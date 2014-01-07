@@ -7,8 +7,8 @@ mod:SetZone()
 mod:SetUsedIcons(8)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START",
-	"UNIT_TARGET"
+	"SPELL_CAST_START 33975 136334 132666 134777 133302",
+	"PLAYER_TARGET_CHANGED"
 )
 
 local warnPyroblast				= mod:NewCastAnnounce(33975, 3)--Hits fairly hard, interruptable, not make or break though. So no special warning. If it hits you you won't wipe.
@@ -30,7 +30,7 @@ local blatGUID = 0
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args.spellId == 33975 or args.spellId == 136334 then--Spellid is used by 5 diff mobs in game, but SetZone sould filter the other 4 mobs.
+	if args:IsSpellID(33975, 136334) then--Spellid is used by 5 diff mobs in game, but SetZone sould filter the other 4 mobs.
 		warnPyroblast:Show()
 	elseif args.spellId == 132666 then
 		warnFireWall:Show()
@@ -49,7 +49,7 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:UNIT_TARGET()
+function mod:PLAYER_TARGET_CHANGED()
 	if self.Options.SetIconOnBlat and not DBM.Options.DontSetIcons and UnitGUID("target") == blatGUID then
 		SetRaidTarget("target", 8)
 	end

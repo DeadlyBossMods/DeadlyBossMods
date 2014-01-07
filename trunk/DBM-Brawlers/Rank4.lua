@@ -7,10 +7,10 @@ mod:SetZone()
 mod:SetUsedIcons(8)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
-	"UNIT_TARGET",
-	"UNIT_SPELLCAST_SUCCEEDED target focus"
+	"SPELL_CAST_START 134743",
+	"SPELL_AURA_APPLIED 129888 133129",
+	"UNIT_SPELLCAST_SUCCEEDED target focus",
+	"PLAYER_TARGET_CHANGED"
 )
 
 local warnCharging				= mod:NewSpellAnnounce(133253, 3)
@@ -46,17 +46,17 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:UNIT_TARGET()
-	if self.Options.SetIconOnDominika and not DBM.Options.DontSetIcons and UnitGUID("target") == DominikaGUID then
-		SetRaidTarget("target", 8)
-	end
-end
-
 --It is however the ONLY event you can detect this spell using.
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if spellId == 133253 and self:AntiSpam() then
 		warnCharging:Show()
 		timerChargingCD:Start()
+	end
+end
+
+function mod:PLAYER_TARGET_CHANGED()
+	if self.Options.SetIconOnDominika and not DBM.Options.DontSetIcons and UnitGUID("target") == DominikaGUID then
+		SetRaidTarget("target", 8)
 	end
 end

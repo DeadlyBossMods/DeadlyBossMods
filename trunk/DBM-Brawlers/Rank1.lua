@@ -6,8 +6,8 @@ mod:SetModelID(46327)--Last Boss of Rank 1
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_START 135342 133286 134740 133607",
+	"SPELL_AURA_APPLIED 133286",
 	"UNIT_SPELLCAST_CHANNEL_START target focus"
 )
 

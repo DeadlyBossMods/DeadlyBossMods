@@ -9,8 +9,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED"
+	"SPELL_CAST_START 144546 144590 144602 144702",
+	"SPELL_AURA_APPLIED 144590"
 )
 
 local warnLeap				= mod:NewTargetAnnounce(144546, 2)

@@ -7,8 +7,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_APPLIED 101871",
+	"SPELL_AURA_REMOVED 101871"
 )
 
 local timerGame		= mod:NewBuffActiveTimer(60, 101871)

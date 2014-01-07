@@ -5,8 +5,8 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
+	"SPELL_AURA_APPLIED 101612",
+	"SPELL_AURA_REMOVED 101612",
 	"UNIT_SPELLCAST_SUCCEEDED player",
 	"QUEST_WATCH_UPDATE"
 )
