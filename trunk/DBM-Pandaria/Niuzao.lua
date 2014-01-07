@@ -11,9 +11,9 @@ mod:RegisterCombat("combat_yell", L.Pull)
 mod:RegisterKill("yell", L.Victory, L.VictoryDem)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_CAST_START 144610 144611 144608",
+	"SPELL_AURA_APPLIED 144606",
+	"SPELL_AURA_APPLIED_DOSE 144606",
 	"UNIT_SPELLCAST_SUCCEEDED target focus"
 )
 

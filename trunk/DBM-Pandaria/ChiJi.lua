@@ -11,8 +11,7 @@ mod:RegisterCombat("combat_yell", L.Pull)
 mod:RegisterKill("yell", L.Victory)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_START 144468 144471 144470 144473 144461",
 	"UNIT_SPELLCAST_SUCCEEDED target focus"
 )
 

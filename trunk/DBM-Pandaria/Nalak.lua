@@ -10,9 +10,8 @@ mod:SetMinSyncRevision(10466)
 mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_CAST_START 136340 136338 136339",
+	"SPELL_AURA_APPLIED 136340 136339"
 )
 
 local warnStormcloud				= mod:NewTargetAnnounce(136340, 3)

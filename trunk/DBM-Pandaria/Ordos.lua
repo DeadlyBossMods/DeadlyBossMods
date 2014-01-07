@@ -11,9 +11,9 @@ mod:SetUsedIcons(8, 7, 6)
 mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_CAST_START 144696 144688 144695",
+	"SPELL_AURA_APPLIED 144689",
+	"SPELL_AURA_REMOVED 144689"
 )
 
 local warnAncientFlame			= mod:NewSpellAnnounce(144695, 2)--probably add a move warning with right DAMAGE event
