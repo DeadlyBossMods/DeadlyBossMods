@@ -3720,6 +3720,18 @@ function DBM:EndCombat(mod, wipe)
 			mod.inCombatOnlyEventsRegistered = nil
 		end
 		mod:Stop()
+		if enableIcons and not DBM.Options.DontSetIcons then
+			-- remove scheduled icon
+			for i, v in ipairs(mod.iconScheduled) do
+				SetRaidTarget(0, v)
+			end
+			twipe(mod.iconScheduled)
+			-- restore saved previous icon
+			for uId, icon in paris(mod.iconRestoreScheduled) do
+				SetRaidTarget(uId, icon)
+			end
+			twipe(mod.iconRestoreScheduled)
+		end
 		mod.inCombat = false
 		mod.blockSyncs = true
 		if mod.combatInfo.killMobs then
@@ -4617,6 +4629,8 @@ do
 				timers = {},
 				countdowns = {},
 				vb = {},
+				iconScheduled = {},
+				iconRestoreScheduled = {},
 				modId = modId,
 				instanceId = instanceId,
 				revision = 0,
@@ -7240,23 +7254,34 @@ bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
 -------------
 --  Icons  --
 -------------
+
 function bossModPrototype:SetIcon(target, icon, timer)
 	if not target then return end--Fix a rare bug where target becomes nil at last second (end combat fires and clears targets)
-	if DBM.Options.DontSetIcons or not enableIcons or (DBM:GetRaidRank(playerName) == 0 and IsInGroup()) then -- Can set icon in solo raid.
+	if DBM.Options.DontSetIcons or not enableIcons or DBM:GetRaidRank(playerName) == 0 then
 		return
 	end
 	icon = icon and icon >= 0 and icon <= 8 and icon or 8
 	local uId = DBM:GetRaidUnitId(target)
 	if not uId then uId = target end
-	local oldIcon = self:GetIcon(uId) or 0
 	SetRaidTarget(uId, icon)
 	self:UnscheduleMethod("SetIcon", target)
+	removeEntry(self.iconScheduled, uId)
 	if timer then
+		self.iconScheduled[#self.iconScheduled + 1] = uId
 		self:ScheduleMethod(timer, "RemoveIcon", target)
-		if oldIcon then
-			self:ScheduleMethod(timer + 1, "SetIcon", target, oldIcon)
-		end
 	end
+	local oldIcon = self:GetIcon(uId) or 0
+	if oldIcon then
+		self.iconRestoreScheduled[uId] = oldIcon
+		self:ScheduleMethod(timer + 1, "RestoreIcon", target, oldIcon)
+	end
+end
+
+function bossModPrototype:RestoreIcon(target, icon)
+	if self.iconRestoreScheduled[uId] then
+		self.iconRestoreScheduled[uId] = nil
+	end
+	return self:SetIcon(target, icon)
 end
 
 do
@@ -7294,7 +7319,7 @@ do
 
 	function bossModPrototype:SetSortedIcon(delay, target, startIcon, maxIcon, reverseIcon, returnFunc)
 		if not target then return end
-		if DBM.Options.DontSetIcons or not enableIcons or (DBM:GetRaidRank(playerName) == 0 and IsInGroup()) then
+		if DBM.Options.DontSetIcons or not enableIcons or DBM:GetRaidRank(playerName) == 0 then
 			return
 		end
 		if not startIcon then startIcon = 1 end
