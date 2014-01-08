@@ -127,8 +127,8 @@ local spellName3 = GetSpellInfo(148994)
 local lines = {}
 --Not important, don't need to recover
 local engineerDied = 0
-local shamanAlive = 0
 --Important, needs recover
+mod.vb.shamanAlive = 0
 mod.vb.phase = 1
 mod.vb.whirlCount = 0
 mod.vb.desecrateCount = 0
@@ -178,7 +178,7 @@ end
 
 function mod:OnCombatStart(delay)
 	engineerDied = 0
-	shamanAlive = 0
+	self.vb.shamanAlive = 0
 	self.vb.phase = 1
 	self.vb.whirlCount = 0
 	self.vb.desecrateCount = 0
@@ -324,12 +324,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args.spellId == 144585 then
-		shamanAlive = shamanAlive + 1
+		self.vb.shamanAlive = self.vb.shamanAlive + 1
 		warnFarseerWolfRider:Show()
 		specWarnFarseerWolfRider:Show()
 		timerFarseerWolfRiderCD:Start()
-		if self.Options.SetIconOnShaman and shamanAlive < 9 then--Support for marking up to 8 shaman
-			self:ScanForMobs(71983, 2, 9-shamanAlive, 1, 0.2, 10, "SetIconOnShaman")
+		if self.Options.SetIconOnShaman and self.vb.shamanAlive < 9 then--Support for marking up to 8 shaman
+			self:ScanForMobs(71983, 2, 9-self.vb.shamanAlive, 1, 0.2, 10, "SetIconOnShaman")
 		end
 	elseif args.spellId == 147209 then
 		self:SendSync("MaliceTarget", args.destGUID)
@@ -373,7 +373,7 @@ function mod:UNIT_DIED(args)
 			countdownPowerIronStar:Cancel()
 		end
 	elseif cid == 71983 then--Farseer Wolf Rider
-		shamanAlive = shamanAlive - 1
+		self.vb.shamanAlive = self.vb.shamanAlive - 1
 	end
 end
 
