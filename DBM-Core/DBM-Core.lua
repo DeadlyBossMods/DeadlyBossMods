@@ -3721,16 +3721,11 @@ function DBM:EndCombat(mod, wipe)
 		end
 		mod:Stop()
 		if enableIcons and not DBM.Options.DontSetIcons then
-			-- remove scheduled icon
-			for uId, v in pairs(mod.iconScheduled) do
-				SetRaidTarget(uId, 0)
-			end
-			twipe(mod.iconScheduled)
 			-- restore saved previous icon
-			for uId, icon in pairs(mod.iconRestoreScheduled) do
+			for uId, icon in pairs(mod.iconRestore) do
 				SetRaidTarget(uId, icon)
 			end
-			twipe(mod.iconRestoreScheduled)
+			twipe(mod.iconRestore)
 		end
 		mod.inCombat = false
 		mod.blockSyncs = true
@@ -4629,8 +4624,7 @@ do
 				timers = {},
 				countdowns = {},
 				vb = {},
-				iconScheduled = {},
-				iconRestoreScheduled = {},
+				iconRestore = {},
 				modId = modId,
 				instanceId = instanceId,
 				revision = 0,
@@ -7265,20 +7259,15 @@ function bossModPrototype:SetIcon(target, icon, timer)
 	local uId = DBM:GetRaidUnitId(target)
 	if not uId then uId = target end
 	--save previous icon into a table.
-	local oldIcon = self:GetIcon(uId) or 0
-	if not self.iconRestoreScheduled[uId] then
-		self.iconRestoreScheduled[uId] = oldIcon
-	end
-	--remove icon Scheduled cache
-	if self.iconScheduled[uId] then
-		self.iconScheduled[uId] = nil
+	if not self.iconRestore[uId] then
+		local oldIcon = self:GetIcon(uId) or 0
+		self.iconRestore[uId] = oldIcon
 	end
 	--set icon
-	SetRaidTarget(uId, icon)
+	SetRaidTarget(uId, self.iconRestore[uId] and icon == 0 and self.iconRestore[uId] or icon)
 	--schedule restoring old icon if timer enabled.
 	if timer then
-		self.iconScheduled[uId] = true
-		self:ScheduleMethod(timer, "SetIcon", target, self.iconRestoreScheduled[uId] or 0)
+		self:ScheduleMethod(timer, "SetIcon", target, 0)
 	end
 end
 
@@ -7302,9 +7291,9 @@ do
 		table.sort(iconSortTable, sort_by_group)
 		local icon = startIcon or 1
 		for i, v in ipairs(iconSortTable) do
-			local oldIcon = self:GetIcon(uId) or 0
-			if not self.iconRestoreScheduled[uId] then
-				self.iconRestoreScheduled[uId] = oldIcon
+			if not self.iconRestore[uId] then
+				local oldIcon = self:GetIcon(uId) or 0
+				self.iconRestore[uId] = oldIcon
 			end
 			SetRaidTarget(v, icon)--do not use SetIcon function again. It already checked in SetSortedIcon function.
 			if reverseIcon then
