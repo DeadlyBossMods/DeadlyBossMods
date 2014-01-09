@@ -103,9 +103,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 122768 then
-		if args:IsPlayer() and (args.amount or 1) >= 9 and (args.amount or 1) % 3 == 0  then
-			specWarnDreadShadows:Show(args.amount)
+	if args.spellId == 122768 and args:IsPlayer() then
+		local amount = args.amount or 1
+		if amount >= 9 and amount % 3 == 0  then
+			specWarnDreadShadows:Show(amount)
 		end
 	elseif args.spellId == 123012 and args:GetDestCreatureID() == 62442 then
 		warnTerrorize:Show(args.destName)
