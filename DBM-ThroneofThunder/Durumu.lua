@@ -13,7 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 133765 138467 136154 134587",
 	"SPELL_CAST_SUCCESS 136932 134122 134123 134124 139202 139204",
 	"SPELL_AURA_APPLIED 133767 133597 133598 134626 137727 133798",
-	"SPELL_AURA_APPLIED_DOSE 133767",--needs review
+	"SPELL_AURA_APPLIED_DOSE 133767 133798",
 	"SPELL_AURA_REMOVED 133767 137727 133597",
 	"SPELL_DAMAGE 134044",
 	"SPELL_MISSED 134044",
@@ -314,10 +314,11 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 133767 then
+		local amount = args.amount or 1
 		timerSeriousWound:Start(args.destName)
-		if (args.amount or 1) >= 5 then
+		if amount >= 5 then
 			if args:IsPlayer() then
-				specWarnSeriousWound:Show(args.amount)
+				specWarnSeriousWound:Show(amount)
 			else
 				if not UnitDebuff("player", GetSpellInfo(133767)) and not UnitIsDeadOrGhost("player") then
 					specWarnSeriousWoundOther:Show(args.destName)
