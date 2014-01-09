@@ -3722,12 +3722,12 @@ function DBM:EndCombat(mod, wipe)
 		mod:Stop()
 		if enableIcons and not DBM.Options.DontSetIcons then
 			-- remove scheduled icon
-			for i, v in ipairs(mod.iconScheduled) do
-				SetRaidTarget(0, v)
+			for uId, v in pairs(mod.iconScheduled) do
+				SetRaidTarget(0, uId)
 			end
 			twipe(mod.iconScheduled)
 			-- restore saved previous icon
-			for uId, icon in paris(mod.iconRestoreScheduled) do
+			for uId, icon in pairs(mod.iconRestoreScheduled) do
 				SetRaidTarget(uId, icon)
 			end
 			twipe(mod.iconRestoreScheduled)
@@ -7260,28 +7260,26 @@ function bossModPrototype:SetIcon(target, icon, timer)
 	if DBM.Options.DontSetIcons or not enableIcons or DBM:GetRaidRank(playerName) == 0 then
 		return
 	end
+	self:UnscheduleMethod("SetIcon", target)
 	icon = icon and icon >= 0 and icon <= 8 and icon or 8
 	local uId = DBM:GetRaidUnitId(target)
 	if not uId then uId = target end
-	SetRaidTarget(uId, icon)
-	self:UnscheduleMethod("SetIcon", target)
-	removeEntry(self.iconScheduled, uId)
-	if timer then
-		self.iconScheduled[#self.iconScheduled + 1] = uId
-		self:ScheduleMethod(timer, "RemoveIcon", target)
-	end
-	local oldIcon = self:GetIcon(uId) or 0
-	if oldIcon then
+	--save previous icon into a table.
+	local oldIcon = self:GetIcon(uId)
+	if oldIcon and not self.iconRestoreScheduled[uId] then
 		self.iconRestoreScheduled[uId] = oldIcon
-		self:ScheduleMethod(timer + 1, "RestoreIcon", target, oldIcon)
 	end
-end
-
-function bossModPrototype:RestoreIcon(target, icon)
-	if self.iconRestoreScheduled[uId] then
-		self.iconRestoreScheduled[uId] = nil
+	--remove icon Scheduled cache
+	if self.iconScheduled[uId] then
+		self.iconScheduled[uId] = nil
 	end
-	return self:SetIcon(target, icon)
+	--set icon
+	SetRaidTarget(uId, icon)
+	--schedult restoring old icon if timer enabled.
+	if timer then
+		self.iconScheduled[uId] = true
+		self:ScheduleMethod(timer, "SetIcon", self.iconRestoreScheduled[uId] or 0)
+	end
 end
 
 do
@@ -7350,8 +7348,8 @@ function bossModPrototype:GetIcon(uId)
 	return GetRaidTargetIndex(uId)
 end
 
-function bossModPrototype:RemoveIcon(target, timer)
-	return self:SetIcon(target, 0, timer)
+function bossModPrototype:RemoveIcon(target)
+	return self:SetIcon(target, 0)
 end
 
 function bossModPrototype:ClearIcons()
