@@ -7172,9 +7172,9 @@ do
 		table.sort(iconSortTable, sort_by_group)
 		local icon = startIcon or 1
 		for i, v in ipairs(iconSortTable) do
-			if not self.iconRestore[uId] then
-				local oldIcon = self:GetIcon(uId) or 0
-				self.iconRestore[uId] = oldIcon
+			if not self.iconRestore[v] then
+				local oldIcon = self:GetIcon(v) or 0
+				self.iconRestore[v] = oldIcon
 			end
 			SetRaidTarget(v, icon)--do not use SetIcon function again. It already checked in SetSortedIcon function.
 			if reverseIcon then
