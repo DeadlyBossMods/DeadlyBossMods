@@ -7219,7 +7219,7 @@ do
 end
 
 function bossModPrototype:GetIcon(uId)
-	return GetRaidTargetIndex(uId)
+	return UnitExists(uId) and GetRaidTargetIndex(uId)
 end
 
 function bossModPrototype:RemoveIcon(target)
