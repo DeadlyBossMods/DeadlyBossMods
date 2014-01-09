@@ -212,11 +212,10 @@ function mod:SPELL_AURA_APPLIED(args)
 --				countdownExpelCorruption:Start(5)--There seems to be a variation on when he casts first one, but ONLY first one has variation
 			end
 		end
-	elseif args.spellId == 118191 then
-		if args:IsPlayer() then
-			if (args.amount or 1) >= 9 then
-				specWarnCorruptedEssence:Show(args.amount)
-			end
+	elseif args.spellId == 118191 and args:IsPlayer() then
+		local amount = args.amount or 1
+		if amount >= 9 then
+			specWarnCorruptedEssence:Show(amount)
 		end
 	end
 end

@@ -208,20 +208,21 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 123059 then
 		local cid = args:GetDestCreatureID()
+		local amount = args.amount or 1
 		if cid == 62511 or cid == 62711 then -- Only boss or monstrosity (most raids do not care about to construct)
 			if Phase < 3 then -- ignore phase3, not useful and super spammy.
-				warnDestabalize:Show(args.destName, args.amount or 1)
+				warnDestabalize:Show(args.destName, amount)
 			end
-			if args.amount then
-				timerDestabalize:Cancel(args.destName, args.amount - 1)
+			if amount then
+				timerDestabalize:Cancel(args.destName, amount - 1)
 			end
 			if self:IsDifficulty("lfr25") then
-				timerDestabalize:Start(60, args.destName, args.amount or 1)
+				timerDestabalize:Start(60, args.destName, amount)
 			else
-				timerDestabalize:Start(nil, args.destName, args.amount or 1)
+				timerDestabalize:Start(nil, args.destName, amount)
 			end
 			if cid == 62711 then 
-				amDestabalizeStack = args.amount or 1 -- save for timer canceling.
+				amDestabalizeStack = amount -- save for timer canceling.
 			end
 		end
 	elseif args.spellId == 121949 then

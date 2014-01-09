@@ -211,52 +211,52 @@ end
 
 -- split Flaming Spear (Arcane Resonance also uses SPELL_AURA_APPLIED_DOSE, buggy)
 function mod:SPELL_AURA_APPLIED_DOSE(args)
+	local amount = args.amount or 1
 	if args.spellId == 131788 then
-		warnLightningLash:Show(args.destName, args.amount or 1)
+		warnLightningLash:Show(args.destName, amount)
 		timerLightningLash:Start(args.destName)
 		timerLightningLashCD:Start()
-		if args:IsPlayer() and (args.amount or 1) >= 2 then
-			specWarnLightningLash:Show(args.amount)
+		if args:IsPlayer() and amount >= 2 then
+			specWarnLightningLash:Show(amount)
 		else
-			if (args.amount or 1) >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(131788)) then
+			if amount >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(131788)) then
 				specWarnLightningLashOther:Show(args.destName)
 			end
 		end
-	elseif args.spellId == 116942 then
-		warnFlamingSpear:Show(args.destName, args.amount or 1)
+		warnFlamingSpear:Show(args.destName, amount)
 		timerFlamingSpear:Start(args.destName)
 		timerFlamingSpearCD:Start()
-		if args:IsPlayer() and (args.amount or 1) >= 2 then
-			specWarnFlamingSpear:Show(args.amount)
+		if args:IsPlayer() and amount >= 2 then
+			specWarnFlamingSpear:Show(amount)
 		else
-			if (args.amount or 1) >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(116942)) then
+			if amount >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(116942)) then
 				specWarnFlamingSpearOther:Show(args.destName)
 			end
 		end
 	elseif args.spellId == 131790 then
-		warnArcaneShock:Show(args.destName, args.amount or 1)
+		warnArcaneShock:Show(args.destName, amount)
 		timerArcaneShock:Start(args.destName)
 		timerArcaneShockCD:Start()
-		if args:IsPlayer() and (args.amount or 1) >= 2 then
-			specWarnArcaneShock:Show(args.amount)
+		if args:IsPlayer() and amount >= 2 then
+			specWarnArcaneShock:Show(amount)
 		else
-			if (args.amount or 1) >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(131790)) then
+			if amount >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(131790)) then
 				specWarnArcaneShockOther:Show(args.destName)
 			end
 		end
 	elseif args.spellId == 131792 then
-		warnShadowBurn:Show(args.destName, args.amount or 1)
+		warnShadowBurn:Show(args.destName, amount)
 		timerShadowBurn:Start(args.destName)
 		timerShadowBurnCD:Start()
-		if args:IsPlayer() and (args.amount or 1) >= 2 then
-			specWarnShadowBurn:Show(args.amount)
+		if args:IsPlayer() and amount >= 2 then
+			specWarnShadowBurn:Show(amount)
 		else
-			if (args.amount or 1) >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(131792)) then
+			if amount >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(131792)) then
 				specWarnShadowBurnOther:Show(args.destName)
 			end
 		end
 	elseif args.spellId == 116821 then
-		wildfireCount = args.amount or 1
+		wildfireCount = amount
 		warnWildfire()
 	end
 end

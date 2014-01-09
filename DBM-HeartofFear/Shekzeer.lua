@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 123707 123788 124748 125822 125390 124862 124097 124007 123845",
-	"SPELL_AURA_APPLIED_DOSE 123707 124748",--needs review
+	"SPELL_AURA_APPLIED_DOSE 123707 124748",
 	"SPELL_AURA_REMOVED 123788 124097 123845",
 	"SPELL_CAST_SUCCESS 123735 125826 124845 125451 123255",
 	"SPELL_CAST_START 124849",
@@ -124,13 +124,14 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 123707 then
-		warnEyes:Show(args.destName, args.amount or 1)
+		local amount = args.amount or 1
+		warnEyes:Show(args.destName, amount)
 		timerEyes:Start(args.destName)
 		timerEyesCD:Start()
-		if args:IsPlayer() and (args.amount or 1) >= 3 then
-			specWarnEyes:Show(args.amount)
+		if args:IsPlayer() and amount >= 3 then
+			specWarnEyes:Show(amount)
 		else
-			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(123735)) and not UnitIsDeadOrGhost("player") then
+			if amount >= 2 and not UnitDebuff("player", GetSpellInfo(123735)) and not UnitIsDeadOrGhost("player") then
 				specWarnEyesOther:Show(args.destName)
 			end
 		end
