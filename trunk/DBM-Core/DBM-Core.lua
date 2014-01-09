@@ -7333,6 +7333,10 @@ do
 		end
 		if not foundDuplicate then
 			iconSet = iconSet + 1
+			local oldIcon = self:GetIcon(uId)
+			if oldIcon and not self.iconRestoreScheduled[uId] then
+				self.iconRestoreScheduled[uId] = oldIcon
+			end
 			table.insert(iconSortTable, uId)
 		end
 		self:UnscheduleMethod("SetIconBySortedTable")
