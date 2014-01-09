@@ -170,15 +170,16 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 136767 then
-		warnPuncture:Show(args.destName, args.amount or 1)
+		local amount = args.amount or 1
+		warnPuncture:Show(args.destName, amount)
 		timerPuncture:Start(args.destName)
 		timerPunctureCD:Start()
 		if args:IsPlayer() then
-			if (args.amount or 1) >= 9 then
-				specWarnPuncture:Show(args.amount)
+			if amount >= 9 then
+				specWarnPuncture:Show(amount)
 			end
 		else
-			if (args.amount or 1) >= 9 and not UnitDebuff("player", GetSpellInfo(136767)) and not UnitIsDeadOrGhost("player") then--Other tank has at least one stack and you have none
+			if amount >= 9 and not UnitDebuff("player", GetSpellInfo(136767)) and not UnitIsDeadOrGhost("player") then--Other tank has at least one stack and you have none
 				specWarnPunctureOther:Show(args.destName)--So nudge you to taunt it off other tank already.
 			end
 		end
@@ -186,8 +187,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	--"<327.0 15:12:46> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Horridon#0xF1310B7C0000383C#elite#261178058#1#1#War-God Jalak <--War-God Jalak jumps down
 	--He jumps down 10 seconds after 4th door is smashed, or when Horridon reaches 30%
 	elseif args.spellId == 136817 then
-		warnBestialCry:Show(args.destName, args.amount or 1)
-		timerBestialCryCD:Start(10, (args.amount or 1)+1)
+		local amount = args.amount or 1
+		warnBestialCry:Show(args.destName, amount)
+		timerBestialCryCD:Start(10, amount+1)
 	elseif args.spellId == 136821 then
 		warnRampage:Show(args.destName)
 		specWarnRampage:Show(args.destName)

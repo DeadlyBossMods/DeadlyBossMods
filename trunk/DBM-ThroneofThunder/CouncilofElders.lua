@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 136189 136521 136894 137203 137350 137891 136990",
 	"SPELL_AURA_APPLIED 136442 136903 136992 136922 136860 136878 137359 137166 137641",
-	"SPELL_AURA_APPLIED_DOSE 136903",--needs review
+	"SPELL_AURA_APPLIED_DOSE 136903 136878",
 	"SPELL_AURA_REMOVED 136442 136903 136904 137359 136992 136922",
 	"SPELL_DAMAGE 136507",
 	"SPELL_MISSED 136507",
@@ -228,15 +228,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:ShowDamagedHealthBar(args.destGUID, args.spellName.." : "..args.destName, bossHealth)
 		end
 	elseif args.spellId == 136903 then--Player Debuff version, not cast version
+		local amount = args.amount or 1
 		timerFrigidAssault:Start(args.destName)
 		if self:AntiSpam(2.5, 1) then
-			warnFrigidAssault:Show(args.destName, args.amount or 1)
+			warnFrigidAssault:Show(args.destName, amount)
 			if args:IsPlayer() then
-				if (args.amount or 1) >= 9 then
-					specWarnFrigidAssault:Show(args.amount)
+				if amount >= 9 then
+					specWarnFrigidAssault:Show(amount)
 				end
 			else
-				if (args.amount or 1) >= 9 and not UnitDebuff("player", GetSpellInfo(136903)) and not UnitIsDeadOrGhost("player") then
+				if amount >= 9 and not UnitDebuff("player", GetSpellInfo(136903)) and not UnitIsDeadOrGhost("player") then
 					specWarnFrigidAssaultOther:Show(args.destName)
 				end
 			end
