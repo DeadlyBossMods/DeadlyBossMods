@@ -308,7 +308,7 @@ local function CheckBosses(ignoreRTF)
 					timerReaveCD:Start(38.5)
 				end
 				mod:StopRepeatedScan("DFAScan")
-				mod:ScheduleMethod(23, "StartRepeatedScan", "DFAScan", unitGUID, 0.25, true)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
+				mod:ScheduleMethod(23, "StartRepeatedScan", unitGUID, "DFAScan", 0.25, true)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
 				if UnitDebuff("player", GetSpellInfo(142929)) then vulnerable = true end
 			elseif cid == 71157 then--Xaril the Poisoned-Mind
 				timerToxicCatalystCD:Start(19.5)--May need tweaking by about a sec or two. Need some transcriptors
@@ -650,7 +650,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.whirlCast = 0
 		self.vb.whirlTime = GetTime()
 		lastWhirl = nil
-		self:StartRepeatedScan("WhirlingScan", args.sourceGUID, 0.08, true)
+		self:StartRepeatedScan(args.sourceGUID, "WhirlingScan", 0.08, true)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)--Range assumed, spell tooltips not informative enough
 			self:Schedule(5, hideRangeFrame)
@@ -707,7 +707,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerToxicCatalystCD:Start(20)
 	elseif args.spellId == 142232 then
 		self:StopRepeatedScan("DFAScan")
-		self:ScheduleMethod(17, "StartRepeatedScan", "DFAScan", args.sourceGUID, 0.25, true)
+		self:ScheduleMethod(17, "StartRepeatedScan", args.sourceGUID, "DFAScan", 0.25, true)
 	end
 end
 
