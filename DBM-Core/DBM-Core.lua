@@ -7265,8 +7265,8 @@ function bossModPrototype:SetIcon(target, icon, timer)
 	local uId = DBM:GetRaidUnitId(target)
 	if not uId then uId = target end
 	--save previous icon into a table.
-	local oldIcon = self:GetIcon(uId)
-	if oldIcon and not self.iconRestoreScheduled[uId] then
+	local oldIcon = self:GetIcon(uId) or 0
+	if not self.iconRestoreScheduled[uId] then
 		self.iconRestoreScheduled[uId] = oldIcon
 	end
 	--remove icon Scheduled cache
@@ -7302,6 +7302,10 @@ do
 		table.sort(iconSortTable, sort_by_group)
 		local icon = startIcon or 1
 		for i, v in ipairs(iconSortTable) do
+			local oldIcon = self:GetIcon(uId) or 0
+			if not self.iconRestoreScheduled[uId] then
+				self.iconRestoreScheduled[uId] = oldIcon
+			end
 			SetRaidTarget(v, icon)--do not use SetIcon function again. It already checked in SetSortedIcon function.
 			if reverseIcon then
 				icon = icon - 1
@@ -7333,10 +7337,6 @@ do
 		end
 		if not foundDuplicate then
 			iconSet = iconSet + 1
-			local oldIcon = self:GetIcon(uId)
-			if oldIcon and not self.iconRestoreScheduled[uId] then
-				self.iconRestoreScheduled[uId] = oldIcon
-			end
 			table.insert(iconSortTable, uId)
 		end
 		self:UnscheduleMethod("SetIconBySortedTable")
