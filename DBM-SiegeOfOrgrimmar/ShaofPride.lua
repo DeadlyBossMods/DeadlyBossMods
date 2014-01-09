@@ -60,7 +60,7 @@ local specWarnManifestation		= mod:NewSpecialWarningSwitch("ej8262", not mod:IsH
 local specWarnMockingBlast		= mod:NewSpecialWarningInterrupt(144379)
 
 --Sha of Pride
-local timerGiftOfTitansCD		= mod:NewNextTimer(25.5, 144359)--NOT cast or tied or boss, on it's own
+local timerGiftOfTitansCD		= mod:NewNextTimer("OptionVersion2", 25.5, 144359, nil, not mod:IsTank())--NOT cast or tied or boss, on it's own. Off for tanks because it can't target tanks, ever
 --These abilitie timings are all based on boss1 UNIT_POWER. All timers have a 1 second variance
 local timerMarkCD				= mod:NewNextTimer(20.5, 144351, nil, mod:IsHealer())
 local timerSelfReflectionCD		= mod:NewNextTimer(25, 144800)
