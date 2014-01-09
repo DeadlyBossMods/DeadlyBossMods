@@ -86,20 +86,22 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 123474 then
-		warnOverwhelmingAssault:Show(args.destName, args.amount or 1)
+		local amount = args.amount or 1
+		warnOverwhelmingAssault:Show(args.destName, amount)
 		timerOverwhelmingAssault:Start(args.destName)
 		if args:IsPlayer() then
-			if (args.amount or 1) >= 2 then
-				specWarnOverwhelmingAssault:Show(args.amount)
+			if amount >= 2 then
+				specWarnOverwhelmingAssault:Show(amount)
 			end
 		else
-			if (args.amount or 1) >= 1 and not UnitDebuff("player", GetSpellInfo(123474)) and not UnitIsDeadOrGhost("player") then--Other tank has at least one stack and you have none
+			if amount >= 1 and not UnitDebuff("player", GetSpellInfo(123474)) and not UnitIsDeadOrGhost("player") then--Other tank has at least one stack and you have none
 				specWarnOverwhelmingAssaultOther:Show(args.destName)--So nudge you to taunt it off other tank already.
 			end
 		end
 	elseif args.spellId == 123471 then
-		if phase2 and (args.amount or 1) % 3 == 0 or not phase2 then
-			warnIntensify:Show(args.destName, args.amount or 1)
+		local amount = args.amount or 1
+		if phase2 and amount % 3 == 0 or not phase2 then
+			warnIntensify:Show(args.destName, amount)
 		end
 		timerIntensifyCD:Start(intensifyCD)
 	end

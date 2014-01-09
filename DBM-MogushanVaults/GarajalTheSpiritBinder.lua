@@ -114,8 +114,8 @@ function mod:OnCombatStart(delay)
 	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
-	if args.spellId == 122151 then
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 122151 then--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
 		if args:IsPlayer() then
 			specWarnVoodooDollsYou:Show()
 		end
@@ -160,7 +160,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 end
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
-function mod:SPELL_AURA_REMOVED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
+function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(116161, 116260) and args:IsPlayer() then
 		if not self:IsDifficulty("lfr25") then
 			warnSuicide:Cancel()
