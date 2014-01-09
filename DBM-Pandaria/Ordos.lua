@@ -12,7 +12,7 @@ mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 144696 144688 144695",
-	"SPELL_AURA_APPLIED 144689",
+	"SPELL_AURA_APPLIED 144689 144693",
 	"SPELL_AURA_REMOVED 144689"
 )
 
