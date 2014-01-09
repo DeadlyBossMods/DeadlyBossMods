@@ -3723,7 +3723,7 @@ function DBM:EndCombat(mod, wipe)
 		if enableIcons and not DBM.Options.DontSetIcons then
 			-- remove scheduled icon
 			for uId, v in pairs(mod.iconScheduled) do
-				SetRaidTarget(0, uId)
+				SetRaidTarget(uId, 0)
 			end
 			twipe(mod.iconScheduled)
 			-- restore saved previous icon
