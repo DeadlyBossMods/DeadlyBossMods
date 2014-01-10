@@ -523,7 +523,7 @@ function mod:WhirlingScan(targetname)
 			specWarnWhirlingNear:Show(targetname)
 		end
 	end
-	if (self.vb.whirlCast > 2) or ((GetTime() - self.vb.whirlTime) > 10) then
+	if (self.vb.whirlCast > 4) or ((GetTime() - self.vb.whirlTime) > 10) then
 		self:StopRepeatedScan("WhirlingScan")
 	end
 end
@@ -650,7 +650,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.whirlCast = 0
 		self.vb.whirlTime = GetTime()
 		lastWhirl = nil
-		self:StartRepeatedScan(args.sourceGUID, "WhirlingScan", 0.08, true)
+		self:StartRepeatedScan(args.sourceGUID, "WhirlingScan", 0.05, true)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)--Range assumed, spell tooltips not informative enough
 			self:Schedule(5, hideRangeFrame)

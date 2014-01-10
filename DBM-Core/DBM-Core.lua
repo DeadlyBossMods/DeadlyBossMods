@@ -3610,6 +3610,10 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 					speedTimer:Start()
 				end
 			end
+			--update boss left
+			if mod.numBoss then
+				mod.vb.bossLeft = mod.numBoss
+			end
 			--elect icon person
 			if mod.findFastestComputer and not DBM.Options.DontSetIcons then
 				if DBM:GetRaidRank() > 0 then
