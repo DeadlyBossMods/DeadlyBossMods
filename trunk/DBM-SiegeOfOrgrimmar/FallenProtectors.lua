@@ -250,6 +250,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDarkMeditation:Show()
 		specWarnDarkMeditation:Show()
 		timerBaneCD:Cancel()
+		timerCalamity:Cancel()
 		timerCalamityCD:Cancel()
 	elseif args.spellId == 143955 then--Misery, Sorrow, and Gloom
 		self.vb.sorrowActive = true

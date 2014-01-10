@@ -1,7 +1,9 @@
 ﻿## Interface: 50400
 ## X-Min-Interface: 50001
 ## Title:|cffffd200Deadly Boss Mods|r |cff69ccf0Status Bar Timers|r
+## Title-koKR:|cffffd200Deadly Boss Mods|r |cff69ccf0상태 바|r
 ## Notes: Deadly Boss Mods - status bar timer library
+## Notes-koKR: Deadly Boss Mods 의 상태 바를 보여주는 애드온입니다.
 ## SavedVariablesPerCharacter: DBT_PersistentOptions
 ## LoadOnDemand: 0
 ## DefaultState: enabled
