@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(72276)
 mod:SetEncounterID(1624)
 mod:DisableESCombatDetection()
-mod:SetMinSyncRevision(10768)
+mod:SetMinSyncRevision(10958)
 mod:SetHotfixNoticeRev(10768)
 mod:SetZone()
 
@@ -23,7 +23,6 @@ mod:RegisterEventsInCombat(
 )
 
 mod:RegisterEvents(
-	"ENCOUNTER_START",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -270,16 +269,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:OnSync(msg, guid)
-	if msg == "BlindHatred" then
-		warnBlindHatred:Show()
-		if not playerInside then
-			specWarnBlindHatred:Show()
-		end
-		timerBlindHatred:Start()
-	elseif msg == "BlindHatredEnded" then
-		timerBlindHatredCD:Start()
-		self.vb.unleashedAngerCast = 0
-	elseif msg == "prepull" then
+	if msg == "prepull" then
 		timerCombatStarts:Start()
 	end
 end
@@ -289,6 +279,15 @@ function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
 	if prefix == "D4" and message then
 		if message:find("ManifestationDied") and not playerInside and self:AntiSpam(1) then
 			addSync()
+		elseif message:find("BlindHatred") then
+			warnBlindHatred:Show()
+			if not playerInside then
+				specWarnBlindHatred:Show()
+			end
+			timerBlindHatred:Start()
+		elseif message:find("BlindHatredEnded") then
+			timerBlindHatredCD:Start()
+			self.vb.unleashedAngerCast = 0
 		end
 	elseif prefix == "BigWigs" and message then
 		local bwPrefix, bwMsg = message:match("^(%u-):(.+)")
