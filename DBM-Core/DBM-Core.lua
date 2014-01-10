@@ -7138,17 +7138,19 @@ function bossModPrototype:SetIcon(target, icon, timer)
 	self:UnscheduleMethod("SetIcon", target)
 	icon = icon and icon >= 0 and icon <= 8 and icon or 8
 	local uId = DBM:GetRaidUnitId(target)
-	if not uId then uId = target end
-	--save previous icon into a table.
-	if not self.iconRestore[uId] then
-		local oldIcon = self:GetIcon(uId) or 0
-		self.iconRestore[uId] = oldIcon
-	end
-	--set icon
-	SetRaidTarget(uId, self.iconRestore[uId] and icon == 0 and self.iconRestore[uId] or icon)
-	--schedule restoring old icon if timer enabled.
-	if timer then
-		self:ScheduleMethod(timer, "SetIcon", target, 0)
+	if uId or UnitExists(target) then--target accepts uid, unitname both.
+		uId = uId or target
+		--save previous icon into a table.
+		if not self.iconRestore[uId] then
+			local oldIcon = self:GetIcon(uId) or 0
+			self.iconRestore[uId] = oldIcon
+		end
+		--set icon
+		SetRaidTarget(uId, self.iconRestore[uId] and icon == 0 and self.iconRestore[uId] or icon)
+		--schedule restoring old icon if timer enabled.
+		if timer then
+			self:ScheduleMethod(timer, "SetIcon", target, 0)
+		end
 	end
 end
 
@@ -7197,23 +7199,25 @@ do
 		if not startIcon then startIcon = 1 end
 		startIcon = startIcon and startIcon >= 0 and startIcon <= 8 and startIcon or 8
 		local uId = DBM:GetRaidUnitId(target)
-		if not uId then uId = target end
-		local foundDuplicate = false
-		for i = #iconSortTable, 1, -1 do
-			if iconSortTable[i] == uId then
-				foundDuplicate = true
-				break
+		if uId or UnitExists(target) then--target accepts uid, unitname both.
+			uId = uId or target
+			local foundDuplicate = false
+			for i = #iconSortTable, 1, -1 do
+				if iconSortTable[i] == uId then
+					foundDuplicate = true
+					break
+				end
 			end
-		end
-		if not foundDuplicate then
-			iconSet = iconSet + 1
-			table.insert(iconSortTable, uId)
-		end
-		self:UnscheduleMethod("SetIconBySortedTable")
-		if maxIcon and iconSet == maxIcon then
-			self:SetIconBySortedTable(startIcon, reverseIcon, returnFunc)
-		elseif self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-			self:ScheduleMethod(delay or 0.5, "SetIconBySortedTable", startIcon, maxIcon, returnFunc)
+			if not foundDuplicate then
+				iconSet = iconSet + 1
+				table.insert(iconSortTable, uId)
+			end
+			self:UnscheduleMethod("SetIconBySortedTable")
+			if maxIcon and iconSet == maxIcon then
+				self:SetIconBySortedTable(startIcon, reverseIcon, returnFunc)
+			elseif self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+				self:ScheduleMethod(delay or 0.5, "SetIconBySortedTable", startIcon, maxIcon, returnFunc)
+			end
 		end
 	end
 end
