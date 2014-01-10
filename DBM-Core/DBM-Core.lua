@@ -795,7 +795,8 @@ do
 	}
 	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
 		if not registeredEvents[event] then return end
-		if (event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_") and not unfilteredCLEUEvents[event] then
+		local eventSub6 = event:sub(0, 6)
+		if (eventSub6 == "SPELL_" or eventSub6 == "RANGE_") and not unfilteredCLEUEvents[event] then
 			local spellId = ...
 			if not registeredSpellIds[event][spellId] then return end
 		end
@@ -816,7 +817,7 @@ do
 			args.destFlags = destFlags
 			args.destRaidFlags = destRaidFlags
 			-- taken from Blizzard_CombatLog.lua
-			if event:sub(0, 6) == "SPELL_" then
+			if eventSub6 == "SPELL_" then
 				args.spellId, args.spellName, args.spellSchool = select(1, ...)
 				if event == "SPELL_INTERRUPT" then
 					args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
@@ -1190,7 +1191,8 @@ do
 			end
 		end
 	end
-
+	
+	local nextModSyncSpamUpdate = 0
 	mainFrame:SetScript("OnUpdate", function(self, elapsed)
 		local time = GetTime()
 
@@ -1215,10 +1217,15 @@ do
 		end
 
 		-- clean up sync spam timers and auto respond spam blockers
-		-- TODO: optimize this; using next(t, k) all the time on nearly empty hash tables is not a good idea...doesn't really matter here as modSyncSpam only very rarely contains more than 4 entries...
-		local k, v = next(modSyncSpam, nil)
-		if v and (time - v > 8) then
-			modSyncSpam[k] = nil
+		if time > nextModSyncSpamUpdate then
+			nextModSyncSpamUpdate = time + 20
+			-- TODO: optimize this; using next(t, k) all the time on nearly empty hash tables is not a good idea...doesn't really matter here as modSyncSpam only very rarely contains more than 4 entries...
+			-- we now do this just every 20 seconds since the earlier assumption about modSyncSpam isn't true any longer
+			-- note that not removing entries at all would be just a small memory leak and not a problem (the sync functions themselves check the timestamp)
+			local k, v = next(modSyncSpam, nil)
+			if v and (time - v > 8) then
+				modSyncSpam[k] = nil
+			end
 		end
 	end)
 
