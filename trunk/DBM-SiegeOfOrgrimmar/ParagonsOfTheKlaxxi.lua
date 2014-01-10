@@ -238,7 +238,6 @@ local FlavorTable = {
 
 local UnitDebuff, GetSpellInfo = UnitDebuff, GetSpellInfo
 local calculatingDude, readyToFight = EJ_GetSectionInfo(8012), GetSpellInfo(143542)
-local expectedWhirl = 3
 ------------------
 --Tables, can't recover
 local activatedTargets = {}--A table, for the 3 on pull
@@ -525,7 +524,7 @@ function mod:WhirlingScan(targetname)
 			specWarnWhirlingNear:Show(targetname)
 		end
 	end
-	if self.vb.whirlCast >= expectedWhirl or (GetTime() - self.vb.whirlTime) > 20 then
+	if self.vb.whirlCast > 4 or (GetTime() - self.vb.whirlTime) > 20 then
 		self:StopRepeatedScan("WhirlingScan")
 	end
 end
@@ -652,8 +651,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.whirlCast = 0
 		self.vb.whirlTime = GetTime()
 		lastWhirl = nil
-		expectedWhirl = self:IsDifficulty("heroic10", "heroic25") and 5 or 3
-		self:StartRepeatedScan(args.sourceGUID, "WhirlingScan", 0.05, true)
+		self:StartRepeatedScan(args.sourceGUID, "WhirlingScan", 0.03, true)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)--Range assumed, spell tooltips not informative enough
 			self:Schedule(5, hideRangeFrame)
