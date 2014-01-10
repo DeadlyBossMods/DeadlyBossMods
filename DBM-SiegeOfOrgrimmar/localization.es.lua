@@ -20,6 +20,10 @@ L= DBM:GetModLocalization(849)
 ---------------------------
 L= DBM:GetModLocalization(866)
 
+L:SetMiscLocalization({
+	wasteOfTime			= "Muy bien, crearé un campo para mantener aislada vuestra corrupción."
+})
+
 ------------------
 -- Sha of Pride --
 ------------------

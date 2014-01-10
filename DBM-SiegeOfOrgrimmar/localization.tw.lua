@@ -20,6 +20,10 @@ L= DBM:GetModLocalization(849)
 ---------------------------
 L= DBM:GetModLocalization(866)
 
+L:SetMiscLocalization({
+	wasteOfTime	= "很好，我會創造一個力場隔離你們的腐化。"
+})
+
 ------------------
 -- Sha of Pride --
 ------------------
