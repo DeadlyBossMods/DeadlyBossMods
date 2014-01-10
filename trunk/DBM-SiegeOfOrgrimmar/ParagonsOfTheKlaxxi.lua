@@ -130,7 +130,7 @@ local yellAim						= mod:NewYell(142948)
 local specWarnAimOther				= mod:NewSpecialWarningTarget(142948)
 local specWarnRapidFire				= mod:NewSpecialWarningSpell(143243, nil, nil, nil, 2)
 
-local timerJumpToCenter				= mod:NewCastTimer(5, 143545)
+local timerJumpToCenter				= mod:NewCastTimer(6.5, 143545)
 --Kil'ruk the Wind-Reaver
 local timerGouge					= mod:NewTargetTimer(10, 143939, nil, mod:IsTank())
 local timerReaveCD					= mod:NewCDTimer(33, 148676)
