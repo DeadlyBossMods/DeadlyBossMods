@@ -23,6 +23,7 @@ mod:RegisterEventsInCombat(
 )
 
 mod:RegisterEvents(
+	"ENCOUNTER_START",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
