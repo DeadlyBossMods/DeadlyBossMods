@@ -43,7 +43,7 @@
 --  Globals  --
 ---------------
 DBT = {}
-DBT_SavedOptions = {}
+DBT_PersistentOptions = {}
 
 
 --------------
@@ -332,8 +332,13 @@ do
 	end
 
 	function DBT:LoadOptions(id)
-		DBT_SavedOptions[id] = DBT_SavedOptions[id] or {}
-		self.options = setmetatable(DBT_SavedOptions[id], optionMT)
+		-- recover old options (DBM_SavedOptions) if possible (saved by DBM, before DBT was a separate addon)
+		DBT_PersistentOptions[id] = DBT_PersistentOptions[id] or (DBT_SavedOptions and DBT_SavedOptions[id]) or {}
+		if DBT_SavedOptions and DBT_SavedOptions[id] then
+			-- don't need them anymore, they are now in DBT_PersistentOptions
+			DBT_SavedOptions[id] = nil
+		end
+		self.options = setmetatable(DBT_PersistentOptions[id], optionMT)
 		self.mainAnchor:ClearAllPoints()
 		self.secAnchor:ClearAllPoints()
 		self.mainAnchor:SetPoint(self.options.TimerPoint, UIParent, self.options.TimerPoint, self.options.TimerX, self.options.TimerY)
