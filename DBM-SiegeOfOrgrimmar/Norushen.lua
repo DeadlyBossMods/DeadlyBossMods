@@ -250,7 +250,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 145769 and self:AntiSpam(1, 1) then--Unleash Corruption
+	if spellId == 145769 and self:AntiSpam(1, 5) then--Unleash Corruption
 		specWarnManifestationSoon:Show()
 		self:Schedule(5, addsDelay, GetTime())
 	end
@@ -279,13 +279,13 @@ function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
 	if prefix == "D4" and message then
 		if message:find("ManifestationDied") and not playerInside and self:AntiSpam(1, 1) then
 			addSync()
-		elseif message:find("BlindHatred") and self:AntiSpam(5, 1) then
+		elseif message:find("BlindHatred") and self:AntiSpam(5, 3) then
 			warnBlindHatred:Show()
 			if not playerInside then
 				specWarnBlindHatred:Show()
 			end
 			timerBlindHatred:Start()
-		elseif message:find("BlindHatredEnded") and self:AntiSpam(5, 1) then
+		elseif message:find("BlindHatredEnded") and self:AntiSpam(5, 4) then
 			timerBlindHatredCD:Start()
 			self.vb.unleashedAngerCast = 0
 		end
