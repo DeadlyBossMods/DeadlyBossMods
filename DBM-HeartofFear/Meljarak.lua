@@ -81,25 +81,17 @@ local countdownImpalingSpear			= mod:NewCountdown(49, 122224, nil, nil, 10) -- l
 mod:AddBoolOption("AmberPrisonIcons", true)
 
 local Reinforcement = EJ_GetSectionInfo(6554)
+local strikeSpell = GetSpellInfo(123963)
 local addsCount = 0
 local amberPrisonIcon = 2
 local zarthikCount = 0
 local firstStriked = false
-local strikeSpell = GetSpellInfo(123963)
 local strikeTarget = nil
-local amberPrisonTargets = {}
 local windBombTargets = {}
 local zarthikGUIDS = {}
 
-local function warnAmberPrisonTargets()
-	warnAmberPrison:Show(table.concat(amberPrisonTargets, "<, >"))
-	table.wipe(amberPrisonTargets)
-end
-
-local function warnWindBombTargets()
-	warnWindBomb:Show(table.concat(windBombTargets, "<, >"))
+local function clearWindBombTargets()
 	table.wipe(windBombTargets)
-	timerWindBombCD:Start()
 end
 
 function mod:OnCombatStart(delay)
@@ -108,7 +100,6 @@ function mod:OnCombatStart(delay)
 	zarthikCount = 0
 	firstStriked = false
 	strikeTarget = nil
-	table.wipe(amberPrisonTargets)
 	table.wipe(windBombTargets)
 	table.wipe(zarthikGUIDS)
 	timerKorthikStrikeCD:Start(18-delay)
@@ -126,16 +117,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownImpalingSpear:Start()
 		timerImpalingSpear:Start(args.destName)
 	elseif args.spellId == 121881 then--Not a mistake, 121881 is targeting spellid.
-		amberPrisonTargets[#amberPrisonTargets + 1] = args.destName
+		warnAmberPrison:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnAmberPrison:Show()
 			if not self:IsDifficulty("lfr25") then
 				yellAmberPrison:Yell()
 			end
+		else
+			specWarnAmberPrisonOther:Show()
 		end
-		self:Unschedule(warnAmberPrisonTargets)
-		self:Schedule(0.3, warnAmberPrisonTargets)
-		specWarnAmberPrisonOther:Show()
 		if self.Options.AmberPrisonIcons then
 			self:SetIcon(args.destName, amberPrisonIcon)
 			if amberPrisonIcon == 2 then
@@ -196,12 +186,12 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
-	if spellId == 131830 then
-		if #windBombTargets < 6 then -- prevent target warning spam.
-			windBombTargets[#windBombTargets + 1] = destName
-		end
-		self:Unschedule(warnWindBombTargets)
-		self:Schedule(0.3, warnWindBombTargets)
+	if spellId == 131830 and not windBombTargets[destGUID] then
+		windBombTargets[destGUID] = true
+		warnWindBomb:CombinedShow(0.5, destName)
+		timerWindBombCD:Start()
+		self:Unschedule(clearWindBombTargets)
+		self:Schedule(0.3, clearWindBombTargets)
 		if destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
 			specWarnWindBomb:Show()
 			if not self:IsDifficulty("lfr25") then
