@@ -20,6 +20,10 @@ L= DBM:GetModLocalization(849)
 ---------------------------
 L= DBM:GetModLocalization(866)
 
+L:SetMiscLocalization({
+	wasteOfTime			= "Хорошо, я создам поле для удерживания порчи."
+})
+
 ------------------
 -- Sha of Pride --
 ------------------
