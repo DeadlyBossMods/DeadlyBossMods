@@ -11,7 +11,7 @@
 ## Notes: Deadly Boss Mods
 ## Dependencies: DBM-StatusBarTimers
 ## OptionalDependencies: LibSharedMedia-3.0, LibChatAnims
-## SavedVariablesPerCharacter: DBM_SavedOptions
+## SavedVariablesPerCharacter: DBM_SavedOptions, DBT_SavedOptions
 ## LoadOnDemand: 0
 ## DefaultState: enabled
 ## Author: Tandanu and Nitram
