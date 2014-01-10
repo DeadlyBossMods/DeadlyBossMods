@@ -172,9 +172,6 @@ mod:AddSetIconOption("SetIconOnMesmerize", 142671, false)
 mod:AddBoolOption("AimArrow", false)
 
 --Upvales, don't need variables
-local UnitDebuff, GetSpellInfo = UnitDebuff, GetSpellInfo
-local calculatingDude, readyToFight = EJ_GetSectionInfo(8012), GetSpellInfo(143542)
-------------------
 --Normal Only
 --143605 Red Sword
 --143606 Purple Sword
@@ -238,6 +235,11 @@ local FlavorTable = {
 	[71158] = L.RikkalFlavor,--Rik'kal the Dissector
 	[71153] = L.hisekFlavor--Hisek the Swarmkeeper
 }
+
+local UnitDebuff, GetSpellInfo = UnitDebuff, GetSpellInfo
+local calculatingDude, readyToFight = EJ_GetSectionInfo(8012), GetSpellInfo(143542)
+local expectedWhirl = 3
+------------------
 --Tables, can't recover
 local activatedTargets = {}--A table, for the 3 on pull
 local activeBossGUIDS = {}
@@ -523,7 +525,7 @@ function mod:WhirlingScan(targetname)
 			specWarnWhirlingNear:Show(targetname)
 		end
 	end
-	if (self.vb.whirlCast > 4) and self:IsDifficulty("herioc10", "heroic25") or (self.vb.whirlCast > 2) or ((GetTime() - self.vb.whirlTime) > 20) then
+	if self.vb.whirlCast >= expectedWhirl or (GetTime() - self.vb.whirlTime) > 20 then
 		self:StopRepeatedScan("WhirlingScan")
 	end
 end
@@ -650,6 +652,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.whirlCast = 0
 		self.vb.whirlTime = GetTime()
 		lastWhirl = nil
+		expectedWhirl = self:IsDifficulty("heroic10", "heroic25") and 5 or 3
 		self:StartRepeatedScan(args.sourceGUID, "WhirlingScan", 0.05, true)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)--Range assumed, spell tooltips not informative enough
