@@ -250,7 +250,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 145769 and self:AntiSpam(1) then--Unleash Corruption
+	if spellId == 145769 and self:AntiSpam(1, 1) then--Unleash Corruption
 		specWarnManifestationSoon:Show()
 		self:Schedule(5, addsDelay, GetTime())
 	end
@@ -277,21 +277,21 @@ end
 function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
 	--Because core already registers BigWigs prefix with server, shouldn't need it here
 	if prefix == "D4" and message then
-		if message:find("ManifestationDied") and not playerInside and self:AntiSpam(1) then
+		if message:find("ManifestationDied") and not playerInside and self:AntiSpam(1, 1) then
 			addSync()
-		elseif message:find("BlindHatred") then
+		elseif message:find("BlindHatred") and self:AntiSpam(5, 1) then
 			warnBlindHatred:Show()
 			if not playerInside then
 				specWarnBlindHatred:Show()
 			end
 			timerBlindHatred:Start()
-		elseif message:find("BlindHatredEnded") then
+		elseif message:find("BlindHatredEnded") and self:AntiSpam(5, 1) then
 			timerBlindHatredCD:Start()
 			self.vb.unleashedAngerCast = 0
 		end
 	elseif prefix == "BigWigs" and message then
 		local bwPrefix, bwMsg = message:match("^(%u-):(.+)")
-		if bwMsg == "InsideBigAddDeath" and not playerInside and self:AntiSpam(1) then
+		if bwMsg == "InsideBigAddDeath" and not playerInside and self:AntiSpam(1, 1) then
 			addSync()
 		end
 	end
