@@ -7,10 +7,10 @@ mod:SetZone()
 mod:RegisterCombat("scenario", 1030)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START 142884 119843",
+	"SPELL_CAST_SUCCESS 120824",
+	"SPELL_AURA_APPLIED 120817 127823 120929 120215",
+	"SPELL_AURA_REMOVED 120817 127823",
 	"UNIT_DIED"
 )
 
@@ -24,8 +24,7 @@ local warnGuardianStrike	= mod:NewSpellAnnounce(119843, 3)
 --Abomination of Anger
 local warnBreathofHate		= mod:NewSpellAnnounce(120929, 3)
 local warnCloudofAnger		= mod:NewSpellAnnounce(120824, 3, 120743)--142432 is heroic ID in 5.3 only, need to figure out damage type event, SPELL_DAMAGE or SPELL_PERIODIC_DAMAGE and add move warning
-local warnDarkforce			= mod:NewCastAnnounce(120215, 4, 5)
-
+local warnDarkforce			= mod:NewSpellAnnounce(120215, 4)--normal 5, heroic 3.5 cast
 
 --Jin Ironfist
 --local specWarnRelentless	= mod:NewSpecialWarningRun(120817)--Maybe on heroic this actually deadly and you must run? if so, uncomment
@@ -43,6 +42,7 @@ local timerEnrage			= mod:NewBuffActiveTimer(10, 127823)
 --Abomination of Anger
 local timerBreathCD			= mod:NewCDTimer(21.5, 120929)--Limited sample size, may be shorter
 local timerCloudofAngerCD	= mod:NewCDTimer(17, 120824)--Limited sample size, may be shorter
+local timerDarkforce		= mod:NewCastTimer(5, 120215)
 local timerDarkforceCD		= mod:NewCDTimer(32, 120215)
 
 local soundDarkforce		= mod:NewSound(120215)
@@ -81,15 +81,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDarkforce:Show()
 		specWarnDarkforce:Show()
 		soundDarkforce:Play()
+		timerDarkforce:Start(self:IsDifficulty("heroic5") and 3.5 or 5)
 		timerDarkforceCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 120817 then
-		timerRelentless:Cancel(args.destname)
+		timerRelentless:Cancel(args.destName)
 	elseif args.spellId == 127823 then
-		timerEnrage:Cancel(args.destname)
+		timerEnrage:Cancel(args.destName)
 	end
 end
 
