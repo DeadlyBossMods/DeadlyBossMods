@@ -7,7 +7,7 @@ mod:SetZone()
 mod:RegisterCombat("scenario", 1099)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
+	"SPELL_CAST_START 141438 141327 141187 136473",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED target focus"
 )
@@ -19,6 +19,7 @@ local warnThrowBomb				= mod:NewSpellAnnounce(132995, 3, nil, false)
 local warnVolatileConcoction	= mod:NewSpellAnnounce(141327, 3)
 --Admiral Hagman
 local warnVerticalSlash			= mod:NewSpellAnnounce(141187, 4)
+local warnCounterShot			= mod:NewSpellAnnounce(136473, 2, nil, mod:IsSpellCaster())
 
 --Lieutenant Drak'on
 local specWarnSwashbuckling		= mod:NewSpecialWarningSpell(141438)
@@ -26,6 +27,7 @@ local specWarnSwashbuckling		= mod:NewSpecialWarningSpell(141438)
 local specWarnVolatileConcoction= mod:NewSpecialWarningSpell(141327)
 --Admiral Hagman
 local specWarnVerticalSlash		= mod:NewSpecialWarningSpell(141187)
+local specWarnCounterShot		= mod:NewSpecialWarningCast(136473, mod:IsSpellCaster())
 
 --Lieutenant Drak'on
 local timerSwashbucklingCD		= mod:NewNextTimer(16, 141438)
@@ -33,6 +35,7 @@ local timerSwashbucklingCD		= mod:NewNextTimer(16, 141438)
 local timerThrowBombCD			= mod:NewNextTimer(6, 132995, nil, false)
 --Admiral Hagman
 local timerVerticalSlashCD		= mod:NewCDTimer(18, 141187)--18-20 second variation
+local timerCounterShot			= mod:NewCastTimer(1.5, 136473)
 
 mod:RemoveOption("HealthFrame")
 
@@ -48,6 +51,10 @@ function mod:SPELL_CAST_START(args)
 		warnVerticalSlash:Show()
 		specWarnVerticalSlash:Show()
 		timerVerticalSlashCD:Start()
+	elseif args.spellId == 136473 then
+		warnCounterShot:Show()
+		specWarnCounterShot:Shot()
+		timerCounterShot:Start()
 	end
 end
 
