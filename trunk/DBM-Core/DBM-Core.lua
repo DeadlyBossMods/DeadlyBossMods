@@ -2299,9 +2299,6 @@ do
 			if not targetEventsRegistered then
 				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED")
 				targetEventsRegistered = true
-				if DBM.Options.DebugMode then
-					print("DBM Debug: targetEventsRegistered true")
-				end
 			end
 			if not forceloadmapIds[mapID] then return end
 		-- You entered instance duing worldboss combat. Force end worldboss mod.
@@ -2309,9 +2306,6 @@ do
 			if targetEventsRegistered then
 				DBM:UnregisterShortTermEvents()
 				targetEventsRegistered = false
-				if DBM.Options.DebugMode then
-					print("DBM Debug: targetEventsRegistered false")
-				end
 			end
 			if savedDifficulty == "worldboss" then
 				for i = #inCombat, 1, -1 do
