@@ -152,7 +152,8 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 143343 then--Assumed, 2 second channel but "Instant" cast flagged, this generally means SPELL_AURA_APPLIED
+	local spellId = args.spellid
+	if spellId == 143343 then--Assumed, 2 second channel but "Instant" cast flagged, this generally means SPELL_AURA_APPLIED
 		timerDeafeningScreechCD:Cancel()
 		if self:IsDifficulty("lfr25") then
 			timerDeafeningScreechCD:Start(18, self.vb.screechCount+1)
@@ -163,10 +164,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 				specWarnDeafeningScreech:Schedule(screechTimers[self.vb.screechCount]-1.5)
 			end
 		end
-	elseif args.spellId == 143428 then
+	elseif spellId == 143428 then
 		warnTailLash:Show()
 		timerTailLashCD:Start()
-	elseif args.spellId == 31821 and not self:IsDifficulty("lfr25") then
+	elseif spellId == 31821 and not self:IsDifficulty("lfr25") then
 		warnDevotionAura:Show(args.sourceName)
 		specWarnDevotionAura:Cancel()
 		specWarnDevotionAura:Schedule(6)--Use scheduling but cancel it if a recast happens, that way we don't falsely warn it's gone since REMOVED fires while buff still up from another person
@@ -175,10 +176,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 143411 then
+	local spellId = args.spellid
+	if spellId == 143411 then
 		self.vb.screechCount = args.amount or 1
 		warnAcceleration:Show(args.destName, self.vb.screechCount)
-	elseif args.spellId == 143766 then
+	elseif spellId == 143766 then
 		timerFearsomeRoarCD:Start()
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId, "boss1") then
@@ -193,7 +195,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args.spellId == 143780 then
+	elseif spellId == 143780 then
 		timerAcidBreathCD:Start()
 		local amount = args.amount or 1
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -209,7 +211,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args.spellId == 143773 then
+	elseif spellId == 143773 then
 		timerFrostBreathCD:Start()
 		local amount = args.amount or 1
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -224,7 +226,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args.spellId == 143767 then
+	elseif spellId == 143767 then
 		timerScorchingBreathCD:Start()
 		local amount = args.amount or 1
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -239,15 +241,15 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args.spellId == 143440 then
+	elseif spellId == 143440 then
 		timerBloodFrenzyCD:Start()
-	elseif args.spellId == 143442 then
+	elseif spellId == 143442 then
 		local amount = args.amount or 1
 		timerBloodFrenzyCD:Start()
 		if amount % 2 == 0 then
 			warnBloodFrenzy:Show(args.destName, amount)
 		end
-	elseif args.spellId == 143445 then
+	elseif spellId == 143445 then
 		warnFixate:Show(args.destName)
 		timerFixate:Start(args.destName)
 		if args:IsPlayer() then
@@ -258,23 +260,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 8)
 		end
-	elseif args.spellId == 143791 then
+	elseif spellId == 143791 then
 		warnCorrosiveBlood:CombinedShow(0.5, args.destName)
 		timerCorrosiveBloodCD:DelayedStart(0.5)
-	elseif args.spellId == 143800 and args:IsPlayer() then
+	elseif spellId == 143800 and args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount >= 3 then
 			specWarnIcyBlood:Show(amount)
 		end
-	elseif args.spellId == 143777 then
+	elseif spellId == 143777 then
 		warnFrozenSolid:CombinedShow(1, args.destName)--On 25 man, many targets get frozen and often at/near the same time. try to batch em up a bit
 		if self:AntiSpam(3, 1) then
 			specWarnFrozenSolid:Show(args.destName)
 		end
-	elseif args.spellId == 145974 then
+	elseif spellId == 145974 then
 		warnEnrage:Show(args.destName)
 		specWarnEnrage:Show(args.destName)
-	elseif args.spellId == 146589 then
+	elseif spellId == 146589 then
 		warnKey:Show(args.destName)
 		timerKey:Start(args.destName)
 	end
@@ -282,19 +284,20 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 143766 then
+	local spellId = args.spellid
+	if spellId == 143766 then
 		timerFearsomeRoar:Cancel(args.destName)
-	elseif args.spellId == 143780 then
+	elseif spellId == 143780 then
 		timerAcidBreath:Cancel(args.destName)
-	elseif args.spellId == 143773 then
+	elseif spellId == 143773 then
 		timerFrostBreath:Cancel(args.destName)
-	elseif args.spellId == 143767 then
+	elseif spellId == 143767 then
 		timerScorchingBreath:Cancel(args.destName)
-	elseif args.spellId == 146589 then
+	elseif spellId == 146589 then
 		timerKey:Cancel(args.destName)
 		warnKeyOpen:Show()
 		timerBloodFrenzyEnd:Start()
-	elseif args.spellId == 143440 then
+	elseif spellId == 143440 then
 		timerBloodFrenzyCD:Cancel()
 		self.vb.screechCount = 0
 		if self:IsDifficulty("lfr25") then
@@ -311,7 +314,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Show(10, nil, nil, 14)
 			end
 		end
-	elseif args.spellId == 143445 then
+	elseif spellId == 143445 then
 		timerFixate:Cancel(args.destName)
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 0)

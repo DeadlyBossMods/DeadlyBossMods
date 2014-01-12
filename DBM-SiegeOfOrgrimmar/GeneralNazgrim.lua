@@ -238,36 +238,37 @@ function mod:OnCombatEnd()
 end 
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 143872 then
+	local spellId = args.spellid
+	if spellId == 143872 then
 		warnRavager:Show()
 		specWarnRavager:Show()
-	elseif args.spellId == 143503 then
+	elseif spellId == 143503 then
 		warnWarSong:Show()
 		specWarnWarSong:Show()
-	elseif args.spellId == 143420 then
+	elseif spellId == 143420 then
 		local source = args.sourceName
 		warnIronstorm:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnIronstorm:Show(source)
 		end
-	elseif args.spellId == 143431 then
+	elseif spellId == 143431 then
 		local source = args.sourceName
 		if source == UnitName("target") or source == UnitName("focus") then
 			warnMagistrike:Show()
 			specWarnMagistrike:Show(source)
 		end
-	elseif args.spellId == 143432 then
+	elseif spellId == 143432 then
 		local source = args.sourceName
 		if source == UnitName("target") or source == UnitName("focus") then 
 			warnArcaneShock:Show()
 			specWarnArcaneShock:Show(source)
 		end
-	elseif args.spellId == 143473 then
+	elseif spellId == 143473 then
 		local source = args.sourceName
 		warnEmpoweredChainHeal:Show()
 		specWarnEmpoweredChainHeal:Show(source)
 		timerEmpoweredChainHealCD:Start(source, args.sourceGUID)
-	elseif args.spellId == 143502 then
+	elseif spellId == 143502 then
 		warnExecute:Show()
 		timerExecuteCD:Start()
 		if UnitExists("boss1") and UnitGUID("boss1") == args.sourceGUID and UnitDetailedThreatSituation("player", "boss1") then--threat check instead of target because we may be helping dps adds
@@ -277,7 +278,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 143589 then
+	local spellId = args.spellid
+	if spellId == 143589 then
 		if self.vb.defensiveActive then
 			self.vb.defensiveActive = false
 			specWarnDefensiveStanceEnd:Show()
@@ -289,7 +291,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			DBM.InfoFrame:SetHeader(GetSpellInfo(143589))
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 		end
-	elseif args.spellId == 143594 then
+	elseif spellId == 143594 then
 		warnBerserkerStance:Show()
 		specWarnBerserkerStance:Show()
 		timerDefensiveStanceCD:Start()
@@ -302,7 +304,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			DBM.InfoFrame:SetHeader(GetSpellInfo(143594))
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 		end
-	elseif args.spellId == 143593 then
+	elseif spellId == 143593 then
 		if not self.vb.allForcesReleased then
 			self.vb.defensiveActive = true
 			self:RegisterShortTermEvents(
@@ -320,22 +322,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 			DBM.InfoFrame:SetHeader(GetSpellInfo(143593))
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 		end
-	elseif args.spellId == 143536 then
+	elseif spellId == 143536 then
 		warnKorkronBanner:Show()
 		specWarnKorkronBanner:Show()
 		if self.Options.SetIconOnAdds then
 			self:ScanForMobs(71626, 2, 8, 1, 0.2, 4)--banner
 		end
-	elseif args.spellId == 143474 then
+	elseif spellId == 143474 then
 		warnHealingTideTotem:Show()
 		specWarnHealingTideTotem:Show()
-	elseif args.spellId == 143494 then--Because it can miss, we start CD here instead of APPLIED
+	elseif spellId == 143494 then--Because it can miss, we start CD here instead of APPLIED
 		timerSunderCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 143494 then
+	local spellId = args.spellid
+	if spellId == 143494 then
 		local amount = args.amount or 1
 		warnSunder:Show(args.destName, amount)
 		timerSunder:Start(args.destName)
@@ -348,11 +351,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnSunderOther:Show(args.destName)
 			end
 		end
-	elseif args.spellId == 143484 then
+	elseif spellId == 143484 then
 		warnCoolingOff:Show(args.destName)
 		timerCoolingOff:Start()
 		countdownCoolingOff:Start()
-	elseif args.spellId == 143480 then
+	elseif spellId == 143480 then
 		warnAssasinsMark:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnAssassinsMark:Show()
@@ -360,13 +363,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			specWarnAssassinsMarkOther:Show(args.destName)
 		end
-	elseif args.spellId == 143475 and not args:IsDestTypePlayer() then
+	elseif spellId == 143475 and not args:IsDestTypePlayer() then
 		warnEarthShield:Show(args.destName)
 		specWarnEarthShield:Show(args.destName)
-	elseif args.spellId == 143638 then
+	elseif spellId == 143638 then
 		warnBonecracker:CombinedShow(1.5, args.destName)
 		timerBoneCD:DelayedStart(1.5)--Takes a while to get on all targets. 1.5 seconds in 10 man, not sure about 25 man yet
-	elseif args.spellId == 143882 then
+	elseif spellId == 143882 then
 		warnHuntersMark:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnHuntersMark:Show()
@@ -379,7 +382,8 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 143494 then
+	local spellId = args.spellid
+	if spellId == 143494 then
 		timerSunder:Cancel(args.destName)
 	end
 end

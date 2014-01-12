@@ -103,7 +103,8 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 144483 then--Siege mode transition
+	local spellId = args.spellid
+	if spellId == 144483 then--Siege mode transition
 		self.vb.shockCount = 0
 		self.vb.siegeMode = true
 		self.vb.firstTar = false
@@ -120,7 +121,7 @@ function mod:SPELL_CAST_START(args)
 			timerMortarBarrageCD:Start(20)
 		end
 		timerAssaultModeCD:Start()
-	elseif args.spellId == 144485 then
+	elseif spellId == 144485 then
 		self.vb.shockCount = self.vb.shockCount + 1
 		warnShockPulse:Show(self.vb.shockCount)
 		specWarnShockPulse:Show(self.vb.shockCount)
@@ -131,13 +132,15 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 146325 then
+	local spellId = args.spellid
+	if spellId == 146325 then
 		self:SendSync("LaserTarget", args.destGUID)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 144467 then
+	local spellId = args.spellid
+	if spellId == 144467 then
 		timerIgniteArmorCD:Start()
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId, "boss1") then
@@ -152,12 +155,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args.spellId == 146325 then
+	elseif spellId == 146325 then
 		self:SendSync("LaserTarget", args.destGUID)
-	elseif args.spellId == 144459 then
+	elseif spellId == 144459 then
 		warnLaserBurn:CombinedShow(0.5, args.destName)
 		timerLaserBurnCD:DelayedStart(0.5)
-	elseif args.spellId == 144498 and args:IsPlayer() then
+	elseif spellId == 144498 and args:IsPlayer() then
 		specWarnExplosiveTar:Show()
 	end
 end
@@ -165,9 +168,10 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 144467 then
+	local spellId = args.spellid
+	if spellId == 144467 then
 		timerIgniteArmor:Cancel(args.destName)
-	elseif args.spellId == 146325 then
+	elseif spellId == 146325 then
 		self:SendSync("LaserTargetRemoved", args.destGUID)
 	end
 end

@@ -108,14 +108,15 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 142879 then
+	local spellId = args.spellid
+	if spellId == 142879 then
 		self.vb.displacedCast = false
 		self.vb.rageActive = true
 		warnBloodRage:Show()
 		specWarnBloodRage:Show()
 		timerBloodRage:Start()
 		timerDisplacedEnergyCD:Start(3.5)
-	elseif args.spellId == 142842 then
+	elseif spellId == 142842 then
 		self.vb.breathCast = self.vb.breathCast + 1
 		warnBreathofYShaarj:Show(self.vb.breathCast)
 		specWarnBreathofYShaarj:Show(self.vb.breathCast)
@@ -126,7 +127,7 @@ function mod:SPELL_CAST_START(args)
 			timerArcingSmashCD:Start(14, 1)
 			timerBreathofYShaarjCD:Start(70, 2)
 		end
-	elseif args.spellId == 143199 then
+	elseif spellId == 143199 then
 		self.vb.breathCast = 0
 		self.vb.arcingSmashCount = 0
 		self.vb.seismicSlamCount = 0
@@ -142,7 +143,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 142851 then
+	local spellId = args.spellid
+	if spellId == 142851 then
 		self.vb.seismicSlamCount = self.vb.seismicSlamCount + 1
 		warnSeismicSlam:Show(self.vb.seismicSlamCount)
 		if self.vb.seismicSlamCount < 3 then
@@ -155,7 +157,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 142913 then
+	local spellId = args.spellid
+	if spellId == 142913 then
 		warnDisplacedEnergy:CombinedShow(0.5, args.destName)
 		playerDebuffs = playerDebuffs + 1
 		if args:IsPlayer() then
@@ -177,7 +180,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(8, debuffFilter)
 			end
 		end
-	elseif args.spellId == 142990 then
+	elseif spellId == 142990 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 then
 			warnFatalStrike:Show(args.destName, amount)
@@ -197,7 +200,8 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 142913 then
+	local spellId = args.spellid
+	if spellId == 142913 then
 		playerDebuffs = playerDebuffs - 1
 		if args:IsPlayer() and self.Options.RangeFrame and playerDebuffs >= 1 then
 			DBM.RangeCheck:Show(10, debuffFilter)--Change to debuff filter based check since theirs is gone but there are still others in raid.

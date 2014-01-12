@@ -153,34 +153,35 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 145216 then
+	local spellId = args.spellid
+	if spellId == 145216 then
 		self.vb.unleashedAngerCast = self.vb.unleashedAngerCast + 1
 		warnUnleashedAnger:Show(self.vb.unleashedAngerCast)
 		specWarnUnleashedAnger:Show()
 		if self.vb.unleashedAngerCast < 3 then
 			timerUnleashedAngerCD:Start(nil, self.vb.unleashedAngerCast+1)
 		end
-	elseif args.spellId == 144482 then
+	elseif spellId == 144482 then
 		warnTearReality:Show()
 		specWarnTearReality:Show()
 		timerTearRealityCD:Start()
-	elseif args.spellId == 144654 then
+	elseif spellId == 144654 then
 		warnBurstOfCorruption:Show()
 		specWarnBurstOfCorruption:Show()
-	elseif args.spellId == 144628 then
+	elseif spellId == 144628 then
 		warnTitanicSmash:Show()
 		specWarnTitanicSmash:Show()
 		timerTitanicSmashCD:Start()
-	elseif args.spellId == 144649 then
+	elseif spellId == 144649 then
 		warnHurlCorruption:Show()
 		specWarnHurlCorruption:Show(args.sourceName)
 		timerHurlCorruptionCD:Start()
 		countdownHurlCorruption:Start()
-	elseif args.spellId == 144657 then
+	elseif spellId == 144657 then
 		warnPiercingCorruption:Show()
 		specWarnPiercingCorruption:Show()
 		timerPiercingCorruptionCD:Start()
-	elseif args.spellId == 146707 then
+	elseif spellId == 146707 then
 		warnDishearteningLaugh:Show()
 		specWarnDishearteningLaugh:Show()
 		timerDishearteningLaughCD:Start()
@@ -188,23 +189,25 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 144514 then
+	local spellId = args.spellid
+	if spellId == 144514 then
 		warnLingeringCorruption:Show(args.destName)
 		specWarnLingeringCorruption:Show(args.destName)
 		timerLingeringCorruptionCD:Start()
 		countdownLingeringCorruption:Start()
-	elseif args.spellId == 145226 then
+	elseif spellId == 145226 then
 		self:SendSync("BlindHatred")
 	elseif args:IsSpellID(144849, 144850, 144851) and args:IsPlayer() then--Look Within
 		playerInside = true
 		timerLookWithin:Start()
 		countdownLookWithin:Start()
-	elseif args.spellId == 146703 and args:IsPlayer() and self:AntiSpam(3, 2) then
+	elseif spellId == 146703 and args:IsPlayer() and self:AntiSpam(3, 2) then
 		specWarnBottomlessPitMove:Show()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellid
 	if args:IsSpellID(144849, 144850, 144851) then--Look Within
 		warnLookWithinEnd:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
@@ -220,7 +223,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerLookWithin:Cancel()
 			countdownLookWithin:Cancel()
 		end
-	elseif args.spellId == 145226 then
+	elseif spellId == 145226 then
 		self:SendSync("BlindHatredEnded")
 	end
 end
