@@ -103,17 +103,18 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 122768 and args:IsPlayer() then
+	local spellId = args.spellId
+	if spellId == 122768 and args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount >= 9 and amount % 3 == 0  then
 			specWarnDreadShadows:Show(amount)
 		end
-	elseif args.spellId == 123012 and args:GetDestCreatureID() == 62442 then
+	elseif spellId == 123012 and args:GetDestCreatureID() == 62442 then
 		warnTerrorize:Show(args.destName)
 		specWarnTerrorize:Show(args.destName)
-	elseif args.spellId == 122858 and args:IsPlayer() then
+	elseif spellId == 122858 and args:IsPlayer() then
 		timerBathedinLight:Start()
-	elseif args.spellId == 123716 then
+	elseif spellId == 123716 then
 		lightOfDayCount = lightOfDayCount + 1
 		warnLightOfDay:Show(args.destName, lightOfDayCount)
 		timerLightOfDay:Start(args.destName)
@@ -122,7 +123,8 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 122855 then
+	local spellId = args.spellId
+	if spellId == 122855 then
 		breathCount = breathCount + 1
 		warnSunBreath:Show(breathCount)
 		if timerNightCD:GetTime() < 100 then
@@ -133,7 +135,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 122752 then
+	local spellId = args.spellId
+	if spellId == 122752 then
 		warnShadowBreath:Show()
 		specWarnShadowBreath:Show()
 		if timerNightCD:GetTime() < 93 then

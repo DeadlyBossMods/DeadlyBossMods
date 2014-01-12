@@ -151,20 +151,21 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 117539 and not diedShadow[args.destGUID] then--They only ressurrect once so only start timer once per GUID
+	local spellId = args.spellId
+	if spellId == 117539 and not diedShadow[args.destGUID] then--They only ressurrect once so only start timer once per GUID
 		diedShadow[args.destGUID] = true
 		timerUSRevive:Start(args.destGUID)--Basically, the rez timer for a defeated Undying Shadow that is going to re-animate in 60 seconds.
-	elseif args.spellId == 117837 then
+	elseif spellId == 117837 then
 		warnDelirious:Show(args.destName)
 		specWarnDelirious:Show(args.destName)
 		timerDeliriousCD:Start()
-	elseif args.spellId == 117756 then
+	elseif spellId == 117756 then
 		warnCowardice:Show(args.destName)
-	elseif args.spellId == 117737 then
+	elseif spellId == 117737 then
 		warnCrazed:Show(args.destName)
-	elseif args.spellId == 117697 then
+	elseif spellId == 117697 then
 		specWarnShieldOfDarknessD:Show(args.destName)
-	elseif args.spellId == 118303 then
+	elseif spellId == 118303 then
 		warnFixate:Show(args.destName)
 		timerFixate:Start(args.destName)
 		if args:IsPlayer() then
@@ -172,7 +173,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFixate:Yell()
 			soundFixate:Play()
 		end
-	elseif args.spellId == 118135 then
+	elseif spellId == 118135 then
 		pinnedTargets[#pinnedTargets + 1] = args.destName
 		self:Unschedule(warnPinnedDownTargets)
 		self:Schedule(0.3, warnPinnedDownTargets)
@@ -180,23 +181,25 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 118303 then
+	local spellId = args.spellId
+	if spellId == 118303 then
 		timerFixate:Cancel(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 117685 then
+	local spellId = args.spellId
+	if spellId == 117685 then
 		warnChargedShadows:Show(args.destName)
 		timerChargingShadowsCD:Start()
-	elseif args.spellId == 117506 then
+	elseif spellId == 117506 then
 		warnUndyingShadows:Show()
 		if zianActive then
 			timerUndyingShadowsCD:Start()
 		else
 			timerUndyingShadowsCD:Start(85)
 		end
-	elseif args.spellId == 117910 then
+	elseif spellId == 117910 then
 		warnFlankingOrders:Show()
 		specWarnFlankingOrders:Show()
 		if qiangActive then
@@ -208,17 +211,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 118162 then
+	local spellId = args.spellId
+	if spellId == 118162 then
 		warnSleightOfHand:Show(args.sourceName)
 		specWarnSleightOfHand:Show(args.sourceName)
 		timerSleightOfHand:Start()
 		timerSleightOfHandCD:Start()
-	elseif args.spellId == 117506 then
+	elseif spellId == 117506 then
 		warnUndyingShadows:Show()
 		timerUndyingShadowsCD:Start()
-	elseif args.spellId == 117628 then
+	elseif spellId == 117628 then
 		specWarnShadowBlast:Show(args.sourceName)
-	elseif args.spellId == 117697 then
+	elseif spellId == 117697 then
 		warnShieldOfDarkness:Show(args.sourceName)
 		specWarnShieldOfDarkness:Show(args.sourceName)
 		warnShieldOfDarknessSoon:Schedule(37.5, 5)--Start pre warning with regular warnings only as you don't move at this point yet.
@@ -228,10 +232,10 @@ function mod:SPELL_CAST_START(args)
 		warnShieldOfDarknessSoon:Schedule(41.5, 1)
 		timerShieldOfDarknessCD:Start()
 		countdownShieldOfDarkness:Start()
-	elseif args.spellId == 117833 then
+	elseif spellId == 117833 then
 		warnCrazyThought:Show()
 		specWarnCrazyThought:Show(args.sourceName)
-	elseif args.spellId == 117708 then
+	elseif spellId == 117708 then
 		warnMaddeningShout:Show()
 		specWarnMaddeningShout:Show()
 		if mengActive then
@@ -239,7 +243,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerMaddeningShoutCD:Start(77)
 		end
-	elseif args.spellId == 117948 then
+	elseif spellId == 117948 then
 		warnAnnihilate:Show()
 		specWarnAnnihilate:Show()
 		if self:IsDifficulty("heroic10", "heroic25") then
@@ -247,7 +251,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerAnnihilateCD:Start()
 		end
-	elseif args.spellId == 117961 then
+	elseif spellId == 117961 then
 		warnImperviousShield:Show(args.sourceName)
 		specWarnImperviousShield:Show(args.sourceName)
 		timerImperviousShieldCD:Start()
