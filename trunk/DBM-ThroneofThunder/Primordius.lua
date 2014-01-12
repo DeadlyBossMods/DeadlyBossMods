@@ -131,7 +131,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136216 then
 		warnCausticGas:Show()
 		specWarnCausticGas:Show()
@@ -140,7 +140,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136037 then
 		warnPrimordialStrike:Show()
 		if metabolicBoost then--Only issue is updating current bar when he gains buff in between CDs, it does seem to affect it to a degree
@@ -152,7 +152,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136050 then
 		warnMalformedBlood:Show(args.destName, args.amount or 1)
 		timerMalformedBlood:Start(args.destName)
@@ -197,7 +197,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136050 then
 		timerMalformedBlood:Cancel(args.destName)
 	elseif spellId == 136215 then

@@ -138,7 +138,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 147688 and UnitPower("player", 10) > 0 then--Tower Spell
 		warnArcingSmash:Show()
 		specWarnArcingSmash:Show()
@@ -152,7 +152,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 147824 and UnitPower("player", 10) > 0 and self:AntiSpam(3, 2) then--Tower Spell
 		warnMuzzleSpray:Show()
 		specWarnMuzzleSpray:Show()
@@ -167,7 +167,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 147068 then
 		warnFlamesofGalakrondTarget:Show(args.destName)
 		timerFlamesofGalakrondCD:Start()
@@ -196,7 +196,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 147029 then
 		local amount = args.amount or 1
 		if amount >= 6 and args:IsPlayer() then
@@ -220,7 +220,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 147068 then
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 0)

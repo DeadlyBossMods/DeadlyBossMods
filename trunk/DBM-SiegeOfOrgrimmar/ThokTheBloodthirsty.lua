@@ -152,7 +152,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143343 then--Assumed, 2 second channel but "Instant" cast flagged, this generally means SPELL_AURA_APPLIED
 		timerDeafeningScreechCD:Cancel()
 		if self:IsDifficulty("lfr25") then
@@ -176,7 +176,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143411 then
 		self.vb.screechCount = args.amount or 1
 		warnAcceleration:Show(args.destName, self.vb.screechCount)
@@ -284,7 +284,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143766 then
 		timerFearsomeRoar:Cancel(args.destName)
 	elseif spellId == 143780 then

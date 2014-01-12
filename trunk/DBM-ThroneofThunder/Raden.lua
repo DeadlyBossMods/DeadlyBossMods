@@ -114,7 +114,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 138338 then
 		horrorCount = horrorCount + 1
 		warnSanguineHorror:Show(horrorCount)
@@ -136,7 +136,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 138333 then
 		warnMurderousStrike:Show()
 		timerMurderousStrikeCD:Start()
@@ -147,7 +147,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 138331 then--Anima Phase
 		local radenPower = UnitPower("boss1")
 		radenPower = radenPower / 3
@@ -221,7 +221,7 @@ end
 "<31.9 01:50:23> [CLEU] SPELL_AURA_APPLIED#false#0x0300000007B5931A#Takeaseat#1297#0#0x0300000007764949#Ryukou#1300#0#138308#Unstable Vita#8#DEBUFF", -- [3769]--Code may break if it doesn't but i've seen no indicatino this should happen
 --]]
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if args:IsSpellID(138297, 138308) and self.Options.SetIconsOnVita then--Unstable Vita
 		self:UnscheduleMethod("checkVitaDistance")
 		playerWithVita = nil

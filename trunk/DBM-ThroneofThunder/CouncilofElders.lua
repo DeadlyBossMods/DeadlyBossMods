@@ -136,7 +136,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136189 then
 		if boltCasts == 3 then boltCasts = 0 end
 		boltCasts = boltCasts + 1
@@ -167,7 +167,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136442 then--Possessed
 		local cid = args:GetDestCreatureID()
 		local uid
@@ -287,7 +287,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136442 then--Possessed
 		darkPowerWarned = false
 		timerDarkPowerCD:Cancel()

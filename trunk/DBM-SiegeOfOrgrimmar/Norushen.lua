@@ -153,7 +153,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 145216 then
 		self.vb.unleashedAngerCast = self.vb.unleashedAngerCast + 1
 		warnUnleashedAnger:Show(self.vb.unleashedAngerCast)
@@ -189,7 +189,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 144514 then
 		warnLingeringCorruption:Show(args.destName)
 		specWarnLingeringCorruption:Show(args.destName)
@@ -207,7 +207,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if args:IsSpellID(144849, 144850, 144851) then--Look Within
 		warnLookWithinEnd:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
