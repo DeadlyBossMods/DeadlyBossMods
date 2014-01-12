@@ -53,11 +53,12 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 137457 then
+	local spellId = args.spellId
+	if spellId == 137457 then
 		warnPiercingRoar:Show()
 		specWarnPiercingRoar:Show()
 		timerPiercingRoarCD:Start()
-	elseif args.spellId == 137505 then
+	elseif spellId == 137505 then
 		warnFrillBlast:Show()
 		specWarnFrillBlast:Show()
 		timerFrillBlastCD:Start()
@@ -71,7 +72,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 137504 then
+	local spellId = args.spellId
+	if spellId == 137504 then
 		warnCrush:Show(args.destName, args.amount or 1)
 		timerCrush:Start(args.destName)
 		timerCrushCD:Start()
@@ -87,7 +89,8 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 137504 then
+	local spellId = args.spellId
+	if spellId == 137504 then
 		timerCrush:Cancel(args.destName)
 	end
 end

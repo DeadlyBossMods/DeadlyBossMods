@@ -55,11 +55,12 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 144635 then
+	local spellId = args.spellId
+	if spellId == 144635 then
 		warnCracklingLightning:Show()
 		timerCracklingLightning:Start()
 		timerCracklingLightningCD:Start()
-	elseif args.spellId == 144642 then
+	elseif spellId == 144642 then
 		warnChiBarrage:Show()
 		specWarnChiBarrage:Show()
 		timerChiBarrageCD:Start()
@@ -67,9 +68,10 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 144638 then
+	local spellId = args.spellId
+	if spellId == 144638 then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId) then--Only want debuffs on tanks, don't care about the dumb melee that stand in front of things.
+		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			warnSpectralSwipe:Show(args.destName, amount)
 			timerSpectralSwipe:Start(args.destName)
@@ -82,7 +84,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args.spellId == 144631 and args:GetDestCreatureID() == 71953 then
+	elseif spellId == 144631 and args:GetDestCreatureID() == 71953 then
 		warnAgility:Show(args.destName)
 		specWarnAgility:Show(args.destName)
 --		timerAgilityCD:Start()
@@ -91,7 +93,8 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 144638 then
+	local spellId = args.spellId
+	if spellId == 144638 then
 		timerSpectralSwipe:Cancel(args.destName)
 	end
 end
