@@ -17,7 +17,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE 144357 144367 143009",
 	"SPELL_MISSED 144357 144367 143009",
 	"RAID_BOSS_WHISPER",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3",
+	"UNIT_HEALTH_FREQUENT boss1 boss2 boss3 boss4 boss5"
 )
 
 local Softfoot = EJ_GetSectionInfo(7889)
@@ -51,10 +52,12 @@ local warnMarked					= mod:NewTargetAnnounce(143840, 3)--Embodied Anguish
 --Sun Tenderheart
 local warnShaShear					= mod:NewCastAnnounce(143423, 3, 5, nil, false)
 local warnBane						= mod:NewCastAnnounce(143446, 4, nil, nil, mod:IsHealer())
-local warnCalamity					= mod:NewSpellAnnounce(143491, 4)
+local warnCalamity					= mod:NewAnnounce("warnCalamity", 4, 143491, nil, DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(143491))
 ----Sun Tenderheart's Desperate Measures
 local warnDarkMeditation			= mod:NewSpellAnnounce(143546, 2)--Activation
 
+--All
+local specWarnMeasures				= mod:NewSpecialWarning("specWarnMeasures", nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon:format("ej7956"))
 --Rook Stonetoe
 local specWarnVengefulStrikes		= mod:NewSpecialWarningSpell(144396, mod:IsTank())
 local specWarnClash					= mod:NewSpecialWarningYou(143027)
@@ -80,7 +83,7 @@ local yellMarked					= mod:NewYell(143840, nil, false)
 local specWarnShaShear				= mod:NewSpecialWarningInterrupt(143423, false)
 local specWarnShaShearYou			= mod:NewSpecialWarningMoveAway(143423)--some heroic player request. Warning to move away from group so Sha shear not hit everyone.
 local yellShaShear					= mod:NewYell(143423)
-local specWarnCalamity				= mod:NewSpecialWarningSpell(143491, nil, nil, nil, 2)
+local specWarnCalamity				= mod:NewSpecialWarning("specWarnCalamity", nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(143491), nil, 2)
 ----Sun Tenderheart's Desperate Measures
 local specWarnDarkMeditation		= mod:NewSpecialWarningSpell(143546)
 
@@ -109,10 +112,16 @@ mod:AddRangeFrameOption(5, 143423, false)--For heroic. Need to chage smart range
 local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
+local calamitySpellText = GetSpellInfo(143491)
+
 --Not important, don't need to recover
 local isInfernoTarget = false
 --Important, needs recover
 mod.vb.sorrowActive = false
+mod.vb.calamityCount = 0
+mod.vb.warned71475 = 0
+mod.vb.warned71479 = 0
+mod.vb.warned71480 = 0
 
 function mod:BrewTarget(targetname, uId)
 	if not targetname then return end
@@ -143,6 +152,10 @@ end
 
 function mod:OnCombatStart(delay)
 	isInfernoTarget = false
+	self.vb.calamityCount = 0
+	self.vb.warned71475 = 0
+	self.vb.warned71479 = 0
+	self.vb.warned71480 = 0
 	timerVengefulStrikesCD:Start(7-delay)
 	timerGarroteCD:Start(15-delay)
 	timerBaneCD:Start(15-delay)
@@ -164,6 +177,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -185,8 +199,14 @@ function mod:SPELL_CAST_START(args)
 			timerBaneCD:Start()
 		end
 	elseif spellId == 143491 then
-		warnCalamity:Show()
-		specWarnCalamity:Show()
+		local perText = ""
+		if self:IsDifficulty("heroic10", "heroic25") then
+			self.vb.calamityCount = self.vb.calamityCount + 1
+			perText = " ("..((self.vb.calamityCount + 2) * 10).."%)"
+		end
+		local displayText = calamitySpellText..perText
+		warnCalamity:Show(displayText)
+		specWarnCalamity:Show(displayText.."!")
 		timerCalamity:Start()
 		timerCalamityCD:Start()
 	elseif spellId == 143961 then
@@ -250,6 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	--Special phases
 	elseif spellId == 143546 then--Dark Meditation
+		self.vb.calamityCount = 0
 		warnDarkMeditation:Show()
 		specWarnDarkMeditation:Show()
 		timerBaneCD:Cancel()
@@ -327,5 +348,22 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 143019 then--Does not show in combat log on normal
 		self:BossTargetScanner(71475, "BrewTarget", 0.025)
 		timerCorruptedBrewCD:Start()
+	end
+end
+
+function mod:UNIT_HEALTH_FREQUENT(uId)
+	if self.vb.warned71475 == 2 and self.vb.warned71479 == 2 and self.vb.warned71480 == 2 then return end
+	local cId = self:GetUnitCreatureId(uId)
+	if cId == 71475 or cId == 71479 or cId == 71480 then
+		local hp = UnitHealth(uId) / UnitHealthMax(uId)
+		if hp < 0.71 and self.vb["warned"..cId] == 0 then
+			local bossName = UnitName(uId)
+			specWarnMeasures:Show(bossName)
+			self.vb["warned"..cId] = 1
+		elseif hp < 0.38 and self.vb["warned"..cId] == 1 then
+			local bossName = UnitName(uId)
+			specWarnMeasures:Show(bossName)
+			self.vb["warned"..cId] = 2
+		end
 	end
 end
