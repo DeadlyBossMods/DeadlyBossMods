@@ -40,23 +40,25 @@ function mod:OnCombatStart(delay, yellTriggered)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 144610 then
+	local spellId = args.spellId
+	if spellId == 144610 then
 		warnHeadbutt:Show()
 		specWarnHeadbutt:Show()
 		timerHeadbuttCD:Start()
-	elseif args.spellId == 144611 then
+	elseif spellId == 144611 then
 		warnMassiveQuake:Show()
 		specWarnMassiveQuake:Show()
 		timerMassiveQuake:Start()
 		timerMassiveQuakeCD:Start()
-	elseif args.spellId == 144608 then
+	elseif spellId == 144608 then
 		warnCharge:Show()
 		specWarnCharge:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 144606 then
+	local spellId = args.spellId
+	if spellId == 144606 then
 		warnOxenFortitude:Show(args.destName, args.amount or 1)
 	end
 end

@@ -65,17 +65,19 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 119488 then
+	local spellId = args.spellId
+	if spellId == 119488 then
 		warnUnleashedWrath:Show()
 		specWarnUnleashedWrath:Show()
 		timerUnleashedWrath:Start()
-	elseif args.spellId == 119622 then
+	elseif spellId == 119622 then
 		timerGrowingAngerCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 119622 then
+	local spellId = args.spellId
+	if spellId == 119622 then
 		warnGrowingAnger:CombinedShow(1.2, args.destName)
 		self:updateRangeFrame()
 		if self.Options.SetIconOnMC then--Set icons on first debuff to get an earlier spread out.
@@ -84,7 +86,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnGrowingAnger:Show()
 		end
-	elseif args.spellId == 119626 then
+	elseif spellId == 119626 then
 		--Maybe add in function to update icons here in case of a spread that results in more then the original 3 getting the final MC debuff.
 		warnAggressiveBehavior:CombinedShow(2.5, args.destName)
 		if args:IsPlayer() then
@@ -97,12 +99,13 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 119626 and self.Options.SetIconOnMC then--Remove them after the MCs break.
+	local spellId = args.spellId
+	if spellId == 119626 and self.Options.SetIconOnMC then--Remove them after the MCs break.
 		self:SetIcon(args.destName, 0)
 		if args:IsPlayer() then
 			playerMCed = false
 		end
-	elseif args.spellId == 119488 then
+	elseif spellId == 119488 then
 		timerUnleashedWrathCD:Start()
 	end
 end
