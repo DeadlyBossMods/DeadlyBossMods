@@ -146,7 +146,8 @@ function mod:OnCombatEnd()
 end 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 130395 then
+	local spellId = args.spellId
+	if spellId == 130395 then
 		jasperChainsTargets[#jasperChainsTargets + 1] = args.destName
 		timerJasperChainsCD:Start()
 		self:Unschedule(warnJasperChainsTargets)
@@ -173,13 +174,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.Arrow:Hide()
 			end
 		end
-	elseif args.spellId == 130774 and args:IsPlayer() then
+	elseif spellId == 130774 and args:IsPlayer() then
 		specWarnAmethystPool:Show()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 130395 and args:IsPlayer() then
+	local spellId = args.spellId
+	if spellId == 130395 and args:IsPlayer() then
 		playerHasChains = false
 		if self.Options.ArrowOnJasperChains then
 			DBM.Arrow:Hide()
@@ -188,31 +190,32 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 115840 then -- Cobalt
+	local spellId = args.spellId
+	if spellId == 115840 then -- Cobalt
 		warnCobaltOverload:Show()
 		if activePetrification == "Cobalt" then
 			timerPetrification:Cancel()
 		end
 		activePetrification = nil
-	elseif args.spellId == 115842 then -- Jade
+	elseif spellId == 115842 then -- Jade
 		warnJadeOverload:Show()
 		if activePetrification == "Jade" then
 			timerPetrification:Cancel()
 		end
 		activePetrification = nil
-	elseif args.spellId == 115843 then -- Jasper
+	elseif spellId == 115843 then -- Jasper
 		warnJasperOverload:Show()
 		if activePetrification == "Jasper" then
 			timerPetrification:Cancel()
 		end
 		activePetrification = nil
-	elseif args.spellId == 115844 then -- Amethyst
+	elseif spellId == 115844 then -- Amethyst
 		warnAmethystOverload:Show()
 		if activePetrification == "Amethyst" then
 			timerPetrification:Cancel()
 		end
 		activePetrification = nil
-	elseif args.spellId == 116223 then
+	elseif spellId == 116223 then
 		warnJadeShards:Show()
 		timerJadeShardsCD:Start()
 	elseif args:IsSpellID(116235, 130774) then--is 116235 still used? my logs show ONLY 130774 being used.

@@ -171,17 +171,18 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 116525 then
+	local spellId = args.spellId
+	if spellId == 116525 then
 		warnFocusedAssault:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFocusedAssault:Show()
 		end
-	elseif args.spellId == 116778 then
+	elseif spellId == 116778 then
 		warnFocusedDefense:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFocusedDefense:Show()
 		end
-	elseif args.spellId == 116829 then
+	elseif spellId == 116829 then
 --		warnFocusedEnergy:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFocusedEnergy:Show()
