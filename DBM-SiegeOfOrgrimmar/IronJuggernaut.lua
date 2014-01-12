@@ -103,7 +103,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 144483 then--Siege mode transition
 		self.vb.shockCount = 0
 		self.vb.siegeMode = true
@@ -132,14 +132,14 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 146325 then
 		self:SendSync("LaserTarget", args.destGUID)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 144467 then
 		timerIgniteArmorCD:Start()
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -168,7 +168,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 144467 then
 		timerIgniteArmor:Cancel(args.destName)
 	elseif spellId == 146325 then

@@ -206,7 +206,7 @@ local function hideRangeDelay()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 144583 then
 		local source = args.sourceName
 		warnChainHeal:Show()
@@ -261,7 +261,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if args:IsSpellID(144748, 144749) then
 		self.vb.desecrateCount = self.vb.desecrateCount + 1
 		if self.vb.phase == 1 then
@@ -291,7 +291,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 144945 then
 		warnYShaarjsProtection:Show(args.destName)
 		timerYShaarjsProtection:Start()
@@ -353,7 +353,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if args:IsSpellID(145183, 145195) then
 		timerGrippingDespair:Cancel(args.destName)
 	elseif spellId == 144945 then

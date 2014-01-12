@@ -101,7 +101,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136954 then
 		self:BossTargetScanner(69427, "AnimaRingTarget", 0.02, 12)
 		timerAnimaRingCD:Start()
@@ -125,7 +125,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 138644 and self:IsDifficulty("heroic10", "heroic25") then--Only start on heroic, on normal it's 6 second cd, not worth using timer there
 		siphon = siphon + 1
 		timerSiphonAnimaCD:Start(nil, siphon+1)
@@ -134,7 +134,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 138569 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId, "boss1") then--Only want sprays that are on tanks, not bads standing on tanks.
@@ -178,7 +178,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 138609 then
 		timerMatterSwap:Cancel(args.destName)
 	elseif spellId == 138569 then

@@ -132,7 +132,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 137491 then
 		self:SendSync("Inferno")
 	elseif spellId == 137531 then
@@ -141,7 +141,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136752 then
 		self:SendSync("CosmicBarrage")
 	elseif spellId == 137404 then
@@ -189,14 +189,14 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 137408 then
 		timerFanOfFlames:Cancel(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 137414 then
 		warnFlamesOfPassion:Show()
 		--timerFlamesOfPassionCD:Start()
@@ -204,7 +204,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 137419 then
 		self:SendSync("Comet")
 	end

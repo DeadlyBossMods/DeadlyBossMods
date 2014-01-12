@@ -180,7 +180,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143265 then
 		timerLaunchSawbladeCD:Start()
 		self:BossTargetScanner(71504, "LaunchSawBladeTarget", 0.1, 16)
@@ -192,7 +192,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 145774 then
 		warnOvercharge:Show(args.destName)
 		specWarnOvercharge:Show(args.destName)
@@ -206,7 +206,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143641 then--Missile Launching
 		warnShockwaveMissile:Show()
 		specWarnShockwaveMissile:Show()
@@ -214,7 +214,7 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 145365 then
 		warnProtectiveFrenzy:Show(args.destName)
 		specWarnProtectiveFrenzy:Show(args.destName)
@@ -274,7 +274,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143385 then
 		timerElectroStaticCharge:Cancel(args.destName)
 	elseif spellId == 144236 and args:IsPlayer() then

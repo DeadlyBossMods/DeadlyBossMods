@@ -69,7 +69,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 139895 then
 		self:Schedule(0.2, SpiritFireTarget, args.sourceGUID)
 		timerSpiritfireCD:Start()
@@ -87,7 +87,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 139322 then--Or 139559, not sure which
 		stormEnergyTargets[#stormEnergyTargets + 1] = args.destName
 		if args:IsPlayer() then
