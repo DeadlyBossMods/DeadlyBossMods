@@ -108,7 +108,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 142879 then
 		self.vb.displacedCast = false
 		self.vb.rageActive = true
@@ -143,7 +143,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 142851 then
 		self.vb.seismicSlamCount = self.vb.seismicSlamCount + 1
 		warnSeismicSlam:Show(self.vb.seismicSlamCount)
@@ -157,7 +157,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 142913 then
 		warnDisplacedEnergy:CombinedShow(0.5, args.destName)
 		playerDebuffs = playerDebuffs + 1
@@ -200,7 +200,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 142913 then
 		playerDebuffs = playerDebuffs - 1
 		if args:IsPlayer() and self.Options.RangeFrame and playerDebuffs >= 1 then

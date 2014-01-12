@@ -58,7 +58,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143436 then
 		warnBreath:Show()
 		specWarnBreath:Show()
@@ -72,7 +72,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143459 and args:IsPlayer() then
 		timerShaResidue:Start()
 	elseif spellId == 143524 and args:IsPlayer() then
@@ -86,7 +86,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143459 and args:IsPlayer() then
 		timerShaResidue:Cancel()
 	elseif spellId == 143524 and args:IsPlayer() then

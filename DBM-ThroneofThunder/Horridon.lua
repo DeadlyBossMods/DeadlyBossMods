@@ -137,7 +137,7 @@ Delayed by Charge version
 "<86.4 15:08:45> [CLEU] SPELL_CAST_START#false#0xF1310B7C0000383C#Horridon#2632#0##nil#-2147483648#-2147483648#136741#Double Swipe#1", -- [6003]
 --]]
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136741 then--Regular double swipe
 		warnDoubleSwipe:Show()
 		specWarnDoubleSwipe:Show()
@@ -163,7 +163,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136797 then
 		warnMending:Show()
 		specWarnMending:Show(args.sourceName)
@@ -171,7 +171,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136767 then
 		local amount = args.amount or 1
 		warnPuncture:Show(args.destName, amount)
@@ -224,7 +224,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 136767 then
 		timerPuncture:Cancel(args.destName)
 	end

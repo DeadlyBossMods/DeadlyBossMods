@@ -121,7 +121,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 133939 then
 		warnStoneBreath:Show()
 		if not self:IsDifficulty("lfr25") then
@@ -154,7 +154,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 133971 then--Shell Block (turtles dying and becoming kickable)
 		shellsRemaining = shellsRemaining + 1
 		addsActivated = addsActivated - 1
@@ -188,14 +188,14 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 137633 and args:IsPlayer() then
 		checkCrystalShell()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 134476 then
 		if stompActive then--10 second cd normally, but cd is disabled when stomp active
 			if not firstRockfall then--Announce first one only and ignore the next ones spammed for about 9-10 seconds

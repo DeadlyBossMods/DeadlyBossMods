@@ -238,7 +238,7 @@ function mod:OnCombatEnd()
 end 
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143872 then
 		warnRavager:Show()
 		specWarnRavager:Show()
@@ -278,7 +278,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143589 then
 		if self.vb.defensiveActive then
 			self.vb.defensiveActive = false
@@ -337,7 +337,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143494 then
 		local amount = args.amount or 1
 		warnSunder:Show(args.destName, amount)
@@ -382,7 +382,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 143494 then
 		timerSunder:Cancel(args.destName)
 	end

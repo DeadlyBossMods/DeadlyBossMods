@@ -173,7 +173,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 145996 and isPlayerInMantid() then
 		timerSetToBlowCD:Start(args.sourceGUID)
 	elseif spellId == 145288 and not isPlayerInMantid() then
@@ -226,7 +226,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 142694 and not isPlayerInMantid() then
 		warnSparkofLife:Show()
 	elseif spellId == 142947 and not isPlayerInMantid() then
@@ -253,7 +253,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 145987 and isPlayerInMantid() then
 		warnSetToBlow:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
@@ -273,7 +273,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellid
+	local spellId = args.spellId
 	if spellId == 145987 and args:IsPlayer() then
 		countdownSetToBlow:Cancel()
 		timerSetToBlow:Cancel()
