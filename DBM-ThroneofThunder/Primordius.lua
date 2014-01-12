@@ -61,6 +61,7 @@ local badCount = 0
 local bigOozeCount = 0
 local bigOozeAlive = 0
 local bigOozeGUIDS = {}
+local UnitDebuff = UnitDebuff
 
 local function BigOoze()
 	bigOozeCount = bigOozeCount + 1
@@ -130,7 +131,8 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 136216 then
+	local spellId = args.spellid
+	if spellId == 136216 then
 		warnCausticGas:Show()
 		specWarnCausticGas:Show()
 		timerCausticGasCD:Start()
@@ -138,7 +140,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 136037 then
+	local spellId = args.spellid
+	if spellId == 136037 then
 		warnPrimordialStrike:Show()
 		if metabolicBoost then--Only issue is updating current bar when he gains buff in between CDs, it does seem to affect it to a degree
 			timerPrimordialStrikeCD:Start(20)
@@ -149,15 +152,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 136050 then
+	local spellId = args.spellid
+	if spellId == 136050 then
 		warnMalformedBlood:Show(args.destName, args.amount or 1)
 		timerMalformedBlood:Start(args.destName)
-	elseif args.spellId == 137000 then
+	elseif spellId == 137000 then
 		warnBlackBlood:Show(args.destName, args.amount or 1)
 		timerBlackBlood:Start(args.destName)
-	elseif args.spellId == 136215 then
+	elseif spellId == 136215 then
 		warnGasBladder:Show(args.destName)
-	elseif args.spellId == 136246 then
+	elseif spellId == 136246 then
 		postulesActive = true
 		warnEruptingPustules:Show(args.destName)
 		if self:IsDifficulty("heroic10", "heroic25") then
@@ -166,25 +170,25 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.RangeFrame and not acidSpinesActive then--Check if acidSpinesActive is active, if they are, we should already have range 5 up
 			DBM.RangeCheck:Show(3)
 		end
-	elseif args.spellId == 136225 then
+	elseif spellId == 136225 then
 		warnPathogenGlands:Show(args.destName)
-	elseif args.spellId == 136228 then
+	elseif spellId == 136228 then
 		warnVolatilePathogen:Show(args.destName)
 		timerVolatilePathogenCD:Start()
 		if args:IsPlayer() then
 			specWarnVolatilePathogen:Show()
 		end
-	elseif args.spellId == 136245 then
+	elseif spellId == 136245 then
 		metabolicBoost = true
 		warnMetabolicBoost:Show(args.destName)
-	elseif args.spellId == 136210 then
+	elseif spellId == 136210 then
 		warnVentralSacs:Show(args.destName)
-	elseif args.spellId == 136218 then
+	elseif spellId == 136218 then
 		acidSpinesActive = true
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)
 		end
-	elseif args.spellId == 140546 and args:IsPlayer() then
+	elseif spellId == 140546 and args:IsPlayer() then
 		specWarnFullyMutated:Show()
 		local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
 		timerFullyMutated:Start(expires-GetTime())
@@ -193,20 +197,21 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 136050 then
+	local spellId = args.spellid
+	if spellId == 136050 then
 		timerMalformedBlood:Cancel(args.destName)
-	elseif args.spellId == 136215 then
+	elseif spellId == 136215 then
 		timerCausticGasCD:Cancel()
-	elseif args.spellId == 136246 then
+	elseif spellId == 136246 then
 		postulesActive = false
 		if self.Options.RangeFrame and not acidSpinesActive then--Check if acidSpinesActive is active, if they are, leave range frame alone
 			DBM.RangeCheck:Hide()
 		end
-	elseif args.spellId == 136225 then
+	elseif spellId == 136225 then
 		timerVolatilePathogenCD:Cancel()
-	elseif args.spellId == 136245 then
+	elseif spellId == 136245 then
 		metabolicBoost = false
-	elseif args.spellId == 136218 then
+	elseif spellId == 136218 then
 		acidSpinesActive = false
 		if self.Options.RangeFrame then
 			if postulesActive then
@@ -215,7 +220,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
-	elseif args.spellId == 140546 and args:IsPlayer() then
+	elseif spellId == 140546 and args:IsPlayer() then
 		timerFullyMutated:Cancel()--Can be dispeled
 		specWarnFullyMutatedFaded:Show(args.spellName)
 	end

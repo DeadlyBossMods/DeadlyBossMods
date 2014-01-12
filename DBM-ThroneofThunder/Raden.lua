@@ -114,18 +114,19 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 138338 then
+	local spellId = args.spellid
+	if spellId == 138338 then
 		horrorCount = horrorCount + 1
 		warnSanguineHorror:Show(horrorCount)
 		specWarnSanguineHorror:Show()
 --		timerSanguineHorrorCD:Start(nil, horrorCount+1)
-	elseif args.spellId == 138339 then
+	elseif spellId == 138339 then
 		lastStalker = GetTime()
 		stalkerCount = stalkerCount + 1
 		warnCracklingStalker:Show(stalkerCount)
 		specWarnCracklingStalker:Show()
 		timerCracklingStalkerCD:Start(nil, stalkerCount+1)
-	elseif args.spellId == 138321 then
+	elseif spellId == 138321 then
 		creationCount = creationCount + 1
 		warnCreation:Show(creationCount)
 		specWarnCreation:Show()
@@ -135,17 +136,19 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 138333 then
+	local spellId = args.spellid
+	if spellId == 138333 then
 		warnMurderousStrike:Show()
 		timerMurderousStrikeCD:Start()
-	elseif args.spellId == 138334 then
+	elseif spellId == 138334 then
 		warnFatalStrike:Show()
 		timerFatalStrikeCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 138331 then--Anima Phase
+	local spellId = args.spellid
+	if spellId == 138331 then--Anima Phase
 		local radenPower = UnitPower("boss1")
 		radenPower = radenPower / 3
 		horrorCount = 0
@@ -154,7 +157,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMurderousStrikeCD:Start(33-radenPower)
 		--timerSanguineHorrorCD:Start(nil, 1)
 		warnAnima:Show()
-	elseif args.spellId == 138332 then--Vita Phase
+	elseif spellId == 138332 then--Vita Phase
 		local radenPower = UnitPower("boss1")
 		radenPower = radenPower / 10
 		local stalkerupdate = nil
@@ -169,15 +172,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		--timerSanguineHorrorCD:Cancel()
 		timerCracklingStalkerCD:Start(stalkerupdate, 1)
 		timerFatalStrikeCD:Start(10-radenPower)
-	elseif args.spellId == 139318 then--Anima Sensitivity
+	elseif spellId == 139318 then--Anima Sensitivity
 		if args:IsPlayer() then
 			specWarnAninaSensitive:Show()
 		end
-	elseif args.spellId == 138372 then--Vita Sensitivity
+	elseif spellId == 138372 then--Vita Sensitivity
 		if args:IsPlayer() then
 			specWarnVitaSensitive:Show()
 		end
-	elseif args.spellId == 138288 then--Unstable Anima
+	elseif spellId == 138288 then--Unstable Anima
 		warnUnstableAnima:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnUnstableAnima:Show()
@@ -197,7 +200,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:ScheduleMethod(8, "checkVitaDistance")--4 seconds before
 		end
 		if args:IsPlayer() then
-			if args.spellId == 138297 then
+			if spellId == 138297 then
 				specWarnUnstablVita:Show()
 			else
 				specWarnUnstablVitaJump:Show()
@@ -218,6 +221,7 @@ end
 "<31.9 01:50:23> [CLEU] SPELL_AURA_APPLIED#false#0x0300000007B5931A#Takeaseat#1297#0#0x0300000007764949#Ryukou#1300#0#138308#Unstable Vita#8#DEBUFF", -- [3769]--Code may break if it doesn't but i've seen no indicatino this should happen
 --]]
 function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellid
 	if args:IsSpellID(138297, 138308) and self.Options.SetIconsOnVita then--Unstable Vita
 		self:UnscheduleMethod("checkVitaDistance")
 		playerWithVita = nil
