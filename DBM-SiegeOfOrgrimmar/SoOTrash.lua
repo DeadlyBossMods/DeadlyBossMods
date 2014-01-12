@@ -32,20 +32,22 @@ local galakrasMod = DBM:GetModByName("868")--Because for first 10-20 seconds of 
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
-	if args.spellId == 147200 and not galakrasMod:IsInCombat() then
+	local spellId = args.spellid
+	if spellId == 147200 and not galakrasMod:IsInCombat() then
 		warnFracture:Show(args.destName)
 		specWarnFracture:Show(args.destName)
-	elseif args.spellId == 147328 and not galakrasMod:IsInCombat() then
+	elseif spellId == 147328 and not galakrasMod:IsInCombat() then
 		warnWarBanner:Show()
 		specWarnWarBanner:Show()
-	elseif args.spellId == 145553 then
+	elseif spellId == 145553 then
 		warnBribe:Show(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
-	if args.spellId == 146728 and not galakrasMod:IsInCombat() then
+	local spellId = args.spellid
+	if spellId == 146728 and not galakrasMod:IsInCombat() then
 		local source = args.sourceName
 		warnChainHeal:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 

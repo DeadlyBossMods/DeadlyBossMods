@@ -180,10 +180,11 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 143265 then
+	local spellId = args.spellid
+	if spellId == 143265 then
 		timerLaunchSawbladeCD:Start()
 		self:BossTargetScanner(71504, "LaunchSawBladeTarget", 0.1, 16)
-	elseif args.spellId == 144208 then
+	elseif spellId == 144208 then
 		timerDeathFromAboveCD:Start(args.sourceGUID)
 		self:ScheduleMethod(0.2, "DeathFromAboveTarget", args.sourceGUID)--Always targets tank, so 1 scan all needed
 		specWarnAutomatedShredderSwitch:Schedule(3)--Better here then when debuff goes up, give dps 2 seconds rampup time so spells in route when debuff goes up.
@@ -191,7 +192,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 145774 then
+	local spellId = args.spellid
+	if spellId == 145774 then
 		warnOvercharge:Show(args.destName)
 		specWarnOvercharge:Show(args.destName)
 		local cid = self:GetCIDFromGUID(args.destGUID)
@@ -204,14 +206,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args.spellId == 143641 then--Missile Launching
+	local spellId = args.spellid
+	if spellId == 143641 then--Missile Launching
 		warnShockwaveMissile:Show()
 		specWarnShockwaveMissile:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 145365 then
+	local spellId = args.spellid
+	if spellId == 145365 then
 		warnProtectiveFrenzy:Show(args.destName)
 		specWarnProtectiveFrenzy:Show(args.destName)
 		timerProtectiveFrenzy:Start()
@@ -223,21 +227,21 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args.spellId == 143385 and args:IsDestTypePlayer() then
+	elseif spellId == 143385 and args:IsDestTypePlayer() then
 		local amount = args.amount or 1
 		warnElectroStaticCharge:Show(args.destName, amount)
 		timerElectroStaticCharge:Start(args.destName)
 		timerElectroStaticChargeCD:Start()
 		countdownElectroStatic:Start()
-	elseif args.spellId == 145444 then
+	elseif spellId == 145444 then
 		local amount = args.amount or 1
 		warnOverload:Show(args.destName, amount)
 		timerOverloadCD:Start(nil, amount+1)
-	elseif args.spellId == 144210 and not args:IsDestTypePlayer() then
+	elseif spellId == 144210 and not args:IsDestTypePlayer() then
 		timerDeathFromAboveDebuff:Start(args.destName)
-	elseif args.spellId == 144236 and args:IsPlayer() then
+	elseif spellId == 144236 and args:IsPlayer() then
 		timerPatternRecognition:Start()
-	elseif args.spellId == 145269 then
+	elseif spellId == 145269 then
 		if self:AntiSpam(20, 3) then
 			warnCrawlerMine:Show()
 			specWarnCrawlerMine:Show()
@@ -246,10 +250,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		timerBreakinPeriod:Start(args.destName, args.destGUID)
-	elseif args.spellId == 145580 then
+	elseif spellId == 145580 then
 		warnReadyToGo:Show(args.destName)
 		specWarnReadyToGo:Show(args.destName)
---[[	elseif args.spellId == 143867 then
+--[[	elseif spellId == 143867 then
 		if not activeWeaponsGUIDS[args.sourceGUID] then
 			activeWeaponsGUIDS[args.sourceGUID] = true
 			laserCount = 0
@@ -259,22 +263,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		if laserCount < 3 then--Seems each laser construction casts 3 times, then disapears.
 			timerDisintegrationLaserCD:Start(nil, laserCount+1)
 		end--]]
-	elseif args.spellId == 144466 and self:AntiSpam(35, 1) then--Only way i see to detect magnet activation, antispam is so it doesn't break if a player dies during it.
+	elseif spellId == 144466 and self:AntiSpam(35, 1) then--Only way i see to detect magnet activation, antispam is so it doesn't break if a player dies during it.
 		warnMagneticCrush:Show()
 		specWarnMagneticCrush:Show()
 		timerMagneticCrush:Start()
-	elseif args.spellId == 143856 and args:IsPlayer() and self:AntiSpam(2, 2) then
+	elseif spellId == 143856 and args:IsPlayer() and self:AntiSpam(2, 2) then
 		specWarnSuperheated:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 143385 then
+	local spellId = args.spellid
+	if spellId == 143385 then
 		timerElectroStaticCharge:Cancel(args.destName)
-	elseif args.spellId == 144236 and args:IsPlayer() then
+	elseif spellId == 144236 and args:IsPlayer() then
 		timerPatternRecognition:Cancel()
-	elseif args.spellId == 145269 then
+	elseif spellId == 145269 then
 		timerBreakinPeriod:Cancel(args.destName, args.destGUID)
 	end
 end

@@ -58,11 +58,12 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 143436 then
+	local spellId = args.spellid
+	if spellId == 143436 then
 		warnBreath:Show()
 		specWarnBreath:Show()
 		timerBreathCD:Start()
-	elseif args.spellId == 143309 then
+	elseif spellId == 143309 then
 		warnSwirl:Show()
 		specWarnSwirl:Show()
 		timerSwirl:Start()
@@ -71,24 +72,26 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 143459 and args:IsPlayer() then
+	local spellId = args.spellid
+	if spellId == 143459 and args:IsPlayer() then
 		timerShaResidue:Start()
-	elseif args.spellId == 143524 and args:IsPlayer() then
+	elseif spellId == 143524 and args:IsPlayer() then
 		timerPurifiedResidue:Start()
-	elseif args.spellId == 143297 and args:IsPlayer() and self:AntiSpam(2, 1) then
+	elseif spellId == 143297 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnShaSplash:Show()
-	elseif args.spellId == 143574 then
+	elseif spellId == 143574 then
 		specWarnSwellingCorruptionTarget:Show(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 143459 and args:IsPlayer() then
+	local spellId = args.spellid
+	if spellId == 143459 and args:IsPlayer() then
 		timerShaResidue:Cancel()
-	elseif args.spellId == 143524 and args:IsPlayer() then
+	elseif spellId == 143524 and args:IsPlayer() then
 		timerPurifiedResidue:Cancel()
-	elseif args.spellId == 143574 then
+	elseif spellId == 143574 then
 		specWarnSwellingCorruptionFades:Show()
 	end
 end

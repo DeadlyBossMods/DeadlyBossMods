@@ -138,10 +138,11 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 147688 and UnitPower("player", ALTERNATE_POWER_INDEX) > 0 then--Tower Spell
+	local spellId = args.spellid
+	if spellId == 147688 and UnitPower("player", 10) > 0 then--Tower Spell
 		warnArcingSmash:Show()
 		specWarnArcingSmash:Show()
-	elseif args.spellId == 146757 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
+	elseif spellId == 146757 and UnitPower("player", 10) == 0 then
 		local source = args.sourceName
 		warnChainHeal:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
@@ -151,21 +152,23 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 147824 and UnitPower("player", ALTERNATE_POWER_INDEX) > 0 and self:AntiSpam(3, 2) then--Tower Spell
+	local spellId = args.spellid
+	if spellId == 147824 and UnitPower("player", 10) > 0 and self:AntiSpam(3, 2) then--Tower Spell
 		warnMuzzleSpray:Show()
 		specWarnMuzzleSpray:Show()
-	elseif args.spellId == 146769 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
+	elseif spellId == 146769 and UnitPower("player", 10) == 0 then
 		warnCrushersCall:Show()
 		specWarnCrushersCall:Show()
 		timerCrushersCallCD:Start()
-	elseif args.spellId == 146849 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
+	elseif spellId == 146849 and UnitPower("player", 10) == 0 then
 		warnShatteringCleave:Show()
 		timerShatteringCleaveCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 147068 then
+	local spellId = args.spellid
+	if spellId == 147068 then
 		warnFlamesofGalakrondTarget:Show(args.destName)
 		timerFlamesofGalakrondCD:Start()
 		if args:IsPlayer() then
@@ -177,13 +180,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 2)
 		end
-	elseif args.spellId == 147328 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
+	elseif spellId == 147328 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
 		warnWarBanner:Show()
 		specWarnWarBanner:Show()
-	elseif args.spellId == 146899 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
+	elseif spellId == 146899 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
 		warnFracture:Show(args.destName)
 		specWarnFracture:Show(args.destName)
-	elseif args.spellId == 147042 then
+	elseif spellId == 147042 then
 		self.vb.pulseCount = self.vb.pulseCount + 1
 		warnPulsingFlames:Show(self.vb.pulseCount)
 		specWarnPulsingFlames:Show()
@@ -193,7 +196,8 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args.spellId == 147029 then
+	local spellId = args.spellid
+	if spellId == 147029 then
 		local amount = args.amount or 1
 		if amount >= 6 and args:IsPlayer() then
 			specWarnFlamesofGalakrondStack:Show(amount)
@@ -216,11 +220,12 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 147068 then
+	local spellId = args.spellid
+	if spellId == 147068 then
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif args.spellId == 147029 then--Tank debuff version
+	elseif spellId == 147029 then--Tank debuff version
 		timerFlamesofGalakrond:Cancel(args.destName)
 	end
 end

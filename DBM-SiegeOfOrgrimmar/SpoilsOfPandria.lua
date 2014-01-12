@@ -173,77 +173,79 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 145996 and isPlayerInMantid() then
+	local spellId = args.spellid
+	if spellId == 145996 and isPlayerInMantid() then
 		timerSetToBlowCD:Start(args.sourceGUID)
-	elseif args.spellId == 145288 and not isPlayerInMantid() then
+	elseif spellId == 145288 and not isPlayerInMantid() then
 		warnMatterScramble:Show()
 		specWarnMatterScramble:Show()
 		timerMatterScramble:Start(args.sourceGUID)
 		timerMatterScrambleCD:Start(args.sourceGUID)
-	elseif args.spellId == 145461 and not isPlayerInMantid() then
+	elseif spellId == 145461 and not isPlayerInMantid() then
 		warnEnergize:Show()
-	elseif args.spellId == 142934 and not isPlayerInMantid() then
+	elseif spellId == 142934 and not isPlayerInMantid() then
 		warnTorment:Show()
 		specWarnTorment:Show()
-	elseif args.spellId == 142539 and isPlayerInMantid() then
+	elseif spellId == 142539 and isPlayerInMantid() then
 		warnMantidSwarm:Show()
 		specWarnMantidSwarm:Show()
 		timerMantidSwarmCD:Start(args.sourceGUID)
-	elseif args.spellId == 145286 and isPlayerInMantid() and self:AntiSpam(5, args.sourceGUID) then
+	elseif spellId == 145286 and isPlayerInMantid() and self:AntiSpam(5, args.sourceGUID) then
 		warnWindStorm:Show()
 		timerWindstormCD:Start(args.sourceGUID)
-	elseif args.spellId == 144922 and not isPlayerInMantid() then
+	elseif spellId == 144922 and not isPlayerInMantid() then
 		local source = args.sourceName
 		warnHardenFlesh:Show()
 		timerHardenFleshCD:Start(args.sourceGUID)
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnHardenFlesh:Show(source)
 		end
-	elseif args.spellId == 144923 and not isPlayerInMantid() then
+	elseif spellId == 144923 and not isPlayerInMantid() then
 		local source = args.sourceName
 		warnEarthenShard:Show()
 		timerEarthenShardCD:Start(args.sourceGUID)
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnEarthenShard:Show(source)
 		end
-	elseif args.spellId == 146222 and self:CheckTankDistance(args.sourceGUID) then--Relics can be either side, must use CheckTank Distance
+	elseif spellId == 146222 and self:CheckTankDistance(args.sourceGUID) then--Relics can be either side, must use CheckTank Distance
 		warnBreathofFire:Show()
-	elseif args.spellId == 146180 and self:CheckTankDistance(args.sourceGUID) then--Also a Relic
+	elseif spellId == 146180 and self:CheckTankDistance(args.sourceGUID) then--Also a Relic
 		warnGustingCraneKick:Show()
 		specWarnGustingCraneKick:Show()
 		timerGustingCraneKickCD:Start(args.sourceGUID)
-	elseif args.spellId == 145489 and not isPlayerInMantid() then
+	elseif spellId == 145489 and not isPlayerInMantid() then
 		warnReturnToStone:Show()
 		timerReturnToStoneCD:Start(args.sourceGUID)
-	elseif args.spellId == 142947 and not isPlayerInMantid() then--Pre warn more or less
+	elseif spellId == 142947 and not isPlayerInMantid() then--Pre warn more or less
 		warnCrimsonRecon:Show()
 		specWarnCrimsonRecon:Show()
-	elseif args.spellId == 146815 and self:AntiSpam(2, 4)  then--Will do more work on this later, not enough time before raid, but i have an idea for it
+	elseif spellId == 146815 and self:AntiSpam(2, 4)  then--Will do more work on this later, not enough time before raid, but i have an idea for it
 		warnSuperNova:Show()
 		specWarnSuperNova:Show()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 142694 and not isPlayerInMantid() then
+	local spellId = args.spellid
+	if spellId == 142694 and not isPlayerInMantid() then
 		warnSparkofLife:Show()
-	elseif args.spellId == 142947 and not isPlayerInMantid() then
+	elseif spellId == 142947 and not isPlayerInMantid() then
 		timerCrimsonReconCD:Start(args.sourceGUID)
-	elseif args.spellId == 145712 and isPlayerInMantid() then
+	elseif spellId == 145712 and isPlayerInMantid() then
 		timerBlazingChargeCD:Start(args.sourceGUID)
-	elseif args.spellId == 146253 and isPlayerInMantid() then
+	elseif spellId == 146253 and isPlayerInMantid() then
 		timerPathOfBlossomsCD:Start(args.sourceGUID)
-	elseif args.spellId == 145230 and not isPlayerInMantid() then
+	elseif spellId == 145230 and not isPlayerInMantid() then
 		local source = args.sourceName
 		warnForbiddenMagic:Show(args.destName)
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnForbiddenMagic:Show(source)
 		end
-	elseif args.spellId == 145786 and isPlayerInMantid() then
+	elseif spellId == 145786 and isPlayerInMantid() then
 		warnResidue:Show()
 		timerResidueCD:Start(args.sourceGUID)
 		specWarnResidue:Show()
-	elseif args.spellId == 145812 and isPlayerInMantid() then
+	elseif spellId == 145812 and isPlayerInMantid() then
 		warnRageoftheEmpress:Show()
 		specWarnRageoftheEmpress:Show()
 		timerRageoftheEmpressCD:Start(args.sourceGUID)
@@ -251,7 +253,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 145987 and isPlayerInMantid() then
+	local spellId = args.spellid
+	if spellId == 145987 and isPlayerInMantid() then
 		warnSetToBlow:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
@@ -260,21 +263,22 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerSetToBlow:Start(buffTime)
 			specWarnSetToBlow:Schedule(buffTime)
 		end
-	elseif args.spellId == 145692 and isPlayerInMantid() then
+	elseif spellId == 145692 and isPlayerInMantid() then
 		warnEnrage:Show(args.destName)
 		specWarnEnrage:Show(args.destName)
 		timerEnrage:Start(args.destName)
-	elseif args.spellId == 145998 and not isPlayerInMantid() then--This is a massive crate mogu spawning
+	elseif spellId == 145998 and not isPlayerInMantid() then--This is a massive crate mogu spawning
 		timerReturnToStoneCD:Start(6)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 145987 and args:IsPlayer() then
+	local spellId = args.spellid
+	if spellId == 145987 and args:IsPlayer() then
 		countdownSetToBlow:Cancel()
 		timerSetToBlow:Cancel()
 		specWarnSetToBlow:Cancel()
-	elseif args.spellId == 145692 then
+	elseif spellId == 145692 then
 		timerEnrage:Cancel(args.destName)
 	end
 end
