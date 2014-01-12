@@ -215,15 +215,16 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 133765 then
+	local spellId = args.spellid
+	if spellId == 133765 then
 		warnHardStare:Show()
 		timerHardStareCD:Start()
-	elseif args.spellId == 138467 then
+	elseif spellId == 138467 then
 		timerLingeringGazeCD:Start(lingeringGazeCD)
-	elseif args.spellId == 136154 and self:IsDifficulty("lfr25") and not lfrCrimsonFogRevealed then--Only use in lfr.
+	elseif spellId == 136154 and self:IsDifficulty("lfr25") and not lfrCrimsonFogRevealed then--Only use in lfr.
 		lfrCrimsonFogRevealed = true
 		specWarnFogRevealed:Show(crimsonFog)
-	elseif args.spellId == 134587 and self:AntiSpam(3, 3) then
+	elseif spellId == 134587 and self:AntiSpam(3, 3) then
 		warnIceWall:Show()
 		if firstIcewall then--if it's first icewall of a two icewall phase, it alters CD of dark parasite to be 50 seconds after this cast (thus preventing it from ever being a 60 second cd between casts for rest of fight do to beam and ice altering it)
 			firstIcewall = false
@@ -233,7 +234,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 136932 then--Force of Will Precast
+	local spellId = args.spellid
+	if spellId == 136932 then--Force of Will Precast
 		warnForceOfWill:Show(args.destName)
 		if timerLightSpectrumCD:GetTime() > 22 or timerDisintegrationBeamCD:GetTime() > 110 then--Don't start timer if either beam or spectrum will come first (cause both disable force ability)
 			timerForceOfWillCD:Start()
@@ -255,7 +257,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				end
 			end
 		end
-	elseif args.spellId == 134122 then--Blue Beam Precas
+	elseif spellId == 134122 then--Blue Beam Precas
 		lingeringGazeCD = not spectrumStarted and 25 or 40 -- First spectrum Lingering Gaze CD = 25, second = 40
 		spectrumStarted = true
 		lastBlue = args.destName
@@ -275,7 +277,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			)
 		end
 		self:Schedule(0.5, warnBeam)
-	elseif args.spellId == 134123 then--Red Beam Precast
+	elseif spellId == 134123 then--Red Beam Precast
 		lastRed = args.destName
 		if args:IsPlayer() then
 			specWarnRedBeam:Show()
@@ -283,7 +285,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.SetIconRays then
 			self:SetIcon(args.destName, 7)--Cross
 		end
-	elseif args.spellId == 134124 then--Yellow Beam Precast
+	elseif spellId == 134124 then--Yellow Beam Precast
 		lastYellow = args.destName
 		totalFogs = 3
 		yellowRevealed = 0
@@ -308,12 +310,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(139202, 139204) then
 		--The SPELL_CAST_SUCCESS event works, it's the SPELL_AURA_APPLIED/REMOVED events that are busted/
 		--SUCCESS has no target. Still have to find target with UnitDebuff checks
-		self:Schedule(0.1, findBeamJump, args.spellName, args.spellId)
+		self:Schedule(0.1, findBeamJump, args.spellName, spellId)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 133767 then
+	local spellId = args.spellid
+	if spellId == 133767 then
 		local amount = args.amount or 1
 		timerSeriousWound:Start(args.destName)
 		if amount >= 5 then
@@ -325,7 +328,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args.spellId == 133597 and not args:IsDestTypeHostile() then--Dark Parasite (filtering the wierd casts they put on themselves periodicly using same spellid that don't interest us and would mess up cooldowns)
+	elseif spellId == 133597 and not args:IsDestTypeHostile() then--Dark Parasite (filtering the wierd casts they put on themselves periodicly using same spellid that don't interest us and would mess up cooldowns)
 		warnDarkParasite:CombinedShow(0.5, args.destName)
 		local _, _, _, _, _, duration = UnitDebuff(args.destName, args.spellName)
 		timerDarkParasite:Start(duration, args.destName)
@@ -335,20 +338,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnParasite and args:IsDestTypePlayer() then--Filter further on icons because we don't want to set icons on grounding totems
 			self:SetSortedIcon(0.5, args.destName, 5, 3, true)
 		end
-	elseif args.spellId == 133598 then--Dark Plague
+	elseif spellId == 133598 then--Dark Plague
 		local _, _, _, _, _, duration = UnitDebuff(args.destName, args.spellName)
 		--maybe add a warning/special warning for everyone if duration is too high and many adds expected
 		timerDarkPlague:Start(duration, args.destName)
-	elseif args.spellId == 134626 then
+	elseif spellId == 134626 then
 		warnLingeringGaze:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnLingeringGaze:Show()
 			yellLingeringGaze:Yell()
 			soundLingeringGaze:Play()
 		end
-	elseif args.spellId == 137727 and self.Options.SetIconLifeDrain then -- Life Drain current target. If target warning needed, insert into this block. (maybe very spammy)
+	elseif spellId == 137727 and self.Options.SetIconLifeDrain then -- Life Drain current target. If target warning needed, insert into this block. (maybe very spammy)
 		self:SetIcon(args.destName, 8)--Skull
-	elseif args.spellId == 133798 and self.Options.InfoFrame and not self:IsDifficulty("lfr25") then -- Force update
+	elseif spellId == 133798 and self.Options.InfoFrame and not self:IsDifficulty("lfr25") then -- Force update
 		DBM.InfoFrame:Update()
 		if args:IsPlayer() then
 			yellLifeDrain:Yell(playerName, args.amount or 1)
@@ -358,11 +361,12 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 133767 then
+	local spellId = args.spellid
+	if spellId == 133767 then
 		timerSeriousWound:Cancel(args.destName)
-	elseif args.spellId == 137727 and self.Options.SetIconLifeDrain then -- Life Drain current target.
+	elseif spellId == 137727 and self.Options.SetIconLifeDrain then -- Life Drain current target.
 		self:SetIcon(args.destName, 0)
-	elseif args.spellId == 133597 then--Dark Parasite
+	elseif spellId == 133597 then--Dark Parasite
 		if self.Options.SetIconOnParasite then
 			self:SetIcon(args.destName, 0)
 		end

@@ -101,7 +101,8 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 136954 then
+	local spellId = args.spellid
+	if spellId == 136954 then
 		self:BossTargetScanner(69427, "AnimaRingTarget", 0.02, 12)
 		timerAnimaRingCD:Start()
 		countdownAnimaRing:Start()
@@ -124,7 +125,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 138644 and self:IsDifficulty("heroic10", "heroic25") then--Only start on heroic, on normal it's 6 second cd, not worth using timer there
+	local spellId = args.spellid
+	if spellId == 138644 and self:IsDifficulty("heroic10", "heroic25") then--Only start on heroic, on normal it's 6 second cd, not worth using timer there
 		siphon = siphon + 1
 		timerSiphonAnimaCD:Start(nil, siphon+1)
 		self:Schedule(2, PowerDelay)
@@ -132,7 +134,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 138569 then
+	local spellId = args.spellid
+	if spellId == 138569 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId, "boss1") then--Only want sprays that are on tanks, not bads standing on tanks.
 			local amount = args.amount or 1
@@ -148,20 +151,20 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args.spellId == 138609 then
+	elseif spellId == 138609 then
 		warnMatterSwap:Show(args.destName)
 		timerMatterSwap:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnMatterSwap:Show()
 		end
-	elseif args.spellId == 138780 then
+	elseif spellId == 138780 then
 		warnEmpowerGolem:Show(args.destName)
 		timerEmpowerGolemCD:Start()
-	elseif args.spellId == 139537 then
+	elseif spellId == 139537 then
 		warnActivation:Show()
 		timerAnimusActivation:Start()
 		countdownActivation:Start()
-	elseif args.spellId == 138691 then
+	elseif spellId == 138691 then
 		warnAnimaFont:Show(args.destName)
 		timerAnimaFontCD:Start()
 		if args:IsPlayer() then
@@ -175,11 +178,12 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 138609 then
+	local spellId = args.spellid
+	if spellId == 138609 then
 		timerMatterSwap:Cancel(args.destName)
-	elseif args.spellId == 138569 then
+	elseif spellId == 138569 then
 		timerExplosiveSlam:Cancel(args.destName)
-	elseif args.spellId == 138691 and self.Options.SetIconOnFont then
+	elseif spellId == 138691 and self.Options.SetIconOnFont then
 		self:SetIcon(args.destName, 0)
 	end
 end
