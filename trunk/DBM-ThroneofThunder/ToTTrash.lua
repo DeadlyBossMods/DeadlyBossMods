@@ -69,15 +69,16 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
-	if args.spellId == 139895 then
+	local spellId = args.spellid
+	if spellId == 139895 then
 		self:Schedule(0.2, SpiritFireTarget, args.sourceGUID)
 		timerSpiritfireCD:Start()
 		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
 			DBM.RangeCheck:Show(3)
 		end
-	elseif args.spellId == 136751 and (args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus")) then
+	elseif spellId == 136751 and (args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus")) then
 		specWarnSonicScreech:Show(args.sourceName)
-	elseif args.spellId == 139899 then
+	elseif spellId == 139899 then
 		warnShadowNova:Show()
 		specWarnShadowNova:Show()
 		timerShadowNovaCD:Start()
@@ -86,7 +87,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
-	if args.spellId == 139322 then--Or 139559, not sure which
+	local spellId = args.spellid
+	if spellId == 139322 then--Or 139559, not sure which
 		stormEnergyTargets[#stormEnergyTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnStormEnergy:Show()
@@ -96,7 +98,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnStormEnergyTargets)
 		self:Schedule(1.5, warnStormEnergyTargets)--For some reason debuffs can go out as slow as 1.2, set to 1.5 in case it can get even worse then that
-	elseif args.spellId == 139900 then
+	elseif spellId == 139900 then
 		stormCloudTargets[#stormCloudTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnStormCloud:Show()
@@ -106,7 +108,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnStormCloudTargets)
 		self:Schedule(0.5, warnStormCloudTargets)
-	elseif args.spellId == 140296 then
+	elseif spellId == 140296 then
 		warnConductiveShield:Show(args.destName)
 		timerConductiveShield:Start(nil, args.destName)
 		timerConductiveShieldCD:Start(20, args.destName, args.sourceGUID)

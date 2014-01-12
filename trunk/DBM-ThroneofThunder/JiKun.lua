@@ -88,7 +88,8 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 134366 then
+	local spellId = args.spellid
+	if spellId == 134366 then
 		local amount = args.amount or 1
 		warnTalonRake:Show(args.destName, amount)
 		timerTalonRake:Start(args.destName)
@@ -102,25 +103,26 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnTalonRakeOther:Show(args.destName)
 			end
 		end
-	elseif args.spellId == 133755 and args:IsPlayer() then
+	elseif spellId == 133755 and args:IsPlayer() then
 		timerFlight:Start()
-	elseif args.spellId == 140741 and args:IsPlayer() then
+	elseif spellId == 140741 and args:IsPlayer() then
 		warnPrimalNutriment:Show(args.amount or 1)
 		timerPrimalNutriment:Start()
-	elseif args.spellId == 140571 and args:IsPlayer() then
+	elseif spellId == 140571 and args:IsPlayer() then
 		timerLessons:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 134366 then
+	local spellId = args.spellid
+	if spellId == 134366 then
 		timerTalonRake:Cancel(args.destName)
-	elseif args.spellId == 133755 and args:IsPlayer() then
+	elseif spellId == 133755 and args:IsPlayer() then
 		timerFlight:Cancel()
-	elseif args.spellId == 140741 and args:IsPlayer() then
+	elseif spellId == 140741 and args:IsPlayer() then
 		timerPrimalNutriment:Cancel()
-	elseif args.spellId == 140571 and args:IsPlayer() then
+	elseif spellId == 140571 and args:IsPlayer() then
 		timerLessons:Cancel()
 	end
 end

@@ -132,30 +132,32 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 137491 then
+	local spellId = args.spellid
+	if spellId == 137491 then
 		self:SendSync("Inferno")
-	elseif args.spellId == 137531 then
+	elseif spellId == 137531 then
 		self:SendSync("TidalForce")
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 136752 then
+	local spellId = args.spellid
+	if spellId == 136752 then
 		self:SendSync("CosmicBarrage")
-	elseif args.spellId == 137404 then
+	elseif spellId == 137404 then
 		warnTearsOfSun:Show()
 		specWarnTearsOfSun:Show()
 		timerTearsOfTheSun:Start()
 		if timerDayCD:GetTime() < 145 then
 			timerTearsOfTheSunCD:Start()
 		end
-	elseif args.spellId == 137375 then
+	elseif spellId == 137375 then
 		warnBeastOfNightmares:Show(args.destName)
 		specWarnBeastOfNightmares:Show(args.destName)
 		if timerDayCD:GetTime() < 135 then
 			timerBeastOfNightmaresCD:Start()
 		end
-	elseif args.spellId == 137408 then
+	elseif spellId == 137408 then
 		local amount = args.amount or 1
 		warnFanOfFlames:Show(args.destName, amount)
 		timerFanOfFlames:Start(args.destName)
@@ -169,17 +171,17 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnFanOfFlamesOther:Show(args.destName)
 			end
 		end
-	elseif args.spellId == 137417 and args:IsPlayer() and self:AntiSpam(3, 4) then
+	elseif spellId == 137417 and args:IsPlayer() and self:AntiSpam(3, 4) then
 		specWarnFlamesofPassionMove:Show()
-	elseif args.spellId == 137360 and args:IsPlayer() then
+	elseif spellId == 137360 and args:IsPlayer() then
 		specWarnCorruptedHealing:Show(args.amount or 1)
-	elseif args.spellId == 138855 and self:AntiSpam(3, 5) then
+	elseif spellId == 138855 and self:AntiSpam(3, 5) then
 		warnTiger:Show()
 		timerTiger:Start()
-	elseif args.spellId == 138306 and self:AntiSpam(3, 5) then
+	elseif spellId == 138306 and self:AntiSpam(3, 5) then
 		warnSerpent:Show()
 		timerSerpent:Start()
-	elseif args.spellId == 138300 and self:AntiSpam(3, 5) then
+	elseif spellId == 138300 and self:AntiSpam(3, 5) then
 		warnOx:Show()
 		timerOx:Start()
 	end
@@ -187,20 +189,23 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 137408 then
+	local spellId = args.spellid
+	if spellId == 137408 then
 		timerFanOfFlames:Cancel(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 137414 then
+	local spellId = args.spellid
+	if spellId == 137414 then
 		warnFlamesOfPassion:Show()
 		--timerFlamesOfPassionCD:Start()
 	end
 end
 
 function mod:SPELL_SUMMON(args)
-	if args.spellId == 137419 then
+	local spellId = args.spellid
+	if spellId == 137419 then
 		self:SendSync("Comet")
 	end
 end

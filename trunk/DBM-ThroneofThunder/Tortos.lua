@@ -121,23 +121,24 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 133939 then
+	local spellId = args.spellid
+	if spellId == 133939 then
 		warnStoneBreath:Show()
 		if not self:IsDifficulty("lfr25") then
 			specWarnStoneBreath:Show(args.sourceName)
 		end
 		timerBreathCD:Start()
 		countdownBreath:Start()
-	elseif args.spellId == 136294 then
+	elseif spellId == 136294 then
 		warnCallofTortos:Show()
 		specWarnCallofTortos:Show()
 		if self:AntiSpam(59, 3) then -- On below 10%, he casts Call of Tortos always. This cast ignores cooldown, so filter below 10% cast.
 			timerCallTortosCD:Start()
 		end
-	elseif args.spellId == 135251 then
+	elseif spellId == 135251 then
 		warnBite:Show()
 		timerBiteCD:Start()
-	elseif args.spellId == 134920 then
+	elseif spellId == 134920 then
 		stompActive = true
 		stompCount = stompCount + 1
 		warnQuakeStomp:Show(stompCount)
@@ -153,7 +154,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 133971 then--Shell Block (turtles dying and becoming kickable)
+	local spellId = args.spellid
+	if spellId == 133971 then--Shell Block (turtles dying and becoming kickable)
 		shellsRemaining = shellsRemaining + 1
 		addsActivated = addsActivated - 1
 		if DBM:GetRaidRank() > 0 and self.Options.ClearIconOnTurtles then
@@ -165,7 +167,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args.spellId == 133974 and self.Options.SetIconOnTurtles then--Spinning Shell
+	elseif spellId == 133974 and self.Options.SetIconOnTurtles then--Spinning Shell
 		if self:AntiSpam(5, 6) then
 			if addsActivated >= 1 then--1 or more add is up from last set
 				if alternateSet then--We check whether we started with skull last time or moon
@@ -186,13 +188,15 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 137633 and args:IsPlayer() then
+	local spellId = args.spellid
+	if spellId == 137633 and args:IsPlayer() then
 		checkCrystalShell()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 134476 then
+	local spellId = args.spellid
+	if spellId == 134476 then
 		if stompActive then--10 second cd normally, but cd is disabled when stomp active
 			if not firstRockfall then--Announce first one only and ignore the next ones spammed for about 9-10 seconds
 				firstRockfall = true
@@ -207,7 +211,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerRockfallCD:Start()
 			end
 		end
-	elseif args.spellId == 134031 and not kickedShells[args.destGUID] then--Kick Shell
+	elseif spellId == 134031 and not kickedShells[args.destGUID] then--Kick Shell
 		kickedShells[args.destGUID] = true
 		shellsRemaining = shellsRemaining - 1
 		warnKickShell:Show(args.spellName, args.sourceName, shellsRemaining)

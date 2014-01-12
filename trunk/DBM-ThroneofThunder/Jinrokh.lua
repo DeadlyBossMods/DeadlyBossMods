@@ -102,10 +102,11 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 137399 then
+	local spellId = args.spellid
+	if spellId == 137399 then
 		self:BossTargetScanner(69465, "FocusedLightningTarget", 0.025, 12)
 		timerFocusedLightningCD:Start()
-	elseif args.spellId == 137313 then
+	elseif spellId == 137313 then
 		warnStorm:Show()
 		specWarnStorm:Show()
 		timerStorm:Start()
@@ -120,7 +121,7 @@ function mod:SPELL_CAST_START(args)
 			"SPELL_PERIODIC_DAMAGE 138006",
 			"SPELL_PERIODIC_MISSED 138006"
 		)
-	elseif args.spellId == 138732 then
+	elseif spellId == 138732 then
 		warnIonization:Show()
 		specWarnIonization:Show()
 		if timerStaticBurstCD:GetTime() == 0 or timerStaticBurstCD:GetTime() > 5 then -- Static Burst will be delayed by Ionization
@@ -130,23 +131,25 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 137162 then
+	local spellId = args.spellid
+	if spellId == 137162 then
 		timerStaticBurstCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 137162 then
+	local spellId = args.spellid
+	if spellId == 137162 then
 		warnStaticBurst:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnStaticBurst:Show()
 		else
 			specWarnStaticBurstOther:Show(args.destName)
 		end
-	elseif args.spellId == 137422 and scanFailed then--Use cleu target if scanning is failed (slower than target scanning)
+	elseif spellId == 137422 and scanFailed then--Use cleu target if scanning is failed (slower than target scanning)
 		scanFailed = false
 		self:FocusedLightningTarget(args.destName)
-	elseif args.spellId == 138732 and args:IsPlayer() then
+	elseif spellId == 138732 and args:IsPlayer() then
 		timerIonization:Start()
 		self:Schedule(19, checkWaterIonization)--Extremely dangerous. (if conducted, then auto wipe). So check before 5 sec.
 		if self.Options.RangeFrame and not UnitDebuff("player", GetSpellInfo(137422)) then--if you have 137422 then you have range 8 open and we don't want to make it 4
@@ -156,13 +159,14 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 138732 and args:IsPlayer() then
+	local spellId = args.spellid
+	if spellId == 138732 and args:IsPlayer() then
 		timerIonization:Cancel()
 		self:Unschedule(checkWaterIonization)
 		if self.Options.RangeFrame and not UnitDebuff("player", GetSpellInfo(137422)) then--if you have 137422 we don't want to hide it either.
 			DBM.RangeCheck:Hide()
 		end
-	elseif args.spellId == 137422 and args:IsPlayer() then
+	elseif spellId == 137422 and args:IsPlayer() then
 		if self.Options.RangeFrame then
 			if UnitDebuff("player", GetSpellInfo(138732)) then--if you have 138732 then switch to 4 yards
 				DBM.RangeCheck:Show(4)
@@ -170,7 +174,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
-	elseif args.spellId == 137313 then
+	elseif spellId == 137313 then
 		self:UnregisterShortTermEvents()
 	end
 end
