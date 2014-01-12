@@ -167,36 +167,37 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 143958 then
+	local spellId = args.spellid
+	if spellId == 143958 then
 		local source = args.sourceName
 		warnCorruptionShock:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnCorruptionShock:Show(source)
 		end
-	elseif args.spellId == 143330 then
+	elseif spellId == 143330 then
 		warnGouge:Show()
 		timerGougeCD:Start()
-	elseif args.spellId == 143446 then
+	elseif spellId == 143446 then
 		warnBane:Show()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerBaneCD:Start(13)--TODO, verify normal to see if it was changed too
 		else
 			timerBaneCD:Start()
 		end
-	elseif args.spellId == 143491 then
+	elseif spellId == 143491 then
 		warnCalamity:Show()
 		specWarnCalamity:Show()
 		timerCalamity:Start()
 		timerCalamityCD:Start()
-	elseif args.spellId == 143961 then
+	elseif spellId == 143961 then
 		warnDefiledGround:Show()
 		timerDefiledGroundCD:Start()
-	elseif args.spellId == 143962 then
+	elseif spellId == 143962 then
 		timerInfernoStrikeCD:Start()
 		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "InfernoStrikeTarget")
-	elseif args.spellId == 143497 then
+	elseif spellId == 143497 then
 		warnBondGoldenLotus:Show()
-	elseif args.spellId == 144396 then
+	elseif spellId == 144396 then
 		warnVengefulStrikes:Show()
 		timerVengefulStrikesCD:Start()
 		for i = 1, 5 do
@@ -209,13 +210,14 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 143027 then
+	local spellId = args.spellid
+	if spellId == 143027 then
 		warnClash:Show()
 		timerClashCD:Start()
 		if args:IsPlayer() then
 			specWarnClash:Show()
 		end
-	elseif args.spellId == 143423 then
+	elseif spellId == 143423 then
 		local source = args.sourceName
 		if source == UnitName("target") or source == UnitName("focus") then--Only warn if your target or focus, period, because if you aren't actually dpsing her, you just stay out of melee range and ignore this
 			warnShaShear:Show()
@@ -225,34 +227,35 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 143959 and args:IsPlayer() and self:AntiSpam(1.5, 2) then
+	local spellId = args.spellid
+	if spellId == 143959 and args:IsPlayer() and self:AntiSpam(1.5, 2) then
 		specWarnDefiledGround:Show()
-	elseif args.spellId == 143301 then--Stun debuff spellid
+	elseif spellId == 143301 then--Stun debuff spellid
 		warnGougeStun:Show(args.destName)
 		if not args:IsPlayer() then
 			specWarnGougeStunOther:Show(args.destName)
 		end
-	elseif args.spellId == 143198 then
+	elseif spellId == 143198 then
 		warnGarrote:CombinedShow(1, args.destName)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerGarroteCD:DelayedStart(1, 20)--TODO, see if it's cast more often on heroic only, or if normal was also changed to 20
 		else
 			timerGarroteCD:DelayedStart(1)
 		end
-	elseif args.spellId == 143840 then
+	elseif spellId == 143840 then
 		warnMarked:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnMarked:Show(args.destName)
 			yellMarked:Yell()
 		end
 	--Special phases
-	elseif args.spellId == 143546 then--Dark Meditation
+	elseif spellId == 143546 then--Dark Meditation
 		warnDarkMeditation:Show()
 		specWarnDarkMeditation:Show()
 		timerBaneCD:Cancel()
 		timerCalamity:Cancel()
 		timerCalamityCD:Cancel()
-	elseif args.spellId == 143955 then--Misery, Sorrow, and Gloom
+	elseif spellId == 143955 then--Misery, Sorrow, and Gloom
 		self.vb.sorrowActive = true
 		warnMiserySorrowGloom:Show()
 		specWarnMiserySorrowGloom:Show()
@@ -264,24 +267,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:RegisterShortTermEvents(
 			"UNIT_DIED"--We register here to make sure we wipe variables on pull
 		)
-	elseif args.spellId == 143812 then--Mark of Anguish
+	elseif spellId == 143812 then--Mark of Anguish
 		warnMarkOfAnguish:Show()
 		specWarnMarkOfAnquish:Show()
 		timerGougeCD:Cancel()
 		timerGarroteCD:Cancel()
 		timerCalamityCD:Cancel()--Can't be cast during THIS special
-	elseif args.spellId == 143423 and args:IsPlayer() and self.vb.sorrowActive and not self:IsDifficulty("lfr25") and not isInfernoTarget then
+	elseif spellId == 143423 and args:IsPlayer() and self.vb.sorrowActive and not self:IsDifficulty("lfr25") and not isInfernoTarget then
 		specWarnShaShearYou:Show()
 		yellShaShear:Yell()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	--Special phases
-	if args.spellId == 143546 then--Dark Meditation
+	local spellId = args.spellid
+	if spellId == 143546 then--Dark Meditation
 		timerBaneCD:Start(10)
 		timerCalamityCD:Start(23)--Now back to not cast right away again.
-	elseif args.spellId == 143955 then--Misery, Sorrow, and Gloom
+	elseif spellId == 143955 then--Misery, Sorrow, and Gloom
 		self.vb.sorrowActive = false--Just in case UNIT_DIED doesn't fire.
 		timerDefiledGroundCD:Cancel()
 		timerInfernoStrikeCD:Cancel()
@@ -290,7 +293,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerVengefulStrikesCD:Start(18)
 		timerClashCD:Start(46)
 		self:UnregisterShortTermEvents()
-	elseif args.spellId == 143812 then--Mark of Anguish
+	elseif spellId == 143812 then--Mark of Anguish
 		timerGarroteCD:Start(12)--TODO, verify consistency in all difficulties
 		timerGougeCD:Start(23)--Seems to be either be exactly 23 or exactly 35. Not sure what causes it to switch.
 	end

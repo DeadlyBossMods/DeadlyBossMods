@@ -206,24 +206,25 @@ local function hideRangeDelay()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 144583 then
+	local spellId = args.spellid
+	if spellId == 144583 then
 		local source = args.sourceName
 		warnChainHeal:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnChainHeal:Show(source)
 		end
-	elseif args.spellId == 144584 then
+	elseif spellId == 144584 then
 		local source = args.sourceName
 		warnChainLightning:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnChainLightning:Show(source)
 		end
-	elseif args.spellId == 144969 then
+	elseif spellId == 144969 then
 		warnAnnihilate:Show()
 		specWarnAnnihilate:Show()
 	elseif args:IsSpellID(144985, 145037) then
 		self.vb.whirlCount = self.vb.whirlCount + 1
-		if args.spellId == 144985 then
+		if spellId == 144985 then
 			warnWhirlingCorruption:Show(self.vb.whirlCount)
 			specWarnWhirlingCorruption:Show(self.vb.whirlCount)
 		else
@@ -234,7 +235,7 @@ function mod:SPELL_CAST_START(args)
 		timerWhirlingCorruptionCD:Start(nil, self.vb.whirlCount+1)
 		countdownWhirlingCorruption:Start()
 		soundWhirlingCorrpution:Play()
-	elseif args.spellId == 147120 then
+	elseif spellId == 147120 then
 		self.vb.bombardCount = self.vb.bombardCount + 1
 		warnBombardment:Show(self.vb.bombardCount)
 		specWarnBombardment:Show(self.vb.bombardCount)
@@ -249,17 +250,18 @@ function mod:SPELL_CAST_START(args)
 			end
 			self:Schedule(13, hideRangeDelay)
 		end
-	elseif args.spellId == 147011 then
+	elseif spellId == 147011 then
 		warnManifestRage:Show()
 		if UnitDebuff("player", GetSpellInfo(147665)) then--Kiting an Unstable Iron Star
 			specWarnManifestRage:Show()
 		end
-	elseif args.spellId == 145599 and self:AntiSpam(1.5) then
+	elseif spellId == 145599 and self:AntiSpam(1.5) then
 		specWarnTouchInterrupt:Show(args.sourceName)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellid
 	if args:IsSpellID(144748, 144749) then
 		self.vb.desecrateCount = self.vb.desecrateCount + 1
 		if self.vb.phase == 1 then
@@ -289,12 +291,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 144945 then
+	local spellId = args.spellid
+	if spellId == 144945 then
 		warnYShaarjsProtection:Show(args.destName)
 		timerYShaarjsProtection:Start()
 		countdownRealm:Start()
 	elseif args:IsSpellID(145065, 145171) then
-		if args.spellId == 145065 then
+		if spellId == 145065 then
 			warnTouchOfYShaarj:CombinedShow(0.5, args.destName)
 		else
 			warnEmpTouchOfYShaarj:CombinedShow(0.5, args.destName)
@@ -310,7 +313,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(145183, 145195) then
 		local amount = args.amount or 1
-		if args.spellId == 145183 then
+		if spellId == 145183 then
 			warnGrippingDespair:Show(args.destName, amount)
 		else
 			warnEmpGrippingDespair:Show(args.destName, amount)
@@ -323,7 +326,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnGrippingDespairOther:Show(args.destName)
 			end
 		end
-	elseif args.spellId == 144585 then
+	elseif spellId == 144585 then
 		self.vb.shamanAlive = self.vb.shamanAlive + 1
 		warnFarseerWolfRider:Show()
 		specWarnFarseerWolfRider:Show()
@@ -331,14 +334,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnShaman and self.vb.shamanAlive < 9 then--Support for marking up to 8 shaman
 			self:ScanForMobs(71983, 2, 9-self.vb.shamanAlive, 1, 0.2, 10, "SetIconOnShaman")
 		end
-	elseif args.spellId == 147209 then
+	elseif spellId == 147209 then
 		self:SendSync("MaliceTarget", args.destGUID)
-	elseif args.spellId == 147665 then
+	elseif spellId == 147665 then
 		warnIronStarFixate:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnISFixate:Show()
 		end
-	elseif args.spellId == 147235 and args:IsPlayer() then
+	elseif spellId == 147235 and args:IsPlayer() then
 		local amount = args.amount or 1
 		timerGrippingDespair:Start(args.destName)
 		if amount >= 1 then
@@ -350,14 +353,15 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellid
 	if args:IsSpellID(145183, 145195) then
 		timerGrippingDespair:Cancel(args.destName)
-	elseif args.spellId == 144945 then
+	elseif spellId == 144945 then
 		warnYShaarjsProtectionFade:Show()
 		showInfoFrame()
 	elseif args:IsSpellID(145065, 145171) and self.Options.SetIconOnMC then
 		self:SetIcon(args.destName, 0)
-	elseif args.spellId == 147209 then
+	elseif spellId == 147209 then
 		self:SendSync("MaliceTargetRemoved", args.destGUID)
 	end
 end

@@ -127,17 +127,18 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 144400 then
+	local spellId = args.spellid
+	if spellId == 144400 then
 		self.vb.swellingCount = self.vb.swellingCount + 1
 		warnSwellingPride:Show(self.vb.swellingCount)
 		specWarnSwellingPride:Show(self.vb.swellingCount)
-	elseif args.spellId == 144379 then
+	elseif spellId == 144379 then
 		local sourceGUID = args.sourceGUID
 		warnMockingBlast:Show()
 		if sourceGUID == UnitGUID("target") or sourceGUID == UnitGUID("focus") then 
 			specWarnMockingBlast:Show(args.sourceName)
 		end
-	elseif args.spellId == 144832 then
+	elseif spellId == 144832 then
 		--These abilitie cd reset on SPELL_CAST_START (they no longer desync though, they sync back up after first off sync cast)
 		countdownReflection:Cancel()
 		countdownSwellingPride:Cancel()
@@ -155,7 +156,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 144400 then--Swelling Pride Cast END
+	local spellId = args.spellid
+	if spellId == 144400 then--Swelling Pride Cast END
 		self.vb.woundCount = 0
 		bpSpecWarnFired = false
 		--Since we register this event anyways for bursting, might as well start cd bars here instead
@@ -192,22 +194,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 				end
 			end
 		end
-	elseif args.spellId == 144832 then
+	elseif spellId == 144832 then
 		warnUnleashed:Show()
 		timerGiftOfTitansCD:Cancel()
 		self.vb.woundCount = 0
 		timerManifestationCD:Start()--Not yet verified if altered or not
 		timerSwellingPrideCD:Start(75, self.vb.swellingCount + 1)--Not yet verified if altered or not (it would be 62 instead of 60 though since we'd be starting at 0 energy instead of cast finish of last swelling)
 		countdownSwellingPride:Start(75)--Not yet verified if altered or not (it would be 62 instead of 60 though since we'd be starting at 0 energy instead of cast finish of last swelling)
-	elseif args.spellId == 144800 then
+	elseif spellId == 144800 then
 		warnSelfReflection:Show()
 		specWarnSelfReflection:Show()
-	elseif args.spellId == 146823 and self.Options.SetIconOnFragment then--Banishment cast. Not want to use applied for add mark scheduling
+	elseif spellId == 146823 and self.Options.SetIconOnFragment then--Banishment cast. Not want to use applied for add mark scheduling
 		self:ScanForMobs(72569, 0, 8, 3, 0.2, 8)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellid
 	if args:IsSpellID(144359, 146594) then
 		warnGiftOfTitans:CombinedShow(0.5, args.destName)
 		timerGiftOfTitansCD:DelayedStart(0.5)
@@ -217,24 +220,24 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellGiftOfTitans:Yell()
 			end
 		end
-	elseif args.spellId == 145215 then
+	elseif spellId == 145215 then
 		warnBanishment:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnBanishment:Show()
 		end
-	elseif args.spellId == 146822 then
+	elseif spellId == 146822 then
 		warnProjection:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnProjection:Show()
 			timerProjection:Start()
 		end
-	elseif args.spellId == 146817 then
+	elseif spellId == 146817 then
 		warnAuraOfPride:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnAuraOfPride:Show()
 			yellAuraOfPride:Yell()
 		end
-	elseif args.spellId == 144843 then--Same spellid fires for both versions, so we have to do some more advanced filtering
+	elseif spellId == 144843 then--Same spellid fires for both versions, so we have to do some more advanced filtering
 		if bit.band(args.destFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0 then--Mind controled version
 			warnOvercomeMC:CombinedShow(0.5, args.destName)
 		else--Non mind controlled version
@@ -243,7 +246,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnOvercome:Show()
 			end
 		end
-	elseif args.spellId == 144351 then
+	elseif spellId == 144351 then
 		warnMark:CombinedShow(0.5, args.destName)
 		timerMarkCD:DelayedStart(0.5)
 		if self.Options.SetIconOnMark and args:IsDestTypePlayer() then--Filter further on icons because we don't want to set icons on grounding totems
@@ -253,7 +256,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetSortedIcon(0.5, args.destName, 1, 3)
 			end
 		end
-	elseif args.spellId == 144358 then
+	elseif spellId == 144358 then
 		warnWoundedPride:Show(args.destName)
 		specWarnWoundedPride:Show()
 		if self.vb.woundCount < 2 and not self:IsDifficulty("lfr25") then
@@ -267,7 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCorruptedPrisonYou:Show()
 			yellCorruptedPrison:Yell()
 		end
-	elseif args.spellId == 147207 then
+	elseif spellId == 147207 then
 		warnWeakenedResolve:Show(args.destName)
 		if args:IsPlayer() then
 			timerWeakenedResolve:Start()
@@ -277,9 +280,10 @@ end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED--In case i decide to do something with fact healer debuff stacks if you suck at dispels
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 144351 and self.Options.SetIconOnMark then
+	local spellId = args.spellid
+	if spellId == 144351 and self.Options.SetIconOnMark then
 		self:SetIcon(args.destName, 0)
-	elseif args.spellId == 147207 and args:IsPlayer() then
+	elseif spellId == 147207 and args:IsPlayer() then
 		timerWeakenedResolve:Cancel()
 	end
 end
