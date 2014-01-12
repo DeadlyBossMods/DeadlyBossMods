@@ -56,8 +56,8 @@ local warnDiminish					= mod:NewSpellAnnounce(143666, 4, nil, false)--Spammy, ta
 local warnCalculated				= mod:NewTargetAnnounce(144095, 3)--Wild variation on timing noted, 34-130.8 variation (wtf)
 local warnInsaneCalculationFire		= mod:NewCastAnnounce(142416, 4)--3 seconds after 144095
 --Ka'roz the Locust
-local warnFlash						= mod:NewCastAnnounce(143701, 3, 2)--62-70
-local warnWhirling					= mod:NewTargetCountAnnounce(143701, 3)
+local warnFlashCast					= mod:NewCastAnnounce(143701, 3, 2)--62-70
+local warnFlash						= mod:NewTargetCountAnnounce("ej8013", 3)
 local warnHurlAmber					= mod:NewSpellAnnounce(143759, 3)
 --Skeer the Bloodseeker
 local warnBloodletting				= mod:NewSpellAnnounce(143280, 4)
@@ -111,10 +111,12 @@ local specWarnCalculated			= mod:NewSpecialWarningYou(142416)
 local yellCalculated				= mod:NewYell(142416, nil, false)
 local specWarnInsaneCalculationFire	= mod:NewSpecialWarningSpell(142416, nil, nil, nil, 2)
 --Ka'roz the Locust
-local specWarnFlash					= mod:NewSpecialWarningSpell(143701, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
-local specWarnWhirling				= mod:NewSpecialWarningYou(143701)
-local specWarnWhirlingNear			= mod:NewSpecialWarningClose(143701)
-local yellWhirling					= mod:NewYell(143701)
+local specWarnFlashCast				= mod:NewSpecialWarningSpell(143701, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
+local specWarnFlash					= mod:NewSpecialWarningYou("ej8013")--Flash is name of his charge ability
+local specWarnFlashNear				= mod:NewSpecialWarningClose("ej8013")
+local specWarnWhirlingNear			= mod:NewSpecialWarningClose(143701)--Whirling is name of debuff applied if you get hit by flash (avoidable) No special warning needed for on YOU, but special warning needed if near you to avoid damage
+local yellFlash						= mod:NewYell("ej8013")
+local yellWhirling					= mod:NewYell("OptionVersion2", 143701, nil, false)
 local specWarnHurlAmber				= mod:NewSpecialWarningSpell(143759, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
 local specWarnCausticAmber			= mod:NewSpecialWarningMove(143735)--Stuff on the ground
 --Skeer the Bloodseeker
@@ -331,63 +333,6 @@ local function CheckBosses(ignoreRTF)
 	end
 end
 
-local function delayedCatalyst(spellID)
-	mod.vb.toxicInjection = true--we won't need work around anymore since you'll get injections from the catalysts cast
-	local debuffFound = false
-	if spellID == 142725 then
-		if UnitDebuff("player", GetSpellInfo(142532)) then
-			debuffFound = true
-			specWarnCatalystBlue:Show()
-			if mod.Options.yellToxicCatalyst then
-				yellCatalystBlue:Yell()
-			end
-		end
-	elseif spellID == 142726 then
-		if UnitDebuff("player", GetSpellInfo(142533)) then
-			debuffFound = true
-			specWarnCatalystRed:Show()
-			if mod.Options.yellToxicCatalyst then
-				yellCatalystRed:Yell()
-			end
-		end
-	elseif spellID == 142727 then
-		if UnitDebuff("player", GetSpellInfo(142534)) then
-			debuffFound = true
-			specWarnCatalystYellow:Show()
-			if mod.Options.yellToxicCatalyst then
-				yellCatalystYellow:Yell()
-			end
-		end
-	elseif spellID == 142728 then
-		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142534)) then--Red or Yellow
-			debuffFound = true
-			specWarnCatalystOrange:Show()
-			if mod.Options.yellToxicCatalyst then
-				yellCatalystOrange:Yell()
-			end
-		end
-	elseif spellID == 142729 then
-		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142532)) then--Red or Blue
-			debuffFound = true
-			specWarnCatalystPurple:Show()
-			if mod.Options.yellToxicCatalyst then
-				yellCatalystPurple:Yell()
-			end
-		end
-	elseif spellID == 142730 then
-		if UnitDebuff("player", GetSpellInfo(142534)) or UnitDebuff("player", GetSpellInfo(142532)) then--Yellow or Blue
-			debuffFound = true
-			specWarnCatalystGreen:Show()
-			if mod.Options.yellToxicCatalyst then
-				yellCatalystGreen:Yell()
-			end
-		end
-	end
-	if not debuffFound and not UnitIsDeadOrGhost("player") then--You didn't have a debuff yet, check again.
-		mod:Schedule(0.2, delayedCatalyst, spellID)
-	end
-end
-
 local function delayMonsterEmote(target)
 	--Because now the raid boss emotes fire AFTER this and we need them first
 	warnCalculated:Show(target)
@@ -512,20 +457,20 @@ function mod:DFAScan(targetname)
 	end
 end
 
-function mod:WhirlingScan(targetname)
+function mod:FlashScan(targetname)
 	if targetname ~= lastWhirl then
 		lastWhirl = targetname
 		self.vb.whirlCast = self.vb.whirlCast + 1
-		warnWhirling:Show(self.vb.whirlCast, targetname)
+		warnFlash:Show(self.vb.whirlCast, targetname)
 		if targetname == UnitName("player") then
-			specWarnWhirling:Show()
-			yellWhirling:Yell()
+			specWarnFlash:Show()
+			yellFlash:Yell()
 		elseif self:CheckNearby(10, targetname) then
-			specWarnWhirlingNear:Show(targetname)
+			specWarnFlashNear:Show(targetname)
 		end
 	end
 	if self.vb.whirlCast > 4 or (GetTime() - self.vb.whirlTime) > 20 then
-		self:StopRepeatedScan("WhirlingScan")
+		self:StopRepeatedScan("FlashScan")
 	end
 end
 
@@ -571,100 +516,101 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 142725 then
+	local spellId = args.spellId
+	if spellId == 142725 then
 		timerToxicCatalystCD:Start()
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystBlue:Show()
 		end
-		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
-		if not self.vb.toxicInjection then
-			self:Schedule(0.2, delayedCatalyst, args.spellId)
-		else
-			delayedCatalyst(args.spellId)
+		if UnitDebuff("player", GetSpellInfo(142532)) then
+			specWarnCatalystBlue:Show()
+			if self.Options.yellToxicCatalyst then
+				yellCatalystBlue:Yell()
+			end
 		end
-	elseif args.spellId == 142726 then
+	elseif spellId == 142726 then
 		timerToxicCatalystCD:Start()
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystRed:Show()
 		end
-		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
-		if not self.vb.toxicInjection then
-			self:Schedule(0.2, delayedCatalyst, args.spellId)
-		else
-			delayedCatalyst(args.spellId)
+		if UnitDebuff("player", GetSpellInfo(142533)) then
+			specWarnCatalystRed:Show()
+			if self.Options.yellToxicCatalyst then
+				yellCatalystRed:Yell()
+			end
 		end
-	elseif args.spellId == 142727 then
+	elseif spellId == 142727 then
 		timerToxicCatalystCD:Start()
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystYellow:Show()
 		end
-		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
-		if not self.vb.toxicInjection then
-			self:Schedule(0.2, delayedCatalyst, args.spellId)
-		else
-			delayedCatalyst(args.spellId)
+		if UnitDebuff("player", GetSpellInfo(142534)) then
+			specWarnCatalystYellow:Show()
+			if self.Options.yellToxicCatalyst then
+				yellCatalystYellow:Yell()
+			end
 		end
-	elseif args.spellId == 142728 then
+	elseif spellId == 142728 then
 		timerToxicCatalystCD:Start()
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystOrange:Show()
 		end
-		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
-		if not self.vb.toxicInjection then
-			self:Schedule(0.2, delayedCatalyst, args.spellId)
-		else
-			delayedCatalyst(args.spellId)
+		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142534)) then--Red or Yellow
+			specWarnCatalystOrange:Show()
+			if self.Options.yellToxicCatalyst then
+				yellCatalystOrange:Yell()
+			end
 		end
-	elseif args.spellId == 142729 then
+	elseif spellId == 142729 then
 		timerToxicCatalystCD:Start()
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystPurple:Show()
 		end
-		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
-		if not self.vb.toxicInjection then
-			self:Schedule(0.2, delayedCatalyst, args.spellId)
-		else
-			delayedCatalyst(args.spellId)
+		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142532)) then--Red or Blue
+			specWarnCatalystPurple:Show()
+			if self.Options.yellToxicCatalyst then
+				yellCatalystPurple:Yell()
+			end
 		end
-	elseif args.spellId == 142730 then
+	elseif spellId == 142730 then
 		timerToxicCatalystCD:Start()
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystGreen:Show()
 		end
-		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
-		if not self.vb.toxicInjection then
-			self:Schedule(0.2, delayedCatalyst, args.spellId)
-		else
-			delayedCatalyst(args.spellId)
+		if UnitDebuff("player", GetSpellInfo(142534)) or UnitDebuff("player", GetSpellInfo(142532)) then--Yellow or Blue
+			specWarnCatalystGreen:Show()
+			if self.Options.yellToxicCatalyst then
+				yellCatalystGreen:Yell()
+			end
 		end
-	elseif args.spellId == 143765 then
+	elseif spellId == 143765 then
 		warnSonicProjection:Show()
-	elseif args.spellId == 143666 then
+	elseif spellId == 143666 then
 		warnDiminish:Show()
-	elseif args.spellId == 142416 then
+	elseif spellId == 142416 then
 		warnInsaneCalculationFire:Show()
 		specWarnInsaneCalculationFire:Show()
-	elseif args.spellId == 143709 then
-		warnFlash:Show()
-		specWarnFlash:Show()
+	elseif spellId == 143709 then
+		warnFlashCast:Show()
+		specWarnFlashCast:Show()
 		timerFlashCD:Start()
 		self.vb.whirlCast = 0
 		self.vb.whirlTime = GetTime()
 		lastWhirl = nil
-		self:StartRepeatedScan(args.sourceGUID, "WhirlingScan", 0.03, true)
+		self:StartRepeatedScan(args.sourceGUID, "FlashScan", 0.03, true)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)--Range assumed, spell tooltips not informative enough
 			self:Schedule(5, hideRangeFrame)
 		end
-	elseif args.spellId == 143280 then
+	elseif spellId == 143280 then
 		warnBloodletting:Show()
 		specWarnBloodletting:Show()
 		timerBloodlettingCD:Start()
-	elseif args.spellId == 143974 then
+	elseif spellId == 143974 then
 		warnShieldBash:Show()
 		specWarnShieldBash:Show()
 		timerShieldBashCD:Start()
-	elseif args.spellId == 142315 then
+	elseif spellId == 142315 then
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
@@ -673,11 +619,11 @@ function mod:SPELL_CAST_START(args)
 				break
 			end
 		end
-	elseif args.spellId == 143243 then
+	elseif spellId == 143243 then
 		warnRapidFire:Show()
 		specWarnRapidFire:Show()
 		timerRapidFireCD:Start()
-	elseif args.spellId == 143339 then
+	elseif spellId == 143339 then
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then
@@ -694,7 +640,7 @@ function mod:SPELL_CAST_START(args)
 				break
 			end
 		end
-	elseif args.spellId == 148676 then
+	elseif spellId == 148676 then
 		warnReave:Show()
 		specWarnReave:Show()
 		timerReaveCD:Start()
@@ -702,33 +648,29 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 142528 then
+	local spellId = args.spellId
+	if spellId == 142528 then
 		self.vb.toxicInjection = true
 		warnToxicInjection:Show()
 		timerToxicCatalystCD:Start(20)
-	elseif args.spellId == 142232 then
+	elseif spellId == 142232 then
 		self:StopRepeatedScan("DFAScan")
 		self:ScheduleMethod(17, "StartRepeatedScan", args.sourceGUID, "DFAScan", 0.25, true)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 143339 then
+	local spellId = args.spellId
+	if spellId == 143339 then
 		local amount = args.amount or 1
 		warnInjection:Show(args.destName, amount)
-	elseif args.spellId == 142532 and args:IsPlayer() then
+	elseif spellId == 142532 and args:IsPlayer() then
 		specWarnToxicBlue:Show()
-	elseif args.spellId == 142533 and args:IsPlayer() then
+	elseif spellId == 142533 and args:IsPlayer() then
 		specWarnToxicRed:Show()
-	elseif args.spellId == 142534 and args:IsPlayer() then
+	elseif spellId == 142534 and args:IsPlayer() then
 		specWarnToxicYellow:Show()
---[[	elseif args.spellId == 142547 and args:IsPlayer() then
-		specWarnToxicOrange:Show()
-	elseif args.spellId == 142548 and args:IsPlayer() then
-		specWarnToxicPurple:Show()
-	elseif args.spellId == 142549 and args:IsPlayer() then
-		specWarnToxicGreen:Show()--]]
-	elseif args.spellId == 142671 then
+	elseif spellId == 142671 then
 		warnMesmerize:Show(args.destName)
 		timerMesmerizeCD:Start()
 		if args.IsPlayer() then
@@ -741,7 +683,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnMesmerize then
 			self:SetIcon(args.destName, 1)
 		end
-	elseif args.spellId == 142564 then
+	elseif spellId == 142564 then
 		warnEncaseInAmber:Show(args.destName)
 		specWarnEncaseInAmber:Show(args.destName)
 		timerEncaseInAmber:Start(args.destName)
@@ -749,7 +691,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			countdownEncaseInAmber:Start()
 		end
-	elseif args.spellId == 143939 then
+	elseif spellId == 143939 then
 		warnGouge:Show(args.destName)
 		timerGouge:Start(args.destName)
 		if args.IsPlayer() then
@@ -757,7 +699,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			specWarnGougeOther:Show(args.destName)
 		end
-	elseif args.spellId == 143974 then
+	elseif spellId == 143974 then
 		timerShieldBash:Start(args.destName)
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
@@ -766,13 +708,28 @@ function mod:SPELL_AURA_APPLIED(args)
 				break
 			end
 		end
-	elseif args.spellId == 143701 and args:IsPlayer() then
-		timerWhirling:Start()
-	elseif args.spellId == 143759 then
+	elseif spellId == 143701 then
+		if args.IsPlayer() then
+			timerWhirling:Start()
+		else
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if uId then
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+					SetMapToCurrentZone()
+					x, y = GetPlayerMapPosition(uId)
+				end
+				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+				if inRange and inRange < 6 then
+					specWarnWhirlingNear:Show(args.destName)
+				end
+			end
+		end
+	elseif spellId == 143759 then
 		warnHurlAmber:Show()
 		specWarnHurlAmber:Show()
 		timerHurlAmberCD:Start()
-	elseif args.spellId == 143337 then
+	elseif spellId == 143337 then
 		if self:AntiSpam(2, 3) then
 			self.vb.mutateCount = self.vb.mutateCount + 1
 			timerMutateCD:Start(nil, self.vb.mutateCount+1)
@@ -789,9 +746,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMutate:Show()
 			timerMutate:Start()
 		end
-	elseif args.spellId == 143358 and args.IsPlayer() then
+	elseif spellId == 143358 and args.IsPlayer() then
 		specWarnParasiteFixate:Show()
-	elseif args.spellId == 142948 then
+	elseif spellId == 142948 then
 		self.vb.aimCount = self.vb.aimCount + 1
 		self.vb.aimActive = true
 		warnAim:Show(self.vb.aimCount, args.destName)
@@ -827,15 +784,16 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 142564 then
+	local spellId = args.spellId
+	if spellId == 142564 then
 		timerEncaseInAmber:Cancel(args.destName)
-	elseif args.spellId == 143939 then
+	elseif spellId == 143939 then
 		timerGouge:Cancel(args.destName)
-	elseif args.spellId == 143974 then
+	elseif spellId == 143974 then
 		timerShieldBash:Cancel(args.destName)
-	elseif args.spellId == 143700 and self.Options.RangeFrame and not self.vb.mutateActive and not self.vb.aimActive then
+	elseif spellId == 143700 and self.Options.RangeFrame and not self.vb.mutateActive and not self.vb.aimActive then
 		DBM.RangeCheck:Hide()
-	elseif args.spellId == 142948 then
+	elseif spellId == 142948 then
 		self.vb.aimActive = false
 		if self.Options.RangeFrame then
 			if not self.vb.mutateActive then--Don't call hide because frame is needed by mutate and will be hiden after that.
@@ -845,9 +803,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnAim then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif args.spellId == 143339 then
+	elseif spellId == 143339 then
 		self.vb.parasitesActive = self.vb.parasitesActive + 8
-	elseif args.spellId == 142671 and self.Options.SetIconOnMesmerize then
+	elseif spellId == 142671 and self.Options.SetIconOnMesmerize then
 		self:SetIcon(args.destName, 0)
 	end
 end
@@ -873,7 +831,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 71160 then--Iyyokuk the Lucid
 		timerInsaneCalculationCD:Cancel()
 	elseif cid == 71154 then--Ka'roz the Locust
-		self:StopRepeatedScan("WhirlingScan")
+		self:StopRepeatedScan("FlashScan")
 		timerFlashCD:Cancel()
 		timerHurlAmberCD:Cancel()
 	elseif cid == 71152 then--Skeer the Bloodseeker
