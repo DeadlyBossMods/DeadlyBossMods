@@ -143,26 +143,27 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 131788 then
+	local spellId = args.spellId
+	if spellId == 131788 then
 		warnLightningLash:Show(args.destName, 1)
 		timerLightningLash:Start(args.destName)
 		timerLightningLashCD:Start()
-	elseif args.spellId == 116942 then
+	elseif spellId == 116942 then
 		warnFlamingSpear:Show(args.destName, 1)
 		timerFlamingSpear:Start(args.destName)
 		timerFlamingSpearCD:Start()
-	elseif args.spellId == 131790 then
+	elseif spellId == 131790 then
 		warnArcaneShock:Show(args.destName, 1)
 		timerArcaneShock:Start(args.destName)
 		timerArcaneShockCD:Start()
-	elseif args.spellId == 131792 then
+	elseif spellId == 131792 then
 		warnShadowBurn:Show(args.destName, 1)
 		timerShadowBurn:Start(args.destName)
 		timerShadowBurnCD:Start()
-	elseif args.spellId == 118302 then
+	elseif spellId == 118302 then
 		warnReversalLightningFists:Show(args.destName)
 		timerReversalLightningFists:Start()
-	elseif args.spellId == 116784 then
+	elseif spellId == 116784 then
 		sparkCount = sparkCount + 1
 		warnWildSpark:Show(sparkCount, args.destName)
 		timerWildSpark:Start(args.destName)
@@ -174,7 +175,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			soundWildSpark:Play()
 			yellWildSpark:Yell()
 		end
-	elseif args.spellId == 116711 then
+	elseif spellId == 116711 then
 		sparkCount = 0
 		specialCount = specialCount + 1
 		warnDrawFlame:Show(specialCount)
@@ -183,10 +184,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if UnitBuff(GetSpellInfo(115811), "player") and self:IsDifficulty("lfr25") then
 			specWarnBarrierNow:Show()
 		end
-	elseif args.spellId == 116821 then
+	elseif spellId == 116821 then
 		wildfireCount = 1
 		warnWildfire()
-	elseif args.spellId == 116417 then
+	elseif spellId == 116417 then
 		arcaneResonanceTargets[#arcaneResonanceTargets + 1] = args.destName
 		if self.Options.SetIconOnAR then
 			self:SetIcon(args.destName, arIcon)
@@ -198,7 +199,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnArcaneResonance:Show()
 			yellArcaneResonance:Yell()
 		end
-	elseif args.spellId == 116364 then
+	elseif spellId == 116364 then
 		specialCount = specialCount + 1
 		warnArcaneVelocity:Show(specialCount)
 		specWarnArcaneVelocity:Show()
@@ -211,8 +212,9 @@ end
 
 -- split Flaming Spear (Arcane Resonance also uses SPELL_AURA_APPLIED_DOSE, buggy)
 function mod:SPELL_AURA_APPLIED_DOSE(args)
+	local spellId = args.spellId
 	local amount = args.amount or 1
-	if args.spellId == 131788 then
+	if spellId == 131788 then
 		warnLightningLash:Show(args.destName, amount)
 		timerLightningLash:Start(args.destName)
 		timerLightningLashCD:Start()
@@ -233,7 +235,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 				specWarnFlamingSpearOther:Show(args.destName)
 			end
 		end
-	elseif args.spellId == 131790 then
+	elseif spellId == 131790 then
 		warnArcaneShock:Show(args.destName, amount)
 		timerArcaneShock:Start(args.destName)
 		timerArcaneShockCD:Start()
@@ -244,7 +246,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 				specWarnArcaneShockOther:Show(args.destName)
 			end
 		end
-	elseif args.spellId == 131792 then
+	elseif spellId == 131792 then
 		warnShadowBurn:Show(args.destName, amount)
 		timerShadowBurn:Start(args.destName)
 		timerShadowBurnCD:Start()
@@ -255,41 +257,43 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 				specWarnShadowBurnOther:Show(args.destName)
 			end
 		end
-	elseif args.spellId == 116821 then
+	elseif spellId == 116821 then
 		wildfireCount = amount
 		warnWildfire()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 131788 then
+	local spellId = args.spellId
+	if spellId == 131788 then
 		timerLightningLash:Cancel(args.destName)
-	elseif args.spellId == 116942 then
+	elseif spellId == 116942 then
 		timerFlamingSpear:Cancel(args.destName)
-	elseif args.spellId == 131790 then
+	elseif spellId == 131790 then
 		timerArcaneShock:Cancel(args.destName)
-	elseif args.spellId == 131792 then
+	elseif spellId == 131792 then
 		timerShadowBurn:Cancel(args.destName)
-	elseif args.spellId == 118302 then
+	elseif spellId == 118302 then
 		timerReversalLightningFists:Cancel()
-	elseif args.spellId == 116018 then
+	elseif spellId == 116018 then
 		timerEpicenter:Cancel()--Epicenter can be removed by Lightning Fists (tank can steal). So added remove stuff.
-	elseif args.spellId == 116784 then
+	elseif spellId == 116784 then
 		timerWildSpark:Cancel(args.destName)
-	elseif args.spellId == 116711 then
+	elseif spellId == 116711 then
 		timerDrawFlameCD:Start(nil, specialCount + 1)
-	elseif args.spellId == 116417 then
+	elseif spellId == 116417 then
 		if self.Options.SetIconOnAR then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif args.spellId == 116364 then
+	elseif spellId == 116364 then
 		timerArcaneVelocity:Cancel()
 		timerArcaneVelocityCD:Start(nil, specialCount + 1)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 116018 then
+	local spellId = args.spellId
+	if spellId == 116018 then
 		specialCount = specialCount + 1
 		warnEpicenter:Show(specialCount)
 		specWarnEpicenter:Show()
@@ -306,10 +310,11 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 118783 then
+	local spellId = args.spellId
+	if spellId == 118783 then
 		warnChainsOfShadow:Show()
 		timerChainsOfShadowCD:Start()
-	elseif args.spellId == 115817 then
+	elseif spellId == 115817 then
 		warnNullBarrier:Show()
 		specWarnNullBarrier:Show()
 		timerNullBarrier:Start()
@@ -318,7 +323,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerNullBarrierCD:Start()
 		end
-	elseif args.spellId == 116417 then
+	elseif spellId == 116417 then
 		arIcon = 8
 		timerArcaneResonanceCD:Start()
 	end

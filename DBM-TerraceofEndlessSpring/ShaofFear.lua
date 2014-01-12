@@ -160,7 +160,7 @@ local function startSpecialTimers()
 	if specialsCast == 100 then
 		timerSpoStrCD:Start()
 	end
-	if specialsCast == 010 then--It is believed and backed that huddle is NEVER cast 3rd. Good evidence suggests this is true so changing timers a bit
+	if specialsCast == 010 then--Huddle is NEVER cast 3rd.
 		timerHuddleInTerrorCD:Start()
 	end
 	if specialsCast == 001 then
@@ -276,7 +276,8 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 119414 and self:AntiSpam(5, 1) and not phase2 then--using this with antispam is still better then registering SPELL_CAST_SUCCESS for a single event when we don't have to. Less cpu cause mod won't have to check every SPELL_CAST_SUCCESS event.
+	local spellId = args.spellId
+	if spellId == 119414 and self:AntiSpam(5, 1) and not phase2 then--using this with antispam is still better then registering SPELL_CAST_SUCCESS for a single event when we don't have to. Less cpu cause mod won't have to check every SPELL_CAST_SUCCESS event.
 		warnBreathOfFear:Show()
 		if not platformSent or self.Options.warnBreathOnPlatform then--not in middle, not your problem
 			timerBreathOfFearCD:Start()
@@ -284,7 +285,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:ScheduleMethod(26.3, "CheckWall")--check before 7s, 5s is too late.
 		end
 		warnBreathOfFearSoon:Schedule(23.3)
-	elseif args.spellId == 129147 then
+	elseif spellId == 129147 then
 		ominousCackleTargets[#ominousCackleTargets + 1] = args.destName
 		if args:IsPlayer() then
 			platformSent = true
@@ -302,18 +303,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnOminousCackleTargets)
 		self:Schedule(2, warnOminousCackleTargets)--this actually staggers a bit, so wait the full 2 seconds to get em all in one table
-	elseif args.spellId == 120047 and MobID and MobID == args:GetSrcCreatureID() then--might change
+	elseif spellId == 120047 and MobID and MobID == args:GetSrcCreatureID() then--might change
 		warnDreadSpray:Show()
 		specWarnDreadSpray:Show()
 		timerDreadSpray:Start(args.sourceGUID)
 		timerDreadSprayCD:Start(args.sourceGUID)
-	elseif args.spellId == 119888 and MobID and MobID == args:GetSrcCreatureID() then
+	elseif spellId == 119888 and MobID and MobID == args:GetSrcCreatureID() then
 		timerDeathBlossom:Show()
-	elseif args.spellId == 118977 and args:IsPlayer() then--Fearless, you're leaving platform 
+	elseif spellId == 118977 and args:IsPlayer() then--Fearless, you're leaving platform 
 		timerFearless:Start()
 		self:UnscheduleMethod("CheckPlatformLeaved")
 		self:LeavePlatform()
-	elseif args.spellId == 131996 and not platformSent then
+	elseif spellId == 131996 and not platformSent then
 		specWarnThrash:Show()
 		if phase2 then
 			thrashCount = thrashCount + 1
@@ -331,12 +332,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			timerThrashCD:Start()
 		end
-	elseif args.spellId == 132007 then
+	elseif spellId == 132007 then
 		thrashCount = 0
 		warnDreadThrash:Show()
 		specWarnDreadThrash:Show()
 		timerThrashCD:Start()
-	elseif args.spellId == 120669 then
+	elseif spellId == 120669 then
 		warnNakedAndAfraid:Show(args.destName)
 		specWarnNakedAndAfraidOther:Show(args.destName)
 		timerNakedAndAfraidCD:Start()
@@ -345,7 +346,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			timerNakedAndAfraid:Start(args.destName)
 		end
-	elseif args.spellId == 120519 then--Waterspout
+	elseif spellId == 120519 then--Waterspout
 		waterspoutTargets[#waterspoutTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnWaterspout:Show()
@@ -367,7 +368,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(warnWaterspoutTargets)
 		self:Schedule(0.3, warnWaterspoutTargets)
 		startSpecialTimers()
-	elseif args.spellId == 120629 then-- Huddle In Terror
+	elseif spellId == 120629 then-- Huddle In Terror
 		huddleInTerrorTargets[#huddleInTerrorTargets + 1] = args.destName
 		if self.Options.SetIconOnHuddle then
 			table.insert(huddleInTerrorIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
@@ -388,7 +389,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(warnHuddleInTerrorTargets)
 		self:Schedule(0.5, warnHuddleInTerrorTargets)
 		startSpecialTimers()
-	elseif args.spellId == 120268 then -- Champion Of The Light
+	elseif spellId == 120268 then -- Champion Of The Light
 		warnChampionOfTheLight:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnChampionOfTheLight:Show()
@@ -397,43 +398,45 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 129147 and args:IsPlayer() then -- Move onPlatform check when Ominous Cackle debuff removes (actually reachs platform). Because on 25 man, you can see other platform warning and timer while flying to platform. (not actually reachs platform). This causes health frame error and etc error. 
+	local spellId = args.spellId
+	if spellId == 129147 and args:IsPlayer() then -- Move onPlatform check when Ominous Cackle debuff removes (actually reachs platform). Because on 25 man, you can see other platform warning and timer while flying to platform. (not actually reachs platform). This causes health frame error and etc error. 
 		onPlatform = true
-	elseif args.spellId == 120047 then
+	elseif spellId == 120047 then
 		timerDreadSpray:Cancel(args.sourceGUID)
 		dreadSprayCounter = 0
-	elseif args.spellId == 118977 and args:IsPlayer() then
+	elseif spellId == 118977 and args:IsPlayer() then
 		timerFearless:Cancel()
-	elseif args.spellId == 120629 and self.Options.SetIconOnHuddle then
+	elseif spellId == 120629 and self.Options.SetIconOnHuddle then
 		self:SetIcon(args.destName, 0)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
+	local spellId = args.spellId
 	if args:IsSpellID(119593, 119692, 119693) then--This seems to have multiple spellids, depending on which platform he's going to send you to. TODO, figure out which is which platform and add additional warnings
 		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
 			timerOminousCackleCD:Start(90.5)--Far less often on LFR
 		else
 			timerOminousCackleCD:Start()
 		end
-	elseif args.spellId == 119862 and onPlatform and not platformGUIDs[args.sourceGUID] then--Best way to track engaging one of the side adds, they cast this instantly.
+	elseif spellId == 119862 and onPlatform and not platformGUIDs[args.sourceGUID] then--Best way to track engaging one of the side adds, they cast this instantly.
 		platformGUIDs[args.sourceGUID] = true
 		MobID = self:GetCIDFromGUID(args.sourceGUID)
 		timerDreadSprayCD:Start(10.5, args.sourceGUID)--We can accurately start perfectly accurate spray cd bar off their first shoot cast.
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:AddBoss(MobID, args.sourceName)
 		end
-	elseif args.spellId == 119888 and MobID and MobID == args:GetSrcCreatureID() then
+	elseif spellId == 119888 and MobID and MobID == args:GetSrcCreatureID() then
 		specWarnDeathBlossom:Show()
 		self:ScheduleMethod(40, "CheckPlatformLeaved")--you may leave platform soon after Death Blossom casted. failsafe for UNIT_DIED not fire, and fearless fails.
-	elseif args.spellId == 120672 then -- Implacable Strike
+	elseif spellId == 120672 then -- Implacable Strike
 		if specialCount == 3 then specialCount = 0 end
 		specialCount = specialCount + 1
 		specialsCast = specialsCast + 1--Huddle (100), Spout(10), Strike(1)
 		warnImplacableStrike:Show(specialCount)
 		specWarnImplacableStrike:Show()
 		startSpecialTimers()
-	elseif args.spellId == 120455 then
+	elseif spellId == 120455 then
 		submergeCount = submergeCount + 1
 		warnSubmerge:Show(submergeCount)
 		warnDreadSpawns:Schedule(5, Spawns[submergeCount])
@@ -443,17 +446,18 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.timerSpecialAbility then
 			timerSpecialAbilityCD:Start()
 		end
-	elseif args.spellId == 120519 then--Waterspout
+	elseif spellId == 120519 then--Waterspout
 		specWarnWaterspoutCast:Show()
-	--elseif args.spellId == 120458 then
+	--elseif spellId == 120458 then
 		--warnEmerge:Show()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)--Handling Dread Sprays
-	if args.spellId == 120047 and onPlatform then
+	local spellId = args.spellId
+	if spellId == 120047 and onPlatform then
 		dreadSprayCounter = 0
-	elseif args.spellId == 119983 and onPlatform then
+	elseif spellId == 119983 and onPlatform then
 		if not self.Options.specWarnMovement then return end
 		dreadSprayCounter = dreadSprayCounter+1
 		if MobID == 61046 then

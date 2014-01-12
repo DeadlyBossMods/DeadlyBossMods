@@ -164,7 +164,8 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 117519 then
+	local spellId = args.spellId
+	if spellId == 117519 then
 		totalTouchOfSha = totalTouchOfSha + 1
 		warnTouchofSha:Show(args.destName)
 		if totalTouchOfSha < DBM:GetNumGroupMembers() then--This ability will not be cast if everyone in raid has it.
@@ -174,7 +175,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerTouchOfShaCD:Start(12)--every 12 seconds on 25 man. Not sure about LFR though. Will adjust next week accordingly
 			end
 		end
-	elseif args.spellId == 111850 then--111850 is targeting debuff (NOT dispelable one)
+	elseif spellId == 111850 then--111850 is targeting debuff (NOT dispelable one)
 		prisonTargets[#prisonTargets + 1] = args.destName
 		prisonCount = prisonCount + 1
 		if args:IsPlayer() then
@@ -183,14 +184,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnPrisonTargets)
 		self:Schedule(0.3, warnPrisonTargets)
-	elseif args.spellId == 117436 then--111850 is pre warning, mainly for player, 117436 is the actual final result, mainly for the healer dispel icons
+	elseif spellId == 117436 then--111850 is pre warning, mainly for player, 117436 is the actual final result, mainly for the healer dispel icons
 		if self.Options.SetIconOnPrison then
 			self:SetIcon(args.destName, prisonIcon)
 			prisonIcon = prisonIcon + 1
 		end
-	elseif args.spellId == 117283 and args.destGUID == (UnitGUID("target") or UnitGUID("focus")) then -- not needed to dispel except for raid member's dealing boss. 
+	elseif spellId == 117283 and args.destGUID == (UnitGUID("target") or UnitGUID("focus")) then -- not needed to dispel except for raid member's dealing boss. 
 		specWarnCleansingWatersDispel:Show(args.destName)
-	elseif args.spellId == 117052 then--Phase changes
+	elseif spellId == 117052 then--Phase changes
 		--Here we go off applied because then we can detect both targets in phase 1 to 2 transition.
 		--There is some possiblity that other timers are reset or altered on phase 2-3 start. Light in case of Lightning storm Cd resetting in phase 3.
 		--If any are missing that actually ALTER during a phase 2 or 3 transition they will be updated here.
@@ -212,7 +213,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --				countdownExpelCorruption:Start(5)--There seems to be a variation on when he casts first one, but ONLY first one has variation
 			end
 		end
-	elseif args.spellId == 118191 and args:IsPlayer() then
+	elseif spellId == 118191 and args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount >= 9 then
 			specWarnCorruptedEssence:Show(amount)
@@ -222,9 +223,10 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 117519 then
+	local spellId = args.spellId
+	if spellId == 117519 then
 		totalTouchOfSha = totalTouchOfSha - 1
-	elseif args.spellId == 117436 then
+	elseif spellId == 117436 then
 		prisonCount = prisonCount - 1
 		if prisonCount == 0 and self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
@@ -236,19 +238,20 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 117309 then
+	local spellId = args.spellId
+	if spellId == 117309 then
 		self:BossTargetScanner(60586, "WatersTarget", 0.1, 15, true, true)
 		timerCleansingWatersCD:Start()
-	elseif args.spellId == 117975 then
+	elseif spellId == 117975 then
 		warnExpelCorruption:Show()
 		specWarnExpelCorruption:Show()
 		timerExpelCorruptionCD:Start()
 		countdownExpelCorruption:Start(38.5)
-	elseif args.spellId == 117227 then
+	elseif spellId == 117227 then
 		warnCorruptingWaters:Show()
 		specWarnCorruptingWaters:Show()
 		timerCorruptingWatersCD:Start()
-	elseif args.spellId == 118077 then
+	elseif spellId == 118077 then
 		warnLightningStorm:Show()
 		specWarnLightningStorm:Show()
 		if phase == 3 then
@@ -258,7 +261,7 @@ function mod:SPELL_CAST_START(args)
 			timerLightningStormCD:Start(41)
 			countdownLightningStorm:Start(41)
 		end
-	elseif args.spellId == 118312 then--Asani water bolt
+	elseif spellId == 118312 then--Asani water bolt
 		if asaniCasts == 3 then asaniCasts = 0 end
 		asaniCasts = asaniCasts + 1
 		warnWaterBolt:Show(asaniCasts)
@@ -266,13 +269,14 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 117986 then
+	local spellId = args.spellId
+	if spellId == 117986 then
 		warnDefiledGround:Show()
 		timerDefiledGroundCD:Start()
 		if args.sourceName == UnitName("target") then 
 			specWarnDefiledGround:Show()
 		end
-	elseif args.spellId == 117052 and phase < 3 then--Phase changes
+	elseif spellId == 117052 and phase < 3 then--Phase changes
 		phase = phase + 1
 		--We cancel timers for whatever boss just died (ie boss that cast the buff, not the ones getting it)
 		if args:GetSrcCreatureID() == 60585 then--Elder Regail
@@ -289,7 +293,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerTouchOfShaCD:Cancel()
 			timerDefiledGroundCD:Cancel()
 		end
-	elseif args.spellId == 118191 then--Corrupted Essence
+	elseif spellId == 118191 then--Corrupted Essence
 		--You dced, rebuild group number. Not sure how to recover corruptedCount though. Sync maybe, but then it may get screwed up by similtanious events like getting a sync .1 sec before this event and then being off by +1
 		if not myGroup then
 			findGroupNumber()
