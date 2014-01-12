@@ -47,7 +47,8 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 144530 then
+	local spellId = args.spellId
+	if spellId == 144530 then
 		warnJadefireBreath:Show()
 		specWarnJadefireBreath:Show()
 		timerJadefireBreathCD:Start()

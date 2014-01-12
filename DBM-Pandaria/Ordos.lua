@@ -49,19 +49,21 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 144696 then
+	local spellId = args.spellId
+	if spellId == 144696 then
 		warnEternalAgony:Show()
 		specWarnEternalAgony:Show()
-	elseif args.spellId == 144688 then
+	elseif spellId == 144688 then
 		warnMagmaCrush:Show()
-	elseif args.spellId == 144695 then
+	elseif spellId == 144695 then
 		warnAncientFlame:Show()
 --		timerAncientFlameCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 144689 then
+	local spellId = args.spellId
+	if spellId == 144689 then
 		warnBurningSoul:CombinedShow(1.2, args.destName)
 		timerBurningSoul:Start()
 --		timerBurningSoulCD:Start()
@@ -75,13 +77,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnBurningSoul then--Set icons on first debuff to get an earlier spread out.
 			self:SetSortedIcon(1.2, args.destName, 8, 3, true)
 		end
-	elseif args.spellId == 144693 and args:IsPlayer() then
+	elseif spellId == 144693 and args:IsPlayer() then
 		specWarnPoolOfFire:Show()--One warning is enough, because it honestly isn't worth moving for unless blizz buffs it.
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 144689 then
+	local spellId = args.spellId
+	if spellId == 144689 then
 		if self.Options.SetIconOnBurningSoul then
 			self:SetIcon(args.destName, 0)
 		end
