@@ -146,7 +146,7 @@ local timerShieldBashCD				= mod:NewCDTimer(17, 143974, nil, mod:IsTank())
 local timerEncaseInAmber			= mod:NewTargetTimer(10, 142564)
 local timerEncaseInAmberCD			= mod:NewCDTimer(30, 142564)--Technically a next timer but we use cd cause it's only cast if someone is low when it comes off 30 second internal cd. VERY important timer for heroic
 --Iyyokuk the Lucid
-local timerInsaneCalculation		= mod:NewBuffActiveTimer(12, 142808)
+local timerInsaneCalculation		= mod:NewBuffActiveTimer(15, 142808)
 local timerInsaneCalculationCD		= mod:NewCDTimer(25, 142416)--25 is minimum but variation is wild (25-50 second variation)
 --Ka'roz the Locust
 local timerFlashCD					= mod:NewCDTimer(62, 143701)
