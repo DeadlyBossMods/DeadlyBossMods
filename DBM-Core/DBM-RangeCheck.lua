@@ -66,6 +66,11 @@ local initializeDropdown
 local initRangeCheck -- initializes the range check for a specific range (if necessary), returns false if the initialization failed (because of a map range check in an unknown zone)
 local dots = {}
 local charms = {}
+local prevRange = 0
+local numPlayers = 0
+local checkUnitID = "raid%d"
+local groupChanged = false
+local playerInRange = {}
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
@@ -323,10 +328,12 @@ end
 -----------------
 -- Play Sounds --
 -----------------
-local function updateSound(numPlayers) -- called every 5 seconds
-	if not UnitAffectingCombat("player") then
-		return
-	end
+local soundUpdate = 0
+local function updateSound(numPlayers)
+	if not UnitAffectingCombat("player") then return end
+	if (GetTime() - soundUpdate) < 5 then return end
+
+	soundUpdate = GetTime()
 	if numPlayers == 1 then
 		if DBM.Options.RangeFrameSound1 ~= "none" then
 			if DBM.Options.UseMasterVolume then
@@ -496,52 +503,41 @@ end
 --  OnUpdate  --
 ----------------
 
-local soundUpdate = 0
 function onUpdate(self, elapsed)
 	local color
 	local j = 0
 	self:ClearLines()
-	self:SetText(DBM_CORE_RANGECHECK_HEADER:format(self.range), 1, 1, 1)
-	if initRangeCheck(self.range) then
-		if IsInRaid() then
-			for i = 1, GetNumGroupMembers() do
-				local uId = "raid"..i
-				if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and self.checkFunc(uId, self.range) and (not self.filter or self.filter(uId)) then
-					j = j + 1
-					local _, class = UnitClass(uId)
-					color = RAID_CLASS_COLORS[class] or NORMAL_FONT_COLOR
-					local icon = GetRaidTargetIndex(uId)
-					local text = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, UnitName(uId)) or UnitName(uId)
-					self:AddLine(text, color.r, color.g, color.b)
-					if j >= 5 then
-						break
-					end
-				end
+	range = self.range
+	self:SetText(DBM_CORE_RANGECHECK_HEADER:format(range), 1, 1, 1)
+	if radarFrame:IsShown() then
+		for name, v in pairs(playerInRange) do
+			j = j + 1
+			color = RAID_CLASS_COLORS[v[1]] or NORMAL_FONT_COLOR
+			local text = v[2] and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(v[2], name) or name
+			self:AddLine(text, color.r, color.g, color.b)
+			if j >= 5 then
+				break
 			end
-		elseif GetNumSubgroupMembers() > 0 then
-			for i = 1, GetNumSubgroupMembers() do
-				local uId = "party"..i
-				if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and self.checkFunc(uId, self.range) and (not self.filter or self.filter(uId)) then
-					j = j + 1
-					local _, class = UnitClass(uId)
-					color = RAID_CLASS_COLORS[class] or NORMAL_FONT_COLOR
-					local icon = GetRaidTargetIndex(uId)
-					local text = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, UnitName(uId)) or UnitName(uId)
-					self:AddLine(text, color.r, color.g, color.b)
-					if j >= 5 then
-						break
-					end
+		end
+	elseif initRangeCheck(range) then
+		for i = 1, numPlayers do
+			local uId = checkUnitID:format(i)
+			if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and self.checkFunc(uId, range) and (not self.filter or self.filter(uId)) then
+				j = j + 1
+				local _, class = UnitClass(uId)
+				color = RAID_CLASS_COLORS[class] or NORMAL_FONT_COLOR
+				local icon = GetRaidTargetIndex(uId)
+				local text = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, UnitName(uId)) or UnitName(uId)
+				self:AddLine(text, color.r, color.g, color.b)
+				if j >= 5 then
+					break
 				end
 			end
 		end
 	else
-		self:AddLine(DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED:format(self.range))
+		self:AddLine(DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED:format(range))
 	end
-	soundUpdate = soundUpdate + elapsed
-	if soundUpdate >= 5 and j >= self.redCircleNumPlayers then
-		updateSound(j)
-		soundUpdate = 0
-	end
+	updateSound(j)
 	self:Show()
 end
 
@@ -554,13 +550,13 @@ do
 		dot:SetHeight(24)
 		dot:Hide()
 
-		dots[id].dot = dot	-- store the dot so we can use it later again
+		dots[id].dot = dot-- store the dot so we can use it later again
 		return dot
 	end
 
 	local function setDotColor(id, class)
 		if class and class == dots[id].class then return end
-		if not class then class = "PRIEST" end	-- if class=nil -> use white dots (priest)
+		if not class then class = "PRIEST" end -- if class=nil -> use white dots (priest)
 		dots[id].dot.icon:SetTexCoord(
 			BLIP_TEX_COORDS[class][1],
 			BLIP_TEX_COORDS[class][2],
@@ -571,12 +567,13 @@ do
 	end
 
 	local function setDot(id, icon, filtered)
-		local dot = dots[id].dot or createDot(id)		-- load the dot, or create a new one if none exists yet (creating new probably never happens as the dots are created when the frame is created)
+		local dot = dots[id].dot or createDot(id) -- load the dot, or create a new one if none exists yet (creating new probably never happens as the dots are created when the frame is created)
 		local x = dots[id].x
 		local y = dots[id].y
 		local range = (x*x + y*y) ^ 0.5
-		if range < (1.5 * frame.range) then							-- if person is closer than 1.5 * range, show the dot. Else hide it
-			local dx = ((x * math.cos(rotation)) - (-y * math.sin(rotation))) * pixelsperyard		-- Rotate the X,Y based on player facing
+		local framerange = frame.range
+		if range < (1.5 * framerange) then	 -- if person is closer than 1.5 * range, show the dot. Else hide it
+			local dx = ((x * math.cos(rotation)) - (-y * math.sin(rotation))) * pixelsperyard -- Rotate the X,Y based on player facing
 			local dy = ((x * math.sin(rotation)) + (-y * math.cos(rotation))) * pixelsperyard
 
 			if icon and type(icon) == "number" and icon >= 1 and icon <= 8 then -- GetRaidTargetIndex seems to return strange values sometimes; see http://www.deadlybossmods.com/phpbb3/viewtopic.php?f=2&t=3213&p=30889#p30889
@@ -614,20 +611,22 @@ do
 				dots[id].icon = nil
 			end
 		end
-		if range < 1.10 * frame.range and not filtered then		-- add an  extra 10% in case of inaccuracy
+		if range < (1.10 * framerange) and not filtered then -- add an  extra 10% in case of inaccuracy
 			dots[id].tooClose = true
+			playerInRange[dots[id].name or ""] = {dots[id].class or "none", icon}
 		else
 			dots[id].tooClose = false
+			playerInRange[dots[id].name or ""] = nil
 		end
 	end
 
 	function onUpdateRadar(self, elapsed)
 		if initRangeCheck(frame.range) then--This is basically fixing a bug with map not being on right dungeon level half the time.
-			pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (frame.range * 3)
-			radarFrame.circle:SetSize(frame.range * pixelsperyard * 2, frame.range * pixelsperyard * 2)
-
-			if frame.range ~= (range or 0) then
-				range = frame.range
+			range = frame.range
+			if range ~= prevRange then
+				prevRange = range
+				pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (range * 3)
+				radarFrame.circle:SetSize(range * pixelsperyard * 2, range * pixelsperyard * 2)
 				radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(range))
 			end
 
@@ -646,43 +645,38 @@ do
 			else
 				isInSupportedArea = true
 				rotation = (2 * math.pi) - GetPlayerFacing()
-				local numPlayers = 0
-				local unitID = "raid%d"
-				if IsInRaid() then
-					unitID = "raid%d"
-					numPlayers = GetNumGroupMembers()
-				elseif GetNumSubgroupMembers() > 0 then
-					unitID = "party%d"
-					numPlayers = GetNumSubgroupMembers()
-				end
-				if numPlayers < (prevNumPlayers or 0) then
-					for i = numPlayers, prevNumPlayers do
-						if dots[i] then
-							if dots[i].dot then
-								dots[i].dot:Hide()		-- Hide dots when people leave the group
+				if groupChanged and prevNumPlayers then
+					groupChanged = false
+					playerInRange = {}
+					if numPlayers < prevNumPlayers then
+						for i = numPlayers, prevNumPlayers do
+							if dots[i] then
+								if dots[i].dot then
+									dots[i].dot:Hide() -- Hide dots when people leave the group
+								end
+								dots[i].tooClose = false
+								dots[i].icon = nil
 							end
-							dots[i].tooClose = false
-							dots[i].icon = nil
 						end
 					end
-					for i=1, 8 do
+					for i = 1, 8 do
 						charms[i]:Hide()
 					end
 				end
 				prevNumPlayers = numPlayers
 
 				local playerX, playerY = GetPlayerMapPosition("player")
-				if playerX == 0 and playerY == 0 then return end		-- Somehow we can't get the correct position?
+				if playerX == 0 and playerY == 0 then return end -- Somehow we can't get the correct position?
 
-				for i=1, numPlayers do
-					local uId = unitID:format(i)
+				local exceedsPlayersTooClose = false
+				local numPlayersTooClose = 0
+				for i = 1, numPlayers do
+					local uId = checkUnitID:format(i)
 					if not UnitIsUnit(uId, "player") then
-						local x,y = GetPlayerMapPosition(uId)
-						if UnitIsDeadOrGhost(uId) then x = 100 end	-- hack to make sure dead people aren't shown
+						local x, y = GetPlayerMapPosition(uId)
+						if UnitIsDeadOrGhost(uId) then x = 100 end -- hack to make sure dead people aren't shown
 						if not dots[i] then
 							dots[i] = {
-								icon = nil,
-								class = "none",
 								x = (x - playerX) * dims[1],
 								y = (y - playerY) * dims[2]
 							}
@@ -690,9 +684,16 @@ do
 							dots[i].x = (x - playerX) * dims[1]
 							dots[i].y = (y - playerY) * dims[2]
 						end
-						setDot(i, GetRaidTargetIndex(uId), (frame.filter and not frame.filter(uId)))
 						local _, playerClass = UnitClass(uId)
+						dots[i].name = UnitName(uId)
+						setDot(i, GetRaidTargetIndex(uId), (frame.filter and not frame.filter(uId)))
 						setDotColor(i, playerClass)
+						if dots[i].tooClose then
+							numPlayersTooClose = numPlayersTooClose + 1
+							if numPlayersTooClose >= frame.redCircleNumPlayers then
+								exceedsPlayersTooClose = true
+							end
+						end
 					else
 						if dots[i] and dots[i].dot then
 							dots[i].dot:Hide()
@@ -701,26 +702,16 @@ do
 					end
 				end
 
-				local exceedsPlayersTooClose = false
-				local numPlayersTooClose = 0
-				for i,v in pairs(dots) do
-					if v.tooClose then
-						numPlayersTooClose = numPlayersTooClose + 1
-						if numPlayersTooClose >= frame.redCircleNumPlayers then
-							exceedsPlayersTooClose = true
-						end
-					end
-				end
 				if numPlayersTooClose ~= (prevNumPlayersTooClose or 0) then
 					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXT:format(numPlayersTooClose))
-					if exceedsPlayersTooClose then	-- only show the text if the circle is red
+					if exceedsPlayersTooClose then -- only show the text if the circle is red
 						radarFrame.inRangeText:Show()
 					else
 						radarFrame.inRangeText:Hide()
 					end
 				end
 				prevNumPlayersTooClose = numPlayersTooClose
-				
+
 				if UnitIsDeadOrGhost("player") then
 					radarFrame.circle:SetVertexColor(1,1,1)
 				elseif exceedsPlayersTooClose then
@@ -728,6 +719,7 @@ do
 				else
 					radarFrame.circle:SetVertexColor(0,1,0)
 				end
+				updateSound(numPlayersTooClose)
 				self:Show()
 			end
 		else
@@ -749,12 +741,18 @@ do
 end
 
 dbmRadarEvents:SetScript("OnEvent", function(self, event, ...)
-	if (event == "ZONE_CHANGED" or event == "ZONE_CHANGED_INDOORS" or event == "ZONE_CHANGED_NEW_AREA") then
+	if event == "ZONE_CHANGED" or event == "ZONE_CHANGED_INDOORS" or event == "ZONE_CHANGED_NEW_AREA" then
 		if rangeCheck:IsShown() then--If either arrow or range frame are shown when we change areas, force a map update
 			DBM:UpdateMapSizes()
 		end
+	elseif event == "GROUP_ROSTER_UPDATE" or event == "LOADING_SCREEN_DISABLED" then
+		checkUnitID = IsInRaid() and "raid%d" or "party%d"
+		numPlayers = GetNumGroupMembers()
+		groupChanged = true
 	end
 end)
+dbmRadarEvents:RegisterEvent("GROUP_ROSTER_UPDATE")
+dbmRadarEvents:RegisterEvent("LOADING_SCREEN_DISABLED")
 
 -----------------------
 --  Check functions  --
@@ -807,20 +805,6 @@ do
 	})
 end
 
-do
-	local bandages = {21991, 34721, 34722, 53049, 53050, 53051}  -- you should have one of these bandages in your cache
-
-	checkFuncs[15] = function(uId)
-		for i, v in ipairs(bandages) do
-			if IsItemInRange(v, uId) == 1 then
-				return true
-			elseif IsItemInRange(v, uId) == 0 then
-				return false
-			end
-		end
-	end
-end
-
 ---------------
 --  Methods  --
 ---------------
@@ -860,7 +844,9 @@ function rangeCheck:Hide()
 	if radarFrame then radarFrame:Hide() end
 	if radarEventsRegistered then
 		radarEventsRegistered = false
-		dbmRadarEvents:UnregisterAllEvents()
+		dbmRadarEvents:UnregisterEvent("ZONE_CHANGED")
+		dbmRadarEvents:UnregisterEvent("ZONE_CHANGED_INDOORS")
+		dbmRadarEvents:UnregisterEvent("ZONE_CHANGED_NEW_AREA")
 	end
 end
 
