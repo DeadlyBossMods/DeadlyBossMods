@@ -816,42 +816,32 @@ do
 			args.destName = destName
 			args.destFlags = destFlags
 			args.destRaidFlags = destRaidFlags
-			-- taken from Blizzard_CombatLog.lua
 			if eventSub6 == "SPELL_" then
-				args.spellId, args.spellName, args.spellSchool = select(1, ...)
-				if event == "SPELL_INTERRUPT" then
-					args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
-				elseif event == "SPELL_EXTRA_ATTACKS" then
-					args.amount = select(4, ...)
-				elseif event == "SPELL_DISPEL" or event == "SPELL_DISPEL_FAILED" or event == "SPELL_AURA_STOLEN" then
-					args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
-					args.auraType = select(7, ...)
-				elseif event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REMOVED" or event == "SPELL_AURA_REFRESH" then
-					args.auraType, args.remainingPoints = select(4, ...)
+				args.spellId, args.spellName = ...
+				if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_REMOVED" then
 					if not args.sourceName then
 						args.sourceName = args.destName
 						args.sourceGUID = args.destGUID
 						args.sourceFlags = args.destFlags
 					end
 				elseif event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" then
-					args.auraType, args.amount = select(4, ...)
+					local _
+					_, _, _, _, args.amount = ...
 					if not args.sourceName then
 						args.sourceName = args.destName
 						args.sourceGUID = args.destGUID
 						args.sourceFlags = args.destFlags
 					end
-				elseif event == "SPELL_CAST_FAILED" then
-					args.missType = select(4, ...)
+				elseif event == "SPELL_INTERRUPT" or event == "SPELL_DISPEL" or event == "SPELL_DISPEL_FAILED" or event == "SPELL_AURA_STOLEN" then
+					local _
+					_, _, _, args.extraSpellId, args.extraSpellName = ...
 				end
 			elseif event == "UNIT_DIED" or event == "UNIT_DESTROYED" then
 				args.sourceName = args.destName
 				args.sourceGUID = args.destGUID
 				args.sourceFlags = args.destFlags
 			elseif event == "ENVIRONMENTAL_DAMAGE" then
-				args.environmentalType = select(1,...)
-				args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(2, ...)
-				args.spellName = _G["ACTION_"..event.."_"..args.environmentalType]
-				args.spellSchool = args.school
+				args.environmentalType, args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = ...
 			end
 			return handleEvent(nil, event, args)
 		end
