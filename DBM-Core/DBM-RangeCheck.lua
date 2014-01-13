@@ -72,7 +72,7 @@ local charms = {}
 --------------------------------------------------------
 local GetPlayerMapPosition = GetPlayerMapPosition
 local GetPlayerFacing = GetPlayerFacing
-local UnitName, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat = UnitName, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat
+local UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat = UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat
 local GetNumGroupMembers, GetNumSubgroupMembers = GetNumGroupMembers, GetNumSubgroupMembers
 local GetCurrentMapDungeonLevel = GetCurrentMapDungeonLevel
 local GetRaidTargetIndex = GetRaidTargetIndex
