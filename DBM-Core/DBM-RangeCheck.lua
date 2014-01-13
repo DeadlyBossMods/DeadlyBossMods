@@ -481,34 +481,33 @@ do
 		local x = dots[id].x
 		local y = dots[id].y
 		local range = dots[id].range
-		local iconT = dots[id].icon
 		if range < (activeRange * 1.5) then -- if person is closer than 1.5 * range, show the dot. Else hide it
 			local dx = ((x * cos(rotation)) - (-y * sin(rotation))) * pixelsperyard -- Rotate the X,Y based on player facing
 			local dy = ((x * sin(rotation)) + (-y * cos(rotation))) * pixelsperyard
 
 			if icon then
 				dot:Hide()
-				if iconT and iconT ~= icon then
-					charms[iconT]:Hide()
+				if dots[id].icon and dots[id].icon ~= icon then
+					charms[dots[id].icon]:Hide()
 				end
 				charms[icon]:ClearAllPoints()
 				charms[icon]:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
 				charms[icon]:Show()
-				iconT = icon
+				dots[id].icon = icon
 			else
 				dot:ClearAllPoints()
 				dot:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
 				dot:Show()
-				if iconT then
-					charms[iconT]:Hide()
-					iconT = nil
+				if dots[id].icon then
+					charms[dots[id].icon]:Hide()
+					dots[id].icon = nil
 				end
 			end
 		else
 			dot:Hide()
-			if iconT then
-				charms[iconT]:Hide()
-				iconT = nil
+			if dots[id].icon then
+				charms[dots[id].icon]:Hide()
+				dots[id].icon = nil
 			end
 		end
 	end
