@@ -633,7 +633,8 @@ do
 
 			local dims = DBM:GetMapSizes()
 			if not dims then -- This ALWAYS happens when leaving a zone that has a map and moving into one that does not.
-				if select(3, radarFrame.circle:GetVertexColor()) < 0.5 then
+				local _, _, vertexColor = radarFrame.circle:GetVertexColor()
+				if vertexColor < 0.5 then
 					radarFrame.circle:SetVertexColor(1,1,1)
 				end
 				for i, v in pairs(dots) do
@@ -690,7 +691,8 @@ do
 							dots[i].y = (y - playerY) * dims[2]
 						end
 						setDot(i, GetRaidTargetIndex(uId), (frame.filter and not frame.filter(uId)))
-						setDotColor(i, (select(2, UnitClass(uId))))
+						local _, playerClass = UnitClass(uId)
+						setDotColor(i, playerClass)
 					else
 						if dots[i] and dots[i].dot then
 							dots[i].dot:Hide()
