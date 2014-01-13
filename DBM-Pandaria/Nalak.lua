@@ -34,10 +34,25 @@ mod:AddReadyCheckOption(32518, false)
 
 local stormcloudTargets = {}
 local tetherTargets = {}
+local cloudDebuff = GetSpellInfo(136340)
+
+local debuffFilter
+do
+	debuffFilter = function(uId)
+		return UnitDebuff(uId, cloudDebuff)
+	end
+end
 
 local function warnStormcloudTargets()
 	warnStormcloud:Show(table.concat(stormcloudTargets, "<, >"))
 	table.wipe(stormcloudTargets)
+	if mod.Options.RangeFrame then
+		if UnitDebuff("player", GetSpellInfo(136340)) then--You have debuff, show everyone
+			DBM.RangeCheck:Show(10, nil)
+		else--You do not have debuff, only show players who do
+			DBM.RangeCheck:Show(10, debuffFilter)
+		end
+	end
 end
 
 local function warnTetherTargets()
@@ -52,9 +67,6 @@ function mod:OnCombatStart(delay, yellTriggered)
 		timerStormcloudCD:Start(15-delay)--15-17 variation noted
 		timerLightningTetherCD:Start(28-delay)
 		timerArcNovaCD:Start(39-delay)--Not a large sample size
-	end
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(10)
 	end
 end
 
@@ -87,6 +99,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnStormcloud:Show()
 			yellStormcloud:Yell()
+		end
+		if self.Options.RangeFrame then
+			if UnitDebuff("player", GetSpellInfo(136340)) then--You have debuff, show everyone
+				DBM.RangeCheck:Show(10, nil)
+			else--You do not have debuff, only show players who do
+				DBM.RangeCheck:Show(10, cindersDebuffFilter)
+			end
 		end
 		self:Unschedule(warnStormcloudTargets)
 		self:Schedule(0.3, warnStormcloudTargets)
