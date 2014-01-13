@@ -53,7 +53,7 @@ function mod:SPELL_CAST_START(args)
 		timerVerticalSlashCD:Start()
 	elseif args.spellId == 136473 then
 		warnCounterShot:Show()
-		specWarnCounterShot:Shot()
+		specWarnCounterShot:Show()
 		timerCounterShot:Start()
 	end
 end
