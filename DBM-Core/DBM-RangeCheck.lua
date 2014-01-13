@@ -630,7 +630,7 @@ do
 			textFrame:Show()
 		end
 
-		if num < warnThreshold then
+		if numPlayers < warnThreshold then
 			updateSound(max(textCount, closePlayer))
 		end
 	end
