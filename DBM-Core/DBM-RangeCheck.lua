@@ -72,7 +72,8 @@ local charms = {}
 --------------------------------------------------------
 local GetPlayerMapPosition = GetPlayerMapPosition
 local GetPlayerFacing = GetPlayerFacing
-local UnitIsUnit = UnitIsUnit
+local UnitName, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat = UnitName, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat
+local GetNumGroupMembers, GetNumSubgroupMembers = GetNumGroupMembers, GetNumSubgroupMembers
 local GetCurrentMapDungeonLevel = GetCurrentMapDungeonLevel
 local GetRaidTargetIndex = GetRaidTargetIndex
 
@@ -377,7 +378,7 @@ function createFrame()
 	end)
 	frame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
-		if elapsed >= 0.04 and self.checkFunc then
+		if elapsed >= 0.05 and self.checkFunc then
 			onUpdate(self, elapsed)
 			elapsed = 0
 		end
@@ -418,7 +419,7 @@ function createRadarFrame()
 	end)
 	radarFrame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
-		if elapsed >= 0.04 then
+		if elapsed >= 0.05 then
 			onUpdateRadar(self, elapsed)
 			elapsed = 0
 		end
@@ -507,7 +508,8 @@ function onUpdate(self, elapsed)
 				local uId = "raid"..i
 				if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and self.checkFunc(uId, self.range) and (not self.filter or self.filter(uId)) then
 					j = j + 1
-					color = RAID_CLASS_COLORS[select(2, UnitClass(uId))] or NORMAL_FONT_COLOR
+					local _, class = UnitClass(uId)
+					color = RAID_CLASS_COLORS[class] or NORMAL_FONT_COLOR
 					local icon = GetRaidTargetIndex(uId)
 					local text = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, UnitName(uId)) or UnitName(uId)
 					self:AddLine(text, color.r, color.g, color.b)
@@ -521,7 +523,8 @@ function onUpdate(self, elapsed)
 				local uId = "party"..i
 				if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and self.checkFunc(uId, self.range) and (not self.filter or self.filter(uId)) then
 					j = j + 1
-					color = RAID_CLASS_COLORS[select(2, UnitClass(uId))] or NORMAL_FONT_COLOR
+					local _, class = UnitClass(uId)
+					color = RAID_CLASS_COLORS[class] or NORMAL_FONT_COLOR
 					local icon = GetRaidTargetIndex(uId)
 					local text = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, UnitName(uId)) or UnitName(uId)
 					self:AddLine(text, color.r, color.g, color.b)
