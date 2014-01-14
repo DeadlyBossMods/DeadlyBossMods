@@ -59,11 +59,11 @@ local radarFrame
 local createRadarFrame
 local updateIcon
 local updateRangeFrame
-local circleColor
 local dropdownFrame
 local initializeDropdown
 local activeRange = 0
 local dots = {}
+local dims = {}
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
@@ -435,8 +435,8 @@ end
 --  OnUpdate  --
 ----------------
 do
-	local rotation, pixelsperyard, activeDots, numPlayers, prevRange, prevNumClosePlayer, prevColor = 0, 0, 0, 0, 0, 0
-	local unitList, dims = {}
+	local rotation, pixelsperyard, activeDots, numPlayers, circleColor, prevRange, prevNumClosePlayer, prevColor = 0, 0, 0, 0, 0, 0, 0, 0
+	local unitList = {}
 
 	local function setDot(id)
 		local dot = dots[id]
@@ -594,6 +594,7 @@ mainFrame:SetScript("OnEvent", function(self, event, ...)
 	if event == "GROUP_ROSTER_UPDATE" or event == "RAID_TARGET_UPDATE" then
 		updateIcon()
 	elseif event == "ZONE_CHANGED" or event == "ZONE_CHANGED_INDOORS" or event == "ZONE_CHANGED_NEW_AREA" then
+		dims = {}
 		DBM:UpdateMapSizes()
 	end
 end)
