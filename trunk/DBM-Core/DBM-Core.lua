@@ -231,6 +231,7 @@ local unschedule
 local loadOptions
 local loadModOptions
 local checkWipe
+local checkBossHealth
 local fireEvent
 local playerName = UnitName("player")
 local _, class = UnitClass("player")
