@@ -57,14 +57,12 @@ local textFrame
 local createTextFrame
 local radarFrame
 local createRadarFrame
+local updateIcon
 local updateRangeFrame
 local dropdownFrame
 local initializeDropdown
 local activeRange = 0
-local unitList = {}
-local numPlayers = 0
 local dots = {}
-local charms = {}
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
@@ -92,16 +90,6 @@ local BLIP_TEX_COORDS = {
 	["WARLOCK"]	= { 0,     0.125, 0.25, 0.5  },
 	["DRUID"]	= { 0.25,  0.375, 0.25, 0.5  },
 	["MONK"]	= { 0.125, 0.25, 0.25, 0.5 }
-}
-local CHARM_TEX_COORDS = {
-	[1] = 	{ 0,	0.25, 0,    0.25 },
-	[2] = 	{ 0.25, 0.5,  0,    0.25 },
-	[3] = 	{ 0.5, 	0.75, 0,    0.25 },
-	[4] = 	{ 0.75, 1,    0,    0.25 },
-	[5] = 	{ 0, 	0.25, 0.25, 0.5  },
-	[6] = 	{ 0.25, 0.5,  0.25, 0.5  },
-	[7] = 	{ 0.5, 	0.75, 0.25, 0.5  },
-	[8] = 	{ 0.75, 1,    0.25, 0.5  }
 }
 ---------------------
 --  Dropdown Menu  --
@@ -304,7 +292,7 @@ end
 -----------------
 local soundUpdate = 0
 local function updateSound(num)
-	if not UnitAffectingCombat("player") or num == 0 or (GetTime() - soundUpdate) < 5 then return end
+	if not UnitAffectingCombat("player") or (GetTime() - soundUpdate) < 5 then return end
 	soundUpdate = GetTime()
 	if num == 1 then
 		if DBM.Options.RangeFrameSound1 ~= "none" then
@@ -429,19 +417,12 @@ function createRadarFrame()
 	inRangeText:Hide()
 	radarFrame.inRangeText = inRangeText
 
-	for i = 1, 8 do
-		local charm = radarFrame:CreateTexture("DBMRangeCheckRadarCharm"..i, "OVERLAY")
-		charm:SetTexture("interface\\targetingframe\\UI-RaidTargetingIcons.blp")
-		charm:SetWidth(16)
-		charm:SetHeight(16)
-		charm:SetTexCoord(
-			CHARM_TEX_COORDS[i][1],
-			CHARM_TEX_COORDS[i][2],
-			CHARM_TEX_COORDS[i][3],
-			CHARM_TEX_COORDS[i][4]
-		)
-		charm:Hide()
-		charms[i] = charm
+	for i = 1, 40 do
+		local dot = radarFrame:CreateTexture(nil, "OVERLAY")
+		dot:SetSize(24, 24)
+		dot:SetTexture("Interface\\Minimap\\PartyRaidBlips")
+		dot:Hide()
+		dots[i] = dot
 	end
 
 	radarFrame:Hide()
@@ -452,63 +433,58 @@ end
 --  OnUpdate  --
 ----------------
 do
-	local rotation, pixelsperyard, prevRange, prevNumPlayers, prevNumClosePlayer, prevColor = 0, 0, 0, 0, 0, 0, 0
+	local rotation, pixelsperyard, activeDots, numPlayers, prevRange, prevNumClosePlayer, prevColor = 0, 0, 0, 0, 0, 0
+	local unitList, dims = {}
 
-	local function createDot(id)
-		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..id, radarFrame, "WorldMapPartyUnitTemplate")
-		dot:SetFrameStrata("TOOLTIP")
-		dot:SetWidth(24)
-		dot:SetHeight(24)
-		dot:Hide()
-
-		dots[id].dot = dot-- store the dot so we can use it later again
-		return dot
-	end
-
-	local function setDotColor(id, class)
-		if class and class == dots[id].class then return end
-		if not class then class = "PRIEST" end -- if class=nil -> use white dots (priest)
-		dots[id].dot.icon:SetTexCoord(
-			BLIP_TEX_COORDS[class][1],
-			BLIP_TEX_COORDS[class][2],
-			BLIP_TEX_COORDS[class][3],
-			BLIP_TEX_COORDS[class][4]
-		)
-		dots[id].class = class
-	end
-
-	local function setDot(id, icon)
-		local dot = dots[id].dot or createDot(id) -- load the dot, or create a new one if none exists yet (creating new probably never happens as the dots are created when the frame is created)
+	local function setDot(id)
+		local dot = dots[id]
 		local x = dots[id].x
 		local y = dots[id].y
 		local range = dots[id].range
 		if range < (activeRange * 1.5) then -- if person is closer than 1.5 * range, show the dot. Else hide it
 			local dx = ((x * cos(rotation)) - (-y * sin(rotation))) * pixelsperyard -- Rotate the X,Y based on player facing
 			local dy = ((x * sin(rotation)) + (-y * cos(rotation))) * pixelsperyard
-
-			if icon then
-				dot:Hide()
-				if dots[id].icon and dots[id].icon ~= icon then
-					charms[dots[id].icon]:Hide()
-				end
-				charms[icon]:ClearAllPoints()
-				charms[icon]:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
-				charms[icon]:Show()
-				dots[id].icon = icon
-			else
-				dot:ClearAllPoints()
-				dot:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
+			dot:ClearAllPoints()
+			dot:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
+			if not dot.isShown then
+				dot.isShown = true
 				dot:Show()
-				if dots[id].icon then
-					charms[dots[id].icon]:Hide()
-					dots[id].icon = nil
-				end
 			end
-		else
+		elseif dot.isShown then
+			dot.isShown = nil
 			dot:Hide()
-			if dots[id].icon then
-				charms[dots[id].icon]:Hide()
-				dots[id].icon = nil
+		end
+	end
+
+	function updateIcon()
+		numPlayers = GetNumGroupMembers()
+		activeDots = max(numPlayers, activeDots)
+		for i = 1, activeDots do
+			local dot = dots[i]
+			if i <= numPlayers then
+				unitList[i] = IsInRaid() and "raid"..i or "party"..i
+				local uId = unitList[i]
+				local _, class = UnitClass(uId)
+				local icon = GetRaidTargetIndex(uId)
+				dot.class = class
+				if icon then
+					dot.icon = icon
+					dot:SetTexture(format("Interface\\TargetingFrame\\UI-RaidTargetingIcon_%d", icon))
+					dot:SetTexCoord(0, 1, 0, 1)
+					dot:SetSize(16, 16)
+					dot:SetDrawLayer("OVERLAY", 1)
+				else
+					dot.icon = nil
+					class = class or "PRIEST"
+					local c = RAID_CLASS_COLORS[class]
+					dot:SetTexture("Interface\\Minimap\\PartyRaidBlips")
+					dot:SetTexCoord(BLIP_TEX_COORDS[class][1], BLIP_TEX_COORDS[class][2], BLIP_TEX_COORDS[class][3], BLIP_TEX_COORDS[class][4])
+					dot:SetSize(24, 24)
+					dot:SetDrawLayer("OVERLAY", 0)
+				end
+			elseif dot.isShown then
+				dot.isShown = nil
+				dot:Hide()
 			end
 		end
 	end
@@ -528,76 +504,51 @@ do
 			radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(activeRange))
 		end
 
-		local dims = DBM:GetMapSizes()
-		if not dims then return end
+		dims = dims or DBM:GetMapSizes()
 
 		local playerX, playerY = GetPlayerMapPosition("player")
 		if playerX == 0 and playerY == 0 then return end -- Somehow we can't get the correct position?
 
-		if rEnabled then
-			if prevNumPlayers ~= numPlayers then -- Hide dots when people leave the group
-				for i, v in pairs(dots) do
-					v.dot:Hide()
-				end
-				for i = 1, 8 do
-					charms[i]:Hide()
-				end
-				prevNumPlayers = numPlayers
-			end
-		end
-
 		rotation = (2 * pi) - GetPlayerFacing()
-		local textCount = 0
 		local closePlayer = 0
 		for i = 1, numPlayers do
 			local uId = unitList[i]
+			local dot = dots[i]
 			local filter = mainFrame.filter
 			if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and (not filter or filter(uId)) then
 				local x, y = GetPlayerMapPosition(uId)
 				local cx = (x - playerX) * dims[1]
 				local cy = (y - playerY) * dims[2]
 				local range = (cx * cx + cy * cy) ^ 0.5
-				local _, playerClass = UnitClass(uId)
-				local icon = GetRaidTargetIndex(uId)
-				if tEnabled then
-					if range < activeRange and textCount < 5 then
-						textCount = textCount + 1
-						local playerName = UnitName(uId)
-						local color = RAID_CLASS_COLORS[playerClass] or NORMAL_FONT_COLOR
-						local text = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, playerName) or playerName
-						textFrame:AddLine(text, color.r, color.g, color.b)
-					end
+				local inRange = false
+				if range < (activeRange * 1.1) then-- add 10% because of map data inaccuracies
+					closePlayer = closePlayer + 1
+					inRange = true
+				end
+				if tEnabled and inRange and closePlayer < 6 then-- display up to 5 players in text range frame.
+					textCount = textCount + 1
+					local playerName = UnitName(uId)
+					local color = RAID_CLASS_COLORS[dot.class] or NORMAL_FONT_COLOR
+					local icon = dot.icon
+					local text = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, playerName) or playerName
+					textFrame:AddLine(text, color.r, color.g, color.b)
 				end
 				if rEnabled then
-					if not dots[i] then
-						dots[i] = {
-							x = cx,
-							y = cy,
-							range = range
-						}
-					else
-						dots[i].x = cx
-						dots[i].y = cy
-						dots[i].range = range
-					end
-					setDot(i, icon)
-					setDotColor(i, playerClass)
-					if range < (activeRange * 1.1) then
-						closePlayer = closePlayer + 1
-					end
+					dot.x = cx
+					dot.y = cy
+					dot.range = range
+					setDot(i)
 				end
-			elseif rEnabled then
-				if dots[i] and dots[i].dot then
-					dots[i].dot:Hide()
-					if dots[i].icon then
-						charms[dots[i].icon]:Hide()
-						dots[i].icon = nil
-					end
-				end
+			elseif rEnabled and dot.isShown then
+				dot.isShown = nil
+				dot:Hide()
 			end
 		end
 
 		local warnThreshold = mainFrame.redCircleNumPlayers
+		if tEnabled then
+			textFrame:Show()
+		end
 		if rEnabled then
 			if prevNumClosePlayer ~= closePlayer then
 				radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXT:format(closePlayer))
@@ -626,13 +577,9 @@ do
 				prevColor = circleColor
 			end
 		end
-		if tEnabled then
-			textFrame:Show()
-		end
 
-		local realClosePlayer = max(textCount, closePlayer)
-		if realClosePlayer >= warnThreshold then
-			updateSound(realClosePlayer)
+		if closePlayer >= warnThreshold then
+			updateSound(closePlayer)
 		end
 	end
 end
@@ -643,16 +590,10 @@ local anim = updater:CreateAnimation()
 anim:SetDuration(0.05)
 
 mainFrame:SetScript("OnEvent", function(self, event, ...)
-	if event == "GROUP_ROSTER_UPDATE" then
-		numPlayers = GetNumGroupMembers()
-		unitList = {}
-		for i = 1, numPlayers do
-			unitList[i] = IsInRaid() and "raid"..i or "party"..i
-		end
+	if event == "GROUP_ROSTER_UPDATE" or event == "RAID_TARGET_UPDATE" then
+		updateIcon()
 	elseif event == "ZONE_CHANGED" or event == "ZONE_CHANGED_INDOORS" or event == "ZONE_CHANGED_NEW_AREA" then
-		if rangeCheck:IsShown() then--If either arrow or range frame are shown when we change areas, force a map update
-			DBM:UpdateMapSizes()
-		end
+		DBM:UpdateMapSizes()
 	end
 end)
 
@@ -706,12 +647,9 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
 	mainFrame.redCircleNumPlayers = redCircleNumPlayers
 	if not mainFrame.eventRegistered then
 		mainFrame.eventRegistered = true
-		numPlayers = GetNumGroupMembers()
-		unitList = {}
-		for i = 1, numPlayers do
-			unitList[i] = IsInRaid() and "raid"..i or "party"..i
-		end
+		updateIcon()
 		mainFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
+		mainFrame:RegisterEvent("RAID_TARGET_UPDATE")
 		mainFrame:RegisterEvent("ZONE_CHANGED")
 		mainFrame:RegisterEvent("ZONE_CHANGED_INDOORS")
 		mainFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
