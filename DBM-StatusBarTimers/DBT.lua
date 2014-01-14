@@ -64,6 +64,8 @@ local function stringFromTimer(t)
 	end
 end
 
+local ipairs, pairs, next, type = ipairs, pairs, next, type
+local tinsert = table.insert
 
 -----------------------
 --  Default Options  --
@@ -327,7 +329,7 @@ do
 		obj.secAnchor:SetClampedToScreen(true)
 		obj.secAnchor:SetMovable(true)
 		obj.secAnchor:Show()
-		table.insert(instances, obj)
+		tinsert(instances, obj)
 		return obj
 	end
 
@@ -811,7 +813,7 @@ end
 ------------------
 function barPrototype:Cancel()
 	local next = self.next
-	table.insert(unusedBars, self.frame)
+	tinsert(unusedBars, self.frame)
 	self.frame:Hide()
 	self.frame.obj = nil
 	self:RemoveFromList()
