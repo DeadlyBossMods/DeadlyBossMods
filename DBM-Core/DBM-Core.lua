@@ -3210,10 +3210,11 @@ do
 	local function scanForCombat(mod, mob, delay)
 		if not checkEntry(inCombat, mod) then
 			buildTargetList()
+			local _, iType = GetInstanceInfo()
 			if targetList[mob] then
 				if delay > 0 and UnitAffectingCombat(targetList[mob]) then
 					DBM:StartCombat(mod, delay, "PLAYER_REGEN_DISABLED")
-				elseif (delay == 0) and select(2, GetInstanceInfo()) == "none" then
+				elseif (delay == 0) and iType == "none" then
 					DBM:StartCombat(mod, 0, "PLAYER_REGEN_DISABLED_AND_MESSAGE")
 				end
 			end
@@ -5081,29 +5082,29 @@ do
 		local info = destGUID and shieldsByGuid[destGUID]
 		if info then
 			if info.maxAbsorb then
-				local absorbed
+				local _, absorbed
 				if subEvent == "SWING_MISSED" then
-					absorbed = select(3, ...)
+					_, _, absorbed = ...
 				elseif subEvent == "RANGE_MISSED" or subEvent == "SPELL_MISSED" or subEvent == "SPELL_PERIODIC_MISSED" then
-					absorbed = select(6, ...)
+					_, _, _, _, _, absorbed = ...
 				end
 				if absorbed then
 					info.absorbRemaining = info.absorbRemaining - absorbed
 				end
 			elseif info.maxDamage then
-				local damage
+				local _, damage
 				if subEvent == "SWING_DAMAGE" then 
-					damage = select(1, ...) 
+					damage = ...
 				elseif subEvent == "RANGE_DAMAGE" or subEvent == "SPELL_DAMAGE" or subEvent == "SPELL_PERIODIC_DAMAGE" then 
-					damage = select(4, ...)
+					_, _, _, damage = ...
 				end
 				if damage then
 					info.damageRemaining = info.damageRemaining - damage
 				end
 			elseif info.maxHeal then
-				local absorbed
+				local _, absorbed
 				if subEvent == "SPELL_HEAL" or subEvent == "SPELL_PERIODIC_HEAL" then
-					absorbed = select(6, ...)
+					_, _, _, _, _, absorbed = ...
 				end
 				if absorbed then
 					info.healed = info.healed + absorbed
