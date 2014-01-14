@@ -100,13 +100,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnStormcloud:Show()
 			yellStormcloud:Yell()
 		end
-		if self.Options.RangeFrame then
-			if UnitDebuff("player", GetSpellInfo(136340)) then--You have debuff, show everyone
-				DBM.RangeCheck:Show(10, nil)
-			else--You do not have debuff, only show players who do
-				DBM.RangeCheck:Show(10, cindersDebuffFilter)
-			end
-		end
 		self:Unschedule(warnStormcloudTargets)
 		self:Schedule(0.3, warnStormcloudTargets)
 	elseif spellId == 136339 then
