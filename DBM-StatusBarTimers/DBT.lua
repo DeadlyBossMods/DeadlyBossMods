@@ -1130,14 +1130,23 @@ end
 do
 
 	local function onUpdate(self, elapsed)
-		if self.obj then
+		if (self.obj.moving or "") == "enlarge" then
+			self.elap = 0
 			self.obj:Update(elapsed)
 		else
-		 	-- This should *never* happen; .obj is only set to nil when calling :Hide() and :Show() is only called in a function that also sets .obj
-			-- However, there have been several reports of this happening since WoW 5.x, wtf?
-			-- Unfortunately, none of the developers was ever able to reproduce this.
-			-- The bug reports show screenshots of expired timers that are still visible (showing 0.00) with all clean-up operations (positioning, list entry) except for the :Hide() call being performed...
-			self:Hide()
+			self.elap = (self.elap or 0) + elapsed
+			if self.elap >= 0.04 then
+				if self.obj then
+					self.obj:Update(self.elap)
+				else
+					-- This should *never* happen; .obj is only set to nil when calling :Hide() and :Show() is only called in a function that also sets .obj
+					-- However, there have been several reports of this happening since WoW 5.x, wtf?
+					-- Unfortunately, none of the developers was ever able to reproduce this.
+					-- The bug reports show screenshots of expired timers that are still visible (showing 0.00) with all clean-up operations (positioning, list entry) except for the :Hide() call being performed...
+					self:Hide()
+				end
+				self.elap = 0
+			end
 		end
 	end
 
