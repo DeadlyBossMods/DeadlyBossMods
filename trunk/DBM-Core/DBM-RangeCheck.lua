@@ -401,6 +401,7 @@ function createRadarFrame()
 	radarFrame.background = bg
 
 	local circle = radarFrame:CreateTexture(nil, "ARTWORK")
+	circle:SetSize(85, 85)
 	circle:SetPoint("CENTER")
 	circle:SetTexture("Interface\\AddOns\\DBM-Core\\textures\\radar_circle.blp")
 	circle:SetBlendMode("ADD")
@@ -629,8 +630,9 @@ do
 			textFrame:Show()
 		end
 
-		if numPlayers < warnThreshold then
-			updateSound(max(textCount, closePlayer))
+		local realClosePlayer = max(textCount, closePlayer)
+		if realClosePlayer >= warnThreshold then
+			updateSound(realClosePlayer)
 		end
 	end
 end
