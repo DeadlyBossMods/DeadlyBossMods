@@ -392,6 +392,7 @@ function createRadarFrame()
 	circle:SetSize(85, 85)
 	circle:SetPoint("CENTER")
 	circle:SetTexture("Interface\\AddOns\\DBM-Core\\textures\\radar_circle.blp")
+	circle:SetVertexColor(0, 1, 0)
 	circle:SetBlendMode("ADD")
 	radarFrame.circle = circle
 
@@ -568,11 +569,11 @@ do
 
 			if prevColor ~= circleColor then
 				if circleColor == 1 then
-					radarFrame.circle:SetVertexColor(0,1,0)
+					radarFrame.circle:SetVertexColor(0, 1, 0)
 				elseif circleColor == 2 then
-					radarFrame.circle:SetVertexColor(1,0,0)
+					radarFrame.circle:SetVertexColor(1, 0, 0)
 				else
-					radarFrame.circle:SetVertexColor(1,1,1)
+					radarFrame.circle:SetVertexColor(1, 1, 1)
 				end
 				prevColor = circleColor
 			end
