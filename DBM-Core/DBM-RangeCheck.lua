@@ -527,7 +527,6 @@ do
 					inRange = true
 				end
 				if tEnabled and inRange and closePlayer < 6 then-- display up to 5 players in text range frame.
-					textCount = textCount + 1
 					local playerName = UnitName(uId)
 					local color = RAID_CLASS_COLORS[dot.class] or NORMAL_FONT_COLOR
 					local icon = dot.icon
