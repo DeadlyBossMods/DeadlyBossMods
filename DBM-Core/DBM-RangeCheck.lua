@@ -59,6 +59,7 @@ local radarFrame
 local createRadarFrame
 local updateIcon
 local updateRangeFrame
+local circleColor
 local dropdownFrame
 local initializeDropdown
 local activeRange = 0
