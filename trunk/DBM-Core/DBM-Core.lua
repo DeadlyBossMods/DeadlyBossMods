@@ -2293,7 +2293,7 @@ do
 			end
 			if not forceloadmapIds[mapID] then return end
 		-- You entered instance duing worldboss combat. Force end worldboss mod.
-		elseif instanceType ~= "none" then
+		else
 			if targetEventsRegistered then
 				DBM:UnregisterShortTermEvents()
 				targetEventsRegistered = false
