@@ -15,6 +15,10 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(849)
 
+L:SetWarningLocalization({
+	specWarnMeasures	= "絕處求生即將到來(%s)!"
+})
+
 ---------------------------
 -- Norushen --
 ---------------------------
