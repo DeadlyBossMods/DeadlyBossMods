@@ -256,8 +256,8 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 50630 and self:AntiSpam(2, 3) then--Eject All Passengers:
-		timerAddsCD:Cancel()
-		timerProtoCD:Cancel()
+		timerAddsCD:Cancel(self.vb.addsCount + 1)
+		timerProtoCD:Cancel(self.vb.addsCount + 1)
 		warnPhase2:Show()
 		timerFlamesofGalakrondCD:Start(13.5)
 		timerPulsingFlamesCD:Start(39, 1)--unconfirmed
