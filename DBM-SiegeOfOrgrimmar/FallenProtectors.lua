@@ -360,7 +360,7 @@ function mod:UNIT_HEALTH_FREQUENT(uId)
 			local bossName = UnitName(uId)
 			specWarnMeasures:Show(bossName)
 			self.vb["warned"..cId] = 1
-		elseif hp < 0.38 and self.vb["warned"..cId] == 1 then
+		elseif hp < 0.37 and self.vb["warned"..cId] == 1 then
 			local bossName = UnitName(uId)
 			specWarnMeasures:Show(bossName)
 			self.vb["warned"..cId] = 2
