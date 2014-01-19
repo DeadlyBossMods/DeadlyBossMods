@@ -272,9 +272,6 @@ DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "Spiele \"Bereitschaftscheck\"-Sound, we
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "bewegbare Spezialwarnung"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Spezialwarnung"
 
-
-DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "Eine %d Meter Abstandsprüfung wird in dieser Zone nicht unterstützt.\nUnterstützte Reichweiten sind 10, 11, 15 und 28 Meter."
-
 DBM_ARROW_MOVABLE					= "Pfeil (bewegbar)"
 DBM_ARROW_NO_RAIDGROUP				= "Diese Funktion steht nur in Schlachtzügen und innerhalb von Instanzen zu Verfügung." 
 DBM_ARROW_ERROR_USAGE	= {
