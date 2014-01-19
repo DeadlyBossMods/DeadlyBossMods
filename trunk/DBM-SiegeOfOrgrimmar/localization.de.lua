@@ -15,6 +15,12 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(849)
 
+L:SetWarningLocalization({
+	warnCalamity		= "%s",
+	specWarnCalamity	= "%s",
+	specWarnMeasures	= "Verzweifelte Maßnahmen bald (%s)!"
+})
+
 ---------------------------
 -- Norushen --
 ---------------------------
@@ -59,7 +65,7 @@ L:SetMiscLocalization({
 	wasteOfTime		= "Well done! Landing parties, form up! Footmen to the front!",--translate (alliance trigger)
 	wasteOfTime2	= "Gute Arbeit. Die erste Kompanie ist an Land.",
 	Pull			= "Drachenmalklan, nehmt den Hafen wieder ein und treibt sie ins Meer! Im Namen Höllschreis und der wahren Horde!",
-	newForces1		= "Da kommen sie!",--needs to be verified (PTR screenshot-captured translation) (alliance)
+	newForces1		= "Da kommen sie!",--needs to be verified (wowhead-captured translation) (alliance)
 	newForces1H		= "Holt sie schnell vom Himmel, damit ich sie erwürgen kann.",
 	newForces2		= "Drachenmalklan, ausrücken!",
 	newForces3		= "Für Höllschrei!",
