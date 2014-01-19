@@ -15,6 +15,12 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(849)
 
+L:SetWarningLocalization({
+	warnCalamity		= "%s",
+	specWarnCalamity	= "%s",
+	specWarnMeasures	= "¡Medidas desesperadas pronto (%s)!"
+})
+
 ---------------------------
 -- Norushen --
 ---------------------------
@@ -39,6 +45,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(868)
 
 L:SetWarningLocalization({
+	warnTowerOpen		= "Torre abierta",
 	warnTowerGrunt		= "Adds defendiendo la torre"
 })
 
@@ -48,6 +55,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnTowerOpen		= "Anunciar cuando se abre una torre",
 	warnTowerGrunt		= "Anunciar cuando aparecen nuevos adds defendiendo la torre",
 	timerTowerCD		= "Mostrar temporizador para el siguiente asalto a la torre",
 	timerTowerGruntCD	= "Mostrar temporizador para los siguientes adds defendiendo la torre"
@@ -168,7 +176,7 @@ L:SetMiscLocalization({
 	KorvenFlavor		= "The end of an ancient empire",--http://ptr.wowhead.com/quest=31232  --TODO need translation
 	KorvenFlavor2		= "Take your Gurthani Tablets and choke on them",--http://ptr.wowhead.com/quest=31232  --TODO need translation
 	IyyokukFlavor		= "See opportunities. Exploit them!",--Does not have quests, http://ptr.wowhead.com/npc=65305  --TODO need translation
-	KarozFlavor			= "You won't be leaping anymore!",---Does not have questst, http://ptr.wowhead.com/npc=65303  --TODO need translation
+	KarozFlavor			= "You won't be leaping anymore!",---Does not have quest, http://ptr.wowhead.com/npc=65303  --TODO need translation
 	SkeerFlavor			= "A bloody delight!",--http://ptr.wowhead.com/quest=31178  --TODO need translation
 	RikkalFlavor		= "Specimen request fulfilled"--http://ptr.wowhead.com/quest=31508  --TODO need translation
 })
@@ -177,6 +185,17 @@ L:SetMiscLocalization({
 -- Garrosh Hellscream --
 ------------------------
 L= DBM:GetModLocalization(869)
+
+L:SetOptionLocalization({
+	RangeFrame			= "Mostrar radar dinámico de rango (8)<br/>(Muestra cuando alcanzas el umbral de $spell:147126)",
+	InfoFrame			= "Mostrar cuadro de información para personajes sin reducción de daño durante las interfases",
+	yellMaliceFading	= "Gritar cuando $spell:147209 esté apunto de disiparse"
+})
+
+L:SetMiscLocalization({
+	NoReduce			= "Sin reducción de daño",
+	MaliceFadeYell		= "Malicia disipándose en %s (%d)"
+})
 
 -------------
 --  Trash  --
