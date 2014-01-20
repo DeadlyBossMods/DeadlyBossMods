@@ -470,7 +470,7 @@ function mod:FlashScan(targetname)
 			specWarnFlashNear:Show(targetname)
 		end
 	end
-	if self.vb.whirlCast > expectedWhirlCount or (GetTime() - self.vb.whirlTime) > 20 then
+	if self.vb.whirlCast >= expectedWhirlCount or (GetTime() - self.vb.whirlTime) > 20 then
 		self:StopRepeatedScan("FlashScan")
 	end
 end
