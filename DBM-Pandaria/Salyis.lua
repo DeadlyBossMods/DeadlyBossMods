@@ -26,12 +26,15 @@ local timerStompCD				= mod:NewNextTimer(60, 121787)
 local timerStomp				= mod:NewCastTimer(3, 121787)
 local timerWarmongerCD			= mod:NewNextTimer(10, "ej6200", nil, nil, nil, 121747)--Comes after Stomp. (Also every 60 sec.)
 
+local berserkTimer				= mod:NewBerserkTimer(900)
+
 mod:AddReadyCheckOption(32098, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 		timerCannonBarrageCD:Start(24-delay)
 		timerStompCD:Start(50-delay)
+		berserkTimer:Start(-delay)
 	end
 end
 
