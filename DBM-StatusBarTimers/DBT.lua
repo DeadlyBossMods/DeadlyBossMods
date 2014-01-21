@@ -56,6 +56,7 @@ local instances = {}
 local updateClickThrough
 local options
 local setupHandlers
+local applyFailed = false
 local function stringFromTimer(t)
 	if t <= 60 then
 		return ("%.1f"):format(t)
@@ -834,9 +835,14 @@ function DBT:ApplyStyle()
 	for bar in self:GetBarIterator() do
 		bar:ApplyStyle()
 	end
+	if applyFailed then
+		applyFailed = false
+		DBM:AddMsg(DBM_CORE_LOAD_SKIN_COMBAT)
+	end
 end
 
 function barPrototype:ApplyStyle()
+	applyFailed = true
 	local frame = self.frame
 	local frame_name = frame:GetName()
 	local bar = _G[frame_name.."Bar"]
@@ -881,6 +887,7 @@ function barPrototype:ApplyStyle()
 	name:SetPoint("LEFT", bar, "LEFT", 3, 0)
 	timer:SetFont(self.owner.options.Font, self.owner.options.FontSize)
 	self:Update(0)
+	applyFailed = false--Got to end with no script ran too long
 end
 
 local function updateOrientation(self)
