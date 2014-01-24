@@ -149,12 +149,14 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
-	specWarnActivatedVulnerable	= "你虛弱於%s - 換坦!"
+	specWarnActivatedVulnerable	= "你虛弱於%s - 換坦!",
+	specWarnMoreParasites		= "你需要更多的寄生蟲 - 不要開招!"
 })
 
 L:SetOptionLocalization({
 	specWarnActivatedVulnerable	= "當你虛弱於活動的議會成員時顯示特別警告",
-	AimArrow					= "當某玩家中了$spell:142948顯示DBM箭頭",
+	specWarnMoreParasites		= "當你需要更多寄生蟲時顯示特別警告",
+	AimArrow					= "當某玩家中了$spell:142948顯示DBM箭頭"
 })
 
 L:SetMiscLocalization({
