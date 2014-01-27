@@ -191,6 +191,7 @@ DBM.DefaultOptions = {
 	LastRevision = 0,
 	FilterSayAndYell = false,
 	DebugMode = false,
+	WorldBossAlert = false,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 }
 
@@ -234,6 +235,7 @@ local checkWipe
 local checkBossHealth
 local fireEvent
 local playerName = UnitName("player")
+local playerRealm = GetRealmName()
 local _, class = UnitClass("player")
 local LastInstanceMapID = -1
 local queuedBattlefield = {}
@@ -246,6 +248,8 @@ local bossHealth = {}
 local bossHealthuIdCache = {}
 local bossuIdCache = {}
 local savedDifficulty, difficultyText, difficultyIndex
+local lastBossEngage = {}
+local lastBossDefeat = {}
 local bossuIdFound = false
 local timerRequestInProgress = false
 
@@ -981,8 +985,8 @@ do
 			self:RegisterEvents(
 				"COMBAT_LOG_EVENT_UNFILTERED",
 				"GROUP_ROSTER_UPDATE",
-				--"INSTANCE_GROUP_SIZE_CHANGED",
 				"CHAT_MSG_ADDON",
+--				"BN_CHAT_MSG_ADDON",--5.4.7+ bnet sync support
 				"PLAYER_REGEN_DISABLED",
 				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
@@ -2502,6 +2506,8 @@ do
 	-- IR = Instance Info Request
 	-- IRE = Instance Info Requested Ended/Canceled
 	-- II = Instance Info
+	-- WBE = World Boss engage info
+	-- WBD = World Boss defeat info
 
 	syncHandlers["M"] = function(sender, mod, revision, event, ...)
 		mod = DBM:GetModByName(mod or "")
@@ -2860,6 +2866,57 @@ do
 			end
 		end
 
+		syncHandlers["WBE"] = function(sender, name, realm, health)
+			if lastBossEngage[name..realm] and GetTime() - lastBossEngage[name..realm] < 10 then return end
+			lastBossEngage[name..realm] = GetTime()
+			if not DBM.Options.WorldBossAlert then return end
+			DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(name, health))
+		end
+		
+		syncHandlers["WBD"] = function(sender, name, realm)
+			if lastBossDefeat[name..realm] and GetTime() - lastBossEngage[name..realm] < 10 then return end
+			lastBossDefeat[name..realm] = GetTime()
+			if not DBM.Options.WorldBossAlert then return end
+			DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(name))
+		end
+
+		whisperSyncHandlers["WBE"] = function(sender, name, realm, health)
+			if lastBossEngage[name..realm] and GetTime() - lastBossEngage[name..realm] < 10 then return end
+			lastBossEngage[name..realm] = GetTime()
+			--RealID sync needs some realm checking.
+			local sameRealm = false
+ 			local connectedServers = GetAutoCompleteRealms()
+ 			if connectedServers then--Check if realm matches any realm in our connection
+				for i = 1, #connectedServers do
+ 	 				if realm == connectedServers[i] then sameRealm = true end
+				end
+			else--connectedServers is nil, so no connected realms, just check against our own realm
+				if realm == playerRealm then sameRealm = true end
+			end
+			if sameRealm and DBM.Options.WorldBossAlert then
+				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(name, health))
+			end
+		end
+		
+		whisperSyncHandlers["WBD"] = function(sender, name, health, realm)
+			if not DBM.Options.WorldBossAlert then return end
+			if lastBossDefeat[name..realm] and GetTime() - lastBossEngage[name..realm] < 10 then return end
+			lastBossDefeat[name..realm] = GetTime()
+			--RealID sync needs some realm checking.
+			local sameRealm = false
+ 			local connectedServers = GetAutoCompleteRealms()
+ 			if connectedServers then--Check if realm matches any realm in our connection
+				for i = 1, #connectedServers do
+ 	 				if realm == connectedServers[i] then sameRealm = true end
+				end
+			else--connectedServers is nil, so no connected realms, just check against our own realm
+				if realm == playerRealm then sameRealm = true end
+			end
+			if sameRealm then
+				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(name))
+			end
+		end
+
 		local lastRequest = 0
 		local numResponses = 0
 		local expectedResponses = 0
@@ -2875,7 +2932,7 @@ do
 			if not result then
 				return
 			end
-			name = name or "Unknown"
+			name = name or DBM_CORE_UNKNOWN
 			id = id or ""
 			diff = tonumber(diff or 0) or 0
 			maxPlayers = tonumber(maxPlayers or 0) or 0
@@ -3095,6 +3152,12 @@ do
 			end
 		end
 	end
+	
+--[[	function DBM:BN_CHAT_MSG_ADDON(prefix, msg, channel, sender)
+		if prefix == "D4" and msg then
+			handleSync(channel, sender, strsplit("\t", msg))
+		end
+	end--]]
 end
 
 -----------------------
@@ -3529,6 +3592,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		end
 		--set mod default info
 		savedDifficulty, difficultyText, difficultyIndex = DBM:GetCurrentInstanceDifficulty()
+		local name = mod.combatInfo.name
 		if C_Scenario.IsInScenario() then
 			mod.inScenario = true
 		end
@@ -3649,14 +3713,14 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			--show enage message
 			if DBM.Options.ShowEngageMessage then
 				if mod.ignoreBestkill and savedDifficulty == "worldboss" then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
-					self:AddMsg(DBM_CORE_COMBAT_STARTED_IN_PROGRESS:format(difficultyText..mod.combatInfo.name))
+					self:AddMsg(DBM_CORE_COMBAT_STARTED_IN_PROGRESS:format(difficultyText..name))
 				elseif mod.ignoreBestkill and mod.inScenario then
-					self:AddMsg(DBM_CORE_SCENARIO_STARTED_IN_PROGRESS:format(difficultyText..mod.combatInfo.name))
+					self:AddMsg(DBM_CORE_SCENARIO_STARTED_IN_PROGRESS:format(difficultyText..name))
 				else
 					if mod.type == "SCENARIO" then
-						self:AddMsg(DBM_CORE_SCENARIO_STARTED:format(difficultyText..mod.combatInfo.name))
+						self:AddMsg(DBM_CORE_SCENARIO_STARTED:format(difficultyText..name))
 					else
-						self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
+						self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..name))
 					end
 				end
 			end
@@ -3673,7 +3737,20 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 				sendSync("HF", mod.id.."\t"..mod.hotfixNoticeRev)
 			end
 		elseif DBM.Options.ShowRecoveryMessage then--show timer recovery message
-			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..mod.combatInfo.name, strFromTime(delay)))
+			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
+		end
+		if savedDifficulty == "worldboss" and LastInstanceMapID ~= 1 and LastInstanceMapID ~= 0 then--Any outdoor boss except Omen and Greench (last thing we want is to sync those 2)
+			if lastBossEngage[name..playerRealm] and GetTime() - lastBossEngage[name..playerRealm] < 10 then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+			if IsInGuild() then
+				SendAddonMessage("D4", "WBE" .. "\t" .. name.."\t"..playerRealm.."\t"..startHp, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
+			end
+			--[[local _, numBNetOnline = BNGetNumFriends()
+			for i = 1, numBNetOnline do
+				local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
+				if isOnline and client == BNET_CLIENT_WOW then
+					BNSendGameData (presenceID, "D4", "WBE" .. "\t" .. name.."\t"..playerRealm.."\t"..startHp)
+				end
+			end--]]
 		end
 	end
 end
@@ -3738,6 +3815,7 @@ function DBM:EndCombat(mod, wipe)
 			self:AddMsg(DBM_CORE_BAD_LOAD)--Warn user that they should reload ui soon as they leave combat to get their mod to load correctly as soon as possible
 			return--Don't run any further, stats are nil on a bad load so rest of this code will also error out.
 		end
+		local name = mod.combatInfo.name
 		if wipe then
 			mod.lastWipeTime = GetTime()
 			--Fix for "attempt to perform arithmetic on field 'pull' (a nil value)" (which was actually caused by stats being nil, so we never did getTime on pull, fixing one SHOULD fix the other)
@@ -3749,17 +3827,17 @@ function DBM:EndCombat(mod, wipe)
 				totalPulls = totalPulls - 1
 				if DBM.Options.ShowWipeMessage then
 					if scenario then
-						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime)))
+						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT:format(difficultyText..name, strFromTime(thisTime)))
 					else
-						self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime)))
+						self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(difficultyText..name, wipeHP, strFromTime(thisTime)))
 					end
 				end
 			else
 				if DBM.Options.ShowWipeMessage then
 					if scenario then
-						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT_LONG:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), totalPulls - totalKills))
+						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT_LONG:format(difficultyText..name, strFromTime(thisTime), totalPulls - totalKills))
 					else
-						self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
+						self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
 					end
 				end
 			end
@@ -3768,23 +3846,23 @@ function DBM:EndCombat(mod, wipe)
 			for k, v in pairs(autoRespondSpam) do
 				if DBM.Options.WhisperStats then
 					if scenario then
-						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, difficultyText..(mod.combatInfo.name or ""), totalPulls - totalKills)
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, difficultyText..(name or ""), totalPulls - totalKills)
 					else
 						local hpText
 						if mod.vb.phase then
 							hpText = wipeHP.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
 						end
-						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), hpText or wipeHP, totalPulls - totalKills)
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, difficultyText..(name or ""), hpText or wipeHP, totalPulls - totalKills)
 					end
 				else
 					if scenario then
-						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE:format(playerName, difficultyText..(mod.combatInfo.name or ""))
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE:format(playerName, difficultyText..(name or ""))
 					else
 						local hpText
 						if mod.vb.phase then
 							hpText = wipeHP.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
 						end
-						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), hpText or wipeHP)
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(playerName, difficultyText..(name or ""), hpText or wipeHP)
 					end
 				end
 				sendWhisper(k, msg)
@@ -3813,33 +3891,33 @@ function DBM:EndCombat(mod, wipe)
 				local msg = ""
 				if not mod.combatInfo.pull then--was a bad pull so we ignored thisTime, should never happen
 					if scenario then
-						msg = DBM_CORE_SCENARIO_COMPLETE:format(difficultyText..mod.combatInfo.name, DBM_CORE_UNKNOWN)
+						msg = DBM_CORE_SCENARIO_COMPLETE:format(difficultyText..name, DBM_CORE_UNKNOWN)
 					else
-						msg = DBM_CORE_BOSS_DOWN:format(difficultyText..mod.combatInfo.name, DBM_CORE_UNKNOWN)
+						msg = DBM_CORE_BOSS_DOWN:format(difficultyText..name, DBM_CORE_UNKNOWN)
 					end
 				elseif mod.ignoreBestkill then--Should never happen in a scenario so no need for scenario check.
 					if scenario then
-						msg = DBM_CORE_SCENARIO_COMPLETE_I:format(difficultyText..mod.combatInfo.name, totalKills)
+						msg = DBM_CORE_SCENARIO_COMPLETE_I:format(difficultyText..name, totalKills)
 					else
-						msg = DBM_CORE_BOSS_DOWN_I:format(difficultyText..mod.combatInfo.name, totalKills)
+						msg = DBM_CORE_BOSS_DOWN_I:format(difficultyText..name, totalKills)
 					end
 				elseif not lastTime then
 					if scenario then
-						msg = DBM_CORE_SCENARIO_COMPLETE:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime))
+						msg = DBM_CORE_SCENARIO_COMPLETE:format(difficultyText..name, strFromTime(thisTime))
 					else
-						msg = DBM_CORE_BOSS_DOWN:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime))
+						msg = DBM_CORE_BOSS_DOWN:format(difficultyText..name, strFromTime(thisTime))
 					end
 				elseif thisTime < (bestTime or mhuge) then
 					if scenario then
-						msg = DBM_CORE_SCENARIO_COMPLETE_NR:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(bestTime), totalKills)
+						msg = DBM_CORE_SCENARIO_COMPLETE_NR:format(difficultyText..name, strFromTime(thisTime), strFromTime(bestTime), totalKills)
 					else
-						msg = DBM_CORE_BOSS_DOWN_NR:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(bestTime), totalKills)
+						msg = DBM_CORE_BOSS_DOWN_NR:format(difficultyText..name, strFromTime(thisTime), strFromTime(bestTime), totalKills)
 					end
 				else
 					if scenario then
-						msg = DBM_CORE_SCENARIO_COMPLETE_L:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills)
+						msg = DBM_CORE_SCENARIO_COMPLETE_L:format(difficultyText..name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills)
 					else
-						msg = DBM_CORE_BOSS_DOWN_L:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills)
+						msg = DBM_CORE_BOSS_DOWN_L:format(difficultyText..name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills)
 					end
 				end
 				self:Schedule(1, DBM.AddMsg, DBM, msg)
@@ -3848,20 +3926,33 @@ function DBM:EndCombat(mod, wipe)
 			for k, v in pairs(autoRespondSpam) do
 				if DBM.Options.WhisperStats then
 					if scenario then
-						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_KILL_STATS:format(playerName, difficultyText..(mod.combatInfo.name or ""), totalKills)
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_KILL_STATS:format(playerName, difficultyText..(name or ""), totalKills)
 					else
-						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL_STATS:format(playerName, difficultyText..(mod.combatInfo.name or ""), totalKills)
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL_STATS:format(playerName, difficultyText..(name or ""), totalKills)
 					end
 				else
 					if scenario then
-						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_KILL:format(playerName, difficultyText..(mod.combatInfo.name or ""))
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_KILL:format(playerName, difficultyText..(name or ""))
 					else
-						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(playerName, difficultyText..(mod.combatInfo.name or ""))
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(playerName, difficultyText..(name or ""))
 					end
 				end
 				sendWhisper(k, msg)
 			end
 			fireEvent("kill", mod)
+			if savedDifficulty == "worldboss" and LastInstanceMapID ~= 1 and LastInstanceMapID ~= 0 then--Any outdoor boss except Omen and Greench (last thing we want is to sync those 2)
+				if lastBossDefeat[name..playerRealm] and GetTime() - lastBossDefeat[name..playerRealm] < 10 then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+				if IsInGuild() then
+					SendAddonMessage("D4", "WBD" .. "\t" .. name.."\t"..playerRealm, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
+				end
+				--[[local _, numBNetOnline = BNGetNumFriends()
+				for i = 1, numBNetOnline do
+					local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
+					if isOnline and client == BNET_CLIENT_WOW then
+						BNSendGameData (presenceID, "D4", "WBD" .. "\t" .. name.."\t"..playerRealm)
+					end
+				end--]]
+			end
 		end
 		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 		if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
