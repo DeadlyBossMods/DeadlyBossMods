@@ -2867,9 +2867,19 @@ do
 		end
 
 		syncHandlers["WBE"] = function(sender, name, realm, health)
-			if lastBossEngage[name..realm] and GetTime() - lastBossEngage[name..realm] < 10 then return end
+			if DBM.Options.DebugMode then
+				print("DBM Debug: World boss pull detected from "..sender.." on boss "..name)
+			end
+			if lastBossEngage[name..realm] and GetTime() - lastBossEngage[name..realm] < 10 then
+				if DBM.Options.DebugMode then
+					print("DBM Debug: Ignoring that sync because it's too soon after last sync or we pulled that boss ourselves")
+				end
+			return end
 			lastBossEngage[name..realm] = GetTime()
 			if not DBM.Options.WorldBossAlert then return end
+			if DBM.Options.DebugMode then
+				print("DBM Debug: All checks passed, we should be seeing a propper DBM alert for that world boss pull")
+			end
 			DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(name, health))
 		end
 		
@@ -3740,9 +3750,19 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
 		end
 		if savedDifficulty == "worldboss" and LastInstanceMapID ~= 1 and LastInstanceMapID ~= 0 then--Any outdoor boss except Omen and Greench (last thing we want is to sync those 2)
-			if lastBossEngage[name..playerRealm] and GetTime() - lastBossEngage[name..playerRealm] < 10 then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+			if DBM.Options.DebugMode then
+				print("DBM Debug: World Boss engaged, should be sending syncs out to guild")
+			end
+			if lastBossEngage[name..playerRealm] and GetTime() - lastBossEngage[name..playerRealm] < 10 then
+				if DBM.Options.DebugMode then
+					print("DBM Debug: Aborting sending world boss syncs. It seems we've already sent or gotten a sync for this boss on this realm within last 10 seconds")
+				end
+			return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 			if IsInGuild() then
 				SendAddonMessage("D4", "WBE" .. "\t" .. name.."\t"..playerRealm.."\t"..startHp, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
+				if DBM.Options.DebugMode then
+					print("DBM Debug: Sending world boss syncs for "..name)
+				end
 			end
 			--[[local _, numBNetOnline = BNGetNumFriends()
 			for i = 1, numBNetOnline do
