@@ -72,6 +72,9 @@ function mod:SPELL_AURA_APPLIED(args)
 --		timerBurningSoulCD:Start()
 		if args:IsPlayer() then
 			specWarnBurningSoul:Show()
+			specWarnBurningSoul:Schedule(2)
+			specWarnBurningSoul:Schedule(4)
+			specWarnBurningSoul:Schedule(6)
 			yellBurningSoul:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
