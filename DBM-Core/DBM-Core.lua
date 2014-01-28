@@ -2867,8 +2867,7 @@ do
 		end
 
 		syncHandlers["WBE"] = function(sender, name, realm, health)
-			if lastBossEngage[name..realm] and GetTime() - lastBossEngage[name..realm] < 10 then
-			return end
+			if lastBossEngage[name..realm] and GetTime() - lastBossEngage[name..realm] < 10 then return end
 			lastBossEngage[name..realm] = GetTime()
 			if not DBM.Options.WorldBossAlert then return end
 			DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(name, health))
@@ -3741,8 +3740,8 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
 		end
 		if savedDifficulty == "worldboss" and LastInstanceMapID ~= 1 and LastInstanceMapID ~= 0 then--Any outdoor boss except Omen and Greench (last thing we want is to sync those 2)
-			if lastBossEngage[name..playerRealm] and GetTime() - lastBossEngage[name..playerRealm] < 10 then
-			return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+			if lastBossEngage[name..playerRealm] and GetTime() - lastBossEngage[name..playerRealm] < 10 then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+			lastBossEngage[name..playerRealm] = GetTime()--Update last engage time, that way we ignore our own sync
 			if IsInGuild() then
 				SendAddonMessage("D4", "WBE\t"..name.."\t"..playerRealm.."\t"..startHp, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 			end
@@ -3944,6 +3943,7 @@ function DBM:EndCombat(mod, wipe)
 			fireEvent("kill", mod)
 			if savedDifficulty == "worldboss" and LastInstanceMapID ~= 1 and LastInstanceMapID ~= 0 then--Any outdoor boss except Omen and Greench (last thing we want is to sync those 2)
 				if lastBossDefeat[name..playerRealm] and GetTime() - lastBossDefeat[name..playerRealm] < 10 then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+				lastBossDefeat[name..playerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
 				if IsInGuild() then
 					SendAddonMessage("D4", "WBD\t"..name.."\t"..playerRealm, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 				end
