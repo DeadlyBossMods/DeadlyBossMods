@@ -3153,7 +3153,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
-		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" and self:GetRaidUnitId(sender)) then
+		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD") then
 			handleSync(channel, sender, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" and self:GetRaidUnitId(sender)) then
 			local bwPrefix, bwMsg = msg:match("^(%u-):(.+)")
@@ -3759,7 +3759,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 				end
 			return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 			if IsInGuild() then
-				SendAddonMessage("D4", "WBE" .. "\t" .. name.."\t"..playerRealm.."\t"..startHp, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
+				SendAddonMessage("D4", "WBE\t"..name.."\t"..playerRealm.."\t"..startHp, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 				if DBM.Options.DebugMode then
 					print("DBM Debug: Sending world boss syncs for "..name)
 				end
@@ -3768,7 +3768,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			for i = 1, numBNetOnline do
 				local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
 				if isOnline and client == BNET_CLIENT_WOW then
-					BNSendGameData (presenceID, "D4", "WBE" .. "\t" .. name.."\t"..playerRealm.."\t"..startHp)
+					BNSendGameData (presenceID, "D4", "WBE\t"..name.."\t"..playerRealm.."\t"..startHp)
 				end
 			end--]]
 		end
@@ -3963,13 +3963,13 @@ function DBM:EndCombat(mod, wipe)
 			if savedDifficulty == "worldboss" and LastInstanceMapID ~= 1 and LastInstanceMapID ~= 0 then--Any outdoor boss except Omen and Greench (last thing we want is to sync those 2)
 				if lastBossDefeat[name..playerRealm] and GetTime() - lastBossDefeat[name..playerRealm] < 10 then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 				if IsInGuild() then
-					SendAddonMessage("D4", "WBD" .. "\t" .. name.."\t"..playerRealm, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
+					SendAddonMessage("D4", "WBD\t"..name.."\t"..playerRealm, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 				end
 				--[[local _, numBNetOnline = BNGetNumFriends()
 				for i = 1, numBNetOnline do
 					local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
 					if isOnline and client == BNET_CLIENT_WOW then
-						BNSendGameData (presenceID, "D4", "WBD" .. "\t" .. name.."\t"..playerRealm)
+						BNSendGameData (presenceID, "D4", "WBD\t"..name.."\t"..playerRealm)
 					end
 				end--]]
 			end
