@@ -11,8 +11,8 @@ mod:RegisterCombat("combat")
 mod:SetMinCombatTime(15)
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_APPLIED 45954",
+	"SPELL_AURA_REMOVED 45954"
 )
 
 local warnSubmerged				= mod:NewSpellAnnounce(37751, 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
