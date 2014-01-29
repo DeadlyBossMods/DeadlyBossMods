@@ -388,46 +388,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 71519 then--Kor'kron Warshaman
-		timerEmpoweredChainHealCD:Cancel(args.destName, args.destGUID)
-	end
-end
-
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.newForces1 or msg == L.newForces2 or msg == L.newForces3 or msg == L.newForces4 or msg == L.newForces5 then
-		self.vb.addsCount = self.vb.addsCount + 1
-		warnAdds:Show(self.vb.addsCount)
-		specWarnAdds:Show(self.vb.addsCount)
-		if self.vb.addsCount < 10 then
-			timerAddsCD:Start(nil, self.vb.addsCount+1)
-			countdownAdds:Start()
-		end
-		if self.Options.SetIconOnAdds then
-			if self:IsDifficulty("heroic10", "heroic25") or self.vb.addsCount > 6 then--3 Adds
-				self:ScanForMobs(addsTable, 2, 7, 3, 0.2, 15)
-			else
-				self:ScanForMobs(addsTable, 2, 7, 2, 0.2, 15)--2 adds
-			end
-		end
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
-		end
-	elseif msg == L.allForces then
-		self.vb.allForcesReleased = true
-		self.vb.defensiveActive = false
-		self:UnregisterShortTermEvents()--Do not warn defensive stance below 10%
-		--Icon setting not put here on purpose, so as not ot mess with existing adds (it's burn boss phase anyawys)
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 143500 then--Faster than combat log by 0.3-0.5 seconds
-		self:BossTargetScanner(71515, "LeapTarget", 0.05, 16)
-	end
-end
-
 function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 143873 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
 		specWarnRavagerMove:Show()
@@ -446,5 +406,53 @@ function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spell
 			dotWarned[spellId] = true
 			specWarnDefensiveStanceAttack:Show()
 		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 71519 then--Kor'kron Warshaman
+		timerEmpoweredChainHealCD:Cancel(args.destName, args.destGUID)
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 143500 then--Faster than combat log by 0.3-0.5 seconds
+		self:BossTargetScanner(71515, "LeapTarget", 0.05, 16)
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.newForces1 or msg == L.newForces2 or msg == L.newForces3 or msg == L.newForces4 or msg == L.newForces5 then
+		self:SendSync("Adds")
+	elseif msg == L.allForces then
+		self:SendSync("AllAdds")
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "Adds" and self:AntiSpam(10, 3) then
+		self.vb.addsCount = self.vb.addsCount + 1
+		warnAdds:Show(self.vb.addsCount)
+		specWarnAdds:Show(self.vb.addsCount)
+		if self.vb.addsCount < 10 then
+			timerAddsCD:Start(nil, self.vb.addsCount+1)
+			countdownAdds:Start()
+		end
+		if self.Options.SetIconOnAdds then
+			if self:IsDifficulty("heroic10", "heroic25") or self.vb.addsCount > 6 then--3 Adds
+				self:ScanForMobs(addsTable, 2, 7, 3, 0.2, 15)
+			else
+				self:ScanForMobs(addsTable, 2, 7, 2, 0.2, 15)--2 adds
+			end
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
+		end
+	elseif msg == "AllAdds" and self:AntiSpam(10, 4) then
+		self.vb.allForcesReleased = true
+		self.vb.defensiveActive = false
+		self:UnregisterShortTermEvents()--Do not warn defensive stance below 10%
+		--Icon setting not put here on purpose, so as not ot mess with existing adds (it's burn boss phase anyawys)
 	end
 end
