@@ -10,7 +10,7 @@ mod:SetZone(1)--Kalimdor
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_SUCCESS 104903 26540",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED"
 )
@@ -29,10 +29,11 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 104903 then
+	local spellId = args.spellId
+	if spellId == 104903 then
 		warnCleave:Show()
 		timerCleaveCD:Start()
-	elseif args.spellId == 26540 then
+	elseif spellId == 26540 then
 		warnStarfall:Show()
 		timerStarfallCD:Start()
 	end

@@ -10,9 +10,9 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_CAST_START 47310",
+	"SPELL_AURA_APPLIED 47376 47340 47442 51413",
+	"SPELL_AURA_REMOVED 47376 47340 47442 51413"
 )
 
 local warnDisarm			= mod:NewCastAnnounce(47310, 2, nil, nil, mod:IsMelee())
@@ -36,12 +36,13 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 47376 then											-- Brew
+	local spellId = args.spellId
+	if spellId == 47376 then											-- Brew
 		timerBrew:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnBrew:Show()
 		end
-	elseif args.spellId == 47340 then										-- Brew Stun
+	elseif spellId == 47340 then										-- Brew Stun
 		timerBrewStun:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnBrewStun:Show()

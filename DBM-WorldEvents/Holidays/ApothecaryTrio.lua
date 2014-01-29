@@ -14,7 +14,7 @@ mod:RegisterEvents(
 )
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
+	"SPELL_CAST_START 68821",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED"
 )
