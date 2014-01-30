@@ -35,8 +35,11 @@ DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s(%s)的戰鬥經過%s結束。你在這個�
 DBM_CORE_SCENARIO_ENDED_AT			= "%s結束!經過%s!"
 DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s結束!本次經過%s，你已有共%d次未完成的嘗試在這個難度裡。"
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥在%s前開始，恢復計時器中..."
-DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor開始記錄."
-DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor結束紀錄."
+DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor開始記錄。"
+DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor結束紀錄。"
+
+DBM_CORE_WORLDBOSS_ENGAGED			= "在你的伺服器上的%s已在%s時開戰。"
+DBM_CORE_WORLDBOSS_DEFEATED			= "在你的伺服器上的%s已被擊敗。"
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d秒"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d分鐘"
