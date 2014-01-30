@@ -1,5 +1,4 @@
 ﻿if GetLocale() ~= "zhTW" then return end
-
 local L
 
 --------------------------
@@ -29,7 +28,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnGameOver	= "當遊戲結束時顯示最多可以取得的點數",
+	warnGameOver	= "當遊戲結束時顯示最多可能取得的點數",
 	warnGnoll		= "為豺狼人出現顯示警告",
 	warnHogger		= "為霍格出現顯示警告",
 	specWarnHogger	= "為霍格出現顯示特別警告"
