@@ -270,7 +270,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(831)
 
 L:SetWarningLocalization({
-	specWarnUnstablVitaJump		= "動盪生命傳到你身上!"
+	specWarnUnstablVitaJump	= "動盪生命傳到你身上!"
 })
 
 L:SetOptionLocalization({
@@ -279,8 +279,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Defeat						= "慢著!",
-	BigWigsRecommendation		= "If you need a vita soaker list, it's recommended you use BigWigs and BigWigs Ra-den assist for this boss"
+	Defeat					= "慢著!",
+	BigWigsRecommendation	= "如果你需要動盪生命列表，建議你使用BigWigs和BigWigs Ra-den assist"
 })
 
 -------------

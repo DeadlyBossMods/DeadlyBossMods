@@ -7,11 +7,11 @@ local L
 L= DBM:GetModLocalization("Brawlers")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部:一般"
+	name = "鬥陣俱樂部:基本設定"
 })
 
 L:SetWarningLocalization({
-	warnQueuePosition	= "你的排名順位為:%d",
+	warnQueuePosition	= "你的目前順位為:%d",
 	specWarnYourNext	= "你是下一位!",
 	specWarnYourTurn	= "輪到你上場了!"
 })
@@ -20,7 +20,7 @@ L:SetOptionLocalization({
 	warnQueuePosition	= "提示你目前的順位",
 	specWarnYourNext	= "當你下一個上場時顯示特別警告",
 	specWarnYourTurn	= "輪到你上時顯示特別警告",
-	SpectatorMode		= "當旁觀戰鬥時顯示警告/計時器(旁觀者不會顯示個人的特別警告訊息)",
+	SpectatorMode		= "當旁觀戰鬥時顯示警告/計時器<br/>(旁觀者不會顯示個人的特別警告訊息)",
 	SpeakOutQueue		= "當順位更新數出你的順位"
 })
 

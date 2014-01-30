@@ -26,7 +26,6 @@ L:SetMiscLocalization({
 	Defeat				= "我們不會居服於黑暗虛空的絕望之下。如果她的意志要我們滅亡，那麼我們就該滅亡。"
 })
 
-
 ------------
 -- Blade Lord Ta'yak --
 ------------
@@ -36,24 +35,23 @@ L:SetOptionLocalization({
 	UnseenStrikeArrow	= "當某人中了$spell:122949時顯示DBM箭頭"
 })
 
-
 -------------------------------
 -- Garalon --
 -------------------------------
 L= DBM:GetModLocalization(713)
 
 L:SetWarningLocalization({
-	specwarnUnder		= "離開紫色圓圈範圍!"
+	specwarnUnder	= "離開紫色圓圈範圍!"
 })
 
 L:SetOptionLocalization({
-	specwarnUnder		= "當你在紫色圓圈範圍內顯示特別警告",
-	countdownCrush		= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).." (只有英雄模式)"
+	specwarnUnder	= "當你在紫色圓圈範圍內顯示特別警告",
+	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).." (只有英雄模式)"
 })
 
 L:SetMiscLocalization({
-	UnderHim			= "在他下面",
-	Phase2				= "巨大的裝甲開始破裂並粉碎!"
+	UnderHim	= "在他下面",
+	Phase2		= "巨大的裝甲開始破裂並粉碎!"
 })
 
 ----------------------
