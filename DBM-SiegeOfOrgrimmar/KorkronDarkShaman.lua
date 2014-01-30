@@ -224,7 +224,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 144215 then
 		local amount = args.amount or 1
 		timerFroststormStrike:Start(args.destName)
-		if amount % 2 == 0 then
+		if amount % 2 == 0 or amount >= 5 then
 			warnFroststormStrike:Show(args.destName, amount)
 		end
 		if amount >= 5 then
