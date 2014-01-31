@@ -3849,21 +3849,29 @@ function DBM:EndCombat(mod, wipe)
 					if scenario then
 						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, difficultyText..(name or ""), totalPulls - totalKills)
 					else
-						local hpText
+						local hpText = wipeHP
 						if mod.vb.phase then
-							hpText = wipeHP.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
+							hpText = hpText.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
 						end
-						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, difficultyText..(name or ""), hpText or wipeHP, totalPulls - totalKills)
+						if mod.numBoss then
+							local bossesKilled = mod.numBoss - mod.vb.bossLeft
+							hpText = hpText.." ("..BOSSES_KILLED:format(bossesKilled, mod.numBoss)..")"
+						end
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, difficultyText..(name or ""), hpText, totalPulls - totalKills)
 					end
 				else
 					if scenario then
 						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE:format(playerName, difficultyText..(name or ""))
 					else
-						local hpText
+						local hpText = wipeHP
 						if mod.vb.phase then
-							hpText = wipeHP.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
+							hpText = hpText.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
 						end
-						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(playerName, difficultyText..(name or ""), hpText or wipeHP)
+						if mod.numBoss then
+							local bossesKilled = mod.numBoss - mod.vb.bossLeft
+							hpText = hpText.." ("..BOSSES_KILLED:format(bossesKilled, mod.numBoss)..")"
+						end
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(playerName, difficultyText..(name or ""), hpText)
 					end
 				end
 				sendWhisper(k, msg)
@@ -4342,9 +4350,13 @@ do
 			end
 			mod = mod or inCombat[1]
 			local hp = ("%d%%"):format(mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()) or DBM_CORE_UNKNOWN
-			local hpText
+			local hpText = hp
 			if mod.vb.phase then
-				hpText = hp.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
+				hpText = hpText.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
+			end
+			if mod.numBoss then
+				local bossesKilled = mod.numBoss - mod.vb.bossLeft
+				hpText = hpText.." ("..BOSSES_KILLED:format(bossesKilled, mod.numBoss)..")"
 			end
 			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(difficultyText..(mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and
