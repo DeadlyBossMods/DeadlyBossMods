@@ -2874,7 +2874,7 @@ do
 		end
 		
 		syncHandlers["WBD"] = function(sender, name, realm)
-			if lastBossDefeat[name..realm] and GetTime() - lastBossEngage[name..realm] < 10 then return end
+			if lastBossDefeat[name..realm] and GetTime() - lastBossDefeat[name..realm] < 10 then return end
 			lastBossDefeat[name..realm] = GetTime()
 			if not DBM.Options.WorldBossAlert then return end
 			DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(name))
@@ -2900,7 +2900,7 @@ do
 		
 		whisperSyncHandlers["WBD"] = function(sender, name, health, realm)
 			if not DBM.Options.WorldBossAlert then return end
-			if lastBossDefeat[name..realm] and GetTime() - lastBossEngage[name..realm] < 10 then return end
+			if lastBossDefeat[name..realm] and GetTime() - lastBossDefeat[name..realm] < 10 then return end
 			lastBossDefeat[name..realm] = GetTime()
 			--RealID sync needs some realm checking.
 			local sameRealm = false
