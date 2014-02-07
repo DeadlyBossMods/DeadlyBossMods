@@ -806,7 +806,11 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 143339 then
-		self.vb.parasitesActive = self.vb.parasitesActive + 8
+		if self:IsDifficulty("normal10", "heroic10") then
+			self.vb.parasitesActive = self.vb.parasitesActive + 5
+		else
+			self.vb.parasitesActive = self.vb.parasitesActive + 8
+		end
 	elseif spellId == 142671 and self.Options.SetIconOnMesmerize then
 		self:SetIcon(args.destName, 0)
 	end
