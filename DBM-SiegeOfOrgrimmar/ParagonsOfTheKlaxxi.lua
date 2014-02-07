@@ -850,7 +850,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 71153 then--Hisek the Swarmkeeper
 		timerAimCD:Cancel()
 		timerRapidFireCD:Cancel()
-	elseif cid == 71578 then--Amber Parasite
+	elseif cid == 71578 and not self:IsDifficulty("flex") then--Amber Parasite
 		self.vb.parasitesActive = self.vb.parasitesActive - 1
 		warnParasitesLeft:Show(self.vb.parasitesActive)
 	elseif cid == 71156 then--Kaz'tik the Manipulator
