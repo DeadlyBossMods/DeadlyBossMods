@@ -5483,6 +5483,10 @@ function DBM:GetBossHP(cId)
 		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		bossHealth[cId] = hp
 		return hp, uId
+	elseif self:GetCIDFromGUID("focus") == cId and UnitHealthMax("focus") ~= 0 then
+		local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
+		bossHealth[cId] = hp
+		return hp, "focus"
 	else
 		for i = 1, 5 do
 			local guid = UnitGUID("boss"..i)
@@ -5514,6 +5518,10 @@ function DBM:GetBossHPByGUID(guid)
 		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		bossHealth[guid] = hp
 		return hp, uId
+	elseif UnitGUID("focus") == guid and UnitHealthMax("focus") ~= 0 then
+		local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
+		bossHealth[guid] = hp
+		return hp, "focus"
 	else
 		for i = 1, 5 do
 			local guid2 = UnitGUID("boss"..i)
