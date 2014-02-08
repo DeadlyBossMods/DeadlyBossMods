@@ -5479,11 +5479,11 @@ end
 ----------------------------
 function DBM:GetBossHP(cId)
 	local uId = bossHealthuIdCache[cId] or "target"
-	if self:GetCIDFromGUID(uId) == cId and UnitHealthMax(uId) ~= 0 then
+	if self:GetCIDFromGUID(UnitGUID(uId)) == cId and UnitHealthMax(uId) ~= 0 then
 		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		bossHealth[cId] = hp
 		return hp, uId
-	elseif self:GetCIDFromGUID("focus") == cId and UnitHealthMax("focus") ~= 0 then
+	elseif self:GetCIDFromGUID(UnitGUID("focus")) == cId and UnitHealthMax("focus") ~= 0 then
 		local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
 		bossHealth[cId] = hp
 		return hp, "focus"
