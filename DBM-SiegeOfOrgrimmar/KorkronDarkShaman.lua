@@ -121,7 +121,7 @@ function mod:ToxicStormTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		specWarnToxicStorm:Show()
 		yellToxicStorm:Yell()
-	elseif self:CheckNearby(8, targetname) then
+	elseif self:CheckNearby(10, targetname) then
 		specWarnToxicStormNear:Show(targetname)
 	end
 end
