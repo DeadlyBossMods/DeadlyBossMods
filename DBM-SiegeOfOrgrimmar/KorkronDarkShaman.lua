@@ -110,7 +110,7 @@ function mod:FoulStreamTarget(targetname, uId)
 			specWarnFoulStream:Show()
 		end
 		if self.Options.SetIconOnFoulStream then
-			self:SetIcon(args.destName, 8, 3)
+			self:SetIcon(targetname, 8, 3)
 		end
 	end
 end
