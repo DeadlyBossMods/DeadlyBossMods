@@ -136,7 +136,7 @@ function mod:OnCombatStart(delay)
 		specWarnDeafeningScreech:Schedule(12)
 	end
 	berserkTimer:Start(-delay)
-	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
+	if self.Options.RangeFrame and not self:IsDifficulty("lfr25", "flex") then
 		if self:IsDifficulty("normal10", "heroic10") then
 			DBM.RangeCheck:Show(10, nil, nil, 4)
 		else
@@ -307,7 +307,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerDeafeningScreechCD:Start(nil, 1)
 			specWarnDeafeningScreech:Schedule(11.5)
 		end
-		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
+		if self.Options.RangeFrame and not self:IsDifficulty("lfr25", "flex") then
 			if self:IsDifficulty("normal10", "heroic10") then
 				DBM.RangeCheck:Show(10, nil, nil, 4)
 			else
