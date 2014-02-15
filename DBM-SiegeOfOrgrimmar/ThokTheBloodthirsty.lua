@@ -136,8 +136,8 @@ function mod:OnCombatStart(delay)
 		specWarnDeafeningScreech:Schedule(12)
 	end
 	berserkTimer:Start(-delay)
-	if self.Options.RangeFrame and not self:IsDifficulty("lfr25", "flex") then
-		if self:IsDifficulty("normal10", "heroic10") then
+	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
+		if self:IsDifficulty("normal10", "heroic10", "flex") then
 			DBM.RangeCheck:Show(10, nil, nil, 4)
 		else
 			DBM.RangeCheck:Show(10, nil, nil, 14)
@@ -307,11 +307,11 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerDeafeningScreechCD:Start(nil, 1)
 			specWarnDeafeningScreech:Schedule(11.5)
 		end
-		if self.Options.RangeFrame and not self:IsDifficulty("lfr25", "flex") then
-			if self:IsDifficulty("normal10", "heroic10") then
+		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
+			if self:IsDifficulty("normal10", "heroic10", "flex") then
 				DBM.RangeCheck:Show(10, nil, nil, 4)
 			else
-				DBM.RangeCheck:Show(10, nil, nil, 14)
+				DBM.RangeCheck:Show(10, nil, nil, 14)	
 			end
 		end
 	elseif spellId == 143445 then

@@ -179,6 +179,7 @@ DBM.DefaultOptions = {
 	DontShowPTText = false,
 	DontShowPTNoID = false,
 	DontShowCTCount = false,
+	DontShowFlexMessage = false,
 	PTCountThreshold = 5,
 	LatencyThreshold = 250,
 	BigBrotherAnnounceToRaid = false,
@@ -238,6 +239,7 @@ local playerName = UnitName("player")
 local playerRealm = GetRealmName()
 local _, class = UnitClass("player")
 local LastInstanceMapID = -1
+local LastGroupSize = 0
 local queuedBattlefield = {}
 local loadDelay = nil
 local loadDelay2 = nil
@@ -985,6 +987,7 @@ do
 			self:RegisterEvents(
 				"COMBAT_LOG_EVENT_UNFILTERED",
 				"GROUP_ROSTER_UPDATE",
+				"INSTANCE_GROUP_SIZE_CHANGED",
 				"CHAT_MSG_ADDON",
 --				"BN_CHAT_MSG_ADDON",--5.4.7+ bnet sync support
 				"PLAYER_REGEN_DISABLED",
@@ -1918,6 +1921,11 @@ do
 	function DBM:GROUP_ROSTER_UPDATE()
 		self:Schedule(1.5, updateAllRoster)
 	end
+	
+	function DBM:INSTANCE_GROUP_SIZE_CHANGED()
+		local _, _, _, _, _, _, _, _, instanceGroupSize = GetInstanceInfo()
+		LastGroupSize = instanceGroupSize
+	end
 
 	function DBM:GetRaidRank(name)
 		local name = name or playerName
@@ -2281,6 +2289,10 @@ function DBM:GetCurrentArea()
 	return LastInstanceMapID
 end
 
+function DBM:GetGroupSize()
+	return LastGroupSize
+end
+
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
@@ -2288,8 +2300,9 @@ do
 	local targetEventsRegistered = false
 	local function FixForShittyComputers()
 		timerRequestInProgress = false
-		local _, instanceType, _, _, _, _, _, mapID = GetInstanceInfo()
+		local _, instanceType, _, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
 		LastInstanceMapID = mapID
+		LastGroupSize = instanceGroupSize
 		if instanceType == "none" then
 			if not targetEventsRegistered then
 				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED")
@@ -3591,7 +3604,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			delay = delay + select(4, GetNetStats()) / 1000
 		end
 		--set mod default info
-		savedDifficulty, difficultyText, difficultyIndex = DBM:GetCurrentInstanceDifficulty()
+		savedDifficulty, difficultyText, difficultyIndex, LastGroupSize = DBM:GetCurrentInstanceDifficulty()
 		local name = mod.combatInfo.name
 		if C_Scenario.IsInScenario() then
 			mod.inScenario = true
@@ -4104,31 +4117,31 @@ function DBM:GetCurrentInstanceDifficulty()
 	if difficulty == 0 then
 		return "worldboss", RAID_INFO_WORLD_BOSS.." - "
 	elseif difficulty == 1 then
-		return "normal5", difficultyName.." - ", difficulty
+		return "normal5", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 2 then
-		return "heroic5", difficultyName.." - ", difficulty
+		return "heroic5", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 3 then
-		return "normal10", difficultyName.." - ", difficulty
+		return "normal10", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 4 then
-		return "normal25", difficultyName.." - ", difficulty
+		return "normal25", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 5 then
-		return "heroic10", difficultyName.." - ", difficulty
+		return "heroic10", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 6 then
-		return "heroic25", difficultyName.." - ", difficulty
+		return "heroic25", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 7 then
-		return "lfr25", difficultyName.." - ", difficulty
+		return "lfr25", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 8 then
-		return "challenge5", difficultyName.." - ", difficulty
+		return "challenge5", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
-		return "normal10", difficultyName.." - ",difficulty--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
+		return "normal10", difficultyName.." - ",difficulty, instanceGroupSize--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
 	elseif difficulty == 11 then--5.3 heroic scenario
-		return "heroic5", difficultyName.." - ", difficulty
+		return "heroic5", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 12 then--5.3 normal scenario
-		return "normal5", difficultyName.." - ", difficulty
+		return "normal5", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 14 then
-		return "flex", difficultyName.." - ", difficulty
+		return "flex", difficultyName.." - ", difficulty, instanceGroupSize
 	else--failsafe
-		return "normal5", "", difficulty
+		return "normal5", "", difficulty, instanceGroupSize
 	end
 end
 
