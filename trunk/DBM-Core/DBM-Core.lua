@@ -3758,13 +3758,15 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			if IsInGuild() then
 				SendAddonMessage("D4", "WBE\t"..name.."\t"..playerRealm.."\t"..startHp, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 			end
-			--[[local _, numBNetOnline = BNGetNumFriends()
-			for i = 1, numBNetOnline do
-				local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
-				if isOnline and client == BNET_CLIENT_WOW then
-					BNSendGameData (presenceID, "D4", "WBE\t"..name.."\t"..playerRealm.."\t"..startHp)
+			if BNSendGameData then--Remove when 5.4.7 is live in all regions
+				local _, numBNetOnline = BNGetNumFriends()
+				for i = 1, numBNetOnline do
+					local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
+					if isOnline and client == BNET_CLIENT_WOW then
+						BNSendGameData(presenceID, "D4", "WBE\t"..name.."\t"..playerRealm.."\t"..startHp)
+					end
 				end
-			end--]]
+			end
 		end
 	end
 end
@@ -3968,13 +3970,15 @@ function DBM:EndCombat(mod, wipe)
 				if IsInGuild() then
 					SendAddonMessage("D4", "WBD\t"..name.."\t"..playerRealm, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 				end
-				--[[local _, numBNetOnline = BNGetNumFriends()
-				for i = 1, numBNetOnline do
-					local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
-					if isOnline and client == BNET_CLIENT_WOW then
-						BNSendGameData (presenceID, "D4", "WBD\t"..name.."\t"..playerRealm)
+				if BNSendGameData then--Remove when 5.4.7 is live in all regions
+					local _, numBNetOnline = BNGetNumFriends()
+					for i = 1, numBNetOnline do
+						local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
+						if isOnline and client == BNET_CLIENT_WOW then
+							BNSendGameData(presenceID, "D4", "WBD\t"..name.."\t"..playerRealm)
+						end
 					end
-				end--]]
+				end
 			end
 		end
 		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
