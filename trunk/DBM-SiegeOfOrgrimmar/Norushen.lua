@@ -279,6 +279,7 @@ function mod:OnSync(msg, guid)
 end
 
 function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
+	sender = Ambiguate(sender, "none")
 	--Because core already registers BigWigs prefix with server, shouldn't need it here
 	if prefix == "D4" and message then
 		if message:find("ManifestationDied") and not playerInside and self:AntiSpam(1, 1) then
