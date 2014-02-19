@@ -95,6 +95,7 @@ mod:AddInfoFrameOption("ej8252", false)--May still be buggy but it's needed for 
 
 --Upvales, don't need variables
 local corruptionLevel = EJ_GetSectionInfo(8252)
+local Ambiguate = Ambiguate
 --Tables, can't recover
 local residue = {}
 --Not important, don't need to recover
@@ -279,9 +280,9 @@ function mod:OnSync(msg, guid)
 end
 
 function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
-	sender = Ambiguate(sender, "none")
 	--Because core already registers BigWigs prefix with server, shouldn't need it here
 	if prefix == "D4" and message then
+		sender = Ambiguate(sender, "none")
 		if message:find("ManifestationDied") and not playerInside and self:AntiSpam(1, 1) then
 			addSync()
 		elseif message:find("BlindHatredEnded") and self:AntiSpam(5, 4) then
@@ -295,6 +296,7 @@ function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
 			timerBlindHatred:Start()
 		end
 	elseif prefix == "BigWigs" and message then
+		sender = Ambiguate(sender, "none")
 		local bwPrefix, bwMsg = message:match("^(%u-):(.+)")
 		if bwMsg == "InsideBigAddDeath" and not playerInside and self:AntiSpam(1, 1) then
 			addSync()
