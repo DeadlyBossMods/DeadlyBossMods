@@ -1,0 +1,40 @@
+﻿## Interface: 50400
+## X-Min-Interface: 50400
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Siege of Orgrimmar|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Осада Оргриммара|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Schlacht um Orgrimmar|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0오그리마 공성전|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0圍攻奧格瑪|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMSiegeOfOrgrimmar_SavedVars, DBMSiegeOfOrgrimmar_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Has-LFR : 1
+## X-DBM-Mod-Has-Flex : 1
+## X-DBM-Mod-Sort: 1
+## X-DBM-Mod-MapID: 1136
+## X-DBM-Mod-Block-Movie-Skip-ItemID: 105930,105931,105932,105933,105934,105935
+localization.en.lua
+localization.de.lua
+localization.kr.lua
+localization.ru.lua
+localization.tw.lua
+localization.es.lua
+Immerseus.lua
+FallenProtectors.lua
+Norushen.lua
+ShaofPride.lua
+Galakras.lua
+IronJuggernaut.lua
+KorkronDarkShaman.lua
+GeneralNazgrim.lua
+Malkorok.lua
+SpoilsOfPandria.lua
+ThokTheBloodthirsty.lua
+SiegecrafterBlackfuse.lua
+ParagonsOfTheKlaxxi.lua
+GarroshHellscream.lua
+SoOTrash.lua
