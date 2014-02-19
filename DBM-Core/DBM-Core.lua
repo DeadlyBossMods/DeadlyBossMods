@@ -3162,9 +3162,9 @@ do
 			sender = Ambiguate(sender, "none")
 			handleSync(channel, sender, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" and self:GetRaidUnitId(sender)) then
-			sender = Ambiguate(sender, "none")
 			local bwPrefix, bwMsg = msg:match("^(%u-):(.+)")
 			if bwPrefix and (bwPrefix == "VR" or bwPrefix == "VRA") then--We only care about version prefixes so only pass those prefixes on
+				sender = Ambiguate(sender, "none")
 				handleSync(channel, sender, bwPrefix, bwMsg)
 			end
 		end
