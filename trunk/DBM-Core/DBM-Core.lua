@@ -2912,7 +2912,7 @@ do
 			end
 		end
 		
-		whisperSyncHandlers["WBD"] = function(sender, name, health, realm)
+		whisperSyncHandlers["WBD"] = function(sender, name, realm)
 			if not DBM.Options.WorldBossAlert then return end
 			if lastBossDefeat[name..realm] and GetTime() - lastBossDefeat[name..realm] < 10 then return end
 			lastBossDefeat[name..realm] = GetTime()
