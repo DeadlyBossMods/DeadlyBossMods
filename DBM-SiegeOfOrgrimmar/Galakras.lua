@@ -315,7 +315,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 
 function mod:OnSync(msg)
-	if msg == "Adds" and self:AntiSpam(10, 4) then
+	if msg == "Adds" and self:AntiSpam(20, 4) then
 		self.vb.addsCount = self.vb.addsCount + 1
 		if self.vb.addsCount % 5 == 3 then
 			warnAdd:Show(self.vb.addsCount)
