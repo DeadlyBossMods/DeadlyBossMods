@@ -526,7 +526,7 @@ do
 		end
 
 		function registerSpellId(event, spellId)
-			if not GetSpellInfo(spellId) then
+			if spellId and not GetSpellInfo(spellId) then
 				print("RegisterEvents : "..spellId.." spell id not exists!")
 				return
 			end
