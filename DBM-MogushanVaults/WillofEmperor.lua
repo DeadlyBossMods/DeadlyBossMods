@@ -31,8 +31,6 @@ local warnEnergizingSmash		= mod:NewSpellAnnounce(116550, 3, nil, mod:IsMelee())
 --Courage
 local warnCourageActivated		= mod:NewCountAnnounce("ej5676", 3, 116778)
 local warnFocusedDefense		= mod:NewTargetAnnounce(116778, 4)
---Sparks (Heroic Only)
---local warnFocusedEnergy			= mod:NewTargetAnnounce(116829, 4)
 --Jan-xi and Qin-xi
 local warnBossesActivatedSoon	= mod:NewPreWarnAnnounce("ej5726", 10, 3, 116815)
 local warnBossesActivated		= mod:NewSpellAnnounce("ej5726", 3, 116815)
@@ -229,7 +227,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 116556 then
 		warnEnergizingSmash:Show()
 	end
-	if (self.vb.comboMob or "") == uId then
+	if (self.vb.comboMob or "") == UnitGUID(uId) then
 		if spellId == 116968 then--Arc Left
 			self.vb.comboCount = self.vb.comboCount + 1
 			if self.Options.CountOutCombo and self.vb.comboCount < 11 then
@@ -282,9 +280,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 end
 
 function mod:UNIT_POWER_FREQUENT(uId)
-	if self.vb.comboMob then
-		if UnitPower(uId) == 18 and (UnitGUID("target") or UnitGUID("targettarget") or UnitGUID("focus") or "") == UnitGUID(uId) then
-			self.vb.comboMob = uId
+	if (uId == "target" or uId == "targettarget") and not UnitIsFriend(uId, "player") and not self.vb.comboMob then
+		if UnitPower(uId) == 18 then
+			self.vb.comboMob = UnitGUID(uId)
+			specWarnCombo:Show()
+		end
+	--split because we want to prefer target over focus. IE I focus other boss while targeting one i'm tanking. previous method bugged out and gave me combo warnings for my focus and NOT my target
+	--Now target should come first and focus should be af allback IF not targeting a boss.
+	elseif (uId == "focus") and not UnitIsFriend(uId, "player") and not self.vb.comboMob then
+		if UnitPower(uId) == 18 then
+			self.vb.comboMob = UnitGUID(uId)
 			specWarnCombo:Show()
 		end
 	end
