@@ -28,7 +28,7 @@ local warnLaserBurn				= mod:NewTargetAnnounce("OptionVersion2", 144459, 2, nil,
 local warnMortarCannon			= mod:NewSpellAnnounce("OptionVersion2", 144316, 3, nil, false)--Could not get target scanning working.
 local warnCrawlerMine			= mod:NewSpellAnnounce(144673, 3)
 local warnIgniteArmor			= mod:NewStackAnnounce(144467, 2, nil, mod:IsTank())--Seems redundant to count debuffs and warn for breath, so just do debuffs
-local warnRicochet				= mod:NewSpellAnnounce(144356, 3)
+local warnRicochet				= mod:NewSpellAnnounce(144356, 3, 144327)
 --Siege Mode
 local warnSeismicActivity		= mod:NewSpellAnnounce(144483, 2)--A mere activation of phase
 local warnExplosiveTar			= mod:NewSpellAnnounce(144492, 3)
@@ -57,7 +57,7 @@ local timerIgniteArmorCD		= mod:NewCDTimer(10, 144467, nil, mod:IsTank())
 local timerLaserBurnCD			= mod:NewCDTimer("OptionVersion2", 11.5, 144459, nil, false)--Also off by default(bar spam)
 local timerBorerDrillCD			= mod:NewCDTimer(17, 144218)
 local timerCrawlerMineCD		= mod:NewCDTimer(30, 144673)
-local timerRicochetCD			= mod:NewCDTimer(15, 144356)
+local timerRicochetCD			= mod:NewCDTimer(15, 144356, nil, nil, nil, 144327)
 --Siege Mode
 local timerSiegeModeCD			= mod:NewNextTimer(114, 84974, nil, nil, "timerSiegeModeCD")--Wish spell name was a litlte shorter but still better than localizing
 local timerCutterLaser			= mod:NewBuffFadesTimer(10, 146325)--Spell tooltip says 15 but combat log showed 10
