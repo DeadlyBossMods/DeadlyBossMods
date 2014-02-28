@@ -263,7 +263,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.woundCount = self.vb.woundCount + 1
 			timerWoundedPrideCD:Start()
 		end
-	elseif args:IsSpellID(144574, 144636) then--Locational spellids, 2 from 10 man, 25 man will use all 4 where we can get other 2
+	elseif args:IsSpellID(144574, 144636, 144683, 144684) then
 		warnCorruptedPrison:CombinedShow(0.5, args.destName)
 		specWarnCorruptedPrison:DelayedShow(0.5)
 		if args:IsPlayer() then
