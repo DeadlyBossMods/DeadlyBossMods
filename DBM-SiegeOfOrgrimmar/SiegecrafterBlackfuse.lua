@@ -15,6 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_SUMMON 143641",
 	"SPELL_AURA_APPLIED 145365 143385 145444 144210 144236 145269 145580 144466 143856",
 	"SPELL_AURA_APPLIED_DOSE 143385 145444 143856",
+	"SPELL_AURA_REFRESS 143385",
 	"SPELL_AURA_REMOVED 143385 144236 145269",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -272,6 +273,17 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REFRESS(args)
+	local spellId = args.spellId
+	if spellId == 143385 and args:IsDestTypePlayer() then
+		local amount = args.amount or 1
+		warnElectroStaticCharge:Show(args.destName, amount)
+		timerElectroStaticCharge:Start(args.destName)
+		timerElectroStaticChargeCD:Start()
+		countdownElectroStatic:Start()
+	end
+end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
