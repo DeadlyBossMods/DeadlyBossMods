@@ -2898,6 +2898,9 @@ do
 			end
 			if sameRealm and DBM.Options.WorldBossAlert then
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(name, floor(health)))
+				if DBM.Options.DebugMode then
+					print("DBM Debug: World Boss Engage sync recieved from "..sender)
+				end
 			end
 		end
 		
@@ -2928,9 +2931,10 @@ do
 					end
 				end
 			end
-			if sameRealm then
-				if DBM.Options.WorldBossAlert then
-					DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(name))
+			if sameRealm and DBM.Options.WorldBossAlert then
+				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(name))
+				if DBM.Options.DebugMode then
+					print("DBM Debug: World Boss Defeat sync recieved from "..sender)
 				end
 			end
 		end
@@ -2960,6 +2964,9 @@ do
 			end
 			if sameRealm and DBM.Options.WorldBossAlert then
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(name, floor(health)))
+				if DBM.Options.DebugMode then
+					print("DBM Debug: World Boss Engage sync recieved from "..sender)
+				end
 			end
 		end
 		
@@ -2988,6 +2995,9 @@ do
 			end
 			if sameRealm and DBM.Options.WorldBossAlert then
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(name))
+				if DBM.Options.DebugMode then
+					print("DBM Debug: World Boss Defeat sync recieved from "..sender)
+				end
 			end
 		end
 
