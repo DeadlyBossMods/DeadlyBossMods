@@ -118,7 +118,6 @@ function mod:OnCombatStart(delay)
 	self.vb.addsCount = 0
 	self.vb.firstTower = 0
 	self.vb.pulseCount = 0
---	timerAddsCD:Start(6.5-delay)--First wave actually seems to have a couple second variation, since timer is so short anyways, just disabling it
 	if not self:IsDifficulty("heroic10", "heroic25") then
 		timerTowerCD:Start(116.5-delay)
 	else
@@ -139,28 +138,28 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 147688 and UnitPower("player", 10) > 0 then--Tower Spell
+	if spellId == 147688 and (not DBM.Options.DontShowFarWarnings or UnitPower("player", 10) > 0) then--Tower Spell
 		warnArcingSmash:Show()
 		specWarnArcingSmash:Show()
-	elseif spellId == 146757 and UnitPower("player", 10) == 0 then
-		local source = args.sourceName
+	elseif spellId == 146757 and (not DBM.Options.DontShowFarWarnings or UnitPower("player", 10) == 0) then
+		local source = args.sourceGUID
 		warnChainHeal:Show()
-		if source == UnitName("target") or source == UnitName("focus") then 
-			specWarnChainheal:Show(source)
+		if source == UnitGUID("target") or source == UnitGUID("focus") then 
+			specWarnChainheal:Show(args.sourceName)
 		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 147824 and UnitPower("player", 10) > 0 and self:AntiSpam(3, 2) then--Tower Spell
+	if spellId == 147824 and (not DBM.Options.DontShowFarWarnings or UnitPower("player", 10) > 0) and self:AntiSpam(3, 2) then--Tower Spell
 		warnMuzzleSpray:Show()
 		specWarnMuzzleSpray:Show()
-	elseif spellId == 146769 and UnitPower("player", 10) == 0 then
+	elseif spellId == 146769 and (not DBM.Options.DontShowFarWarnings or UnitPower("player", 10) == 0) then
 		warnCrushersCall:Show()
 		specWarnCrushersCall:Show()
 		timerCrushersCallCD:Start()
-	elseif spellId == 146849 and UnitPower("player", 10) == 0 then
+	elseif spellId == 146849 and (not DBM.Options.DontShowFarWarnings or UnitPower("player", 10) == 0) then
 		warnShatteringCleave:Show()
 		timerShatteringCleaveCD:Start()
 	end
@@ -180,10 +179,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 2)
 		end
-	elseif spellId == 147328 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
+	elseif spellId == 147328 and (not DBM.Options.DontShowFarWarnings or UnitPower("player", 10) == 0) then
 		warnWarBanner:Show()
 		specWarnWarBanner:Show()
-	elseif spellId == 146899 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
+	elseif spellId == 146899 and (not DBM.Options.DontShowFarWarnings or UnitPower("player", 10) == 0) then
 		warnFracture:Show(args.destName)
 		specWarnFracture:Show(args.destName)
 	elseif spellId == 147042 then
