@@ -3669,6 +3669,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		--set mod default info
 		savedDifficulty, difficultyText, difficultyIndex, LastGroupSize = DBM:GetCurrentInstanceDifficulty()
 		local name = mod.combatInfo.name
+		local modId = mod.id
 		if C_Scenario.IsInScenario() then
 			mod.inScenario = true
 		end
@@ -3776,7 +3777,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			end
 			--send "C" sync
 			if not synced then
-				sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision)
+				sendSync("C", (delay or 0).."\t"..modId.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision)
 			end
 			--show bigbrother check
 			if DBM.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
@@ -3810,12 +3811,12 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			end
 			--show hotfix notify
 			if mod.hotfixNoticeRev then
-				sendSync("HF", mod.id.."\t"..mod.hotfixNoticeRev)
+				sendSync("HF", modId.."\t"..mod.hotfixNoticeRev)
 			end
 		elseif DBM.Options.ShowRecoveryMessage then--show timer recovery message
 			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
 		end
-		if savedDifficulty == "worldboss" and LastInstanceMapID ~= 1 and LastInstanceMapID ~= 0 and LastInstanceMapID ~= 974 then--Any outdoor boss except Omen and Greench and DMF
+		if savedDifficulty == "worldboss" and modId ~= "Omen" and modId ~= "Greench" and modId ~= "Moonfang" then--Any outdoor boss except Omen and Greench and MoonFang
 			if lastBossEngage[name..playerRealm] and GetTime() - lastBossEngage[name..playerRealm] < 10 then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 			lastBossEngage[name..playerRealm] = GetTime()--Update last engage time, that way we ignore our own sync
 			if IsInGuild() then
@@ -3893,6 +3894,7 @@ function DBM:EndCombat(mod, wipe)
 			return--Don't run any further, stats are nil on a bad load so rest of this code will also error out.
 		end
 		local name = mod.combatInfo.name
+		local modId = mod.id
 		if wipe then
 			mod.lastWipeTime = GetTime()
 			--Fix for "attempt to perform arithmetic on field 'pull' (a nil value)" (which was actually caused by stats being nil, so we never did getTime on pull, fixing one SHOULD fix the other)
@@ -4025,7 +4027,7 @@ function DBM:EndCombat(mod, wipe)
 				sendWhisper(k, msg)
 			end
 			fireEvent("kill", mod)
-			if savedDifficulty == "worldboss" and LastInstanceMapID ~= 1 and LastInstanceMapID ~= 0 and LastInstanceMapID ~= 974 then--Any outdoor boss except Omen and Greench (last thing we want is to sync those 2)
+			if savedDifficulty == "worldboss" and modId ~= "Omen" and modId ~= "Greench" and modId ~= "Moonfang" then--Any outdoor boss except Omen and Greench and Moonfang
 				if lastBossDefeat[name..playerRealm] and GetTime() - lastBossDefeat[name..playerRealm] < 10 then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 				lastBossDefeat[name..playerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
 				if IsInGuild() then
@@ -4315,7 +4317,7 @@ function DBM:SendBGTimers(target)
 end
 
 function DBM:SendCombatInfo(mod, target)
-	return SendAddonMessage("D4", ("CI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
+	return SendAddonMessage("D4", ("CI\t%s\t%s"):format(modId, GetTime() - mod.combatInfo.pull), "WHISPER", target)
 end
 
 function DBM:SendTimerInfo(mod, target)
@@ -4329,7 +4331,7 @@ function DBM:SendTimerInfo(mod, target)
 			end
 			timeLeft = totalTime - elapsed
 			if timeLeft > 0 and totalTime > 0 then
-				SendAddonMessage("D4", ("TI\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId), "WHISPER", target)
+				SendAddonMessage("D4", ("TI\t%s\t%s\t%s\t%s"):format(modId, timeLeft, totalTime, uId), "WHISPER", target)
 			end
 		end
 	end
