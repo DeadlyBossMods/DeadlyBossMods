@@ -2896,7 +2896,7 @@ do
 					end
 				end
 			end
-			if sameRealm and DBM.Options.WorldBossAlert then
+			if sameRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(name, floor(health)))
 				if DBM.Options.DebugMode then
 					print("DBM Debug: World Boss Engage sync recieved from "..sender)
@@ -2931,7 +2931,7 @@ do
 					end
 				end
 			end
-			if sameRealm and DBM.Options.WorldBossAlert then
+			if sameRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(name))
 				if DBM.Options.DebugMode then
 					print("DBM Debug: World Boss Defeat sync recieved from "..sender)
@@ -2962,7 +2962,7 @@ do
 					SendAddonMessage("D4", "WBE\t"..name.."\t"..realm.."\t"..health, "GUILD")
 				end
 			end
-			if sameRealm and DBM.Options.WorldBossAlert then
+			if sameRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(name, floor(health)))
 				if DBM.Options.DebugMode then
 					print("DBM Debug: World Boss Engage sync recieved from "..sender)
@@ -2993,7 +2993,7 @@ do
 					SendAddonMessage("D4", "WBD\t"..name.."\t"..realm, "GUILD")
 				end
 			end
-			if sameRealm and DBM.Options.WorldBossAlert then
+			if sameRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(name))
 				if DBM.Options.DebugMode then
 					print("DBM Debug: World Boss Defeat sync recieved from "..sender)
@@ -3573,7 +3573,7 @@ function checkWipe(confirm)
 		local wipe = 1 -- 0: no wipe, 1: normal wipe, 2: wipe by UnitExists check.
 		if IsInScenarioGroup() or (difficultyIndex == 11) or (difficultyIndex == 12) then -- Scenario mod uses special combat start and must be enabled before sceniro end. So do not wipe.
 			wipe = 0
-		elseif IsEncounterInProgress() then -- Encounter Progress marked, you obiously combat whth boss. So do not Wipe
+		elseif IsEncounterInProgress() then -- Encounter Progress marked, you obviously in combat with boss. So do not Wipe
 			wipe = 0
 		elseif savedDifficulty == "worldboss" and UnitIsDeadOrGhost("player") then -- On dead or ghost, unit combat status detection would be fail. If you ghost in instance, that means wipe. But in worldboss, ghost means not wipe. So do not wipe.
 			wipe = 0
