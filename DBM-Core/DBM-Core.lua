@@ -167,6 +167,7 @@ DBM.DefaultOptions = {
 	ArrowPoint = "TOP",
 	-- global boss mod settings (overrides mod-specific settings for some options)
 	DontShowBossAnnounces = false,
+	DontShowFarWarnings = true,
 	DontSendBossWhispers = false,
 	DontSetIcons = false,
 	DontShowRangeFrame = false,
@@ -5196,6 +5197,7 @@ do
 	local rangeUpdated = {}
 
 	function bossModPrototype:CheckTankDistance(cidOrGuid, distance, defaultReturn)
+		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
 		if rangeCache[cidOrGuid] and (GetTime() - (rangeUpdated[cidOrGuid] or 0)) < 2 then -- return same range within 2 sec call
 			if rangeCache[cidOrGuid] > distance then
 				return false
