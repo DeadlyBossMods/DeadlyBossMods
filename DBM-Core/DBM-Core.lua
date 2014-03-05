@@ -2896,7 +2896,7 @@ do
 				end
 			end
 			if sameRealm and DBM.Options.WorldBossAlert then
-				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(name, health))
+				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(name, floor(health)))
 			end
 		end
 		
@@ -2958,7 +2958,7 @@ do
 				end
 			end
 			if sameRealm and DBM.Options.WorldBossAlert then
-				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(name, health))
+				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(name, floor(health)))
 			end
 		end
 		
