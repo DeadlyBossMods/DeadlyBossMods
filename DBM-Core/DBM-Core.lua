@@ -4326,7 +4326,7 @@ function DBM:SendBGTimers(target)
 end
 
 function DBM:SendCombatInfo(mod, target)
-	return SendAddonMessage("D4", ("CI\t%s\t%s"):format(modId, GetTime() - mod.combatInfo.pull), "WHISPER", target)
+	return SendAddonMessage("D4", ("CI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
 end
 
 function DBM:SendTimerInfo(mod, target)
@@ -4340,7 +4340,7 @@ function DBM:SendTimerInfo(mod, target)
 			end
 			timeLeft = totalTime - elapsed
 			if timeLeft > 0 and totalTime > 0 then
-				SendAddonMessage("D4", ("TI\t%s\t%s\t%s\t%s"):format(modId, timeLeft, totalTime, uId), "WHISPER", target)
+				SendAddonMessage("D4", ("TI\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId), "WHISPER", target)
 			end
 		end
 	end
