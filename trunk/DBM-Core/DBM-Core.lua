@@ -2887,6 +2887,9 @@ do
 			--Begin sync pass on to realid since this was a guild sync.
 			if (lastBossEngage[name..realm.."PASSED"] and GetTime() - lastBossEngage[name..realm.."PASSED"] < 10) or not lastBossEngage[name..realm.."PASSED"] then
 				lastBossEngage[name..realm.."PASSED"] = GetTime()
+				if DBM.Options.DebugMode then
+					print("DBM Debug: World Boss Engage sync being passed to battle.net friends")
+				end
 				local _, numBNetOnline = BNGetNumFriends()
 				for i = 1, numBNetOnline do
 					local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
@@ -2922,6 +2925,9 @@ do
 			--Begin sync pass on to realid since this was a guild sync.
 			if (lastBossDefeat[name..realm.."PASSED"] and GetTime() - lastBossDefeat[name..realm.."PASSED"] < 10) or not lastBossDefeat[name..realm.."PASSED"] then
 				lastBossDefeat[name..realm.."PASSED"] = GetTime()
+				if DBM.Options.DebugMode then
+					print("DBM Debug: World Boss Defeat sync being passed to battle.net friends")
+				end
 				local _, numBNetOnline = BNGetNumFriends()
 				for i = 1, numBNetOnline do
 					local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
@@ -2958,6 +2964,9 @@ do
 			if (lastBossEngage[name..realm.."PASSED"] and GetTime() - lastBossEngage[name..realm.."PASSED"] < 10) or not lastBossEngage[name..realm.."PASSED"] then
 				lastBossEngage[name..realm.."PASSED"] = GetTime()
 				if IsInGuild() then--Sync from realid, send to GUILD
+					if DBM.Options.DebugMode then
+						print("DBM Debug: World Boss Engage sync being passed to guild")
+					end
 					SendAddonMessage("D4", "WBE\t"..name.."\t"..realm.."\t"..health, "GUILD")
 				end
 			end
@@ -2989,6 +2998,9 @@ do
 			if (lastBossDefeat[name..realm.."PASSED"] and GetTime() - lastBossDefeat[name..realm.."PASSED"] < 10) or not lastBossDefeat[name..realm.."PASSED"] then
 				lastBossDefeat[name..realm.."PASSED"] = GetTime()
 				if IsInGuild() then--Sync from realid, send to GUILD
+					if DBM.Options.DebugMode then
+						print("DBM Debug: World Boss Defeat sync being passed to guild")
+					end
 					SendAddonMessage("D4", "WBD\t"..name.."\t"..realm, "GUILD")
 				end
 			end
