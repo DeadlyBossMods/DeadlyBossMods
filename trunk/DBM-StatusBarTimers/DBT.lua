@@ -611,7 +611,6 @@ function barPrototype:Update(elapsed)
 	local currentStyle = obj.options.Style
 	local sparkEnabled = currentStyle ~= "BigWigs" and obj.options.Spark
 	local isMoving = self.moving
-	local isFlashing = self.flashing
 	self.timer = self.timer - elapsed
 	local timerValue = self.timer
 	local totaltimeValue = self.totalTime
@@ -648,10 +647,10 @@ function barPrototype:Update(elapsed)
 	elseif self.fadingIn then
 		self.fadingIn = nil
 	end
-	if timerValue <= 7.75 and not isFlashing and obj.options.Flash and currentStyle ~= "BigWigs" then
+	if timerValue <= 7.75 and not self.flashing and obj.options.Flash and currentStyle ~= "BigWigs" then
 		self.flashing = true
 		self.ftimer = 0
-	elseif isFlashing and timerValue > 7.75 then
+	elseif self.flashing and timerValue > 7.75 then
 		self.flashing = nil
 		self.ftimer = nil
 	end
@@ -662,7 +661,7 @@ function barPrototype:Update(elapsed)
 	else
 		spark:SetAlpha(0)
 	end
-	if isFlashing then
+	if self.flashing then
 		local ftime = self.ftimer % 1.25
 		if ftime >= 0.5 then
 			texture:SetAlpha(1)
