@@ -3838,7 +3838,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
 		end
 		if savedDifficulty == "worldboss" and modId ~= "Omen" and modId ~= "Greench" and modId ~= "Moonfang" then--Any outdoor boss except Omen and Greench and MoonFang
-			if lastBossEngage[name..playerRealm] and GetTime() - lastBossEngage[name..playerRealm] < 10 then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+			if lastBossEngage[name..playerRealm] and (GetTime() - lastBossEngage[name..playerRealm] < 10) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 			lastBossEngage[name..playerRealm] = GetTime()--Update last engage time, that way we ignore our own sync
 			if IsInGuild() then
 				SendAddonMessage("D4", "WBE\t"..name.."\t"..playerRealm.."\t"..startHp, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
@@ -4049,7 +4049,7 @@ function DBM:EndCombat(mod, wipe)
 			end
 			fireEvent("kill", mod)
 			if savedDifficulty == "worldboss" and modId ~= "Omen" and modId ~= "Greench" and modId ~= "Moonfang" then--Any outdoor boss except Omen and Greench and Moonfang
-				if lastBossDefeat[name..playerRealm] and GetTime() - lastBossDefeat[name..playerRealm] < 10 then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+				if lastBossDefeat[name..playerRealm] and (GetTime() - lastBossDefeat[name..playerRealm] < 10) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 				lastBossDefeat[name..playerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
 				if IsInGuild() then
 					SendAddonMessage("D4", "WBD\t"..name.."\t"..playerRealm, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
