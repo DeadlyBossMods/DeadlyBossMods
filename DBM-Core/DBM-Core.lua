@@ -2869,7 +2869,7 @@ do
 		end
 
 		syncHandlers["WBE"] = function(sender, name, realm, health)
-			if lastBossEngage[name..realm] and GetTime() - lastBossEngage[name..realm] < 10 then return end--We recently got a sync about this boss on this realm, so do nothing.
+			if lastBossEngage[name..realm] and (GetTime() - lastBossEngage[name..realm] < 10) then return end--We recently got a sync about this boss on this realm, so do nothing.
 			lastBossEngage[name..realm] = GetTime()
 			--Needs some realm checking (even for people same guild, to keep realid syncs matched up.
 			local sameRealm = false
@@ -2907,7 +2907,7 @@ do
 		end
 		
 		syncHandlers["WBD"] = function(sender, name, realm)
-			if lastBossDefeat[name..realm] and GetTime() - lastBossDefeat[name..realm] < 10 then return end
+			if lastBossDefeat[name..realm] and (GetTime() - lastBossDefeat[name..realm] < 10) then return end
 			lastBossDefeat[name..realm] = GetTime()
 			--Needs some realm checking.
 			local sameRealm = false
@@ -2945,7 +2945,7 @@ do
 		end
 
 		whisperSyncHandlers["WBE"] = function(sender, name, realm, health)
-			if lastBossEngage[name..realm] and GetTime() - lastBossEngage[name..realm] < 10 then return end
+			if lastBossEngage[name..realm] and (GetTime() - lastBossEngage[name..realm] < 10) then return end
 			lastBossEngage[name..realm] = GetTime()
 			--Needs some realm checking.
 			local sameRealm = false
@@ -2979,7 +2979,7 @@ do
 		end
 		
 		whisperSyncHandlers["WBD"] = function(sender, name, realm)
-			if lastBossDefeat[name..realm] and GetTime() - lastBossDefeat[name..realm] < 10 then return end
+			if lastBossDefeat[name..realm] and (GetTime() - lastBossDefeat[name..realm] < 10) then return end
 			lastBossDefeat[name..realm] = GetTime()
 			--Needs some realm checking.
 			local sameRealm = false
