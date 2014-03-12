@@ -2889,7 +2889,7 @@ do
 				local value = lastBossEngage[name..realm.."PASSED"] or "nil"
 				print("DBM Debug: lastBossEngage["..name..realm.."PASSED] is "..value)
 			end
-			if (lastBossEngage[name..realm.."PASSED"] and (GetTime() - lastBossEngage[name..realm.."PASSED"] < 10)) or not lastBossEngage[name..realm.."PASSED"] then
+			if (lastBossEngage[name..realm.."PASSED"] and (GetTime() - lastBossEngage[name..realm.."PASSED"]) < 10) or not lastBossEngage[name..realm.."PASSED"] then
 				lastBossEngage[name..realm.."PASSED"] = GetTime()
 				if DBM.Options.DebugMode then
 					print("DBM Debug: World Boss Engage sync being passed to battle.net friends")
@@ -2931,7 +2931,7 @@ do
 				local value = lastBossDefeat[name..realm.."PASSED"] or "nil"
 				print("DBM Debug: lastBossDefeat["..name..realm.."PASSED] is "..value)
 			end
-			if (lastBossDefeat[name..realm.."PASSED"] and (GetTime() - lastBossDefeat[name..realm.."PASSED"] < 10)) or not lastBossDefeat[name..realm.."PASSED"] then
+			if (lastBossDefeat[name..realm.."PASSED"] and (GetTime() - lastBossDefeat[name..realm.."PASSED"]) < 10) or not lastBossDefeat[name..realm.."PASSED"] then
 				lastBossDefeat[name..realm.."PASSED"] = GetTime()
 				if DBM.Options.DebugMode then
 					print("DBM Debug: World Boss Defeat sync being passed to battle.net friends")
@@ -2973,7 +2973,7 @@ do
 				local value = lastBossEngage[name..realm.."PASSED"] or "nil"
 				print("DBM Debug: lastBossEngage["..name..realm.."PASSED] is "..value)
 			end
-			if (lastBossEngage[name..realm.."PASSED"] and (GetTime() - lastBossEngage[name..realm.."PASSED"] < 10)) or not lastBossEngage[name..realm.."PASSED"] then
+			if (lastBossEngage[name..realm.."PASSED"] and (GetTime() - lastBossEngage[name..realm.."PASSED"]) < 10) or not lastBossEngage[name..realm.."PASSED"] then
 				lastBossEngage[name..realm.."PASSED"] = GetTime()
 				if IsInGuild() then--Sync from realid, send to GUILD
 					if DBM.Options.DebugMode then
@@ -3012,7 +3012,7 @@ do
 				local value = lastBossDefeat[name..realm.."PASSED"] or "nil"
 				print("DBM Debug: lastBossDefeat["..name..realm.."PASSED] is "..value)
 			end
-			if (lastBossDefeat[name..realm.."PASSED"] and (GetTime() - lastBossDefeat[name..realm.."PASSED"] < 10)) or not lastBossDefeat[name..realm.."PASSED"] then
+			if (lastBossDefeat[name..realm.."PASSED"] and (GetTime() - lastBossDefeat[name..realm.."PASSED"]) < 10) or not lastBossDefeat[name..realm.."PASSED"] then
 				lastBossDefeat[name..realm.."PASSED"] = GetTime()
 				if IsInGuild() then--Sync from realid, send to GUILD
 					if DBM.Options.DebugMode then
