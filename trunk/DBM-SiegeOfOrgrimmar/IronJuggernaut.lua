@@ -41,6 +41,7 @@ local specWarnIgniteArmor		= mod:NewSpecialWarningStack(144467, mod:IsTank(), 3)
 local specWarnIgniteArmorOther	= mod:NewSpecialWarningTarget(144467, mod:IsTank())
 local specWarnBorerDrill		= mod:NewSpecialWarningSpell(144218, false, nil, nil, 2)
 local specWarnBorerDrillMove	= mod:NewSpecialWarningMove(144218)
+local specWarnRicochet				= mod:NewSpecialWarningSpell(144356, false, nil, nil, 3)
 --Siege Mode
 local specWarnSeismicActivity	= mod:NewSpecialWarningSpell(144483, nil, nil, nil, 2)
 local specWarnShockPulse		= mod:NewSpecialWarningCount(144485, nil, nil, nil, 2)
@@ -229,6 +230,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif spellId == 144356 then
 		warnRicochet:Show()
+		specWarnRicochet:Show()
 		timerRicochetCD:Start()
 	end
 end
