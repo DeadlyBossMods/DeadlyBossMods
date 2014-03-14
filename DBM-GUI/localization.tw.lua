@@ -200,6 +200,7 @@ L.BigBrotherAnnounceToRaid		= "通告BigBrother的結果給團隊"
 
 L.Area_SpamFilter_Outgoing		= "整體過濾選項"
 L.SpamBlockNoShowAnnounce		= "不顯示提示或播放警告音效"
+L.DontShowFarWarnings			= "不發送距離過遠的事件提示/計時器"
 L.SpamBlockNoSendWhisper		= "不發送密語給其他玩家"
 L.SpamBlockNoSetIcon			= "不設置標記在目標上"
 L.SpamBlockNoRangeFrame			= "不顯示距離框架"
