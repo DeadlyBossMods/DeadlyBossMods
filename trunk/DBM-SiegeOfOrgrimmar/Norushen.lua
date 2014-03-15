@@ -14,6 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 145216 144482 144654 144628 144649 144657 146707",
 	"SPELL_AURA_APPLIED 144514 145226 144849 144850 144851",
+	"SPELL_AURA_APPLIED_DOSE 146124",
 	"SPELL_AURA_REMOVED 145226 144849 144850 144851",
 	"SPELL_DAMAGE 145073",
 	"UNIT_DIED",
@@ -34,7 +35,7 @@ mod:SetBossHealthInfo(
 )
 
 --Amalgam of Corruption
-local warnUnleashedAnger				= mod:NewSpellAnnounce(145216, 2, nil, mod:IsTank())
+local warnSelfDoubt						= mod:NewStackAnnounce(146124, 2, nil, mod:IsTank())
 local warnBlindHatred					= mod:NewSpellAnnounce(145226, 3)
 local warnManifestation					= mod:NewSpellAnnounce("ej8232", 1, 147082)
 local warnResidualCorruption			= mod:NewSpellAnnounce(145073)
@@ -51,7 +52,8 @@ local warnHurlCorruption				= mod:NewCastAnnounce(144649, 4)
 local warnPiercingCorruption			= mod:NewSpellAnnounce(144657, 3)
 
 --Amalgam of Corruption
-local specWarnUnleashedAnger			= mod:NewSpecialWarningSpell(145216, mod:IsTank())
+local specWarnUnleashedAnger			= mod:NewSpecialWarningSpell(145216, mod:IsTank())--Cast warning, not stack. for active mitigation timing.
+local specWarnSelfDoubtOther			= mod:NewSpecialWarningTaunt(146124, mod:IsTank())--Stack warning, to taunt off other tank
 local specWarnBlindHatred				= mod:NewSpecialWarningSpell(145226, nil, nil, nil, 2)
 local specWarnManifestation				= mod:NewSpecialWarningSwitch("ej8232", not mod:IsHealer())--Unleashed Manifestation of Corruption
 local specWarnManifestationSoon			= mod:NewSpecialWarningSoon("ej8232", not mod:IsHealer(), nil, nil, 2)--WHen the ones die inside they don't spawn right away, there is like a 5 second lag.
@@ -157,7 +159,6 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 145216 then
 		self.vb.unleashedAngerCast = self.vb.unleashedAngerCast + 1
-		warnUnleashedAnger:Show(self.vb.unleashedAngerCast)
 		specWarnUnleashedAnger:Show()
 		if self.vb.unleashedAngerCast < 3 then
 			timerUnleashedAngerCD:Start(nil, self.vb.unleashedAngerCast+1)
@@ -204,8 +205,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownLookWithin:Start()
 	elseif spellId == 146703 and args:IsPlayer() and self:AntiSpam(3, 2) then
 		specWarnBottomlessPitMove:Show()
+	elseif spellId == 146124 then
+		local amount = args.amount or 1
+		warnSelfDoubt:Show(amount)
+		if not args:IsPlayer() and amount >= 3 then
+			specWarnSelfDoubtOther:Show(args.destName)
+		end
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId

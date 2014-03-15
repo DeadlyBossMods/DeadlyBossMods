@@ -67,7 +67,7 @@ local specWarnAnnihilate			= mod:NewSpecialWarningSpell("OptionVersion3", 144969
 --Stage Two: Power of Y'Shaarj
 local specWarnWhirlingCorruption	= mod:NewSpecialWarningCount(144985)--Two options important, for distinction and setting custom sounds for empowered one vs non empowered one, don't merge
 local specWarnGrippingDespair		= mod:NewSpecialWarningStack(145183, mod:IsTank(), 4)--Unlike whirling and desecrate, doesn't need two options, distinction isn't important for tank swaps.
-local specWarnGrippingDespairOther	= mod:NewSpecialWarningTarget(145183, mod:IsTank())
+local specWarnGrippingDespairOther	= mod:NewSpecialWarningTaunt(145183, mod:IsTank())
 local specWarnTouchOfYShaarj		= mod:NewSpecialWarningSwitch("OptionVersion3", 145071, not mod:IsHealer())
 local specWarnTouchInterrupt		= mod:NewSpecialWarningInterrupt(145599, false)
 --Starge Three: MY WORLD
@@ -115,6 +115,7 @@ mod:AddBoolOption("yellMaliceFading", false)
 mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
 mod:AddSetIconOption("SetIconOnMC", 145071, false)
 mod:AddSetIconOption("SetIconOnMalice", 147209, false)
+mod:AddArrowOption("ShowDesecrateArrow", 144748, false)
 mod:AddBoolOption("InfoFrame", mod:IsHealer())
 --mod:AddBoolOption("RangeFrame")
 
@@ -168,6 +169,10 @@ function mod:DesecrateTarget(targetname, uId)
 		yellDesecrate:Yell()
 	elseif self.vb.phase ~= 1 and self:CheckNearby(20, targetname) then
 		specWarnDesecrateNear:Show(targetname)
+		if self.Options.ShowDesecrateArrow then
+			local x, y = GetPlayerMapPosition(targetname)--Map should already be correct from CheckNearby so don't need to do SetMapToCurrentZone
+			DBM.Arrow:ShowRunAway(x, y, 15, 5)--Maybe adjust arrow run range from 15 to 20
+		end
 	else
 		if UnitPower("boss1") < 75 then
 			specWarnDesecrate:Show(self.vb.desecrateCount)
@@ -197,6 +202,9 @@ function mod:OnCombatEnd()
 --[[	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end--]]
+	if self.Options.ShowDesecrateArrow then
+		DBM.Arrow:Hide()
+	end
 	hideInfoFrame()
 end
 
