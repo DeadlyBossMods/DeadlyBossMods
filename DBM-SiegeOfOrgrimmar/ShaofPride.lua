@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 )
 
 --Sha of Pride
-local warnGiftOfTitans			= mod:NewTargetAnnounce("OptionVersion2", 144359, 1, nil, false)
+local warnGiftOfTitans			= mod:NewTargetAnnounce("OptionVersion2", 144359, 1, nil, mod:IsHealer())
 local warnSwellingPride			= mod:NewCountAnnounce(144400, 3)
 local warnMark					= mod:NewTargetAnnounce(144351, 3, nil, mod:IsHealer())
 local warnWoundedPride			= mod:NewTargetAnnounce(144358, 4, nil, mod:IsTank() or mod:IsHealer())
@@ -38,7 +38,7 @@ local warnManifestation			= mod:NewSpellAnnounce("ej8262", 3, "Interface\\Icons\
 local warnMockingBlast			= mod:NewSpellAnnounce(144379, 3, nil, false)
 
 --Sha of Pride
-local specWarnGiftOfTitans		= mod:NewSpecialWarningYou(144359)
+local specWarnGiftOfTitans		= mod:NewSpecialWarningYou("OptionVersion2", 144359, mod:IsHealer())
 local yellGiftOfTitans			= mod:NewYell("OptionVersion2", 146594, nil, false)
 local specWarnSwellingPride		= mod:NewSpecialWarningCount(144400, nil, nil, nil, 2)
 local specWarnWoundedPride		= mod:NewSpecialWarningSpell(144358, mod:IsTank())
