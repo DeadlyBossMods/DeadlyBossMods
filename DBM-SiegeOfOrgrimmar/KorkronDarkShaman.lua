@@ -40,7 +40,7 @@ local warnIronPrison				= mod:NewTargetAnnounce(144330, 3)
 
 --Earthbreaker Haromm
 local specWarnFroststormStrike		= mod:NewSpecialWarningStack(144215, mod:IsTank(), 5)
-local specWarnFroststormStrikeOther	= mod:NewSpecialWarningTarget(144215, mod:IsTank())
+local specWarnFroststormStrikeOther	= mod:NewSpecialWarningTaunt(144215, mod:IsTank())
 local specWarnFoulStreamYou			= mod:NewSpecialWarningYou(144090)
 local yellFoulStream				= mod:NewYell(144090)
 local specWarnFoulStream			= mod:NewSpecialWarningSpell(144090, nil, nil, nil, 2)
@@ -225,7 +225,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellIronPrisonFades:Schedule(56, playerName, 4)
 			yellIronPrisonFades:Schedule(55, playerName, 5)
 		end
-	elseif spellId == 144215 then
+	elseif spellId == 144215 and self:CheckTankDistance(args.sourceGUID, 50) then
 		local amount = args.amount or 1
 		timerFroststormStrike:Start(args.destName)
 		if amount % 2 == 0 or amount >= 5 then

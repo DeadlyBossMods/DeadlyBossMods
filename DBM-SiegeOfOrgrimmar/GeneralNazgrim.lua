@@ -49,7 +49,7 @@ local warnHuntersMark				= mod:NewTargetAnnounce(143882, 3)
 --Nazgrim Core Abilities
 local specWarnAdds					= mod:NewSpecialWarningCount("ej7920", not mod:IsHealer())
 local specWarnSunder				= mod:NewSpecialWarningStack(143494, mod:IsTank(), 4)
-local specWarnSunderOther			= mod:NewSpecialWarningTarget(143494, mod:IsTank())
+local specWarnSunderOther			= mod:NewSpecialWarningTaunt(143494, mod:IsTank())
 local specWarnExecute				= mod:NewSpecialWarningSpell(143502, mod:IsTank(), nil, nil, 3)
 local specWarnBerserkerStance		= mod:NewSpecialWarningSpell(143594, mod:IsDps())--In case you want to throttle damage some
 local specWarnDefensiveStance		= mod:NewSpecialWarningSpell(143593, nil, nil, nil, 3)--Definitely OFF DPS
