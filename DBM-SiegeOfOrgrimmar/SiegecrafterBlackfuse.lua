@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71504)--71591 Automated Shredder
 mod:SetEncounterID(1601)
 mod:SetZone()
-mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Not sure how many mines spawn on 25 man, even more of them on heroic 25, so maybe all 8 used?
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--More mines than ew can give icons to on 25 man. it uses all 8 and then runs out on heroic :\
 
 mod:RegisterCombat("combat")
 
@@ -91,6 +91,8 @@ local soundLaserFixate					= mod:NewSound(143828, false)
 
 mod:AddInfoFrameOption("ej8202")
 mod:AddSetIconOption("SetIconOnMines", "ej8212", false, true)
+mod:AddSetIconOption("SetIconOnlaserFixate", 143828, false)
+mod:AddSetIconOption("SetIconOnSawBlade", 143265, false)
 
 --Upvales, don't need variables
 --Names very long in english, makes frame HUGE, may switch to shorter localized names
@@ -144,6 +146,9 @@ end
 
 function mod:LaunchSawBladeTarget(targetname, uId)
 	warnLaunchSawblade:Show(targetname)
+	if self.Options.SetIconOnSawBlade then
+		self:SetIcon(targetname, 1, 3)
+	end
 end
 
 --May be two up at once so can't use generic boss scanner.
@@ -347,5 +352,8 @@ function mod:OnSync(msg, guid)
 	if msg == "LockedOnTarget" and guid then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		warnLaserFixate:Show(targetName)
+		if self.Options.SetIconOnlaserFixate then
+			self:SetIcon(targetname, 7, 6)--Maybe adjust timing or add smart code to remove right away if that target dies.
+		end
 	end
 end
