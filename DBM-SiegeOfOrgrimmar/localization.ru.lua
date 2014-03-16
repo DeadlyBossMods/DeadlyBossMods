@@ -151,8 +151,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnActivatedVulnerable		= "Спец-предупреждение когда вы уязвимы к активирующимся идеалам",
-	specWarnMoreParasites			= "Спец-предупреждение когда вам нужно больше паразитов",
-	AimArrow						= "Показывать стрелку DBM, когда на ком-то $spell:142948"
+	specWarnMoreParasites			= "Спец-предупреждение когда вам нужно больше паразитов"
 })
 
 L:SetMiscLocalization({

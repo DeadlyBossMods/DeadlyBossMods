@@ -61,6 +61,7 @@ local soundDisplacedEnergy				= mod:NewSound(142913)
 mod:AddRangeFrameOption("8/5")--Various things
 mod:AddSetIconOption("SetIconOnDisplacedEnergy", 142913, false)
 mod:AddSetIconOption("SetIconOnAdds", "ej7952", false, true)
+mod:AddArrowOption("BloodrageArrow", 142879, true, true)
 
 --Upvales, don't need variables
 local displacedEnergyDebuff = GetSpellInfo(142913)
@@ -105,6 +106,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	if self.Options.BloodrageArrow then
+		DBM.Arrow:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -116,6 +120,17 @@ function mod:SPELL_CAST_START(args)
 		specWarnBloodRage:Show()
 		timerBloodRage:Start()
 		timerDisplacedEnergyCD:Start(3.5)
+		if self.Options.BloodrageArrow then
+			for uId in DBM:GetGroupMembers() do
+				local tanking, status = UnitDetailedThreatSituation(uId, "boss1")
+				if status == 3 then
+					if UnitIsUnit("player", uId) then return end
+					local bosstank = UnitName(uId)
+					DBM.Arrow:ShowRunTo(bosstank, 3, 3, 5)
+					break
+				end
+			end
+		end
 	elseif spellId == 142842 then
 		self.vb.breathCast = self.vb.breathCast + 1
 		warnBreathofYShaarj:Show(self.vb.breathCast)

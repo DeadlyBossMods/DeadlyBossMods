@@ -172,7 +172,7 @@ local countdownInjection			= mod:NewCountdown("Alt9.5", 143339, mod:IsTank())
 mod:AddRangeFrameOption("6/5/3")
 mod:AddSetIconOption("SetIconOnAim", 142948, false)
 mod:AddSetIconOption("SetIconOnMesmerize", 142671, false)
-mod:AddBoolOption("AimArrow", false)
+mod:AddArrowOption("AimArrow", 142948, false, true)
 
 --Upvales, don't need variables
 --Normal Only

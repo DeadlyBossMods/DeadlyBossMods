@@ -155,8 +155,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnActivatedVulnerable	= "當你虛弱於活動的議會成員時顯示特別警告",
-	specWarnMoreParasites		= "當你需要更多寄生蟲時顯示特別警告",
-	AimArrow					= "當某玩家中了$spell:142948顯示DBM箭頭"
+	specWarnMoreParasites		= "當你需要更多寄生蟲時顯示特別警告"
 })
 
 L:SetMiscLocalization({

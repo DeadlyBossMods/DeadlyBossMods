@@ -157,8 +157,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnActivatedVulnerable		= "Mostrar aviso especial cuando eres vulnerable a un Dechado",
-	specWarnMoreParasites			= "Mostrar aviso especial cuando se necesiten más parásitos",
-	AimArrow						= "Mostrar flecha del DBM cuando a alguien le afecte $spell:142948"
+	specWarnMoreParasites			= "Mostrar aviso especial cuando se necesiten más parásitos"
 })
 
 L:SetMiscLocalization({
