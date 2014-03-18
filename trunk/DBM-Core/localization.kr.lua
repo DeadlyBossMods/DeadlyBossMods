@@ -11,7 +11,12 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 경보를 불러왔습니다 !"
 DBM_CORE_LOAD_MOD_COMBAT			= "오류 방지를 위해 전투가 종료 될때까지 '%s' 경보를 불러오지 않습니다."
 DBM_CORE_LOAD_GUI_ERROR				= "설정창을 불러올 수 없습니다: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "전투 중에는 설정창을 불러올 수 없습니다. 전투가 종료되면 설정창이 열릴 것입니다. 이후에는 전투 중이라도 설정창을 불러 올 수 있습니다."
+DBM_CORE_LOAD_SKIN_COMBAT			= "전투 도중 DBM 바 스킨 설정에 실패했습니다. 바가 정상 작동하지 않을 것이며 다수의 lua 오류가 발생할 수 있습니다. 이 오류는 DBM 바에 스킨을 적용하는 제3의 애드온이 있을 때 주로 발생합니다. 전투 종료 후 /reload 명령어를 입력하여 UI를 재시작 해주시기 바랍니다."
 DBM_CORE_BAD_LOAD					= "DBM이 현재 인스턴스의 경고를 완전히 불러오지 못한 것을 발견했습니다. 전투가 종료된 후에, /console reloadui 명령어를 입력하여 경고를 다시 불러오시기 바랍니다."
+
+DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대원 숫자에 맞는 근접판정 정보를 알 수 없기 때문에 DBM이 이 전투에서 거리 창을 비활성화 했습니다."
+DBM_CORE_DYNAMIC_ADD_COUNT			= "현재 공격대원 숫자에 맞는 쫄 소환 정보를 알 수 없기 때문에 DBM이 이 전투에서 소환 횟수 정보를 비활성화 했습니다."
+DBM_CORE_DYNAMIC_MULTIPLE			= "현재 공격대원 숫자에 맞는 우두머리 특수 정보가 없기 때문에 DBM이 이 전투에서 다수 기능을 비활성화 했습니다."
 
 DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s 입니다. 현재 선택된 전리품 전문화는 %s 입니다."
 
@@ -36,6 +41,9 @@ DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s|1이;가; 종료되었습니다. (소요 
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s 전투가 %s 전에 시작되었습니다. 바를 복구 합니다."
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor 기록을 시작합니다."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor 기록을 중단합니다."
+
+DBM_CORE_WORLDBOSS_ENGAGED			= "현재 서버의 %s 전투가 약 %s 퍼센트의 체력으로 시작된 것으로 보입니다. (%s|1이;가; 보냄)"
+DBM_CORE_WORLDBOSS_DEFEATED			= "현재 서버의 %s 우두머리가 처치된 것으로 보입니다. (%s|1이;가; 보냄)"
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d|4초:초;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d|4분:분;"
@@ -197,6 +205,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel		= "%s : >%%s< - 해제!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt		= "%s : >%%s< - 차단!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you			= "당신에게 %s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= ">%%s<에게 %1$s!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt			= ">%%s<에게 %1$s - 도발!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close			= "가까운 곳에 %s (>%%s<)!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move			= "%s - 피하거나 움직이세요!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveaway		= "%s - 혼자 떨어지세요!"
@@ -217,6 +226,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel		= "$spell:%s 해제 특수 경고 보기
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt	= "$spell:%s 차단 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you			= "당신이 $spell:%s 대상이 된 경우 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target		= "$spell:%s 대상 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt		= "다른 방어 전담이 $spell:%s 대상이 된 경우 도발 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close		= "$spell:%s 대상이 당신 가까이 있을 경우 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move		= "$spell:%s 회피 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway	= "$spell:%s 이동 특수 경고 보기"
@@ -254,6 +264,8 @@ DBM_CORE_AUTO_TIMER_OPTIONS.achievement		= "%s 업적까지 남은시간 바 보
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에게 전술 목표 아이콘 설정"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "$spell:%s 에게 전술 목표 아이콘 설정"
+DBM_CORE_AUTO_ARROW_OPTION_TEXT			= "$spell:%s 대상 방향으로 DBM 화살표 보기"
+DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "$spell:%s 대상 반대 방향으로 DBM 화살표 보기"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%s 대상이 된 경우 별도 경고음 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 이전에 초읽기 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "$spell:%s 남은시간 초읽기 듣기"

@@ -31,10 +31,6 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(744)
 
-L:SetOptionLocalization({
-	UnseenStrikeArrow	= "$spell:122949 대상이 정해진 경우 DBM 화살표 보기"
-})
-
 -------------------------------
 -- Garalon --
 -------------------------------
