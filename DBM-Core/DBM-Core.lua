@@ -281,7 +281,7 @@ local GetNumGroupMembers, GetRaidRosterInfo = GetNumGroupMembers, GetRaidRosterI
 local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
 local UnitAffectingCombat, InCombatLockdown, IsEncounterInProgress = UnitAffectingCombat, InCombatLockdown, IsEncounterInProgress
 local UnitGUID, UnitHealth, UnitHealthMax = UnitGUID, UnitHealth, UnitHealthMax
-local UnitExists, UnitIsDead, UnitIsFriend = UnitExists, UnitIsDead, UnitIsFriend
+local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK
 local GetSpellInfo, EJ_GetSectionInfo = GetSpellInfo, EJ_GetSectionInfo
 local EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo = EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo
 local GetInstanceInfo = GetInstanceInfo
@@ -986,7 +986,7 @@ do
 				"ENCOUNTER_END",
 				"UNIT_DIED",
 				"UNIT_DESTROYED",
-				"UNIT_HEALTH mouseover target focus",
+				"UNIT_HEALTH mouseover target focus player",
 				"CHAT_MSG_WHISPER",
 				"CHAT_MSG_BN_WHISPER",
 				"CHAT_MSG_MONSTER_YELL",
@@ -3858,14 +3858,13 @@ end
 
 function DBM:UNIT_HEALTH(uId)
 	local cId = DBM:GetCIDFromGUID(UnitGUID(uId))
-	if cId == 0 then return end
 	local health
 	if UnitHealthMax(uId) ~= 0 then
 		health = UnitHealth(uId) / UnitHealthMax(uId) * 100
 	end
 	if not health or health < 5 then return end -- no worthy of combat start if health is below 5%
 	if InCombatLockdown() then
-		if not bossHealth[cId] and bossIds[cId] and UnitAffectingCombat(uId) and healthCombatInitialized then -- StartCombat by UNIT_HEALTH.
+		if not cId == 0 and not bossHealth[cId] and bossIds[cId] and UnitAffectingCombat(uId) and healthCombatInitialized then -- StartCombat by UNIT_HEALTH.
 			if combatInfo[LastInstanceMapID] then
 				for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 					if v.mod.Options.Enabled and not v.mod.disableHealthCombat and (v.type == "combat" or v.type == "combat_yell" or v.type == "combat_emote" or v.type == "combat_say") and (v.multiMobPullDetection and checkEntry(v.multiMobPullDetection, cId) or v.mob == cId) then
@@ -3875,7 +3874,7 @@ function DBM:UNIT_HEALTH(uId)
 				end
 			end
 		end
-		if UnitIsUnit(uId, "player") and UnitIsAFK("player") and health < 50 and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
+		if UnitIsUnit(uId, "player") and (health < 50) and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
 			PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.ogg", "master")--So fire an alert sound to save yourself from this person's behavior.
 		end
 	end
