@@ -41,8 +41,8 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s was engaged %s ago, recovering timers..."
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor logging started."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor logging ended."
 
-DBM_CORE_WORLDBOSS_ENGAGED			= "%s was engaged on your realm at %s percent health. (Sent by %s)"
-DBM_CORE_WORLDBOSS_DEFEATED			= "%s was defeated on your realm (Sent by %s)."
+DBM_CORE_WORLDBOSS_ENGAGED			= "%s was possibly engaged on your realm at %s percent health. (Sent by %s)"
+DBM_CORE_WORLDBOSS_DEFEATED			= "%s was possibly defeated on your realm (Sent by %s)."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d |4second:seconds;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minute:minutes;"
