@@ -1586,9 +1586,9 @@ local function CreateOptionsMenu()
 		RaidWarnSoundDropDown:SetPoint("TOPLEFT", ShowCountdownText, "BOTTOMLEFT", 10, -10)
 
 		local countSounds = {
-			{	text	= "Mosh (Male)",	value 	= "Mosh"},
+			{	text	= "Moshne (Male)",	value 	= "Mosh"},
 			{	text	= "Corsica (Female)",value 	= "Corsica"},
-			{	text	= "Kolt (Male)",value 	= "Kolt"},
+			{	text	= "Koltrane (Male)",value 	= "Kolt"},
 			{	text	= "None",value 	= "None"},
 		}
 		local CountSoundDropDown = raidwarnoptions:CreateDropdown(L.CountdownVoice, countSounds,
