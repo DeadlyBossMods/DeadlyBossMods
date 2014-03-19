@@ -1008,7 +1008,7 @@ do
 				"LOADING_SCREEN_DISABLED"
 			)
 			self:GROUP_ROSTER_UPDATE()
-			self:LOADING_SCREEN_DISABLED()
+			--self:LOADING_SCREEN_DISABLED()--Initial testing shows it isn't needed here and wastes cpu running funcion twice, because actual event always fires at login, AFTER addonloadded. Will remove this line if it works out ok
 			self:Schedule(1.5, function()
 				combatInitialized = true
 			end)
@@ -2303,7 +2303,7 @@ end
 --------------------------------
 do
 	local targetEventsRegistered = false
-	local function FixForShittyComputers()
+	local function FixForShittyComputers(firstRun)
 		timerRequestInProgress = false
 		local _, instanceType, _, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
 		LastInstanceMapID = mapID
@@ -2328,10 +2328,13 @@ do
 		end
 		-- LoadMod
 		DBM:LoadModsOnDemand("mapId", mapID)
+		if firstRun then--Two pass check for slow computers or people with high latency who didn't get accurate return from GetInstanceInfo yet
+			DBM:Schedule(3, FixForShittyComputers, false, DBM)
+		end
 	end
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
-		self:Schedule(1.5, FixForShittyComputers, DBM)
+		FixForShittyComputers(true)
 	end
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
