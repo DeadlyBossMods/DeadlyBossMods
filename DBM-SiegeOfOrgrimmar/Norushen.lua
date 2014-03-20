@@ -207,7 +207,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnBottomlessPitMove:Show()
 	elseif spellId == 146124 then
 		local amount = args.amount or 1
-		warnSelfDoubt:Show(amount)
+		warnSelfDoubt:Show(args.destName, amount)
 		if not args:IsPlayer() and amount >= 3 then
 			specWarnSelfDoubtOther:Show(args.destName)
 		end
