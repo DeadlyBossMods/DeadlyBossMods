@@ -353,7 +353,7 @@ function mod:OnSync(msg, guid)
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		warnLaserFixate:Show(targetName)
 		if self.Options.SetIconOnlaserFixate then
-			self:SetIcon(targetname, 7, 6)--Maybe adjust timing or add smart code to remove right away if that target dies.
+			self:SetIcon(targetName, 7, 6)--Maybe adjust timing or add smart code to remove right away if that target dies.
 		end
 	end
 end
