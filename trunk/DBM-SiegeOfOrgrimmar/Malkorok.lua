@@ -120,17 +120,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnBloodRage:Show()
 		timerBloodRage:Start()
 		timerDisplacedEnergyCD:Start(3.5)
-		if self.Options.BloodrageArrow then
-			for uId in DBM:GetGroupMembers() do
-				local tanking, status = UnitDetailedThreatSituation(uId, "boss1")
-				if status == 3 then
-					if UnitIsUnit("player", uId) then return end
-					local bosstank = UnitName(uId)
-					DBM.Arrow:ShowRunTo(bosstank, 3, 3, 5)
-					break
-				end
-			end
-		end
 	elseif spellId == 142842 then
 		self.vb.breathCast = self.vb.breathCast + 1
 		warnBreathofYShaarj:Show(self.vb.breathCast)
@@ -141,6 +130,18 @@ function mod:SPELL_CAST_START(args)
 			timerSeismicSlamCD:Start(7.5, 1)
 			timerArcingSmashCD:Start(14, 1)
 			timerBreathofYShaarjCD:Start(70, 2)
+		else--Breath 2
+			if self.Options.BloodrageArrow then
+				for uId in DBM:GetGroupMembers() do
+					local tanking, status = UnitDetailedThreatSituation(uId, "boss1")
+					if status == 3 then
+						if UnitIsUnit("player", uId) then return end
+						local bosstank = UnitName(uId)
+						DBM.Arrow:ShowRunTo(bosstank, 3, 3, 5)
+						break
+					end
+				end
+			end
 		end
 	elseif spellId == 143199 then
 		self.vb.breathCast = 0
