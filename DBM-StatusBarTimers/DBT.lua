@@ -402,6 +402,11 @@ do
 		if (self.numBars or 0) >= 15 and not isDummy then return end
 		local newBar = self:GetBar(id)
 		if newBar then -- update an existing bar
+			if DBM.Options.DebugMode then--Figure out why bar exists when new one is starting (do we have wrong cd?)
+				local elapsed, total = newBar:GetTime()
+				local remaining = total - elapsed
+				print("DBM Debug: Possible incorrect boss cooldown. "..remaining.." CD left on bar when new timer started")
+			end
 			newBar:SetTimer(timer) -- this can kill the timer and the timer methods don't like dead timers
 			if newBar.dead then return end
 			newBar:SetElapsed(0) -- same
