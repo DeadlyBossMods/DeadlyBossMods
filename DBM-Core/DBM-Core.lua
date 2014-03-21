@@ -2099,6 +2099,7 @@ do
 		DBM:UpdateSpecialWarningOptions()
 		-- set this with a short delay to prevent issues with other addons also trying to do the same thing with another position ;)
 		DBM:Schedule(5, setRaidWarningPositon)
+		DBM:Schedule(20, setRaidWarningPositon)--A second attempt after we are sure all other mods are loaded, so we can work around issues with movemanything or other mods.
 	end
 
 	function loadModOptions(modId)
