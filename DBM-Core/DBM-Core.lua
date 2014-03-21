@@ -3894,7 +3894,7 @@ function DBM:UNIT_HEALTH(uId)
 				end
 			end
 		end
-		if UnitIsUnit(uId, "player") and (health < 50) and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
+		if UnitIsUnit(uId, "player") and (health < 65) and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
 			PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.ogg", "master")--So fire an alert sound to save yourself from this person's behavior.
 		end
 	end
