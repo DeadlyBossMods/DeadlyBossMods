@@ -403,7 +403,7 @@ do
 		local newBar = self:GetBar(id)
 		if newBar then -- update an existing bar
 			if DBM.Options.DebugMode then--Figure out why bar exists when new one is starting (do we have wrong cd?)
-				local elapsed, total = newBar:GetTime()
+				local elapsed, total = newBar.totalTime - newBar.timer, newBar.totalTime
 				local remaining = total - elapsed
 				print("DBM Debug: Possible incorrect boss cooldown. "..remaining.." CD left on bar when new timer started")
 			end
