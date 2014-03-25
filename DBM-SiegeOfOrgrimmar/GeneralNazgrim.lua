@@ -431,6 +431,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:OnSync(msg)
+	if not self:IsInCombat() then return end
 	if msg == "Adds" and self:AntiSpam(10, 3) then
 		self.vb.addsCount = self.vb.addsCount + 1
 		warnAdds:Show(self.vb.addsCount)
