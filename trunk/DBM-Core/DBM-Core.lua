@@ -3776,13 +3776,6 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			if IsInGuild() then
 				SendAddonMessage("D4", "WBE\t"..modId.."\t"..playerRealm.."\t"..startHp, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 			end
-			local _, numBNetOnline = BNGetNumFriends()
-			for i = 1, numBNetOnline do
-				local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
-				if isOnline and client == BNET_CLIENT_WOW then
-					BNSendGameData(presenceID, "D4", "WBE\t"..modId.."\t"..playerRealm.."\t"..startHp)
-				end
-			end
 		end
 	end
 end
@@ -3990,13 +3983,6 @@ function DBM:EndCombat(mod, wipe)
 				lastBossDefeat[modId..playerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
 				if IsInGuild() then
 					SendAddonMessage("D4", "WBD\t"..modId.."\t"..playerRealm, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
-				end
-				local _, numBNetOnline = BNGetNumFriends()
-				for i = 1, numBNetOnline do
-					local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
-					if isOnline and client == BNET_CLIENT_WOW then
-						BNSendGameData(presenceID, "D4", "WBD\t"..modId.."\t"..playerRealm)
-					end
 				end
 			end
 		end
