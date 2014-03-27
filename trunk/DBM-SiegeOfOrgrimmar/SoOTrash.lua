@@ -24,7 +24,7 @@ local specWarnWarBanner				= mod:NewSpecialWarningSwitch(147328, not mod:IsHeale
 local specWarnFracture				= mod:NewSpecialWarningTarget(147200, false)
 local specWarnChainheal				= mod:NewSpecialWarningInterrupt(146728)
 local specWarnInfusion				= mod:NewSpecialWarningMove("OptionVersion2", 147884, mod:IsTank())
-local specWarnLockedOn				= mod:NewSpecialWarningRun(147884)
+local specWarnLockedOn				= mod:NewSpecialWarningRun(146680)
 local specWarnCrawlerMineFixate		= mod:NewSpecialWarningYou("ej8212")
 
 mod:RemoveOption("HealthFrame")
