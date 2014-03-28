@@ -978,6 +978,7 @@ do
 				"GROUP_ROSTER_UPDATE",
 				"INSTANCE_GROUP_SIZE_CHANGED",
 				"CHAT_MSG_ADDON",
+				"BN_CHAT_MSG_ADDON",
 				"PLAYER_REGEN_DISABLED",
 				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
@@ -2909,7 +2910,7 @@ do
 
 		syncHandlers["WBE"] = function(sender, modId, realm, health)
 			if not tonumber(modId) then return end--Ignore old versions sending name string.
-			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 10) then return end--We recently got a sync about this boss on this realm, so do nothing.
+			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end--We recently got a sync about this boss on this realm, so do nothing.
 			lastBossEngage[modId..realm] = GetTime()
 			--Needs some realm checking (even for people same guild, to keep realid syncs matched up.
 			local sameRealm = false
@@ -2924,14 +2925,30 @@ do
 			else--connectedServers is nil, so no connected realms, just check against our own realm
 				if realm == playerRealm then sameRealm = true end
 			end
-			if sameRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(worldBossNames[modId], floor(health), sender))
+			if sameRealm then
+				--Begin sync pass on to realid since this was a guild sync.
+				if (lastBossEngage[modId..realm.."PASSED"] and (GetTime() - lastBossEngage[modId..realm.."PASSED"]) > 30) or not lastBossEngage[modId..realm.."PASSED"] then
+					lastBossEngage[modId..realm.."PASSED"] = GetTime()
+					local _, numBNetOnline = BNGetNumFriends()
+					for i = 1, numBNetOnline do
+						local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
+						if isOnline and client == BNET_CLIENT_WOW then
+							local _, _, _, userRealm = BNGetToonInfo(presenceID)
+							if userRealm == playerRealm then
+								BNSendGameData(presenceID, "D4", "WBE\t"..modId.."\t"..realm.."\t"..health)
+							end
+						end
+					end
+				end
+				if DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+					DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(worldBossNames[modId], floor(health), sender))
+				end
 			end
 		end
 		
 		syncHandlers["WBD"] = function(sender, modId, realm)
 			if not tonumber(modId) then return end--Ignore old versions sending name string.
-			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 10) then return end
+			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
 			lastBossDefeat[modId..realm] = GetTime()
 			--Needs some realm checking.
 			local sameRealm = false
@@ -2946,8 +2963,89 @@ do
 			else--connectedServers is nil, so no connected realms, just check against our own realm
 				if realm == playerRealm then sameRealm = true end
 			end
-			if sameRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(worldBossNames[modId], sender))
+			if sameRealm then
+				--Begin sync pass on to realid since this was a guild sync.
+				if (lastBossDefeat[modId..realm.."PASSED"] and (GetTime() - lastBossDefeat[modId..realm.."PASSED"]) > 30) or not lastBossDefeat[modId..realm.."PASSED"] then
+					lastBossDefeat[modId..realm.."PASSED"] = GetTime()
+					local _, numBNetOnline = BNGetNumFriends()
+					for i = 1, numBNetOnline do
+						local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
+						if isOnline and client == BNET_CLIENT_WOW then
+							local _, _, _, userRealm = BNGetToonInfo(presenceID)
+							if userRealm == playerRealm then
+								BNSendGameData(presenceID, "D4", "WBD\t"..modId.."\t"..realm)
+							end
+						end
+					end
+				end
+				if DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+					DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(worldBossNames[modId], sender))
+				end
+			end
+		end
+
+		whisperSyncHandlers["WBE"] = function(sender, modId, realm, health)
+			if not tonumber(modId) then return end--Ignore old versions sending name string.
+			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end
+			lastBossEngage[modId..realm] = GetTime()
+			--Needs some realm checking.
+			local sameRealm = false
+ 			local connectedServers = GetAutoCompleteRealms()
+ 			if connectedServers then--Check if realm matches any realm in our connection
+				for i = 1, #connectedServers do
+ 	 				if realm == connectedServers[i] then
+ 	 					lastBossEngage[modId..connectedServers[i]] = GetTime()--Antispam ALL connected realms to avoid loop backs from connected realms.
+ 	 					sameRealm = true
+ 	 				end
+				end
+			else--connectedServers is nil, so no connected realms, just check against our own realm
+				if realm == playerRealm then sameRealm = true end
+			end
+			if sameRealm then
+				--Begin sync pass on, passing on syncs not from same realm is intentional because guildies will then pass it on to battle.net and may get message to more users on that realm
+				if (lastBossEngage[modId..realm.."PASSED"] and (GetTime() - lastBossEngage[modId..realm.."PASSED"]) > 30) or not lastBossEngage[modId..realm.."PASSED"] then
+					lastBossEngage[modId..realm.."PASSED"] = GetTime()
+					if IsInGuild() then--Sync from realid, send to GUILD
+						SendAddonMessage("D4", "WBE\t"..modId.."\t"..realm.."\t"..health, "GUILD")
+					end
+				end
+				if DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+					local _, toonName = BNGetToonInfo(sender)
+					DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(worldBossNames[modId], floor(health), toonName))
+				end
+			end
+		end
+		
+		whisperSyncHandlers["WBD"] = function(sender, modId, realm)
+			local numberedmodId = tonumber(modId)
+			if not numberedmodId then return end--Ignore old versions sending name string.
+			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
+			lastBossDefeat[modId..realm] = GetTime()
+			--Needs some realm checking.
+			local sameRealm = false
+ 			local connectedServers = GetAutoCompleteRealms()
+ 			if connectedServers then--Check if realm matches any realm in our connection
+				for i = 1, #connectedServers do
+ 	 				if realm == connectedServers[i] then
+ 	 					lastBossDefeat[modId..connectedServers[i]] = GetTime()--Antispam ALL connected realms to avoid loop backs from connected realms.
+ 	 					sameRealm = true
+ 	 				end
+				end
+			else--connectedServers is nil, so no connected realms, just check against our own realm
+				if realm == playerRealm then sameRealm = true end
+			end
+			if sameRealm then
+				--Begin sync pass on, passing on syncs not from same realm is intentional because guildies will then pass it on to battle.net and may get message to more users on that realm
+				if (lastBossDefeat[modId..realm.."PASSED"] and (GetTime() - lastBossDefeat[modId..realm.."PASSED"]) > 30) or not lastBossDefeat[modId..realm.."PASSED"] then
+					lastBossDefeat[modId..realm.."PASSED"] = GetTime()
+					if IsInGuild() then--Sync from realid, send to GUILD
+						SendAddonMessage("D4", "WBD\t"..modId.."\t"..realm, "GUILD")
+					end
+				end
+				if DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+					local _, toonName = BNGetToonInfo(sender)
+					DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(worldBossNames[modId], toonName))
+				end
 			end
 		end
 
@@ -3186,6 +3284,12 @@ do
 				sender = Ambiguate(sender, "none")
 				handleSync(channel, sender, bwPrefix, bwMsg)
 			end
+		end
+	end
+	
+	function DBM:BN_CHAT_MSG_ADDON(prefix, msg, channel, sender)
+		if prefix == "D4" and msg then
+			handleSync(channel, sender, strsplit("\t", msg))
 		end
 	end
 end
@@ -3771,10 +3875,20 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
 		end
 		if savedDifficulty == "worldboss" and modId ~= "Omen" and modId ~= "Greench" and modId ~= "Moonfang" then--Any outdoor boss except Omen and Greench and MoonFang
-			if lastBossEngage[modId..playerRealm] and (GetTime() - lastBossEngage[modId..playerRealm] < 10) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+			if lastBossEngage[modId..playerRealm] and (GetTime() - lastBossEngage[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 			lastBossEngage[modId..playerRealm] = GetTime()--Update last engage time, that way we ignore our own sync
 			if IsInGuild() then
 				SendAddonMessage("D4", "WBE\t"..modId.."\t"..playerRealm.."\t"..startHp, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
+			end
+			local _, numBNetOnline = BNGetNumFriends()
+			for i = 1, numBNetOnline do
+				local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
+				if isOnline and client == BNET_CLIENT_WOW then
+					local _, _, _, userRealm = BNGetToonInfo(presenceID)
+					if userRealm == playerRealm then
+						BNSendGameData(presenceID, "D4", "WBE\t"..modId.."\t"..playerRealm.."\t"..startHp)
+					end
+				end
 			end
 		end
 	end
@@ -3979,10 +4093,20 @@ function DBM:EndCombat(mod, wipe)
 			end
 			fireEvent("kill", mod)
 			if savedDifficulty == "worldboss" and modId ~= "Omen" and modId ~= "Greench" and modId ~= "Moonfang" then--Any outdoor boss except Omen and Greench and Moonfang
-				if lastBossDefeat[modId..playerRealm] and (GetTime() - lastBossDefeat[modId..playerRealm] < 10) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+				if lastBossDefeat[modId..playerRealm] and (GetTime() - lastBossDefeat[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 				lastBossDefeat[modId..playerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
 				if IsInGuild() then
 					SendAddonMessage("D4", "WBD\t"..modId.."\t"..playerRealm, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
+				end
+				local _, numBNetOnline = BNGetNumFriends()
+				for i = 1, numBNetOnline do
+					local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
+					if isOnline and client == BNET_CLIENT_WOW then
+						local _, _, _, userRealm = BNGetToonInfo(presenceID)
+						if userRealm == playerRealm then
+							BNSendGameData(presenceID, "D4", "WBD\t"..modId.."\t"..playerRealm)
+						end
+					end
 				end
 			end
 		end
