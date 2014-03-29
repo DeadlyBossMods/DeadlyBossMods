@@ -2934,7 +2934,7 @@ do
 						local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
 						if isOnline and client == BNET_CLIENT_WOW then
 							local _, _, _, userRealm = BNGetToonInfo(presenceID)
-							if userRealm == playerRealm then
+							if userRealm and (userRealm == playerRealm) then
 								BNSendGameData(presenceID, "D4", "WBE\t"..modId.."\t"..realm.."\t"..health.."\t3")
 							end
 						end
@@ -2972,7 +2972,7 @@ do
 						local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
 						if isOnline and client == BNET_CLIENT_WOW then
 							local _, _, _, userRealm = BNGetToonInfo(presenceID)
-							if userRealm == playerRealm then
+							if userRealm and (userRealm == playerRealm) then
 								BNSendGameData(presenceID, "D4", "WBD\t"..modId.."\t"..realm.."\t3")
 							end
 						end
@@ -3884,7 +3884,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 				local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
 				if isOnline and client == BNET_CLIENT_WOW then
 					local _, _, _, userRealm = BNGetToonInfo(presenceID)
-					if userRealm == playerRealm then
+					if userRealm and (userRealm == playerRealm) then
 						BNSendGameData(presenceID, "D4", "WBE\t"..modId.."\t"..playerRealm.."\t"..startHp.."\t3")
 					end
 				end
@@ -4102,7 +4102,7 @@ function DBM:EndCombat(mod, wipe)
 					local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
 					if isOnline and client == BNET_CLIENT_WOW then
 						local _, _, _, userRealm = BNGetToonInfo(presenceID)
-						if userRealm == playerRealm then
+						if userRealm and (userRealm == playerRealm) then
 							BNSendGameData(presenceID, "D4", "WBD\t"..modId.."\t"..playerRealm.."\t3")
 						end
 					end
