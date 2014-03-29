@@ -88,7 +88,7 @@ L= DBM:GetModLocalization(859)
 
 L:SetMiscLocalization({
 	Pull					= "We shall see.",
-	Victory					= "SOME RANDOM BLAH BLAH BLAH",
+	Victory					= "You are the mountain, unmovable by all but time.",
 	VictoryDem				= "Rakkas shi alar re pathrebosh il zila rethule kiel shi shi belaros rikk kanrethad adare revos shi xi thorje Rukadare zila te lok zekul melar "--Cover all bases and all
 })
 
