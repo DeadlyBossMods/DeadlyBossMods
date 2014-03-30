@@ -121,6 +121,8 @@ DBM.DefaultOptions = {
 	LogOnlyRaidBosses = false,
 	UseMasterVolume = true,
 	LFDEnhance = true,
+	WorldBossNearAlert = false,
+	AFKHealthWarning = true,
 	SetPlayerRole = true,
 	HideWatchFrame = false,
 	HideTooltips = false,
@@ -192,6 +194,7 @@ DBM.DefaultOptions = {
 	LastRevision = 0,
 	FilterSayAndYell = false,
 	DebugMode = false,
+	RoleSpecAlert = true,
 	WorldBossAlert = false,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 }
@@ -1579,6 +1582,8 @@ do
 			DBM:ShowUpdateReminder(arg2, arg3) -- displayVersion, revision
 		elseif arg1 == "forums" then
 			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG)
+		elseif arg1 == "generic" then
+			DBM:ShowUpdateReminder(nil, nil, "")
 		elseif arg1 == "showRaidIdResults" then
 			DBM:ShowRaidIDRequestResults()
 		end
@@ -3562,7 +3567,7 @@ do
 					DBM:StartCombat(v.mod, 0, "MONSTER_MESSAGE")
 				elseif v.type == "combat_" .. type and checkEntry(v.msgs, msg) then
 					scanForCombat(v.mod, v.mob, 0)
-					if v.mod.Options.ReadyCheck and not IsQuestFlaggedCompleted(v.mod.readyCheckQuestId) then
+					if (DBM.Options.WorldBossNearAlert or v.mod.Options.ReadyCheck) and not IsQuestFlaggedCompleted(v.mod.readyCheckQuestId) then
 						PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")
 					end
 				end
@@ -3915,7 +3920,7 @@ function DBM:UNIT_HEALTH(uId)
 				end
 			end
 		end
-		if UnitIsUnit(uId, "player") and (health < 65) and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
+		if DBM.Options.AFKHealthWarning and UnitIsUnit(uId, "player") and (health < 65) and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
 			PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.ogg", "master")--So fire an alert sound to save yourself from this person's behavior.
 		end
 	end
@@ -4745,7 +4750,7 @@ function DBM:RoleCheck()
 		end
 	end
 	--Loot reminder even if spec isn't known or we are in LFR where we have a valid for role without us being ones that set us.
-	if lootrole and (role ~= lootrole) then
+	if lootrole and (role ~= lootrole) and DBM.Options.RoleSpecAlert then
 		self:AddMsg(DBM_CORE_LOOT_SPEC_REMINDER:format(_G[role] or DBM_CORE_UNKNOWN, _G[lootrole]))
 	end
 end
