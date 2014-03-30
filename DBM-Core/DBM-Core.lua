@@ -1582,8 +1582,6 @@ do
 			DBM:ShowUpdateReminder(arg2, arg3) -- displayVersion, revision
 		elseif arg1 == "forums" then
 			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG)
-		elseif arg1 == "generic" then
-			DBM:ShowUpdateReminder(nil, nil, "")
 		elseif arg1 == "showRaidIdResults" then
 			DBM:ShowRaidIDRequestResults()
 		end
