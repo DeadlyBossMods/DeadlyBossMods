@@ -159,7 +159,7 @@ L.Area_SpamFilter				= "Opções do filtro Global"
 L.HideBossEmoteFrame			= "Esconder quadro de emoção de chefe de raid" -- not so sure about that translation
 L.SpamBlockBossWhispers			= "Filtrar sussuros de aviso &lt;DBM&gt; durante a luta."
 L.BlockVersionUpdateNotice		= "Desabilitar pop-up de notificação de atualização."
-L.ShowBigBrotherOnCombatStart	= "Realizar checagem de bônus no início do combate."
+L.ShowBBOnCombatStart			= "Realizar checagem de bônus no início do combate."
 L.BigBrotherAnnounceToRaid		= "Anunciar resultados da checagem para a raide"
 
 L.Area_SpamFilter_Outgoing		= "Opções de Filtro Global"
