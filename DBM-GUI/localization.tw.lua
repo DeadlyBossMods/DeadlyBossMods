@@ -195,7 +195,7 @@ L.Area_SpamFilter				= "垃圾過濾選項"
 L.StripServerName				= "隱藏警告和計時器的玩家伺服器名稱"
 L.SpamBlockBossWhispers			= "當戰鬥時過濾 &lt;DBM&gt; 密語警告"
 L.BlockVersionUpdateNotice		= "禁用彈出的更新通知"
-L.ShowBigBrotherOnCombatStart	= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
+L.ShowBBOnCombatStart			= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
 L.BigBrotherAnnounceToRaid		= "通告BigBrother的結果給團隊"
 
 L.Area_SpamFilter_Outgoing		= "整體過濾選項"

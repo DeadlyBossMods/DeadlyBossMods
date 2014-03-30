@@ -195,7 +195,7 @@ L.Area_SpamFilter				= "Spam-Filter"
 L.StripServerName				= "Entferne den Realmnamen der Spieler in Warnungen und Timern"
 L.SpamBlockBossWhispers			= "Aktiviere Filter für &lt;DBM&gt;-Flüstermitteilungen im Kampf"
 L.BlockVersionUpdateNotice		= "Zeige Update-Meldung im Chatfenster statt als Popup (nicht empfohlen)"
-L.ShowBigBrotherOnCombatStart	= "Führe bei Kampfbeginn eine \"BigBrother\"-Buffprüfung durch"
+L.ShowBBOnCombatStart			= "Führe bei Kampfbeginn eine \"BigBrother\"-Buffprüfung durch"
 L.BigBrotherAnnounceToRaid		= "Verkünde Ergebnis der \"BigBrother\"-Buffprüfung zum Schlachtzug"
 
 L.Area_SpamFilter_Outgoing		= "globale Filtereinstellungen"
