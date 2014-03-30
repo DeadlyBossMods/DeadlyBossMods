@@ -1382,7 +1382,7 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 360, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 210, true)
 
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
@@ -1398,17 +1398,9 @@ local function CreateOptionsMenu()
 		end)
 		local SetPlayerRole				= generaloptions:CreateCheckButton(L.SetPlayerRole, true, nil, "SetPlayerRole")
 		local UseMasterVolume			= generaloptions:CreateCheckButton(L.UseMasterVolume, true, nil, "UseMasterVolume")
-		local LFDEnhance				= generaloptions:CreateCheckButton(L.LFDEnhance, true, nil, "LFDEnhance")
-		local WorldBossAlert			= generaloptions:CreateCheckButton(L.WorldBossAlert, true, nil, "WorldBossAlert")
-		local AutologBosses				= generaloptions:CreateCheckButton(L.AutologBosses, true, nil, "AutologBosses")
-		local AdvancedAutologBosses
-		if Transcriptor then
-			AdvancedAutologBosses = generaloptions:CreateCheckButton(L.AdvancedAutologBosses, true, nil, "AdvancedAutologBosses")
-		end
-		local LogOnlyRaidBosses = generaloptions:CreateCheckButton(L.LogOnlyRaidBosses, true, nil, "LogOnlyRaidBosses")
 
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
-		bmrange:SetPoint('TOPLEFT', LogOnlyRaidBosses, "BOTTOMLEFT", 0, -5)
+		bmrange:SetPoint('TOPLEFT', UseMasterVolume, "BOTTOMLEFT", 0, -5)
 		bmrange:SetScript("OnClick", function(self)
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide()
@@ -1446,7 +1438,7 @@ local function CreateOptionsMenu()
 		latencySlider:SetPoint('BOTTOMLEFT', bminfo, "BOTTOMLEFT", 10, -35)
 		latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.LatencyThreshold) end)
 		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.LatencyThreshold = self:GetValue() end)
-
+		----
 		local generaltimeroptions = DBM_GUI_Frame:CreateArea(L.TimerGeneral, nil, 85)
 		generaltimeroptions.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
 
@@ -1483,49 +1475,6 @@ local function CreateOptionsMenu()
 		)
 		ModelSoundDropDown:SetPoint("TOPLEFT", modelarea.frame, "TOPLEFT", 0, -50)
 
-		-- Pizza Timer (create your own timer menu)
-		local pizzaarea = DBM_GUI_Frame:CreateArea(L.PizzaTimer_Headline, nil, 85)
-		pizzaarea.frame:SetPoint('TOPLEFT', modelarea.frame, "BOTTOMLEFT", 0, -20)
-
-		local textbox = pizzaarea:CreateEditBox(L.PizzaTimer_Title, "Pizza!", 175)
-		local hourbox = pizzaarea:CreateEditBox(L.PizzaTimer_Hours, "0", 25)
-		local minbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Mins, "15", 25)
-		local secbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Secs, "0", 25)
-
-		textbox:SetMaxLetters(17)
-		textbox:SetPoint('TOPLEFT', 30, -25)
-		hourbox:SetNumeric()
-		hourbox:SetMaxLetters(2)
-		hourbox:SetPoint('TOPLEFT', textbox, "TOPRIGHT", 20, 0)
-		minbox:SetNumeric()
-		minbox:SetMaxLetters(2)
-		minbox:SetPoint('TOPLEFT', hourbox, "TOPRIGHT", 20, 0)
-		secbox:SetNumeric()
-		secbox:SetMaxLetters(2)
-		secbox:SetPoint('TOPLEFT', minbox, "TOPRIGHT", 20, 0)
-
-		local BcastTimer = pizzaarea:CreateCheckButton(L.PizzaTimer_BroadCast)
-		local okbttn  = pizzaarea:CreateButton(L.PizzaTimer_ButtonStart)
-		okbttn:SetPoint('TOPLEFT', textbox, "BOTTOMLEFT", -7, -8)
-		BcastTimer:SetPoint("TOPLEFT", okbttn, "TOPRIGHT", 10, 3)
-
-		pizzaarea.frame:SetScript("OnShow", function(self)
-			if DBM:GetRaidRank() == 0 then
-				BcastTimer:Hide()
-			else
-				BcastTimer:Show()
-			end
-		end)
-
-		okbttn:SetScript("OnClick", function()
-			local time = (hourbox:GetNumber() * 60*60) + (minbox:GetNumber() * 60) + secbox:GetNumber()
-			if textbox:GetText() and time > 0 then
-				DBM:CreatePizzaTimer(time,  textbox:GetText(), BcastTimer:GetChecked())
-			end
-		end)
-
-		-- END Pizza Timer
-		--
 		DBM_GUI_Frame:SetMyOwnHeight()
 	end
 
@@ -2409,7 +2358,7 @@ local function CreateOptionsMenu()
 		spamArea:CreateCheckButton(L.SpamBlockBossWhispers, true, nil, "SpamBlockBossWhispers")
 		spamArea:CreateCheckButton(L.BlockVersionUpdateNotice, true, nil, "BlockVersionUpdateNotice")
 		if BigBrother and type(BigBrother.ConsumableCheck) == "function" then
-			spamArea:CreateCheckButton(L.ShowBigBrotherOnCombatStart, true, nil, "ShowBigBrotherOnCombatStart")
+			spamArea:CreateCheckButton(L.ShowBBOnCombatStart, true, nil, "ShowBigBrotherOnCombatStart")
 			spamArea:CreateCheckButton(L.BigBrotherAnnounceToRaid, true, nil, "BigBrotherAnnounceToRaid")
 		end
 		local spamPTArea = spamPanel:CreateArea(L.Area_PullTimer, nil, 160, true)
@@ -2451,6 +2400,68 @@ local function CreateOptionsMenu()
 		blockMovieDropDown:SetPoint("TOPLEFT", filterYell, "TOPLEFT", 0, -40)
 
 		hideBlizzPanel:SetMyOwnHeight()
+	end
+	
+	do
+		local extraFeaturesPanel 	= DBM_GUI_Frame:CreateNewPanel(L.Panel_ExtraFeatures, "option")
+		local chatAlertsArea		= extraFeaturesPanel:CreateArea(L.Area_ChatAlerts, nil, 100, true)
+		local WorldBossAlert		= chatAlertsArea:CreateCheckButton(L.WorldBossAlert, true, nil, "WorldBossAlert")
+
+		local soundAlertsArea		 = extraFeaturesPanel:CreateArea(L.Area_SoundAlerts, nil, 100, true)
+		local LFDEnhance			= soundAlertsArea:CreateCheckButton(L.LFDEnhance, true, nil, "LFDEnhance")
+
+		local bossLoggingArea		= extraFeaturesPanel:CreateArea(L.Area_AutoLogging, nil, 100, true)
+		local AutologBosses			= bossLoggingArea:CreateCheckButton(L.AutologBosses, true, nil, "AutologBosses")
+		local AdvancedAutologBosses
+		if Transcriptor then
+			AdvancedAutologBosses	= bossLoggingArea:CreateCheckButton(L.AdvancedAutologBosses, true, nil, "AdvancedAutologBosses")
+		end
+		local LogOnlyRaidBosses		= bossLoggingArea:CreateCheckButton(L.LogOnlyRaidBosses, true, nil, "LogOnlyRaidBosses")
+		
+		-- Pizza Timer (create your own timer menu)
+		local pizzaarea = extraFeaturesPanel:CreateArea(L.PizzaTimer_Headline, nil, 85, true)
+
+		local textbox = pizzaarea:CreateEditBox(L.PizzaTimer_Title, "Pizza!", 175)
+		local hourbox = pizzaarea:CreateEditBox(L.PizzaTimer_Hours, "0", 25)
+		local minbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Mins, "15", 25)
+		local secbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Secs, "0", 25)
+
+		textbox:SetMaxLetters(17)
+		textbox:SetPoint('TOPLEFT', 30, -25)
+		hourbox:SetNumeric()
+		hourbox:SetMaxLetters(2)
+		hourbox:SetPoint('TOPLEFT', textbox, "TOPRIGHT", 20, 0)
+		minbox:SetNumeric()
+		minbox:SetMaxLetters(2)
+		minbox:SetPoint('TOPLEFT', hourbox, "TOPRIGHT", 20, 0)
+		secbox:SetNumeric()
+		secbox:SetMaxLetters(2)
+		secbox:SetPoint('TOPLEFT', minbox, "TOPRIGHT", 20, 0)
+
+		local BcastTimer = pizzaarea:CreateCheckButton(L.PizzaTimer_BroadCast)
+		local okbttn  = pizzaarea:CreateButton(L.PizzaTimer_ButtonStart)
+		okbttn:SetPoint('TOPLEFT', textbox, "BOTTOMLEFT", -7, -8)
+		BcastTimer:SetPoint("TOPLEFT", okbttn, "TOPRIGHT", 10, 3)
+
+		pizzaarea.frame:SetScript("OnShow", function(self)
+			if DBM:GetRaidRank() == 0 then
+				BcastTimer:Hide()
+			else
+				BcastTimer:Show()
+			end
+		end)
+
+		okbttn:SetScript("OnClick", function()
+			local time = (hourbox:GetNumber() * 60*60) + (minbox:GetNumber() * 60) + secbox:GetNumber()
+			if textbox:GetText() and time > 0 then
+				DBM:CreatePizzaTimer(time,  textbox:GetText(), BcastTimer:GetChecked())
+			end
+		end)
+		-- END Pizza Timer
+		chatAlertsArea:AutoSetDimension()
+		soundAlertsArea:AutoSetDimension()
+		bossLoggingArea:AutoSetDimension()
+		extraFeaturesPanel:SetMyOwnHeight()
 	end
 
 	-- Set Revision // please don't translate this!
