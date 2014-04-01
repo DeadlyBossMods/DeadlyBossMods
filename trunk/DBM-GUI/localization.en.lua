@@ -55,7 +55,7 @@ L.Statistic_BestKill		= "Best Victory:"
 L.General 					= "General DBM Core Options"
 L.EnableDBM 				= "Enable DBM"
 L.EnableMiniMapIcon			= "Show minimap button"
-L.UseMasterVolume			= "Use Master audio channel to play DBM sound alerts"
+L.UseMasterVolume			= "Use Master audio channel to play DBM alert sounds"
 L.Latency_Text				= "Set max latency sync threshold: %d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "General DBM Timer Options"
