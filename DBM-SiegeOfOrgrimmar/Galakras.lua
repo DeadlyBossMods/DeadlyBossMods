@@ -57,6 +57,8 @@ local warnFlamesofGalakrond			= mod:NewStackAnnounce(147029, 2, nil, mod:IsTank(
 local warnPulsingFlames				= mod:NewCountAnnounce(147042, 3)
 
 --Stage 2: Bring Her Down!
+local specWarnAdds					= mod:NewSpecialWarningSpell("ej8553", false)
+local specWarnProto					= mod:NewSpecialWarningSpell("ej8587", false)
 local specWarnWarBanner				= mod:NewSpecialWarningSwitch(147328, not mod:IsHealer())
 local specWarnFracture				= mod:NewSpecialWarningTarget(146899, mod:IsHealer())
 local specWarnChainheal				= mod:NewSpecialWarningInterrupt(146757)
@@ -105,6 +107,9 @@ mod.vb.pulseCount = 0
 local function protos()
 	mod.vb.addsCount = mod.vb.addsCount + 1
 	warnProto:Show(mod.vb.addsCount)
+	if UnitPower("player", 10) == 0 then
+		specWarnProto:Show()
+	end
 	timerAddsCD:Start(nil, mod.vb.addsCount + 1)
 end
 
@@ -318,6 +323,9 @@ function mod:OnSync(msg)
 		self.vb.addsCount = self.vb.addsCount + 1
 		if self.vb.addsCount % 5 == 3 then
 			warnAdd:Show(self.vb.addsCount)
+			if UnitPower("player", 10) == 0 then
+				specWarnAdds:Show()
+			end
 			timerProtoCD:Start(nil, self.vb.addsCount + 1)
 			self:Schedule(55, protos)
 		elseif self.vb.addsCount == 1 then
