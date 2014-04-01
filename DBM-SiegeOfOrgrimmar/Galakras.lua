@@ -265,6 +265,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPhase2:Show()
 		timerFlamesofGalakrondCD:Start(13.5)
 		timerPulsingFlamesCD:Start(39, 1)--unconfirmed
+		self:Unschedule(protos)
 	end
 end
 
