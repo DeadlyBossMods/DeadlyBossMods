@@ -55,7 +55,6 @@ L.Statistic_BestKill		= "Best Victory:"
 L.General 					= "General DBM Core Options"
 L.EnableDBM 				= "Enable DBM"
 L.EnableMiniMapIcon			= "Show minimap button"
-L.SetPlayerRole				= "Automatically set player role (Enabled recommended)"
 L.UseMasterVolume			= "Use Master audio channel to play DBM sound alerts"
 L.Latency_Text				= "Set max latency sync threshold: %d"
 -- Tab: General Timer Options
@@ -224,6 +223,9 @@ L.Area_AutoLogging			= "Auto Logging Options"
 L.AutologBosses				= "Automatically record boss encounters using blizzard combat log (Using /dbm pull before bosses is required for <a href=\"http://www.warcraftlogs.com\">|cff3588ffwarcraftlogs.com|r</a> compatability)"
 L.AdvancedAutologBosses		= "Automatically record boss encounters with Transcriptor"
 L.LogOnlyRaidBosses			= "Only record raid boss encounters (exclude Raid Finder/party/scenario)"
+L.Area_Invite				= "Invite Options"
+L.AutoAcceptFriendInvite	= "Automatically accept group invites from friends"
+L.AutoAcceptGuildInvite		= "Automatically accept group invites from guild members"
 
 L.PizzaTimer_Headline 		= 'Create a "Pizza Timer"'
 L.PizzaTimer_Title			= 'Name (e.g. "Pizza!")'
