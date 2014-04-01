@@ -9,22 +9,22 @@
 --    * Adam Williams (Omegal @ US-Whisperwind) (Primary boss mod author & DBM maintainer) Contact: Twitter @MysticalOS)
 --
 -- The localizations are written by:
---    * enGB/enUS: Tandanu & Omegal		http://www.deadlybossmods.com
---    * deDE: Tandanu					http://www.deadlybossmods.com
---    * deDE: Ebmor						DBM forums (PM: "Ebmor")
+--    * enGB/enUS: Omegal				http://www.deadlybossmods.com
+--    * deDE: Ebmor						http://forums.elitistjerks.com/user/616736-ebmor/
 --    * ruRU: Swix						stalker.kgv@gmail.com
 --    * ruRU: TOM_RUS
 --    * zhTW: Whyv						ultrashining@gmail.com
 --    * koKR: nBlueWiz					everfinale@gmail.com
---    * esES/esMX: Sueñalobos			alcortesm@gmail.com
 --
 -- The former/inactive-translators:
+--    * deDE: Tandanu					http://www.deadlybossmods.com
 --    * ruRU: BootWin					bootwin@gmail.com
 --    * ruRU: Vampik					admin@vampik.ru
 --    * zhTW: Hman						herman_c1@hotmail.com
 --    * zhTW: Azael/kc10577				paul.poon.kw@gmail.com
 --    * esES: Snamor/1nn7erpLaY      	romanscat@hotmail.com
 --    * zhCN: Diablohu					http://www.dreamgen.cn | diablohudream@gmail.com
+--    * esES/esMX: Sueñalobos			alcortesm@gmail.com
 --
 -- Special thanks to:
 --    * Arta
@@ -123,7 +123,6 @@ DBM.DefaultOptions = {
 	LFDEnhance = true,
 	WorldBossNearAlert = false,
 	AFKHealthWarning = true,
-	SetPlayerRole = true,
 	HideWatchFrame = false,
 	HideTooltips = false,
 	EnableModels = true,
@@ -196,6 +195,8 @@ DBM.DefaultOptions = {
 	DebugMode = false,
 	RoleSpecAlert = true,
 	WorldBossAlert = false,
+	AutoAcceptFriendInvite = false,
+	AutoAcceptGuildInvite = false,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 }
 
@@ -1008,6 +1009,7 @@ do
 				"WORLD_STATE_TIMER_START",
 				"WORLD_STATE_TIMER_STOP",
 				"ACTIVE_TALENT_GROUP_CHANGED",
+				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED"
 			)
 			self:GROUP_ROSTER_UPDATE()
@@ -2211,6 +2213,52 @@ function DBM:ACTIVE_TALENT_GROUP_CHANGED()
 	DBM:RoleCheck()
 end
 
+local function AcceptPartyInvite()
+	AcceptGroup()
+	for i=1, STATICPOPUP_NUMDIALOGS do
+		local whichDialog = _G["StaticPopup"..i].which
+		if whichDialog == "PARTY_INVITE" or whichDialog == "PARTY_INVITE_XREALM" then
+			_G["StaticPopup"..i].inviteAccepted = 1
+			StaticPopup_Hide(whichDialog)
+			break
+		end
+	end
+end
+function DBM:PARTY_INVITE_REQUEST(sender)
+	--First off, if you are in queue for something, lets not allow guildies or friends boot you from it.
+ 	if GetLFGMode(1) or GetLFGMode(2) or GetLFGMode(3) or GetLFGMode(4) or GetLFGMode(5) then return end
+ 	--First check realID
+ 	if DBM.Options.AutoAcceptFriendInvite then
+		local _, numBNetOnline = BNGetNumFriends()
+		for i = 1, numBNetOnline do
+			local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
+			if isOnline and client == BNET_CLIENT_WOW then
+				local _, toonName, _, userRealm = BNGetToonInfo(presenceID)
+				if toonName == sender then
+					AcceptPartyInvite()
+					return
+				end
+			end
+		end
+	end
+	--Second check guildies
+ 	if DBM.Options.AutoAcceptGuildInvite then
+		local _, numOnlineGuildMembers = GetNumGuildMembers()
+		for i=1, numOnlineGuildMembers do
+			--At this time, it's not easy to tell an officer from a non officer
+			--since a guild might have ranks 1-3 or even 1-4 be officers/leader while another might only be 1-2
+			--therefor, this feature is just a "yes/no" for if sender is a guildy
+			local name, rank, rankIndex = GetGuildRosterInfo(i)
+			if not name then break end
+			name = Ambiguate(name, "none")
+			if sender == name then
+				AcceptPartyInvite()
+				return
+			end
+		end
+	end
+end
+
 function DBM:PLAYER_REGEN_ENABLED()
 	if loadDelay then
 		DBM:LoadMod(loadDelay)
@@ -2936,7 +2984,7 @@ do
 					for i = 1, numBNetOnline do
 						local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
 						if isOnline and client == BNET_CLIENT_WOW then
-							local _, _, _, userRealm = BNGetToonInfo(presenceID)
+							local _, toonName, _, userRealm = BNGetToonInfo(presenceID)
 							if userRealm and (userRealm == playerRealm) then
 								BNSendGameData(presenceID, "D4", "WBE\t"..modId.."\t"..realm.."\t"..health.."\t4\t"..name)
 							end
@@ -4737,7 +4785,7 @@ function DBM:RoleCheck()
 	local specID = GetLootSpecialization()
 	local _, _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
 	local _, _, diff = GetInstanceInfo()
-	if DBM.Options.SetPlayerRole and not InCombatLockdown() and IsInGroup() and ((IsPartyLFG() and diff == 14) or not IsPartyLFG()) then
+	if not InCombatLockdown() and IsInGroup() and ((IsPartyLFG() and diff == 14) or not IsPartyLFG()) then
 		if UnitGroupRolesAssigned("player") ~= role then
 			UnitSetRole("player", role)
 		end

@@ -1382,7 +1382,7 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 210, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 185, true)
 
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
@@ -1396,7 +1396,6 @@ local function CreateOptionsMenu()
 		MiniMapIcon:SetScript("OnShow", function(self)
 			self:SetChecked( DBM.Options.ShowMinimapButton )
 		end)
-		local SetPlayerRole				= generaloptions:CreateCheckButton(L.SetPlayerRole, true, nil, "SetPlayerRole")
 		local UseMasterVolume			= generaloptions:CreateCheckButton(L.UseMasterVolume, true, nil, "UseMasterVolume")
 
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
@@ -2420,7 +2419,11 @@ local function CreateOptionsMenu()
 			AdvancedAutologBosses	= bossLoggingArea:CreateCheckButton(L.AdvancedAutologBosses, true, nil, "AdvancedAutologBosses")
 		end
 		local LogOnlyRaidBosses		= bossLoggingArea:CreateCheckButton(L.LogOnlyRaidBosses, true, nil, "LogOnlyRaidBosses")
-		
+
+		local inviteArea			= extraFeaturesPanel:CreateArea(L.Area_Invite, nil, 100, true)
+		local AutoAcceptFriendInvite= inviteArea:CreateCheckButton(L.AutoAcceptFriendInvite, true, nil, "AutoAcceptFriendInvite")
+		local AutoAcceptGuildInvite	= inviteArea:CreateCheckButton(L.AutoAcceptGuildInvite, true, nil, "AutoAcceptGuildInvite")
+
 		-- Pizza Timer (create your own timer menu)
 		local pizzaarea = extraFeaturesPanel:CreateArea(L.PizzaTimer_Headline, nil, 85, true)
 
@@ -2464,6 +2467,7 @@ local function CreateOptionsMenu()
 		chatAlertsArea:AutoSetDimension()
 		soundAlertsArea:AutoSetDimension()
 		bossLoggingArea:AutoSetDimension()
+		inviteArea:AutoSetDimension()
 		extraFeaturesPanel:SetMyOwnHeight()
 	end
 
