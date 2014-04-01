@@ -4285,8 +4285,12 @@ function DBM:GetCurrentInstanceDifficulty()
 end
 
 function DBM:UNIT_DIED(args)
-	if bit.band(args.destGUID:sub(1, 5), 0x00F) == 3 or bit.band(args.destGUID:sub(1, 5), 0x00F) == 5 then
-		self:OnMobKill(DBM:GetCIDFromGUID(args.destGUID))
+	local GUID = args.destGUID
+	if bit.band(GUID:sub(1, 5), 0x00F) == 3 or bit.band(GUID:sub(1, 5), 0x00F) == 5 then
+		self:OnMobKill(DBM:GetCIDFromGUID(GUID))
+	end
+	if DBM.Options.AFKHealthWarning and GUID == UnitGUID("player") and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
+		PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.ogg", "master")--So fire an alert sound to save yourself from this person's behavior.
 	end
 end
 DBM.UNIT_DESTROYED = DBM.UNIT_DIED
