@@ -2724,6 +2724,12 @@ do
 		end
 		DBM:StartLogging(timer, checkForActualPull)
 	end
+	
+	syncHandlers["BTR"] = function(sender, timer)
+		if #inCombat >= 1 then return end
+		timer = tonumber(timer or 0)
+		DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+	end
 
 	local function SendVersion()
 		sendSync("V", ("%d\t%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons)))
@@ -4416,7 +4422,15 @@ do
 			self:SendBGTimers(target)
 			return
 		end
-		if #inCombat < 1 then return end
+		if #inCombat < 1 then
+			--Break timer is up, so send that
+			--But only if we are not in combat with a boss
+			if DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK) then
+				local remaining = DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK).totalTime - DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK).timer
+				sendSync("BTR", remaining)
+			end
+			return
+		end
 		local mod
 		for i, v in ipairs(inCombat) do
 			mod = not v.isCustomMod and v
