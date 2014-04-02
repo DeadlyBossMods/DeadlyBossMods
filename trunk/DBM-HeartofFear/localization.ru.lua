@@ -31,10 +31,6 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(744)
 
-L:SetOptionLocalization({
-	UnseenStrikeArrow	= "Показывать стрелку DBM, когда на ком-то $spell:122949"
-})
-
 -------------------------------
 -- Garalon --
 -------------------------------
