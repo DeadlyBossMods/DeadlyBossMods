@@ -4429,7 +4429,7 @@ do
 			--But only if we are not in combat with a boss
 			if DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK) then
 				local remaining = DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK).totalTime - DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK).timer
-				sendSync("BTR", remaining)
+				SendAddonMessage("D4", "BTR\t"..remaining, "WHISPER", target)
 			end
 			return
 		end
