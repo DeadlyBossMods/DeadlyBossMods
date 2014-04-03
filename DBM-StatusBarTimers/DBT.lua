@@ -762,13 +762,13 @@ do
 	updateFrame:SetScript("OnUpdate", function(self, elapsed)
 		-- if UIParent:IsShown() then return end
 		self.elap = (self.elap or 0) + elapsed
+		local haveBars = false
 		if self.elap >= 0.04 then
 			self.elap = self.elap - 0.04
 			-- calculate actual time since last update with GetTime (this also seems to avoid some problems with backgrounding WoW and desynchronized pause timers)
 			local time = GetTime()
 			local delta = time - lastUpdate
 			lastUpdate = time
-			local haveBars = false
 			for i, v in ipairs(instances) do
 				for bar in pairs(v.bars) do
 					bar:Update(delta)
@@ -776,6 +776,7 @@ do
 				end
 			end
 			if not haveBars then
+				print("hiding timers")
 				self:Hide()
 			end
 		end
