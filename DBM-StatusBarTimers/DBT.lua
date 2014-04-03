@@ -776,7 +776,6 @@ do
 				end
 			end
 			if not haveBars then
-				print("hiding timers")
 				self:Hide()
 			end
 		end
