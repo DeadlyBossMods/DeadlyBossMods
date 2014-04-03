@@ -2490,6 +2490,8 @@ function DBM:LoadMod(mod)
 				DBM:Schedule(4, DBM.RequestTimers, DBM)
 				DBM:Schedule(6, DBM.RequestTimers, DBM)
 				DBM:Schedule(6.5, function() timerRequestInProgress = false end)
+			else
+				DBM:Schedule(2, DBM.RequestTimers, DBM)--Do once for break timer out of combat
 			end
 		end
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
