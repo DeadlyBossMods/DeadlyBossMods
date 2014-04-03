@@ -760,7 +760,7 @@ do
 	local GetTime = GetTime
 	local lastUpdate = GetTime()
 	updateFrame:SetScript("OnUpdate", function(self, elapsed)
-		--if UIParent:IsShown() then return end
+		-- if UIParent:IsShown() then return end
 		self.elap = (self.elap or 0) + elapsed
 		if self.elap >= 0.04 then
 			self.elap = self.elap - 0.04
