@@ -775,7 +775,7 @@ do
 					haveBars = true
 				end
 			end
-			if not numBars then
+			if not haveBars then
 				self:Hide()
 			end
 		end
