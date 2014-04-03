@@ -65,6 +65,8 @@ local function stringFromTimer(t)
 	end
 end
 
+local updateFrame = CreateFrame("Frame")
+
 local ipairs, pairs, next, type = ipairs, pairs, next, type
 local tinsert = table.insert
 
@@ -755,9 +757,9 @@ function barPrototype:Update(elapsed)
 end
 
 do
-	local frame = CreateFrame("Frame")
+	local GetTime = GetTime
 	local lastUpdate = GetTime()
-	frame:SetScript("OnUpdate", function(self, elapsed)
+	updateFrame:SetScript("OnUpdate", function(self, elapsed)
 		--if UIParent:IsShown() then return end
 		self.elap = (self.elap or 0) + elapsed
 		if self.elap >= 0.04 then
@@ -766,14 +768,22 @@ do
 			local time = GetTime()
 			local delta = time - lastUpdate
 			lastUpdate = time
+			local haveBars = false
 			for i, v in ipairs(instances) do
-				for bar in v:GetBarIterator() do
+				for bar in pairs(v.bars) do
 					bar:Update(delta)
+					haveBars = true
 				end
+			end
+			if not numBars then
+				self:Hide()
 			end
 		end
 	end)
-	frame:Show()
+	updateFrame:SetScript("OnShow", function(self)
+		lastUpdate = GetTime()
+	end)
+	updateFrame:Show()
 end
 
 
@@ -903,6 +913,7 @@ function barPrototype:ApplyStyle()
 	timer:SetFont(self.owner.options.Font, self.owner.options.FontSize)
 	self:Update(0)
 	applyFailed = false--Got to end with no script ran too long
+	if not updateFrame:IsShown() then updateFrame:Show() end
 end
 
 local function updateOrientation(self)
