@@ -65,8 +65,6 @@ local function stringFromTimer(t)
 	end
 end
 
-local updateFrame = CreateFrame("Frame")
-
 local ipairs, pairs, next, type = ipairs, pairs, next, type
 local tinsert = table.insert
 
@@ -757,33 +755,15 @@ function barPrototype:Update(elapsed)
 end
 
 do
-	local GetTime = GetTime
-	local lastUpdate = GetTime()
-	updateFrame:SetScript("OnUpdate", function(self, elapsed)
-		local haveBars = false
-		-- if UIParent:IsShown() then return end
-		self.elap = (self.elap or 0) + elapsed
-		if self.elap >= 0.04 then
-			self.elap = self.elap - 0.04
-			-- calculate actual time since last update with GetTime (this also seems to avoid some problems with backgrounding WoW and desynchronized pause timers)
-			local time = GetTime()
-			local delta = time - lastUpdate
-			lastUpdate = time
-			for i, v in ipairs(instances) do
-				for bar in pairs(v.bars) do
-					bar:Update(delta)
-					haveBars = true
-				end
+	local frame = CreateFrame("Frame")
+	frame:SetScript("OnUpdate", function(self, elapsed)
+		if UIParent:IsShown() then return end
+		for i, v in ipairs(instances) do
+			for bar in v:GetBarIterator() do
+				bar:Update(elapsed)
 			end
 		end
-		if not haveBars then
-			self:Hide()
-		end
 	end)
-	updateFrame:SetScript("OnShow", function(self)
-		lastUpdate = GetTime()
-	end)
-	updateFrame:Show()
 end
 
 
@@ -913,7 +893,6 @@ function barPrototype:ApplyStyle()
 	timer:SetFont(self.owner.options.Font, self.owner.options.FontSize)
 	self:Update(0)
 	applyFailed = false--Got to end with no script ran too long
-	if not updateFrame:IsShown() then updateFrame:Show() end
 end
 
 local function updateOrientation(self)
@@ -1162,7 +1141,7 @@ end
 ------------------------
 do
 
---[[	local function onUpdate(self, elapsed)
+	local function onUpdate(self, elapsed)
 		if (self.obj.moving or "") == "enlarge" then
 			self.elap = 0
 			self.obj:Update(elapsed)
@@ -1181,7 +1160,7 @@ do
 				self.elap = 0
 			end
 		end
-	end]]
+	end
 
 	local function onMouseDown(self, btn)
 		if self.obj then
@@ -1216,7 +1195,7 @@ do
 	end
 
 	function setupHandlers(frame)
-		--frame:SetScript("OnUpdate", onUpdate)
+		frame:SetScript("OnUpdate", onUpdate)
 		frame:SetScript("OnMouseDown", onMouseDown)
 		frame:SetScript("OnMouseUp", onMouseUp)
 		frame:SetScript("OnHide", onHide)
