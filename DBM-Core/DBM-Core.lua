@@ -214,7 +214,8 @@ DBM_OPTION_SPACER = newproxy(false)
 --------------
 local enabled = true
 local blockEnable = false
-local lastCombatStarted = GetTime()
+local cachedGetTime = GetTime()
+local lastCombatStarted = cachedGetTime
 local loadcIds = {}
 local forceloadmapIds = {}
 local blockMovieSkipItems = {}
@@ -1187,6 +1188,7 @@ do
 	local nextModSyncSpamUpdate = 0
 	mainFrame:SetScript("OnUpdate", function(self, elapsed)
 		local time = GetTime()
+		cachedGetTime = time
 
 		-- execute scheduled tasks
 		local nextTask = getMin()
@@ -2340,6 +2342,10 @@ function DBM:WORLD_STATE_TIMER_STOP()
 	if DBM.Bars:GetBar(DBM_SPEED_CLEAR_TIMER_TEXT) then
 		DBM.Bars:CancelBar(DBM_SPEED_CLEAR_TIMER_TEXT)
 	end
+end
+
+function DBM:GetTime()
+	return cachedGetTime
 end
 
 function DBM:GetCurrentArea()
