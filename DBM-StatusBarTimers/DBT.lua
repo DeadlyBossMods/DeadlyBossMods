@@ -57,6 +57,7 @@ local updateClickThrough
 local options
 local setupHandlers
 local applyFailed = false
+local totalBars = 0
 local function stringFromTimer(t)
 	if t <= 60 then
 		return ("%.1f"):format(t)
@@ -64,6 +65,8 @@ local function stringFromTimer(t)
 		return ("%d:%0.2d"):format(t/60, math.fmod(t, 60))
 	end
 end
+
+local updateFrame = CreateFrame("Frame")
 
 local ipairs, pairs, next, type = ipairs, pairs, next, type
 local tinsert = table.insert
@@ -443,6 +446,7 @@ do
 			end
 			newFrame.obj = newBar
 			self.numBars = (self.numBars or 0) + 1
+			totalBars = self.numBars
 			local enlargeTime = self.options.Style ~= "BigWigs" and self.options.EnlargeBarsTime or 11
 			if (timer <= enlargeTime or huge) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
 				newBar.enlarged = true
@@ -755,15 +759,34 @@ function barPrototype:Update(elapsed)
 end
 
 do
-	local frame = CreateFrame("Frame")
-	frame:SetScript("OnUpdate", function(self, elapsed)
-		if UIParent:IsShown() then return end
-		for i, v in ipairs(instances) do
-			for bar in v:GetBarIterator() do
-				bar:Update(elapsed)
+--KNOWN ISSUES:
+--This uses a lot more cpu than before. at least 50% more.
+--"enlarge" Animations are choppy because animations should not use the 0.04
+	local GetTime = GetTime
+	local lastUpdate = GetTime()--can't use DBM.GetTime() here because DBT loads before DBM does and this generates nil error
+	updateFrame:SetScript("OnUpdate", function(self, elapsed)
+		--if UIParent:IsShown() then return end
+		self.elap = (self.elap or 0) + elapsed
+		if self.elap >= 0.04 then
+			self.elap = self.elap - 0.04
+			-- calculate actual time since last update with GetTime (this also seems to avoid some problems with backgrounding WoW and desynchronized pause timers)
+			local time = DBM.GetTime()
+			local delta = time - lastUpdate
+			lastUpdate = time
+			for i, v in ipairs(instances) do
+				for bar in pairs(v.bars) do
+					bar:Update(delta)
+				end
+			end
+			if totalBars == 0 then
+				self:Hide()
 			end
 		end
 	end)
+	updateFrame:SetScript("OnShow", function(self)
+		lastUpdate = DBM.GetTime()
+	end)
+	updateFrame:Show()
 end
 
 
@@ -830,6 +853,7 @@ function barPrototype:Cancel()
 	unusedBarObjects[self] = self
 	self.dead = true
 	self.owner.numBars = (self.owner.numBars or 1) - 1
+	totalBars = self.owner.numBars 
 end
 
 
@@ -893,6 +917,7 @@ function barPrototype:ApplyStyle()
 	timer:SetFont(self.owner.options.Font, self.owner.options.FontSize)
 	self:Update(0)
 	applyFailed = false--Got to end with no script ran too long
+	if not updateFrame:IsShown() then updateFrame:Show() end
 end
 
 local function updateOrientation(self)
@@ -1141,13 +1166,13 @@ end
 ------------------------
 do
 
-	local function onUpdate(self, elapsed)
+--[[	local function onUpdate(self, elapsed)
 		if (self.obj.moving or "") == "enlarge" then
 			self.elap = 0
 			self.obj:Update(elapsed)
 		else
 			self.elap = (self.elap or 0) + elapsed
-			if self.elap >= 0.04 then--This workaround causes desyncing timers since it's trusting imprecise time calculations instead of using GetTime. However, using gettime uses about 3x the cpu
+			if self.elap >= 0.04 then
 				if self.obj then
 					self.obj:Update(self.elap)
 				else
@@ -1160,7 +1185,7 @@ do
 				self.elap = 0
 			end
 		end
-	end
+	end]]
 
 	local function onMouseDown(self, btn)
 		if self.obj then
@@ -1195,7 +1220,7 @@ do
 	end
 
 	function setupHandlers(frame)
-		frame:SetScript("OnUpdate", onUpdate)
+		--frame:SetScript("OnUpdate", onUpdate)
 		frame:SetScript("OnMouseDown", onMouseDown)
 		frame:SetScript("OnMouseUp", onMouseUp)
 		frame:SetScript("OnHide", onHide)
