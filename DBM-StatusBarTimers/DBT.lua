@@ -1147,7 +1147,7 @@ do
 			self.obj:Update(elapsed)
 		else
 			self.elap = (self.elap or 0) + elapsed
-			if self.elap >= 0.04 then
+			if self.elap >= 0.04 then--This workaround causes desyncing timers since it's trusting imprecise time calculations instead of using GetTime. However, using gettime uses about 3x the cpu
 				if self.obj then
 					self.obj:Update(self.elap)
 				else
