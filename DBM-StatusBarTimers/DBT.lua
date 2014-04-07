@@ -766,12 +766,10 @@ do
 	local lastUpdate = GetTime()--can't use DBM.GetTime() here because DBT loads before DBM does and this generates nil error
 	updateFrame:SetScript("OnUpdate", function(self, elapsed)
 		--if UIParent:IsShown() then return end
-		self.elap = (self.elap or 0) + elapsed
-		if self.elap >= 0.04 then
---			print(elapsed)
+		local time = GetTime()
+		local delta = time - lastUpdate
+		if delta >= 0.04 then
 			-- calculate actual time since last update with GetTime (this also seems to avoid some problems with backgrounding WoW and desynchronized pause timers)
-			local time = GetTime()
-			local delta = time - lastUpdate
 			lastUpdate = time
 			for i, v in ipairs(instances) do
 				for bar in pairs(v.bars) do
@@ -781,7 +779,6 @@ do
 			if totalBars == 0 then
 				self:Hide()
 			end
-			self.elap = 0
 		end
 	end)
 	updateFrame:SetScript("OnShow", function(self)
