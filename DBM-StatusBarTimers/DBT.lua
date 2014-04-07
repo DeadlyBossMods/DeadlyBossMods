@@ -766,7 +766,7 @@ do
 	local lastUpdate = GetTime()--can't use DBM.GetTime() here because DBT loads before DBM does and this generates nil error
 	updateFrame:SetScript("OnUpdate", function(self, elapsed)
 		--if UIParent:IsShown() then return end
---		self.elap = (self.elap or 0) + elapsed
+		self.elap = (self.elap or 0) + elapsed
 		if self.elap >= 0.04 then
 --			print(elapsed)
 			-- calculate actual time since last update with GetTime (this also seems to avoid some problems with backgrounding WoW and desynchronized pause timers)
