@@ -1150,8 +1150,11 @@ end
 do
 	local GetTime = GetTime
 	local function onUpdate(self, elapsed)
+	--KNOWN ISSUES:
+	--For some reason, teh SAME timer name being called again always starts wrong when it's called again
+	--However, all I do know is ONE on update handler doesn't work, it HAS to be done this way so it has to be fixed
 		self.curTime = GetTime()
-		if not self.lastUpdate then self.lastUpdate = self.curTime end
+		self.lastUpdate = self.lastUpdate or self.curTime
 		self.delta = self.curTime - self.lastUpdate
 		if (self.obj.moving or "") == "enlarge" or self.delta >= 0.04 then
 			if self.obj then
