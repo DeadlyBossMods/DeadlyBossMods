@@ -98,6 +98,7 @@ local playerName = UnitName("player")
 local firstIcewall = false
 local CVAR = nil
 local yellowRevealed = 0
+local scanTime = 0
 
 local function warnBeam()
 	if mod:IsDifficulty("heroic10", "heroic25", "lfr25") then
@@ -133,6 +134,7 @@ local function BeamEnded()
 end
 
 local function findBeamJump(spellName, spellId)
+	scanTime = scanTime + 1
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
 		if spellId == 139202 and UnitDebuff(uId, spellName) and lastBlue ~= name then
@@ -159,7 +161,9 @@ local function findBeamJump(spellName, spellId)
 			return
 		end
 	end
-	mod:Schedule(0.1, findBeamJump, spellName, spellId)--Check again if we didn't return from either debuff (We checked too soon)
+	if scanTime < 30 then--Scan for 3 sec but not forever.
+		mod:Schedule(0.1, findBeamJump, spellName, spellId)--Check again if we didn't return from either debuff (We checked too soon)
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -310,6 +314,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(139202, 139204) then
 		--The SPELL_CAST_SUCCESS event works, it's the SPELL_AURA_APPLIED/REMOVED events that are busted/
 		--SUCCESS has no target. Still have to find target with UnitDebuff checks
+		scanTime = 0
 		self:Schedule(0.1, findBeamJump, args.spellName, spellId)
 	end
 end
@@ -467,7 +472,6 @@ function mod:UNIT_DIED(args)
 		if self:IsDifficulty("lfr25") then
 			totalFogs = totalFogs - 1
 			if totalFogs >= 1 then
-				self:Unschedule(findBeamJump)
 				--LFR does something completely different than kill 3 crimson adds to end phase. in LFR, they kill 1 of each color (which is completely against what you do in 10N, 25N, 10H, 25H)
 				warnAddsLeft:Show(totalFogs)
 			else--No adds left, force ability is re-enabled
@@ -485,9 +489,7 @@ function mod:UNIT_DIED(args)
 			end
 		end
 	elseif cid == 69052 then--Azure Fog (endlessly respawn in all but LFR, so we ignore them dying anywhere else)
-		--Maybe do something for heroic here too, if timers for the crap this thing does gets added.
 		if self:IsDifficulty("lfr25") then
-			self:Unschedule(findBeamJump)
 			totalFogs = totalFogs - 1
 			if totalFogs >= 1 then
 				--LFR does something completely different than kill 3 crimson adds to end phase. in LFR, they kill 1 of each color (which is completely against what you do in 10N, 25N, 10H, 25H)
