@@ -1148,17 +1148,15 @@ end
 -- Bar event handlers --
 ------------------------
 do
-	local GetTime = GetTime
+--	local GetTime = GetTime
 	local function onUpdate(self, elapsed)
-	--KNOWN ISSUES:
-	--For some reason, teh SAME timer name being called again always starts wrong when it's called again
-	--However, all I do know is ONE on update handler doesn't work, it HAS to be done this way so it has to be fixed
-		self.curTime = GetTime()
+--[[		self.curTime = GetTime()
 		self.lastUpdate = self.lastUpdate or self.curTime
 		self.delta = self.curTime - self.lastUpdate
-		if (self.obj.moving or "") == "enlarge" or self.delta >= 0.04 then
+		if (self.obj.moving or "") == "enlarge" or self.delta >= 0.04 then]]
 			if self.obj then
-				self.obj:Update(self.delta)
+				--self.obj:Update(self.delta)
+				self.obj:Update(elapsed)
 			else
 				-- This should *never* happen; .obj is only set to nil when calling :Hide() and :Show() is only called in a function that also sets .obj
 				-- However, there have been several reports of this happening since WoW 5.x, wtf?
@@ -1166,8 +1164,8 @@ do
 				-- The bug reports show screenshots of expired timers that are still visible (showing 0.00) with all clean-up operations (positioning, list entry) except for the :Hide() call being performed...
 				self:Hide()
 			end
-			self.lastUpdate = self.curTime
-		end
+			--self.lastUpdate = self.curTime
+		--end
 	end
 
 	local function onMouseDown(self, btn)
