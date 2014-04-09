@@ -759,30 +759,16 @@ function barPrototype:Update(elapsed)
 end
 
 do
---KNOWN ISSUES:
---This uses a lot more cpu than before. at least 50% more.
---"enlarge" Animations are choppy because animations should not use the 0.04
-	local GetTime = GetTime
-	local lastUpdate = GetTime()--can't use DBM.GetTime() here because DBT loads before DBM does and this generates nil error
 	updateFrame:SetScript("OnUpdate", function(self, elapsed)
-		--if UIParent:IsShown() then return end
-		local time = GetTime()
-		local delta = time - lastUpdate
-		if delta >= 0.04 then
-			-- calculate actual time since last update with GetTime (this also seems to avoid some problems with backgrounding WoW and desynchronized pause timers)
-			lastUpdate = time
-			for i, v in ipairs(instances) do
-				for bar in pairs(v.bars) do
-					bar:Update(delta)
-				end
-			end
-			if totalBars == 0 then
-				self:Hide()
+		if totalBars == 0 then
+			self:Hide()
+		end
+		if UIParent:IsShown() then return end
+		for i, v in ipairs(instances) do
+			for bar in pairs(v.bars) do
+				bar:Update(elapsed)
 			end
 		end
-	end)
-	updateFrame:SetScript("OnShow", function(self)
-		lastUpdate = GetTime()
 	end)
 end
 
@@ -1162,27 +1148,24 @@ end
 -- Bar event handlers --
 ------------------------
 do
-
---[[	local function onUpdate(self, elapsed)
-		if (self.obj.moving or "") == "enlarge" then
-			self.elap = 0
-			self.obj:Update(elapsed)
-		else
-			self.elap = (self.elap or 0) + elapsed
-			if self.elap >= 0.04 then
-				if self.obj then
-					self.obj:Update(self.elap)
-				else
-					-- This should *never* happen; .obj is only set to nil when calling :Hide() and :Show() is only called in a function that also sets .obj
-					-- However, there have been several reports of this happening since WoW 5.x, wtf?
-					-- Unfortunately, none of the developers was ever able to reproduce this.
-					-- The bug reports show screenshots of expired timers that are still visible (showing 0.00) with all clean-up operations (positioning, list entry) except for the :Hide() call being performed...
-					self:Hide()
-				end
-				self.elap = 0
+	local GetTime = GetTime
+	local function onUpdate(self, elapsed)
+		self.curTime = GetTime()
+		if not self.lastUpdate then self.lastUpdate = self.curTime end
+		self.delta = self.curTime - self.lastUpdate
+		if (self.obj.moving or "") == "enlarge" or self.delta >= 0.04 then
+			if self.obj then
+				self.obj:Update(self.delta)
+			else
+				-- This should *never* happen; .obj is only set to nil when calling :Hide() and :Show() is only called in a function that also sets .obj
+				-- However, there have been several reports of this happening since WoW 5.x, wtf?
+				-- Unfortunately, none of the developers was ever able to reproduce this.
+				-- The bug reports show screenshots of expired timers that are still visible (showing 0.00) with all clean-up operations (positioning, list entry) except for the :Hide() call being performed...
+				self:Hide()
 			end
+			self.lastUpdate = self.curTime
 		end
-	end]]
+	end
 
 	local function onMouseDown(self, btn)
 		if self.obj then
@@ -1217,7 +1200,7 @@ do
 	end
 
 	function setupHandlers(frame)
-		--frame:SetScript("OnUpdate", onUpdate)
+		frame:SetScript("OnUpdate", onUpdate)
 		frame:SetScript("OnMouseDown", onMouseDown)
 		frame:SetScript("OnMouseUp", onMouseUp)
 		frame:SetScript("OnHide", onHide)
