@@ -27,8 +27,10 @@ mod:RemoveOption("SpeedKillTimer")
 mod:AddBoolOption("UnseenStrikeArrow")
 
 local spellName = GetSpellInfo(122949)
+local scanTime = 0
 
 local function findUnseen()
+	scanTime = scanTime + 1
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
 		if UnitDebuff(uId, spellName) then
@@ -45,7 +47,9 @@ local function findUnseen()
 			return
 		end
 	end
-	mod:Schedule(0.1, findUnseen)
+	if scanTime < 10 then
+		mod:Schedule(0.1, findUnseen)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -67,6 +71,7 @@ end
 
 function mod:OnSync(msg)
 	if msg == "UnseenTrash" then
+		scanTime = 0
 		findUnseen()
 	end
 end
