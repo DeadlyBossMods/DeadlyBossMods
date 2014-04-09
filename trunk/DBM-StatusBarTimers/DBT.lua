@@ -70,6 +70,7 @@ local updateFrame = CreateFrame("Frame")
 
 local ipairs, pairs, next, type = ipairs, pairs, next, type
 local tinsert = table.insert
+local GetTime = GetTime
 
 -----------------------
 --  Default Options  --
@@ -405,6 +406,7 @@ do
 		if (self.numBars or 0) >= 15 and not isDummy then return end
 		local newBar = self:GetBar(id)
 		if newBar then -- update an existing bar
+			newBar.lastUpdate = GetTime()
 			newBar:SetTimer(timer) -- this can kill the timer and the timer methods don't like dead timers
 			if newBar.dead then return end
 			newBar:SetElapsed(0) -- same
@@ -416,6 +418,7 @@ do
 			newBar = next(unusedBarObjects, nil)
 			local newFrame = createBarFrame(self)
 			if newBar then
+				newBar.lastUpdate = GetTime()
 				unusedBarObjects[newBar] = nil
 				newBar.dead = nil -- resurrected it :)
 				newBar.frame = newFrame
@@ -441,7 +444,8 @@ do
 					fadingIn = 0,
 					small = small,
 					color = color,
-					flashing = nil
+					flashing = nil,
+					lastUpdate = GetTime()
 				}, mt)
 			end
 			newFrame.obj = newBar
@@ -1148,15 +1152,13 @@ end
 -- Bar event handlers --
 ------------------------
 do
---	local GetTime = GetTime
 	local function onUpdate(self, elapsed)
---[[		self.curTime = GetTime()
-		self.lastUpdate = self.lastUpdate or self.curTime
-		self.delta = self.curTime - self.lastUpdate
-		if (self.obj.moving or "") == "enlarge" or self.delta >= 0.04 then]]
+		self.obj.curTime = GetTime()
+		self.obj.delta = self.obj.curTime - self.obj.lastUpdate
+		if (self.obj.moving or "") == "enlarge" or self.obj.delta >= 0.04 then
 			if self.obj then
-				--self.obj:Update(self.delta)
-				self.obj:Update(elapsed)
+				self.obj.lastUpdate = self.obj.curTime
+				self.obj:Update(self.obj.delta)
 			else
 				-- This should *never* happen; .obj is only set to nil when calling :Hide() and :Show() is only called in a function that also sets .obj
 				-- However, there have been several reports of this happening since WoW 5.x, wtf?
@@ -1164,8 +1166,7 @@ do
 				-- The bug reports show screenshots of expired timers that are still visible (showing 0.00) with all clean-up operations (positioning, list entry) except for the :Hide() call being performed...
 				self:Hide()
 			end
-			--self.lastUpdate = self.curTime
-		--end
+		end
 	end
 
 	local function onMouseDown(self, btn)
