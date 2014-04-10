@@ -3751,12 +3751,15 @@ local statVarTable = {
 	["normal5"] = "normal",
 	["normal10"] = "normal",
 	["normal25"] = "normal25",
+	["normal"] = "normal",
 	["heroic5"] = "heroic",
 	["heroic10"] = "heroic",
 	["heroic25"] = "heroic25",
+	["mythic"] = "heroic",
 	["challenge5"] = "challenge",
 	["worldboss"] = "normal",
 	["lfr25"] = "lfr25",
+	["lfr"] = "lfr25",
 	["flex"] = "flex",
 }
 
@@ -4329,7 +4332,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "heroic10", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 6 then
 		return "heroic25", difficultyName.." - ", difficulty, instanceGroupSize
-	elseif difficulty == 7 then
+	elseif difficulty == 7 then--Fixed LFR (ie pre WoD zones)
 		return "lfr25", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 8 then
 		return "challenge5", difficultyName.." - ", difficulty, instanceGroupSize
@@ -4339,8 +4342,14 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "heroic5", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 12 then--5.3 normal scenario
 		return "normal5", difficultyName.." - ", difficulty, instanceGroupSize
-	elseif difficulty == 14 then
+	elseif difficulty == 14 then--NOTE: Change "flex" to normal in 6.0
 		return "flex", difficultyName.." - ", difficulty, instanceGroupSize
+	elseif difficulty == 15 then
+		return "heroic", difficultyName.." - ", difficulty, instanceGroupSize
+	elseif difficulty == 16 then
+		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize
+	elseif difficulty == 17 then
+		return "lfr", difficultyName.." - ", difficulty, instanceGroupSize
 	else--failsafe
 		return "normal5", "", difficulty, instanceGroupSize
 	end
@@ -5112,11 +5121,12 @@ end
 
 function bossModPrototype:IsHeroic()
 	local diff = DBM:GetCurrentInstanceDifficulty()
-	if diff == "heroic5" or diff == "heroic10" or diff == "heroic25" then
+	if diff == "mythic" or diff == "heroic5" or diff == "heroic10" or diff == "heroic25" then
 		return true
 	end
 	return false
 end
+bossModPrototype.IsMythic = bossModPrototype.IsHeroic
 
 function bossModPrototype:IsTrivial(level)
 	if UnitLevel("player") >= level then
