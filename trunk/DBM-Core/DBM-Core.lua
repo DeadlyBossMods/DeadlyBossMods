@@ -3755,6 +3755,7 @@ local statVarTable = {
 	["heroic5"] = "heroic",
 	["heroic10"] = "heroic",
 	["heroic25"] = "heroic25",
+	["heroic"] = "heroic",
 	["mythic"] = "heroic",
 	["challenge5"] = "challenge",
 	["worldboss"] = "normal",
