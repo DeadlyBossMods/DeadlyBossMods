@@ -96,6 +96,12 @@ local function clearCheckTankDistanceThrottle(spellId)
 	end
 end
 
+local function hideRangeDelay()
+	if mod.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
+
 function mod:FoulStreamTarget(targetname, uId)
 	if not targetname then return end
 	if self:IsTanking(uId) then--Never target tanks, so if target is tank, that means scanning failed.
@@ -106,6 +112,10 @@ function mod:FoulStreamTarget(targetname, uId)
 		if targetname == UnitName("player") then
 			specWarnFoulStreamYou:Show()
 			yellFoulStream:Yell()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(4)
+				self:Schedule(4, hideRangeDelay)
+			end
 		else
 			specWarnFoulStream:Show()
 		end
@@ -169,9 +179,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnPoisonmistTotem:Show()
 	elseif spellId == 144289 and self:AntiSpam(2, 1) then
 		warnFoulstreamTotem:Show()
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(4)
-		end
 	elseif spellId == 144290 and self:AntiSpam(2, 1) then
 		warnAshflareTotem:Show()
 	elseif spellId == 144291 and self:AntiSpam(2, 1) then
