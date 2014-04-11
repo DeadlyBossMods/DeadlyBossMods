@@ -13,6 +13,7 @@ L.OTabBosses	= "Bosses"
 L.OTabOptions	= "Options"
 
 L.TabCategory_Options	 	= "General Options"
+L.TabCategory_WoD	 		= "Warlords of Draenor"
 L.TabCategory_MOP	 		= "Mists of Pandaria"
 L.TabCategory_CATA	 		= "Cataclysm"
 L.TabCategory_WOTLK 		= "Wrath of the Lich King"
