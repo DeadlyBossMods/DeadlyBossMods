@@ -2671,7 +2671,7 @@ do
 					bottom2header:SetText(PLAYER_DIFFICULTY2)
 					bottom3header:SetText(PLAYER_DIFFICULTY4)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
-				elseif mod.oneFormat then
+				elseif mod.oneFormat then--Classic/BC Raids
 					statsType = 2--Fix for BC instance
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*5*(bossstats-1)))
 					--Do not use top1 header.
@@ -2719,7 +2719,7 @@ do
 						top2text2:SetText(L.Statistic_Incompletes)
 					end
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
-				elseif mod.type == "RAID" and mod.noHeroic then
+				elseif mod.type == "RAID" and mod.noHeroic then--Early wrath
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*(bossstats-1)))
 					--Use top1 and top2 area.
 					top2header:SetPoint("LEFT", top1header, "LEFT", 220, 0)
@@ -2733,7 +2733,7 @@ do
 					top1header:SetText(RAID_DIFFICULTY1)
 					top2header:SetText(RAID_DIFFICULTY2)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
-				elseif mod.type == "RAID" and not mod.hasLFR then
+				elseif mod.type == "RAID" and not mod.hasLFR then--Cata and some wrath raids
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
 					--Use top1, top2, bottom1 and bottom2 area.
 					top2header:SetPoint("LEFT", top1header, "LEFT", 220, 0)
