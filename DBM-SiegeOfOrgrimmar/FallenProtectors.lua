@@ -163,7 +163,7 @@ function mod:OnCombatStart(delay)
 	timerGougeCD:Start(23-delay)
 	timerCalamityCD:Start(31-delay)
 	timerClashCD:Start(45-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		berserkTimer:Start(-delay)
 	else
 		berserkTimer:Start(900-delay)--15min confirmed in LFR, flex, normal
@@ -193,14 +193,14 @@ function mod:SPELL_CAST_START(args)
 		timerGougeCD:Start()
 	elseif spellId == 143446 then
 		warnBane:Show()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerBaneCD:Start(13)--TODO, verify normal to see if it was changed too
 		else
 			timerBaneCD:Start()
 		end
 	elseif spellId == 143491 then
 		local perText = ""
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			self.vb.calamityCount = self.vb.calamityCount + 1
 			perText = " ("..((self.vb.calamityCount + 2) * 10).."%)"
 		end
@@ -257,7 +257,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 143198 then
 		warnGarrote:CombinedShow(1, args.destName)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerGarroteCD:DelayedStart(1, 20)--TODO, see if it's cast more often on heroic only, or if normal was also changed to 20
 		else
 			timerGarroteCD:DelayedStart(1)

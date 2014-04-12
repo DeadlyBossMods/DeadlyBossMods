@@ -305,11 +305,11 @@ local function CheckBosses(ignoreRTF)
 				if UnitDebuff("player", GetSpellInfo(143275)) then vulnerable = true end
 			elseif cid == 71153 then--Hisek the Swarmkeeper
 				timerAimCD:Start(32, 1)--Might be 35-37 with unitdebuff filter
-				if mod:IsDifficulty("heroic10", "heroic25") then
+				if mod:IsHeroic() then
 					timerRapidFireCD:Start(47.5)--47-50 with unitdebuff filter
 				end
 			elseif cid == 71161 then--Kil'ruk the Wind-Reaver
-				if mod:IsDifficulty("heroic10", "heroic25") then
+				if mod:IsHeroic() then
 					timerReaveCD:Start(38.5)
 				end
 				mod:StopRepeatedScan("DFAScan")
@@ -495,7 +495,7 @@ function mod:OnCombatStart(delay)
 	)
 	timerJumpToCenter:Start(-delay)
 	berserkTimer:Start(-delay)
-	if self:IsDifficulty("normal10", "heroic10") then--Increaased number of people, decrease likelyhood of chat yell so it levels out
+	if self:IsHeroic() then--Increaased number of people, decrease likelyhood of chat yell so it levels out
 		mathNumber = 100
 	else
 		mathNumber = 250--0.4% chance per person in 25 man, LFR, Flex
@@ -601,7 +601,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.whirlCast = 0
 		self.vb.whirlTime = GetTime()
 		lastWhirl = nil
-		expectedWhirlCount = self:IsDifficulty("heroic10", "heroic25") and 5 or 4
+		expectedWhirlCount = self:IsHeroic() and 5 or 4
 		self:StartRepeatedScan(args.sourceGUID, "FlashScan", 0.03, true)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)--Range assumed, spell tooltips not informative enough
@@ -634,7 +634,7 @@ function mod:SPELL_CAST_START(args)
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then
 				local elapsed, total = timerMutateCD:GetTime(self.vb.mutateCount+1)
 				local remaining = total - elapsed
-				if self:IsDifficulty("heroic10", "heroic25") and (remaining < 20) and (self.vb.parasitesActive < 3) and not UnitDebuff("player", GetSpellInfo(143339)) then--We need more parasites to spawn with this attack
+				if self:IsHeroic() and (remaining < 20) and (self.vb.parasitesActive < 3) and not UnitDebuff("player", GetSpellInfo(143339)) then--We need more parasites to spawn with this attack
 					specWarnMoreParasites:Show()
 				else--We want to block attack and not spawn anything
 					specWarnInjection:Show()
@@ -693,7 +693,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnEncaseInAmber:Show(args.destName)
 		timerEncaseInAmber:Start(args.destName)
 		timerEncaseInAmberCD:Start()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			countdownEncaseInAmber:Start()
 		end
 	elseif spellId == 143939 then
@@ -809,7 +809,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 143339 then
-		if self:IsDifficulty("normal10", "heroic10") then
+		if self:IsHeroic() then
 			self.vb.parasitesActive = self.vb.parasitesActive + 5
 		else
 			self.vb.parasitesActive = self.vb.parasitesActive + 8

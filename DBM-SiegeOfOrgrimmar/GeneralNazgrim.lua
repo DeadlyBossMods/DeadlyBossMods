@@ -155,7 +155,7 @@ local function updateInfoFrame()
 		lines[GetSpellInfo(143503)] = 70
 		lines["|cFFFF0000"..GetSpellInfo(143872).."|r"] = bossPower--Red (definitely work making this one red, it's really the only critically bad one)
 	end
-	if mod:IsDifficulty("heroic10", "heroic25") then--Same on 10 heroic? TODO, get normal LFR and flex adds info verified
+	if mod:IsHeroic() then--Same on 10 heroic? TODO, get normal LFR and flex adds info verified
 		if mod.vb.addsCount == 0 then
 			lines[L.nextAdds] = L.mage..", "..L.rogue..", "..L.warrior
 		elseif mod.vb.addsCount == 1 then
@@ -441,7 +441,7 @@ function mod:OnSync(msg)
 			countdownAdds:Start()
 		end
 		if self.Options.SetIconOnAdds then
-			if self:IsDifficulty("heroic10", "heroic25") or self.vb.addsCount > 6 then--3 Adds
+			if self:IsHeroic() or self.vb.addsCount > 6 then--3 Adds
 				self:ScanForMobs(addsTable, 2, 7, 3, 0.2, 15)
 			else
 				self:ScanForMobs(addsTable, 2, 7, 2, 0.2, 15)--2 adds
