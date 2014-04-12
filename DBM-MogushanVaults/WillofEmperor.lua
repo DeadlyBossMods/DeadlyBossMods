@@ -129,7 +129,7 @@ local function addsDelay(add)
 	elseif add == "Boss" then
 		warnBossesActivated:Show()
 		specWarnBossesActivated:Show(10)
-		if not mod:IsDifficulty("heroic10", "heroic25") then
+		if not mod:IsHeroic() then
 			timerTitanGasCD:Start(113, 1)
 		end
 	end
@@ -143,7 +143,7 @@ function mod:OnCombatStart(delay)
 	self.vb.rageCount = 0
 	self.vb.strengthCount = 0
 	self.vb.courageCount = 0
-	if self:IsDifficulty("heroic10", "heroic25") then--Heroic trigger is shorter, everything comes about 6 seconds earlier
+	if self:IsHeroic() then--Heroic trigger is shorter, everything comes about 6 seconds earlier
 		timerStrengthActivates:Start(35-delay, 1)
 		timerCourageActivates:Start(69-delay, 1)
 		timerBossesActivates:Start(101-delay)
@@ -207,7 +207,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 		warnBossesActivatedSoon:Show()
 		self:Schedule(10, addsDelay, "Boss")
 	elseif msg:find("spell:116779") then
-		if self:IsDifficulty("heroic10", "heroic25") then--On heroic the boss activates this perminantly on pull and it's always present
+		if self:IsHeroic() then--On heroic the boss activates this perminantly on pull and it's always present
 			if not self:IsInCombat() then
 				DBM:StartCombat(self, 0)
 			end
@@ -272,7 +272,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			end
 			warnStomp:Show(self.vb.comboCount)
 		end
-		if self.vb.comboCount == (self:IsDifficulty("heroic10", "heroic25") and 10 or 5) then
+		if self.vb.comboCount == (self:IsHeroic() and 10 or 5) then
 			self.vb.comboMob = nil
 			self.vb.comboCount = 0
 		end

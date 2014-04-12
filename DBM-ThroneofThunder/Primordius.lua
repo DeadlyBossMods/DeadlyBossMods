@@ -117,7 +117,7 @@ function mod:OnCombatStart(delay)
 	bigOozeAlive = 0
 	table.wipe(bigOozeGUIDS)
 	berserkTimer:Start(-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		timerViscousHorrorCD:Start(11.5-delay, 1)
 		self:Schedule(11.5, BigOoze)
 	end
@@ -164,7 +164,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 136246 then
 		postulesActive = true
 		warnEruptingPustules:Show(args.destName)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			specWarnEruptingPustules:Show(args.destName)
 		end
 		if self.Options.RangeFrame and not acidSpinesActive then--Check if acidSpinesActive is active, if they are, we should already have range 5 up

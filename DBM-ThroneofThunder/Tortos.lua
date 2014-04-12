@@ -102,7 +102,7 @@ function mod:OnCombatStart(delay)
 	countdownStomp:Start(27-delay)
 	timerBreathCD:Start(-delay)
 	countdownBreath:Start(-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(L.WrongDebuff:format(shelldName))
 			DBM.InfoFrame:Show(5, "playergooddebuff", 137633)

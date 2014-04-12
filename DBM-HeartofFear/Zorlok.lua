@@ -72,7 +72,7 @@ function mod:OnCombatStart(delay)
 	platform = 0
 	EchoAlive = false
 	table.wipe(MCTargets)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		berserkTimer:Start(-delay)
 	else
 		berserkTimer:Start(600-delay)--still 10 min on normal. they only raised it to 11 minutes on heroic apparently.

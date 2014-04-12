@@ -194,7 +194,7 @@ function mod:OnCombatStart(delay)
 	cinderIcon = 7
 	iceIcon = 6
 	table.wipe(torrentExpires)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		arcaneBehind = 1
 		arcaneInFront = 0
 		arcaneRecent = false
@@ -358,7 +358,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		end
 		--timers below may need adjusting by 1-2 seconds as I had to substitute last rampage SPELL_DAMAGE event for rampage ends emote when i reg expressioned these timers on WoL
 --[[		if iceBehind > 0 then
-			if self:IsDifficulty("heroic10", "heroic25") then
+			if self:IsHeroic() then
 				timerTorrentofIceCD:Start(12)--12-17 second variation on heroic
 			else
 				timerTorrentofIceCD:Start(8)--8-12 second variation on normal

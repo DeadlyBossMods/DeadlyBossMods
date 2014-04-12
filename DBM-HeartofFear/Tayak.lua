@@ -66,7 +66,7 @@ function mod:OnCombatStart(delay)
 	if not self:IsDifficulty("lfr25") then
 		berserkTimer:Start(-delay)
 	end
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		timerBladeTempestCD:Start(-delay)
 		countdownTempest:Start(-delay)
 	end
