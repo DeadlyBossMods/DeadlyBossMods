@@ -119,7 +119,7 @@ function mod:OnCombatStart(delay)
 	playerHasChains = false
 	table.wipe(jasperChainsTargets)
 	table.wipe(amethystPoolTargets)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		berserkTimer:Start(-delay)
 	else
 		berserkTimer:Start(485-delay)

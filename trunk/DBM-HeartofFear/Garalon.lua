@@ -63,7 +63,7 @@ local crushCount = 0
 function mod:OnCombatStart(delay)
 	brokenLegs = 0
 	timerFuriousSwipeCD:Start(-delay)--8-11 sec on pull
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		crushCount = 0
 		timerCrushCD:Start(25.5-delay, 1)
 		countdownCrush:Start(25.5-delay)
@@ -165,7 +165,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:122774") then
 		timerCrush:Start()
-		if self:IsDifficulty("heroic10", "heroic25") and not msg:find(L.UnderHim) then
+		if self:IsHeroic() and not msg:find(L.UnderHim) then
 			crushCount = crushCount + 1
 			warnCrush:Show(crushCountWarnText:format(crushCount))
 			specwarnCrush:Show()

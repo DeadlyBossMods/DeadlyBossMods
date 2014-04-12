@@ -115,7 +115,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerInterruptingJolt:Start()
 		end
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerInterruptingJoltCD:Start(nil, jolt+1)
 			countdownInterruptingJolt:Start()
 		else
@@ -126,7 +126,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 138644 and self:IsDifficulty("heroic10", "heroic25") then--Only start on heroic, on normal it's 6 second cd, not worth using timer there
+	if spellId == 138644 and self:IsHeroic() then--Only start on heroic, on normal it's 6 second cd, not worth using timer there
 		siphon = siphon + 1
 		timerSiphonAnimaCD:Start(nil, siphon+1)
 		self:Schedule(2, PowerDelay)
@@ -215,7 +215,7 @@ end
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	if UnitExists("boss1") and tonumber(UnitGUID("boss1"):sub(6, 10), 16) == 69427 then
 		self:UnregisterShortTermEvents()--Once boss is out, unregister event, since we need it no longer.
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerAnimaFontCD:Start(14)
 			timerAnimaRingCD:Start(23)
 			countdownAnimaRing:Start(23)

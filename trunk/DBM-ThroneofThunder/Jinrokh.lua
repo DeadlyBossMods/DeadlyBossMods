@@ -85,7 +85,7 @@ function mod:OnCombatStart(delay)
 	timerFocusedLightningCD:Start(8-delay)
 	timerStaticBurstCD:Start(13-delay)
 	timerThrowCD:Start(30-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		timerIonizationCD:Start(60-delay)
 		countdownIonization:Start(60-delay)
 		berserkTimer:Start(360-delay)
@@ -112,7 +112,7 @@ function mod:SPELL_CAST_START(args)
 		timerStorm:Start()
 		timerStaticBurstCD:Start(20.5)--May need tweaking (20.1-24.2)
 		timerThrowCD:Start()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerIonizationCD:Start()
 			countdownIonization:Start()
 		end

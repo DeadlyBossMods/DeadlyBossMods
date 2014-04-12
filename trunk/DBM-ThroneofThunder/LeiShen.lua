@@ -346,7 +346,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDiffusionChain:Show(self.vb.diffusionCastTarget)
 		if not self.vb.intermissionActive then
 			timerDiffusionChainCD:Start()
-			if not (self.vb.phase == 2 and self.vb.westDestroyed) or not self:IsDifficulty("heroic10", "heroic25") then--Disable this countdown in phase 2 if using bouncing bolt strat. so they don't overlap. this is mainly for the diffusion chain strat (ie overloading DC and static shock on heroic vs bouncing and static)
+			if not (self.vb.phase == 2 and self.vb.westDestroyed) or not self:IsHeroic() then--Disable this countdown in phase 2 if using bouncing bolt strat. so they don't overlap. this is mainly for the diffusion chain strat (ie overloading DC and static shock on heroic vs bouncing and static)
 				countdownDiffusionChain:Start()
 			end
 			specWarnDiffusionChainSoon:Schedule(36)
@@ -454,7 +454,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			if self.Options.RangeFrame and self:IsRanged() then--Only ranged need it in phase 2 and 3
 				DBM.RangeCheck:Show(6)--Needed for phase 2 AND phase 3
 			end
-			if self:IsDifficulty("heroic10", "heroic25") then
+			if self:IsHeroic() then
 				--Basically a CD, may come later if delayed by other crap
 				--15-19 variation. but you need this timing to hit spell reflect at 15 (it lasts 5 seconds so covers the variation)
 				if self.vb.northDestroyed then
@@ -472,7 +472,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 				end
 				if self.vb.westDestroyed then
 					timerBouncingBoltCD:Start(14)
-					if not self.vb.eastDestroyed or not self:IsDifficulty("heroic10", "heroic25") then--Why in the hell would you do that? Diffusion chaim & bouncing bolts? you must be nuts
+					if not self.vb.eastDestroyed or not self:IsHeroic() then--Why in the hell would you do that? Diffusion chaim & bouncing bolts? you must be nuts
 						countdownBouncingBolt:Start(14)--Of the two, diffusion chains more important so we disable bouncing count
 					end
 				end
@@ -488,7 +488,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			timerThunderstruckCD:Start(36, 1)
 			countdownThunderstruck:Start(36)
 			timerSummonBallLightningCD:Start(41.5, 1)
-			if self:IsDifficulty("heroic10", "heroic25") then
+			if self:IsHeroic() then
 				--Basically a CD, may come later if delayed by other crap
 				--28-32 variation. but you need this timing to hit spell reflect at 15 (it lasts 5 seconds so covers the variation)
 				if self.vb.northDestroyed then
@@ -496,7 +496,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 				end
 				if self.vb.eastDestroyed then
 					timerDiffusionChainCD:Start(28)
-					if not self.vb.westDestroyed or not self:IsDifficulty("heroic10", "heroic25") then--Why in the fuck would you do that? Diffusion chaim & bouncing bolts? you must be nuts
+					if not self.vb.westDestroyed or not self:IsHeroic() then--Why in the fuck would you do that? Diffusion chaim & bouncing bolts? you must be nuts
 						countdownDiffusionChain:Start(28)
 					end
 				end
@@ -513,26 +513,26 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 end
 
 local function LoopIntermission()
-	if not mod.vb.southDestroyed or mod:IsDifficulty("heroic10", "heroic25") then
+	if not mod.vb.southDestroyed or mod:IsHeroic() then
 		if mod:IsDifficulty("lfr25") then
 			timerOverchargeCD:Start(17.5)
 		else
 			timerOverchargeCD:Start(6.5)
 		end
 	end
-	if not mod.vb.eastDestroyed or mod:IsDifficulty("heroic10", "heroic25") then
+	if not mod.vb.eastDestroyed or mod:IsHeroic() then
 		if mod:IsDifficulty("lfr25") then
 			timerDiffusionChainCD:Start(17.5)
 		else
 			timerDiffusionChainCD:Start(8)
 		end
 	end
-	if not mod.vb.westDestroyed or mod:IsDifficulty("heroic10", "heroic25") then
+	if not mod.vb.westDestroyed or mod:IsHeroic() then
 		if mod:IsDifficulty("lfr25") then
 			warnBouncingBolt:Schedule(8.5)
 			specWarnBouncingBolt:Schedule(8.5)
 			timerBouncingBoltCD:Start(8.5)
-		elseif mod:IsDifficulty("heroic10", "heroic25") then
+		elseif mod:IsHeroic() then
 			warnBouncingBolt:Schedule(15.5)--Delayed by second helm of command i believe
 			specWarnBouncingBolt:Schedule(15.5)
 			timerBouncingBoltCD:Start(15.5)
@@ -542,10 +542,10 @@ local function LoopIntermission()
 			timerBouncingBoltCD:Start(14)
 		end
 	end
-	if (not mod:IsDifficulty("lfr25") and not mod.vb.northDestroyed) or mod:IsDifficulty("heroic10", "heroic25") then--Doesn't cast a 2nd one in LFR
+	if (not mod:IsDifficulty("lfr25") and not mod.vb.northDestroyed) or mod:IsHeroic() then--Doesn't cast a 2nd one in LFR
 		timerStaticShockCD:Start(16)
 	end
-	if mod:IsDifficulty("heroic10", "heroic25") then
+	if mod:IsHeroic() then
 		timerHelmOfCommand:Start(15)
 	end
 end
@@ -579,7 +579,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerOverchargeCD:Cancel()
 		timerBouncingBoltCD:Cancel()
 		countdownBouncingBolt:Cancel()
-		if not self.vb.eastDestroyed or self:IsDifficulty("heroic10", "heroic25") then
+		if not self.vb.eastDestroyed or self:IsHeroic() then
 			if self:IsDifficulty("lfr25") then
 				timerDiffusionChainCD:Start(10)
 			else
@@ -589,19 +589,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				DBM.RangeCheck:Show(8)
 			end
 		end
-		if not self.vb.southDestroyed or self:IsDifficulty("heroic10", "heroic25") then
+		if not self.vb.southDestroyed or self:IsHeroic() then
 			if self:IsDifficulty("lfr25") then
 				timerOverchargeCD:Start(10)
 			else
 				timerOverchargeCD:Start(6)
 			end
 		end
-		if (not self.vb.westDestroyed and not self:IsDifficulty("lfr25")) or self:IsDifficulty("heroic10", "heroic25") then--Doesn't get cast in first wave in LFR, only second
+		if (not self.vb.westDestroyed and not self:IsDifficulty("lfr25")) or self:IsHeroic() then--Doesn't get cast in first wave in LFR, only second
 			warnBouncingBolt:Schedule(14)
 			specWarnBouncingBolt:Schedule(14)
 			timerBouncingBoltCD:Start(14)
 		end
-		if not self.vb.northDestroyed or self:IsDifficulty("heroic10", "heroic25") then
+		if not self.vb.northDestroyed or self:IsHeroic() then
 			if self:IsDifficulty("lfr25") then
 				timerStaticShockCD:Start(21)
 			else
@@ -609,14 +609,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			end
 		end
 		self:Schedule(23, LoopIntermission)--Fire function to start second wave of specials timers
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerHelmOfCommand:Start(14)
 		end
 	elseif spellId == 136395 and self:AntiSpam(2, 3) and not self.vb.intermissionActive then--Bouncing Bolt (During intermission phases, it fires randomly, use scheduler and filter this :\)
 		warnBouncingBolt:Show()
 		specWarnBouncingBolt:Show()
 		timerBouncingBoltCD:Start(40)
-		if not (self.vb.phase == 2 and self.vb.eastDestroyed) or not self:IsDifficulty("heroic10", "heroic25") then--Disable this countdown in phase 2 if using diffusion strat
+		if not (self.vb.phase == 2 and self.vb.eastDestroyed) or not self:IsHeroic() then--Disable this countdown in phase 2 if using diffusion strat
 			countdownBouncingBolt:Start(40)
 		end
 		specWarnBouncingBoltSoon:Schedule(36)

@@ -117,7 +117,7 @@ end
 local function BeamEnded()
 	timerLingeringGazeCD:Start(17)
 	timerForceOfWillCD:Start(19)
-	if mod:IsDifficulty("heroic10", "heroic25") then
+	if mod:IsHeroic() then
 		timerDarkParasiteCD:Start(10)
 		timerIceWallCD:Start(32)
 		firstIcewall = true
@@ -182,7 +182,7 @@ function mod:OnCombatStart(delay)
 	timerForceOfWillCD:Start(33.5-delay)
 	timerLightSpectrumCD:Start(40-delay)
 	countdownLightSpectrum:Start(40-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		timerDarkParasiteCD:Start(-delay)
 		timerIceWallCD:Start(127-delay)
 		firstIcewall = false--On pull, we only get one icewall and the CD behavior of parasite unaltered so we make sure to treat first icewall like a 2nd
@@ -297,7 +297,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		lfrAmberFogRevealed = false
 		lfrAzureFogRevealed = false
 		timerForceOfWillCD:Cancel()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerObliterateCD:Start()
 			if lifeDrained then -- Check 1st Beam ended.
 				timerIceWallCD:Start(88.5)

@@ -161,7 +161,7 @@ function mod:UNIT_SPELLCAST_START(uId, _, _, _, spellId)
 		warnDowndraft:Show()
 		specWarnDowndraft:Show()
 		timerDowndraft:Start()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerDowndraftCD:Start(93)
 		else
 			timerDowndraftCD:Start()--Todo, confirm they didn't just change normal to 90 as well. in my normal logs this had a 110 second cd on normal
