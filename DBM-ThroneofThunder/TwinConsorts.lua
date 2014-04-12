@@ -288,7 +288,7 @@ function mod:OnSync(msg)
 		timerIceCometCD:Start()--TODO, update timer for late 5.3 hotfix.
 		timerFanOfFlamesCD:Start(6)
 		--timerFlamesOfPassionCD:Start(12.5)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerNuclearInfernoCD:Start(45, 1)--45-50 second variation (cd is 45, but there is hard code failsafe that if a commet has spawned recently it's extended?
 		end
 		self:RegisterShortTermEvents(
@@ -301,7 +301,7 @@ function mod:OnSync(msg)
 		warnDusk:Show()
 		timerIceCometCD:Start(17)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
 		timerTidalForceCD:Start(26)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerNuclearInfernoCD:Cancel()
 			timerNuclearInfernoCD:Start(67, 1)
 		end
@@ -316,7 +316,7 @@ function mod:OnSync(msg)
 			infernoCount = 0
 			timerIceCometCD:Start(11)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
 			timerTidalForceCD:Start(20)
-			if self:IsDifficulty("heroic10", "heroic25") then
+			if self:IsHeroic() then
 				timerNuclearInfernoCD:Cancel()
 				timerNuclearInfernoCD:Start(61, infernoCount+1)
 			end

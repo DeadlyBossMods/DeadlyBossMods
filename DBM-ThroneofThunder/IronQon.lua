@@ -101,7 +101,7 @@ local function updateHealthFrame()
 			DBM.BossHealth:AddBoss(68081, Damren)
 		elseif mod.vb.phase == 4 then
 			DBM.BossHealth:AddBoss(68078, L.name)
-			if mod:IsDifficulty("heroic10", "heroic25") then
+			if mod:IsHeroic() then
 				DBM.BossHealth:AddBoss(68081, Damren)
 				DBM.BossHealth:AddBoss(68080, Quetzal)
 				DBM.BossHealth:AddBoss(68079, Roshak)
@@ -371,7 +371,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerImpaleCD:Cancel()
 			warnPhase2:Show()
 			self:Schedule(25, checkSpear)
-			if self:IsDifficulty("heroic10", "heroic25") then
+			if self:IsHeroic() then
 				timerFreezeCD:Start(13)
 				timerFrostSpikeCD:Start(15)
 			end
@@ -435,7 +435,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnFistSmash:Show(self.vb.fistSmashCount)
 		specWarnFistSmash:Show()
 		timerFistSmash:Start()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerFistSmashCD:Start(28, self.vb.fistSmashCount+1) -- heroic cd longer.
 		else
 			timerFistSmashCD:Start(nil, self.vb.fistSmashCount+1)
@@ -448,7 +448,7 @@ function mod:UNIT_DIED(args)
 	if cid == 68079 then--Ro'shak
 		timerUnleashedFlameCD:Cancel()
 		timerMoltenOverload:Cancel()
-		if self:IsDifficulty("heroic10", "heroic25") and DBM.BossHealth:IsShown() then--In heroic, all mounts die in phase 4.
+		if self:IsHeroic() and DBM.BossHealth:IsShown() then--In heroic, all mounts die in phase 4.
 			DBM.BossHealth:RemoveBoss(cid)
 		else
 			if self.Options.RangeFrame then
@@ -484,7 +484,7 @@ function mod:UNIT_DIED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
-		if self:IsDifficulty("heroic10", "heroic25") and DBM.BossHealth:IsShown() then--In heroic, all mounts die in phase 4.
+		if self:IsHeroic() and DBM.BossHealth:IsShown() then--In heroic, all mounts die in phase 4.
 			DBM.BossHealth:RemoveBoss(cid)
 		else
 			self.vb.phase = 3
@@ -499,7 +499,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 68081 then--Dam'ren
 		timerDeadZoneCD:Cancel()
 		timerFreezeCD:Cancel()
-		if self:IsDifficulty("heroic10", "heroic25") and DBM.BossHealth:IsShown() then--In heroic, all mounts die in phase 4.
+		if self:IsHeroic() and DBM.BossHealth:IsShown() then--In heroic, all mounts die in phase 4.
 			DBM.BossHealth:RemoveBoss(cid)
 		else
 			self.vb.phase = 4

@@ -164,7 +164,7 @@ function mod:SPELL_CAST_START(args)
 		protectorCount = protectorCount + 1
 		warnProtector:Show(protectorCount)
 		specWarnProtector:Show()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerProtectorCD:Start(26)--26-28 variation on heroic
 		else
 			timerProtectorCD:Start()--35-37 on normal

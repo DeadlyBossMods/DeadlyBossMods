@@ -79,7 +79,7 @@ function mod:OnCombatStart(delay)
 	lostHealth = 0
 	prevlostHealth = 0
 	timerSpecialCD:Start(30.5-delay, 1)--Variable, 30.5-37 (or aborted if 80% protect happens first)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		berserkTimer:Start(420-delay)
 	else
 		berserkTimer:Start(-delay)
@@ -111,7 +111,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnGetAway:Show(specialsCast)
 		specWarnGetAway:Show()
 		timerSpecialCD:Start(nil, specialsCast+1)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerGetAway:Start(45)
 		else
 			timerGetAway:Start()

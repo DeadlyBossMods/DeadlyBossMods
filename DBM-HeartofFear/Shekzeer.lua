@@ -250,7 +250,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if fieldCount < 2 then
 			timerDissonanceFieldCD:Start(nil, fieldCount+1)
 		end
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			if fieldCount == 1 then
 				timerCorruptedDissonance:Start(10)
 			else

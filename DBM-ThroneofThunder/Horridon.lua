@@ -111,7 +111,7 @@ function mod:OnCombatStart(delay)
 	timerDoor:Start(16.5-delay)
 	timerChargeCD:Start(31-delay)--31-35sec variation
 	berserkTimer:Start(-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		timerDireCallCD:Start(-delay, 1)
 	end
 	self:RegisterShortTermEvents(
