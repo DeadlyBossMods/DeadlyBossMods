@@ -48,7 +48,7 @@ function mod:OnCombatStart(delay)
 	timerBreathCD:Start(10-delay)
 	timerSwirlCD:Start(20-delay)
 	berserkTimer:Start(-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		timerSwellingCorruptionCD:Start(10-delay)--10-14sec variation
 	end
 end
@@ -118,7 +118,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		warnReform:Show()
 		timerBreathCD:Start(14)
 		timerSwirlCD:Start(24)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerSwellingCorruptionCD:Start(17)
 		end
 	elseif msg:find("spell:143020") then--split
