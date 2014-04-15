@@ -1,0 +1,49 @@
+﻿## Interface: 50400
+## X-Min-Interface: 50100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Brawlers|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Бойцовская гильдия|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0싸움꾼 조합|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Kampfgilde|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0搏击俱乐部|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0鬥陣俱樂部|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Camorristas|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastonneurs|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMBrawlers_SavedVars
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: OTHER
+## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-No-Statistics: 1
+## X-DBM-Mod-Name: Brawlers
+## X-DBM-Mod-Name-koKR: 싸움꾼 조합
+## X-DBM-Mod-Name-deDE: Kampfgilde
+## X-DBM-Mod-Name-zhCN: 搏击俱乐部
+## X-DBM-Mod-Name-zhTW: 鬥陣俱樂部
+## X-DBM-Mod-Name-esES: Camorristas
+## X-DBM-Mod-Name-frFR: Bastonneurs
+## X-DBM-Mod-Name-ruRU: Бойцовская гильдия
+## X-DBM-Mod-Sort: 35
+## X-DBM-Mod-MapID: 369,1043
+## X-DBM-Mod-ForceLoad-MapID: 369,1043
+localization.en.lua
+localization.kr.lua
+localization.de.lua
+localization.cn.lua
+localization.tw.lua
+localization.es.lua
+localization.fr.lua
+localization.ru.lua
+Brawlers.lua
+Rank1.lua
+Rank2.lua
+Rank3.lua
+Rank4.lua
+Rank5.lua
+Rank6.lua
+Rank7.lua
+Rank8.lua
+Rank9.lua
+Rares1.lua
+Rares2.lua
