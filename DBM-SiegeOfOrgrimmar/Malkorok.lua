@@ -35,7 +35,7 @@ local warnFatalStrike					= mod:NewStackAnnounce(142990, 2, nil, mod:IsTank())
 local specWarnBloodRage					= mod:NewSpecialWarningSpell(142879, nil, nil, nil, 2)
 local specWarnBloodRageEnded			= mod:NewSpecialWarningFades(142879)
 local specWarnDisplacedEnergy			= mod:NewSpecialWarningRun(142913)
-local yellDisplacedEnergy				= mod:NewYell(142913)
+local yellDisplacedEnergy				= mod:NewYell("OptionVersion2", 142913, nil, false)--Only matters on normal/heroic and most of those raiders know how to dispel it with roars and other things so yells are pointless to most except bad comp 10 mans (and 10 mans going away soon so ultimately false is better default)
 --Might of the Kor'kron
 local specWarnArcingSmash				= mod:NewSpecialWarningCount(142815, nil, nil, nil, 2)
 local specWarnImplodingEnergySoon		= mod:NewSpecialWarningPreWarn(142986, nil, 4)

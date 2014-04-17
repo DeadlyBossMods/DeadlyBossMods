@@ -100,7 +100,7 @@ local yellCatalystGreen				= mod:NewYell(142730, nil, nil, false)
 --Kaz'tik the Manipulator
 local specWarnMesmerize				= mod:NewSpecialWarningYou(142671)
 local specWarnMesmerizeOther		= mod:NewSpecialWarningTarget(142671, false)--Person who grabs korven's amber wants this
-local yellMesmerize					= mod:NewYell(142671, nil, false)
+local yellMesmerize					= mod:NewYell("OptionVersion2", 142671)
 local specWarnKunchongs				= mod:NewSpecialWarningSwitch("ej8043", mod:IsDps())
 --Korven the Prime
 local specWarnShieldBash			= mod:NewSpecialWarningSpell("OptionVersion2", 143974, mod:IsTank())
