@@ -15,6 +15,7 @@
 --    * ruRU: TOM_RUS
 --    * zhTW: Whyv						ultrashining@gmail.com
 --    * koKR: nBlueWiz					everfinale@gmail.com
+--    * frFR: leiyla					http://forums.elitistjerks.com/user/616557-leiyla/
 --
 -- The former/inactive-translators:
 --    * deDE: Tandanu					http://www.deadlybossmods.com
