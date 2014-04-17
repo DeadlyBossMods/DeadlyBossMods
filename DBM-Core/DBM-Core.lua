@@ -3857,10 +3857,12 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		--process global options
 		self:ToggleRaidBossEmoteFrame(1)
 		self:StartLogging(0, nil)
-		--WatchFrame is renamed in 6.0, just a reminder comment to rename it for this function post patch.
-		if DBM.Options.HideWatchFrame and WatchFrame and WatchFrame:IsVisible() and not (mod.type == "SCENARIO") then
-			WatchFrame:Hide()
-			watchFrameRestore = true
+		if DBM.Options.HideWatchFrame and not (mod.type == "SCENARIO") then
+			local frame = WatchFrame or ObjectiveTrackerFrame--WatchFrame is renamed in 6.0. Remove this when 6.0 live
+			if frame:IsVisible() then
+				frame:Hide()
+				watchFrameRestore = true
+			end
 		end
 		if DBM.Options.HideTooltips then
 			--Better or cleaner way?
@@ -4198,7 +4200,8 @@ function DBM:EndCombat(mod, wipe)
 			DBM.BossHealth:Hide()
 			DBM.Arrow:Hide(true)
 			if DBM.Options.HideWatchFrame and watchFrameRestore and not scenario then
-				WatchFrame:Show()
+				local frame = WatchFrame or ObjectiveTrackerFrame--WatchFrame is renamed in 6.0. Remove this when 6.0 live
+				frame:Show()
 				watchFrameRestore = false
 			end
 			if DBM.Options.HideTooltips then
