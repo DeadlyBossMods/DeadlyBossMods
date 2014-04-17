@@ -38,8 +38,8 @@ DBM_CORE_COMBAT_ENDED_AT_LONG		= "Combat face à %s (%s) terminé après %s. Vou
 DBM_CORE_SCENARIO_ENDED_AT                      = "%s terminé après %s."
 DBM_CORE_SCENARIO_ENDED_AT_LONG         = "%s terminé après %s. Vous avez un total de %d wipes dans cette difficulté."
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s a été engagé il y a %s, récupération des délais..."
-DBM_CORE_TRANSCRIPTOR_LOG_START         = "Transcriptor logging started." --transcriptor?
-DBM_CORE_TRANSCRIPTOR_LOG_END           = "Transcriptor logging ended."   
+DBM_CORE_TRANSCRIPTOR_LOG_START         = "Début du log de Transcriptor."
+DBM_CORE_TRANSCRIPTOR_LOG_END           = "Fin du log de Transcriptor."
 
 DBM_CORE_WORLDBOSS_ENGAGED                      = "%s a probablement été engagé sur votre royaume à %s de vie. (Envoyé par %s)"
 DBM_CORE_WORLDBOSS_DEFEATED                     = "%s a probablement été tué sur votre royaume (Envoyé par %s)."
