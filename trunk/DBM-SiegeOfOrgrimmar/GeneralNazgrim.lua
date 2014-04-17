@@ -70,12 +70,12 @@ local specWarnArcaneShock			= mod:NewSpecialWarningInterrupt(143432, false)--Spa
 local specWarnMagistrike			= mod:NewSpecialWarningInterrupt(143431, false)--Spamy as all fuck, so off by default unless maybe heroic
 local specWarnEmpoweredChainHeal	= mod:NewSpecialWarningInterrupt("OptionVersion3", 143473, not mod:IsHealer())--Concerns everyone, if not interrupted will heal boss for a TON
 local specWarnAssassinsMark			= mod:NewSpecialWarningYou(143480)
-local yellAssassinsMark				= mod:NewYell(143480)
+local yellAssassinsMark				= mod:NewYell(143480, nil, false)
 local specWarnAssassinsMarkOther	= mod:NewSpecialWarningTarget(143480, false)
 local specWarnEarthShield			= mod:NewSpecialWarningDispel(143475, mod:IsMagicDispeller())
 local specWarnHealingTideTotem		= mod:NewSpecialWarningSwitch(143474, false)--Not everyone needs to switch, should be turned on by assigned totem mashing people.
 local specWarnHuntersMark			= mod:NewSpecialWarningYou(143882)
-local yellHuntersMark				= mod:NewYell(143882)
+local yellHuntersMark				= mod:NewYell(143882, nil, false)
 local specWarnHuntersMarkOther		= mod:NewSpecialWarningTarget(143882, false)
 
 --Nazgrim Core Abilities
