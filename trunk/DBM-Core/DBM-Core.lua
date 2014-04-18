@@ -1292,6 +1292,21 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		end
 		time = min * 60 + sec
 		DBM:CreatePizzaTimer(time, text)
+	elseif cmd:sub(1, 6) == "ctimer" then
+		local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
+		if not (time and text) then
+			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
+			return
+		end
+		local min, sec = string.split(":", time)
+		min = tonumber(min or "") or 0
+		sec = tonumber(sec or "")
+		if min and not sec then
+			sec = min
+			min = 0
+		end
+		time = min * 60 + sec
+		DBM:CreateCountTimer(time, text)
 	elseif cmd:sub(1, 15) == "broadcast timer" then
 		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
 		if DBM:GetRaidRank(playerName) == 0 then
@@ -1310,6 +1325,24 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		end
 		time = min * 60 + sec
 		DBM:CreatePizzaTimer(time, text, true)
+	elseif cmd:sub(1, 16) == "broadcast ctimer" then
+		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
+		if DBM:GetRaidRank(playerName) == 0 then
+			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+		end
+		if not (time and text) then
+			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
+			return
+		end
+		local min, sec = string.split(":", time)
+		min = tonumber(min or "") or 0
+		sec = tonumber(sec or "")
+		if min and not sec then
+			sec = min
+			min = 0
+		end
+		time = min * 60 + sec
+		DBM:CreateCountTimer(time, text, true)
 	elseif cmd:sub(0,5) == "break" then
 		local _, _, difficultyID = GetInstanceInfo()
 		if DBM:GetRaidRank(playerName) == 0 or difficultyID == 7 or difficultyID == 1 or difficultyID == 2 or IsEncounterInProgress() then--No break timers if not assistant or if it's LFR (because break timers in LFR are just not cute)
@@ -1495,7 +1528,13 @@ end
 --  Pizza Timer  --
 -------------------
 do
+	local function countDownTextDelay(timer)
+		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+	end
+
 	local ignore = {}
+	local fakeMod -- dummy mod for the pull sound effect
+	--Standard Pizza Timer
 	function DBM:CreatePizzaTimer(time, text, broadcast, sender)
 		if sender and ignore[sender] then return end
 		text = text:sub(1, 16)
@@ -1503,6 +1542,37 @@ do
 		self.Bars:CreateBar(time, text, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		if broadcast and self:GetRaidRank(playerName) >= 1 then
 			sendSync("U", ("%s\t%s"):format(time, text))
+		end
+		if sender then self:ShowPizzaInfo(text, sender) end
+	end
+	
+	--Advanced Pizza Timer with count down text and audio options
+	function DBM:CreateCountTimer(time, text, broadcast, sender)
+		if sender and ignore[sender] then return end
+		text = text:sub(1, 16)
+		text = text:gsub("%%t", UnitName("target") or "<no target>")
+		if not fakeMod then
+			fakeMod = DBM:NewMod("CreateCountTimerDummy")
+			DBM:GetModLocalization("CreateCountTimerDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
+			fakeMod.countdown = fakeMod:NewCountdown(0, 0, nil, nil, nil, true)
+		end
+		if not DBM.Options.DontPlayPTCountdown then
+			fakeMod.countdown:Cancel()
+			fakeMod.countdown:Start(timer)
+		end
+		if not DBM.Options.DontShowPTCountdownText then
+			DBM:Unschedule(countDownTextDelay)
+			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
+			local threshold = DBM.Options.PTCountThreshold
+			if timer > threshold then
+				DBM:Schedule(timer-threshold, countDownTextDelay, threshold)
+			else
+				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+			end
+		end
+		self.Bars:CreateBar(time, text, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+		if broadcast and self:GetRaidRank(playerName) >= 1 then
+			sendSync("CU", ("%s\t%s"):format(time, text))
 		end
 		if sender then self:ShowPizzaInfo(text, sender) end
 	end
@@ -2861,6 +2931,17 @@ do
 		text = tostring(text)
 		if time and text then
 			DBM:CreatePizzaTimer(time, text, nil, sender)
+		end
+	end
+	
+	syncHandlers["CU"] = function(sender, time, text)
+		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
+		if DBM:GetRaidRank(sender) == 0 then return end
+		if sender == playerName then return end
+		time = tonumber(time or 0)
+		text = tostring(text)
+		if time and text then
+			DBM:CreateCountTimer(time, text, nil, sender)
 		end
 	end
 
