@@ -37,7 +37,7 @@ mod:SetBossHealthInfo(
 --Amalgam of Corruption
 local warnSelfDoubt						= mod:NewStackAnnounce(146124, 2, nil, mod:IsTank())
 local warnBlindHatred					= mod:NewSpellAnnounce(145226, 3)
-local warnManifestation					= mod:NewSpellAnnounce("ej8232", 1, 147082)
+local warnManifestation					= mod:NewCountAnnounce("ej8232", 1, 147082)
 local warnResidualCorruption			= mod:NewSpellAnnounce(145073)
 local warnLookWithinEnd					= mod:NewEndTargetAnnounce("ej8220", 2, nil, false)
 --Test of Serenity (DPS)
@@ -105,13 +105,15 @@ local playerInside = false
 local previousPower = nil
 --Important, needs recover
 mod.vb.unleashedAngerCast = 0
+mod.vb.manifestationCount = 0
 
 --May be buggy with two adds spawning at exact same time
 --Two different icon functions end up both marking same mob with 8 and 7 and other mob getting no mark.
 --Not sure if GUID table will be fast enough to prevent, we shall see!
 local function addsDelay()
-	warnManifestation:Show()
-	specWarnManifestation:Show()
+	mod.vb.manifestationCount = mod.vb.manifestationCount + 1
+	warnManifestation:Show(mod.vb.manifestationCount)
+	specWarnManifestation:Show(mod.vb.manifestationCount)
 end
 
 local function addSync()
@@ -134,6 +136,7 @@ function mod:OnCombatStart(delay)
 	playerInside = false
 	previousPower = nil
 	mod.vb.unleashedAngerCast = 0
+	mod.vb.manifestationCount = 0
 	table.wipe(residue)
 	timerBlindHatredCD:Start(25-delay)
 	if self:IsDifficulty("lfr25") then
