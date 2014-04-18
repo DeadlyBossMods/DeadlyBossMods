@@ -495,7 +495,7 @@ function mod:OnCombatStart(delay)
 	)
 	timerJumpToCenter:Start(-delay)
 	berserkTimer:Start(-delay)
-	if self:IsHeroic() then--Increaased number of people, decrease likelyhood of chat yell so it levels out
+	if self:IsDifficulty("normal10", "heroic10") then--Increaased number of people, decrease likelyhood of chat yell so it levels out
 		mathNumber = 100
 	else
 		mathNumber = 250--0.4% chance per person in 25 man, LFR, Flex
@@ -809,7 +809,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 143339 then
-		if self:IsHeroic() then
+		if self:IsDifficulty("normal10", "heroic10") then
 			self.vb.parasitesActive = self.vb.parasitesActive + 5
 		else
 			self.vb.parasitesActive = self.vb.parasitesActive + 8
