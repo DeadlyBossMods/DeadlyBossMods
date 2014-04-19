@@ -1558,16 +1558,16 @@ do
 		end
 		if not DBM.Options.DontPlayPTCountdown then
 			fakeMod.countdown:Cancel()
-			fakeMod.countdown:Start(timer)
+			fakeMod.countdown:Start(time)
 		end
 		if not DBM.Options.DontShowPTCountdownText then
 			DBM:Unschedule(countDownTextDelay)
 			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
 			local threshold = DBM.Options.PTCountThreshold
-			if timer > threshold then
-				DBM:Schedule(timer-threshold, countDownTextDelay, threshold)
+			if time > threshold then
+				DBM:Schedule(time-threshold, countDownTextDelay, threshold)
 			else
-				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, time, time)
 			end
 		end
 		self.Bars:CreateBar(time, text, "Interface\\Icons\\Spell_Holy_BorrowedTime")
