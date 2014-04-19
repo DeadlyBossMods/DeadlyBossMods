@@ -3882,7 +3882,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		if not mod.stats then
 			self:AddMsg(DBM_CORE_BAD_LOAD)--Warn user that they should reload ui soon as they leave combat to get their mod to load correctly as soon as possible
 			mod.ignoreBestkill = true--Force this to true so we don't check any more occurances of "stats"
-		elseif event == "TIMER_RECOVERY" then --add a lag tim to delay when TIMER_RECOVERY
+		elseif event == "TIMER_RECOVERY" then --add a lag time to delay when TIMER_RECOVERY
 			delay = delay + select(4, GetNetStats()) / 1000
 		end
 		--set mod default info
@@ -3935,7 +3935,6 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		elseif not mod.inScenario then
 			self:Schedule(1, checkBossHealth)
 		end
-		self:Schedule(1, checkBossHealth)
 		--process global options
 		self:ToggleRaidBossEmoteFrame(1)
 		self:StartLogging(0, nil)
