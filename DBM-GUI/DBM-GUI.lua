@@ -1438,10 +1438,11 @@ local function CreateOptionsMenu()
 		latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.LatencyThreshold) end)
 		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.LatencyThreshold = self:GetValue() end)
 		----
-		local generaltimeroptions = DBM_GUI_Frame:CreateArea(L.TimerGeneral, nil, 85)
+		local generaltimeroptions = DBM_GUI_Frame:CreateArea(L.TimerGeneral, nil, 125)
 		generaltimeroptions.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
 
 		local SKT_Enabled	= generaltimeroptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer")
+		local CRT_Enabled	= generaltimeroptions:CreateCheckButton(L.CRT_Enabled, true, nil, "CRT_Enabled")
 
 		local challengeTimers = {
 			{	text	= L.Disable,				value	= "None" },
@@ -1454,10 +1455,10 @@ local function CreateOptionsMenu()
 			DBM.Options.ChallengeBest = value
 		end
 		)
-		ChallengeTimerDropDown:SetPoint("TOPLEFT", generaltimeroptions.frame, "TOPLEFT", 0, -50)
+		ChallengeTimerDropDown:SetPoint("TOPLEFT", generaltimeroptions.frame, "TOPLEFT", 0, -85)
 
 		--Model viewer options
-		local modelarea = DBM_GUI_Frame:CreateArea(L.ModelOptions, nil, 85)
+		local modelarea = DBM_GUI_Frame:CreateArea(L.ModelOptions, nil, 90)
 		modelarea.frame:SetPoint('TOPLEFT', generaltimeroptions.frame, "BOTTOMLEFT", 0, -20)
 
 		local enablemodels	= modelarea:CreateCheckButton(L.EnableModels,  true, nil, "EnableModels")--Needs someone smarter then me to hide/disable this option if not 4.0.6+
