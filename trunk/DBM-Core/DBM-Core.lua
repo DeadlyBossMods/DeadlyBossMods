@@ -1341,10 +1341,12 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		time = min * 60 + sec
 		DBM:CreatePizzaTimer(time, text, nil, nil, true, true)
 	elseif cmd:sub(1, 15) == "broadcast timer" then--Standard Timer
-		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
-		if DBM:GetRaidRank(playerName) == 0 then
+		local permission = true
+		if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+			permission = false
 		end
+		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
 		if not (time and text) then
 			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
 			return
@@ -1357,12 +1359,14 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			min = 0
 		end
 		time = min * 60 + sec
-		DBM:CreatePizzaTimer(time, text, true)
+		DBM:CreatePizzaTimer(time, text, permission)
 	elseif cmd:sub(1, 16) == "broadcast ctimer" then
-		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
-		if DBM:GetRaidRank(playerName) == 0 then
+		local permission = true
+		if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+			permission = false
 		end
+		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
 		if not (time and text) then
 			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
 			return
@@ -1375,12 +1379,14 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			min = 0
 		end
 		time = min * 60 + sec
-		DBM:CreatePizzaTimer(time, text, true, nil, true)
+		DBM:CreatePizzaTimer(time, text, permission, nil, true)
 	elseif cmd:sub(1, 16) == "broadcast ltimer" then
-		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
-		if DBM:GetRaidRank(playerName) == 0 then
+		local permission = true
+		if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+			permission = false
 		end
+		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
 		if not (time and text) then
 			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
 			return
@@ -1393,12 +1399,14 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			min = 0
 		end
 		time = min * 60 + sec
-		DBM:CreatePizzaTimer(time, text, true, nil, nil, true)
+		DBM:CreatePizzaTimer(time, text, permission, nil, nil, true)
 	elseif cmd:sub(1, 17) == "broadcast cltimer" then
-		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
-		if DBM:GetRaidRank(playerName) == 0 then
+		local permission = true
+		if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+			permission = false
 		end
+		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
 		if not (time and text) then
 			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
 			return
@@ -1411,10 +1419,9 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			min = 0
 		end
 		time = min * 60 + sec
-		DBM:CreatePizzaTimer(time, text, true, nil, true, true)
+		DBM:CreatePizzaTimer(time, text, permission, nil, true, true)
 	elseif cmd:sub(0,5) == "break" then
-		local _, _, difficultyID = GetInstanceInfo()
-		if DBM:GetRaidRank(playerName) == 0 or difficultyID == 7 or difficultyID == 1 or difficultyID == 2 or IsEncounterInProgress() then--No break timers if not assistant or if it's LFR (because break timers in LFR are just not cute)
+		if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 or difficultyIndex == 1 or difficultyIndex == 2 or IsEncounterInProgress() then--No break timers if not assistant or if it's LFR (because break timers in LFR are just not cute)
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 			return
 		end
@@ -1617,7 +1624,7 @@ do
 		text = text:sub(1, 16)
 		text = text:gsub("%%t", UnitName("target") or "<no target>")
 		self.Bars:CreateBar(time, text, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-		if broadcast and self:GetRaidRank(playerName) >= 1 then
+		if broadcast then
 			if count then
 				sendSync("CU", ("%s\t%s"):format(time, text))
 			else
@@ -2438,9 +2445,8 @@ end
 function DBM:CINEMATIC_START()
 	if DBM.Options.MovieFilter == "Never" then return end
 	SetMapToCurrentZone()
-	local _, _, _, _, _, _, _, currentMapID = GetInstanceInfo()
 	for itemId, mapId in pairs(blockMovieSkipItems) do
-		if mapId == currentMapID then
+		if mapId == LastInstanceMapID then
 			if select(3, GetItemCooldown(itemId)) > 0 then return end
 		end
 	end
@@ -2466,10 +2472,9 @@ end
 function DBM:WORLD_STATE_TIMER_START()
 	if DBM.Options.ChallengeBest == "None" or not C_Scenario.IsChallengeMode() then return end
 	local maps = GetChallengeModeMapTable()
-	local _, _, _, _, _, _, _, currentmapID = GetInstanceInfo()
 	for i = 1, 9 do
 		local _, mapID = GetChallengeModeMapInfo(maps[i])
-		if currentmapID == mapID then
+		if LastInstanceMapID == mapID then
 			local guildBest, realmBest = GetChallengeBestTime(mapID)
 			local lastTime, bestTime, medal = GetChallengeModeMapPlayerStats(maps[i])
 			if bestTime and DBM.Options.ChallengeBest == "Personal" then
@@ -3000,7 +3005,7 @@ do
 
 	syncHandlers["U"] = function(sender, time, text)
 		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
-		if DBM:GetRaidRank(sender) == 0 then return end
+		if DBM:GetRaidRank(sender) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then return end
 		if sender == playerName then return end
 		time = tonumber(time or 0)
 		text = tostring(text)
@@ -3011,7 +3016,7 @@ do
 	
 	syncHandlers["CU"] = function(sender, time, text)
 		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
-		if DBM:GetRaidRank(sender) == 0 then return end
+		if DBM:GetRaidRank(sender) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then return end
 		if sender == playerName then return end
 		time = tonumber(time or 0)
 		text = tostring(text)
@@ -4989,8 +4994,7 @@ function DBM:RoleCheck()
 	local role = GetSpecializationRole(spec)
 	local specID = GetLootSpecialization()
 	local _, _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
-	local _, _, diff = GetInstanceInfo()
-	if not InCombatLockdown() and IsInGroup() and ((IsPartyLFG() and diff == 14) or not IsPartyLFG()) then
+	if not InCombatLockdown() and IsInGroup() and ((IsPartyLFG() and difficultyIndex == 14) or not IsPartyLFG()) then
 		if UnitGroupRolesAssigned("player") ~= role then
 			UnitSetRole("player", role)
 		end
