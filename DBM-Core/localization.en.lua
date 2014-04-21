@@ -101,7 +101,7 @@ DBM_CORE_MOVABLE_BAR				= "Drag me!"
 
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a DBM timer: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancel this timer]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignore timers from %1$s]|r|h"
 DBM_PIZZA_CONFIRM_IGNORE			= "Do you really want to ignore DBM timers from %s for this session?"
-DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>"
+DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>. <time> must be greater than 1."
 
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+click or right-click to move\nAlt+shift+click for free drag and drop"
