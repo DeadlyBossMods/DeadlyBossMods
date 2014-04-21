@@ -2803,7 +2803,7 @@ do
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 				else--WoD Zone
 					if not PLAYER_DIFFICULTY6 then
-						print("DBM Notice: This should not happen, because it's only true for WoD mods, and in WoD PLAYER_DIFFICULTY6 won't be nil. If you see this, it means MysticalOS screwed up and you should tell him what mod caused it")
+						print("DBM Notice: This should not happen, because it's only true for WoD mods, and in WoD PLAYER_DIFFICULTY6 won't be nil. If you see this, report this error and this mod name to MysticalOS/Omega: "..mod.name)
 						PLAYER_DIFFICULTY6 = UNKNOWN--Fill the nil global with "Unknown" in case this scenario does happen, we can at least make sure mod loads for user without issue
 					end
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
