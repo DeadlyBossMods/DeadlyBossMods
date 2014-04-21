@@ -1278,6 +1278,8 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM.Bars:ShowMovableBar()
 	elseif cmd == "help" then
 		for i, v in ipairs(DBM_CORE_SLASHCMD_HELP) do DBM:AddMsg(v) end
+	elseif cmd:sub(1, 13) == "timer endloop" then
+		DBM:CreatePizzaTimer(time, text, nil, nil, nil, nil, true)
 	elseif cmd:sub(1, 5) == "timer" then
 		local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
 		if not (time and text) then
@@ -1338,8 +1340,6 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		end
 		time = min * 60 + sec
 		DBM:CreatePizzaTimer(time, text, nil, nil, true, true)
-	elseif cmd:sub(1, 13) == "timer endloop" then
-		DBM:CreatePizzaTimer(time, text, nil, nil, nil, nil, true)
 	elseif cmd:sub(1, 15) == "broadcast timer" then--Standard Timer
 		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
 		if DBM:GetRaidRank(playerName) == 0 then
@@ -1648,7 +1648,7 @@ do
 		end
 		if loop then
 			DBM:Unschedule(loopTimer)--Only one loop timer supported at once doing this, but much cleaner this way
-			DBM:Schedule(time, loopTimer, time, text, broadcast, sender, count)
+			DBM:Schedule(time, loopTimer, time, text, sender, count)
 		end
 	end
 
