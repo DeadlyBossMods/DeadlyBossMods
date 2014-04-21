@@ -133,6 +133,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm unlock: Shows a movable status bar timer (alias: move).",
 	"/dbm timer/ctimer/ltimer/cltimer <x> <text>: Starts a <x> second DBM Timer with the name <text>. See http://tinyurl.com/kwsfl59 for each timer type usage",
 	"/dbm broadcast timer/ctimer/ltimer/cltimer <x> <text>: Broadcasts a <x> second DBM Timer with the name <text> to the raid (requires leader/promoted status).",
+	"/dbm timer endloop: Stops any looping ltimer or cltimer.",
 	"/dbm break <min>: Starts a break timer for <min> minutes. Gives all raid members with DBM a break timer (requires leader/promoted status).",
 	"/dbm pull <sec>: Starts a pull timer for <sec> seconds. Gives all raid members with DBM a pull timer (requires leader/promoted status).",
 	"/dbm arrow: Shows the DBM arrow, see /dbm arrow help for details.",
