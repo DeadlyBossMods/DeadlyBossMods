@@ -2518,9 +2518,10 @@ do
 	local targetEventsRegistered = false
 	local function FixForShittyComputers(firstRun)
 		timerRequestInProgress = false
-		local _, instanceType, _, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
+		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
 		LastInstanceMapID = mapID
 		LastGroupSize = instanceGroupSize
+		difficultyIndex = difficulty
 		if instanceType == "none" then
 			if not targetEventsRegistered then
 				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED")
