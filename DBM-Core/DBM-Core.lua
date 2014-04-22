@@ -4378,10 +4378,6 @@ function DBM:EndCombat(mod, wipe)
 				--Better or cleaner way?
 				GameTooltip:SetScript("OnShow", GameTooltip.Show)
 			end
-			--difficulty table
-			savedDifficulty = nil
-			difficultyText = nil
-			difficultyIndex = nil
 			--cache table
 			twipe(autoRespondSpam)
 			twipe(bossHealth)
