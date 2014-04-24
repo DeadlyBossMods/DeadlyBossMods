@@ -10,6 +10,10 @@ mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 
 mod:RegisterCombat("combat")
 
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_YELL"
+)
+
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 144583 144584 144969 144985 145037 147120 147011 145599",
 	"SPELL_CAST_SUCCESS 144748 144749 145065 145171",
@@ -83,6 +87,7 @@ local specWarnIronStarSpawn			= mod:NewSpecialWarningSpell(147047, false)
 local specWarnManifestRage			= mod:NewSpecialWarningInterrupt(147011, nil, nil, nil, 3)
 local specWarnMaliciousBlast		= mod:NewSpecialWarningStack(147235, nil, 1)
 
+local timerRoleplay					= mod:NewTimer(110, "timerRoleplay", "Interface\\Icons\\Spell_Holy_BorrowedTime")--No boss option, cause I'll likely just make this a prototype later when i decide on text that fits perfectly in all languages.
 --Stage 1: A Cry in the Darkness
 local timerDesecrateCD				= mod:NewCDCountTimer(35, 144748)
 local timerHellscreamsWarsongCD		= mod:NewNextTimer(42.2, 144821, nil, mod:IsTank() or mod:IsHealer())
@@ -493,6 +498,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.wasteOfTime then
+		self:SendSync("prepull")
+	end
+end
+
 function mod:OnSync(msg, guid)
 	if msg == "MaliceTarget" and guid then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
@@ -514,5 +525,7 @@ function mod:OnSync(msg, guid)
 	elseif msg == "MaliceTargetRemoved" and guid and self.Options.SetIconOnMalice then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		self:SetIcon(targetName, 0)
+	elseif msg == "prepull" then
+		timerRoleplay:Start()
 	end
 end
