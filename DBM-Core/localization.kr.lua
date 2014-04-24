@@ -103,7 +103,7 @@ DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h님이 당신에게 DBM 바 보냄: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[바 취소]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[%1$s 바 차단]|r|h"
 DBM_PIZZA_CONFIRM_IGNORE			= "%s님의 DBM 바를 차단하시겠습니까? 이 공격대에 있는 동안에만 적용됩니다."
-DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <글자>"
+DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <글자>. 시간은 1초 이상이어야 합니다."
 
 --DBM_CORE_MINIMAP_TOOLTIP_HEADER (Same as English locales)
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+클릭 또는 오른쪽 클릭으로 움직이세요.\nAlt+Shift+클릭으로 움직이면 자유롭게 배치할 수 있습니다."
@@ -134,8 +134,13 @@ DBM_CORE_SLASHCMD_HELP				= {
 --	"/dbm version2: 공격대 전체 DBM 버전 확인 + 구버전 귓속말 알림(줄임말: ver2).",
 	"/dbm unlock(move): 20초 동안 바 위치 조정 가능 상태가 됨",
 	"* 아래 명령어의 숫자나 글자를 입력할때 < > 는 입력하지 않음 *",
-	"/dbm timer <숫자> <글자>: <글자>에 입력한 대로 <숫자>초 동안 지속되는 바를 생성",
-	"/dbm broadcast timer <숫자> <글자>: <글자>에 입력한 대로 <숫자>초 동안 지속되는 바를 생성 후 모든 공격대원에게 보냄(승급 권한 필요)",
+	"/dbm timer/ctimer/ltimer/cltimer <숫자> <글자>: <글자>에 입력한 대로 <숫자>초 동안 지속되는 바를 생성",
+	"/dbm broadcast timer/ctimer/ltimer/cltimer <숫자> <글자>: <글자>에 입력한 대로 <숫자>초 동안 지속되는 바를 생성 후 모든 공격대원에게 보냄(승급 권한 필요)",
+	" - timer: 평범한 바",
+	" - ctimer: 초읽기 글자 및 소리가 추가된 바",
+	" - ltimer: 계속 반복되는 바", 
+	" - cltimer: 계속 반복되며, 초읽기 글자 및 숫자가 보이는 바",
+	"/dbm timer endloop: ltimer 또는 cltimer 바의 반복을 멈춤.",
 	"/dbm break <숫자>: <숫자>분 지속되는 휴식 바를 보냄. DBM을 설치한 모든 공격대원이 볼 수 있음(승급 권한 필요)",
 	"/dbm pull <숫자>: <숫자>초 후 전투 예정 바를 보냄. DBM을 설치한 모든 공격대원이 볼 수 있음(승급 권한 필요)",
 	"/dbm arrow: DBM 화살표 도움말을 봄",
@@ -297,6 +302,7 @@ DBM_ARROW_ERROR_USAGE	= {
 DBM_SPEED_KILL_TIMER_TEXT	= "최고 기록"
 DBM_SPEED_KILL_TIMER_OPTION	= "최고 기록을 바로 보기"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "최고 기록"
+DBM_COMBAT_RES_TIMER_TEXT	= "다음 전투 부활 충전"
 
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s 님이 당신의 공격대 귀속 정보를 요청합니다.\n%s 님의 요청을 수락하시겠습니까? 확인이 완료될 때까지 이 메세지가 여러번 보일 수도 있습니다."
