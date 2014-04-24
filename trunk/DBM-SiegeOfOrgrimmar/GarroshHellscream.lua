@@ -87,7 +87,7 @@ local specWarnIronStarSpawn			= mod:NewSpecialWarningSpell(147047, false)
 local specWarnManifestRage			= mod:NewSpecialWarningInterrupt(147011, nil, nil, nil, 3)
 local specWarnMaliciousBlast		= mod:NewSpecialWarningStack(147235, nil, 1)
 
-local timerRoleplay					= mod:NewTimer(110, "timerRoleplay", "Interface\\Icons\\Spell_Holy_BorrowedTime")--No boss option, cause I'll likely just make this a prototype later when i decide on text that fits perfectly in all languages.
+local timerRoleplay					= mod:NewTimer(110, "timerRoleplay", "Interface\\Icons\\Spell_Holy_BorrowedTime")
 --Stage 1: A Cry in the Darkness
 local timerDesecrateCD				= mod:NewCDCountTimer(35, 144748)
 local timerHellscreamsWarsongCD		= mod:NewNextTimer(42.2, 144821, nil, mod:IsTank() or mod:IsHealer())
