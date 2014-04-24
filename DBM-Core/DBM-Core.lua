@@ -2455,7 +2455,7 @@ function DBM:CINEMATIC_START()
 		end
 	end
 	local currentFloor = GetCurrentMapDungeonLevel() or 0
-	if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[currentMapID..currentFloor] then
+	if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[LastInstanceMapID..currentFloor] then
 		CinematicFrame_CancelCinematic()
 	else
 		DBM.Options.MoviesSeen[currentMapID..currentFloor] = true
