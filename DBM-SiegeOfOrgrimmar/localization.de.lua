@@ -184,13 +184,19 @@ L:SetMiscLocalization({
 ------------------------
 L= DBM:GetModLocalization(869)
 
+L:SetTimerLocalization({
+	timerRoleplay		= GUILD_INTEREST_RP
+})
+
 L:SetOptionLocalization({
+	timerRoleplay		= "Dauer des Garrosh/Thrall-Rollenspiels anzeigen",
 	RangeFrame			= "Zeige dynamisches Abstandsfenster (8m)<br/>(mit Indikator für den $spell:147088 Schwellwert)",
 	InfoFrame			= "Zeige Infofenster für Spieler ohne Schadensreduzierung während der Unterbrechungsphasen",
 	yellMaliceFading	= "Schreie, wenn $spell:147209 bald ausläuft"
 })
 
 L:SetMiscLocalization({
+	wasteOfTime			= "Es ist noch nicht zu spät, Garrosh. Legt den Mantel des Kriegshäuptlings ab. Wir können dies hier beenden, jetzt, ohne Blutvergießen.",
 	NoReduce			= "Keine Schadensreduzierung",
 	MaliceFadeYell		= "Bösartigkeit schwindet auf %s (%d)"
 })
