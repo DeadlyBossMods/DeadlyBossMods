@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 142528 142232",
 	"SPELL_AURA_APPLIED 143339 142532 142533 142534 142671 142564 143939 143974 143701 143759 143337 143358 142948",
 	"SPELL_AURA_APPLIED_DOSE 143339",
-	"SPELL_AURA_REMOVED 142564 143939 143974 143700 142948 143339 142671",
+	"SPELL_AURA_REMOVED 142564 143939 143974 143700 142948 143339 142671 143542",
 	"SPELL_PERIODIC_DAMAGE 143735",
 	"SPELL_PERIODIC_MISSED 143735",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -291,6 +291,9 @@ local function CheckBosses(ignoreRTF)
 		local unitGUID = UnitGUID(unitID)
 		--Only 3 bosses activate on pull, however now the inactive or (next boss to activate) also fires IEEU. As such, we have to filter that boss by scaning for readytofight. Works well though.
 		if UnitExists(unitID) and not activeBossGUIDS[unitGUID] and not UnitBuff(unitID, readyToFight) then
+			if DBM.Options.DebugMode then
+				print("DBM Debug: "..args.sourcename.." is Ready To Fight (IEEU 1sec delay Check) "..GetTime())
+			end
 			activeBossGUIDS[unitGUID] = true
 			activatedTargets[#activatedTargets + 1] = UnitName(unitID)
 			--Activation Controller
@@ -816,6 +819,45 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 142671 and self.Options.SetIconOnMesmerize then
 		self:SetIcon(args.destName, 0)
+	elseif spellId == 143542 then--Ready to Fight
+		if DBM.Options.DebugMode then
+			print("DBM Debug: "..args.sourcename.." is Ready To Fight (Buff Check) "..GetTime())
+		end
+--[[		local cid = self:GetCIDFromGUID(args.destGUID)
+		if cid == 71152 then--Skeer the Bloodseeker
+			timerBloodlettingCD:Start(5)--5-6
+			if UnitDebuff("player", GetSpellInfo(143279)) then vulnerable = true end
+		elseif cid == 71158 then--Rik'kal the Dissector
+			timerInjectionCD:Start(8)
+			countdownInjection:Start(8)
+			timerMutateCD:Start(23, 1)
+			if UnitDebuff("player", GetSpellInfo(143275)) then vulnerable = true end
+		elseif cid == 71153 then--Hisek the Swarmkeeper
+			timerAimCD:Start(32, 1)--Might be 35-37 with unitdebuff filter
+			if mod:IsHeroic() then
+				timerRapidFireCD:Start(47.5)--47-50 with unitdebuff filter
+			end
+		elseif cid == 71161 then--Kil'ruk the Wind-Reaver
+			if mod:IsHeroic() then
+				timerReaveCD:Start(38.5)
+			end
+			mod:StopRepeatedScan("DFAScan")
+			mod:ScheduleMethod(23, "StartRepeatedScan", unitGUID, "DFAScan", 0.25, true)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
+			--timerDFACD:Start()
+			if UnitDebuff("player", GetSpellInfo(142929)) then vulnerable = true end
+		elseif cid == 71157 then--Xaril the Poisoned-Mind
+			timerToxicCatalystCD:Start(19.5)--May need tweaking by about a sec or two. Need some transcriptors
+			if UnitDebuff("player", GetSpellInfo(142931)) then vulnerable = true end
+		elseif cid == 71156 then--Kaz'tik the Manipulator
+--			timerMesmerizeCD:Start(20)--Need transcriptor log. Seems WILDLY variable though and probably not useful
+		elseif cid == 71155 then--Korven the Prime
+			timerShieldBashCD:Start(19)--20seconds from REAL IEEU
+		elseif cid == 71160 then--Iyyokuk the Lucid
+			timerInsaneCalculationCD:Start()
+		elseif cid == 71154 then--Ka'roz the Locust
+			timerFlashCD:Start(14)--In final LFR test, he didn't cast this for 20 seconds. TODO check this change
+			timerHurlAmberCD:Start(44)
+		end--]]
 	end
 end
 
