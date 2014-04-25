@@ -1,6 +1,6 @@
 if GetLocale() ~= "deDE" then return end
 
-DBM_CORE_NEED_SUPPORT				= "Hey, bist du ein Programmierer oder gut in Fremdsprachen? Falls ja, benötigt das DBM-Team deine Hilfe, damit DBM das beste Boss Mod für WoW bleibt. Trete dem Team auf www.deadlybossmods.com bei oder sende eine E-Mail an tandanu@deadlybossmods.com oder nitram@deadlybossmods.com."
+DBM_CORE_NEED_SUPPORT				= "Hey, bist du ein Programmierer oder gut in Fremdsprachen? Falls ja, benötigt DBM deine Hilfe, um in mehr Sprachen übersetzt zu werden. Hilf uns hier http://forums.elitistjerks.com/topic/132449-dbm-localizers-needed/"
 DBM_HOW_TO_USE_MOD					= "Willkommen bei DBM. Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. DBM versucht dies für dich zu tun, indem es beim ersten Start deine Spezialisierung scannt, aber du kannst zusätzliche Einstellungen aktivieren."
 
 DBM_FORUMS_MESSAGE					= "Du hast einen Bug oder einen falschen Timer gefunden? Du glaubst einige Mods würden zusätzliche Warnungen, Timer oder Spezialfeatures benötigen?\nBesuche die neuen Deadly Boss Mods Foren für Diskussionen, Fehlermeldungen und Featurewünsche: |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (Du kannst auf den Link klicken um ihn zu kopieren.)"
@@ -42,8 +42,8 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "Kampf gegen %s hat vor %s begonnen, Neukalib
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "\"Transcriptor\"-Aufzeichnung gestartet."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "\"Transcriptor\"-Aufzeichnung beendet."
 
-DBM_CORE_WORLDBOSS_ENGAGED			= "Kampf gegen %s wurde auf deinem Realm bei %s Prozent Leben begonnen."
-DBM_CORE_WORLDBOSS_DEFEATED			= "%s wurde auf deinem Realm besiegt."
+DBM_CORE_WORLDBOSS_ENGAGED			= "Kampf gegen %s wurde möglicherweise auf deinem Realm bei %s Prozent Leben begonnen. (gesendet von %s)"
+DBM_CORE_WORLDBOSS_DEFEATED			= "%s wurde möglichweise auf deinem Realm besiegt. (gesendet von %s)"
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d |4Sekunde:Sekunden;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4Minute:Minuten;"
@@ -102,7 +102,7 @@ DBM_CORE_MOVABLE_BAR				= "Zieh mich!"
 
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h hat dir einen DBM-Timer geschickt: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Diesen Timer abbrechen]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Timer von %1$s ignorieren]|r|h"
 DBM_PIZZA_CONFIRM_IGNORE			= "Willst du wirklich DBM-Timer von %s für diese Sitzung ignorieren?"
-DBM_PIZZA_ERROR_USAGE				= "Benutzung: /dbm [broadcast] timer <Sekunden> <Text>"
+DBM_PIZZA_ERROR_USAGE				= "Benutzung: /dbm [broadcast] timer <Sekunden> <Text>. <Sekunden> muss größer als 1 sein."
 
 --DBM_CORE_MINIMAP_TOOLTIP_HEADER
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+Klick oder Rechtsklick zum Bewegen\nAlt+Shift+Klick zum freien Bewegen"
@@ -132,8 +132,9 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm version: Prüft die Version im gesamten Schlachtzug (Alias: ver).",
 --	"/dbm version2: Prüft die Version im gesamten Schlachtzug und flüstert Mitglieder mit veralteten Versionen an (Alias: ver2).",
 	"/dbm unlock: Zeigt einen bewegbaren Timer an (alias: move).",
-	"/dbm timer <x> <text>: Startet einen <x> Sekunden langen DBM-Timer mit dem Namen <text>.",
-	"/dbm broadcast timer <x> <text>: Schickt einen <x> Sekunden langen DBM-Timer mit dem Namen <text> an den Schlachtzug (nur als Leiter/Assistent).",
+	"/dbm timer/ctimer/ltimer/cltimer <x> <text>: Startet einen <x> Sekunden langen DBM-Timer mit dem Namen <text>. Unter http://tinyurl.com/kwsfl59 gibt es Erläuterungen zu jedem Timertyp.",
+	"/dbm broadcast timer/ctimer/ltimer/cltimer <x> <text>: Schickt einen <x> Sekunden langen DBM-Timer mit dem Namen <text> an den Schlachtzug (nur als Leiter/Assistent).",
+	"/dbm timer endloop: Stoppt alle ltimer- und cltimer-Schleifen.",
 	"/dbm break <min>: Startet einen Pause-Timer für <min> Minuten. Schickt allen Schlachzugsmitgliedern mit DBM einen Pause-Timer (nur als Leiter/Assistent).",
 	"/dbm pull <sec>: Startet einen Pull-Timer für <sec> Sekunden. Schickt allen Schlachzugsmitgliedern mit DBM einen Pull-Timer (nur als Leiter/Assistent).",
 	"/dbm arrow: Zeigt den DBM-Pfeil, siehe /dbm arrow help für Details.",
@@ -205,6 +206,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel		= "%s auf >%%s< - jetzt reinigen"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt	= "%s - unterbreche >%%s<!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you			= "%s auf dir"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= "%s auf >%%s<"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt			= "%s auf >%%s< - jetzt spotten"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close		= "%s auf >%%s< in deiner Nähe"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move		= "%s - geh weg"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveaway	= "%s - geh weg von anderen"
@@ -226,6 +228,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel 		= "Spezialwarnung zum Reinigen/Rauben v
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt	= "Spezialwarnung zum Unterbrechen von $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you 		= "Spezialwarnung, wenn du von $spell:%s betroffen bist"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target 		= "Spezialwarnung, wenn jemand von $spell:%s betroffen ist"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt 		= "Spezialwarnung zum Spotten, wenn der andere Tank von $spell:%s betroffen ist"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 		= "Spezialwarnung, wenn jemand in deiner Nähe von $spell:%s betroffen ist"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 		= "Spezialwarnung zum Herausgehen aus $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway	= "Spezialwarnung zum Weggehen von anderen bei $spell:%s"
@@ -265,6 +268,8 @@ DBM_CORE_AUTO_TIMER_OPTIONS.achievement	= "Zeit für %s anzeigen"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Setze Zeichen auf Ziele von $spell:%s"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Setze Zeichen auf $spell:%s"
+DBM_CORE_AUTO_ARROW_OPTION_TEXT			= "Zeige DBM-Pfeil zum Hingehen zum von $spell:%s betroffenen Ziel"
+DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "Zeige DBM-Pfeil zum Weggehen vom von $spell:%s betroffenen Ziel"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Spiele \"Lauf weg!\"-Sound für $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Spiele akustischen Countdown bis $spell:%s gewirkt wird"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Spiele akustischen Countdown bis $spell:%s schwindet"
@@ -291,8 +296,9 @@ DBM_ARROW_ERROR_USAGE	= {
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Rekordzeit"
-DBM_SPEED_KILL_TIMER_OPTION	= "Zeige einen Timer zur Verbesserung deines schnellsten Siegs"
+DBM_SPEED_KILL_TIMER_OPTION	= "Zeige einen Timer zur Verbesserung deiner Rekordzeit"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "Abschlussbestzeit"
+DBM_COMBAT_RES_TIMER_TEXT	= "Kampfbelebung +"
 
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s möchte deine aktuellen Instanzsperren (IDs) einsehen.\n Möchtest Du diese Informationen an %s senden? Dieser Spieler wird in der Lage sein, diese Informationen während deiner aktuellen Sitzung abzufragen (also bis du dich neu einloggst)."
