@@ -3142,7 +3142,7 @@ do
 
 		syncHandlers["WBE"] = function(sender, modId, realm, health, ver, name)
 			if not ver or not (ver == "4") then return end--Ignore old versions
-			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end--We recently got a sync about this boss on this realm, so do nothing.
+			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 60) then return end--We recently got a sync about this boss on this realm, so do nothing.
 			lastBossEngage[modId..realm] = GetTime()
 			--Needs some realm checking (even for people same guild, to keep realid syncs matched up.
 			local sameRealm = false
@@ -3159,7 +3159,7 @@ do
 			end
 			if sameRealm then
 				--Begin sync pass on to realid since this was a guild sync.
-				if (lastBossEngage[modId..realm.."PASSED"] and (GetTime() - lastBossEngage[modId..realm.."PASSED"]) > 30) or not lastBossEngage[modId..realm.."PASSED"] then
+				if (lastBossEngage[modId..realm.."PASSED"] and (GetTime() - lastBossEngage[modId..realm.."PASSED"]) > 60) or not lastBossEngage[modId..realm.."PASSED"] then
 					lastBossEngage[modId..realm.."PASSED"] = GetTime()
 					local _, numBNetOnline = BNGetNumFriends()
 					for i = 1, numBNetOnline do
@@ -3181,7 +3181,7 @@ do
 		
 		syncHandlers["WBD"] = function(sender, modId, realm, ver, name)
 			if not ver or not (ver == "4") then return end--Ignore old versions
-			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
+			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 60) then return end
 			lastBossDefeat[modId..realm] = GetTime()
 			--Needs some realm checking.
 			local sameRealm = false
@@ -3198,7 +3198,7 @@ do
 			end
 			if sameRealm then
 				--Begin sync pass on to realid since this was a guild sync.
-				if (lastBossDefeat[modId..realm.."PASSED"] and (GetTime() - lastBossDefeat[modId..realm.."PASSED"]) > 30) or not lastBossDefeat[modId..realm.."PASSED"] then
+				if (lastBossDefeat[modId..realm.."PASSED"] and (GetTime() - lastBossDefeat[modId..realm.."PASSED"]) > 60) or not lastBossDefeat[modId..realm.."PASSED"] then
 					lastBossDefeat[modId..realm.."PASSED"] = GetTime()
 					local _, numBNetOnline = BNGetNumFriends()
 					for i = 1, numBNetOnline do
@@ -3220,7 +3220,7 @@ do
 
 		whisperSyncHandlers["WBE"] = function(sender, modId, realm, health, ver, name)
 			if not ver or not (ver == "4") then return end--Ignore old versions
-			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end
+			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 60) then return end
 			lastBossEngage[modId..realm] = GetTime()
 			--Needs some realm checking.
 			local sameRealm = false
@@ -3237,7 +3237,7 @@ do
 			end
 			if sameRealm then
 				--Begin sync pass on
-				if (lastBossEngage[modId..realm.."PASSED"] and (GetTime() - lastBossEngage[modId..realm.."PASSED"]) > 30) or not lastBossEngage[modId..realm.."PASSED"] then
+				if (lastBossEngage[modId..realm.."PASSED"] and (GetTime() - lastBossEngage[modId..realm.."PASSED"]) > 60) or not lastBossEngage[modId..realm.."PASSED"] then
 					lastBossEngage[modId..realm.."PASSED"] = GetTime()
 					if IsInGuild() then--Sync from realid, send to GUILD
 						SendAddonMessage("D4", "WBE\t"..modId.."\t"..realm.."\t"..health.."\t4\t"..name, "GUILD")
@@ -3253,7 +3253,7 @@ do
 		
 		whisperSyncHandlers["WBD"] = function(sender, modId, realm, ver, name)
 			if not ver or not (ver == "4") then return end--Ignore old versions
-			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
+			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 60) then return end
 			lastBossDefeat[modId..realm] = GetTime()
 			--Needs some realm checking.
 			local sameRealm = false
@@ -3270,7 +3270,7 @@ do
 			end
 			if sameRealm then
 				--Begin sync pass on
-				if (lastBossDefeat[modId..realm.."PASSED"] and (GetTime() - lastBossDefeat[modId..realm.."PASSED"]) > 30) or not lastBossDefeat[modId..realm.."PASSED"] then
+				if (lastBossDefeat[modId..realm.."PASSED"] and (GetTime() - lastBossDefeat[modId..realm.."PASSED"]) > 60) or not lastBossDefeat[modId..realm.."PASSED"] then
 					lastBossDefeat[modId..realm.."PASSED"] = GetTime()
 					if IsInGuild() then--Sync from realid, send to GUILD
 						SendAddonMessage("D4", "WBD\t"..modId.."\t"..realm.."\t4\t"..name, "GUILD")
@@ -4128,7 +4128,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
 		end
 		if savedDifficulty == "worldboss" and modId ~= "Omen" and modId ~= "Greench" and modId ~= "Moonfang" then--Any outdoor boss except Omen and Greench and MoonFang
-			if lastBossEngage[modId..playerRealm] and (GetTime() - lastBossEngage[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+			if lastBossEngage[modId..playerRealm] and (GetTime() - lastBossEngage[modId..playerRealm] < 60) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 			lastBossEngage[modId..playerRealm] = GetTime()--Update last engage time, that way we ignore our own sync
 			if IsInGuild() then
 				SendAddonMessage("D4", "WBE\t"..modId.."\t"..playerRealm.."\t"..startHp.."\t4\t"..name, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
@@ -4346,7 +4346,7 @@ function DBM:EndCombat(mod, wipe)
 			end
 			fireEvent("kill", mod)
 			if savedDifficulty == "worldboss" and modId ~= "Omen" and modId ~= "Greench" and modId ~= "Moonfang" then--Any outdoor boss except Omen and Greench and Moonfang
-				if lastBossDefeat[modId..playerRealm] and (GetTime() - lastBossDefeat[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+				if lastBossDefeat[modId..playerRealm] and (GetTime() - lastBossDefeat[modId..playerRealm] < 60) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 				lastBossDefeat[modId..playerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
 				if IsInGuild() then
 					SendAddonMessage("D4", "WBD\t"..modId.."\t"..playerRealm.."\t4\t"..name, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
