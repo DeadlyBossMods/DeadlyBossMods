@@ -10,16 +10,16 @@ L.Website					= "Visit our new discussion and support forums at |cFF73C2FBwww.de
 L.WebsiteButton				= "Forums"
 
 L.OTabBosses	= "Bosses"
-L.OTabOptions	= "Options"
+L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options	 	= "General Options"
-L.TabCategory_WoD	 		= "Warlords of Draenor"
-L.TabCategory_MOP	 		= "Mists of Pandaria"
-L.TabCategory_CATA	 		= "Cataclysm"
-L.TabCategory_WOTLK 		= "Wrath of the Lich King"
-L.TabCategory_BC 			= "The Burning Crusade"
-L.TabCategory_CLASSIC		= "WoW Classic"
-L.TabCategory_PVP 			= "PvP"
+L.TabCategory_WoD	 		= EXPANSION_NAME5 or "Warlords of Draenor"
+L.TabCategory_MOP	 		= EXPANSION_NAME4
+L.TabCategory_CATA	 		= EXPANSION_NAME3
+L.TabCategory_WOTLK 		= EXPANSION_NAME2
+L.TabCategory_BC 			= EXPANSION_NAME1
+L.TabCategory_CLASSIC		= EXPANSION_NAME0
+L.TabCategory_PVP 			= PVP
 L.TabCategory_OTHER    		= "Other Boss Mods"
 
 L.BossModLoaded 			= "%s statistics"
@@ -38,8 +38,8 @@ L.Mod_Enabled				= "Enable boss mod"
 L.Mod_Reset					= "Load default options"
 L.Reset 					= "Reset"
 
-L.Enable  					= "Enable"
-L.Disable					= "Disable"
+L.Enable  					= ENABLE
+L.Disable					= DISABLE
 
 L.NoSound					= "No sound"
 
@@ -64,14 +64,14 @@ L.SKT_Enabled				= "Always show record victory timer (Overrides boss-specific op
 L.CRT_Enabled				= "Show timer for next combat ressurection charge (6.x Flexible difficulties only)"
 L.ChallengeTimerOptions		= "Set option for challenge mode best clear timer"
 L.ChallengeTimerPersonal	= "Personal"
-L.ChallengeTimerGuild		= "Guild"
+L.ChallengeTimerGuild		= GUILD
 L.ChallengeTimerRealm		= "Realm"
 
 L.ModelOptions				= "3D Model Viewer Options"
 L.EnableModels				= "Enable 3D models in boss options"
 L.ModelSoundOptions			= "Set sound option for model viewer"
-L.ModelSoundShort			= "Short"
-L.ModelSoundLong			= "Long"
+L.ModelSoundShort			= SHORT
+L.ModelSoundLong			= TOAST_DURATION_LONG
 
 L.Button_RangeFrame			= "Show/hide range frame"
 L.Button_RangeRadar			= "Show/hide range radar"
@@ -211,7 +211,7 @@ L.HideTooltips				= "Hide tooltips during boss fights"
 L.SpamBlockSayYell			= "Hide chat bubbles announces from the chat frame"
 L.DisableCinematics			= "Hide in-game cinematics"
 L.AfterFirst				= "After each movie has played once"
-L.Always					= "Always"
+L.Always					= ALWAYS
 
 L.Panel_ExtraFeatures		= "Extra Features"
 L.Area_ChatAlerts			= "Chat Alert Options"
