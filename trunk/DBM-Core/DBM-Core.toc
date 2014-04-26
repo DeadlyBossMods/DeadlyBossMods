@@ -9,7 +9,7 @@
 ## Title-esMX:|cffffd200Deadly Boss Mods|r |cff69ccf0Proceso|r
 ## Title-frFR:|cffffd200Deadly Boss Mods|r |cff69ccf0Noyau|r
 ## Notes: Deadly Boss Mods
-## Dependencies: DBM-StatusBarTimers
+## Dependencies: DBM-StatusBarTimers, DBM-DefaultSkin
 ## OptionalDependencies: LibSharedMedia-3.0, LibChatAnims
 ## SavedVariablesPerCharacter: DBM_SavedOptions, DBT_SavedOptions
 ## LoadOnDemand: 0
