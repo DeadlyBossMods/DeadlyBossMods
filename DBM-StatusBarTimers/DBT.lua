@@ -519,6 +519,10 @@ end
 --	end
 --end
 function DBT:GetBarIterator()
+	if not self.bars then
+		print("DBM Debug: GetBarIterator failed for unknown reasons")
+		return
+	end
 	return pairs(self.bars)
 end
 
@@ -962,14 +966,19 @@ do
 	end
 
 	function DBT:SetSkin(id)
+		if InCombatLockdown() or totalBars ~= 0 then
+			print("DBT:SetSkin is Disabled if any timers are running or if you are in combat, cancel any running timers before changing skin")
+			return
+		end
 		local skin = skins[id]
 		if not skin then
 			error("skin " .. id .. " doesn't exist", 2)
 		end
-		-- changing the skin cancels all timers; this is much easier than creating new frames for all currently running timers
+--[[		-- changing the skin cancels all timers; this is much easier than creating new frames for all currently running timers
+			-- This just fails and I can't see why so disabling this and just blocking setting skins with timers active instead
 		for bar in self:GetBarIterator() do
 			bar:Cancel()
-		end
+		end--]]
 		self:SetOption("Skin", id)
 		-- throw away old bars (note: there is no way to re-use them as the new skin uses a different XML template)
 		-- note: this doesn't update dummy bars (and can't do it by design); anyone who has a dummy bar for preview purposes (i.e. the GUI) must create new bars (e.g. in a callback)
