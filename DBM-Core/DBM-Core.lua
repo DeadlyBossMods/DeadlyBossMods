@@ -2390,12 +2390,15 @@ function DBM:PARTY_INVITE_REQUEST(sender)
  	if DBM.Options.AutoAcceptFriendInvite then
 		local _, numBNetOnline = BNGetNumFriends()
 		for i = 1, numBNetOnline do
-			local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
-			if isOnline and client == BNET_CLIENT_WOW then
-				local _, toonName, _, userRealm = BNGetToonInfo(presenceID)
-				if toonName == sender then
-					AcceptPartyInvite()
-					return
+			local presenceID, _, _, _, _, _, _, isOnline = BNGetFriendInfo(i)
+			local friendIndex = BNGetFriendIndex(presenceID)--Check if they are on more than one client at once (very likely with new launcher)
+			for i=1, BNGetNumFriendToons(friendIndex) do
+				local _, toonName, client = BNGetFriendToonInfo(friendIndex, i)
+				if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
+					if toonName == sender then--Now simply see if this is sender
+						AcceptPartyInvite()
+						return
+					end
 				end
 			end
 		end
