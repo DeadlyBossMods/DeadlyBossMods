@@ -953,6 +953,7 @@ do
 	skin.__index = skin
 
 	function DBT:RegisterSkin(id)
+		print("Register:", id)
 		if id:sub(0, 4) == "DBM-" then
 			id = id:sub(5)
 		end
@@ -984,7 +985,7 @@ do
 		-- note: this doesn't update dummy bars (and can't do it by design); anyone who has a dummy bar for preview purposes (i.e. the GUI) must create new bars (e.g. in a callback)
 		unusedBars = {}
 		-- apply default options from the skin and reset all other options
-		for k, v in pairs(self.options) do
+		for k, v in pairs(options) do
 			if k ~= "TimerPoint" and k ~= "TimerX" and k ~= "TimerY" -- do not reset the position
 				and k ~= "HugeTimerPoint" and k ~= "HugeTimerX" and k ~= "HugeTimerY"
 				and k ~= "Skin" then -- do not reset the skin we just set

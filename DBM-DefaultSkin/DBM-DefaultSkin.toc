@@ -5,7 +5,7 @@
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM皮肤|r|cffffe00a>|r |cff69ccf0经典计时条|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM外觀|r|cffffe00a>|r |cff69ccf0傳統計時器|r
 ## LoadOnDemand: 1
-## RequiredDeps: DBM-Core
+## RequiredDeps: DBM-Core, DBM-StatusBarTimers
 ## X-DBM-Timer-Skin: 1
 ## X-DBM-Timer-Skin-Name: Classic
 ## X-DBM-Timer-Skin-Textures: Interface\AddOns\DBM-DefaultSkin\textures\default.tga
