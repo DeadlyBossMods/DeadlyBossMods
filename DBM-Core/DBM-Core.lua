@@ -2524,7 +2524,7 @@ do
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
 		LastInstanceMapID = mapID
 		LastGroupSize = instanceGroupSize
-		difficultyIndex = difficulty or 0
+		difficultyIndex = difficulty
 		if instanceType == "none" then
 			if not targetEventsRegistered then
 				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED")
@@ -4452,7 +4452,7 @@ end
 function DBM:GetCurrentInstanceDifficulty()
 	local _, _, difficulty, difficultyName, _, _, _, _, instanceGroupSize = GetInstanceInfo()
 	if difficulty == 0 then
-		return "worldboss", RAID_INFO_WORLD_BOSS.." - "
+		return "worldboss", RAID_INFO_WORLD_BOSS.." - ", difficulty
 	elseif difficulty == 1 then
 		return "normal5", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 2 then
