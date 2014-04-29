@@ -1003,9 +1003,6 @@ do
 		if GetAddOnMetadata(i, "X-DBM-Timer-Skin") then
 			-- load basic skin data
 			local id = GetAddOnInfo(i)
-			if not IsAddOnLoadOnDemand(i) then
-				geterrorhandler()(id .. " should be marked as load on demand")
-			end
 			if id:sub(0, 4) == "DBM-" then
 				id = id:sub(5)
 			end
