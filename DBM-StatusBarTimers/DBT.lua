@@ -57,6 +57,7 @@ local updateClickThrough
 local options
 local setupHandlers
 local applyFailed = false
+local optionsLoaded = false
 local totalBars = 0
 local function stringFromTimer(t)
 	if t <= 60 then
@@ -339,6 +340,8 @@ do
 	end
 
 	function DBT:LoadOptions(id)
+		if optionsLoaded then return end
+		optionsLoaded = true
 		-- recover old options (DBM_SavedOptions) if possible (saved by DBM, before DBT was a separate addon)
 		DBT_PersistentOptions[id] = DBT_PersistentOptions[id] or (DBT_SavedOptions and DBT_SavedOptions[id]) or {}
 		if DBT_SavedOptions and DBT_SavedOptions[id] then
@@ -953,7 +956,6 @@ do
 	skin.__index = skin
 
 	function DBT:RegisterSkin(id)
-		print("Register:", id)
 		if id:sub(0, 4) == "DBM-" then
 			id = id:sub(5)
 		end
@@ -985,6 +987,9 @@ do
 		-- note: this doesn't update dummy bars (and can't do it by design); anyone who has a dummy bar for preview purposes (i.e. the GUI) must create new bars (e.g. in a callback)
 		unusedBars = {}
 		-- apply default options from the skin and reset all other options
+		if not options then
+			DBT:LoadOptions("DBM")
+		end
 		for k, v in pairs(options) do
 			if k ~= "TimerPoint" and k ~= "TimerX" and k ~= "TimerY" -- do not reset the position
 				and k ~= "HugeTimerPoint" and k ~= "HugeTimerX" and k ~= "HugeTimerY"
