@@ -258,6 +258,7 @@ mod.vb.whirlCast = 0
 mod.vb.whirlTime = 0
 mod.vb.aimActive = false
 mod.vb.mutateActive = false
+mod.vb.flashActive = false
 mod.vb.toxicInjection = false--Workaround blizzard bug (double check if hotfix live and if workaround still needed on heroic)
 
 local function warnActivatedTargets(vulnerable)
@@ -275,13 +276,16 @@ local function warnActivatedTargets(vulnerable)
 	table.wipe(activatedTargets)
 end
 
-local function showRangeFrame()
+local function showRangeFrame()--Only called by mutate
 	DBM.RangeCheck:Show(3)
 	mod.vb.mutateActive = true
 end
 
-local function hideRangeFrame()
-	DBM.RangeCheck:Hide()
+local function hideRangeFrame()--Only called by flash
+	mod.vb.flashActive = false
+	if not mod.vb.aimActive and not mod.vb.mutateActive then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 local function CheckBosses(ignoreRTF)
@@ -492,6 +496,7 @@ function mod:OnCombatStart(delay)
 	self.vb.parasitesActive = 0
 	self.vb.aimActive = false
 	self.vb.mutateActive = false
+	self.vb.flashActive = false
 	self.vb.toxicInjection = false
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe vb.on pull
@@ -598,6 +603,7 @@ function mod:SPELL_CAST_START(args)
 		warnInsaneCalculationFire:Show()
 		specWarnInsaneCalculationFire:Show()
 	elseif spellId == 143709 then
+		self.vb.flashActive = true
 		warnFlashCast:Show()
 		specWarnFlashCast:Show()
 		timerFlashCD:Start()
@@ -743,7 +749,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerMutateCD:Start(nil, self.vb.mutateCount+1)
 			if self.Options.RangeFrame then
 				self.vb.mutateActive = false
-				if not self.vb.aimActive then
+				if not self.vb.aimActive and not self.vb.flashActive then
 					DBM.RangeCheck:Hide()--Hide it if aim isn't active, otherwise, delay hide call until hide is called by SPELL_AURA_REMOVED for aim
 				end
 				self:Schedule(26.5, showRangeFrame)--Show about 5 seconds before mutate cast
@@ -799,12 +805,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerGouge:Cancel(args.destName)
 	elseif spellId == 143974 then
 		timerShieldBash:Cancel(args.destName)
-	elseif spellId == 143700 and self.Options.RangeFrame and not self.vb.mutateActive and not self.vb.aimActive then
+	elseif spellId == 143700 and self.Options.RangeFrame and not self.vb.mutateActive and not self.vb.aimActive and not self.vb.flashActive then
 		DBM.RangeCheck:Hide()
 	elseif spellId == 142948 then
 		self.vb.aimActive = false
 		if self.Options.RangeFrame then
-			if not self.vb.mutateActive then--Don't call hide because frame is needed by mutate and will be hiden after that.
+			if not self.vb.mutateActive and not self.vb.flashActive then--Don't call hide because frame is needed by mutate and will be hiden after that.
 				DBM.RangeCheck:Hide()
 			end
 		end
