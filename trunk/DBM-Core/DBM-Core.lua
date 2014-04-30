@@ -1280,7 +1280,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd == "help" then
 		for i, v in ipairs(DBM_CORE_SLASHCMD_HELP) do DBM:AddMsg(v) end
 	elseif cmd:sub(1, 13) == "timer endloop" then
-		DBM:CreatePizzaTimer(time, text, nil, nil, nil, nil, true)
+		DBM:CreatePizzaTimer(time, "", nil, nil, nil, nil, true)
 	elseif cmd:sub(1, 5) == "timer" then
 		local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
 		if not (time and text) then
@@ -2462,7 +2462,7 @@ function DBM:CINEMATIC_START()
 	if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[LastInstanceMapID..currentFloor] then
 		CinematicFrame_CancelCinematic()
 	else
-		DBM.Options.MoviesSeen[currentMapID..currentFloor] = true
+		DBM.Options.MoviesSeen[LastInstanceMapID..currentFloor] = true
 	end
 end
 
@@ -4320,7 +4320,7 @@ function DBM:EndCombat(mod, wipe)
 			bossuIdFound = false
 			eeSyncSender = {}
 			eeSyncReceived = 0
-			DBM:CreatePizzaTimer(time, text, nil, nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
+			DBM:CreatePizzaTimer(time, "", nil, nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
 		elseif DBM.BossHealth:IsShown() then
 			if mod.bossHealthInfo then
 				for i = 1, #mod.bossHealthInfo, 2 do
