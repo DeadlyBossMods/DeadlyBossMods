@@ -109,12 +109,15 @@ local timerBombardmentCD			= mod:NewNextTimer(55, 147120)
 local timerBombardment				= mod:NewBuffActiveTimer(13, 147120)
 local timerClumpCheck				= mod:NewNextTimer(3, 147126)
 local timerMaliciousBlast			= mod:NewBuffFadesTimer(3, 147235, nil, false)
+local timerFixate					= mod:NewTargetTimer(12, 147665)
 
 local soundWhirlingCorrpution		= mod:NewSound("OptionVersion2", 144985, false)--Depends on strat. common one on 25 man is to never run away from it
 local countdownPowerIronStar		= mod:NewCountdown(16.5, 144616)
 local countdownWhirlingCorruption	= mod:NewCountdown(49.5, 144985)
 local countdownTouchOfYShaarj		= mod:NewCountdown("Alt45", 145071, false)--Off by default only because it's a cooldown and it does have a 45-48sec variation
 local countdownRealm				= mod:NewCountdownFades(60.5, "ej8305", nil, nil, 10)
+local countdownBombardment			= mod:NewCountdown(55, 147120)
+local countdownBombardmentEnd		= mod:NewCountdown("Alt13", 147120)
 
 mod:AddBoolOption("yellMaliceFading", false)
 mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
@@ -256,7 +259,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnBombardment:Show(self.vb.bombardCount)
 		specWarnBombardmentOver:Schedule(13)
 		timerBombardment:Start()
+		countdownBombardmentEnd:Start()
 		timerBombardmentCD:Start(bombardCD[self.vb.bombardCount] or 15, self.vb.bombardCount+1)
+		countdownBombardment:Start(bombardCD[self.vb.bombardCount] or 15)
 		timerClumpCheck:Start()
 --[[		if self.Options.RangeFrame then
 			if self:IsDifficulty("heroic10") then
@@ -354,6 +359,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:SendSync("MaliceTarget", args.destGUID)
 	elseif spellId == 147665 then
 		warnIronStarFixate:Show(args.destName)
+		timerFixate:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnISFixate:Show()
 		end
@@ -379,6 +385,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:SetIcon(args.destName, 0)
 	elseif spellId == 147209 then
 		self:SendSync("MaliceTargetRemoved", args.destGUID)
+	elseif spellId == 147665 then
+		timerFixate:Cancel(args.destName)
 	end
 end
 
