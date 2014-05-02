@@ -296,7 +296,7 @@ local function CheckBosses(ignoreRTF)
 		--Only 3 bosses activate on pull, however now the inactive or (next boss to activate) also fires IEEU. As such, we have to filter that boss by scaning for readytofight. Works well though.
 		if UnitExists(unitID) and not activeBossGUIDS[unitGUID] and not UnitBuff(unitID, readyToFight) then
 			if DBM.Options.DebugMode then
-				print("DBM Debug: "..args.sourcename.." is Ready To Fight (IEEU 1sec delay Check) "..GetTime())
+				print("DBM Debug: "..UnitName(unitID).." is Ready To Fight (IEEU 1sec delay Check) "..GetTime())
 			end
 			activeBossGUIDS[unitGUID] = true
 			activatedTargets[#activatedTargets + 1] = UnitName(unitID)
@@ -827,7 +827,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:SetIcon(args.destName, 0)
 	elseif spellId == 143542 then--Ready to Fight
 		if DBM.Options.DebugMode then
-			print("DBM Debug: "..args.sourcename.." is Ready To Fight (Buff Check) "..GetTime())
+			print("DBM Debug: "..args.sourceName.." is Ready To Fight (Buff Check) "..GetTime())
 		end
 --[[		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 71152 then--Skeer the Bloodseeker
