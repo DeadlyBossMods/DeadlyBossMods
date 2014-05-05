@@ -5,6 +5,7 @@
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Schlacht um Orgrimmar|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0오그리마 공성전|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0圍攻奧格瑪|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0决战奥格瑞玛|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -23,6 +24,7 @@ localization.kr.lua
 localization.ru.lua
 localization.tw.lua
 localization.es.lua
+localization.cn.lua
 Immerseus.lua
 FallenProtectors.lua
 Norushen.lua
