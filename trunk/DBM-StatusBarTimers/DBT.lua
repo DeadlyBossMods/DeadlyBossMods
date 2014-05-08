@@ -977,10 +977,6 @@ do
 	end
 
 	function DBT:SetSkin(id)
-		if InCombatLockdown() or totalBars ~= 0 then
-			print("DBT:SetSkin is Disabled if any timers are running or if you are in combat, cancel any running timers before changing skin")
-			return
-		end
 		local skin = skins[id]
 		if not skin then
 			error("skin " .. id .. " doesn't exist", 2)
