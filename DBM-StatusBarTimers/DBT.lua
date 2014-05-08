@@ -112,6 +112,10 @@ options = {
 		type = "boolean",
 		default = false,
 	},
+	IconLocked = {
+		type = "boolean",
+		default = true,
+	},
 	Texture = {
 		type = "string",
 		default = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.tga",
@@ -402,6 +406,11 @@ do
 	local mt = {__index = barPrototype}
 
 	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy)
+		local skins = self:GetSkins()
+		if skins[self.options.Skin].loaded == nil then
+			-- The currently set skin is no longer loaded, revert to DefaultSkin.
+			self:SetSkin("DefaultSkin")
+		end
 		if timer <= 0 then return end
 		if (self.numBars or 0) >= 15 and not isDummy then return end
 		local newBar = self:GetBar(id)
@@ -889,13 +898,15 @@ function barPrototype:ApplyStyle()
 	timer:SetTextColor(self.owner.options.TextColorR, self.owner.options.TextColorG, self.owner.options.TextColorB)
 	if self.owner.options.IconLeft then icon1:Show() else icon1:Hide() end
 	if self.owner.options.IconRight then icon2:Show() else icon2:Hide() end
-	if self.enlarged then frame:SetWidth(self.owner.options.HugeWidth); frame:SetHeight(self.owner.options.Height); else frame:SetWidth(self.owner.options.Width); frame:SetHeight(self.owner.options.Height); end
 	if self.enlarged then bar:SetWidth(self.owner.options.HugeWidth); bar:SetHeight(self.owner.options.Height); else bar:SetWidth(self.owner.options.Width) bar:SetHeight(self.owner.options.Height); end
 	if self.enlarged then frame:SetScale(self.owner.options.HugeScale) else frame:SetScale(self.owner.options.Scale) end
-	icon1:SetWidth(self.owner.options.Height)
-	icon1:SetHeight(self.owner.options.Height)
-	icon2:SetWidth(self.owner.options.Height)
-	icon2:SetHeight(self.owner.options.Height)
+	if self.owner.options.IconLocked then
+		if self.enlarged then frame:SetWidth(self.owner.options.HugeWidth); frame:SetHeight(self.owner.options.Height); else frame:SetWidth(self.owner.options.Width); frame:SetHeight(self.owner.options.Height); end
+		icon1:SetWidth(self.owner.options.Height)
+		icon1:SetHeight(self.owner.options.Height)
+		icon2:SetWidth(self.owner.options.Height)
+		icon2:SetHeight(self.owner.options.Height)
+	end
 	self.frame:Show()
 	if sparkEnabled then
 		spark:SetAlpha(1)
@@ -988,7 +999,13 @@ do
 			if k ~= "TimerPoint" and k ~= "TimerX" and k ~= "TimerY" -- do not reset the position
 				and k ~= "HugeTimerPoint" and k ~= "HugeTimerX" and k ~= "HugeTimerY"
 				and k ~= "Skin" then -- do not reset the skin we just set
-				self:SetOption(k, skin.defaults[k] or v.default)
+				-- A custom skin might have some settings as false, so need to check explicitly for nil.
+				-- skin.defaults will be nil if there isn't a skin (e.g. DefaultSkin) loaded, so check for that too.
+				if skin.defaults and skin.defaults[k] ~= nil then
+					self:SetOption(k, skin.defaults[k])
+				else
+					self:SetOption(k, v.default)
+				end
 			end
 		end
 	end
