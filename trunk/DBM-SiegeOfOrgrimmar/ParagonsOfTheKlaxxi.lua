@@ -289,7 +289,7 @@ local function hideRangeFrame()--Only called by flash
 end
 
 local function CheckBosses()
---	local vulnerable = false
+	local vulnerable = false
 	for i = 1, 5 do
 		local unitID = "boss"..i
 		local unitGUID = UnitGUID(unitID)
@@ -299,7 +299,7 @@ local function CheckBosses()
 				print("DBM Debug: "..UnitName(unitID).." is Ready To Fight (IEEU Check) "..GetTime())
 			end
 			activeBossGUIDS[unitGUID] = true
---[[			activatedTargets[#activatedTargets + 1] = UnitName(unitID)
+			activatedTargets[#activatedTargets + 1] = UnitName(unitID)
 			--Activation Controller
 			local cid = mod:GetCIDFromGUID(unitGUID)
 			if cid == 71152 then--Skeer the Bloodseeker
@@ -338,9 +338,9 @@ local function CheckBosses()
 			end--]]
 		end
 	end
---[[	if #activatedTargets >= 1 then
+	if #activatedTargets >= 1 then
 		warnActivatedTargets(vulnerable)--Down here so we can send tank vulnerable status
-	end--]]
+	end
 end
 
 local function delayMonsterEmote(target)
@@ -523,9 +523,9 @@ end
 --"<13.6 19:16:29> [UNIT_SPELLCAST_SUCCEEDED] Iyyokuk the Lucid [[boss2:Jump to Center::0:143545]]", -- [95]
 --^don't let above fool you, not all of the paragons fire this spell!!! that is why we MUST use IEEU
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-	CheckBosses()
---	self:Unschedule(CheckBosses)
---	self:Schedule(1, CheckBosses)--Delay check to make sure we run function only once on pull
+--	CheckBosses()
+	self:Unschedule(CheckBosses)
+	self:Schedule(1, CheckBosses)--Delay check to make sure we run function only once on pull
 end
 
 function mod:SPELL_CAST_START(args)
@@ -830,7 +830,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if DBM.Options.DebugMode then
 			print("DBM Debug: "..args.destName.." is Ready To Fight (Buff Check) "..GetTime())
 		end
-		activatedTargets[#activatedTargets + 1] = args.destName
+--[[		activatedTargets[#activatedTargets + 1] = args.destName
 		local vulnerable = false
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 71152 then--Skeer the Bloodseeker
@@ -868,7 +868,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerHurlAmberCD:Start(45)
 		end
 		self:Unschedule(warnActivatedTargets, vulnerable)
-		self:Schedule(1, warnActivatedTargets, vulnerable)
+		self:Schedule(1, warnActivatedTargets, vulnerable)--]]
 	end
 end
 
