@@ -2846,7 +2846,6 @@ do
 	local dummyMod -- dummy mod for the pull sound effect
 	syncHandlers["PT"] = function(sender, timer, lastMapID)
 		if select(2, IsInInstance()) == "pvp" or DBM:GetRaidRank(sender) == 0 or IsEncounterInProgress() then
-			print(DBM:GetRaidRank(sender))
 			return
 		end
 		if (lastMapID and tonumber(lastMapID) ~= LastInstanceMapID) or (not lastMapID and DBM.Options.DontShowPTNoID) then return end
@@ -7645,9 +7644,6 @@ do
 	local function clearSortTable()
 		table.wipe(iconSortTable)
 		iconSet = 0
-		if DBM.Options.DebugMode then
-			print("DBM Debug: iconSortTable cleared")
-		end
 	end
 
 	function bossModPrototype:SetIconBySortedTable(startIcon, reverseIcon, returnFunc)
