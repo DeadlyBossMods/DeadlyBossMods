@@ -341,6 +341,15 @@ do
 		tinsert(instances, obj)
 		return obj
 	end
+	
+	local function delaySkinCheck(self)
+		local skins = self:GetSkins()
+		local _, _, _, enabled = GetAddOnInfo("DBM-DefaultSkin")
+		if enabled and skins[self.options.Skin].loaded == nil then
+			-- The currently set skin is no longer loaded, revert to DefaultSkin. If enabled (else, person wants textureless bar on purpose)
+			self:SetSkin("DefaultSkin")
+		end
+	end
 
 	function DBT:LoadOptions(id)
 		-- recover old options (DBM_SavedOptions) if possible (saved by DBM, before DBT was a separate addon)
@@ -354,6 +363,7 @@ do
 		self.secAnchor:ClearAllPoints()
 		self.mainAnchor:SetPoint(self.options.TimerPoint, UIParent, self.options.TimerPoint, self.options.TimerX, self.options.TimerY)
 		self.secAnchor:SetPoint(self.options.HugeTimerPoint, UIParent, self.options.HugeTimerPoint, self.options.HugeTimerX, self.options.HugeTimerY)
+		DBM:Schedule(2, delaySkinCheck, self)
 	end
 end
 
