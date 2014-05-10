@@ -285,6 +285,7 @@ local ipairs, pairs, next = ipairs, pairs, next
 local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
 local type, select = type, select
 local GetTime = GetTime
+local bband = bit.band
 local floor, mhuge, mmin, mmax = math.floor, math.huge, math.min, math.max
 local GetNumGroupMembers, GetRaidRosterInfo = GetNumGroupMembers, GetRaidRosterInfo
 local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
@@ -418,39 +419,39 @@ do
 	end
 
 	function argsMT.__index:IsPlayer()
-		return bit.band(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
+		return bband(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bband(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
 	end
 
 	function argsMT.__index:IsPlayerSource()
-		return bit.band(args.sourceFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bit.band(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
+		return bband(args.sourceFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bband(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
 	end
 
 	function argsMT.__index:IsNPC()
-		return bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_NPC) ~= 0
+		return bband(args.destFlags, COMBATLOG_OBJECT_TYPE_NPC) ~= 0
 	end
 
 	function argsMT.__index:IsPet()
-		return bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0
+		return bband(args.destFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0
 	end
 
 	function argsMT.__index:IsPetSource()
-		return bit.band(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0
+		return bband(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0
 	end
 
 	function argsMT.__index:IsSrcTypePlayer()
-		return bit.band(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
+		return bband(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
 	end
 
 	function argsMT.__index:IsDestTypePlayer()
-		return bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
+		return bband(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
 	end
 
 	function argsMT.__index:IsSrcTypeHostile()
-		return bit.band(args.sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0
+		return bband(args.sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0
 	end
 
 	function argsMT.__index:IsDestTypeHostile()
-		return bit.band(args.destFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0
+		return bband(args.destFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0
 	end
 
 	function argsMT.__index:GetSrcCreatureID()
@@ -2681,7 +2682,7 @@ local function loadModByUnit(uId)
 	end
 	if IsInInstance() or not UnitIsFriend("player", uId) and UnitIsDead("player") or UnitIsDead(uId) then return end--If you're in an instance no reason to waste cpu. If THE BOSS dead, no reason to load a mod for it. To prevent rare lua error, needed to filter on player dead.
 	local guid = UnitGUID(uId)
-	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
+	if guid and (bband(guid:sub(1, 5), 0x00F) == 3 or bband(guid:sub(1, 5), 0x00F) == 5) then
 		local cId = DBM:GetCIDFromGUID(guid)
 		for bosscId, addon in pairs(loadcIds) do
 			local _, _, _, enabled = GetAddOnInfo(addon)
@@ -3531,7 +3532,7 @@ do
 		for i = 0, GetNumGroupMembers() do
 			local id = (i == 0 and "target") or uId..i.."target"
 			local guid = UnitGUID(id)
-			if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
+			if guid and (bband(guid:sub(1, 5), 0x00F) == 3 or bband(guid:sub(1, 5), 0x00F) == 5) then
 				local cId = DBM:GetCIDFromGUID(guid)
 				targetList[cId] = id
 			end
@@ -4465,7 +4466,7 @@ end
 
 function DBM:UNIT_DIED(args)
 	local GUID = args.destGUID
-	if bit.band(GUID:sub(1, 5), 0x00F) == 3 or bit.band(GUID:sub(1, 5), 0x00F) == 5 then
+	if bband(GUID:sub(1, 5), 0x00F) == 3 or bband(GUID:sub(1, 5), 0x00F) == 5 then
 		self:OnMobKill(DBM:GetCIDFromGUID(GUID))
 	end
 	if DBM.Options.AFKHealthWarning and GUID == UnitGUID("player") and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
