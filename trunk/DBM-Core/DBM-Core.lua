@@ -994,6 +994,7 @@ do
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 				"ENCOUNTER_START",
 				"ENCOUNTER_END",
+				--"SPELL_UPDATE_CHARGES",--Likely how we'll have to check for combat res charges in 6.0
 				"UNIT_DIED",
 				"UNIT_DESTROYED",
 				"UNIT_HEALTH mouseover target focus player",
