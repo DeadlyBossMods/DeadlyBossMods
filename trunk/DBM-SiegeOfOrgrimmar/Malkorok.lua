@@ -97,7 +97,7 @@ function mod:OnCombatStart(delay)
 	else
 		berserkTimer:Start(-delay)
 	end
-	if self.Options.RangeFrame then
+	if self.Options.RangeFrame and self:IsRanged() then
 		DBM.RangeCheck:Show(5)
 	end
 end
@@ -142,6 +142,9 @@ function mod:SPELL_CAST_START(args)
 					end
 				end
 			end
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
 		end
 	elseif spellId == 143199 then
 		self.vb.breathCast = 0
@@ -152,7 +155,7 @@ function mod:SPELL_CAST_START(args)
 		timerSeismicSlamCD:Start(7.5, 1)
 		timerArcingSmashCD:Start(14, 1)
 		timerBreathofYShaarjCD:Start(70, 1)
-		if self.Options.RangeFrame then
+		if self.Options.RangeFrame and self:IsRanged() then
 			DBM.RangeCheck:Show(5)
 		end
 	end
