@@ -230,7 +230,9 @@ local raid = {}
 local modSyncSpam = {}
 local autoRespondSpam = {}
 local chatPrefix = "<Deadly Boss Mods> "
+local chatPrefixVEM = "<Voice Encounter Mods> "
 local chatPrefixShort = "<DBM> "
+local chatPrefixShortVEM = "<VEM> "
 local ver = ("%s (r%d)"):format(DBM.DisplayVersion, DBM.Revision)
 local mainFrame = CreateFrame("Frame")
 local newerVersionPerson = {}
@@ -4750,7 +4752,7 @@ do
 			-- as this would be even worse than the issue with missing whisper messages ;)
 			return filterOutgoing(nil, nil, self, event)
 		end
-		return msg:sub(1, chatPrefix:len()) == chatPrefix or msg:sub(1, chatPrefixShort:len()) == chatPrefixShort, ...
+		return msg:sub(1, chatPrefix:len()) == chatPrefix or msg:sub(1, chatPrefixVEM:len()) == chatPrefixVEM or msg:sub(1, chatPrefixShort:len()) == chatPrefixShort or msg:sub(1, chatPrefixShortVEM:len()) == chatPrefixShortVEM, ...
 	end
 
 	local function filterIncoming(self, event, ...)
@@ -4759,7 +4761,7 @@ do
 			return filterIncoming(nil, nil, self, event)
 		end
 		if DBM.Options.SpamBlockBossWhispers then
-			return #inCombat > 0 and (msg == "status" or msg:sub(1, chatPrefix:len()) == chatPrefix or msg:sub(1, chatPrefixShort:len()) == chatPrefixShort), ...
+			return #inCombat > 0 and (msg == "status" or msg:sub(1, chatPrefix:len()) == chatPrefix or msg:sub(1, chatPrefixVEM:len()) == chatPrefixVEM or msg:sub(1, chatPrefixShort:len()) == chatPrefixShort or msg:sub(1, chatPrefixShortVEM:len()) == chatPrefixShortVEM), ...
 		else
 			return msg == "status" and #inCombat > 0, ...
 		end
