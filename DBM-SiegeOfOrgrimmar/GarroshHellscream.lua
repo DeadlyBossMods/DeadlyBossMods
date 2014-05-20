@@ -119,6 +119,8 @@ local countdownRealm				= mod:NewCountdownFades(60.5, "ej8305", nil, nil, 10)
 local countdownBombardment			= mod:NewCountdown(55, 147120)
 local countdownBombardmentEnd		= mod:NewCountdownFades("Alt13", 147120)
 
+local berserkTimer					= mod:NewBerserkTimer(1080)
+
 mod:AddBoolOption("yellMaliceFading", false)
 mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
 mod:AddSetIconOption("SetIconOnMC", 145071, false)
@@ -204,6 +206,11 @@ function mod:OnCombatStart(delay)
 	timerSiegeEngineerCD:Start(20-delay)
 	timerHellscreamsWarsongCD:Start(22-delay)
 	timerFarseerWolfRiderCD:Start(30-delay)
+	if self:IsDifficulty("lfr25") then
+		berserkTimer:Start(1500-delay)
+	else
+		berserkTimer:Start(-delay)
+	end
 end
 
 function mod:OnCombatEnd()
