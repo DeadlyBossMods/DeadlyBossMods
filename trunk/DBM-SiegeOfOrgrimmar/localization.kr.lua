@@ -189,13 +189,19 @@ L:SetMiscLocalization({
 ------------------------
 L= DBM:GetModLocalization(869)
 
+L:SetTimerLocalization({
+	timerRoleplay		= "이벤트 진행"
+})
+
 L:SetOptionLocalization({
+	timerRoleplay		= "가로쉬/스랄 이벤트 진행 바 보기",
 	RangeFrame			= "거리 창 보기(8m)($spell:147126 주문의 경고 수치에 도달한 경우에만 보임)",
 	InfoFrame			= "사잇단계에서 피해 감소가 없는 대상을 정보 창으로 보기",
 	yellMaliceFading	= "$spell:147209 가 사라지기 전에 대화로 알리기"
 })
 
 L:SetMiscLocalization({
+	wasteOfTime			= "아직 늦지 않았다, 가로쉬. 대족장이라는 짐을 내려놓거라. 지금, 여기서 끝내자. 피를 흘릴 필요는 없다.",
 	NoReduce			= "피해 감소 없음",
 	MaliceFadeYell		= "%s의 악의 %d초 남음!"
 })
