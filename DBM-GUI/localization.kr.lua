@@ -11,16 +11,16 @@ L.Website					= "문의/건의사항은 DBM 사용자 포럼을 이용하세요.
 L.WebsiteButton				= "사용자 포럼"
 
 L.OTabBosses	= "우두머리"
-L.OTabOptions	= "설정"
+--L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options		= "기본 설정"
 L.TabCategory_WoD	 		= "드레노어의 전쟁군주"
-L.TabCategory_MOP			= "판다리아의 안개"
-L.TabCategory_CATA	 		= "대격변"
-L.TabCategory_WOTLK 		= "리치왕의 분노"
-L.TabCategory_BC 			= "불타는 성전"
-L.TabCategory_CLASSIC 		= "오리지널"
---L.TabCategory_PVP 			= "PvP"
+--L.TabCategory_MOP	 		= EXPANSION_NAME4
+--L.TabCategory_CATA		= EXPANSION_NAME3
+--L.TabCategory_WOTLK 		= EXPANSION_NAME2
+--L.TabCategory_BC 			= EXPANSION_NAME1
+--L.TabCategory_CLASSIC		= EXPANSION_NAME0
+L.TabCategory_PVP	 		= "PvP"
 L.TabCategory_OTHER			= "기타 우두머리 경보"
 
 L.BossModLoaded 			= "%s 공략 상황"
@@ -39,7 +39,7 @@ L.Mod_Enabled				= "경보 사용"
 L.Mod_Reset					= "이 전투의 기본 설정 불러오기"
 L.Reset						= "초기화"
 
-L.Enable					= "켜기"
+L.Enable					= "활성화"
 L.Disable					= "비활성화"
 
 L.NoSound					= "끄기"
@@ -62,7 +62,7 @@ L.Latency_Text				= "동기화 신호를 보낼 최대 지연시간 설정: %d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "DBM 바 설정"
 L.SKT_Enabled				= "우두머리별 설정을 무시하고 최고 기록 바 항상 보기"
-L.CRT_Enabled				= "다음 전투 부활 충전 바 보기(현재 6.x 탄력적 공격대에서만 작동)"
+L.CRT_Enabled				= "다음 전투 부활 충전 바 보기(6.x 인스턴스에서만 작동)"
 L.ChallengeTimerOptions		= "도전 모드 최고 기록 바 설정"
 L.ChallengeTimerPersonal	= "개인 기록으로 보기"
 L.ChallengeTimerGuild		= "길드 기록으로 보기"
