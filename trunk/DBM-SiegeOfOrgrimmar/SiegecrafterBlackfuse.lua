@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 143265 144208",
-	"SPELL_CAST_SUCCESS 145774",
+	"SPELL_CAST_SUCCESS 145774 143385",
 	"SPELL_SUMMON 143641",
 	"SPELL_AURA_APPLIED 145365 143385 145444 144210 144236 145269 145580 144466 143856",
 	"SPELL_AURA_APPLIED_DOSE 143385 145444 143856",
@@ -208,6 +208,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			self.vb.shockwaveOvercharged = false
 		end
+	elseif spellId == 143385 then
+		timerElectroStaticChargeCD:Start()
+		countdownElectroStatic:Start()
 	end
 end
 
@@ -237,8 +240,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		warnElectroStaticCharge:Show(args.destName, amount)
 		timerElectroStaticCharge:Start(args.destName)
-		timerElectroStaticChargeCD:Start()
-		countdownElectroStatic:Start()
 	elseif spellId == 145444 then
 		local amount = args.amount or 1
 		warnOverload:Show(args.destName, amount)
