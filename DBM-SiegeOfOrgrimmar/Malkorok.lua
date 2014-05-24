@@ -56,6 +56,8 @@ local berserkTimer						= mod:NewBerserkTimer(360)
 
 local countdownImplodingEnergy			= mod:NewCountdown(10, 142986, nil, nil, 8)
 
+local countdownBreathofYShaarj			= mod:NewCountdown(10, 142842, nil, nil, 5, nil, true)
+
 local soundDisplacedEnergy				= mod:NewSound(142913)
 
 mod:AddRangeFrameOption("8/5")--Various things
@@ -92,6 +94,7 @@ function mod:OnCombatStart(delay)
 	timerSeismicSlamCD:Start(5-delay, 1)
 	timerArcingSmashCD:Start(11-delay, 1)
 	timerBreathofYShaarjCD:Start(68-delay, 1)
+	countdownBreathofYShaarj:Start(68-delay)
 	if self:IsDifficulty("lfr25") then
 		berserkTimer:Start(720-delay)
 	else
@@ -130,6 +133,7 @@ function mod:SPELL_CAST_START(args)
 			timerSeismicSlamCD:Start(7.5, 1)
 			timerArcingSmashCD:Start(14, 1)
 			timerBreathofYShaarjCD:Start(70, 2)
+			countdownBreathofYShaarj:Start(70)
 		else--Breath 2
 			if self.Options.BloodrageArrow then
 				for uId in DBM:GetGroupMembers() do
@@ -155,6 +159,7 @@ function mod:SPELL_CAST_START(args)
 		timerSeismicSlamCD:Start(7.5, 1)
 		timerArcingSmashCD:Start(14, 1)
 		timerBreathofYShaarjCD:Start(70, 1)
+		countdownBreathofYShaarj:Start(70)
 		if self.Options.RangeFrame and self:IsRanged() then
 			DBM.RangeCheck:Show(5)
 		end
