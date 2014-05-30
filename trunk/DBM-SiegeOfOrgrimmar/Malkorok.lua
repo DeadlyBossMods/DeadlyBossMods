@@ -54,7 +54,7 @@ local timerFatalStrike					= mod:NewTargetTimer(30, 142990, nil, mod:IsTank())
 
 local berserkTimer						= mod:NewBerserkTimer(360)
 
-local countdownImplodingEnergy			= mod:NewCountdown(10, 142986, nil, nil, 8)
+local countdownImplodingEnergy			= mod:NewCountdown(10, 142986, nil, nil, 5)
 
 local countdownBreathofYShaarj			= mod:NewCountdown(10, 142842, nil, nil, 5, nil, true)
 
