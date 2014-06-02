@@ -518,6 +518,8 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.wasteOfTime then
 		self:SendSync("prepull")
+	elseif msg == L.phase3End or msg:find(L.phase3End) then
+		self:SendSync("phase3End")
 	end
 end
 
@@ -548,5 +550,12 @@ function mod:OnSync(msg, guid)
 		self:SetIcon(targetName, 0)
 	elseif msg == "prepull" then
 		timerRoleplay:Start()
+	elseif msg == "phase3End" then
+		timerDesecrateCD:Cancel()
+		timerTouchOfYShaarjCD:Cancel()
+		countdownTouchOfYShaarj:Cancel()
+		timerWhirlingCorruptionCD:Cancel()
+		countdownWhirlingCorruption:Cancel()
+		--TODO< maybe one day add an RP timer for phase 3-4 transition. Unfortunately I'm unlikely to see heroic garrosh again until after 6.0
 	end
 end
