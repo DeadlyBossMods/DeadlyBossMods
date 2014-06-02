@@ -210,7 +210,8 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	wasteOfTime			= "It is not too late, Garrosh. Lay down the mantle of Warchief. We can end this here, now, with no more bloodshed.",
 	NoReduce			= "No damage reduction",
-	MaliceFadeYell		= "Malice fading on %s (%d)"
+	MaliceFadeYell		= "Malice fading on %s (%d)",
+	phase3End			= "You think you have WON?"
 })
 
 -------------
