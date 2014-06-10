@@ -2456,7 +2456,7 @@ function DBM:UPDATE_BATTLEFIELD_STATUS()
 end
 
 function DBM:CINEMATIC_START()
-	if DBM.Options.MovieFilter == "Never" then return end
+	if IsInInstance() or DBM.Options.MovieFilter == "Never" then return end
 	SetMapToCurrentZone()
 	for itemId, mapId in pairs(blockMovieSkipItems) do
 		if mapId == LastInstanceMapID then
