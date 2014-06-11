@@ -4463,6 +4463,10 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 17 then
 		return "lfr", difficultyName.." - ", difficulty, instanceGroupSize
+	elseif difficulty == 18 then
+		return "event40", difficultyName.." - ", difficulty, instanceGroupSize
+	elseif difficulty == 19 then
+		return "event5", difficultyName.." - ", difficulty, instanceGroupSize
 	else--failsafe
 		return "normal5", "", difficulty, instanceGroupSize
 	end
