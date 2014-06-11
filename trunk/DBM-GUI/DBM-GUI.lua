@@ -239,6 +239,34 @@ local function MixinSharedMedia3(mediatype, mediatable)
 		LSM:Register("sound", "Void Reaver: Marked", [[Sound\Creature\VoidReaver\TEMPEST_VoidRvr_Aggro01.ogg]])
 		LSM:Register("sound", "Kaz'rogal: Marked", [[Sound\Creature\KazRogal\CAV_Kaz_Mark02.ogg]])
 		LSM:Register("sound", "C'Thun: You Will Die!", [[Sound\Creature\CThun\CThunYouWillDIe.ogg]])
+		--Do to terrible coding in LSM formating, it's not possible to do this a nice looking way
+		if DBM.Options.CustomSounds >= 1 then
+			LSM:Register("sound", "DBM: Custom 1", [[Interface\\AddOns\\DBM-CustomSounds\\Custom1.ogg]])
+		end
+		if DBM.Options.CustomSounds >= 2 then
+			LSM:Register("sound", "DBM: Custom 2", [[Interface\\AddOns\\DBM-CustomSounds\\Custom2.ogg]])
+		end
+		if DBM.Options.CustomSounds >= 3 then
+			LSM:Register("sound", "DBM: Custom 3", [[Interface\\AddOns\\DBM-CustomSounds\\Custom3.ogg]])
+		end
+		if DBM.Options.CustomSounds >= 4 then
+			LSM:Register("sound", "DBM: Custom 4", [[Interface\\AddOns\\DBM-CustomSounds\\Custom4.ogg]])
+		end
+		if DBM.Options.CustomSounds >= 5 then
+			LSM:Register("sound", "DBM: Custom 5", [[Interface\\AddOns\\DBM-CustomSounds\\Custom5.ogg]])
+		end
+		if DBM.Options.CustomSounds >= 6 then
+			LSM:Register("sound", "DBM: Custom 6", [[Interface\\AddOns\\DBM-CustomSounds\\Custom6.ogg]])
+		end
+		if DBM.Options.CustomSounds >= 7 then
+			LSM:Register("sound", "DBM: Custom 7", [[Interface\\AddOns\\DBM-CustomSounds\\Custom7.ogg]])
+		end
+		if DBM.Options.CustomSounds >= 8 then
+			LSM:Register("sound", "DBM: Custom 8", [[Interface\\AddOns\\DBM-CustomSounds\\Custom8.ogg]])
+		end
+		if DBM.Options.CustomSounds >= 9 then
+			LSM:Register("sound", "DBM: Custom 9", [[Interface\\AddOns\\DBM-CustomSounds\\Custom9.ogg]])
+		end
 	end
 	-- sort LibSharedMedia keys alphabetically (case-insensitive)
 	local keytable = {}
