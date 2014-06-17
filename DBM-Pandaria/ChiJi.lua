@@ -64,7 +64,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 144473 then
 		warnBeaconOfHope:Show()
 		specWarnBeaconOfHope:Show()
-		self:BossTargetScanner(71952, "BeaconTarget", 0.02, 16)
+		self:BossTargetScanner(71952, "BeaconTarget", 0.1, 16)
 	elseif spellId == 144461 then
 		warnFirestorm:Show()
 	end
