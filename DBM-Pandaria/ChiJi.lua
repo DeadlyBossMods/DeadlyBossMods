@@ -16,14 +16,14 @@ mod:RegisterEventsInCombat(
 )
 
 local warnInspiringSong			= mod:NewSpellAnnounce(144468, 3)
-local warnBeaconOfHope			= mod:NewSpellAnnounce(144473, 1)
-local warnFirestorm				= mod:NewSpellAnnounce(144461, 3)
+local warnBeaconOfHope			= mod:NewTargetAnnounce(144473, 1)
+local warnFirestorm				= mod:NewSpellAnnounce(144461, 2, nil, false)
 local warnBlazingSong			= mod:NewSpellAnnounce(144471, 4)
-local warnCraneRush				= mod:NewSpellAnnounce(144470, 3)--Health based, 66% and 33% (maybe register UNIT_HEALTH and give soon warning?)
+local warnCraneRush				= mod:NewSpellAnnounce(144470, 3, nil, not mod:IsMelee())--Health based, 66% and 33% (off by default for melee because they won't hit melee unless they are bad and standing too far out
 
 local specWarnInspiringSong		= mod:NewSpecialWarningInterrupt(144468)
-local specWarnBeaconOfHope		= mod:NewSpecialWarningSpell(144473)
-local specWarnFirestorm			= mod:NewSpecialWarningSpell(144461, mod:IsMelee(), nil, nil, 2)
+local specWarnBeaconOfHope		= mod:NewSpecialWarningMoveTo(144473)
+local yellBeacon				= mod:NewYell(144473)
 local specWarnBlazingSong		= mod:NewSpecialWarningSpell(144471, nil, nil, nil, 3)
 local specWarnCraneRush			= mod:NewSpecialWarningSpell(144470, nil, nil, nil, 2)
 
@@ -31,6 +31,16 @@ local timerInspiringSongCD		= mod:NewCDTimer(30, 144468)--30-50sec variation?
 local timerBlazingSong			= mod:NewBuffActiveTimer(15, 144471)
 
 mod:AddReadyCheckOption(33117, false)
+
+function mod:BeaconTarget(targetname, uId)
+	if not targetname then return end
+	warnBeaconOfHope:Show(targetname)
+	if targetname == UnitName("player") and not self:IsTanking(uId) then--Never targets tanks
+		yellBeacon:Yell()
+	else
+		specWarnBeaconOfHope:Show(targetname)
+	end
+end
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then--We know for sure this is an actual pull and not diving into in progress
@@ -54,9 +64,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 144473 then
 		warnBeaconOfHope:Show()
 		specWarnBeaconOfHope:Show()
+		self:BossTargetScanner(71952, "BeaconTarget", 0.02, 16)
 	elseif spellId == 144461 then
 		warnFirestorm:Show()
-		specWarnFirestorm:Show()
 	end
 end
 
