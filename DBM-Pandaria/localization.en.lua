@@ -46,7 +46,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "Can you feel a chill wind blow?"
+	Pull				= "Can you feel a chill wind blow? The storm is coming..."
 })
 
 ---------------------------
