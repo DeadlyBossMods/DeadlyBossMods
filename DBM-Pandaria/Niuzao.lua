@@ -18,13 +18,13 @@ mod:RegisterEventsInCombat(
 )
 
 local warnHeadbutt				= mod:NewSpellAnnounce(144610, 3, nil, mod:IsTank())
-local warnOxenFortitude			= mod:NewStackAnnounce(144606, 2)--144607 player version, but better to just track boss and announce stacks
+local warnOxenFortitude			= mod:NewStackAnnounce(144606, 2, nil, false)--144607 player version, but better to just track boss and announce stacks
 local warnMassiveQuake			= mod:NewSpellAnnounce(144611, 3)
 local warnCharge				= mod:NewSpellAnnounce(144609, 4)
 
 local specWarnHeadbutt			= mod:NewSpecialWarningSpell(144610, mod:IsTank())
-local specWarnMassiveQuake		= mod:NewSpecialWarningSpell(144611, mod:IsHealer())
-local specWarnCharge			= mod:NewSpecialWarningSpell(144609, nil, nil, nil, 2)--66 and 33%. Maybe add pre warns
+local specWarnMassiveQuake		= mod:NewSpecialWarningSpell(144611, nil, nil, nil, 2)
+local specWarnCharge			= mod:NewSpecialWarningRun(144609, mod:IsMelee())--66 and 33%. Maybe add pre warns
 
 local timerHeadbuttCD			= mod:NewCDTimer(47, 144610, nil, mod:IsTank())
 local timerMassiveQuake			= mod:NewBuffActiveTimer(13, 144611)

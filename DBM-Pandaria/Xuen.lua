@@ -25,7 +25,7 @@ local warnChiBarrage				= mod:NewSpellAnnounce(144642, 4)
 
 local specWarnSpectralSwipe			= mod:NewSpecialWarningStack(144638, mod:IsTank(), 5)
 local specWarnSpectralSwipeOther	= mod:NewSpecialWarningTarget(144638, mod:IsTank())
-local specWarnAgility				= mod:NewSpecialWarningDispel(144631, mod:IsMagicDispeller())
+local specWarnAgility				= mod:NewSpecialWarningDispel(144631, mod:IsMagicDispeller(), nil, nil, 3)
 local specWarnChiBarrage			= mod:NewSpecialWarningSpell(144642, nil, nil, nil, 2)
 
 local timerSpectralSwipe			= mod:NewTargetTimer(60, 144638, nil, mod:IsTank() or mod:IsHealer())

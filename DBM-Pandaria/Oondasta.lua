@@ -19,16 +19,16 @@ mod:RegisterEventsInCombat(
 
 local warnCrush					= mod:NewStackAnnounce(137504, 2, nil, mod:IsTank() or mod:IsHealer())--Cast every 30 seconds roughly, lasts 1 minute. you need 3 tanks to be able to tank the boss without debuff. 2 tanks CAN do but they will always have 1 stack and take 25% more damage
 local warnPiercingRoar			= mod:NewSpellAnnounce(137457, 2)
-local warnSpiritfireBeam		= mod:NewTargetAnnounce(137511, 3)
-local warnFrillBlast			= mod:NewSpellAnnounce(137505, 4, nil, mod:IsTank() or mod:IsHealer())
+local warnSpiritfireBeam		= mod:NewTargetAnnounce(137511, 3, nil, mod:IsHealer())
+local warnFrillBlast			= mod:NewSpellAnnounce(137505, 4)
 
 local specWarnCrush				= mod:NewSpecialWarningStack(137504, mod:IsTank(), 2)
 local specWarnCrushOther		= mod:NewSpecialWarningTarget(137504, mod:IsTank())
 local specWarnPiercingRoar		= mod:NewSpecialWarningCast(137457, mod:IsRanged() or mod:IsHealer())
 local specWarnFrillBlast		= mod:NewSpecialWarningSpell(137505, nil, nil, nil, 2)
 
-local timerCrush				= mod:NewTargetTimer(60, 137504, nil, mod:IsTank() or mod:IsHealer())
-local timerCrushCD				= mod:NewCDTimer(26, 137504)
+local timerCrush				= mod:NewTargetTimer(60, 137504, nil, false)
+local timerCrushCD				= mod:NewCDTimer(26, 137504, nil, mod:IsTank())
 local timerPiercingRoarCD		= mod:NewCDTimer(25, 137457)--25-60sec variation (i'm going to guess like all the rest of the variations, the timers are all types of fucked up when the boss is running around untanked, which delays casts of crush and frill blast, but makes him cast spitfire twice as often)
 local timerFrillBlastCD			= mod:NewCDTimer(25, 137505)--25-30sec variation
 
