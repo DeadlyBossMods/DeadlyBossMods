@@ -42,8 +42,8 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥在%s前開始，恢復計時器�
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor開始記錄。"
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor結束紀錄。"
 
-DBM_CORE_WORLDBOSS_ENGAGED			= "在你的伺服器上的%s已在%s時開戰(%s發送)。"
-DBM_CORE_WORLDBOSS_DEFEATED			= "在你的伺服器上的%s已被擊敗(%s發送)。"
+DBM_CORE_WORLDBOSS_ENGAGED			= "在你的伺服器上的%s可能已在%s時開戰(%s發送)。"
+DBM_CORE_WORLDBOSS_DEFEATED			= "在你的伺服器上的%s可能已被擊敗(%s發送)。"
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d秒"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d分鐘"
@@ -92,7 +92,7 @@ DBM_CORE_OUTDATED_PVP_MODS			= "你的DBM-PvP模組已經過期而且如果不�
 --DBM_BIG_WIGS_ALPHA (Same as English locales)
 
 DBM_CORE_UPDATEREMINDER_HEADER			= "你的Deadly Boss Mod已經過期。\n你可以在此網址下載到新版本%s(r%d)："
-DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "你的alpha版本Deadly Boss Mods已經過期。\n 你至少落後%d個測試版本。建議DBM使用者使用最新的alpha或最新的穩定版本。過期的alpha版本可能會有低落或未完成的功能。"
+DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "你的alpha版本Deadly Boss Mods已經過期。\n 你至少落後%d個測試版本。建議DBM使用者使用最新的alpha或最新的穩定版本。過期的alpha版本可能會有效能低落或未完成的功能。"
 DBM_CORE_UPDATEREMINDER_FOOTER			= "按下" .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "：複製下載網址到剪貼簿。"
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "按下" .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "：複製網址到剪貼簿。"
 DBM_CORE_UPDATEREMINDER_DISABLE			= "警告: 你的DBM版本已大幅度的過期(%d修訂版)，已被禁用了除非更新至最新版本。這是為了確保舊而不相容的程式碼不會對你而團隊夥伴造成低落的遊戲體驗。"
@@ -102,7 +102,7 @@ DBM_CORE_MOVABLE_BAR				= "拖動我!"
 
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h向你發送了一個倒數計時：'%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[取消該計時]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[忽略來自%1$s的計時]|r|h"
 DBM_PIZZA_CONFIRM_IGNORE			= "是否要在該次遊戲連結中忽略來自%s的計時？"
-DBM_PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <時間（秒）> <文字>"
+DBM_PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <時間（秒）> <文字>。<時間>必須大於1"
 
 --DBM_CORE_MINIMAP_TOOLTIP_HEADER (Same as English locales)
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+左鍵或右鍵點擊即可移動，Alt+Shift+點擊即可拖放"
@@ -132,8 +132,9 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm version：進行團隊範圍內的版本檢測（也可使用：ver）。",
 --	"/dbm version2: 進行團隊範圍內的版本檢測及密語通知已過期的成員（也可使用: ver2）。",
 	"/dbm unlock：顯示一個可移動的計時器（也可使用：move）。",
-	"/dbm timer <x> <文字>：開始一個以<文字>為名稱的時間為<x>秒的計時器。",
+	"/dbm timer/ctimer/ltimer/cltimer <x> <文字>：開始一個以<文字>為名稱的時間為<x>秒的計時器。查看http://tinyurl.com/kwsfl5933取得各種計時器說明",
 	"/dbm broadcast timer <x> <文字>：向團隊廣播一個以<文字>為名稱，時間為<x>秒的計時器（需要團隊隊長或助理權限）。",
+	"/dbm timer endloop：停止任何無限循環的計時器。",
 	"/dbm break <分鐘>: 開始休息計時器<分鐘>。向所有團隊成員發送一個DBM休息計時器（需要團隊隊長或助理權限）。",
 	"/dbm pull <秒數>: 開始備戰計時器<秒數>。向所有團隊成員發送一個DBM備戰計時器（需要團隊隊長或助理權限）。",
 	"/dbm arrow: 顯示DBM箭頭, 輸入 /dbm arrow help 獲得更多訊息。",
@@ -203,6 +204,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel		= ">%%s<中了%s - 現在驅散"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt		= "%s - 快中斷>%%s< !"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you			= "你中了%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= ">%%s<中了%s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt			= ">%%s<中了%s - 快嘲諷"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close			= "你附近的>%%s<中了%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move			= "%s - 快移動"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveaway		= "%s - 快離開其他人"
@@ -223,6 +225,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel		= "需對$spell:%s驅散/竊取時顯示
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt	= "需對$spell:%s斷法時顯示特別警告"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you			= "當你中了$spell:%s時顯示特別警告"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target		= "當有人中了$spell:%s時顯示特別警告"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt 		= "當其他坦克中了$spell:%s顯示特別警告去嘲諷"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close		= "當你附近有人中了$spell:%s時顯示特別警告"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move		= "當你中了$spell:%s時顯示特別警告"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway	= "為$spell:%s要跑離開其他人時顯示特別警告"
@@ -260,6 +263,8 @@ DBM_CORE_AUTO_TIMER_OPTIONS.achievement		= "為成就:%s顯示計時器"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "為$spell:%s的目標設置標記"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "為$spell:%s設置標記"
+DBM_CORE_AUTO_ARROW_OPTION_TEXT			= "為跑向中了$spell:%s的目標顯示DBM箭頭"
+DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "為離開中了$spell:%s的目標顯示DBM箭頭"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "當你中了$spell:%s時播放音效"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "為$spell:%s的冷卻播放倒數計時音效"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "為$spell:%s的減益播放倒數計時音效"
@@ -275,7 +280,6 @@ DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "當首領開打時撥放準備檢查的
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "可拖動的特別警告"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "特別警告"
 
-
 DBM_ARROW_MOVABLE					= "可移動箭頭"
 DBM_ARROW_NO_RAIDGROUP				= "此功能僅作用於團隊副本中的團隊小隊。"
 DBM_ARROW_ERROR_USAGE	= {
@@ -289,6 +293,7 @@ DBM_ARROW_ERROR_USAGE	= {
 DBM_SPEED_KILL_TIMER_TEXT	= "勝利紀錄"
 DBM_SPEED_KILL_TIMER_OPTION	= "顯示一個計時器來打敗你上次的最快勝利"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "最佳紀錄"
+DBM_COMBAT_RES_TIMER_TEXT	= "下一個戰復充能"
 
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s想要查看你的副本ID和進度鎖定情況。\n你想發送該訊息給%s嗎? 在你的當前進程（除非你下線）他可以一直查閱該訊息。"
