@@ -10,16 +10,17 @@ L.Website					= "拜訪我們新的討論與支援論壇:|cFF73C2FBwww.deadlybos
 L.WebsiteButton				= "論壇"
 
 L.OTabBosses	= "首領模組"
-L.OTabOptions	= "選項"
+L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options		= "綜合設置"
-L.TabCategory_MOP	 		= "潘達利亞之謎"
-L.TabCategory_CATA	 		= "浩劫與重生"
-L.TabCategory_WOTLK 		= "巫妖王之怒"
-L.TabCategory_BC 			= "燃燒的遠征"
-L.TabCategory_CLASSIC		= "經典魔獸世界"
-L.TabCategory_PVP 			= "PvP"
-L.TabCategory_OTHER			= "其它"
+L.TabCategory_WoD	 		= EXPANSION_NAME5 or "德拉諾之霸"
+L.TabCategory_MOP	 		= EXPANSION_NAME4
+L.TabCategory_CATA	 		= EXPANSION_NAME3
+L.TabCategory_WOTLK 		= EXPANSION_NAME2
+L.TabCategory_BC 			= EXPANSION_NAME1
+L.TabCategory_CLASSIC		= EXPANSION_NAME0
+L.TabCategory_PVP 			= PVP
+L.TabCategory_OTHER			= "其它首領模組"
 
 L.BossModLoaded				= "%s狀態"
 L.BossModLoad_now 			= [[該模組尚未載入。
@@ -56,38 +57,26 @@ L.General 					= "DBM綜合設置"
 L.EnableDBM 				= "啟用DBM"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
 L.UseMasterVolume			= "使用主要聲音頻道來播放DBM音效警報"
-L.LFDEnhance				= "使用主要聲音頻道播放準備確認音效給腳色確認和戰場/隨機團隊進場"
-L.WorldBossAlert			= "當你的朋友或工會成員在你的伺服器上與世界首領開戰時顯示警告訊息"
-L.AutologBosses				= "自動使用暴雪戰鬥日誌記錄首領戰鬥"
-L.AdvancedAutologBosses		= "自動使用Transcriptor紀錄首領戰鬥"
-L.LogOnlyRaidBosses			= "只記錄團隊首領的戰鬥(除了隨機團隊/隨機隊伍/隨機事件)"
 L.Latency_Text				= "設定最高延遲同步門檻:%d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "綜合DBM計時器選項"
 L.SKT_Enabled				= "永遠顯示快速戰勝計時器 (覆蓋首領特定的選項)"
+L.CRT_Enabled				= "為下一次戰復充能顯示計時器(只有6.0難度)"
 L.ChallengeTimerOptions		= "為挑戰模式設定最佳紀錄計時器"
 L.ChallengeTimerPersonal	= "個人"
-L.ChallengeTimerGuild		= "公會"
+L.ChallengeTimerGuild		= GUILD
 L.ChallengeTimerRealm		= "伺服器"
 
 L.ModelOptions				= "3D模型預覽選項"
 L.EnableModels				= "在首領選項中啟用3D模型預覽"
 L.ModelSoundOptions			= "為模型預覽設置聲音"
-L.ModelSoundShort			= "短"
-L.ModelSoundLong			= "長"
+L.ModelSoundShort			= SHORT
+L.ModelSoundLong			= TOAST_DURATION_LONG
 
 L.Button_RangeFrame			= "顯示/隱藏距離監視器"
 L.Button_RangeRadar			= "顯示/隱藏距離雷達"
 L.Button_InfoFrame			= "顯示/隱藏訊息框架"
 L.Button_TestBars			= "測試計時條"
-
-L.PizzaTimer_Headline		= '建立一個計時條'
-L.PizzaTimer_Title			= '名稱（如“Pizza計時器”）'
-L.PizzaTimer_Hours 			= "時"
-L.PizzaTimer_Mins 			= "分"
-L.PizzaTimer_Secs 			= "秒"
-L.PizzaTimer_ButtonStart 	= "開始計時"
-L.PizzaTimer_BroadCast		= "向團隊廣播"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "團隊警告"
@@ -189,40 +178,64 @@ L.HP_ShowDemo				= "顯示血量框架"
 L.BarWidth					= "寬度:%d"
 
 -- Tab: Spam Filter
-L.Panel_SpamFilter				= "整體及垃圾過濾"
-L.Area_SpamFilter				= "垃圾過濾選項"
-L.StripServerName				= "隱藏警告和計時器的玩家伺服器名稱"
-L.SpamBlockBossWhispers			= "當戰鬥時過濾 &lt;DBM&gt; 密語警告"
-L.BlockVersionUpdateNotice		= "禁用彈出的更新通知"
-L.ShowBBOnCombatStart			= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
-L.BigBrotherAnnounceToRaid		= "通告BigBrother的結果給團隊"
+L.Panel_SpamFilter			= "整體及垃圾過濾"
+L.Area_SpamFilter			= "垃圾過濾選項"
+L.StripServerName			= "隱藏警告和計時器的玩家伺服器名稱"
+L.SpamBlockBossWhispers		= "當戰鬥時過濾 &lt;DBM&gt; 密語警告"
+L.BlockVersionUpdateNotice	= "禁用彈出的更新通知"
+L.ShowBBOnCombatStart		= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
+L.BigBrotherAnnounceToRaid	= "通告BigBrother的結果給團隊"
 
-L.Area_SpamFilter_Outgoing		= "整體過濾選項"
-L.SpamBlockNoShowAnnounce		= "不顯示提示或播放警告音效"
-L.DontShowFarWarnings			= "不發送距離過遠的事件提示/計時器"
-L.SpamBlockNoSendWhisper		= "不發送密語給其他玩家"
-L.SpamBlockNoSetIcon			= "不設置標記在目標上"
-L.SpamBlockNoRangeFrame			= "不顯示距離框架"
-L.SpamBlockNoInfoFrame			= "不顯示訊息框架"
-L.SpamBlockNoHealthFrame		= "不顯示血量框架"
+L.Area_SpamFilter_Outgoing	= "整體過濾選項"
+L.SpamBlockNoShowAnnounce	= "不顯示提示或播放警告音效"
+L.DontShowFarWarnings		= "不發送距離過遠的事件提示/計時器"
+L.SpamBlockNoSendWhisper	= "不發送密語給其他玩家"
+L.SpamBlockNoSetIcon		= "不設置標記在目標上"
+L.SpamBlockNoRangeFrame		= "不顯示距離框架"
+L.SpamBlockNoInfoFrame		= "不顯示訊息框架"
+L.SpamBlockNoHealthFrame	= "不顯示血量框架"
 
-L.Area_PullTimer				= "開怪計時器過濾選項"
-L.DontShowPTNoID				= "阻擋與你不同區域ID送出的開怪倒數計時條"
-L.DontShowPT					= "不要顯示開怪倒數計時條"
-L.DontShowPTText				= "不要顯示開怪提示文字"
-L.DontPlayPTCountdown			= "不要使用開怪/開戰計時器倒數音效"
-L.DontShowPTCountdownText		= "不要顯示開怪/開戰計時器倒數文字"
-L.PT_Threshold					= "不要顯示高於%d秒以上的開怪/開戰倒數計時器文字"
+L.Area_PullTimer			= "開怪計時器過濾選項"
+L.DontShowPTNoID			= "阻擋與你不同區域ID送出的開怪倒數計時條"
+L.DontShowPT				= "不要顯示開怪倒數計時條"
+L.DontShowPTText			= "不要顯示開怪提示文字"
+L.DontPlayPTCountdown		= "不要使用開怪/開戰計時器倒數音效"
+L.DontShowPTCountdownText	= "不要顯示開怪/開戰計時器倒數文字"
+L.PT_Threshold				= "不要顯示高於%d秒以上的開怪/開戰倒數計時器文字"
 
-L.Panel_HideBlizzard			= "隱藏遊戲內建功能"
-L.Area_HideBlizzard				= "隱藏遊戲內建功能選項"
-L.HideBossEmoteFrame			= "在首領戰鬥時隱藏團隊首領表情框架"
-L.HideWatchFrame				= "在首領戰鬥時隱藏注視(物件)框架"
-L.HideTooltips					= "首領戰鬥時隱藏滑鼠提示"
-L.SpamBlockSayYell				= "從聊天頻道隱藏聊天泡泡提示"
-L.DisableCinematics				= "禁用遊戲中的過場動畫"
-L.AfterFirst					= "在每次動畫播放一次之後"
-L.Always						= "總是"
+L.Panel_HideBlizzard		= "隱藏遊戲內建功能"
+L.Area_HideBlizzard			= "隱藏遊戲內建功能選項"
+L.HideBossEmoteFrame		= "在首領戰鬥時隱藏團隊首領表情框架"
+L.HideWatchFrame			= "在首領戰鬥時隱藏注視(物件)框架"
+L.HideTooltips				= "首領戰鬥時隱藏滑鼠提示"
+L.SpamBlockSayYell			= "從聊天頻道隱藏聊天泡泡提示"
+L.DisableCinematics			= "禁用遊戲中的過場動畫"
+L.AfterFirst				= "在每次動畫播放一次之後"
+L.Always					= ALWAYS
+
+L.Panel_ExtraFeatures		= "額外功能"
+L.Area_ChatAlerts			= "頻道警告選項"
+L.RoleSpecAlert				= "當你加入團隊時捨取專精不符合你目前專精顯示警告訊息"
+L.WorldBossAlert			= "當你的工會成員或是朋友可能在你的伺服器上開戰世界首領時顯示警告訊息(如果發送者是被戰復的會不準確)"
+L.Area_SoundAlerts			= "聲音警告選項"
+L.LFDEnhance				= "使用主要聲音頻道播放準備確認音效給腳色確認和戰場/隨機團隊進場(I.E. 即使因為被關閉了也會發出音效而且很大聲!)"
+L.WorldBossNearAlert		= "當你需要的世界首領在你附近開戰播放準備確認音效(蓋過特定首領選項)"
+L.AFKHealthWarning			= "播放警告聲音假如你在暫離時被攻擊"
+L.Area_AutoLogging			= "自動記錄選項"
+L.AutologBosses				= "自動使用暴雪戰鬥日誌記錄首領戰鬥(為了<a href=\"http://www.warcraftlogs.com\">|cff3588ffwarcraftlogs.com|r</a>的相容性在開打前使用/dbm pull是必須的)"
+L.AdvancedAutologBosses		= "自動使用Transcriptor紀錄首領戰鬥"
+L.LogOnlyRaidBosses			= "只記錄團隊首領的戰鬥(除了隨機團隊/隨機隊伍/隨機事件)"
+L.Area_Invite				= "邀請選項"
+L.AutoAcceptFriendInvite	= "自動接受來自朋友的隊伍邀請"
+L.AutoAcceptGuildInvite		= "自動接受來自公會成員的隊伍邀請"
+
+L.PizzaTimer_Headline		= '建立一個計時條'
+L.PizzaTimer_Title			= '名稱（如“Pizza計時器”）'
+L.PizzaTimer_Hours 			= "時"
+L.PizzaTimer_Mins 			= "分"
+L.PizzaTimer_Secs 			= "秒"
+L.PizzaTimer_ButtonStart 	= "開始計時"
+L.PizzaTimer_BroadCast		= "向團隊廣播"
 
 -- Misc
 L.FontHeight	= 18
