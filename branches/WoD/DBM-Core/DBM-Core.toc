@@ -1,0 +1,41 @@
+﻿## Interface: 50400
+## X-Min-Interface: 50001
+## Title:|cffffd200Deadly Boss Mods|r |cff69ccf0Core|r
+## Title-zhCN:|cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
+## Title-ruRU:|cffffd200Deadly Boss Mods|r |cff69ccf0Ядро|r
+## Title-zhTW:|cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
+## Title-koKR:|cffffd200Deadly Boss Mods|r |cff69ccf0핵심 모듈|r
+## Title-esES:|cffffd200Deadly Boss Mods|r |cff69ccf0Proceso|r
+## Title-esMX:|cffffd200Deadly Boss Mods|r |cff69ccf0Proceso|r
+## Title-frFR:|cffffd200Deadly Boss Mods|r |cff69ccf0Noyau|r
+## Notes: Deadly Boss Mods
+## Dependencies: DBM-StatusBarTimers
+## OptionalDependencies: LibSharedMedia-3.0, LibChatAnims
+## SavedVariablesPerCharacter: DBM_SavedOptions, DBT_SavedOptions
+## LoadOnDemand: 0
+## DefaultState: enabled
+## Author: Tandanu and Nitram
+## X-Website: http://www.deadlybossmods.com
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\LibChatAnims\LibChatAnims.xml
+Libs\LibSharedMedia-3.0\lib.xml
+
+localization.en.lua
+localization.de.lua
+localization.cn.lua
+localization.ru.lua
+localization.fr.lua
+localization.it.lua
+localization.tw.lua
+localization.kr.lua
+localization.es.lua
+localization.br.lua
+DBM-Core.lua
+DBM-Arrow.lua
+DBM-Flash.lua
+DBM-RangeCheck.lua
+DBM-BossHealth.lua
+DBM-BossHealth.xml
+DBM-InfoFrame.lua
