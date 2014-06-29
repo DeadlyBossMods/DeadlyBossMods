@@ -219,7 +219,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg) -- Switch to yell. INSTANCE_ENCOUNTER_EN
 end
 
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event) -- still remains backup trigger for phase3.
-	if UnitExists("boss2") and tonumber(UnitGUID("boss2"):sub(6, 10), 16) == 68905 then--Make sure we don't trigger it off another engage such as wipe engage event
+	if UnitExists("boss2") and self:GetCIDFromGUID(UnitGUID("boss2")) == 68905 then--Make sure we don't trigger it off another engage such as wipe engage event
 		self:SendSync("Phase3")
 	end
 end
