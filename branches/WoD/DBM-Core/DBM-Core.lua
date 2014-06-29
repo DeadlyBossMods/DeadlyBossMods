@@ -3943,9 +3943,8 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		self:ToggleRaidBossEmoteFrame(1)
 		self:StartLogging(0, nil)
 		if DBM.Options.HideWatchFrame and not (mod.type == "SCENARIO") then
-			local frame = WatchFrame or ObjectiveTrackerFrame--WatchFrame is renamed in 6.0. Remove this when 6.0 live
-			if frame:IsVisible() then
-				frame:Hide()
+			if ObjectiveTrackerFrame:IsVisible() then
+				ObjectiveTrackerFrame:Hide()
 				watchFrameRestore = true
 			end
 		end
@@ -4317,8 +4316,7 @@ function DBM:EndCombat(mod, wipe)
 			DBM.BossHealth:Hide()
 			DBM.Arrow:Hide(true)
 			if DBM.Options.HideWatchFrame and watchFrameRestore and not scenario then
-				local frame = WatchFrame or ObjectiveTrackerFrame--WatchFrame is renamed in 6.0. Remove this when 6.0 live
-				frame:Show()
+				ObjectiveTrackerFrame:Show()
 				watchFrameRestore = false
 			end
 			if DBM.Options.HideTooltips then
