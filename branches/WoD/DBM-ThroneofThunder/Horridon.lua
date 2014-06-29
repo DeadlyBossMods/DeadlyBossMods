@@ -247,7 +247,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 --"<372.2 21:39:53> [RAID_BOSS_EMOTE] RAID_BOSS_EMOTE#Amani forces pour from the Amani Tribal Door!#War-God Jalak#0#false", -- [77469]
 --"<515.3 21:42:16> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Horridon#0xF1310B7C0000467C#elite#522686397#1#1#War-God Jalak
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
-	if UnitExists("boss2") and tonumber(UnitGUID("boss2"):sub(6, 10), 16) == 69374 and not jalakEngaged then--Jalak is jumping down
+	if UnitExists("boss2") and self:GetCIDFromGUID(UnitGUID("boss2")) == 69374 and not jalakEngaged then--Jalak is jumping down
 		jalakEngaged = true--Set this so we know not to concern with 4th door anymore (plus so we don't fire extra warnings when we wipe and ENGAGE fires more)
 		timerJalakCD:Cancel()
 		specWarnJalak:Show()

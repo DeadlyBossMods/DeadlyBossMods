@@ -393,7 +393,11 @@ end
 
 local function getUnitCreatureId(uId)
 	local guid = UnitGUID(uId)
-	return (guid and (tonumber(guid:sub(6, 10), 16))) or 0
+	local type, _, _, _, cid = strsplit(":", guid or "")
+	if type and type == "Creature" then
+		return tonumber(cid)
+	end
+	return 0
 end
 
 local function updatePlayerTargets()

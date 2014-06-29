@@ -458,11 +458,11 @@ do
 	end
 
 	function argsMT.__index:GetSrcCreatureID()
-		return tonumber(self.sourceGUID:sub(6, 10), 16) or 0
+		return DBM:GetCIDFromGUID(self.sourceGUID)
 	end
 
 	function argsMT.__index:GetDestCreatureID()
-		return tonumber(self.destGUID:sub(6, 10), 16) or 0
+		return DBM:GetCIDFromGUID(self.destGUID)
 	end
 
 	local function handleEvent(self, event, ...)
@@ -2196,11 +2196,24 @@ end
 
 function DBM:GetUnitCreatureId(uId)
 	local guid = UnitGUID(uId)
-	return (guid and (tonumber(guid:sub(6, 10), 16))) or 0
+	return DBM:GetCIDFromGUID(guid)
 end
 
 function DBM:GetCIDFromGUID(guid)
-	return (guid and (tonumber(guid:sub(6, 10), 16))) or 0
+	local guid = UnitGUID(uId)
+	local type, _, _, _, cid = strsplit(":", guid or "")
+	if type and type == "Creature" then
+		return tonumber(cid)
+	end
+	return 0
+end
+
+function DBM:IsCreatureGUID(guid)
+	local type = strsplit(":", guid or "")
+	if type and type == "Creature" then
+		return true
+	end
+	return false
 end
 
 function DBM:GetBossUnitId(name)
@@ -2686,7 +2699,7 @@ local function loadModByUnit(uId)
 	end
 	if IsInInstance() or not UnitIsFriend("player", uId) and UnitIsDead("player") or UnitIsDead(uId) then return end--If you're in an instance no reason to waste cpu. If THE BOSS dead, no reason to load a mod for it. To prevent rare lua error, needed to filter on player dead.
 	local guid = UnitGUID(uId)
-	if guid and (bband(guid:sub(1, 5), 0x00F) == 3 or bband(guid:sub(1, 5), 0x00F) == 5) then
+	if guid and DBM:IsCreatureGUID(guid) then
 		local cId = DBM:GetCIDFromGUID(guid)
 		for bosscId, addon in pairs(loadcIds) do
 			local _, _, _, enabled = GetAddOnInfo(addon)
@@ -3536,7 +3549,7 @@ do
 		for i = 0, GetNumGroupMembers() do
 			local id = (i == 0 and "target") or uId..i.."target"
 			local guid = UnitGUID(id)
-			if guid and (bband(guid:sub(1, 5), 0x00F) == 3 or bband(guid:sub(1, 5), 0x00F) == 5) then
+			if guid and DBM:IsCreatureGUID(guid) then
 				local cId = DBM:GetCIDFromGUID(guid)
 				targetList[cId] = id
 			end
