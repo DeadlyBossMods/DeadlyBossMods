@@ -38,7 +38,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(814)
 
 L:SetMiscLocalization({
-	Pull				= "Könnt Ihr den kalten Hauch spüren?"
+	Pull				= "Könnt Ihr den kalten Hauch spüren? Ein Sturm naht..."
 })
 
 ---------------------------

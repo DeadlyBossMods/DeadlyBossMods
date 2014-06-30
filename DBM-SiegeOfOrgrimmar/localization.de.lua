@@ -198,7 +198,8 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	wasteOfTime			= "Es ist noch nicht zu spät, Garrosh. Legt den Mantel des Kriegshäuptlings ab. Wir können dies hier beenden, jetzt, ohne Blutvergießen.",
 	NoReduce			= "Keine Schadensreduzierung",
-	MaliceFadeYell		= "Bösartigkeit schwindet auf %s (%d)"
+	MaliceFadeYell		= "Bösartigkeit schwindet auf %s (%d)",
+	phase3End			= "You think you have WON?" --translate (trigger)
 })
 
 -------------
