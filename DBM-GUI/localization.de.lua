@@ -61,7 +61,7 @@ L.Latency_Text				= "Maximale Synchronisierungslatenz: %d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "Allgemeine Einstellungen für Timer"
 L.SKT_Enabled				= "Zeige immer Timer für Rekordzeit (ignoriert Boss-spezifische Einstellung)"
-L.CRT_Enabled				= "Zeige Zeit bis zur nächsten Wiederbelebungsaufladung im Kampf (nur bei flexiblen Schwierigkeitgraden von 6.x-Kämpfen)"
+L.CRT_Enabled				= "Zeige Zeit bis zur nächsten Wiederbelebungsaufladung im Kampf (nur bei 6.x-Schwierigkeitgraden)"
 L.ChallengeTimerOptions		= "Timer für den schnellsten Abschluss im Herausforderungsmodus"
 L.ChallengeTimerPersonal	= "Persönliche Bestzeit"
 L.ChallengeTimerGuild		= "Bestzeit der Gilde"
