@@ -13,7 +13,6 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MOP
-## X-DBM-Mod-Has-LFR : 1
 ## X-DBM-Mod-Sort: 1
 ## X-DBM-Mod-MapID: 1136
 ## X-DBM-Mod-Block-Movie-Skip-ItemID: 105930,105931,105932,105933,105934,105935

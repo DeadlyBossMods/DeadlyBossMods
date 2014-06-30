@@ -1192,33 +1192,6 @@ function UpdateAnimationFrame(mod)
 			PlaySoundFile(mod.modelSoundLong or 0)
 		end
 	end
-
---[[	** FANCY STUFF WE DO NOT USE FOR NOW **
-	DBM_BossPreview:SetModelScale(mod.modelScale or 0.5)
-
-	DBM_BossPreview.atime = 0
-	DBM_BossPreview.apos = 0
-	DBM_BossPreview.rotation = 0
-	DBM_BossPreview.modelRotation = mod.modelRotation or -60
-	DBM_BossPreview.modelOffsetX = mod.modelOffsetX or 0
-	DBM_BossPreview.modelOffsetY = mod.modelOffsetY or 0
-	DBM_BossPreview.modelOffsetZ = mod.modelOffsetZ or 0
-	DBM_BossPreview.modelscale = mod.modelScale or 0.5
-	DBM_BossPreview.modelMoveSpeed = mod.modelMoveSpeed or 1
-	DBM_BossPreview.pos_x = 0.5
-	DBM_BossPreview.pos_y = 0.1
-	DBM_BossPreview.pos_z = 0
-	DBM_BossPreview.alpha = 1
-	DBM_BossPreview.scale = 0
-	DBM_BossPreview.apos = 0
-	DBM_BossPreview:SetAlpha(DBM_BossPreview.alpha)
-	DBM_BossPreview:SetFacing( DBM_BossPreview.modelRotation  *math.pi/180)
-	DBM_BossPreview:SetPosition(
-		DBM_BossPreview.pos_z + DBM_BossPreview.modelOffsetZ,
-		DBM_BossPreview.pos_x + DBM_BossPreview.modelOffsetX,
-		DBM_BossPreview.pos_y + DBM_BossPreview.modelOffsetY)
-	DBM_BossPreview.enabled = true
---]]
 end
 
 local function CreateAnimationFrame()
