@@ -2200,7 +2200,6 @@ function DBM:GetUnitCreatureId(uId)
 end
 
 function DBM:GetCIDFromGUID(guid)
-	local guid = UnitGUID(guid)
 	local type, _, _, _, cid = strsplit(":", guid or "")
 	if type and (type == "Creature" or type == "Vehicle") then
 		return tonumber(cid)
