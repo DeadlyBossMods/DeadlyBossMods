@@ -4483,7 +4483,7 @@ end
 
 function DBM:UNIT_DIED(args)
 	local GUID = args.destGUID
-	if bband(GUID:sub(1, 5), 0x00F) == 3 or bband(GUID:sub(1, 5), 0x00F) == 5 then
+	if DBM:IsCreatureGUID(GUID) then
 		self:OnMobKill(DBM:GetCIDFromGUID(GUID))
 	end
 	if DBM.Options.AFKHealthWarning and GUID == UnitGUID("player") and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
