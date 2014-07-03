@@ -943,7 +943,7 @@ do
 							hasChallenge	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Challenge") or 0) == 1,
 							noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1,
 							noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
-							isNewFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Is-New-Format") or 0) == 1,
+							hasMythic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Mythic") or 0) == 1,
 							modId			= addonName,
 						})
 						for i = #self.AddOns[#self.AddOns].mapId, 1, -1 do
@@ -2635,7 +2635,7 @@ function DBM:LoadMod(mod)
 				v.hasLFR = mod.hasLFR
 				v.hasChallenge = mod.hasChallenge
 				v.noHeroic = mod.noHeroic
-				v.isNewFormat = mod.isNewFormat
+				v.hasMythic = mod.hasMythic
 			end
 		end
 		if DBM_GUI then

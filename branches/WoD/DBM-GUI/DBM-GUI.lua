@@ -2661,7 +2661,7 @@ do
 						top2text2:SetText(L.Statistic_Incompletes)
 					end
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
-				elseif mod.type == "RAID" and mod.noHeroic and not mod.isNewFormat then--Early wrath
+				elseif mod.type == "RAID" and mod.noHeroic and not mod.hasMythic then--Early wrath
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*(bossstats-1)))
 					--Use top1 and top2 area.
 					top2header:SetPoint("LEFT", top1header, "LEFT", 220, 0)
@@ -2675,7 +2675,7 @@ do
 					top1header:SetText(RAID_DIFFICULTY1)
 					top2header:SetText(RAID_DIFFICULTY2)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
-				elseif mod.type == "RAID" and not mod.hasLFR and not mod.isNewFormat then--Cata and some wrath raids
+				elseif mod.type == "RAID" and not mod.hasLFR and not mod.hasMythic then--Cata and some wrath raids
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
 					--Use top1, top2, bottom1 and bottom2 area.
 					top2header:SetPoint("LEFT", top1header, "LEFT", 220, 0)
@@ -2705,7 +2705,7 @@ do
 					bottom1header:SetText(PLAYER_DIFFICULTY2)
 					bottom2header:SetText(PLAYER_DIFFICULTY2)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
-				elseif mod.type == "RAID" and not mod.isNewFormat then--All MoP raids except SoO
+				elseif mod.type == "RAID" and not mod.hasMythic then--All MoP raids except SoO
 					--Use top1, top2, top3, bottom1 and bottom2 area.
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
 					top2header:SetPoint("LEFT", top1header, "LEFT", 150, 0)
