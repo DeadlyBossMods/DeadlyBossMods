@@ -2207,6 +2207,13 @@ function DBM:GetCIDFromGUID(guid)
 	return (guid and (tonumber(guid:sub(6, 10), 16))) or 0
 end
 
+function DBM:IsCreatureGUID(guid)
+	if bband(guid:sub(1, 5), 0x00F) == 3 or bband(guid:sub(1, 5), 0x00F) == 5 then
+		return true
+	end
+	return false
+end
+
 function DBM:GetBossUnitId(name)
 	for i = 1, 5 do
 		if UnitName("boss" .. i) == name then
@@ -5288,6 +5295,7 @@ end
 bossModPrototype.AntiSpam = DBM.AntiSpam
 bossModPrototype.GetUnitCreatureId = DBM.GetUnitCreatureId
 bossModPrototype.GetCIDFromGUID = DBM.GetCIDFromGUID
+bossModPrototype.IsCreatureGUID = DBM.IsCreatureGUID
 
 do
 	local bossTargetuIds = {

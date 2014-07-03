@@ -13,6 +13,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Has-Mythic : 1
 ## X-DBM-Mod-Has-LFR : 1
 ## X-DBM-Mod-Has-Flex : 1
 ## X-DBM-Mod-Sort: 1
