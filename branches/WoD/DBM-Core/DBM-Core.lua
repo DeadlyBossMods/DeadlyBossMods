@@ -2201,7 +2201,7 @@ end
 
 function DBM:GetCIDFromGUID(guid)
 	local type, _, _, _, cid = strsplit(":", guid or "")
-	if type and (type == "Creature" or type == "Vehicle") then
+	if type and (type == "Creature" or type == "Vehicle" or type == "Pet") then
 		return tonumber(cid)
 	end
 	return 0
@@ -2209,7 +2209,7 @@ end
 
 function DBM:IsCreatureGUID(guid)
 	local type = strsplit(":", guid or "")
-	if type and (type == "Creature" or type == "Vehicle") then
+	if type and (type == "Creature" or type == "Vehicle") then--To determine, add pet or not?
 		return true
 	end
 	return false
@@ -5294,6 +5294,7 @@ end
 bossModPrototype.AntiSpam = DBM.AntiSpam
 bossModPrototype.GetUnitCreatureId = DBM.GetUnitCreatureId
 bossModPrototype.GetCIDFromGUID = DBM.GetCIDFromGUID
+bossModPrototype.IsCreatureGUID = DBM.IsCreatureGUID
 
 do
 	local bossTargetuIds = {
