@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1234, "DBM-Party-WoD", 8, 559)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(56884)
+mod:SetCreatureID(77120)
 mod:SetEncounterID(1762)
 mod:SetZone()
 

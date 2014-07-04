@@ -8,9 +8,10 @@ mod:SetEncounterID(1677)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED"
+	"SPELL_CAST_SUCCESS"
 )
 
+local warnDaggerFall			= mod:NewSpellAnnounce(153240, 3)
 local warnDarkCommunion			= mod:NewSpellAnnounce(153153, 4)
 local warnDarkEclipse			= mod:NewSpellAnnounce(164974, 4)
 
@@ -20,27 +21,25 @@ local specWarnDarkEclipse		= mod:NewSpecialWarningSpell(164974, nil, nil, nil, 3
 local timerDarkCommunionCD		= mod:NewNextTimer(45.5, 153153)
 local timerDarkEclipseCD		= mod:NewNextTimer(45.5, 164974)
 
+local countdownDarkCommunion	= mod:NewCountdown(45.5, 153153)
+
 function mod:OnCombatStart(delay)
---Need transcriptor log for these. /chatlog seems to no longer log boss yells?
---	timerDarkCommunionCD:Start(7-delay)
---	timerDarkEclipseCD:Start(-delay)
+	timerDarkCommunionCD:Start(25-delay)
+	countdownDarkCommunion:Start(25-delay)
+	timerDarkEclipseCD:Start(-delay)
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 153153 then
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 153240 then
+		warnDaggerFall:Show()
+	elseif args.spellId == 153153 then
 		warnDarkCommunion:Show()
 		specWarnDarkCommunion:Show()
 		timerDarkCommunionCD:Start()
+		countdownDarkCommunion:Start()
 	elseif args.spellId == 164974 then
 		specWarnDarkEclipse:Show()
 		specWarnDarkEclipse:Show()
 		timerDarkEclipseCD:Start()
 	end
 end
-
---[[TODO, need transcriptor, or at least non broken combat log. daggerfall didn't show in combat log but needs warning/timer if it has UNIT_ event
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 114086 then
-		warnPiercingThrow:Show()
-	end
-end--]]
