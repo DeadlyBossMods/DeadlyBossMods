@@ -7,76 +7,67 @@ mod:SetEncounterID(1759)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_CAST_SUCCESS 162090",
+	"SPELL_AURA_APPLIED 161833",
+	"SPELL_PERIODIC_DAMAGE",
+	"SPELL_PERIODIC_MISSED",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 --Chi blast warns very spammy. and not useful.
-local warnFistsOfFury		= mod:NewSpellAnnounce(106853, 3)
-local warnTornadoKick		= mod:NewSpellAnnounce(106434, 3)
-local warnPhase2			= mod:NewPhaseAnnounce(2)
-local warnChaseDown			= mod:NewTargetAnnounce(118961, 3)--Targeting spell for Tornado Slam (106352)
--- phase3 ability not found yet.
-local warnPhase3			= mod:NewPhaseAnnounce(3)
+local warnIronReaver		= mod:NewSpellAnnounce(161989, 3)
+local warnImbuedIronAxe		= mod:NewTargetAnnounce(162090, 4)
 
-local specWarnFists			= mod:NewSpecialWarningMove(106853, mod:IsTank())
-local specWarnChaseDown		= mod:NewSpecialWarningYou(118961)
+local specWarnImbuedIronAxe	= mod:NewSpecialWarningYou(162090)
+local yellImbuedIronAxe		= mod:NewYell(162090)
+local specWarnNoxiousSpit	= mod:NewSpecialWarningMove(161833)
 
-local timerFistsOfFuryCD	= mod:NewCDTimer(23, 106853)--Not enough data to really verify this
-local timerTornadoKickCD	= mod:NewCDTimer(32, 106434)--Or this
---local timerChaseDownCD		= mod:NewCDTimer(22, 118961)--Unknown
-local timerChaseDown		= mod:NewTargetTimer(11, 118961)
-
-local phase = 1
-local remainingNovice = 20
+local timerIronReaverCD		= mod:NewCDTimer(20.5, 161989)--Not enough data to really verify this
+local timerImbuedIronAxeCD	= mod:NewCDTimer(29, 162090)--29-37sec variation
 
 function mod:OnCombatStart(delay)
-	phase = 1
+	DBM:AddMsg("Notice, this boss mod may have very unreliable combat detection until missing IEEU or ES event is fixed by blizzard")
+--	timerIronReaverCD:Start(-delay)
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 162090 then
+		warnImbuedIronAxe:Show(args.destName)
+		timerImbuedIronAxeCD:Start()
+		if args:IsPlayer() then
+			specWarnImbuedIronAxe:Show()
+			yellImbuedIronAxe:Yell()
+		end
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 118961 then
-		warnChaseDown:Show(args.destName)
-		timerChaseDown:Start(args.destName)
---		timerChaseDownCD:Start()
-		if args:IsPlayer() then
-			specWarnChaseDown:Show()
-		end
+	if args.spellId == 161833 and args:IsPlayer() and self:AntiSpam(3, 1) then
+		specWarnNoxiousSpit:Show()
 	end
 end
 
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 118961 then
-		timerChaseDown:Cancel(args.destName)
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 161833 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then--Goriona's Void zones
+		specWarnNoxiousSpit:Show()
 	end
 end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:SPELL_CAST_START(args)
-	if args.spellId == 106853 then
-		warnFistsOfFury:Show()
-		specWarnFists:Show()
-		timerFistsOfFuryCD:Start()
-	elseif args.spellId == 106434 then
-		warnTornadoKick:Show()
-		timerTornadoKickCD:Start()
-	end
-end
-
+--TODO, watch for blizzard to fix IEEU on this fight so we can use "boss1" instead
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 110324 then
-		phase = phase + 1
-		if phase == 2 then
-			warnPhase2:Show()
-		elseif phase == 3 then
-			warnPhase3:Show()
-		end
-		timerFistsOfFuryCD:Cancel()
-		timerTornadoKickCD:Cancel()
-	elseif spellId == 123096 then -- only first defeat?
-		DBM:EndCombat(self)
+	--"<46.8 00:38:13> Commander Tharbek [[target:Iron Reaver::0:161989]]", -- [11]
+	--This has combatlog event (Both SUCCESS & DAMAGE) but only if it HITS someone, otherwise there is no CLEU event, this s why we use UNIT_ event.
+	if spellId == 161989 and self:AntiSpam(3, 2) then
+		self:SendSync("IronReaver")--Syncing because IEEU is broken on fight and so there is no "boss1"
 	end
-end--]]
+end
+
+function mod:OnSync(event, arg)
+	if event == "IronReaver" then
+		warnIronReaver:Show()
+		timerIronReaverCD:Start()
+	end
+end

@@ -7,59 +7,69 @@ mod:SetEncounterID(1758)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_AURA_APPLIED 161203 162600",
+	"SPELL_CAST_START 161199",
+	"SPELL_PERIODIC_DAMAGE",
+	"SPELL_PERIODIC_MISSED",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
-local warnDisorientingSmash		= mod:NewTargetAnnounce(106872, 2)
-local warnShaSpike				= mod:NewTargetAnnounce(106877, 3)
-local warnEnrage				= mod:NewSpellAnnounce(38166, 4)
+local warnDeblitatingFixation		= mod:NewSpellAnnounce(161199, 2, nil, mod:IsTank())
+local warnRejuvSerum				= mod:NewTargetAnnounce(161203, 3, nil, mod:IsMagicDispeller())
+local warnToxicFumes				= mod:NewTargetAnnounce(162600, 3, nil, mod:IsHealer())
+local warnVilebloodSerum			= mod:NewSpellAnnounce(161209, 3)--Some may think this is spammy but the puddles tick literally instantly giving not much time to move before 2nd tick which may kill you.
 
-local specWarnShaSpike			= mod:NewSpecialWarningMove(106877)
-local specWarnShaSpikeNear		= mod:NewSpecialWarningClose(106877)
+local specWarnDeblitatingFixation	= mod:NewSpecialWarningInterrupt(161199, mod:IsTank())--12 second cd, but tank can only interrupt every 15, hmm
+local specWarnRejuvSerum			= mod:NewSpecialWarningDispel(161203, mod:IsMagicDispeller())
+local specWarnToxicFumes			= mod:NewSpecialWarningDispel(162600, mod:IsHealer())
+local specWarnVilebloodSerum		= mod:NewSpecialWarningMove(161288)
 
-local timerDisorientingSmashCD	= mod:NewCDTimer(13, 106872)--variables. not confirmed
-local timerShaSpikeCD			= mod:NewNextTimer(9, 106877)
+--local timerRejuvSerumCD			= mod:NewCDTimer(33, 161203, nil, mod:IsMagicDispeller())--33-40sec variation. Could also be health based so disabled for now.
+local timerVilebloodSerumCD			= mod:NewCDTimer(9.5, 161209)--every 9-10 seconds
 
-function mod:ShaSpikeTarget(targetname, uId)
-	if not targetname then return end
-	warnShaSpike:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnShaSpike:Show()
-	else
-		if uId then
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 6 then
-				specWarnShaSpikeNear:Show(targetname)
-			end
-		end
-	end
+function mod:OnCombatStart(delay)
+--	timerRejuvSerumCD:Start(29-delay)--Insufficent sample size
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 38166 then
-		warnEnrage:Show()
+	local spellId = args.spellId
+	if spellId == 161203 then
+		warnRejuvSerum:Show(args.destName)
+		specWarnRejuvSerum:Show(args.destName)
+--		timerRejuvSerumCD:Start()
+	elseif spellId == 162600 then
+		warnToxicFumes:Show(args.destName)
+		specWarnToxicFumes:Show(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 106877 then
-		self:BossTargetScanner(56719, "ShaSpikeTarget", 0.02, 20)
-		timerShaSpikeCD:Start()
+	if args.spellId == 161199 then
+		warnDeblitatingFixation:Show()
+		specWarnDeblitatingFixation:Show(args.sourceName)
 	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 106872 then
-		warnDisorientingSmash:Show(args.destName)
-		timerDisorientingSmashCD:Start()
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 161288 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then--Goriona's Void zones
+		specWarnVilebloodSerum:Show()
 	end
-end--]]
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+--TODO, watch for blizzard to fix IEEU on this fight so we can use "boss1" instead
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+--	"<58.9 23:54:07> [UNIT_SPELLCAST_SUCCEEDED] Drakonid Monstrosity [[target:Vileblood Serum::0:161209]]", -- [1996]
+	if spellId == 161209 and self:AntiSpam(3, 2) then
+		self:SendSync("VileSerum")--Syncing because IEEU is broken on fight and so there is no "boss1"
+	end
+end
+
+function mod:OnSync(event, arg)
+	if event == "VileSerum" then
+		warnVilebloodSerum:Show()
+		timerVilebloodSerumCD:Start()
+	end
+end

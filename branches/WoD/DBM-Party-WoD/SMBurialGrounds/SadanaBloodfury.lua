@@ -8,7 +8,7 @@ mod:SetEncounterID(1677)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS 153240 153153 164974"
 )
 
 local warnDaggerFall			= mod:NewSpellAnnounce(153240, 3)
@@ -30,14 +30,15 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 153240 then
+	local spellId = args.spellId
+	if spellId == 153240 then
 		warnDaggerFall:Show()
-	elseif args.spellId == 153153 then
+	elseif spellId == 153153 then
 		warnDarkCommunion:Show()
 		specWarnDarkCommunion:Show()
 		timerDarkCommunionCD:Start()
 		countdownDarkCommunion:Start()
-	elseif args.spellId == 164974 then
+	elseif spellId == 164974 then
 		specWarnDarkEclipse:Show()
 		specWarnDarkEclipse:Show()
 		timerDarkEclipseCD:Start()

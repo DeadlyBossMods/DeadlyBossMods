@@ -995,6 +995,7 @@ do
 				"PLAYER_REGEN_DISABLED",
 				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+				"UNIT_TARGETABLE_CHANGED",
 				"ENCOUNTER_START",
 				"ENCOUNTER_END",
 				--"SPELL_UPDATE_CHARGES",--Likely how we'll have to check for combat res charges in 6.0
@@ -3631,6 +3632,12 @@ do
 					self:StartCombat(v.mod, 0, "IEEU")
 				end
 			end
+		end
+	end
+	
+	function DBM:UNIT_TARGETABLE_CHANGED()
+		if DBM.Options.DebugMode then
+			print("DBM Debug: UNIT_TARGETABLE_CHANGED event fired")
 		end
 	end
 

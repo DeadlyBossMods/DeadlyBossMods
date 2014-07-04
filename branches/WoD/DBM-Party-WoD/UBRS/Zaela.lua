@@ -7,67 +7,51 @@ mod:SetEncounterID(1762)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS 155673",
+	"SPELL_AURA_APPLIED 155721",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	--UNIT_TARGETABLE_CHANGED
 )
 
-local warnRingofMalice		= mod:NewSpellAnnounce(131521, 3)
-local warnGrippingHatred	= mod:NewSpellAnnounce(115002, 2)
-local warnHazeofHate		= mod:NewTargetAnnounce(107087, 4)
-local warnRisingHate		= mod:NewCastAnnounce(107356, 4, 5)
+local warnDestructiveSmite		= mod:NewSpellAnnounce(155673, 4, nil, mod:IsTank())
+local warnReboundingBlade		= mod:NewSpellAnnounce(155705, 2, nil, false)--More for completion than anything.
+local warnBlackIronCyclone		= mod:NewTargetAnnounce(155721, 3)
 
-local specWarnGrippingHatred= mod:NewSpecialWarningSwitch("ej5817")
-local specWarnHazeofHate	= mod:NewSpecialWarningYou(107087)
-local specWarnRisingHate	= mod:NewSpecialWarningInterrupt(107356, not mod:IsHealer())
+local specWarnBlackIronCyclone	= mod:NewSpecialWarningRun(155721)
 
-local timerRingofMalice		= mod:NewBuffActiveTimer(15, 131521)
-local timerGrippingHartedCD	= mod:NewNextTimer(45.5, 115002)
+local timerDestructiveSmiteCD	= mod:NewNextTimer(15.5, 155673, nil, mod:IsTank())
+local timerReboundingBladeCD	= mod:NewNextTimer(10.5, 155705, nil, false)
+local timerBlackIronCycloneCD	= mod:NewCDTimer(19.5, 155721)--19.5-23sec variation in phase 2. phase 1 seems diff
 
-mod:AddBoolOption("InfoFrame", true)
-
-local Hate = EJ_GetSectionInfo(5827)
+local countdownDestructiveSmite	= mod:NewCountdown(15.5, 155673)
 
 function mod:OnCombatStart(delay)
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(Hate)
-		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
-	end
+	timerReboundingBladeCD:Start(-delay)
+	timerDestructiveSmiteCD:Start(10-delay)
+	countdownDestructiveSmite:Start(10-delay)
+	timerBlackIronCycloneCD:Start(-delay)--In one pull, the first cast got interrupted
 end
 
-function mod:OnCombatEnd()
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 155673 then
+		warnDestructiveSmite:Show()
+		timerDestructiveSmiteCD:Start()
+		countdownDestructiveSmite:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 131521 then
-		warnRingofMalice:Show()
-		timerRingofMalice:Start()
-	elseif args.spellId == 107087 then
-		warnHazeofHate:Show(args.destName)
-		if args:IsPlayer() then
-			specWarnHazeofHate:Show()
-		end
-	elseif args.spellId == 107356 then
-		warnRisingHate:Show()
-		specWarnRisingHate:Show(args.destName)
-	end
-end
-
-function mod:SPELL_CAST_START(args)
-	if args.spellId == 115002 and self:AntiSpam(5, 2) then
-		warnGrippingHatred:Show()
-		specWarnGrippingHatred:Show()
-		timerGrippingHartedCD:Start()
+	if args.spellId == 155721 then
+		warnBlackIronCyclone:Show(args.destName)
+		timerBlackIronCycloneCD:Start()
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 125891 then
-		DBM:EndCombat(self)
+	if spellId == 155705 then
+		warnReboundingBlade:Show()
+		timerReboundingBladeCD:Start()
 	end
-end--]]
+end

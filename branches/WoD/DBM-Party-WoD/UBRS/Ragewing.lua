@@ -7,67 +7,69 @@ mod:SetEncounterID(1760)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START",
+	"SPELL_AURA_APPLIED 155620 167203",
+	"SPELL_AURA_REMOVED 167203",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
-local warnRingofMalice		= mod:NewSpellAnnounce(131521, 3)
-local warnGrippingHatred	= mod:NewSpellAnnounce(115002, 2)
-local warnHazeofHate		= mod:NewTargetAnnounce(107087, 4)
-local warnRisingHate		= mod:NewCastAnnounce(107356, 4, 5)
+local warnBurningRage		= mod:NewStackAnnounce(155620, 3, nil, mod:CanRemoveEnrage() or mod:IsTank())
+local warnEngulfingFire		= mod:NewSpellAnnounce(154996, 4)
+local warnSwirlingWinds		= mod:NewSpellAnnounce(167203, 2)
 
-local specWarnGrippingHatred= mod:NewSpecialWarningSwitch("ej5817")
-local specWarnHazeofHate	= mod:NewSpecialWarningYou(107087)
-local specWarnRisingHate	= mod:NewSpecialWarningInterrupt(107356, not mod:IsHealer())
+local specWarnBurningRage	= mod:NewSpecialWarningDispel(155620, mod:CanRemoveEnrage())
+local specWarnMagmaSpit		= mod:NewSpecialWarningMove(155051)
+local specWarnEngulfingFire	= mod:NewSpecialWarningSpell(154996, nil, nil, nil, 3)
 
-local timerRingofMalice		= mod:NewBuffActiveTimer(15, 131521)
-local timerGrippingHartedCD	= mod:NewNextTimer(45.5, 115002)
+local timerEngulfingFireCD	= mod:NewCDTimer(22, 154996)
+local timerSwirlingWinds	= mod:NewBuffActiveTimer(20, 167203)
+local timerSwirlingWindsCD	= mod:NewNextTimer(45, 167203)
 
-mod:AddBoolOption("InfoFrame", true)
-
-local Hate = EJ_GetSectionInfo(5827)
+mod.vb.firstBreath = false
 
 function mod:OnCombatStart(delay)
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(Hate)
-		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
-	end
-end
-
-function mod:OnCombatEnd()
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
-	end
+	timerEngulfingFireCD:Start(13-delay)--Needs more data
+	timerSwirlingWindsCD:Start(40-delay)--Needs more data
+	self.vb.firstBreath = false
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 131521 then
-		warnRingofMalice:Show()
-		timerRingofMalice:Start()
-	elseif args.spellId == 107087 then
-		warnHazeofHate:Show(args.destName)
-		if args:IsPlayer() then
-			specWarnHazeofHate:Show()
-		end
-	elseif args.spellId == 107356 then
-		warnRisingHate:Show()
-		specWarnRisingHate:Show(args.destName)
+	local spellId = args.spellId
+	if spellId == 155620 then
+		warnBurningRage:Show(args.destName, args.amount or 1)
+		specWarnBurningRage:Show(args.destName)
+	elseif spellId == 167203 then
+		warnSwirlingWinds:Show()
+		timerSwirlingWinds:Start()
+	end
+end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 167203 then
+		timerSwirlingWindsCD:Start()
+		self.vb.firstBreath = false
 	end
 end
 
-function mod:SPELL_CAST_START(args)
-	if args.spellId == 115002 and self:AntiSpam(5, 2) then
-		warnGrippingHatred:Show()
-		specWarnGrippingHatred:Show()
-		timerGrippingHartedCD:Start()
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 155051 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then--Goriona's Void zones
+		specWarnMagmaSpit:Show()
 	end
 end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
+--This boss actually does fire IEEU so boss1 works
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 125891 then
-		DBM:EndCombat(self)
+	if spellId == 154996 then
+		warnEngulfingFire:Show()
+		specWarnEngulfingFire:Show()
+		if not self.vb.firstBreath then
+			self.vb.firstBreath = true
+			timerEngulfingFireCD:Start()
+		end
 	end
-end--]]
+end
