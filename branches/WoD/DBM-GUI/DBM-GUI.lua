@@ -2808,7 +2808,7 @@ do
 				-- Create a Panel for "Wrath of the Lich King" "Burning Crusade" ...
 				local expLevel = GetExpansionLevel()
 				if expLevel == 5 then--Choose default expanded category based on players current expansion is.
-					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="WoD"))
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="WOD"))
 				elseif expLevel == 4 then--Choose default expanded category based on players current expansion is.
 					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="MOP"))
 				elseif expLevel == 3 then
