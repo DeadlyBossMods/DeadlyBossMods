@@ -8,7 +8,6 @@ mod:SetReCombatTime(45)--Lets just assume he has same bug as tsulong in advance 
 mod:SetZone()
 
 mod:RegisterCombat("combat")
-mod:RegisterKill("yell", L.Victory)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 143436 143309",
