@@ -1,0 +1,22 @@
+﻿## Interface: 60000
+## X-Min-Interface: 60000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Highmaul|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMHighmaul_SavedVars, DBMHighmaul_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: WOD
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 102
+## X-DBM-Mod-MapID: 1228
+localization.en.lua
+KargathBladefist.lua
+TheButcher.lua
+Tectus.lua
+Brackenspore.lua
+TwinOgron.lua
+FelBreaker.lua
+Margok.lua
+HighmaulTrash.lua
