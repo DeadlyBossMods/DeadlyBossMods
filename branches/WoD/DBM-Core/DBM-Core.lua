@@ -540,7 +540,7 @@ do
 		end
 
 		function registerSpellId(event, spellId)
-			if spellId == "string" then--Something is screwed up, like SPELL_AURA_APPLIED DOSE
+			if type(spellId) == "string" then--Something is screwed up, like SPELL_AURA_APPLIED DOSE
 				print("DBM RegisterEvents Debug: "..spellId.." not a number!")
 			end
 			if spellId and not GetSpellInfo(spellId) then
