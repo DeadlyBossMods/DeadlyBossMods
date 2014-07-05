@@ -15,7 +15,7 @@
 ## SavedVariablesPerCharacter: DBMWorldEvents_SavedVars, DBMWorldEvents_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
-## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Category: WOD
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-SubCategories: Holidays,Quests
 ## X-DBM-Mod-SubCategories-deDE: Feiertage,Quests

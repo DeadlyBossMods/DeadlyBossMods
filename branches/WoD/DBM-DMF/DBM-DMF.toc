@@ -14,7 +14,7 @@
 ## SavedVariablesPerCharacter: DBMDMF_SavedVars, DBMWorldDMF_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
-## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Category: WOD
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-MapID: 974
 ## X-DBM-Mod-ForceLoad-MapID: 974
