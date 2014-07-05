@@ -541,7 +541,7 @@ do
 
 		function registerSpellId(event, spellId)
 			if spellId and not GetSpellInfo(spellId) then
-				print("RegisterEvents : "..spellId.." spell id not exists!")
+				print("DBM RegisterEvents Debug: "..spellId.." spell id does not exist!")
 				return
 			end
 			if not registeredSpellIds[event] then
