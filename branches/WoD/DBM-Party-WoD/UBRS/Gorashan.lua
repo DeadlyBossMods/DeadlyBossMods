@@ -7,6 +7,7 @@ mod:SetEncounterID(1761)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
+mod.disableHealthCombat = true
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 166168",
