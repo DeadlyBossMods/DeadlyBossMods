@@ -641,7 +641,7 @@ function mod:SPELL_CAST_START(args)
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then
 				local elapsed, total = timerMutateCD:GetTime(self.vb.mutateCount+1)
 				local remaining = total - elapsed
-				if self:IsHeroic() and (remaining < 20) and (self.vb.parasitesActive < 3) and not UnitDebuff("player", GetSpellInfo(143339)) then--We need more parasites to spawn with this attack
+				if self:IsHeroic() and (remaining < 20) and (self:IsDifficulty("heroic25") and (self.vb.parasitesActive < 3) or (self.vb.parasitesActive < 1)) and not UnitDebuff("player", GetSpellInfo(143339)) then--We need more parasites to spawn with this attack
 					specWarnMoreParasites:Show()
 				else--We want to block attack and not spawn anything
 					specWarnInjection:Show()
