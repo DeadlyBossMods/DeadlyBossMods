@@ -39,6 +39,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	table.wipe(activeAddGUIDS)
 	self:UnregisterShortTermEvents()
 end
 

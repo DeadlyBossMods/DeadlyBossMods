@@ -2,82 +2,60 @@ local mod	= DBM:NewMod(888, "DBM-Party-WoD", 2, 385)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(56732)
+mod:SetCreatureID(74787)
 mod:SetEncounterID(1653)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START",
-	"SPELL_DAMAGE",
-	"SPELL_MISSED",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
-	"UNIT_DIED"
+	"SPELL_AURA_APPLIED 150751",
+	"SPELL_CAST_START 150759 150801 153679 150753"
 )
 
-local warnDragonStrike			= mod:NewSpellAnnounce(106823, 2)
-local warnPhase2				= mod:NewPhaseAnnounce(2)
-local warnJadeDragonStrike		= mod:NewSpellAnnounce(106841, 3)
-local warnPhase3				= mod:NewPhaseAnnounce(3)
+local warnFerociousYell			= mod:NewCastAnnounce(150759, 2)
+local warnRaiseMiners			= mod:NewSpellAnnounce(150801, 2, nil, mod:IsTank())
+local warnCrushingLeap			= mod:NewTargetAnnounce(150751, 3)
+local warnEarthCrush			= mod:NewTargetAnnounce(153679, 3)--target scanning assumed, TODO: Verify it!
+local warnWildSlam				= mod:NewTargetAnnounce(150753, 3, nil, mod:IsMelee())
 
-local specWarnJadeDragonWave	= mod:NewSpecialWarningMove(118540)
-local specWarnJadeFire			= mod:NewSpecialWarningMove(107110)
+local specWarnFerociousYell		= mod:NewSpecialWarningInterrupt(150759, not mod:IsHealer())
+local specWarnRaiseMiners		= mod:NewSpecialWarningSwitch(150801, mod:IsTank())
+local specWarnCrushingLeap		= mod:NewSpecialWarningTarget(150751, false)
+local specWarnEarthCrush		= mod:NewSpecialWarningYou(153679)
+local yellEarthCrush			= mod:NewYell(153679)
+local specWarnWildSlam			= mod:NewSpecialWarningRun(150753, mod:IsMelee())
 
-local timerDragonStrikeCD		= mod:NewNextTimer(10.5, 106823)
-local timerJadeDragonStrikeCD	= mod:NewNextTimer(10.5, 106841)
-local timerJadeFireCD			= mod:NewNextTimer(3.5, 107045)
+--In logs he didn't have any consistent timings, they were all wildly variable, no useful timers
 
-function mod:OnCombatStart(delay)
---	timerDragonStrikeCD:Start(-delay)--Unknown, tank pulled before i could start a log to get an accurate first timer.
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 106823 then--Phase 1 dragonstrike
-		warnDragonStrike:Show()
-		timerDragonStrikeCD:Start()
-	elseif args.spellId == 106841 then--phase 2 dragonstrike
-		warnJadeDragonStrike:Show()
-		timerJadeDragonStrikeCD:Start()
+function mod:EarthCrushTarget(targetname, uId)
+	if not targetname then return end
+	warnEarthCrush:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnEarthCrush:Show()
+		yellEarthCrush:Yell()
 	end
 end
 
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 106797 then--Jade Essence removed, (Phase 3 trigger)
-		warnPhase3:Show()
-		timerJadeDragonStrikeCD:Cancel()
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 150751 then
+		warnCrushingLeap:Show(args.destName)
+		specWarnCrushingLeap:Show(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 106797 then--Jade Essence (Phase 2 trigger)
-		warnPhase2:Show()
-		timerDragonStrikeCD:Cancel()
-	elseif args.spellId == 107045 then
-		timerJadeFireCD:Start()
+	local spellId = args.spellId
+	if spellId == 150759 then
+		warnFerociousYell:Show()
+		specWarnFerociousYell:Show(args.sourceName)
+	elseif spellId == 150801 then
+		warnRaiseMiners:Show()
+		specWarnRaiseMiners:Show()
+	elseif spellId == 153679 then
+		self:BossTargetScanner(74787, "EarthCrushTarget", 0.1, 12)--Adjust timing if not reliable
+	elseif spellId == 150753 then
+		warnWildSlam:Show()
+		specWarnWildSlam:Show()
 	end
 end
-
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 107110 and destGUID == UnitGUID("player") and self:AntiSpam() then
-		specWarnJadeFire:Show()
-	end
-end
-mod.SPELL_MISSED = mod.SPELL_DAMAGE
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 118540 and destGUID == UnitGUID("player") and self:AntiSpam() then
-		specWarnJadeFire:Show()
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 56762 then--Fight ends when Yu'lon dies.
-		DBM:EndCombat(self)
-	end
-end--]]
