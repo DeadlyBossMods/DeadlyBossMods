@@ -2,77 +2,84 @@ local mod	= DBM:NewMod(893, "DBM-Party-WoD", 2, 385)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(59051)
+mod:SetCreatureID(74366, 74475)--74366 Forgemaster Gog'duh, 74475 Magmolatus
 mod:SetEncounterID(1655)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"UNIT_DIED"
+	"SPELL_AURA_APPLIED 149997 149975 150032",
+	"SPELL_CAST_START 150038"
 )
 
---Stuff that might be used with more data--
---4/6 12:57:22.825  UNIT_DISSIPATES,0x0000000000000000,nil,0x80000000,0x80000000,0xF130DEF800005B63,"Corrupted Scroll",0xa48,0x0
 -------------------------------------------
-local warnIntensity			= mod:NewStackAnnounce(113315, 3)
-local warnUltimatePower		= mod:NewTargetAnnounce(113309, 4)
+local warnFirestorm				= mod:NewSpellAnnounce(149997, 3)
+local warnDancingFlames			= mod:NewTargetAnnounce(149975, 3, nil, mod:IsHealer())
+local warnWitheringFlames		= mod:NewTargetAnnounce(150032, 3, nil, mod:IsHealer())
+local warnMoltenImpact			= mod:NewSpellAnnounce(150038, 4)
 
-local specWarnIntensity		= mod:NewSpecialWarning("SpecWarnIntensity")
-local specWarnUltimatePower	= mod:NewSpecialWarningTarget(113309, nil, nil, nil, true)
+local specWarnRuination			= mod:NewSpecialWarningSwitch("ej8622", not mod:IsHealer())
+local specWarnCalamity			= mod:NewSpecialWarningSwitch("ej8626", not mod:IsHealer())
+local specWarnFirestorm			= mod:NewSpecialWarningInterrupt(149997, not mod:IsHealer())
+local specWarnMagmolatus		= mod:NewSpecialWarningSwitch("ej8621", mod:IsTank())--Dps can turn this on too I suppose but 5 seconds after boss spawns they are switching to add anyways, so this is mainly for tank to pick it up
+local specWarnMoltenImpact		= mod:NewSpecialWarningSpell(150038, nil, nil, nil, 2)
+local specWarnDancingFlames		= mod:NewSpecialWarningDispel(149975, mod:IsHealer())
+local specWarnWitheringFlames	= mod:NewSpecialWarningDispel(150032, mod:IsHealer())
 
-local timerUltimatePower	= mod:NewTargetTimer(15, 113309)
+local timerMoltenImpactCD		= mod:NewNextTimer(21.5, 150038)
 
-local bossesDead = 0
+local activeAddGUIDS = {}
 
 function mod:OnCombatStart(delay)
-	bossesDead = 0
+	table.wipe(activeAddGUIDS)
+	self:RegisterShortTermEvents(
+		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
+	)
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 113315 then
-		warnIntensity:Show(args.destName, args.amount or 1)
-	elseif args.spellId == 113309 then
-		warnUltimatePower:Show(args.destName)
-		specWarnUltimatePower:Show(args.destName)
-		timerUltimatePower:Start(args.destName)
-	end
+function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 122714 then
-		DBM:EndCombat(self)--Alternte win detection, UNIT_DIED not fire for 59051 (Strife), 59726 (Anger)
-	end
-end
-
-function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args.spellId == 113315 then
-		if args.amount % 2 == 0 then--only warn every 2
-			warnIntensity:Show(args.destName, args.amount)
-			if args.amount >= 6 then--Start point of special warnings subject to adjustment based on live tuning.
-				specWarnIntensity:Show(args.spellName, args.destName, args.amount)
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	for i = 1, 5 do
+		local unitID = "boss"..i
+		local unitGUID = UnitGUID(unitID)
+		local cid = self:GetCIDFromGUID(unitGUID)
+		if UnitExists(unitID) and not activeAddGUIDS[unitGUID] then
+			activeAddGUIDS[unitGUID] = true
+			--Ruination#Creature:0:3314:1175:11531:74570
+			if cid == 74570 then--Ruination
+				specWarnRuination:Show()
+			elseif cid == 74571 then--Calamity
+				specWarnCalamity:Show()
+			elseif cid == 74475 then--Magmolatus
+				specWarnMagmolatus:Show()
+				timerMoltenImpactCD:Start(5)
 			end
 		end
 	end
 end
 
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 59051 then--These 2 both have to die for fight to end
-		bossesDead = bossesDead + 1
-		if bossesDead == 2 then
-			DBM:EndCombat(self)
-		end
-	elseif cid == 59726 then--These 2 both have to die for fight to end
-		bossesDead = bossesDead + 1
-		if bossesDead == 2 then
-			DBM:EndCombat(self)
-		end
-	elseif cid == 58826 then--This one is by himself so we don't need special rules
-		DBM:EndCombat(self)
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 149997 then
+		warnFirestorm:Show()
+		specWarnFirestorm:Show(args.sourceName)
+	elseif spellId == 149975 then
+		warnDancingFlames:CombinedShow(0.3, args.destName)--heroic is 2 targets so combined.
+		specWarnDancingFlames:Show(args.destName)--This will only warn for one of em though but still good alert for sound, at that point healer can find 2nd target off reg warn or frames
+	elseif spellId == 150032 then
+		warnWitheringFlames:Show(args.destName)
+		specWarnWitheringFlames:Show(args.destName)
 	end
-end--]]
+end
+
+function mod:SPELL_CAST_START(args)
+	if args.spellId == 150038 then
+		warnMoltenImpact:Show()
+		specWarnMoltenImpact:Show()
+		timerMoltenImpactCD:Start()
+	end
+end
