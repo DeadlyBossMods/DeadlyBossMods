@@ -73,6 +73,7 @@ mod:AddBoolOption("ArrowOnCombo", mod:IsTank())--Very accurate for tank, everyon
 
 --Upvales, don't need variables
 local focusedAssault = GetSpellInfo(116525)
+local UnitIsUnit, UnitPower, UnitGUID = UnitIsUnit, UnitPower, UnitGUID
 --Important, needs recover
 mod.vb.comboMob = nil
 mod.vb.comboCount = 0
@@ -227,6 +228,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 116556 then
 		warnEnergizingSmash:Show()
 	end
+	--Melee that wasn't targeting boss when it started, but is targeting boss now so activate warnings immediately.
+	--It's safe to assume MELEE are on boss, they are in range of attacks
+	if not self.vb.comboMob and self:IsMelee() and (UnitIsUnit(uId, "boss1") or UnitIsUnit(uId, "boss2")) then
+		self.vb.comboMob = UnitGUID(uId)
+	end
 	if (self.vb.comboMob or "") == UnitGUID(uId) then
 		if spellId == 116968 then--Arc Left
 			self.vb.comboCount = self.vb.comboCount + 1
@@ -281,16 +287,22 @@ end
 
 function mod:UNIT_POWER_FREQUENT(uId)
 	if (uId == "target" or uId == "targettarget") and not UnitIsFriend(uId, "player") and not self.vb.comboMob then
-		if UnitPower(uId) == 18 then
+		local powerLevel = UnitPower(uId)
+		if powerLevel >= 18 then--Give more than 1 second to find comboMob
 			self.vb.comboMob = UnitGUID(uId)
-			specWarnCombo:Show()
+			if powerLevel == 18 then
+				specWarnCombo:Show()
+			end
 		end
 	--split because we want to prefer target over focus. IE I focus other boss while targeting one i'm tanking. previous method bugged out and gave me combo warnings for my focus and NOT my target
 	--Now target should come first and focus should be af allback IF not targeting a boss.
 	elseif (uId == "focus") and not UnitIsFriend(uId, "player") and not self.vb.comboMob then
-		if UnitPower(uId) == 18 then
+		local powerLevel = UnitPower(uId)
+		if powerLevel >= 18 then
 			self.vb.comboMob = UnitGUID(uId)
-			specWarnCombo:Show()
+			if powerLevel == 18 then
+				specWarnCombo:Show()
+			end
 		end
 	end
 end
