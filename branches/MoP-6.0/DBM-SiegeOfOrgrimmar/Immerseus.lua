@@ -8,6 +8,7 @@ mod:SetReCombatTime(45)--Lets just assume he has same bug as tsulong in advance 
 mod:SetZone()
 
 mod:RegisterCombat("combat")
+mod:RegisterKill("yell", L.Victory)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 143436 143309",
@@ -47,7 +48,7 @@ function mod:OnCombatStart(delay)
 	timerBreathCD:Start(10-delay)
 	timerSwirlCD:Start(20-delay)
 	berserkTimer:Start(-delay)
-	if self:IsHeroic() then
+	if self:IsMythic() then
 		timerSwellingCorruptionCD:Start(10-delay)--10-14sec variation
 	end
 end
@@ -117,7 +118,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		warnReform:Show()
 		timerBreathCD:Start(14)
 		timerSwirlCD:Start(24)
-		if self:IsHeroic() then
+		if self:IsMythic() then
 			timerSwellingCorruptionCD:Start(17)
 		end
 	elseif msg:find("spell:143020") then--split

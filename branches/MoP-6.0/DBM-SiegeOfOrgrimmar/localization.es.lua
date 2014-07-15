@@ -6,6 +6,10 @@ local L
 ---------------
 L= DBM:GetModLocalization(852)
 
+L:SetMiscLocalization({
+	Victory			= "¡Ah, lo habéis logrado! Las aguas vuelven a ser puras."
+})
+
 ---------------------------
 -- The Fallen Protectors --
 ---------------------------
@@ -158,11 +162,11 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	--thanks to blizz, the only accurate way for this to work, is to translate 5 emotes in all languages
-	one					= "Uno",
-	two					= "Dos",
-	three				= "Tres",
-	four				= "Cuatro",
-	five				= "Cinco",
+	one					= "One", --TODO need translation
+	two					= "Two", --TODO need translation
+	three				= "Three", --TODO need translation
+	four				= "Four", --TODO need translation
+	five				= "Five", --TODO need translation
 	hisekFlavor			= "Look who's quiet now",--http://ptr.wowhead.com/quest=31510  --TODO need translation
 	KilrukFlavor		= "Just another day, culling the swarm",--http://ptr.wowhead.com/quest=31109  --TODO need translation
 	XarilFlavor			= "I see only dark skies in your future",--http://ptr.wowhead.com/quest=31216  --TODO need translation

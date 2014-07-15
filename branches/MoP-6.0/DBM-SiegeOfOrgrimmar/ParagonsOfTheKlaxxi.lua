@@ -160,7 +160,7 @@ local timerMutate					= mod:NewBuffFadesTimer("OptionVersion2", 20, 143337, nil,
 local timerMutateCD					= mod:NewCDCountTimer(31.5, 143337)
 local timerInjectionCD				= mod:NewNextTimer(9.5, 143339, nil, mod:IsTank())
 --Hisek the Swarmkeeper
-local timerAim						= mod:NewTargetTimer(5, 142948)--or is it 7, conflicting tooltips
+--local timerAim						= mod:NewTargetTimer(5, 142948)--or is it 7, conflicting tooltips
 local timerAimCD					= mod:NewCDCountTimer(39.5, 142948)
 local timerRapidFireCD				= mod:NewCDTimer(47, 143243)--Heroic, 47-50 variation
 
@@ -309,11 +309,11 @@ local function CheckBosses()
 				if UnitDebuff("player", GetSpellInfo(143275)) then vulnerable = true end
 			elseif cid == 71153 then--Hisek the Swarmkeeper
 				timerAimCD:Start(32, 1)--Might be 35-37 with unitdebuff filter
-				if mod:IsHeroic() then
+				if mod:IsMythic() then
 					timerRapidFireCD:Start(47.5)--47-50 with unitdebuff filter
 				end
 			elseif cid == 71161 then--Kil'ruk the Wind-Reaver
-				if mod:IsHeroic() then
+				if mod:IsMythic() then
 					timerReaveCD:Start(38.5)
 				end
 				mod:StopRepeatedScan("DFAScan")
@@ -490,7 +490,11 @@ function mod:OnCombatStart(delay)
 	calculatedColor = nil
 	self.vb.mutateCount = 0
 	self.vb.aimCount = 0
-	self.vb.parasitesActive = 0
+	if self:IsMythic() then
+		self.vb.parasitesActive = 0
+	else
+		DBM:AddMsg(DBM_CORE_DYNAMIC_ADD_COUNT)
+	end
 	self.vb.aimActive = false
 	self.vb.mutateActive = false
 	self.vb.flashActive = false
@@ -500,11 +504,7 @@ function mod:OnCombatStart(delay)
 	)
 	timerJumpToCenter:Start(-delay)
 	berserkTimer:Start(-delay)
-	if self:IsDifficulty("normal10", "heroic10") then--Increaased number of people, decrease likelyhood of chat yell so it levels out
-		mathNumber = 100
-	else
-		mathNumber = 250--0.4% chance per person in 25 man, LFR, Flex
-	end
+	mathNumber = 100
 end
 
 function mod:OnCombatEnd()
@@ -608,7 +608,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.whirlCast = 0
 		self.vb.whirlTime = GetTime()
 		lastWhirl = nil
-		expectedWhirlCount = self:IsHeroic() and 5 or 4
+		expectedWhirlCount = self:IsMythic() and 5 or 4
 		self:StartRepeatedScan(args.sourceGUID, "FlashScan", 0.03, true)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)--Range assumed, spell tooltips not informative enough
@@ -641,7 +641,7 @@ function mod:SPELL_CAST_START(args)
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then
 				local elapsed, total = timerMutateCD:GetTime(self.vb.mutateCount+1)
 				local remaining = total - elapsed
-				if self:IsHeroic() and (remaining < 20) and (self:IsDifficulty("heroic25") and (self.vb.parasitesActive < 3) or (self.vb.parasitesActive < 1)) and not UnitDebuff("player", GetSpellInfo(143339)) then--We need more parasites to spawn with this attack
+				if self:IsMythic() and (remaining < 20) and (self.vb.parasitesActive < 3) and not UnitDebuff("player", GetSpellInfo(143339)) then--NEED to know Mythic number of parasites
 					specWarnMoreParasites:Show()
 				else--We want to block attack and not spawn anything
 					specWarnInjection:Show()
@@ -700,7 +700,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnEncaseInAmber:Show(args.destName)
 		timerEncaseInAmber:Start(args.destName)
 		timerEncaseInAmberCD:Start()
-		if self:IsHeroic() then
+		if self:IsMythic() then
 			countdownEncaseInAmber:Start()
 		end
 	elseif spellId == 143939 then
@@ -764,13 +764,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.aimCount = self.vb.aimCount + 1
 		self.vb.aimActive = true
 		warnAim:Show(self.vb.aimCount, args.destName)
+		--[[--New difficulties, unable to verify all this for a while.
 		if self:IsDifficulty("lfr25") then
 			timerAim:Start(7, args.destName)
 		elseif self:IsDifficulty("normal25", "heroic25") then
 			timerAim:Start(6, args.destName)
 		else
 			timerAim:Start(nil, args.destName)
-		end
+		end--]]
 		timerAimCD:Start(nil, self.vb.aimCount+1)
 		if args.IsPlayer() then
 			specWarnAim:Show()
@@ -779,11 +780,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnAimOther:Show(args.destName)
 		end
 		if self.Options.RangeFrame then
-			if self:IsDifficulty("normal25", "heroic25") then
-				DBM.RangeCheck:Show(3)
-			else
-				DBM.RangeCheck:Show(5)
-			end
+--			if self:IsDifficulty("normal25", "heroic25") then
+				DBM.RangeCheck:Show(3)--Have to assume 3 for all now, because all group sizes will now either be 30, or 20. Until we know for sure
+--			else
+--				DBM.RangeCheck:Show(5)
+--			end
 		end
 		if self.Options.SetIconOnAim then
 			self:SetIcon(args.destName, 3)
@@ -816,10 +817,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 143339 then
-		if self:IsDifficulty("normal10", "heroic10") then
-			self.vb.parasitesActive = self.vb.parasitesActive + 5
-		else
-			self.vb.parasitesActive = self.vb.parasitesActive + 8
+		if self:IsMythic() then
+			self.vb.parasitesActive = self.vb.parasitesActive + 6--Assumed, probably 5-7. All other modes will now be variable which means this warning is now mythic only
 		end
 	elseif spellId == 142671 and self.Options.SetIconOnMesmerize then
 		self:SetIcon(args.destName, 0)
@@ -860,7 +859,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 71153 then--Hisek the Swarmkeeper
 		timerAimCD:Cancel()
 		timerRapidFireCD:Cancel()
-	elseif cid == 71578 and not self:IsDifficulty("flex") then--Amber Parasite
+	elseif cid == 71578 and self:IsMythic() then--Amber Parasite
 		self.vb.parasitesActive = self.vb.parasitesActive - 1
 		warnParasitesLeft:Show(self.vb.parasitesActive)
 	elseif cid == 71156 then--Kaz'tik the Manipulator

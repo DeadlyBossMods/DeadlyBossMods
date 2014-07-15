@@ -123,7 +123,7 @@ function mod:OnCombatStart(delay)
 	self.vb.addsCount = 0
 	self.vb.firstTower = 0
 	self.vb.pulseCount = 0
-	if not self:IsHeroic() then
+	if not self:IsMythic() then
 		timerTowerCD:Start(116.5-delay)
 	else
 		timerTowerGruntCD:Start(6)
@@ -131,8 +131,8 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.SpecWarn146764move then--specWarnFlameArrow is turned on, since it's off by default, no reasont to register high CPU events unless user turns it on
 		self:RegisterShortTermEvents(
-			"SPELL_DAMAGE 146764",
-			"SPELL_MISSED 146764"
+			"SPELL_DAMAGE",
+			"SPELL_MISSED"
 		)
 	end
 end
@@ -294,7 +294,7 @@ end
 function mod:UPDATE_WORLD_STATES()
 	local text = select(4, GetWorldStateUIInfo(4))
 	local percent = tonumber(string.match(text or "", "%d+"))
-	if percent == 1 and (self.vb.firstTower == 0) and not self:IsHeroic() then
+	if percent == 1 and (self.vb.firstTower == 0) and not self:IsMythic() then
 		self.vb.firstTower = 1
 		timerTowerCD:Start()
 	end
@@ -304,7 +304,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("cFFFF0404") then--They fixed epiccenter bug (figured they would). Color code should be usuable though. It's only emote on encounter that uses it.
 		warnDemolisher:Show()
-		if self:IsHeroic() and self.vb.firstTower == 0 then
+		if self:IsMythic() and self.vb.firstTower == 0 then
 			timerTowerGruntCD:Start(15)
 			self:Schedule(15, TowerGrunt)
 			self.vb.firstTower = 2
@@ -312,7 +312,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	elseif msg:find(L.tower) then
 		warnTowerOpen:Show()
 		timerDemolisherCD:Start()
-		if self:IsHeroic() then
+		if self:IsMythic() then
 			timerTowerGruntCD:Cancel()
 			self:Unschedule(TowerGrunt)
 		end

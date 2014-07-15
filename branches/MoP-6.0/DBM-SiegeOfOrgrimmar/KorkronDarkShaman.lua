@@ -269,7 +269,7 @@ function mod:OnSync(msg)
 	if msg == "FallingAsh" then
 		self.vb.ashCount = self.vb.ashCount + 1
 		timerFallingAsh:Start()
-		if self:IsHeroic() then--On heroic, base spell 1 second cast, not 2.
+		if self:IsMythic() then--On heroic, base spell 1 second cast, not 2.
 			timerFallingAshCD:Start(16, self.vb.ashCount+1)
 			warnFallingAsh:Schedule(13)
 			specWarnFallingAsh:Schedule(13)--Give special warning 3 seconds before happens, not cast

@@ -270,14 +270,6 @@ function mod:SPELL_CAST_START(args)
 		timerBombardmentCD:Start(bombardCD[self.vb.bombardCount] or 15, self.vb.bombardCount+1)
 		countdownBombardment:Start(bombardCD[self.vb.bombardCount] or 15)
 		timerClumpCheck:Start()
---[[		if self.Options.RangeFrame then
-			if self:IsDifficulty("heroic10") then
-				DBM.RangeCheck:Show(8, nil, nil, 3)
-			else
-				DBM.RangeCheck:Show(8, nil, nil, 7)
-			end
-			self:Schedule(13, hideRangeDelay)
-		end--]]
 	elseif spellId == 147011 then
 		warnManifestRage:Show()
 		if UnitDebuff("player", GetSpellInfo(147665)) then--Kiting an Unstable Iron Star
@@ -331,13 +323,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnEmpTouchOfYShaarj:CombinedShow(0.5, args.destName)
 		end
 		if self.Options.SetIconOnMC then
-			if self:IsDifficulty("normal25", "heroic25", "lfr25") then
-				self:SetSortedIcon(1, args.destName, 1, 4)
-			elseif self:IsDifficulty("normal10", "heroic10") then
-				self:SetSortedIcon(1, args.destName, 1, 2)
-			else
-				self:SetSortedIcon(1, args.destName, 1)
-			end
+			self:SetSortedIcon(1, args.destName, 1)
 		end
 	elseif args:IsSpellID(145183, 145195) then
 		local amount = args.amount or 1
@@ -498,7 +484,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		else
 			timerSiegeEngineerCD:Start()
 		end
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsMythic() then
 			timerPowerIronStar:Start(11.5)
 			countdownPowerIronStar:Start(11.5)
 			warnExplodingIronStar:Schedule(11.5)
