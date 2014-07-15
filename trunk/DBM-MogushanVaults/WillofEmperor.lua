@@ -285,18 +285,26 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
+local prevPower = 0
 function mod:UNIT_POWER_FREQUENT(uId)
 	if (uId == "target" or uId == "targettarget") and not UnitIsFriend(uId, "player") and not self.vb.comboMob then
 		local powerLevel = UnitPower(uId)
 		if powerLevel >= 18 then--Give more than 1 second to find comboMob
+			if prevPower < powerLevel then--Power is going up, not down, reset comboCount again to be sure
+				self.vb.comboCount = 0
+			end
 			self.vb.comboMob = UnitGUID(uId)
 			specWarnCombo:Show()
+			prevPower = powerLevel
 		end
 	--split because we want to prefer target over focus. IE I focus other boss while targeting one i'm tanking. previous method bugged out and gave me combo warnings for my focus and NOT my target
 	--Now target should come first and focus should be af allback IF not targeting a boss.
 	elseif (uId == "focus") and not UnitIsFriend(uId, "player") and not self.vb.comboMob then
 		local powerLevel = UnitPower(uId)
 		if powerLevel >= 18 then
+			if prevPower < powerLevel then--Power is going up, not down, reset comboCount again to be sure
+				self.vb.comboCount = 0
+			end
 			self.vb.comboMob = UnitGUID(uId)
 			specWarnCombo:Show()
 		end
