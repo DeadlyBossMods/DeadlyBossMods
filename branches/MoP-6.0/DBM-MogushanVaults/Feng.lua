@@ -51,24 +51,24 @@ local warnReversalLightningFists	= mod:NewTargetAnnounce(118302, 2)--this spell 
 local warnNullBarrier				= mod:NewSpellAnnounce(115817, 1)
 
 --Nature/Fist
-local specWarnLightningLash			= mod:NewSpecialWarningStack(131788, mod:IsTank(), 2)
-local specWarnLightningLashOther	= mod:NewSpecialWarningTarget(131788, mod:IsTank())
+local specWarnLightningLash			= mod:NewSpecialWarningStack(131788, nil, 2)
+local specWarnLightningLashOther	= mod:NewSpecialWarningTaunt(131788)
 local specWarnEpicenter				= mod:NewSpecialWarningRun(116018, nil, nil, nil, true)
 --Fire/Spear
-local specWarnFlamingSpear			= mod:NewSpecialWarningStack(116942, mod:IsTank(), 2)
-local specWarnFlamingSpearOther		= mod:NewSpecialWarningTarget(116942, mod:IsTank())
+local specWarnFlamingSpear			= mod:NewSpecialWarningStack(116942, nil, 2)
+local specWarnFlamingSpearOther		= mod:NewSpecialWarningTaunt(116942)
 local specWarnWildSpark				= mod:NewSpecialWarningYou(116784)
 local specWarnWildfire				= mod:NewSpecialWarningMove(116793)
 local specWarnDrawFlame				= mod:NewSpecialWarningSpell(116711, nil, nil, nil, 2)
 --Arcane/Staff
-local specWarnArcaneShock			= mod:NewSpecialWarningStack(131790, mod:IsTank(), 2)
-local specWarnArcaneShockOther		= mod:NewSpecialWarningTarget(131790, mod:IsTank())
+local specWarnArcaneShock			= mod:NewSpecialWarningStack(131790, nil, 2)
+local specWarnArcaneShockOther		= mod:NewSpecialWarningTaunt(131790)
 local specWarnArcaneResonance		= mod:NewSpecialWarningMoveAway(116417)
 local yellArcaneResonance			= mod:NewYell(116417)
 local specWarnArcaneVelocity		= mod:NewSpecialWarningSpell(116364, nil, nil, nil, 2)
 --Shadow/Shield (Heroic Only)
-local specWarnShadowBurn			= mod:NewSpecialWarningStack(131792, mod:IsTank(), 2)
-local specWarnShadowBurnOther		= mod:NewSpecialWarningTarget(131792, mod:IsTank())
+local specWarnShadowBurn			= mod:NewSpecialWarningStack(131792, nil, 2)
+local specWarnShadowBurnOther		= mod:NewSpecialWarningTaunt(131792)
 local specWarnSiphoningShield		= mod:NewSpecialWarningSpell(117203)
 --Tank Abilities
 local specWarnBarrierNow			= mod:NewSpecialWarning("specWarnBarrierNow")--Because i'm so damn tired of tanks not having a clue how/when to use this in LFR

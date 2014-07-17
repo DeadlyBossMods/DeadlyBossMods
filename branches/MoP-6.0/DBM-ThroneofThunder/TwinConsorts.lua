@@ -55,8 +55,8 @@ local specWarnTearsOfSun				= mod:NewSpecialWarningSpell(137404, nil, nil, nil, 
 local specWarnBeastOfNightmares			= mod:NewSpecialWarningTarget(137375, mod:IsTank() or mod:IsHealer())
 local specWarnCorruptedHealing			= mod:NewSpecialWarningStack(137360, mod:IsHealer())
 --Light
-local specWarnFanOfFlames				= mod:NewSpecialWarningStack(137408, mod:IsTank(), 2)
-local specWarnFanOfFlamesOther			= mod:NewSpecialWarningTarget(137408, mod:IsTank())
+local specWarnFanOfFlames				= mod:NewSpecialWarningStack(137408, nil, 2)
+local specWarnFanOfFlamesOther			= mod:NewSpecialWarningTaunt(137408)
 local specWarnFlamesofPassionMove		= mod:NewSpecialWarningMove(137417)
 local specWarnIceComet					= mod:NewSpecialWarningSpell(137419, false)
 local specWarnNuclearInferno			= mod:NewSpecialWarningCount(137491, nil, nil, nil, 2)--Heroic

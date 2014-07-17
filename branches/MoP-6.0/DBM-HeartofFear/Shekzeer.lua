@@ -37,8 +37,8 @@ local warnConsumingTerror		= mod:NewSpellAnnounce(124849, 4, nil, not mod:IsTank
 local warnHeartOfFear			= mod:NewTargetAnnounce(125638, 4)
 
 local specwarnSonicDischarge	= mod:NewSpecialWarningSpell(123504, nil, nil, nil, true)
-local specWarnEyes				= mod:NewSpecialWarningStack(123707, mod:IsTank(), 3)--4 is max, 2 is actually the smartest time to taunt though. i may change it to 2 at some point
-local specWarnEyesOther			= mod:NewSpecialWarningTarget(123707, mod:IsTank())
+local specWarnEyes				= mod:NewSpecialWarningStack(123707, nil, 3)--4 is max, 2 is actually the smartest time to taunt though. i may change it to 2 at some point
+local specWarnEyesOther			= mod:NewSpecialWarningTaunt(123707)
 local specwarnCryOfTerror		= mod:NewSpecialWarningYou(123788)
 local specWarnRetreat			= mod:NewSpecialWarningSpell(125098)
 local specwarnAmberTrap			= mod:NewSpecialWarningSpell(125826, false)
