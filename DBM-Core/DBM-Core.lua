@@ -187,6 +187,7 @@ DBM.DefaultOptions = {
 	PTCountThreshold = 5,
 	LatencyThreshold = 250,
 	BigBrotherAnnounceToRaid = false,
+	FilterTankSpec = true,
 	SettingsMessageShown = false,
 	ForumsMessageShown = false,
 	AlwaysShowSpeedKillTimer = true,
@@ -6518,7 +6519,7 @@ do
 
 	function specialWarningPrototype:Show(...)
 		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
-			if not self.mod:IsTank() and self.announceType == "taunt" then return end--Don't tell non tanks to taunt, ever.
+			if self.announceType == "taunt" and DBM.Options.FilterTankSpec and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
 			local msg = pformat(self.text, ...)
 			local text = msg:gsub(">.-<", stripServerName)
 			font:SetText(text)
