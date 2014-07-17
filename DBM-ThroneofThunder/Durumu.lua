@@ -35,8 +35,8 @@ local warnLifeDrain					= mod:NewTargetAnnounce(133795, 3)--Some times needs to 
 local warnDarkParasite				= mod:NewTargetAnnounce(133597, 3, nil, mod:IsHealer())--Heroic
 local warnIceWall					= mod:NewSpellAnnounce(134587, 3, 111231)
 
-local specWarnSeriousWound			= mod:NewSpecialWarningStack(133767, mod:IsTank(), 5)--This we will use debuff on though.
-local specWarnSeriousWoundOther		= mod:NewSpecialWarningTarget(133767, mod:IsTank())
+local specWarnSeriousWound			= mod:NewSpecialWarningStack(133767, nil, 5)--This we will use debuff on though.
+local specWarnSeriousWoundOther		= mod:NewSpecialWarningTaunt(133767)
 local specWarnForceOfWill			= mod:NewSpecialWarningYou(136413, nil, nil, nil, 3)--VERY important, if you get hit by this you are out of fight for rest of pull.
 local specWarnForceOfWillNear		= mod:NewSpecialWarningClose(136413, nil, nil, nil, 3)
 local yellForceOfWill				= mod:NewYell(136413)

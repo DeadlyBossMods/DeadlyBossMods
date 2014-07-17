@@ -29,8 +29,8 @@ local warnStormUnleashed				= mod:NewSpellAnnounce(123815, 3)--Phase 2
 local specWarnUnseenStrike				= mod:NewSpecialWarningYou(122949)
 local specWarnUnseenStrikeOther			= mod:NewSpecialWarningMoveTo(122949)--Everyone needs to know this, and run to this person.
 local yellUnseenStrike					= mod:NewYell(122949)
-local specWarnOverwhelmingAssault		= mod:NewSpecialWarningStack(123474, mod:IsTank(), 2)
-local specWarnOverwhelmingAssaultOther	= mod:NewSpecialWarningTarget(123474, mod:IsTank())
+local specWarnOverwhelmingAssault		= mod:NewSpecialWarningStack(123474, nil, 2)
+local specWarnOverwhelmingAssaultOther	= mod:NewSpecialWarningTaunt(123474)
 local specWarnBladeTempest				= mod:NewSpecialWarningRun(125310, true)
 local specWarnStormUnleashed			= mod:NewSpecialWarningSpell(123814, nil, nil, nil, true)
 
