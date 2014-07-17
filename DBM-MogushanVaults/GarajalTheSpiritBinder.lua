@@ -34,7 +34,7 @@ local warnFrenzy					= mod:NewSpellAnnounce(117752, 4)
 
 local specWarnTotem					= mod:NewSpecialWarningSpell(116174, false)
 local specWarnBanishment			= mod:NewSpecialWarningYou(116272)
-local specWarnBanishmentOther		= mod:NewSpecialWarningTarget(116272, mod:IsTank())
+local specWarnBanishmentOther		= mod:NewSpecialWarningTaunt(116272)
 local specWarnVoodooDolls			= mod:NewSpecialWarningSpell(122151, false)
 local specWarnVoodooDollsYou		= mod:NewSpecialWarningYou(122151, false)
 

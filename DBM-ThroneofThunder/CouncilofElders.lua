@@ -70,8 +70,8 @@ local specWarnTwistedFate			= mod:NewSpecialWarningSwitch(137891)
 local specWarnBitingCold			= mod:NewSpecialWarningYou(136992)
 local yellBitingCold				= mod:NewYell(136992)--This one you just avoid so chat bubble is useful
 local specWarnFrostBite				= mod:NewSpecialWarningYou(136922)--This one you do not avoid you clear it hugging people so no chat bubble
-local specWarnFrigidAssault			= mod:NewSpecialWarningStack(136903, mod:IsTank(), 9)
-local specWarnFrigidAssaultOther	= mod:NewSpecialWarningTarget(136903, mod:IsTank())
+local specWarnFrigidAssault			= mod:NewSpecialWarningStack(136903, nil, 9)
+local specWarnFrigidAssaultOther	= mod:NewSpecialWarningTaunt(136903)
 --Kazra'jin
 local specWarnDischarge				= mod:NewSpecialWarningCount(137166, nil, nil, nil, 2)
 

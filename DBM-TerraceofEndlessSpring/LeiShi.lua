@@ -28,7 +28,7 @@ local specWarnAnimatedProtector			= mod:NewSpecialWarningSwitch("ej6224", not mo
 local specWarnHide						= mod:NewSpecialWarningSpell(123244, nil, nil, nil, 2)
 local specWarnGetAway					= mod:NewSpecialWarningSpell(123461, nil, nil, nil, 2)
 local specWarnSpray						= mod:NewSpecialWarningStack(123121, mod:IsTank(), 6)
-local specWarnSprayOther				= mod:NewSpecialWarningTarget(123121, mod:IsTank())
+local specWarnSprayOther				= mod:NewSpecialWarningTaunt(123121)
 
 local timerSpecialCD					= mod:NewTimer(50, "timerSpecialCD", 123250)--Variable, 49.5-55 seconds
 local timerSpray						= mod:NewTargetTimer(10, 123121, nil, mod:IsTank() or mod:IsHealer())
