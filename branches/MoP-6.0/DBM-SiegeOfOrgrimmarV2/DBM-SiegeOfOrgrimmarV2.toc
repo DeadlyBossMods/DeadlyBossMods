@@ -9,7 +9,7 @@
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariablesPerCharacter: DBMSiegeOfOrgrimmar_SavedVars, DBMSiegeOfOrgrimmarV2_SavedStats
+## SavedVariablesPerCharacter: DBMSiegeOfOrgrimmarV2_SavedVars, DBMSiegeOfOrgrimmarV2_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MOP
