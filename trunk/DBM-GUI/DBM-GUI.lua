@@ -2390,6 +2390,10 @@ local function CreateOptionsMenu()
 			spamArea:CreateCheckButton(L.ShowBBOnCombatStart, true, nil, "ShowBigBrotherOnCombatStart")
 			spamArea:CreateCheckButton(L.BigBrotherAnnounceToRaid, true, nil, "BigBrotherAnnounceToRaid")
 		end
+
+		local spamSpecArea = spamPanel:CreateArea(L.Area_SpecFilter, nil, 40, true)
+		spamArea:CreateCheckButton(L.FilterTankSpec, true, nil, "FilterTankSpec")
+		
 		local spamPTArea = spamPanel:CreateArea(L.Area_PullTimer, nil, 160, true)
 		spamPTArea:CreateCheckButton(L.DontShowPTNoID, true, nil, "DontShowPTNoID")
 		spamPTArea:CreateCheckButton(L.DontShowPT, true, nil, "DontShowPT")
@@ -2404,10 +2408,11 @@ local function CreateOptionsMenu()
 		
 		spamPTArea:AutoSetDimension()
 		spamArea:AutoSetDimension()
+		spamSpecArea:AutoSetDimension()
 		spamOutArea:AutoSetDimension()
 		spamPanel:SetMyOwnHeight()
 	end
-	
+
 	do
 		local hideBlizzPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_HideBlizzard, "option")
 		local hideBlizzArea = hideBlizzPanel:CreateArea(L.Area_HideBlizzard, nil, 160, true)

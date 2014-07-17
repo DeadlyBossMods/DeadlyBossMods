@@ -177,15 +177,8 @@ L.HP_GrowUpwards			= "Expand health frame upward"
 L.HP_ShowDemo				= "Show HP frame"
 L.BarWidth					= "Bar width: %d"
 
--- Tab: Spam Filter
+-- Tab: Global Filter
 L.Panel_SpamFilter			= "Global and Spam Filters"
-L.Area_SpamFilter			= "Spam Filter Options"
-L.StripServerName			= "Strip realm name in warnings and timers"
-L.SpamBlockBossWhispers		= "Filter &lt;DBM&gt; warning whispers while fighting"
-L.BlockVersionUpdateNotice	= "Disable update notification popup (Not recommended)"
-L.ShowBBOnCombatStart		= "Perform Big Brother buff check on combat start"
-L.BigBrotherAnnounceToRaid	= "Announce Big Brother results to raid"
-
 L.Area_SpamFilter_Outgoing	= "Global Filter Options"
 L.SpamBlockNoShowAnnounce	= "Do not show announces or play warning sounds"
 L.DontShowFarWarnings		= "Do not show announces/timers for events that are far away"
@@ -194,6 +187,23 @@ L.SpamBlockNoSetIcon		= "Do not set icons on targets"
 L.SpamBlockNoRangeFrame		= "Do not show range frame"
 L.SpamBlockNoInfoFrame		= "Do not show info frame"
 L.SpamBlockNoHealthFrame	= "Do not show health frame"
+
+-- Tab: Spam Filter
+L.Area_SpamFilter			= "Spam Filter Options"
+L.StripServerName			= "Strip realm name in warnings and timers"
+L.SpamBlockBossWhispers		= "Filter &lt;DBM&gt; warning whispers while fighting"
+L.BlockVersionUpdateNotice	= "Disable update notification popup (Not recommended)"
+L.ShowBBOnCombatStart		= "Perform Big Brother buff check on combat start"
+L.BigBrotherAnnounceToRaid	= "Announce Big Brother results to raid"
+
+L.Area_SpecFilter			= "Spec Filter Options"
+L.FilterTankSpec			= "Filter warnings designated for Tank role when not tank spec"
+--Healer and Damager not in use yet. Tank is easily black and white. if not a tank, disable taunt warnings. Pretty obvious.
+--Healer and Damager a bit more tricky, since often times, Healer DO need to switch and kill adds designated a dps roll (hi disc attonement priest)
+--Or a dps does need to handle debuff dispels. Or a dps/tank need to know when aoe damage is going out just as much as healer for personal CDs
+--Etc etc. Point being, I translate these but I'm not sure they could ever actually be used as effectively as the tank spec filter.
+--L.FilterHealerSpec		= "Filter warnings designated for Healer role when not Healer spec"--Not in use
+--L.FilterDamagerSpec		= "Filter warnings designated for Damager role when not Damager spec"--Not in use
 
 L.Area_PullTimer			= "Pull, Combat, & Custom Timer Filter Options"
 L.DontShowPTNoID			= "Block Pull Timer if not sent from same zone as you"
