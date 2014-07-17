@@ -276,6 +276,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	-- ZG and ZA are now part of the party mods for Cataclysm
 	"DBM-ZulAman",
 	"DBM-ZG",
+	"DBM-SiegeOfOrgrimmar",--Block legacy version. New version is "DBM-SiegeOfOrgrimmarV2"
 }
 
 --------------------------------------------------------
@@ -931,7 +932,7 @@ do
 				local addonName, _, _, enabled = GetAddOnInfo(i)
 				if GetAddOnMetadata(i, "X-DBM-Mod") and enabled then
 					if checkEntry(bannedMods, addonName) then
-						print("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message.")
+						print("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. "that is compatible with your game version.")
 					else
 						local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
 						tinsert(self.AddOns, {
@@ -3850,16 +3851,15 @@ end
 local statVarTable = {
 	--6.0
 	["normal5"] = "normal",
-	["normal"] = "normal",
 	["heroic5"] = "heroic",
-	["heroic"] = "heroic",
-	["mythic"] = "heroic25",--Just save em in heroic25. No need to increase loading of stats
 	["challenge5"] = "challenge",
-	["worldboss"] = "normal",
 	["lfr"] = "lfr25",
+	["normal"] = "normal",
+	["heroic"] = "heroic",
+	["mythic"] = "mythic",
+	["worldboss"] = "normal",
 	--Legacy
 	["lfr25"] = "lfr25",
-	["flex"] = "flex",
 	["normal10"] = "normal",
 	["normal25"] = "normal25",
 	["heroic10"] = "heroic",
@@ -4400,7 +4400,7 @@ do
 
 	function DBM:StartLogging(timer, checkFunc)
 		self:Unschedule(DBM.StopLogging)
-		if DBM.Options.LogOnlyRaidBosses and savedDifficulty ~= "normal10" and savedDifficulty ~= "normal25" and savedDifficulty ~= "heroic10" and savedDifficulty ~= "heroic25" and savedDifficulty ~= "flex" then return end
+		if DBM.Options.LogOnlyRaidBosses and savedDifficulty ~= "normal10" and savedDifficulty ~= "normal25" and savedDifficulty ~= "heroic10" and savedDifficulty ~= "heroic25" and savedDifficulty ~= "normal" and savedDifficulty ~= "heroic" and savedDifficulty ~= "mythic" then return end
 		if DBM.Options.AutologBosses then--Start logging here to catch pre pots.
 			if not LoggingCombat() then
 				autoLog = true
@@ -4471,17 +4471,17 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "challenge5", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
 		return "normal10", difficultyName.." - ",difficulty, instanceGroupSize--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
-	elseif difficulty == 11 then--5.3 heroic scenario
+	elseif difficulty == 11 then
 		return "heroic5", difficultyName.." - ", difficulty, instanceGroupSize
-	elseif difficulty == 12 then--5.3 normal scenario
+	elseif difficulty == 12 then
 		return "normal5", difficultyName.." - ", difficulty, instanceGroupSize
-	elseif difficulty == 14 then--NOTE: Change "flex" to "normal" in 6.0
-		return "flex", difficultyName.." - ", difficulty, instanceGroupSize
+	elseif difficulty == 14 then
+		return "normal", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 15 then
 		return "heroic", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 16 then
 		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize
-	elseif difficulty == 17 then
+	elseif difficulty == 17 then--Variable LFR (ie post WoD zones)
 		return "lfr", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 18 then
 		return "event40", difficultyName.." - ", difficulty, instanceGroupSize

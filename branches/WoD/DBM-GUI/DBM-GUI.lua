@@ -2511,9 +2511,9 @@ do
 				bottom1value1:SetText( stats.heroicKills )
 				bottom1value2:SetText( stats.heroicPulls-stats.heroicKills )
 				bottom1value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
-				bottom2value1:SetText( stats.heroic25Kills )
-				bottom2value2:SetText( stats.heroic25Pulls-stats.heroic25Kills )
-				bottom2value3:SetText( stats.heroic25BestTime and ("%d:%02d"):format(mfloor(stats.heroic25BestTime / 60), stats.heroic25BestTime % 60) or "-" )
+				bottom2value1:SetText( stats.mythicKills )
+				bottom2value2:SetText( stats.mythicPulls-stats.mythicKills )
+				bottom2value3:SetText( stats.mythicBestTime and ("%d:%02d"):format(mfloor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-" )
 			end
 		end
 	end
@@ -2547,8 +2547,8 @@ do
 				stats.heroicPulls = stats.heroicPulls or 0
 				stats.challengeKills = stats.challengeKills or 0
 				stats.challengePulls = stats.challengePulls or 0
-				stats.flexKills = stats.flexKills or 0
-				stats.flexPulls = stats.flexPulls or 0
+				stats.mythicKills = stats.mythicKills or 0
+				stats.mythicPulls = stats.mythicPulls or 0
 				stats.normal25Kills = stats.normal25Kills or 0
 				stats.normal25Pulls = stats.normal25Pulls or 0
 				stats.heroic25Kills = stats.heroic25Kills or 0
