@@ -47,8 +47,8 @@ local warnBurningBlood				= mod:NewTargetAnnounce("OptionVersion2", 143783, 3, n
 
 local specWarnDevotionAura			= mod:NewSpecialWarningFades("OptionVersion3", 31821, mod:IsSpellCaster(true))
 --Stage 1: A Cry in the Darkness
-local specWarnFearsomeRoar			= mod:NewSpecialWarningStack(143766, mod:IsTank(), 2)
-local specWarnFearsomeRoarOther		= mod:NewSpecialWarningTaunt(143766, mod:IsTank())
+local specWarnFearsomeRoar			= mod:NewSpecialWarningStack(143766, nil, 2)
+local specWarnFearsomeRoarOther		= mod:NewSpecialWarningTaunt(143766)
 local specWarnDeafeningScreech		= mod:NewSpecialWarningCast("OptionVersion3", 143343, mod:IsSpellCaster(), nil, nil, 2)
 --Stage 2: Frenzy for Blood!
 local specWarnBloodFrenzy			= mod:NewSpecialWarningSpell(143440, nil, nil, nil, 2)
@@ -57,16 +57,16 @@ local yellFixate					= mod:NewYell(143445)
 local specWarnEnrage				= mod:NewSpecialWarningTarget(145974, mod:IsTank() or mod:CanRemoveEnrage())
 local specWarnBloodFrenzyOver		= mod:NewSpecialWarningEnd(143440)
 --Infusion of Acid
-local specWarnAcidBreath			= mod:NewSpecialWarningStack(143780, mod:IsTank(), 3)
-local specWarnAcidBreathOther		= mod:NewSpecialWarningTaunt(143780, mod:IsTank())
+local specWarnAcidBreath			= mod:NewSpecialWarningStack(143780, nil, 3)
+local specWarnAcidBreathOther		= mod:NewSpecialWarningTaunt(143780)
 --Infusion of Frost
-local specWarnFrostBreath			= mod:NewSpecialWarningStack(143773, mod:IsTank(), 3)
-local specWarnFrostBreathOther		= mod:NewSpecialWarningTaunt(143773, mod:IsTank())
+local specWarnFrostBreath			= mod:NewSpecialWarningStack(143773, nil, 3)
+local specWarnFrostBreathOther		= mod:NewSpecialWarningTaunt(143773)
 local specWarnIcyBlood				= mod:NewSpecialWarningStack(143800, nil, 3)
 local specWarnFrozenSolid			= mod:NewSpecialWarningTarget(143777, mod:IsDps())
 --Infusion of Fire
-local specWarnScorchingBreath		= mod:NewSpecialWarningStack(143767, mod:IsTank(), 3)
-local specWarnScorchingBreathOther	= mod:NewSpecialWarningTaunt(143767, mod:IsTank())
+local specWarnScorchingBreath		= mod:NewSpecialWarningStack(143767, nil, 3)
+local specWarnScorchingBreathOther	= mod:NewSpecialWarningTaunt(143767)
 local specWarnBurningBloodMove		= mod:NewSpecialWarningMove(143784)
 local yellBurningBlood				= mod:NewYell(143783, nil, false)
 

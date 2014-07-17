@@ -52,7 +52,7 @@ local warnPiercingCorruption			= mod:NewSpellAnnounce(144657, 3)
 
 --Amalgam of Corruption
 local specWarnUnleashedAnger			= mod:NewSpecialWarningSpell(145216, mod:IsTank())--Cast warning, not stack. for active mitigation timing.
-local specWarnSelfDoubtOther			= mod:NewSpecialWarningTaunt(146124, mod:IsTank())--Stack warning, to taunt off other tank
+local specWarnSelfDoubtOther			= mod:NewSpecialWarningTaunt(146124)--Stack warning, to taunt off other tank
 local specWarnBlindHatred				= mod:NewSpecialWarningSpell(145226, nil, nil, nil, 2)
 local specWarnManifestation				= mod:NewSpecialWarningSwitch("ej8232", not mod:IsHealer())--Unleashed Manifestation of Corruption
 local specWarnManifestationSoon			= mod:NewSpecialWarningSoon("ej8232", not mod:IsHealer(), nil, nil, 2)--WHen the ones die inside they don't spawn right away, there is like a 5 second lag.

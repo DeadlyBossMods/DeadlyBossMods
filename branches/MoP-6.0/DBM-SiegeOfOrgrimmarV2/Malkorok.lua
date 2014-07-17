@@ -40,8 +40,8 @@ local yellDisplacedEnergy				= mod:NewYell("OptionVersion2", 142913, nil, false)
 local specWarnArcingSmash				= mod:NewSpecialWarningCount(142815, nil, nil, nil, 2)
 local specWarnImplodingEnergySoon		= mod:NewSpecialWarningPreWarn(142986, nil, 4)
 local specWarnBreathofYShaarj			= mod:NewSpecialWarningCount(142842, nil, nil, nil, 3)
-local specWarnFatalStrike				= mod:NewSpecialWarningStack(142990, mod:IsTank(), 12)--stack guessed, based on CD
-local specWarnFatalStrikeOther			= mod:NewSpecialWarningTaunt(142990, mod:IsTank())
+local specWarnFatalStrike				= mod:NewSpecialWarningStack(142990, nil, 12)--stack guessed, based on CD
+local specWarnFatalStrikeOther			= mod:NewSpecialWarningTaunt(142990)
 
 local timerBloodRage					= mod:NewBuffActiveTimer(22.5, 142879)--2.5sec cast plus 20 second duration
 local timerDisplacedEnergyCD			= mod:NewNextTimer(11, 142913)

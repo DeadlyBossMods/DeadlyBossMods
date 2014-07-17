@@ -70,8 +70,8 @@ local specWarnChainLightning		= mod:NewSpecialWarningInterrupt(144584, false)
 local specWarnAnnihilate			= mod:NewSpecialWarningSpell("OptionVersion3", 144969, false, nil, nil, 3)
 --Stage Two: Power of Y'Shaarj
 local specWarnWhirlingCorruption	= mod:NewSpecialWarningCount(144985)--Two options important, for distinction and setting custom sounds for empowered one vs non empowered one, don't merge
-local specWarnGrippingDespair		= mod:NewSpecialWarningStack(145183, mod:IsTank(), 4)--Unlike whirling and desecrate, doesn't need two options, distinction isn't important for tank swaps.
-local specWarnGrippingDespairOther	= mod:NewSpecialWarningTaunt(145183, mod:IsTank())
+local specWarnGrippingDespair		= mod:NewSpecialWarningStack(145183, nil, 4)--Unlike whirling and desecrate, doesn't need two options, distinction isn't important for tank swaps.
+local specWarnGrippingDespairOther	= mod:NewSpecialWarningTaunt(145183)
 local specWarnTouchOfYShaarj		= mod:NewSpecialWarningSwitch("OptionVersion3", 145071, not mod:IsHealer())
 local specWarnTouchInterrupt		= mod:NewSpecialWarningInterrupt(145599, false)
 --Starge Three: MY WORLD
