@@ -22,8 +22,8 @@ local warnPiercingRoar			= mod:NewSpellAnnounce(137457, 2)
 local warnSpiritfireBeam		= mod:NewTargetAnnounce(137511, 3, nil, mod:IsHealer())
 local warnFrillBlast			= mod:NewSpellAnnounce(137505, 4)
 
-local specWarnCrush				= mod:NewSpecialWarningStack(137504, mod:IsTank(), 2)
-local specWarnCrushOther		= mod:NewSpecialWarningTarget(137504, mod:IsTank())
+local specWarnCrush				= mod:NewSpecialWarningStack(137504, nil, 2)
+local specWarnCrushOther		= mod:NewSpecialWarningTarget(137504, mod:IsTank())--Taunt immune, so not a taunt warning, just a warning that tank may die soon and to be ready
 local specWarnPiercingRoar		= mod:NewSpecialWarningCast(137457, mod:IsRanged() or mod:IsHealer())
 local specWarnFrillBlast		= mod:NewSpecialWarningSpell(137505, nil, nil, nil, 2)
 

@@ -35,8 +35,8 @@ local specWarnCrimsonWakeYou		= mod:NewSpecialWarningRun(138480)--Kiter
 local specWarnCrimsonWake			= mod:NewSpecialWarningMove(138485)--Standing in stuff left behind by kiter
 local yellCrimsonWake				= mod:NewYell(138480)
 local specWarnMatterSwap			= mod:NewSpecialWarningYou(138609)
-local specWarnExplosiveSlam			= mod:NewSpecialWarningStack(138569, mod:IsTank(), 4)--Assumed value drycode, won't know until cd is observed
-local specWarnExplosiveSlamOther	= mod:NewSpecialWarningTarget(138569, mod:IsTank())
+local specWarnExplosiveSlam			= mod:NewSpecialWarningStack(138569, nil, 4)--Assumed value drycode, won't know until cd is observed
+local specWarnExplosiveSlamOther	= mod:NewSpecialWarningTarget(138569, mod:IsTank())--Not black and white, so not using Taunt type warning
 --Boss
 local specWarnAnimaRing				= mod:NewSpecialWarningYou(136954)
 local specWarnAnimaRingOther		= mod:NewSpecialWarningTarget(136954, false)
