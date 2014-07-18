@@ -186,7 +186,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	wasteOfTime			= "It is not too late, Garrosh. Lay down the mantle of Warchief. We can end this here, now, with no more bloodshed.",
+	wasteOfTime			= "卡爾洛斯，現在還不遲。放下大酋長的權力。我們可以在此時此地就結束，停止流血。",
 	NoReduce			= "無傷害減免",
 	MaliceFadeYell		= "%s的惡意消退中(%d)",
 	phase3End			= "你們以為贏了嗎?"

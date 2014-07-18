@@ -177,15 +177,8 @@ L.HP_GrowUpwards			= "血量框架向上延伸"
 L.HP_ShowDemo				= "顯示血量框架"
 L.BarWidth					= "寬度:%d"
 
--- Tab: Spam Filter
+-- Tab: Global Filter
 L.Panel_SpamFilter			= "整體及垃圾過濾"
-L.Area_SpamFilter			= "垃圾過濾選項"
-L.StripServerName			= "隱藏警告和計時器的玩家伺服器名稱"
-L.SpamBlockBossWhispers		= "當戰鬥時過濾 &lt;DBM&gt; 密語警告"
-L.BlockVersionUpdateNotice	= "禁用彈出的更新通知"
-L.ShowBBOnCombatStart		= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
-L.BigBrotherAnnounceToRaid	= "通告BigBrother的結果給團隊"
-
 L.Area_SpamFilter_Outgoing	= "整體過濾選項"
 L.SpamBlockNoShowAnnounce	= "不顯示提示或播放警告音效"
 L.DontShowFarWarnings		= "不發送距離過遠的事件提示/計時器"
@@ -194,6 +187,23 @@ L.SpamBlockNoSetIcon		= "不設置標記在目標上"
 L.SpamBlockNoRangeFrame		= "不顯示距離框架"
 L.SpamBlockNoInfoFrame		= "不顯示訊息框架"
 L.SpamBlockNoHealthFrame	= "不顯示血量框架"
+
+-- Tab: Spam Filter
+L.Area_SpamFilter			= "垃圾過濾選項"
+L.StripServerName			= "隱藏警告和計時器的玩家伺服器名稱"
+L.SpamBlockBossWhispers		= "當戰鬥時過濾 &lt;DBM&gt; 密語警告"
+L.BlockVersionUpdateNotice	= "禁用彈出的更新通知"
+L.ShowBBOnCombatStart		= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
+L.BigBrotherAnnounceToRaid	= "通告BigBrother的結果給團隊"
+
+L.Area_SpecFilter			= "專精過濾選項"
+L.FilterTankSpec			= "非坦克專精時過濾掉坦克專精的特定警告"
+--Healer and Damager not in use yet. Tank is easily black and white. if not a tank, disable taunt warnings. Pretty obvious.
+--Healer and Damager a bit more tricky, since often times, Healer DO need to switch and kill adds designated a dps roll (hi disc attonement priest)
+--Or a dps does need to handle debuff dispels. Or a dps/tank need to know when aoe damage is going out just as much as healer for personal CDs
+--Etc etc. Point being, I translate these but I'm not sure they could ever actually be used as effectively as the tank spec filter.
+--L.FilterHealerSpec		= "非治療專精時過濾掉治療專精的特定警告"--Not in use
+--L.FilterDamagerSpec		= "非傷害專精時過濾掉治療傷害的特定警告"--Not in use
 
 L.Area_PullTimer			= "開怪計時器過濾選項"
 L.DontShowPTNoID			= "阻擋與你不同區域ID送出的開怪倒數計時條"
@@ -222,7 +232,7 @@ L.LFDEnhance				= "使用主要聲音頻道播放準備確認音效給腳色確�
 L.WorldBossNearAlert		= "當你需要的世界首領在你附近開戰播放準備確認音效(蓋過特定首領選項)"
 L.AFKHealthWarning			= "播放警告聲音假如你在暫離時被攻擊"
 L.Area_AutoLogging			= "自動記錄選項"
-L.AutologBosses				= "自動使用暴雪戰鬥日誌記錄首領戰鬥(為了<a href=\"http://www.warcraftlogs.com\">|cff3588ffwarcraftlogs.com|r</a>的相容性在開打前使用/dbm pull是必須的)"
+L.AutologBosses				= "自動使用暴雪戰鬥日誌記錄首領戰鬥(為了<a href=\"http://www.warcraftlogs.com\">|cff3588ffwarcraftlogs.com|r</a>的相容性請於開打前使用/dbm pull)"
 L.AdvancedAutologBosses		= "自動使用Transcriptor紀錄首領戰鬥"
 L.LogOnlyRaidBosses			= "只記錄團隊首領的戰鬥(除了隨機團隊/隨機隊伍/隨機事件)"
 L.Area_Invite				= "邀請選項"
