@@ -6,55 +6,47 @@ mod:SetCreatureID(76407)
 mod:SetEncounterID(1682)
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_REMOVED",
-	"RAID_BOSS_EMOTE"
+	"SPELL_CAST_START 154442",
+	"SPELL_CAST_SUCCESS 154350",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --All data confirmed and accurate for normal mode scarlet halls. heroic data should be quite similar but with diff spellids, will wait for logs to assume anything there.
-local warnDragonsReach			= mod:NewSpellAnnounce(111217, 2)
-local warnCallReinforcements	= mod:NewSpellAnnounce("ej5378", 3)--triggers only found in emote
-local warnBladesofLight			= mod:NewCastAnnounce(111216, 4)
+local warnRitualOfBones			= mod:NewSpellAnnounce(154671, 4)
+local warnOmenOfDeath			= mod:NewSpellAnnounce(154350, 3)
+local warnMalevolence			= mod:NewSpellAnnounce(154442, 3, nil, mod:IsTank())
 
-local specWarnBladesofLight		= mod:NewSpecialWarningSpell(111216, nil, nil, nil, true)
+local specWarnRitualOfBones		= mod:NewSpecialWarningSpell(154671, nil, nil, nil, true)
+local specWarnMalevolence		= mod:NewSpecialWarningMove(154442, mod:IsTank())--Assume tank is in front
 
-local timerDragonsReachCD		= mod:NewCDTimer(7, 111217)--12 on normal, 7 on heroic, OR, 7 in both and it was buffed on normal since i've run it. For time being i'll make it 7 but change it from next to CD
-local timerCallReinforcementsCD	= mod:NewCDTimer(20, "ej5378")--adjusted in build 15799?
-local timerBladesofLightCD		= mod:NewNextTimer(30, 111216)
+local timerRitualOfBonesCD		= mod:NewNextTimer(50.5, 154671)
+local timerOmenOfDeathCD		= mod:NewNextTimer(10.5, 154350)
 
 function mod:OnCombatStart(delay)
-	timerDragonsReachCD:Start(-delay)
-	timerCallReinforcementsCD:Start(-delay)
-	timerBladesofLightCD:Start(40-delay)
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 111217 then
-		warnDragonsReach:Show()
-		timerDragonsReachCD:Start()
-	end
+	timerOmenOfDeathCD:Start(12-delay)
+	timerRitualOfBonesCD:Start(20-delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 111216 then
-		warnBladesofLight:Show()
-		specWarnBladesofLight:Show()
-		timerDragonsReachCD:Cancel()
+	if args.spellId == 154442 then
+		warnMalevolence:Show()
+		specWarnMalevolence:Show()
 	end
 end
 
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 111216 then
-		timerBladesofLightCD:Start()
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 154350 then
+		warnOmenOfDeath:Show()
+		timerOmenOfDeathCD:Start()
 	end
 end
 
-function mod:RAID_BOSS_EMOTE(msg)
-	if msg == L.Call or msg:find(L.Call) then
-		warnCallReinforcements:Show()
-		timerCallReinforcementsCD:Start()
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 154671 then
+		warnRitualOfBones:Show()
+		specWarnRitualOfBones:Show()
+		timerRitualOfBonesCD:Start()
 	end
-end--]]
+end

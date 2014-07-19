@@ -6,55 +6,61 @@ mod:SetCreatureID(75452)
 mod:SetEncounterID(1679)
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_REMOVED",
-	"RAID_BOSS_EMOTE"
+	"SPELL_CAST_START 154175 165578",
+	"RAID_BOSS_EMOTE",
+	"UNIT_DIED"
 )
 
---All data confirmed and accurate for normal mode scarlet halls. heroic data should be quite similar but with diff spellids, will wait for logs to assume anything there.
-local warnDragonsReach			= mod:NewSpellAnnounce(111217, 2)
-local warnCallReinforcements	= mod:NewSpellAnnounce("ej5378", 3)--triggers only found in emote
-local warnBladesofLight			= mod:NewCastAnnounce(111216, 4)
+--Inhale and submerge timers iffy. Based on data, it's possible they share a CD and which one he uses is random of two.
+--With that working theory, it's possible to add a 28-30 second timer for it maybe.
+--However, being a 5 man boss. Plus not knowing for certain, not worth the time right now.
+local warnBodySlam				= mod:NewTargetAnnounce(154175, 4)
+local warnInhale				= mod:NewSpellAnnounce(154868, 4)
+local warnCorpseBreath			= mod:NewSpellAnnounce(165578, 2)
 
-local specWarnBladesofLight		= mod:NewSpecialWarningSpell(111216, nil, nil, nil, true)
+local specWarnBodySlam			= mod:NewSpecialWarningSpell(154175, nil, nil, nil, 2)
+local specWarnInhale			= mod:NewSpecialWarningRun(153804)
 
-local timerDragonsReachCD		= mod:NewCDTimer(7, 111217)--12 on normal, 7 on heroic, OR, 7 in both and it was buffed on normal since i've run it. For time being i'll make it 7 but change it from next to CD
-local timerCallReinforcementsCD	= mod:NewCDTimer(20, "ej5378")--adjusted in build 15799?
-local timerBladesofLightCD		= mod:NewNextTimer(30, 111216)
+local timerBodySlamCD			= mod:NewCDSourceTimer(32, 154175)--32-35 Variation
+local timerCorpseBreathCD		= mod:NewCDTimer(32, 165578, nil, false)--32-37 Variation, also not that important so off by default since there will already be up to 3 smash timers
+
+local soundInhale				= mod:NewSound(153804)
 
 function mod:OnCombatStart(delay)
-	timerDragonsReachCD:Start(-delay)
-	timerCallReinforcementsCD:Start(-delay)
-	timerBladesofLightCD:Start(40-delay)
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 111217 then
-		warnDragonsReach:Show()
-		timerDragonsReachCD:Start()
-	end
+	timerBodySlamCD:Start(15-delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 111216 then
-		warnBladesofLight:Show()
-		specWarnBladesofLight:Show()
-		timerDragonsReachCD:Cancel()
+	local spellId = args.spellId
+	if spellId == 154175 then
+		warnBodySlam:Show(args.sourceName)
+		if self:AntiSpam(3) then--Throttle special warning when more than 1 slam at once happens.
+			specWarnBodySlam:Show()
+		end
+		if args:GetSrcCreatureID() == 75452 then--Source is Bonemaw, not one of his adds
+			timerBodySlamCD:Start(32, args.sourceName, args.sourceGUID)
+		else
+			timerBodySlamCD:Start(14, args.sourceName, args.sourceGUID)--little guys use it more often.
+		end
+	elseif spellId == 165578 then
+		warnCorpseBreath:Show()
+		timerCorpseBreathCD:Start()
 	end
 end
 
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 111216 then
-		timerBladesofLightCD:Start()
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 76057 then--Carrion Centipede
+		timerBodySlamCD:Cancel(args.destName, args.destGUID)
 	end
 end
 
 function mod:RAID_BOSS_EMOTE(msg)
-	if msg == L.Call or msg:find(L.Call) then
-		warnCallReinforcements:Show()
-		timerCallReinforcementsCD:Start()
+	if msg:find("spell:153804") then--Slightly faster than combat log
+		warnInhale:Show()
+		specWarnInhale:Show()
+		soundInhale:Play()
 	end
-end--]]
+end
