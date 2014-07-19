@@ -199,7 +199,8 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	wasteOfTime			= "아직 늦지 않았다, 가로쉬. 대족장이라는 짐을 내려놓거라. 지금, 여기서 끝내자. 피를 흘릴 필요는 없다.",
 	NoReduce			= "피해 감소 없음",
-	MaliceFadeYell		= "%s의 악의 %d초 남음!"
+	MaliceFadeYell		= "%s의 악의 %d초 남음!",
+	phase3End			= "네가 이겼다고 생각하나?"
 })
 
 -------------
