@@ -5,65 +5,47 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(76177)
 mod:SetEncounterID(1685)
 mod:SetZone()
---mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_APPLIED 154477",
+	"SPELL_CAST_START 155327",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 
-local warnSabotage				= mod:NewTargetAnnounce(107268, 4)
---local warnThrowExplosive		= mod:NewSpellAnnounce(102569, 3)--Doesn't show in chat/combat log, need transcriptor log
---local warnWorldinFlame		= mod:NewSpellAnnounce(101591, 4)--^, triggered at 66% and 33% boss health.
+local warnSWP					= mod:NewTargetAnnounce(154477, 2, nil, mod:IsHealer())
+local warnSoulVessel			= mod:NewSpellAnnounce(155327, 3)
+local warnTornSpirits			= mod:NewSpellAnnounce(153991, 3)
 
-local specWarnSabotage			= mod:NewSpecialWarningYou(107268)
-local specWarnSabotageNear		= mod:NewSpecialWarningClose(107268)
+local specWarnSoulVessel		= mod:NewSpecialWarningSpell(155327, nil, nil, nil, 2)
+local specWarnTornSpirits		= mod:NewSpecialWarningSwitch(153991, not mod:IsHealer())
+local specWarnSWP				= mod:NewSpecialWarningDispel(154477, mod:IsHealer())
 
-local timerSabotage				= mod:NewTargetTimer(5, 107268)
-local timerSabotageCD			= mod:NewNextTimer(12, 107268)
---local timerThrowExplosiveCD	= mod:NewNextTimer(22, 102569)
-
-mod:AddBoolOption("IconOnSabotage", true)
+local timerSoulVesselCD			= mod:NewNextTimer(27, 155327)
 
 function mod:OnCombatStart(delay)
---	timerSabotageCD:Start(-delay)--Unknown, tank pulled before log got started, will need a fresh log.
+	timerSoulVesselCD:Start(6-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 107268 then
-		warnSabotage:Show(args.destName)
-		timerSabotage:Start(args.destName)
-		timerSabotageCD:Start()
-		if self.Options.IconOnSabotage then
-			self:SetIcon(args.destName, 8)
-		end
-		if args:IsPlayer() then
-			specWarnSabotage:Show()
-		else
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if uId then
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-					SetMapToCurrentZone()
-					x, y = GetPlayerMapPosition(uId)
-				end
-				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-				if inRange and inRange < 10 then
-					specWarnSabotageNear:Show(args.destName)
-				end
-			end
-		end
+	if args.spellId == 154477 then
+		warnSWP:Show(args.destName)
+		specWarnSWP:Show(args.destName)
 	end
 end
 
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 107268 then
-		timerSabotage:Cancel(args.destName)
-		if self.Options.IconOnSabotage then
-			self:SetIcon(args.destName, 0)
-		end
+function mod:SPELL_CAST_START(args)
+	if args.spellId == 155327 then
+		warnSoulVessel:Show()
+		specWarnSoulVessel:Show()
 	end
-end--]]
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 95323 then--Creature Special 1 (5s) (always cast 1sec before Torn spirits)
+		warnTornSpirits:Show()
+		specWarnTornSpirits:Show()
+	end
+end

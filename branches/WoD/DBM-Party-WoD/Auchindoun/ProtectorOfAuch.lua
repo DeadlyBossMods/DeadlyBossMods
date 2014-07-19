@@ -7,68 +7,48 @@ mod:SetEncounterID(1686)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_DAMAGE",
-	"SPELL_MISSED",
-	"RAID_BOSS_EMOTE"
+	"SPELL_CAST_START 153002 153006",
+	"SPELL_DAMAGE 161457",
+	"SPELL_MISSED 161457"
 )
 
-local warnImpalingStrike	= mod:NewTargetAnnounce(107047, 3)
-local warnPreyTime			= mod:NewTargetAnnounce(106933, 3, nil, mod:IsHealer())
-local warnStrafingRun		= mod:NewSpellAnnounce("ej5660", 4)
+local warnHolyShield			= mod:NewTargetAnnounce(153002, 3)--Verify target scanning, or switch to generic
+local warnConsecratedLight		= mod:NewSpellAnnounce(153006, 4)
 
-local specWarnStafingRun	= mod:NewSpecialWarningSpell("ej5660", nil, nil, nil, true)
-local specWarnStafingRunAoe	= mod:NewSpecialWarningMove(116297)
-local specWarnAcidBomb		= mod:NewSpecialWarningMove(115458)
+local specWarnConsecreatedLight	= mod:NewSpecialWarningSpell(153006, nil, nil, nil, 2)
+local specWarnSanctifiedGround	= mod:NewSpecialWarningMove(161457)
+local yellHolyShield			= mod:NewYell(153002)
 
-local timerImpalingStrikeCD	= mod:NewNextTimer(30, 107047)
-local timerPreyTime			= mod:NewTargetTimer(5, 106933, nil, mod:IsHealer())
-local timerPreyTimeCD		= mod:NewNextTimer(14.5, 106933)
+local timerHolyShieldCD			= mod:NewNextTimer(47, 153002)
+
+function mod:ShieldTarget(targetname, uId)
+	if not targetname then return end
+	warnHolyShield:Show(targetname)
+	if targetname == UnitName("player") then
+		yellHolyShield:Yell()
+	end
+end
 
 function mod:OnCombatStart(delay)
---	timerImpalingStrikeCD:Start(-delay)--Bad pull, no pull timers.
---	timerPreyTimeCD:Start(-delay)
+	timerHolyShieldCD:Start(30-delay)
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 106933 then
-		warnPreyTime:Show(args.destName)
-		timerPreyTime:Start(args.destName)
-		timerPreyTimeCD:Start()
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 106933 then
-		timerPreyTime:Start(args.destName)
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 107047 then
-		warnImpalingStrike:Show(args.destName)
-		timerImpalingStrikeCD:Start()
+function mod:SPELL_CAST_START(args)
+	local spellId = args.spellId
+	if spellId == 153002 then
+		self:BossTargetScanner(75839, "ShieldTarget", 0.02, 16)
+		timerHolyShieldCD:Start()
+	elseif spellId == 153006 then
+		warnConsecratedLight:Show()
+		specWarnConsecreatedLight:Show()
 	end
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 115458 and destGUID == UnitGUID("player") and self:AntiSpam() then
-		specWarnAcidBomb:Show()
-	elseif spellId == 116297 and destGUID == UnitGUID("player") and self:AntiSpam() then
-		specWarnStafingRunAoe:Show()
+	if spellId == 161457 and destGUID == UnitGUID("player") and self:AntiSpam() then
+		specWarnSanctifiedGround:Show()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
-
-function mod:RAID_BOSS_EMOTE(msg)--Needs a better trigger if possible using transcriptor.
-	if msg == L.StaffingRun or msg:find(L.StaffingRun) then
-		warnStrafingRun:Show()
-		specWarnStafingRun:Show()
-		timerImpalingStrikeCD:Start(29)
-		timerPreyTimeCD:Start(32.5)
-	end
-end--]]

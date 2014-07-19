@@ -7,67 +7,91 @@ mod:SetEncounterID(1678)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START"
+	"SPELL_AURA_APPLIED 153396",
+	"SPELL_AURA_REMOVED 153396 153764",
+	"SPELL_CAST_START 153764 154221",
+	"SPELL_SUMMON 164081"
 )
 
-local warnHeadbutt				= mod:NewSpellAnnounce(111668, 2)
-local warnScreechingSwarm		= mod:NewTargetAnnounce(111600, 4, nil, false)--Can be spam if adds not die.
-local warnBrokenCarapace		= mod:NewSpellAnnounce(107146, 2)--Phase 2
-local warnFixate				= mod:NewTargetAnnounce(111723, 4)
-local warnStomp					= mod:NewCountAnnounce(111728, 3)
+local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
+local warnClawsOfArgus				= mod:NewSpellAnnounce(153764, 3)
+local warnFelblast					= mod:NewCastAnnounce(154221, 3, nil, not mod:IsHealer())--Spammy but still important. May improve by checking if interrupt spells on CD, if are, don't show warning, else, spam warning because interrupt SHOULD be on CD
+local warnSummonFelguard			= mod:NewSpellAnnounce(164081, 3, 56285, not mod:IsHealer())
 
-local specWarnScreechingSwarm	= mod:NewSpecialWarningDispel(111600, false)--Can be spam if adds not die.
-local specWarnBrokenCarapace	= mod:NewSpecialWarningSpell(107146, mod:IsDps())
+local specWarnCurtainOfFlame		= mod:NewSpecialWarningYou(153396)
+local specWarnCurtainOfFlameNear	= mod:NewSpecialWarningClose(153396, mod:IsDps())
+local specWarnClawsOfArgus			= mod:NewSpecialWarningSpell(153764)
+local specWarnSummonFelguard		= mod:NewSpecialWarningSwitch(164081, mod:IsTank())
+local specWarnFelblast				= mod:NewSpecialWarningInterrupt(154221, not mod:IsHealer())--Spammy but still important. May improve by checking if interrupt spells on CD, if are, don't show warning, else, spam warning because interrupt SHOULD be on CD
 
-local timerHeadbuttCD			= mod:NewNextTimer(33, 111668)
-local timerScreechingSwarm		= mod:NewTargetTimer(10, 111600)
-local timerFixate				= mod:NewTargetTimer(15, 111723)
-local timerFixateCD				= mod:NewNextTimer(20.5, 111723)
-local timerStompCD				= mod:NewNextCountTimer(20.5, 111728)
+local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396)--20sec cd but can be massively delayed by adds phases
+local timerClawsOfArgusCD			= mod:NewNextTimer(60, 153764)
 
-local stompCount = 0
+mod.vb.debuffCount = 0
+local curtainDebuff = GetSpellInfo(153396)
+local UnitDebuff = UnitDebuff
+local debuffFilter
+do
+	debuffFilter = function(uId)
+		return UnitDebuff(uId, curtainDebuff)
+	end
+end
 
 function mod:OnCombatStart(delay)
-	stompCount = 0
+	self.vb.debuffCount = 0
+	timerCurtainOfFlameCD:Start(15-delay)
+	timerClawsOfArgusCD:Start(27-delay)
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 153396 and timerClawsOfArgusCD:GetTime() > 40 then--if claws of argus is less than 20 seconds away, don't start CurtainOfFlame timer
+		timerCurtainOfFlameCD:Start()--Start CD off success, not applied, so spreads don't mess with CD bar
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 107146 then
-		warnBrokenCarapace:Show()
-		specWarnBrokenCarapace:Show()
-		timerHeadbuttCD:Cancel()
-		timerFixateCD:Start(5.5)--Timing for target pick, not cast start.
-		timerStompCD:Start(20.5, 1)
-	elseif args.spellId == 111723 then
-		warnFixate:Show(args.destName)
-		timerFixate:Start(args.destName)
-		timerFixateCD:Start()
-	elseif args.spellId == 111600 then
-		warnScreechingSwarm:Show(args.destName)
-		specWarnScreechingSwarm:Show(args.destName)
-		timerScreechingSwarm:Start(args.destName)
+	if args.spellId == 153396 then
+		self.vb.debuffCount = self.vb.debuffCount + 1
+		warnCurtainOfFlame:CombinedShow(0.5, args.destName)
+		if self.Options.RangeFrame then
+			if UnitDebuff("player", curtainDebuff) then--You have debuff, show everyone
+				DBM.RangeCheck:Show(5, nil)
+			else--You do not have debuff, only show players who do
+				DBM.RangeCheck:Show(5, debuffFilter)
+			end
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 111723 then
-		timerFixate:Cancel(args.destName)
-	elseif args.spellId == 111600 then
-		timerScreechingSwarm:Cancel(args.destName)
+	local spellId = args.spellId
+	if spellId == 153396 then
+		self.vb.debuffCount = self.vb.debuffCount - 1
+		if self.Options.RangeFrame and self.vb.debuffCount == 0 then
+			DBM.RangeCheck:Hide()
+		end
+	elseif spellId == 153764 then--Claws of Argus ending
+		timerCurtainOfFlameCD:Start(7)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 111668 then
-		warnHeadbutt:Show()
-		timerHeadbuttCD:Start()
-	elseif args.spellId == 111728 then
-		stompCount = stompCount + 1
-		warnStomp:Show(stompCount)
-		timerStompCD:Start(20.5, stompCount+1)
+	local spellId = args.spellId
+	if spellId == 153764 then
+		warnClawsOfArgus:Show()
+		specWarnClawsOfArgus:Show()
+		timerClawsOfArgusCD:Start()
+	elseif spellId == 154221 then
+		warnFelblast:Show()
+		specWarnFelblast:Show(args.sourceName)
 	end
-end--]]
+end
+
+function mod:SPELL_SUMMON(args)
+	if args.spellId == 164081 then
+		warnSummonFelguard:Show()
+		specWarnSummonFelguard:Show()
+	end
+end
