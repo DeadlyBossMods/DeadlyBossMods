@@ -58,10 +58,10 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	wasteOfTime		= "Muito bem! Grupos de desembarque, formação! Infantaria para a frente!",--Alliance Version
-	wasteOfTime2	= "Muito bem. A primeira brigada desembarcou.",--Horde Version
+	wasteOfTime2	= "Muito bem. A primeira brigada chegou ao destino.",--Horde Version
 	Pull			= "Clã Presa do Dragão, retomem as docas e mandem todos de volta para o mar! Em nome de Grito Infernal e da Verdadeira Horda!",
 	newForces1		= "Lá vem eles!",--Jaina's line, alliance
-	newForces1H		= "Desçam-na logo, para que eu possa colocar meus dedos em volta do seu pescoço.",--Sylva's line, horde
+	newForces1H		= "Rrrrraagh. Derrubem-na! Meus dedos estão loucos para sentir a garganta dela",--Sylva's line, horde
 	newForces2		= "Presa do Dragão, avante!",
 	newForces3		= "Por Grito Infernal!",
 	newForces4		= "Próximo esquadrão, avançar!",
