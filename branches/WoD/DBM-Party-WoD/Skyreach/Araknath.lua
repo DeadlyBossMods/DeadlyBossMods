@@ -7,33 +7,41 @@ mod:SetEncounterID(1699)--Verify, name doesn't match
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"SPELL_CAST_START 154135",
+	"SPELL_AURA_APPLIED 154159"
 )
 
-local warnLesson		= mod:NewTargetAnnounce(113395, 2)--Needs to be changed to target when transcriptor works, at present CLEU doesn't show anything.
-local warnRise			= mod:NewSpellAnnounce(113143, 3)
 
-local timerLessonCD		= mod:NewNextTimer(30, 113395)
-local timerRiseCD		= mod:NewNextTimer(62.5, 113143)--Assuming this is even CD based, it could be boss health based, in which case timer is worthless
+--Add smash? it's a 1 sec cast, can it be dodged?
+local warnEnergize		= mod:NewSpellAnnounce(154159, 3)
+local warnBurst			= mod:NewCountAnnounce(154135, 3)
+
+local specWarnBurst		= mod:NewSpecialWarningCount(154135, nil, nil, nil, 2)
+
+local timerEnergozeCD	= mod:NewNextTimer(20, 154159)
+local timerBurstCD		= mod:NewCDCountTimer(23, 154135)
+
+mod.vb.burstCount = 0
 
 function mod:OnCombatStart(delay)
-	timerLessonCD:Start(17-delay)
-	timerRiseCD:Start(48-delay)--Assumed based off a single log. This may be health based.
+	self.vb.burstCount = 0
+	timerBurstCD:Start(20-delay)
+end
+
+function mod:SPELL_CAST_START(args)
+	if args.spellId == 154135 then
+		self.vb.burstCount = self.vb.burstCount + 1
+		warnBurst:Show(self.vb.burstCount)
+		specWarnBurst:Show(self.vb.burstCount)
+		timerBurstCD:Start(nil, self.vb.burstCount+1)
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 113143 then
-		warnRise:Show()
-		timerRiseCD:Start()
+	if args.spellId == 154159 then
+		warnEnergize:Show()
+		timerEnergozeCD:Start()
 	end
 end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)--Just until there is a better way
-	if msg:find("spell:113395") then
-		warnLesson:Show(DBM:GetUnitFullName(target))
-		timerLessonCD:Start()
-	end
-end--]]
