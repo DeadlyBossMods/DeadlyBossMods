@@ -179,15 +179,8 @@ L.HP_GrowUpwards			= "우두머리 체력 바를 위로 쌓기"
 L.HP_ShowDemo				= "체력 바 보기"
 L.BarWidth					= "바 길이: %d"
 
--- Tab: Spam Filter
+-- Tab: Global Filter
 L.Panel_SpamFilter			= "기타 설정"
-L.Area_SpamFilter			= "일반 기능 끄기 설정"
-L.StripServerName			= "알림 및 바에서 서버명 보이지 않기"
-L.SpamBlockBossWhispers		= "전투 중 다른 공격대원 또는 파티원이 보낸 &lt;DBM&gt; 귓속말 감추기"
-L.BlockVersionUpdateNotice	= "업데이트 알림 창 끄기(추천하지 않음)"
-L.ShowBBOnCombatStart		= "전투 시작시 BigBrother 버프 체크 실행하기"
-L.BigBrotherAnnounceToRaid	= "BigBrother 버프 체크 결과를 공격대에 알리기"
-
 L.Area_SpamFilter_Outgoing	= "경고 기능 끄기 설정(다른 설정보다 항상 우선됨)"
 L.SpamBlockNoShowAnnounce	= "알림 보이지 않기"
 L.DontShowFarWarnings		= "멀리 떨어진 곳에서 시전된 주문 알림 및 바를 보이지 않기"
@@ -196,6 +189,23 @@ L.SpamBlockNoSetIcon		= "전술 목표 아이콘 설정하지 않기"
 L.SpamBlockNoRangeFrame		= "거리 창 보이지 않기"
 L.SpamBlockNoInfoFrame		= "정보 창 보이지 않기"
 L.SpamBlockNoHealthFrame	= "우두머리 체력 바 보이지 않기"
+
+-- Tab: Spam Filter
+L.Area_SpamFilter			= "일반 기능 끄기 설정"
+L.StripServerName			= "알림 및 바에서 서버명 보이지 않기"
+L.SpamBlockBossWhispers		= "전투 중 다른 공격대원 또는 파티원이 보낸 &lt;DBM&gt; 귓속말 감추기"
+L.BlockVersionUpdateNotice	= "업데이트 알림 창 끄기(추천하지 않음)"
+L.ShowBBOnCombatStart		= "전투 시작시 BigBrother 버프 체크 실행하기"
+L.BigBrotherAnnounceToRaid	= "BigBrother 버프 체크 결과를 공격대에 알리기"
+
+L.Area_SpecFilter			= "역할에 따른 경고 설정"
+L.FilterTankSpec			= "방어 전담이 아닐 경우 방어 전담용 경고 보지 않기"
+--Healer and Damager not in use yet. Tank is easily black and white. if not a tank, disable taunt warnings. Pretty obvious.
+--Healer and Damager a bit more tricky, since often times, Healer DO need to switch and kill adds designated a dps roll (hi disc attonement priest)
+--Or a dps does need to handle debuff dispels. Or a dps/tank need to know when aoe damage is going out just as much as healer for personal CDs
+--Etc etc. Point being, I translate these but I'm not sure they could ever actually be used as effectively as the tank spec filter.
+--L.FilterHealerSpec		= "치유 전담이 아닐 경우 치유 전담용 경고 보지 않기"--Not in use
+--L.FilterDamagerSpec		= "공격 전담이 아닐 경우 치유 전담용 경고 보지 않기"--Not in use
 
 L.Area_PullTimer			= "전투 예정, 시작, 사용자 바 기능 설정"
 L.DontShowPTNoID			= "같은 인스턴스에 있지 않은 사용자가 보낸 전투 예정 신호 차단"
