@@ -20,6 +20,7 @@
 ## X-DBM-Mod-MapID: 1136
 ## X-DBM-Mod-Block-Movie-Skip-ItemID: 105930,105931,105932,105933,105934,105935
 localization.en.lua
+localization.br.lua
 localization.de.lua
 localization.kr.lua
 localization.ru.lua
