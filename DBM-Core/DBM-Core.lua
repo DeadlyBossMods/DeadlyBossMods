@@ -119,6 +119,7 @@ DBM.DefaultOptions = {
 	CustomSounds = 0,
 	AlwaysShowHealthFrame = false,
 	ShowBigBrotherOnCombatStart = false,
+	FilterTankSpec = true,
 	AutologBosses = false,
 	AdvancedAutologBosses = false,
 	LogOnlyRaidBosses = false,
@@ -187,7 +188,6 @@ DBM.DefaultOptions = {
 	PTCountThreshold = 5,
 	LatencyThreshold = 250,
 	BigBrotherAnnounceToRaid = false,
-	FilterTankSpec = true,
 	SettingsMessageShown = false,
 	ForumsMessageShown = false,
 	AlwaysShowSpeedKillTimer = true,
@@ -541,8 +541,11 @@ do
 		end
 
 		function registerSpellId(event, spellId)
+			if type(spellId) == "string" then--Something is screwed up, like SPELL_AURA_APPLIED DOSE
+				print("DBM RegisterEvents Debug: "..spellId.." not a number!")
+			end
 			if spellId and not GetSpellInfo(spellId) then
-				print("RegisterEvents : "..spellId.." spell id not exists!")
+				print("DBM RegisterEvents Debug: "..spellId.." spell id does not exist!")
 				return
 			end
 			if not registeredSpellIds[event] then
@@ -933,7 +936,7 @@ do
 				local addonName, _, _, enabled = GetAddOnInfo(i)
 				if GetAddOnMetadata(i, "X-DBM-Mod") and enabled then
 					if checkEntry(bannedMods, addonName) then
-						print("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message.")
+						print("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. "that is compatible with your game version.")
 					else
 						local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
 						tinsert(self.AddOns, {
@@ -945,10 +948,10 @@ do
 							subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 							oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
 							hasLFR			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-LFR") or 0) == 1,
-							hasFlex			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Flex") or 0) == 1,
 							hasChallenge	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Challenge") or 0) == 1,
 							noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1,
 							noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
+							hasFlex			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Flex") or 0) == 1,
 							modId			= addonName,
 						})
 						for i = #self.AddOns[#self.AddOns].mapId, 1, -1 do
@@ -2633,9 +2636,9 @@ function DBM:LoadMod(mod)
 				v.type = mod.type
 				v.oneFormat = mod.oneFormat
 				v.hasLFR = mod.hasLFR
-				v.hasFlex = mod.hasFlex
 				v.hasChallenge = mod.hasChallenge
 				v.noHeroic = mod.noHeroic
+				v.hasFlex = mod.hasFlex
 			end
 		end
 		if DBM_GUI then
@@ -3838,16 +3841,12 @@ function checkBossHealth()
 end
 
 local statVarTable = {
-	--6.0
 	["normal5"] = "normal",
 	["normal"] = "normal",
 	["heroic5"] = "heroic",
 	["heroic"] = "heroic",
-	["mythic"] = "heroic25",--Just save em in heroic25. No need to increase loading of stats. This also transitions SoO heroic 25 into mythic stats for most accurate conversion.
 	["challenge5"] = "challenge",
 	["worldboss"] = "normal",
-	["lfr"] = "lfr25",
-	--Legacy
 	["lfr25"] = "lfr25",
 	["flex"] = "flex",
 	["normal10"] = "normal",
@@ -3942,9 +3941,8 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		self:ToggleRaidBossEmoteFrame(1)
 		self:StartLogging(0, nil)
 		if DBM.Options.HideWatchFrame and not (mod.type == "SCENARIO") then
-			local frame = WatchFrame or ObjectiveTrackerFrame--WatchFrame is renamed in 6.0. Remove this when 6.0 live
-			if frame:IsVisible() then
-				frame:Hide()
+			if WatchFrame:IsVisible() then
+				WatchFrame:Hide()
 				watchFrameRestore = true
 			end
 		end
@@ -4019,7 +4017,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			end
 			--show enage message
 			if DBM.Options.ShowEngageMessage then
-				if mod.ignoreBestkill and savedDifficulty == "worldboss" then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
+				if mod.ignoreBestkill and (savedDifficulty == "worldboss") then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
 					self:AddMsg(DBM_CORE_COMBAT_STARTED_IN_PROGRESS:format(difficultyText..name))
 				elseif mod.ignoreBestkill and mod.inScenario then
 					self:AddMsg(DBM_CORE_SCENARIO_STARTED_IN_PROGRESS:format(difficultyText..name))
@@ -4316,8 +4314,7 @@ function DBM:EndCombat(mod, wipe)
 			DBM.BossHealth:Hide()
 			DBM.Arrow:Hide(true)
 			if DBM.Options.HideWatchFrame and watchFrameRestore and not scenario then
-				local frame = WatchFrame or ObjectiveTrackerFrame--WatchFrame is renamed in 6.0. Remove this when 6.0 live
-				frame:Show()
+				WatchFrame:Show()
 				watchFrameRestore = false
 			end
 			if DBM.Options.HideTooltips then
@@ -4467,18 +4464,8 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "heroic5", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 12 then--5.3 normal scenario
 		return "normal5", difficultyName.." - ", difficulty, instanceGroupSize
-	elseif difficulty == 14 then--NOTE: Change "flex" to "normal" in 6.0
+	elseif difficulty == 14 then
 		return "flex", difficultyName.." - ", difficulty, instanceGroupSize
-	elseif difficulty == 15 then
-		return "heroic", difficultyName.." - ", difficulty, instanceGroupSize
-	elseif difficulty == 16 then
-		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize
-	elseif difficulty == 17 then
-		return "lfr", difficultyName.." - ", difficulty, instanceGroupSize
-	elseif difficulty == 18 then
-		return "event40", difficultyName.." - ", difficulty, instanceGroupSize
-	elseif difficulty == 19 then
-		return "event5", difficultyName.." - ", difficulty, instanceGroupSize
 	else--failsafe
 		return "normal5", "", difficulty, instanceGroupSize
 	end
