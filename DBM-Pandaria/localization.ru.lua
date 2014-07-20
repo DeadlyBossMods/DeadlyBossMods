@@ -39,7 +39,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(814)
 
 L:SetMiscLocalization({
-	Pull				= "Чувствуете порывы холодного ветра?"
+	Pull				= "Чувствуете порывы холодного ветра? Приближается буря…"
 })
 
 ---------------------------
