@@ -27,7 +27,7 @@
 --    * esES: Snamor/1nn7erpLaY      	romanscat@hotmail.com
 --    * zhCN: Diablohu					http://www.dreamgen.cn | diablohudream@gmail.com
 --    * esES/esMX: Sueñalobos			alcortesm@gmail.com
---
+-- 
 -- Special thanks to:
 --    * Arta
 --    * Tennberg (a lot of fixes in the enGB/enUS localization)
