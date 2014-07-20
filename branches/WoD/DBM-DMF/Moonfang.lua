@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71992)
 --mod:SetModelID(328)
 mod:SetZone()
+mod:DisableWBEngageSync()
 
 mod:RegisterCombat("combat")
 

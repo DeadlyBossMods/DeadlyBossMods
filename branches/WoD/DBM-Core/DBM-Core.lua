@@ -268,6 +268,7 @@ local lastBossDefeat = {}
 local bossuIdFound = false
 local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
+local worldBossNames = {}
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -987,6 +988,12 @@ do
 								blockMovieSkipItems[tonumber(idTable[i]) or ""] = tonumber(mapIdTable[1])
 							end
 						end
+						if GetAddOnMetadata(i, "X-DBM-Mod-WBName") then
+							local idTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-WBName"))}
+							for i = 1, #idTable, 2 do
+								worldBossNames[tostring(idTable[i]) or ""] = _G[idTable[i + 1]] or idTable[i + 1]
+							end
+						end
 					end
 				end
 			end
@@ -1003,7 +1010,7 @@ do
 				"UNIT_TARGETABLE_CHANGED",
 				"ENCOUNTER_START",
 				"ENCOUNTER_END",
-				--"SPELL_UPDATE_CHARGES",--Likely how we'll have to check for combat res charges in 6.0
+				--"SPELL_UPDATE_CHARGES",
 				"UNIT_DIED",
 				"UNIT_DESTROYED",
 				"UNIT_HEALTH mouseover target focus player",
@@ -2741,18 +2748,6 @@ local canSetIcons = {}
 local iconSetRevision = {}
 local iconSetPerson = {}
 local addsGUIDs = {}
-local worldBossNames = {
-	--Because we can't pull name from modId if mod isn't loaded
-	["857"] = WORLD_BOSS_FOUR_CELESTIALS,
-	["858"] = WORLD_BOSS_FOUR_CELESTIALS,
-	["859"] = WORLD_BOSS_FOUR_CELESTIALS,
-	["860"] = WORLD_BOSS_FOUR_CELESTIALS,
-	["725"] = WORLD_BOSS_GALLEON,
-	["814"] = WORLD_BOSS_NALAK,
-	["826"] = WORLD_BOSS_OONDASTA,
-	["861"] = WORLD_BOSS_ORDOS,
-	["691"] = WORLD_BOSS_SHA_OF_ANGER,
-}
 
 do
 	local function checkForActualPull()
@@ -3182,7 +3177,7 @@ do
 			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
 			lastBossDefeat[modId..realm] = GetTime()
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				local bossName = worldBossNames[modId] or name or UNKNOWN--Pull name from world boss globals first, else, use name sent by sender so we still alert for bosses we don't have globals for (like darkmoon rabbit, cata/BC world bosses)
+				local bossName = worldBossNames[modId] or name or UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(bossName, sender))
 			end
 		end
@@ -4056,7 +4051,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		elseif DBM.Options.ShowRecoveryMessage then--show timer recovery message
 			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
 		end
-		if savedDifficulty == "worldboss" and modId ~= "Omen" and modId ~= "Greench" and modId ~= "Moonfang" then--Any outdoor boss except Omen and Greench and MoonFang
+		if savedDifficulty == "worldboss" and not mod.noWBEsync then
 			if lastBossEngage[modId..playerRealm] and (GetTime() - lastBossEngage[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 			lastBossEngage[modId..playerRealm] = GetTime()--Update last engage time, that way we ignore our own sync
 			if IsInGuild() then
@@ -4287,7 +4282,7 @@ function DBM:EndCombat(mod, wipe)
 				sendWhisper(k, msg)
 			end
 			fireEvent("kill", mod)
-			if savedDifficulty == "worldboss" and modId ~= "Omen" and modId ~= "Greench" and modId ~= "Moonfang" then--Any outdoor boss except Omen and Greench and Moonfang
+			if savedDifficulty == "worldboss" and not mod.noWBEsync then
 				if lastBossDefeat[modId..playerRealm] and (GetTime() - lastBossDefeat[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 				lastBossDefeat[modId..playerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
 				if IsInGuild() then
@@ -4402,7 +4397,7 @@ do
 	function DBM:StartLogging(timer, checkFunc)
 		self:Unschedule(DBM.StopLogging)
 		local _, instanceType = GetInstanceInfo()
-		if DBM.Options.LogOnlyRaidBosses and (instanceType ~= "raid" or savedDifficulty == "lfr" or savedDifficulty == "lfr25") then return end
+		if DBM.Options.LogOnlyRaidBosses and ((instanceType ~= "raid") or IsPartyLFG()) then return end
 		if DBM.Options.AutologBosses then--Start logging here to catch pre pots.
 			if not LoggingCombat() then
 				autoLog = true
@@ -7436,6 +7431,9 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	if self.noRegenDetection then
 		info.noRegenDetection = self.noRegenDetection
 	end
+	if self.noWBEsync then
+		info.noWBEsync = self.noWBEsync
+	end
 	-- use pull-mobs as kill mobs by default, can be overriden by RegisterKill
 	if self.multiMobPullDetection then
 		for i, v in ipairs(self.multiMobPullDetection) do
@@ -7528,6 +7526,13 @@ function bossModPrototype:DisableRegenDetection()
 	self.noRegenDetection = true
 	if self.combatInfo then
 		self.combatInfo.noRegenDetection = true
+	end
+end
+
+function bossModPrototype:DisableWBEngageSync()
+	self.noWBEsync = true
+	if self.combatInfo then
+		self.combatInfo.noWBEsync = true
 	end
 end
 

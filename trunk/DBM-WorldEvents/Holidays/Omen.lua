@@ -6,6 +6,7 @@ mod:SetCreatureID(15467)
 mod:SetModelID(15879)
 mod:SetReCombatTime(10)
 mod:SetZone(1)--Kalimdor
+mod:DisableWBEngageSync()
 
 mod:RegisterCombat("combat")
 
