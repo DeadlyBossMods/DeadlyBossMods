@@ -244,7 +244,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	cast 		= "Show special warning to stop casting for $spell:%s",--Spell Interrupt
 	reflect 	= "Show special warning to stop attacking $spell:%s",--Spell Reflect
 	count 		= "Show special warning for $spell:%s",
-	stack 		= "Show special warning when you are affected by >=%d stacks of $spell:%s",--too long?
+	stack 		= "Show special warning when you are affected by >=%d stacks of $spell:%s",
 	switch		= "Show special warning to switch targets for $spell:%s"
 }
 

@@ -14,12 +14,6 @@ L.OTabBosses	= "우두머리"
 --L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options		= "기본 설정"
-L.TabCategory_WoD	 		= "드레노어의 전쟁군주"
---L.TabCategory_MOP	 		= EXPANSION_NAME4
---L.TabCategory_CATA		= EXPANSION_NAME3
---L.TabCategory_WOTLK 		= EXPANSION_NAME2
---L.TabCategory_BC 			= EXPANSION_NAME1
---L.TabCategory_CLASSIC		= EXPANSION_NAME0
 L.TabCategory_PVP	 		= "PvP"
 L.TabCategory_OTHER			= "기타 우두머리 경보"
 
@@ -96,11 +90,11 @@ L.ShowFakedRaidWarnings 	= "알림을 공격대 경보처럼 보기"
 L.WarningIconLeft 			= "알림 왼쪽에 주문 아이콘 보기"
 L.WarningIconRight 			= "알림 오른쪽에 주문 아이콘 보기"
 L.WarningIconChat 			= "대화창 알림 메세지에 주문 아이콘 보기"
-L.ShowCountdownText			= "초읽기를 진행중일때 화면중앙에 초읽기 글자 표시(기본 숫자로 읽을때만 작동)"
+L.ShowCountdownText			= "주 초읽기를 진행중일때 화면중앙에 초읽기 글자 표시"
 L.RaidWarnMessage 			= "<Deadly Boss Mods>를 사용해 주셔셔 감사합니다."
 L.BarWhileMove 				= "알림 위치 수정"
 L.RaidWarnSound				= "알림 소리"
-L.CountdownVoice			= "기본 숫자 읽기 소리 설정"
+L.CountdownVoice			= "주 숫자 읽기 소리 설정"
 L.CountdownVoice2			= "보조 숫자 읽기 소리 설정"
 L.SpecialWarnSound			= "특수 경고 소리 1(SW1)"
 L.SpecialWarnSound2			= "특수 경고 소리 2(SW2)"
