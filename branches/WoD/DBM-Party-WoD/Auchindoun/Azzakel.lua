@@ -29,6 +29,8 @@ local specWarnFelblast				= mod:NewSpecialWarningInterrupt(154221, not mod:IsHea
 local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396)--20sec cd but can be massively delayed by adds phases
 local timerClawsOfArgusCD			= mod:NewNextTimer(60, 153764)
 
+mod:AddRangeFrameOption(5, 153396)
+
 mod.vb.debuffCount = 0
 local curtainDebuff = GetSpellInfo(153396)
 local UnitDebuff = UnitDebuff
