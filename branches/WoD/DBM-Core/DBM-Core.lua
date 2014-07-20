@@ -249,6 +249,7 @@ local checkBossHealth
 local fireEvent
 local playerName = UnitName("player")
 local playerRealm = GetRealmName()
+local gladStance = GetSpellInfo(156291)
 local connectedServers = GetAutoCompleteRealms()
 local _, class = UnitClass("player")
 local LastInstanceMapID = -1
@@ -296,7 +297,7 @@ local floor, mhuge, mmin, mmax = math.floor, math.huge, math.min, math.max
 local GetNumGroupMembers, GetRaidRosterInfo = GetNumGroupMembers, GetRaidRosterInfo
 local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
 local UnitAffectingCombat, InCombatLockdown, IsEncounterInProgress = UnitAffectingCombat, InCombatLockdown, IsEncounterInProgress
-local UnitGUID, UnitHealth, UnitHealthMax = UnitGUID, UnitHealth, UnitHealthMax
+local UnitGUID, UnitHealth, UnitHealthMax, UnitBuff = UnitGUID, UnitHealth, UnitHealthMax, UnitBuff
 local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK
 local GetSpellInfo, EJ_GetSectionInfo = GetSpellInfo, EJ_GetSectionInfo
 local EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo = EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo
@@ -1032,6 +1033,7 @@ do
 				"WORLD_STATE_TIMER_START",
 				"WORLD_STATE_TIMER_STOP",
 				"ACTIVE_TALENT_GROUP_CHANGED",
+				"UPDATE_SHAPESHIFT_FORM",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED"
 			)
@@ -2402,6 +2404,12 @@ end
 
 function DBM:ACTIVE_TALENT_GROUP_CHANGED()
 	DBM:RoleCheck()
+end
+
+function DBM:UPDATE_SHAPESHIFT_FORM()
+	if class == "WARRIOR" and DBM:AntiSpam(0.5, "STANCE") then--check for stance changes for prot warriors that might be specced into Gladiator Stance
+		DBM:RoleCheck()
+	end
 end
 
 local function AcceptPartyInvite()
@@ -4950,8 +4958,13 @@ function DBM:RoleCheck()
 	local specID = GetLootSpecialization()
 	local _, _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
 	if not InCombatLockdown() and IsInGroup() and ((IsPartyLFG() and difficultyIndex == 14) or not IsPartyLFG()) then
-		if UnitGroupRolesAssigned("player") ~= role then
-			UnitSetRole("player", role)
+		local tempRole--Use temp role because we still want Role to be "tank" for loot check comparison at bottom (gladiators still use tank gear)
+		if role == "TANK" and UnitBuff("player", gladStance) then--Special handling for gladiator stance
+			tempRole = "DAMAGER"
+		end
+		local whatToCheck = tempRole or role
+		if UnitGroupRolesAssigned("player") ~= whatToCheck then
+			UnitSetRole("player", whatToCheck)
 		end
 		if not roleEventUnregistered then
 			roleEventUnregistered = true
@@ -5755,7 +5768,7 @@ function bossModPrototype:IsDps()--For features that simply should only be on fo
 	or class == "MAGE"
 	or class == "HUNTER"
 	or class == "ROGUE"
-	or (class == "WARRIOR" and (GetSpecialization() ~= 3))
+	or (class == "WARRIOR" and (GetSpecialization() ~= 3) or UnitBuff("player", gladStance))
 	or (class == "DEATHKNIGHT" and (GetSpecialization() ~= 1))
 	or (class == "PALADIN" and (GetSpecialization() == 3))
 	or (class == "DRUID" and (GetSpecialization() == 1 or GetSpecialization() == 2))
@@ -5765,7 +5778,7 @@ function bossModPrototype:IsDps()--For features that simply should only be on fo
 end
 
 function bossModPrototype:IsTank()
-	return (class == "WARRIOR" and (GetSpecialization() == 3))
+	return (class == "WARRIOR" and (GetSpecialization() == 3) and not UnitBuff("player", gladStance))
 	or (class == "DEATHKNIGHT" and (GetSpecialization() == 1))
 	or (class == "PALADIN" and (GetSpecialization() == 2))
 	or (class == "DRUID" and (GetSpecialization() == 3))
