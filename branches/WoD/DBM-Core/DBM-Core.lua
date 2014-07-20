@@ -52,8 +52,8 @@
 -------------------------------
 DBM = {
 	Revision = tonumber(("$Revision$"):sub(12, -3)),
-	DisplayVersion = "5.4.16 alpha", -- the string that is shown as version
-	DisplayReleaseVersion = "5.4.15", -- Needed to work around old versions of BW sending improper version information
+	DisplayVersion = "6.0.0 alpha", -- the string that is shown as version
+	DisplayReleaseVersion = "6.0.0", -- Needed to work around old versions of BW sending improper version information
 	ReleaseRevision = 11270 -- the revision of the latest stable version that is available
 }
 
@@ -4401,7 +4401,8 @@ do
 
 	function DBM:StartLogging(timer, checkFunc)
 		self:Unschedule(DBM.StopLogging)
-		if DBM.Options.LogOnlyRaidBosses and savedDifficulty ~= "normal10" and savedDifficulty ~= "normal25" and savedDifficulty ~= "heroic10" and savedDifficulty ~= "heroic25" and savedDifficulty ~= "normal" and savedDifficulty ~= "heroic" and savedDifficulty ~= "mythic" then return end
+		local _, instanceType = GetInstanceInfo()
+		if DBM.Options.LogOnlyRaidBosses and (instanceType ~= "raid" or savedDifficulty == "lfr" or savedDifficulty == "lfr25") then return end
 		if DBM.Options.AutologBosses then--Start logging here to catch pre pots.
 			if not LoggingCombat() then
 				autoLog = true

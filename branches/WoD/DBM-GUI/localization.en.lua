@@ -177,7 +177,7 @@ L.HP_GrowUpwards			= "Expand health frame upward"
 L.HP_ShowDemo				= "Show HP frame"
 L.BarWidth					= "Bar width: %d"
 
--- Tab: Spam Filter
+-- Tab: Global Filter
 L.Panel_SpamFilter			= "Global and Spam Filters"
 L.Area_SpamFilter_Outgoing	= "Global Filter Options"
 L.SpamBlockNoShowAnnounce	= "Do not show announces or play warning sounds"
@@ -188,6 +188,7 @@ L.SpamBlockNoRangeFrame		= "Do not show range frame"
 L.SpamBlockNoInfoFrame		= "Do not show info frame"
 L.SpamBlockNoHealthFrame	= "Do not show health frame"
 
+-- Tab: Spam Filter
 L.Area_SpamFilter			= "Spam Filter Options"
 L.StripServerName			= "Strip realm name in warnings and timers"
 L.SpamBlockBossWhispers		= "Filter &lt;DBM&gt; warning whispers while fighting"

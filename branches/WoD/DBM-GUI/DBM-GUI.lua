@@ -2385,7 +2385,7 @@ local function CreateOptionsMenu()
 		spamOutArea:AutoSetDimension()
 		spamPanel:SetMyOwnHeight()
 	end
-	
+
 	do
 		local hideBlizzPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_HideBlizzard, "option")
 		local hideBlizzArea = hideBlizzPanel:CreateArea(L.Area_HideBlizzard, nil, 160, true)
@@ -2509,7 +2509,7 @@ do
 				top1value1:SetText( stats.normal25Kills )
 				top1value2:SetText( stats.normal25Pulls - stats.normal25Kills )
 				top1value3:SetText( stats.normal25BestTime and ("%d:%02d"):format(mfloor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-" )
-			else--WoD 4 difficulty stats, TOP: Normal, LFR. BOTTOM. Heroic, Mythic
+			elseif statsType == 3 then--WoD 4 difficulty stats, TOP: Normal, LFR. BOTTOM. Heroic, Mythic
 				top2value1:SetText( stats.lfr25Kills )
 				top2value2:SetText( stats.lfr25Pulls-stats.lfr25Kills )
 				top2value3:SetText( stats.lfr25BestTime and ("%d:%02d"):format(mfloor(stats.lfr25BestTime / 60), stats.lfr25BestTime % 60) or "-" )
@@ -2519,6 +2519,19 @@ do
 				bottom2value1:SetText( stats.mythicKills )
 				bottom2value2:SetText( stats.mythicPulls-stats.mythicKills )
 				bottom2value3:SetText( stats.mythicBestTime and ("%d:%02d"):format(mfloor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-" )
+			else
+				top2value1:SetText( stats.normal25Kills )
+				top2value2:SetText( stats.normal25Pulls - stats.normal25Kills )
+				top2value3:SetText( stats.normal25BestTime and ("%d:%02d"):format(math.floor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-" )
+				top3value1:SetText( stats.lfr25Kills )
+				top3value2:SetText( stats.lfr25Pulls-stats.lfr25Kills )
+				top3value3:SetText( stats.lfr25BestTime and ("%d:%02d"):format(math.floor(stats.lfr25BestTime / 60), stats.lfr25BestTime % 60) or "-" )
+				bottom1value1:SetText( stats.heroicKills )
+				bottom1value2:SetText( stats.heroicPulls-stats.heroicKills )
+				bottom1value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
+				bottom2value1:SetText( stats.heroic25Kills )
+				bottom2value2:SetText( stats.heroic25Pulls-stats.heroic25Kills )
+				bottom2value3:SetText( stats.heroic25BestTime and ("%d:%02d"):format(math.floor(stats.heroic25BestTime / 60), stats.heroic25BestTime % 60) or "-" )
 			end
 		end
 	end
@@ -2680,7 +2693,7 @@ do
 					top1header:SetText(RAID_DIFFICULTY1)
 					top2header:SetText(RAID_DIFFICULTY2)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
-				elseif mod.type == "RAID" and not mod.hasLFR and not mod.hasMythic then--Cata and some wrath raids
+				elseif mod.type == "RAID" and not mod.hasLFR and not mod.hasMythic then--Cata(except DS) and some wrath raids
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
 					--Use top1, top2, bottom1 and bottom2 area.
 					top2header:SetPoint("LEFT", top1header, "LEFT", 220, 0)
@@ -2710,7 +2723,7 @@ do
 					bottom1header:SetText(PLAYER_DIFFICULTY2)
 					bottom2header:SetText(PLAYER_DIFFICULTY2)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
-				elseif mod.type == "RAID" and not mod.hasMythic then--All MoP raids except SoO
+				elseif mod.type == "RAID" and not mod.hasMythic then--DS + All MoP raids(except SoO)
 					--Use top1, top2, top3, bottom1 and bottom2 area.
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
 					top2header:SetPoint("LEFT", top1header, "LEFT", 150, 0)
@@ -2748,10 +2761,7 @@ do
 					bottom2header:SetText(PLAYER_DIFFICULTY2)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 				else--WoD Zone
-					if not PLAYER_DIFFICULTY6 then
-						print("DBM Notice: This should not happen, because it's only true for WoD mods, and in WoD PLAYER_DIFFICULTY6 won't be nil. If you see this, report this error and this mod name to MysticalOS/Omega: "..mod.name)
-						PLAYER_DIFFICULTY6 = UNKNOWN--Fill the nil global with "Unknown" in case this scenario does happen, we can at least make sure mod loads for user without issue
-					end
+					statsType = 3
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
 					--Use top1, top2, bottom1 and bottom2 area.
 					top2header:SetPoint("LEFT", top1header, "LEFT", 220, 0)

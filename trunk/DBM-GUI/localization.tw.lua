@@ -13,7 +13,6 @@ L.OTabBosses	= "首領模組"
 L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options		= "綜合設置"
-L.TabCategory_WoD	 		= EXPANSION_NAME5 or "德拉諾之霸"
 L.TabCategory_MOP	 		= EXPANSION_NAME4
 L.TabCategory_CATA	 		= EXPANSION_NAME3
 L.TabCategory_WOTLK 		= EXPANSION_NAME2
