@@ -13,7 +13,6 @@ L.OTabBosses	= "Bosse"
 L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options	 	= "Allgemeine Einstellungen"
-L.TabCategory_WoD	 		= EXPANSION_NAME5 or "Warlords of Draenor"
 L.TabCategory_MOP	 		= EXPANSION_NAME4
 L.TabCategory_CATA	 		= EXPANSION_NAME3
 L.TabCategory_WOTLK 		= EXPANSION_NAME2
