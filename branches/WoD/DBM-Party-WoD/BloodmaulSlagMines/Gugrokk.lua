@@ -10,8 +10,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 150677 150784 150755",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED"
+	"SPELL_PERIODIC_DAMAGE 150784",
+	"SPELL_PERIODIC_MISSED 150784"
 )
 
 --TODO, Add heroic ability "Flame Buffet" Since ability name to common can't just wowhead the spellid
