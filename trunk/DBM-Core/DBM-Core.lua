@@ -2679,12 +2679,12 @@ function DBM:LoadMod(mod)
 			if doRequest then
 				timerRequestInProgress = true
 				-- Request timer to 3 person to prevent failure.
-				DBM:Schedule(2, DBM.RequestTimers, DBM)
-				DBM:Schedule(4, DBM.RequestTimers, DBM)
-				DBM:Schedule(6, DBM.RequestTimers, DBM)
-				DBM:Schedule(6.5, function() timerRequestInProgress = false end)
+				DBM:Schedule(8, DBM.RequestTimers, DBM)
+				DBM:Schedule(10, DBM.RequestTimers, DBM)
+				DBM:Schedule(12, DBM.RequestTimers, DBM)
+				DBM:Schedule(12.5, function() timerRequestInProgress = false end)
 			else
-				DBM:Schedule(2, DBM.RequestTimers, DBM)--Do once for break timer out of combat
+				DBM:Schedule(6, DBM.RequestTimers, DBM)--Do once for break timer out of combat
 			end
 		end
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
@@ -4483,12 +4483,15 @@ do
 		for i, v in pairs(raid) do
 			-- If bestClient player's realm is not same with your's, timer recovery by bestClient not works at all.
 			-- SendAddonMessage target channel is "WHISPER" and target player is other realm, no msg sends at all. At same realm, message sending works fine. (Maybe bliz bug or SendAddonMessage function restriction?)
-			if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and (v.revision or 0) > ((bestClient and bestClient.revision) or 0) and not select(2, UnitName(v.id)) and not clientUsed[v.name] then
+			if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and v.revision and v.revision >= ((bestClient and bestClient.revision) or 0) and not select(2, UnitName(v.id)) and (GetTime() - (clientUsed[v.name] or 0)) > 10 then
 				bestClient = v
-				clientUsed[v.name] = true
+				clientUsed[v.name] = GetTime()
 			end
 		end
 		if not bestClient then return end
+		if DBM.Options.DebugMode then
+			print("Requesting timer to "..bestClient.name)
+		end
 		requestedFrom = bestClient.name
 		requestTime = GetTime()
 		SendAddonMessage("D4", "RT", "WHISPER", bestClient.name)
