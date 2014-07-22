@@ -543,10 +543,10 @@ do
 
 		function registerSpellId(event, spellId)
 			if type(spellId) == "string" then--Something is screwed up, like SPELL_AURA_APPLIED DOSE
-				print("DBM RegisterEvents Debug: "..spellId.." not a number!")
+				DBM:AddMsg("DBM RegisterEvents Error: "..spellId.." is not a number!")
 			end
 			if spellId and not GetSpellInfo(spellId) then
-				print("DBM RegisterEvents Debug: "..spellId.." spell id does not exist!")
+				DBM:AddMsg("DBM RegisterEvents Error: "..spellId.." spell id does not exist!")
 				return
 			end
 			if not registeredSpellIds[event] then
@@ -937,7 +937,7 @@ do
 				local addonName, _, _, enabled = GetAddOnInfo(i)
 				if GetAddOnMetadata(i, "X-DBM-Mod") and enabled then
 					if checkEntry(bannedMods, addonName) then
-						print("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. "that is compatible with your game version.")
+						DBM:AddMsg("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. "that is compatible with your game version.")
 					else
 						local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
 						tinsert(self.AddOns, {
@@ -1514,7 +1514,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:RequestInstanceInfo()
 	elseif cmd:sub(1, 5) == "debug" then
 		DBM.Options.DebugMode = DBM.Options.DebugMode == false and true or false
-		DBM:AddMsg("DebugMode : " .. (DBM.Options.DebugMode and "on" or "off"))
+		DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
 	else
 		DBM:LoadGUI()
 	end
@@ -2830,10 +2830,8 @@ do
 		else--Not from self, it means someone with a higher version than us probably sent it
 			canSetIcons[optionName] = false
 		end
-		if DBM.Options.DebugMode then
-			local name = DBM:GetFullPlayerNameByGUID(iconSetPerson[optionName])
-			print("DBM Debug: "..name.." was elected icon setter for "..optionName)
-		end
+		local name = DBM:GetFullPlayerNameByGUID(iconSetPerson[optionName])
+		DBM:Debug(name.." was elected icon setter for "..optionName)
 	end
 
 	syncHandlers["K"] = function(sender, cId)
@@ -3632,9 +3630,7 @@ do
 	end
 
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
-		if DBM.Options.DebugMode then
-			print("DBM Debug: ENCOUNTER_START event fired:", encounterID, name, difficulty, size)
-		end
+		self:Debug("ENCOUNTER_START event fired: "..encounterID.." "..name.." "..difficulty.." "..size)
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if not v.noESDetection then
@@ -3661,9 +3657,7 @@ do
 	end
 	
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
-		if DBM.Options.DebugMode then
-			print("DBM Debug: ENCOUNTER_END event fired:", encounterID, name, difficulty, size, success)
-		end
+		self:Debug("ENCOUNTER_END event fired: "..encounterID.." "..name.." "..difficulty.." "..size.." "..success)
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
@@ -3803,10 +3797,8 @@ function checkWipe(confirm)
 			DBM:Schedule(3, checkWipe)
 		elseif confirm then
 			for i = #inCombat, 1, -1 do
-				if DBM.Options.DebugMode then
-					local reason = (wipe == 1 and "No combat unit found in your party." or "No boss found : "..(wipe or "nil"))
-					print("DBM Debug: You wiped. Reason : "..reason)
-				end
+				local reason = (wipe == 1 and "No combat unit found in your party." or "No boss found : "..(wipe or "nil"))
+				DBM:Debug("You wiped. Reason : "..reason)
 				DBM:EndCombat(inCombat[i], true)
 			end
 		else
@@ -3850,11 +3842,11 @@ local statVarTable = {
 }
 
 function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
-	if DBM.Options.DebugMode and not mod.inCombat then
+	if not mod.inCombat then
 		if event then
-			print("DBM Debug: StartCombat called by : "..event)
+			self:Debug("StartCombat called by : "..event)
 		else
-			print("DBM Debug: StartCombat called by individual mod or unknown reason.")
+			self:Debug("StartCombat called by individual mod or unknown reason.")
 		end
 	end
 	cSyncSender = {}
@@ -4348,9 +4340,7 @@ function DBM:OnMobKill(cId, synced)
 			v.combatInfo.killMobs[cId] = false
 			if v.numBoss then
 				v.vb.bossLeft = (v.vb.bossLeft or v.numBoss) - 1
-				if DBM.Options.DebugMode then
-					print("DBM Debug: Boss left - "..v.vb.bossLeft.."/"..v.numBoss)
-				end
+				self:Debug("Boss left - "..v.vb.bossLeft.."/"..v.numBoss)
 			end
 			local allMobsDown = true
 			for i, v in pairs(v.combatInfo.killMobs) do
@@ -4489,9 +4479,7 @@ do
 			end
 		end
 		if not bestClient then return end
-		if DBM.Options.DebugMode then
-			print("Requesting timer to "..bestClient.name)
-		end
+		self:Debug("Requesting timer recovery to "..bestClient.name)
 		requestedFrom = bestClient.name
 		requestTime = GetTime()
 		SendAddonMessage("D4", "RT", "WHISPER", bestClient.name)
@@ -4833,6 +4821,13 @@ function DBM:AddMsg(text, prefix)
 	local frame = _G[tostring(DBM.Options.ChatFrame)]
 	frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
 	frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(prefix), tostring(text)), 0.41, 0.8, 0.94)
+end
+
+function DBM:Debug(text)
+	if not self.Options.DebugMode then return end
+	local frame = _G[tostring(DBM.Options.ChatFrame)]
+	frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
+	frame:AddMessage("|cffff7d0aDBM Debug:|r "..text, 1, 1, 1)
 end
 
 do
