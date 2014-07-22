@@ -60,7 +60,6 @@ L.Latency_Text				= "Set max latency sync threshold: %d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "General DBM Timer Options"
 L.SKT_Enabled				= "Always show record victory timer (Overrides boss-specific option)"
-L.CRT_Enabled				= "Show timer for next combat ressurection charge (6.x difficulties only)"
 L.ChallengeTimerOptions		= "Set option for challenge mode best clear timer"
 L.ChallengeTimerPersonal	= "Personal"
 L.ChallengeTimerGuild		= GUILD
