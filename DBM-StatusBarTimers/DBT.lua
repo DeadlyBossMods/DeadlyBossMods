@@ -534,7 +534,7 @@ end
 --end
 function DBT:GetBarIterator()
 	if not self.bars then
-		print("DBM Debug: GetBarIterator failed for unknown reasons")
+		DBM:Debug("GetBarIterator failed for unknown reasons")
 		return
 	end
 	return pairs(self.bars)
