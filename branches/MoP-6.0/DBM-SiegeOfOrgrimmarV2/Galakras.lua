@@ -88,7 +88,7 @@ local timerTowerGruntCD				= mod:NewTimer(60, "timerTowerGruntCD", 89253)
 local timerDemolisherCD				= mod:NewNextTimer(20, "ej8562", nil, nil, nil, 116040)--EJ is just not complete yet, shouldn't need localizing
 ----High Enforcer Thranok (Road)
 local timerShatteringCleaveCD		= mod:NewCDTimer(7.5, 146849, nil, mod:IsTank())
-local timerCrushersCallCD			= mod:NewNextTimer(30, 146769)
+local timerCrushersCallCD			= mod:NewCDTimer(30, 146769)
 
 --Phase 3: Galakras,The Last of His Progeny
 local timerFlamesofGalakrondCD		= mod:NewCDTimer(6, 147068)

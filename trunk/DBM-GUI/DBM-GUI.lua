@@ -401,19 +401,15 @@ do
 		local spellName = GetSpellInfo(spellId)
 		if not spellName then
 			spellName = DBM_CORE_UNKNOWN
-			if DBM.Options.DebugMode then
-				print("Spell ID not exists: "..spellId)
-			end
+			DBM:Debug("Spell ID not exists: "..spellId)
 		end
 		return ("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellId, spellName)
 	end
 
 	local function replaceJournalLinks(id)
-		if DBM.Options.DebugMode then
-			local check = EJ_GetSectionInfo(tonumber(id))
-			if not check then 
-				print("Journal ID not exists: "..id)
-			end
+		local check = EJ_GetSectionInfo(tonumber(id))
+		if not check then 
+			DBM:Debug("Journal ID not exists: "..id)
 		end
 		local link = select(9, EJ_GetSectionInfo(tonumber(id))) or DBM_CORE_UNKNOWN
 		return link:gsub("|h%[(.*)%]|h", "|h%1|h")
