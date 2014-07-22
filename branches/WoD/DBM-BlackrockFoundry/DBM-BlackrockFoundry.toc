@@ -22,3 +22,4 @@ Darmac.lua
 Thogar.lua
 IronMaidens.lua
 Blackhand.lua
+BlackrockFoundryTrash.lua
