@@ -174,8 +174,8 @@ L.HP_ShowDemo				= "체력 바 보기"
 L.BarWidth					= "바 길이: %d"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "기타 설정"
-L.Area_SpamFilter_Outgoing	= "경고 기능 끄기 설정(다른 설정보다 항상 우선됨)"
+L.Panel_SpamFilter			= "필터 설정"
+L.Area_SpamFilter_Outgoing	= "기능 끄기 설정(다른 설정보다 항상 우선됨)"
 L.SpamBlockNoShowAnnounce	= "알림 보이지 않기"
 L.DontShowFarWarnings		= "멀리 떨어진 곳에서 시전된 주문 알림 및 바를 보이지 않기"
 L.SpamBlockNoSendWhisper	= "다른 공격대원 또는 파티원에게 우두머리 주문 귓속말 알림을 보내지 않기"
@@ -185,7 +185,7 @@ L.SpamBlockNoInfoFrame		= "정보 창 보이지 않기"
 L.SpamBlockNoHealthFrame	= "우두머리 체력 바 보이지 않기"
 
 -- Tab: Spam Filter
-L.Area_SpamFilter			= "일반 기능 끄기 설정"
+L.Area_SpamFilter			= "일반 필터 설정"
 L.StripServerName			= "알림 및 바에서 서버명 보이지 않기"
 L.SpamBlockBossWhispers		= "전투 중 다른 공격대원 또는 파티원이 보낸 &lt;DBM&gt; 귓속말 감추기"
 L.BlockVersionUpdateNotice	= "업데이트 알림 창 끄기(추천하지 않음)"
@@ -219,7 +219,7 @@ L.DisableCinematics			= "게임 내 동영상 끄기"
 L.AfterFirst				= "1회 이상 본 동영상"
 L.Always					= "모든 동영상"
 
-L.Panel_ExtraFeatures		= "추가 기능"
+L.Panel_ExtraFeatures		= "추가 기능 설정"
 L.Area_ChatAlerts			= "대화창 알림 설정"
 L.RoleSpecAlert				= "공격대 참여시 전문화와 전리품 전문화가 맞지 않을시 대화창에 알림 보기"
 L.WorldBossAlert			= "현재 서버에서 친구 또는 길드원에 의해 야외 우두머리 전투가 시작 된 경우 메세지 보이기(서버 공용지역에서 보낸 경우 부정확할 수 있습니다)"
