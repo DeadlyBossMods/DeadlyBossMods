@@ -102,7 +102,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 155323 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	elseif spellId == 155323 then
+	elseif spellId == 155539 then
 		timerWorldShakingCD:Start()
 	end
 end
