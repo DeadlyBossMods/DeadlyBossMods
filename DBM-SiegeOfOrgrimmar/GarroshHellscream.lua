@@ -262,13 +262,14 @@ function mod:SPELL_CAST_START(args)
 		soundWhirlingCorrpution:Play()
 	elseif spellId == 147120 then
 		self.vb.bombardCount = self.vb.bombardCount + 1
-		warnBombardment:Show(self.vb.bombardCount)
-		specWarnBombardment:Show(self.vb.bombardCount)
+		local count = self.vb.bombardCount
+		warnBombardment:Show(count)
+		specWarnBombardment:Show(count)
 		specWarnBombardmentOver:Schedule(13)
 		timerBombardment:Start()
 		countdownBombardmentEnd:Start()
-		timerBombardmentCD:Start(bombardCD[self.vb.bombardCount] or 15, self.vb.bombardCount+1)
-		countdownBombardment:Start(bombardCD[self.vb.bombardCount] or 15)
+		timerBombardmentCD:Start(bombardCD[count] or 15, count+1)
+		countdownBombardment:Start(bombardCD[count] or 15)
 		timerClumpCheck:Start()
 --[[		if self.Options.RangeFrame then
 			if self:IsDifficulty("heroic10") then
@@ -472,6 +473,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownWhirlingCorruption:Start(44.5)
 	elseif spellId == 146984 then--Phase 4 trigger
 		self.vb.phase = 4
+		self.vb.bombardCount = 0
 		timerEnterRealm:Cancel()
 		timerDesecrateCD:Cancel()
 		timerTouchOfYShaarjCD:Cancel()
