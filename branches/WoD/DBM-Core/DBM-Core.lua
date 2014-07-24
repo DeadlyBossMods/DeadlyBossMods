@@ -2590,7 +2590,7 @@ do
 	end
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
-		FixForShittyComputers(true)
+		FixForShittyComputers()
 		DBM:Schedule(3, FixForShittyComputers, DBM)
 	end
 
