@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1122, "DBM-BlackrockFoundry", nil, 457)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(71543)
+mod:SetCreatureID(76865)
 mod:SetEncounterID(1694)
 mod:SetZone()
 
@@ -39,7 +39,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 147824 then--Tower Spell
+	if spellId == 147824 then
 		warnMuzzleSpray:Show()
 		specWarnMuzzleSpray:Show()
 	end
