@@ -344,7 +344,7 @@ end
 -- automatically sends an addon message to the appropriate channel (INSTANCE_CHAT, RAID or PARTY)
 local function sendSync(prefix, msg)
 	msg = msg or ""
-	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
+	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() and not C_Garrison:IsOnGarrisonMap() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
 		SendAddonMessage("D4", prefix .. "\t" .. msg, "INSTANCE_CHAT")
 	else
 		if IsInRaid() then
@@ -2426,7 +2426,7 @@ local function AcceptPartyInvite()
 end
 function DBM:PARTY_INVITE_REQUEST(sender)
 	--First off, if you are in queue for something, lets not allow guildies or friends boot you from it.
- 	if IsInInstance() or GetLFGMode(1) or GetLFGMode(2) or GetLFGMode(3) or GetLFGMode(4) or GetLFGMode(5) then return end
+ 	if (IsInInstance() and not C_Garrison:IsOnGarrisonMap()) or GetLFGMode(1) or GetLFGMode(2) or GetLFGMode(3) or GetLFGMode(4) or GetLFGMode(5) then return end
  	--First check realID
  	if DBM.Options.AutoAcceptFriendInvite then
 		local _, numBNetOnline = BNGetNumFriends()
@@ -2491,7 +2491,7 @@ function DBM:UPDATE_BATTLEFIELD_STATUS()
 end
 
 function DBM:CINEMATIC_START()
-	if not IsInInstance() or DBM.Options.MovieFilter == "Never" then return end
+	if not IsInInstance() or C_Garrison:IsOnGarrisonMap() or DBM.Options.MovieFilter == "Never" then return end
 	SetMapToCurrentZone()
 	for itemId, mapId in pairs(blockMovieSkipItems) do
 		if mapId == LastInstanceMapID then
@@ -5062,7 +5062,7 @@ end
 -------------------
 MovieFrame:HookScript("OnEvent", function(self, event, id)
 	if event == "PLAY_MOVIE" and id then
-		if not IsInInstance() or DBM.Options.MovieFilter == "Never" then return end
+		if not IsInInstance() or C_Garrison:IsOnGarrisonMap() or DBM.Options.MovieFilter == "Never" then return end
 		if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[id] then
 			MovieFrame_OnMovieFinished(self)
 		else
