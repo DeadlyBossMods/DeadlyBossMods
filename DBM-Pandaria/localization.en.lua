@@ -119,3 +119,12 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Pull					= "You will take my place on the eternal brazier."
 })
+
+-----------------
+--  Zandalari  --
+-----------------
+L = DBM:GetModLocalization("Zandalari")
+
+L:SetGeneralLocalization({
+	name =	"Zandalari"
+})
