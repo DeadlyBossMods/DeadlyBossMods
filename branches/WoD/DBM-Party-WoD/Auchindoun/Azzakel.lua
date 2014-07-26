@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 
 local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
 local warnClawsOfArgus				= mod:NewSpellAnnounce(153764, 3)
-local warnFelblast					= mod:NewCastAnnounce(154221, 3, nil, not mod:IsHealer())--Spammy but still important. May improve by checking if interrupt spells on CD, if are, don't show warning, else, spam warning because interrupt SHOULD be on CD
+local warnFelblast					= mod:NewCastAnnounce(154221, 3, nil, nil, not mod:IsHealer())--Spammy but still important. May improve by checking if interrupt spells on CD, if are, don't show warning, else, spam warning because interrupt SHOULD be on CD
 local warnSummonFelguard			= mod:NewSpellAnnounce(164081, 3, 56285, not mod:IsHealer())
 
 local specWarnCurtainOfFlame		= mod:NewSpecialWarningYou(153396)
