@@ -27,7 +27,7 @@ local specWarnAcidTorrent			= mod:NewSpecialWarningSpell(156240, mod:IsTank(), n
 local specWarnExplosiveShard		= mod:NewSpecialWarningYou(156370)
 local yellExplosiveShard			= mod:NewYell(156370)
 local specWarnRollingFury			= mod:NewSpecialWarningSpell(155898, nil, nil, nil, 2)
-local specWarnRollingFuryEnded		= mod:NewSpecialWarningFaded(155898)
+local specWarnRollingFuryEnded		= mod:NewSpecialWarningFades(155898)
 
 --local timerBlackrockBarrageCD		= mod:NewNextTimer(30, 156879)
 --local timerAcidTorrentCD			= mod:NewNextTimer(30, 156240)
