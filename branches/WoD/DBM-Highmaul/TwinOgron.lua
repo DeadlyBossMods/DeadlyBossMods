@@ -9,32 +9,45 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 158057 157943 158134 158093 158200"
+	"SPELL_CAST_START 158057 157943 158134 158093 158200 157952 158415 158419",
+	"SPELL_CAST_SUCCESS 158385"
 )
 
+--Phemos
 local warnEnfeeblingroar			= mod:NewCountAnnounce(158057, 3)
-local warnWhirlwind					= mod:NewSpellAnnounce(157943, 3, nil, mod:IsMelee())
+local warnWhirlwind					= mod:NewCountAnnounce(157943, 3)
+local warnQuake						= mod:NewCountAnnounce(158200, 3)
+--Pol
 local warnShieldCharge				= mod:NewTargetAnnounce(158134, 4)--Target scanning assumed
 local warnInterruptingShout			= mod:NewCastAnnounce(158093, 3)
-local warnQuake						= mod:NewCountAnnounce(158200, 3)
---local warnPulverize					= mod:NewSpellAnnounce(158385, 3)--Too many spellids to guess. Investigate this after logs
+local warnPulverize					= mod:NewCountAnnounce(158385, 3)--158385 is primary activation with SPELL_CAST_SUCCESS, cast at start, followed by 3 channeled IDs using SPELL_CAST_START
 
+--Phemos
 local specWarnEnfeeblingRoar		= mod:NewSpecialWarningCount(158057)
-local specWarnWhirlWind				= mod:NewSpecialWarningRun(157943, mod:IsMelee())
+local specWarnWhirlWind				= mod:NewSpecialWarningCount(157943, nil, nil, nil, 2)
+local specWarnQuake					= mod:NewSpecialWarningCount(158200, nil, nil, nil, 2)
+--Pol
 local specWarnShieldCharge			= mod:NewSpecialWarningYou(158134)
 local specWarnShieldChargeNear		= mod:NewSpecialWarningClose(158134)
 local yellShieldCharge				= mod:NewYell(158134)
 local specWarnInterruptingShout		= mod:NewSpecialWarningCast(158093)
-local specWarnQuake					= mod:NewSpecialWarningCount(158200, nil, nil, nil, 2)
+local specWarnPulverize				= mod:NewSpecialWarningSpell(158385, nil, nil, nil, 2)
 
---local timerEnfeeblingRoarCD		= mod:NewCDTimer(20, 158057)--Assumed less than 30sec because it lasts 30 seconds and stacks. 2 group rotation likely so probably 15-20sec CD
---local timerWhirlwindCD			= mod:NewCDTimer(20, 157943)
---local timerShieldChargeCD			= mod:NewCDTimer(20, 158134)
---local timerInterruptingShoutCD	= mod:NewCDTimer(20, 158093)
---local timerQuakeCD				= mod:NewCDTimer(20, 158200)
+--Phemos (83 second full rotation, 27-28 in between)
+local timerEnfeeblingRoarCD			= mod:NewNextCountTimer(28, 158057)
+local timerWhirlwindCD				= mod:NewNextCountTimer(27, 157943)
+local timerQuakeCD					= mod:NewNextCountTimer(27, 158200)
+--Pol (70 seconds full rotation, 23-24 seconds in between)
+local timerShieldChargeCD			= mod:NewNextTimer(24, 158134)
+local timerInterruptingShoutCD		= mod:NewNextTimer(23, 158093)
+local timerPulverizeCD				= mod:NewNextTimer(23, 158385)
+--^^Even though 6 cd timers, coded smart to only need 2 up at a time, by using the predictability of "next ability" timing.
 
+--Non resetting counts because strategy drastically changes based on number of people. Mechanics like debuff duration change with different player counts.
 mod.vb.EnfeebleCount = 0
 mod.vb.QuakeCount = 0
+mod.vb.WWCount = 0
+mod.vb.PulverizeCount = 0
 
 function mod:ShieldTarget(targetname, uId)
 	if not targetname then return end
@@ -50,6 +63,10 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.EnfeebleCount = 0
 	self.vb.QuakeCount = 0
+	self.vb.WWCount = 0
+	self.vb.PulverizeCount = 0
+	timerShieldChargeCD:Start(24-delay)
+	--2nd timer will start 2 seconds into pull when quake is cast.
 end
 
 function mod:OnCombatEnd()
@@ -57,75 +74,39 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 147688 then
+	if spellId == 158057 then
 		self.vb.EnfeebleCount = self.vb.EnfeebleCount + 1
 		warnEnfeeblingroar:Show(self.vb.EnfeebleCount)
 		specWarnEnfeeblingRoar:Show(self.vb.EnfeebleCount)
-		if self.vb.EnfeebleCount == 2 then--Atlernate 1 2 1 2 until have better understanding of mechanic, timing and strategy
-			self.vb.EnfeebleCount = 0
-		end
+		timerQuakeCD:Start()--Next Special
 	elseif spellId == 157943 then
-		warnWhirlwind:Show()
-		specWarnWhirlWind:Show()
+		self.vb.WWCount = self.vb.WWCount + 1
+		warnWhirlwind:Show(self.vb.WWCount)
+		specWarnWhirlWind:Show(self.vb.WWCount)
+		timerEnfeeblingRoarCD:Start()--Next Special
 	elseif spellId == 158134 then
-		self:BossTargetScanner(78238, "ShieldTarget", 0.15, 16)--Long cast, scan for a while in case it's a slow look, like sawblades were in SoO
+		self:BossTargetScanner(78238, "ShieldTarget", 0.01, 20)--This may still not be fast enough, it may require pre scanning like paragons and iron qon do. He spends most of his time looking at target PRE cast
+		timerInterruptingShoutCD:Start()--Next Special
 	elseif spellId == 158093 then
 		warnInterruptingShout:Show()
 		specWarnInterruptingShout:Show()
+		timerPulverizeCD:Start()--Next Special
 	elseif spellId == 158200 then
 		self.vb.QuakeCount = self.vb.QuakeCount + 1
 		warnQuake:Show(self.vb.QuakeCount)
 		specWarnQuake:Show(self.vb.QuakeCount)
-		if self.vb.QuakeCount == 3 then--Assume standard 3 healer Cd rotation, where group 1 is back up for 4th.
-			self.vb.QuakeCount = 0
-		end
+		timerWhirlwindCD:Start()--Next Special
+	elseif args:IsSpellID(157952, 158415, 158419) then--Pulverize channel IDs
+		self.vb.PulverizeCount = self.vb.PulverizeCount + 1
+		warnPulverize:Show(self.vb.PulverizeCount)
+		timerShieldChargeCD:Start()--Next Special
 	end
 end
---[[
+
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 147824 then--Tower Spell
-		warnMuzzleSpray:Show()
-		specWarnMuzzleSpray:Show()
+	if spellId == 158385 then--Activation
+		self.vb.PulverizeCount = 0
+		specWarnPulverize:Show()
 	end
 end
-
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 147068 then
-
-	end
-end
-
-function mod:SPELL_AURA_APPLIED_DOSE(args)
-	local spellId = args.spellId
-	if spellId == 147029 then
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 147068 then
-	end
-end
-
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 50630 and self:AntiSpam(2, 3) then--Eject All Passengers:
-	
-	end
-end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:find("cFFFF0404") then
-
-	elseif msg:find(L.tower) then
-
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "Adds" and self:AntiSpam(20, 4) and self:IsInCombat() then
-
-	end
-end--]]
