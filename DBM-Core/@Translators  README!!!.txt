@@ -10,6 +10,8 @@ svn://svn.deadlybossmods.com/dbm4-spelltimers (DBM-SpellTimers)
 svn://svn.deadlybossmods.com/dbm4-raidtools (DBM-RaidLeadTools)
 svn://svn.deadlybossmods.com/dbm-pvp (DBM-PVP)
 svn://svn.deadlybossmods.com/dbm-provinggrounds (DBM-Proving Grounds)
+svn://svn.deadlybossmods.com/dbm4/branches/MoP-6.0 (DBM-MoP)
+svn://svn.deadlybossmods.com/dbm4/branches/WoD (WOD-Beta)
 (login data is the same for all repositories)
 
 
