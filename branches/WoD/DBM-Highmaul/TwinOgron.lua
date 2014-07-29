@@ -43,6 +43,9 @@ local timerInterruptingShoutCD		= mod:NewNextTimer(23, 158093)
 local timerPulverizeCD				= mod:NewNextTimer(23, 158385)
 --^^Even though 6 cd timers, coded smart to only need 2 up at a time, by using the predictability of "next ability" timing.
 
+local countdownPhemos				= mod:NewCountdown(27, nil, "PhemosSpecial")
+local countdownPol					= mod:NewCountdown("Alt23", nil, "PolSpecial")
+
 --Non resetting counts because strategy drastically changes based on number of people. Mechanics like debuff duration change with different player counts.
 mod.vb.EnfeebleCount = 0
 mod.vb.QuakeCount = 0
@@ -78,28 +81,34 @@ function mod:SPELL_CAST_START(args)
 		self.vb.EnfeebleCount = self.vb.EnfeebleCount + 1
 		warnEnfeeblingroar:Show(self.vb.EnfeebleCount)
 		specWarnEnfeeblingRoar:Show(self.vb.EnfeebleCount)
-		timerQuakeCD:Start()--Next Special
+		timerQuakeCD:Start(nil, self.vb.QuakeCount+1)--Next Special
+		countdownPhemos:Start()
 	elseif spellId == 157943 then
 		self.vb.WWCount = self.vb.WWCount + 1
 		warnWhirlwind:Show(self.vb.WWCount)
 		specWarnWhirlWind:Show(self.vb.WWCount)
-		timerEnfeeblingRoarCD:Start()--Next Special
+		timerEnfeeblingRoarCD:Start(nil, self.vb.EnfeebleCount+1)--Next Special
+		countdownPhemos:Start(28)
 	elseif spellId == 158134 then
 		self:BossTargetScanner(78238, "ShieldTarget", 0.01, 20)--This may still not be fast enough, it may require pre scanning like paragons and iron qon do. He spends most of his time looking at target PRE cast
 		timerInterruptingShoutCD:Start()--Next Special
+		countdownPol:Start()
 	elseif spellId == 158093 then
 		warnInterruptingShout:Show()
 		specWarnInterruptingShout:Show()
 		timerPulverizeCD:Start()--Next Special
+		countdownPol:Start()
 	elseif spellId == 158200 then
 		self.vb.QuakeCount = self.vb.QuakeCount + 1
 		warnQuake:Show(self.vb.QuakeCount)
 		specWarnQuake:Show(self.vb.QuakeCount)
-		timerWhirlwindCD:Start()--Next Special
+		timerWhirlwindCD:Start(nil, self.vb.WWCount+1)--Next Special
+		countdownPhemos:Start()
 	elseif args:IsSpellID(157952, 158415, 158419) then--Pulverize channel IDs
 		self.vb.PulverizeCount = self.vb.PulverizeCount + 1
 		warnPulverize:Show(self.vb.PulverizeCount)
 		timerShieldChargeCD:Start()--Next Special
+		countdownPol:Start(24)
 	end
 end
 

@@ -34,6 +34,11 @@ L= DBM:GetModLocalization(1196)
 --------------
 L= DBM:GetModLocalization(1148)
 
+L:SetOptionLocalization({
+	PhemosSpecial	= "Play countdown sound for Phemos' cooldowns",
+	PolSpecial		= "Play countdown sound for Pol's cooldowns"
+})
+
 --------------------
 --Fel Breaker --
 --------------------
