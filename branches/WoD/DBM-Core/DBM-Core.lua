@@ -1046,6 +1046,10 @@ do
 			self:Schedule(20, function()--Delay UNIT_HEALTH combat start for 20 sec. (not to break Timer Recovery stuff)
 				healthCombatInitialized = true
 			end)
+			if not GetCVarBool("Sound_EnableSFX") then--Sound was turned off on login, sooo
+				SetCVar("Sound_EnableSFX", 1)--Turn it on
+				SetCVar("Sound_EnableSFX", 0)--Then back off again to fix stupid blizzard bug
+			end
 		end
 	end
 end
