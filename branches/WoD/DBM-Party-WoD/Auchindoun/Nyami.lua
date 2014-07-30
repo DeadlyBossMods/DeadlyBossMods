@@ -10,8 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 154477",
-	"SPELL_CAST_START 155327",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_CAST_START 155327 153994"
 )
 
 
@@ -37,14 +36,12 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 155327 then
+	local spellId = args.spellId
+	if spellId == 155327 then
 		warnSoulVessel:Show()
 		specWarnSoulVessel:Show()
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 95323 then--Creature Special 1 (5s) (always cast 1sec before Torn spirits)
+		timerSoulVesselCD:Start()
+	elseif spellId == 153994 then
 		warnTornSpirits:Show()
 		specWarnTornSpirits:Show()
 	end
