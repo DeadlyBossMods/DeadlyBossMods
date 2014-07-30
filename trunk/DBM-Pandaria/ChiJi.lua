@@ -33,7 +33,7 @@ local timerBlazingSong			= mod:NewBuffActiveTimer(15, 144471)
 mod:AddReadyCheckOption(33117, false)
 
 function mod:BeaconTarget(targetname, uId)
-	if not targetname or (targetname == DBM_CORE_UNKNOWN) then return end
+	if not targetname then return end
 	warnBeaconOfHope:Show(targetname)
 	if targetname == UnitName("player") and not self:IsTanking(uId) then--Never targets tanks
 		yellBeacon:Yell()
