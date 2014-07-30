@@ -1047,8 +1047,13 @@ do
 				healthCombatInitialized = true
 			end)
 			if not GetCVarBool("Sound_EnableSFX") then--Sound was turned off on login, sooo
-				SetCVar("Sound_EnableSFX", 1)--Turn it on
-				SetCVar("Sound_EnableSFX", 0)--Then back off again to fix stupid blizzard bug
+				if not InCombatLockdown() then
+					SetCVar("Sound_EnableSFX", 1)--Turn it on
+					SetCVar("Sound_EnableSFX", 0)--Then back off again to fix stupid blizzard bug
+					print("DBM detected you actually want sound effects OFF so it took liberty of making sure it STAYS off. :)")
+				else
+					print("DBM detected you actually want sound effects OFF but blizzard blocks us from fixing it if you login while in combat :\ ")
+				end
 			end
 		end
 	end
