@@ -76,6 +76,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnFieryBoulder:Show()
 		if self.vb.boulderCount == 3 then
 			timerHeatWaveCD:Start()
+			self.vb.boulderCount = 0
 		else
 			timerFieryBoulderCD:Start(3.5)--Not to be confused with cast timer, that's 3 seconds. The previous meteor WILL hit ground before next cast.
 		end
@@ -92,7 +93,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 153227 and self:AntiSpam(2, 1) then
+	if args.spellId == 153227 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnBurningSlagFire:Show()
 	end
 end
