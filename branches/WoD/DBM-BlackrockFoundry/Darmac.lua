@@ -113,7 +113,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 155236 then
-		local amount = args.amount
+		local amount = args.amount or 1
 		warnCrushArmor:Show(args.destName, amount)
 		if amount >= 4 then
 			if args:IsPlayer() then
