@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 )
 
 --local warnOverwhelmingBlows			= mod:NewSpellAnnounce(155078, 3, nil, mod:IsTank() or mod:IsHealer())--Doesn't show cast event in combat log and I still don't get how it works.
---local warnCrumblingRoar				= mod:NewSpellAnnounce(155730, 3, nil, false)--Might be spammy. I have a hunch it may be so temp off by default
+local warnCrumblingRoar				= mod:NewSpellAnnounce(155730, 3, nil, false)--Might be spammy. I have a hunch it may be so temp off by default
 local warnInfernoSlice				= mod:NewSpellAnnounce(155080, 3)
 local warnWorldShaking				= mod:NewSpellAnnounce(155539, 3)
 local warnOverheadSmash				= mod:NewCountAnnounce(155301, 3)--every 6 seconds is ok, boss doesn't do much else during this phase. TODO< why does this fire outside of world shaking? tank out of range?
