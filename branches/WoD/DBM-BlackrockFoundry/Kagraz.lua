@@ -110,6 +110,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--timerMoltenTorrentCD:Start()
 		timerBlazingRadianceCD:Cancel()
 		timerMoltenTorrentCD:Start(30)
+		timerSummonCinderWolvesCD:Start()
 	elseif spellId == 154952 then
 		warnFixate:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
