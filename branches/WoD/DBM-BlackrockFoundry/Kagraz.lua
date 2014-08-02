@@ -9,7 +9,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 154932 156018 156040",
+	"SPELL_CAST_START 154932 156018 156040 155382",
 	"SPELL_CAST_SUCCESS 155318 155776 156724",
 	"SPELL_AURA_APPLIED 155277 155493 154952 163284 154950 155074",
 	"SPELL_AURA_APPLIED_DOSE 163284 154950 155074",
@@ -19,9 +19,9 @@ mod:RegisterEventsInCombat(
 local warnDevastatingSlam				= mod:NewSpellAnnounce(156018, 4)
 local warnDropHammer					= mod:NewSpellAnnounce(156040, 3)--Target scanning?
 
-local warnLavaSlash						= mod:NewSpellAnnounce(155318, 2, nil, false)--Likely cast often
+--local warnLavaSlash					= mod:NewSpellAnnounce(155318, 2, nil, false)--Likely cast often & doesn't show in combat log anyways except for damage and not THAT important
 local warnSummonEnchantedArmaments		= mod:NewSpellAnnounce(156724, 3)
-local warnMoltenTorrent					= mod:NewSpellAnnounce(154932, 3)--timerLavaSlashCD
+local warnMoltenTorrent					= mod:NewSpellAnnounce(154932, 3)
 local warnSummonCinderWolves			= mod:NewSpellAnnounce(155776, 3)--Cast trigger could be anything, undefined on wowhead. just "Channeled" which I've seen use START, SUCCESS and even APPLIED. sigh
 local warnFixate						= mod:NewTargetAnnounce(154952, 3)
 local warnFireStorm						= mod:NewSpellAnnounce(155493, 4, nil, mod:IsTank())
@@ -42,15 +42,16 @@ local specWarnCharringBreath			= mod:NewSpecialWarningYou(155074)--Assumed based
 local specWarnCharringBreathOther		= mod:NewSpecialWarningTaunt(155074)
 
 --local timerLavaSlashCD				= mod:NewCDTimer(10, 155318, nil, false)
---local timerMoltenTorrentCD			= mod:NewNextTimer(25, 154932)--Power Based. Show only one at a time to reduce bar space
---local timerSummonCinderWolvesCD		= mod:NewNextTimer(25, 155776)--Power Based Show only one at a time to reduce bar space
---local timerSummonBlazingRadianceCD	= mod:NewNextTimer(25, 155277)--Power Based Show only one at a time to reduce bar space
---local timerFireStormCD				= mod:NewNextTimer(50, 155493)--Power Based Except this one, starts after cinder wolves
+local timerMoltenTorrentCD				= mod:NewCDTimer(14, 154932)
+local timerSummonCinderWolvesCD			= mod:NewNextTimer(60, 155776)
+local timerBlazingRadianceCD			= mod:NewCDTimer(12, 155277)
+local timerFireStormCD					= mod:NewNextTimer(63, 155493)
 
 mod:AddRangeFrameOption("10/6")
 
 function mod:OnCombatStart(delay)
---	timerMoltenTorrentCD:Start(-delay)
+	timerMoltenTorrentCD:Start(30-delay)
+	timerSummonCinderWolvesCD:Start(-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
 	end
@@ -67,26 +68,28 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 154932 then
 		warnMoltenTorrent:Show()
 		specWarnMoltenTorrent:Show()
---		timerSummonCinderWolvesCD:Start()
+		timerMoltenTorrentCD:Start()
 	elseif spellId == 156018 then
 		warnDevastatingSlam:Show()
 	elseif spellId == 156040 then
 		warnDropHammer:Show()
+	elseif spellId == 155382 then
+		timerBlazingRadianceCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 155318 then
-		warnLavaSlash:Show()
-		--timerLavaSlashCD:Start()
-	elseif spellId == 155776 then--Move to START or APPLIED if wrong
+	if spellId == 155776 then--Move to START or APPLIED if wrong
 		warnSummonCinderWolves:Show()
 		specWarnCinderWolves:Show()
-		--timerSummonBlazingRadianceCD:Start()
-		--timerFireStormCD:Start()--Start here as well since starting any timer at something ast more than once may act up
+		timerBlazingRadianceCD:Start(34)
+		timerFireStormCD:Start()
 	elseif spellId == 156724 then--Move to START or APPLIED if wrong
 		warnSummonEnchantedArmaments:Show()
+--[[elseif spellId == 155318 then
+		warnLavaSlash:Show()
+		--timerLavaSlashCD:Start()--]]
 	end
 end
 
@@ -94,7 +97,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 155277 then
 		warnBlazingRadiance:CombinedShow(0.5, args.destName)--Assume it can affect more than one target
-		--timerSummonBlazingRadianceCD:Start()--Cast more than once?
 		if args:IsPlayer() then
 			specWarnBlazinRadiance:Show()
 			yellBlazinRadiance:Yell()
@@ -102,10 +104,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(10)
 			end
 		end
-	elseif spellId == 155776 then--Move to START or SUCCESS if wrong
+	elseif spellId == 155493 then--Move to START or SUCCESS if wrong
 		warnFireStorm:Show()
 		specWarnFireStorm:Show()
 		--timerMoltenTorrentCD:Start()
+		timerBlazingRadianceCD:Cancel()
+		timerMoltenTorrentCD:Start(30)
 	elseif spellId == 154952 then
 		warnFixate:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
