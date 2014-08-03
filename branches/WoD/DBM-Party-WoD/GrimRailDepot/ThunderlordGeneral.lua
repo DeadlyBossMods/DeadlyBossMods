@@ -7,58 +7,47 @@ mod:SetEncounterID(1736)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_CAST_START 162066 162058",
+	"SPELL_PERIODIC_DAMAGE 161588",
+	"SPELL_PERIODIC_MISSED 161588"
 )
 
 
-local warnGroundSmash		= mod:NewCastAnnounce(119684, 3)
-local warnStaff				= mod:NewSpellAnnounce("ej5973", 2)
-local warnRoar				= mod:NewSpellAnnounce(122959, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnWhirlwindingAxe	= mod:NewSpellAnnounce(119374, 4)
-local warnStreamBlades		= mod:NewSpellAnnounce("ej5972", 4)
-local warnCrossbowTrap		= mod:NewSpellAnnounce("ej5974", 4)
+local warnFreezingSnare			= mod:NewSpellAnnounce(162066, 3)
+local warnThunderousBreath		= mod:NewSpellAnnounce(119374, 4)
+local warnSpinningSpear			= mod:NewSpellAnnounce(162058, 3)
 
-local specWarnSmash			= mod:NewSpecialWarningMove(119684, mod:IsTank())
+local specWarnFreezingSnare		= mod:NewSpecialWarningSpell(162066)
+local specWarnThunderousBreath	= mod:NewSpecialWarningSpell(161801, nil, nil, nil, 2)
+local specWarnDiffusedEnergy	= mod:NewSpecialWarningMove(161588)
 
-local timerSmashCD			= mod:NewCDTimer(28, 119684)
-local timerStaffCD			= mod:NewCDTimer(23, "ej5973")--23~25 sec.
-local timerWhirlwindingAxe	= mod:NewNextTimer(15, 119374)
---local timerRoarCD			= mod:NewCDTimer(48, 122959)--Need to confirm, i crashed during log and only got 2 casts, so only one CD, not enough confirmation for me.
+local timerFreezingSnareCD		= mod:NewNextTimer(17, 162066)
+local timerThunderousBreath		= mod:NewNextTimer(17, 161801)
 
 function mod:OnCombatStart(delay)
-	timerStaffCD:Start(8-delay)
-	timerSmashCD:Start(9.5-delay)
-	timerWhirlwindingAxe:Start(-delay)
+	timerFreezingSnareCD:Start(5.5-delay)
+	timerThunderousBreath:Start(11-delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 119684 then
-		warnGroundSmash:Show()
-		specWarnSmash:Show()
-		timerSmashCD:Start()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 122959 then
-		warnRoar:Show()
---		timerRoarCD:Start()
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 120109 then
-		warnStaff:Show()
-		timerStaffCD:Start()
-	elseif spellId == 120083 then
+	if args.spellId == 162066 then
 		warnWhirlwindingAxe:Show()
-	elseif spellId == 120094 then
-		warnStreamBlades:Show()
-	elseif spellId == 120139 then
-		warnCrossbowTrap:Show()
+		specWarnFreezingSnare:Show()
+		timerFreezingSnareCD:Start()
+		--Because using SPELL_CAST_SUCCESS is a bit ugly and it's always 5-6 sec after trap anyways
+		warnThunderousBreath:Schedule(5)
+		specWarnThunderousBreath:Schedule(5)
+		timerThunderousBreath:Schedule(5)
+	elseif args.spellId == 162066 then
+		warnSpinningSpear:Show()
 	end
-end--]]
+end
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 161588 and destGUID == UnitGUID("player") and self:AntiSpam() then
+		specWarnDiffusedEnergy:Show()
+	end
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

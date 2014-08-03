@@ -43,7 +43,7 @@ local specWarnCharringBreathOther		= mod:NewSpecialWarningTaunt(155074)
 
 --local timerLavaSlashCD				= mod:NewCDTimer(10, 155318, nil, false)
 local timerMoltenTorrentCD				= mod:NewCDTimer(14, 154932)
-local timerSummonCinderWolvesCD			= mod:NewNextTimer(60, 155776)
+local timerSummonCinderWolvesCD			= mod:NewNextTimer(74, 155776)
 local timerBlazingRadianceCD			= mod:NewCDTimer(12, 155277)
 local timerFireStormCD					= mod:NewNextTimer(63, 155493)
 
@@ -51,7 +51,7 @@ mod:AddRangeFrameOption("10/6")
 
 function mod:OnCombatStart(delay)
 	timerMoltenTorrentCD:Start(30-delay)
-	timerSummonCinderWolvesCD:Start(-delay)
+	timerSummonCinderWolvesCD:Start(60-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
 	end
@@ -107,10 +107,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 155493 then--Move to START or SUCCESS if wrong
 		warnFireStorm:Show()
 		specWarnFireStorm:Show()
-		--timerMoltenTorrentCD:Start()
 		timerBlazingRadianceCD:Cancel()
-		timerMoltenTorrentCD:Start(30)
-		timerSummonCinderWolvesCD:Start()
+		timerMoltenTorrentCD:Start(44)
+		timerSummonCinderWolvesCD:Start(74)
 	elseif spellId == 154952 then
 		warnFixate:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then

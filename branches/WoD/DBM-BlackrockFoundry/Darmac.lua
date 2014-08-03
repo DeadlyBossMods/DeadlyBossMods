@@ -14,6 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_SUMMON 154956",
 	"SPELL_AURA_APPLIED 154960 155458 155459 155460 154981 155030 155236",
 	"SPELL_AURA_APPLIED_DOSE 155030 155236",
+	"SPELL_AURA_REMOVED 154960",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--Because boss numbering tends to get out of wack with things constantly joining/leaving fight. I've only seen boss1 and boss2 but for good measure.
@@ -39,6 +40,7 @@ local warnStampede					= mod:NewSpellAnnounce(155247, 3)
 
 --Boss basic attacks
 local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, not mod:IsHealer())
+local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
 local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil, nil, 2)--Still iffy on it
 local specWarnTantrum				= mod:NewSpecialWarningSpell(162275, nil, nil, nil, 2)
@@ -62,6 +64,7 @@ local timerConflagCD				= mod:NewCDTimer(20, 155399)
 local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
 
 mod:AddRangeFrameOption("8/7/3")
+mod:AddSetIconOption("SetIconOnSpear", 154960)--Not often I make icon options on by default but this one is universally important. YOu always break players out of spear, in any strat.
 
 mod.vb.RylakAbilities = false
 mod.vb.WolfAbilities = false
@@ -128,6 +131,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 154960 then
 		self:Unschedule(pinDelay)--We git debuffs, show target warning instead of generic
 		warnPinDownTargets:CombinedShow(0.5, args.destName)
+		if self.Options.SetIconOnSpear then
+			self:SetSortedIcon(0.5, args.destName, 8, nil, true)
+		end
+		if args:IsPlayer() then
+			yellPinDown:Yell()
+		end
 	elseif spellId == 154981 then
 		warnConflag:CombinedShow(0.5, args.destName)
 	elseif spellId == 155030 then
@@ -171,6 +180,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+local spellId = args.spellId
+	if spellId == 154960 and self.Options.SetIconOnSpear then
+		self:SetIcon(0, args.destName)
+	end
+end
 
 local function updateBeasts(cid, status, beastName)
 	if DBM.BossHealth:IsShown() then
