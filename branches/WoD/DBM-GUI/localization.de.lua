@@ -13,7 +13,7 @@ L.OTabBosses	= "Bosse"
 L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options	 	= "Allgemeine Einstellungen"
-L.TabCategory_WoD	 		= EXPANSION_NAME5 or "Warlords of Draenor"
+L.TabCategory_WoD	 		= EXPANSION_NAME5
 L.TabCategory_MOP	 		= EXPANSION_NAME4
 L.TabCategory_CATA	 		= EXPANSION_NAME3
 L.TabCategory_WOTLK 		= EXPANSION_NAME2
@@ -95,7 +95,7 @@ L.ShowFakedRaidWarnings 	= "Zeige Warnungen als künstliche Schlachtzugwarnungen
 L.WarningIconLeft 			= "Zeige Symbol links an"
 L.WarningIconRight 			= "Zeige Symbol rechts an"
 L.WarningIconChat 			= "Zeige Symbole im Chatfenster"
-L.ShowCountdownText			= "Zeige Countdown-Text"
+L.ShowCountdownText			= "Zeige Countdown-Text während Zählungen mit der primären Stimme"
 L.RaidWarnMessage 			= "Danke, dass du Deadly Boss Mods verwendest"
 L.BarWhileMove 				= "bewegbare Schlachtzugwarnung"
 L.RaidWarnSound				= "Sound für Schlachtzugwarnung"
@@ -177,15 +177,8 @@ L.HP_GrowUpwards			= "Erweitere Lebensanzeige nach oben"
 L.HP_ShowDemo				= "Anzeigen"
 L.BarWidth					= "Balkenbreite: %d"
 
--- Tab: Spam Filter
+-- Tab: Global Filter
 L.Panel_SpamFilter			= "Filter / Spam-Filter"
-L.Area_SpamFilter			= "Spam-Filter"
-L.StripServerName			= "Entferne den Realmnamen der Spieler in Warnungen und Timern"
-L.SpamBlockBossWhispers		= "Aktiviere Filter für &lt;DBM&gt;-Flüstermitteilungen im Kampf"
-L.BlockVersionUpdateNotice	= "Zeige Update-Meldung im Chatfenster statt als Popup (nicht empfohlen)"
-L.ShowBBOnCombatStart		= "Führe bei Kampfbeginn eine \"BigBrother\"-Buffprüfung durch"
-L.BigBrotherAnnounceToRaid	= "Verkünde Ergebnis der \"BigBrother\"-Buffprüfung zum Schlachtzug"
-
 L.Area_SpamFilter_Outgoing	= "globale Filtereinstellungen"
 L.SpamBlockNoShowAnnounce	= "Zeige keine Mitteilungen und spiele keine Warnungssounds"
 L.DontShowFarWarnings		= "Zeige keine Mitteilungen/Timer für weit entfernte Ereignisse"
@@ -194,6 +187,23 @@ L.SpamBlockNoSetIcon		= "Setze keine Zeichen auf Ziele"
 L.SpamBlockNoRangeFrame		= "Zeige kein Abstandsfenster/-radar an"
 L.SpamBlockNoInfoFrame		= "Zeige kein Infofenster an"
 L.SpamBlockNoHealthFrame	= "Zeige keine Lebensanzeige an"
+
+-- Tab: Spam Filter
+L.Area_SpamFilter			= "Spam-Filter"
+L.StripServerName			= "Entferne den Realmnamen der Spieler in Warnungen und Timern"
+L.SpamBlockBossWhispers		= "Aktiviere Filter für &lt;DBM&gt;-Flüstermitteilungen im Kampf"
+L.BlockVersionUpdateNotice	= "Zeige Update-Meldung im Chatfenster statt als Popup (nicht empfohlen)"
+L.ShowBBOnCombatStart		= "Führe bei Kampfbeginn eine \"BigBrother\"-Buffprüfung durch"
+L.BigBrotherAnnounceToRaid	= "Verkünde Ergebnis der \"BigBrother\"-Buffprüfung zum Schlachtzug"
+
+L.Area_SpecFilter			= "Filtereinstellungen für Spezialisierungen"
+L.FilterTankSpec			= "Unterdrücke Warnungen für Tanks, falls deine aktuelle Spezialisierung keine \"Schutz\"-Spezialisierung ist"
+
+
+
+
+--L.FilterHealerSpec		= "Unterdrücke Warnungen für Heiler, falls deine aktuelle Spezialisierung keine \"Heilung\"-Spezialisierung ist"--Not in use
+--L.FilterDamagerSpec		= "Unterdrücke Warnungen für DDs, falls deine aktuelle Spezialisierung keine \"Schaden\"-Spezialisierung ist"--Not in use
 
 L.Area_PullTimer			= "Filtereinstellungen für Pull-, Kampf- und benutzerdefinierte Timer"
 L.DontShowPTNoID			= "Blockiere Pull-Timer, die nicht aus deiner derzeitigen Zone gesendet worden sind"
@@ -222,7 +232,7 @@ L.LFDEnhance				= "Spiele \"Bereitschaftscheck\"-Sound für Rollenabfragen und E
 L.WorldBossNearAlert		= "Spiele \"Bereitschaftscheck\"-Sound, wenn Weltbosse in deiner Nähe gepullt werden, die du brauchst (Boss-spezifische Einstellung)"
 L.AFKHealthWarning			= "Spiele Alarmsound, wenn du Gesundheit verlierst, während du als nicht an der Tastatur (\"AFK\") markiert bist"
 L.Area_AutoLogging			= "Automatische Aufzeichnungen"
-L.AutologBosses				= "Automatische Aufzeichnung von Bosskämpfen im spieleigenen Kampflog (/dbm pull vor Bossen wird benötigt für <a href=\"http://www.warcraftlogs.com\">|cff3588ffwarcraftlogs.com|r</a> Kompatibilität)"
+L.AutologBosses				= "Automatische Aufzeichnung von Bosskämpfen im spieleigenen Kampflog (/dbm pull vor Bossen wird benötigt um die Aufzeichnung rechtzeitig für \"Pre-Pots\" und andere Ereignisse zu starten)"
 L.AdvancedAutologBosses		= "Automatische Aufzeichnung von Bosskämpfen mit Addon \"Transcriptor\""
 L.LogOnlyRaidBosses			= "Nur Schlachtzugbosskämpfe aufzeichnen\n(ohne Schlachtzugsbrowser-/Dungeon-/Szenarienbosskämpfe)"
 L.Area_Invite				= "Einstellungen für Einladungen"
