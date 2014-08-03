@@ -90,11 +90,6 @@ L= DBM:GetModLocalization(850)
 L:SetWarningLocalization({
 	warnDefensiveStanceSoon		= "Postura Defensiva em %ds"
 })
-
-L:SetOptionLocalization({
-	warnDefensiveStanceSoon		= "Mostrar pre-aviso de contagem regressiva para $spell:143593 (5s antes)"
-})
-
 L:SetMiscLocalization({
 	newForces1					= "Guerreiros, depressa!",
 	newForces2					= "Defendam o portão!",

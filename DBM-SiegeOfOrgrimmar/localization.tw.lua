@@ -90,10 +90,6 @@ L:SetWarningLocalization({
 	warnDefensiveStanceSoon	= "%d秒後防禦姿態"
 })
 
-L:SetOptionLocalization({
-	warnDefensiveStanceSoon	= "為$spell:143593(五秒前)顯示預先警告倒數"
-})
-
 L:SetMiscLocalization({
 	newForces1			= "戰士們，快點過來!",
 	newForces2			= "守住大門!",
