@@ -92,10 +92,6 @@ L:SetWarningLocalization({
 	warnDefensiveStanceSoon		= "%d초 후 방어 태세"
 })
 
-L:SetOptionLocalization({
-	warnDefensiveStanceSoon		= "$spell:143593 이전에 초읽기 알림 보기(5초 전부터)"
-})
-
 L:SetMiscLocalization({
 	newForces1	= "전사들이여! 이리로!",
 	newForces2	= "놈들을 막아라!",--확인 필요
