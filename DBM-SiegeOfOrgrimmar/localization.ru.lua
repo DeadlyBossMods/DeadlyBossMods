@@ -92,10 +92,6 @@ L:SetWarningLocalization({
 	warnDefensiveStanceSoon		= "Оборонительная стойка через %d сек."
 })
 
-L:SetOptionLocalization({
-	warnDefensiveStanceSoon		= "Обратный отсчет за 5 секунд до $spell:143593"
-})
-
 L:SetMiscLocalization({
 	newForces1					= "Воины, бегом!",
 	newForces2					= "Удерживайте врата!",

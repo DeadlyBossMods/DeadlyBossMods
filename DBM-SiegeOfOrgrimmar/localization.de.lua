@@ -92,10 +92,6 @@ L:SetWarningLocalization({
 	warnDefensiveStanceSoon		= "Verteidigungshaltung in %ds"
 })
 
-L:SetOptionLocalization({
-	warnDefensiveStanceSoon		= "Zeige Vorwarnungscountdown für $spell:143593 (5s zuvor)"
-})
-
 L:SetMiscLocalization({
 	newForces1					= "Krieger, im Laufschritt!",
 	newForces2					= "Verteidigt das Tor!",

@@ -97,7 +97,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDefensiveStanceSoon		= "Show pre-warning countdown for $spell:143593 (5s before)"
+	warnDefensiveStanceSoon		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn:format(143593)
 })
 
 L:SetMiscLocalization({
