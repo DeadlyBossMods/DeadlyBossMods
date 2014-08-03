@@ -916,10 +916,6 @@ do
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
 			isLoaded = true
-			if select(4, GetBuildInfo()) >= 60000 then
-				DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
-				return
-			end
 			for i, v in ipairs(onLoadCallbacks) do
 				xpcall(v, geterrorhandler())
 			end
@@ -930,6 +926,10 @@ do
 			end
 			loadOptions()
 			DBM.Bars:LoadOptions("DBM")
+			if select(4, GetBuildInfo()) >= 60000 then
+				DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
+				return
+			end
 			DBM.Arrow:LoadPosition()
 			if not DBM.Options.ShowMinimapButton then self:HideMinimapButton() end
 			self.AddOns = {}
