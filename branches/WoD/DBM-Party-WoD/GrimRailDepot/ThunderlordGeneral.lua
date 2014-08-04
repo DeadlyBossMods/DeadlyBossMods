@@ -33,7 +33,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 162066 then
-		warnWhirlwindingAxe:Show()
+		warnFreezingSnare:Show()
 		specWarnFreezingSnare:Show()
 		timerFreezingSnareCD:Start()
 		--Because using SPELL_CAST_SUCCESS is a bit ugly and it's always 5-6 sec after trap anyways

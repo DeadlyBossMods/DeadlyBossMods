@@ -38,7 +38,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 160680 then
-		warnShockwave:Show()
+		warnReloading:Show()
 		timerReloading:Start()
 	end
 end
