@@ -13,6 +13,7 @@
 ## X-DBM-Mod-Sort: 102
 ## X-DBM-Mod-MapID: 1228
 localization.en.lua
+localization.kr.lua
 KargathBladefist.lua
 TheButcher.lua
 Tectus.lua

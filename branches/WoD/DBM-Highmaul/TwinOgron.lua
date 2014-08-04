@@ -43,8 +43,8 @@ local timerInterruptingShoutCD		= mod:NewNextTimer(23, 158093)
 local timerPulverizeCD				= mod:NewNextTimer(23, 158385)
 --^^Even though 6 cd timers, coded smart to only need 2 up at a time, by using the predictability of "next ability" timing.
 
-local countdownPhemos				= mod:NewCountdown(27, nil, "PhemosSpecial")
-local countdownPol					= mod:NewCountdown("Alt23", nil, "PolSpecial")
+local countdownPhemos				= mod:NewCountdown(27, nil, nil, "PhemosSpecial")
+local countdownPol					= mod:NewCountdown("Alt23", nil, nil, "PolSpecial")
 
 --Non resetting counts because strategy drastically changes based on number of people. Mechanics like debuff duration change with different player counts.
 mod.vb.EnfeebleCount = 0

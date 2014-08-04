@@ -13,6 +13,7 @@
 ## X-DBM-Mod-Sort: 101
 ## X-DBM-Mod-MapID: 1205
 localization.en.lua
+localization.kr.lua
 Gruul.lua
 Oregorger.lua
 BlastFurnace.lua
