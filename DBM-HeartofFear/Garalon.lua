@@ -87,11 +87,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBrokenLeg:Show(args.destName, args.amount or 1)
 	elseif spellId == 122835 then
 		warnPheromones:Show(args.destName)
-		specwarnPheromonesTarget:Show(args.destName)
 		if args:IsPlayer() then
 			specwarnPheromonesYou:Show()
 			yellPheromones:Yell()
 		else
+			specwarnPheromonesTarget:Show(args.destName)
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if uId then
 				local x, y = GetPlayerMapPosition(uId)
