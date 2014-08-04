@@ -39,7 +39,7 @@ local specWarnExpelMagicArcane		= mod:NewSpecialWarningTarget(162186, mod:IsHeal
 local specWarnExpelMagicArcaneYou	= mod:NewSpecialWarningMoveAway(162186)
 local yellExpelMagicArcane			= mod:NewYell(162186)
 
-local timerVulnerability			= mod:NewBuffActiveTimer(20, 160734)--FRIENDS_FRIENDS_CHOICE_EVERYONE
+local timerVulnerability			= mod:NewBuffActiveTimer(20, 160734)
 --local timerNullBarrierCD			= mod:NewNextTimer(20, 156803)
 --local timerOverflowingEnergyCD	= mod:NewNextTimer(10, 161576)
 
