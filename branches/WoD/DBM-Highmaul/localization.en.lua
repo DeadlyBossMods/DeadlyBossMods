@@ -44,6 +44,12 @@ L:SetOptionLocalization({
 --------------------
 L= DBM:GetModLocalization(1153)
 
+L:SetMiscLocalization({
+	supressionTarget1	= "I will crush you!",
+	supressionTarget2	= "Silence!",
+	supressionTarget3	= "Quiet!"
+})
+
 --------------------------
 -- Imperator Mar'gok --
 --------------------------
