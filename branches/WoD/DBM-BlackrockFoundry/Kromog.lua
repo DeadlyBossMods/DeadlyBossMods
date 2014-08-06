@@ -32,7 +32,7 @@ local specWarnThunderingBlows		= mod:NewSpecialWarningSpell(157054, nil, nil, ni
 local specWarnRipplingSmash			= mod:NewSpecialWarningSpell(157592, nil, nil, nil, 2)
 local specWarnCrushingEarth			= mod:NewSpecialWarningSpell(161839, nil, nil, nil, 2)
 local specWarnSlam					= mod:NewSpecialWarningSpell(156704, mod:IsTank())
-local specWarnWarpedArmor			= mod:NewSpecialWarningStack(156766, nil, 2)--stack guessed
+local specWarnWarpedArmor			= mod:NewSpecialWarningStack(156766, nil, 3)--stack bugged right now, requires tanks going to 5 stacks before they can clear. Blizz will likely fix this because 5 too much
 local specWarnWarpedArmorOther		= mod:NewSpecialWarningTaunt(156766)
 
 --local timerGraspingEarthCD		= mod:NewNextTimer(30, 157060)
@@ -42,8 +42,10 @@ local specWarnWarpedArmorOther		= mod:NewSpecialWarningTaunt(156766)
 --local timerSlamCD					= mod:NewNextTimer(30, 156704, nil, mod:IsTank())
 --local timerWarpedArmorD			= mod:NewNextTimer(30, 156704, nil, mod:IsTank())
 
-function mod:OnCombatStart(delay)
+local berserkTimer					= mod:NewBerserkTimer(600)
 
+function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
@@ -84,7 +86,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 156766 then
 		local amount = args.amount or 1
 		warnWarpedArmor:Show(args.destName, amount)
-		if amount >= 2 then
+		if amount >= 3 then
 			if args:IsPlayer() then
 				specWarnWarpedArmor:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
