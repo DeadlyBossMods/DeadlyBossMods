@@ -64,7 +64,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.debuffCount = self.vb.debuffCount + 1
 		local targetname = args.destName
 		warnCurtainOfFlame:CombinedShow(0.5, targetname)
-		if args.IsPlayer() then
+		if args:IsPlayer() then
 			specWarnCurtainOfFlame:Show()
 		else
 			if self:CheckNearby(5, targetname) then
