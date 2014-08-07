@@ -246,6 +246,7 @@ local loadOptions
 local loadModOptions
 local checkWipe
 local checkBossHealth
+local loopCRTimer
 local fireEvent
 local playerName = UnitName("player")
 local playerRealm = GetRealmName()
@@ -3842,6 +3843,12 @@ function checkBossHealth()
 	end
 end
 
+function loopCRTimer(timer, mod)
+	local crTimer = mod:NewTimer(time, DBM_COMBAT_RES_TIMER_TEXT, "Interface\\Icons\\Spell_Nature_Reincarnation")
+	crTimer:Start()
+	DBM:Schedule(timer, loopCRTimer, mod)
+end
+
 local statVarTable = {
 	--6.0
 	["normal5"] = "normal",
@@ -3859,6 +3866,8 @@ local statVarTable = {
 	["heroic10"] = "heroic",
 	["heroic25"] = "heroic25",
 }
+
+
 
 function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 	if not mod.inCombat then
@@ -3974,8 +3983,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			if DBM.Options.CRT_Enabled and difficultyIndex >= 14 then--14-17 difficulties, all of the difficulty sizes of WoD.
 				local time = 90/LastGroupSize
 				time = time * 60
-				local crTimer = mod:NewTimer(time, DBM_COMBAT_RES_TIMER_TEXT, "Interface\\Icons\\Spell_Nature_Reincarnation")
-				crTimer:Start()
+				loopCRTimer(time, mod)
 			end
 			--update boss left
 			if mod.numBoss then
@@ -4262,7 +4270,9 @@ function DBM:EndCombat(mod, wipe)
 				end
 				self:Schedule(1, DBM.AddMsg, DBM, msg)
 			end
-			DBM:AddMsg(DBM_CORE_NEED_LOGS)--REMOVE IN 6.0!!! 60000
+			if difficultyIndex >= 14 then--Only display in raids. Don't want 100 dungeon logs
+				DBM:AddMsg(DBM_CORE_NEED_LOGS)--REMOVE IN 6.0!!! 60000
+			end
 			local msg
 			for k, v in pairs(autoRespondSpam) do
 				if DBM.Options.WhisperStats then
@@ -4317,6 +4327,7 @@ function DBM:EndCombat(mod, wipe)
 			self:Schedule(10, DBM.StopLogging, DBM)--small delay to catch kill/died combatlog events
 			self:ToggleRaidBossEmoteFrame(0)
 			self:Unschedule(checkBossHealth)
+			self:Unschedule(loopCRTimer)
 			DBM.BossHealth:Hide()
 			DBM.Arrow:Hide(true)
 			if DBM.Options.HideWatchFrame and watchFrameRestore and not scenario then
