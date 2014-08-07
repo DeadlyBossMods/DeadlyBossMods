@@ -88,7 +88,7 @@ local timerWarmingUp					= mod:NewCastTimer(90, 158849)
 ----Admiral Gar'an
 ----Enforcer Sorka
 
-mod:AddRangeFrameOption("?/5")--Various things
+mod:AddRangeFrameOption(5, 156631)
 
 function mod:OnCombatStart(delay)
 

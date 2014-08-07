@@ -46,10 +46,10 @@ local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil,
 local specWarnTantrum				= mod:NewSpecialWarningSpell(162275, nil, nil, nil, 2)
 --Beast abilities (living)
 local specWarnSavageHowl			= mod:NewSpecialWarningSpell(155198, mod:IsHealer() or mod:IsTank(), nil, nil, 2)
-local specWarnSearingFangs			= mod:NewSpecialWarningStack(155030, mod:IsTank(), 12)--Stack count assumed, may be 2
-local specWarnSearingFangsOther		= mod:NewSpecialWarningTaunt(155030, mod:IsTank())--No evidence of this existing ANYWHERE in any logs. removed? Bugged?
-local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, mod:IsTank(), 3)--Stack count assumed, may be less
-local specWarnCrushArmorOther		= mod:NewSpecialWarningTaunt(155236, mod:IsTank())
+local specWarnSearingFangs			= mod:NewSpecialWarningStack(155030, nil, 12)--Stack count assumed, may be 2
+local specWarnSearingFangsOther		= mod:NewSpecialWarningTaunt(155030)--No evidence of this existing ANYWHERE in any logs. removed? Bugged?
+local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, nil, 3)--Stack count assumed, may be less
+local specWarnCrushArmorOther		= mod:NewSpecialWarningTaunt(155236)
 
 --Boss basic attacks
 local timerPinDownCD				= mod:NewCDTimer(20.5, 155365)--Every 20 seconds unless delayed by other things. CD timer used for this reason

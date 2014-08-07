@@ -62,7 +62,15 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 153396 then
 		self.vb.debuffCount = self.vb.debuffCount + 1
-		warnCurtainOfFlame:CombinedShow(0.5, args.destName)
+		local targetname = args.destName
+		warnCurtainOfFlame:CombinedShow(0.5, targetname)
+		if args.IsPlayer() then
+			specWarnCurtainOfFlame:Show()
+		else
+			if self:CheckNearby(5, targetname) then
+				specWarnCurtainOfFlameNear:Show(targetname)
+			end
+		end
 		if self.Options.RangeFrame then
 			if UnitDebuff("player", curtainDebuff) then--You have debuff, show everyone
 				DBM.RangeCheck:Show(5, nil)
