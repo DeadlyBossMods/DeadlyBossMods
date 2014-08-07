@@ -4262,6 +4262,7 @@ function DBM:EndCombat(mod, wipe)
 				end
 				self:Schedule(1, DBM.AddMsg, DBM, msg)
 			end
+			DBM:AddMsg(DBM_CORE_NEED_LOGS)--REMOVE IN 6.0!!! 60000
 			local msg
 			for k, v in pairs(autoRespondSpam) do
 				if DBM.Options.WhisperStats then

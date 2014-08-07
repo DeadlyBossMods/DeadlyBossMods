@@ -1,5 +1,6 @@
 
 DBM_CORE_NEED_SUPPORT				= "Are you good with programming or languages? If yes, the DBM needs your help in localizing DBM in more languages. Help us out by visiting http://forums.elitistjerks.com/topic/132449-dbm-localizers-needed/"
+DBM_CORE_NEED_LOGS					= "DBM needs Transcriptor (http://www.wowace.com/addons/transcriptor/) logs of these test fights to make best mods possible. If you want to help, log these fights with transcriptor and post them to http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing-updated-8-07-14/ (zip them up, they can get quite large otherwise). Only interested in 6.0 raid logs. Do not need dungeon logs."
 DBM_HOW_TO_USE_MOD					= "Welcome to DBM. Type /dbm help for a list of supported commands. To access options type /dbm in your chat to begin configuration. Load specific zones manually to configure any boss specific settings to your liking as well. DBM tries to do this for you by scanning your spec on first run, but some might want additional options turned on anyways."
 
 DBM_FORUMS_MESSAGE					= "Found a bug or wrong timer? Do you think some mod would need an additional warning, timer or special feature?\nVisit the new Deadly Boss Mods discussion, bug report and feature request forums at |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (you can click the link to copy the URL)"
@@ -95,7 +96,7 @@ DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "Your alpha version of Deadly Boss Mods i
 DBM_CORE_UPDATEREMINDER_FOOTER			= "Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " to copy the download link to your clipboard."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " to copy the link to your clipboard."
 DBM_CORE_UPDATEREMINDER_DISABLE			= "WARNING: Do to your Deadly Boss Mods being drastically out of date (%d revisions), it has been disabled until updated. This is to ensure old and incompatable code doesn't cause poor play experience for yourself or fellow raid members."
-DBM_CORE_UPDATEREMINDER_HOTFIX			= "Your version of DBM will have incorrect timers or warnings during this boss encounter. This is corrected in a newer release (or alpha release if newer release version not available)"
+DBM_CORE_UPDATEREMINDER_HOTFIX			= "Your version of DBM will have incorrect timers or warnings during this boss encounter. This is corrected in a newer release (or alpha release if newer release version not yet available)"
 DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "WARNING: Do to your Deadly Boss Mods being out of date, it has been disabled until updated since this is a major game patch. This is to ensure old and incompatable code doesn't cause poor play experience for yourself or fellow raid members. Make sure you download a newer version from deadlybossmods.com or curse as soon as it's available."
 
 DBM_CORE_MOVABLE_BAR				= "Drag me!"
