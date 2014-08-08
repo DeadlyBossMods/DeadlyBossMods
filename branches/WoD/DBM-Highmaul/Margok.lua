@@ -11,16 +11,14 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 156238 156467 157349 163988 164075 156471 164299 164232 164301 163989 164076 164235 163990 164077 164240 164303",
-	"SPELL_CAST_SUCCESS 158563",
+	"SPELL_CAST_SUCCESS 158563 158605 164176 164178 164191",
 	"SPELL_AURA_APPLIED 158605 164176 164178 164191 157763 158553",
 	"SPELL_AURA_APPLIED_DOSE 158553",
-	"SPELL_AURA_REMOVED 158605 164176 164178 164191",
-	"SPELL_PERIODIC_DAMAGE 157353",
-	"SPELL_PERIODIC_MISSED 157353"
+	"SPELL_AURA_REMOVED 158605 164176 164178 164191 157763",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, probably add range 5 for http://beta.wowhead.com/spell=157769 during first intermission.
---TODO, probably add http://beta.wowhead.com/spell=158547 for second intermission
+--TODO, probably add http://beta.wowhead.com/spell=158547 for second intermission once fine the pre cast ID
 --TODO, probably add timer for Volatile Anomalies in both intermissions (12 second timer)
 --Phase 1: Might of the Crown
 local warnArcaneWrath							= mod:NewSpellAnnounce(156238, 3)
@@ -53,36 +51,40 @@ local warnForceNovaReplication					= mod:NewSpellAnnounce(164240, 3)
 local warnSummonReplicatingArcaneAberration		= mod:NewSpellAnnounce(164303, 3)
 
 --Phase 1: Might of the Crown
-local specWarnDestructiveResonance				= mod:NewSpecialWarningSpell(156467, nil, nil, nil, 3)--If target scanning works make this personal.
+local specWarnDestructiveResonance				= mod:NewSpecialWarningSpell(156467, nil, nil, nil, 2)--If target scanning works make this personal.
 local specWarnMarkOfChaos						= mod:NewSpecialWarningMoveAway(158605, nil, nil, nil, 3)
-local specWarnForceNova							= mod:NewSpecialWarningMove(157353)--All use this version? I can't find other damage IDs
+local specWarnMarkOfChaosOther					= mod:NewSpecialWarningTaunt(158605)
 --Phase 2: Rune of Displacement
-local specWarnDestructiveResonanceDisplacement	= mod:NewSpecialWarningSpell(164075, nil, nil, nil, 3)--If target scanning works make this personal.
+local specWarnDestructiveResonanceDisplacement	= mod:NewSpecialWarningSpell(164075, nil, nil, nil, 2)--If target scanning works make this personal.
 local specWarnMarkOfChaosDisplacement			= mod:NewSpecialWarningMoveAway(164176, nil, nil, nil, 3)
+local specWarnMarkOfChaosDisplacementOther		= mod:NewSpecialWarningTaunt(164176)
 --Intermission: Dormant Runestones
 local specWarnFixate							= mod:NewSpecialWarningYou(157763)--Change to run warning?
 --Phase 3: Rune of Fortification
-local specWarnDestructiveResonanceFortification	= mod:NewSpecialWarningSpell(164076, nil, nil, nil, 3)--If target scanning works make this personal.
+local specWarnDestructiveResonanceFortification	= mod:NewSpecialWarningSpell(164076, nil, nil, nil, 2)--If target scanning works make this personal.
 local specWarnMarkOfChaosFortification			= mod:NewSpecialWarningYou(164178)--Debuffed player can not move for this one
 local yellMarkOfChaosFortification				= mod:NewYell(164178)--So give yell
 local specWarnMarkOfChaosFortificationNear		= mod:NewSpecialWarningClose(164178, nil, nil, nil, 3)--And super important "near" warning.
+local specWarnMarkOfChaosFortificationOther		= mod:NewSpecialWarningTaunt(164178)
 --Intermission: Lineage of Power
 local specWarnKickToTheFace						= mod:NewSpecialWarningSpell(158563, mod:IsTank())
 --local specWarnCrushArmor						= mod:NewSpecialWarningStack(158553, nil, 3)--Stack count assumed, may be less
 --local specWarnCrushArmorOther					= mod:NewSpecialWarningTaunt(158553)
 --Phase 4: Rune of Replication
-local specWarnDestructiveResonanceReplication	= mod:NewSpecialWarningSpell(164077, nil, nil, nil, 3)--If target scanning works make this personal.
+local specWarnDestructiveResonanceReplication	= mod:NewSpecialWarningSpell(164077, nil, nil, nil, 2)--If target scanning works make this personal.
 local specWarnMarkOfChaosReplication			= mod:NewSpecialWarningYou(164191)--Debuffed player can not move for this one
 local yellMarkOfChaosReplication				= mod:NewYell(164191)--Give a yell to this one too since balls form at that location of player
+local specWarnMarkOfChaosReplicationOther		= mod:NewSpecialWarningTaunt(164191)
 
 --All Phases (No need to use different timers for empowered abilities. Short names better for timers.)
---local timerArcaneWrathCD						= mod:NewNextTimer(30, 156238)
---local timerDestructiveResonanceCD				= mod:NewNextTimer(30, 156467)
---local timerMarkOfChaosCD						= mod:NewNextTimer(30, 158605)
---local timerForceNovaCD						= mod:NewNextTimer(30, 157349)
---local timerSummonArcaneAberrationCD			= mod:NewNextTimer(30, 156471)
+local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238)--Pretty much a next timer, HOWEVER can get delayed by other abilities so only reason it's CD timer anyways
+local timerDestructiveResonanceCD				= mod:NewCDTimer(16, 156467)--16-30sec variation noted. I don't like it
+local timerMarkOfChaosCD						= mod:NewCDTimer(50, 158605)
+local timerForceNovaCD							= mod:NewCDTimer(45, 157349)--45-52
+local timerSummonArcaneAberrationCD				= mod:NewCDTimer(45, 156471)--45-52 Variation Noted
+local timerTransition							= mod:NewCastTimer(60, 157278)
 
-mod:AddRangeFrameOption(35, 158605)
+mod:AddRangeFrameOption("35/5")
 
 local chaosDebuff1 = GetSpellInfo(158605)
 local chaosDebuff2 = GetSpellInfo(164176)
@@ -99,7 +101,11 @@ do
 end
 
 function mod:OnCombatStart(delay)
-
+	timerArcaneWrathCD:Start(6-delay)
+	timerDestructiveResonanceCD:Start(15-delay)
+	timerSummonArcaneAberrationCD:Start(25-delay)
+	timerMarkOfChaosCD:Start(35-delay)
+	timerForceNovaCD:Start(-delay)
 end
 
 function mod:OnCombatEnd()
@@ -112,43 +118,59 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 156238 then
 		warnArcaneWrath:Show()
+		timerArcaneWrathCD:Start()
 	elseif spellId == 163988 then
 		warnArcaneWrathDisplacement:Show()
+		timerArcaneWrathCD:Start()
 	elseif spellId == 163989 then
 		warnArcaneWrathFortification:Show()
+		timerArcaneWrathCD:Start()
 	elseif spellId == 163990 then
 		warnArcaneWrathReplication:Show()
+		timerArcaneWrathCD:Start()
 	-----
 	elseif spellId == 156467 then
 		warnDestructiveResonance:Show()
 		specWarnDestructiveResonance:Show()
+		timerDestructiveResonanceCD:Start()
 	elseif spellId == 164075 then
 		warnDestructiveResonanceDisplacement:Show()
 		specWarnDestructiveResonanceDisplacement:Show()
+		timerDestructiveResonanceCD:Start()
 	elseif spellId == 164076 then
 		warnDestructiveResonanceFortification:Show()
 		specWarnDestructiveResonanceFortification:Show()
+		timerDestructiveResonanceCD:Start()
 	elseif spellId == 164077 then
 		warnDestructiveResonanceReplication:Show()
 		specWarnDestructiveResonanceReplication:Show()
+		timerDestructiveResonanceCD:Start()
 	-----
 	elseif spellId == 157349 then
 		warnForceNova:Show()
+		timerForceNovaCD:Start()
 	elseif spellId == 164232 then
 		warnForceNovaDisplacement:Show()
+		timerForceNovaCD:Start()
 	elseif spellId == 164235 then
 		warnForceNovaFortification:Show()
+		timerForceNovaCD:Start()
 	elseif spellId == 164240 then
 		warnForceNovaReplication:Show()
+		timerForceNovaCD:Start()
 	-----
-	elseif spellId == 156471 and self:AntiSpam(3, 1) then
+	elseif spellId == 156471 then
 		warnSummonArcaneAberration:Show()
-	elseif spellId == 164299 and self:AntiSpam(3, 1) then
+		timerSummonArcaneAberrationCD:Start()
+	elseif spellId == 164299 then
 		warnSummonDisplacingArcaneAberration:Show()
-	elseif spellId == 164301 and self:AntiSpam(3, 1) then
+		timerSummonArcaneAberrationCD:Start()
+	elseif spellId == 164301 then
 		warnSummonFortifiedArcaneAberration:Show()
-	elseif spellId == 164303 and self:AntiSpam(3, 1) then
+		timerSummonArcaneAberrationCD:Start()
+	elseif spellId == 164303 then
 		warnSummonReplicatingArcaneAberration:Show()
+		timerSummonArcaneAberrationCD:Start()
 	end
 end
 
@@ -157,6 +179,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 158563 then
 		warnKickToTheFace:Show()
 		specWarnKickToTheFace:Show()
+	elseif args:IsSpellID(158605, 164176, 164178, 164191) then--Start timer on success because APPLIED can miss DKS (stupid AMS)
+		timerMarkOfChaosCD:Start()
 	end
 end
 
@@ -167,11 +191,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnMarkOfChaos:Show(args.destName)
 			if args:IsPlayer() then
 				specWarnMarkOfChaos:Show()
+			else
+				specWarnMarkOfChaosOther:Show()
 			end
 		elseif spellId == 164176 then
 			warnMarkOfChaosDisplacement:Show(args.destName)
 			if args:IsPlayer() then
 				specWarnMarkOfChaosDisplacement:Show()
+			else
+				specWarnMarkOfChaosDisplacementOther:Show()
 			end
 		elseif spellId == 164178 then
 			local targetname = args.destName
@@ -180,6 +208,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnMarkOfChaosFortification:Show()
 				yellMarkOfChaosFortification:Yell()
 			else
+				specWarnMarkOfChaosFortificationOther:Show()
 				if self:CheckNearby(35, targetname) then
 					specWarnMarkOfChaosFortificationNear:Show(targetname)
 				end
@@ -189,6 +218,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnMarkOfChaosReplication:Show()
 				yellMarkOfChaosReplication:Yell()
+			else
+				specWarnMarkOfChaosReplicationOther:Show()
 			end
 		end
 		if self.Options.RangeFrame then
@@ -202,6 +233,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFixate:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(5)
+			end
 		end
 	elseif spellId == 158553 then
 		local amount = args.amount or 1
@@ -222,33 +256,19 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if args:IsSpellID(158605, 164176, 164178, 164191) and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	elseif spellId == 157763 and args:IsPlayer() and self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 157353 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
-		specWarnForceNova:Show()
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 50630 and self:AntiSpam(2, 3) then--Eject All Passengers:
-	
+	if spellId == 164751 or spellId == 164810 then--Teleport to Fortification/Teleport to Replication. For these two, cancel all CD timers, these transitions are both over a minute long.
+		timerArcaneWrathCD:Cancel()
+		timerDestructiveResonanceCD:Cancel()
+		timerSummonArcaneAberrationCD:Cancel()
+		timerMarkOfChaosCD:Cancel()
+		timerForceNovaCD:Cancel()
+		timerTransition:Start(68)--May need adjusting, I don't have a log that went this far.
+		--TODO, get end event, and start new timers
 	end
 end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:find("cFFFF0404") then
-
-	elseif msg:find(L.tower) then
-
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "Adds" and self:AntiSpam(20, 4) and self:IsInCombat() then
-
-	end
-end--]]
