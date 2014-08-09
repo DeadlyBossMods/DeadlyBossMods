@@ -55,6 +55,10 @@ L= DBM:GetModLocalization(1147)
 --------------------------
 L= DBM:GetModLocalization(1203)
 
+L:SetMiscLocalization({
+	shipMessage		= "prepares to man the Dreadnaught's Main Cannon!"
+})
+
 --------------------------
 -- Blackhand --
 --------------------------
