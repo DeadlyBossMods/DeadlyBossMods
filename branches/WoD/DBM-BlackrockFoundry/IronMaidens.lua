@@ -233,14 +233,7 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 	if msg:find(L.shipMessage) then
-		warnShip:Show()
-		if npc == Marak then
-			timerBloodRitualCD:Cancel()
-		elseif npc == Sorka then
-			timerBladeDashCD:Cancel()
-		elseif npc == Garan then
-			timerRapidFireCD:Cancel()
-		end
+		self:SendSync("Ship", npc)
 	end
 end
 
@@ -252,5 +245,14 @@ function mod:OnSync(msg, guid)
 	elseif msg == "RapidFireTarget" and guid then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		warnRapidFire:Show(targetName)
+	elseif msg == "Ship" and guid then--Techbucakkt not guid but it's fine.
+		warnShip:Show()
+		if guid == Marak then
+			timerBloodRitualCD:Cancel()
+		elseif guid == Sorka then
+			timerBladeDashCD:Cancel()
+		elseif guid == Garan then
+			timerRapidFireCD:Cancel()
+		end
 	end
 end
