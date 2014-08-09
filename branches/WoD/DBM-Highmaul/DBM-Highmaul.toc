@@ -19,6 +19,6 @@ TheButcher.lua
 Tectus.lua
 Brackenspore.lua
 TwinOgron.lua
-FelBreaker.lua
+Koragh.lua
 Margok.lua
 HighmaulTrash.lua
