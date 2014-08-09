@@ -247,6 +247,7 @@ function mod:OnSync(msg, guid)
 		warnRapidFire:Show(targetName)
 	elseif msg == "Ship" and guid then--Techbucakkt not guid but it's fine.
 		warnShip:Show()
+		timerBombardmentAlphaCD:Start(15)
 		if guid == Marak then
 			timerBloodRitualCD:Cancel()
 		elseif guid == Sorka then
