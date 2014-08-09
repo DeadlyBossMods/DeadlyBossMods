@@ -67,7 +67,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(137508, 137511) then
-		warnSpiritfireBeam:Show(args.destName)
+		warnSpiritfireBeam:CombinedShow(0.5, args.destName)
 	end
 end
 
