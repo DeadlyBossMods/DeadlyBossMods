@@ -1460,58 +1460,11 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			DBM:Schedule(timer, SendChatMessage, DBM_CORE_ANNOUNCE_BREAK_OVER, channel)
 		end
 	elseif cmd:sub(1, 4) == "pull" then
-		if IsInGroup() then
-			if DBM:GetRaidRank(playerName) == 0 or IsEncounterInProgress() then
-				return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
-			end
-			local timer = tonumber(cmd:sub(5)) or 10
-			sendSync("PT", timer.."\t"..LastInstanceMapID)
-		else--Yay for duplicate code because syncing a PT to yourself doesn't work.
-			local function countDownTextDelay(timer)
-				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
-			end
-			local timer = tonumber(cmd:sub(5)) or 10
-			if timer > 60 then
-				return
-			end
-			if not dummyMod then
-				dummyMod = DBM:NewMod("PullTimerCountdownDummy")
-				DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
-				dummyMod.countdown = dummyMod:NewCountdown(0, 0, nil, nil, nil, true)
-				dummyMod.text = dummyMod:NewAnnounce("%s", 1, 2457)
-			end
-			--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-			if not DBM.Options.DontShowPT and DBM.Bars:GetBar(DBM_CORE_TIMER_PULL) then
-				DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL)
-			end
-			if not DBM.Options.DontPlayPTCountdown then
-				dummyMod.countdown:Cancel()
-			end
-			if not DBM.Options.DontShowPTCountdownText then
-				DBM:Unschedule(countDownTextDelay)
-				TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")--easiest way to nil out timers on TimerTracker frame. This frame just has no actual star/stop functions
-			end
-			dummyMod.text:Cancel()
-			if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
-			if not DBM.Options.DontShowPT then
-				DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-			end
-			if not DBM.Options.DontPlayPTCountdown then
-				dummyMod.countdown:Start(timer)
-			end
-			if not DBM.Options.DontShowPTCountdownText then
-				local threshold = DBM.Options.PTCountThreshold
-				if timer > threshold then
-					DBM:Schedule(timer-threshold, countDownTextDelay, threshold)
-				else
-					TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
-				end
-			end
-			if not DBM.Options.DontShowPTText then
-				dummyMod.text:Show(DBM_CORE_ANNOUNCE_PULL:format(timer, playerName))
-				dummyMod.text:Schedule(timer, DBM_CORE_ANNOUNCE_PULL_NOW)
-			end
+		if (DBM:GetRaidRank(playerName) == 0 and IsInGroup()) or IsEncounterInProgress() then
+			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
+		local timer = tonumber(cmd:sub(5)) or 10
+		sendSync("PT", timer.."\t"..LastInstanceMapID)
 	elseif cmd:sub(1, 3) == "lag" then
 		sendSync("L")
 		DBM:AddMsg(DBM_CORE_LAG_CHECKING)
@@ -2903,7 +2856,7 @@ do
 
 	local dummyMod -- dummy mod for the pull sound effect
 	syncHandlers["PT"] = function(sender, timer, lastMapID)
-		if select(2, IsInInstance()) == "pvp" or DBM:GetRaidRank(sender) == 0 or IsEncounterInProgress() then
+		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 			return
 		end
 		if (lastMapID and tonumber(lastMapID) ~= LastInstanceMapID) or (not lastMapID and DBM.Options.DontShowPTNoID) then return end
@@ -3459,7 +3412,7 @@ do
 			return
 		end
 		local handler
-		if channel == "WHISPER" then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
+		if channel == "WHISPER" and sender ~= playerName then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
 			handler = whisperSyncHandlers[prefix]
 		else
 			handler = syncHandlers[prefix]
