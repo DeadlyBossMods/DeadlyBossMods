@@ -2,66 +2,65 @@ local mod	= DBM:NewMod(1207, "DBM-Party-WoD", 5, 556)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(59223)
+mod:SetCreatureID(83894, 83892, 83893)--Dulhu 83894, Gola 83892, Telu
 mod:SetEncounterID(1757)
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED"
+	"SPELL_CAST_START 168082 168041 168105 168383",
+	"SPELL_AURA_APPLIED 168105 168041 168520"
 )
 
-local warnFlyingKick		= mod:NewSpellAnnounce(113764, 4)--This is always followed instantly by Firestorm kick, so no reason to warn both.
-local warnBlazingFists		= mod:NewSpellAnnounce(114807, 3)
---local warnScorchedEarth		= mod:NewCountAnnounce(114460, 3)--only aoe warn will be enough.
+--maybe add CD timers if i care enough to check for briarskin and cancel them if it applies to a boss
+local warnRevitalizingWaters		= mod:NewSpellAnnounce(168082, 4)--This is always followed instantly by Firestorm kick, so no reason to warn both.
+local warnBriarskin					= mod:NewTargetAnnounce(168041, 4)
+local warnRapidTides				= mod:NewTargetAnnounce(168105, 3)
+local warnSlash						= mod:NewSpellAnnounce(168383, 3)
+local warnShapersFortitude			= mod:NewTargetAnnounce(168520, 3)
 
---local yellFlyingKick		= mod:NewYell(114487)
-local specWarnFlyingKick	= mod:NewSpecialWarningSpell(113764, nil, nil, nil, true)
---local specWarnFlyingKickNear= mod:NewSpecialWarningClose(114487)
-local specWarnScorchedEarth	= mod:NewSpecialWarningMove(114460)
-local specWarnBlazingFists	= mod:NewSpecialWarningMove(114807, mod:IsTank()) -- Everything is dangerous in challenge mode, entry level heriocs will also be dangerous when they aren't overtuning your gear with an ilvl buff.if its avoidable, you should avoid it, in good practice, to create good habit for challenge modes.
+local specWarnRevitalizingWaters	= mod:NewSpecialWarningInterrupt(168082, not mod:IsHealer())
+local specWarnBriarskin				= mod:NewSpecialWarningInterrupt(168041, false)--if you have more than one interruptor, great. but off by default because we can't assume you can interrupt every bosses abilities. and heal takes priority
+local specWarnBriarskinDispel		= mod:NewSpecialWarningDispel(168041, false)--Not as important as rapid Tides and to assume you have at least two dispellers is big assumption
+local specWarnRapidTides			= mod:NewSpecialWarningInterrupt(168105, false)--if you have more than one interruptor, great. but off by default because we can't assume you can interrupt every bosses abilities. and heal takes priority
+local specWarnRapidTidesDispel		= mod:NewSpecialWarningDispel(168105, mod:IsMagicDispeller())
+local specWarnSlash					= mod:NewSpecialWarningSpell(168383, mod:IsMelee(), nil, nil, 2)--Because it's 8 yard cone in random direction.
 
-local timerFlyingKickCD		= mod:NewCDTimer(25, 113764)--25-30 second variation
-local timerFirestormKick	= mod:NewBuffActiveTimer(6, 113764)
-local timerBlazingFistsCD	= mod:NewNextTimer(30, 114807)
-
-mod:AddBoolOption("KickArrow", true)
+local timerShapersFortitude			= mod:NewTargetTimer(15, 168520)
 
 function mod:OnCombatStart(delay)
-	timerFlyingKickCD:Start(10-delay)
-	timerBlazingFistsCD:Start(20.5-delay)
+
 end
 
 function mod:OnCombatEnd()
-	self:UnregisterShortTermEvents()
+
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 113764 then
-		warnFlyingKick:Show()
-		specWarnFlyingKick:Show()
-		timerFirestormKick:Start()
-		timerFlyingKickCD:Start()
-	elseif args.spellId == 114807 then
-		warnBlazingFists:Show()
-		specWarnBlazingFists:Show()
-		timerBlazingFistsCD:Start()
+function mod:SPELL_CAST_START(args)
+	local spellId = args.spellId
+	if spellId == 168082 then
+		warnRevitalizingWaters:Show()
+		specWarnRevitalizingWaters:Show(args.sourceName)
+	elseif spellId == 168041 then
+		specWarnBriarskin:Show(args.sourceName)
+	elseif spellId == 168105 then
+		specWarnRapidTides:Show(args.sourceName)
+	elseif spellId == 168105 then
+		warnSlash:Show()
+		specWarnSlash:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 114460 then
-		self:RegisterShortTermEvents(
-			"SPELL_DAMAGE",
-			"SPELL_MISSED"
-		)
+	local spellId = args.spellId
+	if spellId == 168105 then
+		warnRapidTides:Show(args.destName)
+		specWarnRapidTidesDispel:Show(args.destName)
+	elseif spellId == 168041 then
+		warnBriarskin:Show(args.destName)
+		specWarnBriarskinDispel:Show(args.destName)
+	elseif spellId == 168520 then
+		warnShapersFortitude:Show(args.destName)
+		timerShapersFortitude:Start(args.destName)
 	end
 end
-
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
-	if spellId == 114465 and destGUID == UnitGUID("player") and self:AntiSpam(3) then
-		specWarnScorchedEarth:Show()
-	end
-end
-mod.SPELL_MISSED = mod.SPELL_DAMAGE--]]

@@ -2,66 +2,44 @@ local mod	= DBM:NewMod(1208, "DBM-Party-WoD", 5, 556)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(59223)
+mod:SetCreatureID(82682)
 mod:SetEncounterID(1751)--TODO: Verify, Label was "Boss 3"
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED"
+	"SPELL_CAST_START 168885",
+	"SPELL_AURA_APPLIED 166492 166726"
 )
 
-local warnFlyingKick		= mod:NewSpellAnnounce(113764, 4)--This is always followed instantly by Firestorm kick, so no reason to warn both.
-local warnBlazingFists		= mod:NewSpellAnnounce(114807, 3)
---local warnScorchedEarth		= mod:NewCountAnnounce(114460, 3)--only aoe warn will be enough.
+--Again, too lazy to work on CD timers, someone else can do it. raid mods are putting too much strain on me to give 5 man mods as much attention
+--Probalby should also add a close warning for Frozen Rain
+local warnParasiticGrowth		= mod:NewSpellAnnounce(168885, 3, nil, mod:IsTank())--This is tanks job, it's no one elses business to interrupt this before tank is ready to push next phase. Careless interruptions can cause a wipe to arcane phase because fire/ice were too short.
+local warnFireBloom				= mod:NewSpellAnnounce(113764, 4)
+local warnFrozenRain			= mod:NewTargetAnnounce(166726, 3)--
 
---local yellFlyingKick		= mod:NewYell(114487)
-local specWarnFlyingKick	= mod:NewSpecialWarningSpell(113764, nil, nil, nil, true)
---local specWarnFlyingKickNear= mod:NewSpecialWarningClose(114487)
-local specWarnScorchedEarth	= mod:NewSpecialWarningMove(114460)
-local specWarnBlazingFists	= mod:NewSpecialWarningMove(114807, mod:IsTank()) -- Everything is dangerous in challenge mode, entry level heriocs will also be dangerous when they aren't overtuning your gear with an ilvl buff.if its avoidable, you should avoid it, in good practice, to create good habit for challenge modes.
+local specWarnParasiticGrowth	= mod:NewSpecialWarningSpell(168885, mod:IsTank())
+local specWarnFireBloom			= mod:NewSpecialWarningSpell(166492, nil, nil, nil, 2)
+local specWarnFrozenRain		= mod:NewSpecialWarningMove(166726)
 
-local timerFlyingKickCD		= mod:NewCDTimer(25, 113764)--25-30 second variation
-local timerFirestormKick	= mod:NewBuffActiveTimer(6, 113764)
-local timerBlazingFistsCD	= mod:NewNextTimer(30, 114807)
+function mod:SPELL_CAST_START(args)
+	local spellId = args.spellId
+	if spellId == 168885 then
+		warnParasiticGrowth:Show()
+		specWarnParasiticGrowth:Show()
 
-mod:AddBoolOption("KickArrow", true)
-
-function mod:OnCombatStart(delay)
-	timerFlyingKickCD:Start(10-delay)
-	timerBlazingFistsCD:Start(20.5-delay)
-end
-
-function mod:OnCombatEnd()
-	self:UnregisterShortTermEvents()
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 113764 then
-		warnFlyingKick:Show()
-		specWarnFlyingKick:Show()
-		timerFirestormKick:Start()
-		timerFlyingKickCD:Start()
-	elseif args.spellId == 114807 then
-		warnBlazingFists:Show()
-		specWarnBlazingFists:Show()
-		timerBlazingFistsCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 114460 then
-		self:RegisterShortTermEvents(
-			"SPELL_DAMAGE",
-			"SPELL_MISSED"
-		)
+	local spellId = args.spellId
+	if spellId == 166492 and self:AntiSpam(12) then--Because the dumb spell has no cast Id, and it's scripted to trigger via a series of debuffs over like 8 seconds
+		warnFireBloom:Show()
+		specWarnFireBloom:Show()
+	elseif spellId == 166726 then
+		warnFrozenRain:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnFrozenRain:Show()
+		end
 	end
 end
-
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
-	if spellId == 114465 and destGUID == UnitGUID("player") and self:AntiSpam(3) then
-		specWarnScorchedEarth:Show()
-	end
-end
-mod.SPELL_MISSED = mod.SPELL_DAMAGE--]]
