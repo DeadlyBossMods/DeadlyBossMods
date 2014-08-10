@@ -40,11 +40,11 @@ IronDocks\Nokgar.lua
 IronDocks\GrimrailEnforcers.lua
 IronDocks\Oshir.lua
 IronDocks\Skulloc.lua
-OvergrownOutpost\Witherbark.lua
-OvergrownOutpost\AncientProtectors.lua
-OvergrownOutpost\ArchmageSol.lua
-OvergrownOutpost\Xeritac.lua
-OvergrownOutpost\Yalnu.lua
+EverBloom\Witherbark.lua
+EverBloom\AncientProtectors.lua
+EverBloom\ArchmageSol.lua
+EverBloom\Xeritac.lua
+EverBloom\Yalnu.lua
 SMBurialGrounds\SadanaBloodfury.lua
 SMBurialGrounds\Nhallish.lua
 SMBurialGrounds\Bonemaw.lua
