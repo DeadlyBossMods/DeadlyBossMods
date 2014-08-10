@@ -41,7 +41,7 @@ L:SetOptionLocalization({
 })
 
 --------------------
---Fel Breaker --
+--Koragh --
 --------------------
 L= DBM:GetModLocalization(1153)
 
