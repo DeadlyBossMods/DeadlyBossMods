@@ -44,7 +44,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 169248 then
 		warnConsume:Show()
 		specWarnConsume:Show()
-		timerConsumeCD:Start()
+--		timerConsumeCD:Start()
 	elseif spellId == 169382 then
 		warnGaseousVolley:Show()
 		specWarnGaseousVolley:Show()
