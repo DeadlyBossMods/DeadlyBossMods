@@ -3844,6 +3844,7 @@ function checkBossHealth()
 end
 
 function loopCRTimer(timer, mod)
+	mod = DBM:GetModByName(mod or "")
 	local crTimer = mod:NewTimer(timer, DBM_COMBAT_RES_TIMER_TEXT, "Interface\\Icons\\Spell_Nature_Reincarnation")
 	crTimer:Start()
 	DBM:Schedule(timer, loopCRTimer, mod)
