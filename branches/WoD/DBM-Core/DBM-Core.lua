@@ -3844,7 +3844,7 @@ function checkBossHealth()
 end
 
 function loopCRTimer(timer, mod)
-	local crTimer = mod:NewTimer(time, DBM_COMBAT_RES_TIMER_TEXT, "Interface\\Icons\\Spell_Nature_Reincarnation")
+	local crTimer = mod:NewTimer(timer, DBM_COMBAT_RES_TIMER_TEXT, "Interface\\Icons\\Spell_Nature_Reincarnation")
 	crTimer:Start()
 	DBM:Schedule(timer, loopCRTimer, mod)
 end
@@ -3981,9 +3981,9 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 				end
 			end
 			if DBM.Options.CRT_Enabled and difficultyIndex >= 14 then--14-17 difficulties, all of the difficulty sizes of WoD.
-				local time = 90/LastGroupSize
-				time = time * 60
-				loopCRTimer(time, mod)
+				local crTimer = 90/LastGroupSize
+				crTimer = crTimer * 60
+				loopCRTimer(crTimer, mod)
 			end
 			--update boss left
 			if mod.numBoss then
