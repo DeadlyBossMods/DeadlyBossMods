@@ -78,7 +78,7 @@ local yellConvulsiveShadows				= mod:NewYell(156214)--Mythic
 local specWarnDarkHunt					= mod:NewSpecialWarningTarget(158315, false)--Healer may want this, or raid leader
 ----Marak the Blooded
 local specWarnBloodRitual				= mod:NewSpecialWarningYou(158078)
-local specWarnBloodRitualOther			= mod:NewSpecialWarningOther(158078, mod:IsTank())
+local specWarnBloodRitualOther			= mod:NewSpecialWarningTarget(158078, mod:IsTank())
 local yellBloodRitual					= mod:NewYell(158078)
 local specWarnWhirlOfBlood				= mod:NewSpecialWarningSpell(156366, nil, nil, nil, 2)--Mythic
 local specWarnBloodsoakedHeartseeker	= mod:NewSpecialWarningYou(157950)
