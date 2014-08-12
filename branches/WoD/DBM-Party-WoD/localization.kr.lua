@@ -111,6 +111,10 @@ L= DBM:GetModLocalization(1208)
 -----------------------
 L= DBM:GetModLocalization(1209)
 
+L:SetMiscLocalization({
+	Pull	= "Xeri'tac begins unleashing Toxic Spiderlings down on you!"
+})
+
 -----------------------
 -- Yalnu --
 -----------------------
