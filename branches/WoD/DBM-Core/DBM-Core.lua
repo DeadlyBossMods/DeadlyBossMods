@@ -3844,6 +3844,9 @@ function checkBossHealth()
 end
 
 function loopCRTimer(timer, mod)
+	if not mod then
+		self:Debug("IMPOSSIBLE bug")
+	return end
 	mod = DBM:GetModByName(mod or "")
 	local crTimer = mod:NewTimer(timer, DBM_COMBAT_RES_TIMER_TEXT, "Interface\\Icons\\Spell_Nature_Reincarnation")
 	crTimer:Start()
