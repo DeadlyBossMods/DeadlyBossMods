@@ -1011,6 +1011,7 @@ do
 				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 				"UNIT_TARGETABLE_CHANGED",
+				"UNIT_SPELLCAST_SUCCEEDED",
 				"ENCOUNTER_START",
 				"ENCOUNTER_END",
 				--"SPELL_UPDATE_CHARGES",
@@ -3644,6 +3645,14 @@ do
 	
 	function DBM:UNIT_TARGETABLE_CHANGED()
 		self:Debug("UNIT_TARGETABLE_CHANGED event fired")
+	end
+
+	--TODO, waste less cpu and register Unit event somehow. DBMs register events code is so conviluted though that it's difficult to add without tons of work.
+	--This may be spammy but only for debug mode. It's very important for raid testing though. i've had too many bosses where even though I tested boss
+	--And I have transcriptor log, i still don't know which event is right one sometimes. It's important to SEE which event is firing during an exact moment of a fight.
+	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
+		if not (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5") then return end
+		self:Debug("UNIT_SPELLCAST_SUCCEEDED event fired for "..UnitName(uId).."casting "..spellName.."("..spellId..")")
 	end
 
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
