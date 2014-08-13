@@ -31,7 +31,7 @@ local specWarnShatteredVertebrae		= mod:NewSpecialWarningStack(157139, nil, 2)--
 local specWarnShatteredVertebraeOther	= mod:NewSpecialWarningTaunt(157139)
 local specWarnCripplingSuplex			= mod:NewSpecialWarningSpell(156938, nil, nil, nil, 3)--pop a cooldown, or die.
 local specWarnEnvironmentalThreads		= mod:NewSpecialWarningSpell("ej10089", nil, nil, nil, 2)
-local specWarnEnvironmentalThreadsEnd	= mod:NewSpecialWarningEnds("ej10089")
+local specWarnEnvironmentalThreadsEnd	= mod:NewSpecialWarningEnd("ej10089")
 
 local timerDisruptingRoarCD				= mod:NewCDTimer(46, 160838)
 
