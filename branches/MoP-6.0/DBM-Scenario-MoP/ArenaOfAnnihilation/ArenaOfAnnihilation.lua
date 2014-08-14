@@ -10,6 +10,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START"
 --	"SPELL_AURA_REMOVED"
 )
+mod.onlyNormal = true
 
 local warnFlameWall				= mod:NewSpellAnnounce(123966, 4)
 

@@ -9,6 +9,7 @@ mod:RegisterEvents(
 --	"UNIT_EXITED_VEHICLE player",
 	"RAID_BOSS_WHISPER"
 )
+mod.noStatistics = true
 
 --Note, mod writen and tested in ENdless mode only. The actual quests are unverified
 --Endless mode is only unlockable via unofficial means.

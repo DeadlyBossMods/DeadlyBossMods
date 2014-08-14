@@ -11,6 +11,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"UNIT_AURA player"
 )
+mod.onlyNormal = true
 
 --Todo, get luck enough to have a treasure goblin spawn and capture event for it so we can special warn for it.
 local warnStoneSmash		= mod:NewCastAnnounce(139777, 3, nil, nil, false)

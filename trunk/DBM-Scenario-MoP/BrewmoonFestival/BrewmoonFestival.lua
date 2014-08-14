@@ -13,6 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"UNIT_DIED"
 )
+mod.onlyNormal = true
 
 --Li Te
 local warnWaterShell		= mod:NewSpellAnnounce(124653, 2)

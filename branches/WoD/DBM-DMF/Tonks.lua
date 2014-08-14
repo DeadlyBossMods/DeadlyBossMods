@@ -10,6 +10,7 @@ mod:RegisterEvents(
 	"UNIT_DIED",
 	"UNIT_EXITED_VEHICLE player"
 )
+mod.noStatistics = true
 
 local warnMarked				= mod:NewSpellAnnounce(102341, 4)
 

@@ -38,8 +38,8 @@ local specWarnMaulingBrew			= mod:NewSpecialWarningMove(159413)
 
 local timerPillarCD					= mod:NewNextTimer(20, "ej9394", nil, nil, nil, 159202)
 local timerChainHurlCD				= mod:NewNextTimer(106, 159947)
-local timerBerserkerRushCD			= mod:NewCDimer(45, 158986)--45 to 70 variation. Small indication that you can use a sequence to get it a little more accurate but even then it's variable. Pull1: 48, 60, 46, 70, 45, 51, 46, 70. Pull2: 48, 60, 50, 55, 45
-local timerImpaleCD					= mod:NewCDimer(35, 159113, nil, mod:IsTank())--35 to 53.7 variation
+local timerBerserkerRushCD			= mod:NewCDTimer(45, 158986)--45 to 70 variation. Small indication that you can use a sequence to get it a little more accurate but even then it's variable. Pull1: 48, 60, 46, 70, 45, 51, 46, 70. Pull2: 48, 60, 50, 55, 45
+local timerImpaleCD					= mod:NewCDTimer(35, 159113, nil, mod:IsTank())--35 to 53.7 variation
 local timerCrowdCD					= mod:NewTimer(94, "timerCrowdCD", 159410)
 
 mod:AddRangeFrameOption(4, 159386)

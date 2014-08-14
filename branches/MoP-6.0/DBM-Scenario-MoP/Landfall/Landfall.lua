@@ -10,6 +10,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"UNIT_DIED"
 )
+mod.onlyNormal = true
 
 local warnDivineStorm		= mod:NewSpellAnnounce(135404, 4, nil, mod:IsMelee())
 local warnDivineLight		= mod:NewSpellAnnounce(135403, 4)
