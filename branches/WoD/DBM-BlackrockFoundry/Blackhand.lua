@@ -12,7 +12,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 155992 159142 156530 156728 156928 158054",
 	"SPELL_CAST_SUCCESS 156425 156030 156999",
 	"SPELL_AURA_APPLIED 156096 157000",
-	"SPELL_AURA_REMOVED 156096 157000"
+	"SPELL_AURA_REMOVED 156096 157000",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --General
@@ -56,7 +57,7 @@ local specWarnMassiveShatteringSmash= mod:NewSpecialWarningSpell(158054, nil, ni
 --Stage One: The Blackrock Forge
 --local timerCrushersCallCD			= mod:NewNextTimer(30, 156425)
 --local timerMarkedforDeathCD		= mod:NewNextTimer(30, 156096)
---local timerThrowSlagBombsCD		= mod:NewNextTimer(30, 156030)
+local timerThrowSlagBombsCD			= mod:NewNextTimer(25, 156030)
 --local timerShatteringSmashCD		= mod:NewNextTimer(30, 155992)
 local timerImpalingThrow			= mod:NewCastTimer(5, 156111)--How long marked target has to aim throw at Debris Pile or Siegemaker
 --Stage Two: Storage Warehouse
@@ -68,7 +69,7 @@ local timerSlagBomb					= mod:NewCastTimer(5, 157015)
 
 
 function mod:OnCombatStart(delay)
-
+	timerThrowSlagBombsCD:Start(7-delay)
 end
 
 function mod:OnCombatEnd()
@@ -97,16 +98,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 156425 then
 		warnDemolition:Show()
 		specWarnDemolition:Show()
-	elseif spellId == 156030 or spellId == 156999 then--Phase 1 and then phase 2 version
+	elseif spellId == 156030 or spellId == 156999 then--NOT IN COMBAT LOG
 		warnThrowSlagBombs:Show()
 		specWarnThrowSlagBombs:Show()
+		timerThrowSlagBombsCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 156096 then
-		warnMarkedforDeath:Show(args.destName)
+		warnMarkedforDeath:CombinedShow(0.5, args.destName)
 		timerImpalingThrow:Start()
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
@@ -132,14 +134,15 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 156425 then
-		warnDemolition:Show()
-		specWarnDemolition:Show()
+	if spellId == 156031 then--Need phase 3 ID
+		warnThrowSlagBombs:Show()
+		specWarnThrowSlagBombs:Show()
+		timerThrowSlagBombsCD:Start()
 	end
 end
 
+--[[
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("cFFFF0404") then
 
