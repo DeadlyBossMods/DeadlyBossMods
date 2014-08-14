@@ -2,56 +2,39 @@ local mod	= DBM:NewMod(1236, "DBM-Party-WoD", 4, 558)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(61567)
+mod:SetCreatureID(87452, 86231, 80808)
 mod:SetEncounterID(1748)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_CAST_SUCCESS",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_AURA_APPLIED 163689",
+	"SPELL_AURA_REMOVED 163689"
 )
 
 
-local warnDetonate			= mod:NewSpellAnnounce(120001, 3)
+local warnSanguineSphere		= mod:NewTargetAnnounce(163689, 3)
 
-local specWarnSapResidue	= mod:NewSpecialWarningStack(119941, true, 6)
-local specWarnDetonate		= mod:NewSpecialWarningSpell(120001, mod:IsHealer(), nil, nil, true)
-local specWarnGlob			= mod:NewSpecialWarningSwitch("ej6494", not mod:IsHealer())
+local specWarnSanguineSphere	= mod:NewSpecialWarningReflect(163689)
 
-local timerDetonateCD		= mod:NewNextTimer(45.5, 120001)
-local timerDetonate			= mod:NewCastTimer(5, 120001)
-local timerSapResidue		= mod:NewBuffFadesTimer(10, 119941)
---local timerGlobCD			= mod:NewNextTimer(45.5, 119990)--Need more logs
+local timerSanguineSphere        	= mod:NewTargetTimer(15, 163689)
+
 
 function mod:OnCombatStart(delay)
-	timerDetonateCD:Start(30-delay)
+
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 119941 and args:IsPlayer() then
-		timerSapResidue:Start()
-		if (args.amount or 1) >= 6 and self:AntiSpam(1, 2) then
-			specWarnSapResidue:Show(args.amount)
-		end
-	end
-end
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 120001 then
-		warnDetonate:Show()
-		specWarnDetonate:Show()
-		timerDetonate:Start()
-		timerDetonateCD:Start()
+	if args.spellId == 163689 then
+		warnSanguineSphere:Show(args.destName)
+		specWarnSanguineSphere:Show(args.destName)
+		timerSanguineSphere:Start(args.destName)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 119990 then
-		specWarnGlob:Show()
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 163689 then
+		timerSanguineSphere:Cancel(args.destName)
 	end
-end--]]
+end

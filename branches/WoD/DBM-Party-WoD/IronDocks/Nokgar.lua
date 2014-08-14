@@ -2,54 +2,37 @@ local mod	= DBM:NewMod(1235, "DBM-Party-WoD", 4, 558)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(62205)
+mod:SetCreatureID(81297, 81305)--VERIFY 81305
 mod:SetEncounterID(1749)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_INTERRUPT"
+	"SPELL_CAST_START 166923",
+	"SPELL_AURA_APPLIED 164426"
 )
 
-local warnGustingWinds		= mod:NewSpellAnnounce(121282, 4)
-local warnResin				= mod:NewTargetAnnounce(121447, 4)
+local warnBarbedArrowBarrage			= mod:NewSpellAnnounce(166923, 3)
+local warnRecklessProvocation			= mod:NewTargetAnnounce(164426, 3)
 
-local specWarnGustingWinds	= mod:NewSpecialWarningSpell(121282, nil, nil, nil, true)
-local specWarnResin			= mod:NewSpecialWarningYou(121447)
-local specWarnCausticPitch	= mod:NewSpecialWarningMove(121443)
-
-local timerResinCD			= mod:NewCDTimer(20, 121447)--20-25 sec variation
-
-local windsActive = false
+local specWarnBarbedArrowBarrage		= mod:NewSpecialWarningSpell(166923, nil, nil, nil, true)
+local specWarnRecklessProvocation		= mod:NewSpecialWarningReflect(164426)
 
 function mod:OnCombatStart(delay)
-	windsActive = false
-	timerResinCD:Start(7-delay)
+
+end
+
+function mod:SPELL_CAST_START(args)
+	if args.spellId == 166923 then
+		warnBarbedArrowBarrage:Show()
+		specWarnBarbedArrowBarrage:Show()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 121447 then
-		warnResin:Show(args.destName)
-		if args:IsPlayer() then
-			specWarnResin:Show()
-		end
-	elseif args.spellId == 121443 then
-		if args:IsPlayer() then
-			specWarnCausticPitch:Show()
-		end
-	elseif args.spellId == 121282 and not windsActive then
-		windsActive = true
-		timerResinCD:Cancel()
-		warnGustingWinds:Show()
-		specWarnGustingWinds:Show()
+	if args.spellId == 164426 then
+		warnRecklessProvocation:Show(args.destName)
+		specWarnRecklessProvocation:Show(args.destName)
 	end
 end
-
-function mod:SPELL_INTERRUPT(args)
-	if (type(args.extraSpellId) == "number" and args.extraSpellId == 121282) and self:AntiSpam() then
-		windsActive = false
-		timerResinCD:Start(10)
-	end
-end--]]
