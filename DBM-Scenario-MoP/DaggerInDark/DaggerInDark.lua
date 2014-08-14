@@ -15,6 +15,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED target focus"
 )
+mod.onlyNormal = true
 
 --Darkhatched Lizard-Lord
 local warnWaterJets			= mod:NewCastAnnounce(133121, 2, 3)
