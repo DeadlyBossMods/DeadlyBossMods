@@ -6,13 +6,12 @@ local L
 ---------------
 L= DBM:GetModLocalization(1128)
 
-L:SetWarningLocalization({
+L:SetTimerLocalization({
+	timerCrowdCD	= "Crowd 병력"
 })
 
 L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
+	timerCrowdCD	= "Crowd 병력 대기시간 바 보기"
 })
 
 ---------------------------

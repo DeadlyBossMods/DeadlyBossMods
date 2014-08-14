@@ -5,14 +5,12 @@ local L
 ---------------
 L= DBM:GetModLocalization(1128)
 
-L:SetWarningLocalization({
+L:SetTimerLocalization({
+	timerCrowdCD	= "Crowd CD"
 })
 
 L:SetOptionLocalization({
-	timerCrowdCD	= "Show timer for when the crowd will spawn new adds",
-})
-
-L:SetMiscLocalization({
+	timerCrowdCD	= "Show timer for when the crowd will spawn new adds"
 })
 
 ---------------------------
