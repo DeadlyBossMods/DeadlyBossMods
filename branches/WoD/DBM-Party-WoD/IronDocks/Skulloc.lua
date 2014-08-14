@@ -17,6 +17,7 @@ local warnRapidFire			= mod:NewTargetAnnounce(168398, 3)
 local warnCannonBarrage		= mod:NewSpellAnnounce(168929, 4)
 
 local specWarnRapidFire		= mod:NewSpecialWarningMoveAway(168398)
+local yellRapidFire			= mod:NewYell(168398)
 local specWarnCannonBarrage	= mod:NewSpecialWarningSpell(168929, nil, nil, nil, 3)--Use the one time cast trigger instead of drycode when relogging
 
 --local timerWaveCD				= mod:NewTimer(12, "TimerWave", 69076)--Not wave timers in traditional sense. They are non stop, this is for when he activates certain mob types.
@@ -25,7 +26,10 @@ local specWarnCannonBarrage	= mod:NewSpecialWarningSpell(168929, nil, nil, nil, 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 168398 then
 		warnRapidFire:Show(args.destname)
-		specWarnRapidFire:Show()
+		if args:IsPlayer() then
+			specWarnRapidFire:Show()
+			yellRapidFire:Yell()
+		end
 	end
 end
 
