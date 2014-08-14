@@ -10,6 +10,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_SUCCESS"
 )
+mod.onlyNormal = true
 
 local warnStormTotem			= mod:NewSpellAnnounce(127010, 3)
 local warnWarEnginesSights		= mod:NewTargetAnnounce(114570, 4)

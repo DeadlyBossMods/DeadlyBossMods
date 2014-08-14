@@ -11,6 +11,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL"
 )
+mod.onlyNormal = true
 
 --Zan'thik Swarmer spawns don't show in logs, so might need to do /chatlog and /yell when they spawn and schedule a loop to get add wave timers for final boss
 local warnGuidedMissle		= mod:NewCastAnnounce(135546, 3, 5)

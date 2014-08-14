@@ -12,6 +12,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED target focus",
 	"SCENARIO_UPDATE"
 )
+mod.onlyNormal = true
 
 --Captain Ook
 local warnOrange			= mod:NewTargetAnnounce(121895, 3)

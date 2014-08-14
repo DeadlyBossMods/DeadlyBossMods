@@ -16,6 +16,7 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_DIED"
 )
+mod.onlyNormal = true
 
 --Essence of Order
 local warnSpellFlame			= mod:NewSpellAnnounce(134234, 3)

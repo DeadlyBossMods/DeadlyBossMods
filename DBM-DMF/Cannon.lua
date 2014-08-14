@@ -8,6 +8,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS 102120",
 	"UNIT_AURA player"
 )
+mod.noStatistics = true
 
 local timerMagicWings				= mod:NewBuffFadesTimer(8.5, 102116)
 

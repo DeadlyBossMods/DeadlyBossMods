@@ -12,6 +12,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_CAST_SUCCESS",
 	"UNIT_DIED"
 )
+mod.onlyNormal = true
 
 --Cursed Brew
 local warnBrewBubble			= mod:NewTargetAnnounce(131143, 3)
