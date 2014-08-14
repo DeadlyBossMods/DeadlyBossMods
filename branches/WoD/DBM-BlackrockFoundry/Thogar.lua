@@ -28,7 +28,7 @@ local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)--Going with stro
 
 --Operator Thogar
 local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195)--If target scanning works
-local specWarnEnkindle				= mod:NewSpecialWarningStack(155921, nil, 3)
+local specWarnEnkindle				= mod:NewSpecialWarningStack(155921, nil, 2)
 local specWarnEnkindleOther			= mod:NewSpecialWarningTaunt(155921)
 --Adds
 local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt(160140, not mod:IsHealer())
@@ -38,12 +38,14 @@ local yellDelayedSiegeBomb			= mod:NewYell(159481)
 
 --Operator Thogar
 local timerProtoGrenadeCD			= mod:NewCDTimer(16, 155864)
+local timerEnkindleCD				= mod:NewCDTimer(16.5, 155921, nil, mod:IsTank())
 --Adds
 --local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140)
 local timerIronbellowCD				= mod:NewCDTimer(12, 163753)
 
 function mod:OnCombatStart(delay)
-
+	timerProtoGrenadeCD:Start(6-delay)
+	timerEnkindleCD:Start(-delay)
 end
 
 function mod:OnCombatEnd()
@@ -70,7 +72,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 155921 then
 		local amount = args.amount or 1
 		warnEnkindle:Show(args.destName, amount)
-		if amount >= 3 then
+		timerEnkindleCD:Start()
+		if amount >= 2 then
 			if args:IsPlayer() then
 				specWarnEnkindle:Show()
 			else--Taunt as soon as stacks are clear, regardless of stack count.
