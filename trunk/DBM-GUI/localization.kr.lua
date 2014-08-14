@@ -5,8 +5,8 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "죽이는 보스 모드"
 
-L.TranslationByPrefix		= "제작/번역: "
-L.TranslationBy 			= "법사세린(Tag: 세린#3105/everfinale@gmail.com)"
+L.TranslationByPrefix		= "제작지원 및 번역: "
+L.TranslationBy 			= "법사세린(everfinale@gmail.com)"
 L.Website					= "문의/건의사항은 DBM 사용자 포럼을 이용하세요. |cFF73C2FB주소는 여기를 클릭|r (와우 인벤 제공)"
 L.WebsiteButton				= "사용자 포럼"
 
