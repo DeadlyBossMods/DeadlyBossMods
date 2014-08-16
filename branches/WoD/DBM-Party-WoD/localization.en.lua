@@ -59,6 +59,11 @@ L= DBM:GetModLocalization(1138)
 -----------------------
 L= DBM:GetModLocalization(1163)
 
+L:SetWarningLocalization({
+	warnGrenadeDown			= "%s dropped",
+	warnMortarDown			= "%s dropped"
+})
+
 -----------------------
 -- Thunderlord General --
 -----------------------

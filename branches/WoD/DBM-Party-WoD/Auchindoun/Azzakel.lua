@@ -43,6 +43,7 @@ local timerClawsOfArgusCD			= mod:NewNextTimer(60, 153764)
 mod:AddRangeFrameOption(5, 153396)
 
 mod.vb.debuffCount = 0
+mod.vb.firstFlameDone = false
 local curtainDebuff = GetSpellInfo(153396)
 local UnitDebuff = UnitDebuff
 local debuffFilter
@@ -54,6 +55,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.debuffCount = 0
+	self.vb.firstFlameDone = false
 	timerCurtainOfFlameCD:Start(15.5-delay)
 	timerClawsOfArgusCD:Start(27-delay)
 end
@@ -65,8 +67,11 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 153396 and timerClawsOfArgusCD:GetTime() > 40 then--if claws of argus is less than 20 seconds away, don't start CurtainOfFlame timer
+	if args.spellId == 153396 and timerClawsOfArgusCD:GetTime() < 40 and self.vb.firstFlameDone then--if claws of argus is less than 20 seconds away, don't start CurtainOfFlame timer
 		timerCurtainOfFlameCD:Start()--Start CD off success, not applied, so spreads don't mess with CD bar
+	end
+	if not self.vb.firstFlameDone then
+		self.vb.firstFlameDone = true
 	end
 end
 

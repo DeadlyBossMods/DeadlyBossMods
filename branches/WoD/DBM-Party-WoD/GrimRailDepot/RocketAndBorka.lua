@@ -10,26 +10,46 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 162500 162407 161090",
+	"SPELL_CAST_START 162500 162407 161090 162617",
 	"UNIT_DIED"
 )
 
 local warnVX18B					= mod:NewCountAnnounce(162500, 2)--Cast twice, 3rd cast is X2101, then repeats
 local warnX2101AMissile			= mod:NewSpellAnnounce(162407, 4)
 local warnMadDash				= mod:NewSpellAnnounce(161090, 3)
+local warnSlam					= mod:NewCastAnnounce(162617, 3, 1.5, nil, mod:IsSpellCaster())
 
-local specWarnMadDash			= mod:NewSpecialWarningInterrupt(161090, mod:IsTank())--It's actually an interrupt warning for OTHER boss, not caster of this spell
+local specWarnX2101AMissile		= mod:NewSpecialWarningSpell(162407, nil, nil, nil, 2)--Large AOE damage
+local specWarnMadDash			= mod:NewSpecialWarningSpell(161090, nil, nil, nil, 2)--DPS version of this warning
+local specWarnMadDashInterrupt	= mod:NewSpecialWarningInterrupt(161090, true, false)--It's actually an interrupt warning for OTHER boss, not caster of this spell
+local specWarnSlam				= mod:NewSpecialWarningCast(162617, mod:IsSpellCaster())
 
 local timerVX18BCD				= mod:NewCDTimer(33, 162500)
 local timerX2101AMissileCD		= mod:NewCDTimer(42, 162407)
 local timerMadDashCD			= mod:NewCDTimer(42, 161090)
+local timerSlamCD				= mod:NewCDTimer(15, 162617, nil, mod:IsSpellCaster())
 
 local rocketsName = EJ_GetSectionInfo(9430)
+local borkaID = nil
 mod.vb.VXCast = 0
+mod.vb.SlamCast = 0
+
+local function getBorkaID()
+	for i = 1, 2 do
+		local uId = "boss"..i
+		if self:GetUnitCreatureId(uId) == 77816 then
+			borkaID = uId
+			return
+		end
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.VXCast = 0
-	timerX2101AMissileCD:Start(21-delay)
+	self.vb.SlamCast = 0
+	getBorkaID()
+	timerSlamCD:Start(9-delay)
+	timerX2101AMissileCD:Start(18.5-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -43,11 +63,30 @@ function mod:SPELL_CAST_START(args)
 			timerVX18BCD:Start(7)
 		end
 	elseif spellId == 162407 then
+		self.vb.VXCast = 0
 		warnX2101AMissile:Show()
+		specWarnX2101AMissile:Show()
 		timerX2101AMissileCD:Start()
 	elseif spellId == 161090 then
-		specWarnMadDash:Show(rocketsName)
+		self.vb.SlamCast = 0
+		if not borkaID then--failsafe 1
+			getBorkaID()
+		end
+		if borkaID and self:IsTanking("player", borkaID) then--failsafe 2
+			specWarnMadDashInterrupt:Show(rocketsName)
+		else
+			specWarnMadDash:Show()
+		end
 		timerMadDashCD:Start()
+	elseif spellId == 162617 then
+		self.vb.SlamCast = self.vb.SlamCast + 1
+		warnSlam:Show()
+		specWarnSlam:Show()
+		if self.vb.SlamCast == 2 then
+			timerSlamCD:Start(30)
+		else
+			timerSlamCD:Start()
+		end
 	end
 end
 

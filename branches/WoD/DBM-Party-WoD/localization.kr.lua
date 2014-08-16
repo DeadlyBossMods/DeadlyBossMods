@@ -1,4 +1,4 @@
-if GetLocale() ~= "koKR" then return end
+﻿if GetLocale() ~= "koKR" then return end
 local L
 
 -----------------------
@@ -59,6 +59,11 @@ L= DBM:GetModLocalization(1138)
 -- Blackrock Assault Commander --
 -----------------------
 L= DBM:GetModLocalization(1163)
+
+L:SetWarningLocalization({
+	warnGrenadeDown			= "%s 떨어짐",
+	warnMortarDown			= "%s 떨어짐"
+})
 
 -----------------------
 -- Thunderlord General --
