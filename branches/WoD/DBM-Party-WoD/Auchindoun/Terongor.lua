@@ -44,6 +44,7 @@ local specWarnFixate			= mod:NewSpecialWarningRun(157168)
 --Affliction Abilities
 --TODO : Maybe need shit warning.
 local specWarnSeedOfCorruption	= mod:NewSpecialWarningMoveAway(156921)
+local specWarnExhaustion		= mod:NewSpecialWarningDispel(164841, mod:CanRemoveCurse())
 --Destruction Abilities
 local specWarnChaosBolt			= mod:NewSpecialWarningInterrupt(156975, not mod:IsHealer())
 --Demonic Abilities
@@ -139,6 +140,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 164841 then
 		warnExhaustion:Show(args.destName)
+		specWarnExhaustion:Show(args.destName)
 		--timerExhaustionCD:Start()
 	end
 end
