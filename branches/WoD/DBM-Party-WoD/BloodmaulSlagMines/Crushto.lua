@@ -16,31 +16,26 @@ mod:RegisterEventsInCombat(
 local warnFerociousYell			= mod:NewCastAnnounce(150759, 2)
 local warnRaiseMiners			= mod:NewSpellAnnounce(150801, 2, nil, mod:IsTank())
 local warnCrushingLeap			= mod:NewTargetAnnounce(150751, 3)
-local warnEarthCrush			= mod:NewTargetAnnounce(153679, 3)--target scanning assumed, TODO: Verify it!
-local warnWildSlam				= mod:NewTargetAnnounce(150753, 3, nil, mod:IsMelee())
+local warnEarthCrush			= mod:NewSpellAnnounce(153679, 4)--Target scanning unavailable.
+local warnWildSlam				= mod:NewSpellAnnounce(150753, 3)
 
 local specWarnFerociousYell		= mod:NewSpecialWarningInterrupt(150759, not mod:IsHealer())
 local specWarnRaiseMiners		= mod:NewSpecialWarningSwitch(150801, mod:IsTank())
-local specWarnCrushingLeap		= mod:NewSpecialWarningTarget(150751, false)
-local specWarnEarthCrush		= mod:NewSpecialWarningYou(153679)
-local yellEarthCrush			= mod:NewYell(153679)
-local specWarnWildSlam			= mod:NewSpecialWarningSpell(150753, mod:IsMelee() or mod:IsHealer(), nil, nil, 2)--not avoidable. melee just eat it.
+local specWarnCrushingLeap		= mod:NewSpecialWarningTarget(150751, false)--seems useless.
+local specWarnEarthCrush		= mod:NewSpecialWarningSpell(153679, nil, nil, nil, 2)--avoidable.
+local specWarnWildSlam			= mod:NewSpecialWarningSpell(150753, nil, nil, nil, 2)--not avoidable. large aoe damage and knockback
 
---In logs he didn't have any consistent timings, they were all wildly variable, no useful timers
-
-function mod:EarthCrushTarget(targetname, uId)
-	if not targetname then return end
-	warnEarthCrush:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnEarthCrush:Show()
-		yellEarthCrush:Yell()
-	end
-end
+--local timerFerociousYellCD--12~18. large variable?
+--local timerRaiseMinersCD--14~26. large variable. useless.
+local timerCrushingLeapCD		= mod:NewCDTimer(23, 150751)--23~25 variable.
+--local timerEarthCrushCD--13~21. large variable. useless.
+local timerWildSlamCD			= mod:NewCDTimer(23, 150753)--23~24 variable.
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 150751 then
 		warnCrushingLeap:Show(args.destName)
 		specWarnCrushingLeap:Show(args.destName)
+		timerCrushingLeapCD:Start()
 	end
 end
 
@@ -53,9 +48,11 @@ function mod:SPELL_CAST_START(args)
 		warnRaiseMiners:Show()
 		specWarnRaiseMiners:Show()
 	elseif spellId == 153679 then
-		self:BossTargetScanner(74787, "EarthCrushTarget", 0.1, 16)--Adjust timing if not reliable
+		warnEarthCrush:Show()
+		specWarnEarthCrush:Show()
 	elseif spellId == 150753 then
 		warnWildSlam:Show()
 		specWarnWildSlam:Show()
+		timerWildSlamCD:Start()
 	end
 end

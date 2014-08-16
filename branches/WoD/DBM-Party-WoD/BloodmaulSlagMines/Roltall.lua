@@ -20,14 +20,15 @@ local warnFieryBoulder			= mod:NewCountAnnounce(153247, 3)
 local warnHeatWave				= mod:NewSpellAnnounce(152940, 3)
 local warnBurningSlag			= mod:NewSpellAnnounce(152939, 3)
 
-local specWarnFieryBoulder		= mod:NewSpecialWarningSpell(153247, false)
+local specWarnFieryBoulder		= mod:NewSpecialWarningSpell("OptionVersion2", 153247, nil, nil, nil, 2)--Important to everyone
 local specWarnHeatWave			= mod:NewSpecialWarningSpell(152940, false, nil, nil, 2)
 local specWarnBurningSlag		= mod:NewSpecialWarningSpell(152939, false, nil, nil, 2)
 local specWarnBurningSlagFire	= mod:NewSpecialWarningMove(152939)
 
 local timerFieryBoulderCD		= mod:NewNextTimer(13.3, 153247)--13.3-13.4 Observed
-local timerHeatWaveCD			= mod:NewCDTimer(9.5, 152940)--9.5-9.8 Observed
-local timerBurningSlagCD		= mod:NewCDTimer(10.7, 152939)--10.7-11 Observed
+local timerHeatWave				= mod:NewBuffActiveTimer(9.5, 152940)
+local timerHeatWaveCD			= mod:NewNextTimer(9.5, 152940)--9.5-9.8 Observed
+local timerBurningSlagCD		= mod:NewNextTimer(10.7, 152939)--10.7-11 Observed
 
 mod.vb.boulderCount = 0
 mod.vb.burningSlagCast = false--More robust than using a really huge anti spam, because this will work with recovery, antispam won't
@@ -83,6 +84,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 152940 then--Heat Wave
 		warnHeatWave:Show()
 		specWarnHeatWave:Show()
+		timerHeatWave:Start()
 		timerBurningSlagCD:Start()
 	elseif spellId == 152939 and not self.vb.burningSlagCast then--Burning Slag
 		self.vb.burningSlagCast = true
