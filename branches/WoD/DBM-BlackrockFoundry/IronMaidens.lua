@@ -246,7 +246,7 @@ function mod:OnSync(msg, guid)
 	elseif msg == "RapidFireTarget" and guid then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		warnRapidFire:Show(targetName)
-	elseif msg == "Ship" and guid then--Techbucakkt not guid but it's fine.
+	elseif msg == "Ship" and guid then--technically not guid but it's fine.
 		warnShip:Show()
 		timerBombardmentAlphaCD:Start(15)
 		if guid == Marak then
