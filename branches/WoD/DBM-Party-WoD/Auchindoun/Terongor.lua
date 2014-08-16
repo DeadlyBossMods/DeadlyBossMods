@@ -42,6 +42,7 @@ local spceWarnRainOfFire		= mod:NewSpecialWarningSpell(156857, nil, nil, nil, 2)
 --Unknown Abilities
 local specWarnFixate			= mod:NewSpecialWarningRun(157168)
 --Affliction Abilities
+--TODO : Maybe need shit warning.
 local specWarnSeedOfCorruption	= mod:NewSpecialWarningMoveAway(156921)
 --Destruction Abilities
 local specWarnChaosBolt			= mod:NewSpecialWarningInterrupt(156975, not mod:IsHealer())
@@ -97,7 +98,7 @@ function mod:ChaosWaveTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-
+	self.vb.seedCount = 0
 end
 
 function mod:OnCombatEnd()
@@ -114,7 +115,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 156842 then
 		warnCorruption:Show(args.destName)
 		specWarnCorruption:Show(args.destName)
-	elseif spellId == 156921 then
+	elseif spellId == 156921 and args:IsDestTypePlayer() then--This debuff can be spread to the boss. bugged?
 		self.vb.seedCount = self.vb.seedCount + 1
 		warnSeedOfcorruption:Show(args.destName)
 		--timerSeedOfcorruptionCD:Start()
@@ -144,7 +145,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 156921 then
+	if spellId == 156921 and args:IsDestTypePlayer() then
 		self.vb.seedCount = self.vb.seedCount - 1
 		if args:IsPlayer() then
 			timerSeedOfcorruption:Cancel()
@@ -185,6 +186,8 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 156919 and self:AntiSpam(2, 1) then--Demonology Transformation
 		self:SendSync("DemonForm")--Syncing because IEEU is broken on fight and so there is no "boss1"
+	elseif spellId == 156863 and self:AntiSpam(2, 1) then--Affliction Transformation
+		self:SendSync("AfflictionForm")
 	end
 end
 
@@ -192,5 +195,7 @@ function mod:OnSync(event, arg)
 	if event == "DemonForm" then
 		timerChaosWaveCD:Start(10)
 		timerDemonicLeapCD:Start(23)
+	elseif event == "AfflictionForm" then
+		--no timer or warning yet. need more logs to confirm. maybe add phase 2 warning?
 	end
 end
