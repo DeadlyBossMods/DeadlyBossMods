@@ -5864,6 +5864,10 @@ function bossModPrototype:CanRemoveEnrage()
 	return class == "HUNTER" or class == "ROGUE" or class == "DRUID"
 end
 
+function bossModPrototype:CanRemoveCurse()
+	return class == "DRUID" or class == "MAGE"
+end
+
 function bossModPrototype:IsMagicDispeller()
 	return class == "MAGE" or class == "PRIEST" or class == "SHAMAN"
 end
