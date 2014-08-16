@@ -3876,7 +3876,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		savedDifficulty, difficultyText, difficultyIndex, LastGroupSize = DBM:GetCurrentInstanceDifficulty()
 		local name = mod.combatInfo.name
 		local modId = mod.id
-		if C_Scenario.IsInScenario() then
+		if C_Scenario.IsInScenario() and (mod.type == "SCENARIO") then
 			mod.inScenario = true
 		end
 		mod.inCombat = true
