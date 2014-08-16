@@ -1629,8 +1629,8 @@ do
 		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
 	end
 	
-	local function loopTimer(time, text, sender, count)
-		DBM:CreatePizzaTimer(time, text, nil, sender, count, true)
+	local function loopTimer(time, text, broadcast, sender, count)
+		DBM:CreatePizzaTimer(time, text, broadcast, sender, count, true)
 	end
 
 	local ignore = {}
@@ -1680,7 +1680,7 @@ do
 		end
 		if loop then
 			DBM:Unschedule(loopTimer)--Only one loop timer supported at once doing this, but much cleaner this way
-			DBM:Schedule(time, loopTimer, time, text, sender, count)
+			DBM:Schedule(time, loopTimer, time, text, broadcast, sender, count)
 		end
 	end
 
