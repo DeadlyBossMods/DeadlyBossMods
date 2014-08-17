@@ -79,6 +79,7 @@ local specWarnMarkOfChaosReplicationOther		= mod:NewSpecialWarningTaunt(164191)
 --All Phases (No need to use different timers for empowered abilities. Short names better for timers.)
 local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238)--Pretty much a next timer, HOWEVER can get delayed by other abilities so only reason it's CD timer anyways
 local timerDestructiveResonanceCD				= mod:NewCDTimer(16, 156467)--16-30sec variation noted. I don't like it
+local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605)
 local timerMarkOfChaosCD						= mod:NewCDTimer(50, 158605)
 local timerForceNovaCD							= mod:NewCDTimer(45, 157349)--45-52
 local timerSummonArcaneAberrationCD				= mod:NewCDTimer(45, 156471)--45-52 Variation Noted
@@ -189,6 +190,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(158605, 164176, 164178, 164191) then
 		if spellId == 158605 then
 			warnMarkOfChaos:Show(args.destName)
+			timerMarkOfChaos:Start(args.destName)
 			if args:IsPlayer() then
 				specWarnMarkOfChaos:Show()
 			else

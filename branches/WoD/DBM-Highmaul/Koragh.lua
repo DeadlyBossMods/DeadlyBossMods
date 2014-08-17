@@ -38,6 +38,8 @@ local specWarnExpelMagicArcaneYou	= mod:NewSpecialWarningMoveAway(162186)
 local yellExpelMagicArcane			= mod:NewYell(162186)
 
 local timerVulnerability			= mod:NewBuffActiveTimer(20, 160734)
+--local timerTrampleCD				= mod:NewCDTimer(15, 161328)--Also all over the place, 15-25 with first one coming very randomly (5-20 after barrier goes up)
+local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
 --local timerExpelMagicFireCD		= mod:NewCDTimer(20, 162185)
 --local timerExpelMagicShadowCD		= mod:NewCDTimer(10, 162184)
 --local timerExpelMagicFrostCD		= mod:NewCDTimer(10, 161411)
@@ -88,8 +90,10 @@ function mod:SPELL_AURA_APPLIED(args)
 --		timerExpelMagicFrostCD:Cancel()
 --		timerExpelMagicShadowCD:Cancel()
 --		timerExpelMagicFireCD:Cancel()
+		timerTrampleCD:Cancel()
 	elseif spellId == 162186 then
 		warnExpelMagicArcane:Show(args.destName)
+		timerExpelMagicArcane:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnExpelMagicArcaneYou:Show()
 			yellExpelMagicArcane:Yell()
@@ -123,14 +127,16 @@ end
 --"<16.8 14:52:14> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I will crush you!#Ko'ragh###Serrinne##0#0##0#565#nil#0#false#false", -- [5422]
 --"<57.9 14:52:55> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Silence!#Ko'ragh###Hesptwo-BetaLevelingRealm02##0#0##0#568#nil#0#false#false", -- [18204]
 --"<106.1 14:53:43> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Quiet!#Ko'ragh###Kevo-Level100PvP##0#0##0#572#nil#0#false#false", -- [30685]
+--"<77.9 14:43:24> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I will tear you in half!#Ko'ragh###Turkeyburger##0#0##0#510#nil#0#false#false", -- [23203]
 function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, target)
-	if msg:find(L.supressionTarget1) or msg:find(L.supressionTarget2) or msg:find(L.supressionTarget3) then
+	if msg:find(L.supressionTarget1) or msg:find(L.supressionTarget2) or msg:find(L.supressionTarget3) or msg:find(L.supressionTarget4) then
 		self:SendSync("ChargeTo", target)--Sync since we have poor language support for many languages.
 	end
 end
 
 function mod:OnSync(msg, targetname)
 	if msg == "ChargeTo" and targetname and self:AntiSpam(10, 4) then
+		timerTrampleCD:Start()
 		local target = DBM:GetUnitFullName(targetname)
 		if target then
 			warnTrample:Show(target)
