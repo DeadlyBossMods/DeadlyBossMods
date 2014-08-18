@@ -37,7 +37,7 @@ mod.vb.SlamCast = 0
 local function getBorkaID()
 	for i = 1, 2 do
 		local uId = "boss"..i
-		if self:GetUnitCreatureId(uId) == 77816 then
+		if mod:GetUnitCreatureId(uId) == 77816 then
 			borkaID = uId
 			return
 		end
