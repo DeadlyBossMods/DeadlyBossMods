@@ -9,20 +9,24 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 154932 156018 156040 155382",
-	"SPELL_CAST_SUCCESS 155318 155776 156724",
-	"SPELL_AURA_APPLIED 155277 155493 154952 163284 154950 155074",
+	"SPELL_CAST_START 156018 156040 155382 155064",
+	"SPELL_CAST_SUCCESS 155776",
+	"SPELL_AURA_APPLIED 155277 155493 154952 163284 154950 155074 154932",
 	"SPELL_AURA_APPLIED_DOSE 163284 154950 155074",
-	"SPELL_AURA_REMOVED 155277"
+	"SPELL_AURA_REMOVED 155277 154932",
+	"SPELL_DAMAGE 155318",
+	"SPELL_MISSED 155318",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 --Who is this dude?
 local warnDevastatingSlam				= mod:NewSpellAnnounce(156018, 4)
 local warnDropHammer					= mod:NewSpellAnnounce(156040, 3)--Target scanning?
 
---local warnLavaSlash					= mod:NewSpellAnnounce(155318, 2, nil, false)--Likely cast often & doesn't show in combat log anyways except for damage and not THAT important
+local warnLavaSlash						= mod:NewSpellAnnounce(155318, 2, nil, false)--Likely cast often & doesn't show in combat log anyways except for damage and not THAT important
 local warnSummonEnchantedArmaments		= mod:NewSpellAnnounce(156724, 3)
-local warnMoltenTorrent					= mod:NewSpellAnnounce(154932, 3)
+local warnMoltenTorrent					= mod:NewTargetAnnounce(154932, 3)
 local warnSummonCinderWolves			= mod:NewSpellAnnounce(155776, 3)--Cast trigger could be anything, undefined on wowhead. just "Channeled" which I've seen use START, SUCCESS and even APPLIED. sigh
+local warnRekindle						= mod:NewCastAnnounce(155064, 4)
 local warnFixate						= mod:NewTargetAnnounce(154952, 3)
 local warnFireStorm						= mod:NewSpellAnnounce(155493, 4, nil, mod:IsTank())
 local warnBlazingRadiance				= mod:NewTargetAnnounce(155277, 3)
@@ -30,26 +34,34 @@ local warnFireStorm						= mod:NewSpellAnnounce(155493, 4)
 local warnRisingFlames					= mod:NewStackAnnounce(163284, 2, nil, mod:IsTank())
 local warnCharringBreath				= mod:NewStackAnnounce(155074, 2, nil, mod:IsTank())
 
-local specWarnMoltenTorrent				= mod:NewSpecialWarningSpell(154932, nil, nil, nil, 2)
+local specWarnLavaSlash					= mod:NewSpecialWarningMove(155318)
+local specWarnMoltenTorrent				= mod:NewSpecialWarningYou(154932)
+local specWarnMoltenTorrentOther		= mod:NewSpecialWarningMoveTo(154932, not mod:IsTank())--Hard code tanke exclusion?
+local yellMoltenTOrrent					= mod:NewYell(154932)
 local specWarnCinderWolves				= mod:NewSpecialWarningSwitch(155776, not mod:IsHealer())
 local specWarnFixate					= mod:NewSpecialWarningYou(154952)--Need to be run warning instead?
-local specWarnBlazinRadiance			= mod:NewSpecialWarningYou(155277)
-local yellBlazinRadiance				= mod:NewYell(155277)
+local specWarnBlazinRadiance			= mod:NewSpecialWarningMoveAway(155277)
+local yellBlazinRadiance				= mod:NewYell(155277, nil, false)
 local specWarnFireStorm					= mod:NewSpecialWarningSpell(155493, nil, nil, nil, 2)
-local specWarnRisingFlames				= mod:NewSpecialWarningStack(163284, nil, 12)--stack guessed
+local specWarnRisingFlames				= mod:NewSpecialWarningStack(163284, nil, 10)--stack guessed
 local specWarnRisingFlamesOther			= mod:NewSpecialWarningTaunt(163284)
 local specWarnCharringBreath			= mod:NewSpecialWarningYou(155074)--Assumed based on timing and casts, that you swap every breath.
 local specWarnCharringBreathOther		= mod:NewSpecialWarningTaunt(155074)
+--
 
---local timerLavaSlashCD				= mod:NewCDTimer(10, 155318, nil, false)
+local timerLavaSlashCD					= mod:NewCDTimer(14.5, 155318, nil, false)
 local timerMoltenTorrentCD				= mod:NewCDTimer(14, 154932)
+local timerSummonEnchantedArmamentsCD	= mod:NewCDTimer(45, 156724)--45-47sec variation
 local timerSummonCinderWolvesCD			= mod:NewNextTimer(74, 155776)
+local timerFixate						= mod:NewTargetTimer(10, 154952, nil, false)--Could be spammy
 local timerBlazingRadianceCD			= mod:NewCDTimer(12, 155277)
 local timerFireStormCD					= mod:NewNextTimer(63, 155493)
 
 mod:AddRangeFrameOption("10/6")
+mod:AddArrowOption("TorrentArrow", 154932, not mod:IsTank(), true)--Hard code tanke exclusion?
 
 function mod:OnCombatStart(delay)
+	timerLavaSlashCD:Start(11-delay)
 	timerMoltenTorrentCD:Start(30-delay)
 	timerSummonCinderWolvesCD:Start(60-delay)
 	if self.Options.RangeFrame then
@@ -61,35 +73,31 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	if self.Options.TorrentArrow then
+		DBM.Arrow:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 154932 then
-		warnMoltenTorrent:Show()
-		specWarnMoltenTorrent:Show()
-		timerMoltenTorrentCD:Start()
-	elseif spellId == 156018 then
+	if spellId == 156018 then
 		warnDevastatingSlam:Show()
 	elseif spellId == 156040 then
 		warnDropHammer:Show()
 	elseif spellId == 155382 then
 		timerBlazingRadianceCD:Start()
+	elseif spellId == 155064 then
+		warnRekindle:Show()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 155776 then--Move to START or APPLIED if wrong
+	if spellId == 155776 then
 		warnSummonCinderWolves:Show()
 		specWarnCinderWolves:Show()
 		timerBlazingRadianceCD:Start(34)
 		timerFireStormCD:Start()
-	elseif spellId == 156724 then--Move to START or APPLIED if wrong
-		warnSummonEnchantedArmaments:Show()
---[[elseif spellId == 155318 then
-		warnLavaSlash:Show()
-		--timerLavaSlashCD:Start()--]]
 	end
 end
 
@@ -104,7 +112,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(10)
 			end
 		end
-	elseif spellId == 155493 then--Move to START or SUCCESS if wrong
+	elseif spellId == 155493 then
 		warnFireStorm:Show()
 		specWarnFireStorm:Show()
 		timerBlazingRadianceCD:Cancel()
@@ -112,6 +120,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSummonCinderWolvesCD:Start(74)
 	elseif spellId == 154952 then
 		warnFixate:CombinedShow(0.5, args.destName)
+		timerFixate:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show()--Are these kited? add a run away sound?
 		end
@@ -120,7 +129,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount % 3 == 0 then
 			warnRisingFlames:Show(args.destName, amount)
 		end
-		if amount % 3 == 0 and amount >= 12 then--Stack count unknown
+		if amount % 3 == 0 and amount >= 10 then--Stack count unknown
 			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 				specWarnRisingFlames:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
@@ -139,6 +148,18 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnCharringBreathOther:Show(args.destName)
 			end
 		end
+	elseif spellId == 154932 then
+		warnMoltenTorrent:Show(args.destName)
+		timerMoltenTorrentCD:Start()
+		if args:IsPlayer() then
+			specWarnMoltenTorrent:Show()
+			yellMoltenTOrrent:Yell()
+		else
+			specWarnMoltenTorrentOther:Show(args.destName)
+			if self.Options.TorrentArrow then
+				DBM.Arrow:ShowRunTo(args.destName, 3, 3, 5)
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -150,26 +171,24 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)
 		end
+	elseif spellId == 154932 and self.Options.TorrentArrow then
+		DBM.Arrow:Hide()
 	end
 end
 
---[[
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
+	if spellId == 155318 and destGUID == UnitGUID("player") and self:AntiSpam() then
+		specWarnLavaSlash:Show()
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 50630 and self:AntiSpam(2, 3) then--Eject All Passengers:
-	
+	if spellId == 163644 then
+		warnSummonEnchantedArmaments:Show()
+		timerSummonEnchantedArmamentsCD:Start()
+	elseif spellId == 154914 then
+		warnLavaSlash:Show()
+		timerLavaSlashCD:Start()
 	end
 end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:find("cFFFF0404") then
-
-	elseif msg:find(L.tower) then
-
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "Adds" and self:AntiSpam(20, 4) and self:IsInCombat() then
-
-	end
-end--]]

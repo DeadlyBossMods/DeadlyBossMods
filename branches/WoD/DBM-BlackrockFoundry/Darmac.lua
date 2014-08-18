@@ -20,6 +20,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--Because boss numbering tends to get out of wack with things constantly joining/leaving fight. I've only seen boss1 and boss2 but for good measure.
 )
 
+--TODO, get mythic beast casts and timers
 --Boss basic attacks
 local warnPinDown					= mod:NewSpellAnnounce(155365, 3)--Debuffs/target only show in combat log 1 in 5 times. so target warning not reliable for timers/warnings right now. 154960#Pin Down#1#DEBUFF is debuff
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
@@ -31,6 +32,7 @@ local warnRylak						= mod:NewTargetAnnounce(155459, 3)--Grants Superheated Shra
 local warnSuperheatedShrapnel		= mod:NewSpellAnnounce(155499, 3, nil, mod:IsHealer())
 local warnElekk						= mod:NewTargetAnnounce(155460, 3)--Grants Tantrum
 local warnTantrum					= mod:NewSpellAnnounce(162275, 3)
+local warnEpicenter					= mod:NewSpellAnnounce(162277, 3)--Mythic
 --Beast abilities (living beasts)
 local warnSavageHowl				= mod:NewSpellAnnounce(155198, 3, nil, mod:IsHealer() or mod:IsTank())
 local warnConflag					= mod:NewTargetAnnounce(155399, 3, nil, mod:IsHealer())
@@ -44,6 +46,7 @@ local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
 local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil, nil, 2)--Still iffy on it
 local specWarnTantrum				= mod:NewSpecialWarningSpell(162275, nil, nil, nil, 2)
+local specWarnEpicenter				= mod:NewSpecialWarningSpell(162277, nil, nil, nil, 2)
 --Beast abilities (living)
 local specWarnSavageHowl			= mod:NewSpecialWarningSpell(155198, mod:IsHealer() or mod:IsTank(), nil, nil, 2)
 local specWarnSearingFangs			= mod:NewSpecialWarningStack(155030, nil, 12)--Stack count assumed, may be 2
@@ -58,6 +61,7 @@ local timerCallthePackCD			= mod:NewCDTimer(20.5, 154975)--Every 20.5sec cd but 
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
 local timerSuperheatedShrapnelCD	= mod:NewCDTimer(15, 155499)--15-30sec variation observed.
 local timerTantrumCD				= mod:NewCDTimer(25, 162275)--Not a large enough sample size, could be 20 like other abilities
+--local timerEpicenterCD			= mod:NewCDTimer(25, 162277)
 --Beast abilities (living)
 local timerSavageHowlCD				= mod:NewCDTimer(25, 155198)
 local timerConflagCD				= mod:NewCDTimer(20, 155399)
@@ -275,6 +279,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnTantrum:Show()
 		specWarnTantrum:Show()
 		timerTantrumCD:Start(37)--Initial data supports this having a much longer CD on boss which is why two IDs are split
+	elseif spellId == 162277 then--Assume that like his other abilities, isn't in combat log.
+		warnEpicenter:Show()
+		specWarnEpicenter:Show()
 	elseif spellId == 155497 then--Superheated Shrapnel
 		warnSuperheatedShrapnel:Show()
 		specWarnSuperheatedShrapnel:Show()

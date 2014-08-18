@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 --[[Berserk?
 "<4.4 14:25:47> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#true#true#Oregorger#Creature:0:3314:1205:13906:77182
 "<328.2 14:31:10> CHAT_MSG_RAID_BOSS_EMOTE#Oregorger has gone insane from hunger!#Oregorger#####0#0##0#164#0000000000000000#0#false#false", -- [5]--]]
+--TODO, check into http://beta.wowhead.com/spell=155923 on mythic
 local warnBlackrockBarrage			= mod:NewCountAnnounce(156877, 2)
 local warnAcidTorrent				= mod:NewSpellAnnounce(156240, 3)
 local warnRetchedBlackrock			= mod:NewTargetAnnounce(156179, 3)--Target scanning verified.
