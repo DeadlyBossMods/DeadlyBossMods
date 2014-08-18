@@ -388,23 +388,23 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId)
+function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID, destName, _, _, spellId)
 	if spellId == 143873 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
 		specWarnRavagerMove:Show()
 	elseif sourceGUID == UnitGUID("player") and destGUID == UnitGUID("boss1") and self:AntiSpam(3, 1) then--If you've been in LFR at all, you'll see that even 3 is generous. 8 is WAY too leaniant.
 		if not UnitDebuff("player", sunder) and self.vb.defensiveActive then
-			specWarnDefensiveStanceAttack:Show()
+			specWarnDefensiveStanceAttack:Show(destName)
 		end
 	end
 end
 mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
 mod.SWING_DAMAGE = mod.SPELL_DAMAGE
 
-function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId)--Prevent spam on DoT
+function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, _, _, _, destGUID, destName, _, _, spellId)--Prevent spam on DoT
 	if sourceGUID == UnitGUID("player") and destGUID == UnitGUID("boss1") and self:AntiSpam(3, 1) then
 		if not UnitDebuff("player", sunder) and self.vb.defensiveActive and not dotWarned[spellId] then
 			dotWarned[spellId] = true
-			specWarnDefensiveStanceAttack:Show()
+			specWarnDefensiveStanceAttack:Show(destName)
 		end
 	end
 end
