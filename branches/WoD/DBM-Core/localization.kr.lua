@@ -1,7 +1,7 @@
 ﻿if (GetLocale() == "koKR") then
 
 DBM_CORE_NEED_SUPPORT				= "문의/건의사항은 설정 화면에서 사용자 포럼 버튼을 누른 후, DBM 사용자 포럼에 남겨 주시기 바랍니다. DBM Team은 프로그래밍 또는 외국어에 능통하신 분의 도움을 기다리고 있습니다. 자세한 사항은 everfinale@gmail.com 으로 메일을 보내주시기 바랍니다."
-DBM_CORE_NEED_LOGS					= "DBM이 현재 전투 경고를 원할히 하기 위해서는 Transcriptor (http://www.wowace.com/addons/transcriptor/) 기록이 필요합니다. 가능하시다면, 현재 전투를 Transcriptor로 기록하신 후에 http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing-updated-8-07-14/ 로 오셔서 올려주세요.(용량이 크므로 반드시 압축해주시기 바랍니다.). 6.0 공격대 전투 기록만 필요합니다. 5인 던전 전투 기록은 필요하지 않습니다."
+DBM_CORE_NEED_LOGS					= "DBM이 현재 전투 경고를 원할히 하기 위해서는 Transcriptor (http://www.wowace.com/addons/transcriptor/) 기록이 필요합니다. 가능하시다면, 현재 전투를 Transcriptor로 기록하신 후에 http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing/ 로 오셔서 올려주세요.(용량이 크므로 반드시 압축해주시기 바랍니다.). 6.0 공격대 전투 기록만 필요합니다. 5인 던전 전투 기록은 필요하지 않습니다."
 DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력하면 설정창이 나타납니다. 각 경고는 최초 불러오기시 캐릭터 특성에 맞는 적절한 경고를 선택합니다. 선택된 경고는 설정창에서 언제든지 변경이 가능합니다."
 
 DBM_FORUMS_MESSAGE					= "오류를 발견하셨나요? 일부 전투에서 추가 경고가 있으면 좋을텐데라고 생각하셨나요?\n그렇다면 DBM 사용자 포럼을 방문해 보세요. 주소는 |HDBM:forums|h|cff3588ffhttp://www.inven.co.kr/board/powerbbs.php?come_idx=3716|r 입니다. (클릭후 주소 복사 가능)"

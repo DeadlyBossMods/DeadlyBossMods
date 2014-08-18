@@ -2508,7 +2508,7 @@ function DBM:CINEMATIC_START()
 end
 
 function DBM:LFG_COMPLETION_REWARD()
-	if #inCombat > 0 and C_Scenario.IsInScenario() then
+	if #inCombat > 0 and IsInScenarioGroup() then
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if v.inScenario then
@@ -3899,7 +3899,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		savedDifficulty, difficultyText, difficultyIndex, LastGroupSize = DBM:GetCurrentInstanceDifficulty()
 		local name = mod.combatInfo.name
 		local modId = mod.id
-		if C_Scenario.IsInScenario() and (mod.type == "SCENARIO") then
+		if IsInScenarioGroup() then
 			mod.inScenario = true
 		end
 		mod.inCombat = true
