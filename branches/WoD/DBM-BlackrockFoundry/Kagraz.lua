@@ -47,7 +47,7 @@ local yellBlazinRadiance				= mod:NewYell(155277, nil, false)
 local specWarnFireStorm					= mod:NewSpecialWarningSpell(155493, nil, nil, nil, 2)
 local specWarnRisingFlames				= mod:NewSpecialWarningStack(163284, nil, 10)--stack guessed
 local specWarnRisingFlamesOther			= mod:NewSpecialWarningTaunt(163284)
-local specWarnCharringBreath			= mod:NewSpecialWarningStack(155074, nil, 2)--Assumed based on timing and casts, that you swap every breath.
+local specWarnCharringBreath			= mod:NewSpecialWarningStack(155074, nil, 3)--Assumed based on timing and casts, that you swap every breath.
 local specWarnCharringBreathOther		= mod:NewSpecialWarningTaunt(155074)
 --
 
@@ -155,7 +155,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 155074 then
 		local amount = args.amount or 1
 		warnCharringBreath:Show(args.destName, amount)
-		if amount >= 2 then
+		if amount >= 3 then
 			if args:IsPlayer() then
 				specWarnCharringBreath:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
