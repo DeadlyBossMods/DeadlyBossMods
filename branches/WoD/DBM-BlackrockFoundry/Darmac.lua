@@ -11,8 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 154975 155198",
 	"SPELL_CAST_SUCCESS 155247 155399",
-	"SPELL_SUMMON 154956",
-	"SPELL_AURA_APPLIED 154960 155458 155459 155460 154981 155030 155236",
+	"SPELL_AURA_APPLIED 154960 155458 155459 155460 154981 155030 155236 155462",
 	"SPELL_AURA_APPLIED_DOSE 155030 155236",
 	"SPELL_AURA_REMOVED 154960",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
@@ -21,6 +20,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, get mythic beast casts and timers
+--TODO, verify timers with new start method I did to ensure it works for both mythic and non mythic
 --Boss basic attacks
 local warnPinDown					= mod:NewSpellAnnounce(155365, 3)--Debuffs/target only show in combat log 1 in 5 times. so target warning not reliable for timers/warnings right now. 154960#Pin Down#1#DEBUFF is debuff
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
@@ -42,6 +42,7 @@ local warnStampede					= mod:NewSpellAnnounce(155247, 3)
 
 --Boss basic attacks
 local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, not mod:IsHealer())
+local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, mod:IsRanged(), nil, nil, 2)
 local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
 local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil, nil, 2)--Still iffy on it
@@ -56,7 +57,7 @@ local specWarnCrushArmorOther		= mod:NewSpecialWarningTaunt(155236)
 
 --Boss basic attacks
 local timerPinDownCD				= mod:NewCDTimer(20.5, 155365)--Every 20 seconds unless delayed by other things. CD timer used for this reason
-local timerCallthePackCD			= mod:NewCDTimer(20.5, 154975)--Every 20.5sec cd but RARELY 20 seconds. often 26-30 seconds. Don't mistake for 26 second cd. It is absolutely 20
+local timerCallthePackCD			= mod:NewCDTimer(30.5, 154975)--Every 30-42 now?
 --Boss gained abilities (beast deaths grant boss new abilities)
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
 local timerSuperheatedShrapnelCD	= mod:NewCDTimer(15, 155499)--15-30sec variation observed.
@@ -74,10 +75,41 @@ mod.vb.RylakAbilities = false
 mod.vb.WolfAbilities = false
 mod.vb.ElekkAbilities = false
 mod.vb.FaultlineAbilites= false
+mod.vb.mounted = false
 local activeBossGUIDS = {}
 
-local function pinDelay()
-	warnPinDown:Show()
+local function updateBeasts(cid, status, beastName)
+	if DBM.BossHealth:IsShown() then
+		if status == 3 then--Add Boss, keep Beast
+			DBM.BossHealth:AddBoss(76865, L.name)
+		elseif status == 2 then--Just Remove Beast
+			DBM.BossHealth:AddBoss(cid, beastName)
+		elseif status == 1 then--Add beast, remove boss
+			DBM.BossHealth:RemoveBoss(76865)
+			DBM.BossHealth:AddBoss(cid, beastName)
+		else--Status 0, remove beast add boss
+			DBM.BossHealth:RemoveBoss(cid)
+			DBM.BossHealth:AddBoss(76865, L.name)
+		end
+	end
+end
+
+local function updateBeastTimers()
+	if mod.vb.WolfAbilities then--Cruelfang
+		timerSavageHowlCD:Cancel()
+		timerRendandTearCD:Start(6)--Small sample size. Just keep subtracking if shorter times are observed.
+	end
+	if mod.vb.RylakAbilities then--Dreadwing
+		timerConflagCD:Cancel()
+		timerSuperheatedShrapnelCD:Start(9)--Small sample size. Just keep subtracking if shorter times are observed.
+	end
+	if mod.vb.ElekkAbilities then--Ironcrusher
+		timerStampedeCD:Cancel()
+		timerTantrumCD:Start(16)--Small sample size. Just keep subtracking if shorter times are observed.
+	end
+	if mod.vb.FaultlineAbilites then--Faultline
+		--Mythic Stuff
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -85,6 +117,7 @@ function mod:OnCombatStart(delay)
 	self.vb.WolfAbilities = false
 	self.vb.ElekkAbilities = false
 	self.vb.FaultlineAbilites = false
+	self.vb.mounted = false
 	table.wipe(activeBossGUIDS)
 	timerCallthePackCD:Start(8-delay)
 	timerPinDownCD:Start(12.5-delay)
@@ -122,18 +155,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_SUMMON(args)
-	local spellId = args.spellId
-	if spellId == 154956 and self:AntiSpam(3, 1) then
-		self:Schedule(0.5, pinDelay)--Schedule a delay, wait to see if debuffs appear in combat log and show those instead.
-		timerPinDownCD:Start()
-	end
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 154960 then
-		self:Unschedule(pinDelay)--We git debuffs, show target warning instead of generic
 		warnPinDownTargets:CombinedShow(0.5, args.destName)
 		if self.Options.SetIconOnSpear then
 			self:SetSortedIcon(0.5, args.destName, 8, nil, true)
@@ -169,18 +193,23 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif spellId == 155458 then--Wolf Aura
-		warnWolf:Show(args.destName)
-		if self.Options.RangeFrame and not self:IsMelee() and not self.vb.RylakAbilities then
-			DBM.RangeCheck:Show(7)--Upgrade range frame to 7 now that he has rend and tear. TODO: If this attack doesn't target melee
+	elseif args:IsSpellID(155458, 155459, 155460, 155462) then
+		updateBeastTimers()
+		if spellId == 155458 then--Wolf Aura
+			warnWolf:Show(args.destName)
+			if self.Options.RangeFrame and not self:IsMelee() and not self.vb.RylakAbilities then
+				DBM.RangeCheck:Show(7)--Upgrade range frame to 7 now that he has rend and tear. TODO: If this attack doesn't target melee
+			end
+		elseif spellId == 155459 then--Rylak Aura
+			warnRylak:Show(args.destName)
+			if self.Options.RangeFrame and not self:IsMelee() then
+				DBM.RangeCheck:Show(8)--Update range frame to 8 for Scrapnal. TODO, again, see if melee affected by this or not
+			end
+		elseif spellId == 155460 then--Elekk Aura
+			warnElekk:Show(args.destName)
+		elseif spellId == 155462 then--Mythic Beast
+			
 		end
-	elseif spellId == 155459 then--Rylak Aura
-		warnRylak:Show(args.destName)
-		if self.Options.RangeFrame and not self:IsMelee() then
-			DBM.RangeCheck:Show(8)--Update range frame to 8 for Scrapnal. TODO, again, see if melee affected by this or not
-		end
-	elseif spellId == 155460 then--Elekk Aura
-		warnElekk:Show(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -192,18 +221,6 @@ local spellId = args.spellId
 	end
 end
 
-local function updateBeasts(cid, status, beastName)
-	if DBM.BossHealth:IsShown() then
-		if status == 1 then--Add beast, remove boss
-			DBM.BossHealth:RemoveBoss(76865)
-			DBM.BossHealth:AddBoss(cid, beastName)
-		else--Status 0, remove beast add boss
-			DBM.BossHealth:RemoveBoss(cid)
-			DBM.BossHealth:AddBoss(76865, L.name)
-		end
-	end
-end
-
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	for i = 1, 5 do
 		local unitID = "boss"..i
@@ -211,62 +228,62 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if UnitExists(unitID) and not activeBossGUIDS[unitGUID] then
 			activeBossGUIDS[unitGUID] = true
 			local cid = self:GetCIDFromGUID(unitGUID)
-			if cid == 76884 then--Cruelfang
-				self.vb.WolfAbilities = true
-				updateBeasts(cid, 1, UnitName(unitID))
-				timerRendandTearCD:Start(5)
-				timerSavageHowlCD:Start(15)
-				--Cancel timers for abilities he can't use from other dead beasts
-				timerSuperheatedShrapnelCD:Cancel()
-				timerTantrumCD:Cancel()
-			elseif cid == 76874 then--Dreadwing
-				self.vb.RylakAbilities = true
-				updateBeasts(cid, 1, UnitName(unitID))
-				timerConflagCD:Start(12)
-				--Cancel timers for abilities he can't use from other dead beasts
-				timerRendandTearCD:Cancel()
-				timerTantrumCD:Cancel()
-			elseif cid == 76945 then--Ironcrusher
-				self.vb.ElekkAbilities = true
-				updateBeasts(cid, 1, UnitName(unitID))
-				timerStampedeCD:Start(15)
-				timerTantrumCD:Start(30)
-				--Cancel timers for abilities he can't use from other dead beasts
-				timerRendandTearCD:Cancel()
-				timerSuperheatedShrapnelCD:Cancel()
-			elseif cid == 76946 then--Faultline
-				self.vb.FaultlineAbilites = true
-				updateBeasts(cid, 1, UnitName(unitID))
-				--Cancel timers for abilities he can't use from other dead beasts
-				timerRendandTearCD:Cancel()
-				timerSuperheatedShrapnelCD:Cancel()
-				timerTantrumCD:Cancel()
+			if cid == 76884 or cid == 76874 or cid == 76945 or cid == 76946 then
+				self.vb.mounted = true
+				if self:IsMythic() then
+					updateBeasts(cid, 2, UnitName(unitID))
+				else
+					updateBeasts(cid, 1, UnitName(unitID))
+				end
+				if cid == 76884 then--Cruelfang
+					self.vb.WolfAbilities = true
+					timerRendandTearCD:Start(5)
+					timerSavageHowlCD:Start(15)
+					--Cancel timers for abilities he can't use from other dead beasts
+					timerSuperheatedShrapnelCD:Cancel()
+					timerTantrumCD:Cancel()
+				elseif cid == 76874 then--Dreadwing
+					self.vb.RylakAbilities = true
+					timerConflagCD:Start(12)
+					--Cancel timers for abilities he can't use from other dead beasts
+					timerRendandTearCD:Cancel()
+					timerTantrumCD:Cancel()
+				elseif cid == 76945 then--Ironcrusher
+					self.vb.ElekkAbilities = true
+					timerStampedeCD:Start(15)
+					timerTantrumCD:Start(30)
+					--Cancel timers for abilities he can't use from other dead beasts
+					timerRendandTearCD:Cancel()
+					timerSuperheatedShrapnelCD:Cancel()
+				elseif cid == 76946 then--Faultline
+					self.vb.FaultlineAbilites = true
+					--Cancel timers for abilities he can't use from other dead beasts
+					timerRendandTearCD:Cancel()
+					timerSuperheatedShrapnelCD:Cancel()
+					timerTantrumCD:Cancel()
+				end
 			end
 		end
 	end
 end
 
+function mod:UNIT_TARGETABLE_CHANGED()
+	for i = 1, 5 do
+		local unitID = "boss"..i
+		local unitGUID = UnitGUID(unitID)
+		if cid == 76865 and self.vb.mounted then--Boss dismounting living beast on mythic
+			self.vb.mounted = false
+			updateBeasts(cid, 3)
+			updateBeastTimers()
+		end
+	end
+end	
+
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 76884 or cid == 76874 or cid == 76945 or cid == 76946 then--Beasts
 		updateBeasts(cid, 0)
-		--I realize there is redundant timer canceling but that hurts nothing.
-		--Still a lot cleaner than a ton of extra nested CID checks
-		if self.vb.WolfAbilities then--Cruelfang
-			timerSavageHowlCD:Cancel()
-			timerRendandTearCD:Start()--Small sample size. Just keep subtracking if shorter times are observed.
-		end
-		if self.vb.RylakAbilities then--Dreadwing
-			timerConflagCD:Cancel()
-			timerSuperheatedShrapnelCD:Start(15)--Small sample size. Just keep subtracking if shorter times are observed.
-		end
-		if self.vb.ElekkAbilities then--Ironcrusher
-			timerStampedeCD:Cancel()
-			timerTantrumCD:Start(22)--Small sample size. Just keep subtracking if shorter times are observed.
-		end
-		if self.vb.FaultlineAbilites then--Faultline
-			--Mythic Stuff
-		end
 	end
 end
 
@@ -288,5 +305,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 155385 or spellId == 155515 then--Both versions of spell(boss and beast), they seem to have same cooldown so combining is fine
 		warnRendandTear:Show()
 		timerRendandTearCD:Start()
+	elseif spellId == 155365 then--Cast
+		warnPinDown:Show()
+		specWarnPinDown:Show()
+		timerPinDownCD:Start()
 	end
 end
