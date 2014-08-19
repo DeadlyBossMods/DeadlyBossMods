@@ -144,7 +144,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 154981 then
 		warnConflag:CombinedShow(0.5, args.destName)
 	elseif spellId == 155030 then
-		local amount = args.amount
+		local amount = args.amount or 1
 		if amount % 3 == 0 and amount >= 12 then--Stack assumed, may need revisint
 			warnSearingFangs:Show(args.destName, amount)
 			if amount >= 12 then
