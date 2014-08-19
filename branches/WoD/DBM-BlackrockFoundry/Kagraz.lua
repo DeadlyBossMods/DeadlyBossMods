@@ -13,7 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 155776 155074",
 	"SPELL_AURA_APPLIED 155277 155493 154952 163284 155074 154932 154950",
 	"SPELL_AURA_APPLIED_DOSE 163284 155074",
-	"SPELL_AURA_REMOVED 155277 154932 154950",
+	"SPELL_AURA_REMOVED 155277 154932 154950 154952",
 	"SPELL_PERIODIC_DAMAGE 155314",
 	"SPELL_PERIODIC_MISSED 155314",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -42,6 +42,7 @@ local yellMoltenTorrent					= mod:NewYell(154932)
 local specWarnCinderWolves				= mod:NewSpecialWarningSwitch(155776, not mod:IsHealer())
 local specWarnOverheated				= mod:NewSpecialWarningSwitch(154950, mod:IsTank())
 local specWarnFixate					= mod:NewSpecialWarningYou(154952, nil, nil, nil, 3)
+local specWarnFixateEnded				= mod:NewSpecialWarningEnd(154952, false)
 local specWarnBlazinRadiance			= mod:NewSpecialWarningMoveAway(155277)
 local yellBlazinRadiance				= mod:NewYell(155277, nil, false)
 local specWarnFireStorm					= mod:NewSpecialWarningSpell(155493, nil, nil, nil, 2)
@@ -202,6 +203,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 154950 then
 		timerOverheated:Cancel(args.destName)
 		countdownOverheated:Cancel()
+	elseif spellId == 154952 then
+		timerFixate:Cancel(args.destName)
+		if args:IsPlayer() then
+			specWarnFixateEnded:Show()
+		end
 	end
 end
 
