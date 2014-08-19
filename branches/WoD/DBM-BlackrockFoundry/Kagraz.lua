@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 156018 156040 155382 155064",
-	"SPELL_CAST_SUCCESS 155776",
+	"SPELL_CAST_SUCCESS 155776 155074",
 	"SPELL_AURA_APPLIED 155277 155493 154952 163284 155074 154932 154950",
 	"SPELL_AURA_APPLIED_DOSE 163284 155074",
 	"SPELL_AURA_REMOVED 155277 154932 154950",
@@ -56,6 +56,7 @@ local timerMoltenTorrentCD				= mod:NewCDTimer(14, 154932)
 local timerSummonEnchantedArmamentsCD	= mod:NewCDTimer(45, 156724)--45-47sec variation
 local timerSummonCinderWolvesCD			= mod:NewNextTimer(74, 155776)
 local timerOverheated					= mod:NewTargetTimer(14, 154950, nil, mod:IsTank())
+local timerCharringBreathCD				= mod:NewNextTimer(5, 155074, nil, mod:IsTank())
 local timerFixate						= mod:NewTargetTimer(10, 154952, nil, false)--Spammy, can't combine them beacause of wolves will desync if players die.
 local timerBlazingRadianceCD			= mod:NewCDTimer(12, 155277, nil, false)--somewhat important but not important enough. there is just too much going on to be distracted by this timer
 local timerFireStormCD					= mod:NewNextTimer(63, 155493)
@@ -108,6 +109,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBlazingRadianceCD:Start(34)
 		timerFireStormCD:Start()
 		countdownFireStorm:Start()
+	elseif spellId == 155074 then
+		timerCharringBreathCD:Start()
 	end
 end
 
@@ -177,6 +180,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnOverheated:Show(args.destName)
 		specWarnOverheated:Show()
 		timerOverheated:Start(args.destName)
+		timerCharringBreathCD:Start()
 		countdownOverheated:Start()
 	end
 end
