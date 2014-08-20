@@ -197,3 +197,11 @@ L= DBM:GetModLocalization(1229)
 -- Warlord Zaela --
 -----------------------
 L= DBM:GetModLocalization(1234)
+
+L:SetTimerLocalization({
+	timerZaelaReturns	= "Zaela Returns"
+})
+
+L:SetOptionLocalization({
+	timerZaelaReturns	= "Show timer for when Zaela returns"
+})

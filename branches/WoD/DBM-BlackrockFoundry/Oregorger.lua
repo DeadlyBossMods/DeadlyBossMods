@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 "<4.4 14:25:47> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#true#true#Oregorger#Creature:0:3314:1205:13906:77182
 "<328.2 14:31:10> CHAT_MSG_RAID_BOSS_EMOTE#Oregorger has gone insane from hunger!#Oregorger#####0#0##0#164#0000000000000000#0#false#false", -- [5]--]]
 --TODO, check into http://beta.wowhead.com/spell=155923 on mythic
-local warnBlackrockBarrage			= mod:NewCountAnnounce(156877, 2)
+local warnBlackrockBarrage			= mod:NewSpellAnnounce(156877, 2, nil, false)
 local warnAcidTorrent				= mod:NewSpellAnnounce(156240, 3)
 local warnRetchedBlackrock			= mod:NewTargetAnnounce(156179, 3)--Target scanning verified.
 local warnExplosiveShard			= mod:NewSpellAnnounce(156390, 4)--No target scanning available.
@@ -45,7 +45,7 @@ local timerRetchedBlackrockCD		= mod:NewCDTimer(17, 156179)--Every 17-18 seconds
 
 --local berserkTimer					= mod:NewBerserkTimer(324)--May not be exact science. may be phase based instead, like tsulong. Needs more than one log to verify. Only saw one berserk.
 
-mod.vb.barrageCount = 0
+--mod.vb.barrageCount = 0
 
 function mod:RetchedBlackrockTarget(targetname, uId)
 	if not targetname then return end
@@ -56,7 +56,7 @@ function mod:RetchedBlackrockTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.barrageCount = 0
+--	self.vb.barrageCount = 0
 	timerAcidTorrentCD:Start(11.5-delay)
 --	berserkTimer:Start(-delay)
 end
@@ -68,13 +68,13 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 156877 then
-		self.vb.barrageCount = self.vb.barrageCount + 1
-		warnBlackrockBarrage:Show(self.vb.barrageCount)
+--		self.vb.barrageCount = self.vb.barrageCount + 1
+		warnBlackrockBarrage:Show()
 		specWarnBlackrockBarrage:Show(args.sourceName)
 --		timerBlackrockBarrageCD:Start()
-		if self.vb.barrageCount == 3 then--Always in sets of 3
-			self.vb.barrageCount = 0
-		end
+--		if (self:IsMythic() and self.vb.barrageCount == 5) or (not self:IsMythic() and self.vb.barrageCount == 3) then--Always in sets of 3/5
+--			self.vb.barrageCount = 0
+--		end
 	elseif spellId == 156240 then
 		warnAcidTorrent:Show()
 		specWarnAcidTorrent:Show()
@@ -98,7 +98,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 155819 then
 		specWarnHungerDriveEnded:Show()
-		self.vb.barrageCount = 0
+--		self.vb.barrageCount = 0
 	end
 end
 

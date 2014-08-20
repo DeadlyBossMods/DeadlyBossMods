@@ -21,6 +21,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, get mythic beast casts and timers
 --TODO, verify timers with new start method I did to ensure it works for both mythic and non mythic
+--TODO< figure out why setsortedicon is not working for more than 1 person.
 --Boss basic attacks
 local warnPinDown					= mod:NewSpellAnnounce(155365, 3)--Debuffs/target only show in combat log 1 in 5 times. so target warning not reliable for timers/warnings right now. 154960#Pin Down#1#DEBUFF is debuff
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
@@ -45,6 +46,7 @@ local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, not mod:IsHeal
 local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, mod:IsRanged(), nil, nil, 2)
 local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
+local specWarnRendandTear			= mod:NewSpecialWarningMove(162275, mod:IsMelee())--Always returns to melee
 local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil, nil, 2)--Still iffy on it
 local specWarnTantrum				= mod:NewSpecialWarningSpell(162275, nil, nil, nil, 2)
 local specWarnEpicenter				= mod:NewSpecialWarningSpell(162277, nil, nil, nil, 2)
@@ -160,7 +162,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 154960 then
 		warnPinDownTargets:CombinedShow(0.5, args.destName)
 		if self.Options.SetIconOnSpear then
-			self:SetSortedIcon(0.5, args.destName, 8, nil, true)
+			self:SetSortedIcon(0.5, args.destName, 8, nil, true)--Bugged?
 		end
 		if args:IsPlayer() then
 			yellPinDown:Yell()
@@ -271,6 +273,7 @@ function mod:UNIT_TARGETABLE_CHANGED()
 	for i = 1, 5 do
 		local unitID = "boss"..i
 		local unitGUID = UnitGUID(unitID)
+		local cid = self:GetCIDFromGUID(unitGUID)
 		if cid == 76865 and self.vb.mounted then--Boss dismounting living beast on mythic
 			self.vb.mounted = false
 			updateBeasts(cid, 3)
@@ -304,6 +307,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnSuperheatedShrapnel:Show()
 	elseif spellId == 155385 or spellId == 155515 then--Both versions of spell(boss and beast), they seem to have same cooldown so combining is fine
 		warnRendandTear:Show()
+		specWarnRendandTear:Show()
 		timerRendandTearCD:Start()
 	elseif spellId == 155365 then--Cast
 		warnPinDown:Show()
