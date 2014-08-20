@@ -104,15 +104,12 @@ local function updateBeastTimers(all, spellId)
 	--TODO, if on mythic, and boss is already grounded and timers for other abiltiies already started
 	--See if all of them reset or if we need to just add timers for the newly gained ability only
 	if mod.vb.WolfAbilities and (all or mod:IsMythic() and spellId == 155458) then--Cruelfang
-		timerSavageHowlCD:Cancel()
 		timerRendandTearCD:Start(6)--Small sample size. Just keep subtracking if shorter times are observed.
 	end
 	if mod.vb.RylakAbilities and (all or mod:IsMythic() and spellId == 155459) then--Dreadwing
-		timerConflagCD:Cancel()
 		timerSuperheatedShrapnelCD:Start(9)--Small sample size. Just keep subtracking if shorter times are observed.
 	end
 	if mod.vb.ElekkAbilities and (all or mod:IsMythic() and spellId == 155460) then--Ironcrusher
-		timerStampedeCD:Cancel()
 		timerTantrumCD:Start(16)--Small sample size. Just keep subtracking if shorter times are observed.
 	end
 	if mod.vb.FaultlineAbilites and (all or mod:IsMythic() and spellId == 155462) then--Faultline
@@ -293,6 +290,9 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 76884 or cid == 76874 or cid == 76945 or cid == 76946 then--Beasts
+		timerSavageHowlCD:Cancel()
+		timerConflagCD:Cancel()
+		timerStampedeCD:Cancel()
 		if self:IsMythic() then
 			updateBeasts(cid, 2)
 		else
