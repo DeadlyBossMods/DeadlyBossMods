@@ -16,7 +16,8 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, maybe range finder for when Man-at_arms is out (reckless Charge)
---TODO, train timers, as well as what mobs get off with each train. Probably require a lot of notepadding.
+--TODO, train timers, as well as what mobs get off with each train. Probably tie in with Thogar Assist callbacks.
+--TODO, add train spawning warnings/special warnings, maybe with Thogar Assist callbacks?
 --TODO, see if http://beta.wowhead.com/spell=163750 has a target during cast and if there is enough time to avoid/react.
 --Operator Thogar
 local warnProtoGrenade				= mod:NewSpellAnnounce(155864, 3)
@@ -24,7 +25,7 @@ local warnEnkindle					= mod:NewStackAnnounce(155921, 2, nil, mod:IsTank())
 --Adds
 local warnCauterizingBolt			= mod:NewSpellAnnounce(160140, 4)
 local warnIronBellow				= mod:NewSpellAnnounce(163753, 3)
-local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)--Going with strong assumption debuff is not incombat log, so probably RAID_BOSS_WHISPER. Have debug to find out.
+local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)
 
 --Operator Thogar
 local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195)--If target scanning works
@@ -46,6 +47,10 @@ local timerIronbellowCD				= mod:NewCDTimer(12, 163753)
 function mod:OnCombatStart(delay)
 	timerProtoGrenadeCD:Start(6-delay)
 	timerEnkindleCD:Start(-delay)
+	if not self.Options.ShowedThogarMessage then
+		DBM:AddMsg(L.helperMessage)
+		self.Options.ShowedThogarMessage = true
+	end
 end
 
 function mod:OnCombatEnd()

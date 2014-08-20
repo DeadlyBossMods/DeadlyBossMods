@@ -49,6 +49,10 @@ L= DBM:GetModLocalization(1122)
 --------------------------
 L= DBM:GetModLocalization(1147)
 
+L:SetMiscLocalization({
+	helperMessage	= "It is recommended you use 'Thogar Assist' in combination with DBM on this boss. Available from: http://wow.curseforge.com/addons/thogar-assist/"
+})
+
 --------------------------
 -- The Iron Maidens --
 --------------------------
