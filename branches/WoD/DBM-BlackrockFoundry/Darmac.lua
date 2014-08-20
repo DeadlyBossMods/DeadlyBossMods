@@ -21,7 +21,8 @@ mod:RegisterEventsInCombat(
 
 --TODO, get mythic beast casts and timers
 --TODO, verify timers with new start method I did to ensure it works for both mythic and non mythic
---TODO< figure out why setsortedicon is not working for more than 1 person.
+--TODO, figure out why setsortedicon is not working for more than 1 person.
+--TODO, See if gaining new abilities actually resets cd on old abilities on mythic, or if I need to only start timers for the newly gained abilities
 --Boss basic attacks
 local warnPinDown					= mod:NewSpellAnnounce(155365, 3)--Debuffs/target only show in combat log 1 in 5 times. so target warning not reliable for timers/warnings right now. 154960#Pin Down#1#DEBUFF is debuff
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
@@ -97,6 +98,8 @@ local function updateBeasts(cid, status, beastName)
 end
 
 local function updateBeastTimers()
+	--TODO, if on mythic, and boss is already grounded and timers for abiltiies already started
+	--See if all of them reset or if we need to just add timers for the newly gained ability only
 	if mod.vb.WolfAbilities then--Cruelfang
 		timerSavageHowlCD:Cancel()
 		timerRendandTearCD:Start(6)--Small sample size. Just keep subtracking if shorter times are observed.
