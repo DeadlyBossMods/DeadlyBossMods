@@ -90,7 +90,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --		timerExpelMagicFrostCD:Cancel()
 --		timerExpelMagicShadowCD:Cancel()
 --		timerExpelMagicFireCD:Cancel()
-		timerTrampleCD:Cancel()
+--		timerTrampleCD:Cancel()
 	elseif spellId == 162186 then
 		warnExpelMagicArcane:Show(args.destName)
 		timerExpelMagicArcane:Start(args.destName)
@@ -136,7 +136,7 @@ end
 
 function mod:OnSync(msg, targetname)
 	if msg == "ChargeTo" and targetname and self:AntiSpam(10, 4) then
-		timerTrampleCD:Start()
+		--timerTrampleCD:Start()
 		local target = DBM:GetUnitFullName(targetname)
 		if target then
 			warnTrample:Show(target)

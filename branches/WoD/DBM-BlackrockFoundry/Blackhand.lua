@@ -144,13 +144,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnDemolition:Show()
 		specWarnDemolition:Show()
 		timerDemolitionCD:Start()
-	elseif spellid == 161347 then--Phase 2 Trigger
+	elseif spellId == 161347 then--Phase 2 Trigger
 		timerDemolitionCD:Cancel()
 		timerThrowSlagBombsCD:Start(11)
 		timerShatteringSmashCD:Start(15)
 		timerSiegemakerCD:Start(15)
 		timerMarkedforDeathCD:Start(25)
-	elseif spellid == 161348 then--Phase 3 Trigger
+	elseif spellId == 161348 then--Phase 3 Trigger
 		timerSiegemakerCD:Cancel()
 		timerThrowSlagBombsCD:Cancel()
 		timerShatteringSmashCD:Cancel()

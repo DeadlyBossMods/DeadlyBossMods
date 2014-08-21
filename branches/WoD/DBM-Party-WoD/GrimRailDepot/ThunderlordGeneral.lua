@@ -19,6 +19,7 @@ mod:RegisterEventsInCombat(
 
 local warnFreezingSnare			= mod:NewTargetAnnounce(162066, 3)
 local warnSpinningSpear			= mod:NewSpellAnnounce(162058, 3)
+local warnMark					= mod:NewTargetAnnounce(163447, 3)
 
 local specWarnFreezingSnare		= mod:NewSpecialWarningYou(162066)
 local specWarnFreezingSnareNear	= mod:NewSpecialWarningClose(162066)
