@@ -10,42 +10,61 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 158057 157943 158134 158093 158200 157952 158415 158419",
+	"SPELL_CAST_START 158057 157943 158134 158093 158200 157952 158415 158419 163336",
+	"SPELL_AURA_APPLIED 163372 167200",
+	"SPELL_AURA_APPLIED_DOSE 167200",
+	"SPELL_AURA_REMOVED 163372",
 	"SPELL_CAST_SUCCESS 158385"
 )
 
+--TODO, Mythic timers
+--TODO, figure out stack tanks swap at for Arcane Wound(or if they can avoid swapping somehow).
+--TODO, observe arcane charge for target scanning.
+--TODO, figure http://beta.wowhead.com/spell=173425 out. I suspect all current timers are wrong if it's what I think it is.
 --Phemos
 local warnEnfeeblingroar			= mod:NewCountAnnounce(158057, 3)
 local warnWhirlwind					= mod:NewCountAnnounce(157943, 3)
 local warnQuake						= mod:NewCountAnnounce(158200, 3)
+local warnArcaneVolatility			= mod:NewTargetAnnounce(163372, 4)--Mythic
+local warnArcaneWound				= mod:NewStackAnnounce(167200, 2, nil, mod:IsTank())
 --Pol
 local warnShieldCharge				= mod:NewTargetAnnounce(158134, 4)--Target scanning assumed
 local warnInterruptingShout			= mod:NewCastAnnounce(158093, 3)
 local warnPulverize					= mod:NewCountAnnounce(158385, 3)--158385 is primary activation with SPELL_CAST_SUCCESS, cast at start, followed by 3 channeled IDs using SPELL_CAST_START
+local warnArcaneCharge				= mod:NewCastAnnounce(163336, 4)--Hopefully all cast at same time.
 
 --Phemos
 local specWarnEnfeeblingRoar		= mod:NewSpecialWarningCount(158057)
 local specWarnWhirlWind				= mod:NewSpecialWarningCount(157943, nil, nil, nil, 2)
 local specWarnQuake					= mod:NewSpecialWarningCount(158200, nil, nil, nil, 2)
+local specWarnArcaneVolatility		= mod:NewSpecialWarningYou(163372)--Mythic
+local yellArcaneVolatility			= mod:NewYell(163372)--Mythic
+--local specWarnArcaneWound			= mod:NewSpecialWarningStack(167200, nil, 2)
+--local specWarnArcaneWoundOther	= mod:NewSpecialWarningTaunt(167200)
 --Pol
 local specWarnShieldCharge			= mod:NewSpecialWarningYou(158134)
 local specWarnShieldChargeNear		= mod:NewSpecialWarningClose(158134)
 local yellShieldCharge				= mod:NewYell(158134)
 local specWarnInterruptingShout		= mod:NewSpecialWarningCast(158093)
 local specWarnPulverize				= mod:NewSpecialWarningSpell(158385, nil, nil, nil, 2)
+local specWarnArcaneCharge			= mod:NewSpecialWarningSpell(163336, nil, nil, nil, 2)
 
 --Phemos (83 second full rotation, 27-28 in between)
 local timerEnfeeblingRoarCD			= mod:NewNextCountTimer(28, 158057)
 local timerWhirlwindCD				= mod:NewNextCountTimer(27, 157943)
 local timerQuakeCD					= mod:NewNextCountTimer(27, 158200)
+--local timerArcaneVolatilityCD		= mod:NewNextCountTimer(27, 163372)
 --Pol (70 seconds full rotation, 23-24 seconds in between)
 local timerShieldChargeCD			= mod:NewNextTimer(24, 158134)
 local timerInterruptingShoutCD		= mod:NewNextTimer(23, 158093)
 local timerPulverizeCD				= mod:NewNextTimer(23, 158385)
+--local timerArcaneChargeD			= mod:NewNextTimer(27, 163336)
 --^^Even though 6 cd timers, coded smart to only need 2 up at a time, by using the predictability of "next ability" timing.
 
 local countdownPhemos				= mod:NewCountdown(27, nil, nil, "PhemosSpecial")
 local countdownPol					= mod:NewCountdown("Alt23", nil, nil, "PolSpecial")
+
+mod:AddRangeFrameOption(8, 163372)
 
 --Non resetting counts because strategy drastically changes based on number of people. Mechanics like debuff duration change with different player counts.
 mod.vb.EnfeebleCount = 0
@@ -110,6 +129,43 @@ function mod:SPELL_CAST_START(args)
 		warnPulverize:Show(self.vb.PulverizeCount)
 		timerShieldChargeCD:Start()--Next Special
 		countdownPol:Start(24)
+	elseif spellId == 163336 and self:AntiSpam(2, 1) then
+		warnArcaneCharge:Show()
+		specWarnArcaneCharge:Show()
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 163372 then
+		warnArcaneVolatility:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnArcaneVolatility:Show()
+			yellArcaneVolatility:Yell()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(8)
+			end
+		end
+	elseif spellId == 167200 then
+		local amount = args.amount or 1
+		warnArcaneWound:Show(args.destName, amount)
+--[[		if amount >= 2 then--Stack count unknown
+			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
+				specWarnArcaneWound:Show(amount)
+			else--Taunt as soon as stacks are clear, regardless of stack count.
+				if not UnitDebuff("player", GetSpellInfo(167200)) and not UnitIsDeadOrGhost("player") then
+					specWarnArcaneWoundOther:Show(args.destName)
+				end
+			end
+		end--]]
+	end
+end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 163372 and args:IsPlayer() and self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 

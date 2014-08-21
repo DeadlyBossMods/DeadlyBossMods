@@ -10,7 +10,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 155080 155539 155301",
+	"SPELL_CAST_START 155080 155539 155301 165300",
 	"SPELL_CAST_SUCCESS 155730 155078 155326",
 	"SPELL_AURA_APPLIED 155323",--155078
 	"SPELL_AURA_APPLIED_DOSE",--155078
@@ -25,17 +25,20 @@ local warnWorldShaking				= mod:NewSpellAnnounce(155539, 3)
 local warnOverheadSmash				= mod:NewCountAnnounce(155301, 3)--every 6 seconds is ok, boss doesn't do much else during this phase. TODO< why does this fire outside of world shaking? tank out of range?
 local warnPetrifyingSlam			= mod:NewSpellAnnounce(155326, 3)
 local warnGroundPunch				= mod:NewSpellAnnounce(155294, 3, nil, false)
+local warnFlare						= mod:NewSpellAnnounce(165300, 3)
 
 local specWarnInfernoSlice			= mod:NewSpecialWarningSpell(155080, mod:IsTank())--Need more information on how he's taunted and timing of overwhelming Blows to fine tune this
 local specWarnWorldShaking			= mod:NewSpecialWarningSpell(155539, nil, nil, nil, 2)
 local specWarnOverheadSmash			= mod:NewSpecialWarningSpell(155301, nil, nil, nil, 2)
 local specWarnPetrifyingSlam		= mod:NewSpecialWarningYou(155326)
+local specWarnFlare					= mod:NewSpecialWarningSpell(165300, nil, nil, nil, 2)
 
 --local timerInfernoSliceCD			= mod:NewCDTimer(15, 155080)--Highly Variable, not useful right now.
 local timerPetrifyingSlamCD			= mod:NewCDTimer(99, 155323)
 local timerShatter					= mod:NewCastTimer(8, 155529)
 local timerWorldShaking				= mod:NewBuffActiveTimer(27, 155539)
 local timerWorldShakingCD			= mod:NewCDTimer(82, 155539)
+--local timerFlareCD				= mod:NewCDTimer(82, 165300)
 
 --local berserkTimer				= mod:NewBerserkTimer(600)
 
@@ -70,6 +73,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.smashCount = self.vb.smashCount + 1
 		warnOverheadSmash:Show(self.vb.smashCount)
 		specWarnOverheadSmash:Show()
+	elseif spellId == 165300 then
+		warnFlare:Show()
+		specWarnFlare:Show()
 	end
 end
 

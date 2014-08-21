@@ -25,6 +25,7 @@ local specWarnTenderizer			= mod:NewSpecialWarningStack(156151, nil, 2)
 local specWarnTenderizerOther		= mod:NewSpecialWarningTaunt(156151)
 local specWarnGushingWounds			= mod:NewSpecialWarningStack(156152, nil, 3)
 local specWarnBoundingCleave		= mod:NewSpecialWarningSpell(156160, nil, nil, nil, 2)
+local specWarnPaleVitriol			= mod:NewSpecialWarningMove(163046)--Mythic
 
 local timerCleaveCD					= mod:NewCDTimer(6, 156157, nil, false)
 local timerTenderizerCD				= mod:NewCDTimer(17, 156151, nil, mod:IsTank())
@@ -43,9 +44,16 @@ function mod:OnCombatStart(delay)
 	timerCleaverCD:Start(12-delay)
 	timerBoundingCleaveCD:Start(-delay)
 	berserkTimer:Start(-delay)
+	if self.Options.SpecWarn163046move and self:IsMythic() then--specWarnPaleVitriol is turned on, and it's mythic, just micro CPU optimize since like 99% of players won't need high CPU events for something that only happens on mythic
+		self:RegisterShortTermEvents(
+			"SPELL_PERIODIC_DAMAGE 163046",
+			"SPELL_PERIODIC_MISSED 163046"
+		)
+	end
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -96,6 +104,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCleaverCD:Start()
 	end
 end
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
+	if spellId == 163046 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then
+		specWarnPaleVitriol:Show()
+	end
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 156197 then
