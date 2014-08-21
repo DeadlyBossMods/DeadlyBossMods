@@ -50,6 +50,10 @@ L= DBM:GetModLocalization(1122)
 --------------------------
 L= DBM:GetModLocalization(1147)
 
+L:SetMiscLocalization({
+	helperMessage	= "DBM과 함께 'Thogar Assist' 애드온을 사용하시는 것을 권장드립니다. http://wow.curseforge.com/addons/thogar-assist/ 에서 받으실 수 있습니다."
+})
+
 --------------------------
 -- The Iron Maidens --
 --------------------------
