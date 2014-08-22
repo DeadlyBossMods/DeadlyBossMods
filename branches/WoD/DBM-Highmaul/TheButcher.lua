@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(971, "DBM-Highmaul", nil, 477)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(79538)
+mod:SetCreatureID(77404)
 mod:SetEncounterID(1706)
 mod:SetZone()
 
@@ -120,5 +120,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnBoundingCleave:Show()
 		timerCleaverCD:Start(22)
 		timerBoundingCleaveCD:Start()
+		timerTenderizerCD:Start()
 	end
 end
