@@ -23,7 +23,7 @@ local warnCleaver					= mod:NewSpellAnnounce(156143, 3, nil, mod:IsTank())--Sabe
 
 local specWarnTenderizer			= mod:NewSpecialWarningStack(156151, nil, 2)
 local specWarnTenderizerOther		= mod:NewSpecialWarningTaunt(156151)
-local specWarnGushingWounds			= mod:NewSpecialWarningStack(156152, nil, 3)
+local specWarnGushingWounds			= mod:NewSpecialWarningStack(156152, nil, 2)
 local specWarnBoundingCleave		= mod:NewSpecialWarningSpell(156160, nil, nil, nil, 2)
 local specWarnPaleVitriol			= mod:NewSpecialWarningMove(163046)--Mythic
 
@@ -70,7 +70,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 156152 and args:IsPlayer() then
 		local amount = args.amount or 1
 		timerGushingWounds:Start()
-		if amount > 2 then
+		if amount > 1 then
 			specWarnGushingWounds:Show(amount)
 		end
 	elseif spellId == 156151 then
