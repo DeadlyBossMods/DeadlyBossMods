@@ -73,7 +73,7 @@ local timerSavageHowlCD				= mod:NewCDTimer(25, 155198)
 local timerConflagCD				= mod:NewCDTimer(20, 155399)
 local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
 
-mod:AddRangeFrameOption("8/7/3", not mod:IsMelee())
+mod:AddRangeFrameOption("8/7/3", nil, not mod:IsMelee())
 mod:AddSetIconOption("SetIconOnSpear", 154960)--Not often I make icon options on by default but this one is universally important. YOu always break players out of spear, in any strat.
 
 mod.vb.RylakAbilities = false
