@@ -17,10 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 158385"
 )
 
---TODO, Mythic timers
---TODO, figure out stack tanks swap at for Arcane Wound(or if they can avoid swapping somehow).
---TODO, observe arcane charge for target scanning.
---TODO, figure http://beta.wowhead.com/spell=173425 out. I suspect all current timers are wrong if it's what I think it is.
+--TODO, figure out stack tanks swap at for Arcane Wound(or if they can avoid swapping somehow). (bugged, there were no swapps on mythic, in fact tank debuff was irrelevant
 --Phemos
 local warnEnfeeblingroar			= mod:NewCountAnnounce(158057, 3)
 local warnWhirlwind					= mod:NewCountAnnounce(157943, 3)
@@ -28,38 +25,36 @@ local warnQuake						= mod:NewCountAnnounce(158200, 3)
 local warnArcaneVolatility			= mod:NewTargetAnnounce(163372, 4)--Mythic
 local warnArcaneWound				= mod:NewStackAnnounce(167200, 2, nil, mod:IsTank())
 --Pol
-local warnShieldCharge				= mod:NewTargetAnnounce(158134, 4)--Target scanning assumed
+local warnShieldCharge				= mod:NewSpellAnnounce(158134, 4)--Target scanning assumed
 local warnInterruptingShout			= mod:NewCastAnnounce(158093, 3)
 local warnPulverize					= mod:NewCountAnnounce(158385, 3)--158385 is primary activation with SPELL_CAST_SUCCESS, cast at start, followed by 3 channeled IDs using SPELL_CAST_START
-local warnArcaneCharge				= mod:NewCastAnnounce(163336, 4)--Hopefully all cast at same time.
+local warnArcaneCharge				= mod:NewCastAnnounce(163336, 4)--Mythic. Seems not reliable timer, has a chance to happen immediately after a charge (but not always)
 
 --Phemos
 local specWarnEnfeeblingRoar		= mod:NewSpecialWarningCount(158057)
 local specWarnWhirlWind				= mod:NewSpecialWarningCount(157943, nil, nil, nil, 2)
 local specWarnQuake					= mod:NewSpecialWarningCount(158200, nil, nil, nil, 2)
+local specWarnBlaze				= mod:NewSpecialWarningMove(158241)--Mythic
 local specWarnArcaneVolatility		= mod:NewSpecialWarningMoveAway(163372)--Mythic
 local yellArcaneVolatility			= mod:NewYell(163372)--Mythic
 --local specWarnArcaneWound			= mod:NewSpecialWarningStack(167200, nil, 2)
 --local specWarnArcaneWoundOther	= mod:NewSpecialWarningTaunt(167200)
 --Pol
-local specWarnShieldCharge			= mod:NewSpecialWarningYou(158134)
-local specWarnShieldChargeNear		= mod:NewSpecialWarningClose(158134)
-local yellShieldCharge				= mod:NewYell(158134)
+local specWarnShieldCharge			= mod:NewSpecialWarningSpell(158134, nil, nil, nil, 2)
 local specWarnInterruptingShout		= mod:NewSpecialWarningCast(158093)
 local specWarnPulverize				= mod:NewSpecialWarningSpell(158385, nil, nil, nil, 2)
-local specWarnArcaneCharge			= mod:NewSpecialWarningSpell(163336, nil, nil, nil, 2)
+local specWarnArcaneCharge			= mod:NewSpecialWarningSpell(163336, nil, nil, nil, 2)--Mythic. Seems not reliable timer, has a chance to happen immediately after a charge (but not always)
 
 --Phemos (83 second full rotation, 27-28 in between)
 local timerEnfeeblingRoarCD			= mod:NewNextCountTimer(28, 158057)
 local timerWhirlwindCD				= mod:NewNextCountTimer(27, 157943)
 local timerQuakeCD					= mod:NewNextCountTimer(27, 158200)
---local timerArcaneVolatilityCD		= mod:NewNextCountTimer(27, 163372)
 --Pol (70 seconds full rotation, 23-24 seconds in between)
 local timerShieldChargeCD			= mod:NewNextTimer(24, 158134)
 local timerInterruptingShoutCD		= mod:NewNextTimer(23, 158093)
 local timerPulverizeCD				= mod:NewNextTimer(23, 158385)
---local timerArcaneChargeD			= mod:NewNextTimer(27, 163336)
 --^^Even though 6 cd timers, coded smart to only need 2 up at a time, by using the predictability of "next ability" timing.
+local timerArcaneVolatilityCD		= mod:NewNextTimer(60, 163372)--NOT BOSS POWER BASED, this debuff is cast by outside influence every 60 seconds
 
 local countdownPhemos				= mod:NewCountdown(27, nil, nil, "PhemosSpecial")
 local countdownPol					= mod:NewCountdown("Alt23", nil, nil, "PolSpecial")
@@ -72,30 +67,31 @@ mod.vb.QuakeCount = 0
 mod.vb.WWCount = 0
 mod.vb.PulverizeCount = 0
 
-function mod:ShieldTarget(targetname, uId)
-	if not targetname then return end
-	warnShieldCharge:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnShieldCharge:Show()
-		yellShieldCharge:Yell()
-	elseif self:CheckNearby(10, targetname) then
-		specWarnShieldChargeNear:Show(targetname)
-	end
-end
-
 function mod:OnCombatStart(delay)
 	self.vb.EnfeebleCount = 0
 	self.vb.QuakeCount = 0
 	self.vb.WWCount = 0
 	self.vb.PulverizeCount = 0
-	timerQuakeCD:Start(11-delay)
-	countdownPhemos:Start(11-delay)
-	timerShieldChargeCD:Start(34-delay)
-	countdownPol:Start(34-delay)
-	--2nd timer will start 2 seconds into pull when quake is cast.
+	timerQuakeCD:Start(11.5-delay)
+	countdownPhemos:Start(11.5-delay)
+	timerShieldChargeCD:Start(35-delay)
+	countdownPol:Start(35-delay)
+	if self:IsMythic() then
+		timerArcaneVolatilityCD:Start(65-delay)
+	end
+	if self.Options.SpecWarn158241move then--specWarnFeedPool is turned on, since it's off by default, no reasont to register high CPU events unless user turns it on
+		self:RegisterShortTermEvents(
+			"SPELL_PERIODIC_DAMAGE 158241",
+			"SPELL_PERIODIC_MISSED 158241"
+		)
+	end
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -113,7 +109,8 @@ function mod:SPELL_CAST_START(args)
 		timerEnfeeblingRoarCD:Start(nil, self.vb.EnfeebleCount+1)--Next Special
 		countdownPhemos:Start(28)
 	elseif spellId == 158134 then
-		self:BossTargetScanner(78238, "ShieldTarget", 0.01, 20)--This may still not be fast enough, it may require pre scanning like paragons and iron qon do. He spends most of his time looking at target PRE cast
+		warnShieldCharge:Show()
+		specWarnShieldCharge:Show()
 		timerInterruptingShoutCD:Start()--Next Special
 		countdownPol:Start()
 	elseif spellId == 158093 then
@@ -130,8 +127,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(157952, 158415, 158419) then--Pulverize channel IDs
 		self.vb.PulverizeCount = self.vb.PulverizeCount + 1
 		warnPulverize:Show(self.vb.PulverizeCount)
-		timerShieldChargeCD:Start()--Next Special
-		countdownPol:Start(24)
 	elseif spellId == 163336 and self:AntiSpam(2, 1) then
 		warnArcaneCharge:Show()
 		specWarnArcaneCharge:Show()
@@ -141,7 +136,10 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 163372 then
-		warnArcaneVolatility:CombinedShow(0.5, args.destName)
+		warnArcaneVolatility:CombinedShow(1, args.destName)--Applies slowly to all targets
+		if self:AntiSpam(2, 2) then
+			timerArcaneVolatilityCD:Start()
+		end
 		if args:IsPlayer() then
 			specWarnArcaneVolatility:Show()
 			yellArcaneVolatility:Yell()
@@ -177,5 +175,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 158385 then--Activation
 		self.vb.PulverizeCount = 0
 		specWarnPulverize:Show()
+		timerShieldChargeCD:Start()--Next Special
+		countdownPol:Start(24)
 	end
 end
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
+	if spellId == 158241 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+		specWarnBlaze:Show()
+	end
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
