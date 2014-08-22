@@ -34,7 +34,7 @@ local warnArcaneCharge				= mod:NewCastAnnounce(163336, 4)--Mythic. Seems not re
 local specWarnEnfeeblingRoar		= mod:NewSpecialWarningCount(158057)
 local specWarnWhirlWind				= mod:NewSpecialWarningCount(157943, nil, nil, nil, 2)
 local specWarnQuake					= mod:NewSpecialWarningCount(158200, nil, nil, nil, 2)
-local specWarnBlaze				= mod:NewSpecialWarningMove(158241)--Mythic
+local specWarnBlaze					= mod:NewSpecialWarningMove(158241)--Mythic
 local specWarnArcaneVolatility		= mod:NewSpecialWarningMoveAway(163372)--Mythic
 local yellArcaneVolatility			= mod:NewYell(163372)--Mythic
 --local specWarnArcaneWound			= mod:NewSpecialWarningStack(167200, nil, 2)
@@ -79,7 +79,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerArcaneVolatilityCD:Start(65-delay)
 	end
-	if self.Options.SpecWarn158241move then--specWarnFeedPool is turned on, since it's off by default, no reasont to register high CPU events unless user turns it on
+	if self.Options.SpecWarn158241move then--specWarnBlaze is turned on, since it's off by default, no reasont to register high CPU events unless user turns it on
 		self:RegisterShortTermEvents(
 			"SPELL_PERIODIC_DAMAGE 158241",
 			"SPELL_PERIODIC_MISSED 158241"
