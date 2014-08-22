@@ -88,7 +88,10 @@ function mod:OnCombatStart(delay)
 	self.vb.QuakeCount = 0
 	self.vb.WWCount = 0
 	self.vb.PulverizeCount = 0
-	timerShieldChargeCD:Start(24-delay)
+	timerQuakeCD:Start(11-delay)
+	countdownPhemos:Start(11-delay)
+	timerShieldChargeCD:Start(34-delay)
+	countdownPol:Start(34-delay)
 	--2nd timer will start 2 seconds into pull when quake is cast.
 end
 

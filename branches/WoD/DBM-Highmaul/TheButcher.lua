@@ -9,17 +9,20 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 156152 156151",
+	"SPELL_AURA_APPLIED 156152 156151 156598",
 	"SPELL_AURA_APPLIED_DOSE 156152 156151",
 	"SPELL_AURA_REMOVED 156152",
 	"SPELL_CAST_SUCCESS 156143",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--TODO, LFR probably not 5 min, probably like 20 min :)
+--TODO, See frenzies effect on power generation (Timers)
 local warnCleave					= mod:NewCountAnnounce(156157, 2, nil, false)
 local warnBoundingCleave			= mod:NewSpellAnnounce(156160, 3)
 local warnTenderizer				= mod:NewStackAnnounce(156151, 2, nil, mod:IsTank())
 local warnCleaver					= mod:NewSpellAnnounce(156143, 3, nil, mod:IsTank())--Saberlash
+local warnFrenzy					= mod:NewTargetAnnounce(156598, 4)
 
 local specWarnTenderizer			= mod:NewSpecialWarningStack(156151, nil, 2)
 local specWarnTenderizerOther		= mod:NewSpecialWarningTaunt(156151)
@@ -43,12 +46,14 @@ function mod:OnCombatStart(delay)
 	timerCleaveCD:Start(10-delay)--Verify this wasn't caused by cleave bug.
 	timerCleaverCD:Start(12-delay)
 	timerBoundingCleaveCD:Start(-delay)
-	berserkTimer:Start(-delay)
-	if self.Options.SpecWarn163046move and self:IsMythic() then--specWarnPaleVitriol is turned on, and it's mythic, just micro CPU optimize since like 99% of players won't need high CPU events for something that only happens on mythic
+	if self:IsMythic() then
+		berserkTimer:Start(240-delay)
 		self:RegisterShortTermEvents(
 			"SPELL_PERIODIC_DAMAGE 163046",
 			"SPELL_PERIODIC_MISSED 163046"
 		)
+	else
+		berserkTimer:Start(-delay)
 	end
 end
 
@@ -86,6 +91,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
+	elseif spellId == 156598 then
+		warnFrenzy:Show(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -120,6 +127,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnBoundingCleave:Show()
 		timerCleaverCD:Start(22)
 		timerBoundingCleaveCD:Start()
-		timerTenderizerCD:Start()
+		timerTenderizerCD:Start(16)
 	end
 end
