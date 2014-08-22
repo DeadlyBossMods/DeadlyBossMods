@@ -141,7 +141,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 163372 then
-		warnArcaneVolatility:Show(args.destName)
+		warnArcaneVolatility:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnArcaneVolatility:Show()
 			yellArcaneVolatility:Yell()
