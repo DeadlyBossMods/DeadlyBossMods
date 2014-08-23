@@ -279,8 +279,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Defeat						= "Остановитесь! Я… не враг вам.",
-	BigWigsRecommendation		= "Если вам нужен список получения Нестабильной жизни, рекомендуется использовать BigWigs и BigWigs Ra-den assist для этого босса"
+	Defeat						= "Остановитесь! Я… не враг вам."
 })
 
 -------------

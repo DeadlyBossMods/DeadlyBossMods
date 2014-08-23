@@ -279,8 +279,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Defeat						= "Wartet!",--needs to be verified (video-captured translation)
-	BigWigsRecommendation		= "Tipp: Du solltest für diesen Gegner die Mods \"BigWigs\" und \"BigWigs_Ra-denAssist\" nutzen, falls du eine automatische Einteilung der Spieler als Ziel für Instabile Vita benötigst."
+	Defeat						= "Wartet!"--needs to be verified (video-captured translation)
 })
 
 -------------

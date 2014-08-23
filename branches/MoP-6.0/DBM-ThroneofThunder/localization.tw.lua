@@ -279,8 +279,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Defeat					= "慢著!",
-	BigWigsRecommendation	= "如果你需要動盪生命列表，建議你使用BigWigs和BigWigs Ra-den assist"
+	Defeat					= "慢著!"
 })
 
 -------------

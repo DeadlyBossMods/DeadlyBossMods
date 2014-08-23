@@ -285,8 +285,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Defeat						= "¡Esperad!",
-	BigWigsRecommendation		= "Si necesitas una lista de disipadores de vita, recomendamos utilizar Bigwigs y Bigwigs Ra-den assist para este encuentro"
+	Defeat						= "¡Esperad!"
 })
 
 -------------

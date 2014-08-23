@@ -279,8 +279,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Defeat						= "잠깐",
-	BigWigsRecommendation		= "불안정한 생령 전이 도우미가 필요할 경우, BigWigs 및 BigWigs Ra-den assist 애드온을 이용하시는 것을 권장합니다."
+	Defeat						= "잠깐"
 })
 
 -------------
