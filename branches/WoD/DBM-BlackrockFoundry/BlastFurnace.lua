@@ -138,7 +138,7 @@ end
 
 function mod:UNIT_POWER_FREQUENT(uId)
 	local bossPower = UnitPower("boss1") --Get Boss Power
-	bossPower = bossPower / 4 --Divide it by 4 (cause he gains 4 power per second and we need to know how many seconds to subtrack from fear CD)
+	bossPower = bossPower / 4 --Divide it by 4 (cause he gains 4 power per second and we need to know how many seconds to subtrack from CD)
 	timerBlastCD:Update(25-bossPower, 25)--Maybe awkward way of doing it since timer will kind of skip when operators are out, but most accurate way of doing it.
 	if bossPower == 23 then--Cast in 2 seconds
 		specWarnBlast:Show()
