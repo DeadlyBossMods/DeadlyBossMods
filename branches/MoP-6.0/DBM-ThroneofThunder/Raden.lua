@@ -108,10 +108,6 @@ function mod:OnCombatStart(delay)
 	horrorCount = 0
 	timerCreationCD:Start(11-delay, 1)
 	countdownCreation:Start(11-delay)
-	if not BigWigs and not self.Options.ShowedBigWigsmessage then
-		DBM:AddMsg(L.BigWigsRecommendation)
-		self.Options.ShowedBigWigsmessage = true
-	end
 end
 
 function mod:SPELL_CAST_START(args)

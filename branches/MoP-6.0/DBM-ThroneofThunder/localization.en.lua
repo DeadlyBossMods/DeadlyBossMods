@@ -313,13 +313,12 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnUnstablVitaJump	= "Show special warning when $spell:138297 jumps to you",
-	SetIconsOnVita			= "Set icons on $spell:138297 debuffed player and furthest player from them"
+	specWarnUnstablVitaJump		= "Show special warning when $spell:138297 jumps to you",
+	SetIconsOnVita				= "Set icons on $spell:138297 debuffed player and furthest player from them"
 })
 
 L:SetMiscLocalization({
-	Defeat						= "Wait!",
-	BigWigsRecommendation		= "If you need a vita soaker list, it's recommended you use BigWigs and BigWigs Ra-den assist for this boss"
+	Defeat						= "Wait!"
 })
 
 -------------
