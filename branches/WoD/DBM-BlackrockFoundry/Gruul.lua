@@ -26,7 +26,7 @@ local warnOverheadSmash				= mod:NewCountAnnounce(155301, 3)--every 6 seconds is
 local warnPetrifyingSlam			= mod:NewSpellAnnounce(155326, 4)
 
 local specWarnInfernoSlice			= mod:NewSpecialWarningCount(155080, mod:IsTank() or mod:IsHealer())
-local specWarnWorldShaking			= mod:NewSpecialWarningSpell(155539, nil, nil, nil, 2)
+local specWarnRampage				= mod:NewSpecialWarningSpell(155539, nil, nil, nil, 2)
 local specWarnOverheadSmash			= mod:NewSpecialWarningCount(155301, nil, nil, nil, 2)
 local specWarnPetrifyingSlam		= mod:NewSpecialWarningMoveAway(155326, nil, nil, nil, 3)
 
@@ -81,7 +81,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerShatter:Start()
 --		timerPetrifyingSlamCD:Start()
 		--Maybe show range frame for all here instead of only those who get debuff?
-	elseif spellid == 155080 then--Inferno Slice Cast Finish
+	elseif spellId == 155080 then--Inferno Slice Cast Finish
 		self:RegisterShortTermEvents(
 			"UNIT_POWER_FREQUENT boss1"
 		)
