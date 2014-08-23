@@ -11,12 +11,11 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 155080 155301",
-	"SPELL_CAST_SUCCESS 155326",
+	"SPELL_CAST_SUCCESS 155326 155080",
 	"SPELL_AURA_APPLIED 155323 155539 155078",
 	"SPELL_AURA_APPLIED_DOSE 155078",
 	"SPELL_AURA_REMOVED 155323 155539",
-	"UNIT_SPELLCAST_SUCCEEDED boss1",
-	"UNIT_POWER_FREQUENT boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 local warnOverwhelmingBlows			= mod:NewStackAnnounce(155078, 3, nil, mod:IsTank() or mod:IsHealer())--No special warnings, strats for this revolve around the inferno slice strat, not this debuff, so dbm isn't going to say when tanks should taunt here
@@ -49,9 +48,13 @@ function mod:OnCombatStart(delay)
 	self.vb.sliceCount = 0
 --	timerPetrifyingSlamCD:Start(25-delay)
 	timerRampageCD:Start(-delay)--112-117 variation
+	self:RegisterShortTermEvents(
+		"UNIT_POWER_FREQUENT boss1"
+	)
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -59,11 +62,12 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 155080 then
+	if spellId == 155080 then--Inferno Slice Cast Start
 		self.vb.sliceCount = self.vb.sliceCount + 1
 		warnInfernoSlice:Show(self.vb.sliceCount)
 		specWarnInfernoSlice:Show(self.vb.sliceCount)
 	elseif spellId == 155301 then
+		self:UnregisterShortTermEvents()
 		self.vb.smashCount = self.vb.smashCount + 1
 		warnOverheadSmash:Show(self.vb.smashCount)
 		specWarnOverheadSmash:Show(self.vb.smashCount)
@@ -72,13 +76,15 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
---[[	elseif spellId == 155078 then
-		warnOverwhelmingBlows:Show()--]]
 	if spellId == 155326 then
 		warnPetrifyingSlam:Show()
 		timerShatter:Start()
 --		timerPetrifyingSlamCD:Start()
 		--Maybe show range frame for all here instead of only those who get debuff?
+	elseif spellid == 155080 then--Inferno Slice Cast Finish
+		self:RegisterShortTermEvents(
+			"UNIT_POWER_FREQUENT boss1"
+		)
 	end
 end
 
