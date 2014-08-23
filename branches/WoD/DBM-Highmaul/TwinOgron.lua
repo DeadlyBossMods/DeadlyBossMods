@@ -56,6 +56,8 @@ local timerPulverizeCD				= mod:NewNextTimer(23, 158385)
 --^^Even though 6 cd timers, coded smart to only need 2 up at a time, by using the predictability of "next ability" timing.
 local timerArcaneVolatilityCD		= mod:NewNextTimer(60, 163372)--NOT BOSS POWER BASED, this debuff is cast by outside influence every 60 seconds
 
+local berserkTimer					= mod:NewBerserkTimer(420)--As reported in feedback threads
+
 local countdownPhemos				= mod:NewCountdown(27, nil, nil, "PhemosSpecial")
 local countdownPol					= mod:NewCountdown("Alt23", nil, nil, "PolSpecial")
 
@@ -79,6 +81,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerArcaneVolatilityCD:Start(65-delay)
 	end
+	berserkTimer:Start(-delay)
 	if self.Options.SpecWarn158241move then--specWarnBlaze is turned on, since it's off by default, no reasont to register high CPU events unless user turns it on
 		self:RegisterShortTermEvents(
 			"SPELL_PERIODIC_DAMAGE 158241",
