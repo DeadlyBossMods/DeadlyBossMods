@@ -28,7 +28,7 @@ local warnPillar					= mod:NewSpellAnnounce("ej9394", 3, nil, 159202)
 
 local specWarnChainHurl				= mod:NewSpecialWarningSpell(159947)
 local specWarnBerserkerRushOther	= mod:NewSpecialWarningTarget(158986, nil, nil, nil, 2)
-local specWarnBerserkerRush			= mod:NewSpecialWarningYou(158986, nil, nil, nil, 3)
+local specWarnBerserkerRush			= mod:NewSpecialWarningMoveTo(158986, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(158986), nil, 3)--Creative use of warning. Run option text but a moveto warning to get players in LFR to actually run to the flame jet instead of being clueless.
 local yellBerserkerRush				= mod:NewYell(158986)
 local specWarnImpale				= mod:NewSpecialWarningSpell(159113, mod:IsTank())
 local specWarnOpenWounds			= mod:NewSpecialWarningStack(159178, nil, 2)
@@ -42,6 +42,8 @@ local timerImpaleCD					= mod:NewCDTimer(35, 159113, nil, mod:IsTank())--35 to 5
 local timerCrowdCD					= mod:NewTimer(94, "timerCrowdCD", 159410)
 
 mod:AddRangeFrameOption(4, 159386)
+
+local firePillar = EJ_GetSectionInfo(9394)
 
 function mod:OnCombatStart(delay)
 	timerPillarCD:Start(24-delay)
@@ -82,7 +84,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBerserkerRush:Show(args.destName)
 		timerBerserkerRushCD:Start()
 		if args:IsPlayer() then
-			specWarnBerserkerRush:Show()
+			specWarnBerserkerRush:Show(firePillar)
 			yellBerserkerRush:Yell()
 		else
 			specWarnBerserkerRushOther:Show(args.destName)
