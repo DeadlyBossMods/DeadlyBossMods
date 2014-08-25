@@ -222,7 +222,6 @@ local blockEnable = false
 local cachedGetTime = GetTime()
 local lastCombatStarted = cachedGetTime
 local loadcIds = {}
-local forceloadmapIds = {}
 local blockMovieSkipItems = {}
 local inCombat = {}
 local combatInfo = {}
@@ -953,6 +952,7 @@ do
 							noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1,
 							noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
 							hasFlex			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Flex") or 0) == 1,
+							isWorldBoss		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-World-Boss") or 0) == 1,
 							modId			= addonName,
 						})
 						for i = #self.AddOns[#self.AddOns].mapId, 1, -1 do
@@ -977,12 +977,6 @@ do
 							local idTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadCID"))}
 							for i = 1, #idTable do
 								loadcIds[tonumber(idTable[i]) or ""] = addonName
-							end
-						end
-						if GetAddOnMetadata(i, "X-DBM-Mod-ForceLoad-MapID") then
-							local idTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-ForceLoad-MapID"))}
-							for i = 1, #idTable do
-								forceloadmapIds[tonumber(idTable[i]) or ""] = true
 							end
 						end
 						if GetAddOnMetadata(i, "X-DBM-Mod-Block-Movie-Skip-ItemID") then
@@ -2559,7 +2553,6 @@ do
 				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED")
 				targetEventsRegistered = true
 			end
-			if not forceloadmapIds[mapID] then return end
 		-- You entered instance duing worldboss combat. Force end worldboss mod.
 		else
 			if targetEventsRegistered then
@@ -2609,11 +2602,9 @@ end
 	--IF we are fighting a boss, we don't have much of a choice but to try and load anyways since script ran too long isn't actually a guarentee.
 	--The main place we should force a mod load in combat is for IsEncounterInProgress because i'm pretty sure blizzard waves "script ran too long" function for a small amount of time after a DC
 	--Outdoor bosses will try to ignore check, if they fail, well, then we need to try and find ways to make the mods that can't load in combat smaller or load faster.
-function DBM:LoadMod(mod)
-	if type(mod) ~= "table" then
-		DBM:Debug("DBM core is being a peice of shit and refusing to load a VALID mod")
-		return false
-	end
+function DBM:LoadMod(mod, force)
+	if type(mod) ~= "table" then return false end
+	if mod.isWorldBoss and IsInInstance() and not force then return end--Don't load world boss mod this way.
 	if InCombatLockdown() and not IsEncounterInProgress() and IsInInstance() then
 		if not loadDelay then--Prevent duplicate DBM_CORE_LOAD_MOD_COMBAT message.
 			self:AddMsg(DBM_CORE_LOAD_MOD_COMBAT:format(tostring(mod.name)))
@@ -2716,7 +2707,7 @@ local function loadModByUnit(uId)
 			if cId and bosscId and cId == bosscId and not IsAddOnLoaded(addon) and enabled then
 				for i, v in ipairs(DBM.AddOns) do
 					if v.modId == addon then
-						DBM:LoadMod(v)
+						DBM:LoadMod(v, force)
 						break
 					end
 				end
