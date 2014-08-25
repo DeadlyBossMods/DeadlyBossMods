@@ -30,7 +30,7 @@ mod:RemoveOption("SpeedKillTimer")
 local playerIsFighting = false
 local currentFighter = nil
 local currentRank = 0--Used to stop bars for the right sub mod based on dynamic rank detection from pulls
-local currentZoneID = select(8, GetInstanceInfo())--As core what current area is on load, since core should know
+local currentZoneID = select(8, GetInstanceInfo())
 local modsStopped = false
 local eventsRegistered = false
 local lastRank = 0
