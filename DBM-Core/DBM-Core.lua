@@ -2610,7 +2610,10 @@ end
 	--The main place we should force a mod load in combat is for IsEncounterInProgress because i'm pretty sure blizzard waves "script ran too long" function for a small amount of time after a DC
 	--Outdoor bosses will try to ignore check, if they fail, well, then we need to try and find ways to make the mods that can't load in combat smaller or load faster.
 function DBM:LoadMod(mod)
-	if type(mod) ~= "table" then return false end
+	if type(mod) ~= "table" then
+		DBM:Debug("DBM core is being a peice of shit and refusing to load a VALID mod")
+		return false
+	end
 	if InCombatLockdown() and not IsEncounterInProgress() and IsInInstance() then
 		if not loadDelay then--Prevent duplicate DBM_CORE_LOAD_MOD_COMBAT message.
 			self:AddMsg(DBM_CORE_LOAD_MOD_COMBAT:format(tostring(mod.name)))
