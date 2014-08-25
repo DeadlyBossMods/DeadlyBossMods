@@ -2707,7 +2707,7 @@ local function loadModByUnit(uId)
 			if cId and bosscId and cId == bosscId and not IsAddOnLoaded(addon) and enabled then
 				for i, v in ipairs(DBM.AddOns) do
 					if v.modId == addon then
-						DBM:LoadMod(v, force)
+						DBM:LoadMod(v, true)
 						break
 					end
 				end
