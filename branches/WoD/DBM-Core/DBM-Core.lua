@@ -2217,10 +2217,16 @@ function DBM:GetUnitCreatureId(uId)
 	return DBM:GetCIDFromGUID(guid)
 end
 
+--Creature/Vehicle/Pet
+----<type>:<subtype>:<realmID>:<mapID>:<serverID>:<dbID>:<creationbits>
+--Player/Item
+----<type>:<realmID>:<dbID>
 function DBM:GetCIDFromGUID(guid)
-	local type, _, _, _, _, cid = strsplit(":", guid or "")
+	local type, _, playerdbID, _, _, cid, creationbits = strsplit(":", guid or "")
 	if type and (type == "Creature" or type == "Vehicle" or type == "Pet") then
 		return tonumber(cid)
+	elseif type and (type == "Player" or type == "Item") then
+		return tonumber(playerdbID)
 	end
 	return 0
 end
