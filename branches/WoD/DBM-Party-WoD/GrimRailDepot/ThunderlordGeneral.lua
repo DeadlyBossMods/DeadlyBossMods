@@ -9,11 +9,10 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 163447",
+	"SPELL_AURA_APPLIED 163447 161588",
+	"SPELL_AURA_APPLIED_DOSE 161588",
 	"SPELL_AURA_REMOVED 163447",
-	"SPELL_CAST_START 162066 162058",
-	"SPELL_PERIODIC_DAMAGE 161588",
-	"SPELL_PERIODIC_MISSED 161588"
+	"SPELL_CAST_START 162066 162058"
 )
 
 
@@ -72,8 +71,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(8, debuffFilter)
 			end
 		end
+	elseif args.spellId == 161588 and args:IsPlayer() and self:AntiSpam() then
+		specWarnDiffusedEnergy:Show()
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 163447 then
@@ -94,10 +96,3 @@ function mod:SPELL_CAST_START(args)
 		timerSpinningSpearCD:Start()
 	end
 end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 161588 and destGUID == UnitGUID("player") and self:AntiSpam() then
-		specWarnDiffusedEnergy:Show()
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
