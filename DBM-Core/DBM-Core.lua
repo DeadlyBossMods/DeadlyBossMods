@@ -2604,7 +2604,7 @@ end
 	--Outdoor bosses will try to ignore check, if they fail, well, then we need to try and find ways to make the mods that can't load in combat smaller or load faster.
 function DBM:LoadMod(mod, force)
 	if type(mod) ~= "table" then return false end
-	if mod.isWorldBoss and not force then return end--Don't load world boss mod this way.
+	if mod.isWorldBoss and not IsInInstance() and not force then return end--Don't load world boss mod this way.
 	if InCombatLockdown() and not IsEncounterInProgress() and IsInInstance() then
 		if not loadDelay then--Prevent duplicate DBM_CORE_LOAD_MOD_COMBAT message.
 			self:AddMsg(DBM_CORE_LOAD_MOD_COMBAT:format(tostring(mod.name)))
