@@ -283,8 +283,6 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 --  Cache frequently used global variables in locals  --
 --------------------------------------------------------
 local DBM = DBM
--- these global functions are accessed all the time by the event handler
--- so caching them is worth the effort
 local ipairs, pairs, next = ipairs, pairs, next
 local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
 local type, select = type, select
