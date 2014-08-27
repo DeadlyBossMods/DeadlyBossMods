@@ -5364,6 +5364,7 @@ do
 		local targetname, targetuid, bossuid = self:GetBossTarget(cidOrGuid, scanOnlyBoss)
 		--Do scan
 		if targetname and targetname ~= DBM_CORE_UNKNOWN then
+			if not IsInGroup() then scanTimes = 1 end--Solo, no reason to keep scanning, give faster warning. But only if first scan is actually a valid target, which is why i have this check HERE
 			if (isEnemyScan and UnitIsFriend("player", targetuid) or self:IsTanking(targetuid, bossuid)) and not isFinalScan and not includeTank then--On player scan, ignore tanks. On enemy scan, ignore friendly player.
 				if targetScanCount[cidOrGuid] < scanTimes then--Make sure no infinite loop.
 					self:ScheduleMethod(scanInterval, "BossTargetScanner", cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, includeTank)--Scan multiple times to be sure it's not on something other then tank (or friend on enemy scan).
