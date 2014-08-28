@@ -104,6 +104,7 @@ local timerTouchOfYShaarjCD			= mod:NewCDCountTimer(45, 145071)
 local timerGrippingDespair			= mod:NewTargetTimer(15, 145183, nil, mod:IsTank())
 --Starge Three: MY WORLD
 --Starge Four: Heroic Hidden Phase
+local timerEnterGarroshRealm		= mod:NewNextTimer(20, 146984, nil, nil, nil, 144945)
 local timerMaliceCD					= mod:NewNextTimer(29.5, 147209)--29.5-33sec variation
 local timerBombardmentCD			= mod:NewNextTimer(55, 147120)
 local timerBombardment				= mod:NewBuffActiveTimer(13, 147120)
@@ -558,6 +559,6 @@ function mod:OnSync(msg, guid)
 		countdownTouchOfYShaarj:Cancel()
 		timerWhirlingCorruptionCD:Cancel()
 		countdownWhirlingCorruption:Cancel()
-		--TODO< maybe one day add an RP timer for phase 3-4 transition. Unfortunately I'm unlikely to see heroic garrosh again until after 6.0
+		timerEnterGarroshRealm:Start()
 	end
 end
