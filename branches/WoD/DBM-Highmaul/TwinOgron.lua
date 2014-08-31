@@ -11,8 +11,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 158057 157943 158134 158093 158200 157952 158415 158419 163336",
-	"SPELL_AURA_APPLIED 163372 167200",
-	"SPELL_AURA_APPLIED_DOSE 167200",
+	"SPELL_AURA_APPLIED 163372 167200 158241",
+	"SPELL_AURA_APPLIED_DOSE 167200 158241",
 	"SPELL_AURA_REMOVED 163372",
 	"SPELL_CAST_SUCCESS 158385"
 )
@@ -81,12 +81,8 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerArcaneVolatilityCD:Start(65-delay)
 	end
-	berserkTimer:Start(-delay)
-	if self.Options.SpecWarn158241move then--specWarnBlaze is turned on, since it's off by default, no reasont to register high CPU events unless user turns it on
-		self:RegisterShortTermEvents(
-			"SPELL_PERIODIC_DAMAGE 158241",
-			"SPELL_PERIODIC_MISSED 158241"
-		)
+	if not self:IsDifficulty("lfr25") then
+		berserkTimer:Start(-delay)
 	end
 end
 
@@ -162,6 +158,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end--]]
+	elseif spellId == 158241 and args:IsPlayer() and self:AntiSpam(2, 3) then
+		specWarnBlaze:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -182,10 +180,3 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownPol:Start(24)
 	end
 end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
-	if spellId == 158241 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
-		specWarnBlaze:Show()
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
