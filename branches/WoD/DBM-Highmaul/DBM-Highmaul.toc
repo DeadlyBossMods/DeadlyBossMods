@@ -2,6 +2,7 @@
 ## X-Min-Interface: 60000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Highmaul|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0높은망치|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Верховный Молот|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -14,6 +15,7 @@
 ## X-DBM-Mod-MapID: 1228
 localization.en.lua
 localization.kr.lua
+localization.ru.lua
 KargathBladefist.lua
 TheButcher.lua
 Tectus.lua
