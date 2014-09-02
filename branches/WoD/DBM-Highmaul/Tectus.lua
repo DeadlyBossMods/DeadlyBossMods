@@ -17,12 +17,13 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
+--TODO, find better icons for adds, these are filler icons for spells they use.
 --Tectus
 --local warnEarthenPillar				= mod:NewSpellAnnounce(162518, 3)--No way to detect unless it hits a player :\
 local warnTectonicUpheaval			= mod:NewSpellAnnounce(162475, 3)
 local warnCrystallineBarrage		= mod:NewTargetAnnounce(162346, 3)
-local warnEarthwarper				= mod:NewSpellAnnounce("ej10061", 3)
-local warnBerserker					= mod:NewSpellAnnounce("ej10062", 3)
+local warnEarthwarper				= mod:NewSpellAnnounce("ej10061", 3, nil, 162894)
+local warnBerserker					= mod:NewSpellAnnounce("ej10062", 3, nil, 163312)
 --Night-Twisted NPCs
 local warnEarthenFlechettes			= mod:NewSpellAnnounce(162968, 3, nil, mod:IsTank())
 local warnGiftOfEarth				= mod:NewSpellAnnounce(162894, 4, nil, mod:IsTank())
@@ -36,8 +37,8 @@ local specWarnCrystallineBarrage	= mod:NewSpecialWarningYou(162894)
 local specWarnEarthenFlechettes		= mod:NewSpecialWarningSpell(162968, mod:IsTank())--Change to "move" warning if it's avoidable
 local specWarnGiftOfEarth			= mod:NewSpecialWarningSpell(162894, mod:IsTank())
 
-local timerEarthwarperCD			= mod:NewNextTimer(41, "ej10061")
-local timerBerserkerCD				= mod:NewNextTimer(41, "ej10062")
+local timerEarthwarperCD			= mod:NewNextTimer(41, "ej10061", nil, nil, nil, 162894)
+local timerBerserkerCD				= mod:NewNextTimer(41, "ej10062", nil, nil, nil, 163312)
 
 mod:AddSetIconOption("SetIconOnEarthwarper", "ej10061", true, true)
 mod:AddSetIconOption("SetIconOnMote", "ej10083", false, true)--This more or less assumes the 4 at a time strat. if you unleash 8 it will fail. Although any guild unleashing 8 is probably doing it wrong (minus LFR)
