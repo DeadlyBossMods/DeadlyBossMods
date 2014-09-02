@@ -1,6 +1,7 @@
 if GetLocale() ~= "deDE" then return end
 
 DBM_CORE_NEED_SUPPORT				= "Hey, bist du ein Programmierer oder gut in Fremdsprachen? Falls ja, benötigt DBM deine Hilfe, um in mehr Sprachen übersetzt zu werden. Hilf uns hier http://forums.elitistjerks.com/topic/132449-dbm-localizers-needed/"
+DBM_CORE_NEED_LOGS					= "DBM benötigt Transcriptor (http://www.wowace.com/addons/transcriptor/) Logs dieser Testkämpfe um möglichst gute Mods bereitstellen zu können. Falls du helfen willst, dann zeichne diese Testkämpfe mit Transcriptor auf und lade sie hier hoch: http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing/ (bitte vorher einzippen, die Logs können sonst sehr groß werden). Es werden nur Logs von 6.0 Schlachtzügen benötigt. Logs von Dungeons sind nicht erforderlich."
 DBM_HOW_TO_USE_MOD					= "Willkommen bei DBM. Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. DBM versucht dies für dich zu tun, indem es beim ersten Start deine Spezialisierung scannt, aber du kannst zusätzliche Einstellungen aktivieren."
 
 DBM_FORUMS_MESSAGE					= "Du hast einen Bug oder einen falschen Timer gefunden? Du glaubst einige Mods würden zusätzliche Warnungen, Timer oder Spezialfeatures benötigen?\nBesuche die neuen Deadly Boss Mods Foren für Diskussionen, Fehlermeldungen und Featurewünsche: |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (Du kannst auf den Link klicken um ihn zu kopieren.)"
@@ -96,8 +97,8 @@ DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "Deine Alphaversion von Deadly Boss Mods 
 DBM_CORE_UPDATEREMINDER_FOOTER			= "Drücke " .. (IsMacClient() and "Cmd-C" or "Strg+C")  ..  " um den Downloadlink in die Zwischenablage zu kopieren."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Drücke " .. (IsMacClient() and "Cmd-C" or "Strg+C")  ..  " um den Link in die Zwischenablage zu kopieren."
 DBM_CORE_UPDATEREMINDER_DISABLE			= "WARNUNG: Da dein Deadly Boss Mods extrem veraltet ist (%d Revisionen), hat es sich bis zu einer Aktualisierung deaktiviert. Derart alter und inkompatibler Code kann zu einem schlechten Spielerlebnis bei dir oder deinen Schlachtzugsmitgliedern führen."
-DBM_CORE_UPDATEREMINDER_HOTFIX			= "Deine Version von DBM wird für diesen Bosskampf falsche Timer und Warnungen anzeigen. Dies wurde in einer neueren Version von DBM korrigiert (oder in einer Alphaversion, falls eine neuere Releaseversion nicht verfügbar ist)."
-DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "WARNUNG: Da dein Deadly Boss Mods veraltet und deshalb leider für diesen Major Patch des Spiels nicht mehr geeignet ist, hat es sich bis zu einer Aktualisierung deaktiviert. Alter und inkompatibler Code kann zu einem schlechten Spielerlebnis bei dir oder deinen Schlachtzugsmitgliedern führen. Bitte lade dir eine neue Version von deadlybossmods.com oder Curse herunter (sobald verfügbar)."
+DBM_CORE_UPDATEREMINDER_HOTFIX			= "Deine Version von DBM wird für diesen Bosskampf falsche Timer und Warnungen anzeigen. Dies wurde in einer neueren Version von DBM korrigiert (oder in einer Alphaversion, falls eine neuere Releaseversion noch nicht verfügbar ist)."
+DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "WARNUNG: Da dein Deadly Boss Mods veraltet und deshalb leider für diesen Major Patch des Spiels nicht mehr geeignet ist, hat es sich bis zu einer Aktualisierung deaktiviert. Alter und inkompatibler Code kann zu einem schlechten Spielerlebnis bei dir oder deinen Schlachtzugsmitgliedern führen. Bitte lade dir baldmöglichst eine neue Version von deadlybossmods.com oder Curse herunter. Falls du diese Meldung auf einem 6.0 beta Testserver bekommst, dann lade dir die Beta-Version des Mods hier herunter: http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing"
 
 DBM_CORE_MOVABLE_BAR				= "Zieh mich!"
 
@@ -214,7 +215,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveaway	= "%s - geh weg von anderen"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto		= "%s - geh zu >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run			= "%s - lauf weg"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast		= "%s - stoppe Zauber"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect	= "%s auf >%%s< - stoppe Angriffe"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect		= "%s auf >%%s< - stoppe Angriffe"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.count		= "%s! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "%%d Stapel von %s auf dir"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= ">%s< - Ziel wechseln"
