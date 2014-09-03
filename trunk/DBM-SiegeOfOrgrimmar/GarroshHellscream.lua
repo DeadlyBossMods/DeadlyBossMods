@@ -521,7 +521,7 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.wasteOfTime then
 		self:SendSync("prepull")
-	elseif msg == L.phase3End or msg:find(L.phase3End) then
+	elseif (msg == L.phase3End or msg:find(L.phase3End)) and self:IsInCombat() then
 		self:SendSync("phase3End")
 	end
 end
