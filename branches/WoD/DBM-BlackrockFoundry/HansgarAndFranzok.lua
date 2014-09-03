@@ -115,25 +115,3 @@ function mod:UNIT_TARGETABLE_CHANGED()
 		specWarnEnvironmentalThreadsEnd:Show()
 	end
 end
-
---[[
-local jumpSlam = GetSpellInfo(157922)
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
-	if spellName == jumpSlam then--Spammy debug, but this spell has ridiculous number of events in log and I have NO IDEA which one is the one we need to use without seeing it printed in chat when it happens.
-		DBM:Debug(UnitName(uId).." cast "..spellName.."("..spellId..")")
-	end
-end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:find("cFFFF0404") then
-
-	elseif msg:find(L.tower) then
-
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "Adds" and self:AntiSpam(20, 4) and self:IsInCombat() then
-
-	end
-end--]]

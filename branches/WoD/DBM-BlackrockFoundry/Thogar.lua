@@ -19,6 +19,7 @@ mod:RegisterEventsInCombat(
 --TODO, train timers, as well as what mobs get off with each train. Probably tie in with Thogar Assist callbacks.
 --TODO, add train spawning warnings/special warnings, maybe with Thogar Assist callbacks?
 --TODO, see if http://beta.wowhead.com/spell=163750 has a target during cast and if there is enough time to avoid/react.
+--TODO, mythic "move out of fire" warnings and maybe cast warnings too
 --Operator Thogar
 local warnProtoGrenade				= mod:NewSpellAnnounce(155864, 3)
 local warnEnkindle					= mod:NewStackAnnounce(155921, 2, nil, mod:IsTank())
@@ -105,24 +106,3 @@ function mod:UNIT_DIED(args)
 		timerIronbellowCD:Cancel(args.destGUID)
 	end
 end
-
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 50630 and self:AntiSpam(2, 3) then--Eject All Passengers:
-	
-	end
-end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:find("cFFFF0404") then
-
-	elseif msg:find(L.tower) then
-
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "Adds" and self:AntiSpam(20, 4) and self:IsInCombat() then
-
-	end
-end--]]

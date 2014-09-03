@@ -239,6 +239,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 end
 
 function mod:OnSync(msg, guid)
+	if not self:IsInCombat() then return end
 	if msg == "BloodRitualTarget" and guid then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		warnBloodRitual:Show(targetName)

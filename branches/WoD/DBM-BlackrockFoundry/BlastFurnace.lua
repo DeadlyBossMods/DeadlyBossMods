@@ -144,18 +144,3 @@ function mod:UNIT_POWER_FREQUENT(uId)
 		specWarnBlast:Show()
 	end
 end
-
---[[
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:find("cFFFF0404") then
-
-	elseif msg:find(L.tower) then
-
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "Adds" and self:AntiSpam(20, 4) and self:IsInCombat() then
-
-	end
-end--]]
