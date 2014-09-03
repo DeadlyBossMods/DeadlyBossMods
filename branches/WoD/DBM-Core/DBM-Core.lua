@@ -883,39 +883,6 @@ do
 		end
 	end
 
-	local function showOldVerWarning()
-		local popup = CreateFrame("Frame", nil, UIParent)
-		popup:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",
-			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
-			tile = true, tileSize = 16, edgeSize = 16,
-			insets = {left = 1, right = 1, top = 1, bottom = 1}}
-		)
-		popup:SetSize(600, 160)
-		popup:SetPoint("TOP", UIParent, "TOP", 0, -200)
-		popup:SetFrameStrata("DIALOG")
-
-		local text = popup:CreateFontString()
-		text:SetFontObject(ChatFontNormal)
-		text:SetWidth(570)
-		text:SetWordWrap(true)
-		text:SetPoint("TOP", popup, "TOP", 0, -15)
-		text:SetText("You are still running the old DBM3 compatibility layer for deprecated DBM3 mods which have been replaced by DBM4 mods. This mod will cause error messages on login and must be disabled.\nYou should also remove the folder DBM-BurningCrusade from your Interface/AddOns folder.\nClick okay to disable the mod and reload the UI.")
-
-		local accept = CreateFrame("Button", nil, popup)
-		accept:SetNormalTexture("Interface\\Buttons\\UI-DialogBox-Button-Up")
-		accept:SetPushedTexture("Interface\\Buttons\\UI-DialogBox-Button-Down")
-		accept:SetHighlightTexture("Interface\\Buttons\\UI-DialogBox-Button-Highlight", "ADD")
-		accept:SetSize(128, 35)
-		accept:SetPoint("BOTTOM", popup, "BOTTOM", 0, 0)
-		accept:SetScript("OnClick", function(f) DisableAddOn("DBM-BurningCrusade") ReloadUI() f:GetParent():Hide() end)
-
-		local atext = accept:CreateFontString()
-		atext:SetFontObject(ChatFontNormal)
-		atext:SetPoint("CENTER", accept, "CENTER", 0, 5)
-		atext:SetText(OKAY)
-		PlaySound("igMainMenuOpen")
-	end
-
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
 			isLoaded = true
@@ -923,10 +890,6 @@ do
 				xpcall(v, geterrorhandler())
 			end
 			onLoadCallbacks = nil
-			local enabled, loadable = select(4, GetAddOnInfo("DBM-BurningCrusade"))
-			if enabled and loadable then
-				showOldVerWarning()
-			end
 			loadOptions()
 			DBM.Bars:LoadOptions("DBM")
 			DBM.Arrow:LoadPosition()
