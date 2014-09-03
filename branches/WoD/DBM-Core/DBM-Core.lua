@@ -307,7 +307,7 @@ local GetPlayerMapPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMap
 local GetSpecialization = GetSpecialization
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local GetPartyAssignment, UnitGroupRolesAssigned = GetPartyAssignment, UnitGroupRolesAssigned
-local LoadAddOn, GetAddOnInfo = LoadAddOn, GetAddOnInfo
+local LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns = LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns
 local PlaySoundFile, PlaySound = PlaySoundFile, PlaySound
 local Ambiguate = Ambiguate
 
@@ -896,7 +896,8 @@ do
 			if not DBM.Options.ShowMinimapButton then self:HideMinimapButton() end
 			self.AddOns = {}
 			for i = 1, GetNumAddOns() do
-				local addonName, _, _, enabled = GetAddOnInfo(i)
+				local addonName = GetAddOnInfo(i)
+				local enabled = GetAddOnEnableState(playerName, addonName)
 				if GetAddOnMetadata(i, "X-DBM-Mod") and enabled then
 					if checkEntry(bannedMods, addonName) then
 						DBM:AddMsg("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
@@ -1769,7 +1770,14 @@ do
 				self:AddMsg(DBM_CORE_LOAD_GUI_COMBAT)
 				return
 			end
-			local _, _, _, enabled = GetAddOnInfo("DBM-GUI")
+			local enabled
+			for i = 1, GetNumAddOns() do
+				local addonName = GetAddOnInfo(i)
+				if addonName == "DBM-GUI" then
+					enabled = GetAddOnEnableState(playerName, addonName)
+					break
+				end
+			end
 			if not enabled then
 				EnableAddOn("DBM-GUI")
 			end
@@ -2568,7 +2576,14 @@ do
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
 		for i, v in ipairs(DBM.AddOns) do
 			local modTable = v[checkTable]
-			local _, _, _, enabled = GetAddOnInfo(v.modId)
+			local enabled
+			for i = 1, GetNumAddOns() do
+				local addonName = GetAddOnInfo(i)
+				if addonName == v.modId then
+					enabled = GetAddOnEnableState(playerName, addonName)
+					break
+				end
+			end
 			if enabled and not IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
 				self:LoadMod(v)
 			end
@@ -2694,7 +2709,14 @@ local function loadModByUnit(uId)
 	if guid and DBM:IsCreatureGUID(guid) then
 		local cId = DBM:GetCIDFromGUID(guid)
 		for bosscId, addon in pairs(loadcIds) do
-			local _, _, _, enabled = GetAddOnInfo(addon)
+			local enabled
+			for i = 1, GetNumAddOns() do
+				local addonName = GetAddOnInfo(i)
+				if addonName == addon then
+					enabled = GetAddOnEnableState(playerName, addonName)
+					break
+				end
+			end
 			if cId and bosscId and cId == bosscId and not IsAddOnLoaded(addon) and enabled then
 				for i, v in ipairs(DBM.AddOns) do
 					if v.modId == addon then

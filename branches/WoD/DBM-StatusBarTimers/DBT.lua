@@ -348,7 +348,14 @@ do
 			DBM:Schedule(3, delaySkinCheck, self)
 			return
 		end
-		local _, _, _, enabled = GetAddOnInfo("DBM-DefaultSkin")
+		local enabled
+		for i = 1, GetNumAddOns() do
+			local addonName = GetAddOnInfo(i)
+			if addonName == "DBM-DefaultSkin" then
+				enabled = GetAddOnEnableState(playerName, addonName)
+				break
+			end
+		end
 		if enabled and skins[self.options.Skin].loaded == nil then
 			-- The currently set skin is no longer loaded, revert to DefaultSkin. If enabled (else, person wants textureless bar on purpose)
 			self:SetSkin("DefaultSkin")
