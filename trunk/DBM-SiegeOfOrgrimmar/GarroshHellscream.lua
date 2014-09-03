@@ -527,7 +527,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:OnSync(msg, guid)
-	if msg == "MaliceTarget" and guid then
+	if msg == "MaliceTarget" and guid and self:IsInCombat() then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		warnMalice:Show(targetName)
 		timerMaliceCD:Start()
@@ -548,12 +548,12 @@ function mod:OnSync(msg, guid)
 		if self.Options.SetIconOnMalice then
 			self:SetIcon(targetName, 7)
 		end
-	elseif msg == "MaliceTargetRemoved" and guid and self.Options.SetIconOnMalice then
+	elseif msg == "MaliceTargetRemoved" and guid and self.Options.SetIconOnMalice and self:IsInCombat() then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		self:SetIcon(targetName, 0)
 	elseif msg == "prepull" then
 		timerRoleplay:Start()
-	elseif msg == "phase3End" then
+	elseif msg == "phase3End" and self:IsInCombat() then
 		timerDesecrateCD:Cancel()
 		timerTouchOfYShaarjCD:Cancel()
 		countdownTouchOfYShaarj:Cancel()

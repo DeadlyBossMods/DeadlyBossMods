@@ -266,7 +266,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:OnSync(msg)
-	if msg == "FallingAsh" then
+	if msg == "FallingAsh" and self:IsInCombat() then
 		self.vb.ashCount = self.vb.ashCount + 1
 		timerFallingAsh:Start()
 		if self:IsHeroic() then--On heroic, base spell 1 second cast, not 2.

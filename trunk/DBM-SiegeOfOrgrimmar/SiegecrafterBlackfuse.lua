@@ -350,7 +350,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 end
 
 function mod:OnSync(msg, guid)
-	if msg == "LockedOnTarget" and guid then
+	if msg == "LockedOnTarget" and guid and self:IsInCombat() then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		warnLaserFixate:Show(targetName)
 		if self.Options.SetIconOnlaserFixate then
