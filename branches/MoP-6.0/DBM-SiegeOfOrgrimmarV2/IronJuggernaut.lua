@@ -240,6 +240,7 @@ function mod:OnSync(msg, guid)
 	--It's easy to be out of range of combat log event
 	--We also scan success and applied since we may be in range of one and not the other
 	--We just watch both combat events and emote for good measure, so we grab SOMETHING and sync it
+	if not self:IsInCombat() then return end
 	if msg == "LaserTarget" and guid then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		warnCutterLaser:Show(targetName)
