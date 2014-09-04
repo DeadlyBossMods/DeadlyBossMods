@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1128, "DBM-Highmaul", nil, 477)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(79459)
+mod:SetCreatureID(78714)
 mod:SetEncounterID(1721)
 mod:SetZone()
 --mod:SetUsedIcons(7)
@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 
 --TODO find the debuff for arena to add a timer/count for it.
 local warnChainHurl					= mod:NewTargetAnnounce(159947, 3)--Warn for cast too?
-local warnBladeDance				= mod:NewSpellAnnounce(159250, 3)
+local warnBladeDance				= mod:NewSpellAnnounce(159250, 3, nil, false)
 local warnBerserkerRush				= mod:NewTargetAnnounce(158986, 4)
 local warnOpenWounds				= mod:NewStackAnnounce(159178, 2, nil, mod:IsTank())
 local warnImpale					= mod:NewSpellAnnounce(159113, 3, nil, mod:IsTank())
@@ -35,7 +35,7 @@ local specWarnImpale				= mod:NewSpecialWarningSpell(159113, mod:IsTank())
 local specWarnOpenWounds			= mod:NewSpecialWarningStack(159178, nil, 2)
 local specWarnOpenWoundsOther		= mod:NewSpecialWarningTaunt(159178)--If it is swap every impale, will move this to impale cast and remove stack stuff all together.
 local specWarnMaulingBrew			= mod:NewSpecialWarningMove(159413)
-local specWarnOnTheHunt				= mod:NewSpecialWarningRun(162497)--Run or You warning?
+local specWarnOnTheHunt				= mod:NewSpecialWarningMoveTo(162497, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(162497))
 
 local timerPillarCD					= mod:NewNextTimer(20, "ej9394", nil, nil, nil, 159202)
 local timerChainHurlCD				= mod:NewNextTimer(106, 159947)
