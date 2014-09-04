@@ -22,8 +22,8 @@ mod:RegisterEventsInCombat(
 --local warnEarthenPillar				= mod:NewSpellAnnounce(162518, 3)--No way to detect unless it hits a player :\
 local warnTectonicUpheaval			= mod:NewSpellAnnounce(162475, 3)
 local warnCrystallineBarrage		= mod:NewTargetAnnounce(162346, 3)
-local warnEarthwarper				= mod:NewSpellAnnounce("ej10061", 3, nil, 162894)
-local warnBerserker					= mod:NewSpellAnnounce("ej10062", 3, nil, 163312)
+local warnEarthwarper				= mod:NewSpellAnnounce("ej10061", 3, 162894)
+local warnBerserker					= mod:NewSpellAnnounce("ej10062", 3, 163312)
 --Night-Twisted NPCs
 local warnEarthenFlechettes			= mod:NewSpellAnnounce(162968, 3, nil, mod:IsTank())
 local warnGiftOfEarth				= mod:NewSpellAnnounce(162894, 4, nil, mod:IsTank())
