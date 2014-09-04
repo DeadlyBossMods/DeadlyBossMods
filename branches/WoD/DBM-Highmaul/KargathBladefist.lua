@@ -15,7 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 159947 159250 158986 159178 159202 162497",
 	"SPELL_AURA_APPLIED_DOSE 159178",
 	"SPELL_PERIODIC_DAMAGE 159413",
-	"SPELL_PERIODIC_MISSED 159413"
+	"SPELL_PERIODIC_MISSED 159413",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 --TODO find the debuff for arena to add a timer/count for it.
@@ -35,14 +36,14 @@ local specWarnImpale				= mod:NewSpecialWarningSpell(159113, mod:IsTank())
 local specWarnOpenWounds			= mod:NewSpecialWarningStack(159178, nil, 2)
 local specWarnOpenWoundsOther		= mod:NewSpecialWarningTaunt(159178)--If it is swap every impale, will move this to impale cast and remove stack stuff all together.
 local specWarnMaulingBrew			= mod:NewSpecialWarningMove(159413)
-local specWarnOnTheHunt				= mod:NewSpecialWarningMoveTo(162497, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(162497))
+local specWarnOnTheHunt				= mod:NewSpecialWarningMoveTo(162497, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(162497))--Does not need yell, tigers don't cleave other targets like berserker rush does.
 
 local timerPillarCD					= mod:NewNextTimer(20, "ej9394", nil, nil, nil, 159202)
 local timerChainHurlCD				= mod:NewNextTimer(106, 159947)
-local timerBerserkerRushCD			= mod:NewCDTimer(45, 158986)--45 to 70 variation. Small indication that you can use a sequence to get it a little more accurate but even then it's variable. Pull1: 48, 60, 46, 70, 45, 51, 46, 70. Pull2: 48, 60, 50, 55, 45
+local timerBerserkerRushCD			= mod:NewCDTimer(45, 158986)--45 to 70 variation. Small indication that you can use a sequence to get it a little more accurate but even then it's variable. Pull1: 48, 60, 46, 70, 45, 51, 46, 70. Pull2: 48, 60, 50, 55, 45. Mythic pull1, 48, 50, 57, 49
 local timerImpaleCD					= mod:NewCDTimer(35, 159113, nil, mod:IsTank())--35 to 53.7 variation
 local timerCrowdCD					= mod:NewTimer(94, "timerCrowdCD", 159410)
---local timerOnTheHunt				= mod:NewTargetTimer(45, 162497)--Ths really 45 seconds? might just be a meaningless timer if it's not even possible to kite for 45 seconds
+local timerTigerCD					= mod:NewNextTimer(110, "ej9396", nil, nil, nil, 162497)
 
 mod:AddRangeFrameOption(4, 159386)
 
@@ -52,10 +53,14 @@ function mod:OnCombatStart(delay)
 	timerPillarCD:Start(24-delay)
 	timerImpaleCD:Start(-delay)
 	timerBerserkerRushCD:Start(48-delay)
-	timerCrowdCD:Start(61-delay)
 	timerChainHurlCD:Start(91-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(4)--For Mauling Brew splash damage.
+	end
+	if self:IsMythic() then
+		timerTigerCD:Start()
+	else
+		timerCrowdCD:Start(61-delay)--TODO, see if this changed on normal/LFR/Herioc too. on mythic this no longer existed.
 	end
 end
 
@@ -124,7 +129,17 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+--	CheckBosses()
+	self:Unschedule(CheckBosses)
+	self:Schedule(1, CheckBosses)--Delay check to make sure we run function only once on pull
+end
+
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	--Only fires for one thing, so no reason to localize
-	timerCrowdCD:Start()
+	if self:IsMythic() then
+		timerTigerCD:Start()
+	else
+		timerCrowdCD:Start(61-delay)--TODO, see if this changed on normal/LFR/Herioc too. on mythic this no longer existed.
+	end
 end
