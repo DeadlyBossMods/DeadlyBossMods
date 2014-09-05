@@ -81,7 +81,6 @@ mod:AddSetIconOption("SetIconOnToxicMists", 144089, false)
 mod:AddSetIconOption("SetIconOnFoulStream", 144090, false)
 
 --Upvales, don't need variables
-local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local playerName = UnitName("player")
 --Important, needs recover
 mod.vb.ashCount = 0
