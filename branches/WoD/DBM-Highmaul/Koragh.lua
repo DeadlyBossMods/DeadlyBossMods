@@ -9,7 +9,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 162185 162184 161411 163517",
+	"SPELL_CAST_START 162185 162184 161411 163517 162186",
 	"SPELL_AURA_APPLIED 156803 160734 162186 162185 161242 163472",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 162186 162185 163472",
@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 local warnCausticEnergy				= mod:NewTargetAnnounce(161242, 2)
 local warnNullBarrier				= mod:NewTargetAnnounce(156803, 3)
 local warnVulnerability				= mod:NewTargetAnnounce(160734, 1)
-local warnTrample					= mod:NewTargetAnnounce(161328, 3)--Technically it's supression field, then trample, but everyone is going to know it more by trample cause that's the part of it that matters
+local warnTrample					= mod:NewTargetAnnounce(163101, 3)--Technically it's supression field, then trample, but everyone is going to know it more by trample cause that's the part of it that matters
 --local warnOverflowingEnergy		= mod:NewSpellAnnounce(161576, 4)--need to find an alternate way to detect this. or just remove :\
 local warnExpelMagicFire			= mod:NewSpellAnnounce(162185, 3)
 local warnExpelMagicShadow			= mod:NewSpellAnnounce(162184, 3, nil, mod:IsHealer())
@@ -45,12 +45,13 @@ local specWarnMC					= mod:NewSpecialWarningSwitch(163472, mod:IsDps())
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
 
 local timerVulnerability			= mod:NewBuffActiveTimer(20, 160734)
---local timerTrampleCD				= mod:NewCDTimer(15, 161328)--Also all over the place, 15-25 with first one coming very randomly (5-20 after barrier goes up)
+--local timerTrampleCD				= mod:NewCDTimer(15, 163101)--Also all over the place, 15-25 with first one coming very randomly (5-20 after barrier goes up)
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
 --local timerExpelMagicFireCD		= mod:NewCDTimer(20, 162185)
 --local timerExpelMagicShadowCD		= mod:NewCDTimer(10, 162184)
 --local timerExpelMagicFrostCD		= mod:NewCDTimer(10, 161411)
---local timerMCCD					= mod:NewCDTimer(10, 163472)
+
+local soundExpelMagicArcane			= mod:NewSound(162186)
 
 mod:AddRangeFrameOption("7/5")
 mod:AddSetIconOption("SetIconOnMC", 163472, false)
@@ -78,6 +79,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 163517 then
 		warnForfeitPower:Show()
 		specWarnForfeitPower:Show(args.sourceName)
+	elseif spellId == 162186 then
+		if UnitExists("boss1") and UnitGUID("boss1") == args.sourceGUID and UnitDetailedThreatSituation("player", "boss1") then--We are highest threat target
+			specWarnExpelMagicArcaneYou:Show()--So show tank warning
+			soundExpelMagicArcane:Play()
+		end
 	end
 end
 
@@ -106,8 +112,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 162186 then
 		warnExpelMagicArcane:Show(args.destName)
 		timerExpelMagicArcane:Start(args.destName)
-		if args:IsPlayer() then
-			specWarnExpelMagicArcaneYou:Show()
+		if args:IsPlayer() then--Still do yell and range frame here, in case DK
 			yellExpelMagicArcane:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(5)
@@ -121,7 +126,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.RangeCheck:Show(7)
 		end
 	elseif spellId == 161242 then
-		warnCausticEnergy:CombinedShow(0.5, args.destName)--Two targets on mythic, which is why combinedshow.
+		warnCausticEnergy:CombinedShow(1, args.destName)--Two targets on mythic, which is why combinedshow.
 	elseif spellId == 163472 then
 		warnMC:CombinedShow(0.5, args.destName)
 		if self:AntiSpam(3, 1) then
