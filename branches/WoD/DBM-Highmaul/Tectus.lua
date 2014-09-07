@@ -26,8 +26,8 @@ local warnCrystallineBarrage		= mod:NewTargetAnnounce(162346, 3)
 local warnEarthwarper				= mod:NewSpellAnnounce("ej10061", 3, 162894)
 local warnBerserker					= mod:NewSpellAnnounce("ej10062", 3, 163312)
 --Night-Twisted NPCs
-local warnEarthenFlechettes			= mod:NewSpellAnnounce(162968, 3, nil, mod:IsTank())
-local warnGiftOfEarth				= mod:NewSpellAnnounce(162894, 4, nil, mod:IsTank())
+local warnEarthenFlechettes			= mod:NewSpellAnnounce(162968, 3, nil, mod:IsMelee())
+local warnGiftOfEarth				= mod:NewCountAnnounce(162894, 4, nil, mod:IsMelee())
 local warnRavingAssault				= mod:NewSpellAnnounce(163312, 3)--Target scanning? Emote?
 
 local specWarnEarthwarper			= mod:NewSpecialWarningSwitch("ej10061")
@@ -35,11 +35,13 @@ local specWarnTectonicUpheaval		= mod:NewSpecialWarningSpell(162475, nil, nil, n
 local specWarnEarthenPillar			= mod:NewSpecialWarningSpell(162518, nil, nil, nil, 3)
 local specWarnCrystallineBarrage	= mod:NewSpecialWarningYou(162894)
 --Night-Twisted NPCs
-local specWarnEarthenFlechettes		= mod:NewSpecialWarningSpell(162968, mod:IsTank())--Change to "move" warning if it's avoidable
-local specWarnGiftOfEarth			= mod:NewSpecialWarningSpell(162894, mod:IsTank())
+local specWarnEarthenFlechettes		= mod:NewSpecialWarningSpell(162968, mod:IsMelee())--Change to "move" warning if it's avoidable
+local specWarnGiftOfEarth			= mod:NewSpecialWarningCount(162894, mod:IsTank())
 
 local timerEarthwarperCD			= mod:NewNextTimer(41, "ej10061", nil, nil, nil, 162894)--Both of these get delayed by upheavel
 local timerBerserkerCD				= mod:NewNextTimer(41, "ej10062", nil, nil, nil, 163312)--Both of these get delayed by upheavel
+local timerGiftOfEarthCD			= mod:NewCDTimer(10.5, 162894, nil, mod:IsMelee())--10.5 but obviously delayed if stuns were used.
+local timerEarthenFlechettesCD		= mod:NewCDTimer(14, 162968, nil, mod:IsMelee())--14 but obviously delayed if stuns were used. Also tends to be recast immediately if stun interrupted
 
 mod:AddSetIconOption("SetIconOnEarthwarper", "ej10061", true, true)
 mod:AddSetIconOption("SetIconOnMote", "ej10083", false, true)--This more or less assumes the 4 at a time strat. if you unleash 8 it will fail. Although any guild unleashing 8 is probably doing it wrong (minus LFR)
@@ -47,8 +49,10 @@ mod:AddSetIconOption("SetIconOnMote", "ej10083", false, true)--This more or less
 local Earthwarper = EJ_GetSectionInfo(10061)
 local Berserker = EJ_GetSectionInfo(10062)
 mod.vb.EarthwarperAlive = 0
+local earthDuders = {}
 
 function mod:OnCombatStart(delay)
+	table.wipe(earthDuders)
 	self.vb.EarthwarperAlive = 0
 	timerEarthwarperCD:Start(11-delay)
 	timerBerserkerCD:Start(21-delay)
@@ -65,9 +69,17 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 162968 then
 		warnEarthenFlechettes:Show()
 		specWarnEarthenFlechettes:Show()
+		timerEarthenFlechettesCD:Start(args.sourceGUID)
 	elseif spellId == 162894 then
-		warnGiftOfEarth:Show()
-		specWarnGiftOfEarth:Show()
+		local GUID = args.sourceGUID
+		--Support for counts for each earth guy up.
+		if not earthDuders[GUID] then
+			earthDuders[GUID] = 0
+		end
+		earthDuders[GUID] = earthDuders[GUID] + 1
+		warnGiftOfEarth:Show(earthDuders[GUID])
+		specWarnGiftOfEarth:Show(earthDuders[GUID])
+		timerGiftOfEarthCD:Start(GUID)
 	elseif spellId == 163312 then
 		warnRavingAssault:Show()
 	end
@@ -81,14 +93,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCrystallineBarrage:Show()
 		end
 	elseif spellId == 162674 and self.Options.SetIconOnMote and not self:IsDifficulty("lfr") then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
-		self:ScanForMobs(args.destGUID, 0, 8, 4, 0.05, 10)
+		self:ScanForMobs(args.destGUID, 0, 8, 4, 0.05, 15)
 	end
 end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 80599 then
+		local GUID = args.destGUID
 		self.vb.EarthwarperAlive = self.vb.EarthwarperAlive - 1
+		timerGiftOfEarthCD:Cancel(GUID)--Only issue is that this won't cancel the FIRST timer which lacks a GUID, if you manage to kill it before first cast
+		timerEarthenFlechettesCD:Cancel(GUID)
+		earthDuders[GUID] = nil
 	end
 end
 
@@ -106,9 +122,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
 		self.vb.EarthwarperAlive = self.vb.EarthwarperAlive + 1
 		warnEarthwarper:Show()
 		specWarnEarthwarper:Show()
+		timerGiftOfEarthCD:Start(10)
+		timerEarthenFlechettesCD:Start(15)
 		timerEarthwarperCD:Start()
 		if self.Options.SetIconOnEarthwarper and self.vb.EarthwarperAlive < 9 then--Support for marking up to 8 mobs (you're group is terrible)
-			self:ScanForMobs(80599, 2, 9-self.vb.EarthwarperAlive, 1, 0.2, 15, "SetIconOnEarthwarper")
+			self:ScanForMobs(80599, 2, 9-self.vb.EarthwarperAlive, 1, 0.1, 15, "SetIconOnEarthwarper")
 		end
 	elseif npc == Berserker then
 		warnBerserker:Show()
