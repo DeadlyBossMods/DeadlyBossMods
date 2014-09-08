@@ -60,16 +60,16 @@ local Deforester = EJ_GetSectionInfo(10329)
 local mythicTrains = {
 	[1] = ManOArms.." (4)",--+7 after pull
 	[2] = Deforester.." (1)",--+5 after 1
-	[3] = Train.." ("..UNKNOWN..")",--+5 after 2. I forgot lane, it's a single train drive by
-	[4] = Train.." ("..UNKNOWN..")",--+15 after 3. I forgot lane, it's a single train drive by
+	[3] = Train.." (2)",--+5 after 2.
+	[4] = Train.." (3)",--+15 after 3.
 	[5] = Train..L.threeTrains,--+15 after 4
 	[6] = Cannon.." (1, 4)",--+15 after 5
-	[7] = Train.." ("..UNKNOWN..")",--+5 after 6. I forgot lane, it's a single train drive by
-	[8] = Train.." ("..UNKNOWN..")",--+5 after 7. I forgot lane, it's a single train drive by
-	[9] = Train.." ("..UNKNOWN..")",--+15 after 8. I forgot lane, it's a single train drive by
+	[7] = Train.." (2)",--+5 after 6.
+	[8] = Train.." (3)",--+5 after 7.
+	[9] = Train.." (2)",--+15 after 8.
 	[10] = Reinforcements.." (2, 3)",--+20 after 9
-	[11] = Train.." ("..UNKNOWN..")",--+15 after 10. Don't know this one, just know it's a drive by (1 or 2 lanes)
-	[12] = Train..L.threeTrains,--+15 after 11
+	[11] = Train.." (1, 4)",--+15 after 10.
+	[12] = Train.." (2, 4)",--+15 after 11
 	[13] = UNKNOWN,--+15 after 12
 }
 --Trains are either 20, 15 or 5.
