@@ -10,9 +10,9 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 155186 156937 160379 155179",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 155192 155196 158345 155242 155181",
+	"SPELL_CAST_START 155186 156937 177756",
+	"SPELL_CAST_SUCCESS 160382 155179 174726",
+	"SPELL_AURA_APPLIED 155192 155196 158345 155242 155181 156932",
 	"SPELL_AURA_APPLIED_DOSE 155242",
 	"SPELL_AURA_REMOVED 155192",
 	"SPELL_PERIODIC_DAMAGE 156932 155223",
@@ -23,37 +23,60 @@ mod:RegisterEventsInCombat(
 
 --TODO, figure out how to detect OTHER add spawns besides operator and get timers for them too. It's likely the'll require ugly scheduling and /yell logging. 
 local warnBomb					= mod:NewTargetAnnounce(155192, 4)
+local warnBellowsOperator		= mod:NewSpellAnnounce("ej9650", 4, 155181)
+local warnDeafeningRoar			= mod:NewSpellAnnounce(177756, 3, nil, mod:IsTank())
+local warnDefense				= mod:NewSpellAnnounce(160382, 2, nil, mod:IsTank())
+local warnRepair				= mod:NewCastAnnounce(155179, 4, nil, nil, not mod:IsHealer())
+local warnDropBombs				= mod:NewSpellAnnounce(174726, 1)
+local warnRupture				= mod:NewTargetAnnounce(156932, 3)
 local warnCauterizeWounds		= mod:NewCastAnnounce(155186, 4, nil, nil, not mod:IsHealer())
-local warnBellowsOperator		= mod:NewSpellAnnounce("ej9650", 4, 155181)--BellowsOperator
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnPryclasm				= mod:NewCastAnnounce(156937, 3, nil, nil, false)
-local warnRepair				= mod:NewCastAnnounce(155179, 4, nil, nil, not mod:IsHealer())
-local warnDefense				= mod:NewSpellAnnounce(160379, 2, nil, false)--Spammy
 local warnShieldsDown			= mod:NewSpellAnnounce(158345, 1, nil, mod:IsDps())
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, mod:IsTank())
 
 local specWarnBomb				= mod:NewSpecialWarningYou(155192, nil, nil, nil, 3)
-local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, not mod:IsHealer())--if spammy, will switch to target/focus type only
 local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("ej9650", mod:IsDps())
-local specWarnFixate			= mod:NewSpecialWarningYou(155196)
-local specWarnRupture			= mod:NewSpecialWarningMove(156932)
-local specWarnMelt				= mod:NewSpecialWarningMove(155223)
-local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
+local specWarnDeafeningRoar		= mod:NewSpecialWarningSpell(177756, nil, nil, nil, 3)
+local specWarnDefense			= mod:NewSpecialWarningMove(160382, mod:IsTank())
 local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, not mod:IsHealer())
+local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932)
+local specWarnRupture			= mod:NewSpecialWarningMove(156932)
+local specWarnFixate			= mod:NewSpecialWarningYou(155196)
+local specWarnMelt				= mod:NewSpecialWarningMove(155223)
+local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, not mod:IsHealer())--if spammy, will switch to target/focus type only
+local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
 local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", mod:IsDps())
 local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3)
 local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242)
 local specWarnBlast				= mod:NewSpecialWarningSpell(155209, nil, nil, nil, 2)
 
 local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
-local timerBlastCD				= mod:NewNextTimer(25, 155209)--25 seconds base. shorter when loading is being channeled by operators.
+local timerBlastCD				= mod:NewCDTimer(25, 155209)--25 seconds base. shorter when loading is being channeled by operators.
+local timerEngineer				= mod:NewNextTimer(45, "ej9649", nil, nil, nil, 155179)
 local timerBellowsOperator		= mod:NewNextTimer(60, "ej9655", nil, nil, nil, 155181)
 local timerShieldsDown			= mod:NewBuffActiveTimer(25, 158345, nil, mod:IsDps())--Anyone else need?
 
 local UnitPower = UnitPower
 
+--I was pretty bad at doing /yell adds in my chat log so this may not be perfect.
+--It may not be 45 at all. Or at least first may not be 45 so rest will be off by a couple sec.
+--Todo, verify and improve. Putting timer in to catch it if wrong faster, but adding warnings only after it's right.
+local function Adds()
+	timerEngineer:Start()
+	mod:Schedule(45, Adds)
+end
+
 function mod:OnCombatStart(delay)
-	timerBellowsOperator:Start(20-delay)
+	if self:IsMythic() then
+		self:Schedule(45, Adds)
+		timerEngineer:Start()
+		if self:AntiSpam(10, 0) then--Force this antispam on pull so first two adds "loading" doesn't start 60 second timer
+			timerBellowsOperator:Start(55-delay)
+		end
+	else
+		timerBellowsOperator:Start(20-delay)
+	end
 	timerBlastCD:Start(25-delay)
 end
 
@@ -69,18 +92,31 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 156937 then
 		warnPryclasm:Show()
 		specWarnPyroclasm:Show(args.sourceName)
-	elseif spellId == 160379 then
+	elseif spellId == 177756 and self:CheckTankDistance(args.sourceGUID, 30) then
+		warnDeafeningRoar:Show()
+		specWarnDeafeningRoar:Show()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 160382 and self:CheckTankDistance(args.sourceGUID, 30) then
 		warnDefense:Show()
-	elseif spellId == 155179 then
+		specWarnDefense:Show()
+	elseif spellId == 155179 then--Repair should NOT check tank distance, because these mobs run to lowest health regulator, even if it's on OTHER side of where their tank is.
 		warnRepair:Show()
 		specWarnRepair:Show(args.sourceName)
+	elseif spellId == 174726 and self:CheckTankDistance(args.sourceGUID, 30) then
+		warnDropBombs:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 155192 then
-		warnBomb:Show(args.destName)
+		if self:CheckTankDistance(args.sourceGUID, 30) then
+			warnBomb:Show(args.destName)
+		end
 		if args:IsPlayer() then
 			specWarnBomb:Show()
 			timerBomb:Start()
@@ -99,17 +135,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnHeat:Show(args.destName, amount)
 		if amount >= 3 then
 			if args:IsPlayer() then
-				specWarnHeat:Show()
+				specWarnHeat:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
 				if not UnitDebuff("player", GetSpellInfo(155242)) and not UnitIsDeadOrGhost("player") then
 					specWarnHeatOther:Show(args.destName)
 				end
 			end
 		end
-	elseif spellId == 155181 and self:AntiSpam(3, 0) then--Loading
+	elseif spellId == 155181 and self:AntiSpam(10, 0) then--Loading (The two that come can be upwards of 5 seconds apart so at least 10 second antispam)
 		warnBellowsOperator:Show()
 		specWarnBellowsOperator:Show()
 		timerBellowsOperator:Start()
+	elseif spellId == 156932 then
+		warnRupture:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnRuptureOn:Show()
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -132,15 +173,19 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 160823 then--Bust Loose. Not the earliest event but cleanest. IEEU can be used if want to warn 1.5 seconds earlier but it's far uglier code wise.
+		self:Unschedule(Adds)
 		timerBellowsOperator:Cancel()
 	end
 end
 
+--Maybe awkward way of doing it since timer will kind of skip when operators are out, but most accurate way of doing it.
+--emote to emote shows variation even when loading doesn't add power. sometimes 24, sometimes 27. This timer may be closer, we'll see
+--Probably very high cpu usage
 function mod:UNIT_POWER_FREQUENT(uId)
 	local bossPower = UnitPower("boss1") --Get Boss Power
 	bossPower = bossPower / 4 --Divide it by 4 (cause he gains 4 power per second and we need to know how many seconds to subtrack from CD)
-	timerBlastCD:Update(25-bossPower, 25)--Maybe awkward way of doing it since timer will kind of skip when operators are out, but most accurate way of doing it.
-	if bossPower == 23 then--Cast in 2 seconds
+	timerBlastCD:Update(bossPower, 25)
+	if bossPower == 23 and self:AntiSpam(5, 5) then--Cast in 2 seconds
 		specWarnBlast:Show()
 	end
 end
