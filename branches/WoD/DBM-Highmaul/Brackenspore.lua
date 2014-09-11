@@ -39,7 +39,7 @@ local specWarnDecay					= mod:NewSpecialWarningInterrupt(160013, not mod:IsHeale
 local specWarnNecroticBreath		= mod:NewSpecialWarningSpell(159219, mod:IsTank(), nil, nil, 3)
 local specWarnRot					= mod:NewSpecialWarningStack(163241, nil, 5)--stack guessed, based on low debuff damage, assumed to be a fast stacker, like malkorak
 local specWarnRotOther				= mod:NewSpecialWarningTaunt(163241)
-local specWarnInfestingSpores		= mod:NewSpecialWarningSpell(163794, nil, nil, nil, 2)--Change warning type/sound? need to know more about spawn.
+local specWarnExplodingFungus		= mod:NewSpecialWarningSpell(163794, nil, nil, nil, 2)--Change warning type/sound? need to know more about spawn.
 --Adds
 local specWarnSporeShooter			= mod:NewSpecialWarningSwitch(163594, mod:IsDps())
 local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitch("ej9995")
@@ -153,6 +153,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerRejuvMushroomCD:Start()
 	elseif spellId == 163794 then
 		warnExplodingFungus:Show()
+		specWarnExplodingFungus:Show()
 --		timerExplodingFungusCD:Start()
 	end
 end
