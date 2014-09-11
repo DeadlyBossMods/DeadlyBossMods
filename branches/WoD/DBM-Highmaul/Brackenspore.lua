@@ -32,6 +32,7 @@ local warnMindFungus				= mod:NewSpellAnnounce(163141, 2, nil, mod:IsDps())
 local warnLivingMushroom			= mod:NewSpellAnnounce(160022, 1)--Good shroom! (mana)
 local warnRejuvMushroom				= mod:NewSpellAnnounce(160021, 1)--Other good shroom (healing)
 local warnExplodingFungus			= mod:NewSpellAnnounce(163794, 4)--Mythic Shroom
+local warnWaves						= mod:NewSpellAnnounce(160425, 4)--Mythic Waves
 
 local specWarnCreepingMoss			= mod:NewSpecialWarningMove(163590, mod:IsTank())
 local specWarnInfestingSpores		= mod:NewSpecialWarningSpell(159996, nil, nil, nil, 2)
@@ -40,34 +41,36 @@ local specWarnNecroticBreath		= mod:NewSpecialWarningSpell(159219, mod:IsTank(),
 local specWarnRot					= mod:NewSpecialWarningStack(163241, nil, 5)--stack guessed, based on low debuff damage, assumed to be a fast stacker, like malkorak
 local specWarnRotOther				= mod:NewSpecialWarningTaunt(163241)
 local specWarnExplodingFungus		= mod:NewSpecialWarningSpell(163794, nil, nil, nil, 2)--Change warning type/sound? need to know more about spawn.
+local specWarnWaves					= mod:NewSpecialWarningSpell(160425, nil, nil, nil, 2)
 --Adds
 local specWarnSporeShooter			= mod:NewSpecialWarningSwitch(163594, mod:IsDps())
 local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitch("ej9995")
 local specWarnMindFungus			= mod:NewSpecialWarningSwitch(163141, mod:IsDps())
 
-local timerInfestingSporesCD		= mod:NewNextTimer(103, 159996)
-local timerNecroticBreathCD			= mod:NewCDTimer(30, 159219, nil, mod:IsTank() or mod:IsHealer())
+local timerInfestingSporesCD		= mod:NewNextTimer(57, 159996)
+local timerNecroticBreathCD			= mod:NewCDTimer(32, 159219, nil, mod:IsTank() or mod:IsHealer())
 --Adds (all adds are actually NEXT timers however they get dleayed by infesting spores and necrotic breath sometimes so i'm leaving as CD for now)
-local timerSporeShooterCD			= mod:NewCDTimer(60, 163594, nil, mod:IsDps())
-local timerFungalFleshEaterCD		= mod:NewCDTimer(120, "ej9995")
+local timerSporeShooterCD			= mod:NewCDTimer(57, 163594, nil, mod:IsDps())
+local timerFungalFleshEaterCD		= mod:NewCDTimer(120, "ej9995", nil, nil, nil, 163142)
 local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, mod:IsDps())
-local timerLivingMushroomCD			= mod:NewCDTimer(60, 160022)
+local timerLivingMushroomCD			= mod:NewCDTimer(55.5, 160022)
 local timerRejuvMushroomCD			= mod:NewCDTimer(145, 160021)
---local timerExplodingFungusCD		= mod:NewCDTimer(30, 163794)
+--local timerExplodingFungusCD		= mod:NewCDTimer(32, 163794)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
+local timerWavesCD					= mod:NewCDTimer(33, 160425)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 
-mod:AddRangeFrameOption(8, 160254, mod:IsRanged())
+mod:AddRangeFrameOption(8, 160254, false)
 
 mod.vb.sporesAlive = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.sporesAlive = 0
-	timerMindFungusCD:Start(10-delay)
-	timerSporeShooterCD:Start(20-delay)
+	timerMindFungusCD:Start(11-delay)
+	timerLivingMushroomCD:Start(18-delay)--16-18
+	timerSporeShooterCD:Start(23-delay)--23-26
 	timerNecroticBreathCD:Start(-delay)
 	timerFungalFleshEaterCD:Start(34-delay)
-	timerLivingMushroomCD:Start(-delay)
-	timerRejuvMushroomCD:Start(80-delay)
-	timerInfestingSporesCD:Start(90-delay)
+	timerInfestingSporesCD:Start(49-delay)
+	timerRejuvMushroomCD:Start(75-delay)
 end
 
 function mod:OnCombatEnd()
@@ -155,5 +158,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnExplodingFungus:Show()
 		specWarnExplodingFungus:Show()
 --		timerExplodingFungusCD:Start()
+	elseif spellId == 160425 then
+		warnWaves:Show()
+		specWarnWaves:Show()
+		timerWavesCD:Start()
 	end
 end
