@@ -132,6 +132,10 @@ function mod:OnCombatStart(delay)
 	timerBladeDashCD:Start(11-delay)
 	timerRapidFireCD:Start(16-delay)
 	timerShipCD:Start(-delay)
+	if not self.Options.ShowedLimitationMessage then
+		DBM:AddMsg(L.warningNotice)
+		self.Options.ShowedLimitationMessage = true
+	end
 end
 
 function mod:OnCombatEnd()

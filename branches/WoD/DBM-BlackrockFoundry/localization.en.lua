@@ -74,10 +74,10 @@ L:SetMiscLocalization({
 	--Some of these flamethrowers are iffy so verify flamethrower again in videos to be very sure.
 	--These may also be something else entirely so going to only debug these right now
 	flameThrower1	= "I have a schedule to keep!",
-	flameThrower1	= "You are running out of time...",
-	flameThrower1	= "I'm not impressed. More trains are inbound!",
-	flameThrower1	= "You're just in time for the rush.!",
-	flameThrower1	= "Let's step up the pace."
+	flameThrower2	= "You are running out of time...",
+	flameThrower3	= "I'm not impressed. More trains are inbound!",
+	flameThrower4	= "You're just in time for the rush.!",
+	flameThrower5	= "Let's step up the pace."
 })
 
 --------------------------
@@ -86,7 +86,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1203)
 
 L:SetMiscLocalization({
-	shipMessage		= "prepares to man the Dreadnaught's Main Cannon!"
+	shipMessage		= "prepares to man the Dreadnaught's Main Cannon!",
+	warningNotice	= "Do to Rapid Fire & Blood Ritual targeting being hidden from combat log and unit aura by Blizzard, warnings for these spells have to rely on boss emotes sent privately to the targeted player and passed onto rest of the raid by that players boss mod. As such, warnings for these abilities rely on everyone running a boss mod to recieve alerts"
 })
 
 --------------------------
