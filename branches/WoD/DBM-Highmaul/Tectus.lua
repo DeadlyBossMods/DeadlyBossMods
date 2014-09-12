@@ -8,6 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5)
 
 mod:RegisterCombat("combat")
+mod:SetMinSyncTime(4)--Rise Mountain can occur pretty often.
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 162475 162968 162894 163312",

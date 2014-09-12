@@ -7566,7 +7566,7 @@ end
 function bossModPrototype:ReceiveSync(event, sender, revision, ...)
 	local spamId = self.id .. event .. strjoin("\t", ...)
 	local time = GetTime()
-	if (not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 8) and self.OnSync and (not (self.blockSyncs and sender)) and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
+	if (not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > self.SyncThreshold or 8) and self.OnSync and (not (self.blockSyncs and sender)) and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
 		modSyncSpam[spamId] = time
 		-- we have to use the sender as last argument for compatibility reasons (stupid old API...)
 		-- avoid table allocations for frequently used number of arguments
@@ -7594,6 +7594,10 @@ end
 
 function bossModPrototype:SetMinSyncRevision(revision)
 	self.minSyncRevision = revision
+end
+
+function bossModPrototype:SetMinSyncTime(time)
+	self.syncThreshold = time
 end
 
 function bossModPrototype:SetHotfixNoticeRev(revision)
