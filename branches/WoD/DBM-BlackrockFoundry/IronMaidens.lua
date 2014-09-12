@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 --TODO, find out how many bombardments there are so timer doesn't start after last one.
 --TODO, get longer log to verify all missing drycoded abilities.
 --Ship
-local warnShip							= mod:NewSpellAnnounce("ej10019", 3)
+local warnShip							= mod:NewSpellAnnounce("ej10019", 3, 76204)
 local warnBombardmentAlpha				= mod:NewSpellAnnounce(157854, 3)--From ship, but affects NON ship.
 local warnBombardmentOmega				= mod:NewSpellAnnounce(157886, 4)--From ship, but affects NON ship.
 local warnWarmingUp						= mod:NewCastAnnounce(158849, 3)--Could not verify
@@ -73,7 +73,7 @@ local yellPenetratingShot				= mod:NewYell(164271)
 local specWarnDeployTurret				= mod:NewSpecialWarningSpell(158599, nil, nil, nil, 2)
 ----Enforcer Sorka
 local specWarnBladeDash					= mod:NewSpecialWarningYou(155794)
-local specWarnBladeDashOther			= mod:NewSpecialWarningTarget(155794, false, nil, nil, 2)
+local specWarnBladeDashOther			= mod:NewSpecialWarningTarget(155794, nil, nil, nil, 2)
 local specWarnConvulsiveShadows			= mod:NewSpecialWarningMoveAway(156214)--Mythic
 local yellConvulsiveShadows				= mod:NewYell(156214)--Mythic
 local specWarnDarkHunt					= mod:NewSpecialWarningTarget(158315, false)--Healer may want this, or raid leader
@@ -86,7 +86,7 @@ local specWarnBloodsoakedHeartseeker	= mod:NewSpecialWarningYou(157950)
 local yellBloodsoakedHeartseeker		= mod:NewYell(157950)
 
 --Ship
-local timerShipCD						= mod:NewNextTimer(60, "ej10019")--Only know time for first one. not time between first and second.
+local timerShipCD						= mod:NewNextTimer(60, "ej10019", nil, nil, nil, 76204)--Only know time for first one. not time between first and second.
 local timerBombardmentAlphaCD			= mod:NewNextTimer(18, 157854)--How many times cast?
 local timerWarmingUp					= mod:NewCastTimer(90, 158849)--Could not verify
 ----Blackrock Deckhand
@@ -103,6 +103,20 @@ local timerBladeDashCD					= mod:NewNextTimer(20, 155794)
 local Marak = EJ_GetSectionInfo(10033)
 local Sorka = EJ_GetSectionInfo(10030)
 local Garan = EJ_GetSectionInfo(10025)
+
+local GetPlayerMapPosition = GetPlayerMapPosition
+local function isPlayerOnBoat()
+	local x, y = GetPlayerMapPosition("player")
+	if x == 0 and y == 0 then
+		SetMapToCurrentZone()
+		x, y = GetPlayerMapPosition("player")
+	end
+	if x >= 0.75 then
+		return false
+	else
+		return true
+	end
+end
 
 function mod:BladeDashTarget(targetname, uId)
 	warnBladeDash:Show(targetname)
@@ -126,20 +140,21 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 156683 then
+	local noFilter = not DBM.Options.DontShowFarWarnings
+	if spellId == 156683 and (noFilter or not isPlayerOnBoat()) then
 		warnIncendiaryDevice:Show()
 		specWarnIncendiaryDevice:Show()
-	elseif spellId == 158078 then--Blood Ritual. Still safest way to start timer, in case no sync
+	elseif spellId == 158078 and (noFilter or not isPlayerOnBoat()) then--Blood Ritual. Still safest way to start timer, in case no sync
 		timerBloodRitualCD:Start()
-	elseif spellId == 156626 then--Rapid Fire. Still safest way to start timer, in case no sync
+	elseif spellId == 156626 and (noFilter or not isPlayerOnBoat()) then--Rapid Fire. Still safest way to start timer, in case no sync
 		timerRapidFireCD:Start()
-	elseif spellId == 158599 then
+	elseif spellId == 158599 and (noFilter or not isPlayerOnBoat()) then
 		warnDeployTurret:Show()
 		specWarnDeployTurret:Show()
-	elseif spellId == 155794 then
+	elseif spellId == 155794 and (noFilter or not isPlayerOnBoat()) then
 		self:BossTargetScanner(77231, "BladeDashTarget", 0.1, 16)
 		timerBladeDashCD:Start()
-	elseif spellId == 156366 then
+	elseif spellId == 156366 and (noFilter or not isPlayerOnBoat()) then
 		warnWhirlOfBlood:Show()
 		specWarnWhirlOfBlood:Show()
 	--Begin Deck Abilities
@@ -147,6 +162,7 @@ function mod:SPELL_CAST_START(args)
 		warnWarmingUp:Show()
 		specWarnWarmingUp:Show()
 		timerWarmingUp:Start()
+	if (noFilter or not isPlayerOnBoat()) then return end--Anything below this line doesn't concern people not on boat
 	elseif spellId == 158695 then
 		warnGrapeshotBlast:Show()
 	elseif spellId == 158708 then
@@ -164,46 +180,48 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 157854 then
+	local noFilter = not DBM.Options.DontShowFarWarnings
+	if spellId == 157854 and (noFilter or not isPlayerOnBoat()) then
 		warnBombardmentAlpha:Show()
 		specWarnBombardmentAlpha:Show()
 		timerBombardmentAlphaCD:Start()
-	elseif spellId == 157886 then
+	elseif spellId == 157886 and (noFilter or not isPlayerOnBoat()) then
 		warnBombardmentOmega:Show()
 		specWarnBombardmentOmega:Show()
 	--Begin Deck Abilities
-	elseif spellId == 158701 then
+	elseif spellId == 158701 and (noFilter or isPlayerOnBoat()) then
 		warnCallforReinforcements:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 164271 then
+	local noFilter = not DBM.Options.DontShowFarWarnings
+	if spellId == 164271 and (noFilter or not isPlayerOnBoat()) then
 		warnPenetratingShot:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnPenetratingShot:Show()
 			yellPenetratingShot:Yell()
 		end
-	elseif spellId == 156214 then
+	elseif spellId == 156214 and (noFilter or not isPlayerOnBoat()) then
 		warnConvulsiveShadows:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnConvulsiveShadows:Show()
 			yellConvulsiveShadows:Yell()
 		end
-	elseif spellId == 156007 then
+	elseif spellId == 156007 and (noFilter or not isPlayerOnBoat()) then
 		warnImpale:Show(args.destName)
-	elseif spellId == 158315 then
+	elseif spellId == 158315 and (noFilter or not isPlayerOnBoat()) then
 		warnDarkHunt:Show(args.destName)
 		specWarnDarkHunt:Show()
-	elseif spellId == 157950 then
+	elseif spellId == 157950 and (noFilter or not isPlayerOnBoat()) then
 		warnBloodsoakedHeartseeker:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnBloodsoakedHeartseeker:Show()
 			yellBloodsoakedHeartseeker:Yell()
 		end
 	--Begin Deck Abilities
-	elseif spellId == 158702 then
+	elseif spellId == 158702 and (noFilter or isPlayerOnBoat()) then
 		warnFixate:Show(args.destName)
 		if args:IsPlayer() and self:AntiSpam(3, 1) then--it spams sometimes
 			specWarnFixate:Show()
@@ -240,6 +258,7 @@ end
 
 function mod:OnSync(msg, guid)
 	if not self:IsInCombat() then return end
+	if (not DBM.Options.DontShowFarWarnings or isPlayerOnBoat()) then return end--Anything below this line doesn't concern people on boat
 	if msg == "BloodRitualTarget" and guid then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		warnBloodRitual:Show(targetName)
