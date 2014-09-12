@@ -129,17 +129,18 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
+--[[
+--TODO, add tiger spawning warning here
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
---	CheckBosses()
 	self:Unschedule(CheckBosses)
 	self:Schedule(1, CheckBosses)--Delay check to make sure we run function only once on pull
-end
+end--]]
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	--Only fires for one thing, so no reason to localize
 	if self:IsMythic() then
 		timerTigerCD:Start()
 	else
-		timerCrowdCD:Start(61-delay)--TODO, see if this changed on normal/LFR/Herioc too. on mythic this no longer existed.
+		timerCrowdCD:Start(61)--TODO, see if this changed on normal/LFR/Herioc too. on mythic this no longer existed.
 	end
 end
