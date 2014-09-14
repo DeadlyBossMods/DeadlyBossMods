@@ -168,7 +168,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnVolatileFire:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specVolatileFire:Show()
-			if not self:IsDifficulty("lfr25") then
+			if not self:IsLFR() then
 				yellVolatileFire:Yell()
 			end
 			if self.Options.RangeFrame then

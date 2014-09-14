@@ -96,7 +96,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnCrystallineBarrage:Show()
 		end
-	elseif spellId == 162674 and self.Options.SetIconOnMote and not self:IsDifficulty("lfr") then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
+	elseif spellId == 162674 and self.Options.SetIconOnMote and not self:IsLFR() then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
 		self:ScanForMobs(args.destGUID, 0, 8, 4, 0.05, 15)
 	end
 end

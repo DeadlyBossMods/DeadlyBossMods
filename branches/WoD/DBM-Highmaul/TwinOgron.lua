@@ -81,7 +81,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerArcaneVolatilityCD:Start(65-delay)
 	end
-	if not self:IsDifficulty("lfr25") then
+	if not self:IsLFR() then
 		berserkTimer:Start(-delay)
 	end
 end

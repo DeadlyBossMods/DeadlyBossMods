@@ -5223,6 +5223,14 @@ function bossModPrototype:IsDifficulty(...)
 	return false
 end
 
+function bossModPrototype:IsLFR()
+	local diff = DBM:GetCurrentInstanceDifficulty()
+	if diff == "lfr" or diff == "lfr25" then
+		return true
+	end
+	return false
+end
+
 function bossModPrototype:IsHeroic()
 	local diff = DBM:GetCurrentInstanceDifficulty()
 	if diff == "heroic" or diff == "heroic5" or diff == "heroic10" or diff == "heroic25" then

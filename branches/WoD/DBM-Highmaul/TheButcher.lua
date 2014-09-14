@@ -61,7 +61,7 @@ function mod:OnCombatStart(delay)
 			"SPELL_PERIODIC_DAMAGE 163046",
 			"SPELL_PERIODIC_MISSED 163046"
 		)
-	elseif self:IsDifficulty("lfr25") then
+	elseif self:IsLFR() then
 		--Find LFR berserk
 	else
 		berserkTimer:Start(-delay)
