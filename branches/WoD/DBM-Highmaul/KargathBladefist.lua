@@ -41,9 +41,13 @@ local specWarnOnTheHunt				= mod:NewSpecialWarningMoveTo(162497, nil, DBM_CORE_A
 local timerPillarCD					= mod:NewNextTimer(20, "ej9394", nil, nil, nil, 159202)
 local timerChainHurlCD				= mod:NewNextTimer(106, 159947)
 local timerBerserkerRushCD			= mod:NewCDTimer(45, 158986)--45 to 70 variation. Small indication that you can use a sequence to get it a little more accurate but even then it's variable. Pull1: 48, 60, 46, 70, 45, 51, 46, 70. Pull2: 48, 60, 50, 55, 45. Mythic pull1, 48, 50, 57, 49
-local timerImpaleCD					= mod:NewCDTimer(35, 159113, nil, mod:IsTank())--35 to 53.7 variation
+local timerImpaleCD					= mod:NewCDTimer(35, 159113, nil, mod:IsTank())--Dead on unless delayed by a fixate
 local timerCrowdCD					= mod:NewTimer(94, "timerCrowdCD", 159410)
-local timerTigerCD					= mod:NewNextTimer(110, "ej9396", nil, nil, nil, 162497)
+local timerTigerCD					= mod:NewNextTimer(110, "ej9396", nil, not mod:IsTank(), nil, 162497)
+
+local countdownChainHurl			= mod:NewCountdown(106, 159947)
+local countdownTiger				= mod:NewCountdown("Alt110", "ej9396", not mod:IsTank())--Tigers never bother tanks so not tanks probelm
+local countdownImpale				= mod:NewCountdown("Alt35", 159113, mod:IsTank())--Dead on unless delayed by a fixate
 
 mod:AddRangeFrameOption(4, 159386)
 
@@ -52,13 +56,16 @@ local firePillar = EJ_GetSectionInfo(9394)
 function mod:OnCombatStart(delay)
 	timerPillarCD:Start(24-delay)
 	timerImpaleCD:Start(-delay)
+	countdownImpale:Start(35-delay)
 	timerBerserkerRushCD:Start(48-delay)
 	timerChainHurlCD:Start(91-delay)
+	countdownChainHurl:Start(91-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(4)--For Mauling Brew splash damage.
 	end
 	if self:IsMythic() then
 		timerTigerCD:Start()
+		countdownTiger:Start()
 	else
 		timerCrowdCD:Start(61-delay)--TODO, see if this changed on normal/LFR/Herioc too. on mythic this no longer existed.
 	end
@@ -76,9 +83,11 @@ function mod:SPELL_CAST_START(args)
 		warnImpale:Show()
 		specWarnImpale:Show()
 		timerImpaleCD:Start()
+		countdownImpale:Start()
 	elseif spellId == 159947 then
 		specWarnChainHurl:Show()
 		timerChainHurlCD:Start()
+		countdownChainHurl:Start()
 	end
 end
 
@@ -140,6 +149,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	--Only fires for one thing, so no reason to localize
 	if self:IsMythic() then
 		timerTigerCD:Start()
+		countdownTiger:Start()
 	else
 		timerCrowdCD:Start(61)--TODO, see if this changed on normal/LFR/Herioc too. on mythic this no longer existed.
 	end

@@ -48,6 +48,9 @@ local timerCalloftheMountain		= mod:NewCastTimer(5, 158217)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
+local countdownThunderingBlows		= mod:NewCountdown(60, 157054)
+local countdownTremblingEarth		= mod:NewCountdownFades("Alt25", 173917)
+
 mod.vb.mountainCast = 0
 
 function mod:OnCombatStart(delay)
@@ -65,6 +68,7 @@ function mod:SPELL_CAST_START(args)
 		warnGraspingEarth:Show()
 		specWarnGraspingEarth:Show()
 		timerThunderingBlowsCD:Start()
+		countdownThunderingBlows:Start()
 		timerSlamCD:Cancel()--Can't cast slam during this
 		timerRipplingSmashCD:Cancel()--Or rippling
 		timerWarpedArmorCD:Cancel()
@@ -124,6 +128,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTremblingEarth:Show()
 		specWarnTremblingEarth:Show()
 		timerTremblingEarth:Start()
+		countdownTremblingEarth:Start()
 		timerSlamCD:Cancel()--Can't cast slam during this
 		timerRipplingSmashCD:Cancel()--Or rippling
 		timerWarpedArmorCD:Cancel()

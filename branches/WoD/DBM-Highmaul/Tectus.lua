@@ -44,6 +44,8 @@ local timerBerserkerCD				= mod:NewNextTimer(41, "ej10062", nil, nil, nil, 16331
 local timerGiftOfEarthCD			= mod:NewCDTimer(10.5, 162894, nil, mod:IsMelee())--10.5 but obviously delayed if stuns were used.
 local timerEarthenFlechettesCD		= mod:NewCDTimer(14, 162968, nil, mod:IsMelee())--14 but obviously delayed if stuns were used. Also tends to be recast immediately if stun interrupted
 
+local countdownEarthwarper			= mod:NewCountdown(41, "ej10061", mod:IsMelee())
+
 mod:AddSetIconOption("SetIconOnEarthwarper", "ej10061", true, true)
 mod:AddSetIconOption("SetIconOnMote", "ej10083", false, true)--This more or less assumes the 4 at a time strat. if you unleash 8 it will fail. Although any guild unleashing 8 is probably doing it wrong (minus LFR)
 
@@ -56,6 +58,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(earthDuders)
 	self.vb.EarthwarperAlive = 0
 	timerEarthwarperCD:Start(11-delay)
+	countdownEarthwarper:Start(11-delay)
 	timerBerserkerCD:Start(21-delay)
 end
 
@@ -112,6 +115,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 140562 then--Break Player Targetting (cast when tectus splits)
 		timerEarthwarperCD:Cancel()
+		countdownEarthwarper:Cancel()
 		timerBerserkerCD:Cancel()
 	end
 end
@@ -126,6 +130,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
 		timerGiftOfEarthCD:Start(10)
 		timerEarthenFlechettesCD:Start(15)
 		timerEarthwarperCD:Start()
+		countdownEarthwarper:Start()
 		if self.Options.SetIconOnEarthwarper and self.vb.EarthwarperAlive < 9 then--Support for marking up to 8 mobs (you're group is terrible)
 			self:ScanForMobs(80599, 2, 9-self.vb.EarthwarperAlive, 1, 0.1, 15, "SetIconOnEarthwarper")
 		end

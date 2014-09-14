@@ -40,6 +40,8 @@ local timerBoundingCleave			= mod:NewCastTimer(15, 156160)
 
 local berserkTimer					= mod:NewBerserkTimer(300)
 
+local countdownBoundingCleave		= mod:NewCountdown(60, 156160)
+
 mod.vb.cleaveCount = 0
 mod.vb.boundingCleave = 0
 mod.vb.isFrenzied = false
@@ -52,6 +54,7 @@ function mod:OnCombatStart(delay)
 	timerCleaveCD:Start(10-delay)--Verify this wasn't caused by cleave bug.
 	timerCleaverCD:Start(12-delay)
 	timerBoundingCleaveCD:Start(-delay)
+	countdownBoundingCleave:Start(-delay)
 	if self:IsMythic() then
 		berserkTimer:Start(240-delay)
 		self:RegisterShortTermEvents(
@@ -130,6 +133,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local bossPower = UnitPower("boss1")
 		local bossProgress = bossPower * 3.33--Under frenzy he gains energy twice as fast. So about 3.33 energy per seocnd, 30 seconds to full power.
 		timerBoundingCleave:Update(bossProgress, 30, self.vb.boundingCleave+1)--Will bar update work correctly on a count bar? Looking at code I don't think it will, it doesn't accept/pass on extra args in Update call.
+		countdownBoundingCleave:Cancel()
+		countdownBoundingCleave:Start(30-bossProgress)
 	end
 end
 
@@ -152,9 +157,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self.vb.isFrenzied then
 			timerBoundingCleave:Start(5)
 			timerBoundingCleaveCD:Start(30, self.vb.boundingCleave+1)
+			countdownBoundingCleave:Start(30)
 		else
 			timerBoundingCleave:Start(9)
 			timerBoundingCleaveCD:Start(nil, self.vb.boundingCleave+1)
+			countdownBoundingCleave:Start(60)
 		end
 	end
 end

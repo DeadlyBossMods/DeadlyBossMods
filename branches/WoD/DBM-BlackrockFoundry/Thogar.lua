@@ -49,6 +49,8 @@ local timerTrainCD					= mod:NewNextCountTimer(15, 176312)
 --local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140)
 local timerIronbellowCD				= mod:NewCDTimer(12, 163753)
 
+local countdownTrain				= mod:NewCountdown(15, 176312)
+
 mod.vb.trainCount = 0
 local Train = GetSpellInfo(174806)
 local Cannon = GetSpellInfo(62357)
@@ -84,7 +86,8 @@ function mod:OnCombatStart(delay)
 		self.Options.ShowedThogarMessage = true
 	end
 	if self:IsMythic() then
-		timerTrainCD:Start(7, 1)
+		timerTrainCD:Start(7-delay, 1)
+		countdownTrain:Start(7-delay)
 	else
 		--timerTrainCD:Start()
 	end
@@ -157,10 +160,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			end
 			if count == 1 or count == 2 or count == 6 or count == 7 then
 				timerTrainCD:Start(5, count+1)
+				countdownTrain:Start(5)
 			elseif count == 9 then
 				timerTrainCD:Start(20, count+1)
+				countdownTrain:Start(20)
 			else
 				timerTrainCD:Start(15, count+1)
+				countdownTrain:Start(15)
 			end
 			if count == 1 then--I'm sure they spawn again sometime later, find that data
 				specWarnManOArms:Show()

@@ -85,6 +85,9 @@ local timerForceNovaCD							= mod:NewCDTimer(45, 157349)--45-52
 local timerSummonArcaneAberrationCD				= mod:NewCDTimer(45, 156471)--45-52 Variation Noted
 local timerTransition							= mod:NewCastTimer(60, 157278)
 
+--local countdownChainHurl						= mod:NewCountdown(106, 159947)--Probably will add for whatever proves most dangerous on mythic
+local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank())
+
 mod:AddRangeFrameOption("35/5")
 
 local chaosDebuff1 = GetSpellInfo(158605)
@@ -106,6 +109,7 @@ function mod:OnCombatStart(delay)
 	timerDestructiveResonanceCD:Start(15-delay)
 	timerSummonArcaneAberrationCD:Start(25-delay)
 	timerMarkOfChaosCD:Start(35-delay)
+	countdownMarkofChaos:Start(35-delay)
 	timerForceNovaCD:Start(-delay)
 end
 
@@ -182,6 +186,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnKickToTheFace:Show()
 	elseif args:IsSpellID(158605, 164176, 164178, 164191) then--Start timer on success because APPLIED can miss DKS (stupid AMS)
 		timerMarkOfChaosCD:Start()
+		countdownMarkofChaos:Start()
 	end
 end
 
@@ -269,6 +274,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerDestructiveResonanceCD:Cancel()
 		timerSummonArcaneAberrationCD:Cancel()
 		timerMarkOfChaosCD:Cancel()
+		countdownMarkofChaos:Cancel()
 		timerForceNovaCD:Cancel()
 		timerTransition:Start(68)--May need adjusting, I don't have a log that went this far.
 		--TODO, get end event, and start new timers

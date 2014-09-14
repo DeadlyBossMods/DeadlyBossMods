@@ -58,6 +58,9 @@ local timerRejuvMushroomCD			= mod:NewCDTimer(145, 160021)
 --local timerExplodingFungusCD		= mod:NewCDTimer(32, 163794)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 local timerWavesCD					= mod:NewCDTimer(33, 160425)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 
+local countdownInfestingSpores		= mod:NewCountdown(57, 159996)
+local countdownFungalFleshEater		= mod:NewCountdown("Alt120", "ej9995")
+
 mod:AddRangeFrameOption(8, 160254, false)
 
 mod.vb.sporesAlive = 0
@@ -69,7 +72,9 @@ function mod:OnCombatStart(delay)
 	timerSporeShooterCD:Start(23-delay)--23-26
 	timerNecroticBreathCD:Start(-delay)
 	timerFungalFleshEaterCD:Start(34-delay)
+	countdownFungalFleshEater:Start(34-delay)
 	timerInfestingSporesCD:Start(49-delay)
+	countdownInfestingSpores:Start(49-delay)
 	timerRejuvMushroomCD:Start(75-delay)
 end
 
@@ -85,6 +90,7 @@ function mod:SPELL_CAST_START(args)
 		warnInfestingSpores:Show()
 		specWarnInfestingSpores:Show()
 		timerInfestingSporesCD:Start()
+		countdownInfestingSpores:Start()
 	elseif spellId == 160013 then
 		warnDecay:Show()
 		specWarnDecay:Show(args.sourceName)
@@ -148,6 +154,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnFungalFlesheater:Show()
 		specWarnFungalFlesheater:Show()
 		timerFungalFleshEaterCD:Start()
+		countdownFungalFleshEater:Start()
 	elseif spellId == 160022 then
 		warnLivingMushroom:Show()
 		timerLivingMushroomCD:Start()

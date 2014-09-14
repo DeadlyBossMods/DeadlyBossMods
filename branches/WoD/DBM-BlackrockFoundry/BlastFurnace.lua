@@ -12,9 +12,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 155186 156937 177756",
 	"SPELL_CAST_SUCCESS 160382 155179 174726",
-	"SPELL_AURA_APPLIED 155192 155196 158345 155242 155181 156932",
+	"SPELL_AURA_APPLIED 155192 155196 158345 155242 155181 156932 176121",
 	"SPELL_AURA_APPLIED_DOSE 155242",
-	"SPELL_AURA_REMOVED 155192",
+	"SPELL_AURA_REMOVED 155192 176121",
 	"SPELL_PERIODIC_DAMAGE 156932 155223",
 	"SPELL_PERIODIC_MISSED 156932 155223",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",--Regulators, operators and boss up at once, all 5 boss used.
@@ -32,6 +32,7 @@ local warnRupture				= mod:NewTargetAnnounce(156932, 3)
 local warnCauterizeWounds		= mod:NewCastAnnounce(155186, 4, nil, nil, not mod:IsHealer())
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnPryclasm				= mod:NewCastAnnounce(156937, 3, nil, nil, false)
+local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4)
 local warnShieldsDown			= mod:NewSpellAnnounce(158345, 1, nil, mod:IsDps())
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, mod:IsTank())
 
@@ -46,6 +47,8 @@ local specWarnFixate			= mod:NewSpecialWarningYou(155196)
 local specWarnMelt				= mod:NewSpecialWarningMove(155223)
 local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, not mod:IsHealer())--if spammy, will switch to target/focus type only
 local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
+local specVolatileFire			= mod:NewSpecialWarningMoveAway(176121)
+local yellVolatileFire			= mod:NewYell(176121)
 local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", mod:IsDps())
 local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3)
 local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242)
@@ -57,6 +60,11 @@ local timerEngineer				= mod:NewNextTimer(45, "ej9649", nil, nil, nil, 155179)
 local timerBellowsOperator		= mod:NewNextTimer(60, "ej9655", nil, nil, nil, 155181)
 local timerShieldsDown			= mod:NewBuffActiveTimer(25, 158345, nil, mod:IsDps())--Anyone else need?
 
+local countdownBellowsOperator	= mod:NewCountdown(60, "ej9650")
+local countdownEngineer			= mod:NewCountdown("Alt45", "ej9649")
+
+mod:AddRangeFrameOption(8, 176121)
+
 local UnitPower = UnitPower
 
 --I was pretty bad at doing /yell adds in my chat log so this may not be perfect.
@@ -64,6 +72,7 @@ local UnitPower = UnitPower
 --Todo, verify and improve. Putting timer in to catch it if wrong faster, but adding warnings only after it's right.
 local function Adds()
 	timerEngineer:Start()
+	countdownEngineer:Start()
 	mod:Schedule(45, Adds)
 end
 
@@ -71,11 +80,14 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		self:Schedule(45, Adds)
 		timerEngineer:Start()
+		countdownEngineer:Start()
 		if self:AntiSpam(10, 0) then--Force this antispam on pull so first two adds "loading" doesn't start 60 second timer
 			timerBellowsOperator:Start(55-delay)
+			countdownBellowsOperator:Start(55-delay)
 		end
 	else
 		timerBellowsOperator:Start(20-delay)
+		countdownBellowsOperator:Start(20-delay)
 	end
 	timerBlastCD:Start(25-delay)
 end
@@ -146,10 +158,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBellowsOperator:Show()
 		specWarnBellowsOperator:Show()
 		timerBellowsOperator:Start()
+		countdownBellowsOperator:Start()
 	elseif spellId == 156932 then
 		warnRupture:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnRuptureOn:Show()
+		end
+	elseif spellId == 176121 then
+		warnVolatileFire:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specVolatileFire:Show()
+			if not self:IsDifficulty("lfr25") then
+				yellVolatileFire:Yell()
+			end
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(8)
+			end
 		end
 	end
 end
@@ -159,6 +183,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 155192 and args:IsPlayer() then
 		timerBomb:Cancel()
+	elseif spellId == 176121 and args:IsPlayer() and self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 
@@ -174,7 +200,10 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 160823 then--Bust Loose. Not the earliest event but cleanest. IEEU can be used if want to warn 1.5 seconds earlier but it's far uglier code wise.
 		self:Unschedule(Adds)
+		timerEngineer:Cancel()
+		countdownEngineer:Cancel()
 		timerBellowsOperator:Cancel()
+		countdownBellowsOperator:Cancel()
 	end
 end
 
