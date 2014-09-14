@@ -1439,10 +1439,6 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:AddMsg(DBM_CORE_LAG_CHECKING)
 		DBM:Schedule(5, function() DBM:ShowLag() end)
 	elseif cmd:sub(1, 5) == "arrow" then
-		if not IsInRaid() then
-			DBM:AddMsg(DBM_ARROW_NO_RAIDGROUP)
-			return false
-		end
 		local x, y = string.split(" ", cmd:sub(6):trim())
 		local xNum, yNum = tonumber(x or ""), tonumber(y or "")
 		local success
