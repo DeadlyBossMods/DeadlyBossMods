@@ -11,13 +11,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 155186 156937 177756",
-	"SPELL_CAST_SUCCESS 160382 155179 174726",
-	"SPELL_AURA_APPLIED 155192 155196 158345 155242 155181 156932 176121",
+	"SPELL_CAST_SUCCESS 160382 155179 174726 156932",
+	"SPELL_AURA_APPLIED 155192 155196 158345 155242 155181 176121",
 	"SPELL_AURA_APPLIED_DOSE 155242",
 	"SPELL_AURA_REMOVED 155192 176121",
 	"SPELL_PERIODIC_DAMAGE 156932 155223",
 	"SPELL_PERIODIC_MISSED 156932 155223",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",--Regulators, operators and boss up at once, all 5 boss used.
+	"UNIT_DIED",
 	"UNIT_POWER_FREQUENT boss1"
 )
 
@@ -28,12 +28,13 @@ local warnDeafeningRoar			= mod:NewSpellAnnounce(177756, 3, nil, mod:IsTank())
 local warnDefense				= mod:NewSpellAnnounce(160382, 2, nil, mod:IsTank())
 local warnRepair				= mod:NewCastAnnounce(155179, 4, nil, nil, not mod:IsHealer())
 local warnDropBombs				= mod:NewSpellAnnounce(174726, 1)
-local warnRupture				= mod:NewTargetAnnounce(156932, 3)
+local warnRupture				= mod:NewTargetAnnounce(156932, 3)--Uses SPELL_CAST_SUCCESS because blizzard is dumb and debuff apply and standing in fire apply same spellid, only way to report ONLY debuff is use SUCCESS
 local warnCauterizeWounds		= mod:NewCastAnnounce(155186, 4, nil, nil, not mod:IsHealer())
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnPryclasm				= mod:NewCastAnnounce(156937, 3, nil, nil, false)
 local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4)
 local warnShieldsDown			= mod:NewSpellAnnounce(158345, 1, nil, mod:IsDps())
+local warnHeartoftheMountain	= mod:NewSpellAnnounce("ej9641", 3, 2894)
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, mod:IsTank())
 
 local specWarnBomb				= mod:NewSpecialWarningYou(155192, nil, nil, nil, 3)
@@ -50,6 +51,7 @@ local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
 local specVolatileFire			= mod:NewSpecialWarningMoveAway(176121)
 local yellVolatileFire			= mod:NewYell(176121)
 local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", mod:IsDps())
+local specWarnHeartoftheMountain= mod:NewSpecialWarningSwitch("ej9641", mod:IsTank())
 local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3)
 local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242)
 local specWarnBlast				= mod:NewSpecialWarningSpell(155209, nil, nil, nil, 2)
@@ -65,7 +67,10 @@ local countdownEngineer			= mod:NewCountdown("Alt45", "ej9649")
 
 mod:AddRangeFrameOption(8, 176121)
 
-local UnitPower = UnitPower
+mod.vb.machinesDead = 0
+mod.vb.elementalistsDead = 0
+local UnitPower, UnitBuff = UnitPower, UnitBuff
+local dkAMS = GetSpellInfo(48707)
 
 --I was pretty bad at doing /yell adds in my chat log so this may not be perfect.
 --It may not be 45 at all. Or at least first may not be 45 so rest will be off by a couple sec.
@@ -77,17 +82,14 @@ local function Adds()
 end
 
 function mod:OnCombatStart(delay)
-	if self:IsMythic() then
-		self:Schedule(45, Adds)
-		timerEngineer:Start()
-		countdownEngineer:Start()
-		if self:AntiSpam(10, 0) then--Force this antispam on pull so first two adds "loading" doesn't start 60 second timer
-			timerBellowsOperator:Start(55-delay)
-			countdownBellowsOperator:Start(55-delay)
-		end
-	else
-		timerBellowsOperator:Start(20-delay)
-		countdownBellowsOperator:Start(20-delay)
+	self.vb.machinesDead = 0
+	self.vb.elementalistsDead = 0
+	self:Schedule(45, Adds)
+	timerEngineer:Start()
+	countdownEngineer:Start()
+	if self:AntiSpam(10, 0) then--Force this antispam on pull so first two adds "loading" doesn't start 60 second timer
+		timerBellowsOperator:Start(55-delay)
+		countdownBellowsOperator:Start(55-delay)
 	end
 	timerBlastCD:Start(25-delay)
 end
@@ -120,6 +122,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnRepair:Show(args.sourceName)
 	elseif spellId == 174726 and self:CheckTankDistance(args.sourceGUID, 30) then
 		warnDropBombs:Show()
+	elseif spellId == 156932 then
+		warnRupture:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() and not UnitBuff("player", dkAMS) then--Because forced to use SUCCESS, extra check to avoid giving death knight a warning if they blocked it with AMS
+			specWarnRuptureOn:Show()
+		end
 	end
 end
 
@@ -159,11 +166,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnBellowsOperator:Show()
 		timerBellowsOperator:Start()
 		countdownBellowsOperator:Start()
-	elseif spellId == 156932 then
-		warnRupture:CombinedShow(0.5, args.destName)
-		if args:IsPlayer() then
-			specWarnRuptureOn:Show()
-		end
 	elseif spellId == 176121 then
 		warnVolatileFire:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
@@ -197,13 +199,23 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 160823 then--Bust Loose. Not the earliest event but cleanest. IEEU can be used if want to warn 1.5 seconds earlier but it's far uglier code wise.
-		self:Unschedule(Adds)
-		timerEngineer:Cancel()
-		countdownEngineer:Cancel()
-		timerBellowsOperator:Cancel()
-		countdownBellowsOperator:Cancel()
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 76815 then--Elementalist
+		self.vb.elementalistsDead = self.vb.elementalistsDead + 1
+		if self.vb.elementalistsDead == 4 then
+			warnHeartoftheMountain:Show()
+			specWarnHeartoftheMountain:Show()
+		end
+	elseif cid == 76808 then--Regulators
+		self.vb.machinesDead = self.vb.machinesDead + 1
+		if self.vb.machinesDead == 2 then
+			self:Unschedule(Adds)
+			timerEngineer:Cancel()
+			countdownEngineer:Cancel()
+			timerBellowsOperator:Cancel()
+			countdownBellowsOperator:Cancel()	
+		end
 	end
 end
 
