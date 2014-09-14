@@ -58,7 +58,6 @@ local options
 local setupHandlers
 local applyFailed = false
 local totalBars = 0
-local defaultSkinAddonID = 0
 local function stringFromTimer(t)
 	if t <= 60 then
 		return ("%.1f"):format(t)
@@ -349,7 +348,7 @@ do
 			DBM:Schedule(3, delaySkinCheck, self)
 			return
 		end
-		local enabled = GetAddOnEnableState(UnitName("player"), defaultSkinAddonID)
+		local enabled = GetAddOnEnableState(UnitName("player"), "DBM-DefaultSkin")
 		if enabled ~= 0 and skins[self.options.Skin].loaded == nil then
 			-- The currently set skin is no longer loaded, revert to DefaultSkin. If enabled (else, person wants textureless bar on purpose)
 			self:SetSkin("DefaultSkin")
@@ -1022,9 +1021,6 @@ do
 		if GetAddOnMetadata(i, "X-DBM-Timer-Skin") then
 			-- load basic skin data
 			local id = GetAddOnInfo(i)
-			if id == "DBM-DefaultSkin" then
-				defaultSkinAddonID = i
-			end
 			if id:sub(0, 4) == "DBM-" then
 				id = id:sub(5)
 			end

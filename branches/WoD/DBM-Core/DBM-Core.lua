@@ -270,7 +270,6 @@ local bossuIdFound = false
 local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
 local worldBossNames = {}
-local addonIndexTable = {}
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -899,9 +898,6 @@ do
 			for i = 1, GetNumAddOns() do
 				local addonName = GetAddOnInfo(i)
 				local enabled = GetAddOnEnableState(playerName, i)
-				if addonName:find("DBM") then
-					addonIndexTable[addonName] = i
-				end
 				if GetAddOnMetadata(i, "X-DBM-Mod") and enabled ~= 0 then
 					if checkEntry(bannedMods, addonName) then
 						DBM:AddMsg("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
@@ -1775,7 +1771,7 @@ do
 				self:AddMsg(DBM_CORE_LOAD_GUI_COMBAT)
 				return
 			end
-			local enabled = GetAddOnEnableState(playerName, addonIndexTable["DBM-GUI"])
+			local enabled = GetAddOnEnableState(playerName, "DBM-GUI")
 			if enabled == 0 then
 				EnableAddOn("DBM-GUI")
 			end
@@ -2574,7 +2570,7 @@ do
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
 		for i, v in ipairs(DBM.AddOns) do
 			local modTable = v[checkTable]
-			local enabled = GetAddOnEnableState(playerName, addonIndexTable[v.modId])
+			local enabled = GetAddOnEnableState(playerName, v.modId)
 			if enabled ~= 0 and not IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
 				self:LoadMod(v)
 			end
@@ -2700,7 +2696,7 @@ local function loadModByUnit(uId)
 	if guid and DBM:IsCreatureGUID(guid) then
 		local cId = DBM:GetCIDFromGUID(guid)
 		for bosscId, addon in pairs(loadcIds) do
-			local enabled = GetAddOnEnableState(playerName, addonIndexTable[addon])
+			local enabled = GetAddOnEnableState(playerName, addon)
 			if cId and bosscId and cId == bosscId and not IsAddOnLoaded(addon) and enabled ~= 0 then
 				for i, v in ipairs(DBM.AddOns) do
 					if v.modId == addon then
