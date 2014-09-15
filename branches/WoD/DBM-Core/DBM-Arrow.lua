@@ -199,7 +199,7 @@ local function MapToWorldCoords(x, y)
 	return x, y
 end
 
-local function show(runAway, x, y, distance, time, world)
+local function show(runAway, x, y, distance, time, legacy)
 	local player
 	if type(x) == "string" then
 		player, hideDistance, hideTime = x, y, hideDistance
@@ -217,7 +217,7 @@ local function show(runAway, x, y, distance, time, world)
 		targetPlayer = player
 	else
 		targetType = "fixed"
-		if not world and x >= 0 and x <= 100 and y >= 0 and y <= 100 then
+		if legacy and x >= 0 and x <= 100 and y >= 0 and y <= 100 then
 			x, y = MapToWorldCoords(x, y)
 		end
 		targetX, targetY = x, y

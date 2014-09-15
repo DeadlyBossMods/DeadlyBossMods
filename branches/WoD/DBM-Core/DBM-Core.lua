@@ -53,7 +53,7 @@
 DBM = {
 	Revision = tonumber(("$Revision$"):sub(12, -3)),
 	DisplayVersion = "6.0.0 alpha", -- the string that is shown as version
-	ReleaseRevision = 11651 -- the revision of the latest stable version that is available
+	ReleaseRevision = 11653 -- the revision of the latest stable version that is available
 }
 
 -- Legacy crap; that stupid "Version" field was never a good idea.
@@ -1459,7 +1459,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 				DBM.Arrow:ShowRunTo("focus")
 				success = true
 			elseif subCmd:upper() == "MAP" then
-				DBM.Arrow:ShowRunTo(yNum, zNum, 0, nil, false)
+				DBM.Arrow:ShowRunTo(yNum, zNum, 0, nil, true)
 				success = true
 			elseif DBM:GetRaidUnitId(subCmd) then
 				DBM.Arrow:ShowRunTo(subCmd)
