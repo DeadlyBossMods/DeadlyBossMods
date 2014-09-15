@@ -229,7 +229,6 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "特别警报"
 DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "此区域不支持%d码的距离检查。\n已支持的距离有10，11，15及28码。"
 
 DBM_ARROW_MOVABLE				= "可移动箭头"
-DBM_ARROW_NO_RAIDGROUP			= "此功能仅适用于副本中的团队。"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 可用命令：",
 	"/dbm arrow <x> <y>  新建一个箭头在指定位置(0 < x/y < 100)",
