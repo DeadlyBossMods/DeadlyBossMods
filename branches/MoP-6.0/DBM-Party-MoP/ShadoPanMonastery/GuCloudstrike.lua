@@ -55,12 +55,7 @@ function mod:StaticFieldTarget(targetname, uId)
 			yellStaticField:Yell()
 		else
 			if uId then
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-					SetMapToCurrentZone()
-					x, y = GetPlayerMapPosition(uId)
-				end
-				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+				local inRange = DBM.RangeCheck:GetDistance("player", uId)
 				if inRange and inRange < 6 then
 					specWarnStaticFieldNear:Show(targetname)
 				end

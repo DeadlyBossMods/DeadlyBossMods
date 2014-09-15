@@ -181,7 +181,7 @@ function mod:DesecrateTarget(targetname, uId)
 	elseif self.vb.phase ~= 1 and self:CheckNearby(20, targetname) then
 		specWarnDesecrateNear:Show(targetname)
 		if self.Options.ShowDesecrateArrow then
-			local x, y = GetPlayerMapPosition(targetname)--Map should already be correct from CheckNearby so don't need to do SetMapToCurrentZone
+			local x, y = UnitPosition(uId)
 			DBM.Arrow:ShowRunAway(x, y, 15, 5)--Maybe adjust arrow run range from 15 to 20
 		end
 	else

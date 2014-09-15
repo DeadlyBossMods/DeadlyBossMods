@@ -92,13 +92,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 122761 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if not uId then return end
-		local x, y = GetPlayerMapPosition(uId)
-		if x == 0 and y == 0 then
-			SetMapToCurrentZone()
-			x, y = GetPlayerMapPosition(uId)
-		end
-		local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-		if (inRange and inRange < 40) or (x == 0 and y == 0) then--Only show exhale warning if the target is near you (ie on same platform as you). Otherwise, we ignore it since we are likely with the echo somewhere else and this doesn't concern us
+		local inRange = DBM.RangeCheck:GetDistance("player", uId)
+		if (inRange and inRange < 40) then--Only show exhale warning if the target is near you (ie on same platform as you). Otherwise, we ignore it since we are likely with the echo somewhere else and this doesn't concern us
 			warnExhale:Show(args.destName)
 			specwarnExhale:Show(args.destName)
 			timerExhale:Start(args.destName)
@@ -141,13 +136,8 @@ function mod:SPELL_CAST_START(args)
 		local _, uId = self:GetBossTarget(bossCID)--Now lets get a uId. We can't simply just use boss1target and boss2target because echos do not have BossN ID. This is why we use GetBossTarget
 		warnAttenuation:Show(args.spellName, args.sourceName, lastDirection)--Always give basic warning. we don't need special warning to run in circles but on heroic green orbs go MUCH further than discs, we still need to be aware of them somewhat.
 		if uId then--Now we know who is tanking that boss
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)--We check how far we are from the tank who has that boss
-			if (inRange and inRange < 60) or (x == 0 and y == 0) then--Only show warning if we are near the boss casting it (or rathor, the player tanking that boss). I realize orbs go very far, but the special warning is for the dance, not stray discs, that's what normal warning is for
+			local inRange = DBM.RangeCheck:GetDistance("player", uId)--We check how far we are from the tank who has that boss
+			if (inRange and inRange < 60) then--Only show warning if we are near the boss casting it (or rathor, the player tanking that boss). I realize orbs go very far, but the special warning is for the dance, not stray discs, that's what normal warning is for
 				if self.Options.ArrowOnAttenuation then
 					DBM.Arrow:ShowStatic(lastDirection == DBM_CORE_LEFT and 90 or 270, 12)
 				end

@@ -151,12 +151,7 @@ local function checkSpear()
 			specWarnThrowSpearYou:Show()
 			yellThrowSpear:Yell()
 		else--Not spear target
-			local x, y = GetPlayerMapPosition("boss1target")
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition("boss1target")
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			local inRange = DBM.RangeCheck:GetDistance("player", "boss1target")
 			if inRange and inRange < 10 then
 				specWarnThrowSpearNear:Show(targetname)--Near spear target
 			elseif mod:AntiSpam(15, 6) then--Smart way to do a failsafe in case we never get a valid target
