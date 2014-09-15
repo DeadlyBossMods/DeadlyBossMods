@@ -298,27 +298,27 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			elseif flockCount ==  2 then
 				specWarnBigBird:Show(L.Lower.." ("..L.SouthEast..")")
 				if self.Options.ShowNestArrows == "Guardians" then
-					DBM.Arrow:ShowRunTo(nestCoords[2][1]/100, nestCoords[2][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[2][1], nestCoords[2][2], 3, 10, false)
 				end
 			elseif flockCount ==  5 then
 				specWarnBigBird:Show(L.Lower.." ("..L.NorthWest..")")
 				if self.Options.ShowNestArrows == "Guardians" then
-					DBM.Arrow:ShowRunTo(nestCoords[5][1]/100, nestCoords[5][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[5][1], nestCoords[5][2], 3, 10, false)
 				end
 			elseif flockCount ==  8 then
 				specWarnBigBird:Show(L.Upper.." ("..L.NorthWest..")")
 				if self.Options.ShowNestArrows == "Guardians" then
-					DBM.Arrow:ShowRunTo(nestCoords[10][1]/100, nestCoords[10][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[10][1], nestCoords[10][2], 3, 10, false)
 				end
 			elseif flockCount == 11 then
 				specWarnBigBird:Show(L.Upper.." ("..L.SouthEast..")")
 				if self.Options.ShowNestArrows == "Guardians" then
-					DBM.Arrow:ShowRunTo(nestCoords[7][1]/100, nestCoords[7][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[7][1], nestCoords[7][2], 3, 10, false)
 				end
 			elseif flockCount == 14 then
 				specWarnBigBird:Show(L.Lower.." ("..L.SouthWest..")")
 				if self.Options.ShowNestArrows == "Guardians" then
-					DBM.Arrow:ShowRunTo(nestCoords[3][1]/100, nestCoords[3][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[3][1], nestCoords[3][2], 3, 10, false)
 				end
 			--Reports of birds in next two nests but not precise locations
 			elseif flockCount == 17 then specWarnBigBird:Show(L.Lower.." ("..DBM_CORE_UNKNOWN..")")
@@ -332,39 +332,39 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			else--Since we know persons location, in addition to arrows, we can fire specWarnFlock for only the nests they have chosen arrows for.
 				--Lower Nests
 				if currentLocation:find(L.ArrowLower.." "..L.NorthEast) and self.Options.ShowNestArrows == "Northeast" then
-					DBM.Arrow:ShowRunTo(nestCoords[1][1]/100, nestCoords[1][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[1][1], nestCoords[1][2], 3, 10, false)
 					specWarnFlock:Show(currentDirection, flockName, flockCountText.." ("..currentLocation..")")
 				elseif currentLocation:find(L.ArrowLower.." "..L.SouthEast) and self.Options.ShowNestArrows == "Southeast" then
-					DBM.Arrow:ShowRunTo(nestCoords[2][1]/100, nestCoords[2][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[2][1], nestCoords[2][2], 3, 10, false)
 					specWarnFlock:Show(currentDirection, flockName, flockCountText.." ("..currentLocation..")")
 				elseif currentLocation:find(L.ArrowLower.." "..L.SouthWest) and self.Options.ShowNestArrows == "Southwest" then
-					DBM.Arrow:ShowRunTo(nestCoords[3][1]/100, nestCoords[3][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[3][1], nestCoords[3][2], 3, 10, false)
 					specWarnFlock:Show(currentDirection, flockName, flockCountText.." ("..currentLocation..")")
 				elseif currentLocation:find(L.ArrowLower.." "..L.West) and self.Options.ShowNestArrows == "West" then
-					DBM.Arrow:ShowRunTo(nestCoords[4][1]/100, nestCoords[4][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[4][1], nestCoords[4][2], 3, 10, false)
 					specWarnFlock:Show(currentDirection, flockName, flockCountText.." ("..currentLocation..")")
 				elseif currentLocation:find(L.ArrowLower.." "..L.NorthWest) and self.Options.ShowNestArrows == "Northwest" then
-					DBM.Arrow:ShowRunTo(nestCoords[5][1]/100, nestCoords[5][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[5][1], nestCoords[5][2], 3, 10, false)
 					specWarnFlock:Show(currentDirection, flockName, flockCountText.." ("..currentLocation..")")
 				--Upper Nests
 				elseif currentLocation:find(L.ArrowUpper.." "..L.NorthEast) and self.Options.ShowNestArrows == "Northeast" then
-					DBM.Arrow:ShowRunTo(nestCoords[6][1]/100, nestCoords[6][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[6][1], nestCoords[6][2], 3, 10, false)
 					specWarnFlock:Show(currentDirection, flockName, flockCountText.." ("..currentLocation..")")
 				elseif currentLocation:find(L.ArrowUpper.." "..L.SouthEast) and self.Options.ShowNestArrows == "Southeast" then
-					DBM.Arrow:ShowRunTo(nestCoords[7][1]/100, nestCoords[7][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[7][1], nestCoords[7][2], 3, 10, false)
 					specWarnFlock:Show(currentDirection, flockName, flockCountText.." ("..currentLocation..")")
 				elseif (currentLocation:find(L.Middle10) or currentLocation:find(L.ArrowUpper.." "..L.SouthWest)) and self.Options.ShowNestArrows == "Southwest" then
 					if self:IsDifficulty("normal25", "heroic25") then
-						DBM.Arrow:ShowRunTo(nestCoords[8][1]/100, nestCoords[8][2]/100, 3, 10)
+						DBM.Arrow:ShowRunTo(nestCoords[8][1], nestCoords[8][2], 3, 10, false)
 					else
-						DBM.Arrow:ShowRunTo(nestCoords[9][1]/100, nestCoords[9][2]/100, 3, 10)
+						DBM.Arrow:ShowRunTo(nestCoords[9][1], nestCoords[9][2], 3, 10, false)
 					end
 					specWarnFlock:Show(currentDirection, flockName, flockCountText.." ("..currentLocation..")")
 				elseif currentLocation:find(L.Middle25) and self.Options.ShowNestArrows == "West" then
-					DBM.Arrow:ShowRunTo(nestCoords[9][1]/100, nestCoords[9][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[9][1], nestCoords[9][2], 3, 10, false)
 					specWarnFlock:Show(currentDirection, flockName, flockCountText.." ("..currentLocation..")")
 				elseif currentLocation:find(L.ArrowUpper.." "..L.NorthWest) and self.Options.ShowNestArrows == "Northwest" then
-					DBM.Arrow:ShowRunTo(nestCoords[10][1]/100, nestCoords[10][2]/100, 3, 10)
+					DBM.Arrow:ShowRunTo(nestCoords[10][1], nestCoords[10][2], 3, 10, false)
 					specWarnFlock:Show(currentDirection, flockName, flockCountText.." ("..currentLocation..")")
 				end
 			end
