@@ -298,7 +298,6 @@ DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Special warning movable"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Special Warning"
 
 DBM_ARROW_MOVABLE					= "Arrow movable"
-DBM_ARROW_NO_RAIDGROUP				= "This function only works in raid groups and within raid instances."
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow usage:",
 	"/dbm arrow <x> <y>  creates an arrow that points to a specific locataion (0 < x/y < 100)",
