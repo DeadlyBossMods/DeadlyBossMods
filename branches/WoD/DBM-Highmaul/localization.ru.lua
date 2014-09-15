@@ -24,6 +24,10 @@ L= DBM:GetModLocalization(971)
 ---------------------------
 L= DBM:GetModLocalization(1195)
 
+L:SetMiscLocalization({
+	pillarSpawn	= "RISE, MOUNTAINS!"
+})
+
 ------------------
 -- Brackenspore, Walker of the Deep --
 ------------------
