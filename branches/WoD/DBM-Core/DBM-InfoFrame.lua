@@ -55,7 +55,7 @@ local createFrame
 local onUpdate
 local dropdownFrame
 local initializeDropdown
-local currentMapName
+local currentMapId
 local maxlines
 local currentEvent
 local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
@@ -80,8 +80,7 @@ local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local GetSpellInfo = GetSpellInfo
 local UnitThreatSituation = UnitThreatSituation
 local GetRaidRosterInfo = GetRaidRosterInfo
-local GetCurrentMapAreaID = GetCurrentMapAreaID
-local GetMapNameByID = GetMapNameByID
+local UnitPosition = UnitPosition
 local GetPartyAssignment = GetPartyAssignment
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 
@@ -478,8 +477,7 @@ function onUpdate(self, elapsed)
 		local name = sortedLines[i]
 		-- filter players who are not in the current zone (i.e. just idling/watching while being in the raid)
 		local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(name))
-		local raidId = unitId and unitId:sub(0, 4) == "raid" and (tonumber(unitId:sub(5) or 0) or 0)
-		if not raidId or select(7, GetRaidRosterInfo(raidId)) == currentMapName then
+		if unitId and select(4, UnitPosition(unitId)) == currentMapId then
 			linesShown = linesShown + 1
 			local power = lines[name]
 			local icon = icons[name]
@@ -513,9 +511,7 @@ end
 --  Methods  --
 ---------------
 function infoFrame:Show(maxLines, event, ...)
-	SetMapToCurrentZone()
-	local currentMapId = GetCurrentMapAreaID()
-	currentMapName = GetMapNameByID(currentMapId)
+	currentMapId = select(4, UnitPosition("player"))
 	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
 
 	maxlines = maxLines or 5

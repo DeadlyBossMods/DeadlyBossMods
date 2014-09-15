@@ -259,7 +259,6 @@ local loadDelay = nil
 local loadDelay2 = nil
 local stopDelay = nil
 local watchFrameRestore = false
-local currentSizes = nil
 local bossHealth = {}
 local bossHealthuIdCache = {}
 local bossuIdCache = {}
@@ -303,7 +302,7 @@ local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK = UnitExists, 
 local GetSpellInfo, EJ_GetSectionInfo = GetSpellInfo, EJ_GetSectionInfo
 local EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo = EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo
 local GetInstanceInfo = GetInstanceInfo
-local GetPlayerMapPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone = GetPlayerMapPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone
+local UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone = UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone
 local GetSpecialization = GetSpecialization
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local GetPartyAssignment, UnitGroupRolesAssigned = GetPartyAssignment, UnitGroupRolesAssigned
@@ -1439,11 +1438,11 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:AddMsg(DBM_CORE_LAG_CHECKING)
 		DBM:Schedule(5, function() DBM:ShowLag() end)
 	elseif cmd:sub(1, 5) == "arrow" then
-		local x, y = string.split(" ", cmd:sub(6):trim())
-		local xNum, yNum = tonumber(x or ""), tonumber(y or "")
+		local x, y, z = string.split(" ", msg:sub(6):trim())
+		local xNum, yNum, zNum = tonumber(x or ""), tonumber(y or ""), tonumber(z or "")
 		local success
 		if xNum and yNum then
-			DBM.Arrow:ShowRunTo(xNum / 100, yNum / 100, 0)
+			DBM.Arrow:ShowRunTo(xNum, yNum, 0, nil, true)
 			success = true
 		elseif type(x) == "string" and x:trim() ~= "" then
 			local subCmd = x:trim()
@@ -1459,8 +1458,11 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			elseif subCmd:upper() == "FOCUS" then
 				DBM.Arrow:ShowRunTo("focus")
 				success = true
-			elseif DBM:GetRaidUnitId(DBM:Capitalize(subCmd)) then
-				DBM.Arrow:ShowRunTo(DBM:Capitalize(subCmd))
+			elseif subCmd:upper() == "MAP" then
+				DBM.Arrow:ShowRunTo(yNum, zNum, 0, nil, false)
+				success = true
+			elseif DBM:GetRaidUnitId(subCmd) then
+				DBM.Arrow:ShowRunTo(subCmd)
 				success = true
 			end
 		end
@@ -1480,6 +1482,9 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd:sub(1, 5) == "debug" then
 		DBM.Options.DebugMode = DBM.Options.DebugMode == false and true or false
 		DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
+	elseif cmd:sub(1, 8) == "whereiam" then
+		local x, y, _, map = UnitPosition("player")
+		DBM:AddMsg(("You are at map %u (%s), x=%f, y=%f"):format(map, GetRealZoneText(map), x, y))
 	else
 		DBM:LoadGUI()
 	end
@@ -1492,7 +1497,7 @@ SlashCmdList["DBMRANGE"] = function(msg)
 		DBM.RangeCheck:Hide()
 	else
 		local r = tonumber(msg)
-		if r and ((r == 10 or r == 11 or r == 15 or r == 28) or (DBM:GetMapSizes() and r < 31)) then
+		if r and ((r == 10 or r == 11 or r == 15 or r == 28) or (r < 50)) then
 			DBM.RangeCheck:Show(r, nil, true)
 		else
 			DBM.RangeCheck:Show(10, nil, true)
@@ -2157,13 +2162,11 @@ function DBM:GetNumRealGroupMembers()
 	if not IsInInstance() then--Not accurate outside of instances (such as world bosses)
 		return IsInGroup() and GetNumGroupMembers() or 1--So just return regular group members.
 	end
-	SetMapToCurrentZone()
-	local currentMapId = GetCurrentMapAreaID()
-	local currentMapName = GetMapNameByID(currentMapId)
+	local currentMapId = select(4, UnitPosition("player"))
 	local realGroupMembers = 0
 	if IsInGroup() then
-		for i = 1, GetNumGroupMembers() do
-			if select(7, GetRaidRosterInfo(i)) == currentMapName then
+		for uId in DBM:GetGroupMembers() do
+			if select(4, UnitPosition(uId)) == currentMapId then
 				realGroupMembers = realGroupMembers + 1
 			end
 		end
@@ -2461,12 +2464,12 @@ end
 
 function DBM:CINEMATIC_START()
 	if not IsInInstance() or C_Garrison:IsOnGarrisonMap() or DBM.Options.MovieFilter == "Never" then return end
-	SetMapToCurrentZone()
 	for itemId, mapId in pairs(blockMovieSkipItems) do
 		if mapId == LastInstanceMapID then
 			if select(3, GetItemCooldown(itemId)) > 0 then return end
 		end
 	end
+	SetMapToCurrentZone()
 	local currentFloor = GetCurrentMapDungeonLevel() or 0
 	if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[LastInstanceMapID..currentFloor] then
 		CinematicFrame_CancelCinematic()
@@ -4974,50 +4977,6 @@ function DBM:FindEncounterIDs(instanceID, diff)
 	end
 end
 
------------------
---  Map Sizes  --
------------------
-DBM.MapSizes = {}
-
-function DBM:RegisterMapSize(zone, ...)
-	if not DBM.MapSizes[zone] then
-		DBM.MapSizes[zone] = {}
-	end
-	local zone = DBM.MapSizes[zone]
-	for i = 1, select("#", ...), 3 do
-		local level, width, height = select(i, ...)
-		zone[level] = {width, height}
-	end
-end
-
-function DBM:UpdateMapSizes()
-	-- try custom map size first
-	SetMapToCurrentZone()
-	local mapName = GetMapInfo()
-	local floor, a1, b1, c1, d1 = GetCurrentMapDungeonLevel()
-	local dims = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][floor]
-	if dims then
-		currentSizes = dims
-		return
-	end
-
-	-- failed, try Blizzard's map size
-	if not (a1 and b1 and c1 and d1) then
-		local zoneIndex, a2, b2, c2, d2 = GetCurrentMapZone()
-		a1, b1, c1, d1 = a2, b2, c2, d2
-	end
-
-	if not (a1 and b1 and c1 and d1) then return end
-	currentSizes = {abs(c1-a1), abs(d1-b1)}
-end
-
-function DBM:GetMapSizes()
-	if not currentSizes then
-		DBM:UpdateMapSizes()
-	end
-	return currentSizes
-end
-
 -------------------
 --  Movie Filter --
 -------------------
@@ -5442,12 +5401,7 @@ end
 function bossModPrototype:CheckNearby(range, targetname)
 	local uId = DBM:GetRaidUnitId(targetname)
 	if uId then
-		local x, y = GetPlayerMapPosition(targetname)
-		if x == 0 and y == 0 then
-			SetMapToCurrentZone()
-			x, y = GetPlayerMapPosition(targetname)
-		end
-		local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+		local inRange = DBM.RangeCheck:GetDistance("player", uId)
 		if inRange and inRange < range then
 			return true
 		end
@@ -5492,12 +5446,8 @@ do
 			end
 			if uId then--Now we have a valid uId
 				if UnitIsUnit("player", uId) then return true end--If "player" is target, avoid doing any complicated stuff
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-					SetMapToCurrentZone()
-					x, y = GetPlayerMapPosition(uId)
-				end
-				if x == 0 and y == 0 then--Failed to pull coords. This is likely a pet or a guardian or an NPC.
+				local x, y = UnitPosition(uId)
+				if not x then--Failed to pull coords. This is likely a pet or a guardian or an NPC.
 					local inRange2, checkedRange = UnitInRange(uId)--Use an API that works on pets and some NPCS (npcs that get a party/raid/pet ID)
 					if inRange2 and checkedRange then
 					end
