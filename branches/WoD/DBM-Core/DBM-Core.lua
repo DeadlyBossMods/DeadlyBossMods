@@ -1442,7 +1442,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		local xNum, yNum, zNum = tonumber(x or ""), tonumber(y or ""), tonumber(z or "")
 		local success
 		if xNum and yNum then
-			DBM.Arrow:ShowRunTo(xNum, yNum, 0, nil, true)
+			DBM.Arrow:ShowRunTo(xNum, yNum, 0)
 			success = true
 		elseif type(x) == "string" and x:trim() ~= "" then
 			local subCmd = x:trim()
