@@ -281,7 +281,6 @@ DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "可拖動的特別警告"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "特別警告"
 
 DBM_ARROW_MOVABLE					= "可移動箭頭"
-DBM_ARROW_NO_RAIDGROUP				= "此功能僅作用於團隊副本中的團隊小隊。"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 用法:",
 	"/dbm arrow <x> <y>  建立一個箭頭在特定的位置(0 < x/y < 100)",

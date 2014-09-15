@@ -217,7 +217,6 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Aviso especial"
 DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "Medição de distância de %d metros não suportada nessa zona.\nAs distâncias suportadas são 10, 11, 15 e 28 metros."
 
 DBM_ARROW_MOVABLE					= "Seta móvel"
-DBM_ARROW_NO_RAIDGROUP				= "Essa funcionalidade só está disponível em grupos de raide e no interior de instâncias de raide."
 DBM_ARROW_ERROR_USAGE	= {
 	"Uso da seta do DBM:",
 	"/dbm arrow <x> <y>  cria uma seta que aponta para um local específico (0 < x/y < 100)",

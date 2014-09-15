@@ -287,7 +287,6 @@ DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "bewegbare Spezialwarnung"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Spezialwarnung"
 
 DBM_ARROW_MOVABLE					= "Pfeil (bewegbar)"
-DBM_ARROW_NO_RAIDGROUP				= "Diese Funktion steht nur in Schlachtzügen und innerhalb von Instanzen zu Verfügung." 
 DBM_ARROW_ERROR_USAGE	= {
 	"Benutzung des DBM-Pfeils:",
 	"/dbm arrow <x> <y>  erzeugt einen Pfeil, der auf bestimmte Koordinaten zeigt (0 < x/y < 100)",

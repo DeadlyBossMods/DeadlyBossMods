@@ -281,7 +281,6 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Alerte spéciale"
 
 
 DBM_ARROW_MOVABLE					= "Flèche mobile"
-DBM_ARROW_NO_RAIDGROUP				= "Cette fonctionnalité n'est disponible que dans les groupes de raid et dans les instances de raid."
 DBM_ARROW_ERROR_USAGE	= {
 	"Utilisation de DBM-Arrow:",
 	"/dbm arrow <x> <y>  créée une flèche qui pointe vers une position spécifique (0 < x/y < 100)",
