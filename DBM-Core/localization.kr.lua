@@ -288,7 +288,6 @@ DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "특수 경고 움직이기"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "특수 경고"
 
 DBM_ARROW_MOVABLE						= "화살표 움직이기"
-DBM_ARROW_NO_RAIDGROUP					= "이 기능은 공격대에 속해 있고, 공격대 던전 내부에 있을때만 사용 가능합니다."
 
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM 화살표 사용법:",
