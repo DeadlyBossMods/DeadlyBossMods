@@ -302,7 +302,7 @@ DBM_ARROW_MOVABLE					= "Arrow movable"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow usage:",
 	"/dbm arrow <x> <y>  creates an arrow that points to a specific location (using world coordinates)",
-	"/dbm arrow map <x> <y>  creates an arrow that points to a specific location (0 < x/y < 100)",
+	"/dbm arrow map <x> <y>  creates an arrow that points to a specific location (using zone map coordinates)",
 	"/dbm arrow <player>  creates and arrow that points to a specific player in your party or raid (case sensitive!)",
 	"/dbm arrow hide  hides the arrow",
 	"/dbm arrow move  makes the arrow movable"
