@@ -14,6 +14,8 @@ svn://svn.deadlybossmods.com/dbm4/branches/MoP-6.0 (DBM-MoP)
 svn://svn.deadlybossmods.com/dbm4/branches/WoD (WOD-Beta)
 (login data is the same for all repositories)
 
+Curse 3rd Party Open Repos:
+svn://svn.curseforge.net/wow/dbm-timeless-isle/mainline/trunk
 
 If you want to receive notification emails on SVN updates, please drop me a line at tandanu@deadlybossmods.com.
 
