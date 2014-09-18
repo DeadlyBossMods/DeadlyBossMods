@@ -2508,6 +2508,7 @@ function DBM:WORLD_STATE_TIMER_START()
 			elseif realmBest and DBM.Options.ChallengeBest == "Realm" then
 				DBM.Bars:CreateBar(ceil(realmBest / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 			end
+			break
 		end
 	end
 end
