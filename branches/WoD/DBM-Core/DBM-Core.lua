@@ -1482,11 +1482,12 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd:sub(1, 5) == "debug" then
 		DBM.Options.DebugMode = DBM.Options.DebugMode == false and true or false
 		DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
-	elseif cmd:sub(1, 8) == "whereiam" then
+	elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 		local x, y, _, map = UnitPosition("player")
 		SetMapToCurrentZone()
+		local mapID = GetCurrentMapAreaID()
 		local mapx, mapy = GetPlayerMapPosition("player")
-		DBM:AddMsg(("You are at map %u (%s), x=%f, y=%f (Mx=%f, My=%f)"):format(map, GetRealZoneText(map), x, y, mapx, mapy))
+		DBM:AddMsg(("You are at zone %u (%s), x=%f, y=%f.\nLocal Map ID %u (%s), x=%f, y=%f"):format(map, GetRealZoneText(map), x, y, mapID, GetZoneText(), mapx, mapy))
 	else
 		DBM:LoadGUI()
 	end
