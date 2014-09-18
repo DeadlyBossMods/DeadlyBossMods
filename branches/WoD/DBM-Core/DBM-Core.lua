@@ -996,8 +996,11 @@ do
 				"UPDATE_BATTLEFIELD_STATUS",
 				"CINEMATIC_START",
 				"LFG_COMPLETION_REWARD",
-				"WORLD_STATE_TIMER_START",
-				"WORLD_STATE_TIMER_STOP",
+				--"WORLD_STATE_TIMER_START",
+				--"WORLD_STATE_TIMER_STOP",
+				"CHALLENGE_MODE_START",
+				"CHALLENGE_MODE_RESET",
+				"CHALLENGE_MODE_END",
 				"ACTIVE_TALENT_GROUP_CHANGED",
 				"UPDATE_SHAPESHIFT_FORM",
 				"PARTY_INVITE_REQUEST",
@@ -2492,6 +2495,7 @@ function DBM:LFG_COMPLETION_REWARD()
 	end
 end
 
+--[[
 function DBM:WORLD_STATE_TIMER_START()
 	if DBM.Options.ChallengeBest == "None" or not C_Scenario.IsChallengeMode() then return end
 	local maps = GetChallengeModeMapTable()
@@ -2507,12 +2511,47 @@ function DBM:WORLD_STATE_TIMER_START()
 			elseif realmBest and DBM.Options.ChallengeBest == "Realm" then
 				DBM.Bars:CreateBar(ceil(realmBest / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 			end
+			break
 		end
 	end
 end
 
 function DBM:WORLD_STATE_TIMER_STOP()
 	if (DBM.Options.ChallengeBest == "None") or not C_Scenario.IsChallengeMode() then return end
+	if DBM.Bars:GetBar(DBM_SPEED_CLEAR_TIMER_TEXT) then
+		DBM.Bars:CancelBar(DBM_SPEED_CLEAR_TIMER_TEXT)
+	end
+end
+--]]
+
+function DBM:CHALLENGE_MODE_START(mapID)
+	DBM:Debug("CHALLENGE_MODE_START fired for mapID "..mapID)
+	if DBM.Options.ChallengeBest == "None" then return end
+	local maps = GetChallengeModeMapTable()--Hopefully this returns WoD CMs and not MoP ones. or maybe it returns all of them?
+	for i = 1, 8 do--Either giong to be 8 for WoD, or 17 if it includes mop+wod
+		local _, mapIDVerify = GetChallengeModeMapInfo(maps[i])--Even though we get mapid from CHALLENGE_MODE_START, we still need CM index since GetChallengeModeMapPlayerStats doesn't take mapID :\
+		if mapID == mapIDVerify then
+			local guildBest, realmBest = GetChallengeBestTime(mapID)
+			local lastTime, bestTime, medal = GetChallengeModeMapPlayerStats(maps[i])
+			if bestTime and DBM.Options.ChallengeBest == "Personal" then
+				DBM.Bars:CreateBar(ceil(bestTime / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+			elseif guildBest and DBM.Options.ChallengeBest == "Guild" then
+				DBM.Bars:CreateBar(ceil(guildBest / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+			elseif realmBest and DBM.Options.ChallengeBest == "Realm" then
+				DBM.Bars:CreateBar(ceil(realmBest / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+			end
+			break
+		end
+	end
+end
+
+function DBM:CHALLENGE_MODE_RESET(...)--args?
+	DBM:Debug("CHALLENGE_MODE_RESET fired")
+end
+
+function DBM:CHALLENGE_MODE_END(mapID, success, medal, completionTime)
+	DBM:Debug("CHALLENGE_MODE_END fired for mapID "..mapID)
+	if DBM.Options.ChallengeBest == "None" then return end
 	if DBM.Bars:GetBar(DBM_SPEED_CLEAR_TIMER_TEXT) then
 		DBM.Bars:CancelBar(DBM_SPEED_CLEAR_TIMER_TEXT)
 	end
