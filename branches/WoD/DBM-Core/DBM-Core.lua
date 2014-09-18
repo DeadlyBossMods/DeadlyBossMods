@@ -2189,7 +2189,7 @@ end
 --Player/Item
 ----<type>:<realmID>:<dbID>
 function DBM:GetCIDFromGUID(guid)
-	local type, _, playerdbID, _, _, cid, creationbits = strsplit(":", guid or "")
+	local type, _, playerdbID, _, _, cid, creationbits = strsplit("-", guid or "")
 	if type and (type == "Creature" or type == "Vehicle" or type == "Pet") then
 		return tonumber(cid)
 	elseif type and (type == "Player" or type == "Item") then
