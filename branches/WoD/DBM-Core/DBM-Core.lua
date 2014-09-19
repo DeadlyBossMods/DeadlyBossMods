@@ -2538,10 +2538,15 @@ function DBM:CHALLENGE_MODE_START(mapID)
 	end
 end
 
-function DBM:CHALLENGE_MODE_RESET(...)--args?
+function DBM:CHALLENGE_MODE_RESET()
 	DBM:Debug("CHALLENGE_MODE_RESET fired")
+	if DBM.Options.ChallengeBest == "None" then return end
+	if DBM.Bars:GetBar(DBM_SPEED_CLEAR_TIMER_TEXT) then
+		DBM.Bars:CancelBar(DBM_SPEED_CLEAR_TIMER_TEXT)
+	end
 end
 
+--This event may not exist at all in game, just combat log, will have to verify.
 function DBM:CHALLENGE_MODE_END(mapID, success, medal, completionTime)
 	DBM:Debug("CHALLENGE_MODE_END fired for mapID "..mapID)
 	if DBM.Options.ChallengeBest == "None" then return end
