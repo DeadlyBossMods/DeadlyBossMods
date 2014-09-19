@@ -17,5 +17,5 @@
 localization.en.lua
 localization.kr.lua
 Drov.lua
-Tarina.lua
+Tarlna.lua
 Rukhmar.lua
