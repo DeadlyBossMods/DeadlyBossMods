@@ -1,6 +1,7 @@
 ﻿## Interface: 60000
 ## X-Min-Interface: 60000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Draenor|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0드레노어|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -14,6 +15,7 @@
 ## X-DBM-Mod-MapID: 1116
 ## X-DBM-Mod-LoadCID: 83746, 81535, 81252
 localization.en.lua
+localization.kr.lua
 Drov.lua
 Tarina.lua
 Rukhmar.lua
