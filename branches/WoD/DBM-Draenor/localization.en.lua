@@ -3,7 +3,7 @@ local L
 -----------------------
 -- Drov the Ruiner --
 -----------------------
-L= DBM:GetModLocalization(1212)
+L= DBM:GetModLocalization(1291)
 
 L:SetOptionLocalization({
 })
