@@ -291,8 +291,9 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "특수 경고"
 DBM_ARROW_MOVABLE						= "화살표 움직이기"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM 화살표 사용법:",
-	"/dbm arrow <x> <y>  지정된 좌표(X/Y) 방향으로 화살표를 만듭니다.(0 < x/y < 100)",
-	"/dbm arrow <대상이름>  현재 파티 또는 공격대의 <대상이름> 방향으로 화살표를 만듭니다.",
+	"/dbm arrow <x> <y>  지정된 좌표(X/Y) 방향으로 화살표를 만듭니다. (세계지도 좌표 사용)",
+	"/dbm arrow map <x> <y>  지정된 좌표(X/Y) 방향으로 화살표를 만듭니다. (지역지도 좌표 사용)",
+	"/dbm arrow <대상이름>  현재 파티 또는 공격대의 <대상이름> 방향으로 화살표를 만듭니다. (대소문자 구분)",
 	"/dbm arrow target  현재 대상 방향으로 화살표를 만듭니다.",
 	"/dbm arrow focus  현재 주시대상 방향으로 화살표를 만듭니다.",
 	"/dbm arrow move  화살표가 25초 동안 이동가능 상태가 됩니다.",
