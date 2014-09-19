@@ -1483,7 +1483,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		SetMapToCurrentZone()
 		local mapID = GetCurrentMapAreaID()
 		local mapx, mapy = GetPlayerMapPosition("player")
-		DBM:AddMsg(("You are at zone %u (%s), x=%f, y=%f.\nLocal Map ID %u (%s), x=%f, y=%f"):format(map, GetRealZoneText(map), x, y, mapID, GetZoneText(), mapx, mapy))
+		DBM:AddMsg(("Location Information\nYou are at zone %u (%s): x=%f, y=%f.\nLocal Map ID %u (%s): x=%f, y=%f"):format(map, GetRealZoneText(map), x, y, mapID, GetZoneText(), mapx, mapy))
 	else
 		DBM:LoadGUI()
 	end
