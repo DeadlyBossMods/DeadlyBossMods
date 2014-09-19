@@ -38,7 +38,7 @@ local warnTantrum					= mod:NewCountAnnounce(162275, 3)
 local warnClefthoof					= mod:NewTargetAnnounce(155462, 3)--Grants Epicenter
 local warnEpicenter					= mod:NewSpellAnnounce(162277, 3)--Mythic
 --Beast abilities (living beasts)
-local warnSavageHowl				= mod:NewSpellAnnounce(155198, 3, nil, mod:IsHealer() or mod:IsTank())
+local warnSavageHowl				= mod:NewSpellAnnounce(155198, 3, nil, mod:IsHealer() or mod:IsTank() or mod:CanRemoveEnrage())
 local warnConflag					= mod:NewTargetAnnounce(155399, 3, nil, mod:IsHealer())
 local warnSearingFangs				= mod:NewStackAnnounce(155030, 2, nil, mod:IsTank())
 local warnCrushArmor				= mod:NewStackAnnounce(155236, 2, nil, mod:IsTank())
