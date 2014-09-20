@@ -17,6 +17,7 @@ mod:RegisterEventsInCombat(
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_TARGETABLE_CHANGED",
 	"UNIT_DIED",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--Because boss numbering tends to get out of wack with things constantly joining/leaving fight. I've only seen boss1 and boss2 but for good measure.
 )
 
@@ -43,6 +44,7 @@ local warnConflag					= mod:NewTargetAnnounce(155399, 3, nil, mod:IsHealer())
 local warnSearingFangs				= mod:NewStackAnnounce(155030, 2, nil, mod:IsTank())
 local warnCrushArmor				= mod:NewStackAnnounce(155236, 2, nil, mod:IsTank())
 local warnStampede					= mod:NewSpellAnnounce(155247, 3)
+local warnInfernoBreath				= mod:NewSpellAnnounce(154989, 3)
 
 --Boss basic attacks
 local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, not mod:IsHealer())
@@ -54,11 +56,12 @@ local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil,
 local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2)
 local specWarnEpicenter				= mod:NewSpecialWarningSpell(162277, nil, nil, nil, 2)
 --Beast abilities (living)
-local specWarnSavageHowl			= mod:NewSpecialWarningSpell(155198, mod:IsHealer() or mod:IsTank(), nil, nil, 2)
+local specWarnSavageHowl			= mod:NewSpecialWarningDispel(155198, mod:IsHealer() or mod:IsTank() or mod:CanRemoveEnrage())
 local specWarnSearingFangs			= mod:NewSpecialWarningStack(155030, nil, 12)--Stack count assumed, may be 2
 local specWarnSearingFangsOther		= mod:NewSpecialWarningTaunt(155030)--No evidence of this existing ANYWHERE in any logs. removed? Bugged?
 local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, nil, 3)--Stack count assumed, may be less
 local specWarnCrushArmorOther		= mod:NewSpecialWarningTaunt(155236)
+local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil, 2)
 
 --Boss basic attacks
 local timerPinDownCD				= mod:NewCDTimer(20.5, 155365)--Every 20 seconds unless delayed by other things. CD timer used for this reason
@@ -72,6 +75,7 @@ local timerTantrumCD				= mod:NewCDTimer(25, 162275)--Not a large enough sample 
 local timerSavageHowlCD				= mod:NewCDTimer(25, 155198)
 local timerConflagCD				= mod:NewCDTimer(20, 155399)
 local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
+local timerInfernoBreathCD			= mod:NewCDTimer(20, 154989)
 
 mod:AddRangeFrameOption("8/7/3", nil, not mod:IsMelee())
 mod:AddSetIconOption("SetIconOnSpear", 154960)--Not often I make icon options on by default but this one is universally important. YOu always break players out of spear, in any strat.
@@ -146,7 +150,7 @@ function mod:SPELL_CAST_START(args)
 		timerCallthePackCD:Start()
 	elseif spellId == 155198 then
 		warnSavageHowl:Show()
-		specWarnSavageHowl:Show()
+		specWarnSavageHowl:Schedule(1.5, args.sourceName)
 		timerSavageHowlCD:Start()
 	end
 end
@@ -250,6 +254,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					timerTantrumCD:Cancel()
 				elseif cid == 76874 then--Dreadwing
 					self.vb.RylakAbilities = true
+					timerInfernoBreathCD:Start(6)
 					timerConflagCD:Start(12)
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerRendandTearCD:Cancel()
@@ -293,11 +298,20 @@ function mod:UNIT_DIED(args)
 		timerSavageHowlCD:Cancel()
 		timerConflagCD:Cancel()
 		timerStampedeCD:Cancel()
+		timerInfernoBreathCD:Cancel()
 		if self:IsMythic() then
 			updateBeasts(cid, 2)
 		else
 			updateBeasts(cid, 0)
 		end
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg:find("spell:154989") then
+		warnInfernoBreath:Show()
+		specWarnInfernoBreath:Show()
+		timerInfernoBreathCD:Start()
 	end
 end
 
