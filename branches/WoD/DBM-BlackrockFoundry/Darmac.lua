@@ -179,7 +179,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnConflag:CombinedShow(0.5, args.destName)
 	elseif spellId == 155030 then
 		local amount = args.amount or 1
-		if amount % 3 == 0 and amount >= 12 then--Stack assumed, may need revisint
+		if amount % 3 == 0 and amount >= 12 then--Stack assumed, may need revising
 			warnSearingFangs:Show(args.destName, amount)
 			if amount >= 12 then
 				if args:IsPlayer() then
@@ -211,14 +211,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if spellId == 155458 then--Wolf Aura
 			warnWolf:Show(args.destName)
-			if self.Options.RangeFrame and not self.vb.RylakAbilities then
-				DBM.RangeCheck:Show(7)--Upgrade range frame to 7 now that he has rend and tear. TODO: If this attack doesn't target melee
-			end
 		elseif spellId == 155459 then--Rylak Aura
 			warnRylak:Show(args.destName)
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(8)--Update range frame to 8 for Scrapnal. TODO, again, see if melee affected by this or not
-			end
 		elseif spellId == 155460 then--Elekk Aura
 			warnElekk:Show(args.destName)
 		elseif spellId == 155462 then--Mythic Beast
@@ -249,6 +243,9 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					self.vb.WolfAbilities = true
 					timerRendandTearCD:Start(5)
 					timerSavageHowlCD:Start(15)
+					if self.Options.RangeFrame and not self.vb.RylakAbilities then
+						DBM.RangeCheck:Show(7)--Upgrade range frame to 7 now that he has rend and tear. TODO: If this attack doesn't target melee
+					end
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerSuperheatedShrapnelCD:Cancel()
 					timerTantrumCD:Cancel()
@@ -256,6 +253,9 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					self.vb.RylakAbilities = true
 					timerInfernoBreathCD:Start(6)
 					timerConflagCD:Start(12)
+					if self.Options.RangeFrame then
+						DBM.RangeCheck:Show(8)--Update range frame to 8 for Scrapnal. TODO, again, see if melee affected by this or not
+					end
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerRendandTearCD:Cancel()
 					timerTantrumCD:Cancel()
