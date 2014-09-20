@@ -241,6 +241,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
 	if spellId == 159724 and self.Options.SetIconOnBloodRitual then
 		self:SetIcon(args.destName, 0)
 	end

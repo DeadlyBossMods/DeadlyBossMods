@@ -11,7 +11,7 @@ local arrowFrame = DBM.Arrow
 local runAwayArrow
 local targetType
 local targetPlayer
-local targetX, targetY
+local targetX, targetY, targetMapId
 local hideTime, hideDistance
 
 -- cached variables
