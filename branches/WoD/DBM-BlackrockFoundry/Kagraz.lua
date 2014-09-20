@@ -154,14 +154,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 155074 then
-		local amount = args.amount or 1
-		warnCharringBreath:Show(args.destName, amount)
-		if amount >= 3 then
-			if args:IsPlayer() then
-				specWarnCharringBreath:Show(amount)
-			else--Taunt as soon as stacks are clear, regardless of stack count.
-				if not UnitDebuff("player", GetSpellInfo(155074)) and not UnitIsDeadOrGhost("player") then
-					specWarnCharringBreathOther:Show(args.destName)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId, "boss1") or self:IsTanking(uId, "boss2") or self:IsTanking(uId, "boss3") or self:IsTanking(uId, "boss4") or self:IsTanking(uId, "boss5") then
+			local amount = args.amount or 1
+			warnCharringBreath:Show(args.destName, amount)
+			if amount >= 3 then
+				if args:IsPlayer() then
+					specWarnCharringBreath:Show(amount)
+				else--Taunt as soon as stacks are clear, regardless of stack count.
+					if not UnitDebuff("player", GetSpellInfo(155074)) and not UnitIsDeadOrGhost("player") then
+						specWarnCharringBreathOther:Show(args.destName)
+					end
 				end
 			end
 		end
