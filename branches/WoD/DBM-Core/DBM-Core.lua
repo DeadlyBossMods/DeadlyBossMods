@@ -104,6 +104,7 @@ DBM.DefaultOptions = {
 	ShowEngageMessage = true,
 	ShowKillMessage = true,
 	ShowWipeMessage = true,
+	ShowGuildMessages = true,
 	ShowRecoveryMessage = true,
 	AutoRespond = true,
 	StatusEnabled = true,
@@ -2791,6 +2792,7 @@ do
 	-- DBM uses the following prefixes since 4.1 as pre-4.1 sync code is going to be incompatible anways, so this is the perfect opportunity to throw away the old and long names
 	-- M = Mod
 	-- C = Combat start
+	-- GC = Guild Combat Start
 	-- IS = Icon set info
 	-- K = Kill
 	-- H = Hi!
@@ -3171,6 +3173,38 @@ do
 			end
 		end
 
+		syncHandlers["GCB"] = function(sender, modId, ver)
+			if not DBM.Options.ShowGuildMessages then return end
+			if not ver or not (ver == "1") then return end--Ignore old versions
+			if DBM:AntiSpam(5, "GCB") then
+				if IsInGroup() then
+					for i = 1, GetNumGroupMembers() do
+						if UnitName("raid"..i) == sender then return end--Hopefully filter this message if you are in the raid group with sender
+					end
+				end
+				local bossName = EJ_GetEncounterInfo(modId) or UNKNOWN
+				DBM:AddMsg(DBM_CORE_GUILD_COMBAT_STARTED:format(bossName))
+			end
+		end
+		
+		syncHandlers["GCE"] = function(sender, modId, ver, wipe, time, wipeHP)
+			if not DBM.Options.ShowGuildMessages then return end
+			if not ver or not (ver == "1") then return end--Ignore old versions
+			if DBM:AntiSpam(5, "GCE") then
+				if IsInGroup() then
+					for i = 1, GetNumGroupMembers() do
+						if UnitName("raid"..i) == sender then return end
+					end
+				end
+				local bossName = EJ_GetEncounterInfo(modId) or UNKNOWN
+				if wipe == "1" then
+					DBM:AddMsg(DBM_CORE_GUILD_COMBAT_ENDED_AT:format(bossName, wipeHP, time))
+				else
+					DBM:AddMsg(DBM_CORE_GUILD_BOSS_DOWN:format(bossName, time))
+				end
+			end
+		end
+
 		syncHandlers["WBE"] = function(sender, modId, realm, health, ver, name)
 			if not ver or not (ver == "7") then return end--Ignore old versions
 			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end--We recently got a sync about this boss on this realm, so do nothing.
@@ -3439,7 +3473,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
-		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD") then
+		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD" or channel == "CHANNEL") then
 			sender = Ambiguate(sender, "none")
 			handleSync(channel, sender, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" and self:GetRaidUnitId(sender)) then
@@ -4049,6 +4083,13 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 						self:AddMsg(DBM_CORE_SCENARIO_STARTED:format(difficultyText..name))
 					else
 						self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..name))
+						if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 then--Only send relevant content, not guild beating down lich king or LFR.
+							--RequestGuildPartyState()
+							local _, numGuildPresent, numGuildRequired = InGuildParty()
+							if numGuildPresent >= numGuildRequired then--Guild Group
+								SendAddonMessage("D4", "GCB\t"..modId.."\t1", "GUILD")
+							end
+						end
 					end
 				end
 			end
@@ -4073,6 +4114,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			if IsInGuild() then
 				SendAddonMessage("D4", "WBE\t"..modId.."\t"..playerRealm.."\t"..startHp.."\t7\t"..name, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 			end
+			SendAddonMessage("D4", "WBE\t"..modId.."\t"..playerRealm.."\t"..startHp.."\t7\t"..name, "CHANNEL", "General")
 			local _, numBNetOnline = BNGetNumFriends()
 			for i = 1, numBNetOnline do
 				local sameRealm = false
@@ -4180,6 +4222,7 @@ function DBM:EndCombat(mod, wipe)
 						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT:format(difficultyText..name, strFromTime(thisTime)))
 					else
 						self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(difficultyText..name, wipeHP, strFromTime(thisTime)))
+						--No reason to GCE it here, so omited on purpose.
 					end
 				end
 			else
@@ -4188,6 +4231,13 @@ function DBM:EndCombat(mod, wipe)
 						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT_LONG:format(difficultyText..name, strFromTime(thisTime), totalPulls - totalKills))
 					else
 						self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
+						if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 then
+							--RequestGuildPartyState()
+							local _, numGuildPresent, numGuildRequired = InGuildParty()
+							if numGuildPresent >= numGuildRequired then--Guild Group
+								SendAddonMessage("D4", "GCE\t"..modId.."\t1\t1\t"..strFromTime(thisTime).."\t"..wipeHP, "GUILD")
+							end
+						end
 					end
 				end
 			end
@@ -4264,24 +4314,42 @@ function DBM:EndCombat(mod, wipe)
 						msg = DBM_CORE_SCENARIO_COMPLETE:format(difficultyText..name, strFromTime(thisTime))
 					else
 						msg = DBM_CORE_BOSS_DOWN:format(difficultyText..name, strFromTime(thisTime))
+						if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 then
+							--RequestGuildPartyState()
+							local _, numGuildPresent, numGuildRequired = InGuildParty()
+							if numGuildPresent >= numGuildRequired then--Guild Group
+								SendAddonMessage("D4", "GCE\t"..modId.."\t1\t0\t"..strFromTime(thisTime), "GUILD")
+							end
+						end
 					end
 				elseif thisTime < (bestTime or mhuge) then
 					if scenario then
 						msg = DBM_CORE_SCENARIO_COMPLETE_NR:format(difficultyText..name, strFromTime(thisTime), strFromTime(bestTime), totalKills)
 					else
 						msg = DBM_CORE_BOSS_DOWN_NR:format(difficultyText..name, strFromTime(thisTime), strFromTime(bestTime), totalKills)
+						if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 then
+							--RequestGuildPartyState()
+							local _, numGuildPresent, numGuildRequired = InGuildParty()
+							if numGuildPresent >= numGuildRequired then--Guild Group
+								SendAddonMessage("D4", "GCE\t"..modId.."\t1\t0\t"..strFromTime(thisTime), "GUILD")
+							end
+						end
 					end
 				else
 					if scenario then
 						msg = DBM_CORE_SCENARIO_COMPLETE_L:format(difficultyText..name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills)
 					else
 						msg = DBM_CORE_BOSS_DOWN_L:format(difficultyText..name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills)
+						if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 then
+							--RequestGuildPartyState()
+							local _, numGuildPresent, numGuildRequired = InGuildParty()
+							if numGuildPresent >= numGuildRequired then--Guild Group
+								SendAddonMessage("D4", "GCE\t"..modId.."\t1\t0\t"..strFromTime(thisTime), "GUILD")
+							end
+						end
 					end
 				end
 				self:Schedule(1, DBM.AddMsg, DBM, msg)
-			end
-			if difficultyIndex >= 14 then--Only display in raids. Don't want 100 dungeon logs
-				DBM:AddMsg(DBM_CORE_NEED_LOGS)--REMOVE IN 6.0!!! 60000
 			end
 			local msg
 			for k, v in pairs(autoRespondSpam) do
@@ -4307,6 +4375,7 @@ function DBM:EndCombat(mod, wipe)
 				if IsInGuild() then
 					SendAddonMessage("D4", "WBD\t"..modId.."\t"..playerRealm.."\t7\t"..name, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 				end
+				SendAddonMessage("D4", "WBD\t"..modId.."\t"..playerRealm.."\t7\t"..name, "CHANNEL", "General")
 				local _, numBNetOnline = BNGetNumFriends()
 				for i = 1, numBNetOnline do
 					local sameRealm = false
