@@ -29,8 +29,8 @@ local specWarnDisruptingRoar			= mod:NewSpecialWarningCount(160838)--"stop casti
 local specWarnShatteredVertebrae		= mod:NewSpecialWarningStack(157139, nil, 2)--stack guessed
 local specWarnShatteredVertebraeOther	= mod:NewSpecialWarningTaunt(157139)
 local specWarnCripplingSuplex			= mod:NewSpecialWarningSpell(156938, nil, nil, nil, 3)--pop a cooldown, or die.
-local specWarnEnvironmentalThreads		= mod:NewSpecialWarningSpell("ej10089", nil, nil, nil, 2)
-local specWarnEnvironmentalThreadsEnd	= mod:NewSpecialWarningEnd("ej10089")
+local specWarnEnvironmentalThreats		= mod:NewSpecialWarningSpell("ej10089", nil, nil, nil, 2)
+local specWarnEnvironmentalThreatsEnd	= mod:NewSpecialWarningEnd("ej10089")
 
 local timerDisruptingRoarCD				= mod:NewCDTimer(46, 160838)
 
@@ -93,25 +93,29 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 --This is probably easiest way. But not only way.
+--The triggers are these percentages for sure but there is a delay before they do it, but if only one person is alive, and pushes 85%, you'll see that they DO go, even if health stops going down.
+--TODO, maybe figure out exact timing on this delay and add a cast/transition bar for it though.
 function mod:UNIT_TARGETABLE_CHANGED()
 	self.vb.phase = self.vb.phase + 1
 	if self.vb.phase == 2 then--First belt 85% (15 Energy) (fire plates)
 		warnSearingPlates:Show()
-		specWarnEnvironmentalThreads:Show()
+		specWarnEnvironmentalThreats:Show()
 	elseif self.vb.phase == 3 then--Ended
-		specWarnEnvironmentalThreadsEnd:Show()
+		specWarnEnvironmentalThreatsEnd:Show()
 	elseif self.vb.phase == 4 then--Second belt 55% (45 Energy) (smoosh plates)
 		timerDisruptingRoarCD:Cancel()
 		warnPulverized:Show()
-		specWarnEnvironmentalThreads:Show()
+		specWarnEnvironmentalThreats:Show()
 	elseif self.vb.phase == 5 then--Ended
-		specWarnEnvironmentalThreadsEnd:Show()
+		specWarnEnvironmentalThreatsEnd:Show()
 		timerDisruptingRoarCD:Start(7)
-	elseif self.vb.phase == 6 then--Third belt 25% (75 Energy) (smoosh plates & fire plates)
+	elseif self.vb.phase == 6 then--Third belt part 1 25% (75 Energy) (fire plates)
 		warnSearingPlates:Show()
-		warnPulverized:Show()
-		specWarnEnvironmentalThreads:Show()
+		specWarnEnvironmentalThreats:Show()
 	elseif self.vb.phase == 7 then--Ended
-		specWarnEnvironmentalThreadsEnd:Show()
+		specWarnEnvironmentalThreatsEnd:Show()
+	elseif self.vb.phase == 8 then--Third belt part 2
+		warnPulverized:Show()
+		specWarnEnvironmentalThreats:Show()
 	end
 end

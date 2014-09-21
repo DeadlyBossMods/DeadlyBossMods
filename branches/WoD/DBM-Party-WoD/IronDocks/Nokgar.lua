@@ -9,15 +9,18 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 164426",
+	"SPELL_AURA_APPLIED 164426 164835",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 local warnBurningArrows					= mod:NewSpellAnnounce(164635, 3)
 local warnRecklessProvocation			= mod:NewTargetAnnounce(164426, 3)
+local warnEnrage						= mod:NewTargetAnnounce(164835, 3, nil, mod:CanRemoveEnrage() or mod:IsTank())
+
 
 local specWarnBurningArrows				= mod:NewSpecialWarningSpell(164635, nil, nil, nil, true)
 local specWarnRecklessProvocation		= mod:NewSpecialWarningReflect(164426)
+local specWarnEnrage					= mod:NewSpecialWarningDispel(164835, mod:CanRemoveEnrage())
 
 local timerBurningArrowsCD				= mod:NewNextTimer(25, 164635)
 
@@ -25,6 +28,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 164426 then
 		warnRecklessProvocation:Show(args.destName)
 		specWarnRecklessProvocation:Show(args.destName)
+	elseif args.spellId == 164835 then
+		warnEnrage:CombinedShow(0.3, args.destName)
+		specWarnEnrage:Show(args.destName)
 	end
 end
 
