@@ -6935,14 +6935,13 @@ do
 	end
 
 	function timerPrototype:AddOption(optionDefault, optionName)
-		--Do some stuff if countdownDefault isn't nil to make audio countdown checkbox for this timer on by default
 		if optionName ~= false then
 			self.option = optionName or self.id
 			self.mod:AddBoolOption(self.option, optionDefault, "timer")
 		end
 	end
 
-	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b, countdownDefault)--countdownDefault should be a number, such as 5 or 10 hard coded in boss mod to say "audio countdown is on by default for this timer and default count start point is 5 or 10
+	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
 		local icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon or "Interface\\Icons\\Spell_Nature_WispSplode"
 		local obj = setmetatable(
 			{
@@ -6958,7 +6957,7 @@ do
 			},
 			mt
 		)
-		obj:AddOption(optionDefault, optionName)--countdownDefault
+		obj:AddOption(optionDefault, optionName)
 		tinsert(self.timers, obj)
 		return obj
 	end
@@ -6968,15 +6967,15 @@ do
 	-- todo: disable the timer if the player already has the achievement and when the ACHIEVEMENT_EARNED event is fired
 	-- problem: heroic/normal achievements :[
 	-- local achievementTimers = {}
-	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion)--countdownDefault should be a number, such as 5 or 10 hard coded in boss mod to say "audio countdown is on by default for this timer and default count start point is 5 or 10
+	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, optionVersion)
 		if type(timer) == "string" and timer:match("OptionVersion") then
 			local temp = optionVersion
 			optionVersion = string.sub(timer, 14)
-			timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault = spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, temp
+			timer, spellId, timerText, optionDefault, optionName, texture, r, g, b = spellId, timerText, optionDefault, optionName, texture, r, g, b, temp
 		end
 		-- new argument timerText is optional (usually only required for achievement timers as they have looooong names)
 		if type(timerText) == "boolean" or type(optionDefault) == "string" then -- check if the argument was skipped
-			return newTimer(self, timerType, timer, spellId, nil, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion)
+			return newTimer(self, timerType, timer, spellId, nil, timerText, optionDefault, optionName, texture, r, g, b, optionVersion)
 		end
 		local spellName, icon
 		local unparsedId = spellId
@@ -7017,7 +7016,7 @@ do
 			},
 			mt
 		)
-		obj:AddOption(optionDefault, optionName)--countdownDefault
+		obj:AddOption(optionDefault, optionName)
 		tinsert(self.timers, obj)
 		-- todo: move the string creation to the GUI with SetFormattedString...
 		if timerType == "achievement" then
