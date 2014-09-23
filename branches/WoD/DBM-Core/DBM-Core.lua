@@ -354,6 +354,9 @@ local function sendSync(prefix, msg)
 			SendAddonMessage("D4", prefix .. "\t" .. msg, "WHISPER", playerName)
 		end
 	end
+	if (savedDifficulty == "worldboss") and prefix ~= "C" then--World boss syncs to channel so we can catch things like combat ending. We filter combat start though cause that is not good to sync to whole zone.
+		SendAddonMessage("D4", prefix .. "\t" .. msg, "CHANNEL", "General")
+	end
 end
 
 local function strFromTime(time)
