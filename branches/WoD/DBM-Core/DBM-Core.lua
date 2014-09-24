@@ -7660,7 +7660,6 @@ end
 
 function bossModPrototype:SetMinSyncTime(time)
 	self.syncThreshold = time
-	print("blah")
 end
 
 function bossModPrototype:SetHotfixNoticeRev(revision)

@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
---TODO find the debuff for arena to add a timer/count for it.
+--TODO add timer for sweeper in arena
 local warnChainHurl					= mod:NewTargetAnnounce(159947, 3)--Warn for cast too?
 local warnBladeDance				= mod:NewSpellAnnounce(159250, 3, nil, false)
 local warnBerserkerRush				= mod:NewTargetAnnounce(158986, 4)
@@ -42,7 +42,6 @@ local timerPillarCD					= mod:NewNextTimer(20, "ej9394", nil, nil, nil, 159202)
 local timerChainHurlCD				= mod:NewNextTimer(106, 159947)
 local timerBerserkerRushCD			= mod:NewCDTimer(45, 158986)--45 to 70 variation. Small indication that you can use a sequence to get it a little more accurate but even then it's variable. Pull1: 48, 60, 46, 70, 45, 51, 46, 70. Pull2: 48, 60, 50, 55, 45. Mythic pull1, 48, 50, 57, 49
 local timerImpaleCD					= mod:NewCDTimer(35, 159113, nil, mod:IsTank())--Dead on unless delayed by a fixate
-local timerCrowdCD					= mod:NewTimer(94, "timerCrowdCD", 159410)
 local timerTigerCD					= mod:NewNextTimer(110, "ej9396", nil, not mod:IsTank(), nil, 162497)
 
 local countdownChainHurl			= mod:NewCountdown(106, 159947)
@@ -66,8 +65,6 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerTigerCD:Start()
 		countdownTiger:Start()
-	else
-		timerCrowdCD:Start(61-delay)--TODO, see if this changed on normal/LFR/Herioc too. on mythic this no longer existed.
 	end
 end
 
@@ -123,7 +120,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerPillarCD:Start()
 	elseif spellId == 162497 then
 		warnOnTheHunt:Show(args.destName)
---		timerOnTheHunt:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnOnTheHunt:Show(firePillar)
 		end
@@ -138,19 +134,10 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---[[
---TODO, add tiger spawning warning here
-function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-	self:Unschedule(CheckBosses)
-	self:Schedule(1, CheckBosses)--Delay check to make sure we run function only once on pull
-end--]]
-
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	--Only fires for one thing, so no reason to localize
 	if self:IsMythic() then
 		timerTigerCD:Start()
 		countdownTiger:Start()
-	else
-		timerCrowdCD:Start(61)--TODO, see if this changed on normal/LFR/Herioc too. on mythic this no longer existed.
 	end
 end

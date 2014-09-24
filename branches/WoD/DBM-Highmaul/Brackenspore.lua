@@ -10,26 +10,24 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 159996 160013 159219",
-	"SPELL_CAST_SUCCESS 163594",
+	"SPELL_CAST_SUCCESS 163594 163241",
 	"SPELL_AURA_APPLIED 163241 164125",
 	"SPELL_AURA_APPLIED_DOSE 163241",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, see if exploding fungus are in combat log (none of his other mushrooms are, so pretty safe to assume neither is this one)
---TODO, see how they even work, who they target, if they are killed or just avoided.
 --TODO, verify only one spore shooter spawns at a time
 local warnCreepingMoss				= mod:NewTargetAnnounce(164125, 4, nil, mod:IsTank())--Persists whole fight, so just warn if boss gets it to move it
 local warnInfestingSpores			= mod:NewSpellAnnounce(159996, 3)
-local warnDecay						= mod:NewSpellAnnounce(160013, 4)
-local warnNecroticBreath			= mod:NewSpellAnnounce(159219, 4, nil, mod:IsHealer() or mod:IsTank())
+local warnDecay						= mod:NewSpellAnnounce(160013, 4, nil, not mod:IsHealer())
+local warnNecroticBreath			= mod:NewSpellAnnounce(159219, 4)--Warn everyone, so they know where not to be.
 local warnRot						= mod:NewStackAnnounce(163241, 2, nil, mod:IsTank())
 --Adds/Mushrooms
-local warnSporeShooter				= mod:NewSpellAnnounce(163594, 3, nil, mod:IsDps())
+local warnSporeShooter				= mod:NewSpellAnnounce(163594, 3, nil, mod:IsRanged())
 local warnFungalFlesheater			= mod:NewSpellAnnounce("ej9995", 4, 163142)--Using ej name because it doesn't match spell name at all like others
-local warnMindFungus				= mod:NewSpellAnnounce(163141, 2, nil, mod:IsDps())
-local warnLivingMushroom			= mod:NewSpellAnnounce(160022, 1)--Good shroom! (mana)
+local warnMindFungus				= mod:NewSpellAnnounce(163141, 2, nil, mod:IsMelee() and not mod:IsTank())
+local warnLivingMushroom			= mod:NewSpellAnnounce(160022, 1)--Good shroom! (mana/haste)
 local warnRejuvMushroom				= mod:NewSpellAnnounce(160021, 1)--Other good shroom (healing)
 local warnExplodingFungus			= mod:NewSpellAnnounce(163794, 4)--Mythic Shroom
 local warnWaves						= mod:NewSpellAnnounce(160425, 4)--Mythic Waves
@@ -38,28 +36,30 @@ local specWarnCreepingMoss			= mod:NewSpecialWarningMove(163590, mod:IsTank())
 local specWarnInfestingSpores		= mod:NewSpecialWarningSpell(159996, nil, nil, nil, 2)
 local specWarnDecay					= mod:NewSpecialWarningInterrupt(160013, not mod:IsHealer())
 local specWarnNecroticBreath		= mod:NewSpecialWarningSpell(159219, mod:IsTank(), nil, nil, 3)
-local specWarnRot					= mod:NewSpecialWarningStack(163241, nil, 5)--stack guessed, based on low debuff damage, assumed to be a fast stacker, like malkorak
+local specWarnRot					= mod:NewSpecialWarningStack(163241, nil, 4)
 local specWarnRotOther				= mod:NewSpecialWarningTaunt(163241)
 local specWarnExplodingFungus		= mod:NewSpecialWarningSpell(163794, nil, nil, nil, 2)--Change warning type/sound? need to know more about spawn.
 local specWarnWaves					= mod:NewSpecialWarningSpell(160425, nil, nil, nil, 2)
 --Adds
 local specWarnSporeShooter			= mod:NewSpecialWarningSwitch(163594, mod:IsDps())
-local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitch("ej9995")
+local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitch("ej9995", not mod:IsHealer())
 local specWarnMindFungus			= mod:NewSpecialWarningSwitch(163141, mod:IsDps())
 
 local timerInfestingSporesCD		= mod:NewNextTimer(57, 159996)
+local timerRotCD					= mod:NewCDTimer(10, 163241, nil, false)--it's a useful timer, but not mandatory and this fight has A LOT of timers so off by default for clutter reduction
 local timerNecroticBreathCD			= mod:NewCDTimer(32, 159219, nil, mod:IsTank() or mod:IsHealer())
 --Adds (all adds are actually NEXT timers however they get dleayed by infesting spores and necrotic breath sometimes so i'm leaving as CD for now)
-local timerSporeShooterCD			= mod:NewCDTimer(57, 163594, nil, mod:IsDps())
+local timerSporeShooterCD			= mod:NewCDTimer(57, 163594, nil, mod:IsRanged())
 local timerFungalFleshEaterCD		= mod:NewCDTimer(120, "ej9995", nil, nil, nil, 163142)
-local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, mod:IsDps())
+local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, not mod:IsHealer())
+local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, mod:IsMelee() and not mod:IsTank())
 local timerLivingMushroomCD			= mod:NewCDTimer(55.5, 160022)
 local timerRejuvMushroomCD			= mod:NewCDTimer(145, 160021)
 --local timerExplodingFungusCD		= mod:NewCDTimer(32, 163794)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 local timerWavesCD					= mod:NewCDTimer(33, 160425)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 
 local countdownInfestingSpores		= mod:NewCountdown(57, 159996)
-local countdownFungalFleshEater		= mod:NewCountdown("Alt120", "ej9995")
+local countdownFungalFleshEater		= mod:NewCountdown("Alt120", "ej9995", not mod:IsHealer())
 
 mod:AddRangeFrameOption(8, 160254, false)
 
@@ -93,7 +93,11 @@ function mod:SPELL_CAST_START(args)
 		countdownInfestingSpores:Start()
 	elseif spellId == 160013 then
 		warnDecay:Show()
-		specWarnDecay:Show(args.sourceName)
+		local guid = args.souceGUID
+		if guid == UnitGUID("target") or guid == UnitGUID("focus") then
+			specWarnDecay:Show(args.sourceName)
+			timerDecayCD:Start(args.sourceGUID)
+		end
 	elseif spellId == 159219 then
 		warnNecroticBreath:Show()
 		specWarnNecroticBreath:Show()
@@ -111,6 +115,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
 		end
+	elseif spellId == 163241 then
+		timerRotCD:Start()
 	end
 end
 
@@ -119,7 +125,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 163241 then
 		local amount = args.amount or 1
 		warnRot:Show(args.destName, amount)
-		if amount >= 5 then
+		if amount >= 4 then
 			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 				specWarnRot:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
@@ -142,6 +148,8 @@ function mod:UNIT_DIED(args)
 		if self.Options.RangeFrame and self.vb.sporesAlive == 0 then
 			DBM.RangeCheck:Hide()
 		end
+	elseif cid == 79092 then--Fungal Flesh Eater
+		timerDecayCD:Cancel(args.destGUID)
 	end
 end
 
