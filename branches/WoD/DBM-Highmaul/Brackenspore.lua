@@ -45,7 +45,7 @@ local specWarnSporeShooter			= mod:NewSpecialWarningSwitch(163594, mod:IsDps())
 local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitch("ej9995", not mod:IsHealer())
 local specWarnMindFungus			= mod:NewSpecialWarningSwitch(163141, mod:IsDps())
 
-local timerInfestingSporesCD		= mod:NewNextTimer(57, 159996)
+local timerInfestingSporesCD		= mod:NewCDTimer(57, 159996)--57-63 variation
 local timerRotCD					= mod:NewCDTimer(10, 163241, nil, false)--it's a useful timer, but not mandatory and this fight has A LOT of timers so off by default for clutter reduction
 local timerNecroticBreathCD			= mod:NewCDTimer(32, 159219, nil, mod:IsTank() or mod:IsHealer())
 --Adds (all adds are actually NEXT timers however they get dleayed by infesting spores and necrotic breath sometimes so i'm leaving as CD for now)
@@ -54,11 +54,11 @@ local timerFungalFleshEaterCD		= mod:NewCDTimer(120, "ej9995", nil, nil, nil, 16
 local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, not mod:IsHealer())
 local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, mod:IsMelee() and not mod:IsTank())
 local timerLivingMushroomCD			= mod:NewCDTimer(55.5, 160022)
-local timerRejuvMushroomCD			= mod:NewCDTimer(145, 160021)
+local timerRejuvMushroomCD			= mod:NewCDTimer(150, 160021)
 --local timerExplodingFungusCD		= mod:NewCDTimer(32, 163794)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 local timerWavesCD					= mod:NewCDTimer(33, 160425)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 
-local countdownInfestingSpores		= mod:NewCountdown(57, 159996)
+local countdownInfestingSpores		= mod:NewCountdown(57, 159996)--The variation on this annoys me, may move countdown to something more reliable if possible
 local countdownFungalFleshEater		= mod:NewCountdown("Alt120", "ej9995", not mod:IsHealer())
 
 mod:AddRangeFrameOption(8, 160254, false)
@@ -67,15 +67,15 @@ mod.vb.sporesAlive = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.sporesAlive = 0
-	timerMindFungusCD:Start(11-delay)
+	timerMindFungusCD:Start(10-delay)
 	timerLivingMushroomCD:Start(18-delay)--16-18
-	timerSporeShooterCD:Start(23-delay)--23-26
-	timerNecroticBreathCD:Start(-delay)
-	timerFungalFleshEaterCD:Start(34-delay)
-	countdownFungalFleshEater:Start(34-delay)
-	timerInfestingSporesCD:Start(49-delay)
-	countdownInfestingSpores:Start(49-delay)
-	timerRejuvMushroomCD:Start(75-delay)
+	timerSporeShooterCD:Start(20-delay)--20-26
+	timerNecroticBreathCD:Start(30-delay)
+	timerFungalFleshEaterCD:Start(32-delay)
+	countdownFungalFleshEater:Start(32-delay)
+	timerInfestingSporesCD:Start(45-delay)
+	countdownInfestingSpores:Start(45-delay)
+	timerRejuvMushroomCD:Start(80-delay)--Todo, verify 80 in all modes and not still 75 in mythic
 end
 
 function mod:OnCombatEnd()
@@ -166,7 +166,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 160022 then
 		warnLivingMushroom:Show()
 		timerLivingMushroomCD:Start()
-	elseif spellId == 160021 then
+	elseif spellId == 160021 or spellId == 177820 then--Seems diff ID in mythic vs non mythic?
 		warnRejuvMushroom:Show()
 		timerRejuvMushroomCD:Start()
 	elseif spellId == 163794 then

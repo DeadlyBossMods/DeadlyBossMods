@@ -39,12 +39,14 @@ local specWarnMaulingBrew			= mod:NewSpecialWarningMove(159413)
 local specWarnOnTheHunt				= mod:NewSpecialWarningMoveTo(162497, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(162497))--Does not need yell, tigers don't cleave other targets like berserker rush does.
 
 local timerPillarCD					= mod:NewNextTimer(20, "ej9394", nil, nil, nil, 159202)
-local timerChainHurlCD				= mod:NewNextTimer(106, 159947)
+local timerChainHurlCD				= mod:NewNextTimer(106, 159947)--177776
+local timerSweeperCD				= mod:NewNextTimer(39, 177776, 177258)
 local timerBerserkerRushCD			= mod:NewCDTimer(45, 158986)--45 to 70 variation. Small indication that you can use a sequence to get it a little more accurate but even then it's variable. Pull1: 48, 60, 46, 70, 45, 51, 46, 70. Pull2: 48, 60, 50, 55, 45. Mythic pull1, 48, 50, 57, 49
 local timerImpaleCD					= mod:NewCDTimer(35, 159113, nil, mod:IsTank())--Dead on unless delayed by a fixate
 local timerTigerCD					= mod:NewNextTimer(110, "ej9396", nil, not mod:IsTank(), nil, 162497)
 
 local countdownChainHurl			= mod:NewCountdown(106, 159947)
+local countdownSweeper				= mod:NewCountdown(39, 177776)
 local countdownTiger				= mod:NewCountdown("Alt110", "ej9396", not mod:IsTank())--Tigers never bother tanks so not tanks probelm
 local countdownImpale				= mod:NewCountdown("Alt35", 159113, mod:IsTank())--Dead on unless delayed by a fixate
 
@@ -92,6 +94,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 159947 then
 		warnChainHurl:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			timerSweeperCD:Start()
+			countdownSweeper:Start()
+		end
 	elseif spellId == 159250 then
 		warnBladeDance:Show()
 	elseif spellId == 158986 then
