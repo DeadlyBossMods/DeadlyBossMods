@@ -894,11 +894,11 @@ do
 			end
 			onLoadCallbacks = nil
 			loadOptions()
-			DBM.Bars:LoadOptions("DBM")
 			if not GetAddOnEnableState then--Not 6.0
 				DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
 				return
 			end
+			DBM.Bars:LoadOptions("DBM")
 			DBM.Arrow:LoadPosition()
 			if not DBM.Options.ShowMinimapButton then self:HideMinimapButton() end
 			self.AddOns = {}
