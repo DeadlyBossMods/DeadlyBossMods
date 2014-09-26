@@ -10,10 +10,11 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 162185 162184 161411 163517 162186",
-	"SPELL_AURA_APPLIED 156803 160734 162186 162185 161242 163472",
+	"SPELL_AURA_APPLIED 156803 162186 162185 161242 163472",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 162186 162185 163472",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, find number of targets of MC and add SetIconsUsed with correct icon count.
@@ -45,7 +46,7 @@ local specWarnMC					= mod:NewSpecialWarningSwitch(163472, mod:IsDps())
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
 
 local timerVulnerability			= mod:NewBuffActiveTimer(20, 160734)
---local timerTrampleCD				= mod:NewCDTimer(15, 163101)--Also all over the place, 15-25 with first one coming very randomly (5-20 after barrier goes up)
+local timerTrampleCD				= mod:NewCDTimer(16, 163101)--Also all over the place, 15-25 with first one coming very randomly (5-20 after barrier goes up)
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
 --local timerExpelMagicFireCD		= mod:NewCDTimer(20, 162185)
 --local timerExpelMagicShadowCD		= mod:NewCDTimer(10, 162184)
@@ -94,21 +95,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnNullBarrier:Show(args.destName)
 		--Arcane is just too variable to make meaningful yet
 		--I really don't think this is CD based anyways, need more data (such as a raid with WILDLY different dps.
-		--I suspect these abilities are actually cast at certain shield % and not timer based at all.
+		--I suspect these abilities are actually cast at certain shield or health % in combination with internal CDs so they still have some limit to frequency.
 		--If Shield % based then instead of timers just pre warn based on shield remaining
 		--I'm not even sure order is always same. it MAY resume where it left off from previous phase.
+--		timerTrampleCD:Start()--5-20
 --		timerExpelMagicFrostCD:Start(11)--11-29 Observed
 --		timerExpelMagicShadowCD:Start(26)--26-44 Observed
 --		timerExpelMagicFireCD:Start(41)--41-59 Observed
 		--Variation that wild, i'm confident, shield % based not timer based.
-	elseif spellId == 160734 then
-		warnVulnerability:Show(args.destName)
-		specWarnVulnerability:Show()
-		timerVulnerability:Start()
---		timerExpelMagicFrostCD:Cancel()
---		timerExpelMagicShadowCD:Cancel()
---		timerExpelMagicFireCD:Cancel()
---		timerTrampleCD:Cancel()
 	elseif spellId == 162186 then
 		warnExpelMagicArcane:Show(args.destName)
 		timerExpelMagicArcane:Start(args.destName)
@@ -163,10 +157,23 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, target)
 	end
 end
 
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 160734 then
+		local bossName = UnitName(uId)
+		warnVulnerability:Show(bossName)
+		specWarnVulnerability:Show(bossName)
+		timerVulnerability:Start()
+		timerTrampleCD:Cancel()
+--		timerExpelMagicFrostCD:Cancel()
+--		timerExpelMagicShadowCD:Cancel()
+--		timerExpelMagicFireCD:Cancel()
+	end
+end
+
 function mod:OnSync(msg, targetname)
 	if not self:IsInCombat() then return end
-	if msg == "ChargeTo" and targetname and self:AntiSpam(10, 2) then
-		--timerTrampleCD:Start()
+	if msg == "ChargeTo" and targetname then
+		timerTrampleCD:Start()
 		local target = DBM:GetUnitFullName(targetname)
 		if target then
 			warnTrample:Show(target)
