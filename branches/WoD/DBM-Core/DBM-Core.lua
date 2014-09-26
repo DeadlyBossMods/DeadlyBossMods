@@ -83,6 +83,7 @@ DBM.DefaultOptions = {
 	ChallengeBest = "Realm",
 	CountdownVoice = "Corsica",
 	CountdownVoice2 = "Kolt",
+	CountdownVoice3 = "Pewsey",
 	ShowCountdownText = false,
 	RaidWarningPosition = {
 		Point = "TOP",
@@ -6359,9 +6360,13 @@ do
 			end
 			local voice = DBM.Options.CountdownVoice
 			local voice2 = DBM.Options.CountdownVoice2
+			local voice3 = DBM.Options.CountdownVoice3
 			if voice == "None" then return end
-			if self.alternateVoice then--We already have an active countdown using primary voice, so fall back to secondary voice
+			if self.alternateVoice == 2 then
 				voice = voice2
+			end
+			if self.alternateVoice == 3 then
+				voice = voice3
 			end
 			if voice == "Mosh" then--Voice only goes to 5
 				if self.type == "Countout" then
@@ -6418,8 +6423,12 @@ do
 			optionVersion = string.sub(timer, 14)
 			timer, spellId, optionDefault, optionName, count, textDisabled, altVoice = spellId, optionDefault, optionName, count, textDisabled, altVoice, temp
 		end
-		if type(timer) == "string" and timer:match("Alt") then
-			altVoice = true
+		if altVoice == true then altVoice = 2 end--Compat
+		if type(timer) == "string" and timer:match("AltTwo") then
+			altVoice = 3
+			timer = tonumber(string.sub(timer, 7))
+		elseif type(timer) == "string" and timer:match("Alt") then
+			altVoice = 2
 			timer = tonumber(string.sub(timer, 4))
 		end
 		local sound5 = self:NewSound(5, true, false)
