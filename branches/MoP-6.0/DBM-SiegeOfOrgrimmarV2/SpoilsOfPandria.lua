@@ -31,7 +31,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnSuperNova				= mod:NewCastAnnounce("OptionVersion3", 146815, 4, nil, nil, false)--Heroic
+local warnSuperNova				= mod:NewCastAnnounce(146815, 4, nil, nil, false)--Heroic
 --Massive Crate of Goods
 ----Mogu
 local warnReturnToStone			= mod:NewSpellAnnounce(145489, 2)
@@ -41,7 +41,7 @@ local warnSetToBlow				= mod:NewTargetAnnounce(145987, 4)--145996 is cast ID
 ----Mogu
 local warnForbiddenMagic		= mod:NewTargetAnnounce(145230, 2)
 local warnMatterScramble		= mod:NewSpellAnnounce(145288, 3)
-local warnCrimsonRecon			= mod:NewSpellAnnounce("OptionVersion2", 142947, 4, nil, mod:IsTank())
+local warnCrimsonRecon			= mod:NewSpellAnnounce(142947, 4, nil, mod:IsTank())
 local warnEnergize				= mod:NewSpellAnnounce(145461, 3)--May be script spellid that doesn't show in combat log
 local warnTorment				= mod:NewSpellAnnounce(142934, 3, nil, mod:IsHealer())
 ----Mantid
@@ -59,7 +59,7 @@ local warnSparkofLife			= mod:NewSpellAnnounce(142694, 3, nil, false)
 local warnBreathofFire			= mod:NewSpellAnnounce(146222, 3)--Do not have timer for this yet, add not alive long enough.
 local warnGustingCraneKick		= mod:NewSpellAnnounce(146180, 3)
 
-local specWarnSuperNova			= mod:NewSpecialWarningSpell("OptionVersion3", 146815, false, nil, nil, 2)
+local specWarnSuperNova			= mod:NewSpecialWarningSpell(146815, false, nil, nil, 2)
 --Massive Crate of Goods
 local specWarnSetToBlowYou		= mod:NewSpecialWarningYou(145987)
 local specWarnSetToBlow			= mod:NewSpecialWarningPreWarn(145996, nil, 4, nil, 3)
@@ -68,7 +68,7 @@ local specWarnSetToBlow			= mod:NewSpecialWarningPreWarn(145996, nil, 4, nil, 3)
 local specWarnForbiddenMagic	= mod:NewSpecialWarningInterrupt(145230, mod:IsMelee())
 local specWarnMatterScramble	= mod:NewSpecialWarningSpell(145288, nil, nil, nil, 2)
 local specWarnCrimsonRecon		= mod:NewSpecialWarningMove(142947, mod:IsTank(), nil, nil, 3)
-local specWarnTorment			= mod:NewSpecialWarningSpell("OptionVersion2", 142934, false)
+local specWarnTorment			= mod:NewSpecialWarningSpell(142934, false)
 ----Mantid
 local specWarnMantidSwarm		= mod:NewSpecialWarningSpell(142539, mod:IsTank())
 local specWarnResidue			= mod:NewSpecialWarningSpell(145786, mod:IsMagicDispeller())

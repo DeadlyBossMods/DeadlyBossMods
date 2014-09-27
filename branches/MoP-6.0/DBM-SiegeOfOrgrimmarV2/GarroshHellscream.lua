@@ -67,19 +67,19 @@ local specWarnSiegeEngineer			= mod:NewSpecialWarningPreWarn("ej8298", false, 4)
 local specWarnChainHeal				= mod:NewSpecialWarningInterrupt(144583)
 local specWarnChainLightning		= mod:NewSpecialWarningInterrupt(144584, false)
 --Intermission: Realm of Y'Shaarj
-local specWarnAnnihilate			= mod:NewSpecialWarningSpell("OptionVersion3", 144969, false, nil, nil, 3)
+local specWarnAnnihilate			= mod:NewSpecialWarningSpell(144969, false, nil, nil, 3)
 --Stage Two: Power of Y'Shaarj
 local specWarnWhirlingCorruption	= mod:NewSpecialWarningCount(144985)--Two options important, for distinction and setting custom sounds for empowered one vs non empowered one, don't merge
 local specWarnGrippingDespair		= mod:NewSpecialWarningStack(145183, nil, 4)--Unlike whirling and desecrate, doesn't need two options, distinction isn't important for tank swaps.
 local specWarnGrippingDespairOther	= mod:NewSpecialWarningTaunt(145183)
-local specWarnTouchOfYShaarj		= mod:NewSpecialWarningSwitch("OptionVersion3", 145071, not mod:IsHealer())
+local specWarnTouchOfYShaarj		= mod:NewSpecialWarningSwitch(145071, not mod:IsHealer())
 local specWarnTouchInterrupt		= mod:NewSpecialWarningInterrupt(145599, false)
 --Starge Three: MY WORLD
 local specWarnEmpWhirlingCorruption	= mod:NewSpecialWarningCount(145037)--Two options important, for distinction and setting custom sounds for empowered one vs non empowered one, don't merge
 local specWarnEmpDesecrate			= mod:NewSpecialWarningCount(144749, nil, nil, nil, 2)--^^
 --Starge Four: Heroic Hidden Phase
 local specWarnMaliceYou				= mod:NewSpecialWarningYou(147209)
-local yellMalice					= mod:NewYell("OptionVersion2", 147209, nil, false)
+local yellMalice					= mod:NewYell(147209, nil, false)
 local specWarnBombardment			= mod:NewSpecialWarningCount(147120, nil, nil, nil, 2)
 local specWarnBombardmentOver		= mod:NewSpecialWarningEnd(147120)
 local specWarnISFixate				= mod:NewSpecialWarningYou(147665)
@@ -99,7 +99,7 @@ local timerEnterRealm				= mod:NewNextTimer(145.5, 144866, nil, nil, nil, 144945
 local timerRealm					= mod:NewBuffActiveTimer(60.5, "ej8305", nil, nil, nil, 144945)--May be too long, but intermission makes more sense than protection buff which actually fades before intermission ends if you do it right.
 --Stage Two: Power of Y'Shaarj
 local timerWhirlingCorruptionCD		= mod:NewCDCountTimer(49.5, 144985)--One bar for both, "empowered" makes timer too long
-local timerWhirlingCorruption		= mod:NewBuffActiveTimer("OptionVersion2", 9, 144985, nil, false)
+local timerWhirlingCorruption		= mod:NewBuffActiveTimer(9, 144985, nil, false)
 local timerTouchOfYShaarjCD			= mod:NewCDCountTimer(45, 145071)
 local timerGrippingDespair			= mod:NewTargetTimer(15, 145183, nil, mod:IsTank())
 --Starge Three: MY WORLD
@@ -112,10 +112,10 @@ local timerClumpCheck				= mod:NewNextTimer(3, 147126)
 local timerMaliciousBlast			= mod:NewBuffFadesTimer(3, 147235, nil, false)
 local timerFixate					= mod:NewTargetTimer(12, 147665)
 
-local soundWhirlingCorrpution		= mod:NewSound("OptionVersion2", 144985, false)--Depends on strat. common one on 25 man is to never run away from it
+local soundWhirlingCorrpution		= mod:NewSound(144985, false)--Depends on strat. common one on 25 man is to never run away from it
 local countdownPowerIronStar		= mod:NewCountdown(16.5, 144616)
 local countdownWhirlingCorruption	= mod:NewCountdown(49.5, 144985)
-local countdownTouchOfYShaarj		= mod:NewCountdown("Alt45", 145071, false)--Off by default only because it's a cooldown and it does have a 45-48sec variation
+local countdownTouchOfYShaarj		= mod:NewCountdown("AltTwo45", 145071)--Off by default only because it's a cooldown and it does have a 45-48sec variation
 local countdownRealm				= mod:NewCountdownFades(60.5, "ej8305", nil, nil, 10)
 local countdownBombardment			= mod:NewCountdown(55, 147120)
 local countdownBombardmentEnd		= mod:NewCountdownFades("Alt13", 147120)

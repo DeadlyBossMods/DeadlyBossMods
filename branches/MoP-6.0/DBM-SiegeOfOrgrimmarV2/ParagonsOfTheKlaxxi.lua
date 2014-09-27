@@ -37,7 +37,7 @@ local warnDeathFromAbove			= mod:NewTargetAnnounce(142232, 3)
 local warnReave						= mod:NewCastAnnounce(148676, 3)
 --Xaril the Poisoned-Mind
 local warnToxicInjection			= mod:NewSpellAnnounce(142528, 3)
-local warnCausticBlood				= mod:NewSpellAnnounce("OptionVersion2", 142315, 4, nil, mod:IsTank())
+local warnCausticBlood				= mod:NewSpellAnnounce(142315, 4, nil, mod:IsTank())
 mod:AddBoolOption("warnToxicCatalyst", true, "announce")
 local warnToxicCatalystBlue			= mod:NewCastAnnounce(142725, 4, nil, nil, nil, false)
 local warnToxicCatalystRed			= mod:NewCastAnnounce(142726, 4, nil, nil, nil, false)
@@ -100,10 +100,10 @@ local yellCatalystGreen				= mod:NewYell(142730, nil, nil, false)
 --Kaz'tik the Manipulator
 local specWarnMesmerize				= mod:NewSpecialWarningYou(142671)
 local specWarnMesmerizeOther		= mod:NewSpecialWarningTarget(142671, false)--Person who grabs korven's amber wants this
-local yellMesmerize					= mod:NewYell("OptionVersion2", 142671)
+local yellMesmerize					= mod:NewYell(142671)
 local specWarnKunchongs				= mod:NewSpecialWarningSwitch("ej8043", mod:IsDps())
 --Korven the Prime
-local specWarnShieldBash			= mod:NewSpecialWarningSpell("OptionVersion2", 143974, mod:IsTank())
+local specWarnShieldBash			= mod:NewSpecialWarningSpell(143974, mod:IsTank())
 local specWarnShieldBashOther		= mod:NewSpecialWarningTarget(143974, mod:IsTank() or mod:IsHealer())
 local specWarnEncaseInAmber			= mod:NewSpecialWarningTarget(142564, mod:IsDps())--Better than switch because on heroic, you don't actually switch to amber, you switch to a NON amber target. Plus switch gives no targetname
 --Iyyokuk the Lucid
@@ -116,14 +116,14 @@ local specWarnFlash					= mod:NewSpecialWarningYou("ej8058")--Flash is name of h
 local specWarnFlashNear				= mod:NewSpecialWarningClose("ej8058")
 local specWarnWhirlingNear			= mod:NewSpecialWarningClose(143701)--Whirling is name of debuff applied if you get hit by flash (avoidable) No special warning needed for on YOU, but special warning needed if near you to avoid damage
 local yellFlash						= mod:NewYell("ej8058")
-local yellWhirling					= mod:NewYell("OptionVersion2", 143701, nil, false)
+local yellWhirling					= mod:NewYell(143701, nil, false)
 local specWarnHurlAmber				= mod:NewSpecialWarningSpell(143759, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
 local specWarnCausticAmber			= mod:NewSpecialWarningMove(143735)--Stuff on the ground
 --Skeer the Bloodseeker
 local specWarnBloodletting			= mod:NewSpecialWarningSwitch(143280, not mod:IsHealer())
 --Rik'kal the Dissector
 local specWarnMutate				= mod:NewSpecialWarningYou(143337)
-local specWarnParasiteFixate		= mod:NewSpecialWarningYou("OptionVersion2", 143358, false)
+local specWarnParasiteFixate		= mod:NewSpecialWarningYou(143358, false)
 local specWarnInjection				= mod:NewSpecialWarningSpell(143339, mod:IsTank(), nil, nil, 3)
 local specWarnMoreParasites			= mod:NewSpecialWarning("specWarnMoreParasites", mod:IsTank())
 --Hisek the Swarmkeeper
@@ -151,12 +151,12 @@ local timerInsaneCalculation		= mod:NewBuffActiveTimer(15, 142808)
 local timerInsaneCalculationCD		= mod:NewCDTimer(25, 142416)--25 is minimum but variation is wild (25-50 second variation)
 --Ka'roz the Locust
 local timerFlashCD					= mod:NewCDTimer(62, 143701)
-local timerWhirling					= mod:NewBuffFadesTimer("OptionVersion2", 5, 143701, nil, false)
+local timerWhirling					= mod:NewBuffFadesTimer(5, 143701, nil, false)
 local timerHurlAmberCD				= mod:NewCDTimer(62, 143759)--TODO< verify cd on spell itself. in my logs he died after only casting it once every time.
 --Skeer the Bloodseeker
 local timerBloodlettingCD			= mod:NewCDTimer(35, 143280)--35-65 variable. most of the time it's around 42 range
 --Rik'kal the Dissector
-local timerMutate					= mod:NewBuffFadesTimer("OptionVersion2", 20, 143337, nil, false)
+local timerMutate					= mod:NewBuffFadesTimer(20, 143337, nil, false)
 local timerMutateCD					= mod:NewCDCountTimer(31.5, 143337)
 local timerInjectionCD				= mod:NewNextTimer(9.5, 143339, nil, mod:IsTank())
 --Hisek the Swarmkeeper

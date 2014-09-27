@@ -56,7 +56,7 @@ local specWarnSelfDoubtOther			= mod:NewSpecialWarningTaunt(146124)--Stack warni
 local specWarnBlindHatred				= mod:NewSpecialWarningSpell(145226, nil, nil, nil, 2)
 local specWarnManifestation				= mod:NewSpecialWarningSwitch("ej8232", not mod:IsHealer())--Unleashed Manifestation of Corruption
 local specWarnManifestationSoon			= mod:NewSpecialWarningSoon("ej8232", not mod:IsHealer(), nil, nil, 2)--WHen the ones die inside they don't spawn right away, there is like a 5 second lag.
-local specWarnResidualCorruption		= mod:NewSpecialWarningSpell("OptionVersion2", 145073, false)--spammy. but sometimes needed.
+local specWarnResidualCorruption		= mod:NewSpecialWarningSpell(145073, false)--spammy. but sometimes needed.
 --Test of Serenity (DPS)
 local specWarnTearReality				= mod:NewSpecialWarningMove(144482)
 --Test of Reliance (Healer)
@@ -72,7 +72,7 @@ local specWarnPiercingCorruption		= mod:NewSpecialWarningSpell(144657)
 --Amalgam of Corruption
 local timerCombatStarts					= mod:NewCombatTimer(25)
 local timerUnleashedAngerCD				= mod:NewCDTimer(11, 145216, nil, mod:IsTank())
-local timerBlindHatred					= mod:NewBuffActiveTimer("OptionVersion3", 30, 145226, nil, mod:IsHealer())
+local timerBlindHatred					= mod:NewBuffActiveTimer(30, 145226, nil, mod:IsHealer())
 local timerBlindHatredCD				= mod:NewNextTimer(30, 145226)
 --All Tests
 local timerLookWithin					= mod:NewBuffFadesTimer(60, "ej8220")

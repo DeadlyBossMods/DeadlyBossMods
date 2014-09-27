@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 )
 
 --Sha of Pride
-local warnGiftOfTitans			= mod:NewTargetAnnounce("OptionVersion2", 144359, 1, nil, mod:IsHealer())
+local warnGiftOfTitans			= mod:NewTargetAnnounce(144359, 1, nil, mod:IsHealer())
 local warnSwellingPride			= mod:NewCountAnnounce(144400, 3)
 local warnMark					= mod:NewTargetAnnounce(144351, 3, nil, mod:IsHealer())
 local warnWoundedPride			= mod:NewTargetAnnounce(144358, 4, nil, mod:IsTank() or mod:IsHealer())
@@ -28,9 +28,9 @@ local warnBanishment			= mod:NewTargetAnnounce(145215, 3)--Heroic
 local warnWeakenedResolve		= mod:NewTargetAnnounce(147207, 2, nil, false)--Heroic
 local warnUnleashed				= mod:NewSpellAnnounce(144832, 3)--Phase 2
 --Pride / These 5 warnings can be show at same time. Can be extremely spam. Need to throttle these warnings. (core changes not enough)
-local warnBurstingPride			= mod:NewTargetAnnounce("OptionVersion2", 144911, 2, nil, false)--25-49 Energy (off by default, who has them isn't as relevant as to where they are
+local warnBurstingPride			= mod:NewTargetAnnounce(144911, 2, nil, false)--25-49 Energy (off by default, who has them isn't as relevant as to where they are
 local warnProjection			= mod:NewTargetAnnounce(146822, 3)--50-74 Energy (VERY important who has)
-local warnAuraOfPride			= mod:NewTargetAnnounce("OptionVersion2", 146817, 3, nil, false)--75-99 Energy (not important who has them)
+local warnAuraOfPride			= mod:NewTargetAnnounce(146817, 3, nil, false)--75-99 Energy (not important who has them)
 local warnOvercome				= mod:NewTargetAnnounce(144843, 3)--100 Energy (pre mind control) Also very important who has
 local warnOvercomeMC			= mod:NewTargetAnnounce(605, 4)--Mind control version (use priest mind control spellid to discribe. because have same spell name in pre-warning)
 --Manifestation of Pride
@@ -38,8 +38,8 @@ local warnManifestation			= mod:NewSpellAnnounce("ej8262", 3, "Interface\\Icons\
 local warnMockingBlast			= mod:NewSpellAnnounce(144379, 3, nil, false)
 
 --Sha of Pride
-local specWarnGiftOfTitans		= mod:NewSpecialWarningYou("OptionVersion2", 144359, mod:IsHealer())
-local yellGiftOfTitans			= mod:NewYell("OptionVersion2", 146594, nil, false)
+local specWarnGiftOfTitans		= mod:NewSpecialWarningYou(144359, mod:IsHealer())
+local yellGiftOfTitans			= mod:NewYell(146594, nil, false)
 local specWarnSwellingPride		= mod:NewSpecialWarningCount(144400, nil, nil, nil, 2)
 local specWarnWoundedPride		= mod:NewSpecialWarningYou(144358)--Cast/personal warning
 local specWarnWoundedPrideOther	= mod:NewSpecialWarningTaunt(144358)
@@ -50,7 +50,7 @@ local yellCorruptedPrison		= mod:NewYell(144574, nil, false)
 --Pride
 local specWarnBurstingPride		= mod:NewSpecialWarningMove(144911)--25-49 Energy
 local specWarnBurstingPrideNear	= mod:NewSpecialWarningClose(144911)
-local yellBurstingPride			= mod:NewYell("OptionVersion2", 144911, nil, false)
+local yellBurstingPride			= mod:NewYell(144911, nil, false)
 local specWarnProjection		= mod:NewSpecialWarningYou(146822, nil, nil, nil, 3)--50-74 Energy
 local specWarnAuraOfPride		= mod:NewSpecialWarningYou(146817)--75-99 Energy
 local yellAuraOfPride			= mod:NewYell(146818, nil, false)
@@ -61,7 +61,7 @@ local specWarnManifestation		= mod:NewSpecialWarningSwitch("ej8262", not mod:IsH
 local specWarnMockingBlast		= mod:NewSpecialWarningInterrupt(144379)
 
 --Sha of Pride
-local timerGiftOfTitansCD		= mod:NewNextTimer("OptionVersion2", 25.5, 144359, nil, not mod:IsTank())--NOT cast or tied or boss, on it's own. Off for tanks because it can't target tanks, ever
+local timerGiftOfTitansCD		= mod:NewNextTimer(25.5, 144359, nil, not mod:IsTank())--NOT cast or tied or boss, on it's own. Off for tanks because it can't target tanks, ever
 --These abilitie timings are all based on boss1 UNIT_POWER. All timers have a 1 second variance
 local timerMarkCD				= mod:NewNextTimer(20.5, 144351, nil, mod:IsHealer())
 local timerSelfReflectionCD		= mod:NewNextTimer(25, 144800)
@@ -78,7 +78,7 @@ local timerProjection			= mod:NewCastTimer(6, 146822)
 local berserkTimer				= mod:NewBerserkTimer(600)
 
 local countdownSwellingPride	= mod:NewCountdown(75.5, 144400)
-local countdownReflection		= mod:NewCountdown("OptionVersion2", "Alt25", 144800)
+local countdownReflection		= mod:NewCountdown("Alt25", 144800)
 
 mod:AddInfoFrameOption("ej8255")
 mod:AddSetIconOption("SetIconOnMark", 144351, false)

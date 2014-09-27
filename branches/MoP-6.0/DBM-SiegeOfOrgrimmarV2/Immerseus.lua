@@ -24,22 +24,22 @@ mod:RegisterEventsInCombat(
 local warnBreath						= mod:NewSpellAnnounce(143436, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnShaBolt						= mod:NewSpellAnnounce(143295, 3, nil, false)
 local warnSwirl							= mod:NewSpellAnnounce(143309, 4)
-local warnSplit							= mod:NewSpellAnnounce("OptionVersion2", 143020, 2, nil, false)--Blizzard ones are loud enough
-local warnReform						= mod:NewSpellAnnounce("OptionVersion2", 143469, 2, nil, false)--These are redundant, but some DO like them for the DBM sound vs blizz one so not completely removed
+local warnSplit							= mod:NewSpellAnnounce(143020, 2, nil, false)--Blizzard ones are loud enough
+local warnReform						= mod:NewSpellAnnounce(143469, 2, nil, false)--These are redundant, but some DO like them for the DBM sound vs blizz one so not completely removed
 local warnSwellingCorruptionCast		= mod:NewSpellAnnounce(143578, 2, 143574)--Heroic (this is the boss spellcast trigger spell NOT personal debuff warning)
 
 local specWarnBreath					= mod:NewSpecialWarningSpell(143436, mod:IsTank())
 local specWarnShaSplash					= mod:NewSpecialWarningMove(143297)
 local specWarnSwirl						= mod:NewSpecialWarningSpell(143309, nil, nil, nil, 2)
-local specWarnSwellingCorruptionTarget	= mod:NewSpecialWarningTarget("OptionVersion2", 143578, false)
-local specWarnSwellingCorruptionFades	= mod:NewSpecialWarningFades("OptionVersion2", 143578, false)
+local specWarnSwellingCorruptionTarget	= mod:NewSpecialWarningTarget(143578, false)
+local specWarnSwellingCorruptionFades	= mod:NewSpecialWarningFades(143578, false)
 
 local timerBreathCD						= mod:NewCDTimer(35, 143436, nil, mod:IsTank() or mod:IsHealer())--35-65 second variation wtf?
 local timerSwirl						= mod:NewBuffActiveTimer(13, 143309)
 local timerShaBoltCD					= mod:NewCDTimer(6, 143295, nil, false)--every 6-20 seconds (yeah it variates that much)
 local timerSwirlCD						= mod:NewCDTimer(48.5, 143309)
-local timerShaResidue					= mod:NewBuffFadesTimer("OptionVersion2", 10, 143459, nil, false)
-local timerPurifiedResidue				= mod:NewBuffFadesTimer("OptionVersion2", 15, 143524, nil, false)
+local timerShaResidue					= mod:NewBuffFadesTimer(10, 143459, nil, false)
+local timerPurifiedResidue				= mod:NewBuffFadesTimer(15, 143524, nil, false)
 local timerSwellingCorruptionCD			= mod:NewCDTimer(75, 143578, nil, nil, nil, 143574)
 
 local berserkTimer						= mod:NewBerserkTimer(605)
