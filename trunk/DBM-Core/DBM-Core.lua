@@ -7665,7 +7665,7 @@ do
 			if maxIcon and iconSet == maxIcon then
 				self:SetIconBySortedTable(startIcon, reverseIcon, returnFunc)
 			elseif self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				self:ScheduleMethod(delay or 0.5, "SetIconBySortedTable", startIcon, maxIcon, returnFunc)
+				self:ScheduleMethod(delay or 0.5, "SetIconBySortedTable", startIcon, reverseIcon, returnFunc)
 			end
 		end
 	end
