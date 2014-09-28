@@ -75,7 +75,7 @@ local mythicTrains = {
 	[10] = Reinforcements.." (2, 3)",--+20 after 9
 	[11] = Train.." (1, 4)",--+15 after 10.
 	[12] = Train.." (2, 4)",--+15 after 11
-	[13] = UNKNOWN,--+15 after 12
+	[13] = UNKNOWN,--+15/20? after 12
 }
 local otherTrains = {
 	[1] = Train.." (4)",--+12 after pull
@@ -102,6 +102,8 @@ local otherTrains = {
 	[20] = Cannon.." (1, 4)",--+30 after 19
 	[21] = Train.." (2)",--+10 after 20
 	[22] = Train.." (3)",--+25 after 21
+	[23] = Train.." (2, 3)",--+30 after 22
+	[24] = Train.." (3)",--+15 after 22
 }
 
 function mod:OnCombatStart(delay)
@@ -216,7 +218,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			--Next Train 40 seconds after: 9
 			if count == 2 or count == 4 or count == 6 or count == 18 then
 				timerTrainCD:Start(10, count+1)
-			elseif count == 1 or count == 10 or count == 14 or count == 15 or count == 20 then
+			elseif count == 1 or count == 10 or count == 14 or count == 15 or count == 20 or count == 23 then
 				timerTrainCD:Start(15, count+1)
 			elseif count == 3 or count == 5 or count == 7 or count == 11 or count == 16 then
 				timerTrainCD:Start(20, count+1)
@@ -224,7 +226,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				timerTrainCD:Start(25, count+1)
 			elseif count == 21 then
 				timerTrainCD:Start(30, count+1)
-			elseif count == 19 then
+			elseif count == 19 or count == 22 then
 				timerTrainCD:Start(35, count+1)
 			elseif count == 9 then
 				timerTrainCD:Start(45, count+1)
