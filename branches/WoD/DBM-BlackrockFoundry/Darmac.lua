@@ -9,8 +9,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 154975 155198",
-	"SPELL_CAST_SUCCESS 155247 155399",
+	"SPELL_CAST_START 155198",
+	"SPELL_CAST_SUCCESS 155247 155399 154975",
 	"SPELL_AURA_APPLIED 154960 155458 155459 155460 154981 155030 155236 155462",
 	"SPELL_AURA_APPLIED_DOSE 155030 155236",
 	"SPELL_AURA_REMOVED 154960",
@@ -51,7 +51,7 @@ local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, not mod:IsHeal
 local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, mod:IsRanged(), nil, nil, 2)
 local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
-local specWarnRendandTear			= mod:NewSpecialWarningMove(162275, mod:IsMelee())--Always returns to melee
+local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, mod:IsMelee())--Always returns to melee
 local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil, nil, 2)--Still iffy on it
 local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2)
 local specWarnEpicenter				= mod:NewSpecialWarningSpell(162277, nil, nil, nil, 2)
@@ -59,17 +59,17 @@ local specWarnEpicenter				= mod:NewSpecialWarningSpell(162277, nil, nil, nil, 2
 local specWarnSavageHowl			= mod:NewSpecialWarningDispel(155198, mod:IsHealer() or mod:IsTank() or mod:CanRemoveEnrage())
 local specWarnSearingFangs			= mod:NewSpecialWarningStack(155030, nil, 12)--Stack count assumed, may be 2
 local specWarnSearingFangsOther		= mod:NewSpecialWarningTaunt(155030)--No evidence of this existing ANYWHERE in any logs. removed? Bugged?
-local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, nil, 3)--Stack count assumed, may be less
+local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, nil, 3)--6-9 second cd, 15 second duration, 3 is smallest safe swap, sometimes 2 when favorable RNG
 local specWarnCrushArmorOther		= mod:NewSpecialWarningTaunt(155236)
 local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil, 2)
 
 --Boss basic attacks
 local timerPinDownCD				= mod:NewCDTimer(20.5, 155365)--Every 20 seconds unless delayed by other things. CD timer used for this reason
-local timerCallthePackCD			= mod:NewCDTimer(20.5, 154975)--Every 20-42 now
+local timerCallthePackCD			= mod:NewCDTimer(25.5, 154975)--Every 25-42 now
 --Boss gained abilities (beast deaths grant boss new abilities)
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
 local timerSuperheatedShrapnelCD	= mod:NewCDTimer(15, 155499)--15-30sec variation observed.
-local timerTantrumCD				= mod:NewCDTimer(25, 162275)--Not a large enough sample size, could be 20 like other abilities
+local timerTantrumCD				= mod:NewCDCountTimer(30, 162275)--30-35
 --local timerEpicenterCD			= mod:NewCDTimer(25, 162277)
 --Beast abilities (living)
 local timerSavageHowlCD				= mod:NewCDTimer(25, 155198)
@@ -114,7 +114,7 @@ local function updateBeastTimers(all, spellId)
 		timerSuperheatedShrapnelCD:Start(9)--Small sample size. Just keep subtracking if shorter times are observed.
 	end
 	if mod.vb.ElekkAbilities and (all or mod:IsMythic() and spellId == 155460) then--Ironcrusher
-		timerTantrumCD:Start(16)--Small sample size. Just keep subtracking if shorter times are observed.
+		timerTantrumCD:Start(16, mod.vb.tantrumCount+1)--Small sample size. Just keep subtracking if shorter times are observed.
 	end
 	if mod.vb.FaultlineAbilites and (all or mod:IsMythic() and spellId == 155462) then--Faultline
 		--Mythic Stuff
@@ -129,8 +129,8 @@ function mod:OnCombatStart(delay)
 	self.vb.mounted = false
 	self.vb.tantrumCount = 0
 	table.wipe(activeBossGUIDS)
-	timerCallthePackCD:Start(8-delay)
-	timerPinDownCD:Start(12.5-delay)
+	timerCallthePackCD:Start(9.5-delay)--Time for cast finish, not cast start, because only cast finish is sure thing. cast start can be interrupted
+	timerPinDownCD:Start(11-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3)
 	end
@@ -144,11 +144,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 154975 then
-		warnCallthePack:Show()
-		specWarnCallthePack:Show()
-		timerCallthePackCD:Start()
-	elseif spellId == 155198 then
+	if spellId == 155198 then
 		warnSavageHowl:Show()
 		specWarnSavageHowl:Schedule(1.5, args.sourceName)
 		timerSavageHowlCD:Start()
@@ -162,6 +158,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerStampedeCD:Start()
 	elseif spellId == 155399 then
 		timerConflagCD:Start()
+	elseif spellId == 154975 then--Moved to success because spell cast start is interrupted, a lot, and no sense in announcing it if he didn't finish it. if he self interrupts it can be delayed as much as 15 seconds.
+		warnCallthePack:Show()
+		specWarnCallthePack:Show()
+		timerCallthePackCD:Start()
 	end
 end
 
@@ -170,7 +170,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 154960 then
 		warnPinDownTargets:CombinedShow(0.5, args.destName)
 		if self.Options.SetIconOnSpear then
-			self:SetSortedIcon(0.5, args.destName, 8, nil, true)--Bugged?
+			self:SetSortedIcon(1, args.destName, 8, nil, true)--Bugged, still doesn't set more than 1 icon on all targets. Not sure why. It's like reverseIcon isn't working?
 		end
 		if args:IsPlayer() then
 			yellPinDown:Yell()
@@ -194,13 +194,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 155236 then
 		local amount = args.amount or 1
 		warnCrushArmor:Show(args.destName, amount)
-		if amount >= 3 then
-			if args:IsPlayer() then
-				specWarnCrushArmor:Show(amount)
-			else
-				if not UnitDebuff("player", GetSpellInfo(155236)) and not UnitIsDeadOrGhost("player") then
-					specWarnCrushArmorOther:Show(args.destName)
-				end
+		if amount >= 3 and args:IsPlayer() then
+			specWarnCrushArmor:Show(amount)
+		elseif amount >= 2 and not args:IsPlayer() then--Swap at 2 WHEN POSSIBLE but 50/50 you have to go to 3.
+			if not UnitDebuff("player", GetSpellInfo(155236)) and not UnitIsDeadOrGhost("player") then
+				specWarnCrushArmorOther:Show(args.destName)
 			end
 		end
 	elseif args:IsSpellID(155458, 155459, 155460, 155462) then
@@ -262,7 +260,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				elseif cid == 76945 then--Ironcrusher
 					self.vb.ElekkAbilities = true
 					timerStampedeCD:Start(15)
-					timerTantrumCD:Start(30)
+					timerTantrumCD:Start(30, self.vb.tantrumCount+1)
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerRendandTearCD:Cancel()
 					timerSuperheatedShrapnelCD:Cancel()
@@ -331,7 +329,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self.vb.tantrumCount == 3 then
 			self.vb.tantrumCount = 0
 		end
-		timerTantrumCD:Start(37)--Initial data supports this having a much longer CD on boss which is why two IDs are split
+		timerTantrumCD:Start(37, self.vb.tantrumCount+1)--Initial data supports this having a much longer CD on boss which is why two IDs are split
 	elseif spellId == 162277 then--Assume that like his other abilities, isn't in combat log.
 		warnEpicenter:Show()
 		specWarnEpicenter:Show()

@@ -36,7 +36,7 @@ local specWarnEnkindleOther			= mod:NewSpecialWarningTaunt(155921)
 --Adds
 local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt(160140, not mod:IsHealer())
 local specWarnIronbellow			= mod:NewSpecialWarningSpell(163753, nil, nil, nil, 2)
-local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481, nil, nil, nil, 3)
+local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481)
 local yellDelayedSiegeBomb			= mod:NewYell(159481)
 local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", not mod:IsHealer())
 --local specWarnObliteration		= mod:NewSpecialWarningMove(156494)--Debuff doesn't show in combat log, and dot persists after moving out of it so warning is pretty useless right now. TODO, see if UNIT_AURA player type check can work.
@@ -49,7 +49,7 @@ local timerTrainCD					= mod:NewNextCountTimer(15, 176312)
 --local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140)
 local timerIronbellowCD				= mod:NewCDTimer(12, 163753)
 
-local countdownTrain				= mod:NewCountdown(15, 176312)
+local countdownTrain				= mod:NewCountdown(5, 176312)
 
 mod.vb.trainCount = 0
 local Train = GetSpellInfo(174806)
@@ -58,7 +58,10 @@ local Reinforcements = EJ_GetSectionInfo(9537)
 local ManOArms = EJ_GetSectionInfo(9549)
 local Deforester = EJ_GetSectionInfo(10329)
 
---Shit code. I lack patience or time to do it cleaner.
+--Crap code. I lack patience or time to do it cleaner.
+--Note, all trains spawn 5 second after yell for that train
+--this means that for 5 second cd trains you may see a yell for NEXT train as previous train is showing up. Do not confuse this!
+--Also be aware that older beta videos are worng, blizz has changed train orders few times, so don't try to fill in missing data by putting "thogar" into youtube unless it's a RECENT video.
 local mythicTrains = {
 	[1] = ManOArms.." (4)",--+7 after pull
 	[2] = Deforester.." (1)",--+5 after 1
@@ -74,8 +77,32 @@ local mythicTrains = {
 	[12] = Train.." (2, 4)",--+15 after 11
 	[13] = UNKNOWN,--+15 after 12
 }
---Trains are either 20, 15 or 5.
---Also be aware that some videos WILL NOT match the above. Blizzard hotfixed order twice during testing. Above is the final order for later pulls. If first train is not manoarms, it's old, if second train is not deforester, it's old.
+local otherTrains = {
+	[1] = Train.." (4)",--+12 after pull
+	[2] = Train.." (2)",--+10 after 1
+	[3] = Reinforcements.." (1)",--+5 after 2
+	[4] = Train.." (3)",--+15 after 3
+	[5] = Cannon.." (4)",--+5 after 4
+	[6] = Train.." (2)",--+15 after 5
+	[7] = ManOArms.." (3)",--+5 after 6
+	[8] = Train.." (1)",--+15 after 7
+	[9] = ManOArms.." (2) "..Reinforcements.." (3)",--+15 after 8
+	[10] = Train.." (1, 4)",--+40 after 9
+	[11] = Cannon.." (1)",--+10 after 10
+	[12] = Train.." (2)",--+15 after 11
+	[13] = Reinforcements.." (4)",--+10 after 12
+	[14] = Train.." (3)",--+20 after 13
+	[15] = Train.." (2)",--+10 after 14
+	[16] = Train.." (1)",--+10 after 15
+	[17] = ManOArms.." (2, 4)",--+15 after 16
+	[18] = Train.." (1)",--+20 after 17
+	--WARNING, Train 19 did not have a yell
+	[19] = Train.." (3)",--+5 after 18
+	--WARNING, Train 19 did not have a yell
+	[20] = Cannon.." (1, 4)",--+30 after 19
+	[21] = Train.." (2)",--+10 after 20
+	[22] = Train.." (3)",--+25 after 21
+}
 
 function mod:OnCombatStart(delay)
 	self.vb.trainCount = 0
@@ -86,10 +113,9 @@ function mod:OnCombatStart(delay)
 		self.Options.ShowedThogarMessage = true
 	end
 	if self:IsMythic() then
-		timerTrainCD:Start(7-delay, 1)
-		countdownTrain:Start(7-delay)
+		timerTrainCD:Start(12-delay, 1)
 	else
-		--timerTrainCD:Start()
+		timerTrainCD:Start(17-delay, 1)
 	end
 end
 
@@ -107,7 +133,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnCauterizingBolt:Show(args.sourceName)
 	elseif spellId == 163753 then
 		warnIronBellow:Show()
-		specWarnIronbellow:Show()
+		if self:AntiSpam() then
+			specWarnIronbellow:Show()
+		end
 		timerIronbellowCD:Start(12, args.sourceGUID)
 	end
 end
@@ -153,26 +181,57 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		self.vb.trainCount = self.vb.trainCount + 1
 		local count = self.vb.trainCount
 		warnTrain:Show(count)
+		countdownTrain:Start()--All trains are delayed 5 seconds from yell now, so we can just put 5 second countdown here.
 		if self:IsMythic() then
 			if count >= 12 then
-				print("Train Set: "..count..". DBM has no train data beyond this point. Write down lane(s) this train spawned on and what was on it and train set number and give it to us")
+				print("Train Set: "..count..". DBM has no train data beyond this point. Write down lane(s) trains come from in 5 seconds with train set number and give it to us")
 				return
 			end
+			--+5 added to all timers so timers are for train coming down the lane.
+			--yes this means sometimes two timers up at a time instead of one. this is fine, fight doesn't have many timers.
 			if count == 1 or count == 2 or count == 6 or count == 7 then
-				timerTrainCD:Start(5, count+1)
-				countdownTrain:Start(5)
+				timerTrainCD:Start(10, count+1)
 			elseif count == 9 then
-				timerTrainCD:Start(20, count+1)
-				countdownTrain:Start(20)
+				timerTrainCD:Start(25, count+1)
 			else
-				timerTrainCD:Start(15, count+1)
-				countdownTrain:Start(15)
+				timerTrainCD:Start(20, count+1)
 			end
 			if count == 1 then--I'm sure they spawn again sometime later, find that data
 				specWarnManOArms:Show()
 			end
 		else
-			--Non mythic train order stuffs
+			if count >= 18 then
+				print("Train set 19 was missing a boss yell in my first test. As such, all further timers are disabled until it's verified that it's ALWAYS missing (so I can code around this bug), or blizzard fixes it .")
+				if count >= 23 then
+					print("Train Set: "..count..". DBM has no train data beyond this point. Write down lane(s) trains come from in 5 seconds with train set number and give it to us")
+				end
+				return
+			end
+			--Next Train 5 seconds after: 2, 4, 6, 18
+			--Next Train 10 seconds after: 1, 10, 14, 15, 20
+			--Next Train 15 seconds after: 3, 5, 7, 11, 16
+			--Next Train 20 seconds after: 13, 17
+			--Next Train 25 seconds after: 21
+			--Next Train 30 seconds after: 19
+			--Next Train 40 seconds after: 9
+			if count == 2 or count == 4 or count == 6 or count == 18 then
+				timerTrainCD:Start(10, count+1)
+			elseif count == 1 or count == 10 or count == 14 or count == 15 or count == 20 then
+				timerTrainCD:Start(15, count+1)
+			elseif count == 3 or count == 5 or count == 7 or count == 11 or count == 16 then
+				timerTrainCD:Start(20, count+1)
+			elseif count == 13 or count == 17 then
+				timerTrainCD:Start(25, count+1)
+			elseif count == 21 then
+				timerTrainCD:Start(30, count+1)
+			elseif count == 19 then
+				timerTrainCD:Start(35, count+1)
+			elseif count == 9 then
+				timerTrainCD:Start(45, count+1)
+			end
+			if count == 7 or count == 9 or count == 17 then--I'm sure they spawn again sometime later, find that data
+				specWarnManOArms:Show()
+			end
 		end
 	end
 end
