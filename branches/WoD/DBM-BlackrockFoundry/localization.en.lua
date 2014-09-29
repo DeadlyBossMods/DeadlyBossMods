@@ -86,8 +86,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1203)
 
 L:SetMiscLocalization({
-	shipMessage		= "prepares to man the Dreadnaught's Main Cannon!",
-	warningNotice	= "Do to Rapid Fire & Blood Ritual targeting being hidden from combat log and unit aura by Blizzard, warnings for these spells have to rely on boss emotes sent privately to the targeted player and passed onto rest of the raid by that players boss mod. As such, warnings for these abilities rely on everyone running a boss mod to recieve alerts"
+	shipMessage		= "prepares to man the Dreadnaught's Main Cannon!"
 })
 
 --------------------------
