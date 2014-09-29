@@ -4005,7 +4005,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 				watchFrameRestore = true
 			end
 		end
-		if DBM.Options.HideTooltips then
+		if DBM.Options.HideTooltips and not mod.inScenario then
 			--Better or cleaner way?
 			GameTooltip.Temphide = function() GameTooltip:Hide() end; GameTooltip:SetScript("OnShow", GameTooltip.Temphide)
 		end
@@ -4412,7 +4412,7 @@ function DBM:EndCombat(mod, wipe)
 				ObjectiveTrackerFrame:Show()
 				watchFrameRestore = false
 			end
-			if DBM.Options.HideTooltips then
+			if DBM.Options.HideTooltips and not mod.inScenario then
 				--Better or cleaner way?
 				GameTooltip:SetScript("OnShow", GameTooltip.Show)
 			end
