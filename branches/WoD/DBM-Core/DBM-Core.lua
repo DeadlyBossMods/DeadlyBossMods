@@ -355,9 +355,6 @@ local function sendSync(prefix, msg)
 			SendAddonMessage("D4", prefix .. "\t" .. msg, "WHISPER", playerName)
 		end
 	end
-	if (savedDifficulty == "worldboss") and prefix ~= "C" then--World boss syncs to channel so we can catch things like combat ending. We filter combat start though cause that is not good to sync to whole zone.
-		SendAddonMessage("D4", prefix .. "\t" .. msg, "CHANNEL", "General")
-	end
 end
 
 local function strFromTime(time)
@@ -4118,7 +4115,6 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			if IsInGuild() then
 				SendAddonMessage("D4", "WBE\t"..modId.."\t"..playerRealm.."\t"..startHp.."\t7\t"..name, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 			end
-			SendAddonMessage("D4", "WBE\t"..modId.."\t"..playerRealm.."\t"..startHp.."\t7\t"..name, "CHANNEL", "General")
 			local _, numBNetOnline = BNGetNumFriends()
 			for i = 1, numBNetOnline do
 				local sameRealm = false
@@ -4379,7 +4375,6 @@ function DBM:EndCombat(mod, wipe)
 				if IsInGuild() then
 					SendAddonMessage("D4", "WBD\t"..modId.."\t"..playerRealm.."\t7\t"..name, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 				end
-				SendAddonMessage("D4", "WBD\t"..modId.."\t"..playerRealm.."\t7\t"..name, "CHANNEL", "General")
 				local _, numBNetOnline = BNGetNumFriends()
 				for i = 1, numBNetOnline do
 					local sameRealm = false

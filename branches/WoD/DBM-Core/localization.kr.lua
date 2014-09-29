@@ -25,18 +25,21 @@ DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM의 전술 목표 아이
 
 DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가하였습니다. 행운을 빕니다! :)"
+DBM_CORE_GUILD_COMBAT_STARTED		= "길드원이 %s 전투를 시작하였습니다."
 DBM_CORE_SCENARIO_STARTED			= "%s 시작됨. 행운을 빕니다! :)";
 DBM_CORE_SCENARIO_STARTED_IN_PROGRESS	= "%s 진행 도중 참가하였습니다. 행운을 빕니다! :)"
 DBM_CORE_BOSS_DOWN					= "%s 전투에서 승리하였습니다! (전투 시간: %s)"
 DBM_CORE_BOSS_DOWN_I				= "%s 전투에서 승리하였습니다! (이 난이도에서 승리: %d회)"
 DBM_CORE_BOSS_DOWN_L				= "%s 전투에서 승리하였습니다! (전투 시간: %s, 최종 전투 기록: %s, 가장 빨랐던 기록: %s, 이 난이도에서 승리: %d회)"
 DBM_CORE_BOSS_DOWN_NR				= "%s 전투에서 승리하였습니다! (전투 시간: %s) 이 기록은 새로운 기록이군요! (과거 기록: %s, 이 난이도에서 승리: %d회)"
+DBM_CORE_GUILD_BOSS_DOWN			= "길드원이 %s 전투에서 승리하였습니다! (전투시간: %s)"
 DBM_CORE_SCENARIO_COMPLETE			= "%s|1을;를; 완료하였습니다! (소요 시간: %s)"
 DBM_CORE_SCENARIO_COMPLETE_I		= "%s|1을;를; 완료하였습니다! (이 난이도 완료: %d회)"
 DBM_CORE_SCENARIO_COMPLETE_L		= "%s|1을;를; 완료하였습니다! (소요 시간: %s, 최종 소요 시간: %s, 가장 빨랐던 소요 시간: %s. 이 난이도 완료: %d회)"
 DBM_CORE_SCENARIO_COMPLETE_NR		= "%s|1을;를; 완료하였습니다! (소요 시간: %s) 이 기록은 새로운 기록이군요! (과거 기록: %s, 이 난이도 완료: %d회)"
 DBM_CORE_COMBAT_ENDED_AT			= "%s 전투가 종료되었습니다. (전투 종료시 우두머리 체력: %s, 전투 시간: %s)"
 DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s 전투가 종료되었습니다. (전투 종료시 우두머리 체력: %s, 전투 시간: %s, 전멸: %d회)"
+DBM_CORE_GUILD_COMBAT_ENDED_AT		= "길드원이 %s 전투에서 전멸하였습니다. (전투 종료시 우두머리 체력: %s, 전투시간: %s)"
 DBM_CORE_SCENARIO_ENDED_AT			= "%s|1이;가; 종료되었습니다. (소요 시간: %s)"
 DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s|1이;가; 종료되었습니다. (소요 시간: %s, 이 난이도 미완료: %d회)"
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s 전투가 %s 전에 시작되었습니다. 바를 복구 합니다."
@@ -100,6 +103,7 @@ DBM_CORE_UPDATEREMINDER_URL				= "http://www.inven.co.kr/board/powerbbs.php?come
 DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 현재 사용중인 DBM 버전은 지나치게 오래되어 (r%d 가량) 사용하실 수 없습니다. 이것은 당신 및 공격대원에게 잘못된 알림으로 혼동을 주지 않기 위함입니다. 계속 사용하시려면 지금 즉시 최신 버전으로 업데이트하여 주시기 바랍니다."
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "지금 사용하시는 DBM 버전은 이 전투에서 잘못된 경고를 표시합니다. 이 오류는 다음 버전에서 수정되오나, 다음 버전이 없을 경우 최신 alpha 버전으로 업데이트 하면 수정할 수 있습니다."
 DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "경고: DBM 버전이 오래되어 현재 게임 버전에서는 작동하지 않을 것입니다. 당신 또는 같은 공격대원에게 잘못된 알림을 보내거나 게임이 느려지는 것을 막기 위함을 양해하여 주시기 바랍니다. 지금 당장 최신 버전으로 업데이트 하여 주시기 바랍니다. 만약 6.0 베타를 실행 중인데 이 메세지가 보인다면, http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing 에서 6.0 베타 버전을 받으세요."
+DBM_CORE_UPDATEREMINDER_TESTVERSION		= "경고: 현재 게임 버전과 맞지 않는 DBM을 사용중입니다. 현재 게임 버전에 맞는 DBM을 다운로드 받아 다시 설치하시기 바랍니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
