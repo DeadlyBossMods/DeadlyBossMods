@@ -270,6 +270,7 @@ local lastBossDefeat = {}
 local bossuIdFound = false
 local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
+local tooltipsHidden = false
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -4007,6 +4008,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		end
 		if DBM.Options.HideTooltips and not mod.inScenario then
 			--Better or cleaner way?
+			tooltipsHidden = true
 			GameTooltip.Temphide = function() GameTooltip:Hide() end; GameTooltip:SetScript("OnShow", GameTooltip.Temphide)
 		end
 		fireEvent("pull", mod, delay, synced, startHp)
@@ -4412,8 +4414,9 @@ function DBM:EndCombat(mod, wipe)
 				ObjectiveTrackerFrame:Show()
 				watchFrameRestore = false
 			end
-			if DBM.Options.HideTooltips and not mod.inScenario then
+			if tooltipsHidden then
 				--Better or cleaner way?
+				tooltipsHidden = false
 				GameTooltip:SetScript("OnShow", GameTooltip.Show)
 			end
 			--cache table
