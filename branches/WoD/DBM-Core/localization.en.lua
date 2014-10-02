@@ -22,6 +22,8 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "Your current spec is %s. Your current loot choi
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM has detected that you have raid icons turned on in both BigWigs and DBM. Please disable icons in one of them to avoid conflict with your group leader"
 
+DBM_CORE_PROVINGGROUNDS_AD			= "DBM-ProvingGrounds is available for this content. You can find on deadlybossmods.com or on Curse. This message will only display once."
+
 DBM_CORE_COMBAT_STARTED				= "%s engaged. Good luck and have fun! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "Engaged an in progress fight against %s. Good luck and have fun! :)"
 DBM_CORE_GUILD_COMBAT_STARTED		= "%s has been engaged by guild"
