@@ -1539,7 +1539,9 @@ local function CreateOptionsMenu()
 			{	text	= "Koltrane (Male)",value 	= "Kolt"},
 			{	text	= "Pewsey (Male)",value 	= "Pewsey"},
 			{	text	= "Bear (Male Child)",value = "Bear"},
-			{	text	= "None",value 	= "None"},
+			{	text	= "Anshlun (ptBR Male)",value = "Anshlun"},
+			{	text	= "Neryssa (ptBR Female)",value = "Neryssa"},
+			{	text	= "None (Overrides ALL voices)",value 	= "None"},
 		}
 		local CountSoundDropDown = raidwarnoptions:CreateDropdown(L.CountdownVoice, countSounds,
 		DBM.Options.CountdownVoice, function(value)
@@ -1555,6 +1557,8 @@ local function CreateOptionsMenu()
 			{	text	= "Koltrane (Male)",value 	= "Kolt"},
 			{	text	= "Pewsey (Male)",value 	= "Pewsey"},
 			{	text	= "Bear (Male Child)",value = "Bear"},
+			{	text	= "Anshlun (ptBR Male)",value = "Anshlun"},
+			{	text	= "Neryssa (ptBR Female)",value = "Neryssa"},
 		}
 		local CountSoundDropDown2 = raidwarnoptions:CreateDropdown(L.CountdownVoice2, countSounds,
 		DBM.Options.CountdownVoice2, function(value)
