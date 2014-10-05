@@ -2830,7 +2830,8 @@ do
 		end
 	end
 
-	local dummyMod -- dummy mod for the pull sound effect
+	local dummyMod -- dummy mod for the pull timer
+	local dummyMod2 -- dummy mod for the break timer
 	syncHandlers["PT"] = function(sender, timer, lastMapID)
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 			return
@@ -2885,30 +2886,30 @@ do
 			return
 		end
 		timer = tonumber(timer or 0)
-		if not dummyMod then
-			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
+		if not dummyMod2 then
+			dummyMod2 = DBM:NewMod("PullTimerCountdownDummy")
 			DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
-			dummyMod.countdown = dummyMod:NewCountdown(0, 0, nil, nil, nil, true)
-			dummyMod.text = dummyMod:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+			dummyMod2.countdown = dummyMod2:NewCountdown(0, 0, nil, nil, nil, true)
+			dummyMod2.text = dummyMod2:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
 		--Cancel any existing break timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
 		if not DBM.Options.DontShowPT and DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK) then
 			DBM.Bars:CancelBar(DBM_CORE_TIMER_BREAK)
 		end
 		if not DBM.Options.DontPlayPTCountdown then
-			dummyMod.countdown:Cancel()
+			dummyMod2.countdown:Cancel()
 		end
 		if not DBM.Options.DontShowPTCountdownText then
 			DBM:Unschedule(countDownTextDelay)
 			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")--easiest way to nil out timers on TimerTracker frame. This frame just has no actual star/stop functions
 		end
-		dummyMod.text:Cancel()
+		dummyMod2.text:Cancel()
 		if timer == 0 then return end--"/dbm break 0" will strictly be used to cancel the break timer (which is why we let above part of code run but not below)
 		if not DBM.Options.DontShowPT then
 			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
 		if not DBM.Options.DontPlayPTCountdown then
-			dummyMod.countdown:Start(timer)
+			dummyMod2.countdown:Start(timer)
 		end
 		if not DBM.Options.DontShowPTCountdownText then
 			local threshold = DBM.Options.PTCountThreshold
@@ -2919,29 +2920,29 @@ do
 			end
 		end
 		if not DBM.Options.DontShowPTText then
-			dummyMod.text:Show(DBM_CORE_BREAK_START:format(timer/60, sender))
-			if timer/60 > 10 then dummyMod.text:Schedule(timer - 10*60, DBM_CORE_BREAK_MIN:format(10)) end
-			if timer/60 > 5 then dummyMod.text:Schedule(timer - 5*60, DBM_CORE_BREAK_MIN:format(5)) end
-			if timer/60 > 2 then dummyMod.text:Schedule(timer - 2*60, DBM_CORE_BREAK_MIN:format(2)) end
-			if timer/60 > 1 then dummyMod.text:Schedule(timer - 1*60, DBM_CORE_BREAK_MIN:format(1)) end
-			dummyMod.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER)
+			dummyMod2.text:Show(DBM_CORE_BREAK_START:format(timer/60, sender))
+			if timer/60 > 10 then dummyMod2.text:Schedule(timer - 10*60, DBM_CORE_BREAK_MIN:format(10)) end
+			if timer/60 > 5 then dummyMod2.text:Schedule(timer - 5*60, DBM_CORE_BREAK_MIN:format(5)) end
+			if timer/60 > 2 then dummyMod2.text:Schedule(timer - 2*60, DBM_CORE_BREAK_MIN:format(2)) end
+			if timer/60 > 1 then dummyMod2.text:Schedule(timer - 1*60, DBM_CORE_BREAK_MIN:format(1)) end
+			dummyMod2.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER)
 		end
 	end
 	
 	syncHandlers["BTR"] = function(sender, timer)
 		if #inCombat >= 1 then return end
 		timer = tonumber(timer or 0)
-		if not dummyMod then
-			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
+		if not dummyMod2 then
+			dummyMod2 = DBM:NewMod("PullTimerCountdownDummy")
 			DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
-			dummyMod.countdown = dummyMod:NewCountdown(0, 0, nil, nil, nil, true)
-			dummyMod.text = dummyMod:NewAnnounce("%s", 1, 2457)
+			dummyMod2.countdown = dummyMod2:NewCountdown(0, 0, nil, nil, nil, true)
+			dummyMod2.text = dummyMod2:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
 		if not DBM.Options.DontShowPT then
 			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
 		if not DBM.Options.DontPlayPTCountdown then
-			dummyMod.countdown:Start(timer)
+			dummyMod2.countdown:Start(timer)
 		end
 		if not DBM.Options.DontShowPTCountdownText then
 			local threshold = DBM.Options.PTCountThreshold
@@ -2952,12 +2953,12 @@ do
 			end
 		end
 		if not DBM.Options.DontShowPTText then
-			dummyMod.text:Show(DBM_CORE_BREAK_START:format(timer/60, sender))
-			if timer/60 > 10 then dummyMod.text:Schedule(timer - 10*60, DBM_CORE_BREAK_MIN:format(10)) end
-			if timer/60 > 5 then dummyMod.text:Schedule(timer - 5*60, DBM_CORE_BREAK_MIN:format(5)) end
-			if timer/60 > 2 then dummyMod.text:Schedule(timer - 2*60, DBM_CORE_BREAK_MIN:format(2)) end
-			if timer/60 > 1 then dummyMod.text:Schedule(timer - 1*60, DBM_CORE_BREAK_MIN:format(1)) end
-			dummyMod.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER)
+			dummyMod2.text:Show(DBM_CORE_BREAK_START:format(timer/60, sender))
+			if timer/60 > 10 then dummyMod2.text:Schedule(timer - 10*60, DBM_CORE_BREAK_MIN:format(10)) end
+			if timer/60 > 5 then dummyMod2.text:Schedule(timer - 5*60, DBM_CORE_BREAK_MIN:format(5)) end
+			if timer/60 > 2 then dummyMod2.text:Schedule(timer - 2*60, DBM_CORE_BREAK_MIN:format(2)) end
+			if timer/60 > 1 then dummyMod2.text:Schedule(timer - 1*60, DBM_CORE_BREAK_MIN:format(1)) end
+			dummyMod2.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER)
 		end
 	end
 
