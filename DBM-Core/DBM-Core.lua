@@ -2889,7 +2889,7 @@ do
 			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
 			DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
 			dummyMod.countdown = dummyMod:NewCountdown(0, 0, nil, nil, nil, true)
-			dummyMod.text = dummyMod:NewAnnounce("%s", 1, 2457)
+			dummyMod.text = dummyMod:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
 		--Cancel any existing break timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
 		if not DBM.Options.DontShowPT and DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK) then
