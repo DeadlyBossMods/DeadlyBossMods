@@ -404,6 +404,10 @@ local function stripServerName(cap)
 	return cap
 end
 
+local function countDownTextDelay(timer)
+	TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+end
+
 --------------
 --  Events  --
 --------------
@@ -1435,23 +1439,13 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		time = min * 60 + sec
 		DBM:CreatePizzaTimer(time, text, permission, nil, true, true)
 	elseif cmd:sub(0,5) == "break" then
-		if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 or difficultyIndex == 1 or difficultyIndex == 2 or IsEncounterInProgress() then--No break timers if not assistant or if it's LFR (because break timers in LFR are just not cute)
+		if IsInGroup() and (DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 or difficultyIndex == 1 or difficultyIndex == 2) or IsEncounterInProgress() then--No break timers if not assistant or if it's LFR (because break timers in LFR are just not cute)
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 			return
 		end
-		DBM:Unschedule(SendChatMessage)
 		local timer = tonumber(cmd:sub(6)) or 5
-		if timer == 0 then return end--Allow /dbm break 0 to cancel it
 		local timer = timer * 60
-		local channel = (IsInRaid() and "RAID_WARNING") or "PARTY"
-		DBM:CreatePizzaTimer(timer, DBM_CORE_TIMER_BREAK, true)
-		if IsInGroup() then
-			SendChatMessage(DBM_CORE_BREAK_START:format(timer/60), channel)
-			if timer/60 > 5 then DBM:Schedule(timer - 5*60, SendChatMessage, DBM_CORE_BREAK_MIN:format(5), channel) end
-			if timer/60 > 2 then DBM:Schedule(timer - 2*60, SendChatMessage, DBM_CORE_BREAK_MIN:format(2), channel) end
-			if timer/60 > 1 then DBM:Schedule(timer - 1*60, SendChatMessage, DBM_CORE_BREAK_MIN:format(1), channel) end
-			DBM:Schedule(timer, SendChatMessage, DBM_CORE_ANNOUNCE_BREAK_OVER, channel)
-		end
+		sendSync("BT", timer)
 	elseif cmd:sub(1, 4) == "pull" then
 		if (DBM:GetRaidRank(playerName) == 0 and IsInGroup()) or IsEncounterInProgress() then
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
@@ -1614,10 +1608,6 @@ end
 --  Pizza Timer  --
 -------------------
 do
-	local function countDownTextDelay(timer)
-		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
-	end
-	
 	local function loopTimer(time, text, broadcast, sender, count)
 		DBM:CreatePizzaTimer(time, text, broadcast, sender, count, true)
 	end
@@ -2741,10 +2731,6 @@ do
 		end
 	end
 
-	local function countDownTextDelay(timer)
-		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
-	end
-
 	local syncHandlers = {}
 	local whisperSyncHandlers = {}
 
@@ -2894,10 +2880,85 @@ do
 		DBM:StartLogging(timer, checkForActualPull)
 	end
 	
+	syncHandlers["BT"] = function(sender, timer)
+		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
+			return
+		end
+		timer = tonumber(timer or 0)
+		if not dummyMod then
+			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
+			DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
+			dummyMod.countdown = dummyMod:NewCountdown(0, 0, nil, nil, nil, true)
+			dummyMod.text = dummyMod:NewAnnounce("%s", 1, 2457)
+		end
+		--Cancel any existing break timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
+		if not DBM.Options.DontShowPT and DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK) then
+			DBM.Bars:CancelBar(DBM_CORE_TIMER_BREAK)
+		end
+		if not DBM.Options.DontPlayPTCountdown then
+			dummyMod.countdown:Cancel()
+		end
+		if not DBM.Options.DontShowPTCountdownText then
+			DBM:Unschedule(countDownTextDelay)
+			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")--easiest way to nil out timers on TimerTracker frame. This frame just has no actual star/stop functions
+		end
+		dummyMod.text:Cancel()
+		if timer == 0 then return end--"/dbm break 0" will strictly be used to cancel the break timer (which is why we let above part of code run but not below)
+		if not DBM.Options.DontShowPT then
+			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+		end
+		if not DBM.Options.DontPlayPTCountdown then
+			dummyMod.countdown:Start(timer)
+		end
+		if not DBM.Options.DontShowPTCountdownText then
+			local threshold = DBM.Options.PTCountThreshold
+			if timer > threshold then
+				DBM:Schedule(timer-threshold, countDownTextDelay, threshold)
+			else
+				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+			end
+		end
+		if not DBM.Options.DontShowPTText then
+			dummyMod.text:Show(DBM_CORE_BREAK_START:format(timer/60, sender))
+			if timer/60 > 10 then dummyMod.text:Schedule(timer - 10*60, DBM_CORE_BREAK_MIN:format(10)) end
+			if timer/60 > 5 then dummyMod.text:Schedule(timer - 5*60, DBM_CORE_BREAK_MIN:format(5)) end
+			if timer/60 > 2 then dummyMod.text:Schedule(timer - 2*60, DBM_CORE_BREAK_MIN:format(2)) end
+			if timer/60 > 1 then dummyMod.text:Schedule(timer - 1*60, DBM_CORE_BREAK_MIN:format(1)) end
+			dummyMod.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER)
+		end
+	end
+	
 	syncHandlers["BTR"] = function(sender, timer)
 		if #inCombat >= 1 then return end
 		timer = tonumber(timer or 0)
-		DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+		if not dummyMod then
+			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
+			DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
+			dummyMod.countdown = dummyMod:NewCountdown(0, 0, nil, nil, nil, true)
+			dummyMod.text = dummyMod:NewAnnounce("%s", 1, 2457)
+		end
+		if not DBM.Options.DontShowPT then
+			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+		end
+		if not DBM.Options.DontPlayPTCountdown then
+			dummyMod.countdown:Start(timer)
+		end
+		if not DBM.Options.DontShowPTCountdownText then
+			local threshold = DBM.Options.PTCountThreshold
+			if timer > threshold then
+				DBM:Schedule(timer-threshold, countDownTextDelay, threshold)
+			else
+				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+			end
+		end
+		if not DBM.Options.DontShowPTText then
+			dummyMod.text:Show(DBM_CORE_BREAK_START:format(timer/60, sender))
+			if timer/60 > 10 then dummyMod.text:Schedule(timer - 10*60, DBM_CORE_BREAK_MIN:format(10)) end
+			if timer/60 > 5 then dummyMod.text:Schedule(timer - 5*60, DBM_CORE_BREAK_MIN:format(5)) end
+			if timer/60 > 2 then dummyMod.text:Schedule(timer - 2*60, DBM_CORE_BREAK_MIN:format(2)) end
+			if timer/60 > 1 then dummyMod.text:Schedule(timer - 1*60, DBM_CORE_BREAK_MIN:format(1)) end
+			dummyMod.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER)
+		end
 	end
 
 	local function SendVersion()
@@ -7097,10 +7158,6 @@ end
 do
 	local enragePrototype = {}
 	local mt = {__index = enragePrototype}
-
-	local function countDownTextDelay(timer)
-		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
-	end
 
 	function enragePrototype:Start(timer)
 		timer = timer or self.timer or 600
