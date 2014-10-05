@@ -203,13 +203,13 @@ L.FilterTankSpec			= "Filter warnings designated for Tank role when not tank spe
 --L.FilterHealerSpec		= "Filter warnings designated for Healer role when not Healer spec"--Not in use
 --L.FilterDamagerSpec		= "Filter warnings designated for Damager role when not Damager spec"--Not in use
 
-L.Area_PullTimer			= "Pull, Combat, & Custom Timer Filter Options"
+L.Area_PullTimer			= "Pull, Break, Combat, & Custom Timer Filter Options"
 L.DontShowPTNoID			= "Block Pull Timer if not sent from same zone as you"
 L.DontShowPT				= "Do not show Pull Timer bar"
 L.DontShowPTText			= "Do not show announce text for Pull Timer"
-L.DontPlayPTCountdown		= "Do not play Pull/Combat/Custom Timer countdown audio"
-L.DontShowPTCountdownText	= "Do not show Pull/Combat/Custom Timer countdown text"
-L.PT_Threshold				= "Do not show Pull/Combat/Custom Timer countdown text above: %d"
+L.DontPlayPTCountdown		= "Do not play Pull/Break/Combat/Custom Timer countdown audio"
+L.DontShowPTCountdownText	= "Do not show Pull/Break/Combat/Custom Timer countdown text"
+L.PT_Threshold				= "Do not show Pull/Break/Combat/Custom Timer countdown text above: %d"
 
 L.Panel_HideBlizzard		= "Hide Blizzard"
 L.Area_HideBlizzard			= "Hide Blizzard Options"
