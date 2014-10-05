@@ -205,8 +205,8 @@ L.FilterTankSpec			= "Filter warnings designated for Tank role when not tank spe
 
 L.Area_PullTimer			= "Pull, Break, Combat, & Custom Timer Filter Options"
 L.DontShowPTNoID			= "Block Pull Timer if not sent from same zone as you"
-L.DontShowPT				= "Do not show Pull Timer bar"
-L.DontShowPTText			= "Do not show announce text for Pull Timer"
+L.DontShowPT				= "Do not show Pull/Break Timer bar"
+L.DontShowPTText			= "Do not show announce text for Pull/Break Timer"
 L.DontPlayPTCountdown		= "Do not play Pull/Break/Combat/Custom Timer countdown audio"
 L.DontShowPTCountdownText	= "Do not show Pull/Break/Combat/Custom Timer countdown text"
 L.PT_Threshold				= "Do not show Pull/Break/Combat/Custom Timer countdown text above: %d"
