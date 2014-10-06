@@ -27,6 +27,7 @@ local warnFelPool					= mod:NewSpellAnnounce(153616, 1)
 
 local specWarnCurtainOfFlame		= mod:NewSpecialWarningMoveAway(153396)
 local specWarnCurtainOfFlameNear	= mod:NewSpecialWarningClose(153396)
+local yellWarnCurtainOfFlame		= mod:NewYell(153396)
 local specWarnFelLash				= mod:NewSpecialWarningYou(153234, mod:IsTank())
 local specWarnClawsOfArgus			= mod:NewSpecialWarningSpell(153764)
 local specWarnClawsOfArgusEnd		= mod:NewSpecialWarningEnd(153764)
@@ -83,6 +84,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCurtainOfFlame:CombinedShow(0.5, targetname)
 		if args:IsPlayer() then
 			specWarnCurtainOfFlame:Show()
+			yellWarnCurtainOfFlame:Yell()
 		else
 			if self:CheckNearby(5, targetname) then
 				specWarnCurtainOfFlameNear:Show(targetname)
