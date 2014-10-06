@@ -310,7 +310,6 @@ DBM_ARROW_MOVABLE				= "可移动箭头"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 可用命令：",
 	"/dbm arrow <x> <y>  新建一个箭头到指定位置(使用世界坐标系)",
-	"/dbm arrow map <x> <y>  新建一个箭头到指定位置 (使用区域地图坐标系)",
 	"/dbm arrow <玩家名字>  新建一个箭头并指向你队伍或团队中特定的玩家。请区分大小写。",
 	"/dbm arrow hide  隐藏箭头",
 	"/dbm arrow move  移动或锁定箭头"
