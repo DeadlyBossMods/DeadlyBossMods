@@ -8,71 +8,55 @@ mod:SetZone()
 
 mod:RegisterCombat("combat_yell", L.Pull)
 
---[[
+
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 136340 136338 136339",
-	"SPELL_AURA_APPLIED 136340 136339"
+	"SPELL_CAST_START 175973 175979",
+	"SPELL_CAST_SUCCESS 176013",
+	"SPELL_AURA_APPLIED 176004"
 )
 
-local warnStormcloud				= mod:NewTargetAnnounce(136340, 3)
-local warnLightningTether			= mod:NewTargetAnnounce(136339, 3)
-local warnArcNova					= mod:NewCastAnnounce(136338, 3)
+--Oh look, someone designed a world boss that's a copy and paste of Yalnu with tweaks.
+--TODO, do dps siwtch to Untamed Mand, or just tanks.
+--TODO, add Noxious Spit warnings
+local warnColossalBlow				= mod:NewSpellAnnounce(175973, 3)
+local warnGenesis					= mod:NewSpellAnnounce(175979, 4)
+local warnSavageVines				= mod:NewTargetAnnounce(175979, 3)
+local warnGrowUntamedMandragora		= mod:NewSpellAnnounce(176013, 3)
 
-local specWarnStormcloud			= mod:NewSpecialWarningYou(136340)
-local yellStormcloud				= mod:NewYell(136340)
-local specWarnLightningTether		= mod:NewSpecialWarningYou(136339)--Is this important enough?
-local specWarnArcNova				= mod:NewSpecialWarningRun(136338, mod:IsMelee())
+local specWarnColossalBlow			= mod:NewSpecialWarningSpell(175973, nil, nil, nil, 2)
+local specWarnGenesis				= mod:NewSpecialWarningSwitch(175979)--Everyone. "Switch" is closest generic to "run around stomping flowers". Might need custom message
+local specWarnSavageVines			= mod:NewSpecialWarningYou(176004)
+local yellSavageVines				= mod:NewYell(176004)
+local specWarnSavageVinesNear		= mod:NewSpecialWarningClose(176004)
+local specWarnGrowUntamedMandragora	= mod:NewSpecialWarningSwitch(176013, not mod:IsHealer())
 
-local timerStormcloudCD				= mod:NewCDTimer(24, 136340)
-local timerLightningTetherCD		= mod:NewCDTimer(35, 136339)--Needs more data, they may have tweaked it some.
-local timerArcNovaCD				= mod:NewCDTimer(39, 136338)
+--local timerColossalBlow			= mod:NewNextTimer(60, 175973)
+--local timerGenesis				= mod:NewNextTimer(60, 169613)
+--local timerGrowUntamedMandragora	= mod:NewNextTimer(60, 176013)
 
-local soundArcNova					= mod:NewSound(136338, mod:IsMelee())
+--mod:AddReadyCheckOption(32518, false)
+mod:AddRangeFrameOption(8, 175979)
 
-mod:AddBoolOption("RangeFrame")--For Stormcloud, might tweek to not show all the time with actual better logs than me facepulling it and dying with 20 seconds
-mod:AddReadyCheckOption(32518, false)
-
-local stormcloudTargets = {}
-local tetherTargets = {}
-local cloudDebuff = GetSpellInfo(136340)
-
+local UnitDebuff = UnitDebuff
+local debuffName = GetSpellInfo(176004)
 local debuffFilter
 do
 	debuffFilter = function(uId)
-		return UnitDebuff(uId, cloudDebuff)
+		return UnitDebuff(uId, debuffName)
 	end
 end
 
-local function warnStormcloudTargets()
-	warnStormcloud:Show(table.concat(stormcloudTargets, "<, >"))
-	table.wipe(stormcloudTargets)
-	if mod.Options.RangeFrame then
-		if UnitDebuff("player", GetSpellInfo(136340)) then--You have debuff, show everyone
-			DBM.RangeCheck:Show(10, nil)
-		else--You do not have debuff, only show players who do
-			DBM.RangeCheck:Show(10, debuffFilter)
-		end
-	end
-end
-
-local function warnTetherTargets()
-	warnLightningTether:Show(table.concat(tetherTargets, "<, >"))
-	table.wipe(tetherTargets)
+local function hideRangeFrame()
+	DBM.RangeCheck:Hide()
 end
 
 function mod:OnCombatStart(delay, yellTriggered)
-	table.wipe(stormcloudTargets)
-	table.wipe(tetherTargets)
-	if yellTriggered then
-		timerStormcloudCD:Start(15-delay)--15-17 variation noted
-		timerLightningTetherCD:Start(28-delay)
-		timerArcNovaCD:Start(39-delay)--Not a large sample size
-	end
+--	if yellTriggered then
+
+--	end
 end
 
 function mod:OnCombatEnd()
-	table.wipe(stormcloudTargets)
-	table.wipe(tetherTargets)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -80,34 +64,45 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 136340 then
-		timerStormcloudCD:Start()
-	elseif spellId == 136338 then
-		warnArcNova:Show()
-		specWarnArcNova:Show()
-		timerArcNovaCD:Start()
-		soundArcNova:Play()
-	elseif spellId == 136339 then
-		timerLightningTetherCD:Start()
+	if spellId == 175973 then
+		warnColossalBlow:Show()
+		specWarnColossalBlow:Show()
+		--timerColossalBlow:Start()
+	elseif spellId == 175979 then
+		warnGenesis:Show()
+		specWarnGenesis:Show()
+		--timerGenesis:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 176013 then
+		warnGrowUntamedMandragora:Show()
+		specWarnGrowUntamedMandragora:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 136340 then
-		stormcloudTargets[#stormcloudTargets + 1] = args.destName
+	if spellId == 176004 then
+		local targetName = args.destName
+		warnSavageVines:CombinedShow(0.5, targetName)
 		if args:IsPlayer() then
-			specWarnStormcloud:Show()
-			yellStormcloud:Yell()
+			specWarnSavageVines:Show()
+			yellSavageVines:Yell()
+		else
+			if self:CheckNearby(8, targetName) then
+				specWarnSavageVinesNear:Show(targetName)
+			end
 		end
-		self:Unschedule(warnStormcloudTargets)
-		self:Schedule(0.3, warnStormcloudTargets)
-	elseif spellId == 136339 then
-		tetherTargets[#tetherTargets + 1] = args.destName
-		if args:IsPlayer() then
-			specWarnLightningTether:Show()
+		if self.Options.RangeFrame then
+			if UnitDebuff("player", debuffName) then
+				DBM.RangeCheck:Show(8, nil)
+			else
+				DBM.RangeCheck:Show(8, debuffFilter)
+			end
+			self:Schedule(8, hideRangeFrame)
 		end
-		self:Unschedule(warnTetherTargets)
-		self:Schedule(0.3, warnTetherTargets)
 	end
-end--]]
+end

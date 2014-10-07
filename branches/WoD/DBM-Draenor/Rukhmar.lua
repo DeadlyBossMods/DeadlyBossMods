@@ -8,77 +8,68 @@ mod:SetZone()
 
 mod:RegisterCombat("combat_yell", L.Pull)
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 144468 144471 144470 144473 144461",
-	"UNIT_SPELLCAST_SUCCEEDED target focus"
+	"SPELL_AURA_APPLIED 167647 167615",
+	"SPELL_AURA_APPLIED_DOSE 167615",
+	"SPELL_CAST_START 167614 167687",
+	"SPELL_CAST_SUCCESS 167710"
 )
 
-local warnInspiringSong			= mod:NewSpellAnnounce(144468, 3)
-local warnBeaconOfHope			= mod:NewTargetAnnounce(144473, 1)
-local warnFirestorm				= mod:NewSpellAnnounce(144461, 2, nil, false)
-local warnBlazingSong			= mod:NewSpellAnnounce(144471, 4)
-local warnCraneRush				= mod:NewSpellAnnounce(144470, 3, nil, not mod:IsMelee())--Health based, 66% and 33% (off by default for melee because they won't hit melee unless they are bad and standing too far out
+--TODO, does breath face tank?
+--TODO, taunt stacks and what not
+--TODO, timers.
+--TODO, health percents feathers/glory happen at. Add warnings if cast detectable too.
+--TODO, add warnings for fixates birds do if they fixate.
+local warnLooseQuills			= mod:NewSpellAnnounce(167647, 3)
+local warnPiercedArmor			= mod:NewStackAnnounce(167615, 3, nil, mod:IsTank())
+local warnSolarBreath			= mod:NewSpellAnnounce(167687, 3, nil, mod:IsTank())
+local warnSolarRadiation		= mod:NewSpellAnnounce(167710, 3, nil, mod:IsHealer())
 
-local specWarnInspiringSong		= mod:NewSpecialWarningInterrupt(144468)
-local specWarnBeaconOfHope		= mod:NewSpecialWarningMoveTo(144473)
-local yellBeacon				= mod:NewYell(144473)
-local specWarnBlazingSong		= mod:NewSpecialWarningSpell(144471, nil, nil, nil, 3)
-local specWarnCraneRush			= mod:NewSpecialWarningSpell(144470, nil, nil, nil, 2)
+local specWarnLooseQuills		= mod:NewSpecialWarningSpell(167647, nil, nil, nil, 2)
+local specWarnSolarBreath		= mod:NewSpecialWarningSpell(167687, false)
 
-local timerInspiringSongCD		= mod:NewCDTimer(30, 144468)--30-50sec variation?
-local timerBlazingSong			= mod:NewBuffActiveTimer(15, 144471)
+local timerLooseQuills			= mod:NewBuffActiveTimer(30, 167647)
+--local timerLooseQuillsCD		= mod:NewCDTimer(30, 167647)
+local timerSolarRadiationCD		= mod:NewNextTimer(15, 167710)--15 seconds according to journal. Doesn't mean it's right though.
+--local timerSharpBeakCD		= mod:NewCDTimer(15, 167614)
+--local timerSolarBreathCD		= mod:NewCDTimer(15, 167687)
 
-mod:AddReadyCheckOption(33117, false)
-
-function mod:BeaconTarget(targetname, uId)
-	if not targetname then return end
-	warnBeaconOfHope:Show(targetname)
-	if targetname == UnitName("player") and not self:IsTanking(uId) then--Never targets tanks
-		yellBeacon:Yell()
-	else
-		specWarnBeaconOfHope:Show(targetname)
-	end
-end
+--mod:AddReadyCheckOption(33117, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
-	if yellTriggered then--We know for sure this is an actual pull and not diving into in progress
-		timerInspiringSongCD:Start(20-delay)
+--	if yellTriggered then
+
+--	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 167647 then
+		warnLooseQuills:Show()
+		specWarnLooseQuills:Show()
+		timerLooseQuills:Start()
+	elseif spellId == 167615 then
+		local amount = args.amount or 1
+		warnPiercedArmor:Show(args.destName, amount)
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 144468 then
-		warnInspiringSong:Show()
-		specWarnInspiringSong:Show(args.sourceName)
-		timerInspiringSongCD:Start()
-	elseif spellId == 144471 then
-		warnBlazingSong:Show()
-		specWarnBlazingSong:Show()
-		timerBlazingSong:Start()
-	elseif spellId == 144470 then
-		warnCraneRush:Show()
-		specWarnCraneRush:Show()
-	elseif spellId == 144473 then
-		warnBeaconOfHope:Show()
-		specWarnBeaconOfHope:Show()
-		self:BossTargetScanner(71952, "BeaconTarget", 0.1, 20)
-	elseif spellId == 144461 then
-		warnFirestorm:Show()
+	if spellId == 167614 then
+		--timerSharpBeakCD:Start()
+	elseif spellId == 167687 then
+		warnSolarBreath:Show()
+		specWarnSolarBreath:Show()
+		--timerSolarBreathCD:Start()
 	end
 end
 
---This method works without local and doesn't fail with curse of tongues. However, it requires at least ONE person in raid targeting boss to be running dbm (which SHOULD be most of the time)
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 148318 or spellId == 148317 or spellId == 149304 and self:AntiSpam(3, 2) then--use all 3 because i'm not sure which ones fire on repeat kills
-		self:SendSync("Victory")
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 167710 then
+		warnSolarRadiation:Show()
+		timerSolarRadiationCD:Start()
 	end
 end
-
-function mod:OnSync(msg)
-	if msg == "Victory" and self:IsInCombat() then
-		DBM:EndCombat(self)
-	end
-end
---]]
