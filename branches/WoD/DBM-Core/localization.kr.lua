@@ -23,6 +23,8 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s 입니다. 현재 선택
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM의 전술 목표 아이콘 설정이 모두 활성화 되어 있는 것이 확인했습니다. 아이콘 충돌을 방지하기 위해 두 애드온중 하나의 아이콘 설정을 비활성화 해주시기 바랍니다."
 
+DBM_CORE_PROVINGGROUNDS_AD			= "현재 인스턴스에서 DBM-ProvingGrounds 사용이 가능합니다. deadlybossmods.com 또는 와우 인벤에서 다운로드 받으실 수 있습니다. 이 메세지는 한 번만 표시됩니다."
+
 DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가하였습니다. 행운을 빕니다! :)"
 DBM_CORE_GUILD_COMBAT_STARTED		= "길드원이 %s 전투를 시작하였습니다."
@@ -104,6 +106,7 @@ DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 현재 사용중인 DBM 버전은 �
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "지금 사용하시는 DBM 버전은 이 전투에서 잘못된 경고를 표시합니다. 이 오류는 다음 버전에서 수정되오나, 다음 버전이 없을 경우 최신 alpha 버전으로 업데이트 하면 수정할 수 있습니다."
 DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "경고: DBM 버전이 오래되어 현재 게임 버전에서는 작동하지 않을 것입니다. 당신 또는 같은 공격대원에게 잘못된 알림을 보내거나 게임이 느려지는 것을 막기 위함을 양해하여 주시기 바랍니다. 지금 당장 최신 버전으로 업데이트 하여 주시기 바랍니다. 만약 6.0 베타를 실행 중인데 이 메세지가 보인다면, http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing 에서 6.0 베타 버전을 받으세요."
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "경고: 현재 게임 버전과 맞지 않는 DBM을 사용중입니다. 현재 게임 버전에 맞는 DBM을 다운로드 받아 다시 설치하시기 바랍니다."
+DBM_CORE_VEM							= "경고: 당신은 DBM과 VEM을 동시에 사용중입니다. 현재 설정에서는 DBM이 작동하지 않으므로 DBM을 불러오지 않습니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
@@ -165,7 +168,7 @@ DBM_CORE_RIGHT						= "오른쪽"
 DBM_CORE_BACK						= "뒤쪽"--BACK
 DBM_CORE_FRONT						= "앞쪽"
 
-DBM_CORE_BREAK_START				= "쉬는 시간 시작 -- %s분 남았습니다!"
+DBM_CORE_BREAK_START				= "쉬는 시간 시작 -- %s분 남았습니다! (%s|1이;가; 보냄)"
 DBM_CORE_BREAK_MIN					= "%s분 후 쉬는 시간이 끝납니다!"
 DBM_CORE_BREAK_SEC					= "%s초 후 쉬는 시간이 끝납니다!"
 DBM_CORE_TIMER_BREAK				= "쉬는 시간"
