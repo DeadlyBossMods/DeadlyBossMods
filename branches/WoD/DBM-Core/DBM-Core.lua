@@ -4244,14 +4244,6 @@ function DBM:UNIT_HEALTH(uId)
 	end
 end
 
-local minBestTime = {
-	["lfr25"] = 10,
-	["normal10"] = 1.5,
-	["heroic10"] = 2,
-	["normal25"] = 3,
-	["heroic25"] = 4,
-}
-
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
 		local scenario = mod.type == "SCENARIO"
@@ -4366,7 +4358,7 @@ function DBM:EndCombat(mod, wipe)
 			if not mod.ignoreBestkill and mod.combatInfo.pull then
 				mod.stats[statVarTable[savedDifficulty].."LastTime"] = thisTime
 				--Just to prevent pre mature end combat calls from broken mods from saving bad time stats.
-				if bestTime and bestTime > 0 and minBestTime[savedDifficulty] and bestTime < minBestTime[savedDifficulty] then
+				if bestTime and bestTime > 0 and bestTime < 1.5 then
 					mod.stats[statVarTable[savedDifficulty].."BestTime"] = thisTime
 				else
 					mod.stats[statVarTable[savedDifficulty].."BestTime"] = mmin(bestTime or mhuge, thisTime)
