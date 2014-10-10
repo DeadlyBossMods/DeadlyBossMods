@@ -267,7 +267,6 @@ local lastBossDefeat = {}
 local bossuIdFound = false
 local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
-local worldBossNames = {}
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -985,12 +984,6 @@ do
 							local idTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-Block-Movie-Skip-ItemID"))}
 							for i = 1, #idTable do
 								blockMovieSkipItems[tonumber(idTable[i]) or ""] = tonumber(mapIdTable[1])
-							end
-						end
-						if GetAddOnMetadata(i, "X-DBM-Mod-WBName") then
-							local idTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-WBName"))}
-							for i = 1, #idTable, 2 do
-								worldBossNames[tostring(idTable[i]) or ""] = _G[idTable[i + 1]] or idTable[i + 1]
 							end
 						end
 					end
@@ -3212,7 +3205,7 @@ do
 			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end--We recently got a sync about this boss on this realm, so do nothing.
 			lastBossEngage[modId..realm] = GetTime()
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				local bossName = worldBossNames[modId] or name or UNKNOWN
+				local bossName = EJ_GetEncounterInfo[modId] or name or UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(bossName, floor(health), sender))
 			end
 		end
@@ -3222,7 +3215,7 @@ do
 			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
 			lastBossDefeat[modId..realm] = GetTime()
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				local bossName = worldBossNames[modId] or name or UNKNOWN
+				local bossName = EJ_GetEncounterInfo[modId] or name or UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(bossName, sender))
 			end
 		end
@@ -3233,7 +3226,7 @@ do
 			lastBossEngage[modId..realm] = GetTime()
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 				local _, toonName = BNGetToonInfo(sender)
-				local bossName = worldBossNames[modId] or name or UNKNOWN
+				local bossName = EJ_GetEncounterInfo[modId] or name or UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(bossName, floor(health), toonName))
 			end
 		end
@@ -3244,7 +3237,7 @@ do
 			lastBossDefeat[modId..realm] = GetTime()
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 				local _, toonName = BNGetToonInfo(sender)
-				local bossName = worldBossNames[modId] or name or UNKNOWN
+				local bossName = EJ_GetEncounterInfo[modId] or name or UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(bossName, toonName))
 			end
 		end
