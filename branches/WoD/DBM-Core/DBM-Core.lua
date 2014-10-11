@@ -3253,8 +3253,12 @@ do
 			if not ver or not (ver == "1") then return end--Ignore old versions
 			if DBM:AntiSpam(5, "GCB") then
 				if IsInGroup() then
-					for i = 1, GetNumGroupMembers() do
-						if UnitName("raid"..i) == sender then return end--Hopefully filter this message if you are in the raid group with sender
+					if IsInRaid() then
+						for i = 1, GetNumGroupMembers() do
+							if UnitName("raid"..i) == sender then return end--You are in group with sender, filter message
+						end
+					elseif IsInInstance() then--You are in a dungeon with a group, filter message
+						return
 					end
 				end
 				local bossName = EJ_GetEncounterInfo(modId) or UNKNOWN
@@ -3267,8 +3271,12 @@ do
 			if not ver or not (ver == "1") then return end--Ignore old versions
 			if DBM:AntiSpam(5, "GCE") then
 				if IsInGroup() then
-					for i = 1, GetNumGroupMembers() do
-						if UnitName("raid"..i) == sender then return end
+					if IsInRaid() then
+						for i = 1, GetNumGroupMembers() do
+							if UnitName("raid"..i) == sender then return end--You are in group with sender, filter message
+						end
+					elseif IsInInstance() then--You are in a dungeon with a group, filter message
+						return
 					end
 				end
 				local bossName = EJ_GetEncounterInfo(modId) or UNKNOWN
