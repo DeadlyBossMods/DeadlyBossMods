@@ -174,38 +174,7 @@ mod:AddSetIconOption("SetIconOnAim", 142948, false)
 mod:AddSetIconOption("SetIconOnMesmerize", 142671, false)
 mod:AddArrowOption("AimArrow", 142948, false, true)
 
---Upvales, don't need variables
---Normal Only
---143605 Red Sword
---143606 Purple Sword
---143607 Blue Sword
---143608 Green Sword
---143609 Yellow Sword
-
---143610 Red Drum
---143611 Purple Drum
---143612 Blue Drum
---143613 Green Drum
---143614 Yellow Drum
-
---143615 Red Bomb
---143616 Purple Bomb
---143617 Blue Bomb
---143618 Green Bomb
---143619 Yellow Bomb
-----------------------
---25man Only
---143620 Red Mantid
---143621 Purple Mantid
---143622 Blue Mantid
---143623 Green Mantid
---143624 Yellow Mantid
-
---143627 Red Staff
---143628 Purple Staff
---143629 Blue Staff
---143630 Green Staff
---143631 Yellow Staff
+local currentTitle = nil
 
 local RedDebuffs = {GetSpellInfo(143605), GetSpellInfo(143610), GetSpellInfo(143615), GetSpellInfo(143620), (GetSpellInfo(143627))}
 local PurpleDebuffs = {GetSpellInfo(143606), GetSpellInfo(143611), GetSpellInfo(143616), GetSpellInfo(143621), (GetSpellInfo(143628))}
@@ -485,6 +454,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
 	table.wipe(activatedTargets)
+	currentTitle = GetCurrentTitle()
 	calculatedShape = nil
 	calculatedNumber = nil
 	calculatedColor = nil
@@ -508,6 +478,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	if currentTitle then
+		SetCurrentTitle(currentTitle)
+		currentTitle = nil
+	end
 	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
