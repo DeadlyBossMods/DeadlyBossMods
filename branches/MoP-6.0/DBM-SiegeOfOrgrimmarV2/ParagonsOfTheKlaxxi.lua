@@ -174,8 +174,6 @@ mod:AddSetIconOption("SetIconOnAim", 142948, false)
 mod:AddSetIconOption("SetIconOnMesmerize", 142671, false)
 mod:AddArrowOption("AimArrow", 142948, false, true)
 
-local currentTitle = nil
-
 local RedDebuffs = {GetSpellInfo(143605), GetSpellInfo(143610), GetSpellInfo(143615), GetSpellInfo(143620), (GetSpellInfo(143627))}
 local PurpleDebuffs = {GetSpellInfo(143606), GetSpellInfo(143611), GetSpellInfo(143616), GetSpellInfo(143621), (GetSpellInfo(143628))}
 local BlueDebuffs = {GetSpellInfo(143607), GetSpellInfo(143612), GetSpellInfo(143617), GetSpellInfo(143622), (GetSpellInfo(143629))}
@@ -454,7 +452,6 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
 	table.wipe(activatedTargets)
-	currentTitle = GetCurrentTitle()
 	calculatedShape = nil
 	calculatedNumber = nil
 	calculatedColor = nil
@@ -478,10 +475,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	if currentTitle then
-		SetCurrentTitle(currentTitle)
-		currentTitle = nil
-	end
 	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
