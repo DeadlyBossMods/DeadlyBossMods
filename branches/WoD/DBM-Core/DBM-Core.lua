@@ -5637,7 +5637,7 @@ do
 				end
 			end
 			if uId then--Now we have a valid uId
-				if UnitIsUnit("player", uId) then return true end--If "player" is target, avoid doing any complicated stuff
+				if UnitIsUnit(uId, "player") then return true end--If "player" is target, avoid doing any complicated stuff
 				local x, y = UnitPosition(uId)
 				if not x then--Failed to pull coords. This is likely a pet or a guardian or an NPC.
 					local inRange2, checkedRange = UnitInRange(uId)--Use an API that works on pets and some NPCS (npcs that get a party/raid/pet ID)
@@ -7788,6 +7788,7 @@ function bossModPrototype:SetIcon(target, icon, timer)
 	self:UnscheduleMethod("SetIcon", target)
 	icon = icon and icon >= 0 and icon <= 8 and icon or 8
 	local uId = DBM:GetRaidUnitId(target)
+	if uId and UnitIsUnit(uId, "player") and not IsInGroup() then return end--Solo raid, no reason to put icon on yourself.
 	if uId or UnitExists(target) then--target accepts uid, unitname both.
 		uId = uId or target
 		--save previous icon into a table.
