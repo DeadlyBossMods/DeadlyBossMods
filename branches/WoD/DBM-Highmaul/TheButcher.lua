@@ -64,7 +64,7 @@ function mod:OnCombatStart(delay)
 	elseif self:IsLFR() then
 		--Find LFR berserk
 	else
-		berserkTimer:Start(-delay)
+--		berserkTimer:Start(-delay)--Find new normal berserk
 	end
 end
 
