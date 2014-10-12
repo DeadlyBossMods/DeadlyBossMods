@@ -65,5 +65,6 @@ function mod:UNIT_TARGETABLE_CHANGED()
 		specWarnZaela:Show()
 	else--Leaving for air phase, may need to delay by a sec or so if boss1 still exists.
 		timerZaelaReturns:Start()
+		timerBlackIronCycloneCD:Cancel()
 	end
 end	

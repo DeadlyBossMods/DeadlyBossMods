@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 155620 167203",
+	"SPELL_AURA_APPLIED_DOSE 155620",
 	"SPELL_AURA_REMOVED 167203",
 	"SPELL_DAMAGE 155051",
 	"SPELL_MISSED 155051",
@@ -26,7 +27,7 @@ local specWarnEngulfingFire	= mod:NewSpecialWarningSpell(154996, nil, nil, nil, 
 
 local timerEngulfingFireCD	= mod:NewCDTimer(22, 154996)
 local timerSwirlingWinds	= mod:NewBuffActiveTimer(20, 167203)
-local timerSwirlingWindsCD	= mod:NewNextTimer(45, 167203)
+local timerSwirlingWindsCD	= mod:NewNextTimer(45, 167203)--Verify this isn't health based.
 
 mod.vb.firstBreath = false
 

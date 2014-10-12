@@ -10,14 +10,15 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 161203 162600",
-	"SPELL_CAST_START 161199",
+	"SPELL_CAST_START 161199 161203",
 	"SPELL_PERIODIC_DAMAGE 161288",
 	"SPELL_PERIODIC_MISSED 161288",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnDeblitatingFixation		= mod:NewSpellAnnounce(161199, 2, nil, mod:IsTank())
-local warnRejuvSerum				= mod:NewTargetAnnounce(161203, 3, nil, mod:IsMagicDispeller())
+local warnRejuvSerumCast			= mod:NewCastAnnounce(161203, 3)
+local warnRejuvSerum				= mod:NewTargetAnnounce(161203, 4, nil, mod:IsMagicDispeller())
 local warnToxicFumes				= mod:NewTargetAnnounce(162600, 3, nil, mod:IsHealer())
 local warnVilebloodSerum			= mod:NewSpellAnnounce(161209, 3)--Some may think this is spammy but the puddles tick literally instantly giving not much time to move before 2nd tick which may kill you.
 
@@ -35,7 +36,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 161203 then
+	if spellId == 161203 and not args:IsDestTypePlayer() then
 		warnRejuvSerum:Show(args.destName)
 		specWarnRejuvSerum:Show(args.destName)
 --		timerRejuvSerumCD:Start()
@@ -49,6 +50,8 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 161199 then
 		warnDeblitatingFixation:Show()
 		specWarnDeblitatingFixation:Show(args.sourceName)
+	elseif args.spellId == 161203 then
+		warnRejuvSerumCast:Show()
 	end
 end
 
