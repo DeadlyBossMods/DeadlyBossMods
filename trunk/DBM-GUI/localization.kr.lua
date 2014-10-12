@@ -200,13 +200,13 @@ L.FilterTankSpec			= "방어 전담이 아닐 경우 방어 전담용 경고 보
 --L.FilterHealerSpec		= "치유 전담이 아닐 경우 치유 전담용 경고 보지 않기"--Not in use
 --L.FilterDamagerSpec		= "공격 전담이 아닐 경우 치유 전담용 경고 보지 않기"--Not in use
 
-L.Area_PullTimer			= "전투 예정, 시작, 사용자 바 기능 설정"
+L.Area_PullTimer			= "전투 예정, 시작, 휴식, 사용자 바 기능 설정"
 L.DontShowPTNoID			= "같은 인스턴스에 있지 않은 사용자가 보낸 전투 예정 신호 차단"
-L.DontShowPT				= "전투 예정 및 시작 바 숨기기"
-L.DontShowPTText			= "전투 예정 알림 숨기기"
-L.DontPlayPTCountdown		= "전투 예정, 시작, 사용자 바 초읽기 소리 끄기"
-L.DontShowPTCountdownText	= "전투 예정, 시작, 사용자 바 초읽기 글자 숨기기"
-L.PT_Threshold				= "전투 예정, 시작, 사용자 바 소리/글자를 몇 초부터 보여줄 것인지 설정: %d"
+L.DontShowPT				= "전투 예정, 시작, 휴식 바 숨기기"
+L.DontShowPTText			= "전투 예정, 휴식 초읽기 글자 숨기기"
+L.DontPlayPTCountdown		= "전투 예정, 시작, 휴식, 사용자 바 초읽기 소리 끄기"
+L.DontShowPTCountdownText	= "전투 예정, 시작, 휴식, 사용자 바 초읽기 글자 숨기기"
+L.PT_Threshold				= "전투 예정, 시작, 휴식, 사용자 바 소리/글자를 몇 초부터 보여줄 것인지 설정: %d"
 
 L.Panel_HideBlizzard		= "블리자드 기능 끄기 설정"
 L.Area_HideBlizzard			= "블리자드 기능 끄기 설정"
