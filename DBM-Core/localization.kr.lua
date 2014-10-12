@@ -1,6 +1,7 @@
 ﻿if (GetLocale() == "koKR") then
 
 DBM_CORE_NEED_SUPPORT				= "문의/건의사항은 설정 화면에서 사용자 포럼 버튼을 누른 후, DBM 사용자 포럼에 남겨 주시기 바랍니다. DBM Team은 프로그래밍 또는 외국어에 능통하신 분의 도움을 기다리고 있습니다. 자세한 사항은 everfinale@gmail.com 으로 메일을 보내주시기 바랍니다."
+DBM_CORE_NEED_LOGS					= "DBM이 현재 전투 경고를 원할히 하기 위해서는 Transcriptor (http://www.wowace.com/addons/transcriptor/) 기록이 필요합니다. 가능하시다면, 현재 전투를 Transcriptor로 기록하신 후에 http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing/ 로 오셔서 올려주세요.(용량이 크므로 반드시 압축해주시기 바랍니다.). 6.0 공격대 전투 기록만 필요합니다. 5인 던전 전투 기록은 필요하지 않습니다."
 DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력하면 설정창이 나타납니다. 각 경고는 최초 불러오기시 캐릭터 특성에 맞는 적절한 경고를 선택합니다. 선택된 경고는 설정창에서 언제든지 변경이 가능합니다."
 
 DBM_FORUMS_MESSAGE					= "오류를 발견하셨나요? 일부 전투에서 추가 경고가 있으면 좋을텐데라고 생각하셨나요?\n그렇다면 DBM 사용자 포럼을 방문해 보세요. 주소는 |HDBM:forums|h|cff3588ffhttp://www.inven.co.kr/board/powerbbs.php?come_idx=3716|r 입니다. (클릭후 주소 복사 가능)"
@@ -22,20 +23,25 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s 입니다. 현재 선택
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM의 전술 목표 아이콘 설정이 모두 활성화 되어 있는 것이 확인했습니다. 아이콘 충돌을 방지하기 위해 두 애드온중 하나의 아이콘 설정을 비활성화 해주시기 바랍니다."
 
+DBM_CORE_PROVINGGROUNDS_AD			= "현재 인스턴스에서 DBM-ProvingGrounds 사용이 가능합니다. deadlybossmods.com 또는 와우 인벤에서 다운로드 받으실 수 있습니다. 이 메세지는 한 번만 표시됩니다."
+
 DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가하였습니다. 행운을 빕니다! :)"
+DBM_CORE_GUILD_COMBAT_STARTED		= "길드원이 %s 전투를 시작하였습니다."
 DBM_CORE_SCENARIO_STARTED			= "%s 시작됨. 행운을 빕니다! :)";
 DBM_CORE_SCENARIO_STARTED_IN_PROGRESS	= "%s 진행 도중 참가하였습니다. 행운을 빕니다! :)"
 DBM_CORE_BOSS_DOWN					= "%s 전투에서 승리하였습니다! (전투 시간: %s)"
 DBM_CORE_BOSS_DOWN_I				= "%s 전투에서 승리하였습니다! (이 난이도에서 승리: %d회)"
 DBM_CORE_BOSS_DOWN_L				= "%s 전투에서 승리하였습니다! (전투 시간: %s, 최종 전투 기록: %s, 가장 빨랐던 기록: %s, 이 난이도에서 승리: %d회)"
 DBM_CORE_BOSS_DOWN_NR				= "%s 전투에서 승리하였습니다! (전투 시간: %s) 이 기록은 새로운 기록이군요! (과거 기록: %s, 이 난이도에서 승리: %d회)"
+DBM_CORE_GUILD_BOSS_DOWN			= "길드원이 %s 전투에서 승리하였습니다! (전투시간: %s)"
 DBM_CORE_SCENARIO_COMPLETE			= "%s|1을;를; 완료하였습니다! (소요 시간: %s)"
 DBM_CORE_SCENARIO_COMPLETE_I		= "%s|1을;를; 완료하였습니다! (이 난이도 완료: %d회)"
 DBM_CORE_SCENARIO_COMPLETE_L		= "%s|1을;를; 완료하였습니다! (소요 시간: %s, 최종 소요 시간: %s, 가장 빨랐던 소요 시간: %s. 이 난이도 완료: %d회)"
 DBM_CORE_SCENARIO_COMPLETE_NR		= "%s|1을;를; 완료하였습니다! (소요 시간: %s) 이 기록은 새로운 기록이군요! (과거 기록: %s, 이 난이도 완료: %d회)"
 DBM_CORE_COMBAT_ENDED_AT			= "%s 전투가 종료되었습니다. (전투 종료시 우두머리 체력: %s, 전투 시간: %s)"
 DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s 전투가 종료되었습니다. (전투 종료시 우두머리 체력: %s, 전투 시간: %s, 전멸: %d회)"
+DBM_CORE_GUILD_COMBAT_ENDED_AT		= "길드원이 %s 전투에서 전멸하였습니다. (전투 종료시 우두머리 체력: %s, 전투시간: %s)"
 DBM_CORE_SCENARIO_ENDED_AT			= "%s|1이;가; 종료되었습니다. (소요 시간: %s)"
 DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s|1이;가; 종료되었습니다. (소요 시간: %s, 이 난이도 미완료: %d회)"
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s 전투가 %s 전에 시작되었습니다. 바를 복구 합니다."
@@ -161,7 +167,7 @@ DBM_CORE_RIGHT						= "오른쪽"
 DBM_CORE_BACK						= "뒤쪽"--BACK
 DBM_CORE_FRONT						= "앞쪽"
 
-DBM_CORE_BREAK_START				= "쉬는 시간 시작 -- %s분 남았습니다!"
+DBM_CORE_BREAK_START				= "쉬는 시간 시작 -- %s분 남았습니다! (%s|1이;가; 보냄)"
 DBM_CORE_BREAK_MIN					= "%s분 후 쉬는 시간이 끝납니다!"
 DBM_CORE_BREAK_SEC					= "%s초 후 쉬는 시간이 끝납니다!"
 DBM_CORE_TIMER_BREAK				= "쉬는 시간"
@@ -289,7 +295,6 @@ DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "특수 경고 움직이기"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "특수 경고"
 
 DBM_ARROW_MOVABLE						= "화살표 움직이기"
-
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM 화살표 사용법:",
 	"/dbm arrow <x> <y>  지정된 좌표(X/Y) 방향으로 화살표를 만듭니다.(0 < x/y < 100)",
