@@ -174,10 +174,12 @@ local function MapToWorldCoords(x, y)
 
 	local isMapDungeon = true
 	local _, a, b, c, d = GetCurrentMapDungeonLevel()
+	--local floorIndex, minX, minY, maxX, maxY = GetCurrentMapDungeonLevel()
 
 	if not (a and b and c and d) then
 		isMapDungeon = false
 		_, a, b, c, d = GetCurrentMapZone()
+		--local zoneIndex, locLeft, locTop, locRight, locBottom = GetCurrentMapZone()
 	end
 
 	if not (a and b and c and d) then
@@ -195,7 +197,7 @@ local function MapToWorldCoords(x, y)
 		y = a + h * dx
 	end
 
-	print("x=" .. x .. ", y=" .. y)
+	--print("x=" .. x .. ", y=" .. y)
 	return x, y
 end
 
