@@ -1,6 +1,7 @@
 if GetLocale() ~= "deDE" then return end
 
 DBM_CORE_NEED_SUPPORT				= "Hey, bist du ein Programmierer oder gut in Fremdsprachen? Falls ja, benötigt DBM deine Hilfe, um in mehr Sprachen übersetzt zu werden. Hilf uns hier http://forums.elitistjerks.com/topic/132449-dbm-localizers-needed/"
+DBM_CORE_NEED_LOGS					= "DBM benötigt Transcriptor (http://www.wowace.com/addons/transcriptor/) Logs dieser Testkämpfe um möglichst gute Mods bereitstellen zu können. Falls du helfen willst, dann zeichne diese Testkämpfe mit Transcriptor auf und lade sie hier hoch: http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing/ (bitte vorher einzippen, die Logs können sonst sehr groß werden). Es werden nur Logs von 6.0 Schlachtzügen benötigt. Logs von Dungeons sind nicht erforderlich."
 DBM_HOW_TO_USE_MOD					= "Willkommen bei DBM. Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. DBM versucht dies für dich zu tun, indem es beim ersten Start deine Spezialisierung scannt, aber du kannst zusätzliche Einstellungen aktivieren."
 
 DBM_FORUMS_MESSAGE					= "Du hast einen Bug oder einen falschen Timer gefunden? Du glaubst einige Mods würden zusätzliche Warnungen, Timer oder Spezialfeatures benötigen?\nBesuche die neuen Deadly Boss Mods Foren für Diskussionen, Fehlermeldungen und Featurewünsche: |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (Du kannst auf den Link klicken um ihn zu kopieren.)"
@@ -22,20 +23,25 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "Deine aktuelle Spezialisierung ist %s. Deine ak
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM hat festgestellt, dass du das Setzen von Schlachtzugzeichen in \"BigWigs\" und in \"DBM\" aktiviert hast. Bitte deaktiviere das Setzen von Zeichen in einem der beiden Addons um Konflikte zu vermeiden."
 
+DBM_CORE_PROVINGGROUNDS_AD			= "Das Mod \"DBM-ProvingGrounds\" ist für diesen Spielinhalt verfügbar. Du kannst es auf deadlybossmods.com oder Curse finden. Dieser Hinweis wird nur einmal angezeigt."
+
 DBM_CORE_COMBAT_STARTED				= "Kampf gegen %s hat begonnen. Viel Glück! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "Du wurdest in den laufenden Kampf gegen %s verwickelt. Viel Glück! :)"
+DBM_CORE_GUILD_COMBAT_STARTED		= "Kampf gegen %s wurde von deiner Gilde begonnen."
 DBM_CORE_SCENARIO_STARTED			= "%s gestartet. Viel Glück! :)"
 DBM_CORE_SCENARIO_STARTED_IN_PROGRESS	=	"Du bist dem laufenden %s beigetreten. Viel Glück! :)"
 DBM_CORE_BOSS_DOWN					= "%s besiegt nach %s!"
 DBM_CORE_BOSS_DOWN_I				= "%s besiegt! Das war dein %d. Sieg."
 DBM_CORE_BOSS_DOWN_L				= "%s besiegt nach %s! Dein letzter Sieg hat %s gedauert und der schnellste %s. Das war dein %d. Sieg."
 DBM_CORE_BOSS_DOWN_NR				= "%s besiegt nach %s! Das ist ein neuer Rekord! (Der alte Rekord war %s.) Das war dein %d. Sieg."
+DBM_CORE_GUILD_BOSS_DOWN			= "%s wurde durch deine Gilde besiegt nach %s!"
 DBM_CORE_SCENARIO_COMPLETE			= "%s abgeschlossen nach %s!"
 DBM_CORE_SCENARIO_COMPLETE_I		= "%s abgeschlossen! Das war dein %d. Abschluss."
 DBM_CORE_SCENARIO_COMPLETE_L		= "%s abgeschlossen nach %s! Dein letzter Abschluss hat %s gedauert und der schnellste %s. Das war dein %d. Abschluss."
 DBM_CORE_SCENARIO_COMPLETE_NR		= "%s abgeschlossen nach %s! Das ist ein neuer Rekord! (Der alte Rekord war %s.) Das war dein %d. Abschluss."
 DBM_CORE_COMBAT_ENDED_AT			= "Kampf gegen %s (%s) hat nach %s aufgehört."
 DBM_CORE_COMBAT_ENDED_AT_LONG		= "Kampf gegen %s (%s) hat nach %s aufgehört. Das war deine %d. Niederlage auf diesem Schwierigkeitsgrad."
+DBM_CORE_GUILD_COMBAT_ENDED_AT		= "Deine Gilde war %s (%s) unterlegen nach %s."
 DBM_CORE_SCENARIO_ENDED_AT			= "%s abgebrochen nach %s."
 DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s abgebrochen nach %s. Das war dein %d. Abbruch auf diesem Schwierigkeitsgrad."
 DBM_CORE_COMBAT_STATE_RECOVERED		= "Kampf gegen %s hat vor %s begonnen, Neukalibrierung der Timer erfolgt..."
@@ -95,7 +101,7 @@ DBM_CORE_UPDATEREMINDER_HEADER			= "Deine Version von Deadly Boss Mods ist veral
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "Deine Alphaversion von Deadly Boss Mods ist veraltet.\nDu liegst mindestens %d Revisionen zurück. Es wird empfohlen, die neueste Alphaversion oder neueste stabile Version von DBM zu benutzen. Die Funktionalität veralteter Alphaversionen kann schlecht oder unvollständig sein."
 DBM_CORE_UPDATEREMINDER_FOOTER			= "Drücke " .. (IsMacClient() and "Cmd-C" or "Strg+C")  ..  " um den Downloadlink in die Zwischenablage zu kopieren."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Drücke " .. (IsMacClient() and "Cmd-C" or "Strg+C")  ..  " um den Link in die Zwischenablage zu kopieren."
-DBM_CORE_UPDATEREMINDER_DISABLE			= "WARNUNG: Da dein Deadly Boss Mods extrem veraltet ist (%d Revisionen), hat es sich bis zu einer Aktualisierung deaktiviert. Derart alter und inkompatibler Code kann zu einem schlechten Spielerlebnis bei dir oder deinen Schlachtzugsmitgliedern führen."
+DBM_CORE_UPDATEREMINDER_DISABLE			= "WARNUNG: Da dein Deadly Boss Mods extrem veraltet ist (mindestens %d Revisionen), hat es sich bis zu einer Aktualisierung deaktiviert. Derart alter und inkompatibler Code kann zu einem schlechten Spielerlebnis bei dir oder deinen Schlachtzugsmitgliedern führen."
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "Deine Version von DBM wird für diesen Bosskampf falsche Timer und Warnungen anzeigen. Dies wurde in einer neueren Version von DBM korrigiert (oder in einer Alphaversion, falls eine neuere Releaseversion noch nicht verfügbar ist)."
 DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "WARNUNG: Da dein Deadly Boss Mods veraltet und deshalb leider für diesen Major Patch des Spiels nicht mehr geeignet ist, hat es sich bis zu einer Aktualisierung deaktiviert. Alter und inkompatibler Code kann zu einem schlechten Spielerlebnis bei dir oder deinen Schlachtzugsmitgliedern führen. Bitte lade dir baldmöglichst eine neue Version von deadlybossmods.com oder Curse herunter. Falls du diese Meldung auf einem 6.0 beta Testserver bekommst, dann lade dir die Beta-Version des Mods hier herunter: http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing"
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "WARNUNG: Du benutzt eine Version von Deadly Boss Mods die nicht für diese Version des Spiels gedacht ist. Bitte lade dir eine zum Spiel passende Version von deadlybossmods.com oder Curse herunter."
@@ -155,14 +161,14 @@ DBM_CORE_RIGHT						= "Rechts"
 DBM_CORE_BACK						= "Hinten"
 DBM_CORE_FRONT						= "Vorne"
 
-DBM_CORE_BREAK_START				= "Pause startet jetzt -- du hast %s Minute(n)!"
+DBM_CORE_BREAK_START				= "Pause startet jetzt -- du hast %s Minute(n)! (gesendet von: %s)"
 DBM_CORE_BREAK_MIN					= "Pause endet in %s Minute(n)!"
 DBM_CORE_BREAK_SEC					= "Pause endet in %s Sekunden!"
 DBM_CORE_TIMER_BREAK				= "Pause!"
 DBM_CORE_ANNOUNCE_BREAK_OVER		= "Pause ist vorbei"
 
 DBM_CORE_TIMER_PULL					= "Pull in"
-DBM_CORE_ANNOUNCE_PULL				= "Pull in %d Sekunden (gesendet von: %s)"
+DBM_CORE_ANNOUNCE_PULL				= "Pull in %d Sekunden. (gesendet von: %s)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull jetzt!"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Zeit für Erfolg"
