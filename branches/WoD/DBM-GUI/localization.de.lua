@@ -101,6 +101,7 @@ L.BarWhileMove 				= "bewegbare Schlachtzugwarnung"
 L.RaidWarnSound				= "Sound für Schlachtzugwarnung"
 L.CountdownVoice			= "Primäre Stimme für akustische Zählungen"
 L.CountdownVoice2			= "Sekundäre Stimme für akustische Zählungen"
+L.CountdownVoice3			= "Tertiäre Stimme für akustische Zählungen"
 L.SpecialWarnSound			= "Sound für Spezialwarnungen, die dich oder deine Rolle betreffen"
 L.SpecialWarnSound2			= "Sound für Spezialwarnungen, die jeden betreffen"
 L.SpecialWarnSound3			= "Sound für SEHR wichtige Spezialwarnungen"
@@ -206,13 +207,13 @@ L.FilterTankSpec			= "Unterdrücke Warnungen für Tanks, falls deine aktuelle Sp
 --L.FilterHealerSpec		= "Unterdrücke Warnungen für Heiler, falls deine aktuelle Spezialisierung keine \"Heilung\"-Spezialisierung ist"--Not in use
 --L.FilterDamagerSpec		= "Unterdrücke Warnungen für DDs, falls deine aktuelle Spezialisierung keine \"Schaden\"-Spezialisierung ist"--Not in use
 
-L.Area_PullTimer			= "Filtereinstellungen für Pull-, Kampf- und benutzerdefinierte Timer"
+L.Area_PullTimer			= "Filtereinstellungen für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
 L.DontShowPTNoID			= "Blockiere Pull-Timer, die nicht aus deiner derzeitigen Zone gesendet worden sind"
-L.DontShowPT				= "Zeige keinen Timerbalken für Pull-Timer"
-L.DontShowPTText			= "Zeige keine Mitteilungen für Pull-Timer im Chatfenster"
-L.DontPlayPTCountdown		= "Spiele keinen akustischen Countdown für Pull/Kampfbeginn-Timer"
-L.DontShowPTCountdownText	= "Zeige keinen optischen Countdown für Pull/Kampfbeginn-Timer"
-L.PT_Threshold				= "Zeige keinen optischen Countdown für Pull/Kampfbeginn-Timer über: %d"
+L.DontShowPT				= "Zeige keinen Timerbalken für Pull-/Pausen-Timer"
+L.DontShowPTText			= "Zeige keine Mitteilungen für Pull-/Pausen-Timer im Chatfenster"
+L.DontPlayPTCountdown		= "Spiele keinen akustischen Countdown für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
+L.DontShowPTCountdownText	= "Zeige keinen optischen Countdown für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
+L.PT_Threshold				= "Zeige keinen opt. Countd. f. Pull-/Pausen-/Kampf-/Nutzer-Timer über: %d"
 
 L.Panel_HideBlizzard		= "Verberge Spielelemente"
 L.Area_HideBlizzard			= "Einstellungen zum Verbergen von Spielelementen"
