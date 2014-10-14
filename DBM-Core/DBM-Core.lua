@@ -1450,7 +1450,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:AddMsg(DBM_CORE_LAG_CHECKING)
 		DBM:Schedule(5, function() DBM:ShowLag() end)
 	elseif cmd:sub(1, 5) == "arrow" then
-		local x, y = string.split(" ", cmd:sub(6):trim())
+		local x, y = string.split(" ", msg:sub(6):trim())
 		local xNum, yNum = tonumber(x or ""), tonumber(y or "")
 		local success
 		if xNum and yNum then
