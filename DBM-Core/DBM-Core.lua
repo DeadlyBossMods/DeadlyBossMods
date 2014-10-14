@@ -56,7 +56,6 @@ DBM = {
 	ReleaseRevision = 11766 -- the revision of the latest stable version that is available
 }
 
-
 -- Legacy crap; that stupid "Version" field was never a good idea.
 -- Some functions that should be using ReleaseRevision still use this one, so we will just keep it and set to ReleaseRevision
 DBM.Version = tostring(DBM.ReleaseRevision)
