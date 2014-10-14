@@ -1436,10 +1436,11 @@ local function CreateOptionsMenu()
 		latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.LatencyThreshold) end)
 		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.LatencyThreshold = self:GetValue() end)
 		----
-		local generaltimeroptions = DBM_GUI_Frame:CreateArea(L.TimerGeneral, nil, 90)
+		local generaltimeroptions = DBM_GUI_Frame:CreateArea(L.TimerGeneral, nil, 125)
 		generaltimeroptions.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
 
 		local SKT_Enabled	= generaltimeroptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer")
+		local CRT_Enabled	= generaltimeroptions:CreateCheckButton(L.CRT_Enabled, true, nil, "CRT_Enabled")
 
 		local challengeTimers = {
 			{	text	= L.Disable,				value	= "None" },
@@ -1452,7 +1453,7 @@ local function CreateOptionsMenu()
 			DBM.Options.ChallengeBest = value
 		end
 		)
-		ChallengeTimerDropDown:SetPoint("TOPLEFT", generaltimeroptions.frame, "TOPLEFT", 0, -50)
+		ChallengeTimerDropDown:SetPoint("TOPLEFT", generaltimeroptions.frame, "TOPLEFT", 0, -85)
 
 		--Model viewer options
 		local modelarea = DBM_GUI_Frame:CreateArea(L.ModelOptions, nil, 90)
@@ -1490,6 +1491,7 @@ local function CreateOptionsMenu()
 		generalMessagesArea:CreateCheckButton(L.ShowEngageMessage, true, nil, "ShowEngageMessage")
 		generalMessagesArea:CreateCheckButton(L.ShowKillMessage, true, nil, "ShowKillMessage")
 		generalMessagesArea:CreateCheckButton(L.ShowWipeMessage, true, nil, "ShowWipeMessage")
+		generalMessagesArea:CreateCheckButton(L.ShowGuildMessages, true, nil, "ShowGuildMessages")
 		generalMessagesArea:CreateCheckButton(L.ShowRecoveryMessage, true, nil, "ShowRecoveryMessage")
 		local generalWhispersArea = generalWarningPanel:CreateArea(L.WhisperMessages, nil, 135, true)
 		generalWhispersArea:CreateCheckButton(L.AutoRespond, true, nil, "AutoRespond")
@@ -1506,7 +1508,7 @@ local function CreateOptionsMenu()
 		--            Raid Warning Colors            --
 		-----------------------------------------------
 		local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
-		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 280, true)
+		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 320, true)
 
 		local ShowWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
 		local ShowSWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowSWarningsInChat, true, nil, "ShowSWarningsInChat")
@@ -1537,7 +1539,9 @@ local function CreateOptionsMenu()
 			{	text	= "Koltrane (Male)",value 	= "Kolt"},
 			{	text	= "Pewsey (Male)",value 	= "Pewsey"},
 			{	text	= "Bear (Male Child)",value = "Bear"},
-			{	text	= "None",value 	= "None"},
+			{	text	= "Anshlun (ptBR Male)",value = "Anshlun"},
+			{	text	= "Neryssa (ptBR Female)",value = "Neryssa"},
+			{	text	= "None (Overrides ALL voices)",value 	= "None"},
 		}
 		local CountSoundDropDown = raidwarnoptions:CreateDropdown(L.CountdownVoice, countSounds,
 		DBM.Options.CountdownVoice, function(value)
@@ -1553,6 +1557,8 @@ local function CreateOptionsMenu()
 			{	text	= "Koltrane (Male)",value 	= "Kolt"},
 			{	text	= "Pewsey (Male)",value 	= "Pewsey"},
 			{	text	= "Bear (Male Child)",value = "Bear"},
+			{	text	= "Anshlun (ptBR Male)",value = "Anshlun"},
+			{	text	= "Neryssa (ptBR Female)",value = "Neryssa"},
 		}
 		local CountSoundDropDown2 = raidwarnoptions:CreateDropdown(L.CountdownVoice2, countSounds,
 		DBM.Options.CountdownVoice2, function(value)
@@ -1561,6 +1567,14 @@ local function CreateOptionsMenu()
 		end
 		)
 		CountSoundDropDown2:SetPoint("LEFT", CountSoundDropDown, "RIGHT", 60, 0)
+
+		local CountSoundDropDown3 = raidwarnoptions:CreateDropdown(L.CountdownVoice3, countSounds2,
+		DBM.Options.CountdownVoice3, function(value)
+			DBM.Options.CountdownVoice3 = value
+			DBM:PlayCountSound(1, DBM.Options.CountdownVoice3)
+		end
+		)
+		CountSoundDropDown3:SetPoint("TOPLEFT", CountSoundDropDown, "TOPLEFT", 0, -40)
 
 		--Raid Warning Colors
 		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 150, true)
@@ -1640,14 +1654,14 @@ local function CreateOptionsMenu()
 					anchorFrame.texture:SetWidth(32)
 					anchorFrame.texture:SetHeight(32)
 					anchorFrame:SetScript("OnMouseDown", function(self)
-						RaidWarningFrame:SetMovable(1)
+						RaidWarningFrame:SetMovable(true)
 						RaidWarningFrame:StartMoving()
 						DBM:Unschedule(hideme)
 						DBM.Bars:CancelBar(L.BarWhileMove)
 					end)
 					anchorFrame:SetScript("OnMouseUp", function(self)
 						RaidWarningFrame:StopMovingOrSizing()
-						RaidWarningFrame:SetMovable(0)
+						RaidWarningFrame:SetMovable(false)
 						local point, _, _, xOfs, yOfs = RaidWarningFrame:GetPoint(1)
 						DBM.Options.RaidWarningPosition.Point = point
 						DBM.Options.RaidWarningPosition.X = xOfs
@@ -2389,7 +2403,7 @@ local function CreateOptionsMenu()
 		local hideBlizzPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_HideBlizzard, "option")
 		local hideBlizzArea = hideBlizzPanel:CreateArea(L.Area_HideBlizzard, nil, 160, true)
 		hideBlizzArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame")
-		hideBlizzArea:CreateCheckButton(L.HideWatchFrame, true, nil, "HideWatchFrame")
+		hideBlizzArea:CreateCheckButton(L.HideWatchFrame, true, nil, "HideObjectivesFrame")
 		hideBlizzArea:CreateCheckButton(L.HideTooltips, true, nil, "HideTooltips")
 		local filterYell	= hideBlizzArea:CreateCheckButton(L.SpamBlockSayYell, true, nil, "FilterSayAndYell")
 		
@@ -2508,6 +2522,19 @@ do
 				top1value1:SetText( stats.normal25Kills )
 				top1value2:SetText( stats.normal25Pulls - stats.normal25Kills )
 				top1value3:SetText( stats.normal25BestTime and ("%d:%02d"):format(mfloor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-" )
+			elseif statsType == 3 then--WoD 4 difficulty stats, TOP: Normal, LFR. BOTTOM. Heroic, Mythic
+				top1value1:SetText( stats.lfr25Kills )
+				top1value2:SetText( stats.lfr25Pulls-stats.lfr25Kills )
+				top1value3:SetText( stats.lfr25BestTime and ("%d:%02d"):format(mfloor(stats.lfr25BestTime / 60), stats.lfr25BestTime % 60) or "-" )
+				top2value1:SetText( stats.normalKills )
+				top2value2:SetText( stats.normalPulls - stats.normalKills )
+				top2value3:SetText( stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
+				bottom1value1:SetText( stats.heroicKills )
+				bottom1value2:SetText( stats.heroicPulls-stats.heroicKills )
+				bottom1value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
+				bottom2value1:SetText( stats.mythicKills )
+				bottom2value2:SetText( stats.mythicPulls-stats.mythicKills )
+				bottom2value3:SetText( stats.mythicBestTime and ("%d:%02d"):format(mfloor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-" )
 			else
 				top2value1:SetText( stats.normal25Kills )
 				top2value2:SetText( stats.normal25Pulls - stats.normal25Kills )
@@ -2521,9 +2548,6 @@ do
 				bottom2value1:SetText( stats.heroic25Kills )
 				bottom2value2:SetText( stats.heroic25Pulls-stats.heroic25Kills )
 				bottom2value3:SetText( stats.heroic25BestTime and ("%d:%02d"):format(math.floor(stats.heroic25BestTime / 60), stats.heroic25BestTime % 60) or "-" )
-				bottom3value1:SetText( stats.flexKills )
-				bottom3value2:SetText( stats.flexPulls-stats.flexKills )
-				bottom3value3:SetText( stats.flexBestTime and ("%d:%02d"):format(math.floor(stats.flexBestTime / 60), stats.flexBestTime % 60) or "-" )
 			end
 		end
 	end
@@ -2557,8 +2581,8 @@ do
 				stats.heroicPulls = stats.heroicPulls or 0
 				stats.challengeKills = stats.challengeKills or 0
 				stats.challengePulls = stats.challengePulls or 0
-				stats.flexKills = stats.flexKills or 0
-				stats.flexPulls = stats.flexPulls or 0
+				stats.mythicKills = stats.mythicKills or 0
+				stats.mythicPulls = stats.mythicPulls or 0
 				stats.normal25Kills = stats.normal25Kills or 0
 				stats.normal25Pulls = stats.normal25Pulls or 0
 				stats.heroic25Kills = stats.heroic25Kills or 0
@@ -2605,7 +2629,7 @@ do
 				local bottom2value1		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom2value2		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom2value3		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
-				local bottom3header		= area:CreateText("", nil, nil, GameFontHighlightSmall, "LEFT")--Row 2, 3rd column
+				local bottom3header		= area:CreateText("", nil, nil, GameFontDisableSmall, "LEFT")--Row 2, 3rd column
 				local bottom3text1		= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom3text2		= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom3text3		= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
@@ -2734,7 +2758,7 @@ do
 					end
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 					singleline = singleline + 1
-				elseif mod.type == "RAID" and mod.noHeroic then--Early wrath
+				elseif mod.type == "RAID" and mod.noHeroic and not mod.hasMythic then--Early wrath
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
 					--Use top1 and top2 area.
 					top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
@@ -2756,7 +2780,7 @@ do
 					top2header:SetText(RAID_DIFFICULTY2)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 					singleline = singleline + 1
-				elseif mod.type == "RAID" and not mod.hasLFR then--Cata(except DS) and some wrath raids
+				elseif mod.type == "RAID" and not mod.hasLFR and not mod.hasMythic then--Cata(except DS) and some wrath raids
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 					if mod.onlyHeroic then
 						--Use top1, top2 area
@@ -2842,7 +2866,7 @@ do
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 						doubleline = doubleline + 1
 					end
-				elseif mod.type == "RAID" and not mod.hasFlex then--DS + All MoP raids(except SoO)
+				elseif mod.type == "RAID" and not mod.hasMythic then--DS + All MoP raids(except SoO)
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 					if mod.onlyHeroic then
 						--Use top1, top2 area
@@ -2914,60 +2938,62 @@ do
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 						doubleline = doubleline + 1
 					end
-				else--SoO
+				else--WoD Zone
+					statsType = 3
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
-					top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
-					top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
-					top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
-					top1text3:SetPoint("TOPLEFT", top1text2, "BOTTOMLEFT", 0, -5)
-					top1value1:SetPoint("TOPLEFT", top1text1, "TOPLEFT", 80, 0)
-					top1value2:SetPoint("TOPLEFT", top1text2, "TOPLEFT", 80, 0)
-					top1value3:SetPoint("TOPLEFT", top1text3, "TOPLEFT", 80, 0)
-					top2header:SetPoint("LEFT", top1header, "LEFT", 150, 0)
-					top2text1:SetPoint("LEFT", top1text1, "LEFT", 150, 0)
-					top2text2:SetPoint("LEFT", top1text2, "LEFT", 150, 0)
-					top2text3:SetPoint("LEFT", top1text3, "LEFT", 150, 0)
-					top2value1:SetPoint("TOPLEFT", top2text1, "TOPLEFT", 80, 0)
-					top2value2:SetPoint("TOPLEFT", top2text2, "TOPLEFT", 80, 0)
-					top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
-					top3header:SetPoint("LEFT", top2header, "LEFT", 150, 0)
-					top3text1:SetPoint("LEFT", top2text1, "LEFT", 150, 0)
-					top3text2:SetPoint("LEFT", top2text2, "LEFT", 150, 0)
-					top3text3:SetPoint("LEFT", top2text3, "LEFT", 150, 0)
-					top3value1:SetPoint("TOPLEFT", top3text1, "TOPLEFT", 80, 0)
-					top3value2:SetPoint("TOPLEFT", top3text2, "TOPLEFT", 80, 0)
-					top3value3:SetPoint("TOPLEFT", top3text3, "TOPLEFT", 80, 0)
-					bottom1header:SetPoint("TOPLEFT", top1text3, "BOTTOMLEFT", -20, -5)
-					bottom1text1:SetPoint("TOPLEFT", bottom1header, "BOTTOMLEFT", 20, -5)
-					bottom1text2:SetPoint("TOPLEFT", bottom1text1, "BOTTOMLEFT", 0, -5)
-					bottom1text3:SetPoint("TOPLEFT", bottom1text2, "BOTTOMLEFT", 0, -5)
-					bottom1value1:SetPoint("TOPLEFT", bottom1text1, "TOPLEFT", 80, 0)
-					bottom1value2:SetPoint("TOPLEFT", bottom1text2, "TOPLEFT", 80, 0)
-					bottom1value3:SetPoint("TOPLEFT", bottom1text3, "TOPLEFT", 80, 0)
-					bottom2header:SetPoint("LEFT", bottom1header, "LEFT", 150, 0)
-					bottom2text1:SetPoint("LEFT", bottom1text1, "LEFT", 150, 0)
-					bottom2text2:SetPoint("LEFT", bottom1text2, "LEFT", 150, 0)
-					bottom2text3:SetPoint("LEFT", bottom1text3, "LEFT", 150, 0)
-					bottom2value1:SetPoint("TOPLEFT", bottom2text1, "TOPLEFT", 80, 0)
-					bottom2value2:SetPoint("TOPLEFT", bottom2text2, "TOPLEFT", 80, 0)
-					bottom2value3:SetPoint("TOPLEFT", bottom2text3, "TOPLEFT", 80, 0)
-					bottom3header:SetPoint("LEFT", bottom2header, "LEFT", 150, 0)
-					bottom3text1:SetPoint("LEFT", bottom2text1, "LEFT", 150, 0)
-					bottom3text2:SetPoint("LEFT", bottom2text2, "LEFT", 150, 0)
-					bottom3text3:SetPoint("LEFT", bottom2text3, "LEFT", 150, 0)
-					bottom3value1:SetPoint("TOPLEFT", bottom3text1, "TOPLEFT", 80, 0)
-					bottom3value2:SetPoint("TOPLEFT", bottom3text2, "TOPLEFT", 80, 0)
-					bottom3value3:SetPoint("TOPLEFT", bottom3text3, "TOPLEFT", 80, 0)
-					top1header:SetText(RAID_DIFFICULTY1)
-					top2header:SetText(RAID_DIFFICULTY2)
-					top3header:SetText(PLAYER_DIFFICULTY3)
-					bottom1header:SetText(PLAYER_DIFFICULTY2)
-					bottom1header:SetFontObject(GameFontDisableSmall)
-					bottom2header:SetText(PLAYER_DIFFICULTY2)
-					bottom2header:SetFontObject(GameFontDisableSmall)
-					bottom3header:SetText(PLAYER_DIFFICULTY4)
-					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
-					doubleline = doubleline + 1
+					if mod.onlyMythic then -- future use
+						bottom2header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
+						bottom2text1:SetPoint("TOPLEFT", bottom2header, "BOTTOMLEFT", 20, -5)
+						bottom2text2:SetPoint("TOPLEFT", bottom2text1, "BOTTOMLEFT", 0, -5)
+						bottom2text3:SetPoint("TOPLEFT", bottom2text2, "BOTTOMLEFT", 0, -5)
+						bottom2value1:SetPoint("TOPLEFT", bottom2text1, "TOPLEFT", 80, 0)
+						bottom2value2:SetPoint("TOPLEFT", bottom2text2, "TOPLEFT", 80, 0)
+						bottom2value3:SetPoint("TOPLEFT", bottom2text3, "TOPLEFT", 80, 0)
+						--Set header text.
+						bottom2header:SetText(PLAYER_DIFFICULTY6)--Mythic
+						bottom2header:SetFontObject(GameFontHighlightSmall)
+						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
+						singleline = singleline + 1
+					else
+						--Use top1, top2, bottom1 and bottom2 area.
+						top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
+						top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
+						top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
+						top1text3:SetPoint("TOPLEFT", top1text2, "BOTTOMLEFT", 0, -5)
+						top1value1:SetPoint("TOPLEFT", top1text1, "TOPLEFT", 80, 0)
+						top1value2:SetPoint("TOPLEFT", top1text2, "TOPLEFT", 80, 0)
+						top1value3:SetPoint("TOPLEFT", top1text3, "TOPLEFT", 80, 0)
+						top2header:SetPoint("LEFT", top1header, "LEFT", 220, 0)
+						top2text1:SetPoint("LEFT", top1text1, "LEFT", 220, 0)
+						top2text2:SetPoint("LEFT", top1text2, "LEFT", 220, 0)
+						top2text3:SetPoint("LEFT", top1text3, "LEFT", 220, 0)
+						top2value1:SetPoint("TOPLEFT", top2text1, "TOPLEFT", 80, 0)
+						top2value2:SetPoint("TOPLEFT", top2text2, "TOPLEFT", 80, 0)
+						top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
+						bottom1header:SetPoint("TOPLEFT", top1text3, "BOTTOMLEFT", -20, -5)
+						bottom1text1:SetPoint("TOPLEFT", bottom1header, "BOTTOMLEFT", 20, -5)
+						bottom1text2:SetPoint("TOPLEFT", bottom1text1, "BOTTOMLEFT", 0, -5)
+						bottom1text3:SetPoint("TOPLEFT", bottom1text2, "BOTTOMLEFT", 0, -5)
+						bottom1value1:SetPoint("TOPLEFT", bottom1text1, "TOPLEFT", 80, 0)
+						bottom1value2:SetPoint("TOPLEFT", bottom1text2, "TOPLEFT", 80, 0)
+						bottom1value3:SetPoint("TOPLEFT", bottom1text3, "TOPLEFT", 80, 0)
+						bottom2header:SetPoint("LEFT", bottom1header, "LEFT", 220, 0)
+						bottom2text1:SetPoint("LEFT", bottom1text1, "LEFT", 220, 0)
+						bottom2text2:SetPoint("LEFT", bottom1text2, "LEFT", 220, 0)
+						bottom2text3:SetPoint("LEFT", bottom1text3, "LEFT", 220, 0)
+						bottom2value1:SetPoint("TOPLEFT", bottom2text1, "TOPLEFT", 80, 0)
+						bottom2value2:SetPoint("TOPLEFT", bottom2text2, "TOPLEFT", 80, 0)
+						bottom2value3:SetPoint("TOPLEFT", bottom2text3, "TOPLEFT", 80, 0)
+						--Set header text.
+						top1header:SetText(PLAYER_DIFFICULTY3)--Raid Finder
+						top2header:SetText(PLAYER_DIFFICULTY1)--Normal
+						bottom1header:SetText(PLAYER_DIFFICULTY2)--Heroic
+						bottom1header:SetFontObject(GameFontHighlightSmall)
+						bottom2header:SetText(PLAYER_DIFFICULTY6)--Mythic
+						bottom2header:SetFontObject(GameFontHighlightSmall)
+						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
+						doubleline = doubleline + 1
+					end
 				end
 
 				table.insert(area.onshowcall, OnShowGetStats(mod.stats, statsType, top1value1, top1value2, top1value3, top2value1, top2value2, top2value3, top3value1, top3value2, top3value3, bottom1value1, bottom1value2, bottom1value3, bottom2value1, bottom2value2, bottom2value3, bottom3value1, bottom3value2, bottom3value3))
@@ -2999,7 +3025,9 @@ do
 			if not Categories[addon.category] then
 				-- Create a Panel for "Wrath of the Lich King" "Burning Crusade" ...
 				local expLevel = GetExpansionLevel()
-				if expLevel == 4 then--Choose default expanded category based on players current expansion is.
+				if expLevel == 5 then--Choose default expanded category based on players current expansion is.
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="WOD"))
+				elseif expLevel == 4 then--Choose default expanded category based on players current expansion is.
 					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="MOP"))
 				elseif expLevel == 3 then
 					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="CATA"))

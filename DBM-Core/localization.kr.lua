@@ -106,6 +106,7 @@ DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 현재 사용중인 DBM 버전은 �
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "지금 사용하시는 DBM 버전은 이 전투에서 잘못된 경고를 표시합니다. 이 오류는 다음 버전에서 수정되오나, 다음 버전이 없을 경우 최신 alpha 버전으로 업데이트 하면 수정할 수 있습니다."
 DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "경고: DBM 버전이 오래되어 현재 게임 버전에서는 작동하지 않을 것입니다. 당신 또는 같은 공격대원에게 잘못된 알림을 보내거나 게임이 느려지는 것을 막기 위함을 양해하여 주시기 바랍니다. 지금 당장 최신 버전으로 업데이트 하여 주시기 바랍니다. 만약 6.0 베타를 실행 중인데 이 메세지가 보인다면, http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing 에서 6.0 베타 버전을 받으세요."
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "경고: 현재 게임 버전과 맞지 않는 DBM을 사용중입니다. 현재 게임 버전에 맞는 DBM을 다운로드 받아 다시 설치하시기 바랍니다."
+DBM_CORE_VEM							= "경고: 당신은 DBM과 VEM을 동시에 사용중입니다. 현재 설정에서는 DBM이 작동하지 않으므로 DBM을 불러오지 않습니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
@@ -297,8 +298,9 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "특수 경고"
 DBM_ARROW_MOVABLE						= "화살표 움직이기"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM 화살표 사용법:",
-	"/dbm arrow <x> <y>  지정된 좌표(X/Y) 방향으로 화살표를 만듭니다.(0 < x/y < 100)",
-	"/dbm arrow <대상이름>  현재 파티 또는 공격대의 <대상이름> 방향으로 화살표를 만듭니다.",
+	"/dbm arrow <x> <y>  지정된 좌표(X/Y) 방향으로 화살표를 만듭니다. (세계지도 좌표 사용)",
+	"/dbm arrow map <x> <y>  지정된 좌표(X/Y) 방향으로 화살표를 만듭니다. (지역지도 좌표 사용)",
+	"/dbm arrow <대상이름>  현재 파티 또는 공격대의 <대상이름> 방향으로 화살표를 만듭니다. (대소문자 구분)",
 	"/dbm arrow target  현재 대상 방향으로 화살표를 만듭니다.",
 	"/dbm arrow focus  현재 주시대상 방향으로 화살표를 만듭니다.",
 	"/dbm arrow move  화살표가 25초 동안 이동가능 상태가 됩니다.",

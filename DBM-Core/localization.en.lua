@@ -104,6 +104,7 @@ DBM_CORE_UPDATEREMINDER_DISABLE			= "WARNING: Do to your Deadly Boss Mods being 
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "Your version of DBM will have incorrect timers or warnings during this boss encounter. This is corrected in a newer release (or alpha release if newer release version not yet available)"
 DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "WARNING: Do to your Deadly Boss Mods being out of date, DBM has been disabled until updated, since this is a major game patch. This is to ensure old and incompatable code doesn't cause poor play experience for yourself or fellow group members. Make sure you download a newer version from deadlybossmods.com or curse as soon as possible. If you are getting this messeage on 6.0 beta, download beta mod here: http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing"
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "WARNING: You are using a version of Deadly Boss Mods not intended to be used with this game version. Please make sure you download the appropriate version for your game client from deadlybossmods.com or curse."
+DBM_CORE_VEM							= "WARNING: You are running both Deadly Boss Mods and Voice Encounter Mods. DBM will not run in this configuration and therefor will not be loaded."
 
 DBM_CORE_MOVABLE_BAR				= "Drag me!"
 
@@ -307,8 +308,9 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Special Warning"
 DBM_ARROW_MOVABLE					= "Arrow movable"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow usage:",
-	"/dbm arrow <x> <y>  creates an arrow that points to a specific locataion (0 < x/y < 100)",
-	"/dbm arrow <player>  creates and arrow that points to a specific player in your party or raid",
+	"/dbm arrow <x> <y>  creates an arrow that points to a specific location (using world coordinates)",
+	"/dbm arrow map <x> <y>  creates an arrow that points to a specific location (using zone map coordinates)",
+	"/dbm arrow <player>  creates and arrow that points to a specific player in your party or raid (case sensitive!)",
 	"/dbm arrow hide  hides the arrow",
 	"/dbm arrow move  makes the arrow movable"
 }
