@@ -121,30 +121,28 @@ mod:AddRangeFrameOption(10, 145987)
 mod:AddInfoFrameOption("ej8350")--Eh, "overview" works.
 
 --Upvales, don't need variables
-local select, tonumber, GetPlayerMapPosition, GetWorldStateUIInfo = select, tonumber, GetPlayerMapPosition, GetWorldStateUIInfo
-local point1 = {0.488816, 0.208129}
-local point2 = {0.562330, 0.371684}
+local select, tonumber, UnitPosition, GetWorldStateUIInfo = select, tonumber, UnitPosition, GetWorldStateUIInfo
 --Not important, don't need to recover
 local worldTimer = 0
 local maxTimer = 0
 
 local function isPlayerInMantid()
-	local x, y = GetPlayerMapPosition("player")
-	if x == 0 and y == 0 then
-		SetMapToCurrentZone()
-		x, y = GetPlayerMapPosition("player")
-	end
-	local lineX, diffX, calcY
-	lineX = point2[1] - point1[1]
-	diffX = x - point1[1]
-	if diffX <= 0 then return true end
-	if diffX >= lineX then return false end
-	calcY = (diffX / lineX) * (point2[2]-point1[2]) + point1[2]
-	if y >= calcY then
-		return true
-	else
-		return false
-	end
+	local x, y = UnitPosition("player")
+	local p1 = {1666, -4982}--top point, clockwise
+	local p2 = {1711, -5070}
+	local p3 = {1552, -5179}
+	local p4 = {1493, -5102}
+
+	local m1 = (p2[2]-p1[2])/(p2[1]-p1[1])
+	if (y > m1*x-m1*p1[1]+p1[2]) then return false end
+	local m2 = (p3[2]-p2[2])/(p3[1]-p2[1])
+	if (y < m2*x-m2*p2[1]+p2[2]) then return false end
+	local m3 = (p4[2]-p3[2])/(p4[1]-p3[1])
+	if (y < m3*x-m3*p3[1]+p3[2]) then return false end
+	local m4 = (p1[2]-p4[2])/(p1[1]-p4[1])
+	if (y > m4*x-m4*p4[1]+p4[2]) then return false end
+
+	return true
 end
 
 local function hideRangeFrame()
