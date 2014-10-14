@@ -11,14 +11,14 @@ local arrowFrame = DBM.Arrow
 local runAwayArrow
 local targetType
 local targetPlayer
-local targetX, targetY
+local targetX, targetY, targetMapId
 local hideTime, hideDistance
 
 -- cached variables
 local pi, pi2 = math.pi, math.pi * 2
 local floor = math.floor
 local sin, cos, atan2, sqrt, min = math.sin, math.cos, math.atan2, math.sqrt, math.min
-local GetPlayerMapPosition = GetPlayerMapPosition
+local UnitPosition = UnitPosition
 
 --------------------
 --  Create Frame  --
@@ -48,26 +48,11 @@ arrow:SetAllPoints(frame)
 ---------------------
 --  Map Utilities  --
 ---------------------
-local SetMapToCurrentZone -- throttled SetMapToCurrentZone function to prevent lag issues with unsupported WorldMap addons
-do
-	local lastMapUpdate = 0
-	function SetMapToCurrentZone(...)
-		if GetTime() - lastMapUpdate > 1 then
-			lastMapUpdate = GetTime()
-			return _G.SetMapToCurrentZone(...)
-		end
-	end
-end
-
 local calculateDistance
 do
 	function calculateDistance(x1, y1, x2, y2)
-		local dims = DBM:GetMapSizes()
-		if not dims then
-			return
-		end
-		local dX = (x1 - x2) * dims[1]
-		local dY = (y1 - y2) * dims[2]
+		local dX = x1 - x2
+		local dY = y1 - y2
 		return sqrt(dX * dX + dY * dY)
 	end
 end
@@ -147,18 +132,11 @@ do
 			return updateArrow(targetX) -- targetX contains the static angle to show
 		end
 
-		local x, y = GetPlayerMapPosition("player")
-		if x == 0 and y == 0 then
-			SetMapToCurrentZone()
-			x, y = GetPlayerMapPosition("player")
-			if x == 0 and y == 0 then
-				self:Hide() -- hide the arrow if you enter a zone without a map
-				return
-			end
-		end
+		local x, y, _, mapId = UnitPosition("player")
+
 		if targetType == "player" then
-			targetX, targetY = GetPlayerMapPosition(targetPlayer)
-			if targetX == 0 and targetY == 0 then
+			targetX, targetY, _, targetMapId = UnitPosition(targetPlayer)
+			if not targetX or mapId ~= targetMapId then
 				self:Hide() -- hide the arrow if the target doesn't exist. TODO: just hide the texture and add a timeout
 			end
 		elseif targetType == "rotate" then
@@ -169,7 +147,7 @@ do
 		if not targetX or not targetY then
 			return
 		end
-		local angle = atan2(x - targetX, targetY - y)
+		local angle = atan2(targetY - y, x - targetX)
 		if angle <= 0 then -- -pi < angle < pi but we need/want a value between 0 and 2 pi
 			if runAwayArrow then
 				angle = -angle -- 0 < angle < pi
@@ -191,10 +169,40 @@ end
 ----------------------
 --  Public Methods  --
 ----------------------
-local function show(runAway, x, y, distance, time)
+local function MapToWorldCoords(x, y)
+	SetMapToCurrentZone()
+
+	local isMapDungeon = true
+	local _, a, b, c, d = GetCurrentMapDungeonLevel()
+	--local floorIndex, minX, minY, maxX, maxY = GetCurrentMapDungeonLevel()
+
+	if not (a and b and c and d) then
+		isMapDungeon = false
+		_, a, b, c, d = GetCurrentMapZone()
+		--local zoneIndex, locLeft, locTop, locRight, locBottom = GetCurrentMapZone()
+	end
+
+	if not (a and b and c and d) then
+		return x, y
+	end
+
+	local h, w = c - a, d - b
+	local dx, dy = x / 100, y / 100
+
+	if isMapDungeon then
+		x = d - w * dy
+		y = c - h * dx
+	else
+		x = b + w * dy
+		y = a + h * dx
+	end
+
+	--print("x=" .. x .. ", y=" .. y)
+	return x, y
+end
+
+local function show(runAway, x, y, distance, time, legacy)
 	local player
-	SetMapToCurrentZone()--Set map to current zone before checking other stuff
-	DBM:UpdateMapSizes()--Force a mapsize update after SetMapToCurrentZone to ensure our information is current
 	if type(x) == "string" then
 		player, hideDistance, hideTime = x, y, hideDistance
 	end
@@ -211,6 +219,9 @@ local function show(runAway, x, y, distance, time)
 		targetPlayer = player
 	else
 		targetType = "fixed"
+		if legacy and x >= 0 and x <= 100 and y >= 0 and y <= 100 then
+			x, y = MapToWorldCoords(x, y)
+		end
 		targetX, targetY = x, y
 	end
 end

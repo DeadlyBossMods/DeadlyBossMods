@@ -68,7 +68,7 @@ local dims
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
 --------------------------------------------------------
-local GetPlayerMapPosition = GetPlayerMapPosition
+local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
 local UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat = UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat
 local GetNumGroupMembers, GetNumSubgroupMembers = GetNumGroupMembers, GetNumSubgroupMembers
@@ -327,7 +327,7 @@ function createTextFrame()
 	textFrame:SetWidth(64)
 	textFrame:EnableMouse(true)
 	textFrame:SetToplevel(true)
-	textFrame:SetMovable()
+	textFrame:SetMovable(1)
 	GameTooltip_OnLoad(textFrame)
 	textFrame:SetPadding(16)
 	textFrame:RegisterForDrag("LeftButton")
@@ -361,7 +361,7 @@ function createRadarFrame()
 	radarFrame:SetWidth(128)
 	radarFrame:EnableMouse(true)
 	radarFrame:SetToplevel(true)
-	radarFrame:SetMovable()
+	radarFrame:SetMovable(1)
 	radarFrame:RegisterForDrag("LeftButton")
 	radarFrame:SetScript("OnDragStart", function(self)
 		if not DBM.Options.RangeFrameLocked then
@@ -506,10 +506,7 @@ do
 			radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(activeRange))
 		end
 
-		dims = dims or DBM:GetMapSizes()
-
-		local playerX, playerY = GetPlayerMapPosition("player")
-		if playerX == 0 and playerY == 0 then return end -- Somehow we can't get the correct position?
+		local playerX, playerY, _, playerMapId = UnitPosition("player")
 
 		rotation = (2 * pi) - GetPlayerFacing()
 		local closePlayer = 0
@@ -517,11 +514,12 @@ do
 			local uId = unitList[i]
 			local dot = dots[i]
 			local filter = mainFrame.filter
-			if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and (not filter or filter(uId)) then
-				local x, y = GetPlayerMapPosition(uId)
-				local cx = (x - playerX) * dims[1]
-				local cy = (y - playerY) * dims[2]
+			local x, y, _, mapId = UnitPosition(uId)
+			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and (not filter or filter(uId)) then
+				local cy = x - playerX
+				local cx = y - playerY
 				local range = (cx * cx + cy * cy) ^ 0.5
+				--local range = UnitDistanceSquared(uId) ^ 0.5
 				local inRange = false
 				if range < (activeRange * 1.1) then-- add 10% because of map data inaccuracies
 					closePlayer = closePlayer + 1
@@ -535,8 +533,8 @@ do
 					textFrame:AddLine(text, color.r, color.g, color.b)
 				end
 				if rEnabled then
-					dot.x = cx
-					dot.y = cy
+					dot.x = -cx
+					dot.y = -cy
 					dot.range = range
 					setDot(i)
 				end
@@ -593,9 +591,6 @@ anim:SetDuration(0.05)
 mainFrame:SetScript("OnEvent", function(self, event, ...)
 	if event == "GROUP_ROSTER_UPDATE" or event == "RAID_TARGET_UPDATE" then
 		updateIcon()
-	elseif event == "ZONE_CHANGED" or event == "ZONE_CHANGED_INDOORS" or event == "ZONE_CHANGED_NEW_AREA" then
-		dims = nil
-		DBM:UpdateMapSizes()
 	end
 end)
 
@@ -607,18 +602,17 @@ do
 	function getDistanceBetween(uId, x, y)
 		-- alternative arguments: uId, uId2
 		if type(x) == "string" then
-			x, y = GetPlayerMapPosition(x)
+			local uId2 = x
+			x, y = UnitPosition(uId2)
+			if not x then
+				print("getDistanceBetween failed for: " .. uId .. " (" .. UnitExists(uId) .. ") and " .. uId2 .. " (" .. UnitExists(uId2) .. ")")
+				return
+			end
 		end
-		local startX, startY = GetPlayerMapPosition(uId)
-		local dims = DBM:GetMapSizes()
-		if not dims then return end
-		local dX = (startX - x) * dims[1]
-		local dY = (startY - y) * dims[2]
+		local startX, startY = UnitPosition(uId)
+		local dX = startX - x
+		local dY = startY - y
 		return (dX * dX + dY * dY) ^ 0.5
-	end
-
-	local function mapRangeCheck(uId, range)
-		return getDistanceBetween(uId, GetPlayerMapPosition("player")) < range
 	end
 end
 
@@ -627,7 +621,6 @@ end
 ---------------
 function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
 	if (not IsInGroup() or DBM.Options.DontShowRangeFrame) and not forceshow then return end
-	DBM:UpdateMapSizes()--Force a mapsize update after SetMapToCurrentZone to ensure our information is current
 	if type(range) == "function" then -- the first argument is optional
 		return self:Show(nil, range)
 	end
@@ -652,9 +645,6 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
 		updateIcon()
 		mainFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
 		mainFrame:RegisterEvent("RAID_TARGET_UPDATE")
-		mainFrame:RegisterEvent("ZONE_CHANGED")
-		mainFrame:RegisterEvent("ZONE_CHANGED_INDOORS")
-		mainFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	end
 	updater:SetScript("OnLoop", updateRangeFrame)
 	updater:Play()

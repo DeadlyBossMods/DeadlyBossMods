@@ -1,5 +1,5 @@
-﻿## Interface: 50400
-## X-Min-Interface: 50001
+﻿## Interface: 60000
+## X-Min-Interface: 60000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0World Events|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eventos del Mundo|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0이벤트|r
@@ -15,7 +15,7 @@
 ## SavedVariablesPerCharacter: DBMWorldEvents_SavedVars, DBMWorldEvents_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
-## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Category: WOD
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-SubCategories: Holidays,Quests
@@ -38,7 +38,7 @@
 ## X-DBM-Mod-Name-ptBR: Eventos Mundiais
 ## X-DBM-Mod-Name-frFR: Évènements Mondiaux
 ## X-DBM-Mod-MapID: 230,189,33,547,1004, 1, 0
-## X-DBM-Mod-Sort: 250
+## X-DBM-Mod-Sort: 150
 ## X-DBM-Mod-LoadCID: 55003,54499,15467,15466,49687,15664
 localization.en.lua
 localization.ru.lua

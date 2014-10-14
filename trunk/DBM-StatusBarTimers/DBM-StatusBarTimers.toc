@@ -1,5 +1,5 @@
-﻿## Interface: 50400
-## X-Min-Interface: 50001
+﻿## Interface: 60000
+## X-Min-Interface: 60000
 ## Title:|cffffd200DBM|r |cff69ccf0Status Bar Timers|r
 ## Title-koKR:|cffffd200DBM|r |cff69ccf0상태 바|r
 ## Title-zhTW:|cffffd200DBM|r |cff69ccf0狀態條計時器|r

@@ -1,5 +1,5 @@
-﻿## Interface: 50400
-## X-Min-Interface: 50001
+﻿## Interface: 60000
+## X-Min-Interface: 60000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Darkmoon Faire|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Feria de la Luna Negra|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0다크문 축제|r
@@ -14,10 +14,10 @@
 ## SavedVariablesPerCharacter: DBMDMF_SavedVars, DBMWorldDMF_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
-## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Category: WOD
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-MapID: 974
-## X-DBM-Mod-Sort: 255
+## X-DBM-Mod-Sort: 155
 localization.en.lua
 localization.ru.lua
 localization.fr.lua
