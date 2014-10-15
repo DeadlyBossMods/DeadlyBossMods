@@ -2199,7 +2199,7 @@ function DBM:GetCIDFromGUID(guid)
 end
 
 function DBM:IsCreatureGUID(guid)
-	local type = strsplit(":", guid or "")
+	local type = strsplit("-", guid or "")
 	if type and (type == "Creature" or type == "Vehicle") then--To determine, add pet or not?
 		return true
 	end
