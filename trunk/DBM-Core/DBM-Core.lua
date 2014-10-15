@@ -3981,6 +3981,8 @@ end
 
 local statVarTable = {
 	--6.0
+	["event5"] = "normal",
+	["event40"] = "lfr25",
 	["normal5"] = "normal",
 	["heroic5"] = "heroic",
 	["challenge5"] = "challenge",
