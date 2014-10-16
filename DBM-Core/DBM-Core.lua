@@ -3252,15 +3252,7 @@ do
 			if not DBM.Options.ShowGuildMessages then return end
 			if not ver or not (ver == "1") then return end--Ignore old versions
 			if DBM:AntiSpam(5, "GCB") then
-				if IsInGroup() then
-					if IsInRaid() then
-						for i = 1, GetNumGroupMembers() do
-							if UnitName("raid"..i) == sender then return end--You are in group with sender, filter message
-						end
-					elseif IsInInstance() then--You are in a dungeon with a group, filter message
-						return
-					end
-				end
+				if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 				local bossName = EJ_GetEncounterInfo(modId) or UNKNOWN
 				DBM:AddMsg(DBM_CORE_GUILD_COMBAT_STARTED:format(bossName))
 			end
@@ -3270,15 +3262,7 @@ do
 			if not DBM.Options.ShowGuildMessages then return end
 			if not ver or not (ver == "1") then return end--Ignore old versions
 			if DBM:AntiSpam(5, "GCE") then
-				if IsInGroup() then
-					if IsInRaid() then
-						for i = 1, GetNumGroupMembers() do
-							if UnitName("raid"..i) == sender then return end--You are in group with sender, filter message
-						end
-					elseif IsInInstance() then--You are in a dungeon with a group, filter message
-						return
-					end
-				end
+				if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 				local bossName = EJ_GetEncounterInfo(modId) or UNKNOWN
 				if wipe == "1" then
 					DBM:AddMsg(DBM_CORE_GUILD_COMBAT_ENDED_AT:format(bossName, wipeHP, time))
