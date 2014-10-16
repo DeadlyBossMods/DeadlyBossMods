@@ -278,7 +278,7 @@ local function updateEnemyPower()
 	local threshold = value[1]
 	local powerType = value[2]
 	for i = 1, 5 do
-		if UnitExists("boss"..i) and UnitPower("boss"..i, powerType) / UnitPowerMax("boss"..i, powerType) * 100 >= threshold then
+		if UnitPower("boss"..i, powerType) / UnitPowerMax("boss"..i, powerType) * 100 >= threshold then
 			lines[UnitName("boss"..i)] = UnitPower("boss"..i, powerType)
 		end
 	end
