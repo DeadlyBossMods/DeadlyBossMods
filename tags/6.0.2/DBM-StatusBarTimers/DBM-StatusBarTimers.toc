@@ -1,0 +1,17 @@
+﻿## Interface: 60000
+## X-Min-Interface: 60000
+## Title:|cffffd200DBM|r |cff69ccf0Status Bar Timers|r
+## Title-koKR:|cffffd200DBM|r |cff69ccf0상태 바|r
+## Title-zhTW:|cffffd200DBM|r |cff69ccf0狀態條計時器|r
+## Title-zhCN:|cffffd200DBM|r |cff69ccf0状态条计时器|r
+## Notes: DBM - status bar timer library
+## Notes-koKR: DBM 바 표시에 필요한 애드온입니다.
+## Notes-zhTW: DBM 狀態條計時器函式庫
+## Notes-zhCN: DBM 状态条计时器函数库
+## SavedVariablesPerCharacter: DBT_PersistentOptions
+## LoadOnDemand: 0
+## DefaultState: enabled
+## X-Website: http://www.deadlybossmods.com
+
+DBT-Template.xml
+DBT.lua
