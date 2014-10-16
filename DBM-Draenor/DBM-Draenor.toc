@@ -2,6 +2,7 @@
 ## X-Min-Interface: 60000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Draenor|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0드레노어|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Draenor|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -16,6 +17,7 @@
 ## X-DBM-Mod-LoadCID: 83746, 81535, 81252
 localization.en.lua
 localization.kr.lua
+localization.de.lua
 localization.ru.lua
 Drov.lua
 Tarlna.lua
