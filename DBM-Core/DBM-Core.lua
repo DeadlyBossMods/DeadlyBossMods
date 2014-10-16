@@ -3773,7 +3773,9 @@ do
 	--And I have transcriptor log, i still don't know which event is right one sometimes. It's important to SEE which event is firing during an exact moment of a fight.
 	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		if not (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5") then return end
-		self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")")
+		if Transcriptor and Transcriptor:IsLogging() then--Only want this information if it's a new fight we're running transcriptor for, otherwise, no spam.
+			self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")")
+		end
 	end
 
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
