@@ -101,5 +101,5 @@ L= DBM:GetModLocalization(959)
 L = DBM:GetModLocalization("BlackrockFoundryTrash")
 
 L:SetGeneralLocalization({
-	name =	"Blackrock Foundry Trash"
+	name =	"Trash der Schwarzfelsgießerei"
 })

@@ -66,5 +66,5 @@ L= DBM:GetModLocalization(1197)
 L = DBM:GetModLocalization("HighmaulTrash")
 
 L:SetGeneralLocalization({
-	name =	"Highmaul Trash"
+	name =	"Trash des Hochfels"
 })
