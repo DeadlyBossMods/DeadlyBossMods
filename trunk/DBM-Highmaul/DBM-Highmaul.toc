@@ -3,6 +3,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Highmaul|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0높은망치|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Верховный Молот|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Hochfels|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -16,6 +17,7 @@
 localization.en.lua
 localization.kr.lua
 localization.ru.lua
+localization.de.lua
 KargathBladefist.lua
 TheButcher.lua
 Tectus.lua
