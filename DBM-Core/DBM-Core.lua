@@ -52,8 +52,8 @@
 -------------------------------
 DBM = {
 	Revision = tonumber(("$Revision$"):sub(12, -3)),
-	DisplayVersion = "6.0.2 alpha", -- the string that is shown as version
-	ReleaseRevision = 11772 -- the revision of the latest stable version that is available
+	DisplayVersion = "6.0.3 alpha", -- the string that is shown as version
+	ReleaseRevision = 11780 -- the revision of the latest stable version that is available
 }
 
 -- Legacy crap; that stupid "Version" field was never a good idea.
