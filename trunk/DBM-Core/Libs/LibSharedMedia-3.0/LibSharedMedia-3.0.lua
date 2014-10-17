@@ -1,6 +1,6 @@
 --[[
 Name: LibSharedMedia-3.0
-Revision: $Revision: 87 $
+Revision: $Revision: 89 $
 Author: Elkano (elkano@gmx.de)
 Inspired By: SurfaceLib by Haste/Otravi (troeks@gmail.com)
 Website: http://www.wowace.com/projects/libsharedmedia-3-0/
@@ -9,7 +9,7 @@ Dependencies: LibStub, CallbackHandler-1.0
 License: LGPL v2.1
 ]]
 
-local MAJOR, MINOR = "LibSharedMedia-3.0", 5000404 -- 5.0.4 v4 / increase manually on changes
+local MAJOR, MINOR = "LibSharedMedia-3.0", 6000201 -- 6.0.2 v1 / increase manually on changes
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not lib then return end
@@ -60,9 +60,13 @@ lib.MediaType.SOUND			= "sound"				-- sound files
 -- BACKGROUND
 if not lib.MediaTable.background then lib.MediaTable.background = {} end
 lib.MediaTable.background["None"]									= [[]]
+lib.MediaTable.background["Blizzard Collections Background"]		= [[Interface\Collections\CollectionsBackgroundTile]]
 lib.MediaTable.background["Blizzard Dialog Background"]				= [[Interface\DialogFrame\UI-DialogBox-Background]]
 lib.MediaTable.background["Blizzard Dialog Background Dark"]		= [[Interface\DialogFrame\UI-DialogBox-Background-Dark]]
 lib.MediaTable.background["Blizzard Dialog Background Gold"]		= [[Interface\DialogFrame\UI-DialogBox-Gold-Background]]
+lib.MediaTable.background["Blizzard Garrison Background"]			= [[Interface\Garrison\GarrisonUIBackground]]
+lib.MediaTable.background["Blizzard Garrison Background 2"]			= [[Interface\Garrison\GarrisonUIBackground2]]
+lib.MediaTable.background["Blizzard Garrison Background 3"]			= [[Interface\Garrison\GarrisonMissionUIInfoBoxBackgroundTile]]
 lib.MediaTable.background["Blizzard Low Health"]					= [[Interface\FullScreenTextures\LowHealth]]
 lib.MediaTable.background["Blizzard Marble"]						= [[Interface\FrameGeneral\UI-Background-Marble]]
 lib.MediaTable.background["Blizzard Out of Control"]				= [[Interface\FullScreenTextures\OutOfControl]]
@@ -90,6 +94,8 @@ if not lib.MediaTable.font then lib.MediaTable.font = {} end
 local SML_MT_font = lib.MediaTable.font
 --[[
 All font files are currently in all clients, the following table depicts which font supports which charset as of 5.0.4
+Fonts were checked using langcover.pl from DejaVu fonts (http://sourceforge.net/projects/dejavu/) and FontForge (http://fontforge.org/)
+latin means check for: de, en, es, fr, it, pt
 
 file				name							latin	koKR	ruRU	zhCN	zhTW
 2002.ttf			2002							X		X		X		-		-
@@ -103,7 +109,7 @@ bHEI01B.ttf			AR Heiti2 Bold B5				-		-		-		-		X
 bKAI00M.ttf			AR Kaiti Medium B5				-		-		-		-		X
 bLEI00D.ttf			AR Leisu Demi B5				-		-		-		-		X
 FRIZQT__.TTF		Friz Quadrata TT				X		-		-		-		-
-FRIZQT___CYR.TTF	FrizQuadrataCTT					-		-		X		-		-
+FRIZQT___CYR.TTF	FrizQuadrataCTT					x		-		X		-		-
 K_Damage.TTF		YDIWingsM						-		X		X		-		-
 K_Pagetext.TTF		MoK								X		X		X		-		-
 MORPHEUS.TTF		Morpheus						X		-		-		-		-
@@ -220,7 +226,7 @@ function lib:Register(mediatype, key, data, langmask)
 	if not mediaTable[mediatype] then mediaTable[mediatype] = {} end
 	local mtable = mediaTable[mediatype]
 	if mtable[key] then return false end
-
+	
 	mtable[key] = data
 	rebuildMediaList(mediatype)
 	self.callbacks:Fire("LibSharedMedia_Registered", mediatype, key)
