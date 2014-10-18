@@ -14,6 +14,8 @@ DBM_CORE_LOAD_GUI_COMBAT			= "GUI cannot be initially loaded in combat. GUI will
 DBM_CORE_LOAD_SKIN_COMBAT			= "DBM timers failed to skin during combat. Your timers will likely not work correctly and generate several lua errors. This is often caused by 3rd party mods trying to apply skin changes in combat. Recommended to reloadui after you leave combat"
 DBM_CORE_BAD_LOAD					= "DBM has detected your mod for this instance failed to fully load correctly because of combat. As soon as you are out of combat, please do /console reloadui as soon as possible."
 
+DBM_CORE_BLIZZ_BUGS					= "Known 6.0 Addon Bugs:\n1. Mod sound ducking is back. If you play with combat sounds enabled and only have quality set to 'low (24 channels)' you may lose mod sounds in combat if number of similtanious sounds exceeds 24. Raise sound channels to 64, or turn 'Sound Effects' channel off.\n2. Addons that save variables per character, will fail to do so on characters that use special characters in name. This will cause many mods to have issues with saving settings or loading settings."
+
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM has disabled dynamic range frame on this fight do to insufficient information about number of players needed to affect clump check for a group of your size."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM has disabled add count warnings on this fight do to insufficient information about number of adds that spawn for a group of your size."
 DBM_CORE_DYNAMIC_MULTIPLE			= "DBM has disabled multiple features on this fight do to insufficient information about certain mechanics for a group of your size."
