@@ -15,6 +15,8 @@ DBM_CORE_LOAD_GUI_COMBAT			= "Die grafische Benutzeroberfläche kann nicht im Ka
 DBM_CORE_LOAD_SKIN_COMBAT			= "Das Design der DBM-Timer konnte nicht im Kampf gesetzt werden. Die Timer werden vermutlich nicht korrekt funktionieren und diverse LUA-Fehler generieren. Dies wird oft durch Mods anderer Hersteller verursacht, die versuchen Designänderungen im Kampf vorzunehmen. Du solltest nach dem Kampfende /reload ausführen."
 DBM_CORE_BAD_LOAD					= "Dein Boss Mod für diese Instanz konnte nicht vollständig korrekt im Kampf geladen werden. Bitte führe baldmöglichst nach Kampfende /reload aus."
 
+DBM_CORE_BLIZZ_BUGS					= "Fehler im Spiel mit Addons seit 6.0:\n1. Bei aktivierten Soundeffekten können Audiomeldungen durch Addons im Kampf verloren gehen, falls die Anzahl deiner Soundkanäle für die gleichzeitige Ausgabe nicht ausreicht, da seit 6.0 Addons niedrig priorisiert werden.\n2. Addons können charakterspezifische Einstellungen nicht erfolgreich speichern, wenn im Charakternamen Sonderzeichen enthalten sind. Deshalb haben viele Mods Probleme mit dem Speichern und Laden von Einstellungen."
+
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM hat das dynamische Abstandsfenster für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, auf wieviel versammelte Spieler bei deiner Gruppengröße geprüft werden muss."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM hat Warnungen bezüglich der Anzahl der Gegner für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, wieviel Gegner bei deiner Gruppengröße erscheinen."
 DBM_CORE_DYNAMIC_MULTIPLE			= "DBM hat mehrere Funktionalitäten für diesen Kampf deaktiviert, da für deine Gruppengröße nicht genügend Informationen über bestimmte Kampfmechaniken vorliegen."
