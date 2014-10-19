@@ -80,7 +80,7 @@ local function onMouseUp(self, button)
 	DBM.Options.HPFrameX = x
 	DBM.Options.HPFrameY = y
 	if button == "RightButton" then
-		EasyMenu(menu, dropdownFrame, "cursor", nil, nil, "MENU")
+		EasyMenu(menu, dropdownFrame, "cursor", nil, nil)
 	end
 end
 
