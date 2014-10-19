@@ -2462,18 +2462,23 @@ function DBM:UPDATE_BATTLEFIELD_STATUS()
 end
 
 function DBM:CINEMATIC_START()
+	DBM:Debug("CINEMATIC_START fired")
 	if not IsInInstance() or C_Garrison:IsOnGarrisonMap() or DBM.Options.MovieFilter == "Never" then return end
+	DBM:Debug("CINEMATIC_START is enabled and passed first check")
 	for itemId, mapId in pairs(blockMovieSkipItems) do
 		if mapId == LastInstanceMapID then
 			if select(3, GetItemCooldown(itemId)) > 0 then return end
 		end
 	end
+	DBM:Debug("CINEMATIC_START has no visions of time item")
 	SetMapToCurrentZone()
 	local currentFloor = GetCurrentMapDungeonLevel() or 0
 	if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[LastInstanceMapID..currentFloor] then
 		CinematicFrame_CancelCinematic()
+		DBM:Debug("CINEMATIC_START should be canceling movie")
 	else
 		DBM.Options.MoviesSeen[LastInstanceMapID..currentFloor] = true
+		DBM:Debug("CINEMATIC_START should be allowing movie to play since it's first time")
 	end
 end
 
