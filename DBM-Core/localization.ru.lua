@@ -1,11 +1,11 @@
 ﻿if GetLocale() ~= "ruRU" then return end
 
-DBM_CORE_NEED_SUPPORT				= "Вы - программист или хороший переводчик? Если да, то нам нужна ваша помощь в локализации DBM на другие языки. Помогите нам, посетив http://forums.elitistjerks.com/topic/132449-dbm-localizers-needed/"
+DBM_CORE_NEED_SUPPORT				= "Вы - программист или хороший переводчик? Нам нужна ваша помощь в локализации DBM на другие языки! Посетите http://forums.elitistjerks.com/topic/132449-dbm-localizers-needed/ для получения дополнительной информации."
 DBM_CORE_NEED_LOGS					= "DBM needs Transcriptor (http://www.wowace.com/addons/transcriptor/) logs of these test fights to make best mods possible. If you want to help, log these fights with transcriptor and post them to http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing/ (zip them up, they can get quite large otherwise). Only interested in 6.0 raid logs. Do not need dungeon logs."
 DBM_HOW_TO_USE_MOD					= "Добро пожаловать в DBM. Для доступа к настройкам наберите /dbm в чате. При желании, загрузите определенные зоны вручную для изменений специфических настроек для каждого босса. DBM пытается подстраиваться под вас на основе вашей специализации на момент первого запуска, но некоторые могут захотеть включить дополнительные опции."
 
-DBM_FORUMS_MESSAGE					= "Нашли баг или неправильный таймер? Вы считаете что какому-то модулю требуется дополнительное предупреждение, таймер или особенность?\nПосетите новые форумы Deadly Boss Mods для обсуждений, сообщений об ошибках и запроса новых возможностей на |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (вы можете нажать на ссылку, чтобы скопировать URL)"
-DBM_FORUMS_COPY_URL_DIALOG			= "Посетите наши новые форумы обсуждения и поддержки\r\n(организовано Elitist Jerks!)"
+DBM_FORUMS_MESSAGE					= "Нашли баг или неправильный таймер? Считаете что какому-то модулю требуется дополнительное предупреждение, таймер или особенность?\nПосетите новые форумы Deadly Boss Mods для обсуждений, сообщений об ошибках и запроса новых возможностей на |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (нажмите на ссылку, чтобы скопировать URL)"
+DBM_FORUMS_COPY_URL_DIALOG			= "Зайдите на новый форум DBM\r\n(организовано Elitist Jerks!)"
 
 DBM_CORE_LOAD_MOD_ERROR				= "Ошибка при загрузке босс модуля для %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Загружен модуль для '%s'. Для дополнительных настроек введите /dbm или /dbm help в чате."
@@ -13,17 +13,19 @@ DBM_CORE_LOAD_MOD_COMBAT			= "Загрузка '%s' отложена до вых
 DBM_CORE_LOAD_GUI_ERROR				= "Не удалось загрузить GUI: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "GUI не может быть изначально загружено в бою. GUI будет загружено после боя. После загрузки GUI вы сможете загружать его в бою."
 DBM_CORE_LOAD_SKIN_COMBAT			= "DBM timers failed to skin during combat. Your timers will likely not work correctly and generate several lua errors. This is often caused by 3rd party mods trying to apply skin changes in combat. Recommended to reloadui after you leave combat"
-DBM_CORE_BAD_LOAD					= "DBM обнаружил, что не удалось полностью загрузить модуль для этого подземелья из-за режима боя. Как только вы выйдите из боя, пожалуйста сделайте /console reloadui как можно скорее."
+DBM_CORE_BAD_LOAD					= "DBM не удалось полностью загрузить модуль для этого подземелья, т.к. вы находитесь в режиме боя. Как только вы выйдите из боя, пожалуйста сделайте /console reloadui как можно скорее."
 
-DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM has disabled dynamic range frame on this fight do to insufficient information about number of players needed to affect clump check for a group of your size."
-DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM has disabled add count warnings on this fight do to insufficient information about number of adds that spawn for a group of your size."
-DBM_CORE_DYNAMIC_MULTIPLE			= "DBM has disabled multiple features on this fight do to insufficient information about certain mechanics for a group of your size."
+DBM_CORE_BLIZZ_BUGS					= "Обнаружены следующие баги с аддонами в 6.0:\n1. Если у вас включены звуковые эффекты, то звуки аддонов будут иногда пропадать в бою. Это происходит если одновременное количество звуковых эффектов превышает количество максимальных звуковых каналов (см. настройки звука). В патче 6.0 для звуков аддонов был установлен минимальный приоритет.\n2. Аддоны, сохраняющие свои настройки отдельно для каждого персонажа, не смогут сделать это, если в имени персонажа присутствуют специальные символы."
+
+DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM отключил динамическое окно проверки дистанции на этом боссе, т.к. нет точной информации о необходимом количестве игроков в одном скоплении для рейда вашего размера."
+DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM отключил предупреждения о появлении помощников на этом боссе, т.к. нет точной информации о количестве помощников, которые появляются в рейде вашего размера."
+DBM_CORE_DYNAMIC_MULTIPLE			= "DBM отключил несколько таймеров и предупреждений на этом боссе, т.к. нет точной информации о том, как работают механики энкаунтера для рейда вашего размера."
 
 DBM_CORE_LOOT_SPEC_REMINDER			= "Ваша текущая специализация %s. Вы выбрали добычу для специализации %s."
 
-DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM обнаружил, что у Вас включена установка меток в Bigwigs и DBM одновременно. Пожалуйста отключите метки в одном из них, чтобы избежать конфликта с лидером вашей группы"
+DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM обнаружил, что у вас включена установка меток в Bigwigs и DBM одновременно. Пожалуйста отключите метки в одном из них, чтобы избежать конфликта с лидером вашей группы"
 
-DBM_CORE_PROVINGGROUNDS_AD			= "Для этого контента доступен DBM-ProvingGrounds. Вы можете найти его на deadlybossmods.com или Curse. Это сообщение отображается один раз."
+DBM_CORE_PROVINGGROUNDS_AD			= "Для этого контента доступен дополнительный модуль DBM-ProvingGrounds. Вы можете скачать его с deadlybossmods.com или Curse.com. Это сообщение отображается один раз."
 
 DBM_CORE_COMBAT_STARTED				= "%s вступает в бой. Удачи! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s вступает в бой (в процессе). Удачи! :)"
@@ -105,7 +107,7 @@ DBM_CORE_UPDATEREMINDER_DISABLE			= "ПРЕДУПРЕЖДЕНИЕ: В связи
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "Ваша версия DBM будет иметь некорректные таймеры или предупреждения во время этого энкаунтера. Это исправлено в новой версии (или альфа-версии, если новая версия не доступна)"
 DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "ПРЕДУПРЕЖДЕНИЕ: Из-за того, что ваш Deadly Boss Mods устарел, он был отключен до обновления, т.к. это большой игровой патч. Это необходимо для того, чтобы старый и несовместимый код не приводил к ухудшению игрового опыта для вас и членов вашего рейда. Убедитесь что вы скачали новую версию с deadlybossmods.com или curse.com как только она станет доступна."
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "WARNING: You are using a version of Deadly Boss Mods not intended to be used with this game version. Please make sure you download the appropriate version for your game client from deadlybossmods.com or curse."
-DBM_CORE_VEM							= "WARNING: You are running both Deadly Boss Mods and Voice Encounter Mods. DBM will not run in this configuration and therefor will not be loaded."
+DBM_CORE_VEM							= "ПРЕДУПРЕЖДЕНИЕ: Вы используете Deadly Boss Mods и Voice Encounter Mods одновременно. DBM не был загружен, т.к. эти два аддона не могут работать вместе."
 
 DBM_CORE_MOVABLE_BAR				= "Перетащите!"
 
