@@ -1,6 +1,7 @@
 ﻿if GetLocale() ~= "zhTW" then return end
 
 DBM_CORE_NEED_SUPPORT				= "你是否擁有良好的程式開發或語言能力? 如果是的話, DBM團隊真的需要你的幫助以保持成為WOW裡最佳的首領模組。觀看 www.deadlybossmods.com 或發送郵件到 tandanu@deadlybossmods.com 或 nitram@deadlybossmods.com 來加入團隊。"
+DBM_CORE_NEED_LOGS					= "DBM需要Transcriptor (http://www.wowace.com/addons/transcriptor/) 去紀錄測試伺服器的戰鬥紀錄讓插件更加完美。如果你願意幫忙，請使用transcriptor去紀錄這些戰鬥過程然後將記錄發佈在http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing/ (請壓縮這些紀錄檔，這些檔案會很龐大)。僅需要6.0的團隊戰鬥紀錄，不需要五人副本的紀錄。"
 DBM_HOW_TO_USE_MOD					= "歡迎使用DBM。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。DBM會在第一次啟動時嘗試掃描你的職業天賦，但有些選項你可能想打開。"
 
 DBM_FORUMS_MESSAGE					= "發現臭蟲或錯誤的計時器?你希望要讓某些模組有新的警告，計時器或是特別功能?\n拜訪新的Deadly Boss Mods討論，臭蟲回報與功能要求論壇 |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (你可以點擊連結去複製網址)"
@@ -14,6 +15,8 @@ DBM_CORE_LOAD_GUI_COMBAT			= "圖形介面不能在戰鬥中初始化。圖形�
 DBM_CORE_LOAD_SKIN_COMBAT			= "DBM計時條在戰鬥中套用外觀失敗。你的計時條可能不能正常作用而可能會導致錯誤。這常發生在使用第三方插件試著在戰鬥中套用外觀。建議在脫離戰鬥後reloadui。"
 DBM_CORE_BAD_LOAD					= "DBM偵測到你的此副本的模組在戰鬥中讀取失敗。一旦脫離戰鬥，請立即輸入/consoel reloadui重新載入。"
 
+DBM_CORE_BLIZZ_BUGS					= "6.0中的暴雪插件BUG：\n1. 如果你開啟音效設定，你可能會在戰鬥中失去插件的音效，如果遊戲同時放出的音效數量超過你最大聲音頻道的值。因為Patch 6.0降低插件的聲音優先權。\n2. 插件使用獨立角色記錄，可能會導致使用特殊字元的角色無法讀取或紀錄插件設定。"
+
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM已中禁用動態距離框架，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM已中禁用小怪計數警告，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
 DBM_CORE_DYNAMIC_MULTIPLE			= "DBM已中禁用多項功能，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
@@ -22,22 +25,27 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "你目前的專精為:%s。而你目前的拾�
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM偵測到你同時開啟BigWigs和DBM的團隊圖示。請關閉其中之一的團隊圖示功能以免與你的隊伍隊長產生衝突。"
 
+DBM_CORE_PROVINGGROUNDS_AD			= "試煉之地的DBM插件已經可供使用。你可以在deadlybossmods.com或Curse找到。此訊息只會顯示一次。"
+
 DBM_CORE_COMBAT_STARTED				= "%s開戰。祝好運與盡興! :)"
-DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "開戰%s已進行的戰鬥。祝好運與盡興! :)"
+DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "與%s開戰已進行的戰鬥。祝好運與盡興! :)"
+DBM_CORE_GUILD_COMBAT_STARTED		= "公會已跟%s開戰"
 DBM_CORE_SCENARIO_STARTED			= "%s開始。祝好運與盡興! :)"
 DBM_CORE_SCENARIO_STARTED_IN_PROGRESS	= "加入進行中的%s。祝好運與盡興! :)"
-DBM_CORE_BOSS_DOWN					= "擊敗%s，經過%s!"
+DBM_CORE_BOSS_DOWN					= "擊敗%s，用了%s!"
 DBM_CORE_BOSS_DOWN_I				= "擊敗%s!你已勝利了%d次。"
-DBM_CORE_BOSS_DOWN_L				= "擊敗%s!本次經過%s，上次經過%s，最快紀錄為%s。你總共戰勝了%d次。"
-DBM_CORE_BOSS_DOWN_NR				= "擊敗%s!經過%s! 這是一個新記錄! (舊紀錄為%s) 你總共戰勝了%d次。"
-DBM_CORE_SCENARIO_COMPLETE			= "%s完成!經過%s!"
+DBM_CORE_BOSS_DOWN_L				= "擊敗%s!本次用了%s，上次用了%s，最快紀錄為%s。你總共戰勝了%d次。"
+DBM_CORE_BOSS_DOWN_NR				= "擊敗%s!用了%s! 這是一個新記錄! (舊紀錄為%s) 你總共戰勝了%d次。"
+DBM_CORE_GUILD_BOSS_DOWN			= "公會已擊敗%s，用了%s!"
+DBM_CORE_SCENARIO_COMPLETE			= "%s完成!用了%s!"
 DBM_CORE_SCENARIO_COMPLETE_I		= "%s完成! 你總共完成了%d次。"
-DBM_CORE_SCENARIO_COMPLETE_L		= "%s完成!本次經過%s，上次經過%s，最快紀錄為%s。你總共完成了%d次。"
-DBM_CORE_SCENARIO_COMPLETE_NR		= "%s完成!經過%s! 這是一個新記錄! (舊紀錄為%s) 你總共完成了%d次。"
+DBM_CORE_SCENARIO_COMPLETE_L		= "%s完成!本次用了%s，上次用了%s，最快紀錄為%s。你總共完成了%d次。"
+DBM_CORE_SCENARIO_COMPLETE_NR		= "%s完成!用了%s! 這是一個新記錄! (舊紀錄為%s) 你總共完成了%d次。"
 DBM_CORE_COMBAT_ENDED_AT			= "%s(%s)的戰鬥經過%s結束。"
 DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s(%s)的戰鬥經過%s結束。你在這個難度總共滅團了%d次。"
-DBM_CORE_SCENARIO_ENDED_AT			= "%s結束!經過%s!"
-DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s結束!本次經過%s，你已有共%d次未完成的嘗試在這個難度裡。"
+DBM_CORE_GUILD_COMBAT_ENDED_AT		= "公會在%s (%s)的戰鬥滅團，經過%s."
+DBM_CORE_SCENARIO_ENDED_AT			= "%s結束!用了%s!"
+DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s結束!本次用了%s，你已有共%d次未完成的嘗試在這個難度裡。"
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥在%s前開始，恢復計時器中..."
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor開始記錄。"
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor結束紀錄。"
@@ -97,6 +105,9 @@ DBM_CORE_UPDATEREMINDER_FOOTER			= "按下" .. (IsMacClient() and "Cmd-C" or "Ct
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "按下" .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "：複製網址到剪貼簿。"
 DBM_CORE_UPDATEREMINDER_DISABLE			= "警告: 你的DBM版本已大幅度的過期(%d修訂版)，已被禁用了除非更新至最新版本。這是為了確保舊而不相容的程式碼不會對你而團隊夥伴造成低落的遊戲體驗。"
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "你的DBM版本會在這首領戰鬥有不準確的計時器或警告。這問題已被修正在新版正式版(或是更新到最新的alpha如果新版正式版還未釋出。)"
+DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "警告:你的DBM已經過期，DBM已被禁用直到你更新至最新版，因為遊戲大改版。為了不讓舊的程式碼拖累遊戲體驗。請至deadlybossmods.com或是curse下載最新版本的DBM。如果你在6.0 beta看到此訊息，請到http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing下載6.0 beta插件"
+DBM_CORE_UPDATEREMINDER_TESTVERSION		= "警告:你使用的DBM版本和遊戲版本不相容。請到deadlybossmods.com或是curse下載符合你遊戲版本的DBM。"
+DBM_CORE_VEM							= "警告:你同時使用DBM和VEM。DBM將停用而無法執行。"
 
 DBM_CORE_MOVABLE_BAR				= "拖動我!"
 
@@ -283,7 +294,8 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "特別警告"
 DBM_ARROW_MOVABLE					= "可移動箭頭"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 用法:",
-	"/dbm arrow <x> <y>  建立一個箭頭在特定的位置(0 < x/y < 100)",
+	"/dbm arrow <x> <y>  建立一個箭頭在特定的位置(使用世界地圖座標)",
+	"/dbm arrow map <x> <y>  建立一個箭頭在特定的位置 (使用小地圖座標)",
 	"/dbm arrow <玩家>  建立並箭頭指向你的隊伍或團隊中特定的玩家",
 	"/dbm arrow hide  隱藏箭頭",
 	"/dbm arrow move  可移動箭頭"
