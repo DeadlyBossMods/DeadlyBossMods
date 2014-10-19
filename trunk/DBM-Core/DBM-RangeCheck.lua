@@ -114,13 +114,13 @@ do
 
 	local function setRange(self, range)
 		rangeCheck:Hide()
-		rangeCheck:Show(range, mainFrame.filter)
+		rangeCheck:Show(range, mainFrame.filter, true)
 	end
 
 	local function setFrames(self, option)
 		DBM.Options.RangeFrameFrames = option
 		rangeCheck:Hide()
-		rangeCheck:Show(mainFrame.range, mainFrame.filter)
+		rangeCheck:Show(mainFrame.range, mainFrame.filter, true)
 	end
 
 	local function toggleLocked()
@@ -134,6 +134,7 @@ do
 			info.text = DBM_CORE_RANGECHECK_SETRANGE
 			info.notCheckable = true
 			info.hasArrow = true
+			info.keepShownOnClick = true
 			info.menuList = "range"
 			UIDropDownMenu_AddButton(info, 1)
 
@@ -141,6 +142,7 @@ do
 			info.text = DBM_CORE_RANGECHECK_SOUNDS
 			info.notCheckable = true
 			info.hasArrow = true
+			info.keepShownOnClick = true
 			info.menuList = "sounds"
 			UIDropDownMenu_AddButton(info, 1)
 
@@ -148,6 +150,7 @@ do
 			info.text = DBM_CORE_RANGECHECK_OPTION_FRAMES
 			info.notCheckable = true
 			info.hasArrow = true
+			info.keepShownOnClick = true
 			info.menuList = "frames"
 			UIDropDownMenu_AddButton(info, 1)
 
@@ -346,7 +349,7 @@ function createTextFrame()
 	end)
 	textFrame:SetScript("OnMouseDown", function(self, button)
 		if button == "RightButton" then
-			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown, "MENU")
+			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)
 			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
 		end
 	end)
@@ -378,7 +381,7 @@ function createRadarFrame()
 	end)
 	radarFrame:SetScript("OnMouseDown", function(self, button)
 		if button == "RightButton" then
-			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown, "MENU")
+			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)
 			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
 		end
 	end)
