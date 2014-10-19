@@ -108,6 +108,7 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 
 			info = UIDropDownMenu_CreateInfo()
+			info.keepShownOnClick = true
 			info.text = DBM_CORE_INFOFRAME_SHOW_SELF
 			if DBM.Options.InfoFrameShowSelf then
 				info.checked = true
@@ -170,7 +171,7 @@ function createFrame()
 	end)
 	frame:SetScript("OnMouseDown", function(self, button)
 		if button == "RightButton" then
-			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown, "MENU")
+			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)
 			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
 		end
 	end)
