@@ -898,10 +898,10 @@ do
 			end
 			onLoadCallbacks = nil
 			loadOptions()
-			if not GetAddOnEnableState then--Not 6.0
-				DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
-				return
-			end
+--			if not GetAddOnEnableState then--Not 6.0
+--				DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
+--				return
+--			end
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 				DBM:AddMsg(DBM_CORE_VEM)
 				return
@@ -1763,6 +1763,14 @@ end
 do
 	local callOnLoad = {}
 	function DBM:LoadGUI()
+--		if not GetAddOnEnableState then--Not 6.0
+--			DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
+--			return
+--		end
+		if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
+			DBM:AddMsg(DBM_CORE_VEM)
+			return
+		end
 		if not IsAddOnLoaded("DBM-GUI") then
 			if InCombatLockdown() then
 				guiRequested = true
