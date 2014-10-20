@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Oct 06, 2014
+-- Last update: Oct 19, 2014
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -11,42 +11,42 @@ local L = DBM_GUI_Translations
 
 L.MainFrame 				= "Deadly Boss Mods"
 
-L.TranslationByPrefix			= "本地化："
+L.TranslationByPrefix		= "本地化："
 L.TranslationBy 			= "Diablohu & yleaf & sunlcy & Mini_Dragon"
-L.Website				= "拜访我们的论坛（英文） |cFF73C2FBwww.deadlybossmods.com|r (hosted by Elitist Jerks!)"
+L.Website					= "拜访我们的论坛（英文） |cFF73C2FBwww.deadlybossmods.com|r (hosted by Elitist Jerks!)"
 L.WebsiteButton				= "论坛"
 
 L.OTabBosses				= "模块"
 L.OTabOptions				= "选项"
 
-L.TabCategory_Options 			= "综合设置"
+L.TabCategory_Options 		= "综合设置"
 L.TabCategory_WOD	 		= "德拉诺之王"
 L.TabCategory_MOP	 		= "熊猫人之谜"
 L.TabCategory_CATA	 		= "大地的裂变"
-L.TabCategory_WOTLK 			= "巫妖王之怒"
+L.TabCategory_WOTLK 		= "巫妖王之怒"
 L.TabCategory_BC 			= "燃烧的远征"
-L.TabCategory_CLASSIC 			= "经典旧世"
-L.TabCategory_OTHER    			= "其它"
+L.TabCategory_CLASSIC 		= "经典旧世"
+L.TabCategory_OTHER    		= "其它"
 
 L.BossModLoaded 			= "%s状态"
 L.BossModLoad_now 			= [[该模块尚未启动。
 当你进入相应副本时其会自动加载。
 你也可以点击该按钮手动启动该模块。]]
 
-L.PosX 					= 'X坐标'
-L.PosY 					= 'Y坐标'
+L.PosX 						= 'X坐标'
+L.PosY 						= 'Y坐标'
 
-L.MoveMe				= '移动'
+L.MoveMe					= '移动'
 L.Button_OK 				= '确定'
 L.Button_Cancel 			= '取消'
 L.Button_LoadMod 			= '加载插件'
 L.Mod_Enabled				= "开启模块"
-L.Mod_Reset				= "恢复默认设置"
-L.Reset 				= "重置"
+L.Mod_Reset					= "恢复默认设置"
+L.Reset 					= "重置"
 
-L.Enable  				= "开启"
-L.Disable				= "关闭"
-L.NoSound				= "静音"
+L.Enable  					= "开启"
+L.Disable					= "关闭"
+L.NoSound					= "静音"
 
 L.IconsInUse				= "该模块使用到的团队标记"
 
@@ -54,11 +54,11 @@ L.IconsInUse				= "该模块使用到的团队标记"
 L.BossStatistics			= "首领统计"
 L.Statistic_Kills			= "击杀:"
 L.Statistic_Wipes			= "失败:"
-L.Statistic_Incompletes			= "未完成:"
-L.Statistic_BestKill			= "最好成绩:"
+L.Statistic_Incompletes		= "未完成:"
+L.Statistic_BestKill		= "最好成绩:"
 
 -- Tab: General Options
-L.General 				= "DBM综合设置"
+L.General 					= "DBM综合设置"
 L.EnableDBM 				= "启用DBM"
 L.EnableMiniMapIcon			= "显示小地图图标"
 L.UseMasterVolume			= "使用游戏总声道播放音频"
@@ -99,20 +99,22 @@ L.RaidWarnColor_4 			= "颜色4"
 L.InfoRaidWarning			= [[你可以对团队警报的文本颜色及其位置进行设定。
 在这里会显示诸如“玩家X受到了Y效果的影响”之类的信息。]]
 L.ColorResetted 			= "该颜色设置已重置"
-L.ShowWarningsInChat 			= "在聊天窗口中显示警报"
-L.ShowFakedRaidWarnings 		= "以伪装团队警报信息的方式显示警报内容"
+L.ShowWarningsInChat 		= "在聊天窗口中显示警报"
+L.ShowSWarningsInChat 		= "在聊天窗口中显示特殊警报"
+L.ShowFakedRaidWarnings 	= "以伪装团队警报信息的方式显示警报内容"
 L.WarningIconLeft 			= "左侧显示图标"
 L.WarningIconRight 			= "右侧显示图标"
 L.WarningIconChat 			= "在聊天窗口中显示图标"
+L.ShowCountdownText			= "为第一倒计时显示文本"
 L.RaidWarnMessage 			= "感谢您使用Deadly Boss Mods"
 L.BarWhileMove 				= "可移动团队警报"
 L.RaidWarnSound				= "发出团队警报时播放声音"
 L.CountdownVoice			= "设置第一倒计时语音"
 L.CountdownVoice2			= "设置第二倒计时语音"
 L.CountdownVoice3			= "设置第三倒计时语音"
-L.SpecialWarnSound			= "针对你或你的角色发出特殊警报时播放声音"
-L.SpecialWarnSound2			= "针对所有人发出特殊警报时播放声音"
-L.SpecialWarnSound3			= "针对非常重要事件(灭团点)的特殊警报播放声音"
+L.SpecialWarnSound			= "针对你发出特殊警报时播放的声音"
+L.SpecialWarnSound2			= "针对所有人发出特殊警报时播放的声音"
+L.SpecialWarnSound3			= "针对非常重要事件(灭团点)的特殊警报播放的声音"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages	 		= "综合信息"
@@ -211,10 +213,12 @@ L.FilterTankSpec			= "当非坦克专精时，过滤掉给予坦克的专用信�
 --
 L.Area_SpamFilter_Outgoing		= "全局过滤设置"
 L.SpamBlockNoShowAnnounce		= "不显示警报或播放警报音效"
+L.DontShowFarWarnings			= "不显示过远事件的通告和计时器"
 L.SpamBlockNoSendWhisper		= "不发送悄悄话提示给其他玩家"
 L.SpamBlockNoSetIcon			= "不设定标记在目标上"
 L.SpamBlockNoRangeFrame			= "不显示距离监视器"
 L.SpamBlockNoInfoFrame			= "不显示信息监视器"
+L.SpamBlockNoHealthFrame		= "不显示生命值监视器"
 
 L.Area_PullTimer			= "开怪倒计时过滤设置"
 L.DontShowPT				= "不显示开怪倒计时条"
