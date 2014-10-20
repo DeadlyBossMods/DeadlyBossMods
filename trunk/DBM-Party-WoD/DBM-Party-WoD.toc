@@ -6,6 +6,7 @@
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Groupe-WoD|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Групповые подземелья-WoD|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0隊伍首領-德拉諾之霸|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0队伍首领(德拉诺之王)|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMPartyWoD_SavedVars, DBMPartyWoD_SavedStats
@@ -23,6 +24,7 @@
 ## X-DBM-Mod-Name-ptBR: Masmorras (WoD)
 ## X-DBM-Mod-Name-frFR: Groupe (WoD)
 ## X-DBM-Mod-Name-zhTW: 隊伍首領 (德拉諾之霸)
+## X-DBM-Mod-Name-zhCN: 队伍首领(德拉诺之王)
 ## X-DBM-Mod-Sort: 125
 ## X-DBM-Mod-MapID: 1182, 1175, 1208, 1195, 1279, 1176, 1209, 1358
 localization.en.lua
