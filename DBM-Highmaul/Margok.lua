@@ -83,12 +83,12 @@ local specWarnMarkOfChaosReplicationOther		= mod:NewSpecialWarningTaunt(164191)
 local specWarnBrandedReplication				= mod:NewSpecialWarningYou(164006)
 
 --All Phases (No need to use different timers for empowered abilities. Short names better for timers.)
-local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238)--Pretty much a next timer, HOWEVER can get delayed by other abilities so only reason it's CD timer anyways
-local timerDestructiveResonanceCD				= mod:NewCDTimer(16, 156467)--16-30sec variation noted. I don't like it
-local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605)
-local timerMarkOfChaosCD						= mod:NewCDTimer(50, 158605)
+local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238, nil, not mod:IsTank())--Pretty much a next timer, HOWEVER can get delayed by other abilities so only reason it's CD timer anyways
+local timerDestructiveResonanceCD				= mod:NewCDTimer(16, 156467, nil, not mod:IsMelee())--16-30sec variation noted. I don't like it
+local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605, nil, mod:IsTank())
+local timerMarkOfChaosCD						= mod:NewCDTimer(50, 158605, nil, mod:IsTank())
 local timerForceNovaCD							= mod:NewCDTimer(45, 157349)--45-52
-local timerSummonArcaneAberrationCD				= mod:NewCDTimer(45, 156471)--45-52 Variation Noted
+local timerSummonArcaneAberrationCD				= mod:NewCDTimer(45, 156471, nil, not mod:IsHealer())--45-52 Variation Noted
 local timerTransition							= mod:NewCastTimer(76.5, 157278)
 
 local countdownArcaneWrath						= mod:NewCountdown(50, 156238, not mod:IsTank())--Probably will add for whatever proves most dangerous on mythic

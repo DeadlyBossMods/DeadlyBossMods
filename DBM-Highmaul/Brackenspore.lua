@@ -54,11 +54,11 @@ local timerRotCD					= mod:NewCDTimer(10, 163241, nil, false)--it's a useful tim
 local timerNecroticBreathCD			= mod:NewCDTimer(32, 159219, nil, mod:IsTank() or mod:IsHealer())
 --Adds (all adds are actually NEXT timers however they get dleayed by infesting spores and necrotic breath sometimes so i'm leaving as CD for now)
 local timerSporeShooterCD			= mod:NewCDTimer(57, 163594, nil, mod:IsRanged())
-local timerFungalFleshEaterCD		= mod:NewCDTimer(120, "ej9995", nil, nil, nil, 163142)
-local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, not mod:IsHealer())
+local timerFungalFleshEaterCD		= mod:NewCDTimer(120, "ej9995", nil, not mod:IsHealer(), nil, 163142)
+local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, mod:IsMelee())
 local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, mod:IsMelee() and not mod:IsTank())
-local timerLivingMushroomCD			= mod:NewCDTimer(55.5, 160022)
-local timerRejuvMushroomCD			= mod:NewCDTimer(150, 160021)
+local timerLivingMushroomCD			= mod:NewCDTimer(55.5, 160022, nil, mod:IsHealer())
+local timerRejuvMushroomCD			= mod:NewCDTimer(150, 160021, nil, mod:IsHealer())
 --local timerExplodingFungusCD		= mod:NewCDTimer(32, 163794)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 local timerWavesCD					= mod:NewCDTimer(33, 160425)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 
