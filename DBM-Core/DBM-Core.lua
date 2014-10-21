@@ -2443,9 +2443,11 @@ end
 
 function DBM:PLAYER_REGEN_ENABLED()
 	if loadDelay then
+		DBM:Debug("loadDelay is activating LoadMod again")
 		DBM:LoadMod(loadDelay)
 	end
 	if loadDelay2 then
+		DBM:Debug("loadDelay2 is activating LoadMod again")
 		DBM:LoadMod(loadDelay2)
 	end
 	if guiRequested and not IsAddOnLoaded("DBM-GUI") then
@@ -2588,7 +2590,11 @@ do
 	local function FixForShittyComputers()
 		timerRequestInProgress = false
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
-		if LastInstanceMapID == mapID then return end--ID hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh phase 4 is a loading screen)
+		DBM:Debug("Instance Check fired with mapID "..mapID.." and difficulty "..difficulty)
+		if LastInstanceMapID == mapID then
+			DBM:Debug("No action taken because mapID hasn't changed since last check")
+			return
+		end--ID hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh phase 4 is a loading screen)
 		LastInstanceMapID = mapID
 		LastGroupSize = instanceGroupSize
 		difficultyIndex = difficulty
@@ -2617,11 +2623,13 @@ do
 	end
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
+		DBM:Debug("LOADING_SCREEN_DISABLED fired")
 		FixForShittyComputers()
 		DBM:Schedule(3, FixForShittyComputers, DBM)
 	end
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
+		DBM:Debug("LoadModsOnDemand fired for checkValue "..checkValue.." using checkMethod "..checkTable)
 		for i, v in ipairs(DBM.AddOns) do
 			local modTable = v[checkTable]
 			local enabled = GetAddOnEnableState(playerName, v.modId)
@@ -2650,9 +2658,17 @@ end
 	--The main place we should force a mod load in combat is for IsEncounterInProgress because i'm pretty sure blizzard waves "script ran too long" function for a small amount of time after a DC
 	--Outdoor bosses will try to ignore check, if they fail, well, then we need to try and find ways to make the mods that can't load in combat smaller or load faster.
 function DBM:LoadMod(mod, force)
-	if type(mod) ~= "table" then return false end
-	if mod.isWorldBoss and not IsInInstance() and not force then return end--Don't load world boss mod this way.
+	DBM:Debug("LoadMod fired")
+	if type(mod) ~= "table" then
+		DBM:Debug("LoadMod failed because mod table not valid")
+		return false
+	end
+	if mod.isWorldBoss and not IsInInstance() and not force then
+		DBM:Debug("LoadMod denied because world boss mods don't load this way")
+		return
+	end--Don't load world boss mod this way.
 	if InCombatLockdown() and not IsEncounterInProgress() and IsInInstance() then
+		DBM:Debug("LoadMod delayed do to combat")
 		if not loadDelay then--Prevent duplicate DBM_CORE_LOAD_MOD_COMBAT message.
 			self:AddMsg(DBM_CORE_LOAD_MOD_COMBAT:format(tostring(mod.name)))
 		end
@@ -2665,10 +2681,12 @@ function DBM:LoadMod(mod, force)
 	end
 
 	local loaded, reason = LoadAddOn(mod.modId)
+	DBM:Debug("LoadMod should have fired LoadAddOn")
 	if not loaded then
 		if reason then
 			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(_G["ADDON_"..reason or ""])))
 		else
+			DBM:Debug("LoadAddOn failed and did not give reason")
 --			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), DBM_CORE_UNKNOWN)) -- wtf, this should never happen....(but it does happen sometimes if you reload your UI in an instance...)
 		end
 		return false
