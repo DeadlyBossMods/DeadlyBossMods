@@ -21,6 +21,7 @@ localization.kr.lua
 localization.ru.lua
 localization.de.lua
 localization.tw.lua
+localization.cn.lua
 KargathBladefist.lua
 TheButcher.lua
 Tectus.lua

@@ -40,7 +40,7 @@ local specWarnOnTheHunt				= mod:NewSpecialWarningMoveTo(162497, nil, DBM_CORE_A
 
 local timerPillarCD					= mod:NewNextTimer(20, "ej9394", nil, nil, nil, 159202)
 local timerChainHurlCD				= mod:NewNextTimer(106, 159947)--177776
-local timerSweeperCD				= mod:NewNextTimer(39, 177776, 177258)
+local timerSweeperCD				= mod:NewNextTimer(39, 177776, nil, nil, nil,  177258)
 local timerBerserkerRushCD			= mod:NewCDTimer(45, 158986)--45 to 70 variation. Small indication that you can use a sequence to get it a little more accurate but even then it's variable. Pull1: 48, 60, 46, 70, 45, 51, 46, 70. Pull2: 48, 60, 50, 55, 45. Mythic pull1, 48, 50, 57, 49
 local timerImpaleCD					= mod:NewCDTimer(35, 159113, nil, mod:IsTank())--Dead on unless delayed by a fixate
 local timerTigerCD					= mod:NewNextTimer(110, "ej9396", nil, not mod:IsTank(), nil, 162497)
