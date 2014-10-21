@@ -2664,7 +2664,7 @@ function DBM:LoadMod(mod, force)
 		return false
 	end
 	if mod.isWorldBoss and not IsInInstance() and not force then
-		DBM:Debug("LoadMod denied because world boss mods don't load this way")
+		DBM:Debug("LoadMod denied for "..mod.name.." because world boss mods don't load this way")
 		return
 	end--Don't load world boss mod this way.
 	if InCombatLockdown() and not IsEncounterInProgress() and IsInInstance() then
@@ -2679,9 +2679,8 @@ function DBM:LoadMod(mod, force)
 		end
 		return
 	end
-
 	local loaded, reason = LoadAddOn(mod.modId)
-	DBM:Debug("LoadMod should have fired LoadAddOn")
+	DBM:Debug("LoadMod should have fired LoadAddOn for "..mod.name)
 	if not loaded then
 		if reason then
 			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(_G["ADDON_"..reason or ""])))
