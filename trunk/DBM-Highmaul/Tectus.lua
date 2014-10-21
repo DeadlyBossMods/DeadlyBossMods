@@ -40,7 +40,7 @@ local specWarnEarthenFlechettes		= mod:NewSpecialWarningSpell(162968, mod:IsMele
 local specWarnGiftOfEarth			= mod:NewSpecialWarningCount(162894, mod:IsTank())
 
 local timerEarthwarperCD			= mod:NewNextTimer(41, "ej10061", nil, nil, nil, 162894)--Both of these get delayed by upheavel
-local timerBerserkerCD				= mod:NewNextTimer(41, "ej10062", nil, nil, nil, 163312)--Both of these get delayed by upheavel
+local timerBerserkerCD				= mod:NewNextTimer(41, "ej10062", nil, mod:IsTank(), nil, 163312)--Both of these get delayed by upheavel
 local timerGiftOfEarthCD			= mod:NewCDTimer(10.5, 162894, nil, mod:IsMelee())--10.5 but obviously delayed if stuns were used.
 local timerEarthenFlechettesCD		= mod:NewCDTimer(14, 162968, nil, mod:IsMelee())--14 but obviously delayed if stuns were used. Also tends to be recast immediately if stun interrupted
 

@@ -32,6 +32,7 @@ localization.kr.lua
 localization.de.lua
 localization.ru.lua
 localization.tw.lua
+localization.cn.lua
 Auchindoun\ProtectorOfAuch.lua
 Auchindoun\Nyami.lua
 Auchindoun\Azzakel.lua
