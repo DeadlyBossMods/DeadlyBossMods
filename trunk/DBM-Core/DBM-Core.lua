@@ -2629,7 +2629,6 @@ do
 	end
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
-		DBM:Debug("LoadModsOnDemand fired for checkValue "..checkValue.." using checkMethod "..checkTable)
 		for i, v in ipairs(DBM.AddOns) do
 			local modTable = v[checkTable]
 			local enabled = GetAddOnEnableState(playerName, v.modId)
@@ -2658,7 +2657,6 @@ end
 	--The main place we should force a mod load in combat is for IsEncounterInProgress because i'm pretty sure blizzard waves "script ran too long" function for a small amount of time after a DC
 	--Outdoor bosses will try to ignore check, if they fail, well, then we need to try and find ways to make the mods that can't load in combat smaller or load faster.
 function DBM:LoadMod(mod, force)
-	DBM:Debug("LoadMod fired")
 	if type(mod) ~= "table" then
 		DBM:Debug("LoadMod failed because mod table not valid")
 		return false
