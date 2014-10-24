@@ -456,6 +456,7 @@ local friendlyEvents = {
 }
 
 function onUpdate(frame)
+	if not currentEvent then return end
 	if events[currentEvent] then
 		events[currentEvent]()
 	else
@@ -482,7 +483,7 @@ function onUpdate(frame)
 				linesShown = linesShown + 1
 				if leftText == UnitName("player") then--It's player.
 					addedSelf = true
-					if currentEvent == "health" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
+					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
 						frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 255, 255)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
 					else--Green
 						frame:AddDoubleLine(icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
@@ -536,7 +537,7 @@ function infoFrame:Show(maxLines, event, ...)
 	end
 	frame:Show()
 	frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
-	onUpdate(frame, 0)
+	onUpdate(frame)
 	frame.ticker = C_Timer.NewTicker(0.5, function() onUpdate(frame) end)
 end
 
@@ -545,7 +546,7 @@ function infoFrame:RegisterCallback(cb)
 end
 
 function infoFrame:Update()
-	onUpdate(frame, 0)
+	onUpdate(frame)
 end
 
 function infoFrame:Hide()
