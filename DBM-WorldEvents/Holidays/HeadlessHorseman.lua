@@ -9,9 +9,9 @@ mod:SetZone()
 mod:SetReCombatTime(10)
 mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
-	"CHAT_MSG_SAY"
-)
+--mod:RegisterEvents(
+--	"CHAT_MSG_SAY"
+--)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 42380 42514",
@@ -26,7 +26,7 @@ local warnPhase					= mod:NewAnnounce("WarnPhase", 2, "Interface\\Icons\\Spell_N
 local warnHorsemanSoldiers		= mod:NewAnnounce("warnHorsemanSoldiers", 2, 97133)
 local warnHorsemanHead			= mod:NewAnnounce("warnHorsemanHead", 3)
 
-local timerCombatStart			= mod:NewCombatTimer(17)--rollplay for first pull
+--local timerCombatStart			= mod:NewCombatTimer(17)--rollplay for first pull
 local timerConflag				= mod:NewTargetTimer(4, 42380)
 local timerSquashSoul			= mod:NewTargetTimer(15, 42514)
 
@@ -77,11 +77,12 @@ function mod:CHAT_MSG_MONSTER_SAY(msg)
 	end
 end
 
+--[[
 function mod:CHAT_MSG_SAY(msg)
 	if msg == L.HorsemanSummon and self:AntiSpam(5) then		-- Summoned
 		timerCombatStart:Start()
 	end
-end
+end--]]
 
 function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 23775 then
