@@ -456,7 +456,6 @@ local friendlyEvents = {
 }
 
 function onUpdate(frame)
-	if not currentEvent then return end
 	if events[currentEvent] then
 		events[currentEvent]()
 	else
@@ -538,7 +537,9 @@ function infoFrame:Show(maxLines, event, ...)
 	frame:Show()
 	frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 	onUpdate(frame)
-	frame.ticker = C_Timer.NewTicker(0.5, function() onUpdate(frame) end)
+	if not frame.ticker then
+		frame.ticker = C_Timer.NewTicker(0.5, function() onUpdate(frame) end)
+	end
 end
 
 function infoFrame:RegisterCallback(cb)
@@ -559,8 +560,11 @@ function infoFrame:Hide()
 	currentEvent = nil
 	twipe(value)
 	if frame then
+		if frame.ticker then
+			frame.ticker:Cancel()
+			frame.ticker = nil
+		end
 		frame:Hide()
-		frame.ticker = nil
 	end
 end
 
