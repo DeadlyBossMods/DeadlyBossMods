@@ -3290,7 +3290,7 @@ do
 					difficultyName = PLAYER_DIFFICULTY1
 				end
 				if wipe == "1" then
-					DBM:AddMsg(DBM_CORE_GUILD_COMBAT_ENDED_AT:format(difficultyName, bossName, wipeHP, time))
+					DBM:AddMsg(DBM_CORE_GUILD_COMBAT_ENDED_AT:format(difficultyName.."-"..bossName, wipeHP, time))
 				else
 					DBM:AddMsg(DBM_CORE_GUILD_BOSS_DOWN:format(difficultyName.."-"..bossName, time))
 				end
