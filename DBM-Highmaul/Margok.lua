@@ -271,7 +271,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.SetIconOnBranded then
-			self:SetIcon(1, args.destName)--TODO, find out number of targets and add
+			self:SetIcon(args.destName, 1)--TODO, find out number of targets and add
 		end
 	elseif spellId == 158553 then
 		local amount = args.amount or 1
