@@ -137,10 +137,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 162186 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	elseif spellId == 162185 and args:IsPlayer() and self.Options.RangeFrame then
-		if UnitDebuff("player", GetSpellInfo(162186)) then
-			DBM.RangeCheck:Show(5)
-		else
+	elseif spellId == 162185 and args:IsPlayer() then
+		specWarnExpelMagicFire:Cancel()
+		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
 	elseif spellId == 163472 and self.Options.SetIconOnMC then
