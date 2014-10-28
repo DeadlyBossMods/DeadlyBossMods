@@ -7,11 +7,11 @@ local L
 L= DBM:GetModLocalization(1128)
 
 L:SetTimerLocalization({
-	timerCrowdCD	= "Crowd CD"
+	timerCrowdCD	= "Восст. Толпы"
 })
 
 L:SetOptionLocalization({
-	timerCrowdCD	= "Show timer for when the crowd will spawn new adds"
+	timerCrowdCD	= "Отсчет времени до появления новых аддов толпы"
 })
 
 ---------------------------
@@ -25,7 +25,7 @@ L= DBM:GetModLocalization(971)
 L= DBM:GetModLocalization(1195)
 
 L:SetMiscLocalization({
-	pillarSpawn	= "RISE, MOUNTAINS!"
+	pillarSpawn	= "ВОССТАНЬТЕ, ГОРЫ!"
 })
 
 ------------------
@@ -49,10 +49,10 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1153)
 
 L:SetMiscLocalization({
-	supressionTarget1	= "I will crush you!",
-	supressionTarget2	= "Silence!",
-	supressionTarget3	= "Quiet!",
-	supressionTarget4	= "I will tear you in half!"
+	supressionTarget1	= "Я сокрушу вас!",
+	supressionTarget2	= "Молчать!",
+	supressionTarget3	= "Тихо!",
+	supressionTarget4	= "Я разорву вас на части!"
 })
 
 --------------------------
