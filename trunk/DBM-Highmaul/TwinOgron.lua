@@ -18,6 +18,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, figure out stack tanks swap at for Arcane Wound(or if they can avoid swapping somehow). (bugged, there were no swapps on mythic, in fact tank debuff was irrelevant
+--TODO, see if whirlwind is always 60 60 86, repeating, and if my hack that checks quake timer is even needed
 --Phemos
 local warnEnfeeblingroar			= mod:NewCountAnnounce(158057, 3)
 local warnWhirlwind					= mod:NewCountAnnounce(157943, 3)
@@ -82,6 +83,8 @@ function mod:OnCombatStart(delay)
 	countdownPhemos:Start(11.5-delay)
 	timerShieldChargeCD:Start(37.5-delay)--Variable on pull
 	countdownPol:Start(37.5-delay)
+	timerWhirlwindCD:Start(45-delay, 1)
+	countdownWW:Start(45-delay)
 	if self:IsMythic() then
 		timerArcaneVolatilityCD:Start(65-delay)
 	end
@@ -122,10 +125,10 @@ function mod:SPELL_CAST_START(args)
 			nextQuakeTime = 100
 		end
 		local timeRemaining = nextQuakeTime - (GetTime() - self.vb.LastQuake)
-		if timeRemaining < 60 then--Quake failsafe will activate and delay Whirlwind
-			timerWhirlwindCD:Start(timeRemaining+33, self.vb.WWCount+1)--Next Special
-			countdownWW:Start(timeRemaining+33)
-			DBM:Debug("Activating Whirlwind Delay, quake is less than 60 seconds away")
+		if timeRemaining < 60 and timeRemaining > 45 then--Quake failsafe will activate and delay Whirlwind
+			timerWhirlwindCD:Start(timeRemaining+34, self.vb.WWCount+1)--Next Special
+			countdownWW:Start(timeRemaining+34)
+			DBM:Debug("Activating Whirlwind Delay, quake is less than 50 seconds away")
 		else
 			timerWhirlwindCD:Start(nil, self.vb.WWCount+1)--Next Special
 			countdownWW:Start()
