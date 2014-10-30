@@ -3262,7 +3262,7 @@ do
 		end
 
 		syncHandlers["GCB"] = function(sender, modId, ver, difficulty)
-			if not DBM.Options.ShowGuildMessages then return end
+			if not DBM.Options.ShowGuildMessages or not difficulty then return end
 			if not ver or not (ver == "2") then return end--Ignore old versions
 			if DBM:AntiSpam(5, "GCB") then
 				if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
@@ -3280,7 +3280,7 @@ do
 		end
 		
 		syncHandlers["GCE"] = function(sender, modId, ver, wipe, time, wipeHP, difficulty)
-			if not DBM.Options.ShowGuildMessages then return end
+			if not DBM.Options.ShowGuildMessages or not difficulty then return end
 			if not ver or not (ver == "2") then return end--Ignore old versions
 			if DBM:AntiSpam(5, "GCE") then
 				if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
