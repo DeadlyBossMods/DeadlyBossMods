@@ -2663,9 +2663,7 @@ function DBM:LoadMod(mod, force)
 		return false
 	end
 	if mod.isWorldBoss and not IsInInstance() and not force then
-		if DBM.Options.DebugLevel > 1 then
-			DBM:Debug("LoadMod denied for "..mod.name.." because world boss mods don't load this way")
-		end
+		DBM:Debug("LoadMod denied for "..mod.name.." because world boss mods don't load this way", 2)
 		return
 	end--Don't load world boss mod this way.
 	if InCombatLockdown() and not IsEncounterInProgress() and IsInInstance() then
@@ -2886,9 +2884,7 @@ do
 			canSetIcons[optionName] = false
 		end
 		local name = DBM:GetFullPlayerNameByGUID(iconSetPerson[optionName])
-		if DBM.Options.DebugLevel > 1 then
-			DBM:Debug(name.." was elected icon setter for "..optionName)
-		end
+		DBM:Debug(name.." was elected icon setter for "..optionName, 2)
 	end
 
 	syncHandlers["K"] = function(sender, cId)
@@ -3074,15 +3070,11 @@ do
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
-			if DBM.Options.DebugLevel > 1 then
-				DBM:Debug("Received version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
-			end
+			DBM:Debug("Received version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 2)
 			if version > tonumber(DBM.Version) then -- Update reminder
 				if not checkEntry(newerVersionPerson, sender) then
 					newerVersionPerson[#newerVersionPerson + 1] = sender
-					if DBM.Options.DebugLevel > 1 then
-						DBM:Debug("Newer version detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
-					end
+					DBM:Debug("Newer version detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 2)
 				end
 				if #newerVersionPerson < 4 then
 					if #newerVersionPerson == 2 and updateNotificationDisplayed < 2 then--Only requires 2 for update notification.
@@ -5052,11 +5044,13 @@ function DBM:AddMsg(text, prefix)
 	frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(prefix), tostring(text)), 0.41, 0.8, 0.94)
 end
 
-function DBM:Debug(text)
+function DBM:Debug(text, level)
 	if not self.Options.DebugMode then return end
-	local frame = _G[tostring(DBM.Options.ChatFrame)]
-	frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
-	frame:AddMessage("|cffff7d0aDBM Debug:|r "..text, 1, 1, 1)
+	if (level or 1) <= DBM.Options.DebugLevel then
+		local frame = _G[tostring(DBM.Options.ChatFrame)]
+		frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
+		frame:AddMessage("|cffff7d0aDBM Debug:|r "..text, 1, 1, 1)
+	end
 end
 
 do
