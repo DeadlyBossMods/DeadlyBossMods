@@ -239,6 +239,7 @@ local chatPrefixShortVEM = "<VEM> "
 local ver = ("%s (r%d)"):format(DBM.DisplayVersion, DBM.Revision)
 local mainFrame = CreateFrame("Frame")
 local newerVersionPerson = {}
+local newerRevisionPerson = {}
 local combatInitialized = false
 local healthCombatInitialized = false
 local schedule
@@ -3060,18 +3061,13 @@ do
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
+			DBM:Debug("Received version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
 			if version > tonumber(DBM.Version) then -- Update reminder
 				if not checkEntry(newerVersionPerson, sender) then
 					newerVersionPerson[#newerVersionPerson + 1] = sender
+					DBM:Debug("Newer version detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
 				end
 				if #newerVersionPerson < 4 then
-					for i, v in pairs(raid) do
-						if v.version and v.revision and v.version >= version and v ~= raid[sender] then
-							if not checkEntry(newerVersionPerson, sender) then
-								newerVersionPerson[#newerVersionPerson + 1] = sender
-							end
-						end
-					end
 					if #newerVersionPerson == 2 and updateNotificationDisplayed < 2 then--Only requires 2 for update notification.
 						--Find min revision.
 						updateNotificationDisplayed = 2
@@ -3097,19 +3093,14 @@ do
 					end
 				end
 			end
-			if DBM.DisplayVersion:find("alpha") and #newerVersionPerson < 2 and (revision - DBM.Revision) > 30 then--Revision 20 can be increased in 1 day, so raised it to 30.
-				local found = false
-				for i, v in pairs(raid) do
-					if v.revision and v.revision >= revision and v ~= raid[sender] then
-						found = true
-						break
-					end
+			if DBM.DisplayVersion:find("alpha") and #newerVersionPerson < 2 and #newerRevisionPerson < 2 and updateNotificationDisplayed < 2 and (revision - DBM.Revision) > 30 then--Revision 20 can be increased in 1 day, so raised it to 30. Requires 2 person.
+				if not checkEntry(newerRevisionPerson, sender) then
+					newerRevisionPerson[#newerRevisionPerson + 1] = sender
+					DBM:Debug("Newer revision detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
 				end
-				if found then--Running alpha version that's out of date
-					if updateNotificationDisplayed < 2 then
-						updateNotificationDisplayed = 2
-						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revision - DBM.Revision))
-					end
+				if #newerRevisionPerson == 2 then
+					updateNotificationDisplayed = 2
+					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revision - DBM.Revision))
 				end
 			end
 		end
