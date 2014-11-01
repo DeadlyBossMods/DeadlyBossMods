@@ -201,6 +201,7 @@ DBM.DefaultOptions = {
 	LastRevision = 0,
 	FilterSayAndYell = false,
 	DebugMode = false,
+	DebugLevel = 1,
 	RoleSpecAlert = true,
 	WorldBossAlert = false,
 	AutoAcceptFriendInvite = false,
@@ -1477,6 +1478,14 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd:sub(1, 5) == "debug" then
 		DBM.Options.DebugMode = DBM.Options.DebugMode == false and true or false
 		DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
+	elseif cmd:sub(1, 10) == "debuglevel" then
+		local level = tonumber(cmd:sub(11)) or 1
+		if level < 1 or level > 3 then
+			DBM:AddMsg("Invalid Value. Debug Level must be between 1 and 3.")
+			return
+		end
+		DBM.Options.DebugLevel = level
+		DBM:AddMsg("Debug Level is " .. level)
 	elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 		local x, y, _, map = UnitPosition("player")
 		SetMapToCurrentZone()
@@ -2654,7 +2663,9 @@ function DBM:LoadMod(mod, force)
 		return false
 	end
 	if mod.isWorldBoss and not IsInInstance() and not force then
-		DBM:Debug("LoadMod denied for "..mod.name.." because world boss mods don't load this way")
+		if DBM.Options.DebugLevel > 1 then
+			DBM:Debug("LoadMod denied for "..mod.name.." because world boss mods don't load this way")
+		end
 		return
 	end--Don't load world boss mod this way.
 	if InCombatLockdown() and not IsEncounterInProgress() and IsInInstance() then
@@ -2875,7 +2886,9 @@ do
 			canSetIcons[optionName] = false
 		end
 		local name = DBM:GetFullPlayerNameByGUID(iconSetPerson[optionName])
-		DBM:Debug(name.." was elected icon setter for "..optionName)
+		if DBM.Options.DebugLevel > 1 then
+			DBM:Debug(name.." was elected icon setter for "..optionName)
+		end
 	end
 
 	syncHandlers["K"] = function(sender, cId)
@@ -3061,11 +3074,15 @@ do
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
-			DBM:Debug("Received version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
+			if DBM.Options.DebugLevel > 1 then
+				DBM:Debug("Received version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
+			end
 			if version > tonumber(DBM.Version) then -- Update reminder
 				if not checkEntry(newerVersionPerson, sender) then
 					newerVersionPerson[#newerVersionPerson + 1] = sender
-					DBM:Debug("Newer version detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
+					if DBM.Options.DebugLevel > 1 then
+						DBM:Debug("Newer version detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
+					end
 				end
 				if #newerVersionPerson < 4 then
 					if #newerVersionPerson == 2 and updateNotificationDisplayed < 2 then--Only requires 2 for update notification.
@@ -3769,7 +3786,7 @@ do
 	end
 	
 	function DBM:UNIT_TARGETABLE_CHANGED()
-		if Transcriptor and Transcriptor:IsLogging() then
+		if DBM.Options.DebugLevel > 2 then
 			self:Debug("UNIT_TARGETABLE_CHANGED event fired")
 		end
 	end
@@ -3779,7 +3796,7 @@ do
 	--And I have transcriptor log, i still don't know which event is right one sometimes. It's important to SEE which event is firing during an exact moment of a fight.
 	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		if not (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5") then return end
-		if Transcriptor and Transcriptor:IsLogging() then--Only want this information if it's a new fight we're running transcriptor for, otherwise, no spam.
+		if DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging()) then
 			self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")")
 		end
 	end
