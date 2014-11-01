@@ -3786,7 +3786,7 @@ do
 	end
 	
 	function DBM:UNIT_TARGETABLE_CHANGED()
-		if DBM.Options.DebugLevel > 2 then
+		if DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging()) then
 			self:Debug("UNIT_TARGETABLE_CHANGED event fired")
 		end
 	end
