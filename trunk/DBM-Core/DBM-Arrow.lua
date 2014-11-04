@@ -23,7 +23,7 @@ local UnitPosition = UnitPosition
 --------------------
 --  Create Frame  --
 --------------------
-local frame = CreateFrame("Button", nil, UIParent)
+local frame = CreateFrame("Button", "DBMArrow", UIParent)
 frame:Hide()
 frame:SetFrameStrata("HIGH")
 frame:SetWidth(56)
