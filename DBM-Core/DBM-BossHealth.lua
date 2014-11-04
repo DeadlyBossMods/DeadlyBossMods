@@ -123,7 +123,7 @@ end
 -- Create the Frame  --
 -----------------------
 local function createFrame(self)
-	anchor = CreateFrame("Frame", nil, UIParent)
+	anchor = CreateFrame("Frame", "DBMBossHealth", UIParent)
 	anchor:SetWidth(60)
 	anchor:SetHeight(10)
 	anchor:SetMovable(1)
