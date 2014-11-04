@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 
 local warnParchedGrasp			= mod:NewSpellAnnounce(164357, 3, nil, mod:IsTank())
 local warnBrittleBark			= mod:NewSpellAnnounce(164275, 2)
-local warnUncheckedGrowth		= mod:NewSpellAnnounce("ej10098", 3)
+local warnUncheckedGrowth		= mod:NewSpellAnnounce("ej10098", 3, 164294)
 
 local specWarnLivingLeaves		= mod:NewSpecialWarningMove(169495)
 local specWarnUncheckedGrowth	= mod:NewSpecialWarningMove(164294)

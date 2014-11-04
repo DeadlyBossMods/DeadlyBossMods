@@ -62,9 +62,6 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---"<104.1 20:55:19> [CLEU] UNIT_DIED#true##nil#-2147483648#-2147483648#Creature:0:3313:1279:28971:84552:0000617CBD#Toxic Spiderling#2632#0#0", -- [3454]
---"<105.5 20:55:21> [UNIT_TARGETABLE_CHANGED] Fake Args:#true#true#Xeri'tac#Creature:0:3313:1279:28971:84550:0000617C15#elite#2617950#false#false#nil#nil#normal#0#false#false#nil#nil#normal#0#false#fals
---"<106.4 20:55:21> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#Xeri'tac descends from her web!#Xeri'tac###Kaltio##0#0##0#90#nil#0#false#false", -- [3569]
 function mod:UNIT_TARGETABLE_CHANGED()
 	if not self.vb.phase2 then
 		self.vb.phase2 = true
