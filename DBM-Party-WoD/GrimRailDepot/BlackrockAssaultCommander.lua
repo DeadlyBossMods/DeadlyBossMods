@@ -13,7 +13,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 163550 160680",
 	"SPELL_PERIODIC_DAMAGE 166570",
 	"SPELL_PERIODIC_MISSED 166570",
-	"UNIT_DIED",
 	"UNIT_TARGETABLE_CHANGED"
 )
 
@@ -67,15 +66,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 79739 then--Blackrock Grenadier
-		warnGrenadeDown:Show(grenade)
-	elseif cid == 79720 then--Blackrock Artillery Engineer
-		warnMortarDown:Show(mortar)
-	end
-end]]
 
 function mod:UNIT_TARGETABLE_CHANGED()
 	self.vb.phase = self.vb.phase + 1
