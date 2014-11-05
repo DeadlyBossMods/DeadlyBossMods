@@ -55,6 +55,15 @@ L:SetGeneralLocalization({
 	name = "Tonk Challenge"
 })
 
+---------------------------
+--  Fire Ring Challenge  --
+---------------------------
+L = DBM:GetModLocalization("Rings")
+
+L:SetGeneralLocalization({
+	name = "Fire Ring Challenge"
+})
+
 -----------------------
 --  Darkmoon Rabbit  --
 -----------------------

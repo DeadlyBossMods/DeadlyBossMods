@@ -31,5 +31,6 @@ Cannon.lua
 Gnoll.lua
 Shot.lua
 Tonks.lua
+Rings.lua
 Rabbit.lua
 Moonfang.lua
