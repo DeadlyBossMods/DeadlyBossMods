@@ -195,7 +195,7 @@ L.ShowBBOnCombatStart		= "전투 시작시 BigBrother 버프 체크 실행하기
 L.BigBrotherAnnounceToRaid	= "BigBrother 버프 체크 결과를 공격대에 알리기"
 
 L.Area_SpecFilter			= "역할에 따른 경고 설정"
-L.FilterTankSpec			= "방어 전담이 아닐 경우 방어 전담용 경고 보지 않기"
+L.FilterTankSpec			= "방어 전담이 아닐 경우 방어 전담용 경고 보지 않기(참고: 도발 경고는 대부분 기본값으로 켜짐 상태이기 때문에 이 설정을 끄지 않는 것을 권장합니다.)"
 --Healer and Damager not in use yet. Tank is easily black and white. if not a tank, disable taunt warnings. Pretty obvious.
 --Healer and Damager a bit more tricky, since often times, Healer DO need to switch and kill adds designated a dps roll (hi disc attonement priest)
 --Or a dps does need to handle debuff dispels. Or a dps/tank need to know when aoe damage is going out just as much as healer for personal CDs
