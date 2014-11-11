@@ -56,6 +56,15 @@ L:SetGeneralLocalization({
 	name = "Panzergeneral"
 })
 
+---------------------------
+--  Fire Ring Challenge  --
+---------------------------
+L = DBM:GetModLocalization("Rings")
+
+L:SetGeneralLocalization({
+	name = "Herausforderung des Feuervogels"
+})
+
 -----------------------
 --  Darkmoon Rabbit  --
 -----------------------
