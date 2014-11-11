@@ -4,7 +4,7 @@ DBM_CORE_NEED_LOGS					= "DBM needs Transcriptor (http://www.wowace.com/addons/t
 DBM_HOW_TO_USE_MOD					= "Welcome to DBM. Type /dbm help for a list of supported commands. To access options type /dbm in your chat to begin configuration. Load specific zones manually to configure any boss specific settings to your liking as well. DBM tries to do this for you by scanning your spec on first run, but some might want additional options turned on anyways."
 
 DBM_FORUMS_MESSAGE					= "Found a bug or wrong timer? Do you think some mod would need an additional warning, timer or special feature?\nVisit the new Deadly Boss Mods discussion, bug report and feature request forums at |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (you can click the link to copy the URL)"
-DBM_FORUMS_COPY_URL_DIALOG			= "Come visit our new discussion and support forums\r\n(hosted by Elitist Jerks!)"
+DBM_FORUMS_COPY_URL_DIALOG			= "Come visit our discussion and support forums\r\n(hosted by Elitist Jerks!)"
 
 DBM_CORE_LOAD_MOD_ERROR				= "Error while loading boss mods for %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Loaded '%s' mods. For more options, type /dbm or /dbm help in your chat."
