@@ -623,7 +623,7 @@ end
 --  Methods  --
 ---------------
 function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
-	if (not IsInGroup() or DBM.Options.DontShowRangeFrame) and not forceshow then return end
+	if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame) and not forceshow then return end
 	if type(range) == "function" then -- the first argument is optional
 		return self:Show(nil, range)
 	end

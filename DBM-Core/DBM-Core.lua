@@ -4858,6 +4858,7 @@ do
 
 	local function getNumRealAlivePlayers()
 		local alive = 0
+		SetMapToCurrentZone()
 		local currentMapId = GetCurrentMapAreaID()
 		local currentMapName = GetMapNameByID(currentMapId)
 		if IsInRaid() then
@@ -7818,7 +7819,7 @@ function bossModPrototype:SetIcon(target, icon, timer)
 	self:UnscheduleMethod("SetIcon", target)
 	icon = icon and icon >= 0 and icon <= 8 and icon or 8
 	local uId = DBM:GetRaidUnitId(target)
-	if uId and UnitIsUnit(uId, "player") and not IsInGroup() then return end--Solo raid, no reason to put icon on yourself.
+	if uId and UnitIsUnit(uId, "player") and DBM:GetNumRealGroupMembers() < 2 then return end--Solo raid, no reason to put icon on yourself.
 	if uId or UnitExists(target) then--target accepts uid, unitname both.
 		uId = uId or target
 		--save previous icon into a table.
