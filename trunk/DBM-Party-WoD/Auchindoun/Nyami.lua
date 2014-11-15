@@ -13,7 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 155327 153994"
 )
 
-
+--TODO, soul vessel is probably wrong now.
 local warnSWP					= mod:NewTargetAnnounce(154477, 2, nil, mod:IsHealer())
 local warnSoulVessel			= mod:NewSpellAnnounce(155327, 4)
 local warnTornSpirits			= mod:NewSpellAnnounce(153991, 3)
