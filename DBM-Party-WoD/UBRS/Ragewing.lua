@@ -27,13 +27,13 @@ local specWarnEngulfingFire	= mod:NewSpecialWarningSpell(154996, nil, nil, nil, 
 
 local timerEngulfingFireCD	= mod:NewCDTimer(22, 154996)
 local timerSwirlingWinds	= mod:NewBuffActiveTimer(20, 167203)
-local timerSwirlingWindsCD	= mod:NewNextTimer(45, 167203)--Verify this isn't health based.
+local timerSwirlingWindsCD	= mod:NewNextTimer(30, 167203)--Verify this isn't health based.
 
 mod.vb.firstBreath = false
 
 function mod:OnCombatStart(delay)
 	timerEngulfingFireCD:Start(13-delay)--Needs more data
-	timerSwirlingWindsCD:Start(40-delay)--Needs more data
+	timerSwirlingWindsCD:Start(22-delay)--Needs more data
 	self.vb.firstBreath = false
 end
 

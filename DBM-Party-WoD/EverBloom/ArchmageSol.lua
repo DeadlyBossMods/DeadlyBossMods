@@ -35,7 +35,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 166492 and self:AntiSpam(12) then--Because the dumb spell has no cast Id, we can only warn when someone gets hit by one of rings.
 		warnFireBloom:Show()
 		specWarnFireBloom:Show()
-	elseif spellId == 166726 then--Because dumb spell has no cast Id, we can only warn when people get debuff from standing in it.
+	elseif spellId == 166726 and self:AntiSpam(10, args.destName) then--Because dumb spell has no cast Id, we can only warn when people get debuff from standing in it.
 		warnFrozenRain:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnFrozenRain:Show()
