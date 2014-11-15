@@ -6,7 +6,7 @@ mod:SetCreatureID(84550)
 mod:SetEncounterID(1752)--TODO: VERIFY, "Boss 4" isn't descriptive enough
 mod:SetZone()
 
-mod:RegisterCombat("combat_emote", L.Pull)--IEEU doesn't always work, so emote is fallback.
+mod:RegisterCombat("combat_emote", L.Pull)--IEEU doesn't work, so emote is required. EDIT, emote doesn't work either wtf?
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 169248 169233 169382",
@@ -15,6 +15,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_TARGETABLE_CHANGED"
 )
 
+--TODO, figure out why the hell emote pull doesn't work. Text is correct.
 local warnToxicSpiderling			= mod:NewAddsLeftAnnounce("ej10492", 2)
 --local warnVenomCrazedPaleOne		= mod:NewSpellAnnounce("ej10502", 3)--I can't find a way to detect these, at least not without flat out scanning all DAMAGE events but that's too much work.
 local warnInhale					= mod:NewSpellAnnounce(169233, 3)
@@ -25,9 +26,6 @@ local warnGaseousVolley				= mod:NewSpellAnnounce(169248, 3)
 --local specWarnVenomCrazedPaleOne	= mod:NewSpecialWarningSwitch("ej10502", not mod:IsHealer())
 local specWarnConsume				= mod:NewSpecialWarningSpell(169248)
 local specWarnGaseousVolley			= mod:NewSpecialWarningSpell(169382, nil, nil, nil, 2)
-
---local timerConsumeCD				= mod:NewCDTimer(34, 115297)--34-40 sec variation? is it even CD based? Health based?
---local timerGaseousVolleyCD			= mod:NewCDTimer(25, 115297)--25-40. variation is too great, not using this timer until more data to find out why its all over place.
 
 mod.vb.spiderlingCount = 8
 mod.vb.phase2 = false
@@ -44,13 +42,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 169248 then
 		warnConsume:Show()
 		specWarnConsume:Show()
---		timerConsumeCD:Start()
 	elseif spellId == 169382 then
 		warnGaseousVolley:Show()
 		specWarnGaseousVolley:Show()
 	end
 end
-
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
@@ -66,7 +62,5 @@ function mod:UNIT_TARGETABLE_CHANGED()
 	if not self.vb.phase2 then
 		self.vb.phase2 = true
 		warnPhase2:Show()
---		timerGaseousVolleyCD:Start(18)--18 one pull 19 another. Very small sample size (2 pulls, needs verification)
---		timerConsumeCD:Start()--38 one pull 43 next. Very small sample size (2 pulls, needs verification)
 	end
 end

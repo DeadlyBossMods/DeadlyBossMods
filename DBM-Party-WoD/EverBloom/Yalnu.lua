@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 local warnColossalBlow			= mod:NewSpellAnnounce(169179, 2)
 local warnEntanglement			= mod:NewSpellAnnounce(169251, 3)
 local warnFontofLife			= mod:NewSpellAnnounce(169120, 3)--Does this need a switch warning too?
-local warnGenesis				= mod:NewSpellAnnounce(169251, 4)
+local warnGenesis				= mod:NewSpellAnnounce(169613, 4)
 
 local specWarnColossalBlow		= mod:NewSpecialWarningSpell(169179, nil, nil, nil, 2)
 local specWarnEntanglement		= mod:NewSpecialWarningSwitch(169251, mod:IsDps())
@@ -25,11 +25,11 @@ local specWarnGenesis			= mod:NewSpecialWarningSwitch(169613)--Everyone. "Switch
 
 --Only timers that were consistent, others are all over the place.
 local timerFontOfLife			= mod:NewNextTimer(15, 169120)
-local timerGenesis				= mod:NewNextTimer(60, 169613)
+local timerGenesis				= mod:NewNextTimer(60.5, 169613)
 
 function mod:OnCombatStart(delay)
 	timerFontOfLife:Start(-delay)
-	timerGenesis:Start(30-delay)
+	timerGenesis:Start(25-delay)
 end
 
 function mod:SPELL_CAST_START(args)

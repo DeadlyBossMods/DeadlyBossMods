@@ -26,10 +26,10 @@ local specWarnOgreTraps			= mod:NewSpecialWarningSpell(163390, mod:IsRanged())--
 
 local timerSanguineSphere      	= mod:NewTargetTimer(15, 163689)
 local timerSanguineSphereCD    	= mod:NewCDTimer(43.5, 163689)
-local timerFlamingSlashCD      	= mod:NewCDTimer(43.5, 163665)
-local timerOgreTrapsCD      	= mod:NewCDTimer(41, 163390)--41-45 variation. Usually 43, makes me wonder if those other 43s CAN be sooner. will have to see with more data.
+local timerFlamingSlashCD      	= mod:NewCDTimer(29, 163665)
+local timerOgreTrapsCD      	= mod:NewCDTimer(25, 163390)--25-30 variation.
 
-local countdownFlamingSlash		= mod:NewCountdown(43.5, 163665)
+local countdownFlamingSlash		= mod:NewCountdown(29, 163665)
 
 function mod:OnCombatStart(delay)
 	timerFlamingSlashCD:Start(8-delay)

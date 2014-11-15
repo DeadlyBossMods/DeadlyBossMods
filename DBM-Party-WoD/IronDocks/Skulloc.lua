@@ -38,7 +38,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 168398 then
-		warnRapidFire:Show(args.destname)
+		warnRapidFire:Show(args.destName)
 		timerRapidFireCD:Start()
 		if args:IsPlayer() then
 			specWarnRapidFire:Show()
