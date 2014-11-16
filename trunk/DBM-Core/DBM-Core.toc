@@ -17,10 +17,12 @@
 ## Author: Tandanu and Nitram
 ## X-Website: http://www.deadlybossmods.com
 
+#@no-lib-strip@
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 Libs\LibChatAnims\LibChatAnims.xml
 Libs\LibSharedMedia-3.0\lib.xml
+#@end-no-lib-strip@
 
 localization.en.lua
 localization.de.lua
