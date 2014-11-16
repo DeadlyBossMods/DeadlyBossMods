@@ -29,7 +29,7 @@ local specWarnCannonBarrage	= mod:NewSpecialWarningSpell(168929, nil, nil, nil, 
 local specWarnCannonBarrageE= mod:NewSpecialWarningEnd(168929)
 
 local timerRapidFireCD		= mod:NewNextTimer(12, 168398)
-local timerGronSmashCD		= mod:NewCDTimer(67, 168227)--Still don't know timer for second one. just know first one is always 30
+local timerGronSmashCD		= mod:NewCDTimer(67, 168227)--too variable, 58-71, I believe health based, except first, which always seems to be 30 seconds no matter what.
 local timerBackdraft		= mod:NewCastTimer(3, 169129)
 
 function mod:OnCombatStart(delay)
