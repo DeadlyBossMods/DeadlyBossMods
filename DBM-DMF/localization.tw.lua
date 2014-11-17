@@ -56,6 +56,15 @@ L:SetGeneralLocalization({
 	name = "坦克大戰"
 })
 
+---------------------------
+--  Fire Ring Challenge  --
+---------------------------
+L = DBM:GetModLocalization("Rings")
+
+L:SetGeneralLocalization({
+	name = "火鳥的挑戰"
+})
+
 -----------------------
 --  Darkmoon Rabbit  --
 -----------------------
