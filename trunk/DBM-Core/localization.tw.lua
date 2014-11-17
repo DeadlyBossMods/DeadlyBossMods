@@ -4,7 +4,7 @@ DBM_CORE_NEED_SUPPORT				= "你是否擁有良好的程式開發或語言能力?
 DBM_CORE_NEED_LOGS					= "DBM需要Transcriptor (http://www.wowace.com/addons/transcriptor/) 去紀錄測試伺服器的戰鬥紀錄讓插件更加完美。如果你願意幫忙，請使用transcriptor去紀錄這些戰鬥過程然後將記錄發佈在http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing/ (請壓縮這些紀錄檔，這些檔案會很龐大)。僅需要6.0的團隊戰鬥紀錄，不需要五人副本的紀錄。"
 DBM_HOW_TO_USE_MOD					= "歡迎使用DBM。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。DBM會在第一次啟動時嘗試掃描你的職業天賦，但有些選項你可能想打開。"
 
-DBM_FORUMS_MESSAGE					= "發現臭蟲或錯誤的計時器?你希望要讓某些模組有新的警告，計時器或是特別功能?\n拜訪新的Deadly Boss Mods討論，臭蟲回報與功能要求論壇 |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (你可以點擊連結去複製網址)"
+DBM_FORUMS_MESSAGE					= "發現臭蟲或錯誤的計時器?你希望要讓某些模組有新的警告，計時器或是特別功能?\nDeadly Boss Mods討論，臭蟲回報與功能要求論壇 |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (你可以點擊連結去複製網址)"
 DBM_FORUMS_COPY_URL_DIALOG			= "來拜訪我們新的討論與支援論壇\r\n(代管於Elitist Jerks!)"
 
 DBM_CORE_LOAD_MOD_ERROR				= "載入%s模組時發生錯誤：%s"
@@ -25,7 +25,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "你目前的專精為:%s。而你目前的拾�
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM偵測到你同時開啟BigWigs和DBM的團隊圖示。請關閉其中之一的團隊圖示功能以免與你的隊伍隊長產生衝突。"
 
-DBM_CORE_PROVINGGROUNDS_AD			= "試煉之地的DBM插件已經可供使用。你可以在deadlybossmods.com或Curse找到。此訊息只會顯示一次。"
+DBM_CORE_PROVINGGROUNDS_AD			= "試煉之地的DBM插件已經可供使用。你可以在deadlybossmods.com或Curse上找到。此訊息只會顯示一次。"
 
 DBM_CORE_COMBAT_STARTED				= "%s開戰。祝好運與盡興! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "與%s開戰已進行的戰鬥。祝好運與盡興! :)"
@@ -50,8 +50,8 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥在%s前開始，恢復計時器�
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor開始記錄。"
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor結束紀錄。"
 
-DBM_CORE_WORLDBOSS_ENGAGED			= "在你的伺服器上的%s可能已在%s時開戰(%s發送)。"
-DBM_CORE_WORLDBOSS_DEFEATED			= "在你的伺服器上的%s可能已被擊敗(%s發送)。"
+DBM_CORE_WORLDBOSS_ENGAGED			= "在你的伺服器上的%s已在百分之%s時開戰(%s發送)。"
+DBM_CORE_WORLDBOSS_DEFEATED			= "在你的伺服器上的%s已被擊敗(%s發送)。"
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d秒"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d分鐘"
