@@ -24,7 +24,7 @@ local timerSolarFlareCD			= mod:NewCDTimer(18, 153810)
 local timerQuillsCD				= mod:NewCDTimer(64, 159382)--Needs review
 
 function mod:OnCombatStart(delay)
-	timerSolarFlare:Start(11-delay)
+	timerSolarFlareCD:Start(11-delay)
 	if self:IsHeroic() then
 		timerQuillsCD:Start(33-delay)--Needs review
 	end
