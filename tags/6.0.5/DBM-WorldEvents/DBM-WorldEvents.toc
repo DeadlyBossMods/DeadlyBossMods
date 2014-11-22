@@ -1,0 +1,58 @@
+﻿## Interface: 60000
+## X-Min-Interface: 60000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0World Events|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eventos del Mundo|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0이벤트|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Игровые события|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0世界事件|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Weltereignisse|r
+## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eventos Mundiais|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Évènements Mondiaux|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0世界事件|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMWorldEvents_SavedVars, DBMWorldEvents_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: OTHER
+## X-DBM-Mod-Category: WOD
+## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-Mod-World-Boss: 1
+## X-DBM-Mod-SubCategories: Holidays,Quests
+## X-DBM-Mod-SubCategories-deDE: Feiertage,Quests
+## X-DBM-Mod-SubCategories-ruRU: Праздники,Задания
+## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,퀘스트
+## X-DBM-Mod-SubCategories-zhTW: 節慶,任務
+## X-DBM-Mod-SubCategories-zhCN: 节日,任务
+## X-DBM-Mod-SubCategories-esES: Fiestas,Quests
+## X-DBM-Mod-SubCategories-esMX: Holidays,Quests
+## X-DBM-Mod-SubCategories-ptBR: Holidays,Quests
+## X-DBM-Mod-SubCategories-frFR: Vacances,Quêtes
+## X-DBM-Mod-Name: World Events
+## X-DBM-Mod-Name-esES: Eventos del Mundo
+## X-DBM-Mod-Name-ruRU: Игровые события
+## X-DBM-Mod-Name-zhTW: 世界事件
+## X-DBM-Mod-Name-zhCN: 世界事件
+## X-DBM-Mod-Name-koKR: 이벤트
+## X-DBM-Mod-Name-deDE: Weltereignisse
+## X-DBM-Mod-Name-ptBR: Eventos Mundiais
+## X-DBM-Mod-Name-frFR: Évènements Mondiaux
+## X-DBM-Mod-MapID: 230,189,33,547,1004, 1, 0
+## X-DBM-Mod-Sort: 150
+## X-DBM-Mod-LoadCID: 55003,54499,15467,15466,49687,15664
+localization.en.lua
+localization.ru.lua
+localization.fr.lua
+localization.tw.lua
+localization.kr.lua
+localization.de.lua
+localization.es.lua
+localization.cn.lua
+localization.br.lua
+Holidays\Omen.lua
+Holidays\ApothecaryTrio.lua
+Holidays\Ahune.lua
+Holidays\CorenDirebrew.lua
+Holidays\HeadlessHorseman.lua
+Holidays\Greench.lua
+Quests\Plants.lua
