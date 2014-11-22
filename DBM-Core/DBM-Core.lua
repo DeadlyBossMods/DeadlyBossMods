@@ -193,6 +193,7 @@ DBM.DefaultOptions = {
 	SettingsMessageShown = false,
 	ForumsMessageShown = false,
 	PGMessageShown = false,
+	MCMessageShown = false,
 	AlwaysShowSpeedKillTimer = true,
 	CRT_Enabled = false,
 --	HelpMessageShown = false,
@@ -2621,6 +2622,9 @@ do
 		if not DBM.Options.PGMessageShown and LastInstanceMapID == 1148 and not GetAddOnInfo("DBM-ProvingGrounds") then
 			DBM.Options.PGMessageShown = true
 			DBM:AddMsg(DBM_CORE_PROVINGGROUNDS_AD)
+		elseif not DBM.Options.MCMessageShown and LastInstanceMapID == 409 and not GetAddOnInfo("DBM-MC") then
+			DBM.Options.MCMessageShown = true
+			DBM:AddMsg(DBM_CORE_MOLTENCORE_AD)
 		end
 	end
 	--Faster and more accurate loading for instances, but useless outside of them
