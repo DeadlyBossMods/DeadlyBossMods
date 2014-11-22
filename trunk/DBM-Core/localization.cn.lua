@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Oct 19, 2014@11805
+-- Last update: Nov 22, 2014@11872
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -21,7 +21,7 @@ DBM_CORE_LOAD_GUI_COMBAT			= "DBM无法在战斗中初始化图形界面。请�
 DBM_CORE_LOAD_SKIN_COMBAT			= "DBM无法在战斗中更换皮肤。请先在非战斗状态更换好皮肤，并重载界面。"
 DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，有些计时器可能会错误。请在离开战斗后马上重载界面。"
 
-DBM_CORE_BLIZZ_BUGS					= "6.0中的暴雪的插件bug:\n1. 如果你开启音效，你的插件可能会在战斗时丢失声音，因为插件的优先权被下降了而声音通道有限。请在您的“主菜单-系统-声音”菜单中，将“声道”选项调为“中(32)”或“高(64)”。\n2. 插件为每个角色单独保存设置，如果名字中有特殊字符，可能会导致错误。"
+DBM_CORE_BLIZZ_BUGS					= "6.0中的暴雪的插件bug:\n1. 如果你开启音效，你的插件可能会在战斗时丢失声音，因为插件的优先权被下降了而声音通道有限。DBM已经强制将声音通道数设置为64。在这种情况下还丢失报警声音，你可以考虑关闭游戏音效。"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "由于玩家数量不足，DBM 无法开启倒计时。"
@@ -32,6 +32,8 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "你当前的人物专精为 %s。你当前的�
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM检测到你同时开启了Bigwigs,请关闭自动标记以避免冲突。"
 
 DBM_CORE_PROVINGGROUNDS_AD			= "6.0 版本的 DBM-ProvingGrounds （白虎寺挑战模块） 已经上线了. 旧的模块 DBM-ProvingGrounds-MoP 已经被禁用. 你可以删除旧版本并且在 deadlybossmods.com 或 Curse 上找到新版本。本消息只显示一次。"
+
+DBM_CORE_MOLTENCORE_AD				= "DBM-MC （熔火之心模块） 已经为100级40人随机模式适配。你可以在 deadlybossmods.com 上找到新版本。本消息只显示一次。"
 
 DBM_CORE_COMBAT_STARTED				= "%s作战开始，祝你走运 :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "已进行的战斗-%s正在作战。祝你走运 :)"
@@ -297,7 +299,7 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT			= "声音警报：$spell:%s的冷却时间
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2		= "声音警报：$spell:%s消失时"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT			= "声音警报：$spell:%s的持续时间正计时"
 DBM_CORE_AUTO_YELL_OPTION_TEXT				= "当你受到$spell:%s影响时时大喊"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT			= UnitName("player") .. " 中了 %s!!!"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT			= UnitName("player") .. " 中了 %s!"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT				= "距离监视(%s)：$spell:%s"--string used for range so we can use things like "5/2" as a value for that field
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT		= "距离监视(%s)"--For when a range frame is just used for more than one thing
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT		= "信息框：$spell:%s"
