@@ -5429,6 +5429,14 @@ function bossModPrototype:IsMythic()
 	return false
 end
 
+function bossModPrototype:IsEvent()
+	local diff = DBM:GetCurrentInstanceDifficulty()
+	if diff == "event5" or diff == "event20" or diff == "event40" then
+		return true
+	end
+	return false
+end
+
 function bossModPrototype:IsTrivial(level)
 	if UnitLevel("player") >= level then
 		return true
