@@ -1964,6 +1964,7 @@ do
 					raidUIds[v.id] = nil
 					raidGuids[v.guid] = nil
 					raid[i] = nil
+					removeEntry(newerVersionPerson, i)
 					fireEvent("raidLeave", i)
 				else
 					v.updated = nil
@@ -2026,6 +2027,7 @@ do
 					raidUIds[v.id] = nil
 					raidGuids[v.guid] = nil
 					raid[i] = nil
+					removeEntry(newerVersionPerson, i)
 					fireEvent("partyLeave", i)
 				else
 					v.updated = nil
@@ -2047,6 +2049,7 @@ do
 			enableIcons = true
 			fireEvent("raidLeave", playerName)
 			twipe(raid)
+			twipe(newerVersionPerson)
 			-- restore playerinfo into raid table on raidleave. (for solo raid)
 			raid[playerName] = {}
 			raid[playerName].name = playerName
