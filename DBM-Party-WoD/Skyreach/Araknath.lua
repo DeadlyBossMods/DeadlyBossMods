@@ -27,7 +27,7 @@ mod.vb.burstCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.burstCount = 0
-	timerBurstCD:Start(20-delay)
+	timerBurstCD:Start(20-delay, 1)
 end
 
 function mod:SPELL_CAST_START(args)
