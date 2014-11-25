@@ -205,3 +205,12 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerZaelaReturns	= "Show timer for when Zaela returns"
 })
+
+-------------
+--  UBRS Trash  --
+-------------
+L = DBM:GetModLocalization("UBRSTrash")
+
+L:SetGeneralLocalization({
+	name =	"UBRS Trash"
+})

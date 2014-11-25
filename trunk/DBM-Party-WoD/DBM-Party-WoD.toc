@@ -66,3 +66,4 @@ UBRS\Kyrak.lua
 UBRS\Tharbek.lua
 UBRS\Ragewing.lua
 UBRS\Zaela.lua
+UBRS\UBRSTrash.lua
