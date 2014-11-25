@@ -30,6 +30,8 @@ local timerZaelaReturns			= mod:NewTimer(26.5, "timerZaelaReturns", 166041)
 
 local countdownDestructiveSmite	= mod:NewCountdown(15.5, 155673)
 
+local soundCyclone				= mod:NewSound(155721)
+
 function mod:OnCombatStart(delay)
 	timerReboundingBladeCD:Start(-delay)
 	timerDestructiveSmiteCD:Start(10-delay)
@@ -49,6 +51,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 155721 then
 		warnBlackIronCyclone:Show(args.destName)
 		timerBlackIronCycloneCD:Start()
+		if args:IsPlayer() then
+			specWarnBlackIronCyclone:Show()
+			soundCyclone:Play()
+		end
 	end
 end
 
