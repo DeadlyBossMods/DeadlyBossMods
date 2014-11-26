@@ -9,7 +9,7 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 155586",
-	"SPELL_CAST_START 155505 169151 155572 155586 155588 154039",
+	"SPELL_CAST_START 155505 169151 155572 155586 155588 154039 155037",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
@@ -21,6 +21,7 @@ local warnShadowBoltVolley				= mod:NewCastAnnounce(155588, 3)
 local warnEarthPounder					= mod:NewSpellAnnounce(154749, 4, nil, mod:IsMelee())
 local warnSmash							= mod:NewSpellAnnounce(155572, 4, nil, mod:IsTank())
 local warnFranticMauling				= mod:NewSpellAnnounce(154039, 4, nil, mod:IsMelee())
+local warnEruption						= mod:NewSpellAnnounce(155037, 4, nil, mod:IsTank())
 
 local specWarnDebilitatingRay			= mod:NewSpecialWarningInterrupt(155505, not mod:IsHealer())
 local specWarnSummonBlackIronVet		= mod:NewSpecialWarningInterrupt(169151, not mod:IsHealer())
@@ -29,8 +30,10 @@ local specWarnVeilofShadowDispel		= mod:NewSpecialWarningDispel(155586, mod:CanR
 local specWarnShadowBoltVolley			= mod:NewSpecialWarningInterrupt(155588, not mod:IsHealer())
 local specWarnSmash						= mod:NewSpecialWarningMove(155572, mod:IsTank())
 local specWarnFranticMauling			= mod:NewSpecialWarningMove(154039, mod:IsTank())
+local specWarnEruption					= mod:NewSpecialWarningMove(155037, mod:IsTank())
 
 local timerSmashCD						= mod:NewCDTimer(13, 155572)
+local timerEruptionCD					= mod:NewCDTimer(10, 155037, nil, false)--10-15 sec variation. May be distracting or spammy since two of them
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
@@ -70,12 +73,19 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 154039 and self:AntiSpam(2, 2) then
 		warnFranticMauling:Show()
 		specWarnFranticMauling:Show()
+	elseif spellId == 155037 then
+		warnEruption:Show()
+		specWarnEruption:Show()
+		timerEruptionCD:Start(nil, args.sourceGUID)
 	end
 end
 
 function mod:UNIT_DIED(args)
-	if self:GetCIDFromGUID(args.destGUID) == 77033 then
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 77033 then
 		timerSmashCD:Cancel(args.destGUID)
+	elseif cid == 82556 then
+		timerEruptionCD:Cancel(args.destGUID)
 	end
 end
 
