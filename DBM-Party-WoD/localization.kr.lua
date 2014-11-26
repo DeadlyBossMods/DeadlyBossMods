@@ -117,7 +117,7 @@ L= DBM:GetModLocalization(1208)
 L= DBM:GetModLocalization(1209)
 
 L:SetMiscLocalization({
-	Pull	= "Xeri'tac begins unleashing Toxic Spiderlings down on you!"
+	Pull	= "제리타크가 당신의 머리 위로 산성 새끼 거미를 쏟아붓습니다!"
 })
 
 -----------------------
@@ -200,9 +200,18 @@ L= DBM:GetModLocalization(1229)
 L= DBM:GetModLocalization(1234)
 
 L:SetTimerLocalization({
-	timerZaelaReturns	= "젤라 돌아옴"
+	timerZaelaReturns	= "젤라 착지"
 })
 
 L:SetOptionLocalization({
-	timerZaelaReturns	= "젤라 돌아옴 바 보기"
+	timerZaelaReturns	= "젤라 착지 바 보기"
+})
+
+-------------
+--  UBRS Trash  --
+-------------
+L = DBM:GetModLocalization("UBRSTrash")
+
+L:SetGeneralLocalization({
+	name =	"검은바위 첨탑 상층: 일반구간"
 })
