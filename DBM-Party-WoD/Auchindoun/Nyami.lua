@@ -24,8 +24,8 @@ local specWarnSoulVesselEnd		= mod:NewSpecialWarningEnd(155327)
 local specWarnTornSpirits		= mod:NewSpecialWarningSwitch(153991, not mod:IsHealer())
 
 local timerSoulVessel			= mod:NewBuffActiveTimer(11.5, 155327)
-local timerSoulVesselCD			= mod:NewNextTimer(27, 155327)
-local timerTornSpiritsCD		= mod:NewNextTimer(22.5, 153991)
+local timerSoulVesselCD			= mod:NewCDTimer(27, 155327)
+local timerTornSpiritsCD		= mod:NewCDTimer(22.5, 153991)
 
 function mod:OnCombatStart(delay)
 	timerSoulVesselCD:Start(6-delay)

@@ -43,8 +43,11 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 166168 and self:IsInCombat() then
-		warnPowerConduitLeft:Show(args.amount or 0)
-		specWarnPowerConduitEnded:Show()
+		local amount = args.amount or 0
+		warnPowerConduitLeft:Show(amount)
+		if amount == 0 then
+			specWarnPowerConduitEnded:Show()
+		end
 	end
 end
 mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
