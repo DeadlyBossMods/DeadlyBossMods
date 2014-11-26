@@ -25,6 +25,7 @@ local specWarnFreezingSnareNear	= mod:NewSpecialWarningClose(162066)
 local yellFreezingSnare			= mod:NewYell(162066)
 local specWarnDiffusedEnergy	= mod:NewSpecialWarningMove(161588)
 local specWarnMark				= mod:NewSpecialWarningMoveAway(163447)
+local yellMark					= mod:NewYell(163447)
 
 local timerFreezingSnareCD		= mod:NewNextTimer(20, 162066)
 local timerSpinningSpearCD		= mod:NewNextTimer(20, 162058)
@@ -63,6 +64,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMarkCD:Start()
 		if args:IsPlayer() then
 			specWarnMark:Show()
+			yellMark:Yell()
 		end
 		if self.Options.RangeFrame then
 			if UnitDebuff("player", debuffCheck) then--You have debuff, show everyone
