@@ -18,7 +18,6 @@ local warnSWP					= mod:NewTargetAnnounce(154477, 2, nil, mod:IsHealer())
 local warnSoulVessel			= mod:NewSpellAnnounce(155327, 4)
 local warnTornSpirits			= mod:NewSpellAnnounce(153991, 3)
 
-local specWarnSWP				= mod:NewSpecialWarningDispel(154477, mod:IsHealer())
 local specWarnSoulVessel		= mod:NewSpecialWarningSpell(155327, nil, nil, nil, 2)
 local specWarnSoulVesselEnd		= mod:NewSpecialWarningEnd(155327)
 local specWarnTornSpirits		= mod:NewSpecialWarningSwitch(153991, not mod:IsHealer())
@@ -34,7 +33,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 154477 then
 		warnSWP:Show(args.destName)
-		specWarnSWP:Show(args.destName)
 	end
 end
 
