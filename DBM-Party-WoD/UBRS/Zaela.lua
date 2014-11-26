@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 local warnDestructiveSmite		= mod:NewSpellAnnounce(155673, 4, nil, mod:IsTank())
 local warnReboundingBlade		= mod:NewSpellAnnounce(155705, 2, nil, false)--More for completion than anything.
 local warnBlackIronCyclone		= mod:NewTargetAnnounce(155721, 3)
-local warnZaela					= mod:NewSpellAnnounce("ej10312", 3)
+local warnZaela					= mod:NewSpellAnnounce("ej10312", 3, "Interface\\ICONS\\INV_Misc_Head_Orc_01.blp")
 
 local specWarnBlackIronCyclone	= mod:NewSpecialWarningRun(155721)
 local specWarnZaela				= mod:NewSpecialWarningSwitch("ej10312", mod:IsTank())
@@ -28,7 +28,7 @@ local timerReboundingBladeCD	= mod:NewNextTimer(10.5, 155705, nil, false)
 local timerBlackIronCycloneCD	= mod:NewCDTimer(19.5, 155721)--19.5-23sec variation in phase 2. phase 1 seems diff
 local timerZaelaReturns			= mod:NewTimer(26.5, "timerZaelaReturns", 166041)
 
-local countdownDestructiveSmite	= mod:NewCountdown(15.5, 155673)
+local countdownDestructiveSmite	= mod:NewCountdown("OptionVersion2", 15.5, 155673, mod:IsTank())
 
 local soundCyclone				= mod:NewSound(155721)
 

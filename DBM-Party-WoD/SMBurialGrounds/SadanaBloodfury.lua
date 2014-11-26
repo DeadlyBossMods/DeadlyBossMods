@@ -40,7 +40,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownDarkCommunion:Start()
 	elseif spellId == 164974 then
 		specWarnDarkEclipse:Show()
-		specWarnDarkEclipse:Show()
 		timerDarkEclipseCD:Start()
 	end
 end
