@@ -4117,7 +4117,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		--process global options
 		self:ToggleRaidBossEmoteFrame(1)
 		self:StartLogging(0, nil)
-		if DBM.Options.HideObjectivesFrame and not (mod.type == "SCENARIO") then
+		if DBM.Options.HideObjectivesFrame and not (mod.type == "SCENARIO") and not GetTrackedAchievements() then
 			if ObjectiveTrackerFrame:IsVisible() then
 				ObjectiveTrackerFrame:Hide()
 				watchFrameRestore = true
