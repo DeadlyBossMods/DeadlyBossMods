@@ -2640,6 +2640,7 @@ do
 		for i, v in ipairs(DBM.AddOns) do
 			local modTable = v[checkTable]
 			local enabled = GetAddOnEnableState(playerName, v.modId)
+			DBM:Debug("LoadModsOnDemand fired")
 			if not IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
 				if enabled ~= 0 then
 					self:LoadMod(v)
@@ -2689,8 +2690,9 @@ function DBM:LoadMod(mod, force)
 		end
 		return
 	end
+	DBM:Debug("LoadAddOn should have fired for "..mod.name)
 	local loaded, reason = LoadAddOn(mod.modId)
-	DBM:Debug("LoadMod should have fired LoadAddOn for "..mod.name)
+	DBM:Debug("LoadAddOn should have succeeded for "..mod.name, 2)
 	if not loaded then
 		if reason then
 			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(_G["ADDON_"..reason or ""])))
