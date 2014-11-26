@@ -64,7 +64,7 @@ function mod:SPELL_CAST_START(args)
 		countdownDebilitating:Start()
 	elseif spellId == 161203 then
 		warnRejuvSerumCast:Show()
-	elseif spellId == 155037 then
+	elseif spellId == 155037 and self:IsInCombat() then
 		warnEruption:Show()
 		specWarnEruption:Show()
 		timerEruptionCD:Start(nil, args.sourceGUID)
