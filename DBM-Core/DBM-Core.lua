@@ -2637,11 +2637,11 @@ do
 	end
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
+		DBM:Debug("LoadModsOnDemand fired")
 		for i, v in ipairs(DBM.AddOns) do
 			local modTable = v[checkTable]
 			local enabled = GetAddOnEnableState(playerName, v.modId)
 			if not IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
-				DBM:Debug("LoadModsOnDemand fired")
 				if enabled ~= 0 then
 					self:LoadMod(v)
 				else
