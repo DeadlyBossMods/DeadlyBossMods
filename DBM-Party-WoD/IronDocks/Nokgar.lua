@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 
 local warnBurningArrows					= mod:NewSpellAnnounce(164635, 3)
 local warnRecklessProvocation			= mod:NewTargetAnnounce(164426, 3)
-local warnEnrage						= mod:NewTargetAnnounce(164835, 3, nil, mod:CanRemoveEnrage() or mod:IsTank())
+local warnEnrage						= mod:NewSpellAnnounce(164835, 3, nil, mod:CanRemoveEnrage() or mod:IsTank())
 
 
 local specWarnBurningArrows				= mod:NewSpecialWarningSpell(164635, nil, nil, nil, true)
@@ -28,8 +28,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 164426 then
 		warnRecklessProvocation:Show(args.destName)
 		specWarnRecklessProvocation:Show(args.destName)
-	elseif args.spellId == 164835 then
-		warnEnrage:CombinedShow(0.3, args.destName)
+	elseif args.spellId == 164835 and args:GetSrcCreatureID() == 81297 then
+		warnEnrage:Show()
 		specWarnEnrage:Show(args.destName)
 	end
 end
