@@ -3783,7 +3783,7 @@ do
 		if timerRequestInProgress then return end--do not start ieeu combat if timer request is progressing. (not to break Timer Recovery stuff)
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
+				if (v.type == "combat" or v.type == "combat_yell" or v.type == "combat_emote" or v.type == "combat_say") and isBossEngaged(v.multiMobPullDetection or v.mob) then
 					self:StartCombat(v.mod, 0, "IEEU")
 				end
 			end
@@ -3879,7 +3879,7 @@ do
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type == type and checkEntry(v.msgs, msg) or v.type == type .. "_regex" and checkExpressionList(v.msgs, msg) then
 					DBM:StartCombat(v.mod, 0, "MONSTER_MESSAGE")
-				elseif v.type == "combat_" .. type and checkEntry(v.msgs, msg) then
+				elseif v.type == "combat_"..type and checkEntry(v.msgs, msg) then
 					if IsInInstance() then--Indoor boss that uses both combat and yell for combat, so in other words (such as hodir), don't require "target" of boss for yell like scanForCombat does for World Bosses
 						DBM:StartCombat(v.mod, 0, "MONSTER_MESSAGE")
 					else--World Boss
