@@ -14,19 +14,30 @@ mod:RegisterEventsInCombat(
 
 --Again, too lazy to work on CD timers, someone else can do it. raid mods are putting too much strain on me to give 5 man mods as much attention
 --Probalby should also add a close warning for Frozen Rain
-local warnParasiticGrowth		= mod:NewSpellAnnounce(168885, 3, nil, mod:IsTank())--This is tanks job, it's no one elses business to interrupt this before tank is ready to push next phase. Careless interruptions can cause a wipe to arcane phase because fire/ice were too short.
+local warnParasiticGrowth		= mod:NewCountAnnounce(168885, 3, nil, mod:IsTank())--This is tanks job, it's no one elses business to interrupt this before tank is ready to push next phase. Careless interruptions can cause a wipe to arcane phase because fire/ice were too short.
 local warnFireBloom				= mod:NewSpellAnnounce(113764, 4)--Shitty way of detecting, cast is hidden, only way to "detect" it is if someone is standing in it.
 local warnFrozenRain			= mod:NewTargetAnnounce(166726, 3)--Shitty way of detecting, cast is hidden, only way to "detect" it is if someone is standing in it.
 
-local specWarnParasiticGrowth	= mod:NewSpecialWarningSpell(168885, mod:IsTank())
+local specWarnParasiticGrowth	= mod:NewSpecialWarningCount(168885, mod:IsTank())
 local specWarnFireBloom			= mod:NewSpecialWarningSpell(166492, nil, nil, nil, 2)
 local specWarnFrozenRain		= mod:NewSpecialWarningMove(166726)
+
+local timerParasiticGrowthCD	= mod:NewCDCountTimer(12, 168885)--Every 12 seconds unless comes off cd during fireball/frostbolt, then cast immediately after.
+
+mod.vb.ParasiteCount = 0
+
+function mod:OnCombatStart(delay)
+	self.vb.ParasiteCount = 0
+	timerParasiticGrowthCD:Start(32.5-delay, 1)
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 168885 then
-		warnParasiticGrowth:Show()
-		specWarnParasiticGrowth:Show()
+		self.vb.ParasiteCount = self.vb.ParasiteCount + 1
+		warnParasiticGrowth:Show(self.vb.ParasiteCount)
+		specWarnParasiticGrowth:Show(self.vb.ParasiteCount)
+		timerParasiticGrowthCD:Start(nil, self.vb.ParasiteCount+1)
 	end
 end
 

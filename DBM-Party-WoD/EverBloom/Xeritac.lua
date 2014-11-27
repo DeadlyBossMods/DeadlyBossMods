@@ -6,7 +6,7 @@ mod:SetCreatureID(84550)
 mod:SetEncounterID(1752)--TODO: VERIFY, "Boss 4" isn't descriptive enough
 mod:SetZone()
 
-mod:RegisterCombat("combat_emote", L.Pull)--IEEU doesn't work, so emote is required. EDIT, emote doesn't work either wtf?
+mod:RegisterCombat("combat_emote", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 169248 169233 169382",
