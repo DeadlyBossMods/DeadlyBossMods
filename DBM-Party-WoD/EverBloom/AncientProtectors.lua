@@ -12,6 +12,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 168082 168041 168105 168383 175997",
 	"SPELL_AURA_APPLIED 168105 168041 168520",
 	"SPELL_AURA_REMOVED 168520",
+	"SPELL_PERIODIC_DAMAGE 167977",
+	"SPELL_PERIODIC_MISSED 167977",
 	"UNIT_DIED"
 )
 
@@ -29,6 +31,7 @@ local specWarnBriarskinDispel		= mod:NewSpecialWarningDispel(168041, false)--Not
 local specWarnRapidTidesDispel		= mod:NewSpecialWarningDispel(168105, mod:IsMagicDispeller(), nil, nil, 3)
 local specWarnSlash					= mod:NewSpecialWarningSpell(168383, mod:IsMelee(), nil, nil, 2)--Because it's 8 yard cone in random direction.
 local specWarnNoxious				= mod:NewSpecialWarningRun(175997, mod:IsMelee())
+local specWarnBramble				= mod:NewSpecialWarningMove(167977)
 
 local timerShapersFortitude			= mod:NewTargetTimer("OptionVersion2", 15, 168520, nil, false)
 local timerNoxiousCD				= mod:NewCDTimer(16, 175997, nil, mod:IsMelee())
@@ -78,6 +81,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerShapersFortitude:Cancel(args.destName)
 	end
 end
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 167977 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
+		specWarnBramble:Show()
+	end
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
