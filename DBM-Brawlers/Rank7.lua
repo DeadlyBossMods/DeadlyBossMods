@@ -6,23 +6,30 @@ mod:SetModelID(46798)
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 133212 125212 133465 133017",
-	"SPELL_AURA_APPLIED 133015 133018"
+	"SPELL_CAST_START 133212 125212 133465 133017 138845 142621 142583",
+	"SPELL_AURA_APPLIED 133015 133018",
+	"SPELL_AURA_APPLIED_DOSE 138901",
+	"SPELL_AURA_REMOVED_DOSE 138901",
+	"SPELL_AURA_REMOVED 138901"
 )
 
-local warnRockets				= mod:NewCastAnnounce(133212, 4)
-local warnShadowbolt			= mod:NewSpellAnnounce(125212, 3)
-local warnGhost					= mod:NewSpellAnnounce(133465, 4)
-local warnMines					= mod:NewCountAnnounce(133018, 3)
-local warnMinesSpawning			= mod:NewSpellAnnounce(133015, 4)
+local warnRockets				= mod:NewCastAnnounce(133212, 4)--Max Megablast
+local warnShadowbolt			= mod:NewSpellAnnounce(125212, 3)--Dark Summoner
+local warnGhost					= mod:NewSpellAnnounce(133465, 4)--Dark Summoner
+local warnMines					= mod:NewCountAnnounce(133018, 3)--Battletron
+local warnMinesSpawning			= mod:NewSpellAnnounce(133015, 4)--Battletron
+local warnBulwark				= mod:NewAddsLeftAnnounce(138901, 2)--Ahoo'ru
+local warnCharge				= mod:NewCastAnnounce(138845, 1)--Ahoo'ru
+local warnCompleteHeal			= mod:NewCastAnnounce(142621, 4)--Ahoo'ru
+local warnDivineCircle			= mod:NewSpellAnnounce(142585, 3)--Ahoo'ru
 
-local specWarnShadowbolt		= mod:NewSpecialWarningSpell(125212, false)--Let you choose which one is important to warn for
-local specWarnGhost				= mod:NewSpecialWarningSpell(133465, false)
-local specWarnMinesSpawning		= mod:NewSpecialWarningSpell(133015)
+local specWarnShadowbolt		= mod:NewSpecialWarningSpell(125212, false)--Let you choose which one is important to warn for(Dark Summoner)
+local specWarnGhost				= mod:NewSpecialWarningSpell(133465, false)--Dark Summoner
+local specWarnMinesSpawning		= mod:NewSpecialWarningSpell(133015)--Battletron
 
-local timerRockets				= mod:NewBuffActiveTimer(9, 133212)
-local timerShadowboltCD			= mod:NewCDTimer(12, 125212)
-local timerGhostCD				= mod:NewNextTimer(13, 133465)
+local timerRockets				= mod:NewBuffActiveTimer(9, 133212)--Max Megablast
+local timerShadowboltCD			= mod:NewCDTimer(12, 125212)--Dark Summoner
+local timerGhostCD				= mod:NewNextTimer(13, 133465)--Battletron
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
@@ -50,6 +57,22 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 133017 then
 		remainingMines = remainingMines - 1
 		warnMines:Show(remainingMines)
+	elseif args.spellId == 138845 then
+		warnCharge:Show()
+		if brawlersMod:PlayerFighting() then
+			specWarnCharge:Show()
+		end
+	elseif args.spellId == 142621 then
+		warnCompleteHeal:Show()
+		if brawlersMod:PlayerFighting() then
+			specWarnCompleteHeal:Show(args.sourceName)
+		end
+	elseif args.spellId == 142583 then
+		warnDivineCircle:Show()
+		timerDivineCircleCD:Start()
+		if args:IsPlayer() then
+			specWarnDivineCircle:Show()
+		end
 	end
 end
 
@@ -65,3 +88,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		remainingMines = 8
 	end
 end
+
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
+	if args.spellId == 138901 then
+		warnBulwark:Show(args.amount or 0)
+	end
+end
+mod.SPELL_AURA_REMOVED = mod.SPELL_AURA_APPLIED_DOSE
+mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_APPLIED_DOSE

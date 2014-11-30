@@ -136,11 +136,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRare1")
 
 L:SetGeneralLocalization({
-	name = "싸움꾼: 도전 1"
-})
-
-L:SetOptionLocalization({
-	ArrowOnBoxing	= "$spell:140868, $spell:140862, $spell:140886 활성화 중일때 DBM 화살표 보기"
+	name = "싸움꾼: 도전(유산)"
 })
 
 -------------
@@ -149,7 +145,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization("BrawlRare2")
 
 L:SetGeneralLocalization({
-	name = "싸움꾼: 도전 2"
+	name = "싸움꾼: 도전(특수)"
 })
 
 L:SetWarningLocalization({
@@ -157,6 +153,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	ArrowOnBoxing		= "$spell:140868, $spell:140862, $spell:140886 활성화 중일때 DBM 화살표 보기",
 	specWarnRPS			= "$spell:141206 진행 중일때 무엇을 내야할지 특수 경고 보기",
 	SpeakOutStrikes		= "$spell:141190 공격 횟수를 소리로 듣기"
 })

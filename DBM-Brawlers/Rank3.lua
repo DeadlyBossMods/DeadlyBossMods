@@ -7,36 +7,38 @@ mod:SetZone()
 mod:SetUsedIcons(8)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 33975 136334 132666 134777 133302",
+	"SPELL_CAST_START 134740 133607 134777 133302",
 	"PLAYER_TARGET_CHANGED"
 )
 
-local warnPyroblast				= mod:NewCastAnnounce(33975, 3)--Hits fairly hard, interruptable, not make or break though. So no special warning. If it hits you you won't wipe.
-local warnFireWall				= mod:NewSpellAnnounce(132666, 4)
-local warnDevastatingThrust		= mod:NewSpellAnnounce(134777, 4)--1.5 second cast, does 2 million damage. pretty brutal
+local warnVolatileFlames		= mod:NewSpellAnnounce(134740, 3)--Vian the Volatile
+local warnFireLine				= mod:NewCastAnnounce(133607, 4, 2)--Vian the Volatile
+local warnDevastatingThrust		= mod:NewSpellAnnounce(134777, 4)--Ixx
 
-local specWarnFireWall			= mod:NewSpecialWarningSpell(132666)
-local specWarnDevastatingThrust	= mod:NewSpecialWarningMove(134777)
+local specWarnFireLine			= mod:NewSpecialWarningMove(133607)--Vian the Volatile
+local specWarnDevastatingThrust	= mod:NewSpecialWarningMove(134777)--Ixx
 
-local timerFirewallCD			= mod:NewCDTimer(18, 132666)--18-22 sec variation
-local timerDevastatingThrustCD	= mod:NewCDTimer(12, 134777)--Need more data to verify CD
+local timerVolatileFlamesCD		= mod:NewCDTimer(11, 134740)--Vian the Volatile
+local timerFireLineCD			= mod:NewCDTimer(15, 133607)--Vian the Volatile
+local timerDevastatingThrustCD	= mod:NewCDTimer(12, 134777)--Ixx
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
-mod:AddBoolOption("SetIconOnBlat", true)
+mod:AddBoolOption("SetIconOnBlat", true)--Blat
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 local blatGUID = 0
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args:IsSpellID(33975, 136334) then--Spellid is used by 5 diff mobs in game, but SetZone sould filter the other 4 mobs.
-		warnPyroblast:Show()
-	elseif args.spellId == 132666 then
-		warnFireWall:Show()
-		timerFirewallCD:Start()--First one is 5 seconds after combat start
+	if args.spellId == 134740 then
+		warnVolatileFlames:Show()
+		timerVolatileFlamesCD:Start()
+	elseif args.spellId == 133607 then
+		warnFireLine:Show()
+		timerFireLineCD:Start()--First one is 9-10 seconds after combat start
 		if brawlersMod:PlayerFighting() then
-			specWarnFireWall:Show()
+			specWarnFireLine:Show()
 		end
 	elseif args.spellId == 134777 then
 		warnDevastatingThrust:Show()
