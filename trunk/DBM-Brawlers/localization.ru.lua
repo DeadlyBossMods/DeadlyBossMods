@@ -141,10 +141,6 @@ L:SetGeneralLocalization({
 	name = "Бойцовская гильдия: Вызовы 1"
 })
 
-L:SetOptionLocalization({
-	ArrowOnBoxing	= "Показывать стрелку DBM во время $spell:140868, $spell:140862 и $spell:140886"
-})
-
 -------------
 -- Rares 2 --
 -------------
@@ -159,6 +155,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	ArrowOnBoxing	= "Показывать стрелку DBM во время $spell:140868, $spell:140862 и $spell:140886",
 	specWarnRPS			= "Спец-предупреждение что использовать для $spell:141206",
 	SpeakOutStrikes		= "Отсчитывать количество атак $spell:141190"
 })

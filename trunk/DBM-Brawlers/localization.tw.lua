@@ -141,10 +141,6 @@ L:SetGeneralLocalization({
 	name = "鬥陣俱樂部:挑戰1"
 })
 
-L:SetOptionLocalization({
-	ArrowOnBoxing	= "為$spell:140868和$spell:140862和$spell:140886顯示DBM箭頭"
-})
-
 -------------
 -- Rares 2 --
 -------------
@@ -159,6 +155,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	ArrowOnBoxing	= "為$spell:140868和$spell:140862和$spell:140886顯示DBM箭頭",
 	specWarnRPS			= "為$spell:141206該出什麼的時候顯示特別警告",
 	SpeakOutStrikes		= "數出$spell:141190的攻擊次數"
 })
