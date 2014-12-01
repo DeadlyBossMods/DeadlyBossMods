@@ -44,6 +44,7 @@ BloodmaulSlagMines\Gugrokk.lua
 GrimRailDepot\RocketAndBorka.lua
 GrimRailDepot\BlackrockAssaultCommander.lua
 GrimRailDepot\ThunderlordGeneral.lua
+GrimRailDepot\GRDTrash.lua
 IronDocks\Nokgar.lua
 IronDocks\GrimrailEnforcers.lua
 IronDocks\Oshir.lua
