@@ -69,6 +69,15 @@ L:SetWarningLocalization({
 -----------------------
 L= DBM:GetModLocalization(1133)
 
+-------------
+--  GRD Trash  --
+-------------
+L = DBM:GetModLocalization("GRDTrash")
+
+L:SetGeneralLocalization({
+	name =	"GRD Trash"
+})
+
 -----------------------
 -- <<<Iron Docks>>> --
 -----------------------
