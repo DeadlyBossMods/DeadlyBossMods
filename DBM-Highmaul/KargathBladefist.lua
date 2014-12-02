@@ -106,6 +106,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBerserkerRush:Show(firePillar)
 			yellBerserkerRush:Yell()
+			self:PlayVoice(self, spellId, "now")--Example usage (subject to change)
 		else
 			specWarnBerserkerRushOther:Show(args.destName)
 		end
