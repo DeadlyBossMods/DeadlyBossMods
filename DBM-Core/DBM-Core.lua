@@ -84,6 +84,7 @@ DBM.DefaultOptions = {
 	CountdownVoice = "Corsica",
 	CountdownVoice2 = "Kolt",
 	CountdownVoice3 = "Pewsey",
+	ChosenVoicePack = "None",
 	ShowCountdownText = false,
 	RaidWarningPosition = {
 		Point = "TOP",
@@ -916,6 +917,7 @@ do
 				SetCVar("Sound_NumChannels", 64)
 			end
 			self.AddOns = {}
+			self.Voices = { {text = "None",value  = "None"}, }--Create voice table, with default "None" value
 			for i = 1, GetNumAddOns() do
 				local addonName = GetAddOnInfo(i)
 				local enabled = GetAddOnEnableState(playerName, i)
@@ -965,6 +967,12 @@ do
 							end
 						end
 					end
+				end
+				--Work in progress and subject to change. Just kind of throwing code in for random ideas
+				--X-VEM-Voice-Name Should be long name you want to appear in dropdown menu
+				--X-VEM-Voice-ShortName should be short name that matches folder name after VEM-. So for example, VEM-Harry would be "Harry" for a short name.
+				if GetAddOnMetadata(i, "X-VEM-Voice") and enabled ~= 0 then
+					tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-VEM-Voice-Name"), value = GetAddOnMetadata(i, "X-VEM-Voice-ShortName") })
 				end
 			end
 			table.sort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
@@ -6208,6 +6216,7 @@ do
 					PlaySoundFile(DBM.Options.RaidWarningSound)
 				end
 			end
+			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
 			fireEvent("DBM_Announce", message)
 		else
 			self.combinedcount = 0
@@ -6729,6 +6738,7 @@ do
 				local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
 				DBM:PlaySpecialWarningSound(soundId or 1)
 			end
+			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
 			fireEvent("DBM_SpecWarn", msg)
 		end
 	end
@@ -6948,6 +6958,14 @@ do
 			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..number..".ogg")
 		end
 	end
+	
+	function DBM:PlayCustomSound(path)
+		if DBM.Options.UseMasterVolume then
+			PlaySoundFile(path, "Master")
+		else
+			PlaySoundFile(path)
+		end
+	end
 
 	function DBM:PlaySpecialWarningSound(soundId)
 		local sound = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or DBM.Options.SpecialWarningSound
@@ -7074,6 +7092,7 @@ do
 			end
 			msg = msg:gsub(">.-<", stripServerName)
 			bar:SetText(msg)
+			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
 			fireEvent("DBM_TimerStart", id, msg, timer..DBM_CORE_SEC)
 			tinsert(self.startedTimers, id)
 			self.mod:Unschedule(removeEntry, self.startedTimers, id)
@@ -7102,6 +7121,7 @@ do
 	function timerPrototype:Stop(...)
 		if select("#", ...) == 0 then
 			for i = #self.startedTimers, 1, -1 do
+				--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
 				fireEvent("DBM_TimerStop", self.startedTimers[i])
 				DBM.Bars:CancelBar(self.startedTimers[i])
 				self.startedTimers[i] = nil
@@ -7110,6 +7130,7 @@ do
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 			for i = #self.startedTimers, 1, -1 do
 				if self.startedTimers[i] == id then
+					--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
 					fireEvent("DBM_TimerStop", id)
 					DBM.Bars:CancelBar(id)
 					tremove(self.startedTimers, i)
