@@ -1582,6 +1582,7 @@ local function CreateOptionsMenu()
 		local VoiceDropDown = raidwarnoptions:CreateDropdown(L.VoicePackChoice, DBM.Voices,
 		DBM.Options.ChosenVoicePack, function(value)
 			DBM.Options.ChosenVoicePack = value
+			DBM:Debug("DBM.Options.ChosenVoicePack is set to "..DBM.Options.ChosenVoicePack)
 		end
 		)
 		VoiceDropDown:SetPoint("TOPLEFT", CountSoundDropDown2, "TOPLEFT", 0, -40)
