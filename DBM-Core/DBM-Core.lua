@@ -969,10 +969,10 @@ do
 					end
 				end
 				--Work in progress and subject to change. Just kind of throwing code in for random ideas
-				--X-VEM-Voice-Name Should be long name you want to appear in dropdown menu
-				--X-VEM-Voice-ShortName should be short name that matches folder name after VEM-. So for example, VEM-Harry would be "Harry" for a short name.
-				if GetAddOnMetadata(i, "X-VEM-Voice") and enabled ~= 0 then
-					tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-VEM-Voice-Name"), value = GetAddOnMetadata(i, "X-VEM-Voice-ShortName") })
+				--X-DBM-Voice-Name Should be long name you want to appear in dropdown menu
+				--X-DBM-Voice-ShortName should be short name that matches folder name after DBM-. So for example, DBM-Harry would be "Harry" for a short name.
+				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
+					tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = GetAddOnMetadata(i, "X-DBM-Voice-ShortName") })
 				end
 			end
 			table.sort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
