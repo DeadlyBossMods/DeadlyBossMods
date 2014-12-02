@@ -29,6 +29,8 @@ local warnSolarBeam					= mod:NewSpellAnnounce(129888, 3)--Leona Earthwind
 local warnHeatedPokers				= mod:NewSpellAnnounce(133286, 4)--Dungeon Master Vishas
 local warnIntensifyingAssault		= mod:NewStackAnnounce(141396, 3)--T440 Dual-Mode Robot
 local warnPrecisionArtillery		= mod:NewStackAnnounce(141401, 3)--T440 Dual-Mode Robot
+local warnBoomingBoogaloo			= mod:NewSpellAnnounce(140894, 3)--Master Boom Boom 
+local warnDeployBoom				= mod:NewSpellAnnounce(140912, 4)--Master Boom Boom 
 
 local specWarnEvilGlare				= mod:NewSpecialWarningMove(133208)--Zen'shar
 local specWarnDoom					= mod:NewSpecialWarningSpell(133650, nil, nil, nil, true)--Nothing you can do about this, it means you let him get to 100 stacks and will most likely wipe if you don't have super strong CDs to blow(Millhouse Manastorm)
@@ -39,6 +41,8 @@ local specWarnDarkZone				= mod:NewSpecialWarningSpell(133346)--Fjoll
 local specWarnHeatedPokers			= mod:NewSpecialWarningSpell(133286)--Dungeon Master Vishas
 local specWarnIntensifyingAssault	= mod:NewSpecialWarningStack(141396, true, 10)--T440 Dual-Mode Robot
 local specWarnPrecisionArtillery	= mod:NewSpecialWarningStack(141401, true, 10)--T440 Dual-Mode Robot
+local specWarnBoomingBoogaloo		= mod:NewSpecialWarningSpell(140894, nil, nil, nil, 2)--Master Boom Boom 
+local specWarnDeployBoom			= mod:NewSpecialWarningSpell(140912, nil, nil, nil, 3)--Master Boom Boom 
 
 local timerPowerCrystalCD			= mod:NewCDTimer(13, 133398)--Millhouse Manastorm
 local timerBlueCrushCD				= mod:NewNextTimer(30, 133262)--Epicus Maximus

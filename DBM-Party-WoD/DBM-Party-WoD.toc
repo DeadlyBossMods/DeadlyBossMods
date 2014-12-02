@@ -37,6 +37,7 @@ Auchindoun\ProtectorOfAuch.lua
 Auchindoun\Nyami.lua
 Auchindoun\Azzakel.lua
 Auchindoun\Terongor.lua
+Auchindoun\AuchTrash.lua
 BloodmaulSlagMines\Magmolatus.lua
 BloodmaulSlagMines\Crushto.lua
 BloodmaulSlagMines\Roltall.lua

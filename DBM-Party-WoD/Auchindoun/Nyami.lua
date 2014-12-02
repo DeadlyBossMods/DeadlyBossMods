@@ -14,6 +14,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, soul vessel is probably wrong now.
+--Even on CM, fights too short to get a good soulvessel timer. Still need better logs
 local warnSWP					= mod:NewTargetAnnounce(154477, 2, nil, mod:IsHealer())
 local warnSoulVessel			= mod:NewSpellAnnounce(155327, 4)
 local warnTornSpirits			= mod:NewSpellAnnounce(153991, 3)

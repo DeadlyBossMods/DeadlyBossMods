@@ -26,10 +26,14 @@ local warnDivineCircle			= mod:NewSpellAnnounce(142585, 3)--Ahoo'ru
 local specWarnShadowbolt		= mod:NewSpecialWarningSpell(125212, false)--Let you choose which one is important to warn for(Dark Summoner)
 local specWarnGhost				= mod:NewSpecialWarningSpell(133465, false)--Dark Summoner
 local specWarnMinesSpawning		= mod:NewSpecialWarningSpell(133015)--Battletron
+local specWarnCharge			= mod:NewSpecialWarningSpell(138845)--Ahoo'ru
+local specWarnCompleteHeal		= mod:NewSpecialWarningInterrupt(142621, nil, nil, nil, 3)--Ahoo'ru
+local specWarnDivineCircle		= mod:NewSpecialWarningMove(142585)--Ahoo'ru
 
 local timerRockets				= mod:NewBuffActiveTimer(9, 133212)--Max Megablast
 local timerShadowboltCD			= mod:NewCDTimer(12, 125212)--Dark Summoner
 local timerGhostCD				= mod:NewNextTimer(13, 133465)--Battletron
+local timerDivineCircleCD		= mod:NewCDTimer(35, 142585)--Insufficent data to say if accurate with certainty
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
