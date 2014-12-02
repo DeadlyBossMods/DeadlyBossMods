@@ -1560,7 +1560,7 @@ local function CreateOptionsMenu()
 			{	text	= "Anshlun (ptBR Male)",value = "Anshlun"},
 			{	text	= "Neryssa (ptBR Female)",value = "Neryssa"},
 		}
-		local CountSoundDropDown2 = raidwarnoptions:CreateDropdown(L.CountdownVoice2, countSounds,
+		local CountSoundDropDown2 = raidwarnoptions:CreateDropdown(L.CountdownVoice2, countSounds2,
 		DBM.Options.CountdownVoice2, function(value)
 			DBM.Options.CountdownVoice2 = value
 			DBM:PlayCountSound(1, DBM.Options.CountdownVoice2)
@@ -1575,6 +1575,13 @@ local function CreateOptionsMenu()
 		end
 		)
 		CountSoundDropDown3:SetPoint("TOPLEFT", CountSoundDropDown, "TOPLEFT", 0, -40)
+		
+		local VoiceDropDown = raidwarnoptions:CreateDropdown(L.VoicePackChoice, DBM.Voices,
+		DBM.Options.ChosenVoicePack, function(value)
+			DBM.Options.ChosenVoicePack = value
+		end
+		)
+		VoiceDropDown:SetPoint("TOPLEFT", CountSoundDropDown2, "TOPLEFT", 0, -40)
 
 		--Raid Warning Colors
 		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 150, true)
