@@ -55,9 +55,10 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 163550 then
+	local spellId = args.spellId
+	if spellId == 163550 then
 		warnMortar:Show()
-	elseif args.spellId == 160680 then
+	elseif spellId == 160680 then
 		self:BossTargetScanner(79548, "SupressiveFireTarget", 0.2, 15)
 	elseif spellId == 160943 and self:AntiSpam(2, 1) then
 		warnShrapnelBlast:Show()

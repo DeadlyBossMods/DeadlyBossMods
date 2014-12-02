@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 153392 153234",
 	"SPELL_AURA_REMOVED 153392 153764",
-	"SPELL_CAST_START 153764 154221",
+	"SPELL_CAST_START 153764 154221 157173",
 	"SPELL_PERIODIC_DAMAGE 153616 153726",
 	"SPELL_PERIODIC_MISSED 153616 153726",
 	"SPELL_SUMMON 164081",
@@ -19,7 +19,8 @@ mod:RegisterEventsInCombat(
 )
 
 local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
-local warnFelLash					= mod:NewTargetAnnounce(153234, 2)
+local warnFelLash					= mod:NewTargetAnnounce("OptionVersion2", 153234, 3, nil, mod:IsHealer() or mod:IsTank())
+local warnFelStomp					= mod:NewCastAnnounce(157173, 3, nil, mod:IsTank())
 local warnClawsOfArgus				= mod:NewSpellAnnounce(153764, 3)
 local warnSummonFelguard			= mod:NewSpellAnnounce(164081, 3, 56285, not mod:IsHealer())
 local warnFelblast					= mod:NewCastAnnounce(154221, 3, nil, nil, not mod:IsHealer())--Spammy but still important. May improve by checking if interrupt spells on CD, if are, don't show warning, else, spam warning because interrupt SHOULD be on CD
@@ -28,7 +29,8 @@ local warnFelPool					= mod:NewSpellAnnounce(153616, 1)
 local specWarnCurtainOfFlame		= mod:NewSpecialWarningMoveAway(153396)
 local specWarnCurtainOfFlameNear	= mod:NewSpecialWarningClose(153396)
 local yellWarnCurtainOfFlame		= mod:NewYell(153396)
-local specWarnFelLash				= mod:NewSpecialWarningYou(153234, mod:IsTank())
+local specWarnFelLash				= mod:NewSpecialWarningYou("OptionVersion2", 153234)
+local specWarnFelStomp				= mod:NewSpecialWarningMove(157173)
 local specWarnClawsOfArgus			= mod:NewSpecialWarningSpell(153764)
 local specWarnClawsOfArgusEnd		= mod:NewSpecialWarningEnd(153764)
 local specWarnSummonFelguard		= mod:NewSpecialWarningSwitch(164081, mod:IsTank())
@@ -37,14 +39,17 @@ local specWarnFelPool				= mod:NewSpecialWarningMove(153616)
 local specWarnFelSpark				= mod:NewSpecialWarningMove(153726)
 
 local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396)--20sec cd but can be massively delayed by adds phases
-local timerFelLash					= mod:NewTargetTimer(7.5, 153234)
-local timerClawsOfArgus				= mod:NewBuffActiveTimer(18, 153764)
+local timerFelLash					= mod:NewTargetTimer("OptionVersion2", 7.5, 153234, nil, mod:IsHealer() or mod:IsTank())
+local timerClawsOfArgus				= mod:NewBuffActiveTimer(20, 153764)
 local timerClawsOfArgusCD			= mod:NewNextTimer(70, 153764)
+
+local countdownClawsOfArgus			= mod:NewCountdown(70, 153764)
+local countdownCurtainOfFlame		= mod:NewCountdown("Alt20", 153396)
 
 mod:AddRangeFrameOption(5, 153396)
 
 mod.vb.debuffCount = 0
-mod.vb.firstFlameDone = false
+mod.vb.flamesCast = 2
 local curtainDebuff = GetSpellInfo(153396)
 local UnitDebuff = UnitDebuff
 local debuffFilter
@@ -56,9 +61,11 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.debuffCount = 0
-	self.vb.firstFlameDone = false
-	timerCurtainOfFlameCD:Start(15.5-delay)
-	timerClawsOfArgusCD:Start(32-delay)
+	self.vb.flamesCast = 2--Set to 2 on pull to offset first argus
+	timerCurtainOfFlameCD:Start(16-delay)
+	countdownCurtainOfFlame:Start(16-delay)
+	timerClawsOfArgusCD:Start(34-delay)
+	countdownClawsOfArgus:Start(34-delay)
 end
 
 function mod:OnCombatEnd()
@@ -68,11 +75,12 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 153396 and timerClawsOfArgusCD:GetTime() < 40 and self.vb.firstFlameDone then--if claws of argus is less than 20 seconds away, don't start CurtainOfFlame timer
-		timerCurtainOfFlameCD:Start()--Start CD off success, not applied, so spreads don't mess with CD bar
-	end
-	if not self.vb.firstFlameDone then
-		self.vb.firstFlameDone = true
+	if args.spellId == 153396 then--if claws of argus is less than 20 seconds away, don't start CurtainOfFlame timer
+		self.vb.flamesCast = self.vb.flamesCast + 1
+		if self.vb.flamesCast < 3 then
+			timerCurtainOfFlameCD:Start()
+			countdownCurtainOfFlame:Start()
+		end
 	end
 end
 
@@ -114,8 +122,11 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.RangeCheck:Hide()
 		end
 	elseif spellId == 153764 then--Claws of Argus ending
+		self.vb.flamesCast = 0
 		specWarnClawsOfArgusEnd:Show()
-		timerCurtainOfFlameCD:Start(6.5)
+		timerCurtainOfFlameCD:Start(7)
+		timerClawsOfArgusCD:Start()
+		countdownClawsOfArgus:Start()
 	end
 end
 
@@ -125,10 +136,12 @@ function mod:SPELL_CAST_START(args)
 		warnClawsOfArgus:Show()
 		specWarnClawsOfArgus:Show()
 		timerClawsOfArgus:Start()
-		timerClawsOfArgusCD:Start()
 	elseif spellId == 154221 then
 		warnFelblast:Show()
 		specWarnFelblast:Show(args.sourceName)
+	elseif spellId == 157173 then
+		warnFelStomp:Show()
+		specWarnFelStomp:Show()
 	end
 end
 
