@@ -918,6 +918,7 @@ do
 			end
 			self.AddOns = {}
 			self.Voices = { {text = "None",value  = "None"}, }--Create voice table, with default "None" value
+			DBM:Debug("DBM.Voices table should be generated")
 			for i = 1, GetNumAddOns() do
 				local addonName = GetAddOnInfo(i)
 				local enabled = GetAddOnEnableState(playerName, i)
@@ -972,6 +973,7 @@ do
 				--X-DBM-Voice-Name Should be long name you want to appear in dropdown menu
 				--X-DBM-Voice-ShortName should be short name that matches folder name after DBM-VP. So for example, DBM-VPHarry would be "Harry" for a short name.
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
+					DBM:Debug("Adding to DBM.Voices table "..GetAddOnMetadata(i, "X-DBM-Voice-Name")..", "..GetAddOnMetadata(i, "X-DBM-Voice-ShortName"))
 					tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = GetAddOnMetadata(i, "X-DBM-Voice-ShortName") })
 				end
 			end
