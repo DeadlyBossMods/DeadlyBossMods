@@ -6648,10 +6648,10 @@ do
 		)
 		if optionName then
 			obj.option = obj.id
-			self:AddBoolOption(obj.option, optionDefault, "misc")
+			self:AddBoolOption(obj.option, optionDefault, "sound")
 		elseif not (optionName == false) then
 			obj.option = obj.id
-			self:AddBoolOption(obj.option, optionDefault, "misc")
+			self:AddBoolOption(obj.option, optionDefault, "sound")
 			if countdownType == "Countdown" then
 				self.localization.options[obj.option] = DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId)
 			elseif countdownType == "CountdownFades" then
