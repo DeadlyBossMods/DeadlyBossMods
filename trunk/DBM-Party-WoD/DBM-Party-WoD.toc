@@ -42,6 +42,7 @@ BloodmaulSlagMines\Magmolatus.lua
 BloodmaulSlagMines\Crushto.lua
 BloodmaulSlagMines\Roltall.lua
 BloodmaulSlagMines\Gugrokk.lua
+BloodmaulSlagMines\BSMTrash.lua
 GrimRailDepot\RocketAndBorka.lua
 GrimRailDepot\BlackrockAssaultCommander.lua
 GrimRailDepot\ThunderlordGeneral.lua

@@ -14,22 +14,25 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 150784"
 )
 
---TODO, Add heroic ability "Flame Buffet" Since ability name to common can't just wowhead the spellid
+--TODO, Add heroic ability "Flame Buffet"? Seems to just stack up over time and not really need warnings.
 local warnMoltenBlast			= mod:NewCastAnnounce(150677, 4)
 local warnUnstableSlag			= mod:NewSpellAnnounce(150677, 3)
 local warnMagmaEruption			= mod:NewSpellAnnounce(150784, 3)
 
 local specWarnMoltenBlast		= mod:NewSpecialWarningInterrupt(150677)
-local specWarnUnstableSlag		= mod:NewSpecialWarningSwitch(150755, not mod:IsHealer())
+local specWarnUnstableSlag		= mod:NewSpecialWarningSwitch("OptionVersion2", 150755, mod:IsDps())
 local specWarnMagmaEruptionCast	= mod:NewSpecialWarningSpell(150784, nil, nil, nil, 2)
 local specWarnMagmaEruption		= mod:NewSpecialWarningMove(150784)
 
 local timerMagmaEruptionCD		= mod:NewCDTimer(20, 150784)
 local timerUnstableSlagCD		= mod:NewCDTimer(20, 150755)
 
+local countdownUnstableSlag		= mod:NewCountdown(20, 150755)
+
 function mod:OnCombatStart(delay)
 --	timerMagmaEruptionCD:Start(8-delay)--Poor sample size
 	timerUnstableSlagCD:Start(-delay)--Also poor sample size but more likely to be correct.
+	countdownUnstableSlag:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -45,6 +48,7 @@ function mod:SPELL_CAST_START(args)
 		warnUnstableSlag:Show()
 		specWarnUnstableSlag:Show()
 		timerUnstableSlagCD:Start()
+		countdownUnstableSlag:Start()
 	end
 end
 
