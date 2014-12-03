@@ -144,7 +144,7 @@ L= DBM:GetModLocalization(1208)
 L= DBM:GetModLocalization(1209)
 
 L:SetMiscLocalization({
-	Pull	= "제리타크가 당신의 머리 위로 산성 새끼 거미를 쏟아붓습니다!"
+	Pull	= "당신의 머리 위로 산성 새끼 거미를 쏟아붓습니다!"
 })
 
 -----------------------
