@@ -970,6 +970,7 @@ do
 					end
 				end
 				--Work in progress and subject to change. Just kind of throwing code in for random ideas
+				--X-DBM-Voice: 1 should be in file
 				--X-DBM-Voice-Name Should be long name you want to appear in dropdown menu
 				--X-DBM-Voice-ShortName should be short name that matches folder name after DBM-VP. So for example, DBM-VPHarry would be "Harry" for a short name.
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
