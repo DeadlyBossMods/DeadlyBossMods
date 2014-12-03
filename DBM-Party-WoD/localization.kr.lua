@@ -56,6 +56,15 @@ L= DBM:GetModLocalization(887)
 -----------------------
 L= DBM:GetModLocalization(889)
 
+-------------
+--  BSM Trash  --
+-------------
+L = DBM:GetModLocalization("BSMTrash")
+
+L:SetGeneralLocalization({
+	name =	"피망치 잿가루 광산: 일반구간"
+})
+
 -----------------------
 -- <<<Grimrail Depot>>> --
 -----------------------
