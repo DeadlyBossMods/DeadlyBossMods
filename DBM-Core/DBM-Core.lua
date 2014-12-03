@@ -3783,14 +3783,13 @@ do
 		local i = 1
 		repeat
 			local bossUnitId = "boss"..i
-			local bossExists = UnitExists(bossUnitId)
-			local bossGUID = bossExists and not UnitIsDead(bossUnitId) and UnitGUID(bossUnitId) -- check for UnitIsVisible maybe?
+			local bossGUID = not UnitIsDead(bossUnitId) and UnitGUID(bossUnitId) -- check for UnitIsVisible maybe?
 			local bossCId = bossGUID and DBM:GetCIDFromGUID(bossGUID)
 			if bossCId and (type(cId) == "number" and cId == bossCId or type(cId) == "table" and checkEntry(cId, bossCId)) then
 				return true
 			end
 			i = i + 1
-		until not bossExists
+		until not bossGUID
 	end
 
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
