@@ -34,7 +34,7 @@ local warnRavingAssault				= mod:NewSpellAnnounce(163312, 3)--Target scanning? E
 local specWarnEarthwarper			= mod:NewSpecialWarningSwitch("ej10061")
 local specWarnTectonicUpheaval		= mod:NewSpecialWarningSpell(162475, nil, nil, nil, 2)
 local specWarnEarthenPillar			= mod:NewSpecialWarningSpell(162518, nil, nil, nil, 3)
-local specWarnCrystallineBarrage	= mod:NewSpecialWarningYou(162894)
+local specWarnCrystallineBarrage	= mod:NewSpecialWarningYou(162346)
 --Night-Twisted NPCs
 local specWarnEarthenFlechettes		= mod:NewSpecialWarningSpell(162968, mod:IsMelee())--Change to "move" warning if it's avoidable
 local specWarnGiftOfEarth			= mod:NewSpecialWarningCount(162894, mod:IsTank())

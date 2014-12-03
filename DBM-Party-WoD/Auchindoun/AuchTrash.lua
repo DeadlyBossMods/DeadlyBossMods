@@ -28,7 +28,7 @@ mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
 function mod:SPELL_CAST_START(args)
-	if not self.Options.Enabled then return end
+	if not self.Options.Enabled or self:IsDifficulty("normal5") then return end
 	local spellId = args.spellId
 	if spellId == 157173 then
 		warnFelStomp:Show()
