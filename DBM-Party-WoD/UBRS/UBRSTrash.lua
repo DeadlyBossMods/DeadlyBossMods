@@ -39,7 +39,7 @@ mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
 function mod:SPELL_AURA_APPLIED(args)
-	if not self.Options.Enabled then return end
+	if not self.Options.Enabled or self:IsDifficulty("normal5") then return end
 	local spellId = args.spellId
 	if spellId == 155586 then
 		specWarnVeilofShadowDispel:Show(args.destName)
@@ -47,7 +47,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if not self.Options.Enabled then return end
+	if not self.Options.Enabled or self:IsDifficulty("normal5") then return end
 	local spellId = args.spellId
 	if spellId == 155505 then
 		local sourceGUID = args.sourceGUID
