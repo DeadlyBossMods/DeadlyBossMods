@@ -29,7 +29,7 @@ local timerCorpseBreathCD		= mod:NewCDTimer(28, 165578, nil, false)--32-37 Varia
 local soundInhale				= mod:NewSound(153804)
 
 function mod:OnCombatStart(delay)
-	timerBodySlamCD:Start(15-delay)
+	timerBodySlamCD:Start(15-delay, UnitName("boss1"), UnitGUID("boss1"))
 end
 
 function mod:SPELL_CAST_START(args)
