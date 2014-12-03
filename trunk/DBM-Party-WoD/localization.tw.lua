@@ -24,6 +24,15 @@ L= DBM:GetModLocalization(1216)
 -----------------------
 L= DBM:GetModLocalization(1225)
 
+-------------
+--  Auch Trash  --
+-------------
+L = DBM:GetModLocalization("AuchTrash")
+
+L:SetGeneralLocalization({
+	name =	"奧齊頓小怪"
+})
+
 -----------------------
 -- <<<Bloodmaul Slag Mines>>> --
 -----------------------
@@ -69,6 +78,15 @@ L:SetWarningLocalization({
 -- Thunderlord General --
 -----------------------
 L= DBM:GetModLocalization(1133)
+
+-------------
+--  GRD Trash  --
+-------------
+L = DBM:GetModLocalization("GRDTrash")
+
+L:SetGeneralLocalization({
+	name =	"恐軌車站小怪"
+})
 
 -----------------------
 -- <<<Iron Docks>>> --
