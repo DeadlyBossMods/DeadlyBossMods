@@ -6433,10 +6433,10 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(obj.option, optionDefault, "misc")
+			self:AddBoolOption(obj.option, optionDefault, "sound")
 		elseif not (optionName == false) then
 			obj.option = "Sound"..spellId..(optionVersion or "")
-			self:AddBoolOption(obj.option, optionDefault, "misc")
+			self:AddBoolOption(obj.option, optionDefault, "sound")
 			self.localization.options[obj.option] = DBM_CORE_AUTO_SOUND_OPTION_TEXT:format(spellId)
 		end
 		return obj
@@ -6484,10 +6484,10 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(obj.option, optionDefault, "misc")
+			self:AddBoolOption(obj.option, optionDefault, "sound")
 		elseif not (optionName == false) then
 			obj.option = "Voice"..spellId..(optionVersion or "")
-			self:AddBoolOption(obj.option, optionDefault, "misc")
+			self:AddBoolOption(obj.option, optionDefault, "sound")
 			self.localization.options[obj.option] = DBM_CORE_AUTO_VOICE_OPTION_TEXT:format(spellId)
 		end
 		return obj
@@ -8209,6 +8209,7 @@ do
 		__index = setmetatable({
 			timer		= DBM_CORE_OPTION_CATEGORY_TIMERS,
 			announce	= DBM_CORE_OPTION_CATEGORY_WARNINGS,
+			sound		= DBM_CORE_OPTION_CATEGORY_SOUNDS,
 			misc		= MISCELLANEOUS
 		}, returnKey)
 	}
