@@ -74,6 +74,7 @@ DBM_CORE_OPTION_HEALTH_FRAME		= "Show boss health frame"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Bars"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "Announces"
+DBM_CORE_OPTION_CATEGORY_SOUNDS		= "Sounds"
 
 DBM_CORE_AUTO_RESPONDED						= "Auto-responded."
 DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d people alive"
