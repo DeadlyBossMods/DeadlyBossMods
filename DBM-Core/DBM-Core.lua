@@ -918,7 +918,6 @@ do
 			end
 			self.AddOns = {}
 			self.Voices = { {text = "None",value  = "None"}, }--Create voice table, with default "None" value
-			DBM:Debug("DBM.Voices table should be generated")
 			for i = 1, GetNumAddOns() do
 				local addonName = GetAddOnInfo(i)
 				local enabled = GetAddOnEnableState(playerName, i)
@@ -974,7 +973,6 @@ do
 				--X-DBM-Voice-Name Should be long name you want to appear in dropdown menu
 				--X-DBM-Voice-ShortName should be short name that matches folder name after DBM-VP. So for example, DBM-VPHarry would be "Harry" for a short name.
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
-					DBM:Debug("Adding to DBM.Voices table "..GetAddOnMetadata(i, "X-DBM-Voice-Name")..", "..GetAddOnMetadata(i, "X-DBM-Voice-ShortName"))
 					tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = GetAddOnMetadata(i, "X-DBM-Voice-ShortName") })
 				end
 			end
@@ -2494,17 +2492,13 @@ function DBM:UPDATE_BATTLEFIELD_STATUS()
 end
 
 function DBM:CINEMATIC_START()
-	DBM:Debug("CINEMATIC_START fired")
 	if not IsInInstance() or C_Garrison:IsOnGarrisonMap() or DBM.Options.MovieFilter == "Never" then return end
-	DBM:Debug("CINEMATIC_START: in valid zone, checking settings")
 	SetMapToCurrentZone()
 	local currentFloor = GetCurrentMapDungeonLevel() or 0
 	if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[LastInstanceMapID..currentFloor] then
 		CinematicFrame_CancelCinematic()
-		DBM:Debug("CINEMATIC_START should be canceling movie")
 	else
 		DBM.Options.MoviesSeen[LastInstanceMapID..currentFloor] = true
-		DBM:Debug("CINEMATIC_START should be allowing movie to play since it's first time")
 	end
 end
 
@@ -5220,12 +5214,9 @@ end
 -------------------
 MovieFrame:HookScript("OnEvent", function(self, event, id)
 	if event == "PLAY_MOVIE" and id then
-		DBM:Debug("PLAY_MOVIE fired")
 		if not IsInInstance() or C_Garrison:IsOnGarrisonMap() or DBM.Options.MovieFilter == "Never" then return end
-		DBM:Debug("PLAY_MOVIE: In valid zone, checking settings")
 		if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[id] then
 			MovieFrame_OnMovieFinished(self)
-			DBM:Debug("PLAY_MOVIE: Canceling movie")
 		else
 			DBM.Options.MoviesSeen[id] = true
 		end

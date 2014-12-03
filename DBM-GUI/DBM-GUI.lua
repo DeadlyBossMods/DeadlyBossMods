@@ -401,7 +401,7 @@ do
 		local spellName = GetSpellInfo(spellId)
 		if not spellName then
 			spellName = DBM_CORE_UNKNOWN
-			DBM:Debug("Spell ID not exists: "..spellId)
+			DBM:Debug("Spell ID does not exist: "..spellId)
 		end
 		return ("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellId, spellName)
 	end
@@ -409,7 +409,7 @@ do
 	local function replaceJournalLinks(id)
 		local check = EJ_GetSectionInfo(tonumber(id))
 		if not check then 
-			DBM:Debug("Journal ID not exists: "..id)
+			DBM:Debug("Journal ID does not exist: "..id)
 		end
 		local link = select(9, EJ_GetSectionInfo(tonumber(id))) or DBM_CORE_UNKNOWN
 		return link:gsub("|h%[(.*)%]|h", "|h%1|h")
@@ -1576,9 +1576,6 @@ local function CreateOptionsMenu()
 		)
 		CountSoundDropDown3:SetPoint("TOPLEFT", CountSoundDropDown, "TOPLEFT", 0, -40)
 		
-		if not DBM.Voices then
-			DBM:Debug("Error: DBM.Voices table is nil")
-		end
 		local VoiceDropDown = raidwarnoptions:CreateDropdown(L.VoicePackChoice, DBM.Voices,
 		DBM.Options.ChosenVoicePack, function(value)
 			DBM.Options.ChosenVoicePack = value
