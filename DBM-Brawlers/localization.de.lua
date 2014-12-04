@@ -137,7 +137,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRare1")
 
 L:SetGeneralLocalization({
-	name = "Kampfgilde: Herausford. 1"
+	name = "Kampfgilde: Klassische Herausford."
 })
 
 -------------
@@ -146,7 +146,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRare2")
 
 L:SetGeneralLocalization({
-	name = "Kampfgilde: Herausford. 2"
+	name = "Kampfgilde: Spezielle Herausford."
 })
 
 L:SetWarningLocalization({
@@ -154,7 +154,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	ArrowOnBoxing	= "Zeige DBM-Pfeil während $spell:140868, $spell:140862 und $spell:140886",
+	ArrowOnBoxing		= "Zeige DBM-Pfeil während $spell:140868, $spell:140862 und $spell:140886",
 	specWarnRPS			= "Spezialwarnung für die richtige Auswahl bei $spell:141206",
 	SpeakOutStrikes		= "Verkünde akustisch die Anzahl der $spell:141190 Angriffe"
 })
