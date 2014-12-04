@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Oct 19, 2014
+-- Last update: Dec 4, 2014@11926
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -112,9 +112,10 @@ L.RaidWarnSound				= "发出团队警报时播放声音"
 L.CountdownVoice			= "设置第一倒计时语音"
 L.CountdownVoice2			= "设置第二倒计时语音"
 L.CountdownVoice3			= "设置第三倒计时语音"
+L.VoicePackChoice			= "设置语音报警的语音包(快躲开！)"
 L.SpecialWarnSound			= "针对你发出特殊警报时播放的声音"
-L.SpecialWarnSound2			= "针对所有人发出特殊警报时播放的声音"
-L.SpecialWarnSound3			= "针对非常重要事件(灭团点)的特殊警报播放的声音"
+L.SpecialWarnSound2			= "针对所有人发出特殊警报时播放的声音(默认:当心)"
+L.SpecialWarnSound3			= "针对非常重要事件(灭团点)的特殊警报播放的声音(默认:毁灭)"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages	 		= "综合信息"
@@ -153,7 +154,7 @@ L.Slider_BarScale 			= "缩放"
 L.AreaTitle_BarSetup 			= "计时条综合设置"
 L.AreaTitle_BarSetupSmall 		= "小型计时条设置"
 L.AreaTitle_BarSetupHuge 		= "大型计时条设置"
-L.EnableHugeBar 			= "开启大型计时条（2号计时条"
+L.EnableHugeBar 			= "开启大型计时条（2号计时条）"
 L.BarIconLeft 				= "左侧图标"
 L.BarIconRight 				= "右侧图标"
 L.ExpandUpwards				= "折叠"

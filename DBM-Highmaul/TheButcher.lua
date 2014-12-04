@@ -53,7 +53,7 @@ function mod:OnCombatStart(delay)
 	timerTenderizerCD:Start(6-delay)
 	timerCleaveCD:Start(10-delay)--Verify this wasn't caused by cleave bug.
 	timerCleaverCD:Start(12-delay)
-	timerBoundingCleaveCD:Start(-delay)
+	timerBoundingCleaveCD:Start(-delay, 1)
 	countdownBoundingCleave:Start(-delay)
 	if self:IsMythic() then
 		berserkTimer:Start(240-delay)
