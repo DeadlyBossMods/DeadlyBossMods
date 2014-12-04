@@ -24,6 +24,15 @@ L= DBM:GetModLocalization(1216)
 -----------------------
 L= DBM:GetModLocalization(1225)
 
+-------------
+--  Auch Trash  --
+-------------
+L = DBM:GetModLocalization("AuchTrash")
+
+L:SetGeneralLocalization({
+	name =	"Trash von Auchindoun"
+})
+
 -----------------------
 -- <<<Bloodmaul Slag Mines>>> --
 -----------------------
@@ -47,6 +56,15 @@ L= DBM:GetModLocalization(887)
 -----------------------
 L= DBM:GetModLocalization(889)
 
+-------------
+--  BSM Trash  --
+-------------
+L = DBM:GetModLocalization("BSMTrash")
+
+L:SetGeneralLocalization({
+	name =	"Trash der Blutschlägermine"
+})
+
 -----------------------
 -- <<<Grimrail Depot>>> --
 -----------------------
@@ -69,6 +87,15 @@ L:SetWarningLocalization({
 -- Thunderlord General --
 -----------------------
 L= DBM:GetModLocalization(1133)
+
+-------------
+--  GRD Trash  --
+-------------
+L = DBM:GetModLocalization("GRDTrash")
+
+L:SetGeneralLocalization({
+	name =	"Trash des Grimmgleisdepots"
+})
 
 -----------------------
 -- <<<Iron Docks>>> --
@@ -205,4 +232,13 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	timerZaelaReturns	= "Show timer for when Zaela returns"
+})
+
+-------------
+--  UBRS Trash  --
+-------------
+L = DBM:GetModLocalization("UBRSTrash")
+
+L:SetGeneralLocalization({
+	name =	"Trash der Oberen Schwarzfelsspitze"
 })
