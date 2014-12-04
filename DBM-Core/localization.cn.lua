@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Nov 22, 2014@11872
+-- Last update: Dec 4, 2014@11926
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -84,6 +84,7 @@ DBM_CORE_OPTION_HEALTH_FRAME		= "首领生命值窗口"
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "计时条"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "警报"
 DBM_CORE_OPTION_CATEGORY_MISC		= "其它"
+DBM_CORE_OPTION_CATEGORY_SOUNDS		= "声音"
 
 DBM_CORE_AUTO_RESPONDED						= "已自动回复."
 DBM_CORE_STATUS_WHISPER						= "%s：%s，%d/%d存活"
@@ -295,6 +296,7 @@ DBM_CORE_AUTO_ICONS_OPTION_TEXT2			= "为$spell:%s添加团队标记"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT				= "为$spell:%s的目标添加箭头"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT2			= "为$spell:%s的目标添加远离箭头"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT				= "声音警报（快跑啊，小姑娘）：$spell:%s"
+DBM_CORE_AUTO_VOICE_OPTION_TEXT				= "为 $spell:%s 提供语音警报(使用选中的语音包)"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT			= "声音警报：$spell:%s的冷却时间倒计时"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2		= "声音警报：$spell:%s消失时"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT			= "声音警报：$spell:%s的持续时间正计时"
