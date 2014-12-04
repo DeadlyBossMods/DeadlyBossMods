@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, figure out stack tanks swap at for Arcane Wound(or if they can avoid swapping somehow). (bugged, there were no swapps on mythic, in fact tank debuff was irrelevant
---TODO, see if whirlwind is always 60 60 86, repeating, and if my hack that checks quake timer is even needed
+--Note, watch to see if whirlwind returns to 60 60 86, repeating, or if the hotfix to make it old way, is perm
 --Phemos
 local warnEnfeeblingroar			= mod:NewCountAnnounce(158057, 3)
 local warnWhirlwind					= mod:NewCountAnnounce(157943, 3)
