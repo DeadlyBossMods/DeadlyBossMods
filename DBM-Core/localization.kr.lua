@@ -75,6 +75,7 @@ DBM_CORE_OPTION_HEALTH_FRAME		= "우두머리 체력 바 보기"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "바"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "알림"
+DBM_CORE_OPTION_CATEGORY_SOUNDS		= "소리"
 
 DBM_CORE_AUTO_RESPONDED						= "전투중 받은 귓속말에 자동 응답합니다."
 DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d 명이 생존해 있습니다."
@@ -285,7 +286,7 @@ DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "$spell:%s 에게 전술 목표 아이콘 �
 DBM_CORE_AUTO_ARROW_OPTION_TEXT			= "$spell:%s 대상 방향으로 DBM 화살표 보기"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "$spell:%s 대상 반대 방향으로 DBM 화살표 보기"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%s 대상이 된 경우 별도 경고음 듣기"
-DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "$spell:%s 대상이 된 경우 음성 알림 듣기"
+DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "$spell:%s 대상이 된 경우 설정된 음성안내 소리로 음성 알림 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 이전에 초읽기 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "$spell:%s 남은시간 초읽기 듣기"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 진행시간 초읽기 듣기"
