@@ -47,6 +47,8 @@ local timerBerserkerCD				= mod:NewNextTimer(41, "ej10062", nil, mod:IsTank(), n
 local timerGiftOfEarthCD			= mod:NewCDTimer(10.5, 162894, nil, mod:IsMelee())--10.5 but obviously delayed if stuns were used.
 local timerEarthenFlechettesCD		= mod:NewCDTimer(14, 162968, nil, mod:IsMelee())--14 but obviously delayed if stuns were used. Also tends to be recast immediately if stun interrupted
 
+local berserkTimer					= mod:NewBerserkTimer(300)
+
 local countdownEarthwarper			= mod:NewCountdown(41, "ej10061", mod:IsMelee())
 
 mod:AddSetIconOption("SetIconOnEarthwarper", "ej10061", true, true)
@@ -63,6 +65,13 @@ function mod:OnCombatStart(delay)
 	timerEarthwarperCD:Start(11-delay)
 	countdownEarthwarper:Start(11-delay)
 	timerBerserkerCD:Start(21-delay)
+	if self:IsMythic() then
+		--Figure out berserk
+	elseif self:IsDifficulty("normal", "heroic") then
+		berserkTimer:Start(-delay)--Confirmed 10 min in both.
+	else
+		--Find LFR berserk for LFR
+	end
 end
 
 function mod:OnCombatEnd()
