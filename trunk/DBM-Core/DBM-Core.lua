@@ -2647,7 +2647,7 @@ do
 	function DBM:LOADING_SCREEN_DISABLED()
 		DBM:Debug("LOADING_SCREEN_DISABLED fired")
 		FixForShittyComputers()
-		DBM:Schedule(3, FixForShittyComputers, DBM)
+		DBM:Schedule(5, FixForShittyComputers, DBM)
 	end
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
@@ -4048,9 +4048,9 @@ local statVarTable = {
 function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 	if not mod.inCombat then
 		if event then
-			self:Debug("StartCombat called by : "..event)
+			self:Debug("StartCombat called by : "..event..". LastInstanceMapID is "..LastInstanceMapID)
 		else
-			self:Debug("StartCombat called by individual mod or unknown reason.")
+			self:Debug("StartCombat called by individual mod or unknown reason. LastInstanceMapID is "..LastInstanceMapID)
 		end
 	end
 	cSyncSender = {}

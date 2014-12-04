@@ -1,6 +1,6 @@
 ﻿--Mini Dragon(projecteurs@gmail.com)
 --Thanks to Yike Xia
---Last Update: Oct 21, 2014
+--Last update: Dec 4, 2014@11926
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -28,6 +28,15 @@ L= DBM:GetModLocalization(1216)
 -----------------------
 L= DBM:GetModLocalization(1225)
 
+-------------
+--  Auch Trash  --
+-------------
+L = DBM:GetModLocalization("AuchTrash")
+
+L:SetGeneralLocalization({
+	name =	"奥金顿小怪"
+})
+
 -----------------------
 -- <<<Bloodmaul Slag Mines>>> --
 -----------------------
@@ -50,6 +59,15 @@ L= DBM:GetModLocalization(887)
 -- Gug'rokk --
 -----------------------
 L= DBM:GetModLocalization(889)
+
+-------------
+--  BSM Trash  --
+-------------
+L = DBM:GetModLocalization("BSMTrash")
+
+L:SetGeneralLocalization({
+	name =	"血槌炉渣矿井小怪"
+})
 
 -----------------------
 -- <<<Grimrail Depot>>> --
@@ -74,6 +92,14 @@ L:SetWarningLocalization({
 -----------------------
 L= DBM:GetModLocalization(1133)
 
+-------------
+--  GRD Trash  --
+-------------
+L = DBM:GetModLocalization("GRDTrash")
+
+L:SetGeneralLocalization({
+	name =	"恐轨车站小怪"
+})
 -----------------------
 -- <<<Iron Docks>>> --
 -----------------------
@@ -121,7 +147,7 @@ L= DBM:GetModLocalization(1208)
 L= DBM:GetModLocalization(1209)
 
 L:SetMiscLocalization({
-	Pull	= "艾里塔克对你放出剧毒小蜘蛛!"
+	Pull	= "艾里塔克对你放出剧毒小蜘蛛！"
 })
 
 -----------------------
@@ -209,4 +235,13 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	timerZaelaReturns	= "显示扎伊拉返回的计时器"
+})
+
+-------------
+--  UBRS Trash  --
+-------------
+L = DBM:GetModLocalization("UBRSTrash")
+
+L:SetGeneralLocalization({
+	name =	"黑石塔上层小怪"
 })

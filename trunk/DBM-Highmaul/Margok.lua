@@ -66,7 +66,7 @@ local specWarnFixate							= mod:NewSpecialWarningYou(157763)--Change to run war
 local specWarnTransitionEnd						= mod:NewSpecialWarningEnd(157278)
 --Phase 3: Rune of Fortification
 local specWarnDestructiveResonanceFortification	= mod:NewSpecialWarningSpell(164076, nil, nil, nil, 2)--If target scanning works make this personal.
-local specWarnMarkOfChaosFortification			= mod:NewSpecialWarningYou(164178)--Debuffed player can not move for this one
+local specWarnMarkOfChaosFortification			= mod:NewSpecialWarningYou(164178, nil, nil, nil, 3)--Debuffed player can not move for this one
 local yellMarkOfChaosFortification				= mod:NewYell(164178)--So give yell
 local specWarnMarkOfChaosFortificationNear		= mod:NewSpecialWarningClose(164178, nil, nil, nil, 3)--And super important "near" warning.
 local specWarnMarkOfChaosFortificationOther		= mod:NewSpecialWarningTaunt(164178)
@@ -77,7 +77,7 @@ local specWarnKickToTheFace						= mod:NewSpecialWarningSpell(158563, mod:IsTank
 --local specWarnCrushArmorOther					= mod:NewSpecialWarningTaunt(158553)
 --Phase 4: Rune of Replication
 local specWarnDestructiveResonanceReplication	= mod:NewSpecialWarningSpell(164077, nil, nil, nil, 2)--If target scanning works make this personal.
-local specWarnMarkOfChaosReplication			= mod:NewSpecialWarningYou(164191)--Debuffed player can not move for this one
+local specWarnMarkOfChaosReplication			= mod:NewSpecialWarningYou(164191, nil, nil, nil, 3)--Debuffed player can not move for this one
 local yellMarkOfChaosReplication				= mod:NewYell(164191)--Give a yell to this one too since balls form at that location of player
 local specWarnMarkOfChaosReplicationOther		= mod:NewSpecialWarningTaunt(164191)
 local specWarnBrandedReplication				= mod:NewSpecialWarningYou(164006)
@@ -228,7 +228,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 		if self.Options.RangeFrame then
-			if UnitDebuff("player", GetSpellInfo(spellId)) then--You have debuff, show everyone
+			if self:IsTanking("player", "boss1") then--You have threat, show everyone (debuff check not work, when using SPELL_CAST_START for early warning)
 				DBM.RangeCheck:Show(35, nil)
 			else--You do not have debuff, only show players who do
 				DBM.RangeCheck:Show(35, debuffFilter)
