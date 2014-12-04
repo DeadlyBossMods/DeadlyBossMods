@@ -56,6 +56,15 @@ L= DBM:GetModLocalization(887)
 -----------------------
 L= DBM:GetModLocalization(889)
 
+-------------
+--  BSM Trash  --
+-------------
+L = DBM:GetModLocalization("BSMTrash")
+
+L:SetGeneralLocalization({
+	name =	"血槌熔渣礦場小怪"
+})
+
 -----------------------
 -- <<<Grimrail Depot>>> --
 -----------------------
