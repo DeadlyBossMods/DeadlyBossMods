@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, figure out why the hell emote pull doesn't work. Text is correct.
-local warnToxicSpiderling			= mod:NewAddsLeftAnnounce("ej10492", 2)
+local warnToxicSpiderling			= mod:NewAddsLeftAnnounce("ej10492", 2, "Interface\\ICONS\\Spell_Nature_Web")
 --local warnVenomCrazedPaleOne		= mod:NewSpellAnnounce("ej10502", 3)--I can't find a way to detect these, at least not without flat out scanning all DAMAGE events but that's too much work.
 local warnInhale					= mod:NewSpellAnnounce(169233, 3)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
@@ -28,11 +28,11 @@ local warnGaseousVolley				= mod:NewSpellAnnounce(169248, 3)
 local specWarnConsume				= mod:NewSpecialWarningSpell(169248)
 local specWarnGaseousVolley			= mod:NewSpecialWarningSpell(169382, nil, nil, nil, 2)
 
-mod.vb.spiderlingCount = 8
+mod.vb.spiderlingCount = 4
 mod.vb.phase2 = false
 
 function mod:OnCombatStart(delay)
-	self.vb.spiderlingCount = 8
+	self.vb.spiderlingCount = 4
 	self.vb.phase2 = false
 end
 

@@ -12,7 +12,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START 152298 151447 151545"
 )
 
-local warnCrush							= mod:NewCastAnnounce(151447, 4, nil, mod:IsTank())
+local warnCrush							= mod:NewCastAnnounce(151447, 4, 3, nil, mod:IsTank())
 local warnCinderSplash					= mod:NewCastAnnounce(152298, 3)
 local warnRoar							= mod:NewCastAnnounce(151545, 3)
 local warnLavaBurst						= mod:NewCastAnnounce(151558, 4)--Too spammy? hits tank hard on CM though, near one shot. like 70% of health. Must interrupt most of them
