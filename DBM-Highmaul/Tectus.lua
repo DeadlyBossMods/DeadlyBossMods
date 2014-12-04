@@ -109,7 +109,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCrystallineBarrageYou:Show()
 		end
 	elseif spellId == 162674 and self.Options.SetIconOnMote and not self:IsLFR() then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
-		self:ScanForMobs(args.destGUID, 0, 8, 4, 0.05, 15)
+		self:ScanForMobs(args.destGUID, 0, 8, 4, 0.05, 15)--Find out why this still doesn't work.
 	end
 end
 

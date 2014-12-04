@@ -95,7 +95,7 @@ local countdownArcaneWrath						= mod:NewCountdown(50, 156238, not mod:IsTank())
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank())
 
 mod:AddRangeFrameOption("35/5")
-mod:AddSetIconOption("SetIconOnBranded", 156225)
+mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
 
 local chaosDebuff1 = GetSpellInfo(158605)
 local chaosDebuff2 = GetSpellInfo(164176)
@@ -270,7 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnBrandedReplication:Show()
 			end
 		end
-		if self.Options.SetIconOnBranded then
+		if self.Options.SetIconOnBrandedDebuff then
 			self:SetIcon(args.destName, 1)--TODO, find out number of targets and add
 		end
 	elseif spellId == 158553 then
@@ -294,7 +294,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		DBM.RangeCheck:Hide()
 	elseif spellId == 157763 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	elseif args:IsSpellID(156225, 164004, 164005, 164006) and self.Options.SetIconOnBranded then
+	elseif args:IsSpellID(156225, 164004, 164005, 164006) and self.Options.SetIconOnBrandedDebuff then
 		self:SetIcon(args.destName, 0)--TODO, find out number of targets and add
 	end
 end
