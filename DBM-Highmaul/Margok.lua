@@ -256,7 +256,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
 		if not self:IsLFR() and args:IsPlayer() then
+			local currentStack = select(15, UnitDebuff("player", GetSpellInfo(spellId)))
 			yellBranded:Yell()
+			if currentStack then
+				print("DBM Debug: Is your stack "..currentStack.."? Let MysticalOS/Omega know")
+			end
 		end
 		if spellId == 156225 then
 			warnBranded:Show(args.destName)
