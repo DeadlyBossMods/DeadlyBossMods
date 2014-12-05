@@ -19,32 +19,32 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, probably add http://beta.wowhead.com/spell=158547 for second intermission once find the pre cast ID
---TODO, very new faster mark of chaos method always returns valid target name.
+--TODO, combine options to reduce GUI mod options in same manor that was done with paragons.
 --Phase 1: Might of the Crown
-local warnArcaneWrath							= mod:NewSpellAnnounce(156238, 3)
-local warnDestructiveResonance					= mod:NewSpellAnnounce(156467, 4)--Find out if target scanning works
+local warnBranded								= mod:NewTargetAnnounce(156225, 4)
+local warnDestructiveResonance					= mod:NewSpellAnnounce(156467, 3)--Find out if target scanning works
 local warnMarkOfChaos							= mod:NewTargetAnnounce(158605, 4)
 local warnForceNova								= mod:NewSpellAnnounce(157349, 3)
 local warnSummonArcaneAberration				= mod:NewSpellAnnounce(156471, 3)
 --Phase 2: Rune of Displacement
-local warnArcaneWrathDisplacement				= mod:NewSpellAnnounce(163988, 3)
+local warnBrandedDisplacement					= mod:NewTargetAnnounce(164004, 4)
 local warnDestructiveResonanceDisplacement		= mod:NewSpellAnnounce(164075, 4)--Find out if target scanning works
 local warnMarkOfChaosDisplacement				= mod:NewTargetAnnounce(164176, 4)
 local warnForceNovaDisplacement					= mod:NewSpellAnnounce(164232, 3)
 local warnSummonDisplacingArcaneAberration		= mod:NewSpellAnnounce(164299, 3)
 --Intermission: Dormant Runestones
-local warnFixate								= mod:NewTargetAnnounce(157763, 3)
+local warnFixate								= mod:NewTargetAnnounce("OptionVersion2", 157763, 3, nil, not mod:IsTank())
 --Phase 3: Rune of Fortification
-local warnArcaneWrathFortification				= mod:NewSpellAnnounce(163989, 3)
+local warnBrandedFortification					= mod:NewTargetAnnounce(164005, 4)
 local warnDestructiveResonanceFortification		= mod:NewSpellAnnounce(164076, 4)--Find out if target scanning works
 local warnMarkOfChaosFortification				= mod:NewTargetAnnounce(164178, 4)
 local warnForceNovaFortification				= mod:NewSpellAnnounce(164235, 3)
 local warnSummonFortifiedArcaneAberration		= mod:NewSpellAnnounce(164301, 3)
 --Intermission: Lineage of Power
-local warnKickToTheFace							= mod:NewSpellAnnounce(158563, 3)
+local warnKickToTheFace							= mod:NewTargetAnnounce("OptionVersion2", 158563, 3, nil, mod:IsTank())
 local warnCrushArmor							= mod:NewStackAnnounce(158553, 2, nil, mod:IsTank())
 --Phase 4: Rune of Replication
-local warnArcaneWrathReplication				= mod:NewSpellAnnounce(163990, 3)
+local warnBrandedReplication					= mod:NewTargetAnnounce(164006, 4)
 local warnDestructiveResonanceReplication		= mod:NewSpellAnnounce(164077, 4)--Find out if target scanning works
 local warnMarkOfChaosReplication				= mod:NewTargetAnnounce(164191, 4)
 local warnForceNovaReplication					= mod:NewSpellAnnounce(164240, 3)
@@ -73,8 +73,7 @@ local specWarnMarkOfChaosFortificationOther		= mod:NewSpecialWarningTaunt(164178
 local specWarnBrandedFortification				= mod:NewSpecialWarningYou(164005)
 --Intermission: Lineage of Power
 local specWarnKickToTheFace						= mod:NewSpecialWarningSpell(158563, mod:IsTank())
---local specWarnCrushArmor						= mod:NewSpecialWarningStack(158553, nil, 3)--Stack count assumed, may be less
---local specWarnCrushArmorOther					= mod:NewSpecialWarningTaunt(158553)
+local specWarnKickToTheFaceOther				= mod:NewSpecialWarningTaunt(158563)
 --Phase 4: Rune of Replication
 local specWarnDestructiveResonanceReplication	= mod:NewSpecialWarningSpell(164077, nil, nil, nil, 2)--If target scanning works make this personal.
 local specWarnMarkOfChaosReplication			= mod:NewSpecialWarningYou(164191, nil, nil, nil, 3)--Debuffed player can not move for this one
@@ -130,19 +129,15 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 156238 then
-		warnArcaneWrath:Show()
 		timerArcaneWrathCD:Start()
 		countdownArcaneWrath:Start()
 	elseif spellId == 163988 then
-		warnArcaneWrathDisplacement:Show()
 		timerArcaneWrathCD:Start()
 		countdownArcaneWrath:Start()
 	elseif spellId == 163989 then
-		warnArcaneWrathFortification:Show()
 		timerArcaneWrathCD:Start()
 		countdownArcaneWrath:Start()
 	elseif spellId == 163990 then
-		warnArcaneWrathReplication:Show()
 		timerArcaneWrathCD:Start()
 		countdownArcaneWrath:Start()
 	-----
@@ -240,8 +235,12 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 158563 then
-		warnKickToTheFace:Show()
-		specWarnKickToTheFace:Show()
+		warnKickToTheFace:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnKickToTheFace:Show()
+		else
+			specWarnKickToTheFaceOther(args.destName)
+		end
 	end
 end
 
@@ -261,30 +260,25 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellBranded:Yell()
 			end
 			if spellId == 156225 then
+				warnBranded:Show(args.destName)
 				specWarnBranded:Show()
 			elseif spellId == 164004 then
+				warnBrandedDisplacement:Show(args.destName)
 				specWarnBrandedDisplacement:Show()
 			elseif spellId == 164005 then
+				warnBrandedFortification:Show(args.destName)
 				specWarnBrandedFortification:Show()
 			elseif spellId == 164006 then
+				warnBrandedReplication:CombinedShow(0.5, args.destName)
 				specWarnBrandedReplication:Show()
 			end
 		end
 		if self.Options.SetIconOnBrandedDebuff then
-			self:SetSortedIcon(args.destName, 1, 1, 2)--TODO, find out number of targets and add
+			self:SetSortedIcon(args.destName, 1, 1, 2)
 		end
 	elseif spellId == 158553 then
 		local amount = args.amount or 1
 		warnCrushArmor:Show(args.destName, amount)
---[[		if amount >= 3 then
-			if args:IsPlayer() then
-				specWarnCrushArmor:Show(amount)
-			else
-				if not UnitDebuff("player", GetSpellInfo(158553)) and not UnitIsDeadOrGhost("player") then
-					specWarnCrushArmorOther:Show(args.destName)
-				end
-			end
-		end--]]
 	end
 end
 
