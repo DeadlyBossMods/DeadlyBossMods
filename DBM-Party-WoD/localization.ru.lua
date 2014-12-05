@@ -24,6 +24,15 @@ L= DBM:GetModLocalization(1216)
 -----------------------
 L= DBM:GetModLocalization(1225)
 
+-------------
+--  Auch Trash  --
+-------------
+L = DBM:GetModLocalization("AuchTrash")
+
+L:SetGeneralLocalization({
+	name =	"Трэш мобы"
+})
+
 -----------------------
 -- <<<Bloodmaul Slag Mines>>> --
 -----------------------
@@ -47,6 +56,15 @@ L= DBM:GetModLocalization(887)
 -----------------------
 L= DBM:GetModLocalization(889)
 
+-------------
+--  BSM Trash  --
+-------------
+L = DBM:GetModLocalization("BSMTrash")
+
+L:SetGeneralLocalization({
+	name =	"Трэш мобы"
+})
+
 -----------------------
 -- <<<Grimrail Depot>>> --
 -----------------------
@@ -69,6 +87,15 @@ L:SetWarningLocalization({
 -- Thunderlord General --
 -----------------------
 L= DBM:GetModLocalization(1133)
+
+-------------
+--  GRD Trash  --
+-------------
+L = DBM:GetModLocalization("GRDTrash")
+
+L:SetGeneralLocalization({
+	name =	"Трэш мобы"
+})
 
 -----------------------
 -- <<<Iron Docks>>> --
@@ -205,4 +232,13 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	timerZaelaReturns	= "Отсчет времени до возвращения Зелы"
+})
+
+-------------
+--  UBRS Trash  --
+-------------
+L = DBM:GetModLocalization("UBRSTrash")
+
+L:SetGeneralLocalization({
+	name =	"Трэш мобы"
 })
