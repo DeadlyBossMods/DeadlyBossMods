@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 156238 156467 157349 163988 164075 156471 164299 164232 164301 163989 164076 164235 163990 164077 164240 164303 158605 164176 164178 164191",
 	"SPELL_CAST_SUCCESS 158563",
-	"SPELL_AURA_APPLIED 157763 158553 156225 164004 164005 164006",
+	"SPELL_AURA_APPLIED 157763 158553 156225 164004 164005 164006 158605 164176 164178 164191",
 	"SPELL_AURA_APPLIED_DOSE 158553",
 	"SPELL_AURA_REMOVED 158605 164176 164178 164191 157763 156225 164004 164005 164006",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -83,7 +83,7 @@ local specWarnBrandedReplication				= mod:NewSpecialWarningYou(164006)
 
 --All Phases (No need to use different timers for empowered abilities. Short names better for timers.)
 local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238, nil, not mod:IsTank())--Pretty much a next timer, HOWEVER can get delayed by other abilities so only reason it's CD timer anyways
-local timerDestructiveResonanceCD				= mod:NewCDTimer(16, 156467, nil, not mod:IsMelee())--16-30sec variation noted. I don't like it
+local timerDestructiveResonanceCD				= mod:NewCDTimer(15, 156467, nil, not mod:IsMelee())--16-30sec variation noted. I don't like it
 local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605, nil, mod:IsTank())
 local timerMarkOfChaosCD						= mod:NewCDTimer(50, 158605, nil, mod:IsTank())
 local timerForceNovaCD							= mod:NewCDTimer(45, 157349)--45-52
@@ -239,7 +239,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if args:IsPlayer() then
 			specWarnKickToTheFace:Show()
 		else
-			specWarnKickToTheFaceOther(args.destName)
+			specWarnKickToTheFaceOther:Show(args.destName)
 		end
 	end
 end
@@ -247,7 +247,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 157763 then
-		warnFixate:Show(args.destName)
+		warnFixate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show()
 			if self.Options.RangeFrame then
@@ -255,30 +255,43 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
-		if args:IsPlayer() then
-			if not self:IsLFR() then
-				yellBranded:Yell()
-			end
-			if spellId == 156225 then
-				warnBranded:Show(args.destName)
+		if not self:IsLFR() and args:IsPlayer() then
+			yellBranded:Yell()
+		end
+		if spellId == 156225 then
+			warnBranded:Show(args.destName)
+			if args:IsPlayer() then
 				specWarnBranded:Show()
-			elseif spellId == 164004 then
-				warnBrandedDisplacement:Show(args.destName)
+			end
+		elseif spellId == 164004 then
+			warnBrandedDisplacement:Show(args.destName)
+			if args:IsPlayer() then
 				specWarnBrandedDisplacement:Show()
-			elseif spellId == 164005 then
-				warnBrandedFortification:Show(args.destName)
+			end
+		elseif spellId == 164005 then
+			warnBrandedFortification:Show(args.destName)
+			if args:IsPlayer() then
 				specWarnBrandedFortification:Show()
-			elseif spellId == 164006 then
-				warnBrandedReplication:CombinedShow(0.5, args.destName)
+			end
+		elseif spellId == 164006 then
+			warnBrandedReplication:CombinedShow(0.5, args.destName)
+			if args:IsPlayer() then
 				specWarnBrandedReplication:Show()
 			end
 		end
 		if self.Options.SetIconOnBrandedDebuff then
-			self:SetSortedIcon(args.destName, 1, 1, 2)
+			self:SetSortedIcon(0.5, args.destName, 1, 2)
 		end
 	elseif spellId == 158553 then
 		local amount = args.amount or 1
 		warnCrushArmor:Show(args.destName, amount)
+	elseif args:IsSpellID(158605, 164176, 164178, 164191) and self.Options.RangeFrame then
+		--Update frame again in case he swaped targets during cast (happens)
+		if UnitDebuff("player", GetSpellInfo(spellId)) then
+			DBM.RangeCheck:Show(35, nil)
+		else--You do not have debuff, only show players who do
+			DBM.RangeCheck:Show(35, debuffFilter)
+		end
 	end
 end
 
