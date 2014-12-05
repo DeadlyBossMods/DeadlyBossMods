@@ -71,6 +71,8 @@ mod.vb.WWCount = 0
 mod.vb.PulverizeCount = 0
 mod.vb.LastQuake = 0
 local GetTime = GetTime
+local PhemosEnergyRate = 33
+local polEnergyRate = 28
 
 function mod:OnCombatStart(delay)
 	self.vb.EnfeebleCount = 0
@@ -84,6 +86,13 @@ function mod:OnCombatStart(delay)
 	countdownPol:Start(37.5-delay)
 	if self:IsMythic() then
 		timerArcaneVolatilityCD:Start(65-delay)
+	end
+	if self:IsDifficulty("heroic", "mythic") then
+		PhemosEnergyRate = 31
+		polEnergyRate = 25
+	else
+		PhemosEnergyRate = 33
+		polEnergyRate = 28
 	end
 --[[	if not self:IsLFR() then
 		berserkTimer:Start(-delay)
@@ -103,31 +112,31 @@ function mod:SPELL_CAST_START(args)
 		self.vb.EnfeebleCount = self.vb.EnfeebleCount + 1
 		warnEnfeeblingroar:Show(self.vb.EnfeebleCount)
 		specWarnEnfeeblingRoar:Show(self.vb.EnfeebleCount)
-		timerQuakeCD:Start(nil, self.vb.QuakeCount+1)--Next Special
-		countdownPhemos:Start(34)	
+		timerQuakeCD:Start(PhemosEnergyRate+1, self.vb.QuakeCount+1)--Next Special
+		countdownPhemos:Start(PhemosEnergyRate+1)	
 	elseif spellId == 157943 then
 		self.vb.WWCount = self.vb.WWCount + 1
 		warnWhirlwind:Show(self.vb.WWCount)
 		specWarnWhirlWind:Show(self.vb.WWCount)
-		timerEnfeeblingRoarCD:Start(nil, self.vb.EnfeebleCount+1)--Next Special
-		countdownPhemos:Start(33)
+		timerEnfeeblingRoarCD:Start(PhemosEnergyRate, self.vb.EnfeebleCount+1)--Next Special
+		countdownPhemos:Start(PhemosEnergyRate)
 	elseif spellId == 158134 then
 		warnShieldCharge:Show()
 		specWarnShieldCharge:Show()
-		timerInterruptingShoutCD:Start()--Next Special
-		countdownPol:Start()
+		timerInterruptingShoutCD:Start(polEnergyRate)--Next Special
+		countdownPol:Start(polEnergyRate)
 	elseif spellId == 158093 then
 		warnInterruptingShout:Show()
 		specWarnInterruptingShout:Show()
-		timerPulverizeCD:Start()--Next Special
-		countdownPol:Start()
+		timerPulverizeCD:Start(polEnergyRate+1)--Next Special
+		countdownPol:Start(polEnergyRate+1)
 	elseif spellId == 158200 then
 		self.vb.LastQuake = GetTime()
 		self.vb.QuakeCount = self.vb.QuakeCount + 1
 		warnQuake:Show(self.vb.QuakeCount)
 		specWarnQuake:Show(self.vb.QuakeCount)
-		timerWhirlwindCD:Start(nil, self.vb.WWCount+1)
-		countdownPhemos:Start(33)	
+		timerWhirlwindCD:Start(PhemosEnergyRate, self.vb.WWCount+1)
+		countdownPhemos:Start(PhemosEnergyRate)	
 	elseif args:IsSpellID(157952, 158415, 158419) then--Pulverize channel IDs
 		self.vb.PulverizeCount = self.vb.PulverizeCount + 1
 		warnPulverize:Show(self.vb.PulverizeCount)
@@ -181,7 +190,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 158385 then--Activation
 		self.vb.PulverizeCount = 0
 		specWarnPulverize:Show()
-		timerShieldChargeCD:Start()--Next Special
-		countdownPol:Start(28)
+		timerShieldChargeCD:Start(polEnergyRate)--Next Special
+		countdownPol:Start(polEnergyRate)
 	end
 end
