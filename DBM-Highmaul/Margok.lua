@@ -271,7 +271,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.SetIconOnBrandedDebuff then
-			self:SetIcon(args.destName, 1)--TODO, find out number of targets and add
+			self:SetSortedIcon(args.destName, 1, 1, 2)--TODO, find out number of targets and add
 		end
 	elseif spellId == 158553 then
 		local amount = args.amount or 1
