@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(71859)
 mod:SetEncounterID(1705)
 mod:SetZone()
-mod:SetUsedIcons(1)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)--Unknown total number of icons replication will use.
 
 mod:RegisterCombat("combat")
 
@@ -54,13 +54,14 @@ local warnSummonReplicatingArcaneAberration		= mod:NewSpellAnnounce(164303, 3)
 local specWarnDestructiveResonance				= mod:NewSpecialWarningSpell(156467, nil, nil, nil, 2)--If target scanning works make this personal.
 local specWarnMarkOfChaos						= mod:NewSpecialWarningMoveAway(158605, nil, nil, nil, 3)
 local specWarnMarkOfChaosOther					= mod:NewSpecialWarningTaunt(158605)
-local specWarnBranded							= mod:NewSpecialWarningYou(156225)--Debuff Name "Branded"
-local yellBranded								= mod:NewYell(156225)--Always use the short yell, to reduce clutter. Maybe only need to yell on fortification though? (the one player can't move for)
+local specWarnBranded							= mod:NewSpecialWarningStack(156225, nil, 5)--Debuff Name "Branded"
+local yellBranded								= mod:NewYell(156225, L.BrandedYell)--Always use the short yell, to reduce clutter. Maybe only need to yell on fortification though? (the one player can't move for)
 --Phase 2: Rune of Displacement
 local specWarnDestructiveResonanceDisplacement	= mod:NewSpecialWarningSpell(164075, nil, nil, nil, 2)--If target scanning works make this personal.
 local specWarnMarkOfChaosDisplacement			= mod:NewSpecialWarningMoveAway(164176, nil, nil, nil, 3)
 local specWarnMarkOfChaosDisplacementOther		= mod:NewSpecialWarningTaunt(164176)
-local specWarnBrandedDisplacement				= mod:NewSpecialWarningYou(164004)
+local specWarnBrandedDisplacement				= mod:NewSpecialWarningStack(164004, nil, 5)
+local specWarnBrandedDisplacementNear			= mod:NewSpecialWarningClose(164004)--Displacement version of branded makes player unable to move from raid, raid moves from player
 --Intermission: Dormant Runestones
 local specWarnFixate							= mod:NewSpecialWarningYou(157763)--Change to run warning?
 local specWarnTransitionEnd						= mod:NewSpecialWarningEnd(157278)
@@ -70,7 +71,7 @@ local specWarnMarkOfChaosFortification			= mod:NewSpecialWarningYou(164178, nil,
 local yellMarkOfChaosFortification				= mod:NewYell(164178)--So give yell
 local specWarnMarkOfChaosFortificationNear		= mod:NewSpecialWarningClose(164178, nil, nil, nil, 3)--And super important "near" warning.
 local specWarnMarkOfChaosFortificationOther		= mod:NewSpecialWarningTaunt(164178)
-local specWarnBrandedFortification				= mod:NewSpecialWarningYou(164005)
+local specWarnBrandedFortification				= mod:NewSpecialWarningStack(164005, nil, 8)
 --Intermission: Lineage of Power
 local specWarnKickToTheFace						= mod:NewSpecialWarningSpell(158563, mod:IsTank())
 local specWarnKickToTheFaceOther				= mod:NewSpecialWarningTaunt(158563)
@@ -79,7 +80,7 @@ local specWarnDestructiveResonanceReplication	= mod:NewSpecialWarningSpell(16407
 local specWarnMarkOfChaosReplication			= mod:NewSpecialWarningYou(164191, nil, nil, nil, 3)--Debuffed player can not move for this one
 local yellMarkOfChaosReplication				= mod:NewYell(164191)--Give a yell to this one too since balls form at that location of player
 local specWarnMarkOfChaosReplicationOther		= mod:NewSpecialWarningTaunt(164191)
-local specWarnBrandedReplication				= mod:NewSpecialWarningYou(164006)
+local specWarnBrandedReplication				= mod:NewSpecialWarningStack(164006, nil, 5)
 
 --All Phases (No need to use different timers for empowered abilities. Short names better for timers.)
 local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238, nil, not mod:IsTank())--Pretty much a next timer, HOWEVER can get delayed by other abilities so only reason it's CD timer anyways
@@ -96,11 +97,13 @@ local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank()
 mod:AddRangeFrameOption("35/5")
 mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
 
+local GetSpellInfo = GetSpellInfo
 local chaosDebuff1 = GetSpellInfo(158605)
 local chaosDebuff2 = GetSpellInfo(164176)
 local chaosDebuff3 = GetSpellInfo(164178)
 local chaosDebuff4 = GetSpellInfo(164191)
 local UnitDebuff = UnitDebuff
+local playerName = UnitName("player")
 local debuffFilter
 do
 	debuffFilter = function(uId)
@@ -255,36 +258,44 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
-		if not self:IsLFR() and args:IsPlayer() then
-			local currentStack = select(15, UnitDebuff("player", GetSpellInfo(spellId)))
-			yellBranded:Yell()
-			if currentStack then
-				print("DBM Debug: Is your stack "..currentStack.."? Let MysticalOS/Omega know")
-			end
+		local uId = DBM:GetRaidUnitId(args.destName)
+		local currentStack = select(15, UnitDebuff(uId, GetSpellInfo(spellId)))
+		if not currentStack then
+			print("Branded/Arcane Wrath stack count drycode failed, warnings aren't going to work")
+			return
 		end
-		if spellId == 156225 then
-			warnBranded:Show(args.destName)
-			if args:IsPlayer() then
-				specWarnBranded:Show()
+		if (spellId == 164005 and currentStack > 6) or currentStack > 3 then--yells and general announces for target 1 stack before move.
+			if not self:IsLFR() and args:IsPlayer() then
+				yellBranded:Yell(currentStack, playerName)
 			end
-		elseif spellId == 164004 then
-			warnBrandedDisplacement:Show(args.destName)
-			if args:IsPlayer() then
-				specWarnBrandedDisplacement:Show()
+			if spellId == 156225 then
+				warnBranded:Show(args.destName)
+				if args:IsPlayer() and currentStack > 4 then--Special warning only for person that needs to get out
+					specWarnBranded:Show(currentStack)
+				end
+			elseif spellId == 164004 then
+				warnBrandedDisplacement:Show(args.destName)
+				if currentStack > 4  then--Special warning only for person that needs to get out
+					if args:IsPlayer() then
+						specWarnBrandedDisplacement:Show(currentStack)
+					elseif self:CheckNearby(13, args.destName) then
+						specWarnBrandedDisplacementNear:Show(args.destName)
+					end
+				end
+			elseif spellId == 164005 then
+				warnBrandedFortification:Show(args.destName)
+				if args:IsPlayer() and currentStack > 7  then--Special warning only for person that needs to get out
+					specWarnBrandedFortification:Show(currentStack)
+				end
+			elseif spellId == 164006 then
+				warnBrandedReplication:CombinedShow(0.5, args.destName)
+				if args:IsPlayer() and currentStack > 4 then--Special warning only for person that needs to get out
+					specWarnBrandedReplication:Show(currentStack)
+				end
 			end
-		elseif spellId == 164005 then
-			warnBrandedFortification:Show(args.destName)
-			if args:IsPlayer() then
-				specWarnBrandedFortification:Show()
+			if self.Options.SetIconOnBrandedDebuff then
+				self:SetSortedIcon(0.5, args.destName, 1)
 			end
-		elseif spellId == 164006 then
-			warnBrandedReplication:CombinedShow(0.5, args.destName)
-			if args:IsPlayer() then
-				specWarnBrandedReplication:Show()
-			end
-		end
-		if self.Options.SetIconOnBrandedDebuff then
-			self:SetSortedIcon(0.5, args.destName, 1, 2)
 		end
 	elseif spellId == 158553 then
 		local amount = args.amount or 1
