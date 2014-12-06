@@ -18,7 +18,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, probably add http://beta.wowhead.com/spell=158547 for second intermission once find the pre cast ID
 --TODO, combine options to reduce GUI mod options in same manor that was done with paragons.
 --Phase 1: Might of the Crown
 local warnBranded								= mod:NewTargetAnnounce(156225, 4)
@@ -179,16 +178,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 156238 then
-		timerArcaneWrathCD:Start()
-		countdownArcaneWrath:Start()
-	elseif spellId == 163988 then
-		timerArcaneWrathCD:Start()
-		countdownArcaneWrath:Start()
-	elseif spellId == 163989 then
-		timerArcaneWrathCD:Start()
-		countdownArcaneWrath:Start()
-	elseif spellId == 163990 then
+	if args:IsSpellID(156238, 163988, 163989, 163990) then
 		timerArcaneWrathCD:Start()
 		countdownArcaneWrath:Start()
 	-----
@@ -309,11 +299,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
 		self.vb.brandedActive = self.vb.brandedActive + 1
 		local uId = DBM:GetRaidUnitId(args.destName)
-		local currentStack = select(15, UnitDebuff(uId, GetSpellInfo(spellId)))
-		if not currentStack then
-			print("Branded/Arcane Wrath stack count drycode failed, warnings aren't going to work")
+		local _, _, _, stack1, _, _, _, _, _, _, _, _, _, _, stack2 = UnitDebuff(uId, GetSpellInfo(spellId))
+		DBM:Debug(stack1, stack2)
+		if not stack1 and not stack2 then
+			print("Branded/Arcane Wrath stack count drycode failed with arg4 and arg15, All warnings/Yells/icons will be disabled")
 			return
 		end
+		local currentStack = stack2 or stack1
 		if (spellId == 164005 and currentStack > 6) or currentStack > 3 then--yells and general announces for target 1 stack before move.
 			if args:IsPlayer() then
 				self.vb.playerHasBranded = true
