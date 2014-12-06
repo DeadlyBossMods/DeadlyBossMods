@@ -102,7 +102,7 @@ mod.vb.playerHasMark = false
 mod.vb.playerHasBranded = false
 mod.vb.brandedActive = 0
 
-local GetSpellInfo = GetSpellInfo
+local GetSpellInfo, UnitDebuff = GetSpellInfo, UnitDebuff
 local chaosDebuff1 = GetSpellInfo(158605)
 local chaosDebuff2 = GetSpellInfo(164176)
 local chaosDebuff3 = GetSpellInfo(164178)
@@ -111,7 +111,7 @@ local brandedDebuff1 = GetSpellInfo(156225)
 local brandedDebuff2 = GetSpellInfo(164004)
 local brandedDebuff3 = GetSpellInfo(164005)
 local brandedDebuff4 = GetSpellInfo(164006)
-local UnitDebuff = UnitDebuff
+local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local playerName = UnitName("player")
 local debuffFilterMark, debuffFilterBranded, debuffFilterCombined
 do
@@ -236,26 +236,27 @@ function mod:SPELL_CAST_START(args)
 		timerSummonArcaneAberrationCD:Start()
 	elseif args:IsSpellID(158605, 164176, 164178, 164191) then
 		local targetName, uId = self:GetBossTarget(77428)
+		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		timerMarkOfChaosCD:Start()
 		countdownMarkofChaos:Start()
 		if spellId == 158605 then
 			warnMarkOfChaos:Show(targetName)
 			timerMarkOfChaos:Start(targetName)
-			if UnitIsUnit(uId, "player") then
+			if tanking or (status == 3) then
 				specWarnMarkOfChaos:Show()
 			else
 				specWarnMarkOfChaosOther:Show(targetName)
 			end
 		elseif spellId == 164176 then
 			warnMarkOfChaosDisplacement:Show(targetName)
-			if UnitIsUnit(uId, "player") then
+			if tanking or (status == 3) then
 				specWarnMarkOfChaosDisplacement:Show()
 			else
 				specWarnMarkOfChaosDisplacementOther:Show(targetName)
 			end
 		elseif spellId == 164178 then
 			warnMarkOfChaosFortification:Show(targetName)
-			if UnitIsUnit(uId, "player") then
+			if tanking or (status == 3) then
 				specWarnMarkOfChaosFortification:Show()
 				yellMarkOfChaosFortification:Yell()
 			else
@@ -266,14 +267,14 @@ function mod:SPELL_CAST_START(args)
 			end
 		elseif spellId == 164191 then
 			warnMarkOfChaosReplication:Show(targetName)
-			if UnitIsUnit(uId, "player") then
+			if tanking or (status == 3) then
 				specWarnMarkOfChaosReplication:Show()
 				yellMarkOfChaosReplication:Yell()
 			else
 				specWarnMarkOfChaosReplicationOther:Show(targetName)
 			end
 		end
-		if self:IsTanking("player", "boss1") then
+		if tanking or (status == 3) then
 			self.vb.playerHasMark = true
 		else
 			self.vb.playerHasMark = false
