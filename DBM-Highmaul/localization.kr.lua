@@ -6,14 +6,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1128)
 
-L:SetTimerLocalization({
-	timerCrowdCD	= "Crowd 병력"
-})
-
-L:SetOptionLocalization({
-	timerCrowdCD	= "Crowd 병력 대기시간 바 보기"
-})
-
 ---------------------------
 -- The Butcher --
 ---------------------------
@@ -25,7 +17,7 @@ L= DBM:GetModLocalization(971)
 L= DBM:GetModLocalization(1195)
 
 L:SetMiscLocalization({
-	pillarSpawn	= "RISE, MOUNTAINS!"
+	pillarSpawn	= "산이여, 솟아라!"
 })
 
 ------------------
@@ -39,8 +31,8 @@ L= DBM:GetModLocalization(1196)
 L= DBM:GetModLocalization(1148)
 
 L:SetOptionLocalization({
-	PhemosSpecial	= "Phemos의 대기시간 초읽기 듣기",
-	PolSpecial		= "Pol의 대기시간 초읽기 듣기"
+	PhemosSpecial	= "페모스의 대기시간 초읽기 듣기",
+	PolSpecial		= "폴의 대기시간 초읽기 듣기"
 })
 
 --------------------
@@ -49,16 +41,20 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1153)
 
 L:SetMiscLocalization({
-	supressionTarget1	= "I will crush you!",
-	supressionTarget2	= "Silence!",
-	supressionTarget3	= "Quiet!",
-	supressionTarget4	= "I will tear you in half!"
+	supressionTarget1	= "박살내주마!",
+	supressionTarget2	= "침묵!",
+	supressionTarget3	= "닥쳐라!",
+	supressionTarget4	= "으허허허, 반으로 찢어주마!"
 })
 
 --------------------------
 -- Imperator Mar'gok --
 --------------------------
 L= DBM:GetModLocalization(1197)
+
+L:SetMiscLocalization({
+	BrandedYell			= "%s 에게 낙인! (%d)"
+})
 
 -------------
 --  Trash  --
