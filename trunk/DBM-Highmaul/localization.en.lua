@@ -59,6 +59,10 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(1197)
 
+L:SetMiscLocalization({
+	BrandedYell			= "Branded (%d) on %s"
+})
+
 -------------
 --  Trash  --
 -------------
