@@ -17,7 +17,7 @@ L= DBM:GetModLocalization(971)
 L= DBM:GetModLocalization(1195)
 
 L:SetMiscLocalization({
-	pillarSpawn	= "RISE, MOUNTAINS!"
+	pillarSpawn	= "ERHEBT EUCH, BERGE!"
 })
 
 ------------------
@@ -31,8 +31,8 @@ L= DBM:GetModLocalization(1196)
 L= DBM:GetModLocalization(1148)
 
 L:SetOptionLocalization({
-	PhemosSpecial	= "Play countdown sound for Phemos' cooldowns",
-	PolSpecial		= "Play countdown sound for Pol's cooldowns"
+	PhemosSpecial	= "Spiele akustischen Countdown für Phemos' Spezialfähigkeiten",
+	PolSpecial		= "Spiele akustischen Countdown für Pols Spezialfähigkeiten"
 })
 
 --------------------
@@ -51,6 +51,10 @@ L:SetMiscLocalization({
 -- Imperator Mar'gok --
 --------------------------
 L= DBM:GetModLocalization(1197)
+
+L:SetMiscLocalization({
+	BrandedYell			= "Gebrandmarkt (%d) auf %s"
+})
 
 -------------
 --  Trash  --

@@ -79,8 +79,8 @@ L= DBM:GetModLocalization(1138)
 L= DBM:GetModLocalization(1163)
 
 L:SetWarningLocalization({
-	warnGrenadeDown			= "%s dropped",
-	warnMortarDown			= "%s dropped"
+	warnGrenadeDown			= "%s aufsammelbar",
+	warnMortarDown			= "%s aufsammelbar"
 })
 
 -----------------------
@@ -144,7 +144,7 @@ L= DBM:GetModLocalization(1208)
 L= DBM:GetModLocalization(1209)
 
 L:SetMiscLocalization({
-	Pull	= "Xeri'tac begins unleashing Toxic Spiderlings down on you!"
+	Pull	= "Xeri'tac lässt Giftspinnlinge auf Euch niederregnen!"
 })
 
 -----------------------
@@ -227,11 +227,11 @@ L= DBM:GetModLocalization(1229)
 L= DBM:GetModLocalization(1234)
 
 L:SetTimerLocalization({
-	timerZaelaReturns	= "Zaela Returns"
+	timerZaelaReturns	= "Zaela kommt zurück"
 })
 
 L:SetOptionLocalization({
-	timerZaelaReturns	= "Show timer for when Zaela returns"
+	timerZaelaReturns	= "Zeige Zeit bis Zaela zurückkommt"
 })
 
 -------------
