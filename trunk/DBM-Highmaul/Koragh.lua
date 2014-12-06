@@ -11,9 +11,9 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 162185 162184 161411 163517 162186",
-	"SPELL_AURA_APPLIED 156803 162186 162185 161242 163472",
+	"SPELL_AURA_APPLIED 156803 162186 161242 163472",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 162186 162185 163472",
+	"SPELL_AURA_REMOVED 162186 163472",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -68,10 +68,22 @@ function mod:OnCombatEnd()
 	end
 end
 
+local function closeRange()
+	if mod.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 162185 then
 		warnExpelMagicFire:Show()
+		specWarnExpelMagicFire:Schedule(7.5)--Give you about 4 seconds to spread out
+		--Even if you AMS or resist debuff, need to avoid others that didn't, so rangecheck now here
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(7)
+		end
+		self:Schedule(11.5, closeRange)
 	elseif spellId == 162184 then
 		warnExpelMagicShadow:Show()
 		specWarnExpelMagicShadow:Show()
@@ -123,11 +135,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnExpelMagicArcane:Show(args.destName)
 			end
 		end
-	elseif spellId == 162185 and args:IsPlayer() then
-		specWarnExpelMagicFire:Schedule(6)--Give you about 4 seconds to spread out
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(7)
-		end
 	elseif spellId == 161242 and self:AntiSpam(3, args.destName) then--Players may wabble in and out of it and we don't want to spam add them to table.
 		warnCausticEnergy:CombinedShow(1, args.destName)--Two targets on mythic, which is why combinedshow.
 	elseif spellId == 163472 then
@@ -145,11 +152,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 162186 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	elseif spellId == 162185 and args:IsPlayer() then
-		specWarnExpelMagicFire:Cancel()
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
-		end
 	elseif spellId == 163472 and self.Options.SetIconOnMC then
 		self:SetIcon(args.destName, 0)
 	end
