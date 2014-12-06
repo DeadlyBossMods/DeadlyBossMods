@@ -10,14 +10,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1128)
 
-L:SetTimerLocalization({
-	timerCrowdCD	= "捣乱的观众 CD"
-})
-
-L:SetOptionLocalization({
-	timerCrowdCD	= "为下一波捣乱的观众显示计时器"
-})
-
 ---------------------------
 -- The Butcher --
 ---------------------------
