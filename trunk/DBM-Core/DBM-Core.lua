@@ -5965,12 +5965,7 @@ end
 
 function bossModPrototype:IsTanking(unit, boss)
 	if not unit then return false end
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
-	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
-	end
+	--Prefer threat target first
 	if boss and UnitExists(boss) then--Only checking one bossID as requested
 		local tanking, status = UnitDetailedThreatSituation(unit, boss)
 		if tanking or (status == 3) then
@@ -5985,6 +5980,13 @@ function bossModPrototype:IsTanking(unit, boss)
 				end
 			end
 		end
+	end
+	--Use these as fallback if threat target not found
+	if GetPartyAssignment("MAINTANK", unit, 1) then
+		return true
+	end
+	if UnitGroupRolesAssigned(unit) == "TANK" then
+		return true
 	end
 	return false
 end
