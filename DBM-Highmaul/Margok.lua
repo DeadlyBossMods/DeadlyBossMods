@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1197, "DBM-Highmaul", nil, 477)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(71859)
+mod:SetCreatureID(77428)
 mod:SetEncounterID(1705)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)--Unknown total number of icons replication will use.
@@ -187,27 +187,27 @@ function mod:SPELL_CAST_START(args)
 		warnSummonReplicatingArcaneAberration:Show()
 		timerSummonArcaneAberrationCD:Start()
 	elseif args:IsSpellID(158605, 164176, 164178, 164191) then
-		local targetName = UnitName("boss1target")
+		local targetName, uId = self:GetBossTarget(77428)
 		timerMarkOfChaosCD:Start()
 		countdownMarkofChaos:Start()
 		if spellId == 158605 then
 			warnMarkOfChaos:Show(targetName)
 			timerMarkOfChaos:Start(targetName)
-			if UnitIsUnit("boss1target", "player") then
+			if UnitIsUnit(uId, "player") then
 				specWarnMarkOfChaos:Show()
 			else
 				specWarnMarkOfChaosOther:Show(targetName)
 			end
 		elseif spellId == 164176 then
 			warnMarkOfChaosDisplacement:Show(targetName)
-			if UnitIsUnit("boss1target", "player") then
+			if UnitIsUnit(uId, "player") then
 				specWarnMarkOfChaosDisplacement:Show()
 			else
 				specWarnMarkOfChaosDisplacementOther:Show(targetName)
 			end
 		elseif spellId == 164178 then
 			warnMarkOfChaosFortification:Show(targetName)
-			if UnitIsUnit("boss1target", "player") then
+			if UnitIsUnit(uId, "player") then
 				specWarnMarkOfChaosFortification:Show()
 				yellMarkOfChaosFortification:Yell()
 			else
@@ -218,7 +218,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		elseif spellId == 164191 then
 			warnMarkOfChaosReplication:Show(targetName)
-			if UnitIsUnit("boss1target", "player") then
+			if UnitIsUnit(uId, "player") then
 				specWarnMarkOfChaosReplication:Show()
 				yellMarkOfChaosReplication:Yell()
 			else
@@ -300,12 +300,19 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 158553 then
 		local amount = args.amount or 1
 		warnCrushArmor:Show(args.destName, amount)
-	elseif args:IsSpellID(158605, 164176, 164178, 164191) and self.Options.RangeFrame then
+	elseif args:IsSpellID(158605, 164176, 164178, 164191) then
 		--Update frame again in case he swaped targets during cast (happens)
 		if UnitDebuff("player", GetSpellInfo(spellId)) then
-			DBM.RangeCheck:Show(35, nil)
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(35, nil)
+			end
 		else--You do not have debuff, only show players who do
-			DBM.RangeCheck:Show(35, debuffFilter)
+			if spellId == 164178 and self:CheckNearby(35, targetName) then
+				specWarnMarkOfChaosFortificationNear:Show(args.destName)--Warn a second time, in case first time was not right target (rare but happens with bad timed swaps). Even if first warn did work, if you are still too close, warn again
+			end
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(35, debuffFilter)
+			end
 		end
 	end
 end
