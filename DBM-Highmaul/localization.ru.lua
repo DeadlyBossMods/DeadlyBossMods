@@ -6,14 +6,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1128)
 
-L:SetTimerLocalization({
-	timerCrowdCD	= "Восст. Толпы"
-})
-
-L:SetOptionLocalization({
-	timerCrowdCD	= "Отсчет времени до появления новых аддов толпы"
-})
-
 ---------------------------
 -- The Butcher --
 ---------------------------
