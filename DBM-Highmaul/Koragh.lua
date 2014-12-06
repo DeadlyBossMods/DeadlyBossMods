@@ -40,8 +40,8 @@ local yellTrample					= mod:NewYell(163101)
 local specWarnExpelMagicFire		= mod:NewSpecialWarningMoveAway(162185)
 local specWarnExpelMagicShadow		= mod:NewSpecialWarningSpell(162184, mod:IsHealer())
 local specWarnExpelMagicFrost		= mod:NewSpecialWarningSpell(161411, false)
-local specWarnExpelMagicArcane		= mod:NewSpecialWarningTarget(162186, mod:IsTank())
 local specWarnExpelMagicArcaneYou	= mod:NewSpecialWarningMoveAway(162186, nil, nil, nil, 3)
+local specWarnExpelMagicArcane		= mod:NewSpecialWarningTaunt(162186)
 local yellExpelMagicArcane			= mod:NewYell(162186)
 local specWarnMC					= mod:NewSpecialWarningSwitch(163472, mod:IsDps())
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
@@ -82,9 +82,14 @@ function mod:SPELL_CAST_START(args)
 		warnForfeitPower:Show()
 		specWarnForfeitPower:Show(args.sourceName)
 	elseif spellId == 162186 then
-		if UnitExists("boss1") and UnitGUID("boss1") == args.sourceGUID and UnitDetailedThreatSituation("player", "boss1") then--We are highest threat target
+		local targetName, uId = self:GetBossTarget(79015)
+		if UnitIsUnit(uId, "player") then--Player is current target
 			specWarnExpelMagicArcaneYou:Show()--So show tank warning
 			soundExpelMagicArcane:Play()
+		else
+			if self:AntiSpam(2, targetName) then--Set anti spam with target name
+				specWarnExpelMagicArcane:Show(targetName)
+			end
 		end
 	end
 end
@@ -113,7 +118,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(5)
 			end
 		else
-			specWarnExpelMagicArcane:Show(args.destName)
+			if self:AntiSpam(2, args.destName) then--if antispam matches cast start warning, it won't warn again, if name is different, it'll trigger new warning
+				specWarnExpelMagicArcane:Show(args.destName)
+			end
 		end
 	elseif spellId == 162185 and args:IsPlayer() then
 		specWarnExpelMagicFire:Schedule(6)--Give you about 4 seconds to spread out
