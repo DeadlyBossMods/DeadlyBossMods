@@ -94,26 +94,74 @@ local timerTransition							= mod:NewCastTimer(76.5, 157278)
 local countdownArcaneWrath						= mod:NewCountdown(50, 156238, not mod:IsTank())--Probably will add for whatever proves most dangerous on mythic
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank())
 
-mod:AddRangeFrameOption("35/5")
+mod:AddRangeFrameOption("35/13/5")
 mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
+
+mod.vb.markActive = false
+mod.vb.playerHasMark = false
+mod.vb.playerHasBranded = false
+mod.vb.brandedActive = 0
 
 local GetSpellInfo = GetSpellInfo
 local chaosDebuff1 = GetSpellInfo(158605)
 local chaosDebuff2 = GetSpellInfo(164176)
 local chaosDebuff3 = GetSpellInfo(164178)
 local chaosDebuff4 = GetSpellInfo(164191)
+local brandedDebuff1 = GetSpellInfo(156225)
+local brandedDebuff2 = GetSpellInfo(164004)
+local brandedDebuff3 = GetSpellInfo(164005)
+local brandedDebuff4 = GetSpellInfo(164006)
 local UnitDebuff = UnitDebuff
 local playerName = UnitName("player")
-local debuffFilter
+local debuffFilterMark, debuffFilterBranded, debuffFilterCombined
 do
-	debuffFilter = function(uId)
+	debuffFilterMark = function(uId)
 		if UnitDebuff(uId, chaosDebuff1) or UnitDebuff(uId, chaosDebuff2) or UnitDebuff(uId, chaosDebuff3) or UnitDebuff(uId, chaosDebuff4) then
+			return true
+		end
+	end
+	debuffFilterBranded = function(uId)
+		if UnitDebuff(uId, brandedDebuff1) or UnitDebuff(uId, brandedDebuff2) or UnitDebuff(uId, brandedDebuff3) or UnitDebuff(uId, brandedDebuff4) then
+			return true
+		end
+	end
+	debuffFilterCombined = function(uId)
+		if UnitDebuff(uId, chaosDebuff1) or UnitDebuff(uId, chaosDebuff2) or UnitDebuff(uId, chaosDebuff3) or UnitDebuff(uId, chaosDebuff4) or UnitDebuff(uId, brandedDebuff1) or UnitDebuff(uId, brandedDebuff2) or UnitDebuff(uId, brandedDebuff3) or UnitDebuff(uId, brandedDebuff4) then
 			return true
 		end
 	end
 end
 
+local function updateRangeFrame(markPreCast)
+	if not mod.Options.RangeFrame then return end
+	if not mod:IsTank() and mod.vb.brandedActive > 0 then--Active branded out there, not a tank. Branded is always prioritized over mark for non tanks since 90% of time tanks handle this on their own, while rest of raid must ALWAYS handle branded
+		if mod.vb.playerHasBranded then--Player has Branded debuff
+			DBM.RangeCheck:Show(13, nil)--Show everyone
+		else--No branded debuff on player, so show a filtered range finder
+			if mod.vb.markActive then--Even though we set range to 13 instead of 35, show marked tank dots on radar too, not just branded dots.
+				DBM.RangeCheck:Show(13, debuffFilterCombined)--If it turns out needed, i'll force a combined filter of 35 so safe distances for both active debuffs are used.
+			else--no branded tank, So show ONLY branded dots
+				DBM.RangeCheck:Show(13, debuffFilterBranded)
+			end
+		end
+	else--no branded, or player is a tank
+		if markPreCast or mod.vb.markActive then--Mark of Chaos is active, or is being cast
+			if mod.vb.playerHasMark then--Player has mark of chaos debuff, or is current highest threat during mark of chaos cast
+				DBM.RangeCheck:Show(35, nil)
+			else--Not boss target during cast, not debuffed, use filtered range frame to show only players affected by mark of chaos.
+				DBM.RangeCheck:Show(35, debuffFilterMark)
+			end
+		else--We got this far, no mark of chaos, no branded, no nothing, finally hide the range frame!
+			DBM.RangeCheck:Hide()
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
+	self.vb.markActive = false
+	self.vb.playerHasMark = false
+	self.vb.playerHasBranded = false
+	self.vb.brandedActive = 0
 	timerArcaneWrathCD:Start(6-delay)
 	countdownArcaneWrath:Start(6-delay)
 	timerDestructiveResonanceCD:Start(15-delay)
@@ -225,13 +273,13 @@ function mod:SPELL_CAST_START(args)
 				specWarnMarkOfChaosReplicationOther:Show(targetName)
 			end
 		end
-		if self.Options.RangeFrame then
-			if self:IsTanking("player", "boss1") then--You have threat, show everyone (debuff check not work, when using SPELL_CAST_START for early warning)
-				DBM.RangeCheck:Show(35, nil)
-			else--You do not have debuff, only show players who do
-				DBM.RangeCheck:Show(35, debuffFilter)
-			end
+		if self:IsTanking("player", "boss1") then
+			self.vb.playerHasMark = true
+		else
+			self.vb.playerHasMark = false
 		end
+		updateRangeFrame(true)
+		self:Schedule(4, updateRangeFrame)--Cast + 1, since sometimes tank resists, so we'll want to hide frame after 4 seconds if no debuff has gone out in 2.
 	end
 end
 
@@ -258,6 +306,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
+		self.vb.brandedActive = self.vb.brandedActive + 1
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local currentStack = select(15, UnitDebuff(uId, GetSpellInfo(spellId)))
 		if not currentStack then
@@ -265,8 +314,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			return
 		end
 		if (spellId == 164005 and currentStack > 6) or currentStack > 3 then--yells and general announces for target 1 stack before move.
-			if not self:IsLFR() and args:IsPlayer() then
-				yellBranded:Yell(currentStack, playerName)
+			if args:IsPlayer() then
+				self.vb.playerHasBranded = true
+				if not self:IsLFR() then
+					yellBranded:Yell(currentStack, playerName)
+				end
 			end
 			if spellId == 156225 then
 				warnBranded:Show(args.destName)
@@ -296,35 +348,43 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.SetIconOnBrandedDebuff then
 				self:SetSortedIcon(0.5, args.destName, 1)
 			end
+			updateRangeFrame()--Update it here cause we don't need it before stacks get to relevant levels.
 		end
 	elseif spellId == 158553 then
 		local amount = args.amount or 1
 		warnCrushArmor:Show(args.destName, amount)
 	elseif args:IsSpellID(158605, 164176, 164178, 164191) then
 		--Update frame again in case he swaped targets during cast (happens)
-		if UnitDebuff("player", GetSpellInfo(spellId)) then
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(35, nil)
-			end
-		else--You do not have debuff, only show players who do
-			if spellId == 164178 and self:CheckNearby(35, targetName) then
-				specWarnMarkOfChaosFortificationNear:Show(args.destName)--Warn a second time, in case first time was not right target (rare but happens with bad timed swaps). Even if first warn did work, if you are still too close, warn again
-			end
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(35, debuffFilter)
-			end
+		self.vb.markActive = true
+		if args:IsPlayer() then
+			self.vb.playerHasMark = true
+		else
+			self.vb.playerHasMark = false
 		end
+		self:Unschedule(updateRangeFrame)
+		updateRangeFrame()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if args:IsSpellID(158605, 164176, 164178, 164191) and self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
+	if args:IsSpellID(158605, 164176, 164178, 164191) then
+		self.vb.markActive = false
+		if args:IsPlayer() then
+			self.vb.playerHasMark = false
+		end
+		updateRangeFrame()
 	elseif spellId == 157763 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	elseif args:IsSpellID(156225, 164004, 164005, 164006) and self.Options.SetIconOnBrandedDebuff then
-		self:SetIcon(args.destName, 0)--TODO, find out number of targets and add
+	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
+		self.vb.brandedActive = self.vb.brandedActive - 1
+		if args:IsPlayer() then
+			self.vb.playerHasBranded = false
+		end
+		if self.Options.SetIconOnBrandedDebuff then
+			self:SetIcon(args.destName, 0)
+		end
+		updateRangeFrame()
 	end
 end
 
