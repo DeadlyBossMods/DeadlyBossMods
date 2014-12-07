@@ -23,13 +23,13 @@ mod:RegisterEventsInCombat(
 local warnBranded								= mod:NewTargetAnnounce(156225, 4)
 local warnDestructiveResonance					= mod:NewSpellAnnounce(156467, 3)--Find out if target scanning works
 local warnMarkOfChaos							= mod:NewTargetAnnounce(158605, 4)
-local warnForceNova								= mod:NewSpellAnnounce(157349, 3)
+local warnForceNova								= mod:NewCountAnnounce(157349, 3)
 local warnSummonArcaneAberration				= mod:NewSpellAnnounce(156471, 3)
 --Phase 2: Rune of Displacement
 local warnBrandedDisplacement					= mod:NewTargetAnnounce(164004, 4)
 local warnDestructiveResonanceDisplacement		= mod:NewSpellAnnounce(164075, 4)--Find out if target scanning works
 local warnMarkOfChaosDisplacement				= mod:NewTargetAnnounce(164176, 4)
-local warnForceNovaDisplacement					= mod:NewSpellAnnounce(164232, 3)
+local warnForceNovaDisplacement					= mod:NewCountAnnounce(164232, 3)
 local warnSummonDisplacingArcaneAberration		= mod:NewSpellAnnounce(164299, 3)
 --Intermission: Dormant Runestones
 local warnFixate								= mod:NewTargetAnnounce("OptionVersion2", 157763, 3, nil, not mod:IsTank())
@@ -37,7 +37,7 @@ local warnFixate								= mod:NewTargetAnnounce("OptionVersion2", 157763, 3, nil
 local warnBrandedFortification					= mod:NewTargetAnnounce(164005, 4)
 local warnDestructiveResonanceFortification		= mod:NewSpellAnnounce(164076, 4)--Find out if target scanning works
 local warnMarkOfChaosFortification				= mod:NewTargetAnnounce(164178, 4)
-local warnForceNovaFortification				= mod:NewSpellAnnounce(164235, 3)
+local warnForceNovaFortification				= mod:NewCountAnnounce(164235, 3)
 local warnSummonFortifiedArcaneAberration		= mod:NewSpellAnnounce(164301, 3)
 --Intermission: Lineage of Power
 local warnKickToTheFace							= mod:NewTargetAnnounce("OptionVersion2", 158563, 3, nil, mod:IsTank())
@@ -46,7 +46,7 @@ local warnCrushArmor							= mod:NewStackAnnounce(158553, 2, nil, mod:IsTank())
 local warnBrandedReplication					= mod:NewTargetAnnounce(164006, 4)
 local warnDestructiveResonanceReplication		= mod:NewSpellAnnounce(164077, 4)--Find out if target scanning works
 local warnMarkOfChaosReplication				= mod:NewTargetAnnounce(164191, 4)
-local warnForceNovaReplication					= mod:NewSpellAnnounce(164240, 3)
+local warnForceNovaReplication					= mod:NewCountAnnounce(164240, 3)
 local warnSummonReplicatingArcaneAberration		= mod:NewSpellAnnounce(164303, 3)
 
 --Phase 1: Might of the Crown
@@ -86,12 +86,13 @@ local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238, nil, not mod:IsTank()
 local timerDestructiveResonanceCD				= mod:NewCDTimer(15, 156467, nil, not mod:IsMelee())--16-30sec variation noted. I don't like it
 local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605, nil, mod:IsTank())
 local timerMarkOfChaosCD						= mod:NewCDTimer(50, 158605, nil, mod:IsTank())
-local timerForceNovaCD							= mod:NewCDTimer(45, 157349)--45-52
+local timerForceNovaCD							= mod:NewCDCountTimer(45, 157349)--45-52
 local timerSummonArcaneAberrationCD				= mod:NewCDTimer(45, 156471, nil, not mod:IsHealer())--45-52 Variation Noted
 local timerTransition							= mod:NewCastTimer(76.5, 157278)
 
 local countdownArcaneWrath						= mod:NewCountdown(50, 156238, not mod:IsTank())--Probably will add for whatever proves most dangerous on mythic
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank())
+local countdownForceNova						= mod:NewCountdown("AltTwo45", 157349)
 
 mod:AddRangeFrameOption("35/13/5")
 mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
@@ -100,6 +101,7 @@ mod.vb.markActive = false
 mod.vb.playerHasMark = false
 mod.vb.playerHasBranded = false
 mod.vb.brandedActive = 0
+mod.vb.forceCount = 0
 
 local GetSpellInfo, UnitDebuff = GetSpellInfo, UnitDebuff
 local chaosDebuff1 = GetSpellInfo(158605)
@@ -161,6 +163,7 @@ function mod:OnCombatStart(delay)
 	self.vb.playerHasMark = false
 	self.vb.playerHasBranded = false
 	self.vb.brandedActive = 0
+	self.vb.forceCount = 0
 	timerArcaneWrathCD:Start(6-delay)
 	countdownArcaneWrath:Start(6-delay)
 	timerDestructiveResonanceCD:Start(15-delay)
@@ -168,6 +171,7 @@ function mod:OnCombatStart(delay)
 	timerMarkOfChaosCD:Start(33.5-delay)
 	countdownMarkofChaos:Start(33.5-delay)
 	timerForceNovaCD:Start(-delay)
+	countdownForceNova:Start(-delay)
 end
 
 function mod:OnCombatEnd()
@@ -200,17 +204,25 @@ function mod:SPELL_CAST_START(args)
 		timerDestructiveResonanceCD:Start()
 	-----
 	elseif spellId == 157349 then
-		warnForceNova:Show()
-		timerForceNovaCD:Start()
+		self.vb.forceCount = self.vb.forceCount + 1
+		warnForceNova:Show(self.vb.forceCount)
+		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
+		countdownForceNova:Start()
 	elseif spellId == 164232 then
-		warnForceNovaDisplacement:Show()
-		timerForceNovaCD:Start()
+		self.vb.forceCount = self.vb.forceCount + 1
+		warnForceNovaDisplacement:Show(self.vb.forceCount)
+		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
+		countdownForceNova:Start()
 	elseif spellId == 164235 then
-		warnForceNovaFortification:Show()
-		timerForceNovaCD:Start()
+		self.vb.forceCount = self.vb.forceCount + 1
+		warnForceNovaFortification:Show(self.vb.forceCount)
+		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
+		countdownForceNova:Start()
 	elseif spellId == 164240 then
-		warnForceNovaReplication:Show()
-		timerForceNovaCD:Start()
+		self.vb.forceCount = self.vb.forceCount + 1
+		warnForceNovaReplication:Show(self.vb.forceCount)
+		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
+		countdownForceNova:Start()
 	-----
 	elseif spellId == 156471 then
 		warnSummonArcaneAberration:Show()
@@ -390,8 +402,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerMarkOfChaosCD:Cancel()
 		countdownMarkofChaos:Cancel()
 		timerForceNovaCD:Cancel()
+		countdownForceNova:Cancel()
 		timerTransition:Start()
 	elseif spellId == 158012 or spellId == 157964 then--Power of Foritification/Replication
+		self.vb.forceCount = 0
 		specWarnTransitionEnd:Show()
 		timerArcaneWrathCD:Start(8.5)
 		countdownArcaneWrath:Start(8.5)
@@ -399,6 +413,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerSummonArcaneAberrationCD:Start(28)
 		timerMarkOfChaosCD:Start(36.5)
 		countdownMarkofChaos:Start(36.5)
-		timerForceNovaCD:Start(48.5)	
+		timerForceNovaCD:Start(48.5)
+		countdownForceNova:Start(48.5)
 	end
 end
