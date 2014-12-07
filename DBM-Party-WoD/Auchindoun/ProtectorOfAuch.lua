@@ -26,7 +26,7 @@ local specWarnSanctifiedGround	= mod:NewSpecialWarningMove(161457)
 
 local timerHolyShieldCD			= mod:NewNextTimer(47, 153002)
 local timerConsecratedLightCD	= mod:NewNextTimer(7, 153006)
-local timerConsecratedLight		= mod:NewBuffActiveTimer(6.5, 153006)
+local timerConsecratedLight		= mod:NewBuffActiveTimer(8, 153006)
 local timerFateCD				= mod:NewCDTimer(37, 157465)--Need more logs to confirm
 
 local countdownHolyShield		= mod:NewCountdown(47, 153002)

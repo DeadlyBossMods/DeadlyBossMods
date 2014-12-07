@@ -30,11 +30,11 @@ local specWarnCurtainOfFlame		= mod:NewSpecialWarningMoveAway(153396)
 local specWarnCurtainOfFlameNear	= mod:NewSpecialWarningClose(153396)
 local yellWarnCurtainOfFlame		= mod:NewYell(153396)
 local specWarnFelLash				= mod:NewSpecialWarningYou("OptionVersion2", 153234)
-local specWarnFelStomp				= mod:NewSpecialWarningMove(157173)
+local specWarnFelStomp				= mod:NewSpecialWarningMove("OptionVersion2", 157173, mod:IsMelee())
 local specWarnClawsOfArgus			= mod:NewSpecialWarningSpell(153764)
 local specWarnClawsOfArgusEnd		= mod:NewSpecialWarningEnd(153764)
 local specWarnSummonFelguard		= mod:NewSpecialWarningSwitch(164081, mod:IsTank())
-local specWarnFelblast				= mod:NewSpecialWarningInterrupt(154221, not mod:IsHealer())--Spammy but still important. May improve by checking if interrupt spells on CD, if are, don't show warning, else, spam warning because interrupt SHOULD be on CD
+local specWarnFelblast				= mod:NewSpecialWarningInterrupt(154221, not mod:IsHealer())--Very spammy
 local specWarnFelPool				= mod:NewSpecialWarningMove(153616)
 local specWarnFelSpark				= mod:NewSpecialWarningMove(153726)
 

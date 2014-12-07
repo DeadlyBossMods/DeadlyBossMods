@@ -21,7 +21,7 @@ local warnInhale				= mod:NewSpellAnnounce(154868, 4)
 local warnCorpseBreath			= mod:NewSpellAnnounce(165578, 2)
 
 local specWarnBodySlam			= mod:NewSpecialWarningSpell(154175, nil, nil, nil, 2)
-local specWarnInhale			= mod:NewSpecialWarningRun(153804)
+local specWarnInhale			= mod:NewSpecialWarningSpell(153804)
 
 local timerBodySlamCD			= mod:NewCDSourceTimer(30, 154175)--32-35 Variation
 local timerCorpseBreathCD		= mod:NewCDTimer(28, 165578, nil, false)--32-37 Variation, also not that important so off by default since there will already be up to 3 smash timers

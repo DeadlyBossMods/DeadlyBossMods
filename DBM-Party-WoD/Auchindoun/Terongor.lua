@@ -13,7 +13,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 156921 157168",
 	"SPELL_CAST_SUCCESS 156854 156974",
 	"SPELL_CAST_START 157039 157001 156975 156857 156964",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"QUEST_COMPLETE"
 )
 
 --TODO, get timers for other forms besides demonic, form chosen is RNG based so may take a few logs.
@@ -235,5 +236,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			--timerChaosBoltCD:Start(15)
 			--timerImmolateCD:Start(22)
 		end
+	end
+end
+
+function mod:QUEST_COMPLETE()
+	local questID = GetQuestID()
+	if questID == 35963 then
+		DBM:EndCombat(self)
 	end
 end

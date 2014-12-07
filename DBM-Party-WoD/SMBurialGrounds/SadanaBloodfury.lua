@@ -9,7 +9,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 153240 153153 164974",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_AURA_APPLIED 153094"
 )
 
 local warnDaggerFall			= mod:NewSpellAnnounce(153240, 3)
@@ -18,6 +18,7 @@ local warnDarkCommunion			= mod:NewSpellAnnounce(153153, 4)
 local warnDarkEclipse			= mod:NewSpellAnnounce(164974, 4)
 
 local specWarnDarkCommunion		= mod:NewSpecialWarningSwitch(153153, not mod:IsHealer())--On Test, even tank and healer needed to dps to kill it. I'm going to assume it's an overtuning and at least excempt healer.
+local specWarnWhispers			= mod:NewSpecialWarningSpell(153094, nil, nil, nil, 2)
 local specWarnDarkEclipse		= mod:NewSpecialWarningSpell(164974, nil, nil, nil, 3)
 
 local timerDarkCommunionCD		= mod:NewCDTimer(45.5, 153153)
@@ -46,8 +47,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
 	if spellId == 153094 then
 		warnWhispers:Show()
+		specWarnWhispers:Show()
 	end
 end
