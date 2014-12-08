@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 
 local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
 local warnFelLash					= mod:NewTargetAnnounce("OptionVersion2", 153234, 3, nil, mod:IsHealer() or mod:IsTank())
-local warnFelStomp					= mod:NewCastAnnounce(157173, 3, nil, mod:IsTank())
+local warnFelStomp					= mod:NewCastAnnounce(157173, 3, nil, nil, mod:IsTank())
 local warnClawsOfArgus				= mod:NewSpellAnnounce(153764, 3)
 local warnSummonFelguard			= mod:NewSpellAnnounce(164081, 3, 56285, not mod:IsHealer())
 local warnFelblast					= mod:NewCastAnnounce(154221, 3, nil, nil, not mod:IsHealer())--Spammy but still important. May improve by checking if interrupt spells on CD, if are, don't show warning, else, spam warning because interrupt SHOULD be on CD
