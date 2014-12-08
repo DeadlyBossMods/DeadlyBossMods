@@ -53,7 +53,7 @@ local countdownSweeper				= mod:NewCountdown(39, 177776)
 local countdownTiger				= mod:NewCountdown("Alt110", "ej9396", not mod:IsTank())--Tigers never bother tanks so not tanks probelm
 local countdownImpale				= mod:NewCountdown("Alt35", 159113, mod:IsTank())--Dead on unless delayed by a fixate
 
-local voiceBerserkerRush			= mod:NewVoice(158986)
+--local voiceBerserkerRush			= mod:NewVoice(158986)
 
 mod:AddRangeFrameOption(4, 159386)
 
@@ -111,7 +111,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBerserkerRush:Show(firePillar)
 			yellBerserkerRush:Yell()
-			voiceBerserkerRush:Play("now")
+			--voiceBerserkerRush:Play("now")
 		else
 			specWarnBerserkerRushOther:Show(args.destName)
 		end

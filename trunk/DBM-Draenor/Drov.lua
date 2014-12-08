@@ -30,7 +30,7 @@ local specWarnCallofEarth		= mod:NewSpecialWarningSpell(175827)
 --local timerColossalSlamCD		= mod:NewCDTimer(32, 175791)
 --local timerCallofEarthCD		= mod:NewCDTimer(32, 175827)
 
---mod:AddReadyCheckOption(32099, false)
+--mod:AddReadyCheckOption(37460, false)
 
 function mod:SmashTarget(targetname, uId)
 	if not targetname then return end
