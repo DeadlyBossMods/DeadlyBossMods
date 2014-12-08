@@ -62,7 +62,8 @@ local specWarnMarkOfChaosDisplacementOther		= mod:NewSpecialWarningTaunt(164176)
 local specWarnBrandedDisplacement				= mod:NewSpecialWarningStack(164004, nil, 5)
 local specWarnBrandedDisplacementNear			= mod:NewSpecialWarningClose(164004)--Displacement version of branded makes player unable to move from raid, raid moves from player
 --Intermission: Dormant Runestones
-local specWarnFixate							= mod:NewSpecialWarningYou(157763)--Change to run warning?
+local specWarnFixate							= mod:NewSpecialWarningMoveAway(157763)
+local yellFixate								= mod:NewYell(157763)
 local specWarnTransitionEnd						= mod:NewSpecialWarningEnd(157278)
 --Phase 3: Rune of Fortification
 local specWarnDestructiveResonanceFortification	= mod:NewSpecialWarningSpell(164076, nil, nil, nil, 2)--If target scanning works make this personal.
@@ -99,10 +100,13 @@ mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
 
 mod.vb.markActive = false
 mod.vb.playerHasMark = false
-mod.vb.playerHasBranded = false
-mod.vb.brandedActive = 0
-mod.vb.forceCount = 0
-
+mod.vb.jumpDistance = 13
+local jumpDistance1 = {
+	[1] = 200, [2] = 100, [3] = 50, [4] = 25, [5] = 12.5, [6] = 7,--Or 5
+}
+local jumpDistance2 = {
+	[1] = 200, [2] = 150, [3] = 113, [4] = 85, [5] = 63, [6] = 48, [7] =36, [8] = 27, [9] = 21, [10] = 16, [11] = 12, [12] = 9, [13] = 7,--or 5
+}
 local GetSpellInfo, UnitDebuff = GetSpellInfo, UnitDebuff
 local chaosDebuff1 = GetSpellInfo(158605)
 local chaosDebuff2 = GetSpellInfo(164176)
@@ -136,13 +140,14 @@ end
 local function updateRangeFrame(markPreCast)
 	if not mod.Options.RangeFrame then return end
 	if not mod:IsTank() and mod.vb.brandedActive > 0 then--Active branded out there, not a tank. Branded is always prioritized over mark for non tanks since 90% of time tanks handle this on their own, while rest of raid must ALWAYS handle branded
+		local distance = mod.vb.jumpDistance or 5
 		if mod.vb.playerHasBranded then--Player has Branded debuff
-			DBM.RangeCheck:Show(13, nil)--Show everyone
+			DBM.RangeCheck:Show(distance, nil)--Show everyone
 		else--No branded debuff on player, so show a filtered range finder
 			if mod.vb.markActive then--Even though we set range to 13 instead of 35, show marked tank dots on radar too, not just branded dots.
-				DBM.RangeCheck:Show(13, debuffFilterCombined)--If it turns out needed, i'll force a combined filter of 35 so safe distances for both active debuffs are used.
+				DBM.RangeCheck:Show(distance, debuffFilterCombined)--If it turns out needed, i'll force a combined filter of 35 so safe distances for both active debuffs are used.
 			else--no branded tank, So show ONLY branded dots
-				DBM.RangeCheck:Show(13, debuffFilterBranded)
+				DBM.RangeCheck:Show(distance, debuffFilterBranded)
 			end
 		end
 	else--no branded, or player is a tank
@@ -164,6 +169,7 @@ function mod:OnCombatStart(delay)
 	self.vb.playerHasBranded = false
 	self.vb.brandedActive = 0
 	self.vb.forceCount = 0
+	self.vb.jumpDistance = 13
 	timerArcaneWrathCD:Start(6-delay)
 	countdownArcaneWrath:Start(6-delay)
 	timerDestructiveResonanceCD:Start(15-delay)
@@ -304,6 +310,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFixate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show()
+			if not self:IsLFR() then
+				yellFixate:Yell()
+			end
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(5)
 			end
@@ -317,6 +326,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			return
 		end
 		if (spellId == 164005 and currentStack > 5) or currentStack > 2 then--yells and general announces for target 2 stack before move.
+			if spelId == 164005 then
+				self.vb.jumpDistance = jumpDistance2[currentStack]
+			else
+				self.vb.jumpDistance = jumpDistance1[currentStack]
+			end
 			if args:IsPlayer() then
 				self.vb.playerHasBranded = true
 				if not self:IsLFR() then
@@ -333,7 +347,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				if currentStack > 4  then--Special warning only for person that needs to get out
 					if args:IsPlayer() then
 						specWarnBrandedDisplacement:Show(currentStack)
-					elseif self:CheckNearby(13, args.destName) then
+					elseif self:CheckNearby(self.vb.jumpDistance, args.destName) then
 						specWarnBrandedDisplacementNear:Show(args.destName)
 					end
 				end
