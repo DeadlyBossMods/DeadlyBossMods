@@ -51,7 +51,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 160681 and args:IsDestTypePlayer() then
 		timerSupressiveFire:Start(args.destName)
-	elseif spellId == 166570 and destGUID == UnitGUID("player") and self:AntiSpam() then
+	elseif spellId == 166570 and args.destGUID == UnitGUID("player") and self:AntiSpam() then
 		specWarnSlagBlast:Show()
 	end
 end
