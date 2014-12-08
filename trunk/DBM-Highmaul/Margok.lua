@@ -326,7 +326,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			return
 		end
 		if (spellId == 164005 and currentStack > 5) or currentStack > 2 then--yells and general announces for target 2 stack before move.
-			if spelId == 164005 then
+			if spellId == 164005 then
 				self.vb.jumpDistance = jumpDistance2[currentStack]
 			else
 				self.vb.jumpDistance = jumpDistance1[currentStack]
