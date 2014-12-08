@@ -20,13 +20,13 @@ mod:RegisterEventsInCombat(
 
 --TODO, combine options to reduce GUI mod options in same manor that was done with paragons.
 --Phase 1: Might of the Crown
-local warnBranded								= mod:NewTargetAnnounce(156225, 4)
+local warnBranded								= mod:NewStackAnnounce(156225, 4)
 local warnDestructiveResonance					= mod:NewSpellAnnounce(156467, 3)--Find out if target scanning works
 local warnMarkOfChaos							= mod:NewTargetAnnounce(158605, 4)
 local warnForceNova								= mod:NewCountAnnounce(157349, 3)
 local warnSummonArcaneAberration				= mod:NewSpellAnnounce(156471, 3)
 --Phase 2: Rune of Displacement
-local warnBrandedDisplacement					= mod:NewTargetAnnounce(164004, 4)
+local warnBrandedDisplacement					= mod:NewStackAnnounce(164004, 4)
 local warnDestructiveResonanceDisplacement		= mod:NewSpellAnnounce(164075, 4)--Find out if target scanning works
 local warnMarkOfChaosDisplacement				= mod:NewTargetAnnounce(164176, 4)
 local warnForceNovaDisplacement					= mod:NewCountAnnounce(164232, 3)
@@ -34,7 +34,7 @@ local warnSummonDisplacingArcaneAberration		= mod:NewSpellAnnounce(164299, 3)
 --Intermission: Dormant Runestones
 local warnFixate								= mod:NewTargetAnnounce("OptionVersion2", 157763, 3, nil, not mod:IsTank())
 --Phase 3: Rune of Fortification
-local warnBrandedFortification					= mod:NewTargetAnnounce(164005, 4)
+local warnBrandedFortification					= mod:NewStackAnnounce(164005, 4)
 local warnDestructiveResonanceFortification		= mod:NewSpellAnnounce(164076, 4)--Find out if target scanning works
 local warnMarkOfChaosFortification				= mod:NewTargetAnnounce(164178, 4)
 local warnForceNovaFortification				= mod:NewCountAnnounce(164235, 3)
@@ -43,7 +43,7 @@ local warnSummonFortifiedArcaneAberration		= mod:NewSpellAnnounce(164301, 3)
 local warnKickToTheFace							= mod:NewTargetAnnounce("OptionVersion2", 158563, 3, nil, mod:IsTank())
 local warnCrushArmor							= mod:NewStackAnnounce(158553, 2, nil, mod:IsTank())
 --Phase 4: Rune of Replication
-local warnBrandedReplication					= mod:NewTargetAnnounce(164006, 4)
+local warnBrandedReplication					= mod:NewStackAnnounce(164006, 4)
 local warnDestructiveResonanceReplication		= mod:NewSpellAnnounce(164077, 4)--Find out if target scanning works
 local warnMarkOfChaosReplication				= mod:NewTargetAnnounce(164191, 4)
 local warnForceNovaReplication					= mod:NewCountAnnounce(164240, 3)
@@ -170,7 +170,7 @@ function mod:OnCombatStart(delay)
 	timerSummonArcaneAberrationCD:Start(25-delay)
 	timerMarkOfChaosCD:Start(33.5-delay)
 	countdownMarkofChaos:Start(33.5-delay)
-	timerForceNovaCD:Start(-delay)
+	timerForceNovaCD:Start(-delay, 1)
 	countdownForceNova:Start(-delay)
 end
 
@@ -311,14 +311,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
 		self.vb.brandedActive = self.vb.brandedActive + 1
 		local uId = DBM:GetRaidUnitId(args.destName)
-		local _, _, _, stack1, _, _, _, _, _, _, _, _, _, _, stack2 = UnitDebuff(uId, GetSpellInfo(spellId))
-		DBM:Debug(stack1, stack2)
-		if not stack1 and not stack2 then
-			print("Branded/Arcane Wrath stack count drycode failed with arg4 and arg15, All warnings/Yells/icons will be disabled")
+		local _, _, _, currentStack = UnitDebuff(uId, GetSpellInfo(spellId))
+		if not currentStack then
+			print("currentStack is nil, report to dbm authors. Branded warning disabled.")--Should never happen but added just in case.
 			return
 		end
-		local currentStack = stack2 or stack1
-		if (spellId == 164005 and currentStack > 6) or currentStack > 3 then--yells and general announces for target 1 stack before move.
+		if (spellId == 164005 and currentStack > 5) or currentStack > 2 then--yells and general announces for target 2 stack before move.
 			if args:IsPlayer() then
 				self.vb.playerHasBranded = true
 				if not self:IsLFR() then
@@ -326,12 +324,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 			if spellId == 156225 then
-				warnBranded:Show(args.destName)
+				warnBranded:Show(args.destName, currentStack)
 				if args:IsPlayer() and currentStack > 4 then--Special warning only for person that needs to get out
 					specWarnBranded:Show(currentStack)
 				end
 			elseif spellId == 164004 then
-				warnBrandedDisplacement:Show(args.destName)
+				warnBrandedDisplacement:Show(args.destName, currentStack)
 				if currentStack > 4  then--Special warning only for person that needs to get out
 					if args:IsPlayer() then
 						specWarnBrandedDisplacement:Show(currentStack)
@@ -340,18 +338,22 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 				end
 			elseif spellId == 164005 then
-				warnBrandedFortification:Show(args.destName)
+				warnBrandedFortification:Show(args.destName, currentStack)
 				if args:IsPlayer() and currentStack > 7  then--Special warning only for person that needs to get out
 					specWarnBrandedFortification:Show(currentStack)
 				end
 			elseif spellId == 164006 then
-				warnBrandedReplication:CombinedShow(0.5, args.destName)
+				warnBrandedReplication:Show(args.destName, currentStack)--Changed from combined show cause it can only be max targets, and important to have stack counts.
 				if args:IsPlayer() and currentStack > 4 then--Special warning only for person that needs to get out
 					specWarnBrandedReplication:Show(currentStack)
 				end
 			end
 			if self.Options.SetIconOnBrandedDebuff then
-				self:SetSortedIcon(0.5, args.destName, 1)
+				if spellId == 164005 then
+					self:SetSortedIcon(0.2, args.destName, 1, 2)
+				else
+					self:SetIcon(args.destName, 1)
+				end
 			end
 			updateRangeFrame()--Update it here cause we don't need it before stacks get to relevant levels.
 		end
@@ -413,7 +415,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerSummonArcaneAberrationCD:Start(28)
 		timerMarkOfChaosCD:Start(36.5)
 		countdownMarkofChaos:Start(36.5)
-		timerForceNovaCD:Start(48.5)
+		timerForceNovaCD:Start(48.5, 1)
 		countdownForceNova:Start(48.5)
 	end
 end
