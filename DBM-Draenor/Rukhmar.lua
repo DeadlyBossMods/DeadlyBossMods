@@ -34,7 +34,7 @@ local timerSolarRadiationCD		= mod:NewNextTimer(15, 167710)--15 seconds accordin
 --local timerSharpBeakCD		= mod:NewCDTimer(15, 167614)
 --local timerSolarBreathCD		= mod:NewCDTimer(15, 167687)
 
---mod:AddReadyCheckOption(33117, false)
+--mod:AddReadyCheckOption(37474, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
 --	if yellTriggered then
