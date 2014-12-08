@@ -8,7 +8,6 @@ mod:SetZone()
 
 mod:RegisterCombat("combat_yell", L.Pull)
 
-
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 175791 175953",
 	"SPELL_AURA_APPLIED 175827"
