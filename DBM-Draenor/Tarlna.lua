@@ -34,7 +34,7 @@ local specWarnGrowUntamedMandragora	= mod:NewSpecialWarningSwitch(176013, not mo
 local timerGenesisCD				= mod:NewCDTimer(45, 169613)--45-60 variation
 local timerGrowUntamedMandragoraCD	= mod:NewCDTimer(30, 176013)
 
---mod:AddReadyCheckOption(32518, false)
+--mod:AddReadyCheckOption(37462, false)
 mod:AddRangeFrameOption(8, 175979)
 
 local UnitDebuff = UnitDebuff
@@ -52,7 +52,10 @@ end
 
 function mod:OnCombatStart(delay, yellTriggered)
 --	if yellTriggered then
-
+		--Vines--7
+		--Colossal Bow--14
+		--timerGrowUntamedMandragoraCD:Start(18-delay)
+		--timerGenesisCD:Start(20-delay)
 --	end
 end
 
