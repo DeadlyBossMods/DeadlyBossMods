@@ -13,10 +13,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 163594 163241",
 	"SPELL_AURA_APPLIED 163241 164125",
 	"SPELL_AURA_APPLIED_DOSE 163241",
-	"SPELL_DAMAGE",
-	"SPELL_PERIODIC_DAMAGE",
-	"RANGE_DAMAGE",
-	"SWING_DAMAGE",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -80,9 +76,18 @@ function mod:OnCombatStart(delay)
 	timerInfestingSporesCD:Start(45-delay)
 	countdownInfestingSpores:Start(45-delay)
 	timerRejuvMushroomCD:Start(80-delay)--Todo, verify 80 in all modes and not still 75 in mythic
+	if self.Options.RangeFrame then
+		self:RegisterShortTermEvents(
+			"SPELL_DAMAGE",
+			"SPELL_PERIODIC_DAMAGE",
+			"RANGE_DAMAGE",
+			"SWING_DAMAGE"
+		)
+	end
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
