@@ -224,7 +224,7 @@ DBM_OPTION_SPACER = newproxy(false)
 --------------
 --  Locals  --
 --------------
-local enabled = true
+local dbmIsEnabled = true
 local blockEnable = false
 local cachedGetTime = GetTime()
 local lastCombatStarted = cachedGetTime
@@ -497,7 +497,7 @@ do
 			event = event .. "_UNFILTERED"
 			isUnitEvent = false -- not actually a real unit id for this function...
 		end
-		if not registeredEvents[event] or not enabled then return end
+		if not registeredEvents[event] or not dbmIsEnabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
 			local zones = v.zones
 			local handler = v[event]
@@ -2298,7 +2298,7 @@ do
 
 	function loadOptions()
 		DBM.Options = DBM_SavedOptions
-		enabled = DBM.Options.Enabled
+		dbmIsEnabled = DBM.Options.Enabled or true
 		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
 		-- load special warning options
 		migrateSavedOptions()
@@ -5045,17 +5045,16 @@ end
 --------------------------
 function DBM:Disable(forced)
 	unschedule()
-	enabled = false
-	if not forced then
-		self.Options.Enabled = false
-	else
+	dbmIsEnabled = false
+	self.Options.Enabled = false
+	if forced then
 		blockEnable = true
 	end
 end
 
 function DBM:Enable()
 	if not blockEnable then
-		enabled = true
+		dbmIsEnabled = true
 		self.Options.Enabled = true
 	end
 end
