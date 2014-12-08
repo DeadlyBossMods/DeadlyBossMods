@@ -64,7 +64,7 @@ function mod:OnCombatStart(delay)
 	elseif self:IsHeroic() then
 		berserkTimer:Start(-delay)
 	else
-		--Find LFR berserk for LFR & Normal
+		--Find berserk for LFR & Normal
 	end
 end
 
