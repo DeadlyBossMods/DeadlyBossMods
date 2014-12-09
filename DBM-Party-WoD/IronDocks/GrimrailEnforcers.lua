@@ -16,6 +16,16 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
+local Dugru = EJ_GetSectionInfo(10449)
+local Makogg = EJ_GetSectionInfo(10453)
+local Nox = EJ_GetSectionInfo(10456)
+
+mod:SetBossHealthInfo(
+	80816, Dugru,
+	80805, Makogg,
+	80808, Nox
+)
+
 local warnSanguineSphere		= mod:NewTargetAnnounce(163689, 3)
 local warnFlamingSlash			= mod:NewCastAnnounce(163665, 4)
 local warnOgreTraps				= mod:NewCastAnnounce(163390, 3)
