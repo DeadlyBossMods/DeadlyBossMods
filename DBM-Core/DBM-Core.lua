@@ -986,6 +986,8 @@ do
 					tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = GetAddOnMetadata(i, "X-DBM-Voice-ShortName") })
 				end
 			end
+			--Todo, make this more robust and actually check if the ACTIVE voice is removed, because checking for none being instaled still won't account for removing selected voice pack but still having other packs
+			if #self.Voices < 2 and DBM.Options.ChosenVoicePack ~= "None" then DBM.Options.ChosenVoicePack = "None" end
 			table.sort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
 			self:RegisterEvents(
 				"COMBAT_LOG_EVENT_UNFILTERED",
@@ -6535,6 +6537,7 @@ do
 	end
 
 	function soundPrototype2:Cancel(...)
+		if DBM.Options.ChosenVoicePack == "None" then return end
 		return unschedule(self.Play, self.mod, self, ...)
 	end
 end
