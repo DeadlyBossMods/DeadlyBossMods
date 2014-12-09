@@ -14,6 +14,14 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
+local Rocket = EJ_GetSectionInfo(9430)
+local Borka = EJ_GetSectionInfo(9433)
+
+mod:SetBossHealthInfo(
+	77803, Rocket,
+	77816, Borka
+)
+
 local warnVX18B					= mod:NewCountAnnounce(162500, 2)--Cast twice, 3rd cast is X2101, then repeats
 local warnX2101AMissile			= mod:NewSpellAnnounce(162407, 4)
 local warnMadDash				= mod:NewSpellAnnounce(161090, 3)

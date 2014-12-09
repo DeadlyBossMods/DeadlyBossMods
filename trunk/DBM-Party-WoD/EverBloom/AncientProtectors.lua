@@ -17,6 +17,16 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
+local Dulhu = EJ_GetSectionInfo(10417)
+local Gola = EJ_GetSectionInfo(10409)
+local Telu = EJ_GetSectionInfo(10413)
+
+mod:SetBossHealthInfo(
+	83894, Dulhu,
+	83892, Gola,
+	83893, Telu
+)
+
 --Timers are too difficult to do, rapidTides messes up any chance of ever having decent timers.
 local warnRevitalizingWaters		= mod:NewSpellAnnounce(168082, 4)
 local warnBriarskin					= mod:NewTargetAnnounce("OptionVersion2", 168041, 3, nil, mod:IsMagicDispeller())
