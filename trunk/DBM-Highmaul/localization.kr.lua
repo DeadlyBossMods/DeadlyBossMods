@@ -53,7 +53,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1197)
 
 L:SetMiscLocalization({
-	BrandedYell			= "%s 에게 낙인! (%d)"
+	BrandedYell			= "%$2s 에게 낙인! (%$1d)"
 })
 
 -------------
