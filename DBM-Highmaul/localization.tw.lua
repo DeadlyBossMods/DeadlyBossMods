@@ -17,7 +17,7 @@ L= DBM:GetModLocalization(971)
 L= DBM:GetModLocalization(1195)
 
 L:SetMiscLocalization({
-	pillarSpawn	= "RISE, MOUNTAINS!"
+	pillarSpawn	= "起來吧，群山！"
 })
 
 ------------------
@@ -31,8 +31,8 @@ L= DBM:GetModLocalization(1196)
 L= DBM:GetModLocalization(1148)
 
 L:SetOptionLocalization({
-	PhemosSpecial	= "Play countdown sound for Phemos' cooldowns",
-	PolSpecial		= "Play countdown sound for Pol's cooldowns"
+	PhemosSpecial	= "為菲莫斯的技能冷卻播放倒數音效",
+	PolSpecial		= "為博爾的技能冷卻播放倒數音效"
 })
 
 --------------------
@@ -41,16 +41,20 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1153)
 
 L:SetMiscLocalization({
-	supressionTarget1	= "I will crush you!",
-	supressionTarget2	= "Silence!",
-	supressionTarget3	= "Quiet!",
-	supressionTarget4	= "I will tear you in half!"
+	supressionTarget1	= "我要擊垮你們！",
+	supressionTarget2	= "閉嘴！",
+	supressionTarget3	= "安靜！",
+	supressionTarget4	= "我要把你撕成兩半！"
 })
 
 --------------------------
 -- Imperator Mar'gok --
 --------------------------
 L= DBM:GetModLocalization(1197)
+
+L:SetMiscLocalization({
+	BrandedYell			= "%s中了烙印(%d)"
+})
 
 -------------
 --  Trash  --
