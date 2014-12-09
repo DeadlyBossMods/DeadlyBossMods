@@ -42,6 +42,11 @@ local berserkTimer					= mod:NewBerserkTimer(300)
 
 local countdownBoundingCleave		= mod:NewCountdown(60, 156160)
 
+local voiceTenderizer				= mod:NewVoice(156151)
+local voiceGushingWound				= mod:NewVoice(156152, false)--off by default because only one person needs to run out in most strats, not everyone. Only that person should enable option
+local voiceFrenzy					= mod:NewVoice(156598)
+local voiceBoundingCleaveSoon		= mod:NewVoice(156160)
+
 mod.vb.cleaveCount = 0
 mod.vb.boundingCleave = 0
 mod.vb.isFrenzied = false
@@ -54,6 +59,7 @@ function mod:OnCombatStart(delay)
 	timerCleaveCD:Start(10-delay)--Verify this wasn't caused by cleave bug.
 	timerCleaverCD:Start(12-delay)
 	timerBoundingCleaveCD:Start(-delay, 1)
+	voiceBoundingCleaveSoon:Schedule(53.5-delay, "156160")
 	countdownBoundingCleave:Start(-delay)
 	if self:IsMythic() then
 		berserkTimer:Start(240-delay)
@@ -86,14 +92,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 156152 and args:IsPlayer() then
 		local amount = args.amount or 1
 		timerGushingWounds:Start()
-		if amount > 1 then
+		if (self:IsMythic() and amount > 1) or (self:IsHeroic() and amount > 2) or (self:IsNormal() and amount > 3) then--Mythic max stack 4, heroic 5, normal 6. Common Strats re generally out at 2, 3, 4
 			specWarnGushingWounds:Show(amount)
+			voiceGushingWound:Play("runout")
 		end
 	elseif spellId == 156151 then
 		local amount = args.amount or 1
 		warnTenderizer:Show(args.destName, amount)
 		timerTenderizerCD:Start()
 		if amount >= 2 then
+			voiceTenderizer:Play("changemt")
 			if args:IsPlayer() then
 				specWarnTenderizer:Show(amount)
 			else
@@ -105,6 +113,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 156598 then
 		self.vb.isFrenzied = true
 		warnFrenzy:Show(args.destName)
+		voiceFrenzy:Play("frenzy")
+		--Update bounding cleave timer
+		local bossPower = UnitPower("boss1")
+		local bossProgress = bossPower * 3.33--Under frenzy he gains energy twice as fast. So about 3.33 energy per seocnd, 30 seconds to full power.
+		timerBoundingCleave:Update(bossProgress, 30, self.vb.boundingCleave+1)--Will bar update work correctly on a count bar? Looking at code I don't think it will, it doesn't accept/pass on extra args in Update call.
+		countdownBoundingCleave:Cancel()
+		countdownBoundingCleave:Start(30-bossProgress)
+		voiceBoundingCleaveSoon:Cancel()
+		voiceBoundingCleaveSoon:Schedule(30-bossProgress-6.5, "156160")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -129,12 +146,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerCleaveCD:Start(11)
 		end
-		--Update bounding cleave timer
-		local bossPower = UnitPower("boss1")
-		local bossProgress = bossPower * 3.33--Under frenzy he gains energy twice as fast. So about 3.33 energy per seocnd, 30 seconds to full power.
-		timerBoundingCleave:Update(bossProgress, 30, self.vb.boundingCleave+1)--Will bar update work correctly on a count bar? Looking at code I don't think it will, it doesn't accept/pass on extra args in Update call.
-		countdownBoundingCleave:Cancel()
-		countdownBoundingCleave:Start(30-bossProgress)
 	end
 end
 
@@ -158,10 +169,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerBoundingCleave:Start(5)
 			timerBoundingCleaveCD:Start(30, self.vb.boundingCleave+1)
 			countdownBoundingCleave:Start(30)
+			voiceBoundingCleaveSoon:Schedule(23.5, "156160")
 		else
 			timerBoundingCleave:Start(9)
 			timerBoundingCleaveCD:Start(nil, self.vb.boundingCleave+1)
 			countdownBoundingCleave:Start(60)
+			voiceBoundingCleaveSoon:Schedule(53.5, "156160")
 		end
 	end
 end
