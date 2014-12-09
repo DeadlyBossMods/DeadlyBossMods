@@ -17,13 +17,13 @@ mod:RegisterEventsInCombat(
 --Probalby should also add a close warning for Frozen Rain
 local warnParasiticGrowth		= mod:NewCountAnnounce(168885, 3, nil, mod:IsTank())--This is tanks job, it's no one elses business to interrupt this before tank is ready to push next phase. Careless interruptions can cause a wipe to arcane phase because fire/ice were too short.
 local warnFirePhase				= mod:NewSpellAnnounce(166475 ,1)
-local warnFireBloom				= mod:NewSpellAnnounce(166492, 4)
+--local warnFireBloom				= mod:NewSpellAnnounce(166492, 4)--Very useless. only confusing
 local warnFrostPhase			= mod:NewSpellAnnounce(166476 ,1)
 local warnFrozenRain			= mod:NewSpellAnnounce(166726, 3)
 local warnArcanePhase			= mod:NewSpellAnnounce(166477 ,1)
 
 local specWarnParasiticGrowth	= mod:NewSpecialWarningCount(168885, mod:IsTank())
-local specWarnFireBloom			= mod:NewSpecialWarningSpell(166492, nil, nil, nil, 2)
+--local specWarnFireBloom			= mod:NewSpecialWarningSpell(166492, nil, nil, nil, 2)
 local specWarnFrozenRainMove	= mod:NewSpecialWarningMove(166726)
 
 local timerParasiticGrowthCD	= mod:NewCDCountTimer(11.5, 168885)--Every 12 seconds unless comes off cd during fireball/frostbolt, then cast immediately after.
@@ -55,10 +55,10 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if args:IsSpellID(166492, 166572) and self:AntiSpam(12) then--Because the dumb spell has no cast Id, we can only warn when someone gets hit by one of rings.
-		warnFireBloom:Show()
-		specWarnFireBloom:Show()
-	elseif spellId == 166726 and args:IsPlayer() and self:AntiSpam(2) then--Because dumb spell has no cast Id, we can only warn when people get debuff from standing in it.
+	--if args:IsSpellID(166492, 166572) and self:AntiSpam(12) then--Because the dumb spell has no cast Id, we can only warn when someone gets hit by one of rings.
+		--warnFireBloom:Show()
+		--specWarnFireBloom:Show()
+	if spellId == 166726 and args:IsPlayer() and self:AntiSpam(2) then--Because dumb spell has no cast Id, we can only warn when people get debuff from standing in it.
 		specWarnFrozenRainMove:Show()
 	elseif spellId == 166475 then
 		warnFirePhase:Show()
