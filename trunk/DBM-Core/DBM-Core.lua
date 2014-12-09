@@ -6514,7 +6514,7 @@ do
 			local path
 			if globalSound then--Common (global) sounds.
 				--Example "Interface\\AddOns\\DBM-VPHenry\\Global\\dispelnow.ogg"
-				--Usage: voiceBerserkerRush:Play("name", true)
+				--Usage: voiceBerserkerRush:Play("dispelnow", true)
 				path = "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\Global\\"..type..".ogg"
 			else--Instance Specific sounds
 				--Example "Interface\\AddOns\\DBM-VPHenry\\1228\\1128\\158986now.ogg" --This would be Kargath playvoice for berserker rush from highmaul
