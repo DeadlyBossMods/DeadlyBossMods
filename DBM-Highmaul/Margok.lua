@@ -145,7 +145,7 @@ local function updateRangeFrame(markPreCast)
 			DBM.RangeCheck:Show(distance, nil)--Show everyone
 		else--No branded debuff on player, so show a filtered range finder
 			if mod.vb.markActive then--Even though we set range to 13 instead of 35, show marked tank dots on radar too, not just branded dots.
-				DBM.RangeCheck:Show(distance, debuffFilterCombined)--If it turns out needed, i'll force a combined filter of 35 so safe distances for both active debuffs are used.
+				DBM.RangeCheck:Show(35, debuffFilterCombined)--Enough complained about it, so we'll now prioritize 35 yards for mark of chaos if mark is active. This is also what Bigwigs does so gives consistency across mods.
 			else--no branded tank, So show ONLY branded dots
 				DBM.RangeCheck:Show(distance, debuffFilterBranded)
 			end
