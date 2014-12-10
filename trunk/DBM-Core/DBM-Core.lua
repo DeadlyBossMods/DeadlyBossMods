@@ -131,6 +131,7 @@ DBM.DefaultOptions = {
 	WorldBossNearAlert = false,
 	AFKHealthWarning = true,
 	HideObjectivesFrame = true,
+	HideGarrisonUpdates = false,
 	HideTooltips = false,
 	EnableModels = true,
 	RangeFrameFrames = "radar",
@@ -4136,6 +4137,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		end
 		--process global options
 		self:ToggleRaidBossEmoteFrame(1)
+		self:ToggleGarrisonAlertsFrame(1)
 		self:StartLogging(0, nil)
 		if DBM.Options.HideObjectivesFrame and not (mod.type == "SCENARIO") and GetNumTrackedAchievements() == 0 then
 			if ObjectiveTrackerFrame:IsVisible() then
@@ -4525,6 +4527,7 @@ function DBM:EndCombat(mod, wipe)
 		if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
 			self:Schedule(10, DBM.StopLogging, DBM)--small delay to catch kill/died combatlog events
 			self:ToggleRaidBossEmoteFrame(0)
+			self:ToggleGarrisonAlertsFrame(0)
 			self:Unschedule(checkBossHealth)
 			self:Unschedule(loopCRTimer)
 			DBM.BossHealth:Hide()
@@ -5041,6 +5044,20 @@ function DBM:ToggleRaidBossEmoteFrame(toggle, custom)
 		RaidBossEmoteFrame:RegisterEvent("RAID_BOSS_EMOTE")
 		RaidBossEmoteFrame:RegisterEvent("RAID_BOSS_WHISPER")
 		RaidBossEmoteFrame:RegisterEvent("CLEAR_BOSS_EMOTES")
+	end
+end
+
+local GarrisonUnregistered = false
+function DBM:ToggleGarrisonAlertsFrame(toggle, custom)
+	if not DBM.Options.HideGarrisonUpdates and not custom then return end
+	if toggle == 1 and not GarrisonUnregistered then
+		GarrisonUnregistered = true
+		AlertFrame:UnregisterEvent("GARRISON_MISSION_FINISHED")
+		AlertFrame:UnregisterEvent("GARRISON_BUILDING_ACTIVATABLE")
+	elseif toggle == 0 and GarrisonUnregistered then
+		GarrisonUnregistered = false
+		AlertFrame:RegisterEvent("GARRISON_MISSION_FINISHED")
+		AlertFrame:RegisterEvent("GARRISON_BUILDING_ACTIVATABLE")
 	end
 end
 
