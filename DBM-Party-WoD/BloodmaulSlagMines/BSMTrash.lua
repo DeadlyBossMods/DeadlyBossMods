@@ -35,13 +35,22 @@ local specWarnSlaversRage				= mod:NewSpecialWarningDispel(151965, mod:CanRemove
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
+local UnitExists, UnitGUID, UnitAffectingCombat = UnitExists, UnitGUID, UnitAffectingCombat
+local function validWarning(GUID)
+	for uId in DBM:GetGroupMembers() do
+		local target = uId.."target"
+		if UnitExists(target) and UnitGUID(target) == GUID and UnitAffectingCombat(target) then return true end
+	end
+	return false
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled or self:IsDifficulty("normal5") then return end
 	local spellId = args.spellId
 	if spellId == 164597 and not args:IsDestTypePlayer() then
 		warnStoneBulwark:Show(args.destName)
 		specWarnStoneBulwark:Show(args.destName)
-	elseif spellId == 151548 and not args:IsDestTypePlayer() then
+	elseif spellId == 151548 and not args:IsDestTypePlayer() and validWarning(args.sourceGUID) then--Antispam
 		warnBloodRage:Show(args.destName)
 		specWarnBloodRage:Show(args.destName)
 	elseif spellId == 151697 then
@@ -62,7 +71,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 151447 then
 		warnCrush:Show()
 		specWarnCrush:Show()
-	elseif spellId == 151545 then
+	elseif spellId == 151545 and validWarning(args.sourceGUID) then--Antispam
 		warnRoar:Show()
 		specWarnRoar:Show(args.sourceName)
 	elseif spellId == 151558 then
