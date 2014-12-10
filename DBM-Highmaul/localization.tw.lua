@@ -53,7 +53,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1197)
 
 L:SetMiscLocalization({
-	BrandedYell			= "%s中了烙印(%d)"
+	BrandedYell			= "%$2s中了烙印(%$1d)"
 })
 
 -------------
