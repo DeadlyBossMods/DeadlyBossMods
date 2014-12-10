@@ -140,7 +140,7 @@ end
 local function updateRangeFrame(markPreCast)
 	if not mod.Options.RangeFrame then return end
 	if not mod:IsTank() and mod.vb.brandedActive > 0 then--Active branded out there, not a tank. Branded is always prioritized over mark for non tanks since 90% of time tanks handle this on their own, while rest of raid must ALWAYS handle branded
-		local distance = mod.vb.jumpDistance or 5
+		local distance = mod.vb.jumpDistance
 		if mod.vb.playerHasBranded then--Player has Branded debuff
 			DBM.RangeCheck:Show(distance, nil)--Show everyone
 		else--No branded debuff on player, so show a filtered range finder
@@ -327,9 +327,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if (spellId == 164005 and currentStack > 5) or currentStack > 2 then--yells and general announces for target 2 stack before move.
 			if spellId == 164005 then
-				self.vb.jumpDistance = jumpDistance2[currentStack]
+				self.vb.jumpDistance = jumpDistance2[currentStack] or 5
 			else
-				self.vb.jumpDistance = jumpDistance1[currentStack]
+				self.vb.jumpDistance = jumpDistance1[currentStack] or 5
 			end
 			if args:IsPlayer() then
 				self.vb.playerHasBranded = true
