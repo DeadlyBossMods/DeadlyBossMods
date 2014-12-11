@@ -14,6 +14,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 167203",
 	"SPELL_DAMAGE 155051",
 	"SPELL_MISSED 155051",
+	"SPELL_PERIODIC_DAMAGE 155057",
+	"SPELL_PERIODIC_MISSED 155057",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -23,6 +25,7 @@ local warnSwirlingWinds		= mod:NewSpellAnnounce(167203, 2)
 
 local specWarnBurningRage	= mod:NewSpecialWarningDispel(155620, mod:CanRemoveEnrage())
 local specWarnMagmaSpit		= mod:NewSpecialWarningMove(155051)
+local specWarnMagmaPool		= mod:NewSpecialWarningMove(155057)
 local specWarnEngulfingFire	= mod:NewSpecialWarningSpell(154996, nil, nil, nil, 3)
 
 local timerEngulfingFireCD	= mod:NewCDTimer(22, 154996)
@@ -59,6 +62,13 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 155057 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then--Goriona's Void zones
+		specWarnMagmaPool:Show()
+	end
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 --This boss actually does fire IEEU so boss1 works
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
