@@ -94,6 +94,7 @@ local timerTransition							= mod:NewCastTimer(76.5, 157278)
 local countdownArcaneWrath						= mod:NewCountdown(50, 156238, not mod:IsTank())--Probably will add for whatever proves most dangerous on mythic
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank())
 local countdownForceNova						= mod:NewCountdown("AltTwo45", 157349)
+local countdownTransition						= mod:NewCountdown(76.5, 157278)
 
 mod:AddRangeFrameOption("35/13/5")
 mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
@@ -420,6 +421,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerForceNovaCD:Cancel()
 		countdownForceNova:Cancel()
 		timerTransition:Start()
+		countdownTransition:Start()
 	elseif spellId == 158012 or spellId == 157964 then--Power of Foritification/Replication
 		self.vb.forceCount = 0
 		specWarnTransitionEnd:Show()

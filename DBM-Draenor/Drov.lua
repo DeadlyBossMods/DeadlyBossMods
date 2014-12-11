@@ -10,39 +10,21 @@ mod:SetMinSyncRevision(11969)
 mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 175791 175953",
+	"SPELL_CAST_START 175791",
 	"SPELL_AURA_APPLIED 175827"
 )
 
---TODO, timers
---TODO, add warnings for Acid Breath or Crushing Charge?
---TODO, Slam improvements
-local warnGigaSmash				= mod:NewSpellAnnounce(175953, 3)
-local warnColossalSlam			= mod:NewTargetAnnounce(175791, 4)
+--Gigasmash not in combatlog. Has unit event but spammed pretty often anyways, not worth having, especially with target requirement for it to work.
+local warnColossalSlam			= mod:NewSpellAnnounce(175791, 4)--No target scanning. target is either nil or tank.
 local warnCallofEarth			= mod:NewSpellAnnounce(175827, 2)
 
-local specWarnGigaSmash			= mod:NewSpecialWarningSpell(175953, nil, nil, nil, 2)
-local specWarnColossalSlam		= mod:NewSpecialWarningYou(175791)
-local specWarnColossalSlamOther	= mod:NewSpecialWarningTarget(175791)
-local yellColossalSlam			= mod:NewYell(175791)
+local specWarnColossalSlam		= mod:NewSpecialWarningSpell(175791, nil, nil, nil, 2)
 local specWarnCallofEarth		= mod:NewSpecialWarningSpell(175827)
 
---local timerGigaSmashCD		= mod:NewCDTimer(53, 175953)
---local timerColossalSlamCD		= mod:NewCDTimer(32, 175791)
---local timerCallofEarthCD		= mod:NewCDTimer(32, 175827)
+local timerColossalSlamCD		= mod:NewCDTimer(16, 175791)--16-35 second variation? Then again was a bad pull with no tank, boss running loose so may have affected timer
+local timerCallofEarthCD		= mod:NewCDTimer(90, 175827)
 
 --mod:AddReadyCheckOption(37460, false)
-
-function mod:SmashTarget(targetname, uId)
-	if not targetname then return end
-	warnColossalSlam:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnColossalSlam:Show()
-		yellColossalSlam:Yell()
-	else
-		specWarnColossalSlamOther:Show(targetname)
-	end
-end
 
 function mod:OnCombatStart(delay, yellTriggered)
 --[[	if yellTriggered then
@@ -56,20 +38,17 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 175791 then
-		self:BossTargetScanner(81252, "SmashTarget", 0.02, 16)
-		--timerColossalSlamCD:Start()
-	elseif spellId == 175953 then
-		warnGigaSmash:Show()
-		specWarnGigaSmash:Show()
-		--timerGigaSmashCD:Start()
+		warnColossalSlam:Show()
+		specWarnColossalSlam:Show()
+		timerColossalSlamCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 119622 then
+	if spellId == 175827 then
 		warnCallofEarth:Show()
 		specWarnCallofEarth:Show()
-		--timerCallofEarthCD:Start()
+		timerCallofEarthCD:Start()
 	end
 end
