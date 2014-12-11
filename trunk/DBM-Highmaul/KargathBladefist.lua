@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 159113 159947",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 159947 159250 158986 159178 159202 162497",
+	"SPELL_AURA_APPLIED 159947 158986 159178 159202 162497",
 	"SPELL_AURA_APPLIED_DOSE 159178",
 	"SPELL_PERIODIC_DAMAGE 159413",
 	"SPELL_PERIODIC_MISSED 159413",
@@ -23,7 +23,6 @@ mod:RegisterEventsInCombat(
 
 --TODO add timer for sweeper in arena
 local warnChainHurl					= mod:NewTargetAnnounce(159947, 3)--Warn for cast too?
-local warnBladeDance				= mod:NewSpellAnnounce(159250, 3, nil, false)
 local warnBerserkerRush				= mod:NewTargetAnnounce(158986, 4)
 local warnOpenWounds				= mod:NewStackAnnounce(159178, 2, nil, mod:IsTank())
 local warnImpale					= mod:NewSpellAnnounce(159113, 3, nil, mod:IsTank())
@@ -51,7 +50,7 @@ local timerTigerCD					= mod:NewNextTimer(110, "ej9396", nil, not mod:IsTank(), 
 local countdownChainHurl			= mod:NewCountdown(106, 159947)
 local countdownSweeper				= mod:NewCountdown(39, 177776)
 local countdownTiger				= mod:NewCountdown("Alt110", "ej9396", not mod:IsTank())--Tigers never bother tanks so not tanks probelm
-local countdownImpale				= mod:NewCountdown("Alt45", 159113, mod:IsTank())--Dead on unless delayed by a fixate
+local countdownImpale				= mod:NewCountdown("Alt45", 159113, mod:IsTank())--Slightly veriable based on other spells
 
 --local voiceBerserkerRush			= mod:NewVoice(158986)
 
@@ -61,8 +60,8 @@ local firePillar = EJ_GetSectionInfo(9394)
 
 function mod:OnCombatStart(delay)
 	timerPillarCD:Start(24-delay)
-	timerImpaleCD:Start(-delay)
-	countdownImpale:Start(-delay)
+	timerImpaleCD:Start(35-delay)
+	countdownImpale:Start(35-delay)
 	timerBerserkerRushCD:Start(48-delay)
 	timerChainHurlCD:Start(91-delay)
 	countdownChainHurl:Start(91-delay)
@@ -101,10 +100,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnChainHurl:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			timerSweeperCD:Start()
-			countdownSweeper:Start()
+			countdownSweeper:Start()--TODO,scan for punted or whatever knockdown is and cancel.
 		end
-	elseif spellId == 159250 then
-		warnBladeDance:Show()
 	elseif spellId == 158986 then
 		warnBerserkerRush:Show(args.destName)
 		timerBerserkerRushCD:Start()

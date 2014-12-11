@@ -43,7 +43,7 @@ local yellArcaneVolatility			= mod:NewYell(163372)--Mythic
 --local specWarnArcaneWoundOther	= mod:NewSpecialWarningTaunt(167200)
 --Pol
 local specWarnShieldCharge			= mod:NewSpecialWarningSpell(158134, nil, nil, nil, 2)
-local specWarnInterruptingShout		= mod:NewSpecialWarningCast(158093)
+local specWarnInterruptingShout		= mod:NewSpecialWarningCast("OptionVersion2", 158093, mod:IsSpellCaster())
 local specWarnPulverize				= mod:NewSpecialWarningSpell(158385, nil, nil, nil, 2)
 local specWarnArcaneCharge			= mod:NewSpecialWarningSpell(163336, nil, nil, nil, 2)--Mythic. Seems not reliable timer, has a chance to happen immediately after a charge (but not always)
 
@@ -62,6 +62,7 @@ local timerArcaneVolatilityCD		= mod:NewNextTimer(60, 163372)--NOT BOSS POWER BA
 
 local countdownPhemos				= mod:NewCountdown(33, nil, nil, "PhemosSpecial")
 local countdownPol					= mod:NewCountdown("Alt28", nil, nil, "PolSpecial")
+local countdownArcaneVolatility		= mod:NewCountdown("AltTwo60", 163372, not mod:IsTank())
 
 mod:AddRangeFrameOption(8, 163372)
 
@@ -87,6 +88,7 @@ function mod:OnCombatStart(delay)
 	countdownPol:Start(37.5-delay)
 	if self:IsMythic() then
 		timerArcaneVolatilityCD:Start(65-delay)
+		countdownArcaneVolatility:Start(65-delay)
 	end
 	if self:IsDifficulty("heroic", "mythic") then
 		PhemosEnergyRate = 31
@@ -153,6 +155,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnArcaneVolatility:CombinedShow(1, args.destName)--Applies slowly to all targets
 		if self:AntiSpam(2, 2) then
 			timerArcaneVolatilityCD:Start()
+			countdownArcaneVolatility:Start()
 		end
 		if args:IsPlayer() then
 			specWarnArcaneVolatility:Show()
