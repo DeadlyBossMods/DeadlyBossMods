@@ -58,7 +58,7 @@ local timerPulverizeCD				= mod:NewNextTimer(29, 158385)
 --^^Even though 6 cd timers, coded smart to only need 2 up at a time, by using the predictability of "next ability" timing.
 local timerArcaneVolatilityCD		= mod:NewNextTimer(60, 163372)--NOT BOSS POWER BASED, this debuff is cast by outside influence every 60 seconds
 
---local berserkTimer				= mod:NewBerserkTimer(600)--As reported in feedback threads
+local berserkTimer					= mod:NewBerserkTimer(420)--As reported in feedback threads
 
 local countdownPhemos				= mod:NewCountdown(33, nil, nil, "PhemosSpecial")
 local countdownPol					= mod:NewCountdown("Alt28", nil, nil, "PolSpecial")
@@ -89,6 +89,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerArcaneVolatilityCD:Start(65-delay)
 		countdownArcaneVolatility:Start(65-delay)
+		berserkTimer:Start(-delay)
 	end
 	if self:IsDifficulty("heroic", "mythic") then
 		PhemosEnergyRate = 31
@@ -153,7 +154,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 163372 then
 		warnArcaneVolatility:CombinedShow(1, args.destName)--Applies slowly to all targets
-		if self:AntiSpam(2, 2) then
+		if self:AntiSpam(15, 2) then
 			timerArcaneVolatilityCD:Start()
 			countdownArcaneVolatility:Start()
 		end
