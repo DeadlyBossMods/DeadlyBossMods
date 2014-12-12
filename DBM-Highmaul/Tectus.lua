@@ -38,6 +38,7 @@ local specWarnEarthwarper			= mod:NewSpecialWarningSwitch("ej10061")
 local specWarnTectonicUpheaval		= mod:NewSpecialWarningSpell(162475, nil, nil, nil, 2)
 local specWarnEarthenPillar			= mod:NewSpecialWarningSpell(162518, nil, nil, nil, 3)
 local specWarnCrystallineBarrageYou	= mod:NewSpecialWarningYou(162346)
+local yellCrystalineBarrage			= mod:NewYell(162346)
 local specWarnCrystallineBarrage	= mod:NewSpecialWarningMove(162370)
 --Night-Twisted NPCs
 local specWarnEarthenFlechettes		= mod:NewSpecialWarningSpell(162968, mod:IsMelee())--Change to "move" warning if it's avoidable
@@ -106,8 +107,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 162346 then
 		warnCrystallineBarrage:CombinedShow(1, args.destName)
-		if args:IsPlayer() and self:AntiSpam(2, 2) then
+		if args:IsPlayer() then
 			specWarnCrystallineBarrageYou:Show()
+			if not self:IsLFR() then
+				yellCrystalineBarrage:Yell()
+			end
 		end
 	elseif spellId == 162674 and self.Options.SetIconOnMote and not self:IsLFR() then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
 		self:ScanForMobs(args.destGUID, 0, 8, 4, 0.4, 20)--Find out why this still doesn't work.
