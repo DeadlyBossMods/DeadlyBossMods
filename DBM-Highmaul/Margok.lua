@@ -15,10 +15,12 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 157763 158553 156225 164004 164005 164006 158605 164176 164178 164191",
 	"SPELL_AURA_APPLIED_DOSE 158553",
 	"SPELL_AURA_REMOVED 158605 164176 164178 164191 157763 156225 164004 164005 164006",
+	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, combine options to reduce GUI mod options in same manor that was done with paragons.
+--TODO, get timers for first kick and crush, since my logs are from before the hotfix
 --Phase 1: Might of the Crown
 local warnBranded								= mod:NewStackAnnounce(156225, 4)
 local warnDestructiveResonance					= mod:NewSpellAnnounce(156467, 3)--Find out if target scanning works
@@ -90,6 +92,9 @@ local timerMarkOfChaosCD						= mod:NewCDTimer(50, 158605, nil, mod:IsTank())
 local timerForceNovaCD							= mod:NewCDCountTimer(45, 157349)--45-52
 local timerSummonArcaneAberrationCD				= mod:NewCDTimer(45, 156471, nil, not mod:IsHealer())--45-52 Variation Noted
 local timerTransition							= mod:NewCastTimer(76.5, 157278)
+--Intermission: Lineage of Power
+local timerCrushArmorCD							= mod:NewNextTimer(6, 158553, nil, mod:IsTank())
+local timerKickToFaceCD							= mod:NewNextTimer(20, 158563, nil, mod:IsTank())
 
 local countdownArcaneWrath						= mod:NewCountdown(50, 156238, not mod:IsTank())--Probably will add for whatever proves most dangerous on mythic
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank())
@@ -299,6 +304,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 158563 then
 		warnKickToTheFace:Show(args.destName)
+		timerKickToFaceCD:Start()
 		if args:IsPlayer() then
 			specWarnKickToTheFace:Show()
 		else
@@ -377,6 +383,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 158553 then
 		local amount = args.amount or 1
 		warnCrushArmor:Show(args.destName, amount)
+		timerCrushArmorCD:Start()
 	elseif args:IsSpellID(158605, 164176, 164178, 164191) then
 		--Update frame again in case he swaped targets during cast (happens)
 		self.vb.markActive = true
@@ -411,6 +418,14 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		updateRangeFrame()
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 78549 then--Reaver
+		timerCrushArmorCD:Cancel()
+		timerKickToFaceCD:Cancel()
 	end
 end
 
