@@ -335,7 +335,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				self.vb.playerHasBranded = true
 				if not self:IsLFR() then
-					yellBranded:Yell(currentStack, playerName)
+					yellBranded:Yell(currentStack.."-"..self.vb.jumpDistance, playerName)
 				end
 			end
 			if spellId == 156225 then
