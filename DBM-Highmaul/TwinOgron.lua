@@ -39,8 +39,6 @@ local specWarnQuake					= mod:NewSpecialWarningCount(158200, nil, nil, nil, 2)
 local specWarnBlaze					= mod:NewSpecialWarningMove(158241, false)
 local specWarnArcaneVolatility		= mod:NewSpecialWarningMoveAway(163372)--Mythic
 local yellArcaneVolatility			= mod:NewYell(163372)--Mythic
---local specWarnArcaneWound			= mod:NewSpecialWarningStack(167200, nil, 2)
---local specWarnArcaneWoundOther	= mod:NewSpecialWarningTaunt(167200)
 --Pol
 local specWarnShieldCharge			= mod:NewSpecialWarningSpell(158134, nil, nil, nil, 2)
 local specWarnInterruptingShout		= mod:NewSpecialWarningCast("OptionVersion2", 158093, mod:IsSpellCaster())
@@ -75,6 +73,16 @@ mod.vb.LastQuake = 0
 local GetTime = GetTime
 local PhemosEnergyRate = 33
 local polEnergyRate = 28
+local arcaneDebuff = GetSpellInfo(163372)
+local UnitDebuff = UnitDebuff
+
+do
+	debuffFilter = function(uId)
+		if UnitDebuff(uId, arcaneDebuff) then
+			return true
+		end
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.EnfeebleCount = 0
@@ -90,6 +98,9 @@ function mod:OnCombatStart(delay)
 		timerArcaneVolatilityCD:Start(65-delay)
 		countdownArcaneVolatility:Start(65-delay)
 		berserkTimer:Start(-delay)
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(8, debuffFilter)
+		end
 	end
 	if self:IsDifficulty("heroic", "mythic") then
 		PhemosEnergyRate = 31
@@ -161,22 +172,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnArcaneVolatility:Show()
 			yellArcaneVolatility:Yell()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(8)
-			end
+		end
+		if UnitDebuff("player", arcaneDebuff) then
+			DBM.RangeCheck:Show(8, nil)
+		else
+			DBM.RangeCheck:Show(8, debuffFilter)
 		end
 	elseif spellId == 167200 then
 		local amount = args.amount or 1
 		warnArcaneWound:Show(args.destName, amount)
---[[		if amount >= 2 then--Stack count unknown
-			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
-				specWarnArcaneWound:Show(amount)
-			else--Taunt as soon as stacks are clear, regardless of stack count.
-				if not UnitDebuff("player", GetSpellInfo(167200)) and not UnitIsDeadOrGhost("player") then
-					specWarnArcaneWoundOther:Show(args.destName)
-				end
-			end
-		end--]]
 	elseif spellId == 158241 and args:IsPlayer() and self:AntiSpam(2, 3) then
 		specWarnBlaze:Show()
 	end
@@ -186,7 +190,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 163372 and args:IsPlayer() and self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
+		DBM.RangeCheck:Show(8, debuffFilter)
 	end
 end
 
