@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 162185 162184 161411 163517 162186",
+	"SPELL_CAST_SUCCESS 161612",
 	"SPELL_AURA_APPLIED 156803 162186 161242 163472",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 162186 163472",
@@ -20,6 +21,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, find number of targets of MC and add SetIconsUsed with correct icon count.
 --TODO, see if MC has consistent CD (unlike rest of bosses stuff)
+--TODO, very 55, 30 30, 55, 30 30, 55, etc pattern for balls
 local warnCausticEnergy				= mod:NewTargetAnnounce(161242, 3)
 local warnNullBarrier				= mod:NewTargetAnnounce(156803, 2)
 local warnVulnerability				= mod:NewTargetAnnounce(160734, 1)
@@ -49,6 +51,7 @@ local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
 local timerVulnerability			= mod:NewBuffActiveTimer(20, 160734)
 local timerTrampleCD				= mod:NewCDTimer(16, 163101)--Also all over the place, 15-25 with first one coming very randomly (5-20 after barrier goes up)
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
+local timerBallsCD					= mod:NewNextTimer(30, 161612)
 --local timerExpelMagicFireCD		= mod:NewCDTimer(20, 162185)
 --local timerExpelMagicShadowCD		= mod:NewCDTimer(10, 162184)
 --local timerExpelMagicFrostCD		= mod:NewCDTimer(10, 161411)
@@ -104,6 +107,13 @@ function mod:SPELL_CAST_START(args)
 				specWarnExpelMagicArcane:Show(targetName)--Sometimes targetname is nil, and then it warns for unknown, but with the new status == 3 check, it'll still warn correct tank, so useful anyways
 			end
 		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 161612 then
+		timerBallsCD:Start()--This won't show balls that hit, only ones caught. Balls that hit require high cpu spell_damage event
 	end
 end
 
@@ -174,6 +184,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnVulnerability:Show(bossName)
 		timerVulnerability:Start()
 		timerTrampleCD:Cancel()
+		timerBallsCD:Cancel()--This affects timers but how is uncertain, inconsistent.
+		--Example, http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
 --		timerExpelMagicFrostCD:Cancel()
 --		timerExpelMagicShadowCD:Cancel()
 --		timerExpelMagicFireCD:Cancel()

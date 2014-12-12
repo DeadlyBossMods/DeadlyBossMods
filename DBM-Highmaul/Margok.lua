@@ -102,6 +102,7 @@ mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
 mod.vb.markActive = false
 mod.vb.playerHasMark = false
 mod.vb.jumpDistance = 13
+mod.vb.lastMarkedTank = nil
 local jumpDistance1 = {
 	[1] = 200, [2] = 100, [3] = 50, [4] = 25, [5] = 12.5, [6] = 7,--Or 5
 }
@@ -145,9 +146,9 @@ local function updateRangeFrame(markPreCast)
 		if mod.vb.playerHasBranded then--Player has Branded debuff
 			DBM.RangeCheck:Show(distance, nil)--Show everyone
 		else--No branded debuff on player, so show a filtered range finder
-			if mod.vb.markActive then--Even though we set range to 13 instead of 35, show marked tank dots on radar too, not just branded dots.
-				DBM.RangeCheck:Show(35, debuffFilterCombined)--Enough complained about it, so we'll now prioritize 35 yards for mark of chaos if mark is active. This is also what Bigwigs does so gives consistency across mods.
-			else--no branded tank, So show ONLY branded dots
+			if mod.vb.markActive and mod.vb.lastMarkedTank and mod:CheckNearby(35, mod.vb.lastMarkedTank) then--There is an active tank with debuff and they are too close
+				DBM.RangeCheck:Show(35, debuffFilterCombined)--Show marked instead of branded if the marked tank is NOT far enough out
+			else--no branded tank in range, So show ONLY branded dots
 				DBM.RangeCheck:Show(distance, debuffFilterBranded)
 			end
 		end
@@ -168,6 +169,7 @@ function mod:OnCombatStart(delay)
 	self.vb.markActive = false
 	self.vb.playerHasMark = false
 	self.vb.playerHasBranded = false
+	self.vb.lastMarkedTank = nil
 	self.vb.brandedActive = 0
 	self.vb.forceCount = 0
 	self.vb.jumpDistance = 13
@@ -378,6 +380,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(158605, 164176, 164178, 164191) then
 		--Update frame again in case he swaped targets during cast (happens)
 		self.vb.markActive = true
+		self.vb.lastMarkedTank = args.destName
 		if args:IsPlayer() then
 			self.vb.playerHasMark = true
 		else
@@ -392,6 +395,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if args:IsSpellID(158605, 164176, 164178, 164191) then
 		self.vb.markActive = false
+		self.vb.lastMarkedTank = nil
 		if args:IsPlayer() then
 			self.vb.playerHasMark = false
 		end
