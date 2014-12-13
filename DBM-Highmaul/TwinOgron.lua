@@ -62,8 +62,8 @@ local countdownPhemos				= mod:NewCountdown(33, nil, nil, "PhemosSpecial")
 local countdownPol					= mod:NewCountdown("Alt28", nil, nil, "PolSpecial")
 local countdownArcaneVolatility		= mod:NewCountdown("AltTwo60", 163372, not mod:IsTank())
 
-local voicePhemos					= mod:NewVoice(nil, nil, "PhemosSpecial")
-local voicePol						= mod:NewVoice(nil, nil, "PolSpecial")
+local voicePhemos					= mod:NewVoice(nil, nil, "PhemosSpecialVoice")
+local voicePol						= mod:NewVoice(nil, nil, "PolSpecialVoice")
 local voiceBlaze					= mod:NewVoice(158241, false)
 local voiceArcaneVolatility			= mod:NewVoice(163372)
 
