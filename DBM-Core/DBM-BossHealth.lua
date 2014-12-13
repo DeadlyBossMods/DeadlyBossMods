@@ -156,7 +156,10 @@ local function createBar(self, name, ...) -- the vararg will also contain the na
 	end
 	bar.hidden = false
 	bar:ClearAllPoints()
-	bartext:SetText(name)
+	bartext:SetText(name or "")
+	if not name then
+		bar.needName = true
+	end
 	if type(bar.id) == "function" then
 		local health, icon = bar.id()
 		updateBar(bar, health, icon, true)
@@ -217,14 +220,28 @@ do
 --					v:Show()
 --				end
 				if type(v.id) == "number" then -- creature ID
-					local health, id = DBM:GetBossHP(v.id)
+					local health, id, name = DBM:GetBossHP(v.id)
 					if health then
+						if name and v.needName then
+							v.needName = nil
+							local bartext = _G[v:GetName().."BarName"]
+							bartext:SetText(name)
+						end
 						updateBar(v, health, GetRaidTargetIndex(id))
+					else
+						updateBar(v, 0)
 					end
 				elseif type(v.id) == "string" then -- GUID
-					local health, id = DBM:GetBossHPByGUID(v.id)
+					local health, id, name = DBM:GetBossHPByGUID(v.id)
 					if health then
+						if name and v.needName then
+							v.needName = nil
+							local bartext = _G[v:GetName().."BarName"]
+							bartext:SetText(name)
+						end
 						updateBar(v, health, GetRaidTargetIndex(id))
+					else
+						updateBar(v, 0)
 					end
 				elseif type(v.id) == "table" then -- multi boss
 					-- TODO: it would be more efficient to scan all party/raid members for all IDs instead of going over all raid members n times

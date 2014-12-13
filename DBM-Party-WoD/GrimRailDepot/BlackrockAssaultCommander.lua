@@ -73,7 +73,13 @@ function mod:UNIT_TARGETABLE_CHANGED()
 	self.vb.phase = self.vb.phase + 1
 	if self.vb.phase == 2 then
 		warnPhase2:Show()
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:AddBoss(79548)
+		end
 	elseif self.vb.phase == 3 then
 		warnPhase3:Show()
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:RemoveBoss(79548)
+		end
 	end
 end

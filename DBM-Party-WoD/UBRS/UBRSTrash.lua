@@ -14,6 +14,7 @@ mod:RegisterEvents(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
+local warnRejuvSerum					= mod:NewTargetAnnounce(155498, 4, nil, mod:IsMagicDispeller())
 local warnDebilitatingRay				= mod:NewCastAnnounce(155505, 4)
 local warnSummonBlackIronVet			= mod:NewCastAnnounce(169151, 4)
 local warnVeilofShadow					= mod:NewCastAnnounce(155586, 4)--Challenge mode only
@@ -23,9 +24,10 @@ local warnSmash							= mod:NewSpellAnnounce(155572, 4, nil, mod:IsTank())
 local warnFranticMauling				= mod:NewSpellAnnounce(154039, 4, nil, mod:IsMelee())
 local warnEruption						= mod:NewSpellAnnounce(155037, 4, nil, mod:IsTank())
 
+local specWarnRejuvSerumDispel			= mod:NewSpecialWarningDispel(155498, mod:IsMagicDispeller())
 local specWarnDebilitatingRay			= mod:NewSpecialWarningInterrupt(155505, not mod:IsHealer())
 local specWarnSummonBlackIronVet		= mod:NewSpecialWarningInterrupt(169151, not mod:IsHealer())
-local specWarnVeilofShadow				= mod:NewSpecialWarningInterrupt(155586, not mod:IsHealer())--Challenge mode only
+local specWarnVeilofShadow				= mod:NewSpecialWarningInterrupt(155586, not mod:IsHealer())--Challenge mode only(little spammy for mage)
 local specWarnVeilofShadowDispel		= mod:NewSpecialWarningDispel(155586, mod:CanRemoveCurse())
 local specWarnShadowBoltVolley			= mod:NewSpecialWarningInterrupt(155588, not mod:IsHealer())
 local specWarnSmash						= mod:NewSpecialWarningMove(155572, mod:IsTank())
@@ -49,7 +51,10 @@ end
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled or self:IsDifficulty("normal5") then return end
 	local spellId = args.spellId
-	if spellId == 155505 then
+	if spellId == 155498 and not args:IsDestTypePlayer() then
+		warnRejuvSerum:Show(args.destName)
+		specWarnRejuvSerumDispel:Show(args.destName)
+	elseif spellId == 155505 then
 		local sourceGUID = args.sourceGUID
 		warnDebilitatingRay:Show()
 		if sourceGUID == UnitGUID("target") or sourceGUID == UnitGUID("focus") then 
@@ -58,7 +63,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 169151 then
 		warnSummonBlackIronVet:Show()
 		specWarnSummonBlackIronVet:Show(args.sourceName)
-	elseif spellId == 155586 then
+	elseif spellId == 155586 and self:IsDifficulty("challenge5") then
 		warnVeilofShadow:Show()
 		specWarnVeilofShadow:Show(args.sourceName)
 	elseif spellId == 155588 then

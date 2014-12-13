@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 159413",
 	"SPELL_PERIODIC_MISSED 159413",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_CHANNEL_STOP boss1"
 )
 
 --TODO add timer for sweeper in arena
@@ -151,8 +151,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 160519 then--Best way to detect berserker rage End, SPELL_AURA_REMOVED not accurate enough since can fire for target changes.
+function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, _, _, spellId)
+	if spellId == 158986 then--160519 bugged. find better way
 		specWarnBerserkerRushEnded:Show()
 	end
 end
