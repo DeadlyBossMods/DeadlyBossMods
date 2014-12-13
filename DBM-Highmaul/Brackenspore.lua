@@ -58,6 +58,8 @@ local timerRejuvMushroomCD			= mod:NewCDTimer(150, 160021, nil, mod:IsHealer())
 --local timerExplodingFungusCD		= mod:NewCDTimer(32, 163794)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 local timerWavesCD					= mod:NewCDTimer(33, 160425)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 
+local berserkTimer					= mod:NewBerserkTimer(600)
+
 local countdownInfestingSpores		= mod:NewCountdown(57, 159996)--The variation on this annoys me, may move countdown to something more reliable if possible
 local countdownFungalFleshEater		= mod:NewCountdown("Alt120", "ej9995", not mod:IsHealer())
 
@@ -76,6 +78,7 @@ function mod:OnCombatStart(delay)
 	timerInfestingSporesCD:Start(45-delay)
 	countdownInfestingSpores:Start(45-delay)
 	timerRejuvMushroomCD:Start(80-delay)--Todo, verify 80 in all modes and not still 75 in mythic
+	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame then
 		self:RegisterShortTermEvents(
 			"SPELL_DAMAGE",
