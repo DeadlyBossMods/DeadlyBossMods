@@ -52,7 +52,11 @@ local countdownSweeper				= mod:NewCountdown(55, 177776)
 local countdownTiger				= mod:NewCountdown("Alt110", "ej9396", not mod:IsTank())--Tigers never bother tanks so not tanks probelm
 local countdownImpale				= mod:NewCountdown("Alt45", 159113, mod:IsTank())--Slightly veriable based on other spells
 
---local voiceBerserkerRush			= mod:NewVoice(158986)
+local voiceImpale					= mod:NewVoice(159113)
+local voiceBerserkerRush			= mod:NewVoice(158986)
+local voiceChainHurl				= mod:NewVoice(159947)
+local voiceOnTheHunt				= mod:NewVoice(162497)
+local voicePillar					= mod:NewVoice(159202, mod:IsRanged())
 
 mod:AddRangeFrameOption(4, 159386)
 
@@ -65,13 +69,14 @@ function mod:OnCombatStart(delay)
 	timerBerserkerRushCD:Start(48-delay)
 	timerChainHurlCD:Start(91-delay)
 	countdownChainHurl:Start(91-delay)
-	if self.Options.RangeFrame then
+	if self.Options.RangeFrame and not self:IsLFR() then
 		DBM.RangeCheck:Show(4)--For Mauling Brew splash damage.
 	end
 	if self:IsMythic() then
 		timerTigerCD:Start()
 		countdownTiger:Start()
 	end
+	voiceChainHurl:Schedule(84.5-delay, "159947r") --ready for hurl
 end
 
 function mod:OnCombatEnd()
@@ -87,10 +92,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnImpale:Show()
 		timerImpaleCD:Start()
 		countdownImpale:Start()
+		if mod:IsHealer() then
+			voiceImpale:Play("tankheal")
+		end
 	elseif spellId == 159947 then
 		specWarnChainHurl:Show()
 		timerChainHurlCD:Start()
 		countdownChainHurl:Start()
+		voiceChainHurl:Schedule(99.5, "159947r") --ready for hurl
 	end
 end
 
@@ -101,6 +110,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			timerSweeperCD:Start()
 			countdownSweeper:Start()--TODO,scan for punted or whatever knockdown is and cancel.
+			voiceChainHurl:Play("159947y") --you are the target
+		else
+			if self:AntiSpam() then			
+				voiceChainHurl:Play("otherout")
+			end
 		end
 	elseif spellId == 158986 then
 		warnBerserkerRush:Show(args.destName)
@@ -108,9 +122,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBerserkerRush:Show(firePillar)
 			yellBerserkerRush:Yell()
-			--voiceBerserkerRush:Play("159202f")--They may rename the file name now that I've scrapped organizing sounds in favor of easier development.
+			voiceBerserkerRush:Play("159202f") --find the pillar
 		else
 			specWarnBerserkerRushOther:Show(args.destName)
+			voiceBerserkerRush:Play("chargemove")
 		end
 	elseif spellId == 159178 then
 		local amount = args.amount or 1
@@ -127,10 +142,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 159202 then
 		warnPillar:Show()
 		timerPillarCD:Start()
+		voicePillar:Play("159202") --pillar
 	elseif spellId == 162497 then
 		warnOnTheHunt:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnOnTheHunt:Show(firePillar)
+			voiceOnTheHunt("159202f") --find the pillar
 		end
 	end
 end
