@@ -6533,6 +6533,7 @@ do
 			},
 			mt
 		)
+		if #DBM.Voices < 2 then optionName = false end--Hide options if no voice packs are installed
 		if optionName then
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "sound")
