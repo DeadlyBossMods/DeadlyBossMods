@@ -56,7 +56,16 @@ local timerBallsCD					= mod:NewNextTimer(30, 161612)
 --local timerExpelMagicShadowCD		= mod:NewCDTimer(10, 162184)
 --local timerExpelMagicFrostCD		= mod:NewCDTimer(10, 161411)
 
+local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
+
 local soundExpelMagicArcane			= mod:NewSound(162186)
+
+local voiceExpelMagicFire			= mod:NewVoice(162185)
+local voiceExpelMagicShadow			= mod:NewVoice(162184, mod:IsHealer())
+local voiceExpelMagicFrost			= mod:NewVoice(161411)
+local voiceExpelMagicArcane			= mod:NewVoice(162186)
+local voiceMC						= mod:NewVoice(163472, mod:IsDps())
+local voiceTrample					= mod:NewVoice(163101)
 
 mod:AddRangeFrameOption("7/5")
 mod:AddSetIconOption("SetIconOnMC", 163472, false)
@@ -81,18 +90,23 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 162185 then
 		warnExpelMagicFire:Show()
-		specWarnExpelMagicFire:Schedule(7.5)--Give you about 4 seconds to spread out
+		specWarnExpelMagicFire:Schedule(5)--Give you about 4 seconds to spread out
 		--Even if you AMS or resist debuff, need to avoid others that didn't, so rangecheck now here
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(7)
 		end
+		countdownMagicFire:Start()
+		voiceExpelMagicFire:Play("scattersoon")
+		voiceExpelMagicFire:Schedule(5, "scatter")
 		self:Schedule(11.5, closeRange)
 	elseif spellId == 162184 then
 		warnExpelMagicShadow:Show()
 		specWarnExpelMagicShadow:Show()
+		voiceExpelMagicShadow:Play("healall")
 	elseif spellId == 161411 then
 		warnExpelMagicFrost:Show()
 		specWarnExpelMagicFrost:Show()
+		voiceExpelMagicFrost:Play("161411") --faraway from icy orb
 	elseif spellId == 163517 then
 		warnForfeitPower:Show()
 		specWarnForfeitPower:Show(args.sourceName)
@@ -101,10 +115,12 @@ function mod:SPELL_CAST_START(args)
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then--Player is current target
 			specWarnExpelMagicArcaneYou:Show()--So show tank warning
+			voiceExpelMagicArcane:Play("runout")
 			soundExpelMagicArcane:Play()
 		else
 			if self:AntiSpam(2, targetName) then--Set anti spam with target name
 				specWarnExpelMagicArcane:Show(targetName)--Sometimes targetname is nil, and then it warns for unknown, but with the new status == 3 check, it'll still warn correct tank, so useful anyways
+				voiceExpelMagicArcane:Play("changemt")
 			end
 		end
 	end
@@ -143,6 +159,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			if self:AntiSpam(2, args.destName) then--if antispam matches cast start warning, it won't warn again, if name is different, it'll trigger new warning
 				specWarnExpelMagicArcane:Show(args.destName)
+				voiceExpelMagicArcane:Play("changemt")
 			end
 		end
 	elseif spellId == 161242 and self:AntiSpam(3, args.destName) then--Players may wabble in and out of it and we don't want to spam add them to table.
@@ -151,6 +168,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMC:CombinedShow(0.5, args.destName)
 		if self:AntiSpam(3, 1) then
 			specWarnMC:Show()
+			voiceMC:Play("killmob")
 		end
 		if self.Options.SetIconOnMC then
 			self:SetSortedIcon(1, args.destName, 1)--TODO, find out number of targets and add
@@ -202,6 +220,7 @@ function mod:OnSync(msg, targetname)
 			if target == UnitName("player") then
 				specWarnTrample:Show()
 				yellTrample:Yell()
+				voiceTrample:Play("runaway")
 			end
 		end
 	end
