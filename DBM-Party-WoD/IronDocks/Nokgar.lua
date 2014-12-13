@@ -30,7 +30,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 164426 then
 		warnRecklessProvocation:Show(args.destName)
 		specWarnRecklessProvocation:Show(args.destName)
-		timerRecklessProvocation:Show()
+		timerRecklessProvocation:Start()
 	elseif args.spellId == 164835 and args:GetSrcCreatureID() == 81297 then
 		warnEnrage:Show()
 		specWarnEnrage:Show(args.destName)
