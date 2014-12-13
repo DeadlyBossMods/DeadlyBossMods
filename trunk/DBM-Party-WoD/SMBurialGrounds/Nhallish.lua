@@ -53,7 +53,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if spellId == 152979 and args:IsPlayer() then
+	if args.spellId == 152979 and args:IsPlayer() then
 		timerSoulShred:Cancel()
 	end
 end
