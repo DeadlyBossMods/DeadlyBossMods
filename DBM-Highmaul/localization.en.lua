@@ -32,8 +32,8 @@ L= DBM:GetModLocalization(1148)
 L:SetOptionLocalization({
 	PhemosSpecial	= "Play countdown sound for Phemos' cooldowns",
 	PolSpecial		= "Play countdown sound for Pol's cooldowns",
-	PhemosSpecialVoice	= "Play spoken alerts for for Phemos' abilities using selected voice pack",
-	PolSpecialVoice		= "Play spoken alerts for for Pol's abilities using selected voice pack"
+	PhemosSpecialVoice	= "Play spoken alerts for Phemos' abilities using selected voice pack",
+	PolSpecialVoice		= "Play spoken alerts for Pol's abilities using selected voice pack"
 })
 
 --------------------
