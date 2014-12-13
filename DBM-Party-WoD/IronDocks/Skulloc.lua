@@ -31,7 +31,10 @@ local timerRapidFireCD		= mod:NewNextTimer(12, 168398)
 local timerGronSmashCD		= mod:NewCDTimer(70, 168227)
 local timerBackdraft		= mod:NewCastTimer(3, 169129)
 
+mod.vb.flameCast = false
+
 function mod:OnCombatStart(delay)
+	self.vb.flameCast = false
 	timerGronSmashCD:Start(30-delay)
 end
 
@@ -53,10 +56,12 @@ function mod:SPELL_CAST_START(args)
 		warnGronSmash:Show()
 		specWarnGronSmash:Show()
 		timerGronSmashCD:Start()
+		self.vb.flameCast = false
 	elseif spellId == 168929 then
 		warnCannonBarrage:Show()
 		specWarnCannonBarrage:Show()
-	elseif spellId == 169129 then
+	elseif spellId == 169129 and not self.vb.flameCast then
+		self.vb.flameCast = true
 		warnBackdraft:Show()
 		specWarnBackdraft:Show()
 		timerBackdraft:Start()
