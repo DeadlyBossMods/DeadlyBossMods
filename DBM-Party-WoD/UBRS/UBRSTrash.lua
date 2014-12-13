@@ -8,7 +8,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED 155586",
+	"SPELL_AURA_APPLIED 155586 155498",
 	"SPELL_CAST_START 155505 169151 155572 155586 155588 154039 155037",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED"
@@ -45,16 +45,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 155586 then
 		specWarnVeilofShadowDispel:Show(args.destName)
+	elseif spellId == 155498 and not args:IsDestTypePlayer() then
+		warnRejuvSerum:Show(args.destName)
+		specWarnRejuvSerumDispel:Show(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled or self:IsDifficulty("normal5") then return end
 	local spellId = args.spellId
-	if spellId == 155498 and not args:IsDestTypePlayer() then
-		warnRejuvSerum:Show(args.destName)
-		specWarnRejuvSerumDispel:Show(args.destName)
-	elseif spellId == 155505 then
+	if spellId == 155505 then
 		local sourceGUID = args.sourceGUID
 		warnDebilitatingRay:Show()
 		if sourceGUID == UnitGUID("target") or sourceGUID == UnitGUID("focus") then 

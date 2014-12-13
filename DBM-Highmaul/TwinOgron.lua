@@ -77,7 +77,7 @@ local PhemosEnergyRate = 33
 local polEnergyRate = 28
 local arcaneDebuff = GetSpellInfo(163372)
 local UnitDebuff = UnitDebuff
-
+local debuffFilter
 do
 	debuffFilter = function(uId)
 		if UnitDebuff(uId, arcaneDebuff) then

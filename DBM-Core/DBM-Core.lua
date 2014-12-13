@@ -4130,9 +4130,9 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 						DBM.BossHealth:AddBoss(mod.bossHealthInfo[i])
 					end
 				else
-				for i = 1, #mod.bossHealthInfo, 2 do
-					DBM.BossHealth:AddBoss(mod.bossHealthInfo[i], mod.bossHealthInfo[i + 1])
-				end
+					for i = 1, #mod.bossHealthInfo, 2 do
+						DBM.BossHealth:AddBoss(mod.bossHealthInfo[i], mod.bossHealthInfo[i + 1])
+					end
 				end
 			else
 				DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
