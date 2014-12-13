@@ -68,7 +68,7 @@ local voiceNecroticBreath			= mod:NewVoice(159219, mod:IsTank() or mod:IsHealer(
 local voiceLivingMushroom			= mod:NewVoice(160022)
 local voiceRejuvMushroom			= mod:NewVoice(160021, mod:IsHealer())
 local voiceMindFungus				= mod:NewVoice(163141, mod:IsDps())
-local voiceFungalFlesheater			= mod:NewVoice(163142, not mod:IsHealer())
+local voiceFungalFlesheater			= mod:NewVoice("ej9995", not mod:IsHealer())
 local voiceSporeShooter				= mod:NewVoice(163594, mod:IsRangedDps())
 local voiceDecay					= mod:NewVoice(160013, not mod:IsHealer())
 

@@ -56,7 +56,7 @@ local voiceImpale					= mod:NewVoice(159113)
 local voiceBerserkerRush			= mod:NewVoice(158986)
 local voiceChainHurl				= mod:NewVoice(159947)
 local voiceOnTheHunt				= mod:NewVoice(162497)
-local voicePillar					= mod:NewVoice(159202, mod:IsRanged())
+local voicePillar					= mod:NewVoice("ej9394", mod:IsRanged())
 
 mod:AddRangeFrameOption(4, 159386)
 
