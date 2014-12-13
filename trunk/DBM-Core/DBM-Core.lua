@@ -4125,8 +4125,14 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 				DBM.BossHealth:SetHeaderText(BOSS)
 			end
 			if mod.bossHealthInfo then
+				if mod.bossHealthInfo[2] and type(mod.bossHealthInfo[2]) == "number" then
+					for i = 1, #mod.bossHealthInfo do--boss name gets from UnitName
+						DBM.BossHealth:AddBoss(mod.bossHealthInfo[i])
+					end
+				else
 				for i = 1, #mod.bossHealthInfo, 2 do
 					DBM.BossHealth:AddBoss(mod.bossHealthInfo[i], mod.bossHealthInfo[i + 1])
+				end
 				end
 			else
 				DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
@@ -4557,11 +4563,15 @@ function DBM:EndCombat(mod, wipe)
 			DBM:CreatePizzaTimer(time, "", nil, nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
 		elseif DBM.BossHealth:IsShown() then
 			if mod.bossHealthInfo then
-				for i = 1, #mod.bossHealthInfo, 2 do
+				if mod.bossHealthInfo[2] and type(mod.bossHealthInfo[2]) == "number" then
+					for i = 1, #mod.bossHealthInfo do
 					DBM.BossHealth:RemoveBoss(mod.bossHealthInfo[i])
 				end
 			else
-				DBM.BossHealth:RemoveBoss(mod.combatInfo.mob)
+					for i = 1, #mod.bossHealthInfo, 2 do
+						DBM.BossHealth:RemoveBoss(mod.bossHealthInfo[i])
+					end
+				end
 			end
 		end
 	end
@@ -6059,24 +6069,24 @@ end
 function DBM:GetBossHP(cId)
 	local uId = bossHealthuIdCache[cId] or "target"
 	if self:GetCIDFromGUID(UnitGUID(uId)) == cId and UnitHealthMax(uId) ~= 0 then
-		if bossHealth[cId] and UnitHealth(uId) == 0 then return bossHealth[cId], uId end--Return last non 0 value if value is 0, since it's last valid value we had.
+		if bossHealth[cId] and (UnitHealth(uId) == 0 and not UnitIsDead(uId)) then return bossHealth[cId], uId, UnitName(uId) end--Return last non 0 value if value is 0, since it's last valid value we had.
 		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		bossHealth[cId] = hp
-		return hp, uId
+		return hp, uId, UnitName(uId)
 	elseif self:GetCIDFromGUID(UnitGUID("focus")) == cId and UnitHealthMax("focus") ~= 0 then
-		if bossHealth[cId] and UnitHealth("focus") == 0 then return bossHealth[cId], "focus" end--Return last non 0 value if value is 0, since it's last valid value we had.
+		if bossHealth[cId] and (UnitHealth("focus") == 0  and not UnitIsDead("focus")) then return bossHealth[cId], "focus", UnitName("focus") end--Return last non 0 value if value is 0, since it's last valid value we had.
 		local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
 		bossHealth[cId] = hp
-		return hp, "focus"
+		return hp, "focus", UnitName("focus")
 	else
 		for i = 1, 5 do
 			local guid = UnitGUID("boss"..i)
 			if self:GetCIDFromGUID(guid) == cId and UnitHealthMax("boss"..i) ~= 0 then
-				if bossHealth[cId] and UnitHealth("boss"..i) == 0 then return bossHealth[cId], "boss"..i end--Return last non 0 value if value is 0, since it's last valid value we had.
+				if bossHealth[cId] and (UnitHealth("boss"..i) == 0 and not UnitIsDead("boss"..i)) then return bossHealth[cId], "boss"..i, UnitName("boss"..i) end--Return last non 0 value if value is 0, since it's last valid value we had.
 				local hp = UnitHealth("boss"..i) / UnitHealthMax("boss"..i) * 100
 				bossHealth[cId] = hp
 				bossHealthuIdCache[cId] = "boss"..i
-				return hp, "boss"..i
+				return hp, "boss"..i, UnitName("boss"..i)
 			end
 		end
 		local idType = (IsInRaid() and "raid") or "party"
@@ -6084,11 +6094,11 @@ function DBM:GetBossHP(cId)
 			local unitId = ((i == 0) and "target") or idType..i.."target"
 			local guid = UnitGUID(unitId)
 			if self:GetCIDFromGUID(guid) == cId and UnitHealthMax(unitId) ~= 0 then
-				if bossHealth[cId] and UnitHealth(unitId) == 0 then return bossHealth[cId], unitId end--Return last non 0 value if value is 0, since it's last valid value we had.
+				if bossHealth[cId] and (UnitHealth(unitId) == 0 and not UnitIsDead(unitId)) then return bossHealth[cId], unitId, UnitName(unitId) end--Return last non 0 value if value is 0, since it's last valid value we had.
 				local hp = UnitHealth(unitId) / UnitHealthMax(unitId) * 100
 				bossHealth[cId] = hp
 				bossHealthuIdCache[cId] = unitId
-				return hp, unitId
+				return hp, unitId, UnitName(unitId)
 			end
 		end
 	end
@@ -6098,24 +6108,24 @@ end
 function DBM:GetBossHPByGUID(guid)
 	local uId = bossHealthuIdCache[guid] or "target"
 	if UnitGUID(uId) == guid and UnitHealthMax(uId) ~= 0 then
-		if bossHealth[guid] and UnitHealth(uId) == 0 then return bossHealth[guid], uId end--Return last non 0 value if value is 0, since it's last valid value we had.
+		if bossHealth[guid] and (UnitHealth(uId) == 0 and not UnitIsDead(uId)) then return bossHealth[guid], uId, UnitName(uId) end--Return last non 0 value if value is 0, since it's last valid value we had.
 		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		bossHealth[guid] = hp
-		return hp, uId
+		return hp, uId, UnitName(uId)
 	elseif UnitGUID("focus") == guid and UnitHealthMax("focus") ~= 0 then
-		if bossHealth[guid] and UnitHealth("focus") == 0 then return bossHealth[guid], "focus" end--Return last non 0 value if value is 0, since it's last valid value we had.
+		if bossHealth[guid] and (UnitHealth("focus") == 0  and not UnitIsDead("focus")) then return bossHealth[guid], "focus", UnitName("focus") end--Return last non 0 value if value is 0, since it's last valid value we had.
 		local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
 		bossHealth[guid] = hp
-		return hp, "focus"
+		return hp, "focus", UnitName("focus")
 	else
 		for i = 1, 5 do
 			local guid2 = UnitGUID("boss"..i)
 			if guid == guid2 and UnitHealthMax("boss"..i) ~= 0 then
-				if bossHealth[guid] and UnitHealth("boss"..i) == 0 then return bossHealth[guid], "boss"..i end--Return last non 0 value if value is 0, since it's last valid value we had.
+				if bossHealth[guid] and (UnitHealth("boss"..i) == 0 and not UnitIsDead("boss"..i)) then return bossHealth[guid], "boss"..i, UnitName("boss"..i) end--Return last non 0 value if value is 0, since it's last valid value we had.
 				local hp = UnitHealth("boss"..i) / UnitHealthMax("boss"..i) * 100
 				bossHealth[guid] = hp
 				bossHealthuIdCache[guid] = "boss"..i
-				return hp, "boss"..i
+				return hp, "boss"..i, UnitName("boss"..i)
 			end
 		end
 		local idType = (IsInRaid() and "raid") or "party"
@@ -6123,11 +6133,11 @@ function DBM:GetBossHPByGUID(guid)
 			local unitId = ((i == 0) and "target") or idType..i.."target"
 			local guid2 = UnitGUID(unitId)
 			if guid == guid2 and UnitHealthMax(unitId) ~= 0 then
-				if bossHealth[guid] and UnitHealth(unitId) == 0 then return bossHealth[guid], unitId end--Return last non 0 value if value is 0, since it's last valid value we had.
+				if bossHealth[guid] and (UnitHealth(unitId) == 0 and not UnitIsDead(unitId)) then return bossHealth[guid], unitId, UnitName(unitId) end--Return last non 0 value if value is 0, since it's last valid value we had.
 				local hp = UnitHealth(unitId) / UnitHealthMax(unitId) * 100
 				bossHealth[guid] = hp
 				bossHealthuIdCache[guid] = unitId
-				return hp, unitId
+				return hp, unitId, UnitName(unitId)
 			end
 		end
 	end

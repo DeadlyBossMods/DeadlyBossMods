@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 164426 164835",
+	"SPELL_AURA_REMOVED 164426",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -17,20 +18,28 @@ local warnBurningArrows					= mod:NewSpellAnnounce(164635, 3)
 local warnRecklessProvocation			= mod:NewTargetAnnounce(164426, 3)
 local warnEnrage						= mod:NewSpellAnnounce(164835, 3, nil, mod:CanRemoveEnrage() or mod:IsTank())
 
-
 local specWarnBurningArrows				= mod:NewSpecialWarningSpell(164635, nil, nil, nil, true)
 local specWarnRecklessProvocation		= mod:NewSpecialWarningReflect(164426)
+local specWarnRecklessProvocationEnd	= mod:NewSpecialWarningEnd(164426)
 local specWarnEnrage					= mod:NewSpecialWarningDispel(164835, mod:CanRemoveEnrage())
 
-local timerBurningArrowsCD				= mod:NewNextTimer(25, 164635)
+local timerRecklessProvocation			= mod:NewBuffActiveTimer(5, 164426)
+--local timerBurningArrowsCD				= mod:NewNextTimer(25, 164635)--25~42 variable (patterned?)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 164426 then
 		warnRecklessProvocation:Show(args.destName)
 		specWarnRecklessProvocation:Show(args.destName)
+		timerRecklessProvocation:Show()
 	elseif args.spellId == 164835 and args:GetSrcCreatureID() == 81297 then
 		warnEnrage:Show()
 		specWarnEnrage:Show(args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 164426 then
+		specWarnRecklessProvocationEnd:Show()
 	end
 end
 
@@ -39,6 +48,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 164635 then
 		warnBurningArrows:Show()
 		specWarnBurningArrows:Show()
-		timerBurningArrowsCD:Start()
+		--timerBurningArrowsCD:Start()
 	end
 end
