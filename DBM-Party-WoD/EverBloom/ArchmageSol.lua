@@ -10,7 +10,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 168885",
 	"SPELL_CAST_SUCCESS 166726",
-	"SPELL_AURA_APPLIED 166492 166572 166726 166475 166476 166477"
+	"SPELL_AURA_APPLIED 166492 166572 166726 166475 166476 166477",
+	"SPELL_INTERRUPT"
 )
 
 --Again, too lazy to work on CD timers, someone else can do it. raid mods are putting too much strain on me to give 5 man mods as much attention
@@ -66,11 +67,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFrostPhase:Show()
 	elseif spellId == 166477 then
 		warnArcanePhase:Show()
-		end
+	end
 end
 
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 168885 then
+		self.vb.ParasiteCount = 0
 		timerParasiticGrowthCD:Cancel(self.vb.ParasiteCount)
+		timerParasiticGrowthCD:Start(nil, 1)
 	end
 end
