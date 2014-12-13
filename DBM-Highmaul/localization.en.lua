@@ -34,6 +34,11 @@ L:SetOptionLocalization({
 	PolSpecial		= "Play countdown sound for Pol's cooldowns"
 })
 
+L:SetMiscLocalization({
+	PhemosSpecial	= "Play countdown sound for Phemos' cooldowns",
+	PolSpecial		= "Play countdown sound for Pol's cooldowns"
+})
+
 --------------------
 --Koragh --
 --------------------
