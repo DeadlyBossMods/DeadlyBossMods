@@ -62,6 +62,11 @@ local countdownPhemos				= mod:NewCountdown(33, nil, nil, "PhemosSpecial")
 local countdownPol					= mod:NewCountdown("Alt28", nil, nil, "PolSpecial")
 local countdownArcaneVolatility		= mod:NewCountdown("AltTwo60", 163372, not mod:IsTank())
 
+local voicePhemos					= mod:NewVoice(nil, nil, "PhemosSpecial")
+local voicePol						= mod:NewVoice(nil, nil, "PolSpecial")
+local voiceBlaze					= mod:NewVoice(158241, false)
+local voiceArcaneVolatility			= mod:NewVoice(163372)
+
 mod:AddRangeFrameOption(8, 163372)
 
 --Non resetting counts because strategy drastically changes based on number of people. Mechanics like debuff duration change with different player counts.
@@ -96,8 +101,6 @@ function mod:OnCombatStart(delay)
 	self.vb.PulverizeRadar = false
 	timerQuakeCD:Start(11.5-delay, 1)
 	countdownPhemos:Start(11.5-delay)
-	timerShieldChargeCD:Start(37.5-delay)--Variable on pull
-	countdownPol:Start(37.5-delay)
 	if self:IsMythic() then
 		PhemosEnergyRate = 28
 		polEnergyRate = 23
@@ -115,6 +118,9 @@ function mod:OnCombatStart(delay)
 		PhemosEnergyRate = 33
 		polEnergyRate = 28
 	end
+	timerShieldChargeCD:Start(polEnergyRate+10-delay)
+	countdownPol:Start(polEnergyRate+10-delay)
+	voicePol:Schedule(polEnergyRate+10-delay, "158134") --shield
 end
 
 function mod:OnCombatEnd()
@@ -133,9 +139,11 @@ function mod:SPELL_CAST_START(args)
 		if not self:IsMythic() then--On all other difficulties, quake is 1 second longer
 			timerQuakeCD:Start(PhemosEnergyRate+1, self.vb.QuakeCount+1)--Next Special
 			countdownPhemos:Start(PhemosEnergyRate+1)	
+			voicePhemos:Schedule(PhemosEnergyRate + 1 - 6.5, "158200")
 		else--On mythic, there is no longer ability than other 2, since 84 is more divisible by 3 than 100 is
 			timerQuakeCD:Start(PhemosEnergyRate, self.vb.QuakeCount+1)--Next Special
 			countdownPhemos:Start(PhemosEnergyRate)
+			voicePhemos:Schedule(PhemosEnergyRate - 6.5, "158200")
 		end	
 	elseif spellId == 157943 then
 		self.vb.WWCount = self.vb.WWCount + 1
@@ -143,20 +151,27 @@ function mod:SPELL_CAST_START(args)
 		specWarnWhirlWind:Show(self.vb.WWCount)
 		timerEnfeeblingRoarCD:Start(PhemosEnergyRate, self.vb.EnfeebleCount+1)--Next Special
 		countdownPhemos:Start(PhemosEnergyRate)
+		voicePhemos:Schedule(PhemosEnergyRate - 6.5, "158057") --roar
 	elseif spellId == 158134 then
 		warnShieldCharge:Show()
 		specWarnShieldCharge:Show()
 		timerInterruptingShoutCD:Start(polEnergyRate)--Next Special
 		countdownPol:Start(polEnergyRate)
+		voicePol:Schedule(polEnergyRate - 6.5, "158093") --shot
+		if self:IsSpellCaster() then
+			voicePol:Schedule(polEnergyRate - 0.5, "stopcast")
+		end
 	elseif spellId == 158093 then
 		warnInterruptingShout:Show()
 		specWarnInterruptingShout:Show()
 		if not self:IsMythic() then
 			timerPulverizeCD:Start(polEnergyRate+1)--Next Special
 			countdownPol:Start(polEnergyRate+1)
+			voicePol:Schedule(polEnergyRate + 1 - 6.5, "157952") --pulverize
 		else--On mythic, there is no longer ability than other 2, since 84 is more divisible by 3 than 100 is
 			timerPulverizeCD:Start(polEnergyRate)--Next Special
-			countdownPol:Start(polEnergyRate)	
+			countdownPol:Start(polEnergyRate)
+			voicePol:Schedule(polEnergyRate - 6.5, "157952") --pulverize
 		end
 	elseif spellId == 158200 then
 		self.vb.LastQuake = GetTime()
@@ -165,6 +180,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnQuake:Show(self.vb.QuakeCount)
 		timerWhirlwindCD:Start(PhemosEnergyRate, self.vb.WWCount+1)
 		countdownPhemos:Start(PhemosEnergyRate)
+		voicePhemos:Schedule(PhemosEnergyRate - 6.5, "157943") --ww
 	elseif spellId == 157952 then--Pulverize first cast that needs range finder
 		self.vb.PulverizeCount = self.vb.PulverizeCount + 1
 		warnPulverize:Show(self.vb.PulverizeCount)
@@ -205,6 +221,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnArcaneVolatility:Show()
 			yellArcaneVolatility:Yell()
+			voiceArcaneVolatility:Play("runout")
 		end
 		if self.Options.RangeFrame then
 			if UnitDebuff("player", arcaneDebuff) then
@@ -218,6 +235,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnArcaneWound:Show(args.destName, amount)
 	elseif spellId == 158241 and args:IsPlayer() and self:AntiSpam(2, 3) then
 		specWarnBlaze:Show()
+		voiceBlaze:Play("runaway")
 	elseif spellId == 163297 then
 		warnArcaneTwisted:Show(args.destName)
 		timerArcaneTwistedCD:Start()
@@ -247,6 +265,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnPulverize:Show()
 		timerShieldChargeCD:Start(polEnergyRate)--Next Special
 		countdownPol:Start(polEnergyRate)
+		voicePol:Play("scatter")
 		if self.Options.RangeFrame and not UnitDebuff("player", arcaneDebuff) then--Show range 3 for everyone, unless have arcane debuff, then you already have range 8 showing everyone that's more important
 			DBM.RangeCheck:Show(3, nil)
 		end
