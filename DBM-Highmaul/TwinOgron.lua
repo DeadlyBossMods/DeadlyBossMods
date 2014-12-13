@@ -99,6 +99,8 @@ function mod:OnCombatStart(delay)
 	timerShieldChargeCD:Start(37.5-delay)--Variable on pull
 	countdownPol:Start(37.5-delay)
 	if self:IsMythic() then
+		PhemosEnergyRate = 28
+		polEnergyRate = 23
 		timerArcaneTwistedCD:Start(33-delay)
 		timerArcaneVolatilityCD:Start(65-delay)
 		countdownArcaneVolatility:Start(65-delay)
@@ -106,11 +108,10 @@ function mod:OnCombatStart(delay)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8, debuffFilter)
 		end
-	end
-	if self:IsDifficulty("heroic", "mythic") then
+	elseif self:IsHeroic() then
 		PhemosEnergyRate = 31
 		polEnergyRate = 25
-	else
+	else--TODO, find out if LFR is even slower
 		PhemosEnergyRate = 33
 		polEnergyRate = 28
 	end
@@ -129,8 +130,13 @@ function mod:SPELL_CAST_START(args)
 		self.vb.EnfeebleCount = self.vb.EnfeebleCount + 1
 		warnEnfeeblingroar:Show(self.vb.EnfeebleCount)
 		specWarnEnfeeblingRoar:Show(self.vb.EnfeebleCount)
-		timerQuakeCD:Start(PhemosEnergyRate+1, self.vb.QuakeCount+1)--Next Special
-		countdownPhemos:Start(PhemosEnergyRate+1)	
+		if not self:IsMythic() then--On all other difficulties, quake is 1 second longer
+			timerQuakeCD:Start(PhemosEnergyRate+1, self.vb.QuakeCount+1)--Next Special
+			countdownPhemos:Start(PhemosEnergyRate+1)	
+		else--On mythic, there is no longer ability than other 2, since 84 is more divisible by 3 than 100 is
+			timerQuakeCD:Start(PhemosEnergyRate, self.vb.QuakeCount+1)--Next Special
+			countdownPhemos:Start(PhemosEnergyRate)
+		end	
 	elseif spellId == 157943 then
 		self.vb.WWCount = self.vb.WWCount + 1
 		warnWhirlwind:Show(self.vb.WWCount)
@@ -145,8 +151,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 158093 then
 		warnInterruptingShout:Show()
 		specWarnInterruptingShout:Show()
-		timerPulverizeCD:Start(polEnergyRate+1)--Next Special
-		countdownPol:Start(polEnergyRate+1)
+		if not self:IsMythic() then
+			timerPulverizeCD:Start(polEnergyRate+1)--Next Special
+			countdownPol:Start(polEnergyRate+1)
+		else--On mythic, there is no longer ability than other 2, since 84 is more divisible by 3 than 100 is
+			timerPulverizeCD:Start(polEnergyRate)--Next Special
+			countdownPol:Start(polEnergyRate)	
+		end
 	elseif spellId == 158200 then
 		self.vb.LastQuake = GetTime()
 		self.vb.QuakeCount = self.vb.QuakeCount + 1
