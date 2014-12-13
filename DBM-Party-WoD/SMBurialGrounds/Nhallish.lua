@@ -9,7 +9,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 152801",
-	"SPELL_AURA_APPLIED 152979 153067"
+	"SPELL_AURA_APPLIED 152979 153067",
+	"SPELL_AURA_REMOVED 152979"
 )
 
 local warnVoidVortex			= mod:NewSpellAnnounce(152801, 3)
@@ -21,6 +22,7 @@ local specWarnVoidDevastation	= mod:NewSpecialWarningSpell(153067, nil, nil, nil
 
 local timerVoidVortexCD			= mod:NewNextTimer(72, 152801)
 local timerSoulShredCD			= mod:NewNextTimer(71, 152979)
+local timerSoulShred			= mod:NewBuffFadesTimer(20, 152979)
 local timerVoidDevastationCD	= mod:NewNextTimer(71, 153067)
 
 function mod:OnCombatStart(delay)
@@ -42,9 +44,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSoulShred:Show()
 		specWarnSoulShred:Show()
 		timerSoulShredCD:Start()
+		timerSoulShred:Start()
 	elseif spellId == 153067 then--SPELL_CAST_SUCCESS is usually missing so have to scan for debuffs
 		warnVoidDevastation:Show()
 		specWarnVoidDevastation:Show()
 		timerVoidDevastationCD:Start()
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if spellId == 152979 and args:IsPlayer() then
+		timerSoulShred:Cancel()
 	end
 end

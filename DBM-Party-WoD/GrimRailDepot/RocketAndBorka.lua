@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 162500 162407 161090 162617",
+	"SPELL_AURA_APPLIED 163947",
 	"UNIT_DIED"
 )
 
@@ -36,6 +37,7 @@ local timerVX18BCD				= mod:NewCDTimer(33, 162500)
 local timerX2101AMissileCD		= mod:NewCDTimer(42, 162407)
 local timerMadDashCD			= mod:NewCDTimer(42, 161090)
 local timerSlamCD				= mod:NewCDTimer(15, 162617, nil, mod:IsSpellCaster())
+local timerRecovering			= mod:NewBuffActiveTimer(6, 163947)
 
 local rocketsName = EJ_GetSectionInfo(9430)
 local borkaID = nil
@@ -95,6 +97,14 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerSlamCD:Start()
 		end
+	end
+end
+
+
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 163947 then
+		timerRecovering:Start()
 	end
 end
 
