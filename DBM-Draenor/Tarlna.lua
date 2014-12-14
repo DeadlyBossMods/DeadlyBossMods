@@ -37,7 +37,7 @@ local timerGrowUntamedMandragoraCD	= mod:NewCDTimer(30, 176013)
 
 local voiceColossalBlow				= mod:NewVoice(175973)
 local voiceMandragora				= mod:NewVoice(176013, mod:IsDps())
-local voiceGenesis					= mod:NewVoice(169613)
+local voiceGenesis					= mod:NewVoice(175979)
 
 --mod:AddReadyCheckOption(37462, false)
 mod:AddRangeFrameOption(8, 175979)

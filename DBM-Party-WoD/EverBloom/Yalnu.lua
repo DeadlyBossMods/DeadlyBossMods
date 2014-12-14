@@ -27,6 +27,9 @@ local specWarnGenesis			= mod:NewSpecialWarningSpell(169613)--Everyone. "Switch"
 local timerFontOfLife			= mod:NewNextTimer(15, 169120)
 local timerGenesis				= mod:NewNextTimer(60.5, 169613)
 
+local voiceColossalBlow			= mod:NewVoice(169179)
+local voiceGenesis				= mod:NewVoice(169613)
+
 function mod:OnCombatStart(delay)
 	timerFontOfLife:Start(-delay)
 	timerGenesis:Start(25-delay)
@@ -37,10 +40,12 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 169179 then
 		warnColossalBlow:Show()
 		specWarnColossalBlow:Show()
+		voiceColossalBlow:Play("shockwave")
 	elseif spellId == 169613 then
 		warnGenesis:Show()
 		specWarnGenesis:Show()
 		timerGenesis:Start()
+		voiceGenesis:Play("169613")
 	end
 end
 
