@@ -499,7 +499,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			voicePhaseChange:Play("pthree")
 		end
 		if spellId == 157964 then
-			voicePhaseChange:Play("four")
+			voicePhaseChange:Play("pfour")
 		end
 	elseif spellId == 164336 then--Teleport to Displacement (first phase change that has no transition)
 		voicePhaseChange:Play("ptwo")
