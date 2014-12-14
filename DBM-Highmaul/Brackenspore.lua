@@ -186,6 +186,7 @@ function mod:UNIT_DIED(args)
 		end
 		DBM:Debug("Blizzard fixed UNIT_DIED for Spore Shooter, remove high cpu waste")
 	elseif cid == 79092 then--Fungal Flesh Eater
+		self.vb.decayCounter = 0
 		timerDecayCD:Cancel(args.destGUID)
 	end
 end
