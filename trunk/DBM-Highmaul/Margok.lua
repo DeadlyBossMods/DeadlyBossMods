@@ -57,6 +57,7 @@ local specWarnMarkOfChaos						= mod:NewSpecialWarningMoveAway(158605, nil, nil,
 local specWarnMarkOfChaosOther					= mod:NewSpecialWarningTaunt(158605)
 local specWarnBranded							= mod:NewSpecialWarningStack(156225, nil, 5)--Debuff Name "Branded"
 local yellBranded								= mod:NewYell(156225, L.BrandedYell)--Always use the short yell, to reduce clutter. Maybe only need to yell on fortification though? (the one player can't move for)
+local specWarnAberration						= mod:NewSpecialWarningSwitch("ej9945", not mod:IsHealer())--can use short name for all of them
 --Phase 2: Rune of Displacement
 local specWarnDestructiveResonanceDisplacement	= mod:NewSpecialWarningSpell(164075, nil, nil, nil, 2)--If target scanning works make this personal.
 local specWarnMarkOfChaosDisplacement			= mod:NewSpecialWarningMoveAway(164176, nil, nil, nil, 3)
@@ -71,7 +72,7 @@ local specWarnTransitionEnd						= mod:NewSpecialWarningEnd(157278)
 local specWarnDestructiveResonanceFortification	= mod:NewSpecialWarningSpell(164076, nil, nil, nil, 2)--If target scanning works make this personal.
 local specWarnMarkOfChaosFortification			= mod:NewSpecialWarningYou(164178, nil, nil, nil, 3)--Debuffed player can not move for this one
 local yellMarkOfChaosFortification				= mod:NewYell(164178)--So give yell
-local specWarnMarkOfChaosFortificationNear		= mod:NewSpecialWarningClose(164178, nil, nil, nil, 3)--And super important "near" warning.
+local specWarnMarkOfChaosFortificationNear		= mod:NewSpecialWarningClose(164178, nil, nil, nil, 3)
 local specWarnMarkOfChaosFortificationOther		= mod:NewSpecialWarningTaunt(164178)
 local specWarnBrandedFortification				= mod:NewSpecialWarningStack(164005, nil, 8)
 --Intermission: Lineage of Power
@@ -101,6 +102,13 @@ local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank()
 local countdownForceNova						= mod:NewCountdown("AltTwo45", 157349)
 local countdownTransition						= mod:NewCountdown(76.5, 157278)
 
+local voiceDestructiveResonance 				= mod:NewVoice(156467, not mod:IsMelee())
+local voiceForceNova	 						= mod:NewVoice(157349)
+local voiceMarkOfChaos							= mod:NewVoice(158605)
+local voicePhaseChange							= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT) --this string should write into language file
+local voiceFixate								= mod:NewVoice(157763)
+local voiceArcaneAberration						= mod:NewVoice(156471, mod:IsDps())
+
 mod:AddRangeFrameOption("35/13/5")
 mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
 
@@ -108,6 +116,7 @@ mod.vb.markActive = false
 mod.vb.playerHasMark = false
 mod.vb.jumpDistance = 13
 mod.vb.lastMarkedTank = nil
+
 local jumpDistance1 = {
 	[1] = 200, [2] = 100, [3] = 50, [4] = 25, [5] = 12.5, [6] = 7,--Or 5
 }
@@ -186,6 +195,7 @@ function mod:OnCombatStart(delay)
 	countdownMarkofChaos:Start(33.5-delay)
 	timerForceNovaCD:Start(-delay, 1)
 	countdownForceNova:Start(-delay)
+	voiceForceNova:Schedule(38.5-delay, "157349")
 end
 
 function mod:OnCombatEnd()
@@ -204,52 +214,70 @@ function mod:SPELL_CAST_START(args)
 		warnDestructiveResonance:Show()
 		specWarnDestructiveResonance:Show()
 		timerDestructiveResonanceCD:Start()
+		voiceDestructiveResonance:Play("runaway")
 	elseif spellId == 164075 then
 		warnDestructiveResonanceDisplacement:Show()
 		specWarnDestructiveResonanceDisplacement:Show()
 		timerDestructiveResonanceCD:Start()
+		voiceDestructiveResonance:Play("runaway")
 	elseif spellId == 164076 then
 		warnDestructiveResonanceFortification:Show()
 		specWarnDestructiveResonanceFortification:Show()
 		timerDestructiveResonanceCD:Start()
+		voiceDestructiveResonance:Play("runaway")
 	elseif spellId == 164077 then
 		warnDestructiveResonanceReplication:Show()
 		specWarnDestructiveResonanceReplication:Show()
 		timerDestructiveResonanceCD:Start()
+		voiceDestructiveResonance:Play("watchstep")
 	-----
 	elseif spellId == 157349 then
 		self.vb.forceCount = self.vb.forceCount + 1
 		warnForceNova:Show(self.vb.forceCount)
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
 		countdownForceNova:Start()
+		voiceForceNova:Schedule(38.5, "157349")
 	elseif spellId == 164232 then
 		self.vb.forceCount = self.vb.forceCount + 1
 		warnForceNovaDisplacement:Show(self.vb.forceCount)
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
 		countdownForceNova:Start()
+		voiceForceNova:Schedule(38.5, "157349")
 	elseif spellId == 164235 then
 		self.vb.forceCount = self.vb.forceCount + 1
 		warnForceNovaFortification:Show(self.vb.forceCount)
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
 		countdownForceNova:Start()
+		voiceForceNova:Schedule(38.5, "157349")
 	elseif spellId == 164240 then
 		self.vb.forceCount = self.vb.forceCount + 1
 		warnForceNovaReplication:Show(self.vb.forceCount)
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
-		countdownForceNova:Start()
+		voiceForceNova:Schedule(38.5, "157349")
+		if not self:IsMelee() then
+			voiceForceNova:Play("range5") --keep range 5 years
+		end
 	-----
 	elseif spellId == 156471 then
 		warnSummonArcaneAberration:Show()
+		specWarnAberration:Show()
 		timerSummonArcaneAberrationCD:Start()
+		voiceArcaneAberration:Play("killmob")
 	elseif spellId == 164299 then
 		warnSummonDisplacingArcaneAberration:Show()
+		specWarnAberration:Show()
 		timerSummonArcaneAberrationCD:Start()
+		voiceArcaneAberration:Play("killmob")
 	elseif spellId == 164301 then
 		warnSummonFortifiedArcaneAberration:Show()
+		specWarnAberration:Show()
 		timerSummonArcaneAberrationCD:Start()
+		voiceArcaneAberration:Play("killmob")
 	elseif spellId == 164303 then
 		warnSummonReplicatingArcaneAberration:Show()
+		specWarnAberration:Show()
 		timerSummonArcaneAberrationCD:Start()
+		voiceArcaneAberration:Play("killmob")
 	elseif args:IsSpellID(158605, 164176, 164178, 164191) then
 		local targetName, uId = self:GetBossTarget(77428)
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
@@ -260,34 +288,40 @@ function mod:SPELL_CAST_START(args)
 			timerMarkOfChaos:Start(targetName)
 			if tanking or (status == 3) then
 				specWarnMarkOfChaos:Show()
+				voiceMarkOfChaos:Play("runout")
 			else
-				specWarnMarkOfChaosOther:Schedule(1, targetName)
+				specWarnMarkOfChaosOther:Show(targetName)
+				voiceMarkOfChaos:Play("changemt")
 			end
 		elseif spellId == 164176 then
 			warnMarkOfChaosDisplacement:Show(targetName)
 			if tanking or (status == 3) then
 				specWarnMarkOfChaosDisplacement:Show()
+				voiceMarkOfChaos:Play("runout")
 			else
-				specWarnMarkOfChaosDisplacementOther:Schedule(1, targetName)
+				specWarnMarkOfChaosDisplacementOther:Show(targetName)
+				voiceMarkOfChaos:Play("changemt")
 			end
 		elseif spellId == 164178 then
 			warnMarkOfChaosFortification:Show(targetName)
 			if tanking or (status == 3) then
 				specWarnMarkOfChaosFortification:Show()
 				yellMarkOfChaosFortification:Yell()
+				voiceMarkOfChaos:Play("runout")--Tank can still run out during cast
 			else
-				specWarnMarkOfChaosFortificationOther:Schedule(1, targetName)
-				if self:CheckNearby(35, targetName) then
-					specWarnMarkOfChaosFortificationNear:Show(targetName)
-				end
+				specWarnMarkOfChaosFortificationOther:Show(targetName)
+				voiceMarkOfChaos:Play("changemt")
 			end
 		elseif spellId == 164191 then
 			warnMarkOfChaosReplication:Show(targetName)
 			if tanking or (status == 3) then
 				specWarnMarkOfChaosReplication:Show()
 				yellMarkOfChaosReplication:Yell()
+				voiceMarkOfChaos:Play("runout")
 			else
-				specWarnMarkOfChaosReplicationOther:Schedule(1, targetName)
+				specWarnMarkOfChaosReplicationOther:Show(targetName)
+				voiceMarkOfChaos:Play("changemt")
+				voiceMarkOfChaos:Schedule(1.5, "watchstep")
 			end
 		end
 		if tanking or (status == 3) then
@@ -321,6 +355,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFixate:Show()
 			if not self:IsLFR() then
 				yellFixate:Yell()
+				voiceFixate:Play("runout")
+				voiceFixate:Schedule(1.5,"targetyou")
 			end
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(5)
@@ -392,6 +428,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.playerHasMark = true
 		else
 			self.vb.playerHasMark = false
+			if spellId == 164178 and self:CheckNearby(35, args.destName) then
+				specWarnMarkOfChaosFortificationNear:Show(args.destName)
+				voiceMarkOfChaos:Play("justrun")
+			end
 		end
 		self:Unschedule(updateRangeFrame)
 		updateRangeFrame()
@@ -439,8 +479,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownMarkofChaos:Cancel()
 		timerForceNovaCD:Cancel()
 		countdownForceNova:Cancel()
+		voiceForceNova:Cancel()
 		timerTransition:Start()
 		countdownTransition:Start()
+		voicePhaseChange:Play("ptran")
 	elseif spellId == 158012 or spellId == 157964 then--Power of Foritification/Replication
 		self.vb.forceCount = 0
 		specWarnTransitionEnd:Show()
@@ -451,6 +493,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerMarkOfChaosCD:Start(36.5)
 		countdownMarkofChaos:Start(36.5)
 		timerForceNovaCD:Start(48.5, 1)
+		voiceForceNova:Schedule(42, "157349")
 		countdownForceNova:Start(48.5)
+		if spellId == 158012 then
+			voicePhaseChange:Play("pthree")
+		end
+		if spellId == 157964 then
+			voicePhaseChange:Play("four")
+		end
+	elseif spellId == 164336 then--Teleport to Displacement (first phase change that has no transition)
+		voicePhaseChange:Play("ptwo")
 	end
 end
