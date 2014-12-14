@@ -62,7 +62,7 @@ local soundExpelMagicArcane			= mod:NewSound(162186)
 
 local voiceExpelMagicFire			= mod:NewVoice(162185)
 local voiceExpelMagicShadow			= mod:NewVoice(162184, mod:IsHealer())
-local voiceExpelMagicFrost			= mod:NewVoice(161411)
+--local voiceExpelMagicFrost			= mod:NewVoice(161411)
 local voiceExpelMagicArcane			= mod:NewVoice(162186)
 local voiceMC						= mod:NewVoice(163472, mod:IsDps())
 local voiceTrample					= mod:NewVoice(163101)
@@ -106,7 +106,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 161411 then
 		warnExpelMagicFrost:Show()
 		specWarnExpelMagicFrost:Show()
-		voiceExpelMagicFrost:Play("161411") --faraway from icy orb
+--		voiceExpelMagicFrost:Play("161411") --faraway from icy orb
 	elseif spellId == 163517 then
 		warnForfeitPower:Show()
 		specWarnForfeitPower:Show(args.sourceName)
