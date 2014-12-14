@@ -27,7 +27,7 @@ local specWarnCannonBarrage	= mod:NewSpecialWarningSpell(168929, nil, nil, nil, 
 local specWarnCannonBarrageE= mod:NewSpecialWarningEnd(168929)
 
 local timerRapidFireCD		= mod:NewNextTimer(12, 168398)
-local timerGronSmashCD		= mod:NewCDTimer(70, 168227)
+local timerGronSmashCD		= mod:NewCDTimer(70, 168227)--Timer is too variable, which is why i never enabled. every time i kill boss it's diff. today 2nd gron smash happened at 49 seconds, 21 seconds sooner than this timer
 
 mod.vb.flameCast = false
 
@@ -53,7 +53,7 @@ function mod:SPELL_CAST_START(args)
 		timerRapidFireCD:Cancel()
 		warnGronSmash:Show()
 		specWarnGronSmash:Show()
-		timerGronSmashCD:Start()
+--		timerGronSmashCD:Start()
 		self.vb.flameCast = false
 	elseif spellId == 168929 then
 		warnCannonBarrage:Show()
