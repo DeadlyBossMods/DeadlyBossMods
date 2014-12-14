@@ -1,9 +1,9 @@
 ﻿## Interface: 60000
 ## X-Min-Interface: 60000
-## Title:|cffffd200DBM|r |cff69ccf0Status Bar Timers|r
-## Title-koKR:|cffffd200DBM|r |cff69ccf0상태 바|r
-## Title-zhTW:|cffffd200DBM|r |cff69ccf0狀態條計時器|r
-## Title-zhCN:|cffffd200DBM|r |cff69ccf0状态条计时器|r
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFStatus Bar Timers|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF상태 바|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF狀態條計時器|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF状态条计时器|r
 ## Notes: DBM - status bar timer library
 ## Notes-koKR: DBM 바 표시에 필요한 애드온입니다.
 ## Notes-zhTW: DBM 狀態條計時器函式庫
