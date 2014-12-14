@@ -53,7 +53,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1197)
 
 L:SetMiscLocalization({
-	BrandedYell			= "Gebrandmarkt (%d) auf %s"
+	BrandedYell			= "Gebrandmarkt (%s) auf %s"
 })
 
 -------------
