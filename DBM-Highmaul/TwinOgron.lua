@@ -266,6 +266,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerShieldChargeCD:Start(polEnergyRate)--Next Special
 		countdownPol:Start(polEnergyRate)
 		voicePol:Play("scatter")
+		voicePol:Schedule(polEnergyRate-6.5, "158134")
 		if self.Options.RangeFrame and not UnitDebuff("player", arcaneDebuff) then--Show range 3 for everyone, unless have arcane debuff, then you already have range 8 showing everyone that's more important
 			DBM.RangeCheck:Show(3, nil)
 		end
