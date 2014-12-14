@@ -6,6 +6,15 @@ local L
 ---------------
 L= DBM:GetModLocalization(1128)
 
+L:SetTimerLocalization({
+	timerSweeperCD			= "다음 높은망치 난동꾼"
+})
+
+L:SetOptionLocalization({
+	timerSweeperCD			= "다음 높은망치 난동꾼 바 보기",
+	countdownSweeper		= "높은망치 난동꾼 이전에 초읽기 듣기"
+})
+
 ---------------------------
 -- The Butcher --
 ---------------------------
