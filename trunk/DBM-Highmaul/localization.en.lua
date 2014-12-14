@@ -62,6 +62,16 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(1197)
 
+L:SetOptionLocalization({
+	--Auto generated, don't copy to non english files, not needed.
+	warnBranded						= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack:format(156225),
+	warnResonance					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(156467),
+	warnMarkOfChaos					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(158605),
+	warnForceNova					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(157349),
+	warnAberration					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(156471)
+	--Auto generated, don't copy to non english files, not needed.
+})
+
 L:SetMiscLocalization({
 	BrandedYell			= "Branded (%s) on %s"
 })
