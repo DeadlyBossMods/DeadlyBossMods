@@ -100,7 +100,7 @@ local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605, nil, mod:IsTank())
 local timerMarkOfChaosCD						= mod:NewCDTimer(50, 158605, nil, mod:IsTank())
 local timerForceNovaCD							= mod:NewCDCountTimer(45, 157349)--45-52
 local timerSummonArcaneAberrationCD				= mod:NewCDTimer(45, 156471, nil, not mod:IsHealer())--45-52 Variation Noted
-local timerTransition							= mod:NewCastTimer(76.5, 157278)
+local timerTransition							= mod:NewPhaseTimer(76.5)
 --Intermission: Lineage of Power
 local timerCrushArmorCD							= mod:NewNextTimer(6, 158553, nil, mod:IsTank())
 local timerKickToFaceCD							= mod:NewNextTimer(20, 158563, nil, mod:IsTank())
