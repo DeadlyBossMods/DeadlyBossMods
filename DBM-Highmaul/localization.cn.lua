@@ -48,7 +48,7 @@ L= DBM:GetModLocalization(1153)
 
 L:SetMiscLocalization({
 	supressionTarget1	= "我要碾碎你！", --Thanks xuesj87@NGA
-	supressionTarget2	= "沉默！",
+	supressionTarget2	= "闭嘴！", --Thanks 纸醉金迷°@NGA
 	supressionTarget3	= "安静！",
 	supressionTarget4	= "我要把你撕成两半！"
 })
