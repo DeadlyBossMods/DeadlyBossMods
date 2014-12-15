@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Dec 4, 2014@11926
+-- Last update: Dec 15, 2014@12036
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -274,10 +274,13 @@ DBM_CORE_AUTO_TIMER_TEXTS.fades					= "%s消失"--Buff/Debuff on players
 DBM_CORE_AUTO_TIMER_TEXTS.cd					= "%s冷却"
 DBM_CORE_AUTO_TIMER_TEXTS.cdcount				= "%s冷却（%%d）"
 DBM_CORE_AUTO_TIMER_TEXTS.cdsource				= "%s冷却: >%%s<"
+DBM_CORE_AUTO_TIMER_TEXTS.cdspecial				= "特殊技能冷却"
 DBM_CORE_AUTO_TIMER_TEXTS.next 					= "下一次%s"
 DBM_CORE_AUTO_TIMER_TEXTS.nextcount				= "下一次%s（%%d）"
 DBM_CORE_AUTO_TIMER_TEXTS.nextsource			= "下一次%s: >%%s<"
+DBM_CORE_AUTO_TIMER_TEXTS.nextspecial			= "下一次特殊技能"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement 			= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.phase					= "下一阶段"
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target				= "计时条：$spell:%s减益效果持续时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast				= "计时条：$spell:%s施法时间"
@@ -286,20 +289,24 @@ DBM_CORE_AUTO_TIMER_OPTIONS.fades				= "计时条：$spell:%s何时从玩家身�
 DBM_CORE_AUTO_TIMER_OPTIONS.cd					= "计时条：$spell:%s冷却时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.cdcount				= "计时条：$spell:%s冷却时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.cdsource			= "计时条：$spell:%s冷却时间以及来源"
+DBM_CORE_AUTO_TIMER_OPTIONS.cdspecial				= "计时条：特殊技能冷却"
 DBM_CORE_AUTO_TIMER_OPTIONS.next				= "计时条：下一次$spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextcount			= "计时条：下一次$spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextsource			= "计时条：下一次$spell:%s以及来源"
+DBM_CORE_AUTO_TIMER_OPTIONS.nextspecial			= "计时条：下一次特殊技能"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement			= "计时条：成就%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.phase					= "计时条：下一阶段"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT				= "为$spell:%s的目标添加团队标记"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT2			= "为$spell:%s添加团队标记"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT				= "为$spell:%s的目标添加箭头"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT2			= "为$spell:%s的目标添加远离箭头"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT				= "声音警报（快跑啊，小姑娘）：$spell:%s"
-DBM_CORE_AUTO_VOICE_OPTION_TEXT				= "为 $spell:%s 提供语音警报(使用选中的语音包)"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT			= "声音警报：$spell:%s的冷却时间倒计时"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2		= "声音警报：$spell:%s消失时"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT			= "声音警报：$spell:%s的持续时间正计时"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT				= "为技能$spell:%s提供内置语音警报（快跑啊，小姑娘）"
+DBM_CORE_AUTO_VOICE_OPTION_TEXT				= "为技能$spell:%s提供语音包警报"
+DBM_CORE_AUTO_VOICE2_OPTION_TEXT			= "为阶段转换提供语音包警报"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT			= "倒计时：$spell:%s的冷却时间倒计时"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2		= "倒计时：$spell:%s消失时"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT			= "倒计时：$spell:%s的持续时间正计时"
 DBM_CORE_AUTO_YELL_OPTION_TEXT				= "当你受到$spell:%s影响时时大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT			= UnitName("player") .. " 中了 %s!"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT				= "距离监视(%s)：$spell:%s"--string used for range so we can use things like "5/2" as a value for that field
