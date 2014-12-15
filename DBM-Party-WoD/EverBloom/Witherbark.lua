@@ -30,6 +30,10 @@ local specWarnBrittleBarkEnd	= mod:NewSpecialWarningEnd(164275, false)--Added fo
 local timerParchedGrasp			= mod:NewCDTimer(12, 164357)
 
 
+local voiceLivingLeaves			= mod:NewVoice(169495)
+local voiceUncheckedGrowth		= mod:NewVoice(164294)
+
+
 function mod:OnCombatStart(delay)
 	timerParchedGrasp:Start(7-delay)
 end
@@ -55,8 +59,10 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
 	if spellId == 169495 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnLivingLeaves:Show()
+		voiceLivingLeaves:Play("runaway")
 	elseif spellId == 164294 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnUncheckedGrowth:Show()
+		voiceUncheckedGrowth:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -70,5 +76,8 @@ end
 function mod:CHAT_MSG_MONSTER_EMOTE(msg)--Message doesn't matter, it occurs only for one thing during this fight
 	warnUncheckedGrowth:Show()
 	specWarnUncheckedGrowthAdd:Show()
+	if self:IsTank() then
+		voiceUncheckedGrowth:Play("killmob")
+	end
 end
 

@@ -46,6 +46,10 @@ local timerClawsOfArgusCD			= mod:NewNextTimer(70, 153764)
 local countdownClawsOfArgus			= mod:NewCountdown(70, 153764)
 local countdownCurtainOfFlame		= mod:NewCountdown("Alt20", 153396)
 
+local voiceCurtainOfFlame			= mod:NewVoice(153392)
+local voiceClawsOfArgus				= mod:NewVoice(153764)
+local voiceFelblast					= mod:NewVoice(154221, false)
+
 mod:AddRangeFrameOption(5, 153396)
 
 mod.vb.debuffCount = 0
@@ -66,6 +70,7 @@ function mod:OnCombatStart(delay)
 	countdownCurtainOfFlame:Start(16-delay)
 	timerClawsOfArgusCD:Start(34-delay)
 	countdownClawsOfArgus:Start(34-delay)
+	voiceClawsOfArgus:Schedule("mobsoon", 27.5-delay)
 end
 
 function mod:OnCombatEnd()
@@ -93,9 +98,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnCurtainOfFlame:Show()
 			yellWarnCurtainOfFlame:Yell()
+			voiceCurtainOfFlame:Play("runout")
 		else
 			if self:CheckNearby(5, targetname) then
 				specWarnCurtainOfFlameNear:Show(targetname)
+				voiceCurtainOfFlame:Play("runaway")
 			end
 		end
 		if self.Options.RangeFrame then
@@ -127,6 +134,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerCurtainOfFlameCD:Start(7)
 		timerClawsOfArgusCD:Start()
 		countdownClawsOfArgus:Start()
+		voiceClawsOfArgus:Schedule("mobsoon", 63.5)
 	end
 end
 
@@ -139,6 +147,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 154221 then
 		warnFelblast:Show()
 		specWarnFelblast:Show(args.sourceName)
+		if self:IsTank() then
+			voiceFelblast:Play("kickcast")
+		else
+			voiceFelblast:Play("helpkick")
+		end
 	elseif spellId == 157173 then
 		warnFelStomp:Show()
 		specWarnFelStomp:Show()

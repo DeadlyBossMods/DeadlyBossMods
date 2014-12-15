@@ -36,6 +36,14 @@ local specWarnWitheringFlames	= mod:NewSpecialWarningDispel(150032, mod:IsHealer
 
 local timerMoltenImpactCD		= mod:NewNextTimer(21.5, 150038)
 
+local voiceRuination			= mod:NewVoice("ej8622", not mod:IsHealer())
+local voiceCalamity				= mod:NewVoice("ej8626", not mod:IsHealer())
+local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+local voiceFirestorm			= mod:NewVoice(149997, not mod:IsHealer())
+local voiceDancingFlames		= mod:NewVoice(149975, mod:IsHealer())
+local voiceWitheringFlames		= mod:NewVoice(150032, mod:IsHealer())
+local voiceSlagSmash			= mod:NewVoice(150023, mod:IsMelee())
+
 local activeAddGUIDS = {}
 
 function mod:OnCombatStart(delay)
@@ -60,10 +68,13 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			--Ruination#Creature:0:3314:1175:11531:74570
 			if cid == 74570 then--Ruination
 				specWarnRuination:Show()
+				voiceRuination:Play("mobsoon")
 			elseif cid == 74571 then--Calamity
 				specWarnCalamity:Show()
+				voiceCalamity:Play("mobsoon")
 			elseif cid == 74475 then--Magmolatus
 				warnPhase2:Show()
+				voicePhaseChange:Play("ptwo")
 				specWarnMagmolatus:Show()
 				timerMoltenImpactCD:Start(5)
 			end
@@ -76,14 +87,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 149997 then
 		warnFirestorm:Show()
 		specWarnFirestorm:Show(args.sourceName)
+		if self:IsTank() then
+			voiceFirestorm:Play("kickcast")
+		else
+			voiceFirestorm:Play("helpkick")
+		end
 	elseif spellId == 149975 then
 		warnDancingFlames:CombinedShow(0.3, args.destName)--heroic is 2 targets so combined.
 		if self:AntiSpam(2, 2) then--only show once. (prevent loud sound)
 			specWarnDancingFlames:Show(args.destName)
+			voiceDancingFlames:Play("dispelnow")
 		end
 	elseif spellId == 150032 then
 		warnWitheringFlames:Show(args.destName)
 		specWarnWitheringFlames:Show(args.destName)
+		voiceWitheringFlames:Play("dispelnow")
 	end
 end
 
@@ -97,6 +115,7 @@ function mod:SPELL_CAST_START(args)
 		timerMoltenImpactCD:Start()
 	elseif spellId == 150023 then
 		specWarnSlagSmash:Show()
+		voiceSlagSmash:Play("runaway")
 	end
 end
 

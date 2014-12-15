@@ -31,11 +31,19 @@ local timerCrushingLeapCD		= mod:NewCDTimer(23, 150751)--23~25 variable.
 --local timerEarthCrushCD--13~21. large variable. useless.
 local timerWildSlamCD			= mod:NewCDTimer(23, 150753)--23~24 variable.
 
+local voiceFerociousYell		= mod:NewVoice(150759, not mod:IsHealer())
+local voiceRaiseMiners			= mod:NewVoice(150801)
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 150751 then
 		warnCrushingLeap:Show(args.destName)
 		specWarnCrushingLeap:Show(args.destName)
 		timerCrushingLeapCD:Start()
+		if self:IsTank() then
+			voiceFerociousYell:Play("kickcast")
+		else
+			voiceFerociousYell:Play("helpkick")
+		end
 	end
 end
 
@@ -47,6 +55,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 150801 then
 		warnRaiseMiners:Show()
 		specWarnRaiseMiners:Show()
+		voiceRaiseMiners:Play("mobsoon")
 	elseif spellId == 153679 then
 		warnEarthCrush:Show()
 		specWarnEarthCrush:Show()
