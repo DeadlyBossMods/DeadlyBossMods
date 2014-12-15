@@ -55,8 +55,7 @@ local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, mod:IsMelee())
 local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, mod:IsMelee() and not mod:IsTank())
 local timerLivingMushroomCD			= mod:NewCDTimer(55.5, 160022, nil, mod:IsHealer())
 local timerRejuvMushroomCD			= mod:NewCDTimer(150, 160021, nil, mod:IsHealer())
---local timerExplodingFungusCD		= mod:NewCDTimer(32, 163794)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
-local timerWavesCD					= mod:NewCDTimer(33, 160425)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
+local timerSpecialCD				= mod:NewCDSpecialTimer(20)--Mythic Specials. Shared cd, which special he uses is random. 20-25 second variation, unless delayed by spores. then 20-25+10 Only Exploding fungas can be delayed by spores. waves can still cast during spores.
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -91,6 +90,9 @@ function mod:OnCombatStart(delay)
 	voiceInfestingSpores:Schedule(38.5-delay, "aesoon")
 	timerRejuvMushroomCD:Start(80-delay)--Todo, verify 80 in all modes and not still 75 in mythic
 	berserkTimer:Start(-delay)
+	if self:IsMythic() then
+		timerSpecialCD:Start(-delay)--standard 20-25
+	end
 end
 
 function mod:OnCombatEnd()
@@ -205,10 +207,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 163794 then
 		warnExplodingFungus:Show()
 		specWarnExplodingFungus:Show()
---		timerExplodingFungusCD:Start()
+		timerSpecialCD:Start()
 	elseif spellId == 160425 then
 		warnWaves:Show()
 		specWarnWaves:Show()
-		timerWavesCD:Start()
+		timerSpecialCD:Start()
 	end
 end
