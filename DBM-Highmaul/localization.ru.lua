@@ -11,8 +11,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerSweeperCD			= DBM_CORE_AUTO_TIMER_OPTIONS.next:format("Чистильщик арены"),
-	countdownSweeper		= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format("Чистильщик арены")
+	timerSweeperCD			= "Отсчет времени до следующего Чистильщика арены",
+	countdownSweeper		= "Звуковой отсчет до восстановления \"Чистильщик арены\""
 })
 
 ---------------------------
