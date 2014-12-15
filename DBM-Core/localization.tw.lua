@@ -15,7 +15,7 @@ DBM_CORE_LOAD_GUI_COMBAT			= "圖形介面不能在戰鬥中初始化。圖形�
 DBM_CORE_LOAD_SKIN_COMBAT			= "DBM計時條在戰鬥中套用外觀失敗。你的計時條可能不能正常作用而可能會導致錯誤。這常發生在使用第三方插件試著在戰鬥中套用外觀。建議在脫離戰鬥後reloadui。"
 DBM_CORE_BAD_LOAD					= "DBM偵測到你的此副本的模組在戰鬥中讀取失敗。一旦脫離戰鬥，請立即輸入/consoel reloadui重新載入。"
 
-DBM_CORE_BLIZZ_BUGS					= "6.0中的暴雪插件BUG：\n1. 如果你開啟音效設定，你可能會在戰鬥中失去插件的音效，因為Patch 6.0降低插件的聲音優先權而且遊戲同時放出的音效數量超過你最大聲音頻道的值，DBM現在會自動強制設定聲音頻道的值為64。如果依舊有此類問題發生，請將'音效'完全禁用。"
+DBM_CORE_BLIZZ_BUGS					= "6.0中的暴雪插件改變：\n1. 如果你開啟音效設定，你可能會在戰鬥中失去插件的音效，插件的聲音優先權較低而且遊戲同時放出的音效數量超過你最大聲音頻道的值，DBM現在會自動強制設定聲音頻道的值為64。如果依舊有此類問題發生，請將'音效'完全禁用。"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM已中禁用動態距離框架，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM已中禁用小怪計數警告，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
@@ -280,7 +280,8 @@ DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "為$spell:%s設置標記"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT			= "為跑向中了$spell:%s的目標顯示DBM箭頭"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "為離開中了$spell:%s的目標顯示DBM箭頭"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "當你中了$spell:%s時播放音效"
-DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "為$spell:%s播放選取的語音包音效"
+DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "為$spell:%s播放語音音效"
+DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "為階段轉換播放語音音效"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "為$spell:%s的冷卻播放倒數計時音效"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "為$spell:%s的減益播放倒數計時音效"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "為$spell:%s的持續時間播放倒數計時音效"
