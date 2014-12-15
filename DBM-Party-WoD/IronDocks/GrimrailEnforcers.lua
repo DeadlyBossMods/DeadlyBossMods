@@ -42,6 +42,8 @@ local timerOgreTrapsCD      	= mod:NewCDTimer(25, 163390)--25-30 variation.
 
 local countdownFlamingSlash		= mod:NewCountdown(29, 163665)
 
+local voiceSanguineSphere		= mod:NewVoice(163689, not mod:IsHealer())
+
 function mod:OnCombatStart(delay)
 	timerFlamingSlashCD:Start(5-delay)
 	countdownFlamingSlash:Start(5-delay)
@@ -67,6 +69,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 163689 then
 		warnSanguineSphere:Show(args.destName)
 		specWarnSanguineSphere:Show(args.destName)
+		voiceSanguineSphere:Play("stopattack")
 		local _, _, _, _, _, duration, expires, _, _ = UnitBuff(args.destName, args.spellName)
 		if expires then
 			timerSanguineSphere:Start(expires-GetTime(), args.destName)

@@ -30,6 +30,10 @@ local timerHeatWave				= mod:NewBuffActiveTimer(9.5, 152940)
 local timerHeatWaveCD			= mod:NewNextTimer(9.5, 152940)--9.5-9.8 Observed
 local timerBurningSlagCD		= mod:NewNextTimer(10.7, 152939)--10.7-11 Observed
 
+local voiceFieryBoulder			= mod:NewVoice(153247)
+local voiceHeatWave				= mod:NewVoice(152940)
+local voiceBurningSlag			= mod:NewVoice(152939)
+
 mod.vb.boulderCount = 0
 mod.vb.burningSlagCast = false--More robust than using a really huge anti spam, because this will work with recovery, antispam won't
 
@@ -46,6 +50,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.boulderCount = self.vb.boulderCount + 1
 		warnFieryBoulder:Show(self.vb.boulderCount)
 		specWarnFieryBoulder:Show()
+		if self.vb.boulderCount == 1 then
+			voiceFieryBoulder:Play("153247")
+		end
 		if self.vb.boulderCount == 3 then
 			timerHeatWaveCD:Start()
 			self.vb.boulderCount = 0
@@ -57,23 +64,27 @@ function mod:SPELL_CAST_START(args)
 		specWarnHeatWave:Show()
 		timerHeatWave:Start()
 		timerBurningSlagCD:Start()
+		voiceHeatWave:Play("aesoon")
 	elseif spellId == 152939 and not self.vb.burningSlagCast then--Burning Slag
 		self.vb.burningSlagCast = true
 		warnBurningSlag:Show()
 		specWarnBurningSlag:Show()
 		timerFieryBoulderCD:Start()
+		voiceBurningSlag:Play("firecircle")
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 153227 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnBurningSlagFire:Show()
+		voiceBurningSlag:Play("runaway")
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 153227 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnBurningSlagFire:Show()
+		voiceBurningSlag:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

@@ -29,14 +29,22 @@ local specWarnEnrage					= mod:NewSpecialWarningDispel(164835, mod:CanRemoveEnra
 local timerRecklessProvocation			= mod:NewBuffActiveTimer(5, 164426)
 --local timerBurningArrowsCD				= mod:NewNextTimer(25, 164635)--25~42 variable (patterned?)
 
+local voiceRecklessProvocation			= mod:NewVoice(164426)
+local voiceEnrage						= mod:NewVoice(164835, mod:CanRemoveEnrage())
+local voiceBurningArrows				= mod:NewVoice(164632)
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 164426 then
 		warnRecklessProvocation:Show(args.destName)
 		specWarnRecklessProvocation:Show(args.destName)
 		timerRecklessProvocation:Start()
+		voiceRecklessProvocation:Play("stopattack")
 	elseif args.spellId == 164835 and args:GetSrcCreatureID() == 81297 then
 		warnEnrage:Show()
 		specWarnEnrage:Show(args.destName)
+		if self:AntiSpam() then
+			voiceEnrage:Play("trannow") --multi sound
+		end
 	elseif args.spellId == 164632 and args:IsPlayer() and self:AntiSpam(2) then
 		specWarnBurningArrowsMove:Show()
 	end
@@ -45,6 +53,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 164426 then
 		specWarnRecklessProvocationEnd:Show()
+		voiceBurningArrows:Play("runaway")
 	end
 end
 

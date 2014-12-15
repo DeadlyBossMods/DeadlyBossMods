@@ -29,6 +29,9 @@ local specWarnCannonBarrageE= mod:NewSpecialWarningEnd(168929)
 local timerRapidFireCD		= mod:NewNextTimer(12, 168398)
 local timerGronSmashCD		= mod:NewCDTimer(70, 168227)--Timer is too variable, which is why i never enabled. every time i kill boss it's diff. today 2nd gron smash happened at 49 seconds, 21 seconds sooner than this timer
 
+local voiceRapidFire		= mod:NewVoice(168398)
+local voiceCannonBarrage	= mod:NewVoice(168929)
+
 mod.vb.flameCast = false
 
 function mod:OnCombatStart(delay)
@@ -43,6 +46,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnRapidFire:Show()
 			yellRapidFire:Yell()
+			voiceRapidFire:Play("runout")
 		end
 	end
 end
@@ -58,6 +62,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 168929 then
 		warnCannonBarrage:Show()
 		specWarnCannonBarrage:Show()
+		voiceCannonBarrage:Play("findshelter")
 	elseif spellId == 169129 and not self.vb.flameCast then
 		self.vb.flameCast = true
 		warnBackdraft:Show()

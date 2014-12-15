@@ -37,6 +37,11 @@ local timerVilebloodSerumCD			= mod:NewCDTimer(9.5, 161209)--every 9-10 seconds
 
 local countdownDebilitating			= mod:NewCountdown(20, 161199, mod:IsTank())
 
+local voiceRejuvSerum				= mod:NewVoice(161203, mod:IsMagicDispeller())
+local voiceToxicFumes				= mod:NewVoice(162600, mod:IsHealer())
+local voiceDebilitating				= mod:NewVoice(161199, not mod:IsHealer())
+local voiceVilebloodSerum			= mod:NewVoice(161288)
+
 function mod:OnCombatStart(delay)
 --	timerRejuvSerumCD:Start(22.5-delay)--Insufficent sample size
 	timerDebilitatingCD:Start(12-delay)--Insufficent sample size
@@ -49,9 +54,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRejuvSerum:Show(args.destName)
 		specWarnRejuvSerum:Show(args.destName)
 --		timerRejuvSerumCD:Start()
+		voiceRejuvSerum:Play("dispelboss")
 	elseif spellId == 162600 then
 		warnToxicFumes:Show(args.destName)
 		specWarnToxicFumes:Show(args.destName)
+		voiceToxicFumes:Play("dispelnow")
 	end
 end
 
@@ -62,6 +69,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnDebilitatingFixation:Show(args.sourceName)
 		timerDebilitatingCD:Start()
 		countdownDebilitating:Start()
+		if self:IsTank() then
+			voiceDebilitating:Play("kickcast")
+		else
+			voiceDebilitating:Play("helpkick")
+		end
 	elseif spellId == 161203 then
 		warnRejuvSerumCast:Show()
 	elseif spellId == 155037 and self:IsInCombat() then
@@ -74,6 +86,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 161288 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnVilebloodSerum:Show()
+		voiceVilebloodSerum:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

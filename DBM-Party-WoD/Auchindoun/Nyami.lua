@@ -28,6 +28,10 @@ local timerSoulVessel			= mod:NewBuffActiveTimer(11.5, 155327)
 local timerSoulVesselCD			= mod:NewCDTimer(51.5, 155327)
 local timerTornSpiritsCD		= mod:NewCDTimer(25.5, 153991)
 
+local voiceSWP					= mod:NewVoice(154477, mod:IsHealer())
+local voiceSoulVessel			= mod:NewVoice(155327)
+local voiceTornSpirits			= mod:NewVoice(153994)
+
 function mod:OnCombatStart(delay)
 	timerSoulVesselCD:Start(22-delay)
 end
@@ -36,6 +40,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 154477 and args:IsDestTypePlayer() then
 		warnSWP:Show(args.destName)
 		specWarnSWP:Show(args.destName)
+		voiceSWP:Play("dispelnow")
 	end
 end
 
@@ -48,8 +53,10 @@ function mod:SPELL_CAST_START(args)
 		timerSoulVessel:Start()
 		timerTornSpiritsCD:Start()
 		timerSoulVesselCD:Start()
+		voiceSoulVessel:Play("findshadow")
 	elseif spellId == 153994 then
 		warnTornSpirits:Show()
 		specWarnTornSpirits:Show()
+		voiceTornSpirits:Play("mobsoon")
 	end
 end

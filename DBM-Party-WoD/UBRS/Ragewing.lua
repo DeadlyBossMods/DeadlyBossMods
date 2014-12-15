@@ -31,11 +31,18 @@ local specWarnEngulfingFire	= mod:NewSpecialWarningSpell(154996, nil, nil, nil, 
 local timerEngulfingFireCD	= mod:NewCDTimer(22, 154996)
 local timerSwirlingWinds	= mod:NewBuffActiveTimer(20, 167203)
 
+local voiceEngulfingFire	= mod:NewVoice(154996)
+local voiceBurningRage		= mod:NewVoice(155620, mod:CanRemoveEnrage())
+local voiceMagmaSpit		= mod:NewVoice(155051)
+local voiceMagmaPool		= mod:NewVoice(155057)
+
+
 mod.vb.firstBreath = false
 
 function mod:OnCombatStart(delay)
 	timerEngulfingFireCD:Start(13-delay)--Needs more data
 	self.vb.firstBreath = false
+	voiceEngulfingFire:Schedule(12, "breathsoon")
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -43,6 +50,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 155620 then
 		warnBurningRage:Show(args.destName, args.amount or 1)
 		specWarnBurningRage:Show(args.destName)
+		voiceBurningRage:Play("trannow")
 	elseif spellId == 167203 then
 		warnSwirlingWinds:Show()
 		timerSwirlingWinds:Start()
@@ -59,6 +67,7 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 155051 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then--Goriona's Void zones
 		specWarnMagmaSpit:Show()
+		voiceMagmaSpit:Play("runaway")
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
@@ -66,6 +75,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 155057 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then--Goriona's Void zones
 		specWarnMagmaPool:Show()
+		voiceMagmaPool:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -78,6 +88,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if not self.vb.firstBreath then
 			self.vb.firstBreath = true
 			timerEngulfingFireCD:Start()
+			voiceEngulfingFire:Schedule(21, "breathsoon")
 		end
 	end
 end

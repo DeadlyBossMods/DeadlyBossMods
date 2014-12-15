@@ -27,6 +27,8 @@ local specWarnNoxiousSpit	= mod:NewSpecialWarningMove(161833)
 local timerIronReaverCD		= mod:NewCDTimer(20.5, 161989)--Not enough data to really verify this
 local timerImbuedIronAxeCD	= mod:NewCDTimer(29, 162090)--29-37sec variation
 
+local voiceWarnNoxiousSpit	= mod:NewVoice(161833)
+
 function mod:OnCombatStart(delay)
 --	timerIronReaverCD:Start(-delay)
 end
@@ -45,12 +47,14 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 161833 and args:IsPlayer() and self:AntiSpam(3, 1) then
 		specWarnNoxiousSpit:Show()
+		voiceWarnNoxiousSpit:Play("runaway")
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 161833 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then--Goriona's Void zones
 		specWarnNoxiousSpit:Show()
+		voiceWarnNoxiousSpit:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

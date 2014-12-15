@@ -29,6 +29,10 @@ local specWarnFrozenRainMove	= mod:NewSpecialWarningMove(166726)
 
 local timerParasiticGrowthCD	= mod:NewCDCountTimer(11.5, 168885)--Every 12 seconds unless comes off cd during fireball/frostbolt, then cast immediately after.
 
+--local voiceFireBloom= mod:NewVoice(166492)
+local voiceFrozenRain			= mod:NewVoice(166726)
+local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+
 mod.vb.ParasiteCount = 0
 
 function mod:OnCombatStart(delay)
@@ -59,14 +63,18 @@ function mod:SPELL_AURA_APPLIED(args)
 	--if args:IsSpellID(166492, 166572) and self:AntiSpam(12) then--Because the dumb spell has no cast Id, we can only warn when someone gets hit by one of rings.
 		--warnFireBloom:Show()
 		--specWarnFireBloom:Show()
+		--voiceFireBloom:Play("firecircle")
 	if spellId == 166726 and args:IsPlayer() and self:AntiSpam(2) then--Because dumb spell has no cast Id, we can only warn when people get debuff from standing in it.
 		specWarnFrozenRainMove:Show()
+		voiceFrozenRain:Play("runaway")
 	elseif spellId == 166475 then
 		warnFirePhase:Show()
 	elseif spellId == 166476 then
 		warnFrostPhase:Show()
+		voicePhaseChange:Play("ptwo")
 	elseif spellId == 166477 then
 		warnArcanePhase:Show()
+		voicePhaseChange:Play("pthree")
 	end
 end
 

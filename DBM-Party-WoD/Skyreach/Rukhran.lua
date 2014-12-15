@@ -25,6 +25,9 @@ local specWarnQuillsEnd			= mod:NewSpecialWarningEnd(159382)
 local timerSolarFlareCD			= mod:NewCDTimer(18, 153810)
 local timerQuillsCD				= mod:NewCDTimer(64, 159382)--Needs review
 
+local voiceSolarFlare			= mod:NewVoice(153810, not mod:IsTank())
+local voiceQuills				= mod:NewVoice(159382)
+
 function mod:OnCombatStart(delay)
 	timerSolarFlareCD:Start(11-delay)
 	if self:IsHeroic() then
@@ -45,6 +48,10 @@ function mod:SPELL_CAST_START(args)
 		warnSolarFlare:Show()
 		specWarnSolarFlare:Show()
 		timerSolarFlareCD:Start()
+		voiceSolarFlare:Play("mobsoon")
+		if self:IsDps() then
+			voiceSolarFlare:Schedule(2, "mobkill")
+		end
 	elseif spellId == 153794 then
 		warnPierceArmor:Show()
 		specWarnPierceArmor:Show()
@@ -52,5 +59,6 @@ function mod:SPELL_CAST_START(args)
 		warnQuills:Show()
 		specWarnQuills:Show()
 		timerQuillsCD:Start()
+		voiceQuills:Play("findshelter")
 	end
 end
