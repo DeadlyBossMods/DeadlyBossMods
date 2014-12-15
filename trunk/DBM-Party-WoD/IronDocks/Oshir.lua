@@ -26,7 +26,7 @@ local specWarnRoar				= mod:NewSpecialWarningSpell(163054, nil, nil, nil, true)
 local specWarnTimeToFeed		= mod:NewSpecialWarningYou(162415)--Can still move and attack during it, a personal warning lets a person immediately hit self heals/damage reduction abilities.
 local specWarnTimeToFeedOther	= mod:NewSpecialWarningTarget(162415, mod:IsHealer())
 
-local timerPrimalAssaultCD		= mod:NewCDTimer(25, 161256)--25 to 32 variables. need more data
+--local timerPrimalAssaultCD		= mod:NewCDTimer(25, 161256)--25 to 32 variables. need more data
 --local timerTimeToFeedCD			= mod:NewCDTimer(22, 162415)--22 to 30 second variation. In CM targets random players, not just tank, so timer for all.
 
 function mod:OnCombatStart(delay)
@@ -53,10 +53,10 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 161256 then
+	if spellId == 161256 and self:AntiSpam(5) then
 		warnPrimalAssault:Show()
 		specWarnPrimalAssault:Show()
-		timerPrimalAssaultCD:Start()
+		--timerPrimalAssaultCD:Start()
 	elseif spellId == 178124 then
 		warnBreakout:Show(args.destName)
 	end
