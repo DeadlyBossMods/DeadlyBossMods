@@ -42,10 +42,7 @@ local timerOgreTrapsCD      	= mod:NewCDTimer(25, 163390)--25-30 variation.
 
 local countdownFlamingSlash		= mod:NewCountdown(29, 163665)
 
-mod.vb.firstSphere = false
-
 function mod:OnCombatStart(delay)
-	self.vb.firstSphere = true
 	timerFlamingSlashCD:Start(5-delay)
 	countdownFlamingSlash:Start(5-delay)
 	timerOgreTrapsCD:Start(19.5-delay)
@@ -70,11 +67,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 163689 then
 		warnSanguineSphere:Show(args.destName)
 		specWarnSanguineSphere:Show(args.destName)
-		if self.vb.firstSphere then
-			self.vb.firstSphere = false
-			timerSanguineSphere:Start(9, args.destName)
-		else
-			timerSanguineSphere:Start(15, args.destName)
+		local _, _, _, _, _, duration, expires, _, _ = UnitBuff(args.destName, args.spellName)
+		if expires then
+			timerSanguineSphere:Start(expires-GetTime(), args.destName)
 		end
 		timerSanguineSphereCD:Start()
 	end
