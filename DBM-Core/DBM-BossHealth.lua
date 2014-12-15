@@ -20,7 +20,6 @@ local updateBar
 local anchor
 local header
 local dropdownFrame
-local savedDifficulty
 --local sortingEnabled
 
 do
@@ -157,9 +156,6 @@ local function createBar(self, name, ...) -- the vararg will also contain the na
 	bar.hidden = false
 	bar:ClearAllPoints()
 	bartext:SetText(name or "")
-	if not name then
-		bar.needName = true
-	end
 	if type(bar.id) == "function" then
 		local health, icon = bar.id()
 		updateBar(bar, health, icon, true)
@@ -174,21 +170,35 @@ end
 ------------------
 --  Bar Update  --
 ------------------
-function updateBar(bar, percent, icon, dontShowDead)
+function updateBar(bar, percent, icon, dontShowDead, name)
 	if not percent then return end
-	local bartimer = _G[bar:GetName() .. "BarTimer"]
-	local barbar = _G[bar:GetName() .. "Bar"]
-	local barIcon = _G[bar:GetName() .. "BarIcon"]
-	bartimer:SetText((percent > 0 or dontShowDead) and math.floor(percent).."%" or DEAD)
-	barbar:SetValue(percent)
-	barbar:SetStatusBarColor((100 - percent) / 100, percent/100, 0)
+	local barName = bar:GetName()
+	local bartimer = _G[barName .. "BarTimer"]
+	local barbar = _G[barName .. "Bar"]
+	local barIcon = _G[barName .. "BarIcon"]
+	local bartext = _G[barName .. "BarName"]
+	if percent > 0 then
+		bartimer:SetText(math.floor(percent).."%")
+		barbar:SetValue(percent)
+		barbar:SetStatusBarColor((100 - percent) / 100, percent/100, 0)
+		bar.value = percent
+	elseif percent == 0 then
+		bartimer:SetText(dontShowDead and "0%" or DEAD)
+		barbar:SetValue(0)
+		barbar:SetStatusBarColor(0, 0, 0)
+		bar.value = 0
+	else--can't detect health. show unknown
+		bartimer:SetText(DBM_CORE_UNKNOWN)
+	end
 	if not icon or type(icon) ~= "number" or icon < 1 or icon > 8 then
 		barIcon:Hide()
 	else
 		barIcon:Show()
 		barIcon:SetTexCoord((icon - 1) % 4 / 4, (icon - 1) % 4 / 4 + 0.25, icon < 5 and 0 or 0.25, icon < 5 and 0.25 or 0.5)
 	end
-	bar.value = percent
+	if name then
+		bartext:SetText(name)
+	end
 end
 
 do
@@ -199,9 +209,6 @@ do
 --		if sortingEnabled then
 --			table.sort(bars, compareBars)
 --		end
-		if not savedDifficulty then
-			savedDifficulty = DBM:GetCurrentInstanceDifficulty()
-		end
 		for i, v in ipairs(bars) do
 --			if i > DBM.Options.HPFrameMaxEntries then
 --				v:Hide()
@@ -211,26 +218,16 @@ do
 			if type(v.id) == "number" then -- creature ID
 				local health, id, name = DBM:GetBossHP(v.id)
 				if health then
-					if name and v.needName then
-						v.needName = nil
-						local bartext = _G[v:GetName().."BarName"]
-						bartext:SetText(name)
-					end
-					updateBar(v, health, GetRaidTargetIndex(id))
-				elseif savedDifficulty ~= "worldboss" then
-					updateBar(v, 0)
+					updateBar(v, health, GetRaidTargetIndex(id), nil, name)
+				else
+					updateBar(v, -1)
 				end
 			elseif type(v.id) == "string" then -- GUID
 				local health, id, name = DBM:GetBossHPByGUID(v.id)
 				if health then
-					if name and v.needName then
-						v.needName = nil
-						local bartext = _G[v:GetName().."BarName"]
-						bartext:SetText(name)
-					end
-					updateBar(v, health, GetRaidTargetIndex(id))
-				elseif savedDifficulty ~= "worldboss" then
-					updateBar(v, 0)
+					updateBar(v, health, GetRaidTargetIndex(id), nil, name)
+				else
+					updateBar(v, -1)
 				end
 			elseif type(v.id) == "table" then -- multi boss
 				-- TODO: it would be more efficient to scan all party/raid members for all IDs instead of going over all raid members n times
@@ -260,7 +257,6 @@ function bossHealth:Show(name)
 	anchor:Show()
 	bossHealth:Clear()
 	updateFrame(bossHealth)
-	savedDifficulty = DBM:GetCurrentInstanceDifficulty()
 	if not bossHealth.ticker then
 		bossHealth.ticker = C_Timer.NewTicker(0.5, function() updateFrame(bossHealth) end)
 	end
@@ -285,7 +281,6 @@ end
 
 function bossHealth:Hide()
 	if anchor then
-		savedDifficulty = nil
 		if bossHealth.ticker then
 			bossHealth.ticker:Cancel()
 			bossHealth.ticker = nil

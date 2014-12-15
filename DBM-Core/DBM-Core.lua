@@ -4591,6 +4591,7 @@ function DBM:OnMobKill(cId, synced)
 				sendSync("K", cId)
 			end
 			v.combatInfo.killMobs[cId] = false
+			DBM.BossHealth:RemoveBoss(cId)
 			if v.numBoss then
 				v.vb.bossLeft = (v.vb.bossLeft or v.numBoss) - 1
 				self:Debug("Boss left - "..v.vb.bossLeft.."/"..v.numBoss)
