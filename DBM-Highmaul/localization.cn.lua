@@ -1,6 +1,6 @@
-﻿--Mini Dragon(projecteurs@gmail.com)
---Thanks to Yike Xia
---Last Update: Oct 21, 2014
+﻿-- Mini Dragon(projecteurs@gmail.com)
+-- Yike Xia
+-- Last update: Dec 15, 2014@12036
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -36,7 +36,9 @@ L= DBM:GetModLocalization(1148)
 
 L:SetOptionLocalization({
 	PhemosSpecial	= "为菲莫斯的技能播放倒计时声音",
-	PolSpecial		= "为波尔的技能播放倒计时声音"
+	PolSpecial		= "为波尔的技能播放倒计时声音",
+	PhemosSpecialVoice	= "为菲莫斯的技能播放语音",
+	PolSpecialVoice		= "为波尔的技能播放语音"
 })
 
 --------------------
@@ -45,9 +47,9 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1153)
 
 L:SetMiscLocalization({
-	supressionTarget1	= "I will crush you!", --PH
-	supressionTarget2	= "Silence!", --PH
-	supressionTarget3	= "Quiet!", --PH
+	supressionTarget1	= "我要碾碎你！", --Thanks xuesj87@NGA
+	supressionTarget2	= "沉默！",
+	supressionTarget3	= "安静！",
 	supressionTarget4	= "我要把你撕成两半！"
 })
 
@@ -56,6 +58,9 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(1197)
 
+L:SetMiscLocalization({
+	BrandedYell			= "烙印(%s)->%s"
+})
 -------------
 --  Trash  --
 -------------
