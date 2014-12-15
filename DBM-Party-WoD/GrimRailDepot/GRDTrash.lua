@@ -71,7 +71,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 163966 then
 		warnActivating:Show()
-		specWarnActivating:Show(args.soruceName)
+		specWarnActivating:Show(args.sourceName)
 	end
 end
 

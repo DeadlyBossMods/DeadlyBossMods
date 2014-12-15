@@ -28,7 +28,6 @@ local timerIronReaverCD		= mod:NewCDTimer(20.5, 161989)--Not enough data to real
 local timerImbuedIronAxeCD	= mod:NewCDTimer(29, 162090)--29-37sec variation
 
 function mod:OnCombatStart(delay)
-	DBM:AddMsg("Notice, this boss mod may have very unreliable combat detection until missing IEEU or ES event is fixed by blizzard")
 --	timerIronReaverCD:Start(-delay)
 end
 

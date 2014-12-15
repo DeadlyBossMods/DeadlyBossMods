@@ -91,14 +91,6 @@ function mod:OnCombatStart(delay)
 	voiceInfestingSpores:Schedule(38.5-delay, "aesoon")
 	timerRejuvMushroomCD:Start(80-delay)--Todo, verify 80 in all modes and not still 75 in mythic
 	berserkTimer:Start(-delay)
-	if self.Options.RangeFrame then
-		self:RegisterShortTermEvents(
-			"SPELL_DAMAGE",
-			"SPELL_PERIODIC_DAMAGE",
-			"RANGE_DAMAGE",
-			"SWING_DAMAGE"
-		)
-	end
 end
 
 function mod:OnCombatEnd()
@@ -184,37 +176,9 @@ function mod:UNIT_DIED(args)
 		if self.Options.RangeFrame and self.vb.sporesAlive == 0 then
 			DBM.RangeCheck:Hide()
 		end
-		DBM:Debug("Blizzard fixed UNIT_DIED for Spore Shooter, remove high cpu waste")
 	elseif cid == 79092 then--Fungal Flesh Eater
 		self.vb.decayCounter = 0
 		timerDecayCD:Cancel(args.destGUID)
-	end
-end
-
---here is where we waste massive amounts of cpu because one mob doesn't fire UNIT_DIED
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
-	if (overkill or 0) > 0 then
-		local cid = self:GetCIDFromGUID(destGUID)
-		if cid == 79183 then--Spore Shooter don't fire UNIT_DIED
-			self.vb.sporesAlive = self.vb.sporesAlive - 1
-			if self.Options.RangeFrame and self.vb.sporesAlive == 0 then
-				DBM.RangeCheck:Hide()
-			end
-		end
-	end
-end
-mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
-mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
-
-function mod:SWING_DAMAGE(_, _, _, _, destGUID, _, _, _, _, overkill)
-	if (overkill or 0) > 0 then
-		local cid = self:GetCIDFromGUID(destGUID)
-		if cid == 79183 then--Spore Shooter don't fire UNIT_DIED
-			self.vb.sporesAlive = self.vb.sporesAlive - 1
-			if self.Options.RangeFrame and self.vb.sporesAlive == 0 then
-				DBM.RangeCheck:Hide()
-			end
-		end
 	end
 end
 
