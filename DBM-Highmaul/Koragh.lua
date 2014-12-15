@@ -5,16 +5,16 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(79015)
 mod:SetEncounterID(1723)
 mod:SetZone()
-mod:SetUsedIcons(2, 1)--Don't know total number of icons needed yet
+mod:SetUsedIcons(8, 7, 6, 3, 2, 1)--Don't know total number of icons needed yet
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 162185 162184 161411 163517 162186",
+	"SPELL_CAST_START 162185 162184 161411 163517 162186 172895",
 	"SPELL_CAST_SUCCESS 161612",
-	"SPELL_AURA_APPLIED 156803 162186 161242 163472",
+	"SPELL_AURA_APPLIED 156803 162186 161242 163472 172895",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 162186 163472",
+	"SPELL_AURA_REMOVED 162186 163472 172895",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -33,6 +33,7 @@ local warnExpelMagicFrost			= mod:NewSpellAnnounce(161411, 3)
 local warnExpelMagicArcane			= mod:NewTargetAnnounce(162186, 4)--Everyone, so they know to avoid him
 local warnMC						= mod:NewTargetAnnounce(163472, 4)--Mythic
 local warnForfeitPower				= mod:NewCastAnnounce(163517, 4)--Mythic, Spammy?
+local warnExpelMagicFel				= mod:NewTargetAnnounce(172895, 4)
 
 local specWarnNullBarrier			= mod:NewSpecialWarningTarget(156803)--Only warn for boss
 local specWarnVulnerability			= mod:NewSpecialWarningTarget(160734)--Switched to target warning since some may be assined adds, some to boss, but all need to know when this phase starts
@@ -47,14 +48,13 @@ local specWarnExpelMagicArcane		= mod:NewSpecialWarningTaunt(162186)
 local yellExpelMagicArcane			= mod:NewYell(162186)
 local specWarnMC					= mod:NewSpecialWarningSwitch(163472, mod:IsDps())
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
+local specWarnExpelMagicFel			= mod:NewSpecialWarningYou(172895)--Maybe needs "do not move" warning or at very least "try not to move" since sometimes you have to move for trample.
 
 local timerVulnerability			= mod:NewBuffActiveTimer(20, 160734)
 local timerTrampleCD				= mod:NewCDTimer(16, 163101)--Also all over the place, 15-25 with first one coming very randomly (5-20 after barrier goes up)
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
 local timerBallsCD					= mod:NewNextTimer(30, 161612)
---local timerExpelMagicFireCD		= mod:NewCDTimer(20, 162185)
---local timerExpelMagicShadowCD		= mod:NewCDTimer(10, 162184)
---local timerExpelMagicFrostCD		= mod:NewCDTimer(10, 161411)
+--local timerExpelMagicFelCD		= mod:NewCDTimer(30, 172895)--Mythic
 
 local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
 
@@ -62,13 +62,14 @@ local soundExpelMagicArcane			= mod:NewSound(162186)
 
 local voiceExpelMagicFire			= mod:NewVoice(162185)
 local voiceExpelMagicShadow			= mod:NewVoice(162184, mod:IsHealer())
---local voiceExpelMagicFrost			= mod:NewVoice(161411)
+--local voiceExpelMagicFrost		= mod:NewVoice(161411)
 local voiceExpelMagicArcane			= mod:NewVoice(162186)
 local voiceMC						= mod:NewVoice(163472, mod:IsDps())
 local voiceTrample					= mod:NewVoice(163101)
 
 mod:AddRangeFrameOption("7/5")
 mod:AddSetIconOption("SetIconOnMC", 163472, false)
+mod:AddSetIconOption("SetIconOnFel", 172895, false)
 
 function mod:OnCombatStart(delay)
 	--timerExpelMagicFireCD:Start(6-delay)
@@ -123,6 +124,8 @@ function mod:SPELL_CAST_START(args)
 				voiceExpelMagicArcane:Play("changemt")
 			end
 		end
+	elseif spellId == 172895 then
+		--timerExpelMagicFelCD:Start()
 	end
 end
 
@@ -138,15 +141,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 156803 then
 		warnNullBarrier:Show(args.destName)
 		specWarnNullBarrier:Show(args.destName)
-		--Arcane is just too variable to make meaningful yet
-		--I really don't think this is CD based anyways, need more data (such as a raid with WILDLY different dps.
-		--I suspect these abilities are actually cast at certain shield or health % in combination with internal CDs so they still have some limit to frequency.
-		--If Shield % based then instead of timers just pre warn based on shield remaining
-		--I'm not even sure order is always same. it MAY resume where it left off from previous phase.
 --		timerTrampleCD:Start()--5-20
---		timerExpelMagicFrostCD:Start(11)--11-29 Observed
---		timerExpelMagicShadowCD:Start(26)--26-44 Observed
---		timerExpelMagicFireCD:Start(41)--41-59 Observed
+--		timerExpelMagicFelCD:Start()
 		--Variation that wild, i'm confident, shield % based not timer based.
 	elseif spellId == 162186 then
 		warnExpelMagicArcane:Show(args.destName)
@@ -171,7 +167,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceMC:Play("killmob")
 		end
 		if self.Options.SetIconOnMC then
-			self:SetSortedIcon(1, args.destName, 1)--TODO, find out number of targets and add
+			self:SetSortedIcon(1, args.destName, 8, nil, true)--TODO, find out number of targets and add
+		end
+	elseif spellId == 172895 then
+		warnExpelMagicFel:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnExpelMagicFel:Show()
+		end
+		if self.Options.SetIconOnFel then
+			self:SetSortedIcon(1, args.destName, 1, 3)
 		end
 	end
 end
@@ -181,6 +185,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 162186 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	elseif spellId == 163472 and self.Options.SetIconOnMC then
+		self:SetIcon(args.destName, 0)
+	elseif spellId == 172895 and self.Options.SetIconOnFel then
 		self:SetIcon(args.destName, 0)
 	end
 end
@@ -204,9 +210,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerTrampleCD:Cancel()
 		timerBallsCD:Cancel()--This affects timers but how is uncertain, inconsistent.
 		--Example, http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
---		timerExpelMagicFrostCD:Cancel()
---		timerExpelMagicShadowCD:Cancel()
---		timerExpelMagicFireCD:Cancel()
+--		timerExpelMagicFelCD:Cancel()
 	end
 end
 
