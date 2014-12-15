@@ -7362,6 +7362,8 @@ do
 --				local completed = select(4, GetAchievementInfo(spellId))
 --				optionDefault = not completed
 --			end
+		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "phase" then
+			icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or type(spellId) == "string" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) or (type(spellId) == "number" and select(3, GetSpellInfo(spellId))) or "Interface\\Icons\\Spell_Nature_WispSplode"
 		else
 			if type(spellId) == "string" and spellId:match("ej%d+") then
 				spellName = EJ_GetSectionInfo(string.sub(spellId, 3)) or ""
