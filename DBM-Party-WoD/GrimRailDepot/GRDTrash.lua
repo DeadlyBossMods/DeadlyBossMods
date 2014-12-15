@@ -10,14 +10,17 @@ mod.isTrashMod = true
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 176025",
 	"SPELL_CAST_START 166675 176032",
+	"SPELL_CAST_SUCCESS 163966",
 	"SPELL_PERIODIC_DAMAGE 176033 166340",
 	"SPELL_PERIODIC_MISSED 176033 166340"
 )
 
+local warnActivating					= mod:NewCastAnnounce(163966, 2, 5, nil, not mod:IsHealer())
 local warnLavaWreath					= mod:NewTargetAnnounce(176025, 4)
 --local warnFlametongue					= mod:NewTargetAnnounce(176032, 4)--target scanning unverified
 local warnShrapnelBlast					= mod:NewCastAnnounce(166675, 4)
 
+local specWarnActivating				= mod:NewSpecialWarningInterrupt(163966, not mod:IsHealer())
 local specWarnLavaWreath				= mod:NewSpecialWarningMoveAway(176025)
 --local specWarnFlametongue				= mod:NewSpecialWarningYou(176032)
 --local yellFlametongue					= mod:NewYell(176032)
@@ -60,6 +63,15 @@ function mod:SPELL_CAST_START(args)
 		if self:IsTank() then
 			specWarnFlametongueGround:Show()--Pre warn here for tanks, because this attack also massively buffs trash damage if they are standing in the fire too. Will improve if target scanning works
 		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if not self.Options.Enabled or self:IsDifficulty("normal5") then return end
+	local spellId = args.spellId
+	if spellId == 163966 then
+		warnActivating:Show()
+		specWarnActivating:Show(args.soruceName)
 	end
 end
 
