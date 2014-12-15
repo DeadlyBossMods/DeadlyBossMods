@@ -27,6 +27,8 @@ local timerBodySlamCD			= mod:NewCDSourceTimer(30, 154175)--32-35 Variation
 local timerCorpseBreathCD		= mod:NewCDTimer(28, 165578, nil, false)--32-37 Variation, also not that important so off by default since there will already be up to 3 smash timers
 
 local soundInhale				= mod:NewSound(153804)
+local voiceBodySlam				= mod:NewVoice(154175)
+local voiceInhale				= mod:NewVoice(153804)
 
 function mod:OnCombatStart(delay)
 	timerBodySlamCD:Start(15-delay, UnitName("boss1"), UnitGUID("boss1"))
@@ -38,6 +40,7 @@ function mod:SPELL_CAST_START(args)
 		warnBodySlam:Show(args.sourceName)
 		if self:AntiSpam(3) then--Throttle special warning when more than 1 slam at once happens.
 			specWarnBodySlam:Show()
+			voiceBodySlam("watchstep")
 		end
 		if args:GetSrcCreatureID() == 75452 then--Source is Bonemaw, not one of his adds
 			timerBodySlamCD:Start(30, args.sourceName, args.sourceGUID)
@@ -62,5 +65,6 @@ function mod:RAID_BOSS_EMOTE(msg)
 		warnInhale:Show()
 		specWarnInhale:Show()
 		soundInhale:Play()
+		voiceInhale:Play("153804") 
 	end
 end

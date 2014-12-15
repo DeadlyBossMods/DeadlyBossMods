@@ -29,6 +29,10 @@ local timerUnstableSlagCD		= mod:NewCDTimer(20, 150755)
 
 local countdownUnstableSlag		= mod:NewCountdown(20, 150755)
 
+local voiceMoltenBlast			= mod:NewVoice(150677, not mod:IsHealer())
+local voiceUnstableSlag			= mod:NewVoice(150755, mod:IsDps())
+local voiceMagmaEruption		= mod:NewVoice(150784)
+
 function mod:OnCombatStart(delay)
 --	timerMagmaEruptionCD:Start(8-delay)--Poor sample size
 	timerUnstableSlagCD:Start(-delay)--Also poor sample size but more likely to be correct.
@@ -40,6 +44,11 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 150677 then
 		warnMoltenBlast:Show()
 		specWarnMoltenBlast:Show(args.sourceName)
+		if self:IsTank() then
+			voiceMoltenBlast:Play("kickcast")
+		else
+			voiceMoltenBlast:Play("helpkick")
+		end
 	elseif spellId == 150784 then
 		warnMagmaEruption:Show()
 		specWarnMagmaEruptionCast:Show()
@@ -49,12 +58,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnUnstableSlag:Show()
 		timerUnstableSlagCD:Start()
 		countdownUnstableSlag:Start()
+		voiceUnstableSlag:Play("mobkill")
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 150784 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnMagmaEruption:Show()
+		voiceMagmaEruption:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

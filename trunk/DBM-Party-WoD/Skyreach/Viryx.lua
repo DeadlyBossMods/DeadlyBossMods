@@ -32,6 +32,10 @@ local specWarnShielding		= mod:NewSpecialWarningInterrupt(154055, mod:IsDps())
 local timerLenseFlareCD		= mod:NewCDTimer(38, 154032)
 local timerCastDownCD		= mod:NewCDTimer(38, 153954)
 
+local voiceCastDown			= mod:NewVoice(153954)
+local voiceLensFlare		= mod:NewVoice(154032)
+local voiceShielding		= mod:NewVoice(154055, mod:IsDps())
+
 mod:AddSetIconOption("SetIconOnCastDown", 153954)
 
 mod.vb.lastGrab = nil
@@ -51,12 +55,14 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 154055 then
 		specWarnShielding:Show(args.sourceName)
+		voiceShielding:Play("kickcast")
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
 	if spellId == 154043 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
 		specWarnLensFlare:Show()
+		voiceLensFlare:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -74,10 +80,13 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 153954 then--Cast Down (4-5 sec before pre warning)
 		specWarnCastDownSoon:Show()
+		voiceCastDown:Play("mobsoon")
 	elseif spellId == 165834 then--Force Demon Creator to Ride Me
 		--TODO, see if victom detectable here instead
 		specWarnCastDown:Show()
 		timerCastDownCD:Start()
+		voiceCastDown:Play("helpme")
+		voiceCastDown:Schedule(2, "helpme2")
 	elseif spellId == 136522 then--Force Demon Creator to Ride Me
 		--TODO, see if vehicle check works here.
 		for uId in DBM:GetGroupMembers() do

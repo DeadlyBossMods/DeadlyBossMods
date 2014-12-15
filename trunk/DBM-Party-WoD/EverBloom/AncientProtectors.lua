@@ -46,6 +46,11 @@ local specWarnBramble				= mod:NewSpecialWarningMove(167977)
 local timerShapersFortitude			= mod:NewTargetTimer("OptionVersion2", 15, 168520, nil, false)
 local timerNoxiousCD				= mod:NewCDTimer(16, 175997, nil, mod:IsMelee())
 
+local voiceRevitalizingWaters		= mod:NewVoice(168082, not mod:IsHealer())
+local voiceNoxious					= mod:NewVoice(175997, mod:IsMelee())
+local voiceRapidTides				= mod:NewVoice(168105, mod:IsMagicDispeller())
+local voiceBramble					= mod:NewVoice(167977)
+
 function mod:OnCombatStart(delay)
 
 end
@@ -59,6 +64,11 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 168082 then
 		warnRevitalizingWaters:Show()
 		specWarnRevitalizingWaters:Show(args.sourceName)
+		if self:IsTank() then
+			voiceRevitalizingWaters:Play("kickcast")
+		else
+			voiceRevitalizingWaters:Play("helpkick")
+		end
 	elseif spellId == 168041 then
 		specWarnBriarskin:Show(args.sourceName)
 	elseif spellId == 168383 then
@@ -68,6 +78,7 @@ function mod:SPELL_CAST_START(args)
 		warnNoxious:Show()
 		specWarnNoxious:Show()
 		timerNoxiousCD:Start()
+		voiceNoxious:Play("watchstep")
 	end
 end
 
@@ -76,6 +87,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 168105 then
 		warnRapidTides:Show(args.destName)
 		specWarnRapidTidesDispel:Show(args.destName)
+		voiceRapidTides:Play("dispelboss")
 	elseif spellId == 168041 then
 		warnBriarskin:Show(args.destName)
 		specWarnBriarskinDispel:Show(args.destName)
@@ -95,6 +107,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 167977 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnBramble:Show()
+		voiceBramble:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

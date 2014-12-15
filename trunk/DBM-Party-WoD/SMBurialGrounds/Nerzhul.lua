@@ -26,24 +26,31 @@ local specWarnMalevolence		= mod:NewSpecialWarningSpell(154442, nil, nil, nil, t
 local timerRitualOfBonesCD		= mod:NewNextTimer(50.5, 154671)
 local timerOmenOfDeathCD		= mod:NewCDTimer(10.5, 154350)
 
+local voiceRitualOfBones		= mod:NewVoice(154671)
+local voiceOmenOfDeath			= mod:NewVoice(154350)
+local voiceMalevolence			= mod:NewVoice(154442)
+
 function mod:OmenOfDeathTarget(targetname, uId)
 	if not targetname then return end
 	warnOmenOfDeath:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnOmenOfDeath:Show()
 		yellOmenOfDeath:Yell()
+		voiceOmenOfDeath:Play("runaway")
 	end
 end
 
 function mod:OnCombatStart(delay)
 	timerOmenOfDeathCD:Start(12-delay)
 	timerRitualOfBonesCD:Start(20-delay)
+	voiceRitualOfBones:Schedule(18-delay, "specialsoon")
 end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 154442 then
 		warnMalevolence:Show()
 		specWarnMalevolence:Show()
+		voiceMalevolence:Play("shockwave")
 	end
 end
 
@@ -59,5 +66,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnRitualOfBones:Show()
 		specWarnRitualOfBones:Show()
 		timerRitualOfBonesCD:Start()
+		voiceRitualOfBones:Schedule(48.5, "specialsoon")
 	end
 end

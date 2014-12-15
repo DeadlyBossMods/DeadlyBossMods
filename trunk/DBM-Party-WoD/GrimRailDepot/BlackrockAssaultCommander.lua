@@ -30,6 +30,11 @@ local specWarnSlagBlast			= mod:NewSpecialWarningMove(166570)
 
 local timerSupressiveFire		= mod:NewTargetTimer(10, 160681)
 
+local voiceSupressiveFire		= mod:NewVoice(160681)
+local voiceSlagBlast			= mod:NewVoice(166570)
+local voiceShrapnelblast		= mod:NewVoice(160943, mod:IsTank())
+local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+
 local grenade = EJ_GetSectionInfo(9711)
 local mortar = EJ_GetSectionInfo(9712)
 mod.vb.phase = 1
@@ -40,6 +45,7 @@ function mod:SupressiveFireTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		specWarnSupressiveFire:Show()
 		yellSupressiveFire:Yell()
+		voiceSupressiveFire:Play("findshelter")
 	end
 end
 
@@ -53,6 +59,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSupressiveFire:Start(args.destName)
 	elseif spellId == 166570 and args.destGUID == UnitGUID("player") and self:AntiSpam() then
 		specWarnSlagBlast:Show()
+		voiceSlagBlast:Play("runaway")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -66,6 +73,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 160943 and self:AntiSpam(2, 1) then
 		warnShrapnelBlast:Show()
 		specWarnShrapnelblast:Show()
+		voiceShrapnelblast:Play("runaway")
 	end
 end
 
@@ -73,11 +81,13 @@ function mod:UNIT_TARGETABLE_CHANGED()
 	self.vb.phase = self.vb.phase + 1
 	if self.vb.phase == 2 then
 		warnPhase2:Show()
+		voicePhaseChange:Play("ptwo")
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:AddBoss(79548)
 		end
 	elseif self.vb.phase == 3 then
 		warnPhase3:Show()
+		voicePhaseChange:Play("pthree")
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:RemoveBoss(79548)
 		end
