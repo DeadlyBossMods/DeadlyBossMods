@@ -14,6 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 158057 157943 158134 158093 158200 157952 158415 158419 163336",
 	"SPELL_AURA_APPLIED 163372 167200 158241 163297",
 	"SPELL_AURA_APPLIED_DOSE 167200 158241",
+	"SPELL_AURA_REFRESH 163372",
 	"SPELL_AURA_REMOVED 163372",
 	"SPELL_CAST_SUCCESS 158385"
 )
@@ -76,12 +77,14 @@ mod.vb.WWCount = 0
 mod.vb.PulverizeCount = 0
 mod.vb.PulverizeRadar = false
 mod.vb.LastQuake = 0
+mod.vb.arcaneCast = 0
 mod.vb.arcaneDebuff = 0
 local GetTime = GetTime
 local PhemosEnergyRate = 33
 local polEnergyRate = 28
 local arcaneDebuff = GetSpellInfo(163372)
 local UnitDebuff = UnitDebuff
+local arcaneVTimers = {8.5, 6, 45, 8, 16.5, 8.5, 5.5, 39, 130, 10, 56.5, 8, 6}
 local debuffFilter
 do
 	debuffFilter = function(uId)
@@ -97,6 +100,7 @@ function mod:OnCombatStart(delay)
 	self.vb.WWCount = 0
 	self.vb.PulverizeCount = 0
 	self.vb.LastQuake = 0
+	self.vb.arcaneCast = 0
 	self.vb.arcaneDebuff = 0
 	self.vb.PulverizeRadar = false
 	timerQuakeCD:Start(11.5-delay, 1)
@@ -213,10 +217,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 163372 then
 		self.vb.arcaneDebuff = self.vb.arcaneDebuff + 1
-		warnArcaneVolatility:CombinedShow(1, args.destName)--Applies slowly to all targets
-		if self:AntiSpam(15, 2) then
---			timerArcaneVolatilityCD:Start()
---			countdownArcaneVolatility:Start()
+		warnArcaneVolatility:CombinedShow(1.5, args.destName)--Applies slowly to all targets
+		if self:AntiSpam(4, 2) then
+			self.vb.arcaneCast = self.vb.arcaneCast + 1
+			local cooldown = arcaneVTimers[self.vb.arcaneCast]
+			timerArcaneVolatilityCD:Start(cooldown)
+			countdownArcaneVolatility:Start(cooldown)
 		end
 		if args:IsPlayer() then
 			specWarnArcaneVolatility:Show()
@@ -242,6 +248,33 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+--refresh event verified, https://www.warcraftlogs.com/reports/Ya31FTj9bGMyQk8C#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+163372
+function mod:SPELL_AURA_REFRESH(args)
+	local spellId = args.spellId
+	if spellId == 163372 then
+		--self.vb.arcaneDebuff missing on purpose. refresh is not +1 since REMOVED not fired yet.
+		warnArcaneVolatility:CombinedShow(1.5, args.destName)--Applies slowly to all targets
+		if self:AntiSpam(4, 2) then
+			self.vb.arcaneCast = self.vb.arcaneCast + 1
+			local cooldown = arcaneVTimers[self.vb.arcaneCast]
+			timerArcaneVolatilityCD:Start(cooldown)
+			countdownArcaneVolatility:Start(cooldown)
+		end
+		if args:IsPlayer() then
+			specWarnArcaneVolatility:Show()
+			yellArcaneVolatility:Yell()
+			voiceArcaneVolatility:Play("runout")
+		end
+		if self.Options.RangeFrame then
+			if UnitDebuff("player", arcaneDebuff) then
+				DBM.RangeCheck:Show(8, nil)
+			else
+				DBM.RangeCheck:Show(8, debuffFilter)
+			end
+		end
+	end
+end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
