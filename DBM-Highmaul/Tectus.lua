@@ -156,6 +156,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 140562 then--Break Player Targetting (cast when tectus splits)
+		--TODO< need mythic logs to see if they restart. the adds don't stop spawning on mythic. but no idea if split resets the timer.
 		timerEarthwarperCD:Cancel()
 		countdownEarthwarper:Cancel()
 		timerBerserkerCD:Cancel()
