@@ -40,7 +40,7 @@ function mod:SPELL_CAST_START(args)
 		warnBodySlam:Show(args.sourceName)
 		if self:AntiSpam(3) then--Throttle special warning when more than 1 slam at once happens.
 			specWarnBodySlam:Show()
-			voiceBodySlam("watchstep")
+			voiceBodySlam:Play("watchstep")
 		end
 		if args:GetSrcCreatureID() == 75452 then--Source is Bonemaw, not one of his adds
 			timerBodySlamCD:Start(30, args.sourceName, args.sourceGUID)
