@@ -140,9 +140,10 @@ local brandedDebuff1 = GetSpellInfo(156225)
 local brandedDebuff2 = GetSpellInfo(164004)
 local brandedDebuff3 = GetSpellInfo(164005)
 local brandedDebuff4 = GetSpellInfo(164006)
+local fixateDebuff = GetSpellInfo(157763)
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local playerName = UnitName("player")
-local debuffFilterMark, debuffFilterBranded, debuffFilterCombined
+local debuffFilterMark, debuffFilterBranded, debuffFilterCombined, debuffFilterFixate
 do
 	debuffFilterMark = function(uId)
 		if UnitDebuff(uId, chaosDebuff1) or UnitDebuff(uId, chaosDebuff2) or UnitDebuff(uId, chaosDebuff3) or UnitDebuff(uId, chaosDebuff4) then
@@ -156,6 +157,11 @@ do
 	end
 	debuffFilterCombined = function(uId)
 		if UnitDebuff(uId, chaosDebuff1) or UnitDebuff(uId, chaosDebuff2) or UnitDebuff(uId, chaosDebuff3) or UnitDebuff(uId, chaosDebuff4) or UnitDebuff(uId, brandedDebuff1) or UnitDebuff(uId, brandedDebuff2) or UnitDebuff(uId, brandedDebuff3) or UnitDebuff(uId, brandedDebuff4) then
+			return true
+		end
+	end
+	debuffFilterFixate = function(uId)
+		if UnitDebuff(uId, fixateDebuff) then
 			return true
 		end
 	end
@@ -496,7 +502,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		updateRangeFrame()
 	elseif spellId == 157763 and args:IsPlayer() and self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
+		DBM.RangeCheck:Show(5, debuffFilterFixate)
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
 		self.vb.brandedActive = self.vb.brandedActive - 1
 		if args:IsPlayer() then
@@ -531,6 +537,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerTransition:Start()
 		countdownTransition:Start()
 		voicePhaseChange:Play("ptran")
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(5, debuffFilterFixate)
+		end
 	elseif spellId == 158012 or spellId == 157964 then--Power of Foritification/Replication
 		self.vb.forceCount = 0
 		specWarnTransitionEnd:Show()
@@ -548,6 +557,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 		if spellId == 157964 then
 			voicePhaseChange:Play("pfour")
+		end
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
 		end
 	elseif spellId == 164336 then--Teleport to Displacement (first phase change that has no transition)
 		voicePhaseChange:Play("ptwo")
