@@ -14,6 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 158563",
 	"SPELL_AURA_APPLIED 157763 158553 156225 164004 164005 164006 158605 164176 164178 164191",
 	"SPELL_AURA_APPLIED_DOSE 158553",
+	"SPELL_AURA_REFRESH 157763",
 	"SPELL_AURA_REMOVED 158605 164176 164178 164191 157763 156225 164004 164005 164006",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -489,6 +490,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(updateRangeFrame)
 		updateRangeFrame()
+	end
+end
+
+function mod:SPELL_AURA_REFRESH(args)
+	local spellId = args.spellId
+	if spellId == 157763 then
+		warnFixate:CombinedShow(1, args.destName)
+		if args:IsPlayer() then
+			specWarnFixate:Show()
+			if not self:IsLFR() then
+				yellFixate:Yell()
+				voiceFixate:Play("runout")
+				voiceFixate:Schedule(1.5,"targetyou")
+			end
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(5)
+			end
+		end
 	end
 end
 
