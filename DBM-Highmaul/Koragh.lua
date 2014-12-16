@@ -31,6 +31,7 @@ local warnExpelMagicFire			= mod:NewSpellAnnounce(162185, 3)
 local warnExpelMagicShadow			= mod:NewSpellAnnounce(162184, 3, nil, mod:IsHealer())
 local warnExpelMagicFrost			= mod:NewSpellAnnounce(161411, 3)
 local warnExpelMagicArcane			= mod:NewTargetAnnounce(162186, 4)--Everyone, so they know to avoid him
+local warnBallsSoon					= mod:NewPreWarnAnnounce(161612, 5, 2)
 local warnMC						= mod:NewTargetAnnounce(163472, 4)--Mythic
 local warnForfeitPower				= mod:NewCastAnnounce(163517, 4)--Mythic, Spammy?
 local warnExpelMagicFel				= mod:NewTargetAnnounce(172895, 4)
@@ -46,6 +47,7 @@ local specWarnExpelMagicFrost		= mod:NewSpecialWarningSpell(161411, false)
 local specWarnExpelMagicArcaneYou	= mod:NewSpecialWarningMoveAway(162186, nil, nil, nil, 3)
 local specWarnExpelMagicArcane		= mod:NewSpecialWarningTaunt(162186)
 local yellExpelMagicArcane			= mod:NewYell(162186)
+local specWarnBallsSoon				= mod:NewSpecialWarningPreWarn(161612, nil, 5)
 local specWarnMC					= mod:NewSpecialWarningSwitch(163472, mod:IsDps())
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
 local specWarnExpelMagicFel			= mod:NewSpecialWarningYou(172895)--Maybe needs "do not move" warning or at very least "try not to move" since sometimes you have to move for trample.
@@ -57,6 +59,7 @@ local timerBallsCD					= mod:NewNextTimer(30, 161612)
 --local timerExpelMagicFelCD		= mod:NewCDTimer(30, 172895)--Mythic
 
 local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
+local countdownBalls				= mod:NewCountdown("Alt30", 161612)
 
 local soundExpelMagicArcane			= mod:NewSound(162186)
 
@@ -84,6 +87,13 @@ end
 local function closeRange()
 	if mod.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+end
+
+local function ballsWarning()
+	warnBallsSoon:Show()
+	if UnitPower("player", 10) > 0 then--Player is soaker
+		specWarnBallsSoon:Show()
 	end
 end
 
@@ -131,8 +141,10 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 161612 then
-		timerBallsCD:Start()--This won't show balls that hit, only ones caught. Balls that hit require high cpu spell_damage event
+	if spellId == 161612 then--This won't show balls that hit, only ones caught. Balls that hit require high cpu spell_damage event
+		timerBallsCD:Start()
+		countdownBalls:Start()
+		self:Schedule(25, ballsWarning)
 	end
 end
 
@@ -211,8 +223,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		local elapsed, total = timerBallsCD:GetTime()
 		local remaining = total - elapsed
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
-		if remaining < 6 and remaining > 0 then--If 5 seconds left on timer, it'll happen on time. if > 5 seconds left on timer, phase will add 20 seconds to timer.
-			timerBallsCD:Update(elapsed, 50)
+		if remaining > 5 then--If 5 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
+			timerBallsCD:Update(elapsed, 50)--Cleanest to just take existing time on timer copy over, but extend max timer by 20 seconds
+			countdownBalls:Cancel()
+			specWarnBallsSoon:Cancel()
+			countdownBalls:Start(remaining+20)--But for scheduling purposes, remaining+20
+			self:Unschedule(ballsWarning)
+			self:Schedule(remaining+15, ballsWarning)
 			DBM:Debug("timerBallsCD is extending by 20 seconds do to shield phase")
 		end
 --		timerExpelMagicFelCD:Cancel()
