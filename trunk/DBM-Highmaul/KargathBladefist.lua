@@ -147,7 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnOnTheHunt:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnOnTheHunt:Show(firePillar)
-			voiceOnTheHunt("159202f") --find the pillar
+			voiceOnTheHunt:Play("159202f") --find the pillar
 		end
 	end
 end
