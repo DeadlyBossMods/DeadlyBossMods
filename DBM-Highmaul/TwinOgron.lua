@@ -136,7 +136,7 @@ local function updateInfoFrame()
 			lines[GetSpellInfo(158200)] = ""
 		end
 	elseif DBM:GetUnitCreatureId("boss2") == 78237 then
-		lines[UnitName("boss2")] = bossPower
+		lines[UnitName("boss2")] = bossPower2
 		if bossPower2 < 33 then--Whirlwind
 			if UnitBuff("boss2", arcaneTwisted) then--Empowered attack
 				lines["|cFF9932CD"..GetSpellInfo(157943).."|r"] = GetSpellInfo(163321)
@@ -164,7 +164,7 @@ local function updateInfoFrame()
 			lines[GetSpellInfo(158385)] = ""
 		end
 	elseif DBM:GetUnitCreatureId("boss2") == 78238 then
-		lines[UnitName("boss2")] = bossPower
+		lines[UnitName("boss2")] = bossPower2
 		if bossPower2 < 33 then--Shield Charge
 			if UnitBuff("boss2", arcaneTwisted) then--Empowered attack
 				lines["|cFFFF0000"..GetSpellInfo(158134).."|r"] = GetSpellInfo(163336)
@@ -212,7 +212,7 @@ function mod:OnCombatStart(delay)
 	countdownPol:Start(polEnergyRate+10-delay)
 	voicePol:Schedule(polEnergyRate+10-delay, "158134") --shield
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:Show(4, "function", updateInfoFrame, sortInfoFrame)
+		DBM.InfoFrame:Show(4, "function", updateInfoFrame, false)
 	end
 end
 
