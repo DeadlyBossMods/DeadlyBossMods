@@ -68,7 +68,8 @@ local voicePol						= mod:NewVoice(nil, nil, "PolSpecialVoice")
 local voiceBlaze					= mod:NewVoice(158241, false)
 local voiceArcaneVolatility			= mod:NewVoice(163372)
 
-mod:AddRangeFrameOption(8, 163372)
+mod:AddRangeFrameOption("8/3", 163372)
+mod:AddInfoFrameOption("ej9586")
 
 --Non resetting counts because strategy drastically changes based on number of people. Mechanics like debuff duration change with different player counts.
 mod.vb.EnfeebleCount = 0
@@ -82,8 +83,10 @@ mod.vb.arcaneDebuff = 0
 local GetTime = GetTime
 local PhemosEnergyRate = 33
 local polEnergyRate = 28
+local GetSpellInfo = GetSpellInfo
 local arcaneDebuff = GetSpellInfo(163372)
-local UnitDebuff = UnitDebuff
+local arcaneTwisted = GetSpellInfo(163297)
+local UnitDebuff, UnitBuff = UnitDebuff, UnitBuff
 local arcaneVTimers = {8.5, 6, 45, 8, 16.5, 8.5, 5.5, 39, 130, 10, 56.5, 8, 6}
 local debuffFilter
 do
@@ -92,6 +95,89 @@ do
 			return true
 		end
 	end
+end
+
+local lines = {}
+--[[
+local function sortInfoFrame(a, b)--is this even needed? no idea. 
+	local a = lines[a]
+	local b = lines[b]
+	if not tonumber(a) then a = -1 end
+	if not tonumber(b) then b = -1 end
+	if a > b then return true else return false end
+end--]]
+
+--Layout
+--Boss 1 name - Power
+--Boss 1 next ability
+--Boss 2 name - Power
+--Boss 2 next ability
+--if mythic, ability will show if ability empowered or not to right with empowerment name and purple coloring
+local function updateInfoFrame()
+	table.wipe(lines)
+	local bossPower = 0
+	local bossPower2 = 0
+	if UnitExists("boss1") and UnitExists("boss2") then
+		bossPower = UnitPower("boss1")
+		bossPower2 = UnitPower("boss2")
+	end
+	--First, Phem
+	if DBM:GetUnitCreatureId("boss1") == 78237 then
+		lines[UnitName("boss1")] = bossPower
+		if bossPower < 33 then--Whirlwind
+			if UnitBuff("boss1", arcaneTwisted) then--Empowered attack
+				lines["|cFF9932CD"..GetSpellInfo(157943).."|r"] = GetSpellInfo(163321)
+			else
+				lines[GetSpellInfo(157943)] = ""
+			end
+		elseif bossPower < 66 then--Enfeabling Roar
+			lines[GetSpellInfo(158057)] = ""
+		elseif bossPower < 100 then--Quake
+			lines[GetSpellInfo(158200)] = ""
+		end
+	elseif DBM:GetUnitCreatureId("boss2") == 78237 then
+		lines[UnitName("boss2")] = bossPower
+		if bossPower2 < 33 then--Whirlwind
+			if UnitBuff("boss2", arcaneTwisted) then--Empowered attack
+				lines["|cFF9932CD"..GetSpellInfo(157943).."|r"] = GetSpellInfo(163321)
+			else
+				lines[GetSpellInfo(157943)] = ""
+			end
+		elseif bossPower2 < 66 then--Enfeabling Roar
+			lines[GetSpellInfo(158057)] = ""
+		elseif bossPower2 < 100 then--Quake
+			lines[GetSpellInfo(158200)] = ""
+		end
+	end
+	--Second, Pol
+	if DBM:GetUnitCreatureId("boss1") == 78238 then
+		if bossPower < 33 then--Shield Charge
+			lines[UnitName("boss1")] = bossPower
+			if UnitBuff("boss1", arcaneTwisted) then--Empowered attack
+				lines["|cFFFF0000"..GetSpellInfo(158134).."|r"] = GetSpellInfo(163336)
+			else
+				lines[GetSpellInfo(158134)] = ""
+			end
+		elseif bossPower < 66 then--Disruptiong Shout
+			lines[GetSpellInfo(158093)] = ""
+		elseif bossPower < 100 then--Pulverize
+			lines[GetSpellInfo(158385)] = ""
+		end
+	elseif DBM:GetUnitCreatureId("boss2") == 78238 then
+		lines[UnitName("boss2")] = bossPower
+		if bossPower2 < 33 then--Shield Charge
+			if UnitBuff("boss2", arcaneTwisted) then--Empowered attack
+				lines["|cFFFF0000"..GetSpellInfo(158134).."|r"] = GetSpellInfo(163336)
+			else
+				lines[GetSpellInfo(158134)] = ""
+			end
+		elseif bossPower2 < 66 then--Disruptiong Shout
+			lines[GetSpellInfo(158093)] = ""
+		elseif bossPower2 < 100 then--Pulverize
+			lines[GetSpellInfo(158385)] = ""
+		end
+	end
+	return lines
 end
 
 function mod:OnCombatStart(delay)
@@ -125,12 +211,17 @@ function mod:OnCombatStart(delay)
 	timerShieldChargeCD:Start(polEnergyRate+10-delay)
 	countdownPol:Start(polEnergyRate+10-delay)
 	voicePol:Schedule(polEnergyRate+10-delay, "158134") --shield
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Show(4, "function", updateInfoFrame)
+	end
 end
 
 function mod:OnCombatEnd()
-	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
