@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 156238 156467 157349 163988 164075 156471 164299 164232 164301 163989 164076 164235 163990 164077 164240 164303 158605 164176 164178 164191",
 	"SPELL_CAST_SUCCESS 158563",
-	"SPELL_AURA_APPLIED 157763 158553 156225 164004 164005 164006 158605 164176 164178 164191",
+	"SPELL_AURA_APPLIED 157763 158553 156225 164004 164005 164006 158605 164176 164178 164191 157801",
 	"SPELL_AURA_APPLIED_DOSE 158553",
 	"SPELL_AURA_REFRESH 157763",
 	"SPELL_AURA_REMOVED 158605 164176 164178 164191 157763 156225 164004 164005 164006",
@@ -89,6 +89,7 @@ local specWarnAberration						= mod:NewSpecialWarningSwitch("ej9945", not mod:Is
 --Intermission: Dormant Runestones
 local specWarnFixate							= mod:NewSpecialWarningMoveAway(157763)
 local yellFixate								= mod:NewYell(157763)
+local specWarnSlow								= mod:NewSpecialWarningDispel(157801, mod:IsHealer())--Seems CD long enough not too spammy, requested feature.
 local specWarnTransitionEnd						= mod:NewSpecialWarningEnd(157278)
 --Intermission: Lineage of Power
 local specWarnKickToTheFace						= mod:NewSpecialWarningSpell(158563, mod:IsTank())
@@ -490,6 +491,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(updateRangeFrame)
 		updateRangeFrame()
+	elseif spellId == 157801 then
+		specWarnSlow:Show(args.destName)
 	end
 end
 
