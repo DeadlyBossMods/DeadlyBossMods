@@ -31,7 +31,7 @@ local warnExpelMagicFire			= mod:NewSpellAnnounce(162185, 3)
 local warnExpelMagicShadow			= mod:NewSpellAnnounce(162184, 3, nil, mod:IsHealer())
 local warnExpelMagicFrost			= mod:NewSpellAnnounce(161411, 3)
 local warnExpelMagicArcane			= mod:NewTargetAnnounce(162186, 4)--Everyone, so they know to avoid him
-local warnBallsSoon					= mod:NewPreWarnAnnounce(161612, 5, 2)
+local warnBallsSoon					= mod:NewPreWarnAnnounce(161612, 6.5, 2)
 local warnMC						= mod:NewTargetAnnounce(163472, 4)--Mythic
 local warnForfeitPower				= mod:NewCastAnnounce(163517, 4)--Mythic, Spammy?
 local warnExpelMagicFel				= mod:NewTargetAnnounce(172895, 4)
@@ -47,7 +47,7 @@ local specWarnExpelMagicFrost		= mod:NewSpecialWarningSpell(161411, false)
 local specWarnExpelMagicArcaneYou	= mod:NewSpecialWarningMoveAway(162186, nil, nil, nil, 3)
 local specWarnExpelMagicArcane		= mod:NewSpecialWarningTaunt(162186)
 local yellExpelMagicArcane			= mod:NewYell(162186)
-local specWarnBallsSoon				= mod:NewSpecialWarningPreWarn(161612, nil, 5)
+local specWarnBallsSoon				= mod:NewSpecialWarningPreWarn(161612, nil, 6.5)
 local specWarnMC					= mod:NewSpecialWarningSwitch(163472, mod:IsDps())
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
 local specWarnExpelMagicFel			= mod:NewSpecialWarningYou(172895)--Maybe needs "do not move" warning or at very least "try not to move" since sometimes you have to move for trample.
@@ -69,6 +69,7 @@ local voiceExpelMagicShadow			= mod:NewVoice(162184, mod:IsHealer())
 local voiceExpelMagicArcane			= mod:NewVoice(162186)
 local voiceMC						= mod:NewVoice(163472, mod:IsDps())
 local voiceTrample					= mod:NewVoice(163101)
+local voiceBalls					= mod:NewVoice(161612)
 
 mod:AddRangeFrameOption("7/5")
 mod:AddSetIconOption("SetIconOnMC", 163472, false)
@@ -94,6 +95,7 @@ local function ballsWarning()
 	warnBallsSoon:Show()
 	if UnitPower("player", 10) > 0 then--Player is soaker
 		specWarnBallsSoon:Show()
+		voiceBalls:Play("161612")
 	end
 end
 
@@ -144,7 +146,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 161612 then--This won't show balls that hit, only ones caught. Balls that hit require high cpu spell_damage event
 		timerBallsCD:Start()
 		countdownBalls:Start()
-		self:Schedule(25, ballsWarning)
+		self:Schedule(23.5, ballsWarning)
 	end
 end
 
@@ -229,7 +231,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			specWarnBallsSoon:Cancel()
 			countdownBalls:Start(remaining+20)--But for scheduling purposes, remaining+20
 			self:Unschedule(ballsWarning)
-			self:Schedule(remaining+15, ballsWarning)
+			self:Schedule(remaining+13.5, ballsWarning)
 			DBM:Debug("timerBallsCD is extending by 20 seconds do to shield phase")
 		end
 --		timerExpelMagicFelCD:Cancel()
