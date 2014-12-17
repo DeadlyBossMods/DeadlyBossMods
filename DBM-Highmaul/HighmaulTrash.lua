@@ -33,7 +33,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 172066 then
 		warnRadiatingPoison:CombinedShow(1, args.destName)
-		if args:IsPlayer() then
+		if args:IsPlayer() and not self:IsTank() then--tank can't run out even if they have debuff
 			specWarnRadiatingPoison:Show()
 		end
 	elseif spellId == 166200 then

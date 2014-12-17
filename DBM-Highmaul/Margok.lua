@@ -126,6 +126,7 @@ mod.vb.markActive = false
 mod.vb.playerHasMark = false
 mod.vb.jumpDistance = 13
 mod.vb.lastMarkedTank = nil
+mod.vb.isTransition = false
 
 local jumpDistance1 = {
 	[1] = 200, [2] = 100, [3] = 50, [4] = 25, [5] = 12.5, [6] = 7,--Or 5
@@ -189,7 +190,13 @@ local function updateRangeFrame(markPreCast)
 			else--Not boss target during cast, not debuffed, use filtered range frame to show only players affected by mark of chaos.
 				DBM.RangeCheck:Show(35, debuffFilterMark)
 			end
-		else--We got this far, no mark of chaos, no branded, no nothing, finally hide the range frame!
+		elseif mod.vb.isTransition then
+			if UnitDebuff("player", fixateDebuff) then
+				DBM.RangeCheck:Show(5, nil)
+			else
+				DBM.RangeCheck:Show(5, debuffFilterFixate)
+			end
+		else--We got this far, no mark of chaos, no branded, fixate, no nothing, finally hide the range frame!
 			DBM.RangeCheck:Hide()
 		end
 	end
@@ -199,6 +206,7 @@ function mod:OnCombatStart(delay)
 	self.vb.markActive = false
 	self.vb.playerHasMark = false
 	self.vb.playerHasBranded = false
+	self.vb.isTransition = false
 	self.vb.lastMarkedTank = nil
 	self.vb.brandedActive = 0
 	self.vb.forceCount = 0
@@ -406,9 +414,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceFixate:Play("runout")
 				voiceFixate:Schedule(1.5,"targetyou")
 			end
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(5)
-			end
+			updateRangeFrame()
 		end
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
 		self.vb.brandedActive = self.vb.brandedActive + 1
@@ -507,9 +513,7 @@ function mod:SPELL_AURA_REFRESH(args)
 				voiceFixate:Play("runout")
 				voiceFixate:Schedule(1.5,"targetyou")
 			end
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(5)
-			end
+			updateRangeFrame()
 		end
 	end
 end
@@ -524,7 +528,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		updateRangeFrame()
 	elseif spellId == 157763 and args:IsPlayer() and self.Options.RangeFrame then
-		DBM.RangeCheck:Show(5, debuffFilterFixate)
+		updateRangeFrame()
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
 		self.vb.brandedActive = self.vb.brandedActive - 1
 		if args:IsPlayer() then
@@ -547,6 +551,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 164751 or spellId == 164810 then--Teleport to Fortification/Teleport to Replication. For these two, cancel all CD timers, these transitions are both over a minute long.
+		self.vb.isTransition = true
 		timerArcaneWrathCD:Cancel()
 		countdownArcaneWrath:Cancel()
 		timerDestructiveResonanceCD:Cancel()
@@ -559,11 +564,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerTransition:Start()
 		countdownTransition:Start()
 		voicePhaseChange:Play("ptran")
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(5, debuffFilterFixate)
-		end
+		updateRangeFrame()
 	elseif spellId == 158012 or spellId == 157964 then--Power of Foritification/Replication
 		self.vb.forceCount = 0
+		self.vb.isTransition = false
 		specWarnTransitionEnd:Show()
 		timerArcaneWrathCD:Start(8.5)
 		countdownArcaneWrath:Start(8.5)
