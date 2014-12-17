@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 local warnCausticEnergy				= mod:NewTargetAnnounce(161242, 3)
 local warnNullBarrier				= mod:NewTargetAnnounce(156803, 2)
 local warnVulnerability				= mod:NewTargetAnnounce(160734, 1)
-local warnTrample					= mod:NewTargetAnnounce(163101, 3)--Technically it's supression field, then trample, but everyone is going to know it more by trample cause that's the part of it that matters
+local warnTrample					= mod:NewTargetCountAnnounce(163101, 3)--Technically it's supression field, then trample, but everyone is going to know it more by trample cause that's the part of it that matters
 --local warnOverflowingEnergy		= mod:NewSpellAnnounce(161576, 4)--need to find an alternate way to detect this. or just remove :\
 local warnExpelMagicFire			= mod:NewSpellAnnounce(162185, 3)
 local warnExpelMagicShadow			= mod:NewSpellAnnounce(162184, 3, nil, mod:IsHealer())
@@ -65,7 +65,7 @@ local soundExpelMagicArcane			= mod:NewSound(162186)
 
 local voiceExpelMagicFire			= mod:NewVoice(162185)
 local voiceExpelMagicShadow			= mod:NewVoice(162184, mod:IsHealer())
---local voiceExpelMagicFrost		= mod:NewVoice(161411)
+local voiceExpelMagicFrost			= mod:NewVoice(161411)
 local voiceExpelMagicArcane			= mod:NewVoice(162186)
 local voiceMC						= mod:NewVoice(163472, mod:IsDps())
 local voiceTrample					= mod:NewVoice(163101)
@@ -75,7 +75,10 @@ mod:AddRangeFrameOption("7/5")
 mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddSetIconOption("SetIconOnFel", 172895, false)
 
+mod.vb.supressionCount = 0
+
 function mod:OnCombatStart(delay)
+	self.vb.supressionCount = 0
 	--timerExpelMagicFireCD:Start(6-delay)
 end
 
@@ -120,7 +123,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 161411 then
 		warnExpelMagicFrost:Show()
 		specWarnExpelMagicFrost:Show()
---		voiceExpelMagicFrost:Play("161411") --faraway from icy orb
+		voiceExpelMagicFrost:Play("161411")
 	elseif spellId == 163517 then
 		warnForfeitPower:Show()
 		specWarnForfeitPower:Show(args.sourceName)
@@ -246,7 +249,9 @@ function mod:OnSync(msg, targetname)
 		timerTrampleCD:Start()
 		local target = DBM:GetUnitFullName(targetname)
 		if target and self:AntiSpam(3, target) then--Syncs sending from same realm don't send realm name, while other realms do, so it bypasses syncspam code since two diff args. So filter here after GetUnitFullName
-			warnTrample:Show(target)
+			--Investigating someone theory that frost orbs are after every 4 self.vb.supressionCount, except for first, which is after 2. They wanted a counter added
+			self.vb.supressionCount = self.vb.supressionCount + 1
+			warnTrample:Show(self.vb.supressionCount, target)
 			if target == UnitName("player") then
 				specWarnTrample:Show()
 				yellTrample:Yell()
