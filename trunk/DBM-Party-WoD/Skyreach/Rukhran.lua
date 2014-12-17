@@ -23,7 +23,7 @@ local specWarnQuills			= mod:NewSpecialWarningSpell(159382, nil, nil, nil, 2)
 local specWarnQuillsEnd			= mod:NewSpecialWarningEnd(159382)
 
 local timerSolarFlareCD			= mod:NewCDTimer(18, 153810)
-local timerQuillsCD				= mod:NewCDTimer(64, 159382)--Needs review
+--local timerQuillsCD				= mod:NewCDTimer(64, 159382)--Health based
 
 local voiceSolarFlare			= mod:NewVoice(153810, not mod:IsTank())
 local voiceQuills				= mod:NewVoice(159382)
@@ -31,7 +31,7 @@ local voiceQuills				= mod:NewVoice(159382)
 function mod:OnCombatStart(delay)
 	timerSolarFlareCD:Start(11-delay)
 	if self:IsHeroic() then
-		timerQuillsCD:Start(33-delay)--Needs review
+		--timerQuillsCD:Start(33-delay)--Needs review
 	end
 end
 
@@ -58,7 +58,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 159382 then
 		warnQuills:Show()
 		specWarnQuills:Show()
-		timerQuillsCD:Start()
+		--timerQuillsCD:Start()
 		voiceQuills:Play("findshelter")
 	end
 end
