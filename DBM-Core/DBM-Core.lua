@@ -132,6 +132,7 @@ DBM.DefaultOptions = {
 	AFKHealthWarning = true,
 	HideObjectivesFrame = true,
 	HideGarrisonUpdates = false,
+	SmarterLFGPing = false,
 	HideTooltips = false,
 	EnableModels = true,
 	RangeFrameFrames = "radar",
@@ -1020,6 +1021,7 @@ do
 				"LFG_PROPOSAL_SHOW",
 				"LFG_PROPOSAL_FAILED",
 				"LFG_PROPOSAL_SUCCEEDED",
+				"LFG_LIST_APPLICANT_LIST_UPDATED",
 				"UPDATE_BATTLEFIELD_STATUS",
 				"CINEMATIC_START",
 				"LFG_COMPLETION_REWARD",
@@ -1034,6 +1036,9 @@ do
 				"LOADING_SCREEN_DISABLED"
 			)
 			RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
+			if DBM.Options.SmarterLFGPing then
+				LFGListFrame:UnregisterEvent("LFG_LIST_APPLICANT_LIST_UPDATED")
+			end
 			self:GROUP_ROSTER_UPDATE()
 			--self:LOADING_SCREEN_DISABLED()--Initial testing shows it isn't needed here and wastes cpu running funcion twice, because actual event always fires at login, AFTER addonloadded. Will remove this line if it works out ok
 			self:Schedule(1.5, function()
@@ -2412,6 +2417,19 @@ end
 
 function DBM:LFG_PROPOSAL_SUCCEEDED()
 	DBM.Bars:CancelBar(DBM_LFG_INVITE)
+end
+
+function DBM:LFG_LIST_APPLICANT_LIST_UPDATED(hasNewPending, hasNewPendingWithData)
+	if not DBM.Options.SmarterLFGPing then return end
+	if GetNumGroupMembers() < 40 then
+		if ( hasNewPending and hasNewPendingWithData and LFGListUtil_IsEntryEmpowered() ) then
+			if ( not LFGListFrame:IsVisible() ) then
+				QueueStatusMinimapButton_SetGlowLock(QueueStatusMinimapButton, "lfglist-applicant", true);
+			end
+		end
+	else
+		DBM:Debug("LFG_LIST_APPLICANT_LIST_UPDATED fired, but group is full, supressing ping update", 2)
+	end
 end
 
 function DBM:ACTIVE_TALENT_GROUP_CHANGED()
