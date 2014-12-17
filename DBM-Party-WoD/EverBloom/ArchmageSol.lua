@@ -9,7 +9,6 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 168885",
-	"SPELL_CAST_SUCCESS 166726",
 	"SPELL_AURA_APPLIED 166492 166572 166726 166475 166476 166477",
 	"SPELL_INTERRUPT"
 )
@@ -20,7 +19,6 @@ local warnParasiticGrowth		= mod:NewCountAnnounce(168885, 3, nil, mod:IsTank())-
 local warnFirePhase				= mod:NewSpellAnnounce(166475 ,1)
 --local warnFireBloom				= mod:NewSpellAnnounce(166492, 4)--Very useless. only confusing
 local warnFrostPhase			= mod:NewSpellAnnounce(166476 ,1)
-local warnFrozenRain			= mod:NewSpellAnnounce(166726, 3)
 local warnArcanePhase			= mod:NewSpellAnnounce(166477 ,1)
 
 local specWarnParasiticGrowth	= mod:NewSpecialWarningCount(168885, mod:IsTank())
@@ -51,13 +49,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 166726 then
-		warnFrozenRain:Show()
-	end
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	--if args:IsSpellID(166492, 166572) and self:AntiSpam(12) then--Because the dumb spell has no cast Id, we can only warn when someone gets hit by one of rings.
@@ -81,7 +72,7 @@ end
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 168885 then
 		self.vb.ParasiteCount = 0
-		timerParasiticGrowthCD:Cancel(self.vb.ParasiteCount)
-		timerParasiticGrowthCD:Start(nil, 1)
+		timerParasiticGrowthCD:Cancel(self.vb.ParasiteCount+1)
+		timerParasiticGrowthCD:Start(30, 1)
 	end
 end
