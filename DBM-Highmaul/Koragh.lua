@@ -172,8 +172,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceExpelMagicArcane:Play("changemt")
 			end
 		end
-	elseif spellId == 161242 and self:AntiSpam(3, args.destName) then--Players may wabble in and out of it and we don't want to spam add them to table.
-		warnCausticEnergy:CombinedShow(1, args.destName)--Two targets on mythic, which is why combinedshow.
+	elseif spellId == 161242 and self:AntiSpam(3, args.destName) and not self:IsLFR() then--Players may wabble in and out of it and we don't want to spam add them to table.
+		warnCausticEnergy:CombinedShow(1, args.destName)--Two targets on mythic, which is why combinedshow. (10 on LFR. too much spam and not important, so disabled in LFR)
 	elseif spellId == 163472 then
 		warnMC:CombinedShow(0.5, args.destName)
 		if self:AntiSpam(3, 1) then
@@ -243,7 +243,7 @@ function mod:OnSync(msg, targetname)
 	if msg == "ChargeTo" and targetname then
 		timerTrampleCD:Start()
 		local target = DBM:GetUnitFullName(targetname)
-		if target then
+		if target and self:AntiSpam(3, target) then--Syncs sending from same realm don't send realm name, while other realms do, so it bypasses syncspam code since two diff args. So filter here after GetUnitFullName
 			warnTrample:Show(target)
 			if target == UnitName("player") then
 				specWarnTrample:Show()
