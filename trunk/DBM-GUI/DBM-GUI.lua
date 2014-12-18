@@ -416,6 +416,7 @@ do
 	end
 
 	local sounds = MixinSharedMedia3("sound", {
+		{ sound=true, text = "None", value = "None" },
 		{ sound=true, text = "SW 1", value = 1 },
 		{ sound=true, text = "SW 2", value = 2 },
 		{ sound=true, text = "SW 3", value = 3 },
