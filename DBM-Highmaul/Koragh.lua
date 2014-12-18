@@ -231,7 +231,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		local remaining = total - elapsed
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
 		if remaining > 5 then--If 5 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
-			timerBallsCD:Update(elapsed, 50)--Cleanest to just take existing time on timer copy over, but extend max timer by 20 seconds
+			timerBallsCD:Start(remaining+20)
 			countdownBalls:Cancel()
 			specWarnBallsSoon:Cancel()
 			countdownBalls:Start(remaining+20)--But for scheduling purposes, remaining+20

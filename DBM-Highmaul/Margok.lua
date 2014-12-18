@@ -471,7 +471,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			if self.Options.SetIconOnBrandedDebuff then
 				if spellId == 164005 then
-					self:SetSortedIcon(1, args.destName, 1, 2)
+					self:SetSortedIcon(2, args.destName, 1, 2)--Icon still not working. setting star on both targets. 1 sec should have worked, no idea why it doesn't.
 				else
 					self:SetIcon(args.destName, 1)
 				end
