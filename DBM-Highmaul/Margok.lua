@@ -2,10 +2,11 @@ local mod	= DBM:NewMod(1197, "DBM-Highmaul", nil, 477)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(77428)
+mod:SetCreatureID(77428, 78623)
 mod:SetEncounterID(1705)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)--Unknown total number of icons replication will use.
+mod:SetBossHPInfoToHighest()--For mythic chogal
 
 mod:RegisterCombat("combat")
 
@@ -127,6 +128,7 @@ mod.vb.playerHasMark = false
 mod.vb.jumpDistance = 13
 mod.vb.lastMarkedTank = nil
 mod.vb.isTransition = false
+mod.vb.phase = 1
 
 local jumpDistance1 = {
 	[1] = 200, [2] = 100, [3] = 50, [4] = 25, [5] = 12.5, [6] = 7,--Or 5
@@ -210,6 +212,7 @@ function mod:OnCombatStart(delay)
 	self.vb.brandedActive = 0
 	self.vb.forceCount = 0
 	self.vb.jumpDistance = 13
+	self.vb.phase = 1
 	timerArcaneWrathCD:Start(6-delay)
 	countdownArcaneWrath:Start(6-delay)
 	timerDestructiveResonanceCD:Start(15-delay)
@@ -579,14 +582,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownForceNova:Start(48.5)
 		if spellId == 158012 then
 			voicePhaseChange:Play("pthree")
+			self.vb.phase = 3
 		end
 		if spellId == 157964 then
 			voicePhaseChange:Play("pfour")
+			self.vb.phase = 4
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
 	elseif spellId == 164336 then--Teleport to Displacement (first phase change that has no transition)
 		voicePhaseChange:Play("ptwo")
+		self.vb.phase = 2
 	end
 end
