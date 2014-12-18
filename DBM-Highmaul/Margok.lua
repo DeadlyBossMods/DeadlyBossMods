@@ -134,7 +134,7 @@ local jumpDistance1 = {
 local jumpDistance2 = {
 	[1] = 200, [2] = 150, [3] = 113, [4] = 85, [5] = 63, [6] = 48, [7] =36, [8] = 27, [9] = 21, [10] = 16, [11] = 12, [12] = 9, [13] = 7,--or 5
 }
-local GetSpellInfo, UnitDebuff = GetSpellInfo, UnitDebuff
+local GetSpellInfo, UnitDebuff, UnitDetailedThreatSituation = GetSpellInfo, UnitDebuff, UnitDetailedThreatSituation
 local chaosDebuff1 = GetSpellInfo(158605)
 local chaosDebuff2 = GetSpellInfo(164176)
 local chaosDebuff3 = GetSpellInfo(164178)
@@ -144,7 +144,6 @@ local brandedDebuff2 = GetSpellInfo(164004)
 local brandedDebuff3 = GetSpellInfo(164005)
 local brandedDebuff4 = GetSpellInfo(164006)
 local fixateDebuff = GetSpellInfo(157763)
-local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local playerName = UnitName("player")
 local debuffFilterMark, debuffFilterBranded, debuffFilterCombined, debuffFilterFixate
 do
@@ -170,27 +169,27 @@ do
 	end
 end
 
-local function updateRangeFrame(markPreCast)
-	if not mod.Options.RangeFrame then return end
-	if not mod:IsTank() and mod.vb.brandedActive > 0 then--Active branded out there, not a tank. Branded is always prioritized over mark for non tanks since 90% of time tanks handle this on their own, while rest of raid must ALWAYS handle branded
-		local distance = mod.vb.jumpDistance
+local function updateRangeFrame(self, markPreCast)
+	if not self.Options.RangeFrame then return end
+	if not self:IsTank() and self.vb.brandedActive > 0 then--Active branded out there, not a tank. Branded is always prioritized over mark for non tanks since 90% of time tanks handle this on their own, while rest of raid must ALWAYS handle branded
+		local distance = self.vb.jumpDistance
 		if mod.vb.playerHasBranded then--Player has Branded debuff
 			DBM.RangeCheck:Show(distance, nil)--Show everyone
 		else--No branded debuff on player, so show a filtered range finder
-			if mod.vb.markActive and mod.vb.lastMarkedTank and mod:CheckNearby(35, mod.vb.lastMarkedTank) then--There is an active tank with debuff and they are too close
+			if self.vb.markActive and self.vb.lastMarkedTank and self:CheckNearby(35, self.vb.lastMarkedTank) then--There is an active tank with debuff and they are too close
 				DBM.RangeCheck:Show(35, debuffFilterCombined)--Show marked instead of branded if the marked tank is NOT far enough out
 			else--no branded tank in range, So show ONLY branded dots
 				DBM.RangeCheck:Show(distance, debuffFilterBranded)
 			end
 		end
 	else--no branded, or player is a tank
-		if markPreCast or mod.vb.markActive then--Mark of Chaos is active, or is being cast
-			if mod.vb.playerHasMark then--Player has mark of chaos debuff, or is current highest threat during mark of chaos cast
+		if markPreCast or self.vb.markActive then--Mark of Chaos is active, or is being cast
+			if self.vb.playerHasMark then--Player has mark of chaos debuff, or is current highest threat during mark of chaos cast
 				DBM.RangeCheck:Show(35, nil)
 			else--Not boss target during cast, not debuffed, use filtered range frame to show only players affected by mark of chaos.
 				DBM.RangeCheck:Show(35, debuffFilterMark)
 			end
-		elseif mod.vb.isTransition then
+		elseif self.vb.isTransition then
 			if UnitDebuff("player", fixateDebuff) then
 				DBM.RangeCheck:Show(5, nil)
 			else
@@ -385,8 +384,8 @@ function mod:SPELL_CAST_START(args)
 		else
 			self.vb.playerHasMark = false
 		end
-		updateRangeFrame(true)
-		self:Schedule(4, updateRangeFrame)--Cast + 1, since sometimes tank resists, so we'll want to hide frame after 4 seconds if no debuff has gone out in 2.
+		updateRangeFrame(self, true)
+		self:Schedule(4, updateRangeFrame, self)--Cast + 1, since sometimes tank resists, so we'll want to hide frame after 4 seconds if no debuff has gone out in 2.
 	end
 end
 
@@ -414,7 +413,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceFixate:Play("runout")
 				voiceFixate:Schedule(1.5,"targetyou")
 			end
-			updateRangeFrame()
+			updateRangeFrame(self)
 		end
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
 		self.vb.brandedActive = self.vb.brandedActive + 1
@@ -476,7 +475,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					self:SetIcon(args.destName, 1)
 				end
 			end
-			updateRangeFrame()--Update it here cause we don't need it before stacks get to relevant levels.
+			updateRangeFrame(self)--Update it here cause we don't need it before stacks get to relevant levels.
 		end
 	elseif spellId == 158553 then
 		local amount = args.amount or 1
@@ -496,7 +495,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		self:Unschedule(updateRangeFrame)
-		updateRangeFrame()
+		updateRangeFrame(self)
 	elseif spellId == 157801 then
 		specWarnSlow:Show(args.destName)
 	end
@@ -513,7 +512,7 @@ function mod:SPELL_AURA_REFRESH(args)
 				voiceFixate:Play("runout")
 				voiceFixate:Schedule(1.5,"targetyou")
 			end
-			updateRangeFrame()
+			updateRangeFrame(self)
 		end
 	end
 end
@@ -526,9 +525,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			self.vb.playerHasMark = false
 		end
-		updateRangeFrame()
+		updateRangeFrame(self)
 	elseif spellId == 157763 and args:IsPlayer() and self.Options.RangeFrame then
-		updateRangeFrame()
+		updateRangeFrame(self)
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
 		self.vb.brandedActive = self.vb.brandedActive - 1
 		if args:IsPlayer() then
@@ -537,7 +536,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnBrandedDebuff then
 			self:SetIcon(args.destName, 0)
 		end
-		updateRangeFrame()
+		updateRangeFrame(self)
 	end
 end
 
@@ -564,7 +563,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerTransition:Start()
 		countdownTransition:Start()
 		voicePhaseChange:Play("ptran")
-		updateRangeFrame()
+		updateRangeFrame(self)
 	elseif spellId == 158012 or spellId == 157964 then--Power of Foritification/Replication
 		self.vb.forceCount = 0
 		self.vb.isTransition = false
