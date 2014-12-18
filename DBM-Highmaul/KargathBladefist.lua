@@ -17,8 +17,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 159178",
 	"SPELL_PERIODIC_DAMAGE 159413",
 	"SPELL_PERIODIC_MISSED 159413",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_CHANNEL_STOP boss1"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
+--	"UNIT_SPELLCAST_CHANNEL_STOP boss1"
 )
 
 --TODO add timer for sweeper in arena
@@ -33,7 +33,7 @@ local specWarnChainHurl				= mod:NewSpecialWarningSpell(159947)
 local specWarnBerserkerRushOther	= mod:NewSpecialWarningTarget(158986, nil, nil, nil, 2)
 local specWarnBerserkerRush			= mod:NewSpecialWarningMoveTo(158986, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(158986), nil, 3)--Creative use of warning. Run option text but a moveto warning to get players in LFR to actually run to the flame jet instead of being clueless.
 local yellBerserkerRush				= mod:NewYell(158986)
-local specWarnBerserkerRushEnded	= mod:NewSpecialWarningEnd(158986)
+--local specWarnBerserkerRushEnded	= mod:NewSpecialWarningEnd(158986)
 local specWarnImpale				= mod:NewSpecialWarningSpell(159113, mod:IsTank())
 local specWarnOpenWounds			= mod:NewSpecialWarningStack(159178, nil, 2)
 local specWarnOpenWoundsOther		= mod:NewSpecialWarningTaunt(159178)--If it is swap every impale, will move this to impale cast and remove stack stuff all together.
@@ -168,8 +168,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
+--[[
 function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, _, _, spellId)
 	if spellId == 158986 then--160519 bugged. find better way
 		specWarnBerserkerRushEnded:Show()
 	end
-end
+end--]]
