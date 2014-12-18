@@ -63,7 +63,7 @@ local countdownInfestingSpores		= mod:NewCountdown(57, 159996)--The variation on
 local countdownFungalFleshEater		= mod:NewCountdown("Alt120", "ej9995", not mod:IsHealer())
 
 local voiceInfestingSpores			= mod:NewVoice(159996)
-local voiceNecroticBreath			= mod:NewVoice(159219, mod:IsTank() or mod:IsHealer())
+local voiceRot						= mod:NewVoice(163241, mod:IsTank() or mod:IsHealer())
 local voiceLivingMushroom			= mod:NewVoice(160022)
 local voiceRejuvMushroom			= mod:NewVoice(160021, mod:IsHealer())
 local voiceMindFungus				= mod:NewVoice(163141, mod:IsDps())
@@ -130,7 +130,6 @@ function mod:SPELL_CAST_START(args)
 		warnNecroticBreath:Show()
 		specWarnNecroticBreath:Show()
 		timerNecroticBreathCD:Start()
-		voiceNecroticBreath:Play("changemt")
 	end
 end
 
@@ -161,6 +160,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
 				if not UnitDebuff("player", GetSpellInfo(163241)) and not UnitIsDeadOrGhost("player") then
 					specWarnRotOther:Show(args.destName)
+					voiceRot:Play("changemt")
 				end
 			end
 		end
