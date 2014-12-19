@@ -33,13 +33,14 @@ local specWarnPaleVitriol			= mod:NewSpecialWarningMove(163046)--Mythic
 
 local timerCleaveCD					= mod:NewCDTimer(6, 156157, nil, false)
 local timerTenderizerCD				= mod:NewCDTimer(17, 156151, nil, mod:IsTank())
-local timerCleaverCD				= mod:NewCDTimer(9, 156143, nil, mod:IsTank())--Maybe change to off by default if i get a general consensus from other tanks if this is useful.
+local timerCleaverCD				= mod:NewCDTimer(8.5, 156143, nil, mod:IsTank())--Maybe change to off by default if i get a general consensus from other tanks if this is useful.
 local timerGushingWounds			= mod:NewBuffFadesTimer(15, 156152)
 local timerBoundingCleaveCD			= mod:NewNextCountTimer(60, 156160)
 local timerBoundingCleave			= mod:NewCastTimer(15, 156160)
 
 local berserkTimer					= mod:NewBerserkTimer(300)
 
+local countdownCleaver				= mod:NewCountdown("Alt8.5", 156143, mod:IsTank())
 local countdownBoundingCleave		= mod:NewCountdown(60, 156160)
 
 local voiceCleave					= mod:NewVoice(156157, mod:IsMelee())
@@ -60,6 +61,7 @@ function mod:OnCombatStart(delay)
 	timerTenderizerCD:Start(6-delay)
 	timerCleaveCD:Start(10-delay)--Verify this wasn't caused by cleave bug.
 	timerCleaverCD:Start(12-delay)
+	countdownCleaver:Start(12-delay)
 	timerBoundingCleaveCD:Start(-delay, 1)
 	voiceBoundingCleaveSoon:Schedule(53.5-delay, "156160")
 	countdownBoundingCleave:Start(-delay)
@@ -143,6 +145,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 156143 then
 		warnCleaver:Show()
 		timerCleaverCD:Start()
+		countdownCleaver:Start()
 	elseif spellId == 156172 then--The cleave finisher of Bounding Cleave. NOT to be confused with other cleave.
 		specWarnBoundingCleaveEnded:Show()
 		--Timer for when regular cleave resumes
@@ -171,6 +174,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnBoundingCleave:Show(self.vb.boundingCleave)
 		timerTenderizerCD:Start(15)
 		timerCleaverCD:Start(21)
+		countdownCleaver:Cancel()
+		countdownCleaver:Start(21)
 		if self.vb.isFrenzied then
 			timerBoundingCleave:Start(5)
 			timerBoundingCleaveCD:Start(30, self.vb.boundingCleave+1)
