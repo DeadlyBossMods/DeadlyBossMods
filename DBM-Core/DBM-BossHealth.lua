@@ -156,6 +156,7 @@ local function createBar(self, name, ...) -- the vararg will also contain the na
 	bar.hidden = false
 	bar:ClearAllPoints()
 	bartext:SetText(name or "")
+	bar.nameused = name and true or nil
 	if type(bar.id) == "function" then
 		local health, icon = bar.id()
 		updateBar(bar, health, icon, true)
@@ -182,7 +183,7 @@ function updateBar(bar, percent, icon, dontShowDead, name)
 		barbar:SetValue(percent)
 		barbar:SetStatusBarColor((100 - percent) / 100, percent/100, 0)
 		bar.value = percent
-	elseif percent == 0 then
+	elseif (percent == 0) or (bar.value == 0) then
 		bartimer:SetText(dontShowDead and "0%" or DEAD)
 		barbar:SetValue(0)
 		barbar:SetStatusBarColor(0, 0, 0)
@@ -196,7 +197,7 @@ function updateBar(bar, percent, icon, dontShowDead, name)
 		barIcon:Show()
 		barIcon:SetTexCoord((icon - 1) % 4 / 4, (icon - 1) % 4 / 4 + 0.25, icon < 5 and 0 or 0.25, icon < 5 and 0.25 or 0.5)
 	end
-	if name then
+	if name and not bar.nameused then
 		bartext:SetText(name)
 	end
 end
@@ -222,8 +223,13 @@ do
 				else
 					updateBar(v, -1)
 				end
-			elseif type(v.id) == "string" then -- GUID
-				local health, id, name = DBM:GetBossHPByGUID(v.id)
+			elseif type(v.id) == "string" then -- UnitID or GUID
+				local health, id, name
+				if v.id:match("boss") then
+					health, id, name = DBM:GetBossHPByUnitID(v.id)
+				else
+					health, id, name = DBM:GetBossHPByGUID(v.id)
+				end
 				if health then
 					updateBar(v, health, GetRaidTargetIndex(id), nil, name)
 				else

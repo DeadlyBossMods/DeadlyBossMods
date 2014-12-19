@@ -255,6 +255,7 @@ local loadOptions
 local loadModOptions
 local checkWipe
 local checkBossHealth
+local checkCustomBossHealth
 local loopCRTimer
 local fireEvent
 local playerName = UnitName("player")
@@ -4046,6 +4047,11 @@ function checkBossHealth()
 	end
 end
 
+function checkCustomBossHealth(mod)
+	mod:CustomHealthUpdate()
+	DBM:Schedule(1, checkCustomBossHealth, mod)
+end
+
 function loopCRTimer(timer, mod)
 	local crTimer = mod:NewTimer(timer, DBM_COMBAT_RES_TIMER_TEXT, "Interface\\Icons\\Spell_Nature_Reincarnation")
 	crTimer:Start()
@@ -4140,28 +4146,34 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			mod.ignoreBestkill = false
 		end
 		--show health frame
-		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario then
-			if not DBM.BossHealth:IsShown() then
-				DBM.BossHealth:Show(mod.localization.general.name)
-			else-- pulled other boss during combat, set header text.
-				DBM.BossHealth:SetHeaderText(BOSS)
-			end
-			if mod.bossHealthInfo then
-				if mod.bossHealthInfo[2] and type(mod.bossHealthInfo[2]) == "number" then
-					for i = 1, #mod.bossHealthInfo do--boss name gets from UnitName
-						DBM.BossHealth:AddBoss(mod.bossHealthInfo[i])
+		if not mod.inScenario then
+			if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) then
+				if not DBM.BossHealth:IsShown() then
+					DBM.BossHealth:Show(mod.localization.general.name)
+				else-- pulled other boss during combat, set header text.
+					DBM.BossHealth:SetHeaderText(BOSS)
+				end
+				if mod.bossHealthInfo then
+					if mod.bossHealthInfo[2] and type(mod.bossHealthInfo[2]) == "number" then
+						for i = 1, #mod.bossHealthInfo do--boss name gets from UnitName
+							DBM.BossHealth:AddBoss(mod.bossHealthInfo[i])
+						end
+					else
+						for i = 1, #mod.bossHealthInfo, 2 do
+							DBM.BossHealth:AddBoss(mod.bossHealthInfo[i], mod.bossHealthInfo[i + 1])
+						end
 					end
 				else
-					for i = 1, #mod.bossHealthInfo, 2 do
-						DBM.BossHealth:AddBoss(mod.bossHealthInfo[i], mod.bossHealthInfo[i + 1])
-					end
+					DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
 				end
-			else
-				DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
+			--boss health info update scheduler if boss health frame is not enabled.
+			elseif not mod.CustomHealthUpdate then
+				self:Schedule(1, checkBossHealth)
 			end
-		--boss health info update scheduler if boss health frame is not enabled.
-		elseif not mod.inScenario then
-			self:Schedule(1, checkBossHealth)
+			--this function must be scheduled if boss health frame enabled.
+			if mod.CustomHealthUpdate then
+				self:Schedule(1, checkCustomBossHealth, mod)
+			end
 		end
 		--process global options
 		self:ToggleRaidBossEmoteFrame(1)
@@ -4371,7 +4383,7 @@ function DBM:EndCombat(mod, wipe)
 			mod.lastWipeTime = GetTime()
 			--Fix for "attempt to perform arithmetic on field 'pull' (a nil value)" (which was actually caused by stats being nil, so we never did getTime on pull, fixing one SHOULD fix the other)
 			local thisTime = GetTime() - mod.combatInfo.pull
-			local wipeHP = ("%d%%"):format(mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth())
+			local wipeHP = mod.CustomHealthUpdate and mod:CustomHealthUpdate() or ("%d%%"):format(mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth())
 			local totalPulls = mod.stats[statVarTable[savedDifficulty].."Pulls"]
 			local totalKills = mod.stats[statVarTable[savedDifficulty].."Kills"]
 			if thisTime < 30 then -- Normally, one attempt will last at least 30 sec.
@@ -4557,6 +4569,7 @@ function DBM:EndCombat(mod, wipe)
 			self:ToggleRaidBossEmoteFrame(0)
 			self:ToggleGarrisonAlertsFrame(0)
 			self:Unschedule(checkBossHealth)
+			self:Unschedule(checkCustomBossHealth)
 			self:Unschedule(loopCRTimer)
 			DBM.BossHealth:Hide()
 			DBM.Arrow:Hide(true)
@@ -4964,8 +4977,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			local hp = ("%d%%"):format(mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()) or DBM_CORE_UNKNOWN
-			local hpText = hp
+			local hpText = mod.CustomHealthUpdate and mod:CustomHealthUpdate() or ("%d%%"):format(mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()) or DBM_CORE_UNKNOWN
 			if mod.vb.phase then
 				hpText = hpText.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
 			end
@@ -4983,8 +4995,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			local hp = ("%d%%"):format(mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()) or DBM_CORE_UNKNOWN
-			local hpText = hp
+			local hpText = mod.CustomHealthUpdate and mod:CustomHealthUpdate() or ("%d%%"):format(mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()) or DBM_CORE_UNKNOWN
 			if mod.vb.phase then
 				hpText = hpText.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
 			end
@@ -6169,6 +6180,12 @@ function DBM:GetBossHPByGUID(guid)
 	return nil
 end
 
+function DBM:GetBossHPByUnitID(uId)
+	local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
+	bossHealth[uId] = hp
+	return hp, uId, UnitName(uId)
+end
+
 function bossModPrototype:SetBossHealthInfo(...)
 	self.bossHealthInfo = {...}
 end
@@ -6178,7 +6195,9 @@ function bossModPrototype:SetMainBossID(cid)
 end
 
 function bossModPrototype:SetBossHPInfoToHighest(numBoss)
-	self.numBoss = numBoss or (self.multiMobPullDetection and #self.multiMobPullDetection)
+	if numBoss ~= false then
+		self.numBoss = numBoss or (self.multiMobPullDetection and #self.multiMobPullDetection)
+	end
 	self.highesthealth = true
 end
 
