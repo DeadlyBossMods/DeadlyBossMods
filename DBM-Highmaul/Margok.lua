@@ -103,7 +103,7 @@ local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605, nil, mod:IsTank())
 local timerMarkOfChaosCD						= mod:NewCDTimer(50, 158605, nil, mod:IsTank())
 local timerForceNovaCD							= mod:NewCDCountTimer(45, 157349)--45-52
 local timerSummonArcaneAberrationCD				= mod:NewCDTimer(45, 156471, nil, not mod:IsHealer())--45-52 Variation Noted
-local timerTransition							= mod:NewPhaseTimer(76.5)
+local timerTransition							= mod:NewPhaseTimer(74)
 --Intermission: Lineage of Power
 local timerCrushArmorCD							= mod:NewNextTimer(6, 158553, nil, mod:IsTank())
 local timerKickToFaceCD							= mod:NewNextTimer(20, 158563, nil, mod:IsTank())
@@ -111,7 +111,7 @@ local timerKickToFaceCD							= mod:NewNextTimer(20, 158563, nil, mod:IsTank())
 local countdownArcaneWrath						= mod:NewCountdown(50, 156238, not mod:IsTank())--Probably will add for whatever proves most dangerous on mythic
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank())
 local countdownForceNova						= mod:NewCountdown("AltTwo45", 157349)
-local countdownTransition						= mod:NewCountdown(76.5, 157278)
+local countdownTransition						= mod:NewCountdown(74, 157278)
 
 local voiceDestructiveResonance 				= mod:NewVoice(156467, not mod:IsMelee())
 local voiceForceNova	 						= mod:NewVoice(157349)
@@ -350,8 +350,7 @@ function mod:SPELL_CAST_START(args)
 				warnMarkOfChaosDisplacement:Show(targetName)
 			end
 			if tanking or (status == 3) then
-				specWarnMarkOfChaosDisplacement:Show()
-				voiceMarkOfChaos:Play("runout")
+				--No action, displacement you don't run out until fast FINISHES since cast finish ports you into raid.
 			else
 				specWarnMarkOfChaosDisplacementOther:Show(targetName)
 				voiceMarkOfChaos:Play("changemt")
@@ -361,9 +360,10 @@ function mod:SPELL_CAST_START(args)
 				warnMarkOfChaosFortification:Show(targetName)
 			end
 			if tanking or (status == 3) then
-				specWarnMarkOfChaosFortification:Show()
-				yellMarkOfChaosFortification:Yell()
-				voiceMarkOfChaos:Play("runout")--Tank can still run out during cast
+				if not (self:IsMythic() and self.vb.phase == 2) then--Cannot run out on mythic during displacement/fort. Can during fort/replication though.
+					specWarnMarkOfChaosFortification:Show()
+					voiceMarkOfChaos:Play("runout")--Tank can still run out during cast
+				end
 			else
 				specWarnMarkOfChaosFortificationOther:Show(targetName)
 				voiceMarkOfChaos:Play("changemt")
@@ -426,7 +426,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			print("currentStack is nil, report to dbm authors. Branded warning disabled.")--Should never happen but added just in case.
 			return
 		end
-		if (spellId == 164005 and currentStack > 5) or currentStack > 2 then--yells and general announces for target 2 stack before move.
+		if (spellId ~= 164005 and currentStack > 2) or currentStack > 5 then--yells and general announces for target 2 stack before move.
 			if spellId == 164005 then
 				self.vb.jumpDistance = jumpDistance2[currentStack] or 5
 			else
@@ -447,7 +447,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			elseif spellId == 164004 then
 				if self.Options.warnBranded then
-					warnBrandedDisplacement:Show(args.destName, currentStack)
+					warnBrandedDisplacement:CombinedShow(0.5, args.destName, currentStack)
 				end
 				if currentStack > 4  then--Special warning only for person that needs to get out
 					if args:IsPlayer() then
@@ -458,9 +458,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			elseif spellId == 164005 then
 				if self.Options.warnBranded then
-					warnBrandedFortification:Show(args.destName, currentStack)
+					warnBrandedFortification:CombinedShow(0.5, args.destName, currentStack)
 				end
-				if args:IsPlayer() and currentStack > 7  then--Special warning only for person that needs to get out
+				if args:IsPlayer() and currentStack > 6  then--Special warning only for person that needs to get out
 					specWarnBrandedFortification:Show(currentStack)
 				end
 			elseif spellId == 164006 then
@@ -472,8 +472,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 			if self.Options.SetIconOnBrandedDebuff then
-				if spellId == 164005 then
-					self:SetSortedIcon(2, args.destName, 1, 2)--Icon still not working. setting star on both targets. 1 sec should have worked, no idea why it doesn't.
+				if spellId == 164006 or (self:IsMythic() and spellId == 164004) then--On mythic, displacement/replication in phase 1. Using dipslacemnet spellid, on two targets.
+					self:SetSortedIcon(1, args.destName, 1, 2)
 				else
 					self:SetIcon(args.destName, 1)
 				end
@@ -490,6 +490,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.lastMarkedTank = args.destName
 		if args:IsPlayer() then
 			self.vb.playerHasMark = true
+			if spellId == 164176 then 
+				specWarnMarkOfChaosDisplacement:Show()
+				voiceMarkOfChaos:Play("runout")
+			elseif spellId == 164178 then
+				if self:IsMythic() and self.vb.phase == 2 then
+					specWarnMarkOfChaosFortification:Show()
+				end
+				yellMarkOfChaosFortification:Yell()--Always yell when root occurs in all modes though, because that's when raid really needs to know WHERE you are.
+			end
 		else
 			self.vb.playerHasMark = false
 			if spellId == 164178 and self:CheckNearby(35, args.destName) then
@@ -567,6 +576,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownTransition:Start()
 		voicePhaseChange:Play("ptran")
 		updateRangeFrame(self)
+		if spellId == 164810 then
+			timerCrushArmorCD:Start(23)
+			timerKickToFaceCD:Start(42)
+		end
 	elseif spellId == 158012 or spellId == 157964 then--Power of Foritification/Replication
 		self.vb.forceCount = 0
 		self.vb.isTransition = false
@@ -581,12 +594,22 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voiceForceNova:Schedule(42, "157349")
 		countdownForceNova:Start(48.5)
 		if spellId == 158012 then
-			voicePhaseChange:Play("pthree")
-			self.vb.phase = 3
+			if self:IsMythic() then
+				self.vb.phase = 2
+				voicePhaseChange:Play("ptwo")	
+			else
+				self.vb.phase = 3
+				voicePhaseChange:Play("pthree")
+			end
 		end
 		if spellId == 157964 then
-			voicePhaseChange:Play("pfour")
-			self.vb.phase = 4
+			if self:IsMythic() then
+				self.vb.phase = 3
+				voicePhaseChange:Play("pthree")	
+			else
+				self.vb.phase = 4
+				voicePhaseChange:Play("pfour")
+			end
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
