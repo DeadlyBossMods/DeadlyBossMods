@@ -32,7 +32,9 @@ L= DBM:GetModLocalization(1148)
 
 L:SetOptionLocalization({
 	PhemosSpecial	= "Spiele akustischen Countdown für Phemos' Spezialfähigkeiten",
-	PolSpecial		= "Spiele akustischen Countdown für Pols Spezialfähigkeiten"
+	PolSpecial		= "Spiele akustischen Countdown für Pols Spezialfähigkeiten",
+	PhemosSpecialVoice	= "Spiele gesprochene Warnungen für Phemos' Spezialfähigkeiten",
+	PolSpecialVoice		= "Spiele gesprochene Warnungen für Pols Spezialfähigkeiten"
 })
 
 --------------------
