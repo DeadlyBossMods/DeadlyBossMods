@@ -15,6 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 156803 162186 161242 163472 172895",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 162186 163472 172895",
+	"SPELL_DAMAGE 161576",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -152,6 +153,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownBalls:Start()
 		self:Schedule(23.5, ballsWarning)
 		DBM:Debug("timerBallsCD started because a successful soak happened")
+	end
+end
+
+function mod:SPELL_DAMAGE() -- only captures spellid 161576
+	if self:AntiSpam(5, 4) then
+		timerBallsCD:Start()
+		countdownBalls:Start()
+		self:Schedule(23.5, ballsWarning)
+		DBM:Debug("timerBallsCD started by aoe damage")
 	end
 end
 
