@@ -107,7 +107,10 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 163947 then
-		timerRecovering:Start()
+		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(args.destName, args.spellName)
+		if expires then
+			timerRecovering:Start(expires-GetTime())
+		end
 	end
 end
 
