@@ -70,6 +70,8 @@ local voiceMindFungus				= mod:NewVoice(163141, mod:IsDps())
 local voiceFungalFlesheater			= mod:NewVoice("ej9995", not mod:IsHealer())
 local voiceSporeShooter				= mod:NewVoice(163594, mod:IsRangedDps())
 local voiceDecay					= mod:NewVoice(160013, not mod:IsHealer())
+local voiceExplodingFungus			= mod:NewVoice(163794)
+local voiceWaves					= mod:NewVoice(160425)
 
 mod:AddRangeFrameOption(8, 160254, false)
 
@@ -214,9 +216,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnExplodingFungus:Show()
 		specWarnExplodingFungus:Show()
 		timerSpecialCD:Start()
+		voiceExplodingFungus:Play("watchstep")
 	elseif spellId == 160425 then
 		warnWaves:Show()
 		specWarnWaves:Show()
 		timerSpecialCD:Start()
+		voiceWaves:Play("watchwave")
 	end
 end
