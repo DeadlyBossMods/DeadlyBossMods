@@ -89,7 +89,7 @@ function mod:SPELL_CAST_START(args)
 		warnCleave:Show(self.vb.cleaveCount)
 		timerCleaveCD:Start()
 		if not self:IsLFR() then --never play this in LFR
-			voiceCleave:Play(156157)
+			voiceCleave:Play("156157")
 		end
 	end
 end
