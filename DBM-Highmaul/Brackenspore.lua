@@ -27,8 +27,8 @@ local warnRot						= mod:NewStackAnnounce(163241, 2, nil, mod:IsTank())
 local warnSporeShooter				= mod:NewSpellAnnounce("OptionVersion2", 163594, 3, nil, mod:IsRangedDps())
 local warnFungalFlesheater			= mod:NewSpellAnnounce("ej9995", 4, 163142)--Using ej name because it doesn't match spell name at all like others
 local warnMindFungus				= mod:NewSpellAnnounce(163141, 2, nil, mod:IsMelee() and not mod:IsTank())
-local warnLivingMushroom			= mod:NewSpellAnnounce(160022, 1)--Good shroom! (mana/haste)
-local warnRejuvMushroom				= mod:NewSpellAnnounce(160021, 1)--Other good shroom (healing)
+local warnLivingMushroom			= mod:NewCountAnnounce(160022, 1)--Good shroom! (mana/haste)
+local warnRejuvMushroom				= mod:NewCountAnnounce(160021, 1)--Other good shroom (healing)
 local warnExplodingFungus			= mod:NewSpellAnnounce(163794, 4)--Mythic Shroom
 local warnWaves						= mod:NewSpellAnnounce(160425, 4)--Mythic Waves
 
@@ -53,8 +53,8 @@ local timerSporeShooterCD			= mod:NewCDTimer("OptionVersion2", 57, 163594, nil, 
 local timerFungalFleshEaterCD		= mod:NewCDTimer(120, "ej9995", nil, not mod:IsHealer(), nil, 163142)
 local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, mod:IsMelee())
 local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, mod:IsMelee() and not mod:IsTank())
-local timerLivingMushroomCD			= mod:NewCDTimer(55.5, 160022, nil, mod:IsHealer())
-local timerRejuvMushroomCD			= mod:NewCDTimer(150, 160021, nil, mod:IsHealer())
+local timerLivingMushroomCD			= mod:NewCDCountTimer(55.5, 160022, nil, mod:IsHealer())
+local timerRejuvMushroomCD			= mod:NewCDCountTimer(150, 160021, nil, mod:IsHealer())
 local timerSpecialCD				= mod:NewCDSpecialTimer(20)--Mythic Specials. Shared cd, which special he uses is random. 20-25 second variation, unless delayed by spores. then 20-25+10 Only Exploding fungas can be delayed by spores. waves can still cast during spores.
 
 local berserkTimer					= mod:NewBerserkTimer(600)
@@ -75,12 +75,16 @@ mod:AddRangeFrameOption(8, 160254, false)
 
 mod.vb.sporesAlive = 0
 mod.vb.decayCounter = 0
+mod.vb.greenShroom = 0
+mod.vb.blueShroom = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.sporesAlive = 0
 	self.vb.decayCounter = 0
+	self.vb.greenShroom = 0
+	self.vb.blueShroom = 0
 	timerMindFungusCD:Start(10-delay)
-	timerLivingMushroomCD:Start(18-delay)--16-18
+	timerLivingMushroomCD:Start(18-delay, 1)--16-18
 	timerSporeShooterCD:Start(20-delay)--20-26
 	timerNecroticBreathCD:Start(30-delay)
 	timerFungalFleshEaterCD:Start(32-delay)
@@ -88,7 +92,7 @@ function mod:OnCombatStart(delay)
 	timerInfestingSporesCD:Start(45-delay)
 	countdownInfestingSpores:Start(45-delay)
 	voiceInfestingSpores:Schedule(38.5-delay, "aesoon")
-	timerRejuvMushroomCD:Start(80-delay)--Todo, verify 80 in all modes and not still 75 in mythic
+	timerRejuvMushroomCD:Start(80-delay, 1)--Todo, verify 80 in all modes and not still 75 in mythic
 	berserkTimer:Start(-delay)
 	if self:IsMythic() then
 		timerSpecialCD:Start(-delay)--standard 20-25
@@ -197,12 +201,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownFungalFleshEater:Start()
 		voiceFungalFlesheater:Play("163142k")
 	elseif spellId == 160022 then
-		warnLivingMushroom:Show()
-		timerLivingMushroomCD:Start()
+		self.vb.greenShroom = self.vb.greenShroom + 1
+		warnLivingMushroom:Show(self.vb.greenShroom)
+		timerLivingMushroomCD:Start(nil, self.vb.greenShroom+1)
 		voiceLivingMushroom:Play("160022s") --green one
 	elseif spellId == 160021 or spellId == 177820 then--Seems diff ID in mythic vs non mythic?
-		warnRejuvMushroom:Show()
-		timerRejuvMushroomCD:Start()
+		self.vb.blueShroom = self.vb.blueShroom + 1
+		warnRejuvMushroom:Show(self.vb.blueShroom)
+		timerRejuvMushroomCD:Start(nil, self.vb.blueShroom+1)
 		voiceRejuvMushroom:Play("160021s") --blue one
 	elseif spellId == 163794 then
 		warnExplodingFungus:Show()
