@@ -53,7 +53,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 161256 and self:AntiSpam(5) then
+	if spellId == 161256 and self:AntiSpam(5) then--sometimes not fires?
 		warnPrimalAssault:Show()
 		specWarnPrimalAssault:Show()
 		--timerPrimalAssaultCD:Start()
