@@ -36,7 +36,7 @@ local specWarnCreepingMoss			= mod:NewSpecialWarningMove(163590, mod:IsTank())
 local specWarnInfestingSpores		= mod:NewSpecialWarningSpell(159996, nil, nil, nil, 2)
 local specWarnDecay					= mod:NewSpecialWarningInterrupt(160013, not mod:IsHealer())
 local specWarnNecroticBreath		= mod:NewSpecialWarningSpell(159219, mod:IsTank(), nil, nil, 3)
-local specWarnRot					= mod:NewSpecialWarningStack(163241, nil, 4)
+local specWarnRot					= mod:NewSpecialWarningStack(163241, nil, 3)
 local specWarnRotOther				= mod:NewSpecialWarningTaunt(163241)
 local specWarnExplodingFungus		= mod:NewSpecialWarningSpell(163794, nil, nil, nil, 2)--Change warning type/sound? need to know more about spawn.
 local specWarnWaves					= mod:NewSpecialWarningSpell(160425, nil, nil, nil, 2)
@@ -65,7 +65,7 @@ local countdownFungalFleshEater		= mod:NewCountdown("Alt120", "ej9995", not mod:
 local voiceInfestingSpores			= mod:NewVoice(159996)
 local voiceRot						= mod:NewVoice(163241, mod:IsTank() or mod:IsHealer())
 local voiceLivingMushroom			= mod:NewVoice(160022)
-local voiceRejuvMushroom			= mod:NewVoice(160021, mod:IsHealer())
+local voiceRejuvMushroom			= mod:NewVoice(160021)
 local voiceMindFungus				= mod:NewVoice(163141, mod:IsDps())
 local voiceFungalFlesheater			= mod:NewVoice("ej9995", not mod:IsHealer())
 local voiceSporeShooter				= mod:NewVoice(163594, mod:IsRangedDps())
@@ -160,7 +160,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 163241 then
 		local amount = args.amount or 1
 		warnRot:Show(args.destName, amount)
-		if amount >= 4 then
+		if amount >= 3 then
 			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 				specWarnRot:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
