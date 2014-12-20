@@ -8,6 +8,8 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
+mod:SetBossHealthInfo(81297)
+
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 164426 164835 164632",
 	"SPELL_AURA_REMOVED 164426",
