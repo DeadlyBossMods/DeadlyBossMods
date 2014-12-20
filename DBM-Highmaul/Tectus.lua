@@ -221,7 +221,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			moteH[args.destGUID] = 0
 		end
 		if self.Options.SetIconOnMote and not self:IsLFR() then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
-			self:ScanForMobs(args.destGUID, 0, 8, 8, 0.05, 10)--Find out why this still doesn't work.
+			self:ScanForMobs(args.destGUID, 0, 8, 8, 0.05, 12)
 		end
 	end
 end
@@ -271,7 +271,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
 		timerEarthenFlechettesCD:Start(15)
 		timerEarthwarperCD:Start()
 		countdownEarthwarper:Start()
-		if self.Options.SetIconOnEarthwarper and self.vb.EarthwarperAlive < 9 then--Support for marking up to 8 mobs (you're group is terrible)
+		if self.Options.SetIconOnEarthwarper and self.vb.EarthwarperAlive < 9 and not (self:IsMythic() and self.Options.SetIconOnMote) then--Support for marking up to 8 mobs (you're group is terrible)
 			self:ScanForMobs(80599, 2, 9-self.vb.EarthwarperAlive, 1, 0.2, 10, "SetIconOnEarthwarper")
 		end
 	elseif npc == Berserker then
