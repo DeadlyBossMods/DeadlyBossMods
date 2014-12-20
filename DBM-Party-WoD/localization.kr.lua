@@ -198,6 +198,15 @@ L= DBM:GetModLocalization(967)
 -----------------------
 L= DBM:GetModLocalization(968)
 
+-------------
+--  Skyreach Trash  --
+-------------
+L = DBM:GetModLocalization("SkyreachTrash")
+
+L:SetGeneralLocalization({
+	name =	"하늘탑: 일반구간"
+})
+
 -----------------------
 -- <<<Upper Blackrock Spire>>> --
 -----------------------
