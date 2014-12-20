@@ -132,7 +132,7 @@ DBM.DefaultOptions = {
 	AFKHealthWarning = true,
 	HideObjectivesFrame = true,
 	HideGarrisonUpdates = false,
-	SmarterLFGPing = false,
+	HideApplicantAlerts = 0,
 	HideTooltips = false,
 	EnableModels = true,
 	RangeFrameFrames = "radar",
@@ -280,6 +280,7 @@ local bossuIdFound = false
 local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
 local tooltipsHidden = false
+local LFGPingHijacked = false
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -317,7 +318,7 @@ local GetInstanceInfo = GetInstanceInfo
 local UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone = UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone
 local GetSpecialization = GetSpecialization
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
-local GetPartyAssignment, UnitGroupRolesAssigned = GetPartyAssignment, UnitGroupRolesAssigned
+local GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant = GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant
 local LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns = LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns
 local PlaySoundFile, PlaySound = PlaySoundFile, PlaySound
 local Ambiguate = Ambiguate
@@ -1037,8 +1038,9 @@ do
 				"LOADING_SCREEN_DISABLED"
 			)
 			RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
-			if DBM.Options.SmarterLFGPing then
+			if DBM.Options.HideApplicantAlerts > 0 then
 				LFGListFrame:UnregisterEvent("LFG_LIST_APPLICANT_LIST_UPDATED")
+				LFGPingHijacked = true
 			end
 			self:GROUP_ROSTER_UPDATE()
 			--self:LOADING_SCREEN_DISABLED()--Initial testing shows it isn't needed here and wastes cpu running funcion twice, because actual event always fires at login, AFTER addonloadded. Will remove this line if it works out ok
@@ -2424,15 +2426,15 @@ function DBM:LFG_PROPOSAL_SUCCEEDED()
 end
 
 function DBM:LFG_LIST_APPLICANT_LIST_UPDATED(hasNewPending, hasNewPendingWithData)
-	if not DBM.Options.SmarterLFGPing then return end
-	if GetNumGroupMembers() < 40 then
+	if not LFGPingHijacked then return end
+	if (DBM.Options.HideApplicantAlerts == 2 and not UnitIsGroupLeader("player", LE_PARTY_CATEGORY_HOME)) or (DBM.Options.HideApplicantAlerts >= 1 and GetNumGroupMembers() == 40) then
+		DBM:Debug("LFG_LIST_APPLICANT_LIST_UPDATED fired, but filter conditions met, supressing ping update", 2)
+	else
 		if ( hasNewPending and hasNewPendingWithData and LFGListUtil_IsEntryEmpowered() ) then
 			if ( not LFGListFrame:IsVisible() ) then
 				QueueStatusMinimapButton_SetGlowLock(QueueStatusMinimapButton, "lfglist-applicant", true);
 			end
 		end
-	else
-		DBM:Debug("LFG_LIST_APPLICANT_LIST_UPDATED fired, but group is full, supressing ping update", 2)
 	end
 end
 
