@@ -83,25 +83,19 @@ function mod:CustomHealthUpdate()
 		tectusH = UnitHealth("boss1") / UnitHealthMax("boss1") * 100
 	end
 	if UnitExists("boss2") then
-		if tectusH == 0 then
-			healthPhase = 2
-		end
+		healthPhase = 2
 		shardC = shardC + 1
 		shardT = shardT + (UnitHealth("boss2") / UnitHealthMax("boss2") * 100)
 	end
 	if UnitExists("boss3") then
-		if tectusH == 0 then
-			healthPhase = 2
-		end
+		healthPhase = 2
 		shardC = shardC + 1
 		shardT = shardT + (UnitHealth("boss3") / UnitHealthMax("boss3") * 100)
 	end
 	for guid, health in pairs(moteH) do
 		local newhealth = self:GetBossHPByGUID(guid) or health
 		if newhealth >= 1 then
-			if shardT == 0 then
-				healthPhase = 3
-			end
+			healthPhase = 3
 			moteC = moteC + 1
 			moteT = moteT + newhealth
 			moteH[guid] = newhealth
