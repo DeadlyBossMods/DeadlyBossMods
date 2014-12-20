@@ -72,7 +72,7 @@ local voiceMC						= mod:NewVoice(163472, mod:IsDps())
 local voiceTrample					= mod:NewVoice(163101)
 local voiceBalls					= mod:NewVoice(161612)
 
-mod:AddRangeFrameOption("7/5")
+mod:AddRangeFrameOption("5")
 mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddSetIconOption("SetIconOnFel", 172895, false)
 
@@ -111,7 +111,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnExpelMagicFire:Schedule(5)--Give you about 4 seconds to spread out
 		--Even if you AMS or resist debuff, need to avoid others that didn't, so rangecheck now here
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(7)
+			DBM.RangeCheck:Show(5)
 		end
 		countdownMagicFire:Start()
 		voiceExpelMagicFire:Play("scattersoon")
