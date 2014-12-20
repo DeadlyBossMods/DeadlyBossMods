@@ -424,12 +424,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.brandedActive = self.vb.brandedActive + 1
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local _, _, _, currentStack = UnitDebuff(uId, GetSpellInfo(spellId))
+		local fortified = (self:IsMythic() and self.vb.phase == 3) or spellid == 164005--Phase 3 uses replication ID, so need hack for mythic fortified/replication phase.
 		if not currentStack then
 			print("currentStack is nil, report to dbm authors. Branded warning disabled.")--Should never happen but added just in case.
 			return
 		end
-		if (spellId ~= 164005 and currentStack > 2) or currentStack > 5 then--yells and general announces for target 2 stack before move.
-			if spellId == 164005 then
+		if (not fortified and currentStack > 2) or currentStack > 5 then--yells and general announces for target 2 stack before move.
+			if fortified then
 				self.vb.jumpDistance = jumpDistance2[currentStack] or 5
 			else
 				self.vb.jumpDistance = jumpDistance1[currentStack] or 5
