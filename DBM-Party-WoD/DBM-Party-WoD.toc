@@ -64,6 +64,7 @@ Skyreach\Ranjit.lua
 Skyreach\Araknath.lua
 Skyreach\Rukhran.lua
 Skyreach\Viryx.lua
+Skyreach\SkyreachTrash.lua
 UBRS\Gorashan.lua
 UBRS\Kyrak.lua
 UBRS\Tharbek.lua

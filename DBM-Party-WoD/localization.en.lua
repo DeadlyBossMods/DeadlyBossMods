@@ -197,6 +197,15 @@ L= DBM:GetModLocalization(967)
 -----------------------
 L= DBM:GetModLocalization(968)
 
+-------------
+--  Skyreach Trash  --
+-------------
+L = DBM:GetModLocalization("SkyreachTrash")
+
+L:SetGeneralLocalization({
+	name =	"Skyreach Trash"
+})
+
 -----------------------
 -- <<<Upper Blackrock Spire>>> --
 -----------------------
