@@ -22,9 +22,12 @@ mod:RegisterEventsInCombat(
 local warnBurningRage		= mod:NewStackAnnounce(155620, 3, nil, mod:CanRemoveEnrage() or mod:IsTank())
 local warnEngulfingFire		= mod:NewSpellAnnounce(154996, 4)
 local warnSwirlingWinds		= mod:NewSpellAnnounce(167203, 2)
+local warnMagmaSpit			= mod:NewTargetAnnounce(155051, 3)
 
 local specWarnBurningRage	= mod:NewSpecialWarningDispel(155620, mod:CanRemoveEnrage())
 local specWarnMagmaSpit		= mod:NewSpecialWarningMove(155051)
+local specWarnMagmaSpitYou	= mod:NewSpecialWarningYou(155051)
+local yellMagmaSpit			= mod:NewYell(155051)
 local specWarnMagmaPool		= mod:NewSpecialWarningMove(155057)
 local specWarnEngulfingFire	= mod:NewSpecialWarningSpell(154996, nil, nil, nil, 3)
 
@@ -36,8 +39,16 @@ local voiceBurningRage		= mod:NewVoice(155620, mod:CanRemoveEnrage())
 local voiceMagmaSpit		= mod:NewVoice(155051)
 local voiceMagmaPool		= mod:NewVoice(155057)
 
-
 mod.vb.firstBreath = false
+
+function mod:MagmaSpitTarget(targetname, uId)
+	if not targetname then return end
+	warnMagmaSpit:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnMagmaSpitYou:Show()
+		yellMagmaSpit:Yell()
+	end
+end
 
 function mod:OnCombatStart(delay)
 	timerEngulfingFireCD:Start(13-delay)--Needs more data
@@ -90,5 +101,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerEngulfingFireCD:Start()
 			voiceEngulfingFire:Schedule(21, "breathsoon")
 		end
+	elseif spellId == 155050 then
+		self:BossTargetScanner(76585, "MagmaSpitTarget", 0.05, 10)
 	end
 end
