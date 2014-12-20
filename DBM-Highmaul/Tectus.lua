@@ -6,7 +6,6 @@ mod:SetCreatureID(78948, 80557, 80551, 99999)--78948 Tectus, 80557 Mote of Tectu
 mod:SetEncounterID(1722)--Hopefully win will work fine off this because otherwise tracking shard deaths is crappy
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
-mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 mod:SetMinSyncTime(4)--Rise Mountain can occur pretty often.
@@ -64,16 +63,102 @@ local voiceEarthenPillar			= mod:NewVoice(162518, nil )
 
 
 mod:AddSetIconOption("SetIconOnEarthwarper", "ej10061", true, true)
-mod:AddSetIconOption("SetIconOnMote", "ej10083", false, true)--This more or less assumes the 4 at a time strat. if you unleash 8 it will fail. Although any guild unleashing 8 is probably doing it wrong (minus LFR)
+mod:AddSetIconOption("SetIconOnMote", "ej10083", false, true)--Working with both shard and mote. ej10083 description is bad / This more or less assumes the 4 at a time strat. if you unleash 8 it will fail. Although any guild unleashing 8 is probably doing it wrong (minus LFR)
 
+local UnitGUID, UnitExists = UnitGUID, UnitExists
 local Earthwarper = EJ_GetSectionInfo(10061)
 local Berserker = EJ_GetSectionInfo(10062)
 mod.vb.EarthwarperAlive = 0
 local earthDuders = {}
 
+local tectusN = EJ_GetEncounterInfo(1195)
+local shardN = EJ_GetSectionInfo(10063)
+local moteN = EJ_GetSectionInfo(10064)
+local moteH = {}
+local healthPhase = 0 -- not need to sync.
+function mod:CustomHealthUpdate()
+	local tectusH, shardC, shardT, moteC, moteT = 0, 0, 0, 0, 0
+	if UnitExists("boss1") then
+		healthPhase = 1
+		tectusH = UnitHealth("boss1") / UnitHealthMax("boss1") * 100
+	end
+	if UnitExists("boss2") then
+		if tectusH == 0 then
+			healthPhase = 2
+		end
+		shardC = shardC + 1
+		shardT = shardT + (UnitHealth("boss2") / UnitHealthMax("boss2") * 100)
+	end
+	if UnitExists("boss3") then
+		if tectusH == 0 then
+			healthPhase = 2
+		end
+		shardC = shardC + 1
+		shardT = shardT + (UnitHealth("boss3") / UnitHealthMax("boss3") * 100)
+	end
+	for guid, health in pairs(moteH) do
+		local newhealth = self:GetBossHPByGUID(guid) or health
+		if newhealth >= 1 then
+			if shardT == 0 then
+				healthPhase = 3
+			end
+			moteC = moteC + 1
+			moteT = moteT + newhealth
+			moteH[guid] = newhealth
+		end
+	end
+	if DBM.BossHealth:IsShown() then
+		if UnitExists("boss1") then
+			if DBM.BossHealth:HasBoss(78948) then
+				DBM.BossHealth:RemoveBoss(78948)
+			end
+			if not DBM.BossHealth:HasBoss("boss1") then
+				DBM.BossHealth:AddBoss("boss1", tectusN)
+			end
+		else
+			if DBM.BossHealth:HasBoss("boss1") then
+				DBM.BossHealth:RemoveBoss("boss1")
+			end
+		end
+		if UnitExists("boss2") then
+			if not DBM.BossHealth:HasBoss("boss2") then
+				DBM.BossHealth:AddBoss("boss2", shardN)
+			end
+		else
+			if DBM.BossHealth:HasBoss("boss2") then
+				DBM.BossHealth:RemoveBoss("boss2")
+			end
+		end
+		if UnitExists("boss3") then
+			if not DBM.BossHealth:HasBoss("boss3") then
+				DBM.BossHealth:AddBoss("boss3", shardN)
+			end
+		else
+			if DBM.BossHealth:HasBoss("boss3") then
+				DBM.BossHealth:RemoveBoss("boss3")
+			end
+		end
+		for guid, health in pairs(moteH) do
+			if not DBM.BossHealth:HasBoss(guid) then
+				DBM.BossHealth:AddBoss(guid, moteN)
+			end
+		end
+	end
+	if healthPhase == 1 then
+		return ("(%d%%, %s)"):format(tectusH, tectusN)
+	elseif healthPhase == 2 then
+		return ("(%d%%, %s)"):format(shardT / shardC, shardN)
+	elseif healthPhase == 3 then
+		return ("(%d%%, %s)"):format(moteT / moteC, moteN)
+	end
+	return DBM_CORE_UNKNOWN
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(earthDuders)
 	self.vb.EarthwarperAlive = 0
+	healthPhase = 1
+	table.wipe(moteH)
 	timerEarthwarperCD:Start(11-delay)
 	countdownEarthwarper:Start(11-delay)
 	timerBerserkerCD:Start(21-delay)
@@ -83,6 +168,10 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(-delay)--Confirmed 10 min in both.
 	else
 		--Find LFR berserk for LFR
+	end
+	if DBM.BossHealth:IsShown() then
+		DBM.BossHealth:Clear()
+		DBM.BossHealth:AddBoss("boss1", tectusN)
 	end
 end
 
@@ -132,15 +221,26 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceCrystallineBarrage:Play("runout")
 			end
 		end
-	elseif spellId == 162658 and self.Options.SetIconOnMote and not self:IsLFR() then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
-		self:ScanForMobs(args.destGUID, 0, 8, 8, 0.05, 10)--Find out why this still doesn't work.
+	elseif spellId == 162658 then
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if not moteH[args.destGUID] and cid == 80557 then
+			moteH[args.destGUID] = 0
+		end
+		if self.Options.SetIconOnMote and not self:IsLFR() then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
+			self:ScanForMobs(args.destGUID, 0, 8, 8, 0.05, 10)--Find out why this still doesn't work.
+		end
 	end
 end
 
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
-	if spellId == 162370 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
-		specWarnCrystallineBarrage:Show()
-		voiceCrystallineBarrage:Play("runaway")
+function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, sourceName, _, _, destGUID, destName, _, _, spellId)
+	if spellId == 162370 then
+		if (healthPhase == 0 or healthPhase == 3) and not moteH[sourceGUID] and sourceName == moteN then -- try to recover moteH table if timer recovery worked.
+			moteH[sourceGUID] = 0
+		end
+		if destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+			specWarnCrystallineBarrage:Show()
+			voiceCrystallineBarrage:Play("runaway")
+		end
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

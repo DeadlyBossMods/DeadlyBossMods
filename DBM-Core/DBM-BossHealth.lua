@@ -178,13 +178,17 @@ function updateBar(bar, percent, icon, dontShowDead, name)
 	local barbar = _G[barName .. "Bar"]
 	local barIcon = _G[barName .. "BarIcon"]
 	local bartext = _G[barName .. "BarName"]
-	if percent > 0 then
+	if percent >= 1 then
 		bartimer:SetText(math.floor(percent).."%")
 		barbar:SetValue(percent)
 		barbar:SetStatusBarColor((100 - percent) / 100, percent/100, 0)
 		bar.value = percent
-	elseif (percent == 0) or (bar.value == 0) then
-		bartimer:SetText(dontShowDead and "0%" or DEAD)
+	elseif (bar.value == 0) or (percent >= 0) then
+		if percent == 0 then
+			bartimer:SetText(dontShowDead and "0%" or DEAD)
+		else
+			bartimer:SetText("0%")
+		end
 		barbar:SetValue(0)
 		barbar:SetStatusBarColor(0, 0, 0)
 		bar.value = 0
