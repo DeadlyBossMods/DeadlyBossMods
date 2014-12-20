@@ -39,11 +39,16 @@ local voiceShielding		= mod:NewVoice(154055, mod:IsDps())
 mod:AddSetIconOption("SetIconOnCastDown", 153954)
 
 mod.vb.lastGrab = nil
+local skyTrashMod = DBM:GetModByName("SkyreachTrash")
 
 function mod:OnCombatStart(delay)
 	self.vb.lastGrab = nil
 	timerLenseFlareCD:Start(-delay)
 	timerCastDownCD:Start(15-delay)
+	if skyTrashMod.Options.RangeFrame and skyTrashMod.vb.debuffCount ~= 0 then--In case of bug where range frame gets stuck open from trash pulls before this boss.
+		skyTrashMod.vb.debuffCount = 0--Fix variable
+		DBM.RangeCheck:Hide()--Close range frame.
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
