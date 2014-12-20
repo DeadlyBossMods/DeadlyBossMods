@@ -5,21 +5,29 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(79912, 80098)--80098 is mount(Ironbarb Skyreaver), 79912 is boss
 mod:SetEncounterID(1759)
 mod:SetZone()
+mod:SetBossHPInfoToHighest(false)
 
 mod:RegisterCombat("combat")
+
+mod:SetBossHealthInfo(80098)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 162090",
 	"SPELL_AURA_APPLIED 161833",
 	"SPELL_PERIODIC_DAMAGE 161989",
 	"SPELL_PERIODIC_MISSED 161989",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"UNIT_TARGETABLE_CHANGED",
+	"UNIT_DIED"
 )
 
 --Chi blast warns very spammy. and not useful.
-local warnIronReaver		= mod:NewSpellAnnounce(161989, 3)
+local warnTharbek			= mod:NewSpellAnnounce("ej10276", 3, "Interface\\ICONS\\INV_Misc_Head_Orc_01.blp")
+local warnIronReaver		= mod:NewTargetAnnounce(161989, 3)
 local warnImbuedIronAxe		= mod:NewTargetAnnounce(162090, 4)
 
+local specWarnIronReaver	= mod:NewSpecialWarningYou(161989)
+local yellIronReaver		= mod:NewYell(161989)
 local specWarnImbuedIronAxe	= mod:NewSpecialWarningYou(162090)
 local yellImbuedIronAxe		= mod:NewYell(162090)
 local specWarnNoxiousSpit	= mod:NewSpecialWarningMove(161833)
@@ -28,6 +36,15 @@ local timerIronReaverCD		= mod:NewCDTimer(20.5, 161989)--Not enough data to real
 local timerImbuedIronAxeCD	= mod:NewCDTimer(29, 162090)--29-37sec variation
 
 local voiceWarnNoxiousSpit	= mod:NewVoice(161833)
+
+function mod:IronReaverTarget(targetname, uId)
+	if not targetname then return end
+	warnIronReaver:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnIronReaverYou:Show()
+		yellIronReaver:Yell()
+	end
+end
 
 function mod:OnCombatStart(delay)
 --	timerIronReaverCD:Start(-delay)
@@ -59,18 +76,24 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---TODO, watch for blizzard to fix IEEU on this fight so we can use "boss1" instead
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	--"<46.8 00:38:13> Commander Tharbek [[target:Iron Reaver::0:161989]]", -- [11]
-	--This has combatlog event (Both SUCCESS & DAMAGE) but only if it HITS someone, otherwise there is no CLEU event, this s why we use UNIT_ event.
-	if spellId == 161989 and self:AntiSpam(3, 2) then
-		self:SendSync("IronReaver")--Syncing because IEEU is broken on fight and so there is no "boss1"
+	if spellId == 161989 then
+		self:BossTargetScanner(79912, "IronReaverTarget", 0.05, 10)
+		timerIronReaverCD:Start()
 	end
 end
 
-function mod:OnSync(event, arg)
-	if event == "IronReaver" then
-		warnIronReaver:Show()
-		timerIronReaverCD:Start()
+function mod:UNIT_TARGETABLE_CHANGED()
+	warnTharbek:Show()
+	if DBM.BossHealth:IsShown() then
+		DBM.BossHealth:AddBoss(79912)
+	end
+end
+
+function mod:UNIT_DIED(args)
+	if not DBM.BossHealth:IsShown() then return end
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 80098 then
+		DBM.BossHealth:RemoveBoss(80098)
 	end
 end
