@@ -71,8 +71,8 @@ end
 
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 168885 then
-		self.vb.ParasiteCount = 0
 		timerParasiticGrowthCD:Cancel(self.vb.ParasiteCount+1)
+		self.vb.ParasiteCount = 0
 		timerParasiticGrowthCD:Start(30, 1)
 	end
 end
