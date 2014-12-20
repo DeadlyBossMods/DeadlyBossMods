@@ -84,6 +84,9 @@ function mod:UNIT_DIED(args)
 	if not DBM.BossHealth:IsShown() then return end
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 83613 then
+		DBM.BossHealth:RemoveBoss(83613)
 		DBM.BossHealth:AddBoss(83616)
+	elseif cid == 83616 then
+		DBM.BossHealth:RemoveBoss(83616)
 	end
 end

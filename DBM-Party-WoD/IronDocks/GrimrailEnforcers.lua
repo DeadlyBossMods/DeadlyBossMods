@@ -16,15 +16,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
-local Dugru = EJ_GetSectionInfo(10449)
-local Makogg = EJ_GetSectionInfo(10453)
-local Nox = EJ_GetSectionInfo(10456)
-
-mod:SetBossHealthInfo(
-	80816, Dugru,
-	80805, Makogg,
-	80808, Nox
-)
+mod:SetBossHealthInfo(80816, 80805, 80808)
 
 local warnSanguineSphere		= mod:NewTargetAnnounce(163689, 3)
 local warnFlamingSlash			= mod:NewCastAnnounce(163665, 4)
@@ -70,9 +62,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSanguineSphere:Show(args.destName)
 		specWarnSanguineSphere:Show(args.destName)
 		voiceSanguineSphere:Play("stopattack")
-		local _, _, _, _, _, duration, expires, _, _ = UnitBuff(args.destName, args.spellName)
-		if expires then
-			timerSanguineSphere:Start(expires-GetTime(), args.destName)
+		local unitid
+		for i = 1, 3 do
+			if UnitGUID("boss"..i) == args.destGUID then
+				unitid = "boss"..i
+			end
+		end
+		if unitid then
+			local _, _, _, _, _, duration, expires, _, _ = UnitBuff(unitid, args.spellName)
+			if expires then
+				timerSanguineSphere:Start(expires-GetTime(), args.destName)
+			end
 		end
 		timerSanguineSphereCD:Start()
 	end
