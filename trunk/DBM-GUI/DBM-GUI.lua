@@ -2422,8 +2422,8 @@ local function CreateOptionsMenu()
 		
 		local movieOptions = {
 			{	text	= L.Disable,	value 	= "Never"},
-			{	text	= L.AfterFirst	,value 	= "AfterFirst"},
-			{	text	= L.Always		,value 	= "Block"},
+			{	text	= L.AfterFirst,	value 	= "AfterFirst"},
+			{	text	= L.Always,		value 	= "Block"},
 		}
 		local blockMovieDropDown = hideBlizzArea:CreateDropdown(L.DisableCinematics, movieOptions,
 		DBM.Options.MovieFilter, function(value)
@@ -2431,6 +2431,18 @@ local function CreateOptionsMenu()
 		end
 		)
 		blockMovieDropDown:SetPoint("TOPLEFT", filterYell, "TOPLEFT", 0, -40)
+
+		local pingFilterOptions = {
+			{	text	= L.Disable,					value 	= 0},
+			{	text	= L.HideApplicantAlertsFull,	value 	= 1},
+			{	text	= L.HideApplicantAlertsNotL,	value 	= 2},
+		}
+		local blockApplicantsDropDown = hideBlizzArea:CreateDropdown(L.HideApplicantAlerts, pingFilterOptions,
+		DBM.Options.HideApplicantAlerts, function(value)
+			DBM.Options.HideApplicantAlerts = value
+		end
+		)
+		blockApplicantsDropDown:SetPoint("TOPLEFT", blockMovieDropDown, "TOPLEFT", 0, -40)
 
 		hideBlizzPanel:SetMyOwnHeight()
 	end
