@@ -198,6 +198,16 @@ L= DBM:GetModLocalization(967)
 -----------------------
 L= DBM:GetModLocalization(968)
 
+L:SetWarningLocalization({
+	warnAdd			= DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell:format("하늘탑 보호 피조물"),
+	specWarnAdd		= DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch:format("하늘탑 보호 피조물")
+})
+
+L:SetOptionLocalization({
+	warnAdd			= "하늘탑 보호 피조물 알림 보기",
+	specWarnAdd		= "하늘탑 보호 피조물 대상 전환 특수 경고 보기"
+})
+
 -------------
 --  Skyreach Trash  --
 -------------
