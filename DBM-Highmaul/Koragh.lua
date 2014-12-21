@@ -10,12 +10,13 @@ mod:SetUsedIcons(8, 7, 6, 3, 2, 1)--Don't know total number of icons needed yet
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 162185 162184 161411 163517 162186 172895",
+	"SPELL_CAST_START 162185 162184 161411 172747 163517 162186 172895",
 	"SPELL_CAST_SUCCESS 161612",
 	"SPELL_AURA_APPLIED 156803 162186 161242 163472 172895",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 162186 163472 172895",
-	"SPELL_DAMAGE 161576",
+	"SPELL_DAMAGE 161612 161576",
+	"SPELL_ABSORBED 161612 161576",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -55,6 +56,8 @@ local specWarnExpelMagicFel			= mod:NewSpecialWarningYou(172895)--Maybe needs "d
 
 local timerVulnerability			= mod:NewBuffActiveTimer(20, 160734)
 local timerTrampleCD				= mod:NewCDTimer(16, 163101)--Also all over the place, 15-25 with first one coming very randomly (5-20 after barrier goes up)
+local timerExpelMagicFire			= mod:NewBuffFadesTimer(11.5, 162185)
+local timerExpelMagicFrost			= mod:NewBuffActiveTimer(20, 161411)
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
 local timerBallsCD					= mod:NewNextTimer(30, 161612)
 --local timerExpelMagicFelCD		= mod:NewCDTimer(30, 172895)--Mythic
@@ -97,7 +100,7 @@ end
 
 local function ballsWarning()
 	warnBallsSoon:Show()
-	DBM:Debug("Balls should be falling in 1 second")
+	DBM:Debug("Balls should be falling in 6.5 second")
 	if UnitPower("player", 10) > 0 then--Player is soaker
 		specWarnBallsSoon:Show()
 		voiceBalls:Play("161612")
@@ -113,6 +116,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)
 		end
+		timerExpelMagicFire:Start()
 		countdownMagicFire:Start()
 		voiceExpelMagicFire:Play("scattersoon")
 		voiceExpelMagicFire:Schedule(5, "scatter")
@@ -121,9 +125,10 @@ function mod:SPELL_CAST_START(args)
 		warnExpelMagicShadow:Show()
 		specWarnExpelMagicShadow:Show()
 		voiceExpelMagicShadow:Play("healall")
-	elseif spellId == 161411 then
+	elseif args:IsSpellID(161411, 172747) then
 		warnExpelMagicFrost:Show()
 		specWarnExpelMagicFrost:Show()
+		timerExpelMagicFrost:Start()
 		voiceExpelMagicFrost:Play("161411")
 	elseif spellId == 163517 then
 		warnForfeitPower:Show()
@@ -156,7 +161,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_DAMAGE() -- only captures spellid 161576
+function mod:SPELL_DAMAGE() -- captures spellid 161612, 161576
 	if self:AntiSpam(5, 4) then
 		timerBallsCD:Start()
 		countdownBalls:Start()
@@ -164,6 +169,7 @@ function mod:SPELL_DAMAGE() -- only captures spellid 161576
 		DBM:Debug("timerBallsCD started by aoe damage")
 	end
 end
+mod.SPELL_ABSORBED = mod.SPELL_DAMAGE
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -241,13 +247,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		local remaining = total - elapsed
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
 		if remaining > 5 then--If 5 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
-			timerBallsCD:Start(remaining+20)
+			timerBallsCD:Start(remaining+21)
 			countdownBalls:Cancel()
 			specWarnBallsSoon:Cancel()
-			countdownBalls:Start(remaining+20)--But for scheduling purposes, remaining+20
+			countdownBalls:Start(remaining+21)--But for scheduling purposes, remaining+20
 			self:Unschedule(ballsWarning)
-			self:Schedule(remaining+13.5, ballsWarning)
-			DBM:Debug("timerBallsCD is extending by 20 seconds do to shield phase")
+			self:Schedule(remaining+14.5, ballsWarning)
+			DBM:Debug("timerBallsCD is extending by 21 seconds do to shield phase")
 		end
 --		timerExpelMagicFelCD:Cancel()
 	end

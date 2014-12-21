@@ -84,9 +84,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 end
 
 function mod:UNIT_TARGETABLE_CHANGED()
-	warnTharbek:Show()
-	if DBM.BossHealth:IsShown() then
-		DBM.BossHealth:AddBoss(79912)
+	if UnitExists("boss1") then
+		warnTharbek:Show()
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:AddBoss(79912)
+		end
 	end
 end
 

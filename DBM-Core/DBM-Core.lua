@@ -825,6 +825,7 @@ do
 		SPELL_DAMAGE = true,
 		SPELL_BUILDING_DAMAGE = true,
 		SPELL_MISSED = true,
+		SPELL_ABSORBED = true,
 		SPELL_HEAL = true,
 		SPELL_ENERGIZE = true,
 		SPELL_PERIODIC_MISSED = true,
