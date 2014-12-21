@@ -280,7 +280,6 @@ local bossuIdFound = false
 local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
 local tooltipsHidden = false
-local LFGPingHijacked = false
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -1039,10 +1038,6 @@ do
 				"LOADING_SCREEN_DISABLED"
 			)
 			RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
-			if DBM.Options.HideApplicantAlerts > 0 then
-				LFGListFrame:UnregisterEvent("LFG_LIST_APPLICANT_LIST_UPDATED")
-				LFGPingHijacked = true
-			end
 			self:GROUP_ROSTER_UPDATE()
 			--self:LOADING_SCREEN_DISABLED()--Initial testing shows it isn't needed here and wastes cpu running funcion twice, because actual event always fires at login, AFTER addonloadded. Will remove this line if it works out ok
 			self:Schedule(1.5, function()
@@ -2434,15 +2429,10 @@ end
 ----FrameXML\LFGList.lua:1147: in function `LFGListApplicationViewer_UpdateApplicant'
 ----[string "*:OnEvent"]:8: in function <[string "*:OnEvent"]:1>
 function DBM:LFG_LIST_APPLICANT_LIST_UPDATED(hasNewPending, hasNewPendingWithData)
-	if not LFGPingHijacked then return end
+--	if not LFGPingHijacked then return end
 	if (DBM.Options.HideApplicantAlerts == 2 and not UnitIsGroupLeader("player", LE_PARTY_CATEGORY_HOME)) or (DBM.Options.HideApplicantAlerts >= 1 and GetNumGroupMembers() == 40) then
-		DBM:Debug("LFG_LIST_APPLICANT_LIST_UPDATED fired, but filter conditions met, supressing ping update", 2)
-	else
-		if ( hasNewPending and hasNewPendingWithData and LFGListUtil_IsEntryEmpowered() ) then
-			if ( not LFGListFrame:IsVisible() ) then
-				QueueStatusMinimapButton_SetGlowLock(QueueStatusMinimapButton, "lfglist-applicant", true);
-			end
-		end
+		DBM:Debug("LFG_LIST_APPLICANT_LIST_UPDATED fired, but filter conditions met, supressing ping animation/sound", 2)
+		QueueStatusMinimapButton.EyeHighlightAnim:Stop()--Force stop the animation loop
 	end
 end
 
