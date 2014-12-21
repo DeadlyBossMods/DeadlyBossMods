@@ -13,7 +13,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---All data confirmed and accurate for normal mode scarlet halls. heroic data should be quite similar but with diff spellids, will wait for logs to assume anything there.
 local warnRitualOfBones			= mod:NewSpellAnnounce(154671, 4)
 local warnOmenOfDeath			= mod:NewTargetAnnounce(154350, 3)
 local warnMalevolence			= mod:NewSpellAnnounce("OptionVersion2", 154442, 3)--Some tank has terrible move. May need everyone
