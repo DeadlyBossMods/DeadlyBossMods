@@ -55,7 +55,7 @@ local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, mod:IsMelee())
 local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, mod:IsMelee() and not mod:IsTank())
 local timerLivingMushroomCD			= mod:NewCDCountTimer(55.5, 160022, nil, mod:IsHealer())
 local timerRejuvMushroomCD			= mod:NewCDCountTimer(150, 160021, nil, mod:IsHealer())
-local timerSpecialCD				= mod:NewCDSpecialTimer(20)--Mythic Specials. Shared cd, which special he uses is random. 20-25 second variation, unless delayed by spores. then 20-25+10 Only Exploding fungas can be delayed by spores. waves can still cast during spores.
+local timerSpecialCD				= mod:NewCDSpecialTimer(20)--Mythic Specials. Shared cd, which special he uses is random. 20-25 second variation, unless delayed by spores. then 20-25+10
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -74,6 +74,7 @@ local voiceExplodingFungus			= mod:NewVoice(163794)
 local voiceWaves					= mod:NewVoice(160425)
 
 mod:AddRangeFrameOption(8, 160254, false)
+mod:AddDropdownOption("InterruptCounter", {"Two", "Three", "Four"}, "Two", "announce")
 
 mod.vb.sporesAlive = 0
 mod.vb.decayCounter = 0
@@ -117,7 +118,7 @@ function mod:SPELL_CAST_START(args)
 		countdownInfestingSpores:Start()
 		voiceInfestingSpores:Schedule(50.5, "aesoon")
 	elseif spellId == 160013 then
-		if self.vb.decayCounter == 2 then
+		if (self.Options.InterruptCounter == "Two" and self.vb.decayCounter == 2) or (self.Options.InterruptCounter == "Three" and self.vb.decayCounter == 3) or self.vb.decayCounter == 4 then
 			self.vb.decayCounter = 0
 		end	
 		self.vb.decayCounter = self.vb.decayCounter + 1
@@ -130,6 +131,10 @@ function mod:SPELL_CAST_START(args)
 				voiceDecay:Play("kick1r")
 			elseif self.vb.decayCounter == 2 then
 				voiceDecay:Play("kick2r")
+			elseif self.vb.decayCounter == 3 then
+				voiceDecay:Play("kick3r")
+			elseif self.vb.decayCounter == 4 then
+				voiceDecay:Play("kick4r")
 			end
 		end
 	elseif spellId == 159219 then

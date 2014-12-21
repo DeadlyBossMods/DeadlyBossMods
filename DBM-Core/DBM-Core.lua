@@ -2425,6 +2425,13 @@ function DBM:LFG_PROPOSAL_SUCCEEDED()
 	DBM.Bars:CancelBar(DBM_LFG_INVITE)
 end
 
+--On rare occasions, this hack will break LFGList and cause lua errors every time you join groups until reload ui. Error looks like this. I have found no work around for this.
+--This happens when LFG_LIST_SEARCH_FAILED fires i believe, or when group is forceibly removed from group finder during an update. Heck, the error may occur even without dbm, no idea.
+--Source of error is LFGListApplicationViewer_UpdateApplicant being called when PARTY_LEADER_CHANGED fires, within LFGList.xml
+----1x FrameXML\LFGList.lua:1299: attempt to perform arithmetic on local 'numApplicants' (a nil value)
+----FrameXML\LFGList.lua:1299: in function `LFGListApplicationViewerUtil_GetButtonHeight'
+----FrameXML\LFGList.lua:1147: in function `LFGListApplicationViewer_UpdateApplicant'
+----[string "*:OnEvent"]:8: in function <[string "*:OnEvent"]:1>
 function DBM:LFG_LIST_APPLICANT_LIST_UPDATED(hasNewPending, hasNewPendingWithData)
 	if not LFGPingHijacked then return end
 	if (DBM.Options.HideApplicantAlerts == 2 and not UnitIsGroupLeader("player", LE_PARTY_CATEGORY_HOME)) or (DBM.Options.HideApplicantAlerts >= 1 and GetNumGroupMembers() == 40) then
