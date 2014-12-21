@@ -123,7 +123,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceFrenzy:Play("frenzy")
 		--Update bounding cleave timer
 		local bossPower = UnitPower("boss1")
-		local bossProgress = bossPower * 3.33--Under frenzy he gains energy twice as fast. So about 3.33 energy per seocnd, 30 seconds to full power.
+		local bossProgress = bossPower * 0.3--Under frenzy he gains energy twice as fast. So about 3.33 energy per seocnd, 30 seconds to full power.
 		timerBoundingCleaveCD:Update(bossProgress, 30, self.vb.boundingCleave+1)--Will bar update work correctly on a count bar? Looking at code I don't think it will, it doesn't accept/pass on extra args in Update call.
 		countdownBoundingCleave:Cancel()
 		countdownBoundingCleave:Start(30-bossProgress)
