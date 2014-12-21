@@ -7,13 +7,16 @@ mod:SetEncounterID(1655)
 mod:SetMainBossID(74475)
 mod:SetZone()
 
+mod:SetBossHealthInfo(74336)
+
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 149997 149975 150032",
 	"SPELL_CAST_START 149941 150038 150023",
 	"SPELL_PERIODIC_DAMAGE 150011",
-	"SPELL_PERIODIC_MISSED 150011"
+	"SPELL_PERIODIC_MISSED 150011",
+	"UNIT_DIED"
 )
 
 -------------------------------------------
@@ -69,14 +72,24 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			if cid == 74570 then--Ruination
 				specWarnRuination:Show()
 				voiceRuination:Play("mobsoon")
+				if DBM.BossHealth:IsShown() then
+					DBM.BossHealth:AddBoss(74570)
+				end
 			elseif cid == 74571 then--Calamity
 				specWarnCalamity:Show()
 				voiceCalamity:Play("mobsoon")
+				if DBM.BossHealth:IsShown() then
+					DBM.BossHealth:AddBoss(74571)
+				end
 			elseif cid == 74475 then--Magmolatus
 				warnPhase2:Show()
 				voicePhaseChange:Play("ptwo")
 				specWarnMagmolatus:Show()
 				timerMoltenImpactCD:Start(5)
+				if DBM.BossHealth:IsShown() then
+					DBM.BossHealth:RemoveBoss(74336)
+					DBM.BossHealth:AddBoss(74475)
+				end
 			end
 		end
 	end
@@ -125,3 +138,13 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:UNIT_DIED(args)
+	if not DBM.BossHealth:IsShown() then return end
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 74570 then
+		DBM.BossHealth:RemoveBoss(74570)
+	elseif cid == 75471 then
+		DBM.BossHealth:RemoveBoss(74571)
+	end
+end
