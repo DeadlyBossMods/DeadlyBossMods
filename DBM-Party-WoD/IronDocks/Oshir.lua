@@ -11,17 +11,20 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 163054",
 	"SPELL_CAST_SUCCESS 161256 178124",
-	"SPELL_AURA_APPLIED 162415"
+	"SPELL_AURA_APPLIED 162415",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, Roar cd 37 seconds? Verify
 --TODO, time to feed seems MUCH longer CD now, unfortunately because of this, fight too short to get good cooldown data
 local warnPrimalAssault			= mod:NewSpellAnnounce(161256, 4)
+local warnRendingSlashes		= mod:NewSpellAnnounce(161239, 4)
 local warnRoar					= mod:NewSpellAnnounce(163054, 3)
 local warnTimeToFeed			= mod:NewTargetAnnounce(162415, 3)
 local warnBreakout				= mod:NewTargetAnnounce(178124, 2)
 
 local specWarnPrimalAssault		= mod:NewSpecialWarningSpell(161256, nil, nil, nil, true)
+local specWarnRendingSlashes	= mod:NewSpecialWarningSpell(161239, nil, nil, nil, true)
 local specWarnRoar				= mod:NewSpecialWarningSpell(163054, nil, nil, nil, true)
 local specWarnTimeToFeed		= mod:NewSpecialWarningYou(162415)--Can still move and attack during it, a personal warning lets a person immediately hit self heals/damage reduction abilities.
 local specWarnTimeToFeedOther	= mod:NewSpecialWarningTarget(162415, mod:IsHealer())
@@ -53,11 +56,18 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 161256 and self:AntiSpam(5) then--sometimes not fires?
+	if spellId == 161256 and self:AntiSpam(5, 1) then
 		warnPrimalAssault:Show()
 		specWarnPrimalAssault:Show()
 		--timerPrimalAssaultCD:Start()
 	elseif spellId == 178124 then
 		warnBreakout:Show(args.destName)
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 161239 and self:AntiSpam(5, 1) then
+		warnRendingSlashes:Show()
+		specWarnRendingSlashes:Show()
 	end
 end
