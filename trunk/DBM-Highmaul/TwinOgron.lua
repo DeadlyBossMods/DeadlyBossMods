@@ -51,6 +51,7 @@ local timerQuakeCD					= mod:NewNextCountTimer(34, 158200)
 --Pol (84 seconds full rotation, 28-29 seconds in between)
 local timerShieldChargeCD			= mod:NewNextTimer(28, 158134)
 local timerInterruptingShoutCD		= mod:NewNextTimer(28, 158093)
+local timerInterruptingShout		= mod:NewCastTimer(3, 158093, nil, mod:IsSpellCaster())
 local timerPulverizeCD				= mod:NewNextTimer(29, 158385)
 --^^Even though 6 cd timers, coded smart to only need 2 up at a time, by using the predictability of "next ability" timing.
 local timerArcaneTwistedCD			= mod:NewNextTimer(55, 163297)
@@ -258,6 +259,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 158093 then
 		warnInterruptingShout:Show()
 		specWarnInterruptingShout:Show()
+		timerInterruptingShout:Start()
 		if not self:IsMythic() then
 			timerPulverizeCD:Start(polEnergyRate+1)--Next Special
 			countdownPol:Start(polEnergyRate+1)
