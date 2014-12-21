@@ -2421,17 +2421,17 @@ function DBM:LFG_PROPOSAL_SUCCEEDED()
 	DBM.Bars:CancelBar(DBM_LFG_INVITE)
 end
 
---local function stopQueueButtonDelay()
---	QueueStatusMinimapButton.EyeHighlightAnim:Stop()
---end
+local function stopQueueButtonDelay()
+	QueueStatusMinimapButton.EyeHighlightAnim:Stop()
+end
 function DBM:LFG_LIST_APPLICANT_LIST_UPDATED(hasNewPending, hasNewPendingWithData)
 --	if not LFGPingHijacked then return end
 	if QueueStatusMinimapButton:IsShown() and (DBM.Options.HideApplicantAlerts == 2 and not UnitIsGroupLeader("player", LE_PARTY_CATEGORY_HOME)) or (DBM.Options.HideApplicantAlerts >= 1 and GetNumGroupMembers() == 40) then
 		DBM:Debug("LFG_LIST_APPLICANT_LIST_UPDATED fired, but filter conditions met, supressing ping animation/sound", 2)
 		QueueStatusMinimapButton.EyeHighlightAnim:Stop()
---		DBM:Unschedule(stopQueueButtonDelay)
---		DBM:Schedule(1, stopQueueButtonDelay, DBM)
---		QueueStatusMinimapButton.EyeHighlightAnim:Stop()--Force stop the animation loop
+		DBM:Unschedule(stopQueueButtonDelay)
+		DBM:Schedule(1, stopQueueButtonDelay, DBM)
+		QueueStatusMinimapButton.EyeHighlightAnim:Stop()--Force stop the animation loop
 	end
 end
 
