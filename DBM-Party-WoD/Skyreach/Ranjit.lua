@@ -10,22 +10,22 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 153544 156793 153315",
-	"SPELL_CAST_SUCCESS 165731 154043",
+	"SPELL_CAST_SUCCESS 165731",
 	"SPELL_PERIODIC_DAMAGE 154043",
-	"SPELL_PERIODIC_MISSED 154043"
+	"SPELL_PERIODIC_MISSED 154043",
+	"RAID_BOSS_EMOTE"
 )
 
 local warnSpinningBlade		= mod:NewSpellAnnounce(153544, 3)
 local warnFourWinds			= mod:NewSpellAnnounce(156793, 4)
 local warnWindFall			= mod:NewSpellAnnounce(153315, 2)
 local warnPiercingRush		= mod:NewTargetAnnounce(165731, 2)--EJ shows tank warning but in my encounter it could target anyone. If this changes I'll tweak the default to tank/healer
-local warnLensFlare			= mod:NewTargetAnnounce(154033, 3)
+local warnLensFlare			= mod:NewSpellAnnounce(154043, 3)
 
 local specWarnSpinningBlade	= mod:NewSpecialWarningSpell(153544, false, nil, nil, 2)
 local specWarnFourWinds		= mod:NewSpecialWarningSpell(156793, nil, nil, nil, 2)
-local specWarnLensFlareYou	= mod:NewSpecialWarningYou(154043)
+local specWarnLensFlareCast	= mod:NewSpecialWarningSpell(154043)
 local specWarnLensFlare		= mod:NewSpecialWarningMove(154043)
-local yellLensFlare			= mod:NewYell(154043)
 
 local timerFourWinds		= mod:NewBuffActiveTimer(18, 156793)
 local timerFourWindsCD		= mod:NewCDTimer(30, 156793)
@@ -56,14 +56,12 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 165731 then
 		warnPiercingRush:Show(args.destName)
-	elseif args.spellId == 154043 then
-		warnLensFlare:Show(args.destName)
-		if args:IsPlayer() then
-			specWarnLensFlareYou:Show()
-			yellLensFlare:Yell()
-			--no timer yet
-		end
 	end
+end
+
+function mod:RAID_BOSS_EMOTE(args)
+	warnLensFlare:Show(args.destName)
+	specWarnLensFlareCast:Show()
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
