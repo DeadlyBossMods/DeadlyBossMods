@@ -250,7 +250,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerBallsCD:Start(remaining+21)
 			countdownBalls:Cancel()
 			specWarnBallsSoon:Cancel()
-			countdownBalls:Start(remaining+21)--But for scheduling purposes, remaining+20
+			countdownBalls:Start(remaining+21)
 			self:Unschedule(ballsWarning)
 			self:Schedule(remaining+14.5, ballsWarning)
 			DBM:Debug("timerBallsCD is extending by 21 seconds do to shield phase")
