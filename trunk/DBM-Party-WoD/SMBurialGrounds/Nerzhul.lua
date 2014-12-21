@@ -23,7 +23,7 @@ local specWarnOmenOfDeath		= mod:NewSpecialWarningMove(154350)
 local yellOmenOfDeath			= mod:NewYell(154350)
 local specWarnMalevolence		= mod:NewSpecialWarningSpell(154442, nil, nil, nil, true)
 
-local timerRitualOfBonesCD		= mod:NewNextTimer(50.5, 154671)
+local timerRitualOfBonesCD		= mod:NewCDTimer(50.5, 154671)
 local timerOmenOfDeathCD		= mod:NewCDTimer(10.5, 154350)
 
 local voiceRitualOfBones		= mod:NewVoice(154671)
@@ -41,7 +41,7 @@ function mod:OmenOfDeathTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	timerOmenOfDeathCD:Start(12-delay)
+	timerOmenOfDeathCD:Start(10-delay)
 	timerRitualOfBonesCD:Start(20-delay)
 	voiceRitualOfBones:Schedule(18-delay, "specialsoon")
 end

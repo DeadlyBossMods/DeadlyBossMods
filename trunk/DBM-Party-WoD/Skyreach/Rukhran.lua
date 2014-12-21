@@ -10,7 +10,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 159382",
-	"SPELL_CAST_START 153810 153794 159382"
+	"SPELL_CAST_START 153810 153794 159382",
+	"RAID_BOSS_WHISPER"
 )
 
 local warnSolarFlare			= mod:NewSpellAnnounce(153810, 3)
@@ -19,6 +20,7 @@ local warnQuills				= mod:NewSpellAnnounce(159382, 4)
 
 local specWarnSolarFlare		= mod:NewSpecialWarningSwitch(153810, false)--Not everyone needs to, really just requires 1 person, unless it's harder on heroic/challenge mode and needs more, then i'll default all damage dealers
 local specWarnPierceArmor		= mod:NewSpecialWarningSpell(153794, mod:IsTank())
+local specWarnFixate			= mod:NewSpecialWarningYou(176544)
 local specWarnQuills			= mod:NewSpecialWarningSpell(159382, nil, nil, nil, 2)
 local specWarnQuillsEnd			= mod:NewSpecialWarningEnd(159382)
 
@@ -61,4 +63,8 @@ function mod:SPELL_CAST_START(args)
 		--timerQuillsCD:Start()
 		voiceQuills:Play("findshelter")
 	end
+end
+
+function mod:RAID_BOSS_WHISPER()
+	specWarnFixate:Show()
 end

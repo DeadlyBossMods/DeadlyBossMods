@@ -13,6 +13,7 @@ mod:SetMinSyncTime(4)--Rise Mountain can occur pretty often.
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 162475 162968 162894 163312",
 	"SPELL_AURA_APPLIED 162346 162658",
+	"SPELL_AURA_REMOVED 162346",
 	"SPELL_PERIODIC_DAMAGE 162370",
 	"SPELL_PERIODIC_MISSED 162370",
 	"CHAT_MSG_MONSTER_YELL",
@@ -48,6 +49,7 @@ local timerBerserkerCD				= mod:NewNextTimer(41, "ej10062", nil, mod:IsTank(), n
 local timerGiftOfEarthCD			= mod:NewCDTimer(10.5, 162894, nil, mod:IsMelee())--10.5 but obviously delayed if stuns were used.
 local timerEarthenFlechettesCD		= mod:NewCDTimer(14, 162968, nil, mod:IsMelee())--14 but obviously delayed if stuns were used. Also tends to be recast immediately if stun interrupted
 local timerCrystalBarrageCD			= mod:NewNextSourceTimer(30, 162346, nil, false)--Very accurate but spammy mess with 4+ adds up.
+local timerCrystalBarrage			= mod:NewBuffFadesTimer(15, 162346)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -210,6 +212,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCrystalBarrageCD:Start(30, args.sourceName, args.sourceGUID)
 		if args:IsPlayer() then
 			specWarnCrystallineBarrageYou:Show()
+			timerCrystalBarrage:Start()
 			if not self:IsLFR() then
 				yellCrystalineBarrage:Yell()
 				voiceCrystallineBarrage:Play("runout")
@@ -223,6 +226,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnMote and not self:IsLFR() then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
 			self:ScanForMobs(args.destGUID, 0, 8, 8, 0.05, 12)
 		end
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
+	if spellId == 162346 and args:IsPlayer() then
+		timerCrystalBarrage:Cancel()
 	end
 end
 

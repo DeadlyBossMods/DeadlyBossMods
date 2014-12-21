@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(1128)
 
 L:SetTimerLocalization({
-	timerSweeperCD			= "다음 높은망치 난동꾼"
+	timerSweeperCD			= DBM_CORE_AUTO_TIMER_TEXTS.next:format("높은망치 난동꾼")
 })
 
 L:SetOptionLocalization({
@@ -33,6 +33,13 @@ L:SetMiscLocalization({
 -- Brackenspore, Walker of the Deep --
 ------------------
 L= DBM:GetModLocalization(1196)
+
+L:SetOptionLocalization({
+	InterruptCounter	= "부패 시전 횟수 초기화",
+	Two					= "2회 시전 후",
+	Three				= "3회 시전 후",
+	Four				= "4회 시전 후"
+})
 
 --------------
 -- Twin Ogron --
