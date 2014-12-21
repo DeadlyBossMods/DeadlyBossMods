@@ -31,6 +31,7 @@ local timerVX18BCD				= mod:NewCDTimer(33, 162500)
 local timerX2101AMissileCD		= mod:NewCDTimer(40, 162407)
 local timerMadDashCD			= mod:NewCDTimer(40, 161090)
 local timerSlamCD				= mod:NewCDTimer(15, 162617, nil, mod:IsSpellCaster())
+local timerSlam					= mod:NewCastTimer(1.5, 162617, nil, mod:IsSpellCaster())
 local timerRecovering			= mod:NewBuffActiveTimer(6, 163947)
 
 local voiceSlam					=	mod:NewVoice(162617, mod:IsSpellCaster())
@@ -88,6 +89,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.SlamCast = self.vb.SlamCast + 1
 		warnSlam:Show()
 		specWarnSlam:Show()
+		timerSlam:Start()
 		voiceSlam:Play("stopcast")
 		if self.vb.SlamCast == 2 then
 			timerSlamCD:Start(30)
