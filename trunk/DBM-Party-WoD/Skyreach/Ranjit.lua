@@ -59,8 +59,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:RAID_BOSS_EMOTE(args)
-	warnLensFlare:Show(args.destName)
+function mod:RAID_BOSS_EMOTE(msg)
+	warnLensFlare:Show()
 	specWarnLensFlareCast:Show()
 end
 
