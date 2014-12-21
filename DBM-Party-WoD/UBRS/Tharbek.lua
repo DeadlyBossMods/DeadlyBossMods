@@ -41,7 +41,7 @@ function mod:IronReaverTarget(targetname, uId)
 	if not targetname then return end
 	warnIronReaver:Show(targetname)
 	if targetname == UnitName("player") then
-		specWarnIronReaverYou:Show()
+		specWarnIronReaver:Show()
 		yellIronReaver:Yell()
 	end
 end
