@@ -33,6 +33,13 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1196)
 
+L:SetOptionLocalization({
+	InterruptCounter	= "Reset Decay counter after",
+	Two					= "After two casts",
+	Three				= "After three casts",
+	Four				= "After four casts"
+})
+
 --------------
 -- Twin Ogron --
 --------------
@@ -42,11 +49,7 @@ L:SetOptionLocalization({
 	PhemosSpecial	= "Play countdown sound for Phemos' cooldowns",
 	PolSpecial		= "Play countdown sound for Pol's cooldowns",
 	PhemosSpecialVoice	= "Play spoken alerts for Phemos' abilities using selected voice pack",
-	PolSpecialVoice		= "Play spoken alerts for Pol's abilities using selected voice pack",
-	InterruptCounter	= "Reset Decay counter after",
-	Two					= "After two casts",
-	Three				= "After three casts",
-	Four				= "After four casts"
+	PolSpecialVoice		= "Play spoken alerts for Pol's abilities using selected voice pack"
 })
 
 --------------------
