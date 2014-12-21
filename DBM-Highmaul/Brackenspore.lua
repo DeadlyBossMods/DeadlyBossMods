@@ -74,7 +74,7 @@ local voiceExplodingFungus			= mod:NewVoice(163794)
 local voiceWaves					= mod:NewVoice(160425)
 
 mod:AddRangeFrameOption(8, 160254, false)
-mod:AddDropdownOption("InterruptCounter", {"Two", "Three", "Four"}, "Two", "announce")
+mod:AddDropdownOption("InterruptCounter", {"Two", "Three", "Four"}, "Two", "misc")
 
 mod.vb.sporesAlive = 0
 mod.vb.decayCounter = 0
