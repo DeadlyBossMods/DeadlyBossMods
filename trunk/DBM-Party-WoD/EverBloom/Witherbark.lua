@@ -22,7 +22,7 @@ local warnBrittleBark			= mod:NewSpellAnnounce(164275, 2)
 local warnUncheckedGrowth		= mod:NewSpellAnnounce("ej10098", 3, 164294)
 
 local specWarnLivingLeaves		= mod:NewSpecialWarningMove(169495)
-local specWarnLivingLeavesYou	= mod:NewSpecialWarningYou(169495)
+local specWarnUncheckedGrowthYou= mod:NewSpecialWarningYou(164294)
 local specWarnUncheckedGrowth	= mod:NewSpecialWarningMove(164294)
 local specWarnUncheckedGrowthAdd= mod:NewSpecialWarningSwitch("ej10098", mod:IsTank())
 local specWarnParchedGrasp		= mod:NewSpecialWarningSpell(164357, mod:IsTank())
@@ -83,5 +83,5 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg)--Message doesn't matter, it occurs only
 end
 
 function mod:RAID_BOSS_WHISPER()
-	specWarnLivingLeavesYou:Show()
+	specWarnUncheckedGrowthYou:Show()
 end
