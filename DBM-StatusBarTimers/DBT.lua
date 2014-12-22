@@ -1185,7 +1185,7 @@ do
 	local function onUpdate(self, elapsed)
 		self.obj.curTime = GetTime()
 		self.obj.delta = self.obj.curTime - self.obj.lastUpdate
-		if (self.obj.moving or "") == "enlarge" or self.obj.delta >= 0.04 then
+		if (self.obj.moving or "") == "enlarge" or self.obj.delta >= 0.02 then
 			if self.obj then
 				self.obj.lastUpdate = self.obj.curTime
 				self.obj:Update(self.obj.delta)
