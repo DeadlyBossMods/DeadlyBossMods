@@ -50,7 +50,7 @@ local timerRotCD					= mod:NewCDTimer(10, 163241, nil, false)--it's a useful tim
 local timerNecroticBreathCD			= mod:NewCDTimer(32, 159219, nil, mod:IsTank() or mod:IsHealer())
 --Adds (all adds are actually NEXT timers however they get dleayed by infesting spores and necrotic breath sometimes so i'm leaving as CD for now)
 local timerSporeShooterCD			= mod:NewCDTimer("OptionVersion2", 57, 163594, nil, mod:IsRangedDps())
-local timerFungalFleshEaterCD		= mod:NewCDTimer(120, "ej9995", nil, not mod:IsHealer(), nil, 163142)
+local timerFungalFleshEaterCD		= mod:NewCDCountTimer(120, "ej9995", nil, not mod:IsHealer(), nil, 163142)
 local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, mod:IsMelee())
 local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, mod:IsMelee() and not mod:IsTank())
 local timerLivingMushroomCD			= mod:NewCDCountTimer(55.5, 160022, nil, mod:IsHealer())
