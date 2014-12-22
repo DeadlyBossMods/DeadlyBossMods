@@ -76,10 +76,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 161203 then
 		warnRejuvSerumCast:Show()
-		if self:AntiSpam(2, 1) then
-			specWarnVilebloodSerum:Show()--Always dropped on all players when cast, so moving during cast gets 0 ticks.
-			voiceVilebloodSerum:Play("runaway")
-		end
 	elseif spellId == 155037 and self:IsInCombat() then
 		warnEruption:Show()
 		specWarnEruption:Show()
@@ -88,9 +84,11 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 161288 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-		specWarnVilebloodSerum:Show()
-		voiceVilebloodSerum:Play("runaway")
+	if spellId == 161288 and destGUID == UnitGUID("player") then
+		if self:AntiSpam(2, 1) then
+			specWarnVilebloodSerum:Show()
+			voiceVilebloodSerum:Play("runaway")
+		end
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -106,5 +104,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 161209 and self:AntiSpam(3, 2) then
 		warnVilebloodSerum:Show()
 		timerVilebloodSerumCD:Start()
+		if self:AntiSpam(2, 1) then
+			specWarnVilebloodSerum:Show()--Always dropped on all players when cast, so moving during cast gets 0 ticks.
+			voiceVilebloodSerum:Play("runaway")
+		end
 	end
 end
