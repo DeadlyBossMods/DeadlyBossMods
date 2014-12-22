@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, verify only one spore shooter spawns at a time
 local warnCreepingMoss				= mod:NewTargetAnnounce(164125, 4, nil, mod:IsTank())--Persists whole fight, so just warn if boss gets it to move it
-local warnInfestingSpores			= mod:NewSpellAnnounce(159996, 3)
+local warnInfestingSpores			= mod:NewCountAnnounce(159996, 3)
 local warnDecay						= mod:NewCountAnnounce(160013, 4, nil, not mod:IsHealer())
 local warnNecroticBreath			= mod:NewSpellAnnounce(159219, 4)--Warn everyone, so they know where not to be.
 local warnRot						= mod:NewStackAnnounce(163241, 2, nil, mod:IsTank())
@@ -33,7 +33,7 @@ local warnExplodingFungus			= mod:NewSpellAnnounce(163794, 4)--Mythic Shroom
 local warnWaves						= mod:NewSpellAnnounce(160425, 4)--Mythic Waves
 
 local specWarnCreepingMoss			= mod:NewSpecialWarningMove(163590, mod:IsTank())
-local specWarnInfestingSpores		= mod:NewSpecialWarningSpell(159996, nil, nil, nil, 2)
+local specWarnInfestingSpores		= mod:NewSpecialWarningCount(159996, nil, nil, nil, 2)
 local specWarnDecay					= mod:NewSpecialWarningInterrupt(160013, not mod:IsHealer())
 local specWarnNecroticBreath		= mod:NewSpecialWarningSpell(159219, mod:IsTank(), nil, nil, 3)
 local specWarnRot					= mod:NewSpecialWarningStack(163241, nil, 3)
@@ -45,7 +45,7 @@ local specWarnSporeShooter			= mod:NewSpecialWarningSwitch("OptionVersion2", 163
 local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitch("ej9995", not mod:IsHealer())
 local specWarnMindFungus			= mod:NewSpecialWarningSwitch(163141, mod:IsDps())
 
-local timerInfestingSporesCD		= mod:NewCDTimer(57, 159996)--57-63 variation
+local timerInfestingSporesCD		= mod:NewCDCountTimer(57, 159996)--57-63 variation
 local timerRotCD					= mod:NewCDTimer(10, 163241, nil, false)--it's a useful timer, but not mandatory and this fight has A LOT of timers so off by default for clutter reduction
 local timerNecroticBreathCD			= mod:NewCDTimer(32, 159219, nil, mod:IsTank() or mod:IsHealer())
 --Adds (all adds are actually NEXT timers however they get dleayed by infesting spores and necrotic breath sometimes so i'm leaving as CD for now)
@@ -80,19 +80,21 @@ mod.vb.sporesAlive = 0
 mod.vb.decayCounter = 0
 mod.vb.greenShroom = 0
 mod.vb.blueShroom = 0
+mod.vb.sporesCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.sporesAlive = 0
 	self.vb.decayCounter = 0
 	self.vb.greenShroom = 0
 	self.vb.blueShroom = 0
+	self.vb.sporesCount = 0
 	timerMindFungusCD:Start(10-delay)
 	timerLivingMushroomCD:Start(18-delay, 1)--16-18
 	timerSporeShooterCD:Start(20-delay)--20-26
 	timerNecroticBreathCD:Start(30-delay)
 	timerFungalFleshEaterCD:Start(32-delay)
 	countdownFungalFleshEater:Start(32-delay)
-	timerInfestingSporesCD:Start(45-delay)
+	timerInfestingSporesCD:Start(45-delay, 1)
 	countdownInfestingSpores:Start(45-delay)
 	voiceInfestingSpores:Schedule(38.5-delay, "aesoon")
 	timerRejuvMushroomCD:Start(80-delay, 1)--Todo, verify 80 in all modes and not still 75 in mythic
@@ -112,9 +114,10 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 159996 then
-		warnInfestingSpores:Show()
-		specWarnInfestingSpores:Show()
-		timerInfestingSporesCD:Start()
+		self.vb.sporesCount = self.vb.sporesCount + 1
+		warnInfestingSpores:Show(self.vb.sporesCount)
+		specWarnInfestingSpores:Show(self.vb.sporesCount)
+		timerInfestingSporesCD:Start(nil, self.vb.sporesCount+1)
 		countdownInfestingSpores:Start()
 		voiceInfestingSpores:Schedule(50.5, "aesoon")
 	elseif spellId == 160013 then
