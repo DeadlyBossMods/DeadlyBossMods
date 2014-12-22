@@ -25,7 +25,7 @@ local warnNecroticBreath			= mod:NewSpellAnnounce(159219, 4)--Warn everyone, so 
 local warnRot						= mod:NewStackAnnounce(163241, 2, nil, mod:IsTank())
 --Adds/Mushrooms
 local warnSporeShooter				= mod:NewSpellAnnounce("OptionVersion2", 163594, 3, nil, mod:IsRangedDps())
-local warnFungalFlesheater			= mod:NewSpellAnnounce("ej9995", 4, 163142)--Using ej name because it doesn't match spell name at all like others
+local warnFungalFlesheater			= mod:NewCountAnnounce("ej9995", 4, 163142)--Using ej name because it doesn't match spell name at all like others
 local warnMindFungus				= mod:NewSpellAnnounce(163141, 2, nil, mod:IsMelee() and not mod:IsTank())
 local warnLivingMushroom			= mod:NewCountAnnounce(160022, 1)--Good shroom! (mana/haste)
 local warnRejuvMushroom				= mod:NewCountAnnounce(160021, 1)--Other good shroom (healing)
@@ -81,6 +81,7 @@ mod.vb.decayCounter = 0
 mod.vb.greenShroom = 0
 mod.vb.blueShroom = 0
 mod.vb.sporesCount = 0
+mod.vb.fleshEaterCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.sporesAlive = 0
@@ -88,11 +89,12 @@ function mod:OnCombatStart(delay)
 	self.vb.greenShroom = 0
 	self.vb.blueShroom = 0
 	self.vb.sporesCount = 0
+	self.vb.fleshEaterCount = 0
 	timerMindFungusCD:Start(10-delay)
 	timerLivingMushroomCD:Start(18-delay, 1)--16-18
 	timerSporeShooterCD:Start(20-delay)--20-26
 	timerNecroticBreathCD:Start(30-delay)
-	timerFungalFleshEaterCD:Start(32-delay)
+	timerFungalFleshEaterCD:Start(32-delay, 1)
 	countdownFungalFleshEater:Start(32-delay)
 	timerInfestingSporesCD:Start(45-delay, 1)
 	countdownInfestingSpores:Start(45-delay)
@@ -205,9 +207,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerMindFungusCD:Start()
 		voiceMindFungus:Play("163141k")
 	elseif spellId == 163142 then
-		warnFungalFlesheater:Show()
+		self.vb.fleshEaterCount = self.vb.fleshEaterCount + 1
+		warnFungalFlesheater:Show(self.vb.fleshEaterCount)
 		specWarnFungalFlesheater:Show()
-		timerFungalFleshEaterCD:Start()
+		timerFungalFleshEaterCD:Start(nil, self.vb.fleshEaterCount+1)
 		countdownFungalFleshEater:Start()
 		voiceFungalFlesheater:Play("163142k")
 	elseif spellId == 160022 then

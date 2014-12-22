@@ -22,8 +22,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, find number of targets of MC and add SetIconsUsed with correct icon count.
---TODO, see if MC has consistent CD (unlike rest of bosses stuff)
---TODO, very 55, 30 30, 55, 30 30, 55, etc pattern for balls
+--TODO, see if MC works. I think it's every 3rd balls
 local warnCausticEnergy				= mod:NewTargetAnnounce(161242, 3)
 local warnNullBarrier				= mod:NewTargetAnnounce(156803, 2)
 local warnVulnerability				= mod:NewTargetAnnounce(160734, 1)
