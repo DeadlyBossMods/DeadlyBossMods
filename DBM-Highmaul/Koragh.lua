@@ -57,10 +57,12 @@ local timerExpelMagicFire			= mod:NewBuffFadesTimer(11.5, 162185)
 local timerExpelMagicFrost			= mod:NewBuffActiveTimer(20, 161411)
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
 local timerBallsCD					= mod:NewNextTimer(30, 161612)
---local timerExpelMagicFelCD		= mod:NewCDTimer(30, 172895)--Mythic
+local timerExpelMagicFelCD			= mod:NewCDTimer(15.5, 172895)--Mythic
+local timerExpelMagicFel			= mod:NewBuffFadesTimer(12, 172895)--Mythic
 
 local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
 local countdownBalls				= mod:NewCountdown("Alt30", 161612)
+local countdownFel					= mod:NewCountdownFades("AltTwo11", 172895)
 
 local soundExpelMagicArcane			= mod:NewSound(162186)
 
@@ -83,6 +85,9 @@ function mod:OnCombatStart(delay)
 	self.vb.supressionCount = 0
 	self.vb.shieldCharging = false
 	--timerExpelMagicFireCD:Start(6-delay)
+	if self:IsMythic() then
+		timerExpelMagicFelCD:Start(5-delay)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -91,8 +96,8 @@ function mod:OnCombatEnd()
 	end
 end
 
-local function closeRange()
-	if mod.Options.RangeFrame then
+local function closeRange(self)
+	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
 end
@@ -119,7 +124,7 @@ function mod:SPELL_CAST_START(args)
 		countdownMagicFire:Start()
 		voiceExpelMagicFire:Play("scattersoon")
 		voiceExpelMagicFire:Schedule(5, "scatter")
-		self:Schedule(11.5, closeRange)
+		self:Schedule(11.5, closeRange, self)
 	elseif spellId == 162184 then
 		warnExpelMagicShadow:Show()
 		specWarnExpelMagicShadow:Show()
@@ -146,7 +151,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 172895 then
-		--timerExpelMagicFelCD:Start()
+		timerExpelMagicFelCD:Start()
 	end
 end
 
@@ -222,6 +227,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnExpelMagicFel:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnExpelMagicFel:Show()
+			timerExpelMagicFel:Start()
+			countdownFel:Start()
 			yellExpelMagicFel:Yell()
 		end
 		if self.Options.SetIconOnFel then
@@ -244,6 +251,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		specWarnVulnerability:Show(args.destName)
 		timerVulnerability:Start()
 		timerTrampleCD:Cancel()
+		timerExpelMagicFelCD:Cancel()
 		local elapsed, total = timerBallsCD:GetTime()
 		local remaining = total - elapsed
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
@@ -255,8 +263,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:Unschedule(ballsWarning)
 			self:Schedule(remaining+14.5, ballsWarning)
 			DBM:Debug("timerBallsCD is extending by 21 seconds do to shield phase")
-		end
---		timerExpelMagicFelCD:Cancel()	
+		end	
 	end
 end
 
@@ -275,7 +282,7 @@ function mod:OnSync(msg, targetname)
 	if msg == "ChargeTo" and targetname then
 		timerTrampleCD:Start()
 		local target = DBM:GetUnitFullName(targetname)
-		if target and self:AntiSpam(3, target) then--Syncs sending from same realm don't send realm name, while other realms do, so it bypasses syncspam code since two diff args. So filter here after GetUnitFullName
+		if target and self:AntiSpam(3, target) then--Syncs sending from same realm don't send realm name, while other realms do, so it bypasses sync spam code since two diff args. So filter here after GetUnitFullName
 			--Investigating someone theory that frost orbs are after every 4 self.vb.supressionCount, except for first, which is after 2. They wanted a counter added
 			self.vb.supressionCount = self.vb.supressionCount + 1
 			warnTrample:Show(self.vb.supressionCount, target)
