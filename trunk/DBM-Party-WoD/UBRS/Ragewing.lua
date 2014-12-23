@@ -65,6 +65,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 167203 then
 		warnSwirlingWinds:Show()
 		timerSwirlingWinds:Start()
+		voiceEngulfingFire:Cancel()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
