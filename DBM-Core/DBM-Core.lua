@@ -6904,12 +6904,13 @@ do
 			frame:Show()
 			frame:SetAlpha(1)
 			frame.timer = 5
-			if self.sound and not (DBM.Options.ChosenVoicePack ~= "None" and DBM.Options.VoiceOverSW and self.hasVoice and not SWFilterDisabed) and self.mod.Options[self.option .. "SpecialWarningSound"] ~= "None" then
+			fireEvent("DBM_SpecWarn", msg)
+			if self.sound and not (DBM.Options.ChosenVoicePack ~= "None" and DBM.Options.VoiceOverSW and self.hasVoice and not SWFilterDisabed) then
 				local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
+				if self.option and self.mod.Options[self.option.."SpecialWarningSound"] ~= "None" then return end
 				DBM:PlaySpecialWarningSound(soundId or 1)
 			end
 			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
-			fireEvent("DBM_SpecWarn", msg)
 		end
 	end
 
