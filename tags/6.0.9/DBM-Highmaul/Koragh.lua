@@ -14,11 +14,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 161612",
 	"SPELL_AURA_APPLIED 156803 162186 161242 163472 172895",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 162186 163472 172895",
+	"SPELL_AURA_REMOVED 162186 163472 172895 156803",
 	"SPELL_DAMAGE 161612 161576",
 	"SPELL_ABSORBED 161612 161576",
-	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 --TODO, find number of targets of MC and add SetIconsUsed with correct icon count.
@@ -27,7 +26,6 @@ local warnCausticEnergy				= mod:NewTargetAnnounce(161242, 3)
 local warnNullBarrier				= mod:NewTargetAnnounce(156803, 2)
 local warnVulnerability				= mod:NewTargetAnnounce(160734, 1)
 local warnTrample					= mod:NewTargetCountAnnounce(163101, 3)--Technically it's supression field, then trample, but everyone is going to know it more by trample cause that's the part of it that matters
---local warnOverflowingEnergy		= mod:NewSpellAnnounce(161576, 4)--need to find an alternate way to detect this. or just remove :\
 local warnExpelMagicFire			= mod:NewSpellAnnounce(162185, 3)
 local warnExpelMagicShadow			= mod:NewSpellAnnounce(162184, 3, nil, mod:IsHealer())
 local warnExpelMagicFrost			= mod:NewSpellAnnounce(161411, 3)
@@ -41,7 +39,6 @@ local specWarnNullBarrier			= mod:NewSpecialWarningTarget(156803)--Only warn for
 local specWarnVulnerability			= mod:NewSpecialWarningTarget(160734)--Switched to target warning since some may be assined adds, some to boss, but all need to know when this phase starts
 local specWarnTrample				= mod:NewSpecialWarningYou(163101, nil, nil, nil, nil, nil, true)
 local yellTrample					= mod:NewYell(163101)
---local specWarnOverflowingEnergy	= mod:NewSpecialWarningSpell(161576)--Warn the person with Null barrier.
 local specWarnExpelMagicFire		= mod:NewSpecialWarningMoveAway(162185, nil, nil, nil, nil, nil, true)
 local specWarnExpelMagicShadow		= mod:NewSpecialWarningSpell(162184, mod:IsHealer(), nil, nil, nil, nil, true)
 local specWarnExpelMagicFrost		= mod:NewSpecialWarningSpell(161411, false, nil, nil, nil, nil, true)
@@ -79,9 +76,11 @@ mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddSetIconOption("SetIconOnFel", 172895, false)
 
 mod.vb.supressionCount = 0
+mod.vb.shieldCharging = false
 
 function mod:OnCombatStart(delay)
 	self.vb.supressionCount = 0
+	self.vb.shieldCharging = false
 	--timerExpelMagicFireCD:Start(6-delay)
 end
 
@@ -153,19 +152,33 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 161612 and self:AntiSpam(5, 4) then--This won't show balls that hit, only ones caught. Balls that hit require high cpu spell_damage event
-		timerBallsCD:Start()
-		countdownBalls:Start()
-		self:Schedule(23.5, ballsWarning)
-		DBM:Debug("timerBallsCD started because a successful soak happened")
+		local timer
+		if self.vb.shieldCharging then
+			timer = 51
+			DBM:Debug("timerBallsCD started by user soaking shield charging, 51 second timer started")
+		else
+			timer = 30
+			DBM:Debug("timerBallsCD started by user soaking in regular phase, 30 second timer started")
+		end
+		timerBallsCD:Start(timer)
+		countdownBalls:Start(timer)
+		self:Schedule(timer-6.5, ballsWarning)
 	end
 end
 
 function mod:SPELL_DAMAGE() -- captures spellid 161612, 161576
 	if self:AntiSpam(5, 4) then
-		timerBallsCD:Start()
-		countdownBalls:Start()
-		self:Schedule(23.5, ballsWarning)
-		DBM:Debug("timerBallsCD started by aoe damage")
+		local timer
+		if self.vb.shieldCharging then
+			timer = 51
+			DBM:Debug("timerBallsCD started by aoe damage during shield charging, 51 second timer started")
+		else
+			timer = 30
+			DBM:Debug("timerBallsCD started by aoe damage in regular phase, 30 second timer started")
+		end
+		timerBallsCD:Start(timer)
+		countdownBalls:Start(timer)
+		self:Schedule(timer-6.5, ballsWarning)
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_DAMAGE
@@ -173,6 +186,7 @@ mod.SPELL_ABSORBED = mod.SPELL_DAMAGE
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 156803 then
+		self.vb.shieldCharging = false
 		warnNullBarrier:Show(args.destName)
 		specWarnNullBarrier:Show(args.destName)
 --		timerTrampleCD:Start()--5-20
@@ -222,24 +236,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:SetIcon(args.destName, 0)
 	elseif spellId == 172895 and self.Options.SetIconOnFel then
 		self:SetIcon(args.destName, 0)
-	end
-end
-
---"<16.8 14:52:14> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I will crush you!#Ko'ragh###Serrinne##0#0##0#565#nil#0#false#false", -- [5422]
---"<57.9 14:52:55> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Silence!#Ko'ragh###Hesptwo-BetaLevelingRealm02##0#0##0#568#nil#0#false#false", -- [18204]
---"<106.1 14:53:43> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Quiet!#Ko'ragh###Kevo-Level100PvP##0#0##0#572#nil#0#false#false", -- [30685]
---"<77.9 14:43:24> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I will tear you in half!#Ko'ragh###Turkeyburger##0#0##0#510#nil#0#false#false", -- [23203]
-function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, target)
-	if msg:find(L.supressionTarget1) or msg:find(L.supressionTarget2) or msg:find(L.supressionTarget3) or msg:find(L.supressionTarget4) then
-		self:SendSync("ChargeTo", target)--Sync since we have poor language support for many languages.
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 160734 then
-		local bossName = UnitName(uId)
-		warnVulnerability:Show(bossName)
-		specWarnVulnerability:Show(bossName)
+	elseif spellId == 156803 then--Null barrier fall off boss
+		self.vb.shieldCharging = true
+		warnVulnerability:Show(args.destName)
+		specWarnVulnerability:Show(args.destName)
 		timerVulnerability:Start()
 		timerTrampleCD:Cancel()
 		local elapsed, total = timerBallsCD:GetTime()
@@ -254,7 +254,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			self:Schedule(remaining+14.5, ballsWarning)
 			DBM:Debug("timerBallsCD is extending by 21 seconds do to shield phase")
 		end
---		timerExpelMagicFelCD:Cancel()
+--		timerExpelMagicFelCD:Cancel()	
+	end
+end
+
+--"<16.8 14:52:14> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I will crush you!#Ko'ragh###Serrinne##0#0##0#565#nil#0#false#false", -- [5422]
+--"<57.9 14:52:55> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Silence!#Ko'ragh###Hesptwo-BetaLevelingRealm02##0#0##0#568#nil#0#false#false", -- [18204]
+--"<106.1 14:53:43> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Quiet!#Ko'ragh###Kevo-Level100PvP##0#0##0#572#nil#0#false#false", -- [30685]
+--"<77.9 14:43:24> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I will tear you in half!#Ko'ragh###Turkeyburger##0#0##0#510#nil#0#false#false", -- [23203]
+function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, target)
+	if msg:find(L.supressionTarget1) or msg:find(L.supressionTarget2) or msg:find(L.supressionTarget3) or msg:find(L.supressionTarget4) then
+		self:SendSync("ChargeTo", target)--Sync since we have poor language support for many languages.
 	end
 end
 

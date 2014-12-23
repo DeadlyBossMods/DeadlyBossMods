@@ -24,12 +24,12 @@ local warnGenesis					= mod:NewSpellAnnounce(175979, 4)
 local warnSavageVines				= mod:NewTargetAnnounce(176004, 2)
 local warnGrowUntamedMandragora		= mod:NewSpellAnnounce(176013, 3)
 
-local specWarnColossalBlow			= mod:NewSpecialWarningSpell(175973, nil, nil, nil, 2)
-local specWarnGenesis				= mod:NewSpecialWarningSpell(175979)--Everyone. "Switch" is closest generic to "run around stomping flowers". Might need custom message
+local specWarnColossalBlow			= mod:NewSpecialWarningSpell(175973, nil, nil, nil, 2, nil, true)
+local specWarnGenesis				= mod:NewSpecialWarningSpell(175979, nil, nil, nil, nil, nil, true)--Everyone. "Switch" is closest generic to "run around stomping flowers". Might need custom message
 local specWarnSavageVines			= mod:NewSpecialWarningYou(176004)
 local yellSavageVines				= mod:NewYell(176004)
 local specWarnSavageVinesNear		= mod:NewSpecialWarningClose(176004)
-local specWarnGrowUntamedMandragora	= mod:NewSpecialWarningSwitch(176013, not mod:IsHealer())
+local specWarnGrowUntamedMandragora	= mod:NewSpecialWarningSwitch(176013, not mod:IsHealer(), nil, nil, nil, nil, true)
 
 --local timerColossalBlowCD			= mod:NewNextTimer(60, 175973)
 local timerGenesisCD				= mod:NewCDTimer(45, 169613)--45-60 variation
