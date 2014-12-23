@@ -32,17 +32,17 @@ local warnPulverize					= mod:NewCountAnnounce(158385, 3)--158385 is primary act
 local warnArcaneCharge				= mod:NewCastAnnounce(163336, 4)--Mythic. Seems not reliable timer, has a chance to happen immediately after a charge (but not always)
 
 --Phemos
-local specWarnEnfeeblingRoar		= mod:NewSpecialWarningCount(158057)
-local specWarnWhirlWind				= mod:NewSpecialWarningCount(157943, nil, nil, nil, 2)
-local specWarnQuake					= mod:NewSpecialWarningCount(158200, nil, nil, nil, 2)
-local specWarnBlaze					= mod:NewSpecialWarningMove(158241)
-local specWarnArcaneVolatility		= mod:NewSpecialWarningMoveAway(163372)--Mythic
+local specWarnEnfeeblingRoar		= mod:NewSpecialWarningCount(158057, nil, nil, nil, nil, true)
+local specWarnWhirlWind				= mod:NewSpecialWarningCount(157943, nil, nil, nil, 2, true)
+local specWarnQuake					= mod:NewSpecialWarningCount(158200, nil, nil, nil, 2, true)
+local specWarnBlaze					= mod:NewSpecialWarningMove(158241, nil, nil, nil, nil, true)
+local specWarnArcaneVolatility		= mod:NewSpecialWarningMoveAway(163372, nil, nil, nil, nil, true)--Mythic
 local yellArcaneVolatility			= mod:NewYell(163372)--Mythic
 --Pol
-local specWarnShieldCharge			= mod:NewSpecialWarningSpell(158134, nil, nil, nil, 2)
+local specWarnShieldCharge			= mod:NewSpecialWarningSpell(158134, nil, nil, nil, 2, true)
 local specWarnInterruptingShout		= mod:NewSpecialWarningCast("OptionVersion2", 158093, mod:IsSpellCaster())
-local specWarnPulverize				= mod:NewSpecialWarningSpell(158385, nil, nil, nil, 2)
-local specWarnArcaneCharge			= mod:NewSpecialWarningSpell(163336, nil, nil, nil, 2)--Mythic. Seems not reliable timer, has a chance to happen immediately after a charge (but not always)
+local specWarnPulverize				= mod:NewSpecialWarningSpell(158385, nil, nil, nil, 2, true)
+local specWarnArcaneCharge			= mod:NewSpecialWarningSpell(163336, nil, nil, nil, 2)
 
 --Phemos (100-106 second full rotation, 33-34 in between)
 local timerEnfeeblingRoarCD			= mod:NewNextCountTimer(33, 158057)
