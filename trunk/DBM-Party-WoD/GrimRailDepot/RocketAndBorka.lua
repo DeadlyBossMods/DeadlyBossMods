@@ -25,7 +25,7 @@ local warnSlam					= mod:NewCastAnnounce(162617, 3, 1.5, nil, mod:IsSpellCaster(
 local specWarnX2101AMissile		= mod:NewSpecialWarningSpell(162407, nil, nil, nil, 2)--Large AOE damage
 local specWarnMadDash			= mod:NewSpecialWarningSpell(161090, nil, nil, nil, 2)--DPS version of this warning
 local specWarnMadDashInterrupt	= mod:NewSpecialWarningInterrupt(161090, true, false)--It's actually an interrupt warning for OTHER boss, not caster of this spell
-local specWarnSlam				= mod:NewSpecialWarningCast(162617, mod:IsSpellCaster())
+local specWarnSlam				= mod:NewSpecialWarningCast(162617, mod:IsSpellCaster(), nil, nil, nil, nil, true)
 
 local timerVX18BCD				= mod:NewCDTimer(33, 162500)
 local timerX2101AMissileCD		= mod:NewCDTimer(40, 162407)
@@ -34,7 +34,7 @@ local timerSlamCD				= mod:NewCDTimer(15, 162617, nil, mod:IsSpellCaster())
 local timerSlam					= mod:NewCastTimer(1.5, 162617, nil, mod:IsSpellCaster())
 local timerRecovering			= mod:NewBuffActiveTimer(6, 163947)
 
-local voiceSlam					=	mod:NewVoice(162617, mod:IsSpellCaster())
+local voiceSlam					= mod:NewVoice(162617, mod:IsSpellCaster())
 
 local rocketsName = EJ_GetSectionInfo(9430)
 local borkaID = nil
