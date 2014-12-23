@@ -33,17 +33,17 @@ local warnExplodingFungus			= mod:NewSpellAnnounce(163794, 4)--Mythic Shroom
 local warnWaves						= mod:NewSpellAnnounce(160425, 4)--Mythic Waves
 
 local specWarnCreepingMoss			= mod:NewSpecialWarningMove(163590, mod:IsTank())
-local specWarnInfestingSpores		= mod:NewSpecialWarningCount(159996, nil, nil, nil, 2, true)
-local specWarnDecay					= mod:NewSpecialWarningInterrupt(160013, not mod:IsHealer(), nil, nil, nil, true)
+local specWarnInfestingSpores		= mod:NewSpecialWarningCount(159996, nil, nil, nil, 2, nil, true)
+local specWarnDecay					= mod:NewSpecialWarningInterrupt(160013, not mod:IsHealer(), nil, nil, nil, nil, true)
 local specWarnNecroticBreath		= mod:NewSpecialWarningSpell(159219, mod:IsTank(), nil, nil, 3)
 local specWarnRot					= mod:NewSpecialWarningStack(163241, nil, 3)
-local specWarnRotOther				= mod:NewSpecialWarningTaunt(163241, nil, nil, nil, nil, true)
-local specWarnExplodingFungus		= mod:NewSpecialWarningSpell(163794, nil, nil, nil, 2, true)--Change warning type/sound? need to know more about spawn.
-local specWarnWaves					= mod:NewSpecialWarningSpell(160425, nil, nil, nil, 2, true)
+local specWarnRotOther				= mod:NewSpecialWarningTaunt(163241, nil, nil, nil, nil, nil, true)
+local specWarnExplodingFungus		= mod:NewSpecialWarningSpell(163794, nil, nil, nil, 2, nil, true)--Change warning type/sound? need to know more about spawn.
+local specWarnWaves					= mod:NewSpecialWarningSpell(160425, nil, nil, nil, 2, nil, true)
 --Adds
-local specWarnSporeShooter			= mod:NewSpecialWarningSwitch("OptionVersion2", 163594, mod:IsRangedDps(), nil, nil, nil, true)
-local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitch("ej9995", not mod:IsHealer(), nil, nil, nil, true)
-local specWarnMindFungus			= mod:NewSpecialWarningSwitch(163141, mod:IsDps(), nil, nil, nil, true)
+local specWarnSporeShooter			= mod:NewSpecialWarningSwitch("OptionVersion2", 163594, mod:IsRangedDps(), nil, nil, nil, nil, true)
+local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitch("ej9995", not mod:IsHealer(), nil, nil, nil, nil, true)
+local specWarnMindFungus			= mod:NewSpecialWarningSwitch(163141, mod:IsDps(), nil, nil, nil, nil, true)
 
 local timerInfestingSporesCD		= mod:NewCDCountTimer(57, 159996)--57-63 variation
 local timerRotCD					= mod:NewCDTimer(10, 163241, nil, false)--it's a useful timer, but not mandatory and this fight has A LOT of timers so off by default for clutter reduction
