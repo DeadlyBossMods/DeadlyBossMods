@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 162185 162184 161411 172747 163517 162186 172895",
 	"SPELL_CAST_SUCCESS 161612",
-	"SPELL_AURA_APPLIED 156803 162186 161242 163472 172895",
+	"SPELL_AURA_APPLIED 156803 162186 161242 163472 172895 172917",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 162186 163472 172895 156803",
 	"SPELL_DAMAGE 161612 161576",
@@ -50,6 +50,7 @@ local specWarnMC					= mod:NewSpecialWarningSwitch(163472, mod:IsDps())
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
 local specWarnExpelMagicFel			= mod:NewSpecialWarningYou(172895)--Maybe needs "do not move" warning or at very least "try not to move" since sometimes you have to move for trample.
 local yellExpelMagicFel				= mod:NewYell(172895)
+local specWarnExpelMagicFelMove		= mod:NewSpecialWarningMove(172917)--Under you (fire). If not enough maybe add periodic damage too?
 
 local timerVulnerability			= mod:NewBuffActiveTimer(20, 160734)
 local timerTrampleCD				= mod:NewCDTimer(16, 163101)--Also all over the place, 15-25 with first one coming very randomly (5-20 after barrier goes up)
@@ -234,6 +235,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnFel then
 			self:SetSortedIcon(1, args.destName, 1, 3)
 		end
+	elseif spellId == 172917 and args:IsPlayer() then
+		specWarnExpelMagicFelMove:Show()
 	end
 end
 
