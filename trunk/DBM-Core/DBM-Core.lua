@@ -935,6 +935,7 @@ do
 			end
 			self.AddOns = {}
 			self.Voices = { {text = "None",value  = "None"}, }--Create voice table, with default "None" value
+			self.VoiceVersions = {}
 			for i = 1, GetNumAddOns() do
 				local addonName = GetAddOnInfo(i)
 				local enabled = GetAddOnEnableState(playerName, i)
@@ -989,14 +990,16 @@ do
 				--X-DBM-Voice: 1 should be in file
 				--X-DBM-Voice-Name Should be long name you want to appear in dropdown menu
 				--X-DBM-Voice-ShortName should be short name that matches folder name after DBM-VP. So for example, DBM-VPHarry would be "Harry" for a short name.
+				--X-DBM-Voice-Version should be a single number identifying whether or not the voice pack is new enough to enable special warning sound filter.
+				--Bump Voice-Version any time NEW files are added to CURRENT raid tier (files prepping for next tier don't need a version bump since they won't break things).
+				--When a NEW tier finally does launch though, bump the version then because then any files added for that tier should be relevant.
+				--Bump version by +1 when bumping for new files. I'll bump DBM core to match it when I add the new files to mods themselves.
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
 					local voiceValue = GetAddOnMetadata(i, "X-DBM-Voice-ShortName")
+					local voiceVersion = tonumber(GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0)
 					tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = voiceValue })
-					local voiceVersion = GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0
-					if (DBM.Options.ChosenVoicePack == voiceValue) and voiceVersion < 0 then--Version will be bumped when new voice packs released that contain new voices.
-						DBM:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
-						SWFilterDisabed = true
-					end
+					self.VoiceVersions[voiceValue] = voiceVersion
+					DBM:CheckVoicePackVersion(voiceValue)
 				end
 			end
 			--Todo, make this more robust and actually check if the ACTIVE voice is removed, because checking for none being instaled still won't account for removing selected voice pack but still having other packs
@@ -7128,6 +7131,17 @@ do
 		end
 	end
 
+	function DBM:CheckVoicePackVersion(value)
+		if DBM.Options.ChosenVoicePack == value then
+			if self.VoiceVersions[value] < 0 then--Version will be bumped when new voice packs released that contain new voices.
+				DBM:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
+				SWFilterDisabed = true
+			else
+				SWFilterDisabed = false
+			end
+		end
+	end
+	
 	function DBM:PlaySpecialWarningSound(soundId)
 		local sound = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or DBM.Options.SpecialWarningSound
 		if DBM.Options.UseMasterVolume then
