@@ -6895,7 +6895,7 @@ do
 			frame:Show()
 			frame:SetAlpha(1)
 			frame.timer = 5
-			if self.sound and not (DBM.Options.VoiceOverSW and self.hasVoice) then
+			if self.sound and not (DBM.Options.ChosenVoicePack ~= "None" and DBM.Options.VoiceOverSW and self.hasVoice) then
 				local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
 				if (not DBM.Options.VoiceOverSW and self.hasVoice) or (self.mod.Options[self.option .. "SpecialWarningSound"] ~= "None") then
 					DBM:PlaySpecialWarningSound(soundId or 1)
