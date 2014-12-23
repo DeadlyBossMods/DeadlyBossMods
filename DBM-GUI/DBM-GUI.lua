@@ -1583,6 +1583,7 @@ local function CreateOptionsMenu()
 		DBM.Options.ChosenVoicePack, function(value)
 			DBM.Options.ChosenVoicePack = value
 			DBM:Debug("DBM.Options.ChosenVoicePack is set to "..DBM.Options.ChosenVoicePack)
+			DBM:CheckVoicePackVersion(value)
 		end
 		)
 		VoiceDropDown:SetPoint("TOPLEFT", CountSoundDropDown2, "TOPLEFT", 0, -40)
