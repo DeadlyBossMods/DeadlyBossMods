@@ -29,16 +29,16 @@ local warnImpale					= mod:NewSpellAnnounce(159113, 3, nil, mod:IsTank())
 local warnPillar					= mod:NewSpellAnnounce("ej9394", 3, nil, 159202)
 local warnOnTheHunt					= mod:NewTargetAnnounce(162497, 4)
 
-local specWarnChainHurl				= mod:NewSpecialWarningSpell(159947)
-local specWarnBerserkerRushOther	= mod:NewSpecialWarningTarget(158986, nil, nil, nil, 2)
-local specWarnBerserkerRush			= mod:NewSpecialWarningMoveTo(158986, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(158986), nil, 3)--Creative use of warning. Run option text but a moveto warning to get players in LFR to actually run to the flame jet instead of being clueless.
+local specWarnChainHurl				= mod:NewSpecialWarningSpell(159947, nil, nil, nil, nil, true)
+local specWarnBerserkerRushOther	= mod:NewSpecialWarningTarget(158986, nil, nil, nil, 2, true)
+local specWarnBerserkerRush			= mod:NewSpecialWarningMoveTo(158986, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(158986), nil, 3, true)--Creative use of warning. Run option text but a moveto warning to get players in LFR to actually run to the flame jet instead of being clueless.
 local yellBerserkerRush				= mod:NewYell(158986)
 --local specWarnBerserkerRushEnded	= mod:NewSpecialWarningEnd(158986)
 local specWarnImpale				= mod:NewSpecialWarningSpell(159113, mod:IsTank())
 local specWarnOpenWounds			= mod:NewSpecialWarningStack(159178, nil, 2)
 local specWarnOpenWoundsOther		= mod:NewSpecialWarningTaunt(159178)--If it is swap every impale, will move this to impale cast and remove stack stuff all together.
 local specWarnMaulingBrew			= mod:NewSpecialWarningMove(159413)
-local specWarnOnTheHunt				= mod:NewSpecialWarningMoveTo(162497, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(162497))--Does not need yell, tigers don't cleave other targets like berserker rush does.
+local specWarnOnTheHunt				= mod:NewSpecialWarningMoveTo(162497, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(162497), nil, nil, true)--Does not need yell, tigers don't cleave other targets like berserker rush does.
 
 local timerPillarCD					= mod:NewNextTimer(20, "ej9394", nil, nil, nil, 159202)
 local timerChainHurlCD				= mod:NewNextTimer(106, 159947)--177776
