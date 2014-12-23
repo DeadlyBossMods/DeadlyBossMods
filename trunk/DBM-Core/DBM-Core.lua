@@ -281,6 +281,7 @@ local bossuIdFound = false
 local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
 local tooltipsHidden = false
+local SWFilterDisabed = false
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -989,7 +990,13 @@ do
 				--X-DBM-Voice-Name Should be long name you want to appear in dropdown menu
 				--X-DBM-Voice-ShortName should be short name that matches folder name after DBM-VP. So for example, DBM-VPHarry would be "Harry" for a short name.
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
-					tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = GetAddOnMetadata(i, "X-DBM-Voice-ShortName") })
+					local voiceValue = GetAddOnMetadata(i, "X-DBM-Voice-ShortName")
+					tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = voiceValue })
+					local voiceVersion = GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0
+					if (DBM.Options.ChosenVoicePack == voiceValue) and voiceVersion < 0 then--Version will be bumped when new voice packs released that contain new voices.
+						DBM:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
+						SWFilterDisabed = true
+					end
 				end
 			end
 			--Todo, make this more robust and actually check if the ACTIVE voice is removed, because checking for none being instaled still won't account for removing selected voice pack but still having other packs
@@ -6894,11 +6901,9 @@ do
 			frame:Show()
 			frame:SetAlpha(1)
 			frame.timer = 5
-			if self.sound and not (DBM.Options.ChosenVoicePack ~= "None" and DBM.Options.VoiceOverSW and self.hasVoice) then
+			if self.sound and not (DBM.Options.ChosenVoicePack ~= "None" and DBM.Options.VoiceOverSW and self.hasVoice and not SWFilterDisabed) and self.mod.Options[self.option .. "SpecialWarningSound"] ~= "None" then
 				local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
-				if (not DBM.Options.VoiceOverSW and self.hasVoice) or (self.mod.Options[self.option .. "SpecialWarningSound"] ~= "None") then
-					DBM:PlaySpecialWarningSound(soundId or 1)
-				end
+				DBM:PlaySpecialWarningSound(soundId or 1)
 			end
 			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
 			fireEvent("DBM_SpecWarn", msg)
