@@ -6897,7 +6897,7 @@ do
 			frame:SetAlpha(1)
 			frame.timer = 5
 			if self.sound and self.mod.Options[self.option .. "SpecialWarningSound"] ~= "None" then
-				if not self.hasVoice or not DBM.Options.VoiceOverSW or ((self.voiceVersion or 0) > DBM.VoicesVersion) then
+				if not self.hasVoice or not DBM.Options.VoiceOverSW or not self.mod.Options["Voice" .. self.spellId .. (self.voiceOptionVersion or "")] or ((self.voiceVersion or 0) > DBM.VoicesVersion) then
 					local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
 					DBM:PlaySpecialWarningSound(soundId or 1)
 				end
@@ -6920,7 +6920,7 @@ do
 		return unschedule(self.Show, self.mod, self, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound, runSound, hasVoice, voiceVersion)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound, runSound, hasVoice, voiceVersion, voiceOptionVersion)
 		if not text then
 			error("NewSpecialWarning: you must provide special warning text", 2)
 			return
@@ -6939,6 +6939,7 @@ do
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 				hasVoice = hasVoice,
 				voiceVersion = voiceVersion,
+				voiceOptionVersion = voiceOptionVersion,
 			},
 			mt
 		)
@@ -6951,7 +6952,7 @@ do
 		return obj
 	end
 
-	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion)
+	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion, voiceOptionVersion)
 		if not spellId then
 			error("newSpecialWarning: you must provide spellId", 2)
 			return
@@ -6992,6 +6993,7 @@ do
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 				hasVoice = hasVoice,
 				voiceVersion = voiceVersion,
+				voiceOptionVersion = voiceOptionVersion,
 			},
 			mt
 		)
@@ -6999,6 +7001,7 @@ do
 			obj.option = optionName
 		elseif not (optionName == false) then
 			obj.option = "SpecWarn"..spellId..announceType..(optionVersion or "")
+			obj.spellId = spellId
 			if announceType == "stack" then
 				self.localization.options[obj.option] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(stacks or 3, spellId)
 			elseif announceType == "prewarn" then
@@ -7082,26 +7085,26 @@ do
 		return newSpecialWarning(self, "count", text, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion)
+	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion, voiceOptionVersion)
 		if type(text) == "string" and text:match("OptionVersion") then
 			local temp = optionVersion
 			optionVersion = string.sub(text, 14)
 			text, optionDefault, stacks, optionName, noSound, runSound = optionDefault, stacks, optionName, noSound, runSound, temp
 		end
-		return newSpecialWarning(self, "stack", text, stacks, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion)
+		return newSpecialWarning(self, "stack", text, stacks, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion, voiceOptionVersion)
 	end
 
 	function bossModPrototype:NewSpecialWarningSwitch(text, optionDefault, ...)
 		return newSpecialWarning(self, "switch", text, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion)
+	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion, voiceOptionVersion)
 		if type(text) == "string" and text:match("OptionVersion") then
 			local temp = optionVersion
 			optionVersion = string.sub(text, 14)
 			text, optionDefault, time, optionName, noSound, runSound = optionDefault, time, optionName, noSound, runSound, temp
 		end
-		return newSpecialWarning(self, "prewarn", text, time, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion)
+		return newSpecialWarning(self, "prewarn", text, time, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion, voiceOptionVersion)
 	end
 
 	function DBM:PlayCountSound(number, forceVoice)
