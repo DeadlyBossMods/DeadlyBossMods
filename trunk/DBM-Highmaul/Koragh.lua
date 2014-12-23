@@ -49,6 +49,7 @@ local specWarnBallsSoon				= mod:NewSpecialWarningPreWarn(161612, nil, 6.5, nil,
 local specWarnMC					= mod:NewSpecialWarningSwitch(163472, mod:IsDps())
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
 local specWarnExpelMagicFel			= mod:NewSpecialWarningYou(172895)--Maybe needs "do not move" warning or at very least "try not to move" since sometimes you have to move for trample.
+local yellExpelMagicFel				= mod:NewYell(172895)
 
 local timerVulnerability			= mod:NewBuffActiveTimer(20, 160734)
 local timerTrampleCD				= mod:NewCDTimer(16, 163101)--Also all over the place, 15-25 with first one coming very randomly (5-20 after barrier goes up)
@@ -221,6 +222,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnExpelMagicFel:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnExpelMagicFel:Show()
+			yellExpelMagicFel:Yell()
 		end
 		if self.Options.SetIconOnFel then
 			self:SetSortedIcon(1, args.destName, 1, 3)
