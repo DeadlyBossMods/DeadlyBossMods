@@ -220,11 +220,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 162658 then
 		local cid = self:GetCIDFromGUID(args.destGUID)
-		if not moteH[args.destGUID] and cid == 80557 then
-			moteH[args.destGUID] = 0
-		end
-		if self.Options.SetIconOnMote and not self:IsLFR() then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
-			self:ScanForMobs(args.destGUID, 0, 8, 8, 0.05, 12)
+		if cid == 80557 then
+			if not moteH[args.destGUID] then
+				moteH[args.destGUID] = 0
+			end
+			if self.Options.SetIconOnMote and not self:IsLFR() then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
+				self:ScanForMobs(args.destGUID, 0, 8, 8, 0.05, 12)
+			end
 		end
 	end
 end
