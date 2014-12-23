@@ -65,7 +65,7 @@ local voiceEarthenPillar			= mod:NewVoice(162518, nil )
 
 
 mod:AddSetIconOption("SetIconOnEarthwarper", "ej10061", true, true)
-mod:AddSetIconOption("SetIconOnMote", "ej10083", false, true)--Working with both shard and mote. ej10083 description is bad / This more or less assumes the 4 at a time strat. if you unleash 8 it will fail. Although any guild unleashing 8 is probably doing it wrong (minus LFR)
+mod:AddSetIconOption("SetIconOnMote", "ej10064", false, true)--Working with both shard and mote. ej10083 description is bad / This more or less assumes the 4 at a time strat. if you unleash 8 it will fail. Although any guild unleashing 8 is probably doing it wrong (minus LFR)
 
 local UnitGUID, UnitExists = UnitGUID, UnitExists
 local Earthwarper = EJ_GetSectionInfo(10061)
