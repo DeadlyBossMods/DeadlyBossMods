@@ -934,6 +934,7 @@ do
 			end
 			self.AddOns = {}
 			self.Voices = { {text = "None",value  = "None"}, }--Create voice table, with default "None" value
+			self.VoicesVersion = 0
 			for i = 1, GetNumAddOns() do
 				local addonName = GetAddOnInfo(i)
 				local enabled = GetAddOnEnableState(playerName, i)
@@ -990,6 +991,7 @@ do
 				--X-DBM-Voice-ShortName should be short name that matches folder name after DBM-VP. So for example, DBM-VPHarry would be "Harry" for a short name.
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
 					tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = GetAddOnMetadata(i, "X-DBM-Voice-ShortName") })
+					self.VoicesVersion = GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0
 				end
 			end
 			--Todo, make this more robust and actually check if the ACTIVE voice is removed, because checking for none being instaled still won't account for removing selected voice pack but still having other packs
@@ -6894,9 +6896,9 @@ do
 			frame:Show()
 			frame:SetAlpha(1)
 			frame.timer = 5
-			if self.sound and not (DBM.Options.ChosenVoicePack ~= "None" and DBM.Options.VoiceOverSW and self.hasVoice) then
-				local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
-				if (not DBM.Options.VoiceOverSW and self.hasVoice) or (self.mod.Options[self.option .. "SpecialWarningSound"] ~= "None") then
+			if self.sound and self.mod.Options[self.option .. "SpecialWarningSound"] ~= "None" then
+				if not self.hasVoice or not DBM.Options.VoiceOverSW or ((self.voiceVersion or 0) > DBM.VoicesVersion) then
+					local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
 					DBM:PlaySpecialWarningSound(soundId or 1)
 				end
 			end
@@ -6918,7 +6920,7 @@ do
 		return unschedule(self.Show, self.mod, self, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound, runSound, hasVoice)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound, runSound, hasVoice, voiceVersion)
 		if not text then
 			error("NewSpecialWarning: you must provide special warning text", 2)
 			return
@@ -6936,6 +6938,7 @@ do
 				sound = not noSound,
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 				hasVoice = hasVoice,
+				voiceVersion = voiceVersion,
 			},
 			mt
 		)
@@ -6948,7 +6951,7 @@ do
 		return obj
 	end
 
-	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice)
+	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion)
 		if not spellId then
 			error("newSpecialWarning: you must provide spellId", 2)
 			return
@@ -6988,6 +6991,7 @@ do
 				sound = not noSound,
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 				hasVoice = hasVoice,
+				voiceVersion = voiceVersion,
 			},
 			mt
 		)
@@ -7078,26 +7082,26 @@ do
 		return newSpecialWarning(self, "count", text, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, optionName, noSound, runSound, optionVersion, hasVoice)
+	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion)
 		if type(text) == "string" and text:match("OptionVersion") then
 			local temp = optionVersion
 			optionVersion = string.sub(text, 14)
 			text, optionDefault, stacks, optionName, noSound, runSound = optionDefault, stacks, optionName, noSound, runSound, temp
 		end
-		return newSpecialWarning(self, "stack", text, stacks, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice)
+		return newSpecialWarning(self, "stack", text, stacks, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion)
 	end
 
 	function bossModPrototype:NewSpecialWarningSwitch(text, optionDefault, ...)
 		return newSpecialWarning(self, "switch", text, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, optionName, noSound, runSound, optionVersion, hasVoice)
+	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion)
 		if type(text) == "string" and text:match("OptionVersion") then
 			local temp = optionVersion
 			optionVersion = string.sub(text, 14)
 			text, optionDefault, time, optionName, noSound, runSound = optionDefault, time, optionName, noSound, runSound, temp
 		end
-		return newSpecialWarning(self, "prewarn", text, time, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice)
+		return newSpecialWarning(self, "prewarn", text, time, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice, voiceVersion)
 	end
 
 	function DBM:PlayCountSound(number, forceVoice)
