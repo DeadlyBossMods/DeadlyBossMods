@@ -127,7 +127,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceBerserkerRush:Play("159202f") --find the pillar
 		else
 			specWarnBerserkerRushOther:Show(args.destName)
-			voiceBerserkerRush:Play("chargemove")
+			if not self:IsMelee() then
+				voiceBerserkerRush:Play("chargemove")
+			end
 		end
 	elseif spellId == 159178 then
 		local amount = args.amount or 1
