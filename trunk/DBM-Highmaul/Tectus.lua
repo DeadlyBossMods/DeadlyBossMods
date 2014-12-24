@@ -186,7 +186,7 @@ function mod:SPELL_CAST_START(args)
 		timerEarthenFlechettesCD:Start(args.sourceGUID)
 		local guid = args.souceGUID
 		if guid == UnitGUID("target") or guid == UnitGUID("focus") then
-			voiceEarthenFlechettes:Play("watchwave")
+			voiceEarthenFlechettes:Play("shockwave")
 		end
 	elseif spellId == 162894 then
 		local GUID = args.sourceGUID
