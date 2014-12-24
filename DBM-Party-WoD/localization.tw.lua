@@ -198,6 +198,25 @@ L= DBM:GetModLocalization(967)
 -----------------------
 L= DBM:GetModLocalization(968)
 
+L:SetWarningLocalization({
+	warnAdd			= DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell:format("Skyreach Shield Construct"),
+	specWarnAdd		= DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch:format("Skyreach Shield Construct")
+})
+
+L:SetOptionLocalization({
+	warnAdd			= "Show warning for Skyreach Shield Construct",
+	specWarnAdd		= "Show special warning to switch targets for Skyreach Shield Construct"
+})
+
+-------------
+--  Skyreach Trash  --
+-------------
+L = DBM:GetModLocalization("SkyreachTrash")
+
+L:SetGeneralLocalization({
+	name =	"擎天峰小怪"
+})
+
 -----------------------
 -- <<<Upper Blackrock Spire>>> --
 -----------------------
