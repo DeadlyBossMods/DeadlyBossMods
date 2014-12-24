@@ -143,9 +143,9 @@ function mod:CustomHealthUpdate()
 	if healthPhase == 1 then
 		return ("(%d%%, %s)"):format(tectusH, tectusN)
 	elseif healthPhase == 2 then
-		return ("(%d%%, %s)"):format(shardT / shardC, shardN)
+		return ("(%d%%, %s)"):format(shardT / (shardC > 0 and shardC or 1), shardN)
 	elseif healthPhase == 3 then
-		return ("(%d%%, %s)"):format(moteT / moteC, moteN)
+		return ("(%d%%, %s)"):format(moteT / (moteC > 0 and moteC or 1), moteN)
 	end
 	return DBM_CORE_UNKNOWN
 end
