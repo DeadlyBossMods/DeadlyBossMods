@@ -1968,7 +1968,7 @@ local function CreateOptionsMenu()
 		local check1 = specArea:CreateCheckButton(L.SpecWarn_Enabled, true, nil, "ShowSpecialWarnings")
 		local check2 = specArea:CreateCheckButton(L.SpecWarn_FlashFrame, true, nil, "ShowFlashFrame")
 		local check3 = specArea:CreateCheckButton(L.SpecWarn_AdSound, true, nil, "ShowAdvSWSound")
-		local check4 = specArea:CreateCheckButton(L.SpecWarn_NoSoundsWVoice, true, nil, "VoiceOverSW")
+		local check4 = specArea:CreateCheckButton(L.SpecWarn_NoSoundsWVoice, true, nil, "VoiceOverSpecW")
 
 		local showbutton = specArea:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 		showbutton:SetPoint('TOPRIGHT', specArea.frame, "TOPRIGHT", -5, -5)

@@ -86,7 +86,7 @@ DBM.DefaultOptions = {
 	CountdownVoice2 = "Kolt",
 	CountdownVoice3 = "Pewsey",
 	ChosenVoicePack = "None",
-	VoiceOverSW = true,
+	VoiceOverSpecW = false,
 	ShowCountdownText = false,
 	RaidWarningPosition = {
 		Point = "TOP",
@@ -6905,7 +6905,7 @@ do
 			frame:SetAlpha(1)
 			frame.timer = 5
 			fireEvent("DBM_SpecWarn", msg)
-			if self.sound and not (DBM.Options.ChosenVoicePack ~= "None" and DBM.Options.VoiceOverSW and self.hasVoice and not SWFilterDisabed) then
+			if self.sound and not (DBM.Options.ChosenVoicePack ~= "None" and DBM.Options.VoiceOverSpecW and self.hasVoice and not SWFilterDisabed) then
 				local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
 				if self.option and self.mod.Options[self.option.."SpecialWarningSound"] == "None" then return end
 				DBM:PlaySpecialWarningSound(soundId or 1)
