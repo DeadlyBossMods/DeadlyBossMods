@@ -109,7 +109,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if unitid then
-			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(unitid, args.spellName)
+			local _, _, _, _, _, duration, expires, _, _ = UnitBuff(unitid, args.spellName)
 			if expires then
 				timerRecovering:Start(expires-GetTime())
 			end
