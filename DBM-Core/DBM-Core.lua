@@ -6904,13 +6904,15 @@ do
 			frame:Show()
 			frame:SetAlpha(1)
 			frame.timer = 5
-			fireEvent("DBM_SpecWarn", msg)
-			if self.sound and not (DBM.Options.ChosenVoicePack ~= "None" and DBM.Options.VoiceOverSpecW and self.hasVoice and not SWFilterDisabed) then
-				local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
-				if self.option and self.mod.Options[self.option.."SpecialWarningSound"] == "None" then return end
-				DBM:PlaySpecialWarningSound(soundId or 1)
-			end
 			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
+			fireEvent("DBM_SpecWarn", msg)
+			if self.sound then
+				if self.hasVoice and DBM.Options.ChosenVoicePack ~= "None" and not SWFilterDisabed and DBM.Options.VoiceOverSW and self.mod.Options[self.voiceOptionId] ~= false then return end
+				if not self.option or self.mod.Options[self.option.."SpecialWarningSound"] ~= "None" then
+					local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
+					DBM:PlaySpecialWarningSound(soundId or 1)
+				end
+			end
 		end
 	end
 
@@ -6950,6 +6952,7 @@ do
 		)
 		local optionId = optionName or optionName ~= false and text
 		if optionId then
+			obj.voiceOptionId = hasVoice and "Voice"..optionId or nil
 			obj.option = optionId
 			self:AddSpecialWarningOption(optionId, optionDefault, runSound, "announce")
 		end
@@ -7013,6 +7016,7 @@ do
 			end
 		end
 		if obj.option then
+			obj.voiceOptionId = hasVoice and "Voice"..spellId..(type(hasVoice) == "number" and hasVoice or "") or nil
 			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, "announce")
 		end
 		tinsert(self.specwarns, obj)
