@@ -25,6 +25,13 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1196)
 
+L:SetOptionLocalization({
+	InterruptCounter	= "重數衰減打算計數",
+	Two					= "在兩次打斷後",
+	Three				= "在三次打斷後",
+	Four				= "在四次打斷後"
+})
+
 --------------
 -- Twin Ogron --
 --------------
