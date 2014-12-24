@@ -261,12 +261,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		local remaining = total - elapsed
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
 		if remaining > 5 then--If 5 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
-			timerBallsCD:Start(remaining+21)
+			timerBallsCD:Start(remaining+23)
 			countdownBalls:Cancel()
 			specWarnBallsSoon:Cancel()
-			countdownBalls:Start(remaining+21)
+			countdownBalls:Start(remaining+23)
 			self:Unschedule(ballsWarning)
-			self:Schedule(remaining+14.5, ballsWarning)
+			self:Schedule(remaining+16.5, ballsWarning)
 			DBM:Debug("timerBallsCD is extending by 21 seconds do to shield phase")
 		end	
 	end
