@@ -3304,10 +3304,9 @@ do
 			-- okay, send data
 			local sentData = false
 			for i = 1, GetNumSavedInstances() do
-				local name, id, _, difficulty, locked, extended, instanceIDMostSig, isRaid, maxPlayers, _, _, progress = GetSavedInstanceInfo(i)
-				local longId = ("%x%x"):format(instanceIDMostSig, id) -- used as unique id by then default UI, so it's probably the "real" id
+				local name, id, _, difficulty, locked, extended, instanceIDMostSig, isRaid, maxPlayers, textDiff, _, progress = GetSavedInstanceInfo(i)
 				if (locked or extended) and isRaid then -- only report locked raid instances
-					SendAddonMessage("D4", "II\tData\t" .. name .. "\t" .. longId .. "\t" .. difficulty .. "\t" .. maxPlayers .. "\t" .. (progress or 0), "WHISPER", sender)
+					SendAddonMessage("D4", "II\tData\t" .. name .. "\t" .. id .. "\t" .. difficulty .. "\t" .. maxPlayers .. "\t" .. (progress or 0) .. "\t" .. textDiff, "WHISPER", sender)
 					sentData = true
 				end
 			end
@@ -3418,7 +3417,7 @@ do
 
 		local updateInstanceInfo, showResults
 
-		whisperSyncHandlers["II"] = function(sender, result, name, id, diff, maxPlayers, progress)
+		whisperSyncHandlers["II"] = function(sender, result, name, id, diff, maxPlayers, progress, textDiff)
 			if GetTime() - lastRequest > 62 or not results then
 				return
 			end
@@ -3430,11 +3429,17 @@ do
 			diff = tonumber(diff or 0) or 0
 			maxPlayers = tonumber(maxPlayers or 0) or 0
 			progress = tonumber(progress or 0) or 0
+			textDiff = textDiff or ""
 
 			-- count responses
 			if not results.responses[sender] then
 				results.responses[sender] = result
 				numResponses = numResponses + 1
+			end
+
+			-- get localized difficulty text
+			if textDiff then
+				results.difftext[diff] = textDiff
 			end
 
 			if result == "Data" then
@@ -3446,8 +3451,13 @@ do
 					diff = diff,
 					maxPlayers = maxPlayers,
 				}
-				results.data[instanceId].ids[id] = results.data[instanceId].ids[id] or { progress = progress }
-				tinsert(results.data[instanceId].ids[id], sender)
+				if diff == 5 or diff == 6 or diff == 16 then
+					results.data[instanceId].ids[id] = results.data[instanceId].ids[id] or { progress = progress, haveid = true }
+					tinsert(results.data[instanceId].ids[id], sender)
+				else
+					results.data[instanceId].ids[progress] = results.data[instanceId].ids[progress] or { progress = progress }
+					tinsert(results.data[instanceId].ids[progress], sender)
+				end
 			end
 
 			if numResponses >= expectedResponses then -- unlikely, lol
@@ -3462,13 +3472,24 @@ do
 		end
 
 		function showResults()
+			local resultCount = 0
 			-- TODO: you could catch some localized instances by observing IDs if there are multiple players with the same instance ID but a different name ;) (not that useful if you are trying to get a fresh instance)
-			DBM:AddMsg(DBM_INSTANCE_INFO_RESULTS)
+			DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_RESULTS, 0.41, 0.8, 0.94)
+			DEFAULT_CHAT_FRAME:AddMessage("---")
 			for i, v in pairs(results.data) do
-				DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_HEADER:format(v.name, v.maxPlayers, v.diff))
+				resultCount = resultCount + 1
+				DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_DETAIL_HEADER:format(v.name, (results.difftext[v.diff] or v.diff)), 0.41, 0.8, 0.94)
 				for id, v in pairs(v.ids) do
-					DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_INSTANCE:format(id, v.progress, table.concat(v, ", ")))
+					if v.haveid then
+						DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_DETAIL_INSTANCE:format(id, v.progress, table.concat(v, ", ")), 0.41, 0.8, 0.94)
+					else
+						DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_DETAIL_INSTANCE2:format(v.progress, table.concat(v, ", ")), 0.41, 0.8, 0.94)
+					end
 				end
+				DEFAULT_CHAT_FRAME:AddMessage("---")
+			end
+			if resultCount == 0 then
+				DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_NOLOCKOUT, 0.41, 0.8, 0.94)
 			end
 			local denied = {}
 			local away = {}
@@ -3488,13 +3509,13 @@ do
 				removeEntry(noResponse, i)
 			end
 			if #denied > 0 then
-				DBM:AddMsg(DBM_INSTANCE_INFO_STATS_DENIED:format(table.concat(denied, ", ")))
+				DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_STATS_DENIED:format(table.concat(denied, ", ")), 0.41, 0.8, 0.94)
 			end
 			if #away > 0 then
-				DBM:AddMsg(DBM_INSTANCE_INFO_STATS_AWAY:format(table.concat(away, ", ")))
+				DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_STATS_AWAY:format(table.concat(away, ", ")), 0.41, 0.8, 0.94)
 			end
 			if #noResponse > 0 then
-				DBM:AddMsg(DBM_INSTANCE_INFO_STATS_NO_RESPONSE:format(table.concat(noResponse, ", ")))
+				DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_STATS_NO_RESPONSE:format(table.concat(noResponse, ", ")), 0.41, 0.8, 0.94)
 			end
 			results = nil
 		end
@@ -3541,7 +3562,7 @@ do
 		function updateInstanceInfo(timeRemaining, dontAddShowResultNowButton)
 			local numResponses, sent, denied, away = getResponseStats()
 			local dbmUsers = getNumDBMUsers()
-			DBM:AddMsg(DBM_INSTANCE_INFO_STATUS_UPDATE:format(numResponses, dbmUsers, sent, denied, timeRemaining))
+			DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_STATUS_UPDATE:format(numResponses, dbmUsers, sent, denied, timeRemaining), 0.41, 0.8, 0.94)
 			if not dontAddShowResultNowButton then
 				if dbmUsers - numResponses <= 7 then -- waiting for 7 or less players, show their names and the early result option
 					-- copied from above, todo: implement a smarter way of keeping track of stuff like this
@@ -3558,13 +3579,13 @@ do
 					--[[
 					-- this looked like the easiest way (for some reason?) to create the player string when writing this code -.-
 					local function dup(...) if select("#", ...) == 0 then return else return ..., ..., dup(select(2, ...)) end end
-					DBM:AddMsg(DBM_INSTANCE_INFO_SHOW_RESULTS:format(("|Hplayer:%s|h[%s]|h| "):rep(#noResponse):format(dup(unpack(noResponse)))))
+					DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_SHOW_RESULTS:format(("|Hplayer:%s|h[%s]|h| "):rep(#noResponse):format(dup(unpack(noResponse)))), 0.41, 0.8, 0.94)
 					]]
 					-- code that one can actually read
 					for i, v in ipairs(noResponse) do
 						noResponse[i] = ("|Hplayer:%s|h[%s]|h|"):format(v, v)
 					end
-					DBM:AddMsg(DBM_INSTANCE_INFO_SHOW_RESULTS:format(table.concat(noResponse, ", ")))
+					DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_SHOW_RESULTS:format(table.concat(noResponse, ", ")), 0.41, 0.8, 0.94)
 				end
 			end
 		end
@@ -3577,6 +3598,8 @@ do
 				responses = { -- who responded to our request?
 				},
 				data = { -- the actual data
+				},
+				difftext = {
 				}
 			}
 			numResponses = 0
