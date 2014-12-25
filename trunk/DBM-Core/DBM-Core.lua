@@ -3438,7 +3438,7 @@ do
 			end
 
 			-- get localized difficulty text
-			if textDiff then
+			if textDiff ~= "" then
 				results.difftext[diff] = textDiff
 			end
 
