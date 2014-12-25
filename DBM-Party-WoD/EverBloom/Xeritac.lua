@@ -5,13 +5,14 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(84550)
 mod:SetEncounterID(1752)--TODO: VERIFY, "Boss 4" isn't descriptive enough
 mod:SetZone()
+mod:SetReCombatTime(120, 3)--this boss can quickly re-enter combat if boss reset occurs.
 
 mod:RegisterCombat("combat_emotefind", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 169248 169233 169382",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
+	"SPELL_PERIODIC_DAMAGE 169223",
+	"SPELL_PERIODIC_MISSED 169223",
 	"UNIT_DIED",
 	"UNIT_TARGETABLE_CHANGED"
 )
@@ -24,9 +25,10 @@ local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 local warnConsume					= mod:NewSpellAnnounce(169248, 4)
 local warnGaseousVolley				= mod:NewSpellAnnounce(169248, 3)
 
---local specWarnVenomCrazedPaleOne	= mod:NewSpecialWarningSwitch("ej10502", not mod:IsHealer())
-local specWarnConsume				= mod:NewSpecialWarningSpell(169248)
+local specWarnVenomCrazedPaleOne	= mod:NewSpecialWarningSwitch("ej10502", not mod:IsHealer())
+--local specWarnConsume				= mod:NewSpecialWarningSpell(169248)
 local specWarnGaseousVolley			= mod:NewSpecialWarningSpell(169382, nil, nil, nil, 2)
+local specWarnToxicGas				= mod:NewSpecialWarningMove(169223)
 
 local voiceConsume					= mod:NewVoice(169248)
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
@@ -45,13 +47,20 @@ function mod:SPELL_CAST_START(args)
 		warnInhale:Show()
 	elseif spellId == 169248 then
 		warnConsume:Show()
-		specWarnConsume:Show()
+		specWarnVenomCrazedPaleOne:Show()
 		voiceConsume:Play("killmob")
 	elseif spellId == 169382 then
 		warnGaseousVolley:Show()
 		specWarnGaseousVolley:Show()
 	end
 end
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 169223 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
+		specWarnToxicGas:Show()
+	end
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
