@@ -103,7 +103,7 @@ function mod:OnCombatStart(delay)
 	--timerExpelMagicFireCD:Start(6-delay)
 	timerBallsCD:Start(36-delay)
 	countdownBalls:Start(36-delay)
-	self:Schedule(36-delay-6.5, ballsWarning)
+	self:Schedule(29.5-delay, ballsWarning)
 	if self:IsMythic() then
 		timerExpelMagicFelCD:Start(5-delay)
 	end
@@ -290,8 +290,8 @@ function mod:OnSync(msg, targetname)
 		self:Unschedule(ballsWarning)
 		local timer
 		if self.vb.shieldCharging then
-			timer = 51
-			DBM:Debug("timerBallsCD started by aoe damage during shield charging, 51 second timer started")
+			timer = 52.5
+			DBM:Debug("timerBallsCD started by aoe damage during shield charging, 52.5 second timer started")
 		else
 			timer = 30
 			DBM:Debug("timerBallsCD started by aoe damage in regular phase, 30 second timer started")
