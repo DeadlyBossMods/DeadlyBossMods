@@ -3473,22 +3473,22 @@ do
 		function showResults()
 			local resultCount = 0
 			-- TODO: you could catch some localized instances by observing IDs if there are multiple players with the same instance ID but a different name ;) (not that useful if you are trying to get a fresh instance)
-			DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_RESULTS, 0.41, 0.8, 0.94)
-			DEFAULT_CHAT_FRAME:AddMessage("---")
+			DBM:AddMsg(DBM_INSTANCE_INFO_RESULTS, false)
+			DBM:AddMsg("---", false)
 			for i, v in pairs(results.data) do
 				resultCount = resultCount + 1
-				DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_DETAIL_HEADER:format(v.name, (results.difftext[v.diff] or v.diff)), 0.41, 0.8, 0.94)
+				DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_HEADER:format(v.name, (results.difftext[v.diff] or v.diff)), false)
 				for id, v in pairs(v.ids) do
 					if v.haveid then
-						DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_DETAIL_INSTANCE:format(id, v.progress, table.concat(v, ", ")), 0.41, 0.8, 0.94)
+						DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_INSTANCE:format(id, v.progress, table.concat(v, ", ")), false)
 					else
-						DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_DETAIL_INSTANCE2:format(v.progress, table.concat(v, ", ")), 0.41, 0.8, 0.94)
+						DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_INSTANCE2:format(v.progress, table.concat(v, ", ")), false)
 					end
 				end
-				DEFAULT_CHAT_FRAME:AddMessage("---")
+				DBM:AddMsg("---", false)
 			end
 			if resultCount == 0 then
-				DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_NOLOCKOUT, 0.41, 0.8, 0.94)
+				DBM:AddMsg(DBM_INSTANCE_INFO_NOLOCKOUT, false)
 			end
 			local denied = {}
 			local away = {}
@@ -3508,13 +3508,13 @@ do
 				removeEntry(noResponse, i)
 			end
 			if #denied > 0 then
-				DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_STATS_DENIED:format(table.concat(denied, ", ")), 0.41, 0.8, 0.94)
+				DBM:AddMsg(DBM_INSTANCE_INFO_STATS_DENIED:format(table.concat(denied, ", ")), false)
 			end
 			if #away > 0 then
-				DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_STATS_AWAY:format(table.concat(away, ", ")), 0.41, 0.8, 0.94)
+				DBM:AddMsg(DBM_INSTANCE_INFO_STATS_AWAY:format(table.concat(away, ", ")), false)
 			end
 			if #noResponse > 0 then
-				DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_STATS_NO_RESPONSE:format(table.concat(noResponse, ", ")), 0.41, 0.8, 0.94)
+				DBM:AddMsg(DBM_INSTANCE_INFO_STATS_NO_RESPONSE:format(table.concat(noResponse, ", ")), false)
 			end
 			results = nil
 		end
@@ -3561,7 +3561,7 @@ do
 		function updateInstanceInfo(timeRemaining, dontAddShowResultNowButton)
 			local numResponses, sent, denied, away = getResponseStats()
 			local dbmUsers = getNumDBMUsers()
-			DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_STATUS_UPDATE:format(numResponses, dbmUsers, sent, denied, timeRemaining), 0.41, 0.8, 0.94)
+			DBM:AddMsg(DBM_INSTANCE_INFO_STATUS_UPDATE:format(numResponses, dbmUsers, sent, denied, timeRemaining), false)
 			if not dontAddShowResultNowButton then
 				if dbmUsers - numResponses <= 7 then -- waiting for 7 or less players, show their names and the early result option
 					-- copied from above, todo: implement a smarter way of keeping track of stuff like this
@@ -3578,13 +3578,13 @@ do
 					--[[
 					-- this looked like the easiest way (for some reason?) to create the player string when writing this code -.-
 					local function dup(...) if select("#", ...) == 0 then return else return ..., ..., dup(select(2, ...)) end end
-					DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_SHOW_RESULTS:format(("|Hplayer:%s|h[%s]|h| "):rep(#noResponse):format(dup(unpack(noResponse)))), 0.41, 0.8, 0.94)
+					DBM:AddMsg(DBM_INSTANCE_INFO_SHOW_RESULTS:format(("|Hplayer:%s|h[%s]|h| "):rep(#noResponse):format(dup(unpack(noResponse)))), false)
 					]]
 					-- code that one can actually read
 					for i, v in ipairs(noResponse) do
 						noResponse[i] = ("|Hplayer:%s|h[%s]|h|"):format(v, v)
 					end
-					DEFAULT_CHAT_FRAME:AddMessage(DBM_INSTANCE_INFO_SHOW_RESULTS:format(table.concat(noResponse, ", ")), 0.41, 0.8, 0.94)
+					DBM:AddMsg(DBM_INSTANCE_INFO_SHOW_RESULTS:format(table.concat(noResponse, ", ")), false)
 				end
 			end
 		end
@@ -5168,10 +5168,14 @@ end
 --  Misc. Functions  --
 -----------------------
 function DBM:AddMsg(text, prefix)
-	prefix = prefix or (self.localization and self.localization.general.name) or "Deadly Boss Mods"
+	local tag = prefix or (self.localization and self.localization.general.name) or "Deadly Boss Mods"
 	local frame = _G[tostring(DBM.Options.ChatFrame)]
 	frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
-	frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(prefix), tostring(text)), 0.41, 0.8, 0.94)
+	if prefix ~= false then
+		frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text)), 0.41, 0.8, 0.94)
+	else
+		frame:AddMessage(text, 0.41, 0.8, 0.94)
+	end
 end
 
 function DBM:Debug(text, level)
