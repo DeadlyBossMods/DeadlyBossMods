@@ -991,9 +991,8 @@ do
 				--X-DBM-Voice-Name Should be long name you want to appear in dropdown menu
 				--X-DBM-Voice-ShortName should be short name that matches folder name after DBM-VP. So for example, DBM-VPHarry would be "Harry" for a short name.
 				--X-DBM-Voice-Version should be a single number identifying whether or not the voice pack is new enough to enable special warning sound filter.
-				--Bump Voice-Version any time NEW files are added to CURRENT raid tier (files prepping for next tier don't need a version bump since they won't break things).
-				--When a NEW tier finally does launch though, bump the version then because then any files added for that tier should be relevant.
-				--Bump version by +1 when bumping for new files. I'll bump DBM core to match it when I add the new files to mods themselves.
+				--Version 1: Contains All files in highmaul currently present in DBM 6.0.9
+				--Version 2: TBD
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
 					local voiceValue = GetAddOnMetadata(i, "X-DBM-Voice-ShortName")
 					local voiceVersion = tonumber(GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0)
