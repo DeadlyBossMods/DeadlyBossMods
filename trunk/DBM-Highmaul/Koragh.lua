@@ -13,7 +13,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 162185 162184 161411 172747 163517 162186 172895",
 	"SPELL_CAST_SUCCESS 161612",
 	"SPELL_AURA_APPLIED 156803 162186 161242 163472 172895 172917",
-	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 162186 163472 172895 156803",
 	"SPELL_DAMAGE 161612 161576",
 	"SPELL_ABSORBED 161612 161576",
@@ -83,21 +82,6 @@ mod:AddSetIconOption("SetIconOnFel", 172895, false)
 mod.vb.supressionCount = 0
 mod.vb.shieldCharging = false
 
-function mod:OnCombatStart(delay)
-	self.vb.supressionCount = 0
-	self.vb.shieldCharging = false
-	--timerExpelMagicFireCD:Start(6-delay)
-	if self:IsMythic() then
-		timerExpelMagicFelCD:Start(5-delay)
-	end
-end
-
-function mod:OnCombatEnd()
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
-end
-
 local function closeRange(self)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
@@ -110,6 +94,24 @@ local function ballsWarning()
 	if UnitPower("player", 10) > 0 then--Player is soaker
 		specWarnBallsSoon:Show()
 		voiceBalls:Play("161612")
+	end
+end
+
+function mod:OnCombatStart(delay)
+	self.vb.supressionCount = 0
+	self.vb.shieldCharging = false
+	--timerExpelMagicFireCD:Start(6-delay)
+	timerBallsCD:Start(36-delay)
+	countdownBalls:Start(36-delay)
+	self:Schedule(36-delay-6.5, ballsWarning)
+	if self:IsMythic() then
+		timerExpelMagicFelCD:Start(5-delay)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 
@@ -160,33 +162,13 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 161612 and self:AntiSpam(5, 4) then--This won't show balls that hit, only ones caught. Balls that hit require high cpu spell_damage event
-		local timer
-		if self.vb.shieldCharging then
-			timer = 51
-			DBM:Debug("timerBallsCD started by user soaking shield charging, 51 second timer started")
-		else
-			timer = 30
-			DBM:Debug("timerBallsCD started by user soaking in regular phase, 30 second timer started")
-		end
-		timerBallsCD:Start(timer)
-		countdownBalls:Start(timer)
-		self:Schedule(timer-6.5, ballsWarning)
+		self:SendSync("Ball")
 	end
 end
 
 function mod:SPELL_DAMAGE() -- captures spellid 161612, 161576
 	if self:AntiSpam(5, 4) then
-		local timer
-		if self.vb.shieldCharging then
-			timer = 51
-			DBM:Debug("timerBallsCD started by aoe damage during shield charging, 51 second timer started")
-		else
-			timer = 30
-			DBM:Debug("timerBallsCD started by aoe damage in regular phase, 30 second timer started")
-		end
-		timerBallsCD:Start(timer)
-		countdownBalls:Start(timer)
-		self:Schedule(timer-6.5, ballsWarning)
+		self:SendSync("Ball")
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_DAMAGE
@@ -260,14 +242,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		local elapsed, total = timerBallsCD:GetTime()
 		local remaining = total - elapsed
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
-		if remaining > 5 then--If 5 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
-			timerBallsCD:Start(remaining+23)
+		if remaining > 4 then--If 4 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
+			timerBallsCD:Start(remaining+22.5)
 			countdownBalls:Cancel()
 			specWarnBallsSoon:Cancel()
-			countdownBalls:Start(remaining+23)
+			countdownBalls:Start(remaining+22.5)
 			self:Unschedule(ballsWarning)
-			self:Schedule(remaining+16.5, ballsWarning)
-			DBM:Debug("timerBallsCD is extending by 21 seconds do to shield phase")
+			self:Schedule(remaining+16, ballsWarning)
+			DBM:Debug("timerBallsCD is extending by 22.5 seconds due to shield phase")
 		end	
 	end
 end
@@ -297,5 +279,25 @@ function mod:OnSync(msg, targetname)
 				voiceTrample:Play("runaway")
 			end
 		end
+	--There no Overflowing Energy for 81 second, this should never happen. What happened? CLEU range? (I think range issue is impossible. No player is out of range during playing rest druid. And the room is not enough large to occur CLEU issue.)
+	--12/26 22:11:41.504  SPELL_DAMAGE,Vehicle-0-3152-1228-6882-79015-00001D58EE,"Koragh",0x10a48,0x0,Player-2110-056C48C0,"__",0x514,0x0,161576,"Overflowing Energy",0x40,0000000000000000,0,0,0,0,0,0,0,0,0.00,0.00,0,16512,-1,64,0,0,7914,nil,nil,nil,nil <-- Soak failure
+	--12/26 22:12:03.793  SPELL_AURA_REMOVED,Vehicle-0-3152-1228-6882-79015-00001D58EE,"Koragh",0xa48,0x0,Vehicle-0-3152-1228-6882-79015-00001D58EE,"Koragh",0xa48,0x0,156803,"Nullification Barrier",0x1,BUFF,0,0 <---- Shield Phase Start
+	--12/26 22:12:34.340  SPELL_CAST_SUCCESS,Vehicle-0-3152-1228-6882-79015-00001D58EE,"Koragh",0xa48,0x0,Player-2110-057062D7,"___",0x512,0x0,161612,"Overflowing Energy",0x40,0000000000000000,0,0,0,0,0,0,0,0,0.00,0.00,0 <-- Soak happens (30 + 22.5 sec. correct)
+	--12/26 22:13:04.340  -- Expected to fall ball, but nothing.
+	--12/26 22:13:11.402  SPELL_AURA_REMOVED,Vehicle-0-3152-1228-6882-79015-00001D58EE,"Koragh",0xa48,0x0,Vehicle-0-3152-1228-6882-79015-00001D58EE,"Koragh",0xa48,0x0,156803,"Nullification Barrier",0x1,BUFF,0,0 <---- Shield Phase Start
+	--12/26 22:13:55.372  SPELL_CAST_SUCCESS,Vehicle-0-3152-1228-6882-79015-00001D58EE,"Koragh",0xa48,0x0,Player-2110-057062D7,"___",0x512,0x0,161612,"Overflowing Energy",0x40,0000000000000000,0,0,0,0,0,0,0,0,0.00,0.00,0 <-- Soak happens (51 sec after failure occurs)
+	elseif msg == "Ball" then
+		self:Unschedule(ballsWarning)
+		local timer
+		if self.vb.shieldCharging then
+			timer = 51
+			DBM:Debug("timerBallsCD started by aoe damage during shield charging, 51 second timer started")
+		else
+			timer = 30
+			DBM:Debug("timerBallsCD started by aoe damage in regular phase, 30 second timer started")
+		end
+		timerBallsCD:Start(timer)
+		countdownBalls:Start(timer)
+		self:Schedule(timer-6.5, ballsWarning)
 	end
 end
