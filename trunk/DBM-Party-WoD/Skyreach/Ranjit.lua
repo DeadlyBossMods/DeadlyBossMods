@@ -33,8 +33,14 @@ local timerFourWindsCD		= mod:NewCDTimer(30, 156793)
 local voiceFourWinds		= mod:NewVoice(156793)
 local voiceLensFlare		= mod:NewVoice(154043)
 
+local skyTrashMod = DBM:GetModByName("SkyreachTrash")
+
 function mod:OnCombatStart(delay)
 	timerFourWindsCD:Start(-delay)
+	if skyTrashMod.Options.RangeFrame and skyTrashMod.vb.debuffCount ~= 0 then--In case of bug where range frame gets stuck open from trash pulls before this boss.
+		skyTrashMod.vb.debuffCount = 0--Fix variable
+		DBM.RangeCheck:Hide()--Close range frame.
+	end
 end
 
 function mod:SPELL_CAST_START(args)

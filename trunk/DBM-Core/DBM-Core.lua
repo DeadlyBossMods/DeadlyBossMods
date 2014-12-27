@@ -6364,7 +6364,9 @@ do
 		for i = 1, #argTable do
 			if type(argTable[i]) == "string" then
 				if #self.combinedtext < 8 then--Throttle spam. We may not need more than 9 targets..
-					self.combinedtext[#self.combinedtext + 1] = argTable[i]
+					if not checkEntry(self.combinedtext, argTable[i]) then
+						self.combinedtext[#self.combinedtext + 1] = argTable[i]
+					end
 				else
 					self.combinedcount = self.combinedcount + 1
 				end
