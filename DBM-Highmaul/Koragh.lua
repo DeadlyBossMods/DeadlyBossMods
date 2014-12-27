@@ -97,6 +97,13 @@ local function ballsWarning()
 	end
 end
 
+local function checkBossForgot(self)
+	DBM:Debug("checkBossForgot ran, which means expected balls 5 seconds late, starting 25 second timer for next balls")
+	timerBallsCD:Start(25)
+	countdownBalls:Start(25)
+	self:Schedule(18.5, ballsWarning)
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.supressionCount = 0
 	self.vb.shieldCharging = false
@@ -248,7 +255,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			specWarnBallsSoon:Cancel()
 			countdownBalls:Start(remaining+22.5)
 			self:Unschedule(ballsWarning)
+			self:Unschedule(checkBossForgot)--Cancel check boss forgot
 			self:Schedule(remaining+16, ballsWarning)
+			self:Schedule(remaining+27.5, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
 			DBM:Debug("timerBallsCD is extending by 22.5 seconds due to shield phase")
 		end	
 	end
@@ -288,16 +297,18 @@ function mod:OnSync(msg, targetname)
 	--12/26 22:13:55.372  SPELL_CAST_SUCCESS,Vehicle-0-3152-1228-6882-79015-00001D58EE,"Koragh",0xa48,0x0,Player-2110-057062D7,"___",0x512,0x0,161612,"Overflowing Energy",0x40,0000000000000000,0,0,0,0,0,0,0,0,0.00,0.00,0 <-- Soak happens (51 sec after failure occurs)
 	elseif msg == "Ball" then
 		self:Unschedule(ballsWarning)
+		self:Unschedule(checkBossForgot)
 		local timer
 		if self.vb.shieldCharging then
-			timer = 52.5
-			DBM:Debug("timerBallsCD started by aoe damage during shield charging, 52.5 second timer started")
+			timer = 52.5--Maybe 51-52.5 variable
+			DBM:Debug("timerBallsCD started during shield charging, 52.5 second timer started")
 		else
 			timer = 30
-			DBM:Debug("timerBallsCD started by aoe damage in regular phase, 30 second timer started")
+			DBM:Debug("timerBallsCD started in regular phase, 30 second timer started")
 		end
 		timerBallsCD:Start(timer)
 		countdownBalls:Start(timer)
 		self:Schedule(timer-6.5, ballsWarning)
+		self:Schedule(timer+5, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
 	end
 end
