@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 156238 156467 157349 163988 164075 156471 164299 164232 164301 163989 164076 164235 163990 164077 164240 164303 158605 164176 164178 164191 165243 165876",
-	"SPELL_CAST_SUCCESS 158563",
+	"SPELL_CAST_SUCCESS 158563 165102",
 	"SPELL_AURA_APPLIED 157763 158553 156225 164004 164005 164006 158605 164176 164178 164191 157801 178468 165102 165595 176533",
 	"SPELL_AURA_APPLIED_DOSE 158553 178468 165595",
 	"SPELL_AURA_REFRESH 157763",
@@ -60,7 +60,7 @@ local warnNetherEnergy							= mod:NewStackAnnounce(178468, 3)--Mythic
 local warnKickToTheFace							= mod:NewTargetAnnounce("OptionVersion2", 158563, 3, nil, mod:IsTank())
 local warnCrushArmor							= mod:NewStackAnnounce(158553, 2, nil, mod:IsTank())
 --Mythic
-local warnGlimpseOfMadness						= mod:NewSpellAnnounce(165243, 3)
+local warnGlimpseOfMadness						= mod:NewCountAnnounce(165243, 3)
 local warnEnvelopingNight						= mod:NewCountAnnounce(165876, 3)
 local warnInfiniteDarkness						= mod:NewTargetAnnounce(165102, 3, nil, mod:IsHealer())
 local warnGazeSelf								= mod:NewStackAnnounce(165595, 4)
@@ -124,6 +124,9 @@ local timerCrushArmorCD							= mod:NewNextTimer(6, 158553, nil, mod:IsTank())
 local timerKickToFaceCD							= mod:NewNextTimer(20, 158563, nil, mod:IsTank())
 --Mythic
 local timerGaze									= mod:NewBuffFadesTimer(10, 165595)
+local timerGlimpseOfMadnessCD					= mod:NewNextCountTimer(27, 165243)
+local timerInfiniteDarknessCD					= mod:NewNextTimer(63, 165102)
+local timerEnvelopingNightCD					= mod:NewNextCountTimer(63, 165876)--60 seconds plus 3 second cast
 
 local countdownArcaneWrath						= mod:NewCountdown(50, 156238, not mod:IsTank())--Probably will add for whatever proves most dangerous on mythic
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank())
@@ -151,6 +154,7 @@ mod.vb.lastMarkedTank = nil
 mod.vb.isTransition = false
 mod.vb.phase = 1
 mod.vb.arcaneAdd = 0
+mod.vb.madnessAdd = 0
 mod.vb.envelopingCount = 0
 
 local jumpDistance1 = {
@@ -252,6 +256,7 @@ function mod:OnCombatStart(delay)
 	self.vb.jumpDistance = 13
 	self.vb.phase = 1
 	self.vb.arcaneAdd = 0
+	self.vb.madnessAdd = 0
 	self.vb.envelopingCount = 0
 	timerArcaneWrathCD:Start(6-delay)
 	countdownArcaneWrath:Start(6-delay)
@@ -435,12 +440,15 @@ function mod:SPELL_CAST_START(args)
 		updateRangeFrame(self, true)
 		self:Schedule(4, updateRangeFrame, self)--Cast + 1, since sometimes tank resists, so we'll want to hide frame after 4 seconds if no debuff has gone out in 2.
 	elseif spellId == 165243 then
-		warnGlimpseOfMadness:Show()
+		self.vb.madnessAdd = self.vb.madnessAdd + 1
+		warnGlimpseOfMadness:Show(self.vb.madnessAdd)
+		timerGlimpseOfMadnessCD:Start(nil, self.vb.madnessAdd+1)
 	elseif spellId == 165876 then
 		self.vb.envelopingCount = self.vb.envelopingCount + 1
 		warnEnvelopingNight:Show(self.vb.envelopingCount)
 		specWarnEnvelopingNight:Show(self.vb.envelopingCount)
 		voiceEnvelopingNight:Play("aesoon")
+		timerEnvelopingNightCD:Start(nil, self.vb.envelopingCount+1)
 	end
 end
 
@@ -454,6 +462,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			specWarnKickToTheFaceOther:Show(args.destName)
 		end
+	elseif spellId == 165102 then
+		timerInfiniteDarknessCD:Start()
 	end
 end
 
