@@ -7,7 +7,7 @@ mod:SetEncounterID(1655)
 mod:SetMainBossID(74475)
 mod:SetZone()
 
-mod:SetBossHealthInfo(74336)
+mod:SetBossHealthInfo(74366)
 
 mod:RegisterCombat("combat")
 
@@ -87,7 +87,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				specWarnMagmolatus:Show()
 				timerMoltenImpactCD:Start(5)
 				if DBM.BossHealth:IsShown() then
-					DBM.BossHealth:RemoveBoss(74336)
 					DBM.BossHealth:AddBoss(74475)
 				end
 			end
@@ -142,9 +141,11 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	if not DBM.BossHealth:IsShown() then return end
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 74570 then
+	if cid == 74366 then
+		DBM.BossHealth:RemoveBoss(74366)
+	elseif cid == 74570 then
 		DBM.BossHealth:RemoveBoss(74570)
-	elseif cid == 75471 then
+	elseif cid == 74571 then
 		DBM.BossHealth:RemoveBoss(74571)
 	end
 end
