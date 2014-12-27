@@ -80,7 +80,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BrandedYell			= "Branded (%s) on %s"
+	BrandedYell			= "Branded (%s) on %s",
+	GazeYell			= "Gaze fading in %d"
 })
 
 -------------
