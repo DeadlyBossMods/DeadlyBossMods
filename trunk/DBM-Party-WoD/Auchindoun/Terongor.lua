@@ -9,7 +9,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 156965 156842 156921 157168 164841",
+	"SPELL_AURA_APPLIED 156965 156842 156921 157168 164841 156856",
 	"SPELL_AURA_REMOVED 156921 157168",
 	"SPELL_CAST_SUCCESS 156854 156974",
 	"SPELL_CAST_START 157039 157001 156975 156857 156964",
@@ -38,6 +38,7 @@ local warnDoom					= mod:NewTargetAnnounce(156965, 3, nil, mod:IsHealer())
 local specWarnDrainLife			= mod:NewSpecialWarningInterrupt(156854, not mod:IsHealer())
 local specWarnCorruption		= mod:NewSpecialWarningDispel(156842, mod:IsHealer())
 local specWarnRainOfFire		= mod:NewSpecialWarningSpell(156857, nil, nil, nil, 2)--156856 fires SUCCESS but do not use, it fires for any player walking in or out of it
+local specWarnRainOfFireMove	= mod:NewSpecialWarningMove(156857)
 --Unknown Abilities
 local specWarnFixate			= mod:NewSpecialWarningRun(157168)
 --Affliction Abilities
@@ -56,13 +57,13 @@ local specWarnDoom				= mod:NewSpecialWarningTarget(156965, false)
 
 --Basic Abilities
 local timerDrainLifeCD			= mod:NewCDTimer(15, 156854)--15~18 variation
-local timerFixate				= mod:NewTargetTimer("OptionVersion2", 12, 157168, nil, false)
+local timerFixate				= mod:NewTargetTimer("OptionVersion3", 12, 157168, nil, not mod:IsTank())
 local timerRainOfFireCD			= mod:NewCDTimer(12, 156857)--12-22sec variation phase 2. Unknown Phase 1 repeat timer
 --Destruction Abilities
 local timerChaosBoltCD			= mod:NewCDTimer(20.5, 156975)--20-25 variation.
 local timerImmolateCD			= mod:NewCDTimer(12, 156964, nil, mod:IsHealer())--Only timer that's probably not variable
 --Affliction Abilities
-local timerSeedOfMelevolence	= mod:NewBuffFadesTimer(18, 156921)
+local timerSeedOfMelevolence	= mod:NewTargetTimer(18, 156921, nil, not mod:IsTank())
 local timerSeedOfMelevolenceCD	= mod:NewCDTimer(22, 156921)--22-25
 --local timerExhaustionCD		= mod:NewCDTimer(14, 164841)--14~24 variation. Large variation, seems useless.
 --Demonic Abilities
@@ -138,9 +139,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.seedCount = self.vb.seedCount + 1
 		warnSeedOfMalevolence:Show(args.destName)
 		--timerSeedOfMelevolenceCD:Start()
+		timerSeedOfMelevolence:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnSeedOfMelevolence:Show()
-			timerSeedOfMelevolence:Start()
 			countdownSeedOfMelevolence:Start()
 			voiceSeedOfMelevolence:Play("runout")
 		end
@@ -168,6 +169,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnImmolate:Show(args.destName)
 		timerImmolateCD:Start()
 		voiceWarnImmolate:Plat("dispelnow")
+	elseif spellId == 156856 and args:IsPlayer() then
+		specWarnRainOfFireMove:Show()
 	end
 end
 
@@ -175,8 +178,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 156921 and args:IsDestTypePlayer() then
 		self.vb.seedCount = self.vb.seedCount - 1
+		timerSeedOfMelevolence:Cancel(args.destName)
 		if args:IsPlayer() then
-			timerSeedOfMelevolence:Cancel()
 			countdownSeedOfMelevolence:Cancel()
 		end
 		if self.Options.RangeFrame and self.vb.seedCount == 0 then
