@@ -24,10 +24,15 @@ local timerEnergozeCD	= mod:NewNextTimer(20, 154159)
 local timerBurstCD		= mod:NewCDCountTimer(23, 154135)
 
 mod.vb.burstCount = 0
+local skyTrashMod = DBM:GetModByName("SkyreachTrash")
 
 function mod:OnCombatStart(delay)
 	self.vb.burstCount = 0
 	timerBurstCD:Start(20-delay, 1)
+	if skyTrashMod.Options.RangeFrame and skyTrashMod.vb.debuffCount ~= 0 then--In case of bug where range frame gets stuck open from trash pulls before this boss.
+		skyTrashMod.vb.debuffCount = 0--Fix variable
+		DBM.RangeCheck:Hide()--Close range frame.
+	end
 end
 
 function mod:SPELL_CAST_START(args)
