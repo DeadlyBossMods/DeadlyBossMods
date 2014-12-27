@@ -13,20 +13,20 @@ mod:SetMinSyncRevision(12073)--Avoid premature combat end on mythic
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 156238 156467 157349 163988 164075 156471 164299 164232 164301 163989 164076 164235 163990 164077 164240 164303 158605 164176 164178 164191 165243 165876",
+	"SPELL_CAST_START 156238 156467 157349 163988 164075 156471 164299 164232 164301 163989 164076 164235 163990 164077 164240 164303 158605 164176 164178 164191 165243 165876 178607",
 	"SPELL_CAST_SUCCESS 158563 165102",
 	"SPELL_AURA_APPLIED 157763 158553 156225 164004 164005 164006 158605 164176 164178 164191 157801 178468 165102 165595 176533",
 	"SPELL_AURA_APPLIED_DOSE 158553 178468 165595",
 	"SPELL_AURA_REFRESH 157763",
 	"SPELL_AURA_REMOVED 158605 164176 164178 164191 157763 156225 164004 164005 164006 165102 165595",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
 --TODO, do more fancy stuff with radar in phase 4 when i have more logs, like closing it when it's not needed. Or may just leave it as is depending on preferences.
---TODO, verify chogal yell hack works without localizing. This is a pure drycode that is attempting to detect phase 4 with no chat log by using cataclysm encounter journal, that can't possibly go wrong right?
---TODO, mythic phase 4 timers, and any other fixes from stuff that's bound to be broken in this quick and dirty drycode.
+--TODO, Night-Twisted Faithful stuff (no spawn trigger or yell, but 30 second loop, like oozes on that boss in ToT)
+--TODO, see if target scanning works on dark star, or if that player gets an emote whisper or something. If can find dark star target, then need "nearby" warnings to move away from location
 --All Phases
 mod:AddBoolOption("warnBranded", true, "announce")
 local warnBranded								= mod:NewStackAnnounce("OptionVersion2", 156225, 4, nil, nil, false)
@@ -61,6 +61,7 @@ local warnKickToTheFace							= mod:NewTargetAnnounce("OptionVersion2", 158563, 
 local warnCrushArmor							= mod:NewStackAnnounce(158553, 2, nil, mod:IsTank())
 --Mythic
 local warnGlimpseOfMadness						= mod:NewCountAnnounce(165243, 3)
+local warnDarkStar								= mod:NewSpellAnnounce(178607, 3)
 local warnEnvelopingNight						= mod:NewCountAnnounce(165876, 3)
 local warnInfiniteDarkness						= mod:NewTargetAnnounce(165102, 3, nil, mod:IsHealer())
 local warnGazeSelf								= mod:NewStackAnnounce(165595, 4)
@@ -110,6 +111,7 @@ local specWarnGaze								= mod:NewSpecialWarningStack(165595, nil, 1)--For now,
 local yellGaze									= mod:NewYell(165595, L.GazeYell)
 local specWarnEnvelopingNight					= mod:NewSpecialWarningSpell(165876, nil, nil, nil, 2, nil, true)
 local specWarnGrowingDarkness					= mod:NewSpecialWarningMove(176533, nil, nil, nil, nil, nil, true)
+local specWarnDarkStar							= mod:NewSpecialWarningSpell(178607, nil, nil, nil, 2)--Change to target/near warning if targetscanning or any other method to detect target possible.
 
 --All Phases (No need to use different timers for empowered abilities. Short names better for timers.)
 local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238, nil, not mod:IsTank())--Pretty much a next timer, HOWEVER can get delayed by other abilities so only reason it's CD timer anyways
@@ -127,12 +129,16 @@ local timerGaze									= mod:NewBuffFadesTimer(10, 165595)
 local timerGlimpseOfMadnessCD					= mod:NewNextCountTimer(27, 165243)
 local timerInfiniteDarknessCD					= mod:NewNextTimer(62, 165102)
 local timerEnvelopingNightCD					= mod:NewNextCountTimer(63, 165876)--60 seconds plus 3 second cast
+local timerDarkStarCD							= mod:NewCDTimer(61, 178607)--61-65 Variations noticed
 
 local countdownArcaneWrath						= mod:NewCountdown(50, 156238, not mod:IsTank())--Probably will add for whatever proves most dangerous on mythic
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank())
 local countdownForceNova						= mod:NewCountdown("AltTwo45", 157349)
 local countdownTransition						= mod:NewCountdown(74, 157278)
+--Mythic
+local countdownEnvelopingNight					= mod:NewCountdown(63, 165876)
 local countdownGaze								= mod:NewCountdownFades("Alt10", 165595)
+local countdownDarkStar							= mod:NewCountdown("AltTwo61", 178607)
 
 local voiceDestructiveResonance 				= mod:NewVoice(156467, not mod:IsMelee())
 local voiceForceNova	 						= mod:NewVoice(157349)
@@ -449,6 +455,12 @@ function mod:SPELL_CAST_START(args)
 		specWarnEnvelopingNight:Show(self.vb.envelopingCount)
 		voiceEnvelopingNight:Play("aesoon")
 		timerEnvelopingNightCD:Start(nil, self.vb.envelopingCount+1)
+		countdownEnvelopingNight:Start()
+	elseif spellId == 178607 then
+		warnDarkStar:Show()
+		specWarnDarkStar:Show()
+		timerDarkStarCD:Start()
+		countdownDarkStar:Start()
 	end
 end
 
@@ -484,7 +496,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.brandedActive = self.vb.brandedActive + 1
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local _, _, _, currentStack = UnitDebuff(uId, GetSpellInfo(spellId))
-		local fortified = (self:IsMythic() and self.vb.phase == 3) or spellId == 164005--Phase 3 uses replication ID, so need hack for mythic fortified/replication phase.
+		local fortified = (self:IsMythic() and self.vb.phase >= 3) or spellId == 164005--Phase 3 uses replication ID, so need hack for mythic fortified/replication phase.
 		if not currentStack then
 			print("currentStack is nil, report to dbm authors. Branded warning disabled.")--Should never happen but added just in case.
 			return
@@ -728,17 +740,44 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 164336 then--Teleport to Displacement (first phase change that has no transition)
 		voicePhaseChange:Play("ptwo")
 		self.vb.phase = 2
-	end
-end
-
-function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
-	if npc == chogallName and not self.vb.phase == 4 then--Some creative shit right here. Screw localized text.
-		self.vb.phase = 4
+	elseif spellId == 70628 then --Margok being killed by chogal
 		voicePhaseChange:Play("pfour")
+		timerArcaneWrathCD:Cancel()
+		countdownArcaneWrath:Cancel()
+		timerDestructiveResonanceCD:Cancel()
+		timerSummonArcaneAberrationCD:Cancel()
+		timerMarkOfChaosCD:Cancel()
+		countdownMarkofChaos:Cancel()
+		timerForceNovaCD:Cancel()
+		voiceForceNova:Cancel()
+		countdownForceNova:Cancel()
 		updateRangeFrame(self)
+		timerInfiniteDarknessCD:Start(10)
+		timerGlimpseOfMadnessCD:Start(20)
+		timerDarkStarCD:Start(29)
+		countdownDarkStar:Start(29)
+		timerEnvelopingNightCD:Start(55)
+		countdownEnvelopingNight:Start(55)
 		self:RegisterShortTermEvents(
 			"SPELL_PERIODIC_DAMAGE 176533",
 			"SPELL_PERIODIC_MISSED 176533"
 		)
+	end
+end
+
+--[[
+"<617.7 00:41:02> CHAT_MSG_MONSTER_YELL#你根本不知道你面對的是什麼力量，瑪爾戈克。(我們知道，它在呼喚我們！它的力量是我們的！)#丘加利###統治者瑪爾戈克##0#0##0#485#nil#0#false#false#false", -- [37]--Chogall yelling
+"<634.5 00:41:19> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#丘加利？！該死的叛徒。就知道是你在搞鬼！#統治者瑪爾戈克###天牢##0#0##0#489#nil#0#false#false#false", -- [146479]--Margok replying "chogal, you traiter blah blah"
+"<641.6 00:41:26> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#你的統治到此為止，無盡的黑夜開始了。(黑暗降臨！)#丘加利###統治者瑪爾戈克##0#0##0#494#nil#0#false#false#false", -- [154539]
+"<649.9 00:41:34> [UNIT_SPELLCAST_SUCCEEDED] 統治者瑪爾戈克 boss1:永久假死::0:70628", -- [163257]--Permanent Feign Death--Chogall kills margok
+"<649.9 00:41:34> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#我…是…大王…#統治者瑪爾戈克###丘加利##0#0##0#500#nil#0#false#false#false", -- [163260]
+"<649.9 00:41:34> [UNIT_TARGETABLE_CHANGED] Fake Args:#false#false#true#未知目標#Vehicle-0-3127-1228-11037-77428-00001D8C50#elite#5803903#false#false#false#nil#--Margok no longer targetable, removed from boss health
+"<653.1 00:41:38> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#我們等待這一刻已經很久了。符石真正的力量終於要現世了！(不留活口。我們會摧毀一切！殺光他們！血洗這個世界！)#丘加利--Chogall Active
+"<653.1 00:41:38> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#false#false#true#未知目標#Vehicle-0-3127-1228-11037-77428-00001D8C50#elite#0#false#true#true#丘加利#--Chogall Active
+--]]
+function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
+	if npc == chogallName and not self.vb.phase == 4 then--Some creative shit right here. Screw localized text. This will trigger off first yell at start of 35 second RP Sender is 丘加利 (Cho'gall)
+		self.vb.phase = 4
+		timerTransition:Start(35)--Boss/any arcane adds still active during this, so do not cancel timers here, canceled on margok death
 	end
 end
