@@ -62,7 +62,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1197)
 
 L:SetMiscLocalization({
-	BrandedYell			= "%2$s中了烙印(%1$s)"
+	BrandedYell			= "%2$s中了烙印(%1$s)",
+	GazeYell			= "凝視結束於%d秒內"
 })
 
 -------------
