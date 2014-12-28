@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Dec 15, 2014@12036
+-- Last update: Dec 27, 2014@12186
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -173,6 +173,7 @@ L.SpecWarn_Enabled			= "显示首领技能特殊警报"
 L.SpecWarn_FlashFrame			= "特殊警报时屏幕边缘泛光"
 L.SpecWarn_ShakeFrame			= "为毁灭性的技能闪烁屏幕"
 L.SpecWarn_AdSound			= "启用特别警告高级声音选项（需要UI重载）"
+L.SpecWarn_NoSoundsWVoice	= "当技能存在语音包语音时，屏蔽播放特殊警报声（当心，毁灭）"
 L.SpecWarn_Font				= "特殊警报字体"
 L.SpecWarn_DemoButton			= "测试警报"
 L.SpecWarn_MoveMe			= "设置位置"
@@ -236,7 +237,11 @@ L.Panel_HideBlizzard			= "隐藏暴雪框架"
 L.Area_HideBlizzard			= "隐藏暴雪框架选项"
 L.HideBossEmoteFrame			= "首领战中隐藏团队首领表情框体"
 L.HideWatchFrame			= "首领战中隐藏任务追踪框体"
+L.HideGarrisonUpdates		= "首领战中隐藏要塞队列完成提示"
 L.HideTooltips				= "首领战中隐藏鼠标提示窗体 （tooltips）"
+L.HideApplicantAlerts		= "屏蔽预创建队伍邀请信息"
+L.HideApplicantAlertsFull	= "当团队已满时"
+L.HideApplicantAlertsNotL	= "当我不是团长时 （团长别选）"
 L.SpamBlockSayYell			= "隐藏聊天窗口中的使用聊天泡泡的警报信息"
 L.DisableCinematics			= "自动跳过游戏内过场动画"
 L.AfterFirst				= "仅第一次播放"
