@@ -3073,12 +3073,16 @@ do
 	end
 
 	local function SendVersion()
-		local VPVersion = ""
+		local VPVersion
 		local VoicePack = DBM.Options.ChosenVoicePack
 		if VoicePack ~= "None" then
 			VPVersion = "/ VP"..VoicePack..": v"..DBM.VoiceVersions[VoicePack]
 		end
-		sendSync("V", ("%d\t%s\t%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), VPVersion))
+		if VPVersion then
+			sendSync("V", ("%d\t%s\t%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), VPVersion))
+		else
+			sendSync("V", ("%d\t%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons)))
+		end
 	end
 
 	-- TODO: is there a good reason that version information is broadcasted and not unicasted?
