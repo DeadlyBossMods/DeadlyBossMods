@@ -30,7 +30,7 @@ local voiceDarkEclipse			= mod:NewVoice(164974)
 --local countdownDarkCommunion	= mod:NewCountdown(45.5, 153153)
 
 function mod:OnCombatStart(delay)
-	timerDarkCommunionCD:Start(15-delay)
+	timerDarkCommunionCD:Start(24-delay)
 	--countdownDarkCommunion:Start(15-delay)
 	timerDarkEclipseCD:Start(-delay)
 end

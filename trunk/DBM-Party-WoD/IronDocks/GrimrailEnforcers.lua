@@ -96,8 +96,11 @@ function mod:UNIT_DIED(args)
 	if cid == 80805 then--Makogg Emberblade
 		timerFlamingSlashCD:Cancel()
 		countdownFlamingSlash:Cancel()
+		timerLavaSwipeCD:Cancel()
 	elseif cid == 80808 then--Neesa Nox
 		timerOgreTrapsCD:Cancel()
+	elseif cid == 80816 then
+		timerSanguineSphere:Cancel()
 	end
 end
 
