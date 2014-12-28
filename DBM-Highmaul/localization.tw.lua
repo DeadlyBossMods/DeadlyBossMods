@@ -49,6 +49,14 @@ L:SetOptionLocalization({
 --------------------
 L= DBM:GetModLocalization(1153)
 
+L:SetWarningLocalization({
+	specWarnExpelMagicFelFades	= "魔化結束於五秒內 - 回到原位"
+})
+
+L:SetOptionLocalization({
+	specWarnExpelMagicFelFades	= "為$spell:172895消退顯示回到原位的特別警告"
+})
+
 L:SetMiscLocalization({
 	supressionTarget1	= "我要擊垮你們！",
 	supressionTarget2	= "閉嘴！",
@@ -63,7 +71,8 @@ L= DBM:GetModLocalization(1197)
 
 L:SetMiscLocalization({
 	BrandedYell			= "%2$s中了烙印(%1$s)",
-	GazeYell			= "凝視結束於%d秒內"
+	GazeYell			= "凝視結束於%d秒內",
+	PlayerDebuffs		= "最接近的瘋狂之眼"
 })
 
 -------------

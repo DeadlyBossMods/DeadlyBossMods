@@ -93,13 +93,14 @@ DBM_CORE_WHISPER_SCENARIO_END_WIPE			= "%s未完成%s。"
 DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s未完成%s。他們在這個難度總共未完成%d次。"
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Boss Mods - 版本檢測"
-DBM_CORE_VERSIONCHECK_ENTRY			= "%s：%s(r%d)"
+DBM_CORE_VERSIONCHECK_ENTRY			= "%s：%s (r%d) %s"
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s：%s (r%d) & %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s：尚未安裝任何團隊首領模組"
 DBM_CORE_VERSIONCHECK_FOOTER		= "找到有%d玩家正在使用DBM且有%d玩家正在使用Bigwigs"
 DBM_CORE_YOUR_VERSION_OUTDATED		= "你的 Deadly Boss Mod 已經過期。請到http://dev.deadlybossmods.com下載最新版本。"
 DBM_CORE_OUTDATED_PVP_MODS			= "你的DBM-PvP模組已經過期而且如果不使用請移除,或是更新最新的獨立包. 這些模組不在包含在DBM-Core下載. 尋找最新的PVP模組在http://www.deadlybossmods.com"
 DBM_CORE_VOICE_PACK_OUTDATED		= "你的DBM語音包缺少在這個版本的DBM需要的語音。特別警告音效篩選器已經被關閉。請下載新版本的語音包或是聯絡語音包作者更新並加入缺少的語音。"
+DBM_CORE_VOICE_MISSING				= "DBM找不到你所選取的語音包。你的語音包選項已經被重置為'None'。請確定你的語音包已正確的安裝與啟用。"
 --DBM_BIG_WIGS (Same as English locales)
 --DBM_BIG_WIGS_ALPHA (Same as English locales)
 
@@ -280,6 +281,7 @@ DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "為$spell:%s的目標設置標記"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "為$spell:%s設置標記"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT			= "為跑向中了$spell:%s的目標顯示DBM箭頭"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "為離開中了$spell:%s的目標顯示DBM箭頭"
+DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "為中了$spell:%s後移動到特定區域顯示DBM箭頭"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "當你中了$spell:%s時播放音效"
 DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "為$spell:%s播放語音音效"
 DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "為階段轉換播放語音音效"
