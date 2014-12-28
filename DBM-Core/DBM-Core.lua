@@ -3073,7 +3073,7 @@ do
 	end
 
 	local function SendVersion()
-		local VPVersion
+		local VPVersion = ""
 		local VoicePack = DBM.Options.ChosenVoicePack
 		if VoicePack ~= "None" then
 			VPVersion = "/ VP"..VoicePack..": v"..DBM.VoiceVersions[VoicePack]
