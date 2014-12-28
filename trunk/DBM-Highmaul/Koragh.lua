@@ -155,7 +155,11 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(161411, 172747) then
 		warnExpelMagicFrost:Show()
 		specWarnExpelMagicFrost:Show()
-		timerExpelMagicFrost:Start()
+		if not self:IsLFR() then
+			timerExpelMagicFrost:Start()
+		else
+			timerExpelMagicFrost:Start(21.5)
+		end
 		voiceExpelMagicFrost:Play("161411")
 	elseif spellId == 163517 then
 		warnForfeitPower:Show()
