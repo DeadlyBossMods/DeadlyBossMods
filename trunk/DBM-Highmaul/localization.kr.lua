@@ -72,7 +72,8 @@ L= DBM:GetModLocalization(1197)
 
 L:SetMiscLocalization({
 	BrandedYell			= "%2$s 에게 낙인! (%1$s)",
-	GazeYell			= "%d초 후 시선 사라짐!"
+	GazeYell			= "%d초 후 시선 사라짐!",
+	PlayerDebuffs		= "광기의 눈길 가까움"
 })
 
 -------------
