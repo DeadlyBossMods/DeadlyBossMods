@@ -26,9 +26,9 @@ local specWarnBodySlam			= mod:NewSpecialWarningSpell(154175, nil, nil, nil, 2)
 local specWarnInhale			= mod:NewSpecialWarningSpell(153804)
 
 local timerBodySlamCD			= mod:NewCDSourceTimer(30, 154175)
-local timerInhaleCD				= mod:NewCDTimer(30, 154868)
+local timerInhaleCD				= mod:NewCDTimer(35, 154868)
 local timerCorpseBreathCD		= mod:NewCDTimer(28, 165578, nil, false)--32-37 Variation, also not that important so off by default since there will already be up to 3 smash timers
-local timerSubmergeCD			= mod:NewCDTimer(84, 177694)
+local timerSubmergeCD			= mod:NewCDTimer(80, 177694)
 
 local soundInhale				= mod:NewSound(153804)
 local voiceBodySlam				= mod:NewVoice(154175)
@@ -36,6 +36,7 @@ local voiceInhale				= mod:NewVoice(153804)
 
 function mod:OnCombatStart(delay)
 	timerBodySlamCD:Start(15-delay, UnitName("boss1"), UnitGUID("boss1"))
+	timerInhaleCD:Start(29-delay)
 	timerSubmergeCD:Start(-delay)
 end
 
@@ -78,6 +79,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 177694 then
 		warnSubmerge:Show()
+		timerInhaleCD:Start()
 		timerSubmergeCD:Start()
 	end
 end
