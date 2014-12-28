@@ -22,7 +22,7 @@ local warnWildSlam				= mod:NewSpellAnnounce(150753, 3)
 local specWarnFerociousYell		= mod:NewSpecialWarningInterrupt(150759, not mod:IsHealer())
 local specWarnRaiseMiners		= mod:NewSpecialWarningSwitch(150801, mod:IsTank())
 local specWarnCrushingLeap		= mod:NewSpecialWarningTarget(150751, false)--seems useless.
-local specWarnEarthCrush		= mod:NewSpecialWarningSpell(153679, nil, nil, nil, 2)--avoidable.
+local specWarnEarthCrush		= mod:NewSpecialWarningSpell(153679, nil, nil, nil, 3)--avoidable.
 local specWarnWildSlam			= mod:NewSpecialWarningSpell(150753, nil, nil, nil, 2)--not avoidable. large aoe damage and knockback
 
 --local timerFerociousYellCD--12~18. large variable?

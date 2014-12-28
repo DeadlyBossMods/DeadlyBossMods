@@ -24,7 +24,7 @@ local warnLensFlare			= mod:NewSpellAnnounce(154043, 3)
 
 local specWarnSpinningBlade	= mod:NewSpecialWarningSpell(153544, false, nil, nil, 2)
 local specWarnFourWinds		= mod:NewSpecialWarningSpell(156793, nil, nil, nil, 2)
-local specWarnLensFlareCast	= mod:NewSpecialWarningSpell(154043)
+local specWarnLensFlareCast	= mod:NewSpecialWarningSpell(154043, nil, nil, nil, 2)
 local specWarnLensFlare		= mod:NewSpecialWarningMove(154043)
 
 local timerFourWinds		= mod:NewBuffActiveTimer(18, 156793)

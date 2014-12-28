@@ -93,7 +93,7 @@ DBM_CORE_WHISPER_SCENARIO_END_WIPE			= "%s 님이 %s 시나리오를 완료하�
 DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s 님이 %s 시니리오를 완료하지 못했습니다. (미완료: %d회)"
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - 버전"
-DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
+DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d) %s"
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 공격대 경보 애드온이 설치되어 있지 않습니다."
 DBM_CORE_VERSIONCHECK_FOOTER		= "DBM 설치 : %d명, BigWigs 설치 : %d명이 확인되었습니다."
