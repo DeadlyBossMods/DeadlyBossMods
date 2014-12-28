@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Dec 15, 2014@12036
+-- Last update: Dec 27, 2014@12186
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -59,7 +59,9 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1197)
 
 L:SetMiscLocalization({
-	BrandedYell			= "烙印(%s)->%s"
+	BrandedYell			= "%2$s 中了 烙印 (%1$s)!",
+	GazeYell			= "凝视于 %d 秒后结束",
+	PlayerDebuffs		= "距离最近的疯狂之眼"  --165243
 })
 -------------
 --  Trash  --
