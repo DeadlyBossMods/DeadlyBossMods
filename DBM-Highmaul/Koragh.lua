@@ -78,9 +78,11 @@ local voiceBalls					= mod:NewVoice(161612)
 mod:AddRangeFrameOption("5")
 mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddSetIconOption("SetIconOnFel", 172895, false)
+mod:AddArrowOption("FelArrow", 172895, true, 3)
 
 mod.vb.supressionCount = 0
 mod.vb.shieldCharging = false
+local lastX, LastY = nil, nil--Not in VB table because it player personal position
 
 local function closeRange(self)
 	if self.Options.RangeFrame then
@@ -104,6 +106,13 @@ local function checkBossForgot(self)
 	self:Schedule(18.5, ballsWarning)
 end
 
+local function returnPosition(self)
+	--voiceExpelMagicArcaneFel:Play("172895")
+	if self.Options.FelArrow and lastX and LastY then
+		DBM.Arrow:ShowRunTo(lastX, LastY, 3, 3, 5)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.supressionCount = 0
 	self.vb.shieldCharging = false
@@ -119,6 +128,9 @@ end
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.FelArrow then
+		DBM.Arrow:Hide()
 	end
 end
 
@@ -221,7 +233,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerExpelMagicFel:Start()
 			countdownFel:Start()
 			yellExpelMagicFel:Yell()
---			voiceExpelMagicArcaneFel:Schedule(7, "172895")
+			lastX, LastY = UnitPosition("player")
+			self:Schedule(7, returnPosition, self)
 		end
 		if self.Options.SetIconOnFel then
 			self:SetSortedIcon(1, args.destName, 1, 3)
@@ -237,8 +250,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		DBM.RangeCheck:Hide()
 	elseif spellId == 163472 and self.Options.SetIconOnMC then
 		self:SetIcon(args.destName, 0)
-	elseif spellId == 172895 and self.Options.SetIconOnFel then
-		self:SetIcon(args.destName, 0)
+	elseif spellId == 172895 then
+		if args:IsPlayer() then
+			lastX, LastY = nil, nil
+			if self.Options.FelArrow then
+				DBM.Arrow:Hide()
+			end
+		end
+		if self.Options.SetIconOnFel then
+			self:SetIcon(args.destName, 0)
+		end
 	elseif spellId == 156803 then--Null barrier fall off boss
 		self.vb.shieldCharging = true
 		warnVulnerability:Show(args.destName)
