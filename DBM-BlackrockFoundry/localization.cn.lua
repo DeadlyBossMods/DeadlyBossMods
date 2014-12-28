@@ -1,6 +1,6 @@
-﻿--Mini Dragon(projecteurs@gmail.com)
---Thanks to Yike Xia
---Last Update: Oct 21, 2014
+﻿-- Mini Dragon(projecteurs@gmail.com)
+-- Yike Xia
+-- Last update: Dec 27, 2014@12186
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -58,8 +58,8 @@ L:SetMiscLocalization({
 	--Might not even need to use yells if my npc target works in all languages.
 	--depends on if "Train" is boss target in all languages and if that spellid hack also matches it in all languages.
 	--At the very least this helps read transcriptor logs :)
-	cannonTrain		= "Cannon", --PH
-	threeTrains		= " 3 Random Lanes", --PH
+	cannonTrain		= "火炮车",
+	threeTrains		= "随机三轨道快车",
 	helperMessage	= "建议你使用 'Thogar Assist' 索戈尔助手插件配合DBM作战。下载地址 http://wow.curseforge.com/addons/thogar-assist/",
 	commandTrain1	= "指挥车到了",
 	commandTrain2	= "老大来了",
