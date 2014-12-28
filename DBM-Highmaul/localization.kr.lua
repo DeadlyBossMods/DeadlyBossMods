@@ -58,6 +58,15 @@ L:SetOptionLocalization({
 --------------------
 L= DBM:GetModLocalization(1153)
 
+
+L:SetWarningLocalization({
+	specWarnExpelMagicFelFades	= "5초 후 악마 사라짐 - 처음 지점으로 이동!"
+})
+
+L:SetOptionLocalization({
+	specWarnExpelMagicFelFades	= "$spell:172895 주문이 사라지기 전에 처음 지점 이동 특수 경고 보기"
+})
+
 L:SetMiscLocalization({
 	supressionTarget1	= "박살내주마!",
 	supressionTarget2	= "침묵!",
