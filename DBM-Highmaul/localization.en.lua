@@ -57,6 +57,15 @@ L:SetOptionLocalization({
 --------------------
 L= DBM:GetModLocalization(1153)
 
+
+L:SetWarningLocalization({
+	specWarnExpelMagicFelFades	= "Fel fading in 5s - move to start"
+})
+
+L:SetOptionLocalization({
+	specWarnExpelMagicFelFades	= "Show special warning to move to start position for $spell:172895 expiring"
+})
+
 L:SetMiscLocalization({
 	supressionTarget1	= "I will crush you!",
 	supressionTarget2	= "Silence!",
