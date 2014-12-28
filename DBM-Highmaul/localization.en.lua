@@ -81,7 +81,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	BrandedYell			= "Branded (%s) on %s",
-	GazeYell			= "Gaze fading in %d"
+	GazeYell			= "Gaze fading in %d",
+	PlayerDebuffs		= "Closest to Glimpse"
 })
 
 -------------
