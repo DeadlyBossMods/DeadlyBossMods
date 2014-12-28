@@ -152,6 +152,7 @@ local voiceGrowingDarkness						= mod:NewVoice(176533)
 mod:AddRangeFrameOption("35/13/5")
 mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
 mod:AddSetIconOption("SetIconOnInfiniteDarkness", 165102, false)
+mod:AddInfoFrameOption(176537)
 
 mod.vb.markActive = false
 mod.vb.playerHasMark = false
@@ -278,6 +279,9 @@ end
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 	self:UnregisterShortTermEvents()
 end
@@ -762,6 +766,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			"SPELL_PERIODIC_DAMAGE 176533",
 			"SPELL_PERIODIC_MISSED 176533"
 		)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
+			DBM.InfoFrame:Show(5, "playerbaddebuffbyspellid", 176537)
+		end
 	end
 end
 
