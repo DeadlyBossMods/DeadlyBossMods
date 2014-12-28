@@ -34,6 +34,13 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1196)
 
+L:SetOptionLocalization({
+	InterruptCounter	= "Сбрасывать счетчик Ослабления после",
+	Two					= "После двух кастов",
+	Three				= "После трех кастов",
+	Four				= "После четырех кастов"
+})
+
 --------------
 -- Twin Ogron --
 --------------
@@ -51,6 +58,15 @@ L:SetOptionLocalization({
 --------------------
 L= DBM:GetModLocalization(1153)
 
+
+L:SetWarningLocalization({
+	specWarnExpelMagicFelFades	= "Скверна спадает через 5 сек. - вернитесь в начало"
+})
+
+L:SetOptionLocalization({
+	specWarnExpelMagicFelFades	= "Спец-предупреждение двигаться в начальную точку когда $spell:172895 спадает"
+})
+
 L:SetMiscLocalization({
 	supressionTarget1	= "Я сокрушу вас!",
 	supressionTarget2	= "Молчать!",
@@ -64,7 +80,9 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1197)
 
 L:SetMiscLocalization({
-	BrandedYell			= "Клеймо (%s) на %s"
+	BrandedYell			= "Клеймо (%s) на %s",
+	GazeYell			= "Взгляд спадает через %d",
+	PlayerDebuffs		= "Ближайшие к Вспышке"
 })
 
 -------------
