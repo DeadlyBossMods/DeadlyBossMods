@@ -241,9 +241,7 @@ local raid = {}
 local modSyncSpam = {}
 local autoRespondSpam = {}
 local chatPrefix = "<Deadly Boss Mods> "
-local chatPrefixVEM = "<Voice Encounter Mods> "
 local chatPrefixShort = "<DBM> "
-local chatPrefixShortVEM = "<VEM> "
 local ver = ("%s (r%d)"):format(DBM.DisplayVersion, DBM.Revision)
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
 local newerVersionPerson = {}
@@ -3105,6 +3103,11 @@ do
 	end
 
 	local function SendVersion()
+		local verionString = DBM.DisplayVersion
+		if DBM.Options.ChosenVoicePack ~= "None" then
+			local VPVersion = DBM.VoiceVersions[DBM.Options.ChosenVoicePack] or 0
+			verionString = verionString.." (VP"..DBM.Options.ChosenVoicePack..": Ver "..VPVersion
+		end
 		sendSync("V", ("%d\t%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons)))
 	end
 
@@ -5073,7 +5076,7 @@ do
 			-- as this would be even worse than the issue with missing whisper messages ;)
 			return filterOutgoing(nil, nil, self, event)
 		end
-		return msg:sub(1, chatPrefix:len()) == chatPrefix or msg:sub(1, chatPrefixVEM:len()) == chatPrefixVEM or msg:sub(1, chatPrefixShort:len()) == chatPrefixShort or msg:sub(1, chatPrefixShortVEM:len()) == chatPrefixShortVEM, ...
+		return msg:sub(1, chatPrefix:len()) == chatPrefix or msg:sub(1, chatPrefixShort:len()) == chatPrefixShort, ...
 	end
 
 	local function filterIncoming(self, event, ...)
@@ -5082,7 +5085,7 @@ do
 			return filterIncoming(nil, nil, self, event)
 		end
 		if DBM.Options.SpamBlockBossWhispers then
-			return #inCombat > 0 and (msg == "status" or msg:sub(1, chatPrefix:len()) == chatPrefix or msg:sub(1, chatPrefixVEM:len()) == chatPrefixVEM or msg:sub(1, chatPrefixShort:len()) == chatPrefixShort or msg:sub(1, chatPrefixShortVEM:len()) == chatPrefixShortVEM), ...
+			return #inCombat > 0 and (msg == "status" or msg:sub(1, chatPrefix:len()) == chatPrefix or msg:sub(1, chatPrefixShort:len()) == chatPrefixShort), ...
 		else
 			return msg == "status" and #inCombat > 0, ...
 		end
