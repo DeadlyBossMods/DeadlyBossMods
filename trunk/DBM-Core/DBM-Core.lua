@@ -991,7 +991,7 @@ do
 				--X-DBM-Voice-Name Should be long name you want to appear in dropdown menu
 				--X-DBM-Voice-ShortName should be short name that matches folder name after DBM-VP. So for example, DBM-VPHarry would be "Harry" for a short name.
 				--X-DBM-Voice-Version should be a single number identifying whether or not the voice pack is new enough to enable special warning sound filter.
-				--Version 1: Contains All files in highmaul currently present in DBM 6.0.9
+				--Version 1: Contains All files in highmaul currently present in DBM 6.0.10
 				--Version 2: TBD
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
 					local voiceValue = GetAddOnMetadata(i, "X-DBM-Voice-ShortName")
@@ -7166,7 +7166,7 @@ do
 
 	function DBM:CheckVoicePackVersion(value)
 		if DBM.Options.ChosenVoicePack == value then
-			if self.VoiceVersions[value] < 0 then--Version will be bumped when new voice packs released that contain new voices.
+			if self.VoiceVersions[value] < 1 then--Version will be bumped when new voice packs released that contain new voices.
 				DBM:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
 				SWFilterDisabed = true
 			else

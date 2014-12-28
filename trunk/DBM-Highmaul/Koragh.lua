@@ -48,6 +48,7 @@ local specWarnBallsSoon				= mod:NewSpecialWarningPreWarn(161612, nil, 6.5, nil,
 local specWarnMC					= mod:NewSpecialWarningSwitch(163472, mod:IsDps())
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
 local specWarnExpelMagicFel			= mod:NewSpecialWarningYou(172895)--Maybe needs "do not move" warning or at very least "try not to move" since sometimes you have to move for trample.
+local specWarnExpelMagicFelFades	= mod:NewSpecialWarning("specWarnExpelMagicFelFades", nil, nil, nil, 3, nil, true)--No generic that describes this
 local yellExpelMagicFel				= mod:NewYell(172895)
 local specWarnExpelMagicFelMove		= mod:NewSpecialWarningMove(172917)--Under you (fire). If not enough maybe add periodic damage too?
 
@@ -73,7 +74,7 @@ local voiceExpelMagicArcane			= mod:NewVoice(162186)
 local voiceMC						= mod:NewVoice(163472, mod:IsDps())
 local voiceTrample					= mod:NewVoice(163101)
 local voiceBalls					= mod:NewVoice(161612)
---local voiceExpelMagicArcaneFel	= mod:NewVoice(172895)--Voice requested, not yet generated. so not enabled yet.
+local voiceExpelMagicArcaneFel		= mod:NewVoice(172895)
 
 mod:AddRangeFrameOption("5")
 mod:AddSetIconOption("SetIconOnMC", 163472, false)
@@ -107,7 +108,8 @@ local function checkBossForgot(self)
 end
 
 local function returnPosition(self)
-	--voiceExpelMagicArcaneFel:Play("172895")
+	specWarnExpelMagicFelFades:Show()
+	voiceExpelMagicArcaneFel:Play("172895")
 	if self.Options.FelArrow and lastX and LastY then
 		DBM.Arrow:ShowRunTo(lastX, LastY, 3, 3, 5)
 	end
