@@ -1574,7 +1574,7 @@ do
 		self:AddMsg(DBM_CORE_VERSIONCHECK_HEADER)
 		for i, v in ipairs(sortMe) do
 			if v.displayVersion and not (v.bwrevision or v.bwarevision) then--DBM, no BigWigs
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, "DBM "..v.displayVersion, v.revision))
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, "DBM "..v.displayVersion, v.revision, v.VPVersion or ""))--Only display VP version if not running two mods
 				if notify and v.revision < DBM.ReleaseRevision then
 					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
@@ -3103,12 +3103,12 @@ do
 	end
 
 	local function SendVersion()
-		local verionString = DBM.DisplayVersion
-		if DBM.Options.ChosenVoicePack ~= "None" then
-			local VPVersion = DBM.VoiceVersions[DBM.Options.ChosenVoicePack] or 0
-			verionString = verionString.."/VP"..DBM.Options.ChosenVoicePack..": Ver "..VPVersion
+		local VPVersion
+		local VoicePack = DBM.Options.ChosenVoicePack
+		if VoicePack ~= "None" then
+			VPVersion = "/ VP"..VoicePack..": v"..DBM.VoiceVersions[VoicePack]
 		end
-		sendSync("V", ("%d\t%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, verionString, GetLocale(), tostring(not DBM.Options.DontSetIcons)))
+		sendSync("V", ("%d\t%s\t%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), VPVersion))
 	end
 
 	-- TODO: is there a good reason that version information is broadcasted and not unicasted?
@@ -3129,12 +3129,13 @@ do
 		end
 	end
 
-	syncHandlers["V"] = function(sender, revision, version, displayVersion, locale, iconEnabled)
+	syncHandlers["V"] = function(sender, revision, version, displayVersion, locale, iconEnabled, VPVersion)
 		revision, version = tonumber(revision), tonumber(version)
 		if revision and version and displayVersion and raid[sender] then
 			raid[sender].revision = revision
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
+			raid[sender].VPVersion = VPVersion
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
 			DBM:Debug("Received version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
