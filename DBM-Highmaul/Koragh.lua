@@ -30,6 +30,7 @@ local warnExpelMagicShadow			= mod:NewSpellAnnounce(162184, 3, nil, mod:IsHealer
 local warnExpelMagicFrost			= mod:NewSpellAnnounce(161411, 3)
 local warnExpelMagicArcane			= mod:NewTargetAnnounce(162186, 4)--Everyone, so they know to avoid him
 local warnBallsSoon					= mod:NewPreWarnAnnounce(161612, 6.5, 2)
+local warnBallsHit					= mod:NewCountAnnounce(161612, 2)
 local warnMC						= mod:NewTargetAnnounce(163472, 4)--Mythic
 local warnForfeitPower				= mod:NewCastAnnounce(163517, 4)--Mythic, Spammy?
 local warnExpelMagicFel				= mod:NewTargetAnnounce(172895, 4)
@@ -82,6 +83,7 @@ mod:AddSetIconOption("SetIconOnFel", 172895, false)
 mod:AddArrowOption("FelArrow", 172895, true, 3)
 
 mod.vb.supressionCount = 0
+mod.vb.ballsCount = 0
 mod.vb.shieldCharging = false
 local lastX, LastY = nil, nil--Not in VB table because it player personal position
 
@@ -102,7 +104,8 @@ end
 
 local function checkBossForgot(self)
 	DBM:Debug("checkBossForgot ran, which means expected balls 5 seconds late, starting 25 second timer for next balls")
-	timerBallsCD:Start(25)
+	--self.vb.ballsCount = self.vb.ballsCount + 1--if boss forgot balls, should it be incrimented? need to see log where he forgets his balls to see if it offsets mind contorls from evens to odds, if so, then do NOT incriment. if it does offset mcs that means we need to uncommont this
+	timerBallsCD:Start(25, self.vb.ballsCount+1)
 	countdownBalls:Start(25)
 	self:Schedule(18.5, ballsWarning)
 end
@@ -117,6 +120,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.supressionCount = 0
+	self.vb.ballsCount = 0
 	self.vb.shieldCharging = false
 	--timerExpelMagicFireCD:Start(6-delay)
 	timerBallsCD:Start(36-delay)
@@ -333,7 +337,8 @@ function mod:OnSync(msg, targetname)
 			timer = 30
 			DBM:Debug("timerBallsCD started in regular phase, 30 second timer started")
 		end
-		timerBallsCD:Start(timer)
+		warnBallsHit:Show(self.vb.ballsCount)
+		timerBallsCD:Start(timer, self.vb.ballsCount+1)
 		countdownBalls:Start(timer)
 		self:Schedule(timer-6.5, ballsWarning)
 		self:Schedule(timer+5, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
