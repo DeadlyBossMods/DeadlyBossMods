@@ -28,7 +28,7 @@ local specWarnCannonBarrage	= mod:NewSpecialWarningSpell(168929, nil, nil, nil, 
 local specWarnCannonBarrageE= mod:NewSpecialWarningEnd(168929)
 
 local timerRapidFireCD		= mod:NewNextTimer(12, 168398)
-local timerRapidFire		= mod:NewBuffFadesTimer(5, 168398)
+local timerRapidFire		= mod:NewTargetTimer(5, 168398, nil, not mod:IsTank())
 local timerGronSmashCD		= mod:NewCDTimer(70, 168227)--Timer is too variable, which is why i never enabled. every time i kill boss it's diff. today 2nd gron smash happened at 49 seconds, 21 seconds sooner than this timer
 
 local voiceRapidFire		= mod:NewVoice(168398)
@@ -47,11 +47,11 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 168398 then
 		warnRapidFire:Show(args.destName)
+		timerRapidFire:Start(args.destName)
 		timerRapidFireCD:Start()
 		if args:IsPlayer() then
 			specWarnRapidFire:Show()
 			yellRapidFire:Yell()
-			timerRapidFire:Start()
 			voiceRapidFire:Play("runout")
 		end
 	end
@@ -86,6 +86,8 @@ function mod:UNIT_DIED(args)
 	if not DBM.BossHealth:IsShown() then return end
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 83613 then
+		timerRapidFireCD:Cancel()
+		timerRapidFire:Cancel()
 		DBM.BossHealth:RemoveBoss(83613)
 		DBM.BossHealth:AddBoss(83616)
 	elseif cid == 83616 then
