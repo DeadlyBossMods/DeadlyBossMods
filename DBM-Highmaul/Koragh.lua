@@ -58,7 +58,7 @@ local timerTrampleCD				= mod:NewCDTimer(16, 163101)--Also all over the place, 1
 local timerExpelMagicFire			= mod:NewBuffFadesTimer(11.5, 162185)
 local timerExpelMagicFrost			= mod:NewBuffActiveTimer(20, 161411)
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
-local timerBallsCD					= mod:NewNextTimer(30, 161612)
+local timerBallsCD					= mod:NewNextCountTimer(30, 161612)
 local timerExpelMagicFelCD			= mod:NewCDTimer(15.5, 172895)--Mythic
 local timerExpelMagicFel			= mod:NewBuffFadesTimer(12, 172895)--Mythic
 
@@ -123,7 +123,7 @@ function mod:OnCombatStart(delay)
 	self.vb.ballsCount = 0
 	self.vb.shieldCharging = false
 	--timerExpelMagicFireCD:Start(6-delay)
-	timerBallsCD:Start(36-delay)
+	timerBallsCD:Start(36-delay, 1)
 	countdownBalls:Start(36-delay)
 	self:Schedule(29.5-delay, ballsWarning)
 	if self:IsMythic() then
@@ -278,10 +278,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerTrampleCD:Cancel()
 		timerExpelMagicFelCD:Cancel()
 		local elapsed, total = timerBallsCD:GetTime()
+		if elapsed == 0 and total == 0 then--There was no timer?
+			DBM:Debug("Koragh lost his balls?")--Should not happen, but just in case, i want to see when it does clearly
+			return
+		end
 		local remaining = total - elapsed
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
 		if remaining > 4 then--If 4 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
-			timerBallsCD:Start(remaining+22.5)
+			timerBallsCD:Cancel()
+			timerBallsCD:Start(remaining+22.5, self.vb.ballsCount+1)
 			countdownBalls:Cancel()
 			specWarnBallsSoon:Cancel()
 			countdownBalls:Start(remaining+22.5)
