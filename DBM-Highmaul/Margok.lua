@@ -149,16 +149,18 @@ local voiceArcaneAberration						= mod:NewVoice(156471, mod:IsDps())
 local voiceEnvelopingNight 						= mod:NewVoice(165876)
 local voiceGrowingDarkness						= mod:NewVoice(176533)
 
-mod:AddRangeFrameOption("35/13/5")
+mod:AddRangeFrameOption("35/13/5/4")
 mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
 mod:AddSetIconOption("SetIconOnInfiniteDarkness", 165102, false)
 mod:AddInfoFrameOption(176537)
 
 mod.vb.markActive = false
+mod.vb.playerHasBranded = false
 mod.vb.playerHasMark = false
-mod.vb.jumpDistance = 13
-mod.vb.lastMarkedTank = nil
 mod.vb.isTransition = false
+mod.vb.lastMarkedTank = nil
+mod.vb.RepNovaActive = nil
+mod.vb.jumpDistance = 13
 mod.vb.phase = 1
 mod.vb.arcaneAdd = 0
 mod.vb.madnessAdd = 0
@@ -183,7 +185,7 @@ local fixateDebuff = GetSpellInfo(157763)
 local gazeDebuff = GetSpellInfo(165595)
 local playerName = UnitName("player")
 local chogallName = EJ_GetEncounterInfo(167)
-local debuffFilterMark, debuffFilterBranded, debuffFilterCombined, debuffFilterFixate, debuffFilterGaze
+local debuffFilterMark, debuffFilterBranded, debuffFilterFixate, debuffFilterGaze
 do
 	debuffFilterMark = function(uId)
 		if UnitDebuff(uId, chaosDebuff1) or UnitDebuff(uId, chaosDebuff2) or UnitDebuff(uId, chaosDebuff3) or UnitDebuff(uId, chaosDebuff4) then
@@ -192,11 +194,6 @@ do
 	end
 	debuffFilterBranded = function(uId)
 		if UnitDebuff(uId, brandedDebuff1) or UnitDebuff(uId, brandedDebuff2) or UnitDebuff(uId, brandedDebuff3) or UnitDebuff(uId, brandedDebuff4) then
-			return true
-		end
-	end
-	debuffFilterCombined = function(uId)
-		if UnitDebuff(uId, chaosDebuff1) or UnitDebuff(uId, chaosDebuff2) or UnitDebuff(uId, chaosDebuff3) or UnitDebuff(uId, chaosDebuff4) or UnitDebuff(uId, brandedDebuff1) or UnitDebuff(uId, brandedDebuff2) or UnitDebuff(uId, brandedDebuff3) or UnitDebuff(uId, brandedDebuff4) then
 			return true
 		end
 	end
@@ -228,7 +225,7 @@ local function updateRangeFrame(self, markPreCast)
 			DBM.RangeCheck:Show(distance, nil)--Show everyone
 		else--No branded debuff on player, so show a filtered range finder
 			if self.vb.markActive and self.vb.lastMarkedTank and self:CheckNearby(35, self.vb.lastMarkedTank) then--There is an active tank with debuff and they are too close
-				DBM.RangeCheck:Show(35, debuffFilterCombined)--Show marked instead of branded if the marked tank is NOT far enough out
+				DBM.RangeCheck:Show(35, debuffFilterMark)--Show marked instead of branded if the marked tank is NOT far enough out
 			else--no branded tank in range, So show ONLY branded dots
 				DBM.RangeCheck:Show(distance, debuffFilterBranded)
 			end
@@ -240,6 +237,8 @@ local function updateRangeFrame(self, markPreCast)
 			else--Not boss target during cast, not debuffed, use filtered range frame to show only players affected by mark of chaos.
 				DBM.RangeCheck:Show(35, debuffFilterMark)
 			end
+		elseif self.vb.RepNovaActive then--Replicating Nova Active
+			DBM.RangeCheck:Show(4, nil)
 		elseif self.vb.isTransition then
 			if UnitDebuff("player", fixateDebuff) then
 				DBM.RangeCheck:Show(5, nil)
@@ -252,12 +251,18 @@ local function updateRangeFrame(self, markPreCast)
 	end
 end
 
+local function delayedRangeUpdate(self)
+	self.vb.RepNovaActive = nil
+	updateRangeFrame(self)
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.markActive = false
 	self.vb.playerHasMark = false
 	self.vb.playerHasBranded = false
 	self.vb.isTransition = false
 	self.vb.lastMarkedTank = nil
+	self.vb.RepNovaActive = nil
 	self.vb.brandedActive = 0
 	self.vb.forceCount = 0
 	self.vb.jumpDistance = 13
@@ -337,6 +342,11 @@ function mod:SPELL_CAST_START(args)
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
 		countdownForceNova:Start()
 		voiceForceNova:Schedule(38.5, "157349")
+		if self:IsMythic() and self.vb.phase == 1 then--Also replication empowered
+			self.vb.RepNovaActive = true
+			self:Schedule(9, delayedRangeUpdate, self)
+			updateRangeFrame(self)
+		end
 	elseif spellId == 164235 then
 		self.vb.forceCount = self.vb.forceCount + 1
 		if self.Options.warnForceNova then
@@ -347,6 +357,13 @@ function mod:SPELL_CAST_START(args)
 		voiceForceNova:Schedule(38.5, "157349")
 	elseif spellId == 164240 then
 		self.vb.forceCount = self.vb.forceCount + 1
+		self.vb.RepNovaActive = true
+		if self:IsMythic() then
+			self:Schedule(27, delayedRangeUpdate, self)--Also Fortification empowered
+		else
+			self:Schedule(9, delayedRangeUpdate, self)
+		end
+		updateRangeFrame(self)
 		if self.Options.warnForceNova then
 			warnForceNovaReplication:Show(self.vb.forceCount)
 		end
