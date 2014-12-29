@@ -25,14 +25,15 @@ local specWarnGenesis			= mod:NewSpecialWarningSpell(169613)--Everyone. "Switch"
 
 --Only timers that were consistent, others are all over the place.
 local timerFontOfLife			= mod:NewNextTimer(15, 169120)
-local timerGenesis				= mod:NewNextTimer(60.5, 169613)
+local timerGenesis				= mod:NewCastTimer(17, 169613)
+local timerGenesisCD			= mod:NewNextTimer(60.5, 169613)
 
 local voiceColossalBlow			= mod:NewVoice(169179)
 local voiceGenesis				= mod:NewVoice(169613)
 
 function mod:OnCombatStart(delay)
 	timerFontOfLife:Start(-delay)
-	timerGenesis:Start(25-delay)
+	timerGenesisCD:Start(25-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -45,6 +46,7 @@ function mod:SPELL_CAST_START(args)
 		warnGenesis:Show()
 		specWarnGenesis:Show()
 		timerGenesis:Start()
+		timerGenesisCD:Start()
 		voiceGenesis:Play("169613")
 	end
 end
