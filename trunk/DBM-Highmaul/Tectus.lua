@@ -181,10 +181,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnTectonicUpheaval:Show()
 		voiceTectonicUpheaval:Play("aesoon")
 	elseif spellId == 162968 then
+		local guid = args.souceGUID
 		warnEarthenFlechettes:Show()
 		specWarnEarthenFlechettes:Show()
-		timerEarthenFlechettesCD:Start(args.sourceGUID)
-		local guid = args.souceGUID
+		timerEarthenFlechettesCD:Start(guid)
 		if guid == UnitGUID("target") or guid == UnitGUID("focus") then
 			voiceEarthenFlechettes:Play("shockwave")
 		end
@@ -219,13 +219,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 162658 then
-		local cid = self:GetCIDFromGUID(args.destGUID)
+		local guid = args.destGUID
+		local cid = self:GetCIDFromGUID(guid)
 		if cid == 80557 then
-			if not moteH[args.destGUID] then
-				moteH[args.destGUID] = 0
+			if not moteH[guid] then
+				moteH[guid] = 0
 			end
 			if self.Options.SetIconOnMote and not self:IsLFR() then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
-				self:ScanForMobs(args.destGUID, 0, 8, 8, 0.1, 20)
+				self:ScanForMobs(guid, 0, 8, 8, 0.1, 20)
 			end
 		end
 	end
@@ -273,6 +274,7 @@ end
 
 --"<11.7 15:07:19> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#MASTER! I COME FOR YOU!#Night-Twisted Earthwarper#####0#0##0#480#nil#0#false#false", -- [1951]
 --"<21.3 15:07:28> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Graaagh! KAHL...  AHK... RAAHHHH!#Night-Twisted Berserker#####0#0##0#482#nil#0#false#false", -- [4086]
+--It's posssible this method has one bug in it. If an add kills a player, it might do a death yell and triggers false message. However, above translations are out of date and not what i was seeing during fight.
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
 	if npc == Earthwarper then
 		self.vb.EarthwarperAlive = self.vb.EarthwarperAlive + 1
