@@ -40,7 +40,7 @@ local timerBoundingCleave			= mod:NewCastTimer(15, 156160)
 
 local berserkTimer					= mod:NewBerserkTimer(300)
 
-local countdownCleaver				= mod:NewCountdown("Alt8.5", 156143, mod:IsTank())
+local countdownCleaver				= mod:NewCountdown("OptionVersion2", "Alt8.5", 156143, false)--Not as useful as I thought. too short of CD for countdown, 8.5 second cd with 5 count was WAY too much noise. but i'll leave option in case people did like it
 local countdownBoundingCleave		= mod:NewCountdown(60, 156160)
 
 local voiceCleave					= mod:NewVoice(156157, mod:IsMelee())
