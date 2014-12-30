@@ -19,7 +19,7 @@ local warnMalevolence			= mod:NewSpellAnnounce("OptionVersion2", 154442, 3)--Som
 
 local specWarnRitualOfBones		= mod:NewSpecialWarningSpell(154671, nil, nil, nil, true)
 local specWarnOmenOfDeath		= mod:NewSpecialWarningMove(154350)
-local specWarnOmenOfDeathNear	= mod:NewSpecialWarningNear(154350)
+local specWarnOmenOfDeathNear	= mod:NewSpecialWarningClose(154350)
 local yellOmenOfDeath			= mod:NewYell(154350)
 local specWarnMalevolence		= mod:NewSpecialWarningSpell(154442, nil, nil, nil, true)
 
