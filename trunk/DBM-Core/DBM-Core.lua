@@ -3040,6 +3040,7 @@ do
 	end
 	
 	syncHandlers["BTR"] = function(sender, timer)
+		DBM:Debug("BTR Fired")
 		if #inCombat >= 1 then return end
 		timer = tonumber(timer or 0)
 		if not dummyMod2 then
@@ -4780,6 +4781,7 @@ do
 	local clientUsed = {}
 
 	function DBM:RequestTimers()
+		self:Debug("RequestTimers Running", 2)
 		local bestClient
 		for i, v in pairs(raid) do
 			-- If bestClient player's realm is not same with your's, timer recovery by bestClient not works at all.
@@ -4849,6 +4851,7 @@ do
 			--Break timer is up, so send that
 			--But only if we are not in combat with a boss
 			if self.Bars:GetBar(DBM_CORE_TIMER_BREAK) then
+				self:Debug("Sending BTR to "..target)
 				local remaining = self.Bars:GetBar(DBM_CORE_TIMER_BREAK).totalTime - self.Bars:GetBar(DBM_CORE_TIMER_BREAK).timer
 				SendAddonMessage("D4", "BTR\t"..remaining, "WHISPER", target)
 			end
