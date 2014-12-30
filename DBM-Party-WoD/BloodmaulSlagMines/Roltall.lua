@@ -12,9 +12,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 153247 152940 152939",
 	"SPELL_AURA_APPLIED 153227",
 	"SPELL_PERIODIC_DAMAGE 153227",
-	"SPELL_PERIODIC_MISSED 153227"
+	"SPELL_ABSORBED 153227"
 )
-
 
 local warnFieryBoulder			= mod:NewCountAnnounce(153247, 3)
 local warnHeatWave				= mod:NewSpellAnnounce(152940, 3)
@@ -87,4 +86,4 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		voiceBurningSlag:Play("runaway")
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE

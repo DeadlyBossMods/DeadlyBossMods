@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE 155051",
 	"SPELL_MISSED 155051",
 	"SPELL_PERIODIC_DAMAGE 155057",
-	"SPELL_PERIODIC_MISSED 155057",
+	"SPELL_ABSORBED 155057",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -90,7 +90,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		voiceMagmaPool:Play("runaway")
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 --This boss actually does fire IEEU so boss1 works
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)

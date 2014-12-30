@@ -693,7 +693,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId
 		voiceGrowingDarkness:Play("runout")
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
@@ -781,7 +781,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownEnvelopingNight:Start(55)
 		self:RegisterShortTermEvents(
 			"SPELL_PERIODIC_DAMAGE 176533",
-			"SPELL_PERIODIC_MISSED 176533"
+			"SPELL_ABSORBED 176533"
 		)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(L.PlayerDebuffs)

@@ -69,7 +69,7 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(240-delay)
 		self:RegisterShortTermEvents(
 			"SPELL_PERIODIC_DAMAGE 163046",
-			"SPELL_PERIODIC_MISSED 163046"
+			"SPELL_ABSORBED 163046"
 		)
 	elseif self:IsHeroic() then
 		berserkTimer:Start(-delay)
@@ -172,7 +172,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId
 		voicePaleVitriol:Play("runaway")
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 156197 or spellId == 156257 then

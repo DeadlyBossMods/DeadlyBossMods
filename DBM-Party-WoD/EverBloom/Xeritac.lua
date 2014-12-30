@@ -12,7 +12,7 @@ mod:RegisterCombat("combat_emotefind", L.Pull)
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 169248 169233 169382",
 	"SPELL_PERIODIC_DAMAGE 169223",
-	"SPELL_PERIODIC_MISSED 169223",
+	"SPELL_ABSORBED 169223",
 	"UNIT_DIED",
 	"UNIT_TARGETABLE_CHANGED"
 )
@@ -60,7 +60,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		specWarnToxicGas:Show()
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)

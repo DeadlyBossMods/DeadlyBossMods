@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 149997 149975 150032",
 	"SPELL_CAST_START 149941 150038 150023",
 	"SPELL_PERIODIC_DAMAGE 150011",
-	"SPELL_PERIODIC_MISSED 150011",
+	"SPELL_ABSORBED 150011",
 	"UNIT_DIED"
 )
 
@@ -136,7 +136,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		specWarnMagmaBarrage:Show()
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	if not DBM.BossHealth:IsShown() then return end

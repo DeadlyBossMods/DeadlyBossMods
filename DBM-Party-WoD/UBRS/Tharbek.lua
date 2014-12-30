@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 162090",
 	"SPELL_AURA_APPLIED 161833",
 	"SPELL_PERIODIC_DAMAGE 161989",
-	"SPELL_PERIODIC_MISSED 161989",
+	"SPELL_ABSORBED 161989",
 	"UNIT_SPELLCAST_SUCCEEDED boss1",
 	"UNIT_TARGETABLE_CHANGED",
 	"UNIT_DIED"
@@ -74,7 +74,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		voiceWarnNoxiousSpit:Play("runaway")
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 161989 then
