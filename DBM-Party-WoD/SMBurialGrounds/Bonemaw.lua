@@ -9,9 +9,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 154175 165578",
+	"SPELL_AURA_APPLIED 153804",
 	"SPELL_AURA_REMOVED 153804",
-	"SPELL_PERIODIC_DAMAGE 153908",
-	"SPELL_ABSORBED 153908",
+	"SPELL_PERIODIC_DAMAGE 153692",
+	"SPELL_ABSORBED 153692",
 	"RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1",
 	"UNIT_DIED"
@@ -28,11 +29,11 @@ local warnSubmerge				= mod:NewSpellAnnounce(177694, 1)
 local specWarnBodySlam			= mod:NewSpecialWarningSpell(154175, nil, nil, nil, 2)
 local specWarnInhale			= mod:NewSpecialWarningSpell(153804)
 local specWarnInhaleEnd			= mod:NewSpecialWarningEnd(153804)
-local specWarnInhaleMove		= mod:NewSpecialWarningMove(153908)
+local specWarnNecroticPitch		= mod:NewSpecialWarningMove(153692)
 
 local timerBodySlamCD			= mod:NewCDSourceTimer(30, 154175)
 local timerInhaleCD				= mod:NewCDTimer(35, 153804)
-local timerInhale				= mod:NewBuffActiveTimer(11.3, 153804)
+local timerInhale				= mod:NewBuffActiveTimer(9, 153804)
 local timerCorpseBreathCD		= mod:NewCDTimer(28, 165578, nil, false)--32-37 Variation, also not that important so off by default since there will already be up to 3 smash timers
 local timerSubmergeCD			= mod:NewCDTimer(80, 177694)
 
@@ -68,13 +69,21 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_CAST_START(args)
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 153804 then
+		timerInhale:Start()
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 153804 then
 		self.vb.inhaleActive = false
 		specWarnInhaleEnd:Show()
 	end
 end
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 76057 then--Carrion Centipede
@@ -88,7 +97,6 @@ function mod:RAID_BOSS_EMOTE(msg)
 		warnInhale:Show()
 		specWarnInhale:Show()
 		soundInhale:Play()
-		timerInhale:Start()
 		timerInhaleCD:Start()
 		voiceInhale:Play("153804") 
 	end
@@ -103,8 +111,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
-	if spellId == 153908 and not self.vb.inhaleActive and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-		specWarnInhaleMove:Show()
+	if spellId == 153692 and not self.vb.inhaleActive and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
+		specWarnNecroticPitch:Show()
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
