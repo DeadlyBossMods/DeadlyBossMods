@@ -13,7 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 154055",
 	"SPELL_CAST_START 154055",
 	"SPELL_PERIODIC_DAMAGE 154043",
-	"SPELL_PERIODIC_MISSED 154043",
+	"SPELL_ABSORBED 154043",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--On a bad pull you can very much have 3-4 adds.
 )
@@ -81,7 +81,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _,
 		voiceLensFlare:Play("runaway")
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)

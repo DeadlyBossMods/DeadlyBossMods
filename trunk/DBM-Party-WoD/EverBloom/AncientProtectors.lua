@@ -14,7 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 168105 168041 168520",
 	"SPELL_AURA_REMOVED 168520",
 	"SPELL_PERIODIC_DAMAGE 167977",
-	"SPELL_PERIODIC_MISSED 167977",
+	"SPELL_ABSORBED 167977",
 	"UNIT_DIED"
 )
 
@@ -109,7 +109,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		voiceBramble:Play("runaway")
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)

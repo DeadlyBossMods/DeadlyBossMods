@@ -40,7 +40,7 @@ function mod:OmenOfDeathTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	timerOmenOfDeathCD:Start(8.5-delay)
+	--timerOmenOfDeathCD:Start(8.5-delay)
 	timerRitualOfBonesCD:Start(20-delay)
 	voiceRitualOfBones:Schedule(18-delay, "specialsoon")
 end
