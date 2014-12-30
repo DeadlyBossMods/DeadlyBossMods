@@ -1054,7 +1054,7 @@ do
 				healthCombatInitialized = true
 			end)
 			if IsInGroup() then
-				self:Schedule(6, self.RequestTimers, self)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
+				self:Schedule(12, self.RequestTimers, self)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
 			end
 		end
 	end
@@ -4786,7 +4786,7 @@ do
 		for i, v in pairs(raid) do
 			-- If bestClient player's realm is not same with your's, timer recovery by bestClient not works at all.
 			-- SendAddonMessage target channel is "WHISPER" and target player is other realm, no msg sends at all. At same realm, message sending works fine. (Maybe bliz bug or SendAddonMessage function restriction?)
-			if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and v.revision and v.revision >= ((bestClient and bestClient.revision) or 0) and not select(2, UnitName(v.id)) and (GetTime() - (clientUsed[v.name] or 0)) > 10 then
+			if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and v.revision and v.revision >= ((bestClient and bestClient.revision) or 0) and (GetTime() - (clientUsed[v.name] or 0)) > 10 then
 				bestClient = v
 				clientUsed[v.name] = GetTime()
 			end
@@ -4832,6 +4832,7 @@ end
 do
 	local spamProtection = {}
 	function DBM:SendTimers(target)
+		self:Debug("SendTimers requested by "..target, 2)
 		local spamForTarget = spamProtection[target] or 0
 		-- just try to clean up the table, that should keep the hash table at max. 4 entries or something :)
 		for k, v in pairs(spamProtection) do
