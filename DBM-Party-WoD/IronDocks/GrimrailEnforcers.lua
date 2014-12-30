@@ -52,7 +52,11 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 163665 then
 		warnFlamingSlash:Show()
 		specWarnFlamingSlash:Show()
-		timerFlamingSlashCD:Start()
+		if self:IsHeroic() then
+			timerFlamingSlashCD:Start()
+		else
+			timerFlamingSlashCD:Start(41.5)
+		end
 		countdownFlamingSlash:Start()
 	elseif spellId == 163390 then
 		warnOgreTraps:Show()
@@ -108,6 +112,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 164956 and self:AntiSpam(5, 2) then
 		warnLavaSwipe:Show()
 		specWarnLavaSwipe:Show()
-		timerLavaSwipeCD:Start()
+		if self:IsHeroic() then
+			timerLavaSwipeCD:Start()
+		else
+			timerLavaSwipeCD:Start(41.5)
+		end
 	end
 end

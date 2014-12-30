@@ -4215,7 +4215,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 					speedTimer:Start()
 				end
 			end
-			if self.Options.CRT_Enabled and difficultyIndex >= 14 and difficultyIndex < 17 then--14-16 difficulties. Normal, Heroic, Mythic
+			if self.Options.CRT_Enabled and difficultyIndex >= 14 and difficultyIndex < 18 then--14-17 difficulties. Normal, Heroic, Mythic, LFR
 				local time = 90/LastGroupSize
 				time = time * 60
 				loopCRTimer(time, mod)
