@@ -3039,8 +3039,7 @@ do
 		end
 	end
 	
-	syncHandlers["BTR"] = function(sender, timer)
-		DBM:Debug("BTR Fired")
+	whisperSyncHandlers["BTR"] = function(sender, timer)
 		if #inCombat >= 1 then return end
 		timer = tonumber(timer or 0)
 		if not dummyMod2 then
