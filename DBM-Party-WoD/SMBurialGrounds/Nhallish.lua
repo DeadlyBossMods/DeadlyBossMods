@@ -12,7 +12,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 152979 153067",
 	"SPELL_AURA_REMOVED 152979",
 	"SPELL_PERIODIC_DAMAGE 153070",
-	"SPELL_PERIODIC_MISSED 153070"
+	"SPELL_ABSORBED 153070"
 )
 
 local warnVoidVortex			= mod:NewSpellAnnounce(152801, 3)
@@ -34,7 +34,7 @@ local voiceVoidVortex			= mod:NewVoice(152801)
 
 function mod:OnCombatStart(delay)
 	timerVoidVortexCD:Start(23-delay)
-	timerSoulShredCD:Start(36-delay)
+	timerSoulShredCD:Start(38-delay)
 	timerVoidDevastationCD:Start(65.5-delay)
 end
 
@@ -73,4 +73,4 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId
 		specWarnVoidDevastationM:Show()
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
