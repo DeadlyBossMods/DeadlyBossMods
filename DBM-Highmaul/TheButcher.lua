@@ -40,7 +40,7 @@ local timerBoundingCleave			= mod:NewCastTimer(15, 156160)
 
 local berserkTimer					= mod:NewBerserkTimer(300)
 
-local countdownTenderizer			= mod:NewCountdown("Alt17", 156143, mod:IsTank())
+local countdownTenderizer			= mod:NewCountdown("Alt17", 156151, mod:IsTank())
 local countdownBoundingCleave		= mod:NewCountdown(60, 156160)
 
 local voiceCleave					= mod:NewVoice(156157, mod:IsMelee())
