@@ -103,6 +103,7 @@ DBM.DefaultOptions = {
 	StripServerName = true,
 	ShowCombatLogMessage = true,
 	ShowTranscriptorMessage = true,
+	ShowAllVersions = true,
 	ShowLoadMessage = true,
 	ShowPizzaMessage = true,
 	ShowEngageMessage = true,
@@ -1575,16 +1576,20 @@ do
 		self:AddMsg(DBM_CORE_VERSIONCHECK_HEADER)
 		for i, v in ipairs(sortMe) do
 			if v.displayVersion and not (v.bwrevision or v.bwarevision) then--DBM, no BigWigs
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, "DBM "..v.displayVersion, v.revision, v.VPVersion or ""))--Only display VP version if not running two mods
+				if self.Options.ShowAllVersions then
+					self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, "DBM "..v.displayVersion, v.revision, v.VPVersion or ""))--Only display VP version if not running two mods
+				end
 				if notify and v.revision < self.ReleaseRevision then
 					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
-			elseif v.displayVersion and (v.bwrevision or v.bwarevision) then--DBM & BigWigs
+			elseif self.Options.ShowAllVersions and (v.displayVersion and (v.bwrevision or v.bwarevision)) then--DBM & BigWigs
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_TWO:format(v.name, "DBM "..v.displayVersion, v.revision, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision))
-			elseif not v.displayVersion and (v.bwrevision or v.bwarevision) then--BigWigs, No DBM
+			elseif self.Options.ShowAllVersions and (not v.displayVersion and (v.bwrevision or v.bwarevision)) then--BigWigs, No DBM
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision, ""))
 			else
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(v.name))
+				if self.Options.ShowAllVersions then
+					self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(v.name))
+				end
 			end
 		end
 		local TotalUsers = #sortMe
@@ -1609,6 +1614,8 @@ do
 		local TotalBW = TotalUsers - NoBigwigs
 		self:AddMsg(DBM_CORE_VERSIONCHECK_FOOTER:format(TotalDBM, TotalBW))
 		self:AddMsg(DBM_CORE_VERSIONCHECK_OUTDATED:format(OldDBM, #OutdatedUsers > 0 and table.concat(OutdatedUsers, ", ") or NONE))
+		twipe(OutdatedUsers)
+		twipe(sortMe)
 		for i = #sortMe, 1, -1 do
 			sortMe[i] = nil
 		end
