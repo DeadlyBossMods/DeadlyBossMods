@@ -4209,6 +4209,22 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 				ObjectiveTrackerFrame:Hide()
 				watchFrameRestore = true
 			end
+			--When hiding objectives frame in challenge modes, start our own timer to show medal time remaining
+			local _, elapsedTime, worldTimerType = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active. if it's not, use GetWorldElapsedTimers() to find correct one
+			if worldTimerType == 2 then--Challenge mode
+				local bronze, silver, gold = GetChallengeModeMapTimes(LastInstanceMapID)
+				local remaining
+				if elapsedTime < gold then
+					remaining = gold - elapsedTime
+					self.Bars:CreateBar(remaining, CHALLENGE_MODE_MEDAL3, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+				elseif elapsedTime < silver then
+					remaining = silver - elapsedTime
+					self.Bars:CreateBar(remaining, CHALLENGE_MODE_MEDAL2, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+				elseif elapsedTime < bronze then
+					remaining = bronze - elapsedTime
+					self.Bars:CreateBar(remaining, CHALLENGE_MODE_MEDAL1, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+				end
+			end
 		end
 		if self.Options.HideTooltips and not mod.inScenario then
 			--Better or cleaner way?
@@ -4602,6 +4618,12 @@ function DBM:EndCombat(mod, wipe)
 			if self.Options.HideObjectivesFrame and watchFrameRestore and not scenario then
 				ObjectiveTrackerFrame:Show()
 				watchFrameRestore = false
+				if difficultyIndex == 8 then
+					--Cancel any and all CM medal when unhiding objectives frame
+					self.Bars:CancelBar(CHALLENGE_MODE_MEDAL1)
+					self.Bars:CancelBar(CHALLENGE_MODE_MEDAL2)
+					self.Bars:CancelBar(CHALLENGE_MODE_MEDAL3)
+				end
 			end
 			if tooltipsHidden then
 				--Better or cleaner way?
