@@ -77,22 +77,28 @@ local tectusN = EJ_GetEncounterInfo(1195)
 local shardN = EJ_GetSectionInfo(10063)
 local moteN = EJ_GetSectionInfo(10064)
 local moteH = {}
-local healthPhase = 0 -- not need to sync.
+local healthPhase, ltectusH, lshardC, lshardT, lmoteC, lmoteT = 0, 1, 1, 1, 1, 1 -- not need to sync.
+
 function mod:CustomHealthUpdate()
 	local tectusH, shardC, shardT, moteC, moteT = 0, 0, 0, 0, 0
 	if UnitExists("boss1") then
 		healthPhase = 1
 		tectusH = UnitHealth("boss1") / UnitHealthMax("boss1") * 100
+		ltectusH = tectusH
 	end
 	if UnitExists("boss2") then
 		healthPhase = 2
 		shardC = shardC + 1
 		shardT = shardT + (UnitHealth("boss2") / UnitHealthMax("boss2") * 100)
+		lshardC = shardC
+		lshardT = shardT
 	end
 	if UnitExists("boss3") then
 		healthPhase = 2
 		shardC = shardC + 1
 		shardT = shardT + (UnitHealth("boss3") / UnitHealthMax("boss3") * 100)
+		lshardC = shardC
+		lshardT = shardT
 	end
 	for guid, health in pairs(moteH) do
 		local newhealth = self:GetBossHPByGUID(guid) or health
@@ -100,6 +106,8 @@ function mod:CustomHealthUpdate()
 			healthPhase = 3
 			moteC = moteC + 1
 			moteT = moteT + newhealth
+			lmoteC = moteC
+			lmoteH = moteH
 			moteH[guid] = newhealth
 		end
 	end
@@ -141,11 +149,11 @@ function mod:CustomHealthUpdate()
 		end
 	end
 	if healthPhase == 1 then
-		return ("(%d%%, %s)"):format(tectusH, tectusN)
+		return ("(%d%%, %s)"):format(tectusH > 0 and tectusH or ltectusH, tectusN)
 	elseif healthPhase == 2 then
-		return ("(%d%%, %s)"):format(shardT / (shardC > 0 and shardC or 1), shardN)
+		return ("(%d%%, %s)"):format((shardT > 0 and shardT or lshardT) / (shardC > 0 and shardC or lshardC), shardN)
 	elseif healthPhase == 3 then
-		return ("(%d%%, %s)"):format(moteT / (moteC > 0 and moteC or 1), moteN)
+		return ("(%d%%, %s)"):format((moteT > 0 and moteT or lmoteT) / (moteC > 0 and moteC or lmoteC), moteN)
 	end
 	return DBM_CORE_UNKNOWN
 end
