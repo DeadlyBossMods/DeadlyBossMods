@@ -105,9 +105,9 @@ end
 local function checkBossForgot(self)
 	DBM:Debug("checkBossForgot ran, which means expected balls 5 seconds late, starting 25 second timer for next balls")
 	--self.vb.ballsCount = self.vb.ballsCount + 1--if boss forgot balls, should it be incrimented? need to see log where he forgets his balls to see if it offsets mind contorls from evens to odds, if so, then do NOT incriment. if it does offset mcs that means we need to uncommont this
-	timerBallsCD:Start(25, self.vb.ballsCount+1)
-	countdownBalls:Start(25)
-	self:Schedule(18.5, ballsWarning)
+	timerBallsCD:Start(20, self.vb.ballsCount+1)
+	countdownBalls:Start(20)
+	self:Schedule(13.5, ballsWarning)
 end
 
 local function returnPosition(self)
@@ -294,7 +294,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:Unschedule(ballsWarning)
 			self:Unschedule(checkBossForgot)--Cancel check boss forgot
 			self:Schedule(remaining+16, ballsWarning)
-			self:Schedule(remaining+27.5, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
+			self:Schedule(remaining+32.5, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
 			DBM:Debug("timerBallsCD is extending by 22.5 seconds due to shield phase")
 		end	
 	end
@@ -333,6 +333,7 @@ function mod:OnSync(msg, targetname)
 	--12/26 22:13:11.402  SPELL_AURA_REMOVED,Vehicle-0-3152-1228-6882-79015-00001D58EE,"Koragh",0xa48,0x0,Vehicle-0-3152-1228-6882-79015-00001D58EE,"Koragh",0xa48,0x0,156803,"Nullification Barrier",0x1,BUFF,0,0 <---- Shield Phase Start
 	--12/26 22:13:55.372  SPELL_CAST_SUCCESS,Vehicle-0-3152-1228-6882-79015-00001D58EE,"Koragh",0xa48,0x0,Player-2110-057062D7,"___",0x512,0x0,161612,"Overflowing Energy",0x40,0000000000000000,0,0,0,0,0,0,0,0,0.00,0.00,0 <-- Soak happens (51 sec after failure occurs)
 	elseif msg == "Ball" then
+		self.vb.ballsCount = self.vb.ballsCount + 1
 		self:Unschedule(ballsWarning)
 		self:Unschedule(checkBossForgot)
 		local timer
@@ -347,6 +348,6 @@ function mod:OnSync(msg, targetname)
 		timerBallsCD:Start(timer, self.vb.ballsCount+1)
 		countdownBalls:Start(timer)
 		self:Schedule(timer-6.5, ballsWarning)
-		self:Schedule(timer+5, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
+		self:Schedule(timer+10, checkBossForgot, self)--Fire checkbossForgot 10 seconds after raid should have soaked or taken damage
 	end
 end
