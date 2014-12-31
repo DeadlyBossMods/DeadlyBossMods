@@ -4204,7 +4204,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		self:ToggleRaidBossEmoteFrame(1)
 		self:ToggleGarrisonAlertsFrame(1)
 		self:StartLogging(0, nil)
-		if self.Options.HideObjectivesFrame and savedDifficulty ~= "challenge5" and mod.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 then
+		if self.Options.HideObjectivesFrame and not (mod.type == "SCENARIO") and GetNumTrackedAchievements() == 0 then
 			if ObjectiveTrackerFrame:IsVisible() then
 				ObjectiveTrackerFrame:Hide()
 				watchFrameRestore = true
