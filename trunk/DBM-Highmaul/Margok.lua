@@ -588,7 +588,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.markActive = true
 		self.vb.lastMarkedTank = args.destName
 		local uId = DBM:GetRaidUnitId(args.destName)
-		local _, _, _, _, _, duration, expires, _, _ = UnitDeBuff(uId, args.spellName)
+		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)
 		timerMarkOfChaos:Start(duration, targetName)
 		if args:IsPlayer() then
 			self.vb.playerHasMark = true
