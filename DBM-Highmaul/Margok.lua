@@ -414,7 +414,6 @@ function mod:SPELL_CAST_START(args)
 			if self.Options.warnMarkOfChaos then
 				warnMarkOfChaos:Show(targetName)
 			end
-			timerMarkOfChaos:Start(targetName)
 			if tanking or (status == 3) then
 				specWarnMarkOfChaos:Show()
 				voiceMarkOfChaos:Play("runout")
@@ -588,6 +587,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Update frame again in case he swaped targets during cast (happens)
 		self.vb.markActive = true
 		self.vb.lastMarkedTank = args.destName
+		local uId = DBM:GetRaidUnitId(args.destName)
+		local _, _, _, _, _, duration, expires, _, _ = UnitDeBuff(uId, args.spellName)
+		timerMarkOfChaos:Start(duration, targetName)
 		if args:IsPlayer() then
 			self.vb.playerHasMark = true
 			if spellId == 164176 then 
