@@ -1552,6 +1552,7 @@ end
 
 do
 	local sortMe = {}
+	local OutdatedUsers = {}
 
 	local function sort(v1, v2)
 		if v1.revision and not v2.revision then
@@ -1570,11 +1571,12 @@ do
 			tinsert(sortMe, v)
 		end
 		tsort(sortMe, sort)
+		twipe(OutdatedUsers)
 		self:AddMsg(DBM_CORE_VERSIONCHECK_HEADER)
 		for i, v in ipairs(sortMe) do
 			if v.displayVersion and not (v.bwrevision or v.bwarevision) then--DBM, no BigWigs
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, "DBM "..v.displayVersion, v.revision, v.VPVersion or ""))--Only display VP version if not running two mods
-				if notify and v.revision < DBM.ReleaseRevision then
+				if notify and v.revision < self.ReleaseRevision then
 					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
 			elseif v.displayVersion and (v.bwrevision or v.bwarevision) then--DBM & BigWigs
@@ -1588,6 +1590,7 @@ do
 		local TotalUsers = #sortMe
 		local NoDBM = 0
 		local NoBigwigs = 0
+		local OldDBM = 0
 		for i = #sortMe, 1, -1 do
 			if not sortMe[i].revision then
 				NoDBM = NoDBM + 1
@@ -1595,10 +1598,17 @@ do
 			if not (sortMe[i].bwarevision or sortMe[i].bwrevision) then
 				NoBigwigs = NoBigwigs + 1
 			end
+			--Table sorting sorts dbm to top, bigwigs underneath. Highest version dbm always at top. so sortMe[1]
+			--This check compares all dbm version to highest RELEASE version in raid.
+			if sortMe[i].revision and (sortMe[i].revision < sortMe[1].version) then
+				OldDBM = OldDBM + 1
+				tinsert(OutdatedUsers, sortMe[i].name)
+			end
 		end
 		local TotalDBM = TotalUsers - NoDBM
 		local TotalBW = TotalUsers - NoBigwigs
 		self:AddMsg(DBM_CORE_VERSIONCHECK_FOOTER:format(TotalDBM, TotalBW))
+		self:AddMsg(DBM_CORE_VERSIONCHECK_OUTDATED:format(OldDBM, #OutdatedUsers > 0 and table.concat(OutdatedUsers, ", ") or NONE))
 		for i = #sortMe, 1, -1 do
 			sortMe[i] = nil
 		end
