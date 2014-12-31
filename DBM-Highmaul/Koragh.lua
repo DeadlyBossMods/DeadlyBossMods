@@ -271,6 +271,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 156803 then--Null barrier fall off boss
+		DBM:Debug("Koragh Lost his shield")
 		self.vb.shieldCharging = true
 		warnVulnerability:Show(args.destName)
 		specWarnVulnerability:Show(args.destName)
@@ -278,7 +279,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerTrampleCD:Cancel()
 		timerExpelMagicFelCD:Cancel()
 		local elapsed, total = timerBallsCD:GetTime()
-		if elapsed == 0 and total == 0 then--There was no timer?
+		if (elapsed == 0) and (total == 0) then--There was no timer?
 			DBM:Debug("Koragh lost his balls?")--Should not happen, but just in case, i want to see when it does clearly
 			return
 		end
