@@ -2,13 +2,13 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Dec 27, 2014@12193
+-- Last update: Dec 31, 2014@12240
 
 if GetLocale() ~= "zhCN" then return end
 
 DBM_CORE_NEED_SUPPORT				= "如果你会编程并且英语不错，请来帮助我们完善DBM中文翻译。请访问 http://forums.elitistjerks.com/topic/132449-dbm-localizers-needed/ 获取更多消息。"
 DBM_CORE_NEED_LOGS					= "DBM 需要战斗记录器 (http://www.wowace.com/addons/transcriptor/) 的日志来使得技能判断更准确. 如果你想帮忙，请用 transcriptor 记录并上传日志文件到 http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing/ (请压缩他们). 我们现在只对团本数据感兴趣."
-DBM_HOW_TO_USE_MOD					= "欢迎使用DBM。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口。手动打开指定区域的模组即可开始针对各个模块进行设置，也可以浏览首领击杀记录。DBM 会在你首次尝试首领战时自动进行扫描，但是有些设置需要手动开启。"
+DBM_HOW_TO_USE_MOD					= "欢迎使用DBM。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。DBM 会在你第一次使用时读取你的职业和专精并做出相应设置，但是有些设置需要手动开启。"
 
 DBM_FORUMS_MESSAGE					= "发现BUG或错误的计时条?你希望要让某些模组有新的警告，计时器或是特别功能?\n拜访新的Deadly Boss Mods |HDBM:论坛|h|cff3588ffhttp://www.deadlybossmods.com|r (你可以点击链接复制网址)"
 DBM_FORUMS_COPY_URL_DIALOG			= "拜访我们的讨论与支持论坛\r\n(hosted by Elitist Jerks!)"
@@ -102,15 +102,17 @@ DBM_CORE_WHISPER_SCENARIO_END_WIPE			= "%s在场景战役-%s的战斗中灭团�
 DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s在场景战役-%s的战斗中灭团了。该难度下总共失败%d次。"
 
 DBM_CORE_VERSIONCHECK_HEADER		= "DBM - 版本检测"
-DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"--One Boss mod
+DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d) %s"--One Boss mod
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s：未安装DBM"
+DBM_CORE_VERSIONCHECK_OUTDATED		= "下列%d名玩家的DBM版本已经过期:%s"
 DBM_CORE_VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用DBM"
 DBM_CORE_YOUR_VERSION_OUTDATED		= "你的DBM已经过期。请访问 http://dev.deadlybossmods.com 下载最新版本。"
 DBM_CORE_OUTDATED_PVP_MODS			= "你当前使用的DBM-PVP模块已经过期。PVP模块现在需要单独下载。请访问 http://www.deadlybossmods.com"
 DBM_CORE_VOICE_PACK_OUTDATED		= "你当前使用的DBM语音包已经过期。特殊警报屏蔽（当心，毁灭）已被禁用。请下载最新语音包，或联系语音包作者更新。"
-DBM_BIG_WIGS						= "BigWigs"
-DBM_BIG_WIGS_ALPHA					= "BigWigs Alpha"
+DBM_CORE_VOICE_MISSING				= "DBM找不到你当前选择的语音包。语音包选项已经被设置成'None'。请确保你的语音包被正确安装和启用。"
+--DBM_BIG_WIGS						(Same as English locales)
+--DBM_BIG_WIGS_ALPHA					(Same as English locales)
 
 DBM_CORE_UPDATEREMINDER_HEADER			= "你的DBM版本已过期。\n你可以在如下地址下载到新版本%s（r%d）："
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "你的DBM Alpha 版本已过期了%d个版本。这可能导致你或其他团队成员出错。"
@@ -132,7 +134,7 @@ DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+拖动 / 右键拖动：拖动\nAlt+Sh
 
 DBM_CORE_RANGECHECK_HEADER			= "距离监视（%d码）"
 DBM_CORE_RANGECHECK_SETRANGE		= "设置距离"
-DBM_CORE_RANGECHECK_SOUNDS			= "声音"
+DBM_CORE_RANGECHECK_SOUNDS			= "音效"
 DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "声音提示：当有玩家接近时"
 DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "声音提示：多名玩家接近时"
 DBM_CORE_RANGECHECK_SOUND_0			= "无"
@@ -144,7 +146,7 @@ DBM_CORE_RANGECHECK_LOCK			= "锁定框体"
 DBM_CORE_RANGECHECK_OPTION_FRAMES	= "框体"
 DBM_CORE_RANGECHECK_OPTION_RADAR	= "显示雷达框体"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "显示文本框体"
-DBM_CORE_RANGECHECK_OPTION_BOTH		= "同时显示2个框体"
+DBM_CORE_RANGECHECK_OPTION_BOTH		= "同时显示雷达和文本框体"
 DBM_CORE_RANGERADAR_HEADER			= "距离雷达（%d码）"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d人在监视距离内"
 
@@ -301,14 +303,13 @@ DBM_CORE_AUTO_ICONS_OPTION_TEXT				= "为$spell:%s的目标添加团队标记"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT2			= "为$spell:%s添加团队标记"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT				= "为$spell:%s的目标添加箭头"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT2			= "为$spell:%s的目标添加远离箭头"
-DBM_CORE_AUTO_ARROW_OPTION_TEXT3			= "为$spell:%s的目标添加前往指定位置的箭头"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT				= "为技能$spell:%s提供内置语音警报（快跑啊，小姑娘）"
 DBM_CORE_AUTO_VOICE_OPTION_TEXT				= "为技能$spell:%s提供语音包警报"
 DBM_CORE_AUTO_VOICE2_OPTION_TEXT			= "为阶段转换提供语音包警报"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT			= "倒计时：$spell:%s的冷却时间倒计时"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2		= "倒计时：$spell:%s消失时"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT			= "倒计时：$spell:%s的持续时间正计时"
-DBM_CORE_AUTO_YELL_OPTION_TEXT				= "当你受到$spell:%s影响时大喊"
+DBM_CORE_AUTO_YELL_OPTION_TEXT				= "当你受到$spell:%s影响时时大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT			= UnitName("player") .. " 中了 %s!"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT				= "距离监视(%s)：$spell:%s"--string used for range so we can use things like "5/2" as a value for that field
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT		= "距离监视(%s)"--For when a range frame is just used for more than one thing
