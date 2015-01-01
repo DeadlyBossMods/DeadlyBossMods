@@ -86,6 +86,7 @@ mod.vb.supressionCount = 0
 mod.vb.ballsCount = 0
 mod.vb.shieldCharging = false
 local lastX, LastY = nil, nil--Not in VB table because it player personal position
+local barName = GetSpellInfo(156803)
 
 local function closeRange(self)
 	if self.Options.RangeFrame then
@@ -128,6 +129,9 @@ function mod:OnCombatStart(delay)
 	self:Schedule(29.5-delay, ballsWarning)
 	if self:IsMythic() then
 		timerExpelMagicFelCD:Start(5-delay)
+	end
+	if DBM.BossHealth:IsShown() then--maybe need another option
+		DBM.BossHealth:AddBoss(function() return UnitPower("boss1", 10) end, barName)--Null Barrier health bar
 	end
 end
 
