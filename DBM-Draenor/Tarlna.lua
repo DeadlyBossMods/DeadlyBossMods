@@ -7,18 +7,18 @@ mod:SetReCombatTime(20)
 mod:SetZone()
 mod:SetMinSyncRevision(11969)
 
-mod:RegisterCombat("combat_yell", L.Pull)
-
+mod:RegisterCombat("combat_yell", L.Pull)--no yell
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 175973 175979",
 	"SPELL_CAST_SUCCESS 176013",
-	"SPELL_AURA_APPLIED 176004"
+	"SPELL_AURA_APPLIED 176004",
+	"SPELL_PERIODIC_DAMAGE 176037",
+	"SPELL_ABSORBED 176037"
 )
 
 --Oh look, someone designed a world boss that's a copy and paste of Yalnu with tweaks.
 --TODO, do dps siwtch to Untamed Mand, or just tanks.
---TODO, add Noxious Spit warnings
 local warnColossalBlow				= mod:NewSpellAnnounce(175973, 3)
 local warnGenesis					= mod:NewSpellAnnounce(175979, 4)
 local warnSavageVines				= mod:NewTargetAnnounce(176004, 2)
@@ -30,6 +30,7 @@ local specWarnSavageVines			= mod:NewSpecialWarningYou(176004)
 local yellSavageVines				= mod:NewYell(176004)
 local specWarnSavageVinesNear		= mod:NewSpecialWarningClose(176004)
 local specWarnGrowUntamedMandragora	= mod:NewSpecialWarningSwitch(176013, not mod:IsHealer(), nil, nil, nil, nil, true)
+local specWarnNoxiousSpit			= mod:NewSpecialWarningMove(176037)
 
 --local timerColossalBlowCD			= mod:NewNextTimer(60, 175973)
 local timerGenesis					= mod:NewCastTimer(14, 169613)
@@ -120,3 +121,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID)-- only listen personal Noxious Spit event
+	if destGUID ~= UnitGUID("player") then return end
+	if self:AntiSpam(2, 1) then
+		specWarnNoxiousSpit:Show()
+	end
+end
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
