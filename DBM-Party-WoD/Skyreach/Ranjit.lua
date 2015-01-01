@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 153544 156793 153315",
 	"SPELL_CAST_SUCCESS 165731",
-	"SPELL_PERIODIC_DAMAGE 154043",
+	"SPELL_PERIODIC_DAMAGE 154043 153759",
 	"SPELL_ABSORBED 154043",
 	"RAID_BOSS_EMOTE"
 )
@@ -24,8 +24,9 @@ local warnLensFlare			= mod:NewSpellAnnounce(154043, 3)
 
 local specWarnSpinningBlade	= mod:NewSpecialWarningSpell(153544, false, nil, nil, 2)
 local specWarnFourWinds		= mod:NewSpecialWarningSpell(156793, nil, nil, nil, 2)
-local specWarnLensFlareCast	= mod:NewSpecialWarningSpell(154043, nil, nil, nil, 2)
-local specWarnLensFlare		= mod:NewSpecialWarningMove(154043)
+local specWarnWindFallMove	= mod:NewSpecialWarningMove(153315)
+local specWarnLensFlare		= mod:NewSpecialWarningSpell(154043, nil, nil, nil, 2)
+local specWarnLensFlareMove	= mod:NewSpecialWarningMove(154043)
 
 local timerFourWinds		= mod:NewBuffActiveTimer(18, 156793)
 local timerFourWindsCD		= mod:NewCDTimer(30, 156793)
@@ -67,13 +68,15 @@ end
 
 function mod:RAID_BOSS_EMOTE(msg)
 	warnLensFlare:Show()
-	specWarnLensFlareCast:Show()
+	specWarnLensFlare:Show()
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
-	if spellId == 154043 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
-		specWarnLensFlare:Show()
+	if spellId == 154043 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
+		specWarnLensFlareMove:Show()
 		voiceLensFlare:Play("runaway")
+	elseif spellId == 153759 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+		specWarnWindFallMove:Show()
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
