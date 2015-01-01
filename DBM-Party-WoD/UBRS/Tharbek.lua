@@ -26,8 +26,6 @@ local warnTharbek			= mod:NewSpellAnnounce("ej10276", 3, "Interface\\ICONS\\INV_
 local warnIronReaver		= mod:NewTargetAnnounce(161989, 3)
 local warnImbuedIronAxe		= mod:NewTargetAnnounce(162090, 4)
 
-local specWarnIronReaver	= mod:NewSpecialWarningYou(161989)
-local yellIronReaver		= mod:NewYell(161989)
 local specWarnImbuedIronAxe	= mod:NewSpecialWarningYou(162090)
 local yellImbuedIronAxe		= mod:NewYell(162090)
 local specWarnNoxiousSpit	= mod:NewSpecialWarningMove(161833)
@@ -40,10 +38,6 @@ local voiceWarnNoxiousSpit	= mod:NewVoice(161833)
 function mod:IronReaverTarget(targetname, uId)
 	if not targetname then return end
 	warnIronReaver:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnIronReaver:Show()
-		yellIronReaver:Yell()
-	end
 end
 
 function mod:OnCombatStart(delay)
