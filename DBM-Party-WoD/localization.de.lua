@@ -198,6 +198,25 @@ L= DBM:GetModLocalization(967)
 -----------------------
 L= DBM:GetModLocalization(968)
 
+L:SetWarningLocalization({
+	warnAdd			= DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell:format("Schildkonstrukt der Himmelsnadel"),
+	specWarnAdd		= DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch:format("Schildkonstrukt der Himmelsnadel")
+})
+
+L:SetOptionLocalization({
+	warnAdd			= "Zeige Warnung für Schildkonstrukt der Himmelsnadel",
+	specWarnAdd		= "Spezialwarnung für Zielwechsel auf Schildkonstrukt der Himmelsnadel"
+})
+
+-------------
+--  Skyreach Trash  --
+-------------
+L = DBM:GetModLocalization("SkyreachTrash")
+
+L:SetGeneralLocalization({
+	name =	"Trash der Himmelsnadel"
+})
+
 -----------------------
 -- <<<Upper Blackrock Spire>>> --
 -----------------------
