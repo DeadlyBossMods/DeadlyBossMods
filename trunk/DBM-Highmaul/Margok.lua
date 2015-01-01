@@ -117,7 +117,7 @@ local specWarnDarkStar							= mod:NewSpecialWarningSpell(178607, nil, nil, nil,
 local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238, nil, not mod:IsTank())--Pretty much a next timer, HOWEVER can get delayed by other abilities so only reason it's CD timer anyways
 local timerDestructiveResonanceCD				= mod:NewCDTimer(15, 156467, nil, not mod:IsMelee())--16-30sec variation noted. I don't like it
 local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605, nil, mod:IsTank())
-local timerMarkOfChaosCD						= mod:NewCDTimer(51, 158605, nil, mod:IsTank())
+local timerMarkOfChaosCD						= mod:NewCDTimer(50.5, 158605, nil, mod:IsTank())
 local timerForceNovaCD							= mod:NewCDCountTimer(45, 157349)--45-52
 local timerSummonArcaneAberrationCD				= mod:NewCDCountTimer(45, "ej9945", nil, not mod:IsHealer(), nil, 156471)--45-52 Variation Noted
 local timerTransition							= mod:NewPhaseTimer(74)
@@ -132,7 +132,7 @@ local timerEnvelopingNightCD					= mod:NewNextCountTimer(63, 165876)--60 seconds
 local timerDarkStarCD							= mod:NewCDTimer(61, 178607)--61-65 Variations noticed
 
 local countdownArcaneWrath						= mod:NewCountdown(50, 156238, not mod:IsTank())--Probably will add for whatever proves most dangerous on mythic
-local countdownMarkofChaos						= mod:NewCountdown("Alt51", 158605, mod:IsTank())
+local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank())
 local countdownForceNova						= mod:NewCountdown("AltTwo45", 157349)
 local countdownTransition						= mod:NewCountdown(74, 157278)
 --Mythic
