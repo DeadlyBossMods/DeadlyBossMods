@@ -9,13 +9,14 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 155586 155498",
-	"SPELL_CAST_START 155505 169151 155572 155586 155588 154039 155037",
+	"SPELL_CAST_START 155505 169088 169151 155572 155586 155588 154039 155037",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnRejuvSerum					= mod:NewTargetAnnounce(155498, 4, nil, mod:IsMagicDispeller())
 local warnDebilitatingRay				= mod:NewCastAnnounce(155505, 4)
+local warnSummonBlackIronDread			= mod:NewCastAnnounce(169088, 4)
 local warnSummonBlackIronVet			= mod:NewCastAnnounce(169151, 4)
 local warnVeilofShadow					= mod:NewCastAnnounce(155586, 4)--Challenge mode only
 local warnShadowBoltVolley				= mod:NewCastAnnounce(155588, 3)
@@ -26,6 +27,7 @@ local warnEruption						= mod:NewSpellAnnounce(155037, 4, nil, mod:IsTank())
 
 local specWarnRejuvSerumDispel			= mod:NewSpecialWarningDispel(155498, mod:IsMagicDispeller())
 local specWarnDebilitatingRay			= mod:NewSpecialWarningInterrupt(155505, not mod:IsHealer())
+local specWarnSummonBlackIronDread		= mod:NewSpecialWarningInterrupt(169088, not mod:IsHealer())
 local specWarnSummonBlackIronVet		= mod:NewSpecialWarningInterrupt(169151, not mod:IsHealer())
 local specWarnVeilofShadow				= mod:NewSpecialWarningInterrupt(155586, not mod:IsHealer())--Challenge mode only(little spammy for mage)
 local specWarnVeilofShadowDispel		= mod:NewSpecialWarningDispel(155586, mod:CanRemoveCurse())
@@ -60,6 +62,9 @@ function mod:SPELL_CAST_START(args)
 		if sourceGUID == UnitGUID("target") or sourceGUID == UnitGUID("focus") then 
 			specWarnDebilitatingRay:Show(args.sourceName)
 		end
+	elseif spellId == 169088 then
+		warnSummonBlackIronDread:Show()
+		specWarnSummonBlackIronDread:Show(args.sourceName)
 	elseif spellId == 169151 then
 		warnSummonBlackIronVet:Show()
 		specWarnSummonBlackIronVet:Show(args.sourceName)
