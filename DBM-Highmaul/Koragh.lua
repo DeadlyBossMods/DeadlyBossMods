@@ -278,7 +278,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerVulnerability:Start()
 		timerTrampleCD:Cancel()
 		timerExpelMagicFelCD:Cancel()
-		local elapsed, total = timerBallsCD:GetTime()
+		local elapsed, total = timerBallsCD:GetTime(self.vb.ballsCount+1)
 		if (elapsed == 0) and (total == 0) then--There was no timer?
 			DBM:Debug("Koragh lost his balls?")--Should not happen, but just in case, i want to see when it does clearly
 			return
