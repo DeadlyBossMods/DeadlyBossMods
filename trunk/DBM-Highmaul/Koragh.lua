@@ -58,7 +58,7 @@ local timerTrampleCD				= mod:NewCDTimer(16, 163101)--Also all over the place, 1
 local timerExpelMagicFire			= mod:NewBuffFadesTimer(11.5, 162185)
 local timerExpelMagicFrost			= mod:NewBuffActiveTimer(20, 161411)
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
-local timerBallsCD					= mod:NewNextCountTimer(30, 161612)
+local timerBallsCD					= mod:NewNextTimer(30, 161612)
 local timerExpelMagicFelCD			= mod:NewCDTimer(15.5, 172895)--Mythic
 local timerExpelMagicFel			= mod:NewBuffFadesTimer(12, 172895)--Mythic
 
@@ -105,7 +105,7 @@ end
 local function checkBossForgot(self)
 	DBM:Debug("checkBossForgot ran, which means expected balls 5 seconds late, starting 25 second timer for next balls")
 	--self.vb.ballsCount = self.vb.ballsCount + 1--if boss forgot balls, should it be incrimented? need to see log where he forgets his balls to see if it offsets mind contorls from evens to odds, if so, then do NOT incriment. if it does offset mcs that means we need to uncommont this
-	timerBallsCD:Start(20, self.vb.ballsCount+1)
+	timerBallsCD:Start(20)
 	countdownBalls:Start(20)
 	self:Schedule(13.5, ballsWarning)
 end
@@ -123,7 +123,7 @@ function mod:OnCombatStart(delay)
 	self.vb.ballsCount = 0
 	self.vb.shieldCharging = false
 	--timerExpelMagicFireCD:Start(6-delay)
-	timerBallsCD:Start(36-delay, 1)
+	timerBallsCD:Start(36-delay)
 	countdownBalls:Start(36-delay)
 	self:Schedule(29.5-delay, ballsWarning)
 	if self:IsMythic() then
@@ -287,7 +287,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
 		if remaining > 4 then--If 4 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
 			timerBallsCD:Cancel()
-			timerBallsCD:Start(remaining+22.5, self.vb.ballsCount+1)
+			timerBallsCD:Start(remaining+22.5)
 			countdownBalls:Cancel()
 			specWarnBallsSoon:Cancel()
 			countdownBalls:Start(remaining+22.5)
@@ -345,7 +345,7 @@ function mod:OnSync(msg, targetname)
 			DBM:Debug("timerBallsCD started in regular phase, 30 second timer started")
 		end
 		warnBallsHit:Show(self.vb.ballsCount)
-		timerBallsCD:Start(timer, self.vb.ballsCount+1)
+		timerBallsCD:Start(timer)
 		countdownBalls:Start(timer)
 		self:Schedule(timer-6.5, ballsWarning)
 		self:Schedule(timer+10, checkBossForgot, self)--Fire checkbossForgot 10 seconds after raid should have soaked or taken damage
