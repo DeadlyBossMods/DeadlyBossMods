@@ -31,7 +31,7 @@ local yellMagmaSpit			= mod:NewYell(155051)
 local specWarnMagmaPool		= mod:NewSpecialWarningMove(155057)
 local specWarnEngulfingFire	= mod:NewSpecialWarningSpell(154996, nil, nil, nil, 3)
 
-local timerEngulfingFireCD	= mod:NewCDTimer(22, 154996)
+local timerEngulfingFireCD	= mod:NewCDTimer(24, 154996)
 local timerSwirlingWinds	= mod:NewBuffActiveTimer(20, 167203)
 
 local voiceEngulfingFire	= mod:NewVoice(154996)
@@ -51,7 +51,7 @@ function mod:MagmaSpitTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	timerEngulfingFireCD:Start(13-delay)--Needs more data
+	timerEngulfingFireCD:Start(15-delay)--Needs more data
 	self.vb.firstBreath = false
 	voiceEngulfingFire:Schedule(12, "breathsoon")
 end
@@ -65,6 +65,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 167203 then
 		warnSwirlingWinds:Show()
 		timerSwirlingWinds:Start()
+		timerEngulfingFireCD:Cancel()
 		voiceEngulfingFire:Cancel()
 	end
 end
