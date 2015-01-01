@@ -19,7 +19,7 @@ local warnEnergize		= mod:NewSpellAnnounce(154159, 3)
 local warnBurst			= mod:NewCountAnnounce(154135, 3)
 
 local specWarnBurst		= mod:NewSpecialWarningCount(154135, nil, nil, nil, 2)
-local specWarnSmash		= mod:NewSpecialWarningMove(154110)
+local specWarnSmash		= mod:NewSpecialWarningMove("OptionVersion2", 154110, mod:IsTank())
 
 local timerEnergozeCD	= mod:NewNextTimer(20, 154159)
 local timerBurstCD		= mod:NewCDCountTimer(23, 154135)
