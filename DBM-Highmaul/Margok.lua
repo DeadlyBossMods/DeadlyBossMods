@@ -20,8 +20,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REFRESH 157763",
 	"SPELL_AURA_REMOVED 158605 164176 164178 164191 157763 156225 164004 164005 164006 165102 165595",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2",
-	"CHAT_MSG_MONSTER_YELL"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
 --TODO, do more fancy stuff with radar in phase 4 when i have more logs, like closing it when it's not needed. Or may just leave it as is depending on preferences.
@@ -751,7 +750,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if spellId == 157964 then
 			if self:IsMythic() then
 				self.vb.phase = 3
-				voicePhaseChange:Play("pthree")	
+				voicePhaseChange:Play("pthree")
+				self:RegisterShortTermEvents(
+					"CHAT_MSG_MONSTER_YELL"
+				)
 			else
 				self.vb.phase = 4
 				voicePhaseChange:Play("pfour")
@@ -764,6 +766,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voicePhaseChange:Play("ptwo")
 		self.vb.phase = 2
 	elseif spellId == 70628 then --Margok being killed by chogal
+		self.vb.phase = 4
 		voicePhaseChange:Play("pfour")
 		timerArcaneWrathCD:Cancel()
 		countdownArcaneWrath:Cancel()
@@ -803,8 +806,8 @@ end
 "<653.1 00:41:38> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#false#false#true#未知目標#Vehicle-0-3127-1228-11037-77428-00001D8C50#elite#0#false#true#true#丘加利#--Chogall Active
 --]]
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
-	if npc == chogallName and not self.vb.phase == 4 then--Some creative shit right here. Screw localized text. This will trigger off first yell at start of 35 second RP Sender is 丘加利 (Cho'gall)
-		self.vb.phase = 4
+	if npc == chogallName then--Some creative shit right here. Screw localized text. This will trigger off first yell at start of 35 second RP Sender is 丘加利 (Cho'gall)
+		self:UnregisterShortTermEvents()--Unregister Yell
 		timerTransition:Start(35)--Boss/any arcane adds still active during this, so do not cancel timers here, canceled on margok death
 	end
 end
