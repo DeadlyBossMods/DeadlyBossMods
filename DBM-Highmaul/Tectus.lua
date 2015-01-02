@@ -234,7 +234,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				moteH[guid] = 0
 			end
 			if self.Options.SetIconOnMote and not self:IsLFR() then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
-				self:ScanForMobs(guid, 0, 8, 8, 0.1, 20)
+				self:ScanForMobs(guid, 0, 8, 8, 0.1, 20, "SetIconOnMote")
 			end
 		end
 	end
