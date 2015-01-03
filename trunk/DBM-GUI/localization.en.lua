@@ -249,6 +249,8 @@ L.LogOnlyRaidBosses			= "Only record raid boss encounters (exclude Raid Finder/p
 L.Area_Invite				= "Invite Options"
 L.AutoAcceptFriendInvite	= "Automatically accept group invites from friends"
 L.AutoAcceptGuildInvite		= "Automatically accept group invites from guild members"
+L.Area_Advanced				= "Advanced Options"
+L.FakeBW					= "Pretend to be BigWigs in version checks instead of DBM (Useful for guilds that force using BigWigs)"
 
 L.PizzaTimer_Headline 		= 'Create a "Pizza Timer"'
 L.PizzaTimer_Title			= 'Name (e.g. "Pizza!")'
