@@ -283,6 +283,7 @@ local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
 local tooltipsHidden = false
 local SWFilterDisabed = false
+local fakeBWRevision = 12464
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -3099,7 +3100,10 @@ do
 	end
 
 	local function SendVersion()
-		if DBM.Options.FakeBWVersion then return end--Pretending to be bigwigs, don't send dbm version information
+		if DBM.Options.FakeBWVersion then
+			SendAddonMessage("BigWigs", ("VR:%d"):format(fakeBWRevision), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")--Pretending to be bigwigs, don't send dbm version information
+			return
+		end
 		--(Note, faker isn't to screw with bigwigs nor is theirs to screw with dbm, but rathor raid leaders who don't let people run WTF they want to run)
 		local VPVersion
 		local VoicePack = DBM.Options.ChosenVoicePack
@@ -3663,7 +3667,6 @@ do
 		end
 	end
 
-	local fakeBWRevision = 12464
 	local function sendBWVer()
 		if IsInGroup() then
 			SendAddonMessage("BigWigs", ("VR:%d"):format(fakeBWRevision), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
