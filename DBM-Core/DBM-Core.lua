@@ -3667,12 +3667,6 @@ do
 		end
 	end
 
-	local function sendBWVer()
-		if IsInGroup() then
-			SendAddonMessage("BigWigs", ("VR:%d"):format(fakeBWRevision), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
-		end
-	end
-
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD") then
 			sender = Ambiguate(sender, "none")
@@ -3688,9 +3682,8 @@ do
 						if bwMsg > fakeBWRevision then fakeBWRevision = bwMsg end--Newer revision found, upgrade!
 					end
 				elseif prefix == "VQ" then--Version request prefix
-					if not self.Options.FakeBWVersion then return end
-					self:Unschedule(sendBWVer)
-					self:Schedule(3, sendBWVer)
+					self:Unschedule(SendVersion)
+					self:Schedule(3, SendVersion)
 				end
 			end
 		end
