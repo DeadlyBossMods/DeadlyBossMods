@@ -552,14 +552,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			elseif spellId == 164005 then
 				if self.Options.warnBranded then
-					warnBrandedFortification:CombinedShow(0.5, args.destName, currentStack)
+					warnBrandedFortification:Show(args.destName, currentStack)
 				end
 				if args:IsPlayer() and currentStack > 6  then--Special warning only for person that needs to get out
 					specWarnBrandedFortification:Show(currentStack)
 				end
 			elseif spellId == 164006 then
 				if self.Options.warnBranded then
-					warnBrandedReplication:Show(args.destName, currentStack)--Changed from combined show cause it can only be max targets, and important to have stack counts.
+					warnBrandedReplication:CombinedShow(0.5, args.destName, currentStack)
 				end
 				if args:IsPlayer() and currentStack > 4 then--Special warning only for person that needs to get out
 					specWarnBrandedReplication:Show(currentStack)
