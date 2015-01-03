@@ -97,7 +97,7 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d) %s"
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 공격대 경보 애드온이 설치되어 있지 않습니다."
 DBM_CORE_VERSIONCHECK_FOOTER		= "DBM 설치: %d명, BigWigs 설치: %d명이 확인되었습니다."
-DBM_CORE_VERSIONCHECK_OUTDATED		= "DBM 구버전 사용중 (%d명): %s"
+DBM_CORE_VERSIONCHECK_OUTDATED		= "구버전 애드온 사용중 (%d명): %s"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "사용중인 DBM 버전이 오래되었습니다! DBM 사용자 포럼에 오셔서 최신 버전을 다운로드 받으세요."
 DBM_CORE_OUTDATED_PVP_MODS			= "설치되어 있는 DBM-PvP 경고가 구버전 입니다. DBM 사용자 포럼에 오셔서 최신 버전으로 업데이트 하시거나, 애드온 폴더에서 DBM-PvP 폴더를 제거하시기 바랍니다. 이제 PvP 경고는 DBM-Core에 더 이상 포함되지 않습니다."
 DBM_CORE_VOICE_PACK_OUTDATED		= "현재 설치되어 있는 음성안내는 이 버전의 DBM에서 지원하는 음성 중 일부가 빠져 있습니다. 특수 경고 소리 끄기 기능이 비활성화 됩니다. 음성안내의 새 버전을 설치하시거나 음성안내 제작자에게 문의하여 업데이트가 가능한지 확인바랍니다."
@@ -185,6 +185,7 @@ DBM_CORE_ANNOUNCE_BREAK_OVER		= "쉬는 시간이 종료되었습니다."
 DBM_CORE_TIMER_PULL					= "전투 예정"
 DBM_CORE_ANNOUNCE_PULL				= "%d초 뒤 시작 합니다. (%s|1이;가; 보냄)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "시작합니다. 긴장하세요.!"
+DBM_CORE_GEAR_WARNING				= "경고: 착용 장비를 확인하세요. 착용 장비 레벨이 가방 장비 레벨보다 %d 낮습니다."
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적)"--BATTLE_PET_SOURCE_6
 
