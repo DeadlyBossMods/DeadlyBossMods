@@ -2973,6 +2973,7 @@ do
 			DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
 			dummyMod.countdown = dummyMod:NewCountdown(0, 0, nil, nil, nil, true)
 			dummyMod.text = dummyMod:NewAnnounce("%s", 1, 2457)
+			dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
 		end
 		--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
 		if not DBM.Options.DontShowPT2 and DBM.Bars:GetBar(DBM_CORE_TIMER_PULL) then
@@ -3010,7 +3011,7 @@ do
 			local bagilvl, equippedilvl = GetAverageItemLevel()
 			local difference = bagilvl - equippedilvl
 			if difference > 50 then
-				DBM:AddMsg(DBM_CORE_GEAR_WARNING:format(floor(difference)))
+				dummyMod.geartext:Show(DBM_CORE_GEAR_WARNING:format(floor(difference)))
 			end
 		end
 	end
