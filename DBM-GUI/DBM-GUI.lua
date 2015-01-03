@@ -2475,6 +2475,9 @@ local function CreateOptionsMenu()
 		local inviteArea			= extraFeaturesPanel:CreateArea(L.Area_Invite, nil, 100, true)
 		local AutoAcceptFriendInvite= inviteArea:CreateCheckButton(L.AutoAcceptFriendInvite, true, nil, "AutoAcceptFriendInvite")
 		local AutoAcceptGuildInvite	= inviteArea:CreateCheckButton(L.AutoAcceptGuildInvite, true, nil, "AutoAcceptGuildInvite")
+		
+		local advancedArea			= extraFeaturesPanel:CreateArea(L.Area_Advanced, nil, 100, true)
+		local FakeBW				= advancedArea:CreateCheckButton(L.FakeBW, true, nil, "FakeBWVersion")
 
 		-- Pizza Timer (create your own timer menu)
 		local pizzaarea = extraFeaturesPanel:CreateArea(L.PizzaTimer_Headline, nil, 85, true)
@@ -2520,6 +2523,7 @@ local function CreateOptionsMenu()
 		soundAlertsArea:AutoSetDimension()
 		bossLoggingArea:AutoSetDimension()
 		inviteArea:AutoSetDimension()
+		advancedArea:AutoSetDimension()
 		extraFeaturesPanel:SetMyOwnHeight()
 	end
 
