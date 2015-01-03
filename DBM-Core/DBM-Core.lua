@@ -3010,7 +3010,7 @@ do
 			local bagilvl, equippedilvl = GetAverageItemLevel()
 			local difference = bagilvl - equippedilvl
 			if difference > 50 then
-				DBM:AddMsg(DBM_CORE_GEAR_WARNING:format(difference))
+				DBM:AddMsg(DBM_CORE_GEAR_WARNING:format(floor(difference)))
 			end
 		end
 	end
