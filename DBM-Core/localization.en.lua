@@ -178,7 +178,7 @@ DBM_CORE_ANNOUNCE_BREAK_OVER		= "Break time is over"
 DBM_CORE_TIMER_PULL					= "Pull in"
 DBM_CORE_ANNOUNCE_PULL				= "Pull in %d sec. (Sent by %s)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull now!"
-DBM_CORE_GEAR_WARNING				= "Warning: You may have forgotten to equip all of your items. Your equipped ilvl is %d lower tan bag ilvl"
+DBM_CORE_GEAR_WARNING				= "Warning: Check gear. Your equipped ilvl is %d lower than bag ilvl"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Achievement"--BATTLE_PET_SOURCE_6
 
