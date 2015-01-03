@@ -215,6 +215,7 @@ DBM.DefaultOptions = {
 	WorldBossAlert = false,
 	AutoAcceptFriendInvite = false,
 	AutoAcceptGuildInvite = false,
+	FakeBWVersion = false,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 }
 
@@ -3098,6 +3099,8 @@ do
 	end
 
 	local function SendVersion()
+		if DBM.Options.FakeBWVersion then return end--Pretending to be bigwigs, don't send dbm version information
+		--(Note, faker isn't to screw with bigwigs nor is theirs to screw with dbm, but rathor raid leaders who don't let people run WTF they want to run)
 		local VPVersion
 		local VoicePack = DBM.Options.ChosenVoicePack
 		if VoicePack ~= "None" then
@@ -3660,15 +3663,32 @@ do
 		end
 	end
 
+	local fakeBWRevision = 12464
+	local function sendBWVer()
+		if IsInGroup() then
+			SendAddonMessage("BigWigs", ("VR:%d"):format(fakeBWRevision), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
+		end
+	end
+
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD") then
 			sender = Ambiguate(sender, "none")
 			handleSync(channel, sender, strsplit("\t", msg))
-		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" and self:GetRaidUnitId(sender)) then
+		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
 			local bwPrefix, bwMsg = msg:match("^(%u-):(.+)")
-			if bwPrefix and (bwPrefix == "VR" or bwPrefix == "VRA") then--We only care about version prefixes so only pass those prefixes on
-				sender = Ambiguate(sender, "none")
-				handleSync(channel, sender, bwPrefix, bwMsg)
+			if bwPrefix then
+				if bwPrefix == "VR" or bwPrefix == "VRA" then--Version information prefixes
+					sender = Ambiguate(sender, "none")
+					handleSync(channel, sender, bwPrefix, bwMsg)
+					bwMsg = tonumber(bwMsg) or 0
+					if bwPrefix == "VR" then--Only upgrade to latest release version found
+						if bwMsg > fakeBWRevision then fakeBWRevision = bwMsg end--Newer revision found, upgrade!
+					end
+				elseif prefix == "VQ" then--Version request prefix
+					if not self.Options.FakeBWVersion then return end
+					self:Unschedule(sendBWVer)
+					self:Schedule(3, sendBWVer)
+				end
 			end
 		end
 	end
