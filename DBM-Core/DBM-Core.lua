@@ -1031,6 +1031,7 @@ do
 				"CHAT_MSG_MONSTER_SAY",
 				"CHAT_MSG_RAID_BOSS_EMOTE",
 				"RAID_BOSS_EMOTE",
+				"RAID_BOSS_WHISPER",
 				"PLAYER_ENTERING_WORLD",
 				"LFG_ROLE_CHECK_SHOW",
 				"LFG_PROPOSAL_SHOW",
@@ -3224,6 +3225,12 @@ do
 			DBM:CreatePizzaTimer(time, text, nil, sender, true)
 		end
 	end
+	
+	syncHandlers["RBW"] = function(sender, spellId)
+		if DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging()) then
+			DBM:Debug("RAID_BOSS_WHISPER on "..sender.." with spellId of "..spellId)
+		end
+	end
 
 	-- beware, ugly and missplaced code ahead
 	-- todo: move this somewhere else
@@ -4012,6 +4019,15 @@ do
 	function DBM:RAID_BOSS_EMOTE(msg, ...)--This is a mirror of above prototype only it has less args, both still exist for some reason.
 		onMonsterMessage("emote", msg)
 		return self:FilterRaidBossEmote(msg, ...)
+	end
+	
+	function DBM:RAID_BOSS_WHISPER(msg)
+		--Make it easier for devs to detect whispers they are unable to see
+		if msg:find("spell:") and IsInGroup() then
+			local _, spellId = string.split("spell:", msg)--First strip so spellId == spellid plus anything after it
+			spellId = spellId:sub(0, 5)--Now trim off anything after 6 characters so we have ONLY spellid.
+			sendSync("RBW", spellId)
+		end
 	end
 
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)

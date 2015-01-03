@@ -32,7 +32,7 @@ local warnExpelMagicArcane			= mod:NewTargetAnnounce(162186, 4)--Everyone, so th
 local warnBallsSoon					= mod:NewPreWarnAnnounce(161612, 6.5, 2)
 local warnBallsHit					= mod:NewCountAnnounce(161612, 2)
 local warnMC						= mod:NewTargetAnnounce(163472, 4)--Mythic
-local warnForfeitPower				= mod:NewCastAnnounce(163517, 4)--Mythic, Spammy?
+local warnForfeitPower				= mod:NewCastAnnounce("OptionVersion2", 163517, 4, nil, nil, false)--Definitely Spammy (can have 8 up at once)
 local warnExpelMagicFel				= mod:NewTargetAnnounce(172895, 4)
 
 local specWarnNullBarrier			= mod:NewSpecialWarningTarget(156803)--Only warn for boss
@@ -173,7 +173,10 @@ function mod:SPELL_CAST_START(args)
 		voiceExpelMagicFrost:Play("161411")
 	elseif spellId == 163517 then
 		warnForfeitPower:Show()
-		specWarnForfeitPower:Show(args.sourceName)
+		local guid = args.souceGUID
+		if guid == UnitGUID("target") or guid == UnitGUID("focus") then
+			specWarnForfeitPower:Show(args.sourceName)
+		end
 	elseif spellId == 162186 then
 		local targetName, uId = self:GetBossTarget(79015)
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
