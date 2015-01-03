@@ -1598,7 +1598,7 @@ do
 		local TotalUsers = #sortMe
 		local NoDBM = 0
 		local NoBigwigs = 0
-		local OldDBM = 0
+		local OldMod = 0
 		for i = #sortMe, 1, -1 do
 			if not sortMe[i].revision then
 				NoDBM = NoDBM + 1
@@ -1608,15 +1608,15 @@ do
 			end
 			--Table sorting sorts dbm to top, bigwigs underneath. Highest version dbm always at top. so sortMe[1]
 			--This check compares all dbm version to highest RELEASE version in raid.
-			if sortMe[i].revision and (sortMe[i].revision < sortMe[1].version) then
-				OldDBM = OldDBM + 1
+			if sortMe[i].revision and (sortMe[i].revision < sortMe[1].version) or sortMe[i].bwrevision and (sortMe[i].bwrevision < fakeBWRevision) then
+				OldMod = OldMod + 1
 				tinsert(OutdatedUsers, sortMe[i].name)
 			end
 		end
 		local TotalDBM = TotalUsers - NoDBM
 		local TotalBW = TotalUsers - NoBigwigs
 		self:AddMsg(DBM_CORE_VERSIONCHECK_FOOTER:format(TotalDBM, TotalBW))
-		self:AddMsg(DBM_CORE_VERSIONCHECK_OUTDATED:format(OldDBM, #OutdatedUsers > 0 and table.concat(OutdatedUsers, ", ") or NONE))
+		self:AddMsg(DBM_CORE_VERSIONCHECK_OUTDATED:format(OldMod, #OutdatedUsers > 0 and table.concat(OutdatedUsers, ", ") or NONE))
 		twipe(OutdatedUsers)
 		twipe(sortMe)
 		for i = #sortMe, 1, -1 do
