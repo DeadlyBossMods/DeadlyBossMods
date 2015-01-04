@@ -19,7 +19,7 @@ local warnVoidVortex			= mod:NewSpellAnnounce(152801, 3)
 local warnSoulShred				= mod:NewSpellAnnounce(152979, 3)
 local warnVoidDevastation		= mod:NewSpellAnnounce(153067, 4)
 
-local specWarnVoidVortex		= mod:NewSpecialWarningRun(152801)
+local specWarnVoidVortex		= mod:NewSpecialWarningRun("OptionVersion2", 152801, nil, nil, nil, 4, nil, true)
 local specWarnSoulShred			= mod:NewSpecialWarningSpell(152979)
 local specWarnVoidDevastation	= mod:NewSpecialWarningSpell(153067, nil, nil, nil, 2)
 local specWarnVoidDevastationM	= mod:NewSpecialWarningMove(153070)
@@ -29,7 +29,6 @@ local timerSoulShredCD			= mod:NewNextTimer(71, 152979)
 local timerSoulShred			= mod:NewBuffFadesTimer(20, 152979)
 local timerVoidDevastationCD	= mod:NewNextTimer(71, 153067)
 
-local soundVoidVortex			= mod:NewSound(152801)
 local voiceWarnSoulShred		= mod:NewVoice(152979)
 local voiceVoidVortex			= mod:NewVoice(152801)
 
@@ -44,7 +43,6 @@ function mod:SPELL_CAST_START(args)
 		warnVoidVortex:Show()
 		timerVoidVortexCD:Start()
 		specWarnVoidVortex:Show()
-		soundVoidVortex:Play()
 		voiceVoidVortex:Play("runaway")
 	end
 end

@@ -21,7 +21,7 @@ local warnBlackIronCyclone		= mod:NewTargetAnnounce(155721, 3)
 local warnZaela					= mod:NewSpellAnnounce("ej10312", 3, "Interface\\ICONS\\INV_Misc_Head_Orc_01.blp")
 
 local specWarnBlackIronCyclone	= mod:NewSpecialWarningRun(155721)
-local specWarnZaela				= mod:NewSpecialWarningSwitch("ej10312", mod:IsTank())
+local specWarnZaela				= mod:NewSpecialWarningSwitch("OptionVersion2", "ej10312", mod:IsTank(), nil, nil, 4)
 
 local timerDestructiveSmiteCD	= mod:NewNextTimer(15.5, 155673, nil, mod:IsTank())
 local timerReboundingBladeCD	= mod:NewNextTimer(10.5, 155705, nil, false)
@@ -30,7 +30,6 @@ local timerZaelaReturns			= mod:NewTimer(26.5, "timerZaelaReturns", 166041)
 
 local countdownDestructiveSmite	= mod:NewCountdown("OptionVersion2", 15.5, 155673, mod:IsTank())
 
-local soundCyclone				= mod:NewSound(155721)
 local voiceCyclone				= mod:NewVoice(155721)
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
@@ -55,7 +54,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBlackIronCycloneCD:Start()
 		if args:IsPlayer() then
 			specWarnBlackIronCyclone:Show()
-			soundCyclone:Play()
 			voiceCyclone:Play("runaway") 
 		end
 	end
