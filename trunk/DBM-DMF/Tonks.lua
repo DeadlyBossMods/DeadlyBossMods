@@ -14,13 +14,11 @@ mod.noStatistics = true
 
 local warnMarked				= mod:NewSpellAnnounce(102341, 4)
 
-local specWarnMarked			= mod:NewSpecialWarningRun(102341)
+local specWarnMarked			= mod:NewSpecialWarningRun("OptionVersion2", 102341, nil, nil, nil, 4)
 
 local timerGame					= mod:NewBuffActiveTimer(60, 102178)
 
 local countdownGame				= mod:NewCountdownFades(60, 102178)
-
-local soundMarked				= mod:NewSound(102341)
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
@@ -29,7 +27,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 102341 and UnitGUID("pet") == args.destGUID and self:AntiSpam() then
 		warnMarked:Show()
 		specWarnMarked:Show()
-		soundMarked:Play()
 	end
 end
 

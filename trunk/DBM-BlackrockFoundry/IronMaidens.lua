@@ -67,7 +67,7 @@ local specWarnFixate					= mod:NewSpecialWarningYou(158702)
 local specWarnCorruptedBlood			= mod:NewSpecialWarningMove(158683)
 --Ground
 ----Admiral Gar'an
-local specWarnRapidFire					= mod:NewSpecialWarningRun(156631, nil, nil, nil, 3)
+local specWarnRapidFire					= mod:NewSpecialWarningRun(156631, nil, nil, nil, 4)
 local yellRapidFire						= mod:NewYell(156631)
 local specWarnPenetratingShot			= mod:NewSpecialWarningYou(164271)
 local yellPenetratingShot				= mod:NewYell(164271)
@@ -82,7 +82,7 @@ local specWarnDarkHunt					= mod:NewSpecialWarningTarget(158315, false)--Healer 
 local specWarnBloodRitual				= mod:NewSpecialWarningYou(158078)
 local specWarnBloodRitualOther			= mod:NewSpecialWarningTarget(158078, mod:IsTank())
 local yellBloodRitual					= mod:NewYell(158078)
-local specWarnBloodsoakedHeartseeker	= mod:NewSpecialWarningRun(158010)
+local specWarnBloodsoakedHeartseeker	= mod:NewSpecialWarningRun(158010, nil, nil, nil, 4)
 local yellHeartseeker					= mod:NewYell(158010, nil, false)
 local specWarnSanguineStrikes			= mod:NewSpecialWarningTarget(156601, mod:IsHealer())
 
@@ -104,9 +104,6 @@ local timerConvulsiveShadowsCD			= mod:NewNextTimer(46.5, 156214)
 ----Marak the Blooded
 local timerBladeDashCD					= mod:NewNextTimer(20, 155794)
 local timerHeartSeekerCD				= mod:NewNextTimer(51, 158010)
-
-local soundHeartSeeker					= mod:NewSound(158010)
-local soundRapidFire					= mod:NewSound(156631)
 
 mod:AddSetIconOption("SetIconOnRapidFire", 156626, true)
 mod:AddSetIconOption("SetIconOnBloodRitual", 158078, true)
@@ -236,7 +233,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBloodsoakedHeartseeker:Show()
 			yellHeartseeker:Yell()
-			soundHeartSeeker:Play()
 		end
 		if self.Options.SetIconOnHeartSeeker then
 			self:SetSortedIcon(1, args.destName, 3, 3)
@@ -305,7 +301,6 @@ function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:156626") then
 		specWarnRapidFire:Show()
 		yellRapidFire:Yell()
-		soundRapidFire:Play()
 		self:SendSync("RapidFireTarget", UnitGUID("player"))
 	end
 end

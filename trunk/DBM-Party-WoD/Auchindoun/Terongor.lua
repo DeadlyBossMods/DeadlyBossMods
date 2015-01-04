@@ -40,7 +40,7 @@ local specWarnCorruption		= mod:NewSpecialWarningDispel(156842, mod:IsHealer())
 local specWarnRainOfFire		= mod:NewSpecialWarningSpell(156857, nil, nil, nil, 2)--156856 fires SUCCESS but do not use, it fires for any player walking in or out of it
 local specWarnRainOfFireMove	= mod:NewSpecialWarningMove(156857)
 --Unknown Abilities
-local specWarnFixate			= mod:NewSpecialWarningRun(157168)
+local specWarnFixate			= mod:NewSpecialWarningRun("OptionVersion2", 157168, nil, nil, nil, 4)
 --Affliction Abilities
 --TODO : Maybe need shit warning.
 local specWarnSeedOfMelevolence	= mod:NewSpecialWarningMoveAway(156921)
@@ -72,8 +72,6 @@ local timerDemonicLeapCD		= mod:NewCDTimer(20, 157039)
 
 --Affliction Abilities
 local countdownSeedOfMelevolence= mod:NewCountdownFades(18, 156921)
-
-local soundFixate				= mod:NewSound(157168)
 
 local voiceWarnChaosWave		= mod:NewVoice(157001)
 local voiceCorruption			= mod:NewVoice(156842, mod:IsHealer())
@@ -157,7 +155,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFixate:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show()
-			soundFixate:Play()
 		end
 	elseif spellId == 164841 then
 		warnExhaustion:Show(args.destName)
