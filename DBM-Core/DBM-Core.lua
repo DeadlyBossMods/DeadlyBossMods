@@ -7006,10 +7006,15 @@ do
 		return unschedule(self.Show, self.mod, self, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound, runSound, hasVoice)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice)
 		if not text then
 			error("NewSpecialWarning: you must provide special warning text", 2)
 			return
+		end
+		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			local temp = optionVersion
+			optionVersion = string.sub(spellId, 14)
+			text, optionDefault, optionName, noSound, runSound = optionDefault, optionName, noSound, runSound, temp
 		end
         if runSound == true then
 			runSound = 2
@@ -7029,7 +7034,7 @@ do
 		local optionId = optionName or optionName ~= false and text
 		if optionId then
 			obj.voiceOptionId = hasVoice and "Voice"..optionId or nil
-			obj.option = optionId
+			obj.option = optionId..(optionVersion or "")
 			self:AddSpecialWarningOption(optionId, optionDefault, runSound, "announce")
 		end
 		tinsert(self.specwarns, obj)
