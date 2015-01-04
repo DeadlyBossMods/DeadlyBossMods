@@ -2729,6 +2729,7 @@ function DBM:LoadMod(mod, force)
 		end
 		return
 	end
+	EJ_SetDifficulty(difficultyIndex)--Work around blizzard crash bug where other mods (like Boss) screw with Ej difficulty value, which makes EJ_GetSectionInfo crash the game when called with invalid difficulty index set.
 	self:Debug("LoadAddOn should have fired for "..mod.name)
 	local loaded, reason = LoadAddOn(mod.modId)
 	self:Debug("LoadAddOn should have succeeded for "..mod.name, 2)
