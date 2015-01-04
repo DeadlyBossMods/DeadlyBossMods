@@ -7011,9 +7011,9 @@ do
 			error("NewSpecialWarning: you must provide special warning text", 2)
 			return
 		end
-		if type(spellId) == "string" and spellId:match("OptionVersion") then
+		if type(text) == "string" and text:match("OptionVersion") then
 			local temp = optionVersion
-			optionVersion = string.sub(spellId, 14)
+			optionVersion = string.sub(text, 14)
 			text, optionDefault, optionName, noSound, runSound = optionDefault, optionName, noSound, runSound, temp
 		end
         if runSound == true then
