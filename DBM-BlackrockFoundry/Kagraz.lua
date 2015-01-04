@@ -36,18 +36,18 @@ local warnRisingFlames					= mod:NewStackAnnounce(163284, 2, nil, mod:IsTank())
 local warnCharringBreath				= mod:NewStackAnnounce(155074, 2, nil, mod:IsTank())
 
 local specWarnLavaSlash					= mod:NewSpecialWarningMove(155318)
-local specWarnMoltenTorrent				= mod:NewSpecialWarningYou(154932)
+local specWarnMoltenTorrent				= mod:NewSpecialWarningYou(154932, nil, nil, nil, nil, nil, true)
 local specWarnMoltenTorrentOther		= mod:NewSpecialWarningMoveTo(154932, false)--Strat dependant. most strats i saw ran these into meleee instead of running to the meteor target.
 local yellMoltenTorrent					= mod:NewYell(154932)
-local specWarnCinderWolves				= mod:NewSpecialWarningSwitch(155776, not mod:IsHealer())
+local specWarnCinderWolves				= mod:NewSpecialWarningSwitch(155776, not mod:IsHealer(), nil, nil, nil, nil, true)
 local specWarnOverheated				= mod:NewSpecialWarningSwitch(154950, mod:IsTank())
-local specWarnFixate					= mod:NewSpecialWarningYou(154952, nil, nil, nil, 3)
+local specWarnFixate					= mod:NewSpecialWarningYou(154952, nil, nil, nil, 3, nil, true)
 local specWarnFixateEnded				= mod:NewSpecialWarningEnd(154952, false)
-local specWarnBlazinRadiance			= mod:NewSpecialWarningMoveAway(155277)
+local specWarnBlazinRadiance			= mod:NewSpecialWarningMoveAway(155277, nil, nil, nil, nil, nil, true)
 local yellBlazinRadiance				= mod:NewYell(155277, nil, false)
-local specWarnFireStorm					= mod:NewSpecialWarningSpell(155493, nil, nil, nil, 2)
+local specWarnFireStorm					= mod:NewSpecialWarningSpell(155493, nil, nil, nil, 2, nil, true)
 local specWarnRisingFlames				= mod:NewSpecialWarningStack(163284, nil, 10)--stack guessed
-local specWarnRisingFlamesOther			= mod:NewSpecialWarningTaunt(163284)
+local specWarnRisingFlamesOther			= mod:NewSpecialWarningTaunt(163284, nil, nil, nil, nil, nil, true)
 local specWarnCharringBreath			= mod:NewSpecialWarningStack(155074, nil, 3)--Assumed based on timing and casts, that you swap every breath.
 local specWarnCharringBreathOther		= mod:NewSpecialWarningTaunt(155074)
 --
@@ -66,6 +66,13 @@ local countdownCinderWolves				= mod:NewCountdown(74, 155776)
 local countdownFireStorm				= mod:NewCountdown(63, 155493)--Same voice as wolves cause never happen at same time, in fact they alternate.
 local countdownEnchantedArmaments		= mod:NewCountdown("Alt45", 156724, mod:IsRanged())
 local countdownOverheated				= mod:NewCountdownFades("Alt20", 154950, mod:IsTank())
+
+local voiceMoltenTorrent				= mod:NewVoice(154932) --runin
+local voiceFixate						= mod:NewVoice(154952) --justrun
+local voiceCinderWolves					= mod:NewVoice(155776, not mod:IsHealer()) --killmob
+local voiceBlazinRadiance				= mod:NewVoice(155277)  --runaway (scatter if we have power system)
+local voiceRisingFlames					= mod:NewVoice(163284, mod:IsTank())  --changemt
+local voiceFireStorm					= mod:NewVoice(155493) --aoe
 
 mod:AddRangeFrameOption("10/6")
 mod:AddArrowOption("TorrentArrow", 154932, false, true)
@@ -110,6 +117,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBlazingRadianceCD:Start(34)
 		timerFireStormCD:Start()
 		countdownFireStorm:Start()
+		voiceCinderWolves:Play("killmob")
 	elseif spellId == 155074 then
 		timerCharringBreathCD:Start()
 	end
@@ -122,6 +130,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBlazinRadiance:Show()
 			yellBlazinRadiance:Yell()
+			voiceBlazinRadiance:Play("runout")
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
@@ -133,11 +142,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMoltenTorrentCD:Start(44)
 		timerSummonCinderWolvesCD:Start()
 		countdownCinderWolves:Start()
+		voiceFireStorm:Play("aesoon")--maybe gather?
 	elseif spellId == 154952 then
 		warnFixate:CombinedShow(0.5, args.destName)
 		timerFixate:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show()--Are these kited? add a run away sound?
+			voiceFixate:Play("justrun")
 		end
 	elseif spellId == 163284 then
 		local amount = args.amount or 1
@@ -150,6 +161,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
 				if not UnitDebuff("player", GetSpellInfo(163284)) and not UnitIsDeadOrGhost("player") then
 					specWarnRisingFlamesOther:Show(args.destName)
+					voiceRisingFlames:Play("changemt")
 				end
 			end
 		end
@@ -174,6 +186,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnMoltenTorrent:Show()
 			yellMoltenTorrent:Yell()
+			voiceMoltenTorrent:Play("runin")
 		else
 			specWarnMoltenTorrentOther:Show(args.destName)
 			if self.Options.TorrentArrow then

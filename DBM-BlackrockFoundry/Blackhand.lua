@@ -37,17 +37,17 @@ local warnAttachSlagBombs			= mod:NewTargetAnnounce(157000, 4)
 local warnMassiveShatteringSmash	= mod:NewTargetAnnounce(158054, 3)
 
 --Stage One: The Blackrock Forge
-local specWarnDemolition			= mod:NewSpecialWarningSpell(156425, nil, nil, nil, 2)
-local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 3)
+local specWarnDemolition			= mod:NewSpecialWarningSpell(156425, nil, nil, nil, 2, nil, true)
+local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 3, nil, true)
 local yellMarkedforDeath			= mod:NewYell(156096)
-local specWarnThrowSlagBombs		= mod:NewSpecialWarningMove(156030)
-local specWarnShatteringSmash		= mod:NewSpecialWarningSpell(155992, mod:IsMelee())
+local specWarnThrowSlagBombs		= mod:NewSpecialWarningMove(156030, nil, nil, nil, nil, nil, true)
+local specWarnShatteringSmash		= mod:NewSpecialWarningSpell(155992, mod:IsMelee(), nil, nil, nil, nil, true)
 local specWarnMoltenSlag			= mod:NewSpecialWarningMove(156401)
 --Stage Two: Storage Warehouse
-local specWarnSiegemaker			= mod:NewSpecialWarningSwitch("ej9571", mod:IsDps())
+local specWarnSiegemaker			= mod:NewSpecialWarningSwitch("ej9571", mod:IsDps(), nil, nil, nil, nil, true)
 --Stage Three: Iron Crucible
 local specWarnSlagEruption			= mod:NewSpecialWarningSpell(156928, nil, nil, nil, 2)
-local specWarnAttachSlagBombs		= mod:NewSpecialWarningYou(157000)--May change to sound 3, but I don't want it confused with the even more threatening marked for death, so for now will try 1
+local specWarnAttachSlagBombs		= mod:NewSpecialWarningYou(157000, nil, nil, nil, nil, nil, true)--May change to sound 3, but I don't want it confused with the even more threatening marked for death, so for now will try 1
 local yellAttachSlagBombs			= mod:NewYell(157000, nil, false)
 local specWarnMassiveShatteringSmash= mod:NewSpecialWarningSpell(158054, nil, nil, nil, 2)
 
@@ -65,6 +65,13 @@ local timerSiegemakerCD				= mod:NewNextTimer(50, "ej9571", nil, nil, nil, 15666
 local timerSlagBomb					= mod:NewCastTimer(5, 157015)
 --local timerMassiveShatteringSmashCD	= mod:NewNextTimer(30, 158054)
 
+local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+local voiceSiegemaker				= mod:NewVoice("ej9571", mod:IsDps()) -- ej9571.ogg tank coming
+local voiceShatteringSmash			= mod:NewVoice(155992, mod:IsMelee()) --carefly
+local voiceMarkedforDeath			= mod:NewVoice(156096) --target: findshelter; else: 156096.ogg marked for death
+local voiceDemolition				= mod:NewVoice(156425) --AOE
+local voiceThrowSlagBombs			= mod:NewVoice(156030) --bombsoon
+local voiceAttachSlagBombs			= mod:NewVoice(157000) --target: runout;
 
 function mod:OnCombatStart(delay)
 	timerThrowSlagBombsCD:Start(6-delay)
@@ -82,6 +89,7 @@ function mod:SPELL_CAST_START(args)
 		warnShatteringSmash:Show()
 		specWarnShatteringSmash:Show()
 		timerShatteringSmashCD:Start()
+		voiceShatteringSmash:Play("carefly")
 	elseif spellId == 156928 then
 		warnSlagEruption:Show()
 		specWarnSlagEruption:Show()
@@ -100,6 +108,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
 			yellMarkedforDeath:Yell()
+			voiceShatteringSmash:Play("findshelter")
+		else
+			voiceShatteringSmash:Play("156096")
 		end
 	elseif spellId == 157000 then
 		warnAttachSlagBombs:CombinedShow(0.5, args.destName)
@@ -107,10 +118,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnAttachSlagBombs:Show()
 			yellAttachSlagBombs:Yell()
 			timerSlagBomb:Start()
+			voiceAttachSlagBombs:Play("runout")
+--		else--In beta, raid stacked for heals and only bombs ran out, scatter maybe misleading, but will leave here for review
+--			voiceAttachSlagBombs:Play("scatter")
 		end
 	elseif spellId == 156667 then
 		warnSiegemaker:Show()
 		timerSiegemakerCD:Start()
+		voiceSiegemaker:Play("ej9571")
 	elseif spellId == 156401 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnMoltenSlag:Show()
 	end
@@ -140,19 +155,23 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnThrowSlagBombs:Show()
 		specWarnThrowSlagBombs:Show()
 		timerThrowSlagBombsCD:Start()
+		voiceThrowSlagBombs:Play("bombsoon")
 	elseif spellId == 156425 then
 		warnDemolition:Show()
 		specWarnDemolition:Show()
 		timerDemolitionCD:Start()
+		voiceDemolition:Play("aesoon")
 	elseif spellId == 161347 then--Phase 2 Trigger
 		timerDemolitionCD:Cancel()
 		timerThrowSlagBombsCD:Start(11)
 		timerShatteringSmashCD:Start(15)
 		timerSiegemakerCD:Start(15)
 		timerMarkedforDeathCD:Start(25)
+		voicePhaseChange:Play("ptwo")
 	elseif spellId == 161348 then--Phase 3 Trigger
 		timerSiegemakerCD:Cancel()
 		timerThrowSlagBombsCD:Cancel()
 		timerShatteringSmashCD:Cancel()
+		voicePhaseChange:Play("pthree")
 	end
 end
