@@ -103,9 +103,10 @@ L.CountdownVoice			= "Set primary voice for count sounds"
 L.CountdownVoice2			= "Set secondary voice for count sounds"
 L.CountdownVoice3			= "Set tertiary voice for count sounds"
 L.VoicePackChoice			= "Set voice pack for spoken alerts"
-L.SpecialWarnSound			= "Set sound for special warnings affecting you or your specific role"
-L.SpecialWarnSound2			= "Set sound for special warnings affecting everyone"
-L.SpecialWarnSound3			= "Set sound for VERY important special warnings"
+L.SpecialWarnSound			= "Set default sound for special warnings affecting you or your specific role"
+L.SpecialWarnSound2			= "Set default sound for special warnings affecting everyone"
+L.SpecialWarnSound3			= "Set default sound for VERY important special warnings"
+L.SpecialWarnSound4			= "Set default sound for run away special warnings"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "General Messages"
