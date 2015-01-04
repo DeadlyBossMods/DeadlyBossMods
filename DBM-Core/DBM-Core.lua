@@ -6631,7 +6631,7 @@ do
 
 	function soundPrototype:Play(file)
 		if DBM.Options.UseMasterVolume then
-			PlaySoundFile(file)
+			PlaySoundFile(file, "Master")
 		else
 			PlaySoundFile(file)
 		end
