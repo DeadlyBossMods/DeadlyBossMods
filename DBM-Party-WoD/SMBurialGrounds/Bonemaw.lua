@@ -26,8 +26,8 @@ local warnInhale				= mod:NewSpellAnnounce(153804, 4)
 local warnCorpseBreath			= mod:NewSpellAnnounce(165578, 2)
 local warnSubmerge				= mod:NewSpellAnnounce(177694, 1)
 
-local specWarnBodySlam			= mod:NewSpecialWarningSpell(154175, nil, nil, nil, 2)
-local specWarnInhale			= mod:NewSpecialWarningSpell(153804)
+local specWarnBodySlam			= mod:NewSpecialWarningSpell(154175, nil, nil, nil, 2, nil, true)
+local specWarnInhale			= mod:NewSpecialWarningSpell("OptionVersion2", 153804, nil, nil, nil, 4, nil, true)
 local specWarnInhaleEnd			= mod:NewSpecialWarningEnd(153804)
 local specWarnNecroticPitch		= mod:NewSpecialWarningMove(153692)
 
@@ -37,7 +37,6 @@ local timerInhale				= mod:NewBuffActiveTimer(9, 153804)
 local timerCorpseBreathCD		= mod:NewCDTimer(28, 165578, nil, false)--32-37 Variation, also not that important so off by default since there will already be up to 3 smash timers
 local timerSubmergeCD			= mod:NewCDTimer(80, 177694)
 
-local soundInhale				= mod:NewSound(153804)
 local voiceBodySlam				= mod:NewVoice(154175)
 local voiceInhale				= mod:NewVoice(153804)
 
@@ -96,7 +95,6 @@ function mod:RAID_BOSS_EMOTE(msg)
 		self.vb.inhaleActive = true
 		warnInhale:Show()
 		specWarnInhale:Show()
-		soundInhale:Play()
 		timerInhaleCD:Start()
 		voiceInhale:Play("153804") 
 	end

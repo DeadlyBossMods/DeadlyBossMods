@@ -66,8 +66,6 @@ local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
 local countdownBalls				= mod:NewCountdown("Alt30", 161612)
 local countdownFel					= mod:NewCountdownFades("AltTwo11", 172895)
 
-local soundExpelMagicArcane			= mod:NewSound(162186)
-
 local voiceExpelMagicFire			= mod:NewVoice(162185)
 local voiceExpelMagicShadow			= mod:NewVoice(162184, mod:IsHealer())
 local voiceExpelMagicFrost			= mod:NewVoice(161411)
@@ -183,7 +181,6 @@ function mod:SPELL_CAST_START(args)
 		if tanking or (status == 3) then--Player is current target
 			specWarnExpelMagicArcaneYou:Show()--So show tank warning
 			voiceExpelMagicArcane:Play("runout")
-			soundExpelMagicArcane:Play()
 		else
 			if self:AntiSpam(2, targetName) then--Set anti spam with target name
 				specWarnExpelMagicArcane:Show(targetName)--Sometimes targetname is nil, and then it warns for unknown, but with the new status == 3 check, it'll still warn correct tank, so useful anyways
