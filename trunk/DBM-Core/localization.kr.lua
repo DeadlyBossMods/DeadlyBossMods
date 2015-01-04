@@ -296,7 +296,6 @@ DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "$spell:%s 에게 전술 목표 아이콘 �
 DBM_CORE_AUTO_ARROW_OPTION_TEXT			= "$spell:%s 대상 방향으로 DBM 화살표 보기"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "$spell:%s 대상 반대 방향으로 DBM 화살표 보기"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "$spell:%s 관련 특정 위치로 DBM 화살표 보기"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%s 주문에 대한 '도망쳐라' 소리 듣기"
 DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "$spell:%s 주문에 대한 음성안내 소리 듣기"
 DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "단계 전환시 음성안내 소리 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 이전에 초읽기 듣기"
