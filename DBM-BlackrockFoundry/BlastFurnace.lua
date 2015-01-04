@@ -37,23 +37,23 @@ local warnShieldsDown			= mod:NewSpellAnnounce(158345, 1, nil, mod:IsDps())
 local warnHeartoftheMountain	= mod:NewSpellAnnounce("ej9641", 3, 2894)
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, mod:IsTank())
 
-local specWarnBomb				= mod:NewSpecialWarningYou(155192, nil, nil, nil, 3)
-local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("ej9650", mod:IsDps())
+local specWarnBomb				= mod:NewSpecialWarningYou(155192, nil, nil, nil, 3, nil, true)
+local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("ej9650", mod:IsDps(), nil, nil, nil, nil, true)
 local specWarnDeafeningRoar		= mod:NewSpecialWarningSpell(177756, nil, nil, nil, 3)
-local specWarnDefense			= mod:NewSpecialWarningMove(160382, mod:IsTank())
-local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, not mod:IsHealer())
+local specWarnDefense			= mod:NewSpecialWarningMove(160382, mod:IsTank(), nil, nil, nil, nil, true)
+local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, not mod:IsHealer(), nil, nil, nil, nil, true)
 local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932)
-local specWarnRupture			= mod:NewSpecialWarningMove(156932)
+local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, nil, nil, true)
 local specWarnFixate			= mod:NewSpecialWarningYou(155196)
-local specWarnMelt				= mod:NewSpecialWarningMove(155223)
+local specWarnMelt				= mod:NewSpecialWarningMove(155223, nil, nil, nil, nil, nil, true)
 local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, not mod:IsHealer())--if spammy, will switch to target/focus type only
 local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
 local specVolatileFire			= mod:NewSpecialWarningMoveAway(176121)
 local yellVolatileFire			= mod:NewYell(176121)
 local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", mod:IsDps())
 local specWarnHeartoftheMountain= mod:NewSpecialWarningSwitch("ej9641", mod:IsTank())
-local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3)
-local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242)
+local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3, nil, nil, nil, nil, true)
+local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242, nil, nil, nil, nil, nil, true)
 local specWarnBlast				= mod:NewSpecialWarningSpell(155209, nil, nil, nil, 2)
 
 local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
@@ -64,6 +64,15 @@ local timerShieldsDown			= mod:NewBuffActiveTimer(25, 158345, nil, mod:IsDps())-
 
 local countdownBellowsOperator	= mod:NewCountdown(60, "ej9650")
 local countdownEngineer			= mod:NewCountdown("Alt45", "ej9649")
+
+local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+local voiceRepair				= mod:NewVoice(155179, not mod:IsHealer()) --int
+local voiceBomb 				= mod:NewVoice(155192) --bombyou.ogg, bomb on you
+local voiceDefense 				= mod:NewVoice(160382, mod:IsTank()) --taunt mobout
+local voiceBellowsOperator 		= mod:NewVoice("ej9650", mod:IsDps())
+local voiceRupture				= mod:NewVoice(156932) --runaway
+local voiceMelt					= mod:NewVoice(155223) --runaway
+local voiceHeat					= mod:NewVoice(155242, mod:IsTank()) --changemt
 
 mod:AddRangeFrameOption(8, 176121)
 
@@ -117,9 +126,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 160382 and self:CheckTankDistance(args.sourceGUID, 30) then
 		warnDefense:Show()
 		specWarnDefense:Show()
+		voiceDefense:Play("mobout")
 	elseif spellId == 155179 then--Repair should NOT check tank distance, because these mobs run to lowest health regulator, even if it's on OTHER side of where their tank is.
 		warnRepair:Show()
 		specWarnRepair:Show(args.sourceName)
+		voiceRepair:Play("kickcast")
 	elseif spellId == 174726 and self:CheckTankDistance(args.sourceGUID, 30) then
 		warnDropBombs:Show()
 	elseif spellId == 156932 then
@@ -139,6 +150,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBomb:Show()
 			timerBomb:Start()
+			voiceBomb:Play("bombrun")
 		end
 	elseif spellId == 155196 then
 		warnFixate:CombinedShow(1, args.destName)
@@ -153,6 +165,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		warnHeat:Show(args.destName, amount)
 		if amount >= 3 then
+			voiceHeat:Play("changemt")
 			if args:IsPlayer() then
 				specWarnHeat:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
@@ -166,6 +179,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnBellowsOperator:Show()
 		timerBellowsOperator:Start()
 		countdownBellowsOperator:Start()
+		voiceBellowsOperator:Play("killmob")
 	elseif spellId == 176121 then
 		warnVolatileFire:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
@@ -193,8 +207,10 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
 	if spellId == 156932 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnRupture:Show()
+		voiceRupture:Play("runaway")
 	elseif spellId == 155223 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnMelt:Show()
+		voiceMelt:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

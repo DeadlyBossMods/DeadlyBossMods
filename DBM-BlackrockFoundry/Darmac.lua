@@ -25,6 +25,7 @@ mod:RegisterEventsInCombat(
 --TODO, verify timers with new start method I did to ensure it works for both mythic and non mythic
 --TODO, figure out why setsortedicon is not working for more than 1 person.
 --TODO, See if gaining new abilities actually resets cd on old abilities on mythic, or if I need to only start timers for the newly gained abilities
+--voicePhaseChange:Play("pthree") --Phases are health based. Boss mounts closest beast at n %, kill beast, boss solo for bit til next %, choose new beast. Similar to Feng or Iron Qon. All beast dead, final boss burn at end with many abilities
 --Boss basic attacks
 local warnPinDown					= mod:NewSpellAnnounce(155365, 3)
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
@@ -47,21 +48,21 @@ local warnStampede					= mod:NewSpellAnnounce(155247, 3)
 local warnInfernoBreath				= mod:NewSpellAnnounce(154989, 3)
 
 --Boss basic attacks
-local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, not mod:IsHealer())
-local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, mod:IsRanged(), nil, nil, 2)
+local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, not mod:IsHealer(), nil, nil, nil, nil, true)
+local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, mod:IsRanged(), nil, nil, 2, nil, true)
 local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
-local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, mod:IsMelee())--Always returns to melee
+local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, mod:IsMelee(), nil, nil, nil, nil, true)--Always returns to melee
 local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil, nil, 2)--Still iffy on it
-local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2)
+local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2, nil, true)
 local specWarnEpicenter				= mod:NewSpecialWarningSpell(162277, nil, nil, nil, 2)
 --Beast abilities (living)
-local specWarnSavageHowl			= mod:NewSpecialWarningDispel(155198, mod:IsHealer() or mod:IsTank() or mod:CanRemoveEnrage())
+local specWarnSavageHowl			= mod:NewSpecialWarningDispel(155198, mod:IsHealer() or mod:IsTank() or mod:CanRemoveEnrage(), nil, nil, nil, nil, true)
 local specWarnSearingFangs			= mod:NewSpecialWarningStack(155030, nil, 12)--Stack count assumed, may be 2
 local specWarnSearingFangsOther		= mod:NewSpecialWarningTaunt(155030)--No evidence of this existing ANYWHERE in any logs. removed? Bugged?
 local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, nil, 3)--6-9 second cd, 15 second duration, 3 is smallest safe swap, sometimes 2 when favorable RNG
 local specWarnCrushArmorOther		= mod:NewSpecialWarningTaunt(155236)
-local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil, 2)
+local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil, 2, nil, true)
 
 --Boss basic attacks
 local timerPinDownCD				= mod:NewCDTimer(20.5, 155365)--Every 20 seconds unless delayed by other things. CD timer used for this reason
@@ -76,6 +77,16 @@ local timerSavageHowlCD				= mod:NewCDTimer(25, 155198)
 local timerConflagCD				= mod:NewCDTimer(20, 155399)
 local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
 local timerInfernoBreathCD			= mod:NewCDTimer(20, 154989)
+
+--local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+local voiceCallthePack				= mod:NewVoice(154975, not mod:IsHealer()) --killmob
+local voiceSavageHowl				= mod:NewVoice(155198, mod:CanRemoveEnrage()) --trannow
+local voicePinDown					= mod:NewVoice(154960, mod:IsRanged()) --helpme
+local voiceInfernoBreath			= mod:NewVoice(154989, 3) --breathsoon
+local voiceRendandTear				= mod:NewVoice(155385, mod:IsMelee())  --runaway
+local voiceCrushArmor				= mod:NewVoice(155236, mod:IsTank()) --changemt
+local voiceTantrum					= mod:NewVoice(162275) --aesoon
+
 
 mod:AddRangeFrameOption("8/7/3", nil, not mod:IsMelee())
 mod:AddSetIconOption("SetIconOnSpear", 154960)--Not often I make icon options on by default but this one is universally important. YOu always break players out of spear, in any strat.
@@ -93,7 +104,7 @@ local function updateBeasts(cid, status, beastName)
 		if status == 3 then--Add Boss, keep Beast
 			DBM.BossHealth:AddBoss(76865, L.name)
 		elseif status == 2 then--Just Remove Beast
-			DBM.BossHealth:AddBoss(cid, beastName)
+			DBM.BossHealth:RemoveBoss(cid, beastName)
 		elseif status == 1 then--Add beast, remove boss
 			DBM.BossHealth:RemoveBoss(76865)
 			DBM.BossHealth:AddBoss(cid, beastName)
@@ -115,6 +126,7 @@ local function updateBeastTimers(all, spellId)
 	end
 	if mod.vb.ElekkAbilities and (all or mod:IsMythic() and spellId == 155460) then--Ironcrusher
 		timerTantrumCD:Start(16, mod.vb.tantrumCount+1)--Small sample size. Just keep subtracking if shorter times are observed.
+		voiceTantrum:Schedule(16, "aesoon")
 	end
 	if mod.vb.FaultlineAbilites and (all or mod:IsMythic() and spellId == 155462) then--Faultline
 		--Mythic Stuff
@@ -148,6 +160,7 @@ function mod:SPELL_CAST_START(args)
 		warnSavageHowl:Show()
 		specWarnSavageHowl:Schedule(1.5, args.sourceName)
 		timerSavageHowlCD:Start()
+		voiceSavageHowl:Play("trannow")
 	end
 end
 
@@ -162,6 +175,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnCallthePack:Show()
 		specWarnCallthePack:Show()
 		timerCallthePackCD:Start()
+		voiceCallthePack:Play("killmob")
 	end
 end
 
@@ -174,6 +188,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			yellPinDown:Yell()
+		else
+			voicePinDown:Cancel()
+			voicePinDown:Schedule(0.5, "helpme")
 		end
 	elseif spellId == 154981 then
 		warnConflag:CombinedShow(0.5, args.destName)
@@ -200,6 +217,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not UnitDebuff("player", GetSpellInfo(155236)) and not UnitIsDeadOrGhost("player") then
 				specWarnCrushArmorOther:Show(args.destName)
 			end
+			voiceCrushArmor:Play("changemt")
 		end
 	elseif args:IsSpellID(155458, 155459, 155460, 155462) then
 		if not self:IsMythic() then--Not mythic, boss gaining ability means he just dismounted, start/update all timers.
@@ -261,6 +279,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					self.vb.ElekkAbilities = true
 					timerStampedeCD:Start(15)
 					timerTantrumCD:Start(30, self.vb.tantrumCount+1)
+					voiceTantrum:Schedule(30, "aesoon")
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerRendandTearCD:Cancel()
 					timerSuperheatedShrapnelCD:Cancel()
@@ -310,6 +329,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnInfernoBreath:Show()
 		specWarnInfernoBreath:Show()
 		timerInfernoBreathCD:Start()
+		voiceInfernoBreath:Play("breathsoon")
 	end
 end
 
@@ -340,6 +360,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnRendandTear:Show()
 		specWarnRendandTear:Show()
 		timerRendandTearCD:Start()
+		voiceRendandTear:Play("runaway")
 	elseif spellId == 155365 then--Cast
 		warnPinDown:Show()
 		specWarnPinDown:Show()

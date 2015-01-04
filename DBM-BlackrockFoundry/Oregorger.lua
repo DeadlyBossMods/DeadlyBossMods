@@ -33,7 +33,7 @@ local warnHungerDriveStack			= mod:NewStackAnnounce(155819, 3, nil, false)--Simi
 local specWarnBlackrockBarrage		= mod:NewSpecialWarningInterrupt(156877, false)--Strategy dependant
 local specWarnAcidTorrent			= mod:NewSpecialWarningSpell(156240, mod:IsTank(), nil, nil, 3)
 local yellRetchedBlackrock			= mod:NewYell(156179)
-local specWarnRetchedBlackrock		= mod:NewSpecialWarningMove(156203)
+local specWarnRetchedBlackrock		= mod:NewSpecialWarningMove(156203, nil, nil, nil, nil, nil, true)
 local specWarnExplosiveShard		= mod:NewSpecialWarningSpell(156390, mod:IsMelee())
 local specWarnHungerDrive			= mod:NewSpecialWarningSpell(165127, nil, nil, nil, 2)
 local specWarnHungerDriveEnded		= mod:NewSpecialWarningFades(165127)
@@ -42,6 +42,10 @@ local specWarnHungerDriveEnded		= mod:NewSpecialWarningFades(165127)
 local timerAcidTorrentCD			= mod:NewCDTimer(12, 156240)--Every 12-15 seconds
 local timerExplosiveShardCD			= mod:NewCDTimer(12, 156390)--Every 12-20 seconds
 local timerRetchedBlackrockCD		= mod:NewCDTimer(17, 156179)--Every 17-18 seconds
+
+local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+local voiceRetchedBlackrock			= mod:NewVoice(156203)  --runaway
+local voiceBlackrockBarrage			= mod:NewVoice(156877, false)
 
 --local berserkTimer					= mod:NewBerserkTimer(324)--May not be exact science. may be phase based instead, like tsulong. Needs more than one log to verify. Only saw one berserk.
 
@@ -71,6 +75,7 @@ function mod:SPELL_CAST_START(args)
 --		self.vb.barrageCount = self.vb.barrageCount + 1
 		warnBlackrockBarrage:Show()
 		specWarnBlackrockBarrage:Show(args.sourceName)
+		voiceBlackrockBarrage:Play("kickcast")
 --		timerBlackrockBarrageCD:Start()
 --		if (self:IsMythic() and self.vb.barrageCount == 5) or (not self:IsMythic() and self.vb.barrageCount == 3) then--Always in sets of 3/5
 --			self.vb.barrageCount = 0
@@ -98,6 +103,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 155819 then
 		specWarnHungerDriveEnded:Show()
+		voicePhaseChange:Play("phasechange")
 --		self.vb.barrageCount = 0
 	end
 end
@@ -114,6 +120,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 156203 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
 		specWarnRetchedBlackrock:Show()
+		voiceRetchedBlackrock:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
@@ -125,5 +132,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerExplosiveShardCD:Cancel()
 		warnHungerDrive:Show()
 		specWarnHungerDrive:Show()
+		voicePhaseChange:Play("phasechange")
 	end
 end

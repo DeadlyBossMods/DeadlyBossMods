@@ -59,7 +59,7 @@ local warnSanguineStrikes				= mod:NewTargetAnnounce(156601, 3, nil, mod:IsHeale
 local specWarnBombardmentAlpha			= mod:NewSpecialWarningSpell(157854, nil, nil, nil, 2)--From ship, but affects NON ship.
 local specWarnBombardmentOmega			= mod:NewSpecialWarningSpell(157886, nil, nil, nil, 3)--From ship, but affects NON ship.
 ----Blackrock Deckhand
-local specWarnEarthenbarrier			= mod:NewSpecialWarningInterrupt(158708)
+local specWarnEarthenbarrier			= mod:NewSpecialWarningInterrupt(158708, nil, nil, nil, nil, nil, true)
 ----Shattered Hand Deckhand
 local specWarnDeadlyThrow				= mod:NewSpecialWarningSpell(158692, mod:IsTank())
 local specWarnFixate					= mod:NewSpecialWarningYou(158702)
@@ -67,24 +67,24 @@ local specWarnFixate					= mod:NewSpecialWarningYou(158702)
 local specWarnCorruptedBlood			= mod:NewSpecialWarningMove(158683)
 --Ground
 ----Admiral Gar'an
-local specWarnRapidFire					= mod:NewSpecialWarningRun(156631, nil, nil, nil, 4)
+local specWarnRapidFire					= mod:NewSpecialWarningRun(156631, nil, nil, nil, 4, nil, true)
 local yellRapidFire						= mod:NewYell(156631)
 local specWarnPenetratingShot			= mod:NewSpecialWarningYou(164271)
 local yellPenetratingShot				= mod:NewYell(164271)
-local specWarnDeployTurret				= mod:NewSpecialWarningSwitch(158599, nil, nil, nil, 2)--Switch warning since most need to switch and kill, but on for EVERYONE because tanks/healers need to avoid it while it's up
+local specWarnDeployTurret				= mod:NewSpecialWarningSwitch(158599, nil, nil, nil, 2, nil, true)--Switch warning since most need to switch and kill, but on for EVERYONE because tanks/healers need to avoid it while it's up
 ----Enforcer Sorka
 local specWarnBladeDash					= mod:NewSpecialWarningYou(155794)
 local specWarnBladeDashOther			= mod:NewSpecialWarningTarget(155794, nil, nil, nil, 2)
-local specWarnConvulsiveShadows			= mod:NewSpecialWarningMoveAway(156214)--Does this still drop lingering shadows, if not moveaway is not appropriate
+local specWarnConvulsiveShadows			= mod:NewSpecialWarningMoveAway(156214, nil, nil, nil, nil, nil, true)--Does this still drop lingering shadows, if not moveaway is not appropriate
 local yellConvulsiveShadows				= mod:NewYell(156214, nil, false)
-local specWarnDarkHunt					= mod:NewSpecialWarningTarget(158315, false)--Healer may want this, or raid leader
+local specWarnDarkHunt					= mod:NewSpecialWarningTarget(158315, false, nil, nil, nil, nil, true)--Healer may want this, or raid leader
 ----Marak the Blooded
 local specWarnBloodRitual				= mod:NewSpecialWarningYou(158078)
-local specWarnBloodRitualOther			= mod:NewSpecialWarningTarget(158078, mod:IsTank())
+local specWarnBloodRitualOther			= mod:NewSpecialWarningTarget(158078, mod:IsMelee(), nil, nil, nil, nil, true)
 local yellBloodRitual					= mod:NewYell(158078)
-local specWarnBloodsoakedHeartseeker	= mod:NewSpecialWarningRun(158010, nil, nil, nil, 4)
+local specWarnBloodsoakedHeartseeker	= mod:NewSpecialWarningRun(158010, nil, nil, nil, 4, nil, true)
 local yellHeartseeker					= mod:NewYell(158010, nil, false)
-local specWarnSanguineStrikes			= mod:NewSpecialWarningTarget(156601, mod:IsHealer())
+local specWarnSanguineStrikes			= mod:NewSpecialWarningTarget(156601, mod:IsHealer(), nil, nil, nil, nil, true)
 
 --Ship
 local timerShipCD						= mod:NewNextTimer(198, "ej10019", nil, nil, nil, 76204)
@@ -104,6 +104,16 @@ local timerConvulsiveShadowsCD			= mod:NewNextTimer(46.5, 156214)
 ----Marak the Blooded
 local timerBladeDashCD					= mod:NewNextTimer(20, 155794)
 local timerHeartSeekerCD				= mod:NewNextTimer(51, 158010)
+
+local voiceRapidFire					= mod:NewVoice(156631) --runout
+local voiceBloodRitual					= mod:NewVoice(158078, mod:IsMelee()) --158078.ogg, farawayfromline
+local voiceHeartSeeker					= mod:NewVoice(158010) --spread
+local voiceShip							= mod:NewVoice("ej10019") --1695uktar, 1695gorak, 1695ukurogg
+local voiceEarthenbarrier				= mod:NewVoice(158708)  --int
+--local voiceSanguineStrikes				= mod:NewVoice(156601, mod:IsHealer()) --healteam
+local voiceDeployTurret					= mod:NewVoice(158599, mod:IsDps()) --158599.ogg attack turret
+local voiceConvulsiveShadows			= mod:NewVoice(156214) --runaway, target
+local voiceDarkHunt						= mod:NewVoice(158315) --defensive, target
 
 mod:AddSetIconOption("SetIconOnRapidFire", 156626, true)
 mod:AddSetIconOption("SetIconOnBloodRitual", 158078, true)
@@ -162,6 +172,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 158599 and (noFilter or not isPlayerOnBoat()) then
 		warnDeployTurret:Show()
 		specWarnDeployTurret:Show()
+		voiceDeployTurret:Play("158599")
 	elseif spellId == 155794 and (noFilter or not isPlayerOnBoat()) then
 		self:BossTargetScanner(77231, "BladeDashTarget", 0.1, 16)
 		timerBladeDashCD:Start()
@@ -174,6 +185,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 158708 then
 		warnEarthenBarrier:Show()
 		specWarnEarthenbarrier:Show(args.sourceName)
+		voiceEarthenbarrier:Play("kickcast")
 	elseif spellId == 158707 then
 		warnProtectiveEarth:Show()
 	elseif spellId == 158710 then
@@ -223,16 +235,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnConvulsiveShadows:Show()
 			yellConvulsiveShadows:Yell()
+			voiceConvulsiveShadows:Play("runaway")
 		end
 	elseif spellId == 158315 and (noFilter or not isPlayerOnBoat()) then
 		warnDarkHunt:Show(args.destName)
 		specWarnDarkHunt:Show(args.destName)
-		timerDarkHuntCD:Start()
+		timerDarkHuntCD:Start() --8s
+		voiceDarkHunt:Schedule(3, "defensive") --if a countdown is added for this spell, change schedule time to 1.5s
 	elseif spellId == 158010 and (noFilter or not isPlayerOnBoat()) then
 		warnBloodsoakedHeartseeker:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnBloodsoakedHeartseeker:Show()
 			yellHeartseeker:Yell()
+			voiceHeartSeeker:Play("scatter")
 		end
 		if self.Options.SetIconOnHeartSeeker then
 			self:SetSortedIcon(1, args.destName, 3, 3)
@@ -243,6 +258,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBloodRitual:Show()
 			yellBloodRitual:Yell()
+			voiceBloodRitual:Play("158078")
 		end
 		if self.Options.SetIconOnBloodRitual then
 			self:SetIcon(args.destName, 2)
@@ -257,6 +273,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 156601 then
 		warnSanguineStrikes:Show(args.destName)
 		specWarnSanguineStrikes:Show(args.destName)
+		--voiceSanguineStrikes:Play("healall")
 	--Begin Deck Abilities
 	elseif spellId == 158702 and (noFilter or isPlayerOnBoat()) then
 		warnFixate:Show(args.destName)
@@ -301,6 +318,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:156626") then
 		specWarnRapidFire:Show()
 		yellRapidFire:Yell()
+		voiceRapidFire:Play("runout")
 		self:SendSync("RapidFireTarget", UnitGUID("player"))
 	end
 end
@@ -332,13 +350,16 @@ function mod:OnSync(msg, guid)
 		if guid == Marak then
 			timerBloodRitualCD:Cancel()
 			timerHeartSeekerCD:Cancel()
+			voiceShip:Play("1695ukurogg")
 		elseif guid == Sorka then
 			timerBladeDashCD:Cancel()
 			timerConvulsiveShadowsCD:Cancel()
 			timerDarkHuntCD:Cancel()
+			voiceShip:Play("1695gorak")
 		elseif guid == Garan then
 			timerRapidFireCD:Cancel()
 			timerPenetratingShotCD:Cancel()
+			voiceShip:Play("1695uktar")
 		end
 	end
 end

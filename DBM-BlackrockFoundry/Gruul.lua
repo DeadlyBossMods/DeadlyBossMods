@@ -28,10 +28,10 @@ local warnRampage					= mod:NewSpellAnnounce(155539, 2)
 local warnOverheadSmash				= mod:NewCountAnnounce(155301, 3)--every 6 seconds is ok, boss doesn't do much else during this phase. TODO< why does this fire outside of world shaking? tank out of range?
 local warnPetrifyingSlam			= mod:NewSpellAnnounce(155326, 4)
 
-local specWarnInfernoSlice			= mod:NewSpecialWarningCount(155080, mod:IsTank() or mod:IsHealer())
+local specWarnInfernoSlice			= mod:NewSpecialWarningCount(155080, mod:IsTank() or mod:IsHealer(), nil, nil, nil, nil, true)
 local specWarnRampage				= mod:NewSpecialWarningSpell(155539, nil, nil, nil, 2)
 local specWarnRampageEnded			= mod:NewSpecialWarningEnd(155539)
-local specWarnOverheadSmash			= mod:NewSpecialWarningCount(155301, nil, nil, nil, 2)
+local specWarnOverheadSmash			= mod:NewSpecialWarningCount(155301, nil, nil, nil, 2, nil, true)
 local specWarnPetrifyingSlam		= mod:NewSpecialWarningMoveAway(155326, nil, nil, nil, 3)
 
 local timerInfernoSliceCD			= mod:NewCDTimer(13, 155080)--Variable do to energy bugs (gruul not gain power consistently)
@@ -39,6 +39,10 @@ local timerInfernoSliceCD			= mod:NewCDTimer(13, 155080)--Variable do to energy 
 local timerShatter					= mod:NewCastTimer(8, 155529)
 local timerRampage					= mod:NewBuffActiveTimer(30, 155539)
 local timerRampageCD				= mod:NewCDTimer(110, 155539)--Not sure if it's 110 in all difficulties, this is what LFR was from rampage end to new rampage
+
+local voiceInfernoSlice				= mod:NewVoice(155080) --gathershare. maybe change to "cleave". Fight exactly like butcher, EXACTLY.
+--local voiceCrumblingRoar			= mod:NewVoice(155730)
+local voiceOverheadSmash			= mod:NewVoice(155301) --shockwave
 
 --local berserkTimer				= mod:NewBerserkTimer(360)--Said to be 6 minutes. Unconfirmed.
 
@@ -75,11 +79,13 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerInfernoSliceCD:Start()
 		end
+		voiceInfernoSlice:Play("gathershare")
 	elseif spellId == 155301 then
 		self:UnregisterShortTermEvents()
 		self.vb.smashCount = self.vb.smashCount + 1
 		warnOverheadSmash:Show(self.vb.smashCount)
 		specWarnOverheadSmash:Show(self.vb.smashCount)
+		voiceOverheadSmash:Play("shockwave")
 	end
 end
 
