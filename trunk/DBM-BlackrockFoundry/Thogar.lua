@@ -30,7 +30,7 @@ local warnIronBellow				= mod:NewSpellAnnounce(163753, 3)
 local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)
 
 --Operator Thogar
-local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195)--If target scanning works
+local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195, nil, nil, nil, nil, nil, true)--If target scanning works
 local specWarnEnkindle				= mod:NewSpecialWarningStack(155921, nil, 2)
 local specWarnEnkindleOther			= mod:NewSpecialWarningTaunt(155921)
 --Adds
@@ -50,6 +50,9 @@ local timerTrainCD					= mod:NewNextCountTimer(15, 176312)
 local timerIronbellowCD				= mod:NewCDTimer(12, 163753)
 
 local countdownTrain				= mod:NewCountdown(5, 176312)
+
+local voiceTrain					= mod:NewVoice(176312) --see mythicVoice{} otherVoice{} tables for more details
+local voiceProtoGrenade				= mod:NewVoice(165195) --runaway
 
 mod.vb.trainCount = 0
 local Train = GetSpellInfo(174806)
@@ -104,6 +107,57 @@ local otherTrains = {
 	[22] = Train.." (3)",--+25 after 21
 	[23] = Train.." (2, 3)",--+30 after 22
 	[24] = Train.." (3)",--+15 after 22
+}
+
+--  Voicelist
+--	A: just rushing through the lane(express)
+--	B: small Adds(Reinforcements)
+--	C: cannon
+--	D: big Adds (ManOArms)
+--	E: fire(Deforester) 
+--	F: random express (3x trainType A)
+--	X: random rail
+
+local mythicVoice = {
+	[1] = "D4",
+	[2] = "E1",
+	[3] = "A2",
+	[4] = "A3",
+	[5] = "F",
+	[6] = "CX",
+	[7] = "A2",
+	[8] = "A3",
+	[9] = "A2",
+	[10] = "BX",
+	[11] = "A14",
+	[12] = "F"
+}
+
+local otherVoice = {
+	[1] = "A4",
+	[2] = "A2",
+	[3] = "B1",
+	[4] = "A3",
+	[5] = "C4",
+	[6] = "A2",
+	[7] = "D3",
+	[8] = "A1",
+	[9] = "B2B3",
+	[10] = "A14",
+	[11] = "C1",
+	[12] = "A2",
+	[13] = "B4",
+	[14] = "A3",
+	[15] = "A2",
+	[16] = "A1",
+	[17] = "DX",
+	[18] = "A1",
+	[19] = "A3",
+	[20] = "C14",
+	[21] = "A2",
+	[22] = "A3",
+	[23] = "AX",
+	[24] = "AX"
 }
 
 function mod:OnCombatStart(delay)
@@ -165,6 +219,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 165195 and args:IsPlayer() then
 		specWarnProtoGrenade:Show()
+		voiceProtoGrenade:Play("runaway")
 --[[	elseif spellId == 156494 and args:IsPlayer() and self:AntiSpam() then
 		specWarnObliteration:Show()--]]
 	end
@@ -185,6 +240,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		warnTrain:Show(count)
 		countdownTrain:Start()--All trains are delayed 5 seconds from yell now, so we can just put 5 second countdown here.
 		if self:IsMythic() then
+			voiceTrain:Play("Thogar\\"..mythicVoice[count])
 			if count >= 12 then
 				print("Train Set: "..count..". DBM has no train data beyond this point. Write down lane(s) trains come from in 5 seconds with train set number and give it to us")
 				return
@@ -202,6 +258,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				specWarnManOArms:Show()
 			end
 		else
+		voiceTrain:Play("Thogar\\"..otherVoice[count])
 			if count >= 18 then
 				print("Train set 19 was missing a boss yell in my first test. As such, all further timers are disabled until it's verified that it's ALWAYS missing (so I can code around this bug), or blizzard fixes it .")
 				if count >= 23 then

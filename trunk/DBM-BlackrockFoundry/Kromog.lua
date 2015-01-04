@@ -27,7 +27,7 @@ local warnWarpedArmor				= mod:NewStackAnnounce(156766, 2, nil, mod:IsTank())
 local warnTremblingEarth			= mod:NewSpellAnnounce(173917, 3)--Mythic
 local warnCalloftheMountain			= mod:NewCastAnnounce(158217, 4, 5)--Mythic
 
-local specWarnGraspingEarth			= mod:NewSpecialWarningSpell(157060)
+local specWarnGraspingEarth			= mod:NewSpecialWarningSpell(157060, nil, nil, nil, nil, nil, true)
 local specWarnThunderingBlows		= mod:NewSpecialWarningSpell(157054, nil, nil, nil, 3)
 local specWarnRipplingSmash			= mod:NewSpecialWarningSpell(157592, nil, nil, nil, 2)
 local specWarnSlam					= mod:NewSpecialWarningSpell(156704, mod:IsTank())
@@ -51,6 +51,10 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 local countdownThunderingBlows		= mod:NewCountdown(60, 157054)
 local countdownTremblingEarth		= mod:NewCountdownFades("Alt25", 173917)
 
+local voiceGraspingEarth 			= mod:NewVoice(157060)--157060, safenow
+local voiceWarpedArmor				= mod:NewVoice(156766, mod:IsTank())
+
+
 mod.vb.mountainCast = 0
 
 function mod:OnCombatStart(delay)
@@ -72,6 +76,8 @@ function mod:SPELL_CAST_START(args)
 		timerSlamCD:Cancel()--Can't cast slam during this
 		timerRipplingSmashCD:Cancel()--Or rippling
 		timerWarpedArmorCD:Cancel()
+		voiceGraspingEarth:Play("157060")
+		voiceGraspingEarth:Schedule(12, "safenow")
 		if self:IsMythic() then
 			timerTremblingEarthCD:Start()
 			timerGraspingEarthCD:Start(123)--TODO, see if normal is still 111 after last
@@ -114,6 +120,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnWarpedArmor:Show(args.destName, amount)
 		timerWarpedArmorCD:Start()
 		if amount >= 3 then
+			voiceWarpedArmor:Play("changemt")
 			if args:IsPlayer() then
 				specWarnWarpedArmor:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.

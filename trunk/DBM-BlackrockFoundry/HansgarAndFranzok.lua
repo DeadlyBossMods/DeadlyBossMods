@@ -26,13 +26,16 @@ local warnSearingPlates					= mod:NewSpellAnnounce(161570, 4)--Types
 local warnPulverized					= mod:NewSpellAnnounce(174825, 4)--Types
 
 local specWarnDisruptingRoar			= mod:NewSpecialWarningCount(160838)--"stop casting" is incorrect, you need to move away from boss for this, not stop casting.
-local specWarnShatteredVertebrae		= mod:NewSpecialWarningStack(157139, nil, 2)--stack guessed
+local specWarnShatteredVertebrae		= mod:NewSpecialWarningStack(157139, nil, 2, nil, nil, nil, nil, true)--stack guessed
 local specWarnShatteredVertebraeOther	= mod:NewSpecialWarningTaunt(157139)
 local specWarnCripplingSuplex			= mod:NewSpecialWarningSpell(156938, nil, nil, nil, 3)--pop a cooldown, or die.
 local specWarnEnvironmentalThreats		= mod:NewSpecialWarningSpell("ej10089", nil, nil, nil, 2)
-local specWarnEnvironmentalThreatsEnd	= mod:NewSpecialWarningEnd("ej10089")
+local specWarnEnvironmentalThreatsEnd	= mod:NewSpecialWarningEnd("ej10089", nil)
 
 local timerDisruptingRoarCD				= mod:NewCDTimer(46, 160838)
+
+local voiceEnvironmentalThreats			= mod:NewVoice("ej10089")
+local voiceShatteredVertebrae			= mod:NewVoice(157139, mod:IsTank())
 
 mod.vb.phase = 1
 
@@ -86,6 +89,7 @@ function mod:SPELL_AURA_APPLIED(args)
 						specWarnShatteredVertebraeOther:Show(args.destName)
 					end
 				end
+				voiceShatteredVertebrae:Play("changemt")
 			end
 		end
 	end
@@ -100,22 +104,29 @@ function mod:UNIT_TARGETABLE_CHANGED()
 	if self.vb.phase == 2 then--First belt 85% (15 Energy) (fire plates)
 		warnSearingPlates:Show()
 		specWarnEnvironmentalThreats:Show()
+		voiceEnvironmentalThreats:Play("watchstep")
 	elseif self.vb.phase == 3 then--Ended
 		specWarnEnvironmentalThreatsEnd:Show()
+		voiceEnvironmentalThreats:Play("safenow")
 	elseif self.vb.phase == 4 then--Second belt 55% (45 Energy) (smoosh plates)
 		timerDisruptingRoarCD:Cancel()
 		warnPulverized:Show()
 		specWarnEnvironmentalThreats:Show()
+		voiceEnvironmentalThreats:Play("watchstep")
 	elseif self.vb.phase == 5 then--Ended
 		specWarnEnvironmentalThreatsEnd:Show()
 		timerDisruptingRoarCD:Start(7)
+		voiceEnvironmentalThreats:Play("safenow")
 	elseif self.vb.phase == 6 then--Third belt part 1 25% (75 Energy) (fire plates)
 		warnSearingPlates:Show()
 		specWarnEnvironmentalThreats:Show()
+		voiceEnvironmentalThreats:Play("watchstep")
 	elseif self.vb.phase == 7 then--Ended
 		specWarnEnvironmentalThreatsEnd:Show()
+		voiceEnvironmentalThreats:Play("safenow")
 	elseif self.vb.phase == 8 then--Third belt part 2
 		warnPulverized:Show()
 		specWarnEnvironmentalThreats:Show()
+		voiceEnvironmentalThreats:Play("watchstep")
 	end
 end
