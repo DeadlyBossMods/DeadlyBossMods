@@ -7247,30 +7247,37 @@ do
 			end
 		end
 		--Check if any of countdown sounds are using missing voice pack
-		local voice1 = DBM.Options.CountdownVoice
-		local voice2 = DBM.Options.CountdownVoice2
-		local voice3 = DBM.Options.CountdownVoice3
+		local voice1 = self.Options.CountdownVoice
+		local voice2 = self.Options.CountdownVoice2
+		local voice3 = self.Options.CountdownVoice3
 		if voice1 == "None" then--Migrate to new setting
-			DBM.Options.CountdownVoice = DBM.DefaultOptions.CountdownVoice
-			DBM.Options.DontPlayCountdowns = true
+			self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice
+			self.Options.DontPlayCountdowns = true
+		end
+		if voice1 == "Yike" then--Migration for CN Users
+			if self.VoiceVersions["Yike"] then
+				self.Options.CountdownVoice = "VP:Yike"
+			else
+				self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice--Defaults
+			end
 		end
 		if voice1:find("VP:") then
 			local _, voiceValue = string.split(":", voice1)
 			if not self.VoiceVersions[voiceValue] then
 				self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(1))
-				DBM.Options.CountdownVoice1 = DBM.DefaultOptions.CountdownVoice
+				self.Options.CountdownVoice1 = self.DefaultOptions.CountdownVoice
 			end
 		elseif voice2:find("VP:") then
 			local _, voiceValue = string.split(":", voice2)
 			if not self.VoiceVersions[voiceValue] then
 				self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(2))
-				DBM.Options.CountdownVoice2 = DBM.DefaultOptions.CountdownVoice2
+				self.Options.CountdownVoice2 = self.DefaultOptions.CountdownVoice2
 			end
 		elseif voice3:find("VP:") then
 			local _, voiceValue = string.split(":", voice3)
 			if not self.VoiceVersions[voiceValue] then
 				self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(3))
-				DBM.Options.CountdownVoice3 = DBM.DefaultOptions.CountdownVoice3
+				self.Options.CountdownVoice3 = self.DefaultOptions.CountdownVoice3
 			end
 		end
 	end
