@@ -193,6 +193,7 @@ L.SpamBlockNoSetIcon		= "不設置標記在目標上"
 L.SpamBlockNoRangeFrame		= "不顯示距離框架"
 L.SpamBlockNoInfoFrame		= "不顯示訊息框架"
 L.SpamBlockNoHealthFrame	= "不顯示血量框架"
+L.SpamBlockNoCountdowns		= "不播放倒數音效"
 
 -- Tab: Spam Filter
 L.Area_SpamFilter			= "垃圾過濾選項"
