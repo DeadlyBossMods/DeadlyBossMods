@@ -260,7 +260,7 @@ end
 function arrowFrame:Move()
 	targetType = "rotate"
 	runAwayArrow = false
-	hideDistance = 5
+	hideDistance = 0
 	frame:EnableMouse(true)
 	frame:Show()
 	DBM.Bars:CreateBar(25, DBM_ARROW_MOVABLE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
