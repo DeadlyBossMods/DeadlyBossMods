@@ -1001,13 +1001,6 @@ do
 						end
 					end
 				end
-				--Work in progress and subject to change. Just kind of throwing code in for random ideas
-				--X-DBM-Voice: 1 should be in file
-				--X-DBM-Voice-Name Should be long name you want to appear in dropdown menu
-				--X-DBM-Voice-ShortName should be short name that matches folder name after DBM-VP. So for example, DBM-VPHarry would be "Harry" for a short name.
-				--X-DBM-Voice-Version should be a single number identifying whether or not the voice pack is new enough to enable special warning sound filter.
-				--Version 1: Contains All files in highmaul currently present in DBM 6.0.10
-				--Version 2: Contains Support for new Countdown injection in 6.0.11
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
 					local voiceValue = GetAddOnMetadata(i, "X-DBM-Voice-ShortName")
 					local voiceVersion = tonumber(GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0)
