@@ -1536,36 +1536,15 @@ local function CreateOptionsMenu()
 		)
 		RaidWarnSoundDropDown:SetPoint("TOPLEFT", ShowCountdownText, "BOTTOMLEFT", 10, -10)
 
-		local countSounds = {
-			{	text	= "Moshne (Male)",	value 	= "Mosh"},
-			{	text	= "Corsica (Female)",value 	= "Corsica"},
-			{	text	= "Koltrane (Male)",value 	= "Kolt"},
-			{	text	= "Pewsey (Male)",value 	= "Pewsey"},
-			{	text	= "Bear (Male Child)",value = "Bear"},
-			{	text	= "Anshlun (ptBR Male)",value = "Anshlun"},
-			{	text	= "Neryssa (ptBR Female)",value = "Neryssa"},
-			{	text	= "Yike (zhCN Female)",value 	= "Yike"},
-			{	text	= "None (Overrides ALL voices)",value 	= "None"},
-		}
-		local CountSoundDropDown = raidwarnoptions:CreateDropdown(L.CountdownVoice, countSounds,
+		local CountSoundDropDown = raidwarnoptions:CreateDropdown(L.CountdownVoice, DBM.Counts,
 		DBM.Options.CountdownVoice, function(value)
 			DBM.Options.CountdownVoice = value
 			DBM:PlayCountSound(1, DBM.Options.CountdownVoice)
 		end
 		)
 		CountSoundDropDown:SetPoint("TOPLEFT", RaidWarnSoundDropDown, "TOPLEFT", 0, -40)
-		
-		local countSounds2 = {
-			{	text	= "Moshne (Male)",	value 	= "Mosh"},
-			{	text	= "Corsica (Female)",value 	= "Corsica"},
-			{	text	= "Koltrane (Male)",value 	= "Kolt"},
-			{	text	= "Pewsey (Male)",value 	= "Pewsey"},
-			{	text	= "Bear (Male Child)",value = "Bear"},
-			{	text	= "Anshlun (ptBR Male)",value = "Anshlun"},
-			{	text	= "Neryssa (ptBR Female)",value = "Neryssa"},
-			{	text	= "Yike (zhCN Female)",value 	= "Yike"},
-		}
-		local CountSoundDropDown2 = raidwarnoptions:CreateDropdown(L.CountdownVoice2, countSounds2,
+
+		local CountSoundDropDown2 = raidwarnoptions:CreateDropdown(L.CountdownVoice2, DBM.Counts,
 		DBM.Options.CountdownVoice2, function(value)
 			DBM.Options.CountdownVoice2 = value
 			DBM:PlayCountSound(1, DBM.Options.CountdownVoice2)
@@ -2456,6 +2435,7 @@ local function CreateOptionsMenu()
 		spamOutArea:CreateCheckButton(L.SpamBlockNoRangeFrame, true, nil, "DontShowRangeFrame")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoInfoFrame, true, nil, "DontShowInfoFrame")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoHealthFrame, true, nil, "DontShowHealthFrame")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoCountdowns, true, nil, "DontPlayCountdowns")
 
 		local spamArea = spamPanel:CreateArea(L.Area_SpamFilter, nil, 150, true)
 		spamArea:CreateCheckButton(L.StripServerName, true, nil, "StripServerName")
