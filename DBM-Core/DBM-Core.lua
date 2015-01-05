@@ -7224,10 +7224,17 @@ do
 				voice = "Corsica"
 			end
 		end--If number is higher than 5 and users primary voice setting ismosh, fallback to secondary voice setting
-		if DBM.Options.UseMasterVolume then
-			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..number..".ogg", "Master")
+		local path
+		if voice:find("VP:") then
+			local _, voiceValue = string.split(":", voice)
+			path = "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\"..number..".ogg"
 		else
-			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..number..".ogg")
+			path = "Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..number..".ogg"
+		end
+		if DBM.Options.UseMasterVolume then
+			PlaySoundFile(path, "Master")
+		else
+			PlaySoundFile(path)
 		end
 	end
 
