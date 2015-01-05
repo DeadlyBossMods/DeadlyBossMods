@@ -193,6 +193,7 @@ L.SpamBlockNoSetIcon		= "Do not set icons on targets"
 L.SpamBlockNoRangeFrame		= "Do not show range frame"
 L.SpamBlockNoInfoFrame		= "Do not show info frame"
 L.SpamBlockNoHealthFrame	= "Do not show health frame"
+L.SpamBlockNoCountdowns		= "Do not play countdown sounds"
 
 -- Tab: Spam Filter
 L.Area_SpamFilter			= "Spam Filter Options"
