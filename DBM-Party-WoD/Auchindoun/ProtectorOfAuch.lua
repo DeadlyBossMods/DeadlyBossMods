@@ -45,7 +45,7 @@ function mod:ShieldTarget(targetname, uId)
 		yellHolyShield:Yell()
 	else
 		if self.Options.ShieldArrow then
-			DBM.Arrow:ShowRunTo(uId, 3, 3, 9)
+			DBM.Arrow:ShowRunTo(uId, 3, 9)
 		end
 		voiceHolyShield:Schedule(3, "findshield")
 	end

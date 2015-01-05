@@ -190,7 +190,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			specWarnMoltenTorrentOther:Show(args.destName)
 			if self.Options.TorrentArrow then
-				DBM.Arrow:ShowRunTo(args.destName, 3, 3, 5)
+				DBM.Arrow:ShowRunTo(args.destName, 3, 5)
 			end
 		end
 	elseif spellId == 154950 then

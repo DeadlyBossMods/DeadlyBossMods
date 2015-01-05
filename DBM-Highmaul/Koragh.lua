@@ -118,7 +118,7 @@ local function returnPosition(self)
 	specWarnExpelMagicFelFades:Show()
 	voiceExpelMagicArcaneFel:Play("172895")
 	if self.Options.FelArrow and lastX and LastY then
-		DBM.Arrow:ShowRunTo(lastX, LastY, 3, 3, 5)
+		DBM.Arrow:ShowRunTo(lastX, LastY, 1, 5)
 	end
 end
 
