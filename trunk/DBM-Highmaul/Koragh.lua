@@ -39,6 +39,7 @@ local specWarnNullBarrier			= mod:NewSpecialWarningTarget(156803)--Only warn for
 local specWarnVulnerability			= mod:NewSpecialWarningTarget(160734)--Switched to target warning since some may be assined adds, some to boss, but all need to know when this phase starts
 local specWarnTrample				= mod:NewSpecialWarningYou(163101, nil, nil, nil, nil, nil, true)
 local yellTrample					= mod:NewYell(163101)
+local specWarnTrampleNear			= mod:NewSpecialWarningClose(163101)
 local specWarnExpelMagicFire		= mod:NewSpecialWarningMoveAway(162185, nil, nil, nil, nil, nil, true)
 local specWarnExpelMagicShadow		= mod:NewSpecialWarningSpell(162184, mod:IsHealer(), nil, nil, nil, nil, true)
 local specWarnExpelMagicFrost		= mod:NewSpecialWarningSpell(161411, false, nil, nil, nil, nil, true)
@@ -246,7 +247,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnExpelMagicFel:Show()
 			timerExpelMagicFel:Start()
 			countdownFel:Start()
-			yellExpelMagicFel:Yell()
+			yellExpelMagicFel:Schedule(10)--Yell right before expire, not apply
 			lastX, LastY = UnitPosition("player")
 			self:Schedule(7, returnPosition, self)
 		end
@@ -289,7 +290,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		local remaining = total - elapsed
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
-		if remaining > 4 then--If 4 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
+		if remaining > 5 then--If 5 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
 			timerBallsCD:Cancel()
 			timerBallsCD:Start(remaining+22.5, self.vb.ballsCount+1)
 			countdownBalls:Cancel()
@@ -329,6 +330,8 @@ function mod:OnSync(msg, targetname)
 				specWarnTrample:Show()
 				yellTrample:Yell()
 				voiceTrample:Play("runaway")
+			elseif self:CheckNearby(10, target) then
+				specWarnTrampleNear:Show(target)
 			end
 		end
 	--There no Overflowing Energy for 81 second, this should never happen. What happened? CLEU range? (I think range issue is impossible. No player is out of range during playing rest druid. And the room is not enough large to occur CLEU issue.)
@@ -343,9 +346,10 @@ function mod:OnSync(msg, targetname)
 		self.vb.ballsCount = self.vb.ballsCount + 1
 		self:Unschedule(ballsWarning)
 		self:Unschedule(checkBossForgot)
+		timerBallsCD:Cancel()
 		local timer
 		if self.vb.shieldCharging then
-			timer = 52.5--Maybe 51-52.5 variable
+			timer = 52
 			DBM:Debug("timerBallsCD started during shield charging, 52.5 second timer started")
 		else
 			timer = 30
