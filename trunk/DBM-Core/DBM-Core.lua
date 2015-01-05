@@ -189,6 +189,7 @@ DBM.DefaultOptions = {
 	DontShowRangeFrame = false,
 	DontShowInfoFrame = false,
 	DontShowHealthFrame = false,
+	DontPlayCountdowns = false,
 	DontShowPT2 = false,
 	DontShowPTCountdownText = false,
 	DontPlayPTCountdown = false,
@@ -224,6 +225,15 @@ DBM.DefaultOptions = {
 
 DBM.Bars = DBT:New()
 DBM.Mods = {}
+DBM.Counts = {
+	{	text	= "Moshne (Male)",	value 	= "Mosh"},
+	{	text	= "Corsica (Female)",value 	= "Corsica"},
+	{	text	= "Koltrane (Male)",value 	= "Kolt"},
+	{	text	= "Pewsey (Male)",value 	= "Pewsey"},
+	{	text	= "Bear (Male Child)",value = "Bear"},
+	{	text	= "Anshlun (ptBR Male)",value = "Anshlun"},
+	{	text	= "Neryssa (ptBR Female)",value = "Neryssa"},
+}
 
 ------------------------
 -- Global Identifiers --
@@ -997,18 +1007,17 @@ do
 				--X-DBM-Voice-ShortName should be short name that matches folder name after DBM-VP. So for example, DBM-VPHarry would be "Harry" for a short name.
 				--X-DBM-Voice-Version should be a single number identifying whether or not the voice pack is new enough to enable special warning sound filter.
 				--Version 1: Contains All files in highmaul currently present in DBM 6.0.10
-				--Version 2: TBD
+				--Version 2: Contains Support for new Countdown injection in 6.0.11
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
 					local voiceValue = GetAddOnMetadata(i, "X-DBM-Voice-ShortName")
 					local voiceVersion = tonumber(GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0)
 					tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = voiceValue })
 					self.VoiceVersions[voiceValue] = voiceVersion
-					self:Schedule(10, self.CheckVoicePackVersion, self, voiceValue)
+					self:Schedule(10, self.CheckVoicePackVersion, self, voiceValue)--Still at 1 since the count sounds won't break any mods or affect filter. V2 if support countsound path
+					if voiceVersion >= 2 then--Supports adding countdown options, insert new countdown into table
+						tinsert(self.Counts, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = "VP:"..voiceValue })
+					end
 				end
-			end
-			if self.Options.ChosenVoicePack ~= "None"  and not self.VoiceVersions[DBM.Options.ChosenVoicePack] then--A voice pack is selected but has nil version (not possible unless voice pack disabled
-				self.Options.ChosenVoicePack = "None"--Set ChosenVoicePack back to None
-				self:AddMsg(DBM_CORE_VOICE_MISSING)
 			end
 			tsort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
 			self:RegisterEvents(
@@ -6733,10 +6742,10 @@ do
 					DBM:Schedule(timer%1, showCountdown, floor(timer))
 				end
 			end
+			if DBM.Options.DontPlayCountdowns then return end
 			local voice = DBM.Options.CountdownVoice
 			local voice2 = DBM.Options.CountdownVoice2
 			local voice3 = DBM.Options.CountdownVoice3
-			if voice == "None" then return end
 			if self.alternateVoice == 2 then
 				voice = voice2
 			end
@@ -6755,6 +6764,19 @@ do
 						if i <= 5 then
 							self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"..i..".ogg")
 						end
+					end
+				end
+			elseif voice:find("VP:") then--voice pack voice
+				local _, voiceValue = string.split(":", voice)
+				if self.type == "Countout" then
+					for i = 1, timer do
+						if i < 11 then
+							self.sound5:Schedule(i, "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\"..i..".ogg")
+						end
+					end
+				else
+					for i = count, 1, -1 do
+						self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\"..i..".ogg")
 					end
 				end
 			else--Voice that goes to 10
@@ -7217,12 +7239,45 @@ do
 	end
 
 	function DBM:CheckVoicePackVersion(value)
+		--Check if voice pack missing
+		if self.Options.ChosenVoicePack ~= "None"  and not self.VoiceVersions[value] then--A voice pack is selected but has nil version (not possible unless voice pack disabled
+			self.Options.ChosenVoicePack = "None"--Set ChosenVoicePack back to None
+			self:AddMsg(DBM_CORE_VOICE_MISSING)
+		end
+		--Check if voice pack out of date
 		if self.Options.ChosenVoicePack == value then
 			if self.VoiceVersions[value] < 1 then--Version will be bumped when new voice packs released that contain new voices.
 				self:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
 				SWFilterDisabed = true
 			else
 				SWFilterDisabed = false
+			end
+		end
+		--Check if any of countdown sounds are using missing voice pack
+		local voice1 = DBM.Options.CountdownVoice
+		local voice2 = DBM.Options.CountdownVoice2
+		local voice3 = DBM.Options.CountdownVoice3
+		if voice1 == "None" then--Migrate to new setting
+			DBM.Options.CountdownVoice = DBM.DefaultOptions.CountdownVoice
+			DBM.Options.DontPlayCountdowns = true
+		end
+		if voice1:find("VP:") then
+			local _, voiceValue = string.split(":", voice1)
+			if not self.VoiceVersions[voiceValue] then
+				self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(1))
+				DBM.Options.CountdownVoice1 = DBM.DefaultOptions.CountdownVoice
+			end
+		elseif voice2:find("VP:") then
+			local _, voiceValue = string.split(":", voice2)
+			if not self.VoiceVersions[voiceValue] then
+				self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(2))
+				DBM.Options.CountdownVoice2 = DBM.DefaultOptions.CountdownVoice2
+			end
+		elseif voice3:find("VP:") then
+			local _, voiceValue = string.split(":", voice3)
+			if not self.VoiceVersions[voiceValue] then
+				self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(3))
+				DBM.Options.CountdownVoice3 = DBM.DefaultOptions.CountdownVoice3
 			end
 		end
 	end
