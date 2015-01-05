@@ -10,7 +10,7 @@ mod:SetUsedIcons(8, 7, 6, 3, 2, 1)--Don't know total number of icons needed yet
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 162185 162184 161411 172747 163517 162186 172895",
+	"SPELL_CAST_START 162185 162184 172747 163517 162186 172895",
 	"SPELL_CAST_SUCCESS 161612",
 	"SPELL_AURA_APPLIED 156803 162186 161242 163472 172895 172917",
 	"SPELL_AURA_REMOVED 162186 163472 172895 156803",
@@ -57,8 +57,12 @@ local specWarnExpelMagicFelMove		= mod:NewSpecialWarningMove(172917)--Under you 
 local timerVulnerability			= mod:NewBuffActiveTimer(20, 160734)
 local timerTrampleCD				= mod:NewCDTimer(16, 163101)--Also all over the place, 15-25 with first one coming very randomly (5-20 after barrier goes up)
 local timerExpelMagicFire			= mod:NewBuffFadesTimer(11.5, 162185)
-local timerExpelMagicFrost			= mod:NewBuffActiveTimer(20, 161411)
+--local timerExpelMagicFire			= mod:NewCDTimer(60, 162185)--More problematic than rest, because unlike rest which are always 60 seconds except after shields, this one is ALWAYS variable. 60-67
+local timerExpelMagicFrost			= mod:NewBuffActiveTimer(20, 161411, nil, false)
+local timerExpelMagicFrostCD		= mod:NewCDTimer(60, 161411)
+local timerExpelMagicShadowCD		= mod:NewCDTimer(60, 162184, nil, mod:IsHealer())
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
+local timerExpelMagicArcaneCD		= mod:NewCDTimer(26, 162184, nil, mod:IsTank())--26-32
 local timerBallsCD					= mod:NewNextCountTimer(30, 161612)
 local timerExpelMagicFelCD			= mod:NewCDTimer(15.5, 172895)--Mythic
 local timerExpelMagicFel			= mod:NewBuffFadesTimer(12, 172895)--Mythic
@@ -122,7 +126,8 @@ function mod:OnCombatStart(delay)
 	self.vb.supressionCount = 0
 	self.vb.ballsCount = 0
 	self.vb.shieldCharging = false
-	--timerExpelMagicFireCD:Start(6-delay)
+--	timerExpelMagicFireCD:Start(6-delay)
+	timerExpelMagicArcaneCD:Start(30-delay)
 	timerBallsCD:Start(36-delay, 1)
 	countdownBalls:Start(36-delay)
 	self:Schedule(29.5-delay, ballsWarning)
@@ -160,10 +165,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 162184 then
 		warnExpelMagicShadow:Show()
 		specWarnExpelMagicShadow:Show()
+		timerExpelMagicShadowCD:Start()
 		voiceExpelMagicShadow:Play("healall")
-	elseif args:IsSpellID(161411, 172747) then
+	elseif args:IsSpellID(172747) then
 		warnExpelMagicFrost:Show()
 		specWarnExpelMagicFrost:Show()
+		timerExpelMagicFrostCD:Start()
 		if not self:IsLFR() then
 			timerExpelMagicFrost:Start()
 		else
@@ -173,7 +180,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 163517 then
 		warnForfeitPower:Show()
 		local guid = args.souceGUID
-		if guid == UnitGUID("target") or guid == UnitGUID("focus") then
+		if (guid == UnitGUID("target")) or (guid == UnitGUID("focus")) then
 			specWarnForfeitPower:Show(args.sourceName)
 		end
 	elseif spellId == 162186 then
@@ -213,12 +220,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.shieldCharging = false
 		warnNullBarrier:Show(args.destName)
 		specWarnNullBarrier:Show(args.destName)
---		timerTrampleCD:Start()--5-20
---		timerExpelMagicFelCD:Start()
-		--Variation that wild, i'm confident, shield % based not timer based.
 	elseif spellId == 162186 then
 		warnExpelMagicArcane:Show(args.destName)
 		timerExpelMagicArcane:Start(args.destName)
+		timerExpelMagicArcaneCD:Start()
 		if args:IsPlayer() then--Still do yell and range frame here, in case DK
 			yellExpelMagicArcane:Yell()
 			if self.Options.RangeFrame then
@@ -282,20 +287,47 @@ function mod:SPELL_AURA_REMOVED(args)
 		specWarnVulnerability:Show(args.destName)
 		timerVulnerability:Start()
 		timerTrampleCD:Cancel()
-		timerExpelMagicFelCD:Cancel()
-		local elapsed, total = timerBallsCD:GetTime(self.vb.ballsCount+1)
-		if (elapsed == 0) and (total == 0) then--There was no timer?
+		--Here we making a fucking mess, because his timers pause during shield phase then resume. All with different rates from one another
+		if self:IsMythic() then
+		--Fel https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+172895+and+type+%3D%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=11
+			local felElapsed, felTotalTotal = timerExpelMagicFelCD:GetTime()
+			local felRemaining = felTotalTotal - felElapsed
+			if felRemaining > 0 then--Basically, a 0 0 check.
+				timerExpelMagicFelCD:Start(felRemaining+23)
+			end
+		end
+		--Frost https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+172747+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=11
+		local frostElapsed, frostTotal = timerExpelMagicFrostCD:GetTime()
+		local frostRemaining = frostTotal - frostElapsed
+		if frostRemaining > 0 then--Basically, a 0 0 check.
+			timerExpelMagicFrostCD:Start(frostRemaining+23)--Not perfect. It's every 60 seconds exacty, unless delayed by shield phase, then it's remaining+24-27
+		end
+		--Shadow https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+162184+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=1
+		local shadowElapsed, shadowTotal = timerExpelMagicShadowCD:GetTime()
+		local shadowRemaining = shadowTotal - shadowElapsed
+		if shadowRemaining > 0 then--Basically, a 0 0 check.
+			timerExpelMagicShadowCD:Start(shadowRemaining+27)--Note the difference, shadow is +27-30 not +23-26
+		end
+		--Arcane https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+162186+and+type+%3D+%22applydebuff%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=9
+		local arcaneElapsed, arcaneTotal = timerExpelMagicArcaneCD:GetTime()
+		local arcaneRemaining = arcaneTotal - arcaneElapsed
+		if arcaneRemaining > 0 then--Basically, a 0 0 check.
+			timerExpelMagicArcaneCD:Start(arcaneRemaining+27)--Note the difference, shadow is +27-30 not +23-26
+		end
+		--Balls
+		local ballsElapsed, ballsTotal = timerBallsCD:GetTime(self.vb.ballsCount+1)
+		if (ballsElapsed == 0) and (ballsTotal == 0) then
 			DBM:Debug("Koragh lost his balls?")--Should not happen, but just in case, i want to see when it does clearly
 			return
 		end
-		local remaining = total - elapsed
+		local ballsRemaining = ballsTotal - ballsElapsed
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
 		if remaining > 5 then--If 5 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
 			timerBallsCD:Cancel()
-			timerBallsCD:Start(remaining+22.5, self.vb.ballsCount+1)
+			timerBallsCD:Start(ballsRemaining+22.5, self.vb.ballsCount+1)
 			countdownBalls:Cancel()
 			specWarnBallsSoon:Cancel()
-			countdownBalls:Start(remaining+22.5)
+			countdownBalls:Start(ballsRemaining+22.5)
 			self:Unschedule(ballsWarning)
 			self:Unschedule(checkBossForgot)--Cancel check boss forgot
 			self:Schedule(remaining+16, ballsWarning)
