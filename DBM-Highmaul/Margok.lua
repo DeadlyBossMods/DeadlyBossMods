@@ -763,6 +763,29 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			DBM.RangeCheck:Hide()
 		end
 	elseif spellId == 164336 then--Teleport to Displacement (first phase change that has no transition)
+		--This needs complicated work. Timers that have > 10 seconds remaining get extended by about 3-4 seconds.
+		--But timers that have < 10 seconds remaining get extended by like 10-13 seconds. 
+		--So besides code that's already done below, need to check time remaining < or > 10 and do all kinds of nasty crap. maybe not worth it
+--[[		countdownArcaneWrath:Cancel()
+		countdownMarkofChaos:Cancel()
+		countdownForceNova:Cancel()
+		voiceForceNova:Cancel()
+		local te1, te2, te3, te4, te5
+		local tt1, tt2, tt3, tt4, tt5
+		te1, tt1 = timerArcaneWrathCD:GetTime()
+		te2, tt2 = timerDestructiveResonanceCD:GetTime()
+		te3, tt3 = timerSummonArcaneAberrationCD:GetTime()
+		te4, tt4 = timerMarkOfChaosCD:GetTime()
+		te5, tt5 = timerForceNovaCD:GetTime()
+		local tr1, tr2, tr3, tr4, tr5 = tt1-te1,tt2-te2,tt3-te3,tt4-te4,tt5-te5
+		countdownArcaneWrath:Start(tr1+n)
+		timerArcaneWrathCD:Start(tr1+n)
+		timerDestructiveResonanceCD:Start(tr2+n)
+		timerSummonArcaneAberrationCD:Start(tr3+n)
+		timerMarkOfChaosCD:Start(tr4+n)		
+		countdownMarkofChaos:Start(tr4+n)
+		timerForceNovaCD:Start(tr5+n)
+		countdownForceNova:Start(tr5+n)--]]
 		voicePhaseChange:Play("ptwo")
 		self.vb.phase = 2
 	elseif spellId == 70628 then --Margok being killed by chogal
