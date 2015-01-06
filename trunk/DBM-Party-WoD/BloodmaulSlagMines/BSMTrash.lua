@@ -74,7 +74,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 151545 and validWarning(args.sourceGUID) then--Antispam
 		warnRoar:Show()
 		specWarnRoar:Show(args.sourceName)
-	elseif spellId == 151558 then
+	elseif spellId == 151558 and validWarning(args.sourceGUID) then
 		warnLavaBurst:Show()
 		specWarnLavaBurst:Show(args.sourceName)
 	elseif spellId == 151581 then
