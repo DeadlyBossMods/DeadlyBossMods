@@ -48,6 +48,7 @@ local specWarnExpelMagicArcaneYou	= mod:NewSpecialWarningMoveAway(162186, nil, n
 local specWarnExpelMagicArcane		= mod:NewSpecialWarningTaunt(162186, nil, nil, nil, nil, nil, true)
 local yellExpelMagicArcane			= mod:NewYell(162186)
 local specWarnBallsSoon				= mod:NewSpecialWarningPreWarn(161612, nil, 6.5, nil, nil, nil, nil, true)
+local specWarnMCSoon				= mod:NewSpecialWarningPreWarn(163472, true, 6.5)
 local specWarnMC					= mod:NewSpecialWarningSwitch(163472, mod:IsDps())
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
 local specWarnExpelMagicFel			= mod:NewSpecialWarningYou(172895)--Maybe needs "do not move" warning or at very least "try not to move" since sometimes you have to move for trample.
@@ -98,12 +99,16 @@ local function closeRange(self)
 	end
 end
 
-local function ballsWarning()
+local function ballsWarning(self)
 	warnBallsSoon:Show()
 	DBM:Debug("Balls should be falling in 6.5 second")
 	if UnitPower("player", 10) > 0 then--Player is soaker
 		specWarnBallsSoon:Show()
 		voiceBalls:Play("161612")
+	else
+		if self:IsMythic() and self.vb.ballsCount+1 % 2 then
+			specWarnMCSoon:Show()
+		end
 	end
 end
 
@@ -111,7 +116,7 @@ local function checkBossForgot(self)
 	DBM:Debug("checkBossForgot ran, which means expected balls 10 seconds late, starting 20 second timer for next balls")
 	timerBallsCD:Start(20, self.vb.ballsCount+1)
 	countdownBalls:Start(20)
-	self:Schedule(13.5, ballsWarning)
+	self:Schedule(13.5, ballsWarning, self)
 end
 
 local function returnPosition(self)
@@ -132,7 +137,7 @@ function mod:OnCombatStart(delay)
 	countdownBalls:Start(36-delay)
 	timerExpelMagicFrostCD:Start(40-delay)
 --	timerExpelMagicShadowCD:Start(50-delay)--Needs verification
-	self:Schedule(29.5-delay, ballsWarning)
+	self:Schedule(29.5-delay, ballsWarning, self)
 	if self:IsMythic() then
 		timerExpelMagicFelCD:Start(5-delay)
 	end
@@ -349,7 +354,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			countdownBalls:Start(ballsRemaining+22)
 			self:Unschedule(ballsWarning)
 			self:Unschedule(checkBossForgot)--Cancel check boss forgot
-			self:Schedule(ballsRemaining+15.5, ballsWarning)
+			self:Schedule(ballsRemaining+15.5, ballsWarning, self)
 			self:Schedule(ballsRemaining+32, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
 			DBM:Debug("timerBallsCD is extending by 22 seconds due to shield phase")
 		else
@@ -410,7 +415,7 @@ function mod:OnSync(msg, targetname)
 		warnBallsHit:Show(self.vb.ballsCount)
 		timerBallsCD:Start(timer, self.vb.ballsCount+1)
 		countdownBalls:Start(timer)
-		self:Schedule(timer-6.5, ballsWarning)
+		self:Schedule(timer-6.5, ballsWarning, self)
 		self:Schedule(timer+10, checkBossForgot, self)--Fire checkbossForgot 10 seconds after raid should have soaked or taken damage
 	end
 end
