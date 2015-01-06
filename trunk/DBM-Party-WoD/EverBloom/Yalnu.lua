@@ -32,8 +32,8 @@ local voiceColossalBlow			= mod:NewVoice(169179)
 local voiceGenesis				= mod:NewVoice(169613)
 
 function mod:OnCombatStart(delay)
-	timerFontOfLife:Start(-delay)
-	timerGenesisCD:Start(25-delay)
+	--timerFontOfLife:Start(-delay)
+	--timerGenesisCD:Start(25-delay)
 end
 
 function mod:SPELL_CAST_START(args)
