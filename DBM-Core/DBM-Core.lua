@@ -3233,7 +3233,7 @@ do
 		end
 	end
 	
-	syncHandlers["RBW"] = function(sender, spellId, spellName)
+	syncHandlers["RBW2"] = function(sender, spellId, spellName)
 		if DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging()) then
 			DBM:Debug("RAID_BOSS_WHISPER on "..sender.." with spell of "..spellName.." ("..spellId..")")
 		end
@@ -3907,7 +3907,7 @@ do
 	--TODO, waste less cpu and register Unit only events for boss1-5
 	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		if not (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5") then return end
-		--Changed, only fire for debug level 3 period. transcriptor running now only forces RBW and UTC.
+		--Changed, only fire for debug level 3 period. transcriptor running now only forces RBW2 and UTC.
 		--This event is way too spammy to see every time transcriptor running. Only want from time to time
 		self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3)
 	end
@@ -4032,7 +4032,7 @@ do
 		if msg:find("spell:") and IsInGroup() then
 			local spellId = string.match(msg, "spell:(%d+)") or UNKNOWN
 			local spellName = string.match(msg, "h%[(.-)%]|h") or UNKNOWN
-			sendSync("RBW", spellId, spellName)
+			sendSync("RBW2", spellId, spellName)
 		end
 	end
 
