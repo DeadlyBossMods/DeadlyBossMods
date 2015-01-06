@@ -66,7 +66,7 @@ local timerExpelMagicShadowCD		= mod:NewCDTimer(60, 162184, nil, mod:IsHealer() 
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
 local timerExpelMagicArcaneCD		= mod:NewCDTimer(26, 162186, nil, mod:IsTank())--26-32
 local timerBallsCD					= mod:NewNextCountTimer(30, 161612)
-local timerExpelMagicFelCD			= mod:NewCDTimer(15.5, 172895)--Mythic
+local timerExpelMagicFelCD			= mod:NewCDTimer("OptionVersion2", 15.5, 172895, nil, not mod:IsTank())--Mythic
 local timerExpelMagicFel			= mod:NewBuffFadesTimer(12, 172895)--Mythic
 
 local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
