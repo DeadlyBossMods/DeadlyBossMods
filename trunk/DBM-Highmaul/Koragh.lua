@@ -16,6 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 162186 163472 172895 156803",
 	"SPELL_DAMAGE 161612 161576",
 	"SPELL_ABSORBED 161612 161576",
+	"SPELL_MISSED 161612 161576",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -54,11 +55,11 @@ local specWarnExpelMagicFelFades	= mod:NewSpecialWarning("specWarnExpelMagicFelF
 local yellExpelMagicFel				= mod:NewYell(172895)
 local specWarnExpelMagicFelMove		= mod:NewSpecialWarningMove(172917)--Under you (fire). If not enough maybe add periodic damage too?
 
-local timerVulnerability			= mod:NewBuffActiveTimer(20, 160734)
-local timerTrampleCD				= mod:NewCDTimer(16, 163101)--Also all over the place, 15-25 with first one coming very randomly (5-20 after barrier goes up)
-local timerExpelMagicFire			= mod:NewBuffFadesTimer(11.5, 162185)
+local timerVulnerability			= mod:NewBuffActiveTimer(23, 160734)--more like 23-24 than 20
+local timerTrampleCD				= mod:NewCDTimer(16, 163101)
+local timerExpelMagicFire			= mod:NewBuffFadesTimer("OptionVersion2", 11.5, 162185, nil, false)--Has countdown, and fight has a lot of itmers now, i found this timer HIGHLY distracting when trying to process multiple important ability cds at once.
 --local timerExpelMagicFire			= mod:NewCDTimer(60, 162185)--More problematic than rest, because unlike rest which are always 60 seconds except after shields, this one is ALWAYS variable. 60-67
-local timerExpelMagicFrost			= mod:NewBuffActiveTimer(20, 161411, nil, false)
+local timerExpelMagicFrost			= mod:NewBuffActiveTimer("OptionVersion2", 20, 161411, nil, false)
 local timerExpelMagicFrostCD		= mod:NewCDTimer(60, 161411)
 local timerExpelMagicShadowCD		= mod:NewCDTimer(60, 162184, nil, mod:IsHealer() or mod:IsTank())
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
@@ -74,7 +75,7 @@ local countdownFel					= mod:NewCountdownFades("AltTwo11", 172895)
 local voiceExpelMagicFire			= mod:NewVoice(162185)
 local voiceExpelMagicShadow			= mod:NewVoice(162184, mod:IsHealer())
 local voiceExpelMagicFrost			= mod:NewVoice(161411)
-local voiceExpelMagicArcane			= mod:NewVoice(162186)
+local voiceExpelMagicArcane			= mod:NewVoice("OptionVersion2", 162186, mod:IsTank())
 local voiceMC						= mod:NewVoice(163472, mod:IsDps())
 local voiceTrample					= mod:NewVoice(163101)
 local voiceBalls					= mod:NewVoice(161612)
@@ -107,8 +108,7 @@ local function ballsWarning()
 end
 
 local function checkBossForgot(self)
-	DBM:Debug("checkBossForgot ran, which means expected balls 5 seconds late, starting 25 second timer for next balls")
-	--self.vb.ballsCount = self.vb.ballsCount + 1--if boss forgot balls, should it be incrimented? need to see log where he forgets his balls to see if it offsets mind contorls from evens to odds, if so, then do NOT incriment. if it does offset mcs that means we need to uncommont this
+	DBM:Debug("checkBossForgot ran, which means expected balls 10 seconds late, starting 20 second timer for next balls")
 	timerBallsCD:Start(20, self.vb.ballsCount+1)
 	countdownBalls:Start(20)
 	self:Schedule(13.5, ballsWarning)
@@ -130,6 +130,8 @@ function mod:OnCombatStart(delay)
 	timerExpelMagicArcaneCD:Start(30-delay)
 	timerBallsCD:Start(36-delay, 1)
 	countdownBalls:Start(36-delay)
+	timerExpelMagicFrostCD:Start(40-delay)
+--	timerExpelMagicShadowCD:Start(50-delay)--Needs verification
 	self:Schedule(29.5-delay, ballsWarning)
 	if self:IsMythic() then
 		timerExpelMagicFelCD:Start(5-delay)
@@ -165,12 +167,22 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 162184 then
 		warnExpelMagicShadow:Show()
 		specWarnExpelMagicShadow:Show()
-		timerExpelMagicShadowCD:Start()
+		if self.vb.shieldCharging then
+			timerExpelMagicShadowCD:Start(87)
+			DBM:Debug("timerExpelMagicShadowCD started during charging phase, adding 27 seconds")
+		else
+			timerExpelMagicShadowCD:Start()
+		end
 		voiceExpelMagicShadow:Play("healall")
 	elseif args:IsSpellID(172747) then
 		warnExpelMagicFrost:Show()
 		specWarnExpelMagicFrost:Show()
-		timerExpelMagicFrostCD:Start()
+		if self.vb.shieldCharging then
+			timerExpelMagicFrostCD:Start(83)
+			DBM:Debug("timerExpelMagicShadowCD started during charging phase, adding 23 seconds")
+		else
+			timerExpelMagicFrostCD:Start()
+		end
 		if not self:IsLFR() then
 			timerExpelMagicFrost:Start()
 		else
@@ -213,6 +225,7 @@ function mod:SPELL_DAMAGE() -- captures spellid 161612, 161576
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_DAMAGE
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -223,7 +236,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 162186 then
 		warnExpelMagicArcane:Show(args.destName)
 		timerExpelMagicArcane:Start(args.destName)
-		timerExpelMagicArcaneCD:Start()
+		if self.vb.shieldCharging then--Sometimes debuff land during shield charging, if this happens, it's still extended
+			timerExpelMagicArcaneCD:Start(49)--26+23
+			DBM:Debug("timerExpelMagicArcaneCD started during charging phase, adding 23 seconds")
+		else
+			timerExpelMagicArcaneCD:Start()
+		end
 		if args:IsPlayer() then--Still do yell and range frame here, in case DK
 			yellExpelMagicArcane:Yell()
 			if self.Options.RangeFrame then
@@ -297,6 +315,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 		--Frost https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+172747+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=11
+		--https://www.warcraftlogs.com/reports/6bF47HT9hN3Xcj2n#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+172747+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=40
 		local frostElapsed, frostTotal = timerExpelMagicFrostCD:GetTime()
 		local frostRemaining = frostTotal - frostElapsed
 		if frostRemaining > 0 then--Basically, a 0 0 check.
@@ -324,14 +343,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
 		if ballsRemaining > 5 then--If 5 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
 			timerBallsCD:Cancel()
-			timerBallsCD:Start(ballsRemaining+22.5, self.vb.ballsCount+1)
+			timerBallsCD:Start(ballsRemaining+23, self.vb.ballsCount+1)
 			countdownBalls:Cancel()
 			specWarnBallsSoon:Cancel()
-			countdownBalls:Start(ballsRemaining+22.5)
+			countdownBalls:Start(ballsRemaining+23)
 			self:Unschedule(ballsWarning)
 			self:Unschedule(checkBossForgot)--Cancel check boss forgot
-			self:Schedule(ballsRemaining+16, ballsWarning)
-			self:Schedule(ballsRemaining+32.5, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
+			self:Schedule(ballsRemaining+16.5, ballsWarning)
+			self:Schedule(ballsRemaining+33, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
 			DBM:Debug("timerBallsCD is extending by 22.5 seconds due to shield phase")
 		else
 			DBM:Debug("remaining less than 5, no action taken")
@@ -351,7 +370,7 @@ end
 
 function mod:OnSync(msg, targetname)
 	if not self:IsInCombat() then return end
-	if msg == "ChargeTo" and targetname then
+	if msg == "ChargeTo" and targetname and not self.vb.shieldCharging then
 		timerTrampleCD:Start()
 		local target = DBM:GetUnitFullName(targetname)
 		if target and self:AntiSpam(3, target) then--Syncs sending from same realm don't send realm name, while other realms do, so it bypasses sync spam code since two diff args. So filter here after GetUnitFullName
@@ -378,7 +397,8 @@ function mod:OnSync(msg, targetname)
 		self.vb.ballsCount = self.vb.ballsCount + 1
 		self:Unschedule(ballsWarning)
 		self:Unschedule(checkBossForgot)
-		timerBallsCD:Cancel()
+		timerBallsCD:Cancel()--Sometimes balls still hit even with > 5-6 seconds, cancel timers an count
+		countdownBalls:Cancel()--Then code below will just fix it all on it's own
 		local timer
 		if self.vb.shieldCharging then
 			timer = 52
