@@ -59,7 +59,7 @@ local timerVulnerability			= mod:NewBuffActiveTimer(23, 160734)--more like 23-24
 local timerTrampleCD				= mod:NewCDTimer(16, 163101)
 local timerExpelMagicFire			= mod:NewBuffFadesTimer("OptionVersion2", 11.5, 162185, nil, false)--Has countdown, and fight has a lot of itmers now, i found this timer HIGHLY distracting when trying to process multiple important ability cds at once.
 --local timerExpelMagicFire			= mod:NewCDTimer(60, 162185)--More problematic than rest, because unlike rest which are always 60 seconds except after shields, this one is ALWAYS variable. 60-67
-local timerExpelMagicFrost			= mod:NewBuffActiveTimer("OptionVersion2", 20, 161411, nil, false)
+local timerExpelMagicFrost			= mod:NewBuffActiveTimer("OptionVersion3", 20, 161411, nil, false)
 local timerExpelMagicFrostCD		= mod:NewCDTimer(60, 161411)
 local timerExpelMagicShadowCD		= mod:NewCDTimer(60, 162184, nil, mod:IsHealer() or mod:IsTank())
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
@@ -343,15 +343,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
 		if ballsRemaining > 5 then--If 5 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
 			timerBallsCD:Cancel()
-			timerBallsCD:Start(ballsRemaining+23, self.vb.ballsCount+1)
+			timerBallsCD:Start(ballsRemaining+22, self.vb.ballsCount+1)
 			countdownBalls:Cancel()
 			specWarnBallsSoon:Cancel()
-			countdownBalls:Start(ballsRemaining+23)
+			countdownBalls:Start(ballsRemaining+22)
 			self:Unschedule(ballsWarning)
 			self:Unschedule(checkBossForgot)--Cancel check boss forgot
-			self:Schedule(ballsRemaining+16.5, ballsWarning)
-			self:Schedule(ballsRemaining+33, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
-			DBM:Debug("timerBallsCD is extending by 22.5 seconds due to shield phase")
+			self:Schedule(ballsRemaining+15.5, ballsWarning)
+			self:Schedule(ballsRemaining+32, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
+			DBM:Debug("timerBallsCD is extending by 22 seconds due to shield phase")
 		else
 			DBM:Debug("remaining less than 5, no action taken")
 		end	
