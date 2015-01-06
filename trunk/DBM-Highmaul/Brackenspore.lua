@@ -72,6 +72,7 @@ local voiceSporeShooter				= mod:NewVoice(163594, mod:IsRangedDps())
 local voiceDecay					= mod:NewVoice(160013, not mod:IsHealer())
 local voiceExplodingFungus			= mod:NewVoice(163794)
 local voiceWaves					= mod:NewVoice(160425)
+local voiceCreepingMoss				= mod:NewVoice(163590, mod:IsTank())
 
 mod:AddRangeFrameOption(8, 160254, false)
 mod:AddDropdownOption("InterruptCounter", {"Two", "Three", "Four"}, "Two", "misc")
@@ -183,6 +184,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 164125 and args:GetDestCreatureID() == 78491 then
 		warnCreepingMoss:Show(args.destName)
 		specWarnCreepingMoss:Show()
+		voiceCreepingMoss:Play("bossout")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
