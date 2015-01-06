@@ -3232,9 +3232,9 @@ do
 		end
 	end
 	
-	syncHandlers["RBW"] = function(sender, spellId)
+	syncHandlers["RBW"] = function(sender, spellId, spellName)
 		if DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging()) then
-			DBM:Debug("RAID_BOSS_WHISPER on "..sender.." with spellId of "..spellId)
+			DBM:Debug("RAID_BOSS_WHISPER on "..sender.." with spell of "..spellName.." ("..spellId..")")
 		end
 	end
 
@@ -3903,14 +3903,12 @@ do
 		end
 	end
 
-	--TODO, waste less cpu and register Unit event somehow. DBMs register events code is so conviluted though that it's difficult to add without tons of work.
-	--This may be spammy but only for debug mode. It's very important for raid testing though. i've had too many bosses where even though I tested boss
-	--And I have transcriptor log, i still don't know which event is right one sometimes. It's important to SEE which event is firing during an exact moment of a fight.
+	--TODO, waste less cpu and register Unit only events for boss1-5
 	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		if not (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5") then return end
-		if self.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging()) then
-			self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")")
-		end
+		--Changed, only fire for debug level 3 period. transcriptor running now only forces RBW and UTC.
+		--This event is way too spammy to see every time transcriptor running. Only want from time to time
+		self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3)
 	end
 
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
@@ -4029,10 +4027,11 @@ do
 	
 	function DBM:RAID_BOSS_WHISPER(msg)
 		--Make it easier for devs to detect whispers they are unable to see
+		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
 		if msg:find("spell:") and IsInGroup() then
-			local _, spellId = string.split("spell:", msg)--First strip so spellId == spellid plus anything after it
-			spellId = spellId:sub(0, 5)--Now trim off anything after 6 characters so we have ONLY spellid.
-			sendSync("RBW", spellId)
+			local spellId = string.match(msg, "spell:(%d+)") or UNKNOWN
+			local spellName = string.match(msg, "h%[(.-)%]|h") or UNKNOWN
+			sendSync("RBW", spellId, spellName)
 		end
 	end
 
@@ -4723,7 +4722,7 @@ function DBM:OnMobKill(cId, synced)
 			self.BossHealth:RemoveBoss(cId)
 			if v.numBoss then
 				v.vb.bossLeft = (v.vb.bossLeft or v.numBoss) - 1
-				self:Debug("Boss left - "..v.vb.bossLeft.."/"..v.numBoss)
+				self:Debug("Boss left - "..v.vb.bossLeft.."/"..v.numBoss, 2)
 			end
 			local allMobsDown = true
 			for i, v in pairs(v.combatInfo.killMobs) do
