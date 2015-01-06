@@ -616,7 +616,7 @@ function barPrototype:Pause()
 end
 
 function barPrototype:Resume()
-	sel.paused = nil
+	self.paused = nil
 end
 
 function barPrototype:SetElapsed(elapsed)
