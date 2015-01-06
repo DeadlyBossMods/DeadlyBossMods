@@ -1,0 +1,32 @@
+﻿## Interface: 60000
+## X-Min-Interface: 60000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Highmaul|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0높은망치|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Верховный Молот|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Hochfels|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0天槌|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0悬槌堡|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMHighmaul_SavedVars, DBMHighmaul_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: WOD
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 102
+## X-DBM-Mod-MapID: 1228
+localization.en.lua
+localization.kr.lua
+localization.ru.lua
+localization.de.lua
+localization.tw.lua
+localization.cn.lua
+KargathBladefist.lua
+TheButcher.lua
+Tectus.lua
+Brackenspore.lua
+TwinOgron.lua
+Koragh.lua
+Margok.lua
+HighmaulTrash.lua

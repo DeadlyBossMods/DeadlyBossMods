@@ -1,0 +1,36 @@
+﻿## Interface: 60000
+## X-Min-Interface: 60000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Darkmoon Faire|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Feria de la Luna Negra|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0다크문 축제|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ярмарка Новолуния|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0暗月马戏团|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dunkelmond-Jahrmarkt|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Foire de Sombrelune|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0暗月馬戲團|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMDMF_SavedVars, DBMWorldDMF_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: OTHER
+## X-DBM-Mod-Category: WOD
+## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-Mod-MapID: 974
+## X-DBM-Mod-Sort: 155
+localization.en.lua
+localization.ru.lua
+localization.fr.lua
+localization.tw.lua
+localization.kr.lua
+localization.de.lua
+localization.es.lua
+localization.cn.lua
+localization.br.lua
+Cannon.lua
+Gnoll.lua
+Shot.lua
+Tonks.lua
+Rings.lua
+Rabbit.lua
+Moonfang.lua

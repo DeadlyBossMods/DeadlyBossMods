@@ -1,0 +1,35 @@
+﻿## Interface: 60000
+## X-Min-Interface: 60000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Blackrock Foundry|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0검은바위 용광로|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Литейная клана Черной горы|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Schwarzfelsgießerei|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑石鑄造場|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑石铸造厂|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMBlackrockFoundry_SavedVars, DBMBlackrockFoundry_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: WOD
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 101
+## X-DBM-Mod-MapID: 1205
+localization.en.lua
+localization.kr.lua
+localization.ru.lua
+localization.de.lua
+localization.tw.lua
+localization.cn.lua
+Gruul.lua
+Oregorger.lua
+BlastFurnace.lua
+HansgarAndFranzok.lua
+Kagraz.lua
+Kromog.lua
+Darmac.lua
+Thogar.lua
+IronMaidens.lua
+Blackhand.lua
+BlackrockFoundryTrash.lua
