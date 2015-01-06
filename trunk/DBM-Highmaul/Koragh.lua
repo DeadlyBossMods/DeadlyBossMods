@@ -330,8 +330,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			countdownBalls:Start(ballsRemaining+22.5)
 			self:Unschedule(ballsWarning)
 			self:Unschedule(checkBossForgot)--Cancel check boss forgot
-			self:Schedule(remaining+16, ballsWarning)
-			self:Schedule(remaining+32.5, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
+			self:Schedule(ballsRemaining+16, ballsWarning)
+			self:Schedule(ballsRemaining+32.5, checkBossForgot, self)--Fire checkbossForgot 5 seconds after raid should have soaked or taken damage
 			DBM:Debug("timerBallsCD is extending by 22.5 seconds due to shield phase")
 		else
 			DBM:Debug("remaining less than 5, no action taken")
