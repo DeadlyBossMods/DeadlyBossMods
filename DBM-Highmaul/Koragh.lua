@@ -136,7 +136,7 @@ function mod:OnCombatStart(delay)
 	timerBallsCD:Start(36-delay, 1)
 	countdownBalls:Start(36-delay)
 	timerExpelMagicFrostCD:Start(40-delay)
---	timerExpelMagicShadowCD:Start(50-delay)--Needs verification
+	timerExpelMagicShadowCD:Start(55-delay)
 	self:Schedule(29.5-delay, ballsWarning, self)
 	if self:IsMythic() then
 		timerExpelMagicFelCD:Start(5-delay)
