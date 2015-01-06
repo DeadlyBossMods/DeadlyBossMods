@@ -20,8 +20,8 @@ local warnReboundingBlade		= mod:NewSpellAnnounce(155705, 2, nil, false)--More f
 local warnBlackIronCyclone		= mod:NewTargetAnnounce(155721, 3)
 local warnZaela					= mod:NewSpellAnnounce("ej10312", 3, "Interface\\ICONS\\INV_Misc_Head_Orc_01.blp")
 
-local specWarnBlackIronCyclone	= mod:NewSpecialWarningRun(155721)
-local specWarnZaela				= mod:NewSpecialWarningSwitch("OptionVersion2", "ej10312", mod:IsTank(), nil, nil, 4)
+local specWarnBlackIronCyclone	= mod:NewSpecialWarningRun("OptionVersion2", 155721, nil, nil, nil, 4)
+local specWarnZaela				= mod:NewSpecialWarningSwitch("OptionVersion3", "ej10312", mod:IsTank())
 
 local timerDestructiveSmiteCD	= mod:NewNextTimer(15.5, 155673, nil, mod:IsTank())
 local timerReboundingBladeCD	= mod:NewNextTimer(10.5, 155705, nil, false)
@@ -37,7 +37,7 @@ function mod:OnCombatStart(delay)
 	timerReboundingBladeCD:Start(-delay)
 	timerDestructiveSmiteCD:Start(10-delay)
 	countdownDestructiveSmite:Start(10-delay)
-	timerBlackIronCycloneCD:Start(-delay)--In one pull, the first cast got interrupted
+	timerBlackIronCycloneCD:Start(18-delay)--In one pull, the first cast got interrupted
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
