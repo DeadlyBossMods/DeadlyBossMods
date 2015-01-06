@@ -590,20 +590,41 @@ function barPrototype:SetTimer(timer)
 	self:Update(0)
 end
 
+function barPrototype:ResetAnimations()
+	local next = self.next
+	self:RemoveFromList()
+	self.enlarged = nil
+	self.moving = nil
+	if next then
+		next:MoveToNextPosition()
+	end
+	self.owner.smallBars:Append(self)
+	self:SetPosition()
+end
+
+function barPrototype:Pause()
+	if self.moving == "enlarge" then
+		self:ResetAnimations()
+	end
+	self.flashing = nil
+	self.ftimer = nil
+	self:Update(0)
+	self.paused = true
+	if self.moving == "enlarge" then
+		self:ResetAnimations()
+	end
+end
+
+function barPrototype:Resume()
+	sel.paused = nil
+end
+
 function barPrototype:SetElapsed(elapsed)
 	self.timer = self.totalTime - elapsed
 	local enlargeTime = self.owner.options.Style ~= "BigWigs" and self.owner.options.EnlargeBarsTime or 11
 	local enlargePer = self.owner.options.Style ~= "BigWigs" and self.owner.options.EnlargeBarsPercent or 0
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) then
-		local next = self.next
-		self:RemoveFromList()
-		self.enlarged = nil
-		self.moving = nil
-		if next then
-			next:MoveToNextPosition()
-		end
-		self.owner.smallBars:Append(self)
-		self:SetPosition()
+		self:ResetAnimations()
 	end
 	self:Update(0)
 end
