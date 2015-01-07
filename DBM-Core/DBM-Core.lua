@@ -310,6 +310,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-SiegeOfOrgrimmar",--Block legacy version. New version is "DBM-SiegeOfOrgrimmarV2"
 	"DBM-HighMail",
 	"DBM-ProvingGrounds-MoP",--Renamed to DBM-ProvingGrounds in 6.0 version since blizzard updated content for WoD
+	"DBM-VPKiwiBeta",--Renamed to DBM-VPKiwi in final version.
 }
 
 --------------------------------------------------------
@@ -1003,13 +1004,17 @@ do
 					end
 				end
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
-					local voiceValue = GetAddOnMetadata(i, "X-DBM-Voice-ShortName")
-					local voiceVersion = tonumber(GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0)
-					tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = voiceValue })
-					self.VoiceVersions[voiceValue] = voiceVersion
-					self:Schedule(10, self.CheckVoicePackVersion, self, voiceValue)--Still at 1 since the count sounds won't break any mods or affect filter. V2 if support countsound path
-					if voiceVersion >= 2 then--Supports adding countdown options, insert new countdown into table
-						tinsert(self.Counts, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = "VP:"..voiceValue })
+					if checkEntry(bannedMods, addonName) then
+						self:AddMsg("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
+					else
+						local voiceValue = GetAddOnMetadata(i, "X-DBM-Voice-ShortName")
+						local voiceVersion = tonumber(GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0)
+						tinsert(self.Voices, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = voiceValue })
+						self.VoiceVersions[voiceValue] = voiceVersion
+						self:Schedule(10, self.CheckVoicePackVersion, self, voiceValue)--Still at 1 since the count sounds won't break any mods or affect filter. V2 if support countsound path
+						if voiceVersion >= 2 then--Supports adding countdown options, insert new countdown into table
+							tinsert(self.Counts, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = "VP:"..voiceValue })
+						end
 					end
 				end
 			end
