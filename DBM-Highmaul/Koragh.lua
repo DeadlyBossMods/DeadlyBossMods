@@ -59,10 +59,10 @@ local specWarnExpelMagicFelMove		= mod:NewSpecialWarningMove(172917)--Under you 
 local timerVulnerability			= mod:NewBuffActiveTimer(23, 160734)--more like 23-24 than 20
 local timerTrampleCD				= mod:NewCDTimer(16, 163101)
 local timerExpelMagicFire			= mod:NewBuffFadesTimer("OptionVersion2", 11.5, 162185, nil, false)--Has countdown, and fight has a lot of itmers now, i found this timer HIGHLY distracting when trying to process multiple important ability cds at once.
---local timerExpelMagicFire			= mod:NewCDTimer(60, 162185)--More problematic than rest, because unlike rest which are always 60 seconds except after shields, this one is ALWAYS variable. 60-67
+local timerExpelMagicFireCD			= mod:NewCDTimer(60, 162185)--60-66 Variation
 local timerExpelMagicFrost			= mod:NewBuffActiveTimer("OptionVersion3", 20, 161411, nil, false)
-local timerExpelMagicFrostCD		= mod:NewCDTimer(60, 161411)
-local timerExpelMagicShadowCD		= mod:NewCDTimer(60, 162184, nil, mod:IsHealer() or mod:IsTank())
+local timerExpelMagicFrostCD		= mod:NewCDTimer(60, 161411)--60-63 variation
+local timerExpelMagicShadowCD		= mod:NewCDTimer(60, 162184, nil, mod:IsHealer() or mod:IsTank())--60-63 variation
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, mod:IsTank() or mod:IsHealer())
 local timerExpelMagicArcaneCD		= mod:NewCDTimer(26, 162186, nil, mod:IsTank())--26-32
 local timerBallsCD					= mod:NewNextCountTimer(30, 161612)
@@ -131,7 +131,7 @@ function mod:OnCombatStart(delay)
 	self.vb.supressionCount = 0
 	self.vb.ballsCount = 0
 	self.vb.shieldCharging = false
---	timerExpelMagicFireCD:Start(6-delay)
+	timerExpelMagicFireCD:Start(6-delay)
 	timerExpelMagicArcaneCD:Start(30-delay)
 	timerBallsCD:Start(36-delay, 1)
 	countdownBalls:Start(36-delay)
@@ -165,6 +165,11 @@ function mod:SPELL_CAST_START(args)
 			DBM.RangeCheck:Show(5)
 		end
 		timerExpelMagicFire:Start()
+		if self.vb.shieldCharging then
+			timerExpelMagicFireCD:Start(87)
+		else
+			timerExpelMagicFireCD:Start()
+		end
 		countdownMagicFire:Start()
 		voiceExpelMagicFire:Play("scattersoon")
 		voiceExpelMagicFire:Schedule(5, "scatter")
@@ -337,6 +342,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		local arcaneRemaining = arcaneTotal - arcaneElapsed
 		if arcaneRemaining > 0 then--Basically, a 0 0 check.
 			timerExpelMagicArcaneCD:Start(arcaneRemaining+27)--Note the difference, shadow is +27-30 not +23-26
+		end
+		--Fire https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+162185+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=12
+		--https://www.warcraftlogs.com/reports/Wj4MnfLQ8t3HzFgy#fight=10&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+162185+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)
+		local fireElapsed, fireTotal = timerExpelMagicArcaneCD:GetTime()
+		local fireRemaining = fireTotal - fireElapsed
+		if fireRemaining > 0 then--Basically, a 0 0 check.
+			timerExpelMagicFireCD:Start(fireRemaining+27)--Note the difference, shadow is +27-30 not +23-26
 		end
 		--Balls
 		local ballsElapsed, ballsTotal = timerBallsCD:GetTime(self.vb.ballsCount+1)
