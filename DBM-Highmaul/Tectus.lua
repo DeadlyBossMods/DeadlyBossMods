@@ -66,35 +66,37 @@ local voiceEarthenPillar			= mod:NewVoice(162518, nil )
 
 mod:AddSetIconOption("SetIconOnEarthwarper", "ej10061", true, true)
 mod:AddSetIconOption("SetIconOnMote", "ej10064", false, true)--Working with both shard and mote. ej10083 description is bad / This more or less assumes the 4 at a time strat. if you unleash 8 it will fail. Although any guild unleashing 8 is probably doing it wrong (minus LFR)
+mod:AddSetIconOption("SetIconOnCrystal", 162370, false)--icons 1 and 2, no conflict with icon on earthwarper
 
 local UnitGUID, UnitExists = UnitGUID, UnitExists
 local Earthwarper = EJ_GetSectionInfo(10061)
 local Berserker = EJ_GetSectionInfo(10062)
 mod.vb.EarthwarperAlive = 0
+mod.vb.healthPhase = 0
 local earthDuders = {}
 
 local tectusN = EJ_GetEncounterInfo(1195)
 local shardN = EJ_GetSectionInfo(10063)
 local moteN = EJ_GetSectionInfo(10064)
 local moteH = {}
-local healthPhase, ltectusH, lshardC, lshardT, lmoteC, lmoteT = 0, 1, 1, 1, 1, 1 -- not need to sync.
+local ltectusH, lshardC, lshardT, lmoteC, lmoteT = 1, 1, 1, 1, 1 -- not need to sync.
 
 function mod:CustomHealthUpdate()
 	local tectusH, shardC, shardT, moteC, moteT = 0, 0, 0, 0, 0
 	if UnitExists("boss1") then
-		healthPhase = 1
+		self.vb.healthPhase = 1
 		tectusH = UnitHealth("boss1") / UnitHealthMax("boss1") * 100
 		ltectusH = tectusH
 	end
 	if UnitExists("boss2") then
-		healthPhase = 2
+		self.vb.healthPhase = 2
 		shardC = shardC + 1
 		shardT = shardT + (UnitHealth("boss2") / UnitHealthMax("boss2") * 100)
 		lshardC = shardC
 		lshardT = shardT
 	end
 	if UnitExists("boss3") then
-		healthPhase = 2
+		self.vb.healthPhase = 2
 		shardC = shardC + 1
 		shardT = shardT + (UnitHealth("boss3") / UnitHealthMax("boss3") * 100)
 		lshardC = shardC
@@ -103,7 +105,7 @@ function mod:CustomHealthUpdate()
 	for guid, health in pairs(moteH) do
 		local newhealth = self:GetBossHPByGUID(guid) or health
 		if newhealth >= 1 then
-			healthPhase = 3
+			self.vb.healthPhase = 3
 			moteC = moteC + 1
 			moteT = moteT + newhealth
 			lmoteC = moteC
@@ -148,11 +150,11 @@ function mod:CustomHealthUpdate()
 			end
 		end
 	end
-	if healthPhase == 1 then
+	if self.vb.healthPhase == 1 then
 		return ("(%d%%, %s)"):format(tectusH > 0 and tectusH or ltectusH, tectusN)
-	elseif healthPhase == 2 then
+	elseif self.vb.healthPhase == 2 then
 		return ("(%d%%, %s)"):format((shardT > 0 and shardT or lshardT) / (shardC > 0 and shardC or lshardC), shardN)
-	elseif healthPhase == 3 then
+	elseif self.vb.healthPhase == 3 then
 		return ("(%d%%, %s)"):format((moteT > 0 and moteT or lmoteT) / (moteC > 0 and moteC or lmoteC), moteN)
 	end
 	return DBM_CORE_UNKNOWN
@@ -161,7 +163,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(earthDuders)
 	self.vb.EarthwarperAlive = 0
-	healthPhase = 1
+	self.vb.healthPhase = 1
 	table.wipe(moteH)
 	timerEarthwarperCD:Start(11-delay)
 	countdownEarthwarper:Start(11-delay)
@@ -226,6 +228,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceCrystallineBarrage:Play("runout")
 			end
 		end
+		if self.Options.SetIconOnCrystal and not self.vb.healthPhase == 3 then
+			self:SetSortedIcon(3, args.destName, 1, 2)--Wait 3 seconds or until we have 2 targets, mobs sometimes stagger casts.
+		end
 	elseif spellId == 162658 then
 		local guid = args.destGUID
 		local cid = self:GetCIDFromGUID(guid)
@@ -234,6 +239,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				moteH[guid] = 0
 			end
 			if self.Options.SetIconOnMote and not self:IsLFR() then--Don't mark kill/pickup marks in LFR, it'll be an aoe fest.
+				if self:AntiSpam(5, 3) then
+					self:ClearIcons()--Clear any barrage icons
+					self:CustomHealthUpdate()--Force update to health phase 3
+				end
 				self:ScanForMobs(guid, 0, 8, 8, 0.1, 20, "SetIconOnMote")
 			end
 		end
@@ -242,14 +251,19 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 162346 and args:IsPlayer() then
-		timerCrystalBarrage:Cancel()
+	if spellId == 162346 then
+		if args:IsPlayer() then
+			timerCrystalBarrage:Cancel()
+		end
+		if self.Options.SetIconOnCrystal then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, sourceName, _, _, destGUID, destName, _, _, spellId)
 	if spellId == 162370 then
-		if (healthPhase == 0 or healthPhase == 3) and not moteH[sourceGUID] and sourceName == moteN then -- try to recover moteH table if timer recovery worked.
+		if (self.vb.healthPhase == 0 or self.vb.healthPhase == 3) and not moteH[sourceGUID] and sourceName == moteN then -- try to recover moteH table if timer recovery worked.
 			moteH[sourceGUID] = 0
 		end
 		if destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
