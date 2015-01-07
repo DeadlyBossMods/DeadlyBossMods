@@ -15,7 +15,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 162066 162058"
 )
 
-
 local warnFreezingSnare			= mod:NewTargetAnnounce(162066, 3)
 local warnSpinningSpear			= mod:NewSpellAnnounce(162058, 3)
 local warnMark					= mod:NewTargetAnnounce(163447, 3)
