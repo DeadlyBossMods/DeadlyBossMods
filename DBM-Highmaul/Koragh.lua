@@ -106,7 +106,7 @@ local function ballsWarning(self)
 		specWarnBallsSoon:Show()
 		voiceBalls:Play("161612")
 	else
-		if self:IsMythic() and self.vb.ballsCount+1 % 2 then
+		if self:IsMythic() and (self.vb.ballsCount+1) % 2 then
 			specWarnMCSoon:Show()
 		end
 	end
