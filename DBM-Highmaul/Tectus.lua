@@ -228,7 +228,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceCrystallineBarrage:Play("runout")
 			end
 		end
-		if self.Options.SetIconOnCrystal and not self.vb.healthPhase == 3 then
+		if self.Options.SetIconOnCrystal and self.vb.healthPhase ~= 3 then
 			self:SetSortedIcon(3, args.destName, 1, 2)--Wait 3 seconds or until we have 2 targets, mobs sometimes stagger casts.
 		end
 	elseif spellId == 162658 then
