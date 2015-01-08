@@ -3239,8 +3239,9 @@ do
 	end
 	
 	syncHandlers["RBW2"] = function(sender, spellId, spellName)
-		if not spellName then spellName = UNKNOWN end
+		if sender == playerName then return end
 		if DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging()) then
+			if not spellName then spellName = UNKNOWN end
 			DBM:Debug("RAID_BOSS_WHISPER on "..sender.." with spell of "..spellName.." ("..spellId..")")
 		end
 	end
