@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 156238 156467 157349 163988 164075 156471 164299 164232 164301 163989 164076 164235 163990 164077 164240 164303 158605 164176 164178 164191 165243 165876 178607",
 	"SPELL_CAST_SUCCESS 158563 165102",
 	"SPELL_AURA_APPLIED 157763 158553 156225 164004 164005 164006 158605 164176 164178 164191 157801 178468 165102 165595 176533",
-	"SPELL_AURA_APPLIED_DOSE 158553 178468 165595",
+	"SPELL_AURA_APPLIED_DOSE 158553 178468 165595 159515",
 	"SPELL_AURA_REFRESH 157763",
 	"SPELL_AURA_REMOVED 158605 164176 164178 164191 157763 156225 164004 164005 164006 165102 165595",
 	"UNIT_DIED",
@@ -52,6 +52,7 @@ local warnSummonArcaneAberration				= mod:NewCountAnnounce("OptionVersion2", 156
 local warnSummonDisplacingArcaneAberration		= mod:NewCountAnnounce("OptionVersion2", 164299, 3, nil, nil, false)
 local warnSummonFortifiedArcaneAberration		= mod:NewCountAnnounce("OptionVersion2", 164301, 3, nil, nil, false)
 local warnSummonReplicatingArcaneAberration		= mod:NewCountAnnounce("OptionVersion2", 164303, 3, nil, nil, false)
+local warnAcceleratedAssault					= mod:NewStackAnnounce(159515, 3, nil, mod:IsTank())
 --Intermission: Dormant Runestones
 local warnFixate								= mod:NewTargetAnnounce("OptionVersion2", 157763, 3, nil, not mod:IsTank())
 local warnNetherEnergy							= mod:NewStackAnnounce(178468, 3)--Mythic
@@ -67,6 +68,9 @@ local warnGazeSelf								= mod:NewStackAnnounce(165595, 4)
 
 --All Phases
 --Special warnings cannot be combined because it breaks custom sounds, however, they will be grouped up better now at least.
+local specWarnAcceleratedAssault				= mod:NewSpecialWarningStack(159515, nil, 5)
+local specWarnAcceleratedAssaultOther			= mod:NewSpecialWarningTaunt(159515, nil, nil, nil, nil, nil, true)
+
 local specWarnDestructiveResonance				= mod:NewSpecialWarningSpell(156467, nil, nil, nil, 2)
 local specWarnDestructiveResonanceDisplacement	= mod:NewSpecialWarningSpell(164075, nil, nil, nil, 2)
 local specWarnDestructiveResonanceFortification	= mod:NewSpecialWarningSpell(164076, nil, nil, nil, 2)
@@ -141,6 +145,7 @@ local countdownDarkStar							= mod:NewCountdown("AltTwo61", 178607)
 
 local voiceDestructiveResonance 				= mod:NewVoice(156467, not mod:IsMelee())
 local voiceForceNova	 						= mod:NewVoice(157349)
+local voiceAcceleratedAssault					= mod:NewVoice(159515, mod:IsTank())
 local voiceMarkOfChaos							= mod:NewVoice(158605)
 local voicePhaseChange							= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT) --this string should write into language file
 local voiceFixate								= mod:NewVoice(157763)
@@ -154,6 +159,7 @@ mod:AddSetIconOption("SetIconOnInfiniteDarkness", 165102, false)
 mod:AddInfoFrameOption(176537)
 
 mod.vb.markActive = false
+mod.vb.noTaunt = false--Almost same as mark active, but during cast too
 mod.vb.playerHasBranded = false
 mod.vb.playerHasMark = false
 mod.vb.isTransition = false
@@ -257,6 +263,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.markActive = false
+	self.vb.noTaunt = false
 	self.vb.playerHasMark = false
 	self.vb.playerHasBranded = false
 	self.vb.isTransition = false
@@ -415,6 +422,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(158605, 164176, 164178, 164191) then
 		local targetName, uId = self:GetBossTarget(77428)
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
+		self.vb.noTaunt = true
 		timerMarkOfChaosCD:Start()
 		countdownMarkofChaos:Start()
 		if spellId == 158605 then
@@ -586,10 +594,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		warnCrushArmor:Show(args.destName, amount)
 		timerCrushArmorCD:Start()
-	elseif spellId == 178468 and UnitGUID("target") == args.destGUID then
+	elseif spellId == 178468 and (UnitGUID("target") == args.destGUID) or (UnitGUID("focus") == args.destGUID) then
 		local amount = args.amount or 1
 		warnNetherEnergy:Show(args.destName, amount)
 		specWarnNetherEnergy:Show(amount)
+	elseif spellId == 159515 then
+		local amount = args.amount or 1
+		warnAcceleratedAssault:Show(args.destName, amount)
+		--5 may seem low stack, most wait longer on easier difficulties, but this boss has taunt DR flag turned OFF, there is really no reason to wait for higher stacks, and on mythic 5 is common number to reduce tank damage
+		if amount >= 5 and not self.vb.noTaunt and self:AntiSpam(3, 2) then--Stack > 5, not during mark of chaos run out, and not in last 3 seconds
+			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
+			if tanking or (status == 3) then
+				specWarnAcceleratedAssault:Show(amount)
+			else
+				specWarnAcceleratedAssaultOther:Show()
+			end
+			voiceAcceleratedAssault:Play("changemt")
+		end
 	elseif args:IsSpellID(158605, 164176, 164178, 164191) then
 		--Update frame again in case he swaped targets during cast (happens)
 		self.vb.markActive = true
@@ -669,6 +690,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if args:IsSpellID(158605, 164176, 164178, 164191) then
 		self.vb.markActive = false
+		self.vb.noTaunt = false
 		self.vb.lastMarkedTank = nil
 		if args:IsPlayer() then
 			self.vb.playerHasMark = false
