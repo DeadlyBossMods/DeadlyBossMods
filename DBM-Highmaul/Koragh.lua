@@ -48,7 +48,7 @@ local specWarnExpelMagicArcaneYou	= mod:NewSpecialWarningMoveAway(162186, nil, n
 local specWarnExpelMagicArcane		= mod:NewSpecialWarningTaunt(162186, nil, nil, nil, nil, nil, true)
 local yellExpelMagicArcane			= mod:NewYell(162186)
 local specWarnBallsSoon				= mod:NewSpecialWarningPreWarn(161612, nil, 6.5, nil, nil, nil, nil, true)
-local specWarnMCSoon				= mod:NewSpecialWarningPreWarn(163472, true, 6.5)
+--local specWarnMCSoon				= mod:NewSpecialWarningPreWarn(163472, true, 6.5)
 local specWarnMC					= mod:NewSpecialWarningSwitch(163472, mod:IsDps())
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
 local specWarnExpelMagicFel			= mod:NewSpecialWarningYou(172895)--Maybe needs "do not move" warning or at very least "try not to move" since sometimes you have to move for trample.
@@ -107,7 +107,7 @@ local function ballsWarning(self)
 		voiceBalls:Play("161612")
 	else
 		if self:IsMythic() and ((self.vb.ballsCount+1) % 2) == 0 then
-			specWarnMCSoon:Show()
+--			specWarnMCSoon:Show()
 		end
 	end
 end
