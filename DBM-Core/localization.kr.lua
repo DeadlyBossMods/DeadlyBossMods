@@ -275,7 +275,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextcount			= "다음 %s (%%d)"
 DBM_CORE_AUTO_TIMER_TEXTS.nextsource		= "다음 %s: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.nextspecial		= "다음 특수 능력"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement		= "%s"
-DBM_CORE_AUTO_TIMER_OPTIONS.phase			= "다음 단계"
+DBM_CORE_AUTO_TIMER_TEXTS.phase				= "다음 단계"
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target			= "$spell:%s 약화효과 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast			= "$spell:%s 시전 바 보기"
