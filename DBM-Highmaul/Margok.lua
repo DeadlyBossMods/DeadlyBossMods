@@ -536,7 +536,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			print("currentStack is nil, report to dbm authors. Branded warning disabled.")--Should never happen but added just in case.
 			return
 		end
-		if (not fortified and currentStack > 2) or currentStack > 5 then--yells and general announces for target 2 stack before move.
+		if (not fortified and currentStack > 2) or currentStack > 4 then--yells and general announces for target 2 stack before move.
 			if fortified then
 				self.vb.jumpDistance = jumpDistance2[currentStack] or 5
 			else
