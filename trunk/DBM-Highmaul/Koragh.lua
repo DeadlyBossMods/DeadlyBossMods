@@ -28,7 +28,7 @@ local warnVulnerability				= mod:NewTargetAnnounce(160734, 1)
 local warnTrample					= mod:NewTargetCountAnnounce(163101, 3)--Technically it's supression field, then trample, but everyone is going to know it more by trample cause that's the part of it that matters
 local warnExpelMagicFire			= mod:NewSpellAnnounce(162185, 3)
 local warnExpelMagicShadow			= mod:NewSpellAnnounce(162184, 3, nil, mod:IsHealer())
-local warnExpelMagicFrost			= mod:NewSpellAnnounce(161411, 3)
+local warnExpelMagicFrost			= mod:NewTargetAnnounce(161411, 3)
 local warnExpelMagicArcane			= mod:NewTargetAnnounce(162186, 4)--Everyone, so they know to avoid him
 local warnBallsSoon					= mod:NewPreWarnAnnounce(161612, 6.5, 2)
 local warnBallsHit					= mod:NewCountAnnounce(161612, 2)
@@ -128,6 +128,10 @@ local function returnPosition(self)
 	end
 end
 
+function mod:FrostTarget(targetname, uId)
+	warnExpelMagicFrost:Show(targetname)
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.supressionCount = 0
 	self.vb.ballsCount = 0
@@ -186,7 +190,6 @@ function mod:SPELL_CAST_START(args)
 		end
 		voiceExpelMagicShadow:Play("healall")
 	elseif args:IsSpellID(172747) then
-		warnExpelMagicFrost:Show()
 		specWarnExpelMagicFrost:Show()
 		if self.vb.shieldCharging then
 			timerExpelMagicFrostCD:Start(83)
@@ -200,6 +203,7 @@ function mod:SPELL_CAST_START(args)
 			timerExpelMagicFrost:Start(21.5)
 		end
 		voiceExpelMagicFrost:Play("161411")
+		self:BossTargetScanner(79015, "FrostTarget", 0.1, 16)
 	elseif spellId == 163517 then
 		warnForfeitPower:Show()
 		local guid = args.sourceGUID
