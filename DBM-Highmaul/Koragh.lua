@@ -114,6 +114,7 @@ end
 
 local function checkBossForgot(self)
 	DBM:Debug("checkBossForgot ran, which means expected balls 10 seconds late, starting 20 second timer for next balls")
+--	self.vb.ballsCount = self.vb.ballsCount + 1
 	timerBallsCD:Start(20, self.vb.ballsCount+1)
 	countdownBalls:Start(20)
 	self:Schedule(13.5, ballsWarning, self)
@@ -263,7 +264,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceExpelMagicArcane:Play("changemt")
 			end
 		end
-	elseif spellId == 161242 and self:AntiSpam(5, args.destName) and not self:IsLFR() then--Players may wabble in and out of it and we don't want to spam add them to table.
+	elseif spellId == 161242 and self:AntiSpam(23, args.destName) and not self:IsLFR() then--Players may wabble in and out of it and we don't want to spam warnings.
 		warnCausticEnergy:CombinedShow(1, args.destName)--Two targets on mythic, which is why combinedshow. (10 on LFR. too much spam and not important, so disabled in LFR)
 	elseif spellId == 163472 then
 		warnMC:CombinedShow(0.5, args.destName)
@@ -375,10 +376,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---"<16.8 14:52:14> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I will crush you!#Ko'ragh###Serrinne##0#0##0#565#nil#0#false#false", -- [5422]
---"<57.9 14:52:55> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Silence!#Ko'ragh###Hesptwo-BetaLevelingRealm02##0#0##0#568#nil#0#false#false", -- [18204]
---"<106.1 14:53:43> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Quiet!#Ko'ragh###Kevo-Level100PvP##0#0##0#572#nil#0#false#false", -- [30685]
---"<77.9 14:43:24> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I will tear you in half!#Ko'ragh###Turkeyburger##0#0##0#510#nil#0#false#false", -- [23203]
 function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, target)
 	if msg:find(L.supressionTarget1) or msg:find(L.supressionTarget2) or msg:find(L.supressionTarget3) or msg:find(L.supressionTarget4) then
 		self:SendSync("ChargeTo", target)--Sync since we have poor language support for many languages.
