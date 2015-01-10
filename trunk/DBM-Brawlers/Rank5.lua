@@ -13,7 +13,7 @@ local warnPolymorph			= mod:NewSpellAnnounce(133362, 4)--Millie Watt
 local warnChomp				= mod:NewSpellAnnounce(135342, 4)--Bruce
 
 local specWarnPolymorph		= mod:NewSpecialWarningSpell(133362)--Millie Watt
-local specWarnChomp			= mod:NewSpecialWarningMove(135342)--Bruce
+local specWarnChomp			= mod:NewSpecialWarningDodge(135342)--Bruce
 
 local timerPolymorphCD		= mod:NewCDTimer(35, 133362)--Millie Watt
 local timerChompCD			= mod:NewCDTimer(8, 135342)--Bruce

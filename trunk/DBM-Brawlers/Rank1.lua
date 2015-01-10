@@ -21,7 +21,7 @@ local warnShieldWaller			= mod:NewSpellAnnounce(134650, 2)--Smash Hoofstomp
 local warnShadowStrikes			= mod:NewSpellAnnounce(126209, 3)--Akama
 local warnChainLightning		= mod:NewSpellAnnounce(39945, 3)--Akama
 
-local specWarnLumberingCharge	= mod:NewSpecialWarningMove(134527)--Goredome
+local specWarnLumberingCharge	= mod:NewSpecialWarningDodge(134527)--Goredome
 local specWarnFireWall			= mod:NewSpecialWarningSpell(132666)--Sanoriak
 local specWarnShadowStrikes		= mod:NewSpecialWarningDispel(126209, mod:IsMagicDispeller())--Akama
 local specWarnChainLightning	= mod:NewSpecialWarningInterrupt(39945)--Akama

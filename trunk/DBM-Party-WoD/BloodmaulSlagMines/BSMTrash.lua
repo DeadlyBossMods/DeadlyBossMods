@@ -22,7 +22,7 @@ local warnBloodRage						= mod:NewTargetAnnounce(151548, 4, nil, mod:IsMagicDisp
 local warnSubjugate						= mod:NewTargetAnnounce(151697, 3, nil, mod:IsHealer())
 local warnSlaversRage					= mod:NewTargetAnnounce(151965, 3, nil, mod:CanRemoveEnrage())
 
-local specWarnCrush						= mod:NewSpecialWarningMove(151447, mod:IsTank())
+local specWarnCrush						= mod:NewSpecialWarningDodge(151447, mod:IsTank())
 local specWarnCinderSplash				= mod:NewSpecialWarningSpell(152298, nil, nil, nil, 2)
 local specWarnRoar						= mod:NewSpecialWarningInterrupt(151545, not mod:IsHealer())--Maybe healer need warning too, if interrupt gets off, healer can't heal for 5 seconds
 local specWarnLavaBurst					= mod:NewSpecialWarningInterrupt(151558, not mod:IsHealer())

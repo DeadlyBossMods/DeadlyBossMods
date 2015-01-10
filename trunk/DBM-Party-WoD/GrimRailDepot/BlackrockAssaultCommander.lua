@@ -25,7 +25,7 @@ local warnPhase3				= mod:NewPhaseAnnounce(3)
 
 local specWarnSupressiveFire	= mod:NewSpecialWarningYou(160681)
 local yellSupressiveFire		= mod:NewYell(160681)
-local specWarnShrapnelblast		= mod:NewSpecialWarningMove(160943, mod:IsTank(), nil, nil, 3)--160943 boss version, 166675 trash version.
+local specWarnShrapnelblast		= mod:NewSpecialWarningDodge(160943, mod:IsTank(), nil, nil, 3)--160943 boss version, 166675 trash version.
 local specWarnSlagBlast			= mod:NewSpecialWarningMove(166570)
 
 local timerSupressiveFire		= mod:NewTargetTimer(10, 160681)

@@ -32,9 +32,9 @@ local specWarnSummonBlackIronVet		= mod:NewSpecialWarningInterrupt(169151, not m
 local specWarnVeilofShadow				= mod:NewSpecialWarningInterrupt(155586, not mod:IsHealer())--Challenge mode only(little spammy for mage)
 local specWarnVeilofShadowDispel		= mod:NewSpecialWarningDispel(155586, mod:CanRemoveCurse())
 local specWarnShadowBoltVolley			= mod:NewSpecialWarningInterrupt(155588, not mod:IsHealer())
-local specWarnSmash						= mod:NewSpecialWarningMove(155572, mod:IsTank())
-local specWarnFranticMauling			= mod:NewSpecialWarningMove(154039, mod:IsTank())
-local specWarnEruption					= mod:NewSpecialWarningMove(155037, mod:IsTank())
+local specWarnSmash						= mod:NewSpecialWarningDodge(155572, mod:IsTank())
+local specWarnFranticMauling			= mod:NewSpecialWarningDodge(154039, mod:IsTank())
+local specWarnEruption					= mod:NewSpecialWarningDodge(155037, mod:IsTank())
 
 local timerSmashCD						= mod:NewCDTimer(13, 155572)
 local timerEruptionCD					= mod:NewCDTimer(10, 155037, nil, false)--10-15 sec variation. May be distracting or spammy since two of them
