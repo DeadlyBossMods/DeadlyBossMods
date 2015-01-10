@@ -624,13 +624,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.playerHasMark = true
 			if spellId == 164176 then 
 				specWarnMarkOfChaosDisplacement:Show()
-				voiceMarkOfChaos:Play("runout")
 			elseif spellId == 164178 then
-				if self:IsMythic() and self.vb.phase == 2 then
-					specWarnMarkOfChaosFortification:Show()
-				end
+				specWarnMarkOfChaosFortification:Show()
 				yellMarkOfChaosFortification:Yell()--Always yell when root occurs in all modes though, because that's when raid really needs to know WHERE you are.
 			end
+			voiceMarkOfChaos:Play("runout")
 		else
 			self.vb.playerHasMark = false
 			if spellId == 164178 and self:CheckNearby(35, args.destName) then
