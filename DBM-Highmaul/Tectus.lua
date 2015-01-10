@@ -41,7 +41,7 @@ local specWarnCrystallineBarrageYou	= mod:NewSpecialWarningYou(162346, nil, nil,
 local yellCrystalineBarrage			= mod:NewYell(162346)
 local specWarnCrystallineBarrage	= mod:NewSpecialWarningMove(162370, nil, nil, nil, nil, nil, true)
 --Night-Twisted NPCs
-local specWarnEarthenFlechettes		= mod:NewSpecialWarningSpell(162968, mod:IsMelee(), nil, nil, nil, nil, true)
+local specWarnEarthenFlechettes		= mod:NewSpecialWarningDodge(162968, mod:IsMelee(), nil, nil, nil, nil, true)
 local specWarnGiftOfEarth			= mod:NewSpecialWarningCount(162894, mod:IsTank(), nil, nil, nil, nil, true)
 
 local timerEarthwarperCD			= mod:NewNextTimer(41, "ej10061", nil, nil, nil, 162894)--Both of these get delayed by upheavel

@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 local warnColossalSlam			= mod:NewSpellAnnounce(175791, 4)--No target scanning. target is either nil or tank.
 local warnCallofEarth			= mod:NewSpellAnnounce(175827, 2)
 
-local specWarnColossalSlam		= mod:NewSpecialWarningSpell(175791, nil, nil, nil, 2, nil, true)
+local specWarnColossalSlam		= mod:NewSpecialWarningDodge(175791, nil, nil, nil, 2, nil, true)
 local specWarnCallofEarth		= mod:NewSpecialWarningSpell(175827)
 
 local timerColossalSlamCD		= mod:NewCDTimer(16, 175791)--16-35 second variation? Then again was a bad pull with no tank, boss running loose so may have affected timer

@@ -17,11 +17,11 @@ local warnRitualOfBones			= mod:NewSpellAnnounce(154671, 4)
 local warnOmenOfDeath			= mod:NewTargetAnnounce(154350, 3)
 local warnMalevolence			= mod:NewSpellAnnounce("OptionVersion2", 154442, 3)--Some tank has terrible move. May need everyone
 
-local specWarnRitualOfBones		= mod:NewSpecialWarningSpell(154671, nil, nil, nil, true)
+local specWarnRitualOfBones		= mod:NewSpecialWarningSpell(154671, nil, nil, nil, 2)
 local specWarnOmenOfDeath		= mod:NewSpecialWarningMove(154350)
 local specWarnOmenOfDeathNear	= mod:NewSpecialWarningClose(154350)
 local yellOmenOfDeath			= mod:NewYell(154350)
-local specWarnMalevolence		= mod:NewSpecialWarningSpell(154442, nil, nil, nil, true)
+local specWarnMalevolence		= mod:NewSpecialWarningDodge(154442, nil, nil, nil, 2, nil, true)
 
 local timerRitualOfBonesCD		= mod:NewCDTimer(50.5, 154671)
 local timerOmenOfDeathCD		= mod:NewCDTimer(10.5, 154350)

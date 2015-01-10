@@ -29,7 +29,7 @@ local specWarnMagmaSpit		= mod:NewSpecialWarningMove(155051)
 local specWarnMagmaSpitYou	= mod:NewSpecialWarningYou(155051)
 local yellMagmaSpit			= mod:NewYell(155051)
 local specWarnMagmaPool		= mod:NewSpecialWarningMove(155057)
-local specWarnEngulfingFire	= mod:NewSpecialWarningSpell(154996, nil, nil, nil, 3)
+local specWarnEngulfingFire	= mod:NewSpecialWarningDodge(154996, nil, nil, nil, 3)
 
 local timerEngulfingFireCD	= mod:NewCDTimer(24, 154996)
 local timerSwirlingWinds	= mod:NewBuffActiveTimer(20, 167203)

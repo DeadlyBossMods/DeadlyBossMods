@@ -73,7 +73,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if not self.Options.Enabled or self:IsDifficulty("normal5") then return end
 	local spellId = args.spellId
-	if spellId == 163966 then
+	if spellId == 163966 and self:AntiSpam(2, 3) then
 		warnActivating:Show()
 		specWarnActivating:Show(args.sourceName)
 	end
