@@ -214,6 +214,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	soon		= prewarnOption,
 	prewarn 	= prewarnOption,
 	phase		= "Announce Phase %s",
+	phasechange	= "Announce phase changes",
 	prephase	= "Show a prewarning for Phase %s",
 	count		= "Show warning for $spell:%s",
 	stack		= "Announce $spell:%s stacks"
