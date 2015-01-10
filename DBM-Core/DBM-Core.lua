@@ -1032,6 +1032,7 @@ do
 				"UNIT_SPELLCAST_SUCCEEDED",
 				"ENCOUNTER_START",
 				"ENCOUNTER_END",
+				"BOSS_KILLED",
 				"UNIT_DIED",
 				"UNIT_DESTROYED",
 				"UNIT_HEALTH mouseover target focus player",
@@ -3974,6 +3975,10 @@ do
 				return
 			end
 		end
+	end
+	
+	function DBM:BOSS_KILLED(encounterID, name)
+		self:Debug("BOSS_KILLED event fired: "..encounterID.." "..name)
 	end
 
 	local function checkExpressionList(exp, str)
