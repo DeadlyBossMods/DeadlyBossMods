@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, Night-Twisted Faithful stuff (no spawn trigger or yell, but 30 second loop, like oozes on that boss in ToT)
 --TODO, see if target scanning works on dark star, or if that player gets an emote whisper or something. If can find dark star target, then need "nearby" warnings to move away from location
 --All Phases
+local warnPhase									= mod:NewPhaseChangeAnnounce()
 mod:AddBoolOption("warnBranded", true, "announce")
 local warnBranded								= mod:NewStackAnnounce("OptionVersion2", 156225, 4, nil, nil, false)
 local warnBrandedDisplacement					= mod:NewStackAnnounce("OptionVersion2", 164004, 4, nil, nil, false)
@@ -190,6 +191,9 @@ local fixateDebuff = GetSpellInfo(157763)
 local gazeDebuff = GetSpellInfo(165595)
 local playerName = UnitName("player")
 local chogallName = EJ_GetEncounterInfo(167)
+local inter1 = EJ_GetSectionInfo(9891)
+local inter2 = EJ_GetSectionInfo(9893)
+
 local debuffFilterMark, debuffFilterBranded, debuffFilterFixate, debuffFilterGaze
 do
 	debuffFilterMark = function(uId)
@@ -448,7 +452,7 @@ function mod:SPELL_CAST_START(args)
 				warnMarkOfChaosFortification:Show(targetName)
 			end
 			if tanking or (status == 3) then
-				if not (self:IsMythic() and self.vb.phase == 2) then--Cannot run out on mythic during displacement/fort. Can during fort/replication though.
+				if self.vb.phase ~= 2 then--Cannot run out on mythic during displacement/fort. Can during fort/replication though.
 					specWarnMarkOfChaosFortification:Show()
 					voiceMarkOfChaos:Play("runout")--Tank can still run out during cast
 				end
@@ -750,6 +754,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if spellId == 164810 then
 			timerCrushArmorCD:Start(23)
 			timerKickToFaceCD:Start(42)
+			warnPhase:Show(inter2)
+		else
+			warnPhase:Show(inter1)
 		end
 	elseif spellId == 158012 or spellId == 157964 then--Power of Foritification/Replication
 		self.vb.forceCount = 0
@@ -768,21 +775,25 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if spellId == 158012 then
 			if self:IsMythic() then
 				self.vb.phase = 2
-				voicePhaseChange:Play("ptwo")	
+				warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(2))
+				voicePhaseChange:Play("ptwo")
 			else
 				self.vb.phase = 3
+				warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(3))
 				voicePhaseChange:Play("pthree")
 			end
 		end
 		if spellId == 157964 then
 			if self:IsMythic() then
 				self.vb.phase = 3
+				warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(3))
 				voicePhaseChange:Play("pthree")
 				self:RegisterShortTermEvents(
 					"CHAT_MSG_MONSTER_YELL"
 				)
 			else
 				self.vb.phase = 4
+				warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(4))
 				voicePhaseChange:Play("pfour")
 			end
 		end
@@ -813,10 +824,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownMarkofChaos:Start(tr4+n)
 		timerForceNovaCD:Start(tr5+n)
 		countdownForceNova:Start(tr5+n)--]]
-		voicePhaseChange:Play("ptwo")
 		self.vb.phase = 2
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(2))
+		voicePhaseChange:Play("ptwo")
 	elseif spellId == 70628 then --Margok being killed by chogal
 		self.vb.phase = 4
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(4))
 		voicePhaseChange:Play("pfour")
 		timerArcaneWrathCD:Cancel()
 		countdownArcaneWrath:Cancel()
