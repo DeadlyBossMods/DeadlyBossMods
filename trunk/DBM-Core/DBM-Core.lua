@@ -5206,10 +5206,12 @@ function DBM:ToggleGarrisonAlertsFrame(toggle, custom)
 		GarrisonUnregistered = true
 		AlertFrame:UnregisterEvent("GARRISON_MISSION_FINISHED")
 		AlertFrame:UnregisterEvent("GARRISON_BUILDING_ACTIVATABLE")
+--		AlertFrame:UnregisterEvent("GARRISON_RANDOM_MISSION_ADDED")--6.1
 	elseif toggle == 0 and GarrisonUnregistered then
 		GarrisonUnregistered = false
 		AlertFrame:RegisterEvent("GARRISON_MISSION_FINISHED")
 		AlertFrame:RegisterEvent("GARRISON_BUILDING_ACTIVATABLE")
+--		AlertFrame:RegisterEvent("GARRISON_RANDOM_MISSION_ADDED")--6.1
 	end
 end
 
