@@ -23,7 +23,7 @@ local specWarnFreezingSnare		= mod:NewSpecialWarningYou(162066)
 local specWarnFreezingSnareNear	= mod:NewSpecialWarningClose(162066)
 local yellFreezingSnare			= mod:NewYell(162066)
 local specWarnDiffusedEnergy	= mod:NewSpecialWarningMove(161588)
-local specWarnSpinningSpear		= mod:NewSpecialWarningMove("OptionVersion2", 162058, mod:IsTank())
+local specWarnSpinningSpear		= mod:NewSpecialWarningDodge("OptionVersion2", 162058, mod:IsTank())
 local specWarnMark				= mod:NewSpecialWarningMoveAway(163447)
 local yellMark					= mod:NewYell(163447)
 

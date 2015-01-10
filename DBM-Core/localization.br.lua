@@ -183,6 +183,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you 		= "Exibir aviso especial quando você é a
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target 		= "Exibir aviso especial quando alguém é afetador por $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 		= "Exibir aviso especial quando alguém próximo de você é afetado por $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 		= "Exibir aviso especial quando você é afetado por $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge 		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move--FIXME (this is a temp until localized properly as a dodge warning)
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run 		= "Exibir aviso especial para $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast 		= "Exibir aviso especial para o lançamento de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Exibir aviso especial para pilha >=%d de $spell:%s"
@@ -195,6 +196,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.you		= "%s em você"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target	= "%s em >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close		= "%s em >%%s< perto de você"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move		= "%s - saia de perto"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodge 	= DBM_CORE_AUTO_SPEC_WARN_TEXTS.move--FIXME (this is a temp until localized properly as a dodge warning)
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run		= "%s - corra para longe"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast		= "%s - pare de lançar"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "%s (%%d)"
