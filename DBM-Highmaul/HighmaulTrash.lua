@@ -8,7 +8,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED 175636 173827 172066 166200"
+	"SPELL_AURA_APPLIED 175636 173827 172066 166200 175654"
 )
 
 --Maybe add auto range finder for moveaway warnings, and REMOVED event to close it after
@@ -16,6 +16,7 @@ local warnRuneofDestruction			= mod:NewTargetAnnounce("OptionVersion2", 175636, 
 local warnRadiatingPoison			= mod:NewTargetAnnounce("OptionVersion2", 172066, 3, nil, false)
 local warnArcaneVol					= mod:NewTargetAnnounce("OptionVersion2", 166200, 3, nil, false)
 
+local specWarnRuneofDisintegration	= mod:NewSpecialWarningMove(175654)
 local specWarnRuneofDestruction		= mod:NewSpecialWarningMoveAway(175636)
 local yellRuneofDestruction			= mod:NewYell(175636)
 local specWarnRadiatingPoison		= mod:NewSpecialWarningMoveAway(172066)
@@ -56,5 +57,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 173827 and args:IsPlayer() then
 		specWarnWildFlames:Show()
+	elseif spellId == 175654 and args:IsPlayer() then
+		specWarnRuneofDisintegration:Show()
 	end
 end
