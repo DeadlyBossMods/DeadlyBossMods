@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Dec 31, 2014@12240
+-- Last update: Jan 10, 2015@12371
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -40,7 +40,7 @@ L.PosY 						= 'Y坐标'
 L.MoveMe					= '移动'
 L.Button_OK 				= '确定'
 L.Button_Cancel 			= '取消'
-L.Button_LoadMod 			= '加载插件'
+L.Button_LoadMod 			= '加载模块'
 L.Mod_Enabled				= "开启模块"
 L.Mod_Reset					= "恢复默认设置"
 L.Reset 					= "重置"
@@ -72,11 +72,6 @@ L.ChallengeTimerOptions			= "设置挑战模式最佳记录计时条"
 L.ChallengeTimerPersonal		= "个人"
 L.ChallengeTimerGuild			= "公会"
 L.ChallengeTimerRealm			= "服务器"
-
-L.DisableCinematics			= "在副本时自动跳过游戏内过场动画"
-L.DisableCinematicsOutside		= "在副本外时自动跳过游戏内过场动画"
-L.SKT_Enabled				= "永远显示最速击杀计时条（无论该首领的相关设置如何）"
-L.Latency_Text				= "设定启用同步功能的最高延迟阀值：%d"
 
 L.ModelOptions				= "3D模型选项"
 L.EnableModels				= "在首领选项中启用3D模型"
@@ -117,6 +112,7 @@ L.VoicePackChoice			= "设置语音报警的语音包(快躲开！)"
 L.SpecialWarnSound			= "针对你发出特殊警报时播放的声音"
 L.SpecialWarnSound2			= "针对所有人发出特殊警报时播放的声音(默认:当心)"
 L.SpecialWarnSound3			= "针对非常重要事件(灭团点)的特殊警报播放的声音(默认:毁灭)"
+L.SpecialWarnSound4			= "特殊警报: 快跑啊 小女孩"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages	 		= "综合信息"
@@ -145,7 +141,6 @@ L.BarDBM				= "DBM"
 L.BarBigWigs				= "BigWigs (没动画)"
 L.BarStartColor				= "初始颜色"
 L.BarEndColor 				= "结束颜色"
-L.ExpandUpwards				= "向上扩展"
 L.Bar_Font				= "计时条字体"
 L.Bar_FontSize				= "字体大小"
 L.Bar_Height				= "计时条高度: %d"
