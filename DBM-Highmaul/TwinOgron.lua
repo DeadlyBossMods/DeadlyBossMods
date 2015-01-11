@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(78238, 78237)--Pol 78238, Phemos 78237
 mod:SetEncounterID(1719)
 mod:SetZone()
+--Could not find south path for this one
 mod:SetHotfixNoticeRev(11939)
 
 mod:RegisterCombat("combat")
