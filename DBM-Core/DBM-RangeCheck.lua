@@ -70,9 +70,8 @@ local dims
 --------------------------------------------------------
 local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
-local UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat = UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat
-local GetNumGroupMembers, GetNumSubgroupMembers = GetNumGroupMembers, GetNumSubgroupMembers
-local GetCurrentMapDungeonLevel = GetCurrentMapDungeonLevel
+local UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat, UnitExists = UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat, UnitExists
+local IsInRaid, GetNumGroupMembers, GetNumSubgroupMembers = IsInRaid, GetNumGroupMembers, GetNumSubgroupMembers
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetTime = GetTime
 local max, sin, cos, pi = math.max, math.sin, math.cos, math.pi
