@@ -198,7 +198,6 @@ L.SpamBlockNoHealthFrame		= "Не отображать окно здоровья
 L.Area_SpamFilter				= "Параметры спам-фильтра"
 L.StripServerName				= "Удалять имя сервера в предупреждениях и таймерах"
 L.SpamBlockBossWhispers			= "Фильтрация &lt;DBM&gt; предупреждений шепотом в бою"
-L.BlockVersionUpdateNotice		= "Отключить уведомление о доступном обновлении (не рекомендуется)"
 L.ShowBBOnCombatStart			= "Выполнять проверку положительных эффектов Big Brother в начале боя"
 L.BigBrotherAnnounceToRaid		= "Объявлять результаты проверки Big Brother в рейд"
 

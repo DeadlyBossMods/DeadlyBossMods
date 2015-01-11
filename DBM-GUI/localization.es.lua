@@ -192,7 +192,6 @@ L.Panel_SpamFilter		= "Filtro de Spam"
 L.Area_SpamFilter		= "Opciones de spam"
 L.StripServerName		= "Eliminar nombre de reino de los avisos y temporizadores"
 L.SpamBlockBossWhispers		= "Filtrar los avisos de &lt;DBM&gt; mientras estas en combate"
-L.BlockVersionUpdateNotice	= "Desabilitar avisos de actualizaciones"
 L.ShowBBOnCombatStart			= "Comprobar los bufos con Big Brother al inicio del combate"
 L.BigBrotherAnnounceToRaid		= "Anunciar los resultados de Big Brother a la banda"
 

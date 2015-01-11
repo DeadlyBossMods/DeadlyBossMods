@@ -199,7 +199,6 @@ L.SpamBlockNoCountdowns		= "Do not play countdown sounds"
 L.Area_SpamFilter			= "Spam Filter Options"
 L.StripServerName			= "Strip realm name in warnings and timers"
 L.SpamBlockBossWhispers		= "Filter &lt;DBM&gt; warning whispers while fighting"
-L.BlockVersionUpdateNotice	= "Disable update notification popup (Not recommended)"
 L.ShowBBOnCombatStart		= "Perform Big Brother buff check on combat start"
 L.BigBrotherAnnounceToRaid	= "Announce Big Brother results to raid"
 
