@@ -172,7 +172,6 @@ L.Panel_SpamFilter			= "Filtros Global e de Spam"
 L.Area_SpamFilter			= "Opções do filtro Global"
 L.StripServerName			= "Tira com nome do reino em avisos e temporizadores"
 L.SpamBlockBossWhispers			= "Filtra &lt;DBM&gt; avisos de sussurro enquanto estiver lutando"
-L.BlockVersionUpdateNotice		= "Desabilitar popup de notificação de atualização (Não recomendado)"
 L.ShowBBOnCombatStart			= "Fazer checagem de Buff com Big Brother no início do combate"
 L.BigBrotherAnnounceToRaid		= "Anunciar resultados do Big Brother para a raide"
 

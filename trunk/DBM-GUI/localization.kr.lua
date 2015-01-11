@@ -195,7 +195,6 @@ L.SpamBlockNoCountdowns		= "초읽기 소리 재생 안함"
 L.Area_SpamFilter			= "일반 필터 설정"
 L.StripServerName			= "알림 및 바에서 서버명 보이지 않기"
 L.SpamBlockBossWhispers		= "전투 중 다른 공격대원 또는 파티원이 보낸 &lt;DBM&gt; 귓속말 감추기"
-L.BlockVersionUpdateNotice	= "업데이트 알림 창 끄기(추천하지 않음)"
 L.ShowBBOnCombatStart		= "전투 시작시 BigBrother 버프 체크 실행하기"
 L.BigBrotherAnnounceToRaid	= "BigBrother 버프 체크 결과를 공격대에 알리기"
 
