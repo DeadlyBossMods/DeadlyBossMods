@@ -452,9 +452,8 @@ function mod:SPELL_CAST_START(args)
 				warnMarkOfChaosFortification:Show(targetName)
 			end
 			if tanking or (status == 3) then
-				--2/5 tank classes can still run this out even while rooted. so always warn. Mythic guilds always use at least one of these two classes
 				specWarnMarkOfChaosFortification:Show()
-				voiceMarkOfChaos:Play("runout")--Tank can still run out during cast
+				voiceMarkOfChaos:Play("runout")--Tank can still run out during cast. This spellid is only used phase 3 in all modes, never displacement
 			else
 				specWarnMarkOfChaosFortificationOther:Show(targetName)
 				voiceMarkOfChaos:Play("changemt")
@@ -623,12 +622,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			self.vb.playerHasMark = true
 			if spellId == 164176 then 
-				specWarnMarkOfChaosDisplacement:Show()
+				--Displacement you cannot run out on cast start (you get ported back on cast finish). Only warn after cast finish.
+				if self:IsMythic() and self.vb.phase == 2 then--Mythic phase 2 uses displacement spellid but it's also fortified
+					specWarnMarkOfChaosFortification:Show()--So show fortified warning, not displacement.
+				else
+					specWarnMarkOfChaosDisplacement:Show()
+				end
+				voiceMarkOfChaos:Play("runout")
 			elseif spellId == 164178 then
-				specWarnMarkOfChaosFortification:Show()
 				yellMarkOfChaosFortification:Yell()--Always yell when root occurs in all modes though, because that's when raid really needs to know WHERE you are.
 			end
-			voiceMarkOfChaos:Play("runout")
 		else
 			self.vb.playerHasMark = false
 			if spellId == 164178 and self:CheckNearby(35, args.destName) then
