@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(77404)
 mod:SetEncounterID(1706)
 mod:SetZone()
+mod:SetModelSound("sound\\creature\\thebutcher\\VO_60_OGRERAID_BUTCHER_AGGRO.ogg", "sound\\creature\\thebutcher\\VO_60_OGRERAID_BUTCHER_SPELL_B.ogg")
 
 mod:RegisterCombat("combat")
 

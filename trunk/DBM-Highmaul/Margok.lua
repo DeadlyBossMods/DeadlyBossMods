@@ -7,6 +7,7 @@ mod:SetEncounterID(1705)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)--Unknown total number of icons replication will use.
 mod:SetBossHPInfoToHighest()--For mythic chogal
+--Could not find south path on internet
 mod:SetHotfixNoticeRev(12370)
 mod:SetMinSyncRevision(12073)--Avoid premature combat end on mythic
 
