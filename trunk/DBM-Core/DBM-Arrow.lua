@@ -19,6 +19,7 @@ local pi, pi2 = math.pi, math.pi * 2
 local floor = math.floor
 local sin, cos, atan2, sqrt, min = math.sin, math.cos, math.atan2, math.sqrt, math.min
 local UnitPosition = UnitPosition
+local GetTime = GetTime
 
 --------------------
 --  Create Frame  --
