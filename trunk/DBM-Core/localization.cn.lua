@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Dec 31, 2014@12246
+-- Last update: Jan 10, 2015@12371
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -111,6 +111,7 @@ DBM_CORE_YOUR_VERSION_OUTDATED		= "你的DBM已经过期。请访问 http://dev.
 DBM_CORE_OUTDATED_PVP_MODS			= "你当前使用的DBM-PVP模块已经过期。PVP模块现在需要单独下载。请访问 http://www.deadlybossmods.com"
 DBM_CORE_VOICE_PACK_OUTDATED		= "你当前使用的DBM语音包已经过期。特殊警报屏蔽（当心，毁灭）已被禁用。请下载最新语音包，或联系语音包作者更新。"
 DBM_CORE_VOICE_MISSING				= "DBM找不到你当前选择的语音包。语音包选项已经被设置成'None'。请确保你的语音包被正确安装和启用。"
+DBM_CORE_VOICE_COUNT_MISSING		= "在 %d 语音包中找不到倒计时语音。倒计时已恢复为默认值"
 --DBM_BIG_WIGS						(Same as English locales)
 --DBM_BIG_WIGS_ALPHA					(Same as English locales)
 
@@ -222,6 +223,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast				= "警报：$spell:%s的施放"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon				= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn			= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase			= "警报：第%s阶段"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phasechange		= "警报：阶段转换"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase			= "预警：第%s阶段"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count			= "警报：$spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack			= "警报：$spell:%s叠加层数"
@@ -238,6 +240,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.target			= ">%%s<中了%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt				= ">%%s<中了%s - 快嘲讽"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close				= "你附近的>%%s<中了%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move				= "%s - 快躲开"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodge				= "%s - 躲开攻击"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveaway			= "%s - 离开人群"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto			= "%s - 靠近 >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run				= "%s - 快跑"
@@ -260,6 +263,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target			= "特殊警报：当他人受到$spell
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt 			= "特殊警报：当另外一个T中了$spell:%s并需要你嘲讽时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close			= "特殊警报：当你附近有人受到$spell:%s影响时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move			= "特殊警报：当你受到$spell:%s影响时"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge			= "特殊警报：当你受到$spell:%s影响并需要躲开攻击"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway		= "特殊警报：当你受到$spell:%s影响并需要跑开人群时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveto			= "特殊警报：当他人中了$spell:%s并需要你去靠近时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run				= "特殊警报：$spell:%s"
@@ -291,13 +295,13 @@ DBM_CORE_AUTO_TIMER_OPTIONS.fades				= "计时条：$spell:%s何时从玩家身�
 DBM_CORE_AUTO_TIMER_OPTIONS.cd					= "计时条：$spell:%s冷却时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.cdcount				= "计时条：$spell:%s冷却时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.cdsource			= "计时条：$spell:%s冷却时间以及来源"
-DBM_CORE_AUTO_TIMER_OPTIONS.cdspecial				= "计时条：特殊技能冷却"
+DBM_CORE_AUTO_TIMER_OPTIONS.cdspecial			= "计时条：特殊技能冷却"
 DBM_CORE_AUTO_TIMER_OPTIONS.next				= "计时条：下一次$spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextcount			= "计时条：下一次$spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextsource			= "计时条：下一次$spell:%s以及来源"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextspecial			= "计时条：下一次特殊技能"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement			= "计时条：成就%s"
-DBM_CORE_AUTO_TIMER_OPTIONS.phase					= "计时条：下一阶段"
+DBM_CORE_AUTO_TIMER_OPTIONS.phase				= "计时条：下一阶段"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT				= "为$spell:%s的目标添加团队标记"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT2			= "为$spell:%s添加团队标记"
@@ -310,12 +314,12 @@ DBM_CORE_AUTO_VOICE2_OPTION_TEXT			= "为阶段转换提供语音包警报"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT			= "倒计时：$spell:%s的冷却时间倒计时"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2		= "倒计时：$spell:%s消失时"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT			= "倒计时：$spell:%s的持续时间正计时"
-DBM_CORE_AUTO_YELL_OPTION_TEXT				= "当你受到$spell:%s影响时时大喊"
+DBM_CORE_AUTO_YELL_OPTION_TEXT				= "当你受到$spell:%s影响时大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT			= UnitName("player") .. " 中了 %s!"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT				= "距离监视(%s)：$spell:%s"--string used for range so we can use things like "5/2" as a value for that field
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT		= "距离监视(%s)"--For when a range frame is just used for more than one thing
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT		= "信息框：$spell:%s"
-DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT		= "当首领开打时拨放准备检查的音效（即使没有选定目标）"
+DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT		= "当首领开打时播放准备检查的音效（即使没有选定目标）"
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "可拖动的特别警报"
