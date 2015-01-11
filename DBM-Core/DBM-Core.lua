@@ -89,6 +89,7 @@ DBM.DefaultOptions = {
 	CountdownVoice3 = "Pewsey",
 	ChosenVoicePack = "None",
 	VoiceOverSpecW = false,
+	AlwaysPlayVoice = false,
 	ShowCountdownText = false,
 	RaidWarningPosition = {
 		Point = "TOP",
@@ -6700,7 +6701,7 @@ do
 	--If no file at path, it should silenty fail. However, I want to try to only add NewVoice to mods for files that already exist.
 	function soundPrototype2:Play(name)
 		if DBM.Options.ChosenVoicePack == "None" then return end
-		if not self.option or self.mod.Options[self.option] then
+		if not self.option or self.mod.Options[self.option] or DBM.Options.AlwaysPlayVoice then
 			local path = "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\"..name..".ogg"
 				--Example "Interface\\AddOns\\DBM-VPHenry\\dispelnow.ogg"
 				--Usage: voiceBerserkerRush:Play("dispelnow")
