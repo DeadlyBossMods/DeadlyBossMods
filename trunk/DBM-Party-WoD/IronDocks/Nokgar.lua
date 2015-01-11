@@ -43,13 +43,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnRecklessProvocation:Show(args.destName)
 		timerRecklessProvocation:Start()
 		voiceRecklessProvocation:Play("stopattack")
-	elseif args.spellId == 164835 and args:GetSrcCreatureID() == 81297 then
+	elseif args.spellId == 164835 and self:AntiSpam(2, 1) then
 		warnEnrage:Show()
 		specWarnEnrage:Show(args.destName)
-		if self:AntiSpam() then
-			voiceEnrage:Play("trannow") --multi sound
-		end
-	elseif args.spellId == 164632 and args:IsPlayer() and self:AntiSpam(2) then
+		voiceEnrage:Play("trannow") --multi sound
+	elseif args.spellId == 164632 and args:IsPlayer() and self:AntiSpam(2, 2) then
 		specWarnBurningArrowsMove:Show()
 	end
 end
