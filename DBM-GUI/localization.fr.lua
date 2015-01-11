@@ -177,7 +177,6 @@ L.Panel_SpamFilter				= "Filtres globaux et de spam"
 L.Area_SpamFilter				= "Options des filtres de spam"
 L.StripServerName				= "Ne pas afficher le royaume sur les alertes et les timers"
 L.SpamBlockBossWhispers			= "Filtrer les chuchotements d'alerte &lt;DBM&gt; pendant les rencontres"
-L.BlockVersionUpdateNotice		= "Désactiver le popup de notification de mise à jour"
 L.ShowBBOnCombatStart			= "Effectuer une vérif. générale des buffs au début du combat"
 L.BigBrotherAnnounceToRaid		= "Annoncer les résultats de la vérif. générale au raid"
 

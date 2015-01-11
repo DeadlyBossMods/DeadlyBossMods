@@ -211,7 +211,6 @@ L.SpamBlockNoHealthFrame		= "不显示生命值监视器"
 L.Area_SpamFilter				= "信息过滤设置"
 L.StripServerName				= "警告和计时器中不显示服务器名"
 L.SpamBlockBossWhispers			= "战斗中过滤DBM密语警报"
-L.BlockVersionUpdateNotice		= "禁用升级提示"
 L.ShowBBOnCombatStart			= "战斗开始时使用Big Brother检测增益情况"
 L.BigBrotherAnnounceToRaid		= "报告Big Brother的检测结果给团队"
 
