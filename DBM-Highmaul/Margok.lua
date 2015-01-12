@@ -602,9 +602,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 159515 then
 		local amount = args.amount or 1
-		warnAcceleratedAssault:Show(args.destName, amount)
 		--5 may seem low stack, most wait longer on easier difficulties, but this boss has taunt DR flag turned OFF, there is really no reason to wait for higher stacks, and on mythic 5 is common number to reduce tank damage
-		if amount >= 5 and not self.vb.noTaunt and self:AntiSpam(3, 2) then--Stack > 5, not during mark of chaos run out, and not in last 3 seconds
+		if amount >= 5 and not self.vb.noTaunt and self:AntiSpam(3, 3) then--Stack > 5, not during mark of chaos run out, and not in last 3 seconds
+			warnAcceleratedAssault:Show(args.destName, amount)
 			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 			if tanking or (status == 3) then
 				specWarnAcceleratedAssault:Show(amount)
