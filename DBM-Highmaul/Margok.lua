@@ -889,7 +889,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voiceForceNova:Cancel()
 		countdownForceNova:Cancel()
 		updateRangeFrame(self)
-		timerInfiniteDarknessCD:Start(9)--First timer 8-10 second variable, almost always 10. I'll make 9 for now so it's semi accurate in both situations
+		timerInfiniteDarknessCD:Start(9)--First timer 8-12 second variable, almost always 10. I'll make 9 for now so it's semi accurate in both situations
 		timerGlimpseOfMadnessCD:Start(20, 1)
 		timerDarkStarCD:Start(29)
 		countdownDarkStar:Start(29)
