@@ -846,10 +846,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownForceNova:Cancel()
 		updateRangeFrame(self)
 		timerInfiniteDarknessCD:Start(10)
-		timerGlimpseOfMadnessCD:Start(20)
+		timerGlimpseOfMadnessCD:Start(20, 1)
 		timerDarkStarCD:Start(29)
 		countdownDarkStar:Start(29)
-		timerEnvelopingNightCD:Start(55)
+		timerEnvelopingNightCD:Start(55, 1)
 		countdownEnvelopingNight:Start(55)
 		self:RegisterShortTermEvents(
 			"SPELL_PERIODIC_DAMAGE 176533",
