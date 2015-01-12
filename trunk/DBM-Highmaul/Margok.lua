@@ -87,6 +87,9 @@ local specWarnMarkOfChaosFortificationNear		= mod:NewSpecialWarningClose(164178,
 local yellMarkOfChaosFortification				= mod:NewYell(164178)
 local yellMarkOfChaosReplication				= mod:NewYell(164191)
 
+local specWarnForceNova							= mod:NewSpecialWarningSpell(157349, nil, nil, nil, 2)
+local specWarnForceNovaRep						= mod:NewSpecialWarningMoveAway(164191, nil, nil, nil, 3)
+
 local specWarnMarkOfChaosOther					= mod:NewSpecialWarningTaunt(158605, nil, nil, nil, nil, nil, true)
 local specWarnMarkOfChaosDisplacementOther		= mod:NewSpecialWarningTaunt(164176, nil, nil, nil, nil, nil, true)
 local specWarnMarkOfChaosFortificationOther		= mod:NewSpecialWarningTaunt(164178, nil, nil, nil, nil, nil, true)
@@ -351,6 +354,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.warnForceNova then
 			warnForceNova:Show(self.vb.forceCount)
 		end
+		specWarnForceNova:Show()
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
 		countdownForceNova:Start()
 		voiceForceNova:Schedule(38.5, "157349")
@@ -366,20 +370,31 @@ function mod:SPELL_CAST_START(args)
 			self.vb.RepNovaActive = true
 			self:Schedule(9, delayedRangeUpdate, self)
 			updateRangeFrame(self)
-			--Two extra checks to make sure we update 35 to 5 if tank was too close briefly if they came at same time
+			--Trhee extra checks to make sure we update 35 to 5 if tank was too close briefly if they came at same time
 			self:Schedule(1, updateRangeFrame, self)
 			self:Schedule(2, updateRangeFrame, self)
 			self:Schedule(5, updateRangeFrame, self)
 			voiceForceNova:Play("range5")
+			specWarnForceNovaRep:Show()
+		else
+			specWarnForceNova:Show()
 		end
 	elseif spellId == 164235 then
 		self.vb.forceCount = self.vb.forceCount + 1
 		if self.Options.warnForceNova then
 			warnForceNovaFortification:Show(self.vb.forceCount)
 		end
+		specWarnForceNova:Show()
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
 		countdownForceNova:Start()
 		voiceForceNova:Schedule(38.5, "157349")
+		--Fortified novas, 3 novas not just 1. Start additional timer/Countdown for novas 2 and 3
+		timerForceNovaFortification:Start()
+		timerForceNovaFortification:Schedule(10)
+		countdownForceNova:Start(10)
+		countdownForceNova:Start(20)
+		specWarnForceNova:Schedule(10)
+		specWarnForceNova:Schedule(20)
 	elseif spellId == 164240 then
 		self.vb.forceCount = self.vb.forceCount + 1
 		self.vb.RepNovaActive = true
@@ -390,17 +405,20 @@ function mod:SPELL_CAST_START(args)
 			timerForceNovaFortification:Schedule(10)
 			countdownForceNova:Start(10)
 			countdownForceNova:Start(20)
+			specWarnForceNovaRep:Schedule(10)
+			specWarnForceNovaRep:Schedule(20)
 		else
 			self:Schedule(9, delayedRangeUpdate, self)
 		end
 		updateRangeFrame(self)
-		--Two extra checks to make sure we update 35 to 5 if tank was too close briefly if they came at same time
+		--Three extra checks to make sure we update 35 to 5 if tank was too close briefly if they came at same time
 		self:Schedule(1, updateRangeFrame, self)
 		self:Schedule(2, updateRangeFrame, self)
 		self:Schedule(5, updateRangeFrame, self)
 		if self.Options.warnForceNova then
 			warnForceNovaReplication:Show(self.vb.forceCount)
 		end
+		specWarnForceNovaRep:Show()
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
 		voiceForceNova:Schedule(38.5, "157349")
 		voiceForceNova:Play("range5") --keep range 5 yards

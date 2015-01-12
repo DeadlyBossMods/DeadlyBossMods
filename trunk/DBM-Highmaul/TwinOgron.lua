@@ -156,7 +156,7 @@ local function updateInfoFrame()
 		if bossPower < 33 then--Shield Charge
 			lines[UnitName("boss1")] = bossPower
 			if UnitBuff("boss1", arcaneTwisted) then--Empowered attack
-				lines["|cFFFF0000"..GetSpellInfo(158134).."|r"] = GetSpellInfo(163336)
+				lines["|cFF9932CD"..GetSpellInfo(158134).."|r"] = GetSpellInfo(163336)
 			else
 				lines[GetSpellInfo(158134)] = ""
 			end
@@ -169,7 +169,7 @@ local function updateInfoFrame()
 		lines[UnitName("boss2")] = bossPower2
 		if bossPower2 < 33 then--Shield Charge
 			if UnitBuff("boss2", arcaneTwisted) then--Empowered attack
-				lines["|cFFFF0000"..GetSpellInfo(158134).."|r"] = GetSpellInfo(163336)
+				lines["|cFF9932CD"..GetSpellInfo(158134).."|r"] = GetSpellInfo(163336)
 			else
 				lines[GetSpellInfo(158134)] = ""
 			end
