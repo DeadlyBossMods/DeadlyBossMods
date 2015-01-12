@@ -673,6 +673,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceGrowingDarkness:Play("runout")
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REFRESH(args)
 	local spellId = args.spellId
