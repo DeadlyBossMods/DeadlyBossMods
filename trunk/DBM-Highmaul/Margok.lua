@@ -407,6 +407,8 @@ function mod:SPELL_CAST_START(args)
 			countdownForceNova:Start(20)
 			specWarnForceNovaRep:Schedule(10)
 			specWarnForceNovaRep:Schedule(20)
+			voiceForceNova:Schedule(10, "range5")
+			voiceForceNova:Schedule(20, "range5")
 		else
 			self:Schedule(9, delayedRangeUpdate, self)
 		end
