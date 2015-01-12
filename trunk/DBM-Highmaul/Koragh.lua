@@ -24,14 +24,14 @@ mod:RegisterEventsInCombat(
 
 --TODO, find number of targets of MC and add SetIconsUsed with correct icon count.
 --TODO, see if MC works. I think it's every 3rd balls
-local warnCausticEnergy				= mod:NewTargetAnnounce(161242, 3)
+local warnCausticEnergy				= mod:NewTargetAnnounce("OptionVersion2", 161242, 3, nil, false)
 local warnNullBarrier				= mod:NewTargetAnnounce(156803, 2)
-local warnVulnerability				= mod:NewTargetAnnounce(160734, 1)
+local warnVulnerability				= mod:NewTargetAnnounce("OptionVersion2", 160734, 1, nil, false)
 local warnTrample					= mod:NewTargetCountAnnounce(163101, 3)--Technically it's supression field, then trample, but everyone is going to know it more by trample cause that's the part of it that matters
 local warnExpelMagicFire			= mod:NewSpellAnnounce(162185, 3)
 local warnExpelMagicShadow			= mod:NewSpellAnnounce(162184, 3, nil, mod:IsHealer())
 local warnExpelMagicFrost			= mod:NewTargetAnnounce(161411, 3)
-local warnExpelMagicArcane			= mod:NewTargetAnnounce(162186, 4)--Everyone, so they know to avoid him
+local warnExpelMagicArcane			= mod:NewTargetAnnounce(162186, 4)
 local warnBallsSoon					= mod:NewPreWarnAnnounce(161612, 6.5, 2)
 local warnBallsHit					= mod:NewCountAnnounce(161612, 2)
 local warnMC						= mod:NewTargetAnnounce(163472, 4)--Mythic
