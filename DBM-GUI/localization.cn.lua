@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Jan 10, 2015@12371
+-- Last update: Jan 12, 2015@12395
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -96,19 +96,13 @@ L.InfoRaidWarning			= [[你可以对团队警报的文本颜色及其位置进�
 在这里会显示诸如“玩家X受到了Y效果的影响”之类的信息。]]
 L.ColorResetted 			= "该颜色设置已重置"
 L.ShowWarningsInChat 		= "在聊天窗口中显示警报"
-L.ShowSWarningsInChat 		= "在聊天窗口中显示特殊警报"
 L.ShowFakedRaidWarnings 	= "以伪装团队警报信息的方式显示警报内容"
 L.WarningIconLeft 			= "左侧显示图标"
 L.WarningIconRight 			= "右侧显示图标"
 L.WarningIconChat 			= "在聊天窗口中显示图标"
-L.ShowCountdownText			= "为第一倒计时显示文本"
 L.RaidWarnMessage 			= "感谢您使用Deadly Boss Mods"
 L.BarWhileMove 				= "可移动团队警报"
 L.RaidWarnSound				= "发出团队警报时播放声音"
-L.CountdownVoice			= "设置第一倒计时语音"
-L.CountdownVoice2			= "设置第二倒计时语音"
-L.CountdownVoice3			= "设置第三倒计时语音"
-L.VoicePackChoice			= "设置语音报警的语音包(快躲开！)"
 L.SpecialWarnSound			= "针对你发出特殊警报时播放的声音"
 L.SpecialWarnSound2			= "针对所有人发出特殊警报时播放的声音(默认:当心)"
 L.SpecialWarnSound3			= "针对非常重要事件(灭团点)的特殊警报播放的声音(默认:毁灭)"
@@ -167,9 +161,8 @@ L.BarFlash				= "当计时条快走完时闪动"
 L.Panel_SpecWarnFrame			= "特殊警报"
 L.Area_SpecWarn				= "特殊警报设置"
 L.SpecWarn_Enabled			= "显示首领技能特殊警报"
-L.SpecWarn_FlashFrame			= "特殊警报时屏幕边缘泛光"
-L.SpecWarn_ShakeFrame			= "为毁灭性的技能闪烁屏幕"
-L.SpecWarn_NoSoundsWVoice	= "当技能存在语音包语音时，屏蔽播放特殊警报声（当心，毁灭）"
+L.SpecWarn_FlashFrame		= "特殊警报时屏幕边缘泛光"
+L.ShowSWarningsInChat 		= "在聊天窗口中显示特殊警报"
 L.SpecWarn_Font				= "特殊警报字体"
 L.SpecWarn_DemoButton			= "测试警报"
 L.SpecWarn_MoveMe			= "设置位置"
@@ -180,6 +173,20 @@ L.SpecWarn_FlashColor			= "泛光顏色 (%d)"
 L.SpecWarn_FlashDur			= "泛光持续时间: %0.1f"
 L.SpecWarn_FlashAlpha			= "泛光透明度: %0.1f"
 L.SpecWarn_ResetMe			= "重置"
+
+-- Tab: Spoken Alerts Frame
+L.Panel_SpokenAlerts		= "语音警告"
+L.Area_VoiceSelection		= "语音选项"
+L.CountdownVoice			= "设置第一倒计时语音"
+L.CountdownVoice2			= "设置第二倒计时语音"
+L.CountdownVoice3			= "设置第三倒计时语音"
+L.VoicePackChoice			= "设置语音报警的语音包(快躲开！)"
+L.Area_CountdownOptions		= "倒计时选项"
+L.ShowCountdownText			= "为第一倒计时显示文本"
+L.Area_VoicePackOptions		= "语音包选项(第三方)"
+L.SpecWarn_NoSoundsWVoice	= "当技能存在语音包语音时，屏蔽播放特殊警报声（当心，毁灭）"
+L.SpecWarn_AlwaysVoice		= "总是播放所有语音警告(覆盖首领特定的选项,建议指挥使用)"
+--TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 
 -- Tab: HealthFrame
 L.Panel_HPFrame				= "生命值框体"
