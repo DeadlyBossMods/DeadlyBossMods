@@ -177,9 +177,10 @@ L.CountdownVoice3			= "Set tertiary voice for count sounds"
 L.VoicePackChoice			= "Set voice pack for spoken alerts"
 L.Area_CountdownOptions		= "Countdown Options"
 L.ShowCountdownText			= "Show countdown text during primary voice countdowns"
-L.Area_VoicePackOptions		= "Voice Pack Options"
+L.Area_VoicePackOptions		= "Voice Pack Options (3rd party voice packs)"
 L.SpecWarn_NoSoundsWVoice	= "Do not play special warning sounds for warnings that have spoken alerts"
 L.SpecWarn_AlwaysVoice		= "Always play all spoken alerts (Overrides boss-specific options. Useful for RL)"
+--TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 
 -- Tab: HealthFrame
 L.Panel_HPFrame				= "Health Frame"
