@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 local warnCleave					= mod:NewCountAnnounce(156157, 2, nil, false)
 local warnBoundingCleave			= mod:NewCountAnnounce(156160, 3)
 local warnTenderizer				= mod:NewStackAnnounce(156151, 2, nil, mod:IsTank())
-local warnCleaver					= mod:NewSpellAnnounce(156143, 3, nil, mod:IsTank())--Saberlash
+local warnCleaver					= mod:NewSpellAnnounce("OptionVersion2", 156143, 3, nil, false)--Saberlash
 local warnFrenzy					= mod:NewTargetAnnounce(156598, 4)
 
 local specWarnTenderizer			= mod:NewSpecialWarningStack(156151, nil, 2)

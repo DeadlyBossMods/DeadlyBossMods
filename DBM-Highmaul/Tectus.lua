@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 --TODO, find better icons for adds, these are filler icons for spells they use.
 --TODO, figure out what's wrong with DBM-Core stripping most of EJ spellname in specWarnEarthwarper (it's saying "Night - Switch" instead of "Night-Twisted Earthshaper - Switch")
 --Tectus
-local warnEarthenPillar				= mod:NewSpellAnnounce(162518, 3)--No way to detect unless it hits a player :\
+local warnEarthenPillar				= mod:NewSpellAnnounce(162518, 3)
 local warnTectonicUpheaval			= mod:NewSpellAnnounce(162475, 3)
 local warnCrystallineBarrage		= mod:NewTargetAnnounce(162346, 3)
 local warnEarthwarper				= mod:NewSpellAnnounce("ej10061", 3, 162894)
