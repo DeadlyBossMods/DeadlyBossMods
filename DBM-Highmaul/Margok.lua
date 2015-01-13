@@ -70,7 +70,7 @@ local warnGazeSelf								= mod:NewStackAnnounce(165595, 4)
 
 --All Phases
 --Special warnings cannot be combined because it breaks custom sounds, however, they will be grouped up better now at least.
-local specWarnAcceleratedAssault				= mod:NewSpecialWarningCount(159515, nil, 5)
+local specWarnAcceleratedAssault				= mod:NewSpecialWarningCount(159515, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(5, 159515))
 local specWarnAcceleratedAssaultOther			= mod:NewSpecialWarningTaunt(159515, nil, nil, nil, nil, nil, true)
 
 local specWarnDestructiveResonance				= mod:NewSpecialWarningSpell(156467, nil, nil, nil, 2)
@@ -110,7 +110,7 @@ local specWarnFixate							= mod:NewSpecialWarningMoveAway(157763, nil, nil, nil
 local yellFixate								= mod:NewYell(157763)
 local specWarnSlow								= mod:NewSpecialWarningDispel(157801, mod:IsHealer())--Seems CD long enough not too spammy, requested feature.
 local specWarnTransitionEnd						= mod:NewSpecialWarningEnd(157278)
-local specWarnNetherEnergy						= mod:NewSpecialWarningCount(178468, nil, 3)
+local specWarnNetherEnergy						= mod:NewSpecialWarningCount(178468, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(3, 178468))
 --Intermission: Lineage of Power
 local specWarnKickToTheFace						= mod:NewSpecialWarningSpell(158563, mod:IsTank())
 local specWarnKickToTheFaceOther				= mod:NewSpecialWarningTaunt(158563)
