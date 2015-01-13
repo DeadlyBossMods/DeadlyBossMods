@@ -97,10 +97,12 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"--One Boss mod
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) и %s (r%d)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: Boss Mod не установлен"
 DBM_CORE_VERSIONCHECK_FOOTER		= "Найдено %d |4игрок:игрока:игроков; с DBM и %d |4игрок:игрока:игроков; с Bigwigs"
+DBM_CORE_VERSIONCHECK_OUTDATED		= "Следующие %d игрок(и) имеют устаревшую версию: %s"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Ваша версия Deadly Boss Mods устарела! Пожалуйста, посетите http://www.deadlybossmods.com для загрузки последней версии."
 DBM_CORE_OUTDATED_PVP_MODS			= "Ваши модули DBM-PvP устарели и должны быть удалены, если не успользуются, либо обновлены до нового самостоятельного пакета. Эти модули больше не входят в пакет DBM-Core. Последние модули PvP могут быть найдены на http://www.deadlybossmods.com"
 DBM_CORE_VOICE_PACK_OUTDATED		= "В вашем голосовом пакете DBM отсутствуют звуки, поддерживаемые этой версией DBM. Фильтр звуков спец-предупреждений был отключен. Пожалуйста скачайте обновленную версию голосового пакета или свяжитесь с автором для обновления, которое содержит отсутствующие звуковые файлы."
 DBM_CORE_VOICE_MISSING				= "Выбранный вами голосовой пакет DBM не найден. Ваш выбор был сброшен на 'None'. Если это ошибка, убедитесь что ваш голосовой пакет правильно установлен и включен в модификациях."
+DBM_CORE_VOICE_COUNT_MISSING		= "Countdown voice %d is set to a voice pack that could not be found. It has be reset to default settings."
 --DBM_BIG_WIGS
 --DBM_BIG_WIGS_ALPHA
 
@@ -178,6 +180,7 @@ DBM_CORE_ANNOUNCE_BREAK_OVER		= "Перерыв закончился"
 DBM_CORE_TIMER_PULL					= "Атака"
 DBM_CORE_ANNOUNCE_PULL				= "Атака через %d сек. (отправил %s)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Атака!"
+DBM_CORE_GEAR_WARNING				= "Внимание: Проверка экипировки. Уровень надетых предметов на %d ниже чем максимальный"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Достижение"
 
@@ -209,6 +212,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast 		= "Предупреждать о прим�
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon 		= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn 		= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 		= "Объявлять фазу %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phasechange	= "Объявлять смены фаз"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase 	= "Предупреждать заранее о фазе %s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count 		= "Предупреждение для $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack 		= "Объявлять количество стаков $spell:%s"
@@ -225,6 +229,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.target 	= "%s на |3-5(>%%s<)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt		= "%s на >%%s< - затаунти"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close 	= "%s на |3-5(>%%s<) около вас"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move 		= "%s - отбегите"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodge		= "%s - избегайте"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveaway	= "%s - отбегите от остальных"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto	= "%s - бегите к >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run 		= "%s - убегайте"
@@ -247,6 +252,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target 		= "Спец-предупреждени�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt 		= "Спец-предупреждение \"затаунти\", когда на другом танке $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 		= "Спец-предупреждение, когда на ком-то рядом с вами $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 		= "Спец-предупреждение \"отбегите\" для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge 		= "Спец-предупреждение \"избегайте\" для $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway	= "Спец-предупреждение \"отбегите от остальных\" для $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveto		= "Спец-предупреждение \"бегите к кому-то\", на ком $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run 		= "Спец-предупреждение \"убегайте\" для $spell:%s"
@@ -293,7 +299,6 @@ DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Устанавливать метки на 
 DBM_CORE_AUTO_ARROW_OPTION_TEXT			= "Показывать стрелку DBM к цели, на которой $spell:%s"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "Показывать стрелку DBM от цели, на которой $spell:%s"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "Показывать стрелку DBM к определенному месту для $spell:%s"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Звуковой сигнал \"убегайте\" для $spell:%s"
 DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "Звуковое оповещение для $spell:%s"
 DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "Звуковое оповещение о сменах фаз"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Звуковой отсчет до восстановления $spell:%s"
