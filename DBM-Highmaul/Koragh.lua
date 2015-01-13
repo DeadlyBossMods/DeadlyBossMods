@@ -92,13 +92,16 @@ mod:AddArrowOption("FelArrow", 172895, true, 3)
 mod.vb.supressionCount = 0
 mod.vb.ballsCount = 0
 mod.vb.shieldCharging = false
+mod.vb.fireActive = false
 local lastX, LastY = nil, nil--Not in VB table because it player personal position
 local barName = GetSpellInfo(156803)
+local arcaneDebuff = GetSpellInfo(162186)
 
 local function closeRange(self)
-	if self.Options.RangeFrame then
+	if self.Options.RangeFrame and not UnitDebuff("player", arcaneDebuff) then
 		DBM.RangeCheck:Hide()
 	end
+	self.vb.fireActive = false
 end
 
 local function ballsWarning(self)
@@ -138,6 +141,7 @@ function mod:OnCombatStart(delay)
 	self.vb.supressionCount = 0
 	self.vb.ballsCount = 0
 	self.vb.shieldCharging = false
+	self.vb.fireActive = false
 	timerExpelMagicFireCD:Start(6-delay)
 	timerExpelMagicArcaneCD:Start(30-delay)
 	timerBallsCD:Start(36-delay, 1)
@@ -301,7 +305,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 162186 and args:IsPlayer() and self.Options.RangeFrame then
+	if spellId == 162186 and args:IsPlayer() and self.Options.RangeFrame and not self.vb.fireActive then
 		DBM.RangeCheck:Hide()
 	elseif spellId == 163472 and self.Options.SetIconOnMC then
 		self:SetIcon(args.destName, 0)
