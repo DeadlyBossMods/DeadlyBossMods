@@ -637,7 +637,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		warnCrushArmor:Show(args.destName, amount)
 		timerCrushArmorCD:Start()
-	elseif spellId == 178468 and (UnitGUID("target") == args.destGUID) or (UnitGUID("focus") == args.destGUID) then
+	elseif spellId == 178468 and ((UnitGUID("target") == args.destGUID) or (UnitGUID("focus") == args.destGUID)) then
 		local amount = args.amount or 1
 		warnNetherEnergy:Show(args.destName, amount)
 		if amount >= 3 then
