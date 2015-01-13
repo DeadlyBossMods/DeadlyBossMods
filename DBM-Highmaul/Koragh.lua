@@ -169,6 +169,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 162185 then
+		self.vb.fireActive = true
 		warnExpelMagicFire:Show()
 		specWarnExpelMagicFire:Schedule(5)--Give you about 4 seconds to spread out
 		--Even if you AMS or resist debuff, need to avoid others that didn't, so rangecheck now here
