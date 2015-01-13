@@ -127,7 +127,7 @@ local timerDestructiveResonanceCD				= mod:NewCDTimer(15, 156467, nil, not mod:I
 local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605, nil, mod:IsTank())
 local timerMarkOfChaosCD						= mod:NewCDTimer(50.5, 158605, nil, mod:IsTank())
 local timerForceNovaCD							= mod:NewCDCountTimer(45, 157349)--45-52
-local timerForceNovaFortification				= mod:NewNextTimer(10, 157349)--For replication nova
+local timerForceNovaFortification				= mod:NewNextTimer(9, 157349)--For replication nova
 local timerSummonArcaneAberrationCD				= mod:NewCDCountTimer(45, "ej9945", nil, not mod:IsHealer(), nil, 156471)--45-52 Variation Noted
 local timerTransition							= mod:NewPhaseTimer(74)
 --Intermission: Lineage of Power
@@ -390,11 +390,11 @@ function mod:SPELL_CAST_START(args)
 		voiceForceNova:Schedule(38.5, "157349")
 		--Fortified novas, 3 novas not just 1. Start additional timer/Countdown for novas 2 and 3
 		timerForceNovaFortification:Start()
-		timerForceNovaFortification:Schedule(10)
-		countdownForceNova:Start(10)
-		countdownForceNova:Start(20)
-		specWarnForceNova:Schedule(10)
-		specWarnForceNova:Schedule(20)
+		timerForceNovaFortification:Schedule(9)
+		countdownForceNova:Start(9)
+		countdownForceNova:Start(18)
+		specWarnForceNova:Schedule(9)
+		specWarnForceNova:Schedule(18)
 	elseif spellId == 164240 then
 		self.vb.forceCount = self.vb.forceCount + 1
 		self.vb.RepNovaActive = true
@@ -402,13 +402,13 @@ function mod:SPELL_CAST_START(args)
 			self:Schedule(27, delayedRangeUpdate, self)--Also Fortification empowered
 			--Fortified novas, 3 novas not just 1. Start additional timer/Countdown for novas 2 and 3
 			timerForceNovaFortification:Start()
-			timerForceNovaFortification:Schedule(10)
-			countdownForceNova:Start(10)
-			countdownForceNova:Start(20)
-			specWarnForceNovaRep:Schedule(10)
-			specWarnForceNovaRep:Schedule(20)
-			voiceForceNova:Schedule(10, "range5")
-			voiceForceNova:Schedule(20, "range5")
+			timerForceNovaFortification:Schedule(9)
+			countdownForceNova:Start(9)
+			countdownForceNova:Start(18)
+			specWarnForceNovaRep:Schedule(9)
+			specWarnForceNovaRep:Schedule(18)
+			voiceForceNova:Schedule(9, "range5")
+			voiceForceNova:Schedule(18, "range5")
 		else
 			self:Schedule(9, delayedRangeUpdate, self)
 		end
@@ -472,7 +472,9 @@ function mod:SPELL_CAST_START(args)
 				voiceMarkOfChaos:Play("runout")
 			else
 				specWarnMarkOfChaosOther:Show(targetName)
-				voiceMarkOfChaos:Play("changemt")
+				if self:IsTank() or not DBM.Options.FilterTankSpec then
+					voiceMarkOfChaos:Play("changemt")
+				end
 			end
 		elseif spellId == 164176 then
 			if self.Options.warnMarkOfChaos then
@@ -482,7 +484,9 @@ function mod:SPELL_CAST_START(args)
 				--No action, displacement you don't run out until fast FINISHES since cast finish ports you into raid.
 			else
 				specWarnMarkOfChaosDisplacementOther:Show(targetName)
-				voiceMarkOfChaos:Play("changemt")
+				if self:IsTank() or not DBM.Options.FilterTankSpec then
+					voiceMarkOfChaos:Play("changemt")
+				end
 			end
 		elseif spellId == 164178 then
 			if self.Options.warnMarkOfChaos then
@@ -493,7 +497,9 @@ function mod:SPELL_CAST_START(args)
 				voiceMarkOfChaos:Play("runout")--Tank can still run out during cast. This spellid is only used phase 3 in all modes, never displacement
 			else
 				specWarnMarkOfChaosFortificationOther:Show(targetName)
-				voiceMarkOfChaos:Play("changemt")
+				if self:IsTank() or not DBM.Options.FilterTankSpec then
+					voiceMarkOfChaos:Play("changemt")
+				end
 			end
 		elseif spellId == 164191 then
 			if self.Options.warnMarkOfChaos then
@@ -505,7 +511,9 @@ function mod:SPELL_CAST_START(args)
 				voiceMarkOfChaos:Play("runout")
 			else
 				specWarnMarkOfChaosReplicationOther:Show(targetName)
-				voiceMarkOfChaos:Play("changemt")
+				if self:IsTank() or not DBM.Options.FilterTankSpec then
+					voiceMarkOfChaos:Play("changemt")
+				end
 				voiceMarkOfChaos:Schedule(1.5, "watchstep")
 			end
 		end
