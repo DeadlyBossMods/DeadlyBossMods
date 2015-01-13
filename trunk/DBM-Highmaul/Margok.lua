@@ -472,7 +472,7 @@ function mod:SPELL_CAST_START(args)
 				voiceMarkOfChaos:Play("runout")
 			else
 				specWarnMarkOfChaosOther:Show(targetName)
-				if self:IsTank() or not DBM.Options.FilterTankSpec then
+				if self:IsTank() or not DBM.Options.FilterTankSpec or DBM.Options.AlwaysPlayVoice then
 					voiceMarkOfChaos:Play("changemt")
 				end
 			end
@@ -484,7 +484,7 @@ function mod:SPELL_CAST_START(args)
 				--No action, displacement you don't run out until fast FINISHES since cast finish ports you into raid.
 			else
 				specWarnMarkOfChaosDisplacementOther:Show(targetName)
-				if self:IsTank() or not DBM.Options.FilterTankSpec then
+				if self:IsTank() or not DBM.Options.FilterTankSpec or DBM.Options.AlwaysPlayVoice then
 					voiceMarkOfChaos:Play("changemt")
 				end
 			end
@@ -497,7 +497,7 @@ function mod:SPELL_CAST_START(args)
 				voiceMarkOfChaos:Play("runout")--Tank can still run out during cast. This spellid is only used phase 3 in all modes, never displacement
 			else
 				specWarnMarkOfChaosFortificationOther:Show(targetName)
-				if self:IsTank() or not DBM.Options.FilterTankSpec then
+				if self:IsTank() or not DBM.Options.FilterTankSpec or DBM.Options.AlwaysPlayVoice then
 					voiceMarkOfChaos:Play("changemt")
 				end
 			end
@@ -511,7 +511,7 @@ function mod:SPELL_CAST_START(args)
 				voiceMarkOfChaos:Play("runout")
 			else
 				specWarnMarkOfChaosReplicationOther:Show(targetName)
-				if self:IsTank() or not DBM.Options.FilterTankSpec then
+				if self:IsTank() or not DBM.Options.FilterTankSpec or DBM.Options.AlwaysPlayVoice then
 					voiceMarkOfChaos:Play("changemt")
 				end
 				voiceMarkOfChaos:Schedule(1.5, "watchstep")
