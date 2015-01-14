@@ -84,7 +84,7 @@ local voiceSavageHowl				= mod:NewVoice(155198, mod:CanRemoveEnrage()) --trannow
 local voicePinDown					= mod:NewVoice(154960, mod:IsRanged()) --helpme
 local voiceInfernoBreath			= mod:NewVoice(154989, 3) --breathsoon
 local voiceRendandTear				= mod:NewVoice(155385, mod:IsMelee())  --runaway
-local voiceCrushArmor				= mod:NewVoice(155236, mod:IsTank()) --changemt
+local voiceCrushArmor				= mod:NewVoice(155236) --changemt
 local voiceTantrum					= mod:NewVoice(162275) --aesoon
 
 

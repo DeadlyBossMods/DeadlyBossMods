@@ -52,7 +52,7 @@ local countdownThunderingBlows		= mod:NewCountdown(60, 157054)
 local countdownTremblingEarth		= mod:NewCountdownFades("Alt25", 173917)
 
 local voiceGraspingEarth 			= mod:NewVoice(157060)--157060, safenow
-local voiceWarpedArmor				= mod:NewVoice(156766, mod:IsTank())
+local voiceWarpedArmor				= mod:NewVoice(156766)
 
 
 mod.vb.mountainCast = 0
