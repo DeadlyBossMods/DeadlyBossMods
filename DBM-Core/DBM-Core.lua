@@ -3869,7 +3869,16 @@ do
 			end
 		end
 		if self.Options.AFKHealthWarning and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
-			PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.ogg", "master")--So fire an alert sound to save yourself from this person's behavior.
+			local voice = DBM.Options.ChosenVoicePack
+			local path = "Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
+			if voice ~= "None" then 
+				path = "Interface\\AddOns\\DBM-VP"..voice.."\\checkhp.ogg"
+			end
+			if DBM.Options.UseMasterVolume then
+				PlaySoundFile(path, "Master")
+			else
+				PlaySoundFile(path)
+			end
 		end
 	end
 

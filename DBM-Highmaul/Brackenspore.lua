@@ -231,10 +231,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnExplodingFungus:Show()
 		timerSpecialCD:Start()
 		voiceExplodingFungus:Play("watchstep")
+		voiceExplodingFungus:Schedule(15, "specialsoon")
 	elseif spellId == 160425 then
 		warnWaves:Show()
 		specWarnWaves:Show()
 		timerSpecialCD:Start()
 		voiceWaves:Play("watchwave")
+		voiceWaves:Schedule(15, "specialsoon")
 	end
 end
