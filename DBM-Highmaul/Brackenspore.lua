@@ -64,7 +64,7 @@ local countdownInfestingSpores		= mod:NewCountdown(57, 159996)--The variation on
 local countdownFungalFleshEater		= mod:NewCountdown("Alt120", "ej9995", not mod:IsHealer())
 
 local voiceInfestingSpores			= mod:NewVoice(159996)
-local voiceRot						= mod:NewVoice(163241, mod:IsTank() or mod:IsHealer())
+local voiceRot						= mod:NewVoice("OptionVersion2", 163241)
 local voiceLivingMushroom			= mod:NewVoice(160022)
 local voiceRejuvMushroom			= mod:NewVoice(160021)
 local voiceMindFungus				= mod:NewVoice(163141, mod:IsDps())
