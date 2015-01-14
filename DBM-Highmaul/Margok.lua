@@ -472,9 +472,7 @@ function mod:SPELL_CAST_START(args)
 				voiceMarkOfChaos:Play("runout")
 			else
 				specWarnMarkOfChaosOther:Show(targetName)
-				if self:IsTank() or not DBM.Options.FilterTankSpec or DBM.Options.AlwaysPlayVoice then
-					voiceMarkOfChaos:Play("changemt")
-				end
+				voiceMarkOfChaos:Play("changemt")
 			end
 		elseif spellId == 164176 then
 			if self.Options.warnMarkOfChaos then
@@ -484,9 +482,7 @@ function mod:SPELL_CAST_START(args)
 				--No action, displacement you don't run out until fast FINISHES since cast finish ports you into raid.
 			else
 				specWarnMarkOfChaosDisplacementOther:Show(targetName)
-				if self:IsTank() or not DBM.Options.FilterTankSpec or DBM.Options.AlwaysPlayVoice then
-					voiceMarkOfChaos:Play("changemt")
-				end
+				voiceMarkOfChaos:Play("changemt")
 			end
 		elseif spellId == 164178 then
 			if self.Options.warnMarkOfChaos then
@@ -497,9 +493,7 @@ function mod:SPELL_CAST_START(args)
 				voiceMarkOfChaos:Play("runout")--Tank can still run out during cast. This spellid is only used phase 3 in all modes, never displacement
 			else
 				specWarnMarkOfChaosFortificationOther:Show(targetName)
-				if self:IsTank() or not DBM.Options.FilterTankSpec or DBM.Options.AlwaysPlayVoice then
-					voiceMarkOfChaos:Play("changemt")
-				end
+				voiceMarkOfChaos:Play("changemt")
 			end
 		elseif spellId == 164191 then
 			if self.Options.warnMarkOfChaos then
@@ -511,9 +505,7 @@ function mod:SPELL_CAST_START(args)
 				voiceMarkOfChaos:Play("runout")
 			else
 				specWarnMarkOfChaosReplicationOther:Show(targetName)
-				if self:IsTank() or not DBM.Options.FilterTankSpec or DBM.Options.AlwaysPlayVoice then
-					voiceMarkOfChaos:Play("changemt")
-				end
+				voiceMarkOfChaos:Play("changemt")
 				voiceMarkOfChaos:Schedule(1.5, "watchstep")
 			end
 		end
@@ -685,7 +677,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 				voiceMarkOfChaos:Play("runout")
 			elseif spellId == 164178 then
-				yellMarkOfChaosFortification:Yell()--Always yell when root occurs in all modes though, because that's when raid really needs to know WHERE you are.
+				yellMarkOfChaosFortification:Yell()--Always yell when root occurs in all modes though.
 			end
 		else
 			self.vb.playerHasMark = false
@@ -794,7 +786,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 164751 or spellId == 164810 then--Teleport to Fortification/Teleport to Replication. For these two, cancel all CD timers, these transitions are both over a minute long.
+	if spellId == 164751 or spellId == 164810 then--Teleport to Fortification/Teleport to Replication.
 		self.vb.isTransition = true
 		timerArcaneWrathCD:Cancel()
 		countdownArcaneWrath:Cancel()
@@ -805,6 +797,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerForceNovaCD:Cancel()
 		countdownForceNova:Cancel()
 		voiceForceNova:Cancel()
+		timerForceNovaFortification:Cancel()
+		countdownForceNova:Cancel()
+		specWarnForceNova:Cancel()
 		timerTransition:Start()
 		countdownTransition:Start()
 		voicePhaseChange:Play("ptran")
@@ -898,6 +893,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerForceNovaCD:Cancel()
 		voiceForceNova:Cancel()
 		countdownForceNova:Cancel()
+		timerForceNovaFortification:Cancel()
+		countdownForceNova:Cancel()
+		specWarnForceNova:Cancel()
 		updateRangeFrame(self)
 		timerInfiniteDarknessCD:Start(9)--First timer 8-12 second variable, almost always 10. I'll make 9 for now so it's semi accurate in both situations
 		timerGlimpseOfMadnessCD:Start(20, 1)
@@ -916,16 +914,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
---[[
-"<617.7 00:41:02> CHAT_MSG_MONSTER_YELL#你根本不知道你面對的是什麼力量，瑪爾戈克。(我們知道，它在呼喚我們！它的力量是我們的！)#丘加利###統治者瑪爾戈克##0#0##0#485#nil#0#false#false#false", -- [37]--Chogall yelling
-"<634.5 00:41:19> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#丘加利？！該死的叛徒。就知道是你在搞鬼！#統治者瑪爾戈克###天牢##0#0##0#489#nil#0#false#false#false", -- [146479]--Margok replying "chogal, you traiter blah blah"
-"<641.6 00:41:26> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#你的統治到此為止，無盡的黑夜開始了。(黑暗降臨！)#丘加利###統治者瑪爾戈克##0#0##0#494#nil#0#false#false#false", -- [154539]
-"<649.9 00:41:34> [UNIT_SPELLCAST_SUCCEEDED] 統治者瑪爾戈克 boss1:永久假死::0:70628", -- [163257]--Permanent Feign Death--Chogall kills margok
-"<649.9 00:41:34> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#我…是…大王…#統治者瑪爾戈克###丘加利##0#0##0#500#nil#0#false#false#false", -- [163260]
-"<649.9 00:41:34> [UNIT_TARGETABLE_CHANGED] Fake Args:#false#false#true#未知目標#Vehicle-0-3127-1228-11037-77428-00001D8C50#elite#5803903#false#false#false#nil#--Margok no longer targetable, removed from boss health
-"<653.1 00:41:38> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#我們等待這一刻已經很久了。符石真正的力量終於要現世了！(不留活口。我們會摧毀一切！殺光他們！血洗這個世界！)#丘加利--Chogall Active
-"<653.1 00:41:38> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#false#false#true#未知目標#Vehicle-0-3127-1228-11037-77428-00001D8C50#elite#0#false#true#true#丘加利#--Chogall Active
---]]
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
 	if npc == chogallName then--Some creative shit right here. Screw localized text. This will trigger off first yell at start of 35 second RP Sender is 丘加利 (Cho'gall)
 		self:UnregisterShortTermEvents()--Unregister Yell
