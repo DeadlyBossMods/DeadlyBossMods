@@ -56,3 +56,4 @@ Holidays\CorenDirebrew.lua
 Holidays\HeadlessHorseman.lua
 Holidays\Greench.lua
 Quests\Plants.lua
+Quests\Invasions.lua
