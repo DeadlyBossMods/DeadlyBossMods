@@ -284,7 +284,8 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	nextsource	= "Next %s: >%%s<",
 	nextspecial	= "Next Special Ability",
 	achievement	= "%s",
-	phase		= "Next Phase"
+	phase		= "Next Phase",
+	roleplay	= GUILD_INTEREST_RP--Does not require DBM_CORE_AUTO_TIMER_TEXTS.roleplay in other languages, skip this one unless you want to word better.
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -301,7 +302,8 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	nextsource	= "Show timer (with source) for next $spell:%s",--Maybe better wording?
 	nextspecial	= "Show timer for next special ability",
 	achievement	= "Show timer for %s",
-	phase		= "Show timer for next phase"
+	phase		= "Show timer for next phase",
+	roleplay	= "Show timer for roleplay duration"--This does need localizing though.
 }
 
 
