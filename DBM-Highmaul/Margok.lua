@@ -108,7 +108,7 @@ local specWarnAberration						= mod:NewSpecialWarningSwitch("ej9945", not mod:Is
 --Intermission: Dormant Runestones
 local specWarnFixate							= mod:NewSpecialWarningMoveAway(157763, nil, nil, nil, nil, nil, true)
 local yellFixate								= mod:NewYell(157763)
-local specWarnSlow								= mod:NewSpecialWarningDispel(157801, mod:IsHealer())--Seems CD long enough not too spammy, requested feature.
+local specWarnSlow								= mod:NewSpecialWarningDispel(157801, mod:IsHealer(), nil, nil, nil, nil, true)--Seems CD long enough not too spammy, requested feature.
 local specWarnTransitionEnd						= mod:NewSpecialWarningEnd(157278)
 local specWarnNetherEnergy						= mod:NewSpecialWarningCount(178468, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(3, 178468))
 --Intermission: Lineage of Power
@@ -159,6 +159,7 @@ local voiceArcaneAberration						= mod:NewVoice(156471, mod:IsDps())
 local voiceEnvelopingNight 						= mod:NewVoice(165876)
 local voiceGrowingDarkness						= mod:NewVoice(176533)
 local voiceBranded								= mod:NewVoice(156225)
+local voiceSlow									= mod:NewVoice(157801, mod:IsHealer())
 
 mod:AddRangeFrameOption("35/13/5/4")
 mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
@@ -690,6 +691,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		updateRangeFrame(self)
 	elseif spellId == 157801 then
 		specWarnSlow:Show(args.destName)
+		voiceSlow:Play("dispelnow")
 	elseif spellId == 165102 then
 		warnInfiniteDarkness:CombinedShow(0.3, args.destName)
 		if self.Options.SetIconOnInfiniteDarkness then
