@@ -35,7 +35,7 @@ local specWarnEnvironmentalThreatsEnd	= mod:NewSpecialWarningEnd("ej10089", nil)
 local timerDisruptingRoarCD				= mod:NewCDTimer(46, 160838)
 
 local voiceEnvironmentalThreats			= mod:NewVoice("ej10089")
-local voiceShatteredVertebrae			= mod:NewVoice(157139, mod:IsTank())
+local voiceShatteredVertebrae			= mod:NewVoice(157139)
 
 mod.vb.phase = 1
 
