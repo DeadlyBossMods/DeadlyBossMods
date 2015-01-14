@@ -72,7 +72,7 @@ local voiceDefense 				= mod:NewVoice(160382, mod:IsTank()) --taunt mobout
 local voiceBellowsOperator 		= mod:NewVoice("ej9650", mod:IsDps())
 local voiceRupture				= mod:NewVoice(156932) --runaway
 local voiceMelt					= mod:NewVoice(155223) --runaway
-local voiceHeat					= mod:NewVoice(155242, mod:IsTank()) --changemt
+local voiceHeat					= mod:NewVoice(155242) --changemt
 
 mod:AddRangeFrameOption(8, 176121)
 
