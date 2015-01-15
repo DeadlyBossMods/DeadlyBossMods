@@ -133,3 +133,32 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	MassiveWave		= "좀비의 총공격이 시작됐습니다!"
 })
+
+--------------------------
+--  Garrison Invasions  --
+--------------------------
+L = DBM:GetModLocalization("GarrisonInvasions")
+
+L:SetGeneralLocalization({
+	name = "주둔지 방어"
+})
+
+L:SetWarningLocalization({
+	specWarnRylak	= "라일라크 등장!",
+	specWarnWorker	= "겁먹은 일꾼 등장!"
+})
+
+L:SetOptionLocalization({
+	specWarnRylak	= "라이라크 등장시 특수 경고 보기",
+	specWarnWorker	= "겁먹은 일꾼 등장시 특수 경고 보기"
+})
+
+L:SetMiscLocalization({
+	--General
+	preCombat			= "To arms! To your posts! Our fight today",--To arms! To your posts! Our fight today is with ogres.
+	rylakSpawn			= "The commotion of the battle attracts a rylak!",--Source npc Darkwing Scavenger, target playername
+	terrifiedWorker		= "A terrified worker is caught in the open!",
+	--Ogre
+	GorianwarCaller		= "A Gorian Warcaller joins the battle to raise morale!",
+	WildfireElemental	= "A Wildfire Elemental is being summoned at the front gates!"
+})
