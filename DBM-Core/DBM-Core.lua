@@ -2656,7 +2656,7 @@ do
 			if not targetEventsRegistered then
 				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED", "SCENARIO_UPDATE")
 				targetEventsRegistered = true
-				self:Debug("RegisterShortTermEvents: UPDATE_MOUSEOVER_UNIT, UNIT_TARGET_UNFILTERED, SCENARIO_UPDATE", 2)
+				DBM:Debug("RegisterShortTermEvents: UPDATE_MOUSEOVER_UNIT, UNIT_TARGET_UNFILTERED, SCENARIO_UPDATE", 2)
 			end
 		else
 			if targetEventsRegistered then
