@@ -2654,7 +2654,7 @@ do
 		difficultyIndex = difficulty
 		if instanceType == "none" or C_Garrison:IsOnGarrisonMap() then
 			if not targetEventsRegistered then
-				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED")
+				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED", "SCENARIO_UPDATE")
 				targetEventsRegistered = true
 			end
 		else
@@ -3903,6 +3903,22 @@ do
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type:find("combat") and isBossEngaged(v.multiMobPullDetection or v.mob) then
 					self:StartCombat(v.mod, 0, "IEEU")
+				end
+			end
+		end
+	end
+	
+	function DBM:SCENARIO_UPDATE()
+		if not C_Garrison:IsOnGarrisonMap() then return end
+		--SCENARIO_UPDATE on garrison map always invasion
+		--Also only registered outdoor with other world boss events, to save cpu
+		local enabled = GetAddOnEnableState(playerName, "DBM-WorldEvents")
+		if not IsAddOnLoaded("DBM-WorldEvents") and enabled ~= 0 then
+			self:Debug("SCENARIO_UPDATE event fired inside garrison, should be loading Invasions mod")
+			for i, v in ipairs(self.AddOns) do
+				if v.modId == addon then
+					self:LoadMod(v, true)
+					break
 				end
 			end
 		end
