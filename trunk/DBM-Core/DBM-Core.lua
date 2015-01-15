@@ -2656,6 +2656,7 @@ do
 			if not targetEventsRegistered then
 				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED", "SCENARIO_UPDATE")
 				targetEventsRegistered = true
+				self:Debug("RegisterShortTermEvents: UPDATE_MOUSEOVER_UNIT, UNIT_TARGET_UNFILTERED, SCENARIO_UPDATE", 2)
 			end
 		else
 			if targetEventsRegistered then
@@ -3912,9 +3913,10 @@ do
 		if not C_Garrison:IsOnGarrisonMap() then return end
 		--SCENARIO_UPDATE on garrison map always invasion
 		--Also only registered outdoor with other world boss events, to save cpu
+		self:Debug("SCENARIO_UPDATE event fired inside garrison", 2)
 		local enabled = GetAddOnEnableState(playerName, "DBM-WorldEvents")
 		if not IsAddOnLoaded("DBM-WorldEvents") and enabled ~= 0 then
-			self:Debug("SCENARIO_UPDATE event fired inside garrison, should be loading Invasions mod")
+			self:Debug("Should be loading Invasions mod")
 			for i, v in ipairs(self.AddOns) do
 				if v.modId == addon then
 					self:LoadMod(v, true)
