@@ -650,7 +650,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount >= 5 and not self.vb.noTaunt and self:AntiSpam(3, 3) then--Stack > 5, not during mark of chaos run out, and not in last 3 seconds
 			local elapsed, total = timerMarkOfChaosCD:GetTime()
 			local remaining = total - elapsed
-			if remaining < 5 then return end--don't warn if mark of chaos very soon
+			if (remaining > 0) and (remaining < 5) then return end--don't warn if mark of chaos very soon
 			warnAcceleratedAssault:Show(args.destName, amount)
 			local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 			if tanking or (status == 3) then
