@@ -9,9 +9,11 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 mod.noStatistics = true
+mod.isTrashMod = true--Flag as trash mod to at least disable mod during raid combat, since it stays active at all times after loaded. Doing same way as pvp mods wouldn't save any cpu really considering we'd need ZONE_CHANGED too, not just ZONE_CHANGED_NEW_AREA and this fires a ton even in raids.
 
 local specWarnRylak				= mod:NewSpecialWarning("specWarnRylak")
 local specWarnWorker			= mod:NewSpecialWarning("specWarnWorker")
+local specWarnSpy				= mod:NewSpecialWarning("specWarnSpy")
 
 --local timerCombatStart			= mod:NewCombatTimer(44)--rollplay for first pull
 
@@ -23,11 +25,17 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		specWarnRylak:Show()
 	elseif msg == L.terrifiedWorker or msg:find(L.terrifiedWorker) then
 		specWarnWorker:Show()
+	elseif msg == L.sneakySpy or msg:find(L.sneakySpy) then
+		specWarnSpy:Show()
 	end
 end
 
+--Ogre
 --"<11.02 22:30:06> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#To arms! To your posts! Our fight today is with ogres.#Sergeant Crowler###Esoth##0#0##0#4137#nil#0#false#false#false", -- [3]
 --"<55.10 22:30:50> [SCENARIO_CRITERIA_UPDATE] criteriaID#25172#Info#Gorian Assault#1#6#0#false#false#false#625#228000#StepInfo#Invasion!#Follow the Sergeant#1#false#false#false#CriteriaInfo1#Follow the Sergeant#92#true#1#1#0#39813#1#25172#0#0#false", -- [40]
+--Goren
+--"<25.24 19:40:45> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#To arms! To your posts! And look beneath you. They'll come from below....#Sergeant Crowler
+--"<71.58 19:41:31> [SCENARIO_CRITERIA_UPDATE] criteriaID#25172#Info#Something Rumbling This Way Comes#
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.preCombat or msg:find(L.preCombat) then
 		--timerCombatStart:Start()
