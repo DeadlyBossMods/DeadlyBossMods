@@ -36,6 +36,9 @@ end
 --Goren
 --"<25.24 19:40:45> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#To arms! To your posts! And look beneath you. They'll come from below....#Sergeant Crowler
 --"<71.58 19:41:31> [SCENARIO_CRITERIA_UPDATE] criteriaID#25172#Info#Something Rumbling This Way Comes#
+--Iron Horde
+--"<29.58 17:13:46> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#To arms! To your posts! We face a worthy foe today...#Sergeant Crowler###Omegal##0#0##0#1343#nil#0#false#false#false", -- [5]
+--"<91.66 17:14:48> [SCENARIO_CRITERIA_UPDATE] criteriaID#25172#Info#The Iron Tide#1#6#0#false#false#false#0#0#StepInfo#Invasion#Follow the Sergeant.#1#false#false#false#CriteriaInfo1#Follow the Sergeant#92#true#1#1#0#39813#1#25172#0#0#false", -- [24]
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.preCombat or msg:find(L.preCombat) then
 		--timerCombatStart:Start()
