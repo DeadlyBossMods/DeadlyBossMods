@@ -35,7 +35,7 @@ local warnEarthenFlechettes			= mod:NewSpellAnnounce(162968, 3, nil, mod:IsMelee
 local warnGiftOfEarth				= mod:NewCountAnnounce(162894, 4, nil, mod:IsMelee())
 local warnRavingAssault				= mod:NewSpellAnnounce(163312, 3)--Target scanning? Emote?
 
-local specWarnEarthwarper			= mod:NewSpecialWarningSwitch("ej10061", nil, nil, nil, nil, nil, true)
+local specWarnEarthwarper			= mod:NewSpecialWarningSwitch("OptionVersion2", "ej10061", not mod:IsHealer(), nil, nil, nil, nil, true)
 local specWarnTectonicUpheaval		= mod:NewSpecialWarningSpell(162475, nil, nil, nil, 2, nil, true)
 local specWarnEarthenPillar			= mod:NewSpecialWarningSpell(162518, nil, nil, nil, 3, nil, true)
 local specWarnCrystallineBarrageYou	= mod:NewSpecialWarningYou(162346, nil, nil, nil, nil, nil, true)
