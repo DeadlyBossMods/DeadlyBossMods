@@ -161,6 +161,8 @@ L:SetMiscLocalization({
 	terrifiedWorker		= "A terrified worker is caught in the open!",
 	sneakySpy			= "spy has snuck in amidst the chaos!",--Shortened to cut out "horde/alliance"
 	--Ogre
-	GorianwarCaller		= "A Gorian Warcaller joins the battle to raise morale!",--Maybe combined "add" special warning for ogre specific adds?
-	WildfireElemental	= "A Wildfire Elemental is being summoned at the front gates!"--Maybe combined "add" special warning for ogre specific adds?
+	GorianwarCaller		= "A Gorian Warcaller joins the battle to raise morale!",--Maybe combined "add" special warning most adds?
+	WildfireElemental	= "A Wildfire Elemental is being summoned at the front gates!",--Maybe combined "add" special warning most adds?
+	--Iron Horde
+	Assassin			= "An Assassin is hunting your guards!"--Maybe combined "add" special warning most adds?
 })
