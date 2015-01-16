@@ -19,14 +19,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 159413",
 	"SPELL_ABSORBED 159413",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
---	"UNIT_SPELLCAST_CHANNEL_STOP boss1"
 )
 
---TODO add timer for sweeper in arena
 local warnChainHurl					= mod:NewTargetAnnounce(159947, 3)--Warn for cast too?
-local warnBerserkerRush				= mod:NewTargetAnnounce(158986, 4)
 local warnOpenWounds				= mod:NewStackAnnounce(159178, 2, nil, mod:IsTank())
-local warnImpale					= mod:NewSpellAnnounce(159113, 3, nil, mod:IsTank())
 local warnPillar					= mod:NewSpellAnnounce("ej9394", 3, nil, 159202)
 local warnOnTheHunt					= mod:NewTargetAnnounce(162497, 4)
 
@@ -34,7 +30,6 @@ local specWarnChainHurl				= mod:NewSpecialWarningSpell(159947, nil, nil, nil, n
 local specWarnBerserkerRushOther	= mod:NewSpecialWarningTarget(158986, nil, nil, nil, 2, nil, true)
 local specWarnBerserkerRush			= mod:NewSpecialWarningMoveTo(158986, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(158986), nil, 3, nil, true)--Creative use of warning. Run option text but a moveto warning to get players in LFR to actually run to the flame jet instead of being clueless.
 local yellBerserkerRush				= mod:NewYell(158986)
---local specWarnBerserkerRushEnded	= mod:NewSpecialWarningEnd(158986)
 local specWarnImpale				= mod:NewSpecialWarningSpell(159113, mod:IsTank())
 local specWarnOpenWounds			= mod:NewSpecialWarningStack(159178, nil, 2)
 local specWarnOpenWoundsOther		= mod:NewSpecialWarningTaunt(159178)--If it is swap every impale, will move this to impale cast and remove stack stuff all together.
@@ -89,7 +84,6 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 159113 then
-		warnImpale:Show()
 		specWarnImpale:Show()
 		timerImpaleCD:Start()
 		countdownImpale:Start()
@@ -120,7 +114,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 158986 then
-		warnBerserkerRush:Show(args.destName)
 		timerBerserkerRushCD:Start()
 		if args:IsPlayer() then
 			specWarnBerserkerRush:Show(firePillar)
@@ -172,10 +165,3 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		countdownTiger:Start()
 	end
 end
-
---[[
-function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, _, _, spellId)
-	if spellId == 158986 then--160519 bugged. find better way
-		specWarnBerserkerRushEnded:Show()
-	end
-end--]]
