@@ -1071,7 +1071,7 @@ do
 				healthCombatInitialized = true
 			end)
 			if IsInGroup() then
-				self:Schedule(12, self.RequestTimers, self)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
+				self:Schedule(15, self.RequestTimers, self)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
 			end
 		end
 	end
