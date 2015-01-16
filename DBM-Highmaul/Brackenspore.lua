@@ -19,19 +19,13 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, verify only one spore shooter spawns at a time
-local warnCreepingMoss				= mod:NewTargetAnnounce(164125, 4, nil, mod:IsTank())--Persists whole fight, so just warn if boss gets it to move it
-local warnInfestingSpores			= mod:NewCountAnnounce(159996, 3)
 local warnDecay						= mod:NewCountAnnounce(160013, 4, nil, not mod:IsHealer())
-local warnNecroticBreath			= mod:NewSpellAnnounce(159219, 4)--Warn everyone, so they know where not to be.
+local warnNecroticBreath			= mod:NewSpellAnnounce(159219, 3)--Warn everyone, so they know where not to be.
 local warnRot						= mod:NewStackAnnounce(163241, 2, nil, mod:IsTank())
 --Adds/Mushrooms
-local warnSporeShooter				= mod:NewSpellAnnounce("OptionVersion2", 163594, 3, nil, mod:IsRangedDps())
 local warnFungalFlesheater			= mod:NewCountAnnounce("ej9995", 4, 163142)--Using ej name because it doesn't match spell name at all like others
-local warnMindFungus				= mod:NewSpellAnnounce(163141, 2, nil, mod:IsMelee() and not mod:IsTank())
 local warnLivingMushroom			= mod:NewCountAnnounce(160022, 1)--Good shroom! (mana/haste)
 local warnRejuvMushroom				= mod:NewCountAnnounce(160021, 1)--Other good shroom (healing)
-local warnExplodingFungus			= mod:NewSpellAnnounce(163794, 4)--Mythic Shroom
-local warnWaves						= mod:NewSpellAnnounce(160425, 4)--Mythic Waves
 
 local specWarnCreepingMoss			= mod:NewSpecialWarningMove(163590, mod:IsTank())
 local specWarnInfestingSpores		= mod:NewSpecialWarningCount(159996, nil, nil, nil, 2, nil, true)
@@ -119,7 +113,6 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 159996 then
 		self.vb.sporesCount = self.vb.sporesCount + 1
-		warnInfestingSpores:Show(self.vb.sporesCount)
 		specWarnInfestingSpores:Show(self.vb.sporesCount)
 		timerInfestingSporesCD:Start(nil, self.vb.sporesCount+1)
 		countdownInfestingSpores:Start()
@@ -146,7 +139,11 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 159219 then
 		warnNecroticBreath:Show()
-		specWarnNecroticBreath:Show()
+		if self.Options.SpecWarn159219spell then--Special warning is enabled
+			specWarnNecroticBreath:Show()
+		else--Special warning isn't on, show regular one.
+			warnNecroticBreath:Show()
+		end
 		timerNecroticBreathCD:Start()
 	end
 end
@@ -155,7 +152,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 163594 then
 		self.vb.sporesAlive = self.vb.sporesAlive + 1
-		warnSporeShooter:Show()
 		specWarnSporeShooter:Show()
 		timerSporeShooterCD:Start()
 		if self.Options.RangeFrame then
@@ -183,7 +179,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 164125 and args:GetDestCreatureID() == 78491 then
-		warnCreepingMoss:Show(args.destName)
 		specWarnCreepingMoss:Show()
 		voiceCreepingMoss:Play("bossout")
 	end
@@ -205,7 +200,6 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 163141 then
-		warnMindFungus:Show()
 		specWarnMindFungus:Show()
 		timerMindFungusCD:Start()
 		voiceMindFungus:Play("163141k")
@@ -227,13 +221,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerRejuvMushroomCD:Start(nil, self.vb.blueShroom+1)
 		voiceRejuvMushroom:Play("160021s") --blue one
 	elseif spellId == 163794 then
-		warnExplodingFungus:Show()
 		specWarnExplodingFungus:Show()
 		timerSpecialCD:Start()
 		voiceExplodingFungus:Play("watchstep")
 		voiceExplodingFungus:Schedule(15, "specialsoon")
 	elseif spellId == 160425 then
-		warnWaves:Show()
 		specWarnWaves:Show()
 		timerSpecialCD:Start()
 		voiceWaves:Play("watchwave")

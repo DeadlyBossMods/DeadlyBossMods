@@ -35,32 +35,15 @@ local warnBranded								= mod:NewStackAnnounce("OptionVersion2", 156225, 4, nil
 local warnBrandedDisplacement					= mod:NewStackAnnounce("OptionVersion2", 164004, 4, nil, nil, false)
 local warnBrandedFortification					= mod:NewStackAnnounce("OptionVersion2", 164005, 4, nil, nil, false)
 local warnBrandedReplication					= mod:NewStackAnnounce("OptionVersion2", 164006, 4, nil, nil, false)
-mod:AddBoolOption("warnResonance", not mod:IsMelee(), "announce")
-local warnDestructiveResonance					= mod:NewSpellAnnounce("OptionVersion2", 156467, 3, nil, nil, false)
-local warnDestructiveResonanceDisplacement		= mod:NewSpellAnnounce("OptionVersion2", 164075, 4, nil, nil, false)
-local warnDestructiveResonanceFortification		= mod:NewSpellAnnounce("OptionVersion2", 164076, 4, nil, nil, false)
-local warnDestructiveResonanceReplication		= mod:NewSpellAnnounce("OptionVersion2", 164077, 4, nil, nil, false)
-mod:AddBoolOption("warnMarkOfChaos", mod:IsTank(), "announce")
+mod:AddBoolOption("warnMarkOfChaos", true, "announce")
 local warnMarkOfChaos							= mod:NewTargetAnnounce("OptionVersion2", 158605, 4, nil, nil, false)
 local warnMarkOfChaosDisplacement				= mod:NewTargetAnnounce("OptionVersion2", 164176, 4, nil, nil, false)
 local warnMarkOfChaosFortification				= mod:NewTargetAnnounce("OptionVersion2", 164178, 4, nil, nil, false)
 local warnMarkOfChaosReplication				= mod:NewTargetAnnounce("OptionVersion2", 164191, 4, nil, nil, false)
-mod:AddBoolOption("warnForceNova", true, "announce")
-local warnForceNova								= mod:NewCountAnnounce("OptionVersion2", 157349, 3, nil, nil, false)
-local warnForceNovaDisplacement					= mod:NewCountAnnounce("OptionVersion2", 164232, 3, nil, nil, false)
-local warnForceNovaFortification				= mod:NewCountAnnounce("OptionVersion2", 164235, 3, nil, nil, false)
-local warnForceNovaReplication					= mod:NewCountAnnounce("OptionVersion2", 164240, 3, nil, nil, false)
-mod:AddBoolOption("warnAberration", not mod:IsHealer(), "announce")
-local warnSummonArcaneAberration				= mod:NewCountAnnounce("OptionVersion2", 156471, 3, nil, nil, false)
-local warnSummonDisplacingArcaneAberration		= mod:NewCountAnnounce("OptionVersion2", 164299, 3, nil, nil, false)
-local warnSummonFortifiedArcaneAberration		= mod:NewCountAnnounce("OptionVersion2", 164301, 3, nil, nil, false)
-local warnSummonReplicatingArcaneAberration		= mod:NewCountAnnounce("OptionVersion2", 164303, 3, nil, nil, false)
 local warnAcceleratedAssault					= mod:NewStackAnnounce(159515, 3, nil, mod:IsTank())
 --Intermission: Dormant Runestones
-local warnFixate								= mod:NewTargetAnnounce("OptionVersion2", 157763, 3, nil, not mod:IsTank())
-local warnNetherEnergy							= mod:NewStackAnnounce(178468, 3)--Mythic
+local warnFixate								= mod:NewTargetAnnounce("OptionVersion3", 157763, 3)
 --Intermission: Lineage of Power
-local warnKickToTheFace							= mod:NewTargetAnnounce("OptionVersion2", 158563, 3, nil, mod:IsTank())
 local warnCrushArmor							= mod:NewStackAnnounce(158553, 2, nil, mod:IsTank())
 --Mythic
 local warnGlimpseOfMadness						= mod:NewCountAnnounce(165243, 3)
@@ -323,48 +306,30 @@ function mod:SPELL_CAST_START(args)
 		countdownArcaneWrath:Start()
 	-----
 	elseif spellId == 156467 then
-		if self.Options.warnResonance then
-			warnDestructiveResonance:Show()
-		end
 		specWarnDestructiveResonance:Show()
 		timerDestructiveResonanceCD:Start()
 		voiceDestructiveResonance:Play("runaway")
 	elseif spellId == 164075 then
-		if self.Options.warnResonance then
-			warnDestructiveResonanceDisplacement:Show()
-		end
 		specWarnDestructiveResonanceDisplacement:Show()
 		timerDestructiveResonanceCD:Start()
 		voiceDestructiveResonance:Play("runaway")
 	elseif spellId == 164076 then
-		if self.Options.warnResonance then
-			warnDestructiveResonanceFortification:Show()
-		end
 		specWarnDestructiveResonanceFortification:Show()
 		timerDestructiveResonanceCD:Start()
 		voiceDestructiveResonance:Play("runaway")
 	elseif spellId == 164077 then
-		if self.Options.warnResonance then
-			warnDestructiveResonanceReplication:Show()
-		end
 		specWarnDestructiveResonanceReplication:Show()
 		timerDestructiveResonanceCD:Start()
 		voiceDestructiveResonance:Play("watchstep")
 	-----
 	elseif spellId == 157349 then
 		self.vb.forceCount = self.vb.forceCount + 1
-		if self.Options.warnForceNova then
-			warnForceNova:Show(self.vb.forceCount)
-		end
 		specWarnForceNova:Show()
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
 		countdownForceNova:Start()
 		voiceForceNova:Schedule(38.5, "157349")
 	elseif spellId == 164232 then
 		self.vb.forceCount = self.vb.forceCount + 1
-		if self.Options.warnForceNova then
-			warnForceNovaDisplacement:Show(self.vb.forceCount)
-		end
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
 		countdownForceNova:Start()
 		voiceForceNova:Schedule(38.5, "157349")
@@ -383,9 +348,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 164235 then
 		self.vb.forceCount = self.vb.forceCount + 1
-		if self.Options.warnForceNova then
-			warnForceNovaFortification:Show(self.vb.forceCount)
-		end
 		specWarnForceNova:Show()
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
 		countdownForceNova:Start()
@@ -419,9 +381,6 @@ function mod:SPELL_CAST_START(args)
 		self:Schedule(1, updateRangeFrame, self)
 		self:Schedule(2, updateRangeFrame, self)
 		self:Schedule(5, updateRangeFrame, self)
-		if self.Options.warnForceNova then
-			warnForceNovaReplication:Show(self.vb.forceCount)
-		end
 		specWarnForceNovaRep:Show()
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
 		voiceForceNova:Schedule(38.5, "157349")
@@ -429,33 +388,21 @@ function mod:SPELL_CAST_START(args)
 	-----
 	elseif spellId == 156471 then
 		self.vb.arcaneAdd = self.vb.arcaneAdd + 1
-		if self.Options.warnAberration then
-			warnSummonArcaneAberration:Show(self.vb.arcaneAdd)
-		end
 		specWarnAberration:Show()
 		timerSummonArcaneAberrationCD:Start(nil, self.vb.arcaneAdd+1)
 		voiceArcaneAberration:Play("killmob")
 	elseif spellId == 164299 then
 		self.vb.arcaneAdd = self.vb.arcaneAdd + 1
-		if self.Options.warnAberration then
-			warnSummonDisplacingArcaneAberration:Show(self.vb.arcaneAdd)
-		end
 		specWarnAberration:Show()
 		timerSummonArcaneAberrationCD:Start(nil, self.vb.arcaneAdd+1)
 		voiceArcaneAberration:Play("killmob")
 	elseif spellId == 164301 then
 		self.vb.arcaneAdd = self.vb.arcaneAdd + 1
-		if self.Options.warnAberration then
-			warnSummonFortifiedArcaneAberration:Show(self.vb.arcaneAdd)
-		end
 		specWarnAberration:Show()
 		timerSummonArcaneAberrationCD:Start(nil, self.vb.arcaneAdd+1)
 		voiceArcaneAberration:Play("killmob")
 	elseif spellId == 164303 then
 		self.vb.arcaneAdd = self.vb.arcaneAdd + 1
-		if self.Options.warnAberration then
-			warnSummonReplicatingArcaneAberration:Show(self.vb.arcaneAdd)
-		end
 		specWarnAberration:Show()
 		timerSummonArcaneAberrationCD:Start(nil, self.vb.arcaneAdd+1)
 		voiceArcaneAberration:Play("killmob")
@@ -540,7 +487,6 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 158563 then
-		warnKickToTheFace:Show(args.destName)
 		timerKickToFaceCD:Start()
 		if args:IsPlayer() then
 			specWarnKickToTheFace:Show()
@@ -641,7 +587,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCrushArmorCD:Start()
 	elseif spellId == 178468 and ((UnitGUID("target") == args.destGUID) or (UnitGUID("focus") == args.destGUID)) then
 		local amount = args.amount or 1
-		warnNetherEnergy:Show(args.destName, amount)
 		if amount >= 3 then
 			specWarnNetherEnergy:Show(amount)
 		end
