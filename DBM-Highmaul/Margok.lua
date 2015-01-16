@@ -413,7 +413,7 @@ function mod:SPELL_CAST_START(args)
 		timerMarkOfChaosCD:Start()
 		countdownMarkofChaos:Start()
 		if spellId == 158605 then
-			if self.Options.warnMarkOfChaos then
+			if self.Options.warnMarkOfChaos and targetName then
 				warnMarkOfChaos:Show(targetName)
 			end
 			if tanking or (status == 3) then
@@ -424,7 +424,7 @@ function mod:SPELL_CAST_START(args)
 				voiceMarkOfChaos:Play("changemt")
 			end
 		elseif spellId == 164176 then
-			if self.Options.warnMarkOfChaos then
+			if self.Options.warnMarkOfChaos and targetName then
 				warnMarkOfChaosDisplacement:Show(targetName)
 			end
 			if tanking or (status == 3) then
@@ -434,7 +434,7 @@ function mod:SPELL_CAST_START(args)
 				voiceMarkOfChaos:Play("changemt")
 			end
 		elseif spellId == 164178 then
-			if self.Options.warnMarkOfChaos then
+			if self.Options.warnMarkOfChaos and targetName then
 				warnMarkOfChaosFortification:Show(targetName)
 			end
 			if tanking or (status == 3) then
@@ -445,7 +445,7 @@ function mod:SPELL_CAST_START(args)
 				voiceMarkOfChaos:Play("changemt")
 			end
 		elseif spellId == 164191 then
-			if self.Options.warnMarkOfChaos then
+			if self.Options.warnMarkOfChaos and targetName then
 				warnMarkOfChaosReplication:Show(targetName)
 			end
 			if tanking or (status == 3) then
