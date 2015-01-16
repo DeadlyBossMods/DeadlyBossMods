@@ -203,6 +203,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect		= "%s en >%%s< - ¡para de atacar!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.count		= "%s! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "%%d acumulaciones de %s en ti"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= ">%s< - ¡cambio de objetivos!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= ">%s< - ¡cambio de objetivos! (%%d)"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 		= "Mostrar aviso especial para $spell:%s"
@@ -223,6 +224,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect 	= "Mostrar aviso especial para parar de
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 		= "Mostrar aviso especial para $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Mostrar aviso especial cuando tienes >=%d acumulaciones de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Mostrar aviso especial para cambiar objetivos con $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: >%%s<"

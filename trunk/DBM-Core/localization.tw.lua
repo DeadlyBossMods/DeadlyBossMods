@@ -236,6 +236,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect		= "%s - 停止攻擊"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.count			= "%s!(%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack			= "你中了%%d層%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= ">%s< - 快更換目標!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= ">%s< - 快更換目標!(%%d)"
 
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell		= "為$spell:%s顯示特別警告"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.ends 		= "為$spell:%s結束顯示特別警告"
@@ -258,6 +259,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect		= "為$spell:%s施放時顯示停止攻
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 		= "為$spell:%s顯示特別警告"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack		= "為中了>=%d層$spell:%s時顯示特別警告"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "需對$spell:%s更換目標時顯示特別警告"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 
 DBM_CORE_AUTO_TIMER_TEXTS.target			= "%s:>%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.cast				= "%s"

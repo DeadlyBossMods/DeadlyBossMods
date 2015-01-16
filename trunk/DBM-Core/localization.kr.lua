@@ -242,6 +242,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect		= ">%%s<에게 %1$s - 공격 중지!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.count			= "%s! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack			= "당신에게 %s (%%d 중첩)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= ">%s< - 대상 전환!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= ">%s< - 대상 전환! (%%d)"
 
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell		= "$spell:%s 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.ends		= "$spell:%s 종료 특수 경고 보기"
@@ -264,6 +265,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect 	= "$spell:%s 공격 중지 특수 경�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count		= "$spell:%s 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack		= "당신이 $spell:%2$s %1$d중첩 이상이 된 경우 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "$spell:%s 대상 전환 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 
 DBM_CORE_AUTO_TIMER_TEXTS.target			= "%s: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.cast				= "%s"

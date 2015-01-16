@@ -203,14 +203,15 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt           = "%s sur >%%s< - provoquez mainte
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close		= "%s sur >%%s< près de vous"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move		= "%s - écartez-vous"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodge 	= DBM_CORE_AUTO_SPEC_WARN_TEXTS.move--FIXME (this is a temp until localized properly as a dodge warning)
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveaway        = "%s - écartez-vous du raid"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto          = "%s - dirigez-vous vers >%%s<"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.run		= "%s - fuyez"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast		= "%s - arrêtez d'incanter"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect         = "%s sur >%%s< - arrêtez d'attaquer"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.count           = "%s! (%%d)"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "%s (%%d)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveaway      = "%s - écartez-vous du raid"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto        = "%s - dirigez-vous vers >%%s<"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.run			= "%s - fuyez"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast			= "%s - arrêtez d'incanter"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect       = "%s sur >%%s< - arrêtez d'attaquer"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.count         = "%s! (%%d)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack			= "%s (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= ">%s< - Changer de cible"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= ">%s< - Changer de cible (%%d)"
 
 
 -- Auto-generated Special Warning Localizations
@@ -235,6 +236,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect         = "Afficher une alerte spéciale
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count           = "Afficher une alerte spéciale pour $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Afficher une alerte spéciale lorsque vous cumulez >=%d stacks de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch 		= "Afficher une alerte spéciale de changement de cible pour\n $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: >%%s<"
