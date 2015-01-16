@@ -35,12 +35,12 @@ local warnBranded								= mod:NewStackAnnounce("OptionVersion2", 156225, 4, nil
 local warnBrandedDisplacement					= mod:NewStackAnnounce("OptionVersion2", 164004, 4, nil, nil, false)
 local warnBrandedFortification					= mod:NewStackAnnounce("OptionVersion2", 164005, 4, nil, nil, false)
 local warnBrandedReplication					= mod:NewStackAnnounce("OptionVersion2", 164006, 4, nil, nil, false)
-mod:AddBoolOption("warnResonance", true, "announce")
+mod:AddBoolOption("warnResonance", not mod:IsMelee(), "announce")
 local warnDestructiveResonance					= mod:NewSpellAnnounce("OptionVersion2", 156467, 3, nil, nil, false)
 local warnDestructiveResonanceDisplacement		= mod:NewSpellAnnounce("OptionVersion2", 164075, 4, nil, nil, false)
 local warnDestructiveResonanceFortification		= mod:NewSpellAnnounce("OptionVersion2", 164076, 4, nil, nil, false)
 local warnDestructiveResonanceReplication		= mod:NewSpellAnnounce("OptionVersion2", 164077, 4, nil, nil, false)
-mod:AddBoolOption("warnMarkOfChaos", true, "announce")
+mod:AddBoolOption("warnMarkOfChaos", mod:IsTank(), "announce")
 local warnMarkOfChaos							= mod:NewTargetAnnounce("OptionVersion2", 158605, 4, nil, nil, false)
 local warnMarkOfChaosDisplacement				= mod:NewTargetAnnounce("OptionVersion2", 164176, 4, nil, nil, false)
 local warnMarkOfChaosFortification				= mod:NewTargetAnnounce("OptionVersion2", 164178, 4, nil, nil, false)
@@ -50,7 +50,7 @@ local warnForceNova								= mod:NewCountAnnounce("OptionVersion2", 157349, 3, n
 local warnForceNovaDisplacement					= mod:NewCountAnnounce("OptionVersion2", 164232, 3, nil, nil, false)
 local warnForceNovaFortification				= mod:NewCountAnnounce("OptionVersion2", 164235, 3, nil, nil, false)
 local warnForceNovaReplication					= mod:NewCountAnnounce("OptionVersion2", 164240, 3, nil, nil, false)
-mod:AddBoolOption("warnAberration", true, "announce")
+mod:AddBoolOption("warnAberration", not mod:IsHealer(), "announce")
 local warnSummonArcaneAberration				= mod:NewCountAnnounce("OptionVersion2", 156471, 3, nil, nil, false)
 local warnSummonDisplacingArcaneAberration		= mod:NewCountAnnounce("OptionVersion2", 164299, 3, nil, nil, false)
 local warnSummonFortifiedArcaneAberration		= mod:NewCountAnnounce("OptionVersion2", 164301, 3, nil, nil, false)
@@ -88,8 +88,8 @@ local specWarnMarkOfChaosFortificationNear		= mod:NewSpecialWarningClose(164178,
 local yellMarkOfChaosFortification				= mod:NewYell(164178)
 local yellMarkOfChaosReplication				= mod:NewYell(164191)
 
-local specWarnForceNova							= mod:NewSpecialWarningSpell(157349, nil, nil, nil, 2)
-local specWarnForceNovaRep						= mod:NewSpecialWarningMoveAway(164191, nil, nil, nil, 3)
+local specWarnForceNova							= mod:NewSpecialWarningSpell(157349, nil, nil, nil, 2, nil, true)
+local specWarnForceNovaRep						= mod:NewSpecialWarningMoveAway(164240, nil, nil, nil, 3, nil, true)
 
 local specWarnMarkOfChaosOther					= mod:NewSpecialWarningTaunt(158605, nil, nil, nil, nil, nil, true)
 local specWarnMarkOfChaosDisplacementOther		= mod:NewSpecialWarningTaunt(164176, nil, nil, nil, nil, nil, true)
@@ -241,7 +241,7 @@ local function updateRangeFrame(self, markPreCast)
 		if self.vb.playerHasBranded then--Player has Branded debuff
 			DBM.RangeCheck:Show(distance, nil)--Show everyone
 		else--No branded debuff on player, so show a filtered range finder
-			if self.vb.markActive and self.vb.lastMarkedTank and self:CheckNearby(35, self.vb.lastMarkedTank) then--There is an active tank with debuff and they are too close
+			if self.vb.markActive and self.vb.lastMarkedTank and self:CheckNearby(38, self.vb.lastMarkedTank) then--There is an active tank with debuff and they are too close
 				DBM.RangeCheck:Show(35, debuffFilterMark)--Show marked instead of branded if the marked tank is NOT far enough out
 			else--no branded tank in range, So show ONLY branded dots
 				DBM.RangeCheck:Show(distance, debuffFilterBranded)
@@ -648,7 +648,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 159515 then
 		local amount = args.amount or 1
 		--5 may seem low stack, most wait longer on easier difficulties, but this boss has taunt DR flag turned OFF, there is really no reason to wait for higher stacks, and on mythic 5 is common number to reduce tank damage
-		if amount >= 5 and not self.vb.noTaunt and self:AntiSpam(3, 3) then--Stack > 5, not during mark of chaos run out, and not in last 3 seconds
+		if (amount == 5 or amount >= 8) and not self.vb.noTaunt and self:AntiSpam(3, 3) then--First warning at 5, then a decent amount of time until 8. then spam every 3 seconds at 8 and above.
 			local elapsed, total = timerMarkOfChaosCD:GetTime()
 			local remaining = total - elapsed
 			if (remaining > 0) and (remaining < 5) then return end--don't warn if mark of chaos very soon
@@ -683,7 +683,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		else
 			self.vb.playerHasMark = false
-			if spellId == 164178 and self:CheckNearby(35, args.destName) then
+			if spellId == 164178 and self:CheckNearby(38, args.destName) then
 				specWarnMarkOfChaosFortificationNear:Show(args.destName)
 				voiceMarkOfChaos:Play("justrun")
 			end

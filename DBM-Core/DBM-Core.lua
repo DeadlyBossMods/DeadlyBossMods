@@ -6569,8 +6569,8 @@ do
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "announce")
 		elseif not (optionName == false) then
-			obj.option = "Announce"..unparsedId..announceType..(optionVersion or "")
-			self:AddBoolOption(obj.option, optionDefault, "announce")
+			obj.option = "Announce"..unparsedId..announceType
+			self:AddBoolOption(obj.option, optionDefault, "announce", nil, optionVersion)
 			self.localization.options[obj.option] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announceType]:format(unparsedId)
 		end
 		tinsert(self.announces, obj)
@@ -6715,8 +6715,8 @@ do
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "sound")
 		elseif not (optionName == false) then
-			obj.option = "Voice"..spellId..(optionVersion or "")
-			self:AddBoolOption(obj.option, optionDefault, "sound")
+			obj.option = "Voice"..spellId
+			self:AddBoolOption(obj.option, optionDefault, "sound", nil, optionVersion)
 			self.localization.options[obj.option] = DBM_CORE_AUTO_VOICE_OPTION_TEXT:format(spellId)
 		end
 		return obj
@@ -6952,8 +6952,8 @@ do
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "misc")
 		elseif not (optionName == false) then
-			obj.option = "Yell"..(spellId or yellText)..(optionVersion or "")
-			self:AddBoolOption(obj.option, optionDefault, "misc")
+			obj.option = "Yell"..(spellId or yellText)
+			self:AddBoolOption(obj.option, optionDefault, "misc", nil, optionVersion)
 			self.localization.options[obj.option] = DBM_CORE_AUTO_YELL_OPTION_TEXT:format(spellId)
 		end
 		return obj
@@ -7850,9 +7850,9 @@ end
 ---------------
 --  Options  --
 ---------------
-function bossModPrototype:AddBoolOption(name, default, cat, func)
+function bossModPrototype:AddBoolOption(name, default, cat, func, optionVersion)
 	cat = cat or "misc"
-	self.Options[name] = (default == nil) or default
+	self.Options[name..(optionVersion or "")] = (default == nil) or default
 	self:SetOptionCategory(name, cat)
 	if func then
 		self.optionFuncs = self.optionFuncs or {}
