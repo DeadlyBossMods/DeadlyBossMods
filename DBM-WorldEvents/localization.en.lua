@@ -145,13 +145,15 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	specWarnRylak	= "Darkwing Scavenger Incoming",
 	specWarnWorker	= "Terrified worker in open",
-	specWarnSpy		= "A spy has snuck in"
+	specWarnSpy		= "A spy has snuck in",
+	specWarnBuilding= "A building is being attacked"
 })
 
 L:SetOptionLocalization({
 	specWarnRylak	= "Show special warning when a rylak is incoming",
 	specWarnWorker	= "Show special warning when a terrified worker is caught in open",
-	specWarnSpy		= "Show special warning when a spy has snuck in"
+	specWarnSpy		= "Show special warning when a spy has snuck in",
+	specWarnBuilding= "Show special warning when a building is under attack"
 })
 
 L:SetMiscLocalization({
@@ -160,6 +162,7 @@ L:SetMiscLocalization({
 	rylakSpawn			= "The commotion of the battle attracts a rylak!",--Source npc Darkwing Scavenger, target playername
 	terrifiedWorker		= "A terrified worker is caught in the open!",
 	sneakySpy			= "spy has snuck in amidst the chaos!",--Shortened to cut out "horde/alliance"
+	buildingAttack		= "Your %s is under attack!",--Your Salvage Yard is under attack!
 	--Ogre
 	GorianwarCaller		= "A Gorian Warcaller joins the battle to raise morale!",--Maybe combined "add" special warning most adds?
 	WildfireElemental	= "A Wildfire Elemental is being summoned at the front gates!",--Maybe combined "add" special warning most adds?
