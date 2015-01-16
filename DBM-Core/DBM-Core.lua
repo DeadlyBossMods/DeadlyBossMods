@@ -2518,8 +2518,9 @@ function DBM:PARTY_INVITE_REQUEST(sender)
 	end
 	--Second check guildies
  	if self.Options.AutoAcceptGuildInvite then
-		local _, numOnlineGuildMembers = GetNumGuildMembers()
-		for i=1, numOnlineGuildMembers do
+		local totalMembers, numOnlineGuildMembers, numOnlineAndMobileMembers = GetNumGuildMembers()
+		local scanTotal = GetGuildRosterShowOffline() and totalMembers or numOnlineAndMobileMembers
+		for i=1, scanTotal do
 			--At this time, it's not easy to tell an officer from a non officer
 			--since a guild might have ranks 1-3 or even 1-4 be officers/leader while another might only be 1-2
 			--therefor, this feature is just a "yes/no" for if sender is a guildy
@@ -2656,7 +2657,6 @@ do
 			if not targetEventsRegistered then
 				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED", "SCENARIO_UPDATE")
 				targetEventsRegistered = true
-				DBM:Debug("RegisterShortTermEvents: UPDATE_MOUSEOVER_UNIT, UNIT_TARGET_UNFILTERED, SCENARIO_UPDATE", 2)
 			end
 		else
 			if targetEventsRegistered then
@@ -3913,12 +3913,10 @@ do
 		if not C_Garrison:IsOnGarrisonMap() then return end
 		--SCENARIO_UPDATE on garrison map always invasion
 		--Also only registered outdoor with other world boss events, to save cpu
-		self:Debug("SCENARIO_UPDATE event fired inside garrison", 2)
 		local enabled = GetAddOnEnableState(playerName, "DBM-WorldEvents")
 		if not IsAddOnLoaded("DBM-WorldEvents") and enabled ~= 0 then
-			self:Debug("Should be loading Invasions mod")
 			for i, v in ipairs(self.AddOns) do
-				if v.modId == addon then
+				if v.modId == "DBM-WorldEvents" then
 					self:LoadMod(v, true)
 					break
 				end
