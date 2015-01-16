@@ -7228,26 +7228,20 @@ do
 		return newSpecialWarning(self, "count", text, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, optionName, noSound, runSound, optionVersion, hasVoice)
-		if type(text) == "string" and text:match("OptionVersion") then
-			local temp = optionVersion
-			optionVersion = string.sub(text, 14)
-			text, optionDefault, stacks, optionName, noSound, runSound = optionDefault, stacks, optionName, noSound, runSound, temp
-		end
-		return newSpecialWarning(self, "stack", text, stacks, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice)
+	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, ...)
+		return newSpecialWarning(self, "stack", text, stacks, optionDefault, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarningSwitch(text, optionDefault, ...)
 		return newSpecialWarning(self, "switch", text, nil, optionDefault, ...)
 	end
+	
+	function bossModPrototype:NewSpecialWarningSwitchCount(text, optionDefault, ...)
+		return newSpecialWarning(self, "switchcount", text, nil, optionDefault, ...)
+	end
 
-	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, optionName, noSound, runSound, optionVersion, hasVoice)
-		if type(text) == "string" and text:match("OptionVersion") then
-			local temp = optionVersion
-			optionVersion = string.sub(text, 14)
-			text, optionDefault, time, optionName, noSound, runSound = optionDefault, time, optionName, noSound, runSound, temp
-		end
-		return newSpecialWarning(self, "prewarn", text, time, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice)
+	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, ...)
+		return newSpecialWarning(self, "prewarn", text, time, optionDefault, ...)
 	end
 
 	function DBM:PlayCountSound(number, forceVoice)

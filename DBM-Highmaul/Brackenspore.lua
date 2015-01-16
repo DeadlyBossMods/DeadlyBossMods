@@ -23,7 +23,6 @@ local warnDecay						= mod:NewCountAnnounce(160013, 4, nil, not mod:IsHealer())
 local warnNecroticBreath			= mod:NewSpellAnnounce(159219, 3)--Warn everyone, so they know where not to be.
 local warnRot						= mod:NewStackAnnounce(163241, 2, nil, mod:IsTank())
 --Adds/Mushrooms
-local warnFungalFlesheater			= mod:NewCountAnnounce("ej9995", 4, 163142)--Using ej name because it doesn't match spell name at all like others
 local warnLivingMushroom			= mod:NewCountAnnounce(160022, 1)--Good shroom! (mana/haste)
 local warnRejuvMushroom				= mod:NewCountAnnounce(160021, 1)--Other good shroom (healing)
 
@@ -37,7 +36,7 @@ local specWarnExplodingFungus		= mod:NewSpecialWarningSpell(163794, nil, nil, ni
 local specWarnWaves					= mod:NewSpecialWarningSpell(160425, nil, nil, nil, 2, nil, true)
 --Adds
 local specWarnSporeShooter			= mod:NewSpecialWarningSwitch("OptionVersion2", 163594, mod:IsRangedDps(), nil, nil, nil, nil, true)
-local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitch("ej9995", not mod:IsHealer(), nil, nil, nil, nil, true)
+local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitchCount("ej9995", not mod:IsHealer(), nil, nil, nil, nil, true)
 local specWarnMindFungus			= mod:NewSpecialWarningSwitch(163141, mod:IsDps(), nil, nil, nil, nil, true)
 
 local timerInfestingSporesCD		= mod:NewCDCountTimer(57, 159996)--57-63 variation
@@ -205,8 +204,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voiceMindFungus:Play("163141k")
 	elseif spellId == 163142 then
 		self.vb.fleshEaterCount = self.vb.fleshEaterCount + 1
-		warnFungalFlesheater:Show(self.vb.fleshEaterCount)
-		specWarnFungalFlesheater:Show()
+		specWarnFungalFlesheater:Show(self.vb.fleshEaterCount)
 		timerFungalFleshEaterCD:Start(nil, self.vb.fleshEaterCount+1)
 		countdownFungalFleshEater:Start()
 		voiceFungalFlesheater:Play("163142k")

@@ -241,7 +241,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	reflect		= "%s on >%%s< - stop attacking",
 	count		= "%s! (%%d)",
 	stack		= "%%d stacks of %s on you",
-	switch		= ">%s< - switch targets"
+	switch		= ">%s< - switch targets",
+	switchcount	= ">%s< - switch targets (%%d)"
 }
 
 -- Auto-generated Special Warning Localizations
@@ -268,6 +269,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	stack 		= "Show special warning when you are affected by >=%d stacks of $spell:%s",
 	switch		= "Show special warning to switch targets for $spell:%s"
 }
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {

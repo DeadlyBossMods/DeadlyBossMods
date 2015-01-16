@@ -191,6 +191,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run 		= "Mostra un Avviso Speciale per $spell:%s
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast 		= "Mostra un Avviso Speciale per il lancio di $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Mostra un Avviso Speciale per Accumuli >=%d di $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Mostra un Avviso Speciale per cambiare Bersaglio per $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.spell		= "%s!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel	= "%s su >%%s< - rimuovilo ora!"
@@ -204,6 +205,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.run		= "%s - Corri Via!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast		= "%s - Smetti di Attaccare!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "%s (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch	= ">%s< - Cambia Bersaglio"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= ">%s< - Cambia Bersaglio (%%d)"
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Imposta Icone sui bersagli di $spell:%s"
