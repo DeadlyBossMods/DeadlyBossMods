@@ -2668,7 +2668,7 @@ do
 		area.onshowcall = {}
 
 		for _, mod in ipairs(DBM.Mods) do
-			if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) and not mod.isTrashMod and not mod.noStatistics then
+			if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) and not mod.isTrashMod then
 				local statsType = 0
 				if not mod.stats then
 					mod.stats = { }
@@ -2737,7 +2737,7 @@ do
 				local bottom3value3		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 
 				--Set enable or disable per mods.
-				if mod.oneFormat then--Classic/BC Raids
+				if mod.addon.oneFormat then--Classic/BC Raids
 					statsType = 2--Fix for BC instance
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*5*singleline))
 					--Do not use top1 header.
@@ -2749,10 +2749,10 @@ do
 					top1value3:SetPoint("TOPLEFT", top1text3, "TOPLEFT", 80, 0)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*5 )
 					singleline = singleline + 1
-				elseif mod.type == "PARTY" or mod.type == "SCENARIO" then--If party or scenario instance have no heroic, we should use oneFormat.
+				elseif mod.addon.type == "PARTY" or mod.addon.type == "SCENARIO" then--If party or scenario instance have no heroic, we should use oneFormat.
 					statsType = 1
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
-					if mod.hasChallenge then
+					if mod.addon.hasChallenge then
 						if mod.onlyHeroic then
 							--Use top1 and top2 area.
 							top2header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
@@ -2857,7 +2857,7 @@ do
 					end
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 					singleline = singleline + 1
-				elseif mod.type == "RAID" and mod.noHeroic and not mod.hasMythic then--Early wrath
+				elseif mod.addon.type == "RAID" and mod.addon.noHeroic and not mod.addon.hasMythic then--Early wrath
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
 					--Use top1 and top2 area.
 					top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
@@ -2879,7 +2879,7 @@ do
 					top2header:SetText(RAID_DIFFICULTY2)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 					singleline = singleline + 1
-				elseif mod.type == "RAID" and not mod.hasLFR and not mod.hasMythic then--Cata(except DS) and some wrath raids
+				elseif mod.addon.type == "RAID" and not mod.addon.hasLFR and not mod.addon.hasMythic then--Cata(except DS) and some wrath raids
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 					if mod.onlyHeroic then
 						--Use top1, top2 area
@@ -2965,7 +2965,7 @@ do
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 						doubleline = doubleline + 1
 					end
-				elseif mod.type == "RAID" and not mod.hasMythic then--DS + All MoP raids(except SoO)
+				elseif mod.addon.type == "RAID" and not mod.addon.hasMythic then--DS + All MoP raids(except SoO)
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 					if mod.onlyHeroic then
 						--Use top1, top2 area
