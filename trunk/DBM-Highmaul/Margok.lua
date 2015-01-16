@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, do more fancy stuff with radar in phase 4 when i have more logs, like closing it when it's not needed. Or may just leave it as is depending on preferences.
 --TODO, Night-Twisted Faithful stuff (no spawn trigger or yell, but 30 second loop, like oozes on that boss in ToT)
 --TODO, see if target scanning works on dark star, or if that player gets an emote whisper or something. If can find dark star target, then need "nearby" warnings to move away from location
+--TODO, 3 tank strat makes the accelerated confusing. todo, check number of tanks on pull, if 3, require margok be current target for accelerated warning
 --All Phases
 local warnPhase									= mod:NewPhaseChangeAnnounce()
 mod:AddBoolOption("warnBranded", true, "announce")
@@ -517,7 +518,6 @@ function mod:SPELL_CAST_START(args)
 		end
 		updateRangeFrame(self, true)
 		self:Schedule(4, updateRangeFrame, self)--Cast + 1, since sometimes tank resists, so we'll want to hide frame after 4 seconds if no debuff has gone out in 2.
-		self:AntiSpam(3, 3)
 	elseif spellId == 165243 then
 		self.vb.madnessAdd = self.vb.madnessAdd + 1
 		warnGlimpseOfMadness:Show(self.vb.madnessAdd)
