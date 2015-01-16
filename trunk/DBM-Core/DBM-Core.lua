@@ -2759,16 +2759,6 @@ function DBM:LoadMod(mod, force)
 			self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
 		end
 		loadModOptions(mod.modId)
-		for i, v in ipairs(self.Mods) do -- load the hasHeroic/oneFormat attributes from the toc into all boss mods as required by the GetDifficulty() method
-			if v.modId == mod.modId then
-				v.type = mod.type
-				v.oneFormat = mod.oneFormat
-				v.hasLFR = mod.hasLFR
-				v.hasChallenge = mod.hasChallenge
-				v.noHeroic = mod.noHeroic
-				v.hasMythic = mod.hasMythic
-			end
-		end
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
@@ -4219,7 +4209,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		savedDifficulty, difficultyText, difficultyIndex, LastGroupSize = self:GetCurrentInstanceDifficulty()
 		local name = mod.combatInfo.name
 		local modId = mod.id
-		if C_Scenario.IsInScenario() and (mod.type == "SCENARIO") then
+		if C_Scenario.IsInScenario() and (mod.addon.type == "SCENARIO") then
 			mod.inScenario = true
 		end
 		mod.inCombat = true
@@ -4281,7 +4271,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		self:ToggleRaidBossEmoteFrame(1)
 		self:ToggleGarrisonAlertsFrame(1)
 		self:StartLogging(0, nil)
-		if self.Options.HideObjectivesFrame and mod.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 then
+		if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 then
 			if ObjectiveTrackerFrame:IsVisible() then
 				ObjectiveTrackerFrame:Hide()
 				watchFrameRestore = true
@@ -4379,7 +4369,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 				elseif mod.ignoreBestkill and mod.inScenario then
 					self:AddMsg(DBM_CORE_SCENARIO_STARTED_IN_PROGRESS:format(difficultyText..name))
 				else
-					if mod.type == "SCENARIO" then
+					if mod.addon.type == "SCENARIO" then
 						self:AddMsg(DBM_CORE_SCENARIO_STARTED:format(difficultyText..name))
 					else
 						self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..name))
@@ -4465,7 +4455,7 @@ end
 
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
-		local scenario = mod.type == "SCENARIO"
+		local scenario = mod.addon.type == "SCENARIO"
 		if mod.inCombatOnlyEvents and mod.inCombatOnlyEventsRegistered then
 			-- unregister all events except for SPELL_AURA_REMOVED events (might still be needed to remove icons etc...)
 			mod:UnregisterInCombatEvents()
