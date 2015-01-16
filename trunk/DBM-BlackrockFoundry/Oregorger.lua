@@ -25,8 +25,7 @@ mod:RegisterEventsInCombat(
 --TODO, check into http://beta.wowhead.com/spell=155923 on mythic
 local warnBlackrockBarrage			= mod:NewSpellAnnounce(156877, 2, nil, false)
 local warnAcidTorrent				= mod:NewSpellAnnounce(156240, 3)
-local warnRetchedBlackrock			= mod:NewTargetAnnounce(156179, 3)--Target scanning verified.
-local warnExplosiveShard			= mod:NewSpellAnnounce(156390, 4)--No target scanning available.
+local warnRetchedBlackrock			= mod:NewTargetAnnounce(156179, 3)
 local warnHungerDrive				= mod:NewSpellAnnounce(165127, 4)
 local warnHungerDriveStack			= mod:NewStackAnnounce(155819, 3, nil, false)--Similar to thok, count may be useful measure of how long to drag phase out for.
 
@@ -34,7 +33,7 @@ local specWarnBlackrockBarrage		= mod:NewSpecialWarningInterrupt(156877, false)-
 local specWarnAcidTorrent			= mod:NewSpecialWarningSpell(156240, mod:IsTank(), nil, nil, 3)
 local yellRetchedBlackrock			= mod:NewYell(156179)
 local specWarnRetchedBlackrock		= mod:NewSpecialWarningMove(156203, nil, nil, nil, nil, nil, true)
-local specWarnExplosiveShard		= mod:NewSpecialWarningSpell(156390, mod:IsMelee())
+local specWarnExplosiveShard		= mod:NewSpecialWarningDodge(156390, mod:IsMelee())--No target scanning available. prefers melee if I remember correctly. Double check this!
 local specWarnHungerDrive			= mod:NewSpecialWarningSpell(165127, nil, nil, nil, 2)
 local specWarnHungerDriveEnded		= mod:NewSpecialWarningFades(165127)
 
@@ -81,8 +80,11 @@ function mod:SPELL_CAST_START(args)
 --			self.vb.barrageCount = 0
 --		end
 	elseif spellId == 156240 then
-		warnAcidTorrent:Show()
-		specWarnAcidTorrent:Show()
+		if self.Options.SpecWarn156240spell then
+			specWarnAcidTorrent:Show()
+		else
+			warnAcidTorrent:Show()
+		end
 		timerAcidTorrentCD:Start()
 	elseif spellId == 156179 then
 		self:BossTargetScanner(77182, "RetchedBlackrockTarget", 0.02, 16)
@@ -111,7 +113,6 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 156390 then
-		warnExplosiveShard:Show()
 		specWarnExplosiveShard:Show()
 		timerExplosiveShardCD:Start()
 	end
@@ -130,7 +131,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerRetchedBlackrockCD:Cancel()
 		timerAcidTorrentCD:Cancel()
 		timerExplosiveShardCD:Cancel()
-		warnHungerDrive:Show()
 		specWarnHungerDrive:Show()
 		voicePhaseChange:Play("phasechange")
 	end

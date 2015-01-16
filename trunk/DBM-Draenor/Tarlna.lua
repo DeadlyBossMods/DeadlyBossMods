@@ -19,10 +19,7 @@ mod:RegisterEventsInCombat(
 
 --Oh look, someone designed a world boss that's a copy and paste of Yalnu with tweaks.
 --TODO, do dps siwtch to Untamed Mand, or just tanks.
-local warnColossalBlow				= mod:NewSpellAnnounce(175973, 3)
-local warnGenesis					= mod:NewSpellAnnounce(175979, 4)
 local warnSavageVines				= mod:NewTargetAnnounce(176004, 2)
-local warnGrowUntamedMandragora		= mod:NewSpellAnnounce(176013, 3)
 
 local specWarnColossalBlow			= mod:NewSpecialWarningDodge(175973, nil, nil, nil, 2, nil, true)
 local specWarnGenesis				= mod:NewSpecialWarningSpell(175979, nil, nil, nil, nil, nil, true)--Everyone. "Switch" is closest generic to "run around stomping flowers". Might need custom message
@@ -75,12 +72,10 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 175973 then
-		warnColossalBlow:Show()
 		specWarnColossalBlow:Show()
 		--timerColossalBlow:Start()
 		voiceColossalBlow:Play("shockwave")
 	elseif spellId == 175979 then
-		warnGenesis:Show()
 		specWarnGenesis:Show()
 		timerGenesis:Start()
 		timerGenesisCD:Start()
@@ -91,7 +86,6 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 176013 then
-		warnGrowUntamedMandragora:Show()
 		specWarnGrowUntamedMandragora:Show()
 		timerGrowUntamedMandragoraCD:Start()
 		voiceMandragora:Play("killmob")

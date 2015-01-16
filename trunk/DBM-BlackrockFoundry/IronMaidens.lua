@@ -30,11 +30,8 @@ mod:RegisterEventsInCombat(
 --TODO, add timers for deck abilities that need them.
 --Ship
 local warnShip							= mod:NewSpellAnnounce("ej10019", 3, 76204)
-local warnBombardmentAlpha				= mod:NewSpellAnnounce(157854, 3)--From ship, but affects NON ship.
-local warnBombardmentOmega				= mod:NewSpellAnnounce(157886, 4)--From ship, but affects NON ship.
 ----Blackrock Deckhand
 local warnGrapeshotBlast				= mod:NewSpellAnnounce(158695, 3)--Could not verify
-local warnEarthenBarrier				= mod:NewSpellAnnounce(158708, 3)
 local warnProtectiveEarth				= mod:NewSpellAnnounce(158707, 3)--Could not verify
 local warnChainLightning				= mod:NewSpellAnnounce(158710, 3)--Could not verify
 ----Shattered Hand Deckhand
@@ -45,7 +42,6 @@ local warnFixate						= mod:NewTargetAnnounce(158702, 3)
 ----Admiral Gar'an
 local warnRapidFire						= mod:NewTargetAnnounce(156631, 4)
 local warnPenetratingShot				= mod:NewTargetAnnounce(164271, 3)--Could not verify
-local warnDeployTurret					= mod:NewSpellAnnounce(158599, 3)--Could not verify
 ----Enforcer Sorka
 local warnBladeDash						= mod:NewTargetAnnounce(155794, 3)
 local warnConvulsiveShadows				= mod:NewTargetAnnounce(156214, 3)
@@ -170,7 +166,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 156626 and (noFilter or not isPlayerOnBoat()) then--Rapid Fire. Still safest way to start timer, in case no sync
 		timerRapidFireCD:Start()
 	elseif spellId == 158599 and (noFilter or not isPlayerOnBoat()) then
-		warnDeployTurret:Show()
 		specWarnDeployTurret:Show()
 		voiceDeployTurret:Play("158599")
 	elseif spellId == 155794 and (noFilter or not isPlayerOnBoat()) then
@@ -183,7 +178,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 158695 then
 		warnGrapeshotBlast:Show()
 	elseif spellId == 158708 then
-		warnEarthenBarrier:Show()
 		specWarnEarthenbarrier:Show(args.sourceName)
 		voiceEarthenbarrier:Play("kickcast")
 	elseif spellId == 158707 then
@@ -203,11 +197,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		noFilter = true
 	end
 	if spellId == 157854 and (noFilter or not isPlayerOnBoat()) then
-		warnBombardmentAlpha:Show()
 		specWarnBombardmentAlpha:Show()
 		timerBombardmentAlphaCD:Start()
 	elseif spellId == 157886 and (noFilter or not isPlayerOnBoat()) then
-		warnBombardmentOmega:Show()
 		specWarnBombardmentOmega:Show()
 	elseif spellId == 156109 and (noFilter or not isPlayerOnBoat()) then
 		timerConvulsiveShadowsCD:Start()
