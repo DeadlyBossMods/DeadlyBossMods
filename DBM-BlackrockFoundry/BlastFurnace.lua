@@ -23,23 +23,19 @@ mod:RegisterEventsInCombat(
 
 --TODO, figure out how to detect OTHER add spawns besides operator and get timers for them too. It's likely the'll require ugly scheduling and /yell logging. 
 local warnBomb					= mod:NewTargetAnnounce(155192, 4)
-local warnBellowsOperator		= mod:NewSpellAnnounce("ej9650", 4, 155181)
 local warnDeafeningRoar			= mod:NewSpellAnnounce(177756, 3, nil, mod:IsTank())
-local warnDefense				= mod:NewSpellAnnounce(160382, 2, nil, mod:IsTank())
-local warnRepair				= mod:NewCastAnnounce(155179, 4, nil, nil, not mod:IsHealer())
 local warnDropBombs				= mod:NewSpellAnnounce(174726, 1)
 local warnRupture				= mod:NewTargetAnnounce(156932, 3)--Uses SPELL_CAST_SUCCESS because blizzard is dumb and debuff apply and standing in fire apply same spellid, only way to report ONLY debuff is use SUCCESS
 local warnCauterizeWounds		= mod:NewCastAnnounce(155186, 4, nil, nil, not mod:IsHealer())
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnPryclasm				= mod:NewCastAnnounce(156937, 3, nil, nil, false)
 local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4)
-local warnShieldsDown			= mod:NewSpellAnnounce(158345, 1, nil, mod:IsDps())
 local warnHeartoftheMountain	= mod:NewSpellAnnounce("ej9641", 3, 2894)
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, mod:IsTank())
 
 local specWarnBomb				= mod:NewSpecialWarningYou(155192, nil, nil, nil, 3, nil, true)
-local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("ej9650", mod:IsDps(), nil, nil, nil, nil, true)
-local specWarnDeafeningRoar		= mod:NewSpecialWarningSpell(177756, nil, nil, nil, 3)
+local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("OptionVersion2", "ej9650", not mod:IsHealer(), nil, nil, nil, nil, true)
+local specWarnDeafeningRoar		= mod:NewSpecialWarningDodge("OptionVersion2", 177756, mod:IsTank(), nil, nil, 3)
 local specWarnDefense			= mod:NewSpecialWarningMove(160382, mod:IsTank(), nil, nil, nil, nil, true)
 local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, not mod:IsHealer(), nil, nil, nil, nil, true)
 local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932)
@@ -69,7 +65,7 @@ local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TE
 local voiceRepair				= mod:NewVoice(155179, not mod:IsHealer()) --int
 local voiceBomb 				= mod:NewVoice(155192) --bombyou.ogg, bomb on you
 local voiceDefense 				= mod:NewVoice(160382, mod:IsTank()) --taunt mobout
-local voiceBellowsOperator 		= mod:NewVoice("ej9650", mod:IsDps())
+local voiceBellowsOperator 		= mod:NewVoice("ej9650", not mod:IsHealer())
 local voiceRupture				= mod:NewVoice(156932) --runaway
 local voiceMelt					= mod:NewVoice(155223) --runaway
 local voiceHeat					= mod:NewVoice(155242) --changemt
@@ -116,19 +112,20 @@ function mod:SPELL_CAST_START(args)
 		warnPryclasm:Show()
 		specWarnPyroclasm:Show(args.sourceName)
 	elseif spellId == 177756 and self:CheckTankDistance(args.sourceGUID, 30) then
-		warnDeafeningRoar:Show()
-		specWarnDeafeningRoar:Show()
+		if self.Options.SpecWarn177756dodge then
+			specWarnDeafeningRoar:Show()
+		else
+			warnDeafeningRoar:Show()
+		end	
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 160382 and self:CheckTankDistance(args.sourceGUID, 30) then
-		warnDefense:Show()
 		specWarnDefense:Show()
 		voiceDefense:Play("mobout")
 	elseif spellId == 155179 then--Repair should NOT check tank distance, because these mobs run to lowest health regulator, even if it's on OTHER side of where their tank is.
-		warnRepair:Show()
 		specWarnRepair:Show(args.sourceName)
 		voiceRepair:Play("kickcast")
 	elseif spellId == 174726 and self:CheckTankDistance(args.sourceGUID, 30) then
@@ -158,7 +155,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFixate:Show()
 		end
 	elseif spellId == 158345 and self:AntiSpam(10, 3) then--Might be SPELL_CAST_SUCCESS instead.
-		warnShieldsDown:Show()
 		specWarnShieldsDown:Show()
 		timerShieldsDown:Start()
 	elseif spellId == 155242 then
@@ -175,7 +171,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 155181 and self:AntiSpam(10, 0) then--Loading (The two that come can be upwards of 5 seconds apart so at least 10 second antispam)
-		warnBellowsOperator:Show()
 		specWarnBellowsOperator:Show()
 		timerBellowsOperator:Start()
 		countdownBellowsOperator:Start()

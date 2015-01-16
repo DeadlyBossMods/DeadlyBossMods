@@ -25,7 +25,6 @@ mod:RegisterEventsInCombat(
 --TODO, figure out what you aim the impaling throw at
 --TODO, Update timers for phase 3.
 --Stage One: The Blackrock Forge
-local warnDemolition				= mod:NewSpellAnnounce(156425, 3)--Probably doesn't show in combat log. Assume it has a UNIT_SPELLCAST_SUCCEEDED event.
 local warnMarkedforDeath			= mod:NewTargetAnnounce(156096, 4)--If not in combat log, find a RAID_BOSS_WHISPER event.
 local warnThrowSlagBombs			= mod:NewSpellAnnounce(156030, 3)--Probably doesn't show in combat log. Assume it has a UNIT_SPELLCAST_SUCCEEDED event.
 local warnShatteringSmash			= mod:NewSpellAnnounce(155992, 3)
@@ -157,7 +156,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerThrowSlagBombsCD:Start()
 		voiceThrowSlagBombs:Play("bombsoon")
 	elseif spellId == 156425 then
-		warnDemolition:Show()
 		specWarnDemolition:Show()
 		timerDemolitionCD:Start()
 		voiceDemolition:Play("aesoon")

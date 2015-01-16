@@ -24,8 +24,6 @@ mod:RegisterEventsInCombat(
 local warnOverwhelmingBlows			= mod:NewStackAnnounce(155078, 3, nil, mod:IsTank() or mod:IsHealer())--No special warnings, strats for this revolve around the inferno slice strat, not this debuff, so dbm isn't going to say when tanks should taunt here
 local warnCrumblingRoar				= mod:NewSpellAnnounce(155730, 3, nil, false)--Cave ins
 local warnInfernoSlice				= mod:NewCountAnnounce(155080, 4)
-local warnRampage					= mod:NewSpellAnnounce(155539, 2)
-local warnOverheadSmash				= mod:NewCountAnnounce(155301, 3)--every 6 seconds is ok, boss doesn't do much else during this phase. TODO< why does this fire outside of world shaking? tank out of range?
 local warnPetrifyingSlam			= mod:NewSpellAnnounce(155326, 4)
 
 local specWarnInfernoSlice			= mod:NewSpecialWarningCount(155080, mod:IsTank() or mod:IsHealer(), nil, nil, nil, nil, true)
@@ -83,7 +81,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 155301 then
 		self:UnregisterShortTermEvents()
 		self.vb.smashCount = self.vb.smashCount + 1
-		warnOverheadSmash:Show(self.vb.smashCount)
 		specWarnOverheadSmash:Show(self.vb.smashCount)
 		voiceOverheadSmash:Play("shockwave")
 	end
@@ -113,7 +110,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 155539 then
 		self.vb.smashCount = 0
 		self.vb.sliceCount = 0
-		warnRampage:Show()
 		specWarnRampage:Show()
 		timerRampage:Start()
 		timerInfernoSliceCD:Cancel()
