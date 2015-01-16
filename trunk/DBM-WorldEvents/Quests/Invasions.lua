@@ -42,6 +42,9 @@ end
 --Iron Horde
 --"<29.58 17:13:46> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#To arms! To your posts! We face a worthy foe today...#Sergeant Crowler###Omegal##0#0##0#1343#nil#0#false#false#false", -- [5]
 --"<91.66 17:14:48> [SCENARIO_CRITERIA_UPDATE] criteriaID#25172#Info#The Iron Tide#1#6#0#false#false#false#0#0#StepInfo#Invasion#Follow the Sergeant.#1#false#false#false#CriteriaInfo1#Follow the Sergeant#92#true#1#1#0#39813#1#25172#0#0#false", -- [24]
+--Shadow Council
+--"<16.08 18:08:54> [CHAT_MSG_MONSTER_SAY] CHAT_MSG_MONSTER_SAY#The air has taken a turn for the foul...#Sergeant Crowler###Omegal##0#0##0#82#nil#0#false#false#false", -- [4]
+--"<63.05 18:09:41> [SCENARIO_CRITERIA_UPDATE] criteriaID#25172#Info#Amidst the Shadows#1#6#0#false#false#false#0#0#StepInfo#Invasion!#Follow the Sergeant#1#false#false#false#CriteriaInfo1#Follow the Sergeant#92#true#1#1#0#39813#1#25172#0#0#false", -- [13]
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.preCombat or msg:find(L.preCombat) then
 		--timerCombatStart:Start()

@@ -159,6 +159,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	--General
 	preCombat			= "To arms! To your posts!",--Common in all yells, rest varies based on invasion
+	preCombat2			= "The air has taken a turn for the foul...",--Shadow Council doesn't follow format of others :\
 	rylakSpawn			= "The commotion of the battle attracts a rylak!",--Source npc Darkwing Scavenger, target playername
 	terrifiedWorker		= "A terrified worker is caught in the open!",
 	sneakySpy			= "spy has snuck in amidst the chaos!",--Shortened to cut out "horde/alliance"
