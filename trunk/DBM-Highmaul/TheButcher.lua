@@ -20,7 +20,6 @@ mod:RegisterEventsInCombat(
 
 --TODO, Probably fix the update bar if it lua errors or doesn't work right.
 local warnCleave					= mod:NewCountAnnounce(156157, 2, nil, false)
-local warnBoundingCleave			= mod:NewCountAnnounce(156160, 3)
 local warnTenderizer				= mod:NewStackAnnounce(156151, 2, nil, mod:IsTank())
 local warnCleaver					= mod:NewSpellAnnounce("OptionVersion2", 156143, 3, nil, false)--Saberlash
 local warnFrenzy					= mod:NewTargetAnnounce(156598, 4)
@@ -181,7 +180,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.boundingCleave = self.vb.boundingCleave + 1
 		timerCleaveCD:Cancel()
 		countdownTenderizer:Cancel()
-		warnBoundingCleave:Show(self.vb.boundingCleave)
 		specWarnBoundingCleave:Show(self.vb.boundingCleave)
 		timerTenderizerCD:Start(15)
 		countdownTenderizer:Start(15)
