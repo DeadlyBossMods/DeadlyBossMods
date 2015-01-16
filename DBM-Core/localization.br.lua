@@ -188,6 +188,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run 		= "Exibir aviso especial para $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast 		= "Exibir aviso especial para o lançamento de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Exibir aviso especial para pilha >=%d de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Exibir aviso especial para mudar de alvo para $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.spell		= "%s!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel	= "%s em >%%s< - remova agora"
@@ -201,6 +202,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.run		= "%s - corra para longe"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast		= "%s - pare de lançar"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "%s (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch	= ">%s< - mude de alvo"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= ">%s< - mude de alvo (%%d)"
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Colocar ícones nos alvos de $spell:%s"

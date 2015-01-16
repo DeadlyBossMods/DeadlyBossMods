@@ -233,7 +233,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast		= "%s - stoppe Zauber"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect		= "%s auf >%%s< - stoppe Angriffe"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.count		= "%s! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "%%d Stapel von %s auf dir"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= ">%s< - Ziel wechseln"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= ">%s< - Ziel wechseln (%%d)"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 		= "Spezialwarnung für $spell:%s"
@@ -256,6 +256,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect 	= "Spezialwarnung zum Angriffsstopp auf
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 		= "Spezialwarnung für $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Spezialwarnung bei >=%d Stapel von $spell:%s auf dir"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Spezialwarnung für Zielwechsel auf $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: >%%s<"

@@ -87,7 +87,7 @@ local yellBranded								= mod:NewYell(156225, L.BrandedYell)
 
 local specWarnBrandedDisplacementNear			= mod:NewSpecialWarningClose(164004)--Displacement version of branded makes player unable to move from raid, raid moves from player
 
-local specWarnAberration						= mod:NewSpecialWarningSwitch("ej9945", not mod:IsHealer())--can use short name for all of them
+local specWarnAberration						= mod:NewSpecialWarningSwitchCount("ej9945", not mod:IsHealer())--can use short name for all of them
 
 --Intermission: Dormant Runestones
 local specWarnFixate							= mod:NewSpecialWarningMoveAway(157763, nil, nil, nil, nil, nil, true)
@@ -388,22 +388,22 @@ function mod:SPELL_CAST_START(args)
 	-----
 	elseif spellId == 156471 then
 		self.vb.arcaneAdd = self.vb.arcaneAdd + 1
-		specWarnAberration:Show()
+		specWarnAberration:Show(self.vb.arcaneAdd)
 		timerSummonArcaneAberrationCD:Start(nil, self.vb.arcaneAdd+1)
 		voiceArcaneAberration:Play("killmob")
 	elseif spellId == 164299 then
 		self.vb.arcaneAdd = self.vb.arcaneAdd + 1
-		specWarnAberration:Show()
+		specWarnAberration:Show(self.vb.arcaneAdd)
 		timerSummonArcaneAberrationCD:Start(nil, self.vb.arcaneAdd+1)
 		voiceArcaneAberration:Play("killmob")
 	elseif spellId == 164301 then
 		self.vb.arcaneAdd = self.vb.arcaneAdd + 1
-		specWarnAberration:Show()
+		specWarnAberration:Show(self.vb.arcaneAdd)
 		timerSummonArcaneAberrationCD:Start(nil, self.vb.arcaneAdd+1)
 		voiceArcaneAberration:Play("killmob")
 	elseif spellId == 164303 then
 		self.vb.arcaneAdd = self.vb.arcaneAdd + 1
-		specWarnAberration:Show()
+		specWarnAberration:Show(self.vb.arcaneAdd)
 		timerSummonArcaneAberrationCD:Start(nil, self.vb.arcaneAdd+1)
 		voiceArcaneAberration:Play("killmob")
 	elseif args:IsSpellID(158605, 164176, 164178, 164191) then

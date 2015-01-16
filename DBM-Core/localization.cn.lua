@@ -249,6 +249,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect			= ">%%s<中了%s - 快停手"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.count				= "%s! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack				= "你叠加了%%d层%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch			= ">%s< - 转换目标"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount		= ">%s< - 转换目标 (%%d)"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell			= "特殊警报：$spell:%s"
@@ -271,6 +272,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast			= "特殊警报：$spell:%s的施放（�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 			= "特殊警报：$spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack			= "特殊警报：当叠加了>=%d层$spell:%s时"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch 			= "特殊警报：针对$spell:%s需要转换目标"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target				= "%s: >%%s<"
