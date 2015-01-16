@@ -14,6 +14,7 @@ mod.isTrashMod = true--Flag as trash mod to at least disable mod during raid com
 local specWarnRylak				= mod:NewSpecialWarning("specWarnRylak")
 local specWarnWorker			= mod:NewSpecialWarning("specWarnWorker")
 local specWarnSpy				= mod:NewSpecialWarning("specWarnSpy")
+local specWarnBuilding			= mod:NewSpecialWarning("specWarnBuilding")
 
 --local timerCombatStart			= mod:NewCombatTimer(44)--rollplay for first pull
 
@@ -27,6 +28,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		specWarnWorker:Show()
 	elseif msg == L.sneakySpy or msg:find(L.sneakySpy) then
 		specWarnSpy:Show()
+	elseif msg == L.buildingAttack or msg:find(L.buildingAttack) then
+		specWarnBuilding:Show()
 	end
 end
 
