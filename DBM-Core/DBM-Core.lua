@@ -5750,7 +5750,7 @@ do
 				end
 			end
 		end
-		if GetUnitCreatureId(uid) == 24207 then return nil, nil, nil end--filter army of the dead.
+		if DBM:GetUnitCreatureId(uid) == 24207 then return nil, nil, nil end--filter army of the dead.
 		return name, uid, bossuid
 	end
 
