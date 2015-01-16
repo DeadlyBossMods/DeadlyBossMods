@@ -27,25 +27,19 @@ mod:RegisterEventsInCombat(
 --TODO, See if gaining new abilities actually resets cd on old abilities on mythic, or if I need to only start timers for the newly gained abilities
 --voicePhaseChange:Play("pthree") --Phases are health based. Boss mounts closest beast at n %, kill beast, boss solo for bit til next %, choose new beast. Similar to Feng or Iron Qon. All beast dead, final boss burn at end with many abilities
 --Boss basic attacks
-local warnPinDown					= mod:NewSpellAnnounce(155365, 3)
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
-local warnCallthePack				= mod:NewSpellAnnounce(154975, 3)
 --Boss gained abilities (beast deaths grant boss new abilities)
 local warnWolf						= mod:NewTargetAnnounce(155458, 3)--Grants Rend and Tear
 local warnRendandTear				= mod:NewSpellAnnounce(155385, 3)--Target scanning doesn't seem to work, target is nil. Will check targettarget or something fancy just in case
 local warnRylak						= mod:NewTargetAnnounce(155459, 3)--Grants Superheated Shrapnel
-local warnSuperheatedShrapnel		= mod:NewSpellAnnounce(155499, 3, nil, mod:IsHealer())
 local warnElekk						= mod:NewTargetAnnounce(155460, 3)--Grants Tantrum
-local warnTantrum					= mod:NewCountAnnounce(162275, 3)
 local warnClefthoof					= mod:NewTargetAnnounce(155462, 3)--Grants Epicenter
 local warnEpicenter					= mod:NewSpellAnnounce(162277, 3)--Mythic
 --Beast abilities (living beasts)
-local warnSavageHowl				= mod:NewSpellAnnounce(155198, 3, nil, mod:IsHealer() or mod:IsTank() or mod:CanRemoveEnrage())
 local warnConflag					= mod:NewTargetAnnounce(155399, 3, nil, mod:IsHealer())
 local warnSearingFangs				= mod:NewStackAnnounce(155030, 2, nil, mod:IsTank())
 local warnCrushArmor				= mod:NewStackAnnounce(155236, 2, nil, mod:IsTank())
 local warnStampede					= mod:NewSpellAnnounce(155247, 3)
-local warnInfernoBreath				= mod:NewSpellAnnounce(154989, 3)
 
 --Boss basic attacks
 local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, not mod:IsHealer(), nil, nil, nil, nil, true)
@@ -157,7 +151,6 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 155198 then
-		warnSavageHowl:Show()
 		specWarnSavageHowl:Schedule(1.5, args.sourceName)
 		timerSavageHowlCD:Start()
 		voiceSavageHowl:Play("trannow")
@@ -172,7 +165,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 155399 then
 		timerConflagCD:Start()
 	elseif spellId == 154975 then--Moved to success because spell cast start is interrupted, a lot, and no sense in announcing it if he didn't finish it. if he self interrupts it can be delayed as much as 15 seconds.
-		warnCallthePack:Show()
 		specWarnCallthePack:Show()
 		timerCallthePackCD:Start()
 		voiceCallthePack:Play("killmob")
@@ -326,7 +318,6 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:154989") then
-		warnInfernoBreath:Show()
 		specWarnInfernoBreath:Show()
 		timerInfernoBreathCD:Start()
 		voiceInfernoBreath:Play("breathsoon")
@@ -336,7 +327,6 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 155221 then--IronCrusher Tantrum
 		self.vb.tantrumCount = self.vb.tantrumCount + 1
-		warnTantrum:Show(self.vb.tantrumCount)
 		specWarnTantrum:Show(self.vb.tantrumCount)
 		if self.vb.tantrumCount == 3 then
 			self.vb.tantrumCount = 0
@@ -344,7 +334,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerTantrumCD:Start(nil, self.vb.tantrumCount+1)
 	elseif spellId == 155520 then--Beastlord Darmac Tantrum
 		self.vb.tantrumCount = self.vb.tantrumCount + 1
-		warnTantrum:Show(self.vb.tantrumCount)
 		specWarnTantrum:Show(self.vb.tantrumCount)
 		if self.vb.tantrumCount == 3 then
 			self.vb.tantrumCount = 0
@@ -354,7 +343,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnEpicenter:Show()
 		specWarnEpicenter:Show()
 	elseif spellId == 155497 then--Superheated Shrapnel
-		warnSuperheatedShrapnel:Show()
 		specWarnSuperheatedShrapnel:Show()
 	elseif spellId == 155385 or spellId == 155515 then--Both versions of spell(boss and beast), they seem to have same cooldown so combining is fine
 		warnRendandTear:Show()
@@ -362,7 +350,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerRendandTearCD:Start()
 		voiceRendandTear:Play("runaway")
 	elseif spellId == 155365 then--Cast
-		warnPinDown:Show()
 		specWarnPinDown:Show()
 		timerPinDownCD:Start()
 	end

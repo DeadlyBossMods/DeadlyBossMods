@@ -18,10 +18,8 @@ mod:RegisterEventsInCombat(
 
 --TODO, find target scanning for skullcracker. Also, find out how it behaves when it's more than 1 target (just recast?)
 --TODO, maybe use http://beta.wowhead.com/spell=154785 for aftershock/Shattered Vertebrae instead?'
-local warnDisruptingRoar				= mod:NewCountAnnounce(160838, 4)--spell has 4 versions. 10 yard, 20 yard, 30 yard, 40 yard. Count used to convey which one it is.
 local warnSkullcracker					= mod:NewSpellAnnounce(153470, 3, nil, false)--This seems pretty worthless.
 local warnShatteredVertebrae			= mod:NewStackAnnounce(157139, 2, nil, mod:IsTank())
-local warnCripplingSuplex				= mod:NewCastAnnounce(156938, 4, nil, nil, mod:IsTank())
 local warnSearingPlates					= mod:NewSpellAnnounce(161570, 4)--Types
 local warnPulverized					= mod:NewSpellAnnounce(174825, 4)--Types
 
@@ -51,25 +49,20 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 160838 then
-		warnDisruptingRoar:Show(10)
 		specWarnDisruptingRoar:Show(10)
 		timerDisruptingRoarCD:Start()
 	elseif spellId == 160845 then
-		warnDisruptingRoar:Show(20)
 		specWarnDisruptingRoar:Show(20)
 		timerDisruptingRoarCD:Start()
 	elseif spellId == 160847 then
-		warnDisruptingRoar:Show(30)
 		specWarnDisruptingRoar:Show(30)
 		timerDisruptingRoarCD:Start()
 	elseif spellId == 160848 then
-		warnDisruptingRoar:Show(40)
 		specWarnDisruptingRoar:Show(40)
 		timerDisruptingRoarCD:Start()
 	elseif spellId == 153470 then
 		warnSkullcracker:Show()
 	elseif spellId == 156938 then
-		warnCripplingSuplex:Show()
 		specWarnCripplingSuplex:Show()
 	end
 end

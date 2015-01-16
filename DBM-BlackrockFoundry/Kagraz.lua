@@ -18,20 +18,18 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 155314",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
---Who is this dude?
+
+--Pointless add fight starts with (need to keep alive for follower achievement
 local warnDevastatingSlam				= mod:NewSpellAnnounce(156018, 4)
 local warnDropHammer					= mod:NewSpellAnnounce(156040, 3)--Target scanning?
 
 local warnLavaSlash						= mod:NewSpellAnnounce(155318, 2, nil, false)--Likely cast often & doesn't show in combat log anyways except for damage and not THAT important
 local warnSummonEnchantedArmaments		= mod:NewSpellAnnounce(156724, 3)
 local warnMoltenTorrent					= mod:NewTargetAnnounce(154932, 3)
-local warnSummonCinderWolves			= mod:NewSpellAnnounce(155776, 3)--Cast trigger could be anything, undefined on wowhead. just "Channeled" which I've seen use START, SUCCESS and even APPLIED. sigh
 local warnOverheated					= mod:NewTargetAnnounce(154950, 3, nil, mod:IsTank())
 local warnRekindle						= mod:NewCastAnnounce(155064, 4)
 local warnFixate						= mod:NewTargetAnnounce(154952, 3)
-local warnFireStorm						= mod:NewSpellAnnounce(155493, 4, nil, mod:IsTank())
 local warnBlazingRadiance				= mod:NewTargetAnnounce(155277, 3)
-local warnFireStorm						= mod:NewSpellAnnounce(155493, 4)
 local warnRisingFlames					= mod:NewStackAnnounce(163284, 2, nil, mod:IsTank())
 local warnCharringBreath				= mod:NewStackAnnounce(155074, 2, nil, mod:IsTank())
 
@@ -39,7 +37,7 @@ local specWarnLavaSlash					= mod:NewSpecialWarningMove(155318)
 local specWarnMoltenTorrent				= mod:NewSpecialWarningYou(154932, nil, nil, nil, nil, nil, true)
 local specWarnMoltenTorrentOther		= mod:NewSpecialWarningMoveTo(154932, false)--Strat dependant. most strats i saw ran these into meleee instead of running to the meteor target.
 local yellMoltenTorrent					= mod:NewYell(154932)
-local specWarnCinderWolves				= mod:NewSpecialWarningSwitch(155776, not mod:IsHealer(), nil, nil, nil, nil, true)
+local specWarnCinderWolves				= mod:NewSpecialWarningSpell(155776, nil, nil, nil, nil, nil, true)
 local specWarnOverheated				= mod:NewSpecialWarningSwitch(154950, mod:IsTank())
 local specWarnFixate					= mod:NewSpecialWarningYou(154952, nil, nil, nil, 3, nil, true)
 local specWarnFixateEnded				= mod:NewSpecialWarningEnd(154952, false)
@@ -112,7 +110,6 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 155776 then
-		warnSummonCinderWolves:Show()
 		specWarnCinderWolves:Show()
 		timerBlazingRadianceCD:Start(34)
 		timerFireStormCD:Start()
@@ -136,7 +133,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 155493 then
-		warnFireStorm:Show()
 		specWarnFireStorm:Show()
 		timerBlazingRadianceCD:Cancel()
 		timerMoltenTorrentCD:Start(44)

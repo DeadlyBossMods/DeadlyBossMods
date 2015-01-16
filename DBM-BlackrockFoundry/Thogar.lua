@@ -25,8 +25,6 @@ local warnProtoGrenade				= mod:NewSpellAnnounce(155864, 3)
 local warnEnkindle					= mod:NewStackAnnounce(155921, 2, nil, mod:IsTank())
 local warnTrain						= mod:NewCountAnnounce(176312, 4)--Switch from generic and make informing one when mythicTrains (and non mythic trains too) are more populated.
 --Adds
-local warnCauterizingBolt			= mod:NewSpellAnnounce(160140, 4)
-local warnIronBellow				= mod:NewSpellAnnounce(163753, 3)
 local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)
 
 --Operator Thogar
@@ -185,10 +183,8 @@ function mod:SPELL_CAST_START(args)
 		warnProtoGrenade:Show()
 		timerProtoGrenadeCD:Start()
 	elseif spellId == 160140 then
-		warnCauterizingBolt:Show()
 		specWarnCauterizingBolt:Show(args.sourceName)
 	elseif spellId == 163753 then
-		warnIronBellow:Show()
 		if self:AntiSpam() then
 			specWarnIronbellow:Show()
 		end

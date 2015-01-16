@@ -17,14 +17,10 @@ mod:RegisterEventsInCombat(
 
 --TODO, see if normal/heroic is still have 111sec timer on grasping Earth since mythic was about 123
 --TODO, see how second trembling earth CD works and if current code even works for other timers. Mythic pulls were very short :\
-local warnGraspingEarth				= mod:NewSpellAnnounce(157060, 3)
-local warnThunderingBlows			= mod:NewSpellAnnounce(157054, 4)
-local warnRipplingSmash				= mod:NewSpellAnnounce(157592, 3)
 local warnCrushingEarth				= mod:NewTargetAnnounce(161923, 3, nil, false)--Players who failed to move. Off by default since announcing failures is not something DBM generally does by default. Can't announce pre cast unfortunately. No detection
 local warnStoneGeyser				= mod:NewSpellAnnounce(158130, 2)
-local warnSlam						= mod:NewCastAnnounce(156704, 4, nil, nil, mod:IsMelee())
+local warnSlam						= mod:NewCastAnnounce(156704, 3, nil, nil, mod:IsMelee())
 local warnWarpedArmor				= mod:NewStackAnnounce(156766, 2, nil, mod:IsTank())
-local warnTremblingEarth			= mod:NewSpellAnnounce(173917, 3)--Mythic
 local warnCalloftheMountain			= mod:NewCastAnnounce(158217, 4, 5)--Mythic
 
 local specWarnGraspingEarth			= mod:NewSpecialWarningSpell(157060, nil, nil, nil, nil, nil, true)
@@ -69,7 +65,6 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 157060 then
-		warnGraspingEarth:Show()
 		specWarnGraspingEarth:Show()
 		timerThunderingBlowsCD:Start()
 		countdownThunderingBlows:Start()
@@ -85,12 +80,10 @@ function mod:SPELL_CAST_START(args)
 			timerGraspingEarthCD:Start()
 		end
 	elseif spellId == 157054 then
-		warnThunderingBlows:Show()
 		specWarnThunderingBlows:Show()
 		--Starting timers for slam and rippling seem useless, 10-30 sec variation for first ones.
 		--after that they get back into their consistency
 	elseif spellId == 157592 then
-		warnRipplingSmash:Show()
 		specWarnRipplingSmash:Show()
 		timerRipplingSmashCD:Start()
 	elseif spellId == 156704 then
@@ -132,7 +125,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 161923 then
 		warnCrushingEarth:CombinedShow(0.5, args.destName)
 	elseif spellId == 173917 then
-		warnTremblingEarth:Show()
 		specWarnTremblingEarth:Show()
 		timerTremblingEarth:Start()
 		countdownTremblingEarth:Start()
