@@ -517,6 +517,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		updateRangeFrame(self, true)
 		self:Schedule(4, updateRangeFrame, self)--Cast + 1, since sometimes tank resists, so we'll want to hide frame after 4 seconds if no debuff has gone out in 2.
+		self:AntiSpam(3, 3)
 	elseif spellId == 165243 then
 		self.vb.madnessAdd = self.vb.madnessAdd + 1
 		warnGlimpseOfMadness:Show(self.vb.madnessAdd)
@@ -656,7 +657,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if tanking or (status == 3) then
 				specWarnAcceleratedAssault:Show(amount)
 			else
-				specWarnAcceleratedAssaultOther:Show(L.Name)
+				specWarnAcceleratedAssaultOther:Show(L.name)
 			end
 			voiceAcceleratedAssault:Play("changemt")
 		end
