@@ -30,7 +30,7 @@ local specWarnChainHurl				= mod:NewSpecialWarningSpell(159947, nil, nil, nil, n
 local specWarnBerserkerRushOther	= mod:NewSpecialWarningTarget(158986, nil, nil, nil, 2, nil, true)
 local specWarnBerserkerRush			= mod:NewSpecialWarningMoveTo(158986, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(158986), nil, 3, nil, true)--Creative use of warning. Run option text but a moveto warning to get players in LFR to actually run to the flame jet instead of being clueless.
 local yellBerserkerRush				= mod:NewYell(158986)
-local specWarnImpale				= mod:NewSpecialWarningSpell(159113, mod:IsTank())
+local specWarnImpale				= mod:NewSpecialWarningYou(159113, mod:IsTank())
 local specWarnOpenWounds			= mod:NewSpecialWarningStack(159178, nil, 2)
 local specWarnOpenWoundsOther		= mod:NewSpecialWarningTaunt(159178)--If it is swap every impale, will move this to impale cast and remove stack stuff all together.
 local specWarnMaulingBrew			= mod:NewSpecialWarningMove(159413)
@@ -84,7 +84,10 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 159113 then
-		specWarnImpale:Show()
+		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
+		if tanking or (status == 3) then
+			specWarnImpale:Show()
+		end
 		timerImpaleCD:Start()
 		countdownImpale:Start()
 		if self:IsHealer() then
