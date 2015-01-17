@@ -7195,6 +7195,10 @@ do
 	function bossModPrototype:NewSpecialWarningInterrupt(text, optionDefault, ...)
 		return newSpecialWarning(self, "interrupt", text, nil, optionDefault, ...)
 	end
+	
+	function bossModPrototype:NewSpecialWarningInterruptCount(text, optionDefault, ...)
+		return newSpecialWarning(self, "interruptcount", text, nil, optionDefault, ...)
+	end
 
 	function bossModPrototype:NewSpecialWarningYou(text, optionDefault, ...)
 		return newSpecialWarning(self, "you", text, nil, optionDefault, ...)

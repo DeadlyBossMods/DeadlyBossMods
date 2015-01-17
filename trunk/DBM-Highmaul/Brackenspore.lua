@@ -19,7 +19,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, verify only one spore shooter spawns at a time
-local warnDecay						= mod:NewCountAnnounce(160013, 4, nil, not mod:IsHealer())
 local warnNecroticBreath			= mod:NewSpellAnnounce(159219, 3)--Warn everyone, so they know where not to be.
 local warnRot						= mod:NewStackAnnounce(163241, 2, nil, mod:IsTank())
 --Adds/Mushrooms
@@ -28,7 +27,7 @@ local warnRejuvMushroom				= mod:NewCountAnnounce(160021, 1)--Other good shroom 
 
 local specWarnCreepingMoss			= mod:NewSpecialWarningMove(163590, mod:IsTank())
 local specWarnInfestingSpores		= mod:NewSpecialWarningCount(159996, nil, nil, nil, 2, nil, true)
-local specWarnDecay					= mod:NewSpecialWarningInterrupt(160013, not mod:IsHealer(), nil, nil, nil, nil, true)
+local specWarnDecay					= mod:NewSpecialWarningInterruptCount(160013, not mod:IsHealer(), nil, nil, nil, nil, true)
 local specWarnNecroticBreath		= mod:NewSpecialWarningSpell(159219, mod:IsTank(), nil, nil, 3)
 local specWarnRot					= mod:NewSpecialWarningStack(163241, nil, 3)
 local specWarnRotOther				= mod:NewSpecialWarningTaunt(163241, nil, nil, nil, nil, nil, true)
@@ -124,7 +123,7 @@ function mod:SPELL_CAST_START(args)
 		warnDecay:Show(self.vb.decayCounter)
 		local guid = args.souceGUID
 		if guid == UnitGUID("target") or guid == UnitGUID("focus") then
-			specWarnDecay:Show(args.sourceName)
+			specWarnDecay:Show(args.sourceName, self.vb.decayCounter)
 			timerDecayCD:Start(args.sourceGUID)
 			if self.vb.decayCounter == 1 then
 				voiceDecay:Play("kick1r")
