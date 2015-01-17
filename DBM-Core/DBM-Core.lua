@@ -6556,12 +6556,17 @@ do
 			},
 			mt
 		)
+		local catType = "announce"--Default to General announce
+		--Change if Personal or Other
+		if announceType == "target" or announceType == "targetcount" or announceType == "stack" then
+			catType = "announceother"
+		end
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(obj.option, optionDefault, "announce")
+			self:AddBoolOption(obj.option, optionDefault, catType)
 		elseif not (optionName == false) then
-			obj.option = "Announce"..unparsedId..announceType..(optionVersion or "")
-			self:AddBoolOption(obj.option, optionDefault, "announce")
+			obj.option = catType..unparsedId..announceType..(optionVersion or "")
+			self:AddBoolOption(obj.option, optionDefault, catType)
 			self.localization.options[obj.option] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announceType]:format(unparsedId)
 		end
 		tinsert(self.announces, obj)
@@ -7149,8 +7154,15 @@ do
 			end
 		end
 		if obj.option then
+			local catType = "announce"--Default to General announce
+			--Change if Personal or Other
+			if announceType == "target" or announceType == "dispel" or announceType == "taunt" or announceType == "interrupt" or announceType == "close" then
+				catType = "announceother"
+			elseif announceType == "you" or announceType == "move" or announceType == "dodge" or announceType == "moveaway" or announceType == "run" or announceType == "moveto" or announceType == "stack" then
+				catType = "announcepersonal"
+			end
 			obj.voiceOptionId = hasVoice and "Voice"..spellId..(type(hasVoice) == "number" and hasVoice or "") or nil
-			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, "announce")
+			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType)
 		end
 		tinsert(self.specwarns, obj)
 		return obj
@@ -8536,10 +8548,12 @@ do
 	local returnKey = {__index = function(t, k) return k end}
 	local defaultCatLocalization = {
 		__index = setmetatable({
-			timer		= DBM_CORE_OPTION_CATEGORY_TIMERS,
-			announce	= DBM_CORE_OPTION_CATEGORY_WARNINGS,
-			sound		= DBM_CORE_OPTION_CATEGORY_SOUNDS,
-			misc		= MISCELLANEOUS
+			timer				= DBM_CORE_OPTION_CATEGORY_TIMERS,
+			announce			= DBM_CORE_OPTION_CATEGORY_WARNINGS,
+			announceother		= DBM_CORE_OPTION_CATEGORY_WARNINGS_OTHER,
+			announcepersonal	= DBM_CORE_OPTION_CATEGORY_WARNINGS_YOU,
+			sound				= DBM_CORE_OPTION_CATEGORY_SOUNDS,
+			misc				= MISCELLANEOUS
 		}, returnKey)
 	}
 	local defaultTimerLocalization = {
