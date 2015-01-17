@@ -259,6 +259,15 @@ L.AutoAcceptGuildInvite		= "Automatically accept group invites from guild member
 L.Area_Advanced				= "Advanced Options"
 L.FakeBW					= "Pretend to be BigWigs in version checks instead of DBM (Useful for guilds that force using BigWigs)"
 
+L.Panel_Profile				= "Profiles"
+L.Area_CreateProfile        = "Profile Creation"
+L.EnterProfileName			= "Enter profile name"
+L.CreateProfile				= "Create profile"
+L.Area_ApplyProfile			= "Set Active Profile"
+L.SelectProfileToApply		= "Select profile to apply"
+L.Area_DeleteProfile		= "Profile Removal"
+L.SelectProfileToDelete		= "Select profile to delete"
+
 L.PizzaTimer_Headline 		= 'Create a "Pizza Timer"'
 L.PizzaTimer_Title			= 'Name (e.g. "Pizza!")'
 L.PizzaTimer_Hours 			= "Hours"
