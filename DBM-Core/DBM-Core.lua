@@ -6560,8 +6560,8 @@ do
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "announce")
 		elseif not (optionName == false) then
-			obj.option = "Announce"..unparsedId..announceType
-			self:AddBoolOption(obj.option, optionDefault, "announce", nil, optionVersion)
+			obj.option = "Announce"..unparsedId..announceType..(optionVersion or "")
+			self:AddBoolOption(obj.option, optionDefault, "announce")
 			self.localization.options[obj.option] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announceType]:format(unparsedId)
 		end
 		tinsert(self.announces, obj)
@@ -6706,8 +6706,8 @@ do
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "sound")
 		elseif not (optionName == false) then
-			obj.option = "Voice"..spellId
-			self:AddBoolOption(obj.option, optionDefault, "sound", nil, optionVersion)
+			obj.option = "Voice"..spellId..(optionVersion or "")
+			self:AddBoolOption(obj.option, optionDefault, "sound")
 			self.localization.options[obj.option] = DBM_CORE_AUTO_VOICE_OPTION_TEXT:format(spellId)
 		end
 		return obj
@@ -6943,8 +6943,8 @@ do
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "misc")
 		elseif not (optionName == false) then
-			obj.option = "Yell"..(spellId or yellText)
-			self:AddBoolOption(obj.option, optionDefault, "misc", nil, optionVersion)
+			obj.option = "Yell"..(spellId or yellText)..(optionVersion or "")
+			self:AddBoolOption(obj.option, optionDefault, "misc")
 			self.localization.options[obj.option] = DBM_CORE_AUTO_YELL_OPTION_TEXT:format(spellId)
 		end
 		return obj
