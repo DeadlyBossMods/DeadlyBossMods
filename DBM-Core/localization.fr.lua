@@ -196,7 +196,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.fades           = "%s s'est dissipé"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.soon            = "%s bientôt"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.prewarn         = "%s dans %s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel		= "%s on >%%s< - dissipez maintenant"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt	= "%s - interrompez >%%s<!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt		= "%s - interrompez >%%s<!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.interruptcount= "%s - interrompez >%%s<! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you             = "%s sur vous"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= "%s sur >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt           = "%s sur >%%s< - provoquez maintenant"
@@ -237,6 +238,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count           = "Afficher une alerte spéciale
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Afficher une alerte spéciale lorsque vous cumulez >=%d stacks de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch 		= "Afficher une alerte spéciale de changement de cible pour\n $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: >%%s<"

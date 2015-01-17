@@ -192,6 +192,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.soon		= "%s pronto"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.prewarn		= "%s en %s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel		= "%s en >%%s< - ¡dispelea ahora!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt	= "%s - ¡interrumpe >%%s<!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.interruptcount	= "%s - ¡interrumpe >%%s<! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you			= "¡%s en ti!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= "%s en >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close		= "%s en >%%s< cerca tuyo"
@@ -225,6 +226,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 		= "Mostrar aviso especial para $spell:%s
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Mostrar aviso especial cuando tienes >=%d acumulaciones de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Mostrar aviso especial para cambiar objetivos con $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: >%%s<"
