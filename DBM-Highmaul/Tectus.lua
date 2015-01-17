@@ -30,7 +30,7 @@ local warnBerserker					= mod:NewSpellAnnounce("ej10062", 3, 163312)
 
 local specWarnEarthwarper			= mod:NewSpecialWarningSwitch("OptionVersion2", "ej10061", not mod:IsHealer(), nil, nil, nil, nil, true)
 local specWarnTectonicUpheaval		= mod:NewSpecialWarningSpell(162475, nil, nil, nil, 2, nil, true)
-local specWarnEarthenPillar			= mod:NewSpecialWarningSpell(162518, nil, nil, nil, 3, nil, true)
+local specWarnEarthenPillar			= mod:NewSpecialWarningDodge(162518, nil, nil, nil, 3, nil, true)
 local specWarnCrystallineBarrageYou	= mod:NewSpecialWarningYou(162346, nil, nil, nil, nil, nil, true)
 local yellCrystalineBarrage			= mod:NewYell(162346)
 local specWarnCrystallineBarrage	= mod:NewSpecialWarningMove(162370, nil, nil, nil, nil, nil, true)
