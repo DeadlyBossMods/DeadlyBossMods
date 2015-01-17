@@ -96,7 +96,7 @@ local specWarnSlow								= mod:NewSpecialWarningDispel(157801, mod:IsHealer(), 
 local specWarnTransitionEnd						= mod:NewSpecialWarningEnd(157278)
 local specWarnNetherEnergy						= mod:NewSpecialWarningCount(178468)
 --Intermission: Lineage of Power
-local specWarnKickToTheFace						= mod:NewSpecialWarningSpell(158563, mod:IsTank())
+local specWarnKickToTheFace						= mod:NewSpecialWarningYou(158563)
 local specWarnKickToTheFaceOther				= mod:NewSpecialWarningTaunt(158563)
 --Mythic
 local specWarnGaze								= mod:NewSpecialWarningStack(165595, nil, 1)--For now, warn for all stacks until more conclusive understanding of fight.

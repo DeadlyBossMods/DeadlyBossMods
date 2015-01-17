@@ -7155,11 +7155,15 @@ do
 		end
 		if obj.option then
 			local catType = "announce"--Default to General announce
-			--Change if Personal or Other
-			if announceType == "target" or announceType == "dispel" or announceType == "taunt" or announceType == "interrupt" or announceType == "close" then
+			--Directly affects another target (boss or player) that you need to know about
+			if announceType == "target" or announceType == "close" or announceType == "reflect" or announceType == "switch" or announceType == "switchcount" then
 				catType = "announceother"
-			elseif announceType == "you" or announceType == "move" or announceType == "dodge" or announceType == "moveaway" or announceType == "run" or announceType == "moveto" or announceType == "stack" then
+			--Directly affects you
+			elseif announceType == "you" or announceType == "move" or announceType == "dodge" or announceType == "moveaway" or announceType == "run" or announceType == "stack" or announceType == "moveto" then
 				catType = "announcepersonal"
+			--Things you have to do to fulfil your role
+			elseif announceType == "taunt" or announceType == "dispel" or announceType == "interrupt" then
+				catType = "announcerole"
 			end
 			obj.voiceOptionId = hasVoice and "Voice"..spellId..(type(hasVoice) == "number" and hasVoice or "") or nil
 			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType)
@@ -8552,6 +8556,7 @@ do
 			announce			= DBM_CORE_OPTION_CATEGORY_WARNINGS,
 			announceother		= DBM_CORE_OPTION_CATEGORY_WARNINGS_OTHER,
 			announcepersonal	= DBM_CORE_OPTION_CATEGORY_WARNINGS_YOU,
+			announcerole		= DBM_CORE_OPTION_CATEGORY_WARNINGS_ROLE,
 			sound				= DBM_CORE_OPTION_CATEGORY_SOUNDS,
 			misc				= MISCELLANEOUS
 		}, returnKey)
