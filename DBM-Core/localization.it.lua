@@ -192,10 +192,12 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast 		= "Mostra un Avviso Speciale per il lanci
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Mostra un Avviso Speciale per Accumuli >=%d di $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Mostra un Avviso Speciale per cambiare Bersaglio per $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.spell		= "%s!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel	= "%s su >%%s< - rimuovilo ora!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt	= "%s - interrompi >%%s<!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.interruptcount	= "%s - interrompi >%%s<! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you		= "%s su di te"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target	= "%s su >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close		= "%s su >%%s< vicino a te"

@@ -224,28 +224,29 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
-	spell		= "%s!",
-	ends		= "%s ended",
-	fades		= "%s faded",
-	soon		= "%s soon",
-	prewarn		= "%s in %s",
-	dispel		= "%s on >%%s< - dispel now",
-	interrupt	= "%s - interrupt >%%s<!",
-	you			= "%s on you",
-	target		= "%s on >%%s<",
-	taunt		= "%s on >%%s< - taunt now",
-	close		= "%s on >%%s< near you",
-	move		= "%s - move away",
-	dodge		= "%s - dodge attack",
-	moveaway	= "%s - move away from others",
-	moveto		= "%s - move to >%%s<",
-	run			= "%s - run away",
-	cast		= "%s - stop casting",
-	reflect		= "%s on >%%s< - stop attacking",
-	count		= "%s! (%%d)",
-	stack		= "%%d stacks of %s on you",
-	switch		= ">%s< - switch targets",
-	switchcount	= ">%s< - switch targets (%%d)"
+	spell			= "%s!",
+	ends			= "%s ended",
+	fades			= "%s faded",
+	soon			= "%s soon",
+	prewarn			= "%s in %s",
+	dispel			= "%s on >%%s< - dispel now",
+	interrupt		= "%s - interrupt >%%s<!",
+	interruptcount	= "%s - interrupt >%%s<! (%%d)",
+	you				= "%s on you",
+	target			= "%s on >%%s<",
+	taunt			= "%s on >%%s< - taunt now",
+	close			= "%s on >%%s< near you",
+	move			= "%s - move away",
+	dodge			= "%s - dodge attack",
+	moveaway		= "%s - move away from others",
+	moveto			= "%s - move to >%%s<",
+	run				= "%s - run away",
+	cast			= "%s - stop casting",
+	reflect			= "%s on >%%s< - stop attacking",
+	count			= "%s! (%%d)",
+	stack			= "%%d stacks of %s on you",
+	switch			= ">%s< - switch targets",
+	switchcount		= ">%s< - switch targets (%%d)"
 }
 
 -- Auto-generated Special Warning Localizations
@@ -272,7 +273,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	stack 		= "Show special warning when you are affected by >=%d stacks of $spell:%s",
 	switch		= "Show special warning to switch targets for $spell:%s"
 }
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {

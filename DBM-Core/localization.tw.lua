@@ -222,6 +222,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.soon			= "%s即將到來"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.prewarn		= "%s在%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel		= ">%%s<中了%s - 現在驅散"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt		= "%s - 快中斷>%%s< !"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.interruptcount= "%s - 快中斷>%%s< !(%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you			= "你中了%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= ">%%s<中了%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt			= ">%%s<中了%s - 快嘲諷"
@@ -260,6 +261,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 		= "為$spell:%s顯示特別警告"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack		= "為中了>=%d層$spell:%s時顯示特別警告"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "需對$spell:%s更換目標時顯示特別警告"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
 
 DBM_CORE_AUTO_TIMER_TEXTS.target			= "%s:>%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.cast				= "%s"

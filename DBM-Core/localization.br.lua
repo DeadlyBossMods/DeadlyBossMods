@@ -189,10 +189,12 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast 		= "Exibir aviso especial para o lançamen
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Exibir aviso especial para pilha >=%d de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Exibir aviso especial para mudar de alvo para $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.spell		= "%s!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel	= "%s em >%%s< - remova agora"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt	= "%s - interrompa >%%s<"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.interruptcount	= "%s - interrompa >%%s< (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you		= "%s em você"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target	= "%s em >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close		= "%s em >%%s< perto de você"
