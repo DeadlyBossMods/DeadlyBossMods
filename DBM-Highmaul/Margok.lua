@@ -40,16 +40,16 @@ local warnMarkOfChaos							= mod:NewTargetAnnounce("OptionVersion2", 158605, 4,
 local warnMarkOfChaosDisplacement				= mod:NewTargetAnnounce("OptionVersion2", 164176, 4, nil, nil, false)
 local warnMarkOfChaosFortification				= mod:NewTargetAnnounce("OptionVersion2", 164178, 4, nil, nil, false)
 local warnMarkOfChaosReplication				= mod:NewTargetAnnounce("OptionVersion2", 164191, 4, nil, nil, false)
-local warnAcceleratedAssault					= mod:NewStackAnnounce(159515, 3, nil, mod:IsTank())
+local warnAcceleratedAssault					= mod:NewStackAnnounce(159515, 3, nil, "Tank")
 --Intermission: Dormant Runestones
 local warnFixate								= mod:NewTargetAnnounce("OptionVersion3", 157763, 3)
 --Intermission: Lineage of Power
-local warnCrushArmor							= mod:NewStackAnnounce(158553, 2, nil, mod:IsTank())
+local warnCrushArmor							= mod:NewStackAnnounce(158553, 2, nil, "Tank")
 --Mythic
 local warnGlimpseOfMadness						= mod:NewCountAnnounce(165243, 3)
 local warnDarkStar								= mod:NewSpellAnnounce(178607, 3)
 local warnEnvelopingNight						= mod:NewCountAnnounce(165876, 3)
-local warnInfiniteDarkness						= mod:NewTargetAnnounce(165102, 3, nil, mod:IsHealer())
+local warnInfiniteDarkness						= mod:NewTargetAnnounce(165102, 3, nil, "Healer")
 local warnGazeSelf								= mod:NewStackAnnounce(165595, 4)
 
 --All Phases
@@ -79,7 +79,7 @@ local yellBranded								= mod:NewYell(156225, L.BrandedYell)
 
 local specWarnBrandedDisplacementNear			= mod:NewSpecialWarningClose(164004)--Displacement version of branded makes player unable to move from raid, raid moves from player
 
-local specWarnAberration						= mod:NewSpecialWarningSwitchCount("ej9945", not mod:IsHealer())--can use short name for all of them
+local specWarnAberration						= mod:NewSpecialWarningSwitchCount("ej9945", "-Healer")--can use short name for all of them
 
 local specWarnAcceleratedAssault				= mod:NewSpecialWarningCount(159515, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(5, 159515))
 local specWarnAcceleratedAssaultOther			= mod:NewSpecialWarningTaunt(159515, nil, nil, nil, nil, nil, true)
@@ -92,7 +92,7 @@ local specWarnMarkOfChaosReplicationOther		= mod:NewSpecialWarningTaunt(164191, 
 --Intermission: Dormant Runestones
 local specWarnFixate							= mod:NewSpecialWarningMoveAway(157763, nil, nil, nil, nil, nil, true)
 local yellFixate								= mod:NewYell(157763)
-local specWarnSlow								= mod:NewSpecialWarningDispel(157801, mod:IsHealer(), nil, nil, nil, nil, true)--Seems CD long enough not too spammy, requested feature.
+local specWarnSlow								= mod:NewSpecialWarningDispel(157801, "Healer", nil, nil, nil, nil, true)--Seems CD long enough not too spammy, requested feature.
 local specWarnTransitionEnd						= mod:NewSpecialWarningEnd(157278)
 local specWarnNetherEnergy						= mod:NewSpecialWarningCount(178468)
 --Intermission: Lineage of Power
@@ -106,17 +106,17 @@ local specWarnGrowingDarkness					= mod:NewSpecialWarningMove(176533, nil, nil, 
 local specWarnDarkStar							= mod:NewSpecialWarningSpell(178607, nil, nil, nil, 2)--Change to target/near warning if targetscanning or any other method to detect target possible.
 
 --All Phases (No need to use different timers for empowered abilities. Short names better for timers.)
-local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238, nil, not mod:IsTank())--Pretty much a next timer, HOWEVER can get delayed by other abilities so only reason it's CD timer anyways
-local timerDestructiveResonanceCD				= mod:NewCDTimer(15, 156467, nil, not mod:IsMelee())--16-30sec variation noted. I don't like it
-local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605, nil, mod:IsTank())
-local timerMarkOfChaosCD						= mod:NewCDTimer(50.5, 158605, nil, mod:IsTank())
+local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238, nil, "-Tank")--Pretty much a next timer, HOWEVER can get delayed by other abilities so only reason it's CD timer anyways
+local timerDestructiveResonanceCD				= mod:NewCDTimer(15, 156467, nil, "-Melee")--16-30sec variation noted. I don't like it
+local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605, nil, "Tank")
+local timerMarkOfChaosCD						= mod:NewCDTimer(50.5, 158605, nil, "Tank")
 local timerForceNovaCD							= mod:NewCDCountTimer(45, 157349)--45-52
 local timerForceNovaFortification				= mod:NewNextTimer(9, 157349)--For replication nova
-local timerSummonArcaneAberrationCD				= mod:NewCDCountTimer(45, "ej9945", nil, not mod:IsHealer(), nil, 156471)--45-52 Variation Noted
+local timerSummonArcaneAberrationCD				= mod:NewCDCountTimer(45, "ej9945", nil, "-Healer", nil, 156471)--45-52 Variation Noted
 local timerTransition							= mod:NewPhaseTimer(74)
 --Intermission: Lineage of Power
-local timerCrushArmorCD							= mod:NewNextTimer(6, 158553, nil, mod:IsTank())
-local timerKickToFaceCD							= mod:NewNextTimer(20, 158563, nil, mod:IsTank())
+local timerCrushArmorCD							= mod:NewNextTimer(6, 158553, nil, "Tank")
+local timerKickToFaceCD							= mod:NewNextTimer(20, 158563, nil, "Tank")
 --Mythic
 local timerGaze									= mod:NewBuffFadesTimer(10, 165595)
 local timerGlimpseOfMadnessCD					= mod:NewNextCountTimer(27, 165243)
@@ -124,8 +124,8 @@ local timerInfiniteDarknessCD					= mod:NewNextTimer(62, 165102)
 local timerEnvelopingNightCD					= mod:NewNextCountTimer(63, 165876)--60 seconds plus 3 second cast
 local timerDarkStarCD							= mod:NewCDTimer(61, 178607)--61-65 Variations noticed
 
-local countdownArcaneWrath						= mod:NewCountdown(50, 156238, not mod:IsTank())--Probably will add for whatever proves most dangerous on mythic
-local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, mod:IsTank())
+local countdownArcaneWrath						= mod:NewCountdown(50, 156238, "-Tank")--Probably will add for whatever proves most dangerous on mythic
+local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, "Tank")
 local countdownForceNova						= mod:NewCountdown("AltTwo45", 157349)
 local countdownTransition						= mod:NewCountdown(74, 157278)
 --Mythic
@@ -133,17 +133,17 @@ local countdownEnvelopingNight					= mod:NewCountdown(63, 165876)
 local countdownGaze								= mod:NewCountdownFades("Alt10", 165595)
 local countdownDarkStar							= mod:NewCountdown("AltTwo61", 178607)
 
-local voiceDestructiveResonance 				= mod:NewVoice(156467, not mod:IsMelee())
+local voiceDestructiveResonance 				= mod:NewVoice(156467, "-Melee")
 local voiceForceNova	 						= mod:NewVoice(157349)
-local voiceAcceleratedAssault					= mod:NewVoice(159515, mod:IsTank())
+local voiceAcceleratedAssault					= mod:NewVoice(159515, "Tank")
 local voiceMarkOfChaos							= mod:NewVoice(158605)
 local voicePhaseChange							= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT) --this string should write into language file
 local voiceFixate								= mod:NewVoice(157763)
-local voiceArcaneAberration						= mod:NewVoice("OptionVersion2", 156471, not mod:IsHealer())
+local voiceArcaneAberration						= mod:NewVoice("OptionVersion2", 156471, "-Healer")
 local voiceEnvelopingNight 						= mod:NewVoice(165876)
 local voiceGrowingDarkness						= mod:NewVoice(176533)
 local voiceBranded								= mod:NewVoice(156225)
-local voiceSlow									= mod:NewVoice(157801, mod:IsHealer())
+local voiceSlow									= mod:NewVoice(157801, "Healer")
 
 mod:AddRangeFrameOption("35/13/5/4")
 mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)

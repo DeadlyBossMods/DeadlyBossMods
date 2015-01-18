@@ -36,7 +36,7 @@ local specWarnArcaneVolatility		= mod:NewSpecialWarningMoveAway(163372, nil, nil
 local yellArcaneVolatility			= mod:NewYell(163372)--Mythic
 --Pol
 local specWarnShieldCharge			= mod:NewSpecialWarningSpell(158134, nil, nil, nil, 2, nil, true)
-local specWarnInterruptingShout		= mod:NewSpecialWarningCast("OptionVersion2", 158093, mod:IsSpellCaster())
+local specWarnInterruptingShout		= mod:NewSpecialWarningCast("OptionVersion2", 158093, "SpellCaster")
 local specWarnPulverize				= mod:NewSpecialWarningSpell(158385, nil, nil, nil, 2, nil, true)
 local specWarnArcaneCharge			= mod:NewSpecialWarningSpell(163336, nil, nil, nil, 2)
 
@@ -47,7 +47,7 @@ local timerQuakeCD					= mod:NewNextCountTimer(34, 158200)
 --Pol (84 seconds full rotation, 28-29 seconds in between)
 local timerShieldChargeCD			= mod:NewNextTimer(28, 158134)
 local timerInterruptingShoutCD		= mod:NewNextTimer(28, 158093)
-local timerInterruptingShout		= mod:NewCastTimer(3, 158093, nil, mod:IsSpellCaster())
+local timerInterruptingShout		= mod:NewCastTimer(3, 158093, nil, "SpellCaster")
 local timerPulverizeCD				= mod:NewNextTimer(29, 158385)
 --^^Even though 6 cd timers, coded smart to only need 2 up at a time, by using the predictability of "next ability" timing.
 local timerArcaneTwistedCD			= mod:NewNextTimer(55, 163297)
@@ -57,7 +57,7 @@ local berserkTimer					= mod:NewBerserkTimer(420)--As reported in feedback threa
 
 local countdownPhemos				= mod:NewCountdown(33, nil, nil, "PhemosSpecial")
 local countdownPol					= mod:NewCountdown("Alt28", nil, nil, "PolSpecial")
-local countdownArcaneVolatility		= mod:NewCountdown("AltTwo60", 163372, not mod:IsTank())
+local countdownArcaneVolatility		= mod:NewCountdown("AltTwo60", 163372, "-Tank")
 
 local voicePhemos					= mod:NewVoice(nil, nil, "PhemosSpecialVoice")
 local voicePol						= mod:NewVoice(nil, nil, "PolSpecialVoice")

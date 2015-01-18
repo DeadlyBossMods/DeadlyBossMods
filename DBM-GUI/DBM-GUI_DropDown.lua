@@ -135,6 +135,7 @@ do
 				if values[i+self.offset].font then
 					_G[self.buttons[i]:GetName().."NormalText"]:SetFont(values[i+self.offset].font, values[i+self.offset].fontsize or 14)
 				else
+					_G[self.buttons[i]:GetName().."NormalText"]:SetFont(STANDARD_TEXT_FONT, 10)
 					_G[self.buttons[i]:GetName().."NormalText"]:SetFontObject(GameFontHighlightSmall)
 				end
 				self.buttons[i]:Show()
@@ -188,7 +189,7 @@ do
 		end
 	end
 	
-	function DBM_GUI:CreateDropdown(title, values, selected, callfunc, width, parent)
+	function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, parent)
 		local FrameTitle = "DBM_GUI_DropDown"
 		
 		-- Check Values
@@ -231,15 +232,7 @@ do
 				TabFrame1:ShowMenu(self:GetParent().values)
 			end
 		end)
-		
-		for k,v in next, dropdown.values do
-			if v.value ~= nil and v.value == selected or v.text == selected then
-				_G[dropdown:GetName().."Text"]:SetText(v.text)
-				dropdown.value = v.value
-				dropdown.text = v.text
-			end
-		end
-		
+
 		if not (not title or title == "") then
 			dropdown.titletext = dropdown:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
 			dropdown.titletext:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 0)
@@ -248,6 +241,15 @@ do
 		end
 		
 		local obj = setmetatable(dropdown, {__index = dropdownPrototype})
+
+		if vartype and vartype == "DBM" and DBM.Options[var] ~= nil then
+			dropdown:SetScript("OnShow", function() dropdown:SetSelectedValue(DBM.Options[var]) end)
+		elseif vartype and vartype == "DBT" then
+			dropdown:SetScript("OnShow", function() dropdown:SetSelectedValue(DBM.Bars:GetOption(var)) end)
+		elseif vartype then
+			dropdown:SetScript("OnShow", function() dropdown:SetSelectedValue(vartype.Options[var]) end)
+		end
+
 		return obj
 	end
 end
