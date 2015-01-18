@@ -2768,9 +2768,6 @@ do
 		local area = panel:CreateArea(nil, panel.frame:GetWidth() - 20, 0)
 		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -150 or -25)
 		area.onshowcall = {}
-		if area.frame:GetScript("OnShow") then
-			area.frame:GetScript("OnShow")(self)
-		end
 
 		for _, mod in ipairs(DBM.Mods) do
 			if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) and not mod.isTrashMod then
