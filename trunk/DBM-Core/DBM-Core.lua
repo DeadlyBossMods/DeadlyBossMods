@@ -2441,7 +2441,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			savedOptions[id][profileNum] = oldTable
 		end
 		if not savedOptions[id][profileNum] and not first then--previous profile not found. load defaults
-			self:Debug("LoadModOptions: No saved options, creating defaults for profile "..profileNum)
+			self:Debug("LoadModOptions: No saved options, creating defaults for profile "..profileNum, 2)
 			local defaultOptions = {}
 			for option, optionValue in pairs(mod.DefaultOptions) do
 				if type(optionValue) == "string" then
