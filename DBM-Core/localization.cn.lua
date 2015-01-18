@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Jan 10, 2015@12371
+-- Last update: Jan 18, 2015@12472
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -58,6 +58,27 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s作战%s前开始，正在恢复计时条�
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor logging started."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor logging ended."
 
+DBM_CORE_PROFILE_CREATED			= "配置文件 '%s' 已经创建."
+DBM_CORE_PROFILE_CREATE_ERROR		= "配置文件创建失败. 无效的配置文件名."
+DBM_CORE_PROFILE_APPLIED			= "配置文件 '%s' 已经应用."
+DBM_CORE_PROFILE_APPLY_ERROR		= "配置文件应用失败. '%s' 并不存在."
+DBM_CORE_PROFILE_DELETED			= "配置文件 '%s' 已经删除. 'Default' 默认配置文件会被应用."
+DBM_CORE_PROFILE_DELETE_ERROR		= "配置文件删除失败. '%s' 并不存在."
+DBM_CORE_PROFILE_CANNOT_DELETE		= "'Default' 默认配置文件无法被删除"
+DBM_CORE_MPROFILE_COPY_SUCCESS		= "%s 的 s (%d 专精) 模块设置已经被复制."
+DBM_CORE_MPROFILE_COPY_SELF_ERROR	= "无法自己复制自己的配置文件"
+DBM_CORE_MPROFILE_COPY_S_ERROR		= "复制的源出错. 源配置文件可能版本过旧或被篡改."
+DBM_CORE_MPROFILE_COPYS_SUCCESS		= "%s 的 s (%d 专精) 模块声音设置已经被复制."
+DBM_CORE_MPROFILE_COPYS_SELF_ERROR	= "无法自己复制自己的声音配置文件"
+DBM_CORE_MPROFILE_COPYS_S_ERROR		= "复制的源出错. 源配置文件可能版本过旧或被篡改."
+DBM_CORE_MPROFILE_DELETE_SUCCESS	= "%s 的 s (%d 专精)  模块设置已经被删除."
+DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "无法删除一个正在使用的配置文件."
+DBM_CORE_MPROFILE_DELETE_S_ERROR	= "删除的源出错. 源配置文件可能版本过旧或被篡改."
+
+DBM_CORE_ALLMOD_DEFAULT_LOADED		= "本副本里的所有Boss配置已经被初始化"
+DBM_CORE_ALLMOD_STATS_RESETED		= "所有模组的状态已被重置"
+DBM_CORE_MOD_DEFAULT_LOADED			= "将会使用默认设置来进行本场战斗"
+
 DBM_CORE_WORLDBOSS_ENGAGED			= "世界Boss-%s可能正在作战。当前还有%s的生命值。 (由%s的DBM发送)"
 DBM_CORE_WORLDBOSS_DEFEATED			= "世界Boss-%s可能战斗结束了。 (由%s的DBM发送)"
 
@@ -106,7 +127,7 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d) %s"--One Boss mod
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s：未安装DBM"
 DBM_CORE_VERSIONCHECK_OUTDATED		= "下列%d名玩家的DBM版本已经过期:%s"
-DBM_CORE_VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用DBM"
+DBM_CORE_VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用DBM， %d名成员正在使用Bigwigs"
 DBM_CORE_YOUR_VERSION_OUTDATED		= "你的DBM已经过期。请访问 http://dev.deadlybossmods.com 下载最新版本。"
 DBM_CORE_OUTDATED_PVP_MODS			= "你当前使用的DBM-PVP模块已经过期。PVP模块现在需要单独下载。请访问 http://www.deadlybossmods.com"
 DBM_CORE_VOICE_PACK_OUTDATED		= "你当前使用的DBM语音包已经过期。特殊警报屏蔽（当心，毁灭）已被禁用。请下载最新语音包，或联系语音包作者更新。"
@@ -193,6 +214,7 @@ DBM_CORE_ANNOUNCE_BREAK_OVER		= "休息已结束"
 DBM_CORE_TIMER_PULL					= "开怪倒计时"
 DBM_CORE_ANNOUNCE_PULL				= "%d秒后开怪 （由 %s 发送）"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "开怪！"
+DBM_CORE_GEAR_WARNING				= "警告：请检查你的装备. 你当前的装备装等比背包装等低了 %d 点。"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "成就：限时击杀"
 
