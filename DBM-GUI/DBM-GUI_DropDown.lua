@@ -41,6 +41,7 @@ do
 	local BackDropTable = { bgFile = "" }
 
 	local TabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", UIParent)
+	local ClickFrame = CreateFrame("Button", nil, UIParent)
 
 	TabFrame1:SetBackdrop({
 		bgFile="Interface\\DialogFrame\\UI-DialogBox-Background",
@@ -155,6 +156,7 @@ do
 		for k, button in pairs(self.buttons) do
 			button:SetWidth(width)
 		end
+		ClickFrame:Show()
 	end
 
 	function TabFrame1:HideMenu()
@@ -167,12 +169,21 @@ do
 		self:SetWidth(default_button_width+22)
 		self:Hide()
 		self.text:Hide()
+		ClickFrame:Hide()
 	end
 
 	function TabFrame1:Refresh()
 		self:ShowMenu(self.dropdown.values)
 	end
 	
+	ClickFrame:SetAllPoints(DBM_GUI_OptionsFrame)
+	ClickFrame:SetFrameStrata("TOOLTIP")
+	ClickFrame:RegisterForClicks("AnyDown")
+	ClickFrame:Hide()
+	ClickFrame:SetScript("OnClick", function()
+		TabFrame1:HideMenu()
+	end)
+
 	------------------------------------------------------------------------------------------
 	
 	local dropdownPrototype = CreateFrame("Frame")
