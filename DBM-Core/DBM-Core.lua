@@ -2601,7 +2601,7 @@ function DBM:CopyAllModOption(modId, sourceName, sourceProfile)
 	local targetName = playerName.."-"..playerRealm
 	local targetProfile = DBM_UseDualProfile and currentSpecGroup or 0
 	-- do not copy setting itself
-	if fullname == sourceName and targetProfile == sourceProfile then
+	if targetName == sourceName and targetProfile == sourceProfile then
 		self:AddMsg(DBM_CORE_MPROFILE_COPY_SELF_ERROR)
 		return
 	end
