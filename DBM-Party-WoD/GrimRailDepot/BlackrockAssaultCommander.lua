@@ -20,19 +20,18 @@ local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnSupressiveFire		= mod:NewTargetAnnounce(160681, 2)--In a repeating loop
 --local warnGrenadeDown			= mod:NewAnnounce("warnGrenadeDown", 1, "ej9711", nil, DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format("ej9711"))--Boss is killed by looting using these positive items on him.
 --local warnMortarDown			= mod:NewAnnounce("warnMortarDown", 4, "ej9712", nil, DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format("ej9712"))--So warn when adds that drop them die
-local warnShrapnelBlast			= mod:NewCastAnnounce(160943, 4)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
 
 local specWarnSupressiveFire	= mod:NewSpecialWarningYou(160681)
 local yellSupressiveFire		= mod:NewYell(160681)
-local specWarnShrapnelblast		= mod:NewSpecialWarningDodge(160943, mod:IsTank(), nil, nil, 3)--160943 boss version, 166675 trash version.
+local specWarnShrapnelblast		= mod:NewSpecialWarningDodge(160943, "Tank", nil, nil, 3)--160943 boss version, 166675 trash version.
 local specWarnSlagBlast			= mod:NewSpecialWarningMove(166570)
 
 local timerSupressiveFire		= mod:NewTargetTimer(10, 160681)
 
 local voiceSupressiveFire		= mod:NewVoice(160681)
 local voiceSlagBlast			= mod:NewVoice(166570)
-local voiceShrapnelblast		= mod:NewVoice(160943, mod:IsTank())
+local voiceShrapnelblast		= mod:NewVoice(160943, "Tank")
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 local grenade = EJ_GetSectionInfo(9711)
@@ -71,7 +70,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 160680 then
 		self:BossTargetScanner(79548, "SupressiveFireTarget", 0.2, 15)
 	elseif spellId == 160943 and self:AntiSpam(2, 1) then
-		warnShrapnelBlast:Show()
 		specWarnShrapnelblast:Show()
 		voiceShrapnelblast:Play("runaway")
 	end

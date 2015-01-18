@@ -49,7 +49,7 @@ local warnDarkHunt						= mod:NewTargetAnnounce(158315, 4)--Could not verify
 ----Marak the Blooded
 local warnBloodRitual					= mod:NewTargetAnnounce(158078, 3)
 local warnBloodsoakedHeartseeker		= mod:NewTargetAnnounce(158010, 4)
-local warnSanguineStrikes				= mod:NewTargetAnnounce(156601, 3, nil, mod:IsHealer())
+local warnSanguineStrikes				= mod:NewTargetAnnounce(156601, 3, nil, "Healer")
 
 --Ship
 local specWarnBombardmentAlpha			= mod:NewSpecialWarningSpell(157854, nil, nil, nil, 2)--From ship, but affects NON ship.
@@ -57,7 +57,7 @@ local specWarnBombardmentOmega			= mod:NewSpecialWarningSpell(157886, nil, nil, 
 ----Blackrock Deckhand
 local specWarnEarthenbarrier			= mod:NewSpecialWarningInterrupt(158708, nil, nil, nil, nil, nil, true)
 ----Shattered Hand Deckhand
-local specWarnDeadlyThrow				= mod:NewSpecialWarningSpell(158692, mod:IsTank())
+local specWarnDeadlyThrow				= mod:NewSpecialWarningSpell(158692, "Tank")
 local specWarnFixate					= mod:NewSpecialWarningYou(158702)
 ----Bleeding Hollow Deckhand
 local specWarnCorruptedBlood			= mod:NewSpecialWarningMove(158683)
@@ -76,11 +76,11 @@ local yellConvulsiveShadows				= mod:NewYell(156214, nil, false)
 local specWarnDarkHunt					= mod:NewSpecialWarningTarget(158315, false, nil, nil, nil, nil, true)--Healer may want this, or raid leader
 ----Marak the Blooded
 local specWarnBloodRitual				= mod:NewSpecialWarningYou(158078)
-local specWarnBloodRitualOther			= mod:NewSpecialWarningTarget(158078, mod:IsMelee(), nil, nil, nil, nil, true)
+local specWarnBloodRitualOther			= mod:NewSpecialWarningTarget(158078, "Melee", nil, nil, nil, nil, true)
 local yellBloodRitual					= mod:NewYell(158078)
 local specWarnBloodsoakedHeartseeker	= mod:NewSpecialWarningRun(158010, nil, nil, nil, 4, nil, true)
 local yellHeartseeker					= mod:NewYell(158010, nil, false)
-local specWarnSanguineStrikes			= mod:NewSpecialWarningTarget(156601, mod:IsHealer(), nil, nil, nil, nil, true)
+local specWarnSanguineStrikes			= mod:NewSpecialWarningTarget(156601, "Healer", nil, nil, nil, nil, true)
 
 --Ship
 local timerShipCD						= mod:NewNextTimer(198, "ej10019", nil, nil, nil, 76204)
@@ -102,12 +102,12 @@ local timerBladeDashCD					= mod:NewNextTimer(20, 155794)
 local timerHeartSeekerCD				= mod:NewNextTimer(51, 158010)
 
 local voiceRapidFire					= mod:NewVoice(156631) --runout
-local voiceBloodRitual					= mod:NewVoice(158078, mod:IsMelee()) --158078.ogg, farawayfromline
+local voiceBloodRitual					= mod:NewVoice(158078, "Melee") --158078.ogg, farawayfromline
 local voiceHeartSeeker					= mod:NewVoice(158010) --spread
 local voiceShip							= mod:NewVoice("ej10019") --1695uktar, 1695gorak, 1695ukurogg
 local voiceEarthenbarrier				= mod:NewVoice(158708)  --int
 --local voiceSanguineStrikes				= mod:NewVoice(156601, mod:IsHealer()) --healteam
-local voiceDeployTurret					= mod:NewVoice(158599, mod:IsDps()) --158599.ogg attack turret
+local voiceDeployTurret					= mod:NewVoice(158599, "Dps") --158599.ogg attack turret
 local voiceConvulsiveShadows			= mod:NewVoice(156214) --runaway, target
 local voiceDarkHunt						= mod:NewVoice(158315) --defensive, target
 

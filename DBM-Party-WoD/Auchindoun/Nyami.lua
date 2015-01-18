@@ -15,20 +15,20 @@ mod:RegisterEventsInCombat(
 
 --TODO, soul vessel is probably wrong now.
 --Even on CM, fights too short to get a good soulvessel timer. Still need better logs
-local warnSWP					= mod:NewTargetAnnounce(154477, 2, nil, mod:IsHealer())
+local warnSWP					= mod:NewTargetAnnounce(154477, 2, nil, "Healer")
 local warnSoulVessel			= mod:NewSpellAnnounce(155327, 4)
 local warnTornSpirits			= mod:NewSpellAnnounce(153991, 3)
 
-local specWarnSWP				= mod:NewSpecialWarningDispel(154477, mod:IsHealer())
+local specWarnSWP				= mod:NewSpecialWarningDispel(154477, "Healer")
 local specWarnSoulVessel		= mod:NewSpecialWarningSpell(155327, nil, nil, nil, 2)
 local specWarnSoulVesselEnd		= mod:NewSpecialWarningEnd(155327)
-local specWarnTornSpirits		= mod:NewSpecialWarningSwitch(153991, not mod:IsHealer())
+local specWarnTornSpirits		= mod:NewSpecialWarningSwitch(153991, "-Healer")
 
 local timerSoulVessel			= mod:NewBuffActiveTimer(11.5, 155327)
 local timerSoulVesselCD			= mod:NewCDTimer(51.5, 155327)
 local timerTornSpiritsCD		= mod:NewCDTimer(25.5, 153991)
 
-local voiceSWP					= mod:NewVoice(154477, mod:IsHealer())
+local voiceSWP					= mod:NewVoice(154477, "Healer")
 local voiceSoulVessel			= mod:NewVoice(155327)
 local voiceTornSpirits			= mod:NewVoice(153994)
 

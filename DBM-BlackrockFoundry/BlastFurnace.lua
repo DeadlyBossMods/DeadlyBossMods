@@ -23,31 +23,31 @@ mod:RegisterEventsInCombat(
 
 --TODO, figure out how to detect OTHER add spawns besides operator and get timers for them too. It's likely the'll require ugly scheduling and /yell logging. 
 local warnBomb					= mod:NewTargetAnnounce(155192, 4)
-local warnDeafeningRoar			= mod:NewSpellAnnounce(177756, 3, nil, mod:IsTank())
+local warnDeafeningRoar			= mod:NewSpellAnnounce(177756, 3, nil, "Tank")
 local warnDropBombs				= mod:NewSpellAnnounce(174726, 1)
 local warnRupture				= mod:NewTargetAnnounce(156932, 3)--Uses SPELL_CAST_SUCCESS because blizzard is dumb and debuff apply and standing in fire apply same spellid, only way to report ONLY debuff is use SUCCESS
-local warnCauterizeWounds		= mod:NewCastAnnounce(155186, 4, nil, nil, not mod:IsHealer())
+local warnCauterizeWounds		= mod:NewCastAnnounce(155186, 4, nil, nil, "-Healer")
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnPryclasm				= mod:NewCastAnnounce(156937, 3, nil, nil, false)
 local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4)
 local warnHeartoftheMountain	= mod:NewSpellAnnounce("ej9641", 3, 2894)
-local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, mod:IsTank())
+local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 
 local specWarnBomb				= mod:NewSpecialWarningYou(155192, nil, nil, nil, 3, nil, true)
-local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("OptionVersion2", "ej9650", not mod:IsHealer(), nil, nil, nil, nil, true)
-local specWarnDeafeningRoar		= mod:NewSpecialWarningDodge("OptionVersion2", 177756, mod:IsTank(), nil, nil, 3)
-local specWarnDefense			= mod:NewSpecialWarningMove(160382, mod:IsTank(), nil, nil, nil, nil, true)
-local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, not mod:IsHealer(), nil, nil, nil, nil, true)
+local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("OptionVersion2", "ej9650", "-Healer", nil, nil, nil, nil, true)
+local specWarnDeafeningRoar		= mod:NewSpecialWarningDodge("OptionVersion2", 177756, "Tank", nil, nil, 3)
+local specWarnDefense			= mod:NewSpecialWarningMove(160382, "Tank", nil, nil, nil, nil, true)
+local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, "-Healer", nil, nil, nil, nil, true)
 local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932)
 local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, nil, nil, true)
 local specWarnFixate			= mod:NewSpecialWarningYou(155196)
 local specWarnMelt				= mod:NewSpecialWarningMove(155223, nil, nil, nil, nil, nil, true)
-local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, not mod:IsHealer())--if spammy, will switch to target/focus type only
+local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, "-Healer")--if spammy, will switch to target/focus type only
 local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
 local specVolatileFire			= mod:NewSpecialWarningMoveAway(176121)
 local yellVolatileFire			= mod:NewYell(176121)
-local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", mod:IsDps())
-local specWarnHeartoftheMountain= mod:NewSpecialWarningSwitch("ej9641", mod:IsTank())
+local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", "Dps")
+local specWarnHeartoftheMountain= mod:NewSpecialWarningSwitch("ej9641", "Tank")
 local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3, nil, nil, nil, nil, true)
 local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242, nil, nil, nil, nil, nil, true)
 local specWarnBlast				= mod:NewSpecialWarningSpell(155209, nil, nil, nil, 2)
@@ -56,16 +56,16 @@ local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
 local timerBlastCD				= mod:NewCDTimer(25, 155209)--25 seconds base. shorter when loading is being channeled by operators.
 local timerEngineer				= mod:NewNextTimer(45, "ej9649", nil, nil, nil, 155179)
 local timerBellowsOperator		= mod:NewNextTimer(60, "ej9655", nil, nil, nil, 155181)
-local timerShieldsDown			= mod:NewBuffActiveTimer(25, 158345, nil, mod:IsDps())--Anyone else need?
+local timerShieldsDown			= mod:NewBuffActiveTimer(25, 158345, nil, "Dps")--Anyone else need?
 
 local countdownBellowsOperator	= mod:NewCountdown(60, "ej9650")
 local countdownEngineer			= mod:NewCountdown("Alt45", "ej9649")
 
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceRepair				= mod:NewVoice(155179, not mod:IsHealer()) --int
+local voiceRepair				= mod:NewVoice(155179, "-Healer") --int
 local voiceBomb 				= mod:NewVoice(155192) --bombyou.ogg, bomb on you
-local voiceDefense 				= mod:NewVoice(160382, mod:IsTank()) --taunt mobout
-local voiceBellowsOperator 		= mod:NewVoice("ej9650", not mod:IsHealer())
+local voiceDefense 				= mod:NewVoice(160382, "Tank") --taunt mobout
+local voiceBellowsOperator 		= mod:NewVoice("ej9650", "-Healer")
 local voiceRupture				= mod:NewVoice(156932) --runaway
 local voiceMelt					= mod:NewVoice(155223) --runaway
 local voiceHeat					= mod:NewVoice(155242) --changemt
@@ -80,16 +80,16 @@ local dkAMS = GetSpellInfo(48707)
 --I was pretty bad at doing /yell adds in my chat log so this may not be perfect.
 --It may not be 45 at all. Or at least first may not be 45 so rest will be off by a couple sec.
 --Todo, verify and improve. Putting timer in to catch it if wrong faster, but adding warnings only after it's right.
-local function Adds()
+local function Adds(self)
 	timerEngineer:Start()
 	countdownEngineer:Start()
-	mod:Schedule(45, Adds)
+	self:Schedule(45, Adds, self)
 end
 
 function mod:OnCombatStart(delay)
 	self.vb.machinesDead = 0
 	self.vb.elementalistsDead = 0
-	self:Schedule(45, Adds)
+	self:Schedule(45, Adds, self)
 	timerEngineer:Start()
 	countdownEngineer:Start()
 	if self:AntiSpam(10, 0) then--Force this antispam on pull so first two adds "loading" doesn't start 60 second timer

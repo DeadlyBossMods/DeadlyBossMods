@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 47376 47340 47442 51413"
 )
 
-local warnDisarm			= mod:NewCastAnnounce(47310, 2, nil, nil, mod:IsMelee())
+local warnDisarm			= mod:NewCastAnnounce(47310, 2, nil, nil, "Melee")
 local warnBarrel			= mod:NewTargetAnnounce(51413, 4)
 
 local specWarnBrew			= mod:NewSpecialWarning("specWarnBrew")
@@ -26,7 +26,7 @@ local timerBrew				= mod:NewTargetTimer(10, 47376, nil, false)
 local timerBrewStun			= mod:NewTargetTimer(6, 47340, nil, false)
 local timerDisarm			= mod:NewCastTimer(4, 47310)
 
-mod:AddBoolOption("YellOnBarrel", mod:IsTank(), "announce")
+mod:AddBoolOption("YellOnBarrel", "Tank", "announce")
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 47310 then

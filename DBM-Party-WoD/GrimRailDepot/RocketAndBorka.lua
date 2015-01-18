@@ -20,21 +20,20 @@ mod:SetBossHealthInfo(77803, 77816)
 local warnVX18B					= mod:NewCountAnnounce(162500, 2)--Cast twice, 3rd cast is X2101, then repeats
 local warnX2101AMissile			= mod:NewSpellAnnounce(162407, 4)
 local warnMadDash				= mod:NewSpellAnnounce(161090, 3)
-local warnSlam					= mod:NewCastAnnounce(162617, 3, 1.5, nil, mod:IsSpellCaster())
 
 local specWarnX2101AMissile		= mod:NewSpecialWarningSpell(162407, nil, nil, nil, 2)--Large AOE damage
 local specWarnMadDash			= mod:NewSpecialWarningSpell(161090, nil, nil, nil, 2)--DPS version of this warning
 local specWarnMadDashInterrupt	= mod:NewSpecialWarningInterrupt(161090, true, false)--It's actually an interrupt warning for OTHER boss, not caster of this spell
-local specWarnSlam				= mod:NewSpecialWarningCast(162617, mod:IsSpellCaster(), nil, nil, nil, nil, true)
+local specWarnSlam				= mod:NewSpecialWarningCast(162617, "SpellCaster", nil, nil, nil, nil, true)
 
 local timerVX18BCD				= mod:NewCDTimer(33, 162500)
 local timerX2101AMissileCD		= mod:NewCDTimer(40, 162407)
 local timerMadDashCD			= mod:NewCDTimer(40, 161090)
-local timerSlamCD				= mod:NewCDTimer(15, 162617, nil, mod:IsSpellCaster())
-local timerSlam					= mod:NewCastTimer(1.5, 162617, nil, mod:IsSpellCaster())
+local timerSlamCD				= mod:NewCDTimer(15, 162617, nil, "SpellCaster")
+local timerSlam					= mod:NewCastTimer(1.5, 162617, nil, "SpellCaster")
 local timerRecovering			= mod:NewBuffActiveTimer(6, 163947)
 
-local voiceSlam					= mod:NewVoice(162617, mod:IsSpellCaster())
+local voiceSlam					= mod:NewVoice(162617, "SpellCaster")
 
 local rocketsName = EJ_GetSectionInfo(9430)
 local borkaID = nil
@@ -87,7 +86,6 @@ function mod:SPELL_CAST_START(args)
 		timerMadDashCD:Start()
 	elseif spellId == 162617 then
 		self.vb.SlamCast = self.vb.SlamCast + 1
-		warnSlam:Show()
 		specWarnSlam:Show()
 		timerSlam:Start()
 		voiceSlam:Play("stopcast")

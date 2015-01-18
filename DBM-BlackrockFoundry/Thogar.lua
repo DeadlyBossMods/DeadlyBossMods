@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 --TODO, add audio countdown for trains when the train timers are proven good and support whole fight.
 --Operator Thogar
 local warnProtoGrenade				= mod:NewSpellAnnounce(155864, 3)
-local warnEnkindle					= mod:NewStackAnnounce(155921, 2, nil, mod:IsTank())
+local warnEnkindle					= mod:NewStackAnnounce(155921, 2, nil, "Tank")
 local warnTrain						= mod:NewCountAnnounce(176312, 4)--Switch from generic and make informing one when mythicTrains (and non mythic trains too) are more populated.
 --Adds
 local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)
@@ -32,16 +32,16 @@ local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195, nil, nil, nil, 
 local specWarnEnkindle				= mod:NewSpecialWarningStack(155921, nil, 2)
 local specWarnEnkindleOther			= mod:NewSpecialWarningTaunt(155921)
 --Adds
-local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt(160140, not mod:IsHealer())
+local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt(160140, not "Healer")
 local specWarnIronbellow			= mod:NewSpecialWarningSpell(163753, nil, nil, nil, 2)
 local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481)
 local yellDelayedSiegeBomb			= mod:NewYell(159481)
-local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", not mod:IsHealer())
+local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", "-Healer")
 --local specWarnObliteration		= mod:NewSpecialWarningMove(156494)--Debuff doesn't show in combat log, and dot persists after moving out of it so warning is pretty useless right now. TODO, see if UNIT_AURA player type check can work.
 
 --Operator Thogar
 local timerProtoGrenadeCD			= mod:NewCDTimer(16, 155864)
-local timerEnkindleCD				= mod:NewCDTimer(16.5, 155921, nil, mod:IsTank())
+local timerEnkindleCD				= mod:NewCDTimer(16.5, 155921, nil, "Tank")
 local timerTrainCD					= mod:NewNextCountTimer(15, 176312)
 --Adds
 --local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140)

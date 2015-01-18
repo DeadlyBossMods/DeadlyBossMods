@@ -9,7 +9,8 @@
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariablesPerCharacter: DBMBlackrockFoundry_SavedVars, DBMBlackrockFoundry_SavedStats
+## SavedVariables: DBMBlackrockFoundry_AllSavedVars
+## SavedVariablesPerCharacter: DBMBlackrockFoundry_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: WOD

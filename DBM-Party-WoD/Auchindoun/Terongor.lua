@@ -19,24 +19,24 @@ mod:RegisterEventsInCombat(
 --TODO, get timers for other forms besides demonic, form chosen is RNG based so may take a few logs.
 --Basic Abilities
 local warnDrainLife				= mod:NewTargetAnnounce(156854, 4)
-local warnCorruption			= mod:NewTargetAnnounce(156842, 3, nil, mod:IsHealer())--Seems 1 phase only spell.
+local warnCorruption			= mod:NewTargetAnnounce(156842, 3, nil, "Healer")--Seems 1 phase only spell.
 local warnRainOfFire			= mod:NewSpellAnnounce(156857, 3)
 local warnFixate				= mod:NewTargetAnnounce("OptionVersion2", 157168, 2)
 --Affliction Abilities
 local warnSeedOfMalevolence		= mod:NewTargetAnnounce(156921, 3)
-local warnExhaustion			= mod:NewTargetAnnounce(164841, 3, nil, mod:CanRemoveCurse())
+local warnExhaustion			= mod:NewTargetAnnounce(164841, 3, nil, "RemoveCurse")
 --Destruction Abilities
 local warnChaosBolt				= mod:NewSpellAnnounce(156975, 4)--You can get target from yell immediately after cast start, but not much reason to localize for that, you always interrupt.
-local warnImmolate				= mod:NewTargetAnnounce(156964, 3, nil, mod:IsHealer())
+local warnImmolate				= mod:NewTargetAnnounce(156964, 3, nil, "Healer")
 --Demonic Abilities
 local warnDemonForm				= mod:NewSpellAnnounce(156919, 3)
 local warnDemonicLeap			= mod:NewTargetAnnounce(157039, 3)
 local warnChaosWave				= mod:NewTargetAnnounce(157001, 3)
-local warnDoom					= mod:NewTargetAnnounce(156965, 3, nil, mod:IsHealer())
+local warnDoom					= mod:NewTargetAnnounce(156965, 3, nil, "Healer")
 
 --Basic Abilities
-local specWarnDrainLife			= mod:NewSpecialWarningInterrupt(156854, not mod:IsHealer())
-local specWarnCorruption		= mod:NewSpecialWarningDispel(156842, mod:IsHealer())
+local specWarnDrainLife			= mod:NewSpecialWarningInterrupt(156854, "-IsHealer")
+local specWarnCorruption		= mod:NewSpecialWarningDispel(156842, "Healer")
 local specWarnRainOfFire		= mod:NewSpecialWarningSpell(156857, nil, nil, nil, 2)--156856 fires SUCCESS but do not use, it fires for any player walking in or out of it
 local specWarnRainOfFireMove	= mod:NewSpecialWarningMove(156857)
 --Unknown Abilities
@@ -44,10 +44,10 @@ local specWarnFixate			= mod:NewSpecialWarningRun("OptionVersion2", 157168, nil,
 --Affliction Abilities
 --TODO : Maybe need shit warning.
 local specWarnSeedOfMelevolence	= mod:NewSpecialWarningMoveAway(156921)
-local specWarnExhaustion		= mod:NewSpecialWarningDispel(164841, mod:CanRemoveCurse())
+local specWarnExhaustion		= mod:NewSpecialWarningDispel(164841, "RemoveCurse")
 --Destruction Abilities
-local specWarnChaosBolt			= mod:NewSpecialWarningInterrupt(156975, not mod:IsHealer(), nil, nil, 3)
-local specWarnImmolate			= mod:NewSpecialWarningDispel(156964, mod:IsHealer())
+local specWarnChaosBolt			= mod:NewSpecialWarningInterrupt(156975, "-Healer", nil, nil, 3)
+local specWarnImmolate			= mod:NewSpecialWarningDispel(156964, "Healer")
 --Demonic Abilities
 local specWarnDemonicLeap		= mod:NewSpecialWarningYou(157039)
 local yellDemonicLeap			= mod:NewYell(157039)
@@ -57,13 +57,13 @@ local specWarnDoom				= mod:NewSpecialWarningTarget(156965, false)
 
 --Basic Abilities
 local timerDrainLifeCD			= mod:NewCDTimer(15, 156854)--15~18 variation
-local timerFixate				= mod:NewTargetTimer("OptionVersion3", 12, 157168, nil, not mod:IsTank())
+local timerFixate				= mod:NewTargetTimer("OptionVersion3", 12, 157168, nil, "-Tank")
 local timerRainOfFireCD			= mod:NewCDTimer(12, 156857)--12-22sec variation phase 2. Unknown Phase 1 repeat timer
 --Destruction Abilities
 local timerChaosBoltCD			= mod:NewCDTimer(20.5, 156975)--20-25 variation.
-local timerImmolateCD			= mod:NewCDTimer(12, 156964, nil, mod:IsHealer())--Only timer that's probably not variable
+local timerImmolateCD			= mod:NewCDTimer(12, 156964, nil, "Healer")--Only timer that's probably not variable
 --Affliction Abilities
-local timerSeedOfMelevolence	= mod:NewTargetTimer(18, 156921, nil, not mod:IsTank())
+local timerSeedOfMelevolence	= mod:NewTargetTimer(18, 156921, nil, "-Tank")
 local timerSeedOfMelevolenceCD	= mod:NewCDTimer(22, 156921)--22-25
 --local timerExhaustionCD		= mod:NewCDTimer(14, 164841)--14~24 variation. Large variation, seems useless.
 --Demonic Abilities
@@ -74,11 +74,11 @@ local timerDemonicLeapCD		= mod:NewCDTimer(20, 157039)
 local countdownSeedOfMelevolence= mod:NewCountdownFades(18, 156921)
 
 local voiceWarnChaosWave		= mod:NewVoice(157001)
-local voiceCorruption			= mod:NewVoice(156842, mod:IsHealer())
-local voiceWarnImmolate			= mod:NewVoice(156964, mod:IsHealer())
+local voiceCorruption			= mod:NewVoice(156842, "Healer")
+local voiceWarnImmolate			= mod:NewVoice(156964, "Healer")
 local voiceSeedOfMelevolence	= mod:NewVoice(156921)
-local voiceChaosBolt			= mod:NewVoice(156975, not mod:IsHealer())
-local voiceWarnExhaustion		= mod:NewVoice(164841, mod:CanRemoveCurse())
+local voiceChaosBolt			= mod:NewVoice(156975, "-Healer")
+local voiceWarnExhaustion		= mod:NewVoice(164841, "RemoveCurse")
 
 mod:AddRangeFrameOption(10, 156921)
 

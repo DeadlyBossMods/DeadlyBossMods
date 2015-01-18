@@ -28,7 +28,7 @@ local specWarnCannonBarrage	= mod:NewSpecialWarningSpell(168929, nil, nil, nil, 
 local specWarnCannonBarrageE= mod:NewSpecialWarningEnd(168929)
 
 local timerRapidFireCD		= mod:NewNextTimer(12, 168398)
-local timerRapidFire		= mod:NewTargetTimer(5, 168398, nil, not mod:IsTank())
+local timerRapidFire		= mod:NewTargetTimer(5, 168398, nil, "-Tank")
 local timerGronSmashCD		= mod:NewCDTimer(70, 168227)--Timer is too variable, which is why i never enabled. every time i kill boss it's diff. today 2nd gron smash happened at 49 seconds, 21 seconds sooner than this timer
 
 local voiceRapidFire		= mod:NewVoice(168398)

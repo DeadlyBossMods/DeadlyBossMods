@@ -14,27 +14,19 @@ mod:RegisterEvents(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
-local warnRejuvSerum					= mod:NewTargetAnnounce(155498, 4, nil, mod:IsMagicDispeller())
 local warnDebilitatingRay				= mod:NewCastAnnounce(155505, 4)
-local warnSummonBlackIronDread			= mod:NewCastAnnounce(169088, 4)
-local warnSummonBlackIronVet			= mod:NewCastAnnounce(169151, 4)
-local warnVeilofShadow					= mod:NewCastAnnounce(155586, 4)--Challenge mode only
-local warnShadowBoltVolley				= mod:NewCastAnnounce(155588, 3)
-local warnEarthPounder					= mod:NewSpellAnnounce(154749, 4, nil, mod:IsMelee())
-local warnSmash							= mod:NewSpellAnnounce(155572, 4, nil, mod:IsTank())
-local warnFranticMauling				= mod:NewSpellAnnounce(154039, 4, nil, mod:IsMelee())
-local warnEruption						= mod:NewSpellAnnounce(155037, 4, nil, mod:IsTank())
+local warnEarthPounder					= mod:NewSpellAnnounce(154749, 4, nil, "Melee")
 
-local specWarnRejuvSerumDispel			= mod:NewSpecialWarningDispel(155498, mod:IsMagicDispeller())
-local specWarnDebilitatingRay			= mod:NewSpecialWarningInterrupt(155505, not mod:IsHealer())
-local specWarnSummonBlackIronDread		= mod:NewSpecialWarningInterrupt(169088, not mod:IsHealer())
-local specWarnSummonBlackIronVet		= mod:NewSpecialWarningInterrupt(169151, not mod:IsHealer())
-local specWarnVeilofShadow				= mod:NewSpecialWarningInterrupt(155586, not mod:IsHealer())--Challenge mode only(little spammy for mage)
-local specWarnVeilofShadowDispel		= mod:NewSpecialWarningDispel(155586, mod:CanRemoveCurse())
-local specWarnShadowBoltVolley			= mod:NewSpecialWarningInterrupt(155588, not mod:IsHealer())
-local specWarnSmash						= mod:NewSpecialWarningDodge(155572, mod:IsTank())
-local specWarnFranticMauling			= mod:NewSpecialWarningDodge(154039, mod:IsTank())
-local specWarnEruption					= mod:NewSpecialWarningDodge(155037, mod:IsTank())
+local specWarnRejuvSerumDispel			= mod:NewSpecialWarningDispel(155498, "MagicDispeller")
+local specWarnDebilitatingRay			= mod:NewSpecialWarningInterrupt(155505, "-Healer")
+local specWarnSummonBlackIronDread		= mod:NewSpecialWarningInterrupt(169088, "-Healer")
+local specWarnSummonBlackIronVet		= mod:NewSpecialWarningInterrupt(169151, "-Healer")
+local specWarnVeilofShadow				= mod:NewSpecialWarningInterrupt(155586, "-Healer")--Challenge mode only(little spammy for mage)
+local specWarnVeilofShadowDispel		= mod:NewSpecialWarningDispel(155586, "RemoveCurse")
+local specWarnShadowBoltVolley			= mod:NewSpecialWarningInterrupt(155588, "-Healer")
+local specWarnSmash						= mod:NewSpecialWarningDodge(155572, "Tank")
+local specWarnFranticMauling			= mod:NewSpecialWarningDodge(154039, "Tank")
+local specWarnEruption					= mod:NewSpecialWarningDodge(155037, "Tank")
 
 local timerSmashCD						= mod:NewCDTimer(13, 155572)
 local timerEruptionCD					= mod:NewCDTimer(10, 155037, nil, false)--10-15 sec variation. May be distracting or spammy since two of them
@@ -48,7 +40,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 155586 then
 		specWarnVeilofShadowDispel:Show(args.destName)
 	elseif spellId == 155498 and not args:IsDestTypePlayer() then
-		warnRejuvSerum:Show(args.destName)
 		specWarnRejuvSerumDispel:Show(args.destName)
 	end
 end
@@ -63,28 +54,22 @@ function mod:SPELL_CAST_START(args)
 			specWarnDebilitatingRay:Show(args.sourceName)
 		end
 	elseif spellId == 169088 then
-		warnSummonBlackIronDread:Show()
 		specWarnSummonBlackIronDread:Show(args.sourceName)
 	elseif spellId == 169151 then
-		warnSummonBlackIronVet:Show()
 		specWarnSummonBlackIronVet:Show(args.sourceName)
 	elseif spellId == 155586 and self:IsDifficulty("challenge5") then
 		warnVeilofShadow:Show()
 		specWarnVeilofShadow:Show(args.sourceName)
 	elseif spellId == 155588 then
-		warnShadowBoltVolley:Show()
 		specWarnShadowBoltVolley:Show(args.sourceName)
 	elseif spellId == 155572 then
 		if self:AntiSpam(2, 1) then
-			warnSmash:Show()
 			specWarnSmash:Show()
 		end
 		timerSmashCD:Start(nil, args.sourceGUID)
 	elseif spellId == 154039 and self:AntiSpam(2, 2) then
-		warnFranticMauling:Show()
 		specWarnFranticMauling:Show()
 	elseif spellId == 155037 then
-		warnEruption:Show()
 		specWarnEruption:Show()
 		timerEruptionCD:Start(nil, args.sourceGUID)
 	end

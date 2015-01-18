@@ -21,12 +21,12 @@ mod:RegisterEventsInCombat(
 --TODO, confirm if LFR Inferno Slice change actually also made mythic/heroic/normal or if they are still 13
 --TODO, recheck rampage timer on non LFR difficulties to see if longer there too (related to inferno slice change probably)
 --TODO, see if there is any way to impliment timers for smash and petrifyig slam. right now they are too variable. has to be a method to it.
-local warnOverwhelmingBlows			= mod:NewStackAnnounce(155078, 3, nil, mod:IsTank() or mod:IsHealer())--No special warnings, strats for this revolve around the inferno slice strat, not this debuff, so dbm isn't going to say when tanks should taunt here
+local warnOverwhelmingBlows			= mod:NewStackAnnounce(155078, 3, nil, "Tank|Healer")--No special warnings, strats for this revolve around the inferno slice strat, not this debuff, so dbm isn't going to say when tanks should taunt here
 local warnCrumblingRoar				= mod:NewSpellAnnounce(155730, 3, nil, false)--Cave ins
 local warnInfernoSlice				= mod:NewCountAnnounce(155080, 4)
 local warnPetrifyingSlam			= mod:NewSpellAnnounce(155326, 4)
 
-local specWarnInfernoSlice			= mod:NewSpecialWarningCount(155080, mod:IsTank() or mod:IsHealer(), nil, nil, nil, nil, true)
+local specWarnInfernoSlice			= mod:NewSpecialWarningCount(155080, "Tank|Healer", nil, nil, nil, nil, true)
 local specWarnRampage				= mod:NewSpecialWarningSpell(155539, nil, nil, nil, 2)
 local specWarnRampageEnded			= mod:NewSpecialWarningEnd(155539)
 local specWarnOverheadSmash			= mod:NewSpecialWarningCount(155301, nil, nil, nil, 2, nil, true)
