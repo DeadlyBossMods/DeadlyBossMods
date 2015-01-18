@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Jan 12, 2015@12395
+-- Last update: Jan 18, 2015@12472
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -245,6 +245,7 @@ L.Always				= "总是跳过"
 L.Panel_ExtraFeatures			= "其他功能"
 L.Area_ChatAlerts			= "聊天警告选项"
 L.RoleSpecAlert				= "当进入团队时，如果拾取专精与当前角色专精不同，则显示警告。"
+L.CheckGear					= "当你身上的装备装等低于背包装等40点时显示警告。(可能没有装备某物品或装备了低等级的任务道具)"
 L.WorldBossAlert			= "当世界BOSS进入战斗后发送警告，这个信息可能是你的朋友或者同工会成员发送的。 (由于跨服，卡位面等因素，可能不准确)"
 L.Area_SoundAlerts			= "语音警告选项"
 L.LFDEnhance				= "当发起角色检查时，播放准备音效"
@@ -257,6 +258,8 @@ L.LogOnlyRaidBosses			= "只记录团队BOSS，而不记录随机团队，5人�
 L.Area_Invite				= "组队邀请选项"
 L.AutoAcceptFriendInvite		= "自动接受来自好友列表里的好友的组队邀请"
 L.AutoAcceptGuildInvite			= "自动接受同工会成员的组队邀请"
+L.Area_Advanced				= "高级选项"
+L.FakeBW					= "当检查Bigwig时，假装DBM就是Bigwig"
 
 L.PizzaTimer_Headline 			= '创造一个自定义计时器'
 L.PizzaTimer_Title			= '名字 (如 “泡面倒计时”)'
@@ -266,5 +269,22 @@ L.PizzaTimer_Secs 			= "秒"
 L.PizzaTimer_ButtonStart	 	= "开始计时"
 L.PizzaTimer_BroadCast			= "向全团广播"
 
+L.Panel_Profile				= "配置文件"
+L.Area_CreateProfile        = "创建一个配置文件"
+L.EnterProfileName			= "输入配置文件名称"
+L.CreateProfile				= "创建DBM核心配置文件"
+L.Area_ApplyProfile			= "选择一个已有的DBM核心配置文件并应用它"
+L.SelectProfileToApply		= "选择一个配置文件并应用"
+L.Area_DeleteProfile		= "删除一个已有的DBM核心配置文件"
+L.SelectProfileToDelete		= "选择一个配置文件并删除"
+L.Area_DualProfile			= "Boss模块配置文件选项"
+L.DualProfile				= "为Boss的每个专精开启不同的配置选项(Boss的配置在boss模块里)。默认状态下，当你切换专精时，DBM会重置选项到默认状态，选中本选项后，每个专精都有对应的配置文件，切换专精不会丢失上一个专精的配置。"
+
+L.Area_ModProfile			= "复制/删除一个角色/专精选项"
+L.ModAllReset				= "重置所有Boss模块选项"
+L.ModAllStatReset			= "重置所有Boss模块状态"
+L.SelectModProfileCopy		= "复制所有选项"
+L.SelectModProfileCopySound	= "只复制声音选项"
+L.SelectModProfileDelete	= "删除Boss模块选项"
 -- Misc
 L.FontHeight	= 20
