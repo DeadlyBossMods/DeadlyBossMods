@@ -2791,7 +2791,7 @@ function DBM:UPDATE_SHAPESHIFT_FORM()
 	if class == "WARRIOR" and self:AntiSpam(0.5, "STANCE") then--check for stance changes for prot warriors that might be specced into Gladiator Stance
 		if UnitBuff("player", gladStance) then 
 			currentSpecGroup = 3 -- give 3rd spec option only for glad stance.
-			currentSpecID = 71
+			currentSpecID = 74 -- temp id for glad warrior, bliz not uses it
 		else
 			currentSpecGroup = GetActiveSpecGroup()
 			currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
@@ -5686,7 +5686,8 @@ function DBM:RoleCheck(ignoreLoot)
 	if not InCombatLockdown() and ((IsPartyLFG() and (difficultyIndex == 14 or difficultyIndex == 15)) or not IsPartyLFG()) then
 		local tempRole--Use temp role because we still want Role to be "tank" for loot check comparison at bottom (gladiators still use tank gear)
 		if role == "TANK" and UnitBuff("player", gladStance) then--Special handling for gladiator stance
-			currentSpecID = 71--force set to fury warrior
+			currentSpecGroup = 3 -- give 3rd spec option only for glad stance.
+			currentSpecID = 74 -- temp id for glad warrior, bliz not uses it
 			tempRole = "DAMAGER"
 		end
 		local whatToCheck = tempRole or role
@@ -6458,6 +6459,12 @@ local specRoleTable = {
 		["Melee"] = true,
 		["Physical"] = true,
 		["MagicDispeller"] = true,
+	},
+	[74] = {	--Gladiator Warrior
+		["Dps"] = true,
+		["Melee"] = true,
+		["MeleeDps"] = true,
+		["Physical"] = true,
 	},
 	[102] = {	--Balance Druid
 		["Dps"] = true,
