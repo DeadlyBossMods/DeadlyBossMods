@@ -8541,12 +8541,30 @@ function bossModPrototype:AddOptionSpacer(cat)
 	end
 end
 
+function bossModPrototype:AddOptionLine(text, cat)
+	cat = cat or "misc"
+	if not self.optionCategories[cat] then
+		self.optionCategories[cat] = {}
+	end
+	if self.optionCategories[cat] then
+		tinsert(self.optionCategories[cat], {line = true, text = text})
+	end
+end
+
 function bossModPrototype:AddAnnounceSpacer()
 	return self:AddOptionSpacer("announce")
 end
 
 function bossModPrototype:AddTimerSpacer()
 	return self:AddOptionSpacer("timer")
+end
+
+function bossModPrototype:AddAnnounceLine(text)
+	return self:AddOptionLine(text, "announce")
+end
+
+function bossModPrototype:AddTimerLine(text)
+	return self:AddOptionLine(text, "timer")
 end
 
 function bossModPrototype:RemoveOption(name)

@@ -70,7 +70,7 @@ DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "현재 사용중인 설정은 삭제할 �
 DBM_CORE_MPROFILE_DELETE_S_ERROR	= "삭제할 설정이 없거나 올바르지 않습니다. 설정이 삭제되지 않았거나 일부만 삭제됩니다."
 
 DBM_CORE_ALLMOD_DEFAULT_LOADED		= "현재 경보의 기본 설정을 불러왔습니다."
-DBM_CORE_ALLMOD_STATS_RESETED		= "현재 경보의 공략 상황이 초기화 됩니다."
+DBM_CORE_ALLMOD_STATS_RESETED		= "현재 경보의 통계가 초기화 됩니다."
 DBM_CORE_MOD_DEFAULT_LOADED			= "현재 전투의 기본 설정을 불러왔습니다."
 
 DBM_CORE_WORLDBOSS_ENGAGED			= "현재 서버의 %s 전투가 약 %s 퍼센트의 체력으로 시작된 것으로 보입니다. (%s|1이;가; 보냄)"
