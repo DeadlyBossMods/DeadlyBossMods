@@ -30,7 +30,7 @@ L.Button_OK					= '확인'
 L.Button_Cancel				= '취소'
 L.Button_LoadMod			= '불러오기'
 L.Mod_Enabled				= "경보 사용"
-L.Mod_Reset					= "이 전투의 기본 설정 불러오기"
+L.Mod_Reset					= "이 전투의 설정 초기화"
 L.Reset						= "초기화"
 
 L.Enable					= "활성화"
@@ -263,23 +263,23 @@ L.PizzaTimer_Secs 			= "초"
 L.PizzaTimer_ButtonStart 	= "바 시작"
 L.PizzaTimer_BroadCast		= "공격대에 알리기"
 
-L.Panel_Profile				= "Profiles"
-L.Area_CreateProfile        = "Profile Creation"
-L.EnterProfileName			= "Enter profile name"
-L.CreateProfile				= "Create profile for DBM Core Options"
-L.Area_ApplyProfile			= "Set Active Profile for DBM Core Options"
-L.SelectProfileToApply		= "Select profile to apply"
-L.Area_DeleteProfile		= "Remove Profile for DBM Core Options"
-L.SelectProfileToDelete		= "Select profile to delete"
-L.Area_DualProfile			= "Boss mod profile options"
-L.DualProfile				= "Enable support for different boss mod options per spec."
+L.Panel_Profile				= "프로필"
+L.Area_CreateProfile		= "프로필 생성"
+L.EnterProfileName			= "생성할 프로필 이름 입력"
+L.CreateProfile				= "DBM-Core 설정 프로필 생성"
+L.Area_ApplyProfile			= "프로필 적용"
+L.SelectProfileToApply		= "적용할 DBM-Core 설정 프로필 선택"
+L.Area_DeleteProfile		= "프로필 삭제"
+L.SelectProfileToDelete		= "삭제할 DBM-Core 설정 프로필 선택"
+L.Area_DualProfile			= "우두머리 경보 프로필 설정"
+L.DualProfile				= "각 전문화 별로 별도의 우두머리 설정 사용"
 
-L.Area_ModProfile			= "Copy mod settings from another char/spec or delete mod settings"
-L.ModAllReset				= "Reset all mod settings"
-L.ModAllStatReset			= "Reset all mod stats"
-L.SelectModProfileCopy		= "Copy mod settings from"
-L.SelectModProfileCopySound	= "Copy sound setting from"
-L.SelectModProfileDelete	= "Delete mod settings for"
+L.Area_ModProfile			= "다른 캐릭터 또는 그 캐릭터의 특성별 설정을 복사/삭제"
+L.ModAllReset				= "이 경보의 모든 설정을 초기화"
+L.ModAllStatReset			= "이 경보의 공략 상황을 초기화"
+L.SelectModProfileCopy		= "전체 설정 복사"
+L.SelectModProfileCopySound	= "소리 설정 복사"
+L.SelectModProfileDelete	= "설정 삭제"
 
 -- Misc
 L.FontHeight = 16
