@@ -51,14 +51,17 @@ local yellAttachSlagBombs			= mod:NewYell(157000, nil, false)
 local specWarnMassiveShatteringSmash= mod:NewSpecialWarningSpell(158054, nil, nil, nil, 2)
 
 --Stage One: The Blackrock Forge
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDemolitionCD				= mod:NewNextTimer(45, 156425)
 local timerMarkedforDeathCD			= mod:NewNextTimer(15.5, 156096)
 local timerThrowSlagBombsCD			= mod:NewCDTimer(25, 156030)--It's a next timer, but sometimes delayed by Shattering Smash
 local timerShatteringSmashCD		= mod:NewCDTimer(30, 155992)--Next timer, but sometimes delayed by throw slag bombs.
 local timerImpalingThrow			= mod:NewCastTimer(5, 156111)--How long marked target has to aim throw at Debris Pile or Siegemaker
 --Stage Two: Storage Warehouse
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerSiegemakerCD				= mod:NewNextTimer(50, "ej9571", nil, nil, nil, 156667)
 --Stage Three: Iron Crucible
+mod:AddTimerLine(SCENARIO_STAGE:format(3))
 --local timerSlagEruptionCD			= mod:NewNextTimer(30, 156928)
 --local timerAttachSlagBombsCD		= mod:NewNextTimer(30, 157000)
 local timerSlagBomb					= mod:NewCastTimer(5, 157015)

@@ -111,13 +111,15 @@ local timerDestructiveResonanceCD				= mod:NewCDTimer(15, 156467, nil, "-Melee")
 local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605, nil, "Tank")
 local timerMarkOfChaosCD						= mod:NewCDTimer(50.5, 158605, nil, "Tank")
 local timerForceNovaCD							= mod:NewCDCountTimer(45, 157349)--45-52
-local timerForceNovaFortification				= mod:NewNextTimer(9, 157349)--For replication nova
+local timerForceNovaFortification				= mod:NewNextTimer(9, 157349)--For repeating nova
 local timerSummonArcaneAberrationCD				= mod:NewCDCountTimer(45, "ej9945", nil, "-Healer", nil, 156471)--45-52 Variation Noted
-local timerTransition							= mod:NewPhaseTimer(74)
 --Intermission: Lineage of Power
+mod:AddTimerLine(DBM_CORE_INTERMISSION)
+local timerTransition							= mod:NewPhaseTimer(74)
 local timerCrushArmorCD							= mod:NewNextTimer(6, 158553, nil, "Tank")
 local timerKickToFaceCD							= mod:NewNextTimer(20, 158563, nil, "Tank")
 --Mythic
+mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerGaze									= mod:NewBuffFadesTimer(10, 165595)
 local timerGlimpseOfMadnessCD					= mod:NewNextCountTimer(27, 165243)
 local timerInfiniteDarknessCD					= mod:NewNextTimer(62, 165102)
