@@ -38,7 +38,7 @@ L.Disable					= "비활성화"
 
 L.NoSound					= "끄기"
 
-L.IconsInUse				= "현재 전투에서 사용 되는 전술 목표 아이콘:"
+L.IconsInUse				= "사용되는 전술 목표 아이콘:"
 
 -- Tab: Boss Statistics
 L.BossStatistics			= "공략 상황"
@@ -262,6 +262,24 @@ L.PizzaTimer_Mins 			= "분"
 L.PizzaTimer_Secs 			= "초"
 L.PizzaTimer_ButtonStart 	= "바 시작"
 L.PizzaTimer_BroadCast		= "공격대에 알리기"
+
+L.Panel_Profile				= "Profiles"
+L.Area_CreateProfile        = "Profile Creation"
+L.EnterProfileName			= "Enter profile name"
+L.CreateProfile				= "Create profile"
+L.Area_ApplyProfile			= "Set Active Profile"
+L.SelectProfileToApply		= "Select profile to apply"
+L.Area_DeleteProfile		= "Profile Removal"
+L.SelectProfileToDelete		= "Select profile to delete"
+L.SelectProfileToDelete		= "L.SelectProfileToDelete"--localize
+L.Area_DualProfile			= "L.Area_DualProfile"--localize
+L.DualProfile				= "L.DualProfile"--localize
+
+L.Area_ModProfile			= "L.Area_ModProfile"--localize
+L.ModAllReset				= "L.ModAllReset"--localize
+L.ModAllStatReset			= "L.ModAllStatReset"--localize
+L.SelectModProfileCopy		= "L.SelectModProfileCopy"--localize
+L.SelectModProfileDelete	= "L.SelectModProfileDelete"--localize
 
 -- Misc
 L.FontHeight = 16

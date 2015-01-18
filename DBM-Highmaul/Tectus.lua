@@ -28,34 +28,34 @@ mod:RegisterEventsInCombat(
 local warnCrystallineBarrage		= mod:NewTargetAnnounce(162346, 3)
 local warnBerserker					= mod:NewSpellAnnounce("ej10062", 3, 163312)
 
-local specWarnEarthwarper			= mod:NewSpecialWarningSwitch("OptionVersion2", "ej10061", not mod:IsHealer(), nil, nil, nil, nil, true)
+local specWarnEarthwarper			= mod:NewSpecialWarningSwitch("OptionVersion2", "ej10061", "-Healer", nil, nil, nil, nil, true)
 local specWarnTectonicUpheaval		= mod:NewSpecialWarningSpell(162475, nil, nil, nil, 2, nil, true)
 local specWarnEarthenPillar			= mod:NewSpecialWarningDodge(162518, nil, nil, nil, 3, nil, true)
 local specWarnCrystallineBarrageYou	= mod:NewSpecialWarningYou(162346, nil, nil, nil, nil, nil, true)
 local yellCrystalineBarrage			= mod:NewYell(162346)
 local specWarnCrystallineBarrage	= mod:NewSpecialWarningMove(162370, nil, nil, nil, nil, nil, true)
 --Night-Twisted NPCs
-local specWarnRavingAssault			= mod:NewSpecialWarningDodge(163312, mod:IsMelee(), nil, nil, nil, nil, true)
-local specWarnEarthenFlechettes		= mod:NewSpecialWarningDodge(162968, mod:IsMelee(), nil, nil, nil, nil, true)
-local specWarnGiftOfEarth			= mod:NewSpecialWarningCount(162894, mod:IsMelee(), nil, nil, nil, nil, true)
+local specWarnRavingAssault			= mod:NewSpecialWarningDodge(163312, "Melee", nil, nil, nil, nil, true)
+local specWarnEarthenFlechettes		= mod:NewSpecialWarningDodge(162968, "Melee", nil, nil, nil, nil, true)
+local specWarnGiftOfEarth			= mod:NewSpecialWarningCount(162894, "Melee", nil, nil, nil, nil, true)
 
 local timerEarthwarperCD			= mod:NewNextTimer(41, "ej10061", nil, nil, nil, 162894)--Both of these get delayed by upheavel
-local timerBerserkerCD				= mod:NewNextTimer(41, "ej10062", nil, mod:IsTank(), nil, 163312)--Both of these get delayed by upheavel
-local timerGiftOfEarthCD			= mod:NewCDTimer(10.5, 162894, nil, mod:IsMelee())--10.5 but obviously delayed if stuns were used.
-local timerEarthenFlechettesCD		= mod:NewCDTimer(14, 162968, nil, mod:IsMelee())--14 but obviously delayed if stuns were used. Also tends to be recast immediately if stun interrupted
+local timerBerserkerCD				= mod:NewNextTimer(41, "ej10062", nil, "Tank", nil, 163312)--Both of these get delayed by upheavel
+local timerGiftOfEarthCD			= mod:NewCDTimer(10.5, 162894, nil, "Melee")--10.5 but obviously delayed if stuns were used.
+local timerEarthenFlechettesCD		= mod:NewCDTimer(14, 162968, nil, "Melee")--14 but obviously delayed if stuns were used. Also tends to be recast immediately if stun interrupted
 local timerCrystalBarrageCD			= mod:NewNextSourceTimer(30, 162346, nil, false)--Very accurate but spammy mess with 4+ adds up.
 local timerCrystalBarrage			= mod:NewBuffFadesTimer(15, 162346)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
-local countdownEarthwarper			= mod:NewCountdown(41, "ej10061", mod:IsMelee())
+local countdownEarthwarper			= mod:NewCountdown(41, "ej10061", "Melee")
 
 local voiceCrystallineBarrage		= mod:NewVoice(162346)
-local voiceEarthenFlechettes		= mod:NewVoice(162968, mod:IsMelee())
+local voiceEarthenFlechettes		= mod:NewVoice(162968, "Melee")
 local voiceTectonicUpheaval			= mod:NewVoice(162475)
-local voiceGiftOfEarth				= mod:NewVoice(162894, mod:IsMelee())
+local voiceGiftOfEarth				= mod:NewVoice(162894, "Melee")
 local voiceRavingAssault			= mod:NewVoice(163312)
-local voiceEarthwarper				= mod:NewVoice("ej10061", mod:IsDps())
+local voiceEarthwarper				= mod:NewVoice("ej10061", "Dps")
 local voiceEarthenPillar			= mod:NewVoice(162518, nil )
 
 

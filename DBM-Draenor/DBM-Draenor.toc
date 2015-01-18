@@ -8,7 +8,8 @@
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariablesPerCharacter: DBMDraenor_SavedVars, DBMDraenor_SavedStats
+## SavedVariables: DBMDraenor_AllSavedVars
+## SavedVariablesPerCharacter: DBMDraenor_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: WOD
