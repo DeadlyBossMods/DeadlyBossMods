@@ -29,6 +29,11 @@ mod:RegisterEventsInCombat(
 --TODO, see if one of bosses hitting 20% before 3rd ship, cancels first ship (because ships are 10, 40 and 70 energy, but bosses skip to 100 energy if any of them hit 20%)
 --TODO, add timers for deck abilities that need them.
 --Ship
+local Ship	= EJ_GetSectionInfo(10019)
+local Marak = EJ_GetSectionInfo(10033)
+local Sorka = EJ_GetSectionInfo(10030)
+local Garan = EJ_GetSectionInfo(10025)
+
 local warnShip							= mod:NewSpellAnnounce("ej10019", 3, 76204)
 ----Blackrock Deckhand
 local warnGrapeshotBlast				= mod:NewSpellAnnounce(158695, 3)--Could not verify
@@ -83,6 +88,7 @@ local yellHeartseeker					= mod:NewYell(158010, nil, false)
 local specWarnSanguineStrikes			= mod:NewSpecialWarningTarget(156601, "Healer", nil, nil, nil, nil, true)
 
 --Ship
+mod:AddTimerLine(Ship)
 local timerShipCD						= mod:NewNextTimer(198, "ej10019", nil, nil, nil, 76204)
 local timerBombardmentAlphaCD			= mod:NewNextTimer(18, 157854)--How many times cast?
 --local timerWarmingUp					= mod:NewCastTimer(90, 158849)--Could not verify
@@ -91,13 +97,16 @@ local timerBombardmentAlphaCD			= mod:NewNextTimer(18, 157854)--How many times c
 ----Bleeding Hollow Deckhand
 --Ground
 ----Admiral Gar'an
+mod:AddTimerLine(Garan)
 local timerRapidFireCD					= mod:NewNextTimer(30, 156626)
 local timerDarkHuntCD					= mod:NewCDTimer(13.5, 158315)--Needs more data. it was only cast twice in entirety of my log, so space between is based off a single sample.
 local timerPenetratingShotCD			= mod:NewCDTimer(22, 164271)--22-30 at least. maybe larger variation. Just small LFR sample size.
 ----Enforcer Sorka
+mod:AddTimerLine(Sorka)
 local timerBloodRitualCD				= mod:NewNextTimer(12, 158078)
 local timerConvulsiveShadowsCD			= mod:NewNextTimer(46.5, 156214)
 ----Marak the Blooded
+mod:AddTimerLine(Marak)
 local timerBladeDashCD					= mod:NewNextTimer(20, 155794)
 local timerHeartSeekerCD				= mod:NewNextTimer(51, 158010)
 
@@ -115,9 +124,6 @@ mod:AddSetIconOption("SetIconOnRapidFire", 156626, true)
 mod:AddSetIconOption("SetIconOnBloodRitual", 158078, true)
 mod:AddSetIconOption("SetIconOnHeartSeeker", 158010, true)
 
-local Marak = EJ_GetSectionInfo(10033)
-local Sorka = EJ_GetSectionInfo(10030)
-local Garan = EJ_GetSectionInfo(10025)
 mod.vb.ship = 0
 
 local GetPlayerMapPosition = GetPlayerMapPosition

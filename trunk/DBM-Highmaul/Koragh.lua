@@ -64,6 +64,7 @@ local timerExpelMagicShadowCD		= mod:NewCDTimer(60, 162184, nil, "Tank|Healer")-
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, "Tank|Healer")
 local timerExpelMagicArcaneCD		= mod:NewCDTimer(26, 162186, nil, "Tank")--26-32
 local timerBallsCD					= mod:NewNextCountTimer(30, 161612)
+mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerExpelMagicFelCD			= mod:NewCDTimer("OptionVersion2", 15.5, 172895, nil, "-Tank")--Mythic
 local timerExpelMagicFel			= mod:NewBuffFadesTimer(12, 172895)--Mythic
 
