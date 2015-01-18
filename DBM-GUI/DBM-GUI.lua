@@ -2715,7 +2715,7 @@ do
 				local savedVarsName = addon.modId:gsub("-", "").."_AllSavedVars"
 				for charname, charTable in pairs(_G[savedVarsName]) do
 					for bossid, optionTable in pairs(charTable) do
-						for i = 0, 2 do
+						for i = 0, 3 do
 							if optionTable[i] then
 								local displayText = (i == 0 and charname) or charname.." ("..i.."-"..(charTable["talent"..i] or "")..")"
 								local dropdown = { text = displayText, value = charname.."|"..tostring(i) }

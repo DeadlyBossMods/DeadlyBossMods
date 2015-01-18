@@ -2502,7 +2502,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 	end
 	_G[savedVarsName][fullname] = savedOptions
 	if profileNum > 0 then
-		_G[savedVarsName][fullname]["talent"..profileNum] = currentSpecName
+		_G[savedVarsName][fullname]["talent"..profileNum] = profileNum == 3 and gladStance or currentSpecName
 	end
 	_G[savedStatsName] = savedStats
 end
@@ -2788,10 +2788,19 @@ function DBM:ACTIVE_TALENT_GROUP_CHANGED()
 end
 
 function DBM:UPDATE_SHAPESHIFT_FORM()
-	if IsInGroup() and class == "WARRIOR" and self:AntiSpam(0.5, "STANCE") then--check for stance changes for prot warriors that might be specced into Gladiator Stance
-		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
-		currentSpecID = tonumber(currentSpecID)
-		self:RoleCheck(true)
+	if class == "WARRIOR" and self:AntiSpam(0.5, "STANCE") then--check for stance changes for prot warriors that might be specced into Gladiator Stance
+		if UnitBuff("player", gladStance) then 
+			currentSpecGroup = 3 -- give 3rd spec option only for glad stance.
+			currentSpecID = 71
+		else
+			currentSpecGroup = GetActiveSpecGroup()
+			currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+			currentSpecID = tonumber(currentSpecID)
+		end
+		self:SpecChanged()
+		if IsInGroup() then
+			self:RoleCheck(true)
+		end
 	end
 end
 
