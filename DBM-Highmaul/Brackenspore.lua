@@ -31,8 +31,8 @@ local specWarnDecay					= mod:NewSpecialWarningInterruptCount(160013, "-Healer",
 local specWarnNecroticBreath		= mod:NewSpecialWarningSpell(159219, "Tank", nil, nil, 3)
 local specWarnRot					= mod:NewSpecialWarningStack(163241, nil, 3)
 local specWarnRotOther				= mod:NewSpecialWarningTaunt(163241, nil, nil, nil, nil, nil, true)
-local specWarnExplodingFungus		= mod:NewSpecialWarningSpell(163794, nil, nil, nil, 2, nil, true)--Change warning type/sound? need to know more about spawn.
-local specWarnWaves					= mod:NewSpecialWarningSpell(160425, nil, nil, nil, 2, nil, true)
+local specWarnExplodingFungus		= mod:NewSpecialWarningDodge(163794, nil, nil, nil, 2, nil, true)--Change warning type/sound? need to know more about spawn.
+local specWarnWaves					= mod:NewSpecialWarningDodge(160425, nil, nil, nil, 2, nil, true)
 --Adds
 local specWarnSporeShooter			= mod:NewSpecialWarningSwitch("OptionVersion2", 163594, "RangedDps", nil, nil, nil, nil, true)
 local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitch("ej9995", "-Healer", nil, nil, nil, nil, true)
