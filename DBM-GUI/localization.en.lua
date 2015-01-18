@@ -276,7 +276,7 @@ L.SelectProfileToApply		= "Select profile to apply"
 L.Area_DeleteProfile		= "Remove Profile for DBM Core Options"
 L.SelectProfileToDelete		= "Select profile to delete"
 L.Area_DualProfile			= "Boss mod profile options"
-L.DualProfile				= "Enable support for different boss mod options per spec."
+L.DualProfile				= "Enable support for different boss mod options per spec. (Managing of boss mod profiles is done from loaded boss mod stats screen)"
 
 L.Area_ModProfile			= "Copy mod settings from another char/spec or delete mod settings"
 L.ModAllReset				= "Reset all mod settings"
