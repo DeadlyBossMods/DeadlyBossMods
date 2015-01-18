@@ -358,34 +358,34 @@ do
 	function DBT:LoadOptions(id)
 		--init
 		if not DBT_AllPersistentOptions then DBT_AllPersistentOptions = {} end
-		if not DBT_AllPersistentOptions[DBM_UsedProfile] then DBT_AllPersistentOptions[DBM_UsedProfile] = {} end
+		if not DBT_AllPersistentOptions[_G[DBM_UsedProfile]] then DBT_AllPersistentOptions[_G[DBM_UsedProfile]] = {} end
 		--migrate old options
-		if DBT_PersistentOptions and DBT_PersistentOptions[id] and not DBT_AllPersistentOptions[DBM_UsedProfile][id] then
-			DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_PersistentOptions[id]
+		if DBT_PersistentOptions and DBT_PersistentOptions[id] and not DBT_AllPersistentOptions[_G[DBM_UsedProfile]][id] then
+			DBT_AllPersistentOptions[_G[DBM_UsedProfile]][id] = DBT_PersistentOptions[id]
 		end
-		DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile][id] or {}
-		self.options = setmetatable(DBT_AllPersistentOptions[DBM_UsedProfile][id], optionMT)
+		DBT_AllPersistentOptions[_G[DBM_UsedProfile]][id] = DBT_AllPersistentOptions[_G[DBM_UsedProfile]][id] or {}
+		self.options = setmetatable(DBT_AllPersistentOptions[_G[DBM_UsedProfile]][id], optionMT)
 		self:Rearrange()
 		DBM:Schedule(2, delaySkinCheck, self)
 	end
 
 	function DBT:CreateProfile(id)
-		if not DBT_AllPersistentOptions[DBM_UsedProfile] then DBT_AllPersistentOptions[DBM_UsedProfile] = {} end
-		DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile][id] or {}
-		self.options = setmetatable(DBT_AllPersistentOptions[DBM_UsedProfile][id], optionMT)
+		if not DBT_AllPersistentOptions[_G[DBM_UsedProfile]] then DBT_AllPersistentOptions[_G[DBM_UsedProfile]] = {} end
+		DBT_AllPersistentOptions[_G[DBM_UsedProfile]][id] = DBT_AllPersistentOptions[_G[DBM_UsedProfile]][id] or {}
+		self.options = setmetatable(DBT_AllPersistentOptions[_G[DBM_UsedProfile]][id], optionMT)
 		self:Rearrange()
 	end
 
 	function DBT:ApplyProfile(id)
-		if not DBT_AllPersistentOptions[DBM_UsedProfile] then return end
-		self.options = setmetatable(DBT_AllPersistentOptions[DBM_UsedProfile][id], optionMT)
+		if not DBT_AllPersistentOptions[_G[DBM_UsedProfile]] then return end
+		self.options = setmetatable(DBT_AllPersistentOptions[_G[DBM_UsedProfile]][id], optionMT)
 		self:Rearrange()
 	end
 
 	function DBT:DeleteProfile(name, id)
 		if name == "Default" or not DBT_AllPersistentOptions[name] then return end
 		DBT_AllPersistentOptions[name] = nil
-		self.options = setmetatable(DBT_AllPersistentOptions[DBM_UsedProfile][id], optionMT)
+		self.options = setmetatable(DBT_AllPersistentOptions[_G[DBM_UsedProfile]][id], optionMT)
 		self:Rearrange()
 	end
 
