@@ -2530,8 +2530,7 @@ function DBM:LoadAllModDefaultOption(modId)
 	if not modId or not DBM.ModLists[modId] then return end
 	-- prevent error
 	if not currentSpecID then
-		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
-		currentSpecID = tonumber(currentSpecID)
+		self:SetCurrentSpecInfo()
 	end
 	-- variable init
 	local savedVarsName = modId:gsub("-", "").."_AllSavedVars"
@@ -2568,8 +2567,7 @@ function DBM:LoadModDefaultOption(mod)
 	if not mod then return end
 	-- prevent error
 	if not currentSpecID then
-		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
-		currentSpecID = tonumber(currentSpecID)
+		self:SetCurrentSpecInfo()
 	end
 	-- variable init
 	local savedVarsName = (mod.modId):gsub("-", "").."_AllSavedVars"
@@ -2603,8 +2601,7 @@ function DBM:CopyAllModOption(modId, sourceName, sourceProfile)
 	if not modId or not sourceName or not sourceProfile or not DBM.ModLists[modId] then return end
 	-- prevent error
 	if not currentSpecID then
-		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
-		currentSpecID = tonumber(currentSpecID)
+		self:SetCurrentSpecInfo()
 	end
 	-- variable init
 	local savedVarsName = modId:gsub("-", "").."_AllSavedVars"
@@ -2664,8 +2661,7 @@ function DBM:CopyAllModSoundOption(modId, sourceName, sourceProfile)
 	if not modId or not sourceName or not sourceProfile or not DBM.ModLists[modId] then return end
 	-- prevent error
 	if not currentSpecID then
-		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
-		currentSpecID = tonumber(currentSpecID)
+		self:SetCurrentSpecInfo()
 	end
 	-- variable init
 	local savedVarsName = modId:gsub("-", "").."_AllSavedVars"
@@ -2722,8 +2718,7 @@ function DBM:DeleteAllModOption(modId, name, profile)
 	if not modId or not name or not profile or not DBM.ModLists[modId] then return end
 	-- prevent error
 	if not currentSpecID then
-		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
-		currentSpecID = tonumber(currentSpecID)
+		self:SetCurrentSpecInfo()
 	end
 	-- variable init
 	local savedVarsName = modId:gsub("-", "").."_AllSavedVars"
@@ -2846,9 +2841,7 @@ function DBM:LFG_LIST_APPLICANT_LIST_UPDATED(hasNewPending, hasNewPendingWithDat
 end
 
 function DBM:ACTIVE_TALENT_GROUP_CHANGED()
-	currentSpecGroup = GetActiveSpecGroup()
-	currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
-	currentSpecID = tonumber(currentSpecID)
+	self:SetCurrentSpecInfo()
 	self:SpecChanged()
 	if IsInGroup() then
 		self:RoleCheck(false)
@@ -2857,14 +2850,7 @@ end
 
 function DBM:UPDATE_SHAPESHIFT_FORM()
 	if class == "WARRIOR" and self:AntiSpam(0.5, "STANCE") then--check for stance changes for prot warriors that might be specced into Gladiator Stance
-		if UnitBuff("player", gladStance) then 
-			currentSpecGroup = 3 -- give 3rd spec option only for glad stance.
-			currentSpecID = 74 -- temp id for glad warrior, bliz not uses it
-		else
-			currentSpecGroup = GetActiveSpecGroup()
-			currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
-			currentSpecID = tonumber(currentSpecID)
-		end
+		self:SetCurrentSpecInfo()
 		self:SpecChanged()
 		if IsInGroup() then
 			self:RoleCheck(true)
@@ -3079,7 +3065,7 @@ do
 		for i, v in ipairs(self.AddOns) do
 			local modTable = v[checkTable]
 			local enabled = GetAddOnEnableState(playerName, v.modId)
-			self:Debug(v.modId.." is "..enabled, 2)
+			--self:Debug(v.modId.." is "..enabled, 2)
 			if not IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
 				if enabled ~= 0 then
 					self:LoadMod(v)
@@ -3110,8 +3096,7 @@ end
 	--Outdoor bosses will try to ignore check, if they fail, well, then we need to try and find ways to make the mods that can't load in combat smaller or load faster.
 function DBM:LoadMod(mod, force)
 	if not currentSpecID then
-		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
-		currentSpecID = tonumber(currentSpecID)
+		self:SetCurrentSpecInfo()
 	end
 	if type(mod) ~= "table" then
 		self:Debug("LoadMod failed because mod table not valid")
@@ -5211,6 +5196,17 @@ do
 	end
 end
 
+function DBM:SetCurrentSpecInfo()
+	if UnitBuff("player", gladStance) then 
+		currentSpecGroup = 3 -- give 3rd spec option only for glad stance.
+		currentSpecID = 74 -- temp id for glad warrior, bliz not uses it
+	else
+		currentSpecGroup = GetActiveSpecGroup()
+		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+		currentSpecID = tonumber(currentSpecID)
+	end
+end
+
 function DBM:GetCurrentInstanceDifficulty()
 	local _, instanceType, difficulty, difficultyName, _, _, _, _, instanceGroupSize = GetInstanceInfo()
 	if difficulty == 0 or (difficulty == 1 and instanceType == "none") or C_Garrison:IsOnGarrisonMap() then--draenor field returns 1, causing world boss mod bug.
@@ -6710,8 +6706,7 @@ end
 
 function bossModPrototype:IsTank()
 	if not currentSpecID then
-		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
-		currentSpecID = tonumber(currentSpecID)
+		DBM:SetCurrentSpecInfo()
 	end
 	local _, _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
 	if role == "TANK" then
@@ -6723,8 +6718,7 @@ end
 
 function bossModPrototype:IsDps()
 	if not currentSpecID then
-		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
-		currentSpecID = tonumber(currentSpecID)
+		DBM:SetCurrentSpecInfo()
 	end
 	local _, _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
 	if role == "DAMAGER" then
@@ -6736,8 +6730,7 @@ end
 
 function bossModPrototype:IsHealer()
 	if not currentSpecID then
-		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
-		currentSpecID = tonumber(currentSpecID)
+		DBM:SetCurrentSpecInfo()
 	end
 	local _, _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
 	if role == "HEALER" then
