@@ -274,7 +274,7 @@ L.SelectProfileToDelete		= "삭제할 DBM-Core 설정 프로필 선택"
 L.Area_DualProfile			= "우두머리 경보 프로필 설정"
 L.DualProfile				= "각 전문화 별로 별도의 우두머리 설정 사용(전문화별 세부기능은 좌측 상단 우두머리 탭을 선택 후, 경보를 불러오고 나서 나타난 통계 화면에 있습니다.)"
 
-L.Area_ModProfile			= "다른 캐릭터 또는 그 캐릭터의 특성별 설정을 복사/삭제"
+L.Area_ModProfile			= "다른 캐릭터 또는 그 캐릭터의 전문화별 설정을 복사/삭제"
 L.ModAllReset				= "이 경보의 모든 설정을 초기화"
 L.ModAllStatReset			= "이 경보의 통계를 초기화"
 L.SelectModProfileCopy		= "전체 설정 복사"
