@@ -58,7 +58,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 169151 then
 		specWarnSummonBlackIronVet:Show(args.sourceName)
 	elseif spellId == 155586 and self:IsDifficulty("challenge5") then
-		warnVeilofShadow:Show()
 		specWarnVeilofShadow:Show(args.sourceName)
 	elseif spellId == 155588 then
 		specWarnShadowBoltVolley:Show(args.sourceName)
