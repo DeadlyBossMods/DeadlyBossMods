@@ -2649,6 +2649,64 @@ function DBM:CopyAllModOption(modId, sourceName, sourceProfile)
 	end
 end
 
+function DBM:CopyAllModSoundOption(modId, sourceName, sourceProfile)
+	-- modId is string like "DBM-Highmaul"
+	if not modId or not sourceName or not sourceProfile or not DBM.ModLists[modId] then return end
+	-- prevent error
+	if not currentSpecID then
+		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+		currentSpecID = tonumber(currentSpecID)
+	end
+	-- variable init
+	local savedVarsName = modId:gsub("-", "").."_AllSavedVars"
+	local targetName = playerName.."-"..playerRealm
+	local targetProfile = DBM_UseDualProfile and currentSpecGroup or 0
+	-- do not copy setting itself
+	if targetName == sourceName and targetProfile == sourceProfile then
+		self:AddMsg(DBM_CORE_MPROFILE_COPY_SELF_ERROR)
+		return
+	end
+	-- prevent nil table error 
+	if not _G[savedVarsName] then _G[savedVarsName] = {} end
+	-- check source is exist
+	if not _G[savedVarsName][sourceName] then
+		self:AddMsg(DBM_CORE_MPROFILE_COPY_S_ERROR)
+		return
+	end
+	local targetOptions = _G[savedVarsName][targetName] or {}
+	for i, id in ipairs(DBM.ModLists[modId]) do
+		-- check source is exist
+		if not _G[savedVarsName][sourceName][id] then
+			self:AddMsg(DBM_CORE_MPROFILE_COPY_S_ERROR)
+			return
+		end
+		if not _G[savedVarsName][sourceName][id][sourceProfile] then
+			self:AddMsg(DBM_CORE_MPROFILE_COPY_S_ERROR)
+			return
+		end
+		-- prevent nil table error 
+		if not _G[savedVarsName][targetName][id] then _G[savedVarsName][targetName][id] = {} end
+		-- copy table
+		for option, optionValue in pairs(_G[savedVarsName][sourceName][id][sourceProfile]) do
+			if option:find("SpecialWarningSound") then
+				_G[savedVarsName][targetName][id][targetProfile][option] = optionValue
+			end
+		end
+		-- apply to options table
+		local mod = DBM:GetModByName(id)
+		mod.Options = {}
+		mod.Options = _G[savedVarsName][targetName][id][targetProfile]
+	end
+	if targetProfile > 0 then
+		_G[savedVarsName][targetName]["talent"..targetProfile] = currentSpecName
+	end
+	self:AddMsg(DBM_CORE_MPROFILE_COPY_SUCCESS:format(sourceName, sourceProfile))
+	-- update gui if showing
+	if DBM_GUI.currentViewing and DBM_GUI_OptionsFrame:IsShown() then
+		DBM_GUI_OptionsFrame:DisplayFrame(DBM_GUI.currentViewing)
+	end
+end
+
 function DBM:DeleteAllModOption(modId, name, profile)
 	-- modId is string like "DBM-Highmaul"
 	if not modId or not name or not profile or not DBM.ModLists[modId] then return end
