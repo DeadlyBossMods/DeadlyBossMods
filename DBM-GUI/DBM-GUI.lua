@@ -3353,49 +3353,51 @@ do
 
 		for _, catident in pairs(mod.categorySort) do
 			category = mod.optionCategories[catident]
-			local catpanel = panel:CreateArea(mod.localization.cats[catident], nil, nil, true)
-			local button, lastButton, addSpacer
-			for _, v in ipairs(category) do
-				if v == DBM_OPTION_SPACER then
-					addSpacer = true
-				elseif type(mod.Options[v]) == "boolean" then
-					lastButton = button
-					if mod.Options[v .. "SpecialWarningSound"] then
-						button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v .. "SpecialWarningSound")
-					else
-						button = catpanel:CreateCheckButton(mod.localization.options[v], true)
+			if category then
+				local catpanel = panel:CreateArea(mod.localization.cats[catident], nil, nil, true)
+				local button, lastButton, addSpacer
+				for _, v in ipairs(category) do
+					if v == DBM_OPTION_SPACER then
+						addSpacer = true
+					elseif type(mod.Options[v]) == "boolean" then
+						lastButton = button
+						if mod.Options[v .. "SpecialWarningSound"] then
+							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v .. "SpecialWarningSound")
+						else
+							button = catpanel:CreateCheckButton(mod.localization.options[v], true)
+						end
+						if addSpacer then
+							button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -6)
+							addSpacer = false
+						end
+						button:SetScript("OnShow",  function(self)
+							self:SetChecked(mod.Options[v])
+						end)
+						button:SetScript("OnClick", function(self)
+							mod.Options[v] = not mod.Options[v]
+							if mod.optionFuncs and mod.optionFuncs[v] then mod.optionFuncs[v]() end
+						end)
+					elseif mod.dropdowns and mod.dropdowns[v] then
+						lastButton = button
+						local dropdownOptions = {}
+						for i, v in ipairs(mod.dropdowns[v]) do
+							dropdownOptions[#dropdownOptions + 1] = { text = mod.localization.options[v], value = v }
+						end
+						button = catpanel:CreateDropdown(mod.localization.options[v], dropdownOptions, mod, v, function(value) mod.Options[v] = value end)
+						if addSpacer then
+							button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -6)
+							addSpacer = false
+						else
+							button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -10)
+						end
+						button:SetScript("OnShow", function(self)
+							self:SetSelectedValue(mod.Options[v])
+						end)
 					end
-					if addSpacer then
-						button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -6)
-						addSpacer = false
-					end
-					button:SetScript("OnShow",  function(self)
-						self:SetChecked(mod.Options[v])
-					end)
-					button:SetScript("OnClick", function(self)
-						mod.Options[v] = not mod.Options[v]
-						if mod.optionFuncs and mod.optionFuncs[v] then mod.optionFuncs[v]() end
-					end)
-				elseif mod.dropdowns and mod.dropdowns[v] then
-					lastButton = button
-					local dropdownOptions = {}
-					for i, v in ipairs(mod.dropdowns[v]) do
-						dropdownOptions[#dropdownOptions + 1] = { text = mod.localization.options[v], value = v }
-					end
-					button = catpanel:CreateDropdown(mod.localization.options[v], dropdownOptions, mod, v, function(value) mod.Options[v] = value end)
-					if addSpacer then
-						button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -6)
-						addSpacer = false
-					else
-						button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -10)
-					end
-					button:SetScript("OnShow", function(self)
-						self:SetSelectedValue(mod.Options[v])
-					end)
 				end
+				catpanel:AutoSetDimension()
+				panel:SetMyOwnHeight()
 			end
-			catpanel:AutoSetDimension()
-			panel:SetMyOwnHeight()
 		end
 	end
 end
