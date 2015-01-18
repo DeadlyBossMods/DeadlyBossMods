@@ -507,7 +507,7 @@ do
 
 		if autoplace then
 			local x = self:GetLastObj()
-			if x.mytype == "checkbutton" then
+			if x.mytype == "checkbutton" or x.mytype == "line" then
 				button:ClearAllPoints()
 				button:SetPoint('TOPLEFT', x, "TOPLEFT", 0, -x.myheight)
 			else
@@ -520,6 +520,37 @@ do
 		return button
 	end
 
+	function PanelPrototype:CreateLine(text)
+		local line = CreateFrame("Frame", FrameTitle..self:GetNewID(), self.frame)
+		line:SetSize(self.frame:GetWidth() - 20, 20)
+		line:SetPoint("TOPLEFT", 10, -12)
+		line.myheight = 20
+		line.mytype = "line"
+
+		local linetext = line:CreateFontString(line:GetName().."Text", "ARTWORK", "GameFontNormal")
+		linetext:SetPoint("TOPLEFT", line, "TOPLEFT", 0, 0)
+		linetext:SetJustifyH("LEFT")
+		linetext:SetHeight(18)
+		linetext:SetTextColor(0.67, 0.83, 0.48)
+		linetext:SetText(text or "")
+
+		local linebg = line:CreateTexture()
+		linebg:SetTexture("Interface\\Tooltips\\UI-Tooltip-Background")
+		linebg:SetSize(self.frame:GetWidth() - linetext:GetWidth() - 25, 2)
+		linebg:SetPoint("RIGHT", line, "RIGHT", 0, 0)
+
+		local x = self:GetLastObj()
+		if x.mytype == "checkbutton" or x.mytype == "line" then
+			line:ClearAllPoints()
+			line:SetPoint('TOPLEFT', x, "TOPLEFT", 0, -x.myheight)
+		else
+			line:ClearAllPoints()
+			line:SetPoint('TOPLEFT', 10, -12)
+		end
+
+		self:SetLastObj(line)
+		return line
+	end
 end
 
 do
@@ -3358,6 +3389,9 @@ do
 				for _, v in ipairs(category) do
 					if v == DBM_OPTION_SPACER then
 						addSpacer = true
+					elseif v.line then
+						lastButton = button
+						button = catpanel:CreateLine(v.text)
 					elseif type(mod.Options[v]) == "boolean" then
 						lastButton = button
 						if mod.Options[v .. "SpecialWarningSound"] then
