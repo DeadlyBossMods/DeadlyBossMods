@@ -2735,7 +2735,7 @@ do
 				local name, profile = strsplit("|", value)
 				DBM:CopyAllModOption(addon.modId, name, tonumber(profile))
 				C_Timer.After(0.05, dbm_modProfilePanel_refresh)
-			end, 153)
+			end, 100)
 			copyModProfile:SetPoint("TOPLEFT", -7, -54)
 			copyModProfile:SetScript("OnShow", function()
 				copyModProfile.value = nil
@@ -3355,7 +3355,7 @@ do
 			category = mod.optionCategories[catident]
 			local catpanel = panel:CreateArea(mod.localization.cats[catident], nil, nil, true)
 			local button, lastButton, addSpacer
-			for _,v in ipairs(category) do
+			for _, v in ipairs(category) do
 				if v == DBM_OPTION_SPACER then
 					addSpacer = true
 				elseif type(mod.Options[v]) == "boolean" then

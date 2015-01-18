@@ -2674,25 +2674,25 @@ function DBM:CopyAllModSoundOption(modId, sourceName, sourceProfile)
 	local targetProfile = DBM_UseDualProfile and currentSpecGroup or 0
 	-- do not copy setting itself
 	if targetName == sourceName and targetProfile == sourceProfile then
-		self:AddMsg(DBM_CORE_MPROFILE_SCOPY_SELF_ERROR)
+		self:AddMsg(DBM_CORE_MPROFILE_COPYS_SELF_ERROR)
 		return
 	end
 	-- prevent nil table error 
 	if not _G[savedVarsName] then _G[savedVarsName] = {} end
 	-- check source is exist
 	if not _G[savedVarsName][sourceName] then
-		self:AddMsg(DBM_CORE_MPROFILE_SCOPY_S_ERROR)
+		self:AddMsg(DBM_CORE_MPROFILE_COPYS_S_ERROR)
 		return
 	end
 	local targetOptions = _G[savedVarsName][targetName] or {}
 	for i, id in ipairs(DBM.ModLists[modId]) do
 		-- check source is exist
 		if not _G[savedVarsName][sourceName][id] then
-			self:AddMsg(DBM_CORE_MPROFILE_SCOPY_S_ERROR)
+			self:AddMsg(DBM_CORE_MPROFILE_COPYS_S_ERROR)
 			return
 		end
 		if not _G[savedVarsName][sourceName][id][sourceProfile] then
-			self:AddMsg(DBM_CORE_MPROFILE_SCOPY_S_ERROR)
+			self:AddMsg(DBM_CORE_MPROFILE_COPYS_S_ERROR)
 			return
 		end
 		-- prevent nil table error 
@@ -2711,7 +2711,7 @@ function DBM:CopyAllModSoundOption(modId, sourceName, sourceProfile)
 	if targetProfile > 0 then
 		_G[savedVarsName][targetName]["talent"..targetProfile] = currentSpecName
 	end
-	self:AddMsg(DBM_CORE_MPROFILE_SCOPY_SUCCESS:format(sourceName, sourceProfile))
+	self:AddMsg(DBM_CORE_MPROFILE_COPYS_SUCCESS:format(sourceName, sourceProfile))
 	-- update gui if showing
 	if DBM_GUI.currentViewing and DBM_GUI_OptionsFrame:IsShown() then
 		DBM_GUI_OptionsFrame:DisplayFrame(DBM_GUI.currentViewing)
