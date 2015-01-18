@@ -281,7 +281,7 @@ L.DualProfile				= "Enable support for different boss mod options per spec. (Man
 L.Area_ModProfile			= "Copy mod settings from another char/spec or delete mod settings"
 L.ModAllReset				= "Reset all mod settings"
 L.ModAllStatReset			= "Reset all mod stats"
-L.SelectModProfileCopy		= "Copy mod & sound settings from"
+L.SelectModProfileCopy		= "Copy all settings from"
 L.SelectModProfileCopySound	= "Copy just sound setting from"
 L.SelectModProfileDelete	= "Delete mod settings for"
 
