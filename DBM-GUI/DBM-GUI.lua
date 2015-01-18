@@ -2608,11 +2608,10 @@ local function CreateOptionsMenu()
 		local dualProfile			= dualProfileArea:CreateCheckButton(L.DualProfile, true)
 		dualProfile:SetScript("OnClick", function()
 			DBM_UseDualProfile = not DBM_UseDualProfile
-			DBM:SpecChanged()
+			DBM:SpecChanged(true)
 		end)
 		dualProfile:SetScript("OnShow", function()
 			dualProfile:SetChecked(DBM_UseDualProfile)
-			DBM:SpecChanged()
 		end)
 
 		function dbm_profilePanel_create()
