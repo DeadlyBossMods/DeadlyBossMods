@@ -9,7 +9,8 @@
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariablesPerCharacter: DBMHighmaul_SavedVars, DBMHighmaul_SavedStats
+## SavedVariables: DBMHighmaul_AllSavedVars
+## SavedVariablesPerCharacter: DBMHighmaul_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: WOD

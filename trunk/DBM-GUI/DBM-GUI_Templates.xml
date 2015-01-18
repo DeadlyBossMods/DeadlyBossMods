@@ -146,6 +146,9 @@
 		</Frames>
 		<Scripts>
 			<OnValueChanged>
+				if DBM_GUI_DropDown then
+					DBM_GUI_DropDown:HideMenu()
+				end
 				self:GetParent():SetVerticalScroll(value);
 
 				if value == select(1, self:GetMinMaxValues()) then

@@ -259,6 +259,14 @@ L.AutoAcceptGuildInvite		= "Automatically accept group invites from guild member
 L.Area_Advanced				= "Advanced Options"
 L.FakeBW					= "Pretend to be BigWigs in version checks instead of DBM (Useful for guilds that force using BigWigs)"
 
+L.PizzaTimer_Headline 		= 'Create a "Pizza Timer"'
+L.PizzaTimer_Title			= 'Name (e.g. "Pizza!")'
+L.PizzaTimer_Hours 			= "Hours"
+L.PizzaTimer_Mins 			= "Min"
+L.PizzaTimer_Secs 			= "Sec"
+L.PizzaTimer_ButtonStart 	= "Start timer"
+L.PizzaTimer_BroadCast		= "Broadcast to raid"
+
 L.Panel_Profile				= "Profiles"
 L.Area_CreateProfile        = "Profile Creation"
 L.EnterProfileName			= "Enter profile name"
@@ -267,14 +275,15 @@ L.Area_ApplyProfile			= "Set Active Profile"
 L.SelectProfileToApply		= "Select profile to apply"
 L.Area_DeleteProfile		= "Profile Removal"
 L.SelectProfileToDelete		= "Select profile to delete"
+L.SelectProfileToDelete		= "L.SelectProfileToDelete"--localize
+L.Area_DualProfile			= "L.Area_DualProfile"--localize
+L.DualProfile				= "L.DualProfile"--localize
 
-L.PizzaTimer_Headline 		= 'Create a "Pizza Timer"'
-L.PizzaTimer_Title			= 'Name (e.g. "Pizza!")'
-L.PizzaTimer_Hours 			= "Hours"
-L.PizzaTimer_Mins 			= "Min"
-L.PizzaTimer_Secs 			= "Sec"
-L.PizzaTimer_ButtonStart 	= "Start timer"
-L.PizzaTimer_BroadCast		= "Broadcast to raid"
+L.Area_ModProfile			= "L.Area_ModProfile"--localize
+L.ModAllReset				= "L.ModAllReset"--localize
+L.ModAllStatReset			= "L.ModAllStatReset"--localize
+L.SelectModProfileCopy		= "L.SelectModProfileCopy"--localize
+L.SelectModProfileDelete	= "L.SelectModProfileDelete"--localize
 
 -- Misc
 L.FontHeight	= 16

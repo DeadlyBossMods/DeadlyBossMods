@@ -20,52 +20,52 @@ mod:RegisterEventsInCombat(
 
 --TODO, verify only one spore shooter spawns at a time
 local warnNecroticBreath			= mod:NewSpellAnnounce(159219, 3)--Warn everyone, so they know where not to be.
-local warnRot						= mod:NewStackAnnounce(163241, 2, nil, mod:IsTank())
+local warnRot						= mod:NewStackAnnounce(163241, 2, nil, "Tank")
 --Adds/Mushrooms
 local warnLivingMushroom			= mod:NewCountAnnounce(160022, 1)--Good shroom! (mana/haste)
 local warnRejuvMushroom				= mod:NewCountAnnounce(160021, 1)--Other good shroom (healing)
 
-local specWarnCreepingMoss			= mod:NewSpecialWarningMove(163590, mod:IsTank())
+local specWarnCreepingMoss			= mod:NewSpecialWarningMove(163590, "Tank")
 local specWarnInfestingSpores		= mod:NewSpecialWarningCount(159996, nil, nil, nil, 2, nil, true)
-local specWarnDecay					= mod:NewSpecialWarningInterruptCount(160013, not mod:IsHealer(), nil, nil, nil, nil, true)
-local specWarnNecroticBreath		= mod:NewSpecialWarningSpell(159219, mod:IsTank(), nil, nil, 3)
+local specWarnDecay					= mod:NewSpecialWarningInterruptCount(160013, "-Healer", nil, nil, nil, nil, true)
+local specWarnNecroticBreath		= mod:NewSpecialWarningSpell(159219, "Tank", nil, nil, 3)
 local specWarnRot					= mod:NewSpecialWarningStack(163241, nil, 3)
 local specWarnRotOther				= mod:NewSpecialWarningTaunt(163241, nil, nil, nil, nil, nil, true)
-local specWarnExplodingFungus		= mod:NewSpecialWarningDodge(163794, nil, nil, nil, 2, nil, true)--Change warning type/sound? need to know more about spawn.
-local specWarnWaves					= mod:NewSpecialWarningDodge(160425, nil, nil, nil, 2, nil, true)
+local specWarnExplodingFungus		= mod:NewSpecialWarningSpell(163794, nil, nil, nil, 2, nil, true)--Change warning type/sound? need to know more about spawn.
+local specWarnWaves					= mod:NewSpecialWarningSpell(160425, nil, nil, nil, 2, nil, true)
 --Adds
-local specWarnSporeShooter			= mod:NewSpecialWarningSwitch("OptionVersion2", 163594, mod:IsRangedDps(), nil, nil, nil, nil, true)
-local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitchCount("ej9995", not mod:IsHealer(), nil, nil, nil, nil, true)
-local specWarnMindFungus			= mod:NewSpecialWarningSwitch(163141, mod:IsDps(), nil, nil, nil, nil, true)
+local specWarnSporeShooter			= mod:NewSpecialWarningSwitch("OptionVersion2", 163594, "RangedDps", nil, nil, nil, nil, true)
+local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitch("ej9995", "-Healer", nil, nil, nil, nil, true)
+local specWarnMindFungus			= mod:NewSpecialWarningSwitch(163141, "Dps", nil, nil, nil, nil, true)
 
 local timerInfestingSporesCD		= mod:NewCDCountTimer(57, 159996)--57-63 variation
 local timerRotCD					= mod:NewCDTimer(10, 163241, nil, false)--it's a useful timer, but not mandatory and this fight has A LOT of timers so off by default for clutter reduction
-local timerNecroticBreathCD			= mod:NewCDTimer(32, 159219, nil, mod:IsTank() or mod:IsHealer())
+local timerNecroticBreathCD			= mod:NewCDTimer(32, 159219, nil, "Tank|Healer")
 --Adds (all adds are actually NEXT timers however they get dleayed by infesting spores and necrotic breath sometimes so i'm leaving as CD for now)
-local timerSporeShooterCD			= mod:NewCDTimer("OptionVersion2", 57, 163594, nil, mod:IsRangedDps())
-local timerFungalFleshEaterCD		= mod:NewCDCountTimer(120, "ej9995", nil, not mod:IsHealer(), nil, 163142)
-local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, mod:IsMelee())
-local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, mod:IsMelee() and not mod:IsTank())
-local timerLivingMushroomCD			= mod:NewCDCountTimer(55.5, 160022, nil, mod:IsHealer())
-local timerRejuvMushroomCD			= mod:NewCDCountTimer(150, 160021, nil, mod:IsHealer())
+local timerSporeShooterCD			= mod:NewCDTimer("OptionVersion2", 57, 163594, nil, "RangedDps")
+local timerFungalFleshEaterCD		= mod:NewCDCountTimer(120, "ej9995", nil, "-Healer", nil, 163142)
+local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, "Melee")
+local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, "MeleeDps")
+local timerLivingMushroomCD			= mod:NewCDCountTimer(55.5, 160022, nil, "Healer")
+local timerRejuvMushroomCD			= mod:NewCDCountTimer(150, 160021, nil, "Healer")
 local timerSpecialCD				= mod:NewCDSpecialTimer(20)--Mythic Specials. Shared cd, which special he uses is random. 20-25 second variation, unless delayed by spores. then 20-25+10
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
 local countdownInfestingSpores		= mod:NewCountdown(57, 159996)--The variation on this annoys me, may move countdown to something more reliable if possible
-local countdownFungalFleshEater		= mod:NewCountdown("Alt120", "ej9995", not mod:IsHealer())
+local countdownFungalFleshEater		= mod:NewCountdown("Alt120", "ej9995", "-Healer")
 
 local voiceInfestingSpores			= mod:NewVoice(159996)
 local voiceRot						= mod:NewVoice("OptionVersion2", 163241)
 local voiceLivingMushroom			= mod:NewVoice(160022)
 local voiceRejuvMushroom			= mod:NewVoice(160021)
-local voiceMindFungus				= mod:NewVoice(163141, mod:IsDps())
-local voiceFungalFlesheater			= mod:NewVoice("ej9995", not mod:IsHealer())
-local voiceSporeShooter				= mod:NewVoice(163594, mod:IsRangedDps())
-local voiceDecay					= mod:NewVoice(160013, not mod:IsHealer())
+local voiceMindFungus				= mod:NewVoice(163141, "Dps")
+local voiceFungalFlesheater			= mod:NewVoice("ej9995", "-Healer")
+local voiceSporeShooter				= mod:NewVoice(163594, "RangedDps")
+local voiceDecay					= mod:NewVoice(160013, "-Healer")
 local voiceExplodingFungus			= mod:NewVoice(163794)
 local voiceWaves					= mod:NewVoice(160425)
-local voiceCreepingMoss				= mod:NewVoice(163590, mod:IsTank())
+local voiceCreepingMoss				= mod:NewVoice(163590, "Tank")
 
 mod:AddRangeFrameOption(8, 160254, false)
 mod:AddDropdownOption("InterruptCounter", {"Two", "Three", "Four"}, "Two", "misc")

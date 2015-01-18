@@ -68,7 +68,7 @@ if not DBM.Revision then
 	DBM.Revision = DBM.ReleaseRevision
 end
 
-DBM_SavedOptions = {}
+DBM_UseDualProfile = false
 
 DBM.DefaultOptions = {
 	WarningColors = {
@@ -226,6 +226,7 @@ DBM.DefaultOptions = {
 
 DBM.Bars = DBT:New()
 DBM.Mods = {}
+DBM.ModLists = {}
 DBM.Counts = {
 	{	text	= "Moshne (Male)",	value 	= "Mosh"},
 	{	text	= "Corsica (Female)",value 	= "Corsica"},
@@ -245,6 +246,7 @@ DBM_OPTION_SPACER = newproxy(false)
 --------------
 --  Locals  --
 --------------
+local usedProfile = "Default"
 local dbmIsEnabled = true
 local blockEnable = false
 local cachedGetTime = GetTime()
@@ -268,7 +270,6 @@ local healthCombatInitialized = false
 local schedule
 local unschedule
 local loadOptions
-local loadModOptions
 local checkWipe
 local checkBossHealth
 local checkCustomBossHealth
@@ -297,6 +298,8 @@ local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
 local tooltipsHidden = false
 local SWFilterDisabed = false
+local currentSpecGroup = GetActiveSpecGroup()
+local currentSpecID, currentSpecName
 local fakeBWRevision = 12550
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
@@ -330,11 +333,11 @@ local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
 local UnitAffectingCombat, InCombatLockdown, IsEncounterInProgress = UnitAffectingCombat, InCombatLockdown, IsEncounterInProgress
 local UnitGUID, UnitHealth, UnitHealthMax, UnitBuff = UnitGUID, UnitHealth, UnitHealthMax, UnitBuff
 local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit, UnitIsAFK
-local GetSpellInfo, EJ_GetSectionInfo, GetSpellTexture = GetSpellInfo, EJ_GetSectionInfo, GetSpellTexture
+local GetSpellInfo, EJ_GetSectionInfo, GetSpellTexture, GetActiveSpecGroup = GetSpellInfo, EJ_GetSectionInfo, GetSpellTexture, GetActiveSpecGroup
 local EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo = EJ_GetEncounterInfo, EJ_GetCreatureInfo, GetDungeonInfo
 local GetInstanceInfo = GetInstanceInfo
 local UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone = UnitPosition, GetCurrentMapDungeonLevel, GetMapInfo, GetCurrentMapZone, SetMapToCurrentZone
-local GetSpecialization = GetSpecialization
+local GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID = GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant, UnitRealmRelationship = GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant, UnitRealmRelationship
 local LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns = LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns
@@ -1312,6 +1315,85 @@ end
 
 function DBM:ForceUpdate()
 	mainFrame:GetScript("OnUpdate")(mainFrame, 0)
+end
+
+---------------
+--  Profile  --
+---------------
+function DBM:CreateProfile(name)
+	if not name or name == "" then
+		self:AddMsg(DBM_CORE_PROFILE_CREATE_ERROR)
+	end
+	name = name:gsub(" ", "")
+	if name == "" then
+		self:AddMsg(DBM_CORE_PROFILE_CREATE_ERROR)
+	end
+	-- create profile
+	usedProfile = name
+	DBM_UsedProfile = usedProfile
+	DBM_AllSavedOptions[usedProfile] = DBM_AllSavedOptions[usedProfile] or {}
+	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
+	self.Options = DBM_AllSavedOptions[usedProfile]
+	-- rearrange position
+	self.Bars:CreateProfile("DBM")
+	self:RepositionFrames()
+	self:AddMsg(DBM_CORE_PROFILE_CREATED:format(name))
+end
+
+function DBM:ApplyProfile(name)
+	if not name or not DBM_AllSavedOptions[name] then 
+		self:AddMsg(DBM_CORE_PROFILE_APPLY_ERROR:format(name or DBM_CORE_UNKNOWN))
+		return
+	end
+	usedProfile = name
+	DBM_UsedProfile = usedProfile
+	self.Options = DBM_AllSavedOptions[usedProfile]
+	-- rearrange position
+	self.Bars:ApplyProfile("DBM")
+	self:RepositionFrames()
+	self:AddMsg(DBM_CORE_PROFILE_APPLIED:format(name))
+end
+
+function DBM:DeleteProfile(name)
+	if not name or not DBM_AllSavedOptions[name] then
+		self:AddMsg(DBM_CORE_PROFILE_DELETE_ERROR:format(name or DBM_CORE_UNKNOWN))
+		return
+	elseif name == "Default" then-- Default profile cannot be deleted.
+		self:AddMsg(DBM_CORE_PROFILE_CANNOT_DELETE)
+		return
+	end
+	--Delete
+	DBM_AllSavedOptions[name] = nil
+	usedProfile = "Default"--Restore to default
+	DBM_UsedProfile = usedProfile
+	self.Options = DBM_AllSavedOptions[usedProfile]
+	-- rearrange position
+	self.Bars:DeleteProfile(name, "DBM")
+	self:RepositionFrames()
+	self:AddMsg(DBM_CORE_PROFILE_DELETED:format(name))
+end
+
+function DBM:RepositionFrames()
+	-- rearrange position
+	self:SetRaidWarningPositon()
+	self:UpdateSpecialWarningOptions()
+	self.Arrow:LoadPosition()
+	if DBMBossHealth then
+		DBMBossHealth:ClearAllPoints()
+		DBMBossHealth:SetPoint(self.Options.HPFramePoint, UIParent, self.Options.HPFramePoint, self.Options.HPFrameX, self.Options.HPFrameY)
+	end
+	if DBMRangeCheck then
+		DBMRangeCheck:ClearAllPoints()
+		DBMRangeCheck:SetPoint(self.Options.RangeFramePoint, UIParent, self.Options.RangeFramePoint, self.Options.RangeFrameX, self.Options.RangeFrameY)
+	end
+	if DBMRangeCheckRadar then
+		DBMInfoFrame:ClearAllPoints()
+		DBMRangeCheckRadar:SetPoint(self.Options.RangeFrameRadarPoint, UIParent, self.Options.RangeFrameRadarPoint, self.Options.RangeFrameRadarX, self.Options.RangeFrameRadarY)
+	end
+	if DBMInfoFrame then
+		DBMInfoFrame:ClearAllPoints()
+		DBMInfoFrame:SetPoint(self.Options.InfoFramePoint, UIParent, self.Options.InfoFramePoint, self.Options.InfoFrameX, self.Options.InfoFrameY)
+	end
 end
 
 ----------------------
@@ -2321,120 +2403,342 @@ end
 ---------------
 --  Options  --
 ---------------
-do
-	local function addDefaultOptions(t1, t2)
-		for i, v in pairs(t2) do
-			if t1[i] == nil then
-				t1[i] = v
-			elseif type(v) == "table" and type(t1[i]) == "table" then
-				addDefaultOptions(t1[i], v)
-			end
+function DBM:AddDefaultOptions(t1, t2)
+	for i, v in pairs(t2) do
+		if t1[i] == nil then
+			t1[i] = v
+		elseif type(v) == "table" and type(t1[i]) == "table" then
+			self:AddDefaultOptions(t1[i], v)
 		end
 	end
+end
 
-	local function setRaidWarningPositon()
-		RaidWarningFrame:ClearAllPoints()
-		RaidWarningFrame:SetPoint(DBM.Options.RaidWarningPosition.Point, UIParent, DBM.Options.RaidWarningPosition.Point, DBM.Options.RaidWarningPosition.X, DBM.Options.RaidWarningPosition.Y)
-	end
+function DBM:SetRaidWarningPositon()
+	RaidWarningFrame:ClearAllPoints()
+	RaidWarningFrame:SetPoint(DBM.Options.RaidWarningPosition.Point, UIParent, DBM.Options.RaidWarningPosition.Point, DBM.Options.RaidWarningPosition.X, DBM.Options.RaidWarningPosition.Y)
+end
 
-	local function migrateSavedOptions()
-		-- reset default special warning font for russian clients due to many reports of problems with cyrillic characters in special warnings
-		if DBM.Options.LastRevision < 7998 then
-			DBM.Options.LastRevision = DBM.Revision
-			if GetLocale() == "ruRU" then
-				DBM.Options.SpecialWarningFont = STANDARD_TEXT_FONT
+function DBM:LoadModOptions(modId, inCombat, first)
+	local oldSavedVarsName = modId:gsub("-", "").."_SavedVars"
+	local savedVarsName = modId:gsub("-", "").."_AllSavedVars"
+	local savedStatsName = modId:gsub("-", "").."_SavedStats"
+	local fullname = playerName.."-"..playerRealm
+	local profileNum = DBM_UseDualProfile and currentSpecGroup or 0
+	if not _G[savedVarsName] then _G[savedVarsName] = {} end
+	local savedOptions = _G[savedVarsName][fullname] or {}
+	local savedStats = _G[savedStatsName] or {}
+	local existId = {}
+	for i, id in ipairs(DBM.ModLists[modId]) do
+		existId[id] = true
+		-- init
+		if not savedOptions[id] then savedOptions[id] = {} end
+		local mod = DBM:GetModByName(id)
+		-- migrate old option
+		if _G[oldSavedVarsName] and _G[oldSavedVarsName][id] then
+			local oldTable = _G[oldSavedVarsName][id]
+			_G[oldSavedVarsName][id] = nil
+			savedOptions[id][profileNum] = oldTable
+		end
+		savedOptions[id][profileNum] = savedOptions[id][profileNum] or mod.Options
+		--check new option
+		for option, optionValue in pairs(mod.Options) do
+			if savedOptions[id][profileNum][option] == nil then
+				savedOptions[id][profileNum][option] = optionValue
 			end
 		end
-	end
-
-	function loadOptions()
-		DBM.Options = DBM_SavedOptions
-		dbmIsEnabled = DBM.Options.Enabled or true
-		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
-		-- load special warning options
-		migrateSavedOptions()
-		DBM:UpdateSpecialWarningOptions()
-		-- set this with a short delay to prevent issues with other addons also trying to do the same thing with another position ;)
-		DBM:Schedule(5, setRaidWarningPositon)
-		DBM:Schedule(20, setRaidWarningPositon)--A second attempt after we are sure all other mods are loaded, so we can work around issues with movemanything or other mods.
-	end
-
-	function loadModOptions(modId)
-		local savedOptions = _G[modId:gsub("-", "").."_SavedVars"] or {}
-		local savedStats = _G[modId:gsub("-", "").."_SavedStats"] or {}
-		local existId = {}
-		for i, v in ipairs(DBM.Mods) do
-			if v.modId == modId then
-				existId[v.id] = true
-				-- import old options from mods that were using the encounter ID as number as id
-				-- this was changed to use the string for compatibility reasons (see issues with sync),
-				-- but a user might still have saved options or stats that still use the old id as number
-				if tonumber(v.id) then
-					local oldId = tonumber(v.id)
-					if savedOptions[oldId] then
-						savedOptions[v.id] = savedOptions[oldId]
-						savedOptions[oldId] = nil
-					end
-					if savedStats[oldId] then
-						savedStats[v.id] = savedStats[oldId]
-						savedStats[oldId] = nil
-					end
-				end
-				savedOptions[v.id] = savedOptions[v.id] or v.Options
-				for option, optionValue in pairs(v.Options) do
-					v.DefaultOptions[option] = optionValue
-					if savedOptions[v.id][option] == nil then
-						savedOptions[v.id][option] = optionValue
-					end
-				end
-				--clean unused savedvariables
-				for option, optionValue in pairs(savedOptions[v.id]) do
-					if v.DefaultOptions[option] == nil then
-						savedOptions[v.id][option] = nil
-					end
-				end
-				v.Options = savedOptions[v.id] or {}
-				savedStats[v.id] = savedStats[v.id] or {}
-				local stats = savedStats[v.id]
-				stats.normalKills = stats.normalKills or 0
-				stats.normalPulls = stats.normalPulls or 0
-				stats.heroicKills = stats.heroicKills or 0
-				stats.heroicPulls = stats.heroicPulls or 0
-				stats.challengeKills = stats.challengeKills or 0
-				stats.challengePulls = stats.challengePulls or 0
-				stats.mythicKills = stats.mythicKills or 0
-				stats.mythicPulls = stats.mythicPulls or 0
-				stats.normal25Kills = stats.normal25Kills or 0
-				stats.normal25Kills = stats.normal25Kills or 0
-				stats.normal25Pulls = stats.normal25Pulls or 0
-				stats.heroic25Kills = stats.heroic25Kills or 0
-				stats.heroic25Pulls = stats.heroic25Pulls or 0
-				stats.lfr25Kills = stats.lfr25Kills or 0
-				stats.lfr25Pulls = stats.lfr25Pulls or 0
-				v.stats = stats
-				if v.OnInitialize then v:OnInitialize() end
-				for i, cat in ipairs(v.categorySort) do -- temporary hack
-					if cat == "misc" then
-						tremove(v.categorySort, i)
-						tinsert(v.categorySort, cat)
-						break
-					end
+		--clean unused saved variables (do not work on combat load)
+		if not inCombat then
+			for option, optionValue in pairs(savedOptions[id][profileNum]) do
+				if mod.DefaultOptions[option] == nil then
+					savedOptions[id][profileNum][option] = nil
 				end
 			end
 		end
-		--clean unused savedvariables
+		--apply saved option to actual option table
+		mod.Options = savedOptions[id][profileNum]
+		--stats init (only first load)
+		if first then
+			savedStats[id] = savedStats[id] or {}
+			local stats = savedStats[id]
+			stats.normalKills = stats.normalKills or 0
+			stats.normalPulls = stats.normalPulls or 0
+			stats.heroicKills = stats.heroicKills or 0
+			stats.heroicPulls = stats.heroicPulls or 0
+			stats.challengeKills = stats.challengeKills or 0
+			stats.challengePulls = stats.challengePulls or 0
+			stats.mythicKills = stats.mythicKills or 0
+			stats.mythicPulls = stats.mythicPulls or 0
+			stats.normal25Kills = stats.normal25Kills or 0
+			stats.normal25Kills = stats.normal25Kills or 0
+			stats.normal25Pulls = stats.normal25Pulls or 0
+			stats.heroic25Kills = stats.heroic25Kills or 0
+			stats.heroic25Pulls = stats.heroic25Pulls or 0
+			stats.lfr25Kills = stats.lfr25Kills or 0
+			stats.lfr25Pulls = stats.lfr25Pulls or 0
+			mod.stats = stats
+			--run OnInitialize function
+			if mod.OnInitialize then mod:OnInitialize() end
+			for i, cat in ipairs(mod.categorySort) do -- find better way (for ordering)
+				if cat == "misc" then
+					tremove(mod.categorySort, i)
+					tinsert(mod.categorySort, cat)
+					break
+				end
+			end
+		end
+	end
+	--clean unused saved variables (do not work on combat load)
+	if not inCombat then
 		for id, table in pairs(savedOptions) do
-			if existId[id] == nil then
+			if not existId[id] and not id:find("talent") then
 				savedOptions[id] = nil
 			end
 		end
 		for id, table in pairs(savedStats) do
-			if existId[id] == nil then
+			if not existId[id] then
 				savedStats[id] = nil
 			end
 		end
-		_G[modId:gsub("-", "").."_SavedVars"] = savedOptions
-		_G[modId:gsub("-", "").."_SavedStats"] = savedStats
+	end
+	_G[savedVarsName][fullname] = savedOptions
+	if profileNum > 0 then
+		_G[savedVarsName][fullname]["talent"..profileNum] = currentSpecName
+	end
+	_G[savedStatsName] = savedStats
+end
+
+function DBM:SpecChanged()
+	if not DBM_UseDualProfile then return end
+	--Load Options again.
+	for modId, idTable in pairs(DBM.ModLists) do
+		self:LoadModOptions(modId)
+	end
+end
+
+function DBM:LoadAllModDefaultOption(modId)
+	-- modId is string like "DBM-Highmaul"
+	if not modId or not DBM.ModLists[modId] then return end
+	-- prevent error
+	if not currentSpecID then
+		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+		currentSpecID = tonumber(currentSpecID)
+	end
+	-- variable init
+	local savedVarsName = modId:gsub("-", "").."_AllSavedVars"
+	local fullname = playerName.."-"..playerRealm
+	local profileNum = DBM_UseDualProfile and currentSpecGroup or 0
+	-- prevent nil table error 
+	if not _G[savedVarsName] then _G[savedVarsName] = {} end
+	for i, id in ipairs(DBM.ModLists[modId]) do
+		-- prevent nil table error 
+		if not _G[savedVarsName][fullname][id] then _G[savedVarsName][fullname][id] = {} end
+		-- actual do load default option
+		local mod = DBM:GetModByName(id)
+		local defaultOptions = {}
+		for option, optionValue in pairs(mod.DefaultOptions) do
+			if type(optionValue) == "string" then
+				optionValue = mod:GetRoleFlagValue(optionValue)
+			end
+			defaultOptions[option] = optionValue 
+		end
+		mod.Options = {}
+		mod.Options = defaultOptions
+		_G[savedVarsName][fullname][id][profileNum] = {}
+		_G[savedVarsName][fullname][id][profileNum] = defaultOptions
+	end
+	self:AddMsg(DBM_CORE_ALLMOD_DEFAULT_LOADED)
+	-- update gui if showing
+	if DBM_GUI.currentViewing and DBM_GUI_OptionsFrame:IsShown() then
+		DBM_GUI_OptionsFrame:DisplayFrame(DBM_GUI.currentViewing)
+	end
+end
+
+function DBM:LoadModDefaultOption(mod)
+	-- mod must be table
+	if not mod then return end
+	-- prevent error
+	if not currentSpecID then
+		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+		currentSpecID = tonumber(currentSpecID)
+	end
+	-- variable init
+	local savedVarsName = (mod.modId):gsub("-", "").."_AllSavedVars"
+	local fullname = playerName.."-"..playerRealm
+	local profileNum = DBM_UseDualProfile and currentSpecGroup or 0
+	-- prevent nil table error
+	if not _G[savedVarsName] then _G[savedVarsName] = {} end
+	if not _G[savedVarsName][fullname] then _G[savedVarsName][fullname] = {} end
+	if not _G[savedVarsName][fullname][mod.id] then _G[savedVarsName][fullname][mod.id] = {} end
+	-- do load default
+	local defaultOptions = {}
+	for option, optionValue in pairs(mod.DefaultOptions) do
+		if type(optionValue) == "string" then
+			optionValue = mod:GetRoleFlagValue(optionValue)
+		end
+		defaultOptions[option] = optionValue 
+	end
+	mod.Options = {}
+	mod.Options = defaultOptions
+	_G[savedVarsName][fullname][mod.id][profileNum] = {}
+	_G[savedVarsName][fullname][mod.id][profileNum] = defaultOptions
+	self:AddMsg(DBM_CORE_MOD_DEFAULT_LOADED)
+	-- update gui if showing
+	if DBM_GUI.currentViewing and DBM_GUI_OptionsFrame:IsShown() then
+		DBM_GUI_OptionsFrame:DisplayFrame(DBM_GUI.currentViewing)
+	end
+end
+
+function DBM:CopyAllModOption(modId, sourceName, sourceProfile)
+	-- modId is string like "DBM-Highmaul"
+	if not modId or not sourceName or not sourceProfile or not DBM.ModLists[modId] then return end
+	-- prevent error
+	if not currentSpecID then
+		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+		currentSpecID = tonumber(currentSpecID)
+	end
+	-- variable init
+	local savedVarsName = modId:gsub("-", "").."_AllSavedVars"
+	local targetName = playerName.."-"..playerRealm
+	local targetProfile = DBM_UseDualProfile and currentSpecGroup or 0
+	-- do not copy setting itself
+	if fullname == sourceName and targetProfile == sourceProfile then
+		self:AddMsg(DBM_CORE_MPROFILE_COPY_SELF_ERROR)
+		return
+	end
+	-- prevent nil table error 
+	if not _G[savedVarsName] then _G[savedVarsName] = {} end
+	-- check source is exist
+	if not _G[savedVarsName][sourceName] then
+		self:AddMsg(DBM_CORE_MPROFILE_COPY_S_ERROR)
+		return
+	end
+	local targetOptions = _G[savedVarsName][targetName] or {}
+	for i, id in ipairs(DBM.ModLists[modId]) do
+		-- check source is exist
+		if not _G[savedVarsName][sourceName][id] then
+			self:AddMsg(DBM_CORE_MPROFILE_COPY_S_ERROR)
+			return
+		end
+		if not _G[savedVarsName][sourceName][id][sourceProfile] then
+			self:AddMsg(DBM_CORE_MPROFILE_COPY_S_ERROR)
+			return
+		end
+		-- prevent nil table error 
+		if not _G[savedVarsName][targetName][id] then _G[savedVarsName][targetName][id] = {} end
+		-- copy table
+		_G[savedVarsName][targetName][id][targetProfile] = {}--clear before copy
+		_G[savedVarsName][targetName][id][targetProfile] = _G[savedVarsName][sourceName][id][sourceProfile]
+		--check new option
+		local mod = DBM:GetModByName(id)
+		for option, optionValue in pairs(mod.Options) do
+			if _G[savedVarsName][targetName][id][targetProfile][option] == nil then
+				_G[savedVarsName][targetName][id][targetProfile][option] = optionValue
+			end
+		end
+		-- apply to options table
+		mod.Options = {}
+		mod.Options = _G[savedVarsName][targetName][id][targetProfile]
+	end
+	if targetProfile > 0 then
+		_G[savedVarsName][targetName]["talent"..targetProfile] = currentSpecName
+	end
+	self:AddMsg(DBM_CORE_MPROFILE_COPY_SUCCESS:format(sourceName, sourceProfile))
+	-- update gui if showing
+	if DBM_GUI.currentViewing and DBM_GUI_OptionsFrame:IsShown() then
+		DBM_GUI_OptionsFrame:DisplayFrame(DBM_GUI.currentViewing)
+	end
+end
+
+function DBM:DeleteAllModOption(modId, name, profile)
+	-- modId is string like "DBM-Highmaul"
+	if not modId or not name or not profile or not DBM.ModLists[modId] then return end
+	-- prevent error
+	if not currentSpecID then
+		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+		currentSpecID = tonumber(currentSpecID)
+	end
+	-- variable init
+	local savedVarsName = modId:gsub("-", "").."_AllSavedVars"
+	local fullname = playerName.."-"..playerRealm
+	local profileNum = DBM_UseDualProfile and currentSpecGroup or 0
+	-- cannot delete current profile.
+	if fullname == name and profileNum == profile then
+		self:AddMsg(DBM_CORE_MPROFILE_DELETE_SELF_ERROR)
+		return
+	end
+	-- prevent nil table error
+	if not _G[savedVarsName] then _G[savedVarsName] = {} end
+	if not _G[savedVarsName][name] then
+		self:AddMsg(DBM_CORE_MPROFILE_DELETE_S_ERROR)
+		return
+	end
+	for i, id in ipairs(DBM.ModLists[modId]) do
+		-- prevent nil table error
+		if not _G[savedVarsName][name][id] then
+			self:AddMsg(DBM_CORE_MPROFILE_DELETE_S_ERROR)
+			return
+		end
+		-- delete
+		_G[savedVarsName][name][id][profile] = nil
+	end
+	_G[savedVarsName][name]["talent"..profile] = nil
+	self:AddMsg(DBM_CORE_MPROFILE_DELETE_SUCCESS:format(name, profile))
+end
+
+function DBM:ClearAllStats(modId)
+	-- modId is string like "DBM-Highmaul"
+	if not modId or not DBM.ModLists[modId] then return end
+	-- variable init
+	local savedStatsName = modId:gsub("-", "").."_SavedStats"
+	-- prevent nil table error 
+	if not _G[savedStatsName] then _G[savedStatsName] = {} end
+	for i, id in ipairs(DBM.ModLists[modId]) do
+		local mod = self:GetModByName(id)
+		-- prevent nil table error
+		local defaultStats = {}
+		defaultStats.normalKills = 0
+		defaultStats.normalPulls = 0
+		defaultStats.heroicKills = 0
+		defaultStats.heroicPulls = 0
+		defaultStats.challengeKills = 0
+		defaultStats.challengePulls = 0
+		defaultStats.mythicKills = 0
+		defaultStats.mythicPulls = 0
+		defaultStats.normal25Kills = 0
+		defaultStats.normal25Kills = 0
+		defaultStats.normal25Pulls = 0
+		defaultStats.heroic25Kills = 0
+		defaultStats.heroic25Pulls = 0
+		defaultStats.lfr25Kills = 0
+		defaultStats.lfr25Pulls = 0
+		mod.stats = {}
+		mod.stats = defaultStats
+		_G[savedStatsName][id] = {}
+		_G[savedStatsName][id] = defaultStats
+	end
+	self:AddMsg(DBM_CORE_ALLMOD_STATS_RESETED)
+	DBM_GUI:UpdateModList()
+end
+
+do
+	function loadOptions()
+		usedProfile = DBM_UsedProfile or usedProfile
+		DBM_UsedProfile = usedProfile
+		--init
+		if not DBM_AllSavedOptions then DBM_AllSavedOptions = {} end
+		--migrate old options
+		if DBM_SavedOptions and not DBM_AllSavedOptions[usedProfile] then
+			DBM_AllSavedOptions[usedProfile] = DBM_SavedOptions
+		end
+		DBM.Options = DBM_AllSavedOptions[usedProfile] or {}
+		dbmIsEnabled = DBM.Options.Enabled or true
+		DBM:AddDefaultOptions(DBM.Options, DBM.DefaultOptions)
+
+		-- load special warning options
+		DBM:UpdateSpecialWarningOptions()
+		-- set this with a short delay to prevent issues with other addons also trying to do the same thing with another position ;)
+		DBM:Schedule(5, DBM.SetRaidWarningPositon)
+		DBM:Schedule(20, DBM.SetRaidWarningPositon)--A second attempt after we are sure all other mods are loaded, so we can work around issues with movemanything or other mods.
 	end
 end
 
@@ -2474,6 +2778,10 @@ function DBM:LFG_LIST_APPLICANT_LIST_UPDATED(hasNewPending, hasNewPendingWithDat
 end
 
 function DBM:ACTIVE_TALENT_GROUP_CHANGED()
+	currentSpecGroup = GetActiveSpecGroup()
+	currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+	currentSpecID = tonumber(currentSpecID)
+	self:SpecChanged()
 	if IsInGroup() then
 		self:RoleCheck(false)
 	end
@@ -2481,6 +2789,8 @@ end
 
 function DBM:UPDATE_SHAPESHIFT_FORM()
 	if IsInGroup() and class == "WARRIOR" and self:AntiSpam(0.5, "STANCE") then--check for stance changes for prot warriors that might be specced into Gladiator Stance
+		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+		currentSpecID = tonumber(currentSpecID)
 		self:RoleCheck(true)
 	end
 end
@@ -2722,6 +3032,10 @@ end
 	--The main place we should force a mod load in combat is for IsEncounterInProgress because i'm pretty sure blizzard waves "script ran too long" function for a small amount of time after a DC
 	--Outdoor bosses will try to ignore check, if they fail, well, then we need to try and find ways to make the mods that can't load in combat smaller or load faster.
 function DBM:LoadMod(mod, force)
+	if not currentSpecID then
+		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+		currentSpecID = tonumber(currentSpecID)
+	end
 	if type(mod) ~= "table" then
 		self:Debug("LoadMod failed because mod table not valid")
 		return false
@@ -2745,7 +3059,6 @@ function DBM:LoadMod(mod, force)
 	EJ_SetDifficulty(difficultyIndex)--Work around blizzard crash bug where other mods (like Boss) screw with Ej difficulty value, which makes EJ_GetSectionInfo crash the game when called with invalid difficulty index set.
 	self:Debug("LoadAddOn should have fired for "..mod.name)
 	local loaded, reason = LoadAddOn(mod.modId)
-	self:Debug("LoadAddOn should have succeeded for "..mod.name, 2)
 	if not loaded then
 		if reason then
 			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(_G["ADDON_"..reason or ""])))
@@ -2755,10 +3068,11 @@ function DBM:LoadMod(mod, force)
 		end
 		return false
 	else
+		self:Debug("LoadAddOn should have succeeded for "..mod.name, 2)
 		if self.Options.ShowLoadMessage then--Make load option optional for advanced users, option is NOT in the GUI.
 			self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
 		end
-		loadModOptions(mod.modId)
+		self:LoadModOptions(mod.modId, InCombatLockdown(), true)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
@@ -4145,7 +4459,7 @@ function checkCustomBossHealth(mod)
 end
 
 function loopCRTimer(timer, mod)
-	local crTimer = mod:NewTimer(timer, DBM_COMBAT_RES_TIMER_TEXT, "Interface\\Icons\\Spell_Nature_Reincarnation")
+	local crTimer = mod:NewTimer(timer, DBM_COMBAT_RES_TIMER_TEXT, "Interface\\Icons\\Spell_Nature_Reincarnation", false)
 	crTimer:Start()
 	DBM:Schedule(timer, loopCRTimer, timer, mod)
 end
@@ -4310,7 +4624,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			if (self.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.stats and not mod.ignoreBestkill then
 				local bestTime = mod.stats[statVarTable[savedDifficulty].."BestTime"]
 				if bestTime and bestTime > 0 then
-					local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+					local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime", false)
 					speedTimer:Start()
 				end
 			end
@@ -5290,7 +5604,7 @@ do
 			testWarning1 = testMod:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Nature_WispSplode")
 			testWarning2 = testMod:NewAnnounce("%s", 2, "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness")
 			testWarning3 = testMod:NewAnnounce("%s", 3, "Interface\\Icons\\Spell_Fire_SelfDestruct")
-			testTimer = testMod:NewTimer(20, "%s")
+			testTimer = testMod:NewTimer(20, "%s", nil, false)
 			testCount1 = testMod:NewCountdown(0, 0, nil, nil, nil, true)
 			testCount2 = testMod:NewCountdown(0, 0, nil, nil, nil, true, true)
 			testSpecialWarning1 = testMod:NewSpecialWarning("%s")
@@ -5363,6 +5677,7 @@ function DBM:RoleCheck(ignoreLoot)
 	if not InCombatLockdown() and ((IsPartyLFG() and (difficultyIndex == 14 or difficultyIndex == 15)) or not IsPartyLFG()) then
 		local tempRole--Use temp role because we still want Role to be "tank" for loot check comparison at bottom (gladiators still use tank gear)
 		if role == "TANK" and UnitBuff("player", gladStance) then--Special handling for gladiator stance
+			currentSpecID = 71--force set to fury warrior
 			tempRole = "DAMAGER"
 		end
 		local whatToCheck = tempRole or role
@@ -5507,6 +5822,10 @@ do
 			obj.localization.general.name = obj.localization.general.name or name
 		end
 		tinsert(self.Mods, obj)
+		if modId then
+			self.ModLists[modId] = self.ModLists[modId] or {}
+			tinsert(self.ModLists[modId], name)
+		end
 		modsById[name] = obj
 		obj:AddBoolOption("SpeedKillTimer", false, "misc")
 		obj:AddBoolOption("HealthFrame", false, "misc")
@@ -6081,87 +6400,265 @@ end
 ---------------------
 --  Class Methods  --
 ---------------------
+local specRoleTable = {
+	[62] = {	--Aracne Mage
+		["Dps"] = true,
+		["Ranged"] = true,
+		["RangedDps"] = true,
+		["ManaUser"] = true,
+		["SpellCaster"] = true,
+		["RaidCooldown"] = true,--Amplify Magic
+		["RemoveCurse"] = true,
+		["MagicDispeller"] = true,
+	},
+	[65] = {	--Holy Paladin
+		["Healer"] = true,
+		["Ranged"] = true,
+		["ManaUser"] = true,
+		["SpellCaster"] = true,
+		["RaidCooldown"] = true,--Devotion Aura
+		["RemovePoison"] = true,
+		["RemoveDisease"] = true,
+	},
+	[66] = {	--Protection Paladin
+		["Tank"] = true,
+		["Melee"] = true,
+		["ManaUser"] = true,
+		["Physical"] = true,
+		["RemovePoison"] = true,
+		["RemoveDisease"] = true,
+	},
+	[70] = {	--Retribution Paladin
+		["Dps"] = true,
+		["Melee"] = true,
+		["MeleeDps"] = true,
+		["ManaUser"] = true,
+		["Physical"] = true,
+		["RemovePoison"] = true,
+		["RemoveDisease"] = true,
+	},
+	[71] = {	--Arms Warrior
+		["Dps"] = true,
+		["Melee"] = true,
+		["MeleeDps"] = true,
+		["RaidCooldown"] = true,--Rallying Cry
+		["Physical"] = true,
+	},
+	[73] = {	--Protection Warrior
+		["Tank"] = true,
+		["Melee"] = true,
+		["Physical"] = true,
+		["MagicDispeller"] = true,
+	},
+	[102] = {	--Balance Druid
+		["Dps"] = true,
+		["Ranged"] = true,
+		["RangedDps"] = true,
+		["ManaUser"] = true,
+		["SpellCaster"] = true,
+		["RemoveEnrage"] = true,
+		["RemoveCurse"] = true,
+		["RemovePoison"] = true,
+	},
+	[103] = {	--Feral Druid
+		["Dps"] = true,
+		["Melee"] = true,
+		["MeleeDps"] = true,
+		["Physical"] = true,
+		["RemoveEnrage"] = true,
+		["RemoveCurse"] = true,
+		["RemovePoison"] = true,
+	},
+	[104] = {	--Guardian Druid
+		["Tank"] = true,
+		["Melee"] = true,
+		["Physical"] = true,
+		["RemoveCurse"] = true,
+		["RemovePoison"] = true,
+	},
+	[105] = {	-- Restoration Druid
+		["Healer"] = true,
+		["Ranged"] = true,
+		["ManaUser"] = true,
+		["SpellCaster"] = true,
+		["RaidCooldown"] = true,--Tranquility
+		["RemoveEnrage"] = true,
+		["RemoveCurse"] = true,
+		["RemovePoison"] = true,
+	},
+	[250] = {	--Blood DK
+		["Tank"] = true,
+		["Melee"] = true,
+		["Physical"] = true,
+	},
+	[251] = {	--Frost DK
+		["Dps"] = true,
+		["Melee"] = true,
+		["MeleeDps"] = true,
+		["Physical"] = true,
+	},
+	[253] = {	--Beastmaster Hunter
+		["Dps"] = true,
+		["Ranged"] = true,
+		["RangedDps"] = true,
+		["Physical"] = true,
+		["RemoveEnrage"] = true,
+		["MagicDispeller"] = true,
+	},
+	[256] = {	--Discipline Priest
+		["Healer"] = true,
+		["Ranged"] = true,
+		["ManaUser"] = true,
+		["SpellCaster"] = true,
+		["RaidCooldown"] = true,--Power Word: Barrier(Discipline) / Divine Hymn (Holy)
+		["RemoveDisease"] = true,
+		["MagicDispeller"] = true,
+	},
+	[258] = {	--Shadow Priest
+		["Dps"] = true,
+		["Ranged"] = true,
+		["RangedDps"] = true,
+		["ManaUser"] = true,
+		["SpellCaster"] = true,
+		["MagicDispeller"] = true,
+	},
+	[259] = {	--Assassination Rogue
+		["Dps"] = true,
+		["Melee"] = true,
+		["MeleeDps"] = true,
+		["RaidCooldown"] = true,--Smoke Bomb
+		["Physical"] = true,
+		["RemoveEnrage"] = true,
+	},
+	[262] = {	--Elemental Shaman
+		["Dps"] = true,
+		["Ranged"] = true,
+		["RangedDps"] = true,
+		["ManaUser"] = true,
+		["SpellCaster"] = true,
+		["RemoveCurse"] = true,
+		["MagicDispeller"] = true,
+	},
+	[263] = {	--Enhancement Shaman
+		["Dps"] = true,
+		["Melee"] = true,
+		["MeleeDps"] = true,
+		["ManaUser"] = true,
+		["SpellCaster"] = true,
+		["Physical"] = true,
+		["RemoveCurse"] = true,
+		["MagicDispeller"] = true,
+	},
+	[264] = {	--Restoration Shaman
+		["Healer"] = true,
+		["Ranged"] = true,
+		["ManaUser"] = true,
+		["SpellCaster"] = true,
+		["RaidCooldown"] = true,--Spirit Link Totem
+		["RemoveCurse"] = true,
+		["MagicDispeller"] = true,
+	},
+	[265] = {	--Affliction Warlock
+		["Dps"] = true,
+		["Ranged"] = true,
+		["RangedDps"] = true,
+		["ManaUser"] = true,
+		["SpellCaster"] = true,
+	},
+	[268] = {	--Brewmaster Monk
+		["Tank"] = true,
+		["Melee"] = true,
+		["Physical"] = true,
+		["RemovePoison"] = true,
+		["RemoveDisease"] = true,
+	},
+	[269] = {	--Windwalker Monk
+		["Dps"] = true,
+		["Melee"] = true,
+		["MeleeDps"] = true,
+		["Physical"] = true,
+		["RemovePoison"] = true,
+		["RemoveDisease"] = true,
+	},
+	[270] = {	--Mistweaver Monk
+		["Healer"] = true,
+		["Melee"] = true,
+		["Ranged"] = true,
+		["ManaUser"] = true,
+		["SpellCaster"] = true,
+		["RaidCooldown"] = true,--Revival
+		["RemovePoison"] = true,
+		["RemoveDisease"] = true,
+	},
+}
+specRoleTable[63] = specRoleTable[62]--Frost Mage
+specRoleTable[64] = specRoleTable[62]--Fire Mage
+specRoleTable[72] = specRoleTable[71]--Fury Warrior
+specRoleTable[252] = specRoleTable[251]--Unholy DK
+specRoleTable[254] = specRoleTable[253]--Markmanship Hunter
+specRoleTable[255] = specRoleTable[253]--Survival Hunter
+specRoleTable[257] = specRoleTable[256]--Holy Priest
+specRoleTable[260] = specRoleTable[259]--Combat Rogue
+specRoleTable[261] = specRoleTable[259]--Subtlety Rogue
+specRoleTable[266] = specRoleTable[265]--Demonology Warlock
+specRoleTable[267] = specRoleTable[265]--Destruction Warlock
 
-function bossModPrototype:IsMelee()
-	return class == "ROGUE"
-	or class == "WARRIOR"
-	or class == "DEATHKNIGHT"
-	or class == "MONK"--Iffy slope, monk healers will be ranged and melee. :\
-	or (class == "PALADIN" and (GetSpecialization() ~= 1))
-    or (class == "SHAMAN" and (GetSpecialization() == 2))
-	or (class == "DRUID" and (GetSpecialization() == 2 or GetSpecialization() == 3))
-end
-
-function bossModPrototype:IsMeleeDps()
-	return class == "ROGUE"
-	or (class == "WARRIOR" and (GetSpecialization() ~= 3))
-	or (class == "DEATHKNIGHT" and (GetSpecialization() ~= 1))
-	or (class == "MONK" and (GetSpecialization() == 3))
-	or (class == "PALADIN" and (GetSpecialization() == 3))
-    or (class == "SHAMAN" and (GetSpecialization() == 2))
-	or (class == "DRUID" and (GetSpecialization() == 2))
-end
-
-function bossModPrototype:IsRanged()--Including healer
-	return class == "MAGE"
-	or class == "HUNTER"
-	or class == "WARLOCK"
-	or class == "PRIEST"
-	or (class == "PALADIN" and (GetSpecialization() == 1))
-    or (class == "SHAMAN" and (GetSpecialization() ~= 2))
-	or (class == "DRUID" and (GetSpecialization() == 1 or GetSpecialization() == 4))
-	or (class == "MONK" and (GetSpecialization() == 2))--Iffy slope, monk healers will be ranged and melee. :\
-end
-
-function bossModPrototype:IsRangedDps()
-	return class == "MAGE"
-	or class == "HUNTER"
-	or class == "WARLOCK"
-	or (class == "PRIEST" and (GetSpecialization() == 3))
-    or (class == "SHAMAN" and (GetSpecialization() == 1))
-	or (class == "DRUID" and (GetSpecialization() == 1))
-end
-
-function bossModPrototype:IsManaUser()--Similar to ranged, but includes all paladins and all shaman
-	return class == "MAGE"
-	or class == "WARLOCK"
-	or class == "PRIEST"
-	or class == "PALADIN"
-    or class == "SHAMAN"
-	or (class == "DRUID" and (GetSpecialization() == 1 or GetSpecialization() == 4))
-	or (class == "MONK" and (GetSpecialization() == 2))
-end
-
-function bossModPrototype:IsDps()--For features that simply should only be on for dps and not healers or tanks and without me having to use "not is heal or not is tank" rules :)
-	return class == "WARLOCK"
-	or class == "MAGE"
-	or class == "HUNTER"
-	or class == "ROGUE"
-	or (class == "WARRIOR" and (GetSpecialization() ~= 3) or UnitBuff("player", gladStance))
-	or (class == "DEATHKNIGHT" and (GetSpecialization() ~= 1))
-	or (class == "PALADIN" and (GetSpecialization() == 3))
-	or (class == "DRUID" and (GetSpecialization() == 1 or GetSpecialization() == 2))
-	or (class == "SHAMAN" and (GetSpecialization() ~= 3))
-   	or (class == "PRIEST" and (GetSpecialization() == 3))
-	or (class == "MONK" and (GetSpecialization() == 3))
+function bossModPrototype:GetRoleFlagValue(flag)
+	if not flag then return false end
+	local flags = {strsplit("|", flag)}
+	for i = 1, #flags do
+		local flagText = flags[i]
+		if flagText:match("^-") then
+			flagText = flagText:gsub("-", "")
+			if not specRoleTable[currentSpecID][flagText] then
+				return true
+			end
+		else
+			if specRoleTable[currentSpecID][flagText] then
+				return true
+			end
+		end
+	end
+	return false
 end
 
 function bossModPrototype:IsTank()
-	return (class == "WARRIOR" and (GetSpecialization() == 3) and not UnitBuff("player", gladStance))
-	or (class == "DEATHKNIGHT" and (GetSpecialization() == 1))
-	or (class == "PALADIN" and (GetSpecialization() == 2))
-	or (class == "DRUID" and (GetSpecialization() == 3))
-	or (class == "MONK" and (GetSpecialization() == 1))
+	if not currentSpecID then
+		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+		currentSpecID = tonumber(currentSpecID)
+	end
+	local _, _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
+	if role == "TANK" then
+		return true
+	else
+		return false
+	end
 end
 
-function bossModPrototype:IsSpellCaster(includePal)
-	return class == "MAGE"
-	or class == "WARLOCK"
-	or class == "PRIEST"
-	or (class == "MONK" and (GetSpecialization() == 2))
-    or (class == "SHAMAN" and (GetSpecialization() ~= 2))
-	or (class == "DRUID" and (GetSpecialization() == 1 or GetSpecialization() == 4))
-	or (class == "PALADIN" and (GetSpecialization() == 1 or (includePal or false)))
+function bossModPrototype:IsDps()
+	if not currentSpecID then
+		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+		currentSpecID = tonumber(currentSpecID)
+	end
+	local _, _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
+	if role == "DAMAGER" then
+		return true
+	else
+		return false
+	end
+end
+
+function bossModPrototype:IsHealer()
+	if not currentSpecID then
+		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+		currentSpecID = tonumber(currentSpecID)
+	end
+	local _, _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
+	if role == "HEALER" then
+		return true
+	else
+		return false
+	end
 end
 
 function bossModPrototype:IsTanking(unit, boss)
@@ -6190,43 +6687,6 @@ function bossModPrototype:IsTanking(unit, boss)
 		return true
 	end
 	return false
-end
-
-function bossModPrototype:IsHealer()
-	return (class == "PALADIN" and (GetSpecialization() == 1))
-	or (class == "SHAMAN" and (GetSpecialization() == 3))
-	or (class == "DRUID" and (GetSpecialization() == 4))
-	or (class == "PRIEST" and (GetSpecialization() ~= 3))
-	or (class == "MONK" and (GetSpecialization() == 2))
-end
-
-function bossModPrototype:HasRaidCooldown()
-	return class == "WARRIOR"--Rallying Cry/Demoralizing Banner
-	or class == "PALADIN"--Aura Mastery
-	or class == "ROGUE"--Smoke Bomb
-	or (class == "PRIEST" and (GetSpecialization() == 1))--Power Word: Barrier
-	or (class == "SHAMAN" and (GetSpecialization() == 3))--Spirit Link Totem
-end
-
---These don't matter since they don't check talents
-function bossModPrototype:IsPhysical()
-	return self:IsMelee() or class == "HUNTER"
-end
-
-function bossModPrototype:CanRemoveEnrage()
-	return class == "HUNTER" or class == "ROGUE" or class == "DRUID"
-end
-
-function bossModPrototype:CanRemoveCurse()
-	return class == "DRUID" or class == "MAGE"
-end
-
-function bossModPrototype:CanRemovePoison()
-	return class == "DRUID" or class == "MONK" or class == "PALADIN"
-end
-
-function bossModPrototype:IsMagicDispeller()
-	return class == "MAGE" or class == "PRIEST" or class == "SHAMAN"
 end
 
 ----------------------------
@@ -7619,10 +8079,6 @@ do
 			optionVersion = string.sub(timer, 14)
 			timer, spellId, timerText, optionDefault, optionName, texture, r, g, b = spellId, timerText, optionDefault, optionName, texture, r, g, b, temp
 		end
-		-- new argument timerText is optional (usually only required for achievement timers as they have looooong names)
-		if type(timerText) == "boolean" or type(optionDefault) == "string" then -- check if the argument was skipped
-			return newTimer(self, timerType, timer, spellId, nil, timerText, optionDefault, optionName, texture, r, g, b, optionVersion)
-		end
 		local spellName, icon
 		local unparsedId = spellId
 		if timerType == "achievement" then
@@ -7855,9 +8311,13 @@ end
 ---------------
 --  Options  --
 ---------------
-function bossModPrototype:AddBoolOption(name, default, cat, func, optionVersion)
+function bossModPrototype:AddBoolOption(name, default, cat, func)
 	cat = cat or "misc"
-	self.Options[name..(optionVersion or "")] = (default == nil) or default
+	self.DefaultOptions[name] = (default == nil) or default
+	if default and type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
+	self.Options[name] = (default == nil) or default
 	self:SetOptionCategory(name, cat)
 	if func then
 		self.optionFuncs = self.optionFuncs or {}
@@ -7867,12 +8327,21 @@ end
 
 function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat)
 	cat = cat or "misc"
+	self.DefaultOptions[name] = (default == nil) or default
+	self.DefaultOptions[name.."SpecialWarningSound"] = defaultSound or 1
+	if default and type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
 	self.Options[name] = (default == nil) or default
-	self.Options[name .. "SpecialWarningSound"] = defaultSound or "Sound\\Spells\\PVPFlagTaken.ogg"
+	self.Options[name.."SpecialWarningSound"] = defaultSound or 1
 	self:SetOptionCategory(name, cat)
 end
 
 function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile)
+	self.DefaultOptions[name] = (default == nil) or default
+	if default and type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
 	self.Options[name] = (default == nil) or default
 	self:SetOptionCategory(name, "misc")
 	if isHostile then
@@ -7888,6 +8357,10 @@ end
 
 function bossModPrototype:AddArrowOption(name, spellId, default, isRunTo)
 	if isRunTo == true then isRunTo = 2 end--Support legacy
+	self.DefaultOptions[name] = (default == nil) or default
+	if default and type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
 	self.Options[name] = (default == nil) or default
 	self:SetOptionCategory(name, "misc")
 	if isRunTo == 2 then
@@ -7900,6 +8373,10 @@ function bossModPrototype:AddArrowOption(name, spellId, default, isRunTo)
 end
 
 function bossModPrototype:AddRangeFrameOption(range, spellId, default)
+	self.DefaultOptions["RangeFrame"] = (default == nil) or default
+	if default and type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
 	self.Options["RangeFrame"] = (default == nil) or default
 	self:SetOptionCategory("RangeFrame", "misc")
 	if spellId then
@@ -7910,6 +8387,10 @@ function bossModPrototype:AddRangeFrameOption(range, spellId, default)
 end
 
 function bossModPrototype:AddInfoFrameOption(spellId, default)
+	self.DefaultOptions["InfoFrame"] = (default == nil) or default
+	if default and type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
 	self.Options["InfoFrame"] = (default == nil) or default
 	self:SetOptionCategory("InfoFrame", "misc")
 	self.localization.options["InfoFrame"] = DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT:format(spellId)
@@ -7917,6 +8398,10 @@ end
 
 function bossModPrototype:AddReadyCheckOption(questId, default)
 	self.readyCheckQuestId = questId
+	self.DefaultOptions["ReadyCheck"] = (default == nil) or default
+	if default and type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
 	self.Options["ReadyCheck"] = (default == nil) or default
 	self.localization.options["ReadyCheck"] = DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT
 	self:SetOptionCategory("ReadyCheck", "misc")
@@ -7924,6 +8409,7 @@ end
 
 function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, default, cat, func)
 	cat = cat or "misc"
+	self.DefaultOptions[name] = default or 0
 	self.Options[name] = default or 0
 	self:SetOptionCategory(name, cat)
 	self.sliders = self.sliders or {}
@@ -7953,6 +8439,7 @@ end
 -- this will be fixed as soon as it is necessary due to removed options ;-)
 function bossModPrototype:AddDropdownOption(name, options, default, cat, func)
 	cat = cat or "misc"
+	self.DefaultOptions[name] = default
 	self.Options[name] = default
 	self:SetOptionCategory(name, cat)
 	self.dropdowns = self.dropdowns or {}
