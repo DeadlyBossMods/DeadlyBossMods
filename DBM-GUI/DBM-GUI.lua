@@ -2610,6 +2610,10 @@ local function CreateOptionsMenu()
 			DBM_UseDualProfile = not DBM_UseDualProfile
 			DBM:SpecChanged()
 		end)
+		dualProfile:SetScript("OnShow", function()
+			dualProfile:SetChecked(DBM_UseDualProfile)
+			DBM:SpecChanged()
+		end)
 
 		function dbm_profilePanel_create()
 			if createTextbox:GetText() then
