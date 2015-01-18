@@ -2439,18 +2439,29 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			_G[oldSavedVarsName][id] = nil
 			savedOptions[id][profileNum] = oldTable
 		end
-		savedOptions[id][profileNum] = savedOptions[id][profileNum] or mod.Options
-		--check new option
-		for option, optionValue in pairs(mod.Options) do
-			if savedOptions[id][profileNum][option] == nil then
-				savedOptions[id][profileNum][option] = optionValue
+		if not savedOptions[id][profileNum] and not first then--previous profile not found. load defaults
+			local defaultOptions = {}
+			for option, optionValue in pairs(mod.DefaultOptions) do
+				if type(optionValue) == "string" then
+					optionValue = mod:GetRoleFlagValue(optionValue)
+				end
+				defaultOptions[option] = optionValue 
 			end
-		end
-		--clean unused saved variables (do not work on combat load)
-		if not inCombat then
-			for option, optionValue in pairs(savedOptions[id][profileNum]) do
-				if mod.DefaultOptions[option] == nil then
-					savedOptions[id][profileNum][option] = nil
+			savedOptions[id][profileNum] = defaultOptions
+		else
+			savedOptions[id][profileNum] = savedOptions[id][profileNum] or mod.Options
+			--check new option
+			for option, optionValue in pairs(mod.Options) do
+				if savedOptions[id][profileNum][option] == nil then
+					savedOptions[id][profileNum][option] = optionValue
+				end
+			end
+			--clean unused saved variables (do not work on combat load)
+			if not inCombat then
+				for option, optionValue in pairs(savedOptions[id][profileNum]) do
+					if mod.DefaultOptions[option] == nil then
+						savedOptions[id][profileNum][option] = nil
+					end
 				end
 			end
 		end
@@ -2663,25 +2674,25 @@ function DBM:CopyAllModSoundOption(modId, sourceName, sourceProfile)
 	local targetProfile = DBM_UseDualProfile and currentSpecGroup or 0
 	-- do not copy setting itself
 	if targetName == sourceName and targetProfile == sourceProfile then
-		self:AddMsg(DBM_CORE_MPROFILE_COPY_SELF_ERROR)
+		self:AddMsg(DBM_CORE_MPROFILE_SCOPY_SELF_ERROR)
 		return
 	end
 	-- prevent nil table error 
 	if not _G[savedVarsName] then _G[savedVarsName] = {} end
 	-- check source is exist
 	if not _G[savedVarsName][sourceName] then
-		self:AddMsg(DBM_CORE_MPROFILE_COPY_S_ERROR)
+		self:AddMsg(DBM_CORE_MPROFILE_SCOPY_S_ERROR)
 		return
 	end
 	local targetOptions = _G[savedVarsName][targetName] or {}
 	for i, id in ipairs(DBM.ModLists[modId]) do
 		-- check source is exist
 		if not _G[savedVarsName][sourceName][id] then
-			self:AddMsg(DBM_CORE_MPROFILE_COPY_S_ERROR)
+			self:AddMsg(DBM_CORE_MPROFILE_SCOPY_S_ERROR)
 			return
 		end
 		if not _G[savedVarsName][sourceName][id][sourceProfile] then
-			self:AddMsg(DBM_CORE_MPROFILE_COPY_S_ERROR)
+			self:AddMsg(DBM_CORE_MPROFILE_SCOPY_S_ERROR)
 			return
 		end
 		-- prevent nil table error 
@@ -2700,7 +2711,7 @@ function DBM:CopyAllModSoundOption(modId, sourceName, sourceProfile)
 	if targetProfile > 0 then
 		_G[savedVarsName][targetName]["talent"..targetProfile] = currentSpecName
 	end
-	self:AddMsg(DBM_CORE_MPROFILE_COPY_SUCCESS:format(sourceName, sourceProfile))
+	self:AddMsg(DBM_CORE_MPROFILE_SCOPY_SUCCESS:format(sourceName, sourceProfile))
 	-- update gui if showing
 	if DBM_GUI.currentViewing and DBM_GUI_OptionsFrame:IsShown() then
 		DBM_GUI_OptionsFrame:DisplayFrame(DBM_GUI.currentViewing)
