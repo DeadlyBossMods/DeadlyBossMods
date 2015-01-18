@@ -2743,12 +2743,24 @@ do
 				_G[copyModProfile:GetName().."Text"]:SetText("")
 			end)
 
+			local copyModSoundProfile = modProfileArea:CreateDropdown(L.SelectModProfileCopySound, modProfileDropdown, nil, nil, function(value)
+				local name, profile = strsplit("|", value)
+				DBM:CopyAllModSoundOption(addon.modId, name, tonumber(profile))
+				C_Timer.After(0.05, dbm_modProfilePanel_refresh)
+			end, 100)
+			copyModSoundProfile:SetPoint("LEFT", copyModProfile, "RIGHT", 27, 0)
+			copyModSoundProfile:SetScript("OnShow", function()
+				copyModSoundProfile.value = nil
+				copyModSoundProfile.text = nil
+				_G[copyModSoundProfile:GetName().."Text"]:SetText("")
+			end)
+
 			local deleteModProfile = modProfileArea:CreateDropdown(L.SelectModProfileDelete, modProfileDropdown, nil, nil, function(value)
 				local name, profile = strsplit("|", value)
 				DBM:DeleteAllModOption(addon.modId, name, tonumber(profile))
 				C_Timer.After(0.05, dbm_modProfilePanel_refresh)
-			end, 153)
-			deleteModProfile:SetPoint("LEFT", copyModProfile, "RIGHT", 57, 0)
+			end, 100)
+			deleteModProfile:SetPoint("LEFT", copyModSoundProfile, "RIGHT", 27, 0)
 			deleteModProfile:SetScript("OnShow", function()
 				deleteModProfile.value = nil
 				deleteModProfile.text = nil
@@ -2758,6 +2770,7 @@ do
 			function dbm_modProfilePanel_refresh()
 				resetButton:GetScript("OnShow")()
 				copyModProfile:GetScript("OnShow")()
+				copyModSoundProfile:GetScript("OnShow")()
 				deleteModProfile:GetScript("OnShow")()
 			end
 		end
