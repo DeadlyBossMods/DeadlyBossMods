@@ -282,6 +282,7 @@ L.Area_ModProfile			= "Copy mod settings from another char/spec or delete mod se
 L.ModAllReset				= "Reset all mod settings"
 L.ModAllStatReset			= "Reset all mod stats"
 L.SelectModProfileCopy		= "Copy mod settings from"
+L.SelectModProfileCopySound	= "Copy sound setting from"
 L.SelectModProfileDelete	= "Delete mod settings for"
 
 -- Misc
