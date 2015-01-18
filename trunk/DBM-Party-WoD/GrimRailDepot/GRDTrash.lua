@@ -16,17 +16,15 @@ mod:RegisterEvents(
 	"SPELL_ABSORBED 176033"
 )
 
-local warnActivating					= mod:NewCastAnnounce(163966, 2, 5, nil, not mod:IsHealer())
 local warnLavaWreath					= mod:NewTargetAnnounce(176025, 4)
 --local warnFlametongue					= mod:NewTargetAnnounce(176032, 4)--target scanning unverified
-local warnShrapnelBlast					= mod:NewCastAnnounce(166675, 4)
 
-local specWarnActivating				= mod:NewSpecialWarningInterrupt(163966, not mod:IsHealer())
+local specWarnActivating				= mod:NewSpecialWarningInterrupt(163966, "-Healer")
 local specWarnLavaWreath				= mod:NewSpecialWarningMoveAway(176025)
 --local specWarnFlametongue				= mod:NewSpecialWarningYou(176032)
 --local yellFlametongue					= mod:NewYell(176032)
 local specWarnFlametongueGround			= mod:NewSpecialWarningMove(176033)--Ground aoe, may add an earlier personal warning if target scanning works.
-local specWarnShrapnelblast				= mod:NewSpecialWarningMove(166675, mod:IsTank(), nil, nil, 3)--160943 boss version, 166675 trash version.
+local specWarnShrapnelblast				= mod:NewSpecialWarningMove(166675, "Tank", nil, nil, 3)--160943 boss version, 166675 trash version.
 local specWarnThunderzone				= mod:NewSpecialWarningMove(166340)
 
 mod:RemoveOption("HealthFrame")
@@ -60,7 +58,6 @@ function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled or self:IsDifficulty("normal5") then return end
 	local spellId = args.spellId
 	if spellId == 166675 and self:AntiSpam(2, 1) then
-		warnShrapnelBlast:Show()
 		specWarnShrapnelblast:Show()
 	elseif spellId == 176032 then
 		self:BossTargetScanner(args.sourceGUID, "FlametongueTarget", 0.05, 16)
@@ -74,7 +71,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if not self.Options.Enabled or self:IsDifficulty("normal5") then return end
 	local spellId = args.spellId
 	if spellId == 163966 and self:AntiSpam(2, 3) then
-		warnActivating:Show()
 		specWarnActivating:Show(args.sourceName)
 	end
 end

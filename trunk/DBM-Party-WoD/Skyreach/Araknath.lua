@@ -16,10 +16,9 @@ mod:RegisterEventsInCombat(
 
 --Add smash? it's a 1 sec cast, can it be dodged?
 local warnEnergize		= mod:NewSpellAnnounce(154159, 3)
-local warnBurst			= mod:NewCountAnnounce(154135, 3)
 
 local specWarnBurst		= mod:NewSpecialWarningCount(154135, nil, nil, nil, 2)
-local specWarnSmash		= mod:NewSpecialWarningDodge("OptionVersion2", 154110, mod:IsTank())
+local specWarnSmash		= mod:NewSpecialWarningDodge("OptionVersion2", 154110, "Tank")
 
 local timerEnergozeCD	= mod:NewNextTimer(20, 154159)
 local timerBurstCD		= mod:NewCDCountTimer(23, 154135)
@@ -39,7 +38,6 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 154135 then
 		self.vb.burstCount = self.vb.burstCount + 1
-		warnBurst:Show(self.vb.burstCount)
 		specWarnBurst:Show(self.vb.burstCount)
 		timerBurstCD:Start(nil, self.vb.burstCount+1)
 	elseif args:IsSpellID(154110, 154113) then

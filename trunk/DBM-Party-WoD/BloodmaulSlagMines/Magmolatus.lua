@@ -21,31 +21,30 @@ mod:RegisterEventsInCombat(
 
 -------------------------------------------
 local warnFirestorm				= mod:NewSpellAnnounce(149997, 3)
-local warnDancingFlames			= mod:NewTargetAnnounce(149975, 3, nil, mod:IsHealer())
+local warnDancingFlames			= mod:NewTargetAnnounce(149975, 3, nil, "Healer")
 local warnPhase2				= mod:NewPhaseAnnounce(2)
-local warnMoltenImpact			= mod:NewSpellAnnounce(150038, 4)
-local warnWitheringFlames		= mod:NewTargetAnnounce(150032, 3, nil, mod:IsHealer())
+local warnWitheringFlames		= mod:NewTargetAnnounce(150032, 3, nil, "Healer")
 
 local specWarnMagmaBarrage		= mod:NewSpecialWarningMove(150011)
-local specWarnRoughSmash		= mod:NewSpecialWarningDodge(149941, mod:IsMelee())
-local specWarnRuination			= mod:NewSpecialWarningSwitch("ej8622", not mod:IsHealer())
-local specWarnCalamity			= mod:NewSpecialWarningSwitch("ej8626", not mod:IsHealer())
-local specWarnFirestorm			= mod:NewSpecialWarningInterrupt(149997, not mod:IsHealer())
-local specWarnDancingFlames		= mod:NewSpecialWarningDispel(149975, mod:IsHealer())
-local specWarnMagmolatus		= mod:NewSpecialWarningSwitch("ej8621", mod:IsTank())--Dps can turn this on too I suppose but 5 seconds after boss spawns they are switching to add anyways, so this is mainly for tank to pick it up
-local specWarnSlagSmash			= mod:NewSpecialWarningDodge(150023, mod:IsMelee())
+local specWarnRoughSmash		= mod:NewSpecialWarningDodge(149941, "Melee")
+local specWarnRuination			= mod:NewSpecialWarningSwitch("ej8622", "-Healer")
+local specWarnCalamity			= mod:NewSpecialWarningSwitch("ej8626", "-Healer")
+local specWarnFirestorm			= mod:NewSpecialWarningInterrupt(149997, "-Healer")
+local specWarnDancingFlames		= mod:NewSpecialWarningDispel(149975, "Healer")
+local specWarnMagmolatus		= mod:NewSpecialWarningSwitch("ej8621", "Tank")--Dps can turn this on too I suppose but 5 seconds after boss spawns they are switching to add anyways, so this is mainly for tank to pick it up
+local specWarnSlagSmash			= mod:NewSpecialWarningDodge(150023, "Melee")
 local specWarnMoltenImpact		= mod:NewSpecialWarningSpell(150038, nil, nil, nil, 2)
-local specWarnWitheringFlames	= mod:NewSpecialWarningDispel(150032, mod:IsHealer())
+local specWarnWitheringFlames	= mod:NewSpecialWarningDispel(150032, "Healer")
 
 local timerMoltenImpactCD		= mod:NewNextTimer(21.5, 150038)
 
-local voiceRuination			= mod:NewVoice("ej8622", not mod:IsHealer())
-local voiceCalamity				= mod:NewVoice("ej8626", not mod:IsHealer())
+local voiceRuination			= mod:NewVoice("ej8622", "-Healer")
+local voiceCalamity				= mod:NewVoice("ej8626", "-Healer")
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceFirestorm			= mod:NewVoice(149997, not mod:IsHealer())
-local voiceDancingFlames		= mod:NewVoice(149975, mod:IsHealer())
-local voiceWitheringFlames		= mod:NewVoice(150032, mod:IsHealer())
-local voiceSlagSmash			= mod:NewVoice(150023, mod:IsMelee())
+local voiceFirestorm			= mod:NewVoice(149997, "-Healer")
+local voiceDancingFlames		= mod:NewVoice(149975, "Healer")
+local voiceWitheringFlames		= mod:NewVoice(150032, "Healer")
+local voiceSlagSmash			= mod:NewVoice(150023, "Melee")
 
 local activeAddGUIDS = {}
 
@@ -122,7 +121,6 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 149941 then
 		specWarnRoughSmash:Show()
 	elseif spellId == 150038 then
-		warnMoltenImpact:Show()
 		specWarnMoltenImpact:Show()
 		timerMoltenImpactCD:Start()
 	elseif spellId == 150023 then

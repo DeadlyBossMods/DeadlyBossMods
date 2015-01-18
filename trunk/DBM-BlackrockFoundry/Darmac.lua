@@ -36,22 +36,22 @@ local warnElekk						= mod:NewTargetAnnounce(155460, 3)--Grants Tantrum
 local warnClefthoof					= mod:NewTargetAnnounce(155462, 3)--Grants Epicenter
 local warnEpicenter					= mod:NewSpellAnnounce(162277, 3)--Mythic
 --Beast abilities (living beasts)
-local warnConflag					= mod:NewTargetAnnounce(155399, 3, nil, mod:IsHealer())
-local warnSearingFangs				= mod:NewStackAnnounce(155030, 2, nil, mod:IsTank())
-local warnCrushArmor				= mod:NewStackAnnounce(155236, 2, nil, mod:IsTank())
+local warnConflag					= mod:NewTargetAnnounce(155399, 3, nil, "Healer")
+local warnSearingFangs				= mod:NewStackAnnounce(155030, 2, nil, "Tank")
+local warnCrushArmor				= mod:NewStackAnnounce(155236, 2, nil, "Tank")
 local warnStampede					= mod:NewSpellAnnounce(155247, 3)
 
 --Boss basic attacks
-local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, not mod:IsHealer(), nil, nil, nil, nil, true)
-local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, mod:IsRanged(), nil, nil, 2, nil, true)
+local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, "-Healer", nil, nil, nil, nil, true)
+local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, "Range", nil, nil, 2, nil, true)
 local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
-local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, mod:IsMelee(), nil, nil, nil, nil, true)--Always returns to melee
+local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, "Melee", nil, nil, nil, nil, true)--Always returns to melee
 local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil, nil, 2)--Still iffy on it
 local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2, nil, true)
 local specWarnEpicenter				= mod:NewSpecialWarningSpell(162277, nil, nil, nil, 2)
 --Beast abilities (living)
-local specWarnSavageHowl			= mod:NewSpecialWarningDispel(155198, mod:IsHealer() or mod:IsTank() or mod:CanRemoveEnrage(), nil, nil, nil, nil, true)
+local specWarnSavageHowl			= mod:NewSpecialWarningDispel(155198, "Healer|Tank|RemoveEnrage", nil, nil, nil, nil, true)
 local specWarnSearingFangs			= mod:NewSpecialWarningStack(155030, nil, 12)--Stack count assumed, may be 2
 local specWarnSearingFangsOther		= mod:NewSpecialWarningTaunt(155030)--No evidence of this existing ANYWHERE in any logs. removed? Bugged?
 local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, nil, 3)--6-9 second cd, 15 second duration, 3 is smallest safe swap, sometimes 2 when favorable RNG
@@ -73,16 +73,16 @@ local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
 local timerInfernoBreathCD			= mod:NewCDTimer(20, 154989)
 
 --local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceCallthePack				= mod:NewVoice(154975, not mod:IsHealer()) --killmob
-local voiceSavageHowl				= mod:NewVoice(155198, mod:CanRemoveEnrage()) --trannow
-local voicePinDown					= mod:NewVoice(154960, mod:IsRanged()) --helpme
+local voiceCallthePack				= mod:NewVoice(154975, "-Healer") --killmob
+local voiceSavageHowl				= mod:NewVoice(155198, "RemoveEnrage") --trannow
+local voicePinDown					= mod:NewVoice(154960, "Range") --helpme
 local voiceInfernoBreath			= mod:NewVoice(154989, 3) --breathsoon
-local voiceRendandTear				= mod:NewVoice(155385, mod:IsMelee())  --runaway
+local voiceRendandTear				= mod:NewVoice(155385, "Melee")  --runaway
 local voiceCrushArmor				= mod:NewVoice(155236) --changemt
 local voiceTantrum					= mod:NewVoice(162275) --aesoon
 
 
-mod:AddRangeFrameOption("8/7/3", nil, not mod:IsMelee())
+mod:AddRangeFrameOption("8/7/3", nil, "-Melee")
 mod:AddSetIconOption("SetIconOnSpear", 154960)--Not often I make icon options on by default but this one is universally important. YOu always break players out of spear, in any strat.
 
 mod.vb.RylakAbilities = false
@@ -109,20 +109,20 @@ local function updateBeasts(cid, status, beastName)
 	end
 end
 
-local function updateBeastTimers(all, spellId)
+local function updateBeastTimers(self, all, spellId)
 	--TODO, if on mythic, and boss is already grounded and timers for other abiltiies already started
 	--See if all of them reset or if we need to just add timers for the newly gained ability only
-	if mod.vb.WolfAbilities and (all or mod:IsMythic() and spellId == 155458) then--Cruelfang
+	if self.vb.WolfAbilities and (all or self:IsMythic() and spellId == 155458) then--Cruelfang
 		timerRendandTearCD:Start(6)--Small sample size. Just keep subtracking if shorter times are observed.
 	end
-	if mod.vb.RylakAbilities and (all or mod:IsMythic() and spellId == 155459) then--Dreadwing
+	if self.vb.RylakAbilities and (all or self:IsMythic() and spellId == 155459) then--Dreadwing
 		timerSuperheatedShrapnelCD:Start(9)--Small sample size. Just keep subtracking if shorter times are observed.
 	end
-	if mod.vb.ElekkAbilities and (all or mod:IsMythic() and spellId == 155460) then--Ironcrusher
-		timerTantrumCD:Start(16, mod.vb.tantrumCount+1)--Small sample size. Just keep subtracking if shorter times are observed.
+	if self.vb.ElekkAbilities and (all or self:IsMythic() and spellId == 155460) then--Ironcrusher
+		timerTantrumCD:Start(16, self.vb.tantrumCount+1)--Small sample size. Just keep subtracking if shorter times are observed.
 		voiceTantrum:Schedule(16, "aesoon")
 	end
-	if mod.vb.FaultlineAbilites and (all or mod:IsMythic() and spellId == 155462) then--Faultline
+	if self.vb.FaultlineAbilites and (all or self:IsMythic() and spellId == 155462) then--Faultline
 		--Mythic Stuff
 	end
 end
@@ -213,9 +213,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(155458, 155459, 155460, 155462) then
 		if not self:IsMythic() then--Not mythic, boss gaining ability means he just dismounted, start/update all timers.
-			updateBeastTimers(true)
+			updateBeastTimers(self, true)
 		else--On mythic, boss already on ground already casting other things, so only update timers for new ability he just gained.
-			updateBeastTimers(false, spellId)
+			updateBeastTimers(self, false, spellId)
 		end
 		if spellId == 155458 then--Wolf Aura
 			warnWolf:Show(args.destName)
@@ -295,7 +295,7 @@ function mod:UNIT_TARGETABLE_CHANGED()
 		if cid == 76865 and self.vb.mounted then--Boss dismounting living beast on mythic
 			self.vb.mounted = false
 			updateBeasts(cid, 3)
-			updateBeastTimers(true)
+			updateBeastTimers(self, true)
 		end
 	end
 end	

@@ -9,7 +9,8 @@
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0队伍首领(德拉诺之王)|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariablesPerCharacter: DBMPartyWoD_SavedVars, DBMPartyWoD_SavedStats
+## SavedVariables: DBMPartyWoD_AllSavedVars
+## SavedVariablesPerCharacter: DBMPartyWoD_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: PARTY
 ## X-DBM-Mod-Category: WOD

@@ -17,15 +17,15 @@ mod:RegisterEventsInCombat(
 	"RAID_BOSS_WHISPER"
 )
 
-local warnParchedGrasp			= mod:NewSpellAnnounce(164357, 3, nil, mod:IsTank())
+local warnParchedGrasp			= mod:NewSpellAnnounce(164357, 3, nil, "Tank")
 local warnBrittleBark			= mod:NewSpellAnnounce(164275, 2)
 local warnUncheckedGrowth		= mod:NewSpellAnnounce("ej10098", 3, 164294)
 
 local specWarnLivingLeaves		= mod:NewSpecialWarningMove(169495)
 local specWarnUncheckedGrowthYou= mod:NewSpecialWarningYou(164294)
 local specWarnUncheckedGrowth	= mod:NewSpecialWarningMove(164294)
-local specWarnUncheckedGrowthAdd= mod:NewSpecialWarningSwitch("ej10098", mod:IsTank())
-local specWarnParchedGrasp		= mod:NewSpecialWarningSpell(164357, mod:IsTank())
+local specWarnUncheckedGrowthAdd= mod:NewSpecialWarningSwitch("ej10098", "Tank")
+local specWarnParchedGrasp		= mod:NewSpecialWarningSpell(164357, "Tank")
 local specWarnBrittleBark		= mod:NewSpecialWarningSpell(164275)
 local specWarnBrittleBarkEnd	= mod:NewSpecialWarningEnd(164275, false)--Added for sake of adding. Not important enough to be a default though.
 

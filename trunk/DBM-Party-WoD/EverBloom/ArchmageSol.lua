@@ -15,13 +15,13 @@ mod:RegisterEventsInCombat(
 
 --Again, too lazy to work on CD timers, someone else can do it. raid mods are putting too much strain on me to give 5 man mods as much attention
 --Probalby should also add a close warning for Frozen Rain
-local warnParasiticGrowth		= mod:NewCountAnnounce(168885, 3, nil, mod:IsTank())--This is tanks job, it's no one elses business to interrupt this before tank is ready to push next phase. Careless interruptions can cause a wipe to arcane phase because fire/ice were too short.
+local warnParasiticGrowth		= mod:NewCountAnnounce(168885, 3, nil, "Tank")--This is tanks job, it's no one elses business to interrupt this before tank is ready to push next phase. Careless interruptions can cause a wipe to arcane phase because fire/ice were too short.
 local warnFirePhase				= mod:NewSpellAnnounce(166475 ,1)
 --local warnFireBloom				= mod:NewSpellAnnounce(166492, 4)--Very useless. only confusing
 local warnFrostPhase			= mod:NewSpellAnnounce(166476 ,1)
 local warnArcanePhase			= mod:NewSpellAnnounce(166477 ,1)
 
-local specWarnParasiticGrowth	= mod:NewSpecialWarningCount(168885, mod:IsTank())
+local specWarnParasiticGrowth	= mod:NewSpecialWarningCount(168885, "Tank")
 --local specWarnFireBloom			= mod:NewSpecialWarningSpell(166492, nil, nil, nil, 2)
 local specWarnFrozenRainMove	= mod:NewSpecialWarningMove(166726)
 

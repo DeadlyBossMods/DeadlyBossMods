@@ -20,7 +20,7 @@ local warnFontofLife			= mod:NewSpellAnnounce(169120, 3)--Does this need a switc
 local warnGenesis				= mod:NewSpellAnnounce(169613, 4)
 
 local specWarnColossalBlow		= mod:NewSpecialWarningDodge(169179, nil, nil, nil, 2)
-local specWarnEntanglement		= mod:NewSpecialWarningSwitch(169251, mod:IsDps())
+local specWarnEntanglement		= mod:NewSpecialWarningSwitch(169251, "Dps")
 local specWarnGenesis			= mod:NewSpecialWarningSpell(169613)--Everyone. "Switch" is closest generic to "run around stomping flowers"
 
 --Only timers that were consistent, others are all over the place.
