@@ -2435,11 +2435,13 @@ function DBM:LoadModOptions(modId, inCombat, first)
 		local mod = DBM:GetModByName(id)
 		-- migrate old option
 		if _G[oldSavedVarsName] and _G[oldSavedVarsName][id] then
+			self:Debug("LoadModOptions: Found old options, importing")
 			local oldTable = _G[oldSavedVarsName][id]
 			_G[oldSavedVarsName][id] = nil
 			savedOptions[id][profileNum] = oldTable
 		end
 		if not savedOptions[id][profileNum] and not first then--previous profile not found. load defaults
+			self:Debug("LoadModOptions: No saved options, creating defaults for profile "..profileNum)
 			local defaultOptions = {}
 			for option, optionValue in pairs(mod.DefaultOptions) do
 				if type(optionValue) == "string" then
@@ -2507,6 +2509,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 	_G[savedVarsName][fullname] = savedOptions
 	if profileNum > 0 then
 		_G[savedVarsName][fullname]["talent"..profileNum] = profileNum == 3 and gladStance or currentSpecName
+		self:Debug("LoadModOptions: Finished loading ".._G[savedVarsName][fullname]["talent"..profileNum], 2)
 	end
 	_G[savedStatsName] = savedStats
 end
