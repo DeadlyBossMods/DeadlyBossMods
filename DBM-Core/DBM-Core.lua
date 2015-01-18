@@ -5409,7 +5409,9 @@ end
 
 do
 	function DBM:PLAYER_ENTERING_WORLD()
-		self:Schedule(10, function() if not DBM.Options.HelpMessageShown2 then DBM.Options.HelpMessageShown2 = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
+		if GetLocale() == "ptBR" or GetLocale() == "frFR" or GetLocale() == "esES" or GetLocale() == "esMX" or GetLocale() == "itIT" then
+			self:Schedule(10, function() if not DBM.Options.HelpMessageShown2 then DBM.Options.HelpMessageShown2 = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
+		end
 		self:Schedule(20, function() if not DBM.Options.ForumsMessageShown then DBM.Options.ForumsMessageShown = DBM.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
 		self:Schedule(30, function() if not DBM.Options.SettingsMessageShown then DBM.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
 --		self:Schedule(40, function() if DBM.Options.BugMessageShown < 1 then DBM.Options.BugMessageShown = 1 self:AddMsg(DBM_CORE_BLIZZ_BUGS) end end)
