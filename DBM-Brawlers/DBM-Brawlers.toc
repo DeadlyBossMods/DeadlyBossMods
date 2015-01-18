@@ -11,7 +11,7 @@
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariablesPerCharacter: DBMBrawlers_SavedVars
+## SavedVariables: DBMBrawlers_AllSavedVars
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
 ## X-DBM-Mod-Category: WOD

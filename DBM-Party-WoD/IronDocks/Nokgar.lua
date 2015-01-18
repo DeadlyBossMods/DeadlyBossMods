@@ -22,19 +22,19 @@ mod:RegisterEventsInCombat(
 local warnNokgar						= mod:NewSpellAnnounce("ej10433", 3, "Interface\\ICONS\\INV_Misc_Head_Orc_01.blp")
 local warnBurningArrows					= mod:NewSpellAnnounce(164635, 3)
 local warnRecklessProvocation			= mod:NewTargetAnnounce(164426, 3)
-local warnEnrage						= mod:NewSpellAnnounce(164835, 3, nil, mod:CanRemoveEnrage() or mod:IsTank())
+local warnEnrage						= mod:NewSpellAnnounce(164835, 3, nil, "RemoveEnrage|Tank")
 
 local specWarnBurningArrows				= mod:NewSpecialWarningSpell(164635, nil, nil, nil, true)
 local specWarnBurningArrowsMove			= mod:NewSpecialWarningMove(164635)
 local specWarnRecklessProvocation		= mod:NewSpecialWarningReflect(164426)
 local specWarnRecklessProvocationEnd	= mod:NewSpecialWarningEnd(164426)
-local specWarnEnrage					= mod:NewSpecialWarningDispel(164835, mod:CanRemoveEnrage())
+local specWarnEnrage					= mod:NewSpecialWarningDispel(164835, "RemoveEnrage")
 
 local timerRecklessProvocation			= mod:NewBuffActiveTimer(5, 164426)
---local timerBurningArrowsCD				= mod:NewNextTimer(25, 164635)--25~42 variable (patterned?)
+--local timerBurningArrowsCD			= mod:NewNextTimer(25, 164635)--25~42 variable (patterned?)
 
 local voiceRecklessProvocation			= mod:NewVoice(164426)
-local voiceEnrage						= mod:NewVoice(164835, mod:CanRemoveEnrage())
+local voiceEnrage						= mod:NewVoice(164835, "RemoveEnrage")
 local voiceBurningArrows				= mod:NewVoice(164632)
 
 function mod:SPELL_AURA_APPLIED(args)

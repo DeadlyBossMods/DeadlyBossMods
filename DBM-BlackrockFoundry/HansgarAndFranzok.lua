@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 --TODO, find target scanning for skullcracker. Also, find out how it behaves when it's more than 1 target (just recast?)
 --TODO, maybe use http://beta.wowhead.com/spell=154785 for aftershock/Shattered Vertebrae instead?'
 local warnSkullcracker					= mod:NewSpellAnnounce(153470, 3, nil, false)--This seems pretty worthless.
-local warnShatteredVertebrae			= mod:NewStackAnnounce(157139, 2, nil, mod:IsTank())
+local warnShatteredVertebrae			= mod:NewStackAnnounce(157139, 2, nil, "Tank")
 local warnSearingPlates					= mod:NewSpellAnnounce(161570, 4)--Types
 local warnPulverized					= mod:NewSpellAnnounce(174825, 4)--Types
 

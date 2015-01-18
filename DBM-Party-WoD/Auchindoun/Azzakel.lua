@@ -19,27 +19,27 @@ mod:RegisterEventsInCombat(
 )
 
 local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
-local warnFelLash					= mod:NewTargetAnnounce("OptionVersion2", 153234, 3, nil, mod:IsHealer() or mod:IsTank())
-local warnFelStomp					= mod:NewCastAnnounce(157173, 3, nil, nil, mod:IsTank())
+local warnFelLash					= mod:NewTargetAnnounce("OptionVersion2", 153234, 3, nil, "Tank|Healer")
+local warnFelStomp					= mod:NewCastAnnounce(157173, 3, nil, nil, "Tank")
 local warnClawsOfArgus				= mod:NewSpellAnnounce(153764, 3)
-local warnSummonFelguard			= mod:NewSpellAnnounce(164081, 3, 56285, not mod:IsHealer())
-local warnFelblast					= mod:NewCastAnnounce(154221, 3, nil, nil, not mod:IsHealer())--Spammy but still important. May improve by checking if interrupt spells on CD, if are, don't show warning, else, spam warning because interrupt SHOULD be on CD
+local warnSummonFelguard			= mod:NewSpellAnnounce(164081, 3, 56285, "-Healer")
+local warnFelblast					= mod:NewCastAnnounce(154221, 3, nil, nil, "-Healer")--Spammy but still important. May improve by checking if interrupt spells on CD, if are, don't show warning, else, spam warning because interrupt SHOULD be on CD
 local warnFelPool					= mod:NewSpellAnnounce(153616, 1)
 
 local specWarnCurtainOfFlame		= mod:NewSpecialWarningMoveAway(153396)
 local specWarnCurtainOfFlameNear	= mod:NewSpecialWarningClose(153396)
 local yellWarnCurtainOfFlame		= mod:NewYell(153396)
 local specWarnFelLash				= mod:NewSpecialWarningYou("OptionVersion2", 153234)
-local specWarnFelStomp				= mod:NewSpecialWarningDodge("OptionVersion2", 157173, mod:IsMelee())
+local specWarnFelStomp				= mod:NewSpecialWarningDodge("OptionVersion2", 157173, "Melee")
 local specWarnClawsOfArgus			= mod:NewSpecialWarningSpell(153764)
 local specWarnClawsOfArgusEnd		= mod:NewSpecialWarningEnd(153764)
-local specWarnSummonFelguard		= mod:NewSpecialWarningSwitch(164081, mod:IsTank())
-local specWarnFelblast				= mod:NewSpecialWarningInterrupt(154221, not mod:IsHealer())--Very spammy
+local specWarnSummonFelguard		= mod:NewSpecialWarningSwitch(164081, "Tank")
+local specWarnFelblast				= mod:NewSpecialWarningInterrupt(154221, "-Healer")--Very spammy
 local specWarnFelPool				= mod:NewSpecialWarningMove(153616)
 local specWarnFelSpark				= mod:NewSpecialWarningMove(153726)
 
 local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396)--20sec cd but can be massively delayed by adds phases
-local timerFelLash					= mod:NewTargetTimer("OptionVersion2", 7.5, 153234, nil, mod:IsHealer() or mod:IsTank())
+local timerFelLash					= mod:NewTargetTimer("OptionVersion2", 7.5, 153234, nil, "Tank|Healer")
 local timerClawsOfArgus				= mod:NewBuffActiveTimer(20, 153764)
 local timerClawsOfArgusCD			= mod:NewNextTimer(70, 153764)
 

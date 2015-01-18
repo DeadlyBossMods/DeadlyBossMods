@@ -21,21 +21,21 @@ local warnUnstableSlag			= mod:NewSpellAnnounce(150677, 3)
 local warnMagmaEruption			= mod:NewSpellAnnounce(150784, 3)
 local warnMoltenCore			= mod:NewTargetAnnounce(150678, 2)
 
-local specWarnMoltenBlast		= mod:NewSpecialWarningInterrupt("OptionVersion2", 150677, not mod:IsHealer())
-local specWarnUnstableSlag		= mod:NewSpecialWarningSwitch("OptionVersion2", 150755, mod:IsDps())
+local specWarnMoltenBlast		= mod:NewSpecialWarningInterrupt("OptionVersion2", 150677, "-Healer")
+local specWarnUnstableSlag		= mod:NewSpecialWarningSwitch("OptionVersion2", 150755, "Dps")
 local specWarnMagmaEruptionCast	= mod:NewSpecialWarningSpell(150784, nil, nil, nil, 2)
 local specWarnMagmaEruption		= mod:NewSpecialWarningMove(150784)
-local specWarnMoltenCore		= mod:NewSpecialWarningDispel(150678, mod:IsMagicDispeller())
+local specWarnMoltenCore		= mod:NewSpecialWarningDispel(150678, "MagicDispeller")
 
 local timerMagmaEruptionCD		= mod:NewCDTimer(20, 150784)
 local timerUnstableSlagCD		= mod:NewCDTimer(20, 150755)
 
 local countdownUnstableSlag		= mod:NewCountdown(20, 150755)
 
-local voiceMoltenBlast			= mod:NewVoice(150677, not mod:IsHealer())
-local voiceUnstableSlag			= mod:NewVoice(150755, mod:IsDps())
+local voiceMoltenBlast			= mod:NewVoice(150677, "-Healer")
+local voiceUnstableSlag			= mod:NewVoice(150755, "Dps")
 local voiceMagmaEruption		= mod:NewVoice(150784)
-local voiceMoltenCore			= mod:NewVoice(150678, mod:IsMagicDispeller())
+local voiceMoltenCore			= mod:NewVoice(150678, "MagicDispeller")
 
 function mod:OnCombatStart(delay)
 --	timerMagmaEruptionCD:Start(8-delay)--Poor sample size

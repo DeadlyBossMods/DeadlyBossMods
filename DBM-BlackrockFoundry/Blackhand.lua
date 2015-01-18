@@ -40,10 +40,10 @@ local specWarnDemolition			= mod:NewSpecialWarningSpell(156425, nil, nil, nil, 2
 local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 3, nil, true)
 local yellMarkedforDeath			= mod:NewYell(156096)
 local specWarnThrowSlagBombs		= mod:NewSpecialWarningMove(156030, nil, nil, nil, nil, nil, true)
-local specWarnShatteringSmash		= mod:NewSpecialWarningSpell(155992, mod:IsMelee(), nil, nil, nil, nil, true)
+local specWarnShatteringSmash		= mod:NewSpecialWarningSpell(155992, "Melee", nil, nil, nil, nil, true)
 local specWarnMoltenSlag			= mod:NewSpecialWarningMove(156401)
 --Stage Two: Storage Warehouse
-local specWarnSiegemaker			= mod:NewSpecialWarningSwitch("ej9571", mod:IsDps(), nil, nil, nil, nil, true)
+local specWarnSiegemaker			= mod:NewSpecialWarningSwitch("ej9571", "Dps", nil, nil, nil, nil, true)
 --Stage Three: Iron Crucible
 local specWarnSlagEruption			= mod:NewSpecialWarningSpell(156928, nil, nil, nil, 2)
 local specWarnAttachSlagBombs		= mod:NewSpecialWarningYou(157000, nil, nil, nil, nil, nil, true)--May change to sound 3, but I don't want it confused with the even more threatening marked for death, so for now will try 1
@@ -65,8 +65,8 @@ local timerSlagBomb					= mod:NewCastTimer(5, 157015)
 --local timerMassiveShatteringSmashCD	= mod:NewNextTimer(30, 158054)
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceSiegemaker				= mod:NewVoice("ej9571", mod:IsDps()) -- ej9571.ogg tank coming
-local voiceShatteringSmash			= mod:NewVoice(155992, mod:IsMelee()) --carefly
+local voiceSiegemaker				= mod:NewVoice("ej9571", "Dps") -- ej9571.ogg tank coming
+local voiceShatteringSmash			= mod:NewVoice(155992, "Melee") --carefly
 local voiceMarkedforDeath			= mod:NewVoice(156096) --target: findshelter; else: 156096.ogg marked for death
 local voiceDemolition				= mod:NewVoice(156425) --AOE
 local voiceThrowSlagBombs			= mod:NewVoice(156030) --bombsoon

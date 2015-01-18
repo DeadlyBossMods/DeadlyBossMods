@@ -19,14 +19,14 @@ mod:RegisterEventsInCombat(
 --TODO, see how second trembling earth CD works and if current code even works for other timers. Mythic pulls were very short :\
 local warnCrushingEarth				= mod:NewTargetAnnounce(161923, 3, nil, false)--Players who failed to move. Off by default since announcing failures is not something DBM generally does by default. Can't announce pre cast unfortunately. No detection
 local warnStoneGeyser				= mod:NewSpellAnnounce(158130, 2)
-local warnSlam						= mod:NewCastAnnounce(156704, 3, nil, nil, mod:IsMelee())
-local warnWarpedArmor				= mod:NewStackAnnounce(156766, 2, nil, mod:IsTank())
+local warnSlam						= mod:NewCastAnnounce(156704, 3, nil, nil, "Melee")
+local warnWarpedArmor				= mod:NewStackAnnounce(156766, 2, nil, "Tank")
 local warnCalloftheMountain			= mod:NewCastAnnounce(158217, 4, 5)--Mythic
 
 local specWarnGraspingEarth			= mod:NewSpecialWarningSpell(157060, nil, nil, nil, nil, nil, true)
 local specWarnThunderingBlows		= mod:NewSpecialWarningSpell(157054, nil, nil, nil, 3)
 local specWarnRipplingSmash			= mod:NewSpecialWarningSpell(157592, nil, nil, nil, 2)
-local specWarnSlam					= mod:NewSpecialWarningSpell(156704, mod:IsTank())
+local specWarnSlam					= mod:NewSpecialWarningSpell(156704, "Tank")
 local specWarnWarpedArmor			= mod:NewSpecialWarningStack(156766, nil, 3)--stack bugged right now, requires tanks going to 5 stacks before they can clear. Blizz will likely fix this because 5 too much
 local specWarnWarpedArmorOther		= mod:NewSpecialWarningTaunt(156766)
 local specWarnTremblingEarth		= mod:NewSpecialWarningSpell(173917, nil, nil, nil, 2)
@@ -36,8 +36,8 @@ local timerGraspingEarthCD			= mod:NewCDTimer(111, 157060)
 local timerThunderingBlowsCD		= mod:NewNextTimer(12, 157054)
 local timerRipplingSmashCD			= mod:NewCDTimer(22, 157592)--If it comes off CD early enough into ThunderingBlows/Grasping Earth, he skips a cast. Else, he'll cast it very soon after.
 --local timerStoneGeyserCD			= mod:NewNextTimer(30, 158130)
-local timerSlamCD					= mod:NewCDTimer(28, 156704, nil, mod:IsTank())
-local timerWarpedArmorCD			= mod:NewCDTimer(14, 156766, nil, mod:IsTank())
+local timerSlamCD					= mod:NewCDTimer(28, 156704, nil, "Tank")
+local timerWarpedArmorCD			= mod:NewCDTimer(14, 156766, nil, "Tank")
 local timerTremblingEarthCD			= mod:NewNextTimer(30, 173917)
 local timerTremblingEarth			= mod:NewBuffActiveTimer(25, 173917)
 local timerCalloftheMountain		= mod:NewCastTimer(5, 158217)

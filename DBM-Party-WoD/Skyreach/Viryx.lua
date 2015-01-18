@@ -25,18 +25,18 @@ local warnAdd				= mod:NewAnnounce("warnAdd", 1, "Interface\\Icons\\Spell_Holy_B
 local warnShielding			= mod:NewTargetAnnounce(154055, 2)
 
 local specWarnCastDownSoon	= mod:NewSpecialWarningSoon(153954)--Everyone, becaus it can grab healer too, which affects healer/tank
-local specWarnCastDown		= mod:NewSpecialWarningSwitch(153954, mod:IsDps(), nil, nil, 3)--Only dps, because it's their job to stop it.
+local specWarnCastDown		= mod:NewSpecialWarningSwitch(153954, "Dps", nil, nil, 3)--Only dps, because it's their job to stop it.
 local specWarnLensFlareCast	= mod:NewSpecialWarningSpell(154032, nil, nil, nil, 2)--If there is any way to find actual target, like maybe target scanning, this will be changed.
 local specWarnLensFlare		= mod:NewSpecialWarningMove(154043)
-local specWarnAdd			= mod:NewSpecialWarning("specWarnAdd", mod:IsDps())
-local specWarnShielding		= mod:NewSpecialWarningInterrupt(154055, mod:IsDps())
+local specWarnAdd			= mod:NewSpecialWarning("specWarnAdd", "Dps")
+local specWarnShielding		= mod:NewSpecialWarningInterrupt(154055, "Dps")
 
 local timerLenseFlareCD		= mod:NewCDTimer(38, 154032)
 local timerCastDownCD		= mod:NewCDTimer(38, 153954)
 
 local voiceCastDown			= mod:NewVoice(153954)
 local voiceLensFlare		= mod:NewVoice(154032)
-local voiceShielding		= mod:NewVoice(154055, mod:IsDps())
+local voiceShielding		= mod:NewVoice(154055, "Dps")
 
 mod:AddSetIconOption("SetIconOnCastDown", 153954)
 

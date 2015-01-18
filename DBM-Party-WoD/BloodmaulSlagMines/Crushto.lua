@@ -14,13 +14,11 @@ mod:RegisterEventsInCombat(
 )
 
 local warnFerociousYell			= mod:NewCastAnnounce(150759, 2)
-local warnRaiseMiners			= mod:NewSpellAnnounce(150801, 2, nil, mod:IsTank())
 local warnCrushingLeap			= mod:NewTargetAnnounce(150751, 3)
 local warnEarthCrush			= mod:NewSpellAnnounce(153679, 4)--Target scanning unavailable.
-local warnWildSlam				= mod:NewSpellAnnounce(150753, 3)
 
-local specWarnFerociousYell		= mod:NewSpecialWarningInterrupt(150759, not mod:IsHealer())
-local specWarnRaiseMiners		= mod:NewSpecialWarningSwitch(150801, mod:IsTank())
+local specWarnFerociousYell		= mod:NewSpecialWarningInterrupt(150759, "-Healer")
+local specWarnRaiseMiners		= mod:NewSpecialWarningSwitch(150801, "Tank")
 local specWarnCrushingLeap		= mod:NewSpecialWarningTarget(150751, false)--seems useless.
 local specWarnEarthCrush		= mod:NewSpecialWarningSpell(153679, nil, nil, nil, 3)--avoidable.
 local specWarnWildSlam			= mod:NewSpecialWarningSpell(150753, nil, nil, nil, 2)--not avoidable. large aoe damage and knockback
@@ -31,7 +29,7 @@ local timerCrushingLeapCD		= mod:NewCDTimer(23, 150751)--23~25 variable.
 --local timerEarthCrushCD--13~21. large variable. useless.
 local timerWildSlamCD			= mod:NewCDTimer(23, 150753)--23~24 variable.
 
-local voiceFerociousYell		= mod:NewVoice(150759, not mod:IsHealer())
+local voiceFerociousYell		= mod:NewVoice(150759, "-Healer")
 local voiceRaiseMiners			= mod:NewVoice(150801)
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -53,14 +51,12 @@ function mod:SPELL_CAST_START(args)
 		warnFerociousYell:Show()
 		specWarnFerociousYell:Show(args.sourceName)
 	elseif spellId == 150801 then
-		warnRaiseMiners:Show()
 		specWarnRaiseMiners:Show()
 		voiceRaiseMiners:Play("mobsoon")
 	elseif spellId == 153679 then
 		warnEarthCrush:Show()
 		specWarnEarthCrush:Show()
 	elseif spellId == 150753 then
-		warnWildSlam:Show()
 		specWarnWildSlam:Show()
 		timerWildSlamCD:Start()
 	end

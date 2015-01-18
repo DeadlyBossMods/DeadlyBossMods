@@ -15,20 +15,20 @@ mod:RegisterEventsInCombat(
 	"UNIT_TARGETABLE_CHANGED"
 )
 
-local warnDestructiveSmite		= mod:NewSpellAnnounce(155673, 4, nil, mod:IsTank())
+local warnDestructiveSmite		= mod:NewSpellAnnounce(155673, 4, nil, "Tank")
 local warnReboundingBlade		= mod:NewSpellAnnounce(155705, 2, nil, false)--More for completion than anything.
 local warnBlackIronCyclone		= mod:NewTargetAnnounce(155721, 3)
 local warnZaela					= mod:NewSpellAnnounce("ej10312", 3, "Interface\\ICONS\\INV_Misc_Head_Orc_01.blp")
 
 local specWarnBlackIronCyclone	= mod:NewSpecialWarningRun("OptionVersion2", 155721, nil, nil, nil, 4)
-local specWarnZaela				= mod:NewSpecialWarningSwitch("OptionVersion3", "ej10312", mod:IsTank())
+local specWarnZaela				= mod:NewSpecialWarningSwitch("OptionVersion3", "ej10312", "Tank")
 
-local timerDestructiveSmiteCD	= mod:NewNextTimer(15.5, 155673, nil, mod:IsTank())
+local timerDestructiveSmiteCD	= mod:NewNextTimer(15.5, 155673, nil, "Tank")
 local timerReboundingBladeCD	= mod:NewNextTimer(10.5, 155705, nil, false)
 local timerBlackIronCycloneCD	= mod:NewCDTimer(19.5, 155721)--19.5-23sec variation in phase 2. phase 1 seems diff
 local timerZaelaReturns			= mod:NewTimer(26.5, "timerZaelaReturns", 166041)
 
-local countdownDestructiveSmite	= mod:NewCountdown("OptionVersion2", 15.5, 155673, mod:IsTank())
+local countdownDestructiveSmite	= mod:NewCountdown("OptionVersion2", 15.5, 155673, "Tank")
 
 local voiceCyclone				= mod:NewVoice(155721)
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)

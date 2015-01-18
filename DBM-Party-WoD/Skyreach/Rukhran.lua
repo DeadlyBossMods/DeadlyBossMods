@@ -15,11 +15,11 @@ mod:RegisterEventsInCombat(
 )
 
 local warnSolarFlare			= mod:NewSpellAnnounce(153810, 3)
-local warnPierceArmor			= mod:NewSpellAnnounce(153794, 3, nil, mod:IsTank())
+local warnPierceArmor			= mod:NewSpellAnnounce(153794, 3, nil, "Tank")
 local warnQuills				= mod:NewSpellAnnounce(159382, 4)
 
 local specWarnSolarFlare		= mod:NewSpecialWarningSwitch(153810, false)--Not everyone needs to, really just requires 1 person, unless it's harder on heroic/challenge mode and needs more, then i'll default all damage dealers
-local specWarnPierceArmor		= mod:NewSpecialWarningSpell(153794, mod:IsTank())
+local specWarnPierceArmor		= mod:NewSpecialWarningSpell(153794, "Tank")
 local specWarnFixate			= mod:NewSpecialWarningYou(176544)
 local specWarnQuills			= mod:NewSpecialWarningSpell(159382, nil, nil, nil, 2)
 local specWarnQuillsEnd			= mod:NewSpecialWarningEnd(159382)
@@ -27,7 +27,7 @@ local specWarnQuillsEnd			= mod:NewSpecialWarningEnd(159382)
 local timerSolarFlareCD			= mod:NewCDTimer(18, 153810)
 local timerQuills				= mod:NewBuffActiveTimer(17, 159382)
 
-local voiceSolarFlare			= mod:NewVoice(153810, not mod:IsTank())
+local voiceSolarFlare			= mod:NewVoice(153810, "-Tank")
 local voiceQuills				= mod:NewVoice(159382)
 
 local skyTrashMod = DBM:GetModByName("SkyreachTrash")
