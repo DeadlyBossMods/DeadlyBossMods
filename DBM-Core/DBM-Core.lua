@@ -2489,13 +2489,6 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			mod.stats = stats
 			--run OnInitialize function
 			if mod.OnInitialize then mod:OnInitialize() end
-			for i, cat in ipairs(mod.categorySort) do -- find better way (for ordering)
-				if cat == "misc" then
-					tremove(mod.categorySort, i)
-					tinsert(mod.categorySort, cat)
-					break
-				end
-			end
 		end
 	end
 	--clean unused saved variables (do not work on combat load)
@@ -5845,7 +5838,7 @@ do
 				subTab = modSubTab,
 				optionCategories = {
 				},
-				categorySort = {},
+				categorySort = {"announce", "announceother", "announcepersonal", "announcerole", "timer", "sound", "misc"},
 				id = name,
 				announces = {},
 				specwarns = {},
@@ -8556,7 +8549,6 @@ function bossModPrototype:RemoveOption(name)
 		removeEntry(options, name)
 		if #options == 0 then
 			self.optionCategories[i] = nil
-			removeEntry(self.categorySort, i)
 		end
 	end
 	if self.optionFuncs then
@@ -8570,7 +8562,6 @@ function bossModPrototype:SetOptionCategory(name, cat)
 	end
 	if not self.optionCategories[cat] then
 		self.optionCategories[cat] = {}
-		tinsert(self.categorySort, cat)
 	end
 	tinsert(self.optionCategories[cat], name)
 end
