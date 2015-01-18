@@ -266,20 +266,20 @@ L.PizzaTimer_BroadCast		= "공격대에 알리기"
 L.Panel_Profile				= "Profiles"
 L.Area_CreateProfile        = "Profile Creation"
 L.EnterProfileName			= "Enter profile name"
-L.CreateProfile				= "Create profile"
-L.Area_ApplyProfile			= "Set Active Profile"
+L.CreateProfile				= "Create profile for DBM Core Options"
+L.Area_ApplyProfile			= "Set Active Profile for DBM Core Options"
 L.SelectProfileToApply		= "Select profile to apply"
-L.Area_DeleteProfile		= "Profile Removal"
+L.Area_DeleteProfile		= "Remove Profile for DBM Core Options"
 L.SelectProfileToDelete		= "Select profile to delete"
-L.SelectProfileToDelete		= "L.SelectProfileToDelete"--localize
-L.Area_DualProfile			= "L.Area_DualProfile"--localize
-L.DualProfile				= "L.DualProfile"--localize
+L.Area_DualProfile			= "Boss mod profile options"
+L.DualProfile				= "Enable support for different boss mod options per spec."
 
-L.Area_ModProfile			= "L.Area_ModProfile"--localize
-L.ModAllReset				= "L.ModAllReset"--localize
-L.ModAllStatReset			= "L.ModAllStatReset"--localize
-L.SelectModProfileCopy		= "L.SelectModProfileCopy"--localize
-L.SelectModProfileDelete	= "L.SelectModProfileDelete"--localize
+L.Area_ModProfile			= "Copy mod settings from another char/spec or delete mod settings"
+L.ModAllReset				= "Reset all mod settings"
+L.ModAllStatReset			= "Reset all mod stats"
+L.SelectModProfileCopy		= "Copy mod settings from"
+L.SelectModProfileCopySound	= "Copy sound setting from"
+L.SelectModProfileDelete	= "Delete mod settings for"
 
 -- Misc
 L.FontHeight = 16
