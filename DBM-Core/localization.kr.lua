@@ -200,6 +200,7 @@ DBM_CORE_LEFT						= "왼쪽"
 DBM_CORE_RIGHT						= "오른쪽"
 DBM_CORE_BACK						= "뒤쪽"--BACK
 DBM_CORE_FRONT						= "앞쪽"
+DBM_CORE_INTERMISSION				= "사잇 단계"
 
 DBM_CORE_BREAK_START				= "쉬는 시간 시작 -- %s분 남았습니다! (%s|1이;가; 보냄)"
 DBM_CORE_BREAK_MIN					= "%s분 후 쉬는 시간이 끝납니다!"

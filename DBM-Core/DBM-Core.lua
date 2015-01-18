@@ -4937,8 +4937,8 @@ function DBM:EndCombat(mod, wipe)
 			local bestTime = mod.stats[statVarTable[savedDifficulty].."BestTime"]
 			if not mod.stats[statVarTable[savedDifficulty].."Kills"] or mod.stats[statVarTable[savedDifficulty].."Kills"] < 0 then mod.stats[statVarTable[savedDifficulty].."Kills"] = 0 end
 			--Fix logical error i've seen where for some reason we have more kills then pulls for boss as seen by - stats for wipe messages.
-			if mod.stats[statVarTable[savedDifficulty].."Kills"] > mod.stats[statVarTable[savedDifficulty].."Pulls"] then mod.stats[statVarTable[savedDifficulty].."Kills"] = mod.stats[statVarTable[savedDifficulty].."Pulls"] end
 			mod.stats[statVarTable[savedDifficulty].."Kills"] = mod.stats[statVarTable[savedDifficulty].."Kills"] + 1
+			if mod.stats[statVarTable[savedDifficulty].."Kills"] > mod.stats[statVarTable[savedDifficulty].."Pulls"] then mod.stats[statVarTable[savedDifficulty].."Kills"] = mod.stats[statVarTable[savedDifficulty].."Pulls"] end
 			if not mod.ignoreBestkill and mod.combatInfo.pull then
 				mod.stats[statVarTable[savedDifficulty].."LastTime"] = thisTime
 				--Just to prevent pre mature end combat calls from broken mods from saving bad time stats.
@@ -5272,21 +5272,26 @@ do
 	local clientUsed = {}
 
 	function DBM:RequestTimers()
-		self:Debug("RequestTimers Running", 2)
-		local bestClient
-		for i, v in pairs(raid) do
-			-- If bestClient player's realm is not same with your's, timer recovery by bestClient not works at all.
-			-- SendAddonMessage target channel is "WHISPER" and target player is other realm, no msg sends at all. At same realm, message sending works fine. (Maybe bliz bug or SendAddonMessage function restriction?)
-			if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and UnitRealmRelationship(v.id) ~= 2 and v.revision and v.revision >= ((bestClient and bestClient.revision) or 0) and (GetTime() - (clientUsed[v.name] or 0)) > 10 then
-				bestClient = v
-				clientUsed[v.name] = GetTime()
-			end
+		if not savedDifficulty then
+			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize = self:GetCurrentInstanceDifficulty()
 		end
-		if not bestClient then return end
-		self:Debug("Requesting timer recovery to "..bestClient.name)
-		requestedFrom = bestClient.name
-		requestTime = GetTime()
-		SendAddonMessage("D4", "RT", "WHISPER", bestClient.name)
+		if savedDifficulty ~= "worldboss" then--block timer recovery in worldboss.
+			self:Debug("RequestTimers Running", 2)
+			local bestClient
+			for i, v in pairs(raid) do
+				-- If bestClient player's realm is not same with your's, timer recovery by bestClient not works at all.
+				-- SendAddonMessage target channel is "WHISPER" and target player is other realm, no msg sends at all. At same realm, message sending works fine. (Maybe bliz bug or SendAddonMessage function restriction?)
+				if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and UnitRealmRelationship(v.id) ~= 2 and v.revision and v.revision >= ((bestClient and bestClient.revision) or 0) and (GetTime() - (clientUsed[v.name] or 0)) > 10 then
+					bestClient = v
+					clientUsed[v.name] = GetTime()
+				end
+			end
+			if not bestClient then return end
+			self:Debug("Requesting timer recovery to "..bestClient.name)
+			requestedFrom = bestClient.name
+			requestTime = GetTime()
+			SendAddonMessage("D4", "RT", "WHISPER", bestClient.name)
+		end
 	end
 
 	function DBM:ReceiveCombatInfo(sender, mod, time)
