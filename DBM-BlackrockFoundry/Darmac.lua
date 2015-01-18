@@ -59,14 +59,17 @@ local specWarnCrushArmorOther		= mod:NewSpecialWarningTaunt(155236)
 local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil, 2, nil, true)
 
 --Boss basic attacks
+mod:AddTimerLine(CORE_ABILITIES)--Core Abilities
 local timerPinDownCD				= mod:NewCDTimer(20.5, 155365)--Every 20 seconds unless delayed by other things. CD timer used for this reason
 local timerCallthePackCD			= mod:NewCDTimer(25.5, 154975)--Every 25-42 now
 --Boss gained abilities (beast deaths grant boss new abilities)
+mod:AddTimerLine(SPELL_BUCKET_ABILITIES_UNLOCKED)--Abilities Unlocked
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
 local timerSuperheatedShrapnelCD	= mod:NewCDTimer(15, 155499)--15-30sec variation observed.
 local timerTantrumCD				= mod:NewCDCountTimer(30, 162275)--30-35
 --local timerEpicenterCD			= mod:NewCDTimer(25, 162277)
 --Beast abilities (living)
+mod:AddTimerLine(BATTLE_PET_DAMAGE_NAME_8)--Beast
 local timerSavageHowlCD				= mod:NewCDTimer(25, 155198)
 local timerConflagCD				= mod:NewCDTimer(20, 155399)
 local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
