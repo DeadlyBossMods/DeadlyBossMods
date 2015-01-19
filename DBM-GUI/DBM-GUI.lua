@@ -126,7 +126,7 @@ do
 		panel.panelid = #self.panels
 		return setmetatable(obj, prottypemetatable)
 	end
-	
+
 	-- This function don't realy destroy a window, it just hides it
 	function PanelPrototype:Destroy()
 		if self.frame.FrameTyp == 2 then
@@ -165,9 +165,9 @@ do
 
 		if autoplace then
 			if select('#', self.frame:GetChildren()) == 1 then
-				area:SetPoint('TOPLEFT', self.frame, 5, -17)
+				area:SetPoint('TOPLEFT', self.frame, 5, -20)
 			else
-				area:SetPoint('TOPLEFT', select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -17)
+				area:SetPoint('TOPLEFT', select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -20)
 			end
 		end
 
@@ -403,7 +403,7 @@ do
 
 	local function replaceJournalLinks(id)
 		local check = EJ_GetSectionInfo(tonumber(id))
-		if not check then 
+		if not check then
 			DBM:Debug("Journal ID does not exist: "..id)
 		end
 		local link = select(9, EJ_GetSectionInfo(tonumber(id))) or DBM_CORE_UNKNOWN
@@ -444,7 +444,7 @@ do
 			dropdown = self:CreateDropdown(nil, sounds, nil, nil, function(value)
 				mod.Options[modvar] = value
 				DBM:PlaySpecialWarningSound(value)
-			end, 20, button)
+			end, 20, 25, button)
 			dropdown:SetScript("OnShow", function(self)
 				self:SetSelectedValue(mod.Options[modvar])
 			end)
@@ -453,7 +453,7 @@ do
 		local textpad = 0
 		local html
 		if dropdown then
-			dropdown:SetPoint("LEFT", button, "RIGHT", -20, 0)
+			dropdown:SetPoint("LEFT", button, "RIGHT", -20, 2)
 			textbeside = dropdown
 			textpad = 35
 		end
@@ -633,6 +633,7 @@ do
 	function PanelPrototype:CreateSlider(text, low, high, step, framewidth)
 		local slider = CreateFrame('Slider', FrameTitle..self:GetNewID(), self.frame, 'OptionsSliderTemplate')
 		slider.mytype = "slider"
+		slider.myheight = 50
 		slider:SetMinMaxValues(low, high)
 		slider:SetValueStep(step)
 		slider:SetWidth(framewidth or 180)
@@ -759,7 +760,6 @@ function PanelPrototype:CreateText(text, width, autoplaced, style, justify)
 	return textblock
 end
 
-
 function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid)
 	local ModelFrame = CreateFrame('PlayerModel', FrameTitle..self:GetNewID(), self.frame)
 	ModelFrame.mytype = "modelframe"
@@ -782,27 +782,27 @@ function PanelPrototype:AutoSetDimension()
 		if child.myheight and type(child.myheight) == "number" then
 			need_height = need_height + child.myheight
 		else
-			need_height = need_height + child:GetHeight() + 50
+			need_height = need_height + child:GetHeight()
 		end
 	end
 
-	self.frame.myheight = need_height + 25
+	self.frame.myheight = need_height + 20
 	self.frame:SetHeight(need_height)
 end
 
 function PanelPrototype:SetMyOwnHeight()
 	if not self.frame.mytype == "panel" then return end
 
-	local need_height = 30
+	local need_height = self.initheight or 20
 
 	local kids = { self.frame:GetChildren() }
 	for _, child in pairs(kids) do
 		if child.mytype == "area" and child.myheight then
 			need_height = need_height + child.myheight
 		elseif child.mytype == "area" then
-			need_height = need_height + child:GetHeight() + 30
+			need_height = need_height + child:GetHeight() + 20
 		elseif child.myheight then
-			need_height = need_height +  child.myheight
+			need_height = need_height + child.myheight
 		end
 	end
 	self.frame.actualHeight = need_height -- HACK: work-around for some strange bug, panels that are overriden (e.g. stats panels when the mod is loaded) are behaving strange since 4.1. GetHeight() will always return the height of the old panel and not of the new...
@@ -1356,7 +1356,7 @@ do
 		else
 			_G[frameName.."FOV"]:Hide()
 			frame:ClearAllPoints()
-			frame:SetPoint("TOPLEFT", container ,"TOPLEFT", 5, 0)
+			frame:SetPoint("TOPLEFT", container ,"TOPLEFT", 5, -5)
 			frame:SetPoint("BOTTOMRIGHT", container ,"BOTTOMRIGHT", 0, 0)
 
 			if not frame.isfixed then
@@ -1829,7 +1829,7 @@ local function CreateOptionsMenu()
 					DBM.Bars:SetOption(option, self:GetValue())
 					self:SetValue(DBM.Bars:GetOption(option))
 				end
-				
+
 			end
 		end
 
@@ -1979,7 +1979,7 @@ local function CreateOptionsMenu()
 					DBM:ShowTestSpecialWarning(nil, 1)
 			end)
 		end
-		
+
 		local Fonts = MixinSharedMedia3("font", {
 			{	text	= "Default",		value 	= STANDARD_TEXT_FONT,			font = STANDARD_TEXT_FONT		},
 			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
@@ -2040,7 +2040,7 @@ local function CreateOptionsMenu()
 					DBM:ShowTestSpecialWarning(nil, 1)
 			end)
 		end
-		
+
 		local color2 = specArea:CreateColorSelect(64)
 		color2:SetPoint('TOPLEFT', color1, "TOPLEFT", 0, -105)
 		local color2text = specArea:CreateText(L.SpecWarn_FlashColor:format(2), 80)
@@ -2071,7 +2071,7 @@ local function CreateOptionsMenu()
 					DBM:ShowTestSpecialWarning(nil, 2)
 			end)
 		end
-		
+
 		local color3 = specArea:CreateColorSelect(64)
 		color3:SetPoint('TOPLEFT', color2, "TOPLEFT", 0, -105)
 		local color3text = specArea:CreateText(L.SpecWarn_FlashColor:format(3), 80)
@@ -2102,7 +2102,7 @@ local function CreateOptionsMenu()
 					DBM:ShowTestSpecialWarning(nil, 3)
 			end)
 		end
-		
+
 		local color4 = specArea:CreateColorSelect(64)
 		color4:SetPoint('TOPLEFT', color3, "TOPLEFT", 0, -105)
 		local color4text = specArea:CreateText(L.SpecWarn_FlashColor:format(4), 80)
@@ -2348,7 +2348,7 @@ local function CreateOptionsMenu()
 		end)
 		specPanel:SetMyOwnHeight()
 	end
-	
+
 	do
 		local spokenAlertsPanel 	= DBM_GUI_Frame:CreateNewPanel(L.Panel_SpokenAlerts, "option")
 		local spokenGeneralArea		= spokenAlertsPanel:CreateArea(L.Area_VoiceSelection, nil, 110, true)
@@ -2369,14 +2369,14 @@ local function CreateOptionsMenu()
 			DBM.Options.CountdownVoice3 = value
 			DBM:PlayCountSound(1, DBM.Options.CountdownVoice3)
 		end)
-		CountSoundDropDown3:SetPoint("TOPLEFT", CountSoundDropDown, "TOPLEFT", 0, -40)
+		CountSoundDropDown3:SetPoint("TOPLEFT", CountSoundDropDown, "TOPLEFT", 0, -45)
 
 		local VoiceDropDown = spokenGeneralArea:CreateDropdown(L.VoicePackChoice, DBM.Voices, "DBM", "ChosenVoicePack", function(value)
 			DBM.Options.ChosenVoicePack = value
 			DBM:Debug("DBM.Options.ChosenVoicePack is set to "..DBM.Options.ChosenVoicePack)
 			DBM:CheckVoicePackVersion(value)
 		end)
-		VoiceDropDown:SetPoint("TOPLEFT", CountSoundDropDown2, "TOPLEFT", 0, -40)
+		VoiceDropDown:SetPoint("TOPLEFT", CountSoundDropDown2, "TOPLEFT", 0, -45)
 
 		local countdownOptionsArea	= spokenAlertsPanel:CreateArea(L.Area_CountdownOptions, nil, 100, true)
 		local ShowCountdownText 	= countdownOptionsArea:CreateCheckButton(L.ShowCountdownText,  true, nil, "ShowCountdownText")
@@ -2384,7 +2384,7 @@ local function CreateOptionsMenu()
 		local voiceFilterArea	= spokenAlertsPanel:CreateArea(L.Area_VoicePackOptions, nil, 100, true)
 		local VPF1 				= voiceFilterArea:CreateCheckButton(L.SpecWarn_NoSoundsWVoice, true, nil, "VoiceOverSpecW")
 		local VPF2 				= voiceFilterArea:CreateCheckButton(L.SpecWarn_AlwaysVoice, true, nil, "AlwaysPlayVoice")
-		
+
 		--spokenGeneralArea:AutoSetDimension()
 		countdownOptionsArea:AutoSetDimension()
 		voiceFilterArea:AutoSetDimension()
@@ -2470,12 +2470,12 @@ local function CreateOptionsMenu()
 		spamPTArea:CreateCheckButton(L.DontShowPTText, true, nil, "DontShowPTText")
 		spamPTArea:CreateCheckButton(L.DontPlayPTCountdown, true, nil, "DontPlayPTCountdown")
 		local SPTCDT = spamPTArea:CreateCheckButton(L.DontShowPTCountdownText, true, nil, "DontShowPTCountdownText")
-		
+
 		local PTSlider = spamPTArea:CreateSlider(L.PT_Threshold, 3, 30, 1, 300)   -- (text , min_value , max_value , step , width)
 		PTSlider:SetPoint('BOTTOMLEFT', SPTCDT, "BOTTOMLEFT", 80, -40)--Position based on slider, text anchored to slider. English has large text, so must move slider to middle :\
 		PTSlider:HookScript("OnShow", function(self) self:SetValue(math.floor(DBM.Options.PTCountThreshold)) end)
 		PTSlider:HookScript("OnValueChanged", function(self) DBM.Options.PTCountThreshold = math.floor(self:GetValue()) end)
-		
+
 		spamPTArea:AutoSetDimension()
 		spamArea:AutoSetDimension()
 		spamSpecArea:AutoSetDimension()
@@ -2491,7 +2491,7 @@ local function CreateOptionsMenu()
 		hideBlizzArea:CreateCheckButton(L.HideGarrisonUpdates, true, nil, "HideGarrisonUpdates")
 		hideBlizzArea:CreateCheckButton(L.HideTooltips, true, nil, "HideTooltips")
 		local filterYell	= hideBlizzArea:CreateCheckButton(L.SpamBlockSayYell, true, nil, "FilterSayAndYell")
-		
+
 		local movieOptions = {
 			{	text	= L.Disable,	value 	= "Never"},
 			{	text	= L.AfterFirst,	value 	= "AfterFirst"},
@@ -2510,12 +2510,12 @@ local function CreateOptionsMenu()
 		local blockApplicantsDropDown = hideBlizzArea:CreateDropdown(L.HideApplicantAlerts, pingFilterOptions, "DBM", "HideApplicantAlerts", function(value)
 			DBM.Options.HideApplicantAlerts = value
 		end)
-		blockApplicantsDropDown:SetPoint("TOPLEFT", blockMovieDropDown, "TOPLEFT", 0, -40)
-		
+		blockApplicantsDropDown:SetPoint("TOPLEFT", blockMovieDropDown, "TOPLEFT", 0, -45)
+
 		--hideBlizzArea:AutoSetDimension()
 		hideBlizzPanel:SetMyOwnHeight()
 	end
-	
+
 	do
 		local extraFeaturesPanel 	= DBM_GUI_Frame:CreateNewPanel(L.Panel_ExtraFeatures, "option")
 		local chatAlertsArea		= extraFeaturesPanel:CreateArea(L.Area_ChatAlerts, nil, 100, true)
@@ -2539,7 +2539,7 @@ local function CreateOptionsMenu()
 		local inviteArea			= extraFeaturesPanel:CreateArea(L.Area_Invite, nil, 100, true)
 		local AutoAcceptFriendInvite= inviteArea:CreateCheckButton(L.AutoAcceptFriendInvite, true, nil, "AutoAcceptFriendInvite")
 		local AutoAcceptGuildInvite	= inviteArea:CreateCheckButton(L.AutoAcceptGuildInvite, true, nil, "AutoAcceptGuildInvite")
-		
+
 		local advancedArea			= extraFeaturesPanel:CreateArea(L.Area_Advanced, nil, 100, true)
 		local FakeBW				= advancedArea:CreateCheckButton(L.FakeBW, true, nil, "FakeBWVersion")
 
@@ -3347,6 +3347,7 @@ do
 			return false
 		end
 		local panel = mod.panel
+		panel.initheight = 35
 		local category
 
 		local iconstat = panel.frame:CreateFontString("DBM_GUI_Mod_Icons"..mod.localization.general.name, "ARTWORK")
