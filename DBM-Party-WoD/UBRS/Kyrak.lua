@@ -29,7 +29,7 @@ local specWarnVilebloodSerum		= mod:NewSpecialWarningMove(161288)
 
 local timerDebilitatingCD			= mod:NewNextTimer(20, 161199)--Every 20 seconds exactly, at least in challenge mode.
 local timerEruptionCD				= mod:NewCDTimer(10, 155037, nil, false)--10-15 sec variation. May be distracting or spammy since two of them
---local timerRejuvSerumCD			= mod:NewCDTimer(33, 161203, nil, mod:IsMagicDispeller())--33-40sec variation. Could also be health based so disabled for now.
+--local timerRejuvSerumCD			= mod:NewCDTimer(33, 161203, nil, "MagicDispeller")--33-40sec variation. Could also be health based so disabled for now.
 local timerVilebloodSerumCD			= mod:NewCDTimer(9.5, 161209)--every 9-10 seconds
 
 local countdownDebilitating			= mod:NewCountdown(20, 161199, "Tank")
