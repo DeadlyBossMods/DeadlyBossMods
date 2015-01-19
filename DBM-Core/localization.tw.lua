@@ -14,6 +14,7 @@ DBM_CORE_LOAD_GUI_ERROR				= "無法載入圖形介面：%s"
 DBM_CORE_LOAD_GUI_COMBAT			= "圖形介面不能在戰鬥中初始化。圖形介面將在脫離戰鬥後自動讀取，這樣就能夠再次在戰鬥中使用。"
 DBM_CORE_LOAD_SKIN_COMBAT			= "DBM計時條在戰鬥中套用外觀失敗。你的計時條可能不能正常作用而可能會導致錯誤。這常發生在使用第三方插件試著在戰鬥中套用外觀。建議在脫離戰鬥後reloadui。"
 DBM_CORE_BAD_LOAD					= "DBM偵測到你的此副本的模組在戰鬥中讀取失敗。一旦脫離戰鬥，請立即輸入/consoel reloadui重新載入。"
+DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s不能被讀取因為你的DBM核心未達需求，請更新版本。"
 
 DBM_CORE_BLIZZ_BUGS					= "6.0中的暴雪插件改變：\n1. 如果你開啟音效設定，你可能會在戰鬥中失去插件的音效，插件的聲音優先權較低而且遊戲同時放出的音效數量超過你最大聲音頻道的值，DBM現在會自動強制設定聲音頻道的值為64。如果依舊有此類問題發生，請將'音效'完全禁用。"
 
@@ -51,6 +52,27 @@ DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s結束!本次用了%s，你已有共%d次�
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥在%s前開始，恢復計時器中..."
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor開始記錄。"
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor結束紀錄。"
+
+DBM_CORE_PROFILE_CREATED			= "配置檔'%s'已被建立。"
+DBM_CORE_PROFILE_CREATE_ERROR		= "建立配置檔失敗，無效的配置檔名稱。"
+DBM_CORE_PROFILE_APPLIED			= "配置檔'%s'已套用。"
+DBM_CORE_PROFILE_APPLY_ERROR		= "套用配置檔失敗，配置檔'%s'不存在。"
+DBM_CORE_PROFILE_DELETED			= "配置檔'%s'已被刪除。配置檔'Default'會被套用。"
+DBM_CORE_PROFILE_DELETE_ERROR		= "刪除配置檔失敗，配置檔'%s'不存在。"
+DBM_CORE_PROFILE_CANNOT_DELETE		= "不能刪除'Default'配置檔。"
+DBM_CORE_MPROFILE_COPY_SUCCESS		= "%s's (%d專精)模組設定已被複製。"
+DBM_CORE_MPROFILE_COPY_SELF_ERROR	= "不能複製自己的角色設定"
+DBM_CORE_MPROFILE_COPY_S_ERROR		= "配置檔來源已經損毀，設定不能被複製或是部分複製，複製已失敗。"
+DBM_CORE_MPROFILE_COPYS_SUCCESS		= "%s's (%d專精)模組音效設定已被複製。"
+DBM_CORE_MPROFILE_COPYS_SELF_ERROR	= "不能複製自己的角色音效設定"
+DBM_CORE_MPROFILE_COPYS_S_ERROR		= "配置檔來源已經損毀，音效設定不能被複製或是部分複製，複製已失敗。"
+DBM_CORE_MPROFILE_DELETE_SUCCESS	= "%s's (%d專精)模組設定已被刪除。"
+DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "不能刪除使用中的模組設定。"
+DBM_CORE_MPROFILE_DELETE_S_ERROR	= "配置檔來源已經損毀，設定不能被刪除或是部分刪除，刪除已失敗。"
+
+DBM_CORE_ALLMOD_DEFAULT_LOADED		= "此副本所有的選項設定已套用預設值。"
+DBM_CORE_ALLMOD_STATS_RESETED		= "所有模組狀態已經被重置。"
+DBM_CORE_MOD_DEFAULT_LOADED			= "此戰鬥的預設選項已套用。"
 
 DBM_CORE_WORLDBOSS_ENGAGED			= "在你的伺服器上的%s已在百分之%s時開戰(%s發送)。"
 DBM_CORE_WORLDBOSS_DEFEATED			= "在你的伺服器上的%s已被擊敗(%s發送)。"
@@ -115,6 +137,7 @@ DBM_CORE_UPDATEREMINDER_HOTFIX			= "你的DBM版本會在這首領戰鬥有不�
 DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "警告:你的DBM已經過期，DBM已被禁用直到你更新至最新版，因為遊戲大改版。為了不讓舊的程式碼拖累遊戲體驗。請至deadlybossmods.com或是curse下載最新版本的DBM。如果你在6.0 beta看到此訊息，請到http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing下載6.0 beta插件"
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "警告:你使用的DBM版本和遊戲版本不相容。請到deadlybossmods.com或是curse下載符合你遊戲版本的DBM。"
 DBM_CORE_VEM							= "警告:你同時使用DBM和VEM。DBM將停用而無法執行。"
+DBM_CORE_3RDPROFILES					= "警告:DBM-Profiles不相容此版本DBM。請移除避免衝突。"
 
 DBM_CORE_MOVABLE_BAR				= "拖動我!"
 
@@ -170,6 +193,7 @@ DBM_CORE_LEFT						= "左"
 DBM_CORE_RIGHT						= "右"
 DBM_CORE_BACK						= "後"
 DBM_CORE_FRONT						= "前"
+DBM_CORE_INTERMISSION				= "中場時間"
 
 DBM_CORE_BREAK_START				= "現在開始休息-你有%s分鐘!"
 DBM_CORE_BREAK_MIN					= "%s分鐘後休息時間結束!"
@@ -275,6 +299,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextcount 		= "下一次%s (%%d)"
 DBM_CORE_AUTO_TIMER_TEXTS.nextsource		= "下一次%s:>%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement		= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.phase				= "下一個階段"
+DBM_CORE_AUTO_TIMER_TEXTS.roleplay			= GUILD_INTEREST_RP
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target			= "為$spell:%s顯示減益計時器"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast			= "為$spell:%s顯示施法計時器"
@@ -288,6 +313,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.nextcount		= "為下一次$spell:%s顯示計時器"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextsource		= "為下一次$spell:%s顯示計時器"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement		= "為成就:%s顯示計時器"
 DBM_CORE_AUTO_TIMER_OPTIONS.phase			= "為下一個階段顯示計時器"
+DBM_CORE_AUTO_TIMER_OPTIONS.roleplay		= "為角色扮演持續時間顯示計時器"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "為$spell:%s的目標設置標記"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "為$spell:%s設置標記"
