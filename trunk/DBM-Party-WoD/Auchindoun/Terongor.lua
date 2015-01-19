@@ -35,7 +35,7 @@ local warnChaosWave				= mod:NewTargetAnnounce(157001, 3)
 local warnDoom					= mod:NewTargetAnnounce(156965, 3, nil, "Healer")
 
 --Basic Abilities
-local specWarnDrainLife			= mod:NewSpecialWarningInterrupt(156854, "-IsHealer")
+local specWarnDrainLife			= mod:NewSpecialWarningInterrupt(156854, "-Healer")
 local specWarnCorruption		= mod:NewSpecialWarningDispel(156842, "Healer")
 local specWarnRainOfFire		= mod:NewSpecialWarningSpell(156857, nil, nil, nil, 2)--156856 fires SUCCESS but do not use, it fires for any player walking in or out of it
 local specWarnRainOfFireMove	= mod:NewSpecialWarningMove(156857)
