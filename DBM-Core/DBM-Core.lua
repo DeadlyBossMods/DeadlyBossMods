@@ -6507,6 +6507,25 @@ end
 --  Class Methods  --
 ---------------------
 do
+	--[[local specFlags ={
+		["Tank"] = true,
+		["Dps"] = true,
+		["Healer"] = true,
+		["Melee"] = true,
+		["MeleeDps"] = true,
+		["Physical"] = true,
+		["Ranged"] = true,
+		["RangedDps"] = true,
+		["ManaUser"] = true,
+		["SpellCaster"] = true,
+		["RaidCooldown"] = true,
+		["RemovePoison"] = true,
+		["RemoveDisease"] = true,
+		["RemoveEnrage"] = true,
+		["RemoveCurse"] = true,
+		["MagicDispeller"] = true
+	}]]
+
 	local specRoleTable = {
 		[62] = {	--Aracne Mage
 			["Dps"] = true,
@@ -6716,8 +6735,22 @@ do
 	specRoleTable[266] = specRoleTable[265]--Demonology Warlock
 	specRoleTable[267] = specRoleTable[265]--Destruction Warlock
 
-	function bossModPrototype:GetRoleFlagValue(flag)
+	--[[function bossModPrototype:GetRoleFlagValue(flag)
 		if not flag then return false end
+		local flags = {strsplit("|", flag)}
+		for i = 1, #flags do
+			local flagText = flags[i]
+			flagText = flagText:gsub("-", "")
+			if not specFlags[flagText] then
+				print("bad flag found : "..flagText)
+			end
+		end
+		self:GetRoleFlagValue2(flag)
+	end]]
+
+	--to check flag is correct, remove comment block specFlags table and GetRoleFlagValue function, change this to GetRoleFlagValue2
+	--disable flag check normally because double flag check comsumes more cpu on mod load.
+	function bossModPrototype:GetRoleFlagValue(flag)
 		local flags = {strsplit("|", flag)}
 		for i = 1, #flags do
 			local flagText = flags[i]
