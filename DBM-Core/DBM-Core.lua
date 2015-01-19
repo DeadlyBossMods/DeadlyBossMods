@@ -2461,7 +2461,9 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			self:Debug("LoadModOptions: No saved options, creating defaults for profile "..profileNum, 2)
 			local defaultOptions = {}
 			for option, optionValue in pairs(mod.DefaultOptions) do
-				if type(optionValue) == "string" then
+				if type(optionValue) == "table" then
+					optionValue = optionValue.value
+				elseif type(optionValue) == "string" then
 					optionValue = mod:GetRoleFlagValue(optionValue)
 				end
 				defaultOptions[option] = optionValue 
@@ -2567,7 +2569,9 @@ function DBM:LoadAllModDefaultOption(modId)
 		local mod = DBM:GetModByName(id)
 		local defaultOptions = {}
 		for option, optionValue in pairs(mod.DefaultOptions) do
-			if type(optionValue) == "string" then
+			if type(optionValue) == "table" then
+				optionValue = optionValue.value
+			elseif type(optionValue) == "string" then
 				optionValue = mod:GetRoleFlagValue(optionValue)
 			end
 			defaultOptions[option] = optionValue 
@@ -2602,7 +2606,9 @@ function DBM:LoadModDefaultOption(mod)
 	-- do load default
 	local defaultOptions = {}
 	for option, optionValue in pairs(mod.DefaultOptions) do
-		if type(optionValue) == "string" then
+		if type(optionValue) == "table" then
+			optionValue = optionValue.value
+		elseif type(optionValue) == "string" then
 			optionValue = mod:GetRoleFlagValue(optionValue)
 		end
 		defaultOptions[option] = optionValue 
@@ -8594,7 +8600,7 @@ end
 
 function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, default, cat, func)
 	cat = cat or "misc"
-	self.DefaultOptions[name] = default or 0
+	self.DefaultOptions[name] = {type = "slider", value = default or 0}
 	self.Options[name] = default or 0
 	self:SetOptionCategory(name, cat)
 	self.sliders = self.sliders or {}
@@ -8624,7 +8630,7 @@ end
 -- this will be fixed as soon as it is necessary due to removed options ;-)
 function bossModPrototype:AddDropdownOption(name, options, default, cat, func)
 	cat = cat or "misc"
-	self.DefaultOptions[name] = default
+	self.DefaultOptions[name] = {type = "dropdown", value = default}
 	self.Options[name] = default
 	self:SetOptionCategory(name, cat)
 	self.dropdowns = self.dropdowns or {}
