@@ -5272,26 +5272,21 @@ do
 	local clientUsed = {}
 
 	function DBM:RequestTimers()
-		if not savedDifficulty then
-			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize = self:GetCurrentInstanceDifficulty()
-		end
-		if savedDifficulty ~= "worldboss" then--block timer recovery in worldboss.
-			self:Debug("RequestTimers Running", 2)
-			local bestClient
-			for i, v in pairs(raid) do
-				-- If bestClient player's realm is not same with your's, timer recovery by bestClient not works at all.
-				-- SendAddonMessage target channel is "WHISPER" and target player is other realm, no msg sends at all. At same realm, message sending works fine. (Maybe bliz bug or SendAddonMessage function restriction?)
-				if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and UnitRealmRelationship(v.id) ~= 2 and v.revision and v.revision >= ((bestClient and bestClient.revision) or 0) and (GetTime() - (clientUsed[v.name] or 0)) > 10 then
-					bestClient = v
-					clientUsed[v.name] = GetTime()
-				end
+		self:Debug("RequestTimers Running", 2)
+		local bestClient
+		for i, v in pairs(raid) do
+			-- If bestClient player's realm is not same with your's, timer recovery by bestClient not works at all.
+			-- SendAddonMessage target channel is "WHISPER" and target player is other realm, no msg sends at all. At same realm, message sending works fine. (Maybe bliz bug or SendAddonMessage function restriction?)
+			if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and UnitRealmRelationship(v.id) ~= 2 and v.revision and v.revision >= ((bestClient and bestClient.revision) or 0) and (GetTime() - (clientUsed[v.name] or 0)) > 10 then
+				bestClient = v
+				clientUsed[v.name] = GetTime()
 			end
-			if not bestClient then return end
-			self:Debug("Requesting timer recovery to "..bestClient.name)
-			requestedFrom = bestClient.name
-			requestTime = GetTime()
-			SendAddonMessage("D4", "RT", "WHISPER", bestClient.name)
 		end
+		if not bestClient then return end
+		self:Debug("Requesting timer recovery to "..bestClient.name)
+		requestedFrom = bestClient.name
+		requestTime = GetTime()
+		SendAddonMessage("D4", "RT", "WHISPER", bestClient.name)
 	end
 
 	function DBM:ReceiveCombatInfo(sender, mod, time)
