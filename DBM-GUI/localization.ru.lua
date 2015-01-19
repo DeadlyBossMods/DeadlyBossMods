@@ -36,7 +36,7 @@ L.Button_OK 				= 'OK'
 L.Button_Cancel 			= 'Отмена'
 L.Button_LoadMod			= 'Загрузить модуль'
 L.Mod_Enabled				= "Включить модуль"
-L.Mod_Reset					= "Восстановить настройки по умолчанию"
+L.Mod_Reset					= "Сброс настроек"
 L.Reset 					= "Сброс"
 
 L.Enable  					= "Вкл."
@@ -195,7 +195,6 @@ L.BarWidth					= "Ширина индикатора: %d"
 L.Panel_SpamFilter			= "Общие и спам-фильтры"
 L.Area_SpamFilter_Outgoing	= "Параметры общего фильтра"
 L.SpamBlockNoShowAnnounce	= "Не объявлять или предупреждать звуком игрока"
-L.DontShowFarWarnings		= "Не отображать предупреждения/таймеры для событий, которые далеко"
 L.SpamBlockNoSendWhisper	= "Не отправлять предупреждения шепотом другим игрокам"
 L.SpamBlockNoSetIcon		= "Не устанавливать метки на цели"
 L.SpamBlockNoRangeFrame		= "Не отображать окно проверки дистанции"
@@ -204,42 +203,43 @@ L.SpamBlockNoHealthFrame	= "Не отображать окно здоровья"
 L.SpamBlockNoCountdowns		= "Не воспроизводить звуки обратного отсчета"
 
 -- Tab: Spam Filter
-L.Area_SpamFilter				= "Параметры спам-фильтра"
-L.StripServerName				= "Удалять имя сервера в предупреждениях и таймерах"
-L.SpamBlockBossWhispers			= "Фильтрация &lt;DBM&gt; предупреждений шепотом в бою"
-L.ShowBBOnCombatStart			= "Выполнять проверку положительных эффектов Big Brother в начале боя"
-L.BigBrotherAnnounceToRaid		= "Объявлять результаты проверки Big Brother в рейд"
+L.Area_SpamFilter			= "Параметры спам-фильтра"
+L.DontShowFarWarnings		= "Не отображать предупреждения/таймеры для событий, которые далеко"
+L.StripServerName			= "Удалять имя сервера в предупреждениях и таймерах"
+L.SpamBlockBossWhispers		= "Фильтрация &lt;DBM&gt; предупреждений шепотом в бою"
+L.ShowBBOnCombatStart		= "Выполнять проверку положительных эффектов Big Brother в начале боя"
+L.BigBrotherAnnounceToRaid	= "Объявлять результаты проверки Big Brother в рейд"
 
-L.Area_SpecFilter				= "Параметры фильтра по специализации"
-L.FilterTankSpec				= "Фильтровать предупреждения для роли танка когда не в специализации танка"
+L.Area_SpecFilter			= "Параметры фильтра по специализации"
+L.FilterTankSpec			= "Фильтровать предупреждения для роли танка когда не в специализации танка"
 --Healer and Damager not in use yet. Tank is easily black and white. if not a tank, disable taunt warnings. Pretty obvious.
 --Healer and Damager a bit more tricky, since often times, Healer DO need to switch and kill adds designated a dps roll (hi disc attonement priest)
 --Or a dps does need to handle debuff dispels. Or a dps/tank need to know when aoe damage is going out just as much as healer for personal CDs
 --Etc etc. Point being, I translate these but I'm not sure they could ever actually be used as effectively as the tank spec filter.
---L.FilterHealerSpec			= "Фильтровать предупреждения для роли лекаря когда не в специализации лекаря"--Not in use
---L.FilterDamagerSpec			= "Фильтровать предупреждения для роли бойца когда не в специализации бойца"--Not in use
+--L.FilterHealerSpec		= "Фильтровать предупреждения для роли лекаря когда не в специализации лекаря"--Not in use
+--L.FilterDamagerSpec		= "Фильтровать предупреждения для роли бойца когда не в специализации бойца"--Not in use
 
-L.Area_PullTimer				= "Параметры фильтра таймеров пулла/боя/пользов."
-L.DontShowPTNoID				= "Блокировать таймер пулла, отправленный из другой зоны"
-L.DontShowPT					= "Не отображать индикатор таймера пулла"
-L.DontShowPTText				= "Не отображать текст объявления для таймера пулла"
-L.DontPlayPTCountdown			= "Не воспроизводить звук отсчета таймера пулла/боя/пользов."
-L.DontShowPTCountdownText		= "Не отображать текст отсчета таймера пулла/боя/пользов."
-L.PT_Threshold					= "Не отображать текст отсчета таймера пулла/боя/пользов. больше: %d"
+L.Area_PullTimer			= "Параметры фильтра таймеров пулла/боя/пользов."
+L.DontShowPTNoID			= "Блокировать таймер пулла, отправленный из другой зоны"
+L.DontShowPT				= "Не отображать индикатор таймера пулла"
+L.DontShowPTText			= "Не отображать текст объявления для таймера пулла"
+L.DontPlayPTCountdown		= "Не воспроизводить звук отсчета таймера пулла/боя/пользов."
+L.DontShowPTCountdownText	= "Не отображать текст отсчета таймера пулла/боя/пользов."
+L.PT_Threshold				= "Не отображать текст отсчета таймера пулла/боя/пользов. больше: %d"
 
-L.Panel_HideBlizzard			= "Скрыть Blizzard"
-L.Area_HideBlizzard				= "Настройки скрытия Blizzard"
-L.HideBossEmoteFrame			= "Скрывать окно эмоций рейдового босса во время боя с боссом"
-L.HideWatchFrame				= "Скрывать окно отслеживания заданий во время боя с боссом"
-L.HideGarrisonUpdates			= "Скрывать уведомления из гарнизона во время боя с боссом"
-L.HideTooltips					= "Скрывать подсказки во время боя с боссом"
-L.HideApplicantAlerts			= "Скрывать оповещения о кандидатах в заранее собранных группах"
-L.HideApplicantAlertsFull		= "Если группа набрана"
-L.HideApplicantAlertsNotL		= "Если вы не лидер группы (и если группа набрана и вы лидер)"
-L.SpamBlockSayYell				= "Скрыть текст оповещений в облачках из окна чата"
-L.DisableCinematics				= "Отключить внутриигровые ролики"
-L.AfterFirst					= "После одного просмотра"
-L.Always						= "Всегда"
+L.Panel_HideBlizzard		= "Скрыть Blizzard"
+L.Area_HideBlizzard			= "Настройки скрытия Blizzard"
+L.HideBossEmoteFrame		= "Скрывать окно эмоций рейдового босса во время боя с боссом"
+L.HideWatchFrame			= "Скрывать окно отслеживания заданий во время боя с боссом"
+L.HideGarrisonUpdates		= "Скрывать уведомления из гарнизона во время боя с боссом"
+L.HideTooltips				= "Скрывать подсказки во время боя с боссом"
+L.HideApplicantAlerts		= "Скрывать оповещения о кандидатах в заранее собранных группах"
+L.HideApplicantAlertsFull	= "Если группа набрана"
+L.HideApplicantAlertsNotL	= "Если вы не лидер группы (и если группа набрана и вы лидер)"
+L.SpamBlockSayYell			= "Скрыть текст оповещений в облачках из окна чата"
+L.DisableCinematics			= "Отключить внутриигровые ролики"
+L.AfterFirst				= "После одного просмотра"
+L.Always					= "Всегда"
 
 L.Panel_ExtraFeatures		= "Дополнительные возможности"
 L.Area_ChatAlerts			= "Параметры оповещений в чате"
@@ -267,6 +267,24 @@ L.PizzaTimer_Mins 			= "мин."
 L.PizzaTimer_Secs 			= "сек."
 L.PizzaTimer_ButtonStart 	= "Начать отсчет"
 L.PizzaTimer_BroadCast		= "Транслировать рейду"
+
+L.Panel_Profile				= "Профили"
+L.Area_CreateProfile        = "Создание профиля"
+L.EnterProfileName			= "Введите имя профиля"
+L.CreateProfile				= "Создать профиль настроек DBM Core"
+L.Area_ApplyProfile			= "Выбор активного профиля настроек DBM Core"
+L.SelectProfileToApply		= "Выберите профиль для применения"
+L.Area_DeleteProfile		= "Удаление профиля настроек DBM Core"
+L.SelectProfileToDelete		= "Выберите профиль для удаления"
+L.Area_DualProfile			= "Настройки профиля для босс-модулей"
+L.DualProfile				= "Включить поддержку разных настроек босс-модулей для специализаций. (Управление профилями босс-модулей производится с экрана статистики загруженного модуля)"
+
+L.Area_ModProfile			= "Копирование настроек модуля с другого персонажа/спека или удаление настроек модуля"
+L.ModAllReset				= "Сбросить все настройки модуля"
+L.ModAllStatReset			= "Сбросить всю статистику модуля"
+L.SelectModProfileCopy		= "Скопировать все настройки из"
+L.SelectModProfileCopySound	= "Скопировать настройки звука из"
+L.SelectModProfileDelete	= "Удалить настройки модуля для"
 
 -- Misc
 L.FontHeight	= 16
