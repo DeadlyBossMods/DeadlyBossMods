@@ -3100,14 +3100,16 @@ function DBM:LoadMod(mod, force)
 		self:Debug("LoadMod failed because mod table not valid")
 		return false
 	end
-	if mod.minRevision > DBM.Revision then
-		self:AddMsg(DBM_CORE_LOAD_MOD_VER_MISMATCH:format(mod.name))
-		return
-	end
 	if mod.isWorldBoss and not IsInInstance() and not force then
 		self:Debug("LoadMod denied for "..mod.name.." because world boss mods don't load this way", 2)
 		return
 	end--Don't load world boss mod this way.
+	if mod.minRevision > DBM.Revision then
+		if DBM:AntiSpam(60, "VER_MISMATCH") then--Throttle message in case person keeps trying to load mod (or it's a world boss player keeps targeting
+			self:AddMsg(DBM_CORE_LOAD_MOD_VER_MISMATCH:format(mod.name))
+		end
+		return
+	end
 	if InCombatLockdown() and not IsEncounterInProgress() and IsInInstance() then
 		self:Debug("LoadMod delayed do to combat")
 		if not loadDelay then--Prevent duplicate DBM_CORE_LOAD_MOD_COMBAT message.
