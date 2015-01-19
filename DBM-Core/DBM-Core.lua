@@ -3281,11 +3281,22 @@ do
 		end
 	end
 
-	syncHandlers["C"] = function(sender, delay, mod, modRevision, startHp, dbmRevision)
+	syncHandlers["C"] = function(sender, delay, mod, modRevision, startHp, dbmRevision, tX, tY)
 		if sender == playerName then return end
 		local _, instanceType = GetInstanceInfo()
 		if instanceType == "pvp" then return end
-		if instanceType == "none" and (not UnitAffectingCombat("player") or #inCombat > 0) then return end--Ignore world boss pulls if you aren't fighting them. Also ignore world boss pull if already in combat.
+		if instanceType == "none" and (not UnitAffectingCombat("player") or #inCombat > 0) then--world boss
+			tX = tonumber(tX or 0) or 0
+			tY = tonumber(tY or 0) or 0
+			local range
+			if tX > 0 and tY > 0 then
+				local pX, pY = UnitPosition("player")
+				local dX = pX - tX
+				local dY = pY - tY
+				range = (dX * dX + dY * dY) ^ 0.5
+			end
+			if not range or range > 60 then return end
+		end
 		if not cSyncSender[sender] then
 			cSyncSender[sender] = true
 			cSyncReceived = cSyncReceived + 1
@@ -4739,7 +4750,8 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			end
 			--send "C" sync
 			if not synced then
-				sendSync("C", (delay or 0).."\t"..modId.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision)
+				local pX, pY = UnitPosition("player")
+				sendSync("C", (delay or 0).."\t"..modId.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision.."\t"..pX.."\t"..pY)
 			end
 			--show bigbrother check
 			if self.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
