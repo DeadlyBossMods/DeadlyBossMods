@@ -5235,7 +5235,7 @@ function DBM:SetCurrentSpecInfo()
 		currentSpecID = 74 -- temp id for glad warrior, bliz not uses it
 	else
 		currentSpecGroup = GetActiveSpecGroup()
-		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization())
+		currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization() or 1)--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
 		currentSpecID = tonumber(currentSpecID)
 	end
 end
