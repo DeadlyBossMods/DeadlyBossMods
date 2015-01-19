@@ -191,10 +191,9 @@ L.HP_ShowDemo				= "顯示血量框架"
 L.BarWidth					= "寬度:%d"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "整體及垃圾過濾"
-L.Area_SpamFilter_Outgoing	= "整體過濾選項"
+L.Panel_SpamFilter			= "整體禁用及過濾"
+L.Area_SpamFilter_Outgoing	= "整體禁用選項"
 L.SpamBlockNoShowAnnounce	= "不顯示提示或播放警告音效"
-L.DontShowFarWarnings		= "不發送距離過遠的事件提示/計時器"
 L.SpamBlockNoSendWhisper	= "不發送密語給其他玩家"
 L.SpamBlockNoSetIcon		= "不設置標記在目標上"
 L.SpamBlockNoRangeFrame		= "不顯示距離框架"
@@ -204,6 +203,7 @@ L.SpamBlockNoCountdowns		= "不播放倒數音效"
 
 -- Tab: Spam Filter
 L.Area_SpamFilter			= "垃圾過濾選項"
+L.DontShowFarWarnings		= "不發送距離過遠的事件提示/計時器"
 L.StripServerName			= "隱藏警告和計時器的玩家伺服器名稱"
 L.SpamBlockBossWhispers		= "當戰鬥時過濾 &lt;DBM&gt; 密語警告"
 L.ShowBBOnCombatStart		= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
