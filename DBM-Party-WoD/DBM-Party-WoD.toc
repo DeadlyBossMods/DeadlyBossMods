@@ -28,6 +28,7 @@
 ## X-DBM-Mod-Name-zhCN: 队伍首领(德拉诺之王)
 ## X-DBM-Mod-Sort: 125
 ## X-DBM-Mod-MapID: 1182, 1175, 1208, 1195, 1279, 1176, 1209, 1358
+## X-DBM-Mod-MinCoreRevision: 12473
 localization.en.lua
 localization.kr.lua
 localization.de.lua
