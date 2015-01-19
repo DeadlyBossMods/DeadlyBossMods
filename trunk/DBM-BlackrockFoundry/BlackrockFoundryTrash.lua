@@ -17,13 +17,13 @@ local warnWarBanner					= mod:NewSpellAnnounce(147328, 3)
 local warnFracture					= mod:NewTargetAnnounce(147200, 3)
 local warnChainHeal					= mod:NewCastAnnounce(146728, 4)
 local warnBribe						= mod:NewTargetAnnounce(145553, 3, nil, false)--Off by default because it's not useful to most people, and in LFR they are dumb enough to think you're supposed to switch to this target if it has an alert. I like having it though to warn for optential tank/healer MCs
-local warnInfusion					= mod:NewSpellAnnounce(147884, 3, nil, mod:IsTank())
+local warnInfusion					= mod:NewSpellAnnounce(147884, 3, nil, "Tank")
 local warnLockedOn					= mod:NewTargetAnnounce(146680, 3)
 
-local specWarnWarBanner				= mod:NewSpecialWarningSwitch(147328, not mod:IsHealer())
+local specWarnWarBanner				= mod:NewSpecialWarningSwitch(147328, "-Healer")
 local specWarnFracture				= mod:NewSpecialWarningTarget(147200, false)
 local specWarnChainheal				= mod:NewSpecialWarningInterrupt(146728)
-local specWarnInfusion				= mod:NewSpecialWarningMove("OptionVersion2", 147884, mod:IsTank())
+local specWarnInfusion				= mod:NewSpecialWarningMove("OptionVersion2", 147884, "Tank")
 local specWarnLockedOn				= mod:NewSpecialWarningRun(146680)
 local specWarnCrawlerMineFixate		= mod:NewSpecialWarningYou("ej8212")
 
