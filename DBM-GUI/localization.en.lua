@@ -191,8 +191,8 @@ L.HP_ShowDemo				= "Show HP frame"
 L.BarWidth					= "Bar width: %d"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "Global and Spam Filters"
-L.Area_SpamFilter_Outgoing	= "Global Filter Options"
+L.Panel_SpamFilter			= "Global Disables and Filters"
+L.Area_SpamFilter_Outgoing	= "Global Disable Options"
 L.SpamBlockNoShowAnnounce	= "Do not show announces or play warning sounds"
 L.DontShowFarWarnings		= "Do not show announces/timers for events that are far away"
 L.SpamBlockNoSendWhisper	= "Do not send boss warning whispers to other players"
