@@ -200,7 +200,7 @@ do
 		end
 	end
 	
-	function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, parent)
+	function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, height, parent)
 		local FrameTitle = "DBM_GUI_DropDown"
 		
 		-- Check Values
@@ -224,6 +224,7 @@ do
 			end
 		end
 		dropdown:SetWidth(width + 30)	-- required to fix some setpoint problems
+		dropdown:SetHeight(height or 32)
 		_G[dropdown:GetName().."Text"]:SetWidth(width + 30)
 		_G[dropdown:GetName().."Text"]:SetJustifyH("LEFT")
 		_G[dropdown:GetName().."Middle"]:SetWidth(width + 30)
@@ -246,7 +247,7 @@ do
 
 		if not (not title or title == "") then
 			dropdown.titletext = dropdown:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
-			dropdown.titletext:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 0)
+			dropdown.titletext:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 1)
 			dropdown.titletext:SetFontObject('GameFontNormalSmall')
 			dropdown.titletext:SetText(title)
 		end
