@@ -978,6 +978,7 @@ do
 							noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
 							hasMythic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Mythic") or 0) == 1,
 							isWorldBoss		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-World-Boss") or 0) == 1,
+							minRevision		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinCoreRevision") or 0),
 							modId			= addonName,
 						})
 						for i = #self.AddOns[#self.AddOns].mapId, 1, -1 do
@@ -3098,6 +3099,10 @@ function DBM:LoadMod(mod, force)
 	if type(mod) ~= "table" then
 		self:Debug("LoadMod failed because mod table not valid")
 		return false
+	end
+	if mod.minRevision > DBM.Revision then
+		self:AddMsg(DBM_CORE_LOAD_MOD_VER_MISMATCH:format(mod.name))
+		return
 	end
 	if mod.isWorldBoss and not IsInInstance() and not force then
 		self:Debug("LoadMod denied for "..mod.name.." because world boss mods don't load this way", 2)
