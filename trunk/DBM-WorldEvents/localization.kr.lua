@@ -146,14 +146,14 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	specWarnRylak	= "라일라크 등장!",
 	specWarnWorker	= "겁먹은 일꾼 등장!",
-	specWarnSpy		= "상대진영 침입자 등장!",
+	specWarnSpy		= "상대진영 침투요원 등장!",
 	specWarnBuilding= "건물이 공격받고 있습니다!"
 })
 
 L:SetOptionLocalization({
 	specWarnRylak	= "라이라크 등장시 특수 경고 보기",
 	specWarnWorker	= "겁먹은 일꾼 등장시 특수 경고 보기",
-	specWarnSpy		= "상대진영 침입자 등장시 특수 경고 보기",
+	specWarnSpy		= "상대진영 침투요원 등장시 특수 경고 보기",
 	specWarnBuilding= "건물이 공격 받을시 특수 경고 보기"
 })
 
@@ -162,8 +162,8 @@ L:SetMiscLocalization({
 	preCombat			= "To arms! To your posts!",--Common in all yells, rest varies based on invasion
 	preCombat2			= "The air has taken a turn for the foul...",--Shadow Council doesn't follow format of others :\
 	rylakSpawn			= "The commotion of the battle attracts a rylak!",--Source npc Darkwing Scavenger, target playername
-	terrifiedWorker		= "A terrified worker is caught in the open!",
-	sneakySpy			= "spy has snuck in amidst the chaos!",--Shortened to cut out "horde/alliance"
+	terrifiedWorker		= "겁먹은 일꾼이 바깥에서 발이 묶였습니다!",
+	sneakySpy			= "혼란을 틈타",--Shortened to cut out "horde/alliance"
 	buildingAttack		= "Your %s is under attack!",--Your Salvage Yard is under attack!
 	--Ogre
 	GorianwarCaller		= "A Gorian Warcaller joins the battle to raise morale!",--Maybe combined "add" special warning most adds?
