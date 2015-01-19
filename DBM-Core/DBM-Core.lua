@@ -946,6 +946,10 @@ do
 				self:AddMsg(DBM_CORE_VEM)
 				return
 			end
+			if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
+				self:AddMsg(DBM_CORE_3RDPROFILES)
+				return
+			end
 			self.Bars:LoadOptions("DBM")
 			self.Arrow:LoadPosition()
 			if not self.Options.ShowMinimapButton then self:HideMinimapButton() end
