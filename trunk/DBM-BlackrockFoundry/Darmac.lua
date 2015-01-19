@@ -43,7 +43,7 @@ local warnStampede					= mod:NewSpellAnnounce(155247, 3)
 
 --Boss basic attacks
 local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, "-Healer", nil, nil, nil, nil, true)
-local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, "Range", nil, nil, 2, nil, true)
+local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, "Ranged", nil, nil, 2, nil, true)
 local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
 local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, "Melee", nil, nil, nil, nil, true)--Always returns to melee
@@ -78,7 +78,7 @@ local timerInfernoBreathCD			= mod:NewCDTimer(20, 154989)
 --local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceCallthePack				= mod:NewVoice(154975, "-Healer") --killmob
 local voiceSavageHowl				= mod:NewVoice(155198, "RemoveEnrage") --trannow
-local voicePinDown					= mod:NewVoice(154960, "Range") --helpme
+local voicePinDown					= mod:NewVoice(154960, "Ranged") --helpme
 local voiceInfernoBreath			= mod:NewVoice(154989, 3) --breathsoon
 local voiceRendandTear				= mod:NewVoice(155385, "Melee")  --runaway
 local voiceCrushArmor				= mod:NewVoice(155236) --changemt
