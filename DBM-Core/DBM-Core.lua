@@ -312,6 +312,7 @@ local iconSetRevision = {}
 local iconSetPerson = {}
 local addsGUIDs = {}
 
+local voiceRevision = 2
 local fakeBWRevision = 12550
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
@@ -7947,13 +7948,13 @@ do
 
 	function DBM:CheckVoicePackVersion(value)
 		--Check if voice pack missing
-		if self.Options.ChosenVoicePack ~= "None"  and not self.VoiceVersions[value] then--A voice pack is selected but has nil version (not possible unless voice pack disabled
+		if self.Options.ChosenVoicePack ~= "None" and not self.VoiceVersions[value] then--A voice pack is selected but has nil version (not possible unless voice pack disabled
 			self.Options.ChosenVoicePack = "None"--Set ChosenVoicePack back to None
 			self:AddMsg(DBM_CORE_VOICE_MISSING)
 		end
 		--Check if voice pack out of date
-		if self.Options.ChosenVoicePack == value then
-			if self.VoiceVersions[value] < 1 then--Version will be bumped when new voice packs released that contain new voices.
+		if self.Options.ChosenVoicePack ~= "None" and self.Options.ChosenVoicePack == value then
+			if self.VoiceVersions[value] < voiceRevision then--Version will be bumped when new voice packs released that contain new voices.
 				self:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
 				SWFilterDisabed = true
 			else
@@ -7979,7 +7980,7 @@ do
 			local _, voiceValue = string.split(":", voice1)
 			if not self.VoiceVersions[voiceValue] then
 				self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(1))
-				self.Options.CountdownVoice1 = self.DefaultOptions.CountdownVoice
+				self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice
 			end
 		elseif voice2:find("VP:") then
 			local _, voiceValue = string.split(":", voice2)
@@ -7995,7 +7996,7 @@ do
 			end
 		end
 	end
-	
+
 	function DBM:PlaySpecialWarningSound(soundId)
 		local sound = type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
 		if self.Options.UseMasterVolume then
