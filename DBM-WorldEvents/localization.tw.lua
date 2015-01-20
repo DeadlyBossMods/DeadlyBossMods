@@ -167,8 +167,8 @@ L:SetMiscLocalization({
 	sneakySpy			= "的間諜趁亂闖進了要塞！",--Shortened to cut out "horde/alliance"
 	buildingAttack		= "Your %s is under attack!",--Your Salvage Yard is under attack!
 	--Ogre
-	GorianwarCaller		= "A Gorian Warcaller joins the battle to raise morale!",--Maybe combined "add" special warning most adds?
-	WildfireElemental	= "A Wildfire Elemental is being summoned at the front gates!",--Maybe combined "add" special warning most adds?
+	GorianwarCaller		= "一位戈利安戰鬥法師進入戰場！",--Maybe combined "add" special warning most adds?
+	WildfireElemental	= "有個野火元素被召喚到大門前！",--Maybe combined "add" special warning most adds?
 	--Iron Horde
 	Assassin			= "有個刺客正在獵殺你的守衛！"--Maybe combined "add" special warning most adds? --攻城大砲接近了！
 })

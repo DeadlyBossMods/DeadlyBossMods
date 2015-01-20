@@ -191,8 +191,8 @@ L.HP_ShowDemo				= "顯示血量框架"
 L.BarWidth					= "寬度:%d"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "整體禁用及過濾"
-L.Area_SpamFilter_Outgoing	= "整體禁用選項"
+L.Panel_SpamFilter			= "全局禁用及過濾"
+L.Area_SpamFilter_Outgoing	= "全局禁用選項"
 L.SpamBlockNoShowAnnounce	= "不顯示提示或播放警告音效"
 L.SpamBlockNoSendWhisper	= "不發送密語給其他玩家"
 L.SpamBlockNoSetIcon		= "不設置標記在目標上"
