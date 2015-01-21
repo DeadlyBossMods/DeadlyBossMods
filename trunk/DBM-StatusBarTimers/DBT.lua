@@ -985,7 +985,7 @@ local function updateOrientation(self)
 			if bar.moving == "enlarge" then
 				bar.enlarged = true
 				bar.moving = false
-				self.owner.hugeBars:Append(self)
+				self.hugeBars:Append(self)
 				bar:ApplyStyle()
 			end
 			bar.moving = nil
