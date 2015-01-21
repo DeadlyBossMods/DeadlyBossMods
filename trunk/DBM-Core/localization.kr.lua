@@ -127,7 +127,7 @@ DBM_CORE_YOUR_VERSION_OUTDATED      = "사용중인 DBM 버전이 오래되었�
 DBM_CORE_OUTDATED_PVP_MODS			= "설치되어 있는 DBM-PvP 경고가 구버전 입니다. DBM 사용자 포럼에 오셔서 최신 버전으로 업데이트 하시거나, 애드온 폴더에서 DBM-PvP 폴더를 제거하시기 바랍니다. 이제 PvP 경고는 DBM-Core에 더 이상 포함되지 않습니다."
 DBM_CORE_VOICE_PACK_OUTDATED		= "현재 설치되어 있는 음성안내는 이 버전의 DBM에서 지원하는 음성 중 일부가 빠져 있습니다. 특수 경고 소리 끄기 기능이 비활성화 됩니다. 음성안내의 새 버전을 설치하시거나 음성안내 제작자에게 문의하여 업데이트가 가능한지 확인바랍니다."
 DBM_CORE_VOICE_MISSING				= "설정되어 있는 음성안내를 찾을 수 없습니다. 음성안내 설정이 'None' 으로 초기화 됩니다. 이 메세지가 오류라고 생각되면, 음성안내가 제대로 설치되어 있고 애드온 목록에서 활성화 되어 있는지 확인해 보시기 바랍니다."
-DBM_CORE_VOICE_COUNT_MISSING		= "%d번째 초읽기 소리 설정이 설정되어 있는 음성안내와 맞지 않습니다. 기본 설정으로 초기화 됩니다."
+DBM_CORE_VOICE_COUNT_MISSING		= "%d번째 초세기 소리 설정이 설정되어 있는 음성안내와 맞지 않습니다. 기본 설정으로 초기화 됩니다."
 --DBM_BIG_WIGS (Same as English locales)
 --DBM_BIG_WIGS_ALPHA (Same as English locales)
 
@@ -181,9 +181,9 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm timer/ctimer/ltimer/cltimer <숫자> <글자>: <글자>에 입력한 대로 <숫자>초 동안 지속되는 바를 생성",
 	"/dbm broadcast timer/ctimer/ltimer/cltimer <숫자> <글자>: <글자>에 입력한 대로 <숫자>초 동안 지속되는 바를 생성 후 모든 공격대원에게 보냄(승급 권한 필요)",
 	" - timer: 평범한 바",
-	" - ctimer: 초읽기 글자 및 소리가 추가된 바",
+	" - ctimer: 초세기 글자 및 소리가 추가된 바",
 	" - ltimer: 계속 반복되는 바", 
-	" - cltimer: 계속 반복되며, 초읽기 글자 및 숫자가 보이는 바",
+	" - cltimer: 계속 반복되며, 초세기 글자 및 숫자가 보이는 바",
 	"/dbm timer endloop: ltimer 또는 cltimer 바의 반복을 멈춤.",
 	"/dbm break <숫자>: <숫자>분 지속되는 휴식 바를 보냄. DBM을 설치한 모든 공격대원이 볼 수 있음(승급 권한 필요)",
 	"/dbm pull <숫자>: <숫자>초 후 전투 예정 바를 보냄. DBM을 설치한 모든 공격대원이 볼 수 있음(승급 권한 필요)",
@@ -335,9 +335,9 @@ DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "$spell:%s 대상 반대 방향으로 DBM �
 DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "$spell:%s 관련 특정 위치로 DBM 화살표 보기"
 DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "$spell:%s 주문에 대한 음성안내 소리 듣기"
 DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "단계 전환시 음성안내 소리 듣기"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 이전에 초읽기 듣기"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "$spell:%s 남은시간 초읽기 듣기"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 진행시간 초읽기 듣기"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 이전에 초세기 듣기"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "$spell:%s 남은시간 초세기 듣기"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 진행시간 초세기 듣기"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%s 대상이 된 경우 대화로 알리기"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= UnitName("player").."에게 %s!"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 관련 거리 창 보기(%1$sm)"

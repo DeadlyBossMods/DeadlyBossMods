@@ -240,7 +240,7 @@ L.AfterFirst				= "After each movie has played once"
 L.Always					= ALWAYS
 
 L.Panel_ExtraFeatures		= "Extra Features"
-L.Area_ChatAlerts			= "Chat Alert Options"
+L.Area_ChatAlerts			= "Text Alert Options"
 L.RoleSpecAlert				= "Show alert message when your loot spec does not match current spec on raid join"
 L.CheckGear					= "Show alert message when your equiped ilvl is much lower than bag ilvl (40+)"
 L.WorldBossAlert			= "Show alert message when world bosses might have been engaged on your realm by guildies or friends (inaccurate if sender is CRZed)"
@@ -270,7 +270,7 @@ L.PizzaTimer_ButtonStart 	= "Start timer"
 L.PizzaTimer_BroadCast		= "Broadcast to raid"
 
 L.Panel_Profile				= "Profiles"
-L.Area_CreateProfile        = "Profile Creation"
+L.Area_CreateProfile		= "Profile Creation"
 L.EnterProfileName			= "Enter profile name"
 L.CreateProfile				= "Create profile for DBM Core Options"
 L.Area_ApplyProfile			= "Set Active Profile for DBM Core Options"

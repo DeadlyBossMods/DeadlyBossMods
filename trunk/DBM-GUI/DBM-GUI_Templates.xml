@@ -782,7 +782,7 @@
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
 							<Offset>
-								<AbsDimension x="-4" y="13"/>
+								<AbsDimension x="-4" y="14"/>
 							</Offset>
 						</Anchor>
 					</Anchors>
