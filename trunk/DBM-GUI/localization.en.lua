@@ -241,7 +241,7 @@ L.Always					= ALWAYS
 
 L.Panel_ExtraFeatures		= "Extra Features"
 L.Area_ChatAlerts			= "Text Alert Options"
-L.RoleSpecAlert				= "Show alert message on raid join when your loot spec does not match current spec on raid join"
+L.RoleSpecAlert				= "Show alert message on raid join when your loot spec does not match current spec"
 L.CheckGear					= "Show alert message during pull when your equiped ilvl is much lower than bag ilvl (40+)"
 L.WorldBossAlert			= "Show alert message when world bosses might have been engaged on your realm by guildies or friends (inaccurate if sender is CRZed)"
 L.Area_SoundAlerts			= "Sound Alert Options"
