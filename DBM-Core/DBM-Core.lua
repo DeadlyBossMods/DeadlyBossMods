@@ -135,6 +135,7 @@ DBM.DefaultOptions = {
 	AFKHealthWarning = false,
 	HideObjectivesFrame = true,
 	HideGarrisonUpdates = true,
+	HideGuildChallengeUpdates = true,
 	HideApplicantAlerts = 0,
 	HideTooltips = false,
 	EnableModels = true,
@@ -1038,12 +1039,6 @@ do
 							tinsert(self.Counts, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = "VP:"..voiceValue })
 						end
 					end
-				end
-				--Only run once, so not in CheckVoicePackVersion where it gets checked like 6 times if 6 packs installed.
-				local activeVP = self.Options.ChosenVoicePack
-				if (activeVP ~= "None" and not self.VoiceVersions[activeVP]) or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0) then--A voice pack is selected that does not belong
-					self.Options.ChosenVoicePack = "None"--Set ChosenVoicePack back to None
-					self:AddMsg(DBM_CORE_VOICE_MISSING)
 				end
 			end
 			tsort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
@@ -2537,7 +2532,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 	_G[savedVarsName][fullname] = savedOptions
 	if profileNum > 0 then
 		_G[savedVarsName][fullname]["talent"..profileNum] = profileNum == 3 and gladStance or currentSpecName
-		self:Debug("LoadModOptions: Finished loading ".._G[savedVarsName][fullname]["talent"..profileNum], 2)
+		self:Debug("LoadModOptions: Finished loading ".._G[savedVarsName][fullname]["talent"..profileNum])
 	end
 	_G[savedStatsName] = savedStats
 	if not first and DBM_GUI and DBM_GUI.currentViewing and DBM_GUI_OptionsFrame:IsShown() then
@@ -4697,8 +4692,7 @@ do
 				end
 			end
 			--process global options
-			self:ToggleRaidBossEmoteFrame(1)
-			self:ToggleGarrisonAlertsFrame(1)
+			self:HideBlizzardEvents(1)
 			self:StartLogging(0, nil)
 			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 then
 				if ObjectiveTrackerFrame:IsVisible() then
@@ -5105,8 +5099,7 @@ do
 			if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
 				self:Schedule(10, self.StopLogging, self)--small delay to catch kill/died combatlog events
-				self:ToggleRaidBossEmoteFrame(0)
-				self:ToggleGarrisonAlertsFrame(0)
+				self:HideBlizzardEvents(0)
 				self:Unschedule(checkBossHealth)
 				self:Unschedule(checkCustomBossHealth)
 				self:Unschedule(loopCRTimer)
@@ -5638,40 +5631,42 @@ end
 --This completely unregisteres or registers event so frame simply does or doesn't show events
 --No dirty hooking. Least invasive way to do it. Uses lowest CPU
 --Toggle is for if we are turning off or on.
---Custom is for exterior mods to call function without needing global option turned on (such as BG mods option)
+--Custom is for pvp mods to call function without needing global option turned on (such as BG mods option)
 --All also handled by core so both core AND pvp mods aren't trying to hook/hide it. Should all be done HERE
 do
-	local RBEFUnregistered = false
-	function DBM:ToggleRaidBossEmoteFrame(toggle, custom)
-		if not self.Options.HideBossEmoteFrame and not custom then return end
-		if toggle == 1 and not RBEFUnregistered then
-			RBEFUnregistered = true
-			RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_EMOTE")
-			RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_WHISPER")
-			RaidBossEmoteFrame:UnregisterEvent("CLEAR_BOSS_EMOTES")
-		elseif toggle == 0 and RBEFUnregistered then
-			RBEFUnregistered = false
-			RaidBossEmoteFrame:RegisterEvent("RAID_BOSS_EMOTE")
-			RaidBossEmoteFrame:RegisterEvent("RAID_BOSS_WHISPER")
-			RaidBossEmoteFrame:RegisterEvent("CLEAR_BOSS_EMOTES")
+	local blizzEventsUnregistered = false
+	function DBM:HideBlizzardEvents(toggle, custom)
+		if toggle == 1 and not blizzEventsUnregistered then
+			blizzEventsUnregistered = true
+			if self.Options.HideBossEmoteFrame or custom then
+				RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_EMOTE")
+				RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_WHISPER")
+				RaidBossEmoteFrame:UnregisterEvent("CLEAR_BOSS_EMOTES")
+			end
+			if self.Options.HideGarrisonUpdates then
+				AlertFrame:UnregisterEvent("GARRISON_MISSION_FINISHED")
+				AlertFrame:UnregisterEvent("GARRISON_BUILDING_ACTIVATABLE")
+			end
+			if self.Options.HideGuildChallengeUpdates then
+				AlertFrame:UnregisterEvent("GUILD_CHALLENGE_COMPLETED")
+			end
+		elseif toggle == 0 and blizzEventsUnregistered then
+			blizzEventsUnregistered = false
+			if self.Options.HideBossEmoteFrame or custom then
+				RaidBossEmoteFrame:RegisterEvent("RAID_BOSS_EMOTE")
+				RaidBossEmoteFrame:RegisterEvent("RAID_BOSS_WHISPER")
+				RaidBossEmoteFrame:RegisterEvent("CLEAR_BOSS_EMOTES")
+			end
+			if self.Options.HideGarrisonUpdates then
+				AlertFrame:RegisterEvent("GARRISON_MISSION_FINISHED")
+				AlertFrame:RegisterEvent("GARRISON_BUILDING_ACTIVATABLE")
+			end
+			if self.Options.HideGuildChallengeUpdates then
+				AlertFrame:RegisterEvent("GUILD_CHALLENGE_COMPLETED")
+			end
 		end
 	end
-
-	local GarrisonUnregistered = false
-	function DBM:ToggleGarrisonAlertsFrame(toggle, custom)
-		if not self.Options.HideGarrisonUpdates and not custom then return end
-		if toggle == 1 and not GarrisonUnregistered then
-			GarrisonUnregistered = true
-			AlertFrame:UnregisterEvent("GARRISON_MISSION_FINISHED")
-			AlertFrame:UnregisterEvent("GARRISON_BUILDING_ACTIVATABLE")
-	--		AlertFrame:UnregisterEvent("GARRISON_RANDOM_MISSION_ADDED")--6.1
-		elseif toggle == 0 and GarrisonUnregistered then
-			GarrisonUnregistered = false
-			AlertFrame:RegisterEvent("GARRISON_MISSION_FINISHED")
-			AlertFrame:RegisterEvent("GARRISON_BUILDING_ACTIVATABLE")
-	--		AlertFrame:RegisterEvent("GARRISON_RANDOM_MISSION_ADDED")--6.1
-		end
-	end
+	DBM.ToggleRaidBossEmoteFrame = DBM.HideBlizzardEvents--PVP mod compat until 6.0.13 release. REMOVE ME BEFORE NEXT RELEASE.
 end
 
 --------------------------
@@ -7957,6 +7952,10 @@ do
 	function DBM:CheckVoicePackVersion(value)
 		--Check if voice pack missing
 		local activeVP = self.Options.ChosenVoicePack
+		if self:AntiSpam(3, "NOVOICE") and ((activeVP ~= "None" and not self.VoiceVersions[activeVP]) or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0)) then--A voice pack is selected that does not belong
+			self.Options.ChosenVoicePack = "None"--Set ChosenVoicePack back to None
+			self:AddMsg(DBM_CORE_VOICE_MISSING)
+		end
 		--Check if voice pack out of date
 		if activeVP ~= "None" and activeVP == value then
 			if self.VoiceVersions[value] < voiceRevision then--Version will be bumped when new voice packs released that contain new voices.
