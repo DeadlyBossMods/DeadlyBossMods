@@ -131,7 +131,7 @@ DBM_CORE_VOICE_COUNT_MISSING		= "所選取的語音包%d找不到倒數語音。
 --DBM_BIG_WIGS (Same as English locales)
 --DBM_BIG_WIGS_ALPHA (Same as English locales)
 
-DBM_CORE_UPDATEREMINDER_HEADER			= "你的Deadly Boss Mod已經過期。\n你可以在此網址下載到新版本%s(r%d)："
+DBM_CORE_UPDATEREMINDER_HEADER			= "你的Deadly Boss Mod已經過期。\n你可以在Curse網站或是wowinterface網站以及此網址下載到新版本%s(r%d)："
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "你的alpha版本Deadly Boss Mods已經過期。\n 你至少落後%d個測試版本。建議DBM使用者使用最新的alpha或最新的穩定版本。過期的alpha版本可能會有效能低落或未完成的功能。"
 DBM_CORE_UPDATEREMINDER_FOOTER			= "按下" .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "：複製下載網址到剪貼簿。"
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "按下" .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "：複製網址到剪貼簿。"
