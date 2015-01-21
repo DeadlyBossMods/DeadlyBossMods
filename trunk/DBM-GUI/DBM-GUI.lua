@@ -2456,10 +2456,6 @@ local function CreateOptionsMenu()
 		spamArea:CreateCheckButton(L.DontShowFarWarnings, true, nil, "DontShowFarWarnings")
 		spamArea:CreateCheckButton(L.StripServerName, true, nil, "StripServerName")
 		spamArea:CreateCheckButton(L.SpamBlockBossWhispers, true, nil, "SpamBlockBossWhispers")
-		if BigBrother and type(BigBrother.ConsumableCheck) == "function" then
-			spamArea:CreateCheckButton(L.ShowBBOnCombatStart, true, nil, "ShowBigBrotherOnCombatStart")
-			spamArea:CreateCheckButton(L.BigBrotherAnnounceToRaid, true, nil, "BigBrotherAnnounceToRaid")
-		end
 
 		local spamSpecArea = spamPanel:CreateArea(L.Area_SpecFilter, nil, 40, true)
 		spamSpecArea:CreateCheckButton(L.FilterTankSpec, true, nil, "FilterTankSpec")
@@ -2537,6 +2533,12 @@ local function CreateOptionsMenu()
 		end
 		local LogOnlyRaidBosses		= bossLoggingArea:CreateCheckButton(L.LogOnlyRaidBosses, true, nil, "LogOnlyRaidBosses")
 
+		if BigBrother and type(BigBrother.ConsumableCheck) == "function" then
+			local thirdPartyArea			= extraFeaturesPanel:CreateArea(L.Area_3rdParty, nil, 100, true)
+			thirdPartyArea:CreateCheckButton(L.ShowBBOnCombatStart, true, nil, "ShowBigBrotherOnCombatStart")
+			thirdPartyArea:CreateCheckButton(L.BigBrotherAnnounceToRaid, true, nil, "BigBrotherAnnounceToRaid")
+		end
+
 		local inviteArea			= extraFeaturesPanel:CreateArea(L.Area_Invite, nil, 100, true)
 		local AutoAcceptFriendInvite= inviteArea:CreateCheckButton(L.AutoAcceptFriendInvite, true, nil, "AutoAcceptFriendInvite")
 		local AutoAcceptGuildInvite	= inviteArea:CreateCheckButton(L.AutoAcceptGuildInvite, true, nil, "AutoAcceptGuildInvite")
@@ -2587,6 +2589,9 @@ local function CreateOptionsMenu()
 		chatAlertsArea:AutoSetDimension()
 		soundAlertsArea:AutoSetDimension()
 		bossLoggingArea:AutoSetDimension()
+		if thirdPartyArea then
+			thirdPartyArea:AutoSetDimension()
+		end
 		inviteArea:AutoSetDimension()
 		advancedArea:AutoSetDimension()
 		extraFeaturesPanel:SetMyOwnHeight()

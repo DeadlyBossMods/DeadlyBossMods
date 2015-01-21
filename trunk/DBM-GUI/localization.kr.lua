@@ -13,7 +13,7 @@ L.WebsiteButton				= "사용자 포럼"
 L.OTabBosses	= "우두머리"
 --L.OTabOptions	= GAMEOPTIONS_MENU
 
-L.TabCategory_Options		= "기본 설정"
+L.TabCategory_Options		= "전역 설정"
 L.TabCategory_PVP	 		= "PvP"
 L.TabCategory_OTHER			= "기타 우두머리 경보"
 
@@ -74,7 +74,7 @@ L.Button_InfoFrame			= "정보 창 이동"
 L.Button_TestBars			= "시험 경보 시작"
 
 -- Tab: Raidwarning
-L.Tab_RaidWarning 			= "알림 설정"
+L.Tab_RaidWarning 			= "알림"
 L.RaidWarning_Header		= "알림 설정"
 L.RaidWarnColors 			= "알림 색상"
 L.RaidWarnColor_1 			= "색상 1"
@@ -98,7 +98,7 @@ L.SpecialWarnSound3			= "특수 경고 소리 3 기본값(SW3, 속성: 치명적
 L.SpecialWarnSound4			= "특수 경고 소리 4 기본값(SW4, 속성: 도망쳐야 함)"
 
 -- Tab: Generalwarnings
-L.Tab_GeneralMessages 		= "대화창 설정"
+L.Tab_GeneralMessages 		= "대화창"
 L.CoreMessages				= "일반 메세지 설정"
 L.ShowLoadMessage 			= "대화창에 경보 불러오기 메세지 보이기"
 L.ShowPizzaMessage 			= "다른 사용자가 DBM 바를 보낸 경우 메세지 보이기"
@@ -117,7 +117,7 @@ L.EnableStatus 				= "'status' 라는 귓속말을 받은 경우 자동 응답 �
 L.WhisperStats 				= "귓속말 자동 응답시 처치/전멸 횟수 포함하기"
 
 -- Tab: Barsetup
-L.BarSetup  				= "바 설정"
+L.BarSetup  				= "바"
 L.BarTexture 				= "바 무늬"
 L.BarStyle 					= "바 작동 방식"
 L.BarDBM					= "DBM"
@@ -147,7 +147,7 @@ L.BarSpark					= "바 끝 강조"
 L.BarFlash					= "만료되기 직전의 바를 깜빡이기"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "특수 경고 설정"
+L.Panel_SpecWarnFrame		= "특수 경고"
 L.Area_SpecWarn				= "특수 경고 설정"
 L.SpecWarn_Enabled			= "특수 경고 사용"
 L.SpecWarn_FlashFrame		= "특수 경고 화면 반짝임 효과 사용"
@@ -165,7 +165,7 @@ L.SpecWarn_MoveMe			= "위치 설정"
 L.SpecWarn_ResetMe			= "초기화"
 
 -- Tab: Spoken Alerts Frame
-L.Panel_SpokenAlerts		= "음성안내 설정"
+L.Panel_SpokenAlerts		= "음성안내"
 L.Area_VoiceSelection		= "음성선택"
 L.CountdownVoice			= "첫번째 숫자 읽기 소리 설정"
 L.CountdownVoice2			= "두번째 숫자 읽기 소리 설정"
@@ -179,7 +179,7 @@ L.SpecWarn_AlwaysVoice		= "음성안내를 무조건 듣기(각 우두머리별 
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 
 -- Tab: HealthFrame
-L.Panel_HPFrame				= "우두머리 체력 바 설정"
+L.Panel_HPFrame				= "우두머리 체력 바"
 L.Area_HPFrame				= "우두머리 체력 바 설정"
 L.HP_Enabled				= "우두머리별 설정을 무시하고 항상 우두머리 체력 바 보기"
 L.HP_GrowUpwards			= "우두머리 체력 바를 위로 쌓기"
@@ -187,7 +187,7 @@ L.HP_ShowDemo				= "체력 바 보기"
 L.BarWidth					= "바 길이: %d"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "필터 설정"
+L.Panel_SpamFilter			= "DBM 기능 끄기"
 L.Area_SpamFilter_Outgoing	= "기능 끄기 설정(다른 설정보다 항상 우선됨)"
 L.SpamBlockNoShowAnnounce	= "알림 보이지 않기"
 L.DontShowFarWarnings		= "멀리 떨어진 곳에서 시전된 주문 알림 및 바를 보이지 않기"
@@ -199,13 +199,11 @@ L.SpamBlockNoHealthFrame	= "우두머리 체력 바 보이지 않기"
 L.SpamBlockNoCountdowns		= "초읽기 소리 재생 안함"
 
 -- Tab: Spam Filter
-L.Area_SpamFilter			= "일반 필터 설정"
+L.Area_SpamFilter			= "정보 숨기기"
 L.StripServerName			= "알림 및 바에서 서버명 보이지 않기"
 L.SpamBlockBossWhispers		= "전투 중 다른 공격대원 또는 파티원이 보낸 &lt;DBM&gt; 귓속말 감추기"
-L.ShowBBOnCombatStart		= "전투 시작시 BigBrother 버프 체크 실행하기"
-L.BigBrotherAnnounceToRaid	= "BigBrother 버프 체크 결과를 공격대에 알리기"
 
-L.Area_SpecFilter			= "역할에 따른 경고 설정"
+L.Area_SpecFilter			= "역할 경고 숨기기"
 L.FilterTankSpec			= "방어 전담이 아닐 경우 방어 전담용 경고 보지 않기(참고: 도발 경고는 대부분 기본값으로 켜짐 상태이기 때문에 이 설정을 끄지 않는 것을 권장합니다.)"
 --Healer and Damager not in use yet. Tank is easily black and white. if not a tank, disable taunt warnings. Pretty obvious.
 --Healer and Damager a bit more tricky, since often times, Healer DO need to switch and kill adds designated a dps roll (hi disc attonement priest)
@@ -214,7 +212,7 @@ L.FilterTankSpec			= "방어 전담이 아닐 경우 방어 전담용 경고 보
 --L.FilterHealerSpec		= "치유 전담이 아닐 경우 치유 전담용 경고 보지 않기"--Not in use
 --L.FilterDamagerSpec		= "공격 전담이 아닐 경우 치유 전담용 경고 보지 않기"--Not in use
 
-L.Area_PullTimer			= "전투 예정, 시작, 휴식, 사용자 바 기능 설정"
+L.Area_PullTimer			= "전투 예정, 시작, 휴식, 사용자 바 기능 끄기"
 L.DontShowPTNoID			= "같은 인스턴스에 있지 않은 사용자가 보낸 전투 예정 신호 차단"
 L.DontShowPT				= "전투 예정, 시작, 휴식 바 숨기기"
 L.DontShowPTText			= "전투 예정, 휴식 초읽기 글자 숨기기"
@@ -222,7 +220,7 @@ L.DontPlayPTCountdown		= "전투 예정, 시작, 휴식, 사용자 바 초읽기
 L.DontShowPTCountdownText	= "전투 예정, 시작, 휴식, 사용자 바 초읽기 글자 숨기기"
 L.PT_Threshold				= "전투 예정, 시작, 휴식, 사용자 바 소리/글자를 몇 초부터 보여줄 것인지 설정: %d"
 
-L.Panel_HideBlizzard		= "블리자드 기능 끄기 설정"
+L.Panel_HideBlizzard		= "블리자드 기능 끄기"
 L.Area_HideBlizzard			= "블리자드 기능 끄기 설정"
 L.HideBossEmoteFrame		= "전투 중 블리자드 기본 레이드 경보 끄기"
 L.HideWatchFrame			= "추적중인 업적이 없을 경우 전투 중 퀘스트 추적 창 숨기기(도전 모드에서는 메달 바가 표시됩니다.)"
@@ -237,7 +235,7 @@ L.DisableCinematics			= "게임 내 동영상 끄기"
 L.AfterFirst				= "1회 이상 본 동영상"
 L.Always					= "모든 동영상"
 
-L.Panel_ExtraFeatures		= "추가 기능 설정"
+L.Panel_ExtraFeatures		= "기타 기능"
 L.Area_ChatAlerts			= "대화창 알림 설정"
 L.RoleSpecAlert				= "공격대 진행시 전문화와 설정된 전리품 전문화가 맞지 않을시 대화창에 알림 보기"
 L.CheckGear					= "착용 아이템 레벨이 가방 아이템 레벨보다 낮을 경우 경고 보기(40+)"
@@ -250,6 +248,9 @@ L.Area_AutoLogging			= "자동 전투 기록 설정"
 L.AutologBosses				= "우두머리 전투시 블리자드 전투 기록 자동 활성화(전투 시작전 주요 정보를 기록하려면, /dbm pull 명령어를 사용하세요)"
 L.AdvancedAutologBosses		= "우두머리 전투시 Transcriptor 기록 자동 활성화"
 L.LogOnlyRaidBosses			= "공격대 우두머리 전투만 기록하기(공격대 찾기 제외)"
+L.Area_3rdParty				= "외부 애드온 연동 기능"
+L.ShowBBOnCombatStart		= "전투 시작시 BigBrother 버프 체크 실행하기"
+L.BigBrotherAnnounceToRaid	= "BigBrother 버프 체크 결과를 공격대에 알리기"
 L.Area_Invite				= "파티 초대 설정"
 L.AutoAcceptFriendInvite	= "친구가 보낸 파티 초대 자동 수락"
 L.AutoAcceptGuildInvite		= "길드원이 보낸 파티 초대 자동 수락"
