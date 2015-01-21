@@ -1040,6 +1040,7 @@ do
 						end
 					end
 				end
+				self:Schedule(8, self.CheckVoicePackAvailable)
 			end
 			tsort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
 			self:RegisterEvents(
@@ -7949,21 +7950,12 @@ do
 		end
 	end
 
-	function DBM:CheckVoicePackVersion(value)
+	function DBM:CheckVoicePackAvailable()
 		--Check if voice pack missing
 		local activeVP = self.Options.ChosenVoicePack
-		if self:AntiSpam(3, "NOVOICE") and ((activeVP ~= "None" and not self.VoiceVersions[activeVP]) or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0)) then--A voice pack is selected that does not belong
+		if (activeVP ~= "None" and not self.VoiceVersions[activeVP]) or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0) then--A voice pack is selected that does not belong
 			self.Options.ChosenVoicePack = "None"--Set ChosenVoicePack back to None
 			self:AddMsg(DBM_CORE_VOICE_MISSING)
-		end
-		--Check if voice pack out of date
-		if activeVP ~= "None" and activeVP == value then
-			if self.VoiceVersions[value] < voiceRevision then--Version will be bumped when new voice packs released that contain new voices.
-				self:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
-				SWFilterDisabed = true
-			else
-				SWFilterDisabed = false
-			end
 		end
 		--Check if any of countdown sounds are using missing voice pack
 		local voice1 = self.Options.CountdownVoice
@@ -7997,6 +7989,19 @@ do
 			if not self.VoiceVersions[voiceValue] then
 				self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(3))
 				self.Options.CountdownVoice3 = self.DefaultOptions.CountdownVoice3
+			end
+		end
+	end
+
+	function DBM:CheckVoicePackVersion(value)
+		local activeVP = self.Options.ChosenVoicePack
+		--Check if voice pack out of date
+		if activeVP ~= "None" and activeVP == value then
+			if self.VoiceVersions[value] < voiceRevision then--Version will be bumped when new voice packs released that contain new voices.
+				self:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
+				SWFilterDisabed = true
+			else
+				SWFilterDisabed = false
 			end
 		end
 	end
