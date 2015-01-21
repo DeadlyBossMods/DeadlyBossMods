@@ -1040,7 +1040,7 @@ do
 						end
 					end
 				end
-				self:Schedule(8, self.CheckVoicePackAvailable)
+				self:Schedule(8, self.CheckVoicePackAvailable, self)
 			end
 			tsort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
 			self:RegisterEvents(

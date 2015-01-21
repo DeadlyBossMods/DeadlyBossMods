@@ -131,7 +131,7 @@ DBM_CORE_VOICE_COUNT_MISSING		= "%d번째 초읽기 소리 설정이 설정되�
 --DBM_BIG_WIGS (Same as English locales)
 --DBM_BIG_WIGS_ALPHA (Same as English locales)
 
-DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 DBM 버전이 오래되었습니다.\n%s (r%d) 이상으로 업데이트 가능합니다. 다음 주소를 방문하세요."
+DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 DBM 버전이 오래되었습니다.\n%s (r%d) 이상으로 업데이트 가능합니다. 아래 사이트 또는 curse, wowinterface 에서 다운로드 가능합니다."
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 DBM alpha 버전이 오래되었습니다. r%d 이상 업데이트 가능합니다. 가능한 빠른 시일내로 최신버전으로 업데이트 하시기 바랍니다. 계속 사용하실 경우 잘못된 경고를 표시할 수도 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 주소를 복사하실 수 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 주소를 복사하실 수 있습니다."
