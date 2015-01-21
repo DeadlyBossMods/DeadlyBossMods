@@ -70,32 +70,36 @@ do
 	TabFrame1.offset = 0
 
 	TabFrame1.buttons = {}
+	TabFrame1.fontbuttons = {}
+	local buttonTable = {"buttons", "fontbuttons"}
 	for i=1, MAX_BUTTONS, 1 do
-		TabFrame1.buttons[i] = CreateFrame("Button", TabFrame1:GetName().."Button"..i, TabFrame1, "DBM_GUI_DropDownMenuButtonTemplate")
-		if i == 1 then
-			TabFrame1.buttons[i]:SetPoint("TOPLEFT", TabFrame1, "TOPLEFT", 11, -13)
-		else
-			TabFrame1.buttons[i]:SetPoint("TOPLEFT", TabFrame1.buttons[i-1], "BOTTOMLEFT", 0,0)
-		end
-		TabFrame1.buttons[i]:SetScript("OnClick", function(self)
-			self:GetParent():HideMenu()
-			self:GetParent().dropdown.value = self.entry.value
-			self:GetParent().dropdown.text = self.entry.text
-			if self.entry.sound then
-				if DBM.Options.UseMasterVolume then
-					PlaySoundFile(self.entry.value, "Master")
-				else
-					PlaySoundFile(self.entry.value)
+		for _, buttonName in ipairs(buttonTable) do
+			TabFrame1[buttonName][i] = CreateFrame("Button", TabFrame1:GetName().."Button"..buttonName..i, TabFrame1, "DBM_GUI_DropDownMenuButtonTemplate")
+			if i == 1 then
+				TabFrame1[buttonName][i]:SetPoint("TOPLEFT", TabFrame1, "TOPLEFT", 11, -13)
+			else
+				TabFrame1[buttonName][i]:SetPoint("TOPLEFT", TabFrame1[buttonName][i-1], "BOTTOMLEFT", 0,0)
+			end
+			TabFrame1[buttonName][i]:SetScript("OnClick", function(self)
+				self:GetParent():HideMenu()
+				self:GetParent().dropdown.value = self.entry.value
+				self:GetParent().dropdown.text = self.entry.text
+				if self.entry.sound then
+					if DBM.Options.UseMasterVolume then
+						PlaySoundFile(self.entry.value, "Master")
+					else
+						PlaySoundFile(self.entry.value)
+					end
 				end
-			end
-			if self.entry.func then
-				self.entry.func(self.entry.value)
-			end
-			if self:GetParent().dropdown.callfunc then
-				self:GetParent().dropdown.callfunc(self.entry.value)
-			end
-			_G[self:GetParent().dropdown:GetName().."Text"]:SetText(self.entry.text)--Menu refresh
-		end)
+				if self.entry.func then
+					self.entry.func(self.entry.value)
+				end
+				if self:GetParent().dropdown.callfunc then
+					self:GetParent().dropdown.callfunc(self.entry.value)
+				end
+				_G[self:GetParent().dropdown:GetName().."Text"]:SetText(self.entry.text)--Menu refresh
+			end)
+		end
 	end
 	local default_button_width = TabFrame1.buttons[1]:GetWidth()
 	TabFrame1:SetWidth(default_button_width+22)
@@ -127,20 +131,12 @@ do
 				if values[i+self.offset].value == TabFrame1.dropdown.value then
 				  ind = "|TInterface\\Buttons\\UI-CheckBox-Check:0|t"
 				end
+				_G[self.buttons[i]:GetName().."NormalText"]:SetFontObject(GameFontHighlightSmall)
 				self.buttons[i]:SetText(ind..values[i+self.offset].text)
 				self.buttons[i].entry = values[i+self.offset]
 				if values[i+self.offset].texture then
 					BackDropTable.bgFile = values[i+self.offset].texture
 					self.buttons[i]:SetBackdrop(BackDropTable)
-				end
-				if values[i+self.offset].font then
-					_G[self.buttons[i]:GetName().."NormalText"]:SetFont(values[i+self.offset].font, values[i+self.offset].fontsize or 14)
-				else
-					if GetLocale() == "enUS" or GetLocale() == "enEB" then
-						_G[self.buttons[i]:GetName().."NormalText"]:SetFontObject(GameFontHighlightSmall)
-					else
-						_G[self.buttons[i]:GetName().."NormalText"]:SetFont(STANDARD_TEXT_FONT, 10)--Breaks unicode display on english client
-					end
 				end
 				self.buttons[i]:Show()
 			else
@@ -162,12 +158,57 @@ do
 		ClickFrame:Show()
 	end
 
+	function TabFrame1:ShowFontMenu(values)
+		self:Show()
+		if self.offset > #values-MAX_BUTTONS then self.offset = #values-MAX_BUTTONS end
+		if self.offset < 0 then self.offset = 0 end
+		if #values > MAX_BUTTONS then
+			self:SetHeight(MAX_BUTTONS*TabFrame1.fontbuttons[1]:GetHeight()+24)
+			self.text:Show()
+		elseif #values == MAX_BUTTONS then
+			self:SetHeight(MAX_BUTTONS*TabFrame1.fontbuttons[1]:GetHeight()+24)
+			self.text:Hide()
+		elseif #values < MAX_BUTTONS then
+			self:SetHeight( #values * self.fontbuttons[1]:GetHeight() + 24)
+			self.text:Hide()
+		end
+		for i=1, MAX_BUTTONS, 1 do
+			if i + self.offset <= #values then
+				local ind = "   "
+				if values[i+self.offset].value == TabFrame1.dropdown.value then
+				  ind = "|TInterface\\Buttons\\UI-CheckBox-Check:0|t"
+				end
+				_G[self.fontbuttons[i]:GetName().."NormalText"]:SetFont(values[i+self.offset].font, values[i+self.offset].fontsize or 14)
+				self.fontbuttons[i]:SetText(ind..values[i+self.offset].text)
+				self.fontbuttons[i].entry = values[i+self.offset]
+				self.fontbuttons[i]:Show()
+			else
+				self.fontbuttons[i]:Hide()
+			end
+		end
+		local width = self.fontbuttons[1]:GetWidth()
+		local bwidth = 0
+		for k, button in pairs(self.fontbuttons) do
+			bwidth = button:GetTextWidth()
+			if bwidth > width then
+				TabFrame1:SetWidth(bwidth+32)
+				width = bwidth
+			end
+		end
+		for k, button in pairs(self.fontbuttons) do
+			button:SetWidth(width)
+		end
+		ClickFrame:Show()
+	end
+
 	function TabFrame1:HideMenu()
 		for i=1, MAX_BUTTONS, 1 do
 			self.buttons[i]:Hide()
 			self.buttons[i]:SetBackdrop(nil)
 			self.buttons[i]:SetWidth(default_button_width)
 			_G[self.buttons[i]:GetName().."NormalText"]:SetFontObject(GameFontHighlightSmall)
+			self.fontbuttons[i]:Hide()
+			self.fontbuttons[i]:SetWidth(default_button_width)
 		end
 		self:SetWidth(default_button_width+22)
 		self:Hide()
@@ -176,7 +217,11 @@ do
 	end
 
 	function TabFrame1:Refresh()
-		self:ShowMenu(self.dropdown.values)
+		if self.dropdown.values[1].font then
+			self:ShowFontMenu(self.dropdown.values)
+		else
+			self:ShowMenu(self.dropdown.values)
+		end
 	end
 	
 	ClickFrame:SetAllPoints(DBM_GUI_OptionsFrame)
@@ -244,7 +289,11 @@ do
 				TabFrame1:ClearAllPoints()
 				TabFrame1:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
 				TabFrame1.dropdown = self:GetParent()
-				TabFrame1:ShowMenu(self:GetParent().values)
+				if values[1].font then
+					TabFrame1:ShowFontMenu(self:GetParent().values)
+				else
+					TabFrame1:ShowMenu(self:GetParent().values)
+				end
 			end
 		end)
 
