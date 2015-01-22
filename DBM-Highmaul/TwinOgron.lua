@@ -98,7 +98,7 @@ end
 
 local lines = {}
 
-local function sortInfoFrame(a, b)--is this even needed? no idea. 
+local function sortInfoFrame(a, b) 
 	local a = lines[a]
 	local b = lines[b]
 	if not tonumber(a) then a = -1 end
@@ -106,12 +106,6 @@ local function sortInfoFrame(a, b)--is this even needed? no idea.
 	if a > b then return true else return false end
 end
 
---Layout
---Boss 1 name - Power
---Boss 1 next ability
---Boss 2 name - Power
---Boss 2 next ability
---if mythic, ability will show if ability empowered or not to right with empowerment name and purple coloring
 local function updateInfoFrame()
 	table.wipe(lines)
 	local bossPower = 0
