@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Jan 18, 2015@12472
+-- Last update: Jan 22, 2015@12534
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -20,6 +20,7 @@ DBM_CORE_LOAD_GUI_ERROR				= "无法读取图形界面：%s"
 DBM_CORE_LOAD_GUI_COMBAT			= "DBM无法在战斗中初始化图形界面。请先在非战斗状态打开图形设置界面，之后的战斗中就可以自由打开和关闭该界面了。"
 DBM_CORE_LOAD_SKIN_COMBAT			= "DBM无法在战斗中更换皮肤。请先在非战斗状态更换好皮肤，并重载界面。"
 DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，有些计时器可能会错误。请在离开战斗后马上重载界面。"
+DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本过旧。请升级DBM。"
 
 DBM_CORE_BLIZZ_BUGS					= "6.0中的暴雪的插件bug:\n1. 如果你开启音效，你的插件可能会在战斗时丢失声音，因为插件的优先权被下降了而声音通道有限。DBM已经强制将声音通道数设置为64。在这种情况下还丢失报警声音，你可以考虑关闭游戏音效。"
 
@@ -65,14 +66,14 @@ DBM_CORE_PROFILE_APPLY_ERROR		= "配置文件应用失败. '%s' 并不存在."
 DBM_CORE_PROFILE_DELETED			= "配置文件 '%s' 已经删除. 'Default' 默认配置文件会被应用."
 DBM_CORE_PROFILE_DELETE_ERROR		= "配置文件删除失败. '%s' 并不存在."
 DBM_CORE_PROFILE_CANNOT_DELETE		= "'Default' 默认配置文件无法被删除"
-DBM_CORE_MPROFILE_COPY_SUCCESS		= "%s 的 s (%d 专精) 模块设置已经被复制."
+DBM_CORE_MPROFILE_COPY_SUCCESS		= "%s(%d专精)的模块设置已经被复制."
 DBM_CORE_MPROFILE_COPY_SELF_ERROR	= "无法自己复制自己的配置文件"
 DBM_CORE_MPROFILE_COPY_S_ERROR		= "复制的源出错. 源配置文件可能版本过旧或被篡改."
-DBM_CORE_MPROFILE_COPYS_SUCCESS		= "%s 的 s (%d 专精) 模块声音设置已经被复制."
+DBM_CORE_MPROFILE_COPYS_SUCCESS		= "%s(%d专精)的模块声音设置已经被复制."
 DBM_CORE_MPROFILE_COPYS_SELF_ERROR	= "无法自己复制自己的声音配置文件"
 DBM_CORE_MPROFILE_COPYS_S_ERROR		= "复制的源出错. 源配置文件可能版本过旧或被篡改."
-DBM_CORE_MPROFILE_DELETE_SUCCESS	= "%s 的 s (%d 专精)  模块设置已经被删除."
-DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "无法删除一个正在使用的配置文件."
+DBM_CORE_MPROFILE_DELETE_SUCCESS	= "%s(%d专精)的模块设置已经被删除."
+DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "无法删除一个正在使用的模块配置文件."
 DBM_CORE_MPROFILE_DELETE_S_ERROR	= "删除的源出错. 源配置文件可能版本过旧或被篡改."
 
 DBM_CORE_ALLMOD_DEFAULT_LOADED		= "本副本里的所有Boss配置已经被初始化"
@@ -104,6 +105,9 @@ DBM_CORE_OPTION_HEALTH_FRAME		= "首领生命值窗口"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "计时条"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "警报"
+DBM_CORE_OPTION_CATEGORY_WARNINGS_YOU	= "个人警报"
+DBM_CORE_OPTION_CATEGORY_WARNINGS_OTHER	= "目标警报"
+DBM_CORE_OPTION_CATEGORY_WARNINGS_ROLE	= "角色警报"
 DBM_CORE_OPTION_CATEGORY_MISC		= "其它"
 DBM_CORE_OPTION_CATEGORY_SOUNDS		= "声音"
 
@@ -145,6 +149,7 @@ DBM_CORE_UPDATEREMINDER_DISABLE			= "警告：你的DBM已经过期了%d个版�
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "你的DBM版本会在这首领战斗有不准确的计时器或警告。这问题会在下次正式版更新。你也可以更新至最新的alpha版本立即修正此问题。"
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "警告：你使用了不正确版本的DBM。请确保DBM版本和游戏版本一致。"
 DBM_CORE_VEM							= "你好像在使用VEM。DBM在这种情况下无法被载入。"
+DBM_CORE_3RDPROFILES					= "警告: DBM-Profiles 已经无法和本版本DBM兼容。DBM核心已经自带配置文件管理系统，请移除它避免冲突。"
 
 DBM_CORE_MOVABLE_BAR				= "拖动我！"
 
@@ -152,6 +157,7 @@ DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h向你发送了一个DBM计时
 DBM_PIZZA_CONFIRM_IGNORE			= "是否要在该次游戏连接中屏蔽来自%s的计时条？"
 DBM_PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <时间（秒）> <文本>"
 
+--DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+拖动 / 右键拖动：拖动\nAlt+Shift+拖动：自由拖动"
 
 DBM_CORE_RANGECHECK_HEADER			= "距离监视（%d码）"
