@@ -58,6 +58,13 @@ local voicePillar					= mod:NewVoice("ej9394", "Ranged")
 mod:AddRangeFrameOption(4, 159386)
 
 local firePillar = EJ_GetSectionInfo(9394)
+local chainName = GetSpellInfo(159947)
+
+local function checkHurl()
+	if not UnitDebuff("player", chainName) then
+		voiceChainHurl:Play("otherout")
+	end
+end
 
 function mod:OnCombatStart(delay)
 	timerPillarCD:Start(24-delay)
@@ -114,7 +121,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceChainHurl:Play("159947y") --you are the target
 		else
 			if self:AntiSpam(2, 2) then			
-				voiceChainHurl:Play("otherout")
+				self:Schedule(0.5, checkHurl)
 			end
 		end
 	elseif spellId == 158986 then
