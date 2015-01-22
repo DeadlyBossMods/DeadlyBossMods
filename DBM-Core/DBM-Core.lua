@@ -957,10 +957,12 @@ do
 --			end
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 				self:AddMsg(DBM_CORE_VEM)
+				dbmIsEnabled = false
 				return
 			end
 			if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
-				self:AddMsg(DBM_CORE_3RDPROFILES)
+				self:Schedule(10, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
+				dbmIsEnabled = false
 				return
 			end
 			self.Bars:LoadOptions("DBM")
@@ -1951,10 +1953,12 @@ do
 --		end
 		if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 			self:AddMsg(DBM_CORE_VEM)
+			dbmIsEnabled = false
 			return
 		end
 		if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
 			self:AddMsg(DBM_CORE_3RDPROFILES)
+			dbmIsEnabled = false
 			return
 		end
 		if not IsAddOnLoaded("DBM-GUI") then
@@ -5880,11 +5884,8 @@ do
 	local mt = {__index = bossModPrototype}
 
 	function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
-		if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
-			self:AddMsg(DBM_CORE_3RDPROFILES)
-			return
-		end
 		name = tostring(name) -- the name should never be a number of something as it confuses sync handlers that just receive some string and try to get the mod from it
+		if name == "DBM-ProfilesDummy" then return end
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
 			{
