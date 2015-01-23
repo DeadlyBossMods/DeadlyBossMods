@@ -512,6 +512,8 @@ do
 
 		rotation = (2 * pi) - GetPlayerFacing()
 		local closePlayer = 0
+		local closestRange = nil
+		local closetName = nil
 		for i = 1, numPlayers do
 			local uId = unitList[i]
 			local dot = dots[i]
@@ -523,9 +525,15 @@ do
 				local range = (cx * cx + cy * cy) ^ 0.5
 				--local range = UnitDistanceSquared(uId) ^ 0.5
 				local inRange = false
-				if range < (activeRange * 1.1) then-- add 10% because of map data inaccuracies
+				if range < (activeRange) then
 					closePlayer = closePlayer + 1
 					inRange = true
+					if not closestRange then
+						closestRange = range
+					elseif range < closestRange then
+						closestRange = range
+					end
+					if not closetName then closetName = UnitName(uId) end
 				end
 				if tEnabled and inRange and closePlayer < 6 then-- display up to 5 players in text range frame.
 					local playerName = UnitName(uId)
@@ -551,8 +559,12 @@ do
 			textFrame:Show()
 		end
 		if rEnabled then
-			if prevNumClosePlayer ~= closePlayer then
-				radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXT:format(closePlayer))
+--			if prevNumClosePlayer ~= closePlayer then
+				if closePlayer == 1 then
+					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE:format(closetName, closestRange))
+				else
+					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXT:format(closePlayer, closestRange))
+				end
 				if closePlayer >= warnThreshold then -- only show the text if the circle is red
 					circleColor = 2
 					radarFrame.inRangeText:Show()
@@ -560,8 +572,8 @@ do
 					circleColor = 1
 					radarFrame.inRangeText:Hide()
 				end
-				prevNumClosePlayer = closePlayer
-			end
+--				prevNumClosePlayer = closePlayer
+--			end
 
 			if UnitIsDeadOrGhost("player") then
 				circleColor = 3
