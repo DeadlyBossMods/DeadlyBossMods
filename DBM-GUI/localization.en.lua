@@ -74,7 +74,6 @@ L.ModelSoundShort			= SHORT
 L.ModelSoundLong			= TOAST_DURATION_LONG
 
 L.Button_RangeFrame			= "Show/hide range frame"
-L.Button_RangeRadar			= "Show/hide range radar"
 L.Button_InfoFrame			= "Show/hide info frame"
 L.Button_TestBars			= "Start test bars"
 
