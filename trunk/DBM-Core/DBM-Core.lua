@@ -1345,11 +1345,7 @@ end
 --  Profile  --
 ---------------
 function DBM:CreateProfile(name)
-	if not name or name == "" then
-		self:AddMsg(DBM_CORE_PROFILE_CREATE_ERROR)
-	end
-	name = name:gsub(" ", "")
-	if name == "" then
+	if not name or name == "" or name:gsub("%s", "") then
 		self:AddMsg(DBM_CORE_PROFILE_CREATE_ERROR)
 	end
 	-- create profile
@@ -1391,6 +1387,10 @@ function DBM:DeleteProfile(name)
 	usedProfile = "Default"--Restore to default
 	DBM_UsedProfile = usedProfile
 	self.Options = DBM_AllSavedOptions[usedProfile]
+	if not self.Options then
+		-- the default profile got lost somehow (maybe WoW crashed and the saved variables file got corrupted)
+		self:CreateProfile("Default")
+	end
 	-- rearrange position
 	self.Bars:DeleteProfile(name, "DBM")
 	self:RepositionFrames()
