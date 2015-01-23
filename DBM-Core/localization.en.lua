@@ -163,9 +163,9 @@ DBM_CORE_RANGECHECK_OPTION_FRAMES	= "Frames"
 DBM_CORE_RANGECHECK_OPTION_RADAR	= "Show radar frame"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "Show text frame"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "Show both frames"
-DBM_CORE_RANGERADAR_HEADER			= "Range Radar (%d yd)"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d in range (%d yd)"--Multi
-DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%d yd)"--One target
+DBM_CORE_RANGERADAR_HEADER			= "Range Radar (%dyd)"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d in range (%dyd)"--Multi
+DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%dyd)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "Always show your power"		-- Always show your own power value even if you are below the threshold
 
