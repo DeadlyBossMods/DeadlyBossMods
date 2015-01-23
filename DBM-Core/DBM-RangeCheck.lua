@@ -437,7 +437,7 @@ end
 --  OnUpdate  --
 ----------------
 do
-	local rotation, pixelsperyard, activeDots, numPlayers, circleColor, prevRange, prevNumClosePlayer, prevColor = 0, 0, 0, 0, 0, 0, 0, 0
+	local rotation, pixelsperyard, activeDots, numPlayers, circleColor, prevRange, prevNumClosePlayer, prevclosestRange, prevColor = 0, 0, 0, 0, 0, 0, 0, 0, 0
 	local unitList = {}
 
 	local function setDot(id)
@@ -559,7 +559,7 @@ do
 			textFrame:Show()
 		end
 		if rEnabled then
---			if prevNumClosePlayer ~= closePlayer then
+			if prevNumClosePlayer ~= closePlayer or prevclosestRange ~= closestRange then
 				if closePlayer == 1 then
 					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE:format(closetName, closestRange))
 				else
@@ -572,8 +572,9 @@ do
 					circleColor = 1
 					radarFrame.inRangeText:Hide()
 				end
---				prevNumClosePlayer = closePlayer
---			end
+				prevNumClosePlayer = closePlayer
+				prevclosestRange = closestRange
+			end
 
 			if UnitIsDeadOrGhost("player") then
 				circleColor = 3
