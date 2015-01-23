@@ -596,7 +596,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		local elapsed, total = timerMarkOfChaosCD:GetTime()
 		local remaining = total - elapsed
-		if (remaining > 0) and (remaining < 5) then
+		if (remaining > 0) and (remaining < 6) then
 			self.vb.noTaunt = true--don't warn if mark of chaos very soon
 			return
 		end
