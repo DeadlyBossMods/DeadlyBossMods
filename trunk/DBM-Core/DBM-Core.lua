@@ -118,7 +118,7 @@ DBM.DefaultOptions = {
 	StatusEnabled = true,
 	WhisperStats = false,
 	HideBossEmoteFrame = true,
-	SpamBlockBossWhispers = false,
+	SpamBlockBossWhispers = true,
 	ShowMinimapButton = false,
 	ShowSpecialWarnings = true,
 	ShowFlashFrame = true,
@@ -314,7 +314,7 @@ local iconSetPerson = {}
 local addsGUIDs = {}
 
 local voiceRevision = 2
-local fakeBWRevision = 12550
+local fakeBWRevision = 12584
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -2445,7 +2445,7 @@ end
 
 function DBM:SetRaidWarningPositon()
 	RaidWarningFrame:ClearAllPoints()
-	RaidWarningFrame:SetPoint(DBM.Options.RaidWarningPosition.Point, UIParent, DBM.Options.RaidWarningPosition.Point, DBM.Options.RaidWarningPosition.X, DBM.Options.RaidWarningPosition.Y)
+	RaidWarningFrame:SetPoint(self.Options.RaidWarningPosition.Point, UIParent, self.Options.RaidWarningPosition.Point, self.Options.RaidWarningPosition.X, self.Options.RaidWarningPosition.Y)
 end
 
 function DBM:LoadModOptions(modId, inCombat, first)
@@ -2841,8 +2841,8 @@ do
 		-- load special warning options
 		DBM:UpdateSpecialWarningOptions()
 		-- set this with a short delay to prevent issues with other addons also trying to do the same thing with another position ;)
-		DBM:Schedule(5, DBM.SetRaidWarningPositon)
-		DBM:Schedule(20, DBM.SetRaidWarningPositon)--A second attempt after we are sure all other mods are loaded, so we can work around issues with movemanything or other mods.
+		DBM:Schedule(5, DBM.SetRaidWarningPositon, DBM)
+		DBM:Schedule(20, DBM.SetRaidWarningPositon, DBM)--A second attempt after we are sure all other mods are loaded, so we can work around issues with movemanything or other mods.
 	end
 end
 
