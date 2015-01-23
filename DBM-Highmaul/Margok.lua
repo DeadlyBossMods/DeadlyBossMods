@@ -310,15 +310,15 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 156467 then
 		specWarnDestructiveResonance:Show()
 		timerDestructiveResonanceCD:Start()
-		voiceDestructiveResonance:Play("runaway")
+		voiceDestructiveResonance:Play("watchstep")
 	elseif spellId == 164075 then
 		specWarnDestructiveResonanceDisplacement:Show()
 		timerDestructiveResonanceCD:Start()
-		voiceDestructiveResonance:Play("runaway")
+		voiceDestructiveResonance:Play("watchstep")
 	elseif spellId == 164076 then
 		specWarnDestructiveResonanceFortification:Show()
 		timerDestructiveResonanceCD:Start()
-		voiceDestructiveResonance:Play("runaway")
+		voiceDestructiveResonance:Play("watchstep")
 	elseif spellId == 164077 then
 		specWarnDestructiveResonanceReplication:Show()
 		timerDestructiveResonanceCD:Start()
