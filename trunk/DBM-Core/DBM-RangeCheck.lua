@@ -437,7 +437,7 @@ end
 --  OnUpdate  --
 ----------------
 do
-	local rotation, pixelsperyard, activeDots, numPlayers, circleColor, prevRange, prevNumClosePlayer, prevclosestRange, prevColor = 0, 0, 0, 0, 0, 0, 0, 0, 0
+	local rotation, pixelsperyard, activeDots, numPlayers, circleColor, prevRange, prevNumClosePlayer, prevclosestRange, prevColor, prevType = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	local unitList = {}
 
 	local function setDot(id)
@@ -514,10 +514,12 @@ do
 		local closePlayer = 0
 		local closestRange = nil
 		local closetName = nil
+		local reverse = mainFrame.reverse
+		local filter = mainFrame.filter
+		local type = reverse and 2 or filter and 1 or 0
 		for i = 1, numPlayers do
 			local uId = unitList[i]
 			local dot = dots[i]
-			local filter = mainFrame.filter
 			local x, y, _, mapId = UnitPosition(uId)
 			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and (not filter or filter(uId)) then
 				local cy = x - playerX
@@ -559,17 +561,17 @@ do
 			textFrame:Show()
 		end
 		if rEnabled then
-			if prevNumClosePlayer ~= closePlayer or prevclosestRange ~= closestRange then
+			if prevNumClosePlayer ~= closePlayer or prevclosestRange ~= closestRange or prevtype ~= type then
 				if closePlayer == 1 then
 					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE:format(closetName, closestRange))
 				else
 					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXT:format(closePlayer, closestRange))
 				end
 				if closePlayer >= warnThreshold then -- only show the text if the circle is red
-					circleColor = 2
+					circleColor = reverse and 1 or 2
 					radarFrame.inRangeText:Show()
 				else
-					circleColor = 1
+					circleColor = reverse and 2 or 1
 					radarFrame.inRangeText:Hide()
 				end
 				prevNumClosePlayer = closePlayer
@@ -634,7 +636,7 @@ end
 ---------------
 --  Methods  --
 ---------------
-function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
+function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse)
 	if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame) and not forceshow then return end
 	if type(range) == "function" then -- the first argument is optional
 		return self:Show(nil, range)
@@ -655,6 +657,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
 	mainFrame.range = range
 	mainFrame.filter = filter
 	mainFrame.redCircleNumPlayers = redCircleNumPlayers
+	mainFrame.reverse = reverse
 	if not mainFrame.eventRegistered then
 		mainFrame.eventRegistered = true
 		updateIcon()
