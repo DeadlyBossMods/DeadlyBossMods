@@ -71,7 +71,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1197)
 
 L:SetMiscLocalization({
-	BrandedYell			= "Gebrandmarkt (%s) auf %s",
+	BrandedYell			= "Gebrandmarkt (%d) %d",
 	GazeYell			= "Starren endet in %d",
 	PlayerDebuffs		= "Closest to Glimpse"--translate
 })
