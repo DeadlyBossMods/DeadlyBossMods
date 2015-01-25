@@ -172,23 +172,22 @@ local jumpDistance2 = {
 	[1] = 200, [2] = 150, [3] = 113, [4] = 85, [5] = 63, [6] = 48, [7] =36, [8] = 27, [9] = 21, [10] = 16, [11] = 12, [12] = 9, [13] = 7,--or 5
 }
 local GetSpellInfo, UnitDebuff, UnitDetailedThreatSituation, select = GetSpellInfo, UnitDebuff, UnitDetailedThreatSituation, select
-local chaosDebuff1 = GetSpellInfo(158605)
-local chaosDebuff2 = GetSpellInfo(164176)
-local chaosDebuff3 = GetSpellInfo(164178)
-local chaosDebuff4 = GetSpellInfo(164191)
-local brandedDebuff1 = GetSpellInfo(156225)
-local brandedDebuff2 = GetSpellInfo(164004)
-local brandedDebuff3 = GetSpellInfo(164005)
-local brandedDebuff4 = GetSpellInfo(164006)
 local fixateDebuff = GetSpellInfo(157763)
 local gazeDebuff = GetSpellInfo(165595)
-local playerName = UnitName("player")
 local chogallName = EJ_GetEncounterInfo(167)
 local inter1 = EJ_GetSectionInfo(9891)
 local inter2 = EJ_GetSectionInfo(9893)
 
 local debuffFilterMark, debuffFilterBranded, debuffFilterFixate, debuffFilterGaze
 do
+	local chaosDebuff1 = GetSpellInfo(158605)
+	local chaosDebuff2 = GetSpellInfo(164176)
+	local chaosDebuff3 = GetSpellInfo(164178)
+	local chaosDebuff4 = GetSpellInfo(164191)
+	local brandedDebuff1 = GetSpellInfo(156225)
+	local brandedDebuff2 = GetSpellInfo(164004)
+	local brandedDebuff3 = GetSpellInfo(164005)
+	local brandedDebuff4 = GetSpellInfo(164006)
 	debuffFilterMark = function(uId)
 		if UnitDebuff(uId, chaosDebuff1) or UnitDebuff(uId, chaosDebuff2) or UnitDebuff(uId, chaosDebuff3) or UnitDebuff(uId, chaosDebuff4) then
 			return true
@@ -531,7 +530,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			self.vb.playerHasBranded = true
 			if not self:IsLFR() then
-				yellBranded:Yell(currentStack.."-"..self.vb.jumpDistance, playerName)
+				yellBranded:Yell(currentStack, self.vb.jumpDistance)
 			end
 		end
 		--General warnings after 3 stacks

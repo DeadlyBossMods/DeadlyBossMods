@@ -80,7 +80,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1197)
 
 L:SetMiscLocalization({
-	BrandedYell			= "Клеймо (%s) на %s",
+	BrandedYell			= "Клеймо (%d) %d",
 	GazeYell			= "Взгляд спадает через %d",
 	PlayerDebuffs		= "Ближайшие к Вспышке"
 })
