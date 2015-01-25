@@ -7693,8 +7693,26 @@ do
 	function specialWarningPrototype:Show(...)
 		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
 			if self.announceType == "taunt" and DBM.Options.FilterTankSpec and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
-			local msg = pformat(self.text, ...)
+			local argTable = {...}
+			if #self.combinedtext > 0 then
+				--Throttle spam.
+				local combinedText = table.concat(self.combinedtext, "<, >")
+				if self.combinedcount == 1 then
+					combinedText = combinedText.." "..DBM_CORE_GENERIC_WARNING_OTHERS
+				elseif self.combinedcount > 1 then
+					combinedText = combinedText.." "..DBM_CORE_GENERIC_WARNING_OTHERS2:format(self.combinedcount)
+				end
+				--Process
+				for i = 1, #argTable do
+					if type(argTable[i]) == "string" then
+						argTable[i] = combinedText
+					end
+				end
+			end
+			local msg = pformat(self.text, unpack(argTable))
 			local text = msg:gsub(">.-<", stripServerName)
+			self.combinedcount = 0
+			self.combinedtext = {}
 			font:SetText(text)
 			if DBM.Options.ShowSWarningsInChat then
 				local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
@@ -7723,7 +7741,27 @@ do
 					DBM:PlaySpecialWarningSound(soundId or 1)
 				end
 			end
+		else
+			self.combinedcount = 0
+			self.combinedtext = {}
 		end
+	end
+
+	function specialWarningPrototype:CombinedShow(delay, ...)
+		local argTable = {...}
+		for i = 1, #argTable do
+			if type(argTable[i]) == "string" then
+				if #self.combinedtext < 8 then--Throttle spam. We may not need more than 9 targets..
+					if not checkEntry(self.combinedtext, argTable[i]) then
+						self.combinedtext[#self.combinedtext + 1] = argTable[i]
+					end
+				else
+					self.combinedcount = self.combinedcount + 1
+				end
+			end
+		end
+		unschedule(self.Show, self.mod, self)
+		schedule(delay or 0.5, self.Show, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:DelayedShow(delay, ...)
@@ -7757,6 +7795,8 @@ do
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
+				combinedtext = {},
+				combinedcount = 0,
 				mod = self,
 				sound = not noSound,
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
@@ -7808,6 +7848,8 @@ do
 		local obj = setmetatable( -- todo: fix duplicate code
 			{
 				text = text,
+				combinedtext = {},
+				combinedcount = 0,
 				announceType = announceType,
 				mod = self,
 				sound = not noSound,
