@@ -59,7 +59,7 @@ local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil
 --Boss basic attacks
 mod:AddTimerLine(CORE_ABILITIES)--Core Abilities
 local timerPinDownCD				= mod:NewCDTimer(20.5, 155365)--Every 20 seconds unless delayed by other things. CD timer used for this reason
-local timerCallthePackCD			= mod:NewCDTimer(25.5, 154975)--Every 25-42 now
+local timerCallthePackCD			= mod:NewCDTimer(31, 154975)--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart.
 --Boss gained abilities (beast deaths grant boss new abilities)
 mod:AddTimerLine(SPELL_BUCKET_ABILITIES_UNLOCKED)--Abilities Unlocked
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
@@ -112,19 +112,32 @@ end
 
 local function updateBeastTimers(self, all, spellId)
 	--TODO, if on mythic, and boss is already grounded and timers for other abiltiies already started
-	--See if all of them reset or if we need to just add timers for the newly gained ability only
 	if self.vb.WolfAbilities and (all or self:IsMythic() and spellId == 155458) then--Cruelfang
-		timerRendandTearCD:Start(6)--Small sample size. Just keep subtracking if shorter times are observed.
+		if self.vb.RylakAbilities then--If he also has rylak abilities, first rend and tear is 12 seconds, not 6
+			timerRendandTearCD:Start(12)
+		else
+			timerRendandTearCD:Start(6)--Small sample size. Just keep subtracking if shorter times are observed.
+		end
 	end
 	if self.vb.RylakAbilities and (all or self:IsMythic() and spellId == 155459) then--Dreadwing
 		timerSuperheatedShrapnelCD:Start(9)--Small sample size. Just keep subtracking if shorter times are observed.
 	end
 	if self.vb.ElekkAbilities and (all or self:IsMythic() and spellId == 155460) then--Ironcrusher
-		timerTantrumCD:Start(16, self.vb.tantrumCount+1)--Small sample size. Just keep subtracking if shorter times are observed.
-		voiceTantrum:Schedule(16, "aesoon")
+		if self.vb.RylakAbilities then
+			timerTantrumCD:Start(18, self.vb.tantrumCount+1)
+			voiceTantrum:Schedule(13, "aesoon")
+		else
+			timerTantrumCD:Start(17, self.vb.tantrumCount+1)
+			voiceTantrum:Schedule(12, "aesoon")
+		end
 	end
 	if self.vb.FaultlineAbilites and (all or self:IsMythic() and spellId == 155462) then--Faultline
 		--Mythic Stuff
+	end
+	if self.vb.RylakAbilities then--Rylak also delays call of the pack too.
+		timerCallthePackCD:Start(17)
+	else
+		timerCallthePackCD:Start(11)--Data supports that this timer resets to 11 at this time (although can still be delayed by boss casting other things like rend and tear or superheated shrap
 	end
 end
 
@@ -262,6 +275,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerSuperheatedShrapnelCD:Cancel()
 					timerTantrumCD:Cancel()
+					voiceTantrum:Cancel()
 				elseif cid == 76874 then--Dreadwing
 					self.vb.RylakAbilities = true
 					timerInfernoBreathCD:Start(6)
@@ -272,11 +286,12 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerRendandTearCD:Cancel()
 					timerTantrumCD:Cancel()
+					voiceTantrum:Cancel()
 				elseif cid == 76945 then--Ironcrusher
 					self.vb.ElekkAbilities = true
 					timerStampedeCD:Start(15)
-					timerTantrumCD:Start(30, self.vb.tantrumCount+1)
-					voiceTantrum:Schedule(30, "aesoon")
+					timerTantrumCD:Start(25, self.vb.tantrumCount+1)
+					voiceTantrum:Schedule(20, "aesoon")
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerRendandTearCD:Cancel()
 					timerSuperheatedShrapnelCD:Cancel()
@@ -286,6 +301,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					timerRendandTearCD:Cancel()
 					timerSuperheatedShrapnelCD:Cancel()
 					timerTantrumCD:Cancel()
+					voiceTantrum:Cancel()
 				end
 			end
 		end
@@ -337,13 +353,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			self.vb.tantrumCount = 0
 		end
 		timerTantrumCD:Start(nil, self.vb.tantrumCount+1)
+		voiceTantrum:Schedule(25, "aesoon")
 	elseif spellId == 155520 then--Beastlord Darmac Tantrum
 		self.vb.tantrumCount = self.vb.tantrumCount + 1
 		specWarnTantrum:Show(self.vb.tantrumCount)
 		if self.vb.tantrumCount == 3 then
 			self.vb.tantrumCount = 0
 		end
-		timerTantrumCD:Start(37, self.vb.tantrumCount+1)--Initial data supports this having a much longer CD on boss which is why two IDs are split
+		timerTantrumCD:Start(34, self.vb.tantrumCount+1)--This one may also be 30 seconds, but I saw 34 consistently
+		voiceTantrum:Schedule(29, "aesoon")
 	elseif spellId == 162277 then--Assume that like his other abilities, isn't in combat log.
 		specWarnEpicenter:Show()
 	elseif spellId == 155497 then--Superheated Shrapnel
