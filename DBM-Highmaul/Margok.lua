@@ -639,7 +639,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		updateRangeFrame(self)
 	elseif spellId == 157801 then
-		specWarnSlow:Show(args.destName)
+		specWarnSlow:CombinedShow(1, args.destName)
 		voiceSlow:Play("dispelnow")
 	elseif spellId == 165102 then
 		warnInfiniteDarkness:CombinedShow(0.3, args.destName)
