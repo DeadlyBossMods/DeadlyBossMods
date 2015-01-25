@@ -96,7 +96,7 @@ function mod:UNIT_TARGETABLE_CHANGED()
 		warnSearingPlates:Show()
 		specWarnEnvironmentalThreats:Show()
 		voiceEnvironmentalThreats:Play("watchstep")
-	elseif self.vb.phase == 3 then--Ended
+	elseif self.vb.phase == 3 then--Ended 70%
 		specWarnEnvironmentalThreatsEnd:Show()
 		voiceEnvironmentalThreats:Play("safenow")
 	elseif self.vb.phase == 4 then--Second belt 55% (45 Energy) (smoosh plates)
@@ -104,7 +104,7 @@ function mod:UNIT_TARGETABLE_CHANGED()
 		warnPulverized:Show()
 		specWarnEnvironmentalThreats:Show()
 		voiceEnvironmentalThreats:Play("watchstep")
-	elseif self.vb.phase == 5 then--Ended
+	elseif self.vb.phase == 5 then--Ended 40%
 		specWarnEnvironmentalThreatsEnd:Show()
 		timerDisruptingRoarCD:Start(7)
 		voiceEnvironmentalThreats:Play("safenow")
@@ -112,10 +112,10 @@ function mod:UNIT_TARGETABLE_CHANGED()
 		warnSearingPlates:Show()
 		specWarnEnvironmentalThreats:Show()
 		voiceEnvironmentalThreats:Play("watchstep")
-	elseif self.vb.phase == 7 then--Ended
+	elseif self.vb.phase == 7 then--Temp stop before switching
 		specWarnEnvironmentalThreatsEnd:Show()
 		voiceEnvironmentalThreats:Play("safenow")
-	elseif self.vb.phase == 8 then--Third belt part 2
+	elseif self.vb.phase == 8 then--Third belt part 2 (stampers again)
 		warnPulverized:Show()
 		specWarnEnvironmentalThreats:Show()
 		voiceEnvironmentalThreats:Play("watchstep")
