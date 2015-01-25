@@ -28,6 +28,7 @@ mod:AddBoolOption("SetIconOnBlat", true)--Blat
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 local blatGUID = 0
+local GetRaidTargetIndex = GetRaidTargetIndex
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
@@ -52,7 +53,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:PLAYER_TARGET_CHANGED()
-	if self.Options.SetIconOnBlat and not DBM.Options.DontSetIcons and UnitGUID("target") == blatGUID then
+	if self.Options.SetIconOnBlat and not DBM.Options.DontSetIcons and UnitGUID("target") == blatGUID and not GetRaidTargetIndex("target") == 8 then
 		SetRaidTarget("target", 8)
 	end
 end
