@@ -70,7 +70,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1197)
 
 L:SetMiscLocalization({
-	BrandedYell			= "%2$s中了烙印(%1$s)",
+	BrandedYell			= "烙印(%d層)%d碼",
 	GazeYell			= "凝視結束於%d秒內",
 	PlayerDebuffs		= "最接近的瘋狂之眼"
 })

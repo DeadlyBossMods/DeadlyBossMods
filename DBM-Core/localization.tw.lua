@@ -165,7 +165,8 @@ DBM_CORE_RANGECHECK_OPTION_RADAR	= "顯示雷達框架"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "顯示文字框"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "兩者都顯示"
 DBM_CORE_RANGERADAR_HEADER			= "距離雷達(%d碼)"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d玩家在範圍內"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d在範圍內(%d碼)"--Multi
+DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s(%0.1f碼)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "總是顯示你的能量"
 
@@ -173,18 +174,17 @@ DBM_LFG_INVITE						= "地城準備確認"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"可用命令：",
+	"/range <數字> or /distance <數字>: 顯示距離框架。/rrange 或 /rdistance 顯示相反色。",
 	"/dbm version：進行團隊範圍內的版本檢測（也可使用：ver）。",
---	"/dbm version2: 進行團隊範圍內的版本檢測及密語通知已過期的成員（也可使用: ver2）。",
 	"/dbm unlock：顯示一個可移動的計時器（也可使用：move）。",
-	"/dbm timer/ctimer/ltimer/cltimer <x> <文字>：開始一個以<文字>為名稱的時間為<x>秒的計時器。查看http://tinyurl.com/kwsfl5933取得各種計時器說明",
+	"/dbm timer/ctimer/ltimer/cltimer <x> <文字>：開始一個以<文字>為名稱的時間為<x>秒的計時器。",
 	"/dbm broadcast timer <x> <文字>：向團隊廣播一個以<文字>為名稱，時間為<x>秒的計時器（需要團隊隊長或助理權限）。",
 	"/dbm timer endloop：停止任何無限循環的計時器。",
 	"/dbm break <分鐘>: 開始休息計時器<分鐘>。向所有團隊成員發送一個DBM休息計時器（需要團隊隊長或助理權限）。",
 	"/dbm pull <秒數>: 開始備戰計時器<秒數>。向所有團隊成員發送一個DBM備戰計時器（需要團隊隊長或助理權限）。",
 	"/dbm arrow: 顯示DBM箭頭, 輸入 /dbm arrow help 獲得更多訊息。",
 	"/dbm lockout: 向團隊成員請求他們當前的團隊副本鎖定訊息(鎖定訊息、副本id) (需要團隊隊長或助理權限)。",
-	"/dbm lag: 進行團隊範圍內的網路延遲檢測。",
-	"/dbm help：顯示可用命令的說明。"
+	"/dbm lag: 進行團隊範圍內的網路延遲檢測。"
 }
 
 DBM_ERROR_NO_PERMISSION				= "無權進行此操作。"

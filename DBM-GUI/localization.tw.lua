@@ -74,7 +74,6 @@ L.ModelSoundShort			= SHORT
 L.ModelSoundLong			= TOAST_DURATION_LONG
 
 L.Button_RangeFrame			= "顯示/隱藏距離監視器"
-L.Button_RangeRadar			= "顯示/隱藏距離雷達"
 L.Button_InfoFrame			= "顯示/隱藏訊息框架"
 L.Button_TestBars			= "測試計時條"
 
