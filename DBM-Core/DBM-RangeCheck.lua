@@ -561,7 +561,7 @@ do
 			textFrame:Show()
 		end
 		if rEnabled then
-			if prevNumClosePlayer ~= closePlayer or prevclosestRange ~= closestRange or prevtype ~= type then
+			if prevNumClosePlayer ~= closePlayer or prevclosestRange ~= closestRange or prevType ~= type then
 				if closePlayer == 1 then
 					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE:format(closetName, closestRange))
 				else
