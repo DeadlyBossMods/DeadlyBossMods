@@ -145,7 +145,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 155323 then
-		if not self:IsMythic() then--Applied to 8 targets in non mythic, in mythic, applied to EVERYONE so no need target warning.
+		if not self:IsMythic() then--Applied to 8 or less targets in non mythic, in mythic, applied to EVERYONE so no need target warning.
 			warnPetrifyingSlam:CombinedShow(0.5, args.destName)
 		end
 		if args:IsPlayer() then
