@@ -176,8 +176,8 @@ DBM_LFG_INVITE						= "던전 입장"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"명령어 일람:",
+	"/range <number>, /distance <number>: 거리창을 표시, /rrange, /rdistance 는 색상을 반대로 표시",
 	"/dbm version(ver): 공격대원의 DBM 버전 확인",
---	"/dbm version2: 공격대 전체 DBM 버전 확인 + 구버전 귓속말 알림(줄임말: ver2).",
 	"/dbm unlock(move): 20초 동안 바 위치 조정 가능 상태가 됨",
 	"* 아래 명령어의 숫자나 글자를 입력할때 < > 는 입력하지 않음 *",
 	"/dbm timer/ctimer/ltimer/cltimer <숫자> <글자>: <글자>에 입력한 대로 <숫자>초 동안 지속되는 바를 생성",
@@ -191,8 +191,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm pull <숫자>: <숫자>초 후 전투 예정 바를 보냄. DBM을 설치한 모든 공격대원이 볼 수 있음(승급 권한 필요)",
 	"/dbm arrow: DBM 화살표 도움말을 봄",
 	"/dbm lockout: 현재 공격대원에게 공격대 귀속 정보를 요청 (출력형식: 던전이름, 던전 ID)(승급 권한 필요)",
-	"/dbm lag: 공격대원의 지연시간을 확인함",
-	"/dbm help: 이 도움말을 봄"
+	"/dbm lag: 공격대원의 지연시간을 확인함"
 }
 
 DBM_ERROR_NO_PERMISSION				= "해당 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
