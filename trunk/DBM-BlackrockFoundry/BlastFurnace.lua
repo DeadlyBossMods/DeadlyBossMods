@@ -26,9 +26,7 @@ local warnBomb					= mod:NewTargetAnnounce(155192, 4)
 local warnDeafeningRoar			= mod:NewSpellAnnounce(177756, 3, nil, "Tank")
 local warnDropBombs				= mod:NewSpellAnnounce(174726, 1)
 local warnRupture				= mod:NewTargetAnnounce(156932, 3)--Uses SPELL_CAST_SUCCESS because blizzard is dumb and debuff apply and standing in fire apply same spellid, only way to report ONLY debuff is use SUCCESS
-local warnCauterizeWounds		= mod:NewCastAnnounce(155186, 4, nil, nil, "-Healer")
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
-local warnPryclasm				= mod:NewCastAnnounce(156937, 3, nil, nil, false)
 local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4)
 local warnHeartoftheMountain	= mod:NewSpellAnnounce("ej9641", 3, 2894)
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
@@ -106,10 +104,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 155186 then
-		warnCauterizeWounds:Show()
 		specWarnCauterizeWounds:Show(args.sourceName)
 	elseif spellId == 156937 then
-		warnPryclasm:Show()
 		specWarnPyroclasm:Show(args.sourceName)
 	elseif spellId == 177756 and self:CheckTankDistance(args.sourceGUID, 30) then
 		if self.Options.SpecWarn177756dodge then

@@ -26,7 +26,6 @@ mod:RegisterEventsInCombat(
 --TODO, Update timers for phase 3.
 --Stage One: The Blackrock Forge
 local warnMarkedforDeath			= mod:NewTargetAnnounce(156096, 4)--If not in combat log, find a RAID_BOSS_WHISPER event.
-local warnThrowSlagBombs			= mod:NewSpellAnnounce(156030, 3)--Probably doesn't show in combat log. Assume it has a UNIT_SPELLCAST_SUCCEEDED event.
 local warnShatteringSmash			= mod:NewSpellAnnounce(155992, 3)
 --Stage Two: Storage Warehouse
 local warnSiegemaker				= mod:NewSpellAnnounce("ej9571", 3, 156667)
@@ -88,8 +87,11 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 155992 or spellId == 159142 then--Phase 1 and then phase 2 version. They don't really need two diff warnings, complicated anyways since auto generated with same spellname is wonky
-		warnShatteringSmash:Show()
-		specWarnShatteringSmash:Show()
+		if self.Options.SpecWarn155992spell then
+			specWarnShatteringSmash:Show()
+		else
+			warnShatteringSmash:Show()
+		end
 		timerShatteringSmashCD:Start()
 		voiceShatteringSmash:Play("carefly")
 	elseif spellId == 156928 then
@@ -154,7 +156,6 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 156031 or spellId == 156991 then--Need phase 3 ID if it's not in combat log either.
-		warnThrowSlagBombs:Show()
 		specWarnThrowSlagBombs:Show()
 		timerThrowSlagBombsCD:Start()
 		voiceThrowSlagBombs:Play("bombsoon")

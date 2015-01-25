@@ -30,11 +30,9 @@ mod:RegisterEventsInCombat(
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
 --Boss gained abilities (beast deaths grant boss new abilities)
 local warnWolf						= mod:NewTargetAnnounce(155458, 3)--Grants Rend and Tear
-local warnRendandTear				= mod:NewSpellAnnounce(155385, 3)--Target scanning doesn't seem to work, target is nil. Will check targettarget or something fancy just in case
 local warnRylak						= mod:NewTargetAnnounce(155459, 3)--Grants Superheated Shrapnel
 local warnElekk						= mod:NewTargetAnnounce(155460, 3)--Grants Tantrum
 local warnClefthoof					= mod:NewTargetAnnounce(155462, 3)--Grants Epicenter
-local warnEpicenter					= mod:NewSpellAnnounce(162277, 3)--Mythic
 --Beast abilities (living beasts)
 local warnConflag					= mod:NewTargetAnnounce(155399, 3, nil, "Healer")
 local warnSearingFangs				= mod:NewStackAnnounce(155030, 2, nil, "Tank")
@@ -46,7 +44,7 @@ local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, "-Healer", nil
 local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, "Ranged", nil, nil, 2, nil, true)
 local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
-local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, "Melee", nil, nil, nil, nil, true)--Always returns to melee
+local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, "Melee", nil, nil, nil, nil, true)--Always returns to melee (tank)
 local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil, nil, 2)--Still iffy on it
 local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2, nil, true)
 local specWarnEpicenter				= mod:NewSpecialWarningSpell(162277, nil, nil, nil, 2)
@@ -168,9 +166,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 155399 then
 		timerConflagCD:Start()
 	elseif spellId == 154975 then--Moved to success because spell cast start is interrupted, a lot, and no sense in announcing it if he didn't finish it. if he self interrupts it can be delayed as much as 15 seconds.
-		specWarnCallthePack:Show()
+		if self:IsTank() then
+			specWarnCallthePack:Show()
+		else
+			specWarnCallthePack:Schedule(5)--They come out very slow and staggered, allow 5 seconds for tank to pick up then call switch for everyone else
+			voiceCallthePack:Play("killmob")
+		end
 		timerCallthePackCD:Start()
-		voiceCallthePack:Play("killmob")
 	end
 end
 
@@ -343,12 +345,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 		timerTantrumCD:Start(37, self.vb.tantrumCount+1)--Initial data supports this having a much longer CD on boss which is why two IDs are split
 	elseif spellId == 162277 then--Assume that like his other abilities, isn't in combat log.
-		warnEpicenter:Show()
 		specWarnEpicenter:Show()
 	elseif spellId == 155497 then--Superheated Shrapnel
 		specWarnSuperheatedShrapnel:Show()
 	elseif spellId == 155385 or spellId == 155515 then--Both versions of spell(boss and beast), they seem to have same cooldown so combining is fine
-		warnRendandTear:Show()
 		specWarnRendandTear:Show()
 		timerRendandTearCD:Start()
 		voiceRendandTear:Play("runaway")

@@ -21,7 +21,6 @@ local warnCrushingEarth				= mod:NewTargetAnnounce(161923, 3, nil, false)--Playe
 local warnStoneGeyser				= mod:NewSpellAnnounce(158130, 2)
 local warnSlam						= mod:NewCastAnnounce(156704, 3, nil, nil, "Melee")
 local warnWarpedArmor				= mod:NewStackAnnounce(156766, 2, nil, "Tank")
-local warnCalloftheMountain			= mod:NewCastAnnounce(158217, 4, 5)--Mythic
 
 local specWarnGraspingEarth			= mod:NewSpecialWarningSpell(157060, nil, nil, nil, nil, nil, true)
 local specWarnThunderingBlows		= mod:NewSpecialWarningSpell(157054, nil, nil, nil, 3)
@@ -87,12 +86,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnRipplingSmash:Show()
 		timerRipplingSmashCD:Start()
 	elseif spellId == 156704 then
-		warnSlam:Show()
-		specWarnSlam:Show()
+		if self.Options.SpecWarn156704spell then
+			specWarnSlam:Show()
+		else
+			warnSlam:Show()
+		end
 		timerSlamCD:Start()
 	elseif spellId == 158217 then--Probably not in combat log, it's scripted. Probably needs a UNIT_SPELLCAST event
 		self.vb.mountainCast = self.vb.mountainCast + 1
-		warnCalloftheMountain:Show()
 		specWarnCalloftheMountain:Show(self.vb.mountainCast)
 		timerCalloftheMountain:Start()
 	end
