@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Jan 22, 2015@12534
+-- Last update: Jan 25, 2015@12562
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -81,7 +81,6 @@ L.ModelSoundShort			= "短"
 L.ModelSoundLong			= "长"
 
 L.Button_RangeFrame			= "显示/隐藏距离监视信息框体"
-L.Button_RangeRadar			= "显示/隐藏距离监视雷达"
 L.Button_InfoFrame			= "显示/隐藏信息框体"
 L.Button_TestBars			= "测试计时条"
 

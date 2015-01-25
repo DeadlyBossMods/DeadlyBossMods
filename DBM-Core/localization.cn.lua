@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Jan 22, 2015@12534
+-- Last update: Jan 25, 2015@12562
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -176,7 +176,9 @@ DBM_CORE_RANGECHECK_OPTION_RADAR	= "显示雷达框体"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "显示文本框体"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "同时显示雷达和文本框体"
 DBM_CORE_RANGERADAR_HEADER			= "距离雷达（%d码）"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d人在监视距离内"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d人在监视距离内（%d码）"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1f码)"--One target
+
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "总是显示你的能量"		-- Always show your own power value even if you are below the threshold
 
@@ -184,18 +186,17 @@ DBM_LFG_INVITE						= "随机副本确认"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"可用命令：",
+	"/range <number> 或者 /distance <number>: 显示距离雷达窗体. 使用 /rrange 或者 /rdistance 翻转颜色.",
 	"/dbm version:进行团队范围的DBM版本检测（也可使用：ver）",
---	"/dbm version2: 进行团队范围的DBM版本检测并密语给那些使用过期版本的玩家（也可使用：ver2）",
 	"/dbm unlock:显示一个可移动的计时条，可通过对它来移动所有DBM计时条的位置（也可使用：move）",
-	"/dbm timer/ctimer/ltimer/cltimer <x> <text>: 启动一个 <x> 秒的计时器。文本内容为 <text>. 去 http://tinyurl.com/kwsfl59 查阅每种函数用法",
+	"/dbm timer/ctimer/ltimer/cltimer <x> <text>: 启动一个 <x> 秒的计时器。文本内容为 <text>.",
 	"/dbm broadcast timer <x> <文本>:向团队广播一个以<文本>为名称的时间为<x>秒的倒计时（需要团队领袖或助理权限）",
 	"/dbm timer endloop: 停止所有的 ltimer 和 cltimer.",
 	"/dbm break <分钟>: 开始一个<分钟>时间的休息计时条。并向所有团队成员发送这个DBM休息计时条（需开启团队广播及助理权限）。",
 	"/dbm pull <秒>: 开始一个<秒>时间的开怪计时条。 并向所有团队成员发送这个DBM开怪计时条（需开启团队广播及助理权限）。",
 	"/dbm arrow: 显示DBM箭头，输入/dbm arrow查询 更多信息。",
 	"/dbm lockout: 查询团队成员当前的副本锁定状态（也可使用：lockouts, ids）（需要团队领袖或助理权限）。",
-	"/dbm lag: 检测全团延时。",
-	"/dbm help: 显示可用命令的说明， 也就是你现在看到的东西。"
+	"/dbm lag: 检测全团延时。"
 }
 
 DBM_ERROR_NO_PERMISSION				= "你无权进行该操作。"
@@ -334,6 +335,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.nextsource			= "计时条：下一次$spell:%s以及
 DBM_CORE_AUTO_TIMER_OPTIONS.nextspecial			= "计时条：下一次特殊技能"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement			= "计时条：成就%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.phase				= "计时条：下一阶段"
+DBM_CORE_AUTO_TIMER_OPTIONS.roleplay			= "计时条：剧情"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT				= "为$spell:%s的目标添加团队标记"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT2			= "为$spell:%s添加团队标记"
