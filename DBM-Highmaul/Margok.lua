@@ -552,7 +552,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					if args:IsPlayer() then
 						specWarnBrandedDisplacement:Show(currentStack)
 					elseif self:CheckNearby(self.vb.jumpDistance, args.destName) then
-						specWarnBrandedDisplacementNear:Show(args.destName)
+						specWarnBrandedDisplacementNear:CombinedShow(0.5, args.destName)
 					end
 				end
 			elseif spellId == 164005 then
