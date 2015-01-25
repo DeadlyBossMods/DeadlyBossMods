@@ -23,13 +23,14 @@ local warnShatteredVertebrae			= mod:NewStackAnnounce(157139, 2, nil, "Tank")
 local warnSearingPlates					= mod:NewSpellAnnounce(161570, 4)--Types
 local warnPulverized					= mod:NewSpellAnnounce(174825, 4)--Types
 
-local specWarnDisruptingRoar			= mod:NewSpecialWarningCount(160838)--"stop casting" is incorrect, you need to move away from boss for this, not stop casting.
+local specWarnDisruptingRoar			= mod:NewSpecialWarningCast("OptionVersion2", 160838, "SpellCaster")
 local specWarnShatteredVertebrae		= mod:NewSpecialWarningStack(157139, nil, 2, nil, nil, nil, nil, true)--stack guessed
 local specWarnShatteredVertebraeOther	= mod:NewSpecialWarningTaunt(157139)
 local specWarnCripplingSuplex			= mod:NewSpecialWarningSpell(156938, nil, nil, nil, 3)--pop a cooldown, or die.
 local specWarnEnvironmentalThreats		= mod:NewSpecialWarningSpell("ej10089", nil, nil, nil, 2)
 local specWarnEnvironmentalThreatsEnd	= mod:NewSpecialWarningEnd("ej10089", nil)
 
+local timerDisruptingRoar				= mod:NewCastTimer(2.5, 160838)
 local timerDisruptingRoarCD				= mod:NewCDTimer(46, 160838)
 
 local voiceEnvironmentalThreats			= mod:NewVoice("ej10089")
@@ -48,18 +49,15 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 160838 then
-		specWarnDisruptingRoar:Show(10)
+	if args:IsSpellID(160838, 160845, 160847, 160848) then
+		specWarnDisruptingRoar:Show()
 		timerDisruptingRoarCD:Start()
-	elseif spellId == 160845 then
-		specWarnDisruptingRoar:Show(20)
-		timerDisruptingRoarCD:Start()
-	elseif spellId == 160847 then
-		specWarnDisruptingRoar:Show(30)
-		timerDisruptingRoarCD:Start()
-	elseif spellId == 160848 then
-		specWarnDisruptingRoar:Show(40)
-		timerDisruptingRoarCD:Start()
+		DBM:GetBossUnitId(args.sourceName)
+		local _, _, _, _, startTime, endTime = UnitCastingInfo(DBM:GetBossUnitId(args.sourceName))
+		local time = ((endTime or 0) - (startTime or 0)) / 1000
+		if time then
+			timerDisruptingRoar:Start(time)
+		end
 	elseif spellId == 153470 then
 		warnSkullcracker:Show()
 	elseif spellId == 156938 then
