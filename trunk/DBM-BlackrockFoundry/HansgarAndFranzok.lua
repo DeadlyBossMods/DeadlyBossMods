@@ -13,21 +13,22 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 160838 160845 160847 160848 153470 156938",
 	"SPELL_AURA_APPLIED 157139",
 	"SPELL_AURA_APPLIED_DOSE 157139",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2",
 	"UNIT_TARGETABLE_CHANGED"
 )
 
 --TODO, find target scanning for skullcracker. Also, find out how it behaves when it's more than 1 target (just recast?)
 --TODO, maybe use http://beta.wowhead.com/spell=154785 for aftershock/Shattered Vertebrae instead?'
+--TODO, collect more data to figure out how roar stops/resumes on jump down. One pull/kill is not a sufficient sampling.
 local warnSkullcracker					= mod:NewSpellAnnounce(153470, 3, nil, false)--This seems pretty worthless.
-local warnShatteredVertebrae			= mod:NewStackAnnounce(157139, 2, nil, "Tank")
-local warnSearingPlates					= mod:NewSpellAnnounce(161570, 4)--Types
-local warnPulverized					= mod:NewSpellAnnounce(174825, 4)--Types
+local warnShatteredVertebrae			= mod:NewStackAnnounce(157139, 2, nil, "Tank")--Possibly useless or changed. Needs further logs.
 
 local specWarnDisruptingRoar			= mod:NewSpecialWarningCast("OptionVersion2", 160838, "SpellCaster")
 local specWarnShatteredVertebrae		= mod:NewSpecialWarningStack(157139, nil, 2, nil, nil, nil, nil, true)--stack guessed
 local specWarnShatteredVertebraeOther	= mod:NewSpecialWarningTaunt(157139)
 local specWarnCripplingSuplex			= mod:NewSpecialWarningSpell(156938, nil, nil, nil, 3)--pop a cooldown, or die.
-local specWarnEnvironmentalThreats		= mod:NewSpecialWarningSpell("ej10089", nil, nil, nil, 2)
+local specWarnSearingPlates				= mod:NewSpecialWarningSpell(161570, nil, nil, nil, 2)
+local specWarnStampers					= mod:NewSpecialWarningSpell(174825, nil, nil, nil, 2)
 local specWarnEnvironmentalThreatsEnd	= mod:NewSpecialWarningEnd("ej10089", nil)
 
 local timerDisruptingRoar				= mod:NewCastTimer(2.5, 160838)
@@ -87,37 +88,35 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
---This is probably easiest way. But not only way.
---The triggers are these percentages for sure but there is a delay before they do it, but if only one person is alive, and pushes 85%, you'll see that they DO go, even if health stops going down.
---TODO, maybe figure out exact timing on this delay and add a cast/transition bar for it though.
-function mod:UNIT_TARGETABLE_CHANGED()
-	self.vb.phase = self.vb.phase + 1
-	if self.vb.phase == 2 then--First belt 85% (15 Energy) (fire plates)
-		warnSearingPlates:Show()
-		specWarnEnvironmentalThreats:Show()
-		voiceEnvironmentalThreats:Play("watchstep")
-	elseif self.vb.phase == 3 then--Ended 70%
-		specWarnEnvironmentalThreatsEnd:Show()
-		voiceEnvironmentalThreats:Play("safenow")
-	elseif self.vb.phase == 4 then--Second belt 55% (45 Energy) (smoosh plates)
-		timerDisruptingRoarCD:Cancel()
-		warnPulverized:Show()
-		specWarnEnvironmentalThreats:Show()
-		voiceEnvironmentalThreats:Play("watchstep")
-	elseif self.vb.phase == 5 then--Ended 40%
-		specWarnEnvironmentalThreatsEnd:Show()
-		timerDisruptingRoarCD:Start(7)
-		voiceEnvironmentalThreats:Play("safenow")
-	elseif self.vb.phase == 6 then--Third belt part 1 25% (75 Energy) (fire plates)
-		warnSearingPlates:Show()
-		specWarnEnvironmentalThreats:Show()
-		voiceEnvironmentalThreats:Play("watchstep")
-	elseif self.vb.phase == 7 then--Temp stop before switching
-		specWarnEnvironmentalThreatsEnd:Show()
-		voiceEnvironmentalThreats:Play("safenow")
-	elseif self.vb.phase == 8 then--Third belt part 2 (stampers again)
-		warnPulverized:Show()
-		specWarnEnvironmentalThreats:Show()
-		voiceEnvironmentalThreats:Play("watchstep")
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 156220 or spellId == 156883 then--Tactical Retreat
+		self.vb.phase = self.vb.phase + 1
+		local cid = self:GetCIDFromGUID(UnitGUID(uId))
+		if cid == 76974 then--Fran
+			timerDisruptingRoarCD:Cancel()
+		end
+		--The triggers are these percentages for sure but there is a delay before they do it so it always appears later, but the trigger has been triggered
+		if self.vb.phase == 2 then--First belt 85% (15 Energy) (fire plates)
+			specWarnSearingPlates:Show()
+			voiceEnvironmentalThreats:Play("watchstep")
+		elseif self.vb.phase == 3 then--Second belt 55% (45 Energy) (Stampers)
+			specWarnStampers:Show()
+			voiceEnvironmentalThreats:Play("watchstep")
+		elseif self.vb.phase == 4 then--Second belt 25% (75 Energy) (Fire plates, then stampers)
+			specWarnSearingPlates:Show()
+			voiceEnvironmentalThreats:Play("watchstep")	
+		end
+	end
+end
+
+function mod:UNIT_TARGETABLE_CHANGED(uId)
+	if UnitExists(uId) then--Return, not retreat
+		if self.vb.phase == 4 then--Stampers activate on their own after 3rd jump away, when they return.
+			specWarnStampers:Show()
+			voiceEnvironmentalThreats:Play("watchstep")	
+		else
+			specWarnEnvironmentalThreatsEnd:Show()
+			voiceEnvironmentalThreats:Play("safenow")
+		end
 	end
 end
