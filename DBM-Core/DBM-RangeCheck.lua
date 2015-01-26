@@ -273,6 +273,20 @@ do
 				info.arg1 = 5
 				info.checked = (mainFrame.redCircleNumPlayers == 5)
 				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = 6
+				info.func = setThreshold
+				info.arg1 = 6
+				info.checked = (mainFrame.redCircleNumPlayers == 6)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = 8
+				info.func = setThreshold
+				info.arg1 = 8
+				info.checked = (mainFrame.redCircleNumPlayers == 8)
+				UIDropDownMenu_AddButton(info, 2)
 			elseif menu == "sounds" then
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SOUND_OPTION_1
