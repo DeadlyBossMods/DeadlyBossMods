@@ -115,6 +115,11 @@ do
 		rangeCheck:Hide()
 		rangeCheck:Show(range, mainFrame.filter, true)
 	end
+	
+	local function setThreshold(self, threshold)
+		rangeCheck:Hide()
+		rangeCheck:Show(range, mainFrame.filter, true, threshold)
+	end
 
 	local function setFrames(self, option)
 		DBM.Options.RangeFrameFrames = option
@@ -135,6 +140,14 @@ do
 			info.hasArrow = true
 			info.keepShownOnClick = true
 			info.menuList = "range"
+			UIDropDownMenu_AddButton(info, 1)
+
+			info = UIDropDownMenu_CreateInfo()
+			info.text = DBM_CORE_RANGECHECK_SETTHRESHOLD
+			info.notCheckable = true
+			info.hasArrow = true
+			info.keepShownOnClick = true
+			info.menuList = "threshold"
 			UIDropDownMenu_AddButton(info, 1)
 
 			info = UIDropDownMenu_CreateInfo()
@@ -224,6 +237,41 @@ do
 				info.func = setRange
 				info.arg1 = 28
 				info.checked = (mainFrame.range == 28)
+				UIDropDownMenu_AddButton(info, 2)
+			elseif menu == "threshold" then
+				info = UIDropDownMenu_CreateInfo()
+				info.text = 1
+				info.func = setThreshold
+				info.arg1 = 1
+				info.checked = (mainFrame.redCircleNumPlayers == 1)
+				UIDropDownMenu_AddButton(info, 2)
+
+				info = UIDropDownMenu_CreateInfo()
+				info.text = 2
+				info.func = setThreshold
+				info.arg1 = 2
+				info.checked = (mainFrame.redCircleNumPlayers == 2)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = 3
+				info.func = setThreshold
+				info.arg1 = 3
+				info.checked = (mainFrame.redCircleNumPlayers == 3)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = 4
+				info.func = setThreshold
+				info.arg1 = 4
+				info.checked = (mainFrame.redCircleNumPlayers == 4)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = 5
+				info.func = setThreshold
+				info.arg1 = 5
+				info.checked = (mainFrame.redCircleNumPlayers == 5)
 				UIDropDownMenu_AddButton(info, 2)
 			elseif menu == "sounds" then
 				info = UIDropDownMenu_CreateInfo()
