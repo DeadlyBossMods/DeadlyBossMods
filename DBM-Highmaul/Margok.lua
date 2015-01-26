@@ -50,7 +50,6 @@ local warnGlimpseOfMadness						= mod:NewCountAnnounce(165243, 3)
 local warnDarkStar								= mod:NewSpellAnnounce(178607, 3)
 local warnEnvelopingNight						= mod:NewCountAnnounce(165876, 3)
 local warnInfiniteDarkness						= mod:NewTargetAnnounce(165102, 3, nil, "Healer")
-local warnGazeSelf								= mod:NewStackAnnounce(165595, 4)
 
 --All Phases
 --Special warnings cannot be combined because it breaks custom sounds, however, they will be grouped up better now at least.
@@ -99,7 +98,7 @@ local specWarnNetherEnergy						= mod:NewSpecialWarningCount(178468)
 local specWarnKickToTheFace						= mod:NewSpecialWarningYou(158563)
 local specWarnKickToTheFaceOther				= mod:NewSpecialWarningTaunt(158563)
 --Mythic
-local specWarnGaze								= mod:NewSpecialWarningStack(165595, nil, 1)--For now, warn for all stacks until more conclusive understanding of fight.
+local specWarnGaze								= mod:NewSpecialWarningStack(165595, nil, 1)
 local yellGaze									= mod:NewYell(165595, L.GazeYell)
 local specWarnEnvelopingNight					= mod:NewSpecialWarningSpell(165876, nil, nil, nil, 2, nil, true)
 local specWarnGrowingDarkness					= mod:NewSpecialWarningMove(176533, nil, nil, nil, nil, nil, true)
@@ -147,10 +146,11 @@ local voiceGrowingDarkness						= mod:NewVoice(176533)
 local voiceBranded								= mod:NewVoice(156225)
 local voiceSlow									= mod:NewVoice(157801, "Healer")
 
-mod:AddRangeFrameOption("35/13/5/4")
+mod:AddRangeFrameOption("35/13/5")
 mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
 mod:AddSetIconOption("SetIconOnInfiniteDarkness", 165102, false)
 mod:AddInfoFrameOption(176537)
+mod:AddDropdownOption("GazeYellType", {"Countdown", "Stacks"}, "Countdown", "misc")
 
 mod.vb.markActive = false
 mod.vb.noTaunt = false--Almost same as mark active, but during cast too
@@ -174,6 +174,7 @@ local jumpDistance2 = {
 local GetSpellInfo, UnitDebuff, UnitDetailedThreatSituation, select = GetSpellInfo, UnitDebuff, UnitDetailedThreatSituation, select
 local fixateDebuff = GetSpellInfo(157763)
 local gazeDebuff = GetSpellInfo(165595)
+local playerName = UnitName("player")
 local chogallName = EJ_GetEncounterInfo(167)
 local inter1 = EJ_GetSectionInfo(9891)
 local inter2 = EJ_GetSectionInfo(9893)
@@ -223,11 +224,17 @@ local function updateRangeFrame(self, markPreCast)
 	if not self:IsTank() and self.vb.brandedActive > 0 then--Active branded out there, not a tank. Branded is always prioritized over mark for non tanks since 90% of time tanks handle this on their own, while rest of raid must ALWAYS handle branded
 		local distance = self.vb.jumpDistance
 		if self.vb.playerHasBranded then--Player has Branded debuff
-			DBM.RangeCheck:Show(distance, nil)--Show everyone
+			if self.vb.markActive and self:CheckNearby(36, self.vb.lastMarkedTank) then
+				DBM.RangeCheck:Show(36, debuffFilterMark)
+			else
+				DBM.RangeCheck:Show(distance, nil)--Show everyone
+			end
 		else--No branded debuff on player, so show a filtered range finder
 			if self.vb.markActive and self.vb.lastMarkedTank and self:CheckNearby(38, self.vb.lastMarkedTank) then--There is an active tank with debuff and they are too close
 				DBM.RangeCheck:Show(36, debuffFilterMark)--Show marked instead of branded if the marked tank is NOT far enough out
-			else--no branded tank in range, So show ONLY branded dots
+			elseif self.vb.RepNovaActive then--If branded is not on you, and replicating nova is active, show nova instead of branded, it's more important.
+				DBM.RangeCheck:Show(5, nil)
+			else--Show filtered branded range
 				DBM.RangeCheck:Show(distance, debuffFilterBranded)
 			end
 		end
@@ -239,7 +246,7 @@ local function updateRangeFrame(self, markPreCast)
 				DBM.RangeCheck:Show(36, debuffFilterMark)
 			end
 		elseif self.vb.RepNovaActive then--Replicating Nova Active
-			DBM.RangeCheck:Show(4, nil)
+			DBM.RangeCheck:Show(5, nil)
 		elseif self.vb.isTransition then
 			if UnitDebuff("player", fixateDebuff) then
 				DBM.RangeCheck:Show(5, nil)
@@ -285,6 +292,11 @@ function mod:OnCombatStart(delay)
 	--Assuming this can be changed after mod load without breaking things.
 	if self:IsMythic() then
 		self:SetBossHPInfoToHighest(2)
+		if self.Options.GazeYellType == "Countdown" then
+			yellGaze = self:NewYell(165595, L.GazeYell)
+		else
+			yellGaze = self:NewYell(165595, L.GazeYell2)
+		end
 	else
 		self:SetBossHPInfoToHighest(1)
 	end
@@ -514,7 +526,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
 		self.vb.brandedActive = self.vb.brandedActive + 1
-		local uId = DBM:GetRaidUnitId(args.destName)
+		local name = args.destName
+		local uId = DBM:GetRaidUnitId(name)
 		local _, _, _, currentStack = UnitDebuff(uId, GetSpellInfo(spellId))
 		local fortified = (self:IsMythic() and self.vb.phase >= 3) or spellId == 164005--Phase 3 uses replication ID, so need hack for mythic fortified/replication phase.
 		if not currentStack then
@@ -531,13 +544,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.playerHasBranded = true
 			if not self:IsLFR() then
 				yellBranded:Yell(currentStack, self.vb.jumpDistance)
+				self:Schedule(1, updateRangeFrame, self)
+				self:Schedule(2, updateRangeFrame, self)
 			end
 		end
 		--General warnings after 3 stacks
 		if currentStack > 2 then
 			if spellId == 156225 then
 				if self.Options.warnBranded then
-					warnBranded:Show(args.destName, currentStack)
+					warnBranded:Show(name, currentStack)
 				end
 				if args:IsPlayer() and currentStack > 4 then--Special warning only for person that needs to get out
 					specWarnBranded:Show(currentStack)
@@ -545,18 +560,18 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			elseif spellId == 164004 then
 				if self.Options.warnBranded then
-					warnBrandedDisplacement:CombinedShow(0.5, args.destName, currentStack)
+					warnBrandedDisplacement:CombinedShow(0.5, name, currentStack)
 				end
 				if currentStack > 4  then--Special warning only for person that needs to get out
 					if args:IsPlayer() then
 						specWarnBrandedDisplacement:Show(currentStack)
-					elseif self:CheckNearby(self.vb.jumpDistance, args.destName) then
-						specWarnBrandedDisplacementNear:CombinedShow(0.5, args.destName)
+					elseif self:CheckNearby(self.vb.jumpDistance, name) then
+						specWarnBrandedDisplacementNear:CombinedShow(0.5, name)
 					end
 				end
 			elseif spellId == 164005 then
 				if self.Options.warnBranded then
-					warnBrandedFortification:Show(args.destName, currentStack)
+					warnBrandedFortification:Show(name, currentStack)
 				end
 				if args:IsPlayer() and currentStack > 4 then--Special warning all stacks 5 and higher because even if can't get out, high damage
 					specWarnBrandedFortification:Show(currentStack)
@@ -566,7 +581,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			elseif spellId == 164006 then
 				if self.Options.warnBranded then
-					warnBrandedReplication:CombinedShow(0.5, args.destName, currentStack)
+					warnBrandedReplication:CombinedShow(0.5, name, currentStack)
 				end
 				if args:IsPlayer() and currentStack > 4 then--Special warning only for person that needs to get out
 					specWarnBrandedReplication:Show(currentStack)
@@ -575,9 +590,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			if self.Options.SetIconOnBrandedDebuff then
 				if spellId == 164006 or (self:IsMythic() and spellId == 164004) then--On mythic, displacement/replication in phase 1. Using dipslacemnet spellid, on two targets.
-					self:SetSortedIcon(1, args.destName, 1, 2)
+					self:SetSortedIcon(1, name, 1, 2)
 				else
-					self:SetIcon(args.destName, 1)
+					self:SetIcon(name, 1)
 				end
 			end
 			updateRangeFrame(self)--Update it here cause we don't need it before stacks get to relevant levels.
@@ -647,21 +662,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 165595 then
 		if args:IsPlayer() then
+			yellGaze:Cancel()
 			local amount = args.amount or 1
-			warnGazeSelf:Show(args.destName, amount)
 			specWarnGaze:Show(amount)
 			timerGaze:Cancel()
 			countdownGaze:Cancel()
 			timerGaze:Start()
 			countdownGaze:Start()
-			yellGaze:Cancel()
-			yellGaze:Schedule(9, 1)
-			yellGaze:Schedule(8, 2)
-			yellGaze:Schedule(7, 3)
-			yellGaze:Schedule(6, 4)
-			yellGaze:Schedule(5, 5)
-			yellGaze:Schedule(3, 7)
-			yellGaze:Yell(10)
+			if self.Options.GazeYellType == "Countdown" then
+				yellGaze:Schedule(9, 1)
+				yellGaze:Schedule(8, 2)
+				yellGaze:Schedule(7, 3)
+				yellGaze:Schedule(6, 4)
+				yellGaze:Schedule(5, 5)
+				yellGaze:Schedule(3, 7)
+				yellGaze:Yell(10)
+			else
+				yellGaze:Yell(amount, playerName)
+			end
 		end
 		updateRangeFrame(self)
 	elseif spellId == 176533 and args:IsPlayer() and self:AntiSpam(2, 1) then
