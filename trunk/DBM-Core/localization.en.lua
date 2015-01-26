@@ -150,7 +150,7 @@ DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>. <time> 
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+click or right-click to move\nAlt+shift+click for free drag and drop"
 
-DBM_CORE_RANGECHECK_HEADER			= "Range Check (%d yd)"
+DBM_CORE_RANGECHECK_HEADER			= "Range Check (%dyd)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Set range"
 DBM_CORE_RANGECHECK_SETTHRESHOLD	= "Set player threshold"
 DBM_CORE_RANGECHECK_SOUNDS			= "Sounds"
@@ -164,7 +164,7 @@ DBM_CORE_RANGECHECK_OPTION_FRAMES	= "Frames"
 DBM_CORE_RANGECHECK_OPTION_RADAR	= "Show radar frame"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "Show text frame"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "Show both frames"
-DBM_CORE_RANGERADAR_HEADER			= "Range Radar (%dyd)"
+DBM_CORE_RANGERADAR_HEADER			= "Range:%d Players:%d"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d in range (%dyd)"--Multi
 DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fyd)"--One target
 
