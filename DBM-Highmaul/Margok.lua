@@ -226,7 +226,7 @@ local function updateRangeFrame(self, markPreCast)
 			DBM.RangeCheck:Show(distance, nil)--Show everyone
 		else--No branded debuff on player, so show a filtered range finder
 			if self.vb.markActive and self.vb.lastMarkedTank and self:CheckNearby(38, self.vb.lastMarkedTank) then--There is an active tank with debuff and they are too close
-				DBM.RangeCheck:Show(35, debuffFilterMark)--Show marked instead of branded if the marked tank is NOT far enough out
+				DBM.RangeCheck:Show(36, debuffFilterMark)--Show marked instead of branded if the marked tank is NOT far enough out
 			else--no branded tank in range, So show ONLY branded dots
 				DBM.RangeCheck:Show(distance, debuffFilterBranded)
 			end
@@ -234,9 +234,9 @@ local function updateRangeFrame(self, markPreCast)
 	else--no branded, or player is a tank
 		if markPreCast or self.vb.markActive then--Mark of Chaos is active, or is being cast
 			if self.vb.playerHasMark then--Player has mark of chaos debuff, or is current highest threat during mark of chaos cast
-				DBM.RangeCheck:Show(35, nil)
+				DBM.RangeCheck:Show(36, nil)
 			else--Not boss target during cast, not debuffed, use filtered range frame to show only players affected by mark of chaos.
-				DBM.RangeCheck:Show(35, debuffFilterMark)
+				DBM.RangeCheck:Show(36, debuffFilterMark)
 			end
 		elseif self.vb.RepNovaActive then--Replicating Nova Active
 			DBM.RangeCheck:Show(4, nil)
