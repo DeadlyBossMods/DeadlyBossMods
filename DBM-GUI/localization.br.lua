@@ -141,6 +141,7 @@ L.Bar_EnlargeTime			= "Barras aumentam abaixo deste tempo: %d"
 L.Bar_EnlargePercent			= "Barras aumentam abaixo desta porcentagem: %0.1f%%"
 L.BarSpark				= "Barra faísca"
 L.BarFlash				= "Barra pisca quando estiver para expirar"
+L.BarSort					= "Sort by remaining time"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame			= "Avisos Especiais"

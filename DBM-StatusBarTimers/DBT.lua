@@ -104,6 +104,10 @@ options = {
 		type = "boolean",
 		default = true,
 	},
+	Sort = {
+		type = "boolean",
+		default = true,
+	},
 	IconLeft = {
 		type = "boolean",
 		default = true,
@@ -262,14 +266,48 @@ function DLL:Append(obj)
 	if self.first == nil then -- list is empty
 		self.first = obj
 		self.last = obj
-	else -- list is not empty
+	elseif obj.owner.options.Sort == false then -- list is not emty
 		obj.prev = self.last
 		self.last.next = obj
 		self.last = obj
+	else
+		local ptr = self.first
+		local barInserted = false
+		while ptr ~= nil do
+			if barInserted == false then
+				if ptr.timer > obj.timer then
+					obj.next = ptr
+					obj.prev = ptr.prev
+					ptr.prev = obj
+					if obj.prev ~= nil then
+						obj.prev.next = obj
+					end
+					
+					if ptr == self.first then
+						self.first = obj
+					end
+					
+					
+					obj:SetPosition()
+					ptr:SetPosition()
+					barInserted = true
+				end
+			else
+				ptr:SetPosition()
+			end
+			
+			ptr = ptr.next
+		end
+		
+		if barInserted == false then
+			obj.prev = self.last
+			self.last.next = obj
+			self.last = obj
+		end
+		
 	end
 	return obj
 end
-
 function DLL:Remove(obj)
 	if self.first == nil then -- list is empty...
 		-- ...meaning the object is not even in the list, nothing we can do here expect for removing the "prev" and "next" entries from obj
@@ -653,6 +691,11 @@ function barPrototype:SetElapsed(elapsed)
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) then
 		self:ResetAnimations()
 	end
+	
+	if self.owner.options.Sort then
+		self:Relocation()
+	end
+	
 	self:Update(0)
 end
 
@@ -893,6 +936,13 @@ function barPrototype:RemoveFromList()
 	end
 end
 
+function barPrototype:Relocation()
+	if self.moving ~= "enlarge" then
+		local bars = (self.enlarged and self.owner.hugeBars or self.owner.smallBars)
+		bars:Remove(self)
+		bars:Append(self)
+	end
+end
 
 ------------------
 --  Bar Cancel  --
