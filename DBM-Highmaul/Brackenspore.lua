@@ -135,7 +135,6 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 159219 then
-		warnNecroticBreath:Show()
 		if self.Options.SpecWarn159219spell then--Special warning is enabled
 			specWarnNecroticBreath:Show()
 		else--Special warning isn't on, show regular one.
