@@ -230,7 +230,7 @@ local function updateRangeFrame(self, markPreCast)
 				DBM.RangeCheck:Show(distance, nil)--Show everyone
 			end
 		else--No branded debuff on player, so show a filtered range finder
-			if self.vb.markActive and self.vb.lastMarkedTank and self:CheckNearby(38, self.vb.lastMarkedTank) then--There is an active tank with debuff and they are too close
+			if self.vb.markActive and self.vb.lastMarkedTank and self:CheckNearby(36, self.vb.lastMarkedTank) then--There is an active tank with debuff and they are too close
 				DBM.RangeCheck:Show(36, debuffFilterMark)--Show marked instead of branded if the marked tank is NOT far enough out
 			elseif self.vb.RepNovaActive then--If branded is not on you, and replicating nova is active, show nova instead of branded, it's more important.
 				DBM.RangeCheck:Show(5, nil)
@@ -353,6 +353,8 @@ function mod:SPELL_CAST_START(args)
 			--Three extra checks to make sure we update 35 to 5 if tank was too close briefly if they came at same time
 			self:Schedule(1, updateRangeFrame, self)
 			self:Schedule(2, updateRangeFrame, self)
+			self:Schedule(3, updateRangeFrame, self)
+			self:Schedule(4, updateRangeFrame, self)
 			self:Schedule(5, updateRangeFrame, self)
 			voiceForceNova:Play("range5")
 			specWarnForceNovaRep:Show()
@@ -393,6 +395,8 @@ function mod:SPELL_CAST_START(args)
 		--Three extra checks to make sure we update 35 to 5 if tank was too close briefly if they came at same time
 		self:Schedule(1, updateRangeFrame, self)
 		self:Schedule(2, updateRangeFrame, self)
+		self:Schedule(3, updateRangeFrame, self)
+		self:Schedule(4, updateRangeFrame, self)
 		self:Schedule(5, updateRangeFrame, self)
 		specWarnForceNovaRep:Show()
 		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
@@ -818,18 +822,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				voicePhaseChange:Play("pfour")
 			end
 		end
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
-		end
+		updateRangeFrame(self)
 	elseif spellId == 164336 then--Teleport to Displacement (first phase change that has no transition)
 		--This needs complicated work. Timers that have > 10 seconds remaining get extended by about 3-4 seconds.
 		--But timers that have < 10 seconds remaining get extended by like 10-13 seconds. 
 		--So besides code that's already done below, need to check time remaining < or > 10 and do all kinds of nasty crap. maybe not worth it
---[[		countdownArcaneWrath:Cancel()
+		countdownArcaneWrath:Cancel()
 		countdownMarkofChaos:Cancel()
 		countdownForceNova:Cancel()
 		voiceForceNova:Cancel()
-		local te1, te2, te3, te4, te5
+--[[		local te1, te2, te3, te4, te5
 		local tt1, tt2, tt3, tt4, tt5
 		te1, tt1 = timerArcaneWrathCD:GetTime()
 		te2, tt2 = timerDestructiveResonanceCD:GetTime()
@@ -837,14 +839,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		te4, tt4 = timerMarkOfChaosCD:GetTime()
 		te5, tt5 = timerForceNovaCD:GetTime()
 		local tr1, tr2, tr3, tr4, tr5 = tt1-te1,tt2-te2,tt3-te3,tt4-te4,tt5-te5
-		countdownArcaneWrath:Start(tr1+n)
-		timerArcaneWrathCD:Start(tr1+n)
-		timerDestructiveResonanceCD:Start(tr2+n)
-		timerSummonArcaneAberrationCD:Start(tr3+n)
-		timerMarkOfChaosCD:Start(tr4+n)		
-		countdownMarkofChaos:Start(tr4+n)
-		timerForceNovaCD:Start(tr5+n)
-		countdownForceNova:Start(tr5+n)--]]
+		countdownArcaneWrath:Start(tr1+3)
+		timerArcaneWrathCD:Start(tr1+3)
+		timerDestructiveResonanceCD:Start(tr2+3)
+		timerSummonArcaneAberrationCD:Start(tr3+3)
+		timerMarkOfChaosCD:Start(tr4+3)		
+		countdownMarkofChaos:Start(tr4+3)
+		timerForceNovaCD:Start(tr5+3)
+		countdownForceNova:Start(tr5+3)--]]
 		self.vb.phase = 2
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(2))
 		voicePhaseChange:Play("ptwo")
