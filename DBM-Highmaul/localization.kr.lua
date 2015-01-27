@@ -79,9 +79,16 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(1197)
 
+L:SetOptionLocalization({
+	GazeYellType		= "심연의 시선 대화 알림 방식 선택",
+	Countdown			= "남은시간 초세기",
+	Stacks				= "받을 때 중첩 수",
+})
+
 L:SetMiscLocalization({
-	BrandedYell			= "%2$s 에게 낙인! (%1$s)",
+	BrandedYell			= "낙인(%d중첩): %dm",
 	GazeYell			= "%d초 후 시선 사라짐!",
+	GazeYell2			= "%2$s에게 시선!(%1$d)",
 	PlayerDebuffs		= "광기의 눈길 가까움"
 })
 
