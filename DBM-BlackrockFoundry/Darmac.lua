@@ -73,6 +73,9 @@ local timerConflagCD				= mod:NewCDTimer(20, 155399)
 local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
 local timerInfernoBreathCD			= mod:NewCDTimer(20, 154989)
 
+local countdownPinDown				= mod:NewCountdown(20.5, 154960, "Ranged")
+local countdownCallPack				= mod:NewCountdown("Alt31", 154975, "Tank")
+
 --local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceCallthePack				= mod:NewVoice(154975, "-Healer") --killmob
 local voiceSavageHowl				= mod:NewVoice(155198, "RemoveEnrage") --trannow
@@ -116,11 +119,11 @@ local function updateBeastTimers(self, all, spellId)
 		if self.vb.RylakAbilities then--If he also has rylak abilities, first rend and tear is 12 seconds, not 6
 			timerRendandTearCD:Start(12)
 		else
-			timerRendandTearCD:Start(6)--Small sample size. Just keep subtracking if shorter times are observed.
+			timerRendandTearCD:Start(6)
 		end
 	end
 	if self.vb.RylakAbilities and (all or self:IsMythic() and spellId == 155459) then--Dreadwing
-		timerSuperheatedShrapnelCD:Start(9)--Small sample size. Just keep subtracking if shorter times are observed.
+		timerSuperheatedShrapnelCD:Start(9)
 	end
 	if self.vb.ElekkAbilities and (all or self:IsMythic() and spellId == 155460) then--Ironcrusher
 		if self.vb.RylakAbilities then
@@ -134,13 +137,21 @@ local function updateBeastTimers(self, all, spellId)
 	if self.vb.FaultlineAbilites and (all or self:IsMythic() and spellId == 155462) then--Faultline
 		--Mythic Stuff
 	end
-	if self.vb.RylakAbilities then--Rylak delays call of the pack and pin down as well.
+	--Base ability Timers are reset any time boss gains new abilites
+	if self.vb.RylakAbilities then--Rylak delays call of the pack and pin down as well. (Well, that or whatever beast you do 3rd. Still need to determine if rylak, or third beast)
 		timerCallthePackCD:Start(17)
+		countdownCallPack:Cancel()
+		countdownCallPack:Start(17)
 		timerPinDownCD:Start(24)
+		countdownPinDown:Cancel()
+		countdownPinDown:Start(24)
 	else
-		--Timers are reset any time boss gains new abilites
 		timerCallthePackCD:Start(11)
+		countdownCallPack:Cancel()
+		countdownCallPack:Start(11)
 		timerPinDownCD:Start(12)
+		countdownPinDown:Cancel()
+		countdownPinDown:Start(12)
 	end
 end
 
@@ -153,7 +164,9 @@ function mod:OnCombatStart(delay)
 	self.vb.tantrumCount = 0
 	table.wipe(activeBossGUIDS)
 	timerCallthePackCD:Start(9.5-delay)--Time for cast finish, not cast start, because only cast finish is sure thing. cast start can be interrupted
+	countdownCallPack:Start(9.5-delay)
 	timerPinDownCD:Start(11-delay)
+	countdownPinDown:Start(11-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3)
 	end
@@ -189,6 +202,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			voiceCallthePack:Play("killmob")
 		end
 		timerCallthePackCD:Start()
+		countdownCallPack:Start()
 	end
 end
 
@@ -376,5 +390,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 155365 then--Cast
 		specWarnPinDown:Show()
 		timerPinDownCD:Start()
+		countdownPinDown:Start()
 	end
 end
