@@ -1673,7 +1673,7 @@ local function CreateOptionsMenu()
 		--------------------------------------
 		local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 
-		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 390, true)
+		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 360, true)
 
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
@@ -1799,9 +1799,6 @@ local function CreateOptionsMenu()
 		local ClickThrough = BarSetup:CreateCheckButton(L.ClickThrough, false, nil, nil, "ClickThrough")
 		ClickThrough:SetPoint("TOPLEFT", ExpandUpwards, "BOTTOMLEFT", 0, 0)
 
-		local SortBars = BarSetup:CreateCheckButton(L.BarSort, false, nil, nil, "Sort")
-		SortBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT", 0, 0)
-
 		-- Functions for bar setup
 		local function createDBTOnShowHandler(option)
 			return function(self)
@@ -1836,20 +1833,20 @@ local function CreateOptionsMenu()
 		BarHeightSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Height"))
 
 		local descriptionText = BarSetup:CreateText(L.Bar_DBMOnly, 400, nil, nil, "LEFT")
-		descriptionText:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -282)
+		descriptionText:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -252)
 
 		local EnlargeTimeSlider = BarSetup:CreateSlider(L.Bar_EnlargeTime, 6, 30, 1)
-		EnlargeTimeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -315)
+		EnlargeTimeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -285)
 		EnlargeTimeSlider:SetScript("OnShow", createDBTOnShowHandler("EnlargeBarsTime"))
 		EnlargeTimeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarsTime"))
 
 		local EnlargePerecntSlider = BarSetup:CreateSlider(L.Bar_EnlargePercent, 0, 50, 0.5)
-		EnlargePerecntSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -355)
+		EnlargePerecntSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -325)
 		EnlargePerecntSlider:SetScript("OnShow", createDBTOnShowHandler("EnlargeBarsPercent"))
 		EnlargePerecntSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarsPercent"))
 
 		local SparkBars = BarSetup:CreateCheckButton(L.BarSpark, false, nil, nil, "Spark")
-		SparkBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT", 0, -65)
+		SparkBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT", 0, -40)
 
 		local FlashBars = BarSetup:CreateCheckButton(L.BarFlash, false, nil, nil, "Flash")
 		FlashBars:SetPoint("TOPLEFT", SparkBars, "BOTTOMLEFT", 0, 0)
