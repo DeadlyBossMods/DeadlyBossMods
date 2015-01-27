@@ -161,6 +161,7 @@ L.Bar_EnlargeTime			= "Transición de barra cuando < %d sec."
 L.Bar_EnlargePercent		= "Transición de barra en: %0.1f%%"
 L.BarSpark					= "Brillo de barra"
 L.BarFlash					= "Parpadear barras apunto de expirar"
+L.BarSort					= "Sort by remaining time"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Avisos Especiales"

@@ -149,6 +149,7 @@ L.Bar_EnlargeTime			= "計時條時間低於:%d時放大"
 L.Bar_EnlargePercent		= "計時條百分比低於:%0.1f%%時放大"
 L.BarSpark					= "計時條閃光"
 L.BarFlash					= "快結束時閃爍計時條"
+L.BarSort					= "Sort by remaining time"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "特別警告"
