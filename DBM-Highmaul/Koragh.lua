@@ -358,7 +358,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM:Debug("Koragh lost his balls?")--Should not happen, but just in case, i want to see when it does clearly
 			return
 		end
-		local ballsRemaining = ballsTotal - ballsElapsed
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
 		if ballsRemaining > 5 then--If 5 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
 			timerBallsCD:Cancel()
