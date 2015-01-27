@@ -119,7 +119,7 @@ local timerCrushArmorCD							= mod:NewNextTimer(6, 158553, nil, "Tank")
 local timerKickToFaceCD							= mod:NewNextTimer(20, 158563, nil, "Tank")
 --Mythic
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerGaze									= mod:NewBuffFadesTimer(10, 165595)
+local timerGaze									= mod:NewBuffFadesTimer(15, 165595)
 local timerGlimpseOfMadnessCD					= mod:NewNextCountTimer(27, 165243)
 local timerInfiniteDarknessCD					= mod:NewNextTimer(62, 165102)
 local timerEnvelopingNightCD					= mod:NewNextCountTimer(63, 165876)--60 seconds plus 3 second cast
@@ -680,13 +680,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerGaze:Start()
 			countdownGaze:Start()
 			if self.Options.GazeYellType == "Countdown" then
-				yellGaze:Schedule(9, 1)
-				yellGaze:Schedule(8, 2)
-				yellGaze:Schedule(7, 3)
-				yellGaze:Schedule(6, 4)
-				yellGaze:Schedule(5, 5)
-				yellGaze:Schedule(3, 7)
-				yellGaze:Yell(10)
+				yellGaze:Schedule(14, 1)
+				yellGaze:Schedule(13, 2)
+				yellGaze:Schedule(12, 3)
+				yellGaze:Schedule(11, 4)
+				yellGaze:Schedule(10, 5)
 			else
 				yellGaze:Yell(amount, playerName)
 			end
