@@ -824,29 +824,37 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 		updateRangeFrame(self)
 	elseif spellId == 164336 then--Teleport to Displacement (first phase change that has no transition)
-		--This needs complicated work. Timers that have > 10 seconds remaining get extended by about 3-4 seconds.
-		--But timers that have < 10 seconds remaining get extended by like 10-13 seconds. 
-		--So besides code that's already done below, need to check time remaining < or > 10 and do all kinds of nasty crap. maybe not worth it
+		--Cancel countdowns, since timers are altered by this transition
 		countdownArcaneWrath:Cancel()
 		countdownMarkofChaos:Cancel()
 		countdownForceNova:Cancel()
 		voiceForceNova:Cancel()
---[[		local te1, te2, te3, te4, te5
-		local tt1, tt2, tt3, tt4, tt5
-		te1, tt1 = timerArcaneWrathCD:GetTime()
-		te2, tt2 = timerDestructiveResonanceCD:GetTime()
-		te3, tt3 = timerSummonArcaneAberrationCD:GetTime()
-		te4, tt4 = timerMarkOfChaosCD:GetTime()
-		te5, tt5 = timerForceNovaCD:GetTime()
-		local tr1, tr2, tr3, tr4, tr5 = tt1-te1,tt2-te2,tt3-te3,tt4-te4,tt5-te5
-		countdownArcaneWrath:Start(tr1+3)
-		timerArcaneWrathCD:Start(tr1+3)
-		timerDestructiveResonanceCD:Start(tr2+3)
-		timerSummonArcaneAberrationCD:Start(tr3+3)
-		timerMarkOfChaosCD:Start(tr4+3)		
-		countdownMarkofChaos:Start(tr4+3)
-		timerForceNovaCD:Start(tr5+3)
-		countdownForceNova:Start(tr5+3)--]]
+--[[	local tr1 = timerArcaneWrathCD:GetRemaining()
+		local tr2 = timerDestructiveResonanceCD:GetRemaining()
+		local tr3 = timerSummonArcaneAberrationCD:GetRemaining()
+		local tr4 = timerMarkOfChaosCD:GetRemaining()
+		local tr5 = timerForceNovaCD:GetRemaining()
+		--if less than 10 seconds remaining on timer bars get delayed.
+		--Figuring out n is problem. It'll still be variable. the only thing consistent is cast order.
+		--but casts can be delayed 3-13 seconds based on how many get backed up in queue :\
+		if tr1 > 0 and tr1 < 10 then
+			countdownArcaneWrath:Start(tr1+n)
+			timerArcaneWrathCD:Start(tr1+n)
+		end
+		if tr2 > 0 and tr2 < 10 then
+			timerDestructiveResonanceCD:Start(tr2+n)
+		end
+		if tr3 > 0 and tr3 < 10 then
+			timerSummonArcaneAberrationCD:Start(tr3+n)
+		end
+		if tr4 > 0 and tr4 < 10 then
+			timerMarkOfChaosCD:Start(tr4+n)		
+			countdownMarkofChaos:Start(tr4+n)
+		end
+		if tr5 > 0 and tr5 < 10 then
+			timerForceNovaCD:Start(tr5+n)
+			countdownForceNova:Start(tr5+n)
+		end--]]
 		self.vb.phase = 2
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(2))
 		voicePhaseChange:Play("ptwo")
