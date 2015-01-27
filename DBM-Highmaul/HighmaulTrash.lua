@@ -51,7 +51,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnArcaneVol:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnArcaneVol:Show()
-			if not self:IsLFR() then
+			if not self:IsLFR() and self:AntiSpam(3, 1) then
 				yellArcaneVol:Yell()
 			end
 		end

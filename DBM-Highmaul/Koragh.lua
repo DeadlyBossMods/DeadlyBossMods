@@ -325,41 +325,36 @@ function mod:SPELL_AURA_REMOVED(args)
 		--Here we making a fucking mess, because his timers pause during shield phase then resume. All with different rates from one another
 		if self:IsMythic() then
 		--Fel https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+172895+and+type+%3D%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=11
-			local felElapsed, felTotalTotal = timerExpelMagicFelCD:GetTime()
-			local felRemaining = felTotalTotal - felElapsed
+			local felRemaining = timerExpelMagicFelCD:GetRemaining()
 			if felRemaining > 0 then--Basically, a 0 0 check.
 				timerExpelMagicFelCD:Start(felRemaining+23)
 			end
 		end
 		--Frost https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+172747+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=11
 		--https://www.warcraftlogs.com/reports/6bF47HT9hN3Xcj2n#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+172747+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=40
-		local frostElapsed, frostTotal = timerExpelMagicFrostCD:GetTime()
-		local frostRemaining = frostTotal - frostElapsed
+		local frostRemaining = timerExpelMagicFrostCD:GetRemaining()
 		if frostRemaining > 0 then--Basically, a 0 0 check.
 			timerExpelMagicFrostCD:Start(frostRemaining+23)--Not perfect. It's every 60 seconds exacty, unless delayed by shield phase, then it's remaining+24-27
 		end
 		--Shadow https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+162184+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=1
-		local shadowElapsed, shadowTotal = timerExpelMagicShadowCD:GetTime()
-		local shadowRemaining = shadowTotal - shadowElapsed
+		local shadowRemaining = timerExpelMagicShadowCD:GetRemaining()
 		if shadowRemaining > 0 then--Basically, a 0 0 check.
 			timerExpelMagicShadowCD:Start(shadowRemaining+27)--Note the difference, shadow is +27-30 not +23-26
 		end
 		--Arcane https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+162186+and+type+%3D+%22applydebuff%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=9
-		local arcaneElapsed, arcaneTotal = timerExpelMagicArcaneCD:GetTime()
-		local arcaneRemaining = arcaneTotal - arcaneElapsed
+		local arcaneRemaining = timerExpelMagicArcaneCD:GetRemaining()
 		if arcaneRemaining > 0 then--Basically, a 0 0 check.
 			timerExpelMagicArcaneCD:Start(arcaneRemaining+27)--Note the difference, shadow is +27-30 not +23-26
 		end
 		--Fire https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+162185+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=12
 		--https://www.warcraftlogs.com/reports/Wj4MnfLQ8t3HzFgy#fight=10&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+162185+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)
-		local fireElapsed, fireTotal = timerExpelMagicArcaneCD:GetTime()
-		local fireRemaining = fireTotal - fireElapsed
+		local fireRemaining = timerExpelMagicArcaneCD:GetRemaining()
 		if fireRemaining > 0 then--Basically, a 0 0 check.
 			timerExpelMagicFireCD:Start(fireRemaining+27)--Note the difference, shadow is +27-30 not +23-26
 		end
 		--Balls
-		local ballsElapsed, ballsTotal = timerBallsCD:GetTime(self.vb.ballsCount+1)
-		if (ballsElapsed == 0) and (ballsTotal == 0) then
+		local ballsRemaining = timerBallsCD:GetRemaining(self.vb.ballsCount+1)
+		if ballsRemaining == 0 then
 			DBM:Debug("Koragh lost his balls?")--Should not happen, but just in case, i want to see when it does clearly
 			return
 		end
