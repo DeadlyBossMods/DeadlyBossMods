@@ -156,6 +156,7 @@ L.Bar_EnlargeTime			= "在%d后计时条变大"
 L.Bar_EnlargePercent		= "在%0.1f%%后计时条变大"
 L.BarSpark					= "计时条闪光"
 L.BarFlash					= "当计时条快走完时闪动"
+L.BarSort					= "Sort by remaining time"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "特殊警报"
