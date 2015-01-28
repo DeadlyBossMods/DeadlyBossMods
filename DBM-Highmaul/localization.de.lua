@@ -70,9 +70,16 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(1197)
 
+L:SetOptionLocalization({
+	GazeYellType		= "Set yell type for Gaze of the Abyss",--translate
+	Countdown			= "Countdown until expires",--translate
+	Stacks				= "Stacks as they are applied"--translate
+})
+
 L:SetMiscLocalization({
-	BrandedYell			= "Gebrandmarkt (%d) %d",
+	BrandedYell			= "Gebrandmarkt (%d) %dm",
 	GazeYell			= "Starren endet in %d",
+	GazeYell2			= "Starren (%d) auf %s",
 	PlayerDebuffs		= "Closest to Glimpse"--translate
 })
 
