@@ -3330,19 +3330,13 @@ do
 		end
 	end
 
-	syncHandlers["C"] = function(sender, delay, mod, modRevision, startHp, dbmRevision, tX, tY)
+	syncHandlers["C"] = function(sender, delay, mod, modRevision, startHp, dbmRevision)
 		if sender == playerName then return end
 		if LastInstanceType == "pvp" then return end
 		if LastInstanceType == "none" and (not UnitAffectingCombat("player") or #inCombat > 0) then--world boss
-			tX = tonumber(tX or 0) or 0
-			tY = tonumber(tY or 0) or 0
-			local range
-			if tX > 0 and tY > 0 then
-				local pX, pY = UnitPosition("player")
-				local dX = pX - tX
-				local dY = pY - tY
-				range = (dX * dX + dY * dY) ^ 0.5
-			end
+			local senderuId = DBM:GetRaidUnitId(sender)
+			if not senderuId then return end--Should never happen, but just in case. If happens, MANY "C" syncs are sent. losing 1 no big deal.
+			local range = DBM.RangeCheck:GetDistance("player", senderuId)
 			if not range or range > 60 then return end
 		end
 		if not cSyncSender[sender] then
@@ -4795,8 +4789,7 @@ do
 				end
 				--send "C" sync
 				if not synced then
-					local pX, pY = UnitPosition("player")
-					sendSync("C", (delay or 0).."\t"..modId.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision.."\t"..pX.."\t"..pY)
+					sendSync("C", (delay or 0).."\t"..modId.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision)
 				end
 				--show bigbrother check
 				if self.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
