@@ -155,7 +155,6 @@ L.Bar_EnlargeTime			= "Vergrößern unterhalb Restzeit: %d"
 L.Bar_EnlargePercent		= "Vergrößern unterhalb Rest: %0.1f%%"
 L.BarSpark					= "Balkenfunken"
 L.BarFlash					= "Aufblinkende Balken bei baldigem Ablauf"
-L.BarSort					= "Sort by remaining time"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Spezialwarnungen"
