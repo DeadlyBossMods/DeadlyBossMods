@@ -1368,6 +1368,7 @@ function DBM:ApplyProfile(name)
 	end
 	usedProfile = name
 	DBM_UsedProfile = usedProfile
+	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
 	self.Options = DBM_AllSavedOptions[usedProfile]
 	-- rearrange position
 	self.Bars:ApplyProfile("DBM")
