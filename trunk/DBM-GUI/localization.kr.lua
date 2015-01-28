@@ -144,7 +144,7 @@ L.Bar_EnlargeTime			= "남은시간 %d초 미만 바 확대"
 L.Bar_EnlargePercent		= "남은시간 비율 %0.1f%% 미만 바 확대"
 L.BarSpark					= "바 끝 강조"
 L.BarFlash					= "만료되기 직전의 바를 깜빡이기"
-L.BarSort					= "남은 시간을 기준으로 정렬"
+L.BarSort					= "남은 시간을 기준으로 정렬(미작동)"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "특수 경고"
