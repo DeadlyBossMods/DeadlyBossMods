@@ -5657,11 +5657,11 @@ do
 				RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_WHISPER")
 				RaidBossEmoteFrame:UnregisterEvent("CLEAR_BOSS_EMOTES")
 			end
-			if self.Options.HideGarrisonUpdates then
+			if self.Options.HideGarrisonUpdates or custom then
 				AlertFrame:UnregisterEvent("GARRISON_MISSION_FINISHED")
 				AlertFrame:UnregisterEvent("GARRISON_BUILDING_ACTIVATABLE")
 			end
-			if self.Options.HideGuildChallengeUpdates then
+			if self.Options.HideGuildChallengeUpdates or custom then
 				AlertFrame:UnregisterEvent("GUILD_CHALLENGE_COMPLETED")
 			end
 		elseif toggle == 0 and blizzEventsUnregistered then
@@ -5680,7 +5680,6 @@ do
 			end
 		end
 	end
-	DBM.ToggleRaidBossEmoteFrame = DBM.HideBlizzardEvents--PVP mod compat until 6.0.13 release. REMOVE ME BEFORE NEXT RELEASE.
 end
 
 --------------------------
