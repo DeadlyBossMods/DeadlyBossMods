@@ -50,7 +50,6 @@ DBT_PersistentOptions = {}
 local barPrototype = {}
 local unusedBars = {}
 local unusedBarObjects = setmetatable({}, {__mode = "kv"})
-local instances = {}
 local updateClickThrough
 local options
 local setupHandlers
@@ -251,11 +250,6 @@ options = {
 --------------------------
 --  Double Linked List  --
 --------------------------
---
--- this linked list can only contain tables that do not use the fields "prev" and "next"
--- this restriction especially means that an object must not be in two different linked lists at the same time
--- but this is sufficient for DBT here, having a wrapper object would just be an unnecessary overhead
--- special table keys for "prev"/"next" (e.g. userdata values) would add unnecessary complexity
 
 local DLL = {}
 DLL.__index = DLL
@@ -340,7 +334,6 @@ do
 		obj.secAnchor:SetClampedToScreen(true)
 		obj.secAnchor:SetMovable(true)
 		obj.secAnchor:Show()
-		tinsert(instances, obj)
 		return obj
 	end
 	
@@ -552,19 +545,6 @@ end
 -----------------------------
 --  General Bar Functions  --
 -----------------------------
---do
---	local function iterator(self, frame)
---		return not frame and self.mainFirstBar or frame and frame.next
---	end
---
---	local function reverseIterator(self, frame)
---		return (not frame and self.mainLastBar) or frame and frame.prev
---	end
---
---	function DBT:GetBarIterator(reverse)
---		return (reverse and reverseIterator) or iterator, self, nil
---	end
---end
 function DBT:GetBarIterator()
 	if not self.bars then
 		DBM:Debug("GetBarIterator failed for unknown reasons")
@@ -673,6 +653,7 @@ function barPrototype:SetColor(color)
 	_G[frame_name.."Bar"]:SetStatusBarColor(color.r, color.g, color.b)
 	_G[frame_name.."BarSpark"]:SetVertexColor(color.r, color.g, color.b)
 end
+
 
 ------------------
 --  Bar Update  --
@@ -946,7 +927,7 @@ local function updateOrientation(self)
 		if not bar.dummy then
 			if bar.moving == "enlarge" then
 				bar.enlarged = true
-				bar.moving = false
+				bar.moving = nil
 				self.hugeBars:Append(self)
 				bar:ApplyStyle()
 			end

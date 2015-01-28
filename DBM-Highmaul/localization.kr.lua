@@ -88,7 +88,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	BrandedYell			= "낙인(%d중첩): %dm",
 	GazeYell			= "%d초 후 시선 사라짐!",
-	GazeYell2			= "%2$s에게 시선!(%1$d)",
+	GazeYell2			= "%2$s에게 시선! (%1$d)",
 	PlayerDebuffs		= "광기의 눈길 가까움"
 })
 

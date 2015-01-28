@@ -1431,7 +1431,7 @@ local function CreateOptionsMenu()
 		end)
 		local UseMasterVolume			= generaloptions:CreateCheckButton(L.UseMasterVolume, true, nil, "UseMasterVolume")
 
-		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
+		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame, 120, 30)
 		bmrange:SetPoint('TOPLEFT', UseMasterVolume, "BOTTOMLEFT", 0, -5)
 		bmrange:SetScript("OnClick", function(self)
 			if DBM.RangeCheck:IsShown() then
@@ -1441,8 +1441,8 @@ local function CreateOptionsMenu()
 			end
 		end)
 
-		local bminfo  = generaloptions:CreateButton(L.Button_InfoFrame)
-		bminfo:SetPoint('TOPLEFT', bmrange, "BOTTOMLEFT", 0, 0)
+		local bminfo  = generaloptions:CreateButton(L.Button_InfoFrame, 120, 30)
+		bminfo:SetPoint('LEFT', bmrange, "RIGHT", 2, 0)
 		bminfo:SetScript("OnClick", function(self)
 			if DBM.InfoFrame:IsShown() then
 				DBM.InfoFrame:Hide()
@@ -1451,12 +1451,12 @@ local function CreateOptionsMenu()
 			end
 		end)
 
-		local bmtestmode  = generaloptions:CreateButton(L.Button_TestBars)
-		bmtestmode:SetPoint('TOPLEFT', bminfo, "TOPRIGHT", 0, 0)
+		local bmtestmode  = generaloptions:CreateButton(L.Button_TestBars, 150, 30)
+		bmtestmode:SetPoint('LEFT', bminfo, "RIGHT", 2, 0)
 		bmtestmode:SetScript("OnClick", function(self) DBM:DemoMode() end)
 
 		local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 750, 5, 210)   -- (text , min_value , max_value , step , width)
-		latencySlider:SetPoint('BOTTOMLEFT', bminfo, "BOTTOMLEFT", 10, -35)
+		latencySlider:SetPoint('BOTTOMLEFT', bmrange, "BOTTOMLEFT", 10, -40)
 		latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.LatencyThreshold) end)
 		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.LatencyThreshold = self:GetValue() end)
 		----
@@ -1673,7 +1673,7 @@ local function CreateOptionsMenu()
 		--------------------------------------
 		local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 
-		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 360, true)
+		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 390, true)
 
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
@@ -1799,6 +1799,9 @@ local function CreateOptionsMenu()
 		local ClickThrough = BarSetup:CreateCheckButton(L.ClickThrough, false, nil, nil, "ClickThrough")
 		ClickThrough:SetPoint("TOPLEFT", ExpandUpwards, "BOTTOMLEFT", 0, 0)
 
+		local SortBars = BarSetup:CreateCheckButton(L.BarSort, false, nil, nil, "Sort")
+		SortBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT", 0, 0)
+
 		-- Functions for bar setup
 		local function createDBTOnShowHandler(option)
 			return function(self)
@@ -1833,20 +1836,20 @@ local function CreateOptionsMenu()
 		BarHeightSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Height"))
 
 		local descriptionText = BarSetup:CreateText(L.Bar_DBMOnly, 400, nil, nil, "LEFT")
-		descriptionText:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -252)
+		descriptionText:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -282)
 
 		local EnlargeTimeSlider = BarSetup:CreateSlider(L.Bar_EnlargeTime, 6, 30, 1)
-		EnlargeTimeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -285)
+		EnlargeTimeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -315)
 		EnlargeTimeSlider:SetScript("OnShow", createDBTOnShowHandler("EnlargeBarsTime"))
 		EnlargeTimeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarsTime"))
 
 		local EnlargePerecntSlider = BarSetup:CreateSlider(L.Bar_EnlargePercent, 0, 50, 0.5)
-		EnlargePerecntSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -325)
+		EnlargePerecntSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -355)
 		EnlargePerecntSlider:SetScript("OnShow", createDBTOnShowHandler("EnlargeBarsPercent"))
 		EnlargePerecntSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarsPercent"))
 
 		local SparkBars = BarSetup:CreateCheckButton(L.BarSpark, false, nil, nil, "Spark")
-		SparkBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT", 0, -40)
+		SparkBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT", 0, -65)
 
 		local FlashBars = BarSetup:CreateCheckButton(L.BarFlash, false, nil, nil, "Flash")
 		FlashBars:SetPoint("TOPLEFT", SparkBars, "BOTTOMLEFT", 0, 0)
@@ -2619,6 +2622,18 @@ local function CreateOptionsMenu()
 			applyProfile:SetSelectedValue(DBM_UsedProfile)
 		end)
 
+		local copyProfileArea		= profilePanel:CreateArea(L.Area_CopyProfile, nil, 65, true)
+		local copyProfile			= copyProfileArea:CreateDropdown(L.SelectProfileToCopy, profileDropdown, nil, nil, function(value)
+			DBM:CopyProfile(value)
+			C_Timer.After(0.05, DBM_GUI.dbm_profilePanel_refresh)
+		end)
+		copyProfile:SetPoint("TOPLEFT", 0, -20)
+		copyProfile:SetScript("OnShow", function()
+			copyProfile.value = nil
+			copyProfile.text = nil
+			_G[copyProfile:GetName().."Text"]:SetText("")
+		end)
+
 		local deleteProfileArea		= profilePanel:CreateArea(L.Area_DeleteProfile, nil, 65, true)
 		local deleteProfile			= deleteProfileArea:CreateDropdown(L.SelectProfileToDelete, profileDropdown, nil, nil, function(value)
 			DBM:DeleteProfile(value)
@@ -2657,8 +2672,10 @@ local function CreateOptionsMenu()
 		function DBM_GUI:dbm_profilePanel_refresh()
 			createButton:GetScript("OnShow")()
 			applyProfile:GetScript("OnShow")()
+			copyProfile:GetScript("OnShow")()
 			deleteProfile:GetScript("OnShow")()
 		end
+		profilePanel:SetMyOwnHeight()
 	end
 
 	-- Set Revision // please don't translate this!
