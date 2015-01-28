@@ -126,11 +126,19 @@ end
 ------------------------
 --  Create the frame  --
 ------------------------
+local frameBackdrop = {
+	bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+	tile = true,
+	tileSize = 16,
+	insets = { left = 2, right = 14, top = 2, bottom = 2 },
+}
+
 function createFrame()
 	local elapsed = 0
 	local frame = CreateFrame("GameTooltip", "DBMInfoFrame", UIParent, "GameTooltipTemplate")
 	dropdownFrame = CreateFrame("Frame", "DBMInfoFrameDropdown", frame, "UIDropDownMenuTemplate")
 	frame:SetFrameStrata("DIALOG")
+	frame:SetBackdrop(frameBackdrop)
 	frame:SetPoint(DBM.Options.InfoFramePoint, UIParent, DBM.Options.InfoFramePoint, DBM.Options.InfoFrameX, DBM.Options.InfoFrameY)
 	frame:SetHeight(maxlines*12)
 	frame:SetWidth(64)
