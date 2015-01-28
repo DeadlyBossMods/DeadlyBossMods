@@ -284,7 +284,7 @@ function DLL:Append(obj)
 			end
 			ptr = ptr.next
 		end
-		if barInserted == false then
+		if not barInserted then
 			obj.prev = self.last
 			self.last.next = obj
 			self.last = obj
