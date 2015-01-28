@@ -3336,7 +3336,9 @@ do
 		if LastInstanceType == "none" and (not UnitAffectingCombat("player") or #inCombat > 0) then--world boss
 			local senderuId = DBM:GetRaidUnitId(sender)
 			if not senderuId then return end--Should never happen, but just in case. If happens, MANY "C" syncs are sent. losing 1 no big deal.
-			local range = DBM.RangeCheck:GetDistance("player", senderuId)
+			local playerZone, senderZone = select(4, UnitPosition("player")), select(4, UnitPosition(senderuId))
+			if playerZone ~= senderZone then return end--not same zone
+			local range = DBM.RangeCheck:GetDistance("player", senderuId)--Same zone, so check range
 			if not range or range > 60 then return end
 		end
 		if not cSyncSender[sender] then
