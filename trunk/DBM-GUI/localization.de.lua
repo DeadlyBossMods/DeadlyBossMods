@@ -73,9 +73,8 @@ L.ModelSoundOptions			= "Setze Soundeinstellung für Modellanzeige"
 L.ModelSoundShort			= SHORT
 L.ModelSoundLong			= TOAST_DURATION_LONG
 
-L.Button_RangeFrame			= "Zeige/Verberge Abstandsfenster"
-L.Button_RangeRadar			= "Zeige/Verberge Abstandsradar"
-L.Button_InfoFrame			= "Zeige/Verberge Infofenster"
+L.Button_RangeFrame			= "Zeige Abstandsfenster"
+L.Button_InfoFrame			= "Zeige Infofenster"
 L.Button_TestBars			= "Starte Testbalken"
 
 -- Tab: Raidwarning
@@ -90,22 +89,17 @@ L.InfoRaidWarning			= [[Hier werden Position und Farben des Fensters für Schlac
 
 L.ColorResetted 			= "Diese Farbeinstellung wurde zurückgesetzt."
 L.ShowWarningsInChat 		= "Zeige Warnungen im Chatfenster"
-L.ShowSWarningsInChat 		= "Zeige Spezialwarnungen im Chatfenster"
 L.ShowFakedRaidWarnings 	= "Zeige Warnungen als künstliche Schlachtzugwarnungen"
 L.WarningIconLeft 			= "Zeige Symbol links an"
 L.WarningIconRight 			= "Zeige Symbol rechts an"
 L.WarningIconChat 			= "Zeige Symbole im Chatfenster"
-L.ShowCountdownText			= "Zeige Countdown-Text während Zählungen mit der primären Stimme"
 L.RaidWarnMessage 			= "Danke, dass du Deadly Boss Mods verwendest"
 L.BarWhileMove 				= "bewegbare Schlachtzugwarnung"
 L.RaidWarnSound				= "Sound für Schlachtzugwarnung"
-L.CountdownVoice			= "Primäre Stimme für akustische Zählungen"
-L.CountdownVoice2			= "Sekundäre Stimme für akustische Zählungen"
-L.CountdownVoice3			= "Tertiäre Stimme für akustische Zählungen"
-L.VoicePackChoice			= "Setze Sprachpack für gesprochene Warnungen"
 L.SpecialWarnSound			= "Sound für Spezialwarnungen, die dich oder deine Rolle betreffen"
 L.SpecialWarnSound2			= "Sound für Spezialwarnungen, die jeden betreffen"
 L.SpecialWarnSound3			= "Sound für SEHR wichtige Spezialwarnungen"
+L.SpecialWarnSound4			= "Sound für \"Lauf weg!\"-Spezialwarnungen"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Allgemeine Meldungen"
@@ -155,13 +149,14 @@ L.Bar_EnlargeTime			= "Vergrößern unterhalb Restzeit: %d"
 L.Bar_EnlargePercent		= "Vergrößern unterhalb Rest: %0.1f%%"
 L.BarSpark					= "Balkenfunken"
 L.BarFlash					= "Aufblinkende Balken bei baldigem Ablauf"
+L.BarSort					= "Sortiere nach verbleibender Zeit (defekt)"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Spezialwarnungen"
 L.Area_SpecWarn				= "Einstellungen für Spezialwarnungen"
 L.SpecWarn_Enabled			= "Zeige Spezialwarnungen für Bossfähigkeiten"
 L.SpecWarn_FlashFrame		= "Aktiviere aufblinkenden Bildschirm bei Spezialwarnungen"
-L.SpecWarn_NoSoundsWVoice	= "Spiele keine Spezialwarnungssounds für Warnungen, für die eine Sprachausgabe verfügbar ist"
+L.ShowSWarningsInChat 		= "Zeige Spezialwarnungen im Chatfenster"
 L.SpecWarn_Font				= "Schriftart für Spezialwarnungen" --unused
 L.SpecWarn_FontSize			= "Schriftgröße: %d"
 L.SpecWarn_FontColor		= "Schriftfarbe"
@@ -173,6 +168,20 @@ L.SpecWarn_DemoButton		= "Zeige Beispiel"
 L.SpecWarn_MoveMe			= "Positionieren"
 L.SpecWarn_ResetMe			= "Zurücksetzen"
 
+-- Tab: Spoken Alerts Frame
+L.Panel_SpokenAlerts		= "Gesprochene Warnungen"
+L.Area_VoiceSelection		= "Stimmenauswahl"
+L.CountdownVoice			= "Primäre Stimme für akustische Zählungen"
+L.CountdownVoice2			= "Sekundäre Stimme für akustische Zählungen"
+L.CountdownVoice3			= "Tertiäre Stimme für akustische Zählungen"
+L.VoicePackChoice			= "Setze Sprachpack für gesprochene Warnungen"
+L.Area_CountdownOptions		= "Countdown-Einstellungen"
+L.ShowCountdownText			= "Zeige Countdown-Text während Zählungen mit der primären Stimme"
+L.Area_VoicePackOptions		= "Sprachpack-Einstellungen (Drittanbieter)"
+L.SpecWarn_NoSoundsWVoice	= "Spiele keine Spezialwarnungssounds für Warnungen, für die eine Sprachausgabe verfügbar ist"
+L.SpecWarn_AlwaysVoice		= "Spiele immer alle gesprochenen Warnungen (ignoriert Boss-spezifische Einstellung, nützlich für Schlachtzugsleiter)"
+
+
 -- Tab: HealthFrame
 L.Panel_HPFrame				= "Lebensanzeige"
 L.Area_HPFrame				= "Einstellungen für die Lebensanzeige"
@@ -182,23 +191,21 @@ L.HP_ShowDemo				= "Anzeigen"
 L.BarWidth					= "Balkenbreite: %d"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "Filter / Spam-Filter"
-L.Area_SpamFilter_Outgoing	= "globale Filtereinstellungen"
+L.Panel_SpamFilter			= "Globale Deaktivierungen und Filter"
+L.Area_SpamFilter_Outgoing	= "Globale Deaktivierungseinstellungen"
 L.SpamBlockNoShowAnnounce	= "Zeige keine Mitteilungen und spiele keine Warnungssounds"
-L.DontShowFarWarnings		= "Zeige keine Mitteilungen/Timer für weit entfernte Ereignisse"
-L.SpamBlockNoRunAway		= "Spiele keine \"Lauf weg!\"-Sounds"
 L.SpamBlockNoSendWhisper	= "Flüstere keine Bosswarnungen an andere Spieler"
 L.SpamBlockNoSetIcon		= "Setze keine Zeichen auf Ziele"
 L.SpamBlockNoRangeFrame		= "Zeige kein Abstandsfenster/-radar an"
 L.SpamBlockNoInfoFrame		= "Zeige kein Infofenster an"
 L.SpamBlockNoHealthFrame	= "Zeige keine Lebensanzeige an"
+L.SpamBlockNoCountdowns		= "Spiele keine Countdown-Sounds"
 
 -- Tab: Spam Filter
 L.Area_SpamFilter			= "Spam-Filter"
+L.DontShowFarWarnings		= "Zeige keine Mitteilungen/Timer für weit entfernte Ereignisse"
 L.StripServerName			= "Entferne den Realmnamen der Spieler in Warnungen und Timern"
 L.SpamBlockBossWhispers		= "Aktiviere Filter für &lt;DBM&gt;-Flüstermitteilungen im Kampf"
-L.ShowBBOnCombatStart		= "Führe bei Kampfbeginn eine \"BigBrother\"-Buffprüfung durch"
-L.BigBrotherAnnounceToRaid	= "Verkünde Ergebnis der \"BigBrother\"-Buffprüfung zum Schlachtzug"
 
 L.Area_SpecFilter			= "Filtereinstellungen für Spezialisierungen"
 L.FilterTankSpec			= "Unterdrücke Warnungen für Tanks, falls deine aktuelle Spezialisierung keine \"Schutz\"-Spezialisierung ist (Hinweis: Diese Filterung sollte normalerweise nicht deaktiviert werden, da alle individuellen \"Spott\"-Warnungen nun standardmäßig aktiviert sind.)"
@@ -222,6 +229,7 @@ L.Area_HideBlizzard			= "Einstellungen zum Verbergen von Spielelementen"
 L.HideBossEmoteFrame		= "Verberge das Fenster \"RaidBossEmoteFrame\" während Bosskämpfen"
 L.HideWatchFrame			= "Verberge das Fenster für die Questverfolgung während Bosskämpfen, falls keine Erfolge verfolgt werden"
 L.HideGarrisonUpdates		= "Verberge Garnisonsmeldungen während Bosskämpfen"
+L.HideGuildChallengeUpdates	= "Verberge Gildenerfolgsmeldungen während Bosskämpfen"
 L.HideTooltips				= "Verberge Tooltips während Bosskämpfen"
 L.HideApplicantAlerts		= "Unterdrücke Anwärteralarme in organisierten Gruppen"
 L.HideApplicantAlertsFull	= "falls Gruppe voll ist"
@@ -234,6 +242,7 @@ L.Always					= ALWAYS
 L.Panel_ExtraFeatures		= "Sonstige Funktionen"
 L.Area_ChatAlerts			= "Alarmmeldungen im Chatfenster"
 L.RoleSpecAlert				= "Zeige Alarmmeldung, wenn deine Beutespezialisierung nicht deiner aktuellen Spezialisierung beim Betreten eines Schlachtzugs entspricht"
+L.CheckGear					= "Zeige Alarmmeldung beim Pull, wenn deine angelegte Gegenstandsstufe viel niedriger als die in deinen Taschen ist (40+)"
 L.WorldBossAlert			= "Zeige Alarmmeldung, wenn auf deinem Realm Gildenmitglieder oder Freunde möglicherweise beginnen gegen Weltbosse zu kämpfen (ungenau falls Sender \"CRZed\" ist)"
 L.Area_SoundAlerts			= "Akustische Alarme"
 L.LFDEnhance				= "Spiele \"Bereitschaftscheck\"-Sound für Rollenabfragen und Einladungen der Gruppensuche im Master-Audiokanal (funktioniert z.B. auch wenn Soundeffekte abgeschaltet sind und ist allgemein lauter)"
@@ -243,9 +252,14 @@ L.Area_AutoLogging			= "Automatische Aufzeichnungen"
 L.AutologBosses				= "Automatische Aufzeichnung von Bosskämpfen im spieleigenen Kampflog (/dbm pull vor Bossen wird benötigt um die Aufzeichnung rechtzeitig für \"Pre-Pots\" und andere Ereignisse zu starten)"
 L.AdvancedAutologBosses		= "Automatische Aufzeichnung von Bosskämpfen mit Addon \"Transcriptor\""
 L.LogOnlyRaidBosses			= "Nur Schlachtzugbosskämpfe aufzeichnen\n(ohne Schlachtzugsbrowser-/Dungeon-/Szenarienbosskämpfe)"
+L.Area_3rdParty				= "Einstellungen für Addons von Drittanbietern"
+L.ShowBBOnCombatStart		= "Führe bei Kampfbeginn eine \"BigBrother\"-Buffprüfung durch"
+L.BigBrotherAnnounceToRaid	= "Verkünde Ergebnis der \"BigBrother\"-Buffprüfung zum Schlachtzug"
 L.Area_Invite				= "Einstellungen für Einladungen"
 L.AutoAcceptFriendInvite	= "Automatisch Gruppeneinladungen von Freunden akzeptieren"
 L.AutoAcceptGuildInvite		= "Automatisch Gruppeneinladungen von Gildenmitgliedern akzeptieren"
+L.Area_Advanced				= "Erweiterte Einstellungen"
+L.FakeBW					= "Bei Versionsprüfungen als \"BigWigs\" ausgeben, statt als DBM (nützlich für Gilden, die die Nutzung von \"BigWigs\" erzwingen)"
 
 L.PizzaTimer_Headline 		= 'Erstelle einen "Pizza-Timer"'
 L.PizzaTimer_Title			= 'Name (z.B. "Pizza!")'
@@ -254,6 +268,26 @@ L.PizzaTimer_Mins 			= "Min"
 L.PizzaTimer_Secs 			= "Sek"
 L.PizzaTimer_ButtonStart 	= "Starte Timer"
 L.PizzaTimer_BroadCast		= "Anderen Schlachtzugspielern anzeigen"
+
+L.Panel_Profile				= "Profile"
+L.Area_CreateProfile		= "Profilerzeugung"
+L.EnterProfileName			= "Profilnamen eingeben"
+L.CreateProfile				= "Erzeuge Profil für DBM Core Einstellungen"
+L.Area_ApplyProfile			= "Setze aktives Profil für DBM Core Einstellungen"
+L.SelectProfileToApply		= "Anzuwendendes Profil auswählen"
+L.Area_CopyProfile			= "Kopiere Profil für DBM Core Einstellungen"
+L.SelectProfileToCopy		= "Zu kopierendes Profil auswählen"
+L.Area_DeleteProfile		= "Entferne Profil für DBM Core Einstellungen"
+L.SelectProfileToDelete		= "Zu löschendes Profil auswählen"
+L.Area_DualProfile			= "Boss Mod Profileinstellungen"
+L.DualProfile				= "Aktiviere Unterstützung für verschiedene Boss Mod Einstellungen pro Spezialisierung (Die Verwaltung der Boss Mod Profile erfolgt im geladenen Boss Mod Statistikfenster.)"
+
+L.Area_ModProfile			= "Kopiere Mod-Einstellungen von einem Charakter / einer Spezialisierung oder lösche Mod-Einstellungen"
+L.ModAllReset				= "Setze alle Mod-Einstellungen zurück"
+L.ModAllStatReset			= "Setze alle Mod-Statistiken zurück"
+L.SelectModProfileCopy		= "Kopiere alle Einstellungen von"
+L.SelectModProfileCopySound	= "Kopiere nur die Soundeinstellungen von"
+L.SelectModProfileDelete	= "Lösche Modeinstellungen für"
 
 -- Misc
 L.FontHeight	= 16
