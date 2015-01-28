@@ -146,7 +146,6 @@ L.Bar_EnlargeTime			= "Agrandir la barre sous: %d secondes"
 L.Bar_EnlargePercent		= "Agrandir la barre sous: %0.1f%%"
 L.BarSpark					= "Ligne blanche de front de progression"
 L.BarFlash					= "Faire clignoter la barre vers la fin "
-L.BarSort					= "Sort by remaining time"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Alertes spéciales"
