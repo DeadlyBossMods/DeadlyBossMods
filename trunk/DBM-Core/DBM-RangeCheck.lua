@@ -113,18 +113,18 @@ do
 
 	local function setRange(self, range)
 		rangeCheck:Hide()
-		rangeCheck:Show(range, mainFrame.filter, true)
+		rangeCheck:Show(range, mainFrame.filter, true, mainFrame.redCircleNumPlayers or 1)
 	end
 	
 	local function setThreshold(self, threshold)
 		rangeCheck:Hide()
-		rangeCheck:Show(range, mainFrame.filter, true, threshold)
+		rangeCheck:Show(mainFrame.range, mainFrame.filter, true, threshold)
 	end
 
 	local function setFrames(self, option)
 		DBM.Options.RangeFrameFrames = option
 		rangeCheck:Hide()
-		rangeCheck:Show(mainFrame.range, mainFrame.filter, true)
+		rangeCheck:Show(mainFrame.range, mainFrame.filter, true, mainFrame.redCircleNumPlayers or 1)
 	end
 
 	local function toggleLocked()
