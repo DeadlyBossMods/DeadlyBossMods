@@ -258,10 +258,37 @@ function DLL:Append(obj)
 	if self.first == nil then -- list is empty
 		self.first = obj
 		self.last = obj
-	else -- list is not empty
+	elseif not obj.owner.options.Sort then -- list is not emty
 		obj.prev = self.last
 		self.last.next = obj
 		self.last = obj
+	else
+		local ptr = self.first
+		local barInserted = false
+		while ptr do
+			if not barInserted then
+				if ptr.timer > obj.timer then
+					obj.next = ptr
+					obj.prev = ptr.prev
+					ptr.prev = obj
+					if obj.prev then
+						obj.prev.next = obj
+					end
+					if ptr == self.first then
+						self.first = obj
+					end
+					obj:SetPosition()
+					ptr:SetPosition()
+					barInserted = true
+				end
+			end
+			ptr = ptr.next
+		end
+		if barInserted == false then
+			obj.prev = self.last
+			self.last.next = obj
+			self.last = obj
+		end
 	end
 	return obj
 end
@@ -373,6 +400,16 @@ do
 
 	function DBT:ApplyProfile(id)
 		if not DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] then return end
+		self.options = setmetatable(DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id], optionMT)
+		self:Rearrange()
+	end
+
+	function DBT:CopyProfile(name, id)
+		if not DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] then DBT_AllPersistentOptions[_G["DBM_UsedProfile"]] = {} end
+		if not DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] then DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] = {} end
+		if not DBT_AllPersistentOptions[name] then DBT_AllPersistentOptions[name] = {} end
+		if not DBT_AllPersistentOptions[name][id] then DBT_AllPersistentOptions[name][id] = {} end
+		DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] = DBT_AllPersistentOptions[name][id]
 		self.options = setmetatable(DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id], optionMT)
 		self:Rearrange()
 	end
@@ -631,6 +668,10 @@ function barPrototype:SetElapsed(elapsed)
 	local enlargePer = self.owner.options.Style ~= "BigWigs" and self.owner.options.EnlargeBarsPercent or 0
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) then
 		self:ResetAnimations()
+	elseif self.owner.options.Sort then
+		local bar = (self.enlarged and self.owner.hugeBars or self.owner.smallBars)
+		bar:Remove(self)
+		bar:Append(self)
 	end
 	self:Update(0)
 end
@@ -928,7 +969,7 @@ local function updateOrientation(self)
 			if bar.moving == "enlarge" then
 				bar.enlarged = true
 				bar.moving = nil
-				self.hugeBars:Append(self)
+				self.hugeBars:Append(bar)
 				bar:ApplyStyle()
 			end
 			bar.moving = nil
@@ -951,9 +992,16 @@ function updateClickThrough(self, newValue)
 		end
 	end
 end
-
 options.ClickThrough.onChange = updateClickThrough
 
+local function cancelAllBar(self)
+	for bar in self:GetBarIterator() do
+		if not bar.dummy then
+			bar:Cancel()
+		end
+	end
+end
+options.Sort.onChange = cancelAllBar
 
 --------------------
 --  Skinning API  --
