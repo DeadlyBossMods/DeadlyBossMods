@@ -258,37 +258,10 @@ function DLL:Append(obj)
 	if self.first == nil then -- list is empty
 		self.first = obj
 		self.last = obj
-	elseif not obj.owner.options.Sort then -- list is not emty
+	else -- list is not empty
 		obj.prev = self.last
 		self.last.next = obj
 		self.last = obj
-	else
-		local ptr = self.first
-		local barInserted = false
-		while ptr do
-			if not barInserted then
-				if ptr.timer > obj.timer then
-					obj.next = ptr
-					obj.prev = ptr.prev
-					ptr.prev = obj
-					if obj.prev then
-						obj.prev.next = obj
-					end
-					if ptr == self.first then
-						self.first = obj
-					end
-					obj:SetPosition()
-					ptr:SetPosition()
-					barInserted = true
-				end
-			end
-			ptr = ptr.next
-		end
-		if not barInserted then
-			obj.prev = self.last
-			self.last.next = obj
-			self.last = obj
-		end
 	end
 	return obj
 end
@@ -668,10 +641,6 @@ function barPrototype:SetElapsed(elapsed)
 	local enlargePer = self.owner.options.Style ~= "BigWigs" and self.owner.options.EnlargeBarsPercent or 0
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) then
 		self:ResetAnimations()
-	elseif self.owner.options.Sort then
-		local bar = (self.enlarged and self.owner.hugeBars or self.owner.smallBars)
-		bar:Remove(self)
-		bar:Append(self)
 	end
 	self:Update(0)
 end
@@ -994,14 +963,6 @@ function updateClickThrough(self, newValue)
 end
 options.ClickThrough.onChange = updateClickThrough
 
-local function cancelAllBar(self)
-	for bar in self:GetBarIterator() do
-		if not bar.dummy then
-			bar:Cancel()
-		end
-	end
-end
-options.Sort.onChange = cancelAllBar
 
 --------------------
 --  Skinning API  --
