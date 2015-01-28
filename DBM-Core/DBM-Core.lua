@@ -1728,18 +1728,18 @@ do
 		for i, v in ipairs(sortMe) do
 			if v.displayVersion and not (v.bwrevision or v.bwarevision) then--DBM, no BigWigs
 				if self.Options.ShowAllVersions then
-					self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, "DBM "..v.displayVersion, v.revision, v.VPVersion or ""))--Only display VP version if not running two mods
+					self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, "DBM "..v.displayVersion, v.revision, v.VPVersion or ""), false)--Only display VP version if not running two mods
 				end
 				if notify and v.revision < self.ReleaseRevision then
 					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
 			elseif self.Options.ShowAllVersions and (v.displayVersion and (v.bwrevision or v.bwarevision)) then--DBM & BigWigs
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_TWO:format(v.name, "DBM "..v.displayVersion, v.revision, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision))
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_TWO:format(v.name, "DBM "..v.displayVersion, v.revision, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision), false)
 			elseif self.Options.ShowAllVersions and (not v.displayVersion and (v.bwrevision or v.bwarevision)) then--BigWigs, No DBM
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision, ""))
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision, ""), false)
 			else
 				if self.Options.ShowAllVersions then
-					self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(v.name))
+					self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(v.name), false)
 				end
 			end
 		end
@@ -1763,8 +1763,9 @@ do
 		end
 		local TotalDBM = TotalUsers - NoDBM
 		local TotalBW = TotalUsers - NoBigwigs
-		self:AddMsg(DBM_CORE_VERSIONCHECK_FOOTER:format(TotalDBM, TotalBW))
-		self:AddMsg(DBM_CORE_VERSIONCHECK_OUTDATED:format(OldMod, #OutdatedUsers > 0 and table.concat(OutdatedUsers, ", ") or NONE))
+		self:AddMsg("---", false)
+		self:AddMsg(DBM_CORE_VERSIONCHECK_FOOTER:format(TotalDBM, TotalBW), false)
+		self:AddMsg(DBM_CORE_VERSIONCHECK_OUTDATED:format(OldMod, #OutdatedUsers > 0 and table.concat(OutdatedUsers, ", ") or NONE), false)
 		twipe(OutdatedUsers)
 		twipe(sortMe)
 		for i = #sortMe, 1, -1 do
@@ -1787,13 +1788,13 @@ do
 		self:AddMsg(DBM_CORE_LAG_HEADER)
 		for i, v in ipairs(sortLag) do
 			if v.worldlag then
-				self:AddMsg(DBM_CORE_LAG_ENTRY:format(v.name, v.worldlag, v.homelag))
+				self:AddMsg(DBM_CORE_LAG_ENTRY:format(v.name, v.worldlag, v.homelag), false)
 			else
 				tinsert(nolagResponse, v.name)
 			end
 		end
 		if #nolagResponse > 0 then
-			self:AddMsg(DBM_CORE_LAG_FOOTER:format(table.concat(nolagResponse, ", ")))
+			self:AddMsg(DBM_CORE_LAG_FOOTER:format(table.concat(nolagResponse, ", ")), false)
 			for i = #nolagResponse, 1, -1 do
 				nolagResponse[i] = nil
 			end
