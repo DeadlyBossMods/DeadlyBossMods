@@ -1375,6 +1375,23 @@ function DBM:ApplyProfile(name)
 	self:AddMsg(DBM_CORE_PROFILE_APPLIED:format(name))
 end
 
+function DBM:CopyProfile(name)
+	if not name or not DBM_AllSavedOptions[name] then 
+		self:AddMsg(DBM_CORE_PROFILE_COPY_ERROR:format(name or DBM_CORE_UNKNOWN))
+		return
+	elseif name == usedProfile then
+		self:AddMsg(DBM_CORE_PROFILE_COPY_ERROR_SELF)
+		return
+	end
+	DBM_AllSavedOptions[usedProfile] = DBM_AllSavedOptions[name]
+	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
+	self.Options = DBM_AllSavedOptions[usedProfile]
+	-- rearrange position
+	self.Bars:CopyProfile(name, "DBM")
+	self:RepositionFrames()
+	self:AddMsg(DBM_CORE_PROFILE_COPIED:format(name))
+end
+
 function DBM:DeleteProfile(name)
 	if not name or not DBM_AllSavedOptions[name] then
 		self:AddMsg(DBM_CORE_PROFILE_DELETE_ERROR:format(name or DBM_CORE_UNKNOWN))
