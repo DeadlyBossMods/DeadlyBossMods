@@ -175,8 +175,10 @@ L.VoicePackChoice			= "음성안내 소리 설정(설치되어 있을 경우)"
 L.Area_CountdownOptions		= "초세기 설정"
 L.ShowCountdownText			= "초세기 1이 진행 중일때 화면중앙에 글자 표시"
 L.Area_VoicePackOptions		= "음성안내 설정(별도 음성안내 애드온이 필요함)"
-L.SpecWarn_NoSoundsWVoice	= "음성안내가 있는 경고일 경우 특수 경고 소리 재생 안함"
-L.SpecWarn_AlwaysVoice		= "음성안내를 무조건 듣기(각 우두머리별 설정 무시)"
+L.SpecWarn_NoSoundsWVoice	= "음성안내가 있는 특수 경고 소리 끄기 설정"
+L.SWFDefaultOnly			= "별도로 변경한 소리만 재생(SW소리는 무시)"
+L.SWFAll					= "모든 특수 경고 소리 끄기"
+L.SpecWarn_AlwaysVoice		= "음성안내를 무조건 듣기(각 우두머리별 설정 무시, 공격대장에게 유용합니다.)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 
 -- Tab: HealthFrame
