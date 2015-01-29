@@ -282,14 +282,10 @@ function DLL:Append(obj)
 						obj:SetPosition()
 						ptr:SetPosition()
 					else
-						print(ptr.prev.id, obj.id, ptr.id)
 						obj.next = ptr
 						obj.prev = ptr.prev
 						ptr.prev = obj
 						obj.prev.next = obj
-						if obj.prev and obj.prev.prev then
-							print(obj.prev.prev.id)
-						end
 						obj.prev:SetPosition()
 						obj:SetPosition()
 						ptr:SetPosition()
