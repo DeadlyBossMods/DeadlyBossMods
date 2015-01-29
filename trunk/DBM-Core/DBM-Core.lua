@@ -4377,9 +4377,10 @@ do
 		end
 	end
 	
-	function DBM:UNIT_TARGETABLE_CHANGED()
+	function DBM:UNIT_TARGETABLE_CHANGED(uId)
 		if DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging()) then
-			self:Debug("UNIT_TARGETABLE_CHANGED event fired")
+			local active = UnitExists(uId) and "true" or "false"
+			self:Debug("UNIT_TARGETABLE_CHANGED event fired for "..UnitName(uId)..". Active: "..active)
 		end
 	end
 

@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 155198",
 	"SPELL_CAST_SUCCESS 155247 155399 154975",
-	"SPELL_AURA_APPLIED 154960 155458 155459 155460 154981 155030 155236 155462",
+	"SPELL_AURA_APPLIED 154960 155458 155459 155460 154981 155030 155236 155462 163247",
 	"SPELL_AURA_APPLIED_DOSE 155030 155236",
 	"SPELL_AURA_REMOVED 154960",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
@@ -50,6 +50,7 @@ local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2, 
 local specWarnEpicenter				= mod:NewSpecialWarningSpell(162277, nil, nil, nil, 2)
 --Beast abilities (living)
 local specWarnSavageHowl			= mod:NewSpecialWarningDispel(155198, "Healer|Tank|RemoveEnrage", nil, nil, nil, nil, true)
+local specWarnConflag				= mod:NewSpecialWarningDispel(162277, "Healer")
 local specWarnSearingFangs			= mod:NewSpecialWarningStack(155030, nil, 12)--Stack count assumed, may be 2
 local specWarnSearingFangsOther		= mod:NewSpecialWarningTaunt(155030)--No evidence of this existing ANYWHERE in any logs. removed? Bugged?
 local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, nil, 3)--6-9 second cd, 15 second duration, 3 is smallest safe swap, sometimes 2 when favorable RNG
@@ -68,15 +69,15 @@ local timerTantrumCD				= mod:NewCDCountTimer(30, 162275)--30-35
 --local timerEpicenterCD			= mod:NewCDTimer(25, 162277)
 --Beast abilities (living)
 mod:AddTimerLine(BATTLE_PET_DAMAGE_NAME_8)--Beast
-local timerSavageHowlCD				= mod:NewCDTimer(25, 155198)
-local timerConflagCD				= mod:NewCDTimer(20, 155399)
+local timerSavageHowlCD				= mod:NewCDTimer("OptionVersion2", 25, 155198, nil, "Healer|Tank|RemoveEnrage")
+local timerConflagCD				= mod:NewCDTimer("OptionVersion2", 20, 155399, nil, "Healer")
 local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
 local timerInfernoBreathCD			= mod:NewCDTimer(20, 154989)
 
 local countdownPinDown				= mod:NewCountdown(20.5, 154960, "Ranged")
 local countdownCallPack				= mod:NewCountdown("Alt31", 154975, "Tank")
 
---local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+--local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceCallthePack				= mod:NewVoice(154975, "-Healer") --killmob
 local voiceSavageHowl				= mod:NewVoice(155198, "RemoveEnrage") --trannow
 local voicePinDown					= mod:NewVoice(154960, "Ranged") --helpme
@@ -93,7 +94,6 @@ mod.vb.RylakAbilities = false
 mod.vb.WolfAbilities = false
 mod.vb.ElekkAbilities = false
 mod.vb.FaultlineAbilites= false
-mod.vb.mounted = false
 mod.vb.tantrumCount = 0
 local activeBossGUIDS = {}
 
@@ -125,7 +125,7 @@ local function updateBeastTimers(self, all, spellId)
 	if self.vb.RylakAbilities and (all or self:IsMythic() and spellId == 155459) then--Dreadwing
 		timerSuperheatedShrapnelCD:Start(9)
 	end
-	if self.vb.ElekkAbilities and (all or self:IsMythic() and spellId == 155460) then--Ironcrusher
+	if self.vb.ElekkAbilities and (all or self:IsMythic() and spellId == 163247) then--Ironcrusher
 		if self.vb.RylakAbilities then
 			timerTantrumCD:Start(18, self.vb.tantrumCount+1)
 			voiceTantrum:Schedule(13, "aesoon")
@@ -160,7 +160,6 @@ function mod:OnCombatStart(delay)
 	self.vb.WolfAbilities = false
 	self.vb.ElekkAbilities = false
 	self.vb.FaultlineAbilites = false
-	self.vb.mounted = false
 	self.vb.tantrumCount = 0
 	table.wipe(activeBossGUIDS)
 	timerCallthePackCD:Start(9.5-delay)--Time for cast finish, not cast start, because only cast finish is sure thing. cast start can be interrupted
@@ -211,7 +210,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 154960 then
 		warnPinDownTargets:CombinedShow(0.5, args.destName)
 		if self.Options.SetIconOnSpear then
-			self:SetSortedIcon(1, args.destName, 8, nil, true)--Bugged, still doesn't set more than 1 icon on all targets. Not sure why. It's like reverseIcon isn't working?
+			self:SetSortedIcon(1, args.destName, 8, nil, true)
 		end
 		if args:IsPlayer() then
 			yellPinDown:Yell()
@@ -220,7 +219,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			voicePinDown:Schedule(0.5, "helpme")
 		end
 	elseif spellId == 154981 then
-		warnConflag:CombinedShow(0.5, args.destName)
+		if self.Options.SpecWarn154981dispel then
+			specWarnConflag:CombinedShow(2, args.destName)
+		else
+			warnConflag:CombinedShow(2, args.destName)
+		end
 	elseif spellId == 155030 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 and amount >= 12 then--Stack assumed, may need revising
@@ -246,7 +249,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			voiceCrushArmor:Play("changemt")
 		end
-	elseif args:IsSpellID(155458, 155459, 155460, 155462) then
+	elseif args:IsSpellID(155458, 155459, 155460, 155462, 163247) then
+		DBM:Debug("SPELL_AURA_APPLIED, Boss absorbing beast abilities")
 		if not self:IsMythic() then--Not mythic, boss gaining ability means he just dismounted, start/update all timers.
 			updateBeastTimers(self, true)
 		else--On mythic, boss already on ground already casting other things, so only update timers for new ability he just gained.
@@ -256,7 +260,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnWolf:Show(args.destName)
 		elseif spellId == 155459 then--Rylak Aura
 			warnRylak:Show(args.destName)
-		elseif spellId == 155460 then--Elekk Aura
+		elseif spellId == 155460 or spellId == 163247 then--Elekk Aura (two spellids because mythic has diff Id)
 			warnElekk:Show(args.destName)
 		elseif spellId == 155462 then--Mythic Beast
 			warnClefthoof:Show(args.destName)
@@ -280,7 +284,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			activeBossGUIDS[unitGUID] = true
 			local cid = self:GetCIDFromGUID(unitGUID)
 			if cid == 76884 or cid == 76874 or cid == 76945 or cid == 76946 then
-				self.vb.mounted = true
+				DBM:Debug("INSTANCE_ENCOUNTER_ENGAGE_UNIT, Boss mounting")
 				updateBeasts(cid, 1, UnitName(unitID))
 				if cid == 76884 then--Cruelfang
 					self.vb.WolfAbilities = true
@@ -325,16 +329,12 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	end
 end
 
-function mod:UNIT_TARGETABLE_CHANGED()
-	for i = 1, 5 do
-		local unitID = "boss"..i
-		local unitGUID = UnitGUID(unitID)
-		local cid = self:GetCIDFromGUID(unitGUID)
-		if cid == 76865 and self.vb.mounted then--Boss dismounting living beast on mythic
-			self.vb.mounted = false
-			updateBeasts(cid, 3)
-			updateBeastTimers(self, true)
-		end
+function mod:UNIT_TARGETABLE_CHANGED(uId)
+	local cid = self:GetCIDFromGUID(uId)
+	if cid == 76865 and UnitExists(unitID) then--Boss dismounting living beast on mythic
+		DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Dismounting")
+		updateBeasts(cid, 3)
+		updateBeastTimers(self, true)
 	end
 end	
 
