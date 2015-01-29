@@ -56,8 +56,10 @@ local setupHandlers
 local applyFailed = false
 local totalBars = 0
 local function stringFromTimer(t)
-	if t <= 60 then
+	if t <= DBM.Bars:GetOption("Decimal") then
 		return ("%.1f"):format(t)
+	elseif t <= 60 then
+		return ("%d"):format(t)
 	else
 		return ("%d:%0.2d"):format(t/60, math.fmod(t, 60))
 	end
@@ -168,6 +170,10 @@ options = {
 		type = "number",
 		default = 20,
 	},
+	Decimal = {
+		type = "number",
+		default = 60,
+	},
 	Scale = {
 		type = "number",
 		default = 0.9,
@@ -258,10 +264,46 @@ function DLL:Append(obj)
 	if self.first == nil then -- list is empty
 		self.first = obj
 		self.last = obj
-	else -- list is not empty
+	elseif not obj.owner.options.Sort then -- list is not emty
 		obj.prev = self.last
 		self.last.next = obj
 		self.last = obj
+	else
+		local ptr = self.first
+		local barInserted = false
+		ptr:SetPosition()
+		while ptr do
+			if not barInserted then
+				if ptr.timer > obj.timer then
+					if ptr == self.first then
+						obj.next = ptr
+						self.first = obj
+						ptr.prev = obj
+						obj:SetPosition()
+						ptr:SetPosition()
+					else
+						print(ptr.prev.id, obj.id, ptr.id)
+						obj.next = ptr
+						obj.prev = ptr.prev
+						ptr.prev = obj
+						obj.prev.next = obj
+						if obj.prev and obj.prev.prev then
+							print(obj.prev.prev.id)
+						end
+						obj.prev:SetPosition()
+						obj:SetPosition()
+						ptr:SetPosition()
+					end
+					barInserted = true
+				end
+			end
+			ptr = ptr.next
+		end
+		if not barInserted then
+			obj.prev = self.last
+			self.last.next = obj
+			self.last = obj
+		end
 	end
 	return obj
 end
@@ -457,6 +499,7 @@ do
 		local newBar = self:GetBar(id)
 		if newBar then -- update an existing bar
 			newBar.lastUpdate = GetTime()
+			newBar.huge = huge
 			newBar:SetTimer(timer) -- this can kill the timer and the timer methods don't like dead timers
 			if newBar.dead then return end
 			newBar:SetElapsed(0) -- same
@@ -504,8 +547,10 @@ do
 			local enlargeTime = self.options.Style ~= "BigWigs" and self.options.EnlargeBarsTime or 11
 			if (timer <= enlargeTime or huge) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
 				newBar.enlarged = true
+				newBar.huge = true
 				self.hugeBars:Append(newBar)
 			else
+				newBar.huge = nil
 				self.smallBars:Append(newBar)
 			end
 			newBar:SetText(id)
@@ -641,6 +686,14 @@ function barPrototype:SetElapsed(elapsed)
 	local enlargePer = self.owner.options.Style ~= "BigWigs" and self.owner.options.EnlargeBarsPercent or 0
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) then
 		self:ResetAnimations()
+	elseif self.owner.options.Sort then
+		self:RemoveFromList()
+		if (self.huge or self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) and self.owner.options.HugeBarsEnabled then -- starts enlarged?
+			self.owner.hugeBars:Append(self)
+		else
+			self.owner.smallBars:Append(self)
+		end
+		self:SetPosition()
 	end
 	self:Update(0)
 end
