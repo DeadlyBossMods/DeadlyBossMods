@@ -271,8 +271,8 @@ function DLL:Append(obj)
 	else
 		local ptr = self.first
 		local barInserted = false
-		ptr:SetPosition()
 		while ptr do
+			ptr:SetPosition()
 			if not barInserted then
 				if ptr.timer > obj.timer then
 					if ptr == self.first then
@@ -296,6 +296,7 @@ function DLL:Append(obj)
 			ptr = ptr.next
 		end
 		if not barInserted then
+			self.last:SetPosition()
 			obj.prev = self.last
 			self.last.next = obj
 			self.last = obj
@@ -495,7 +496,7 @@ do
 		local newBar = self:GetBar(id)
 		if newBar then -- update an existing bar
 			newBar.lastUpdate = GetTime()
-			newBar.huge = huge
+			newBar.huge = huge or nil
 			newBar:SetTimer(timer) -- this can kill the timer and the timer methods don't like dead timers
 			if newBar.dead then return end
 			newBar:SetElapsed(0) -- same
