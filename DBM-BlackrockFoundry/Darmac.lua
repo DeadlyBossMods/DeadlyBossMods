@@ -34,7 +34,6 @@ local warnRylak						= mod:NewTargetAnnounce(155459, 3)--Grants Superheated Shra
 local warnElekk						= mod:NewTargetAnnounce(155460, 3)--Grants Tantrum
 local warnClefthoof					= mod:NewTargetAnnounce(155462, 3)--Grants Epicenter
 --Beast abilities (living beasts)
-local warnConflag					= mod:NewTargetAnnounce(155399, 3, nil, "Healer")
 local warnSearingFangs				= mod:NewStackAnnounce(155030, 2, nil, "Tank")
 local warnCrushArmor				= mod:NewStackAnnounce(155236, 2, nil, "Tank")
 local warnStampede					= mod:NewSpellAnnounce(155247, 3)
@@ -50,7 +49,7 @@ local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2, 
 local specWarnEpicenter				= mod:NewSpecialWarningSpell(162277, nil, nil, nil, 2)
 --Beast abilities (living)
 local specWarnSavageHowl			= mod:NewSpecialWarningDispel(155198, "Healer|Tank|RemoveEnrage", nil, nil, nil, nil, true)
-local specWarnConflag				= mod:NewSpecialWarningDispel(162277, "Healer")
+local specWarnConflag				= mod:NewSpecialWarningDispel(162277, false)--Just too buggy, cast 3 targets, but can be as high as 5 seconds apart, making warning very spammy. Therefor, MUST stay off by default to reduce DBM spam :\
 local specWarnSearingFangs			= mod:NewSpecialWarningStack(155030, nil, 12)--Stack count assumed, may be 2
 local specWarnSearingFangsOther		= mod:NewSpecialWarningTaunt(155030)--No evidence of this existing ANYWHERE in any logs. removed? Bugged?
 local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, nil, 3)--6-9 second cd, 15 second duration, 3 is smallest safe swap, sometimes 2 when favorable RNG
@@ -113,45 +112,55 @@ local function updateBeasts(cid, status, beastName)
 	end
 end
 
-local function updateBeastTimers(self, all, spellId)
-	--TODO, if on mythic, and boss is already grounded and timers for other abiltiies already started
+local function updateBeastTimers(self, all, spellId, adjust)
+	local dismountAdjust = 0--default of 0, so -0 doesn't affect timers unless mythic and UNIT_TARGETABLE is trigger
+	if adjust then dismountAdjust = 2 end--Dismount event is a little slow, fires 2 seconds after true dismount, so must adjust all timers for dismounts
 	if self.vb.WolfAbilities and (all or self:IsMythic() and spellId == 155458) then--Cruelfang
 		if self.vb.RylakAbilities then--If he also has rylak abilities, first rend and tear is 12 seconds, not 6
-			timerRendandTearCD:Start(12)
+			timerRendandTearCD:Start(12-dismountAdjust)
 		else
-			timerRendandTearCD:Start(6)
+			timerRendandTearCD:Start(6-dismountAdjust)
 		end
 	end
 	if self.vb.RylakAbilities and (all or self:IsMythic() and spellId == 155459) then--Dreadwing
-		timerSuperheatedShrapnelCD:Start(9)
+		timerSuperheatedShrapnelCD:Start(9-dismountAdjust)
 	end
 	if self.vb.ElekkAbilities and (all or self:IsMythic() and spellId == 163247) then--Ironcrusher
-		if self.vb.RylakAbilities then
-			timerTantrumCD:Start(18, self.vb.tantrumCount+1)
-			voiceTantrum:Schedule(13, "aesoon")
-		else
-			timerTantrumCD:Start(17, self.vb.tantrumCount+1)
-			voiceTantrum:Schedule(12, "aesoon")
+		if self.vb.RylakAbilities then--Only verified with all 3 on normal. Unknown of JUST elekk and rylak cuase +1 second without wolf
+			timerTantrumCD:Start(18-dismountAdjust, self.vb.tantrumCount+1)
+			voiceTantrum:Schedule(13-dismountAdjust, "aesoon")
+		else--Verified true for elekk alone, and elekk with wolf
+			timerTantrumCD:Start(17-dismountAdjust, self.vb.tantrumCount+1)
+			voiceTantrum:Schedule(12-dismountAdjust, "aesoon")
 		end
 	end
 	if self.vb.FaultlineAbilites and (all or self:IsMythic() and spellId == 155462) then--Faultline
 		--Mythic Stuff
 	end
-	--Base ability Timers are reset any time boss gains new abilites
+	--Base ability Timers are reset any time boss gains new abilites. Timers are next timers but vary depending on what abilities boss possesses
 	if self.vb.RylakAbilities then--Rylak delays call of the pack and pin down as well. (Well, that or whatever beast you do 3rd. Still need to determine if rylak, or third beast)
-		timerCallthePackCD:Start(17)
+		if self.vb.ElekkAbilities and self.vb.WolfAbilities then--Wolf, elekk AND rylak
+			timerCallthePackCD:Start(17-dismountAdjust)
+			countdownCallPack:Cancel()
+			countdownCallPack:Start(17-dismountAdjust)
+			timerPinDownCD:Start(24-dismountAdjust)
+			countdownPinDown:Cancel()
+			countdownPinDown:Start(24-dismountAdjust)
+		else--TODO, i need data on rylak with wolf (2) or rylak with elekk (2).
+			timerCallthePackCD:Start(15-dismountAdjust)--rylak alone verified 15 seconds
+			countdownCallPack:Cancel()
+			countdownCallPack:Start(15-dismountAdjust)
+			timerPinDownCD:Start(13.5-dismountAdjust)
+			countdownPinDown:Cancel()
+			countdownPinDown:Start(13.5-dismountAdjust)
+		end
+	else--Elekk alone verified, wolf alone verified. Wolf AND Elekk together verified. These timers only alter once rylak abilities activated.
+		timerCallthePackCD:Start(11-dismountAdjust)
 		countdownCallPack:Cancel()
-		countdownCallPack:Start(17)
-		timerPinDownCD:Start(24)
+		countdownCallPack:Start(11-dismountAdjust)
+		timerPinDownCD:Start(12-dismountAdjust)
 		countdownPinDown:Cancel()
-		countdownPinDown:Start(24)
-	else
-		timerCallthePackCD:Start(11)
-		countdownCallPack:Cancel()
-		countdownCallPack:Start(11)
-		timerPinDownCD:Start(12)
-		countdownPinDown:Cancel()
-		countdownPinDown:Start(12)
+		countdownPinDown:Start(12-dismountAdjust)
 	end
 end
 
@@ -219,11 +228,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voicePinDown:Schedule(0.5, "helpme")
 		end
 	elseif spellId == 154981 then
-		if self.Options.SpecWarn154981dispel then
-			specWarnConflag:CombinedShow(2, args.destName)
-		else
-			warnConflag:CombinedShow(2, args.destName)
-		end
+		specWarnConflag:CombinedShow(2, args.destName)
 	elseif spellId == 155030 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 and amount >= 12 then--Stack assumed, may need revising
@@ -291,7 +296,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					timerRendandTearCD:Start(5)
 					timerSavageHowlCD:Start(15)
 					if self.Options.RangeFrame and not self.vb.RylakAbilities then
-						DBM.RangeCheck:Show(7)--Upgrade range frame to 7 now that he has rend and tear. TODO: If this attack doesn't target melee
+						DBM.RangeCheck:Show(7)--Upgrade range frame to 7 now that he has rend and tear.
 					end
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerSuperheatedShrapnelCD:Cancel()
@@ -331,10 +336,10 @@ end
 
 function mod:UNIT_TARGETABLE_CHANGED(uId)
 	local cid = self:GetCIDFromGUID(uId)
-	if cid == 76865 and UnitExists(unitID) then--Boss dismounting living beast on mythic
+	if cid == 76865 and UnitExists(unitID) and self:IsMythic() then--Boss dismounting living beast on mythic
 		DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Dismounting")
 		updateBeasts(cid, 3)
-		updateBeastTimers(self, true)
+		updateBeastTimers(self, true, nil, true)
 	end
 end	
 
@@ -342,10 +347,18 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 76884 or cid == 76874 or cid == 76945 or cid == 76946 then--Beasts
-		timerSavageHowlCD:Cancel()
-		timerConflagCD:Cancel()
-		timerStampedeCD:Cancel()
-		timerInfernoBreathCD:Cancel()
+		--Split timer cancels up by CID. if for SOME REASON someone is stupid enough to have two beasts at once on mythic
+		--when one dies, don't want to cancel wrong timers
+		if cid == 76884 then
+			timerSavageHowlCD:Cancel()
+		end
+		if cid == 76874 then
+			timerConflagCD:Cancel()
+			timerInfernoBreathCD:Cancel()
+		end
+		if cid == 76945 then
+			timerStampedeCD:Cancel()
+		end
 		if self:IsMythic() then
 			updateBeasts(cid, 2)
 		else
