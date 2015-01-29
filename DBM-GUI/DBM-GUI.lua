@@ -2378,9 +2378,17 @@ local function CreateOptionsMenu()
 		local countdownOptionsArea	= spokenAlertsPanel:CreateArea(L.Area_CountdownOptions, nil, 100, true)
 		local ShowCountdownText 	= countdownOptionsArea:CreateCheckButton(L.ShowCountdownText,  true, nil, "ShowCountdownText")
 
-		local voiceFilterArea	= spokenAlertsPanel:CreateArea(L.Area_VoicePackOptions, nil, 100, true)
-		local VPF1 				= voiceFilterArea:CreateCheckButton(L.SpecWarn_NoSoundsWVoice, true, nil, "VoiceOverSpecW")
-		local VPF2 				= voiceFilterArea:CreateCheckButton(L.SpecWarn_AlwaysVoice, true, nil, "AlwaysPlayVoice")
+		local voiceFilterArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackOptions, nil, 100, true)
+		local VPF1 					= voiceFilterArea:CreateCheckButton(L.SpecWarn_AlwaysVoice, true, nil, "AlwaysPlayVoice")
+		local voiceSWOptions = {
+			{	text	= L.Disable,		value 	= "None"},
+			{	text	= L.SWFDefaultOnly,	value 	= "DefaultOnly"},
+			{	text	= L.SWFAll,			value 	= "All"},
+		}
+		local SWFilterDropDown		= voiceFilterArea:CreateDropdown(L.SpecWarn_NoSoundsWVoice, voiceSWOptions, "DBM", "VoiceOverSpecW2", function(value)
+			DBM.Options.VoiceOverSpecW2 = value
+		end)
+		SWFilterDropDown:SetPoint("TOPLEFT", VPF1, "TOPLEFT", 0, -45)
 
 		--spokenGeneralArea:AutoSetDimension()
 		countdownOptionsArea:AutoSetDimension()
