@@ -2381,7 +2381,7 @@ local function CreateOptionsMenu()
 		local voiceFilterArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackOptions, nil, 100, true)
 		local VPF1 					= voiceFilterArea:CreateCheckButton(L.SpecWarn_AlwaysVoice, true, nil, "AlwaysPlayVoice")
 		local voiceSWOptions = {
-			{	text	= L.Disable,		value 	= "None"},
+			{	text	= NEVER,		value 	= "None"},
 			{	text	= L.SWFDefaultOnly,	value 	= "DefaultOnly"},
 			{	text	= L.SWFAll,			value 	= "All"},
 		}
