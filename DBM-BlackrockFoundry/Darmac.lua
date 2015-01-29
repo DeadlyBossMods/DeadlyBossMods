@@ -336,7 +336,7 @@ end
 
 function mod:UNIT_TARGETABLE_CHANGED(uId)
 	local cid = self:GetCIDFromGUID(uId)
-	if cid == 76865 and UnitExists(unitID) and self:IsMythic() then--Boss dismounting living beast on mythic
+	if cid == 76865 and UnitExists(uId) and self:IsMythic() then--Boss dismounting living beast on mythic
 		DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Dismounting")
 		updateBeasts(cid, 3)
 		updateBeastTimers(self, true, nil, true)
