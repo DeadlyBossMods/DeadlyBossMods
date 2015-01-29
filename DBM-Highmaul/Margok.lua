@@ -656,7 +656,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		else
 			self.vb.playerHasMark = false
-			if spellId == 164178 and self:CheckNearby(38, args.destName) then
+			if spellId == 164178 and self:CheckNearby(39, args.destName) then
 				specWarnMarkOfChaosFortificationNear:Show(args.destName)
 				voiceMarkOfChaos:Play("justrun")
 			end
