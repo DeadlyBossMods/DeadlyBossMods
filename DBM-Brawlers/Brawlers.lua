@@ -158,7 +158,7 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	self:Stop()
 	self:UnregisterShortTermEvents()
 	eventsRegistered = false
-	for i = 1, 9 do
+	for i = 1, 7 do
 		local mod2 = DBM:GetModByName("BrawlRank" .. i)
 		if mod2 then
 			mod2:Stop()--Stop all timers and warnings
@@ -209,7 +209,7 @@ function mod:OnSync(msg)
 		for i, v in ipairs(endCallbacks) do
 			v()
 		end
-		for i = 1, 9 do
+		for i = 1, 7 do
 			local mod2 = DBM:GetModByName("BrawlRank" .. i)
 			if mod2 then
 				mod2:Stop()--Stop all timers and warnings
