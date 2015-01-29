@@ -53,10 +53,10 @@ local warnInfiniteDarkness						= mod:NewTargetAnnounce(165102, 3, nil, "Healer"
 
 --All Phases
 --Special warnings cannot be combined because it breaks custom sounds, however, they will be grouped up better now at least.
-local specWarnDestructiveResonance				= mod:NewSpecialWarningSpell(156467, nil, nil, nil, 2)
-local specWarnDestructiveResonanceDisplacement	= mod:NewSpecialWarningSpell(164075, nil, nil, nil, 2)
-local specWarnDestructiveResonanceFortification	= mod:NewSpecialWarningSpell(164076, nil, nil, nil, 2)
-local specWarnDestructiveResonanceReplication	= mod:NewSpecialWarningSpell(164077, nil, nil, nil, 2)
+local specWarnDestructiveResonance				= mod:NewSpecialWarningCount(156467, nil, nil, nil, 2)
+local specWarnDestructiveResonanceDisplacement	= mod:NewSpecialWarningCount(164075, nil, nil, nil, 2)
+local specWarnDestructiveResonanceFortification	= mod:NewSpecialWarningCount(164076, nil, nil, nil, 2)
+local specWarnDestructiveResonanceReplication	= mod:NewSpecialWarningCount(164077, nil, nil, nil, 2)
 
 local specWarnMarkOfChaos						= mod:NewSpecialWarningMoveAway(158605, nil, nil, nil, 3, nil, true)
 local specWarnMarkOfChaosDisplacement			= mod:NewSpecialWarningMoveAway(164176, nil, nil, nil, 3, nil, true)
@@ -125,7 +125,7 @@ local timerInfiniteDarknessCD					= mod:NewNextTimer(62, 165102)
 local timerEnvelopingNightCD					= mod:NewNextCountTimer(63, 165876)--60 seconds plus 3 second cast
 local timerDarkStarCD							= mod:NewCDTimer(61, 178607)--61-65 Variations noticed
 
-local countdownArcaneWrath						= mod:NewCountdown(50, 156238, "-Tank")--Probably will add for whatever proves most dangerous on mythic
+local countdownArcaneWrath						= mod:NewCountdown("OptionVersion2", 50, 156238, false)--Important to the assigned soakers on mythic, but pretty much spam to everyone else
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, "Tank")
 local countdownForceNova						= mod:NewCountdown("AltTwo45", 157349)
 local countdownTransition						= mod:NewCountdown(74, 157278)
@@ -138,7 +138,7 @@ local voiceDestructiveResonance 				= mod:NewVoice(156467, "-Melee")
 local voiceForceNova	 						= mod:NewVoice(157349)
 local voiceAcceleratedAssault					= mod:NewVoice(159515, "Tank")
 local voiceMarkOfChaos							= mod:NewVoice(158605)
-local voicePhaseChange							= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT) --this string should write into language file
+local voicePhaseChange							= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceFixate								= mod:NewVoice(157763)
 local voiceArcaneAberration						= mod:NewVoice("OptionVersion2", 156471, "-Healer")
 local voiceEnvelopingNight 						= mod:NewVoice(165876)
@@ -164,6 +164,7 @@ mod.vb.phase = 1
 mod.vb.arcaneAdd = 0
 mod.vb.madnessAdd = 0
 mod.vb.envelopingCount = 0
+mod.vb.mineCount = 0
 
 local jumpDistance1 = {
 	[1] = 200, [2] = 100, [3] = 50, [4] = 25, [5] = 12.5, [6] = 7,--Or 5
@@ -279,6 +280,7 @@ function mod:OnCombatStart(delay)
 	self.vb.arcaneAdd = 0
 	self.vb.madnessAdd = 0
 	self.vb.envelopingCount = 0
+	self.vb.mineCount = 0
 	timerArcaneWrathCD:Start(6-delay)
 	countdownArcaneWrath:Start(6-delay)
 	timerDestructiveResonanceCD:Start(15-delay)
@@ -318,34 +320,52 @@ function mod:SPELL_CAST_START(args)
 		timerArcaneWrathCD:Start()
 		countdownArcaneWrath:Start()
 	-----
+	--Users complain BW timers more accurate. here is proof BW timers are completely wrong actually
+	--There is no magic timer table for mines. It's a variable cd (a shitty one at that) that cannot be predicted accurately.
+	--Only good timer is a 15 second CD timer :\
+	--Normal https://www.warcraftlogs.com/reports/wCjznkx4TNPMhXr7#fight=46&view=events&pins=2%24Off%24%23244F4B%24expression%24+(ability.id+%3D+156467+or+ability.id+%3D+164075+or+ability.id+%3D+164076+or+ability.id+%3D+164077)+and+type+%3D+%22begincast%22
+	--Heroic https://www.warcraftlogs.com/reports/wCjznkx4TNPMhXr7#fight=23&view=events&pins=2%24Off%24%23244F4B%24expression%24+(ability.id+%3D+156467+or+ability.id+%3D+164075+or+ability.id+%3D+164076+or+ability.id+%3D+164077)+and+type+%3D+%22begincast%22
+	--Mythic https://www.warcraftlogs.com/reports/cm6BPNGCHQygVxLa#view=events&pins=2%24Off%24%23244F4B%24expression%24+(ability.id+%3D+156467+or+ability.id+%3D+164075+or+ability.id+%3D+164076+or+ability.id+%3D+164077)+and+type+%3D+%22begincast%22
 	elseif spellId == 156467 then
-		specWarnDestructiveResonance:Show()
-		timerDestructiveResonanceCD:Start()
+		self.vb.mineCount = self.vb.mineCount + 1
+		--Normal wipe showing cd is actually 15 again after first https://www.warcraftlogs.com/reports/wCjznkx4TNPMhXr7#fight=22&view=events&pins=2%24Off%24%23244F4B%24expression%24+(ability.id+%3D+156467+or+ability.id+%3D+164075+or+ability.id+%3D+164076+or+ability.id+%3D+164077)+and+type+%3D+%22begincast%22
+		specWarnDestructiveResonance:Show(self.vb.mineCount)
+		if self.vb.mineCount == 1 then
+			timerDestructiveResonanceCD:Start(24)--Only cast it's 24 (for sure), rest 15 (variable).
+		else
+			timerDestructiveResonanceCD:Start()
+		end
 		voiceDestructiveResonance:Play("watchstep")
 	elseif spellId == 164075 then
-		specWarnDestructiveResonanceDisplacement:Show()
+		self.vb.mineCount = self.vb.mineCount + 1
+		specWarnDestructiveResonanceDisplacement:Show(self.vb.mineCount)
 		timerDestructiveResonanceCD:Start()
 		voiceDestructiveResonance:Play("watchstep")
 	elseif spellId == 164076 then
-		specWarnDestructiveResonanceFortification:Show()
+		self.vb.mineCount = self.vb.mineCount + 1
+		specWarnDestructiveResonanceFortification:Show(self.vb.mineCount)
 		timerDestructiveResonanceCD:Start()
 		voiceDestructiveResonance:Play("watchstep")
 	elseif spellId == 164077 then
-		specWarnDestructiveResonanceReplication:Show()
+		self.vb.mineCount = self.vb.mineCount + 1
+		specWarnDestructiveResonanceReplication:Show(self.vb.mineCount)
 		timerDestructiveResonanceCD:Start()
 		voiceDestructiveResonance:Play("watchstep")
 	-----
+	--https://www.warcraftlogs.com/reports/cm6BPNGCHQygVxLa#view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id+%3D+157349+or+ability.id+%3D+164232+or+ability.id+%3D+164235+or+ability.id+%3D+164240)+and+type+%3D+%22begincast%22&fight=36
 	elseif spellId == 157349 then
 		self.vb.forceCount = self.vb.forceCount + 1
 		specWarnForceNova:Show()
-		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
-		countdownForceNova:Start()
-		voiceForceNova:Schedule(38.5, "157349")
+		local novaTime = self.vb.forceCount == 1 and 46 or 50.5--Often 51, but 2x I did see 50.5 so 50.5 is safer
+		timerForceNovaCD:Start(novaTime, self.vb.forceCount+1)
+		countdownForceNova:Start(novaTime)
+		voiceForceNova:Schedule(novaTime-6.5, "157349")
 	elseif spellId == 164232 then
 		self.vb.forceCount = self.vb.forceCount + 1
-		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
-		countdownForceNova:Start()
-		voiceForceNova:Schedule(38.5, "157349")
+		local novaTime = self.vb.forceCount == 1 and 46 or 50.5
+		timerForceNovaCD:Start(novaTime, self.vb.forceCount+1)
+		countdownForceNova:Start(novaTime)
+		voiceForceNova:Schedule(novaTime-6.5, "157349")
 		if self:IsMythic() and self.vb.phase == 1 then--Also replication empowered
 			self.vb.RepNovaActive = true
 			self:Schedule(9, delayedRangeUpdate, self)
@@ -367,9 +387,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 164235 then
 		self.vb.forceCount = self.vb.forceCount + 1
 		specWarnForceNova:Show()
-		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
-		countdownForceNova:Start()
-		voiceForceNova:Schedule(38.5, "157349")
+		local novaTime = self.vb.forceCount == 1 and 46 or 50.5
+		timerForceNovaCD:Start(novaTime, self.vb.forceCount+1)
+		countdownForceNova:Start(novaTime)
+		voiceForceNova:Schedule(novaTime-6.5, "157349")
 		--Fortified novas, 3 novas not just 1. Start additional timer/Countdown for novas 2 and 3
 		timerForceNovaFortification:Start()
 		timerForceNovaFortification:Schedule(9)
@@ -405,10 +426,16 @@ function mod:SPELL_CAST_START(args)
 		self:Schedule(3.5, updateRangeFrame, self)
 		self:Schedule(4, updateRangeFrame, self)
 		specWarnForceNovaRep:Show()
-		timerForceNovaCD:Start(nil, self.vb.forceCount+1)
-		voiceForceNova:Schedule(38.5, "157349")
+		local novaTime = self.vb.forceCount == 1 and 46 or 50.5
+		timerForceNovaCD:Start(novaTime, self.vb.forceCount+1)
+		countdownForceNova:Start(novaTime)
+		voiceForceNova:Schedule(novaTime-6.5, "157349")
 		voiceForceNova:Play("range5") --keep range 5 yards
 	-----
+	--People complained about my method vs BWs method here too.
+	--BW is wrong here too. Heres data:
+	--Mythic: https://www.warcraftlogs.com/reports/cm6BPNGCHQygVxLa#view=events&pins=2%24Off%24%23244F4B%24expression%24%0A(ability.id+%3D+156471+or+ability.id+%3D+164299+or+ability.id+%3D+164301+or+ability.id+%3D+164303)+and+type+%3D+%22begincast%22&fight=28
+	--Normal: https://www.warcraftlogs.com/reports/wCjznkx4TNPMhXr7#fight=46&view=events&pins=2%24Off%24%23244F4B%24expression%24+(ability.id+%3D+156471+or+ability.id+%3D+164299+or+ability.id+%3D+164301+or+ability.id+%3D+164303)+and+type+%3D+%22begincast%22
 	elseif spellId == 156471 then
 		self.vb.arcaneAdd = self.vb.arcaneAdd + 1
 		specWarnAberration:Show(self.vb.arcaneAdd)
@@ -790,6 +817,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 158012 or spellId == 157964 then--Power of Foritification/Replication
 		self.vb.forceCount = 0
 		self.vb.arcaneAdd = 0
+		self.vb.mineCount = 0
 		self.vb.isTransition = false
 		specWarnTransitionEnd:Show()
 		timerArcaneWrathCD:Start(8.5)
