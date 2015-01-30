@@ -47,7 +47,7 @@ local timerFungalFleshEaterCD		= mod:NewCDCountTimer(120, "ej9995", nil, "-Heale
 local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, "Melee")
 local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, "MeleeDps")
 local timerLivingMushroomCD			= mod:NewCDCountTimer(55.5, 160022, nil, "Healer")
-local timerRejuvMushroomCD			= mod:NewCDCountTimer(150, 160021, nil, "Healer")
+local timerRejuvMushroomCD			= mod:NewCDCountTimer(130, 160021, nil, "Healer")
 local berserkTimer					= mod:NewBerserkTimer(600)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerSpecialCD				= mod:NewCDSpecialTimer(20)--Mythic Specials. Shared cd, which special he uses is random. 20-25 second variation, unless delayed by spores. then 20-25+10
