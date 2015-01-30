@@ -895,18 +895,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.phase = 4
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(4))
 		voicePhaseChange:Play("pfour")
-		timerArcaneWrathCD:Cancel()
-		countdownArcaneWrath:Cancel()
-		timerDestructiveResonanceCD:Cancel()
-		timerSummonArcaneAberrationCD:Cancel()
-		timerMarkOfChaosCD:Cancel()
-		countdownMarkofChaos:Cancel()
-		timerForceNovaCD:Cancel()
-		voiceForceNova:Cancel()
-		countdownForceNova:Cancel()
-		timerForceNovaFortification:Cancel()
-		countdownForceNova:Cancel()
-		specWarnForceNova:Cancel()
 		updateRangeFrame(self)
 		timerInfiniteDarknessCD:Start(9)--First timer 8-12 second variable, almost always 10. I'll make 9 for now so it's semi accurate in both situations
 		timerGlimpseOfMadnessCD:Start(20, 1)
@@ -925,9 +913,28 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
-	if npc == chogallName then--Some creative shit right here. Screw localized text. This will trigger off first yell at start of 35 second RP Sender is 丘加利 (Cho'gall)
-		self:UnregisterShortTermEvents()--Unregister Yell
-		timerTransition:Start(34)--Boss/any arcane adds still active during this, so do not cancel timers here, canceled on margok death
+--"<54.77 00:46:30> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#You know nothing of the power you meddle with, Mar'gok. (It calls to us. We know! Its power will be ours!)#Cho'gall
+--"<64.00 00:46:40> [UNIT_SPELLCAST_SUCCEEDED] Cho'gall [[target:King Prison::0:178540]]", -- [19041]
+do
+	local function stopP3Timers()
+		timerArcaneWrathCD:Cancel()
+		countdownArcaneWrath:Cancel()
+		timerDestructiveResonanceCD:Cancel()
+		timerSummonArcaneAberrationCD:Cancel()
+		timerMarkOfChaosCD:Cancel()
+		countdownMarkofChaos:Cancel()
+		timerForceNovaCD:Cancel()
+		voiceForceNova:Cancel()
+		countdownForceNova:Cancel()
+		timerForceNovaFortification:Cancel()
+		countdownForceNova:Cancel()
+		specWarnForceNova:Cancel()
+	end
+	function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
+		if npc == chogallName then--Some creative shit right here. Screw localized text. This will trigger off first yell at start of 35 second RP Sender is 丘加利 (Cho'gall)
+			self:UnregisterShortTermEvents()--Unregister Yell
+			timerTransition:Start(34)--Boss/any arcane adds still active during this, so do not cancel timers here, canceled on margok death
+			self:Schedule(10, stopP3Timers, self)--Terminate timers when King Prison activates.
+		end
 	end
 end
