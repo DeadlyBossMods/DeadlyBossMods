@@ -32,14 +32,14 @@ local specWarnRampageEnded			= mod:NewSpecialWarningEnd(155539)
 local specWarnOverheadSmash			= mod:NewSpecialWarningCount(155301, nil, nil, nil, 2, nil, true)
 local specWarnPetrifyingSlam		= mod:NewSpecialWarningMoveAway(155326, nil, nil, nil, 3, nil, true)
 
-local timerInfernoSliceCD			= mod:NewCDCountTimer(17, 155080)--Variable do to energy bugs (gruul not gain power consistently)
+local timerInfernoSliceCD			= mod:NewCDCountTimer(13, 155080)--Variable do to energy bugs (gruul not gain power consistently)
 local timerPetrifyingSlamCD			= mod:NewCDCountTimer(60, 155323)--60-70 variation
 local timerOverheadSmashCD			= mod:NewCDCountTimer(30, 155301)--30-40 variation
 local timerShatter					= mod:NewCastTimer(8, 155529)
 local timerRampage					= mod:NewBuffActiveTimer(30, 155539)
 local timerRampageCD				= mod:NewCDTimer(121.5, 155539)--Not sure if it's 110 in all difficulties, this is what LFR was from rampage end to new rampage
 
-local countdownInfernoSlice			= mod:NewCountdown(17, 155080, "Tank")
+local countdownInfernoSlice			= mod:NewCountdown(13, 155080, "Tank")
 
 local voiceInfernoSlice				= mod:NewVoice(155080) --gathershare. maybe change to "InfernoSlice".
 --local voiceCrumblingRoar			= mod:NewVoice(155730)
@@ -106,12 +106,13 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnInfernoSlice:Show(self.vb.sliceCount)
 		end
---		if self:IsLFR() then
+		if self:IsDifficulty("normal", "lfr") then
 			timerInfernoSliceCD:Start(17, self.vb.sliceCount+1)--Maybe 17 in all now? 17 normal and LFR. maybe heroic and mythic still 13?
+			countdownInfernoSlice:Start(17)
+		else
+			timerInfernoSliceCD:Start()
 			countdownInfernoSlice:Start()
---		else
---			timerInfernoSliceCD:Start()
---		end
+		end
 		voiceInfernoSlice:Play("gathershare")
 	elseif spellId == 155301 then
 --		self:UnregisterShortTermEvents()
@@ -186,12 +187,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:Schedule(3, clearRampage, self)
 		timerPetrifyingSlamCD:Start(26, 1)--VERIFY
 --		timerOverheadSmashCD:Start(47, 1)--VERIFY
---		if self:IsLFR() then
+		if self:IsDifficulty("normal", "lfr") then
 			timerInfernoSliceCD:Start(17.5, 1)
 			countdownInfernoSlice:Start(17.5)
---		else
---			timerInfernoSliceCD:Start()
---		end
+		else
+			timerInfernoSliceCD:Start()
+			countdownInfernoSlice:Start()
+		end
 	end
 end
 
