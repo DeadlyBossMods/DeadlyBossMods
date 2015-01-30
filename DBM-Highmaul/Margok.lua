@@ -267,7 +267,7 @@ local function trippleMarkCheck(self, target, first)
 		voiceMarkOfChaos:Play("justrun")
 	end
 	if first then
-		self:Schedule(2.5, trippleMarkCheck, target, self)
+		self:Schedule(2.5, trippleMarkCheck, self, target)
 	end
 end
 
