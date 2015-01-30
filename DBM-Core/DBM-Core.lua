@@ -138,6 +138,7 @@ DBM.DefaultOptions = {
 	HideGuildChallengeUpdates = true,
 	HideApplicantAlerts = 0,
 	HideTooltips = false,
+	DisableSFX = false,
 	EnableModels = true,
 	RangeFrameFrames = "radar",
 	RangeFrameUpdates = "Average",
@@ -302,6 +303,7 @@ local bossuIdFound = false
 local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
 local tooltipsHidden = false
+local sfxDisabled = false
 local SWFilterDisabed = false
 local currentSpecGroup = GetActiveSpecGroup()
 local currentSpecID, currentSpecName
@@ -4701,6 +4703,15 @@ do
 			end
 			--show health frame
 			if not mod.inScenario then
+				if self.Options.HideTooltips then
+					--Better or cleaner way?
+					tooltipsHidden = true
+					GameTooltip.Temphide = function() GameTooltip:Hide() end; GameTooltip:SetScript("OnShow", GameTooltip.Temphide)
+				end
+				if self.Options.DisableSFX and GetCVar("Sound_EnableSFX") == 1 then
+					sfxDisabled = true
+					SetCVar("Sound_EnableSFX", 0)
+				end
 				if (self.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) then
 					if not self.BossHealth:IsShown() then
 						self.BossHealth:Show(mod.localization.general.name)
@@ -4753,11 +4764,6 @@ do
 						self.Bars:CreateBar(remaining, CHALLENGE_MODE_MEDAL1, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 					end
 				end
-			end
-			if self.Options.HideTooltips and not mod.inScenario then
-				--Better or cleaner way?
-				tooltipsHidden = true
-				GameTooltip.Temphide = function() GameTooltip:Hide() end; GameTooltip:SetScript("OnShow", GameTooltip.Temphide)
 			end
 			fireEvent("pull", mod, delay, synced, startHp)
 			--serperate timer recovery and normal start.
@@ -5156,6 +5162,10 @@ do
 					--Better or cleaner way?
 					tooltipsHidden = false
 					GameTooltip:SetScript("OnShow", GameTooltip.Show)
+				end
+				if sfxDisabled then
+					sfxDisabled = false
+					SetCVar("Sound_EnableSFX", 1)
 				end
 				--cache table
 				twipe(autoRespondSpam)
