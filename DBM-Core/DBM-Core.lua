@@ -8196,8 +8196,21 @@ do
 			return self:Start(nil, timer, ...) -- first argument is optional!
 		end
 		if not self.option or self.mod.Options[self.option] then
+			if self.type and self.type:find("count") then--cdcount, nextcount. remove previous timer.
+				for i = #self.startedTimers, 1, -1 do
+					DBM.Bars:CancelBar(self.startedTimers[i])
+					DBM:Debug("Timer "..self.id.. " refreshed before expires", 2)
+					self.startedTimers[i] = nil
+				end
+			end
 			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+			if not self.type or (self.type ~= "target" and self.type ~= "active" and self.type ~= "fades") then
+				local bar = DBM.Bars:GetBar(id)
+				if bar then
+					DBM:Debug("Timer "..self.id.. " refreshed before expires", 2)
+				end
+			end
 			local bar = DBM.Bars:CreateBar(timer, id, self.icon)
 			if not bar then
 				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
