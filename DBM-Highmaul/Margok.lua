@@ -125,9 +125,9 @@ local timerInfiniteDarknessCD					= mod:NewNextTimer(62, 165102)
 local timerEnvelopingNightCD					= mod:NewNextCountTimer(63, 165876)--60 seconds plus 3 second cast
 local timerDarkStarCD							= mod:NewCDTimer(61, 178607)--61-65 Variations noticed
 
-local countdownArcaneWrath						= mod:NewCountdown("OptionVersion2", "AltTwo50", 156238, false)--Important to the assigned soakers on mythic, but pretty much spam to everyone else
+local countdownArcaneWrath						= mod:NewCountdown("OptionVersion2", 50, 156238, false)--Important to the assigned soakers on mythic, but pretty much spam to everyone else
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, "Tank")
-local countdownForceNova						= mod:NewCountdown(45, 157349)
+local countdownForceNova						= mod:NewCountdown("AltTwo45", 157349)
 local countdownTransition						= mod:NewCountdown(74, 157278)
 --Mythic
 local countdownEnvelopingNight					= mod:NewCountdown(63, 165876)
