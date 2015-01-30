@@ -260,6 +260,17 @@ local function updateRangeFrame(self, markPreCast)
 	end
 end
 
+local function trippleMarkCheck(self, target, first)
+	updateRangeFrame(self)
+	if self:CheckNearby(36, target) then--Second and third check will use smaller range
+		specWarnMarkOfChaosFortificationNear:Show(target)
+		voiceMarkOfChaos:Play("justrun")
+	end
+	if first then
+		self:Schedule(2.5, trippleMarkCheck, target, self)
+	end
+end
+
 local function delayedRangeUpdate(self)
 	self.vb.RepNovaActive = nil
 	updateRangeFrame(self)
@@ -683,9 +694,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		else
 			self.vb.playerHasMark = false
-			if spellId == 164178 and self:CheckNearby(39, args.destName) then
-				specWarnMarkOfChaosFortificationNear:Show(args.destName)
-				voiceMarkOfChaos:Play("justrun")
+			if spellId == 164178 then
+				if self:CheckNearby(39, args.destName) then
+					specWarnMarkOfChaosFortificationNear:Show(args.destName)
+					voiceMarkOfChaos:Play("justrun")
+				end
+				self:Schedule(3, trippleMarkCheck, self, args.destName, true)
 			end
 		end
 		updateRangeFrame(self)
@@ -750,6 +764,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			self.vb.playerHasMark = false
 		end
 		updateRangeFrame(self)
+		if spellId == 164178 then
+			self:Unschedule(trippleMarkCheck)
+		end
 	elseif spellId == 157763 and args:IsPlayer() and self.Options.RangeFrame then
 		updateRangeFrame(self)
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
