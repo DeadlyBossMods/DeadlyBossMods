@@ -1348,8 +1348,13 @@ end
 --  Profile  --
 ---------------
 function DBM:CreateProfile(name)
-	if not name or name == "" or name:gsub("%s", "") then
+	if not name or name == "" or name:find(" ") then
 		self:AddMsg(DBM_CORE_PROFILE_CREATE_ERROR)
+		return
+	end
+	if DBM_AllSavedOptions[usedProfile] then
+		self:AddMsg(DBM_CORE_PROFILE_CREATE_ERROR_D:format(name))
+		return
 	end
 	-- create profile
 	usedProfile = name
