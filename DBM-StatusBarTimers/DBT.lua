@@ -683,10 +683,12 @@ function barPrototype:SetElapsed(elapsed)
 		self:ResetAnimations()
 	elseif self.owner.options.Sort then
 		self:RemoveFromList()
-		if (self.huge or self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) and self.owner.options.HugeBarsEnabled then -- starts enlarged?
-			self.owner.hugeBars:Append(self)
-		else
-			self.owner.smallBars:Append(self)
+		if self.moving ~= "enlarge" then
+			if (self.huge or self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) and self.owner.options.HugeBarsEnabled then -- starts enlarged?
+				self.owner.hugeBars:Append(self)
+			else
+				self.owner.smallBars:Append(self)
+			end
 		end
 	end
 	self:Update(0)
