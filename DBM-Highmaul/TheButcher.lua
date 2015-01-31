@@ -129,12 +129,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Update bounding cleave timer
 		local bossPower = UnitPower("boss1")
 		local bossProgress = bossPower * 0.3--Under frenzy he gains energy twice as fast. So about 3.33 energy per seocnd, 30 seconds to full power.
+		local timeRemaining = 30-bossProgress
 		timerBoundingCleaveCD:Update(bossProgress, 30, self.vb.boundingCleave+1)--Will bar update work correctly on a count bar? Looking at code I don't think it will, it doesn't accept/pass on extra args in Update call.
 		countdownBoundingCleave:Cancel()
 		voiceBoundingCleaveSoon:Cancel()
-		local newTime = 30-bossProgress
 		if newTime >= 3 then--Don't start countdown if only 2 seconds left
-			countdownBoundingCleave:Start(newTime)
+			countdownBoundingCleave:Start(timeRemaining)
 		end
 		if newTime >= 8.5 then--Prevent a number lower than 2
 			voiceBoundingCleaveSoon:Schedule(30-bossProgress-6.5, "156160")
