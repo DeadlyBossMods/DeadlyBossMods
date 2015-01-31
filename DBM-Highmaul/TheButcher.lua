@@ -133,10 +133,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBoundingCleaveCD:Update(bossProgress, 30, self.vb.boundingCleave+1)--Will bar update work correctly on a count bar? Looking at code I don't think it will, it doesn't accept/pass on extra args in Update call.
 		countdownBoundingCleave:Cancel()
 		voiceBoundingCleaveSoon:Cancel()
-		if newTime >= 3 then--Don't start countdown if only 2 seconds left
+		if timeRemaining >= 3 then--Don't start countdown if only 2 seconds left
 			countdownBoundingCleave:Start(timeRemaining)
 		end
-		if newTime >= 8.5 then--Prevent a number lower than 2
+		if timeRemaining >= 8.5 then--Prevent a number lower than 2
 			voiceBoundingCleaveSoon:Schedule(30-bossProgress-6.5, "156160")
 		end
 	end
