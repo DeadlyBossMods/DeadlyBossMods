@@ -34,7 +34,7 @@ local specWarnPetrifyingSlam		= mod:NewSpecialWarningMoveAway(155326, nil, nil, 
 
 local timerInfernoSliceCD			= mod:NewCDCountTimer(13, 155080)--Variable do to energy bugs (gruul not gain power consistently)
 local timerPetrifyingSlamCD			= mod:NewCDCountTimer(60, 155323)--60-70 variation
-local timerOverheadSmashCD			= mod:NewCDCountTimer(30, 155301)--30-40 variation
+local timerOverheadSmashCD			= mod:NewCDCountTimer(25, 155301)--25-42 variation
 local timerShatter					= mod:NewCastTimer(8, 155529)
 local timerRampage					= mod:NewBuffActiveTimer(30, 155539)
 local timerRampageCD				= mod:NewCDTimer(121.5, 155539)--Not sure if it's 110 in all difficulties, this is what LFR was from rampage end to new rampage
@@ -80,11 +80,17 @@ function mod:OnCombatStart(delay)
 	self.vb.sliceCount = 0
 	self.vb.petrifyCount = 0
 	self.vb.rampage = false
-	timerInfernoSliceCD:Start(14-delay, 1)
-	countdownInfernoSlice:Start(14-delay)
-	timerPetrifyingSlamCD:Start(21.5-delay, 1)
+	if self:IsDifficulty("normal", "lfr") then
+		timerInfernoSliceCD:Start(14-delay, 1)
+		countdownInfernoSlice:Start(14-delay)
+		timerRampageCD:Start(114-delay)--112-117 variation (121.5 in LFR)
+	else
+		timerInfernoSliceCD:Start(11-delay, 1)
+		countdownInfernoSlice:Start(11-delay)
+		timerRampageCD:Start(108-delay)--Need more data to find variation on this one
+	end
+	timerPetrifyingSlamCD:Start(20.5-delay, 1)
 	timerOverheadSmashCD:Start(-delay, 1)
-	timerRampageCD:Start(114-delay)--112-117 variation (121.5 in LFR)
 --[[	self:RegisterShortTermEvents(
 		"UNIT_POWER_FREQUENT boss1"
 	)--]]
@@ -120,7 +126,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnOverheadSmash:Show(self.vb.smashCount)
 		voiceOverheadSmash:Play("shockwave")
 		if not self.vb.rampage and self.vb.smashCount < 3 then
-			timerOverheadSmashCD:Start(nil, self.vb.smashCount+1)--First usually 31-21, second 33-39
+			timerOverheadSmashCD:Start(nil, self.vb.smashCount+1)--First usually 25-32, second 33-40
 		end
 	elseif spellId == 155326 and self.Options.RangeFrame and not self:IsMythic() then--On mythic everyone gets debuff so no reason to ever show this radar first
 		DBM.RangeCheck:Show(8, debuffFilter)--Show filtered frame at first for all, then update to unfiltered for those affected.
@@ -203,9 +209,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
---[[
-function mod:UNIT_POWER_FREQUENT(uId)
-	local bossPower = UnitPower("boss1") --Get Boss Power
-	bossPower = bossPower / 10 --Divide it by 10 (cause he gains 10 power per second and we need to know how many seconds to subtrack from CD)
-	timerInfernoSliceCD:Update(10-bossPower+3, 13)--Maybe awkward way of doing it since timer will slow down when gruul does, but as long as cast comes when timer finishes, that's best result we can get with shitty blizzard code.
-end--]]
+
+do
+	local lastPower = 0
+	function mod:UNIT_POWER_FREQUENT(uId)
+		local bossPower = UnitPower("boss1") --Get Boss Power
+		if bossPower >= 50 and bossPower-lastPower > 40 then--Boss gained an enormous amount of energy all of a sudden (less than 4 targets soaked inferno strike on mythic difficulty)
+			--So update timer
+			local timeElapsed = bossPower / 10 --Divide it by 10 (cause he gains 10 power per second and we need to know how many seconds to subtrack from CD)
+			local timeRemaining = 10-timeElapsed
+			timerInfernoSliceCD:Update(timeElapsed+3, 13, self.vb.sliceCount+1)--+3 because total time is 13, else, it's timeElapsed, 10
+			countdownInfernoSlice:Cancel()
+			countdownInfernoSlice:Start(timeRemaining)
+		end
+		lastPower = bossPower
+	end
+end
