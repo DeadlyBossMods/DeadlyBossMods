@@ -37,8 +37,8 @@ function mod:OmenOfDeathTarget(targetname, uId)
 		specWarnOmenOfDeath:Show()
 		yellOmenOfDeath:Yell()
 		voiceOmenOfDeath:Play("runaway")
-	elseif self:CheckNearby(5, targetname) then
-		specWarnOmenOfDeathNear:Show()
+	elseif self:CheckNearby(8, targetname) then
+		specWarnOmenOfDeathNear:Show(targetname)
 	end
 end
 
