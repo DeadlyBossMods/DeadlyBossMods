@@ -55,6 +55,7 @@ DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor 기록을 중단합니다."
 
 DBM_CORE_PROFILE_CREATED			= "'%s' 프로필을 만들었습니다."
 DBM_CORE_PROFILE_CREATE_ERROR		= "프로필 생성 실패. 프로필 이름이 올바르지 않습니다."
+DBM_CORE_PROFILE_CREATE_ERROR_D		= "프로필 생성 실패. '%s' 프로필이 이미 존재합니다."
 DBM_CORE_PROFILE_APPLIED			= "'%s' 프로필을 적용하였습니다."
 DBM_CORE_PROFILE_APPLY_ERROR		= "프로필 적용 실패. %s 프로필이 존재하지 않습니다."
 DBM_CORE_PROFILE_COPIED				= "'%s' 프로필을 복사하였습니다."
