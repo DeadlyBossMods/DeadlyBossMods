@@ -231,6 +231,7 @@ L.HideWatchFrame			= "추적중인 업적이 없을 경우 전투 중 퀘스트 
 L.HideGarrisonUpdates		= "전투 중 주둔지 알림창(임무, 건물 완료 등) 숨기기"
 L.HideGuildChallengeUpdates	= "전투 중 길드 도전 과제 알림창 숨기기"
 L.HideTooltips				= "전투 중 게임 툴팁 끄기"
+L.DisableSFX				= "전투 중 효과음 끄기"
 L.HideApplicantAlerts		= "파티 구성하기 알림 끄기"
 L.HideApplicantAlertsFull	= "파티원이 가득 찼을 경우"
 L.HideApplicantAlertsNotL	= "파티장이 아닌 경우 (또는 파티원이 가득 차고 파티장인 경우)"
