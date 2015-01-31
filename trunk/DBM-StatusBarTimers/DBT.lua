@@ -264,15 +264,16 @@ function DLL:Append(obj)
 	if self.first == nil then -- list is empty
 		self.first = obj
 		self.last = obj
+		obj:SetPosition()
 	elseif not obj.owner.options.Sort then -- list is not emty
 		obj.prev = self.last
 		self.last.next = obj
 		self.last = obj
+		obj:SetPosition()
 	else
 		local ptr = self.first
 		local barInserted = false
 		while ptr do
-			ptr:SetPosition()
 			if not barInserted then
 				if ptr.timer > obj.timer then
 					if ptr == self.first then
@@ -296,10 +297,10 @@ function DLL:Append(obj)
 			ptr = ptr.next
 		end
 		if not barInserted then
-			self.last:SetPosition()
 			obj.prev = self.last
 			self.last.next = obj
 			self.last = obj
+			obj:SetPosition()
 		end
 	end
 	return obj
@@ -314,11 +315,13 @@ function DLL:Remove(obj)
 	elseif self.first == obj then -- trying to remove the first element
 		self.first = obj.next
 		self.first.prev = nil
+		self.first:MoveToNextPosition()
 	elseif self.last == obj then -- trying to remove the last element
 		self.last = obj.prev
 		self.last.next = nil
 	elseif obj.prev and obj.next then -- trying to remove something in the middle of the list
 		obj.prev.next, obj.next.prev = obj.next, obj.prev
+		obj.next:MoveToNextPosition()
 	end
 	obj.prev = nil
 	obj.next = nil
@@ -552,7 +555,6 @@ do
 			end
 			newBar:SetText(id)
 			newBar:SetIcon(icon)
-			newBar:SetPosition()
 			self.bars[newBar] = true
 			newBar:ApplyStyle()
 			newBar:Update(0)
@@ -652,15 +654,10 @@ function barPrototype:SetTimer(timer)
 end
 
 function barPrototype:ResetAnimations()
-	local next = self.next
 	self:RemoveFromList()
 	self.enlarged = nil
 	self.moving = nil
-	if next then
-		next:MoveToNextPosition()
-	end
 	self.owner.smallBars:Append(self)
-	self:SetPosition()
 end
 
 function barPrototype:Pause()
@@ -690,7 +687,6 @@ function barPrototype:SetElapsed(elapsed)
 		else
 			self.owner.smallBars:Append(self)
 		end
-		self:SetPosition()
 	end
 	self:Update(0)
 end
@@ -814,9 +810,6 @@ function barPrototype:Update(elapsed)
 	elseif isMoving == "move" then
 		self.moving = nil
 		self:SetPosition()
-	elseif isMoving == "next" then
-		self.moving = nil
-		self:SetPosition()
 	elseif isMoving == "enlarge" and self.moveElapsed <= 1 then
 		self:AnimateEnlarge(elapsed)
 	elseif isMoving == "enlarge" then
@@ -824,29 +817,17 @@ function barPrototype:Update(elapsed)
 		self.enlarged = true
 		obj.hugeBars:Append(self)
 		self:ApplyStyle()
-		self:SetPosition()
 	elseif isMoving == "nextEnlarge" then
 		self.moving = nil
 		self.enlarged = true
 		obj.hugeBars:Append(self)
 		self:ApplyStyle()
-		self:SetPosition()
 	end
 	local enlargeTime = currentStyle ~= "BigWigs" and obj.options.EnlargeBarsTime or 11
 	local enlargePer = currentStyle ~= "BigWigs" and obj.options.EnlargeBarsPercent or 0
 	if (timerValue <= enlargeTime or (timerValue/totaltimeValue) <= enlargePer) and (not self.small) and not self.enlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
-		local next = self.next
 		self:RemoveFromList()
-		local oldX, oldY
-		if next then
-			oldX = next.frame:GetRight() - next.frame:GetWidth()/2 -- the next frame's point needs to be cleared before we enlarge the bar to prevent the frame from "jumping around"
-			oldY = next.frame:GetTop() -- so we need to save the old point for :MoveToNextPosition() as :GetTop() and :GetRight() might return nil (sometimes? happened only once in 2 weeks of raiding...but it crashed DBT...) after :ClearAllPoints()
-			next.frame:ClearAllPoints()
-		end
 		self:Enlarge()
-		if next then
-			next:MoveToNextPosition(oldX, oldY) -- ugly?
-		end
 	end
 end
 
@@ -902,14 +883,10 @@ end
 --  Bar Cancel  --
 ------------------
 function barPrototype:Cancel()
-	local next = self.next
 	tinsert(unusedBars, self.frame)
 	self.frame:Hide()
 	self.frame.obj = nil
 	self:RemoveFromList()
-	if next then
-		next:MoveToNextPosition()
-	end
 	self.owner.bars[self] = nil
 	unusedBarObjects[self] = self
 	self.dead = true
@@ -990,9 +967,10 @@ local function updateOrientation(self)
 				bar.moving = nil
 				self.hugeBars:Append(bar)
 				bar:ApplyStyle()
+			else
+				bar.moving = nil
+				bar:SetPosition()
 			end
-			bar.moving = nil
-			bar:SetPosition()
 		end
 	end
 end
@@ -1153,11 +1131,11 @@ function barPrototype:SetPosition()
 	end
 end
 
-function barPrototype:MoveToNextPosition(oldX, oldY)
+function barPrototype:MoveToNextPosition()
 	if self.moving == "enlarge" then return end
 	local newAnchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
-	local oldX = oldX or (self.frame:GetRight() - self.frame:GetWidth()/2)
-	local oldY = oldY or (self.frame:GetTop())
+	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
+	local oldY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
 		self.movePoint = "BOTTOM"
@@ -1170,9 +1148,11 @@ function barPrototype:MoveToNextPosition(oldX, oldY)
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local newY = self.frame:GetTop()
-	self.frame:ClearAllPoints()
-	self.frame:SetPoint("TOP", newAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
-	self.moving = self.owner.options.Style == "BigWigs" and "next" or "move"
+	if self.owner.options.Style ~= "BigWigs" then
+		self.frame:ClearAllPoints()
+		self.frame:SetPoint(self.movePoint, newAnchor, self.moveRelPoint, -(newX - oldX), -(newY - oldY))
+		self.moving = "move"
+	end
 	self.moveAnchor = newAnchor
 	self.moveOffsetX = -(newX - oldX)
 	self.moveOffsetY = -(newY - oldY)
@@ -1226,7 +1206,6 @@ function barPrototype:AnimateEnlarge(elapsed)
 		self.enlarged = true
 		self.owner.hugeBars:Append(self)
 		self:ApplyStyle()
-		self:SetPosition()
 	end
 end
 
