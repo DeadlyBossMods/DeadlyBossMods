@@ -54,6 +54,7 @@ DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor logging ended."
 
 DBM_CORE_PROFILE_CREATED			= "'%s' profile created."
 DBM_CORE_PROFILE_CREATE_ERROR		= "Create profile failed. Invalid profile name."
+DBM_CORE_PROFILE_CREATE_ERROR_D		= "Create profile failed. '%s' profile already exists."
 DBM_CORE_PROFILE_APPLIED			= "'%s' profile applied."
 DBM_CORE_PROFILE_APPLY_ERROR		= "Apply profile failed. '%s' profile does not exist."
 DBM_CORE_PROFILE_COPIED				= "'%s' profile copied."
