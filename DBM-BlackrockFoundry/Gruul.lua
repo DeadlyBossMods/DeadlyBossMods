@@ -88,16 +88,18 @@ function mod:OnCombatStart(delay)
 		timerInfernoSliceCD:Start(11-delay, 1)
 		countdownInfernoSlice:Start(11-delay)
 		timerRampageCD:Start(108-delay)--Need more data to find variation on this one
+		if self:IsMythic() then
+			self:RegisterShortTermEvents(
+				"UNIT_POWER_FREQUENT boss1"
+				)
+		end
 	end
 	timerPetrifyingSlamCD:Start(20.5-delay, 1)
 	timerOverheadSmashCD:Start(-delay, 1)
---[[	self:RegisterShortTermEvents(
-		"UNIT_POWER_FREQUENT boss1"
-	)--]]
 end
 
 function mod:OnCombatEnd()
---	self:UnregisterShortTermEvents()
+	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -121,7 +123,6 @@ function mod:SPELL_CAST_START(args)
 		end
 		voiceInfernoSlice:Play("gathershare")
 	elseif spellId == 155301 then
---		self:UnregisterShortTermEvents()
 		self.vb.smashCount = self.vb.smashCount + 1
 		specWarnOverheadSmash:Show(self.vb.smashCount)
 		voiceOverheadSmash:Play("shockwave")
@@ -142,10 +143,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.petrifyCount == 1 then
 			timerPetrifyingSlamCD:Start(nil, self.vb.petrifyCount+1)
 		end
---	elseif spellId == 155080 then--Inferno Slice Cast Finish
---		self:RegisterShortTermEvents(
---			"UNIT_POWER_FREQUENT boss1"
---		)
 	end
 end
 
@@ -169,6 +166,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerRampage:Start()
 		timerInfernoSliceCD:Cancel()
 		countdownInfernoSlice:Cancel()
+		self:UnregisterShortTermEvents()
 	elseif spellId == 155078 then
 		local amount = args.amount or 1
 		if amount % 2 == 0 or amount >= 5 then
@@ -199,6 +197,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		else
 			timerInfernoSliceCD:Start()
 			countdownInfernoSlice:Start()
+			if self:IsMythic() then
+				self:RegisterShortTermEvents(
+					"UNIT_POWER_FREQUENT boss1"
+					)
+			end
 		end
 	end
 end
@@ -216,6 +219,7 @@ do
 		local bossPower = UnitPower("boss1") --Get Boss Power
 		if bossPower >= 50 and bossPower-lastPower > 40 then--Boss gained an enormous amount of energy all of a sudden (less than 4 targets soaked inferno strike on mythic difficulty)
 			--So update timer
+			DBM:Debug("Massive power gain detected. Updating Inferno Slice timer.")
 			local timeElapsed = bossPower / 10 --Divide it by 10 (cause he gains 10 power per second and we need to know how many seconds to subtrack from CD)
 			local timeRemaining = 10-timeElapsed
 			timerInfernoSliceCD:Update(timeElapsed+3, 13, self.vb.sliceCount+1)--+3 because total time is 13, else, it's timeElapsed, 10
