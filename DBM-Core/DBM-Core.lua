@@ -1734,20 +1734,25 @@ do
 		twipe(OutdatedUsers)
 		self:AddMsg(DBM_CORE_VERSIONCHECK_HEADER)
 		for i, v in ipairs(sortMe) do
+			local name = v.name
+			local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
+			if playerColor then
+				name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
+			end
 			if v.displayVersion and not (v.bwrevision or v.bwarevision) then--DBM, no BigWigs
 				if self.Options.ShowAllVersions then
-					self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, "DBM "..v.displayVersion, v.revision, v.VPVersion or ""), false)--Only display VP version if not running two mods
+					self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(name, "DBM "..v.displayVersion, v.revision, v.VPVersion or ""), false)--Only display VP version if not running two mods
 				end
 				if notify and v.revision < self.ReleaseRevision then
 					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
 			elseif self.Options.ShowAllVersions and (v.displayVersion and (v.bwrevision or v.bwarevision)) then--DBM & BigWigs
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_TWO:format(v.name, "DBM "..v.displayVersion, v.revision, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision), false)
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_TWO:format(name, "DBM "..v.displayVersion, v.revision, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision), false)
 			elseif self.Options.ShowAllVersions and (not v.displayVersion and (v.bwrevision or v.bwarevision)) then--BigWigs, No DBM
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision, ""), false)
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(name, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision, ""), false)
 			else
 				if self.Options.ShowAllVersions then
-					self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(v.name), false)
+					self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(name), false)
 				end
 			end
 		end
@@ -1795,8 +1800,13 @@ do
 		tsort(sortLag, sortit)
 		self:AddMsg(DBM_CORE_LAG_HEADER)
 		for i, v in ipairs(sortLag) do
+			local name = v.name
+			local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
+			if playerColor then
+				name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
+			end
 			if v.worldlag then
-				self:AddMsg(DBM_CORE_LAG_ENTRY:format(v.name, v.worldlag, v.homelag), false)
+				self:AddMsg(DBM_CORE_LAG_ENTRY:format(name, v.worldlag, v.homelag), false)
 			else
 				tinsert(nolagResponse, v.name)
 			end
