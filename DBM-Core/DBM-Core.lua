@@ -303,7 +303,6 @@ local bossuIdFound = false
 local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
 local tooltipsHidden = false
-local sfxDisabled = false
 local SWFilterDisabed = false
 local currentSpecGroup = GetActiveSpecGroup()
 local currentSpecID, currentSpecName
@@ -4723,8 +4722,8 @@ do
 					tooltipsHidden = true
 					GameTooltip.Temphide = function() GameTooltip:Hide() end; GameTooltip:SetScript("OnShow", GameTooltip.Temphide)
 				end
-				if self.Options.DisableSFX and GetCVar("Sound_EnableSFX") == 1 then
-					sfxDisabled = true
+				if self.Options.DisableSFX and GetCVar("Sound_EnableSFX") == "1" then
+					self.Options.sfxDisabled = true
 					SetCVar("Sound_EnableSFX", 0)
 				end
 				if (self.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) then
@@ -5178,8 +5177,8 @@ do
 					tooltipsHidden = false
 					GameTooltip:SetScript("OnShow", GameTooltip.Show)
 				end
-				if sfxDisabled then
-					sfxDisabled = false
+				if self.Options.sfxDisabled then
+					self.Options.sfxDisabled = nil
 					SetCVar("Sound_EnableSFX", 1)
 				end
 				--cache table
@@ -5515,10 +5514,10 @@ end
 do
 	function DBM:PLAYER_ENTERING_WORLD()
 		if GetLocale() == "ptBR" or GetLocale() == "frFR" or GetLocale() == "esES" or GetLocale() == "esMX" or GetLocale() == "itIT" then
-			self:Schedule(10, function() if not DBM.Options.HelpMessageShown2 then DBM.Options.HelpMessageShown2 = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
+			self:Schedule(10, function() if not self.Options.HelpMessageShown2 then self.Options.HelpMessageShown2 = true self:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
 		end
-		self:Schedule(20, function() if not DBM.Options.ForumsMessageShown then DBM.Options.ForumsMessageShown = DBM.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
-		self:Schedule(30, function() if not DBM.Options.SettingsMessageShown then DBM.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
+		self:Schedule(20, function() if not self.Options.ForumsMessageShown then self.Options.ForumsMessageShown = self.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
+		self:Schedule(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
 --		self:Schedule(40, function() if DBM.Options.BugMessageShown < 1 then DBM.Options.BugMessageShown = 1 self:AddMsg(DBM_CORE_BLIZZ_BUGS) end end)
 		if type(RegisterAddonMessagePrefix) == "function" then
 			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
@@ -5527,6 +5526,10 @@ do
 			if not RegisterAddonMessagePrefix("BigWigs") then
 				self:AddMsg("Error: unable to register BigWigs addon message prefix (reached client side addon message filter limit), BigWigs version checks will be unavailable")
 			end
+		end
+		if self.Options.sfxDisabled then--Check if sound was disabled by previous session and not re-enabled.
+			self.Options.sfxDisabled = nil
+			SetCVar("Sound_EnableSFX", 1)
 		end
 	end
 end
