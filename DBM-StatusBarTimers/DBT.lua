@@ -55,6 +55,7 @@ local options
 local setupHandlers
 local applyFailed = false
 local totalBars = 0
+local barIsAnimating = false
 local function stringFromTimer(t)
 	if t <= DBM.Bars:GetOption("Decimal") then
 		return ("%.1f"):format(t)
@@ -796,6 +797,7 @@ function barPrototype:Update(elapsed)
 		self.ftimer = self.ftimer + elapsed
 	end
 	if isMoving == "move" and self.moveElapsed <= 0.5 then
+		barIsAnimating = true
 		self.moveElapsed = self.moveElapsed + elapsed
 		local melapsed = self.moveElapsed
 		local newX = self.moveOffsetX + (obj.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"] - self.moveOffsetX) * (melapsed / 0.5)
@@ -808,16 +810,20 @@ function barPrototype:Update(elapsed)
 		frame:ClearAllPoints()
 		frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
 	elseif isMoving == "move" then
+		barIsAnimating = false
 		self.moving = nil
 		self:SetPosition()
 	elseif isMoving == "enlarge" and self.moveElapsed <= 1 then
+		barIsAnimating = true
 		self:AnimateEnlarge(elapsed)
 	elseif isMoving == "enlarge" then
+		barIsAnimating = false
 		self.moving = nil
 		self.enlarged = true
 		obj.hugeBars:Append(self)
 		self:ApplyStyle()
 	elseif isMoving == "nextEnlarge" then
+		barIsAnimating = false
 		self.moving = nil
 		self.enlarged = true
 		obj.hugeBars:Append(self)
@@ -1217,7 +1223,7 @@ do
 	local function onUpdate(self, elapsed)
 		self.obj.curTime = GetTime()
 		self.obj.delta = self.obj.curTime - self.obj.lastUpdate
-		if (self.obj.moving or "") == "enlarge" or self.obj.delta >= 0.02 then
+		if barIsAnimating or self.obj.delta >= 0.02 then
 			if self.obj then
 				self.obj.lastUpdate = self.obj.curTime
 				self.obj:Update(self.obj.delta)
