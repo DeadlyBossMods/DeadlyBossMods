@@ -1221,19 +1221,20 @@ end
 ------------------------
 do
 	local function onUpdate(self, elapsed)
-		self.obj.curTime = GetTime()
-		self.obj.delta = self.obj.curTime - self.obj.lastUpdate
-		if barIsAnimating or self.obj.delta >= 0.02 then
-			if self.obj then
+		if self.obj then
+			self.obj.curTime = GetTime()
+			self.obj.delta = self.obj.curTime - self.obj.lastUpdate
+	
+			if barIsAnimating or self.obj.delta >= 0.02 then
 				self.obj.lastUpdate = self.obj.curTime
 				self.obj:Update(self.obj.delta)
-			else
-				-- This should *never* happen; .obj is only set to nil when calling :Hide() and :Show() is only called in a function that also sets .obj
-				-- However, there have been several reports of this happening since WoW 5.x, wtf?
-				-- Unfortunately, none of the developers was ever able to reproduce this.
-				-- The bug reports show screenshots of expired timers that are still visible (showing 0.00) with all clean-up operations (positioning, list entry) except for the :Hide() call being performed...
-				self:Hide()
 			end
+		else
+			-- This should *never* happen; .obj is only set to nil when calling :Hide() and :Show() is only called in a function that also sets .obj
+			-- However, there have been several reports of this happening since WoW 5.x, wtf?
+			-- Unfortunately, none of the developers was ever able to reproduce this.
+			-- The bug reports show screenshots of expired timers that are still visible (showing 0.00) with all clean-up operations (positioning, list entry) except for the :Hide() call being performed...
+			self:Hide()
 		end
 	end
 
