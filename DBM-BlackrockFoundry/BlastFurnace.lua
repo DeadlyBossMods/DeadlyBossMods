@@ -118,10 +118,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 160382 and self:CheckTankDistance(args.sourceGUID, 30) then
-		specWarnDefense:Show()
-		voiceDefense:Play("mobout")
-	elseif spellId == 155179 then--Repair should NOT check tank distance, because these mobs run to lowest health regulator, even if it's on OTHER side of where their tank is.
+	if spellId == 155179 then--Repair should NOT check tank distance, because these mobs run to lowest health regulator, even if it's on OTHER side of where their tank is.
 		specWarnRepair:Show(args.sourceName)
 		voiceRepair:Play("kickcast")
 	elseif spellId == 174726 and self:CheckTankDistance(args.sourceGUID, 30) then
@@ -131,6 +128,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if args:IsPlayer() and not UnitBuff("player", dkAMS) then--Because forced to use SUCCESS, extra check to avoid giving death knight a warning if they blocked it with AMS
 			specWarnRuptureOn:Show()
 		end
+--	elseif spellId == 160382 and self:CheckTankDistance(args.sourceGUID, 30) then
+--		specWarnDefense:Show()
+--		voiceDefense:Play("mobout")
 	end
 end
 
