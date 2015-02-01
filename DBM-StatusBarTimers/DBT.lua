@@ -278,17 +278,17 @@ function DLL:Append(obj)
 			if not barInserted then
 				if ptr.timer > obj.timer then
 					if ptr == self.first then
-						obj.next = ptr
+						obj.prev = nil
+						obj.next = self.first
+						self.first.prev = obj
 						self.first = obj
-						ptr.prev = obj
 						obj:SetPosition()
 						ptr:SetPosition()
 					else
-						obj.next = ptr
 						obj.prev = ptr.prev
-						ptr.prev = obj
+						obj.next = ptr
 						obj.prev.next = obj
-						obj.prev:SetPosition()
+						obj.next.prev = obj
 						obj:SetPosition()
 						ptr:SetPosition()
 					end
@@ -299,6 +299,7 @@ function DLL:Append(obj)
 		end
 		if not barInserted then
 			obj.prev = self.last
+			obj.next = nil
 			self.last.next = obj
 			self.last = obj
 			obj:SetPosition()
