@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Jan 25, 2015@12562
+-- Last update: Jan 31, 2015@12636
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -61,9 +61,13 @@ DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor logging ended."
 
 DBM_CORE_PROFILE_CREATED			= "配置文件 '%s' 已经创建."
 DBM_CORE_PROFILE_CREATE_ERROR		= "配置文件创建失败. 无效的配置文件名."
+DBM_CORE_PROFILE_CREATE_ERROR_D		= "配置文件创建失败. '%s' 已经存在."
 DBM_CORE_PROFILE_APPLIED			= "配置文件 '%s' 已经应用."
 DBM_CORE_PROFILE_APPLY_ERROR		= "配置文件应用失败. '%s' 并不存在."
 DBM_CORE_PROFILE_DELETED			= "配置文件 '%s' 已经删除. 'Default' 默认配置文件会被应用."
+DBM_CORE_PROFILE_COPIED				= "配置文件 '%s' 已经复制."
+DBM_CORE_PROFILE_COPY_ERROR			= "配置文件复制失败. '%s' 并不存在."
+DBM_CORE_PROFILE_COPY_ERROR_SELF	= "无法自己复制自己的配置文件."
 DBM_CORE_PROFILE_DELETE_ERROR		= "配置文件删除失败. '%s' 并不存在."
 DBM_CORE_PROFILE_CANNOT_DELETE		= "'Default' 默认配置文件无法被删除"
 DBM_CORE_MPROFILE_COPY_SUCCESS		= "%s(%d专精)的模块设置已经被复制."
@@ -149,7 +153,7 @@ DBM_CORE_UPDATEREMINDER_DISABLE			= "警告：你的DBM已经过期了%d个版�
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "你的DBM版本会在这首领战斗有不准确的计时器或警告。这问题会在下次正式版更新。你也可以更新至最新的alpha版本立即修正此问题。"
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "警告：你使用了不正确版本的DBM。请确保DBM版本和游戏版本一致。"
 DBM_CORE_VEM							= "你好像在使用VEM。DBM在这种情况下无法被载入。"
-DBM_CORE_3RDPROFILES					= "警告: DBM-Profiles 已经无法和本版本DBM兼容。DBM核心已经自带配置文件管理系统，请移除它避免冲突。"
+DBM_CORE_3RDPROFILES					= "警告: DBM-Profiles已经无法和本版本DBM兼容。DBM核心已经自带配置文件管理系统，请移除DBM-Profiles避免冲突。"
 
 DBM_CORE_MOVABLE_BAR				= "拖动我！"
 
@@ -162,6 +166,7 @@ DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+拖动 / 右键拖动：拖动\nAlt+Sh
 
 DBM_CORE_RANGECHECK_HEADER			= "距离监视（%d码）"
 DBM_CORE_RANGECHECK_SETRANGE		= "设置距离"
+DBM_CORE_RANGECHECK_SETTHRESHOLD	= "设置玩家数量阈值"
 DBM_CORE_RANGECHECK_SOUNDS			= "音效"
 DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "声音提示：当有玩家接近时"
 DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "声音提示：多名玩家接近时"
@@ -175,7 +180,7 @@ DBM_CORE_RANGECHECK_OPTION_FRAMES	= "框体"
 DBM_CORE_RANGECHECK_OPTION_RADAR	= "显示雷达框体"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "显示文本框体"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "同时显示雷达和文本框体"
-DBM_CORE_RANGERADAR_HEADER			= "距离雷达（%d码）"
+DBM_CORE_RANGERADAR_HEADER			= "距离%d码 玩家%d人"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d人在监视距离内（%d码）"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1f码)"--One target
 
@@ -190,27 +195,25 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm version:进行团队范围的DBM版本检测（也可使用：ver）",
 	"/dbm unlock:显示一个可移动的计时条，可通过对它来移动所有DBM计时条的位置（也可使用：move）",
 	"/dbm timer/ctimer/ltimer/cltimer <x> <text>: 启动一个 <x> 秒的计时器。文本内容为 <text>.",
-	"/dbm broadcast timer <x> <文本>:向团队广播一个以<文本>为名称的时间为<x>秒的倒计时（需要团队领袖或助理权限）",
+	"/dbm broadcast timer <x> <文本>:向团队广播一个以<文本>为名称的时间为<x>秒的倒计时(需要队长或助理权限)。",
 	"/dbm timer endloop: 停止所有的 ltimer 和 cltimer.",
-	"/dbm break <分钟>: 开始一个<分钟>时间的休息计时条。并向所有团队成员发送这个DBM休息计时条（需开启团队广播及助理权限）。",
-	"/dbm pull <秒>: 开始一个<秒>时间的开怪计时条。 并向所有团队成员发送这个DBM开怪计时条（需开启团队广播及助理权限）。",
+	"/dbm break <分钟>: 开始一个<分钟>时间的休息计时条。并向所有团队成员发送这个DBM休息计时条(需要队长或助理权限)。",
+	"/dbm pull <秒>: 开始一个<秒>时间的开怪计时条。 并向所有团队成员发送这个DBM开怪计时条(需要队长或助理权限)。",
 	"/dbm arrow: 显示DBM箭头，输入/dbm arrow查询 更多信息。",
-	"/dbm lockout: 查询团队成员当前的副本锁定状态（也可使用：lockouts, ids）（需要团队领袖或助理权限）。",
-	"/dbm lag: 检测全团延时。"
+	"/dbm lockout: 查询团队成员当前的副本锁定状态(副本CD)(也可使用：lockouts, ids)(需要队长或助理权限)。",
+	"/dbm lag: 检测全团网络延时。"
 }
 
-DBM_ERROR_NO_PERMISSION				= "你无权进行该操作。"
+DBM_ERROR_NO_PERMISSION				= "你无权进行该操作。(需要队长或助理权限?)"
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "隐藏生命值框体"
-
-DBM_CORE_ALLIANCE					= "联盟"
-DBM_CORE_HORDE						= "部落"
 
 DBM_CORE_UNKNOWN					= "未知"
 DBM_CORE_LEFT						= "左"
 DBM_CORE_RIGHT						= "右"
 DBM_CORE_BACK						= "后"
 DBM_CORE_FRONT						= "前"
+DBM_CORE_INTERMISSION				= "中场时间"
 
 DBM_CORE_BREAK_START				= "开始休息 - %s分钟！（由 %s 发送）"
 DBM_CORE_BREAK_MIN					= "%s分钟后休息结束！"
@@ -350,8 +353,10 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2		= "倒计时：$spell:%s消失时"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT			= "倒计时：$spell:%s的持续时间正计时"
 DBM_CORE_AUTO_YELL_OPTION_TEXT				= "当你受到$spell:%s影响时大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT			= UnitName("player") .. " 中了 %s!"
-DBM_CORE_AUTO_RANGE_OPTION_TEXT				= "距离监视(%s)：$spell:%s"--string used for range so we can use things like "5/2" as a value for that field
-DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT		= "距离监视(%s)"--For when a range frame is just used for more than one thing
+DBM_CORE_AUTO_RANGE_OPTION_TEXT				= "距离监视(%s码)：$spell:%s"--string used for range so we can use things like "5/2" as a value for that field
+DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT		= "距离监视(%s码)"--For when a range frame is just used for more than one thing
+DBM_CORE_AUTO_RRANGE_OPTION_TEXT			= "反转距离监视(%s码)：$spell:%s"--Reverse range frame (green when players in range, red when not)
+DBM_CORE_AUTO_RRANGE_OPTION_TEXT_SHORT		= "反转距离监视(%s码)"
 DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT		= "信息框：$spell:%s"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT		= "当首领开打时播放准备检查的音效（即使没有选定目标）"
 
