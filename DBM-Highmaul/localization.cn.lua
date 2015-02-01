@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Jan 25, 2015@12562
+-- Last update: Jan 31, 2015@12636
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -73,9 +73,16 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(1197)
 
+L:SetOptionLocalization({
+	GazeYellType		= "设定疯狂之眼的大喊方式",
+	Countdown			= "倒计时 直到消失",
+	Stacks				= "堆叠层数"
+})
+
 L:SetMiscLocalization({
-	BrandedYell			= "烙印层(%d)%d码",
-	GazeYell			= "凝视于 %d 秒后结束",
+	BrandedYell			= "烙印(%d层)%d码",
+	GazeYell			= "凝视于%d秒后结束",
+	GazeYell2			= "%s中了凝视(%d)",
 	PlayerDebuffs		= "距离最近的疯狂之眼"  --165243
 })
 -------------
