@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START 156446"
 )
 
-local specWarnBlastWave				= mod:NewSpecialWarningMoveTo(156446, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Spell:format(156446))
+local specWarnBlastWave				= mod:NewSpecialWarningMoveTo(156446, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(156446))
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
