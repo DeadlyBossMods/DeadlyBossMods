@@ -18,6 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 156932 155223",
 	"SPELL_PERIODIC_MISSED 156932 155223",
 	"UNIT_DIED",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_POWER_FREQUENT boss1"
 )
 
@@ -50,16 +51,16 @@ local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", "Dps")
 local specWarnHeartoftheMountain= mod:NewSpecialWarningSwitch("ej10808", "Tank")
 local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3, nil, nil, nil, nil, true)
 local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242, nil, nil, nil, nil, nil, true)
-local specWarnBlast				= mod:NewSpecialWarningSpell(155209, nil, nil, nil, 2)
+local specWarnBlast				= mod:NewSpecialWarningSoon(155209, nil, nil, nil, 2)
 
 local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
 local timerBlastCD				= mod:NewCDTimer(25, 155209)--25 seconds base. shorter when loading is being channeled by operators.
-local timerEngineer				= mod:NewNextTimer(45, "ej9649", nil, nil, nil, 155179)
+local timerEngineer				= mod:NewNextTimer(35, "ej9649", nil, nil, nil, 155179)
 local timerBellowsOperator		= mod:NewNextTimer(64, "ej9655", nil, nil, nil, 155181)
 local timerShieldsDown			= mod:NewBuffActiveTimer(25, 158345, nil, "Dps")--Anyone else need?
 
 local countdownBellowsOperator	= mod:NewCountdown(64, "ej9650")
-local countdownEngineer			= mod:NewCountdown("Alt45", "ej9649")
+local countdownEngineer			= mod:NewCountdown("Alt35", "ej9649")
 
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceRepair				= mod:NewVoice(155179, "-Healer") --int
@@ -80,19 +81,20 @@ local UnitPower, UnitBuff = UnitPower, UnitBuff
 local dkAMS = GetSpellInfo(48707)
 
 --I was pretty bad at doing /yell adds in my chat log so this may not be perfect.
---It may not be 45 at all. Or at least first may not be 45 so rest will be off by a couple sec.
+--It may not be 35 at all. Or at least first may not be 45 so rest will be off by a couple sec.
 --Todo, verify and improve. Putting timer in to catch it if wrong faster, but adding warnings only after it's right.
+--Also, it's actually a taggered release. Guards come out first engineers like 5 seconds after guards. so Possibly add secondary timer for engineer and change primary to guard
 local function Adds(self)
 	timerEngineer:Start()
 	countdownEngineer:Start()
-	self:Schedule(45, Adds, self)
+	self:Schedule(35, Adds, self)
 end
 
 function mod:OnCombatStart(delay)
 	self.vb.machinesDead = 0
 	self.vb.elementalistsDead = 0
 	if DBM.Options.DebugMode then
-		self:Schedule(45, Adds, self)
+		self:Schedule(35, Adds, self)
 		timerEngineer:Start()
 		countdownEngineer:Start()
 	end
@@ -150,7 +152,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 155192 then
 		if self:CheckTankDistance(args.sourceGUID, 30) then
-			warnBomb:Show(args.destName)
+			warnBomb:CombinedShow(0.5, args.destName)
 		end
 		if args:IsPlayer() then
 			specWarnBomb:Show()
@@ -245,14 +247,17 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg:find("spell:155209") then
+		specWarnBlast:Show()
+	end
+end
+
 --Maybe awkward way of doing it since timer will kind of skip when operators are out, but most accurate way of doing it.
 --emote to emote shows variation even when loading doesn't add power. sometimes 24, sometimes 27. This timer may be closer.
 --Probably very high cpu usage
 function mod:UNIT_POWER_FREQUENT(uId)
 	local bossPower = UnitPower("boss1") --Get Boss Power
 	bossPower = bossPower / self.vb.powerRate --Divide it by 4 (cause he gains 4 power per second and we need to know how many seconds to subtrack from CD)
-	timerBlastCD:Update(bossPower, totalTime)
-	if bossPower == (self.vb.totalTime-2) and self:AntiSpam(5, 5) then--Cast in 2 seconds
-		specWarnBlast:Show()
-	end
+	timerBlastCD:Update(bossPower, self.vb.totalTime)
 end

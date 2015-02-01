@@ -37,7 +37,7 @@ local timerPetrifyingSlamCD			= mod:NewCDCountTimer(60, 155323)--60-70 variation
 local timerOverheadSmashCD			= mod:NewCDCountTimer(25, 155301)--25-42 variation
 local timerShatter					= mod:NewCastTimer(8, 155529)
 local timerRampage					= mod:NewBuffActiveTimer(30, 155539)
-local timerRampageCD				= mod:NewCDTimer(121.5, 155539)--Not sure if it's 110 in all difficulties, this is what LFR was from rampage end to new rampage
+local timerRampageCD				= mod:NewCDTimer(108, 155539)--Variable, may be even shorter
 
 local countdownInfernoSlice			= mod:NewCountdown(13, 155080, "Tank")
 
@@ -92,7 +92,7 @@ function mod:OnCombatStart(delay)
 				)
 		end
 	end
-	timerRampageCD:Start(108-delay)--Variable. But seen as low as 108 in LFR, normal, mythic
+	timerRampageCD:Start(-delay)--Variable. But seen as low as 108 in LFR, normal, mythic
 	timerPetrifyingSlamCD:Start(20.5-delay, 1)
 	timerOverheadSmashCD:Start(-delay, 1)
 end
@@ -181,7 +181,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		DBM.RangeCheck:Hide()
 	elseif spellId == 155539 then
 		specWarnRampageEnded:Show()
-		timerRampageCD:Start()--VERIFY ALL MODES
+		timerRampageCD:Start()
 		self.vb.petrifyCount = 0
 		self.vb.smashCount = 0
 		self.vb.sliceCount = 0
