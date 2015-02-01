@@ -83,17 +83,16 @@ function mod:OnCombatStart(delay)
 	if self:IsDifficulty("normal", "lfr") then
 		timerInfernoSliceCD:Start(14-delay, 1)
 		countdownInfernoSlice:Start(14-delay)
-		timerRampageCD:Start(114-delay)--112-117 variation (121.5 in LFR)
 	else
 		timerInfernoSliceCD:Start(11-delay, 1)
 		countdownInfernoSlice:Start(11-delay)
-		timerRampageCD:Start(108-delay)--Need more data to find variation on this one
 		if self:IsMythic() then
 			self:RegisterShortTermEvents(
 				"UNIT_POWER_FREQUENT boss1"
 				)
 		end
 	end
+	timerRampageCD:Start(108-delay)--Variable. But seen as low as 108 in LFR, normal, mythic
 	timerPetrifyingSlamCD:Start(20.5-delay, 1)
 	timerOverheadSmashCD:Start(-delay, 1)
 end
