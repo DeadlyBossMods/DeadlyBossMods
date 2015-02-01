@@ -283,6 +283,7 @@ function DLL:Append(obj)
 						self.first.prev = obj
 						self.first = obj
 						obj:SetPosition()
+						ptr.moving = nil
 						ptr:SetPosition()
 					else
 						obj.prev = ptr.prev
@@ -290,6 +291,7 @@ function DLL:Append(obj)
 						obj.prev.next = obj
 						obj.next.prev = obj
 						obj:SetPosition()
+						ptr.moving = nil
 						ptr:SetPosition()
 					end
 					barInserted = true
@@ -685,7 +687,7 @@ function barPrototype:SetElapsed(elapsed)
 	elseif self.owner.options.Sort then
 		self:RemoveFromList()
 		if self.moving ~= "enlarge" then
-			if (self.huge or self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) and self.owner.options.HugeBarsEnabled then -- starts enlarged?
+			if (self.huge or self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) and not self.small and self.owner.options.HugeBarsEnabled then -- starts enlarged?
 				self.owner.hugeBars:Append(self)
 			else
 				self.owner.smallBars:Append(self)
@@ -834,7 +836,7 @@ function barPrototype:Update(elapsed)
 	end
 	local enlargeTime = currentStyle ~= "BigWigs" and obj.options.EnlargeBarsTime or 11
 	local enlargePer = currentStyle ~= "BigWigs" and obj.options.EnlargeBarsPercent or 0
-	if (timerValue <= enlargeTime or (timerValue/totaltimeValue) <= enlargePer) and (not self.small) and not self.enlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
+	if (timerValue <= enlargeTime or (timerValue/totaltimeValue) <= enlargePer) and not self.small and not self.enlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
 		self:RemoveFromList()
 		self:Enlarge()
 	end
