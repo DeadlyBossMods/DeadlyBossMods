@@ -11,15 +11,17 @@ mod:RegisterEvents(
 	"SPELL_CAST_START 156446"
 )
 
-local specWarnBlastWave				= mod:NewSpecialWarningSwitch(156446)
+local specWarnBlastWave				= mod:NewSpecialWarningMoveTo(156446, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Spell:format(156446))
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
+
+local volcanicBomb = GetSpellInfo(156413)
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 156446 then
-		specWarnBlastWave:Show()
+		specWarnBlastWave:Show(volcanicBomb)
 	end
 end
