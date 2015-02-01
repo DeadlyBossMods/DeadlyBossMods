@@ -4,7 +4,9 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
-L.TranslationBy 			= "Psyco/Sasmira/Pettigrow/Edoz@EU-Ysondre/Leiyla@EU-CdO"
+L.TranslationBy 			= "Psyco/Sasmira/Pettigrow/Edoz@EU-Ysondre/Leiyla@EU-CdO/Noleen@EU-Hyjal"
+
+
 
 L.OTabBosses	= "Boss"
 L.OTabOptions	= "Options"
@@ -16,6 +18,7 @@ L.TabCategory_CATA			= "Cataclysm"
 L.TabCategory_WOTLK			= "Wrath of the Lich King"
 L.TabCategory_BC			= "The Burning Crusade"
 L.TabCategory_CLASSIC		= "WoW classique"
+L.TabCategory_PVP 			= "PVP"
 L.TabCategory_OTHER			= "Autres modules"
 
 L.BossModLoaded 			= "Statistiques |2 %s"
@@ -57,6 +60,7 @@ L.Latency_Text				= "Seuil de latence max. pour synchro : %d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "Options du timer de base de DBM"
 L.SKT_Enabled				= "Toujours afficher la barre du meilleur temps (Outrepasse l'option par boss)"
+L.CRT_Enabled				= "Affiche un timer pour la prochaine charge de résurrection en combat (uniquement pour les difficultés 6.x)" --line was missing
 L.ChallengeTimerOptions		= "Régler les options pour le timer du meilleur temps du challenge mode"
 L.ChallengeTimerPersonal	= "Personnel"
 L.ChallengeTimerGuild		= "Guilde"
@@ -69,7 +73,7 @@ L.ModelSoundShort			= "Court"
 L.ModelSoundLong			= "Long"
 
 L.Button_RangeFrame			= "Afficher/cacher le cadre des portées"
-L.Button_RangeRadar			= "Afficher/cacher le radar de portée"
+L.Button_RangeRadar			= "Afficher/cacher le radar de portée" --doesn't seem to exist in the en.lua
 L.Button_InfoFrame			= "Afficher/cacher le cadre d'information"
 L.Button_TestBars			= "Lancer les barres de test"
 
@@ -85,20 +89,17 @@ L.InfoRaidWarning			= [[Vous pouvez spécifier la position et les couleurs du ca
 Ce cadre est utilisé pour les messages du genre "Joueur X subit Y".]]
 L.ColorResetted 			= "Les paramètres de couleur pour ce champ ont été réinitialisés."
 L.ShowWarningsInChat 		= "Afficher les alertes dans la fenêtre de discussion"
-L.ShowSWarningsInChat 		= "Afficher les alertes spéciales dans la fenêtre de discussion"
 L.ShowFakedRaidWarnings 	= "Afficher les alertes comme de faux avertissements raid"
 L.WarningIconLeft 			= "Afficher l'icône sur le côté gauche"
 L.WarningIconRight 			= "Afficher l'icône sur le côté droit"
 L.WarningIconChat 			= "Afficher les icônes dans la fenêtre de discussion"
-L.ShowCountdownText			= "Afficher le texte du compte à rebours"
 L.RaidWarnMessage 			= "Merci d'utiliser Deadly Boss Mods"
 L.BarWhileMove 				= "Alerte raid mobile"
 L.RaidWarnSound				= "Jouer un son sur les alertes"
-L.CountdownVoice			= "Voix principale du compte à rebours"
-L.CountdownVoice2			= "Voix secondaire du compte à rebours"
 L.SpecialWarnSound			= "Son des alertes spéciales vous affectant vous ou votre rôle"
 L.SpecialWarnSound2			= "Son des alertes spéciales affectant tout le monde"
 L.SpecialWarnSound3			= "Son des alertes spéciales TRES IMPORTANTES"
+L.SpecialWarnSound4			= "Son des alertes spéciales de fuite" --line was missing
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Messages généraux"
@@ -107,10 +108,12 @@ L.ShowLoadMessage 			= "Afficher les messages de chargement du mod dans la fenê
 L.ShowPizzaMessage 			= "Afficher les messages d'annonce dans la fenêtre de discussion"
 L.ShowCombatLogMessage 		= "Afficher les messages d'enregistrement de combat de DBM dans la fenêtre de discussion"
 L.ShowTranscriptorMessage	= "Afficher les messages d'enregistrement Transcriptor de DBM dans la fenêtre de discussion"
+L.ShowAllVersions	 		= "Affiche les versions des BossMods pour chaque membre du groupe dans la fenêtre de discussion" --line was missing
 L.CombatMessages			= "Options des messages de combat"
 L.ShowEngageMessage 		= "Afficher les messages d'engagement de combat dans la fenêtre de discussion"
 L.ShowKillMessage 			= "Afficher les messages de victoire dans la fenêtre de discussion"
 L.ShowWipeMessage 			= "Afficher les messages d'échec dans la fenêtre de discussion"
+L.ShowGuildMessages 		= "Afficher les messages de engagement/victoire/échec de la guilde dans la fenêtre de discussion" --line was missing
 L.ShowRecoveryMessage 		= "Afficher les messages de récupération de timers dans la fenêtre de discussion" --timer recovery?
 L.WhisperMessages			= "Options des chuchotements"
 L.AutoRespond 				= "Répondre automatiquement aux messages en combat"
@@ -152,6 +155,7 @@ L.Panel_SpecWarnFrame		= "Alertes spéciales"
 L.Area_SpecWarn				= "Options des alertes spéciales"
 L.SpecWarn_Enabled			= "Afficher des alertes spéciales pour les techniques des boss"
 L.SpecWarn_FlashFrame		= "Faire flasher l'écran lors des alertes spéciales"
+L.ShowSWarningsInChat 		= "Afficher les alertes spéciales dans la fenêtre de discussion"
 L.SpecWarn_Font				= "Police de texte des alertes spéciales"
 L.SpecWarn_FontSize			= "Taille de la police: %d"
 L.SpecWarn_FontColor		= "Couleur du texte"
@@ -163,6 +167,20 @@ L.SpecWarn_DemoButton		= "Aff. un exemple"
 L.SpecWarn_MoveMe			= "Définir la position"
 L.SpecWarn_ResetMe			= "Réinit. les valeurs"
 
+-- Tab: Spoken Alerts Frame (entire tab was missing, some line were missplaced)
+L.Panel_SpokenAlerts		= "Alertes Vocales"
+L.Area_VoiceSelection		= "Sélection des voix"
+L.CountdownVoice			= "Définir la voix principale pour les comptes à rebours"
+L.CountdownVoice2			= "Définir la deuxième voix pour les comptes à rebours"
+L.CountdownVoice3			= "Définir la troisième voix pour les comptes à rebours"
+L.VoicePackChoice			= "Définir le Pack de voix pour les Alertes Vocales"
+L.Area_CountdownOptions		= "Options des Comptes à rebours"
+L.ShowCountdownText			= "Afficher le texte du compte à rebours lors des comptes à rebours de la voix principale" --might be possible to make it shorter
+L.Area_VoicePackOptions		= "Options des Packs de voix (Pack de voix tiers)"
+L.SpecWarn_NoSoundsWVoice	= "Ne pas jouer d'alerte spéciale s'il y a déjà une alerte vocale"
+L.SpecWarn_AlwaysVoice		= "Toujours jouer toutes les alertes vocales (Outrepasse les options par boss. Utile pour les RL)"
+--TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
+
 -- Tab: HealthFrame
 L.Panel_HPFrame				= "Cadre des vies"
 L.Area_HPFrame				= "Options du cadre des vies"
@@ -171,22 +189,31 @@ L.HP_GrowUpwards			= "Décaler vers le haut"
 L.HP_ShowDemo				= "Aff. le cadre"
 L.BarWidth					= "Longueur des barres : %d"
 
--- Tab: Spam Filter
+-- Tab: Global Filter (had to rearrange the section to match the en.lua)
 L.Panel_SpamFilter				= "Filtres globaux et de spam"
-L.Area_SpamFilter				= "Options des filtres de spam"
-L.StripServerName				= "Ne pas afficher le royaume sur les alertes et les timers"
-L.SpamBlockBossWhispers			= "Filtrer les chuchotements d'alerte &lt;DBM&gt; pendant les rencontres"
-L.ShowBBOnCombatStart			= "Effectuer une vérif. générale des buffs au début du combat"
-L.BigBrotherAnnounceToRaid		= "Annoncer les résultats de la vérif. générale au raid"
-
 L.Area_SpamFilter_Outgoing		= "Options des filtres globaux"
 L.SpamBlockNoShowAnnounce		= "Ne pas afficher d'annonces ou jouer de sons d'alerte"
-L.DontShowFarWarnings			= "Ne pas afficher les annonces/timers pour les événements distants"
 L.SpamBlockNoSendWhisper		= "Ne pas chuchoter les alertes boss aux autres joueurs"
 L.SpamBlockNoSetIcon			= "Ne pas placer d'icônes sur les cibles"
 L.SpamBlockNoRangeFrame			= "Ne pas afficher le cadre des portées"
 L.SpamBlockNoInfoFrame			= "Ne pas afficher le cadre d'information"
 L.SpamBlockNoHealthFrame		= "Ne pas afficher le cadre des vies"
+L.SpamBlockNoCountdowns			= "Ne pas jouer le son du compte à rebours" --line was missing
+
+-- Tab: Spam Filter
+L.Area_SpamFilter				= "Options des filtres de spam"
+L.DontShowFarWarnings			= "Ne pas afficher les annonces/timers pour les événements distants"
+L.StripServerName				= "Ne pas afficher le royaume sur les alertes et les timers"
+L.SpamBlockBossWhispers			= "Filtrer les chuchotements d'alerte &lt;DBM&gt; pendant les rencontres"
+
+L.Area_SpecFilter			= "Options du filtre de Spécialisation"
+L.FilterTankSpec			= "Filtre les alertes réservées aux tanks si vous n'êtes pas en spé tank. (Note: Désactivé n'est pas recommandé car les alertes de taunt sont activés en permanence par défaut.)"
+--Healer and Damager not in use yet. Tank is easily black and white. if not a tank, disable taunt warnings. Pretty obvious.
+--Healer and Damager a bit more tricky, since often times, Healer DO need to switch and kill adds designated a dps roll (hi disc attonement priest)
+--Or a dps does need to handle debuff dispels. Or a dps/tank need to know when aoe damage is going out just as much as healer for personal CDs
+--Etc etc. Point being, I translate these but I'm not sure they could ever actually be used as effectively as the tank spec filter.
+--L.FilterHealerSpec		= "Filter warnings designated for Healer role when not Healer spec"--Not in use
+--L.FilterDamagerSpec		= "Filter warnings designated for Damager role when not Damager spec"--Not in use
 
 L.Area_PullTimer			= "Options du filtre des timers de pull"
 L.DontShowPTNoID			= "Bloquer les chronos de pull envoyés depuis une zone différente de la votre"
@@ -196,21 +223,25 @@ L.DontPlayPTCountdown		= "Ne pas jouer le son du compte à rebours du chrono de 
 L.DontShowPTCountdownText	= "Ne pas afficher le texte du compte à rebours du chrono de pull"
 L.PT_Threshold				= "Ne pas afficher le texte du compte à rebours s'il reste plus de: %d sec."
 
---Tab: Hide Blizzard
 L.Panel_HideBlizzard		= "Masquer Blizzard"
 L.Area_HideBlizzard			= "Options pour masquer Blizzard"
 L.HideBossEmoteFrame		= "Masquer le cadre des vies des boss pendant les combats contre un boss"
 L.HideWatchFrame			= "Masquer le cadre de suivi d'objectifs pendant les combats contre un boss"
+L.HideGarrisonUpdates		= "Masque les notifications de fief pendant les combats de boss" --line was missing
+L.HideGuildChallengeUpdates	= "Masque les notifications de défis de guilde pendant les combats de boss" --line was missing
 L.HideTooltips				= "Masquer le cadre d'information pendant les combats contre un boss"
+L.HideApplicantAlerts		= "Supress applicant alerts in premade groups" --line was missing
+L.HideApplicantAlertsFull	= "Si le groupe est complet" --line was missing
+L.HideApplicantAlertsNotL	= "Si vous n'êtes pas responsable du groupe (Agit si le groupe est complet lorsque vous êtes le responsable)" --line was missing
 L.SpamBlockSayYell			= "Masquer les annonces des onglets de chat de la fenêtre de discussion pendant les combats contre un boss"
 L.DisableCinematics			= "Désactiver les cinématiques en jeu"
 L.AfterFirst				= "Après que la cinématique ait été jouée une fois"
 L.Always					= "Toujours"
 
---Tab: Extra Features
 L.Panel_ExtraFeatures		= "Fonctionnalités supplémentaires"
 L.Area_ChatAlerts			= "Options des alertes dans le chat"
 L.RoleSpecAlert				= "Afficher une alerte lorsque votre spé ne correspond pas à votre choix de loot en rejoignant un raid"
+L.CheckGear					= "Affiche un message d'alerte pendant les pull quand votre ilvl équipé est beaucoup plus bas que votre ilvl global (40+)" --line was missing
 L.WorldBossAlert			= "Afficher une alerte lorsqu'un World Boss a probablement été engagé sur votre royaume par votre guilde ou des amis (érronée si info reçue de CRZed)"
 L.Area_SoundAlerts			= "Options des alertes sonores"
 L.LFDEnhance				= "Jouer le son du readycheck sur les vérif. de rôle &amp; sur les propositions de BG/RdG dans le canal audio principal (généralement plus fort, fonctionne même si le SFX est désactivé)"
@@ -220,9 +251,14 @@ L.Area_AutoLogging			= "Options d'enregistrement auto"
 L.AutologBosses				= "Automatiquement enregistrer le combat contre un boss en utilisant le combat log de Blizzard (Il faut utiliser la commande /dbm pull avant le boss pour que ce soit compatible avec <a href=\"http://www.warcraftlogs.com\">|cff3588ffwarcraftlogs.com|r</a>)"
 L.AdvancedAutologBosses		= "Automatiquement enregistrer le combat contre un boss en utilisant Transcriptor"
 L.LogOnlyRaidBosses			= "N'enregistrer que les combats contre un boss (exclus RdR/dongeon/scenario)"
+L.Area_3rdParty				= "Options des Addons tiers" --line was missing
+L.ShowBBOnCombatStart		= "Effectuer la vérification des buffs de Big Brother au début des combats" --line was missing
+L.BigBrotherAnnounceToRaid	= "Annoncer les résultats de Big Brother au raid" --line was missing
 L.Area_Invite				= "Options des invitations"
 L.AutoAcceptFriendInvite	= "Accepter les invitations venant d'un ami automatiquement"
 L.AutoAcceptGuildInvite		= "Accepter les invitations venant d'un membre de la guilde automatiquement"
+L.Area_Advanced				= "Options Avancées" --line was missing
+L.FakeBW					= "Prétendre être BigWigs lors des vérifications de versions au lieu de DBM (Utile pour les guildes qui forcent l'utilisation de BigWigs)" --line was missing
 
 L.PizzaTimer_Headline 		= 'Création d\'un "délai pizza"'
 L.PizzaTimer_Title			= 'Nom (par ex. : "Pizza !")'
@@ -231,6 +267,24 @@ L.PizzaTimer_Mins 			= "Min"
 L.PizzaTimer_Secs 			= "Sec"
 L.PizzaTimer_ButtonStart 	= "Lancer le délai"
 L.PizzaTimer_BroadCast		= "Diffuser au raid"
+-- Both profile sections were missing
+L.Panel_Profile				= "Profils"
+L.Area_CreateProfile		= "Création de Profil"
+L.EnterProfileName			= "Entrer un nom de profil"
+L.CreateProfile				= "Créer un profil pour les options de DBM Core"
+L.Area_ApplyProfile			= "Appliquer le profil actif aux options de DBM Core"
+L.SelectProfileToApply		= "Sélectionner le profil à appliquer"
+L.Area_DeleteProfile		= "Supprimer un profil"
+L.SelectProfileToDelete		= "Sélectionner le profil à supprimer"
+L.Area_DualProfile			= "Options de Profil"
+L.DualProfile				= "Activer le support de différents profils pour chaque spécialisation. (Managing of boss mod profiles is done from loaded boss mod stats screen)" --Don't know how to translate the second part
+
+L.Area_ModProfile			= "Copier les réglages depuis un autre perso/spé ou supprimer des réglages"
+L.ModAllReset				= "Réinitialiser tous les réglages"
+L.ModAllStatReset			= "Réinitialiser toutes les statistiques"
+L.SelectModProfileCopy		= "Copier tous les réglages depuis"
+L.SelectModProfileCopySound	= "Copier uniquement les réglages sonores depuis"
+L.SelectModProfileDelete	= "Supprimer les réglages pour"
 
 -- Misc
 L.FontHeight	= 16
