@@ -55,10 +55,10 @@ local specWarnBlast				= mod:NewSpecialWarningSpell(155209, nil, nil, nil, 2)
 local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
 local timerBlastCD				= mod:NewCDTimer(25, 155209)--25 seconds base. shorter when loading is being channeled by operators.
 local timerEngineer				= mod:NewNextTimer(45, "ej9649", nil, nil, nil, 155179)
-local timerBellowsOperator		= mod:NewNextTimer(60, "ej9655", nil, nil, nil, 155181)
+local timerBellowsOperator		= mod:NewNextTimer(64, "ej9655", nil, nil, nil, 155181)
 local timerShieldsDown			= mod:NewBuffActiveTimer(25, 158345, nil, "Dps")--Anyone else need?
 
-local countdownBellowsOperator	= mod:NewCountdown(60, "ej9650")
+local countdownBellowsOperator	= mod:NewCountdown(64, "ej9650")
 local countdownEngineer			= mod:NewCountdown("Alt45", "ej9649")
 
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
@@ -74,6 +74,8 @@ mod:AddRangeFrameOption(8, 176121)
 
 mod.vb.machinesDead = 0
 mod.vb.elementalistsDead = 0
+mod.vb.powerRate = 4
+mod.vb.totalTime = 25
 local UnitPower, UnitBuff = UnitPower, UnitBuff
 local dkAMS = GetSpellInfo(48707)
 
@@ -89,15 +91,19 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.machinesDead = 0
 	self.vb.elementalistsDead = 0
---	self:Schedule(45, Adds, self)
---	timerEngineer:Start()
---	countdownEngineer:Start()
-	if self:AntiSpam(10, 0) then--Force this antispam on pull so first two adds "loading" doesn't start 60 second timer
-		timerBellowsOperator:Start(55-delay)
-		countdownBellowsOperator:Start(55-delay)
+	if DBM.Options.DebugMode then
+		self:Schedule(45, Adds, self)
+		timerEngineer:Start()
+		countdownEngineer:Start()
 	end
+--	if self:AntiSpam(10, 0) then--Force this antispam on pull so first two adds "loading" doesn't start 60 second timer
+--		timerBellowsOperator:Start(55-delay)
+--		countdownBellowsOperator:Start(55-delay)
+--	end
 	if self:IsLFR() then
 		timerBlastCD:Start(30-delay)
+		self.vb.powerRate = 3.33
+		self.vb.totalTime = 30
 	else
 		timerBlastCD:Start(25-delay)
 	end
@@ -240,15 +246,13 @@ function mod:UNIT_DIED(args)
 end
 
 --Maybe awkward way of doing it since timer will kind of skip when operators are out, but most accurate way of doing it.
---emote to emote shows variation even when loading doesn't add power. sometimes 24, sometimes 27. This timer may be closer, we'll see
+--emote to emote shows variation even when loading doesn't add power. sometimes 24, sometimes 27. This timer may be closer.
 --Probably very high cpu usage
 function mod:UNIT_POWER_FREQUENT(uId)
 	local bossPower = UnitPower("boss1") --Get Boss Power
-	local powerRate = self:IsLFR() and 3.33 or 4
-	local totalTime = self:IsLFR() and 30 or 25
-	bossPower = bossPower / powerRate --Divide it by 4 (cause he gains 4 power per second and we need to know how many seconds to subtrack from CD)
+	bossPower = bossPower / self.vb.powerRate --Divide it by 4 (cause he gains 4 power per second and we need to know how many seconds to subtrack from CD)
 	timerBlastCD:Update(bossPower, totalTime)
-	if bossPower == (totalTime-2) and self:AntiSpam(5, 5) then--Cast in 2 seconds
+	if bossPower == (self.vb.totalTime-2) and self:AntiSpam(5, 5) then--Cast in 2 seconds
 		specWarnBlast:Show()
 	end
 end
