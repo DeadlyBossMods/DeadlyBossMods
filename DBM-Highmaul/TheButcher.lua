@@ -32,8 +32,8 @@ local specWarnBoundingCleaveEnded	= mod:NewSpecialWarningEnd(156160)
 local specWarnPaleVitriol			= mod:NewSpecialWarningMove(163046, nil, nil, nil, nil, nil, true)--Mythic
 
 local timerCleaveCD					= mod:NewCDTimer(6, 156157, nil, false)
-local timerTenderizerCD				= mod:NewCDTimer(17, 156151, nil, "Tank")
-local timerCleaverCD				= mod:NewCDTimer(8.5, 156143, nil, "Tank")--Maybe change to off by default if i get a general consensus from other tanks if this is useful.
+local timerTenderizerCD				= mod:NewCDTimer(16.5, 156151, nil, "Tank")
+local timerCleaverCD				= mod:NewCDTimer(7.5, 156143, nil, "Tank")
 local timerGushingWounds			= mod:NewBuffFadesTimer(15, 156152)
 local timerBoundingCleaveCD			= mod:NewNextCountTimer(60, 156160)
 local timerBoundingCleave			= mod:NewCastTimer(15, 156160)
@@ -88,7 +88,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.cleaveCount = self.vb.cleaveCount + 1
 		warnCleave:Show(self.vb.cleaveCount)
 		if self.vb.isFrenzied then
-			timerCleaveCD:Start(5)
+			timerCleaveCD:Start(3.5)
 		else
 			timerCleaveCD:Start()
 		end
