@@ -684,15 +684,10 @@ function barPrototype:SetElapsed(elapsed)
 	local enlargePer = self.owner.options.Style ~= "BigWigs" and self.owner.options.EnlargeBarsPercent or 0
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) then
 		self:ResetAnimations()
-	elseif self.owner.options.Sort then
-		self:RemoveFromList()
-		if self.moving ~= "enlarge" then
-			if (self.huge or self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) and not self.small and self.owner.options.HugeBarsEnabled then -- starts enlarged?
-				self.owner.hugeBars:Append(self)
-			else
-				self.owner.smallBars:Append(self)
-			end
-		end
+	elseif self.owner.options.Sort and self.moving ~= "enlarge" then
+		local group = self.enlarged and self.owner.hugeBars or self.owner.smallBars
+		group:Remove(self)
+		group:Append(self)
 	end
 	self:Update(0)
 end
