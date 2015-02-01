@@ -1933,7 +1933,7 @@ local function CreateOptionsMenu()
 		local check1 = specArea:CreateCheckButton(L.SpecWarn_Enabled, true, nil, "ShowSpecialWarnings")
 		local check2 = specArea:CreateCheckButton(L.ShowSWarningsInChat, true, nil, "ShowSWarningsInChat")
 		local check3 = specArea:CreateCheckButton(L.SpecWarn_FlashFrame, true, nil, "ShowFlashFrame")
-		
+
 		local flashSlider = specArea:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 3, 1, 100)
 		flashSlider:SetPoint('BOTTOMLEFT', check3, "BOTTOMLEFT", 330, 0)
 		flashSlider:HookScript("OnShow", function(self) self:SetValue(math.floor(DBM.Options.SpecialWarningFlashRepeatAmount)) end)
