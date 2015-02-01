@@ -1931,8 +1931,13 @@ local function CreateOptionsMenu()
 		local specPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpecWarnFrame, "option")
 		local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 645, true)
 		local check1 = specArea:CreateCheckButton(L.SpecWarn_Enabled, true, nil, "ShowSpecialWarnings")
-		local check2 = specArea:CreateCheckButton(L.SpecWarn_FlashFrame, true, nil, "ShowFlashFrame")
-		local check3 = specArea:CreateCheckButton(L.ShowSWarningsInChat, true, nil, "ShowSWarningsInChat")
+		local check2 = specArea:CreateCheckButton(L.ShowSWarningsInChat, true, nil, "ShowSWarningsInChat")
+		local check3 = specArea:CreateCheckButton(L.SpecWarn_FlashFrame, true, nil, "ShowFlashFrame")
+		
+		local flashSlider = specArea:CreateSlider(L.SpecWarn_FlashFrameRepeat, 1, 3, 1, 100)
+		flashSlider:SetPoint('BOTTOMLEFT', check3, "BOTTOMLEFT", 330, 0)
+		flashSlider:HookScript("OnShow", function(self) self:SetValue(math.floor(DBM.Options.SpecialWarningFlashRepeatAmount)) end)
+		flashSlider:HookScript("OnValueChanged", function(self) DBM.Options.SpecialWarningFlashRepeatAmount = math.floor(self:GetValue()) end)
 
 		local showbutton = specArea:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 		showbutton:SetPoint('TOPRIGHT', specArea.frame, "TOPRIGHT", -5, -5)
@@ -2147,6 +2152,8 @@ local function CreateOptionsMenu()
 			DBM.Options.SpecialWarningSound = value
 		end)
 		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -230)
+		local repeatCheck1 = specArea:CreateCheckButton(L.SpecWarn_FlashRepeat, nil, nil, "SpecialWarningFlashRepeat1")
+		repeatCheck1:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown, "BOTTOMLEFT", 240, 0)
 
 		local flashdurSlider = specArea:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)   -- (text , min_value , max_value , step , width)
 		flashdurSlider:SetPoint('TOPLEFT', SpecialWarnSoundDropDown, "TOPLEFT", 20, -45)
@@ -2184,6 +2191,8 @@ local function CreateOptionsMenu()
 			DBM.Options.SpecialWarningSound2 = value
 		end)
 		SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -335)
+		local repeatCheck2 = specArea:CreateCheckButton(L.SpecWarn_FlashRepeat, nil, nil, "SpecialWarningFlashRepeat2")
+		repeatCheck2:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown2, "BOTTOMLEFT", 240, 0)
 
 		local flashdurSlider2 = specArea:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)   -- (text , min_value , max_value , step , width)
 		flashdurSlider2:SetPoint('TOPLEFT', SpecialWarnSoundDropDown2, "TOPLEFT", 20, -45)
@@ -2221,6 +2230,8 @@ local function CreateOptionsMenu()
 			DBM.Options.SpecialWarningSound3 = value
 		end)
 		SpecialWarnSoundDropDown3:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -440)
+		local repeatCheck3 = specArea:CreateCheckButton(L.SpecWarn_FlashRepeat, nil, nil, "SpecialWarningFlashRepeat3")
+		repeatCheck3:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown3, "BOTTOMLEFT", 240, 0)
 
 		local flashdurSlider3 = specArea:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)   -- (text , min_value , max_value , step , width)
 		flashdurSlider3:SetPoint('TOPLEFT', SpecialWarnSoundDropDown3, "TOPLEFT", 20, -45)
@@ -2258,6 +2269,8 @@ local function CreateOptionsMenu()
 			DBM.Options.SpecialWarningSound4 = value
 		end)
 		SpecialWarnSoundDropDown4:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -545)
+		local repeatCheck4 = specArea:CreateCheckButton(L.SpecWarn_FlashRepeat, nil, nil, "SpecialWarningFlashRepeat4")
+		repeatCheck4:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown4, "BOTTOMLEFT", 240, 0)
 
 		local flashdurSlider4 = specArea:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)   -- (text , min_value , max_value , step , width)
 		flashdurSlider4:SetPoint('TOPLEFT', SpecialWarnSoundDropDown4, "TOPLEFT", 20, -45)
