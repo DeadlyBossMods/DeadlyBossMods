@@ -5,7 +5,8 @@ Voice Pack TOC File:
 	"## X-DBM-Voice-Version" should be a single number identifying whether or not the voice pack is new enough to enable special warning sound filter.
 		--Version 1: Contains All files in Highmaul currently present in DBM 6.0.10
 		--Version 2: Contains All files in Highmaul currently present in DBM 6.0.11 and 6.0.12
-		--Version 3: TBD
+		--Version 3: Contains "Interrupt 5" sound file for Blackrock Foundry Release. DBM 6.0.14
+		--Version 4: TBD
 	"## X-DBM-Voice-HasCount: 1" Enables voice pack countdown injection. Voice pack supports adding it's own countdown to dbm countdown options.
 
 Example TOC File:
@@ -22,7 +23,7 @@ Example TOC File:
 ## X-DBM-Voice: 1
 ## X-DBM-Voice-Name: VEM English Female
 ## X-DBM-Voice-ShortName: VEM
-## X-DBM-Voice-Version: 1
+## X-DBM-Voice-Version: 3
 ## X-DBM-Voice-HasCount: 1
 
 File structure:
