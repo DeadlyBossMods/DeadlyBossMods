@@ -8380,6 +8380,8 @@ do
 			if self.VoiceVersions[value] < 3 then--Version will be bumped when new voice packs released that contain new voices.
 				self:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
 				SWFilterDisabed = self.VoiceVersions[value]--Set disable to version on current voice pack
+			else
+				SWFilterDisabed = 3
 			end
 		end
 	end
