@@ -53,6 +53,7 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥在%s前開始，恢復計時器�
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor開始記錄。"
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor結束紀錄。"
 
+DBM_CORE_PROFILE_NOT_FOUND			= "<Deadly Boss Mods>你目前的配置檔已經損毀。DBM會載入'Default'配置檔。"
 DBM_CORE_PROFILE_CREATED			= "配置檔'%s'已建立。"
 DBM_CORE_PROFILE_CREATE_ERROR		= "建立配置檔失敗，無效的配置檔名稱。"
 DBM_CORE_PROFILE_CREATE_ERROR_D		= "建立配置檔失敗，配置檔'%s'已存在。"
@@ -343,6 +344,8 @@ DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "為$spell:%s顯示訊息框架"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "當首領開打時撥放準備檢查的音效(即使沒有選定目標)"
 
 -- New special warnings
+DBM_CORE_MOVE_WARNING_BAR			= "可移動提示"
+DBM_CORE_MOVE_WARNING_MESSAGE		= "感謝您使用Deadly Boss Mods"
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "可拖動的特別警告"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "特別警告"
 
