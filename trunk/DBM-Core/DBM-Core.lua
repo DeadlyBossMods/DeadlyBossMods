@@ -159,6 +159,13 @@ DBM.DefaultOptions = {
 	HPFrameX = -50,
 	HPFrameY = 50,
 	HPFrameMaxEntries = 5,
+	WarningPoint = "CENTER",
+	WarningX = 0,
+	WarningY = 260,
+	WarningFont = STANDARD_TEXT_FONT,
+	WarningFontSize = 20,
+	WarningFontStyle = "None",
+	WarningFontShadow = true,
 	SpecialWarningPoint = "CENTER",
 	SpecialWarningX = 0,
 	SpecialWarningY = 75,
@@ -1429,6 +1436,7 @@ end
 function DBM:RepositionFrames()
 	-- rearrange position
 	self:SetRaidWarningPositon()
+	self:UpdateWarningOptions()
 	self:UpdateSpecialWarningOptions()
 	self.Arrow:LoadPosition()
 	if DBMBossHealth then
@@ -2892,6 +2900,7 @@ do
 		DBM:AddDefaultOptions(DBM.Options, DBM.DefaultOptions)
 
 		-- load special warning options
+		DBM:UpdateWarningOptions()
 		DBM:UpdateSpecialWarningOptions()
 		-- set this with a short delay to prevent issues with other addons also trying to do the same thing with another position ;)
 		DBM:Schedule(5, DBM.SetRaidWarningPositon, DBM)
@@ -7090,6 +7099,242 @@ bossModPrototype.GetBossHPByGUID = DBM.GetBossHPByGUID
 --  Announce Object  --
 -----------------------
 do
+	local frame = CreateFrame("Frame", "DBMWarning", UIParent)
+	local font1u = CreateFrame("Frame", "DBMWarning1Updater", UIParent)
+	local font2u = CreateFrame("Frame", "DBMWarning2Updater", UIParent)
+	local font3u = CreateFrame("Frame", "DBMWarning3Updater", UIParent)
+	local font1 = frame:CreateFontString("DBMWarning1", "OVERLAY", "GameFontNormal")
+	font1:SetWidth(1024)
+	font1:SetHeight(0)
+	font1:SetPoint("TOP", 0, 0)
+	local font2 = frame:CreateFontString("DBMWarning2", "OVERLAY", "GameFontNormal")
+	font2:SetWidth(1024)
+	font2:SetHeight(0)
+	font2:SetPoint("TOP", font1, "BOTTOM", 0, 0)
+	local font3 = frame:CreateFontString("DBMWarning3", "OVERLAY", "GameFontNormal")
+	font3:SetWidth(1024)
+	font3:SetHeight(0)
+	font3:SetPoint("TOP", font2, "BOTTOM", 0, 0)
+	frame:SetMovable(1)
+	frame:SetWidth(1)
+	frame:SetHeight(1)
+	frame:SetFrameStrata("HIGH")
+	frame:SetClampedToScreen()
+	frame:SetPoint("CENTER", UIParent, "CENTER", 0, 300)
+	frame:Hide()
+	font1u:Hide()
+	font2u:Hide()
+	font3u:Hide()
+
+	local lastframe, font1elapsed, font2elapsed, font3elapsed, moving
+
+	local function fontHide1()
+		if font1elapsed > 13 then
+			font1u:Hide()
+			font1:Hide()
+			if frame.font1ticker then
+				frame.font1ticker:Cancel()
+				frame.font1ticker = nil
+			end
+		elseif font1elapsed > 10 then
+			font1elapsed = font1elapsed + 0.05
+			font1:SetAlpha(1 - (font1elapsed - 10) / 3)
+		else
+			font1elapsed = font1elapsed + 0.05
+			font1:SetAlpha(1)
+		end
+	end
+
+	local function fontHide2()
+		if font2elapsed > 13 then
+			font2u:Hide()
+			font2:Hide()
+			if frame.font2ticker then
+				frame.font2ticker:Cancel()
+				frame.font2ticker = nil
+			end
+		elseif font2elapsed > 10 then
+			font2elapsed = font2elapsed + 0.05
+			font2:SetAlpha(1 - (font2elapsed - 10) / 3)
+		else
+			font2elapsed = font2elapsed + 0.05
+			font2:SetAlpha(1)
+		end
+	end
+
+	local function fontHide3()
+		if font3elapsed > 13 then
+			font3u:Hide()
+			font3:Hide()
+			if frame.font3ticker then
+				frame.font3ticker:Cancel()
+				frame.font3ticker = nil
+			end
+		elseif font3elapsed > 10 then
+			font3elapsed = font3elapsed + 0.05
+			font3:SetAlpha(1 - (font3elapsed - 10) / 3)
+		else
+			font3elapsed = font3elapsed + 0.05
+			font3:SetAlpha(1)
+		end
+	end
+
+	font1u:SetScript("OnUpdate", function(self)
+		local diff = GetTime() - font1.lastUpdate
+		local origSize = DBM.Options.WarningFontSize
+		if diff > 0.4 then
+			font1:SetTextHeight(origSize)
+			self:Hide()
+		elseif diff > 0.2 then
+			font1:SetTextHeight(origSize * (1.5 - (diff-0.2) * 2.5))
+		else
+			font1:SetTextHeight(origSize * (1 + diff * 2.5))
+		end
+	end)
+
+	font2u:SetScript("OnUpdate", function(self)
+		local diff = GetTime() - font2.lastUpdate
+		local origSize = DBM.Options.WarningFontSize
+		if diff > 0.4 then
+			font2:SetTextHeight(origSize)
+			self:Hide()
+		elseif diff > 0.2 then
+			font2:SetTextHeight(origSize * (1.5 - (diff-0.2) * 2.5))
+		else
+			font2:SetTextHeight(origSize * (1 + diff * 2.5))
+		end
+	end)
+
+	font3u:SetScript("OnUpdate", function(self)
+		local diff = GetTime() - font3.lastUpdate
+		local origSize = DBM.Options.WarningFontSize
+		if diff > 0.4 then
+			font3:SetTextHeight(origSize)
+			self:Hide()
+		elseif diff > 0.2 then
+			font3:SetTextHeight(origSize * (1.5 - (diff-0.2) * 2.5))
+		else
+			font3:SetTextHeight(origSize * (1 + diff * 2.5))
+		end
+	end)
+
+	function DBM:UpdateWarningOptions()
+		frame:ClearAllPoints()
+		frame:SetPoint(self.Options.WarningPoint, UIParent, self.Options.WarningPoint, self.Options.WarningX, self.Options.WarningY)
+		font1:SetFont(self.Options.WarningFont, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and nil or self.Options.WarningFontStyle)
+		font2:SetFont(self.Options.WarningFont, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and nil or self.Options.WarningFontStyle)
+		font3:SetFont(self.Options.WarningFont, self.Options.WarningFontSize, self.Options.WarningFontStyle == "None" and nil or self.Options.WarningFontStyle)
+		if self.Options.WarningFontShadow then
+			font1:SetShadowOffset(1, -1)
+			font2:SetShadowOffset(1, -1)
+			font3:SetShadowOffset(1, -1)
+		else
+			font1:SetShadowOffset(0, 0)
+			font2:SetShadowOffset(0, 0)
+			font3:SetShadowOffset(0, 0)
+		end
+	end
+
+	function DBM:AddWarning(text, frameNum)
+		frame:Show()
+		local added = false
+		if not frame.font1ticker or frameNum == 1 then
+			font1elapsed = 0
+			font1.lastUpdate = GetTime()
+			font1:SetText(text)
+			font1:Show()
+			font1u:Show()
+			lastframe = 2
+			added = true
+			frame.font1ticker = frame.font1ticker or C_Timer.NewTicker(0.05, fontHide1)
+		elseif not frame.font2ticker or frameNum == 2 then
+			font2elapsed = 0
+			font2.lastUpdate = GetTime()
+			font2:SetText(text)
+			font2:Show()
+			font2u:Show()
+			lastframe = 3
+			added = true
+			frame.font2ticker = frame.font2ticker or C_Timer.NewTicker(0.05, fontHide2)
+		elseif not frame.font3ticker or frameNum == 3 then
+			font3elapsed = 0
+			font3.lastUpdate = GetTime()
+			font3:SetText(text)
+			font3:Show()
+			font3u:Show()
+			fontHide3()
+			lastframe = 1
+			added = true
+			frame.font3ticker = frame.font3ticker or C_Timer.NewTicker(0.05, fontHide3)
+		end
+		if not added then
+			self:AddWarning(text, lastframe)
+		end
+	end
+
+	do
+		local anchorFrame
+		local function moveEnd()
+			moving = false
+			anchorFrame:Hide()
+			if anchorFrame.ticker then
+				anchorFrame.ticker:Cancel()
+				anchorFrame.ticker = nil
+			end
+			font1elapsed = 10
+			font2elapsed = 10
+			font3elapsed = 10
+			frame:SetFrameStrata("HIGH")
+			DBM:Unschedule(moveEnd)
+			DBM.Bars:CancelBar(DBM_CORE_MOVE_WARNING_BAR)
+		end
+
+		function DBM:MoveWarning()
+			if not anchorFrame then
+				anchorFrame = CreateFrame("Frame", nil, frame)
+				anchorFrame:SetWidth(32)
+				anchorFrame:SetHeight(32)
+				anchorFrame:EnableMouse(true)
+				anchorFrame:SetPoint("TOP", frame, "TOP", 0, 32)
+				anchorFrame:RegisterForDrag("LeftButton")
+				anchorFrame:SetClampedToScreen()
+				anchorFrame:Hide()
+				local texture = anchorFrame:CreateTexture()
+				texture:SetTexture("Interface\\Addons\\DBM-GUI\\textures\\dot.blp")
+				texture:SetPoint("CENTER", anchorFrame, "CENTER", 0, 0)
+				texture:SetWidth(32)
+				texture:SetHeight(32)
+				anchorFrame:SetScript("OnDragStart", function()
+					frame:StartMoving()
+					self:Unschedule(moveEnd)
+					self.Bars:CancelBar(DBM_CORE_MOVE_WARNING_BAR)
+				end)
+				anchorFrame:SetScript("OnDragStop", function()
+					frame:StopMovingOrSizing()
+					local point, _, _, xOfs, yOfs = frame:GetPoint(1)
+					self.Options.WarningPoint = point
+					self.Options.WarningX = xOfs
+					self.Options.WarningY = yOfs
+					self:Schedule(15, moveEnd)
+					self.Bars:CreateBar(15, DBM_CORE_MOVE_WARNING_BAR)
+				end)
+			end
+			if anchorFrame:IsShown() then
+				moveEnd()
+			else
+				moving = true
+				anchorFrame:Show()
+				anchorFrame.ticker = anchorFrame.ticker or C_Timer.NewTicker(5, function() DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE) end)
+				DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
+				self:Schedule(15, moveEnd)
+				self.Bars:CreateBar(15, DBM_CORE_MOVE_WARNING_BAR)
+				frame:Show()
+				frame:SetFrameStrata("TOOLTIP")
+				frame:SetAlpha(1)
+			end
+		end
+	end
+
 	local textureCode = " |T%s:12:12|t "
 	local textureExp = " |T(%S+......%S+):12:12|t "--Fix texture file including blank not strips(example: Interface\\Icons\\Spell_Frost_Ring of Frost). But this have limitations. Since I'm poor at regular expressions, this is not good fix. Do you have another good regular expression, tandanu?
 	local announcePrototype = {}
@@ -7144,7 +7389,7 @@ do
 				end
 			end
 			text = text:gsub(">.-<", cachedColorFunctions[self.color])
-			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work (at least it didn't work during the WotLK beta...todo: check this (this would save some of the WTFs))
+			DBM:AddWarning(text)
 			if DBM.Options.ShowWarningsInChat then
 				if not DBM.Options.WarningIconChat then
 					text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size TODO: is this still true as of cataclysm?
@@ -7366,7 +7611,6 @@ do
 	function bossModPrototype:NewPrePhaseAnnounce(phase, color, icon, ...)
 		return newAnnounce(self, "prephase", phase, color or 1, icon or "Interface\\Icons\\Spell_Nature_WispSplode", ...)
 	end
-
 end
 
 --------------------
