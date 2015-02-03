@@ -2904,6 +2904,7 @@ do
 		DBM.Options = DBM_AllSavedOptions[usedProfile] or {}
 		dbmIsEnabled = DBM.Options.Enabled or true
 		DBM:AddDefaultOptions(DBM.Options, DBM.DefaultOptions)
+		DBM_AllSavedOptions[usedProfile] = DBM.Options
 
 		-- load special warning options
 		DBM:UpdateWarningOptions()
