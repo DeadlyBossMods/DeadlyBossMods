@@ -93,8 +93,16 @@ L.ShowFakedRaidWarnings 	= "以偽裝團隊警告資訊的方式顯示警告內�
 L.WarningIconLeft 			= "左側顯示圖示"
 L.WarningIconRight 			= "右側顯示圖示"
 L.WarningIconChat 			= "在聊天視窗顯示圖示"
-L.RaidWarnMessage 			= "感謝您使用Deadly Boss Mods"
-L.BarWhileMove 				= "可移動的團隊警告"
+L.Warn_FontType				= "選擇字型"
+L.Warn_FontStyle			= "字型風格"
+L.Warn_FontShadow			= "陰影"
+L.Warn_FontSize				= "字型大小:%d"
+L.Warn_Duration				= "警告持續時間:%d秒"
+L.None						= "無"
+L.Outline					= "輪廓"
+L.ThickOutline				= "厚輪廓"
+L.MonochromeOutline			= "黑白輪廓"
+L.MonochromeThickOutline	= "黑白厚輪廓"
 L.RaidWarnSound				= "發出團隊警告時播放音效"
 
 -- Tab: Generalwarnings
