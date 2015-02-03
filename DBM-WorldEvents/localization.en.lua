@@ -139,7 +139,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("GarrisonInvasions")
 
 L:SetGeneralLocalization({
-	name = "Garrison Invasinos"
+	name = "Garrison Invasions"
 })
 
 L:SetWarningLocalization({
