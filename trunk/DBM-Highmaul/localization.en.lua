@@ -78,10 +78,15 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(1197)
 
+L:SetTimerLocalization({
+	timerNightTwistedCD		= "Next Night-Twisted Adds"
+})
+
 L:SetOptionLocalization({
 	GazeYellType		= "Set yell type for Gaze of the Abyss",
 	Countdown			= "Countdown until expires",
 	Stacks				= "Stacks as they are applied",
+	timerNightTwistedCD	= "Show timer for Next Night-Twisted Faithful",
 	--Auto generated, don't copy to non english files, not needed.
 	warnBranded						= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack:format(156225),
 	warnResonance					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(156467),
