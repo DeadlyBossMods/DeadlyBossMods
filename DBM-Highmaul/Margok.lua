@@ -58,17 +58,17 @@ local specWarnDestructiveResonanceDisplacement	= mod:NewSpecialWarningCount(1640
 local specWarnDestructiveResonanceFortification	= mod:NewSpecialWarningCount(164076, nil, nil, nil, 2)
 local specWarnDestructiveResonanceReplication	= mod:NewSpecialWarningCount(164077, nil, nil, nil, 2)
 
-local specWarnMarkOfChaos						= mod:NewSpecialWarningMoveAway(158605, nil, nil, nil, 3, nil, true)
-local specWarnMarkOfChaosDisplacement			= mod:NewSpecialWarningMoveAway(164176, nil, nil, nil, 3, nil, true)
-local specWarnMarkOfChaosFortification			= mod:NewSpecialWarningMoveAway(164178, nil, nil, nil, 3, nil, true)
-local specWarnMarkOfChaosReplication			= mod:NewSpecialWarningMoveAway(164191, nil, nil, nil, 3, nil, true)
+local specWarnMarkOfChaos						= mod:NewSpecialWarningMoveAway(158605, nil, nil, nil, 3, nil, 2)
+local specWarnMarkOfChaosDisplacement			= mod:NewSpecialWarningMoveAway(164176, nil, nil, nil, 3, nil, 2)
+local specWarnMarkOfChaosFortification			= mod:NewSpecialWarningMoveAway(164178, nil, nil, nil, 3, nil, 2)
+local specWarnMarkOfChaosReplication			= mod:NewSpecialWarningMoveAway(164191, nil, nil, nil, 3, nil, 2)
 
-local specWarnMarkOfChaosFortificationNear		= mod:NewSpecialWarningClose(164178, nil, nil, nil, 3, nil, true)
+local specWarnMarkOfChaosFortificationNear		= mod:NewSpecialWarningClose(164178, nil, nil, nil, 3, nil, 2)
 local yellMarkOfChaosFortification				= mod:NewYell(164178)
 local yellMarkOfChaosReplication				= mod:NewYell(164191)
 
 local specWarnForceNova							= mod:NewSpecialWarningSpell(157349, nil, nil, nil, 2)
-local specWarnForceNovaRep						= mod:NewSpecialWarningMoveAway(164240, nil, nil, nil, 3, nil, true)
+local specWarnForceNovaRep						= mod:NewSpecialWarningMoveAway(164240, nil, nil, nil, 3, nil, 2)
 
 local specWarnBranded							= mod:NewSpecialWarningStack(156225, nil, 5)--Debuff Name "Branded" for Arcane Wrath
 local specWarnBrandedDisplacement				= mod:NewSpecialWarningStack(164004, nil, 5)
@@ -78,20 +78,20 @@ local yellBranded								= mod:NewYell(156225, L.BrandedYell)
 
 local specWarnBrandedDisplacementNear			= mod:NewSpecialWarningClose(164004)--Displacement version of branded makes player unable to move from raid, raid moves from player
 
-local specWarnAberration						= mod:NewSpecialWarningSwitchCount("ej9945", "-Healer", nil, nil, nil, nil, true)--can use short name for all of them
+local specWarnAberration						= mod:NewSpecialWarningSwitchCount("ej9945", "-Healer", nil, nil, nil, nil, 2)--can use short name for all of them
 
 local specWarnAcceleratedAssault				= mod:NewSpecialWarningCount(159515, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(5, 159515))
-local specWarnAcceleratedAssaultOther			= mod:NewSpecialWarningTaunt(159515, nil, nil, nil, nil, nil, true)
+local specWarnAcceleratedAssaultOther			= mod:NewSpecialWarningTaunt(159515, nil, nil, nil, nil, nil, 2)
 
-local specWarnMarkOfChaosOther					= mod:NewSpecialWarningTaunt(158605, nil, nil, nil, nil, nil, true)
-local specWarnMarkOfChaosDisplacementOther		= mod:NewSpecialWarningTaunt(164176, nil, nil, nil, nil, nil, true)
-local specWarnMarkOfChaosFortificationOther		= mod:NewSpecialWarningTaunt(164178, nil, nil, nil, nil, nil, true)
-local specWarnMarkOfChaosReplicationOther		= mod:NewSpecialWarningTaunt(164191, nil, nil, nil, nil, nil, true)
+local specWarnMarkOfChaosOther					= mod:NewSpecialWarningTaunt(158605, nil, nil, nil, nil, nil, 2)
+local specWarnMarkOfChaosDisplacementOther		= mod:NewSpecialWarningTaunt(164176, nil, nil, nil, nil, nil, 2)
+local specWarnMarkOfChaosFortificationOther		= mod:NewSpecialWarningTaunt(164178, nil, nil, nil, nil, nil, 2)
+local specWarnMarkOfChaosReplicationOther		= mod:NewSpecialWarningTaunt(164191, nil, nil, nil, nil, nil, 2)
 
 --Intermission: Dormant Runestones
-local specWarnFixate							= mod:NewSpecialWarningMoveAway(157763, nil, nil, nil, nil, nil, true)
+local specWarnFixate							= mod:NewSpecialWarningMoveAway(157763, nil, nil, nil, nil, nil, 2)
 local yellFixate								= mod:NewYell(157763)
-local specWarnSlow								= mod:NewSpecialWarningDispel(157801, "Healer", nil, nil, nil, nil, true)--Seems CD long enough not too spammy, requested feature.
+local specWarnSlow								= mod:NewSpecialWarningDispel(157801, "Healer", nil, nil, nil, nil, 2)--Seems CD long enough not too spammy, requested feature.
 local specWarnTransitionEnd						= mod:NewSpecialWarningEnd(157278)
 local specWarnNetherEnergy						= mod:NewSpecialWarningCount(178468)
 --Intermission: Lineage of Power
@@ -100,8 +100,8 @@ local specWarnKickToTheFaceOther				= mod:NewSpecialWarningTaunt(158563)
 --Mythic
 local specWarnGaze								= mod:NewSpecialWarningStack(165595, nil, 1)
 local yellGaze									= mod:NewYell(165595, L.GazeYell)
-local specWarnEnvelopingNight					= mod:NewSpecialWarningSpell(165876, nil, nil, nil, 2, nil, true)
-local specWarnGrowingDarkness					= mod:NewSpecialWarningMove(176533, nil, nil, nil, nil, nil, true)
+local specWarnEnvelopingNight					= mod:NewSpecialWarningSpell(165876, nil, nil, nil, 2, nil, 2)
+local specWarnGrowingDarkness					= mod:NewSpecialWarningMove(176533, nil, nil, nil, nil, nil, 2)
 local specWarnDarkStar							= mod:NewSpecialWarningSpell(178607, nil, nil, nil, 2)--Change to target/near warning if targetscanning or any other method to detect target possible.
 
 --All Phases (No need to use different timers for empowered abilities. Short names better for timers.)

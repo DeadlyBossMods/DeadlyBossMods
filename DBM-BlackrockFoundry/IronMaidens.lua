@@ -61,7 +61,7 @@ local warnSanguineStrikes				= mod:NewTargetAnnounce(156601, 3, nil, "Healer")
 local specWarnBombardmentAlpha			= mod:NewSpecialWarningSpell(157854, nil, nil, nil, 2)--From ship, but affects NON ship.
 local specWarnBombardmentOmega			= mod:NewSpecialWarningSpell(157886, nil, nil, nil, 3)--From ship, but affects NON ship.
 ----Blackrock Deckhand
-local specWarnEarthenbarrier			= mod:NewSpecialWarningInterrupt(158708, nil, nil, nil, nil, nil, true)
+local specWarnEarthenbarrier			= mod:NewSpecialWarningInterrupt(158708, nil, nil, nil, nil, nil, 2)
 ----Shattered Hand Deckhand
 local specWarnDeadlyThrow				= mod:NewSpecialWarningSpell(158692, "Tank")
 local specWarnFixate					= mod:NewSpecialWarningYou(158702)
@@ -69,24 +69,24 @@ local specWarnFixate					= mod:NewSpecialWarningYou(158702)
 local specWarnCorruptedBlood			= mod:NewSpecialWarningMove(158683)
 --Ground
 ----Admiral Gar'an
-local specWarnRapidFire					= mod:NewSpecialWarningRun(156631, nil, nil, nil, 4, nil, true)
+local specWarnRapidFire					= mod:NewSpecialWarningRun(156631, nil, nil, nil, 4, nil, 2)
 local yellRapidFire						= mod:NewYell(156631)
 local specWarnPenetratingShot			= mod:NewSpecialWarningYou(164271)
 local yellPenetratingShot				= mod:NewYell(164271)
-local specWarnDeployTurret				= mod:NewSpecialWarningSwitch(158599, nil, nil, nil, 2, nil, true)--Switch warning since most need to switch and kill, but on for EVERYONE because tanks/healers need to avoid it while it's up
+local specWarnDeployTurret				= mod:NewSpecialWarningSwitch(158599, nil, nil, nil, 2, nil, 2)--Switch warning since most need to switch and kill, but on for EVERYONE because tanks/healers need to avoid it while it's up
 ----Enforcer Sorka
 local specWarnBladeDash					= mod:NewSpecialWarningYou(155794)
 local specWarnBladeDashOther			= mod:NewSpecialWarningTarget(155794, nil, nil, nil, 2)
-local specWarnConvulsiveShadows			= mod:NewSpecialWarningMoveAway(156214, nil, nil, nil, nil, nil, true)--Does this still drop lingering shadows, if not moveaway is not appropriate
+local specWarnConvulsiveShadows			= mod:NewSpecialWarningMoveAway(156214, nil, nil, nil, nil, nil, 2)--Does this still drop lingering shadows, if not moveaway is not appropriate
 local yellConvulsiveShadows				= mod:NewYell(156214, nil, false)
-local specWarnDarkHunt					= mod:NewSpecialWarningTarget(158315, false, nil, nil, nil, nil, true)--Healer may want this, or raid leader
+local specWarnDarkHunt					= mod:NewSpecialWarningTarget(158315, false, nil, nil, nil, nil, 2)--Healer may want this, or raid leader
 ----Marak the Blooded
 local specWarnBloodRitual				= mod:NewSpecialWarningYou(158078)
-local specWarnBloodRitualOther			= mod:NewSpecialWarningTarget(158078, "Melee", nil, nil, nil, nil, true)
+local specWarnBloodRitualOther			= mod:NewSpecialWarningTarget(158078, "Melee", nil, nil, nil, nil, 2)
 local yellBloodRitual					= mod:NewYell(158078)
-local specWarnBloodsoakedHeartseeker	= mod:NewSpecialWarningRun(158010, nil, nil, nil, 4, nil, true)
+local specWarnBloodsoakedHeartseeker	= mod:NewSpecialWarningRun(158010, nil, nil, nil, 4, nil, 2)
 local yellHeartseeker					= mod:NewYell(158010, nil, false)
-local specWarnSanguineStrikes			= mod:NewSpecialWarningTarget(156601, "Healer", nil, nil, nil, nil, true)
+local specWarnSanguineStrikes			= mod:NewSpecialWarningTarget(156601, "Healer", nil, nil, nil, nil, 2)
 
 --Ship
 mod:AddTimerLine(Ship)

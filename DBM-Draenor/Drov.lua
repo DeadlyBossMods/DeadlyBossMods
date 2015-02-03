@@ -14,7 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 175827"
 )
 
-local specWarnColossalSlam		= mod:NewSpecialWarningDodge(175791, nil, nil, nil, 2, nil, true)
+local specWarnColossalSlam		= mod:NewSpecialWarningDodge(175791, nil, nil, nil, 2, nil, 2)
 local specWarnCallofEarth		= mod:NewSpecialWarningSpell(175827)
 
 local timerColossalSlamCD		= mod:NewCDTimer(16, 175791)--16-35 second variation? Then again was a bad pull with no tank, boss running loose so may have affected timer

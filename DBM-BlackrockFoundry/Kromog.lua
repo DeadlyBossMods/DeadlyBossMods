@@ -22,7 +22,7 @@ local warnStoneGeyser				= mod:NewSpellAnnounce(158130, 2)
 local warnSlam						= mod:NewCastAnnounce(156704, 3, nil, nil, "Melee")
 local warnWarpedArmor				= mod:NewStackAnnounce(156766, 2, nil, "Tank")
 
-local specWarnGraspingEarth			= mod:NewSpecialWarningSpell(157060, nil, nil, nil, nil, nil, true)
+local specWarnGraspingEarth			= mod:NewSpecialWarningSpell(157060, nil, nil, nil, nil, nil, 2)
 local specWarnThunderingBlows		= mod:NewSpecialWarningSpell(157054, nil, nil, nil, 3)
 local specWarnRipplingSmash			= mod:NewSpecialWarningSpell(157592, nil, nil, nil, 2)
 local specWarnSlam					= mod:NewSpecialWarningSpell(156704, "Tank")

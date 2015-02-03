@@ -39,22 +39,22 @@ local warnCrushArmor				= mod:NewStackAnnounce(155236, 2, nil, "Tank")
 local warnStampede					= mod:NewSpellAnnounce(155247, 3)
 
 --Boss basic attacks
-local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, "-Healer", nil, nil, nil, nil, true)
-local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, "Ranged", nil, nil, 2, nil, true)
+local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, "-Healer", nil, nil, nil, nil, 2)
+local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, "Ranged", nil, nil, 2, nil, 2)
 local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
-local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, "Melee", nil, nil, nil, nil, true)--Always returns to melee (tank)
+local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, "Melee", nil, nil, nil, nil, 2)--Always returns to melee (tank)
 local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil, nil, 2)--Still iffy on it
-local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2, nil, true)
+local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2, nil, 2)
 local specWarnEpicenter				= mod:NewSpecialWarningSpell(162277, nil, nil, nil, 2)
 --Beast abilities (living)
-local specWarnSavageHowl			= mod:NewSpecialWarningDispel(155198, "Healer|Tank|RemoveEnrage", nil, nil, nil, nil, true)
+local specWarnSavageHowl			= mod:NewSpecialWarningDispel(155198, "Healer|Tank|RemoveEnrage", nil, nil, nil, nil, 2)
 local specWarnConflag				= mod:NewSpecialWarningDispel(162277, false)--Just too buggy, cast 3 targets, but can be as high as 5 seconds apart, making warning very spammy. Therefor, MUST stay off by default to reduce DBM spam :\
 local specWarnSearingFangs			= mod:NewSpecialWarningStack(155030, nil, 12)--Stack count assumed, may be 2
 local specWarnSearingFangsOther		= mod:NewSpecialWarningTaunt(155030)--No evidence of this existing ANYWHERE in any logs. removed? Bugged?
 local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, nil, 3)--6-9 second cd, 15 second duration, 3 is smallest safe swap, sometimes 2 when favorable RNG
 local specWarnCrushArmorOther		= mod:NewSpecialWarningTaunt(155236)
-local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil, 2, nil, true)
+local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil, 2, nil, 2)
 
 --Boss basic attacks
 mod:AddTimerLine(CORE_ABILITIES)--Core Abilities

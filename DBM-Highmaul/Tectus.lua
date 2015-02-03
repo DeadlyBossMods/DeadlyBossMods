@@ -28,16 +28,16 @@ mod:RegisterEventsInCombat(
 local warnCrystallineBarrage		= mod:NewTargetAnnounce(162346, 3)
 local warnBerserker					= mod:NewSpellAnnounce("ej10062", 3, 163312)
 
-local specWarnEarthwarper			= mod:NewSpecialWarningSwitch("OptionVersion2", "ej10061", "-Healer", nil, nil, nil, nil, true)
-local specWarnTectonicUpheaval		= mod:NewSpecialWarningSpell(162475, nil, nil, nil, 2, nil, true)
-local specWarnEarthenPillar			= mod:NewSpecialWarningDodge(162518, nil, nil, nil, 3, nil, true)
-local specWarnCrystallineBarrageYou	= mod:NewSpecialWarningYou(162346, nil, nil, nil, nil, nil, true)
+local specWarnEarthwarper			= mod:NewSpecialWarningSwitch("OptionVersion2", "ej10061", "-Healer", nil, nil, nil, nil, 2)
+local specWarnTectonicUpheaval		= mod:NewSpecialWarningSpell(162475, nil, nil, nil, 2, nil, 2)
+local specWarnEarthenPillar			= mod:NewSpecialWarningDodge(162518, nil, nil, nil, 3, nil, 2)
+local specWarnCrystallineBarrageYou	= mod:NewSpecialWarningYou(162346, nil, nil, nil, nil, nil, 2)
 local yellCrystalineBarrage			= mod:NewYell(162346)
-local specWarnCrystallineBarrage	= mod:NewSpecialWarningMove(162370, nil, nil, nil, nil, nil, true)
+local specWarnCrystallineBarrage	= mod:NewSpecialWarningMove(162370, nil, nil, nil, nil, nil, 2)
 --Night-Twisted NPCs
-local specWarnRavingAssault			= mod:NewSpecialWarningDodge(163312, "Melee", nil, nil, nil, nil, true)
-local specWarnEarthenFlechettes		= mod:NewSpecialWarningDodge(162968, "Melee", nil, nil, nil, nil, true)
-local specWarnGiftOfEarth			= mod:NewSpecialWarningCount(162894, "Melee", nil, nil, nil, nil, true)
+local specWarnRavingAssault			= mod:NewSpecialWarningDodge(163312, "Melee", nil, nil, nil, nil, 2)
+local specWarnEarthenFlechettes		= mod:NewSpecialWarningDodge(162968, "Melee", nil, nil, nil, nil, 2)
+local specWarnGiftOfEarth			= mod:NewSpecialWarningCount(162894, "Melee", nil, nil, nil, nil, 2)
 
 local timerEarthwarperCD			= mod:NewNextTimer(41, "ej10061", nil, nil, nil, 162894)--Both of these get delayed by upheavel
 local timerBerserkerCD				= mod:NewNextTimer(41, "ej10062", nil, "Tank", nil, 163312)--Both of these get delayed by upheavel
