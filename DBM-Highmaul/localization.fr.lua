@@ -56,7 +56,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnExpelMagicFelFades	= "Affiche un avertissement spécial pour revenir à son point de départ lorsque $spell:172895 se dissipe"
+	specWarnExpelMagicFelFades	= "Afficher une alerte spéciale pour revenir à son point de départ lorsque $spell:172895 se dissipe"
 })
 
 L:SetMiscLocalization({
@@ -71,9 +71,16 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(1197)
 
+L:SetOptionLocalization({
+	GazeYellType		= "Choisir le type de cri pour le Regard des Abysses",
+	Countdown			= "Compte à rebours jusqu'à disparition",
+	Stacks				= "Nombre de stacks à chaque application"
+})
+
 L:SetMiscLocalization({
 	BrandedYell			= "Marque (%s) sur %s",
 	GazeYell			= "Regard disparaît dans %d",
+	GazeYell2			= "Regard (%d) sur %s",
 	PlayerDebuffs		= "Plus proche de l'Aperçu"
 })
 
