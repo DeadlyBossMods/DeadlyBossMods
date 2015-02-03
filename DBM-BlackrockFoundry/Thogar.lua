@@ -28,7 +28,7 @@ local warnTrain						= mod:NewCountAnnounce(176312, 4)--Switch from generic and 
 local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)
 
 --Operator Thogar
-local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195, nil, nil, nil, nil, nil, true)--If target scanning works
+local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195, nil, nil, nil, nil, nil, 2)
 local specWarnEnkindle				= mod:NewSpecialWarningStack(155921, nil, 2)
 local specWarnEnkindleOther			= mod:NewSpecialWarningTaunt(155921)
 --Adds
@@ -87,7 +87,7 @@ local otherTrains = {
 	[6] = Train.." (2)",--+15 after 5
 	[7] = ManOArms.." (3)",--+5 after 6
 	[8] = Train.." (1)",--+15 after 7
-	[9] = ManOArms.." (2) "..Reinforcements.." (3)",--+15 after 8
+	[9] = Reinforcements.." (2) "..Reinforcements.." (3)",--+15 after 8
 	[10] = Train.." (1, 4)",--+40 after 9
 	[11] = Cannon.." (1)",--+10 after 10
 	[12] = Train.." (2)",--+15 after 11
@@ -140,7 +140,7 @@ local otherVoice = {
 	[6] = "A2",
 	[7] = "D3",
 	[8] = "A1",
-	[9] = "B2B3",
+	[9] = "B23",
 	[10] = "A14",
 	[11] = "C1",
 	[12] = "A2",

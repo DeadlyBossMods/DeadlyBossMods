@@ -25,11 +25,11 @@ local warnCleaver					= mod:NewSpellAnnounce("OptionVersion2", 156143, 3, nil, f
 local warnFrenzy					= mod:NewSpellAnnounce(156598, 4)
 
 local specWarnTenderizer			= mod:NewSpecialWarningStack(156151, nil, 2)
-local specWarnTenderizerOther		= mod:NewSpecialWarningTaunt(156151, nil, nil, nil, nil, nil, true)
-local specWarnGushingWounds			= mod:NewSpecialWarningStack(156152, nil, 2, nil, nil, nil, nil, true)
-local specWarnBoundingCleave		= mod:NewSpecialWarningCount(156160, nil, nil, nil, 2, nil, true)
+local specWarnTenderizerOther		= mod:NewSpecialWarningTaunt(156151, nil, nil, nil, nil, nil, 2)
+local specWarnGushingWounds			= mod:NewSpecialWarningStack(156152, nil, 2, nil, nil, nil, nil, 2)
+local specWarnBoundingCleave		= mod:NewSpecialWarningCount(156160, nil, nil, nil, 2, nil, 2)
 local specWarnBoundingCleaveEnded	= mod:NewSpecialWarningEnd(156160)
-local specWarnPaleVitriol			= mod:NewSpecialWarningMove(163046, nil, nil, nil, nil, nil, true)--Mythic
+local specWarnPaleVitriol			= mod:NewSpecialWarningMove(163046, nil, nil, nil, nil, nil, 2)--Mythic
 
 local timerCleaveCD					= mod:NewCDTimer(6, 156157, nil, false)
 local timerTenderizerCD				= mod:NewCDTimer(16.5, 156151, nil, "Tank")

@@ -35,17 +35,17 @@ local warnAttachSlagBombs			= mod:NewTargetAnnounce(157000, 4)
 local warnMassiveShatteringSmash	= mod:NewTargetAnnounce(158054, 3)
 
 --Stage One: The Blackrock Forge
-local specWarnDemolition			= mod:NewSpecialWarningSpell(156425, nil, nil, nil, 2, nil, true)
-local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 3, nil, true)
+local specWarnDemolition			= mod:NewSpecialWarningSpell(156425, nil, nil, nil, 2, nil, 2)
+local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 3, nil, 2)
 local yellMarkedforDeath			= mod:NewYell(156096)
-local specWarnThrowSlagBombs		= mod:NewSpecialWarningMove(156030, nil, nil, nil, nil, nil, true)
-local specWarnShatteringSmash		= mod:NewSpecialWarningSpell(155992, "Melee", nil, nil, nil, nil, true)
+local specWarnThrowSlagBombs		= mod:NewSpecialWarningMove(156030, nil, nil, nil, nil, nil, 2)
+local specWarnShatteringSmash		= mod:NewSpecialWarningSpell(155992, "Melee", nil, nil, nil, nil, 2)
 local specWarnMoltenSlag			= mod:NewSpecialWarningMove(156401)
 --Stage Two: Storage Warehouse
-local specWarnSiegemaker			= mod:NewSpecialWarningSwitch("ej9571", "Dps", nil, nil, nil, nil, true)
+local specWarnSiegemaker			= mod:NewSpecialWarningSwitch("ej9571", "Dps", nil, nil, nil, nil, 2)
 --Stage Three: Iron Crucible
 local specWarnSlagEruption			= mod:NewSpecialWarningSpell(156928, nil, nil, nil, 2)
-local specWarnAttachSlagBombs		= mod:NewSpecialWarningYou(157000, nil, nil, nil, nil, nil, true)--May change to sound 3, but I don't want it confused with the even more threatening marked for death, so for now will try 1
+local specWarnAttachSlagBombs		= mod:NewSpecialWarningYou(157000, nil, nil, nil, nil, nil, 2)--May change to sound 3, but I don't want it confused with the even more threatening marked for death, so for now will try 1
 local yellAttachSlagBombs			= mod:NewYell(157000, nil, false)
 local specWarnMassiveShatteringSmash= mod:NewSpecialWarningSpell(158054, nil, nil, nil, 2)
 
