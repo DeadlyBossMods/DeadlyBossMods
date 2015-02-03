@@ -7122,12 +7122,11 @@ do
 	frame:SetFrameStrata("HIGH")
 	frame:SetClampedToScreen()
 	frame:SetPoint("CENTER", UIParent, "CENTER", 0, 300)
-	frame:Hide()
 	font1u:Hide()
 	font2u:Hide()
 	font3u:Hide()
 
-	local lastframe, font1elapsed, font2elapsed, font3elapsed, moving
+	local font1elapsed, font2elapsed, font3elapsed, moving
 
 	local function fontHide1()
 		local duration = DBM.Options.WarningDuration
@@ -7242,40 +7241,42 @@ do
 		end
 	end
 
-	function DBM:AddWarning(text, frameNum)
-		frame:Show()
+	function DBM:AddWarning(text, force)
 		local added = false
-		if not frame.font1ticker or frameNum == 1 then
+		if not frame.font1ticker then
 			font1elapsed = 0
 			font1.lastUpdate = GetTime()
 			font1:SetText(text)
 			font1:Show()
 			font1u:Show()
-			lastframe = 2
 			added = true
 			frame.font1ticker = frame.font1ticker or C_Timer.NewTicker(0.05, fontHide1)
-		elseif not frame.font2ticker or frameNum == 2 then
+		elseif not frame.font2ticker then
 			font2elapsed = 0
 			font2.lastUpdate = GetTime()
 			font2:SetText(text)
 			font2:Show()
 			font2u:Show()
-			lastframe = 3
 			added = true
 			frame.font2ticker = frame.font2ticker or C_Timer.NewTicker(0.05, fontHide2)
-		elseif not frame.font3ticker or frameNum == 3 then
+		elseif not frame.font3ticker or force then
 			font3elapsed = 0
 			font3.lastUpdate = GetTime()
 			font3:SetText(text)
 			font3:Show()
 			font3u:Show()
 			fontHide3()
-			lastframe = 1
 			added = true
 			frame.font3ticker = frame.font3ticker or C_Timer.NewTicker(0.05, fontHide3)
 		end
 		if not added then
-			self:AddWarning(text, lastframe)
+			local prevText1 = font2:GetText()
+			local prevText2 = font3:GetText()
+			font1:SetText(prevText1)
+			font1elapsed = font2elapsed
+			font2:SetText(prevText2)
+			font2elapsed = font3elapsed
+			self:AddWarning(text, true)
 		end
 	end
 
