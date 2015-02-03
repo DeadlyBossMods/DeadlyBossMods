@@ -35,6 +35,7 @@ localization.de.lua
 localization.ru.lua
 localization.tw.lua
 localization.cn.lua
+localization.fr.lua
 Auchindoun\AuchTrash.lua
 Auchindoun\ProtectorOfAuch.lua
 Auchindoun\Nyami.lua
