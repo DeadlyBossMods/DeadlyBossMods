@@ -950,14 +950,14 @@ do
 	end
 	local function NightTwisted(self)
 		timerNightTwistedCD:Start()
-		self:Schedule(NightTwisted, 30, self)
+		self:Schedule(30, NightTwisted, self)
 	end
 	function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
 		if npc == chogallName then--Some creative shit right here. Screw localized text. This will trigger off first yell at start of 35 second RP Sender is 丘加利 (Cho'gall)
 			self:UnregisterShortTermEvents()--Unregister Yell
 			timerTransition:Start(34)--Boss/any arcane adds still active during this, so do not cancel timers here, canceled on margok death
 			self:Schedule(10, stopP3Timers, self)--Terminate timers when King Prison activates.
-			self:Schedule(NightTwisted, 31, self)
+			self:Schedule(31, NightTwisted, self)
 		end
 	end
 end
