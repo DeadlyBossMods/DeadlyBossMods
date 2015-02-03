@@ -124,6 +124,7 @@ local timerGlimpseOfMadnessCD					= mod:NewNextCountTimer(27, 165243)
 local timerInfiniteDarknessCD					= mod:NewNextTimer(62, 165102)
 local timerEnvelopingNightCD					= mod:NewNextCountTimer(63, 165876)--60 seconds plus 3 second cast
 local timerDarkStarCD							= mod:NewCDTimer(61, 178607)--61-65 Variations noticed
+local timerNightTwistedCD						= mod:NewTimer(30, "timerNightTwistedCD", 172138)
 
 local countdownArcaneWrath						= mod:NewCountdown("OptionVersion2", 50, 156238, false)--Important to the assigned soakers on mythic, but pretty much spam to everyone else
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, "Tank")
@@ -947,11 +948,16 @@ do
 		countdownForceNova:Cancel()
 		specWarnForceNova:Cancel()
 	end
+	local function NightTwisted(self)
+		timerNightTwistedCD:Start()
+		self:Schedule(NightTwisted, 30, self)
+	end
 	function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
 		if npc == chogallName then--Some creative shit right here. Screw localized text. This will trigger off first yell at start of 35 second RP Sender is 丘加利 (Cho'gall)
 			self:UnregisterShortTermEvents()--Unregister Yell
 			timerTransition:Start(34)--Boss/any arcane adds still active during this, so do not cancel timers here, canceled on margok death
 			self:Schedule(10, stopP3Timers, self)--Terminate timers when King Prison activates.
+			self:Schedule(NightTwisted, 31, self)
 		end
 	end
 end
