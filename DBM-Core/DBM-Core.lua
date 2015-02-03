@@ -159,6 +159,7 @@ DBM.DefaultOptions = {
 	HPFrameX = -50,
 	HPFrameY = 50,
 	HPFrameMaxEntries = 5,
+	WarningDuration = 5,
 	WarningPoint = "CENTER",
 	WarningX = 0,
 	WarningY = 260,
@@ -7129,16 +7130,18 @@ do
 	local lastframe, font1elapsed, font2elapsed, font3elapsed, moving
 
 	local function fontHide1()
-		if font1elapsed > 13 then
+		local duration = DBM.Options.WarningDuration
+		if font1elapsed > duration * 1.3 then
 			font1u:Hide()
 			font1:Hide()
 			if frame.font1ticker then
 				frame.font1ticker:Cancel()
 				frame.font1ticker = nil
 			end
-		elseif font1elapsed > 10 then
+		elseif font1elapsed > duration then
 			font1elapsed = font1elapsed + 0.05
-			font1:SetAlpha(1 - (font1elapsed - 10) / 3)
+			local alpha = 1 - (font1elapsed - duration) / (duration * 0.3)
+			font1:SetAlpha(alpha > 0 and alpha or 0)
 		else
 			font1elapsed = font1elapsed + 0.05
 			font1:SetAlpha(1)
@@ -7146,16 +7149,18 @@ do
 	end
 
 	local function fontHide2()
-		if font2elapsed > 13 then
+		local duration = DBM.Options.WarningDuration
+		if font2elapsed > duration * 1.3 then
 			font2u:Hide()
 			font2:Hide()
 			if frame.font2ticker then
 				frame.font2ticker:Cancel()
 				frame.font2ticker = nil
 			end
-		elseif font2elapsed > 10 then
+		elseif font2elapsed > duration then
 			font2elapsed = font2elapsed + 0.05
-			font2:SetAlpha(1 - (font2elapsed - 10) / 3)
+			local alpha = 1 - (font2elapsed - duration) / (duration * 0.3)
+			font2:SetAlpha(alpha > 0 and alpha or 0)
 		else
 			font2elapsed = font2elapsed + 0.05
 			font2:SetAlpha(1)
@@ -7163,16 +7168,18 @@ do
 	end
 
 	local function fontHide3()
-		if font3elapsed > 13 then
+		local duration = DBM.Options.WarningDuration
+		if font3elapsed > duration * 1.3 then
 			font3u:Hide()
 			font3:Hide()
 			if frame.font3ticker then
 				frame.font3ticker:Cancel()
 				frame.font3ticker = nil
 			end
-		elseif font3elapsed > 10 then
+		elseif font3elapsed > duration then
 			font3elapsed = font3elapsed + 0.05
-			font3:SetAlpha(1 - (font3elapsed - 10) / 3)
+			local alpha = 1 - (font3elapsed - duration) / (duration * 0.3)
+			font3:SetAlpha(alpha > 0 and alpha or 0)
 		else
 			font3elapsed = font3elapsed + 0.05
 			font3:SetAlpha(1)
@@ -7281,9 +7288,9 @@ do
 				anchorFrame.ticker:Cancel()
 				anchorFrame.ticker = nil
 			end
-			font1elapsed = 10
-			font2elapsed = 10
-			font3elapsed = 10
+			font1elapsed = DBM.Options.WarningDuration
+			font2elapsed = DBM.Options.WarningDuration
+			font3elapsed = DBM.Options.WarningDuration
 			frame:SetFrameStrata("HIGH")
 			DBM:Unschedule(moveEnd)
 			DBM.Bars:CancelBar(DBM_CORE_MOVE_WARNING_BAR)
