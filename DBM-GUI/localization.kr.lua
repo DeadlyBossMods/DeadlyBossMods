@@ -84,12 +84,19 @@ L.InfoRaidWarning			= [[공격대 경보 창 위치와 알림 색상을 수정�
 DBM은 공격대 경보 창에 "X : Y" 같은 알림을 표시합니다.]]
 L.ColorResetted 			= "현재 색상 설정을 초기화 합니다."
 L.ShowWarningsInChat 		= "알림을 대화창에서도 보기"
-L.ShowFakedRaidWarnings 	= "알림을 공격대 경보처럼 보기"
+L.ShowFakedRaidWarnings 	= "대화창 알림 메세지를 공격대 경보처럼 보기"
 L.WarningIconLeft 			= "알림 왼쪽에 주문 아이콘 보기"
 L.WarningIconRight 			= "알림 오른쪽에 주문 아이콘 보기"
 L.WarningIconChat 			= "대화창 알림 메세지에 주문 아이콘 보기"
-L.RaidWarnMessage 			= "<Deadly Boss Mods>를 사용해 주셔셔 감사합니다."
-L.BarWhileMove 				= "알림 위치 수정"
+L.Warn_FontType				= "글꼴"
+L.Warn_FontStyle			= "글꼴 속성"
+L.Warn_FontShadow			= "그림자"
+L.Warn_FontSize				= "글꼴 크기: %d"
+L.None						= "없음"
+L.Outline					= "외곽선"
+L.ThickOutline				= "굵은 외곽선"
+L.MonochromeOutline			= "예리한 외곽선"
+L.MonochromeThickOutline	= "예리한 굵은 외곽선"
 L.RaidWarnSound				= "알림 소리"
 
 -- Tab: Generalwarnings

@@ -354,7 +354,9 @@ DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "$spell:%s 정보를 정보 창으로 보
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "우두머리 전투 시작시 전투 준비 소리 듣기(대상 선택 유무 무관)"
 
 -- New special warnings
-DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "특수 경고 움직이기"
+DBM_CORE_MOVE_WARNING_BAR				= "알림 이동 가능"
+DBM_CORE_MOVE_WARNING_MESSAGE			= "<Deadly Boss Mods>를 사용해 주셔셔 감사합니다."
+DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "특수 경고 이동 가능"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "특수 경고"
 
 DBM_ARROW_MOVABLE						= "화살표 움직이기"
