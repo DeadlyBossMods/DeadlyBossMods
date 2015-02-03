@@ -170,14 +170,17 @@ L.SpecWarn_ResetMe			= "Réinit. les valeurs"
 -- Tab: Spoken Alerts Frame (entire tab was missing, some line were missplaced)
 L.Panel_SpokenAlerts		= "Alertes Vocales"
 L.Area_VoiceSelection		= "Sélection des voix"
-L.CountdownVoice			= "Définir la voix principale pour les comptes à rebours"
+L.CountdownVoice			= "Définir la voix principale" --shortened to avoid overlap in game
 L.CountdownVoice2			= "Définir la deuxième voix pour les comptes à rebours"
-L.CountdownVoice3			= "Définir la troisième voix pour les comptes à rebours"
+L.CountdownVoice3			= "Définir la troisième voix" --shortened to avoid overlap in game
 L.VoicePackChoice			= "Définir le Pack de voix pour les Alertes Vocales"
 L.Area_CountdownOptions		= "Options des Comptes à rebours"
 L.ShowCountdownText			= "Afficher le texte du compte à rebours lors des comptes à rebours de la voix principale" --might be possible to make it shorter
 L.Area_VoicePackOptions		= "Options des Packs de voix (Pack de voix tiers)"
 L.SpecWarn_NoSoundsWVoice	= "Ne pas jouer d'alerte spéciale s'il y a déjà une alerte vocale"
+L.SWFNever					= "Jamais" --line was missing
+L.SWFDefaultOnly			= "quand les alertes spéciales jouent les sons de base. (N'agit pas pour les sons modifiés)" --line was missing
+L.SWFAll					= "quand les alertes spéciales jouent n'importe quel son" --line was missing
 L.SpecWarn_AlwaysVoice		= "Toujours jouer toutes les alertes vocales (Outrepasse les options par boss. Utile pour les RL)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 
@@ -230,7 +233,7 @@ L.HideWatchFrame			= "Masquer le cadre de suivi d'objectifs pendant les combats 
 L.HideGarrisonUpdates		= "Masque les notifications de fief pendant les combats de boss" --line was missing
 L.HideGuildChallengeUpdates	= "Masque les notifications de défis de guilde pendant les combats de boss" --line was missing
 L.HideTooltips				= "Masquer le cadre d'information pendant les combats contre un boss"
-L.HideApplicantAlerts		= "Supress applicant alerts in premade groups" --line was missing
+L.HideApplicantAlerts		= "Supprime les alertes de candidats dans les groupes pré-définis" --line was missing
 L.HideApplicantAlertsFull	= "Si le groupe est complet" --line was missing
 L.HideApplicantAlertsNotL	= "Si vous n'êtes pas responsable du groupe (Agit si le groupe est complet lorsque vous êtes le responsable)" --line was missing
 L.SpamBlockSayYell			= "Masquer les annonces des onglets de chat de la fenêtre de discussion pendant les combats contre un boss"
@@ -274,6 +277,8 @@ L.EnterProfileName			= "Entrer un nom de profil"
 L.CreateProfile				= "Créer un profil pour les options de DBM Core"
 L.Area_ApplyProfile			= "Appliquer le profil actif aux options de DBM Core"
 L.SelectProfileToApply		= "Sélectionner le profil à appliquer"
+L.Area_CopyProfile			= "Copier un profil d'option de DBM Core" --line was missing
+L.SelectProfileToCopy		= "Sélectionner le profil à copier" --line was missing
 L.Area_DeleteProfile		= "Supprimer un profil"
 L.SelectProfileToDelete		= "Sélectionner le profil à supprimer"
 L.Area_DualProfile			= "Options de Profil"
