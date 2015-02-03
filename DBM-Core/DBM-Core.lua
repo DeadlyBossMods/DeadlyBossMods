@@ -2888,15 +2888,15 @@ end
 
 do
 	function loadOptions()
+		--init
+		if not DBM_AllSavedOptions then DBM_AllSavedOptions = {} end
 		usedProfile = DBM_UsedProfile or usedProfile
-		if not usedProfile or not DBM_AllSavedOptions[usedProfile] then
+		if not usedProfile or (usedProfile ~= "Default" and not DBM_AllSavedOptions[usedProfile]) then
 			-- DBM.Option is not loaded. so use print function
 			print(DBM_CORE_PROFILE_NOT_FOUND)
 			usedProfile = "Default"
 		end
 		DBM_UsedProfile = usedProfile
-		--init
-		if not DBM_AllSavedOptions then DBM_AllSavedOptions = {} end
 		--migrate old options
 		if DBM_SavedOptions and not DBM_AllSavedOptions[usedProfile] then
 			DBM_AllSavedOptions[usedProfile] = DBM_SavedOptions
