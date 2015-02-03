@@ -2889,17 +2889,17 @@ end
 do
 	function loadOptions()
 		usedProfile = DBM_UsedProfile or usedProfile
+		if not usedProfile or not DBM_AllSavedOptions[usedProfile] then
+			-- DBM.Option is not loaded. so use print function
+			print(DBM_CORE_PROFILE_NOT_FOUND)
+			usedProfile = "Default"
+		end
 		DBM_UsedProfile = usedProfile
 		--init
 		if not DBM_AllSavedOptions then DBM_AllSavedOptions = {} end
 		--migrate old options
 		if DBM_SavedOptions and not DBM_AllSavedOptions[usedProfile] then
 			DBM_AllSavedOptions[usedProfile] = DBM_SavedOptions
-		end
-		if not DBM_AllSavedOptions["Default"] then--Default doesn't exist, repair.
-			DBM:AddMsg("If you are seeing this error, please report it on deadlybossmods.com forums all info printed below this line")
-			DBM:AddMsg(DBM_UsedProfile..", "..usedProfile)
-			DBM:CreateProfile("Default")
 		end
 		DBM.Options = DBM_AllSavedOptions[usedProfile] or {}
 		dbmIsEnabled = DBM.Options.Enabled or true
