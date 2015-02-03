@@ -1529,7 +1529,7 @@ local function CreateOptionsMenu()
 		--            Raid Warning Colors            --
 		-----------------------------------------------
 		local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
-		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 315, true)
+		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 345, true)
 
 		local ShowWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
 		local ShowFakedRaidWarnings = raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, "ShowFakedRaidWarnings")
@@ -1602,6 +1602,23 @@ local function CreateOptionsMenu()
 			fontSizeSlider:HookScript("OnValueChanged", function(self)
 				if firstshow then firstshow = false return end
 				DBM.Options.WarningFontSize = self:GetValue()
+				DBM:UpdateWarningOptions()
+				DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
+			end)
+		end
+
+		-- RaidWarn Font Size
+		local durationSlider = raidwarnoptions:CreateSlider(L.Warn_Duration, 3, 20, 1, 200)
+		durationSlider:SetPoint('TOPLEFT', FontDropDown, "TOPLEFT", 20, -160)
+		do
+			local firstshow = true
+			durationSlider:SetScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.WarningDuration)
+			end)
+			durationSlider:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.WarningDuration = self:GetValue()
 				DBM:UpdateWarningOptions()
 				DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
 			end)
