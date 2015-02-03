@@ -1529,13 +1529,53 @@ local function CreateOptionsMenu()
 		--            Raid Warning Colors            --
 		-----------------------------------------------
 		local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
-		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 190, true)
+		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 315, true)
 
 		local ShowWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
 		local ShowFakedRaidWarnings = raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, "ShowFakedRaidWarnings")
 		local WarningIconLeft		= raidwarnoptions:CreateCheckButton(L.WarningIconLeft,  true, nil, "WarningIconLeft")
 		local WarningIconRight 		= raidwarnoptions:CreateCheckButton(L.WarningIconRight,  true, nil, "WarningIconRight")
 		local WarningIconChat 		= raidwarnoptions:CreateCheckButton(L.WarningIconChat,  true, nil, "WarningIconChat")
+
+		-- RaidWarn Font
+		local Fonts = MixinSharedMedia3("font", {
+			{	text	= "Default",		value 	= STANDARD_TEXT_FONT,			font = STANDARD_TEXT_FONT		},
+			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
+			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
+			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
+		})
+
+		local FontDropDown = raidwarnoptions:CreateDropdown(L.Warn_FontType, Fonts, "DBM", "WarningFont", function(value)
+			DBM.Options.WarningFont = value
+			DBM:UpdateWarningOptions()
+			DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
+		end)
+		FontDropDown:SetPoint("TOPLEFT", WarningIconChat, "BOTTOMLEFT", 0, -10)
+
+		-- RaidWarn Font Style
+		local FontStyles = {
+			{	text	= L.None,					value 	= "None"						},
+			{	text	= L.Outline,				value 	= "OUTLINE"						},
+			{	text	= L.ThickOutline,			value 	= "THICKOUTLINE"				},
+			{	text	= L.MonochromeOutline,		value 	= "MONOCHROME,OUTLINE"			},
+			{	text	= L.MonochromeThickOutline,	value 	= "MONOCHROME,THICKOUTLINE"		}
+		}
+
+		local FontStyleDropDown = raidwarnoptions:CreateDropdown(L.Warn_FontStyle, FontStyles, "DBM", "WarningFontStyle", function(value)
+			DBM.Options.WarningFontStyle = value
+			DBM:UpdateWarningOptions()
+			DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
+		end)
+		FontStyleDropDown:SetPoint("TOPLEFT", FontDropDown, "BOTTOMLEFT", 0, -10)
+
+		-- RaidWarn Font Shadow
+		local FontShadow = raidwarnoptions:CreateCheckButton(L.Warn_FontShadow, nil, nil, "WarningFontShadow")
+		FontShadow:SetScript("OnClick", function()
+			DBM.Options.WarningFontShadow = not DBM.Options.WarningFontShadow
+			DBM:UpdateWarningOptions()
+			DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
+		end)
+		FontShadow:SetPoint("LEFT", FontStyleDropDown, "RIGHT", 35, 0)
 
 		-- RaidWarn Sound
 		local Sounds = MixinSharedMedia3("sound", {
@@ -1548,7 +1588,24 @@ local function CreateOptionsMenu()
 		local RaidWarnSoundDropDown = raidwarnoptions:CreateDropdown(L.RaidWarnSound, Sounds, "DBM", "RaidWarningSound", function(value)
 			DBM.Options.RaidWarningSound = value
 		end)
-		RaidWarnSoundDropDown:SetPoint("TOPLEFT", WarningIconChat, "BOTTOMLEFT", 10, -10)
+		RaidWarnSoundDropDown:SetPoint("TOPLEFT", FontStyleDropDown, "BOTTOMLEFT", 0, -10)
+
+		-- RaidWarn Font Size
+		local fontSizeSlider = raidwarnoptions:CreateSlider(L.Warn_FontSize, 14, 60, 1, 200)
+		fontSizeSlider:SetPoint('TOPLEFT', FontDropDown, "TOPLEFT", 20, -130)
+		do
+			local firstshow = true
+			fontSizeSlider:SetScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.WarningFontSize)
+			end)
+			fontSizeSlider:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.WarningFontSize = self:GetValue()
+				DBM:UpdateWarningOptions()
+				DBM:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
+			end)
+		end
 
 		--Raid Warning Colors
 		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 150, true)
@@ -1608,62 +1665,7 @@ local function CreateOptionsMenu()
 		movemebutton:SetPoint('BOTTOMRIGHT', raidwarncolors.frame, "TOPRIGHT", 0, -1)
 		movemebutton:SetNormalFontObject(GameFontNormalSmall)
 		movemebutton:SetHighlightFontObject(GameFontNormalSmall)
-		do
-			local anchorFrame
-			local function hideme()
-				anchorFrame:Hide()
-			end
-			movemebutton:SetScript("OnClick", function(self)
-				DBM:Schedule(20, hideme)
-				DBM.Bars:CreateBar(20, L.BarWhileMove)
-				if not anchorFrame then
-					anchorFrame = CreateFrame("Frame", "DBM_GUI_RaidWarnAnchor", UIParent)
-					anchorFrame:SetWidth(32)
-					anchorFrame:SetHeight(32)
-					anchorFrame:EnableMouse(true)
-					anchorFrame:SetPoint("BOTTOM", RaidWarningFrame, "TOP", 0, 1)
-					anchorFrame.texture = anchorFrame:CreateTexture()
-					anchorFrame.texture:SetTexture("Interface\\Addons\\DBM-GUI\\textures\\dot.blp")
-					anchorFrame.texture:SetPoint("CENTER", anchorFrame, "CENTER", 0, 0)
-					anchorFrame.texture:SetWidth(32)
-					anchorFrame.texture:SetHeight(32)
-					anchorFrame:SetScript("OnMouseDown", function(self)
-						RaidWarningFrame:SetMovable(true)
-						RaidWarningFrame:StartMoving()
-						DBM:Unschedule(hideme)
-						DBM.Bars:CancelBar(L.BarWhileMove)
-					end)
-					anchorFrame:SetScript("OnMouseUp", function(self)
-						RaidWarningFrame:StopMovingOrSizing()
-						RaidWarningFrame:SetMovable(false)
-						local point, _, _, xOfs, yOfs = RaidWarningFrame:GetPoint(1)
-						DBM.Options.RaidWarningPosition.Point = point
-						DBM.Options.RaidWarningPosition.X = xOfs
-						DBM.Options.RaidWarningPosition.Y = yOfs
-						DBM:Schedule(15, hideme)
-						DBM.Bars:CreateBar(15, L.BarWhileMove)
-					end)
-					do
-						local elapsed = 10
-						anchorFrame:SetScript("OnUpdate", function(self, e)
-							elapsed = elapsed + e
-							if elapsed > 5 then
-								elapsed = 0
-								RaidNotice_AddMessage(RaidWarningFrame, L.RaidWarnMessage, ChatTypeInfo["RAID_WARNING"])
-							end
-						end)
-					end
-
-					anchorFrame:Show()
-				else
-					if anchorFrame:IsShown() then
-						anchorFrame:Hide()
-					else
-						anchorFrame:Show()
-					end
-				end
-			end)
-		end
+		movemebutton:SetScript("OnClick", function() DBM:MoveWarning() end)
 		RaidWarningPanel:SetMyOwnHeight()
 	end
 
