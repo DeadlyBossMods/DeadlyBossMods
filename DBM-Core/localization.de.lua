@@ -53,8 +53,10 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "Kampf gegen %s hat vor %s begonnen, Neukalib
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "\"Transcriptor\"-Aufzeichnung gestartet."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "\"Transcriptor\"-Aufzeichnung beendet."
 
+DBM_CORE_PROFILE_NOT_FOUND			= "<Deadly Boss Mods> Dein derzeitiges Profil ist korrupt. DBM wird das Profil 'Default' laden."
 DBM_CORE_PROFILE_CREATED			= "Profil '%s' erzeugt."
 DBM_CORE_PROFILE_CREATE_ERROR		= "Erzeugen des Profils fehlgeschlagen. Ungültiger Profilname."
+DBM_CORE_PROFILE_CREATE_ERROR_D		= "Erzeugen des Profils fehlgeschlagen. Profil '%s' existiert bereits."
 DBM_CORE_PROFILE_APPLIED			= "Profil '%s' angewendet."
 DBM_CORE_PROFILE_APPLY_ERROR		= "Anwenden des Profils fehlgeschlagen. Profil '%s' existiert nicht."
 DBM_CORE_PROFILE_COPIED				= "Profil '%s' kopiert."
@@ -130,6 +132,7 @@ DBM_CORE_YOUR_VERSION_OUTDATED      = "Deine Version von Deadly Boss Mods ist ve
 DBM_CORE_OUTDATED_PVP_MODS			= "Deine PvP-Mods von DBM sind veraltet. Die PvP-Mods sind nicht mehr im \"DBM-Core\"-Download enthalten. Die aktuellsten PvP-Mods findest du unter http://www.deadlybossmods.com als separaten Download. Bitte lösche den Ordner \"DBM-PvP\" (unterhalb des Ordners \"...\\Interface\\AddOns\"), falls du die PvP-Mods nicht benutzt."
 DBM_CORE_VOICE_PACK_OUTDATED		= "In deinem DBM Sprachpack fehlen möglicherweise Sounds, die von dieser Version von DBM unterstützt werden. Der Soundfilter für Spezialwarnungen wurde deaktiviert. Bitte lade dir eine neuere Version des Spachpacks herunter oder kontaktiere den Autor des Sprachpacks für ein Update, welches die fehlenden Sounddateien enthält."
 DBM_CORE_VOICE_MISSING				= "Du hast einen DBM Sprachpack ausgewählt, der nicht gefunden werden konnte. Deine Auswahl wurde auf 'Kein Sprachpack' zurückgesetzt. Bitte stelle sicher, dass der Sprachpack korrekt installiert und in der Addon-Liste aktiviert wurde, falls dies ein Fehler ist."
+DBM_CORE_VOICE_COUNT_MISSING		= "Für die Countdown-Stimme %d ist ein Sprachpack ausgewählt, der nicht gefunden werden konnte. Die Stimme wurde auf die Standardeinstellung zurückgesetzt."
 --DBM_BIG_WIGS
 --DBM_BIG_WIGS_ALPHA
 
@@ -335,7 +338,6 @@ DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Setze Zeichen auf $spell:%s"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT			= "Zeige DBM-Pfeil zum Hingehen zum von $spell:%s betroffenen Ziel"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "Zeige DBM-Pfeil zum Weggehen vom von $spell:%s betroffenen Ziel"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "Zeige DBM-Pfeil zum Hingehen zum richtigen Ort für $spell:%s"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Spiele \"Lauf weg!\"-Sound für $spell:%s"
 DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "Spiele gesprochene Warnungen für $spell:%s"
 DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "Spiele gesprochene Warnungen für Phasenwechsel"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Spiele akustischen Countdown bis $spell:%s gewirkt wird"
@@ -351,6 +353,8 @@ DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "Zeige Infofenster für $spell:%s"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "Spiele \"Bereitschaftscheck\"-Sound, wenn der Boss angegriffen wird (auch wenn er nicht als Ziel gesetzt ist)"
 
 -- New special warnings
+DBM_CORE_MOVE_WARNING_BAR			= "bewegbare Schlachtzugwarnung"
+DBM_CORE_MOVE_WARNING_MESSAGE		= "Danke, dass du Deadly Boss Mods verwendest"
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "bewegbare Spezialwarnung"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Spezialwarnung"
 
