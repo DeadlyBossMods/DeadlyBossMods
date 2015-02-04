@@ -25,6 +25,7 @@ mod:RegisterEventsInCombat(
 local warnProtoGrenade				= mod:NewSpellAnnounce(155864, 3)
 local warnEnkindle					= mod:NewStackAnnounce(155921, 2, nil, "Tank")
 local warnTrain						= mod:NewCountAnnounce(176312, 4)--Switch from generic and make informing one when mythicTrains (and non mythic trains too) are more populated.
+--local warnTrain						= mod:NewTargetCountAnnounce(176312, 4)
 --Adds
 local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)
 
@@ -32,6 +33,7 @@ local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)
 local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195, nil, nil, nil, nil, nil, 2)
 local specWarnEnkindle				= mod:NewSpecialWarningStack(155921, nil, 2)--Maybe need 3 for new cd?
 local specWarnEnkindleOther			= mod:NewSpecialWarningTaunt(155921)
+local specWarnTrain					= mod:NewSpecialWarningDodge(176312, nil, nil, nil, 3)
 --Adds
 local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt(160140, not "Healer")
 local specWarnIronbellow			= mod:NewSpecialWarningSpell(163753, nil, nil, nil, 2)
@@ -65,18 +67,18 @@ local Deforester = EJ_GetSectionInfo(10329)
 --this means that for 5 second cd trains you may see a yell for NEXT train as previous train is showing up. Do not confuse this!
 --Also be aware that older beta videos are worng, blizz has changed train orders few times, so don't try to fill in missing data by putting "thogar" into youtube unless it's a RECENT video.
 local mythicTrains = {
-	[1] = ManOArms.." (4)",--+7 after pull
-	[2] = Deforester.." (1)",--+5 after 1
-	[3] = Train.." (2)",--+5 after 2.
-	[4] = Train.." (3)",--+15 after 3.
+	[1] = ManOArms.." #4",--+7 after pull
+	[2] = Deforester.." #1",--+5 after 1
+	[3] = Train.." #2",--+5 after 2.
+	[4] = Train.." #3",--+15 after 3.
 	[5] = Train..L.threeTrains,--+15 after 4
-	[6] = Cannon.." (1, 4)",--+15 after 5
-	[7] = Train.." (2)",--+5 after 6.
-	[8] = Train.." (3)",--+5 after 7.
-	[9] = Train.." (2)",--+15 after 8.
-	[10] = Reinforcements.." (2, 3)",--+20 after 9
-	[11] = Train.." (1, 4)",--+15 after 10.
-	[12] = Train.." (2, 4)",--+15 after 11
+	[6] = Cannon.." #1, #4",--+15 after 5
+	[7] = Train.." #2",--+5 after 6.
+	[8] = Train.." #3",--+5 after 7.
+	[9] = Train.." #2",--+15 after 8.
+	[10] = Reinforcements.." #2, #3",--+20 after 9
+	[11] = Train.." #1, #4",--+15 after 10.
+	[12] = Train.." #2, #4",--+15 after 11
 	[13] = UNKNOWN,--+15/20? after 12
 }
 --[[ All non mythic difficulties
@@ -109,36 +111,36 @@ local mythicTrains = {
 		},
 --]]
 local otherTrains = {
-	[1] = Train.." (4)",--+12 after pull
-	[2] = Train.." (2)",--+10 after 1
-	[3] = Reinforcements.." (1)",--+5 after 2
-	[4] = Train.." (3)",--+15 after 3
-	[5] = Cannon.." (4)",--+5 after 4
-	[6] = Train.." (2)",--+25 after 5
-	[7] = ManOArms.." (3)",--+5 after 6
-	[8] = Train.." (1)",--+25 after 7
+	[1] = Train.." #4",--+12 after pull
+	[2] = Train.." #2",--+10 after 1
+	[3] = Reinforcements.." #1",--+5 after 2
+	[4] = Train.." #3",--+15 after 3
+	[5] = Cannon.." #4",--+5 after 4
+	[6] = Train.." #2",--+25 after 5
+	[7] = ManOArms.." #3",--+5 after 6
+	[8] = Train.." #1",--+25 after 7
 	--WARNING, Train 9 does not fire a yell
-	[9] = Reinforcements.." (2) "..Reinforcements.." (3)",--+15 after 8
+	[9] = Reinforcements.." #2, #3",--+15 after 8
 	--WARNING, Train 9 does not fire a yell
-	[10] = Train.." (1, 4)",--+40 after 9
-	[11] = Cannon.." (1)",--+10 after 10
-	[12] = Train.." (2)",--+15 after 11
-	[13] = Reinforcements.." (4)",--+10 after 12
-	[14] = Train.." (3)",--+20 after 13
-	[15] = Train.." (2)",--+10 after 14
-	[16] = Train.." (1)",--+10 after 15
-	[17] = ManOArms.." (2) "..Cannon.." (4)",--+15 after 16
-	[18] = Train.." (1)",--+20 after 17
+	[10] = Train.." #1, #4",--+40 after 9
+	[11] = Cannon.." #1",--+10 after 10
+	[12] = Train.." #2",--+15 after 11
+	[13] = Reinforcements.." #4",--+10 after 12
+	[14] = Train.." #3",--+20 after 13
+	[15] = Train.." #2",--+10 after 14
+	[16] = Train.." #1",--+10 after 15
+	[17] = ManOArms.." #2, "..Cannon.." #4",--+15 after 16
+	[18] = Train.." #1",--+20 after 17
 	--WARNING, Train 19 does not fire a yell
-	[19] = Train.." (3)",--+5 after 18
+	[19] = Train.." #3",--+5 after 18
 	--WARNING, Train 19 does not fire a yell
-	[20] = Cannon.." (1, 4)",--+30 after 19
-	[21] = Train.." (2)",--+10 after 20
-	[22] = Train.." (2)",--+25 after 21
-	[23] = Reinforcements.." (2) "..ManOArms.." (3)",--+30 after 22
+	[20] = Cannon.." #1, #4",--+30 after 19
+	[21] = Train.." #2",--+10 after 20
+	[22] = Train.." #2",--+25 after 21
+	[23] = Reinforcements.." #2, "..ManOArms.." #3",--+30 after 22
 	[24] = Train,--+15 after 23 (random train, seen 3 and 4 diff pulls)
-	[25] = Train.." (1)",--+20 after 24 (Possibly also random?)
-	[26] = Reinforcements.." (1, 4)",--+20 after 25
+	[25] = Train.." #1",--+20 after 24 (Possibly also random?)
+	[26] = Reinforcements.." #1, #4",--+20 after 25
 }
 
 local function fakeTrainYell(self)
@@ -198,6 +200,43 @@ local otherVoice = {
 	[25] = "A1",--Possibly also random?
 	[26] = "B14",
 }
+
+local function laneCheck()
+	local posX, posY = UnitPosition("player")
+	local train = self.vb.trainCount
+	-- need map data
+	local playerLane
+	if posX > 0 and posY > 0 then
+		playerLane = 1
+	elseif posX > 0 and posY > 0 then
+		playerLane = 2
+	elseif posX > 0 and posY > 0 then
+		playerLane = 3
+	else
+		playerLane = 4
+	end
+	if mod:IsMythic() then
+		if playerLane == 1 and (train == 2 or train == 5 or train == 6 or train == 11) then
+			specWarnTrain:Show()
+		elseif playerLane == 2 and (train == 3 or train == 5 or train == 7 or train == 9 or train == 12) then
+			specWarnTrain:Show()
+		elseif playerLane == 3 and (train == 4 or train == 5 or train == 8 or train == 10) then
+			specWarnTrain:Show()
+		elseif playerLane == 4 and (train == 1 or train == 5 or train == 11 or train == 12) then
+			specWarnTrain:Show()
+		end
+	else
+		if playerLane == 1 and (train == 3 or train == 8 or train == 10 or train == 11 or train == 16 or train == 18 or train == 20 or train == 24 or train == 25 or train == 26) then
+			specWarnTrain:Show()
+		elseif playerLane == 2 and (train == 2 or train == 6 or train == 9 or train == 12 or train == 15 or train == 17 or train == 21 or train == 22 or train == 23 or train == 24) then
+			specWarnTrain:Show()
+		elseif playerLane == 3 and (train == 4 or train == 7 or train == 9 or train == 14 or train == 19 or train == 23 or train == 24) then
+			specWarnTrain:Show()
+		elseif playerLane == 4 and (train == 1 or train == 5 or train == 10 or train == 13 or train == 17 or train == 20 or train == 24 or train == 26) then
+			specWarnTrain:Show()
+		end
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.trainCount = 0
@@ -282,7 +321,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		local count = self.vb.trainCount
 		warnTrain:Show(count)
 		countdownTrain:Start()--All trains are delayed 5 seconds from yell now, so we can just put 5 second countdown here.
+		--self:Schedule(5, laneCheck)--disable for now
 		if self:IsMythic() then
+			if mythicTrains[count] then
+				--warnTrain:Show(count, mythicTrains[count])
+			end
 			if mythicVoice[count] then
 				voiceTrain:Play("Thogar\\"..mythicVoice[count])
 			end
@@ -311,10 +354,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				specWarnManOArms:Show()
 			end
 		else
+			if otherTrains[count] then
+				--warnTrain:Show(count, otherTrains[count])
+			end
 			if otherVoice[count] then
 				voiceTrain:Play("Thogar\\"..otherVoice[count])
 			end
-			if count >= 23 then
+			if count >= 26 then
 				print("Train Set: "..count..". DBM has no train data beyond this point. Write down lane(s) trains come from in 5 seconds with train set number and give it to us")
 				return
 			end
