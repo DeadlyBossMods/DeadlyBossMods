@@ -321,7 +321,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			--Next Train 5 seconds after: 2, 4, 6, 18
 			--Next Train 10 seconds after: 1, 10, 14, 15, 20
 			--Next Train 15 seconds after: 3, 8, 11, 16
-			--Next Train 20 seconds after: 13, 17, 24
+			--Next Train 20 seconds after: 13, 17, 24, 25
 			--Next Train 25 seconds after: 5, 7, 21
 			--Next Train 30 seconds after: 19
 			--Next Train 40 seconds after: 9
@@ -332,7 +332,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 10
 			elseif count == 3 or count == 8 or count == 11 or count == 16 then
 				expectedTime = 15
-			elseif count == 13 or count == 17 or count == 24 then
+			elseif count == 13 or count == 17 or count == 24 or count == 25 then
 				expectedTime = 20
 			elseif count == 5 or count == 7 or count == 21 then
 				expectedTime = 25
