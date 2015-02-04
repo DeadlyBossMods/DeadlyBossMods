@@ -56,7 +56,7 @@ L= DBM:GetModLocalization(1147)
 
 L:SetMiscLocalization({
 	threeTrains		= " 3 Random Lanes",--translate
-	helperMessage	= "It is recommended you use 'Thogar Assist' in combination with DBM on this boss. Available from: http://wow.curseforge.com/addons/thogar-assist/"--translate
+	helperMessage	= "Empfehlung: Bei diesem Boss sollte das Addon \"Thogar Assist\" zusammen mit DBM genutzt werden. Verfügbar hier: http://wow.curseforge.com/addons/thogar-assist/"
 })
 
 --------------------------
