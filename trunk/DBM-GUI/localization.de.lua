@@ -43,7 +43,7 @@ L.Disable					= "Deaktiviert"
 
 L.NoSound					= "Kein Sound"
 
-L.IconsInUse				= "Von diesem Mod benutzte Zeichen"
+L.IconsInUse				= "Zeichennutzung des Mods"
 
 -- Tab: Boss Statistics
 L.BossStatistics			= "Boss Statistiken"
@@ -69,7 +69,7 @@ L.ChallengeTimerRealm		= "Bestzeit des Realms"
 
 L.ModelOptions				= "Einstellungen für 3D-Modellanzeige"
 L.EnableModels				= "Aktiviere 3D-Modelle in den Bosseinstellungen"
-L.ModelSoundOptions			= "Setze Soundeinstellung für Modellanzeige"
+L.ModelSoundOptions			= "Soundeinstellung für Modellanzeige"
 L.ModelSoundShort			= SHORT
 L.ModelSoundLong			= TOAST_DURATION_LONG
 
@@ -94,7 +94,7 @@ L.WarningIconLeft 			= "Zeige Symbol links an"
 L.WarningIconRight 			= "Zeige Symbol rechts an"
 L.WarningIconChat 			= "Zeige Symbole im Chatfenster"
 L.Warn_FontType				= "Schriftart für Schlachtzugwarnungen"
-L.Warn_FontStyle			= "Schriftstil"
+L.Warn_FontStyle			= "Schriftstil für Schlachtzugwarnungen"
 L.Warn_FontShadow			= "Schatten"
 L.Warn_FontSize				= "Schriftgröße: %d"
 L.Warn_Duration				= "Warnungsdauer: %ds"
@@ -103,7 +103,7 @@ L.Outline					= "mit Umriss"
 L.ThickOutline				= "mit dickem Umriss"
 L.MonochromeOutline			= "ohne Kantenglättung, mit Umriss"
 L.MonochromeThickOutline	= "ohne Kantenglättung, mit dickem Umriss"
-L.RaidWarnSound				= "Sound für Schlachtzugwarnung"
+L.RaidWarnSound				= "Sound für Schlachtzugwarnungen"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Allgemeine Meldungen"
@@ -181,11 +181,11 @@ L.SpecialWarnSound4			= "Sound für \"Lauf weg!\"-Spezialwarnungen"
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Gesprochene Warnungen"
-L.Area_VoiceSelection		= "Stimmenauswahl"
-L.CountdownVoice			= "Primäre Stimme für akustische Zählungen"
-L.CountdownVoice2			= "Sekundäre Stimme für akustische Zählungen"
-L.CountdownVoice3			= "Tertiäre Stimme für akustische Zählungen"
-L.VoicePackChoice			= "Setze Sprachpack für gesprochene Warnungen"
+L.Area_VoiceSelection		= "Stimmenauswahl für akustische Zählungen und gesprochene Warnungen"
+L.CountdownVoice			= "Primäre Stimme für Zählungen"
+L.CountdownVoice2			= "Sekundäre Stimme für Zählungen"
+L.CountdownVoice3			= "Tertiäre Stimme für Zählungen"
+L.VoicePackChoice			= "Sprachpack für gesprochene Warnungen"
 L.Area_CountdownOptions		= "Countdown-Einstellungen"
 L.ShowCountdownText			= "Zeige Countdown-Text während Zählungen mit der primären Stimme"
 L.Area_VoicePackOptions		= "Sprachpack-Einstellungen (Drittanbieter)"
@@ -205,8 +205,8 @@ L.HP_ShowDemo				= "Anzeigen"
 L.BarWidth					= "Balkenbreite: %d"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "Globale Deaktivierungen und Filter"
-L.Area_SpamFilter_Outgoing	= "Globale Deaktivierungs- und Filtereinstellungen"
+L.Panel_SpamFilter			= "Deaktivierung von DBM-Funktionen"
+L.Area_SpamFilter_Outgoing	= "Globale Deaktivierungs- und Filtereinstellungen für DBM"
 L.SpamBlockNoShowAnnounce	= "Zeige keine Mitteilungen und spiele keine Warnungssounds"
 L.SpamBlockNoSendWhisper	= "Flüstere keine Bosswarnungen an andere Spieler"
 L.SpamBlockNoSetIcon		= "Setze keine Zeichen auf Ziele"
@@ -238,7 +238,7 @@ L.DontPlayPTCountdown		= "Spiele keinen akustischen Countdown für Pull-, Pausen
 L.DontShowPTCountdownText	= "Zeige keinen optischen Countdown für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
 L.PT_Threshold				= "Zeige keinen opt. Countd. f. Pull-/Pausen-/Kampf-/Nutzer-Timer über: %d"
 
-L.Panel_HideBlizzard		= "Deaktiviere/Verberge Spielelemente"
+L.Panel_HideBlizzard		= "Deaktivierung von Spielelementen"
 L.Area_HideBlizzard			= "Einstellungen zum Deaktivieren und Verbergen von Spielelementen"
 L.HideBossEmoteFrame		= "Verberge das Fenster \"RaidBossEmoteFrame\" während Bosskämpfen"
 L.HideWatchFrame			= "Verberge das Fenster für die Questverfolgung während Bosskämpfen, falls keine Erfolge verfolgt werden"
@@ -288,7 +288,7 @@ L.Panel_Profile				= "Profile"
 L.Area_CreateProfile		= "Profilerzeugung"
 L.EnterProfileName			= "Profilnamen eingeben"
 L.CreateProfile				= "Erzeuge Profil für DBM Core Einstellungen"
-L.Area_ApplyProfile			= "Setze aktives Profil für DBM Core Einstellungen"
+L.Area_ApplyProfile			= "Aktives Profil für DBM Core Einstellungen"
 L.SelectProfileToApply		= "Anzuwendendes Profil auswählen"
 L.Area_CopyProfile			= "Kopiere Profil für DBM Core Einstellungen"
 L.SelectProfileToCopy		= "Zu kopierendes Profil auswählen"
@@ -297,12 +297,12 @@ L.SelectProfileToDelete		= "Zu löschendes Profil auswählen"
 L.Area_DualProfile			= "Boss Mod Profileinstellungen"
 L.DualProfile				= "Aktiviere Unterstützung für verschiedene Boss Mod Einstellungen pro Spezialisierung (Die Verwaltung der Boss Mod Profile erfolgt im geladenen Boss Mod Statistikfenster.)"
 
-L.Area_ModProfile			= "Kopiere Mod-Einstellungen von einem Charakter / einer Spezialisierung oder lösche Mod-Einstellungen"
-L.ModAllReset				= "Setze alle Mod-Einstellungen zurück"
-L.ModAllStatReset			= "Setze alle Mod-Statistiken zurück"
+L.Area_ModProfile			= "Kopiere Mod-Einstellungen von Charakter/Spezialisierung oder lösche Mod-Einstellungen"
+L.ModAllReset				= "Alle Einstellungen zurücksetzen"
+L.ModAllStatReset			= "Alle Statistiken zurücksetzen"
 L.SelectModProfileCopy		= "Kopiere alle Einstellungen von"
-L.SelectModProfileCopySound	= "Kopiere nur die Soundeinstellungen von"
-L.SelectModProfileDelete	= "Lösche Modeinstellungen für"
+L.SelectModProfileCopySound	= "Kopiere nur Soundeinst. von"
+L.SelectModProfileDelete	= "Lösche Mod-Einstellungen für"
 
 -- Misc
 L.FontHeight	= 16
