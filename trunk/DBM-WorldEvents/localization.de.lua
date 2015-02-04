@@ -166,7 +166,7 @@ L:SetMiscLocalization({
 	sneakySpy			= "hat das Chaos genutzt, um sich einzuschleichen!",
 	buildingAttack		= "Dein %s wird angegriffen!",--needs to be verified (guessed)
 	--Ogre
-	GorianwarCaller		= "Ein gorianischer Zauberbinder trifft ein, um Eure Truppen zu verlangsamen!",
+	GorianwarCaller		= "A Gorian Warcaller joins the battle to raise morale!",--translate
 	WildfireElemental	= "Ein Wildfeuerelementar wird am Haupttor beschworen!",
 	--Iron Horde
 	Assassin			= "An Assassin is hunting your guards!"--translate
