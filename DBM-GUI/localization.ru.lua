@@ -75,8 +75,8 @@ L.ModelSoundShort			= "Короткое"
 L.ModelSoundLong			= "Длинное"
 
 L.Button_RangeFrame			= "Окно проверки дистанции"
-L.Button_InfoFrame			= "Показать/скрыть окно информации"
-L.Button_TestBars			= "Запустить проверку"
+L.Button_InfoFrame			= "Окно информации"
+L.Button_TestBars			= "Проверка индикаторов"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Предупреждения для рейда"
@@ -192,7 +192,7 @@ L.ShowCountdownText			= "Отображать текст обратного от
 L.Area_VoicePackOptions		= "Настройки голосового пакета (голосовые пакеты третих лиц)"
 L.SpecWarn_NoSoundsWVoice	= "Не проигрывать звуки спец-предупреждений для предупреждений, которые имеют голосовую настройку"
 L.SWFNever					= "Никогда"
-L.SWFDefaultOnly			= "когда спец-предупреждения используют звуки по умолчанию. (позволяет проигрывать пользовательские звуки)"
+L.SWFDefaultOnly			= "когда спец-предупреждения используют звуки по умолчанию. (позволяет проигрывать пользовательские звуки)"--too long, doesn't fit into frame
 L.SWFAll					= "когда спец-предупреждения используют любые звуки"
 L.SpecWarn_AlwaysVoice		= "Всегда воспроизводить все голосовые предупреждения (Переопределяет настройки для конкретных боссов. Полезно для рейд лидера.)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
@@ -291,7 +291,7 @@ L.EnterProfileName			= "Введите имя профиля"
 L.CreateProfile				= "Создать профиль настроек DBM Core"
 L.Area_ApplyProfile			= "Выбор активного профиля настроек DBM Core"
 L.SelectProfileToApply		= "Выберите профиль для применения"
-L.Area_CopyProfile			= "Скопировать профиль настроек DBM Core"
+L.Area_CopyProfile			= "Копирование профиля настроек DBM Core"
 L.SelectProfileToCopy		= "Выберите профиль для копирования"
 L.Area_DeleteProfile		= "Удаление профиля настроек DBM Core"
 L.SelectProfileToDelete		= "Выберите профиль для удаления"
