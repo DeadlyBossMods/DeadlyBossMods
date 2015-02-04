@@ -42,7 +42,7 @@ local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", "-Healer")
 --Operator Thogar
 local timerProtoGrenadeCD			= mod:NewCDTimer(16, 155864)
 local timerEnkindleCD				= mod:NewCDTimer(16.5, 155921, nil, "Tank")
-local timerTrainCD					= mod:NewNextCountTimer(15, 176312)
+local timerTrainCD					= mod:NewNextCountTimer("d15", 176312)
 --Adds
 --local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140)
 local timerIronbellowCD				= mod:NewCDTimer(12, 163753)

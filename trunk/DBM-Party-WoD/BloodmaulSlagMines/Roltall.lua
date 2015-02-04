@@ -69,7 +69,7 @@ function mod:SPELL_CAST_START(args)
 		warnBurningSlag:Show()
 		specWarnBurningSlag:Show()
 		timerFieryBoulderCD:Start()
-		voiceBurningSlag:Play("firecircle")
+		--voiceBurningSlag:Play("firecircle") not proper voice. disable.
 	end
 end
 
