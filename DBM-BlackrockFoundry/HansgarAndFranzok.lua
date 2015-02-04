@@ -26,7 +26,7 @@ local warnShatteredVertebrae			= mod:NewStackAnnounce(157139, 2, nil, "Tank")--P
 local specWarnDisruptingRoar			= mod:NewSpecialWarningCast("OptionVersion2", 160838, "SpellCaster")
 local specWarnShatteredVertebrae		= mod:NewSpecialWarningStack(157139, nil, 2, nil, nil, nil, nil, 2)--stack guessed
 local specWarnShatteredVertebraeOther	= mod:NewSpecialWarningTaunt(157139)
-local specWarnCripplingSuplex			= mod:NewSpecialWarningSpell(156938, nil, nil, nil, 3)--pop a cooldown, or die.
+local specWarnCripplingSupplex			= mod:NewSpecialWarningPreWarn(156938, nil, 3.5, nil, 3)--pop a cooldown, or die.
 local specWarnSearingPlates				= mod:NewSpecialWarningSpell(161570, nil, nil, nil, 2)
 local specWarnStampers					= mod:NewSpecialWarningSpell(174825, nil, nil, nil, 2)
 local specWarnEnvironmentalThreatsEnd	= mod:NewSpecialWarningEnd("ej10089", nil)
@@ -34,9 +34,12 @@ local specWarnEnvironmentalThreatsEnd	= mod:NewSpecialWarningEnd("ej10089", nil)
 local timerDisruptingRoar				= mod:NewCastTimer(2.5, 160838, nil, "SpellCaster")
 local timerDisruptingRoarCD				= mod:NewCDTimer(46, 160838, nil, "SpellCaster")
 local timerSkullcrackerCD				= mod:NewCDTimer(22, 153470, nil, "Healer")
+local timerCripplingSupplex				= mod:NewCastTimer(9.5, 156938, nil, "Tank|Healer")
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerSmartStamperCD				= mod:NewNextTimer(12, 162124)--Activation
 local timerStamperDodge					= mod:NewNextCountTimer(10, 160582)--Time until stamper falls (spell name fits well, time you have to stamper dodge)
+
+local countCripplingSupplex				= mod:NewCountdown("Alt9.5", 156938)
 
 local voiceEnvironmentalThreats			= mod:NewVoice("ej10089")
 local voiceShatteredVertebrae			= mod:NewVoice(157139)
@@ -130,8 +133,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			specWarnSearingPlates:Show()
 			voiceEnvironmentalThreats:Play("watchstep")	
 		end
-	elseif spellId == 156609 then
-		specWarnCripplingSuplex:Show()
+	--"<944.72 23:32:59> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Crippling Suplex::0:156546]]", -- [5133]--Pre cast, Hidden from UI/player
+	--"<948.55 23:33:03> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Crippling Suplex::0:156609]]", -- [5752]--Grab, Already too late to hit a cd
+	--"<951.15 23:33:06> [CLEU] SPELL_CAST_START#Vehicle-0-3783-1205-31925-76974-0000518B7D#Franzok##nil#156938#Crippling Suplex#nil#nil", -- [6168]--First thing player sees, too bad you've been stunned for 2.5 seconds already.
+	--"<954.06 23:33:08> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-3783-1205-31925-76974-0000518B7D#Franzok#Player-76-0580DD5F#playerName#156938#Crippling Suplex#nil#nil", -- [6639]--SMASH (5.5 seconds after stun, VERY tight to cover attack with 6 second cd)
+	elseif spellId == 156546 or spellId == 156542 then
+		specWarnCripplingSupplex:Show()--Try and hit CD right before stun (156609)
+		timerCripplingSupplex:Start()
+		countCripplingSupplex:Start()
 	end
 end
 
