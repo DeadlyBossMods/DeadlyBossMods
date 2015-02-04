@@ -33,7 +33,7 @@ local warnBlazingRadiance				= mod:NewTargetAnnounce(155277, 3)
 local warnRisingFlames					= mod:NewStackAnnounce(163284, 2, nil, "Tank")
 local warnCharringBreath				= mod:NewStackAnnounce(155074, 2, nil, "Tank")
 
-local specWarnLavaSlash					= mod:NewSpecialWarningMove(155318)
+local specWarnLavaSlash					= mod:NewSpecialWarningMove(155318, nil, nil, nil, nil, nil, 2)
 local specWarnMoltenTorrent				= mod:NewSpecialWarningYou(154932, nil, nil, nil, nil, nil, 2)
 local specWarnMoltenTorrentOther		= mod:NewSpecialWarningMoveTo(154932, false)--Strat dependant. most strats i saw ran these into meleee instead of running to the meteor target.
 local yellMoltenTorrent					= mod:NewYell(154932, L.TorrentYell)
@@ -71,6 +71,7 @@ local voiceCinderWolves					= mod:NewVoice(155776, "-Healer") --killmob
 local voiceBlazinRadiance				= mod:NewVoice(155277)  --runaway (scatter if we have power system)
 local voiceRisingFlames					= mod:NewVoice(163284)  --changemt
 local voiceFireStorm					= mod:NewVoice(155493) --aoe
+local voiceLavaSlash					= mod:NewVoice(155318) --runaway
 
 mod:AddRangeFrameOption("10/6")
 mod:AddArrowOption("TorrentArrow", 154932, false, true)--Depend strat arrow useful if ranged run to torrent person strat. arrow useless if run torrent into melee strat.
@@ -235,6 +236,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
 	if spellId == 155314 and destGUID == UnitGUID("player") and self:AntiSpam() then
 		specWarnLavaSlash:Show()
+		voiceLavaSlash:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

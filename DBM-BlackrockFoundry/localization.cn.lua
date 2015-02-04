@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Dec 27, 2014@12186
+-- Last update: Feb 3, 2015@12685
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -35,9 +35,14 @@ L= DBM:GetModLocalization(1154)
 L= DBM:GetModLocalization(1155)
 
 --------------
--- Flamebender Ka'graz --
+-- Flamebender Ka'graz -- 
 --------------
 L= DBM:GetModLocalization(1123)
+
+L:SetMiscLocalization({
+	return1		= "Wait till they get a load of me.",--Not used yet but just in case my current hack to avoid localizing doesn't work
+	TorrentYell	= "%d秒后熔岩激流"
+})
 
 --------------------
 --Kromog, Legend of the Mountain --
