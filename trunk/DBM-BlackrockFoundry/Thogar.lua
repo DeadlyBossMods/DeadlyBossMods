@@ -30,7 +30,7 @@ local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)
 
 --Operator Thogar
 local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195, nil, nil, nil, nil, nil, 2)
-local specWarnEnkindle				= mod:NewSpecialWarningStack(155921, nil, 2)
+local specWarnEnkindle				= mod:NewSpecialWarningStack(155921, nil, 2)--Maybe need 3 for new cd?
 local specWarnEnkindleOther			= mod:NewSpecialWarningTaunt(155921)
 --Adds
 local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt(160140, not "Healer")
@@ -42,7 +42,7 @@ local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", "-Healer")
 
 --Operator Thogar
 local timerProtoGrenadeCD			= mod:NewCDTimer(12, 155864)
-local timerEnkindleCD				= mod:NewCDTimer(16.5, 155921, nil, "Tank")
+local timerEnkindleCD				= mod:NewCDTimer(12, 155921, nil, "Tank")
 local timerTrainCD					= mod:NewNextCountTimer("d15", 176312)
 --Adds
 --local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140)
@@ -127,7 +127,7 @@ local otherTrains = {
 	[14] = Train.." (3)",--+20 after 13
 	[15] = Train.." (2)",--+10 after 14
 	[16] = Train.." (1)",--+10 after 15
-	[17] = ManOArms.." (2, 4)",--+15 after 16
+	[17] = ManOArms.." (2) "..Cannon.." (4)",--+15 after 16
 	[18] = Train.." (1)",--+20 after 17
 	--WARNING, Train 19 does not fire a yell
 	[19] = Train.." (3)",--+5 after 18
@@ -186,14 +186,14 @@ local otherVoice = {
 	[14] = "A3",
 	[15] = "A2",
 	[16] = "A1",
-	[17] = "DX",
+	[17] = "D2C4",
 	[18] = "A1",
 	[19] = "A3",
 	[20] = "C14",
 	[21] = "A2",
 	[22] = "A3",
-	[23] = "AX",
-	[24] = "AX"
+	[23] = "AX",--Random? Far as i know no random trains on non mythic
+	[24] = "AX"--Random? Far as i know no random trains on non mythic
 }
 
 function mod:OnCombatStart(delay)
