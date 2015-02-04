@@ -84,10 +84,12 @@ local otherTrains = {
 	[3] = Reinforcements.." (1)",--+5 after 2
 	[4] = Train.." (3)",--+15 after 3
 	[5] = Cannon.." (4)",--+5 after 4
-	[6] = Train.." (2)",--+15 after 5
+	[6] = Train.." (2)",--+25 after 5
 	[7] = ManOArms.." (3)",--+5 after 6
-	[8] = Train.." (1)",--+15 after 7
+	[8] = Train.." (1)",--+25 after 7
+	--WARNING, Train 9 did not have a yell
 	[9] = Reinforcements.." (2) "..Reinforcements.." (3)",--+15 after 8
+	--WARNING, Train 9 did not have a yell
 	[10] = Train.." (1, 4)",--+40 after 9
 	[11] = Cannon.." (1)",--+10 after 10
 	[12] = Train.." (2)",--+15 after 11
@@ -106,6 +108,11 @@ local otherTrains = {
 	[23] = Train.." (2, 3)",--+30 after 22
 	[24] = Train.." (3)",--+15 after 22
 }
+
+local function fakeTrainYell(self)
+	self:CHAT_MSG_MONSTER_YELL("Fake", nil, nil, nil, Train)
+	DBM:Debug("Fake yell fired, Boss skipped a yell?")
+end
 
 --  Voicelist
 --	A: just rushing through the lane(express)
@@ -231,6 +238,7 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	if target == Train then
+		self:Unschedule(fakeTrainYell)--Always unschedule
 		self.vb.trainCount = self.vb.trainCount + 1
 		local count = self.vb.trainCount
 		warnTrain:Show(count)
@@ -245,12 +253,23 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			end
 			--+5 added to all timers so timers are for train coming down the lane.
 			--yes this means sometimes two timers up at a time instead of one. this is fine, fight doesn't have many timers.
+			local expectedTime
 			if count == 1 or count == 2 or count == 6 or count == 7 then
+				expectedTime = 5
 				timerTrainCD:Start(10, count+1)
 			elseif count == 9 then
+				expectedTime = 20
 				timerTrainCD:Start(25, count+1)
 			else
+				expectedTime = 15
 				timerTrainCD:Start(20, count+1)
+			end
+			if expectedTime then
+				if msg == "Fake" then expectedTime = expectedTime - 2.5 end
+				timerTrainCD:Schedule(5, expectedTime, count+1)
+				self:Schedule(expectedTime+2.5, fakeTrainYell, self)--Schedule fake yell 2.5 seconds after we should have seen one.
+			else
+				timerTrainCD:Start(count)
 			end
 			if count == 1 then--I'm sure they spawn again sometime later, find that data
 				specWarnManOArms:Show()
@@ -259,34 +278,39 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			if otherVoice[count] then
 				voiceTrain:Play("Thogar\\"..otherVoice[count])
 			end
-			if count >= 18 then
-				print("Train set 19 was missing a boss yell in my first test. As such, all further timers are disabled until it's verified that it's ALWAYS missing (so I can code around this bug), or blizzard fixes it .")
-				if count >= 23 then
-					print("Train Set: "..count..". DBM has no train data beyond this point. Write down lane(s) trains come from in 5 seconds with train set number and give it to us")
-				end
+			if count >= 23 then
+				print("Train Set: "..count..". DBM has no train data beyond this point. Write down lane(s) trains come from in 5 seconds with train set number and give it to us")
 				return
 			end
 			--Next Train 5 seconds after: 2, 4, 6, 18
 			--Next Train 10 seconds after: 1, 10, 14, 15, 20
-			--Next Train 15 seconds after: 3, 5, 7, 11, 16
+			--Next Train 15 seconds after: 3, 8, 11, 16
 			--Next Train 20 seconds after: 13, 17
-			--Next Train 25 seconds after: 21
+			--Next Train 25 seconds after: 5, 7, 21
 			--Next Train 30 seconds after: 19
 			--Next Train 40 seconds after: 9
+			local expectedTime
 			if count == 2 or count == 4 or count == 6 or count == 18 then
-				timerTrainCD:Start(10, count+1)
+				expectedTime = 5
 			elseif count == 1 or count == 10 or count == 14 or count == 15 or count == 20 or count == 23 then
-				timerTrainCD:Start(15, count+1)
-			elseif count == 3 or count == 5 or count == 7 or count == 11 or count == 16 then
-				timerTrainCD:Start(20, count+1)
+				expectedTime = 10
+			elseif count == 3 or count == 8 or count == 11 or count == 16 then
+				expectedTime = 15
 			elseif count == 13 or count == 17 then
-				timerTrainCD:Start(25, count+1)
-			elseif count == 21 then
-				timerTrainCD:Start(30, count+1)
+				expectedTime = 20
+			elseif count == 5 or count == 7 or count == 21 then
+				expectedTime = 25
 			elseif count == 19 or count == 22 then
-				timerTrainCD:Start(35, count+1)
+				expectedTime = 30
 			elseif count == 9 then
-				timerTrainCD:Start(45, count+1)
+				expectedTime = 40
+			end
+			if expectedTime then
+				if msg == "Fake" then expectedTime = expectedTime - 2.5 end
+				timerTrainCD:Schedule(5, expectedTime, count+1)--Show timer for next train from current yell (previous yell already has timer for yell this train is for so no 5 second timer needed)
+				self:Schedule(expectedTime+2.5, fakeTrainYell, self)--Schedule fake yell 2.5 seconds after we should have seen one.
+			else
+				timerTrainCD:Start(5, count)--Show timer for incoming train for current yell if we have no data for next
 			end
 			if count == 7 or count == 9 or count == 17 then--I'm sure they spawn again sometime later, find that data
 				specWarnManOArms:Show()
