@@ -8049,7 +8049,7 @@ do
 			fireEvent("DBM_Announce", msg)
 			if self.sound then
 				local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
-				if self.hasVoice and DBM.Options.ChosenVoicePack ~= "None" and self.hasVoice >= SWFilterDisabed and (type(soundId) == "number" and DBM.Options.VoiceOverSpecW2 == "DefaultOnly" or DBM.Options.VoiceOverSpecW2 == "All") and (self.mod.Options[self.voiceOptionId] ~= false or DBM.Options.AlwaysPlayVoice) then return end
+				if self.hasVoice and DBM.Options.ChosenVoicePack ~= "None" and self.hasVoice <= SWFilterDisabed and (type(soundId) == "number" and DBM.Options.VoiceOverSpecW2 == "DefaultOnly" or DBM.Options.VoiceOverSpecW2 == "All") and (self.mod.Options[self.voiceOptionId] ~= false or DBM.Options.AlwaysPlayVoice) then return end
 				if not self.option or self.mod.Options[self.option.."SpecialWarningSound"] ~= "None" then
 					DBM:PlaySpecialWarningSound(soundId or 1)
 				end
