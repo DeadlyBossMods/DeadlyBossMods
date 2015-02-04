@@ -1783,7 +1783,12 @@ do
 			--This check compares all dbm version to highest RELEASE version in raid.
 			if sortMe[i].revision and (sortMe[i].revision < sortMe[1].version) or sortMe[i].bwrevision and (sortMe[i].bwrevision < fakeBWRevision) then
 				OldMod = OldMod + 1
-				tinsert(OutdatedUsers, sortMe[i].name)
+				local name = sortMe[i].name
+				local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
+				if playerColor then
+					name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
+				end
+				tinsert(OutdatedUsers, name)
 			end
 		end
 		local TotalDBM = TotalUsers - NoDBM
