@@ -9,7 +9,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 155864 160140 163753",
+	"SPELL_CAST_START 160140 163753",
+	"SPELL_CAST_SUCCESS 155864",
 	"SPELL_AURA_APPLIED 155921 159481 165195",
 	"SPELL_AURA_APPLIED_DOSE 155921",
 	"UNIT_DIED",
@@ -40,7 +41,7 @@ local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", "-Healer")
 --local specWarnObliteration		= mod:NewSpecialWarningMove(156494)--Debuff doesn't show in combat log, and dot persists after moving out of it so warning is pretty useless right now. TODO, see if UNIT_AURA player type check can work.
 
 --Operator Thogar
-local timerProtoGrenadeCD			= mod:NewCDTimer(16, 155864)
+local timerProtoGrenadeCD			= mod:NewCDTimer(12, 155864)
 local timerEnkindleCD				= mod:NewCDTimer(16.5, 155921, nil, "Tank")
 local timerTrainCD					= mod:NewNextCountTimer("d15", 176312)
 --Adds
@@ -78,6 +79,35 @@ local mythicTrains = {
 	[12] = Train.." (2, 4)",--+15 after 11
 	[13] = UNKNOWN,--+15/20? after 12
 }
+--[[ All non mythic difficulties
+		["DBM_Announce"] = {
+			"<224.82 22:56:55> DBM_Announce#Moving Train (1)", -- [1]
+			"<234.85 22:57:05> DBM_Announce#Moving Train (2)", -- [2]
+			"<239.89 22:57:10> DBM_Announce#Moving Train (3)", -- [3]
+			"<254.87 22:57:25> DBM_Announce#Moving Train (4)", -- [4]
+			"<259.91 22:57:30> DBM_Announce#Moving Train (5)", -- [5]
+			"<284.87 22:57:55> DBM_Announce#Moving Train (6)", -- [7]
+			"<289.82 22:58:00> DBM_Announce#Moving Train (7)", -- [9]
+			"<314.82 22:58:25> DBM_Announce#Moving Train (8)", -- [13]
+			--329 Fake 9
+			"<369.91 22:59:20> DBM_Announce#Moving Train (10)", -- [17]
+			"<379.89 22:59:30> DBM_Announce#Moving Train (11)", -- [19]
+			"<394.83 22:59:45> DBM_Announce#Moving Train (12)", -- [21]
+			"<404.89 22:59:55> DBM_Announce#Moving Train (13)", -- [23]
+			"<425.01 23:00:15> DBM_Announce#Moving Train (14)", -- [24]
+			"<434.90 23:00:25> DBM_Announce#Moving Train (15)", -- [25]
+			"<444.83 23:00:35> DBM_Announce#Moving Train (16)", -- [26]
+			"<459.89 23:00:50> DBM_Announce#Moving Train (17)", -- [28]
+			"<479.90 23:01:10> DBM_Announce#Moving Train (18)", -- [31]
+			--484 Fake 19
+			"<514.97 23:01:45> DBM_Announce#Moving Train (20)", -- [40]
+			"<524.91 23:01:55> DBM_Announce#Moving Train (21)", -- [41]
+			"<549.90 23:02:20> DBM_Announce#Moving Train (22)", -- [47]
+			"<579.88 23:02:50> DBM_Announce#Moving Train (23)", -- [50]
+			"<594.86 23:03:05> DBM_Announce#Moving Train (24)", -- [52]
+			"<614.86 23:03:25> DBM_Announce#Moving Train (25)", -- [55]
+		},
+--]]
 local otherTrains = {
 	[1] = Train.." (4)",--+12 after pull
 	[2] = Train.." (2)",--+10 after 1
@@ -87,9 +117,9 @@ local otherTrains = {
 	[6] = Train.." (2)",--+25 after 5
 	[7] = ManOArms.." (3)",--+5 after 6
 	[8] = Train.." (1)",--+25 after 7
-	--WARNING, Train 9 did not have a yell
+	--WARNING, Train 9 does not fire a yell
 	[9] = Reinforcements.." (2) "..Reinforcements.." (3)",--+15 after 8
-	--WARNING, Train 9 did not have a yell
+	--WARNING, Train 9 does not fire a yell
 	[10] = Train.." (1, 4)",--+40 after 9
 	[11] = Cannon.." (1)",--+10 after 10
 	[12] = Train.." (2)",--+15 after 11
@@ -99,14 +129,15 @@ local otherTrains = {
 	[16] = Train.." (1)",--+10 after 15
 	[17] = ManOArms.." (2, 4)",--+15 after 16
 	[18] = Train.." (1)",--+20 after 17
-	--WARNING, Train 19 did not have a yell
+	--WARNING, Train 19 does not fire a yell
 	[19] = Train.." (3)",--+5 after 18
-	--WARNING, Train 19 did not have a yell
+	--WARNING, Train 19 does not fire a yell
 	[20] = Cannon.." (1, 4)",--+30 after 19
 	[21] = Train.." (2)",--+10 after 20
 	[22] = Train.." (3)",--+25 after 21
 	[23] = Train.." (2, 3)",--+30 after 22
-	[24] = Train.." (3)",--+15 after 22
+	[24] = Train.." (3)",--+15 after 23
+	[25] = UNKNOWN,--+20 after 24
 }
 
 local function fakeTrainYell(self)
@@ -184,12 +215,17 @@ function mod:OnCombatEnd()
 
 end
 
-function mod:SPELL_CAST_START(args)
+function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 155864 then
 		warnProtoGrenade:Show()
 		timerProtoGrenadeCD:Start()
-	elseif spellId == 160140 then
+	end
+end
+
+function mod:SPELL_CAST_START(args)
+	local spellId = args.spellId
+	if spellId == 160140 then
 		specWarnCauterizingBolt:Show(args.sourceName)
 	elseif spellId == 163753 then
 		if self:AntiSpam() then
@@ -215,7 +251,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 159481 then
-		warnDelayedSiegeBomb:Show(args.destName)
+		warnDelayedSiegeBomb:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnDelayedSiegeBomb:Show()
 			yellDelayedSiegeBomb:Yell()
@@ -256,13 +292,10 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			local expectedTime
 			if count == 1 or count == 2 or count == 6 or count == 7 then
 				expectedTime = 5
-				timerTrainCD:Start(10, count+1)
 			elseif count == 9 then
 				expectedTime = 20
-				timerTrainCD:Start(25, count+1)
 			else
 				expectedTime = 15
-				timerTrainCD:Start(20, count+1)
 			end
 			if expectedTime then
 				if msg == "Fake" then expectedTime = expectedTime - 2.5 end
@@ -285,7 +318,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			--Next Train 5 seconds after: 2, 4, 6, 18
 			--Next Train 10 seconds after: 1, 10, 14, 15, 20
 			--Next Train 15 seconds after: 3, 8, 11, 16
-			--Next Train 20 seconds after: 13, 17
+			--Next Train 20 seconds after: 13, 17, 24
 			--Next Train 25 seconds after: 5, 7, 21
 			--Next Train 30 seconds after: 19
 			--Next Train 40 seconds after: 9
@@ -296,7 +329,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 10
 			elseif count == 3 or count == 8 or count == 11 or count == 16 then
 				expectedTime = 15
-			elseif count == 13 or count == 17 then
+			elseif count == 13 or count == 17 or count == 24 then
 				expectedTime = 20
 			elseif count == 5 or count == 7 or count == 21 then
 				expectedTime = 25
