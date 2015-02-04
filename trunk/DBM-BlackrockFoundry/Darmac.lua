@@ -59,7 +59,7 @@ local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil
 --Boss basic attacks
 mod:AddTimerLine(CORE_ABILITIES)--Core Abilities
 local timerPinDownCD				= mod:NewCDTimer(20.5, 155365)--Every 20 seconds unless delayed by other things. CD timer used for this reason
-local timerCallthePackCD			= mod:NewCDTimer(31, 154975)--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart.
+local timerCallthePackCD			= mod:NewCDTimer(31.5, 154975)--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart. In rare cases, boss still interrupts his own cast/delays cast even when not caused by gaining beast buff
 --Boss gained abilities (beast deaths grant boss new abilities)
 mod:AddTimerLine(SPELL_BUCKET_ABILITIES_UNLOCKED)--Abilities Unlocked
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
@@ -207,7 +207,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnCallthePack:Show()
 		else
 			specWarnCallthePack:Schedule(5)--They come out very slow and staggered, allow 5 seconds for tank to pick up then call switch for everyone else
-			voiceCallthePack:Play("killmob")
+			voiceCallthePack:Schedule(5, "killmob")
 		end
 		timerCallthePackCD:Start()
 		countdownCallPack:Start()

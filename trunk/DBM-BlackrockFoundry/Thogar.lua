@@ -46,7 +46,7 @@ local timerEnkindleCD				= mod:NewCDTimer(12, 155921, nil, "Tank")
 local timerTrainCD					= mod:NewNextCountTimer("d15", 176312)
 --Adds
 --local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140)
-local timerIronbellowCD				= mod:NewCDTimer(12, 163753)
+local timerIronbellowCD				= mod:NewCDTimer(10, 163753)
 
 local countdownTrain				= mod:NewCountdown(5, 176312)
 
