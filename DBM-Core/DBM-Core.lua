@@ -8508,7 +8508,7 @@ do
 			return self:Start(nil, timer, ...) -- first argument is optional!
 		end
 		if not self.option or self.mod.Options[self.option] then
-			if self.type and self.type:find("count") then--cdcount, nextcount. remove previous timer.
+			if self.type and self.type:find("count") and not self.allowdouble then--cdcount, nextcount. remove previous timer.
 				for i = #self.startedTimers, 1, -1 do
 					DBM.Bars:CancelBar(self.startedTimers[i])
 					DBM:Debug("Timer "..self.id.. " refreshed before expires", 2)
@@ -8688,6 +8688,11 @@ do
 			optionVersion = string.sub(timer, 14)
 			timer, spellId, timerText, optionDefault, optionName, texture, r, g, b = spellId, timerText, optionDefault, optionName, texture, r, g, b, temp
 		end
+		local allowdouble
+		if type(timer) == "string" and timer:match("d%d+") then
+			allowdouble = true
+			timer = tonumber(string.sub(timer, 2))
+		end
 		local spellName, icon
 		local unparsedId = spellId
 		if timerType == "achievement" then
@@ -8726,6 +8731,7 @@ do
 				r = r,
 				g = g,
 				b = b,
+				allowdouble = allowdouble,
 				startedTimers = {},
 				mod = self,
 			},
