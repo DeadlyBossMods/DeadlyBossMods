@@ -36,7 +36,7 @@ local warnCharringBreath				= mod:NewStackAnnounce(155074, 2, nil, "Tank")
 local specWarnLavaSlash					= mod:NewSpecialWarningMove(155318)
 local specWarnMoltenTorrent				= mod:NewSpecialWarningYou(154932, nil, nil, nil, nil, nil, 2)
 local specWarnMoltenTorrentOther		= mod:NewSpecialWarningMoveTo(154932, false)--Strat dependant. most strats i saw ran these into meleee instead of running to the meteor target.
-local yellMoltenTorrent					= mod:NewYell(154932)
+local yellMoltenTorrent					= mod:NewYell(154932, L.TorrentYell)
 local specWarnCinderWolves				= mod:NewSpecialWarningSpell(155776, nil, nil, nil, nil, nil, 2)
 local specWarnOverheated				= mod:NewSpecialWarningSwitch(154950, "Tank")
 local specWarnFixate					= mod:NewSpecialWarningYou(154952, nil, nil, nil, 3, nil, 2)
@@ -73,7 +73,7 @@ local voiceRisingFlames					= mod:NewVoice(163284)  --changemt
 local voiceFireStorm					= mod:NewVoice(155493) --aoe
 
 mod:AddRangeFrameOption("10/6")
-mod:AddArrowOption("TorrentArrow", 154932, false, true)
+mod:AddArrowOption("TorrentArrow", 154932, false, true)--Depend strat arrow useful if ranged run to torrent person strat. arrow useless if run torrent into melee strat.
 
 function mod:OnCombatStart(delay)
 	timerLavaSlashCD:Start(11-delay)
@@ -181,8 +181,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMoltenTorrentCD:Start()
 		if args:IsPlayer() then
 			specWarnMoltenTorrent:Show()
-			yellMoltenTorrent:Yell()
 			voiceMoltenTorrent:Play("runin")
+			yellMoltenTorrent:Schedule(5, 1)
+			yellMoltenTorrent:Schedule(4, 2)
+			yellMoltenTorrent:Schedule(3, 3)
+			yellMoltenTorrent:Schedule(2, 4)
+			yellMoltenTorrent:Schedule(1, 5)
 		else
 			specWarnMoltenTorrentOther:Show(args.destName)
 			if self.Options.TorrentArrow then
@@ -210,8 +214,13 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
-	elseif spellId == 154932 and self.Options.TorrentArrow then
-		DBM.Arrow:Hide()
+	elseif spellId == 154932 then
+		if self.Options.TorrentArrow then
+			DBM.Arrow:Hide()
+		end
+		if args:IsPlayer() then
+			yellMoltenTorrent:Cancel()--In case player dieds
+		end
 	elseif spellId == 154950 then
 		timerOverheated:Cancel(args.destName)
 		countdownOverheated:Cancel()

@@ -44,7 +44,7 @@ local voiceRetchedBlackrock			= mod:NewVoice(156203)  --runaway
 local voiceBlackrockBarrage			= mod:NewVoice(156877, false)--kickcast
 local voiceAcidTorrent				= mod:NewVoice(156240)--changemt after 3 seconds (after cast finishes)
 
---local berserkTimer				= mod:NewBerserkTimer(324)--May not be exact science. may be phase based instead, like tsulong. Needs more than one log to verify. Only saw one berserk.
+--local berserkTimer				= mod:NewBerserkTimer(324)--Auto berserk when reaching 3rd hunger drive phase. Time bariable because phase slightly variable.
 
 function mod:RetchedBlackrockTarget(targetname, uId)
 	if not targetname then return end
