@@ -35,7 +35,8 @@ L= DBM:GetModLocalization(1155)
 L= DBM:GetModLocalization(1123)
 
 L:SetMiscLocalization({
-	return1		= "Wait till they get a load of me."--Not used yet but just in case my current hack to avoid localizing doesn't work
+	return1		= "Wait till they get a load of me.",--Not used yet but just in case my current hack to avoid localizing doesn't work
+	TorrentYell	= "Torrent fading in %d"
 })
 
 --------------------
