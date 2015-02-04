@@ -10,7 +10,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 160838 160845 160847 160848 153470 156938",
+	"SPELL_CAST_START 160838 160845 160847 160848 153470",
 	"SPELL_AURA_APPLIED 157139 162124",
 	"SPELL_AURA_APPLIED_DOSE 157139",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2",
@@ -74,8 +74,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 153470 then
 		warnSkullcracker:Show()
 		timerSkullcrackerCD:Start()
-	elseif spellId == 156938 then
-		specWarnCripplingSuplex:Show()
 	end
 end
 
@@ -132,6 +130,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			specWarnSearingPlates:Show()
 			voiceEnvironmentalThreats:Play("watchstep")	
 		end
+	elseif spellId == 156609 then
+		specWarnCripplingSuplex:Show()
 	end
 end
 

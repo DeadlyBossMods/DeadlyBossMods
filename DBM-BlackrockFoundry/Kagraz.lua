@@ -56,7 +56,7 @@ local timerSummonEnchantedArmamentsCD	= mod:NewCDTimer(45, 156724)--45-47sec var
 local timerSummonCinderWolvesCD			= mod:NewNextTimer(74, 155776)
 local timerOverheated					= mod:NewTargetTimer(14, 154950, nil, "Tank")
 local timerCharringBreathCD				= mod:NewNextTimer(5, 155074, nil, "Tank")
-local timerFixate						= mod:NewTargetTimer(10, 154952, nil, false)--Spammy, can't combine them beacause of wolves will desync if players die.
+local timerFixate						= mod:NewTargetTimer(10, 154952, nil, false)--Spammy, can't combine them because of wolves will desync if players die.
 local timerBlazingRadianceCD			= mod:NewCDTimer(12, 155277, nil, false)--somewhat important but not important enough. there is just too much going on to be distracted by this timer
 local timerFireStormCD					= mod:NewNextTimer(63, 155493)
 

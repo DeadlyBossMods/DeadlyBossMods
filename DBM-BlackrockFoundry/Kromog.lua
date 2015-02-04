@@ -15,7 +15,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 156766"
 )
 
---TODO, see if normal/heroic is still have 111sec timer on grasping Earth since mythic was about 123
 --TODO, see how second trembling earth CD works and if current code even works for other timers. Mythic pulls were very short :\
 local warnCrushingEarth				= mod:NewTargetAnnounce(161923, 3, nil, false)--Players who failed to move. Off by default since announcing failures is not something DBM generally does by default. Can't announce pre cast unfortunately. No detection
 local warnStoneGeyser				= mod:NewSpellAnnounce(158130, 2)
@@ -33,9 +32,9 @@ local specWarnCalloftheMountain		= mod:NewSpecialWarningCount(158217, nil, nil, 
 
 local timerGraspingEarthCD			= mod:NewCDTimer(115, 157060)--Unless see new logs on normal showing it can still be 111, raising to 115, average i saw was 116-119
 local timerThunderingBlowsCD		= mod:NewNextTimer(12, 157054)
-local timerRipplingSmashCD			= mod:NewCDTimer(22, 157592)--If it comes off CD early enough into ThunderingBlows/Grasping Earth, he skips a cast. Else, he'll cast it very soon after.
+local timerRipplingSmashCD			= mod:NewCDTimer(21, 157592)--If it comes off CD early enough into ThunderingBlows/Grasping Earth, he skips a cast. Else, he'll cast it very soon after.
 --local timerStoneGeyserCD			= mod:NewNextTimer(30, 158130)
-local timerSlamCD					= mod:NewCDTimer(28, 156704, nil, "Tank")
+local timerSlamCD					= mod:NewCDTimer(23, 156704, nil, "Tank")
 local timerWarpedArmorCD			= mod:NewCDTimer(14, 156766, nil, "Tank")
 local timerTremblingEarthCD			= mod:NewNextTimer(30, 173917)
 local timerTremblingEarth			= mod:NewBuffActiveTimer(25, 173917)
