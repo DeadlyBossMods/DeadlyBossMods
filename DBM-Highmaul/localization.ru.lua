@@ -79,9 +79,21 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(1197)
 
+L:SetTimerLocalization({
+	timerNightTwistedCD		= "След. Поддавшийся ночи верный служитель"
+})
+
+L:SetOptionLocalization({
+	GazeYellType		= "Тип крика для Взгляд Бездны",
+	Countdown			= "Обратный отсчет до спадения",
+	Stacks				= "Получаемые стаки",
+	timerNightTwistedCD	= "Отсчет времени до след. Поддавшийся ночи верный служитель"
+})
+
 L:SetMiscLocalization({
-	BrandedYell			= "Клеймо (%d) %d",
+	BrandedYell			= "Клеймо (%d) %dм",
 	GazeYell			= "Взгляд спадает через %d",
+	GazeYell2			= "Взгляд (%d) на %s",
 	PlayerDebuffs		= "Ближайшие к Вспышке"
 })
 
