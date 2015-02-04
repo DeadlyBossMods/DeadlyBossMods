@@ -31,7 +31,7 @@ local specWarnWarpedArmorOther		= mod:NewSpecialWarningTaunt(156766)
 local specWarnTremblingEarth		= mod:NewSpecialWarningSpell(173917, nil, nil, nil, 2)
 local specWarnCalloftheMountain		= mod:NewSpecialWarningCount(158217, nil, nil, nil, 3)
 
-local timerGraspingEarthCD			= mod:NewCDTimer(111, 157060)
+local timerGraspingEarthCD			= mod:NewCDTimer(115, 157060)--Unless see new logs on normal showing it can still be 111, raising to 115, average i saw was 116-119
 local timerThunderingBlowsCD		= mod:NewNextTimer(12, 157054)
 local timerRipplingSmashCD			= mod:NewCDTimer(22, 157592)--If it comes off CD early enough into ThunderingBlows/Grasping Earth, he skips a cast. Else, he'll cast it very soon after.
 --local timerStoneGeyserCD			= mod:NewNextTimer(30, 158130)
@@ -43,7 +43,7 @@ local timerCalloftheMountain		= mod:NewCastTimer(5, 158217)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
-local countdownThunderingBlows		= mod:NewCountdown(60, 157054)
+local countdownThunderingBlows		= mod:NewCountdown(12, 157054)
 local countdownTremblingEarth		= mod:NewCountdownFades("Alt25", 173917)
 
 local voiceGraspingEarth 			= mod:NewVoice(157060)--157060, safenow
