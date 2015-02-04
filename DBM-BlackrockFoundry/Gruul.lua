@@ -80,17 +80,15 @@ function mod:OnCombatStart(delay)
 	self.vb.sliceCount = 0
 	self.vb.petrifyCount = 0
 	self.vb.rampage = false
-	if self:IsDifficulty("normal", "lfr") then
+	if not self:IsMythic() then
 		timerInfernoSliceCD:Start(14-delay, 1)
 		countdownInfernoSlice:Start(14-delay)
 	else
 		timerInfernoSliceCD:Start(11-delay, 1)
 		countdownInfernoSlice:Start(11-delay)
-		if self:IsMythic() then
-			self:RegisterShortTermEvents(
-				"UNIT_POWER_FREQUENT boss1"
-				)
-		end
+		self:RegisterShortTermEvents(
+			"UNIT_POWER_FREQUENT boss1"
+			)
 	end
 	timerRampageCD:Start(-delay)--Variable. But seen as low as 108 in LFR, normal, mythic
 	timerPetrifyingSlamCD:Start(20.5-delay, 1)
@@ -113,11 +111,11 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnInfernoSlice:Show(self.vb.sliceCount)
 		end
-		if self:IsDifficulty("normal", "lfr") then
+		if not self:IsMythic() then
 			timerInfernoSliceCD:Start(17, self.vb.sliceCount+1)--Maybe 17 in all now? 17 normal and LFR. maybe heroic and mythic still 13?
 			countdownInfernoSlice:Start(17)
 		else
-			timerInfernoSliceCD:Start()
+			timerInfernoSliceCD:Start(nil, self.vb.sliceCount+1)
 			countdownInfernoSlice:Start()
 		end
 		voiceInfernoSlice:Play("gathershare")
@@ -194,7 +192,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerInfernoSliceCD:Start(17.5, 1)
 			countdownInfernoSlice:Start(17.5)
 		else
-			timerInfernoSliceCD:Start()
+			timerInfernoSliceCD:Start(nil, 1)
 			countdownInfernoSlice:Start()
 			if self:IsMythic() then
 				self:RegisterShortTermEvents(
