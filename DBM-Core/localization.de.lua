@@ -158,7 +158,7 @@ DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+Klick oder Rechtsklick zum Bewegen\nAl
 
 DBM_CORE_RANGECHECK_HEADER			= "Abstandscheck (%dm)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Abstand einstellen"
-DBM_CORE_RANGECHECK_SETTHRESHOLD	= "Setze Spielerschwellwert"
+DBM_CORE_RANGECHECK_SETTHRESHOLD	= "Spielerschwellwert"
 DBM_CORE_RANGECHECK_SOUNDS			= "Sounds"
 DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "Sound, falls ein Spieler in Reichweite ist"
 DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Sound, falls mehr als ein Spieler in Reichweite ist"
