@@ -134,10 +134,11 @@ local otherTrains = {
 	--WARNING, Train 19 does not fire a yell
 	[20] = Cannon.." (1, 4)",--+30 after 19
 	[21] = Train.." (2)",--+10 after 20
-	[22] = Train.." (3)",--+25 after 21
-	[23] = Train.." (2, 3)",--+30 after 22
-	[24] = Train.." (3)",--+15 after 23
-	[25] = UNKNOWN,--+20 after 24
+	[22] = Train.." (2)",--+25 after 21
+	[23] = Reinforcements.." (2) "..ManOArms.." (3)",--+30 after 22
+	[24] = Train,--+15 after 23 (random train, seen 3 and 4 diff pulls)
+	[25] = Train.." (1)",--+20 after 24 (Possibly also random?)
+	[26] = Reinforcements.." (1, 4)",--+20 after 24
 }
 
 local function fakeTrainYell(self)
@@ -191,9 +192,11 @@ local otherVoice = {
 	[19] = "A3",
 	[20] = "C14",
 	[21] = "A2",
-	[22] = "A3",
-	[23] = "AX",--Random? Far as i know no random trains on non mythic
-	[24] = "AX"--Random? Far as i know no random trains on non mythic
+	[22] = "A2",
+	[23] = "B2D3",
+	[24] = "AX",
+	[25] = "A1",--Possibly also random?
+	[26] = "B14",
 }
 
 function mod:OnCombatStart(delay)
