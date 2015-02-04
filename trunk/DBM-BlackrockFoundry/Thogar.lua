@@ -236,7 +236,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		warnTrain:Show(count)
 		countdownTrain:Start()--All trains are delayed 5 seconds from yell now, so we can just put 5 second countdown here.
 		if self:IsMythic() then
-			voiceTrain:Play("Thogar\\"..mythicVoice[count])
+			if mythicVoice[count] then
+				voiceTrain:Play("Thogar\\"..mythicVoice[count])
+			end
 			if count >= 12 then
 				print("Train Set: "..count..". DBM has no train data beyond this point. Write down lane(s) trains come from in 5 seconds with train set number and give it to us")
 				return
@@ -254,7 +256,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				specWarnManOArms:Show()
 			end
 		else
-		voiceTrain:Play("Thogar\\"..otherVoice[count])
+			if otherVoice[count] then
+				voiceTrain:Play("Thogar\\"..otherVoice[count])
+			end
 			if count >= 18 then
 				print("Train set 19 was missing a boss yell in my first test. As such, all further timers are disabled until it's verified that it's ALWAYS missing (so I can code around this bug), or blizzard fixes it .")
 				if count >= 23 then
