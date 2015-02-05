@@ -250,11 +250,18 @@ end
 local lines = {}
 
 local function sortInfoFrame(a, b)
-	local a = tonumber(string.sub(a, 1, 2)) or string.sub(a, 1, 2)
-	local b = tonumber(string.sub(b, 1, 2)) or string.sub(b, 1, 2)
-	if not a then a = 99 end
-	if not b then b = 99 end
-	if a < b then return true else return false end
+	local c = string.match(a, "^%d")
+	local d = string.match(b, "^%d")
+	print(c, d)
+	if c and not d then
+		return true
+	elseif not c and d then
+		return false
+	elseif c and d and c < d then 
+		return true
+	else
+		return false
+	end
 end
 
 local function updateInfoFrame()
