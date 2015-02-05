@@ -738,7 +738,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse)
 	updater:SetScript("OnLoop", updateRangeFrame)
 	updater:Play()
 	if forceshow and not DBM.Options.DontRestoreRange then--Force means user activaetd range frame, store user value for restore function
-		restoreRange, restoreFilter, restoreThreshold, restoreReverse = mainframe.range, mainFrame.filter, mainFrame.redCircleNumPlayers, mainFrame.reverse
+		restoreRange, restoreFilter, restoreThreshold, restoreReverse = mainFrame.range, mainFrame.filter, mainFrame.redCircleNumPlayers, mainFrame.reverse
 	end
 end
 
