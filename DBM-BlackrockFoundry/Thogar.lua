@@ -234,10 +234,10 @@ local function showTrainWarning()
 	warnTrain:Show(train, text)
 end
 
-local function laneCheck()
+local function laneCheck(self)
 	local posX = UnitPosition("player")--room is perfrect square, y coord not needed.
 	local train = self.vb.trainCount
-	local trainTable = mod:IsMythic() and mythicTrains or otherTrains
+	local trainTable = self:IsMythic() and mythicTrains or otherTrains
 	local playerLane
 	-- map coord from http://mysticalos.com/images/DBM/ThogarData/1.jpeg http://mysticalos.com/images/DBM/ThogarData/2.jpeg http://mysticalos.com/images/DBM/ThogarData/3.jpeg http://mysticalos.com/images/DBM/ThogarData/4.jpeg
 	if posX > 577.8 then
@@ -393,11 +393,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		showTrainWarning()
 		if msg == "Fake" then
 			countdownTrain:Start(2.5)
-			self:Schedule(1.5, laneCheck)
+			self:Schedule(1.5, laneCheck, self)
 			self:Schedule(2.5, showInfoFrame)
 		else
 			countdownTrain:Start()
-			self:Schedule(4, laneCheck)
+			self:Schedule(4, laneCheck, self)
 			self:Schedule(5, showInfoFrame)
 		end
 		if self:IsMythic() then
