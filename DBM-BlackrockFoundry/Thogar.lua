@@ -445,9 +445,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			local expectedTime
 			if count == 2 or count == 4 or count == 6 or count == 18 then
 				expectedTime = 5
-			elseif count == 1 or count == 10 or count == 14 or count == 15 or count == 20 or count == 23 then
+			elseif count == 1 or count == 10 or count == 14 or count == 15 or count == 20  then
 				expectedTime = 10
-			elseif count == 3 or count == 8 or count == 11 or count == 16 then
+			elseif count == 3 or count == 8 or count == 11 or count == 16 or count == 23 then
 				expectedTime = 15
 			elseif count == 13 or count == 17 or count == 24 or count == 25 then
 				expectedTime = 20
