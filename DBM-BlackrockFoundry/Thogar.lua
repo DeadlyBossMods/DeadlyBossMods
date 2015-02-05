@@ -137,10 +137,10 @@ local otherTrains = {
 	[20] = { [1] = Cannon, [4] = Cannon },--+30 after 19
 	[21] = { [2] = Train },--+10 after 20
 	[22] = { [2] = Train },--+25 after 21
-	[23] = { [2] = Reinforcements, [3] = Reinforcements },--+30 after 22
-	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23 (random train, seen 3 and 4 diff pulls)
-	[25] = { [1] = Train },--+20 after 24 (Possibly also random?)
-	[26] = { [1] = Reinforcements, [4] = Reinforcements },--+20 after 25
+	[23] = { [2] = Reinforcements, [3] = ManOArms },--+30 after 22
+	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--Lane 4, but if reinforcements aren't dead from wave 23, lane 2 (because reinforcements cart still blocking lane 4) Not Actually random. But detecting if reinforcement cart still in way impossible :\
+	[25] = { [1] = Train },--+20 after 24
+	[26] = { [1] = Cannon, [4] = Reinforcements },--+20 after 25
 }
 
 local function fakeTrainYell(self)
