@@ -230,7 +230,7 @@ local function showTrainWarning()
 		text = text..t.lane..": "..t.vehicle..", "
 	end
 	text = string.sub(text, 1, text:len() - 2)
-	text = "|cffffff9a"..text.."|r"
+	text = "noStrip |cffffff9a"..text.."|r"
 	warnTrain:Show(train, text)
 end
 
