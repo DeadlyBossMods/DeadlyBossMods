@@ -46,11 +46,11 @@ L= DBM:GetModLocalization(1122)
 L= DBM:GetModLocalization(1147)
 
 L:SetMiscLocalization({
-	lane			= "차선",
-	oneTrain		= "무작위 차선 1곳: 열차",
-	oneRandom		= "무작위 차선 1곳 등장",
-	threeTrains		= "무작위 차선 3곳: 열차",
-	threeRandom		= "무작위 차선 3곳 등장",
+	lane			= "선로",
+	oneTrain		= "무작위 선로 1곳: 열차",
+	oneRandom		= "무작위 선로 1곳 등장",
+	threeTrains		= "무작위 선로 3곳: 열차",
+	threeRandom		= "무작위 선로 3곳 등장",
 	helperMessage	= "DBM과 함께 'Thogar Assist' 애드온을 사용하시는 것을 권장드립니다. http://wow.curseforge.com/addons/thogar-assist/ 에서 받으실 수 있습니다."
 })
 
