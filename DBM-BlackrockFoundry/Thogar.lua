@@ -309,7 +309,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
