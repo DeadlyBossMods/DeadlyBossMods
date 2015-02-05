@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 --TODO, confirm if LFR Inferno Slice change actually also made mythic/heroic/normal or if they are still 13
 --TODO, recheck rampage timer on non LFR difficulties to see if longer there too (related to inferno slice change probably)
 --TODO, see if there is any way to impliment timers for smash and petrifyig slam. right now they are too variable. has to be a method to it.
-local warnOverwhelmingBlows			= mod:NewStackAnnounce(155078, 3, nil, "Tank|Healer")--No special warnings, strats for this revolve around the inferno slice strat, not this debuff, so dbm isn't going to say when tanks should taunt here
+local warnOverwhelmingBlows			= mod:NewStackAnnounce("OptionVersion2", 155078, 3, nil, false)--No special warnings, strats for this revolve around the inferno slice strat, not this debuff, so dbm isn't going to say when tanks should taunt here
 local warnCrumblingRoar				= mod:NewSpellAnnounce(155730, 3, nil, false)--Cave ins
 local warnInfernoSlice				= mod:NewCountAnnounce(155080, 4)
 local warnPetrifyingSlam			= mod:NewTargetAnnounce(155326, 4)--non mythic only. in mythic, applied to all, so target list only spam
@@ -165,9 +165,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownInfernoSlice:Cancel()
 		self:UnregisterShortTermEvents()
 	elseif spellId == 155078 then
-		local amount = args.amount or 1
-		if amount % 2 == 0 or amount >= 5 then
-			warnOverwhelmingBlows:Show(args.destName, amount)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId, "boss1") then
+			local amount = args.amount or 1
+			if amount % 2 == 0 or amount >= 5 then
+				warnOverwhelmingBlows:Show(args.destName, amount)
+			end
 		end
 	end
 end
