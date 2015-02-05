@@ -214,6 +214,8 @@ L.SpamBlockNoRangeFrame		= "Do not show range frame"
 L.SpamBlockNoInfoFrame		= "Do not show info frame"
 L.SpamBlockNoHealthFrame	= "Do not show health frame"
 L.SpamBlockNoCountdowns		= "Do not play countdown sounds"
+L.SpamBlockNoIconRestore	= "Do not save icon states and restore them on combat end"
+L.SpamBlockNoRangeRestore	= "Do not restore range frame to previous state when boss mods call 'hide'"
 
 -- Tab: Spam Filter
 L.Area_SpamFilter			= "Spam Filter Options"

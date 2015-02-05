@@ -238,6 +238,7 @@ local function laneCheck(self)
 	local posX = UnitPosition("player")--room is perfrect square, y coord not needed.
 	local train = self.vb.trainCount
 	local trainTable = self:IsMythic() and mythicTrains or otherTrains
+	if not trainTable[train] then return end
 	local playerLane
 	-- map coord from http://mysticalos.com/images/DBM/ThogarData/1.jpeg http://mysticalos.com/images/DBM/ThogarData/2.jpeg http://mysticalos.com/images/DBM/ThogarData/3.jpeg http://mysticalos.com/images/DBM/ThogarData/4.jpeg
 	if posX > 577.8 then
