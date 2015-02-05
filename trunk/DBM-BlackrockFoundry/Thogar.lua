@@ -24,8 +24,7 @@ mod:RegisterEventsInCombat(
 --Operator Thogar
 local warnProtoGrenade				= mod:NewSpellAnnounce(155864, 3)
 local warnEnkindle					= mod:NewStackAnnounce(155921, 2, nil, "Tank")
-local warnTrain						= mod:NewCountAnnounce(176312, 4)--Switch from generic and make informing one when mythicTrains (and non mythic trains too) are more populated.
---local warnTrain						= mod:NewTargetCountAnnounce(176312, 4)
+local warnTrain						= mod:NewTargetCountAnnounce(176312, 4)
 --Adds
 local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)
 
@@ -55,32 +54,16 @@ local countdownTrain				= mod:NewCountdown(5, 176312)
 local voiceTrain					= mod:NewVoice(176312) --see mythicVoice{} otherVoice{} tables for more details
 local voiceProtoGrenade				= mod:NewVoice(165195) --runaway
 
+mod:AddInfoFrameOption(176312)
+
 mod.vb.trainCount = 0
+local MovingTrain = GetSpellInfo(176312)
 local Train = GetSpellInfo(174806)
 local Cannon = GetSpellInfo(62357)
 local Reinforcements = EJ_GetSectionInfo(9537)
 local ManOArms = EJ_GetSectionInfo(9549)
 local Deforester = EJ_GetSectionInfo(10329)
 
---Crap code. I lack patience or time to do it cleaner.
---Note, all trains spawn 5 second after yell for that train
---this means that for 5 second cd trains you may see a yell for NEXT train as previous train is showing up. Do not confuse this!
---Also be aware that older beta videos are worng, blizz has changed train orders few times, so don't try to fill in missing data by putting "thogar" into youtube unless it's a RECENT video.
-local mythicTrains = {
-	[1] = ManOArms.." #4",--+7 after pull
-	[2] = Deforester.." #1",--+5 after 1
-	[3] = Train.." #2",--+5 after 2.
-	[4] = Train.." #3",--+15 after 3.
-	[5] = Train..L.threeTrains,--+15 after 4
-	[6] = Cannon.." #1, #4",--+15 after 5
-	[7] = Train.." #2",--+5 after 6.
-	[8] = Train.." #3",--+5 after 7.
-	[9] = Train.." #2",--+15 after 8.
-	[10] = Reinforcements.." #2, #3",--+20 after 9
-	[11] = Train.." #1, #4",--+15 after 10.
-	[12] = Train.." #2, #4",--+15 after 11
-	[13] = UNKNOWN,--+15/20? after 12
-}
 --[[ All non mythic difficulties
 		["DBM_Announce"] = {
 			"<224.82 22:56:55> DBM_Announce#Moving Train (1)", -- [1]
@@ -110,37 +93,54 @@ local mythicTrains = {
 			"<614.86 23:03:25> DBM_Announce#Moving Train (25)", -- [55]
 		},
 --]]
+
+--Crap code. I lack patience or time to do it cleaner.
+--Note, all trains spawn 5 second after yell for that train
+--this means that for 5 second cd trains you may see a yell for NEXT train as previous train is showing up. Do not confuse this!
+--Also be aware that older beta videos are worng, blizz has changed train orders few times, so don't try to fill in missing data by putting "thogar" into youtube unless it's a RECENT video.
+local mythicTrains = {
+	[1] = { [4] = ManOArms },--+7 after pull
+	[2] = { [1] = Deforester },--+5 after 1
+	[3] = { [2] = Train },--+5 after 2.
+	[4] = { [3] = Train },--+15 after 3.
+	[5] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 4
+	[6] = { [1] = Cannon, [4] = Cannon },--+15 after 5
+	[7] = { [2] = Train },--+5 after 6.
+	[8] = { [3] = Train },--+5 after 7.
+	[9] = { [2] = Train },--+15 after 8.
+	[10] = { [2] = Reinforcements, [3] = Reinforcements },--+20 after 9
+	[11] = { [1] = Train, [4] = Train },--+15 after 10.
+	[12] = { [2] = Train, [4] = Train },--+15 after 11
+	--Unknown below 13
+}
+
 local otherTrains = {
-	[1] = Train.." #4",--+12 after pull
-	[2] = Train.." #2",--+10 after 1
-	[3] = Reinforcements.." #1",--+5 after 2
-	[4] = Train.." #3",--+15 after 3
-	[5] = Cannon.." #4",--+5 after 4
-	[6] = Train.." #2",--+25 after 5
-	[7] = ManOArms.." #3",--+5 after 6
-	[8] = Train.." #1",--+25 after 7
-	--WARNING, Train 9 does not fire a yell
-	[9] = Reinforcements.." #2, #3",--+15 after 8
-	--WARNING, Train 9 does not fire a yell
-	[10] = Train.." #1, #4",--+40 after 9
-	[11] = Cannon.." #1",--+10 after 10
-	[12] = Train.." #2",--+15 after 11
-	[13] = Reinforcements.." #4",--+10 after 12
-	[14] = Train.." #3",--+20 after 13
-	[15] = Train.." #2",--+10 after 14
-	[16] = Train.." #1",--+10 after 15
-	[17] = ManOArms.." #2, "..Cannon.." #4",--+15 after 16
-	[18] = Train.." #1",--+20 after 17
-	--WARNING, Train 19 does not fire a yell
-	[19] = Train.." #3",--+5 after 18
-	--WARNING, Train 19 does not fire a yell
-	[20] = Cannon.." #1, #4",--+30 after 19
-	[21] = Train.." #2",--+10 after 20
-	[22] = Train.." #2",--+25 after 21
-	[23] = Reinforcements.." #2, "..ManOArms.." #3",--+30 after 22
-	[24] = Train,--+15 after 23 (random train, seen 3 and 4 diff pulls)
-	[25] = Train.." #1",--+20 after 24 (Possibly also random?)
-	[26] = Reinforcements.." #1, #4",--+20 after 25
+	[1] = { [4] = Train },--+12 after pull
+	[2] = { [2] = Train },--+10 after 1
+	[3] = { [1] = Reinforcements },--+5 after 2
+	[4] = { [3] = Train },--+15 after 3
+	[5] = { [4] = Cannon },--+5 after 4
+	[6] = { [2] = Train },--+25 after 5
+	[7] = { [3] = ManOArms },--+5 after 6
+	[8] = { [1] = Train },--+25 after 7
+	[9] = { [2] = Reinforcements, [3] = Reinforcements },--+15 after 8
+	[10] = { [1] = Train, [4] = Train },--+40 after 9
+	[11] = { [1] = Cannon },--+10 after 10
+	[12] = { [2] = Train },--+15 after 11
+	[13] = { [4] = Reinforcements },--+10 after 12
+	[14] = { [3] = Train },--+20 after 13
+	[15] = { [2] = Train },--+10 after 14
+	[16] = { [1] = Train },--+10 after 15
+	[17] = { [2] = ManOArms, [4] = Cannon },--+15 after 16
+	[18] = { [1] = Train },--+20 after 17
+	[19] = { [3] = Train },--+5 after 18
+	[20] = { [1] = Cannon, [4] = Cannon },--+30 after 19
+	[21] = { [2] = Train },--+10 after 20
+	[22] = { [2] = Train },--+25 after 21
+	[23] = { [2] = Reinforcements, [3] = Reinforcements },--+30 after 22
+	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23 (random train, seen 3 and 4 diff pulls)
+	[25] = { [1] = Train },--+20 after 24 (Possibly also random?)
+	[26] = { [1] = Reinforcements, [4] = Reinforcements },--+20 after 25
 }
 
 local function fakeTrainYell(self)
@@ -201,41 +201,95 @@ local otherVoice = {
 	[26] = "B14",
 }
 
+local function showTrainWarning()
+	local text = ""
+	local used = {}
+	local train = mod.vb.trainCount
+	local trainTable = mod:IsMythic() and mythicTrains or otherTrains
+	if trainTable[train] then
+		if trainTable[train]["specialw"] then
+			text = text .. trainTable[train]["specialw"]..", "
+		else
+			for i = 1, 4 do
+				if trainTable[train][i] then
+					if not used[trainTable[train][i]] then
+						used[trainTable[train][i]] = true
+						text = text..trainTable[train][i]..": "..i..L.lane..", "
+					else
+						text = text..i..L.lane..", "
+					end
+				end
+			end
+		end
+	end
+	text = string.sub(text, 1, text:len() - 2)
+	text = "|cffffff9a"..text.."|r"
+	warnTrain:Show(train, text)
+end
+
 local function laneCheck()
 	local posX, posY = UnitPosition("player")
 	local train = self.vb.trainCount
+	local trainTable = mod:IsMythic() and mythicTrains or otherTrains
 	-- need map data
 	local playerLane
-	if posX > 0 and posY > 0 then
+	if posX > 0 and posY > 0 then-- need map data
 		playerLane = 1
-	elseif posX > 0 and posY > 0 then
+	elseif posX > 0 and posY > 0 then-- need map data
 		playerLane = 2
-	elseif posX > 0 and posY > 0 then
+	elseif posX > 0 and posY > 0 then-- need map data
 		playerLane = 3
-	else
+	else-- need map data
 		playerLane = 4
 	end
-	if mod:IsMythic() then
-		if playerLane == 1 and (train == 2 or train == 5 or train == 6 or train == 11) then
-			specWarnTrain:Show()
-		elseif playerLane == 2 and (train == 3 or train == 5 or train == 7 or train == 9 or train == 12) then
-			specWarnTrain:Show()
-		elseif playerLane == 3 and (train == 4 or train == 5 or train == 8 or train == 10) then
-			specWarnTrain:Show()
-		elseif playerLane == 4 and (train == 1 or train == 5 or train == 11 or train == 12) then
-			specWarnTrain:Show()
+	if trainTable[train][playerLane] then
+		specWarnTrain:Show()
+	end
+end
+
+local lines = {}
+
+local function sortInfoFrame(a, b)
+	local a = tonumber(string.sub(a, 1, 2)) or string.sub(a, 1, 2)
+	local b = tonumber(string.sub(b, 1, 2)) or string.sub(b, 1, 2)
+	if not a then a = 99 end
+	if not b then b = 99 end
+	if a < b then return true else return false end
+end
+
+local function updateInfoFrame()
+	table.wipe(lines)
+	local train = mod.vb.trainCount + 1
+	local trainTable = mod:IsMythic() and mythicTrains or otherTrains
+	if trainTable[train] then
+		for i = 1, 4 do
+			if trainTable[train][i] then
+				lines[i..L.lane] = trainTable[train][i]
+			else
+				lines[i..L.lane] = ""
+			end
+		end
+		if trainTable[train]["speciali"] then
+			lines[trainTable[train]["speciali"]] = ""
 		end
 	else
-		if playerLane == 1 and (train == 3 or train == 8 or train == 10 or train == 11 or train == 16 or train == 18 or train == 20 or train == 24 or train == 25 or train == 26) then
-			specWarnTrain:Show()
-		elseif playerLane == 2 and (train == 2 or train == 6 or train == 9 or train == 12 or train == 15 or train == 17 or train == 21 or train == 22 or train == 23 or train == 24) then
-			specWarnTrain:Show()
-		elseif playerLane == 3 and (train == 4 or train == 7 or train == 9 or train == 14 or train == 19 or train == 23 or train == 24) then
-			specWarnTrain:Show()
-		elseif playerLane == 4 and (train == 1 or train == 5 or train == 10 or train == 13 or train == 17 or train == 20 or train == 24 or train == 26) then
-			specWarnTrain:Show()
-		end
+		lines[DBM_CORE_UNKNOWN] = ""
 	end
+	return lines
+end
+
+local function showInfoFrame()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(MovingTrain.." ("..(self.vb.trainCount + 1)..")")
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
+	end
+end
+
+function mod:test(num)
+	self.vb.trainCount = num
+	showTrainWarning()
+	DBM.InfoFrame:SetHeader(MovingTrain.." ("..(self.vb.trainCount + 1)..")")
+	DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 end
 
 function mod:OnCombatStart(delay)
@@ -251,6 +305,7 @@ function mod:OnCombatStart(delay)
 	else
 		timerTrainCD:Start(17-delay, 1)
 	end
+	showInfoFrame()
 end
 
 function mod:OnCombatEnd()
@@ -319,13 +374,16 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		self:Unschedule(fakeTrainYell)--Always unschedule
 		self.vb.trainCount = self.vb.trainCount + 1
 		local count = self.vb.trainCount
-		warnTrain:Show(count)
+		showTrainWarning()
 		if msg == "Fake" then
 			countdownTrain:Start(2.5)
+			--self:Schedule(1.5, laneCheck)--disable for now
+			self:Schedule(2.5, showInfoFrame)
 		else
 			countdownTrain:Start()
+			--self:Schedule(4, laneCheck)--disable for now
+			self:Schedule(5, showInfoFrame)
 		end
-		--self:Schedule(5, laneCheck)--disable for now
 		if self:IsMythic() then
 			if mythicTrains[count] then
 				--warnTrain:Show(count, mythicTrains[count])

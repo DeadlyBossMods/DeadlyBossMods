@@ -5,15 +5,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1161)
 
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 ---------------------------
 -- Oregorger, The Devourer --
 ---------------------------
@@ -54,7 +45,11 @@ L= DBM:GetModLocalization(1122)
 L= DBM:GetModLocalization(1147)
 
 L:SetMiscLocalization({
-	threeTrains		= " 3 Random Lanes",
+	lane			= " Lane",
+	oneTrain		= "Train: 1 Random Lane",
+	oneRandom		= "Appear on 1 random lane",
+	threeTrains		= "Train: 3 Random Lanes",
+	threeRandom		= "Appear on 3 random lanes",
 	helperMessage	= "It is recommended you use 'Thogar Assist' in combination with DBM on this boss. Available from: http://wow.curseforge.com/addons/thogar-assist/"
 })
 
