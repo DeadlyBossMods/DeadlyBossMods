@@ -320,7 +320,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		self.vb.trainCount = self.vb.trainCount + 1
 		local count = self.vb.trainCount
 		warnTrain:Show(count)
-		countdownTrain:Start()--All trains are delayed 5 seconds from yell now, so we can just put 5 second countdown here.
+		if msg == "Fake" then
+			countdownTrain:Start(2.5)
+		else
+			countdownTrain:Start()
+		end
 		--self:Schedule(5, laneCheck)--disable for now
 		if self:IsMythic() then
 			if mythicTrains[count] then
