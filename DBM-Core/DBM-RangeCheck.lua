@@ -112,18 +112,18 @@ do
 	end
 
 	local function setRange(self, range)
-		rangeCheck:Hide()
+		rangeCheck:Hide(true)
 		rangeCheck:Show(range, mainFrame.filter, true, mainFrame.redCircleNumPlayers or 1)
 	end
 	
 	local function setThreshold(self, threshold)
-		rangeCheck:Hide()
+		rangeCheck:Hide(true)
 		rangeCheck:Show(mainFrame.range, mainFrame.filter, true, threshold)
 	end
 
 	local function setFrames(self, option)
 		DBM.Options.RangeFrameFrames = option
-		rangeCheck:Hide()
+		rangeCheck:Hide(true)
 		rangeCheck:Show(mainFrame.range, mainFrame.filter, true, mainFrame.redCircleNumPlayers or 1)
 	end
 
@@ -177,7 +177,7 @@ do
 			info = UIDropDownMenu_CreateInfo()
 			info.text = HIDE
 			info.notCheckable = true
-			info.func = rangeCheck.Hide
+			info.func = function() rangeCheck.Hide(true) end
 			info.arg1 = rangeCheck
 			UIDropDownMenu_AddButton(info, 1)
 
@@ -706,6 +706,7 @@ end
 ---------------
 --  Methods  --
 ---------------
+local restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
 function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse)
 	if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame) and not forceshow then return end
 	if type(range) == "function" then -- the first argument is optional
@@ -736,22 +737,31 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse)
 	end
 	updater:SetScript("OnLoop", updateRangeFrame)
 	updater:Play()
+	if forceshow and not DBM.Options.DontRestoreRange then--Force means user activaetd range frame, store user value for restore function
+		restoreRange, restoreFilter, restoreThreshold, restoreReverse = mainframe.range, mainFrame.filter, mainFrame.redCircleNumPlayers, mainFrame.reverse
+	end
 end
 
-function rangeCheck:Hide()
-	updater:Stop()
-	activeRange = 0
-	if mainFrame.eventRegistered then
-		mainFrame.eventRegistered = nil
-		mainFrame:UnregisterAllEvents()
-	end
-	if textFrame then
-		textFrame.isShown = nil
-		textFrame:Hide()
-	end
-	if radarFrame then
-		radarFrame.isShown = nil
-		radarFrame:Hide() 
+function rangeCheck:Hide(force)
+	if restoreRange and not force then--Restore range frame to way it was when boss mod is done with it
+		rangeCheck:Show(restoreRange, restoreFilter, true, restoreThreshold, restoreReverse)
+	else
+		restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
+		DBM.Options.RestoreRange = nil--Set nil here because it means force was passed.
+		updater:Stop()
+		activeRange = 0
+		if mainFrame.eventRegistered then
+			mainFrame.eventRegistered = nil
+			mainFrame:UnregisterAllEvents()
+		end
+		if textFrame then
+			textFrame.isShown = nil
+			textFrame:Hide()
+		end
+		if radarFrame then
+			radarFrame.isShown = nil
+			radarFrame:Hide() 
+		end
 	end
 end
 
