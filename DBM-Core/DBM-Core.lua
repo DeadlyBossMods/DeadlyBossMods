@@ -474,7 +474,7 @@ local BNSendWhisper = sendWhisper
 local function stripServerName(cap)
 	cap = cap:sub(2, -2)
 	if DBM.Options.StripServerName then
-		cap = Ambiguate(cap, "none")
+		cap = Ambiguate(cap, "short")
 	end
 	return cap
 end
@@ -7401,7 +7401,7 @@ do
 					cap = cap:sub(2, -2)
 					local name = cap
 					if DBM.Options.StripServerName then
-						cap = Ambiguate(cap, "none")
+						cap = Ambiguate(cap, "short")
 					end
 					if DBM:GetRaidClass(name) then
 						local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)] or color
