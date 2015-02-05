@@ -280,7 +280,7 @@ end
 
 local function showInfoFrame()
 	if mod.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(MovingTrain.." ("..(self.vb.trainCount + 1)..")")
+		DBM.InfoFrame:SetHeader(MovingTrain.." ("..(mod.vb.trainCount + 1)..")")
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 	end
 end
