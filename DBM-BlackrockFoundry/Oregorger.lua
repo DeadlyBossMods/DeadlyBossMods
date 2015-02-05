@@ -25,7 +25,7 @@ local warnAcidTorrent				= mod:NewSpellAnnounce(156240, 3)
 local warnRetchedBlackrock			= mod:NewTargetAnnounce("OptionVersion2", 156179, 3, nil, "Ranged")
 
 local specWarnBlackrockBarrage		= mod:NewSpecialWarningInterruptCount(156877, false, nil, nil, nil, nil, 3)--Off by default since only interruptors want this on for their duty
-local specWarnAcidTorrent			= mod:NewSpecialWarningSpell(156240, "Tank", nil, nil, 3, nil, 2)
+local specWarnAcidTorrent			= mod:NewSpecialWarningSpell(156240, "Tank", nil, nil, 3)--No voice filter, because voice is for tank swap that comes AFTER breath, this warning is to alert tank they need to move into position to soak breath, NOT taunt
 local yellRetchedBlackrock			= mod:NewYell(156179)
 local specWarnRetchedBlackrock		= mod:NewSpecialWarningMove(156203, nil, nil, nil, nil, nil, 2)
 local specWarnExplosiveShard		= mod:NewSpecialWarningDodge("OptionVersion2", 156390, "-Tank|Melee")--No target scanning available. targets ONLY melee (except tanks)

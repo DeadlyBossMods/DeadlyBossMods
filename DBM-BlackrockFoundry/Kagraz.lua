@@ -26,7 +26,6 @@ local warnDropHammer					= mod:NewSpellAnnounce(156040, 3)--Target scanning?
 local warnLavaSlash						= mod:NewSpellAnnounce(155318, 2, nil, false)--Likely cast often & doesn't show in combat log anyways except for damage and not THAT important
 local warnSummonEnchantedArmaments		= mod:NewSpellAnnounce(156724, 3)
 local warnMoltenTorrent					= mod:NewTargetAnnounce(154932, 3)
-local warnOverheated					= mod:NewTargetAnnounce(154950, 3, nil, "Tank")
 local warnRekindle						= mod:NewCastAnnounce(155064, 4)
 local warnFixate						= mod:NewTargetAnnounce(154952, 3)
 local warnBlazingRadiance				= mod:NewTargetAnnounce(155277, 3)
@@ -195,7 +194,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 154950 then
-		warnOverheated:Show(args.destName)
 		specWarnOverheated:Show()
 		timerOverheated:Start(args.destName)
 		timerCharringBreathCD:Start()

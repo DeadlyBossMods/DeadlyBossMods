@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(76865)--No need to add beasts to this. It's always main boss that's engaged first and dies last.
 mod:SetEncounterID(1694)
 mod:SetZone()
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 
 mod:RegisterCombat("combat")
 
