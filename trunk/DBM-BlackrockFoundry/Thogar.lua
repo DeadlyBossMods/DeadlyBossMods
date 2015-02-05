@@ -203,7 +203,8 @@ local otherVoice = {
 
 local function showTrainWarning()
 	local text = ""
-	local used = {}
+	local textTable = {}
+	local usedv = {}
 	local train = mod.vb.trainCount
 	local trainTable = mod:IsMythic() and mythicTrains or otherTrains
 	if trainTable[train] then
@@ -212,15 +213,21 @@ local function showTrainWarning()
 		else
 			for i = 1, 4 do
 				if trainTable[train][i] then
-					if not used[trainTable[train][i]] then
-						used[trainTable[train][i]] = true
-						text = text..trainTable[train][i]..": "..i..L.lane..", "
+					if not usedv[trainTable[train][i]] then
+						usedv[trainTable[train][i]] = #textTable + 1
+						local t = { vehicle = trainTable[train][i], lane = L.lane.." "..i }
+						table.insert(textTable, t)
 					else
-						text = text..i..L.lane..", "
+						local t = textTable[usedv[trainTable[train][i]]]
+						t.lane = t.lane..", "..i
 					end
 				end
 			end
 		end
+	end
+	for i = 1, #textTable do
+		local t = textTable[i]
+		text = text..t.lane..": "..t.vehicle..", "
 	end
 	text = string.sub(text, 1, text:len() - 2)
 	text = "|cffffff9a"..text.."|r"
@@ -250,9 +257,9 @@ end
 local lines = {}
 
 local function sortInfoFrame(a, b)
-	local c = string.match(a, "^%d")
-	local d = string.match(b, "^%d")
-	print(c, d)
+	local rexp = "^"..L.lane.." ".."%d"
+	local c = string.match(a, rexp)
+	local d = string.match(b, rexp)
 	if c and not d then
 		return true
 	elseif not c and d then
@@ -271,9 +278,9 @@ local function updateInfoFrame()
 	if trainTable[train] then
 		for i = 1, 4 do
 			if trainTable[train][i] then
-				lines[i..L.lane] = trainTable[train][i]
+				lines[L.lane.." "..i] = trainTable[train][i]
 			else
-				lines[i..L.lane] = ""
+				lines[L.lane.." "..i] = ""
 			end
 		end
 		if trainTable[train]["speciali"] then

@@ -45,10 +45,10 @@ L= DBM:GetModLocalization(1122)
 L= DBM:GetModLocalization(1147)
 
 L:SetMiscLocalization({
-	lane			= " Lane",
-	oneTrain		= "Train: 1 Random Lane",
+	lane			= "Lane",
+	oneTrain		= "1 Random Lane: Train",
 	oneRandom		= "Appear on 1 random lane",
-	threeTrains		= "Train: 3 Random Lanes",
+	threeTrains		= "3 Random Lanes: Train",
 	threeRandom		= "Appear on 3 random lanes",
 	helperMessage	= "It is recommended you use 'Thogar Assist' in combination with DBM on this boss. Available from: http://wow.curseforge.com/addons/thogar-assist/"
 })
