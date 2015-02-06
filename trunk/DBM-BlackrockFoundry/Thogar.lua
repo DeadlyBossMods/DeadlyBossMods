@@ -365,7 +365,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if target == Train then
+	if target == L.Train then
 		self:Unschedule(fakeTrainYell)--Always unschedule
 		self.vb.trainCount = self.vb.trainCount + 1
 		local count = self.vb.trainCount
