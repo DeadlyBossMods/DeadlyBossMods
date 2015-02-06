@@ -45,6 +45,7 @@ L= DBM:GetModLocalization(1122)
 L= DBM:GetModLocalization(1147)
 
 L:SetMiscLocalization({
+	Train			= GetSpellInfo(174806),
 	lane			= "Lane",
 	oneTrain		= "1 Random Lane: Train",
 	oneRandom		= "Appear on 1 random lane",
