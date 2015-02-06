@@ -25,6 +25,7 @@ mod:RegisterEventsInCombat(
 --TODO, figure out how to detect OTHER add spawns besides operator and get timers for them too. It's likely the'll require ugly scheduling and /yell logging. 
 local warnBomb					= mod:NewTargetAnnounce(155192, 4)
 local warnDropBombs				= mod:NewSpellAnnounce("OptionVersion2", 174726, 1, nil, "-Tank")
+local warnEngineer				= mod:NewSpellAnnounce("ej9649", 2, 155179)
 local warnRupture				= mod:NewTargetAnnounce(156932, 3)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
@@ -55,12 +56,12 @@ local specWarnBlast				= mod:NewSpecialWarningSoon(155209, nil, nil, nil, 2)
 local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
 local timerBlastCD				= mod:NewCDTimer(25, 155209)--25 seconds base. shorter when loading is being channeled by operators.
 local timerRuptureCD			= mod:NewCDTimer(26, 156934)
---local timerEngineer				= mod:NewNextTimer(35, "ej9649", nil, nil, nil, 155179)
+local timerEngineer				= mod:NewNextTimer(41, "ej9649", nil, nil, nil, 155179)
 local timerBellowsOperator		= mod:NewNextTimer(64, "ej9650", nil, nil, nil, 155181)
 local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps")--Anyone else need?
 
 local countdownBellowsOperator	= mod:NewCountdown(64, "ej9650")
---local countdownEngineer			= mod:NewCountdown("Alt35", "ej9649")
+local countdownEngineer			= mod:NewCountdown("Alt41", "ej9649")
 
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceRepair				= mod:NewVoice(155179, "-Healer") --int
@@ -80,24 +81,20 @@ mod.vb.totalTime = 25
 local UnitPower, UnitBuff = UnitPower, UnitBuff
 local dkAMS = GetSpellInfo(48707)
 
---I was pretty bad at doing /yell adds in my chat log so this may not be perfect.
---It may not be 35 at all. Or at least first may not be 45 so rest will be off by a couple sec.
---Todo, verify and improve. Putting timer in to catch it if wrong faster, but adding warnings only after it's right.
---Also, it's actually a taggered release. Guards come out first engineers like 5 seconds after guards. so Possibly add secondary timer for engineer and change primary to guard
---local function Adds(self)
---	timerEngineer:Start()
---	countdownEngineer:Start()
---	self:Schedule(35, Adds, self)
---end
+--With some videos, this looks pretty good now. Just need phase 2 add stuff now.
+local function Engineers(self)
+	warnEngineer:Show()
+	timerEngineer:Start()
+	countdownEngineer:Start()
+	self:Schedule(41, Engineers, self)
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.machinesDead = 0
 	self.vb.elementalistsDead = 0
---	if DBM.Options.DebugMode then
---		self:Schedule(35, Adds, self)
---		timerEngineer:Start()
---		countdownEngineer:Start()
---	end
+	self:Schedule(55, Engineers, self)
+	timerEngineer:Start(55)
+	countdownEngineer:Start(55)
 --	if self:AntiSpam(10, 0) then--Force this antispam on pull so first two adds "loading" doesn't start 60 second timer
 --		timerBellowsOperator:Start(55-delay)
 --		countdownBellowsOperator:Start(55-delay)
@@ -234,9 +231,9 @@ function mod:UNIT_DIED(args)
 		self.vb.machinesDead = self.vb.machinesDead + 1
 		if self.vb.machinesDead == 2 then
 			warnPhase2:Show()
---			self:Unschedule(Adds)
---			timerEngineer:Cancel()
---			countdownEngineer:Cancel()
+			self:Unschedule(Engineers)
+			timerEngineer:Cancel()
+			countdownEngineer:Cancel()
 			timerBellowsOperator:Cancel()
 			countdownBellowsOperator:Cancel()	
 			voicePhaseChange:Play("ptwo")
