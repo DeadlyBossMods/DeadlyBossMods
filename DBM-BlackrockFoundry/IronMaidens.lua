@@ -12,25 +12,24 @@ mod:SetModelSound("sound\\creature\\marak\\vo_60_ironmaidens_marak_08.ogg", "sou
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 158695 158708 158707 158710 158692 158599 155794 158078 156626 158008",
-	"SPELL_CAST_SUCCESS 158701 157854 157886 156109",
+	"SPELL_CAST_START 158708 158707 158692 158599 155794 158078 156626 158008",
+	"SPELL_CAST_SUCCESS 157854 157886 156109",
 	"SPELL_AURA_APPLIED 158702 164271 156214 158315 158010 159724 156631 156601",
 	"SPELL_AURA_REMOVED 159724",
 	"SPELL_PERIODIC_DAMAGE 158683",
 	"SPELL_PERIODIC_MISSED 158683",
 	"UNIT_DIED",
 	"RAID_BOSS_WHISPER",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
 mod:SetBossHealthInfo(77557, 77231, 77477)
 
 --TODO, find out how many bombardments there are so timer doesn't start after last one.
---TODO, timer recovery when leaving boat back to main platform (how do we detect leaving boat? never gotten a log where people return.)
---TODO, find a way to detect BOSS returning from boat so timers for that boss can be started up again.
---TODO, figure out why boat filter isn't working correctly (might be fixed by most recent changes though, so needs reverification
---TODO, see if one of bosses hitting 20% before 3rd ship, cancels first ship (because ships are 10, 40 and 70 energy, but bosses skip to 100 energy if any of them hit 20%)
---TODO, add timers for deck abilities that need them.
+--TODO, use ALTERNATE power to cancel warming up and resume main platform timers for people returning from boat.
+--TODO, If bosses drop below 25% on live, it cancels ship timer, even though bosses don't power up until 20%. No event for this.
+--TODO, add timers for deck abilities that need them?
 local Ship	= EJ_GetSectionInfo(10019)
 local Marak = EJ_GetSectionInfo(10033)
 local Sorka = EJ_GetSectionInfo(10030)
@@ -39,29 +38,26 @@ local Garan = EJ_GetSectionInfo(10025)
 --Ship
 local warnShip							= mod:NewSpellAnnounce("ej10019", 3, 76204)
 ----Blackrock Deckhand
-local warnGrapeshotBlast				= mod:NewSpellAnnounce(158695, 3)--Could not verify
-local warnProtectiveEarth				= mod:NewSpellAnnounce(158707, 3)--Could not verify
-local warnChainLightning				= mod:NewSpellAnnounce(158710, 3)--Could not verify
+local warnProtectiveEarth				= mod:NewSpellAnnounce("OptionVersion2", 158707, 3, nil, false)--Could not verify
 ----Shattered Hand Deckhand
 local warnDeadlyThrow					= mod:NewSpellAnnounce(158692, 3)
-local warnCallforReinforcements			= mod:NewSpellAnnounce(158701, 2)--Could not verify
 local warnFixate						= mod:NewTargetAnnounce(158702, 3)
 --Ground
 ----Admiral Gar'an
 local warnRapidFire						= mod:NewTargetAnnounce(156631, 4)
-local warnPenetratingShot				= mod:NewTargetAnnounce(164271, 3)--Could not verify
+local warnPenetratingShot				= mod:NewTargetAnnounce(164271, 3)
 ----Enforcer Sorka
-local warnBladeDash						= mod:NewTargetAnnounce(155794, 3)
-local warnConvulsiveShadows				= mod:NewTargetAnnounce(156214, 3)
-local warnDarkHunt						= mod:NewTargetAnnounce(158315, 4)--Could not verify
+local warnBladeDash						= mod:NewTargetAnnounce("OptionVersion2", 155794, 3, nil, "Ranged")--No longer targets melee, ever.
+local warnConvulsiveShadows				= mod:NewTargetAnnounce(156214, 3, nil, "Healer")
+local warnDarkHunt						= mod:NewTargetAnnounce(158315, 4, nil, "Healer")
 ----Marak the Blooded
 local warnBloodRitual					= mod:NewTargetAnnounce(158078, 3)
-local warnBloodsoakedHeartseeker		= mod:NewTargetAnnounce(158010, 4)
+local warnBloodsoakedHeartseeker		= mod:NewTargetAnnounce(158010, 4, nil, "Healer")
 local warnSanguineStrikes				= mod:NewTargetAnnounce(156601, 3, nil, "Healer")
 
 --Ship
-local specWarnBombardmentAlpha			= mod:NewSpecialWarningSpell(157854, nil, nil, nil, 2)--From ship, but affects NON ship.
-local specWarnBombardmentOmega			= mod:NewSpecialWarningSpell(157886, nil, nil, nil, 3)--From ship, but affects NON ship.
+local specWarnBombardmentAlpha			= mod:NewSpecialWarningCount(157854, nil, nil, nil, 2)--From ship, but affects NON ship.
+local specWarnBombardmentOmega			= mod:NewSpecialWarningCount(157886, nil, nil, nil, 3)--From ship, but affects NON ship.
 ----Blackrock Deckhand
 local specWarnEarthenbarrier			= mod:NewSpecialWarningInterrupt(158708, nil, nil, nil, nil, nil, 2)
 ----Shattered Hand Deckhand
@@ -75,7 +71,7 @@ local specWarnRapidFire					= mod:NewSpecialWarningRun(156631, nil, nil, nil, 4,
 local yellRapidFire						= mod:NewYell(156631)
 local specWarnPenetratingShot			= mod:NewSpecialWarningYou(164271)
 local yellPenetratingShot				= mod:NewYell(164271)
-local specWarnDeployTurret				= mod:NewSpecialWarningSwitch(158599, nil, nil, nil, 2, nil, 2)--Switch warning since most need to switch and kill, but on for EVERYONE because tanks/healers need to avoid it while it's up
+local specWarnDeployTurret				= mod:NewSpecialWarningSwitch("OptionVersion2", 158599, "Dps", nil, nil, 2, nil, 2)--Switch warning since most need to switch and kill, but on for EVERYONE because tanks/healers need to avoid it while it's up
 ----Enforcer Sorka
 local specWarnBladeDash					= mod:NewSpecialWarningYou(155794)
 local specWarnBladeDashOther			= mod:NewSpecialWarningTarget(155794, nil, nil, nil, 2)
@@ -88,13 +84,12 @@ local specWarnBloodRitualOther			= mod:NewSpecialWarningTarget("OptionVersion2",
 local yellBloodRitual					= mod:NewYell(158078)
 local specWarnBloodsoakedHeartseeker	= mod:NewSpecialWarningRun(158010, nil, nil, nil, 4, nil, 2)
 local yellHeartseeker					= mod:NewYell(158010, nil, false)
-local specWarnSanguineStrikes			= mod:NewSpecialWarningTarget(156601, "Healer", nil, nil, nil, nil, 2)
 
 --Ship
 mod:AddTimerLine(Ship)
 local timerShipCD						= mod:NewNextTimer(198, "ej10019", nil, nil, nil, 76204)
-local timerBombardmentAlphaCD			= mod:NewNextTimer(18, 157854)--How many times cast?
---local timerWarmingUp					= mod:NewCastTimer(90, 158849)--Could not verify
+local timerBombardmentAlphaCD			= mod:NewNextTimer(18, 157854)
+local timerWarmingUp					= mod:NewCastTimer(90, 158849)--Could not verify
 ----Blackrock Deckhand
 ----Shattered Hand Deckhand
 ----Bleeding Hollow Deckhand
@@ -102,23 +97,23 @@ local timerBombardmentAlphaCD			= mod:NewNextTimer(18, 157854)--How many times c
 ----Admiral Gar'an
 mod:AddTimerLine(Garan)
 local timerRapidFireCD					= mod:NewNextTimer(30, 156626)
-local timerDarkHuntCD					= mod:NewCDTimer(13.5, 158315)--Needs more data. it was only cast twice in entirety of my log, so space between is based off a single sample.
-local timerPenetratingShotCD			= mod:NewCDTimer(22, 164271)--22-30 at least. maybe larger variation. Just small LFR sample size.
+local timerDarkHuntCD					= mod:NewCDTimer("OptionVersion2", 13.5, 158315, nil, false)--Important to know you have it, not very important to know it's coming soon.
+local timerPenetratingShotCD			= mod:NewCDTimer(30, 164271)--22-30 at least. maybe larger variation. Just small LFR sample size.
 ----Enforcer Sorka
 mod:AddTimerLine(Sorka)
 local timerBloodRitualCD				= mod:NewNextTimer(21, 158078)
-local timerConvulsiveShadowsCD			= mod:NewNextTimer(46.5, 156214)
+local timerConvulsiveShadowsCD			= mod:NewNextTimer(56.5, 156214)--Timer only enabled on mythicOn non mythic, it's just an unimportant dot. On mythic, MUCH more important because user has to run out of raid and get dispelled.
 ----Marak the Blooded
 mod:AddTimerLine(Marak)
-local timerBladeDashCD					= mod:NewNextTimer(20, 155794)
-local timerHeartSeekerCD				= mod:NewNextTimer(51, 158010)
+local timerBladeDashCD					= mod:NewNextTimer(20, 155794, nil, "Ranged")
+local timerHeartSeekerCD				= mod:NewNextTimer("OptionVersion2", 74, 158010, nil, "Ranged")--Seriously a 74 second cd?
 
 local voiceRapidFire					= mod:NewVoice(156631) --runout
 local voiceBloodRitual					= mod:NewVoice(158078, "Melee") --158078.ogg, farawayfromline
 local voiceHeartSeeker					= mod:NewVoice(158010) --spread
 local voiceShip							= mod:NewVoice("ej10019") --1695uktar, 1695gorak, 1695ukurogg
 local voiceEarthenbarrier				= mod:NewVoice(158708)  --int
---local voiceSanguineStrikes				= mod:NewVoice(156601, "Healer")) --healteam
+--local voiceSanguineStrikes			= mod:NewVoice(156601, "Healer")) --healteam
 local voiceDeployTurret					= mod:NewVoice(158599, "Dps") --158599.ogg attack turret
 local voiceConvulsiveShadows			= mod:NewVoice(156214) --runaway, target
 local voiceDarkHunt						= mod:NewVoice(158315) --defensive, target
@@ -128,6 +123,7 @@ mod:AddSetIconOption("SetIconOnBloodRitual", 158078, true)
 mod:AddSetIconOption("SetIconOnHeartSeeker", 158010, true)
 
 mod.vb.ship = 0
+mod.vb.alphaOmega = 0
 
 local GetPlayerMapPosition = GetPlayerMapPosition
 local function isPlayerOnBoat()
@@ -154,6 +150,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.ship = 0
+	self.vb.alphaOmega = 1
 	timerBloodRitualCD:Start(5-delay)
 	timerBladeDashCD:Start(11-delay)
 	timerRapidFireCD:Start(16-delay)
@@ -183,15 +180,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 158008 and (noFilter or not isPlayerOnBoat()) then
 		timerHeartSeekerCD:Start()
 	--Begin Deck Abilities
-	elseif spellId == 158695 and (noFilter or isPlayerOnBoat()) then
-		warnGrapeshotBlast:Show()
 	elseif spellId == 158708 and (noFilter or isPlayerOnBoat()) then
 		specWarnEarthenbarrier:Show(args.sourceName)
 		voiceEarthenbarrier:Play("kickcast")
 	elseif spellId == 158707 and (noFilter or isPlayerOnBoat()) then
 		warnProtectiveEarth:Show()
-	elseif spellId == 158710 and (noFilter or isPlayerOnBoat()) then
-		warnChainLightning:Show()
 	elseif spellId == 158692 and (noFilter or isPlayerOnBoat()) then
 		warnDeadlyThrow:Show()
 		specWarnDeadlyThrow:Show()
@@ -205,15 +198,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		noFilter = true
 	end
 	if spellId == 157854 and (noFilter or not isPlayerOnBoat()) then
-		specWarnBombardmentAlpha:Show()
+		specWarnBombardmentAlpha:Show(self.vb.alphaOmega)
 		timerBombardmentAlphaCD:Start()
 	elseif spellId == 157886 and (noFilter or not isPlayerOnBoat()) then
-		specWarnBombardmentOmega:Show()
-	elseif spellId == 156109 and (noFilter or not isPlayerOnBoat()) then
+		specWarnBombardmentOmega:Show(self.vb.alphaOmega)
+		self.vb.alphaOmega = self.vb.alphaOmega + 1
+	elseif spellId == 156109 and (noFilter or not isPlayerOnBoat()) and self:IsMythic() then
 		timerConvulsiveShadowsCD:Start()
-	--Begin Deck Abilities
-	elseif spellId == 158701 and (noFilter or isPlayerOnBoat()) then
-		warnCallforReinforcements:Show()
 	end
 end
 
@@ -232,7 +223,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 156214 and (noFilter or not isPlayerOnBoat()) then
 		warnConvulsiveShadows:CombinedShow(0.5, args.destName)--Combined because a bad lingeringshadows drop may have multiple.
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:IsMythic() then
 			specWarnConvulsiveShadows:Show()
 			yellConvulsiveShadows:Yell()
 			voiceConvulsiveShadows:Play("runaway")
@@ -241,7 +232,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDarkHunt:Show(args.destName)
 		specWarnDarkHunt:Show(args.destName)
 		timerDarkHuntCD:Start() --8s
-		voiceDarkHunt:Schedule(3, "defensive") --if a countdown is added for this spell, change schedule time to 1.5s
+		if args:IsPlayer() then
+			voiceDarkHunt:Schedule(3, "defensive") --if a countdown is added for this spell, change schedule time to 1.5s
+		end
 	elseif spellId == 158010 and (noFilter or not isPlayerOnBoat()) then
 		warnBloodsoakedHeartseeker:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
@@ -272,7 +265,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 156601 then
 		warnSanguineStrikes:Show(args.destName)
-		specWarnSanguineStrikes:Show(args.destName)
 		--voiceSanguineStrikes:Play("healall")
 	--Begin Deck Abilities
 	elseif spellId == 158702 and (noFilter or isPlayerOnBoat()) then
@@ -329,6 +321,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 	end
 end
 
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 158849 then
+		timerWarmingUp:Start()
+	end
+end
+
 function mod:OnSync(msg, guid)
 	if not self:IsInCombat() then return end
 	if (not DBM.Options.DontShowFarWarnings or isPlayerOnBoat()) then return end--Anything below this line doesn't concern people on boat
@@ -342,6 +340,7 @@ function mod:OnSync(msg, guid)
 		end
 	elseif msg == "Ship" and guid then--technically not guid but it's fine.
 		self.vb.ship = self.vb.ship + 1
+		self.vb.alphaOmega = 1
 		warnShip:Show()
 		if self.vb.ship < 3 then
 			timerShipCD:Start()
