@@ -27,6 +27,7 @@ local warnRetchedBlackrock			= mod:NewTargetAnnounce("OptionVersion2", 156179, 3
 local specWarnBlackrockBarrage		= mod:NewSpecialWarningInterruptCount(156877, false, nil, nil, nil, nil, 3)--Off by default since only interruptors want this on for their duty
 local specWarnAcidTorrent			= mod:NewSpecialWarningSpell(156240, "Tank", nil, nil, 3)--No voice filter, because voice is for tank swap that comes AFTER breath, this warning is to alert tank they need to move into position to soak breath, NOT taunt
 local yellRetchedBlackrock			= mod:NewYell(156179)
+local specWarnRetchedBlackrockNear	= mod:NewSpecialWarningClose(156179)
 local specWarnRetchedBlackrock		= mod:NewSpecialWarningMove(156203, nil, nil, nil, nil, nil, 2)
 local specWarnExplosiveShard		= mod:NewSpecialWarningDodge("OptionVersion2", 156390, "-Tank|Melee")--No target scanning available. targets ONLY melee (except tanks)
 local specWarnHungerDrive			= mod:NewSpecialWarningSpell(165127, nil, nil, nil, 2)
@@ -51,7 +52,12 @@ function mod:RetchedBlackrockTarget(targetname, uId)
 	if not targetname then return end
 	warnRetchedBlackrock:Show(targetname)
 	if targetname == UnitName("player") then
+		if self:AntiSpam(2.5, 2) then
+			specWarnRetchedBlackrock:Show()
+		end
 		yellRetchedBlackrock:Yell()
+	elseif self:CheckNearby(6, targetname) then
+		specWarnRetchedBlackrockNear:Show(targetname)
 	end
 end
 
@@ -126,7 +132,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 156203 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
+	if spellId == 156203 and destGUID == UnitGUID("player") and self:AntiSpam(2.5, 2) then
 		specWarnRetchedBlackrock:Show()
 		voiceRetchedBlackrock:Play("runaway")
 	end
