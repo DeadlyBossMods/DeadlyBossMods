@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 local warnBomb					= mod:NewTargetAnnounce(155192, 4)
 local warnDeafeningRoar			= mod:NewSpellAnnounce(177756, 3, nil, "Tank")
 local warnDropBombs				= mod:NewSpellAnnounce("OptionVersion2", 174726, 1, nil, "-Tank")
-local warnRupture				= mod:NewTargetAnnounce(156932, 3)--Uses SPELL_CAST_SUCCESS because blizzard is dumb and debuff apply and standing in fire apply same spellid, only way to report ONLY debuff is use SUCCESS
+--local warnRupture				= mod:NewTargetAnnounce(156932, 3)--Uses SPELL_CAST_SUCCESS because blizzard is dumb and debuff apply and standing in fire apply same spellid, only way to report ONLY debuff is use SUCCESS
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4)
@@ -38,7 +38,7 @@ local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("OptionVersion2", "e
 local specWarnDeafeningRoar		= mod:NewSpecialWarningDodge("OptionVersion2", 177756, "Tank", nil, nil, 3)
 local specWarnDefense			= mod:NewSpecialWarningMove("OptionVersion2", 160379, false, nil, nil, nil, nil, true)
 local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, "-Healer", nil, nil, nil, nil, 2)
-local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932)
+--local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932)
 local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, nil, nil, 2)
 local specWarnFixate			= mod:NewSpecialWarningYou(155196)
 local specWarnMeltYou			= mod:NewSpecialWarningYou(155225)
@@ -140,11 +140,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		voiceRepair:Play("kickcast")
 	elseif spellId == 174726 and self:CheckTankDistance(args.sourceGUID, 30) then
 		warnDropBombs:Show()
-	elseif spellId == 156932 then
-		warnRupture:CombinedShow(0.5, args.destName)
-		if args:IsPlayer() and not UnitBuff("player", dkAMS) then--Because forced to use SUCCESS, extra check to avoid giving death knight a warning if they blocked it with AMS
-			specWarnRuptureOn:Show()
-		end
+--	elseif spellId == 156932 then
+--		warnRupture:CombinedShow(0.5, args.destName)
+--		if args:IsPlayer() and not UnitBuff("player", dkAMS) then--Because forced to use SUCCESS, extra check to avoid giving death knight a warning if they blocked it with AMS
+--			specWarnRuptureOn:Show()
+--		end
 	end
 end
 
