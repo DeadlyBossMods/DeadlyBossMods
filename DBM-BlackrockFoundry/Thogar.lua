@@ -64,40 +64,9 @@ local Reinforcements = EJ_GetSectionInfo(9537)
 local ManOArms = EJ_GetSectionInfo(9549)
 local Deforester = EJ_GetSectionInfo(10329)
 
---[[ All non mythic difficulties
-		["DBM_Announce"] = {
-			"<224.82 22:56:55> DBM_Announce#Moving Train (1)", -- [1]
-			"<234.85 22:57:05> DBM_Announce#Moving Train (2)", -- [2]
-			"<239.89 22:57:10> DBM_Announce#Moving Train (3)", -- [3]
-			"<254.87 22:57:25> DBM_Announce#Moving Train (4)", -- [4]
-			"<259.91 22:57:30> DBM_Announce#Moving Train (5)", -- [5]
-			"<284.87 22:57:55> DBM_Announce#Moving Train (6)", -- [7]
-			"<289.82 22:58:00> DBM_Announce#Moving Train (7)", -- [9]
-			"<314.82 22:58:25> DBM_Announce#Moving Train (8)", -- [13]
-			--329 Fake 9
-			"<369.91 22:59:20> DBM_Announce#Moving Train (10)", -- [17]
-			"<379.89 22:59:30> DBM_Announce#Moving Train (11)", -- [19]
-			"<394.83 22:59:45> DBM_Announce#Moving Train (12)", -- [21]
-			"<404.89 22:59:55> DBM_Announce#Moving Train (13)", -- [23]
-			"<425.01 23:00:15> DBM_Announce#Moving Train (14)", -- [24]
-			"<434.90 23:00:25> DBM_Announce#Moving Train (15)", -- [25]
-			"<444.83 23:00:35> DBM_Announce#Moving Train (16)", -- [26]
-			"<459.89 23:00:50> DBM_Announce#Moving Train (17)", -- [28]
-			"<479.90 23:01:10> DBM_Announce#Moving Train (18)", -- [31]
-			--484 Fake 19
-			"<514.97 23:01:45> DBM_Announce#Moving Train (20)", -- [40]
-			"<524.91 23:01:55> DBM_Announce#Moving Train (21)", -- [41]
-			"<549.90 23:02:20> DBM_Announce#Moving Train (22)", -- [47]
-			"<579.88 23:02:50> DBM_Announce#Moving Train (23)", -- [50]
-			"<594.86 23:03:05> DBM_Announce#Moving Train (24)", -- [52]
-			"<614.86 23:03:25> DBM_Announce#Moving Train (25)", -- [55]
-		},
---]]
-
---Crap code. I lack patience or time to do it cleaner.
 --Note, all trains spawn 5 second after yell for that train
 --this means that for 5 second cd trains you may see a yell for NEXT train as previous train is showing up. Do not confuse this!
---Also be aware that older beta videos are worng, blizz has changed train orders few times, so don't try to fill in missing data by putting "thogar" into youtube unless it's a RECENT video.
+--Also be aware that older beta videos are wrong, blizz has changed train orders few times, so don't try to fill in missing data by putting "thogar" into youtube unless it's a RECENT LIVE video.
 local mythicTrains = {
 	[1] = { [4] = ManOArms },--+7 after pull
 	[2] = { [1] = Deforester },--+5 after 1
@@ -111,9 +80,10 @@ local mythicTrains = {
 	[10] = { [2] = Reinforcements, [3] = Reinforcements },--+20 after 9
 	[11] = { [1] = Train, [4] = Train },--+15 after 10.
 	[12] = { [2] = Train, [4] = Train },--+15 after 11
-	--Unknown below 13
+	--Unknown After 12
 }
 
+--https://www.youtube.com/watch?v=_W8vy5Gc5q4
 local otherTrains = {
 	[1] = { [4] = Train },--+12 after pull
 	[2] = { [2] = Train },--+10 after 1
@@ -141,6 +111,9 @@ local otherTrains = {
 	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--Lane 4, but if reinforcements aren't dead from wave 23, lane 2 (because reinforcements cart still blocking lane 4) Not Actually random. But detecting if reinforcement cart still in way impossible :\
 	[25] = { [1] = Train },--+20 after 24
 	[26] = { [1] = Cannon, [4] = Reinforcements },--+20 after 25
+	[27] = { [3] = Train },--+25 after 26
+	[28] = { [2] = ManOArms, [3] = ManOArms },--+15 after 27
+	[29] = { [4] = Train },--+10 after 28
 }
 
 local function fakeTrainYell(self)
@@ -199,6 +172,9 @@ local otherVoice = {
 	[24] = "AX",
 	[25] = "A1",--Possibly also random?
 	[26] = "C1D4",--Don't worry, B14 will be used on mythic i'm sure. sorry about this messup
+	[27] = "A3",
+	[28] = "D23",
+	[29] = "A4",
 }
 
 local function showTrainWarning()

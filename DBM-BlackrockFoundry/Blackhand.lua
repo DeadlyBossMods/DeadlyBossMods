@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(68168)
 mod:SetEncounterID(1704)
 mod:SetZone()
-mod:SetUsedIcons(1)
+mod:SetUsedIcons(1, 2)
 
 mod:RegisterCombat("combat")
 
@@ -73,7 +73,8 @@ local voiceDemolition				= mod:NewVoice(156425) --AOE
 local voiceThrowSlagBombs			= mod:NewVoice(156030) --bombsoon
 local voiceAttachSlagBombs			= mod:NewVoice(157000) --target: runout;
 
-mod:AddSetIconOption("SetIconOnMarked", 156096, false)
+mod:AddSetIconOption("SetIconOnMarked", 156096, true)
+mod:AddRangeFrameOption("6/10")
 
 mod.vb.phase = 1
 mod.vb.SlagEruption = 0
@@ -90,6 +91,9 @@ end
 
 function mod:OnCombatEnd()
 --	self:UnregisterShortTermEvents()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -138,7 +142,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceMarkedforDeath:Play("156096")
 		end
 		if self.Options.SetIconOnMarked then
-			self:SetIcon(args.destName, 1)
+			self:SetSortedIcon(1, args.destName, 1, 2)
 		end
 	elseif spellId == 157000 then
 		warnAttachSlagBombs:CombinedShow(0.5, args.destName)
@@ -148,6 +152,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellAttachSlagBombs:Yell()
 			timerSlagBomb:Start()
 			voiceAttachSlagBombs:Play("runout")
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
 --		else--In beta, raid stacked for heals and only bombs ran out, scatter maybe misleading, but will leave here for review
 --			voiceAttachSlagBombs:Play("scatter")
 		end
@@ -177,6 +184,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 157000 and args:IsPlayer() then
 		timerSlagBomb:Cancel()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	elseif spellId == 156667 then
 		specWarnSiegemaker:Show()
 	end
@@ -239,6 +249,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerShatteringSmashCD:Start(21)--21-23 variation. Boss power is set to 66/100 automatically by transitions
 		timerMarkedforDeathCD:Start(25)
 		voicePhaseChange:Play("ptwo")
+		--Maybe not needed whole phase, only when balcony adds are up? A way to detect and improve?
+		if self.Options.RangeFrame and not self:IsMelee() then
+			DBM.RangeCheck:Show(6)
+		end
 	elseif spellId == 161348 then--Phase 3 Trigger
 		self.vb.phase = 3
 		timerSiegemakerCD:Cancel()
@@ -248,5 +262,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerMarkedforDeathCD:Start(27)
 		timerSlagEruptionCD:Start(31.5)
 		voicePhaseChange:Play("pthree")
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	end
 end
