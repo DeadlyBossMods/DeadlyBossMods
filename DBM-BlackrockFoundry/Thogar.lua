@@ -317,8 +317,10 @@ function mod:OnCombatStart(delay)
 	end
 	if self:IsMythic() then
 		timerTrainCD:Start(12-delay, 1)
+		self:Schedule(14.5, fakeTrainYell, self)
 	else
 		timerTrainCD:Start(17-delay, 1)
+		self:Schedule(19.5, fakeTrainYell, self)
 	end
 	showInfoFrame()
 end
