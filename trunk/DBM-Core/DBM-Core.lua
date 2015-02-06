@@ -4411,8 +4411,8 @@ do
 	
 	function DBM:SCENARIO_UPDATE()
 		if not C_Garrison:IsOnGarrisonMap() then return end
-		--SCENARIO_UPDATE on garrison map always invasion
-		--Also only registered outdoor with other world boss events, to save cpu
+		local name = C_Scenario.GetInfo()
+		if not name then return end-- fix false mod load when visiting other player garrision.
 		local enabled = GetAddOnEnableState(playerName, "DBM-WorldEvents")
 		if not IsAddOnLoaded("DBM-WorldEvents") and enabled ~= 0 then
 			for i, v in ipairs(self.AddOns) do

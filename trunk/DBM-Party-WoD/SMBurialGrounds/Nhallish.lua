@@ -34,7 +34,7 @@ local voiceVoidVortex			= mod:NewVoice(152801)
 
 function mod:OnCombatStart(delay)
 	timerVoidVortexCD:Start(23-delay)
-	timerSoulShredCD:Start(38-delay)
+	timerSoulShredCD:Start(37-delay)
 	timerVoidDevastationCD:Start(67.5-delay)
 end
 
