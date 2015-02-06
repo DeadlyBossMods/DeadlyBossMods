@@ -23,6 +23,8 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
+mod:SetBossHealthInfo(77557, 77231, 77477)
+
 --TODO, find out how many bombardments there are so timer doesn't start after last one.
 --TODO, timer recovery when leaving boat back to main platform (how do we detect leaving boat? never gotten a log where people return.)
 --TODO, find a way to detect BOSS returning from boat so timers for that boss can be started up again.
