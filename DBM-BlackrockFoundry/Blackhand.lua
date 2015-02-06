@@ -23,14 +23,12 @@ mod:RegisterEventsInCombat(
 --TODO, get damage ID for fire on ground created by Mortar
 --Phase 3
 --TODO, Verify everything works.
---TODO, figure out what you aim the impaling throw at
---TODO, Update timers for phase 3.
 --Stage One: The Blackrock Forge
 local warnMarkedforDeath			= mod:NewTargetAnnounce(156096, 4)--If not in combat log, find a RAID_BOSS_WHISPER event.
 local warnShatteringSmash			= mod:NewSpellAnnounce(155992, 3)
 --Stage Two: Storage Warehouse
 local warnSiegemaker				= mod:NewSpellAnnounce("ej9571", 3, 156667)
-local warnFixate					= mod:NewFixateAnnounce(156653, 4)
+local warnFixate					= mod:NewTargetAnnounce(156653, 4)
 --Stage Three: Iron Crucible
 local warnAttachSlagBombs			= mod:NewTargetAnnounce(157000, 4)
 
