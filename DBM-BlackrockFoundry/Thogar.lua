@@ -292,11 +292,11 @@ function mod:OnCombatStart(delay)
 		self.Options.ShowedThogarMessage = true
 	end
 	if self:IsMythic() then
+		self:Schedule(9.5, fakeTrainYell, self)
 		timerTrainCD:Start(12-delay, 1)
-		self:Schedule(14.5, fakeTrainYell, self)
 	else
+		self:Schedule(14.5, fakeTrainYell, self)
 		timerTrainCD:Start(17-delay, 1)
-		self:Schedule(19.5, fakeTrainYell, self)
 	end
 	showInfoFrame()
 end
