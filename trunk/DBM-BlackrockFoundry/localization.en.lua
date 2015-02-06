@@ -50,7 +50,7 @@ L:SetMiscLocalization({
 	oneRandom		= "Appear on 1 random lane",
 	threeTrains		= "3 Random Lanes: Train",
 	threeRandom		= "Appear on 3 random lanes",
-	helperMessage	= "It is recommended you use 'Thogar Assist' in combination with DBM on this boss. Available from: http://wow.curseforge.com/addons/thogar-assist/"
+	helperMessage	= "This encounter can be improved with 3rd party mod 'Thogar Assist' or one of many available DBM Voice packs (they audibly call out trains), available on Curse."
 })
 
 --------------------------
