@@ -211,6 +211,8 @@ L.SpamBlockNoRangeFrame		= "거리 창 보이지 않기"
 L.SpamBlockNoInfoFrame		= "정보 창 보이지 않기"
 L.SpamBlockNoHealthFrame	= "우두머리 체력 바 보이지 않기"
 L.SpamBlockNoCountdowns		= "초세기 소리 재생 안함"
+L.SpamBlockNoIconRestore	= "전투 종료시 전술 목표 아이콘 설정 복구 안함"
+L.SpamBlockNoRangeRestore	= "전투 종료시 거리창 설정 복구 안함"
 
 -- Tab: Spam Filter
 L.Area_SpamFilter			= "정보 숨기기"
