@@ -198,7 +198,7 @@ local otherVoice = {
 	[23] = "B2D3",
 	[24] = "AX",
 	[25] = "A1",--Possibly also random?
-	[26] = "B14",
+	[26] = "C1D4",--Don't worry, B14 will be used on mythic i'm sure. sorry about this messup
 }
 
 local function showTrainWarning()
