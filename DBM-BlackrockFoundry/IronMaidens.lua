@@ -106,7 +106,7 @@ local timerDarkHuntCD					= mod:NewCDTimer(13.5, 158315)--Needs more data. it wa
 local timerPenetratingShotCD			= mod:NewCDTimer(22, 164271)--22-30 at least. maybe larger variation. Just small LFR sample size.
 ----Enforcer Sorka
 mod:AddTimerLine(Sorka)
-local timerBloodRitualCD				= mod:NewNextTimer(12, 158078)
+local timerBloodRitualCD				= mod:NewNextTimer(21, 158078)
 local timerConvulsiveShadowsCD			= mod:NewNextTimer(46.5, 156214)
 ----Marak the Blooded
 mod:AddTimerLine(Marak)
@@ -183,17 +183,16 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 158008 and (noFilter or not isPlayerOnBoat()) then
 		timerHeartSeekerCD:Start()
 	--Begin Deck Abilities
-	if (noFilter or not isPlayerOnBoat()) then return end--Anything below this line doesn't concern people not on boat
-	elseif spellId == 158695 then
+	elseif spellId == 158695 and (noFilter or isPlayerOnBoat()) then
 		warnGrapeshotBlast:Show()
-	elseif spellId == 158708 then
+	elseif spellId == 158708 and (noFilter or isPlayerOnBoat()) then
 		specWarnEarthenbarrier:Show(args.sourceName)
 		voiceEarthenbarrier:Play("kickcast")
-	elseif spellId == 158707 then
+	elseif spellId == 158707 and (noFilter or isPlayerOnBoat()) then
 		warnProtectiveEarth:Show()
-	elseif spellId == 158710 then
+	elseif spellId == 158710 and (noFilter or isPlayerOnBoat()) then
 		warnChainLightning:Show()
-	elseif spellId == 158692 then
+	elseif spellId == 158692 and (noFilter or isPlayerOnBoat()) then
 		warnDeadlyThrow:Show()
 		specWarnDeadlyThrow:Show()
 	end
