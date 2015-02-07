@@ -20,18 +20,19 @@ mod:RegisterEventsInCombat(
 --TODO, timers.
 --TODO, health percents feathers/glory happen at. Add warnings if cast detectable too.
 --TODO, add warnings for fixates birds do if they fixate.
-local warnPiercedArmor			= mod:NewStackAnnounce(167615, 3, nil, "Tank")
+local warnPiercedArmor			= mod:NewStackAnnounce("OptionVersion2", 167615, 3, nil, "Tank|Healer")
 
 local specWarnLooseQuills		= mod:NewSpecialWarningSpell(167647, nil, nil, nil, 2)
 local specWarnSolarBreath		= mod:NewSpecialWarningSpell(167679, "Tank")
 local specWarnExplode			= mod:NewSpecialWarningYou(167630)
 
+--local timerLooseQuillsCD		= mod:NewCDTimer(30, 167647)--seems health based. 80%, 40%
 local timerLooseQuills			= mod:NewBuffActiveTimer(30, 167647)
---local timerLooseQuillsCD		= mod:NewCDTimer(30, 167647)
-local timerSharpBeakCD			= mod:NewCDTimer(18, 167614, nil, "Tank")--Could be wrong, server was highly unstable
---local timerSolarBreathCD		= mod:NewCDTimer(15, 167687, nil, "Tank")
+local timerSolarBreathCD		= mod:NewCDTimer(29, 167679, nil, "Tank")
+local timerSharpBeakCD			= mod:NewCDTimer("OptionVersion2", 12, 167614, nil, "Tank|Healer")
 
 --mod:AddReadyCheckOption(37474, false)
+mod:AddRangeFrameOption(8, 167647)
 
 function mod:OnCombatStart(delay, yellTriggered)
 --	if yellTriggered then
@@ -39,11 +40,20 @@ function mod:OnCombatStart(delay, yellTriggered)
 --	end
 end
 
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 167647 then
 		specWarnLooseQuills:Show()
 		timerLooseQuills:Start()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(8)
+		end
 	elseif spellId == 167615 then
 		local amount = args.amount or 1
 		warnPiercedArmor:Show(args.destName, amount)
@@ -57,7 +67,7 @@ function mod:SPELL_CAST_START(args)
 		timerSharpBeakCD:Start()
 	elseif spellId == 167679 then
 		specWarnSolarBreath:Show()
-		--timerSolarBreathCD:Start()
+		timerSolarBreathCD:Start()
 	end
 end
 
