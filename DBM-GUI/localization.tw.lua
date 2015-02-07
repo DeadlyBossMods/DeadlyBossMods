@@ -214,6 +214,8 @@ L.SpamBlockNoRangeFrame		= "不顯示距離框架"
 L.SpamBlockNoInfoFrame		= "不顯示訊息框架"
 L.SpamBlockNoHealthFrame	= "不顯示血量框架"
 L.SpamBlockNoCountdowns		= "不播放倒數音效"
+L.SpamBlockNoIconRestore	= "不在戰鬥結束後記住和還原團隊圖示狀態"
+L.SpamBlockNoRangeRestore	= "不因模組預設值還原距離框架的狀態"
 
 -- Tab: Spam Filter
 L.Area_SpamFilter			= "垃圾過濾選項"
