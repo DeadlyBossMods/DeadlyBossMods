@@ -28,6 +28,7 @@ mod:SetBossHealthInfo(77557, 77231, 77477)
 
 --TODO, find out how many bombardments there are so timer doesn't start after last one.
 --TODO, add timers for deck abilities that need them?
+--TODO, use x, y values from UnitPosition and remove map crap. Map stuff was only used because that could be coded without going into zone (just open map and mouse over shit)
 local Ship	= EJ_GetSectionInfo(10019)
 local Marak = EJ_GetSectionInfo(10033)
 local Sorka = EJ_GetSectionInfo(10030)
@@ -126,7 +127,7 @@ mod.vb.phase = 1
 mod.vb.ship = 0
 mod.vb.alphaOmega = 0
 
-local GetPlayerMapPosition, UnitPosition, GetTime = GetPlayerMapPosition, UnitPosition, GetTime
+local GetPlayerMapPosition, UnitPosition, GetTime, select = GetPlayerMapPosition, UnitPosition, GetTime, select
 local savedAbilityTime = {}
 local below25 = false
 local playerOnBoat = false
@@ -144,7 +145,7 @@ local function isPlayerOnBoat()
 	end
 end
 
-local function checkBoatPlayer()
+local function checkBoatPlayer(self)
 	for uId in DBM:GetGroupMembers() do 
 		if select(4, UnitPosition(uId)) == 1205 then -- map id is correct?
 			local x, y = GetPlayerMapPosition(uId)
@@ -153,7 +154,7 @@ local function checkBoatPlayer()
 				x, y = GetPlayerMapPosition(uId)
 			end
 			if x < 0.75 then--found player on boat
-				DBM:Schedule(1, checkBoatPlayer)
+				self:Schedule(1, checkBoatPlayer, self)
 				return
 			end
 		end
@@ -398,7 +399,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 158849 then
 		timerWarmingUp:Start()
-		DBM:Schedule(25, checkBoatPlayer)
+		self:Schedule(25, checkBoatPlayer, self)
 	end
 end
 
