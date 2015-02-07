@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(77325)--68168
 mod:SetEncounterID(1704)
 mod:SetZone()
-mod:SetUsedIcons(1, 2)
+mod:SetUsedIcons(2, 1)
 
 mod:RegisterCombat("combat")
 
