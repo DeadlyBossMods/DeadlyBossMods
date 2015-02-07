@@ -89,7 +89,7 @@ DBM_CORE_TIMER_FORMAT				= "%d|4분:분; %d|4초:초;"
 DBM_CORE_MIN						= "분"
 DBM_CORE_MIN_FMT					= "%d분"
 DBM_CORE_SEC						= "초"
-DBM_CORE_SEC_FMT					= "%d초"
+DBM_CORE_SEC_FMT					= "%s초"
 
 DBM_CORE_GENERIC_WARNING_OTHERS		= "외 1명"
 DBM_CORE_GENERIC_WARNING_OTHERS2	= "외 %d명"

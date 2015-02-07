@@ -89,7 +89,7 @@ DBM_CORE_TIMER_FORMAT				= "%d |4Minute:Minuten; und %d |4Sekunde:Sekunden;"
 DBM_CORE_MIN						= "Min"
 DBM_CORE_MIN_FMT					= "%d Min"
 DBM_CORE_SEC						= "Sek"
-DBM_CORE_SEC_FMT					= "%d Sek"
+DBM_CORE_SEC_FMT					= "%s Sek"
 
 DBM_CORE_GENERIC_WARNING_OTHERS		= "und einem anderen"
 DBM_CORE_GENERIC_WARNING_OTHERS2	= "und %d anderen"

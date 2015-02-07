@@ -22,7 +22,7 @@ DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minutos; and %d |4segundo:segundos;"
 DBM_CORE_MIN						= "min"
 DBM_CORE_MIN_FMT					= "%d min"
 DBM_CORE_SEC						= "seg"
-DBM_CORE_SEC_FMT					= "%d seg"
+DBM_CORE_SEC_FMT					= "%s seg"
 DBM_CORE_DEAD						= "morto"
 DBM_CORE_OK							= "Ok"
 
