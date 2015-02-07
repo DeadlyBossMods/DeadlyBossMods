@@ -433,13 +433,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			local expectedTime
 			if count == 2 or count == 4 or count == 6 or count == 18 then
 				expectedTime = 5
-			elseif count == 1 or count == 10 or count == 14 or count == 15 or count == 20  then
+			elseif count == 1 or count == 10 or count == 14 or count == 15 or count == 20 or count == 28 then
 				expectedTime = 10
-			elseif count == 3 or count == 8 or count == 11 or count == 16 or count == 23 then
+			elseif count == 3 or count == 8 or count == 11 or count == 16 or count == 23 or count == 27 then
 				expectedTime = 15
 			elseif count == 13 or count == 17 or count == 24 or count == 25 then
 				expectedTime = 20
-			elseif count == 5 or count == 7 or count == 21 then
+			elseif count == 5 or count == 7 or count == 21 or count == 25 then
 				expectedTime = 25
 			elseif count == 19 or count == 22 then
 				expectedTime = 30
@@ -453,7 +453,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			else
 				timerTrainCD:Start(5, count)--Show timer for incoming train for current yell if we have no data for next
 			end
-			if count == 7 or count == 17 or count == 23 then--I'm sure they spawn again sometime later, find that data
+			if count == 7 or count == 17 or count == 23 or count == 28 then--I'm sure they spawn again sometime later, find that data
 				specWarnManOArms:Show()
 				if self.Options.SetIconOnAdds then
 					self:ScanForMobs(80791, 0, 8, 2, 0.2, 15)--Man At Arms scanner marking 8 down
