@@ -2552,8 +2552,13 @@ function DBM:LoadModOptions(modId, inCombat, first)
 		else
 			savedOptions[id][profileNum] = savedOptions[id][profileNum] or mod.Options
 			--check new option
-			for option, optionValue in pairs(mod.Options) do
+			for option, optionValue in pairs(mod.DefaultOptions) do
 				if savedOptions[id][profileNum][option] == nil then
+					if type(optionValue) == "table" then
+						optionValue = optionValue.value
+					elseif type(optionValue) == "string" then
+						optionValue = mod:GetRoleFlagValue(optionValue)
+					end
 					savedOptions[id][profileNum][option] = optionValue
 				end
 			end
