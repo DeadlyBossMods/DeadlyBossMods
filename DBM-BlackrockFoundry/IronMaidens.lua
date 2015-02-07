@@ -74,7 +74,7 @@ local yellPenetratingShot				= mod:NewYell(164271)
 local specWarnDeployTurret				= mod:NewSpecialWarningSwitch("OptionVersion2", 158599, "Dps", nil, nil, 2, nil, 2)--Switch warning since most need to switch and kill, but on for EVERYONE because tanks/healers need to avoid it while it's up
 ----Enforcer Sorka
 local specWarnBladeDash					= mod:NewSpecialWarningYou(155794)
-local specWarnBladeDashOther			= mod:NewSpecialWarningTarget(155794, nil, nil, nil, 2)
+local specWarnBladeDashOther			= mod:NewSpecialWarningClose(155794)
 local specWarnConvulsiveShadows			= mod:NewSpecialWarningMoveAway(156214, nil, nil, nil, nil, nil, 2)--Does this still drop lingering shadows, if not moveaway is not appropriate
 local yellConvulsiveShadows				= mod:NewYell(156214, nil, false)
 local specWarnDarkHunt					= mod:NewSpecialWarningTarget(158315, false, nil, nil, nil, nil, 2)--Healer may want this, or raid leader
@@ -143,7 +143,7 @@ function mod:BladeDashTarget(targetname, uId)
 	warnBladeDash:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnBladeDash:Show()
-	else
+	elseif self:CheckNearby(8, targetname) then
 		specWarnBladeDashOther:Show(targetname)
 	end
 end
