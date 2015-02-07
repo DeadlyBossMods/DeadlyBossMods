@@ -27,8 +27,6 @@ mod:RegisterEventsInCombat(
 mod:SetBossHealthInfo(77557, 77231, 77477)
 
 --TODO, find out how many bombardments there are so timer doesn't start after last one.
---TODO, use ALTERNATE power to cancel warming up and resume main platform timers for people returning from boat.
---TODO, If bosses drop below 25% on live, it cancels ship timer, even though bosses don't power up until 20%. No event for this.
 --TODO, add timers for deck abilities that need them?
 local Ship	= EJ_GetSectionInfo(10019)
 local Marak = EJ_GetSectionInfo(10033)
@@ -36,6 +34,8 @@ local Sorka = EJ_GetSectionInfo(10030)
 local Garan = EJ_GetSectionInfo(10025)
 
 --Ship
+local warnPhase2						= mod:NewPhaseAnnounce(2)
+local warnPhase2p						= mod:NewPrePhaseAnnounce(2)
 local warnShip							= mod:NewSpellAnnounce("ej10019", 3, 76204)
 ----Blackrock Deckhand
 local warnProtectiveEarth				= mod:NewSpellAnnounce("OptionVersion2", 158707, 3, nil, false)--Could not verify
@@ -89,14 +89,14 @@ local yellHeartseeker					= mod:NewYell(158010, nil, false)
 mod:AddTimerLine(Ship)
 local timerShipCD						= mod:NewNextTimer(198, "ej10019", nil, nil, nil, 76204)
 local timerBombardmentAlphaCD			= mod:NewNextTimer(18, 157854)
-local timerWarmingUp					= mod:NewCastTimer(90, 158849)--Could not verify
+local timerWarmingUp					= mod:NewCastTimer(90, 158849)--Word is not good.
 ----Blackrock Deckhand
 ----Shattered Hand Deckhand
 ----Bleeding Hollow Deckhand
 --Ground
 ----Admiral Gar'an
 mod:AddTimerLine(Garan)
-local timerRapidFireCD					= mod:NewNextTimer(30, 156626)
+local timerRapidFireCD					= mod:NewCDTimer(30.5, 156626)
 local timerDarkHuntCD					= mod:NewCDTimer("OptionVersion2", 13.5, 158315, nil, false)--Important to know you have it, not very important to know it's coming soon.
 local timerPenetratingShotCD			= mod:NewCDTimer(30, 164271)--22-30 at least. maybe larger variation. Just small LFR sample size.
 ----Enforcer Sorka
@@ -105,7 +105,7 @@ local timerBloodRitualCD				= mod:NewNextTimer(21, 158078)
 local timerConvulsiveShadowsCD			= mod:NewNextTimer(56.5, 156214)--Timer only enabled on mythicOn non mythic, it's just an unimportant dot. On mythic, MUCH more important because user has to run out of raid and get dispelled.
 ----Marak the Blooded
 mod:AddTimerLine(Marak)
-local timerBladeDashCD					= mod:NewNextTimer("OptionVersion2", 20, 155794, nil, "Ranged")
+local timerBladeDashCD					= mod:NewNextTimer("OptionVersion2", 21.5, 155794, nil, "Ranged")
 local timerHeartSeekerCD				= mod:NewNextTimer("OptionVersion2", 74, 158010, nil, "Ranged")--Seriously a 74 second cd?
 
 local voiceRapidFire					= mod:NewVoice(156631) --runout
@@ -122,10 +122,15 @@ mod:AddSetIconOption("SetIconOnRapidFire", 156626, true)
 mod:AddSetIconOption("SetIconOnBloodRitual", 158078, true)
 mod:AddSetIconOption("SetIconOnHeartSeeker", 158010, true)
 
+mod.vb.phase = 1
 mod.vb.ship = 0
 mod.vb.alphaOmega = 0
 
-local GetPlayerMapPosition = GetPlayerMapPosition
+local GetPlayerMapPosition, UnitPosition, GetTime = GetPlayerMapPosition, UnitPosition, GetTime
+local savedAbilityTime = {}
+local below25 = false
+local playerOnBoat = false
+
 local function isPlayerOnBoat()
 	local x, y = GetPlayerMapPosition("player")
 	if x == 0 and y == 0 then
@@ -139,6 +144,47 @@ local function isPlayerOnBoat()
 	end
 end
 
+local function checkBoatPlayer()
+	for uId in DBM:GetGroupMembers() do 
+		if select(4, UnitPosition(uId)) == 1205 then -- map id is correct?
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			if x < 0.75 then--found player on boat
+				DBM:Schedule(1, checkBoatPlayer)
+				return
+			end
+		end
+	end
+	timerBombardmentAlphaCD:Cancel()
+	timerWarmingUp:Cancel()
+end
+
+local function recoverTimers()
+	timerBombardmentAlphaCD:Cancel()
+	timerWarmingUp:Cancel()
+	if savedAbilityTime["BloodRitual"] and (GetTime() - savedAbilityTime["BloodRitual"]) < 21 then
+		timerBloodRitualCD:Update(GetTime() - savedAbilityTime["BloodRitual"], 21)
+	end
+	if savedAbilityTime["RapidFire"] and (GetTime() - savedAbilityTime["RapidFire"]) < 30.5 then
+		timerRapidFireCD:Update(GetTime() - savedAbilityTime["RapidFire"], 30.5)
+	end
+	if savedAbilityTime["BladeDash"] and (GetTime() - savedAbilityTime["BladeDash"]) < 21.5 then
+		timerBladeDashCD:Update(GetTime() - savedAbilityTime["BladeDash"], 21.5)
+	end
+	if savedAbilityTime["HeartSeeker"] and (GetTime() - savedAbilityTime["HeartSeeker"]) < 74 then
+		timerHeartSeekerCD:Update(GetTime() - savedAbilityTime["HeartSeeker"], 74)
+	end
+	if savedAbilityTime["ConvulsiveShadows"] and (GetTime() - savedAbilityTime["ConvulsiveShadows"]) < 56.5 then
+		timerConvulsiveShadowsCD:Update(GetTime() - savedAbilityTime["ConvulsiveShadows"], 56.5)
+	end
+	if savedAbilityTime["PenetratingShot"] and (GetTime() - savedAbilityTime["PenetratingShot"]) < 30 then
+		timerPenetratingShotCD:Update(GetTime() - savedAbilityTime["PenetratingShot"], 30)
+	end
+end
+
 function mod:BladeDashTarget(targetname, uId)
 	warnBladeDash:Show(targetname)
 	if targetname == UnitName("player") then
@@ -149,16 +195,23 @@ function mod:BladeDashTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.phase = 1
 	self.vb.ship = 0
 	self.vb.alphaOmega = 1
+	below25 = false
+	playerOnBoat = false
 	timerBloodRitualCD:Start(5-delay)
 	timerBladeDashCD:Start(11-delay)
 	timerRapidFireCD:Start(16-delay)
 	timerShipCD:Start(60-delay)
+	self:RegisterShortTermEvents(
+		"UNIT_HEALTH_FREQUENT boss1 boss2 boss3",
+		"UNIT_POWER_FREQUENT player"
+	)
 end
 
 function mod:OnCombatEnd()
-
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -167,18 +220,30 @@ function mod:SPELL_CAST_START(args)
 	if not DBM.Options.DontShowFarWarnings then
 		noFilter = true
 	end
-	if spellId == 158078 and (noFilter or not isPlayerOnBoat()) then--Blood Ritual. Still safest way to start timer, in case no sync
+	if spellId == 158078 then
+		savedAbilityTime["BloodRitual"] = GetTime()
+		if noFilter or not isPlayerOnBoat() then--Blood Ritual. Still safest way to start timer, in case no sync
 		timerBloodRitualCD:Start()
-	elseif spellId == 156626 and (noFilter or not isPlayerOnBoat()) then--Rapid Fire. Still safest way to start timer, in case no sync
+		end
+	elseif spellId == 156626 then--Rapid Fire. Still safest way to start timer, in case no sync
+		savedAbilityTime["RapidFire"] = GetTime()
+		if noFilter or not isPlayerOnBoat() then
 		timerRapidFireCD:Start()
+		end
 	elseif spellId == 158599 and (noFilter or not isPlayerOnBoat()) then
 		specWarnDeployTurret:Show()
 		voiceDeployTurret:Play("158599")
-	elseif spellId == 155794 and (noFilter or not isPlayerOnBoat()) then
+	elseif spellId == 155794 then
+		savedAbilityTime["BladeDash"] = GetTime()
+		if noFilter or not isPlayerOnBoat() then
 		self:BossTargetScanner(77231, "BladeDashTarget", 0.1, 16)
 		timerBladeDashCD:Start()
-	elseif spellId == 158008 and (noFilter or not isPlayerOnBoat()) then
+		end
+	elseif spellId == 158008 then
+		savedAbilityTime["HeartSeeker"] = GetTime()
+		if noFilter or not isPlayerOnBoat() then
 		timerHeartSeekerCD:Start()
+		end
 	--Begin Deck Abilities
 	elseif spellId == 158708 and (noFilter or isPlayerOnBoat()) then
 		specWarnEarthenbarrier:Show(args.sourceName)
@@ -197,15 +262,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if not DBM.Options.DontShowFarWarnings then
 		noFilter = true
 	end
-	if spellId == 157854 and (noFilter or not isPlayerOnBoat()) then
+	if spellId == 157854 then
+		savedAbilityTime["BombardmentAlpha"] = GetTime()
+		if noFilter or not isPlayerOnBoat() then
 		specWarnBombardmentAlpha:Show(self.vb.alphaOmega)
 		timerBombardmentAlphaCD:Start()
+		end
 	elseif spellId == 157886 and (noFilter or not isPlayerOnBoat()) then
 		specWarnBombardmentOmega:Show(self.vb.alphaOmega)
 		self.vb.alphaOmega = self.vb.alphaOmega + 1
-	elseif spellId == 156109 and (noFilter or not isPlayerOnBoat()) and self:IsMythic() then
+	elseif spellId == 156109 and self:IsMythic() then
+		savedAbilityTime["ConvulsiveShadows"] = GetTime()
+		if noFilter or not isPlayerOnBoat() then
 		timerConvulsiveShadowsCD:Start()
 	end
+end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -214,12 +285,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	if not DBM.Options.DontShowFarWarnings then
 		noFilter = true
 	end
-	if spellId == 164271 and (noFilter or not isPlayerOnBoat()) then
+	if spellId == 164271 then
+		savedAbilityTime["PenetratingShot"] = GetTime()
+		if noFilter or not isPlayerOnBoat() then
 		warnPenetratingShot:Show(args.destName)
 		timerPenetratingShotCD:Start()
 		if args:IsPlayer() then
 			specWarnPenetratingShot:Show()
 			yellPenetratingShot:Yell()
+		end
 		end
 	elseif spellId == 156214 and (noFilter or not isPlayerOnBoat()) then
 		warnConvulsiveShadows:CombinedShow(0.5, args.destName)--Combined because a bad lingeringshadows drop may have multiple.
@@ -324,6 +398,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 158849 then
 		timerWarmingUp:Start()
+		DBM:Schedule(25, checkBoatPlayer)
 	end
 end
 
@@ -360,5 +435,35 @@ function mod:OnSync(msg, guid)
 			timerPenetratingShotCD:Cancel()
 			voiceShip:Play("1695uktar")
 		end
+	end
+end
+
+function mod:UNIT_HEALTH_FREQUENT(uId)
+	local hp = UnitHealth(uId) / UnitHealthMax(uId)
+	if hp < 0.25 and not below25 then
+		below25 = true
+		timerShipCD:Cancel()
+		warnPhase2p:Show()
+	elseif hp < 0.20 and not self.vb.phase == 2 then
+		self.vb.phase = 2
+		warnPhase2:Show()
+		self:UnregisterShortTermEvents()
+	end
+end
+
+function mod:UNIT_POWER_FREQUENT(_, powerType)
+	if powerType ~= "ALTERNATE" then return end
+	local power = UnitPower("player", 10)
+	if power == 1 and not playerOnBoat then -- on boat
+		playerOnBoat = true
+		timerBloodRitualCD:Cancel()
+		timerRapidFireCD:Cancel()
+		timerBladeDashCD:Cancel()
+		timerHeartSeekerCD:Cancel()
+		timerConvulsiveShadowsCD:Cancel()
+		timerPenetratingShotCD:Cancel()
+	elseif power == 0 and playerOnBoat then -- leave boat
+		playerOnBoat = false
+		recoverTimers()
 	end
 end
