@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_MISSED"
 )
 
-mod:SetBossHealthInfo(36272, 36296, 36565)
+mod:SetBossHealthInfo(36296, 36272, 36565)
 
 local warnChainReaction			= mod:NewCastAnnounce(68821, 3)
 
