@@ -18,7 +18,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 156932 155223",
 	"SPELL_PERIODIC_MISSED 156932 155223",
 	"UNIT_DIED",
-	"RAID_BOSS_WHISPER",
 	"UNIT_POWER_FREQUENT boss1"
 )
 
@@ -36,7 +35,7 @@ local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 local specWarnBomb				= mod:NewSpecialWarningYou(155192, nil, nil, nil, 3, nil, 2)
 local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("OptionVersion2", "ej9650", "-Healer", nil, nil, nil, nil, 2)
 local specWarnDeafeningRoar		= mod:NewSpecialWarningDodge("OptionVersion2", 177756, "Tank", nil, nil, 3)
---local specWarnDefense			= mod:NewSpecialWarningMove("OptionVersion2", 160379, false, nil, nil, nil, nil, true)--Doesn't work until 6.1. The cast event doesn't exixst in 6.0
+--local specWarnDefense			= mod:NewSpecialWarningMove("OptionVersion2", 160379, false, nil, nil, nil, nil, true)--Doesn't work until 6.1. The CAST event doesn't exixst in 6.0
 local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, "-Healer", nil, nil, nil, nil, 2)
 local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932)
 local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, nil, nil, 2)
@@ -78,7 +77,6 @@ mod.vb.machinesDead = 0
 mod.vb.elementalistsDead = 0
 mod.vb.powerRate = 4
 mod.vb.totalTime = 25
-local UnitPower, UnitBuff = UnitPower, UnitBuff
 
 --With some videos, this looks pretty good now. Just need phase 2 add stuff now.
 local function Engineers(self)
@@ -94,10 +92,6 @@ function mod:OnCombatStart(delay)
 	self:Schedule(55, Engineers, self)
 	timerEngineer:Start(55)
 	countdownEngineer:Start(55)
---	if self:AntiSpam(10, 0) then--Force this antispam on pull so first two adds "loading" doesn't start 60 second timer
---		timerBellowsOperator:Start(55-delay)
---		countdownBellowsOperator:Start(55-delay)
---	end
 	if self:IsLFR() then
 		timerBlastCD:Start(30-delay)
 		self.vb.powerRate = 3.33
@@ -252,6 +246,7 @@ end
 --emote to emote shows variation even when loading doesn't add power. sometimes 24, sometimes 27. This timer may be closer.
 --Probably very high cpu usage
 do
+	local UnitPower = UnitPower
 	local warned = false
 	function mod:UNIT_POWER_FREQUENT(uId)
 		local bossPower = UnitPower("boss1") --Get Boss Power
