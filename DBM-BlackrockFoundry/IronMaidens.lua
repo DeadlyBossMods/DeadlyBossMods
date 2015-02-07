@@ -105,7 +105,7 @@ local timerBloodRitualCD				= mod:NewNextTimer(21, 158078)
 local timerConvulsiveShadowsCD			= mod:NewNextTimer(56.5, 156214)--Timer only enabled on mythicOn non mythic, it's just an unimportant dot. On mythic, MUCH more important because user has to run out of raid and get dispelled.
 ----Marak the Blooded
 mod:AddTimerLine(Marak)
-local timerBladeDashCD					= mod:NewNextTimer(20, 155794, nil, "Ranged")
+local timerBladeDashCD					= mod:NewNextTimer("OptionVersion2", 20, 155794, nil, "Ranged")
 local timerHeartSeekerCD				= mod:NewNextTimer("OptionVersion2", 74, 158010, nil, "Ranged")--Seriously a 74 second cd?
 
 local voiceRapidFire					= mod:NewVoice(156631) --runout
