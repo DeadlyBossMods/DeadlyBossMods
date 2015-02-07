@@ -179,12 +179,12 @@ local otherVoice = {
 	[29] = "A4",
 }
 
-local function showTrainWarning()
+local function showTrainWarning(self)
 	local text = ""
 	local textTable = {}
 	local usedv = {}
-	local train = mod.vb.trainCount
-	local trainTable = mod:IsMythic() and mythicTrains or otherTrains
+	local train = self.vb.trainCount
+	local trainTable = self:IsMythic() and mythicTrains or otherTrains
 	if trainTable[train] then
 		if trainTable[train]["specialw"] then
 			text = text .. trainTable[train]["specialw"]..", "
@@ -280,7 +280,7 @@ end
 
 function mod:test(num)
 	self.vb.trainCount = num
-	showTrainWarning()
+	showTrainWarning(self)
 	DBM.InfoFrame:SetHeader(MovingTrain.." ("..(self.vb.trainCount + 1)..")")
 	DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 end
@@ -371,7 +371,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		self:Unschedule(fakeTrainYell)--Always unschedule
 		self.vb.trainCount = self.vb.trainCount + 1
 		local count = self.vb.trainCount
-		showTrainWarning()
+		showTrainWarning(self)
 		if msg == "Fake" then
 			countdownTrain:Start(2.5)
 			self:Schedule(1.5, laneCheck, self)
