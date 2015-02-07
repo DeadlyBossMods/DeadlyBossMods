@@ -26,7 +26,7 @@ local warnShatteredVertebrae			= mod:NewStackAnnounce(157139, 2, nil, "Tank")--P
 local specWarnDisruptingRoar			= mod:NewSpecialWarningCast("OptionVersion2", 160838, "SpellCaster")
 local specWarnShatteredVertebrae		= mod:NewSpecialWarningStack(157139, nil, 2, nil, nil, nil, nil, 2)--stack guessed
 local specWarnShatteredVertebraeOther	= mod:NewSpecialWarningTaunt(157139)
-local specWarnCripplingSupplex			= mod:NewSpecialWarningPreWarn(156938, nil, 3.5, nil, nil, 3)--pop a cooldown, or die.
+local specWarnCripplingSupplex			= mod:NewSpecialWarningPreWarn("OptionVersion2", 156938, "Tank|Healer", 3.5, nil, nil, 3)--pop a cooldown, or die.
 local specWarnSearingPlates				= mod:NewSpecialWarningSpell(161570, nil, nil, nil, 2)
 local specWarnStampers					= mod:NewSpecialWarningSpell(174825, nil, nil, nil, 2)
 local specWarnEnvironmentalThreatsEnd	= mod:NewSpecialWarningEnd("ej10089", nil)
@@ -39,7 +39,7 @@ mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerSmartStamperCD				= mod:NewNextTimer(12, 162124)--Activation
 local timerStamperDodge					= mod:NewNextCountTimer(10, 160582)--Time until stamper falls (spell name fits well, time you have to stamper dodge)
 
-local countCripplingSupplex				= mod:NewCountdown("Alt9.5", 156938)
+local countCripplingSupplex				= mod:NewCountdown("OptionVersion2", "Alt9.5", 156938, "Tank|Healer")
 
 local voiceEnvironmentalThreats			= mod:NewVoice("ej10089")
 local voiceShatteredVertebrae			= mod:NewVoice(157139)
