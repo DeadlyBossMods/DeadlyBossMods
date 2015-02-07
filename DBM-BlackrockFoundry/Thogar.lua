@@ -382,15 +382,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			self:Schedule(5, showInfoFrame)
 		end
 		if self:IsMythic() then
-			if mythicTrains[count] then
-				--warnTrain:Show(count, mythicTrains[count])
-			end
 			if mythicVoice[count] then
 				voiceTrain:Play("Thogar\\"..mythicVoice[count])
-			end
-			if count >= 12 then
-				print("Train Set: "..count..". DBM has no train data beyond this point. Write down lane(s) trains come from in 5 seconds with train set number and give it to us")
-				return
 			end
 			--+5 added to all timers so timers are for train coming down the lane.
 			--yes this means sometimes two timers up at a time instead of one. this is fine, fight doesn't have many timers.
@@ -407,27 +400,21 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				timerTrainCD:Schedule(5, expectedTime, count+1)
 				self:Schedule(expectedTime+2.5, fakeTrainYell, self)--Schedule fake yell 2.5 seconds after we should have seen one.
 			else
+				print("Train Set: "..count..". DBM has no train data beyond this point. Send us videos if you can.")
 				timerTrainCD:Start(count)
 			end
 			if count == 1 then--I'm sure they spawn again sometime later, find that data
 				specWarnManOArms:Show()
 			end
 		else
-			if otherTrains[count] then
-				--warnTrain:Show(count, otherTrains[count])
-			end
 			if otherVoice[count] then
 				voiceTrain:Play("Thogar\\"..otherVoice[count])
 			end
-			if count >= 26 then
-				print("Train Set: "..count..". DBM has no train data beyond this point. Write down lane(s) trains come from in 5 seconds with train set number and give it to us")
-				return
-			end
 			--Next Train 5 seconds after: 2, 4, 6, 18
-			--Next Train 10 seconds after: 1, 10, 14, 15, 20
-			--Next Train 15 seconds after: 3, 8, 11, 16
+			--Next Train 10 seconds after: 1, 10, 14, 15, 20, 28
+			--Next Train 15 seconds after: 3, 8, 11, 16, 27
 			--Next Train 20 seconds after: 13, 17, 24, 25
-			--Next Train 25 seconds after: 5, 7, 21
+			--Next Train 25 seconds after: 5, 7, 21, 26
 			--Next Train 30 seconds after: 19
 			--Next Train 40 seconds after: 9
 			local expectedTime
@@ -439,7 +426,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 15
 			elseif count == 13 or count == 17 or count == 24 or count == 25 then
 				expectedTime = 20
-			elseif count == 5 or count == 7 or count == 21 or count == 25 then
+			elseif count == 5 or count == 7 or count == 21 or count == 26 then
 				expectedTime = 25
 			elseif count == 19 or count == 22 then
 				expectedTime = 30
@@ -451,6 +438,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				timerTrainCD:Schedule(5, expectedTime, count+1)--Show timer for next train from current yell (previous yell already has timer for yell this train is for so no 5 second timer needed)
 				self:Schedule(expectedTime+2.5, fakeTrainYell, self)--Schedule fake yell 2.5 seconds after we should have seen one.
 			else
+				print("Train Set: "..count..". DBM has no train data beyond this point. Send us videos if you can.")
 				timerTrainCD:Start(5, count)--Show timer for incoming train for current yell if we have no data for next
 			end
 			if count == 7 or count == 17 or count == 23 or count == 28 then--I'm sure they spawn again sometime later, find that data
