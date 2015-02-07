@@ -6,7 +6,8 @@ Voice Pack TOC File:
 		--Version 1: Contains All files in Highmaul currently present in DBM 6.0.10
 		--Version 2: Contains All files in Highmaul currently present in DBM 6.0.11 and 6.0.12
 		--Version 3: Contains "Interrupt 5" sound file for Blackrock Foundry Release. DBM 6.0.14
-		--Version 4: TBD
+		--Version 4: Probably bump to version 4 once thogar sounds are complete. For now though, need to see how many more files will be needed for mythic.
+		--Version 5: TBD
 	"## X-DBM-Voice-HasCount: 1" Enables voice pack countdown injection. Voice pack supports adding it's own countdown to dbm countdown options.
 
 Example TOC File:
@@ -34,3 +35,4 @@ Additional Information:
 *The special warning sound filter will only work if Voice Pack version is accepted by current DBM version, to ensure no situations where users have both missing special warnings AND missing voices. The voice pack will still be full functional and is never disabled by DBM. Only the special warning sound filter is disabled and user presented with an message that their voice pack may be out of date and to look for an update. Do not set this version higher to avoid filter disable or user message if your voice pack is missing files needed by encounter modules.
 *Countdown sounds can now be injected into countdown options if files 1.ogg through 10.ogg are placed within "count" folder inside your voice pack. DBM will auto add these sounds to countdown options if you have ## X-DBM-Voice-HasCount: 1.
 *If your voice pack is ONLY a countdown. Do not add X-DBM-Voice-Version field, or if you do, set version to 0
+*Curse client will fail to distribute your updates if ## Version: 1.0 field doesn't get incremented every update. This isn't a requirement on my end (DBM) but if you want to maximize your distribution and ensure your users are up to date, you need to increment this field every update.
