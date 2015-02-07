@@ -1529,7 +1529,7 @@ local function CreateOptionsMenu()
 		--            Raid Warning Colors            --
 		-----------------------------------------------
 		local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
-		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 345, true)
+		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 355, true)
 
 		local ShowWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
 		local ShowFakedRaidWarnings = raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, "ShowFakedRaidWarnings")
@@ -1609,7 +1609,7 @@ local function CreateOptionsMenu()
 
 		-- RaidWarn Font Size
 		local durationSlider = raidwarnoptions:CreateSlider(L.Warn_Duration, 3, 20, 1, 200)
-		durationSlider:SetPoint('TOPLEFT', FontDropDown, "TOPLEFT", 20, -160)
+		durationSlider:SetPoint('TOPLEFT', FontDropDown, "TOPLEFT", 20, -170)
 		do
 			local firstshow = true
 			durationSlider:SetScript("OnShow", function(self)
