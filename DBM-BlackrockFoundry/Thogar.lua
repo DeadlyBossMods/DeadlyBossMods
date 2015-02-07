@@ -117,7 +117,7 @@ local otherTrains = {
 }
 
 local function fakeTrainYell(self)
-	self:CHAT_MSG_MONSTER_YELL("Fake", nil, nil, nil, Train)
+	self:CHAT_MSG_MONSTER_YELL("Fake", nil, nil, nil, L.Train)
 	DBM:Debug("Fake yell fired, Boss skipped a yell?")
 end
 
