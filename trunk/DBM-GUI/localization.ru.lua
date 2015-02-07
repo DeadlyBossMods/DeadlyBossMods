@@ -215,6 +215,8 @@ L.SpamBlockNoRangeFrame		= "Не отображать окно проверки 
 L.SpamBlockNoInfoFrame		= "Не отображать информационное окно"
 L.SpamBlockNoHealthFrame	= "Не отображать окно здоровья"
 L.SpamBlockNoCountdowns		= "Не воспроизводить звуки обратного отсчета"
+L.SpamBlockNoIconRestore	= "Не сохранять состояние меток и восстанавливать их после боя"
+L.SpamBlockNoRangeRestore	= "Не восстанавливать окно проверки дистанции в предыдущее состояние при скрытии модулями"
 
 -- Tab: Spam Filter
 L.Area_SpamFilter			= "Параметры спам-фильтра"
