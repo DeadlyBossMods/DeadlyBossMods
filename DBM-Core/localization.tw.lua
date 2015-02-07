@@ -89,7 +89,7 @@ DBM_CORE_TIMER_FORMAT				= "%d分%d秒"
 DBM_CORE_MIN						= "分"
 DBM_CORE_MIN_FMT					= "%d分"
 DBM_CORE_SEC						= "秒"
-DBM_CORE_SEC_FMT					= "%d秒"
+DBM_CORE_SEC_FMT					= "%s秒"
 
 DBM_CORE_GENERIC_WARNING_OTHERS		= "與一個其他"
 DBM_CORE_GENERIC_WARNING_OTHERS2	= "與其他%d"

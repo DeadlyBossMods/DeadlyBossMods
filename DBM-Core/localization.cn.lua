@@ -94,7 +94,7 @@ DBM_CORE_TIMER_FORMAT				= "%d分%d秒"
 DBM_CORE_MIN						= "分"
 DBM_CORE_MIN_FMT					= "%d分"
 DBM_CORE_SEC						= "秒"
-DBM_CORE_SEC_FMT					= "%d秒"
+DBM_CORE_SEC_FMT					= "%s秒"
 DBM_CORE_DEAD						= "死亡"
 DBM_CORE_OK							= "确定"
 

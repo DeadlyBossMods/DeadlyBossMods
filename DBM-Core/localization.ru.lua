@@ -89,7 +89,7 @@ DBM_CORE_TIMER_FORMAT				= "%d мин %d сек"
 DBM_CORE_MIN						= "мин"
 DBM_CORE_MIN_FMT					= "%d мин"
 DBM_CORE_SEC						= "сек"
-DBM_CORE_SEC_FMT					= "%d сек"
+DBM_CORE_SEC_FMT					= "%s сек"
 
 DBM_CORE_GENERIC_WARNING_OTHERS		= "и еще один"
 DBM_CORE_GENERIC_WARNING_OTHERS2	= "и %d других"
