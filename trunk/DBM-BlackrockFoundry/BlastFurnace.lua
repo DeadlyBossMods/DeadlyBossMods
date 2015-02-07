@@ -41,6 +41,7 @@ local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932)
 local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, nil, nil, 2)
 local specWarnFixate			= mod:NewSpecialWarningYou(155196)
 local specWarnMeltYou			= mod:NewSpecialWarningYou(155225)
+local specWarnMeltNear			= mod:NewSpecialWarningClose(155225, false)
 local specWarnMelt				= mod:NewSpecialWarningMove(155223, nil, nil, nil, nil, nil, 2)
 local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, "-Healer")--if spammy, will switch to target/focus type only
 local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
@@ -187,6 +188,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMelt:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnMeltYou:Show()
+		elseif self:CheckNearby(8, args.destName) then
+			specWarnMeltNear:Show()
 		end
 	elseif spellId == 156934 then
 		warnRupture:CombinedShow(0.5, args.destName)
