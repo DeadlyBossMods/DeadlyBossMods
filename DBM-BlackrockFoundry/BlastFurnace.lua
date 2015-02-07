@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 160379 155186 156937 177756",
 	"SPELL_CAST_SUCCESS 155179 174726",
-	"SPELL_AURA_APPLIED 155192 155196 158345 155242 155181 176121 155225",
+	"SPELL_AURA_APPLIED 155192 155196 158345 155242 155181 176121 155225 156934",
 	"SPELL_AURA_APPLIED_DOSE 155242",
 	"SPELL_AURA_REMOVED 155192 176121",
 	"SPELL_PERIODIC_DAMAGE 156932 155223",
@@ -30,7 +30,7 @@ local warnRupture				= mod:NewTargetAnnounce(156932, 3)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4)
-local warnMelt					= mod:NewTargetAnnounce(155225, 4)
+local warnMelt					= mod:NewTargetAnnounce("OptionVersion2", 155225, 4, nil, false)--VERY spammy, off by default
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 
 local specWarnBomb				= mod:NewSpecialWarningYou(155192, nil, nil, nil, 3, nil, 2)
@@ -79,7 +79,6 @@ mod.vb.elementalistsDead = 0
 mod.vb.powerRate = 4
 mod.vb.totalTime = 25
 local UnitPower, UnitBuff = UnitPower, UnitBuff
-local dkAMS = GetSpellInfo(48707)
 
 --With some videos, this looks pretty good now. Just need phase 2 add stuff now.
 local function Engineers(self)
@@ -190,11 +189,17 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(8)
 			end
 		end
---	elseif spellId == 155225 then
---		warnMelt:CombinedShow(0.5, args.destName)
---		if args:IsPlayer() then
---			specWarnMeltYou:Show()
---		end
+	elseif spellId == 155225 then
+		warnMelt:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnMeltYou:Show()
+		end
+	elseif spellId == 156934 then
+		warnRupture:CombinedShow(0.5, args.destName)
+		timerRuptureCD:Start()
+		if args:IsPlayer() then
+			specWarnRuptureOn:Show()
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -240,23 +245,6 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 76809 then
 		timerRuptureCD:Cancel()
-	end
-end
-
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:156934") then
-		specWarnRuptureOn:Show()
-		self:SendSync("RuptureTarget", UnitGUID("player"))
-	end
-end
-
-function mod:OnSync(msg, guid)
-	--Only way to do with any accurately
-	if not self:IsInCombat() then return end
-	if msg == "RuptureTarget" and guid then
-		local targetName = DBM:GetFullPlayerNameByGUID(guid)
-		warnRupture:CombinedShow(0.5, targetName)
-		timerRuptureCD:Start()
 	end
 end
 
