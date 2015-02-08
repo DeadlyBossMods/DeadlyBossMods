@@ -1368,7 +1368,7 @@ function DBM:CreateProfile(name)
 		self:AddMsg(DBM_CORE_PROFILE_CREATE_ERROR)
 		return
 	end
-	if DBM_AllSavedOptions[usedProfile] then
+	if DBM_AllSavedOptions[name] then
 		self:AddMsg(DBM_CORE_PROFILE_CREATE_ERROR_D:format(name))
 		return
 	end
