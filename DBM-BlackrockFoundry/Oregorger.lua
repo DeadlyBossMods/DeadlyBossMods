@@ -23,6 +23,7 @@ mod:RegisterEventsInCombat(
 "<328.2 14:31:10> CHAT_MSG_RAID_BOSS_EMOTE#Oregorger has gone insane from hunger!#Oregorger#####0#0##0#164#0000000000000000#0#false#false", -- [5]--]]
 local warnAcidTorrent				= mod:NewSpellAnnounce(156240, 3)
 local warnRetchedBlackrock			= mod:NewTargetAnnounce("OptionVersion2", 156179, 3, nil, "Ranged")
+local warnCollectOre				= mod:NewCountAnnounce(165184, 2)
 
 local specWarnBlackrockBarrage		= mod:NewSpecialWarningInterruptCount(156877, false, nil, nil, nil, nil, 3)--Off by default since only interruptors want this on for their duty
 local specWarnAcidTorrent			= mod:NewSpecialWarningSpell(156240, "Tank", nil, nil, 3)--No voice filter, because voice is for tank swap that comes AFTER breath, this warning is to alert tank they need to move into position to soak breath, NOT taunt
@@ -30,8 +31,8 @@ local yellRetchedBlackrock			= mod:NewYell(156179)
 local specWarnRetchedBlackrockNear	= mod:NewSpecialWarningClose(156179)
 local specWarnRetchedBlackrock		= mod:NewSpecialWarningMove(156203, nil, nil, nil, nil, nil, 2)
 local specWarnExplosiveShard		= mod:NewSpecialWarningDodge("OptionVersion3", 156390, "MeleeDps")--No target scanning available. targets ONLY melee (except tanks)
-local specWarnHungerDrive			= mod:NewSpecialWarningSpell(165127, nil, nil, nil, 2)
-local specWarnHungerDriveEnded		= mod:NewSpecialWarningFades(165127)
+local specWarnHungerDrive			= mod:NewSpecialWarningSpell("ej9964", nil, nil, nil, 2)
+local specWarnHungerDriveEnded		= mod:NewSpecialWarningFades("ej9964")
 
 local timerBlackrockSpinesCD		= mod:NewCDTimer(20, 156834)--20-23 (cd for barrages themselves too inconsistent and useless. but CD for when he recharges his spines, quite consistent)
 local timerAcidTorrentCD			= mod:NewCDTimer("OptionVersion2", 13, 156240, nil, "Tank|Healer")
@@ -47,6 +48,8 @@ local voiceBlackrockBarrage			= mod:NewVoice(156877, false)--kickcast
 local voiceAcidTorrent				= mod:NewVoice(156240)--changemt after 3 seconds (after cast finishes)
 
 --local berserkTimer				= mod:NewBerserkTimer(324)--Auto berserk when reaching 3rd hunger drive phase. Time bariable because phase slightly variable.
+
+local lastOre = 0 -- not need sync
 
 function mod:RetchedBlackrockTarget(targetname, uId)
 	if not targetname then return end
@@ -71,7 +74,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -94,6 +97,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 155819 then
+		self:UnregisterShortTermEvents()
 		specWarnHungerDriveEnded:Show()
 		voicePhaseChange:Play("phasechange")
 		timerRetchedBlackrockCD:Start(5)
@@ -148,5 +152,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerExplosiveShardCD:Cancel()
 		specWarnHungerDrive:Show()
 		voicePhaseChange:Play("phasechange")
+		lastOre = 0
+		self:RegisterShortTermEvents(
+			"UNIT_POWER_FREQUENT boss1"
+		)
+	end
+end
+
+function mod:UNIT_POWER_FREQUENT()
+	local ore = UnitPower("boss1")
+	if self:AntiSpam(10) and lastOre ~= ore then
+		lastOre = ore
+		warnCollectOre:Show(ore)
 	end
 end
