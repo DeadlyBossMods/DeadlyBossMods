@@ -26,12 +26,12 @@ localization.tw.lua
 localization.cn.lua
 Gruul.lua
 Oregorger.lua
-BlastFurnace.lua
 HansgarAndFranzok.lua
-Kagraz.lua
-Kromog.lua
 Darmac.lua
 Thogar.lua
+Kagraz.lua
+Kromog.lua
+BlastFurnace.lua
 IronMaidens.lua
 Blackhand.lua
 BlackrockFoundryTrash.lua
