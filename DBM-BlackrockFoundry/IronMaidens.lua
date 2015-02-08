@@ -218,12 +218,12 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 158078 then
 		savedAbilityTime["BloodRitual"] = GetTime()
 		if noFilter or not isPlayerOnBoat() then--Blood Ritual. Still safest way to start timer, in case no sync
-		timerBloodRitualCD:Start()
+			timerBloodRitualCD:Start()
 		end
 	elseif spellId == 156626 then--Rapid Fire. Still safest way to start timer, in case no sync
 		savedAbilityTime["RapidFire"] = GetTime()
 		if noFilter or not isPlayerOnBoat() then
-		timerRapidFireCD:Start()
+			timerRapidFireCD:Start()
 		end
 	elseif spellId == 158599 and (noFilter or not isPlayerOnBoat()) then
 		specWarnDeployTurret:Show()
@@ -231,13 +231,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 155794 then
 		savedAbilityTime["BladeDash"] = GetTime()
 		if noFilter or not isPlayerOnBoat() then
-		self:BossTargetScanner(77231, "BladeDashTarget", 0.1, 16)
-		timerBladeDashCD:Start()
+			self:BossTargetScanner(77231, "BladeDashTarget", 0.1, 16)
+			timerBladeDashCD:Start()
 		end
 	elseif spellId == 158008 then
 		savedAbilityTime["HeartSeeker"] = GetTime()
 		if noFilter or not isPlayerOnBoat() then
-		timerHeartSeekerCD:Start()
+			timerHeartSeekerCD:Start()
 		end
 	--Begin Deck Abilities
 	elseif spellId == 158708 and (noFilter or isPlayerOnBoat()) then
@@ -260,8 +260,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 157854 then
 		savedAbilityTime["BombardmentAlpha"] = GetTime()
 		if noFilter or not isPlayerOnBoat() then
-		specWarnBombardmentAlpha:Show(self.vb.alphaOmega)
-		timerBombardmentAlphaCD:Start()
+			specWarnBombardmentAlpha:Show(self.vb.alphaOmega)
+			timerBombardmentAlphaCD:Start()
 		end
 	elseif spellId == 157886 and (noFilter or not isPlayerOnBoat()) then
 		specWarnBombardmentOmega:Show(self.vb.alphaOmega)
@@ -269,9 +269,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 156109 and self:IsMythic() then
 		savedAbilityTime["ConvulsiveShadows"] = GetTime()
 		if noFilter or not isPlayerOnBoat() then
-		timerConvulsiveShadowsCD:Start()
+			timerConvulsiveShadowsCD:Start()
+		end
 	end
-end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -283,12 +283,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 164271 then
 		savedAbilityTime["PenetratingShot"] = GetTime()
 		if noFilter or not isPlayerOnBoat() then
-		warnPenetratingShot:Show(args.destName)
-		timerPenetratingShotCD:Start()
-		if args:IsPlayer() then
-			specWarnPenetratingShot:Show()
-			yellPenetratingShot:Yell()
-		end
+			warnPenetratingShot:Show(args.destName)
+			timerPenetratingShotCD:Start()
+			if args:IsPlayer() then
+				specWarnPenetratingShot:Show()
+				yellPenetratingShot:Yell()
+			end
 		end
 	elseif spellId == 156214 and (noFilter or not isPlayerOnBoat()) then
 		warnConvulsiveShadows:CombinedShow(0.5, args.destName)--Combined because a bad lingeringshadows drop may have multiple.
