@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, figure out how to detect OTHER add spawns besides operator and get timers for them too. It's likely the'll require ugly scheduling and /yell logging. 
+local warnBlastFrequency		= mod:NewAnnounce("warnBlastFrequency", 1, 155209, "Healer")
 local warnBomb					= mod:NewTargetAnnounce(155192, 4)
 local warnDropBombs				= mod:NewSpellAnnounce("OptionVersion2", 174726, 1, nil, "-Tank")
 local warnEngineer				= mod:NewSpellAnnounce("ej9649", 2, 155179)
@@ -243,7 +244,7 @@ function mod:UNIT_DIED(args)
 			timerEngineer:Cancel()
 			countdownEngineer:Cancel()
 			timerBellowsOperator:Cancel()
-			countdownBellowsOperator:Cancel()	
+			countdownBellowsOperator:Cancel()
 			voicePhaseChange:Play("ptwo")
 		end
 	elseif cid == 76809 then
@@ -273,6 +274,7 @@ do
 				powerRate = 5
 			end
 			if self.vb.lastTotal > totalTime then--CD changed
+				warnBlastFrequency:Show(totalTime)
 				local bossPower = UnitPower("boss1") --Get Boss Power
 				local elapsed = bossPower / powerRate
 				timerBlastCD:Update(elapsed, totalTime)
