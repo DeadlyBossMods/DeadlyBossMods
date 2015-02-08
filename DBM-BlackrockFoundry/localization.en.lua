@@ -20,6 +20,14 @@ L= DBM:GetModLocalization(1154)
 ------------------
 L= DBM:GetModLocalization(1155)
 
+L:SetTimerLocalization({
+	timerStamperDodge			= DBM_CORE_AUTO_TIMER_TEXTS.nextcount:format((GetSpellInfo(160582)))
+})
+
+L:SetOptionLocalization({
+	timerStamperDodge			= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format(160582)
+})
+
 --------------
 -- Flamebender Ka'graz --
 --------------
