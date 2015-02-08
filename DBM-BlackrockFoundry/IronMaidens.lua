@@ -127,18 +127,15 @@ mod.vb.phase = 1
 mod.vb.ship = 0
 mod.vb.alphaOmega = 0
 
-local GetPlayerMapPosition, UnitPosition, GetTime, select = GetPlayerMapPosition, UnitPosition, GetTime, select
+local UnitPosition, GetTime =  UnitPosition, GetTime
 local savedAbilityTime = {}
 local below25 = false
 local playerOnBoat = false
 
 local function isPlayerOnBoat()
 	local x, y = GetPlayerMapPosition("player")
-	if x == 0 and y == 0 then
-		SetMapToCurrentZone()
-		x, y = GetPlayerMapPosition("player")
-	end
-	if x >= 0.75 then
+	local _, y = UnitPosition("player")
+	if y < 3196 then
 		return false
 	else
 		return true
@@ -147,13 +144,10 @@ end
 
 local function checkBoatPlayer(self)
 	for uId in DBM:GetGroupMembers() do 
-		if select(4, UnitPosition(uId)) == 1205 then -- map id is correct?
+		local _, y, _, playerMapId = UnitPosition(uId)
+		if playerMapId == 1205 then
 			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			if x < 0.75 then--found player on boat
+			if y > 3196 then--found player on boat
 				self:Schedule(1, checkBoatPlayer, self)
 				return
 			end
