@@ -325,7 +325,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 160140 then
 		specWarnCauterizingBolt:Show(args.sourceName)
 	elseif spellId == 163753 then
-		if self:AntiSpam() then
+		if self:AntiSpam(3, 1) then
 			specWarnIronbellow:Show()
 		end
 		timerIronbellowCD:Start(12, args.sourceGUID)
@@ -356,7 +356,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 165195 and args:IsPlayer() then
 		specWarnProtoGrenade:Show()
 		voiceProtoGrenade:Play("runaway")
---[[	elseif spellId == 156494 and args:IsPlayer() and self:AntiSpam() then
+--[[	elseif spellId == 156494 and args:IsPlayer() and self:AntiSpam(3, 2) then
 		specWarnObliteration:Show()--]]
 	end
 end
@@ -370,7 +370,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if target == L.Train then
+	if target == L.Train and (self:AntiSpam(5, 3) or msg == "Fake") then--yell sometimes bugged?
 		self:Unschedule(fakeTrainYell)--Always unschedule
 		self.vb.trainCount = self.vb.trainCount + 1
 		local count = self.vb.trainCount
