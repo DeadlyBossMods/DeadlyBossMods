@@ -26,9 +26,12 @@ local warnBomb					= mod:NewTargetAnnounce(155192, 4)
 local warnDropBombs				= mod:NewSpellAnnounce("OptionVersion2", 174726, 1, nil, "-Tank")
 local warnEngineer				= mod:NewSpellAnnounce("ej9649", 2, 155179)
 local warnRupture				= mod:NewTargetAnnounce(156932, 3)
+--Phase 2
 local warnPhase2				= mod:NewPhaseAnnounce(2)
+local warnElementalists			= mod:NewAddsLeftAnnounce("ej9655", 2)
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4)
+--Phase 3
 local warnMelt					= mod:NewTargetAnnounce("OptionVersion2", 155225, 4, nil, false)--VERY spammy, off by default
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 
@@ -39,6 +42,7 @@ local specWarnDeafeningRoar		= mod:NewSpecialWarningDodge("OptionVersion2", 1777
 local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, "-Healer", nil, nil, nil, nil, 2)
 local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932)
 local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, nil, nil, 2)
+--Phase 2
 local specWarnFixate			= mod:NewSpecialWarningYou(155196)
 local specWarnMeltYou			= mod:NewSpecialWarningYou(155225)
 local specWarnMeltNear			= mod:NewSpecialWarningClose(155225, false)
@@ -48,9 +52,11 @@ local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
 local specVolatileFire			= mod:NewSpecialWarningMoveAway(176121)
 local yellVolatileFire			= mod:NewYell(176121)
 local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", "Dps")
+--Phase 3
 local specWarnHeartoftheMountain= mod:NewSpecialWarningSwitch("ej10808", "Tank")
 local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3, nil, nil, nil, nil, 2)
 local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242, nil, nil, nil, nil, nil, 2)
+--All
 local specWarnBlast				= mod:NewSpecialWarningSoon(155209, nil, nil, nil, 2)
 
 local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
@@ -58,10 +64,12 @@ local timerBlastCD				= mod:NewCDTimer(25, 155209)--25 seconds base. shorter whe
 local timerRuptureCD			= mod:NewCDTimer(26, 156934)
 local timerEngineer				= mod:NewNextTimer(41, "ej9649", nil, nil, nil, 155179)
 local timerBellowsOperator		= mod:NewNextTimer(64, "ej9650", nil, nil, nil, 155181)
+--Phase 2
 local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps")--Anyone else need?
 
-local countdownBellowsOperator	= mod:NewCountdown(64, "ej9650")
-local countdownEngineer			= mod:NewCountdown("Alt41", "ej9649")
+local countdownBlast			= mod:NewCountdown(30, 155209, "Healer")
+local countdownBellowsOperator	= mod:NewCountdown("OptionVersion2", "Alt64", "ej9650", "-Healer")
+local countdownEngineer			= mod:NewCountdown("OptionVersion2", "AltTwo41", "ej9649", "Tank")
 
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceRepair				= mod:NewVoice(155179, "-Healer") --int
@@ -75,9 +83,9 @@ local voiceHeat					= mod:NewVoice(155242) --changemt
 mod:AddRangeFrameOption(8, 176121)
 
 mod.vb.machinesDead = 0
-mod.vb.elementalistsDead = 0
-mod.vb.powerRate = 4
-mod.vb.totalTime = 25
+mod.vb.elementalistsRemaining = 4
+mod.vb.blastWarned = false
+mod.vb.lastTotal = 30
 
 --With some videos, this looks pretty good now. Just need phase 2 add stuff now.
 local function Engineers(self)
@@ -89,17 +97,14 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.machinesDead = 0
-	self.vb.elementalistsDead = 0
+	self.vb.elementalistsRemaining = 4
+	self.vb.blastWarned = false
+	self.vb.lastTotal = 30
 	self:Schedule(55, Engineers, self)
 	timerEngineer:Start(55)
 	countdownEngineer:Start(55)
-	if self:IsLFR() then
-		timerBlastCD:Start(30-delay)
-		self.vb.powerRate = 3.33
-		self.vb.totalTime = 30
-	else
-		timerBlastCD:Start(25-delay)
-	end
+	timerBlastCD:Start(30-delay)
+	countdownBlast:Start(30-delay)
 end
 
 function mod:OnCombatEnd()
@@ -224,8 +229,9 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 76815 then--Elementalist
-		self.vb.elementalistsDead = self.vb.elementalistsDead + 1
-		if self.vb.elementalistsDead == 4 then
+		self.vb.elementalistsRemaining = self.vb.elementalistsRemaining - 1
+		warnElementalists:Show(self.vb.elementalistsRemaining)
+		if self.vb.elementalistsRemaining == 0 then
 			specWarnHeartoftheMountain:Show()
 			voicePhaseChange:Play("pthree")
 		end
@@ -245,21 +251,44 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---Maybe awkward way of doing it since timer will kind of skip when operators are out, but most accurate way of doing it.
---emote to emote shows variation even when loading doesn't add power. sometimes 24, sometimes 27. This timer may be closer.
---Probably very high cpu usage
 do
 	local UnitPower = UnitPower
-	local warned = false
-	function mod:UNIT_POWER_FREQUENT(uId)
-		local bossPower = UnitPower("boss1") --Get Boss Power
-		local elapsed = bossPower / self.vb.powerRate --Divide it by 4 (cause he gains 4 power per second and we need to know how many seconds to subtrack from CD)
-		timerBlastCD:Update(elapsed, self.vb.totalTime)
-		if bossPower > 85 and not warned then
-			warned = true
-			specWarnBlast:Show()
-		elseif bossPower < 8 then
-			warned = false
+	function mod:UNIT_POWER_FREQUENT(uId, type)
+		local totalTime = 30
+		if type == "ALTERNATE" then
+			local altPower = UnitPower(uId, ALTERNATE_POWER_INDEX)
+			local powerRate = 5
+			--Each time boss breaks interval of 25%. CD is reduced by 33%
+			if altpower == 100 then
+				totalTime = 6
+				powerRate = 16.66
+			elseif altpower > 74 then
+				totalTime = 9
+				powerRate = 11.11
+			elseif altpower > 49 then
+				totalTime = 15
+				powerRate = 6.66
+			elseif altpower > 24 then
+				totalTime = 20
+				powerRate = 5
+			end
+			if self.vb.lastTotal > totalTime then--CD changed
+				local bossPower = UnitPower("boss1") --Get Boss Power
+				local elapsed = bossPower / powerRate
+				timerBlastCD:Update(elapsed, totalTime)
+				countdownBlast:Cancel()
+				countdownBlast:Start(totalTime-elapsed)
+			end
+		else
+			local bossPower = UnitPower("boss1") --Get Boss Power
+			if bossPower >= 85 and not self.vb.blastWarned then
+				self.vb.blastWarned = true
+				specWarnBlast:Show()
+			elseif bossPower < 5 and self.vb.blastWarned then--Should catch 0, if not, at least 1-4 will fire it but then timer may be a second or so off
+				self.vb.blastWarned = false
+				timerBlastCD:Start(totalTime)
+				countdownBlast:Start(totalTime)
+			end
 		end
 	end
 end
