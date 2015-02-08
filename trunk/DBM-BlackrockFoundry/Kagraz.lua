@@ -13,7 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 155776 155074",
 	"SPELL_AURA_APPLIED 155277 155493 154952 163284 155074 154932 154950",
 	"SPELL_AURA_APPLIED_DOSE 163284 155074",
-	"SPELL_AURA_REMOVED 155277 154932 154950 154952",
+	"SPELL_AURA_REMOVED 155277 154932 154950 154952 155493",
 	"SPELL_PERIODIC_DAMAGE 155314",
 	"SPELL_PERIODIC_MISSED 155314",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -43,6 +43,7 @@ local specWarnFixateEnded				= mod:NewSpecialWarningEnd(154952, false)
 local specWarnBlazinRadiance			= mod:NewSpecialWarningMoveAway(155277, nil, nil, nil, nil, nil, 2)
 local yellBlazinRadiance				= mod:NewYell(155277, nil, false)
 local specWarnFireStorm					= mod:NewSpecialWarningSpell(155493, nil, nil, nil, 2, nil, 2)
+local specWarnFireStormEnded			= mod:NewSpecialWarningEnd(155493)
 local specWarnRisingFlames				= mod:NewSpecialWarningStack(163284, nil, 10)--stack guessed
 local specWarnRisingFlamesOther			= mod:NewSpecialWarningTaunt(163284, nil, nil, nil, nil, nil, 2)
 local specWarnCharringBreath			= mod:NewSpecialWarningStack(155074, nil, 3)--Assumed based on timing and casts, that you swap every breath.
@@ -58,6 +59,7 @@ local timerCharringBreathCD				= mod:NewNextTimer(5, 155074, nil, "Tank")
 local timerFixate						= mod:NewTargetTimer(10, 154952, nil, false)--Spammy, can't combine them because of wolves will desync if players die.
 local timerBlazingRadianceCD			= mod:NewCDTimer(12, 155277, nil, false)--somewhat important but not important enough. there is just too much going on to be distracted by this timer
 local timerFireStormCD					= mod:NewNextTimer(63, 155493)
+local timerFireStorm					= mod:NewBuffActiveTimer(10, 155493)
 
 local countdownCinderWolves				= mod:NewCountdown(74, 155776)
 local countdownFireStorm				= mod:NewCountdown(63, 155493)--Same voice as wolves cause never happen at same time, in fact they alternate.
@@ -135,6 +137,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 155493 then
 		specWarnFireStorm:Show()
 		timerBlazingRadianceCD:Cancel()
+		timerFireStorm:Start()
 		timerMoltenTorrentCD:Start(44)
 		timerSummonCinderWolvesCD:Start()
 		countdownCinderWolves:Start()
@@ -205,7 +208,6 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 155277 and args:IsPlayer() then
-		specWarnBlazinRadiance:Show()
 		if self.Options.RangeFrame then
 			if self:IsRanged() then
 				DBM.RangeCheck:Show(6)
@@ -228,6 +230,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			specWarnFixateEnded:Show()
 		end
+	elseif spellId == 155493 then
+		specWarnFireStormEnded:Show()
 	end
 end
 
