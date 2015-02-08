@@ -177,7 +177,7 @@ do
 			info = UIDropDownMenu_CreateInfo()
 			info.text = HIDE
 			info.notCheckable = true
-			info.func = function() rangeCheck.Hide(true) end
+			info.func = function() rangeCheck:Hide(true) end
 			info.arg1 = rangeCheck
 			UIDropDownMenu_AddButton(info, 1)
 
