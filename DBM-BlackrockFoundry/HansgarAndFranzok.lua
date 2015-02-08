@@ -166,10 +166,11 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 			else
 				if self.vb.phase == 2 then
 					specWarnSearingPlatesEnd:Schedule(3)
+					voiceEnvironmentalThreats:Schedule(3, "safenow")
 				else
 					specWarnStampersEnd:Show()
+					voiceEnvironmentalThreats:Play("safenow")
 				end
-				voiceEnvironmentalThreats:Play("safenow")
 			end
 		end
 	end
