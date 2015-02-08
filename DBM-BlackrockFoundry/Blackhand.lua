@@ -169,7 +169,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnMarked then
 			self:SetSortedIcon(1, args.destName, 1, 2)
 		end
-	elseif spellId == 157000 then
+	elseif spellId == 157000 or spellId == 159179 then--Combine tank version with non tank version
 		warnAttachSlagBombs:CombinedShow(0.5, args.destName)
 		if self:AntiSpam(2, 4) then
 			timerAttachSlagBombsCD:Start()
@@ -183,14 +183,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
-		end
-		--Tank stuff
-		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId, "boss1") then
-			if not UnitIsUnit("player", uId) then--Debuff on a tank, but not us
+		else--Tank stuff
+			if spellId == 159179 then--tank version
 				specWarnAttachSlagBombsOther:Show(args.destName)
+				voiceAttachSlagBombs:Play("changemt")
 			end
-			voiceAttachSlagBombs:Play("changemt")
 		end
 	elseif spellId == 156667 then
 		warnSiegemaker:Show()
@@ -269,7 +266,7 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if (spellId == 156031 or spellId == 156991) and self:AntiSpam(2, 2) then--156031 phase 1, 156991 phase 2. 156998 is also usuable for phase 2 but 156991 fires first
+	if (spellId == 156031 or spellId == 156998) and self:AntiSpam(2, 2) then--156031 phase 1, 156991 phase 2. 156998 is also usuable for phase 2 but 156991
 		specWarnThrowSlagBombs:Show()
 		timerThrowSlagBombsCD:Start()
 		countdownSlagBombs:Start()
