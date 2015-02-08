@@ -15,6 +15,14 @@ L= DBM:GetModLocalization(1202)
 ---------------------------
 L= DBM:GetModLocalization(1154)
 
+L:SetWarningLocalization({
+	warnBlastFrequency	= "Blast frequency increased : Approx Every %d sec"
+})
+
+L:SetOptionLocalization({
+	warnBlastFrequency	= "Announce when $spell:155209 frequency increased"
+})
+
 ------------------
 -- Hans'gar And Franzok --
 ------------------
