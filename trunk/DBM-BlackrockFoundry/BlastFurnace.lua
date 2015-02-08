@@ -274,6 +274,7 @@ do
 				powerRate = 5
 			end
 			if self.vb.lastTotal > totalTime then--CD changed
+				self.vb.lastTotal = totalTime
 				warnBlastFrequency:Show(totalTime)
 				local bossPower = UnitPower("boss1") --Get Boss Power
 				local elapsed = bossPower / powerRate
