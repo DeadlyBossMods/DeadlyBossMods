@@ -91,9 +91,6 @@ mod:AddTimerLine(Ship)
 local timerShipCD						= mod:NewNextTimer(198, "ej10019", nil, nil, nil, 76204)
 local timerBombardmentAlphaCD			= mod:NewNextTimer(18, 157854)
 local timerWarmingUp					= mod:NewCastTimer(90, 158849)--Word is not good.
-----Blackrock Deckhand
-----Shattered Hand Deckhand
-----Bleeding Hollow Deckhand
 --Ground
 ----Admiral Gar'an
 mod:AddTimerLine(Garan)
