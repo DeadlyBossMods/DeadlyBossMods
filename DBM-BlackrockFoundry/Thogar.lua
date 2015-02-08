@@ -59,6 +59,7 @@ mod:AddInfoFrameOption(176312)
 mod:AddSetIconOption("SetIconOnAdds", "ej9549", false, true)
 
 mod.vb.trainCount = 0
+mod.vb.infoCount = 0
 local MovingTrain = GetSpellInfo(176312)
 local Train = GetSpellInfo(174806)
 local Cannon = GetSpellInfo(62357)
@@ -252,7 +253,7 @@ end
 
 local function updateInfoFrame()
 	table.wipe(lines)
-	local train = mod.vb.trainCount + 1
+	local train = mod.vb.infoCount
 	local trainTable = mod:IsMythic() and mythicTrains or otherTrains
 	if trainTable[train] then
 		for i = 1, 4 do
@@ -273,7 +274,8 @@ end
 
 local function showInfoFrame()
 	if mod.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(MovingTrain.." ("..(mod.vb.trainCount + 1)..")")
+		mod.vb.infoCount = mod.vb.trainCount + 1
+		DBM.InfoFrame:SetHeader(MovingTrain.." ("..(mod.vb.infoCount)..")")
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 	end
 end
@@ -287,6 +289,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.trainCount = 0
+	self.vb.infoCount = 0
 	timerProtoGrenadeCD:Start(6-delay)
 	timerEnkindleCD:Start(15-delay)
 	if not self.Options.ShowedThogarMessage then
