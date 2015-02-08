@@ -191,7 +191,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:Schedule(3, clearRampage, self)
 		timerPetrifyingSlamCD:Start(26, 1)--VERIFY
 --		timerOverheadSmashCD:Start(47, 1)--VERIFY
-		if self:IsDifficulty("normal", "lfr") then
+		if not self:IsMythic() then
 			timerInfernoSliceCD:Start(17.5, 1)
 			countdownInfernoSlice:Start(17.5)
 		else
