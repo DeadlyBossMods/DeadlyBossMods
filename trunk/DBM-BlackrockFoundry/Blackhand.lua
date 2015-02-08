@@ -82,6 +82,8 @@ mod.vb.phase = 1
 mod.vb.SlagEruption = 0
 mod.vb.smashCount = 0
 
+local UnitDebuff = UnitDebuff
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.SlagEruption = 0
@@ -138,12 +140,10 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-do
-	local debuff = GetSpellInfo(156096)
-	local function checkMarked()
-		if not UnitDebuff("player", debuff) then
-			voiceMarkedforDeath:Play("156096")
-		end
+local debuff = GetSpellInfo(156096)
+local function checkMarked()
+	if not UnitDebuff("player", debuff) then
+		voiceMarkedforDeath:Play("156096")
 	end
 end
 
@@ -162,7 +162,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellMarkedforDeath:Yell()
 			voiceMarkedforDeath:Play("findshelter")
 		end
-		if self:AntiSpam(2, 3) then			
+		if self:AntiSpam(2, 3) then
 			self:Schedule(0.5, checkMarked)
 			countdownMarkedforDeath:Start()
 		end
