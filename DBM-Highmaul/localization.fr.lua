@@ -74,7 +74,8 @@ L= DBM:GetModLocalization(1197)
 L:SetOptionLocalization({
 	GazeYellType		= "Choisir le type de cri pour le Regard des Abysses",
 	Countdown			= "Compte à rebours jusqu'à disparition",
-	Stacks				= "Nombre de stacks à chaque application"
+	Stacks				= "Nombre de stacks à chaque application",
+	timerNightTwistedCD	= "Afficher le compte à rebours pour le prochain Fidèle corrompu par la nuit"
 })
 
 L:SetMiscLocalization({
