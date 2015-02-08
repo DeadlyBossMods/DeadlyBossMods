@@ -402,6 +402,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnEpicenter:Show()
 	elseif spellId == 155497 then--Superheated Shrapnel
 		specWarnSuperheatedShrapnel:Show()
+		timerSuperheatedShrapnelCD:Start()
 	elseif spellId == 155385 or spellId == 155515 then--Both versions of spell(boss and beast), they seem to have same cooldown so combining is fine
 		specWarnRendandTear:Show()
 		timerRendandTearCD:Start()
