@@ -1607,7 +1607,7 @@ local function CreateOptionsMenu()
 			end)
 		end
 
-		-- RaidWarn Font Size
+		-- RaidWarn Duration
 		local durationSlider = raidwarnoptions:CreateSlider(L.Warn_Duration, 3, 20, 1, 200)
 		durationSlider:SetPoint('TOPLEFT', FontDropDown, "TOPLEFT", 20, -170)
 		do
@@ -2013,9 +2013,32 @@ local function CreateOptionsMenu()
 			DBM:UpdateSpecialWarningOptions()
 			DBM:ShowTestSpecialWarning(nil, 1)
 		end)
-		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -125)
+		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 100, -125)
 
-		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 16, 60, 1, 200)
+		local FontStyles = {
+			{	text	= L.None,					value 	= "None"						},
+			{	text	= L.Outline,				value 	= "OUTLINE"						},
+			{	text	= L.ThickOutline,			value 	= "THICKOUTLINE"				},
+			{	text	= L.MonochromeOutline,		value 	= "MONOCHROME,OUTLINE"			},
+			{	text	= L.MonochromeThickOutline,	value 	= "MONOCHROME,THICKOUTLINE"		}
+		}
+
+		local FontStyleDropDown = specArea:CreateDropdown(L.Warn_FontStyle, FontStyles, "DBM", "SpecialWarningFontStyle", function(value)
+			DBM.Options.SpecialWarningFontStyle = value
+			DBM:UpdateSpecialWarningOptions()
+			DBM:ShowTestSpecialWarning(nil, 1)
+		end)
+		FontStyleDropDown:SetPoint("LEFT", FontDropDown, "RIGHT", 25, 0)
+
+		local FontShadow = specArea:CreateCheckButton(L.Warn_FontShadow, nil, nil, "SpecialWarningFontShadow")
+		FontShadow:SetScript("OnClick", function()
+			DBM.Options.SpecialWarningFontShadow = not DBM.Options.SpecialWarningFontShadow
+			DBM:UpdateSpecialWarningOptions()
+			DBM:ShowTestSpecialWarning(nil, 1)
+		end)
+		FontShadow:SetPoint("LEFT", FontStyleDropDown, "RIGHT", -35, 25)
+
+		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 16, 60, 1, 150)
 		fontSizeSlider:SetPoint('TOPLEFT', FontDropDown, "TOPLEFT", 20, -45)
 		do
 			local firstshow = true
@@ -2026,6 +2049,22 @@ local function CreateOptionsMenu()
 			fontSizeSlider:HookScript("OnValueChanged", function(self)
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFontSize = self:GetValue()
+				DBM:UpdateSpecialWarningOptions()
+				DBM:ShowTestSpecialWarning(nil, 1)
+			end)
+		end
+
+		local durationSlider = specArea:CreateSlider(L.Warn_Duration, 3, 20, 1, 150)
+		durationSlider:SetPoint("LEFT", fontSizeSlider, "RIGHT", 20, 0)
+		do
+			local firstshow = true
+			durationSlider:SetScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.SpecialWarningDuration)
+			end)
+			durationSlider:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.SpecialWarningDuration = self:GetValue()
 				DBM:UpdateSpecialWarningOptions()
 				DBM:ShowTestSpecialWarning(nil, 1)
 			end)
@@ -2170,7 +2209,7 @@ local function CreateOptionsMenu()
 		local SpecialWarnSoundDropDown = specArea:CreateDropdown(L.SpecialWarnSound, Sounds, "DBM", "SpecialWarningSound", function(value)
 			DBM.Options.SpecialWarningSound = value
 		end)
-		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -230)
+		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 100, -230)
 		local repeatCheck1 = specArea:CreateCheckButton(L.SpecWarn_FlashRepeat, nil, nil, "SpecialWarningFlashRepeat1")
 		repeatCheck1:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown, "BOTTOMLEFT", 240, 0)
 
@@ -2209,7 +2248,7 @@ local function CreateOptionsMenu()
 		local SpecialWarnSoundDropDown2 = specArea:CreateDropdown(L.SpecialWarnSound2, Sounds, "DBM", "SpecialWarningSound2", function(value)
 			DBM.Options.SpecialWarningSound2 = value
 		end)
-		SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -335)
+		SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 100, -335)
 		local repeatCheck2 = specArea:CreateCheckButton(L.SpecWarn_FlashRepeat, nil, nil, "SpecialWarningFlashRepeat2")
 		repeatCheck2:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown2, "BOTTOMLEFT", 240, 0)
 
@@ -2248,7 +2287,7 @@ local function CreateOptionsMenu()
 		local SpecialWarnSoundDropDown3 = specArea:CreateDropdown(L.SpecialWarnSound3, Sounds, "DBM", "SpecialWarningSound3", function(value)
 			DBM.Options.SpecialWarningSound3 = value
 		end)
-		SpecialWarnSoundDropDown3:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -440)
+		SpecialWarnSoundDropDown3:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 100, -440)
 		local repeatCheck3 = specArea:CreateCheckButton(L.SpecWarn_FlashRepeat, nil, nil, "SpecialWarningFlashRepeat3")
 		repeatCheck3:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown3, "BOTTOMLEFT", 240, 0)
 
@@ -2287,7 +2326,7 @@ local function CreateOptionsMenu()
 		local SpecialWarnSoundDropDown4 = specArea:CreateDropdown(L.SpecialWarnSound4, Sounds, "DBM", "SpecialWarningSound4", function(value)
 			DBM.Options.SpecialWarningSound4 = value
 		end)
-		SpecialWarnSoundDropDown4:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -545)
+		SpecialWarnSoundDropDown4:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 100, -545)
 		local repeatCheck4 = specArea:CreateCheckButton(L.SpecWarn_FlashRepeat, nil, nil, "SpecialWarningFlashRepeat4")
 		repeatCheck4:SetPoint("BOTTOMLEFT", SpecialWarnSoundDropDown4, "BOTTOMLEFT", 240, 0)
 
