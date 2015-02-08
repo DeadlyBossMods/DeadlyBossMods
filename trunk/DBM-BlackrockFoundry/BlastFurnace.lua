@@ -258,15 +258,15 @@ do
 		if type == "ALTERNATE" then
 			local altPower = UnitPower(uId, ALTERNATE_POWER_INDEX)
 			local powerRate = 5
-			--Each time boss breaks interval of 25%. CD is reduced by 33%
+			--Each time boss breaks interval of 25%. CD is reduced
 			if altpower == 100 then
-				totalTime = 6
-				powerRate = 16.66
+				totalTime = 5.5--5-6
+				powerRate = 18.18
 			elseif altpower > 74 then
-				totalTime = 9
+				totalTime = 9--9-10
 				powerRate = 11.11
 			elseif altpower > 49 then
-				totalTime = 15
+				totalTime = 15--15-16
 				powerRate = 6.66
 			elseif altpower > 24 then
 				totalTime = 20
