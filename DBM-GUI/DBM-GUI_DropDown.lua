@@ -39,6 +39,7 @@
 do
 	local MAX_BUTTONS = 10
 	local BackDropTable = { bgFile = "" }
+	local L = DBM_GUI_Translations
 
 	local TabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", UIParent)
 	local ClickFrame = CreateFrame("Button", nil, UIParent)
@@ -265,7 +266,7 @@ do
 		dropdown.callfunc = callfunc
 		if not width then
 			width = 120 -- minimum size
-			if title ~= DBM_GUI_Translations.Warn_FontType then--Force font menus to always be fixed 120 width
+			if title ~= L.Warn_FontType then--Force font menus to always be fixed 120 width
 				for i, v in ipairs(values) do
 					_G[dropdown:GetName().."Text"]:SetText(v.text)
 					width = math.max(width, _G[dropdown:GetName().."Text"]:GetStringWidth())
