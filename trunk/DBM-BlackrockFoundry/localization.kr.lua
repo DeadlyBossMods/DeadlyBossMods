@@ -21,6 +21,14 @@ L= DBM:GetModLocalization(1154)
 ------------------
 L= DBM:GetModLocalization(1155)
 
+L:SetTimerLocalization({
+	timerStamperDodge			= DBM_CORE_AUTO_TIMER_TEXTS.nextcount:format("압축기 회피")
+})
+
+L:SetOptionLocalization({
+	timerStamperDodge			= "다음 압축기 회피 바 보기"
+})
+
 --------------
 -- Flamebender Ka'graz --
 --------------
