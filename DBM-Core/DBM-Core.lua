@@ -167,11 +167,14 @@ DBM.DefaultOptions = {
 	WarningFontSize = 20,
 	WarningFontStyle = "None",
 	WarningFontShadow = true,
+	SpecialWarningDuration = 4,
 	SpecialWarningPoint = "CENTER",
 	SpecialWarningX = 0,
 	SpecialWarningY = 75,
 	SpecialWarningFont = STANDARD_TEXT_FONT,
 	SpecialWarningFontSize = 50,
+	SpecialWarningFontStyle = "THICKOUTLINE",
+	SpecialWarningFontShadow = false,
 	SpecialWarningFontCol = {1.0, 0.7, 0.0},--Yellow, with a tint of orange
 	SpecialWarningFlashCol1 = {1.0, 1.0, 0.0},--Yellow
 	SpecialWarningFlashCol2 = {1.0, 0.5, 0.0},--Orange
@@ -7980,43 +7983,160 @@ end
 ------------------------------
 do
 	local frame = CreateFrame("Frame", "DBMSpecialWarning", UIParent)
-	local font = frame:CreateFontString(nil, "OVERLAY", "ZoneTextFont")
+	local font1 = frame:CreateFontString("DBMSpecialWarning1", "OVERLAY", "ZoneTextFont")
+	font1:SetWidth(1024)
+	font1:SetHeight(0)
+	font1:SetPoint("TOP", 0, 0)
+	local font2 = frame:CreateFontString("DBMSpecialWarning2", "OVERLAY", "ZoneTextFont")
+	font2:SetWidth(1024)
+	font2:SetHeight(0)
+	font2:SetPoint("TOP", font1, "BOTTOM", 0, 0)
 	frame:SetMovable(1)
 	frame:SetWidth(1)
 	frame:SetHeight(1)
 	frame:SetFrameStrata("HIGH")
 	frame:SetClampedToScreen()
-	frame:Hide()
-	font:SetWidth(1024)
-	font:SetHeight(0)
-	font:SetPoint("CENTER", 0, 0)
+	frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 
-	local moving
-	local specialWarningPrototype = {}
-	local mt = {__index = specialWarningPrototype}
+	local font1elapsed, font2elapsed, moving
+
+	local function fontHide1()
+		local duration = DBM.Options.SpecialWarningDuration
+		if font1elapsed > duration * 1.3 then
+			font1:Hide()
+			if frame.font1ticker then
+				frame.font1ticker:Cancel()
+				frame.font1ticker = nil
+			end
+		elseif font1elapsed > duration then
+			font1elapsed = font1elapsed + 0.05
+			local alpha = 1 - (font1elapsed - duration) / (duration * 0.3)
+			font1:SetAlpha(alpha > 0 and alpha or 0)
+		else
+			font1elapsed = font1elapsed + 0.05
+			font1:SetAlpha(1)
+		end
+	end
+
+	local function fontHide2()
+		local duration = DBM.Options.SpecialWarningDuration
+		if font2elapsed > duration * 1.3 then
+			font2:Hide()
+			if frame.font2ticker then
+				frame.font2ticker:Cancel()
+				frame.font2ticker = nil
+			end
+		elseif font2elapsed > duration then
+			font2elapsed = font2elapsed + 0.05
+			local alpha = 1 - (font2elapsed - duration) / (duration * 0.3)
+			font2:SetAlpha(alpha > 0 and alpha or 0)
+		else
+			font2elapsed = font2elapsed + 0.05
+			font2:SetAlpha(1)
+		end
+	end
 
 	function DBM:UpdateSpecialWarningOptions()
 		frame:ClearAllPoints()
 		frame:SetPoint(self.Options.SpecialWarningPoint, UIParent, self.Options.SpecialWarningPoint, self.Options.SpecialWarningX, self.Options.SpecialWarningY)
-		font:SetFont(self.Options.SpecialWarningFont, self.Options.SpecialWarningFontSize, "THICKOUTLINE")
-		font:SetTextColor(unpack(self.Options.SpecialWarningFontCol))
+		font1:SetFont(self.Options.SpecialWarningFont, self.Options.SpecialWarningFontSize, self.Options.SpecialWarningFontStyle == "None" and nil or self.Options.SpecialWarningFontStyle)
+		font2:SetFont(self.Options.SpecialWarningFont, self.Options.SpecialWarningFontSize, self.Options.SpecialWarningFontStyle == "None" and nil or self.Options.SpecialWarningFontStyle)
+		font1:SetTextColor(unpack(self.Options.SpecialWarningFontCol))
+		font2:SetTextColor(unpack(self.Options.SpecialWarningFontCol))
+		if self.Options.SpecialWarningFontShadow then
+			font1:SetShadowOffset(1, -1)
+			font2:SetShadowOffset(1, -1)
+		else
+			font1:SetShadowOffset(0, 0)
+			font2:SetShadowOffset(0, 0)
+		end
 	end
 
-	frame:SetScript("OnUpdate", function(self, elapsed)
-		self.timer = self.timer - elapsed
-		if self.timer >= 3 and self.timer <= 4 then
-			if not self.healthFrameHidden then
-				LowHealthFrame:SetAlpha(self.timer - 3)
-			end
-		elseif self.timer <= 2 then
-			frame:SetAlpha(self.timer/2)
-		elseif self.timer <= 0 then
-			if not self.healthFrameHidden then
-				LowHealthFrame:Hide()
-			end
-			frame:Hide()
+	function DBM:AddSpecialWarning(text, force)
+		local added = false
+		if not frame.font1ticker then
+			font1elapsed = 0
+			font1.lastUpdate = GetTime()
+			font1:SetText(text)
+			font1:Show()
+			added = true
+			frame.font1ticker = frame.font1ticker or C_Timer.NewTicker(0.05, fontHide1)
+		elseif not frame.font2ticker or force then
+			font2elapsed = 0
+			font2.lastUpdate = GetTime()
+			font2:SetText(text)
+			font2:Show()
+			added = true
+			frame.font2ticker = frame.font2ticker or C_Timer.NewTicker(0.05, fontHide2)
 		end
-	end)
+		if not added then
+			local prevText1 = font2:GetText()
+			font1:SetText(prevText1)
+			font1elapsed = font2elapsed
+			self:AddSpecialWarning(text, true)
+		end
+	end
+
+	do
+		local anchorFrame
+		local function moveEnd()
+			moving = false
+			anchorFrame:Hide()
+			font1elapsed = DBM.Options.SpecialWarningDuration
+			font2elapsed = DBM.Options.SpecialWarningDuration
+			frame:SetFrameStrata("HIGH")
+			DBM:Unschedule(moveEnd)
+			DBM.Bars:CancelBar(DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
+		end
+
+		function DBM:MoveSpecialWarning()
+			if not anchorFrame then
+				anchorFrame = CreateFrame("Frame", nil, frame)
+				anchorFrame:SetWidth(32)
+				anchorFrame:SetHeight(32)
+				anchorFrame:EnableMouse(true)
+				anchorFrame:SetPoint("TOP", frame, "TOP", 0, 32)
+				anchorFrame:RegisterForDrag("LeftButton")
+				anchorFrame:SetClampedToScreen()
+				anchorFrame:Hide()
+				local texture = anchorFrame:CreateTexture()
+				texture:SetTexture("Interface\\Addons\\DBM-GUI\\textures\\dot.blp")
+				texture:SetPoint("CENTER", anchorFrame, "CENTER", 0, 0)
+				texture:SetWidth(32)
+				texture:SetHeight(32)
+				anchorFrame:SetScript("OnDragStart", function()
+					frame:StartMoving()
+					self:Unschedule(moveEnd)
+					self.Bars:CancelBar(DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
+				end)
+				anchorFrame:SetScript("OnDragStop", function()
+					frame:StopMovingOrSizing()
+					local point, _, _, xOfs, yOfs = frame:GetPoint(1)
+					self.Options.SpecialWarningPoint = point
+					self.Options.SpecialWarningX = xOfs
+					self.Options.SpecialWarningY = yOfs
+					self:Schedule(15, moveEnd)
+					self.Bars:CreateBar(15, DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
+				end)
+			end
+			if anchorFrame:IsShown() then
+				moveEnd()
+			else
+				moving = true
+				anchorFrame:Show()
+				DBM:AddSpecialWarning(DBM_CORE_MOVE_SPECIAL_WARNING_TEXT)
+				DBM:AddSpecialWarning(DBM_CORE_MOVE_SPECIAL_WARNING_TEXT)
+				self:Schedule(15, moveEnd)
+				self.Bars:CreateBar(15, DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
+				frame:Show()
+				frame:SetFrameStrata("TOOLTIP")
+				frame:SetAlpha(1)
+			end
+		end
+	end
+
+	local specialWarningPrototype = {}
+	local mt = {__index = specialWarningPrototype}
 
 	function specialWarningPrototype:Show(...)
 		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
@@ -8039,9 +8159,9 @@ do
 			end
 			local msg = pformat(self.text, unpack(argTable))
 			local text = msg:gsub(">.-<", stripServerName)
+			DBM:AddSpecialWarning(text)
 			self.combinedcount = 0
 			self.combinedtext = {}
-			font:SetText(text)
 			if DBM.Options.ShowSWarningsInChat then
 				local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
 				self.mod:AddMsg(colorCode.."["..DBM_CORE_MOVE_SPECIAL_WARNING_TEXT.."] "..text.."|r", nil)
@@ -8061,9 +8181,6 @@ do
 					DBM.Flash:Show(DBM.Options.SpecialWarningFlashCol4[1],DBM.Options.SpecialWarningFlashCol4[2], DBM.Options.SpecialWarningFlashCol4[3], DBM.Options.SpecialWarningFlashDura4, DBM.Options.SpecialWarningFlashAlph3, repeatCount)
 				end
 			end
-			frame:Show()
-			frame:SetAlpha(1)
-			frame.timer = 5
 			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
 			fireEvent("DBM_Announce", msg)
 			if self.sound then
@@ -8424,63 +8541,6 @@ do
 		end
 	end
 
-	do
-		local anchorFrame
-		local function moveEnd()
-			moving = false
-			anchorFrame:Hide()
-			frame.timer = 1.5 -- fade out
-			frame:SetFrameStrata("HIGH")
-			DBM:Unschedule(moveEnd)
-			DBM.Bars:CancelBar(DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
-		end
-
-		function DBM:MoveSpecialWarning()
-			if not anchorFrame then
-				anchorFrame = CreateFrame("Frame", nil, frame)
-				anchorFrame:SetWidth(32)
-				anchorFrame:SetHeight(32)
-				anchorFrame:EnableMouse(true)
-				anchorFrame:SetPoint("CENTER", 0, -32)
-				anchorFrame:RegisterForDrag("LeftButton")
-				anchorFrame:SetClampedToScreen()
-				anchorFrame:Hide()
-				local texture = anchorFrame:CreateTexture()
-				texture:SetTexture("Interface\\Addons\\DBM-GUI\\textures\\dot.blp")
-				texture:SetPoint("CENTER", anchorFrame, "CENTER", 0, 0)
-				texture:SetWidth(32)
-				texture:SetHeight(32)
-				anchorFrame:SetScript("OnDragStart", function()
-					frame:StartMoving()
-					self:Unschedule(moveEnd)
-					self.Bars:CancelBar(DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
-				end)
-				anchorFrame:SetScript("OnDragStop", function()
-					frame:StopMovingOrSizing()
-					local point, _, _, xOfs, yOfs = frame:GetPoint(1)
-					self.Options.SpecialWarningPoint = point
-					self.Options.SpecialWarningX = xOfs
-					self.Options.SpecialWarningY = yOfs
-					self:Schedule(15, moveEnd)
-					self.Bars:CreateBar(15, DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
-				end)
-			end
-			if anchorFrame:IsShown() then
-				moveEnd()
-			else
-				moving = true
-				anchorFrame:Show()
-				self:Schedule(15, moveEnd)
-				self.Bars:CreateBar(15, DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
-				font:SetText(DBM_CORE_MOVE_SPECIAL_WARNING_TEXT)
-				frame:Show()
-				frame:SetFrameStrata("TOOLTIP")
-				frame:SetAlpha(1)
-				frame.timer = mhuge
-			end
-		end
-	end
-
 	local function testWarningEnd()
 		frame:SetFrameStrata("HIGH")
 	end
@@ -8489,13 +8549,10 @@ do
 		if moving then
 			return
 		end
-		font:SetText(DBM_CORE_MOVE_SPECIAL_WARNING_TEXT)
-		frame:Show()
-		frame:SetAlpha(1)
+		DBM:AddSpecialWarning(DBM_CORE_MOVE_SPECIAL_WARNING_TEXT)
 		frame:SetFrameStrata("TOOLTIP")
 		self:Unschedule(testWarningEnd)
-		self:Schedule(3, testWarningEnd)
-		frame.timer = 3
+		self:Schedule(self.Options.SpecialWarningDuration * 1.3, testWarningEnd)
 		self:PlaySpecialWarningSound(number)
 		if self.Options.ShowFlashFrame then
 			if number == 1 then
