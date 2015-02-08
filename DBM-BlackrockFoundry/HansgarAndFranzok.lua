@@ -139,8 +139,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	--"<954.06 23:33:08> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-3783-1205-31925-76974-0000518B7D#Franzok#Player-76-0580DD5F#playerName#156938#Crippling Suplex#nil#nil", -- [6639]--SMASH (5.5 seconds after stun, VERY tight to cover attack with 6 second cd)
 	elseif spellId == 156546 or spellId == 156542 then
 		specWarnCripplingSupplex:Show()--Try and hit CD right before stun (156609)
-		timerCripplingSupplex:Start()
-		countCripplingSupplex:Start()
+		if self:IsTank() then
+			timerCripplingSupplex:Start(3.5)
+			countCripplingSupplex:Start(3.5)
+		else
+			timerCripplingSupplex:Start()
+			countCripplingSupplex:Start()
+		end
 	end
 end
 
