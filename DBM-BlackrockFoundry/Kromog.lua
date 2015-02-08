@@ -82,7 +82,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerGraspingEarthCD:Start()
 			timerStoneBreathCD:Start(31, 1)
-			timertimerRipplingSmashCD:Start(41)
+			timerRipplingSmashCD:Start(41)
 		end
 	elseif spellId == 157054 then
 		specWarnThunderingBlows:Show()
