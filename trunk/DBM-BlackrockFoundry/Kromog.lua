@@ -30,11 +30,11 @@ local specWarnWarpedArmorOther		= mod:NewSpecialWarningTaunt(156766)
 local specWarnTremblingEarth		= mod:NewSpecialWarningSpell(173917, nil, nil, nil, 2)
 local specWarnCalloftheMountain		= mod:NewSpecialWarningCount(158217, nil, nil, nil, 3)
 
-local timerGraspingEarthCD			= mod:NewCDTimer(115, 157060)--Unless see new logs on normal showing it can still be 111, raising to 115, average i saw was 116-119
+local timerGraspingEarthCD			= mod:NewCDTimer(114, 157060)--Unless see new logs on normal showing it can still be 111, raising to 115, average i saw was 116-119
 local timerThunderingBlowsCD		= mod:NewNextTimer(12, 157054)
-local timerRipplingSmashCD			= mod:NewCDTimer(21, 157592)--If it comes off CD early enough into ThunderingBlows/Grasping Earth, he skips a cast. Else, he'll cast it very soon after.
+local timerRipplingSmashCD			= mod:NewCDTimer(27, 157592)--If it comes off CD early enough into ThunderingBlows/Grasping Earth, he skips a cast. Else, he'll cast it very soon after.
 --local timerStoneGeyserCD			= mod:NewNextTimer(30, 158130)
-local timerStoneBreathCD			= mod:NewNextCountTimer(22.5, 156852)
+local timerStoneBreathCD			= mod:NewCDCountTimer(22.5, 156852)
 local timerSlamCD					= mod:NewCDTimer(23, 156704, nil, "Tank")
 local timerWarpedArmorCD			= mod:NewCDTimer(14, 156766, nil, "Tank")
 local timerTremblingEarthCD			= mod:NewNextTimer(30, 173917)
@@ -57,9 +57,9 @@ function mod:OnCombatStart(delay)
 	self.vb.stoneBreath = 0
 	timerStoneBreathCD:Start(8-delay, 1)--8-10
 	timerWarpedArmorCD:Start(15-delay)
-	timerRipplingSmashCD:Start(20-delay)
 	timerSlamCD:Start(25-delay)--More data needed
-	timerGraspingEarthCD:Start(53-delay)
+	timerRipplingSmashCD:Start(30-delay)
+	timerGraspingEarthCD:Start(51-delay)
 	berserkTimer:Start(-delay)
 end
 
@@ -82,6 +82,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerGraspingEarthCD:Start()
 			timerStoneBreathCD:Start(31, 1)
+			timertimerRipplingSmashCD:Start(41)
 		end
 	elseif spellId == 157054 then
 		specWarnThunderingBlows:Show()
