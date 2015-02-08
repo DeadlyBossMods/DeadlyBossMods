@@ -33,6 +33,7 @@ local specWarnOverheadSmash			= mod:NewSpecialWarningCount(155301, nil, nil, nil
 local specWarnPetrifyingSlam		= mod:NewSpecialWarningMoveAway(155326, nil, nil, nil, 3, nil, 2)
 
 local timerInfernoSliceCD			= mod:NewCDCountTimer(13, 155080)--Variable do to energy bugs (gruul not gain power consistently)
+local timerSpecialCD				= mod:NewCDSpecialTimer(20.5)
 local timerPetrifyingSlamCD			= mod:NewCDCountTimer(60, 155323)--60-70 variation
 local timerOverheadSmashCD			= mod:NewCDCountTimer(25, 155301)--25-42 variation
 local timerShatter					= mod:NewCastTimer(8, 155529)
@@ -90,9 +91,8 @@ function mod:OnCombatStart(delay)
 			"UNIT_POWER_FREQUENT boss1"
 			)
 	end
+	timerSpecialCD:Start(-delay)
 	timerRampageCD:Start(-delay)--Variable. But seen as low as 108 in LFR, normal, mythic
-	timerPetrifyingSlamCD:Start(20.5-delay, 1)
-	timerOverheadSmashCD:Start(-delay, 1)
 end
 
 function mod:OnCombatEnd()
