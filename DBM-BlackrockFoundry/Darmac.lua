@@ -30,10 +30,11 @@ mod:RegisterEventsInCombat(
 --Boss basic attacks
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
 --Boss gained abilities (beast deaths grant boss new abilities)
-local warnWolf						= mod:NewTargetAnnounce(155458, 3)--Grants Rend and Tear
-local warnRylak						= mod:NewTargetAnnounce(155459, 3)--Grants Superheated Shrapnel
-local warnElekk						= mod:NewTargetAnnounce(155460, 3)--Grants Tantrum
-local warnClefthoof					= mod:NewTargetAnnounce(155462, 3)--Grants Epicenter
+local warnMount						= mod:NewTargetAnnounce(29769, 1)
+local warnWolf						= mod:NewTargetAnnounce(155458, 1)--Grants Rend and Tear
+local warnRylak						= mod:NewTargetAnnounce(155459, 1)--Grants Superheated Shrapnel
+local warnElekk						= mod:NewTargetAnnounce(155460, 1)--Grants Tantrum
+local warnClefthoof					= mod:NewTargetAnnounce(155462, 1)--Grants Epicenter
 --Beast abilities (living beasts)
 local warnSearingFangs				= mod:NewStackAnnounce(155030, 2, nil, "Tank")
 local warnCrushArmor				= mod:NewStackAnnounce(155236, 2, nil, "Tank")
@@ -296,7 +297,9 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetCIDFromGUID(unitGUID)
 			if cid == 76884 or cid == 76874 or cid == 76945 or cid == 76946 then
 				DBM:Debug("INSTANCE_ENCOUNTER_ENGAGE_UNIT, Boss mounting")
-				updateBeasts(cid, 1, UnitName(unitID))
+				local name = UnitName(unitID)
+				updateBeasts(cid, 1, name)
+				warnMount:Show(name)
 				if cid == 76884 then--Cruelfang
 					self.vb.WolfAbilities = true
 					timerRendandTearCD:Start(5)
