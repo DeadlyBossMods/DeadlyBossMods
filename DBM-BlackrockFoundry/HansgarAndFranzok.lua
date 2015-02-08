@@ -29,7 +29,8 @@ local specWarnShatteredVertebraeOther	= mod:NewSpecialWarningTaunt(157139)
 local specWarnCripplingSupplex			= mod:NewSpecialWarningPreWarn("OptionVersion2", 156938, "Tank|Healer", 3.5, nil, nil, 3)--pop a cooldown, or die.
 local specWarnSearingPlates				= mod:NewSpecialWarningSpell(161570, nil, nil, nil, 2)
 local specWarnStampers					= mod:NewSpecialWarningSpell(174825, nil, nil, nil, 2)
-local specWarnEnvironmentalThreatsEnd	= mod:NewSpecialWarningEnd("ej10089", nil)
+local specWarnSearingPlatesEnd			= mod:NewSpecialWarningEnd(161570)
+local specWarnStampersEnd				= mod:NewSpecialWarningEnd(174825)
 
 local timerDisruptingRoar				= mod:NewCastTimer(2.5, 160838, nil, "SpellCaster")
 local timerDisruptingRoarCD				= mod:NewCDTimer(46, 160838, nil, "SpellCaster")
@@ -163,7 +164,11 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 				timerSmartStamperCD:Start()
 				voiceEnvironmentalThreats:Play("gather")--Must restack for smart stampers
 			else
-				specWarnEnvironmentalThreatsEnd:Show()
+				if self.vb.phase == 2 then
+					specWarnSearingPlatesEnd:Schedule(3)
+				else
+					specWarnStampersEnd:Show()
+				end
 				voiceEnvironmentalThreats:Play("safenow")
 			end
 		end
@@ -182,7 +187,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				timerSmartStamperCD:Start()
 				voiceEnvironmentalThreats:Play("gather")--Must restack for smart stampers
 			else
-				specWarnEnvironmentalThreatsEnd:Show()
+				if self.vb.phase == 2 then
+					specWarnSearingPlatesEnd:Show()
+				else
+					specWarnStampersEnd:Show()
+				end
 				voiceEnvironmentalThreats:Play("safenow")
 			end
 		end
