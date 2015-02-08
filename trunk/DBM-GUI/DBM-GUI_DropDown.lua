@@ -250,7 +250,6 @@ do
 	
 	function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, height, parent)
 		local FrameTitle = "DBM_GUI_DropDown"
-		
 		-- Check Values
 		if type(values) == "table" then
 			for _,entry in next,values do
@@ -266,9 +265,11 @@ do
 		dropdown.callfunc = callfunc
 		if not width then
 			width = 120 -- minimum size
-			for i, v in ipairs(values) do
-				_G[dropdown:GetName().."Text"]:SetText(v.text)
-				width = math.max(width, _G[dropdown:GetName().."Text"]:GetStringWidth())
+			if title ~= DBM_GUI_Translations.Warn_FontType then--Force font menus to always be fixed 120 width
+				for i, v in ipairs(values) do
+					_G[dropdown:GetName().."Text"]:SetText(v.text)
+					width = math.max(width, _G[dropdown:GetName().."Text"]:GetStringWidth())
+				end
 			end
 		end
 		dropdown:SetWidth(width + 30)	-- required to fix some setpoint problems
