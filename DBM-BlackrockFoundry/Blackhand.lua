@@ -37,7 +37,8 @@ local specWarnThrowSlagBombs		= mod:NewSpecialWarningMove(156030, nil, nil, nil,
 local specWarnShatteringSmash		= mod:NewSpecialWarningCount(155992, "Melee", nil, nil, nil, nil, 2)
 local specWarnMoltenSlag			= mod:NewSpecialWarningMove(156401)
 --Stage Two: Storage Warehouse
-local specWarnSiegemaker			= mod:NewSpecialWarningSwitch("ej9571", "Dps", nil, nil, nil, nil, 2)
+local specWarnSiegemaker			= mod:NewSpecialWarningSwitch("OptionVersion2", "ej9571", false)
+local specWarnSiegemakerPlatingFades= mod:NewSpecialWarningFades(156667, "Dps")
 local specWarnFixate				= mod:NewSpecialWarningRun(156653, nil, nil, nil, 4)
 local yellFixate					= mod:NewYell(156653)
 --Stage Three: Iron Crucible
@@ -190,7 +191,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 156667 then
-		warnSiegemaker:Show()
+		if not self.Options.SpecWarnej9571switch2 then
+			warnSiegemaker:Show()
+		else
+			specWarnSiegemaker:Show()
+		end
 		timerSiegemakerCD:Start()
 		voiceSiegemaker:Play("ej9571")
 	elseif spellId == 156401 and args:IsPlayer() and self:AntiSpam(2, 1) then
@@ -219,7 +224,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.RangeCheck:Hide()
 		end
 	elseif spellId == 156667 then
-		specWarnSiegemaker:Show()
+		specWarnSiegemakerPlatingFades:Show()
 	end
 end
 
