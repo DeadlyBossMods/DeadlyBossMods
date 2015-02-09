@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Jan 31, 2015@12636
+-- Last update: Feb 8, 2015@12810
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -59,6 +59,7 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s作战%s前开始，正在恢复计时条�
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor logging started."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor logging ended."
 
+DBM_CORE_PROFILE_NOT_FOUND			= "<Deadly Boss Mods> 你当前的配置文件已损坏. 'Default' 默认配置文件会被应用."
 DBM_CORE_PROFILE_CREATED			= "配置文件 '%s' 已经创建."
 DBM_CORE_PROFILE_CREATE_ERROR		= "配置文件创建失败. 无效的配置文件名."
 DBM_CORE_PROFILE_CREATE_ERROR_D		= "配置文件创建失败. '%s' 已经存在."
@@ -134,8 +135,8 @@ DBM_CORE_VERSIONCHECK_HEADER		= "DBM - 版本检测"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d) %s"--One Boss mod
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s：未安装DBM"
-DBM_CORE_VERSIONCHECK_OUTDATED		= "下列%d名玩家的DBM版本已经过期:%s"
 DBM_CORE_VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用DBM， %d名成员正在使用Bigwigs"
+DBM_CORE_VERSIONCHECK_OUTDATED		= "下列%d名玩家的DBM版本已经过期:%s"
 DBM_CORE_YOUR_VERSION_OUTDATED		= "你的DBM已经过期。请访问 http://dev.deadlybossmods.com 下载最新版本。"
 DBM_CORE_OUTDATED_PVP_MODS			= "你当前使用的DBM-PVP模块已经过期。PVP模块现在需要单独下载。请访问 http://www.deadlybossmods.com"
 DBM_CORE_VOICE_PACK_OUTDATED		= "你当前使用的DBM语音包已经过期。特殊警报屏蔽（当心，毁灭）已被禁用。请下载最新语音包，或联系语音包作者更新。"
@@ -148,9 +149,9 @@ DBM_CORE_UPDATEREMINDER_HEADER			= "你的DBM版本已过期。\n你可以在如
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "你的DBM Alpha 版本已过期了%d个版本。这可能导致你或其他团队成员出错。"
 DBM_CORE_UPDATEREMINDER_FOOTER			= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "复制下载地址到剪切板。"
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "复制链接到剪切板。"
-DBM_CORE_UPDATEREMINDER_NOTAGAIN		= "检测到新版本后弹出提示框"
 DBM_CORE_UPDATEREMINDER_DISABLE			= "警告：你的DBM已经过期了%d个版本，它已被禁用，直到你更新。这是为了确保它不会导致你或其他团队成员出错。"
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "你的DBM版本会在这首领战斗有不准确的计时器或警告。这问题会在下次正式版更新。你也可以更新至最新的alpha版本立即修正此问题。"
+DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "你的DBM已经过期,它已被禁用,直到你更新.这是为了确保它不会导致你或其他团队成员出错.这次更新是一个非常重要的补丁,请确保你得到的是最新版."
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "警告：你使用了不正确版本的DBM。请确保DBM版本和游戏版本一致。"
 DBM_CORE_VEM							= "你好像在使用VEM。DBM在这种情况下无法被载入。"
 DBM_CORE_3RDPROFILES					= "警告: DBM-Profiles已经无法和本版本DBM兼容。DBM核心已经自带配置文件管理系统，请移除DBM-Profiles避免冲突。"
@@ -289,6 +290,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell			= "特殊警报：$spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.ends			= "特殊警报：$spell:%s结束"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.fades			= "特殊警报：$spell:%s消失"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon			= "特殊警报：$spell:%s即将到来"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.prewarn 		= "特殊警报：%s秒前预警$spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel			= "特殊警报：需要驱散或偷取$spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect 		= "特殊警报：$spell:%s需要停止攻击"--Spell Reflect
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt		= "特殊警报：需要打断$spell:%s"
@@ -361,10 +363,10 @@ DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT		= "信息框：$spell:%s"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT		= "当首领开打时播放准备检查的音效（即使没有选定目标）"
 
 -- New special warnings
+DBM_CORE_MOVE_WARNING_BAR				= "可拖动的团队警报"
+DBM_CORE_MOVE_WARNING_MESSAGE			= "感谢您使用Deadly Boss Mods"
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "可拖动的特别警报"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "特别警报"
-
-DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "此区域不支持%d码的距离检查。\n已支持的距离有10，11，15及28码。"
 
 DBM_ARROW_MOVABLE				= "可移动箭头"
 DBM_ARROW_ERROR_USAGE	= {
