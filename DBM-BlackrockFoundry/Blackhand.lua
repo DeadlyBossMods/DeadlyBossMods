@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 155992 159142 156928 158054",
-	"SPELL_AURA_APPLIED 156096 157000 156667 156401 156653",
+	"SPELL_AURA_APPLIED 156096 157000 156667 156401 156653 159179",
 	"SPELL_AURA_REMOVED 156096 157000 156667",
 	"SPELL_PERIODIC_DAMAGE 156401",
 	"SPELL_PERIODIC_MISSED 156401",
@@ -37,8 +37,8 @@ local specWarnThrowSlagBombs		= mod:NewSpecialWarningMove(156030, nil, nil, nil,
 local specWarnShatteringSmash		= mod:NewSpecialWarningCount(155992, "Melee", nil, nil, nil, nil, 2)
 local specWarnMoltenSlag			= mod:NewSpecialWarningMove(156401)
 --Stage Two: Storage Warehouse
-local specWarnSiegemaker			= mod:NewSpecialWarningSwitch("OptionVersion2", "ej9571", false)
-local specWarnSiegemakerPlatingFades= mod:NewSpecialWarningFades(156667, "Dps")
+local specWarnSiegemaker			= mod:NewSpecialWarningSwitch("OptionVersion2", "ej9571", false)--Kiter switch. off by default. 
+local specWarnSiegemakerPlatingFades= mod:NewSpecialWarningFades(156667, "Dps")--Plating removed, NOW dps switch
 local specWarnFixate				= mod:NewSpecialWarningRun(156653, nil, nil, nil, 4)
 local yellFixate					= mod:NewYell(156653)
 --Stage Three: Iron Crucible
