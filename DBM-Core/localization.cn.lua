@@ -138,12 +138,9 @@ DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s：未安装DBM"
 DBM_CORE_VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用DBM， %d名成员正在使用Bigwigs"
 DBM_CORE_VERSIONCHECK_OUTDATED		= "下列%d名玩家的DBM版本已经过期:%s"
 DBM_CORE_YOUR_VERSION_OUTDATED		= "你的DBM已经过期。请访问 http://dev.deadlybossmods.com 下载最新版本。"
-DBM_CORE_OUTDATED_PVP_MODS			= "你当前使用的DBM-PVP模块已经过期。PVP模块现在需要单独下载。请访问 http://www.deadlybossmods.com"
 DBM_CORE_VOICE_PACK_OUTDATED		= "你当前使用的DBM语音包已经过期。特殊警报屏蔽（当心，毁灭）已被禁用。请下载最新语音包，或联系语音包作者更新。"
 DBM_CORE_VOICE_MISSING				= "DBM找不到你当前选择的语音包。语音包选项已经被设置成'None'。请确保你的语音包被正确安装和启用。"
 DBM_CORE_VOICE_COUNT_MISSING		= "在 %d 语音包中找不到倒计时语音。倒计时已恢复为默认值"
---DBM_BIG_WIGS						(Same as English locales)
---DBM_BIG_WIGS_ALPHA					(Same as English locales)
 
 DBM_CORE_UPDATEREMINDER_HEADER			= "你的DBM版本已过期。\n你可以在如下地址下载到新版本%s（r%d）："
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "你的DBM Alpha 版本已过期了%d个版本。这可能导致你或其他团队成员出错。"
