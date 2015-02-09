@@ -41,7 +41,7 @@ local timerTremblingEarthCD			= mod:NewNextTimer(30, 173917)
 local timerTremblingEarth			= mod:NewBuffActiveTimer(25, 173917)
 local timerCalloftheMountain		= mod:NewCastTimer(5, 158217)
 
-local berserkTimer					= mod:NewBerserkTimer(600)
+local berserkTimer					= mod:NewBerserkTimer(480)
 
 local countdownThunderingBlows		= mod:NewCountdown(12, 157054)
 local countdownTremblingEarth		= mod:NewCountdownFades("Alt25", 173917)
@@ -60,7 +60,7 @@ function mod:OnCombatStart(delay)
 	timerSlamCD:Start(25-delay)--More data needed
 	timerRipplingSmashCD:Start(30-delay)
 	timerGraspingEarthCD:Start(51-delay)
-	berserkTimer:Start(-delay)
+	berserkTimer:Start(-delay)--8 minutes on normal and heroic verified, but sometimes late?
 end
 
 function mod:SPELL_CAST_START(args)

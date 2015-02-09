@@ -92,8 +92,10 @@ function mod:OnCombatStart(delay)
 		self:RegisterShortTermEvents(
 			"UNIT_POWER_FREQUENT boss1"
 			)
-		if self:IsHeroic() then--6 min berserk on heroic. none found for normal, even going 14 min pulls
+		if self:IsHeroic() then
 			berserkTimer:Start(-delay)
+		elseif self:IsNormal() then
+			berserkTimer:Start(480-delay)
 		end
 	end
 	timerSpecialCD:Start(-delay)
