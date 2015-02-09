@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 155992 159142 156928 158054",
 	"SPELL_AURA_APPLIED 156096 157000 156667 156401 156653 159179",
-	"SPELL_AURA_REMOVED 156096 157000 156667",
+	"SPELL_AURA_REMOVED 156096 157000 156667 159179",
 	"SPELL_PERIODIC_DAMAGE 156401",
 	"SPELL_PERIODIC_MISSED 156401",
 	"SPELL_ENERGIZE 104915",
@@ -218,7 +218,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnMarked then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 157000 and args:IsPlayer() then
+	elseif (spellId == 157000 or spellId == 159179) and args:IsPlayer() then
 		timerSlagBomb:Cancel()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
