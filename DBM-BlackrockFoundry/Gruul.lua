@@ -40,6 +40,8 @@ local timerShatter					= mod:NewCastTimer(8, 155529)
 local timerRampage					= mod:NewBuffActiveTimer(30, 155539)
 local timerRampageCD				= mod:NewCDTimer(107, 155539)--Variable, may be even shorter
 
+local berserkTimer					= mod:NewBerserkTimer(360)
+
 local countdownInfernoSlice			= mod:NewCountdown(13, 155080, "Tank")
 
 local voiceInfernoSlice				= mod:NewVoice(155080) --gathershare. maybe change to "InfernoSlice".
@@ -90,6 +92,9 @@ function mod:OnCombatStart(delay)
 		self:RegisterShortTermEvents(
 			"UNIT_POWER_FREQUENT boss1"
 			)
+		if self:IsHeroic() then--6 min berserk on heroic. none found for normal, even going 14 min pulls
+			berserkTimer:Start(-delay)
+		end
 	end
 	timerSpecialCD:Start(-delay)
 	timerRampageCD:Start(-delay)--Variable. But seen as low as 108 in LFR, normal, mythic
