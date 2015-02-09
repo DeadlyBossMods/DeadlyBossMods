@@ -329,7 +329,7 @@ local iconSetRevision = {}
 local iconSetPerson = {}
 local addsGUIDs = {}
 
-local fakeBWRevision = 12700
+local fakeBWRevision = 12699
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
