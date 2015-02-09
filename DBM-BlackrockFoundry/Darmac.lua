@@ -76,6 +76,8 @@ local timerConflagCD				= mod:NewCDTimer("OptionVersion2", 20, 155399, nil, "Hea
 local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
 local timerInfernoBreathCD			= mod:NewCDTimer(20, 154989)
 
+local berserkTimer					= mod:NewBerserkTimer(720)
+
 local countdownPinDown				= mod:NewCountdown(20.5, 154960, "Ranged")
 local countdownCallPack				= mod:NewCountdown("Alt31", 154975, "Tank")
 
@@ -181,6 +183,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3)
 	end
+	berserkTimer:Start(-delay)--Verified 12 min normal and heroic.
 end
 
 function mod:OnCombatEnd()
