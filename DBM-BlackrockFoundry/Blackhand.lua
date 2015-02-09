@@ -37,7 +37,7 @@ local specWarnThrowSlagBombs		= mod:NewSpecialWarningMove(156030, nil, nil, nil,
 local specWarnShatteringSmash		= mod:NewSpecialWarningCount(155992, "Melee", nil, nil, nil, nil, 2)
 local specWarnMoltenSlag			= mod:NewSpecialWarningMove(156401)
 --Stage Two: Storage Warehouse
-local specWarnSiegemaker			= mod:NewSpecialWarningSwitch("OptionVersion2", "ej9571", false)--Kiter switch. off by default. 
+local specWarnSiegemaker			= mod:NewSpecialWarningSpell("ej9571", false)--Kiter switch. off by default. 
 local specWarnSiegemakerPlatingFades= mod:NewSpecialWarningFades(156667, "Dps")--Plating removed, NOW dps switch
 local specWarnFixate				= mod:NewSpecialWarningRun(156653, nil, nil, nil, 4)
 local yellFixate					= mod:NewYell(156653)
@@ -184,20 +184,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
-		else--Tank stuff
-			if spellId == 159179 then--tank version
+		end
+		--Tank stuff
+		if spellId == 159179 then--tank version
+			if not args:IsPlayer() then
 				specWarnAttachSlagBombsOther:Show(args.destName)
-				voiceAttachSlagBombs:Play("changemt")
 			end
+			voiceAttachSlagBombs:Play("changemt")
 		end
 	elseif spellId == 156667 then
-		if not self.Options.SpecWarnej9571switch2 then
+		if not self.Options.SpecWarnej9571spell then
 			warnSiegemaker:Show()
 		else
 			specWarnSiegemaker:Show()
 		end
 		timerSiegemakerCD:Start()
-		voiceSiegemaker:Play("ej9571")
 	elseif spellId == 156401 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnMoltenSlag:Show()
 	elseif spellId == 156653 then
@@ -225,31 +226,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 156667 then
 		specWarnSiegemakerPlatingFades:Show()
+		voiceSiegemaker:Play("ej9571")
 	end
 end
-
---[[
-Just in case SPELL_ENERGIZE method doesn't work
-do
-	local targetsHit = 0
-	local function updateSmash(self)
-		DBM:Debug("updateSmash is running, 4 targets not hit?")
-	end
-	function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-		if spellId == 158054 then
-			targetsHit = targetsHit + 1
-			self:Unschedule(updateSmash)
-			self:Schedule(3, updateSmash, self)
-			if targetsHit >= 4 then
-				self:UnregisterShortTermEvents()--Unregister events and do nothing else, we're done. hit enough targets
-				self:Unschedule(updateSmash)
-				targetsHit = 0
-				DBM:Debug("updateSmash should be aborted. At least 4 targets hit.")
-			end
-		end
-	end
-	mod.SPELL_MISSED = mod.SPELL_DAMAGE
-end--]]
 
 function mod:SPELL_ENERGIZE(_, _, _, _, destGUID, _, _, _, spellId, _, _, amount)
 	if spellId == 104915 and destGUID == UnitGUID("boss1") then
