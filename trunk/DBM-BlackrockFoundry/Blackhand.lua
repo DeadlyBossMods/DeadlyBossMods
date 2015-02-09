@@ -65,7 +65,7 @@ local timerAttachSlagBombsCD		= mod:NewCDTimer(26, 157000)--26-28. Do to increas
 local timerSlagBomb					= mod:NewCastTimer(5, 157015)
 
 local countdownShatteringSmash		= mod:NewCountdown(45.5, 155992)
-local countdownSlagBombs			= mod:NewCountdown("Alt25", 155992, "Melee")
+local countdownSlagBombs			= mod:NewCountdown("Alt25", 156030, "Melee")
 local countdownMarkedforDeath		= mod:NewCountdown("AltTwo25", 156096, "-Tank")
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
