@@ -58,10 +58,6 @@ DBM = {
 	ReleaseRevision = 12764 -- the revision of the latest stable version that is available
 }
 
--- Legacy crap; that stupid "Version" field was never a good idea.
--- Some functions that should be using ReleaseRevision still use this one, so we will just keep it and set to ReleaseRevision
-DBM.Version = tostring(DBM.ReleaseRevision)
-
 -- support for git svn which doesn't support svn keyword expansion
 if not DBM.Revision then
 	-- just use the latest release revision
@@ -2164,7 +2160,7 @@ do
 				raid[playerName].class = class
 				raid[playerName].id = "player"
 				raid[playerName].revision = DBM.Revision
-				raid[playerName].version = tonumber(DBM.Version)
+				raid[playerName].version = DBM.ReleaseRevision
 				raid[playerName].displayVersion = DBM.DisplayVersion
 				raid[playerName].locale = GetLocale()
 				raid[playerName].enabledIcons = tostring(not DBM.Options.DontSetIcons)
@@ -2311,7 +2307,7 @@ do
 			raid[playerName].class = class
 			raid[playerName].id = "player"
 			raid[playerName].revision = DBM.Revision
-			raid[playerName].version = tonumber(DBM.Version)
+			raid[playerName].version = DBM.ReleaseRevision
 			raid[playerName].displayVersion = DBM.DisplayVersion
 			raid[playerName].locale = GetLocale()
 			raidUIds["player"] = playerName
@@ -3283,14 +3279,7 @@ function DBM:LoadMod(mod, force)
 			RequestChallengeModeMapInfo()
 			RequestChallengeModeLeaders(mapID)
 		end
-		if instanceType == "pvp" and IsAddOnLoaded("DBM-PvP") then--Is a battleground and pvp mods are installed
-			if self:GetModByName("z30") and self:GetModByName("z30").revision >= 3 then--They are loaded and correct revision
-				--Do nothing
-			else--They either aren't loaded or are wrong revision. in either case, it means they have old pvp mods installed that don't load correctly or are out of date
-				--Not the new stand alone pvp mods these are old ones and user needs to remove them or install updated package
-				self:AddMsg(DBM_CORE_OUTDATED_PVP_MODS)
-			end
-		elseif instanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
+		if instanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
 			local doRequest = false
 			if IsEncounterInProgress() then
 				doRequest = true
@@ -3632,9 +3621,9 @@ do
 			VPVersion = "/ VP"..VoicePack..": v"..DBM.VoiceVersions[VoicePack]
 		end
 		if VPVersion then
-			sendSync("V", ("%d\t%s\t%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), VPVersion))
+			sendSync("V", ("%d\t%s\t%s\t%s\t%s\t%s"):format(DBM.Revision, tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), VPVersion))
 		else
-			sendSync("V", ("%d\t%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons)))
+			sendSync("V", ("%d\t%s\t%s\t%s\t%s"):format(DBM.Revision, tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons)))
 		end
 	end
 
@@ -3666,7 +3655,7 @@ do
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
 			DBM:Debug("Received version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
-			if version > tonumber(DBM.Version) and LastInstanceType ~= "pvp" then -- Update reminder
+			if version > DBM.ReleaseRevision and LastInstanceType ~= "pvp" then -- Update reminder
 				if not checkEntry(newerVersionPerson, sender) then
 					newerVersionPerson[#newerVersionPerson + 1] = sender
 					DBM:Debug("Newer version detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)

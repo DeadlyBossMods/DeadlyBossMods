@@ -85,7 +85,6 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"--One Boss mod
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM non installé"--Two Boss mods
 DBM_CORE_VERSIONCHECK_FOOTER		= "%d joueurs trouvés avec Deadly Boss Mods & %d joueurs avec BigWigs"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Votre version de Deadly Boss Mods est périmée. Veuillez vous rendre sur www.deadlybossmods.com pour obtenir la dernière version."
-DBM_CORE_OUTDATED_PVP_MODS                      = "Vos mods DBM-PvP sont périmés et devraient être désactivés s'ils ne sont pas utilisés, ou mis à jours séparément (PvP package). Ces mods ne sont plus inclus avec l'installation de DBM-Core. Les dernières versions des PvP mods peuvent être trouvés sur http://www.deadlybossmods.com"
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Votre version de Deadly Boss Mods est périmée.\nLa version %s (r%d) est disponible au téléchargement ici:"
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA    = "Votre version Alpha de DBM-alpha est périmée.\n Vous avez au moins %d versions de test de retard. Il est recommandé au utilisateurs d'utiliser la dernière version alpha ou la dernière version stable. Les versions alpha périmées peuvent mener à des fonctionnalités absentes ou cassées."
