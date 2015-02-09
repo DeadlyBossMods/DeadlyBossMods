@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Jan 31, 2015@12636
+-- Last update: Feb 8, 2015@12810
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -100,13 +100,17 @@ L.ShowFakedRaidWarnings 	= "以伪装团队警报信息的方式显示警报内�
 L.WarningIconLeft 			= "左侧显示图标"
 L.WarningIconRight 			= "右侧显示图标"
 L.WarningIconChat 			= "在聊天窗口中显示图标"
-L.RaidWarnMessage 			= "感谢您使用Deadly Boss Mods"
-L.BarWhileMove 				= "可移动团队警报"
+L.Warn_FontType				= "选择字体"
+L.Warn_FontStyle			= "选择样式"
+L.Warn_FontShadow			= "阴影"
+L.Warn_FontSize				= "字体大小: %d"
+L.Warn_Duration				= "警告持续时间: %d 秒"
+L.None						= "无"
+L.Outline					= "描边"
+L.ThickOutline				= "加粗描边"
+L.MonochromeOutline			= "单色描边"
+L.MonochromeThickOutline	= "单色加粗描边"
 L.RaidWarnSound				= "发出团队警报时播放声音"
-L.SpecialWarnSound			= "针对你发出特殊警报时播放的声音"
-L.SpecialWarnSound2			= "针对所有人发出特殊警报时播放的声音(默认:当心)"
-L.SpecialWarnSound3			= "针对非常重要事件(灭团点)的特殊警报播放的声音(默认:毁灭)"
-L.SpecialWarnSound4			= "特殊警报: 快跑啊 小女孩"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages	 	= "综合信息"
@@ -175,6 +179,10 @@ L.SpecWarn_FlashAlpha		= "泛光透明度: %0.1f"
 L.SpecWarn_DemoButton		= "测试警报"
 L.SpecWarn_MoveMe			= "设置位置"
 L.SpecWarn_ResetMe			= "重置"
+L.SpecialWarnSound			= "针对你发出特殊警报时播放的声音"
+L.SpecialWarnSound2			= "针对所有人发出特殊警报时播放的声音(默认:当心)"
+L.SpecialWarnSound3			= "针对非常重要事件(灭团点)的特殊警报播放的声音(默认:毁灭)"
+L.SpecialWarnSound4			= "特殊警报: 快跑啊 小女孩"
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "语音警告"
@@ -205,13 +213,14 @@ L.BarWidth					= "计量条宽度: %d"
 L.Panel_SpamFilter			= "DBM全局及信息过滤"
 L.Area_SpamFilter_Outgoing	= "DBM全局过滤设置"
 L.SpamBlockNoShowAnnounce	= "不显示警报或播放警报音效"
-L.DontShowFarWarnings		= "不显示过远事件的通告和计时器"
-L.SpamBlockNoRunAway		= "不要播放'快跑啊，小姑娘'"
 L.SpamBlockNoSendWhisper	= "不发送悄悄话提示给其他玩家"
 L.SpamBlockNoSetIcon		= "不设定标记在目标上"
 L.SpamBlockNoRangeFrame		= "不显示距离监视器"
 L.SpamBlockNoInfoFrame		= "不显示信息监视器"
 L.SpamBlockNoHealthFrame	= "不显示生命值监视器"
+L.SpamBlockNoCountdowns		= "不要播放倒数"
+L.SpamBlockNoIconRestore	= "当战斗结束后不保存团队标记状态(大饼 星星 月亮 方块这些)"
+L.SpamBlockNoRangeRestore	= "当boss暂时消失时不恢复距离指示器"
 
 -- Tab: Spam Filter
 L.Area_SpamFilter			= "信息过滤设置"
