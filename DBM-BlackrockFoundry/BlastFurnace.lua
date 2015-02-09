@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 160379 155186 156937 177756",
 	"SPELL_CAST_SUCCESS 155179 174726",
-	"SPELL_AURA_APPLIED 155192 155196 158345 155242 155181 176121 155225 156934",
+	"SPELL_AURA_APPLIED 155192 155196 158345 155242 155181 176121 155225 156934 155173",
 	"SPELL_AURA_APPLIED_DOSE 155242",
 	"SPELL_AURA_REMOVED 155192 176121",
 	"SPELL_PERIODIC_DAMAGE 156932 155223",
@@ -53,6 +53,7 @@ local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
 local specVolatileFire			= mod:NewSpecialWarningMoveAway(176121)
 local yellVolatileFire			= mod:NewYell(176121)
 local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", "Dps")
+local specWarnEarthShield		= mod:NewSpecialWarningDispel(155173, "MagicDispeller")
 --Phase 3
 local specWarnHeartoftheMountain= mod:NewSpecialWarningSwitch("ej10808", "Tank")
 local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3, nil, nil, nil, nil, 2)
@@ -203,6 +204,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnRuptureOn:Show()
 		end
+	elseif spellId == 155173 and not args:IsDestTypePlayer() then
+		specWarnEarthShield:Show(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
