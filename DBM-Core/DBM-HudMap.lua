@@ -319,12 +319,12 @@ do
 end
 
 do
-	local backdrop = {		
-		tile = false,
-		tileSize = 0,
-		edgeSize = 16, 
-		insets = { left = 0, right = 0, top = 0, bottom = 0 }
-	}
+	--local backdrop = {		
+	--	tile = false,
+	--	tileSize = 0,
+	--	edgeSize = 16, 
+	--	insets = { left = 0, right = 0, top = 0, bottom = 0 }
+	--}
 	function mod:UpdateFrame()
 		self.canvas:SetBackdrop(nil)
 	end
