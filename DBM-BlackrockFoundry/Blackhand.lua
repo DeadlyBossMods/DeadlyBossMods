@@ -78,6 +78,7 @@ local voiceAttachSlagBombs			= mod:NewVoice(157000) --target: runout;
 
 mod:AddSetIconOption("SetIconOnMarked", 156096, true)
 mod:AddRangeFrameOption("6/10")
+mod:AddHudMapOption(156096)
 
 mod.vb.phase = 1
 mod.vb.SlagEruption = 0
@@ -114,7 +115,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	DBMHudMap:FreeEncounterMarkers()
+	if self.Options.HudMap then
+		DBMHudMap:FreeEncounterMarkers()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -162,7 +165,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 156096 then
 		warnMarkedforDeath:CombinedShow(0.5, args.destName)
-		MFDMarkers[args.destName] = register(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
+		if self.Options.HudMap then
+			MFDMarkers[args.destName] = register(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
+		end
 		if self.vb.phase == 3 then
 			timerMarkedforDeathCD:Start(21.5)
 		else
