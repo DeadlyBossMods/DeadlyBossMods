@@ -120,7 +120,7 @@ local function UnregisterAllCallbacks(obj)
 			callbacks[k] = nil
 		end
 		if obj.callbacks.OnUnused then
-			obj.callbacks.OnUnused(obj.callbacks, target, eventname)--Global leak, target. WHere does target come from?
+			obj.callbacks.OnUnused(obj.callbacks, obj, eventname)--Make sure this doesn't error. :)
 		end
 	end
 end
