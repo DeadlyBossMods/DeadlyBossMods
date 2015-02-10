@@ -67,6 +67,7 @@ local timerSlagBomb					= mod:NewCastTimer(5, 157015)
 local countdownShatteringSmash		= mod:NewCountdown(45.5, 155992)
 local countdownSlagBombs			= mod:NewCountdown("Alt25", 156030, "Melee")
 local countdownMarkedforDeath		= mod:NewCountdown("AltTwo25", 156096, "-Tank")
+local countdownMarkedforDeathFades	= mod:NewCountdownFades("AltTwo5", 156096)--Same voice should be fine, never will overlap, and both for same spell, so people will understand
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceSiegemaker				= mod:NewVoice("ej9571", "Dps") -- ej9571.ogg tank coming
@@ -168,20 +169,25 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.HudMap then
 			MFDMarkers[args.destName] = register(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
 		end
-		if self.vb.phase == 3 then
-			timerMarkedforDeathCD:Start(21.5)
-		else
-			timerMarkedforDeathCD:Start()
-		end
-		timerImpalingThrow:Start()
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
 			yellMarkedforDeath:Yell()
 			voiceMarkedforDeath:Play("findshelter")
+			countdownMarkedforDeathFades:Start()
 		end
 		if self:AntiSpam(2, 3) then
+			local timer = 15.5
+			if self.vb.phase == 3 then
+				timer = 21.5
+			elseif self.vb.phase == 2 then
+				timer = 16
+			else
+				timer = 15
+			end
+			timerImpalingThrow:Start()
 			self:Schedule(0.5, checkMarked)
-			countdownMarkedforDeath:Start()
+			timerMarkedforDeathCD:Start(timer)
+			countdownMarkedforDeath:Start(timer)
 		end
 		if self.Options.SetIconOnMarked then
 			self:SetSortedIcon(1, args.destName, 1, 2)
