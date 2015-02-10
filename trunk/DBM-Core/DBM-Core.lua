@@ -5561,6 +5561,9 @@ do
 			SetCVar("Sound_EnableSFX", 1)
 		end
 		if self.Options.RestoreRange then self.Options.RestoreRange = nil end--User DCed while this was true, clear it
+		if not DBMHudMap then--User updated from a version without HudMap, then reloaded ui. This is a no go.
+			self:Schedule(35, function() self:AddMsg(DBM_CORE_UPDATE_REQUIRES_RELAUNCH) end)
+		end
 	end
 end
 
