@@ -272,7 +272,7 @@ function mod:OnInitialize()
 end
 
 function mod:Enable()
-	if DBM.Options.DontShowHudMap or HUDEnabled then return end
+	if DBM.Options.DontShowHudMap2 or HUDEnabled then return end
 	HUDEnabled = true
 	DBM:Debug("HudMap Activating", 2)
 	mod.mainFrame:Show()
