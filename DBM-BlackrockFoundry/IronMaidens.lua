@@ -60,7 +60,7 @@ local warnSanguineStrikes				= mod:NewTargetAnnounce(156601, 3, nil, "Healer")
 local specWarnBombardmentAlpha			= mod:NewSpecialWarningCount(157854, nil, nil, nil, 2)--From ship, but affects NON ship.
 local specWarnBombardmentOmega			= mod:NewSpecialWarningCount(157886, nil, nil, nil, 3)--From ship, but affects NON ship.
 ----Blackrock Deckhand
-local specWarnEarthenbarrier			= mod:NewSpecialWarningInterrupt(158708, nil, nil, nil, nil, nil, 2)
+local specWarnEarthenbarrier			= mod:NewSpecialWarningInterrupt("OptionVersion2", 158708, "-Healer", nil, nil, nil, nil, 2)
 ----Shattered Hand Deckhand
 local specWarnDeadlyThrow				= mod:NewSpecialWarningSpell(158692, "Tank")
 local specWarnFixate					= mod:NewSpecialWarningYou(158702)
