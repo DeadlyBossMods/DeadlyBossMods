@@ -7,7 +7,7 @@ local mod = DBMHudMap
 --[[ Default upvals 
      This has a slight performance benefit, but upvalling these also makes it easier to spot leaked globals. ]]--
 --local _G = _G.getfenv(0)
-local wipe, type, pairs, ipairs, tinsert, tremove, tonumber, setmetatable, select, unpack = wipe, type, pairs, ipairs, tinsert, tremove, tonumber, setmetatable, select, unpack
+local wipe, type, pairs, ipairs, tinsert, tremove, tonumber, setmetatable, select, unpack = table.wipe, type, pairs, ipairs, table.insert, table.remove, tonumber, setmetatable, select, unpack
 local abs, pow, sqrt, sin, cos, atan2, floor, ceil, min, max, pi, pi2 = math.abs, math.pow, math.sqrt, math.sin, math.cos, math.atan2, math.floor, math.ceil, math.min, math.max, math.pi, math.pi * 2
 local error, print = error, print
 --[[ -------------- ]]--
@@ -120,7 +120,7 @@ local function UnregisterAllCallbacks(obj)
 			callbacks[k] = nil
 		end
 		if obj.callbacks.OnUnused then
-			obj.callbacks.OnUnused(obj.callbacks, target, eventname)
+			obj.callbacks.OnUnused(obj.callbacks, target, eventname)--Global leak, target. WHere does target come from?
 		end
 	end
 end
@@ -271,7 +271,7 @@ function mod:OnInitialize()
 	self.activeObjects = 0
 end
 
-function mod:OnEnable()
+function mod:Enable()
 	if DBM.Options.DontShowHudMap or HUDEnabled then return end
 	HUDEnabled = true
 	DBM:Debug("HudMap Activating", 2)
@@ -291,7 +291,7 @@ function mod:OnEnable()
 	self:UpdateFrame()
 end
 
-function mod:OnDisable()
+function mod:Disable()
 	if not HUDEnabled then return end
 	HUDEnabled = false
 	DBM:Debug("HudMap Deactivating", 2)
@@ -305,7 +305,7 @@ do
 	local function onEvent(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == ADDON_NAME then
 			mod:OnInitialize()
-			--mod:OnEnable()
+			--mod:Enable()
 			mod.mainFrame:UnregisterEvent("ADDON_LOADED")
 			--print("DBMHudMap loaded!")
 		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
@@ -1040,9 +1040,9 @@ do
 				x = point_or_unit_or_x.stickX
 				y = point_or_unit_or_x.stickY
 			else
-				unit = to_y == nil and point_or_unit_or_x
-				x = to_y ~= nil and point_or_unit_or_x
-				y = to_y
+				unit = from_y == nil and point_or_unit_or_x
+				x = from_y ~= nil and point_or_unit_or_x
+				y = from_y
 			end
 			
 			local edge = Edge:New(r, g, b, a, unit, toPlayer, x, y, self.stickX, self.stickY, lifetime)
@@ -1216,11 +1216,13 @@ end
 
 local encounterMarkers = {}
 function mod:RegisterEncounterMarker(e)
+	if not HUDEnabled then return end
 	encounterMarkers[e] = true
 	e.RegisterCallback(self, "Free", "FreeEncounterMarker")
 end
 
 function mod:FreeEncounterMarker(cbk, e)
+	if not HUDEnabled then return end
 	encounterMarkers[e] = nil
 end
 
@@ -1229,7 +1231,7 @@ function mod:FreeEncounterMarkers()
 	for k, _ in pairs(encounterMarkers) do
 		encounterMarkers[k] = k:Free()
 	end
-	mod:OnDisable()
+	mod:Disable()--
 end
 
 function mod:DistanceToPoint(unit, x, y)
