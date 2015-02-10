@@ -9,11 +9,21 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 156446",
+	"SPELL_AURA_APPLIED 175583 175594",
+	"SPELL_AURA_APPLIED_DOSE 175594",
 	"RAID_BOSS_WHISPER"
 )
 
+local warnLivingBlaze				= mod:NewTargetAnnounce(159632, 3, nil, false)
+
 local specWarnBlastWave				= mod:NewSpecialWarningMoveTo(156446, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(156446))
 local specWarnInsatiableHunger		= mod:NewSpecialWarningRun(159632, nil, nil, nil, 4)
+local specWarnLivingBlaze			= mod:NewSpecialWarningMoveAway(175583)
+local yellLivingBlaze				= mod:NewYell(175583)
+local specWarnBurning				= mod:NewSpecialWarningStack(175594, nil, 8)
+local specWarnBurningOther			= mod:NewSpecialWarningTaunt(175594, nil, nil, nil, nil, nil, 2)
+
+local voiceBurning					= mod:NewVoice(155242) --changemt
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
@@ -27,6 +37,33 @@ function mod:SPELL_CAST_START(args)
 		specWarnBlastWave:Show(volcanicBomb)
 	end
 end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if not self.Options.Enabled then return end
+	local spellId = args.spellId
+	if spellId == 175583 then
+		warnLivingBlaze:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnLivingBlaze:Show()
+			if not self:IsLFR() then
+				yellLivingBlaze:Yell()
+			end
+		end
+	elseif spellId == 175594 then
+		local amount = args.amount or 1
+		if (amount >= 8) and (amount % 3 == 0) then
+			voiceBurning:Play("changemt")
+			if args:IsPlayer() then
+				specWarnBurning:Show(amount)
+			else--Taunt as soon as stacks are clear, regardless of stack count.
+				if not UnitDebuff("player", GetSpellInfo(175594)) and not UnitIsDeadOrGhost("player") then
+					specWarnBurningOther:Show(args.destName)
+				end
+			end
+		end
+	end
+end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:RAID_BOSS_WHISPER(msg)
 	if not self.Options.Enabled then return end
