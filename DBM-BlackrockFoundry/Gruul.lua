@@ -49,8 +49,6 @@ local voiceInfernoSlice				= mod:NewVoice(155080) --gathershare. maybe change to
 local voiceOverheadSmash			= mod:NewVoice(155301) --shockwave
 local voiceShatter					= mod:NewVoice(155326)--Spread/Scatter
 
---local berserkTimer				= mod:NewBerserkTimer(360)--Said to be 6 minutes. Unconfirmed.
-
 mod:AddRangeFrameOption(8, 155530)
 
 mod.vb.smashCount = 0
