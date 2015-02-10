@@ -130,7 +130,6 @@ local below25 = false
 local playerOnBoat = false
 
 local function isPlayerOnBoat()
-	local x, y = GetPlayerMapPosition("player")
 	local _, y = UnitPosition("player")
 	if y < 3196 then
 		return false
@@ -143,7 +142,6 @@ local function checkBoatPlayer(self)
 	for uId in DBM:GetGroupMembers() do 
 		local _, y, _, playerMapId = UnitPosition(uId)
 		if playerMapId == 1205 then
-			local x, y = GetPlayerMapPosition(uId)
 			if y > 3196 then--found player on boat
 				self:Schedule(1, checkBoatPlayer, self)
 				return
