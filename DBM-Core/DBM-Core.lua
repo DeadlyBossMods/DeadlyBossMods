@@ -9071,6 +9071,20 @@ function bossModPrototype:AddRangeFrameOption(range, spellId, default)
 	end
 end
 
+function bossModPrototype:AddHudMapOption(spellId, default)
+	self.DefaultOptions["HudMap"] = (default == nil) or default
+	if default and type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
+	self.Options["HudMap"] = (default == nil) or default
+	self:SetOptionCategory("HudMap", "misc")
+	if spellId then
+		self.localization.options["HudMap"] = DBM_CORE_AUTO_HUD_OPTION_TEXT:format(spellId)
+	else
+		self.localization.options["HudMap"] = DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI
+	end
+end
+
 function bossModPrototype:AddInfoFrameOption(spellId, default)
 	self.DefaultOptions["InfoFrame"] = (default == nil) or default
 	if default and type(default) == "string" then
