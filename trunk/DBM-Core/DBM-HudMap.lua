@@ -272,12 +272,13 @@ function mod:OnInitialize()
 end
 
 function mod:OnEnable()
+	if DBM.Options.DontShowHudMap then return end--TODO, when DontShowHudMap is called in GUI, run Onenable, add ondisable function to unregister.
 	--self:RegisterEvent("PLAYER_ENTERING_WORLD",	"UpdateZoneData")
 	--self:RegisterEvent("ZONE_CHANGED", "UpdateZoneData")
 	--self:RegisterEvent("ZONE_CHANGED_NEW_AREA",	"UpdateZoneData")
 	--self:RegisterEvent("ZONE_CHANGED_INDOORS", 	"UpdateZoneData")
 	--self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-	updateFrame:SetScript("OnUpdate", onUpdate)
+	updateFrame:SetScript("OnUpdate", onUpdate)--TODO, change to ticker function. And definitely disable when boss mods not using it. Create tigger only on encounters that use it. kill ticker on combat end
 	self.canvas:SetAlpha(1)
 	self:UpdateCanvasPosition()
 	
@@ -1194,15 +1195,18 @@ function mod:UpdateMode()
 end
 
 function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend)
+--	if DBM.Options.DontShowHudMap then return end
 	return Point:New(self.currentZone, x, y, nil, duration, texture, radius, blend, r, g, b, a)	
 end
 
 function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
+--	if DBM.Options.DontShowHudMap then return end
 	local x, y = self:GetUnitPosition(person)
 	return Point:New(nil, x, y, nil, duration, texture, radius, blend, r, g, b, a)
 end
 
 function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
+--	if DBM.Options.DontShowHudMap then return end
 	return Point:New(nil, nil, nil, person, duration, texture, radius, blend, r, g, b, a)
 end
 
@@ -1437,6 +1441,7 @@ end
 --mod.minimapSize = minimapSize
 
 function mod:ShowCanvas()
+--	if DBM.Options.DontShowHudMap then return end
 	if not self.canvas:IsVisible() then
 		zoomScale = targetZoomScale
 		--self:UpdateZoneData()
