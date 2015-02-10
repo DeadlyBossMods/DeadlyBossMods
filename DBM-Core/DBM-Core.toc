@@ -42,3 +42,4 @@ DBM-RangeCheck.lua
 DBM-BossHealth.lua
 DBM-BossHealth.xml
 DBM-InfoFrame.lua
+DBM-HudMap.lua

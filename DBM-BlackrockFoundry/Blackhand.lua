@@ -83,9 +83,18 @@ mod.vb.phase = 1
 mod.vb.SlagEruption = 0
 mod.vb.smashCount = 0
 
+local DBMHudMap = DBMHudMap
+local free = DBMHudMap.free
+local function register(e)	
+	DBMHudMap:RegisterEncounterMarker(e)
+	return e
+end
+local MFDMarkers={}
+
 local UnitDebuff = UnitDebuff
 
 function mod:OnCombatStart(delay)
+	table.wipe(MFDMarkers)
 	self.vb.phase = 1
 	self.vb.SlagEruption = 0
 	self.vb.smashCount = 0
@@ -105,6 +114,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	DBMHudMap:FreeEncounterMarkers()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -152,6 +162,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 156096 then
 		warnMarkedforDeath:CombinedShow(0.5, args.destName)
+		MFDMarkers[args.destName] = register(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
 		if self.vb.phase == 3 then
 			timerMarkedforDeathCD:Start(21.5)
 		else
@@ -215,6 +226,9 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 156096 then
+		if MFDMarkers[args.destName] then
+			MFDMarkers[args.destName] = free(MFDMarkers[args.destName])
+		end
 		timerImpalingThrow:Cancel()
 		if self.Options.SetIconOnMarked then
 			self:SetIcon(args.destName, 0)
