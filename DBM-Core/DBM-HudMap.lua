@@ -20,6 +20,7 @@ local onUpdate, Point, Edge
 local followedUnits = {}
 --local paused
 local callbacks = CallbackHandler:New(mod)
+local HUDEnabled = false
 --local showOverride, toggleOverride
 
 --local SN = setmetatable({}, {__index = function(t, k)
@@ -271,7 +272,8 @@ function mod:OnInitialize()
 end
 
 function mod:OnEnable()
-	if DBM.Options.DontShowHudMap then return end
+	if DBM.Options.DontShowHudMap or HUDEnabled then return end
+	HUDEnabled = true
 	DBM:Debug("HudMap Activating", 2)
 	mod.mainframe:Show()
 	mod.mainFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
@@ -290,6 +292,8 @@ function mod:OnEnable()
 end
 
 function mod:OnDisable()
+	if not HUDEnabled then return end
+	HUDEnabled = false
 	DBM:Debug("HudMap Deactivating", 2)
 	updateFrame:SetScript("OnUpdate", nil)
 	--Anything else needed? maybe clear all marks, hide any frames, etc?
@@ -1221,9 +1225,11 @@ function mod:FreeEncounterMarker(cbk, e)
 end
 
 function mod:FreeEncounterMarkers()
+	if not HUDEnabled then return end
 	for k, _ in pairs(encounterMarkers) do
 		encounterMarkers[k] = k:Free()
 	end
+	mod:OnDisable()
 end
 
 function mod:DistanceToPoint(unit, x, y)

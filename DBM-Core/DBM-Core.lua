@@ -4856,9 +4856,6 @@ do
 						end
 					end
 				end
-				if mod.Options.HudMap then--mod has a hudmap option
-					DBMHudMap:OnEnable()
-				end
 				--call OnCombatStart
 				if mod.OnCombatStart and not mod.ignoreBestkill then
 					mod:OnCombatStart(delay or 0, event == "PLAYER_REGEN_DISABLED_AND_MESSAGE")
@@ -5186,9 +5183,6 @@ do
 				end
 			end
 			if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
-			if mod.Options.HudMap then--mod has a hudmap option
-				DBMHudMap:OnDisable()
-			end
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
 				self:Schedule(10, self.StopLogging, self)--small delay to catch kill/died combatlog events
 				self:HideBlizzardEvents(0)
@@ -9078,17 +9072,17 @@ function bossModPrototype:AddRangeFrameOption(range, spellId, default)
 	end
 end
 
-function bossModPrototype:AddHudMapOption(spellId, default)
-	self.DefaultOptions["HudMap"] = (default == nil) or default
+function bossModPrototype:AddHudMapOption(name, spellId, default)
+	self.DefaultOptions[name] = (default == nil) or default
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
-	self.Options["HudMap"] = (default == nil) or default
-	self:SetOptionCategory("HudMap", "misc")
+	self.Options[name] = (default == nil) or default
+	self:SetOptionCategory(name, "misc")
 	if spellId then
-		self.localization.options["HudMap"] = DBM_CORE_AUTO_HUD_OPTION_TEXT:format(spellId)
+		self.localization.options[name] = DBM_CORE_AUTO_HUD_OPTION_TEXT:format(spellId)
 	else
-		self.localization.options["HudMap"] = DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI
+		self.localization.options[name] = DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI
 	end
 end
 
