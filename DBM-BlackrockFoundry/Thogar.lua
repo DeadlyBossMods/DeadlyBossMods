@@ -35,7 +35,7 @@ local specWarnEnkindle				= mod:NewSpecialWarningStack(155921, nil, 2)--Maybe ne
 local specWarnEnkindleOther			= mod:NewSpecialWarningTaunt(155921)
 local specWarnTrain					= mod:NewSpecialWarningDodge(176312, nil, nil, nil, 3)
 --Adds
-local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt(160140, not "Healer")
+local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt("OptionVersion2", 160140, "-Healer")
 local specWarnIronbellow			= mod:NewSpecialWarningSpell(163753, nil, nil, nil, 2)
 local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481)
 local yellDelayedSiegeBomb			= mod:NewYell(159481)
