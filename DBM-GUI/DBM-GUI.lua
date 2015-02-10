@@ -2518,7 +2518,7 @@ local function CreateOptionsMenu()
 
 	do
 		local spamPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpamFilter, "option")
-		local spamOutArea = spamPanel:CreateArea(L.Area_SpamFilter_Outgoing, nil, 150, true)
+		local spamOutArea = spamPanel:CreateArea(L.Area_SpamFilter_Outgoing, nil, 170, true)
 		spamOutArea:CreateCheckButton(L.SpamBlockNoShowAnnounce, true, nil, "DontShowBossAnnounces")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoSendWhisper, true, nil, "DontSendBossWhispers")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetIcons")
@@ -2526,6 +2526,7 @@ local function CreateOptionsMenu()
 		spamOutArea:CreateCheckButton(L.SpamBlockNoRangeFrame, true, nil, "DontShowRangeFrame")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoRangeRestore, true, nil, "DontRestoreRange")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoInfoFrame, true, nil, "DontShowInfoFrame")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoHudMap, true, nil, "DontShowHudMap")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoHealthFrame, true, nil, "DontShowHealthFrame")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoCountdowns, true, nil, "DontPlayCountdowns")
 
