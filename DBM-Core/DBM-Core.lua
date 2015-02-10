@@ -204,6 +204,7 @@ DBM.DefaultOptions = {
 	DontShowRangeFrame = false,
 	DontRestoreRange = false,
 	DontShowInfoFrame = false,
+	DontShowHudMap = true,--Lets disable it by default, and let people ease into it. Re-determine based on feedback whether it should be on or off by default
 	DontShowHealthFrame = false,
 	DontPlayCountdowns = false,
 	DontShowPT2 = false,
