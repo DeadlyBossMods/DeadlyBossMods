@@ -275,7 +275,7 @@ function mod:Enable()
 	if DBM.Options.DontShowHudMap or HUDEnabled then return end
 	HUDEnabled = true
 	DBM:Debug("HudMap Activating", 2)
-	mod.mainframe:Show()
+	mod.mainFrame:Show()
 	mod.mainFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	updateFrame:SetScript("OnUpdate", onUpdate)
 	self.canvas:SetAlpha(1)
@@ -298,7 +298,7 @@ function mod:Disable()
 	updateFrame:SetScript("OnUpdate", nil)
 	--Anything else needed? maybe clear all marks, hide any frames, etc?
 	mod.mainFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-	mod.mainframe:Hide()
+	mod.mainFrame:Hide()
 end
 
 do
