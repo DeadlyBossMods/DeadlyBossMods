@@ -69,6 +69,8 @@ local timerBellowsOperator		= mod:NewNextTimer(64, "ej9650", nil, nil, nil, 1551
 --Phase 2
 local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps")--Anyone else need?
 
+local berserkTimer				= mod:NewBerserkTimer(780)
+
 local countdownBlast			= mod:NewCountdown(30, 155209, "Healer")
 local countdownBellowsOperator	= mod:NewCountdown("OptionVersion2", "Alt64", "ej9650", "-Healer")
 local countdownEngineer			= mod:NewCountdown("OptionVersion2", "AltTwo41", "ej9649", "Tank")
@@ -107,6 +109,7 @@ function mod:OnCombatStart(delay)
 	countdownEngineer:Start(55)
 	timerBlastCD:Start(30-delay)
 	countdownBlast:Start(30-delay)
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
