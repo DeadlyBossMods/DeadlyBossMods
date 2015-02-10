@@ -209,6 +209,7 @@ L.SpamBlockNoSendWhisper	= "다른 공격대원 또는 파티원에게 우두머
 L.SpamBlockNoSetIcon		= "전술 목표 아이콘 설정하지 않기"
 L.SpamBlockNoRangeFrame		= "거리 창 보이지 않기"
 L.SpamBlockNoInfoFrame		= "정보 창 보이지 않기"
+L.SpamBlockNoHudMap			= "위치 정보 보이지 않기"
 L.SpamBlockNoHealthFrame	= "우두머리 체력 바 보이지 않기"
 L.SpamBlockNoCountdowns		= "초세기 소리 재생 안함"
 L.SpamBlockNoIconRestore	= "전투 종료시 전술 목표 아이콘 설정 복구 안함"
