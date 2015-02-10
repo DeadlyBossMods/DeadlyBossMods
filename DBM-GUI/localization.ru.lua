@@ -213,6 +213,7 @@ L.SpamBlockNoSendWhisper	= "Не отправлять предупреждени
 L.SpamBlockNoSetIcon		= "Не устанавливать метки на цели"
 L.SpamBlockNoRangeFrame		= "Не отображать окно проверки дистанции"
 L.SpamBlockNoInfoFrame		= "Не отображать информационное окно"
+L.SpamBlockNoHudMap			= "Не отображать HudMap"
 L.SpamBlockNoHealthFrame	= "Не отображать окно здоровья"
 L.SpamBlockNoCountdowns		= "Не воспроизводить звуки обратного отсчета"
 L.SpamBlockNoIconRestore	= "Не сохранять состояние меток и восстанавливать их после боя"
