@@ -221,7 +221,6 @@ do
 		
 		if coarseTotal > coarse then
 			coarseTotal = coarseTotal % coarse
-			--mod:UpdateZoneData()
 		end
 		
 		if fineTotal > fine then
@@ -272,13 +271,11 @@ function mod:OnInitialize()
 end
 
 function mod:OnEnable()
-	if DBM.Options.DontShowHudMap then return end--TODO, when DontShowHudMap is called in GUI, run Onenable, add ondisable function to unregister.
-	--self:RegisterEvent("PLAYER_ENTERING_WORLD",	"UpdateZoneData")
-	--self:RegisterEvent("ZONE_CHANGED", "UpdateZoneData")
-	--self:RegisterEvent("ZONE_CHANGED_NEW_AREA",	"UpdateZoneData")
-	--self:RegisterEvent("ZONE_CHANGED_INDOORS", 	"UpdateZoneData")
-	--self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-	updateFrame:SetScript("OnUpdate", onUpdate)--TODO, change to ticker function. And definitely disable when boss mods not using it. Create tigger only on encounters that use it. kill ticker on combat end
+	if DBM.Options.DontShowHudMap then return end
+	DBM:Debug("HudMap Activating", 2)
+	mod.mainframe:Show()
+	mod.mainFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	updateFrame:SetScript("OnUpdate", onUpdate)
 	self.canvas:SetAlpha(1)
 	self:UpdateCanvasPosition()
 	
@@ -290,14 +287,21 @@ function mod:OnEnable()
 	mod.pixelsPerYard = UIParent:GetHeight() / self:GetMinimapSize()	
 	self:SetZoom()
 	self:UpdateFrame()
-	--self:UpdateZoneData()
+end
+
+function mod:OnDisable()
+	DBM:Debug("HudMap Deactivating", 2)
+	updateFrame:SetScript("OnUpdate", nil)
+	--Anything else needed? maybe clear all marks, hide any frames, etc?
+	mod.mainFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	mod.mainframe:Hide()
 end
 
 do
 	local function onEvent(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == ADDON_NAME then
 			mod:OnInitialize()
-			mod:OnEnable()
+			--mod:OnEnable()
 			mod.mainFrame:UnregisterEvent("ADDON_LOADED")
 			--print("DBMHudMap loaded!")
 		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
@@ -315,7 +319,6 @@ do
 
 	mod.mainFrame:SetScript("OnEvent", onEvent)
 	mod.mainFrame:RegisterEvent("ADDON_LOADED")
-	mod.mainFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 end
 
 do
@@ -1195,18 +1198,15 @@ function mod:UpdateMode()
 end
 
 function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend)
---	if DBM.Options.DontShowHudMap then return end
 	return Point:New(self.currentZone, x, y, nil, duration, texture, radius, blend, r, g, b, a)	
 end
 
 function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
---	if DBM.Options.DontShowHudMap then return end
 	local x, y = self:GetUnitPosition(person)
 	return Point:New(nil, x, y, nil, duration, texture, radius, blend, r, g, b, a)
 end
 
 function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
---	if DBM.Options.DontShowHudMap then return end
 	return Point:New(nil, nil, nil, person, duration, texture, radius, blend, r, g, b, a)
 end
 
@@ -1244,54 +1244,9 @@ end
 
 function mod:GetUnitPosition(unit)
 	if not unit then return nil, nil end
-	--if forceZone then SetMapToCurrentZone()	end
-	--local x, y = GetPlayerMapPosition(unit)
-	--return self:CoordsToPosition(x, y)
 	local x, y = UnitPosition(unit)
 	return x, y
 end
-
---function mod:CoordsToPosition(x, y)
---	if not x or not y or (x == 0 and y == 0) then return x, y end
---	if not zoneScale then
---		return x * 1500, (1 - y) * 1000
---	end
---	x = x * zoneScale[1]
---	y = (1 - y) * zoneScale[2]
---	--local x1, y1 = UnitPosition("target")
---	print("3: "..x.." "..y)
---	--print(x1.." "..y1)
---	return x, y
---end
-
---function mod:UpdateZoneData()
-	--if not self.canvas:IsVisible() or WorldMapFrame:IsVisible() then
-	--	paused = true
-	--	return
-	--end
-	--paused = false
-  
-  	--local _, l, x, y = Astrolabe:GetUnitPosition("player", true) --GetCurrentMapAreaID(), GetCurrentMapDungeonLevel(), x, y = GetUnitPosition( unit, noMapChange )
-  	--print(x.." "..y)
-	--m = GetCurrentMapAreaID()
-	--if (x == 0 and y == 0) then
-	--	paused = true
-	--	return
-	--end
-  
-  	-- Do we need to clear zoneScale if we don't have a map?
-  	--if type(m) ~= "number" or m < 0 or type(l) ~= "number" then return end
-	
-  	--local _, _, w, h = Astrolabe:GetMapInfo(m, l or 0) --return system, systemParent, mapData.width, mapData.height, mapData.xOffset, mapData.yOffset=GetMapInfo( mapID, mapFloor );
-  	--print(w.." "..h)
-    --if(w and h) then
-    --	zoneScale[1] = w
-    --	zoneScale[2] = h
-  	--end
-  	--if (w and l) then
-    --	self.currentZone = l > 0 and (m .. l) or l
-  	--end
---end
 
 do
 	local a, b
@@ -1420,31 +1375,9 @@ end
 -- Data
 ------------------------------------
 
---minimapSize = {
---	indoor = {
---		[0] = 290,
---		[1] = 230,
---		[2] = 175,
---		[3] = 119,
---		[4] = 79,
---		[5] = 49.8,
---	},
---	outdoor = {
---		[0] = 450,
---		[1] = 395,
---		[2] = 326,
---		[3] = 265,
---		[4] = 198,
---		[5] = 132
---	},
---}
---mod.minimapSize = minimapSize
-
 function mod:ShowCanvas()
---	if DBM.Options.DontShowHudMap then return end
 	if not self.canvas:IsVisible() then
 		zoomScale = targetZoomScale
-		--self:UpdateZoneData()
 		self.canvas:SetAlpha(0)
 		self.canvas:Show()
 	end
