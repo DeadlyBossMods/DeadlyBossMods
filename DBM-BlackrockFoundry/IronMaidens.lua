@@ -131,11 +131,6 @@ local savedAbilityTime = {}
 local below25 = false
 local playerOnBoat = false
 local DBMHudMap = DBMHudMap
-local free = DBMHudMap.free
-local function register(e)	
-	DBMHudMap:RegisterEncounterMarker(e)
-	return e
-end
 local RapidFireMarkers={}
 local BloodritualMarkers={}
 
@@ -211,14 +206,14 @@ function mod:OnCombatStart(delay)
 	if self.Options.HudMapOnRapidFire or self.Options.HudMapOnBloodRitual then
 		table.wipe(RapidFireMarkers)
 		table.wipe(BloodritualMarkers)
-		DBMHudMap:Enable()
+		self:EnableHudMap()
 	end
 end
 
 function mod:OnCombatEnd()
 	self:UnregisterShortTermEvents()
 	if self.Options.HudMapOnRapidFire or self.Options.HudMapOnBloodRitual then
-		DBMHudMap:FreeEncounterMarkers()
+		self:DisableHudMap()
 	end
 end
 
@@ -339,7 +334,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 2)
 		end
 		if self.Options.HudMapOnBloodRitual and not BloodritualMarkers[args.destName] then
-			BloodritualMarkers[args.destName] = register(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
+			BloodritualMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
 		end
 	elseif spellId == 156631 and (noFilter or not isPlayerOnBoat()) then
 		if self:AntiSpam(5, args.destName) then--check antispam so we don't warn if we got a user sync 3 seconds ago.
@@ -348,7 +343,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetIcon(args.destName, 1, 7)
 			end
 			if self.Options.HudMapOnRapidFire and not RapidFireMarkers[args.destName] then
-				RapidFireMarkers[args.destName] = register(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 0, 1, 0, 0.5):Pulse(0.5, 0.5))
+				RapidFireMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 0, 1, 0, 0.5):Pulse(0.5, 0.5))
 			end
 		end
 	elseif spellId == 156601 then
@@ -369,11 +364,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 159724 and self.Options.SetIconOnBloodRitual then
 		self:SetIcon(args.destName, 0)
 		if self.Options.HudMapOnBloodRitual and BloodritualMarkers[args.destName] then
-			BloodritualMarkers[args.destName] = free(BloodritualMarkers[args.destName])
+			BloodritualMarkers[args.destName] = self:FreeMarker(BloodritualMarkers[args.destName])
 		end
 	elseif spellId == 156631 and self.Options.HudMapOnRapidFire then
 		if RapidFireMarkers[args.destName] then
-			RapidFireMarkers[args.destName] = free(RapidFireMarkers[args.destName])
+			RapidFireMarkers[args.destName] = self:FreeMarker(RapidFireMarkers[args.destName])
 		end
 	end
 end
@@ -434,7 +429,7 @@ function mod:OnSync(msg, guid)
 				self:SetIcon(targetName, 1, 10)
 			end
 			if self.Options.HudMapOnRapidFire and not RapidFireMarkers[targetName] then
-				RapidFireMarkers[targetName] = register(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", targetName, 5, 5, 0, 1, 0, 0.5):Pulse(0.5, 0.5))
+				RapidFireMarkers[targetName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", targetName, 5, 5, 0, 1, 0, 0.5):Pulse(0.5, 0.5))
 			end
 		end
 	elseif msg == "Ship" and guid then--technically not guid but it's fine.
