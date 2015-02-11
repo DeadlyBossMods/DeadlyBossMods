@@ -99,13 +99,13 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceShatteredVertebrae:Play("changemt")
 			end
 		end
-	elseif spellId == 162124 and self:AntiSpam(2, args.sourceGUID) then
+	elseif spellId == 162124 and self:AntiSpam(3, args.sourceGUID) then
 		self.vb.stamperDodgeCount = self.vb.stamperDodgeCount + 1
 		timerStamperDodge:Start(nil, self.vb.stamperDodgeCount)--Multiple timers at once is intended. But capped at 3
 		--Run antispam code. If raid moves too fast MANY stampers spawn at once. This code will auto cancel timers as new timers are added once we reach 3
-		--So only max of 3 bars at once. Cancel current -2 all new timer start
-		if self.vb.stamperDodgeCount >= 3 then
-			timerStamperDodge:Cancel(self.vb.stamperDodgeCount-2)
+		--So only max of 3 bars at once. Cancel current -3 all new timer start
+		if self.vb.stamperDodgeCount >= 3 then--Bugged (has to be DBM-core or DBT).
+			timerStamperDodge:Cancel(self.vb.stamperDodgeCount-3)--This is canceling ALL timers, not just the one with this arg.
 		end
 	end
 end
