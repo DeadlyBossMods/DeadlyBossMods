@@ -6131,9 +6131,8 @@ function bossModPrototype:RegisterMarker(marker)
 	return marker
 end
 
-function bossModPrototype:FreeMarker(marker)
-	DBMHudMap:FreeEncounterMarker(marker)
-	return marker
+function bossModPrototype:FreeMarker(marker, owner, id, noAnimate)
+	return DBMHudMap:free(marker, owner, id, noAnimate)
 end
 
 function bossModPrototype:FreeMarkers()
