@@ -343,7 +343,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetIcon(args.destName, 1, 7)
 			end
 			if self.Options.HudMapOnRapidFire and not RapidFireMarkers[args.destName] then
-				RapidFireMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 0, 1, 0, 0.5):Pulse(0.5, 0.5))
+				RapidFireMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 9, 0, 1, 0, 0.5):Pulse(0.5, 0.5))
 			end
 		end
 	elseif spellId == 156601 then
@@ -429,7 +429,7 @@ function mod:OnSync(msg, guid)
 				self:SetIcon(targetName, 1, 10)
 			end
 			if self.Options.HudMapOnRapidFire and not RapidFireMarkers[targetName] then
-				RapidFireMarkers[targetName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", targetName, 5, 5, 0, 1, 0, 0.5):Pulse(0.5, 0.5))
+				RapidFireMarkers[targetName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", targetName, 5, 12, 0, 1, 0, 0.5):Pulse(0.5, 0.5))
 			end
 		end
 	elseif msg == "Ship" and guid then--technically not guid but it's fine.
