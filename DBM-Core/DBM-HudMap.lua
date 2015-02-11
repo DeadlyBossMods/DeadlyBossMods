@@ -1231,7 +1231,7 @@ function mod:FreeEncounterMarkers()
 	for k, _ in pairs(encounterMarkers) do
 		encounterMarkers[k] = k:Free()
 	end
-	mod:Disable()--
+	mod:Disable()
 end
 
 function mod:DistanceToPoint(unit, x, y)
