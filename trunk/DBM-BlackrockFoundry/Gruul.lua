@@ -175,7 +175,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceShatter:Play("scatter")
 		end
 		if hudEnabled then
-			ShatterMarker[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("timer", args.destName, 8, 8, 0, 1, 0, 0.6):Appear():RegisterForAlerts():Rotate(360, 9.5))
+			ShatterMarker[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("timer", args.destName, 8, 10, 0, 1, 0, 0.6):Appear():RegisterForAlerts():Rotate(360, 9.5))
 		end
 	elseif spellId == 155539 then
 		self.vb.rampage = true
