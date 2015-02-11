@@ -1221,7 +1221,7 @@ function mod:RegisterEncounterMarker(e)
 	e.RegisterCallback(self, "Free", "FreeEncounterMarker")
 end
 
-function mod:FreeEncounterMarker(cbk, e)
+function mod:FreeEncounterMarker(e)
 	if not HUDEnabled then return end
 	encounterMarkers[e] = nil
 end
