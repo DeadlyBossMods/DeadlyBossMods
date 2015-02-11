@@ -188,8 +188,8 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 				voiceEnvironmentalThreats:Play("gather")--Must restack for smart stampers
 			else
 				if self.vb.phase == 2 then
-					specWarnSearingPlatesEnd:Schedule(3)
-					voiceEnvironmentalThreats:Schedule(3, "safenow")
+					specWarnSearingPlatesEnd:Show()
+					voiceEnvironmentalThreats:Play("safenow")
 				else
 					specWarnStampersEnd:Show()
 					voiceEnvironmentalThreats:Play("safenow")
