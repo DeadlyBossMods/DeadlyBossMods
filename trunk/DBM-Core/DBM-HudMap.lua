@@ -4,32 +4,16 @@ DBMHudMap = {}
 DBMHudMap.mainFrame = CreateFrame("Frame", "DBMHudMapFrame")
 local mod = DBMHudMap
 
---[[ Default upvals 
-     This has a slight performance benefit, but upvalling these also makes it easier to spot leaked globals. ]]--
---local _G = _G.getfenv(0)
 local wipe, type, pairs, ipairs, tinsert, tremove, tonumber, setmetatable, select, unpack = table.wipe, type, pairs, ipairs, table.insert, table.remove, tonumber, setmetatable, select, unpack
 local abs, pow, sqrt, sin, cos, atan2, floor, ceil, min, max, pi, pi2 = math.abs, math.pow, math.sqrt, math.sin, math.cos, math.atan2, math.floor, math.ceil, math.min, math.max, math.pi, math.pi * 2
 local error, print = error, print
---[[ -------------- ]]--
---~
+
 local CallbackHandler = LibStub:GetLibrary("CallbackHandler-1.0")
 local updateFrame = CreateFrame("Frame")
---local Astrolabe = DongleStub("Astrolabe-1.0")
 local onUpdate, Point, Edge
---local zoneScale = {1500, 1000}
 local followedUnits = {}
---local paused
 local callbacks = CallbackHandler:New(mod)
 local HUDEnabled = false
---local showOverride, toggleOverride
-
---local SN = setmetatable({}, {__index = function(t, k)
---	local n = GetSpellInfo(k)
---	rawset(t, k, n)
---	return n
---end})
-
---mod.SN = SN
 
 local GetNumGroupMembers, GetNumSubgroupMembers = GetNumGroupMembers, GetNumSubgroupMembers
 local GetTime, UIParent = GetTime, UIParent
@@ -38,55 +22,56 @@ local UnitExists, UnitIsUnit, UnitPosition, GetPlayerFacing = UnitExists, UnitIs
 local targetCanvasAlpha
 
 local textureLookup = {
-	diamond 	= [[Interface\TARGETINGFRAME\UI-RAIDTARGETINGICON_3.BLP]],
-	star 			= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_1.blp]],
-	circle  	= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_2.blp]],
-	triangle 	= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_4.blp]],
-	moon			= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_5.blp]],
+	diamond		= [[Interface\TARGETINGFRAME\UI-RAIDTARGETINGICON_3.BLP]],
+	star		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_1.blp]],
+	circle		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_2.blp]],
+	triangle	= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_4.blp]],
+	moon		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_5.blp]],
 	square		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_6.blp]],
-	cross			= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_7.blp]],
-	skull			= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_8.blp]],
+	cross		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_7.blp]],
+	skull		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_8.blp]],
 	cross2		= [[Interface\RAIDFRAME\ReadyCheck-NotReady.blp]],
-	check			= [[Interface\RAIDFRAME\ReadyCheck-Ready.blp]],
+	check		= [[Interface\RAIDFRAME\ReadyCheck-Ready.blp]],
 	question	= [[Interface\RAIDFRAME\ReadyCheck-Waiting.blp]],
-	targeting = [[Interface\Minimap\Ping\ping5.blp]],
-	highlight = [[Interface\AddOns\DBM-Core\textures\alert_circle]],
-	timer			= [[Interface\AddOns\DBM-Core\textures\timer]],
-	glow			= [[Interface\GLUES\MODELS\UI_Tauren\gradientCircle]],
-	party     = [[Interface\MINIMAP\PartyRaidBlips]],
-	ring			= [[SPELLS\CIRCLE]],
-	rune1			= [[SPELLS\AURARUNE256.BLP]],
-	rune2			= [[SPELLS\AURARUNE9.BLP]],
-	rune3			= [[SPELLS\AURARUNE_A.BLP]],
-	rune4			= [[SPELLS\AURARUNE_B.BLP]],
-	paw				= [[SPELLS\Agility_128.blp]],
-	cyanstar  = [[SPELLS\CYANSTARFLASH.BLP]],
-	summon    = [[SPELLS\DarkSummon.blp]],
-	reticle   = [[SPELLS\Reticle_128.blp]],
-	fuzzyring = [[SPELLS\WHITERINGTHIN128.BLP]],
-	fatring 	= [[SPELLS\WhiteRingFat128.blp]],
+	targeting	= [[Interface\Minimap\Ping\ping5.blp]],
+	highlight	= [[Interface\AddOns\DBM-Core\textures\alert_circle]],
+	timer		= [[Interface\AddOns\DBM-Core\textures\timer]],
+	glow		= [[Interface\GLUES\MODELS\UI_Tauren\gradientCircle]],
+	party		= [[Interface\MINIMAP\PartyRaidBlips]],
+	ring		= [[SPELLS\CIRCLE]],
+	rune1		= [[SPELLS\AURARUNE256.BLP]],
+	rune2		= [[SPELLS\AURARUNE9.BLP]],
+	rune3		= [[SPELLS\AURARUNE_A.BLP]],
+	rune4		= [[SPELLS\AURARUNE_B.BLP]],
+	paw			= [[SPELLS\Agility_128.blp]],
+	cyanstar	= [[SPELLS\CYANSTARFLASH.BLP]],
+	summon		= [[SPELLS\DarkSummon.blp]],
+	reticle		= [[SPELLS\Reticle_128.blp]],
+	fuzzyring	= [[SPELLS\WHITERINGTHIN128.BLP]],
+	fatring		= [[SPELLS\WhiteRingFat128.blp]],
 	swords		= [[SPELLS\Strength_128.blp]],
 }
+
 local textureKeys, textureVals = {}, {}
 mod.textureKeys, mod.textureVals = textureKeys, textureVals
 
 local texBlending = {
-	highlight = "ADD",
-	targeting = "ADD",
-	glow 			= "ADD",
-	ring      = "ADD",
-	rune1			= "ADD",
-	rune2			= "ADD",
-	rune3			= "ADD",
-	rune4			= "ADD",
-	paw				= "ADD",
-	reticle   = "ADD",
-	cyanstar  = "ADD",
+	highlight	= "ADD",
+	targeting	= "ADD",
+	glow 		= "ADD",
+	ring		= "ADD",
+	rune1		= "ADD",
+	rune2		= "ADD",
+	rune3		= "ADD",
+	rune4		= "ADD",
+	paw			= "ADD",
+	reticle		= "ADD",
+	cyanstar	= "ADD",
 	summon		= "ADD",
 	fuzzyring	= "ADD",
 	fatring		= "ADD",
 	swords		= "ADD"
-	-- timer			= "ADD",
+	-- timer	= "ADD",
 }
 
 local texCoordLookup = {
@@ -106,24 +91,24 @@ local frameScalars = {
 	summon = 0.86,
 }
 
-local function UnregisterAllCallbacks(obj)
-	-- Cancel all registered callbacks. CBH doesn't seem to provide a method to do this.
-	if obj.callbacks.insertQueue then
-		for eventname, callbacks in pairs(obj.callbacks.insertQueue) do
-			for k, v in pairs(callbacks) do
-				callbacks[k] = nil
-			end
-		end
-	end
-	for eventname, callbacks in pairs(obj.callbacks.events) do
-		for k, v in pairs(callbacks) do
-			callbacks[k] = nil
-		end
-		if obj.callbacks.OnUnused then
-			obj.callbacks.OnUnused(obj.callbacks, obj, eventname)--Make sure this doesn't error. :)
-		end
-	end
-end
+--local function UnregisterAllCallbacks(obj)
+--	-- Cancel all registered callbacks. CBH doesn't seem to provide a method to do this.
+--	if obj.callbacks.insertQueue then
+--		for eventname, callbacks in pairs(obj.callbacks.insertQueue) do
+--			for k, v in pairs(callbacks) do
+--				callbacks[k] = nil
+--			end
+--		end
+--	end
+--	for eventname, callbacks in pairs(obj.callbacks.events) do
+--		for k, v in pairs(callbacks) do
+--			callbacks[k] = nil
+--		end
+--		if obj.callbacks.OnUnused then
+--			obj.callbacks.OnUnused(obj.callbacks, obj, eventname)--Make sure this doesn't error. :)
+--		end
+--	end
+--end
 
 mod.RegisterTexture = function(self, key, tex, blend, cx1, cx2, cy1, cy2, scalar)
 	if key then
@@ -181,22 +166,16 @@ end
 
 mod.group = group
 
---local coloredTextures = {}
---local gatherCircle, gatherLine
---local indicators = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}
---local new, free
 local pointCache, edgeCache = {}, {}
 local activePointList, activeEdgeList = {}, {}
 
 local zoomScale, targetZoomScale = 45, 40
---local zoomMin, zoomMax = 15, 100
---local db
 
 do
 	local fine, coarse = 1 / 60, 3
 	local fineTotal, fineFrames, coarseTotal = 0, 0, 0
 	local zoomDelay, fadeInDelay, fadeOutDelay = 0.5, 0.25, 0.5
-	
+
 	local function computeNewScale()
 		local px, py = mod:GetUnitPosition("player")
 		local maxDistance = 0
@@ -205,7 +184,7 @@ do
 			local d = point:Distance(px, py, true)
 			local maxSize = 200
 			if (d > 0 and d < maxSize and not point.persist) or point.alwaysShow then
-				activeObjects = activeObjects + 1				
+				activeObjects = activeObjects + 1
 			end
 
 			if d > 0 and d < 200 and d > maxDistance then
@@ -215,20 +194,20 @@ do
 		if maxDistance < 30 then maxDistance = 30 end
 		return maxDistance, activeObjects
 	end
-	
+
 	function onUpdate(self, t)
 		fineTotal = fineTotal + t
 		coarseTotal = coarseTotal + t
-		
+
 		if coarseTotal > coarse then
 			coarseTotal = coarseTotal % coarse
 		end
-		
+
 		if fineTotal > fine then
 			local steps = floor(fineTotal / fine)
 			local elapsed = fine * steps
 			fineTotal = fineTotal - elapsed
-			
+
 			local zoom
 			zoom, mod.activeObjects = computeNewScale()
 			targetZoomScale = zoom
@@ -247,19 +226,15 @@ do
 			elseif targetCanvasAlpha == 0 and currentAlpha == 0 then
 				mod.canvas:Hide()
 			end
-			
-			--if paused then
-			--	zoomScale = targetZoomScale
-			--else
-				if zoomScale < targetZoomScale then
-					zoomScale = min(targetZoomScale, zoomScale + ceil((targetZoomScale - zoomScale) * elapsed / zoomDelay))
-				elseif zoomScale > targetZoomScale then
-					zoomScale = max(targetZoomScale, zoomScale - ceil((zoomScale - targetZoomScale) * elapsed / zoomDelay))
-				end
-		
-				mod:Update()
-				callbacks:Fire("Update", mod)
-			--end
+
+			if zoomScale < targetZoomScale then
+				zoomScale = min(targetZoomScale, zoomScale + ceil((targetZoomScale - zoomScale) * elapsed / zoomDelay))
+			elseif zoomScale > targetZoomScale then
+				zoomScale = max(targetZoomScale, zoomScale - ceil((zoomScale - targetZoomScale) * elapsed / zoomDelay))
+			end
+
+			mod:Update()
+			callbacks:Fire("Update", mod)
 		end
 	end
 end
@@ -275,20 +250,18 @@ function mod:Enable()
 	if DBM.Options.DontShowHudMap2 or HUDEnabled then return end
 	HUDEnabled = true
 	DBM:Debug("HudMap Activating", 2)
-	mod.mainFrame:Show()
-	mod.mainFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	self.currentMap = select(8, GetInstanceInfo())
+	self.mainFrame:Show()
+	self.mainFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	self.mainFrame:RegisterEvent("LOADING_SCREEN_DISABLED")
 	updateFrame:SetScript("OnUpdate", onUpdate)
 	self.canvas:SetAlpha(1)
 	self:UpdateCanvasPosition()
-	
-	--if not self.addedProfiles then
-	--	self.addedProfiles = true
-	--end
-	
-	targetZoomScale = 6	
-	mod.pixelsPerYard = UIParent:GetHeight() / self:GetMinimapSize()	
+
+	targetZoomScale = 6
+	self.pixelsPerYard = UIParent:GetHeight() / self:GetMinimapSize()
 	self:SetZoom()
-	self:UpdateFrame()
+	self.canvas:SetBackdrop(nil)
 end
 
 function mod:Disable()
@@ -297,8 +270,9 @@ function mod:Disable()
 	DBM:Debug("HudMap Deactivating", 2)
 	updateFrame:SetScript("OnUpdate", nil)
 	--Anything else needed? maybe clear all marks, hide any frames, etc?
-	mod.mainFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-	mod.mainFrame:Hide()
+	self.mainFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	self.mainFrame:UnregisterEvent("LOADING_SCREEN_DISABLED")
+	self.mainFrame:Hide()
 end
 
 do
@@ -307,9 +281,7 @@ do
 			mod:OnInitialize()
 			--mod:Enable()
 			mod.mainFrame:UnregisterEvent("ADDON_LOADED")
-			--print("DBMHudMap loaded!")
 		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
-			--print("DBMHudMap CLEU!")
 			local timestamp, clevent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID = ...
 			if clevent == "UNIT_DIED" then
 				for k, v in pairs(followedUnits) do
@@ -317,24 +289,14 @@ do
 						v:Free()
 					end
 				end
-			end			
+			end
+		elseif event == "LOADING_SCREEN_DISABLED" then
+			mod.currentMap = select(8, GetInstanceInfo())
 		end
 	end
 
 	mod.mainFrame:SetScript("OnEvent", onEvent)
 	mod.mainFrame:RegisterEvent("ADDON_LOADED")
-end
-
-do
-	--local backdrop = {		
-	--	tile = false,
-	--	tileSize = 0,
-	--	edgeSize = 16, 
-	--	insets = { left = 0, right = 0, top = 0, bottom = 0 }
-	--}
-	function mod:UpdateFrame()
-		self.canvas:SetBackdrop(nil)
-	end
 end
 
 function mod:PointExists(id)
@@ -352,16 +314,6 @@ function mod:UpdateCanvasPosition()
 	self.canvas:SetSize((UIParent:GetHeight() * 0.48) * 2, (UIParent:GetHeight() * 0.48) * 2)
 end
 
---function mod:COMBAT_LOG_EVENT_UNFILTERED(ev, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID, ...)
---	if event == "UNIT_DIED" then
---		for k, v in pairs(followedUnits) do
---			if sourceName and k and UnitIsUnit(sourceName, k) and not v.persist then
---				v:Free()
---			end
---		end
---	end
---end
-
 -----------------------------------
 --- Points
 -----------------------------------
@@ -375,14 +327,14 @@ local animations = {
 	scale = function(self)
 		local p = self:GetProgress()
 		local progress = self:GetParent():GetLoopState() == "REVERSE" and (1 - p) or p
-		
+
 		if progress < 0 then progress = 0
 		elseif progress > 1 then progress = 1
 		end
-		
+
 		local scale = 1 + ((self.pulseTarget - 1) * progress)
 		self.regionParent:SetScale(scale)
-	end, 
+	end,
 	alpha = function(self)
 		self.regionParent:SetAlpha(self:GetProgress())
 	end,
@@ -398,7 +350,7 @@ local animations = {
 	end,
 	replay = function(self)
 		self:Play()
-	end	
+	end
 }
 
 local function DrawRouteLineCustom(T, C, sx, sy, ex, ey, w, relPoint)
@@ -466,30 +418,32 @@ local Object = {
 		if self.freed == false then
 			error("ERROR: Attempted to reallocate a freed object.")
 		end
-		
+
 		self.radiusClipOffset = nil
 		self.fixedClipOffset = nil
 		self.ownerModule = nil
 		self.id = nil
 		self.freed = false
-		
+
 		-- print("Acquiring", self.serial)
 		self.frame:Show()
 		self.frame:SetAlpha(1)
 		self.frame:StopAnimating()
-		
+
 		-- This shouldn't be necessary, but some animations aren't stopping.
 		for _, anim in ipairs(animationNames) do
 			if self[anim] then self[anim]:Stop() end
 		end
 	end,
-	
+
 	OnFree = function(self, noAnimate)
 		if self.freed then return false end
 		self.freed = true
 		self.callbacks:Fire("Free", self)
-		UnregisterAllCallbacks(self)
+		--UnregisterAllCallbacks(self)
+		self:UnregisterAllCallbacks()
 		self:Hide(noAnimate)
+		print("Object:Free")
 	end,
 
 	ParseSize = function(self, size)
@@ -503,34 +457,34 @@ local Object = {
 				if t then
 					yards = tonumber(t)
 				end
-			end				
+			end
 		else
 			yards = size
 		end
 		return yards, fixed
 	end,
-	
+
 	SetClipOffset = function(self, offset)
 		self.radiusClipOffset, self.fixedClipOffset = self:ParseSize(offset)
 		return self
 	end,
-	
+
 	Identify = function(self, ownerModule, id)
 		self.ownerModule = ownerModule
 		self.id = id
 		return self
 	end,
-	
+
 	Owned = function(self, ownerModule, id)
 		return not self.freed and ownerModule == self.ownerModule and id == self.id
 	end,
-	
+
 	Show = function(self, noAnimate)
 	end,
-	
+
 	Hide = function(self, noAnimate)
 		if noAnimate then
-			self.frame:Hide()				
+			self.frame:Hide()
 			self.frame:StopAnimating()
 		else
 			self.fadeOutGroup:Play()
@@ -544,14 +498,14 @@ local edge_mt, point_mt = {}, {}
 Edge = setmetatable({
 	Free = function(self, noAnimate)
 		if self:OnFree(noAnimate) == false then return end
-		
+
 		for point, _ in pairs(self.points) do
 			point:DetachEdge(self)
-		end		
+		end
 		wipe(self.points)
 		self.srcPlayer, self.dstPlayer, self.sx, self.sy, self.dx, self.dy = nil, nil, nil, nil, nil, nil
 		activeEdgeList[self] = nil
-		
+
 		tinsert(edgeCache, self)
 		return nil
 	end,
@@ -569,7 +523,7 @@ Edge = setmetatable({
 			-- local line = "Interface\\TaxiFrame\\UI-Taxi-Line"
 			local line = "Interface\\AddOns\\DBM-Core\\textures\\line"
 			t.texture:SetTexture(line)
-			
+
 			t.fadeOutGroup = t.frame:CreateAnimationGroup()
 			t.fadeOut = t.fadeOutGroup:CreateAnimation("alpha")
 			-- t.fadeOut:SetMaxFramerate(60)
@@ -580,7 +534,7 @@ Edge = setmetatable({
 		t:OnAcquire()
 		t.srcPoint = nil
 		t.dstPoint = nil
-		
+
 		t.lifetime = type(lifetime) == "number" and GetTime() + lifetime or nil
 		t:SetColor(r, g, b, a)
 		t.srcPlayer, t.dstPlayer = srcPlayer, dstPlayer
@@ -593,14 +547,14 @@ Edge = setmetatable({
 		self.g = g or 1
 		self.b = b or 1
 		self.a = a or 1
-		self.texture:SetVertexColor(r, g, b, a)	
-	end,	
+		self.texture:SetVertexColor(r, g, b, a)
+	end,
 	AttachPoint = function(self, point)
 		self.points[point] = true
 	end,
 	DetachPoint = function(self, point)
 		self.points[point] = nil
-	end,	
+	end,
 	TrackFrom = function(self, src_or_x, y)
 		if type(src_or_x) == "string" then
 			self.srcPlayer = src_or_x
@@ -611,7 +565,8 @@ Edge = setmetatable({
 			self.sx = src_or_x
 			self.sy = y
 		end
-		return self	end,
+		return self
+	end,
 	TrackTo = function(self, dst_or_x, y)
 		if type(dst_or_x) == "string" then
 			self.dstPlayer = dst_or_x
@@ -628,14 +583,14 @@ Edge = setmetatable({
 		if(self ~= Edge) then return end
 		for t, _ in pairs(activeEdgeList) do
 			t:Update()
-		end	
+		end
 	end,
 	Update = function(self)
 		if self.lifetime and GetTime() > self.lifetime then
 			self:Free()
 			return
 		end
-		local sx, sy, dx, dy		
+		local sx, sy, dx, dy
 		if self.srcPlayer then
 			sx, sy = mod:GetUnitPosition(self.srcPlayer)
 		elseif self.srcPoint then
@@ -643,7 +598,7 @@ Edge = setmetatable({
 		elseif self.sx and self.sy then
 			sx, sy = self.sx, self.sy
 		end
-		
+
 		if self.dstPlayer then
 			dx, dy = mod:GetUnitPosition(self.dstPlayer)
 		elseif self.dstPoint then
@@ -651,7 +606,7 @@ Edge = setmetatable({
 		elseif self.dx and self.dy then
 			dx, dy = self.dx, self.dy
 		end
-		
+
 		local visible
 		if sx and sy and dx and dy then
 			local px, py = mod:GetUnitPosition("player")
@@ -659,7 +614,7 @@ Edge = setmetatable({
 			local d1 = pow(px - sx, 2) + pow(py - sy, 2)
 			local d2 = pow(px - dx, 2) + pow(py - dy, 2)
 			visible = d1 < radius or d2 < radius
-			
+
 			sx, sy = mod:LocationToMinimapOffset(sx, sy, true, self.radiusClipOffset, self.fixedClipOffset)
 			dx, dy = mod:LocationToMinimapOffset(dx, dy, true, self.radiusClipOffset, self.fixedClipOffset)
 		end
@@ -691,7 +646,7 @@ do
 	Point = setmetatable({
 		Free = function(self, noAnimate)
 			if self:OnFree(noAnimate) == false then return end
-			
+
 			if self.follow then
 				followedUnits[self.follow] = nil
 			end
@@ -699,37 +654,38 @@ do
 				edge:Free()
 			end
 			wipe(self.edges)
-			
+
 			self.stickX = nil
 			self.stickY = nil
 			self.follow = nil
 			self.lifetime = nil
 			self.lastPPY = nil
 			self.lastRadius = nil
-			
+
 			activePointList[self] = nil
 			tinsert(pointCache, self)
 
 			return nil
 		end,
-		
+
 		AttachEdge = function(self, edge)
 			self.edges[edge] = true
 			edge:AttachPoint(self)
 		end,
-		
+
 		DetachEdge = function(self, edge)
 			self.edges[edge] = nil
 			edge:DetachPoint(self)
-		end,	
-		
-		Stick = function(self, zone, x, y)
+		end,
+
+		Stick = function(self, map, x, y)
 			self.follow = nil
+			self.map = map
 			self.stickX = x
 			self.stickY = y
 			return self
 		end,
-		
+
 		Follow = function(self, unit)
 			self.stickX = nil
 			self.stickY = nil
@@ -737,7 +693,7 @@ do
 			followedUnits[unit] = self
 			return self
 		end,
-		
+
 		Location = function(self)
 			if self.stickX then
 				return self.stickX, self.stickY
@@ -745,14 +701,14 @@ do
 				return mod:GetUnitPosition(self.follow)
 			end
 		end,
-		
+
 		Update = function(self)
-			--if self.zone and mod.currentZone ~= self.zone and not self.persist then self:Free(); return end
+			if self.map and mod.currentMap ~= self.map and not self.persist then self:Free(); return end
 			if not self.lifetime or self.lifetime > 0 and self.lifetime < GetTime() then self:Free(); return end
 			local x, y
-			
+
 			self.callbacks:Fire("Update", self)
-			
+
 			if not self.alwaysShow then
 				local distance
 				local px, py = mod:GetUnitPosition("player")
@@ -764,7 +720,7 @@ do
 			else
 				x, y = self:Location()
 			end
-			
+
 			if not x or not y or (x == 0 and y == 0) then
 				self:Free()
 				return
@@ -772,18 +728,16 @@ do
 				self.frame:Show()
 				self.fadeIn:Play()
 			end
-			--print("1: "..x.." "..y)
 			x, y = mod:LocationToMinimapOffset(x, y, self.alwaysShow, self.radiusClipOffset or self.radius, self.fixedClipOffset or self.fixedSize)
-			--print("2: "..x.." "..y)
 			local needUpdate = false
 			if self.follow == "player" then
 				needUpdate = not self.placed
 			else
 				needUpdate = self.lastX ~= x or self.lastY ~= y
 			end
-			
+
 			self:UpdateSize()
-			
+
 			if needUpdate then
 				self.frame:ClearAllPoints()
 				self.frame:SetPoint("CENTER", self.frame:GetParent(), "CENTER", x, y)
@@ -795,7 +749,7 @@ do
 				self:UpdateAlerts()
 			end
 		end,
-		
+
 		UpdateSize = function(self)
 			if self.radius then
 				if self.lastPPY ~= mod.pixelsPerYard or self.lastRadius ~= self.radius then
@@ -807,20 +761,20 @@ do
 				end
 			elseif self.fixedSize then
 				self.frame:SetSize(self.fixedSize, self.fixedSize)
-			end	
+			end
 		end,
-		
+
 		UpdateAll = function(self)
 			if(self ~= Point) then return end
 			for t, _ in pairs(activePointList) do
 				t:Update()
 			end
 		end,
-		
+
 		Pulse = function(self, size, speed)
 			self.pulseSize = size
 			self.pulseSpeed = speed
-		
+
 			self.pulse:SetDuration(speed)
 			self.pulse:SetScale(size, size)
 			self.pulseIn:SetDuration(speed)
@@ -832,7 +786,7 @@ do
 		Rotate = function(self, amount, speed)
 			self.rotateAmount = amount
 			self.rotateSpeed = speed
-			
+
 			local norm = 360 / amount
 			speed = speed * norm
 			amount = -360
@@ -840,23 +794,23 @@ do
 				speed = speed * -1
 				amount = 360
 			end
-			
+
 			self.rotate:SetDuration(speed)
 			self.rotate:SetDegrees(amount)
-			self.repeatAnimations:Play()		
+			self.repeatAnimations:Play()
 			return self
 		end,
-		
+
 		Appear = function(self)
 			self.fadeInGroup:Play()
 			return self
 		end,
-		
+
 		SetTexCoords = function(self, a, b, c, d)
 			self.texture:SetTexCoord(a,b,c,d)
 			return self
 		end,
-		
+
 		Alert = function(self, bool)
 			local r, g, b, a
 			r = bool and self.alert.r or self.normal.r or 1
@@ -869,14 +823,14 @@ do
 			end
 			return self
 		end,
-		
+
 		RegisterForAlerts = function(self, bool, alertLabel)
 			if bool == nil then bool = true end
 			self.alertLabel = alertLabel
 			self.shouldUpdateRange = bool
 			return self
 		end,
-		
+
 		Distance = function(self, x2, y2, includeRadius)
 			local x, y = self:Location()
 			if not x or not y or (x == 0 and y == 0) then
@@ -886,22 +840,22 @@ do
 			local f = y2-y
 			return sqrt((e*e)+(f*f)) + (includeRadius and self.radius or 0), x, y
 		end,
-		
+
 		Persist = function(self, bool)
 			self.persist = bool == nil and true or bool
 			return self
 		end,
-		
+
 		AlwaysShow = function(self, bool)
 			if bool == nil then bool = true end
 			self.alwaysShow = bool
 			return self
 		end,
-		
+
 		UpdateAlerts = function(self)
 			if not self.radius then return end
 			local x, y = self:Location()
-			
+
 			local alert = false
 			if self.shouldUpdateRange == "all" or (self.follow and UnitIsUnit(self.follow, "player")) then
 				for index, unit in group() do
@@ -913,9 +867,9 @@ do
 			else
 				alert = mod:DistanceToPoint("player", x, y) < self.radius
 			end
-			self:Alert(alert)	
+			self:Alert(alert)
 		end,
-		
+
 		SetColor = function(self, r, g, b, a)
 			self.normal.r = r or 1
 			self.normal.g = g or 1
@@ -924,7 +878,7 @@ do
 			self:Alert(false)
 			return self
 		end,
-		
+
 		SetAlertColor = function(self, r, g, b, a)
 			self.alert.r = r or 1
 			self.alert.g = g or 0
@@ -932,7 +886,7 @@ do
 			self.alert.a = a or 0.5
 			return self
 		end,
-		
+
 		SetTexture = function(self, texfile, blend)
 			local tex = self.texture
 			texfile = texfile or "glow"
@@ -941,12 +895,12 @@ do
 				tex:SetTexCoord(unpack(texCoordLookup[texfile]))
 			else
 				tex:SetTexCoord(0, 1, 0, 1)
-			end	
+			end
 			blend = blend or texBlending[texfile] or "BLEND"
 			tex:SetBlendMode(blend)
 			return self
 		end,
-		
+
 		SetLabel = function(self, text, anchorFrom, anchorTo, r, g, b, a, xOff, yOff, fontSize, outline)
 			self.text.anchorFrom = anchorFrom or self.text.anchorFrom
 			self.text.anchorTo = anchorTo or self.text.anchorTo
@@ -962,10 +916,10 @@ do
 			self.text.g = g or self.text.g
 			self.text.b = b or self.text.b
 			self.text.a = a or self.text.a
-			
+
 			self.text.xOff = xOff or self.text.xOff or 0
 			self.text.yOff = yOff or self.text.yOff or 0
-			
+
 			if not text or text == "" then
 				self.text:SetText(nil)
 				self.text:Hide()
@@ -980,7 +934,7 @@ do
 				self.text:SetFont(font, size, outline)
 				self.text:SetText(text)
 			end
-			
+
 			-- LabelData is for sending to remote clients
 			self.labelData = self.labelData or {}
 			wipe(self.labelData)
@@ -997,7 +951,7 @@ do
 			self.labelData.outline = outline
 			return self
 		end,
-		
+
 		SetSize = function(self, size)
 			self.lastRadius = nil
 			self.size = size
@@ -1008,7 +962,7 @@ do
 			self:UpdateSize()
 			return self
 		end,
-		
+
 		EdgeFrom = function(self, point_or_unit_or_x, to_y, lifetime, r, g, b, a)
 			local fromPlayer = self.follow
 			local unit, x, y
@@ -1031,7 +985,7 @@ do
 			end
 			return edge
 		end,
-		
+
 		EdgeTo = function(self, point_or_unit_or_x, from_y, lifetime, r, g, b, a)
 			local toPlayer = self.follow
 			local unit, x, y
@@ -1044,7 +998,7 @@ do
 				x = from_y ~= nil and point_or_unit_or_x
 				y = from_y
 			end
-			
+
 			local edge = Edge:New(r, g, b, a, unit, toPlayer, x, y, self.stickX, self.stickY, lifetime)
 			self:AttachEdge(edge)
 			if type(point_or_unit_or_x) == "table" then
@@ -1053,14 +1007,14 @@ do
 			edge:SetClipOffset(self.fixedSize and self.fixedSize .. "px" or self.radius)
 			return edge
 		end,
-		
+
 		Broadcast = function(self)
 			local data = self.sendData or {}
 			wipe(data)
-			
+
 			-- Base
-			--data.zone = self.zone
-			data.x, data.y = self:Location()			
+			data.map = self.map
+			data.x, data.y = self:Location()
 			data.lifetime = self.baseLifetime
 			data.texfile = self.texfile
 			data.size = self.size
@@ -1073,18 +1027,18 @@ do
 			data.ag = self.alert.g
 			data.ab = self.alert.b
 			data.aa = self.alert.a
-			data.id = self.id			
+			data.id = self.id
 			data.pulseSize = self.pulseSize
-			data.pulseSpeed = self.pulseSpeed			
+			data.pulseSpeed = self.pulseSpeed
 			data.rotateAmount = self.rotateAmount
-			data.rotateSpeed = self.rotateSpeed			
-			
+			data.rotateSpeed = self.rotateSpeed
+
 			-- Alert
 			data.alertLabel = self.alertLabel
 			data.shouldUpdateRange = self.shouldUpdateRange
 		end,
-		
-		New = function(self, zone, x, y, follow, lifetime, texfile, size, blend, r, g, b, a)
+
+		New = function(self, map, x, y, follow, lifetime, texfile, size, blend, r, g, b, a)
 			local t = tremove(pointCache)
 			if not t then
 				t = setmetatable({}, point_mt)
@@ -1102,10 +1056,10 @@ do
 				t.texture:SetAllPoints()
 				t.repeatAnimations = t.frame:CreateAnimationGroup()
 				t.repeatAnimations:SetLooping("REPEAT")
-				
+
 				t.pulseAnimations = t.frame:CreateAnimationGroup()
-				t.pulseAnimations:SetScript("OnFinished", animations.replay)				
-				
+				t.pulseAnimations:SetScript("OnFinished", animations.replay)
+
 				t.pulse = t.pulseAnimations:CreateAnimation("scale")
 				-- t.pulse:SetMaxFramerate(60)
 				t.pulse:SetOrder(1)
@@ -1113,21 +1067,21 @@ do
 				-- t.pulseIn:SetMaxFramerate(60)
 				t.pulseIn:SetOrder(2)
 				t.pulse:SetScript("OnPlay", animations.onLoad)
-				
+
 				t.rotate = t.repeatAnimations:CreateAnimation("rotation")
 				-- t.rotate:SetMaxFramerate(60)
-				
-				t.normal, t.alert = {}, {}				
-				
+
+				t.normal, t.alert = {}, {}
+
 				do
 					t.fadeInGroup = t.frame:CreateAnimationGroup()
-					
+
 					local scaleOut = t.fadeInGroup:CreateAnimation("scale")
 					-- scaleOut:SetMaxFramerate(60)
 					scaleOut:SetDuration(0)
 					scaleOut:SetScale(1.5, 1.5)
 					scaleOut:SetOrder(1)
-					
+
 					t.fadeIn = t.fadeInGroup:CreateAnimation()
 					-- t.fadeIn:SetMaxFramerate(60)
 					t.fadeIn:SetDuration(0.35)
@@ -1161,34 +1115,34 @@ do
 			t.shouldUpdateRange = nil
 			t.pulseSize = nil
 			t.rotateAmount = nil
-			
+
 			t:OnAcquire()
-			
+
 			t.texture:SetDrawLayer("ARTWORK")
 			t.alwaysShow = nil
 			t.persist = nil
 			t.placed = false
 
 			t:SetLabel(nil, "CENTER", "CENTER", r, g, b, a)
-			
+
 			t.texfile = texfile
 			t:SetTexture(texfile, blend)
 			t:SetSize(size or 20)
-			
+
 			t:SetColor(r, g, b, a)
 			t:SetAlertColor(1, 0, 0, a)
 			t:Alert(false)
-			
+
 			t.shouldUpdateRange = false
-			
+
 			if x and y then
-				t:Stick(zone, x, y)
+				t:Stick(map, x, y)
 			elseif follow then
 				t:Follow(follow)
 			end
 			t.baseLifetime = lifetime
 			t.lifetime = lifetime and (GetTime() + lifetime) or -1
-			--t.zone = zone
+			t.map = map
 			activePointList[t] = true
 			t.callbacks:Fire("New", t)
 			return t
@@ -1202,7 +1156,7 @@ function mod:UpdateMode()
 end
 
 function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend)
-	return Point:New(self.currentZone, x, y, nil, duration, texture, radius, blend, r, g, b, a)	
+	return Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
 end
 
 function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
@@ -1231,7 +1185,7 @@ function mod:FreeEncounterMarkers()
 	for k, _ in pairs(encounterMarkers) do
 		encounterMarkers[k] = k:Free()
 	end
-	mod:Disable()--
+	mod:Disable()
 end
 
 function mod:DistanceToPoint(unit, x, y)
@@ -1291,13 +1245,11 @@ function mod:Update()
 end
 
 function mod:GetMinimapSize()
-	return zoomScale -- math.pow(zoomScale, 2)
-	-- return minimapSize[indoors and "indoor" or "outdoor"][DBMHudMapMinimap:GetZoom()]
+	return zoomScale
 end
 
 do
 	local function ClipPointToRadius(dx, dy, offset)
-		--local clipped
 		local px, py = 0, 0
 		local e = px - dx
 		local f = py - dy
@@ -1308,7 +1260,6 @@ do
 			if distance > (UIParent:GetHeight() * 0.48) then
 				dx = dx + (scaleFactor * e)
 				dy = dy + (scaleFactor * f)
-				--clipped = true
 			end
 		end
 		return dx, dy
@@ -1327,31 +1278,16 @@ do
 	function mod:GetFacing()
 		return GetPlayerFacing()
 	end
-	
+
 	function mod:LocationToMinimapOffset(x, y, alwaysShow, radiusOffset, pixelOffset)
 		mod.pixelsPerYard = (UIParent:GetHeight() * 0.48) / zoomScale
-
-		--local playerX, playerY = self:GetUnitPosition("player")
-		--local rotation = (2 * pi) - self:GetFacing()
-		--local cy = x - playerX
-		--local cx = y - playerY
-		--local nx, ny = -cx, -cy
-		--local dx = ((nx * cos(rotation)) - (-ny * sin(rotation))) * mod.pixelsPerYard
-		--local dy = ((nx * sin(rotation)) + (-ny * cos(rotation))) * mod.pixelsPerYard
-
-		-- breaks stuff when alwaysShow == true
-		--if alwaysShow then
-		--	local offset = (radiusOffset and radiusOffset * mod.pixelsPerYard) or (pixelOffset and pixelOffset / 2) or 0
-		--	dx, dy = ClipPointToRadius(nx, ny, offset)
-		--end
-		--return dx, dy
 
 		local px, py = self:GetUnitPosition("player")
 		local dx, dy
 		local nx, ny
 		dx = (px - x) * mod.pixelsPerYard
 		dy = (py - y) * mod.pixelsPerYard
-		
+
 		-- Now adjust for rotation
 		local bearing = self:GetFacing()
 		local angle = atan2(dy, dx)
@@ -1365,11 +1301,11 @@ do
 		local hyp = abs(sqrt((dx * dx) + (dy * dy)))
 		local x, y = sin(angle + bearing), cos(angle + bearing)
 		nx, ny = -x * hyp, -y * hyp
-		
+
 		if alwaysShow then
 			local offset = (radiusOffset and radiusOffset * mod.pixelsPerYard) or (pixelOffset and pixelOffset / 2) or 0
 			nx, ny = ClipPointToRadius(nx, ny, offset)
-		end		
+		end
 		return nx, ny
 	end
 
