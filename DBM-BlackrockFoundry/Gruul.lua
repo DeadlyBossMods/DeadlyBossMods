@@ -32,7 +32,7 @@ local specWarnRampageEnded			= mod:NewSpecialWarningEnd(155539)
 local specWarnOverheadSmash			= mod:NewSpecialWarningCount(155301, nil, nil, nil, 2, nil, 2)
 local specWarnPetrifyingSlam		= mod:NewSpecialWarningMoveAway(155326, nil, nil, nil, 3, nil, 2)
 
-local timerInfernoSliceCD			= mod:NewCDCountTimer(13, 155080)--Variable do to energy bugs (gruul not gain power consistently)
+local timerInfernoSliceCD			= mod:NewCDCountTimer(12, 155080)--Variable do to energy bugs (gruul not gain power consistently)
 local timerSpecialCD				= mod:NewCDSpecialTimer(20.5)
 local timerPetrifyingSlamCD			= mod:NewCDCountTimer(60, 155323)--60-70 variation
 local timerOverheadSmashCD			= mod:NewCDCountTimer(25, 155301)--25-42 variation
@@ -42,7 +42,7 @@ local timerRampageCD				= mod:NewCDTimer(107, 155539)--Variable, may be even sho
 
 local berserkTimer					= mod:NewBerserkTimer(360)
 
-local countdownInfernoSlice			= mod:NewCountdown(13, 155080, "Tank")
+local countdownInfernoSlice			= mod:NewCountdown(12, 155080, "Tank")
 
 local voiceInfernoSlice				= mod:NewVoice(155080) --gathershare. maybe change to "InfernoSlice".
 --local voiceCrumblingRoar			= mod:NewVoice(155730)
@@ -250,7 +250,7 @@ do
 			DBM:Debug("Massive power gain detected. Updating Inferno Slice timer.")
 			local timeElapsed = bossPower / 10 --Divide it by 10 (cause he gains 10 power per second and we need to know how many seconds to subtrack from CD)
 			local timeRemaining = 10-timeElapsed
-			timerInfernoSliceCD:Update(timeElapsed+3, 13, self.vb.sliceCount+1)--+3 because total time is 13, else, it's timeElapsed, 10
+			timerInfernoSliceCD:Update(timeElapsed+2, 12, self.vb.sliceCount+1)--+3 because total time is 13, else, it's timeElapsed, 10
 			countdownInfernoSlice:Cancel()
 			countdownInfernoSlice:Start(timeRemaining)
 		end
