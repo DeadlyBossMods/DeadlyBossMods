@@ -94,7 +94,7 @@ function mod:OnCombatStart(delay)
 		self:RegisterShortTermEvents(
 			"UNIT_POWER_FREQUENT boss1"
 			)
-		if self:IsHeroic() then
+		if self:IsDifficulty("mythic", "heroic") then
 			berserkTimer:Start(-delay)
 		elseif self:IsNormal() then
 			berserkTimer:Start(480-delay)
