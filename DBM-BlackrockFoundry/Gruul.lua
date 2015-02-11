@@ -67,12 +67,7 @@ do
 	end
 end
 local DBMHudMap = DBMHudMap
-local free = DBMHudMap.free
-local hudEnabled = false
-local function register(e)	
-	DBMHudMap:RegisterEncounterMarker(e)
-	return e
-end
+local hudEnabled = false--Only to avoid calling self.Options.HudMapOnShatter 20x in under a second when shatter goes out (20x SPELL_AURA_APPLIED events)
 local ShatterMarker = {}
 
 local function clearRampage(self)
@@ -110,7 +105,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.HudMapOnShatter then
 		hudEnabled = true
 		table.wipe(ShatterMarker)
-		DBMHudMap:Enable()
+		self:EnableHudMap()
 	end
 end
 
@@ -121,7 +116,7 @@ function mod:OnCombatEnd()
 	end
 	if hudEnabled then
 		hudEnabled = false
-		DBMHudMap:FreeEncounterMarkers()--Disable is called already by FreeEncounterMarkers so no need to call it here
+		self:DisableHudMap()
 	end
 end 
 
@@ -180,7 +175,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceShatter:Play("scatter")
 		end
 		if hudEnabled then
-			ShatterMarker[args.destName] = register(DBMHudMap:PlaceRangeMarkerOnPartyMember("timer", args.destName, 8, 8, 0, 1, 0, 0.6):Appear():RegisterForAlerts():Rotate(360, 9.5))
+			ShatterMarker[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("timer", args.destName, 8, 8, 0, 1, 0, 0.6):Appear():RegisterForAlerts():Rotate(360, 9.5))
 		end
 	elseif spellId == 155539 then
 		self.vb.rampage = true
@@ -210,7 +205,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if hudEnabled then
 			if ShatterMarker[args.destName] then
-				ShatterMarker[args.destName] = free(ShatterMarker[args.destName])
+				ShatterMarker[args.destName] = self:FreeMarker(ShatterMarker[args.destName])
 			end
 		end
 	elseif spellId == 155539 then
