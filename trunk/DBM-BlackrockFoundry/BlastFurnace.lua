@@ -259,10 +259,11 @@ function mod:UNIT_DIED(args)
 end
 
 do
+	local totalTime = 30
 	local UnitPower = UnitPower
 	function mod:UNIT_POWER_FREQUENT(uId, type)
-		local totalTime = 30
 		if type == "ALTERNATE" then
+			totalTime = 30
 			local altPower = UnitPower(uId, 10)
 			local powerRate = 5
 			--Each time boss breaks interval of 25%. CD is reduced
