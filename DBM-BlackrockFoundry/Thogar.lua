@@ -10,9 +10,9 @@ mod:SetUsedIcons(8, 7, 2, 1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 160140 163753",
+	"SPELL_CAST_START 160140 163753 159481",
 	"SPELL_CAST_SUCCESS 155864",
-	"SPELL_AURA_APPLIED 155921 159481 165195",
+	"SPELL_AURA_APPLIED 155921 165195",
 	"SPELL_AURA_APPLIED_DOSE 155921",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL"
@@ -287,6 +287,14 @@ function mod:test(num)
 	DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 end
 
+function mod:BombTarget(targetname, uId)
+	warnDelayedSiegeBomb:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnDelayedSiegeBomb:Show()
+		yellDelayedSiegeBomb:Yell()
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.trainCount = 0
 	self.vb.infoCount = 0
@@ -329,6 +337,8 @@ function mod:SPELL_CAST_START(args)
 			specWarnIronbellow:Show()
 		end
 		timerIronbellowCD:Start(12, args.sourceGUID)
+	elseif spellId == 159481 then
+		self:BossTargetScanner(args.sourceGUID, "BombTarget", 0.05, 10)
 	end
 end
 
@@ -346,12 +356,6 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnEnkindleOther:Show(args.destName)
 				end
 			end
-		end
-	elseif spellId == 159481 then
-		warnDelayedSiegeBomb:CombinedShow(1, args.destName)
-		if args:IsPlayer() then
-			specWarnDelayedSiegeBomb:Show()
-			yellDelayedSiegeBomb:Yell()
 		end
 	elseif spellId == 165195 and args:IsPlayer() then
 		specWarnProtoGrenade:Show()
@@ -377,11 +381,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		showTrainWarning(self)
 		if msg == "Fake" then
 			countdownTrain:Start(2.5)
-			self:Schedule(1.5, laneCheck, self)
+			laneCheck(self)
 			self:Schedule(2.5, showInfoFrame)
 		else
 			countdownTrain:Start()
-			self:Schedule(4, laneCheck, self)
+			self:Schedule(2.5, laneCheck, self)
 			self:Schedule(5, showInfoFrame)
 		end
 		if self:IsMythic() then
