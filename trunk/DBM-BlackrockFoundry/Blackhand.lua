@@ -180,13 +180,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			countdownMarkedforDeathFades:Start()
 		end
 		if self:AntiSpam(2, 3) then
-			local timer = 15.5
+			local timer
 			if self.vb.phase == 3 then
 				timer = 21.5
-			elseif self.vb.phase == 2 then
-				timer = 16
 			else
-				timer = 15
+				timer = 15.5
 			end
 			timerImpalingThrow:Start()
 			self:Schedule(0.5, checkMarked)
