@@ -86,12 +86,6 @@ mod.vb.SlagEruption = 0
 mod.vb.smashCount = 0
 local UnitDebuff = UnitDebuff
 local DBMHudMap = DBMHudMap
-local free = DBMHudMap.free
-local hudEnabled = false
-local function register(e)	
-	DBMHudMap:RegisterEncounterMarker(e)
-	return e
-end
 local MFDMarkers={}
 
 function mod:OnCombatStart(delay)
@@ -108,9 +102,8 @@ function mod:OnCombatStart(delay)
 	timerMarkedforDeathCD:Start(36-delay)
 	countdownMarkedforDeath:Start(36-delay)
 	if self.Options.HudMapOnMFD then
-		hudEnabled = true
 		table.wipe(MFDMarkers)
-		DBMHudMap:Enable()
+		self:EnableHudMap()
 	end
 end
 
@@ -119,9 +112,8 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if hudEnabled then
-		hudEnabled = false
-		DBMHudMap:FreeEncounterMarkers()
+	if self.Options.HudMapOnMFD then
+		self:DisableHudMap()
 	end
 end
 
@@ -170,8 +162,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 156096 then
 		warnMarkedforDeath:CombinedShow(0.5, args.destName)
-		if hudEnabled then
-			MFDMarkers[args.destName] = register(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
+		if self.Options.HudMapOnMFD then
+			MFDMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
 		end
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
@@ -235,13 +227,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 156096 then
-		if hudEnabled then
+		if self.Options.HudMapOnMFD then
 			if MFDMarkers[args.destName] then
-				MFDMarkers[args.destName] = free(MFDMarkers[args.destName])
+				MFDMarkers[args.destName] = self:FreeMarker(MFDMarkers[args.destName])
 			end
 		end
 		timerImpalingThrow:Cancel()

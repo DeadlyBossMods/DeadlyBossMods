@@ -13,7 +13,6 @@ local updateFrame = CreateFrame("Frame")
 local onUpdate, Point, Edge
 local followedUnits = {}
 local callbacks = CallbackHandler:New(mod)
-local HUDEnabled = false
 
 local GetNumGroupMembers, GetNumSubgroupMembers = GetNumGroupMembers, GetNumSubgroupMembers
 local GetTime, UIParent = GetTime, UIParent
@@ -244,11 +243,12 @@ function mod:OnInitialize()
 	self.canvas:SetSize(UIParent:GetWidth(), UIParent:GetHeight())
 	self.canvas:SetPoint("CENTER")
 	self.activeObjects = 0
+	self.HUDEnabled = false
 end
 
 function mod:Enable()
-	if DBM.Options.DontShowHudMap2 or HUDEnabled then return end
-	HUDEnabled = true
+	if DBM.Options.DontShowHudMap2 or self.HUDEnabled then return end
+	self.HUDEnabled = true
 	DBM:Debug("HudMap Activating", 2)
 	self.currentMap = select(8, GetInstanceInfo())
 	self.mainFrame:Show()
@@ -265,10 +265,11 @@ function mod:Enable()
 end
 
 function mod:Disable()
-	if not HUDEnabled then return end
-	HUDEnabled = false
+	if not self.HUDEnabled then return end
+	self.HUDEnabled = false
 	DBM:Debug("HudMap Deactivating", 2)
 	updateFrame:SetScript("OnUpdate", nil)
+	self:FreeEncounterMarkers()
 	--Anything else needed? maybe clear all marks, hide any frames, etc?
 	self.mainFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	self.mainFrame:UnregisterEvent("LOADING_SCREEN_DISABLED")
@@ -1170,22 +1171,21 @@ end
 
 local encounterMarkers = {}
 function mod:RegisterEncounterMarker(e)
-	if not HUDEnabled then return end
+	if not self.HUDEnabled then return end
 	encounterMarkers[e] = true
 	e.RegisterCallback(self, "Free", "FreeEncounterMarker")
 end
 
-function mod:FreeEncounterMarker(cbk, e)
-	if not HUDEnabled then return end
-	encounterMarkers[e] = nil
+function mod:FreeEncounterMarker(e)
+	if not self.HUDEnabled then return end
+	encounterMarkers[e] = e:Free()
 end
 
 function mod:FreeEncounterMarkers()
-	if not HUDEnabled then return end
+	if not self.HUDEnabled then return end
 	for k, _ in pairs(encounterMarkers) do
 		encounterMarkers[k] = k:Free()
 	end
-	mod:Disable()
 end
 
 function mod:DistanceToPoint(unit, x, y)
