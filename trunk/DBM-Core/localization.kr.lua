@@ -146,6 +146,7 @@ DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "경고: DBM 버전이 오래되어 현재
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "경고: 현재 게임 버전과 맞지 않는 DBM을 사용중입니다. 현재 게임 버전에 맞는 DBM을 다운로드 받아 다시 설치하시기 바랍니다."
 DBM_CORE_VEM							= "경고: 당신은 DBM과 VEM을 동시에 사용중입니다. 현재 설정에서는 DBM이 작동하지 않으므로 DBM을 불러오지 않습니다."
 DBM_CORE_3RDPROFILES					= "경고: DBM-Profiles는 이 버전의 DBM과 호환되지 않습니다. 충돌을 방지하기 위해 해당 애드온을 제거하셔야 DBM을 불러올 수 있습니다."
+DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "경고: 지금 업데이트하신 DBM은 게임 클라이언트를 완전히 재시작하지 전까지 정상작동하지 않습니다. 이 업데이트는 새 파일이 추가되었거나 UI 재시작으로는 불러올 수 없는 TOC 변경이 포함되어 있습니다. 재시작 없이 사용하실 경우 오류가 발생하거나 작동하지 않을 수 있습니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
@@ -346,8 +347,8 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "$spell:%s 남은시간 초세기 듣기"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 진행시간 초세기 듣기"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%s 대상이 된 경우 대화로 알리기"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= UnitName("player").."에게 %s!"
-DBM_CORE_AUTO_HUD_OPTION_TEXT			= "$spell:%s 위치 정보를 화면에서 보기"
-DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "다양한 위치 정보를 화면에서 보기"
+DBM_CORE_AUTO_HUD_OPTION_TEXT			= "$spell:%s 범위 정보를 화면에서 보기"
+DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "다양한 범위 정보를 화면에서 보기"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 관련 거리 창 보기(%1$sm)"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "거리 창 보기(%sm)"
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT		= "$spell:%2$s 관련 반전 거리 창 보기(%1$sm)"
