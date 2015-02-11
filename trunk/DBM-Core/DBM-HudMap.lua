@@ -256,7 +256,7 @@ function mod:Enable()
 	self.mainFrame:Show()
 	self.mainFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	self.mainFrame:RegisterEvent("LOADING_SCREEN_DISABLED")
-	updateFrame:SetScript("OnUpdate", onUpdate)
+--	updateFrame:SetScript("OnUpdate", onUpdate)
 	self.canvas:SetAlpha(1)
 	self:UpdateCanvasPosition()
 
@@ -265,18 +265,25 @@ function mod:Enable()
 	self:SetZoom()
 	self.canvas:SetBackdrop(nil)
 	self.HUDEnabled = true
+	if not updateFrame.ticker then
+		updateFrame.ticker = C_Timer.NewTicker(0.05, function() onUpdate(updateFrame, 0.05) end)
+	end
 end
 
 function mod:Disable()
 	if not self.HUDEnabled then return end
 	DBM:Debug("HudMap Deactivating", 2)
-	updateFrame:SetScript("OnUpdate", nil)
+--	updateFrame:SetScript("OnUpdate", nil)
 	self:FreeEncounterMarkers()
 	--Anything else needed? maybe clear all marks, hide any frames, etc?
 	self.mainFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	self.mainFrame:UnregisterEvent("LOADING_SCREEN_DISABLED")
 	self.mainFrame:Hide()
 	self.HUDEnabled = false
+	if updateFrame.ticker then
+		updateFrame.ticker:Cancel()
+		updateFrame.ticker = nil
+	end
 end
 
 do
