@@ -58,7 +58,7 @@ function mod:OnCombatStart(delay)
 	timerStoneBreathCD:Start(8-delay, 1)--8-10
 	timerWarpedArmorCD:Start(15-delay)
 	timerSlamCD:Start(25-delay)--More data needed
-	timerRipplingSmashCD:Start(30-delay)
+	timerRipplingSmashCD:Start(23.5-delay)
 	timerGraspingEarthCD:Start(51-delay)
 	berserkTimer:Start(-delay)--8 minutes on normal and heroic verified, but sometimes late?
 end
