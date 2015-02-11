@@ -6126,8 +6126,6 @@ function bossModPrototype:RegisterOnUpdateHandler(func, interval)
 	updateFunctions[self] = func
 end
 
-local DBMHudMap = DBMHudMap
-
 function bossModPrototype:RegisterMarker(marker)
 	DBMHudMap:RegisterEncounterMarker(marker)
 	return marker
