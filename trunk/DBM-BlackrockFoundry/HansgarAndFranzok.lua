@@ -148,6 +148,26 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerCripplingSupplex:Start()
 			countCripplingSupplex:Start()
 		end
+	--Activation ?
+	--"<84.68 23:57:03> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157926]]", -- [8948]
+	--"<84.71 23:57:03> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:161906]]", -- [8957]
+	--First jump ?
+	--"<84.71 23:57:03> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157922]]", -- [8959]
+	--"<86.72 23:57:05> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157923]]", -- [9188]
+	--New jump ?
+	--"<88.34 23:57:06> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157922]]", -- [9431]
+	--"<90.34 23:57:08> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157923]]", -- [9693]
+	--New jump ?
+	--"<92.02 23:57:10> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157922]]", -- [10065]
+	--"<94.01 23:57:12> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157923]]", -- [10247]
+	--Ended?
+	--"<95.64 23:57:14> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157925]]", -- [10473]
+	elseif spellId == 157926 then
+		DBM:Debug("Jump Slam::0:157926 on "..UnitTarget(uId))
+	elseif spellId == 157922 then--Likely best canidate for target scan, at least for first jump, unless he looks at target during activation
+		DBM:Debug("Jump Slam::0:157922 on "..UnitTarget(uId))
+	elseif spellId == 157923 then--Or possibly this, for 2nd jump and later, if he looks at NEXT target before casting 157922 again
+		DBM:Debug("Jump Slam::0:157923 on "..UnitTarget(uId))
 	end
 end
 
