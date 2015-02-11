@@ -442,7 +442,7 @@ local Object = {
 		self.freed = true
 		self.callbacks:Fire("Free", self)
 		--UnregisterAllCallbacks(self)
-		self:UnregisterAllCallbacks()
+		self:UnregisterAllCallbacks(self)
 		self:Hide(noAnimate)
 		print("Object:Free")
 	end,
