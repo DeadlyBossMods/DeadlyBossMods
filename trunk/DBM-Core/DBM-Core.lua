@@ -6132,7 +6132,7 @@ function bossModPrototype:RegisterMarker(marker)
 end
 
 function bossModPrototype:FreeMarker(marker, owner, id, noAnimate)
-	return DBMHudMap:free(marker, owner, id, noAnimate)
+	return DBMHudMap.free(marker, owner, id, noAnimate)
 end
 
 function bossModPrototype:FreeMarkers()
