@@ -27,6 +27,22 @@ local specWarnWildFlames			= mod:NewSpecialWarningMove(173827)
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
+mod:AddRangeFrameOption(8, 166200)
+
+local debuff = GetSpellInfo(166200)
+
+local DebuffFilter
+do
+	DebuffFilter = function(uId)
+		return UnitDebuff(uId, debuff)
+	end
+end
+
+local function resetRangeFrame()
+	if mod.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
@@ -54,6 +70,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not self:IsLFR() and self:AntiSpam(3, 1) then
 				yellArcaneVol:Yell()
 			end
+		end
+		if self.Options.RangeFrame then
+			if UnitDebuff("player", debuff) then--You have debuff, show everyone
+				DBM.RangeCheck:Show(8, nil)
+			else--You do not have debuff, only show players who do
+				DBM.RangeCheck:Show(8, DebuffFilter)
+			end
+			self:Unschedule(resetRangeFrame)
+			self:Schedule(6.5, resetRangeFrame)
 		end
 	elseif spellId == 173827 and args:IsPlayer() then
 		specWarnWildFlames:Show()

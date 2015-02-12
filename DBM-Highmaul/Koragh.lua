@@ -348,7 +348,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		--Fire https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+162185+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=12
 		--https://www.warcraftlogs.com/reports/Wj4MnfLQ8t3HzFgy#fight=10&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+162185+and+type+%3D+%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)
-		local fireRemaining = timerExpelMagicArcaneCD:GetRemaining()
+		local fireRemaining = timerExpelMagicFireCD:GetRemaining()
 		if fireRemaining > 0 then--Basically, a 0 0 check.
 			timerExpelMagicFireCD:Start(fireRemaining+27)--Note the difference, shadow is +27-30 not +23-26
 		end
