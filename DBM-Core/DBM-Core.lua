@@ -7465,7 +7465,7 @@ do
 				end
 			end
 			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
-			fireEvent("DBM_Announce", message)
+			fireEvent("DBM_Announce", text)
 		else
 			self.combinedcount = 0
 			self.combinedtext = {}
