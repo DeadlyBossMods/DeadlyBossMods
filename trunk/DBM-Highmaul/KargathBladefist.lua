@@ -16,8 +16,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 159947 158986 159178 159202 162497",
 	"SPELL_AURA_APPLIED_DOSE 159178",
-	"SPELL_PERIODIC_DAMAGE 159413",
-	"SPELL_ABSORBED 159413",
+	"SPELL_PERIODIC_DAMAGE 159413 159311",
+	"SPELL_ABSORBED 159413 159311",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
@@ -34,6 +34,7 @@ local specWarnImpale				= mod:NewSpecialWarningYou(159113)
 local specWarnOpenWounds			= mod:NewSpecialWarningStack(159178, nil, 2)
 local specWarnOpenWoundsOther		= mod:NewSpecialWarningTaunt(159178)--If it is swap every impale, will move this to impale cast and remove stack stuff all together.
 local specWarnMaulingBrew			= mod:NewSpecialWarningMove(159413)
+local specWarnFlameJet				= mod:NewSpecialWarningMove(159311)
 local specWarnOnTheHunt				= mod:NewSpecialWarningMoveTo(162497, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(162497), nil, nil, nil, 2)--Does not need yell, tigers don't cleave other targets like berserker rush does.
 
 local timerPillarCD					= mod:NewNextTimer(20, "ej9394", nil, nil, nil, 159202)
@@ -120,7 +121,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			countdownSweeper:Start()--TODO,scan for punted or whatever knockdown is and cancel.
 			voiceChainHurl:Play("159947y") --you are the target
 		else
-			if self:AntiSpam(2, 2) then			
+			if self:AntiSpam(2, 2) then
 				self:Schedule(0.5, checkHurl)
 			end
 		end
@@ -165,6 +166,8 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
 	if spellId == 159413 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnMaulingBrew:Show()
+	elseif spellId == 159311 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+		specWarnFlameJet:Show()
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
