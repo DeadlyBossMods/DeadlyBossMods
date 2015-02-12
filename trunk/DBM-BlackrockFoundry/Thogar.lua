@@ -72,18 +72,29 @@ local Deforester = EJ_GetSectionInfo(10329)
 --Also be aware that older beta videos are wrong, blizz has changed train orders few times, so don't try to fill in missing data by putting "thogar" into youtube unless it's a RECENT LIVE video.
 local mythicTrains = {
 	[1] = { [4] = ManOArms },--+7 after pull
-	[2] = { [1] = Deforester },--+5 after 1
-	[3] = { [2] = Train },--+5 after 2.
-	[4] = { [3] = Train },--+15 after 3.
-	[5] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 4
+	[2] = { [1] = Deforester },--+5 or +7 after 1
+	[3] = { [2] = Train },--++5 or +7 after 2.
+	[4] = { [3] = Train },--+13 after 3.
+	[5] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+17 after 4
 	[6] = { [1] = Cannon, [4] = Cannon },--+15 after 5
 	[7] = { [2] = Train },--+5 after 6.
 	[8] = { [3] = Train },--+5 after 7.
 	[9] = { [2] = Train },--+15 after 8.
-	[10] = { [2] = Reinforcements, [3] = Reinforcements },--+20 after 9
-	[11] = { [1] = Train, [4] = Train },--+15 after 10.
+	[10] = { [2] = Reinforcements, [3] = Reinforcements },--+18 after 9
+	[11] = { [1] = Train, [4] = Train },--+17 after 10.
 	[12] = { [2] = Train, [4] = Train },--+15 after 11
-	--Unknown After 12
+	--Unknown Train types After 12
+--	[13] = { [2] = Train },--+15 after 12
+--	[14] = { [2] = Train },--+13 after 13
+	--Yell Sometimes missing for 15
+--	[15] = { [2] = Train },--+5 after 14
+	--Yell Sometimes missing for 15
+--	[16] = { [2] = Train },--+10 after 15
+--	[17] = { [2] = Train },--+11 after 16
+--	[18] = { [2] = Train },--+17 after 17
+--	[19] = { [2] = Train },--+15 after 18
+--	[20] = { [2] = Train },--+15 after 19
+	--Unknown Train types & times After 20
 }
 
 --https://www.youtube.com/watch?v=_W8vy5Gc5q4
@@ -392,15 +403,23 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			if mythicVoice[count] then
 				voiceTrain:Play("Thogar\\"..mythicVoice[count])
 			end
-			--+5 added to all timers so timers are for train coming down the lane.
-			--yes this means sometimes two timers up at a time instead of one. this is fine, fight doesn't have many timers.
+			--5 second trains on mythic have variation. 5 or 7. This seems intended.
+			--It seems that they offset eachother too. So if train 2 was 5 seconds after 1, train 3 is always 7 seconds after 2
+			--But if train 2 was the 7. then train 3 will be the 5 instead, keeping train 4 always on same schedule.
+			--Coding all the 5 or 7 trains as 5 seems like best solution
 			local expectedTime
-			if count == 1 or count == 2 or count == 6 or count == 7 then
-				expectedTime = 5
-			elseif count == 9 then
-				expectedTime = 20
-			else
+			if count == 1 or count == 2 or count == 6 or count == 7 or count == 14 then
+				expectedTime = 5--or 7 :\
+			elseif count == 15 or count == 16 then
+				expectedTime = 10
+			elseif count == 3 or count == 13 then
+				expectedTime = 13
+			elseif count == 6 or count == 8 or count == 11 or count == 12 or count == 18 or count == 19 then
 				expectedTime = 15
+			elseif count == 4 or count == 10 or count == 17 then
+				expectedTime = 17
+			elseif count == 9 then
+				expectedTime = 18
 			end
 			if expectedTime then
 				if msg == "Fake" then expectedTime = expectedTime - 2.5 end
