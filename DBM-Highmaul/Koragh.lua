@@ -86,6 +86,7 @@ mod:AddRangeFrameOption("5")
 mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddSetIconOption("SetIconOnFel", 172895, false)
 mod:AddArrowOption("FelArrow", 172895, true, 3)
+mod:AddHudMapOption("HudMapOnMC", 163472)
 
 mod.vb.ballsCount = 0
 mod.vb.shieldCharging = false
@@ -93,6 +94,8 @@ mod.vb.fireActive = false
 local lastX, LastY = nil, nil--Not in VB table because it player personal position
 local barName = GetSpellInfo(156803)
 local arcaneDebuff = GetSpellInfo(162186)
+local DBMHudMap = DBMHudMap
+local MCMarkers={}
 
 local function closeRange(self)
 	if self.Options.RangeFrame and not UnitDebuff("player", arcaneDebuff) then
@@ -150,6 +153,10 @@ function mod:OnCombatStart(delay)
 	self:Schedule(29.5-delay, ballsWarning, self)
 	if self:IsMythic() then
 		timerExpelMagicFelCD:Start(5-delay)
+		if self.Options.HudMapOnMC then
+			table.wipe(MCMarkers)
+			self:EnableHudMap()
+		end
 	end
 	if DBM.BossHealth:IsShown() then--maybe need another option
 		DBM.BossHealth:AddBoss(function() return UnitPower("boss1", 10) end, barName)--Null Barrier health bar
@@ -162,6 +169,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.FelArrow then
 		DBM.Arrow:Hide()
+	end
+	if self.Options.HudMapOnMC then
+		self:DisableHudMap()
 	end
 end
 
@@ -282,6 +292,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnMC then
 			self:SetSortedIcon(1, args.destName, 8, nil, true)--TODO, find out number of targets and add
 		end
+		if self.Options.HudMapOnMC and not MCMarkers[args.destName] then
+			MCMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 3.5, 0, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
+		end
 	elseif spellId == 172895 then
 		warnExpelMagicFel:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
@@ -304,8 +317,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 162186 and args:IsPlayer() and self.Options.RangeFrame and not self.vb.fireActive then
 		DBM.RangeCheck:Hide()
-	elseif spellId == 163472 and self.Options.SetIconOnMC then
-		self:SetIcon(args.destName, 0)
+	elseif spellId == 163472 then
+		if self.Options.SetIconOnMC then
+			self:SetIcon(args.destName, 0)
+		end
+		if self.Options.HudMapOnMC and MCMarkers[args.destName] then
+			MCMarkers[args.destName] = self:FreeMarker(MCMarkers[args.destName])
+		end
 	elseif spellId == 172895 then
 		if args:IsPlayer() then
 			lastX, LastY = nil, nil
