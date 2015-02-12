@@ -322,7 +322,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 155864 then
+	if spellId == 155864 and self:AntiSpam(2, 4) then
 		warnProtoGrenade:Show()
 		timerProtoGrenadeCD:Start()
 	end
