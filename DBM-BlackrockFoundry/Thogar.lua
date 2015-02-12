@@ -113,6 +113,46 @@ local Deforester = EJ_GetSectionInfo(10329)
 "<1393.84 18:00:15> DBM_Announce#Moving Train (18) on >noStrip |cffffff9a|r<", -- [351] +15
 "<1408.85 18:00:30> DBM_Announce#Moving Train (19) on >noStrip |cffffff9a|r<", -- [356] +15
 "<1423.85 18:00:45> DBM_Announce#Moving Train (20) on >noStrip |cffffff9a|r<", -- [360]
+----------------------------------------------------------------------------------------------------------
+			"<85.42 23:28:32> DBM_Announce#Pull now!", -- [2] +7
+			"<92.64 23:28:39> DBM_Announce#Moving Train (1) on >noStrip |cffffff9aLane 4: Grom'kar Man-at-Arms|r<", -- [4]  +5
+			"<97.69 23:28:44> DBM_Announce#Moving Train (2) on >noStrip |cffffff9aLane 1: Deforester|r<", -- [8] +8
+			"<105.21 23:28:52> DBM_Announce#Moving Train (3) on >noStrip |cffffff9aLane 2: Train|r<", -- [14] +12
+			"<117.69 23:29:04> DBM_Announce#Moving Train (4) on >noStrip |cffffff9aLane 3: Train|r<", -- [20] +17
+			"<135.21 23:29:22> DBM_Announce#Moving Train (5) on >noStrip |cffffff9a3 Random Lanes: Train|r<", -- [27] +15
+			"<150.22 23:29:37> DBM_Announce#Moving Train (6) on >noStrip |cffffff9aLane 1, 4: Cannon|r<", -- [32] +5
+			"<155.23 23:29:42> DBM_Announce#Moving Train (7) on >noStrip |cffffff9aLane 2: Train|r<", -- [37] +5
+			"<160.27 23:29:47> DBM_Announce#Moving Train (8) on >noStrip |cffffff9aLane 3: Train|r<", -- [38] +15
+			"<175.27 23:30:02> DBM_Announce#Moving Train (9) on >noStrip |cffffff9aLane 2: Train|r<", -- [46] +17
+			"<192.69 23:30:19> DBM_Announce#Moving Train (10) on >noStrip |cffffff9aLane 2, 3: Reinforcements|r<", -- [53] +18
+			"<210.20 23:30:37> DBM_Announce#Moving Train (11) on >noStrip |cffffff9aLane 1, 4: Train|r<", -- [59] +15
+			"<225.21 23:30:52> DBM_Announce#Moving Train (12) on >noStrip |cffffff9aLane 2, 4: Train|r<", -- [64] +15
+
+			"<240.22 23:31:07> DBM_Announce#Moving Train (13) on >noStrip |cffffff9a|r<", -- [71] +12
+			"<252.69 23:31:19> DBM_Announce#Moving Train (14) on >noStrip |cffffff9a|r<", -- [76] +5
+			--257 Missed Yell +10
+			"<267.66 23:31:34> DBM_Announce#Moving Train (16) on >noStrip |cffffff9a|r<", -- [81] +11
+			"<278.67 23:31:45> DBM_Announce#Moving Train (17) on >noStrip |cffffff9a|r<", -- [85] +17
+			"<296.18 23:32:03> DBM_Announce#Moving Train (18) on >noStrip |cffffff9a|r<", -- [89] +15
+			"<311.19 23:32:18> DBM_Announce#Moving Train (19) on >noStrip |cffffff9a|r<", -- [95] +15
+			
+			"<326.21 23:32:33> DBM_Announce#Moving Train (20) on >noStrip |cffffff9a|r<", -- [101] +15
+			"<341.21 23:32:48> DBM_Announce#Moving Train (21) on >noStrip |cffffff9a|r<", -- [107] +6
+			"<347.70 23:32:54> DBM_Announce#Moving Train (22) on >noStrip |cffffff9a|r<", -- [112] +18
+			"<365.22 23:33:12> DBM_Announce#Moving Train (23) on >noStrip |cffffff9a|r<", -- [121] +15
+			"<380.22 23:33:27> DBM_Announce#Moving Train (24) on >noStrip |cffffff9a|r<", -- [126] +15
+			"<395.22 23:33:42> DBM_Announce#Moving Train (25) on >noStrip |cffffff9a|r<", -- [134] +7
+			"<402.71 23:33:49> DBM_Announce#Moving Train (26) on >noStrip |cffffff9a|r<", -- [139] +10
+			"<412.80 23:33:59> DBM_Announce#Moving Train (27) on >noStrip |cffffff9a|r<", -- [146] +15
+			"<427.75 23:34:14> DBM_Announce#Moving Train (28) on >noStrip |cffffff9a|r<", -- [153] +15
+			"<442.77 23:34:29> DBM_Announce#Moving Train (29) on >noStrip |cffffff9a|r<", -- [158] +10
+			"<452.67 23:34:39> DBM_Announce#Moving Train (30) on >noStrip |cffffff9a|r<", -- [161] +18
+			"<470.17 23:34:57> DBM_Announce#Moving Train (31) on >noStrip |cffffff9a|r<", -- [169] +15
+			"<485.18 23:35:12> DBM_Announce#Moving Train (32) on >noStrip |cffffff9a|r<", -- [173] +7
+			"<492.72 23:35:19> DBM_Announce#Moving Train (33) on >noStrip |cffffff9a|r<", -- [176] +5
+			"<507.73 23:35:34> DBM_Announce#Moving Train (34) on >noStrip |cffffff9a|r<", -- [180] +10
+			"<517.67 23:35:44> DBM_Announce#Moving Train (35) on >noStrip |cffffff9a|r<", -- [184] +5
+			"<522.68 23:35:49> DBM_Announce#Moving Train (36) on >noStrip |cffffff9a|r<", -- [185]
 --]]
 
 local mythicTrains = {
@@ -139,7 +179,23 @@ local mythicTrains = {
 --	[18] = { [2] = Train },--+17 after 17
 --	[19] = { [2] = Train },--+15 after 18
 --	[20] = { [2] = Train },--+15 after 19
-	--Unknown Train types & times After 20
+--	[21] = { [2] = Train },--+15 after 20
+--	[22] = { [2] = Train },--+5 after 21
+--	[23] = { [2] = Train },--+18 after 22
+--	[24] = { [2] = Train },--+15 after 23
+--	[25] = { [2] = Train },--+15 after 24
+--	[26] = { [2] = Train },--+5 or +7 after 25
+--	[27] = { [2] = Train },--+10 after 26
+--	[28] = { [2] = Train },--+15 after 27
+--	[29] = { [2] = Train },--+15 after 28
+--	[30] = { [2] = Train },--+10 after 29
+--	[31] = { [2] = Train },--+18 after 30
+--	[32] = { [2] = Train },--+15 after 31
+--	[33] = { [2] = Train },--+7 after 32
+--	[34] = { [2] = Train },--+5 after 33
+--	[35] = { [2] = Train },--+10 after 34
+--	[36] = { [2] = Train },--+5 after 35
+	--Unknown Train types & times After 36 (7:28)
 }
 
 --https://www.youtube.com/watch?v=_W8vy5Gc5q4
@@ -454,18 +510,16 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			--But if train 2 was the 7. then train 3 will be the 5 instead, keeping train 4 always on same schedule.
 			--Coding all the 5 or 7 trains as 5 seems like best solution
 			local expectedTime
-			if count == 1 or count == 2 or count == 6 or count == 7 or count == 14 then
+			if count == 1 or count == 2 or count == 6 or count == 7 or count == 14 or count == 21 or count == 25 or count == 32 or count == 33 or count == 35 then
 				expectedTime = 5--or 7 :\
-			elseif count == 15 or count == 16 then
+			elseif count == 15 or count == 16 or count == 26 or count == 29 or count == 34 then
 				expectedTime = 10
 			elseif count == 3 or count == 13 then
 				expectedTime = 13
-			elseif count == 6 or count == 8 or count == 11 or count == 12 or count == 18 or count == 19 then
+			elseif count == 8 or count == 11 or count == 12 or count == 18 or count == 19 or count == 20 or count == 23 or count == 24 or count == 27 or count == 28 or count == 31 then
 				expectedTime = 15
-			elseif count == 4 or count == 10 or count == 17 then
-				expectedTime = 17
-			elseif count == 9 then
-				expectedTime = 18
+			elseif count == 4 or count == 9 or count == 10 or count == 17 or count == 22 or count == 30 then
+				expectedTime = 17--or 18
 			end
 			if expectedTime then
 				if msg == "Fake" then expectedTime = expectedTime - 2.5 end
