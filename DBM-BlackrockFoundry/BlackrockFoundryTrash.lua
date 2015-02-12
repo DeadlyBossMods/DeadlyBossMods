@@ -9,13 +9,14 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 156446",
-	"SPELL_AURA_APPLIED 175583 175594",
+	"SPELL_AURA_APPLIED 175583 175594 175765",
 	"SPELL_AURA_APPLIED_DOSE 175594",
 	"RAID_BOSS_WHISPER"
 )
 
 local warnLivingBlaze				= mod:NewTargetAnnounce(159632, 3, nil, false)
 
+local specWarnOverheadSmash			= mod:NewSpecialWarningTaunt(175765)
 local specWarnBlastWave				= mod:NewSpecialWarningMoveTo(156446, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(156446))
 local specWarnInsatiableHunger		= mod:NewSpecialWarningRun(159632, nil, nil, nil, 4)
 local specWarnLivingBlaze			= mod:NewSpecialWarningMoveAway(175583)
@@ -61,6 +62,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
+	elseif spellId == 175765 and not args:IsPlayer() then
+		specWarnOverheadSmash:Show(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
