@@ -344,6 +344,7 @@ function mod:test(num)
 end
 
 function mod:BombTarget(targetname, uId)
+	if not targetname then return end
 	warnDelayedSiegeBomb:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnDelayedSiegeBomb:Show()
