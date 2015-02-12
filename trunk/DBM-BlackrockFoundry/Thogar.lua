@@ -367,7 +367,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerIronbellowCD:Start(12, args.sourceGUID)
 	elseif spellId == 159481 then
-		self:BossTargetScanner(args.sourceGUID, "BombTarget", 0.05, 10)
+		self:BossTargetScanner(args.sourceGUID, "BombTarget", 0.05, 25)
 	end
 end
 
