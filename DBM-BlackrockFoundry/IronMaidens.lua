@@ -135,8 +135,8 @@ local RapidFireMarkers={}
 local BloodritualMarkers={}
 
 local function isPlayerOnBoat()
-	local _, y = UnitPosition("player")
-	if y < 3196 then
+	local _, x = UnitPosition("player")
+	if x < 3196 then
 		return false
 	else
 		return true
@@ -145,9 +145,9 @@ end
 
 local function checkBoatPlayer(self)
 	for uId in DBM:GetGroupMembers() do 
-		local _, y, _, playerMapId = UnitPosition(uId)
+		local _, x, _, playerMapId = UnitPosition(uId)
 		if playerMapId == 1205 then
-			if y > 3196 then--found player on boat
+			if x > 3196 then--found player on boat
 				self:Schedule(1, checkBoatPlayer, self)
 				return
 			end
