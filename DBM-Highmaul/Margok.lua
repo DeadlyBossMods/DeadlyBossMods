@@ -151,6 +151,8 @@ mod:AddRangeFrameOption("35/13/5")
 mod:AddSetIconOption("SetIconOnBrandedDebuff", 156225, false)
 mod:AddSetIconOption("SetIconOnInfiniteDarkness", 165102, false)
 mod:AddInfoFrameOption(176537)
+mod:AddHudMapOption("HudMapOnMarkOfChaos", 158605)
+mod:AddHudMapOption("HudMapOnBranded", 156225, false)
 mod:AddDropdownOption("GazeYellType", {"Countdown", "Stacks"}, "Countdown", "misc")
 
 mod.vb.markActive = false
@@ -180,6 +182,9 @@ local playerName = UnitName("player")
 local chogallName = EJ_GetEncounterInfo(167)
 local inter1 = EJ_GetSectionInfo(9891)
 local inter2 = EJ_GetSectionInfo(9893)
+local DBMHudMap = DBMHudMap
+local markOfChaosMarkers={}
+local brandedMarkers={}
 
 local debuffFilterMark, debuffFilterBranded, debuffFilterFixate, debuffFilterGaze
 do
@@ -314,6 +319,10 @@ function mod:OnCombatStart(delay)
 	else
 		self:SetBossHPInfoToHighest(1)
 	end
+	if self.Options.HudMapOnMarkOfChaos or self.Options.HudMapOnBranded then
+		table.wipe(markOfChaosMarkers)
+		self:EnableHudMap()
+	end
 end
 
 function mod:OnCombatEnd()
@@ -324,6 +333,9 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	self:UnregisterShortTermEvents()
+	if self.Options.HudMapOnMarkOfChaos or self.Options.HudMapOnBranded then
+		self:DisableHudMap()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -645,6 +657,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 			updateRangeFrame(self)--Update it here cause we don't need it before stacks get to relevant levels.
+			if self.Options.HudMapOnBranded and not brandedMarkers[args.destName] then
+				brandedMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 4, 5, 0, 0, 1, 0.5):Pulse(0.5, 0.5))
+			end
 		end
 	elseif spellId == 158553 then
 		local amount = args.amount or 1
@@ -704,6 +719,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		updateRangeFrame(self)
+		if self.Options.HudMapOnMarkOfChaos and not markOfChaosMarkers[args.destName] then
+			markOfChaosMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 7, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
+		end
 	elseif spellId == 157801 then
 		specWarnSlow:CombinedShow(1, args.destName)
 		voiceSlow:Play("dispelnow")
@@ -768,6 +786,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if spellId == 164178 then
 			self:Unschedule(trippleMarkCheck)
 		end
+		if self.Options.HudMapOnMarkOfChaos and markOfChaosMarkers[args.destName] then
+			markOfChaosMarkers[args.destName] = self:FreeMarker(markOfChaosMarkers[args.destName])
+		end
 	elseif spellId == 157763 and args:IsPlayer() and self.Options.RangeFrame then
 		updateRangeFrame(self)
 	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
@@ -779,6 +800,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		updateRangeFrame(self)
+		if self.Options.HudMapOnBranded and brandedMarkers[args.destName] then
+			brandedMarkers[args.destName] = self:FreeMarker(brandedMarkers[args.destName])
+		end
 	elseif spellId == 165102 and self.Options.SetIconOnInfiniteDarkness then
 		self:SetIcon(args.destName, 0)
 	elseif spellId == 165595 then

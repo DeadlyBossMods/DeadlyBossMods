@@ -334,7 +334,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 2)
 		end
 		if self.Options.HudMapOnBloodRitual and not BloodritualMarkers[args.destName] then
-			BloodritualMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 7, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
+			BloodritualMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 3.5, 7, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
 		end
 	elseif spellId == 156631 and (noFilter or not isPlayerOnBoat()) then
 		if self:AntiSpam(5, args.destName) then--check antispam so we don't warn if we got a user sync 3 seconds ago.
