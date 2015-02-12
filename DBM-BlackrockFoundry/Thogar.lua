@@ -70,6 +70,51 @@ local Deforester = EJ_GetSectionInfo(10329)
 --Note, all trains spawn 5 second after yell for that train
 --this means that for 5 second cd trains you may see a yell for NEXT train as previous train is showing up. Do not confuse this!
 --Also be aware that older beta videos are wrong, blizz has changed train orders few times, so don't try to fill in missing data by putting "thogar" into youtube unless it's a RECENT LIVE video.
+--[[
+"<808.34 17:50:30> DBM_Announce#Moving Train (1) on >noStrip |cffffff9aLane 4: Grom'kar Man-at-Arms|r<", -- [171] +7
+"<815.85 17:50:37> DBM_Announce#Moving Train (2) on >noStrip |cffffff9aLane 1: Deforester|r<", -- [174] +5
+"<820.85 17:50:42> DBM_Announce#Moving Train (3) on >noStrip |cffffff9aLane 2: Train|r<", -- [180] +13
+"<833.32 17:50:55> DBM_Announce#Moving Train (4) on >noStrip |cffffff9aLane 3: Train|r<", -- [188] +17
+"<850.84 17:51:12> DBM_Announce#Moving Train (5) on >noStrip |cffffff9a3 Random Lanes: Train|r<", -- [194] +15
+"<865.86 17:51:27> DBM_Announce#Moving Train (6) on >noStrip |cffffff9aLane 1, 4: Cannon|r<", -- [199] +5
+"<870.85 17:51:32> DBM_Announce#Moving Train (7) on >noStrip |cffffff9aLane 2: Train|r<", -- [204] +5
+"<875.91 17:51:37> DBM_Announce#Moving Train (8) on >noStrip |cffffff9aLane 3: Train|r<", -- [206] +15
+"<890.91 17:51:52> DBM_Announce#Moving Train (9) on >noStrip |cffffff9aLane 2: Train|r<", -- [213] +18
+"<908.33 17:52:10> DBM_Announce#Moving Train (10) on >noStrip |cffffff9aLane 2, 3: Reinforcements|r<", -- [220] +17
+"<925.85 17:52:27> DBM_Announce#Moving Train (11) on >noStrip |cffffff9aLane 1, 4: Train|r<", -- [226] +15
+"<940.85 17:52:42> DBM_Announce#Moving Train (12) on >noStrip |cffffff9aLane 2, 4: Train|r<", -- [231] +15
+
+"<955.87 17:52:57> DBM_Announce#Moving Train (13) on >noStrip |cffffff9a|r<", -- [238] + 13
+"<968.37 17:53:10> DBM_Announce#Moving Train (14) on >noStrip |cffffff9a|r<", -- [243]  +5
+--973 Missing Yell +10
+"<983.34 17:53:25> DBM_Announce#Moving Train (16) on >noStrip |cffffff9a|r<", -- [248]  +11
+"<994.32 17:53:36> DBM_Announce#Moving Train (17) on >noStrip |cffffff9a|r<", -- [252]  +17
+"<1011.83 17:53:53> DBM_Announce#Moving Train (18) on >noStrip |cffffff9a|r<", -- [257]
+----------------------------------------------------
+"<1183.14 17:56:44> DBM_Announce#Pull now!", -- [261]
+"<1190.34 17:56:52> DBM_Announce#Moving Train (1) on >noStrip |cffffff9aLane 4: Grom'kar Man-at-Arms|r<", -- [263] +5
+"<1195.35 17:56:57> DBM_Announce#Moving Train (2) on >noStrip |cffffff9aLane 1: Deforester|r<", -- [267] +7
+"<1202.86 17:57:04> DBM_Announce#Moving Train (3) on >noStrip |cffffff9aLane 2: Train|r<", -- [271] +13
+"<1215.36 17:57:17> DBM_Announce#Moving Train (4) on >noStrip |cffffff9aLane 3: Train|r<", -- [280]  +17
+"<1232.89 17:57:34> DBM_Announce#Moving Train (5) on >noStrip |cffffff9a3 Random Lanes: Train|r<", -- [287] +15
+"<1247.90 17:57:49> DBM_Announce#Moving Train (6) on >noStrip |cffffff9aLane 1, 4: Cannon|r<", -- [294] +5
+"<1252.91 17:57:54> DBM_Announce#Moving Train (7) on >noStrip |cffffff9aLane 2: Train|r<", -- [297] +5
+"<1257.95 17:57:59> DBM_Announce#Moving Train (8) on >noStrip |cffffff9aLane 3: Train|r<", -- [298] +15
+"<1272.95 17:58:14> DBM_Announce#Moving Train (9) on >noStrip |cffffff9aLane 2: Train|r<", -- [305] +18
+"<1290.34 17:58:32> DBM_Announce#Moving Train (10) on >noStrip |cffffff9aLane 2, 3: Reinforcements|r<", -- [313] +17
+"<1307.86 17:58:49> DBM_Announce#Moving Train (11) on >noStrip |cffffff9aLane 1, 4: Train|r<", -- [319] +15
+"<1322.87 17:59:04> DBM_Announce#Moving Train (12) on >noStrip |cffffff9aLane 2, 4: Train|r<", -- [324] +15
+
+"<1337.88 17:59:19> DBM_Announce#Moving Train (13) on >noStrip |cffffff9a|r<", -- [331] +13
+"<1350.38 17:59:32> DBM_Announce#Moving Train (14) on >noStrip |cffffff9a|r<", -- [336] +5
+"<1355.40 17:59:37> DBM_Announce#Moving Train (15) on >noStrip |cffffff9a|r<", -- [337] +10
+"<1365.36 17:59:47> DBM_Announce#Moving Train (16) on >noStrip |cffffff9a|r<", -- [342] +11
+"<1376.33 17:59:58> DBM_Announce#Moving Train (17) on >noStrip |cffffff9a|r<", -- [346] +17
+"<1393.84 18:00:15> DBM_Announce#Moving Train (18) on >noStrip |cffffff9a|r<", -- [351] +15
+"<1408.85 18:00:30> DBM_Announce#Moving Train (19) on >noStrip |cffffff9a|r<", -- [356] +15
+"<1423.85 18:00:45> DBM_Announce#Moving Train (20) on >noStrip |cffffff9a|r<", -- [360]
+--]]
+
 local mythicTrains = {
 	[1] = { [4] = ManOArms },--+7 after pull
 	[2] = { [1] = Deforester },--+5 or +7 after 1
