@@ -22,11 +22,15 @@ mod:RegisterEventsInCombat(
 --TODO, collect more data to figure out how roar starts/resumes on jump down. One pull/kill is not a sufficient sampling.
 local warnSkullcracker					= mod:NewSpellAnnounce(153470, 3, nil, false)--This seems pretty worthless.
 local warnShatteredVertebrae			= mod:NewStackAnnounce(157139, 2, nil, "Tank")--Possibly useless or changed. Needs further logs.
+local warnJumpSlam						= mod:NewTargetAnnounce("ej9854", 3)--Find pretty icon
 
+local specWarnJumpSlam					= mod:NewSpecialWarningYou("ej9854")
+local specWarnJumpSlamNear				= mod:NewSpecialWarningClose("ej9854")
+local yellJumpSlam						= mod:NewYell("ej9854")
 local specWarnDisruptingRoar			= mod:NewSpecialWarningCast("OptionVersion2", 160838, "SpellCaster")
 local specWarnShatteredVertebrae		= mod:NewSpecialWarningStack(157139, nil, 2, nil, nil, nil, nil, 2)--stack guessed
 local specWarnShatteredVertebraeOther	= mod:NewSpecialWarningTaunt(157139)
-local specWarnCripplingSupplex			= mod:NewSpecialWarningPreWarn("OptionVersion2", 156938, "Tank|Healer", 3.5, nil, nil, 3)--pop a cooldown, or die.
+local specWarnCripplingSupplex			= mod:NewSpecialWarningSoon("OptionVersion2", 156938, "Tank|Healer", 3.5, nil, nil, 3)--pop a cooldown.
 local specWarnSearingPlates				= mod:NewSpecialWarningSpell(161570, nil, nil, nil, 2)
 local specWarnStampers					= mod:NewSpecialWarningSpell(174825, nil, nil, nil, 2)
 local specWarnSearingPlatesEnd			= mod:NewSpecialWarningEnd(161570)
@@ -50,11 +54,28 @@ local voiceShatteredVertebrae			= mod:NewVoice(157139)
 mod.vb.phase = 1
 mod.vb.stamperDodgeCount = 0
 mod.vb.bossUp = "NoBody"
+mod.vb.lastJumpTarget = UNKNOWN
+mod.vb.firstJump = false
+
+function mod:JumpTarget(targetname, uId)
+	if not targetname then return end
+	self.vb.lastJumpTarget = targetname
+	if targetname == UnitName("player") then
+		specWarnJumpSlam:Show()
+		yellJumpSlam:Yell()
+	elseif self:CheckNearby(12, targetname) then--Near warning disabled on mythic, mythic mechanic requires being near it on purpose. Plus raid always stacked
+		specWarnJumpSlamNear:Show(targetname)
+	else
+		warnJumpSlam:Show(targetname)--No reason to show this if you got a special warning. so reduce spam and display this only to let you know jump is far away and you're safe
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.stamperDodgeCount = 0
 	self.vb.bossUp = "NoBody"
+	self.vb.lastJumpTarget = UNKNOWN
+	self.vb.firstJump = false
 	timerSkullcrackerCD:Start(20-delay)
 	timerDisruptingRoarCD:Start(-delay)
 	if self:IsMythic() then
@@ -144,33 +165,26 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	--http://blue.mmo-champion.com/topic/360651-blackrock-foundry-clarification-known-issues/
 	elseif spellId == 156546 or spellId == 156542 then
 		specWarnCripplingSupplex:Show()--Try and hit CD right before stun (156609)
-		if self:IsTank() then
-			timerCripplingSupplex:Start(3.5)
-			countCripplingSupplex:Start(3.5)
-		else
-			timerCripplingSupplex:Start()
-			countCripplingSupplex:Start()
+		timerCripplingSupplex:Start()
+		countCripplingSupplex:Start()
+	elseif spellId == 157926 then--Jump Activation
+		self.vb.firstJump = false--So reset firstjump
+		self.vb.lastJumpTarget = UNKNOWN
+	elseif spellId == 157922 then--First jump must use 157922
+		if not self.vb.firstJump then
+			self.vb.firstJump = true
+			self.vb.lastJumpTarget = UnitName(uId.."target")--It'll be highest threat at this point, baseline for our first filter
+		else--Not first jump
+			if self.vb.lastJumpTarget then
+				self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.05, 30, nil, nil, true, nil, self.vb.lastJumpTarget)--1.5 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
+			else
+				--This shouldn't happen, but just in case
+				DBM:Debug("self.vb.lastJumpTarget is nil, target scanning for jump will be slower", 2)
+			end
 		end
-	--Activation ?
-	--"<84.68 23:57:03> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157926]]", -- [8948]
-	--"<84.71 23:57:03> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:161906]]", -- [8957]
-	--First jump ?
-	--"<84.71 23:57:03> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157922]]", -- [8959]
-	--"<86.72 23:57:05> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157923]]", -- [9188]
-	--New jump ?
-	--"<88.34 23:57:06> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157922]]", -- [9431]
-	--"<90.34 23:57:08> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157923]]", -- [9693]
-	--New jump ?
-	--"<92.02 23:57:10> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157922]]", -- [10065]
-	--"<94.01 23:57:12> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157923]]", -- [10247]
-	--Ended?
-	--"<95.64 23:57:14> [UNIT_SPELLCAST_SUCCEEDED] Hans'gar [[boss1:Jump Slam::0:157925]]", -- [10473]
---	elseif spellId == 157926 then
---		DBM:Debug("Jump Slam::0:157926 on "..UnitName(uId.."target"))
---	elseif spellId == 157922 then--Likely best canidate for target scan, at least for first jump, unless he looks at target during activation
---		DBM:Debug("Jump Slam::0:157922 on "..UnitName(uId.."target"))
---	elseif spellId == 157923 then--Or possibly this, for 2nd jump and later, if he looks at NEXT target before casting 157922 again
---		DBM:Debug("Jump Slam::0:157923 on "..UnitName(uId.."target"))
+	elseif spellId == 157923 and not self.vb.lastJumpTarget then--Fallback
+		DBM:Debug("Using slower scan fallback: 157923", 2)
+		self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.02, 10, nil, nil, true)
 	end
 end
 
