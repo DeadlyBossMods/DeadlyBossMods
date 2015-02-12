@@ -31,7 +31,7 @@ local specWarnDisruptingRoar			= mod:NewSpecialWarningCast("OptionVersion2", 160
 local specWarnShatteredVertebrae		= mod:NewSpecialWarningStack(157139, nil, 2, nil, nil, nil, nil, 2)--stack guessed
 local specWarnShatteredVertebraeOther	= mod:NewSpecialWarningTaunt(157139)
 --Move specWarnCripplingSupplex to a health check, warn when near 85, 55, or 25%
-local specWarnCripplingSupplex			= mod:NewSpecialWarningSoon("OptionVersion2", 156938, "Tank|Healer", 3.5, nil, nil, 3)--pop a cooldown.
+local specWarnCripplingSupplex			= mod:NewSpecialWarningSoon("OptionVersion2", 156938, "Tank|Healer", 9, nil, nil, 3)--pop a cooldown.
 local specWarnSearingPlates				= mod:NewSpecialWarningSpell(161570, nil, nil, nil, 2)
 local specWarnStampers					= mod:NewSpecialWarningSpell(174825, nil, nil, nil, 2)
 local specWarnSearingPlatesEnd			= mod:NewSpecialWarningEnd(161570)
