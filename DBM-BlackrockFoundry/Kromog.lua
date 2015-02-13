@@ -61,7 +61,7 @@ function mod:OnCombatStart(delay)
 	timerSlamCD:Start(25-delay)--More data needed
 	timerRipplingSmashCD:Start(23.5-delay)
 	timerGraspingEarthCD:Start(50-delay)--50-55 variable
-	berserkTimer:Start(-delay)--8 minutes on normal and heroic verified, but sometimes late?
+	berserkTimer:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
