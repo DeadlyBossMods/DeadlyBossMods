@@ -34,6 +34,7 @@ local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195, nil, nil, nil, 
 local specWarnEnkindle				= mod:NewSpecialWarningStack(155921, nil, 2)--Maybe need 3 for new cd?
 local specWarnEnkindleOther			= mod:NewSpecialWarningTaunt(155921)
 local specWarnTrain					= mod:NewSpecialWarningDodge(176312, nil, nil, nil, 3)
+local specWarnSplitSoon				= mod:NewSpecialWarning("specWarnSplitSoon")--TODO, maybe include types in the split?
 --Adds
 local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt("OptionVersion2", 160140, "-Healer")
 local specWarnIronbellow			= mod:NewSpecialWarningSpell(163753, nil, nil, nil, 2)
@@ -81,7 +82,7 @@ local mythicTrains = {
 	[7] = { [1] = Cannon, [4] = Cannon },--+10 after 6.(01:17)
 	[8] = { [2] = Train },--+15 after 7.(01:32)
 	[9] = { [3] = Train },--+15 after 8.(01:47)
-	[10] = { [2] = Reinforcements, [3] = Reinforcements },--+35 after 9.(02:22)
+	[10] = { [2] = Reinforcements, [3] = Reinforcements },--+35 after 9.(02:22) Split
 	[11] = { [1] = Train, [4] = Train },--+25 after 10.(02:47)
 	[12] = { [4] = Deforester },--+5 after 11.(02:52)
 	[13] = { [1] = Deforester },--+5 after 12.(02:57)
@@ -92,7 +93,7 @@ local mythicTrains = {
 	[18] = { [1] = ManOArms, [4] = Cannon },--+15 after 17.(04:02)
 	[19] = { [1] = Deforester, [2] = Train, [3] = Train },--+20 after 18.(04:22)
 	[20] = { [2] = Train, [3] = Train },--+20(or +21) after 19.(04:42)
-	[21] = { [2] = ManOArms, [3] = ManOArms },--+15 after 20.(04:57)
+	[21] = { [2] = ManOArms, [3] = ManOArms },--+15 after 20.(04:57) Split
 	[22] = { [2] = Reinforcements, [4] = Train },--+20 after 21.(05:17)
 	[23] = { [2] = Train, [3] = Train },--+10 after 22.(05:27)
 	[24] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23.(05:42)
@@ -119,7 +120,7 @@ local otherTrains = {
 	[6] = { [2] = Train },--+25 after 5 (1:12)
 	[7] = { [3] = ManOArms },--+5 after 6 (1:17)
 	[8] = { [1] = Train },--+25 after 7 (1:42)
-	[9] = { [2] = Reinforcements, [3] = Reinforcements },--+15 after 8 (1:57)
+	[9] = { [2] = Reinforcements, [3] = Reinforcements },--+15 after 8 (1:57) Split
 	[10] = { [1] = Train, [4] = Train },--+40 after 9 (2:37)
 	[11] = { [1] = Cannon },--+10 after 10 (2:47)
 	[12] = { [2] = Train },--+15 after 11 (3:02)
@@ -133,13 +134,13 @@ local otherTrains = {
 	[20] = { [1] = Cannon, [4] = Cannon },--+30 after 19 (5:02)
 	[21] = { [2] = Train },--+10 after 20 (5:12)
 	[22] = { [2] = Train },--+25 after 21 (5:37)
-	[23] = { [2] = Reinforcements, [3] = ManOArms },--+30 after 22 (6:07)
+	[23] = { [2] = Reinforcements, [3] = ManOArms },--+30 after 22 (6:07) Split
 	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23? (6:22). Lane 4, but if reinforcements aren't dead from wave 23, lane 2 (because reinforcements cart still blocking lane 4) Not Actually random. But detecting if reinforcement cart still in way impossible :\
 	[25] = { [1] = Train },--+20 after 24 (6:42)
 	--Everything under here needs review for hotfix
 	[26] = { [1] = Cannon, [4] = Reinforcements },--+20 after 25 (7:02)
 	[27] = { [3] = Train },--+25 after 26 (7:27)
-	[28] = { [2] = ManOArms, [3] = ManOArms },--+15 after 27 (7:42)
+	[28] = { [2] = ManOArms, [3] = ManOArms },--+15 after 27 (7:42) Split
 	[29] = { [4] = Train },--+10 after 28 (7:52)
 }
 
@@ -440,23 +441,23 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			if mythicVoice[count] then
 				voiceTrain:Play("Thogar\\"..mythicVoice[count])
 			end
-			--5 second trains on mythic have variation. 5 or 7. This seems intended.
-			--It seems that they offset eachother too. So if train 2 was 5 seconds after 1, train 3 is always 7 seconds after 2
-			--But if train 2 was the 7. then train 3 will be the 5 instead, keeping train 4 always on same schedule.
-			--Coding all the 5 or 7 trains as 5 seems like best solution
 			local expectedTime
 			if count == 1 or count == 2 or count == 6 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 32 then
 				expectedTime = 5
 			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 31 or count == 34 then
 				expectedTime = 10
-			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 23 or count == 24 or count == 29 or count == 33 then
+			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 33 then
 				expectedTime = 15
-			elseif count == 4 or count == 15 or count == 18 or count == 19 or count == 20 or count == 21 or count == 27 or count == 28 then
+				if count == 20 then
+					specWarnSplitSoon:Schedule(5)
+				end
+			elseif count == 4 or count == 15 or count == 18 or count == 19  or count == 21 or count == 27 or count == 28 then
 				expectedTime = 20
 			elseif count == 10 then
 				expectedTime = 25
 			elseif count == 9 then
 				expectedTime = 35
+				specWarnSplitSoon:Schedule(25)--10 is a split, pre warn 10 seconds before 10
 			end
 			if expectedTime then
 				if msg == "Fake" then expectedTime = expectedTime - 2.5 end
@@ -473,13 +474,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			if otherVoice[count] then
 				voiceTrain:Play("Thogar\\"..otherVoice[count])
 			end
-			--Next Train 5 seconds after: 2, 4, 6, 18
-			--Next Train 10 seconds after: 1, 10, 14, 15, 20, 28
-			--Next Train 15 seconds after: 3, 8, 11, 16, 23, 27
-			--Next Train 20 seconds after: 13, 17, 24, 25
-			--Next Train 25 seconds after: 5, 7, 21, 26
-			--Next Train 30 seconds after: 19
-			--Next Train 40 seconds after: 9
 			local expectedTime
 			if count == 2 or count == 4 or count == 6 or count == 18 then
 				expectedTime = 5
@@ -487,12 +481,18 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 10
 			elseif count == 3 or count == 8 or count == 11 or count == 16 or count == 23 or count == 27 then
 				expectedTime = 15
+				if count == 8 or count == 27 then
+					specWarnSplitSoon:Schedule(5)
+				end
 			elseif count == 13 or count == 17 or count == 24 or count == 25 then
 				expectedTime = 20
 			elseif count == 5 or count == 7 or count == 21 or count == 26 then
 				expectedTime = 25
 			elseif count == 19 or count == 22 then
 				expectedTime = 30
+				if count == 22 then
+					specWarnSplitSoon:Schedule(20)
+				end
 			elseif count == 9 then
 				expectedTime = 40
 			end
