@@ -131,6 +131,7 @@ local function updateBeastTimers(self, all, spellId, adjust)
 		timerSuperheatedShrapnelCD:Start(9-dismountAdjust)
 	end
 	if self.vb.ElekkAbilities and (all or self:IsMythic() and spellId == 163247) then--Ironcrusher
+		voiceTantrum:Cancel()
 		if self.vb.RylakAbilities then--Only verified with all 3 on normal. Unknown of JUST elekk and rylak cuase +1 second without wolf
 			timerTantrumCD:Start(18-dismountAdjust, self.vb.tantrumCount+1)
 			voiceTantrum:Schedule(13-dismountAdjust, "aesoon")
@@ -215,6 +216,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 154975 then--Moved to success because spell cast start is interrupted, a lot, and no sense in announcing it if he didn't finish it. if he self interrupts it can be delayed as much as 15 seconds.
 		if self:IsTank() then
 			specWarnCallthePack:Show()
+			voiceCallthePack:Play("killmob")
 		else
 			specWarnCallthePack:Schedule(5)--They come out very slow and staggered, allow 5 seconds for tank to pick up then call switch for everyone else
 			voiceCallthePack:Schedule(5, "killmob")
