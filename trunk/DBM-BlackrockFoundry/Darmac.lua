@@ -10,13 +10,14 @@ mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 155198",
+	"SPELL_CAST_START 155198 159043 159045",
 	"SPELL_CAST_SUCCESS 155247 155399 154975",
 	"SPELL_AURA_APPLIED 154960 155458 155459 155460 154981 155030 155236 155462 163247",
 	"SPELL_AURA_APPLIED_DOSE 155030 155236",
 	"SPELL_AURA_REMOVED 154960",
+	"SPELL_PERIODIC_DAMAGE 159044 162277 156824 155657",
+	"SPELL_PERIODIC_MISSED 159044 162277 156824 155657",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-	"UNIT_TARGETABLE_CHANGED",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--Because boss numbering tends to get out of wack with things constantly joining/leaving fight. I've only seen boss1 and boss2 but for good measure.
@@ -47,28 +48,30 @@ local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
 local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, "Melee", nil, nil, nil, nil, 2)--Always returns to melee (tank)
 local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil, nil, 2)--Still iffy on it
+local specWarnFlameInfusion			= mod:NewSpecialWarningMove(155657)
 local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2, nil, 2)
-local specWarnEpicenter				= mod:NewSpecialWarningSpell(162277, nil, nil, nil, 2)
+local specWarnEpicenter				= mod:NewSpecialWarningMove(159043)
 --Beast abilities (living)
 local specWarnSavageHowl			= mod:NewSpecialWarningTarget(155198, "Tank|Healer")
 local specWarnSavageHowlDispel		= mod:NewSpecialWarningDispel("OptionVersion2", 155198, "RemoveEnrage", nil, nil, nil, nil, 2)
 local specWarnConflag				= mod:NewSpecialWarningDispel(162277, false)--Just too buggy, cast 3 targets, but can be as high as 5 seconds apart, making warning very spammy. Therefor, MUST stay off by default to reduce DBM spam :\
 local specWarnSearingFangs			= mod:NewSpecialWarningStack(155030, nil, 12)--Stack count assumed, may be 2
 local specWarnSearingFangsOther		= mod:NewSpecialWarningTaunt(155030)--No evidence of this existing ANYWHERE in any logs. removed? Bugged?
+local specWarnInfernoPyre			= mod:NewSpecialWarningMove(156824)
 local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, nil, 3)--6-9 second cd, 15 second duration, 3 is smallest safe swap, sometimes 2 when favorable RNG
 local specWarnCrushArmorOther		= mod:NewSpecialWarningTaunt(155236)
 local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil, 2, nil, 2)
 
 --Boss basic attacks
 mod:AddTimerLine(CORE_ABILITIES)--Core Abilities
-local timerPinDownCD				= mod:NewCDTimer(20.5, 155365)--Every 20 seconds unless delayed by other things. CD timer used for this reason
+local timerPinDownCD				= mod:NewCDTimer("OptionVersion2", 20.5, 155365, nil, "Ranged")--Every 20 seconds unless delayed by other things. CD timer used for this reason
 local timerCallthePackCD			= mod:NewCDTimer(31.5, 154975)--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart. In rare cases, boss still interrupts his own cast/delays cast even when not caused by gaining beast buff
 --Boss gained abilities (beast deaths grant boss new abilities)
 mod:AddTimerLine(SPELL_BUCKET_ABILITIES_UNLOCKED)--Abilities Unlocked
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
 local timerSuperheatedShrapnelCD	= mod:NewCDTimer(15, 155499)--15-30sec variation observed.
 local timerTantrumCD				= mod:NewCDCountTimer(30, 162275)--30-35
---local timerEpicenterCD			= mod:NewCDTimer(25, 162277)
+local timerEpicenterCD				= mod:NewCDTimer(20, 159043, nil, "Melee")
 --Beast abilities (living)
 mod:AddTimerLine(BATTLE_PET_DAMAGE_NAME_8)--Beast
 local timerSavageHowlCD				= mod:NewCDTimer("OptionVersion2", 25, 155198, nil, "Healer|Tank|RemoveEnrage")
@@ -80,6 +83,7 @@ local berserkTimer					= mod:NewBerserkTimer(720)
 
 local countdownPinDown				= mod:NewCountdown(20.5, 154960, "Ranged")
 local countdownCallPack				= mod:NewCountdown("Alt31", 154975, "Tank")
+local countdownEpicenter			= mod:NewCountdown("AltTwo20", 159043, "Melee")
 
 --local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceCallthePack				= mod:NewVoice(154975, "-Healer") --killmob
@@ -120,53 +124,53 @@ end
 local function updateBeastTimers(self, all, spellId, adjust)
 	local dismountAdjust = 0--default of 0, so -0 doesn't affect timers unless mythic and UNIT_TARGETABLE is trigger
 	if adjust then dismountAdjust = 2 end--Dismount event is a little slow, fires 2 seconds after true dismount, so must adjust all timers for dismounts
-	if self.vb.WolfAbilities and (all or self:IsMythic() and spellId == 155458) then--Cruelfang
+	if self.vb.WolfAbilities and (self:IsMythic() and spellId == 155458 or all) then--Cruelfang
 		if self.vb.RylakAbilities then--If he also has rylak abilities, first rend and tear is 12 seconds, not 6
 			timerRendandTearCD:Start(12-dismountAdjust)
 		else
 			timerRendandTearCD:Start(6-dismountAdjust)
 		end
 	end
-	if self.vb.RylakAbilities and (all or self:IsMythic() and spellId == 155459) then--Dreadwing
+	if self.vb.RylakAbilities and (self:IsMythic() and spellId == 155459 or all) then--Dreadwing
 		timerSuperheatedShrapnelCD:Start(9-dismountAdjust)
 	end
-	if self.vb.ElekkAbilities and (all or self:IsMythic() and spellId == 163247) then--Ironcrusher
-		voiceTantrum:Cancel()
+	if self.vb.ElekkAbilities and (self:IsMythic() and spellId == 163247 or all) then--Ironcrusher
 		if self.vb.RylakAbilities then--Only verified with all 3 on normal. Unknown of JUST elekk and rylak cuase +1 second without wolf
 			timerTantrumCD:Start(18-dismountAdjust, self.vb.tantrumCount+1)
-			voiceTantrum:Schedule(13-dismountAdjust, "aesoon")
 		else--Verified true for elekk alone, and elekk with wolf
 			timerTantrumCD:Start(17-dismountAdjust, self.vb.tantrumCount+1)
-			voiceTantrum:Schedule(12-dismountAdjust, "aesoon")
 		end
 	end
-	if self.vb.FaultlineAbilites and (all or self:IsMythic() and spellId == 155462) then--Faultline
-		--Mythic Stuff
+	if self.vb.FaultlineAbilites and (self:IsMythic() and spellId == 155462 or all) then--Faultline
+		timerEpicenterCD:Start(24)
+		countdownEpicenter:Cancel()
+		countdownEpicenter:Start(24)
 	end
 	--Base ability Timers are reset any time boss gains new abilites. Timers are next timers but vary depending on what abilities boss possesses
+	if adjust then return end--adjust true means triggered by boss dismounted on mythic, this doesn't reset pin down or call of the pack
 	if self.vb.RylakAbilities then--Rylak delays call of the pack and pin down as well. (Well, that or whatever beast you do 3rd. Still need to determine if rylak, or third beast)
 		if self.vb.ElekkAbilities and self.vb.WolfAbilities then--Wolf, elekk AND rylak
-			timerCallthePackCD:Start(17-dismountAdjust)
+			timerCallthePackCD:Start(17)
 			countdownCallPack:Cancel()
-			countdownCallPack:Start(17-dismountAdjust)
-			timerPinDownCD:Start(24-dismountAdjust)
+			countdownCallPack:Start(17)
+			timerPinDownCD:Start(24)
 			countdownPinDown:Cancel()
-			countdownPinDown:Start(24-dismountAdjust)
+			countdownPinDown:Start(24)
 		else--TODO, i need data on rylak with wolf (2) or rylak with elekk (2).
-			timerCallthePackCD:Start(15-dismountAdjust)--rylak alone verified 15 seconds
+			timerCallthePackCD:Start(15)--rylak alone verified 15 seconds
 			countdownCallPack:Cancel()
-			countdownCallPack:Start(15-dismountAdjust)
-			timerPinDownCD:Start(13.5-dismountAdjust)
+			countdownCallPack:Start(15)
+			timerPinDownCD:Start(13.5)
 			countdownPinDown:Cancel()
-			countdownPinDown:Start(13.5-dismountAdjust)
+			countdownPinDown:Start(13.5)
 		end
 	else--Elekk alone verified, wolf alone verified. Wolf AND Elekk together verified. These timers only alter once rylak abilities activated.
-		timerCallthePackCD:Start(11-dismountAdjust)
+		timerCallthePackCD:Start(11)
 		countdownCallPack:Cancel()
-		countdownCallPack:Start(11-dismountAdjust)
-		timerPinDownCD:Start(12-dismountAdjust)
+		countdownCallPack:Start(11)
+		timerPinDownCD:Start(12)
 		countdownPinDown:Cancel()
-		countdownPinDown:Start(12-dismountAdjust)
+		countdownPinDown:Start(12)
 	end
 end
 
@@ -185,9 +189,15 @@ function mod:OnCombatStart(delay)
 		DBM.RangeCheck:Show(3)
 	end
 	berserkTimer:Start(-delay)--Verified 12 min normal and heroic.
+	if self:IsMythic() then
+		self:RegisterShortTermEvents(
+			"UNIT_TARGETABLE_CHANGED"
+		)
+	end
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -203,6 +213,12 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerSavageHowlCD:Start()
 		voiceSavageHowl:Play("trannow")
+	elseif spellId == 159043 or spellId == 159045 then--Beast version/Boss version
+		if self:IsMelee() and self:AntiSpam(3, 2) then
+			specWarnEpicenter:Show()--Warn melee during cast to move outa head of time.
+		end
+		timerEpicenterCD:Start()
+		countdownEpicenter:Start()
 	end
 end
 
@@ -268,11 +284,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(155458, 155459, 155460, 155462, 163247) then
 		DBM:Debug("SPELL_AURA_APPLIED, Boss absorbing beast abilities")
-		if not self:IsMythic() then--Not mythic, boss gaining ability means he just dismounted, start/update all timers.
+		--Seems changed on mythic, ALL beast timers reset now in all modes, period.
+		--Leaving old code in case 6.1 changes it back. Most recent 6.1 tests showed boss only update gained spellid
+--		if not self:IsMythic() then--Not mythic, boss gaining ability means he just dismounted, start/update all timers.
 			updateBeastTimers(self, true)
-		else--On mythic, boss already on ground already casting other things, so only update timers for new ability he just gained.
-			updateBeastTimers(self, false, spellId)
-		end
+--		else--On mythic, boss already on ground already casting other things, so only update timers for new ability he just gained.
+--			updateBeastTimers(self, false, spellId)
+--		end
 		if spellId == 155458 then--Wolf Aura
 			warnWolf:Show(args.destName)
 		elseif spellId == 155459 then--Rylak Aura
@@ -292,6 +310,17 @@ local spellId = args.spellId
 		self:SetIcon(args.destName, 0)
 	end
 end
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if (spellId == 159044 or spellId == 162277) and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
+		specWarnEpicenter:Show()
+	elseif spellId == 156824 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+		specWarnInfernoPyre:Show()
+	elseif spellId == 155657 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+		specWarnFlameInfusion:Show()
+	end
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	for i = 1, 5 do
@@ -315,7 +344,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerSuperheatedShrapnelCD:Cancel()
 					timerTantrumCD:Cancel()
-					voiceTantrum:Cancel()
 				elseif cid == 76874 then--Dreadwing
 					self.vb.RylakAbilities = true
 					timerInfernoBreathCD:Start(6)
@@ -326,22 +354,22 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerRendandTearCD:Cancel()
 					timerTantrumCD:Cancel()
-					voiceTantrum:Cancel()
 				elseif cid == 76945 then--Ironcrusher
 					self.vb.ElekkAbilities = true
 					timerStampedeCD:Start(15)
 					timerTantrumCD:Start(25, self.vb.tantrumCount+1)
-					voiceTantrum:Schedule(20, "aesoon")
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerRendandTearCD:Cancel()
 					timerSuperheatedShrapnelCD:Cancel()
 				elseif cid == 76946 then--Faultline
+					self:UnregisterShortTermEvents()--UNIT_TARGETABLE_CHANGED no longer used, and in fact unregistered to prevent bug with how it fires when faultline dies
 					self.vb.FaultlineAbilites = true
+					timerEpicenterCD:Start(10)
+					countdownEpicenter:Start(10)
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerRendandTearCD:Cancel()
 					timerSuperheatedShrapnelCD:Cancel()
 					timerTantrumCD:Cancel()
-					voiceTantrum:Cancel()
 				end
 			end
 		end
@@ -349,8 +377,8 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 end
 
 function mod:UNIT_TARGETABLE_CHANGED(uId)
-	local cid = self:GetCIDFromGUID(uId)
-	if cid == 76865 and UnitExists(uId) and self:IsMythic() then--Boss dismounting living beast on mythic
+	local cid = self:GetCIDFromGUID(UnitGUID(uId))
+	if (cid == 76865) and UnitExists(uId) and self:IsMythic() then--Boss dismounting living beast on mythic
 		DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Dismounting")
 		updateBeasts(cid, 3)
 		updateBeastTimers(self, true, nil, true)
@@ -393,20 +421,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 155221 then--IronCrusher Tantrum
 		self.vb.tantrumCount = self.vb.tantrumCount + 1
 		specWarnTantrum:Show(self.vb.tantrumCount)
---		if self.vb.tantrumCount == 3 then
---			self.vb.tantrumCount = 0
---		end
 		timerTantrumCD:Start(nil, self.vb.tantrumCount+1)
-		voiceTantrum:Schedule(25, "aesoon")
+		voiceTantrum:Play("aesoon")
 	elseif spellId == 155520 then--Beastlord Darmac Tantrum
 		self.vb.tantrumCount = self.vb.tantrumCount + 1
 		specWarnTantrum:Show(self.vb.tantrumCount)
---		if self.vb.tantrumCount == 3 then
---			self.vb.tantrumCount = 0
---		end
 		timerTantrumCD:Start(34, self.vb.tantrumCount+1)--This one may also be 30 seconds, but I saw 34 consistently
-		voiceTantrum:Schedule(29, "aesoon")
-	elseif spellId == 162277 then--Assume that like his other abilities, isn't in combat log.
+		voiceTantrum:Play("aesoon")
+	elseif spellId == 162277 and self:AntiSpam(3, 1) then--Assume that like his other abilities, isn't in combat log.
 		specWarnEpicenter:Show()
 	elseif spellId == 155497 then--Superheated Shrapnel
 		specWarnSuperheatedShrapnel:Show()
