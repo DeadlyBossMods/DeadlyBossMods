@@ -41,7 +41,7 @@ local timerTremblingEarthCD			= mod:NewCDTimer(30, 173917)--30-36 CD now :\
 local timerTremblingEarth			= mod:NewBuffActiveTimer(25, 173917)
 local timerCalloftheMountain		= mod:NewCastTimer(5, 158217)
 
-local berserkTimer					= mod:NewBerserkTimer(480)
+local berserkTimer					= mod:NewBerserkTimer(540)
 
 local countdownThunderingBlows		= mod:NewCountdown(12, 157054)
 local countdownTremblingEarth		= mod:NewCountdownFades("Alt25", 173917)
