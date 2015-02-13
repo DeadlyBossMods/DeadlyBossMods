@@ -72,46 +72,41 @@ local Deforester = EJ_GetSectionInfo(10329)
 --Also be aware that older beta videos are wrong, blizz has changed train orders few times, so don't try to fill in missing data by putting "thogar" into youtube unless it's a RECENT LIVE video.
 
 local mythicTrains = {
-	[1] = { [4] = ManOArms },--+7 after pull
-	[2] = { [1] = Deforester },--+5 or +7 after 1
-	[3] = { [2] = Train },--++5 or +7 after 2.
-	[4] = { [3] = Train },--+13 after 3.
-	[5] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+17 after 4
-	[6] = { [1] = Cannon, [4] = Cannon },--+15 after 5
-	[7] = { [2] = Train },--+5 after 6.
-	[8] = { [3] = Train },--+5 after 7.
-	[9] = { [2] = Train },--+15 after 8.
-	[10] = { [2] = Reinforcements, [3] = Reinforcements },--+18 after 9
-	[11] = { [1] = Train, [4] = Train },--+17 after 10.
-	[12] = { [2] = Train, [4] = Train },--+15 after 11
-	--Unknown Train types After 12
---	[13] = { [2] = Train },--+15 after 12
---	[14] = { [2] = Train },--+13 after 13
-	--Yell Sometimes missing for 15
---	[15] = { [2] = Train },--+5 after 14
-	--Yell Sometimes missing for 15
---	[16] = { [2] = Train },--+10 after 15
---	[17] = { [2] = Train },--+11 after 16
---	[18] = { [2] = Train },--+17 after 17
---	[19] = { [2] = Train },--+15 after 18
---	[20] = { [2] = Train },--+15 after 19
---	[21] = { [2] = Train },--+15 after 20
---	[22] = { [2] = Train },--+5 after 21
---	[23] = { [2] = Train },--+18 after 22
---	[24] = { [2] = Train },--+15 after 23
---	[25] = { [2] = Train },--+15 after 24
---	[26] = { [2] = Train },--+5 or +7 after 25
---	[27] = { [2] = Train },--+10 after 26
---	[28] = { [2] = Train },--+15 after 27
---	[29] = { [2] = Train },--+15 after 28
---	[30] = { [2] = Train },--+10 after 29
---	[31] = { [2] = Train },--+18 after 30
---	[32] = { [2] = Train },--+15 after 31
---	[33] = { [2] = Train },--+7 after 32
---	[34] = { [2] = Train },--+5 after 33
---	[35] = { [2] = Train },--+10 after 34
---	[36] = { [2] = Train },--+5 after 35
-	--Unknown Train types & times After 36 (7:28)
+	[1] = { [4] = ManOArms },--+7 after pull(00:07)
+	[2] = { [1] = Deforester },--+5 after 1(00:12)
+	[3] = { [2] = Train },--+5 after 2.(00:17)
+	[4] = { [3] = Train },--+15 after 3.(00:32)
+	[5] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+20 after 4.(00:52)
+	[6] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 5.(01:07)
+	[7] = { [1] = Cannon, [4] = Cannon },--+10 after 6.(01:17)
+	[8] = { [2] = Train },--+15 after 7.(01:32)
+	[9] = { [3] = Train },--+15 after 8.(01:47)
+	[10] = { [2] = Reinforcements, [3] = Reinforcements },--+35 after 9.(02:22)
+	[11] = { [1] = Train, [4] = Train },--+25 after 10.(02:47)
+	[12] = { [4] = Deforester },--+5 after 11.(02:52)
+	[13] = { [1] = Deforester },--+5 after 12.(02:57)
+	[14] = { [3] = Train },--+5 after 13.(03:02)
+	[15] = { [2] = Train, [3] = Train },--+10(or +11?) after 14.(03:12)
+	[16] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+20(or +19) after 15.(03:32)
+	[17] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 16.(03:47)
+	[18] = { [1] = ManOArms, [4] = Cannon },--+15 after 17.(04:02)
+	[19] = { [1] = Deforester, [2] = Train, [3] = Train },--+20 after 18.(04:22)
+	[20] = { [2] = Train, [3] = Train },--+20(or +21) after 19.(04:42) 5:04
+	[21] = { [2] = ManOArms, [3] = ManOArms },--+15 after 20.(04:57) 5:19
+	[22] = { [2] = Reinforcements, [4] = Train },--+20 after 21.(05:17) 5:39
+	[23] = { [2] = Train, [3] = Train },--+10 after 22.(05:27) 5:49
+	[24] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23.(05:42) 6:04
+	[25] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 24.(05:57) 6:19
+	[26] = { [4] = Reinforcements },--+5 after 25.(06:02) 6:24
+	[27] = { [1] = Cannon },--+5 after 26.(06:07) 6:29
+	[28] = { [2] = Deforester, [3] = Deforester },--+20 after 27.(06:27) 6:49
+	[29] = { [1] = Train, [4] = Train },--+20 after 28.(06:47) 7:09 (1 train is guessed)
+	[30] = { [1] = Reinforcements, [4] = Deforester },--+15 after 29.(07:02) 7:24
+	[31] = { [2] = Train },--+10 after 30.(07:12) 7:34
+	[32] = { [3] = Deforester },--+10 after 31.(07:22) 7:44
+	[33] = { [2] = Train },--+5 after 32.(07:27) 7:49 (not correctly saw)
+	[34] = { [1] = ManOArms },--+15 after 33.(07:42) 8:04
+	[35] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+10 after 34.(07:52) 8:14 (or 1,3 train?)
 }
 
 --https://www.youtube.com/watch?v=_W8vy5Gc5q4
@@ -168,13 +163,36 @@ local mythicVoice = {
 	[3] = "A2",
 	[4] = "A3",
 	[5] = "F",
-	[6] = "CX",
-	[7] = "A2",
-	[8] = "A3",
-	[9] = "A2",
-	[10] = "BX",
+	[6] = "F",
+	[7] = "C14",
+	[8] = "A2",
+	[9] = "A3",
+	[10] = "B23",
 	[11] = "A14",
-	[12] = "F"
+	[12] = "E4",
+	[13] = "E1",
+	[14] = "A3",
+	[15] = "A23",--new
+	[16] = "F",
+	[17] = "F",
+	[18] = "D1C4",--new
+	[19] = "E1A23",--new
+	[20] = "A23",
+	[21] = "D23",
+	[22] = "B2A4",--new
+	[23] = "A23",
+	[24] = "F",
+	[25] = "F",
+	[26] = "B4",
+	[27] = "C1",
+	[28] = "E23",--new
+	[29] = "A14",
+	[30] = "B1E4",
+	[31] = "A2",
+	[32] = "E3",
+	[33] = "A2",
+	[34] = "D1",
+	[35] = "F",--need to review
 }
 
 local otherVoice = {
@@ -427,16 +445,18 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			--But if train 2 was the 7. then train 3 will be the 5 instead, keeping train 4 always on same schedule.
 			--Coding all the 5 or 7 trains as 5 seems like best solution
 			local expectedTime
-			if count == 1 or count == 2 or count == 6 or count == 7 or count == 14 or count == 21 or count == 25 or count == 32 or count == 33 or count == 35 then
-				expectedTime = 5--or 7 :\
-			elseif count == 15 or count == 16 or count == 26 or count == 29 or count == 34 then
+			if count == 1 or count == 2 or count == 6 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 32 then
+				expectedTime = 5
+			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 31 or count == 34 then
 				expectedTime = 10
-			elseif count == 3 or count == 13 then
-				expectedTime = 13
-			elseif count == 8 or count == 11 or count == 12 or count == 18 or count == 19 or count == 20 or count == 23 or count == 24 or count == 27 or count == 28 or count == 31 then
+			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 23 or count == 24 or count == 29 or count == 33 then
 				expectedTime = 15
-			elseif count == 4 or count == 9 or count == 10 or count == 17 or count == 22 or count == 30 then
-				expectedTime = 17--or 18
+			elseif count == 4 or count == 15 or count == 18 or count == 19 or count == 20 or count == 21 or count == 27 or count == 28 then
+				expectedTime = 20
+			elseif count == 10 then
+				expectedTime = 25
+			elseif count == 9 then
+				expectedTime = 35
 			end
 			if expectedTime then
 				if msg == "Fake" then expectedTime = expectedTime - 2.5 end
@@ -446,7 +466,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				print("Train Set: "..count..". DBM has no train data beyond this point. Send us videos if you can.")
 				timerTrainCD:Start(count)
 			end
-			if count == 1 or count == 20 or count == 24 then--24 seems kind of off, it's possible 25 missing a yell and where true man at arms is
+			if count == 1 or count == 18 or count == 21 or count == 34 then
 				specWarnManOArms:Show()
 			end
 		else
