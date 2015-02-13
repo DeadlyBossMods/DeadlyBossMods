@@ -61,6 +61,14 @@ L= DBM:GetModLocalization(1122)
 --------------------------
 L= DBM:GetModLocalization(1147)
 
+L:SetWarningLocalization({
+	specWarnSplitSoon	= "10초 안에 공격대 상하로 분리하세요!"
+})
+
+L:SetOptionLocalization({
+	specWarnSplitSoon	= "공격대 분리 10초 전에 특수 경고 보기"
+})
+
 L:SetMiscLocalization({
 	Train			= "기차",
 	lane			= "선로",
