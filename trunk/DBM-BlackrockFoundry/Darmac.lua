@@ -428,8 +428,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnTantrum:Show(self.vb.tantrumCount)
 		timerTantrumCD:Start(34, self.vb.tantrumCount+1)--This one may also be 30 seconds, but I saw 34 consistently
 		voiceTantrum:Play("aesoon")
-	elseif spellId == 162277 and self:AntiSpam(3, 1) then--Assume that like his other abilities, isn't in combat log.
-		specWarnEpicenter:Show()
 	elseif spellId == 155497 then--Superheated Shrapnel
 		specWarnSuperheatedShrapnel:Show()
 		timerSuperheatedShrapnelCD:Start()
