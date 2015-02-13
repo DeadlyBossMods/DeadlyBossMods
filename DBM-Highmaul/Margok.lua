@@ -904,7 +904,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownMarkofChaos:Cancel()
 		countdownForceNova:Cancel()
 		voiceForceNova:Cancel()
---[[	local tr1 = timerArcaneWrathCD:GetRemaining()
+		local tr1 = timerArcaneWrathCD:GetRemaining()
 		local tr2 = timerDestructiveResonanceCD:GetRemaining()
 		local tr3 = timerSummonArcaneAberrationCD:GetRemaining()
 		local tr4 = timerMarkOfChaosCD:GetRemaining()
@@ -912,6 +912,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		--if less than 10 seconds remaining on timer bars get delayed.
 		--Figuring out n is problem. It'll still be variable. the only thing consistent is cast order.
 		--but casts can be delayed 3-13 seconds based on how many get backed up in queue :\
+		local n = 10 -- just extend 10s if left time is below 10s.
 		if tr1 > 0 and tr1 < 10 then
 			countdownArcaneWrath:Start(tr1+n)
 			timerArcaneWrathCD:Start(tr1+n)
@@ -923,13 +924,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerSummonArcaneAberrationCD:Start(tr3+n)
 		end
 		if tr4 > 0 and tr4 < 10 then
-			timerMarkOfChaosCD:Start(tr4+n)		
+			timerMarkOfChaosCD:Start(tr4+n)
 			countdownMarkofChaos:Start(tr4+n)
 		end
 		if tr5 > 0 and tr5 < 10 then
 			timerForceNovaCD:Start(tr5+n)
 			countdownForceNova:Start(tr5+n)
-		end--]]
+		end
 		self.vb.phase = 2
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(2))
 		voicePhaseChange:Play("ptwo")
