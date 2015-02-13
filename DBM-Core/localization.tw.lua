@@ -139,10 +139,11 @@ DBM_CORE_UPDATEREMINDER_FOOTER			= "按下" .. (IsMacClient() and "Cmd-C" or "Ct
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "按下" .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "：複製網址到剪貼簿。"
 DBM_CORE_UPDATEREMINDER_DISABLE			= "警告: 你的DBM版本已大幅度的過期(至少過期%d個版本)，DBM已被禁用了除非更新至最新版本。這是為了確保舊而不相容的程式碼不會對你而團隊夥伴造成低落的遊戲體驗。"
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "你的DBM版本會在這首領戰鬥有不準確的計時器或警告。這問題已被修正在新版正式版(或是更新到最新的alpha如果新版正式版還未釋出。)"
-DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "警告:你的DBM已經過期，DBM已被禁用直到你更新至最新版，因為遊戲大改版。為了不讓舊的程式碼拖累遊戲體驗。請至deadlybossmods.com或是curse下載最新版本的DBM。如果你在6.0 beta看到此訊息，請到http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing下載6.0 beta插件"
+DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "警告:你的DBM已經過期，DBM已被禁用直到你更新至最新版，因為遊戲大改版。為了不讓舊的程式碼拖累遊戲體驗。請至deadlybossmods.com或是curse下載最新版本的DBM。"
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "警告:你使用的DBM版本和遊戲版本不相容。請到deadlybossmods.com或是curse下載符合你遊戲版本的DBM。"
 DBM_CORE_VEM							= "警告:你同時使用DBM和VEM。DBM將停用而無法執行。"
 DBM_CORE_3RDPROFILES					= "警告:DBM-Profiles不相容此版本DBM。請移除避免衝突。"
+DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "警告:如果你沒有重啟你的遊戲，這次DBM更新可能無法正確運作。這次更新包含了新的檔案或是.toc檔更新而不能使用ReloadUI載入。如果沒有將遊戲完全重啟可能會導致錯誤或功能不完整。"
 
 DBM_CORE_MOVABLE_BAR				= "拖動我!"
 
@@ -333,6 +334,8 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "為$spell:%s的減益播放倒數計時�
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "為$spell:%s的持續時間播放倒數計時音效"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "當你中了$spell:%s時大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "" .. UnitName("player") .. "中了%s!"
+DBM_CORE_AUTO_HUD_OPTION_TEXT			= "為$spell:%s顯示HudMap"
+DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "為不同的機制顯示HudMap"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "為$spell:%2$s顯示距離框架(%1$s碼)"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "顯示距離框架(%s碼)"
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT		= "為$spell:%2$s顯示反色距離框架(%1$s碼)"--Reverse range frame (green when players in range, red when not)
