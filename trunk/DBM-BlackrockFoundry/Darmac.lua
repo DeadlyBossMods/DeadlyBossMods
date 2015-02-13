@@ -391,17 +391,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 155221 then--IronCrusher Tantrum
 		self.vb.tantrumCount = self.vb.tantrumCount + 1
 		specWarnTantrum:Show(self.vb.tantrumCount)
-		if self.vb.tantrumCount == 3 then
-			self.vb.tantrumCount = 0
-		end
+--		if self.vb.tantrumCount == 3 then
+--			self.vb.tantrumCount = 0
+--		end
 		timerTantrumCD:Start(nil, self.vb.tantrumCount+1)
 		voiceTantrum:Schedule(25, "aesoon")
 	elseif spellId == 155520 then--Beastlord Darmac Tantrum
 		self.vb.tantrumCount = self.vb.tantrumCount + 1
 		specWarnTantrum:Show(self.vb.tantrumCount)
-		if self.vb.tantrumCount == 3 then
-			self.vb.tantrumCount = 0
-		end
+--		if self.vb.tantrumCount == 3 then
+--			self.vb.tantrumCount = 0
+--		end
 		timerTantrumCD:Start(34, self.vb.tantrumCount+1)--This one may also be 30 seconds, but I saw 34 consistently
 		voiceTantrum:Schedule(29, "aesoon")
 	elseif spellId == 162277 then--Assume that like his other abilities, isn't in combat log.
