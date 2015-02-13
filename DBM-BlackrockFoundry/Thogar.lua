@@ -72,8 +72,8 @@ local Deforester = EJ_GetSectionInfo(10329)
 --Also be aware that older beta videos are wrong, blizz has changed train orders few times, so don't try to fill in missing data by putting "thogar" into youtube unless it's a RECENT LIVE video.
 
 local mythicTrains = {
-	[1] = { [4] = ManOArms },--+7 after pull(00:07)
-	[2] = { [1] = Deforester },--+5 after 1(00:12)
+	[1] = { [4] = ManOArms },--+7 after pull.(00:07)
+	[2] = { [1] = Deforester },--+5 after 1.(00:12)
 	[3] = { [2] = Train },--+5 after 2.(00:17)
 	[4] = { [3] = Train },--+15 after 3.(00:32)
 	[5] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+20 after 4.(00:52)
@@ -91,56 +91,56 @@ local mythicTrains = {
 	[17] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 16.(03:47)
 	[18] = { [1] = ManOArms, [4] = Cannon },--+15 after 17.(04:02)
 	[19] = { [1] = Deforester, [2] = Train, [3] = Train },--+20 after 18.(04:22)
-	[20] = { [2] = Train, [3] = Train },--+20(or +21) after 19.(04:42) 5:04
-	[21] = { [2] = ManOArms, [3] = ManOArms },--+15 after 20.(04:57) 5:19
-	[22] = { [2] = Reinforcements, [4] = Train },--+20 after 21.(05:17) 5:39
-	[23] = { [2] = Train, [3] = Train },--+10 after 22.(05:27) 5:49
-	[24] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23.(05:42) 6:04
-	[25] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 24.(05:57) 6:19
-	[26] = { [4] = Reinforcements },--+5 after 25.(06:02) 6:24
-	[27] = { [1] = Cannon },--+5 after 26.(06:07) 6:29
-	[28] = { [2] = Deforester, [3] = Deforester },--+20 after 27.(06:27) 6:49
-	[29] = { [1] = Train, [4] = Train },--+20 after 28.(06:47) 7:09 (1 train is guessed)
-	[30] = { [1] = Reinforcements, [4] = Deforester },--+15 after 29.(07:02) 7:24
-	[31] = { [2] = Train },--+10 after 30.(07:12) 7:34
-	[32] = { [3] = Deforester },--+10 after 31.(07:22) 7:44
-	[33] = { [2] = Train },--+5 after 32.(07:27) 7:49 (not correctly saw)
-	[34] = { [1] = ManOArms },--+15 after 33.(07:42) 8:04
-	[35] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+10 after 34.(07:52) 8:14 (or 1,3 train?)
+	[20] = { [2] = Train, [3] = Train },--+20(or +21) after 19.(04:42)
+	[21] = { [2] = ManOArms, [3] = ManOArms },--+15 after 20.(04:57)
+	[22] = { [2] = Reinforcements, [4] = Train },--+20 after 21.(05:17)
+	[23] = { [2] = Train, [3] = Train },--+10 after 22.(05:27)
+	[24] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23.(05:42)
+	[25] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 24.(05:57)
+	[26] = { [4] = Reinforcements },--+5 after 25.(06:02)
+	[27] = { [1] = Cannon },--+5 after 26.(06:07)
+	[28] = { [2] = Deforester, [3] = Deforester },--+20 after 27.(06:27)
+	[29] = { [1] = Train, [4] = Train },--+20 after 28.(06:47) (1 train is guessed)
+	[30] = { [1] = Reinforcements, [4] = Deforester },--+15 after 29.(07:02)
+	[31] = { [2] = Train },--+10 after 30.(07:12)
+	[32] = { [3] = Deforester },--+10 after 31.(07:22)
+	[33] = { [2] = Train },--+5 after 32.(07:27) (not correctly saw)
+	[34] = { [1] = ManOArms },--+15 after 33.(07:42)
+	[35] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+10 after 34.(07:52) (or 1,3 train?)
 }
 
 --https://www.youtube.com/watch?v=_W8vy5Gc5q4
 local otherTrains = {
 	[1] = { [4] = Train },--+12 after pull (0:12)
 	[2] = { [2] = Train },--+10 after 1 (0:22)
-	[3] = { [1] = Reinforcements },--+5 after 2 (0:25)
-	[4] = { [3] = Train },--+15 after 3 (0:40)
-	[5] = { [4] = Cannon },--+5 after 4 (0:45)
-	[6] = { [2] = Train },--+25 after 5 (1:10)
-	[7] = { [3] = ManOArms },--+5 after 6 (1:15)
-	[8] = { [1] = Train },--+25 after 7 (1:40)
-	[9] = { [2] = Reinforcements, [3] = Reinforcements },--+15 after 8 (1:55)
-	[10] = { [1] = Train, [4] = Train },--+40 after 9 (2:35)
-	[11] = { [1] = Cannon },--+10 after 10 (2:45)
-	[12] = { [2] = Train },--+15 after 11 (3:00)
-	[13] = { [4] = Reinforcements },--+10 after 12 (3:10)
-	[14] = { [3] = Train },--+20 after 13 (3:30)
-	[15] = { [2] = Train },--+10 after 14 (3:40)
-	[16] = { [1] = Train },--+10 after 15 (3:50)
-	[17] = { [2] = ManOArms, [4] = Cannon },--+15 after 16 (4:05)
-	[18] = { [1] = Train },--+20 after 17 (4:25)
-	[19] = { [3] = Train },--+5 after 18 (4:30)
-	[20] = { [1] = Cannon, [4] = Cannon },--+30 after 19 (5:00)
-	[21] = { [2] = Train },--+10 after 20 (5:10)
-	[22] = { [2] = Train },--+25 after 21 (5:35)
-	[23] = { [2] = Reinforcements, [3] = ManOArms },--+30 after 22 (6:05)
-	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23? (6:20). Lane 4, but if reinforcements aren't dead from wave 23, lane 2 (because reinforcements cart still blocking lane 4) Not Actually random. But detecting if reinforcement cart still in way impossible :\
-	[25] = { [1] = Train },--+20 after 24 (6:40)
+	[3] = { [1] = Reinforcements },--+5 after 2 (0:27)
+	[4] = { [3] = Train },--+15 after 3 (0:42)
+	[5] = { [4] = Cannon },--+5 after 4 (0:47)
+	[6] = { [2] = Train },--+25 after 5 (1:12)
+	[7] = { [3] = ManOArms },--+5 after 6 (1:17)
+	[8] = { [1] = Train },--+25 after 7 (1:42)
+	[9] = { [2] = Reinforcements, [3] = Reinforcements },--+15 after 8 (1:57)
+	[10] = { [1] = Train, [4] = Train },--+40 after 9 (2:37)
+	[11] = { [1] = Cannon },--+10 after 10 (2:47)
+	[12] = { [2] = Train },--+15 after 11 (3:02)
+	[13] = { [4] = Reinforcements },--+10 after 12 (3:12)
+	[14] = { [3] = Train },--+20 after 13 (3:32)
+	[15] = { [2] = Train },--+10 after 14 (3:42)
+	[16] = { [1] = Train },--+10 after 15 (3:52)
+	[17] = { [2] = ManOArms, [4] = Cannon },--+15 after 16 (4:07)
+	[18] = { [1] = Train },--+20 after 17 (4:27)
+	[19] = { [3] = Train },--+5 after 18 (4:32)
+	[20] = { [1] = Cannon, [4] = Cannon },--+30 after 19 (5:02)
+	[21] = { [2] = Train },--+10 after 20 (5:12)
+	[22] = { [2] = Train },--+25 after 21 (5:37)
+	[23] = { [2] = Reinforcements, [3] = ManOArms },--+30 after 22 (6:07)
+	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23? (6:22). Lane 4, but if reinforcements aren't dead from wave 23, lane 2 (because reinforcements cart still blocking lane 4) Not Actually random. But detecting if reinforcement cart still in way impossible :\
+	[25] = { [1] = Train },--+20 after 24 (6:42)
 	--Everything under here needs review for hotfix
-	[26] = { [1] = Cannon, [4] = Reinforcements },--+20 after 25 (7:00)
-	[27] = { [3] = Train },--+25 after 26 (7:25)
-	[28] = { [2] = ManOArms, [3] = ManOArms },--+15 after 27 (7:40)
-	[29] = { [4] = Train },--+10 after 28 (7:50)
+	[26] = { [1] = Cannon, [4] = Reinforcements },--+20 after 25 (7:02)
+	[27] = { [3] = Train },--+25 after 26 (7:27)
+	[28] = { [2] = ManOArms, [3] = ManOArms },--+15 after 27 (7:42)
+	[29] = { [4] = Train },--+10 after 28 (7:52)
 }
 
 local function fakeTrainYell(self)
