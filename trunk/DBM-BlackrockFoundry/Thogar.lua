@@ -116,35 +116,36 @@ local mythicTrains = {
 
 --https://www.youtube.com/watch?v=_W8vy5Gc5q4
 local otherTrains = {
-	[1] = { [4] = Train },--+12 after pull
-	[2] = { [2] = Train },--+10 after 1
-	[3] = { [1] = Reinforcements },--+5 after 2
-	[4] = { [3] = Train },--+15 after 3
-	[5] = { [4] = Cannon },--+5 after 4
-	[6] = { [2] = Train },--+25 after 5
-	[7] = { [3] = ManOArms },--+5 after 6
-	[8] = { [1] = Train },--+25 after 7
-	[9] = { [2] = Reinforcements, [3] = Reinforcements },--+15 after 8
-	[10] = { [1] = Train, [4] = Train },--+40 after 9
-	[11] = { [1] = Cannon },--+10 after 10
-	[12] = { [2] = Train },--+15 after 11
-	[13] = { [4] = Reinforcements },--+10 after 12
-	[14] = { [3] = Train },--+20 after 13
-	[15] = { [2] = Train },--+10 after 14
-	[16] = { [1] = Train },--+10 after 15
-	[17] = { [2] = ManOArms, [4] = Cannon },--+15 after 16
-	[18] = { [1] = Train },--+20 after 17
-	[19] = { [3] = Train },--+5 after 18
-	[20] = { [1] = Cannon, [4] = Cannon },--+30 after 19
-	[21] = { [2] = Train },--+10 after 20
-	[22] = { [2] = Train },--+25 after 21
-	[23] = { [2] = Reinforcements, [3] = ManOArms },--+30 after 22
-	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--Lane 4, but if reinforcements aren't dead from wave 23, lane 2 (because reinforcements cart still blocking lane 4) Not Actually random. But detecting if reinforcement cart still in way impossible :\
-	[25] = { [1] = Train },--+20 after 24
-	[26] = { [1] = Cannon, [4] = Reinforcements },--+20 after 25
-	[27] = { [3] = Train },--+25 after 26
-	[28] = { [2] = ManOArms, [3] = ManOArms },--+15 after 27
-	[29] = { [4] = Train },--+10 after 28
+	[1] = { [4] = Train },--+12 after pull (0:12)
+	[2] = { [2] = Train },--+10 after 1 (0:22)
+	[3] = { [1] = Reinforcements },--+5 after 2 (0:25)
+	[4] = { [3] = Train },--+15 after 3 (0:40)
+	[5] = { [4] = Cannon },--+5 after 4 (0:45)
+	[6] = { [2] = Train },--+25 after 5 (1:10)
+	[7] = { [3] = ManOArms },--+5 after 6 (1:15)
+	[8] = { [1] = Train },--+25 after 7 (1:40)
+	[9] = { [2] = Reinforcements, [3] = Reinforcements },--+15 after 8 (1:55)
+	[10] = { [1] = Train, [4] = Train },--+40 after 9 (2:35)
+	[11] = { [1] = Cannon },--+10 after 10 (2:45)
+	[12] = { [2] = Train },--+15 after 11 (3:00)
+	[13] = { [4] = Reinforcements },--+10 after 12 (3:10)
+	[14] = { [3] = Train },--+20 after 13 (3:30)
+	[15] = { [2] = Train },--+10 after 14 (3:40)
+	[16] = { [1] = Train },--+10 after 15 (3:50)
+	[17] = { [2] = ManOArms, [4] = Cannon },--+15 after 16 (4:05)
+	[18] = { [1] = Train },--+20 after 17 (4:25)
+	[19] = { [3] = Train },--+5 after 18 (4:30)
+	[20] = { [1] = Cannon, [4] = Cannon },--+30 after 19 (5:00)
+	[21] = { [2] = Train },--+10 after 20 (5:10)
+	[22] = { [2] = Train },--+25 after 21 (5:35)
+	[23] = { [2] = Reinforcements, [3] = ManOArms },--+30 after 22 (6:05)
+	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23? (6:20). Lane 4, but if reinforcements aren't dead from wave 23, lane 2 (because reinforcements cart still blocking lane 4) Not Actually random. But detecting if reinforcement cart still in way impossible :\
+	[25] = { [1] = Train },--+20 after 24 (6:40)
+	--Everything under here needs review for hotfix
+	[26] = { [1] = Cannon, [4] = Reinforcements },--+20 after 25 (7:00)
+	[27] = { [3] = Train },--+25 after 26 (7:25)
+	[28] = { [2] = ManOArms, [3] = ManOArms },--+15 after 27 (7:40)
+	[29] = { [4] = Train },--+10 after 28 (7:50)
 }
 
 local function fakeTrainYell(self)
@@ -454,7 +455,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			end
 			--Next Train 5 seconds after: 2, 4, 6, 18
 			--Next Train 10 seconds after: 1, 10, 14, 15, 20, 28
-			--Next Train 15 seconds after: 3, 8, 11, 16, 27
+			--Next Train 15 seconds after: 3, 8, 11, 16, 23, 27
 			--Next Train 20 seconds after: 13, 17, 24, 25
 			--Next Train 25 seconds after: 5, 7, 21, 26
 			--Next Train 30 seconds after: 19
