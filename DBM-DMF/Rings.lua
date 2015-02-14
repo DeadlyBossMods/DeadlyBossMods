@@ -31,9 +31,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRings:Show(args.amount or 1)
 		countdownGame:Cancel()
 		local _, _, _, _, _, duration, expires = UnitBuff("player", wingsName)
-		--Maybe use expires instead?
-		timerGame:Start(duration-1)
-		countdownGame:Start(duration-1)
+		local time = expires-GetTime()
+		timerGame:Start(time)
+		countdownGame:Start(time)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
