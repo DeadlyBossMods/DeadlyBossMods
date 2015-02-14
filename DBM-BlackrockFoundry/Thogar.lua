@@ -228,9 +228,14 @@ local otherVoice = {
 	[24] = "AX",
 	[25] = "A1",--Possibly also random?
 	[26] = "C1D4",--Don't worry, B14 will be used on mythic i'm sure. sorry about this messup
-	[27] = "A3",
-	[28] = "D23",
-	[29] = "A4",
+	[27] = "A2",
+	[28] = "A3",
+	[29] = "D3",
+	[30] = "A14",
+	[31] = "A4",
+	[32] = "A3",
+	[33] = "A2",
+	[34] = "A1",
 }
 
 local function showTrainWarning(self)
