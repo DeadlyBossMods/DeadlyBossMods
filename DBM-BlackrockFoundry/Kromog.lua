@@ -32,7 +32,7 @@ local specWarnCalloftheMountain		= mod:NewSpecialWarningCount(158217, nil, nil, 
 
 local timerGraspingEarthCD			= mod:NewCDTimer(114, 157060)--Unless see new logs on normal showing it can still be 111, raising to 115, average i saw was 116-119
 local timerThunderingBlowsCD		= mod:NewNextTimer(12, 157054)
-local timerRipplingSmashCD			= mod:NewCDTimer(26, 157592)--If it comes off CD early enough into ThunderingBlows/Grasping Earth, he skips a cast. Else, he'll cast it very soon after.
+local timerRipplingSmashCD			= mod:NewCDTimer(24, 157592)--If it comes off CD early enough into ThunderingBlows/Grasping Earth, he skips a cast. Else, he'll cast it very soon after.
 --local timerStoneGeyserCD			= mod:NewNextTimer(30, 158130)
 local timerStoneBreathCD			= mod:NewCDCountTimer(22.5, 156852)
 local timerSlamCD					= mod:NewCDTimer(23, 156704, nil, "Tank")
@@ -83,7 +83,7 @@ function mod:SPELL_CAST_START(args)
 			timerGraspingEarthCD:Start(122)
 		else
 			timerGraspingEarthCD:Start()
-			timerRipplingSmashCD:Start(41)
+			timerRipplingSmashCD:Start(39)
 		end
 	elseif spellId == 157054 then
 		specWarnThunderingBlows:Show()
