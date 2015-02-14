@@ -53,6 +53,14 @@ L= DBM:GetModLocalization(1122)
 --------------------------
 L= DBM:GetModLocalization(1147)
 
+L:SetWarningLocalization({
+	specWarnSplitSoon	= "10秒後團隊分開"
+})
+
+L:SetOptionLocalization({
+	specWarnSplitSoon	= "團隊分開10秒前顯示特別警告"
+})
+
 L:SetMiscLocalization({
 	Train			= GetSpellInfo(174806),
 	lane			= "車道",
