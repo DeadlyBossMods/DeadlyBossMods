@@ -110,7 +110,8 @@ local mythicTrains = {
 	[35] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+10 after 34.(07:52) (or 1,3 train?)
 }
 
---https://www.youtube.com/watch?v=_W8vy5Gc5q4
+--https://www.youtube.com/watch?v=yUgrmvksk7g
+--https://www.youtube.com/watch?v=Gny-suQV8to
 local otherTrains = {
 	[1] = { [4] = Train },--+12 after pull (0:12)
 	[2] = { [2] = Train },--+10 after 1 (0:22)
@@ -137,11 +138,15 @@ local otherTrains = {
 	[23] = { [2] = Reinforcements, [3] = ManOArms },--+30 after 22 (6:07) Split
 	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23? (6:22). Lane 4, but if reinforcements aren't dead from wave 23, lane 2 (because reinforcements cart still blocking lane 4) Not Actually random. But detecting if reinforcement cart still in way impossible :\
 	[25] = { [1] = Train },--+20 after 24 (6:42)
-	--Everything under here needs review for hotfix
-	[26] = { [1] = Cannon, [4] = Reinforcements },--+20 after 25 (7:02)
-	[27] = { [3] = Train },--+25 after 26 (7:27)
-	[28] = { [2] = ManOArms, [3] = ManOArms },--+15 after 27 (7:42) Split
-	[29] = { [4] = Train },--+10 after 28 (7:52)
+	[26] = { [1] = Cannon, [4] = Reinforcements },--+10 after 25 (6:52)
+	[27] = { [2] = Train },--+15 after 26 (7:07)
+	[28] = { [3] = Train },--+10 after 27 (7:17)
+	[29] = { [3] = ManOArms },--+20 after 28 (7:37)
+	[30] = { [1] = Train, [4] = Train },--+5 after 29 (7:42) 
+	[31] = { [4] = Train },--+15 after 30 (7:57) (guessed.)--seems berserk. 4 trains in a row (interval 4 sec.)
+	[32] = { [3] = Train },--+4 after 31 (8:01)
+	[33] = { [2] = Train },--+4 after 32 (8:05)
+	[34] = { [1] = Train },--+4 after 33 (8:09)
 }
 
 local function fakeTrainYell(self)
@@ -475,18 +480,20 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				voiceTrain:Play("Thogar\\"..otherVoice[count])
 			end
 			local expectedTime
-			if count == 2 or count == 4 or count == 6 or count == 18 then
+			if count == 31 or count == 32 or count == 33 then
+				expectedTime = 4
+			elseif count == 2 or count == 4 or count == 6 or count == 18  or count == 29 then
 				expectedTime = 5
-			elseif count == 1 or count == 10 or count == 12 or count == 14 or count == 15 or count == 20 or count == 28 then
+			elseif count == 1 or count == 10 or count == 12 or count == 14 or count == 15 or count == 20 or count == 25 or count == 27 then
 				expectedTime = 10
-			elseif count == 3 or count == 8 or count == 11 or count == 16 or count == 23 or count == 27 then
+			elseif count == 3 or count == 8 or count == 11 or count == 16 or count == 23 or count == 26 or count == 30 then
 				expectedTime = 15
-				if count == 8 or count == 27 then
+				if count == 8 then
 					specWarnSplitSoon:Schedule(5)
 				end
-			elseif count == 13 or count == 17 or count == 24 or count == 25 then
+			elseif count == 13 or count == 17 or count == 24 or count == 28 then
 				expectedTime = 20
-			elseif count == 5 or count == 7 or count == 21 or count == 26 then
+			elseif count == 5 or count == 7 or count == 21 then
 				expectedTime = 25
 			elseif count == 19 or count == 22 then
 				expectedTime = 30

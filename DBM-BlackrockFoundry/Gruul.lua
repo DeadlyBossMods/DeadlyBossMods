@@ -15,6 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 155323 155539 155078",
 	"SPELL_AURA_APPLIED_DOSE 155078",
 	"SPELL_AURA_REMOVED 155323 155539",
+	"SPELL_PERIODIC_DAMAGE 173192",
+	"SPELL_ABSORBED 173192",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -30,6 +32,7 @@ local specWarnInfernoSlice			= mod:NewSpecialWarningCount(155080, "Tank|Healer",
 local specWarnRampage				= mod:NewSpecialWarningSpell(155539, nil, nil, nil, 2)
 local specWarnRampageEnded			= mod:NewSpecialWarningEnd(155539)
 local specWarnOverheadSmash			= mod:NewSpecialWarningCount(155301, nil, nil, nil, 2, nil, 2)
+local specWarnCaveIn				= mod:NewSpecialWarningMove(173192)
 local specWarnPetrifyingSlam		= mod:NewSpecialWarningMoveAway(155326, nil, nil, nil, 3, nil, 2)
 
 local timerInfernoSliceCD			= mod:NewCDCountTimer(12, 155080)--Variable do to energy bugs (gruul not gain power consistently)
@@ -48,6 +51,7 @@ local voiceInfernoSlice				= mod:NewVoice(155080) --gathershare. maybe change to
 --local voiceCrumblingRoar			= mod:NewVoice(155730)
 local voiceOverheadSmash			= mod:NewVoice(155301) --shockwave
 local voiceShatter					= mod:NewVoice(155326)--Spread/Scatter
+local voiceCaveIn					= mod:NewVoice(173192)
 
 mod:AddRangeFrameOption(8, 155530)
 mod:AddHudMapOption("HudMapOnShatter", 155530, false)--Might be overwhelming. up to 8 targets on non mythic, and on mythic, 20 of them. So off by default
@@ -240,6 +244,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
+		specWarnCaveIn:Show()
+		voiceCaveIn:Play("runaway")
+	end
+end
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 do
 	local lastPower = 0

@@ -14,7 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 156096 157000 156667 156401 156653 159179",
 	"SPELL_AURA_REMOVED 156096 157000 156667 159179",
 	"SPELL_PERIODIC_DAMAGE 156401",
-	"SPELL_PERIODIC_MISSED 156401",
+	"SPELL_ABSORBED 156401",
 	"SPELL_ENERGIZE 104915",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -267,7 +267,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		specWarnMoltenSlag:Show()
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if (spellId == 156031 or spellId == 156998) and self:AntiSpam(2, 2) then--156031 phase 1, 156991 phase 2. 156998 is also usuable for phase 2 but 156991
