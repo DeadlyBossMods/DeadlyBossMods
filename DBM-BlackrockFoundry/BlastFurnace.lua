@@ -33,6 +33,7 @@ local warnElementalists			= mod:NewAddsLeftAnnounce("ej9655", 2)
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4)
 --Phase 3
+local warnPhase3				= mod:NewPhaseAnnounce(3)
 local warnMelt					= mod:NewTargetAnnounce("OptionVersion2", 155225, 4, nil, false)--VERY spammy, off by default
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 
@@ -90,7 +91,9 @@ mod.vb.machinesDead = 0
 mod.vb.elementalistsRemaining = 4
 mod.vb.blastWarned = false
 mod.vb.lastTotal = 30
+mod.vb.phase = 1
 
+local UnitHealth, UnitMaxHealth = UnitHealth, UnitMaxHealth
 --With some videos, this looks pretty good now. Just need phase 2 add stuff now.
 local function Engineers(self)
 	warnEngineer:Show()
@@ -99,17 +102,70 @@ local function Engineers(self)
 	self:Schedule(41, Engineers, self)
 end
 
+function mod:CustomHealthUpdate()
+	local health
+	local total = 0
+	local tmax = 0
+	if self.vb.phase == 1 then
+		for i = 1, 5 do
+			local uid = "boss"..i
+			local cid = self:GetCIDFromGUID(uid)
+			if cid == 76808 then
+				total = total + UnitHealth(uid)
+				tmax = tmax + UnitHealthMax(uid)
+			end
+		end
+		health = (total / tmax * 100) or DBM_CORE_UNKNOWN
+		return health.." ("..SCENARIO_STAGE:format(1)..")"
+	elseif self.vb.phase == 2 then
+		for i = 1, 5 do
+			local uid = "boss"..i
+			local cid = self:GetCIDFromGUID(uid)
+			if cid == 76815 then
+				total = total + UnitHealth(uid)
+				tmax = tmax + UnitHealthMax(uid)
+			end
+		end
+		health = (total / tmax * 100) or DBM_CORE_UNKNOWN
+		return health.." ("..SCENARIO_STAGE:format(2)..")"
+	elseif self.vb.phase == 3 then
+		for i = 1, 5 do
+			local uid = "boss"..i
+			local cid = self:GetCIDFromGUID(uid)
+			if cid == 76806 then
+				total = total + UnitHealth(uid)
+				tmax = tmax + UnitHealthMax(uid)
+				break
+			end
+		end
+		health = (total / tmax * 100) or DBM_CORE_UNKNOWN
+		return health.." ("..SCENARIO_STAGE:format(3)..")"
+	end
+	return DBM_CORE_UNKNOWN
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.machinesDead = 0
 	self.vb.elementalistsRemaining = 4
 	self.vb.blastWarned = false
 	self.vb.lastTotal = 30
+	self.vb.phase = 1
 	self:Schedule(55, Engineers, self)
 	timerEngineer:Start(55)
 	countdownEngineer:Start(55)
 	timerBlastCD:Start(30-delay)
 	countdownBlast:Start(30-delay)
 	berserkTimer:Start(-delay)
+	if DBM.BossHealth:IsShown() then
+		DBM.BossHealth:Clear()
+		for i = 1, 5 do
+			local uid = "boss"..i
+			local cid = self:GetCIDFromGUID(uid)
+			if cid == 76808 then
+				DBM.BossHealth:AddBoss(uid)
+			end
+		end
+	end
 end
 
 function mod:OnCombatEnd()
@@ -239,12 +295,19 @@ function mod:UNIT_DIED(args)
 		self.vb.elementalistsRemaining = self.vb.elementalistsRemaining - 1
 		warnElementalists:Show(self.vb.elementalistsRemaining)
 		if self.vb.elementalistsRemaining == 0 then
+			self.vb.phase = 3
+			warnPhase3:Show()
 			specWarnHeartoftheMountain:Show()
 			voicePhaseChange:Play("pthree")
+			if DBM.BossHealth:IsShown() then
+				DBM.BossHealth:Clear()
+				DBM.BossHealth:AddBoss(76806)
+			end
 		end
 	elseif cid == 76808 then--Regulators
 		self.vb.machinesDead = self.vb.machinesDead + 1
 		if self.vb.machinesDead == 2 then
+			self.vb.phase = 2
 			warnPhase2:Show()
 			self:Unschedule(Engineers)
 			timerEngineer:Cancel()
@@ -252,6 +315,16 @@ function mod:UNIT_DIED(args)
 			timerBellowsOperator:Cancel()
 			countdownBellowsOperator:Cancel()
 			voicePhaseChange:Play("ptwo")
+			if DBM.BossHealth:IsShown() then
+				DBM.BossHealth:Clear()
+				for i = 1, 5 do
+					local uid = "boss"..i
+					local cid = self:GetCIDFromGUID(uid)
+					if cid == 76815 then
+						DBM.BossHealth:AddBoss(uid)
+					end
+				end
+			end
 		end
 	elseif cid == 76809 then
 		timerRuptureCD:Cancel()
