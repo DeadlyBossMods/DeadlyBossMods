@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 158702 164271 156214 158315 158010 159724 156631 156601",
 	"SPELL_AURA_REMOVED 159724 156631",
 	"SPELL_PERIODIC_DAMAGE 158683",
-	"SPELL_PERIODIC_MISSED 158683",
+	"SPELL_ABSORBED 158683",
 	"UNIT_DIED",
 	"RAID_BOSS_WHISPER",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -265,12 +265,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if not DBM.Options.DontShowFarWarnings then
 		noFilter = true
 	end
-	if spellId == 157854 then
-		savedAbilityTime["BombardmentAlpha"] = GetTime()
-		if noFilter or not isPlayerOnBoat() then
-			specWarnBombardmentAlpha:Show(self.vb.alphaOmega)
-			timerBombardmentAlphaCD:Start()
-		end
+	if spellId == 157854 and (noFilter or not isPlayerOnBoat()) then
+		specWarnBombardmentAlpha:Show(self.vb.alphaOmega)
+		timerBombardmentAlphaCD:Start()
 	elseif spellId == 157886 and (noFilter or not isPlayerOnBoat()) then
 		specWarnBombardmentOmega:Show(self.vb.alphaOmega)
 		self.vb.alphaOmega = self.vb.alphaOmega + 1
@@ -378,7 +375,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		specWarnCorruptedBlood:Show()
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
