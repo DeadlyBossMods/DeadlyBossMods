@@ -597,7 +597,7 @@ do
 				local range = (cx * cx + cy * cy) ^ 0.5
 				--local range = UnitDistanceSquared(uId) ^ 0.5
 				local inRange = false
-				if range < (activeRange) then
+				if range < (activeRange+0.5) then
 					closePlayer = closePlayer + 1
 					inRange = true
 					if not closestRange then
