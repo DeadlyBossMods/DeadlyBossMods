@@ -8673,7 +8673,7 @@ do
 		return schedule(t, self.Start, self.mod, self, ...)
 	end
 
-	function timerPrototype:Unschedule(t, ...)
+	function timerPrototype:Unschedule(...)
 		return unschedule(self.Start, self.mod, self, ...)
 	end
 

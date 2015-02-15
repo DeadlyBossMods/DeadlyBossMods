@@ -436,23 +436,29 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if GetTime() - fakeYellTime < 5 then fakeYellTime = 0 return end -- if fakeYell was followed by realYell within 5 sec, regard realYell as missed fakeYell, so ignore it.
 	if target == L.Train then
+		local adjusted = (GetTime() - fakeYellTime) < 2-- yell followed by fakeyell within 2 sec. this should realyell of scheduled fakeyell. so do not increase count and only do adjust.
 		self:Unschedule(fakeTrainYell)--Always unschedule
-		self.vb.trainCount = self.vb.trainCount + 1
-		local count = self.vb.trainCount
-		showTrainWarning(self)
+		if not adjusted then--do not adjust visible warn to prevent confusing. (although fakeyell worked early, maximum 3.5 sec. this is no matter. only adjust scheduled things.)
+			self.vb.trainCount = self.vb.trainCount + 1
+			showTrainWarning(self)
+			if msg == "Fake" then
+				countdownTrain:Start(3.5)
+				laneCheck(self)
+			else
+				countdownTrain:Start()
+				self:Schedule(1.5, laneCheck, self)
+			end
+		end
+		self:Unschedule(showInfoFrame)
 		if msg == "Fake" then
-			countdownTrain:Start(3.5)
-			laneCheck(self)
 			self:Schedule(3.5, showInfoFrame)
 		else
-			countdownTrain:Start()
-			self:Schedule(1.5, laneCheck, self)
 			self:Schedule(5, showInfoFrame)
 		end
+		local count = self.vb.trainCount
 		if self:IsMythic() then
-			if mythicVoice[count] then
+			if mythicVoice[count] and not adjusted then
 				voiceTrain:Play("Thogar\\"..mythicVoice[count])
 			end
 			local expectedTime
@@ -463,6 +469,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 33 then
 				expectedTime = 15
 				if count == 20 then
+					specWarnSplitSoon:Cancel()
 					specWarnSplitSoon:Schedule(5)
 				end
 			elseif count == 4 or count == 15 or count == 18 or count == 19  or count == 21 or count == 27 or count == 28 then
@@ -471,25 +478,26 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 25
 			elseif count == 9 then
 				expectedTime = 35
+				specWarnSplitSoon:Cancel()
 				specWarnSplitSoon:Schedule(25)--10 is a split, pre warn 10 seconds before 10
 			end
 			if expectedTime then
 				if msg == "Fake" then
 					fakeYellTime = GetTime()
 					expectedTime = expectedTime - 1.5
-				else
-					self:Schedule(expectedTime + 1.5, fakeTrainYell, self)--Schedule fake yell 1.5 seconds after we should have seen one.
 				end
+				self:Schedule(expectedTime + 1.5, fakeTrainYell, self)--Schedule fake yell 1.5 seconds after we should have seen one.
+				timerTrainCD:Unschedule(count+1)
 				timerTrainCD:Schedule(5, expectedTime, count+1)
 			else
 				print("Train Set: "..count..". DBM has no train data beyond this point. Send us videos if you can.")
 				timerTrainCD:Start(5, count)
 			end
-			if count == 1 or count == 18 or count == 21 or count == 34 then
+			if (count == 1 or count == 18 or count == 21 or count == 34) and not adjusted then
 				specWarnManOArms:Show()
 			end
 		else
-			if otherVoice[count] then
+			if otherVoice[count] and not adjusted then
 				voiceTrain:Play("Thogar\\"..otherVoice[count])
 			end
 			local expectedTime
@@ -502,6 +510,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			elseif count == 3 or count == 8 or count == 11 or count == 16 or count == 23 or count == 26 or count == 30 then
 				expectedTime = 15
 				if count == 8 then
+					specWarnSplitSoon:Cancel()
 					specWarnSplitSoon:Schedule(5)
 				end
 			elseif count == 13 or count == 17 or count == 24 or count == 28 then
@@ -511,6 +520,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			elseif count == 19 or count == 22 then
 				expectedTime = 30
 				if count == 22 then
+					specWarnSplitSoon:Cancel()
 					specWarnSplitSoon:Schedule(20)
 				end
 			elseif count == 9 then
@@ -520,15 +530,15 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				if msg == "Fake" then
 					fakeYellTime = GetTime()
 					expectedTime = expectedTime - 1.5
-				else
-					self:Schedule(expectedTime + 1.5, fakeTrainYell, self)--Schedule fake yell 1.5 seconds after we should have seen one.
 				end
+				self:Schedule(expectedTime + 1.5, fakeTrainYell, self)--Schedule fake yell 1.5 seconds after we should have seen one.
+				timerTrainCD:Unschedule(count+1)
 				timerTrainCD:Schedule(5, expectedTime, count+1)
 			else
 				print("Train Set: "..count..". DBM has no train data beyond this point. Send us videos if you can.")
 				timerTrainCD:Start(5, count)--Show timer for incoming train for current yell if we have no data for next
 			end
-			if count == 7 or count == 17 or count == 23 or count == 28 then--I'm sure they spawn again sometime later, find that data
+			if (count == 7 or count == 17 or count == 23 or count == 28) and not adjusted then--I'm sure they spawn again sometime later, find that data
 				specWarnManOArms:Show()
 				if self.Options.SetIconOnAdds then
 					self:ScanForMobs(80791, 0, 8, 2, 0.2, 15)--Man At Arms scanner marking 8 down
