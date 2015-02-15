@@ -19,15 +19,12 @@ mod:RegisterEventsInCombat(
 --TODO, get timers for other forms besides demonic, form chosen is RNG based so may take a few logs.
 --Basic Abilities
 local warnDrainLife				= mod:NewTargetAnnounce(156854, 4)
-local warnCorruption			= mod:NewTargetAnnounce(156842, 3, nil, "Healer")--Seems 1 phase only spell.
 local warnRainOfFire			= mod:NewSpellAnnounce(156857, 3)
 local warnFixate				= mod:NewTargetAnnounce("OptionVersion2", 157168, 2)
 --Affliction Abilities
 local warnSeedOfMalevolence		= mod:NewTargetAnnounce(156921, 3)
-local warnExhaustion			= mod:NewTargetAnnounce(164841, 3, nil, "RemoveCurse")
 --Destruction Abilities
 local warnChaosBolt				= mod:NewSpellAnnounce(156975, 4)--You can get target from yell immediately after cast start, but not much reason to localize for that, you always interrupt.
-local warnImmolate				= mod:NewTargetAnnounce(156964, 3, nil, "Healer")
 --Demonic Abilities
 local warnDemonForm				= mod:NewSpellAnnounce(156919, 3)
 local warnDemonicLeap			= mod:NewTargetAnnounce(157039, 3)
@@ -129,8 +126,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 156965 then
 		warnDoom:Show(args.destName)
 		specWarnDoom:Show(args.destName)
-	elseif spellId == 156842 then
-		warnCorruption:Show(args.destName)
+	elseif spellId == 156842 and self:CheckDispelFilter() then
 		specWarnCorruption:Show(args.destName)
 		voiceCorruption:Play("dispelnow")
 	elseif spellId == 156921 and args:IsDestTypePlayer() then--This debuff can be spread to the boss. bugged?
@@ -156,13 +152,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFixate:Show()
 		end
-	elseif spellId == 164841 then
-		warnExhaustion:Show(args.destName)
+	elseif spellId == 164841 and self:CheckDispelFilter() then
 		specWarnExhaustion:Show(args.destName)
 		voiceWarnExhaustion:Play("dispelnow")
 		--timerExhaustionCD:Start()
-	elseif spellId == 156964 then--Base version cast only in phase 1
-		warnImmolate:Show(args.destName)
+	elseif spellId == 156964 and self:CheckDispelFilter() then--Base version cast only in phase 1
 		specWarnImmolate:Show(args.destName)
 		timerImmolateCD:Start()
 		voiceWarnImmolate:Plat("dispelnow")

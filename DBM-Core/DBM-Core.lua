@@ -123,6 +123,7 @@ DBM.DefaultOptions = {
 	ShowBigBrotherOnCombatStart = false,
 	FilterTankSpec = true,
 	FilterInterrupt = true,
+	FilterDispel = true,
 	AutologBosses = false,
 	AdvancedAutologBosses = false,
 	LogOnlyRaidBosses = false,
@@ -6228,6 +6229,17 @@ end
 function bossModPrototype:CheckInterruptFilter(sourceGUID)
 	if not DBM.Options.FilterInterrupt then return true end
 	if UnitGUID("target") == sourceGUID or UnitGUID("focus") == sourceGUID then
+		return true
+	end
+	return false
+end
+
+function bossModPrototype:CheckDispelFilter()
+	if not DBM.Options.FilterDispel then return true end
+	--Druid: Nature's Cure (88423), Monk: Detox (115450), Priest: Purify (527), Plaadin: Cleanse (4987), Shaman: Purify Spirit (77130)
+	--start, duration, enable = GetSpellCooldown
+	--start & duration == 0 if spell not on cd
+	if (GetSpellCooldown(88423)) == 0 or (GetSpellCooldown(115450)) == 0 or (GetSpellCooldown(527)) == 0 or (GetSpellCooldown(4987)) == 0 or (GetSpellCooldown(77130)) == 0 then
 		return true
 	end
 	return false
