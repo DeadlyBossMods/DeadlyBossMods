@@ -193,7 +193,11 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.ship = 0
 	self.vb.alphaOmega = 1
-	below25 = false
+	if self:IsMythic() then
+		below25 = true--On mythic, they continue going onto boat until 20%
+	else
+		below25 = false
+	end
 	playerOnBoat = false
 	timerBloodRitualCD:Start(5-delay)
 	timerBladeDashCD:Start(11-delay)
