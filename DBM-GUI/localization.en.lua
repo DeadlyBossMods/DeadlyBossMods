@@ -226,12 +226,7 @@ L.SpamBlockBossWhispers		= "Filter &lt;DBM&gt; warning whispers while fighting"
 
 L.Area_SpecFilter			= "Spec Filter Options"
 L.FilterTankSpec			= "Filter warnings designated for Tank role when not tank spec. (Note: Disabling this is not recommended for most users as 'taunt' warnings are now all on by default.)"
---Healer and Damager not in use yet. Tank is easily black and white. if not a tank, disable taunt warnings. Pretty obvious.
---Healer and Damager a bit more tricky, since often times, Healer DO need to switch and kill adds designated a dps roll (hi disc attonement priest)
---Or a dps does need to handle debuff dispels. Or a dps/tank need to know when aoe damage is going out just as much as healer for personal CDs
---Etc etc. Point being, I translate these but I'm not sure they could ever actually be used as effectively as the tank spec filter.
---L.FilterHealerSpec		= "Filter warnings designated for Healer role when not Healer spec"--Not in use
---L.FilterDamagerSpec		= "Filter warnings designated for Damager role when not Damager spec"--Not in use
+L.FilterInterrupts			= "Filter warnings for interruptable spells if caster is not your current target or focus target. (Note: does not apply to spells deemed critical to interrupt that will likely result in raid wipes if missed)"
 
 L.Area_PullTimer			= "Pull, Break, Combat, & Custom Timer Filter Options"
 L.DontShowPTNoID			= "Block Pull Timer if not sent from same zone as you"
