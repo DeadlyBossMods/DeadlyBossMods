@@ -15,7 +15,6 @@ mod:RegisterEventsInCombat(
 
 --TODO, soul vessel is probably wrong now.
 --Even on CM, fights too short to get a good soulvessel timer. Still need better logs
-local warnSWP					= mod:NewTargetAnnounce(154477, 2, nil, "Healer")
 local warnSoulVessel			= mod:NewSpellAnnounce(155327, 4)
 local warnTornSpirits			= mod:NewSpellAnnounce(153991, 3)
 
@@ -37,8 +36,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 154477 and args:IsDestTypePlayer() then
-		warnSWP:Show(args.destName)
+	if args.spellId == 154477 and args:IsDestTypePlayer() and self:CheckDispelFilter() then
 		specWarnSWP:Show(args.destName)
 		voiceSWP:Play("dispelnow")
 	end
