@@ -307,8 +307,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceConvulsiveShadows:Play("runaway")
 		end
 	elseif spellId == 158315 and (noFilter or not isPlayerOnBoat()) then
-		warnDarkHunt:Show(args.destName)
-		specWarnDarkHunt:Show(args.destName)
+		if self.Options.SpecWarn158315target then
+			specWarnDarkHunt:Show(args.destName)
+		else
+			warnDarkHunt:Show(args.destName)
+		end
 		timerDarkHuntCD:Start() --8s
 		if args:IsPlayer() then
 			voiceDarkHunt:Schedule(3, "defensive") --if a countdown is added for this spell, change schedule time to 1.5s
@@ -324,8 +327,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetSortedIcon(1, args.destName, 3, 3)
 		end
 	elseif spellId == 159724 and (noFilter or not isPlayerOnBoat()) then
-		warnBloodRitual:Show(args.destName)
-		specWarnBloodRitualOther:Show(args.destName)
+		if self.Options.SpecWarn158078target2 then
+			specWarnBloodRitualOther:Show(args.destName)
+		else
+			warnBloodRitual:Show(args.destName)
+		end
 		if args:IsPlayer() then
 			specWarnBloodRitual:Show()
 			yellBloodRitual:Yell()
