@@ -176,7 +176,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if not self.vb.firstJump then
 			DBM:Debug("157922: firstJump true")
 			self.vb.firstJump = true
-			self.vb.lastJumpTarget = UnitName(uId.."target")--It'll be highest threat at this point, baseline for our first filter
+			if UnitExists(uId.."target") then
+				self.vb.lastJumpTarget = UnitName(uId.."target")--It'll be highest threat at this point, baseline for our first filter
+			end
 		else--Not first jump
 			DBM:Debug("157922: firstJump false")
 			if self.vb.lastJumpTarget ~= "None" then
