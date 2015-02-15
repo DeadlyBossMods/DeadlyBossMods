@@ -45,7 +45,7 @@ mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerSmartStamperCD				= mod:NewNextTimer(12, 162124)--Activation
 local timerStamperDodge					= mod:NewTimer(10, "timerStamperDodge", 160582)--Time until stamper falls (spell name fits well, time you have to stamper dodge)
 
-local berserkTimer						= mod:NewBerserkTimer(360)
+--local berserkTimer						= mod:NewBerserkTimer(360)
 
 local countCripplingSupplex				= mod:NewCountdown("OptionVersion2", "Alt9.5", 156938, "Tank|Healer")
 
@@ -81,7 +81,7 @@ function mod:OnCombatStart(delay)
 	timerDisruptingRoarCD:Start(-delay)
 	if self:IsMythic() then
 		timerSmartStamperCD:Start(13-delay)
-		berserkTimer:Start(-delay)
+--		berserkTimer:Start(-delay)
 	end
 end
 
