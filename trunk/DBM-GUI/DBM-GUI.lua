@@ -2535,8 +2535,9 @@ local function CreateOptionsMenu()
 		spamArea:CreateCheckButton(L.StripServerName, true, nil, "StripServerName")
 		spamArea:CreateCheckButton(L.SpamBlockBossWhispers, true, nil, "SpamBlockBossWhispers")
 
-		local spamSpecArea = spamPanel:CreateArea(L.Area_SpecFilter, nil, 40, true)
+		local spamSpecArea = spamPanel:CreateArea(L.Area_SpecFilter, nil, 80, true)
 		spamSpecArea:CreateCheckButton(L.FilterTankSpec, true, nil, "FilterTankSpec")
+		spamSpecArea:CreateCheckButton(L.FilterInterrupts, true, nil, "FilterInterrupt")
 
 		local spamPTArea = spamPanel:CreateArea(L.Area_PullTimer, nil, 160, true)
 		spamPTArea:CreateCheckButton(L.DontShowPTNoID, true, nil, "DontShowPTNoID")
