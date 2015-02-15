@@ -220,8 +220,7 @@ function mod:SPELL_CAST_START(args)
 		self:BossTargetScanner(79015, "FrostTarget", 0.1, 16)
 	elseif spellId == 163517 then
 		warnForfeitPower:Show()
-		local guid = args.sourceGUID
-		if (guid == UnitGUID("target")) or (guid == UnitGUID("focus")) then
+		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnForfeitPower:Show(args.sourceName)
 		end
 	elseif spellId == 162186 then

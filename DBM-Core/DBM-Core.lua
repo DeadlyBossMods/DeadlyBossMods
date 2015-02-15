@@ -122,6 +122,7 @@ DBM.DefaultOptions = {
 	AlwaysShowHealthFrame = false,
 	ShowBigBrotherOnCombatStart = false,
 	FilterTankSpec = true,
+	FilterInterrupt = true,
 	AutologBosses = false,
 	AdvancedAutologBosses = false,
 	LogOnlyRaidBosses = false,
@@ -6219,6 +6220,14 @@ end
 
 function bossModPrototype:IsTrivial(level)
 	if playerLevel >= level then
+		return true
+	end
+	return false
+end
+
+function bossModPrototype:CheckInterruptFilter(sourceGUID)
+	if not DBM.Options.FilterInterrupt then return true end
+	if UnitGUID("target") == sourceGUID or UnitGUID("focus") == sourceGUID then
 		return true
 	end
 	return false

@@ -389,7 +389,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 160140 then
+	if spellId == 160140 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnCauterizingBolt:Show(args.sourceName)
 	elseif spellId == 163753 then
 		if self:AntiSpam(3, 1) then
