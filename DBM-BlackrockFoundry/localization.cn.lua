@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Feb 8, 2015@12810
+-- Last update: Feb 15, 2015@12931
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -56,6 +56,14 @@ L= DBM:GetModLocalization(1122)
 -- Operator Thogar --
 --------------------------
 L= DBM:GetModLocalization(1147)
+
+L:SetWarningLocalization({
+	specWarnSplitSoon	= "10秒后分轨"
+})
+
+L:SetOptionLocalization({
+	specWarnSplitSoon	= "特殊警报：当团队需要在10秒后分轨时"
+})
 
 L:SetMiscLocalization({
 	lane			= "轨道",

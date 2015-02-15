@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Feb 8, 2015@12810
+-- Last update: Feb 15, 2015@12931
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -152,6 +152,8 @@ DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "你的DBM已经过期,它已被禁用,直
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "警告：你使用了不正确版本的DBM。请确保DBM版本和游戏版本一致。"
 DBM_CORE_VEM							= "你好像在使用VEM。DBM在这种情况下无法被载入。"
 DBM_CORE_3RDPROFILES					= "警告: DBM-Profiles已经无法和本版本DBM兼容。DBM核心已经自带配置文件管理系统，请移除DBM-Profiles避免冲突。"
+DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "警告: 如果你不完全重启游戏，DBM可能会工作不正常。此次更新包含了新的文件，或者toc文件的改变，这是重载界面无法加载的。不重启游戏可能导致作战模块功能错误。"
+
 
 DBM_CORE_MOVABLE_BAR				= "拖动我！"
 
@@ -352,6 +354,10 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2		= "倒计时：$spell:%s消失时"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT			= "倒计时：$spell:%s的持续时间正计时"
 DBM_CORE_AUTO_YELL_OPTION_TEXT				= "当你受到$spell:%s影响时大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT			= UnitName("player") .. " 中了 %s!"
+DBM_CORE_AUTO_HUD_OPTION_TEXT			= "为$spell:%s显示HudMap"
+DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "为多个机制显示HudMap"
+
+
 DBM_CORE_AUTO_RANGE_OPTION_TEXT				= "距离监视(%s码)：$spell:%s"--string used for range so we can use things like "5/2" as a value for that field
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT		= "距离监视(%s码)"--For when a range frame is just used for more than one thing
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT			= "反转距离监视(%s码)：$spell:%s"--Reverse range frame (green when players in range, red when not)
