@@ -266,7 +266,7 @@ function mod:Enable()
 	self.canvas:SetBackdrop(nil)
 	self.HUDEnabled = true
 	if not updateFrame.ticker then
-		updateFrame.ticker = C_Timer.NewTicker(0.04, function() onUpdate(updateFrame, 0.04) end)
+		updateFrame.ticker = C_Timer.NewTicker(0.035, function() onUpdate(updateFrame, 0.035) end)
 	end
 end
 
