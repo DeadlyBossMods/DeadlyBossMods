@@ -2666,7 +2666,7 @@ function DBM:LoadAllModDefaultOption(modId)
 		mod.Options = {}
 		mod.Options = defaultOptions
 		_G[savedVarsName][fullname][id][profileNum] = {}
-		_G[savedVarsName][fullname][id][profileNum] = defaultOptions
+		_G[savedVarsName][fullname][id][profileNum] = mod.Options
 	end
 	self:AddMsg(DBM_CORE_ALLMOD_DEFAULT_LOADED)
 	-- update gui if showing
@@ -2703,7 +2703,7 @@ function DBM:LoadModDefaultOption(mod)
 	mod.Options = {}
 	mod.Options = defaultOptions
 	_G[savedVarsName][fullname][mod.id][profileNum] = {}
-	_G[savedVarsName][fullname][mod.id][profileNum] = defaultOptions
+	_G[savedVarsName][fullname][mod.id][profileNum] = mod.Options
 	self:AddMsg(DBM_CORE_MOD_DEFAULT_LOADED)
 	-- update gui if showing
 	if DBM_GUI and DBM_GUI.currentViewing and DBM_GUI_OptionsFrame:IsShown() then
