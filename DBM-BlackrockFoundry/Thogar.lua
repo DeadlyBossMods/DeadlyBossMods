@@ -79,35 +79,35 @@ local mythicTrains = {
 	[4] = { [3] = Train },--+15 after 3.(00:32)
 	[5] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+20 after 4.(00:52)
 	[6] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 5.(01:07)
-	[7] = { [1] = Cannon, [4] = Cannon },--+10 after 6.(01:17)
-	[8] = { [2] = Train },--+15 after 7.(01:32)
-	[9] = { [3] = Train },--+15 after 8.(01:47)
-	[10] = { [2] = Reinforcements, [3] = Reinforcements },--+35 after 9.(02:22) Split
-	[11] = { [1] = Train, [4] = Train },--+25 after 10.(02:47)
-	[12] = { [4] = Deforester },--+5 after 11.(02:52)
-	[13] = { [1] = Deforester },--+5 after 12.(02:57)
-	[14] = { [3] = Train },--+5 after 13.(03:02)
-	[15] = { [2] = Train, [3] = Train },--+10(or +11?) after 14.(03:12)
-	[16] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+20(or +19) after 15.(03:32)
-	[17] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 16.(03:47)
-	[18] = { [1] = ManOArms, [4] = Cannon },--+15 after 17.(04:02)
-	[19] = { [1] = Deforester, [2] = Train, [3] = Train },--+20 after 18.(04:22)
-	[20] = { [2] = Train, [3] = Train },--+20(or +21) after 19.(04:42)
-	[21] = { [2] = ManOArms, [3] = ManOArms },--+15 after 20.(04:57) Split
-	[22] = { [2] = Reinforcements, [4] = Train },--+20 after 21.(05:17)
-	[23] = { [2] = Train, [3] = Train },--+10 after 22.(05:27)
-	[24] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23.(05:42)
-	[25] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 24.(05:57)
-	[26] = { [4] = Reinforcements },--+5 after 25.(06:02)
-	[27] = { [1] = Cannon },--+5 after 26.(06:07)
-	[28] = { [2] = Deforester, [3] = Deforester },--+20 after 27.(06:27)
-	[29] = { [1] = Train, [4] = Train },--+20 after 28.(06:47) (1 train is guessed)
-	[30] = { [1] = Reinforcements, [4] = Deforester },--+15 after 29.(07:02)
-	[31] = { [2] = Train },--+10 after 30.(07:12)
-	[32] = { [3] = Deforester },--+10 after 31.(07:22)
-	[33] = { [2] = Train },--+5 after 32.(07:27) (not correctly saw)
-	[34] = { [1] = ManOArms },--+15 after 33.(07:42)
-	[35] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+10 after 34.(07:52) (or 1,3 train?)
+	[7] = { [1] = Cannon, [4] = Cannon },--+15 after 6.(01:22)
+	[8] = { [2] = Train },--+15 after 7.(01:37)
+	[9] = { [3] = Train },--+15 after 8.(01:52)
+	[10] = { [2] = Reinforcements, [3] = Reinforcements },--+35 after 9.(02:27) Split
+	[11] = { [1] = Train, [4] = Train },--+25 after 10.(02:52)
+	[12] = { [4] = Deforester },--+5 after 11.(02:57)
+	[13] = { [1] = Deforester },--+5 after 12.(03:02)
+	[14] = { [3] = Train },--+5 after 13.(03:07)
+	[15] = { [2] = Train, [3] = Train },--+10(or +11?) after 14.(03:17)
+	[16] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+20(or +19) after 15.(03:37)
+	[17] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 16.(03:52)
+	[18] = { [1] = ManOArms, [4] = Cannon },--+15 after 17.(04:07)
+	[19] = { [1] = Deforester, [2] = Train, [3] = Train },--+20 after 18.(04:27)
+	[20] = { [2] = Train, [3] = Train },--+20(or +21) after 19.(04:47)
+	[21] = { [2] = ManOArms, [3] = ManOArms },--+15 after 20.(05:02) Split
+	[22] = { [2] = Reinforcements, [4] = Train },--+20 after 21.(05:22)
+	[23] = { [2] = Train, [3] = Train },--+10 after 22.(05:32)
+	[24] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23.(05:47)
+	[25] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 24.(06:02)
+	[26] = { [4] = Reinforcements },--+5 after 25.(06:07)
+	[27] = { [1] = Cannon },--+5 after 26.(06:12)
+	[28] = { [2] = Deforester, [3] = Deforester },--+20 after 27.(06:32)
+	[29] = { [1] = Train, [4] = Train },--+20 after 28.(06:52) (1 train is guessed)
+	[30] = { [1] = Reinforcements, [4] = Deforester },--+15 after 29.(07:07)
+	[31] = { [2] = Train },--+10 after 30.(07:17)
+	[32] = { [3] = Deforester },--+10 after 31.(07:27)
+	[33] = { [2] = Train },--+5 after 32.(07:32) (not correctly saw)
+	[34] = { [1] = ManOArms },--+15 after 33.(07:47)
+	[35] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+10 after 34.(07:57) (or 1,3 train?)
 }
 
 --https://www.youtube.com/watch?v=yUgrmvksk7g
@@ -454,9 +454,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			local expectedTime
 			if count == 1 or count == 2 or count == 6 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 32 then
 				expectedTime = 5
-			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 31 or count == 34 then
+			elseif count == 14 or count == 22 or count == 30 or count == 31 or count == 34 then
 				expectedTime = 10
-			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 33 then
+			elseif count == 3 or count == 5 or count == 6 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 33 then
 				expectedTime = 15
 				if count == 20 then
 					specWarnSplitSoon:Schedule(5)
