@@ -483,7 +483,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				timerTrainCD:Schedule(5, expectedTime, count+1)
 			else
 				print("Train Set: "..count..". DBM has no train data beyond this point. Send us videos if you can.")
-				timerTrainCD:Start(count)
+				timerTrainCD:Start(5, count)
 			end
 			if count == 1 or count == 18 or count == 21 or count == 34 then
 				specWarnManOArms:Show()
