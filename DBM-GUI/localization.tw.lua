@@ -226,12 +226,8 @@ L.SpamBlockBossWhispers		= "當戰鬥時過濾 &lt;DBM&gt; 密語警告"
 
 L.Area_SpecFilter			= "專精過濾選項"
 L.FilterTankSpec			= "非坦克專精時過濾掉坦克專精的特定警告 (註:不建議玩家關閉此選項因大多數的坦克嘲諷警告都是預設開啟。)"
---Healer and Damager not in use yet. Tank is easily black and white. if not a tank, disable taunt warnings. Pretty obvious.
---Healer and Damager a bit more tricky, since often times, Healer DO need to switch and kill adds designated a dps roll (hi disc attonement priest)
---Or a dps does need to handle debuff dispels. Or a dps/tank need to know when aoe damage is going out just as much as healer for personal CDs
---Etc etc. Point being, I translate these but I'm not sure they could ever actually be used as effectively as the tank spec filter.
---L.FilterHealerSpec		= "非治療專精時過濾掉治療專精的特定警告"--Not in use
---L.FilterDamagerSpec		= "非傷害專精時過濾掉治療傷害的特定警告"--Not in use
+L.FilterInterrupts			= "過濾可中斷技能的警告如果施法者不是你的目標或專注目標。(註：此選項不套用於可能會導致滅團的必須中斷技能)"
+L.FilterDispels				= "過濾可驅散技能如果你的驅散技正在冷卻中"
 
 L.Area_PullTimer			= "開怪計時器過濾選項"
 L.DontShowPTNoID			= "阻擋與你不同區域ID送出的開怪倒數計時條"
