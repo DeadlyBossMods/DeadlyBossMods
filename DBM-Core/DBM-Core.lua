@@ -6239,10 +6239,10 @@ function bossModPrototype:CheckDispelFilter()
 	--Druid: Nature's Cure (88423), Remove Corruption (2782), Monk: Detox (115450), Priest: Purify (527), Plaadin: Cleanse (4987), Shaman: Cleanse Spirit (51886), Purify Spirit (77130), Mage: Remove Curse (475)
 	--start, duration, enable = GetSpellCooldown
 	--start & duration == 0 if spell not on cd
-	if (GetSpellCooldown(88423)) == 0 or (GetSpellCooldown(2782)) == 0 or (GetSpellCooldown(115450)) == 0 or (GetSpellCooldown(527)) == 0 or (GetSpellCooldown(4987)) == 0 or (GetSpellCooldown(51886)) == 0 or (GetSpellCooldown(77130)) == 0 or (GetSpellCooldown(475)) == 0 then
-		return true
+	if (GetSpellCooldown(88423)) ~= 0 or (GetSpellCooldown(2782)) ~= 0 or (GetSpellCooldown(115450)) ~= 0 or (GetSpellCooldown(527)) ~= 0 or (GetSpellCooldown(4987)) ~= 0 or (GetSpellCooldown(51886)) ~= 0 or (GetSpellCooldown(77130)) ~= 0 or (GetSpellCooldown(475)) ~= 0 then
+		return false
 	end
-	return false
+	return true
 end
 
 function bossModPrototype:IsCriteriaCompleted(criteriaIDToCheck)
