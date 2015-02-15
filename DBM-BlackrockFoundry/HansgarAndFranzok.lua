@@ -192,7 +192,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 157923 and self.vb.lastJumpTarget == "None" then--Fallback
 		DBM:Debug("Using slower scan fallback: 157923", 2)
 		DBM:Debug("157923: boss target "..UnitName(uId.."target"))
-		self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.02, 10, nil, nil, true)
+		self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.02, 15, nil, nil, true)
 	end
 end
 
