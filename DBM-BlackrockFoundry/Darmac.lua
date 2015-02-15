@@ -255,7 +255,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voicePinDown:Cancel()
 			voicePinDown:Schedule(0.5, "helpme")
 		end
-	elseif spellId == 154981 then
+	elseif spellId == 154981 and self:CheckDispelFilter() then
 		specWarnConflag:CombinedShow(2, args.destName)
 	elseif spellId == 155030 then
 		local amount = args.amount or 1
