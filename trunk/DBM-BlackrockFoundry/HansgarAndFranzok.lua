@@ -55,7 +55,7 @@ local voiceShatteredVertebrae			= mod:NewVoice(157139)
 mod.vb.phase = 1
 mod.vb.stamperDodgeCount = 0
 mod.vb.bossUp = "NoBody"
-mod.vb.lastJumpTarget = UNKNOWN
+mod.vb.lastJumpTarget = "None"
 mod.vb.firstJump = false
 
 function mod:JumpTarget(targetname, uId)
@@ -75,7 +75,7 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.stamperDodgeCount = 0
 	self.vb.bossUp = "NoBody"
-	self.vb.lastJumpTarget = UNKNOWN
+	self.vb.lastJumpTarget = "None"
 	self.vb.firstJump = false
 	timerSkullcrackerCD:Start(20-delay)
 	timerDisruptingRoarCD:Start(-delay)
@@ -170,7 +170,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countCripplingSupplex:Start()
 	elseif spellId == 157926 then--Jump Activation
 		self.vb.firstJump = false--So reset firstjump
-		self.vb.lastJumpTarget = UNKNOWN
+		self.vb.lastJumpTarget = "None"
 		DBM:Debug("Jump Activation")
 	elseif spellId == 157922 then--First jump must use 157922
 		if not self.vb.firstJump then
@@ -179,14 +179,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			self.vb.lastJumpTarget = UnitName(uId.."target")--It'll be highest threat at this point, baseline for our first filter
 		else--Not first jump
 			DBM:Debug("157922: firstJump false")
-			if self.vb.lastJumpTarget ~= UNKNOWN then
+			if self.vb.lastJumpTarget ~= "None" then
 				DBM:Debug("157922: lastJumpTarget exists for "..self.vb.lastJumpTarget)
 				self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.05, 30, nil, nil, true, nil, self.vb.lastJumpTarget)--1.5 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
 			else
 				DBM:Debug("self.vb.lastJumpTarget is unknown, target scanning for jump will be slower")
 			end
 		end
-	elseif spellId == 157923 and self.vb.lastJumpTarget == UNKNOWN then--Fallback
+	elseif spellId == 157923 and self.vb.lastJumpTarget == "None" then--Fallback
 		DBM:Debug("Using slower scan fallback: 157923", 2)
 		self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.02, 10, nil, nil, true)
 	end
