@@ -183,11 +183,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				DBM:Debug("157922: lastJumpTarget exists for "..self.vb.lastJumpTarget)
 				self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.05, 30, nil, nil, true, nil, self.vb.lastJumpTarget)--1.5 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
 			else
-				--This shouldn't happen, but just in case
-				DBM:Debug("self.vb.lastJumpTarget is nil, target scanning for jump will be slower")
+				DBM:Debug("self.vb.lastJumpTarget is unknown, target scanning for jump will be slower")
 			end
 		end
-	elseif spellId == 157923 and not self.vb.lastJumpTarget then--Fallback
+	elseif spellId == 157923 and self.vb.lastJumpTarget == UNKNOWN then--Fallback
 		DBM:Debug("Using slower scan fallback: 157923", 2)
 		self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.02, 10, nil, nil, true)
 	end
