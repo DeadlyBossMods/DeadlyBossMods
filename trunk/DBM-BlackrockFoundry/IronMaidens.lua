@@ -199,8 +199,8 @@ function mod:OnCombatStart(delay)
 		self.vb.below25 = false
 	end
 	playerOnBoat = false
-	timerBloodRitualCD:Start(5-delay)
-	timerBladeDashCD:Start(11-delay)
+	timerBladeDashCD:Start(10-delay)
+	timerBloodRitualCD:Start(13-delay)
 	timerRapidFireCD:Start(16-delay)
 	timerShipCD:Start(60-delay)
 	self:RegisterShortTermEvents(
