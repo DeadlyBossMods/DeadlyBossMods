@@ -174,9 +174,9 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 155186 then
+	if spellId == 155186 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnCauterizeWounds:Show(args.sourceName)
-	elseif spellId == 156937 then
+	elseif spellId == 156937 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnPyroclasm:Show(args.sourceName)
 	elseif spellId == 177756 and self:CheckTankDistance(args.sourceGUID, 30) then
 		specWarnDeafeningRoar:Show()
@@ -188,7 +188,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 155179 then--Repair should NOT check tank distance, because these mobs run to lowest health regulator, even if it's on OTHER side of where their tank is.
+	if spellId == 155179 and self:CheckTankDistance(args.sourceGUID, 30) then--Blizz seems to updated encounter code so they now run to nearest regulator instead of lowest health one.
 		specWarnRepair:Show(args.sourceName)
 		voiceRepair:Play("kickcast")
 	elseif spellId == 174726 and self:CheckTankDistance(args.sourceGUID, 30) and self:AntiSpam(2, 4) then
