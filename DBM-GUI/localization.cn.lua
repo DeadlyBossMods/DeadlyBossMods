@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Feb 8, 2015@12810
+-- Last update: Feb 15, 2015@12931
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -217,6 +217,8 @@ L.SpamBlockNoSendWhisper	= "不发送悄悄话提示给其他玩家"
 L.SpamBlockNoSetIcon		= "不设定标记在目标上"
 L.SpamBlockNoRangeFrame		= "不显示距离监视器"
 L.SpamBlockNoInfoFrame		= "不显示信息监视器"
+L.SpamBlockNoHudMap			= "不显示HudMap"
+
 L.SpamBlockNoHealthFrame	= "不显示生命值监视器"
 L.SpamBlockNoCountdowns		= "不要播放倒数"
 L.SpamBlockNoIconRestore	= "当战斗结束后不保存团队标记状态(大饼 星星 月亮 方块这些)"
@@ -230,8 +232,8 @@ L.SpamBlockBossWhispers		= "战斗中过滤DBM密语警报"
 
 L.Area_SpecFilter			= "专精过滤选项"
 L.FilterTankSpec			= "当非坦克专精时，过滤掉给予坦克的专用信息"
---L.FilterHealerSpec		= "Filter warnings designated for Healer role when not Healer spec"--Not in use
---L.FilterDamagerSpec		= "Filter warnings designated for Damager role when not Damager spec"--Not in use
+L.FilterInterrupts			= "当目标没有被选中或设置为焦点时，过滤掉打断提示 (注意: 这对那些不打断就灭团的技能无效)"
+L.FilterDispels				= "当驱散技能在冷却时, 过滤掉驱散提示"
 
 L.Area_PullTimer			= "开怪倒计时过滤设置"
 L.DontShowPTNoID			= "不显示不同区域发送的倒计时"
