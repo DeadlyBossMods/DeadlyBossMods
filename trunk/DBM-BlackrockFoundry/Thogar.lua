@@ -61,12 +61,14 @@ mod:AddSetIconOption("SetIconOnAdds", "ej9549", false, true)
 
 mod.vb.trainCount = 0
 mod.vb.infoCount = 0
+local GetTime = GetTime
 local MovingTrain = GetSpellInfo(176312)
 local Train = GetSpellInfo(174806)
 local Cannon = GetSpellInfo(62357)
 local Reinforcements = EJ_GetSectionInfo(9537)
 local ManOArms = EJ_GetSectionInfo(9549)
 local Deforester = EJ_GetSectionInfo(10329)
+local fakeYellTime = 0
 
 --Note, all trains spawn 5 second after yell for that train
 --this means that for 5 second cd trains you may see a yell for NEXT train as previous train is showing up. Do not confuse this!
@@ -355,6 +357,7 @@ function mod:BombTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
+	fakeYellTime = 0
 	self.vb.trainCount = 0
 	self.vb.infoCount = 0
 	timerProtoGrenadeCD:Start(6-delay)
@@ -433,18 +436,19 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if target == L.Train and (self:AntiSpam(5, 3) or msg == "Fake") then--yell sometimes bugged?
+	if GetTime() - fakeYellTime < 5 then fakeYellTime = 0 return end -- if fakeYell was followed by realYell within 5 sec, regard realYell as missed fakeYell, so ignore it.
+	if target == L.Train then
 		self:Unschedule(fakeTrainYell)--Always unschedule
 		self.vb.trainCount = self.vb.trainCount + 1
 		local count = self.vb.trainCount
 		showTrainWarning(self)
 		if msg == "Fake" then
-			countdownTrain:Start(2.5)
+			countdownTrain:Start(3.5)
 			laneCheck(self)
-			self:Schedule(2.5, showInfoFrame)
+			self:Schedule(3.5, showInfoFrame)
 		else
 			countdownTrain:Start()
-			self:Schedule(2.5, laneCheck, self)
+			self:Schedule(1.5, laneCheck, self)
 			self:Schedule(5, showInfoFrame)
 		end
 		if self:IsMythic() then
@@ -470,9 +474,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				specWarnSplitSoon:Schedule(25)--10 is a split, pre warn 10 seconds before 10
 			end
 			if expectedTime then
-				if msg == "Fake" then expectedTime = expectedTime - 2.5 end
+				if msg == "Fake" then
+					fakeYellTime = GetTime()
+					expectedTime = expectedTime - 1.5
+				else
+					self:Schedule(expectedTime + 1.5, fakeTrainYell, self)--Schedule fake yell 1.5 seconds after we should have seen one.
+				end
 				timerTrainCD:Schedule(5, expectedTime, count+1)
-				self:Schedule(expectedTime+2.5, fakeTrainYell, self)--Schedule fake yell 2.5 seconds after we should have seen one.
 			else
 				print("Train Set: "..count..". DBM has no train data beyond this point. Send us videos if you can.")
 				timerTrainCD:Start(count)
@@ -509,9 +517,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 40
 			end
 			if expectedTime then
-				if msg == "Fake" then expectedTime = expectedTime - 2.5 end
-				timerTrainCD:Schedule(5, expectedTime, count+1)--Show timer for next train from current yell (previous yell already has timer for yell this train is for so no 5 second timer needed)
-				self:Schedule(expectedTime+2.5, fakeTrainYell, self)--Schedule fake yell 2.5 seconds after we should have seen one.
+				if msg == "Fake" then
+					fakeYellTime = GetTime()
+					expectedTime = expectedTime - 1.5
+				else
+					self:Schedule(expectedTime + 1.5, fakeTrainYell, self)--Schedule fake yell 1.5 seconds after we should have seen one.
+				end
+				timerTrainCD:Schedule(5, expectedTime, count+1)
 			else
 				print("Train Set: "..count..". DBM has no train data beyond this point. Send us videos if you can.")
 				timerTrainCD:Start(5, count)--Show timer for incoming train for current yell if we have no data for next
