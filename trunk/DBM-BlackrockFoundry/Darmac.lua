@@ -121,7 +121,7 @@ local function updateBeasts(cid, status, beastName)
 	end
 end
 
-local function updateBeastTimers(self, all, spellId, adjust, ignoreId)
+local function updateBeastTimers(self, all, spellId, adjust)
 	local dismountAdjust = 0--default of 0, so -0 doesn't affect timers unless mythic and UNIT_TARGETABLE is trigger
 	if adjust then dismountAdjust = 2 end--Dismount event is a little slow, fires 2 seconds after true dismount, so must adjust all timers for dismounts
 	if self.vb.WolfAbilities and (self:IsMythic() and spellId == 155458 or all) then--Cruelfang
@@ -284,6 +284,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(155458, 155459, 155460, 155462, 163247) then
 		DBM:Debug("SPELL_AURA_APPLIED, Boss absorbing beast abilities")
+		if spellId == 155458 then--Wolf Aura
+			self.vb.WolfAbilities = true
+			warnWolf:Show(args.destName)
+		elseif spellId == 155459 then--Rylak Aura
+			self.vb.RylakAbilities = true
+			warnRylak:Show(args.destName)
+		elseif spellId == 155460 or spellId == 163247 then--Elekk Aura (two spellids because mythic has diff Id)
+			self.vb.ElekkAbilities = true
+			warnElekk:Show(args.destName)
+		elseif spellId == 155462 then--Mythic Beast
+			self.vb.FaultlineAbilites = true
+			warnClefthoof:Show(args.destName)
+		end
 		--Seems changed on mythic, ALL beast timers reset now in all modes, period.
 		--Leaving old code in case 6.1 changes it back. Most recent 6.1 tests showed boss only update gained spellid
 --		if not self:IsMythic() then--Not mythic, boss gaining ability means he just dismounted, start/update all timers.
@@ -291,15 +304,6 @@ function mod:SPELL_AURA_APPLIED(args)
 --		else--On mythic, boss already on ground already casting other things, so only update timers for new ability he just gained.
 --			updateBeastTimers(self, false, spellId)
 --		end
-		if spellId == 155458 then--Wolf Aura
-			warnWolf:Show(args.destName)
-		elseif spellId == 155459 then--Rylak Aura
-			warnRylak:Show(args.destName)
-		elseif spellId == 155460 or spellId == 163247 then--Elekk Aura (two spellids because mythic has diff Id)
-			warnElekk:Show(args.destName)
-		elseif spellId == 155462 then--Mythic Beast
-			warnClefthoof:Show(args.destName)
-		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -335,7 +339,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				updateBeasts(cid, 1, name)
 				warnMount:Show(name)
 				if cid == 76884 then--Cruelfang
-					self.vb.WolfAbilities = true
 					timerRendandTearCD:Start(5)
 					timerSavageHowlCD:Start(15)
 					if self.Options.RangeFrame and not self.vb.RylakAbilities then
@@ -345,7 +348,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					timerSuperheatedShrapnelCD:Cancel()
 					timerTantrumCD:Cancel()
 				elseif cid == 76874 then--Dreadwing
-					self.vb.RylakAbilities = true
 					timerInfernoBreathCD:Start(6)
 					timerConflagCD:Start(12)
 					if self.Options.RangeFrame then
@@ -355,7 +357,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					timerRendandTearCD:Cancel()
 					timerTantrumCD:Cancel()
 				elseif cid == 76945 then--Ironcrusher
-					self.vb.ElekkAbilities = true
 					timerStampedeCD:Start(15)
 					timerTantrumCD:Start(25, self.vb.tantrumCount+1)
 					--Cancel timers for abilities he can't use from other dead beasts
@@ -363,7 +364,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					timerSuperheatedShrapnelCD:Cancel()
 				elseif cid == 76946 then--Faultline
 					self:UnregisterShortTermEvents()--UNIT_TARGETABLE_CHANGED no longer used, and in fact unregistered to prevent bug with how it fires when faultline dies
-					self.vb.FaultlineAbilites = true
 					timerEpicenterCD:Start(10)
 					countdownEpicenter:Start(10)
 					--Cancel timers for abilities he can't use from other dead beasts
