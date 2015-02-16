@@ -16,6 +16,14 @@ L= DBM:GetModLocalization(1202)
 ---------------------------
 L= DBM:GetModLocalization(1154)
 
+L:SetWarningLocalization({
+	warnBlastFrequency	= "Частота взрывов увеличилась: каждые ~%d сек"
+})
+
+L:SetOptionLocalization({
+	warnBlastFrequency	= "Объявлять когда увеличивается частота $spell:155209"
+})
+
 ------------------
 -- Hans'gar And Franzok --
 ------------------
@@ -27,7 +35,7 @@ L= DBM:GetModLocalization(1155)
 L= DBM:GetModLocalization(1123)
 
 L:SetMiscLocalization({
-	return1		= "Wait till they get a load of me."--Not used yet but just in case my current hack to avoid localizing doesn't work
+	TorrentYell	= "Поток спадает через %d"
 })
 
 --------------------
@@ -44,6 +52,14 @@ L= DBM:GetModLocalization(1122)
 -- Operator Thogar --
 --------------------------
 L= DBM:GetModLocalization(1147)
+
+L:SetWarningLocalization({
+	specWarnSplitSoon	= "Разделение рейда через 10 сек"
+})
+
+L:SetOptionLocalization({
+	specWarnSplitSoon	= "Спец-предупредение за 10 секунд до разделения рейда"
+})
 
 L:SetMiscLocalization({
 	Train			= GetSpellInfo(174806),
