@@ -60,7 +60,9 @@ mod.vb.firstJump = false
 
 function mod:JumpTarget(targetname, uId)
 	if not targetname then return end
-	self.vb.lastJumpTarget = targetname
+	if DBM.Options.DebugMode then
+		self.vb.lastJumpTarget = targetname
+	end
 	if targetname == UnitName("player") then
 		specWarnJumpSlam:Show()
 		yellJumpSlam:Yell()
@@ -172,7 +174,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.firstJump = false--So reset firstjump
 		self.vb.lastJumpTarget = "None"
 		DBM:Debug("157926: Jump Activation")
-	elseif spellId == 157922 then--First jump must use 157922
+	elseif spellId == 157922 and DBM.Options.DebugMode then--First jump must use 157922
 		DBM:Debug("157922: boss target "..UnitName(uId.."target"))
 		if not self.vb.firstJump then
 			DBM:Debug("157922: firstJump true")
