@@ -124,6 +124,7 @@ DBM.DefaultOptions = {
 	FilterTankSpec = true,
 	FilterInterrupt = true,
 	FilterDispel = true,
+	FilterSelfHud = true,
 	AutologBosses = false,
 	AdvancedAutologBosses = false,
 	LogOnlyRaidBosses = false,

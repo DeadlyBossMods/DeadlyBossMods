@@ -342,6 +342,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 2)
 		end
 		if self.Options.HudMapOnBloodRitual and not BloodritualMarkers[args.destName] then
+			if DBM.Options.FilterSelfHud and args:IsPlayer() then return end
 			BloodritualMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 3.5, 7, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
 		end
 	elseif spellId == 156631 and (noFilter or not isPlayerOnBoat()) then
@@ -355,6 +356,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetIcon(args.destName, 1, 7)
 			end
 			if self.Options.HudMapOnRapidFire and not RapidFireMarkers[args.destName] then
+				if DBM.Options.FilterSelfHud and args:IsPlayer() then return end
 				RapidFireMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 9, 1, 1, 0, 0.5):Pulse(0.5, 0.5))
 			end
 		end
@@ -445,6 +447,7 @@ function mod:OnSync(msg, guid)
 				self:SetIcon(targetName, 1, 10)
 			end
 			if self.Options.HudMapOnRapidFire and not RapidFireMarkers[targetName] then
+				if DBM.Options.FilterSelfHud and targetName == UnitName("player") then return end
 				RapidFireMarkers[targetName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", targetName, 5, 12, 1, 1, 0, 0.5):Pulse(0.5, 0.5))
 			end
 		end
