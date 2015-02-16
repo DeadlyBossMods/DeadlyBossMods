@@ -93,7 +93,7 @@ mod.vb.blastWarned = false
 mod.vb.lastTotal = 30
 mod.vb.phase = 1
 
-local UnitHealth, UnitMaxHealth = UnitHealth, UnitMaxHealth
+local UnitHealth, UnitHealthMax = UnitHealth, UnitHealthMax
 --With some videos, this looks pretty good now. Just need phase 2 add stuff now.
 local function Engineers(self)
 	warnEngineer:Show()

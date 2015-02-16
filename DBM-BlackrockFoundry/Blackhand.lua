@@ -182,6 +182,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.5, checkMarked)
 			timerMarkedforDeathCD:Start(timer)
 			countdownMarkedforDeath:Start(timer)
+			if DBM.Options.DebugMode then--Experimental smash timer adjusting for marked for death delays
+				DBM:Debug("Running experimental timerShatteringSmashCD adjust because debugmode is enabled", 2)
+				local elapsed, total = timerShatteringSmashCD:GetTime()
+				local remaining = total - elapsed
+				if (remaining > timer) and (remaining < timer+5) then--Marked for death will come off cd before timerShatteringSmashCD comes off cd and delay the cast
+					DBM:Debug("Delay detected, updating smash timer now")
+					local extend = (timer+5)-remaining
+					timerShatteringSmashCD:Update(elapsed, total+extend, self.vb.smashCount+1)
+					countdownShatteringSmash:Cancel()
+					countdownShatteringSmash:Start(remaining+extend)
+				end
+			end
 		end
 		if self.Options.SetIconOnMarked then
 			self:SetSortedIcon(1, args.destName, 1, 2)
