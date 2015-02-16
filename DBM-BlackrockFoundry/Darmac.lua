@@ -43,7 +43,7 @@ local warnStampede					= mod:NewSpellAnnounce(155247, 3)
 
 --Boss basic attacks
 local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, "-Healer", nil, nil, nil, nil, 2)
-local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, "Ranged", nil, nil, 2, nil, 2)
+local specWarnPinDown				= mod:NewSpecialWarningSpell(154960, "Ranged", nil, nil, nil, 2, nil, 2)
 local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
 local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, "Melee", nil, nil, nil, nil, 2)--Always returns to melee (tank)
@@ -121,7 +121,7 @@ local function updateBeasts(cid, status, beastName)
 	end
 end
 
-local function updateBeastTimers(self, all, spellId, adjust)
+local function updateBeastTimers(self, all, spellId, adjust, ignoreId)
 	local dismountAdjust = 0--default of 0, so -0 doesn't affect timers unless mythic and UNIT_TARGETABLE is trigger
 	if adjust then dismountAdjust = 2 end--Dismount event is a little slow, fires 2 seconds after true dismount, so must adjust all timers for dismounts
 	if self.vb.WolfAbilities and (self:IsMythic() and spellId == 155458 or all) then--Cruelfang
