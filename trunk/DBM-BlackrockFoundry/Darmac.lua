@@ -23,11 +23,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--Because boss numbering tends to get out of wack with things constantly joining/leaving fight. I've only seen boss1 and boss2 but for good measure.
 )
 
---TODO, get mythic beast casts and timers
---TODO, verify timers with new start method I did to ensure it works for both mythic and non mythic
---TODO, figure out why setsortedicon is not working for more than 1 person.
---TODO, See if gaining new abilities actually resets cd on old abilities on mythic, or if I need to only start timers for the newly gained abilities
---voicePhaseChange:Play("pthree") --Phases are health based. Boss mounts closest beast at n %, kill beast, boss solo for bit til next %, choose new beast. Similar to Feng or Iron Qon. All beast dead, final boss burn at end with many abilities
 --Boss basic attacks
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
 --Boss gained abilities (beast deaths grant boss new abilities)
@@ -42,7 +37,7 @@ local warnCrushArmor				= mod:NewStackAnnounce(155236, 2, nil, "Tank")
 local warnStampede					= mod:NewSpellAnnounce(155247, 3)
 
 --Boss basic attacks
-local specWarnCallthePack			= mod:NewSpecialWarningSwitch(154975, "-Healer", nil, nil, nil, nil, 2)
+local specWarnCallthePack			= mod:NewSpecialWarningSwitch("OptionVersion2", 154975, "Tank", nil, nil, nil, nil, 2)
 local specWarnPinDown				= mod:NewSpecialWarningSpell("OptionVersion2", 154960, "Ranged", nil, nil, nil, 2, nil, 2)
 local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
@@ -65,19 +60,19 @@ local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil
 --Boss basic attacks
 mod:AddTimerLine(CORE_ABILITIES)--Core Abilities
 local timerPinDownCD				= mod:NewCDTimer("OptionVersion2", 20.5, 155365, nil, "Ranged")--Every 20 seconds unless delayed by other things. CD timer used for this reason
-local timerCallthePackCD			= mod:NewCDTimer(31.5, 154975)--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart. In rare cases, boss still interrupts his own cast/delays cast even when not caused by gaining beast buff
+local timerCallthePackCD			= mod:NewCDTimer("OptionVersion2", 31.5, 154975, nil, "Tank")--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart. In rare cases, boss still interrupts his own cast/delays cast even when not caused by gaining beast buff
 --Boss gained abilities (beast deaths grant boss new abilities)
 mod:AddTimerLine(SPELL_BUCKET_ABILITIES_UNLOCKED)--Abilities Unlocked
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
 local timerSuperheatedShrapnelCD	= mod:NewCDTimer(15, 155499)--15-30sec variation observed.
-local timerTantrumCD				= mod:NewCDCountTimer(30, 162275)--30-35
-local timerEpicenterCD				= mod:NewCDTimer(20, 159043, nil, "Melee")
+local timerTantrumCD				= mod:NewNextCountTimer(30, 162275)--No varation, ever. Always highest priority spell and always a next timer, now that all the update code is working 100%
+local timerEpicenterCD				= mod:NewCDCountTimer(20, 159043, nil, "Melee")
 --Beast abilities (living)
 mod:AddTimerLine(BATTLE_PET_DAMAGE_NAME_8)--Beast
 local timerSavageHowlCD				= mod:NewCDTimer("OptionVersion2", 25, 155198, nil, "Healer|Tank|RemoveEnrage")
 local timerConflagCD				= mod:NewCDTimer("OptionVersion2", 20, 155399, nil, "Healer")
 local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
-local timerInfernoBreathCD			= mod:NewCDTimer(20, 154989)
+local timerInfernoBreathCD			= mod:NewNextTimer(20.5, 154989)
 
 local berserkTimer					= mod:NewBerserkTimer(720)
 
@@ -85,11 +80,10 @@ local countdownPinDown				= mod:NewCountdown(20.5, 154960, "Ranged")
 local countdownCallPack				= mod:NewCountdown("Alt31", 154975, "Tank")
 local countdownEpicenter			= mod:NewCountdown("AltTwo20", 159043, "Melee")
 
---local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceCallthePack				= mod:NewVoice(154975, "-Healer") --killmob
+local voiceCallthePack				= mod:NewVoice("OptionVersion2", 154975, "Tank") --killmob
 local voiceSavageHowl				= mod:NewVoice(155198, "RemoveEnrage") --trannow
 local voicePinDown					= mod:NewVoice(154960, "Ranged") --helpme
-local voiceInfernoBreath			= mod:NewVoice(154989, 3) --breathsoon
+local voiceInfernoBreath			= mod:NewVoice(154989) --breathsoon
 local voiceRendandTear				= mod:NewVoice(155385, "Melee")  --runaway
 local voiceCrushArmor				= mod:NewVoice(155236) --changemt
 local voiceTantrum					= mod:NewVoice(162275) --aesoon
@@ -103,6 +97,7 @@ mod.vb.WolfAbilities = false
 mod.vb.ElekkAbilities = false
 mod.vb.FaultlineAbilites= false
 mod.vb.tantrumCount = 0
+mod.vb.epicenterCount = 0
 local activeBossGUIDS = {}
 
 local function updateBeasts(cid, status, beastName)
@@ -142,7 +137,7 @@ local function updateBeastTimers(self, all, spellId, adjust)
 		end
 	end
 	if self.vb.FaultlineAbilites and (self:IsMythic() and spellId == 155462 or all) then--Faultline
-		timerEpicenterCD:Start(24)
+		timerEpicenterCD:Start(24, self.vb.epicenterCount+1)
 		countdownEpicenter:Cancel()
 		countdownEpicenter:Start(24)
 	end
@@ -214,10 +209,11 @@ function mod:SPELL_CAST_START(args)
 		timerSavageHowlCD:Start()
 		voiceSavageHowl:Play("trannow")
 	elseif spellId == 159043 or spellId == 159045 then--Beast version/Boss version
+		self.vb.epicenterCount = self.vb.epicenterCount + 1
 		if self:IsMelee() and self:AntiSpam(3, 2) then
 			specWarnEpicenter:Show()--Warn melee during cast to move outa head of time.
 		end
-		timerEpicenterCD:Start()
+		timerEpicenterCD:Start(nil, self.vb.epicenterCount+1)
 		countdownEpicenter:Start()
 	end
 end
@@ -283,7 +279,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceCrushArmor:Play("changemt")
 		end
 	elseif args:IsSpellID(155458, 155459, 155460, 155462, 163247) then
-		DBM:Debug("SPELL_AURA_APPLIED, Boss absorbing beast abilities")
+		DBM:Debug("SPELL_AURA_APPLIED, Boss absorbing beast abilities", 2)
 		if spellId == 155458 then--Wolf Aura
 			self.vb.WolfAbilities = true
 			warnWolf:Show(args.destName)
@@ -334,7 +330,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			activeBossGUIDS[unitGUID] = true
 			local cid = self:GetCIDFromGUID(unitGUID)
 			if cid == 76884 or cid == 76874 or cid == 76945 or cid == 76946 then
-				DBM:Debug("INSTANCE_ENCOUNTER_ENGAGE_UNIT, Boss mounting")
+				DBM:Debug("INSTANCE_ENCOUNTER_ENGAGE_UNIT, Boss mounting", 2)
 				local name = UnitName(unitID)
 				updateBeasts(cid, 1, name)
 				warnMount:Show(name)
@@ -363,8 +359,9 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					timerRendandTearCD:Cancel()
 					timerSuperheatedShrapnelCD:Cancel()
 				elseif cid == 76946 then--Faultline
+					self.vb.epicenterCount = 0
 					self:UnregisterShortTermEvents()--UNIT_TARGETABLE_CHANGED no longer used, and in fact unregistered to prevent bug with how it fires when faultline dies
-					timerEpicenterCD:Start(10)
+					timerEpicenterCD:Start(10, 1)
 					countdownEpicenter:Start(10)
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerRendandTearCD:Cancel()
@@ -379,7 +376,7 @@ end
 function mod:UNIT_TARGETABLE_CHANGED(uId)
 	local cid = self:GetCIDFromGUID(UnitGUID(uId))
 	if (cid == 76865) and UnitExists(uId) and self:IsMythic() then--Boss dismounting living beast on mythic
-		DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Dismounting")
+		DBM:Debug("UNIT_TARGETABLE_CHANGED, Boss Dismounting", 2)
 		updateBeasts(cid, 3)
 		updateBeastTimers(self, true, nil, true)
 	end
