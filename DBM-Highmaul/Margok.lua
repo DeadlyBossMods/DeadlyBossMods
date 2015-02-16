@@ -321,6 +321,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.HudMapOnMarkOfChaos or self.Options.HudMapOnBranded then
 		table.wipe(markOfChaosMarkers)
+		table.wipe(brandedMarkers)
 		self:EnableHudMap()
 	end
 end
@@ -658,6 +659,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			updateRangeFrame(self)--Update it here cause we don't need it before stacks get to relevant levels.
 			if self.Options.HudMapOnBranded and not brandedMarkers[args.destName] then
+				if DBM.Options.FilterSelfHud and args:IsPlayer() then return end
 				brandedMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 4, 5, 0, 0, 1, 0.5):Pulse(0.5, 0.5))
 			end
 		end
@@ -720,6 +722,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		updateRangeFrame(self)
 		if self.Options.HudMapOnMarkOfChaos and not markOfChaosMarkers[args.destName] then
+			if DBM.Options.FilterSelfHud and args:IsPlayer() then return end
 			markOfChaosMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 7, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
 		end
 	elseif spellId == 157801 and self:CheckDispelFilter() then
