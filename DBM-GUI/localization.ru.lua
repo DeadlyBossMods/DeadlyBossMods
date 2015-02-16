@@ -225,14 +225,10 @@ L.DontShowFarWarnings		= "Не отображать предупреждения
 L.StripServerName			= "Удалять имя сервера в предупреждениях и таймерах"
 L.SpamBlockBossWhispers		= "Фильтрация &lt;DBM&gt; предупреждений шепотом в бою"
 
-L.Area_SpecFilter			= "Параметры фильтра по специализации"
+L.Area_SpecFilter			= "Параметры фильтра по роли"
 L.FilterTankSpec			= "Фильтровать предупреждения для роли танка когда не в специализации танка"
---Healer and Damager not in use yet. Tank is easily black and white. if not a tank, disable taunt warnings. Pretty obvious.
---Healer and Damager a bit more tricky, since often times, Healer DO need to switch and kill adds designated a dps roll (hi disc attonement priest)
---Or a dps does need to handle debuff dispels. Or a dps/tank need to know when aoe damage is going out just as much as healer for personal CDs
---Etc etc. Point being, I translate these but I'm not sure they could ever actually be used as effectively as the tank spec filter.
---L.FilterHealerSpec		= "Фильтровать предупреждения для роли лекаря когда не в специализации лекаря"--Not in use
---L.FilterDamagerSpec		= "Фильтровать предупреждения для роли бойца когда не в специализации бойца"--Not in use
+L.FilterInterrupts			= "Фильтровать предупреждения для прерываемых спеллов если кастер не является вашей текущей целью или фокусом."
+L.FilterDispels				= "Фильтровать предупреждения для рассеиваемых спеллов если ваш диспел на кулдауне."
 
 L.Area_PullTimer			= "Параметры фильтра таймеров пулла/боя/пользов."
 L.DontShowPTNoID			= "Блокировать таймер пулла, отправленный из другой зоны"
