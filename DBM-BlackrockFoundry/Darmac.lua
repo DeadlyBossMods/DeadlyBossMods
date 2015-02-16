@@ -138,7 +138,6 @@ local function updateBeastTimers(self, all, spellId, adjust)
 	end
 	if self.vb.FaultlineAbilites and (self:IsMythic() and spellId == 155462 or all) then--Faultline
 		timerEpicenterCD:Start(24, self.vb.epicenterCount+1)
-		countdownEpicenter:Cancel()
 		countdownEpicenter:Start(24)
 	end
 	--Base ability Timers are reset any time boss gains new abilites. Timers are next timers but vary depending on what abilities boss possesses
@@ -390,13 +389,14 @@ function mod:UNIT_DIED(args)
 		--when one dies, don't want to cancel wrong timers
 		if cid == 76884 then
 			timerSavageHowlCD:Cancel()
-		end
-		if cid == 76874 then
+		elseif cid == 76874 then
 			timerConflagCD:Cancel()
 			timerInfernoBreathCD:Cancel()
-		end
-		if cid == 76945 then
+		elseif cid == 76945 then
 			timerStampedeCD:Cancel()
+		elseif cid == 76946 then
+			timerEpicenterCD:Cancel()
+			countdownEpicenter:Cancel()
 		end
 		if self:IsMythic() then
 			updateBeasts(cid, 2)
