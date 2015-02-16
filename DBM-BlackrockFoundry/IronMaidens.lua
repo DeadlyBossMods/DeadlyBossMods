@@ -70,6 +70,7 @@ local specWarnCorruptedBlood			= mod:NewSpecialWarningMove(158683)
 ----Admiral Gar'an
 local specWarnRapidFire					= mod:NewSpecialWarningRun(156631, nil, nil, nil, 4, nil, 2)
 local yellRapidFire						= mod:NewYell(156631)
+local specWarnRapidFireNear				= mod:NewSpecialWarningClose(156631, false)
 local specWarnPenetratingShot			= mod:NewSpecialWarningYou(164271)
 local yellPenetratingShot				= mod:NewYell(164271)
 local specWarnDeployTurret				= mod:NewSpecialWarningSwitch("OptionVersion2", 158599, "Dps", nil, nil, 2, nil, 2)--Switch warning since most need to switch and kill, but on for EVERYONE because tanks/healers need to avoid it while it's up
@@ -345,7 +346,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 156631 and (noFilter or not isPlayerOnBoat()) then
 		if self:AntiSpam(5, args.destName) then--check antispam so we don't warn if we got a user sync 3 seconds ago.
-			warnRapidFire:Show(args.destName)
+			if self:CheckNearby(5, args.destName) then
+				specWarnRapidFireNear:Show(args.destName)
+			else
+				warnRapidFire:Show(args.destName)
+			end
 			if self.Options.SetIconOnRapidFire then
 				self:SetIcon(args.destName, 1, 7)
 			end
@@ -431,7 +436,11 @@ function mod:OnSync(msg, guid)
 	if msg == "RapidFireTarget" and guid then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		if self:AntiSpam(5, targetName) then--Set antispam if we got a sync, to block 3 second late SPELL_AURA_APPLIED if we got the early warning
-			warnRapidFire:Show(targetName)
+			if self:CheckNearby(5, targetName) then
+				specWarnRapidFireNear:Show(targetName)
+			else
+				warnRapidFire:Show(targetName)
+			end
 			if self.Options.SetIconOnRapidFire then
 				self:SetIcon(targetName, 1, 10)
 			end
