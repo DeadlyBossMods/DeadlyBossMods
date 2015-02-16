@@ -162,9 +162,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 156096 then
 		warnMarkedforDeath:CombinedShow(0.5, args.destName)
-		if self.Options.HudMapOnMFD then
-			MFDMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
-		end
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
 			yellMarkedforDeath:Yell()
@@ -197,6 +194,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnMarked then
 			self:SetSortedIcon(1, args.destName, 1, 2)
+		end
+		if self.Options.HudMapOnMFD then
+			if DBM.Options.FilterSelfHud and args:IsPlayer() then return end
+			MFDMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
 		end
 	elseif spellId == 157000 or spellId == 159179 then--Combine tank version with non tank version
 		warnAttachSlagBombs:CombinedShow(0.5, args.destName)

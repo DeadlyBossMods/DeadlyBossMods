@@ -292,6 +292,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetSortedIcon(1, args.destName, 8, nil, true)--TODO, find out number of targets and add
 		end
 		if self.Options.HudMapOnMC and not MCMarkers[args.destName] then
+			if DBM.Options.FilterSelfHud and args:IsPlayer() then return end
 			MCMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 3.5, 0, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
 		end
 	elseif spellId == 172895 then
