@@ -54,8 +54,8 @@
 -------------------------------
 DBM = {
 	Revision = tonumber(("$Revision$"):sub(12, -3)),
-	DisplayVersion = "6.0.16 alpha", -- the string that is shown as version
-	ReleaseRevision = 12764 -- the revision of the latest stable version that is available
+	DisplayVersion = "6.0.17 alpha", -- the string that is shown as version
+	ReleaseRevision = 12955 -- the revision of the latest stable version that is available
 }
 
 -- support for git svn which doesn't support svn keyword expansion
