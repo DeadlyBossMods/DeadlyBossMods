@@ -63,7 +63,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 175765 and not args:IsPlayer() then
-		specWarnOverheadSmash:Show(args.destName)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			specWarnOverheadSmash:Show(args.destName)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
