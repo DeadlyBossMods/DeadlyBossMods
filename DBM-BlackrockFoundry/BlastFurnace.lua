@@ -66,7 +66,7 @@ local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
 local timerBlastCD				= mod:NewCDTimer(25, 155209)--25 seconds base. shorter when loading is being channeled by operators.
 local timerRuptureCD			= mod:NewCDTimer(26, 156934)
 local timerEngineer				= mod:NewNextTimer(41, "ej9649", nil, nil, nil, 155179)
-local timerBellowsOperator		= mod:NewNextTimer(64, "ej9650", nil, nil, nil, 155181)
+local timerBellowsOperator		= mod:NewCDTimer(60, "ej9650", nil, nil, nil, 155181)--60-65second variation for sure
 --Phase 2
 local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps")--Anyone else need?
 
@@ -162,6 +162,15 @@ function mod:OnCombatStart(delay)
 		self:Schedule(55, Engineers, self)
 		timerEngineer:Start(55)
 		countdownEngineer:Start(55)
+	end
+	if self:AntiSpam(10, 0) then--Need to ignore loading on the pull
+		if self:IsMythic() then
+			timerBellowsOperator:Start(40)--40-65 variation on mythic? fuck mythic
+			countdownBellowsOperator:Start(40)
+		else
+			timerBellowsOperator:Start(55)--55-60 variation for first ones from pull
+			countdownBellowsOperator:Start(55)
+		end
 	end
 	timerBlastCD:Start(30-delay)
 	countdownBlast:Start(30-delay)
