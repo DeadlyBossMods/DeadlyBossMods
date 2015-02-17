@@ -155,9 +155,9 @@ function mod:OnCombatStart(delay)
 	self.vb.lastTotal = 30
 	self.vb.phase = 1
 	if self:IsMythic() then
-		self:Schedule(45, Engineers, self)
-		timerEngineer:Start(45)
-		countdownEngineer:Start(45)
+		self:Schedule(40, Engineers, self)
+		timerEngineer:Start(40)
+		countdownEngineer:Start(40)
 	else
 		self:Schedule(55, Engineers, self)
 		timerEngineer:Start(55)
