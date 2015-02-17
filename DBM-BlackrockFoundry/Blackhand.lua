@@ -38,7 +38,7 @@ local specWarnShatteringSmash		= mod:NewSpecialWarningCount(155992, "Melee", nil
 local specWarnMoltenSlag			= mod:NewSpecialWarningMove(156401)
 --Stage Two: Storage Warehouse
 local specWarnSiegemaker			= mod:NewSpecialWarningSpell("ej9571", false)--Kiter switch. off by default. 
-local specWarnSiegemakerPlatingFades= mod:NewSpecialWarningFades(156667, "Dps")--Plating removed, NOW dps switch
+local specWarnSiegemakerPlatingFades= mod:NewSpecialWarningFades("OptionVersion2", 156667, "Ranged")--Plating removed, NOW dps switch
 local specWarnFixate				= mod:NewSpecialWarningRun(156653, nil, nil, nil, 4)
 local yellFixate					= mod:NewYell(156653)
 --Stage Three: Iron Crucible
@@ -70,7 +70,7 @@ local countdownMarkedforDeath		= mod:NewCountdown("AltTwo25", 156096, "-Tank")
 local countdownMarkedforDeathFades	= mod:NewCountdownFades("AltTwo5", 156096)--Same voice should be fine, never will overlap, and both for same spell, so people will understand
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceSiegemaker				= mod:NewVoice("ej9571", "Dps") -- ej9571.ogg tank coming
+local voiceSiegemaker				= mod:NewVoice("OptionVersion2", "ej9571", "Ranged") -- ej9571.ogg tank coming
 local voiceShatteringSmash			= mod:NewVoice(155992, "Melee") --carefly
 local voiceMarkedforDeath			= mod:NewVoice(156096) --target: findshelter; else: 156096.ogg marked for death
 local voiceDemolition				= mod:NewVoice(156425) --AOE
