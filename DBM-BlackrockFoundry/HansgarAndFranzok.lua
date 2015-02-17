@@ -182,19 +182,22 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			if UnitExists(uId.."target") then
 				self.vb.lastJumpTarget = UnitName(uId.."target")--It'll be highest threat at this point, baseline for our first filter
 			end
+			self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.1, 13, nil, nil, false)--Don't include tank in first scan should be enough of a filter for first, it'll grab whatever first non tank target he gets and set that as first jump target and it will be valid
 		else--Not first jump
 			DBM:Debug("157922: firstJump false")
-			if self.vb.lastJumpTarget ~= "None" then
+			if self.vb.lastJumpTarget ~= "None" then--First jump was successful, the rest should work work perfectly by grabbing new targets only if they don't match last target
 				DBM:Debug("157922: lastJumpTarget exists for "..self.vb.lastJumpTarget)
-				self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.05, 25, nil, nil, true, nil, self.vb.lastJumpTarget)--1.25 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
+				self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.1, 13, nil, nil, true, nil, self.vb.lastJumpTarget)--1.3 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
 			else
 				DBM:Debug("self.vb.lastJumpTarget is unknown, target scanning for jump will be slower")
 			end
 		end
-	elseif spellId == 157923 and self.vb.lastJumpTarget == "None" then--Fallback
-		DBM:Debug("Using slower scan fallback: 157923", 2)
+	elseif spellId == 157923 then--Fallback
 		DBM:Debug("157923: boss target "..UnitName(uId.."target"))
-		self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.02, 15, nil, nil, true)
+		if self.vb.lastJumpTarget == "None" then
+			DBM:Debug("Using slower scan fallback: 157923", 2)
+			self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.02, 15, nil, nil, true)
+		end
 	end
 end
 
