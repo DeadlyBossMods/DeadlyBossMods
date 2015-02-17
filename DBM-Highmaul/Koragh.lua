@@ -87,6 +87,7 @@ mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddSetIconOption("SetIconOnFel", 172895, false)
 mod:AddArrowOption("FelArrow", 172895, true, 3)
 mod:AddHudMapOption("HudMapOnMC", 163472)
+mod:AddHudMapOption("HudMapForFel", 172895)
 
 mod.vb.ballsCount = 0
 mod.vb.shieldCharging = false
@@ -152,7 +153,7 @@ function mod:OnCombatStart(delay)
 	self:Schedule(29.5-delay, ballsWarning, self)
 	if self:IsMythic() then
 		timerExpelMagicFelCD:Start(5-delay)
-		if self.Options.HudMapOnMC then
+		if self.Options.HudMapOnMC or self.Options.HudMapForFel then
 			DBMHudMap:Enable()
 		end
 	end
@@ -168,7 +169,7 @@ function mod:OnCombatEnd()
 	if self.Options.FelArrow then
 		DBM.Arrow:Hide()
 	end
-	if self.Options.HudMapOnMC then
+	if self.Options.HudMapOnMC or self.Options.HudMapForFel then
 		DBMHudMap:Disable()
 	end
 end
@@ -301,6 +302,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellExpelMagicFel:Schedule(11)--Yell right before expire, not apply
 			lastX, LastY = UnitPosition("player")
 			self:Schedule(7, returnPosition, self)
+			if self.Options.HudMapForFel then
+				DBMHudMap:RegisterStaticMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 12, 0, 1, 0, 0.5):Pulse(0.5, 0.5)
+			end
 		end
 		if self.Options.SetIconOnFel then
 			self:SetSortedIcon(1, args.destName, 1, 3)
@@ -326,6 +330,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			lastX, LastY = nil, nil
 			if self.Options.FelArrow then
 				DBM.Arrow:Hide()
+			end
+			if self.Options.HudMapForFel then
+				DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 			end
 		end
 		if self.Options.SetIconOnFel then
