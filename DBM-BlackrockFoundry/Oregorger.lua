@@ -94,7 +94,7 @@ function mod:SPELL_CAST_START(args)
 		countdownAcidTorrent:Start()
 		voiceAcidTorrent:Schedule(3, "changemt")
 	elseif spellId == 156179 then
-		self:BossTargetScanner(77182, "RetchedBlackrockTarget", 0.04, 20)--scan for 0.8 seconds. sometimes boss slow But still scan fast
+		self:ScheduleMethod(0.1, "BossTargetScanner", 77182, "RetchedBlackrockTarget", 0.04, 8)--give 0.1 delay before scan start.
 		timerRetchedBlackrockCD:Start()
 	end
 end
