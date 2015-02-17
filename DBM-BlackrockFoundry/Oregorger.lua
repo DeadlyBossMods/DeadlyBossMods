@@ -94,7 +94,7 @@ function mod:SPELL_CAST_START(args)
 		countdownAcidTorrent:Start()
 		voiceAcidTorrent:Schedule(3, "changemt")
 	elseif spellId == 156179 then
-		self:BossTargetScanner(77182, "RetchedBlackrockTarget", 0.02, 16)
+		self:BossTargetScanner(77182, "RetchedBlackrockTarget", 0.01, 32)
 		timerRetchedBlackrockCD:Start()
 	end
 end
