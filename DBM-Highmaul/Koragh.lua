@@ -95,7 +95,6 @@ local lastX, LastY = nil, nil--Not in VB table because it player personal positi
 local barName = GetSpellInfo(156803)
 local arcaneDebuff = GetSpellInfo(162186)
 local DBMHudMap = DBMHudMap
-local MCMarkers={}
 
 local function closeRange(self)
 	if self.Options.RangeFrame and not UnitDebuff("player", arcaneDebuff) then
@@ -154,8 +153,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerExpelMagicFelCD:Start(5-delay)
 		if self.Options.HudMapOnMC then
-			table.wipe(MCMarkers)
-			self:EnableHudMap()
+			DBMHudMap:Enable()
 		end
 	end
 	if DBM.BossHealth:IsShown() then--maybe need another option
@@ -171,7 +169,7 @@ function mod:OnCombatEnd()
 		DBM.Arrow:Hide()
 	end
 	if self.Options.HudMapOnMC then
-		self:DisableHudMap()
+		DBMHudMap:Disable()
 	end
 end
 
@@ -291,9 +289,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnMC then
 			self:SetSortedIcon(1, args.destName, 8, nil, true)--TODO, find out number of targets and add
 		end
-		if self.Options.HudMapOnMC and not MCMarkers[args.destName] then
-			if DBM.Options.FilterSelfHud and args:IsPlayer() then return end
-			MCMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 3.5, 0, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
+		if self.Options.HudMapOnMC then
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 0, 1, 0, 0, 0.5, nil, true):Pulse(0.5, 0.5)
 		end
 	elseif spellId == 172895 then
 		warnExpelMagicFel:CombinedShow(0.5, args.destName)
@@ -321,8 +318,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnMC then
 			self:SetIcon(args.destName, 0)
 		end
-		if self.Options.HudMapOnMC and MCMarkers[args.destName] then
-			MCMarkers[args.destName] = self:FreeMarker(MCMarkers[args.destName])
+		if self.Options.HudMapOnMC then
+			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	elseif spellId == 172895 then
 		if args:IsPlayer() then
