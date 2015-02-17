@@ -194,7 +194,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetSortedIcon(1, args.destName, 1, 2)
 		end
 		if self.Options.HudMapOnMFD then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 0, 0, 0.5, nil, true):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
 		end
 	elseif spellId == 157000 or spellId == 159179 then--Combine tank version with non tank version
 		warnAttachSlagBombs:CombinedShow(0.5, args.destName)
