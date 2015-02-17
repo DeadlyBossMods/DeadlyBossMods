@@ -126,7 +126,7 @@ mod:AddHudMapOption("HudMapOnBloodRitual", 158078)--Red markers
 mod.vb.phase = 1
 mod.vb.ship = 0
 mod.vb.alphaOmega = 0
-mod.vb.below25 = false
+--mod.vb.below25 = false
 
 local UnitPosition, GetTime =  UnitPosition, GetTime
 local savedAbilityTime = {}
@@ -192,11 +192,11 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.ship = 0
 	self.vb.alphaOmega = 1
-	if self:IsMythic() then
-		self.vb.below25 = true--On mythic, they continue going onto boat until 20%
-	else
-		self.vb.below25 = false
-	end
+--	if self:IsMythic() then
+--		self.vb.below25 = true--On mythic, they continue going onto boat until 20%
+--	else
+--		self.vb.below25 = false
+--	end
 	playerOnBoat = false
 	timerBladeDashCD:Start(10-delay)
 	timerBloodRitualCD:Start(13-delay)
@@ -477,11 +477,12 @@ end
 
 function mod:UNIT_HEALTH_FREQUENT(uId)
 	local hp = UnitHealth(uId) / UnitHealthMax(uId)
-	if hp < 0.25 and not self.vb.below25 then
-		self.vb.below25 = true
+--	if hp < 0.25 and not self.vb.below25 then
+	--	self.vb.below25 = true
+	--	timerShipCD:Cancel()
+	--	warnPhase2p:Show()
+	if hp < 0.20 and not self.vb.phase == 2 then
 		timerShipCD:Cancel()
-		warnPhase2p:Show()
-	elseif hp < 0.20 and not self.vb.phase == 2 then
 		self.vb.phase = 2
 		warnPhase2:Show()
 		self:UnregisterShortTermEvents()
