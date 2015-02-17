@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 158708 158707 158692 158599 155794 158078 156626 158008",
 	"SPELL_CAST_SUCCESS 157854 157886 156109",
 	"SPELL_AURA_APPLIED 158702 164271 156214 158315 158010 159724 156631 156601",
-	"SPELL_AURA_REMOVED 159724 156631",
+	"SPELL_AURA_REMOVED 159724 156631 158010",
 	"SPELL_PERIODIC_DAMAGE 158683",
 	"SPELL_ABSORBED 158683",
 	"UNIT_DIED",
@@ -374,6 +374,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.HudMapOnBloodRitual then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
+	elseif spellId == 158010 and self.Options.SetIconOnHeartSeeker then
+		self:SetIcon(args.destName, 0)
 	elseif spellId == 156631 and self.Options.HudMapOnRapidFire then
 		DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 	end
