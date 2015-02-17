@@ -72,7 +72,6 @@ do
 end
 local DBMHudMap = DBMHudMap
 local hudEnabled = false--Only to avoid calling self.Options.HudMapOnShatter 20x in under a second when shatter goes out (20x SPELL_AURA_APPLIED events)
-local ShatterMarker = {}
 
 local function clearRampage(self)
 	self.vb.rampage = false
@@ -108,8 +107,7 @@ function mod:OnCombatStart(delay)
 	timerRampageCD:Start(-delay)--Variable. But seen as low as 108 in LFR, normal, mythic
 	if self.Options.HudMapOnShatter then
 		hudEnabled = true
-		table.wipe(ShatterMarker)
-		self:EnableHudMap()
+		DBMHudMap:Enable()
 	end
 end
 
@@ -120,7 +118,7 @@ function mod:OnCombatEnd()
 	end
 	if hudEnabled then
 		hudEnabled = false
-		self:DisableHudMap()
+		DBMHudMap:Disable()
 	end
 end 
 
@@ -179,7 +177,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceShatter:Play("scatter")
 		end
 		if hudEnabled then
-			ShatterMarker[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("timer", args.destName, 8, 10, 0, 1, 0, 0.6):Appear():RegisterForAlerts():Rotate(360, 9.5))
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "timer", args.destName, 8, 10, 0, 1, 0, 0.6):Appear():RegisterForAlerts():Rotate(360, 9.5)
 		end
 	elseif spellId == 155539 then
 		self.vb.rampage = true
@@ -208,9 +206,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.RangeCheck:Hide()
 		end
 		if hudEnabled then
-			if ShatterMarker[args.destName] then
-				ShatterMarker[args.destName] = self:FreeMarker(ShatterMarker[args.destName])
-			end
+			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	elseif spellId == 155539 then
 		specWarnRampageEnded:Show()

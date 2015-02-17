@@ -86,7 +86,6 @@ mod.vb.SlagEruption = 0
 mod.vb.smashCount = 0
 local UnitDebuff = UnitDebuff
 local DBMHudMap = DBMHudMap
-local MFDMarkers={}
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
@@ -102,8 +101,7 @@ function mod:OnCombatStart(delay)
 	timerMarkedforDeathCD:Start(36-delay)
 	countdownMarkedforDeath:Start(36-delay)
 	if self.Options.HudMapOnMFD then
-		table.wipe(MFDMarkers)
-		self:EnableHudMap()
+		DBMHudMap:Enable()
 	end
 end
 
@@ -113,7 +111,7 @@ function mod:OnCombatEnd()
 		DBM.RangeCheck:Hide()
 	end
 	if self.Options.HudMapOnMFD then
-		self:DisableHudMap()
+		DBMHudMap:Disable()
 	end
 end
 
@@ -196,8 +194,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetSortedIcon(1, args.destName, 1, 2)
 		end
 		if self.Options.HudMapOnMFD then
-			if DBM.Options.FilterSelfHud and args:IsPlayer() then return end
-			MFDMarkers[args.destName] = self:RegisterMarker(DBMHudMap:PlaceRangeMarkerOnPartyMember("highlight", args.destName, 5, 5, 1, 0, 0, 0.5):Pulse(0.5, 0.5))
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 0, 0, 0.5, nil, true):Pulse(0.5, 0.5)
 		end
 	elseif spellId == 157000 or spellId == 159179 then--Combine tank version with non tank version
 		warnAttachSlagBombs:CombinedShow(0.5, args.destName)
@@ -244,9 +241,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 156096 then
 		if self.Options.HudMapOnMFD then
-			if MFDMarkers[args.destName] then
-				MFDMarkers[args.destName] = self:FreeMarker(MFDMarkers[args.destName])
-			end
+			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 		timerImpalingThrow:Cancel()
 		if self.Options.SetIconOnMarked then

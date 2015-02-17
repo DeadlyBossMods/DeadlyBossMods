@@ -6129,27 +6129,6 @@ function bossModPrototype:RegisterOnUpdateHandler(func, interval)
 	updateFunctions[self] = func
 end
 
-function bossModPrototype:RegisterMarker(marker)
-	DBMHudMap:RegisterEncounterMarker(marker)
-	return marker
-end
-
-function bossModPrototype:FreeMarker(marker, owner, id, noAnimate)
-	return DBMHudMap.free(marker, owner, id, noAnimate)
-end
-
-function bossModPrototype:FreeMarkers()
-	DBMHudMap:FreeEncounterMarkers()
-end
-
-function bossModPrototype:EnableHudMap()
-	DBMHudMap:Enable()
-end
-
-function bossModPrototype:DisableHudMap()
-	DBMHudMap:Disable()
-end
-
 --------------
 --  Events  --
 --------------

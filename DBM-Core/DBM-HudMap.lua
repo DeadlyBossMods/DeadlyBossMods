@@ -1170,7 +1170,7 @@ end
 
 function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
 	local x, y = self:GetUnitPosition(person)
-	return Point:New(nil, x, y, nil, duration, texture, radius, blend, r, g, b, a)
+	return Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
 end
 
 function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
@@ -1178,21 +1178,58 @@ function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r,
 end
 
 local encounterMarkers = {}
-function mod:RegisterEncounterMarker(e)
+function mod:RegisterEncounterMarker(spellid, name, marker)
 	if not self.HUDEnabled then return end
-	encounterMarkers[e] = true
-	e.RegisterCallback(self, "Free", "FreeEncounterMarker")
+	local key = spellid..name
+	encounterMarkers[key] = marker
+	marker.RegisterCallback(self, "Free", "FreeEncounterMarker", key)
 end
 
-function mod:FreeEncounterMarker(e)
+function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, duration, r, g, b, a, blend)
+	local marker = encounterMarkers[spellid..name]
+	if marker ~= nil then return marker end
+	marker = Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
+	self:RegisterEncounterMarker(spellid, name, marker)
+	return marker
+end
+
+function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf)
+	if DBM.Options.FilterSelfHud and canFilterSelf and UnitIsUnit("player", person) then a = 0 end
+	local marker = encounterMarkers[spellid..person]
+	if marker ~= nil then return marker end
+	local x, y = self:GetUnitPosition(person)
+	marker = Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
+	self:RegisterEncounterMarker(spellid, person, marker)
+	return marker
+end
+
+function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf)
+	if DBM.Options.FilterSelfHud and canFilterSelf and UnitIsUnit("player", person) then a = 0 end
+	local marker = encounterMarkers[spellid..person]
+	if marker ~= nil then return marker end
+	marker = Point:New(nil, nil, nil, person, duration, texture, radius, blend, r, g, b, a)
+	self:RegisterEncounterMarker(spellid, person, marker)
+	return marker
+end
+
+-- automatically called if marker was registered using RegisterEncounterMarker when "Free" callback fires (when time runs out for example)
+function mod:FreeEncounterMarker(key)
 	if not self.HUDEnabled then return end
-	encounterMarkers[e] = nil
+	encounterMarkers[key] = nil
+end
+
+-- should be called to manually free marker
+function mod:FreeEncounterMarkerByTarget(spellid, name)
+	if not self.HUDEnabled then return end
+	local marker = encounterMarkers[spellid..name]
+	if not marker then return end
+	self.free(marker)
 end
 
 function mod:FreeEncounterMarkers()
 	if not self.HUDEnabled then return end
-	for k, _ in pairs(encounterMarkers) do
-		encounterMarkers[k] = k:Free()
+	for k, v in pairs(encounterMarkers) do
+		encounterMarkers[k] = v:Free()
 	end
 end
 
