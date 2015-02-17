@@ -99,7 +99,11 @@ local function Engineers(self)
 	warnEngineer:Show()
 	timerEngineer:Start()
 	countdownEngineer:Start()
-	self:Schedule(41, Engineers, self)
+	if self:IsMythic() then
+		self:Schedule(31, Engineers, self)
+	else
+		self:Schedule(41, Engineers, self)
+	end
 end
 
 function mod:CustomHealthUpdate()
@@ -150,9 +154,15 @@ function mod:OnCombatStart(delay)
 	self.vb.blastWarned = false
 	self.vb.lastTotal = 30
 	self.vb.phase = 1
-	self:Schedule(55, Engineers, self)
-	timerEngineer:Start(55)
-	countdownEngineer:Start(55)
+	if self:IsMythic() then
+		self:Schedule(45, Engineers, self)
+		timerEngineer:Start(45)
+		countdownEngineer:Start(45)
+	else
+		self:Schedule(55, Engineers, self)
+		timerEngineer:Start(55)
+		countdownEngineer:Start(55)
+	end
 	timerBlastCD:Start(30-delay)
 	countdownBlast:Start(30-delay)
 	berserkTimer:Start(-delay)
