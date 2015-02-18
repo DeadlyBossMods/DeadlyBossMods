@@ -33,6 +33,8 @@ local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnElementalists			= mod:NewAddsLeftAnnounce("ej9655", 2)
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4)
+local warnFireCaller			= mod:NewSpellAnnounce("ej9659", 3, 156937, "Tank")
+local warnSecurityGuard			= mod:NewSpellAnnounce("ej9648", 2, 160379, "Tank")
 --Phase 3
 local warnPhase3				= mod:NewPhaseAnnounce(3)
 local warnMelt					= mod:NewTargetAnnounce("OptionVersion2", 155225, 4, nil, false)--VERY spammy, off by default
@@ -63,19 +65,26 @@ local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242, nil, nil, nil, ni
 --All
 local specWarnBlast				= mod:NewSpecialWarningSoon(155209, nil, nil, nil, 2)
 
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
 local timerBlastCD				= mod:NewCDTimer(25, 155209)--25 seconds base. shorter when loading is being channeled by operators.
 local timerRuptureCD			= mod:NewCDTimer(26, 156934)
 local timerEngineer				= mod:NewNextTimer(41, "ej9649", nil, nil, nil, 155179)
 local timerBellowsOperator		= mod:NewCDTimer(60, "ej9650", nil, nil, nil, 155181)--60-65second variation for sure
---Phase 2
-local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps")--Anyone else need?
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
+local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps")
+local timerSlagElemental		= mod:NewNextCountTimer(55, "ej9657", nil, "-Tank", nil, 155196)--Definitely 55 seconds, although current detection method may make it appear 1-2 seconds if slag has to run across room before casting first fixate
+local timerFireCaller			= mod:NewCDTimer(45, "ej9659", nil, "Tank", nil, 156937)--CD bars until accuracy verified
+local timerSecurityGuard		= mod:NewCDTimer(40, "ej9648", nil, "Tank", nil, 160379)--CD bars until accuracy verified
 
 local berserkTimer				= mod:NewBerserkTimer(780)
 
 local countdownBlast			= mod:NewCountdown(30, 155209, "Healer")
 local countdownBellowsOperator	= mod:NewCountdown("OptionVersion2", "Alt64", "ej9650", "-Healer")
 local countdownEngineer			= mod:NewCountdown("OptionVersion2", "AltTwo41", "ej9649", "Tank")
+--Phase 2 countdowns, no conflict with phase 1 countdowns
+local countdownFireCaller		= mod:NewCountdown("Alt64", "ej9659", "Tank")
+local countdownSecurityGuard	= mod:NewCountdown("AltTwo41", "ej9648", "Tank")
 
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceRepair				= mod:NewVoice(155179, "-Healer") --int
@@ -93,9 +102,11 @@ mod.vb.elementalistsRemaining = 4
 mod.vb.blastWarned = false
 mod.vb.lastTotal = 30
 mod.vb.phase = 1
+mod.vb.slagCount = 0
+local activeSlagGUIDS = {}
 
 local UnitHealth, UnitHealthMax = UnitHealth, UnitHealthMax
---With some videos, this looks pretty good now. Just need phase 2 add stuff now.
+--Still needs double checking in LFR, normal, and mythic. Mythic data given via 3rd party and unverified by me
 local function Engineers(self)
 	warnEngineer:Show()
 	timerEngineer:Start()
@@ -104,6 +115,26 @@ local function Engineers(self)
 		self:Schedule(31, Engineers, self)
 	else
 		self:Schedule(41, Engineers, self)
+	end
+end
+
+local function SecurityGuard(self)
+	warnSecurityGuard:Show()
+	timerSecurityGuard:Start()
+	if self:IsMythic() then
+		self:Schedule(40, SecurityGuard, self)
+	else
+--		self:Schedule(50, SecurityGuard, self)
+	end
+end
+
+local function FireCaller(self)
+	warnFireCaller:Show()
+	timerFireCaller:Start()
+	if self:IsMythic() then
+		self:Schedule(45, FireCaller, self)
+	else
+--		self:Schedule(50, FireCaller, self)
 	end
 end
 
@@ -150,11 +181,13 @@ function mod:CustomHealthUpdate()
 end
 
 function mod:OnCombatStart(delay)
+	table.wipe(activeBossGUIDS)
 	self.vb.machinesDead = 0
 	self.vb.elementalistsRemaining = 4
 	self.vb.blastWarned = false
 	self.vb.lastTotal = 30
 	self.vb.phase = 1
+	self.vb.slagCount = 0
 	if self:IsMythic() then
 		self:Schedule(40, Engineers, self)
 		timerEngineer:Start(40)
@@ -228,6 +261,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceBomb:Play("bombrun")
 		end
 	elseif spellId == 155196 then
+		if not activeSlagGUIDS[args.sourceGUID] then
+			activeSlagGUIDS[unitGUID] = true
+			self.vb.slagCount = self.vb.slagCount + 1
+			if self:IsMythic() and self.vb.slagCount == 1 then--Unable to verify, 3rd party report. On heroic/normal. 2nd one is 55, like rest of them.
+				timerSlagElemental:Start(35, self.vb.slagCount+1)
+			else
+				timerSlagElemental:Start(nil, self.vb.slagCount+1)
+			end
+		end
 		warnFixate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show()
@@ -315,6 +357,11 @@ function mod:UNIT_DIED(args)
 		self.vb.elementalistsRemaining = self.vb.elementalistsRemaining - 1
 		warnElementalists:Show(self.vb.elementalistsRemaining)
 		if self.vb.elementalistsRemaining == 0 then
+			timerFireCaller:Cancel()
+			timerSecurityGuard:Cancel()
+			timerSlagElemental:Cancel()
+			self:Unschedule(SecurityGuard)
+			self:Unschedule(FireCaller)
 			self.vb.phase = 3
 			warnPhase3:Show()
 			specWarnHeartoftheMountain:Show()
@@ -335,6 +382,13 @@ function mod:UNIT_DIED(args)
 			timerBellowsOperator:Cancel()
 			countdownBellowsOperator:Cancel()
 			voicePhaseChange:Play("ptwo")
+			timerSlagElemental:Start(15, 1)--Same in all modes, verified
+			if self:IsMythic() then
+				self:Schedule(71, SecurityGuard, self)--Could also be same, but unable to verify
+				timerSecurityGuard:Start(71)
+				self:Schedule(78, FireCaller, self)
+				timerFireCaller:Start(78)
+			end
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:Clear()
 				for i = 1, 5 do
