@@ -36,6 +36,7 @@ local warnElekk						= mod:NewTargetAnnounce(155460, 1)--Grants Tantrum
 local warnClefthoof					= mod:NewTargetAnnounce(155462, 1)--Grants Epicenter
 --Beast abilities (living beasts)
 local warnSearingFangs				= mod:NewStackAnnounce(155030, 2, nil, "Tank")
+local warnInfernoBreath				= mod:NewTargetAnnounce(29769, 4)
 local warnCrushArmor				= mod:NewStackAnnounce(155236, 2, nil, "Tank")
 local warnStampede					= mod:NewSpellAnnounce(155247, 3)
 
@@ -59,6 +60,7 @@ local specWarnInfernoPyre			= mod:NewSpecialWarningMove(156824)
 local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, nil, 3)--6-9 second cd, 15 second duration, 3 is smallest safe swap, sometimes 2 when favorable RNG
 local specWarnCrushArmorOther		= mod:NewSpecialWarningTaunt(155236)
 local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil, 2, nil, 2)
+local yellInfernoBreath				= mod:NewYell(154989)
 
 --Boss basic attacks
 mod:AddTimerLine(CORE_ABILITIES)--Core Abilities
@@ -168,6 +170,14 @@ local function updateBeastTimers(self, all, spellId, adjust)
 		timerPinDownCD:Start(12)
 		countdownPinDown:Cancel()
 		countdownPinDown:Start(12)
+	end
+end
+
+function mod:BreathTarget(targetname, uId)
+	if not targetname then return end
+	warnInfernoBreath:Show(targetname)
+	if targetname == UnitName("player") then
+		yellInfernoBreath:Yell()
 	end
 end
 
@@ -419,6 +429,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		specWarnInfernoBreath:Show()
 		timerInfernoBreathCD:Start()
 		voiceInfernoBreath:Play("breathsoon")
+		self:BossTargetScanner(155459, "BreathTarget", 0.05, 25, nil, nil, false)
 	end
 end
 
