@@ -40,7 +40,7 @@ local warnPhase3				= mod:NewPhaseAnnounce(3)
 local warnMelt					= mod:NewTargetAnnounce("OptionVersion2", 155225, 4, nil, false)--VERY spammy, off by default
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 
-local specWarnBomb				= mod:NewSpecialWarningYou(155192, nil, nil, nil, 3, nil, 2)
+local specWarnBomb				= mod:NewSpecialWarningMoveTo(155192, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(155192), nil, 3, nil, 2)
 local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("OptionVersion2", "ej9650", "-Healer", nil, nil, nil, nil, 2)
 local specWarnDeafeningRoar		= mod:NewSpecialWarningDodge("OptionVersion2", 177756, "Tank", nil, nil, 3)
 --local specWarnDefense			= mod:NewSpecialWarningMove("OptionVersion2", 160379, false, nil, nil, nil, nil, true)--Doesn't work until 6.1. The CAST event doesn't exixst in 6.0
@@ -256,7 +256,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnBomb:CombinedShow(0.5, args.destName)
 		end
 		if args:IsPlayer() then
-			specWarnBomb:Show()
+			specWarnBomb:Show(L.heatRegulator)
 			timerBomb:Start()
 			voiceBomb:Play("bombrun")
 		end
