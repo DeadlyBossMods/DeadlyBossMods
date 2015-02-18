@@ -6,6 +6,7 @@ mod:SetCreatureID(76809, 76806)--76809 foreman feldspar, 76806 heart of the moun
 mod:SetEncounterID(1690)
 mod:SetZone()
 --mod:SetUsedIcons(7)
+mod:SetHotfixNoticeRev(12973)
 
 mod:RegisterCombat("combat")
 

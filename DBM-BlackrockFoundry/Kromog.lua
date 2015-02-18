@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(77692)
 mod:SetEncounterID(1713)
 mod:SetZone()
+mod:SetHotfixNoticeRev(12879)
 
 mod:RegisterCombat("combat")
 
