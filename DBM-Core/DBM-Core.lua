@@ -64,7 +64,12 @@ if not DBM.Revision then
 	DBM.Revision = DBM.ReleaseRevision
 end
 
+-- dual profile setup
+local _, class = UnitClass("player")
 DBM_UseDualProfile = true
+if class == "MAGE" or class == "WARLOCK" and class == "HUNTER" and class == "ROGUE" then
+	DBM_UseDualProfile = false
+end
 DBM_CharSavedRevision = 1
 
 DBM.DefaultOptions = {
@@ -303,7 +308,6 @@ local playerLevel = UnitLevel("player")
 local playerRealm = GetRealmName()
 local gladStance = GetSpellInfo(156291)
 local connectedServers = GetAutoCompleteRealms()
-local _, class = UnitClass("player")
 local LastInstanceMapID = -1
 local LastGroupSize = 0
 local LastInstanceType = nil
