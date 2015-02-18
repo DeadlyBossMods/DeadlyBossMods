@@ -23,6 +23,10 @@ L:SetOptionLocalization({
 	warnBlastFrequency	= "Announce when $spell:155209 frequency increased"
 })
 
+L:SetMiscLocalization({
+	heatRegulator		= "Heat Regulator"
+})
+
 ------------------
 -- Hans'gar And Franzok --
 ------------------
