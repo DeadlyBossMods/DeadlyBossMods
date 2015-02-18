@@ -174,6 +174,20 @@ function mod:OnCombatEnd()
 	end
 end
 
+function mod:ArcaneTarget()
+	local targetName, uId = self:GetBossTarget(79015)
+	local tanking, status = UnitDetailedThreatSituation("player", "boss1")
+	if tanking or (status == 3) then--Player is current target
+		specWarnExpelMagicArcaneYou:Show()--So show tank warning
+		voiceExpelMagicArcane:Play("runout")
+	else
+		if self:AntiSpam(2, targetName) then--Set anti spam with target name
+			specWarnExpelMagicArcane:Show(targetName)--Sometimes targetname is nil, and then it warns for unknown, but with the new status == 3 check, it'll still warn correct tank, so useful anyways
+			voiceExpelMagicArcane:Play("changemt")
+		end
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 162185 then
@@ -223,17 +237,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnForfeitPower:Show(args.sourceName)
 		end
 	elseif spellId == 162186 then
-		local targetName, uId = self:GetBossTarget(79015)
-		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
-		if tanking or (status == 3) then--Player is current target
-			specWarnExpelMagicArcaneYou:Show()--So show tank warning
-			voiceExpelMagicArcane:Play("runout")
-		else
-			if self:AntiSpam(2, targetName) then--Set anti spam with target name
-				specWarnExpelMagicArcane:Show(targetName)--Sometimes targetname is nil, and then it warns for unknown, but with the new status == 3 check, it'll still warn correct tank, so useful anyways
-				voiceExpelMagicArcane:Play("changemt")
-			end
-		end
+		self:ScheduleMethod(0.1, "ArcaneTarget")
 	elseif spellId == 172895 then
 		timerExpelMagicFelCD:Start()
 	end
