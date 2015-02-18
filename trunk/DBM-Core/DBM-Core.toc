@@ -12,7 +12,7 @@
 ## Dependencies: DBM-StatusBarTimers
 ## OptionalDependencies: LibStub, CallbackHandler-1.0, LibSharedMedia-3.0, LibChatAnims
 ## SavedVariables: DBM_AllSavedOptions
-## SavedVariablesPerCharacter: DBM_UsedProfile, DBM_UseDualProfile
+## SavedVariablesPerCharacter: DBM_UsedProfile, DBM_UseDualProfile, DBM_CharSavedRevision
 ## LoadOnDemand: 0
 ## DefaultState: enabled
 ## Author: Tandanu and Nitram
