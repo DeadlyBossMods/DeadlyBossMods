@@ -6,6 +6,7 @@ mod:SetCreatureID(76906)--81315 Crack-Shot, 81197 Raider, 77487 Grom'kar Firemen
 mod:SetEncounterID(1692)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 2, 1)
+mod:SetHotfixNoticeRev(12936)
 
 mod:RegisterCombat("combat")
 
