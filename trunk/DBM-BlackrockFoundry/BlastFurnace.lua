@@ -94,6 +94,9 @@ local voiceBellowsOperator 		= mod:NewVoice("ej9650", "-Healer")
 local voiceRupture				= mod:NewVoice(156932) --runaway
 local voiceMelt					= mod:NewVoice(155223) --runaway
 local voiceHeat					= mod:NewVoice(155242) --changemt
+local voiceSlagElemental		= mod:NewVoice("ej9657", "-Tank")
+local voiceFireCaller			= mod:NewVoice("ej9659", "Tank")
+local voiceSecurityGuard		= mod:NewVoice("ej9648", "Tank")
 
 mod:AddRangeFrameOption(8, 176121)
 
@@ -121,6 +124,7 @@ end
 local function SecurityGuard(self)
 	warnSecurityGuard:Show()
 	timerSecurityGuard:Start()
+	voiceSecurityGuard:Play("ej9648")
 	if self:IsMythic() then
 		self:Schedule(40, SecurityGuard, self)
 	else
@@ -131,6 +135,7 @@ end
 local function FireCaller(self)
 	warnFireCaller:Show()
 	timerFireCaller:Start()
+	voiceFireCaller:Play("ej9659")
 	if self:IsMythic() then
 		self:Schedule(45, FireCaller, self)
 	else
@@ -269,6 +274,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				timerSlagElemental:Start(nil, self.vb.slagCount+1)
 			end
+			voiceSlagElemental:Play("ej9657")
 		end
 		warnFixate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
