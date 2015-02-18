@@ -181,7 +181,7 @@ function mod:CustomHealthUpdate()
 end
 
 function mod:OnCombatStart(delay)
-	table.wipe(activeBossGUIDS)
+	table.wipe(activeSlagGUIDS)
 	self.vb.machinesDead = 0
 	self.vb.elementalistsRemaining = 4
 	self.vb.blastWarned = false
@@ -262,7 +262,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 155196 then
 		if not activeSlagGUIDS[args.sourceGUID] then
-			activeSlagGUIDS[unitGUID] = true
+			activeSlagGUIDS[args.sourceGUID] = true
 			self.vb.slagCount = self.vb.slagCount + 1
 			if self:IsMythic() and self.vb.slagCount == 1 then--Unable to verify, 3rd party report. On heroic/normal. 2nd one is 55, like rest of them.
 				timerSlagElemental:Start(35, self.vb.slagCount+1)
