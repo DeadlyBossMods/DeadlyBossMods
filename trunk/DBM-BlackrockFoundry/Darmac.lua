@@ -6,6 +6,7 @@ mod:SetCreatureID(76865)--No need to add beasts to this. It's always main boss t
 mod:SetEncounterID(1694)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
+mod:SetHotfixNoticeRev(12975)
 
 mod:RegisterCombat("combat")
 
@@ -23,6 +24,8 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--Because boss numbering tends to get out of wack with things constantly joining/leaving fight. I've only seen boss1 and boss2 but for good measure.
 )
 
+--TODO, see if call pack beasts change on normal affects LFR too. I'm assuming it does because they tend to stay synced.
+--TODO, see if above change also has any effect on FIRST cast and update "updatebeasttimers" functions accordingly if it does
 --Boss basic attacks
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
 --Boss gained abilities (beast deaths grant boss new abilities)
@@ -232,8 +235,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnCallthePack:Schedule(5)--They come out very slow and staggered, allow 5 seconds for tank to pick up then call switch for everyone else
 			voiceCallthePack:Schedule(5, "killmob")
 		end
-		timerCallthePackCD:Start()
-		countdownCallPack:Start()
+		if self:IsDifficulty("normal", "lfr") then
+			timerCallthePackCD:Start(41.5)--40+1.5
+			countdownCallPack:Start(41.5)	
+		else
+			timerCallthePackCD:Start()--30+1.5
+			countdownCallPack:Start()
+		end
 	end
 end
 
