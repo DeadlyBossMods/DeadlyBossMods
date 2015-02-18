@@ -24,6 +24,10 @@ L:SetOptionLocalization({
 	warnBlastFrequency	= "$spell:155209 시전 빈도 증가시 알림 보기"
 })
 
+L:SetMiscLocalization({
+	heatRegulator		= "열기 조절 장치"
+})
+
 ------------------
 -- Hans'gar And Franzok --
 ------------------
