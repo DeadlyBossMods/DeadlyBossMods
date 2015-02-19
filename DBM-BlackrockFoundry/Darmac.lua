@@ -429,7 +429,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		specWarnInfernoBreath:Show()
 		timerInfernoBreathCD:Start()
 		voiceInfernoBreath:Play("breathsoon")
-		self:BossTargetScanner(155459, "BreathTarget", 0.05, 25, nil, nil, false)
+		self:BossTargetScanner(155459, "BreathTarget", 0.1, 25, nil, nil, false)
 	end
 end
 
