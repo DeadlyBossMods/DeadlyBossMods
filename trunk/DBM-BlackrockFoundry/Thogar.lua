@@ -52,6 +52,8 @@ local timerTrainCD					= mod:NewNextCountTimer("d15", 176312)
 --local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140)
 local timerIronbellowCD				= mod:NewCDTimer(10, 163753)
 
+local berserkTimer					= mod:NewBerserkTimer(492)
+
 local countdownTrain				= mod:NewCountdown(5, 176312)
 
 local voiceTrain					= mod:NewVoice(176312) --see mythicVoice{} otherVoice{} tables for more details
@@ -381,6 +383,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		self:Schedule(9.5, fakeTrainYell, self)
 		timerTrainCD:Start(12-delay, 1)
+		berserkTimer:Start()
 	else
 		self:Schedule(14.5, fakeTrainYell, self)
 		timerTrainCD:Start(17-delay, 1)
@@ -448,7 +451,8 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if target == L.Train then
+	local trainLimit = self:IsMythic() and 37 or 35
+	if target == L.Train and self.vb.trainCount <= trainLimit then
 		local adjusted = (GetTime() - fakeYellTime) < 2-- yell followed by fakeyell within 2 sec. this should realyell of scheduled fakeyell. so do not increase count and only do adjust.
 		self:Unschedule(fakeTrainYell)--Always unschedule
 		if not adjusted then--do not adjust visible warn to prevent confusing. (although fakeyell worked early, maximum 3.5 sec. this is no matter. only adjust scheduled things.)
@@ -478,7 +482,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 5
 			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 33 or count == 34 or count == 35 then
 				expectedTime = 10
-			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 36 then
+			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 then
 				expectedTime = 15
 				if count == 20 then
 					specWarnSplitSoon:Cancel()
@@ -501,12 +505,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				self:Schedule(expectedTime + 1.5, fakeTrainYell, self)--Schedule fake yell 1.5 seconds after we should have seen one.
 				timerTrainCD:Unschedule(count+1)
 				timerTrainCD:Schedule(5, expectedTime, count+1)
-			else
-				print("Train Set: "..count..". DBM has no train data beyond this point. Send us videos if you can.")
-				timerTrainCD:Start(5, count)
 			end
 			if (count == 1 or count == 18 or count == 21 or count == 34) and not adjusted then
 				specWarnManOArms:Show()
+				if self.Options.SetIconOnAdds then
+					self:ScanForMobs(80791, 0, 8, 2, 0.2, 15)--Man At Arms scanner marking 8 down
+					self:ScanForMobs(77487, 1, 1, 2, 0.2, 15)--Fire Mender scanner marking 1 up
+				end
 			end
 		else
 			if otherVoice[count] and not adjusted then
@@ -546,9 +551,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				self:Schedule(expectedTime + 1.5, fakeTrainYell, self)--Schedule fake yell 1.5 seconds after we should have seen one.
 				timerTrainCD:Unschedule(count+1)
 				timerTrainCD:Schedule(5, expectedTime, count+1)
-			else
-				print("Train Set: "..count..". DBM has no train data beyond this point. Send us videos if you can.")
-				timerTrainCD:Start(5, count)--Show timer for incoming train for current yell if we have no data for next
 			end
 			if (count == 7 or count == 17 or count == 23 or count == 28) and not adjusted then--I'm sure they spawn again sometime later, find that data
 				specWarnManOArms:Show()
