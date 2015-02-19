@@ -62,7 +62,7 @@ mod:AddSetIconOption("SetIconOnAdds", "ej9549", false, true)
 
 mod.vb.trainCount = 0
 mod.vb.infoCount = 0
-local GetTime = GetTime
+local GetTime, UnitPosition = GetTime, UnitPosition
 local MovingTrain = GetSpellInfo(176312)
 local Train = GetSpellInfo(174806)
 local Cannon = GetSpellInfo(62357)
