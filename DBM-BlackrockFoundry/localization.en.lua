@@ -45,10 +45,6 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(1123)
 
-L:SetMiscLocalization({
-	TorrentYell	= "Torrent fading in %d"
-})
-
 --------------------
 --Kromog, Legend of the Mountain --
 --------------------
