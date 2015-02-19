@@ -150,6 +150,7 @@ local otherTrains = {
 	[32] = { [3] = Train },--+4 after 31 (8:01)
 	[33] = { [2] = Train },--+4 after 32 (8:05)
 	[34] = { [1] = Train },--+4 after 33 (8:09)
+	[35] = { [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+? after 34 (8:??)
 }
 
 local function fakeTrainYell(self)
