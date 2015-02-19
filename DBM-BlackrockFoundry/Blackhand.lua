@@ -170,7 +170,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(2, 3) then
 			local timer
 			if self.vb.phase == 3 then
-				timer = 21.5
+				timer = 20.5
 			else
 				timer = 15.5
 			end
@@ -183,7 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				local elapsed, total = timerShatteringSmashCD:GetTime(self.vb.smashCount+1)
 				local remaining = total - elapsed
 				DBM:Debug("Smash Elapsed: "..elapsed.." Smash Total: "..total.." Smash Remaining: "..remaining.." MFD Timer: "..timer, 2)
-				if (remaining > timer) and (remaining < timer+5.5) then--Marked for death will come off cd before timerShatteringSmashCD comes off cd and delay the cast
+				if (remaining > timer) and (remaining < timer+5) then--Marked for death will come off cd before timerShatteringSmashCD comes off cd and delay the cast
 					local extend = (timer+5)-remaining
 					DBM:Debug("Delay detected, updating smash timer now. Extend: "..extend)
 					timerShatteringSmashCD:Update(elapsed, total+extend, self.vb.smashCount+1)
