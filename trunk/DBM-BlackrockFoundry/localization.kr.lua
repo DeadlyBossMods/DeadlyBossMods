@@ -46,10 +46,6 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(1123)
 
-L:SetMiscLocalization({
-	TorrentYell	= "녹아내린 격류 %d초 후 사라짐!"
-})
-
 --------------------
 --Kromog, Legend of the Mountain --
 --------------------

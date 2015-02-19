@@ -355,7 +355,11 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Play countdown sound for $spell:%s coold
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Play countdown sound for when $spell:%s fades"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Play countout sound for $spell:%s duration"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Yell when you are affected by $spell:%s"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s on " .. UnitName("player") .. "!"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
+	yell	= "%s on " .. UnitName("player") .. "!",
+	count	= "%s on " .. UnitName("player") .. "! (%%d)",
+	fade	= "%s fading in %%d"
+}
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Show HudMap for $spell:%s"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Show HudMap for various mechanics"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "Show range frame (%s) for $spell:%s"--string used for range so we can use things like "5/2" as a value for that field
