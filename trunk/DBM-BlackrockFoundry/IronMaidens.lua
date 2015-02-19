@@ -135,8 +135,8 @@ local playerOnBoat = false
 local DBMHudMap = DBMHudMap
 
 local function isPlayerOnBoat()
-	local _, x = UnitPosition("player")
-	if x < 3196 then
+	local _, y = UnitPosition("player")
+	if y < 3196 then
 		return false
 	else
 		return true
@@ -144,15 +144,17 @@ local function isPlayerOnBoat()
 end
 
 local function checkBoatPlayer(self)
+	DBM:Debug("checkBoatPlayer running", 3)
 	for uId in DBM:GetGroupMembers() do 
-		local _, x, _, playerMapId = UnitPosition(uId)
+		local _, y, _, playerMapId = UnitPosition(uId)
 		if playerMapId == 1205 then
-			if x > 3196 then--found player on boat
+			if y > 3196 then--found player on boat
 				self:Schedule(1, checkBoatPlayer, self)
 				return
 			end
 		end
 	end
+	DBM:Debug("checkBoatPlayer finished")
 	timerBombardmentAlphaCD:Cancel()
 	timerWarmingUp:Cancel()
 end
@@ -505,5 +507,6 @@ function mod:UNIT_POWER_FREQUENT(_, powerType)
 	elseif power == 0 and playerOnBoat then -- leave boat
 		playerOnBoat = false
 		recoverTimers()
+		DBM:Debug("Player Leaving Boat")
 	end
 end
