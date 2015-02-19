@@ -111,9 +111,8 @@ local mythicTrains = {
 	[33] = { [3] = Deforester },--+5 after 32.(07:22)
 	[34] = { [2] = Train },--+10 after 33.(07:32)
 	[35] = { [1] = ManOArms },--+10 after 34.(07:42)
-	[36] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+10 after 35.(07:52) (or 1,3 train?)
-	--Verify hard berserk is 37, and no random trans in between 36-37
-	[37] = { [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+? after 36.(???)
+	[36] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+10 after 35.(07:52)
+	[37] = { [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 36.(08:07)--berserk.
 }
 
 --https://www.youtube.com/watch?v=yUgrmvksk7g
@@ -479,7 +478,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 5
 			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 33 or count == 34 or count == 35 then
 				expectedTime = 10
-			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 then
+			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 36 then
 				expectedTime = 15
 				if count == 20 then
 					specWarnSplitSoon:Cancel()
