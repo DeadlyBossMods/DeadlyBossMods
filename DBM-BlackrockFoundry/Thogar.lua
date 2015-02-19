@@ -107,12 +107,13 @@ local mythicTrains = {
 	[29] = { [1] = Train, [4] = Train },--+20 after 28.(06:47) (1 train is guessed)
 	[30] = { [1] = Reinforcements, [4] = Deforester },--+15 after 29.(07:02)
 	[31] = { [2] = Train },--+10 after 30.(07:12)
-	[32] = { [3] = Deforester },--+10 after 31.(07:22)
-	[33] = { [2] = Train },--+5 after 32.(07:27) (not correctly saw)
-	[34] = { [1] = ManOArms },--+15 after 33.(07:42)
-	[35] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+10 after 34.(07:52) (or 1,3 train?)
-	--Verify hard berserk is 36, and no random trans in between 35-36
-	[36] = { [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+? after 35 (???)
+	[32] = { [1] = Train },--+5 after 31.(07:17)
+	[33] = { [3] = Deforester },--+5 after 32.(07:22)
+	[34] = { [2] = Train },--+10 after 33.(07:32)
+	[35] = { [1] = ManOArms },--+15 after 34.(07:47)
+	[36] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+10 after 35.(07:57) (or 1,3 train?)
+	--Verify hard berserk is 37, and no random trans in between 36-37
+	[37] = { [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+? after 36.(???)
 }
 
 --https://www.youtube.com/watch?v=yUgrmvksk7g
@@ -201,10 +202,11 @@ local mythicVoice = {
 	[29] = "A14",
 	[30] = "B1E4",
 	[31] = "A2",
-	[32] = "E3",
-	[33] = "A2",
-	[34] = "D1",
-	[35] = "F",--need to review
+	[32] = "A1",
+	[33] = "E3",
+	[34] = "A2",
+	[35] = "D1",
+	[36] = "F",--need to review
 }
 
 local otherVoice = {
@@ -277,11 +279,8 @@ local function showTrainWarning(self)
 	warnTrain:Show(train, text)
 end
 
-local function laneCheck(self)
+local function lanePos()
 	local posX = UnitPosition("player")--room is perfrect square, y coord not needed.
-	local train = self.vb.trainCount
-	local trainTable = self:IsMythic() and mythicTrains or otherTrains
-	if not trainTable[train] then return end
 	local playerLane
 	-- map coord from http://mysticalos.com/images/DBM/ThogarData/1.jpeg http://mysticalos.com/images/DBM/ThogarData/2.jpeg http://mysticalos.com/images/DBM/ThogarData/3.jpeg http://mysticalos.com/images/DBM/ThogarData/4.jpeg
 	if posX > 577.8 then
@@ -293,7 +292,14 @@ local function laneCheck(self)
 	else
 		playerLane = 4
 	end
-	if trainTable[train][playerLane] then
+	return playerLane
+end
+
+local function laneCheck(self)
+	local trainTable = self:IsMythic() and mythicTrains or otherTrains
+	local train = self.vb.trainCount
+	local playerLane = lanePos()
+	if trainTable[train] and trainTable[train][playerLane] then
 		specWarnTrain:Show()
 	end
 end
@@ -301,7 +307,7 @@ end
 local lines = {}
 
 local function sortInfoFrame(a, b)
-	local rexp = "^"..L.lane.." ".."%d"
+	local rexp = L.lane.." ".."%d"
 	local c = string.match(a, rexp)
 	local d = string.match(b, rexp)
 	if c and not d then
@@ -320,11 +326,13 @@ local function updateInfoFrame()
 	local train = mod.vb.infoCount
 	local trainTable = mod:IsMythic() and mythicTrains or otherTrains
 	if trainTable[train] then
+		local playerLane = lanePos()
 		for i = 1, 4 do
+			local lanetext = (playerLane == i and "|cff00ffff" or "")..L.lane.." "..i..(playerLane == i and "|r" or "")
 			if trainTable[train][i] then
-				lines[L.lane.." "..i] = trainTable[train][i]
+				lines[lanetext] = trainTable[train][i]
 			else
-				lines[L.lane.." "..i] = ""
+				lines[lanetext] = ""
 			end
 		end
 		if trainTable[train]["speciali"] then
@@ -344,11 +352,12 @@ local function showInfoFrame()
 	end
 end
 
+--/run DBM:GetModByName(1147):test(4)
 function mod:test(num)
 	self.vb.trainCount = num
 	showTrainWarning(self)
-	DBM.InfoFrame:SetHeader(MovingTrain.." ("..(self.vb.trainCount + 1)..")")
-	DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
+	laneCheck(self)
+	showInfoFrame()
 end
 
 function mod:BombTarget(targetname, uId)
@@ -466,11 +475,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				voiceTrain:Play("Thogar\\"..mythicVoice[count])
 			end
 			local expectedTime
-			if count == 1 or count == 2 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 32 then
+			if count == 1 or count == 2 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 31 or count == 32 then
 				expectedTime = 5
-			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 31 or count == 34 then
+			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 33 or count == 35 then
 				expectedTime = 10
-			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 33 then
+			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 34 then
 				expectedTime = 15
 				if count == 20 then
 					specWarnSplitSoon:Cancel()
