@@ -128,7 +128,7 @@ local function SecurityGuard(self)
 	if self:IsMythic() then
 		self:Schedule(40, SecurityGuard, self)
 	else
---		self:Schedule(50, SecurityGuard, self)
+		self:Schedule(55, SecurityGuard, self)
 	end
 end
 
@@ -139,7 +139,7 @@ local function FireCaller(self)
 	if self:IsMythic() then
 		self:Schedule(45, FireCaller, self)
 	else
---		self:Schedule(50, FireCaller, self)
+		self:Schedule(55, FireCaller, self)
 	end
 end
 
@@ -388,13 +388,12 @@ function mod:UNIT_DIED(args)
 			timerBellowsOperator:Cancel()
 			countdownBellowsOperator:Cancel()
 			voicePhaseChange:Play("ptwo")
-			timerSlagElemental:Start(15, 1)--Same in all modes, verified
-			if self:IsMythic() then
-				self:Schedule(71, SecurityGuard, self)--Could also be same, but unable to verify
-				timerSecurityGuard:Start(71)
-				self:Schedule(78, FireCaller, self)
-				timerFireCaller:Start(78)
-			end
+			--Start adds timers. Seem same in all modes.
+			timerSlagElemental:Start(15, 1)
+			self:Schedule(71, SecurityGuard, self)
+			timerSecurityGuard:Start(71)
+			self:Schedule(78, FireCaller, self)
+			timerFireCaller:Start(78)
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:Clear()
 				for i = 1, 5 do
