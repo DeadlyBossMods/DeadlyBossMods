@@ -9613,6 +9613,7 @@ do
 		end
 	end
 
+	local mobUids = {"mouseover", "boss1", "boss2", "boss3", "boss4", "boss5"}
 	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName)
 		if not optionName then optionName = self.findFastestComputer[1] end
 		if canSetIcons[optionName] then
@@ -9689,47 +9690,49 @@ do
 					end
 				end
 			end
-			local guid2 = UnitGUID("mouseover")
-			local cid2 = self:GetCIDFromGUID(guid2)
-			if guid2 and type(creatureID) == "table" and creatureID[cid2] and not addsGUIDs[guid2] then
-				if type(creatureID[cid2]) == "number" then
-					SetRaidTarget("mouseover", creatureID[cid2])
-				else
-					SetRaidTarget("mouseover", addsIcon[scanID])
-					if iconSetMethod == 1 then
-						addsIcon[scanID] = addsIcon[scanID] + 1
+			for _, unitid2 in ipairs(mobUids) do
+				local guid2 = UnitGUID(unitid2)
+				local cid2 = self:GetCIDFromGUID(guid2)
+				if guid2 and type(creatureID) == "table" and creatureID[cid2] and not addsGUIDs[guid2] then
+					if type(creatureID[cid2]) == "number" then
+						SetRaidTarget(unitid2, creatureID[cid2])
 					else
-						addsIcon[scanID] = addsIcon[scanID] - 1
+						SetRaidTarget(unitid2, addsIcon[scanID])
+						if iconSetMethod == 1 then
+							addsIcon[scanID] = addsIcon[scanID] + 1
+						else
+							addsIcon[scanID] = addsIcon[scanID] - 1
+						end
 					end
-				end
-				addsGUIDs[guid2] = true
-				addsIconSet[scanID] = addsIconSet[scanID] + 1
-				if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
-					--clear variables
-					scanExpires[scanID] = nil
-					addsIcon[scanID] = nil
-					addsIconSet[scanID] = nil
-					return
-				end
-			elseif guid2 and ((guid2 == creatureID) or (cid2 == creatureID)) and not addsGUIDs[guid2] then
-				if iconSetMethod == 2 then
-					SetRaidTarget("mouseover", mobIcon)
-				else
-					SetRaidTarget("mouseover", addsIcon[scanID])
-					if iconSetMethod == 1 then
-						addsIcon[scanID] = addsIcon[scanID] + 1
+					addsGUIDs[guid2] = true
+					addsIconSet[scanID] = addsIconSet[scanID] + 1
+					if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
+						--clear variables
+						scanExpires[scanID] = nil
+						addsIcon[scanID] = nil
+						addsIconSet[scanID] = nil
+						return
+					end
+				elseif guid2 and ((guid2 == creatureID) or (cid2 == creatureID)) and not addsGUIDs[guid2] then
+					if iconSetMethod == 2 then
+						SetRaidTarget(unitid2, mobIcon)
 					else
-						addsIcon[scanID] = addsIcon[scanID] - 1
+						SetRaidTarget(unitid2, addsIcon[scanID])
+						if iconSetMethod == 1 then
+							addsIcon[scanID] = addsIcon[scanID] + 1
+						else
+							addsIcon[scanID] = addsIcon[scanID] - 1
+						end
 					end
-				end
-				addsGUIDs[guid2] = true
-				addsIconSet[scanID] = addsIconSet[scanID] + 1
-				if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
-					--clear variables
-					scanExpires[scanID] = nil
-					addsIcon[scanID] = nil
-					addsIconSet[scanID] = nil
-					return
+					addsGUIDs[guid2] = true
+					addsIconSet[scanID] = addsIconSet[scanID] + 1
+					if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
+						--clear variables
+						scanExpires[scanID] = nil
+						addsIcon[scanID] = nil
+						addsIconSet[scanID] = nil
+						return
+					end
 				end
 			end
 			if timeNow < scanExpires[scanID] then--scan for limited times.
