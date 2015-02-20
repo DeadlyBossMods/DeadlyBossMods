@@ -254,13 +254,13 @@ DBM.Bars = DBT:New()
 DBM.Mods = {}
 DBM.ModLists = {}
 DBM.Counts = {
-	{	text	= "Moshne (Male)",	value 	= "Mosh", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"},
-	{	text	= "Corsica (Female)",value 	= "Corsica", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\"},
-	{	text	= "Koltrane (Male)",value 	= "Kolt", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\"},
-	{	text	= "Pewsey (Male)",value 	= "Pewsey", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Pewsey\\"},
-	{	text	= "Bear (Male Child)",value = "Bear", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Bear\\"},
-	{	text	= "Anshlun (ptBR Male)",value = "Anshlun", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Anshlun\\"},
-	{	text	= "Neryssa (ptBR Female)",value = "Neryssa", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Neryssa\\"},
+	{	text	= "Moshne (Male)",	value 	= "Mosh", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\", max = 5},
+	{	text	= "Corsica (Female)",value 	= "Corsica", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\", max = 10},
+	{	text	= "Koltrane (Male)",value 	= "Kolt", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\", max = 10},
+	{	text	= "Pewsey (Male)",value 	= "Pewsey", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Pewsey\\", max = 10},
+	{	text	= "Bear (Male Child)",value = "Bear", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Bear\\", max = 10},
+	{	text	= "Anshlun (ptBR Male)",value = "Anshlun", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Anshlun\\", max = 10},
+	{	text	= "Neryssa (ptBR Female)",value = "Neryssa", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Neryssa\\", max = 10},
 }
 
 ------------------------
@@ -1062,7 +1062,7 @@ do
 						self.VoiceVersions[voiceValue] = voiceVersion
 						self:Schedule(10, self.CheckVoicePackVersion, self, voiceValue)--Still at 1 since the count sounds won't break any mods or affect filter. V2 if support countsound path
 						if GetAddOnMetadata(i, "X-DBM-Voice-HasCount") then--Supports adding countdown options, insert new countdown into table
-							tinsert(self.Counts, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = "VP:"..voiceValue, path = "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\" })
+							tinsert(self.Counts, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = "VP:"..voiceValue, path = "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\", max = 10})
 						end
 					end
 				end
@@ -7823,35 +7823,23 @@ do
 				voice = voice3
 			end
 			local path
+			local maxCount = 5
 			for i = 1, #DBM.Counts do
 				if DBM.Counts[i].value == voice then
 					path = DBM.Counts[i].path
+					maxCount = DBM.Counts[i].max
 					break
 				end
 			end
-			if voice == "Mosh" then--Voice only goes to 5
-				if self.type == "Countout" then
-					for i = 1, timer do
-						if i < 6 then
-							self.sound5:Schedule(i, path..i..".ogg")
-						end
-					end
-				else
-					for i = count, 1, -1 do
-						if i <= 5 then
-							self.sound5:Schedule(timer-i, path..i..".ogg")
-						end
+			if self.type == "Countout" then
+				for i = 1, timer do
+					if i < maxCount then
+						self.sound5:Schedule(i, path..i..".ogg")
 					end
 				end
-			else--Voice that goes to 10
-				if self.type == "Countout" then
-					for i = 1, timer do
-						if i < 11 then
-							self.sound5:Schedule(i, path..i..".ogg")
-						end
-					end
-				else
-					for i = count, 1, -1 do
+			else
+				for i = count, 1, -1 do
+					if i <= maxCount then
 						self.sound5:Schedule(timer-i, path..i..".ogg")
 					end
 				end
@@ -8481,27 +8469,22 @@ do
 
 	function DBM:PlayCountSound(number, forceVoice)
 		if number > 10 then return end
-		local voice, voice2
+		local voice
 		if forceVoice then--For options example
 			voice = forceVoice
 		else
 			voice = DBM.Options.CountdownVoice
-			voice2 = DBM.Options.CountdownVoice2
 		end
-		if number > 5 and (voice == "Mosh") then--Can't count past 5
-			if voice ~= voice2 then
-				voice = voice2--Fall back to secondary voice option if primary is mosh
-			else--Voice 1 and voice 2 were both set to "Mosh", they must really like mosh. At this point we must ignore their preference
-				voice = "Corsica"
-			end
-		end--If number is higher than 5 and users primary voice setting ismosh, fallback to secondary voice setting
 		local path
+		local maxCount = 5
 		for i = 1, #DBM.Counts do
 			if DBM.Counts[i].value == voice then
 				path = DBM.Counts[i].path
+				maxCount = DBM.Counts[i].max
 				break
 			end
 		end
+		if not path or (number > maxCount) then return end
 		if DBM.Options.UseMasterVolume then
 			PlaySoundFile(path..number..".ogg", "Master")
 		else
@@ -8509,14 +8492,14 @@ do
 		end
 	end
 	
-	function DBM:RegisterCountSound(t, v, p)
+	function DBM:RegisterCountSound(t, v, p, m)
 		--Prevent duplicate insert
 		for i = 1, #DBM.Counts do
 			if DBM.Counts[i].value == v then return end
 		end
 		--Insert into counts table.
-		if t and v and p then
-			tinsert(self.Counts, { text = t, value = v, path = p })
+		if t and v and p and m then
+			tinsert(self.Counts, { text = t, value = v, path = p, max = m })
 		end
 	end
 
