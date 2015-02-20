@@ -99,6 +99,7 @@ local voiceRupture				= mod:NewVoice(156932) --runaway
 local voiceMelt					= mod:NewVoice(155223) --runaway
 local voiceSlagPool				= mod:NewVoice(155743) --runaway
 local voiceHeat					= mod:NewVoice(155242) --changemt
+local voiceVolatileFire			= mod:NewVoice(176121) --runout
 local voiceSlagElemental		= mod:NewVoice("ej9657", "-Tank")
 local voiceFireCaller			= mod:NewVoice("ej9659", "Tank")
 local voiceSecurityGuard		= mod:NewVoice("ej9648", "Tank")
@@ -349,6 +350,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
+			voiceVolatileFire:Schedule(4, "runout")
 		end
 		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
 			DBM.RangeCheck:Show(8, DebuffFilter)
