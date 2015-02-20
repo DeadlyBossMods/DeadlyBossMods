@@ -22,15 +22,13 @@ mod:RegisterEventsInCombat(
 --TODO, maybe use http://beta.wowhead.com/spell=154785 for aftershock/Shattered Vertebrae instead?'
 --TODO, collect more data to figure out how roar starts/resumes on jump down. One pull/kill is not a sufficient sampling.
 local warnSkullcracker					= mod:NewSpellAnnounce(153470, 3, nil, false)--This seems pretty worthless.
-local warnShatteredVertebrae			= mod:NewStackAnnounce(157139, 2, nil, "Tank")--Possibly useless or changed. Needs further logs.
+local warnShatteredVertebrae			= mod:NewStackAnnounce("OptionVersion2", 157139, 2, nil, false)--Possibly useless or changed. Needs further logs.
 local warnJumpSlam						= mod:NewTargetAnnounce("ej9854", 3)--Find pretty icon
 
 local specWarnJumpSlam					= mod:NewSpecialWarningYou("ej9854")
 local specWarnJumpSlamNear				= mod:NewSpecialWarningClose("ej9854")
 local yellJumpSlam						= mod:NewYell("ej9854")
 local specWarnDisruptingRoar			= mod:NewSpecialWarningCast("OptionVersion2", 160838, "SpellCaster")
-local specWarnShatteredVertebrae		= mod:NewSpecialWarningStack(157139, nil, 2, nil, nil, nil, nil, 2)--stack guessed
-local specWarnShatteredVertebraeOther	= mod:NewSpecialWarningTaunt(157139)
 --Move specWarnCripplingSupplex to a health check, warn when near 85, 55, or 25%
 local specWarnCripplingSupplex			= mod:NewSpecialWarningPreWarn("OptionVersion2", 156938, "Tank|Healer", 9, nil, nil, 3)--pop a cooldown.
 local specWarnSearingPlates				= mod:NewSpecialWarningSpell(161570, nil, nil, nil, 2)
@@ -114,16 +112,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId, "boss1") or self:IsTanking(uId, "boss2") then--Assume this can hit non tanks at landing site too, filter them
 			local amount = args.amount or 1
 			warnShatteredVertebrae:Show(args.destName, amount)
-			if amount >= 2 then
-				if args:IsPlayer() then
-					specWarnShatteredVertebrae:Show(args.amount)
-				else
-					if not UnitDebuff("player", GetSpellInfo(157139)) and not UnitIsDeadOrGhost("player") then
-						specWarnShatteredVertebraeOther:Show(args.destName)
-					end
-				end
-				voiceShatteredVertebrae:Play("changemt")
-			end
 		end
 --	elseif spellId == 162124 and self:AntiSpam(30, args.sourceGUID) then
 --		DBM:Debug(args.sourceGUID, 3)
