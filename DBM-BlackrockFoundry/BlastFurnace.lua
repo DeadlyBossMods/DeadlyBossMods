@@ -107,6 +107,7 @@ mod.vb.lastTotal = 30
 mod.vb.phase = 1
 mod.vb.slagCount = 0
 local activeSlagGUIDS = {}
+local activePrimalGUIDS = {}
 
 local UnitHealth, UnitHealthMax = UnitHealth, UnitHealthMax
 --Still needs double checking in LFR, normal, and mythic. Mythic data given via 3rd party and unverified by me
@@ -150,36 +151,36 @@ function mod:CustomHealthUpdate()
 	if self.vb.phase == 1 then
 		for i = 1, 5 do
 			local uid = "boss"..i
-			local cid = self:GetCIDFromGUID(uid)
+			local cid = self:GetUnitCreatureId(uid)
 			if cid == 76808 then
 				total = total + UnitHealth(uid)
 				tmax = tmax + UnitHealthMax(uid)
 			end
 		end
-		health = (total / tmax * 100) or DBM_CORE_UNKNOWN
+		health = (total / tmax * 100)
 		return health.." ("..SCENARIO_STAGE:format(1)..")"
 	elseif self.vb.phase == 2 then
 		for i = 1, 5 do
 			local uid = "boss"..i
-			local cid = self:GetCIDFromGUID(uid)
+			local cid = self:GetUnitCreatureId(uid)
 			if cid == 76815 then
 				total = total + UnitHealth(uid)
 				tmax = tmax + UnitHealthMax(uid)
 			end
 		end
-		health = (total / tmax * 100) or DBM_CORE_UNKNOWN
+		health = (total / tmax * 100)
 		return health.." ("..SCENARIO_STAGE:format(2)..")"
 	elseif self.vb.phase == 3 then
 		for i = 1, 5 do
 			local uid = "boss"..i
-			local cid = self:GetCIDFromGUID(uid)
+			local cid = self:GetUnitCreatureId(uid)
 			if cid == 76806 then
 				total = total + UnitHealth(uid)
 				tmax = tmax + UnitHealthMax(uid)
 				break
 			end
 		end
-		health = (total / tmax * 100) or DBM_CORE_UNKNOWN
+		health = (total / tmax * 100)
 		return health.." ("..SCENARIO_STAGE:format(3)..")"
 	end
 	return DBM_CORE_UNKNOWN
@@ -187,6 +188,7 @@ end
 
 function mod:OnCombatStart(delay)
 	table.wipe(activeSlagGUIDS)
+	table.wipe(activePrimalGUIDS)
 	self.vb.machinesDead = 0
 	self.vb.elementalistsRemaining = 4
 	self.vb.blastWarned = false
@@ -218,16 +220,20 @@ function mod:OnCombatStart(delay)
 		DBM.BossHealth:Clear()
 		for i = 1, 5 do
 			local uid = "boss"..i
-			local cid = self:GetCIDFromGUID(uid)
+			local guid = UnitGUID(uid)
+			local cid = self:GetCIDFromGUID(guid)
 			if cid == 76808 then
-				DBM.BossHealth:AddBoss(uid)
+				DBM.BossHealth:AddBoss(guid)
 			end
 		end
 	end
 end
 
 function mod:OnCombatEnd()
-
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -396,17 +402,26 @@ function mod:UNIT_DIED(args)
 			timerFireCaller:Start(78)
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:Clear()
-				for i = 1, 5 do
-					local uid = "boss"..i
-					local cid = self:GetCIDFromGUID(uid)
-					if cid == 76815 then
-						DBM.BossHealth:AddBoss(uid)
-					end
-				end
 			end
+			self:RegisterShortTermEvents(
+				"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
+			)
 		end
 	elseif cid == 76809 then
 		timerRuptureCD:Cancel()
+	end
+end
+
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	if not DBM.BossHealth:IsShown() then return end
+	for i = 1, 5 do
+		local unitID = "boss"..i
+		local unitGUID = UnitGUID(unitID)
+		local cid = self:GetCIDFromGUID(unitGUID)
+		if self.vb.phase == 2 and cid == 76815 and UnitExists(unitID) and not activePrimalGUIDS[unitGUID] then
+			activeAddGUIDS[unitGUID] = true
+			DBM.BossHealth:AddBoss(unitGUID)
+		end
 	end
 end
 
