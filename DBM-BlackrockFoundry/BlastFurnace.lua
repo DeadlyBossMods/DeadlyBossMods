@@ -350,7 +350,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
-			voiceVolatileFire:Schedule(4, "runout")
+			voiceVolatileFire:Schedule(debuffTime - 4, "runout")
 		end
 		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
 			DBM.RangeCheck:Show(8, DebuffFilter)
