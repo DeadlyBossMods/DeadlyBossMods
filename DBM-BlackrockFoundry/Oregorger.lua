@@ -61,7 +61,7 @@ function mod:RetchedBlackrockTarget(targetname, uId)
 			specWarnRetchedBlackrock:Show()
 		end
 		yellRetchedBlackrock:Yell()
-	elseif self:CheckNearby(6, targetname) then
+	elseif self:CheckNearby(10, targetname) then
 		specWarnRetchedBlackrockNear:Show(targetname)
 	else
 		warnRetchedBlackrock:Show(targetname)
@@ -168,7 +168,7 @@ end
 
 function mod:UNIT_POWER_FREQUENT()
 	local ore = UnitPower("boss1")
-	if self:AntiSpam(10) and lastOre ~= ore then
+	if (self:AntiSpam(10) or ore == 100) and lastOre ~= ore then
 		lastOre = ore
 		warnCollectOre:Show(ore)
 	end
