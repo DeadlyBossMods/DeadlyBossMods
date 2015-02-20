@@ -646,6 +646,7 @@ do
 				end
 				prevNumClosePlayer = closePlayer
 				prevclosestRange = closestRange
+				prevType = type
 			end
 
 			if UnitIsDeadOrGhost("player") then
