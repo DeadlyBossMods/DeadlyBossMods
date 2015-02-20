@@ -456,7 +456,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnInfernoBreath:Show()
 		timerInfernoBreathCD:Start()
 		voiceInfernoBreath:Play("breathsoon")
-		self:BossTargetScanner(76874, "BreathTarget", 0.05, 25, nil, nil, false)
+		self:BossTargetScanner(76874, "BreathTarget", 0.1, 25, nil, nil, false)
 		DBM:Debug("TESTING THINGS!: "..UnitName(uId.."target"))
 	end
 end
