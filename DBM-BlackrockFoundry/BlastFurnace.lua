@@ -375,6 +375,7 @@ function mod:UNIT_DIED(args)
 			self:Unschedule(SecurityGuard)
 			self:Unschedule(FireCaller)
 			self.vb.phase = 3
+			self:UnregisterShortTermEvents()
 			warnPhase3:Show()
 			specWarnHeartoftheMountain:Show()
 			voicePhaseChange:Play("pthree")
