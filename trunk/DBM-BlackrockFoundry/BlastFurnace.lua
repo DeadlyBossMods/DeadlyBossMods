@@ -178,7 +178,11 @@ function mod:CustomHealthUpdate()
 				maxh = UnitHealthMax(uid)
 			end
 		end
-		health = (total / (maxh * 2) * 100)
+		if maxh > 0 then
+			health = (total / (maxh * 2) * 100)
+		else
+			health = 100
+		end
 		return ("%d%%"):format(health)
 	elseif self.vb.phase == 2 then
 		for i = 1, 5 do
@@ -189,7 +193,11 @@ function mod:CustomHealthUpdate()
 				maxh = UnitHealthMax(uid)
 			end
 		end
-		health = (total / (maxh * activePrimal) * 100)
+		if activePrimal > 0 then
+			health = (total / (maxh * activePrimal) * 100)
+		else
+			health = 100
+		end
 		return ("%d%%"):format(health)
 	elseif self.vb.phase == 3 then
 		health = (UnitHealth("boss1") / UnitHealthMax("boss1") * 100)
@@ -329,7 +337,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceBellowsOperator:Play("killmob")
 	elseif spellId == 176121 then
 		warnVolatileFire:CombinedShow(1, args.destName)
-		local uId = DBM:GetRaidUnitId(name)
+		local uId = DBM:GetRaidUnitId(args.destName)
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)
 		local debuffTime = expires - GetTime()
 		if args:IsPlayer() then
