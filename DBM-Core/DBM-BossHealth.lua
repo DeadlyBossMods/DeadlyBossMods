@@ -193,7 +193,9 @@ function updateBar(bar, percent, icon, dontShowDead, name)
 		barbar:SetStatusBarColor(0, 0, 0)
 		bar.value = 0
 	else--can't detect health. show unknown
-		bartimer:SetText(DBM_CORE_UNKNOWN)
+		if bar.value ~= 0 then
+			bartimer:SetText(DBM_CORE_UNKNOWN)
+		end
 	end
 	if not icon or type(icon) ~= "number" or icon < 1 or icon > 8 then
 		barIcon:Hide()
