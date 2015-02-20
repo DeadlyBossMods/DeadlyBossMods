@@ -16,8 +16,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 155192 155196 158345 155242 155181 176121 155225 156934 155173",
 	"SPELL_AURA_APPLIED_DOSE 155242",
 	"SPELL_AURA_REMOVED 155192 176121",
-	"SPELL_PERIODIC_DAMAGE 156932 155223",
-	"SPELL_ABSORBED 156932 155223",
+	"SPELL_PERIODIC_DAMAGE 156932 155223 155743",
+	"SPELL_ABSORBED 156932 155223 155743",
 	"UNIT_DIED",
 	"UNIT_POWER_FREQUENT boss1"
 )
@@ -30,7 +30,7 @@ local warnEngineer				= mod:NewSpellAnnounce("ej9649", 2, 155179)
 local warnRupture				= mod:NewTargetAnnounce(156932, 3)
 --Phase 2
 local warnPhase2				= mod:NewPhaseAnnounce(2)
-local warnElementalists			= mod:NewAddsLeftAnnounce("ej9655", 2)
+local warnElementalists			= mod:NewAddsLeftAnnounce("ej9655", 2, 91751)
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4)
 local warnFireCaller			= mod:NewSpellAnnounce("ej9659", 3, 156937, "Tank")
@@ -47,17 +47,20 @@ local specWarnDeafeningRoar		= mod:NewSpecialWarningDodge("OptionVersion2", 1777
 local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, "-Healer", nil, nil, nil, nil, 2)
 local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932)
 local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, nil, nil, 2)
+local yellRupture				= mod:NewYell(156932)
 --Phase 2
 local specWarnFixate			= mod:NewSpecialWarningYou(155196)
 local specWarnMeltYou			= mod:NewSpecialWarningYou(155225)
 local specWarnMeltNear			= mod:NewSpecialWarningClose(155225, false)
 local specWarnMelt				= mod:NewSpecialWarningMove(155223, nil, nil, nil, nil, nil, 2)
+local yellMelt					= mod:NewYell(155223)
 local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, "-Healer")--if spammy, will switch to target/focus type only
 local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
 local specVolatileFire			= mod:NewSpecialWarningMoveAway(176121)
 local yellVolatileFire			= mod:NewYell(176121)
 local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", "Dps")
 local specWarnEarthShield		= mod:NewSpecialWarningDispel(155173, "MagicDispeller")
+local specWarnSlagPool			= mod:NewSpecialWarningMove(155743)
 --Phase 3
 local specWarnHeartoftheMountain= mod:NewSpecialWarningSwitch("ej10808", "Tank")
 local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3, nil, nil, nil, nil, 2)
@@ -72,6 +75,7 @@ local timerRuptureCD			= mod:NewCDTimer(26, 156934)
 local timerEngineer				= mod:NewNextTimer(41, "ej9649", nil, nil, nil, 155179)
 local timerBellowsOperator		= mod:NewCDTimer(60, "ej9650", nil, nil, nil, 155181)--60-65second variation for sure
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
+local timerVolatileFire			= mod:NewBuffFadesTimer(8, 176121)
 local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps")
 local timerSlagElemental		= mod:NewNextCountTimer(55, "ej9657", nil, "-Tank", nil, 155196)--Definitely 55 seconds, although current detection method may make it appear 1-2 seconds if slag has to run across room before casting first fixate
 local timerFireCaller			= mod:NewCDTimer(45, "ej9659", nil, "Tank", nil, 156937)--CD bars until accuracy verified
@@ -93,6 +97,7 @@ local voiceBomb 				= mod:NewVoice(155192) --bombyou.ogg, bomb on you
 local voiceBellowsOperator 		= mod:NewVoice("ej9650", "-Healer")
 local voiceRupture				= mod:NewVoice(156932) --runaway
 local voiceMelt					= mod:NewVoice(155223) --runaway
+local voiceSlagPool				= mod:NewVoice(155743) --runaway
 local voiceHeat					= mod:NewVoice(155242) --changemt
 local voiceSlagElemental		= mod:NewVoice("ej9657", "-Tank")
 local voiceFireCaller			= mod:NewVoice("ej9659", "Tank")
@@ -108,8 +113,24 @@ mod.vb.phase = 1
 mod.vb.slagCount = 0
 local activeSlagGUIDS = {}
 local activePrimalGUIDS = {}
+local activePrimal = 0 -- health report variable. no sync
 
-local UnitHealth, UnitHealthMax = UnitHealth, UnitHealthMax
+local VolatileFire = GetSpellInfo(176121)
+
+local DebuffFilter
+do
+	DebuffFilter = function(uId)
+		return UnitDebuff(uId, VolatileFire)
+	end
+end
+
+local function resetRangeFrame()
+	if mod.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
+
+local UnitHealth, UnitHealthMax, GetTime = UnitHealth, UnitHealthMax, GetTime
 --Still needs double checking in LFR, normal, and mythic. Mythic data given via 3rd party and unverified by me
 local function Engineers(self)
 	warnEngineer:Show()
@@ -147,41 +168,32 @@ end
 function mod:CustomHealthUpdate()
 	local health
 	local total = 0
-	local tmax = 0
+	local maxh = 0
 	if self.vb.phase == 1 then
 		for i = 1, 5 do
 			local uid = "boss"..i
 			local cid = self:GetUnitCreatureId(uid)
 			if cid == 76808 then
 				total = total + UnitHealth(uid)
-				tmax = tmax + UnitHealthMax(uid)
+				maxh = UnitHealthMax(uid)
 			end
 		end
-		health = (total / tmax * 100)
-		return health.." ("..SCENARIO_STAGE:format(1)..")"
+		health = (total / (maxh * 2) * 100)
+		return ("%d%%"):format(health)
 	elseif self.vb.phase == 2 then
 		for i = 1, 5 do
 			local uid = "boss"..i
 			local cid = self:GetUnitCreatureId(uid)
 			if cid == 76815 then
 				total = total + UnitHealth(uid)
-				tmax = tmax + UnitHealthMax(uid)
+				maxh = UnitHealthMax(uid)
 			end
 		end
-		health = (total / tmax * 100)
-		return health.." ("..SCENARIO_STAGE:format(2)..")"
+		health = (total / (maxh * activePrimal) * 100)
+		return ("%d%%"):format(health)
 	elseif self.vb.phase == 3 then
-		for i = 1, 5 do
-			local uid = "boss"..i
-			local cid = self:GetUnitCreatureId(uid)
-			if cid == 76806 then
-				total = total + UnitHealth(uid)
-				tmax = tmax + UnitHealthMax(uid)
-				break
-			end
-		end
-		health = (total / tmax * 100)
-		return health.." ("..SCENARIO_STAGE:format(3)..")"
+		health = (UnitHealth("boss1") / UnitHealthMax("boss1") * 100)
+		return ("%d%%"):format(health)
 	end
 	return DBM_CORE_UNKNOWN
 end
@@ -316,8 +328,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownBellowsOperator:Start()
 		voiceBellowsOperator:Play("killmob")
 	elseif spellId == 176121 then
-		warnVolatileFire:CombinedShow(0.5, args.destName)
+		warnVolatileFire:CombinedShow(1, args.destName)
+		local uId = DBM:GetRaidUnitId(name)
+		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)
+		local debuffTime = expires - GetTime()
 		if args:IsPlayer() then
+			timerVolatileFire:Start(debuffTime)
 			specVolatileFire:Show()
 			if not self:IsLFR() then
 				yellVolatileFire:Yell()
@@ -326,10 +342,16 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(8)
 			end
 		end
+		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
+			DBM.RangeCheck:Show(8, DebuffFilter)
+		end
+		self:Unschedule(resetRangeFrame)
+		self:Schedule(debuffTime + 0.5, resetRangeFrame)
 	elseif spellId == 155225 then
 		warnMelt:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnMeltYou:Show()
+			yellMelt:Schedule(5)--yell after 5 sec to warn nearby player (aoe actually after 6 sec). like expel magic: fel
 		elseif self:CheckNearby(8, args.destName) then
 			specWarnMeltNear:Show()
 		end
@@ -338,6 +360,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerRuptureCD:Start()
 		if args:IsPlayer() then
 			specWarnRuptureOn:Show()
+			yellRupture:Schedule(4)--yell after 4 sec to warn nearby player (aoe actually after 5 sec).  like expel magic: fel
 		end
 	elseif spellId == 155173 and not args:IsDestTypePlayer() then
 		specWarnEarthShield:Show(args.destName)
@@ -361,6 +384,9 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId
 	elseif spellId == 155223 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnMelt:Show()
 		voiceMelt:Play("runaway")
+	elseif spellId == 155743 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
+		specWarnSlagPool:Show()
+		voiceSlagPool:Play("runaway")
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
@@ -390,6 +416,7 @@ function mod:UNIT_DIED(args)
 		self.vb.machinesDead = self.vb.machinesDead + 1
 		if self.vb.machinesDead == 2 then
 			self.vb.phase = 2
+			activePrimal = 0
 			warnPhase2:Show()
 			self:Unschedule(Engineers)
 			timerEngineer:Cancel()
@@ -422,6 +449,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		local unitGUID = UnitGUID(unitID)
 		local cid = self:GetCIDFromGUID(unitGUID)
 		if self.vb.phase == 2 and cid == 76815 and UnitExists(unitID) and not activePrimalGUIDS[unitGUID] then
+			activePrimal = activePrimal + 1
 			activePrimalGUIDS[unitGUID] = true
 			DBM.BossHealth:AddBoss(unitGUID)
 		end
