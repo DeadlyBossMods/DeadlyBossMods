@@ -1723,11 +1723,11 @@ do
 	SLASH_DBMRRANGE1 = "/rrange"
 	SLASH_DBMRRANGE2 = "/rdistance"
 	SlashCmdList["DBMRANGE"] = function(msg)
-		local r = tonumber(msg)
+		local r = tonumber(msg) or 10
 		updateRangeFrame(r, false)
 	end
 	SlashCmdList["DBMRRANGE"] = function(msg)
-		local r = tonumber(msg)
+		local r = tonumber(msg) or 10
 		updateRangeFrame(r, true)
 	end
 end
