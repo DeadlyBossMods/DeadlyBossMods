@@ -254,13 +254,13 @@ DBM.Bars = DBT:New()
 DBM.Mods = {}
 DBM.ModLists = {}
 DBM.Counts = {
-	{	text	= "Moshne (Male)",	value 	= "Mosh"},
-	{	text	= "Corsica (Female)",value 	= "Corsica"},
-	{	text	= "Koltrane (Male)",value 	= "Kolt"},
-	{	text	= "Pewsey (Male)",value 	= "Pewsey"},
-	{	text	= "Bear (Male Child)",value = "Bear"},
-	{	text	= "Anshlun (ptBR Male)",value = "Anshlun"},
-	{	text	= "Neryssa (ptBR Female)",value = "Neryssa"},
+	{	text	= "Moshne (Male)",	value 	= "Mosh", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"},
+	{	text	= "Corsica (Female)",value 	= "Corsica", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\"},
+	{	text	= "Koltrane (Male)",value 	= "Kolt", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\"},
+	{	text	= "Pewsey (Male)",value 	= "Pewsey", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Pewsey\\"},
+	{	text	= "Bear (Male Child)",value = "Bear", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Bear\\"},
+	{	text	= "Anshlun (ptBR Male)",value = "Anshlun", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Anshlun\\"},
+	{	text	= "Neryssa (ptBR Female)",value = "Neryssa", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Neryssa\\"},
 }
 
 ------------------------
@@ -1062,7 +1062,7 @@ do
 						self.VoiceVersions[voiceValue] = voiceVersion
 						self:Schedule(10, self.CheckVoicePackVersion, self, voiceValue)--Still at 1 since the count sounds won't break any mods or affect filter. V2 if support countsound path
 						if GetAddOnMetadata(i, "X-DBM-Voice-HasCount") then--Supports adding countdown options, insert new countdown into table
-							tinsert(self.Counts, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = "VP:"..voiceValue })
+							tinsert(self.Counts, { text = GetAddOnMetadata(i, "X-DBM-Voice-Name"), value = "VP:"..voiceValue, path = "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\" })
 						end
 					end
 				end
@@ -7822,43 +7822,37 @@ do
 			if self.alternateVoice == 3 then
 				voice = voice3
 			end
+			local path
+			for i = 1, #DBM.Counts do
+				if DBM.Counts[i].value == voice then
+					path = DBM.Counts[i].path
+					break
+				end
+			end
 			if voice == "Mosh" then--Voice only goes to 5
 				if self.type == "Countout" then
 					for i = 1, timer do
 						if i < 6 then
-							self.sound5:Schedule(i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"..i..".ogg")
+							self.sound5:Schedule(i, path..i..".ogg")
 						end
 					end
 				else
 					for i = count, 1, -1 do
 						if i <= 5 then
-							self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"..i..".ogg")
+							self.sound5:Schedule(timer-i, path..i..".ogg")
 						end
-					end
-				end
-			elseif voice:find("VP:") then--voice pack voice
-				local _, voiceValue = string.split(":", voice)
-				if self.type == "Countout" then
-					for i = 1, timer do
-						if i < 11 then
-							self.sound5:Schedule(i, "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\"..i..".ogg")
-						end
-					end
-				else
-					for i = count, 1, -1 do
-						self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\"..i..".ogg")
 					end
 				end
 			else--Voice that goes to 10
 				if self.type == "Countout" then
 					for i = 1, timer do
 						if i < 11 then
-							self.sound5:Schedule(i, "Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..i..".ogg")
+							self.sound5:Schedule(i, path..i..".ogg")
 						end
 					end
 				else
 					for i = count, 1, -1 do
-						self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..i..".ogg")
+						self.sound5:Schedule(timer-i, path..i..".ogg")
 					end
 				end
 			end
@@ -8488,7 +8482,7 @@ do
 	function DBM:PlayCountSound(number, forceVoice)
 		if number > 10 then return end
 		local voice, voice2
-		if forceVoice then--Primarlly for options
+		if forceVoice then--For options example
 			voice = forceVoice
 		else
 			voice = DBM.Options.CountdownVoice
@@ -8502,16 +8496,27 @@ do
 			end
 		end--If number is higher than 5 and users primary voice setting ismosh, fallback to secondary voice setting
 		local path
-		if voice:find("VP:") then
-			local _, voiceValue = string.split(":", voice)
-			path = "Interface\\AddOns\\DBM-VP"..voiceValue.."\\count\\"..number..".ogg"
-		else
-			path = "Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..number..".ogg"
+		for i = 1, #DBM.Counts do
+			if DBM.Counts[i].value == voice then
+				path = DBM.Counts[i].path
+				break
+			end
 		end
 		if DBM.Options.UseMasterVolume then
-			PlaySoundFile(path, "Master")
+			PlaySoundFile(path..number..".ogg", "Master")
 		else
-			PlaySoundFile(path)
+			PlaySoundFile(path..number..".ogg")
+		end
+	end
+	
+	function DBM:RegisterCountSound(t, v, p)
+		--Prevent duplicate insert
+		for i = 1, #DBM.Counts do
+			if DBM.Counts[i].value == v then return end
+		end
+		--Insert into counts table.
+		if t and v and p then
+			tinsert(self.Counts, { text = t, value = v, path = p })
 		end
 	end
 
@@ -8537,24 +8542,29 @@ do
 				self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice--Defaults
 			end
 		end
-		if voice1:find("VP:") then
-			local _, voiceValue = string.split(":", voice1)
-			if not self.VoiceVersions[voiceValue] then
-				self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(1))
-				self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice
+		local found1, found2, found3 = false, false, false
+		for i = 1, #DBM.Counts do
+			if self.Counts[i].value == self.Options.CountdownVoice then
+				found1 = true
 			end
-		elseif voice2:find("VP:") then
-			local _, voiceValue = string.split(":", voice2)
-			if not self.VoiceVersions[voiceValue] then
-				self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(2))
-				self.Options.CountdownVoice2 = self.DefaultOptions.CountdownVoice2
+			if self.Counts[i].value == self.Options.CountdownVoice2 then
+				found2 = true
 			end
-		elseif voice3:find("VP:") then
-			local _, voiceValue = string.split(":", voice3)
-			if not self.VoiceVersions[voiceValue] then
-				self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(3))
-				self.Options.CountdownVoice3 = self.DefaultOptions.CountdownVoice3
+			if self.Counts[i].value == self.Options.CountdownVoice3 then
+				found3 = true
 			end
+		end
+		if not found1 then
+			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(1))
+			self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice
+		end
+		if not found2 then
+			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(2))
+			self.Options.CountdownVoice2 = self.DefaultOptions.CountdownVoice2
+		end
+		if not found3 then
+			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(3))
+			self.Options.CountdownVoice3 = self.DefaultOptions.CountdownVoice3
 		end
 	end
 
