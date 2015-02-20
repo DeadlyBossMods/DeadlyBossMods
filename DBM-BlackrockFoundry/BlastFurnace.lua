@@ -32,12 +32,12 @@ local warnRupture				= mod:NewTargetAnnounce(156932, 3)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnElementalists			= mod:NewAddsLeftAnnounce("ej9655", 2, 91751)
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
-local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4)
+local warnVolatileFire			= mod:NewTargetAnnounce("OptionVersion2", 176121, 4, nil, false)--Spam. disable by default.
 local warnFireCaller			= mod:NewSpellAnnounce("ej9659", 3, 156937, "Tank")
 local warnSecurityGuard			= mod:NewSpellAnnounce("ej9648", 2, 160379, "Tank")
 --Phase 3
 local warnPhase3				= mod:NewPhaseAnnounce(3)
-local warnMelt					= mod:NewTargetAnnounce("OptionVersion2", 155225, 4, nil, false)--VERY spammy, off by default
+local warnMelt					= mod:NewTargetAnnounce("OptionVersion2", 155225, 4, nil, false)--Every 10 sec.
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 
 local specWarnBomb				= mod:NewSpecialWarningMoveTo(155192, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(155192), nil, 3, nil, 2)
@@ -433,7 +433,9 @@ function mod:UNIT_DIED(args)
 			countdownBellowsOperator:Cancel()
 			voicePhaseChange:Play("ptwo")
 			--Start adds timers. Seem same in all modes.
-			timerSlagElemental:Start(15, 1)
+			if not self:IsLFR() then-- LFR do not have Slag Elemental.
+				timerSlagElemental:Start(15, 1)
+			end
 			self:Schedule(71, SecurityGuard, self)
 			timerSecurityGuard:Start(71)
 			self:Schedule(78, FireCaller, self)
