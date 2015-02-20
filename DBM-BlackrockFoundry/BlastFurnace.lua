@@ -218,14 +218,16 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	if DBM.BossHealth:IsShown() then
 		DBM.BossHealth:Clear()
-		for i = 1, 5 do
-			local uid = "boss"..i
-			local guid = UnitGUID(uid)
-			local cid = self:GetCIDFromGUID(guid)
-			if cid == 76808 then
-				DBM.BossHealth:AddBoss(guid)
+		self:Schedule(1, function()
+			for i = 1, 5 do
+				local uid = "boss"..i
+				local guid = UnitGUID(uid)
+				local cid = self:GetCIDFromGUID(guid)
+				if cid == 76808 then
+					DBM.BossHealth:AddBoss(guid)
+				end
 			end
-		end
+		end)
 	end
 end
 
@@ -420,7 +422,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		local unitGUID = UnitGUID(unitID)
 		local cid = self:GetCIDFromGUID(unitGUID)
 		if self.vb.phase == 2 and cid == 76815 and UnitExists(unitID) and not activePrimalGUIDS[unitGUID] then
-			activeAddGUIDS[unitGUID] = true
+			activePrimalGUIDS[unitGUID] = true
 			DBM.BossHealth:AddBoss(unitGUID)
 		end
 	end
