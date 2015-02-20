@@ -62,7 +62,7 @@ mod.vb.firstJump = false
 function mod:JumpTarget(targetname, uId)
 	if not targetname then return end
 	if DBM.Options.DebugMode then
-		self.vb.lastJumpTarget = DBM:GetUnitFullName(targetname)
+		self.vb.lastJumpTarget = targetname
 	end
 	if targetname == UnitName("player") then
 		specWarnJumpSlam:Show()
@@ -127,14 +127,15 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceShatteredVertebrae:Play("changemt")
 			end
 		end
-	elseif spellId == 162124 and self:AntiSpam(3, args.sourceGUID) then
-		self.vb.stamperDodgeCount = self.vb.stamperDodgeCount + 1
-		timerStamperDodge:Start(nil, self.vb.stamperDodgeCount)--Multiple timers at once is intended. But capped at 3
+--	elseif spellId == 162124 and self:AntiSpam(30, args.sourceGUID) then
+--		DBM:Debug(args.sourceGUID, 3)
+--		self.vb.stamperDodgeCount = self.vb.stamperDodgeCount + 1
+--		timerStamperDodge:Start(nil, self.vb.stamperDodgeCount)--Multiple timers at once is intended. But capped at 3
 		--Run antispam code. If raid moves too fast MANY stampers spawn at once. This code will auto cancel timers as new timers are added once we reach 3
 		--So only max of 3 bars at once. Cancel current -3 all new timer start
-		if self.vb.stamperDodgeCount >= 3 then--Bugged (has to be DBM-core or DBT).
-			timerStamperDodge:Cancel(self.vb.stamperDodgeCount-3)--This is canceling ALL timers, not just the one with this arg.
-		end
+--		if self.vb.stamperDodgeCount >= 3 then--Bugged (has to be DBM-core or DBT).
+--			timerStamperDodge:Cancel(self.vb.stamperDodgeCount-3)--This is canceling ALL timers, not just the one with this arg.
+--		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -184,19 +185,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.1, 13, nil, nil, false)--Don't include tank in first scan should be enough of a filter for first, it'll grab whatever first non tank target he gets and set that as first jump target and it will be valid
 		else--Not first jump
 			DBM:Debug("157922: firstJump false")
-			if self.vb.lastJumpTarget ~= "None" then--First jump was successful, the rest should work work perfectly by grabbing new targets only if they don't match last target
-				DBM:Debug("157922: lastJumpTarget exists for "..self.vb.lastJumpTarget)
-				self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.1, 13, nil, nil, true, nil, self.vb.lastJumpTarget)--1.3 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
-			else
-				DBM:Debug("self.vb.lastJumpTarget is unknown, target scanning for jump will be slower")
-			end
+			self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.05, 40, nil, nil, true, nil, self.vb.lastJumpTarget)--1.3 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
 		end
 	elseif spellId == 157923 then--Fallback
 		DBM:Debug("157923: boss target "..UnitName(uId.."target"))
-		if self.vb.lastJumpTarget == "None" then
-			DBM:Debug("Using slower scan fallback: 157923", 2)
-			self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.02, 15, nil, nil, true)
-		end
 	end
 end
 
