@@ -61,9 +61,7 @@ mod.vb.firstJump = false
 
 function mod:JumpTarget(targetname, uId)
 	if not targetname then return end
-	if DBM.Options.DebugMode then
-		self.vb.lastJumpTarget = targetname
-	end
+	self.vb.lastJumpTarget = targetname
 	if targetname == UnitName("player") then
 		specWarnJumpSlam:Show()
 		yellJumpSlam:Yell()
@@ -182,10 +180,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if not self.vb.firstJump then
 			DBM:Debug("157922: firstJump true")
 			self.vb.firstJump = true
-			self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.05, 30, nil, nil, false)--Don't include tank in first scan should be enough of a filter for first, it'll grab whatever first non tank target he gets and set that as first jump target and it will be valid
+			self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.05, 40, nil, nil, false)--Don't include tank in first scan should be enough of a filter for first, it'll grab whatever first non tank target he gets and set that as first jump target and it will be valid
 		else--Not first jump
 			DBM:Debug("157922: firstJump false")
-			self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.05, 30, nil, nil, true, nil, self.vb.lastJumpTarget)--1.3 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
+			self:BossTargetScanner(UnitGUID(uId), "JumpTarget", 0.05, 40, nil, nil, true, nil, self.vb.lastJumpTarget)--1.3 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
 		end
 	elseif spellId == 157923 then--Fallback
 		DBM:Debug("157923: boss target "..UnitName(uId.."target"))
