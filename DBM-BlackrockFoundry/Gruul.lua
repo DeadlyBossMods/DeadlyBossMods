@@ -139,7 +139,9 @@ function mod:SPELL_CAST_START(args)
 			timerInfernoSliceCD:Start(nil, self.vb.sliceCount+1)
 			countdownInfernoSlice:Start()
 		end
-		voiceInfernoSlice:Play("gathershare")
+		if not UnitDebuff("player", GetSpellInfo(155323)) then
+			voiceInfernoSlice:Play("gathershare")
+		end
 	elseif spellId == 155301 then
 		self.vb.smashCount = self.vb.smashCount + 1
 		specWarnOverheadSmash:Show(self.vb.smashCount)
