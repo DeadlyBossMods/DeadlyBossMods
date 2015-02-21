@@ -67,6 +67,19 @@ local function checkHurl()
 	end
 end
 
+function mod:BerserkerRushTarget(targetname, uId)
+	if not targetname then return end
+	if self:AntiSpam(3, targetname) then
+		if targetname == UnitName("player") then
+			specWarnBerserkerRush:Show(firePillar)
+			yellBerserkerRush:Yell()
+			voiceBerserkerRush:Play("159202f") --find the pillar
+		else
+			specWarnBerserkerRushOther:Show(targetname)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	timerPillarCD:Start(24-delay)
 	timerImpaleCD:Start(35-delay)
@@ -107,7 +120,9 @@ function mod:SPELL_CAST_START(args)
 		timerChainHurlCD:Start()
 		countdownChainHurl:Start()
 		voiceChainHurl:Schedule(99.5, "159947r") --ready for hurl
-	elseif spellId == 158986 and self:IsMelee() then
+	elseif spellId == 158986 then
+		timerBerserkerRushCD:Start()
+		self:BossTargetScanner(78714, "BerserkerRushTarget", 0.05, 10)
 		voiceBerserkerRush:Play("chargemove")
 	end
 end
@@ -125,17 +140,13 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:Schedule(0.5, checkHurl)
 			end
 		end
-	elseif spellId == 158986 then
-		timerBerserkerRushCD:Start()
+	elseif spellId == 158986 and self:AntiSpam(3, args.destName) then
 		if args:IsPlayer() then
 			specWarnBerserkerRush:Show(firePillar)
 			yellBerserkerRush:Yell()
 			voiceBerserkerRush:Play("159202f") --find the pillar
 		else
 			specWarnBerserkerRushOther:Show(args.destName)
-			if not self:IsMelee() then
-				voiceBerserkerRush:Play("chargemove")
-			end
 		end
 	elseif spellId == 159178 then
 		local amount = args.amount or 1
