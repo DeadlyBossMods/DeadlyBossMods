@@ -245,7 +245,9 @@ function mod:OnCombatStart(delay)
 	end
 	timerBlastCD:Start(30-delay)
 	countdownBlast:Start(30-delay)
-	berserkTimer:Start(-delay)
+	if not self:IsLFR() then
+		berserkTimer:Start(-delay)
+	end
 	if DBM.BossHealth:IsShown() then
 		DBM.BossHealth:Clear()
 		self:Schedule(1, function()
