@@ -50,10 +50,6 @@ do
 	end
 end
 
-local function hideRangeFrame()
-	DBM.RangeCheck:Hide()
-end
-
 function mod:OnCombatStart(delay, yellTriggered)
 --	if yellTriggered then
 		--Vines--7
@@ -109,9 +105,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			if UnitDebuff("player", debuffName) then
 				DBM.RangeCheck:Show(8, nil)
 			else
-				DBM.RangeCheck:Show(8, debuffFilter)
+				DBM.RangeCheck:Show(8, debuffFilter, nil, nil, nil, 8)
 			end
-			self:Schedule(8, hideRangeFrame)
 		end
 	end
 end

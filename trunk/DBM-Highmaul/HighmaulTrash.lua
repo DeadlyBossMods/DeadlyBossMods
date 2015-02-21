@@ -29,18 +29,11 @@ mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 mod:AddRangeFrameOption(8, 166200)
 
-local debuff = GetSpellInfo(166200)
-
 local DebuffFilter
 do
+	local debuff = GetSpellInfo(166200)
 	DebuffFilter = function(uId)
 		return UnitDebuff(uId, debuff)
-	end
-end
-
-local function resetRangeFrame()
-	if mod.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
 	end
 end
 
@@ -71,14 +64,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellArcaneVol:Yell()
 			end
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(8)
+				DBM.RangeCheck:Show(8, nil, nil, nil, nil, 6.5)
 			end
 		end
 		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
-			DBM.RangeCheck:Show(8, DebuffFilter)
+			DBM.RangeCheck:Show(8, DebuffFilter, nil, nil, nil, 6.5)
 		end
-		self:Unschedule(resetRangeFrame)
-		self:Schedule(6.5, resetRangeFrame)
 	elseif spellId == 173827 and args:IsPlayer() then
 		specWarnWildFlames:Show()
 	elseif spellId == 175654 and args:IsPlayer() then
