@@ -17,10 +17,12 @@ L= DBM:GetModLocalization(1202)
 L= DBM:GetModLocalization(1154)
 
 L:SetWarningLocalization({
+	warnRegulators		= "열기 조절 장치 남음: %d",
 	warnBlastFrequency	= "폭파 시전 빈도 증가됨: 약 %d초 마다 시전"
 })
 
 L:SetOptionLocalization({
+	warnRegulators		= "열기 조절 장치 남은숫자 알림 보기",
 	warnBlastFrequency	= "$spell:155209 시전 빈도 증가시 알림 보기"
 })
 
