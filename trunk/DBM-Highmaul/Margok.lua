@@ -226,7 +226,7 @@ local function updateRangeFrame(self, markPreCast)
 		end
 		return--Other crap doesn't happen in phase 4 mythic so stop here.
 	end
-	if not self:IsTank() and self.vb.brandedActive > 0 then--Active branded out there, not a tank. Branded is always prioritized over mark for non tanks since 90% of time tanks handle this on their own, while rest of raid must ALWAYS handle branded
+	if not self:IsTank() and self.vb.brandedActive > 0 and not self:IsLFR() then--Active branded out there, not a tank. Branded is always prioritized over mark for non tanks since 90% of time tanks handle this on their own, while rest of raid must ALWAYS handle branded
 		local distance = self.vb.jumpDistance
 		if self.vb.playerHasBranded then--Player has Branded debuff
 			if self.vb.markActive and self:CheckNearby(36, self.vb.lastMarkedTank) then
@@ -582,7 +582,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			updateRangeFrame(self)
 		end
-	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
+	elseif args:IsSpellID(156225, 164004, 164005, 164006) and not self:IsLFR() then
 		self.vb.brandedActive = self.vb.brandedActive + 1
 		local name = args.destName
 		local uId = DBM:GetRaidUnitId(name)
@@ -600,11 +600,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Yell for all stacks
 		if args:IsPlayer() then
 			self.vb.playerHasBranded = true
-			if not self:IsLFR() then
-				yellBranded:Yell(currentStack, self.vb.jumpDistance)
-				self:Schedule(1, updateRangeFrame, self)
-				self:Schedule(2, updateRangeFrame, self)
-			end
+			yellBranded:Yell(currentStack, self.vb.jumpDistance)
+			self:Schedule(1, updateRangeFrame, self)
+			self:Schedule(2, updateRangeFrame, self)
 		end
 		--General warnings after 3 stacks
 		if currentStack > 2 then
@@ -788,7 +786,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 157763 and args:IsPlayer() and self.Options.RangeFrame then
 		updateRangeFrame(self)
-	elseif args:IsSpellID(156225, 164004, 164005, 164006) then
+	elseif args:IsSpellID(156225, 164004, 164005, 164006) and not self:IsLFR() then
 		self.vb.brandedActive = self.vb.brandedActive - 1
 		if args:IsPlayer() then
 			self.vb.playerHasBranded = false
