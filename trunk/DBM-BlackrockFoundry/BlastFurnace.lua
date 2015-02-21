@@ -13,9 +13,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 160379 155186 156937 177756",
 	"SPELL_CAST_SUCCESS 155179 174726",
-	"SPELL_AURA_APPLIED 155192 155196 158345 155242 155181 176121 155225 156934 155173",
+	"SPELL_AURA_APPLIED 155192 174716 155196 158345 155242 155181 176121 155225 156934 155173",
 	"SPELL_AURA_APPLIED_DOSE 155242",
-	"SPELL_AURA_REMOVED 155192 176121",
+	"SPELL_AURA_REMOVED 155192 174716 176121",
 	"SPELL_PERIODIC_DAMAGE 156932 155223 155743",
 	"SPELL_ABSORBED 156932 155223 155743",
 	"UNIT_DIED",
@@ -23,6 +23,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, figure out how to detect OTHER add spawns besides operator and get timers for them too. It's likely the'll require ugly scheduling and /yell logging. 
+local warnRegulators			= mod:NewAnnounce("warnRegulators", 2, 156918)
 local warnBlastFrequency		= mod:NewAnnounce("warnBlastFrequency", 1, 155209, "Healer")
 local warnBomb					= mod:NewTargetAnnounce(155192, 4)
 local warnDropBombs				= mod:NewSpellAnnounce("OptionVersion2", 174726, 1, nil, "-Tank")
@@ -104,7 +105,7 @@ local voiceSlagElemental		= mod:NewVoice("ej9657", "-Tank")
 local voiceFireCaller			= mod:NewVoice("ej9659", "Tank")
 local voiceSecurityGuard		= mod:NewVoice("ej9648", "Tank")
 
-mod:AddRangeFrameOption(8, 176121)
+mod:AddRangeFrameOption(8)
 
 mod.vb.machinesDead = 0
 mod.vb.elementalistsRemaining = 4
@@ -116,11 +117,19 @@ local activeSlagGUIDS = {}
 local activePrimalGUIDS = {}
 local activePrimal = 0 -- health report variable. no sync
 
+local Bomb = GetSpellInfo(155192)
 local VolatileFire = GetSpellInfo(176121)
 
-local DebuffFilter
+local BombFilter
 do
-	DebuffFilter = function(uId)
+	BombFilter = function(uId)
+		return UnitDebuff(uId, BombFilter)
+	end
+end
+
+local VolatileFilter
+do
+	VolatileFilter = function(uId)
 		return UnitDebuff(uId, VolatileFire)
 	end
 end
@@ -278,22 +287,33 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 155179 and self:CheckTankDistance(args.sourceGUID, 30) then--Blizz seems to updated encounter code so they now run to nearest regulator instead of lowest health one.
 		specWarnRepair:Show(args.sourceName)
 		voiceRepair:Play("kickcast")
-	elseif spellId == 174726 and self:CheckTankDistance(args.sourceGUID, 30) and self:AntiSpam(2, 4) then
+	elseif spellId == 174726 and self:CheckTankDistance(args.sourceGUID, 30) and self:AntiSpam(2, 4) and self.vb.phase == 1 then
 		warnDropBombs:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 155192 then
-		if self:CheckTankDistance(args.sourceGUID, 30) then
-			warnBomb:CombinedShow(0.5, args.destName)
+	if args:IsSpellID(155192, 174716) then
+		local uId = DBM:GetRaidUnitId(args.destName)
+		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)
+		local debuffTime = expires - GetTime()
+		if self:CheckTankDistance(args.sourceGUID, 30) and self.vb.phase == 1 then
+			warnBomb:CombinedShow(1, args.destName)
 		end
 		if args:IsPlayer() then
 			specWarnBomb:Show(L.heatRegulator)
-			timerBomb:Start()
+			timerBomb:Start(debuffTime)
 			voiceBomb:Play("bombrun")
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(8)
+			end
 		end
+		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
+			DBM.RangeCheck:Show(8, BombFilter)
+		end
+		self:Unschedule(resetRangeFrame)
+		self:Schedule(debuffTime + 0.5, resetRangeFrame)
 	elseif spellId == 155196 then
 		if not activeSlagGUIDS[args.sourceGUID] then
 			activeSlagGUIDS[args.sourceGUID] = true
@@ -353,7 +373,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceVolatileFire:Schedule(debuffTime - 4, "runout")
 		end
 		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
-			DBM.RangeCheck:Show(8, DebuffFilter)
+			DBM.RangeCheck:Show(8, VolatileFilter)
 		end
 		self:Unschedule(resetRangeFrame)
 		self:Schedule(debuffTime + 0.5, resetRangeFrame)
@@ -380,7 +400,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 155192 and args:IsPlayer() then
+	if args:IsSpellID(155192, 174716) and args:IsPlayer() then
 		timerBomb:Cancel()
 	elseif spellId == 176121 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
@@ -424,6 +444,7 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 76808 then--Regulators
 		self.vb.machinesDead = self.vb.machinesDead + 1
+		warnRegulators:Show(2 - self.vb.machinesDead)
 		if self.vb.machinesDead == 2 then
 			self.vb.phase = 2
 			activePrimal = 0
@@ -490,7 +511,7 @@ do
 				totalTime = 20
 				powerRate = 5
 			end
-			if self.vb.lastTotal > totalTime then--CD changed
+			if self.vb.lastTotal ~= totalTime then--CD changed
 				self.vb.lastTotal = totalTime
 				warnBlastFrequency:Show(totalTime)
 				local bossPower = UnitPower("boss1") --Get Boss Power
