@@ -117,26 +117,15 @@ local activeSlagGUIDS = {}
 local activePrimalGUIDS = {}
 local activePrimal = 0 -- health report variable. no sync
 
-local Bomb = GetSpellInfo(155192)
-local VolatileFire = GetSpellInfo(176121)
-
-local BombFilter
+local BombFilter, VolatileFilter
 do
+	local Bomb = GetSpellInfo(155192)
+	local VolatileFire = GetSpellInfo(176121)
 	BombFilter = function(uId)
-		return UnitDebuff(uId, BombFilter)
+		return UnitDebuff(uId, Bomb)
 	end
-end
-
-local VolatileFilter
-do
 	VolatileFilter = function(uId)
 		return UnitDebuff(uId, VolatileFire)
-	end
-end
-
-local function resetRangeFrame()
-	if mod.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
 	end
 end
 
@@ -308,14 +297,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerBomb:Start(debuffTime)
 			voiceBomb:Play("bombrun")
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(8)
+				DBM.RangeCheck:Show(8, nil, nil, nil, nil, debuffTime+0.5)
 			end
 		end
 		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
-			DBM.RangeCheck:Show(8, BombFilter)
+			DBM.RangeCheck:Show(8, BombFilter, nil, nil, nil, debuffTime+0.5)
 		end
-		self:Unschedule(resetRangeFrame)
-		self:Schedule(debuffTime + 0.5, resetRangeFrame)
 	elseif spellId == 155196 then
 		if not activeSlagGUIDS[args.sourceGUID] then
 			activeSlagGUIDS[args.sourceGUID] = true
@@ -370,15 +357,13 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellVolatileFire:Yell()
 			end
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(8)
+				DBM.RangeCheck:Show(8, nil, nil, nil, nil, debuffTime + 0.5)
 			end
 			voiceVolatileFire:Schedule(debuffTime - 4, "runout")
 		end
 		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
-			DBM.RangeCheck:Show(8, VolatileFilter)
+			DBM.RangeCheck:Show(8, VolatileFilter, nil, nil, nil, debuffTime + 0.5)
 		end
-		self:Unschedule(resetRangeFrame)
-		self:Schedule(debuffTime + 0.5, resetRangeFrame)
 	elseif spellId == 155225 then
 		warnMelt:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
