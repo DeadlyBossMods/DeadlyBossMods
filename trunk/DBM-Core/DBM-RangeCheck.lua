@@ -564,6 +564,10 @@ do
 	end
 
 	function updateRangeFrame()
+		if mainFrame.hideTime > 0 and GetTime() > mainFrame.hideTime then
+			rangeCheck:Hide(true)
+			return
+		end
 		activeRange = mainFrame.range
 		local tEnabled = textFrame.isShown
 		local rEnabled = radarFrame.isShown
@@ -730,6 +734,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	mainFrame.filter = filter
 	mainFrame.redCircleNumPlayers = redCircleNumPlayers
 	mainFrame.reverse = reverse
+	mainFrame.hideTime = hideTime and (GetTime() + hideTime) or 0
 	if not mainFrame.eventRegistered then
 		mainFrame.eventRegistered = true
 		updateIcon()
@@ -740,10 +745,6 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	updater:Play()
 	if forceshow and not DBM.Options.DontRestoreRange then--Force means user activaetd range frame, store user value for restore function
 		restoreRange, restoreFilter, restoreThreshold, restoreReverse = mainFrame.range, mainFrame.filter, mainFrame.redCircleNumPlayers, mainFrame.reverse
-	end
-	if hideTime then
-		DBM:Unschedule(rangeCheck.Hide)
-		DBM:Schedule(hideTime, rangeCheck.Hide, self)
 	end
 end
 
