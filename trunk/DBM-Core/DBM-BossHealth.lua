@@ -184,7 +184,7 @@ function updateBar(bar, percent, icon, dontShowDead, name)
 		barbar:SetStatusBarColor((100 - percent) / 100, percent/100, 0)
 		bar.value = percent
 	elseif (bar.value == 0) or (percent >= 0) then
-		if percent == 0 then
+		if percent == 0 or percent == -1 then
 			bartimer:SetText(dontShowDead and "0%" or DEAD)
 		else
 			bartimer:SetText("0%")
