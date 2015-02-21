@@ -99,6 +99,7 @@ mod:AddTimerLine(Garan)
 local timerRapidFireCD					= mod:NewCDTimer(30.5, 156626)
 local timerDarkHuntCD					= mod:NewCDTimer("OptionVersion2", 13.5, 158315, nil, false)--Important to know you have it, not very important to know it's coming soon.
 local timerPenetratingShotCD			= mod:NewCDTimer(30, 164271)--22-30 at least. maybe larger variation. Just small LFR sample size.
+local timerDeployTurretCD				= mod:NewCDTimer(20.5, 158599)--20.5-23.5
 ----Enforcer Sorka
 mod:AddTimerLine(Sorka)
 local timerBloodRitualCD				= mod:NewNextTimer(21, 158078)
@@ -240,6 +241,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 158599 and (noFilter or not isPlayerOnBoat()) then
 		specWarnDeployTurret:Show()
 		voiceDeployTurret:Play("158599")
+		timerDeployTurretCD:Start()
 	elseif spellId == 155794 then
 		savedAbilityTime["BladeDash"] = GetTime()
 		if noFilter or not isPlayerOnBoat() then
@@ -399,6 +401,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 77557 then--Gar'an
 		timerRapidFireCD:Cancel()
 		timerPenetratingShotCD:Cancel()
+		timerDeployTurretCD:Cancel()
 	elseif cid == 77231 then--Sorka
 		timerBladeDashCD:Cancel()
 		timerConvulsiveShadowsCD:Cancel()
@@ -472,6 +475,7 @@ function mod:OnSync(msg, guid)
 			self:Schedule(7, function()
 				timerRapidFireCD:Cancel()
 				timerPenetratingShotCD:Cancel()
+				timerDeployTurretCD:Cancel()
 			end)
 			voiceShip:Play("1695uktar")
 		end
