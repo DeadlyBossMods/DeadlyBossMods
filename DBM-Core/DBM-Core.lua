@@ -7098,9 +7098,12 @@ function DBM:GetBossHPByGUID(guid)
 end
 
 function DBM:GetBossHPByUnitID(uId)
-	local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
-	bossHealth[uId] = hp
-	return hp, uId, UnitName(uId)
+	if UnitHealthMax(uId) ~= 0 then
+		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
+		bossHealth[uId] = hp
+		return hp, uId, UnitName(uId)
+	end
+	return nil
 end
 
 function bossModPrototype:SetBossHealthInfo(...)
