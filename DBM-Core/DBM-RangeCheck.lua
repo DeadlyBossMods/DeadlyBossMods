@@ -565,7 +565,7 @@ do
 
 	function updateRangeFrame()
 		if mainFrame.hideTime > 0 and GetTime() > mainFrame.hideTime then
-			rangeCheck:Hide(true)
+			rangeCheck:Hide()
 			return
 		end
 		activeRange = mainFrame.range
@@ -773,6 +773,10 @@ end
 
 function rangeCheck:IsShown()
 	return textFrame and textFrame.isShown or radarFrame and radarFrame.isShown
+end
+
+function rangeCheck:SetHideTime(hideTime)
+	mainFrame.hideTime = hideTime and (GetTime() + hideTime) or 0
 end
 
 -- GetDistance(uId) -- distance between you and the given uId
