@@ -708,7 +708,7 @@ end
 --  Methods  --
 ---------------
 local restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
-function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse)
+function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse, hideTime)
 	if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame) and not forceshow then return end
 	if type(range) == "function" then -- the first argument is optional
 		return self:Show(nil, range)
@@ -740,6 +740,10 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse)
 	updater:Play()
 	if forceshow and not DBM.Options.DontRestoreRange then--Force means user activaetd range frame, store user value for restore function
 		restoreRange, restoreFilter, restoreThreshold, restoreReverse = mainFrame.range, mainFrame.filter, mainFrame.redCircleNumPlayers, mainFrame.reverse
+	end
+	if hideTime then
+		DBM:Unschedule(rangeCheck.Hide)
+		DBM:Schedule(hideTime, rangeCheck.Hide, self)
 	end
 end
 
