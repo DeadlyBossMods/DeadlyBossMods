@@ -68,11 +68,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.RangeFrame then
-			if not DBM.RangeCheck:IsShown() then
-				DBM.RangeCheck:Show(8, DebuffFilter, nil, nil, nil, 6.5)
-			else
-				DBM.RangeCheck:SetHideTime(6.5)
-			end
+			DBM.RangeCheck:Show(8, DebuffFilter, nil, nil, nil, 6.5)
 		end
 	elseif spellId == 173827 and args:IsPlayer() then
 		specWarnWildFlames:Show()

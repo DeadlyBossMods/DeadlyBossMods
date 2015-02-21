@@ -78,12 +78,6 @@ local function clearRampage(self)
 	self.vb.rampage = false
 end
 
-local function clearRangeFrame(self)
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
-end
-
 function mod:OnCombatStart(delay)
 	self.vb.smashCount = 0
 	self.vb.sliceCount = 0
@@ -150,8 +144,7 @@ function mod:SPELL_CAST_START(args)
 			timerOverheadSmashCD:Start(nil, self.vb.smashCount+1)--First usually 25-32, second 33-40
 		end
 	elseif spellId == 155326 and self.Options.RangeFrame and not self:IsMythic() then--On mythic everyone gets debuff so no reason to ever show this radar first
-		DBM.RangeCheck:Show(8, debuffFilter)--Show filtered frame at first for all, then update to unfiltered for those affected.
-		self:Schedule(10, clearRangeFrame, self)
+		DBM.RangeCheck:Show(8, debuffFilter, nil, nil, nil, 10)--Show filtered frame at first for all, then update to unfiltered for those affected.
 	end
 end
 

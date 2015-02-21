@@ -301,11 +301,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.RangeFrame then
-			if not DBM.RangeCheck:IsShown() then
-				DBM.RangeCheck:Show(8, BombFilter, nil, nil, nil, debuffTime+0.5)
-			else
-				DBM.RangeCheck:SetHideTime(debuffTime+0.5)
-			end
+			DBM.RangeCheck:Show(8, BombFilter, nil, nil, nil, debuffTime+0.5)
 		end
 	elseif spellId == 155196 then
 		if not activeSlagGUIDS[args.sourceGUID] then
@@ -366,11 +362,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceVolatileFire:Schedule(debuffTime - 4, "runout")
 		end
 		if self.Options.RangeFrame then
-			if not DBM.RangeCheck:IsShown() then
-				DBM.RangeCheck:Show(8, VolatileFilter, nil, nil, nil, debuffTime+0.5)
-			else
-				DBM.RangeCheck:SetHideTime(debuffTime+0.5)
-			end
+			DBM.RangeCheck:Show(8, VolatileFilter, nil, nil, nil, debuffTime+0.5)
 		end
 	elseif spellId == 155225 then
 		warnMelt:CombinedShow(0.5, args.destName)
