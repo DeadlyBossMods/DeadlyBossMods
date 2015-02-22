@@ -220,7 +220,7 @@ DBM_CORE_ANNOUNCE_BREAK_OVER		= "쉬는시간이 종료되었습니다."
 DBM_CORE_TIMER_PULL					= "전투 예정"
 DBM_CORE_ANNOUNCE_PULL				= "%d초 뒤 시작 합니다. (%s|1이;가; 보냄)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "시작합니다. 긴장하세요.!"
-DBM_CORE_GEAR_WARNING				= "경고: 착용 장비를 확인하세요. 착용 장비 레벨이 가방 장비 레벨보다 %d 낮습니다."
+DBM_CORE_GEAR_WARNING				= "경고: 장비를 확인하세요. 착용 장비가 최대 아이템 레벨보다 %d 낮습니다."
 DBM_CORE_GEAR_WARNING_WEAPON		= "경고: 주 장비가 제대로 장착되어 있는지 확인하세요."
 DBM_CORE_GEAR_FISHING_POLE			= "낚싯대"
 
