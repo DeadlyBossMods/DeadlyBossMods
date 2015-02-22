@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 --Stage One: The Blackrock Forge
 local warnMarkedforDeath			= mod:NewTargetAnnounce(156096, 4)--If not in combat log, find a RAID_BOSS_WHISPER event.
 --Stage Two: Storage Warehouse
-local warnSiegemaker				= mod:NewSpellAnnounce("ej9571", 3, 156667)
+local warnSiegemaker				= mod:NewCountAnnounce("ej9571", 3, 156667)
 local warnFixate					= mod:NewTargetAnnounce(156653, 4)
 --Stage Three: Iron Crucible
 local warnAttachSlagBombs			= mod:NewTargetAnnounce(157000, 4)
@@ -33,12 +33,13 @@ local warnAttachSlagBombs			= mod:NewTargetAnnounce(157000, 4)
 --Stage One: The Blackrock Forge
 local specWarnDemolition			= mod:NewSpecialWarningSpell(156425, nil, nil, nil, 2, nil, 2)
 local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 3, nil, 2)
+local specWarnMarkedforDeathOther	= mod:NewSpecialWarningTarget(156096, false)
 local yellMarkedforDeath			= mod:NewYell(156096)
 local specWarnThrowSlagBombs		= mod:NewSpecialWarningMove(156030, nil, nil, nil, nil, nil, 2)
 local specWarnShatteringSmash		= mod:NewSpecialWarningCount(155992, "Melee", nil, nil, nil, nil, 2)
 local specWarnMoltenSlag			= mod:NewSpecialWarningMove(156401)
 --Stage Two: Storage Warehouse
-local specWarnSiegemaker			= mod:NewSpecialWarningSpell("ej9571", false)--Kiter switch. off by default. 
+local specWarnSiegemaker			= mod:NewSpecialWarningCount("ej9571", false)--Kiter switch. off by default. 
 local specWarnSiegemakerPlatingFades= mod:NewSpecialWarningFades("OptionVersion2", 156667, "Ranged")--Plating removed, NOW dps switch
 local specWarnFixate				= mod:NewSpecialWarningRun(156653, nil, nil, nil, 4)
 local yellFixate					= mod:NewYell(156653)
@@ -58,7 +59,7 @@ local timerShatteringSmashCD		= mod:NewCDCountTimer(45.5, 155992)--power based, 
 local timerImpalingThrow			= mod:NewCastTimer(5, 156111)--How long marked target has to aim throw at Debris Pile or Siegemaker
 --Stage Two: Storage Warehouse
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerSiegemakerCD				= mod:NewNextTimer(50, "ej9571", nil, nil, nil, 156667)
+local timerSiegemakerCD				= mod:NewNextCountTimer(50, "ej9571", nil, nil, nil, 156667)
 --Stage Three: Iron Crucible
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerSlagEruptionCD			= mod:NewCDCountTimer(32.5, 156928)
@@ -85,6 +86,7 @@ mod:AddHudMapOption("HudMapOnMFD", 156096)
 mod.vb.phase = 1
 mod.vb.SlagEruption = 0
 mod.vb.smashCount = 0
+mod.vb.siegemaker = 0
 local UnitDebuff = UnitDebuff
 local DBMHudMap = DBMHudMap
 
@@ -160,7 +162,11 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 156096 then
-		warnMarkedforDeath:CombinedShow(0.5, args.destName)
+		if self.Options.SpecWarn156096target then
+			specWarnMarkedforDeathOther:CombinedShow(0.5, args.destName)
+		else
+			warnMarkedforDeath:CombinedShow(0.5, args.destName)
+		end
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
 			yellMarkedforDeath:Yell()
@@ -221,12 +227,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceAttachSlagBombs:Play("changemt")
 		end
 	elseif spellId == 156667 then
+		self.vb.siegemaker = self.vb.siegemaker + 1
 		if not self.Options.SpecWarnej9571spell then
-			warnSiegemaker:Show()
+			warnSiegemaker:Show(self.vb.siegemaker)
 		else
-			specWarnSiegemaker:Show()
+			specWarnSiegemaker:Show(self.vb.siegemaker)
 		end
-		timerSiegemakerCD:Start()
+		timerSiegemakerCD:Start(nil, self.vb.siegemaker+1)
 	elseif spellId == 156401 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnMoltenSlag:Show()
 	elseif spellId == 156653 then
@@ -292,11 +299,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 161347 then--Phase 2 Trigger
 		self.vb.phase = 2
 		self.vb.smashCount = 0
+		self.vb.siegemaker = 0
 		timerDemolitionCD:Cancel()
 		countdownSlagBombs:Cancel()
 		countdownSlagBombs:Start(11)
 		timerThrowSlagBombsCD:Start(11)--11-12.5
-		timerSiegemakerCD:Start(15)
+		timerSiegemakerCD:Start(15, 1)
 		countdownShatteringSmash:Cancel()
 		countdownShatteringSmash:Start(21)
 		timerShatteringSmashCD:Start(21, 1)--21-23 variation. Boss power is set to 66/100 automatically by transitions
