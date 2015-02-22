@@ -92,9 +92,9 @@ local voiceRendandTear				= mod:NewVoice(155385, "Melee")  --runaway
 local voiceCrushArmor				= mod:NewVoice(155236) --changemt
 local voiceTantrum					= mod:NewVoice(162275) --aesoon
 
-
 mod:AddRangeFrameOption("8/7/3", nil, "-Melee")
 mod:AddSetIconOption("SetIconOnSpear", 154960)--Not often I make icon options on by default but this one is universally important. YOu always break players out of spear, in any strat.
+mod:AddHudMapOption("HudMapOnBreath", 154989)
 
 mod.vb.RylakAbilities = false
 mod.vb.WolfAbilities = false
@@ -178,6 +178,10 @@ function mod:BreathTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		yellInfernoBreath:Yell()
 	end
+	if self.Options.HudMapOnBreath then
+		--Static marker, breath doesn't move once a target is picked. it's aimed at static location player WAS
+		DBMHudMap:RegisterStaticMarkerOnPartyMember(154989, "highlight", targetname, 5, 12, 1, 0, 0, 0.5):Pulse(0.5, 0.5)
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -206,6 +210,9 @@ function mod:OnCombatEnd()
 	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.HudMapOnBreath then
+		DBMHudMap:Disable()
 	end
 end
 
@@ -368,6 +375,9 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerRendandTearCD:Cancel()
 					timerTantrumCD:Cancel()
+					if self.Options.HudMapOnBreath then--Only need hud during this phase
+						DBMHudMap:Enable()
+					end
 				elseif cid == 76945 then--Ironcrusher
 					timerStampedeCD:Start(15)
 					timerTantrumCD:Start(25, self.vb.tantrumCount+1)
@@ -409,6 +419,9 @@ function mod:UNIT_DIED(args)
 		elseif cid == 76874 then
 			timerConflagCD:Cancel()
 			timerInfernoBreathCD:Cancel()
+			if self.Options.HudMapOnBreath then
+				DBMHudMap:Disable()
+			end
 		elseif cid == 76945 then
 			timerStampedeCD:Cancel()
 		elseif cid == 76946 then
