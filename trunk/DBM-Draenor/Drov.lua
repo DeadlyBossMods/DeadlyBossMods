@@ -7,7 +7,7 @@ mod:SetReCombatTime(20)
 mod:SetZone()
 mod:SetMinSyncRevision(11969)
 
-mod:RegisterCombat("combat_yell", L.Pull)
+mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 175791",
