@@ -3545,7 +3545,7 @@ do
 		if DBM.Options.CheckGear then
 			local bagilvl, equippedilvl = GetAverageItemLevel()
 			local difference = bagilvl - equippedilvl
-			local weapon = GetInventoryItemLink(unit, 16)
+			local weapon = GetInventoryItemLink("player", 16)
 			local fishingPole = false
 			if weapon then
 				local _, _, _, _, _, _, type = GetItemInfo(weapon)
