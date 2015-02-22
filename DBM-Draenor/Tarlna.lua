@@ -7,7 +7,7 @@ mod:SetReCombatTime(20)
 mod:SetZone()
 mod:SetMinSyncRevision(11969)
 
-mod:RegisterCombat("combat_yell", L.Pull)--no yell
+mod:RegisterCombat("combat")--no yell
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 175973 175979",
@@ -39,7 +39,7 @@ local voiceMandragora				= mod:NewVoice(176013, "Dps")
 local voiceGenesis					= mod:NewVoice(175979)
 
 --mod:AddReadyCheckOption(37462, false)
-mod:AddRangeFrameOption(8, 175979)
+--mod:AddRangeFrameOption(8, 175979)
 
 local UnitDebuff = UnitDebuff
 local debuffName = GetSpellInfo(176004)
