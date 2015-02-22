@@ -893,15 +893,22 @@ do
 		SPELL_ABSORBED = true,
 		SPELL_HEAL = true,
 		SPELL_ENERGIZE = true,
+		SPELL_PERIODIC_ENERGIZE = true,
 		SPELL_PERIODIC_MISSED = true,
 		SPELL_PERIODIC_DAMAGE = true,
 		SPELL_PERIODIC_DRAIN = true,
 		SPELL_PERIODIC_LEECH = true,
 		SPELL_PERIODIC_ENERGIZE = true,
 		SPELL_DRAIN = true,
-		SPELL_LEECH = true
+		SPELL_LEECH = true,
+		SPELL_CAST_FAILED = true
 	}
 	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
+		--Dirty, but has to be here, because we want to see this debug even if SPELL_CAST_SUCCESS isn't in registeredEvents
+		local firstExtraArg = ...
+		if type(firstExtraArg) == "number" and firstExtraArg == 181113 then
+			self:Debug("Encounter Spawn spellid Detected: 181113")
+		end
 		if not registeredEvents[event] then return end
 		local eventSub6 = event:sub(0, 6)
 		if (eventSub6 == "SPELL_" or eventSub6 == "RANGE_") and not unfilteredCLEUEvents[event] then
