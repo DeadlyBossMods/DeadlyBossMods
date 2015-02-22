@@ -77,6 +77,7 @@ local voiceLavaSlash					= mod:NewVoice(155318) --runaway
 
 mod:AddRangeFrameOption("10/6")
 mod:AddArrowOption("TorrentArrow", 154932, false, true)--Depend strat arrow useful if ranged run to torrent person strat. arrow useless if run torrent into melee strat.
+mod:AddHudMapOption("HudMapOnFixate", 154952, false)
 
 function mod:OnCombatStart(delay)
 	timerLavaSlashCD:Start(11-delay)
@@ -86,6 +87,9 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame and self:IsRanged() then
 		DBM.RangeCheck:Show(6)
 	end
+	if self.Options.HudMapOnFixate then
+		DBMHudMap:Enable()
+	end
 end
 
 function mod:OnCombatEnd()
@@ -94,6 +98,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.TorrentArrow then
 		DBM.Arrow:Hide()
+	end
+	if self.Options.HudMapOnFixate then
+		DBMHudMap:Disable()
 	end
 end
 
@@ -153,6 +160,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self:AntiSpam(1, 2) then
 				--Nothing. Just a timestamp
 			end
+		end
+		if self.Options.HudMapOnFixate then
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 10, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
 		end
 	elseif spellId == 163284 then
 		local amount = args.amount or 1
@@ -240,6 +250,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			if self:AntiSpam(1, 2) then--And, avoid firing this warning on a dog changed mind bug as well
 				specWarnFixateEnded:Show()
 			end
+		end
+		if self.Options.HudMapOnFixate then
+			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	elseif spellId == 155493 then
 		specWarnFireStormEnded:Show()
