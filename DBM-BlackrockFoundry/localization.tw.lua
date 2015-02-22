@@ -17,11 +17,17 @@ L= DBM:GetModLocalization(1202)
 L= DBM:GetModLocalization(1154)
 
 L:SetWarningLocalization({
+	warnRegulators		= "熱能調節閥剩餘:%d",
 	warnBlastFrequency	= "爆炸施放頻率增加：大約每%d秒一次"
 })
 
 L:SetOptionLocalization({
+	warnRegulators		= "提示熱能調節閥還剩多少體力",
 	warnBlastFrequency	= "提示$spell:155209施放頻率增加"
+})
+
+L:SetMiscLocalization({
+	heatRegulator		= "熱能調節閥"
 })
 
 ------------------
@@ -33,10 +39,6 @@ L= DBM:GetModLocalization(1155)
 -- Flamebender Ka'graz --
 --------------
 L= DBM:GetModLocalization(1123)
-
-L:SetMiscLocalization({
-	TorrentYell	= "%d秒後熔岩灼流"
-})
 
 --------------------
 --Kromog, Legend of the Mountain --
