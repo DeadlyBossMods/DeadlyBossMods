@@ -3545,8 +3545,18 @@ do
 		if DBM.Options.CheckGear then
 			local bagilvl, equippedilvl = GetAverageItemLevel()
 			local difference = bagilvl - equippedilvl
+			local weapon = GetInventoryItemLink(unit, 16)
+			local fishingPole = false
+			if weapon then
+				local _, _, _, _, _, _, type = GetItemInfo(weapon)
+				if type and type == DBM_CORE_GEAR_FISHING_POLE then
+					fishingPole = true
+				end
+			end
 			if IsInRaid() and difference >= 40 then
 				dummyMod.geartext:Show(DBM_CORE_GEAR_WARNING:format(floor(difference)))
+			elseif IsInRaid() and (not weapon or fishingPole) then
+				dummyMod.geartext:Show(DBM_CORE_GEAR_WARNING_WEAPON)
 			end
 		end
 	end
