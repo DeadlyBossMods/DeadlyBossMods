@@ -213,7 +213,7 @@ DBM_CORE_TIMER_PULL					= "Pull in"
 DBM_CORE_ANNOUNCE_PULL				= "Pull in %d sec. (Sent by %s)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull now!"
 DBM_CORE_GEAR_WARNING				= "Warning: Check gear. Your equipped ilvl is %d lower than bag ilvl"
-DBM_CORE_GEAR_WARNING_WEAPON		= "Warning: Check your weapon is correctly equipped."
+DBM_CORE_GEAR_WARNING_WEAPON		= "Warning: Check if your weapon is correctly equipped."
 DBM_CORE_GEAR_FISHING_POLE			= "Fishing Pole"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Achievement"--BATTLE_PET_SOURCE_6

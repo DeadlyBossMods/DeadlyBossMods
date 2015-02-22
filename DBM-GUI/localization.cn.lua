@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Feb 15, 2015@12931
+-- Last update: Feb 22, 2015@13054
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -230,10 +230,11 @@ L.DontShowFarWarnings		= "不为过远的事件显示计时条/警报"
 L.StripServerName			= "警告和计时器中不显示服务器名"
 L.SpamBlockBossWhispers		= "战斗中过滤DBM密语警报"
 
-L.Area_SpecFilter			= "专精过滤选项"
+L.Area_SpecFilter			= "角色过滤选项"
 L.FilterTankSpec			= "当非坦克专精时，过滤掉给予坦克的专用信息"
 L.FilterInterrupts			= "当目标没有被选中或设置为焦点时，过滤掉打断提示 (注意: 这对那些不打断就灭团的技能无效)"
 L.FilterDispels				= "当驱散技能在冷却时, 过滤掉驱散提示"
+FilterSelfHud				= "把自己从HudMap中过滤掉 (不包括和距离有关的功能)"
 
 L.Area_PullTimer			= "开怪倒计时过滤设置"
 L.DontShowPTNoID			= "不显示不同区域发送的倒计时"
@@ -262,7 +263,7 @@ L.Always					= "总是跳过"
 L.Panel_ExtraFeatures		= "其他功能"
 L.Area_ChatAlerts			= "文字提示警告选项"
 L.RoleSpecAlert				= "当进入团队时，如果拾取专精与当前角色专精不同，则显示警告。"
-L.CheckGear					= "当你身上的装备装等低于背包装等40点时显示警告。(可能没有装备某物品或装备了低等级的任务道具)"
+L.CheckGear					= "当你身上的装备装等低于背包装等40点时显示警告。(可能没有装备某物品或装备了低等级的任务道具或没有装备主武器)"
 L.WorldBossAlert			= "当世界Boss进入战斗后发送警告，这个信息可能是你的朋友或者同工会成员发送的。 (由于跨服，卡位面等因素，可能不准确)"
 L.Area_SoundAlerts			= "语音警告选项"
 L.LFDEnhance				= "当发起角色检查时，播放准备音效"
