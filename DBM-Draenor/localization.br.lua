@@ -1,3 +1,6 @@
+﻿-- Last update GlitterStorm @ Azralon on Feb,22th,2015
+if GetLocale() ~= "ptBR" then return end
+
 local L
 
 -----------------------
