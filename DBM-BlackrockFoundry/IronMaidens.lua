@@ -92,7 +92,7 @@ local yellHeartseeker					= mod:NewYell(158010, nil, false)
 mod:AddTimerLine(Ship)
 local timerShipCD						= mod:NewNextTimer(198, "ej10019", nil, nil, nil, 76204)
 local timerBombardmentAlphaCD			= mod:NewNextTimer(18, 157854)
-local timerWarmingUp					= mod:NewCastTimer(90, 158849)--Word is not good.
+local timerWarmingUp					= mod:NewCastTimer(90, 158849)
 --Ground
 ----Admiral Gar'an
 mod:AddTimerLine(Garan)
@@ -347,7 +347,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 156631 and (noFilter or not isPlayerOnBoat()) then
 		if self:AntiSpam(5, args.destName) then--check antispam so we don't warn if we got a user sync 3 seconds ago.
-			if self:CheckNearby(5, args.destName) then
+			if self:CheckNearby(5, args.destName) and self.Options.SpecWarn156631close then
 				specWarnRapidFireNear:Show(args.destName)
 			else
 				warnRapidFire:Show(args.destName)
@@ -438,7 +438,7 @@ function mod:OnSync(msg, guid)
 	if msg == "RapidFireTarget" and guid then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		if self:AntiSpam(5, targetName) then--Set antispam if we got a sync, to block 3 second late SPELL_AURA_APPLIED if we got the early warning
-			if self:CheckNearby(5, targetName) then
+			if self:CheckNearby(5, targetName) and self.Options.SpecWarn156631close then
 				specWarnRapidFireNear:Show(targetName)
 			else
 				warnRapidFire:Show(targetName)
