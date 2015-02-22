@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Feb 15, 2015@12931
+-- Last update: Feb 22, 2015@13054
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -21,11 +21,17 @@ L= DBM:GetModLocalization(1202)
 L= DBM:GetModLocalization(1154)
 
 L:SetWarningLocalization({
+	warnRegulators		= "温度调节器剩下%d个",
 	warnBlastFrequency	= "冲击施法频率增加:大约每%d秒一次"
 })
 
 L:SetOptionLocalization({
+	warnRegulators		= "显示剩余的温度调节器数量",
 	warnBlastFrequency	= "当$spell:155209施法频率增加时发出警告"
+})
+
+L:SetMiscLocalization({
+	heatRegulator		= "温度调节器"
 })
 
 ------------------
