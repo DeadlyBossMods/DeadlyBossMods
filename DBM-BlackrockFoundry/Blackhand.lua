@@ -87,8 +87,24 @@ mod.vb.phase = 1
 mod.vb.SlagEruption = 0
 mod.vb.smashCount = 0
 mod.vb.siegemaker = 0
-local UnitDebuff = UnitDebuff
+local smashTank = nil
+local UnitDebuff, UnitName = UnitDebuff, UnitName
 local DBMHudMap = DBMHudMap
+local tankFilter
+do
+	tankFilter = function(uId)
+		if UnitName(uId) == smashTank then
+			return true
+		end
+	end
+end
+
+local function massiveOver(self)
+	smashTank = nil
+	if not UnitDebuff("player", GetSpellInfo(157000)) and not UnitDebuff("player", GetSpellInfo(159179)) then
+		DBM.RangeCheck:Hide()
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
@@ -109,7 +125,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -140,15 +155,22 @@ function mod:SPELL_CAST_START(args)
 		specWarnSlagEruption:Show(self.vb.SlagEruption)
 		timerSlagEruptionCD:Start(nil, self.vb.SlagEruption+1)
 	elseif spellId == 158054 then
+		smashTank = UnitName("boss1target")
 		self.vb.smashCount = self.vb.smashCount + 1
 		specWarnMassiveShatteringSmash:Show(self.vb.smashCount)
 		timerShatteringSmashCD:Start(25, self.vb.smashCount+1)--Use this cd bar in phase 3 as well, because text for "Massive Shattering Smash" too long.
 		countdownShatteringSmash:Start(25)
 		voiceShatteringSmash:Play("carefly")
---		self:RegisterShortTermEvents(
---			"SPELL_DAMAGE",
---			"SPELL_MISSED"
---		)
+		if self.Options.RangeFrame and smashTank then
+			--Open regular range frame if you are the smash tank, even if you are a bomb, because now you don't have a choice.
+			if smashTank == UnitName("player") then
+				DBM.RangeCheck:Show(6)
+			--Don't open radar for massive smash if you are one of bomb targets
+			elseif not UnitDebuff("player", GetSpellInfo(157000)) and not UnitDebuff("player", GetSpellInfo(159179)) then
+				DBM.RangeCheck:Show(6, tankFilter)
+			end
+			self:Schedule(4, massiveOver, self)
+		end
 	end
 end
 
@@ -269,6 +291,7 @@ end
 
 function mod:SPELL_ENERGIZE(_, _, _, _, destGUID, _, _, _, spellId, _, _, amount)
 	if spellId == 104915 and destGUID == UnitGUID("boss1") then
+		--TODO, even more complex marked for death checks here to factor that into energy updating.
 		DBM:Debug("SPELL_ENERGIZE fired on Blackhand, 4 targets not hit? Amount: "..amount)
 		local bossPower = UnitPower("boss1")
 		bossPower = bossPower / 4--4 energy per second, smash every 25 seconds there abouts.
