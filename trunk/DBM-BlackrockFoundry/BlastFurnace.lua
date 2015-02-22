@@ -119,6 +119,7 @@ mod.vb.lastSlagIcon = 0
 local activeSlagGUIDS = {}
 local activePrimalGUIDS = {}
 local activePrimal = 0 -- health report variable. no sync
+local prevHealth = 100
 
 local BombFilter, VolatileFilter
 do
@@ -182,8 +183,9 @@ function mod:CustomHealthUpdate()
 		end
 		if maxh > 0 then
 			health = (total / (maxh * 2) * 100)
+			prevHealth = health
 		else
-			health = 100
+			health = prevHealth
 		end
 		return ("%d%%"):format(health)
 	elseif self.vb.phase == 2 then
@@ -197,12 +199,18 @@ function mod:CustomHealthUpdate()
 		end
 		if activePrimal > 0 then
 			health = (total / (maxh * activePrimal) * 100)
+			prevHealth = health
 		else
-			health = 100
+			health = prevHealth
 		end
 		return ("%d%%"):format(health)
 	elseif self.vb.phase == 3 then
-		health = (UnitHealth("boss1") / UnitHealthMax("boss1") * 100)
+		if UnitHealthMax("boss1") > 0 then
+			health = (UnitHealth("boss1") / UnitHealthMax("boss1") * 100)
+			prevHealth = health
+		else
+			health = prevHealth
+		end
 		return ("%d%%"):format(health)
 	end
 	return DBM_CORE_UNKNOWN
@@ -211,6 +219,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(activeSlagGUIDS)
 	table.wipe(activePrimalGUIDS)
+	prevHealth = 100
 	self.vb.machinesDead = 0
 	self.vb.elementalistsRemaining = 4
 	self.vb.blastWarned = false
@@ -446,6 +455,7 @@ function mod:UNIT_DIED(args)
 			self:Unschedule(SecurityGuard)
 			self:Unschedule(FireCaller)
 			self.vb.phase = 3
+			prevHealth = 100
 			self:UnregisterShortTermEvents()
 			warnPhase3:Show()
 			specWarnHeartoftheMountain:Show()
@@ -461,6 +471,7 @@ function mod:UNIT_DIED(args)
 		if self.vb.machinesDead == 2 then
 			self.vb.phase = 2
 			activePrimal = 0
+			prevHealth = 100
 			warnPhase2:Show()
 			self:Unschedule(Engineers)
 			timerEngineer:Cancel()
