@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(76809, 76806)--76809 foreman feldspar, 76806 heart of the mountain, 76809 Security Guard, 76810 Furnace Engineer, 76811 Bellows Operator, 76815 Primal Elementalist, 78463 Slag Elemental, 76821 Firecaller
 mod:SetEncounterID(1690)
 mod:SetZone()
---mod:SetUsedIcons(7)
+mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(12973)
 
 mod:RegisterCombat("combat")
@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 155179 174726",
 	"SPELL_AURA_APPLIED 155192 174716 155196 158345 155242 155181 176121 155225 156934 155173",
 	"SPELL_AURA_APPLIED_DOSE 155242",
-	"SPELL_AURA_REMOVED 155192 174716 176121",
+	"SPELL_AURA_REMOVED 155192 174716 176121 155196",
 	"SPELL_PERIODIC_DAMAGE 156932 155223 155743",
 	"SPELL_ABSORBED 156932 155223 155743",
 	"UNIT_DIED",
@@ -106,6 +106,7 @@ local voiceFireCaller			= mod:NewVoice("ej9659", "Tank")
 local voiceSecurityGuard		= mod:NewVoice("ej9648", "Tank")
 
 mod:AddRangeFrameOption(8)
+mod:AddSetIconOption("SetIconOnFixate", 155196, false)
 mod:AddHudMapOption("HudMapOnBomb", 155192, false)
 
 mod.vb.machinesDead = 0
@@ -114,6 +115,7 @@ mod.vb.blastWarned = false
 mod.vb.lastTotal = 30
 mod.vb.phase = 1
 mod.vb.slagCount = 0
+mod.vb.lastSlagIcon = 0
 local activeSlagGUIDS = {}
 local activePrimalGUIDS = {}
 local activePrimal = 0 -- health report variable. no sync
@@ -215,6 +217,7 @@ function mod:OnCombatStart(delay)
 	self.vb.lastTotal = 30
 	self.vb.phase = 1
 	self.vb.slagCount = 0
+	self.vb.lastSlagIcon = 0
 	if self:IsMythic() then
 		self:Schedule(40, Engineers, self)
 		timerEngineer:Start(40)
@@ -328,6 +331,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFixate:Show()
 		end
+		--Update icon number even if option not enabled, so recoveryable in case person with option DCs
+		if self.vb.lastSlagIcon == 6 then--1-6 should be more than enough before reset. Do not want to use skull or x since probably set on kill targets
+			self.vb.lastSlagIcon = 0
+		end
+		self.vb.lastSlagIcon = self.vb.lastSlagIcon + 1
+		if self.Options.SetIconOnFixate then
+			self:SetIcon(args.destName, self.vb.lastSlagIcon)
+		end
 	elseif spellId == 158345 and self:AntiSpam(10, 3) then--Might be SPELL_CAST_SUCCESS instead.
 		specWarnShieldsDown:Show()
 		if self:IsDifficulty("normal", "lfr") then--40 seconds on normal. at least that much on LFR too, probably even longer in LFR.
@@ -404,6 +415,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 176121 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	elseif spellId == 155196 and self.Options.SetIconOnFixate then
+		self:SetIcon(args.destName, 0)
 	end
 end
 
