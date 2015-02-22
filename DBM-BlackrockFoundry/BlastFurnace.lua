@@ -106,6 +106,7 @@ local voiceFireCaller			= mod:NewVoice("ej9659", "Tank")
 local voiceSecurityGuard		= mod:NewVoice("ej9648", "Tank")
 
 mod:AddRangeFrameOption(8)
+mod:AddHudMapOption("HudMapOnBomb", 155192, false)
 
 mod.vb.machinesDead = 0
 mod.vb.elementalistsRemaining = 4
@@ -250,11 +251,17 @@ function mod:OnCombatStart(delay)
 			end
 		end)
 	end
+	if self.Options.HudMapOnBomb then
+		DBMHudMap:Enable()
+	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.HudMapOnBomb then
+		DBMHudMap:Disable()
 	end
 	self:UnregisterShortTermEvents()
 end
@@ -291,6 +298,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		local debuffTime = expires - GetTime()
 		if self:CheckTankDistance(args.sourceGUID, 30) and self.vb.phase == 1 then
 			warnBomb:CombinedShow(1, args.destName)
+			if self.Options.HudMapOnBomb then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(155192, "highlight", args.destName, 5, debuffTime+0.5, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
+			end
 		end
 		if args:IsPlayer() then
 			specWarnBomb:Show(L.heatRegulator)
@@ -389,6 +399,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if args:IsSpellID(155192, 174716) and args:IsPlayer() then
 		timerBomb:Cancel()
+		if self.Options.HudMapOnBomb then
+			DBMHudMap:FreeEncounterMarkerByTarget(155192, args.destName)
+		end
 	elseif spellId == 176121 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -456,6 +469,9 @@ function mod:UNIT_DIED(args)
 			self:RegisterShortTermEvents(
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 			)
+			if self.Options.HudMapOnBomb then
+				DBMHudMap:Disable()
+			end
 		end
 	elseif cid == 76809 then
 		timerRuptureCD:Cancel()
