@@ -47,8 +47,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1148)
 
 L:SetOptionLocalization({
-	PhemosSpecial	= "페모스의 대기시간 초읽기 듣기",
-	PolSpecial		= "폴의 대기시간 초읽기 듣기",
+	PhemosSpecial		= "페모스의 대기시간 초읽기 듣기",
+	PolSpecial			= "폴의 대기시간 초읽기 듣기",
 	PhemosSpecialVoice	= "펠모스의 주문을 선택한 음성안내 소리로 듣기",
 	PolSpecialVoice		= "폴의 주문을 선택한 음성안내 소리로 듣기"
 })
