@@ -2167,7 +2167,6 @@ end
 do
 	local inRaid = false
 
-	local raidUIds = {}
 	local raidGuids = {}
 	local iconSeter = {}
 
@@ -2187,7 +2186,6 @@ do
 				raid[playerName].displayVersion = DBM.DisplayVersion
 				raid[playerName].locale = GetLocale()
 				raid[playerName].enabledIcons = tostring(not DBM.Options.DontSetIcons)
-				raidUIds["player"] = playerName
 				raidGuids[UnitGUID("player")] = playerName
 			end
 		end)
@@ -2224,7 +2222,6 @@ do
 					raid[name].id = id
 					raid[name].guid = UnitGUID(id) or ""
 					raid[name].updated = true
-					raidUIds[id] = name
 					raidGuids[UnitGUID(id) or ""] = name
 				end
 			end
@@ -2232,7 +2229,6 @@ do
 			twipe(iconSeter)
 			for i, v in pairs(raid) do
 				if not v.updated then
-					raidUIds[v.id] = nil
 					raidGuids[v.guid] = nil
 					raid[i] = nil
 					removeEntry(newerVersionPerson, i)
@@ -2288,14 +2284,12 @@ do
 				raid[name].class = className
 				raid[name].id = id
 				raid[name].updated = true
-				raidUIds[id] = name
 				raidGuids[UnitGUID(id) or ""] = name
 			end
 			enableIcons = false
 			twipe(iconSeter)
 			for i, v in pairs(raid) do
 				if not v.updated then
-					raidUIds[v.id] = nil
 					raidGuids[v.guid] = nil
 					raid[i] = nil
 					removeEntry(newerVersionPerson, i)
@@ -2333,7 +2327,6 @@ do
 			raid[playerName].version = DBM.ReleaseRevision
 			raid[playerName].displayVersion = DBM.DisplayVersion
 			raid[playerName].locale = GetLocale()
-			raidUIds["player"] = playerName
 			raidGuids[UnitGUID("player")] = playerName
 		end
 	end
@@ -2380,7 +2373,7 @@ do
 	end
 
 	function DBM:GetUnitFullName(uId)
-		return raidUIds[uId] or getUnitFullName(uId)
+		return GetUnitName(uId, true)
 	end
 
 	function DBM:GetFullPlayerNameByGUID(guid)
@@ -6348,6 +6341,7 @@ do
 			local cidOrGuid = cidOrGuid or self.creatureId
 			local cacheuid = bossuIdCache[cidOrGuid] or "boss1"
 			if self:GetUnitCreatureId(cacheuid) == cidOrGuid then
+				bossuIdCache[cidOrGuid] = cacheuid
 				bossuIdCache[UnitGUID(cacheuid)] = cacheuid
 				name, uid, bossuid = getBossTarget(UnitGUID(cacheuid), scanOnlyBoss)
 			else
@@ -6400,9 +6394,6 @@ do
 		local scanInterval = scanInterval or 0.05
 		local scanTimes = scanTimes or 16
 		local targetname, targetuid, bossuid = self:GetBossTarget(cidOrGuid, scanOnlyBoss)
-		if targetScanCount[cidOrGuid] == 1 then
-			DBM:Debug("Boss target scanner found target: "..(targetname or ""))
-		end
 		--Do scan
 		if targetname and (not targetFilter and targetname ~= DBM_CORE_UNKNOWN) or (targetFilter and targetFilter ~= targetname) then
 			if not IsInGroup() then scanTimes = 1 end--Solo, no reason to keep scanning, give faster warning. But only if first scan is actually a valid target, which is why i have this check HERE
