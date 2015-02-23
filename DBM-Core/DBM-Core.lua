@@ -6292,7 +6292,7 @@ bossModPrototype.IsCreatureGUID = DBM.IsCreatureGUID
 
 do
 	local bossTargetuIds = {
-		"target", "focus", "boss1", "boss2", "boss3", "boss4", "boss5"
+		"boss1", "boss2", "boss3", "boss4", "boss5", "focus", "target"
 	}
 	local targetScanCount = {}
 	local repeatedScanEnabled = {}
