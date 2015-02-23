@@ -547,7 +547,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 end
 
 do
-	local totalTime = self:IsMythic() and 25 or 30
+	local totalTime = mod:IsMythic() and 25 or 30
 	local UnitPower = UnitPower
 	function mod:UNIT_POWER_FREQUENT(uId, type)
 		if type == "ALTERNATE" then
