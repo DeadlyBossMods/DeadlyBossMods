@@ -23,7 +23,10 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnRegulators		= "열기 조절 장치 남은숫자 알림 보기",
-	warnBlastFrequency	= "$spell:155209 시전 빈도 증가시 알림 보기"
+	warnBlastFrequency	= "$spell:155209 시전 빈도 증가시 알림 보기",
+	VFYellType			= "변덕스러운 불 대화 알림 방식 선택(신화 난이도)",
+	Countdown			= "받을때 & 남은시간 초세기",
+	Apply				= "받을때만 알리기"
 })
 
 L:SetMiscLocalization({
