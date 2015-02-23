@@ -6304,6 +6304,7 @@ do
 			bossuid = cacheuid
 			name = DBM:GetUnitFullName(cacheuid.."target")
 			uid = cacheuid.."target"
+			bossuIdCache[guid] = bossuid
 		end
 		if name then return name, uid, bossuid end
 		for i, uId in ipairs(bossTargetuIds) do
@@ -6338,7 +6339,6 @@ do
 				end
 			end
 		end
-		if uid and DBM:GetUnitCreatureId(uid) == 24207 then return nil, nil, nil end--filter army of the dead.
 		return name, uid, bossuid
 	end
 
@@ -6386,6 +6386,7 @@ do
 		else
 			name, uid, bossuid = getBossTarget(cidOrGuid, scanOnlyBoss)
 		end
+		if uid and DBM:GetUnitCreatureId(uid) == 24207 then return nil, nil, nil end--filter army of the dead.
 		return name, uid, bossuid
 	end
 
