@@ -85,12 +85,11 @@ local timerSecurityGuard		= mod:NewCDTimer(40, "ej9648", nil, "Tank", nil, 16037
 
 local berserkTimer				= mod:NewBerserkTimer(780)
 
-local countdownBlast			= mod:NewCountdown(30, 155209, "Healer")
-local countdownBellowsOperator	= mod:NewCountdown("OptionVersion2", "Alt64", "ej9650", "-Healer")
+local countdownBlast			= mod:NewCountdown("OptionVersion2", 30, 155209, false)
 local countdownEngineer			= mod:NewCountdown("OptionVersion2", "AltTwo41", "ej9649", "Tank")
 --Phase 2 countdowns, no conflict with phase 1 countdowns
-local countdownFireCaller		= mod:NewCountdown("Alt64", "ej9659", "Tank")
-local countdownSecurityGuard	= mod:NewCountdown("AltTwo41", "ej9648", "Tank")
+local countdownFireCaller		= mod:NewCountdown("AltTwo64", "ej9659", "Tank")
+local countdownSecurityGuard	= mod:NewCountdown("Alt41", "ej9648", "Tank")
 
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceRepair				= mod:NewVoice(155179, "-Healer") --int
@@ -253,10 +252,8 @@ function mod:OnCombatStart(delay)
 	if self:AntiSpam(10, 0) then--Need to ignore loading on the pull
 		if self:IsMythic() then
 			timerBellowsOperator:Start(40)--40-65 variation on mythic? fuck mythic
-			countdownBellowsOperator:Start(40)
 		else
 			timerBellowsOperator:Start(55)--55-60 variation for first ones from pull
-			countdownBellowsOperator:Start(55)
 		end
 	end
 	timerBlastCD:Start(30-delay)
@@ -394,7 +391,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 155181 and self:AntiSpam(10, 0) then--Loading (The two that come can be upwards of 5 seconds apart so at least 10 second antispam)
 		specWarnBellowsOperator:Show()
 		timerBellowsOperator:Start()
-		countdownBellowsOperator:Start()
 		voiceBellowsOperator:Play("killmob")
 	elseif spellId == 176121 then
 		warnVolatileFire:CombinedShow(1, args.destName)
@@ -505,7 +501,6 @@ function mod:UNIT_DIED(args)
 			timerEngineer:Cancel()
 			countdownEngineer:Cancel()
 			timerBellowsOperator:Cancel()
-			countdownBellowsOperator:Cancel()
 			voicePhaseChange:Play("ptwo")
 			--Start adds timers. Seem same in all modes.
 			if not self:IsLFR() then-- LFR do not have Slag Elemental.
