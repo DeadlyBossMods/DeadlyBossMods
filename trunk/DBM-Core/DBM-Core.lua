@@ -374,6 +374,7 @@ local GetTime = GetTime
 local bband = bit.band
 local floor, mhuge, mmin, mmax = math.floor, math.huge, math.min, math.max
 local GetNumGroupMembers, GetRaidRosterInfo = GetNumGroupMembers, GetRaidRosterInfo
+local UnitName, GetUnitName = UnitName, GetUnitName
 local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
 local UnitAffectingCombat, InCombatLockdown, IsEncounterInProgress = UnitAffectingCombat, InCombatLockdown, IsEncounterInProgress
 local UnitGUID, UnitHealth, UnitHealthMax, UnitBuff = UnitGUID, UnitHealth, UnitHealthMax, UnitBuff
@@ -2263,12 +2264,10 @@ do
 				else
 					id = "party"..i
 				end
-				local name, server = UnitName(id)
-				local shortname = name
-				local rank, _, className = UnitIsGroupLeader(id), UnitClass(id)
-				if server and server ~= ""  then
-					name = name.."-"..server
-				end
+				local name = GetUnitName(id, true)
+				local shortname = UnitName(id)
+				local rank = UnitIsGroupLeader(id) and 2 or 0
+				local _, className = UnitClass(id)
 				if (not raid[name]) and inRaid then
 					fireEvent("partyJoin", name)
 				end
@@ -2276,11 +2275,6 @@ do
 				raid[name].name = name
 				raid[name].shortname = shortname
 				raid[name].guid = UnitGUID(id) or ""
-				if rank then
-					raid[name].rank = 2
-				else
-					raid[name].rank = 0
-				end
 				raid[name].class = className
 				raid[name].id = id
 				raid[name].updated = true
@@ -2329,17 +2323,6 @@ do
 			raid[playerName].locale = GetLocale()
 			raidGuids[UnitGUID("player")] = playerName
 		end
-	end
-
-	--This local function called if uId is not player's uId. (like target, raid1traget)
-	local function getUnitFullName(uId)
-		if not uId then return end
-		local name, server = UnitName(uId)
-		if not name then return end
-		if server and server ~= ""  then
-			name = name.."-"..server
-		end
-		return name
 	end
 
 	function DBM:GROUP_ROSTER_UPDATE()
