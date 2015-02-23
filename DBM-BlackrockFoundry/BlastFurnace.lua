@@ -139,33 +139,42 @@ local UnitHealth, UnitHealthMax, GetTime = UnitHealth, UnitHealthMax, GetTime
 --Still needs double checking in LFR, normal, and mythic. Mythic data given via 3rd party and unverified by me
 local function Engineers(self)
 	warnEngineer:Show()
-	timerEngineer:Start()
-	countdownEngineer:Start()
 	if self:IsMythic() then
-		self:Schedule(31, Engineers, self)
+		timerEngineer:Start(35)
+		self:Schedule(35, Engineers, self)
+		countdownEngineer:Start(35)
 	else
+		timerEngineer:Start(41)
 		self:Schedule(41, Engineers, self)
+		countdownEngineer:Start(41)
 	end
 end
 
 local function SecurityGuard(self)
 	warnSecurityGuard:Show()
-	timerSecurityGuard:Start()
 	voiceSecurityGuard:Play("ej9648")
 	if self:IsMythic() then
-		self:Schedule(40, SecurityGuard, self)
+		if self.vb.phase == 1 then
+			timerSecurityGuard:Start(30)
+			self:Schedule(30, SecurityGuard, self)
+		else
+			timerSecurityGuard:Start(40)
+			self:Schedule(40, SecurityGuard, self)
+		end
 	else
+		timerSecurityGuard:Start(55)
 		self:Schedule(55, SecurityGuard, self)
 	end
 end
 
 local function FireCaller(self)
 	warnFireCaller:Show()
-	timerFireCaller:Start()
 	voiceFireCaller:Play("ej9659")
 	if self:IsMythic() then
+		timerFireCaller:Start(45)
 		self:Schedule(45, FireCaller, self)
 	else
+		timerFireCaller:Start(55)
 		self:Schedule(55, FireCaller, self)
 	end
 end
@@ -230,7 +239,9 @@ function mod:OnCombatStart(delay)
 	self.vb.slagCount = 0
 	self.vb.lastSlagIcon = 0
 	if self:IsMythic() then
+		self:Schedule(40, SecurityGuard, self)
 		self:Schedule(40, Engineers, self)
+		timerSecurityGuard:Start(40)
 		timerEngineer:Start(40)
 		countdownEngineer:Start(40)
 	else
@@ -499,6 +510,8 @@ function mod:UNIT_DIED(args)
 			if not self:IsLFR() then-- LFR do not have Slag Elemental.
 				timerSlagElemental:Start(15, 1)
 			end
+			timerSecurityGuard:Cancel()
+			self:Unschedule(SecurityGuard)
 			self:Schedule(71, SecurityGuard, self)
 			timerSecurityGuard:Start(71)
 			self:Schedule(78, FireCaller, self)
@@ -533,13 +546,13 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 end
 
 do
-	local totalTime = 30
+	local totalTime = self:IsMythic() and 25 or 30
 	local UnitPower = UnitPower
 	function mod:UNIT_POWER_FREQUENT(uId, type)
 		if type == "ALTERNATE" then
-			totalTime = 30
+			totalTime = self:IsMythic() and 25 or 30
 			local altPower = UnitPower(uId, 10)
-			local powerRate = 5
+			local powerRate = self:IsMythic() and 4 or 3.33
 			--Each time boss breaks interval of 25%. CD is reduced
 			if altPower == 100 then
 				totalTime = 5.5--5-6
