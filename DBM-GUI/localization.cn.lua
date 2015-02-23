@@ -234,7 +234,7 @@ L.Area_SpecFilter			= "角色过滤选项"
 L.FilterTankSpec			= "当非坦克专精时，过滤掉给予坦克的专用信息"
 L.FilterInterrupts			= "当目标没有被选中或设置为焦点时，过滤掉打断提示 (注意: 这对那些不打断就灭团的技能无效)"
 L.FilterDispels				= "当驱散技能在冷却时, 过滤掉驱散提示"
-FilterSelfHud				= "把自己从HudMap中过滤掉 (不包括和距离有关的功能)"
+L.FilterSelfHud				= "把自己从HudMap中过滤掉 (不包括和距离有关的功能)"
 
 L.Area_PullTimer			= "开怪倒计时过滤设置"
 L.DontShowPTNoID			= "不显示不同区域发送的倒计时"
