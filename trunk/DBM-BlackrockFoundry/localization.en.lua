@@ -22,7 +22,10 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnRegulators		= "Announce how many Heat Regulator remain",
-	warnBlastFrequency	= "Announce when $spell:155209 frequency increased"
+	warnBlastFrequency	= "Announce when $spell:155209 frequency increased",
+	VFYellType			= "Set yell type for Volatile Fire (Mythic difficulty only)",
+	Countdown			= "Applied and countdown until expires",
+	Apply				= "Only applied"
 })
 
 L:SetMiscLocalization({
