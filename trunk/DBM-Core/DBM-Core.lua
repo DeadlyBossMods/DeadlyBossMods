@@ -6399,6 +6399,9 @@ do
 		local scanInterval = scanInterval or 0.05
 		local scanTimes = scanTimes or 16
 		local targetname, targetuid, bossuid = self:GetBossTarget(cidOrGuid, scanOnlyBoss)
+		if targetScanCount[cidOrGuid] == 1 then
+			DBM:Debug("Boss target scanner found target: "..(targetname or ""))
+		end
 		--Do scan
 		if targetname and (not targetFilter and targetname ~= DBM_CORE_UNKNOWN) or (targetFilter and targetFilter ~= targetname) then
 			if not IsInGroup() then scanTimes = 1 end--Solo, no reason to keep scanning, give faster warning. But only if first scan is actually a valid target, which is why i have this check HERE
