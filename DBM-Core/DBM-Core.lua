@@ -2275,6 +2275,11 @@ do
 				raid[name].name = name
 				raid[name].shortname = shortname
 				raid[name].guid = UnitGUID(id) or ""
+				if rank then
+					raid[name].rank = 2
+				else
+					raid[name].rank = 0
+				end
 				raid[name].class = className
 				raid[name].id = id
 				raid[name].updated = true
