@@ -215,6 +215,8 @@ DBM_CORE_TIMER_PULL					= "Атака"
 DBM_CORE_ANNOUNCE_PULL				= "Атака через %d сек. (отправил %s)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Атака!"
 DBM_CORE_GEAR_WARNING				= "Внимание: Проверка экипировки. Уровень надетых предметов на %d ниже чем максимальный"
+DBM_CORE_GEAR_WARNING_WEAPON		= "Внимание: Проверьте надето ли у вас корректное оружие."
+DBM_CORE_GEAR_FISHING_POLE			= "Удочка"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Достижение"
 
@@ -344,6 +346,8 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Звуковой отсчет до сп�
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Звуковой отсчет во время действия $spell:%s"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Кричать, когда на вас $spell:%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= "%s на " .. UnitName("player") .. "!"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= "%s на " .. UnitName("player") .. "! (%%d)"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s спадает через %%d"
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Показывать HudMap для $spell:%s"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Показывать HudMap для различных механик"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "Показывать окно проверки дистанции (%s м) для $spell:%s"--string used for range so we can use things like "5/2" as a value for that field
