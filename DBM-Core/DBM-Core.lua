@@ -3753,7 +3753,7 @@ do
 		if DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging()) then
 			DBM:Debug(message)
 		end
-		fireEvent("DBM_Announce", message)
+		--fireEvent("DBM_Announce", message)
 	end
 
 	-- beware, ugly and missplaced code ahead
@@ -4575,10 +4575,13 @@ do
 	function DBM:RAID_BOSS_WHISPER(msg)
 		--Make it easier for devs to detect whispers they are unable to see
 		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
-		if msg:find("spell:") and IsInGroup() then
-			local spellId = string.match(msg, "spell:(%d+)") or UNKNOWN
-			local spellName = string.match(msg, "h%[(.-)%]|h") or UNKNOWN
-			sendSync("RBW3", spellId.."\t"..spellName)
+		if IsInGroup() then
+			SendAddonMessage("Transcriptor", msg, IsInGroup(2) and "INSTANCE_CHAT" or "RAID")--Send any emote to transcriptor, even if no spellid
+			if msg:find("spell:") then--Sync spellid based ones for dbm dev purposes still
+				local spellId = string.match(msg, "spell:(%d+)") or UNKNOWN
+				local spellName = string.match(msg, "h%[(.-)%]|h") or UNKNOWN
+				sendSync("RBW3", spellId.."\t"..spellName)
+			end
 		end
 	end
 
