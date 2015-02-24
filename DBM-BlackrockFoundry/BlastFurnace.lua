@@ -7,6 +7,7 @@ mod:SetEncounterID(1690)
 mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(12973)
+mod:SetReCombatTime(120, 5)--mythic users uses force reset before pull
 
 mod:RegisterCombat("combat")
 
