@@ -141,11 +141,11 @@ local UnitHealth, UnitHealthMax, GetTime = UnitHealth, UnitHealthMax, GetTime
 --Still needs double checking in LFR, normal, and mythic. Mythic data given via 3rd party and unverified by me
 local function Engineers(self)
 	warnEngineer:Show()
-	if self:IsMythic() then
+	if self:IsDifficulty("mythic", "normal") then
 		timerEngineer:Start(35)
 		self:Schedule(35, Engineers, self)
 		countdownEngineer:Start(35)
-	else
+	elseif self:IsHeroic() then
 		timerEngineer:Start(41)
 		self:Schedule(41, Engineers, self)
 		countdownEngineer:Start(41)
@@ -163,9 +163,22 @@ local function SecurityGuard(self)
 			timerSecurityGuard:Start(40)
 			self:Schedule(40, SecurityGuard, self)
 		end
-	else
-		timerSecurityGuard:Start(55)
-		self:Schedule(55, SecurityGuard, self)
+	elseif self:IsHeroic() then
+		if self.vb.phase == 1 then
+			timerSecurityGuard:Start(46)
+			self:Schedule(46, SecurityGuard, self)
+		else
+			timerSecurityGuard:Start(55)
+			self:Schedule(55, SecurityGuard, self)
+		end
+	elseif self:IsNormal() then
+		if self.vb.phase == 1 then
+			timerSecurityGuard:Start(50)
+			self:Schedule(50, SecurityGuard, self)
+		else
+			timerSecurityGuard:Start(60)
+			self:Schedule(60, SecurityGuard, self)
+		end
 	end
 end
 
@@ -246,11 +259,19 @@ function mod:OnCombatStart(delay)
 		timerSecurityGuard:Start(40)
 		timerEngineer:Start(40)
 		countdownEngineer:Start(40)
-	else
-		self:Schedule(55, Engineers, self)
-		timerEngineer:Start(55)
-		countdownEngineer:Start(55)
-	end
+	elseif self:IsHeroic() then
+		self:Schedule(55.5, SecurityGuard, self)
+		self:Schedule(55.5, Engineers, self)
+		timerSecurityGuard:Start(55.5)
+		timerEngineer:Start(55.5)
+		countdownEngineer:Start(55.5)
+	elseif self:IsNormal() then
+		self:Schedule(60, SecurityGuard, self)
+		self:Schedule(60, Engineers, self)
+		timerSecurityGuard:Start(60)
+		timerEngineer:Start(60)
+		countdownEngineer:Start(60)
+	end--not need add timer for lfr.
 	if self:AntiSpam(10, 0) then--Need to ignore loading on the pull
 		if self:IsMythic() then
 			timerBellowsOperator:Start(40)--40-65 variation on mythic? fuck mythic
@@ -506,17 +527,17 @@ function mod:UNIT_DIED(args)
 			timerEngineer:Cancel()
 			countdownEngineer:Cancel()
 			timerBellowsOperator:Cancel()
+			timerSecurityGuard:Cancel()
+			self:Unschedule(SecurityGuard)
 			voicePhaseChange:Play("ptwo")
 			--Start adds timers. Seem same in all modes.
 			if not self:IsLFR() then-- LFR do not have Slag Elemental.
 				timerSlagElemental:Start(15, 1)
+				self:Schedule(71, SecurityGuard, self)
+				timerSecurityGuard:Start(71)
+				self:Schedule(78, FireCaller, self)
+				timerFireCaller:Start(78)
 			end
-			timerSecurityGuard:Cancel()
-			self:Unschedule(SecurityGuard)
-			self:Schedule(71, SecurityGuard, self)
-			timerSecurityGuard:Start(71)
-			self:Schedule(78, FireCaller, self)
-			timerFireCaller:Start(78)
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:Clear()
 			end
