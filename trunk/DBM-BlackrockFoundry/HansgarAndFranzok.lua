@@ -33,8 +33,8 @@ local specWarnDisruptingRoar			= mod:NewSpecialWarningCast("OptionVersion2", 160
 local specWarnCripplingSupplex			= mod:NewSpecialWarningPreWarn("OptionVersion2", 156938, "Tank|Healer", 3, nil, nil, 3)--pop a cooldown.
 local specWarnSearingPlates				= mod:NewSpecialWarningSpell(161570, nil, nil, nil, 2)
 local specWarnStampers					= mod:NewSpecialWarningSpell(174825, nil, nil, nil, 2)
-local specWarnSearingPlatesEnd			= mod:NewSpecialWarningEnd(161570)
-local specWarnStampersEnd				= mod:NewSpecialWarningEnd(174825)
+local specWarnSearingPlatesEnd			= mod:NewSpecialWarningEnd(161570, nil, nil, nil, nil, nil, 2)
+local specWarnStampersEnd				= mod:NewSpecialWarningEnd(174825, nil, nil, nil, nil, nil, 2)
 
 local timerDisruptingRoar				= mod:NewCastTimer(2.5, 160838, nil, "SpellCaster")
 local timerDisruptingRoarCD				= mod:NewCDTimer(46, 160838, nil, "SpellCaster")
@@ -199,16 +199,22 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 			specWarnStampers:Show()
 			voiceEnvironmentalThreats:Play("watchstep")
 		else
-			if self:IsMythic() then
-				timerSmartStamperCD:Start()
-				countSmartStampers:Start()
-				voiceEnvironmentalThreats:Play("gather")--Must restack for smart stampers
-			else
-				if self.vb.phase == 2 then
-					specWarnSearingPlatesEnd:Show()
-					voiceEnvironmentalThreats:Play("safenow")
+			if self.vb.phase == 2 then
+				specWarnSearingPlatesEnd:Show()
+				if self:IsMythic() then
+					timerSmartStamperCD:Start()
+					countSmartStampers:Start()
+					voiceEnvironmentalThreats:Play("gather")--Must restack for smart stampers
 				else
-					specWarnStampersEnd:Show()
+					voiceEnvironmentalThreats:Play("safenow")
+				end
+			else
+				specWarnStampersEnd:Show()
+				if self:IsMythic() then
+					timerSmartStamperCD:Start()
+					countSmartStampers:Start()
+					voiceEnvironmentalThreats:Play("gather")--Must restack for smart stampers
+				else
 					voiceEnvironmentalThreats:Play("safenow")
 				end
 			end
