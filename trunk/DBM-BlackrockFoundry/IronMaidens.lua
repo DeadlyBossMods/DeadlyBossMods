@@ -60,6 +60,7 @@ local warnSanguineStrikes				= mod:NewTargetAnnounce(156601, 3, nil, "Healer")
 --Ship
 local specWarnBombardmentAlpha			= mod:NewSpecialWarningCount(157854, nil, nil, nil, 2)--From ship, but affects NON ship.
 local specWarnBombardmentOmega			= mod:NewSpecialWarningCount(157886, nil, nil, nil, 3)--From ship, but affects NON ship.
+local specWarnReturnBase				= mod:NewSpecialWarning("specWarnReturnBase")
 ----Blackrock Deckhand
 local specWarnEarthenbarrier			= mod:NewSpecialWarningInterrupt("OptionVersion2", 158708, "-Healer", nil, nil, nil, nil, 2)
 ----Shattered Hand Deckhand
@@ -133,6 +134,7 @@ mod.vb.alphaOmega = 0
 local UnitPosition, UnitIsConnected, GetTime =  UnitPosition, UnitIsConnected, GetTime
 local savedAbilityTime = {}
 local playerOnBoat = false
+local boatMissionDone = false
 local DBMHudMap = DBMHudMap
 
 local function isPlayerOnBoat()
@@ -158,6 +160,12 @@ local function checkBoatPlayer(self)
 	DBM:Debug("checkBoatPlayer finished")
 	timerBombardmentAlphaCD:Cancel()
 	timerWarmingUp:Cancel()
+end
+
+local function boatReturnWarning()
+	if boatMissionDone and isPlayerOnBoat() then
+		specWarnReturnBase:Show()
+	end
 end
 
 local function recoverTimers()
@@ -196,6 +204,7 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.ship = 0
 	self.vb.alphaOmega = 1
+	boatMissionDone = false
 --	if self:IsMythic() then
 --		self.vb.below25 = true--On mythic, they continue going onto boat until 20%
 --	else
@@ -271,9 +280,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if not DBM.Options.DontShowFarWarnings then
 		noFilter = true
 	end
-	if spellId == 157854 and (noFilter or not isPlayerOnBoat()) then
-		specWarnBombardmentAlpha:Show(self.vb.alphaOmega)
-		timerBombardmentAlphaCD:Start()
+	if spellId == 157854 then
+		self:Schedule(14, boatReturnWarning)
+		if noFilter or not isPlayerOnBoat() then
+			specWarnBombardmentAlpha:Show(self.vb.alphaOmega)
+			timerBombardmentAlphaCD:Start()
+		end
 	elseif spellId == 157886 and (noFilter or not isPlayerOnBoat()) then
 		specWarnBombardmentOmega:Show(self.vb.alphaOmega)
 		self.vb.alphaOmega = self.vb.alphaOmega + 1
@@ -406,6 +418,10 @@ function mod:UNIT_DIED(args)
 		timerBladeDashCD:Cancel()
 		timerConvulsiveShadowsCD:Cancel()
 		timerDarkHuntCD:Cancel()
+	elseif cid == 78351 or cid == 78341 or cid == 78343 then--boat bosses
+		self:Schedule(1, function()--wait 1s boat player ready to return.
+			boatMissionDone = true
+		end)
 	end
 end
 
@@ -501,6 +517,7 @@ function mod:UNIT_POWER_FREQUENT(_, powerType)
 	local power = UnitPower("player", 10)
 	if power == 1 and not playerOnBoat then -- on boat
 		playerOnBoat = true
+		boatMissionDone = false
 		timerBloodRitualCD:Cancel()
 		timerRapidFireCD:Cancel()
 		timerBladeDashCD:Cancel()
@@ -510,7 +527,9 @@ function mod:UNIT_POWER_FREQUENT(_, powerType)
 		timerBombardmentAlphaCD:Cancel()
 	elseif power == 0 and playerOnBoat then -- leave boat
 		playerOnBoat = false
+		boatMissionDone = false
 		recoverTimers()
+		self:Unschedule(boatReturnWarning)
 		DBM:Debug("Player Leaving Boat")
 	end
 end

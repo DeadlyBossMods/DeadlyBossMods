@@ -89,8 +89,16 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(1203)
 
+L:SetWarningLocalization({
+	specWarnReturnBase	= "지금 본진으로 복귀!"
+})
+
+L:SetOptionLocalization({
+	specWarnReturnBase	= "무쌍호에서 안전하게 본진으로 복귀할 수 있을때 특수 경고 보기"
+})
+
 L:SetMiscLocalization({
-	shipMessage		= "주 대포를 쏠 준비를 합니다!"
+	shipMessage			= "주 대포를 쏠 준비를 합니다!"
 })
 
 --------------------------
