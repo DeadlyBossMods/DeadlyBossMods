@@ -356,11 +356,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if args:IsPlayer() then
-			specWarnBomb:Show(L.heatRegulator)
 			timerBomb:Start(debuffTime)
-			voiceBomb:Play("bombrun")
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8, nil, nil, nil, nil, debuffTime + 0.5)
+			end
+			if self:AntiSpam(2, 6) then
+				specWarnBomb:Show(L.heatRegulator)
+				voiceBomb:Play("bombrun")
 			end
 		end
 		if self.Options.RangeFrame and not UnitDebuff("player", args.spellName) then
