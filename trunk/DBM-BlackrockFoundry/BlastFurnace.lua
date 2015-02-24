@@ -90,6 +90,7 @@ local countdownEngineer			= mod:NewCountdown("OptionVersion2", "AltTwo41", "ej96
 --Phase 2 countdowns, no conflict with phase 1 countdowns
 local countdownFireCaller		= mod:NewCountdown("AltTwo64", "ej9659", "Tank")
 local countdownSecurityGuard	= mod:NewCountdown("Alt41", "ej9648", "Tank")
+local countdownVolatileFire		= mod:NewCountdownFades(8, 176121)
 
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceRepair				= mod:NewVoice(155179, "-Healer") --int
@@ -413,6 +414,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8, nil, nil, nil, nil, debuffTime + 0.5)
 			end
+			countdownVolatileFire:Start(debuffTime)
 			voiceVolatileFire:Schedule(debuffTime - 4, "runout")
 		end
 		if self.Options.RangeFrame then
