@@ -131,9 +131,9 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if (spellId == 156220 or spellId == 156883) and self.vb.bossUp == "Nobody" then--Tactical Retreat (156883 has lots of invalid casts, so self.vb.bossUp to filter)
-		DBM:Debug("Tactical Retreat "..UnitName(uId))
+	if (spellId == 156220 or spellId == 156883) and self.vb.bossUp == "NoBody" then--Tactical Retreat (156883 has lots of invalid casts, so self.vb.bossUp to filter)
 		self.vb.phase = self.vb.phase + 1
+		DBM:Debug("Tactical Retreat "..UnitName(uId)..". Phase:"..self.vb.phase)
 		self.vb.stamperDodgeCount = 0
 		timerStamperDodge:Cancel()--Cancel all of them
 		self.vb.bossUp = UnitName(uId)
@@ -221,26 +221,3 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		end
 	end
 end
---[[
---Don't remove yet. It's possible the UNIT_TARGETABLE_CHANGED change from PTR may still happen when 6.1 goes live
-function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if not target and self.vb.bossUp == npc then--Bosses don't yell with a target for phase change yells. other yells do have targets. For good measure we also make sure sender is boss that's up
-		self.vb.bossUp = "NoBody"
-		if self.vb.phase == 4 then--Stampers activate on their own after 3rd jump away, when they return.
-			specWarnStampers:Show()
-			voiceEnvironmentalThreats:Play("watchstep")
-		else
-			if self:IsMythic() then
-				timerSmartStamperCD:Start()
-				voiceEnvironmentalThreats:Play("gather")--Must restack for smart stampers
-			else
-				if self.vb.phase == 2 then
-					specWarnSearingPlatesEnd:Show()
-				else
-					specWarnStampersEnd:Show()
-				end
-				voiceEnvironmentalThreats:Play("safenow")
-			end
-		end
-	end
-end--]]
