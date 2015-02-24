@@ -70,15 +70,21 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 157060 then
 		self.vb.stoneBreath = 0
 		specWarnGraspingEarth:Show(RUNES)
-		timerThunderingBlowsCD:Start()
+		if self:IsLFR() then
+			voiceGraspingEarth:Schedule(20.5, "safenow")
+			timerThunderingBlowsCD:Start(20.5)
+			timerStoneBreathCD:Start(28, 1)
+		else
+			voiceGraspingEarth:Schedule(12, "safenow")
+			timerThunderingBlowsCD:Start()
+			timerStoneBreathCD:Start(31, 1)--Verified it happens on mythic, if rune of trembling earth doesn't come first
+		end
 		countdownThunderingBlows:Start()
 		timerSlamCD:Cancel()
 		timerStoneBreathCD:Cancel()
 		timerRipplingSmashCD:Cancel()
 		timerWarpedArmorCD:Cancel()
 		voiceGraspingEarth:Play("157060")
-		voiceGraspingEarth:Schedule(12, "safenow")
-		timerStoneBreathCD:Start(31, 1)--Verified it happens on mythic, if rune of trembling earth doesn't come first
 		if self:IsMythic() then
 			timerTremblingEarthCD:Start()
 			timerGraspingEarthCD:Start(122)
