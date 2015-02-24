@@ -403,10 +403,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specVolatileFire:Show()
 			if not self:IsLFR() then
 				if self:IsMythic() and self.Options.VFYellType == "Countdown" then
-					yellVolatileFire:Yell()
 					yellVolatileFire2:Schedule(debuffTime - 1, 1)
 					yellVolatileFire2:Schedule(debuffTime - 2, 2)
 					yellVolatileFire2:Schedule(debuffTime - 3, 3)
+					yellVolatileFire2:Schedule(debuffTime - 5, 5)
 				else
 					yellVolatileFire:Yell()
 				end
