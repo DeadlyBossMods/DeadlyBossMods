@@ -4576,7 +4576,7 @@ do
 		--Make it easier for devs to detect whispers they are unable to see
 		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
 		if IsInGroup() then
-			SendAddonMessage("Transcriptor", msg, IsInGroup(2) and "INSTANCE_CHAT" or "RAID")--Send any emote to transcriptor, even if no spellid
+			SendAddonMessage("Transcriptor", msg, IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")--Send any emote to transcriptor, even if no spellid
 			if msg:find("spell:") then--Sync spellid based ones for dbm dev purposes still
 				local spellId = string.match(msg, "spell:(%d+)") or UNKNOWN
 				local spellName = string.match(msg, "h%[(.-)%]|h") or UNKNOWN
