@@ -40,6 +40,7 @@ local timerDisruptingRoar				= mod:NewCastTimer(2.5, 160838, nil, "SpellCaster")
 local timerDisruptingRoarCD				= mod:NewCDTimer(46, 160838, nil, "SpellCaster")
 local timerSkullcrackerCD				= mod:NewCDTimer(22, 153470, nil, "Healer")
 local timerCripplingSupplex				= mod:NewCastTimer(9.5, 156938, nil, "Tank|Healer")
+local timerJumpSlamCD					= mod:NewNextTimer(35, "ej9854")
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerSmartStamperCD				= mod:NewNextTimer(12, 162124)--Activation
 local timerStamperDodge					= mod:NewTimer(10, "timerStamperDodge", 160582)--Time until stamper falls (spell name fits well, time you have to stamper dodge)
@@ -78,6 +79,7 @@ function mod:OnCombatStart(delay)
 	self.vb.lastJumpTarget = "None"
 	self.vb.firstJump = false
 	timerSkullcrackerCD:Start(20-delay)
+	timerJumpSlamCD:Start(20.5-delay)
 	timerDisruptingRoarCD:Start(-delay)
 	if self:IsMythic() then
 		timerSmartStamperCD:Start(13-delay)
@@ -139,6 +141,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if cid == 76974 then--Fran
 			timerDisruptingRoarCD:Cancel()
 			timerSkullcrackerCD:Cancel()
+		elseif cid == 76973 then--Hans
+			timerJumpSlamCD:Cancel()
 		end
 		--The triggers are these percentages for sure but there is a delay before they do it so it always appears later, but the trigger has been triggered
 		if self.vb.phase == 2 then--First belt 85% (15 Energy) (fire plates)
@@ -165,6 +169,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.lastJumpTarget = "None"
 		DBM:Debug("157926: Jump Activation")
 		cachedGUID = UnitGUID(uId)
+		timerJumpSlamCD:Start()
 	elseif spellId == 157922 then--First jump must use 157922
 		local temptarget = UnitName(uId.."target") or "nil"
 		DBM:Debug("157922: boss target "..temptarget)
@@ -185,6 +190,10 @@ end
 function mod:UNIT_TARGETABLE_CHANGED(uId)
 	DBM:Debug("UNIT_TARGETABLE_CHANGED event fired")
 	if UnitExists(uId) then--Return, not retreat
+		local cid = self:GetCIDFromGUID(UnitGUID(uId))
+		if cid == 76973 then--Hansgar
+			timerJumpSlamCD:Start(8)
+		end
 		self.vb.bossUp = "NoBody"
 		if self.vb.phase == 4 then--Stampers activate on their own after 3rd jump away, when they return.
 			specWarnStampers:Show()
