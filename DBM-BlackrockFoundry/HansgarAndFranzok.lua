@@ -30,7 +30,7 @@ local specWarnJumpSlamNear				= mod:NewSpecialWarningClose("ej9854")
 local yellJumpSlam						= mod:NewYell("ej9854")
 local specWarnDisruptingRoar			= mod:NewSpecialWarningCast("OptionVersion2", 160838, "SpellCaster")
 --Move specWarnCripplingSupplex to a health check, warn when near 85, 55, or 25%
-local specWarnCripplingSupplex			= mod:NewSpecialWarningPreWarn("OptionVersion2", 156938, "Tank|Healer", 9, nil, nil, 3)--pop a cooldown.
+local specWarnCripplingSupplex			= mod:NewSpecialWarningPreWarn("OptionVersion2", 156938, "Tank|Healer", 3, nil, nil, 3)--pop a cooldown.
 local specWarnSearingPlates				= mod:NewSpecialWarningSpell(161570, nil, nil, nil, 2)
 local specWarnStampers					= mod:NewSpecialWarningSpell(174825, nil, nil, nil, 2)
 local specWarnSearingPlatesEnd			= mod:NewSpecialWarningEnd(161570)
@@ -161,7 +161,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	--"<954.06 23:33:08> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-3783-1205-31925-76974-0000518B7D#Franzok#Player-76-0580DD5F#playerName#156938#Crippling Suplex#nil#nil", -- [6639]--SMASH (5.5 seconds after stun, VERY tight to cover attack with 6 second cd)
 	--http://blue.mmo-champion.com/topic/360651-blackrock-foundry-clarification-known-issues/
 	elseif spellId == 156546 or spellId == 156542 then
-		specWarnCripplingSupplex:Show()
+		specWarnCripplingSupplex:Schedule(6)--warn 3 seconds before, stun removed in 6.1
 		timerCripplingSupplex:Start()
 		countCripplingSupplex:Start()
 	elseif spellId == 157926 then--Jump Activation
