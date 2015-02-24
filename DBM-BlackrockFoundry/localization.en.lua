@@ -88,6 +88,14 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(1203)
 
+L:SetWarningLocalization({
+	specWarnReturnBase	= "Return to dock NOW!"
+})
+
+L:SetOptionLocalization({
+	specWarnReturnBase	= "Show special warning when boat player can safely return to dock"
+})
+
 L:SetMiscLocalization({
 	shipMessage		= "prepares to man the Dreadnaught's Main Cannon!"
 })
