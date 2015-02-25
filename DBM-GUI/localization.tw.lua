@@ -262,6 +262,7 @@ L.WorldBossAlert			= "當你的工會成員或是朋友可能在你的伺服器�
 L.Area_SoundAlerts			= "聲音警告選項"
 L.LFDEnhance				= "使用主要聲音頻道播放準備確認音效給角色確認和戰場/隨機團隊進場(I.E. 即使因為被關閉了也會發出音效而且很大聲!)"
 L.WorldBossNearAlert		= "當你需要的世界首領在你附近開戰播放準備確認音效(蓋過特定首領選項)"
+L.RLReadyCheckSound			= "從主要音效頻道播放準備確認音效"
 L.AFKHealthWarning			= "播放警告聲音假如你在暫離時被攻擊"
 L.Area_AutoLogging			= "自動記錄選項"
 L.AutologBosses				= "自動使用暴雪戰鬥日誌記錄首領戰鬥(為了紀錄藥水事件等其他事件請於開打前使用/dbm pull)"
