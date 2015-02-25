@@ -13,12 +13,11 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 159113 159947 158986",
-	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_SUCCESS 181113",
 	"SPELL_AURA_APPLIED 159947 158986 159178 159202 162497",
 	"SPELL_AURA_APPLIED_DOSE 159178",
 	"SPELL_PERIODIC_DAMAGE 159413 159311",
-	"SPELL_ABSORBED 159413 159311",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"SPELL_ABSORBED 159413 159311"
 )
 
 local warnChainHurl					= mod:NewTargetAnnounce(159947, 3)--Warn for cast too?
@@ -174,6 +173,14 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 181113 then--Encounter Spawn
+		timerTigerCD:Start()
+		countdownTiger:Start()
+	end
+end
+
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
 	if spellId == 159413 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnMaulingBrew:Show()
@@ -182,11 +189,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	--Only fires for one thing, so no reason to localize
-	if self:IsMythic() then
-		timerTigerCD:Start()
-		countdownTiger:Start()
-	end
-end
