@@ -262,6 +262,7 @@ L.WorldBossAlert			= "Show alert message when world bosses might have been engag
 L.Area_SoundAlerts			= "Sound Alert Options"
 L.LFDEnhance				= "Play readycheck sound for role checks &amp; BG/LFG proposals in Master audio channel (I.E. sounds work even if SFX are off and are generally louder)"
 L.WorldBossNearAlert		= "Play readycheck sound when world bosses you are near to are pulled that you need (Overrides boss-specific option)"
+L.RLReadyCheckSound			= "Play readycheck sounds from actual ready checks through master audio channel."
 L.AFKHealthWarning			= "Play alert sound if you are losing health while AFK"
 L.Area_AutoLogging			= "Auto Logging Options"
 L.AutologBosses				= "Automatically record boss encounters using blizzard combat log (Use /dbm pull before bosses to start logging early for pre pots and other events.)"
