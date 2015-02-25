@@ -23,7 +23,10 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnRegulators		= "提示熱能調節閥還剩多少體力",
-	warnBlastFrequency	= "提示$spell:155209施放頻率增加"
+	warnBlastFrequency	= "提示$spell:155209施放頻率增加",
+	VFYellType			= "設定烈性之火的大喊方式 (只有傳奇模式)",
+	Countdown			= "倒數直到消失",
+	Apply				= "只有中了時候"
 })
 
 L:SetMiscLocalization({
@@ -77,6 +80,14 @@ L:SetMiscLocalization({
 -- The Iron Maidens --
 --------------------------
 L= DBM:GetModLocalization(1203)
+
+L:SetWarningLocalization({
+	specWarnReturnBase	= "快回到碼頭！"
+})
+
+L:SetOptionLocalization({
+	specWarnReturnBase	= "當船上玩家可以安全回到碼頭時顯示特別警告"
+})
 
 L:SetMiscLocalization({
 	shipMessage		= "準備裝填無畏號的主炮了！"
