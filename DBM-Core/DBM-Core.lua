@@ -137,6 +137,7 @@ DBM.DefaultOptions = {
 	UseMasterVolume = true,
 	LFDEnhance = true,
 	WorldBossNearAlert = false,
+	RLReadyCheckSound = true,
 	AFKHealthWarning = false,
 	HideObjectivesFrame = true,
 	HideGarrisonUpdates = true,
@@ -1118,6 +1119,7 @@ do
 				"LFG_PROPOSAL_SHOW",
 				"LFG_PROPOSAL_FAILED",
 				"LFG_PROPOSAL_SUCCEEDED",
+				"READY_CHECK",
 				"LFG_LIST_APPLICANT_LIST_UPDATED",
 				"UPDATE_BATTLEFIELD_STATUS",
 				"CINEMATIC_START",
@@ -2935,6 +2937,14 @@ do
 		-- set this with a short delay to prevent issues with other addons also trying to do the same thing with another position ;)
 		DBM:Schedule(5, DBM.SetRaidWarningPositon, DBM)
 		DBM:Schedule(20, DBM.SetRaidWarningPositon, DBM)--A second attempt after we are sure all other mods are loaded, so we can work around issues with movemanything or other mods.
+		--Fix old options that use .wav instead of .ogg, to prevent no sounds bug as of 6.1+
+		--Won't fix issue for other bad .wav file selections, but will fix for most.
+		--can't just do find:(.wav) and blindly replace either, since not all wav files are invalid, just blizzard ones.
+		if DBM.Options.RaidWarningSound == "Sound\\Doodad\\BellTollNightElf.wav" then DBM.Options.RaidWarningSound = "Sound\\Doodad\\BellTollNightElf.ogg" end
+		if DBM.Options.SpecialWarningSound == "Sound\\Spells\\PVPFlagTaken.wav" then DBM.Options.SpecialWarningSound = "Sound\\Spells\\PVPFlagTaken.ogg" end
+		if DBM.Options.SpecialWarningSound2 == "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav" then DBM.Options.SpecialWarningSound2 = "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.ogg" end
+		if DBM.Options.SpecialWarningSound3 == "Sound\\Creature\\KilJaeden\\KILJAEDEN02.wav" then DBM.Options.SpecialWarningSound3 = "Sound\\Creature\\KilJaeden\\KILJAEDEN02.ogg" end
+		if DBM.Options.SpecialWarningSound3 == "Sound\\Creature\\Illidan\\BLACK_Illidan_04.wav" then DBM.Options.SpecialWarningSound3 = "Sound\\Creature\\Illidan\\BLACK_Illidan_04.ogg" end
 	end
 end
 
@@ -2961,6 +2971,12 @@ end
 
 function DBM:LFG_PROPOSAL_SUCCEEDED()
 	self.Bars:CancelBar(DBM_LFG_INVITE)
+end
+
+function DBM:READY_CHECK()
+	if self.Options.RLReadyCheckSound and not BINDING_HEADER_oRA3 then--readycheck sound, if ora3 not installed (bad to have 2 mods do it)
+		PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
+	end
 end
 
 do
