@@ -57,7 +57,7 @@ local timerSummonEnchantedArmamentsCD	= mod:NewCDTimer(45, 156724)--45-47sec var
 local timerSummonCinderWolvesCD			= mod:NewNextTimer(74, 155776)
 local timerOverheated					= mod:NewTargetTimer(14, 154950, nil, "Tank")
 local timerCharringBreathCD				= mod:NewNextTimer(5, 155074, nil, "Tank")
-local timerFixate						= mod:NewTargetTimer(9.7, 154952, nil, false)--Spammy, can't combine them because of wolves will desync if players die.
+local timerFixate						= mod:NewBuffFadesTimer(9.7, 154952)
 local timerBlazingRadianceCD			= mod:NewCDTimer(12, 155277, nil, false)--somewhat important but not important enough. there is just too much going on to be distracted by this timer
 local timerFireStormCD					= mod:NewNextTimer(63, 155493)
 local timerFireStorm					= mod:NewBuffActiveTimer(12, 155493)
@@ -89,11 +89,11 @@ local function findFixate(self)
 		if name and (spellId or 0) == 154952 then--Fixate with just name very usual debuff, so check spellId also.
 			local targetname = GetUnitName(uId, true)
 			fixateTargets[#fixateTargets + 1] = targetname
-			timerFixate:Start(targetname)
 			if self.Options.HudMapOnFixate then
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(154952, "highlight", targetname, 3.5, 10, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
 			end
 			if targetname == UnitName("player") then
+				timerFixate:Start()
 				specWarnFixate:Show()
 				voiceFixate:Play("justrun")
 			end
@@ -179,9 +179,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.3, findFixate, self)
 		else
 			warnFixate:CombinedShow(0.5, args.destName)
-			timerFixate:Start(args.destName)
 			if args:IsPlayer() then
 				--Schedule, do to dogs changing mind bug
+				timerFixate:Start()
 				specWarnFixate:Schedule(0.5)
 				voiceFixate:Schedule(0.5, "justrun")
 				if self:AntiSpam(1, 2) then
@@ -270,12 +270,17 @@ function mod:SPELL_AURA_REMOVED(args)
 		countdownOverheated:Cancel()
 	elseif spellId == 154952 then
 		if self.Options.DebugMode then
-			timerFixate:Cancel(args.destName)
+			if self.Options.HudMapOnFixate then
+				DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+			end
+			if args:IsPlayer() then
+				timerFixate:Cancel()
+			end
 		else
 			warnFixate:Cancel()--Not a bug. do to blizzards crap code, have to cancel ANY pending fixate combinedshow if removed fires, because dogs are probably changing targets and we'll get a fresh target list right after
-			timerFixate:Cancel(args.destName)
 			if args:IsPlayer() then
 				--Cancel scheduled warnings if REMOVED fires on player within 0.5 seconds of applied, do to dogs changing mind bug
+				timerFixate:Cancel()
 				specWarnFixate:Cancel()
 				voiceFixate:Cancel()
 				if self:AntiSpam(1, 2) then--And, avoid firing this warning on a dog changed mind bug as well
