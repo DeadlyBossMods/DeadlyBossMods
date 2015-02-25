@@ -57,7 +57,7 @@ local timerSummonEnchantedArmamentsCD	= mod:NewCDTimer(45, 156724)--45-47sec var
 local timerSummonCinderWolvesCD			= mod:NewNextTimer(74, 155776)
 local timerOverheated					= mod:NewTargetTimer(14, 154950, nil, "Tank")
 local timerCharringBreathCD				= mod:NewNextTimer(5, 155074, nil, "Tank")
-local timerFixate						= mod:NewTargetTimer(10, 154952, nil, false)--Spammy, can't combine them because of wolves will desync if players die.
+local timerFixate						= mod:NewTargetTimer(9.7, 154952, nil, false)--Spammy, can't combine them because of wolves will desync if players die.
 local timerBlazingRadianceCD			= mod:NewCDTimer(12, 155277, nil, false)--somewhat important but not important enough. there is just too much going on to be distracted by this timer
 local timerFireStormCD					= mod:NewNextTimer(63, 155493)
 local timerFireStorm					= mod:NewBuffActiveTimer(12, 155493)
@@ -78,6 +78,29 @@ local voiceLavaSlash					= mod:NewVoice(155318) --runaway
 mod:AddRangeFrameOption("10/6")
 mod:AddArrowOption("TorrentArrow", 154932, false, true)--Depend strat arrow useful if ranged run to torrent person strat. arrow useless if run torrent into melee strat.
 mod:AddHudMapOption("HudMapOnFixate", 154952, false)
+
+local fixate = GetSpellInfo(154952)
+local UnitDebuff, UnitName, GetUnitName = UnitDebuff, UnitName, GetUnitName
+
+local function findFixate(self)
+	local fixateTargets = {}
+	for uId in DBM:GetGroupMembers() do
+		local name, _, _, _, _, _, _, _, _, _, spellId = UnitDebuff(uId, fixate)
+		if name and (spellId or 0) == 154952 then--Fixate with just name very usual debuff, so check spellId also.
+			local targetname = GetUnitName(uId, true)
+			fixateTargets[#fixateTargets + 1] = targetname
+			timerFixate:Start(targetname)
+			if self.Options.HudMapOnFixate then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(154952, "highlight", targetname, 3.5, 10, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
+			end
+			if targetname == UnitName("player") then
+				specWarnFixate:Show()
+				voiceFixate:Play("justrun")
+			end
+		end
+	end
+	warnFixate:Show(table.concat(fixateTargets, "<, >"))
+end
 
 function mod:OnCombatStart(delay)
 	timerLavaSlashCD:Start(11-delay)
@@ -151,18 +174,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownCinderWolves:Start()
 		voiceFireStorm:Play("aesoon")--maybe gather?
 	elseif spellId == 154952 then
-		warnFixate:CombinedShow(0.5, args.destName)
-		timerFixate:Start(args.destName)
-		if args:IsPlayer() then
-			--Schedule, do to dogs changing mind bug
-			specWarnFixate:Schedule(0.5)
-			voiceFixate:Schedule(0.5, "justrun")
-			if self:AntiSpam(1, 2) then
-				--Nothing. Just a timestamp
+		if self.Options.DebugMode then
+			self:Unschedule(findFixate)
+			self:Schedule(0.3, findFixate, self)
+		else
+			warnFixate:CombinedShow(0.5, args.destName)
+			timerFixate:Start(args.destName)
+			if args:IsPlayer() then
+				--Schedule, do to dogs changing mind bug
+				specWarnFixate:Schedule(0.5)
+				voiceFixate:Schedule(0.5, "justrun")
+				if self:AntiSpam(1, 2) then
+					--Nothing. Just a timestamp
+				end
 			end
-		end
-		if self.Options.HudMapOnFixate then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 10, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
+			if self.Options.HudMapOnFixate then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 10, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
+			end
 		end
 	elseif spellId == 163284 then
 		local amount = args.amount or 1
@@ -241,18 +269,22 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerOverheated:Cancel(args.destName)
 		countdownOverheated:Cancel()
 	elseif spellId == 154952 then
-		warnFixate:Cancel()--Not a bug. do to blizzards crap code, have to cancel ANY pending fixate combinedshow if removed fires, because dogs are probably changing targets and we'll get a fresh target list right after
-		timerFixate:Cancel(args.destName)
-		if args:IsPlayer() then
-			--Cancel scheduled warnings if REMOVED fires on player within 0.5 seconds of applied, do to dogs changing mind bug
-			specWarnFixate:Cancel()
-			voiceFixate:Cancel()
-			if self:AntiSpam(1, 2) then--And, avoid firing this warning on a dog changed mind bug as well
-				specWarnFixateEnded:Show()
+		if self.Options.DebugMode then
+			timerFixate:Cancel(args.destName)
+		else
+			warnFixate:Cancel()--Not a bug. do to blizzards crap code, have to cancel ANY pending fixate combinedshow if removed fires, because dogs are probably changing targets and we'll get a fresh target list right after
+			timerFixate:Cancel(args.destName)
+			if args:IsPlayer() then
+				--Cancel scheduled warnings if REMOVED fires on player within 0.5 seconds of applied, do to dogs changing mind bug
+				specWarnFixate:Cancel()
+				voiceFixate:Cancel()
+				if self:AntiSpam(1, 2) then--And, avoid firing this warning on a dog changed mind bug as well
+					specWarnFixateEnded:Show()
+				end
 			end
-		end
-		if self.Options.HudMapOnFixate then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+			if self.Options.HudMapOnFixate then
+				DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+			end
 		end
 	elseif spellId == 155493 then
 		specWarnFireStormEnded:Show()
