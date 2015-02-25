@@ -261,10 +261,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.EarthwarperAlive = self.vb.EarthwarperAlive + 1
 			specWarnEarthwarper:Show()
 			voiceEarthwarper:Play("killmob")
-			timerGiftOfEarthCD:Start(10)
-			timerEarthenFlechettesCD:Start(15)
-			timerEarthwarperCD:Start()
-			countdownEarthwarper:Start()
+			timerGiftOfEarthCD:Start(10)--TODO, verify timing on new event
+			timerEarthenFlechettesCD:Start(15)--TODO, verify timing on new event
+			timerEarthwarperCD:Start()--TODO, verify timing on new event
+			countdownEarthwarper:Start()--TODO, verify timing on new event
 			if self.Options.SetIconOnEarthwarper and self.vb.EarthwarperAlive < 9 and not (self:IsMythic() and self.Options.SetIconOnMote) then--Support for marking up to 8 mobs (you're group is terrible)
 				self:ScanForMobs(80599, 2, 9-self.vb.EarthwarperAlive, 1, 0.2, 13, "SetIconOnEarthwarper")
 			end

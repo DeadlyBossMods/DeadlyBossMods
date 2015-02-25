@@ -210,7 +210,7 @@ do
 		end
 	end
 	debuffFilterGaze = function(uId)
-		if select(11, UnitDebuff(uId, gazeDebuff)) == 165595 then--Two debuffs with same name, need correct one
+		if UnitDebuff(uId, gazeDebuff) then
 			return true
 		end
 	end
@@ -219,7 +219,7 @@ end
 local function updateRangeFrame(self, markPreCast)
 	if not self.Options.RangeFrame then return end
 	if self:IsMythic() and self.vb.phase == 4 then
-		if select(11, UnitDebuff("player", gazeDebuff)) == 165595 then--Player has gaze
+		if UnitDebuff("player", gazeDebuff) then--Player has gaze
 			DBM.RangeCheck:Show(8, nil)
 		else
 			DBM.RangeCheck:Show(8, debuffFilterGaze)
@@ -946,7 +946,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
-			DBM.InfoFrame:Show(5, "playerbaddebuffbyspellid", 176537)
+			DBM.InfoFrame:Show(5, "playerbaddebuff", 176537)
 		end
 	end
 end
