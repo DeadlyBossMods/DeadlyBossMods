@@ -2938,13 +2938,12 @@ do
 		DBM:Schedule(5, DBM.SetRaidWarningPositon, DBM)
 		DBM:Schedule(20, DBM.SetRaidWarningPositon, DBM)--A second attempt after we are sure all other mods are loaded, so we can work around issues with movemanything or other mods.
 		--Fix old options that use .wav instead of .ogg, to prevent no sounds bug as of 6.1+
-		--Won't fix issue for other bad .wav file selections, but will fix for most.
-		--can't just do find:(.wav) and blindly replace either, since not all wav files are invalid, just blizzard ones.
-		if DBM.Options.RaidWarningSound == "Sound\\Doodad\\BellTollNightElf.wav" then DBM.Options.RaidWarningSound = "Sound\\Doodad\\BellTollNightElf.ogg" end
-		if DBM.Options.SpecialWarningSound == "Sound\\Spells\\PVPFlagTaken.wav" then DBM.Options.SpecialWarningSound = "Sound\\Spells\\PVPFlagTaken.ogg" end
-		if DBM.Options.SpecialWarningSound2 == "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav" then DBM.Options.SpecialWarningSound2 = "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.ogg" end
-		if DBM.Options.SpecialWarningSound3 == "Sound\\Creature\\KilJaeden\\KILJAEDEN02.wav" then DBM.Options.SpecialWarningSound3 = "Sound\\Creature\\KilJaeden\\KILJAEDEN02.ogg" end
-		if DBM.Options.SpecialWarningSound3 == "Sound\\Creature\\Illidan\\BLACK_Illidan_04.wav" then DBM.Options.SpecialWarningSound3 = "Sound\\Creature\\Illidan\\BLACK_Illidan_04.ogg" end
+		--Check file paths for .wav, but make sure file path does not contain Interface\\AddOns, because wav there is still valid. Only blizzard .wav is gone.
+		if DBM.Options.RaidWarningSound:find(".wav") and not DBM.Options.RaidWarningSound:find("Interface\\AddOns") then DBM.Options.RaidWarningSound = DBM.DefaultOptions.RaidWarningSound end
+		if DBM.Options.SpecialWarningSound:find(".wav") and not DBM.Options.SpecialWarningSound:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound = DBM.DefaultOptions.SpecialWarningSound end
+		if DBM.Options.SpecialWarningSound2:find(".wav") and not DBM.Options.SpecialWarningSound2:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound2 = DBM.DefaultOptions.SpecialWarningSound2 end
+		if DBM.Options.SpecialWarningSound3:find(".wav") and not DBM.Options.SpecialWarningSound3:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound3 = DBM.DefaultOptions.SpecialWarningSound3 end
+		if DBM.Options.SpecialWarningSound4:find(".wav") and not DBM.Options.SpecialWarningSound4:find("Interface\\AddOns") then DBM.Options.SpecialWarningSound4 = DBM.DefaultOptions.SpecialWarningSound4 end
 	end
 end
 
