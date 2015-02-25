@@ -449,6 +449,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnMeltYou:Show()
 			yellMelt:Schedule(5)--yell after 5 sec to warn nearby player (aoe actually after 6 sec). like expel magic: fel
+			voiceMelt:Play("runout")
 		elseif self:CheckNearby(8, args.destName) then
 			specWarnMeltNear:Show()
 		end
@@ -458,6 +459,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnRuptureOn:Show()
 			yellRupture:Schedule(4)--yell after 4 sec to warn nearby player (aoe actually after 5 sec).  like expel magic: fel
+			voiceRupture:Play("runout")
 		end
 	elseif spellId == 155173 and not args:IsDestTypePlayer() then
 		specWarnEarthShield:Show(args.destName)
