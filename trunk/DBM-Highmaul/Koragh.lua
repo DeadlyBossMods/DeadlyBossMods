@@ -181,7 +181,7 @@ function mod:ArcaneTarget()
 		specWarnExpelMagicArcaneYou:Show()--So show tank warning
 		voiceExpelMagicArcane:Play("runout")
 	else
-		if self:AntiSpam(2, targetName) then--Set anti spam with target name
+		if self:AntiSpam(3.5, targetName) then--Set anti spam with target name
 			specWarnExpelMagicArcane:Show(targetName)--Sometimes targetname is nil, and then it warns for unknown, but with the new status == 3 check, it'll still warn correct tank, so useful anyways
 			voiceExpelMagicArcane:Play("changemt")
 		end
@@ -264,7 +264,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.shieldCharging = false
 		specWarnNullBarrier:Show(args.destName)
 	elseif spellId == 162186 then
-		warnExpelMagicArcane:Show(args.destName)
 		timerExpelMagicArcane:Start(args.destName)
 		if self.vb.shieldCharging then--Sometimes debuff land during shield charging, if this happens, it's still extended
 			timerExpelMagicArcaneCD:Start(49)--26+23
@@ -278,9 +277,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(5)
 			end
 		else
-			if self:AntiSpam(2, args.destName) then--if antispam matches cast start warning, it won't warn again, if name is different, it'll trigger new warning
+			if self:AntiSpam(3.5, args.destName) and self:IsTank() then--if antispam matches cast start warning, it won't warn again, if name is different, it'll trigger new warning
 				specWarnExpelMagicArcane:Show(args.destName)
 				voiceExpelMagicArcane:Play("changemt")
+			else
+				warnExpelMagicArcane:Show(args.destName)
 			end
 		end
 	elseif spellId == 161242 and self:AntiSpam(23, args.destName) and not self:IsLFR() then--Players may wabble in and out of it and we don't want to spam warnings.
