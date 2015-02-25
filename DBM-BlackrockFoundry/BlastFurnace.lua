@@ -325,7 +325,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnCauterizeWounds:Show(args.sourceName)
 	elseif spellId == 156937 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnPyroclasm:Show(args.sourceName)
-	elseif spellId == 177756 and self:CheckTankDistance(args.sourceGUID, 30) then
+	elseif spellId == 177756 and self:CheckTankDistance(args.sourceGUID, 30) and self:AntiSpam(3.5, 7) then
 		specWarnDeafeningRoar:Show()
 	elseif spellId == 160379 and self:CheckTankDistance(args.sourceGUID, 30) then--Requires 6.1. The events on live don't work for this
 		specWarnDefense:Show()
