@@ -345,10 +345,10 @@ local function updateInfoFrame()
 	return lines
 end
 
-local function showInfoFrame()
-	if mod.Options.InfoFrame then
-		mod.vb.infoCount = mod.vb.trainCount + 1
-		DBM.InfoFrame:SetHeader(MovingTrain.." ("..(mod.vb.infoCount)..")")
+local function showInfoFrame(self)
+	if self.Options.InfoFrame then
+		self.vb.infoCount = self.vb.trainCount + 1
+		DBM.InfoFrame:SetHeader(MovingTrain.." ("..(self.vb.infoCount)..")")
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 	end
 end
@@ -358,7 +358,7 @@ function mod:test(num)
 	self.vb.trainCount = num
 	showTrainWarning(self)
 	laneCheck(self)
-	showInfoFrame()
+	showInfoFrame(self)
 end
 
 function mod:BombTarget(targetname, uId)
@@ -388,7 +388,7 @@ function mod:OnCombatStart(delay)
 		self:Schedule(14.5, fakeTrainYell, self)
 		timerTrainCD:Start(17-delay, 1)
 	end
-	showInfoFrame()
+	showInfoFrame(self)
 end
 
 function mod:OnCombatEnd()
@@ -468,9 +468,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		end
 		self:Unschedule(showInfoFrame)
 		if msg == "Fake" then
-			self:Schedule(3.5, showInfoFrame)
+			self:Schedule(2.5, showInfoFrame, self)
 		else
-			self:Schedule(5, showInfoFrame)
+			self:Schedule(4, showInfoFrame, self)
 		end
 		local count = self.vb.trainCount
 		if self:IsMythic() then
