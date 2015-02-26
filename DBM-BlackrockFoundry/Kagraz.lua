@@ -64,7 +64,7 @@ local timerFireStorm					= mod:NewBuffActiveTimer(12, 155493)
 
 local countdownCinderWolves				= mod:NewCountdown(74, 155776)
 local countdownFireStorm				= mod:NewCountdown(63, 155493)--Same voice as wolves cause never happen at same time, in fact they alternate.
-local countdownEnchantedArmaments		= mod:NewCountdown("Alt45", 156724, "Ranged")
+local countdownEnchantedArmaments		= mod:NewCountdown("OptionVersion2", "Alt45", 156724, false)
 local countdownOverheated				= mod:NewCountdownFades("Alt20", 154950, "Tank")
 
 local voiceMoltenTorrent				= mod:NewVoice(154932) --runin
