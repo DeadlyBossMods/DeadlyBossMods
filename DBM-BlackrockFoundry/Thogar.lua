@@ -467,17 +467,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			end
 		end
 		self:Unschedule(showInfoFrame)
-		if msg == "Fake" then
-			self:Schedule(2.5, showInfoFrame, self)
-		else
-			self:Schedule(4, showInfoFrame, self)
-		end
+		local expectedTime
 		local count = self.vb.trainCount
 		if self:IsMythic() then
 			if mythicVoice[count] and not adjusted then
 				voiceTrain:Play("Thogar\\"..mythicVoice[count])
 			end
-			local expectedTime
 			if count == 1 or count == 2 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 31 or count == 32 then
 				expectedTime = 5
 			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 33 or count == 34 or count == 35 then
@@ -517,7 +512,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			if otherVoice[count] and not adjusted then
 				voiceTrain:Play("Thogar\\"..otherVoice[count])
 			end
-			local expectedTime
 			if count == 31 or count == 32 or count == 33 then
 				expectedTime = 4
 			elseif count == 2 or count == 4 or count == 6 or count == 18  or count == 29 then
@@ -559,6 +553,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 					self:ScanForMobs(77487, 1, 1, 2, 0.2, 15)--Fire Mender scanner marking 1 up
 				end
 			end
+		end
+		local adjust = 0
+		if msg == "Fake" then
+			if expectedTime and expectedTime == 4 then adjust = 1 end
+			self:Schedule(2.5-adjust, showInfoFrame, self)
+		else
+			self:Schedule(4-adjust, showInfoFrame, self)
 		end
 	end
 end
