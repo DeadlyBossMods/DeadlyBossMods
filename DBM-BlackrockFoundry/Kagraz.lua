@@ -80,13 +80,13 @@ mod:AddArrowOption("TorrentArrow", 154932, false, true)--Depend strat arrow usef
 mod:AddHudMapOption("HudMapOnFixate", 154952, false)
 
 local fixate = GetSpellInfo(154952)
-local UnitDebuff, UnitName, GetUnitName = UnitDebuff, UnitName, GetUnitName
+local UnitDebuff, UnitName, GetUnitName, GetTime = UnitDebuff, UnitName, GetUnitName, GetTime
 
 local function findFixate(self)
 	local fixateTargets = {}
 	for uId in DBM:GetGroupMembers() do
-		local name, _, _, _, _, _, _, _, _, _, spellId = UnitDebuff(uId, fixate)
-		if name and (spellId or 0) == 154952 then--Fixate with just name very usual debuff, so check spellId also.
+		local name, _, _, _, _, _, expires, _, _, _, spellId = UnitDebuff(uId, fixate)
+		if name and (spellId or 0) == 154952 and (expires - GetTime()) > 9 then--Fixate with just name very usual debuff, so check spellId also.
 			local targetname = GetUnitName(uId, true)
 			fixateTargets[#fixateTargets + 1] = targetname
 			if self.Options.HudMapOnFixate then
