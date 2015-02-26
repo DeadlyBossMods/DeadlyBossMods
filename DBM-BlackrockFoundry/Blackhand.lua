@@ -206,18 +206,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.5, checkMarked)
 			timerMarkedforDeathCD:Start(timer)
 			countdownMarkedforDeath:Start(timer)
-			if DBM.Options.DebugMode then--Experimental smash timer adjusting for marked for death delays
-				DBM:Debug("Running experimental timerShatteringSmashCD adjust because debugmode is enabled", 2)
-				local elapsed, total = timerShatteringSmashCD:GetTime(self.vb.smashCount+1)
-				local remaining = total - elapsed
-				DBM:Debug("Smash Elapsed: "..elapsed.." Smash Total: "..total.." Smash Remaining: "..remaining.." MFD Timer: "..timer, 2)
-				if (remaining > timer) and (remaining < timer+5) then--Marked for death will come off cd before timerShatteringSmashCD comes off cd and delay the cast
-					local extend = (timer+5)-remaining
-					DBM:Debug("Delay detected, updating smash timer now. Extend: "..extend)
-					timerShatteringSmashCD:Update(elapsed, total+extend, self.vb.smashCount+1)
-					countdownShatteringSmash:Cancel()
-					countdownShatteringSmash:Start(remaining+extend)
-				end
+			DBM:Debug("Running experimental timerShatteringSmashCD adjust because debugmode is enabled", 2)
+			local elapsed, total = timerShatteringSmashCD:GetTime(self.vb.smashCount+1)
+			local remaining = total - elapsed
+			DBM:Debug("Smash Elapsed: "..elapsed.." Smash Total: "..total.." Smash Remaining: "..remaining.." MFD Timer: "..timer, 2)
+			if (remaining > timer) and (remaining < timer+5) then--Marked for death will come off cd before timerShatteringSmashCD comes off cd and delay the cast
+				local extend = (timer+5)-remaining
+				DBM:Debug("Delay detected, updating smash timer now. Extend: "..extend)
+				timerShatteringSmashCD:Update(elapsed, total+extend, self.vb.smashCount+1)
+				countdownShatteringSmash:Cancel()
+				countdownShatteringSmash:Start(remaining+extend)
 			end
 		end
 		if self.Options.SetIconOnMarked then
