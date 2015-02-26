@@ -8,6 +8,7 @@ mod:SetZone()
 mod:SetMinSyncRevision(13109)
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:SetModelSound("sound\\creature\\tectus\\VO_60_HMR_TECTUS_AGGRO_01.ogg", "sound\\creature\\tectus\\vo_60_hmr_tectus_spell_05.ogg")
+mod:SetHotfixNoticeRev(13109)
 
 mod:RegisterCombat("combat")
 mod:SetMinSyncTime(4)--Rise Mountain can occur pretty often.

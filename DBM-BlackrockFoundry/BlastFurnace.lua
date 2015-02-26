@@ -6,7 +6,7 @@ mod:SetCreatureID(76809, 76806)--76809 foreman feldspar, 76806 heart of the moun
 mod:SetEncounterID(1690)
 mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(12973)
+mod:SetHotfixNoticeRev(13129)
 
 mod:RegisterCombat("combat")
 
@@ -146,30 +146,22 @@ local function Engineers(self)
 		self:Schedule(35, Engineers, self)
 		countdownEngineer:Start(35)
 	elseif self:IsHeroic() then
-		timerEngineer:Start(41)
-		self:Schedule(41, Engineers, self)
-		countdownEngineer:Start(41)
+		timerEngineer:Start(40.5)
+		self:Schedule(40.5, Engineers, self)
+		countdownEngineer:Start(40.5)
 	end
 end
 
 local function SecurityGuard(self)
 	warnSecurityGuard:Show()
 	voiceSecurityGuard:Play("ej9648")
-	if self:IsMythic() then
+	if self:IsDifficulty("mythic", "heroic") then
 		if self.vb.phase == 1 then
-			timerSecurityGuard:Start(30)
-			self:Schedule(30, SecurityGuard, self)
+			timerSecurityGuard:Start(30.5)
+			self:Schedule(30.5, SecurityGuard, self)
 		else
 			timerSecurityGuard:Start(40)
 			self:Schedule(40, SecurityGuard, self)
-		end
-	elseif self:IsHeroic() then
-		if self.vb.phase == 1 then
-			timerSecurityGuard:Start(46)
-			self:Schedule(46, SecurityGuard, self)
-		else
-			timerSecurityGuard:Start(55)
-			self:Schedule(55, SecurityGuard, self)
 		end
 	elseif self:IsNormal() then
 		if self.vb.phase == 1 then
@@ -185,9 +177,11 @@ end
 local function FireCaller(self)
 	warnFireCaller:Show()
 	voiceFireCaller:Play("ej9659")
-	if self:IsMythic() then
+	if self:IsDifficulty("mythic", "heroic") then
+		--Important note, sometimes both side not spawn same time. one side might lag like 2-3 behind other.
+		--But timer good for first one spawning always. 2 always spawn, 1 at timer and 2nd maybe a couple seconds later.
 		timerFireCaller:Start(45)
-		self:Schedule(45, FireCaller, self)
+		self:Schedule(45.5, FireCaller, self)
 	else
 		timerFireCaller:Start(55)
 		self:Schedule(55, FireCaller, self)
@@ -521,7 +515,6 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 76808 then--Regulators
 		self.vb.machinesDead = self.vb.machinesDead + 1
-		warnRegulators:Show(2 - self.vb.machinesDead)
 		if self.vb.machinesDead == 2 then
 			self.vb.phase = 2
 			activePrimal = 0
@@ -537,8 +530,8 @@ function mod:UNIT_DIED(args)
 			--Start adds timers. Seem same in all modes.
 			if not self:IsLFR() then-- LFR do not have Slag Elemental.
 				timerSlagElemental:Start(15, 1)
-				self:Schedule(71, SecurityGuard, self)
-				timerSecurityGuard:Start(71)
+				self:Schedule(72, SecurityGuard, self)
+				timerSecurityGuard:Start(72)
 				self:Schedule(78, FireCaller, self)
 				timerFireCaller:Start(78)
 			end
@@ -551,6 +544,8 @@ function mod:UNIT_DIED(args)
 			if self.Options.HudMapOnBomb then
 				DBMHudMap:Disable()
 			end
+		else--Only announce 1 remaining. 0 remaining not needed, because have phase2 warn. double warn no good
+			warnRegulators:Show(2 - self.vb.machinesDead)
 		end
 	elseif cid == 76809 then
 		timerRuptureCD:Cancel()
