@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(77692)
 mod:SetEncounterID(1713)
 mod:SetZone()
-mod:SetHotfixNoticeRev(12879)
+mod:SetHotfixNoticeRev(13105)
 
 mod:RegisterCombat("combat")
 
@@ -73,13 +73,14 @@ function mod:SPELL_CAST_START(args)
 		if self:IsLFR() then
 			voiceGraspingEarth:Schedule(20.5, "safenow")
 			timerThunderingBlowsCD:Start(20.5)
+			countdownThunderingBlows:Start(20.5)
 			timerStoneBreathCD:Start(28, 1)
 		else
 			voiceGraspingEarth:Schedule(12, "safenow")
 			timerThunderingBlowsCD:Start()
+			countdownThunderingBlows:Start()
 			timerStoneBreathCD:Start(31, 1)--Verified it happens on mythic, if rune of trembling earth doesn't come first
 		end
-		countdownThunderingBlows:Start()
 		timerSlamCD:Cancel()
 		timerStoneBreathCD:Cancel()
 		timerRipplingSmashCD:Cancel()
