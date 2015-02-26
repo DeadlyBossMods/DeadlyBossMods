@@ -50,7 +50,7 @@ local warnRapidFire						= mod:NewTargetAnnounce(156631, 4)
 local warnPenetratingShot				= mod:NewTargetAnnounce(164271, 3)
 ----Enforcer Sorka
 local warnBladeDash						= mod:NewTargetAnnounce("OptionVersion2", 155794, 3, nil, "Ranged")--No longer targets melee, ever.
-local warnConvulsiveShadows				= mod:NewTargetAnnounce(156214, 3, nil, "Healer")
+local warnConvulsiveShadows				= mod:NewTargetAnnounce("OptionVersion2", 156214, 3, nil, "Healer")
 local warnDarkHunt						= mod:NewTargetAnnounce("OptionVersion2", 158315, 4, nil, "Healer")
 ----Marak the Blooded
 local warnBloodRitual					= mod:NewTargetAnnounce(158078, 3)
