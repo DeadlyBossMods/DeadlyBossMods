@@ -258,6 +258,7 @@ L.WorldBossAlert			= "현재 서버에서 친구 또는 길드원에 의해 야�
 L.Area_SoundAlerts			= "소리 알림 설정"
 L.LFDEnhance				= "전장/공격대 찾기 입장, 역할 확인 소리를 주 음량 설정에 맞추어 듣기(환경 소리가 꺼져 있을 때도 작동하며, 일반적으로 환경 소리보다 더 크게 들립니다)"
 L.WorldBossNearAlert		= "근처에서 야외 우두머리 전투가 시작된 경우 전투 준비 소리 듣기(우두머리별 설정 무시)"
+L.RLReadyCheckSound			= "전투 준비 소리를 주 음량 설정에 맞추어 듣기"
 L.AFKHealthWarning			= "자리 비움 상태 도중 체력이 줄면 경고음 듣기"
 L.Area_AutoLogging			= "자동 전투 기록 설정"
 L.AutologBosses				= "우두머리 전투시 블리자드 전투 기록 자동 활성화(전투 시작전 주요 정보를 기록하려면, /dbm pull 명령어를 사용하세요)"
