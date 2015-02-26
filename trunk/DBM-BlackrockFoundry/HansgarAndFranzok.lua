@@ -43,7 +43,7 @@ local timerCripplingSupplex				= mod:NewCastTimer(9.5, 156938, nil, "Tank|Healer
 local timerJumpSlamCD					= mod:NewNextTimer(35, "ej9854")
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerSmartStamperCD				= mod:NewNextTimer(12, 162124)--Activation
-local timerStamperDodge					= mod:NewTimer(10, "timerStamperDodge", 160582)--Time until stamper falls (spell name fits well, time you have to stamper dodge)
+--local timerStamperDodge					= mod:NewTimer(10, "timerStamperDodge", 160582)--Time until stamper falls (spell name fits well, time you have to stamper dodge)
 
 --local berserkTimer						= mod:NewBerserkTimer(360)
 
