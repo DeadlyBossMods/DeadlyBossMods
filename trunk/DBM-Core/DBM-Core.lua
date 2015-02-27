@@ -4532,6 +4532,24 @@ do
 	
 	function DBM:BOSS_KILL(encounterID, name)
 		self:Debug("BOSS_KILL event fired: "..encounterID.." "..name)
+		for i = #inCombat, 1, -1 do
+			local v = inCombat[i]
+			if not v.combatInfo then return end
+--			if v.noEEDetection then return end
+			if v.multiEncounterPullDetection then
+				for _, eId in ipairs(v.multiEncounterPullDetection) do
+					if encounterID == eId then
+						self:EndCombat(v)
+						sendSync("EE", encounterID.."\t1\t"..v.id.."\t"..(v.revision or 0))
+						return
+					end
+				end
+			elseif encounterID == v.combatInfo.eId then
+				self:EndCombat(v)
+				sendSync("EE", encounterID.."\t1\t"..v.id.."\t"..(v.revision or 0))
+				return
+			end
+		end
 	end
 
 	local function checkExpressionList(exp, str)
