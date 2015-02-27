@@ -45,7 +45,7 @@ local specWarnBlazinRadiance			= mod:NewSpecialWarningMoveAway(155277, nil, nil,
 local yellBlazinRadiance				= mod:NewYell(155277, nil, false)
 local specWarnFireStorm					= mod:NewSpecialWarningSpell(155493, nil, nil, nil, 2, nil, 2)
 local specWarnFireStormEnded			= mod:NewSpecialWarningEnd(155493)
-local specWarnRisingFlames				= mod:NewSpecialWarningStack(163284, nil, 10)--stack guessed
+local specWarnRisingFlames				= mod:NewSpecialWarningStack(163284, nil, 6)--stack guessed
 local specWarnRisingFlamesOther			= mod:NewSpecialWarningTaunt(163284, nil, nil, nil, nil, nil, 2)
 local specWarnCharringBreath			= mod:NewSpecialWarningStack(155074, nil, 3)--Assumed based on timing and casts, that you swap every breath.
 local specWarnCharringBreathOther		= mod:NewSpecialWarningTaunt(155074)
@@ -183,7 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount % 3 == 0 then
 			warnRisingFlames:Show(args.destName, amount)
 		end
-		if amount % 3 == 0 and amount >= 10 then--Stack count unknown
+		if amount % 3 == 0 and amount >= 6 then--Stack count unknown
 			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 				specWarnRisingFlames:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
