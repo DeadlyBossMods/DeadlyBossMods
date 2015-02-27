@@ -7169,6 +7169,9 @@ function bossModPrototype:GetHighestBossHealth()
 	local hp
 	if not self.multiMobPullDetection or self.mainBoss then
 		hp = bossHealth[self.mainBoss or self.combatInfo.mob or -1]
+		if hp and (hp > 100 or hp < 1) then
+			hp = nil
+		end
 	else
 		for _, mob in ipairs(self.multiMobPullDetection) do
 			if (bossHealth[mob] or 0) > (hp or 0) and (bossHealth[mob] or 0) < 100 then-- ignore full health.
@@ -7183,6 +7186,9 @@ function bossModPrototype:GetLowestBossHealth()
 	local hp
 	if not self.multiMobPullDetection or self.mainBoss then
 		hp = bossHealth[self.mainBoss or self.combatInfo.mob or -1]
+		if hp and (hp > 100 or hp < 1) then
+			hp = nil
+		end
 	else
 		for _, mob in ipairs(self.multiMobPullDetection) do
 			if (bossHealth[mob] or 100) < (hp or 100) and (bossHealth[mob] or 100) > 0 then-- ignore zero health.
