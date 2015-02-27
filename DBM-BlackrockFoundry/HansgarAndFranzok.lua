@@ -135,7 +135,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.phase = self.vb.phase + 1
 		DBM:Debug("Tactical Retreat "..UnitName(uId)..". Phase:"..self.vb.phase)
 		self.vb.stamperDodgeCount = 0
-		timerStamperDodge:Cancel()--Cancel all of them
+--		timerStamperDodge:Cancel()--Cancel all of them
 		self.vb.bossUp = UnitName(uId)
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
 		if cid == 76974 then--Fran
