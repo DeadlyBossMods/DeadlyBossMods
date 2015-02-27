@@ -7519,10 +7519,12 @@ do
 				end
 			end
 			if self.sound then
+				local sound = DBM.Options.RaidWarningSound or ""--temp hack in 6.1
+				sound = sound:gsub(".wav", ".ogg")--temp hack in 6.1
 				if DBM.Options.UseMasterVolume then
-					PlaySoundFile(DBM.Options.RaidWarningSound, "Master")
+					PlaySoundFile(sound, "Master")
 				else
-					PlaySoundFile(DBM.Options.RaidWarningSound)
+					PlaySoundFile(sound)
 				end
 			end
 			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
@@ -7751,10 +7753,12 @@ do
 	end
 
 	function soundPrototype:Play(file)
+		local sound = file or ""--temp hack in 6.1
+		sound = sound:gsub(".wav", ".ogg")--temp hack in 6.1
 		if DBM.Options.UseMasterVolume then
-			PlaySoundFile(file, "Master")
+			PlaySoundFile(sound, "Master")
 		else
-			PlaySoundFile(file)
+			PlaySoundFile(sound)
 		end
 	end
 
@@ -8612,7 +8616,8 @@ do
 	end
 
 	function DBM:PlaySpecialWarningSound(soundId)
-		local sound = type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
+		local sound = type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound or ""
+		sound = sound:gsub(".wav", ".ogg")--temp hack in 6.1
 		if self.Options.UseMasterVolume then
 			PlaySoundFile(sound, "Master")
 		else
