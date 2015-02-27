@@ -22,13 +22,13 @@ mod:RegisterEventsInCombat(
 
 --Pointless add fight starts with (need to keep alive for follower achievement
 local warnDevastatingSlam				= mod:NewSpellAnnounce("OptionVersion2", 156018, 4, nil, false)
-local warnDropHammer					= mod:NewSpellAnnounce("OptionVersion2", 156040, 3, nil, false)--Target scanning?
+local warnDropHammer					= mod:NewSpellAnnounce("OptionVersion2", 156040, 3, nil, false)
 
 local warnLavaSlash						= mod:NewSpellAnnounce(155318, 2, nil, false)--Likely cast often & doesn't show in combat log anyways except for damage and not THAT important
 local warnSummonEnchantedArmaments		= mod:NewSpellAnnounce("OptionVersion2", 156724, 3, nil, "Ranged")
 local warnMoltenTorrent					= mod:NewTargetAnnounce(154932, 3)
 local warnRekindle						= mod:NewCastAnnounce(155064, 4)
-local warnFixate						= mod:NewTargetAnnounce(154952, 3)
+local warnFixate						= mod:NewTargetAnnounce("OptionVersion2", 154952, 3, nil, false)--Even though it works better now, it's just too spammy and most tune it out. Dogs very often become desynced after player died, or bopped or Feigned, and it's not just 1 warning every 10 seconds, but a warning every 3-4sec
 local warnBlazingRadiance				= mod:NewTargetAnnounce(155277, 3)
 local warnRisingFlames					= mod:NewStackAnnounce(163284, 2, nil, "Tank")
 local warnCharringBreath				= mod:NewStackAnnounce(155074, 2, nil, "Tank")
@@ -47,13 +47,13 @@ local specWarnFireStorm					= mod:NewSpecialWarningSpell(155493, nil, nil, nil, 
 local specWarnFireStormEnded			= mod:NewSpecialWarningEnd(155493)
 local specWarnRisingFlames				= mod:NewSpecialWarningStack(163284, nil, 6)--stack guessed
 local specWarnRisingFlamesOther			= mod:NewSpecialWarningTaunt(163284, nil, nil, nil, nil, nil, 2)
-local specWarnCharringBreath			= mod:NewSpecialWarningStack(155074, nil, 3)--Assumed based on timing and casts, that you swap every breath.
+local specWarnCharringBreath			= mod:NewSpecialWarningStack(155074, nil, 2)--Assumed based on timing and casts, that you swap every breath.
 local specWarnCharringBreathOther		= mod:NewSpecialWarningTaunt(155074)
 --
 
 local timerLavaSlashCD					= mod:NewCDTimer(14.5, 155318, nil, false)
-local timerMoltenTorrentCD				= mod:NewCDTimer(14, 154932)
-local timerSummonEnchantedArmamentsCD	= mod:NewCDTimer(45, 156724)--45-47sec variation
+local timerMoltenTorrentCD				= mod:NewCDTimer("OptionVersion2", 14, 154932, nil, "Ranged")
+local timerSummonEnchantedArmamentsCD	= mod:NewCDTimer("OptionVersion2", 45, 156724, nil, "Ranged")--45-47sec variation
 local timerSummonCinderWolvesCD			= mod:NewNextTimer(74, 155776)
 local timerOverheated					= mod:NewTargetTimer(14, 154950, nil, "Tank")
 local timerCharringBreathCD				= mod:NewNextTimer(5, 155074, nil, "Tank")
@@ -182,14 +182,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		if amount % 3 == 0 then
 			warnRisingFlames:Show(args.destName, amount)
-		end
-		if amount % 3 == 0 and amount >= 6 then--Stack count unknown
-			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
-				specWarnRisingFlames:Show(amount)
-			else--Taunt as soon as stacks are clear, regardless of stack count.
-				if not UnitDebuff("player", GetSpellInfo(163284)) and not UnitIsDeadOrGhost("player") then
-					specWarnRisingFlamesOther:Show(args.destName)
-					voiceRisingFlames:Play("changemt")
+			if amount >= 6 then
+				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
+					specWarnRisingFlames:Show(amount)
+				else--Taunt as soon as stacks are clear, regardless of stack count.
+					if not UnitDebuff("player", GetSpellInfo(163284)) and not UnitIsDeadOrGhost("player") then
+						specWarnRisingFlamesOther:Show(args.destName)
+						voiceRisingFlames:Play("changemt")
+					end
 				end
 			end
 		end
@@ -198,7 +198,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId, "boss1") or self:IsTanking(uId, "boss2") or self:IsTanking(uId, "boss3") or self:IsTanking(uId, "boss4") or self:IsTanking(uId, "boss5") then
 			local amount = args.amount or 1
 			warnCharringBreath:Show(args.destName, amount)
-			if amount >= 3 then
+			if amount >= 2 then
 				if args:IsPlayer() then
 					specWarnCharringBreath:Show(amount)
 				else--Taunt as soon as stacks are clear, regardless of stack count.
