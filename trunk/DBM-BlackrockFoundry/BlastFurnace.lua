@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 --TODO, figure out how to detect OTHER add spawns besides operator and get timers for them too. It's likely the'll require ugly scheduling and /yell logging. 
 local warnRegulators			= mod:NewAnnounce("warnRegulators", 2, 156918)
 local warnBlastFrequency		= mod:NewAnnounce("warnBlastFrequency", 1, 155209, "Healer")
-local warnBomb					= mod:NewTargetAnnounce(155192, 4)
+local warnBomb					= mod:NewTargetAnnounce("OptionVersion2", 155192, 4, false)
 local warnDropBombs				= mod:NewSpellAnnounce("OptionVersion2", 174726, 1, nil, "-Tank")
 local warnEngineer				= mod:NewSpellAnnounce("ej9649", 2, 155179)
 local warnRupture				= mod:NewTargetAnnounce(156932, 3)
@@ -38,7 +38,7 @@ local warnFireCaller			= mod:NewSpellAnnounce("ej9659", 3, 156937, "Tank")
 local warnSecurityGuard			= mod:NewSpellAnnounce("ej9648", 2, 160379, "Tank")
 --Phase 3
 local warnPhase3				= mod:NewPhaseAnnounce(3)
-local warnMelt					= mod:NewTargetAnnounce("OptionVersion2", 155225, 4, nil, false)--Every 10 sec.
+local warnMelt					= mod:NewTargetAnnounce(155225, 4)--Every 10 sec.
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 
 local specWarnBomb				= mod:NewSpecialWarningMoveTo(155192, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(155192), nil, 3, nil, 2)
@@ -495,8 +495,9 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 76815 then--Elementalist
 		self.vb.elementalistsRemaining = self.vb.elementalistsRemaining - 1
-		warnElementalists:Show(self.vb.elementalistsRemaining)
-		if self.vb.elementalistsRemaining == 0 then
+		if self.vb.elementalistsRemaining > 0 then
+			warnElementalists:Show(self.vb.elementalistsRemaining)
+		else
 			timerFireCaller:Cancel()
 			timerSecurityGuard:Cancel()
 			timerSlagElemental:Cancel()
@@ -585,8 +586,10 @@ do
 			end
 			local powerRate = 100 / totalTime
 			if self.vb.lastTotal ~= totalTime then--CD changed
+				if self:AntiSpam(5, 8) and totalTime < self.vb.lastTotal then
+					warnBlastFrequency:Show(totalTime)
+				end
 				self.vb.lastTotal = totalTime
-				warnBlastFrequency:Show(totalTime)
 				local bossPower = UnitPower("boss1") --Get Boss Power
 				local elapsed = bossPower / powerRate
 				timerBlastCD:Update(elapsed, totalTime)
