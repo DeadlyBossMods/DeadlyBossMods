@@ -21,11 +21,11 @@ mod:RegisterEventsInCombat(
 )
 
 --Pointless add fight starts with (need to keep alive for follower achievement
-local warnDevastatingSlam				= mod:NewSpellAnnounce(156018, 4)
-local warnDropHammer					= mod:NewSpellAnnounce(156040, 3)--Target scanning?
+local warnDevastatingSlam				= mod:NewSpellAnnounce("OptionVersion2", 156018, 4, nil, false)
+local warnDropHammer					= mod:NewSpellAnnounce("OptionVersion2", 156040, 3, nil, false)--Target scanning?
 
 local warnLavaSlash						= mod:NewSpellAnnounce(155318, 2, nil, false)--Likely cast often & doesn't show in combat log anyways except for damage and not THAT important
-local warnSummonEnchantedArmaments		= mod:NewSpellAnnounce(156724, 3)
+local warnSummonEnchantedArmaments		= mod:NewSpellAnnounce("OptionVersion2", 156724, 3, nil, "Ranged")
 local warnMoltenTorrent					= mod:NewTargetAnnounce(154932, 3)
 local warnRekindle						= mod:NewCastAnnounce(155064, 4)
 local warnFixate						= mod:NewTargetAnnounce(154952, 3)
