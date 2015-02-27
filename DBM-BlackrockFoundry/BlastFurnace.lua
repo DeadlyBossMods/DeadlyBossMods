@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 --TODO, figure out how to detect OTHER add spawns besides operator and get timers for them too. It's likely the'll require ugly scheduling and /yell logging. 
 local warnRegulators			= mod:NewAnnounce("warnRegulators", 2, 156918)
 local warnBlastFrequency		= mod:NewAnnounce("warnBlastFrequency", 1, 155209, "Healer")
-local warnBomb					= mod:NewTargetAnnounce("OptionVersion2", 155192, 4, false)
+local warnBomb					= mod:NewTargetAnnounce("OptionVersion2", 155192, 4, nil, false)
 local warnDropBombs				= mod:NewSpellAnnounce("OptionVersion2", 174726, 1, nil, "-Tank")
 local warnEngineer				= mod:NewSpellAnnounce("ej9649", 2, 155179)
 local warnRupture				= mod:NewTargetAnnounce(156932, 3)
