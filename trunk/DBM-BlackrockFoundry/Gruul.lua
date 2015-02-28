@@ -59,6 +59,7 @@ mod.vb.smashCount = 0
 mod.vb.sliceCount = 0
 mod.vb.petrifyCount = 0
 mod.vb.rampage = false
+mod.vb.firstWarned = false
 local debuffFilter
 do
 	local petrifyDebuff = GetSpellInfo(155323)
@@ -81,6 +82,7 @@ function mod:OnCombatStart(delay)
 	self.vb.sliceCount = 0
 	self.vb.petrifyCount = 0
 	self.vb.rampage = false
+	self.vb.firstWarned = false
 	if not self:IsMythic() then
 		timerInfernoSliceCD:Start(14-delay, 1)
 		countdownInfernoSlice:Start(14-delay)
@@ -141,6 +143,10 @@ function mod:SPELL_CAST_START(args)
 		if not self.vb.rampage and self.vb.smashCount < 3 then
 			timerOverheadSmashCD:Start(nil, self.vb.smashCount+1)--First usually 25-32, second 33-40
 		end
+		if self.vb.petrifyCount == 0 and not self.vb.firstWarned then
+			self.vb.firstWarned = true
+			--timerPetrifyingSlamCD:Start(15, 1)--NEED TO VERIFY
+		end
 	elseif spellId == 155326 and self.Options.RangeFrame and not self:IsMythic() then--On mythic everyone gets debuff so no reason to ever show this radar first
 		DBM.RangeCheck:Show(8, debuffFilter, nil, nil, nil, 10)--Show filtered frame at first for all, then update to unfiltered for those affected.
 	end
@@ -153,6 +159,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerShatter:Start()
 		if self.vb.petrifyCount == 1 then
 			timerPetrifyingSlamCD:Start(nil, self.vb.petrifyCount+1)
+		end
+		if self.vb.smashCount == 0 and not self.vb.firstWarned then
+			self.vb.firstWarned = true
+			timerOverheadSmashCD:Start(15, 1)
 		end
 	end
 end
