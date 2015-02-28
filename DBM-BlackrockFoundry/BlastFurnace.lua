@@ -137,7 +137,7 @@ do
 end
 
 local UnitHealth, UnitHealthMax, GetTime = UnitHealth, UnitHealthMax, GetTime
---Still needs double checking in LFR, normal, and mythic. Mythic data given via 3rd party and unverified by me
+--Note: only thing that's still different in each mode
 local function Engineers(self)
 	warnEngineer:Show()
 	if self:IsDifficulty("mythic", "normal") then
@@ -154,13 +154,22 @@ end
 local function SecurityGuard(self)
 	warnSecurityGuard:Show()
 	voiceSecurityGuard:Play("ej9648")
-	if self:IsDifficulty("mythic", "heroic") then
+	--NOTE: in 6.1 blizz made all modes behave like mythic. If Blizzard reverts this, uncomment the commented sections
+--	if self:IsMythic() then
 		if self.vb.phase == 1 then
 			timerSecurityGuard:Start(30.5)
 			self:Schedule(30.5, SecurityGuard, self)
 		else
 			timerSecurityGuard:Start(40)
 			self:Schedule(40, SecurityGuard, self)
+		end
+--[[	elseif self:IsHeroic() then
+		if self.vb.phase == 1 then
+			timerSecurityGuard:Start(46)
+			self:Schedule(46, SecurityGuard, self)
+		else
+			timerSecurityGuard:Start(55)
+			self:Schedule(55, SecurityGuard, self)
 		end
 	elseif self:IsNormal() then
 		if self.vb.phase == 1 then
@@ -170,21 +179,22 @@ local function SecurityGuard(self)
 			timerSecurityGuard:Start(60)
 			self:Schedule(60, SecurityGuard, self)
 		end
-	end
+	end--]]
 end
 
 local function FireCaller(self)
 	warnFireCaller:Show()
 	voiceFireCaller:Play("ej9659")
-	if self:IsDifficulty("mythic", "heroic") then
+	--NOTE: in 6.1 blizz made all modes behave like mythic. If Blizzard reverts this, uncomment the commented sections
+--	if self:IsDifficulty("mythic") then
 		--Important note, sometimes both side not spawn same time. one side might lag like 2-3 behind other.
 		--But timer good for first one spawning always. 2 always spawn, 1 at timer and 2nd maybe a couple seconds later.
 		timerFireCaller:Start(45)
 		self:Schedule(45.5, FireCaller, self)
-	else
-		timerFireCaller:Start(55)
-		self:Schedule(55, FireCaller, self)
-	end
+--	else
+--		timerFireCaller:Start(55)
+--		self:Schedule(55, FireCaller, self)
+--	end
 end
 
 function mod:CustomHealthUpdate()
@@ -365,7 +375,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not activeSlagGUIDS[args.sourceGUID] then
 			activeSlagGUIDS[args.sourceGUID] = true
 			self.vb.slagCount = self.vb.slagCount + 1
-			if self.vb.slagCount == 1 then--Unable to verify, 3rd party report. On heroic/normal. 2nd one is 55, like rest of them.
+			if self.vb.slagCount == 1 then--NOTE: Re-Add mythic only check if blizzard reverts the changes that made all modes behave like mythic
 				timerSlagElemental:Start(35, self.vb.slagCount+1)
 			end
 			voiceSlagElemental:Play("ej9657")
