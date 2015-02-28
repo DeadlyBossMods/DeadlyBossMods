@@ -8676,17 +8676,30 @@ do
 		if not self.option or self.mod.Options[self.option] then
 			if self.type and self.type:find("count") and not self.allowdouble then--cdcount, nextcount. remove previous timer.
 				for i = #self.startedTimers, 1, -1 do
-					DBM.Bars:CancelBar(self.startedTimers[i])
-					DBM:Debug("Timer "..self.id.. " refreshed before expires", 2)
+					if DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
+						local bar = DBM.Bars:GetBar(self.startedTimers[i])
+						if bar then
+							local remaining = ("%.1f"):format(bar.timer)
+							local ttext = _G[bar.frame:GetName().."BarName"]:GetText() or ""
+							ttext = ttext.."("..self.id..")"
+							DBM:Debug("Timer "..ttext.. " refreshed before expires. Remaining time is : "..remaining, 2)
+							DBM.Bars:CancelBar(bar)
+						end
+					end
 					self.startedTimers[i] = nil
 				end
 			end
 			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-			if not self.type or (self.type ~= "target" and self.type ~= "active" and self.type ~= "fades") then
-				local bar = DBM.Bars:GetBar(id)
-				if bar then
-					DBM:Debug("Timer "..self.id.. " refreshed before expires", 2)
+			if DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
+				if not self.type or (self.type ~= "target" and self.type ~= "active" and self.type ~= "fades") then
+					local bar = DBM.Bars:GetBar(id)
+					if bar then
+						local remaining = ("%.1f"):format(bar.timer)
+						local ttext = _G[bar.frame:GetName().."BarName"]:GetText() or ""
+						ttext = ttext.."("..self.id..")"
+						DBM:Debug("Timer "..ttext.. " refreshed before expires. Remaining time is : "..remaining, 2)
+					end
 				end
 			end
 			local bar = DBM.Bars:CreateBar(timer, id, self.icon)
