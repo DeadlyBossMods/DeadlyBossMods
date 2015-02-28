@@ -68,6 +68,7 @@ mod:AddSetIconOption("SetIconOnCrystal", 162370, false)--icons 1 and 2, no confl
 
 local UnitGUID, UnitExists = UnitGUID, UnitExists
 mod.vb.EarthwarperAlive = 0
+mod.vb.moteDeath = 0
 mod.vb.healthPhase = 0
 local earthDuders = {}
 
@@ -159,6 +160,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(earthDuders)
 	self.vb.EarthwarperAlive = 0
+	self.vb.moteDeath = 0
 	self.vb.healthPhase = 1
 	table.wipe(moteH)
 	timerEarthwarperCD:Start(8-delay)
@@ -273,10 +275,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnBerserker:Show()
 			timerBerserkerCD:Start()
 		end
-	elseif spellId == 181089 and not self:IsMythic() then--Encounter Event
-		timerEarthwarperCD:Cancel()
-		countdownEarthwarper:Cancel()
-		timerBerserkerCD:Cancel()
+	elseif spellId == 181089 then--Encounter Event
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if not self:IsMythic() and cid == 78948 then
+			timerEarthwarperCD:Cancel()
+			countdownEarthwarper:Cancel()
+			timerBerserkerCD:Cancel()
+		elseif cid == 80557 then--Mote of Tectus
+			self.vb.moteDeath = self.vb.moteDeath + 1
+			if self.vb.moteDeath == 8 then
+				DBM:EndCombat(self)
+			end
+		end
 	end
 end
 

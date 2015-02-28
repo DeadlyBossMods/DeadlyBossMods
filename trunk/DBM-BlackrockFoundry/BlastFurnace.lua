@@ -21,8 +21,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED",
 	"UNIT_POWER_FREQUENT boss1"
 )
-
---TODO, figure out how to detect OTHER add spawns besides operator and get timers for them too. It's likely the'll require ugly scheduling and /yell logging. 
+ 
 local warnRegulators			= mod:NewAnnounce("warnRegulators", 2, 156918)
 local warnBlastFrequency		= mod:NewAnnounce("warnBlastFrequency", 1, 155209, "Healer")
 local warnBomb					= mod:NewTargetAnnounce("OptionVersion2", 155192, 4, nil, false)
