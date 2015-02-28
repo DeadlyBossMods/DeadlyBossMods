@@ -99,15 +99,15 @@ local timerWarmingUp					= mod:NewCastTimer(90, 158849)
 mod:AddTimerLine(Garan)
 local timerRapidFireCD					= mod:NewCDTimer(30.5, 156626)
 local timerDarkHuntCD					= mod:NewCDTimer("OptionVersion2", 13.5, 158315, nil, false)--Important to know you have it, not very important to know it's coming soon.
-local timerPenetratingShotCD			= mod:NewCDTimer(30, 164271)--22-30 at least. maybe larger variation. Just small LFR sample size.
+local timerPenetratingShotCD			= mod:NewCDTimer(28.8, 164271)--22-30 at least. maybe larger variation. Just small LFR sample size.
 local timerDeployTurretCD				= mod:NewCDTimer(20.5, 158599)--20.5-23.5
 ----Enforcer Sorka
 mod:AddTimerLine(Sorka)
-local timerBloodRitualCD				= mod:NewNextTimer(21, 158078)
+local timerBloodRitualCD				= mod:NewNextTimer(20, 158078)
 local timerConvulsiveShadowsCD			= mod:NewNextTimer(56.5, 156214)--Timer only enabled on mythicOn non mythic, it's just an unimportant dot. On mythic, MUCH more important because user has to run out of raid and get dispelled.
 ----Marak the Blooded
 mod:AddTimerLine(Marak)
-local timerBladeDashCD					= mod:NewNextTimer("OptionVersion2", 21.5, 155794, nil, "Ranged")
+local timerBladeDashCD					= mod:NewNextTimer("OptionVersion2", 20.5, 155794, nil, "Ranged")
 local timerHeartSeekerCD				= mod:NewNextTimer("OptionVersion2", 74, 158010, nil, "Ranged")--Seriously a 74 second cd?
 
 local voiceRapidFire					= mod:NewVoice(156631) --runout
@@ -171,14 +171,14 @@ end
 local function recoverTimers()
 	timerBombardmentAlphaCD:Cancel()
 	timerWarmingUp:Cancel()
-	if savedAbilityTime["BloodRitual"] and (GetTime() - savedAbilityTime["BloodRitual"]) < 21 then
-		timerBloodRitualCD:Update(GetTime() - savedAbilityTime["BloodRitual"], 21)
+	if savedAbilityTime["BloodRitual"] and (GetTime() - savedAbilityTime["BloodRitual"]) < 20 then
+		timerBloodRitualCD:Update(GetTime() - savedAbilityTime["BloodRitual"], 20)
 	end
 	if savedAbilityTime["RapidFire"] and (GetTime() - savedAbilityTime["RapidFire"]) < 30.5 then
 		timerRapidFireCD:Update(GetTime() - savedAbilityTime["RapidFire"], 30.5)
 	end
-	if savedAbilityTime["BladeDash"] and (GetTime() - savedAbilityTime["BladeDash"]) < 21.5 then
-		timerBladeDashCD:Update(GetTime() - savedAbilityTime["BladeDash"], 21.5)
+	if savedAbilityTime["BladeDash"] and (GetTime() - savedAbilityTime["BladeDash"]) < 20.5 then
+		timerBladeDashCD:Update(GetTime() - savedAbilityTime["BladeDash"], 20.5)
 	end
 	if savedAbilityTime["HeartSeeker"] and (GetTime() - savedAbilityTime["HeartSeeker"]) < 74 then
 		timerHeartSeekerCD:Update(GetTime() - savedAbilityTime["HeartSeeker"], 74)
@@ -186,8 +186,8 @@ local function recoverTimers()
 	if savedAbilityTime["ConvulsiveShadows"] and (GetTime() - savedAbilityTime["ConvulsiveShadows"]) < 56.5 then
 		timerConvulsiveShadowsCD:Update(GetTime() - savedAbilityTime["ConvulsiveShadows"], 56.5)
 	end
-	if savedAbilityTime["PenetratingShot"] and (GetTime() - savedAbilityTime["PenetratingShot"]) < 30 then
-		timerPenetratingShotCD:Update(GetTime() - savedAbilityTime["PenetratingShot"], 30)
+	if savedAbilityTime["PenetratingShot"] and (GetTime() - savedAbilityTime["PenetratingShot"]) < 28.8 then
+		timerPenetratingShotCD:Update(GetTime() - savedAbilityTime["PenetratingShot"], 28.8)
 	end
 end
 
