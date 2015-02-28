@@ -253,7 +253,7 @@ function mod:OnCombatStart(delay)
 	self.vb.machinesDead = 0
 	self.vb.elementalistsRemaining = 4
 	self.vb.blastWarned = false
-	self.vb.shieldDown = true
+	self.vb.shieldDown = 0
 	self.vb.lastTotal = 30
 	self.vb.phase = 1
 	self.vb.slagCount = 0
@@ -395,14 +395,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, self.vb.lastSlagIcon)
 		end
 	elseif spellId == 158345 and self:AntiSpam(10, 3) then--Might be SPELL_CAST_SUCCESS instead.
-		self.vb.shieldDown = true
+		self.vb.shieldDown = self.vb.shieldDown + 1
 		specWarnShieldsDown:Show()
 		if self:IsDifficulty("normal") then--40 seconds on normal
-			timerShieldsDown:Start(40)
+			timerShieldsDown:Start(40, args.destGUID)
 		elseif self:IsHeroic() then
-			timerShieldsDown:Start()--30 in heroic
+			timerShieldsDown:Start(nil, args.destGUID)--30 in heroic
 		else
-			timerShieldsDown:Start(20)
+			timerShieldsDown:Start(20, args.destGUID)
 		end
 	elseif spellId == 155242 then
 		local amount = args.amount or 1
@@ -465,7 +465,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellRupture:Schedule(4)--yell after 4 sec to warn nearby player (aoe actually after 5 sec).  like expel magic: fel
 			voiceRupture:Play("runout")
 		end
-	elseif spellId == 155173 and args:IsDestTypeHostile() and self.vb.shieldDown then
+	elseif spellId == 155173 and args:IsDestTypeHostile() and self.vb.shieldDown > 0 then
 		specWarnEarthShield:Show(args.destName)
 	end
 end
@@ -485,8 +485,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 155196 and self.Options.SetIconOnFixate then
 		self:SetIcon(args.destName, 0)
 	elseif spellId == 158345 then
-		self.vb.shieldDown = false
-		timerShieldsDown:Cancel()
+		self.vb.shieldDown = self.vb.shieldDown - 1
+		timerShieldsDown:Cancel(args.destGUID)
 	end
 end
 
