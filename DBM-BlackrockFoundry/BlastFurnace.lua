@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 155179 174726",
 	"SPELL_AURA_APPLIED 155192 174716 155196 158345 155242 155181 176121 155225 156934 155173",
 	"SPELL_AURA_APPLIED_DOSE 155242",
-	"SPELL_AURA_REMOVED 155192 174716 176121 155196",
+	"SPELL_AURA_REMOVED 155192 174716 176121 155196 158345",
 	"SPELL_PERIODIC_DAMAGE 156932 155223 155743",
 	"SPELL_ABSORBED 156932 155223 155743",
 	"UNIT_DIED",
@@ -113,6 +113,7 @@ mod:AddDropdownOption("VFYellType", {"Countdown", "Apply"}, "Countdown", "misc")
 mod.vb.machinesDead = 0
 mod.vb.elementalistsRemaining = 4
 mod.vb.blastWarned = false
+mod.vb.shieldDown = 0
 mod.vb.lastTotal = 30
 mod.vb.phase = 1
 mod.vb.slagCount = 0
@@ -252,6 +253,7 @@ function mod:OnCombatStart(delay)
 	self.vb.machinesDead = 0
 	self.vb.elementalistsRemaining = 4
 	self.vb.blastWarned = false
+	self.vb.shieldDown = true
 	self.vb.lastTotal = 30
 	self.vb.phase = 1
 	self.vb.slagCount = 0
@@ -393,6 +395,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, self.vb.lastSlagIcon)
 		end
 	elseif spellId == 158345 and self:AntiSpam(10, 3) then--Might be SPELL_CAST_SUCCESS instead.
+		self.vb.shieldDown = true
 		specWarnShieldsDown:Show()
 		if self:IsDifficulty("normal") then--40 seconds on normal
 			timerShieldsDown:Start(40)
@@ -462,7 +465,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellRupture:Schedule(4)--yell after 4 sec to warn nearby player (aoe actually after 5 sec).  like expel magic: fel
 			voiceRupture:Play("runout")
 		end
-	elseif spellId == 155173 and not args:IsDestTypePlayer() then
+	elseif spellId == 155173 and args:IsDestTypeHostile() and self.vb.shieldDown then
 		specWarnEarthShield:Show(args.destName)
 	end
 end
@@ -481,6 +484,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		DBM.RangeCheck:Hide()
 	elseif spellId == 155196 and self.Options.SetIconOnFixate then
 		self:SetIcon(args.destName, 0)
+	elseif spellId == 158345 then
+		self.vb.shieldDown = false
+		timerShieldsDown:Cancel()
 	end
 end
 
