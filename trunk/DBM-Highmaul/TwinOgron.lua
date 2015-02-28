@@ -182,8 +182,8 @@ function mod:OnCombatStart(delay)
 	self.vb.arcaneCast = 0
 	self.vb.arcaneDebuff = 0
 	self.vb.PulverizeRadar = false
-	timerQuakeCD:Start(11.5-delay, 1)
-	countdownPhemos:Start(11.5-delay)
+	timerQuakeCD:Start(12-delay, 1)
+	countdownPhemos:Start(12-delay)
 	if self:IsMythic() then
 		PhemosEnergyRate = 28
 		polEnergyRate = 23
@@ -223,7 +223,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 158057 then
 		self.vb.EnfeebleCount = self.vb.EnfeebleCount + 1
 		specWarnEnfeeblingRoar:Show(self.vb.EnfeebleCount)
-		if not self:IsMythic() then--On all other difficulties, quake is 1 second longer
+		if not self:IsMythic() and self.vb.QuakeCount == 0 then--On all other difficulties, quake is 1 second longer (only first)
 			timerQuakeCD:Start(PhemosEnergyRate+1, self.vb.QuakeCount+1)--Next Special
 			countdownPhemos:Start(PhemosEnergyRate+1)	
 			voicePhemos:Schedule(PhemosEnergyRate + 1 - 6.5, "158200")

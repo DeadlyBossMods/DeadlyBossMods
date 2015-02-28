@@ -184,7 +184,6 @@ function mod:OnCombatStart(delay)
 	end
 	if DBM.BossHealth:IsShown() then
 		DBM.BossHealth:Clear()
-		DBM.BossHealth:AddBoss("boss1", tectusN)
 	end
 end
 
