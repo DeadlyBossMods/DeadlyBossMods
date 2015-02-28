@@ -34,7 +34,7 @@ local specWarnOverheadSmash			= mod:NewSpecialWarningCount(155301, nil, nil, nil
 local specWarnCaveIn				= mod:NewSpecialWarningMove(173192)
 local specWarnPetrifyingSlam		= mod:NewSpecialWarningMoveAway(155326, nil, nil, nil, 3, nil, 2)
 
-local timerInfernoSliceCD			= mod:NewCDCountTimer(12, 155080)--Variable do to energy bugs (gruul not gain power consistently)
+local timerInfernoSliceCD			= mod:NewCDCountTimer(11, 155080)--Variable do to energy bugs (gruul not gain power consistently)
 local timerSpecialCD				= mod:NewCDSpecialTimer(20.5)
 local timerPetrifyingSlamCD			= mod:NewCDCountTimer(60, 155323)--60-70 variation
 local timerOverheadSmashCD			= mod:NewCDCountTimer(25, 155301)--25-42 variation
@@ -145,7 +145,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self.vb.petrifyCount == 0 and not self.vb.firstWarned then
 			self.vb.firstWarned = true
-			--timerPetrifyingSlamCD:Start(15, 1)--NEED TO VERIFY
+			timerPetrifyingSlamCD:Start(15, 1)
 		end
 	elseif spellId == 155326 and self.Options.RangeFrame and not self:IsMythic() then--On mythic everyone gets debuff so no reason to ever show this radar first
 		DBM.RangeCheck:Show(8, debuffFilter, nil, nil, nil, 10)--Show filtered frame at first for all, then update to unfiltered for those affected.
@@ -261,7 +261,7 @@ do
 			DBM:Debug("Massive power gain detected. Updating Inferno Slice timer.")
 			local timeElapsed = bossPower / 10 --Divide it by 10 (cause he gains 10 power per second and we need to know how many seconds to subtrack from CD)
 			local timeRemaining = 10-timeElapsed
-			timerInfernoSliceCD:Update(timeElapsed+2, 12, self.vb.sliceCount+1)--+3 because total time is 13, else, it's timeElapsed, 10
+			timerInfernoSliceCD:Update(timeElapsed+1, 11, self.vb.sliceCount+1)--+3 because total time is 13, else, it's timeElapsed, 10
 			countdownInfernoSlice:Cancel()
 			countdownInfernoSlice:Start(timeRemaining)
 		end
