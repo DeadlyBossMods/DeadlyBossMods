@@ -72,7 +72,7 @@ local specWarnBlast				= mod:NewSpecialWarningSoon(155209, nil, nil, nil, 2)
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
 local timerBlastCD				= mod:NewCDTimer(25, 155209)--25 seconds base. shorter when loading is being channeled by operators.
-local timerRuptureCD			= mod:NewCDTimer(26, 156934)
+local timerRuptureCD			= mod:NewCDTimer(24, 156934)
 local timerEngineer				= mod:NewNextTimer(41, "ej9649", nil, nil, nil, 155179)
 local timerBellowsOperator		= mod:NewCDTimer(60, "ej9650", nil, nil, nil, 155181)--60-65second variation for sure
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -216,7 +216,7 @@ function mod:CustomHealthUpdate()
 				maxh = UnitHealthMax(uid)
 			end
 		end
-		if activePrimal > 0 then
+		if activePrimal > 0 and maxh > 0 then
 			health = (total / (maxh * activePrimal) * 100)
 			prevHealth = health
 		else
@@ -365,10 +365,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not activeSlagGUIDS[args.sourceGUID] then
 			activeSlagGUIDS[args.sourceGUID] = true
 			self.vb.slagCount = self.vb.slagCount + 1
-			if self:IsMythic() and self.vb.slagCount == 1 then--Unable to verify, 3rd party report. On heroic/normal. 2nd one is 55, like rest of them.
+			if self.vb.slagCount == 1 then--Unable to verify, 3rd party report. On heroic/normal. 2nd one is 55, like rest of them.
 				timerSlagElemental:Start(35, self.vb.slagCount+1)
-			else
-				timerSlagElemental:Start(nil, self.vb.slagCount+1)
 			end
 			voiceSlagElemental:Play("ej9657")
 		end
