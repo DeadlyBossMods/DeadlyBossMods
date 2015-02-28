@@ -21,8 +21,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, confirm if LFR Inferno Slice change actually also made mythic/heroic/normal or if they are still 13
---TODO, recheck rampage timer on non LFR difficulties to see if longer there too (related to inferno slice change probably)
 --TODO, see if there is any way to impliment timers for smash and petrifyig slam. right now they are too variable. has to be a method to it.
 local warnOverwhelmingBlows			= mod:NewStackAnnounce("OptionVersion2", 155078, 3, nil, false)--No special warnings, strats for this revolve around the inferno slice strat, not this debuff, so dbm isn't going to say when tanks should taunt here
 local warnCrumblingRoar				= mod:NewSpellAnnounce(155730, 3, nil, false)--Cave ins
