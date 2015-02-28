@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Feb 22, 2015@13054
+-- Last update: Feb 28, 2015@13161 
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -27,7 +27,10 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnRegulators		= "显示剩余的温度调节器数量",
-	warnBlastFrequency	= "当$spell:155209施法频率增加时发出警告"
+	warnBlastFrequency	= "当$spell:155209施法频率增加时发出警告",
+	VFYellType			= "设定不稳定的火焰的大喊方式 (史诗模式)",
+	Countdown			= "倒数直到消失",
+	Apply				= "只有中了的时候"
 })
 
 L:SetMiscLocalization({
@@ -84,6 +87,14 @@ L:SetMiscLocalization({
 -- The Iron Maidens --
 --------------------------
 L= DBM:GetModLocalization(1203)
+
+L:SetWarningLocalization({
+	specWarnReturnBase	= "返回码头"
+})
+
+L:SetOptionLocalization({
+	specWarnReturnBase	= "特殊警报：当上船的玩家可以安全地返回码头时"
+})
 
 L:SetMiscLocalization({
 	shipMessage		= "准备操纵无畏舰的主炮"
