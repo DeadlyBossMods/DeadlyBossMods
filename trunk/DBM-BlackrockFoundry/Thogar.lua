@@ -45,12 +45,12 @@ local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", "-Healer")
 --local specWarnObliteration		= mod:NewSpecialWarningMove(156494)--Debuff doesn't show in combat log, and dot persists after moving out of it so warning is pretty useless right now. TODO, see if UNIT_AURA player type check can work.
 
 --Operator Thogar
-local timerProtoGrenadeCD			= mod:NewCDTimer(12, 155864)
+local timerProtoGrenadeCD			= mod:NewCDTimer(11, 155864)
 local timerEnkindleCD				= mod:NewCDTimer(12, 155921, nil, "Tank")
 local timerTrainCD					= mod:NewNextCountTimer("d15", 176312)
 --Adds
 --local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140)
-local timerIronbellowCD				= mod:NewCDTimer(10, 163753)
+local timerIronbellowCD				= mod:NewCDTimer(7, 163753)
 
 local berserkTimer					= mod:NewBerserkTimer(492)
 
