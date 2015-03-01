@@ -35,7 +35,7 @@ local timerGraspingEarthCD			= mod:NewCDTimer(114, 157060)--Unless see new logs 
 local timerThunderingBlowsCD		= mod:NewNextTimer(12, 157054)
 local timerRipplingSmashCD			= mod:NewCDTimer(21, 157592)--If it comes off CD early enough into ThunderingBlows/Grasping Earth, he skips a cast. Else, he'll cast it very soon after.
 --local timerStoneGeyserCD			= mod:NewNextTimer(30, 158130)
-local timerStoneBreathCD			= mod:NewCDCountTimer(22.5, 156852)
+local timerStoneBreathCD			= mod:NewCDCountTimer(22, 156852)
 local timerSlamCD					= mod:NewCDTimer(23, 156704, nil, "Tank")
 local timerWarpedArmorCD			= mod:NewCDTimer(14, 156766, nil, "Tank")
 local timerTremblingEarthCD			= mod:NewCDTimer(30, 173917)--30-36 CD now :\
@@ -91,7 +91,7 @@ function mod:SPELL_CAST_START(args)
 			timerGraspingEarthCD:Start(122)
 		else
 			timerGraspingEarthCD:Start()
-			timerRipplingSmashCD:Start(39)
+			timerRipplingSmashCD:Start(35)
 		end
 	elseif spellId == 157054 then
 		specWarnThunderingBlows:Show()
