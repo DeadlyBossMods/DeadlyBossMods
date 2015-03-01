@@ -413,7 +413,7 @@ function mod:SPELL_CAST_START(args)
 		if self:AntiSpam(3, 1) then
 			specWarnIronbellow:Show()
 		end
-		timerIronbellowCD:Start(12, args.sourceGUID)
+		timerIronbellowCD:Start(9, args.sourceGUID)
 	elseif spellId == 159481 then
 		self:BossTargetScanner(args.sourceGUID, "BombTarget", 0.05, 25)
 	end
