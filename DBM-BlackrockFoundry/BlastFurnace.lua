@@ -72,9 +72,9 @@ local specWarnBlast				= mod:NewSpecialWarningSoon(155209, nil, nil, nil, 2)
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
 local timerBlastCD				= mod:NewCDTimer(25, 155209)--25 seconds base. shorter when loading is being channeled by operators.
-local timerRuptureCD			= mod:NewCDTimer(24, 156934)
+local timerRuptureCD			= mod:NewCDTimer(21.5, 156934)
 local timerEngineer				= mod:NewNextTimer(41, "ej9649", nil, nil, nil, 155179)
-local timerBellowsOperator		= mod:NewCDTimer(60, "ej9650", nil, nil, nil, 155181)--60-65second variation for sure
+local timerBellowsOperator		= mod:NewCDTimer(59, "ej9650", nil, nil, nil, 155181)--60-65second variation for sure
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerVolatileFire			= mod:NewBuffFadesTimer(8, 176121)
 local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps")
@@ -585,7 +585,7 @@ do
 	local UnitPower = UnitPower
 	function mod:UNIT_POWER_FREQUENT(uId, type)
 		if type == "ALTERNATE" then
-			totalTime = self:IsMythic() and 25 or 30
+			totalTime = self:IsMythic() and 24 or 29
 			local altPower = UnitPower(uId, 10)
 			--Each time boss breaks interval of 25%. CD is reduced
 			if altPower == 100 then
@@ -595,7 +595,7 @@ do
 			elseif altPower > 49 then
 				totalTime = self:IsMythic() and 12.5 or 15--15-16
 			elseif altPower > 24 then
-				totalTime = self:IsMythic() and 18.3 or 20
+				totalTime = self:IsMythic() and 18.3 or 19.5
 			end
 			local powerRate = 100 / totalTime
 			if self.vb.lastTotal ~= totalTime then--CD changed
@@ -611,7 +611,7 @@ do
 			end
 		else
 			local bossPower = UnitPower("boss1") --Get Boss Power
-			if bossPower >= 85 and not self.vb.blastWarned then
+			if bossPower >= 85 and not self.vb.blastWarned and totalTime > 10 then
 				self.vb.blastWarned = true
 				specWarnBlast:Show()
 			elseif bossPower < 5 and self.vb.blastWarned then--Should catch 0, if not, at least 1-4 will fire it but then timer may be a second or so off

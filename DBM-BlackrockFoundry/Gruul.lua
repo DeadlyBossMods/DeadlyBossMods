@@ -145,7 +145,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self.vb.petrifyCount == 0 and not self.vb.firstWarned then
 			self.vb.firstWarned = true
-			timerPetrifyingSlamCD:Start(15, 1)
+			timerPetrifyingSlamCD:Start(7.5, 1)
 		end
 	elseif spellId == 155326 and self.Options.RangeFrame and not self:IsMythic() then--On mythic everyone gets debuff so no reason to ever show this radar first
 		DBM.RangeCheck:Show(8, debuffFilter, nil, nil, nil, 10)--Show filtered frame at first for all, then update to unfiltered for those affected.
