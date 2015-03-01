@@ -81,6 +81,7 @@ local tectusGUID
 local shardGUID = {}
 local ltectusH, lshardC, lshardT, lmoteC, lmoteT = 1, 1, 1, 1, 1 -- not need to sync.
 
+local newhealth--Review
 function mod:CustomHealthUpdate()
 	local tectusH, shardC, shardT, moteC, moteT = 0, 0, 0, 0, 0
 	local moteGUID = {}
@@ -105,13 +106,13 @@ function mod:CustomHealthUpdate()
 				moteGUID[guid] = true
 				lmoteC = moteC
 				lmoteT = moteH
-				moteH[guid] = newhealth
+				moteH[guid] = newhealth--Review
 			end
 		end
 	end
 	for guid, health in pairs(moteH) do
 		if not moteGUID[guid] then
-			local newhealth = self:GetBossHPByGUID(guid) or health
+			newhealth = self:GetBossHPByGUID(guid) or health--Review
 			if newhealth >= 1 then
 				self.vb.healthPhase = 3
 				moteC = moteC + 1
