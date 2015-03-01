@@ -116,7 +116,7 @@ local timerSummonArcaneAberrationCD				= mod:NewCDCountTimer(45, "ej9945", nil, 
 mod:AddTimerLine(DBM_CORE_INTERMISSION)
 local timerTransition							= mod:NewPhaseTimer(74)
 local timerCrushArmorCD							= mod:NewNextTimer(6, 158553, nil, "Tank")
-local timerKickToFaceCD							= mod:NewNextTimer(20, 158563, nil, "Tank")
+local timerKickToFaceCD							= mod:NewCDTimer(17, 158563, nil, "Tank")
 --Mythic
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerGaze									= mod:NewBuffFadesTimer(15, 165595)
@@ -296,8 +296,8 @@ function mod:OnCombatStart(delay)
 	self.vb.madnessAdd = 0
 	self.vb.envelopingCount = 0
 	self.vb.mineCount = 0
-	timerArcaneWrathCD:Start(6-delay)
-	countdownArcaneWrath:Start(6-delay)
+	timerArcaneWrathCD:Start(5.5-delay)
+	countdownArcaneWrath:Start(5.5-delay)
 	timerDestructiveResonanceCD:Start(15-delay)
 	timerSummonArcaneAberrationCD:Start(25-delay, 1)
 	timerMarkOfChaosCD:Start(33.5-delay)
@@ -377,13 +377,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 157349 then
 		self.vb.forceCount = self.vb.forceCount + 1
 		specWarnForceNova:Show()
-		local novaTime = self.vb.forceCount == 1 and 46 or 50.5--Often 51, but 2x I did see 50.5 so 50.5 is safer
+		local novaTime = self.vb.forceCount == 1 and 45 or 50.5--Often 51, but 2x I did see 50.5 so 50.5 is safer
 		timerForceNovaCD:Start(novaTime, self.vb.forceCount+1)
 		countdownForceNova:Start(novaTime)
 		voiceForceNova:Schedule(novaTime-6.5, "157349")
 	elseif spellId == 164232 then
 		self.vb.forceCount = self.vb.forceCount + 1
-		local novaTime = self.vb.forceCount == 1 and 46 or 50.5
+		local novaTime = self.vb.forceCount == 1 and 45 or 50.5
 		timerForceNovaCD:Start(novaTime, self.vb.forceCount+1)
 		countdownForceNova:Start(novaTime)
 		voiceForceNova:Schedule(novaTime-6.5, "157349")
@@ -408,7 +408,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 164235 then
 		self.vb.forceCount = self.vb.forceCount + 1
 		specWarnForceNova:Show()
-		local novaTime = self.vb.forceCount == 1 and 46 or 50.5
+		local novaTime = self.vb.forceCount == 1 and 45 or 50.5
 		timerForceNovaCD:Start(novaTime, self.vb.forceCount+1)
 		countdownForceNova:Start(novaTime)
 		voiceForceNova:Schedule(novaTime-6.5, "157349")
@@ -447,7 +447,7 @@ function mod:SPELL_CAST_START(args)
 		self:Schedule(3.5, updateRangeFrame, self)
 		self:Schedule(4, updateRangeFrame, self)
 		specWarnForceNovaRep:Show()
-		local novaTime = self.vb.forceCount == 1 and 46 or 50.5
+		local novaTime = self.vb.forceCount == 1 and 45 or 50.5
 		timerForceNovaCD:Start(novaTime, self.vb.forceCount+1)
 		countdownForceNova:Start(novaTime)
 		voiceForceNova:Schedule(novaTime-6.5, "157349")
