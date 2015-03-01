@@ -16,7 +16,6 @@ local warnGameOverQuest			= mod:NewAnnounce("warnGameOverQuest", 2, 101612, nil,
 local warnGameOverNoQuest		= mod:NewAnnounce("warnGameOverNoQuest", 2, 101612, nil, false)
 mod:AddBoolOption("warnGameOver", true, "announce")
 local warnGnoll					= mod:NewAnnounce("warnGnoll", 2, nil, false)
-local warnHogger				= mod:NewAnnounce("warnHogger", 4)
 
 local specWarnHogger			= mod:NewSpecialWarning("specWarnHogger")
 
@@ -58,7 +57,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellID)
 		if gameEarnedPoints < 30 then--You earned 30 points in first game, stop counting points you didn't earn so you get more accurate depiction of hwo many you missed, not how many you ignored when you finished.
 			gameMaxPoints = gameMaxPoints + 3
 		end
-		warnHogger:Show()
 		if self:AntiSpam() then
 			specWarnHogger:Show()
 		end
