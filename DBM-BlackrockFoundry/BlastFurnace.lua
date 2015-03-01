@@ -543,7 +543,7 @@ function mod:UNIT_DIED(args)
 			voicePhaseChange:Play("ptwo")
 			--Start adds timers. Seem same in all modes.
 			if not self:IsLFR() then-- LFR do not have Slag Elemental.
-				timerSlagElemental:Start(15, 1)
+				timerSlagElemental:Start(13.5, 1)
 				self:Schedule(72, SecurityGuard, self)
 				timerSecurityGuard:Start(72)
 				self:Schedule(78, FireCaller, self)
