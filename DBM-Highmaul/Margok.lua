@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 156238 156467 157349 163988 164075 156471 164299 164232 164301 163989 164076 164235 163990 164077 164240 164303 158605 164176 164178 164191 165243 165876 178607",
-	"SPELL_CAST_SUCCESS 158563 165102",
+	"SPELL_CAST_SUCCESS 158563 165102 181113",
 	"SPELL_AURA_APPLIED 157763 158553 156225 164004 164005 164006 158605 164176 164178 164191 157801 178468 165102 165595 176533",
 	"SPELL_AURA_APPLIED_DOSE 158553 178468 165595 159515",
 	"SPELL_AURA_REFRESH 157763",
@@ -278,6 +278,25 @@ end
 local function delayedRangeUpdate(self)
 	self.vb.RepNovaActive = nil
 	updateRangeFrame(self)
+end
+
+local function stopP3Timers()
+	timerArcaneWrathCD:Cancel()
+	countdownArcaneWrath:Cancel()
+	timerDestructiveResonanceCD:Cancel()
+	timerSummonArcaneAberrationCD:Cancel()
+	timerMarkOfChaosCD:Cancel()
+	countdownMarkofChaos:Cancel()
+	timerForceNovaCD:Cancel()
+	voiceForceNova:Cancel()
+	countdownForceNova:Cancel()
+	timerForceNovaFortification:Cancel()
+	countdownForceNova:Cancel()
+	specWarnForceNova:Cancel()
+end
+local function NightTwisted(self)
+	timerNightTwistedCD:Start()
+	self:Schedule(30, NightTwisted, self)
 end
 
 function mod:OnCombatStart(delay)
@@ -566,6 +585,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 165102 then
 		timerInfiniteDarknessCD:Start()
+	elseif spellId == 181113 then--Encounter Spawn
+		timerTransition:Start(36.5)--Boss/any arcane adds still active during this, so do not cancel timers here, canceled on margok death
+		self:Schedule(13, stopP3Timers, self)--Terminate timers when King Prison activates.
+		self:Schedule(34, NightTwisted, self)
 	end
 end
 
@@ -883,9 +906,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				self.vb.phase = 3
 				warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(3))
 				voicePhaseChange:Play("pthree")
-				self:RegisterShortTermEvents(
-					"CHAT_MSG_MONSTER_YELL"
-				)
 			else
 				self.vb.phase = 4
 				warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(4))
@@ -947,37 +967,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
 			DBM.InfoFrame:Show(5, "playerbaddebuff", 176537)
-		end
-	end
-end
-
---"<54.77 00:46:30> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#You know nothing of the power you meddle with, Mar'gok. (It calls to us. We know! Its power will be ours!)#Cho'gall
---"<64.00 00:46:40> [UNIT_SPELLCAST_SUCCEEDED] Cho'gall [[target:King Prison::0:178540]]", -- [19041]
-do
-	local function stopP3Timers()
-		timerArcaneWrathCD:Cancel()
-		countdownArcaneWrath:Cancel()
-		timerDestructiveResonanceCD:Cancel()
-		timerSummonArcaneAberrationCD:Cancel()
-		timerMarkOfChaosCD:Cancel()
-		countdownMarkofChaos:Cancel()
-		timerForceNovaCD:Cancel()
-		voiceForceNova:Cancel()
-		countdownForceNova:Cancel()
-		timerForceNovaFortification:Cancel()
-		countdownForceNova:Cancel()
-		specWarnForceNova:Cancel()
-	end
-	local function NightTwisted(self)
-		timerNightTwistedCD:Start()
-		self:Schedule(30, NightTwisted, self)
-	end
-	function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
-		if npc == chogallName then--Some creative shit right here. Screw localized text. This will trigger off first yell at start of 35 second RP Sender is 丘加利 (Cho'gall)
-			self:UnregisterShortTermEvents()--Unregister Yell
-			timerTransition:Start(34)--Boss/any arcane adds still active during this, so do not cancel timers here, canceled on margok death
-			self:Schedule(10, stopP3Timers, self)--Terminate timers when King Prison activates.
-			self:Schedule(31, NightTwisted, self)
 		end
 	end
 end
