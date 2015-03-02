@@ -37,7 +37,7 @@ local specWarnPetrifyingSlam		= mod:NewSpecialWarningMoveAway(155326, nil, nil, 
 local timerInfernoSliceCD			= mod:NewCDCountTimer(11, 155080)--Variable do to energy bugs (gruul not gain power consistently)
 local timerSpecialCD				= mod:NewCDSpecialTimer(20.5)
 local timerPetrifyingSlamCD			= mod:NewCDCountTimer(60, 155323)--60-70 variation
-local timerOverheadSmashCD			= mod:NewCDCountTimer(25, 155301)--25-42 variation
+local timerOverheadSmashCD			= mod:NewCDCountTimer(24.5, 155301)--25-42 variation
 local timerShatter					= mod:NewCastTimer(8, 155529)
 local timerRampage					= mod:NewBuffActiveTimer(30, 155539)
 local timerRampageCD				= mod:NewCDTimer(107, 155539)--Variable, may be even shorter
@@ -237,7 +237,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		--Delay Rampage clear. Removed event can fire before last rampage smash cast finishes
 		--so we don't want that smash falsely detected as non rampage smash
 		self:Schedule(3, clearRampage, self)
-		timerPetrifyingSlamCD:Start(26, 1)--VERIFY
+		timerPetrifyingSlamCD:Start(23, 1)--VERIFY
 --		timerOverheadSmashCD:Start(47, 1)--VERIFY
 		if not self:IsMythic() then
 			timerInfernoSliceCD:Start(17.5, 1)
