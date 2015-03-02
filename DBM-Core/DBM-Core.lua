@@ -8620,7 +8620,7 @@ do
 	end
 
 	function DBM:PlaySpecialWarningSound(soundId)
-		local sound = type(soundId) == "number" and self.Options["SWSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
+		local sound = type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
 		if self.Options.UseMasterVolume then
 			PlaySoundFile(sound, "Master")
 		else
