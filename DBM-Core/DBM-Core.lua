@@ -2814,7 +2814,7 @@ function DBM:CopyAllModSoundOption(modId, sourceName, sourceProfile)
 		if not _G[savedVarsName][targetName][id] then _G[savedVarsName][targetName][id] = {} end
 		-- copy table
 		for option, optionValue in pairs(_G[savedVarsName][sourceName][id][sourceProfile]) do
-			if option:find("SpecialWarningSound") then
+			if option:find("SWSound") then
 				_G[savedVarsName][targetName][id][targetProfile][option] = optionValue
 			end
 		end
@@ -8260,9 +8260,9 @@ do
 			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
 			fireEvent("DBM_Announce", msg)
 			if self.sound then
-				local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
+				local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 				if self.hasVoice and DBM.Options.ChosenVoicePack ~= "None" and self.hasVoice <= SWFilterDisabed and (type(soundId) == "number" and DBM.Options.VoiceOverSpecW2 == "DefaultOnly" or DBM.Options.VoiceOverSpecW2 == "All") and (self.mod.Options[self.voiceOptionId] ~= false or DBM.Options.AlwaysPlayVoice) then return end
-				if not self.option or self.mod.Options[self.option.."SpecialWarningSound"] ~= "None" then
+				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
 					DBM:PlaySpecialWarningSound(soundId or 1)
 				end
 			end
@@ -8620,7 +8620,7 @@ do
 	end
 
 	function DBM:PlaySpecialWarningSound(soundId)
-		local sound = type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
+		local sound = type(soundId) == "number" and self.Options["SWSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
 		if self.Options.UseMasterVolume then
 			PlaySoundFile(sound, "Master")
 		else
@@ -9128,12 +9128,12 @@ end
 function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat)
 	cat = cat or "misc"
 	self.DefaultOptions[name] = (default == nil) or default
-	self.DefaultOptions[name.."SpecialWarningSound"] = defaultSound or 1
+	self.DefaultOptions[name.."SWSound"] = defaultSound or 1
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
-	self.Options[name.."SpecialWarningSound"] = defaultSound or 1
+	self.Options[name.."SWSound"] = defaultSound or 1
 	self:SetOptionCategory(name, cat)
 end
 

@@ -440,7 +440,7 @@ do
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
 		local dropdown
-		if modvar and modvar:find("SpecialWarningSound") then
+		if modvar and modvar:find("SWSound") then
 			dropdown = self:CreateDropdown(nil, sounds, nil, nil, function(value)
 				mod.Options[modvar] = value
 				DBM:PlaySpecialWarningSound(value)
@@ -2373,6 +2373,7 @@ local function CreateOptionsMenu()
 				DBM.Options.SpecialWarningSound = DBM.DefaultOptions.SpecialWarningSound
 				DBM.Options.SpecialWarningSound2 = DBM.DefaultOptions.SpecialWarningSound2
 				DBM.Options.SpecialWarningSound3 = DBM.DefaultOptions.SpecialWarningSound3
+				DBM.Options.SpecialWarningSound4 = DBM.DefaultOptions.SpecialWarningSound4
 				DBM.Options.SpecialWarningFontSize = DBM.DefaultOptions.SpecialWarningFontSize
 				DBM.Options.SpecialWarningFlashCol1[1] = DBM.DefaultOptions.SpecialWarningFlashCol1[1]
 				DBM.Options.SpecialWarningFlashCol1[2] = DBM.DefaultOptions.SpecialWarningFlashCol1[2]
@@ -2398,6 +2399,7 @@ local function CreateOptionsMenu()
 				SpecialWarnSoundDropDown:SetSelectedValue(DBM.Options.SpecialWarningSound)
 				SpecialWarnSoundDropDown2:SetSelectedValue(DBM.Options.SpecialWarningSound2)
 				SpecialWarnSoundDropDown3:SetSelectedValue(DBM.Options.SpecialWarningSound3)
+				SpecialWarnSoundDropDown4:SetSelectedValue(DBM.Options.SpecialWarningSound4)
 				fontSizeSlider:SetValue(DBM.DefaultOptions.SpecialWarningFontSize)
 				color0:SetColorRGB(DBM.Options.SpecialWarningFontCol[1], DBM.Options.SpecialWarningFontCol[2], DBM.Options.SpecialWarningFontCol[3])
 				color1:SetColorRGB(DBM.Options.SpecialWarningFlashCol1[1], DBM.Options.SpecialWarningFlashCol1[2], DBM.Options.SpecialWarningFlashCol1[3])
@@ -3499,8 +3501,8 @@ do
 						button = catpanel:CreateLine(v.text)
 					elseif type(mod.Options[v]) == "boolean" then
 						lastButton = button
-						if mod.Options[v .. "SpecialWarningSound"] then
-							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v .. "SpecialWarningSound")
+						if mod.Options[v .. "SWSound"] then
+							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v .. "SWSound")
 						else
 							button = catpanel:CreateCheckButton(mod.localization.options[v], true)
 						end
