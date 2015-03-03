@@ -26,16 +26,18 @@ local brawlersMod = DBM:GetModByName("Brawlers")
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if args.spellId == 133362 then
-		warnPolymorph:Show()
 		timerPolymorphCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnPolymorph:Show()
+		else
+			warnPolymorph:Show()
 		end
 	elseif args.spellId == 135342 then
-		warnChomp:Show()--Give reg warnings for spectators
 		timerChompCD:Start()--And timers (first one is after 6 seconds)
 		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
 			specWarnChomp:Show()
+		else
+			warnChomp:Show()--Give reg warnings for spectators
 		end
 	end
 end

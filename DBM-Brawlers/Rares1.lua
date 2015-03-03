@@ -71,7 +71,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		if amount % 5 == 0 then
 			warnIntensifyingAssault:Show(args.destName, amount)
-			if amount >= 10 then
+			if brawlersMod:PlayerFighting() and amount >= 10 then
 				specWarnIntensifyingAssault:Show(amount)
 			end
 		end
@@ -79,7 +79,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		if amount % 5 == 0 then
 			warnPrecisionArtillery:Show(args.destName, amount)
-			if amount >= 10 then
+			if brawlersMod:PlayerFighting() and amount >= 10 then
 				specWarnPrecisionArtillery:Show(amount)
 			end
 		end
@@ -93,36 +93,41 @@ function mod:SPELL_CAST_START(args)
 		warnPowerCrystal:Show()
 		timerPowerCrystalCD:Start()
 	elseif args.spellId == 133650 then
-		warnDoom:Show()
 		if brawlersMod:PlayerFighting() then
 			specWarnDoom:Show()
+		else
+			warnDoom:Show()
 		end
 	elseif args.spellId == 133262 then
-		warnBlueCrush:Show()
 		timerBlueCrushCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnBlueCrush:Show(args.sourceName)
+		else
+			warnBlueCrush:Show()
 		end
 	elseif args.spellId == 135621 then
-		warnStaticCharge:Show()
 --		timerStaticChargeCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnStaticCharge:Show(args.sourceName)
+		else
+			warnStaticCharge:Show()
 		end
 	elseif args.spellId == 133346 then
-		warnDarkZone:Show()
 		timerDarkZoneCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnDarkZone:Show()
+		else
+			warnDarkZone:Show()
 		end
 	elseif args.spellId == 134743 then
 		warnEarthSeed:Show()
 		timerEarthSeedCD:Start()
 	elseif args.spellId == 133286 then
-		warnHeatedPokers:Show()
 		timerHeatedPokersCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnHeatedPokers:Show()
+		else
+			warnHeatedPokers:Show()
 		end
 	end
 end
@@ -130,26 +135,30 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if args.spellId == 133208 then
-		warnEvilGlare:Show()
 --		timerEvilGlareCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnEvilGlare:Show()
+		else
+			warnEvilGlare:Show()
 		end
 	elseif args.spellId == 133250 then
-		warnDestructolaser:Show()
 		timerDestructolaserCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnDestructolaser:Show()
+		else
+			warnDestructolaser:Show()
 		end
 	elseif args.spellId == 140894 then
-		warnBoomingBoogaloo:Show()
 		if brawlersMod:PlayerFighting() then
 			specWarnBoomingBoogaloo:Show()
+		else
+			warnBoomingBoogaloo:Show()
 		end
 	elseif args.spellId == 140912 then
-		warnDeployBoom:Show()
 		if brawlersMod:PlayerFighting() then
 			specWarnDeployBoom:Show()
+		else
+			warnDeployBoom:Show()
 		end
 	end
 end

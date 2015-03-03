@@ -42,16 +42,18 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(33975, 136334) then--Spellid is used by 5 diff mobs in game, but SetZone sould filter the other 4 mobs.
 		warnPyroblast:Show()
 	elseif args.spellId == 132666 then
-		warnFireWall:Show()
 		timerFirewallCD:Start()--First one is 5 seconds after combat start
 		if brawlersMod:PlayerFighting() then
 			specWarnFireWall:Show()
+		else
+			warnFireWall:Show()
 		end
 	elseif args.spellId == 39945 then
-		warnChainLightning:Show()
 		timerChainLightningCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnChainLightning:Show(args.sourceName)
+		else
+			warnChainLightning:Show()
 		end
 	end
 end
@@ -64,10 +66,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnShieldWaller:Show()
 		timerShieldWaller:Start()
 	elseif args.spellId == 126209 then
-		warnShadowStrikes:Show()
 		timerShadowStrikes:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnShadowStrikes:Show(args.destName)
+		else
+			warnShadowStrikes:Show()
 		end
 	end
 end
@@ -87,10 +90,11 @@ end
 function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, _, _, spellId)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if spellId == 134527 and self:AntiSpam() then
-		warnLumberingCharge:Show()
 		timerLumberingChargeCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnLumberingCharge:Show()
+		else
+			warnLumberingCharge:Show()
 		end
 	end
 end
