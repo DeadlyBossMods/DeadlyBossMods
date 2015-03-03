@@ -36,16 +36,18 @@ function mod:SPELL_CAST_START(args)
 		warnVolatileFlames:Show()
 		timerVolatileFlamesCD:Start()
 	elseif args.spellId == 133607 then
-		warnFireLine:Show()
 		timerFireLineCD:Start()--First one is 9-10 seconds after combat start
 		if brawlersMod:PlayerFighting() then
 			specWarnFireLine:Show()
+		else
+			warnFireLine:Show()
 		end
 	elseif args.spellId == 134777 then
-		warnDevastatingThrust:Show()
 		timerDevastatingThrustCD:Start()--First one is 7-8 seconds after combat start
 		if brawlersMod:PlayerFighting() then
 			specWarnDevastatingThrust:Show()
+		else
+			warnDevastatingThrust:Show()
 		end
 	elseif args.spellId == 133302 then--Blat splitting
 		blatGUID = args.sourceGUID
