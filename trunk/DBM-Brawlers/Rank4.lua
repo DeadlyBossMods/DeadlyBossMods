@@ -28,10 +28,11 @@ local DominikaGUID = 0
 function mod:SPELL_CAST_SUCCESS(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
 	if args.spellId == 141013 then
-		warnSpitAcid:Show()
 		timerSpitAcidCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnSpitAcid:Show()
+		else
+			warnSpitAcid:Show()
 		end
 	end
 end
@@ -44,7 +45,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:PLAYER_TARGET_CHANGED()
-	if self.Options.SetIconOnDominika and not DBM.Options.DontSetIcons and UnitGUID("target") == DominikaGUID then
+	if self.Options.SetIconOnDominika and not DBM.Options.DontSetIcons and UnitGUID("target") == DominikaGUID and GetRaidTargetIndex("target") ~= 8 then
 		SetRaidTarget("target", 8)
 	end
 end

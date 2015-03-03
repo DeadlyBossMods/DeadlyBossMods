@@ -47,35 +47,40 @@ function mod:SPELL_CAST_START(args)
 		warnRockets:Show()
 		timerRockets:Schedule(4)
 	elseif args.spellId == 125212 then
-		warnShadowbolt:Show()
 		timerShadowboltCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnShadowbolt:Show()
+		else
+			warnShadowbolt:Show()
 		end
 	elseif args.spellId == 133465 then
-		warnGhost:Show()
 		timerGhostCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnGhost:Show()
+		else
+			warnGhost:Show()
 		end
 	elseif args.spellId == 133017 then
 		remainingMines = remainingMines - 1
 		warnMines:Show(remainingMines)
 	elseif args.spellId == 138845 then
-		warnCharge:Show()
 		if brawlersMod:PlayerFighting() then
 			specWarnCharge:Show()
+		else
+			warnCharge:Show()
 		end
 	elseif args.spellId == 142621 then
-		warnCompleteHeal:Show()
 		if brawlersMod:PlayerFighting() then
 			specWarnCompleteHeal:Show(args.sourceName)
+		else
+			warnCompleteHeal:Show()
 		end
 	elseif args.spellId == 142583 then
-		warnDivineCircle:Show()
 		timerDivineCircleCD:Start()
 		if args:IsPlayer() then
 			specWarnDivineCircle:Show()
+		else
+			warnDivineCircle:Show()
 		end
 	end
 end
@@ -84,9 +89,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
 	if args.spellId == 133015 then
 --		remainingMines = 8
-		warnMinesSpawning:Show()
 		if brawlersMod:PlayerFighting() then
 			specWarnMinesSpawning:Show()
+		else
+			warnMinesSpawning:Show()
 		end
 	elseif args.spellId == 133018 then
 		remainingMines = 8

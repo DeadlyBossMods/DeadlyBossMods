@@ -104,10 +104,11 @@ function mod:SPELL_CAST_START(args)
 		warnBetterStrongerFaster:Show()
 		timerBetterStrongerFasterCD:Start()
 	elseif args.spellId == 142788 then
-		warnEightChomps:Show()
 		timerEightChompsCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnEightChomps:Show()
+		else
+			warnEightChomps:Show()
 		end
 	elseif args.spellId == 142769 then
 		warnStasisBeam:Show()
@@ -145,14 +146,16 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if args.spellId == 140894 then
-		warnBoomingBoogaloo:Show()
 		if brawlersMod:PlayerFighting() then
 			specWarnBoomingBoogaloo:Show()
+		else
+			warnBoomingBoogaloo:Show()
 		end
 	elseif args.spellId == 140912 then
-		warnDeployBoom:Show()
 		if brawlersMod:PlayerFighting() then
 			specWarnDeployBoom:Show()
+		else
+			warnDeployBoom:Show()
 		end
 	end
 end
