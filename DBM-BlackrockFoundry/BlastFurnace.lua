@@ -118,6 +118,7 @@ mod.vb.lastTotal = 30
 mod.vb.phase = 1
 mod.vb.slagCount = 0
 mod.vb.lastSlagIcon = 0
+mod.vb.secondSlagSpawned = false
 local activeSlagGUIDS = {}
 local activePrimalGUIDS = {}
 local activePrimal = 0 -- health report variable. no sync
@@ -191,11 +192,17 @@ local function FireCaller(self)
 		--Important note, sometimes both side not spawn same time. one side might lag like 2-3 behind other.
 		--But timer good for first one spawning always. 2 always spawn, 1 at timer and 2nd maybe a couple seconds later.
 		timerFireCaller:Start(45)
-		self:Schedule(45.5, FireCaller, self)
+		self:Schedule(45, FireCaller, self)
 --	else
 --		timerFireCaller:Start(55)
 --		self:Schedule(55, FireCaller, self)
 --	end
+end
+
+local function checkSecondSlag(self)
+	if not self.vb.secondSlagSpawned then
+		timerSlagElemental:Start(15, self.vb.slagCount+1)
+	end
 end
 
 function mod:CustomHealthUpdate()
@@ -330,9 +337,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnCauterizeWounds:Show(args.sourceName)
 	elseif spellId == 156937 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnPyroclasm:Show(args.sourceName)
-	elseif spellId == 177756 and self:CheckTankDistance(args.sourceGUID, 30) and self:AntiSpam(3.5, 7) then
+	elseif spellId == 177756 and self:CheckTankDistance(args.sourceGUID, 40) and self:AntiSpam(3.5, 7) then
 		specWarnDeafeningRoar:Show()
-	elseif spellId == 160379 and self:CheckTankDistance(args.sourceGUID, 30) then--Requires 6.1. The events on live don't work for this
+	elseif spellId == 160379 and self:CheckTankDistance(args.sourceGUID, 40) then--Requires 6.1. The events on live don't work for this
 		specWarnDefense:Show()
 		voiceDefense:Play("mobout")
 	end
@@ -340,10 +347,10 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 155179 and self:CheckTankDistance(args.sourceGUID, 30) then--Blizz seems to updated encounter code so they now run to nearest regulator instead of lowest health one.
+	if spellId == 155179 and self:CheckTankDistance(args.sourceGUID, 40) then--Blizz seems to updated encounter code so they now run to nearest regulator instead of lowest health one.
 		specWarnRepair:Show(args.sourceName)
 		voiceRepair:Play("kickcast")
-	elseif spellId == 174726 and self:CheckTankDistance(args.sourceGUID, 30) and self:AntiSpam(2, 4) and self.vb.phase == 1 then
+	elseif spellId == 174726 and self:CheckTankDistance(args.sourceGUID, 40) and self:AntiSpam(2, 4) and self.vb.phase == 1 then
 		warnDropBombs:Show()
 	end
 end
@@ -354,7 +361,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)
 		local debuffTime = expires - GetTime()
-		if self:CheckTankDistance(args.sourceGUID, 30) and self.vb.phase == 1 then--Filter Works very poorly, probably because mob not a BOSS id. usually see ALL warnings and all HUDs :\
+		if self:CheckTankDistance(args.sourceGUID, 40) and self.vb.phase == 1 then--Filter Works very poorly, probably because mob not a BOSS id. usually see ALL warnings and all HUDs :\
 			warnBomb:CombinedShow(1, args.destName)
 			if self.Options.HudMapOnBomb then
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(155192, "highlight", args.destName, 5, debuffTime+0.5, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
@@ -377,8 +384,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not activeSlagGUIDS[args.sourceGUID] then
 			activeSlagGUIDS[args.sourceGUID] = true
 			self.vb.slagCount = self.vb.slagCount + 1
-			if self.vb.slagCount == 1 then--NOTE: Re-Add mythic only check if blizzard reverts the changes that made all modes behave like mythic
+			--6.1 Heroic https://www.warcraftlogs.com/reports/XgB24JpF8VQmGLA3#fight=8&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+155196 (2nd is 55)
+			--6.1 Normal https://www.warcraftlogs.com/reports/1ftLca9GDm6qXnA2#fight=3&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+155196 (2nd is 55)
+			--6.1 Mythic https://www.warcraftlogs.com/reports/HnwFRXyG9rb4CtNm#fight=1&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+155196 (2nd is 55)
+			--6.1 Mythic https://www.warcraftlogs.com/reports/h74Rp2TxCkb1AjW6#fight=10&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+155196 (2nd is 35)
+			--All logs i reviewed, 2nd elemental is mostly 55-60 after first regardless of difficulty
+			--But sometimes, for reason cannot find, it's 35 instead
+			--So in all modes, start 35 second timer
+			--Schedule 40 second check, if no 2nd slag by 40 seconds, start 15 second timer for remainder because 2nd will be 55
+			if self.vb.slagCount == 1 then
 				timerSlagElemental:Start(35, self.vb.slagCount+1)
+				self:Schedule(40, checkSecondSlag, self)
+			elseif self.vb.slagCount == 2 then
+				self.vb.secondSlagSpawned = true
 			end
 			voiceSlagElemental:Play("ej9657")
 		end
@@ -457,7 +475,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif self:CheckNearby(8, args.destName) then
 			specWarnMeltNear:Show()
 		end
-	elseif spellId == 156934 then
+	elseif spellId == 156934 and self:CheckTankDistance(args.sourceGUID, 40) then
 		warnRupture:CombinedShow(0.5, args.destName)
 		timerRuptureCD:Start()
 		if args:IsPlayer() then
@@ -531,6 +549,7 @@ function mod:UNIT_DIED(args)
 		self.vb.machinesDead = self.vb.machinesDead + 1
 		if self.vb.machinesDead == 2 then
 			self.vb.phase = 2
+			self.vb.secondSlagSpawned = false
 			activePrimal = 0
 			prevHealth = 100
 			warnPhase2:Show()
@@ -546,8 +565,8 @@ function mod:UNIT_DIED(args)
 				timerSlagElemental:Start(13.5, 1)
 				self:Schedule(72, SecurityGuard, self)
 				timerSecurityGuard:Start(72)
-				self:Schedule(78, FireCaller, self)
-				timerFireCaller:Start(78)
+				self:Schedule(76.5, FireCaller, self)
+				timerFireCaller:Start(76.5)
 			end
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:Clear()
