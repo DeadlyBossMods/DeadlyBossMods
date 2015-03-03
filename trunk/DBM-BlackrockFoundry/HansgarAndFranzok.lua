@@ -179,7 +179,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, nil, nil, false)--Don't include tank in first scan should be enough of a filter for first, it'll grab whatever first non tank target he gets and set that as first jump target and it will be valid
 		else--Not first jump
 			DBM:Debug("157922: firstJump false")
-			self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, nil, nil, true, nil, self.vb.lastJumpTarget)--1.3 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
+			if self.vb.lastJumpTarget ~= "None" then--First jump succeeded
+				self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, nil, nil, true, nil, self.vb.lastJumpTarget)--1.3 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
+			else--Boss is recasting first jump because his first cast was interrupted by a stamper, so don't run filter and warn as soon as it finds a target, like first jump
+				DBM:Debug("157922: firstJump failed, initiating another first jump scan")
+				self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, nil, nil, false)
+			end
 		end
 	elseif spellId == 157923 then--Fallback
 		DBM:Debug("157923: boss target "..UnitName(uId.."target"))
