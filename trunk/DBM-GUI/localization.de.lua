@@ -212,8 +212,11 @@ L.SpamBlockNoSendWhisper	= "Flüstere keine Bosswarnungen an andere Spieler"
 L.SpamBlockNoSetIcon		= "Setze keine Zeichen auf Ziele"
 L.SpamBlockNoRangeFrame		= "Zeige kein Abstandsfenster/-radar an"
 L.SpamBlockNoInfoFrame		= "Zeige kein Infofenster an"
+L.SpamBlockNoHudMap			= "Zeige keine HudMap"
 L.SpamBlockNoHealthFrame	= "Zeige keine Lebensanzeige an"
 L.SpamBlockNoCountdowns		= "Spiele keine Countdown-Sounds"
+L.SpamBlockNoIconRestore	= "Setze Markierungszeichen am Kampfende nicht auf den vorherigen Zustand zurück"
+L.SpamBlockNoRangeRestore	= "Setze das Abstandsfenster nicht auf den vorherigen Zustand zurück, wenn es von Mods ausgeblendet wird"
 
 -- Tab: Spam Filter
 L.Area_SpamFilter			= "Spam-Filter"
@@ -221,14 +224,11 @@ L.DontShowFarWarnings		= "Zeige keine Mitteilungen/Timer für weit entfernte Ere
 L.StripServerName			= "Entferne den Realmnamen der Spieler in Warnungen und Timern"
 L.SpamBlockBossWhispers		= "Aktiviere Filter für &lt;DBM&gt;-Flüstermitteilungen im Kampf"
 
-L.Area_SpecFilter			= "Filtereinstellungen für Spezialisierungen"
+L.Area_SpecFilter			= "Filtereinstellungen für Rollen"
 L.FilterTankSpec			= "Unterdrücke Warnungen für Tanks, falls deine aktuelle Spezialisierung keine \"Schutz\"-Spezialisierung ist (Hinweis: Diese Filterung sollte normalerweise nicht deaktiviert werden, da alle individuellen \"Spott\"-Warnungen nun standardmäßig aktiviert sind.)"
---
---
---
---
---L.FilterHealerSpec		= "Unterdrücke Warnungen für Heiler, falls deine aktuelle Spezialisierung keine \"Heilung\"-Spezialisierung ist"--Not in use
---L.FilterDamagerSpec		= "Unterdrücke Warnungen für DDs, falls deine aktuelle Spezialisierung keine \"Schaden\"-Spezialisierung ist"--Not in use
+L.FilterInterrupts			= "Unterdrücke Warnungen für unterbrechbare Zauber, falls diese nicht von deinem aktuellen Ziel oder Fokusziel gewirkt werden (Hinweis: Diese Einstellung hat keine Wirkung auf Zauber, deren Unterbrechung als kritisch eingestuft wird und die wahrscheinlich tödlich für den Schlachtzug sind, falls sie nicht unterbrochen werden.)"
+L.FilterDispels				= "Unterdrücke Warnungen für unterbrechbare Zauber, falls deine Unterbrechungen noch abklingen"
+L.FilterSelfHud				= "Filtere dich selbst in HudMap (ausgenommen Abstands-basierte Hud-Funktionen)"
 
 L.Area_PullTimer			= "Filtereinstellungen für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
 L.DontShowPTNoID			= "Blockiere Pull-Timer, die nicht aus deiner derzeitigen Zone gesendet worden sind"
@@ -257,11 +257,12 @@ L.Always					= ALWAYS
 L.Panel_ExtraFeatures		= "Sonstige Funktionen"
 L.Area_ChatAlerts			= "Alarmmeldungen im Chatfenster"
 L.RoleSpecAlert				= "Zeige Alarmmeldung, wenn deine Beutespezialisierung nicht deiner aktuellen Spezialisierung beim Betreten eines Schlachtzugs entspricht"
-L.CheckGear					= "Zeige Alarmmeldung beim Pull, wenn deine angelegte Gegenstandsstufe viel niedriger als die in deinen Taschen ist (40+)"
+L.CheckGear					= "Zeige Alarmmeldung beim Pull, wenn deine angelegte Gegenstandsstufe viel niedriger als die in deinen Taschen (40+) oder deine Hauptwaffe nicht ausgerüstet ist"
 L.WorldBossAlert			= "Zeige Alarmmeldung, wenn auf deinem Realm Gildenmitglieder oder Freunde möglicherweise beginnen gegen Weltbosse zu kämpfen (ungenau falls Sender \"CRZed\" ist)"
 L.Area_SoundAlerts			= "Akustische Alarme"
 L.LFDEnhance				= "Spiele \"Bereitschaftscheck\"-Sound für Rollenabfragen und Einladungen der Gruppensuche im Master-Audiokanal (funktioniert z.B. auch wenn Soundeffekte abgeschaltet sind und ist allgemein lauter)"
 L.WorldBossNearAlert		= "Spiele \"Bereitschaftscheck\"-Sound, wenn Weltbosse in deiner Nähe gepullt werden, die du brauchst (Boss-spezifische Einstellung)"
+L.RLReadyCheckSound			= "Spiele \"Bereitschaftscheck\"-Sounds von tatsächlichen Bereitschaftschecks im Master-Audiokanal"
 L.AFKHealthWarning			= "Spiele Alarmsound, wenn du Gesundheit verlierst, während du als nicht an der Tastatur (\"AFK\") markiert bist"
 L.Area_AutoLogging			= "Automatische Aufzeichnungen"
 L.AutologBosses				= "Automatische Aufzeichnung von Bosskämpfen im spieleigenen Kampflog (/dbm pull vor Bossen wird benötigt um die Aufzeichnung rechtzeitig für \"Pre-Pots\" und andere Ereignisse zu starten)"
