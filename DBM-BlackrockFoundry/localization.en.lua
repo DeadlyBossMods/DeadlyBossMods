@@ -70,7 +70,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnSplitSoon	= "Show special warning 10 seconds before raid split"
+	specWarnSplitSoon	= "Show special warning 10 seconds before raid split",
+	InfoFrameSpeed		= "Set when InfoFrame shows next train information",
+	Immediately			= "As soon as doors open for current train",
+	Delayed				= "After current train has come out" 
 })
 
 L:SetMiscLocalization({

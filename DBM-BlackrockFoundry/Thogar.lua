@@ -61,6 +61,7 @@ local voiceProtoGrenade				= mod:NewVoice(165195) --runaway
 
 mod:AddInfoFrameOption(176312)
 mod:AddSetIconOption("SetIconOnAdds", "ej9549", false, true)
+mod:AddDropdownOption("InfoFrameSpeed", {"Immediately", "Delayed"}, "Delayed", "misc")
 
 mod.vb.trainCount = 0
 mod.vb.infoCount = 0
@@ -554,12 +555,16 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				end
 			end
 		end
-		local adjust = 0
-		if msg == "Fake" then
-			if expectedTime and expectedTime == 4 then adjust = 1 end
-			self:Schedule(2.5-adjust, showInfoFrame, self)
+		if self.Options.InfoFrameSpeed == "Delayed" then
+			local adjust = 0
+			if msg == "Fake" then
+				if expectedTime and expectedTime == 4 then adjust = 1 end
+				self:Schedule(2.5-adjust, showInfoFrame, self)
+			else
+				self:Schedule(4-adjust, showInfoFrame, self)
+			end
 		else
-			self:Schedule(4-adjust, showInfoFrame, self)
+			showInfoFrame(self)
 		end
 	end
 end
