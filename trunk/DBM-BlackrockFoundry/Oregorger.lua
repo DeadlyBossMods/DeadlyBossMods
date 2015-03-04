@@ -39,7 +39,7 @@ local timerBlackrockSpinesCD		= mod:NewCDTimer(18.5, 156834)--20-23 (cd for barr
 local timerAcidTorrentCD			= mod:NewCDCountTimer("OptionVersion2", 13, 156240, nil, "Tank|Healer")
 local timerExplosiveShardCD			= mod:NewCDTimer("OptionVersion3", 12, 156390, nil, "MeleeDps")--Every 12-20 seconds
 local timerExplosiveShard			= mod:NewCastTimer(3.5, 156390, nil, "MeleeDps")
-local timerRetchedBlackrockCD		= mod:NewCDTimer("OptionVersion2", 17, 156179, nil, "Ranged")--Every 17-23 seconds
+local timerRetchedBlackrockCD		= mod:NewCDTimer("OptionVersion2", 16, 156179, nil, "Ranged")--Every 17-23 seconds
 
 local countdownAcidTorrent			= mod:NewCountdown(13, 156240, "Tank")
 
@@ -114,7 +114,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerExplosiveShardCD:Start(7)--7-9
 		timerAcidTorrentCD:Start(11, 1)--11-12
 		countdownAcidTorrent:Start(11)
-		timerBlackrockSpinesCD:Start(15)
+		timerBlackrockSpinesCD:Start(14)
 	elseif spellId == 156834 and not self.vb.feedingFrenzy then
 		local amount = args.amount or 0--amount reported for all (SPELL_AURA_APPLIED_DOSE) but 0 (SPELL_AURA_REMOVED)
 		local kickCount = self:IsMythic() and (5 - amount) or (3 - amount)

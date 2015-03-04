@@ -25,15 +25,22 @@ mod:RemoveOption("SpeedKillTimer")
 local wingsName = GetSpellInfo(170820)
 local UnitBuff = UnitBuff
 
+local function checkBuff()
+	local name, _, _, _, _, duration, expires, _, _, _, spellId = UnitBuff("player", wingsName)
+	if name and spellId == 170820 then
+		local time = expires-GetTime()
+		timerGame:Start(time)
+		countdownGame:Start(time)
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 170823 and args:IsPlayer() then
 		warnRings:Show(args.amount or 1)
 		countdownGame:Cancel()
-		local _, _, _, _, _, duration, expires = UnitBuff("player", wingsName)
-		local time = expires-GetTime()
-		timerGame:Start(time)
-		countdownGame:Start(time)
+		self:Unschedule(checkBuff)
+		self:Schedule(0.2, checkBuff)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
