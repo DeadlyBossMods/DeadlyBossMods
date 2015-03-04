@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 157060 157054 156704 157592 158217",
 	"SPELL_CAST_SUCCESS 158130 170469",
-	"SPELL_AURA_APPLIED 156766 161923 173917 156852",
+	"SPELL_AURA_APPLIED 156766 161923 173917 156852 157059",
 	"SPELL_AURA_APPLIED_DOSE 156766"
 )
 
@@ -71,12 +71,10 @@ function mod:SPELL_CAST_START(args)
 		self.vb.stoneBreath = 0
 		specWarnGraspingEarth:Show(RUNES)
 		if self:IsLFR() then
-			voiceGraspingEarth:Schedule(20.5, "safenow")
 			timerThunderingBlowsCD:Start(20.5)
 			countdownThunderingBlows:Start(20.5)
 			timerStoneBreathCD:Start(28, 1)
 		else
-			voiceGraspingEarth:Schedule(12, "safenow")
 			timerThunderingBlowsCD:Start()
 			countdownThunderingBlows:Start()
 			timerStoneBreathCD:Start(31, 1)--Verified it happens on mythic, if rune of trembling earth doesn't come first
@@ -156,6 +154,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.stoneBreath = self.vb.stoneBreath + 1
 		specWarnStoneBreath:Show(self.vb.stoneBreath)
 		timerStoneBreathCD:Start(nil, self.vb.stoneBreath+1)
+	elseif spellId == 157059 and args:IsPlayer() then
+		voiceGraspingEarth:Play("safenow")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
