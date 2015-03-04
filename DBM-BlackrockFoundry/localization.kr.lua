@@ -67,7 +67,10 @@ L= DBM:GetModLocalization(1122)
 L= DBM:GetModLocalization(1147)
 
 L:SetWarningLocalization({
-	specWarnSplitSoon	= "10초 안에 공격대 상하로 분리하세요!"
+	specWarnSplitSoon	= "10초 안에 공격대 상하로 분리하세요!",
+	InfoFrameSpeed		= "정보 창에서 언제 다음 기차를 보여줄 것인지 설정",
+	Immediately			= "등장할 기차 문이 열릴 때(5초전)",
+	Delayed				= "기차가 실제로 등장한 후" 
 })
 
 L:SetOptionLocalization({
