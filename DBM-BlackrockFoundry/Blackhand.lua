@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(77325)--68168
 mod:SetEncounterID(1704)
 mod:SetZone()
-mod:SetUsedIcons(2, 1)
+mod:SetUsedIcons(3, 2, 1)
 mod:SetHotfixNoticeRev(12813)
 
 mod:RegisterCombat("combat")
@@ -219,7 +219,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.SetIconOnMarked then
-			self:SetSortedIcon(1, args.destName, 1, 2)
+			if self:IsMythic() then
+				self:SetSortedIcon(1, args.destName, 1, 3)
+			else
+				self:SetSortedIcon(1, args.destName, 1, 2)
+			end
 		end
 		if self.Options.HudMapOnMFD then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
