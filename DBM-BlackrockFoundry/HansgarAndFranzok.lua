@@ -40,7 +40,7 @@ local timerDisruptingRoar				= mod:NewCastTimer(2.5, 160838, nil, "SpellCaster")
 local timerDisruptingRoarCD				= mod:NewCDTimer(45, 160838, nil, "SpellCaster")
 local timerSkullcrackerCD				= mod:NewCDTimer(22, 153470, nil, "Healer")
 local timerCripplingSupplex				= mod:NewCastTimer(9.5, 156938, nil, "Tank|Healer")
-local timerJumpSlamCD					= mod:NewNextTimer(34.3, "ej9854")
+local timerJumpSlamCD					= mod:NewNextTimer(34, "ej9854")
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerSmartStamperCD				= mod:NewNextTimer(12, 162124)--Activation
 --local timerStamperDodge					= mod:NewTimer(10, "timerStamperDodge", 160582)--Time until stamper falls (spell name fits well, time you have to stamper dodge)
@@ -197,7 +197,7 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 	if UnitExists(uId) then--Return, not retreat
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
 		if cid == 76973 then--Hansgar
-			timerJumpSlamCD:Start(8)
+			timerJumpSlamCD:Start(6.8)
 		end
 		self.vb.bossUp = "NoBody"
 		if self.vb.phase == 4 then--Stampers activate on their own after 3rd jump away, when they return.

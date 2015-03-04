@@ -443,25 +443,27 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnVolatileFire:CombinedShow(1, args.destName)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)
-		local debuffTime = expires - GetTime()
-		if args:IsPlayer() then
-			timerVolatileFire:Start(debuffTime)
-			specVolatileFire:Show()
-			if not self:IsLFR() then
-				if self:IsMythic() and self.Options.VFYellType == "Countdown" then
-					yellVolatileFire2:Schedule(debuffTime - 1, 1)
-					yellVolatileFire2:Schedule(debuffTime - 2, 2)
-					yellVolatileFire2:Schedule(debuffTime - 3, 3)
-					yellVolatileFire2:Schedule(debuffTime - 5, 5)
-				else
-					yellVolatileFire:Yell()
+		if expires then
+			local debuffTime = expires - GetTime()
+			if args:IsPlayer() then
+				timerVolatileFire:Start(debuffTime)
+				specVolatileFire:Show()
+				if not self:IsLFR() then
+					if self:IsMythic() and self.Options.VFYellType == "Countdown" then
+						yellVolatileFire2:Schedule(debuffTime - 1, 1)
+						yellVolatileFire2:Schedule(debuffTime - 2, 2)
+						yellVolatileFire2:Schedule(debuffTime - 3, 3)
+						yellVolatileFire2:Schedule(debuffTime - 5, 5)
+					else
+						yellVolatileFire:Yell()
+					end
 				end
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(8, nil, nil, nil, nil, debuffTime + 0.5)
+				end
+				countdownVolatileFire:Start(debuffTime)
+				voiceVolatileFire:Schedule(debuffTime - 4, "runout")
 			end
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(8, nil, nil, nil, nil, debuffTime + 0.5)
-			end
-			countdownVolatileFire:Start(debuffTime)
-			voiceVolatileFire:Schedule(debuffTime - 4, "runout")
 		end
 		if self.Options.RangeFrame and not UnitDebuff("player", args.spellName) then
 			DBM.RangeCheck:Show(8, VolatileFilter, nil, nil, nil, debuffTime + 0.5)
