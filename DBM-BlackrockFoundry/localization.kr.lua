@@ -74,7 +74,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnSplitSoon	= "공격대 분리 10초 전에 특수 경고 보기"
+	specWarnSplitSoon	= "공격대 분리 10초 전에 특수 경고 보기",
+	InfoFrameSpeed		= "다음 열차 정보 창 업데이트 시기 설정",
+	Immediately			= "다음 열차 등장 문이 열릴 때(5초 전)",
+	Delayed				= "열차가 실제로 등장하기 직전"
 })
 
 L:SetMiscLocalization({
