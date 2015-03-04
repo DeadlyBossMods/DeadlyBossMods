@@ -464,9 +464,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				countdownVolatileFire:Start(debuffTime)
 				voiceVolatileFire:Schedule(debuffTime - 4, "runout")
 			end
-		end
-		if self.Options.RangeFrame and not UnitDebuff("player", args.spellName) then
-			DBM.RangeCheck:Show(8, VolatileFilter, nil, nil, nil, debuffTime + 0.5)
+			if self.Options.RangeFrame and not UnitDebuff("player", args.spellName) then
+				DBM.RangeCheck:Show(8, VolatileFilter, nil, nil, nil, debuffTime + 0.5)
+			end
 		end
 	elseif spellId == 155225 then
 		warnMelt:CombinedShow(0.5, args.destName)
