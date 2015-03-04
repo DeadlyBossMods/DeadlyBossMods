@@ -88,7 +88,7 @@ DBM.DefaultOptions = {
 	ChallengeBest = "Realm",
 	CountdownVoice = "Corsica",
 	CountdownVoice2 = "Kolt",
-	CountdownVoice3 = "Pewsey",
+	CountdownVoice3v2 = "HoTS_N",
 	ChosenVoicePack = "None",
 	VoiceOverSpecW2 = "DefaultOnly",
 	AlwaysPlayVoice = false,
@@ -7870,7 +7870,7 @@ do
 			if DBM.Options.DontPlayCountdowns then return end
 			local voice = DBM.Options.CountdownVoice
 			local voice2 = DBM.Options.CountdownVoice2
-			local voice3 = DBM.Options.CountdownVoice3
+			local voice3 = DBM.Options.CountdownVoice3v2
 			if self.alternateVoice == 2 then
 				voice = voice2
 			end
@@ -8568,7 +8568,7 @@ do
 		--Check if any of countdown sounds are using missing voice pack
 		local voice1 = self.Options.CountdownVoice
 		local voice2 = self.Options.CountdownVoice2
-		local voice3 = self.Options.CountdownVoice3
+		local voice3 = self.Options.CountdownVoice3v2
 		if voice1 == "None" then--Migrate to new setting
 			self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice
 			self.Options.DontPlayCountdowns = true
@@ -8588,7 +8588,7 @@ do
 			if self.Counts[i].value == self.Options.CountdownVoice2 then
 				found2 = true
 			end
-			if self.Counts[i].value == self.Options.CountdownVoice3 then
+			if self.Counts[i].value == self.Options.CountdownVoice3v2 then
 				found3 = true
 			end
 		end
@@ -8602,7 +8602,7 @@ do
 		end
 		if not found3 then
 			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(3))
-			self.Options.CountdownVoice3 = self.DefaultOptions.CountdownVoice3
+			self.Options.CountdownVoice3v2 = self.DefaultOptions.CountdownVoice3v2
 		end
 	end
 
