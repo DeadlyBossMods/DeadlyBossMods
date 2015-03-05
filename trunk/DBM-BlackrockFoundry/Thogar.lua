@@ -99,7 +99,7 @@ local mythicTrains = {
 	[18] = { [1] = ManOArms, [4] = Cannon },--+15 after 17.(04:02)
 	[19] = { [1] = Deforester, [2] = Train, [3] = Train },--+20 after 18.(04:22)
 	[20] = { [2] = Train, [3] = Train },--+20(or +21) after 19.(04:42)
-	[21] = { [2] = ManOArms, [3] = ManOArms },--+15 after 20.(04:57) Split
+	[21] = { [2] = ManOArms, [3] = Reinforcements },--+15 after 20.(04:57) Split
 	[22] = { [2] = Reinforcements, [4] = Train },--+20 after 21.(05:17)
 	[23] = { [2] = Train, [3] = Train },--+10 after 22.(05:27)
 	[24] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23.(05:42)
@@ -192,7 +192,7 @@ local mythicVoice = {
 	[18] = "D1C4",--new
 	[19] = "E1A23",--new
 	[20] = "A23",
-	[21] = "D23",
+	[21] = "D2B3",
 	[22] = "B2A4",--new
 	[23] = "A23",
 	[24] = "F",
