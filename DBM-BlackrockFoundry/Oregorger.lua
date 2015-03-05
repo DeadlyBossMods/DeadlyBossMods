@@ -51,7 +51,6 @@ local voiceAcidTorrent				= mod:NewVoice(156240)--changemt after 3 seconds (afte
 --local berserkTimer				= mod:NewBerserkTimer(324)--Auto berserk when reaching 3rd hunger drive phase. Time bariable because phase slightly variable.
 
 mod.vb.torrentCount = 0
-mod.vb.feedingFrenzy = false
 
 local lastOre = 0 -- not need sync
 
@@ -70,7 +69,6 @@ function mod:RetchedBlackrockTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.feedingFrenzy = false
 	self.vb.torrentCount = 0
 	timerRetchedBlackrockCD:Start(5-delay)--5-7
 	timerExplosiveShardCD:Start(9.5-delay)
@@ -105,7 +103,6 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 155819 then
-		self.vb.feedingFrenzy = false
 		self.vb.torrentCount = 0
 		self:UnregisterShortTermEvents()
 		specWarnHungerDriveEnded:Show()
@@ -115,7 +112,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerAcidTorrentCD:Start(11, 1)--11-12
 		countdownAcidTorrent:Start(11)
 		timerBlackrockSpinesCD:Start(14)
-	elseif spellId == 156834 and not self.vb.feedingFrenzy then
+	elseif spellId == 156834 then
+		local bossPower = UnitPower("boss1")
+		if bossPower == 0 then return end--Avoid announce bug caused by SPELL_AURA_REMOVED fired at 0 energy, before boss going into frenzy)
 		local amount = args.amount or 0--amount reported for all (SPELL_AURA_APPLIED_DOSE) but 0 (SPELL_AURA_REMOVED)
 		local kickCount = self:IsMythic() and (5 - amount) or (3 - amount)
 		specWarnBlackrockBarrage:Show(args.sourceName, kickCount)
