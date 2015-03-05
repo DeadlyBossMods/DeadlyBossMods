@@ -265,25 +265,12 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.slagCount = 0
 	self.vb.lastSlagIcon = 0
-	if self:IsMythic() then
-		self:Schedule(40, SecurityGuard, self)
-		self:Schedule(40, Engineers, self)
-		timerSecurityGuard:Start(40)
-		timerEngineer:Start(40)
-		countdownEngineer:Start(40)
-	elseif self:IsHeroic() then
-		self:Schedule(55.5, SecurityGuard, self)
-		self:Schedule(55.5, Engineers, self)
-		timerSecurityGuard:Start(55.5)
-		timerEngineer:Start(55.5)
-		countdownEngineer:Start(55.5)
-	elseif self:IsNormal() then
-		self:Schedule(60, SecurityGuard, self)
-		self:Schedule(60, Engineers, self)
-		timerSecurityGuard:Start(60)
-		timerEngineer:Start(60)
-		countdownEngineer:Start(60)
-	end--not need add timer for lfr.
+	local firstTimer = self:IsMythic() and 40 or self:IsHeroic() and 55.5 or 60
+	self:Schedule(firstTimer, SecurityGuard, self)
+	self:Schedule(firstTimer, Engineers, self)
+	timerSecurityGuard:Start(firstTimer)
+	timerEngineer:Start(firstTimer)
+	countdownEngineer:Start(firstTimer)
 	if self:AntiSpam(10, 0) then--Need to ignore loading on the pull
 		if self:IsMythic() then
 			timerBellowsOperator:Start(40)--40-65 variation on mythic? fuck mythic
