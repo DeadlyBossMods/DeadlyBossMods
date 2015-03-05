@@ -110,12 +110,11 @@ local mythicTrains = {
 	[29] = { [1] = Train, [4] = Train },--+20 after 28.(06:47) (1 train is guessed)
 	[30] = { [1] = Reinforcements, [4] = Deforester },--+15 after 29.(07:02)
 	[31] = { [2] = Train },--+10 after 30.(07:12)
-	[32] = { [1] = Train },--+5 after 31.(07:17)
-	[33] = { [3] = Deforester },--+5 after 32.(07:22)
-	[34] = { [2] = Train },--+10 after 33.(07:32)
-	[35] = { [1] = ManOArms },--+10 after 34.(07:42)
-	[36] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+10 after 35.(07:52)
-	[37] = { [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 36.(08:07)--berserk.
+	[32] = { [3] = Deforester },--+5 after 31.(07:17)
+	[33] = { [2] = Train },--+10 after 32.(07:27)
+	[34] = { [1] = ManOArms },--+15 after 33.(07:42)
+	[35] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+10 after 34.(07:52)
+	[36] = { [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 35.(08:07)--berserk.
 }
 
 --https://www.youtube.com/watch?v=yUgrmvksk7g
@@ -204,11 +203,10 @@ local mythicVoice = {
 	[29] = "A14",
 	[30] = "B1E4",
 	[31] = "A2",
-	[32] = "A1",
-	[33] = "E3",
-	[34] = "A2",
-	[35] = "D1",
-	[36] = "F",--need to review
+	[32] = "E3",
+	[33] = "A2",
+	[34] = "D1",
+	[35] = "F",
 }
 
 local otherVoice = {
@@ -452,7 +450,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	local trainLimit = self:IsMythic() and 37 or 35
+	local trainLimit = self:IsMythic() and 36 or 35
 	if target == L.Train and self.vb.trainCount <= trainLimit then
 		local adjusted = (GetTime() - fakeYellTime) < 2-- yell followed by fakeyell within 2 sec. this should realyell of scheduled fakeyell. so do not increase count and only do adjust.
 		self:Unschedule(fakeTrainYell)--Always unschedule
@@ -474,11 +472,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			if mythicVoice[count] and not adjusted then
 				voiceTrain:Play("Thogar\\"..mythicVoice[count])
 			end
-			if count == 1 or count == 2 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 31 or count == 32 then
+			if count == 1 or count == 2 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 31 then
 				expectedTime = 5
-			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 33 or count == 34 or count == 35 then
+			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 32 then
 				expectedTime = 10
-			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 then
+			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 33 or count == 34 then
 				expectedTime = 15
 				if count == 20 then
 					specWarnSplitSoon:Cancel()
