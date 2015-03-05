@@ -71,21 +71,21 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1197)
 
 L:SetTimerLocalization({
-	timerNightTwistedCD		= "Next Night-Twisted Adds"--translate
+	timerNightTwistedCD		= "Nächste Nachtsiechende Gläubiger"
 })
 
 L:SetOptionLocalization({
-	GazeYellType		= "Set yell type for Gaze of the Abyss",--translate
-	Countdown			= "Countdown until expires",--translate
-	Stacks				= "Stacks as they are applied",--translate
-	timerNightTwistedCD	= "Show timer for Next Night-Twisted Faithful"--translate
+	GazeYellType		= "Typ des Schreis für Starren des Abgrunds",
+	Countdown			= "Countdown bis zum Ablauf",
+	Stacks				= "Stapelanzahl beim Erhalt",
+	timerNightTwistedCD	= "Zeige Zeit bis nächste Nachtsiechende Gläubiger erscheinen"
 })
 
 L:SetMiscLocalization({
 	BrandedYell			= "Gebrandmarkt (%d) %dm",
 	GazeYell			= "Starren endet in %d",
 	GazeYell2			= "Starren (%d) auf %s",
-	PlayerDebuffs		= "Closest to Glimpse"--translate
+	PlayerDebuffs		= "Nächste zum Vorgeschmack"
 })
 
 -------------
