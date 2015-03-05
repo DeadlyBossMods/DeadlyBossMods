@@ -36,7 +36,7 @@ local specWarnArcaneVolatility		= mod:NewSpecialWarningMoveAway(163372, nil, nil
 local yellArcaneVolatility			= mod:NewYell(163372)--Mythic
 --Pol
 local specWarnShieldCharge			= mod:NewSpecialWarningSpell(158134, nil, nil, nil, 2, nil, 2)
-local specWarnInterruptingShout		= mod:NewSpecialWarningCast("OptionVersion2", 158093, "SpellCaster")
+local specWarnInterruptingShout		= mod:NewSpecialWarningCast("OptionVersion2", 158093, "SpellCaster", nil, nil, 2, nil, 2)
 local specWarnPulverize				= mod:NewSpecialWarningSpell(158385, nil, nil, nil, 2, nil, 2)
 local specWarnArcaneCharge			= mod:NewSpecialWarningSpell(163336, nil, nil, nil, 2)
 
@@ -66,6 +66,7 @@ local voicePhemos					= mod:NewVoice(nil, nil, "PhemosSpecialVoice")
 local voicePol						= mod:NewVoice(nil, nil, "PolSpecialVoice")
 local voiceBlaze					= mod:NewVoice(158241)
 local voiceArcaneVolatility			= mod:NewVoice(163372)
+local voiceInterruptingShout		= mod:NewVoice(158093, "SpellCaster")
 
 mod:AddRangeFrameOption("8/3", 163372)
 mod:AddInfoFrameOption("ej9586")
@@ -249,6 +250,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 158093 then
 		specWarnInterruptingShout:Show()
+		voiceInterruptingShout:Play("stopcast")
 		if not self:IsMythic() then
 			timerPulverizeCD:Start(polEnergyRate+1)--Next Special
 			countdownPol:Start(polEnergyRate+1)
