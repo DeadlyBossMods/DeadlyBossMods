@@ -2573,10 +2573,12 @@ function DBM:LoadModOptions(modId, inCombat, first)
 					if mod.DefaultOptions[option] == nil then
 						savedOptions[id][profileNum][option] = nil
 					elseif mod.DefaultOptions[option] and (type(mod.DefaultOptions[option]) == "table") then--recover broken dropdown option
+						if savedOptions[id][profileNum][option] and (type(savedOptions[id][profileNum][option]) == "boolean") then
 						savedOptions[id][profileNum][option] = mod.DefaultOptions[option].value
 					end
 				end
 			end
+		end
 		end
 		--apply saved option to actual option table
 		mod.Options = savedOptions[id][profileNum]
