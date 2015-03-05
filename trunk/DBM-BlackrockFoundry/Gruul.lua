@@ -237,7 +237,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		--Delay Rampage clear. Removed event can fire before last rampage smash cast finishes
 		--so we don't want that smash falsely detected as non rampage smash
 		self:Schedule(3, clearRampage, self)
-		timerPetrifyingSlamCD:Start(23, 1)--VERIFY
+		timerPetrifyingSlamCD:Start(21, 1)--VERIFY
 --		timerOverheadSmashCD:Start(47, 1)--VERIFY
 		if not self:IsMythic() then
 			timerInfernoSliceCD:Start(17.5, 1)
