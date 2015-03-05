@@ -319,7 +319,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voiceThrowSlagBombs:Play("bombsoon")
 	elseif spellId == 156425 then
 		specWarnDemolition:Show()
+		if self:IsMythic() then
+			timerDemolitionCD:Start(30)
+		else
 		timerDemolitionCD:Start()
+		end
 		voiceDemolition:Play("aesoon")
 	elseif spellId == 161347 then--Phase 2 Trigger
 		self.vb.phase = 2
