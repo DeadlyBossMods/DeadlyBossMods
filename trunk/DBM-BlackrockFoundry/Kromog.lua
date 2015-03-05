@@ -38,7 +38,7 @@ local timerRipplingSmashCD			= mod:NewCDTimer(21, 157592)--If it comes off CD ea
 local timerStoneBreathCD			= mod:NewCDCountTimer(22, 156852)
 local timerSlamCD					= mod:NewCDTimer(23, 156704, nil, "Tank")
 local timerWarpedArmorCD			= mod:NewCDTimer(14, 156766, nil, "Tank")
-local timerTremblingEarthCD			= mod:NewCDTimer(30, 173917)--30-36 CD now :\
+local timerTremblingEarthCD			= mod:NewCDTimer(180, 173917)
 local timerTremblingEarth			= mod:NewBuffActiveTimer(25, 173917)
 local timerCalloftheMountain		= mod:NewCastTimer(5, 158217)
 
@@ -65,12 +65,14 @@ function mod:OnCombatStart(delay)
 	timerRipplingSmashCD:Start(23.5-delay)
 	timerGraspingEarthCD:Start(50-delay)--50-55 variable
 	berserkTimer:Start(-delay)
+	if self:IsMythic() then
+		timerTremblingEarthCD:Start(82.5-delay)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 157060 then
-		self.vb.stoneBreath = 0
 		specWarnGraspingEarth:Show(RUNES)
 		if self:IsLFR() then
 			timerThunderingBlowsCD:Start(20.5)
@@ -87,7 +89,6 @@ function mod:SPELL_CAST_START(args)
 		timerWarpedArmorCD:Cancel()
 		voiceGraspingEarth:Play("157060")
 		if self:IsMythic() then
-			timerTremblingEarthCD:Start()
 			timerGraspingEarthCD:Start(122)
 		else
 			timerGraspingEarthCD:Start()
@@ -115,6 +116,7 @@ function mod:SPELL_CAST_START(args)
 			--Above 2 timers are always either 9 and 14 or 12 and 17. Haven't figured out case for the +3sec to both of them yet
 			--First slam and first rippling still too variable to start here.
 			--after that they get back into their consistency
+			--Rippling smash is WILDLY variable on mythic, to point that any timer for it is completely useless
 		end
 	end
 end
@@ -153,6 +155,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerRipplingSmashCD:Cancel()
 		timerWarpedArmorCD:Cancel()
 		timerStoneBreathCD:Cancel()
+		timerTremblingEarthCD:Start()
+		local remaining = timerGraspingEarthCD:GetRemaining()
+		if remaining < 50 then--Will come off cd during mythic phase, update timer because mythic phase is coded to prevent this from happening and will push ability to about 12-17 seconds after mythic phase ended
+			timerGraspingEarthCD:Start(62)
+		end
 	elseif spellId == 156852 then
 		self.vb.stoneBreath = self.vb.stoneBreath + 1
 		specWarnStoneBreath:Show(self.vb.stoneBreath)
