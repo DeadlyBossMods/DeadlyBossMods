@@ -54,6 +54,7 @@ local voiceCaveIn					= mod:NewVoice(173192)
 
 mod:AddRangeFrameOption(8, 155530)
 mod:AddHudMapOption("HudMapOnShatter", 155530, false)--Might be overwhelming. up to 8 targets on non mythic, and on mythic, 20 of them. So off by default
+mod:AddDropdownOption("MythicSoakBehavior", {"ThreeGroup", "TwoGroup"}, "ThreeGroup", "misc")
 
 mod.vb.smashCount = 0
 mod.vb.sliceCount = 0
@@ -72,16 +73,38 @@ do
 end
 local DBMHudMap = DBMHudMap
 local hudEnabled = false--Only to avoid calling self.Options.HudMapOnShatter 20x in under a second when shatter goes out (20x SPELL_AURA_APPLIED events)
-local mythicSoakOrder = {
+--Tables used for better sync/recover. Slice count synced, then user preference "just works"
+local mythicSoakOrder3Group = {
 	[1] = 1,
 	[2] = 2,
 	[3] = 3,
-	[4] = 3,
+	[4] = 1,
+	[5] = 2,
+	[6] = 3,
+	[7] = 1,
+	[8] = 2,
+	[9] = 3,
+}
+local mythicSoakOrder2Group = {
+	[1] = 1,
+	[2] = 1,
+	[3] = 2,
+	[4] = 2,
+	[5] = 1,
+	[6] = 1,
+	[7] = 2,
+	[8] = 2,
+	[9] = 1,
+}
+--Normal/heroic always best strat is 2 groups 1 stack each, repeating.
+local otherSoakOrder = {
+	[1] = 1,
+	[2] = 2,
+	[3] = 1,
+	[4] = 2,
 	[5] = 1,
 	[6] = 2,
-	[7] = 2,
-	[8] = 3,
-	[9] = 1,
+	[7] = 1,--Super rare, but can happen
 }
 
 
@@ -135,9 +158,13 @@ function mod:SPELL_CAST_START(args)
 		self.vb.sliceCount = self.vb.sliceCount + 1
 		if self.Options.SpecWarn155080count then--if special warning is enabled, do not show regular warning.
 			if self:IsMythic() then
-				specWarnInfernoSlice:Show(self.vb.sliceCount.."-"..mythicSoakOrder[self.vb.sliceCount])
+				if self.Options.InfoFrameSpeed == "ThreeGroup" then
+					specWarnInfernoSlice:Show(self.vb.sliceCount.."-"..mythicSoakOrder3Group[self.vb.sliceCount])
+				else
+					specWarnInfernoSlice:Show(self.vb.sliceCount.."-"..mythicSoakOrder2Group[self.vb.sliceCount])
+				end
 			else
-				specWarnInfernoSlice:Show(self.vb.sliceCount)
+				specWarnInfernoSlice:Show(self.vb.sliceCount.."-"..otherSoakOrder[self.vb.sliceCount])
 			end
 		else
 			warnInfernoSlice:Show(self.vb.sliceCount)

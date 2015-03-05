@@ -5,6 +5,12 @@ local L
 ---------------
 L= DBM:GetModLocalization(1161)
 
+L:SetOptionLocalization({
+	MythicSoakBehavior	= "Set Mythic difficulty group soak preference for special warnings",
+	ThreeGroup			= "3 Group 1 stack each strat",
+	TwoGroup			= "2 Group 2 stacks each strat" 
+})
+
 ---------------------------
 -- Oregorger, The Devourer --
 ---------------------------
