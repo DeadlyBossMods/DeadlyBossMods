@@ -43,7 +43,6 @@ local timerCripplingSupplex				= mod:NewCastTimer(9.5, 156938, nil, "Tank|Healer
 local timerJumpSlamCD					= mod:NewNextTimer(34, "ej9854")
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerSmartStamperCD				= mod:NewNextTimer(12, 162124)--Activation
---local timerStamperDodge					= mod:NewTimer(10, "timerStamperDodge", 160582)--Time until stamper falls (spell name fits well, time you have to stamper dodge)
 
 --local berserkTimer						= mod:NewBerserkTimer(360)
 
@@ -55,13 +54,13 @@ local voiceEnvironmentalThreats			= mod:NewVoice("ej10089")
 mod.vb.phase = 1
 mod.vb.stamperDodgeCount = 0
 mod.vb.bossUp = "NoBody"
-mod.vb.lastJumpTarget = "None"
+--mod.vb.lastJumpTarget = "None"
 mod.vb.firstJump = false
 local cachedGUID = nil
 
 function mod:JumpTarget(targetname, uId)
 	if not targetname then return end
-	self.vb.lastJumpTarget = targetname
+--	self.vb.lastJumpTarget = targetname
 	if targetname == UnitName("player") then
 		specWarnJumpSlam:Show()
 		yellJumpSlam:Yell()
@@ -70,13 +69,14 @@ function mod:JumpTarget(targetname, uId)
 	else
 		warnJumpSlam:Show(targetname)--No reason to show this if you got a special warning. so reduce spam and display this only to let you know jump is far away and you're safe
 	end
+	self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, true, nil, true, nil, targetname)
 end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.stamperDodgeCount = 0
 	self.vb.bossUp = "NoBody"
-	self.vb.lastJumpTarget = "None"
+--	self.vb.lastJumpTarget = "None"
 	self.vb.firstJump = false
 	timerSkullcrackerCD:Start(20-delay)
 	timerJumpSlamCD:Start(20.5-delay)
@@ -117,15 +117,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			warnShatteredVertebrae:Show(args.destName, amount)
 		end
---	elseif spellId == 162124 and self:AntiSpam(30, args.sourceGUID) then
---		DBM:Debug(args.sourceGUID, 3)
---		self.vb.stamperDodgeCount = self.vb.stamperDodgeCount + 1
---		timerStamperDodge:Start(nil, self.vb.stamperDodgeCount)--Multiple timers at once is intended. But capped at 3
-		--Run antispam code. If raid moves too fast MANY stampers spawn at once. This code will auto cancel timers as new timers are added once we reach 3
-		--So only max of 3 bars at once. Cancel current -3 all new timer start
---		if self.vb.stamperDodgeCount >= 3 then--Bugged (has to be DBM-core or DBT).
---			timerStamperDodge:Cancel(self.vb.stamperDodgeCount-3)--This is canceling ALL timers, not just the one with this arg.
---		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -135,7 +126,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.phase = self.vb.phase + 1
 		DBM:Debug("Tactical Retreat "..UnitName(uId)..". Phase:"..self.vb.phase)
 		self.vb.stamperDodgeCount = 0
---		timerStamperDodge:Cancel()--Cancel all of them
 		self.vb.bossUp = UnitName(uId)
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
 		if cid == 76974 then--Fran
@@ -166,28 +156,30 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countCripplingSupplex:Start()
 	elseif spellId == 157926 then--Jump Activation
 		self.vb.firstJump = false--So reset firstjump
-		self.vb.lastJumpTarget = "None"
+--		self.vb.lastJumpTarget = "None"
 		DBM:Debug("157926: Jump Activation")
 		cachedGUID = UnitGUID(uId)
 		timerJumpSlamCD:Start()
 	elseif spellId == 157922 then--First jump must use 157922
 		local temptarget = UnitName(uId.."target") or "nil"
-		DBM:Debug("157922: boss target "..temptarget)
 		if not self.vb.firstJump then
 			DBM:Debug("157922: firstJump true")
 			self.vb.firstJump = true
-			self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, nil, nil, false)--Don't include tank in first scan should be enough of a filter for first, it'll grab whatever first non tank target he gets and set that as first jump target and it will be valid
+			self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, true, nil, false)--Don't include tank in first scan should be enough of a filter for first, it'll grab whatever first non tank target he gets and set that as first jump target and it will be valid
 		else--Not first jump
 			DBM:Debug("157922: firstJump false")
-			if self.vb.lastJumpTarget ~= "None" then--First jump succeeded
-				self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, nil, nil, true, nil, self.vb.lastJumpTarget)--1.3 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
-			else--Boss is recasting first jump because his first cast was interrupted by a stamper, so don't run filter and warn as soon as it finds a target, like first jump
-				DBM:Debug("157922: firstJump failed, initiating another first jump scan")
-				self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, nil, nil, false)
-			end
+--			if self.vb.lastJumpTarget ~= "None" then--First jump succeeded
+--				self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, nil, nil, true, nil, self.vb.lastJumpTarget)--1.3 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
+--			else--Boss is recasting first jump because his first cast was interrupted by a stamper, so don't run filter and warn as soon as it finds a target, like first jump
+--				DBM:Debug("157922: firstJump failed, initiating another first jump scan")
+--				self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, nil, nil, false)
+--			end
 		end
 	elseif spellId == 157923 then--Fallback
-		DBM:Debug("157923: boss target "..UnitName(uId.."target"))
+		DBM:Debug("157923: mid air")
+	elseif spellId == 157925 then--Jump Slam (this id seems to fire when ended)
+		DBM:Debug("157925: jumps ended")
+		self:BossTargetScannerAbort(76973, "JumpTarget")
 	end
 end
 
