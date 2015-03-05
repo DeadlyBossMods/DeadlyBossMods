@@ -6410,6 +6410,12 @@ do
 		return name, uid, bossuid
 	end
 
+	function bossModPrototype:BossTargetScannerAbort(cidOrGuid, returnFunc)
+		targetScanCount[cidOrGuid] = nil--Reset count for later use.
+		self:UnscheduleMethod("BossTargetScanner", cidOrGuid, returnFunc)
+		DBM:Debug("Boss target scan for "..cidOrGuid.." should be aborting.", 3)
+	end
+
 	function bossModPrototype:BossTargetScanner(cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, includeTank, isFinalScan, targetFilter)
 		--Increase scan count
 		local cidOrGuid = cidOrGuid or self.creatureId
@@ -6420,7 +6426,7 @@ do
 		local scanInterval = scanInterval or 0.05
 		local scanTimes = scanTimes or 16
 		local targetname, targetuid, bossuid = self:GetBossTarget(cidOrGuid, scanOnlyBoss)
-		DBM:Debug("Boss target scan "..targetScanCount[cidOrGuid].." found target "..(targetname or "nil").." using "..(bossuid or "nil"), 3)--Doesn't hurt to keep this, as level 3
+		DBM:Debug("Boss target scan "..targetScanCount[cidOrGuid].." of "..scanTimes..", found target "..(targetname or "nil").." using "..(bossuid or "nil"), 3)--Doesn't hurt to keep this, as level 3
 		--Do scan
 		if targetname and (not targetFilter and targetname ~= DBM_CORE_UNKNOWN) or (targetFilter and targetFilter ~= targetname) then
 			if not IsInGroup() then scanTimes = 1 end--Solo, no reason to keep scanning, give faster warning. But only if first scan is actually a valid target, which is why i have this check HERE
