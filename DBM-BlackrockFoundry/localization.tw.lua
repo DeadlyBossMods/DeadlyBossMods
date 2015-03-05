@@ -63,7 +63,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnSplitSoon	= "團隊分開10秒前顯示特別警告"
+	specWarnSplitSoon	= "團隊分開10秒前顯示特別警告",
+	InfoFrameSpeed		= "設定何時訊息框架顯示下一次列車的資訊",
+	Immediately			= "車門一開後立即顯示此班列車",
+	Delayed				= "在此班列車出站之後" 
 })
 
 L:SetMiscLocalization({
