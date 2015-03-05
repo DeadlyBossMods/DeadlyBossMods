@@ -73,7 +73,7 @@ local specWarnCorruptedBlood			= mod:NewSpecialWarningMove(158683)
 local specWarnRapidFire					= mod:NewSpecialWarningRun(156631, nil, nil, nil, 4, nil, 2)
 local yellRapidFire						= mod:NewYell(156631)
 local specWarnRapidFireNear				= mod:NewSpecialWarningClose(156631, false)
-local specWarnPenetratingShot			= mod:NewSpecialWarningYou(164271)
+local specWarnPenetratingShot			= mod:NewSpecialWarningYou(164271, nil, nil, nil, nil, nil, 2)
 local yellPenetratingShot				= mod:NewYell(164271)
 local specWarnDeployTurret				= mod:NewSpecialWarningSwitch("OptionVersion2", 158599, "Dps", nil, nil, 2, nil, 2)--Switch warning since most need to switch and kill, but on for EVERYONE because tanks/healers need to avoid it while it's up
 ----Enforcer Sorka
@@ -119,6 +119,7 @@ local voiceEarthenbarrier				= mod:NewVoice(158708)  --int
 local voiceDeployTurret					= mod:NewVoice(158599, "Dps") --158599.ogg attack turret
 local voiceConvulsiveShadows			= mod:NewVoice(156214) --runaway, target
 local voiceDarkHunt						= mod:NewVoice(158315) --defensive, target
+local voicePenetratingShot				= mod:NewVoice(164271) --stack
 
 mod:AddSetIconOption("SetIconOnRapidFire", 156626, true)
 mod:AddSetIconOption("SetIconOnBloodRitual", 158078, true)
@@ -311,6 +312,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnPenetratingShot:Show()
 				yellPenetratingShot:Yell()
+				voicePenetratingShot:Play("gathershare")
 			end
 		end
 	elseif spellId == 156214 and (noFilter or not isPlayerOnBoat()) then
@@ -431,6 +433,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 		specWarnRapidFire:Show()
 		yellRapidFire:Yell()
 		voiceRapidFire:Play("runout")
+		voiceRapidFire:Schedule(2, "keepmove")
 		self:SendSync("RapidFireTarget", UnitGUID("player"))
 	end
 end

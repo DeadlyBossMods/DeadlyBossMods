@@ -23,8 +23,8 @@ local warnWarpedArmor				= mod:NewStackAnnounce(156766, 2, nil, "Tank")
 
 local specWarnGraspingEarth			= mod:NewSpecialWarningMoveTo(157060, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(157060), nil, nil, nil, 2)
 local specWarnThunderingBlows		= mod:NewSpecialWarningSpell(157054, nil, nil, nil, 3)
-local specWarnRipplingSmash			= mod:NewSpecialWarningDodge(157592, nil, nil, nil, 2)
-local specWarnStoneBreath			= mod:NewSpecialWarningCount(156852, nil, nil, nil, 2)
+local specWarnRipplingSmash			= mod:NewSpecialWarningDodge(157592, nil, nil, nil, 2, nil, 2)
+local specWarnStoneBreath			= mod:NewSpecialWarningCount(156852, nil, nil, nil, 2, nil, 2)
 local specWarnSlam					= mod:NewSpecialWarningSpell(156704, "Tank")
 local specWarnWarpedArmor			= mod:NewSpecialWarningStack(156766, nil, 2)
 local specWarnWarpedArmorOther		= mod:NewSpecialWarningTaunt(156766)
@@ -50,6 +50,8 @@ local countdownTremblingEarth		= mod:NewCountdownFades("Alt25", 173917)
 local voiceGraspingEarth 			= mod:NewVoice(157060)--157060, safenow
 local voiceWarpedArmor				= mod:NewVoice(156766)
 local voiceCallofMountain			= mod:NewVoice(158217)--Findshelter
+local voiceRipplingSmash			= mod:NewVoice(157592)
+local voiceStoneBreath	 			= mod:NewVoice(156852)
 
 mod.vb.mountainCast = 0
 mod.vb.stoneBreath = 0
@@ -98,6 +100,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 157592 then
 		specWarnRipplingSmash:Show()
 		timerRipplingSmashCD:Start()
+		voiceRipplingSmash:Play("shockwave")
 	elseif spellId == 156704 then
 		specWarnSlam:Show()
 		timerSlamCD:Start()
@@ -154,6 +157,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.stoneBreath = self.vb.stoneBreath + 1
 		specWarnStoneBreath:Show(self.vb.stoneBreath)
 		timerStoneBreathCD:Start(nil, self.vb.stoneBreath+1)
+		voiceStoneBreath:Play("breathsoon")
 	elseif spellId == 157059 and args:IsPlayer() then
 		voiceGraspingEarth:Play("safenow")
 	end

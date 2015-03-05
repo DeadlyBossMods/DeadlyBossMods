@@ -28,7 +28,7 @@ local warnJumpSlam						= mod:NewTargetAnnounce("ej9854", 3)--Find pretty icon
 local specWarnJumpSlam					= mod:NewSpecialWarningYou("ej9854")
 local specWarnJumpSlamNear				= mod:NewSpecialWarningClose("ej9854")
 local yellJumpSlam						= mod:NewYell("ej9854")
-local specWarnDisruptingRoar			= mod:NewSpecialWarningCast("OptionVersion2", 160838, "SpellCaster")
+local specWarnDisruptingRoar			= mod:NewSpecialWarningCast("OptionVersion2", 160838, "SpellCaster", nil, nil, nil, nil, 2)
 --Move specWarnCripplingSupplex to a health check, warn when near 85, 55, or 25%
 local specWarnCripplingSupplex			= mod:NewSpecialWarningPreWarn("OptionVersion2", 156938, "Tank|Healer", 3, nil, nil, 3)--pop a cooldown.
 local specWarnSearingPlates				= mod:NewSpecialWarningSpell(161570, nil, nil, nil, 2)
@@ -50,6 +50,7 @@ local countSmartStampers				= mod:NewCountdown(12, 160582)
 local countCripplingSupplex				= mod:NewCountdown("OptionVersion2", "Alt9.5", 156938, "Tank|Healer")
 
 local voiceEnvironmentalThreats			= mod:NewVoice("ej10089")
+local voiceDisruptingRoar				= mod:NewVoice(160838, "SpellCaster")
 
 mod.vb.phase = 1
 mod.vb.stamperDodgeCount = 0
@@ -98,6 +99,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnDisruptingRoar:Show()
 		timerDisruptingRoarCD:Start()
 		DBM:GetBossUnitId(args.sourceName)
+		voiceDisruptingRoar:Play("stopcast")
 		local _, _, _, _, startTime, endTime = UnitCastingInfo(DBM:GetBossUnitId(args.sourceName))
 		local time = ((endTime or 0) - (startTime or 0)) / 1000
 		if time then
