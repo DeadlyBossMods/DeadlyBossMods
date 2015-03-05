@@ -17,20 +17,20 @@ L= DBM:GetModLocalization(1202)
 L= DBM:GetModLocalization(1154)
 
 L:SetWarningLocalization({
-	warnRegulators		= "Heat Regulator remaining: %d",--translate
-	warnBlastFrequency	= "Blast frequency increased: Approx Every %d sec"--translate
+	warnRegulators		= "Hitzeregler verbleibend: %d",
+	warnBlastFrequency	= "Flammenzunge Häufigkeit erhöht: ca. alle %d Sekunden"
 })
 
 L:SetOptionLocalization({
-	warnRegulators		= "Announce how many Heat Regulator remain",--translate
-	warnBlastFrequency	= "Announce when $spell:155209 frequency increased",--translate
-	VFYellType			= "Set yell type for Volatile Fire (Mythic difficulty only)",--translate
-	Countdown			= "Countdown until expires",--translate
-	Apply				= "Only applied"--translate
+	warnRegulators		= "Verkünde die Anzahl der verbleibenden Hitzeregler",
+	warnBlastFrequency	= "Verkünde, wenn sich die $spell:155209 Häufigkeit erhöht",
+	VFYellType			= "Typ des Schreis für Flüchtiges Feuer (nur mythischer Schwierigkeitsgrad)",
+	Countdown			= "Countdown bis zum Ablauf",
+	Apply				= "nur Erhalt"
 })
 
 L:SetMiscLocalization({
-	heatRegulator		= "Heat Regulator"--translate
+	heatRegulator		= "Hitzeregler"
 })
 
 ------------------
@@ -59,21 +59,24 @@ L= DBM:GetModLocalization(1122)
 L= DBM:GetModLocalization(1147)
 
 L:SetWarningLocalization({
-	specWarnSplitSoon	= "Raid split in 10"
+	specWarnSplitSoon	= "Schlachtzugteilung in 10"
 })
 
 L:SetOptionLocalization({
-	specWarnSplitSoon	= "Show special warning 10 seconds before raid split"
+	specWarnSplitSoon	= "Spezialwarnung 10 Sekunden bevor sich der Schlachtzug teilt",
+	InfoFrameSpeed		= "Infofenster zeigt nächste Zuginformation",
+	Immediately			= "sobald sich die Türen für den aktuellen Zug öffnen",
+	Delayed				= "nachdem der aktuelle Zug herausgekommen ist"
 })
 
 L:SetMiscLocalization({
 	Train			= GetSpellInfo(174806),
-	lane			= "Lane",--translate
-	oneTrain		= "1 Random Lane: Train",--translate
-	oneRandom		= "Appear on 1 random lane",--translate
-	threeTrains		= "3 Random Lanes",--translate
-	threeRandom		= "Appear on 3 random lanes",--translate
-	helperMessage	= "Dieser Kampf kann durch das Drittanbieter-Addon \"Thogar Assist\" oder einen der zahlreichen DBM-Sprachpacks (diese sagen die Züge akus­tisch an) erleichtert werden, verfügbar auf Curse."
+	lane			= "Gleis",
+	oneTrain		= "ein zufälliges Gleis: Zug",
+	oneRandom		= "erscheinen auf einem zufälligen Gleis",
+	threeTrains		= "drei zufällige Gleise: Zug",
+	threeRandom		= "erscheinen auf drei zufälligen Gleisen",
+	helperMessage	= "Dieser Kampf kann durch das Drittanbieter-Addon \"Thogar Assist\" oder einen der zahlreichen DBM-Sprachpacks (diese sagen die Züge akustisch an) erleichtert werden, verfügbar auf Curse."
 })
 
 --------------------------
@@ -82,15 +85,15 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1203)
 
 L:SetWarningLocalization({
-	specWarnReturnBase	= "Return to dock NOW!"--translate
+	specWarnReturnBase	= "Kehre JETZT zum Dock zurück!"
 })
 
 L:SetOptionLocalization({
-	specWarnReturnBase	= "Show special warning when boat player can safely return to dock"--translate
+	specWarnReturnBase	= "Spezialwarnung, wenn Spieler auf dem Schiff gefahrlos zum Dock zurückkehren können"
 })
-
+	
 L:SetMiscLocalization({
-	shipMessage		= "prepares to man the Dreadnaught's Main Cannon!"--translate
+	shipMessage		= "prepares to man the Dreadnaught's Main Cannon!"--translate (trigger)
 })
 
 --------------------------
