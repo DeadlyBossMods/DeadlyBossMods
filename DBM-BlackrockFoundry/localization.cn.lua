@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Feb 28, 2015@13161 
+-- Last update: Mar 5, 2015@13217
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -9,6 +9,12 @@ local L
 -- Gruul --
 ---------------
 L= DBM:GetModLocalization(1161)
+
+L:SetOptionLocalization({
+	MythicSoakBehavior	= "特殊警报：吸收伤害的分组方式 (史诗模式)",
+	ThreeGroup			= "3组1层换",
+	TwoGroup			= "2组2层换" 
+})
 
 ---------------------------
 -- Oregorger, The Devourer --
@@ -47,10 +53,6 @@ L= DBM:GetModLocalization(1155)
 --------------
 L= DBM:GetModLocalization(1123)
 
-L:SetMiscLocalization({
-	TorrentYell	= "%d秒后熔岩激流消失"
-})
-
 --------------------
 --Kromog, Legend of the Mountain --
 --------------------
@@ -71,7 +73,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnSplitSoon	= "特殊警报：当团队需要在10秒后分轨时"
+	specWarnSplitSoon	= "特殊警报：当团队需要在10秒后分轨时",
+	InfoFrameSpeed		= "Set when InfoFrame shows next train information",
+	Immediately			= "As soon as doors open for current train",
+	Delayed				= "After current train has come out" 
 })
 
 L:SetMiscLocalization({
