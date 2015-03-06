@@ -11,7 +11,7 @@ mod:SetHotfixNoticeRev(12813)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 155992 159142 156928 158054",
+	"SPELL_CAST_START 155992 159142 156928 158054 163008",
 	"SPELL_AURA_APPLIED 156096 157000 156667 156401 156653 159179",
 	"SPELL_AURA_REMOVED 156096 157000 156667 159179",
 	"SPELL_PERIODIC_DAMAGE 156401",
@@ -43,6 +43,7 @@ local specWarnSiegemaker			= mod:NewSpecialWarningCount("ej9571", false)--Kiter 
 local specWarnSiegemakerPlatingFades= mod:NewSpecialWarningFades("OptionVersion2", 156667, "Ranged")--Plating removed, NOW dps switch
 local specWarnFixate				= mod:NewSpecialWarningRun(156653, nil, nil, nil, 4)
 local yellFixate					= mod:NewYell(156653)
+local specWarnMassiveExplosion		= mod:NewSpecialWarningSpell(163008, nil, nil, nil, 2, nil, 2)--Mythic
 --Stage Three: Iron Crucible
 local specWarnSlagEruption			= mod:NewSpecialWarningCount(156928, nil, nil, nil, 2)
 local specWarnAttachSlagBombs		= mod:NewSpecialWarningYou(157000, nil, nil, nil, nil, nil, 2)--May change to sound 3, but I don't want it confused with the even more threatening marked for death, so for now will try 1
@@ -60,6 +61,7 @@ local timerImpalingThrow			= mod:NewCastTimer(5, 156111)--How long marked target
 --Stage Two: Storage Warehouse
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerSiegemakerCD				= mod:NewNextCountTimer(50, "ej9571", nil, nil, nil, 156667)
+local timerMassiveExplosion			= mod:NewCastTimer(5, 163008)
 --Stage Three: Iron Crucible
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerSlagEruptionCD			= mod:NewCDCountTimer(32.5, 156928)
@@ -77,6 +79,7 @@ local voiceShatteringSmash			= mod:NewVoice(155992, "Melee") --carefly
 local voiceMarkedforDeath			= mod:NewVoice(156096) --target: findshelter; else: 156096.ogg marked for death
 local voiceDemolition				= mod:NewVoice(156425) --AOE
 local voiceThrowSlagBombs			= mod:NewVoice(156030) --bombsoon
+local voiceMassiveExplosion			= mod:NewVoice(163008) --AOE
 local voiceAttachSlagBombs			= mod:NewVoice(157000) --target: runout;
 
 mod:AddSetIconOption("SetIconOnMarked", 156096, true)
@@ -145,8 +148,13 @@ function mod:SPELL_CAST_START(args)
 				voiceShatteringSmash:Play("carefly")
 			end
 		else
-			timerShatteringSmashCD:Start(nil, self.vb.smashCount+1)
-			countdownShatteringSmash:Start()--Not phase 1, concerns everyone not just tank
+			if self:IsMythic() then
+				timerShatteringSmashCD:Start(31.5, self.vb.smashCount+1)
+				countdownShatteringSmash:Start(31.5)
+			else
+				timerShatteringSmashCD:Start(nil, self.vb.smashCount+1)
+				countdownShatteringSmash:Start()--Not phase 1, concerns everyone not just tank
+			end
 			specWarnShatteringSmash:Show(self.vb.smashCount)--Warn all melee in phase 2
 			voiceShatteringSmash:Play("carefly")
 		end
@@ -171,6 +179,12 @@ function mod:SPELL_CAST_START(args)
 			end
 			self:Schedule(4, massiveOver, self)
 		end
+	--"<175.87 23:28:43> [CLEU] SPELL_CAST_START#Vehicle-0-3127-1205-1151-80660-0000732F74#自爆攻城戰車##nil#163008#巨大的爆炸#nil#nil", -- [13865]
+	--"<182.00 23:28:49> [CLEU] UNIT_DIED##nil#Vehicle-0-3127-1205-1151-80660-0000732F74#自爆攻城戰車#-1#false#nil#nil", -- [14611]
+	elseif spellId == 163008 then
+		specWarnMassiveExplosion:Show()
+		timerMassiveExplosion:Start()
+		voiceMassiveExplosion:Play("aesoon")
 	end
 end
 
@@ -320,7 +334,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 156425 then
 		specWarnDemolition:Show()
 		if self:IsMythic() then
-			timerDemolitionCD:Start(30)
+			timerDemolitionCD:Start(30.5)
 		else
 			timerDemolitionCD:Start()
 		end
@@ -335,8 +349,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerThrowSlagBombsCD:Start(11)--11-12.5
 		timerSiegemakerCD:Start(15, 1)
 		countdownShatteringSmash:Cancel()
-		countdownShatteringSmash:Start(21)
-		timerShatteringSmashCD:Start(21, 1)--21-23 variation. Boss power is set to 66/100 automatically by transitions
+		if self:IsMythic() then--Boss gain power faster on mythic phase 2
+			countdownShatteringSmash:Start(18)
+			timerShatteringSmashCD:Start(18, 1)--18 seen in 10 pulls worth of data.
+		else
+			countdownShatteringSmash:Start(21)
+			timerShatteringSmashCD:Start(21, 1)--21-23 variation. Boss power is set to 66/100 automatically by transitions
+		end
 		timerMarkedforDeathCD:Start(25)
 		countdownMarkedforDeath:Cancel()
 		countdownMarkedforDeath:Start(25)
