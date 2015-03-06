@@ -5064,6 +5064,9 @@ do
 				local thisTime = GetTime() - mod.combatInfo.pull
 				local hp = mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()
 				local wipeHP = mod.CustomHealthUpdate and mod:CustomHealthUpdate() or hp and ("%d%%"):format(hp) or DBM_CORE_UNKNOWN
+				if mod.vb.phase then
+					wipeHP = wipeHP.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
+				end
 				local totalPulls = mod.stats[statVarTable[savedDifficulty].."Pulls"]
 				local totalKills = mod.stats[statVarTable[savedDifficulty].."Kills"]
 				if thisTime < 30 then -- Normally, one attempt will last at least 30 sec.

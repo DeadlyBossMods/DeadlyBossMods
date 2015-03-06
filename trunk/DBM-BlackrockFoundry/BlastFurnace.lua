@@ -278,8 +278,9 @@ function mod:OnCombatStart(delay)
 			timerBellowsOperator:Start(55)--55-60 variation for first ones from pull
 		end
 	end
-	timerBlastCD:Start(30-delay)
-	countdownBlast:Start(30-delay)
+	local blastTimer = self:IsMythic() and 24 or 29
+	timerBlastCD:Start(blastTimer)
+	countdownBlast:Start(blastTimer)
 	if not self:IsLFR() then
 		berserkTimer:Start(-delay)
 	end
@@ -589,7 +590,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 end
 
 do
-	local totalTime = mod:IsMythic() and 25 or 30
+	local totalTime = mod:IsMythic() and 24 or 29
 	local UnitPower = UnitPower
 	function mod:UNIT_POWER_FREQUENT(uId, type)
 		if type == "ALTERNATE" then
