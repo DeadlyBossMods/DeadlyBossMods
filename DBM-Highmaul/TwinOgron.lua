@@ -224,7 +224,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 158057 then
 		self.vb.EnfeebleCount = self.vb.EnfeebleCount + 1
 		specWarnEnfeeblingRoar:Show(self.vb.EnfeebleCount)
-		if not self:IsMythic() and self.vb.QuakeCount == 0 then--On all other difficulties, quake is 1 second longer (only first)
+		if not self:IsMythic() and self.vb.QuakeCount == 1 then--On all other difficulties, quake is 1 second longer (only first)
 			timerQuakeCD:Start(PhemosEnergyRate+1, self.vb.QuakeCount+1)--Next Special
 			countdownPhemos:Start(PhemosEnergyRate+1)	
 			voicePhemos:Schedule(PhemosEnergyRate + 1 - 6.5, "158200")
@@ -251,7 +251,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 158093 then
 		specWarnInterruptingShout:Show()
 		voiceInterruptingShout:Play("stopcast")
-		if not self:IsMythic() then
+		if not self:IsMythic() and self.vb.PulverizeCount == 0 then
 			timerPulverizeCD:Start(polEnergyRate+1)--Next Special
 			countdownPol:Start(polEnergyRate+1)
 			voicePol:Schedule(polEnergyRate + 1 - 6.5, "157952") --pulverize
