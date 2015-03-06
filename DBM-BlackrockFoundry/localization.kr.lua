@@ -6,6 +6,12 @@ local L
 ---------------
 L= DBM:GetModLocalization(1161)
 
+L:SetOptionLocalization({
+	MythicSoakBehavior	= "신화 난이도에서 지옥불 가르기 조 알림 방식 선택",
+	ThreeGroup			= "3개 파티가 1 중첩씩",
+	TwoGroup			= "2개 파티가 2 중첩씩" 
+})
+
 ---------------------------
 -- Oregorger, The Devourer --
 ---------------------------
