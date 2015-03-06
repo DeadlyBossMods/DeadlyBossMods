@@ -1,8 +1,8 @@
 ﻿-- Diablohu(diablohudream@gmail.com) 
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
--- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Feb 22, 2015@13054
+-- Mini Dragon(projecteurs@gmail.com)
+-- Last update: Mar 5, 2015
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -268,6 +268,7 @@ L.WorldBossAlert			= "当世界Boss进入战斗后发送警告，这个信息可
 L.Area_SoundAlerts			= "语音警告选项"
 L.LFDEnhance				= "当发起角色检查时，播放准备音效"
 L.WorldBossNearAlert		= "当世界附近的Boss进入战斗时发出特殊音效 (全局设置，覆盖单独BOSS设置)"
+L.RLReadyCheckSound			= "在主声道播放检查准备音效"
 L.AFKHealthWarning			= "当你在挂机/暂离而受到伤害时发出警报"
 L.Area_AutoLogging			= "自动日志记录选项"
 L.AutologBosses				= "自动采用官方格式记录日志。 (使用 /dbm pull 可提前记录并使得记录更准确，如提前偷药水或是召唤大军。)"

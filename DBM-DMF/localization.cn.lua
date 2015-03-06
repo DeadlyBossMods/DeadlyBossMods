@@ -1,5 +1,7 @@
-﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 10/20/2012
+﻿-- Diablohu(diablohudream@gmail.com)
+-- yleaf(yaroot@gmail.com)
+-- Mini Dragon(projecteurs@gmail.com)
+-- Last update: Mar 5, 2015
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -67,4 +69,18 @@ L = DBM:GetModLocalization("Rabbit")
 
 L:SetGeneralLocalization({
 	name = "暗月兔子"
+})
+
+-------------------------
+--  Darkmoon Moonfang  --
+-------------------------
+L = DBM:GetModLocalization("Moonfang")
+
+L:SetGeneralLocalization({
+	name = "月牙"
+})
+
+L:SetWarningLocalization({
+	specWarnCallPack		= "召唤狼群 － 远离月牙40码以上!",
+	specWarnMoonfangCurse	= "月牙的诅咒 － 远离月牙10码以上!"
 })
