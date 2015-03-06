@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Jan 31, 2015@12636
+-- Last update: Mar 5, 2015@13217
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -72,6 +72,10 @@ L:SetMiscLocalization({
 -- Imperator Mar'gok --
 --------------------------
 L= DBM:GetModLocalization(1197)
+
+L:SetTimerLocalization({
+	timerNightTwistedCD	= "下一个拜夜信徒"
+})
 
 L:SetOptionLocalization({
 	GazeYellType		= "设定疯狂之眼的大喊方式",
