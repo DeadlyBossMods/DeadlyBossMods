@@ -322,7 +322,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self:IsMythic() then
 			timerDemolitionCD:Start(30)
 		else
-		timerDemolitionCD:Start()
+			timerDemolitionCD:Start()
 		end
 		voiceDemolition:Play("aesoon")
 	elseif spellId == 161347 then--Phase 2 Trigger
