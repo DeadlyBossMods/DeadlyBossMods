@@ -1,8 +1,8 @@
 ﻿-- DBM_Core
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
--- Mini_Dragon(projecteurs@gmail.com)
--- Last update: Feb 22, 2015@13054
+-- Mini Dragon(projecteurs@gmail.com)
+-- Last update: Mar 5, 2015
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -22,7 +22,7 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "DBM无法在战斗中更换皮肤。请先在非�
 DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，有些计时器可能会错误。请在离开战斗后马上重载界面。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本过旧。请升级DBM。"
 
---DBM_CORE_BLIZZ_BUGS					= "6.0中的暴雪的插件bug:\n1. 如果你开启音效，你的插件可能会在战斗时丢失声音，因为插件的优先权被下降了而声音通道有限。DBM已经强制将声音通道数设置为64。在这种情况下还丢失报警声音，你可以考虑关闭游戏音效。"
+DBM_CORE_BLIZZ_BUGS					= "6.1 禁用了用.wav 文件播放，如果你的的插件有缺失或损毁的自定义音效，那么配置文件会被强制恢复到默认值。这个恢复到默认值只会发生一次，然后你可以再次重新设定自定义音效。记住，一旦你在某个配置文件下设定了自定义音效，你可以从模组状态窗口复制音效配置到另一个配置文件。"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "由于玩家数量不足，DBM 无法开启倒计时。"
