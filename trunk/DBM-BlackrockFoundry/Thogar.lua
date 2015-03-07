@@ -99,8 +99,8 @@ local mythicTrains = {
 	[18] = { [1] = ManOArms, [4] = Cannon },--+15 after 17.(04:02)
 	[19] = { [1] = Deforester, [2] = Train, [3] = Train },--+20 after 18.(04:22)
 	[20] = { [2] = Train, [3] = Train },--+20(or +21) after 19.(04:42)
-	[21] = { [2] = ManOArms, [3] = Reinforcements },--+15 after 20.(04:57) Split
-	[22] = { [2] = Reinforcements, [4] = Train },--+20 after 21.(05:17)
+	[21] = { [2] = Reinforcements, [3] = ManOArms },--+15 after 20.(04:57) Split
+	[22] = { [1] = Train, [4] = Train },--+20 after 21.(05:17)
 	[23] = { [2] = Train, [3] = Train },--+10 after 22.(05:27)
 	[24] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23.(05:42)
 	[25] = { ["specialw"] = L.threeTrains, ["speciali"] = L.threeRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 24.(05:57)
@@ -186,20 +186,20 @@ local mythicVoice = {
 	[12] = "E4",
 	[13] = "E1",
 	[14] = "A3",
-	[15] = "A23",--new
+	[15] = "A23",
 	[16] = "F",
 	[17] = "F",
-	[18] = "D1C4",--new
-	[19] = "E1A23",--new
+	[18] = "D1C4",
+	[19] = "E1A23",
 	[20] = "A23",
-	[21] = "D2B3",
-	[22] = "B2A4",--new
+	[21] = "B2D3",
+	[22] = "A14",
 	[23] = "A23",
 	[24] = "F",
 	[25] = "F",
 	[26] = "B4",
 	[27] = "C1",
-	[28] = "E23",--new
+	[28] = "E23",
 	[29] = "A14",
 	[30] = "B1E4",
 	[31] = "A2",
