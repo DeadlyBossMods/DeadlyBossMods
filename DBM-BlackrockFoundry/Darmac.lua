@@ -63,7 +63,7 @@ local yellInfernoBreath				= mod:NewYell(154989)
 
 --Boss basic attacks
 mod:AddTimerLine(CORE_ABILITIES)--Core Abilities
-local timerPinDownCD				= mod:NewCDTimer("OptionVersion2", 20.5, 155365, nil, "Ranged")--Every 20 seconds unless delayed by other things. CD timer used for this reason
+local timerPinDownCD				= mod:NewCDTimer("OptionVersion2", 20, 155365, nil, "Ranged")--Every 20 seconds unless delayed by other things. CD timer used for this reason
 local timerCallthePackCD			= mod:NewCDTimer("OptionVersion2", 31.5, 154975, nil, "Tank")--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart. In rare cases, boss still interrupts his own cast/delays cast even when not caused by gaining beast buff
 --Boss gained abilities (beast deaths grant boss new abilities)
 mod:AddTimerLine(SPELL_BUCKET_ABILITIES_UNLOCKED)--Abilities Unlocked
@@ -76,7 +76,7 @@ mod:AddTimerLine(BATTLE_PET_DAMAGE_NAME_8)--Beast
 local timerSavageHowlCD				= mod:NewCDTimer("OptionVersion2", 25, 155198, nil, "Healer|Tank|RemoveEnrage")
 local timerConflagCD				= mod:NewCDTimer("OptionVersion2", 20, 155399, nil, "Healer")
 local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
-local timerInfernoBreathCD			= mod:NewNextTimer(20.5, 154989)
+local timerInfernoBreathCD			= mod:NewNextTimer(20, 154989)
 
 local berserkTimer					= mod:NewBerserkTimer(720)
 
@@ -134,11 +134,7 @@ local function updateBeastTimers(self, all, spellId, adjust)
 		timerSuperheatedShrapnelCD:Start(9-dismountAdjust)
 	end
 	if self.vb.ElekkAbilities and (self:IsMythic() and spellId == 163247 or all) then--Ironcrusher
-		if self.vb.RylakAbilities then--Only verified with all 3 on normal. Unknown of JUST elekk and rylak cuase +1 second without wolf
-			timerTantrumCD:Start(18-dismountAdjust, self.vb.tantrumCount+1)
-		else--Verified true for elekk alone, and elekk with wolf
-			timerTantrumCD:Start(17-dismountAdjust, self.vb.tantrumCount+1)
-		end
+		timerTantrumCD:Start(17-dismountAdjust, self.vb.tantrumCount+1)
 	end
 	if self.vb.FaultlineAbilites and (self:IsMythic() and spellId == 155462 or all) then--Faultline
 		timerEpicenterCD:Start(24, self.vb.epicenterCount+1)

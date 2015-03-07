@@ -20,8 +20,8 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---Phase 2
 --TODO, get damage ID for fire on ground created by Mortar
+local warnPhase						= mod:NewPhaseChangeAnnounce()
 --Stage One: The Blackrock Forge
 local warnMarkedforDeath			= mod:NewTargetAnnounce(156096, 4)--If not in combat log, find a RAID_BOSS_WHISPER event.
 --Stage Two: Storage Warehouse
@@ -31,11 +31,11 @@ local warnFixate					= mod:NewTargetAnnounce(156653, 4)
 local warnAttachSlagBombs			= mod:NewTargetAnnounce(157000, 4)
 
 --Stage One: The Blackrock Forge
-local specWarnDemolition			= mod:NewSpecialWarningSpell(156425, nil, nil, nil, 2, nil, 2)
+local specWarnDemolition			= mod:NewSpecialWarningCount(156425, nil, nil, nil, 2, nil, 2)
 local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 3, nil, 2)
 local specWarnMarkedforDeathOther	= mod:NewSpecialWarningTarget(156096, false)
 local yellMarkedforDeath			= mod:NewYell(156096)
-local specWarnThrowSlagBombs		= mod:NewSpecialWarningMove(156030, nil, nil, nil, nil, nil, 2)
+local specWarnThrowSlagBombs		= mod:NewSpecialWarningSpell(156030, nil, nil, nil, 2, nil, 2)--This spell is not gtfo.
 local specWarnShatteringSmash		= mod:NewSpecialWarningCount(155992, "Melee", nil, nil, nil, nil, 2)
 local specWarnMoltenSlag			= mod:NewSpecialWarningMove(156401)
 --Stage Two: Storage Warehouse
@@ -50,13 +50,14 @@ local specWarnAttachSlagBombs		= mod:NewSpecialWarningYou(157000, nil, nil, nil,
 local specWarnAttachSlagBombsOther	= mod:NewSpecialWarningTaunt(157000, nil, nil, nil, nil, nil, 2)
 local yellAttachSlagBombs			= mod:NewYell("OptionVersion2", 157000)
 local specWarnMassiveShatteringSmash= mod:NewSpecialWarningCount("OptionVersion2", 158054, nil, nil, nil, 3, nil, 2)
+local specWarnFallingDebris			= mod:NewSpecialWarningSpell(162585, nil, nil, nil, 2)--Mythic (like Meteor)
 
 --Stage One: The Blackrock Forge
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerDemolitionCD				= mod:NewNextTimer(45, 156425)
+local timerDemolitionCD				= mod:NewNextCountTimer(45, 156425)
 local timerMarkedforDeathCD			= mod:NewNextTimer(15.5, 156096)
-local timerThrowSlagBombsCD			= mod:NewCDTimer(25, 156030)--It's a next timer, but sometimes delayed by Shattering Smash
-local timerShatteringSmashCD		= mod:NewCDCountTimer(45.5, 155992)--power based, can variate a little do to blizzard buggy power code.
+local timerThrowSlagBombsCD			= mod:NewCDTimer(24.5, 156030)--It's a next timer, but sometimes delayed by Shattering Smash
+local timerShatteringSmashCD		= mod:NewCDCountTimer(45, 155992)--power based, can variate a little do to blizzard buggy power code.
 local timerImpalingThrow			= mod:NewCastTimer(5, 156111)--How long marked target has to aim throw at Debris Pile or Siegemaker
 --Stage Two: Storage Warehouse
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -65,8 +66,10 @@ local timerMassiveExplosion			= mod:NewCastTimer(5, 163008)
 --Stage Three: Iron Crucible
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerSlagEruptionCD			= mod:NewCDCountTimer(32.5, 156928)
-local timerAttachSlagBombsCD		= mod:NewCDTimer(26, 157000)--26-28. Do to increased cast time vs phase 1 and 2 slag bombs, timer is 1 second longer on CD
+local timerAttachSlagBombsCD		= mod:NewCDTimer(25.5, 157000)--26-28. Do to increased cast time vs phase 1 and 2 slag bombs, timer is 1 second longer on CD
 local timerSlagBomb					= mod:NewCastTimer(5, 157015)
+local timerFallingDebris			= mod:NewCastTimer(6, 162585)--Mythic
+local timerFallingDebrisCD			= mod:NewNextTimer(40, 162585)--Mythic
 
 local countdownShatteringSmash		= mod:NewCountdown(45.5, 155992)
 local countdownSlagBombs			= mod:NewCountdown("Alt25", 156030, "Melee")
@@ -87,6 +90,7 @@ mod:AddRangeFrameOption("6/10")
 mod:AddHudMapOption("HudMapOnMFD", 156096)
 
 mod.vb.phase = 1
+mod.vb.demolitionCount = 0
 mod.vb.SlagEruption = 0
 mod.vb.smashCount = 0
 mod.vb.siegemaker = 0
@@ -111,11 +115,12 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
+	self.vb.demolitionCount = 0
 	self.vb.SlagEruption = 0
 	self.vb.smashCount = 0
 	timerThrowSlagBombsCD:Start(6-delay)
 	countdownSlagBombs:Start(6-delay)
-	timerDemolitionCD:Start(15-delay)
+	timerDemolitionCD:Start(15-delay, 1)
 	timerShatteringSmashCD:Start(21-delay, 1)
 	if self:IsTank() then--Ability only concerns tank in phase 1
 		countdownShatteringSmash:Start(21-delay)
@@ -158,7 +163,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnShatteringSmash:Show(self.vb.smashCount)--Warn all melee in phase 2
 			voiceShatteringSmash:Play("carefly")
 		end
-	elseif spellId == 156928 then
+	elseif spellId == 156928 and self:AntiSpam(3, 5) then
 		self.vb.SlagEruption = self.vb.SlagEruption + 1
 		specWarnSlagEruption:Show(self.vb.SlagEruption)
 		timerSlagEruptionCD:Start(nil, self.vb.SlagEruption+1)
@@ -166,8 +171,8 @@ function mod:SPELL_CAST_START(args)
 		smashTank = UnitName("boss1target")
 		self.vb.smashCount = self.vb.smashCount + 1
 		specWarnMassiveShatteringSmash:Show(self.vb.smashCount)
-		timerShatteringSmashCD:Start(25, self.vb.smashCount+1)--Use this cd bar in phase 3 as well, because text for "Massive Shattering Smash" too long.
-		countdownShatteringSmash:Start(25)
+		timerShatteringSmashCD:Start(24.5, self.vb.smashCount+1)--Use this cd bar in phase 3 as well, because text for "Massive Shattering Smash" too long.
+		countdownShatteringSmash:Start(24.5)
 		voiceShatteringSmash:Play("carefly")
 		if self.Options.RangeFrame and smashTank then
 			--Open regular range frame if you are the smash tank, even if you are a bomb, because now you don't have a choice.
@@ -194,6 +199,15 @@ local function checkMarked()
 		voiceMarkedforDeath:Play("156096")
 	end
 end
+
+--[[function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 162579 then
+		specWarnFallingDebris:Show()
+		timerFallingDebris:Start()
+		timerFallingDebrisCD:Start()
+	end
+end]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -332,11 +346,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownSlagBombs:Start()
 		voiceThrowSlagBombs:Play("bombsoon")
 	elseif spellId == 156425 then
-		specWarnDemolition:Show()
+		self.vb.demolitionCount = self.vb.demolitionCount + 1
+		specWarnDemolition:Show(self.vb.demolitionCount)
 		if self:IsMythic() then
-			timerDemolitionCD:Start(30.5)
+			timerDemolitionCD:Start(30.5, self.vb.demolitionCount + 1)
 		else
-			timerDemolitionCD:Start()
+			timerDemolitionCD:Start(nil, self.vb.demolitionCount + 1)
 		end
 		voiceDemolition:Play("aesoon")
 	elseif spellId == 161347 then--Phase 2 Trigger
@@ -346,9 +361,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerDemolitionCD:Cancel()
 		countdownSlagBombs:Cancel()
 		countdownSlagBombs:Start(11)
+		timerThrowSlagBombsCD:Cancel()
 		timerThrowSlagBombsCD:Start(11)--11-12.5
 		timerSiegemakerCD:Start(15, 1)
 		countdownShatteringSmash:Cancel()
+		timerShatteringSmashCD:Cancel()
 		if self:IsMythic() then--Boss gain power faster on mythic phase 2
 			countdownShatteringSmash:Start(18)
 			timerShatteringSmashCD:Start(18, 1)--18 seen in 10 pulls worth of data.
@@ -356,9 +373,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			countdownShatteringSmash:Start(21)
 			timerShatteringSmashCD:Start(21, 1)--21-23 variation. Boss power is set to 66/100 automatically by transitions
 		end
+		timerMarkedforDeathCD:Cancel()
 		timerMarkedforDeathCD:Start(25)
 		countdownMarkedforDeath:Cancel()
 		countdownMarkedforDeath:Start(25)
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(2))
 		voicePhaseChange:Play("ptwo")
 		--Maybe not needed whole phase, only when balcony adds are up? A way to detect and improve?
 		if self.Options.RangeFrame and not self:IsMelee() then
@@ -370,15 +389,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerSiegemakerCD:Cancel()
 		timerThrowSlagBombsCD:Cancel()
 		countdownSlagBombs:Cancel()
+		if self:IsMythic() then
+			timerFallingDebrisCD:Start(10)
+		end
 		timerAttachSlagBombsCD:Start(11)
 		countdownSlagBombs:Start(11)
 		countdownShatteringSmash:Cancel()
 		countdownShatteringSmash:Start(26)
+		timerShatteringSmashCD:Cancel()
 		timerShatteringSmashCD:Start(26, 1)--26-28 variation. Boss power is set to 33/100 automatically by transition (after short delay)
-		timerMarkedforDeathCD:Start(27)
+		timerMarkedforDeathCD:Cancel()
+		timerMarkedforDeathCD:Start(17)
 		countdownMarkedforDeath:Cancel()
-		countdownMarkedforDeath:Start(27)
-		timerSlagEruptionCD:Start(31.5)
+		countdownMarkedforDeath:Start(17)
+		timerSlagEruptionCD:Start(31.5, 1)
+		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(3))
 		voicePhaseChange:Play("pthree")
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()

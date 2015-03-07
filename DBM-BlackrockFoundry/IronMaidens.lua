@@ -103,12 +103,12 @@ local timerPenetratingShotCD			= mod:NewCDTimer(28.8, 164271)--22-30 at least. m
 local timerDeployTurretCD				= mod:NewCDTimer(20.5, 158599)--20.5-23.5
 ----Enforcer Sorka
 mod:AddTimerLine(Sorka)
-local timerBloodRitualCD				= mod:NewNextTimer(20, 158078)
+local timerBloodRitualCD				= mod:NewCDTimer(20, 158078)
 local timerConvulsiveShadowsCD			= mod:NewNextTimer(56.5, 156214)--Timer only enabled on mythicOn non mythic, it's just an unimportant dot. On mythic, MUCH more important because user has to run out of raid and get dispelled.
 ----Marak the Blooded
 mod:AddTimerLine(Marak)
-local timerBladeDashCD					= mod:NewNextTimer("OptionVersion2", 20, 155794, nil, "Ranged")
-local timerHeartSeekerCD				= mod:NewCDTimer("OptionVersion2", 71, 158010, nil, "Ranged")--Seriously a 74 second cd?
+local timerBladeDashCD					= mod:NewCDTimer("OptionVersion2", 20, 155794, nil, "Ranged")
+local timerHeartSeekerCD				= mod:NewCDTimer("OptionVersion2", 70, 158010, nil, "Ranged")--Seriously a 74 second cd?
 
 local voiceRapidFire					= mod:NewVoice(156631) --runout
 local voiceBloodRitual					= mod:NewVoice(158078, "Melee") --158078.ogg, farawayfromline
@@ -181,8 +181,8 @@ local function recoverTimers()
 	if savedAbilityTime["BladeDash"] and (GetTime() - savedAbilityTime["BladeDash"]) < 20 then
 		timerBladeDashCD:Update(GetTime() - savedAbilityTime["BladeDash"], 20)
 	end
-	if savedAbilityTime["HeartSeeker"] and (GetTime() - savedAbilityTime["HeartSeeker"]) < 71 then
-		timerHeartSeekerCD:Update(GetTime() - savedAbilityTime["HeartSeeker"], 71)
+	if savedAbilityTime["HeartSeeker"] and (GetTime() - savedAbilityTime["HeartSeeker"]) < 70 then
+		timerHeartSeekerCD:Update(GetTime() - savedAbilityTime["HeartSeeker"], 70)
 	end
 	if savedAbilityTime["ConvulsiveShadows"] and (GetTime() - savedAbilityTime["ConvulsiveShadows"]) < 56.5 then
 		timerConvulsiveShadowsCD:Update(GetTime() - savedAbilityTime["ConvulsiveShadows"], 56.5)
@@ -212,10 +212,10 @@ function mod:OnCombatStart(delay)
 --		self.vb.below25 = false
 --	end
 	playerOnBoat = false
-	timerBladeDashCD:Start(10-delay)
+	timerBladeDashCD:Start(8-delay)
 	timerBloodRitualCD:Start(13-delay)
-	timerRapidFireCD:Start(16-delay)
-	timerShipCD:Start(60-delay)
+	timerRapidFireCD:Start(15.5-delay)
+	timerShipCD:Start(59.5-delay)
 	self:RegisterShortTermEvents(
 		"UNIT_HEALTH_FREQUENT boss1 boss2 boss3",
 		"UNIT_POWER_FREQUENT player"
@@ -476,7 +476,7 @@ function mod:OnSync(msg, guid)
 		if self.vb.ship < 3 then
 			timerShipCD:Start()
 		end
-		timerBombardmentAlphaCD:Start(15)
+		timerBombardmentAlphaCD:Start(14.5)
 		if guid == Marak then
 			self:Schedule(7, function()
 				timerBloodRitualCD:Cancel()

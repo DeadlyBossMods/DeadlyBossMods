@@ -50,7 +50,7 @@ local timerEnkindleCD				= mod:NewCDTimer(12, 155921, nil, "Tank")
 local timerTrainCD					= mod:NewNextCountTimer("d15", 176312)
 --Adds
 --local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140)
-local timerIronbellowCD				= mod:NewCDTimer(7, 163753)
+local timerIronbellowCD				= mod:NewCDTimer(8.5, 163753)
 
 local berserkTimer					= mod:NewBerserkTimer(492)
 
@@ -412,7 +412,7 @@ function mod:SPELL_CAST_START(args)
 		if self:AntiSpam(3, 1) then
 			specWarnIronbellow:Show()
 		end
-		timerIronbellowCD:Start(9, args.sourceGUID)
+		timerIronbellowCD:Start(nil, args.sourceGUID)
 	elseif spellId == 159481 then
 		self:BossTargetScanner(args.sourceGUID, "BombTarget", 0.05, 25)
 	end
