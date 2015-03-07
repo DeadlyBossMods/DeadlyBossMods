@@ -38,7 +38,7 @@ local timerRipplingSmashCD			= mod:NewCDTimer(21, 157592)--If it comes off CD ea
 local timerStoneBreathCD			= mod:NewCDCountTimer(22, 156852)
 local timerSlamCD					= mod:NewCDTimer(23, 156704, nil, "Tank")
 local timerWarpedArmorCD			= mod:NewCDTimer(14, 156766, nil, "Tank")
-local timerTremblingEarthCD			= mod:NewCDTimer(180, 173917)
+local timerTremblingEarthCD			= mod:NewCDTimer(178.5, 173917)
 local timerTremblingEarth			= mod:NewBuffActiveTimer(25, 173917)
 local timerCalloftheMountain		= mod:NewCastTimer(5, 158217)
 
