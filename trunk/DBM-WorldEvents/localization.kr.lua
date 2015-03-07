@@ -171,3 +171,13 @@ L:SetMiscLocalization({
 	--Iron Horde
 	Assassin			= "An Assassin is hunting your guards!"--Maybe combined "add" special warning most adds?
 })
+
+
+-----------------
+--  Annihilon  --
+-----------------
+L = DBM:GetModLocalization("Annihilon")
+
+L:SetGeneralLocalization({
+	name = "파멸혼"
+})
