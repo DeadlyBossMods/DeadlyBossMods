@@ -18,7 +18,7 @@ mod.isTrashMod = true--Flag as trash mod to at least disable mod during raid com
 
 --Annihilon
 local warnVoidBomb				= mod:NewTargetAnnounce(180939, 3)
-local warnWhirlingVoid			= mod:NewSpellAnnounce(180932, 2)
+local warnWhirlingVoid			= mod:NewTargetAnnounce(180932, 2)
 local warnTwistMind				= mod:NewTargetAnnounce(180950, 4)
 
 --Annihilon
@@ -43,6 +43,11 @@ mod:RemoveOption("SpeedKillTimer")
 mod:AddHudMapOption("HudMapOnMC", 180950)
 
 mod.vb.MCCount = 0
+
+function mod:VoidTarget(targetname, uId)
+	if not targetname then return end
+	warnWhirlingVoid:Show(targetname)
+end
 
 function mod:BombTarget(targetname, uId)
 	if not targetname then return end
@@ -69,6 +74,8 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 180939 then
 		self:BossTargetScanner(90802, "BombTarget", 0.05, 25)
+	elseif spellId == 180932 then
+		self:BossTargetScanner(90802, "VoidTarget", 0.05, 25)
 	end
 end
 
