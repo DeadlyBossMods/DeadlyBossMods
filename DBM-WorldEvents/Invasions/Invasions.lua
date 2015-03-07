@@ -28,12 +28,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 181098 then--Ammihilon Summon
-		DBM:GetModByName("Annihilon")
 		DBM:StartCombat(DBM:GetModByName("Annihilon"), 0, "SPELL_CAST_SUCCESS")
 	end
 end
-
-
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.rylakSpawn or msg:find(L.rylakSpawn) then
