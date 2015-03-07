@@ -9,6 +9,10 @@ mod:SetHotfixNoticeRev(13105)
 
 mod:RegisterCombat("combat")
 
+mod:RegisterEvents(
+	"CHAT_MSG_ADDON"--Has to be out of combat
+)
+
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 157060 157054 156704 157592 158217",
 	"SPELL_CAST_SUCCESS 158130 170469",
@@ -170,3 +174,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+RegisterAddonMessagePrefix("kromog")
+function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
+	if not DBM.Options.DebugMode then return end--In case this errors, let it only error for debuggers.
+	if prefix ~= "kromog" then return end
+	local pos1,name1,pos2,name2,pos3,name3 = strsplit("\t", message)
+	DBM:Debug("Sender: "..sender.."Pos1: "..pos1..", Name1: "..name1..", Pos2: "..pos2..", Name2: "..name2..", Pos3: "..pos3..", Name3: "..name3)
+end
