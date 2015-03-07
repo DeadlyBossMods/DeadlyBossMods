@@ -4,13 +4,11 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 180939 180932",
 	"SPELL_AURA_APPLIED 180950",
 	"SPELL_AURA_REMOVED 180950"
 )
-mod.noStatistics = true
-mod.isTrashMod = true--Flag as trash mod to at least disable mod during raid combat, since it stays active at all times after loaded. Doing same way as pvp mods wouldn't save any cpu really considering we'd need ZONE_CHANGED too, not just ZONE_CHANGED_NEW_AREA and this fires a ton even in raids.
 
 --Annihilon
 local warnVoidBomb				= mod:NewTargetAnnounce(180939, 3)

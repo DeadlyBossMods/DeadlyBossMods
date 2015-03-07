@@ -12,24 +12,11 @@ mod:RegisterEvents(
 mod.noStatistics = true
 mod.isTrashMod = true--Flag as trash mod to at least disable mod during raid combat, since it stays active at all times after loaded. Doing same way as pvp mods wouldn't save any cpu really considering we'd need ZONE_CHANGED too, not just ZONE_CHANGED_NEW_AREA and this fires a ton even in raids.
 
---Annihilon
-local warnVoidBomb				= mod:NewTargetAnnounce(180939, 3)
-local warnWhirlingVoid			= mod:NewTargetAnnounce(180932, 2)
-local warnTwistMind				= mod:NewTargetAnnounce(180950, 4)
-
---Annihilon
-local specWarnVoidBomb			= mod:NewSpecialWarningYou(180939)
-local yellVoidBomb				= mod:NewYell(180939)
-local specWarnTwistMind			= mod:NewSpecialWarningSwitch(180950, "Dps")
 --Generic
 local specWarnRylak				= mod:NewSpecialWarning("specWarnRylak")
 local specWarnWorker			= mod:NewSpecialWarning("specWarnWorker")
 local specWarnSpy				= mod:NewSpecialWarning("specWarnSpy")
 local specWarnBuilding			= mod:NewSpecialWarning("specWarnBuilding")
-
---Annihilon
-local timerWhirlingVoidCD		= mod:NewCDTimer(14, 180932)
-local timerTwistMindCD			= mod:NewCDTimer(28, 180950)
 
 --Generic
 --local timerCombatStart			= mod:NewCombatTimer(44)--rollplay for first pull
