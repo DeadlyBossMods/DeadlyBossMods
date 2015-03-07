@@ -23,24 +23,6 @@ local specWarnBuilding			= mod:NewSpecialWarning("specWarnBuilding")
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
-mod:AddHudMapOption("HudMapOnMC", 180950)
-
-mod.vb.MCCount = 0
-
-function mod:VoidTarget(targetname, uId)
-	if not targetname then return end
-	warnWhirlingVoid:Show(targetname)
-end
-
-function mod:BombTarget(targetname, uId)
-	if not targetname then return end
-	if targetname == UnitName("player") then
-		specWarnVoidBomb:Show()
-		yellVoidBomb:Yell()
-	else
-		warnVoidBomb:Show(targetname)
-	end
-end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if not self.Options.Enabled then return end
