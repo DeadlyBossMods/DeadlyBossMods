@@ -1144,6 +1144,8 @@ do
 			end)
 			if IsInGroup() then
 				self:Schedule(15, self.RequestTimers, self)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
+				self:Schedule(16.5, self.RequestTimers, self)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
+				self:Schedule(18, self.RequestTimers, self)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
 			end
 		end
 	end
@@ -5471,23 +5473,42 @@ do
 	local requestedFrom = nil
 	local requestTime = 0
 	local clientUsed = {}
+	local sortMe = {}
+
+	local function sort(v1, v2)
+		if v1.revision and not v2.revision then
+			return true
+		elseif v2.revision and not v1.revision then
+			return false
+		elseif v1.revision and v2.revision then
+			return v1.revision > v2.revision
+		else
+			return (v1.bwarevision or v1.bwrevision or 0) > (v2.bwarevision or v2.bwrevision or 0)
+		end
+	end
 
 	function DBM:RequestTimers()
-		self:Debug("RequestTimers Running", 2)
-		local bestClient
+		twipe(sortMe)
 		for i, v in pairs(raid) do
-			-- If bestClient player's realm is not same with your's, timer recovery by bestClient not works at all.
+			tinsert(sortMe, v)
+		end
+		tsort(sortMe, sort)
+		self:Debug("RequestTimers Running", 2)
+		local selectedClient
+		for i, v in ipairs(sortMe) do
+			-- If selectedClient player's realm is not same with your's, timer recovery by selectedClient not works at all.
 			-- SendAddonMessage target channel is "WHISPER" and target player is other realm, no msg sends at all. At same realm, message sending works fine. (Maybe bliz bug or SendAddonMessage function restriction?)
-			if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and UnitRealmRelationship(v.id) ~= 2 and v.revision and v.revision >= ((bestClient and bestClient.revision) or 0) and (GetTime() - (clientUsed[v.name] or 0)) > 10 then
-				bestClient = v
+			if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and UnitRealmRelationship(v.id) ~= 2 and (GetTime() - (clientUsed[v.name] or 0)) > 10 then
+				selectedClient = v
 				clientUsed[v.name] = GetTime()
+				break
 			end
 		end
-		if not bestClient then return end
-		self:Debug("Requesting timer recovery to "..bestClient.name)
-		requestedFrom = bestClient.name
+		if not selectedClient then return end
+		self:Debug("Requesting timer recovery to "..selectedClient.name)
+		requestedFrom = selectedClient.name
 		requestTime = GetTime()
-		SendAddonMessage("D4", "RT", "WHISPER", bestClient.name)
+		SendAddonMessage("D4", "RT", "WHISPER", selectedClient.name)
 	end
 
 	function DBM:ReceiveCombatInfo(sender, mod, time)
