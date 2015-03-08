@@ -9,15 +9,15 @@ mod:SetHotfixNoticeRev(13105)
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
-	"CHAT_MSG_ADDON"--Has to be out of combat
-)
-
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 157060 157054 156704 157592 158217",
 	"SPELL_CAST_SUCCESS 158130 170469",
 	"SPELL_AURA_APPLIED 156766 161923 173917 156852 157059",
 	"SPELL_AURA_APPLIED_DOSE 156766"
+)
+
+mod:RegisterEvents(
+	"CHAT_MSG_ADDON"--Has to be out of combat
 )
 
 --TODO, see how second trembling earth CD works and if current code even works for other timers. Mythic pulls were very short :\
@@ -57,8 +57,34 @@ local voiceCallofMountain			= mod:NewVoice(158217)--Findshelter
 local voiceRipplingSmash			= mod:NewVoice(157592)
 local voiceStoneBreath	 			= mod:NewVoice(156852)
 
+mod:AddArrowOption("RuneArrow", 157060, false, 3)--Off by default, because hud does a much better job, and in case user is running both Exorsus Raid Tools and DBM (ExRT has it's own arrow)
+mod:AddHudMapOption("HudMapForRune", 157060)--TODO, maybe custom option text explaining that this option only works if RL is running Exorsus Raid Tools and sends you assigned rune location
+
 mod.vb.mountainCast = 0
 mod.vb.stoneBreath = 0
+local playerX, playerY = nil, nil
+
+--Not local functions, so they can also be used as a test functions as well
+function mod:RuneStart()
+	if playerX and playerY then
+		if self.Options.RuneArrow then
+			DBM.Arrow:ShowRunTo(playerX, playerY, 0)
+		end
+		if self.Options.HudMapForRune then
+			DBMHudMap:Enable()
+			DBMHudMap:RegisterPositionMarker(157060, "HudMapForRune", "highlight", playerX, playerY, 3, 20, 0, 1, 0, 0.5):Pulse(0.5, 0.5)
+		end
+	end
+end
+
+function mod:RuneOver()
+	if self.Options.RuneArrow then
+		DBM.RangeCheck:Hide()
+	end
+	if self.Options.HudMapForRune then
+		DBMHudMap:Disable()
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.mountainCast = 0
@@ -71,6 +97,15 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	if self:IsMythic() then
 		timerTremblingEarthCD:Start(82.5-delay)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RuneArrow then
+		DBM.Arrow:Hide()
+	end
+	if self.Options.HudMapForRune then
+		DBMHudMap:Disable()
 	end
 end
 
@@ -92,6 +127,7 @@ function mod:SPELL_CAST_START(args)
 		timerRipplingSmashCD:Cancel()
 		timerWarpedArmorCD:Cancel()
 		voiceGraspingEarth:Play("157060")
+		self:RuneStart()
 		if self:IsMythic() then
 			timerGraspingEarthCD:Start(122)
 		else
@@ -100,6 +136,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 157054 then
 		specWarnThunderingBlows:Show()
+		--Hide rune arrow and hud at this point, if thundering is being cast, runes vanished
+		self:RuneOver()
 		--Starting timers for slam and rippling seem useless, 10-30 sec variation for first ones.
 		--after that they get back into their consistency
 	elseif spellId == 157592 then
@@ -171,14 +209,90 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceStoneBreath:Play("breathsoon")
 	elseif spellId == 157059 and args:IsPlayer() then
 		voiceGraspingEarth:Play("safenow")
+		self:RuneOver()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
-RegisterAddonMessagePrefix("kromog")
-function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
-	if not DBM.Options.DebugMode then return end--In case this errors, let it only error for debuggers.
-	if prefix ~= "kromog" then return end
-	local pos1,name1,pos2,name2,pos3,name3 = strsplit("\t", message)
-	DBM:Debug("Sender: "..sender.."Pos1: "..pos1..", Name1: "..name1..", Pos2: "..pos2..", Name2: "..name2..", Pos3: "..pos3..", Name3: "..name3)
+do
+	--Exorsus Raid Tools Comm snooping to detect player assignment even if player isn't running Exorsus Raid Tools.
+	--Runes locations are from ExRT and not 100% vetted accurate.
+	local runes = {
+		[1] = {3673.47,329.81},
+		[2] = {3669.83,320.84},
+		[3] = {3667.69,309.80},
+		[4] = {3663.56,334.03},
+		[5] = {3661.87,325.15},
+		[6] = {3660.95,315.54},
+		[7] = {3659.29,303.60},
+		[8] = {3652.30,324.41},
+		[9] = {3650.33,315.57},
+		[10] = {3649.88,332.94},
+		[11] = {3649.72,306.76},
+		[12] = {3642.71,324.18},
+		[13] = {3641.32,315.93},
+		[14] = {3640.92,308.55},
+		[15] = {3636.36,331.65},
+		[16] = {3633.00,304.03},
+		[17] = {3632.95,317.41},
+		[18] = {3631.94,310.38},
+		[19] = {3630.81,325.00},
+		[20] = {3624.18,317.63},
+		[21] = {3623.51,306.16},
+		[22] = {3623.30,330.92},
+		[23] = {3617.37,312.64},
+		[24] = {3615.52,323.41},
+		[25] = {3612.18,306.78},
+		[26] = {3611.77,333.36},
+		[27] = {3605.63,318.56},
+		[28] = {3604.92,328.65},
+		[29] = {3603.65,308.19},
+		[30] = {3597.34,336.12},
+		[31] = {3596.64,325.87},
+		[32] = {3594.69,315.58},
+		[33] = {3594.69,306.78},--Added manually
+		[34] = {3587.57,323.10},
+		[35] = {3587.45,333.16},
+	}	
+	RegisterAddonMessagePrefix("EXRTADD")
+	local playerName = UnitName("player")
+	local assignedPosition
+	function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
+		if prefix ~= "EXRTADD" then return end
+		local subPrefix,pos1,name1,pos2,name2,pos3,name3 = strsplit("\t", message)
+		if subPrefix ~= "kromog" then return end
+		DBM:Debug("Sender: "..sender.."Pos1: "..pos1..", Name1: "..(name1 or "nil")..", Pos2: "..pos2..", Name2: "..(name2 or "nil")..", Pos3: "..pos3..", Name3: "..(name3 or "nil"), 3)
+		--Check if player removed from a cached assignment
+		if assignedPosition and pos1 and tonumber(pos1) == assignedPosition and name1 ~= playerName then
+			assignedPosition, playerX, playerY = nil, nil, nil
+			DBM:Debug("Player is no longer asisgned to position "..pos1)
+		end
+		if assignedPosition and pos2 and tonumber(pos2) == assignedPosition and name2 ~= playerName then
+			assignedPosition, playerX, playerY = nil, nil, nil
+			DBM:Debug("Player is no longer asisgned to position "..pos2)
+		end
+		if assignedPosition and pos3 and tonumber(pos3) == assignedPosition and name3 ~= playerName then
+			assignedPosition, playerX, playerY = nil, nil, nil
+			DBM:Debug("Player is no longer asisgned to position "..pos3)
+		end
+		--Now the add player assignment code
+		if name1 and name1 == playerName then
+			assignedPosition = tonumber(pos1)
+			playerX = runes[assignedPosition][2]
+			playerY = runes[assignedPosition][1]
+			DBM:Debug("Player is assigned to position "..assignedPosition..": "..playerX..", "..playerY)
+		end
+		if name2 and name2 == playerName then
+			assignedPosition = tonumber(pos2)
+			playerX = runes[assignedPosition][2]
+			playerY = runes[assignedPosition][1]
+			DBM:Debug("Player is assigned to position "..assignedPosition..": "..playerX..", "..playerY)
+		end
+		if name3 and name3 == playerName then
+			assignedPosition = tonumber(pos3)
+			playerX = runes[assignedPosition][2]
+			playerY = runes[assignedPosition][1]
+			DBM:Debug("Player is assigned to position "..assignedPosition..": "..playerX..", "..playerY)
+		end
+	end
 end
