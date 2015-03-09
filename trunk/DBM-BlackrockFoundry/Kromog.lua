@@ -256,6 +256,7 @@ do
 	}	
 	RegisterAddonMessagePrefix("EXRTADD")
 	local playerName = UnitName("player")
+	local Ambiguate = Ambiguate
 	local assignedPosition
 	function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
 		if prefix ~= "EXRTADD" then return end
@@ -276,19 +277,19 @@ do
 			DBM:Debug("Player is no longer asisgned to position "..pos3)
 		end
 		--Now the add player assignment code
-		if name1 and name1 == playerName then
+		if name1 and Ambiguate(name1, "none") == playerName then
 			assignedPosition = tonumber(pos1)
 			playerX = runes[assignedPosition][2]
 			playerY = runes[assignedPosition][1]
 			DBM:Debug("Player is assigned to position "..assignedPosition..": "..playerX..", "..playerY)
 		end
-		if name2 and name2 == playerName then
+		if name2 and Ambiguate(name2, "none") == playerName then
 			assignedPosition = tonumber(pos2)
 			playerX = runes[assignedPosition][2]
 			playerY = runes[assignedPosition][1]
 			DBM:Debug("Player is assigned to position "..assignedPosition..": "..playerX..", "..playerY)
 		end
-		if name3 and name3 == playerName then
+		if name3 and Ambiguate(name3, "none") == playerName then
 			assignedPosition = tonumber(pos3)
 			playerX = runes[assignedPosition][2]
 			playerY = runes[assignedPosition][1]

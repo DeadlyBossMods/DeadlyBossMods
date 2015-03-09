@@ -55,13 +55,11 @@ local voiceDisruptingRoar				= mod:NewVoice(160838, "SpellCaster")
 mod.vb.phase = 1
 mod.vb.stamperDodgeCount = 0
 mod.vb.bossUp = "NoBody"
---mod.vb.lastJumpTarget = "None"
 mod.vb.firstJump = false
 local cachedGUID = nil
 
 function mod:JumpTarget(targetname, uId)
 	if not targetname then return end
---	self.vb.lastJumpTarget = targetname
 	if targetname == UnitName("player") then
 		specWarnJumpSlam:Show()
 		yellJumpSlam:Yell()
@@ -70,14 +68,14 @@ function mod:JumpTarget(targetname, uId)
 	else
 		warnJumpSlam:Show(targetname)--No reason to show this if you got a special warning. so reduce spam and display this only to let you know jump is far away and you're safe
 	end
-	self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, true, nil, true, nil, targetname)
+--	self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, true, nil, true, nil, targetname)
+	self:ScheduleMethod(0.1, "BossTargetScanner", 76973, "JumpTarget", 0.1, 80, true, nil, true, nil, targetname)
 end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.stamperDodgeCount = 0
 	self.vb.bossUp = "NoBody"
---	self.vb.lastJumpTarget = "None"
 	self.vb.firstJump = false
 	timerSkullcrackerCD:Start(20-delay)
 	timerJumpSlamCD:Start(20.5-delay)
@@ -158,7 +156,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countCripplingSupplex:Start()
 	elseif spellId == 157926 then--Jump Activation
 		self.vb.firstJump = false--So reset firstjump
---		self.vb.lastJumpTarget = "None"
 		DBM:Debug("157926: Jump Activation")
 		cachedGUID = UnitGUID(uId)
 		timerJumpSlamCD:Start()
@@ -170,12 +167,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, true, nil, false)--Don't include tank in first scan should be enough of a filter for first, it'll grab whatever first non tank target he gets and set that as first jump target and it will be valid
 		else--Not first jump
 			DBM:Debug("157922: firstJump false")
---			if self.vb.lastJumpTarget ~= "None" then--First jump succeeded
---				self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, nil, nil, true, nil, self.vb.lastJumpTarget)--1.3 seconds worth of scans, because i've seen it take as long as 1.2 to get target, and yet, still faster than 157923 by 0.6 seconds. Most often, it finds target in 0.5 or less
---			else--Boss is recasting first jump because his first cast was interrupted by a stamper, so don't run filter and warn as soon as it finds a target, like first jump
---				DBM:Debug("157922: firstJump failed, initiating another first jump scan")
---				self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, nil, nil, false)
---			end
 		end
 	elseif spellId == 157923 then--Fallback
 		DBM:Debug("157923: mid air")
