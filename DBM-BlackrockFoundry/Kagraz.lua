@@ -102,9 +102,6 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame and self:IsRanged() then
 		DBM.RangeCheck:Show(6)
 	end
-	if self.Options.HudMapOnFixate then
-		DBMHudMap:Enable()
-	end
 end
 
 function mod:OnCombatEnd()

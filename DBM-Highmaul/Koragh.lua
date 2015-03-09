@@ -153,9 +153,6 @@ function mod:OnCombatStart(delay)
 	self:Schedule(29.5-delay, ballsWarning, self)
 	if self:IsMythic() then
 		timerExpelMagicFelCD:Start(5-delay)
-		if self.Options.HudMapOnMC or self.Options.HudMapForFel then
-			DBMHudMap:Enable()
-		end
 	end
 	if DBM.BossHealth:IsShown() then--maybe need another option
 		DBM.BossHealth:AddBoss(function() return UnitPower("boss1", 10) end, barName)--Null Barrier health bar

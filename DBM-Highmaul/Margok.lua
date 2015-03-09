@@ -336,9 +336,6 @@ function mod:OnCombatStart(delay)
 	else
 		self:SetBossHPInfoToHighest(1)
 	end
-	if self.Options.HudMapOnMarkOfChaos or self.Options.HudMapOnBranded then
-		DBMHudMap:Enable()
-	end
 end
 
 function mod:OnCombatEnd()

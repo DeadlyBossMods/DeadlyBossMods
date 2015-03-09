@@ -371,9 +371,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					--Cancel timers for abilities he can't use from other dead beasts
 					timerRendandTearCD:Cancel()
 					timerTantrumCD:Cancel()
-					if self.Options.HudMapOnBreath then--Only need hud during this phase
-						DBMHudMap:Enable()
-					end
 				elseif cid == 76945 then--Ironcrusher
 					timerStampedeCD:Start(15)
 					timerTantrumCD:Start(25, self.vb.tantrumCount+1)

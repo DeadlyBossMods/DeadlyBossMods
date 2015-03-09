@@ -127,9 +127,6 @@ function mod:OnCombatStart(delay)
 	end
 	timerMarkedforDeathCD:Start(36-delay)
 	countdownMarkedforDeath:Start(36-delay)
-	if self.Options.HudMapOnMFD then
-		DBMHudMap:Enable()
-	end
 end
 
 function mod:OnCombatEnd()
