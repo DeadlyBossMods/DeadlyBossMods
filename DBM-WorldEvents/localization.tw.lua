@@ -1,5 +1,4 @@
 ﻿if GetLocale() ~= "zhTW" then return end
-
 local L
 
 ------------
@@ -171,4 +170,13 @@ L:SetMiscLocalization({
 	WildfireElemental	= "有個野火元素被召喚到大門前！",--Maybe combined "add" special warning most adds?
 	--Iron Horde
 	Assassin			= "有個刺客正在獵殺你的守衛！"--Maybe combined "add" special warning most adds? --攻城大砲接近了！
+})
+
+-----------------
+--  Annihilon  --
+-----------------
+L = DBM:GetModLocalization("Annihilon")
+
+L:SetGeneralLocalization({
+	name = "災滅"
 })
