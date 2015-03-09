@@ -304,9 +304,6 @@ function mod:OnCombatStart(delay)
 			end
 		end)
 	end
-	if self.Options.HudMapOnBomb then
-		DBMHudMap:Enable()
-	end
 end
 
 function mod:OnCombatEnd()

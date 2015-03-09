@@ -220,9 +220,6 @@ function mod:OnCombatStart(delay)
 		"UNIT_HEALTH_FREQUENT boss1 boss2 boss3",
 		"UNIT_POWER_FREQUENT player"
 	)
-	if self.Options.HudMapOnRapidFire or self.Options.HudMapOnBloodRitual then
-		DBMHudMap:Enable()
-	end
 end
 
 function mod:OnCombatEnd()

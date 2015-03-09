@@ -77,9 +77,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(2, 1) then
 			specWarnTwistMind:Show()
 			timerTwistMindCD:Start()
-			if self.Options.HudMapOnMC then
-				DBMHudMap:Enable()
-			end
 		end
 		if self.Options.HudMapOnMC then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 30, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
@@ -98,7 +95,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.vb.MCCount == 0 then
 			specWarnTwistMind:Show()
 			timerTwistMindCD:Start()
-			DBMHudMap:Disable()
 		end
 	end
 end
