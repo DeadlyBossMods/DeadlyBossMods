@@ -7519,8 +7519,8 @@ do
 						if DBM.Options.StripServerName then
 							cap = Ambiguate(cap, "short")
 						end
-						if DBM:GetRaidClass(name) then
-							local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)] or color
+						local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)] or color
+						if playerColor then
 							cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
 						end
 					else
@@ -8242,10 +8242,11 @@ do
 			if DBM.Options.StripServerName then
 				cap = Ambiguate(cap, "short")
 			end
-			if DBM:GetRaidClass(name) and DBM.Options.SWarnClassColor then
-				local color = DBM.Options.SpecialWarningFontCol
-				local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)] or color
-				cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color[1] * 255, color[2] * 255, color[3] * 255)
+			if DBM.Options.SWarnClassColor then
+				local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
+				if playerColor then
+					cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
+				end
 			end
 		else
 			cap = cap:sub(9)
