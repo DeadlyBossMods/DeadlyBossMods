@@ -20,6 +20,7 @@ local callbacks = CallbackHandler:New(mod)
 local GetNumGroupMembers, GetNumSubgroupMembers = GetNumGroupMembers, GetNumSubgroupMembers
 local GetTime, UIParent = GetTime, UIParent
 local UnitExists, UnitIsUnit, UnitPosition, GetPlayerFacing = UnitExists, UnitIsUnit, UnitPosition, GetPlayerFacing
+local GetInstanceInfo = GetInstanceInfo
 
 local targetCanvasAlpha
 
