@@ -74,7 +74,7 @@ function mod:JumpTarget(targetname, uId)
 		warnJumpSlam:Show(targetname)--No reason to show this if you got a special warning. so reduce spam and display this only to let you know jump is far away and you're safe
 	end
 --	self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, true, nil, true, nil, targetname)
-	self:Schedule(0.1, scanDelay, targetname)
+	self:Schedule(0.1, scanDelay, self, targetname)
 end
 
 function mod:OnCombatStart(delay)
