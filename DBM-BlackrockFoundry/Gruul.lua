@@ -169,8 +169,8 @@ function mod:SPELL_CAST_START(args)
 			warnInfernoSlice:Show(self.vb.sliceCount)
 		end
 		if not self:IsMythic() then
-			timerInfernoSliceCD:Start(18, self.vb.sliceCount+1)
-			countdownInfernoSlice:Start(18)
+			timerInfernoSliceCD:Start(17, self.vb.sliceCount+1)
+			countdownInfernoSlice:Start(17)
 		else
 			timerInfernoSliceCD:Start(nil, self.vb.sliceCount+1)
 			countdownInfernoSlice:Start()
