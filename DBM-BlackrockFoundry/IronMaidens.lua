@@ -60,7 +60,7 @@ local warnSanguineStrikes				= mod:NewTargetAnnounce(156601, 3, nil, "Healer")
 --Ship
 local specWarnBombardmentAlpha			= mod:NewSpecialWarningCount(157854, nil, nil, nil, 2)--From ship, but affects NON ship.
 local specWarnBombardmentOmega			= mod:NewSpecialWarningCount(157886, nil, nil, nil, 3)--From ship, but affects NON ship.
-local specWarnReturnBase				= mod:NewSpecialWarning("specWarnReturnBase")
+--local specWarnReturnBase				= mod:NewSpecialWarning("specWarnReturnBase")
 ----Blackrock Deckhand
 local specWarnEarthenbarrier			= mod:NewSpecialWarningInterrupt("OptionVersion2", 158708, "-Healer", nil, nil, nil, nil, 2)
 ----Shattered Hand Deckhand
@@ -163,11 +163,11 @@ local function checkBoatPlayer(self)
 	timerWarmingUp:Cancel()
 end
 
-local function boatReturnWarning()
-	if boatMissionDone and isPlayerOnBoat() then
-		specWarnReturnBase:Show()
-	end
-end
+--local function boatReturnWarning()
+--	if boatMissionDone and isPlayerOnBoat() then
+--		specWarnReturnBase:Show()
+--	end
+--end
 
 local function recoverTimers()
 	timerBombardmentAlphaCD:Cancel()
@@ -279,7 +279,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		noFilter = true
 	end
 	if spellId == 157854 then
-		self:Schedule(14, boatReturnWarning)
+--		self:Schedule(14, boatReturnWarning)
 		if noFilter or not isPlayerOnBoat() then
 			specWarnBombardmentAlpha:Show(self.vb.alphaOmega)
 			timerBombardmentAlphaCD:Start()
@@ -417,10 +417,10 @@ function mod:UNIT_DIED(args)
 		timerBladeDashCD:Cancel()
 		timerConvulsiveShadowsCD:Cancel()
 		timerDarkHuntCD:Cancel()
-	elseif cid == 78351 or cid == 78341 or cid == 78343 then--boat bosses
-		self:Schedule(1, function()--wait 1s boat player ready to return.
-			boatMissionDone = true
-		end)
+--	elseif cid == 78351 or cid == 78341 or cid == 78343 then--boat bosses
+--		self:Schedule(1, function()--wait 1s boat player ready to return.
+--			boatMissionDone = true
+--		end)
 	end
 end
 
@@ -529,7 +529,7 @@ function mod:UNIT_POWER_FREQUENT(_, powerType)
 		playerOnBoat = false
 		boatMissionDone = false
 		recoverTimers()
-		self:Unschedule(boatReturnWarning)
+--		self:Unschedule(boatReturnWarning)
 		DBM:Debug("Player Leaving Boat")
 	end
 end

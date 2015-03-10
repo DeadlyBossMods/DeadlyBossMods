@@ -144,26 +144,48 @@ local function updateBeastTimers(self, all, spellId, adjust)
 	if adjust then return end--adjust true means triggered by boss dismounted on mythic, this doesn't reset pin down or call of the pack
 	if self.vb.RylakAbilities then--Rylak delays call of the pack and pin down as well. (Well, that or whatever beast you do 3rd. Still need to determine if rylak, or third beast)
 		if self.vb.ElekkAbilities and self.vb.WolfAbilities then--Wolf, elekk AND rylak
-			timerCallthePackCD:Start(17)
-			countdownCallPack:Cancel()
-			countdownCallPack:Start(17)
-			timerPinDownCD:Start(24)
+			timerCallthePackCD:Cancel()--Just to not repeatedly see timer update before expires
+			timerPinDownCD:Cancel()--Just to not repeatedly see timer update before expires
 			countdownPinDown:Cancel()
+			countdownCallPack:Cancel()
+			if self:IsDifficulty("lfr") then--Todo, see if normal also does this, since the 41 second timer is both normal and LFR
+				timerCallthePackCD:Start(26)
+				countdownCallPack:Start(26)
+			else
+				timerCallthePackCD:Start(17)
+				countdownCallPack:Start(17)
+			end
+			timerPinDownCD:Start(24)
 			countdownPinDown:Start(24)
 		else--TODO, i need data on rylak with wolf (2) or rylak with elekk (2).
-			timerCallthePackCD:Start(15)--rylak alone verified 15 seconds
+			timerCallthePackCD:Cancel()--Just to not repeatedly see timer update before expires
+			timerPinDownCD:Cancel()--Just to not repeatedly see timer update before expires
 			countdownCallPack:Cancel()
+			countdownPinDown:Cancel()
+			--This can't actually happen in LFR so doesn't need anything special
+			timerCallthePackCD:Start(15)--rylak alone verified 15 seconds
 			countdownCallPack:Start(15)
 			timerPinDownCD:Start(13.5)
-			countdownPinDown:Cancel()
 			countdownPinDown:Start(13.5)
 		end
 	else--Elekk alone verified, wolf alone verified. Wolf AND Elekk together verified. These timers only alter once rylak abilities activated.
-		timerCallthePackCD:Start(11)
+		timerCallthePackCD:Cancel()--Just to not repeatedly see timer update before expires
+		timerPinDownCD:Cancel()--Just to not repeatedly see timer update before expires
 		countdownCallPack:Cancel()
-		countdownCallPack:Start(11)
-		timerPinDownCD:Start(12)
 		countdownPinDown:Cancel()
+		if self:IsDifficulty("lfr") then--Todo, see if normal also does this, since the 41 second timer is both normal and LFR
+			if self.vb.ElekkAbilities and self.vb.WolfAbilities then
+				timerCallthePackCD:Start(40)
+				countdownCallPack:Start(40)
+			else--Just Elekk
+				timerCallthePackCD:Start(48)
+				countdownCallPack:Start(48)
+			end
+		else
+			timerCallthePackCD:Start(11)
+			countdownCallPack:Start(11)
+		end
+		timerPinDownCD:Start(12)
 		countdownPinDown:Start(12)
 	end
 end
@@ -187,10 +209,18 @@ function mod:OnCombatStart(delay)
 	self.vb.FaultlineAbilites = false
 	self.vb.tantrumCount = 0
 	table.wipe(activeBossGUIDS)
-	timerCallthePackCD:Start(9.5-delay)--Time for cast finish, not cast start, because only cast finish is sure thing. cast start can be interrupted
-	countdownCallPack:Start(9.5-delay)
 	timerPinDownCD:Start(11-delay)
 	countdownPinDown:Start(11-delay)
+	if self:IsLFR() then
+		--Guessed. i fucked up and started log late
+		--But timer definitely longer on pull
+		--this SHOULD be pretty close but may need shortening by small amount
+		timerCallthePackCD:Start(20-delay)--Time for cast finish, not cast start, because only cast finish is sure thing. cast start can be interrupted
+		countdownCallPack:Start(20-delay)
+	else
+		timerCallthePackCD:Start(9.5-delay)--Time for cast finish, not cast start, because only cast finish is sure thing. cast start can be interrupted
+		countdownCallPack:Start(9.5-delay)
+	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3)
 	end
