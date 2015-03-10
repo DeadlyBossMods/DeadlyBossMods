@@ -237,6 +237,7 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.slagCount = 0
 	self.vb.lastSlagIcon = 0
+	local firstTimer = self:IsMythic() and 40 or self:IsHeroic() and 55.5 or 60
 	if self:AntiSpam(10, 0) then--Need to ignore loading on the pull
 		timerBellowsOperator:Start(firstTimer)
 	end
@@ -245,7 +246,6 @@ function mod:OnCombatStart(delay)
 	timerBlastCD:Start(blastTimer)
 	countdownBlast:Start(blastTimer)
 	if not self:IsLFR() then
-		local firstTimer = self:IsMythic() and 40 or self:IsHeroic() and 55.5 or 60
 		self:Schedule(firstTimer, SecurityGuard, self)
 		self:Schedule(firstTimer, Engineers, self)
 		timerSecurityGuard:Start(firstTimer)
