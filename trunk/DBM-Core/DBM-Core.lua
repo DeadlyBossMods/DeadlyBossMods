@@ -1143,9 +1143,9 @@ do
 				healthCombatInitialized = true
 			end)
 			if IsInGroup() then
-				self:Schedule(15, self.RequestTimers, self)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
-				self:Schedule(16.5, self.RequestTimers, self)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
-				self:Schedule(18, self.RequestTimers, self)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
+				self:Schedule(15, self.RequestTimers, self, 3)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
+				self:Schedule(16.5, self.RequestTimers, self, 2)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
+				self:Schedule(18, self.RequestTimers, self, 1)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
 			end
 		end
 	end
@@ -3311,29 +3311,12 @@ function DBM:LoadMod(mod, force)
 			RequestChallengeModeLeaders(mapID)
 		end
 		if instanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
-			local doRequest = false
-			if IsEncounterInProgress() then
-				doRequest = true
-			else
-				local uId = (IsInRaid() and "raid") or "party"
-				for i = 0, GetNumGroupMembers() do
-					local id = (i == 0 and "player") or uId..i
-					if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
-						doRequest = true
-						break
-					end
-				end
-			end
-			if doRequest then
-				timerRequestInProgress = true
-				-- Request timer to 3 person to prevent failure.
-				self:Schedule(8, self.RequestTimers, self)
-				self:Schedule(10, self.RequestTimers, self)
-				self:Schedule(12, self.RequestTimers, self)
-				self:Schedule(12.5, function() timerRequestInProgress = false end)
-			else
-				self:Schedule(6, self.RequestTimers, self)--Do once for break timer out of combat
-			end
+			timerRequestInProgress = true
+			-- Request timer to 3 person to prevent failure.
+			self:Schedule(8, self.RequestTimers, self, 3)
+			self:Schedule(10, self.RequestTimers, self, 2)
+			self:Schedule(12, self.RequestTimers, self, 1)
+			self:Schedule(12.5, function() timerRequestInProgress = false end)
 		end
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
@@ -5487,7 +5470,7 @@ do
 		end
 	end
 
-	function DBM:RequestTimers()
+	function DBM:RequestTimers(requestNum)
 		twipe(sortMe)
 		for i, v in pairs(raid) do
 			tinsert(sortMe, v)
@@ -5495,13 +5478,17 @@ do
 		tsort(sortMe, sort)
 		self:Debug("RequestTimers Running", 2)
 		local selectedClient
+		local listNum = 0
 		for i, v in ipairs(sortMe) do
 			-- If selectedClient player's realm is not same with your's, timer recovery by selectedClient not works at all.
 			-- SendAddonMessage target channel is "WHISPER" and target player is other realm, no msg sends at all. At same realm, message sending works fine. (Maybe bliz bug or SendAddonMessage function restriction?)
 			if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and UnitRealmRelationship(v.id) ~= 2 and (GetTime() - (clientUsed[v.name] or 0)) > 10 then
-				selectedClient = v
-				clientUsed[v.name] = GetTime()
-				break
+				listNum = listNum + 1
+				if listNum == requestNum then
+					selectedClient = v
+					clientUsed[v.name] = GetTime()
+					break
+				end
 			end
 		end
 		if not selectedClient then return end
