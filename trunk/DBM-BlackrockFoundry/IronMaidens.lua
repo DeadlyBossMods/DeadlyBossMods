@@ -468,6 +468,7 @@ function mod:OnSync(msg, guid)
 			end
 		end
 	elseif msg == "Ship" and guid then--technically not guid but it's fine.
+		boatMissionDone = false
 		self.vb.ship = self.vb.ship + 1
 		self.vb.alphaOmega = 1
 		warnShip:Show()
