@@ -8707,11 +8707,6 @@ do
 	local mt = {__index = timerPrototype}
 
 	function timerPrototype:Start(timer, ...)
-		--Move entire coundown object here and eliminate seperate countdown options.
-		--Timers should have a popup of their own with "none" "5" and "10" options for countdown voice.
-		--Which voice that's used still controled by primary setting in gui still. Working on GUI will be changed to "primary"
-		--Smart coding in this function to check if any audio countdowns are currently running if we are to start another one, if so, use a voice not currently running? else, always prefer users primary preference.
-		--Maybe add a preferred voice order if more voices get added to mod?
 		if timer and type(timer) ~= "number" then
 			return self:Start(nil, timer, ...) -- first argument is optional!
 		end
@@ -8729,9 +8724,9 @@ do
 							end
 						end
 					end
+					DBM.Bars:CancelBar(self.startedTimers[i])--ASSUMED location, review!
 					self.startedTimers[i] = nil
 				end
-				DBM.Bars:CancelBar(self.startedTimers[i])
 			end
 			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
