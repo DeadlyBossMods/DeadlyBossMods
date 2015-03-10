@@ -143,7 +143,48 @@ local otherTrains = {
 	[21] = { [2] = Train },--+10 after 20 (5:12)
 	[22] = { [2] = Train },--+25 after 21 (5:37)
 	[23] = { [2] = Reinforcements, [3] = ManOArms },--+30 after 22 (6:07) Split
-	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 23? (6:22). Lane 4, but if reinforcements aren't dead from wave 23, lane 2 (because reinforcements cart still blocking lane 4) Not Actually random. But detecting if reinforcement cart still in way impossible :\
+	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [2] = Train, [4] = Train },--+15 after 23? (6:22). Lane 4, but if reinforcements aren't dead from wave 23, lane 2 (because reinforcements cart still blocking lane 4) Not Actually random. But detecting if reinforcement cart still in way impossible :\
+	[25] = { [1] = Train },--+20 after 24 (6:42)
+	[26] = { [1] = Cannon, [4] = Reinforcements },--+10 after 25 (6:52)
+	[27] = { [2] = Train },--+15 after 26 (7:07)
+	[28] = { [3] = Train },--+10 after 27 (7:17)
+	[29] = { [3] = ManOArms },--+20 after 28 (7:37)
+	[30] = { [1] = Train, [4] = Train },--+5 after 29 (7:42) 
+	[31] = { [4] = Train },--+15 after 30 (7:57) (guessed.)--seems berserk. 4 trains in a row (interval 4 sec.)
+	[32] = { [3] = Train },--+4 after 31 (8:01)
+	[33] = { [2] = Train },--+4 after 32 (8:05)
+	[34] = { [1] = Train },--+4 after 33 (8:09)
+	[35] = { [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+? after 34 (8:??)
+}
+
+--Kind of sucks having an entirely new table for 2 changes, but whatever.
+local lfrTrains = {
+	[1] = { [4] = Train },--+12 after pull (0:12)
+	[2] = { [2] = Train },--+10 after 1 (0:22)
+	[3] = { [1] = Reinforcements },--+5 after 2 (0:27)
+	[4] = { [3] = Train },--+15 after 3 (0:42)
+	[5] = { [4] = Cannon },--+5 after 4 (0:47)
+	[6] = { [2] = Train },--+25 after 5 (1:12)
+	[7] = { [3] = ManOArms },--+5 after 6 (1:17)
+	[8] = { [1] = Train },--+25 after 7 (1:42)
+	[9] = { [3] = Reinforcements },--+15 after 8 (1:57) Just one train in LFR
+	[10] = { [1] = Train, [4] = Train },--+40 after 9 (2:37)
+	[11] = { [1] = Cannon },--+10 after 10 (2:47)
+	[12] = { [2] = Train },--+15 after 11 (3:02)
+	[13] = { [4] = Reinforcements },--+10 after 12 (3:12)
+	[14] = { [3] = Train },--+20 after 13 (3:32)
+	[15] = { [2] = Train },--+10 after 14 (3:42)
+	[16] = { [1] = Train },--+10 after 15 (3:52)
+	[17] = { [2] = ManOArms, [4] = Cannon },--+15 after 16 (4:07)
+	[18] = { [1] = Train },--+20 after 17 (4:27)
+	[19] = { [3] = Train },--+5 after 18 (4:32)
+	[20] = { [1] = Cannon, [4] = Cannon },--+30 after 19 (5:02)
+	[21] = { [2] = Train },--+10 after 20 (5:12)
+	[22] = { [2] = Train },--+25 after 21 (5:37)
+	--FIXME
+	[23] = { [2] = Reinforcements, [3] = ManOArms },--+30 after 22 (6:07) Also not a split, but don't know what's changed
+	--FIXME
+	[24] = { ["specialw"] = L.oneTrain, ["speciali"] = L.oneRandom, [2] = Train, [4] = Train },--+15 after 23? (6:22). Lane 4, but if reinforcements aren't dead from wave 23, lane 2 (because reinforcements cart still blocking lane 4) Not Actually random. But detecting if reinforcement cart still in way impossible :\
 	[25] = { [1] = Train },--+20 after 24 (6:42)
 	[26] = { [1] = Cannon, [4] = Reinforcements },--+10 after 25 (6:52)
 	[27] = { [2] = Train },--+15 after 26 (7:07)
@@ -251,7 +292,7 @@ local function showTrainWarning(self)
 	local textTable = {}
 	local usedv = {}
 	local train = self.vb.trainCount
-	local trainTable = self:IsMythic() and mythicTrains or otherTrains
+	local trainTable = self:IsMythic() and mythicTrains or self:IsLFR() and lfrTrains or otherTrains
 	if trainTable[train] then
 		if trainTable[train]["specialw"] then
 			text = text .. trainTable[train]["specialw"]..", "
@@ -296,7 +337,7 @@ local function lanePos()
 end
 
 local function laneCheck(self)
-	local trainTable = self:IsMythic() and mythicTrains or otherTrains
+	local trainTable = self:IsMythic() and mythicTrains or self:IsLFR() and lfrTrains or otherTrains
 	local train = self.vb.trainCount
 	local playerLane = lanePos()
 	if trainTable[train] and trainTable[train][playerLane] then
@@ -324,7 +365,7 @@ end
 local function updateInfoFrame()
 	table.wipe(lines)
 	local train = mod.vb.infoCount
-	local trainTable = mod:IsMythic() and mythicTrains or otherTrains
+	local trainTable = mod:IsMythic() and mythicTrains or mod:IsLFR() and lfrTrains or otherTrains
 	if trainTable[train] then
 		local playerLane = lanePos()
 		for i = 1, 4 do
@@ -362,7 +403,7 @@ end
 
 function mod:BombTarget(targetname, uId)
 	if not targetname then return end
-	warnDelayedSiegeBomb:Show(targetname)
+	warnDelayedSiegeBomb:CombinedShow(0.5, targetname)
 	if targetname == UnitName("player") then
 		specWarnDelayedSiegeBomb:Show()
 		yellDelayedSiegeBomb:Yell()
@@ -519,7 +560,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 10
 			elseif count == 3 or count == 8 or count == 11 or count == 16 or count == 23 or count == 26 or count == 30 then
 				expectedTime = 15
-				if count == 8 then
+				if not self:IsLFR() and count == 8 then
 					specWarnSplitSoon:Cancel()
 					specWarnSplitSoon:Schedule(5)
 				end
@@ -529,7 +570,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 25
 			elseif count == 19 or count == 22 then
 				expectedTime = 30
-				if count == 22 then
+				if not self:IsLFR() and count == 22 then
 					specWarnSplitSoon:Cancel()
 					specWarnSplitSoon:Schedule(20)
 				end
