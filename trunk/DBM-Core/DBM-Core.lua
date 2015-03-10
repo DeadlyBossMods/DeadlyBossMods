@@ -199,6 +199,7 @@ DBM.DefaultOptions = {
 	SpecialWarningFlashRepeat3 = true,
 	SpecialWarningFlashRepeat4 = false,
 	SpecialWarningFlashRepeatAmount = 2,--Repeat 2 times, mean 3 flashes (first plus 2 repeat)
+	SWarnClassColor = true,
 	HealthFrameGrowUp = false,
 	HealthFrameLocked = false,
 	HealthFrameWidth = 200,
@@ -8233,6 +8234,25 @@ do
 	local specialWarningPrototype = {}
 	local mt = {__index = specialWarningPrototype}
 
+	local function classColoringFunction(cap)
+		cap = cap:sub(2, -2)
+		local noStrip = cap:match("noStrip ")
+		if not noStrip then
+			local name = cap
+			if DBM.Options.StripServerName then
+				cap = Ambiguate(cap, "short")
+			end
+			if DBM:GetRaidClass(name) and DBM.Options.SWarnClassColor then
+				local color = DBM.Options.SpecialWarningFontCol
+				local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)] or color
+				cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color[1] * 255, color[2] * 255, color[3] * 255)
+			end
+		else
+			cap = cap:sub(9)
+		end
+		return cap
+	end
+
 	function specialWarningPrototype:Show(...)
 		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
 			if self.announceType == "taunt" and DBM.Options.FilterTankSpec and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
@@ -8253,7 +8273,7 @@ do
 				end
 			end
 			local msg = pformat(self.text, unpack(argTable))
-			local text = msg:gsub(">.-<", stripServerName)
+			local text = msg:gsub(">.-<", classColoringFunction)
 			DBM:AddSpecialWarning(text)
 			self.combinedcount = 0
 			self.combinedtext = {}
