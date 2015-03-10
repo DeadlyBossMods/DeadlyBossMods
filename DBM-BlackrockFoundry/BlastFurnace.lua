@@ -156,47 +156,20 @@ end
 local function SecurityGuard(self)
 	warnSecurityGuard:Show()
 	voiceSecurityGuard:Play("ej9648")
-	--NOTE: in 6.1 blizz made all modes behave like mythic. If Blizzard reverts this, uncomment the commented sections
---	if self:IsMythic() then
-		if self.vb.phase == 1 then
-			timerSecurityGuard:Start(30.5)
-			self:Schedule(30.5, SecurityGuard, self)
-		else
-			timerSecurityGuard:Start(40)
-			self:Schedule(40, SecurityGuard, self)
-		end
---[[	elseif self:IsHeroic() then
-		if self.vb.phase == 1 then
-			timerSecurityGuard:Start(46)
-			self:Schedule(46, SecurityGuard, self)
-		else
-			timerSecurityGuard:Start(55)
-			self:Schedule(55, SecurityGuard, self)
-		end
-	elseif self:IsNormal() then
-		if self.vb.phase == 1 then
-			timerSecurityGuard:Start(50)
-			self:Schedule(50, SecurityGuard, self)
-		else
-			timerSecurityGuard:Start(60)
-			self:Schedule(60, SecurityGuard, self)
-		end
-	end--]]
+	if self.vb.phase == 1 then
+		timerSecurityGuard:Start(30.5)
+		self:Schedule(30.5, SecurityGuard, self)
+	else
+		timerSecurityGuard:Start(40)
+		self:Schedule(40, SecurityGuard, self)
+	end
 end
 
 local function FireCaller(self)
 	warnFireCaller:Show()
 	voiceFireCaller:Play("ej9659")
-	--NOTE: in 6.1 blizz made all modes behave like mythic. If Blizzard reverts this, uncomment the commented sections
---	if self:IsDifficulty("mythic") then
-		--Important note, sometimes both side not spawn same time. one side might lag like 2-3 behind other.
-		--But timer good for first one spawning always. 2 always spawn, 1 at timer and 2nd maybe a couple seconds later.
-		timerFireCaller:Start(45)
-		self:Schedule(45, FireCaller, self)
---	else
---		timerFireCaller:Start(55)
---		self:Schedule(55, FireCaller, self)
---	end
+	timerFireCaller:Start(45)
+	self:Schedule(45, FireCaller, self)
 end
 
 local function checkSecondSlag(self)
@@ -272,11 +245,7 @@ function mod:OnCombatStart(delay)
 	timerEngineer:Start(firstTimer)
 	countdownEngineer:Start(firstTimer)
 	if self:AntiSpam(10, 0) then--Need to ignore loading on the pull
-		if self:IsMythic() then
-			timerBellowsOperator:Start(40)--40-65 variation on mythic? fuck mythic
-		else
-			timerBellowsOperator:Start(55)--55-60 variation for first ones from pull
-		end
+		timerBellowsOperator:Start(firstTimer)
 	end
 	local blastTimer = self:IsMythic() and 24 or 29
 	timerBlastCD:Start(blastTimer)
