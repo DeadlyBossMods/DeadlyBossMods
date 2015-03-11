@@ -337,7 +337,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellHeartseeker:Yell()
 			voiceHeartSeeker:Play("scatter")
 		end
-		if self.Options.SetIconOnHeartSeeker then
+		if self.Options.SetIconOnHeartSeeker and not self:IsLFR() then
 			self:SetSortedIcon(1, args.destName, 3, 3)
 		end
 	elseif spellId == 159724 and (noFilter or not isPlayerOnBoat()) then
@@ -351,7 +351,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellBloodRitual:Yell()
 			voiceBloodRitual:Play("158078")
 		end
-		if self.Options.SetIconOnBloodRitual then
+		if self.Options.SetIconOnBloodRitual and not self:IsLFR() then
 			self:SetIcon(args.destName, 2)
 		end
 		if self.Options.HudMapOnBloodRitual then
@@ -364,7 +364,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				warnRapidFire:Show(args.destName)
 			end
-			if self.Options.SetIconOnRapidFire then
+			if self.Options.SetIconOnRapidFire and not self:IsLFR() then
 				self:SetIcon(args.destName, 1, 7)
 			end
 			if self.Options.HudMapOnRapidFire then
@@ -386,12 +386,12 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 159724 and self.Options.SetIconOnBloodRitual then
+	if spellId == 159724 and self.Options.SetIconOnBloodRitual and not self:IsLFR() then
 		self:SetIcon(args.destName, 0)
 		if self.Options.HudMapOnBloodRitual then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
-	elseif spellId == 158010 and self.Options.SetIconOnHeartSeeker then
+	elseif spellId == 158010 and self.Options.SetIconOnHeartSeeker and not self:IsLFR() then
 		self:SetIcon(args.destName, 0)
 	elseif spellId == 156631 and self.Options.HudMapOnRapidFire then
 		DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
@@ -460,7 +460,7 @@ function mod:OnSync(msg, guid)
 			else
 				warnRapidFire:Show(targetName)
 			end
-			if self.Options.SetIconOnRapidFire then
+			if self.Options.SetIconOnRapidFire and not self:IsLFR() then
 				self:SetIcon(targetName, 1, 10)
 			end
 			if self.Options.HudMapOnRapidFire then
