@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Mar 5, 2015
+-- Last update: Mar 11, 2015@13282
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -63,7 +63,10 @@ L.Statistic_BestKill		= "最好成绩:"
 L.General 					= "DBM核心综合设置"
 L.EnableDBM 				= "启用DBM"
 L.EnableMiniMapIcon			= "显示小地图按钮"
-L.UseMasterVolume			= "使用游戏主声道播放音频"
+L.UseSoundChannel			= "设置DBM使用的声道"
+L.UseMasterChannel			= "主声道"
+L.UseDialogChannel			= "对话声道"
+L.UseSFXChannel				= "音效声道"
 L.Latency_Text				= "设定启用同步功能的最高延迟阈值：%d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "DBM计时条综合设置"
@@ -167,6 +170,7 @@ L.BarSort					= "按剩余时间排序"
 L.Panel_SpecWarnFrame		= "特殊警报"
 L.Area_SpecWarn				= "特殊警报设置"
 L.SpecWarn_Enabled			= "显示首领技能特殊警报"
+L.SpecWarn_ClassColor		= "为特殊警报启用分职业着色"
 L.SpecWarn_FlashFrame		= "特殊警报时屏幕边缘泛光"
 L.ShowSWarningsInChat 		= "在聊天窗口中显示特殊警报"
 L.SpecWarn_Font				= "特殊警报字体"
@@ -266,9 +270,9 @@ L.RoleSpecAlert				= "当进入团队时，如果拾取专精与当前角色专�
 L.CheckGear					= "当你身上的装备装等低于背包装等40点时显示警告。(可能没有装备某物品或装备了低等级的任务道具或没有装备主武器)"
 L.WorldBossAlert			= "当世界Boss进入战斗后发送警告，这个信息可能是你的朋友或者同工会成员发送的。 (由于跨服，卡位面等因素，可能不准确)"
 L.Area_SoundAlerts			= "语音警告选项"
-L.LFDEnhance				= "当发起角色检查时，播放准备音效"
+L.LFDEnhance				= "当发起角色检查或随机团队/战场就绪时，在主声道播放准备音效 (即使关闭了音效)"
 L.WorldBossNearAlert		= "当世界附近的Boss进入战斗时发出特殊音效 (全局设置，覆盖单独BOSS设置)"
-L.RLReadyCheckSound			= "在主声道播放检查准备音效"
+L.RLReadyCheckSound			= "在主声道/对话声道播放检查准备音效"
 L.AFKHealthWarning			= "当你在挂机/暂离而受到伤害时发出警报"
 L.Area_AutoLogging			= "自动日志记录选项"
 L.AutologBosses				= "自动采用官方格式记录日志。 (使用 /dbm pull 可提前记录并使得记录更准确，如提前偷药水或是召唤大军。)"
