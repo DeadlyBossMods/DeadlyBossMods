@@ -417,6 +417,12 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					timerSuperheatedShrapnelCD:Cancel()
 					timerTantrumCD:Cancel()
 				end
+				if self:IsDifficulty("lfr") then--ONLY LFR does this
+					countdownCallPack:Cancel()
+					timerCallthePackCD:Cancel()
+					timerCallthePackCD:Start(20)
+					countdownCallPack:Start(20)
+				end
 			end
 		end
 	end
