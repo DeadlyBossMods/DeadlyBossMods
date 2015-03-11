@@ -14,6 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 155992 159142 156928 158054 163008",
 	"SPELL_AURA_APPLIED 156096 157000 156667 156401 156653 159179",
 	"SPELL_AURA_REMOVED 156096 157000 156667 159179",
+	"SPELL_CAST_SUCCESS 162579",
 	"SPELL_PERIODIC_DAMAGE 156401",
 	"SPELL_ABSORBED 156401",
 	"SPELL_ENERGIZE 104915",
@@ -51,7 +52,7 @@ local specWarnAttachSlagBombs		= mod:NewSpecialWarningYou(157000, nil, nil, nil,
 local specWarnAttachSlagBombsOther	= mod:NewSpecialWarningTaunt(157000, nil, nil, nil, nil, nil, 2)
 local yellAttachSlagBombs			= mod:NewYell("OptionVersion2", 157000)
 local specWarnMassiveShatteringSmash= mod:NewSpecialWarningCount("OptionVersion2", 158054, nil, nil, nil, 3, nil, 2)
-local specWarnFallingDebris			= mod:NewSpecialWarningSpell(162585, nil, nil, nil, 2)--Mythic (like Meteor)
+local specWarnFallingDebris			= mod:NewSpecialWarningCount(162585, nil, nil, nil, 2)--Mythic (like Meteor)
 
 --Stage One: The Blackrock Forge
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
@@ -71,7 +72,7 @@ local timerSlagEruptionCD			= mod:NewCDCountTimer(32.5, 156928)
 local timerAttachSlagBombsCD		= mod:NewCDTimer(25.5, 157000)--26-28. Do to increased cast time vs phase 1 and 2 slag bombs, timer is 1 second longer on CD
 local timerSlagBomb					= mod:NewCastTimer(5, 157015)
 local timerFallingDebris			= mod:NewCastTimer(6, 162585)--Mythic
-local timerFallingDebrisCD			= mod:NewNextTimer(40, 162585)--Mythic
+local timerFallingDebrisCD			= mod:NewNextCountTimer(40, 162585)--Mythic
 
 local countdownShatteringSmash		= mod:NewCountdown(45.5, 155992)
 local countdownSlagBombs			= mod:NewCountdown("Alt25", 156030, "Melee")
@@ -96,6 +97,7 @@ mod.vb.demolitionCount = 0
 mod.vb.SlagEruption = 0
 mod.vb.smashCount = 0
 mod.vb.siegemaker = 0
+mod.vb.deprisCount = 0
 local smashTank = nil
 local UnitDebuff, UnitName = UnitDebuff, UnitName
 local DBMHudMap = DBMHudMap
@@ -199,14 +201,15 @@ local function checkMarked()
 	end
 end
 
---[[function mod:SPELL_CAST_SUCCESS(args)
+function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 162579 then
-		specWarnFallingDebris:Show()
+		self.vb.deprisCount = self.vb.deprisCount + 1
+		specWarnFallingDebris:Show(self.vb.deprisCount)
 		timerFallingDebris:Start()
-		timerFallingDebrisCD:Start()
+		timerFallingDebrisCD:Start(nil, self.vb.deprisCount+1)
 	end
-end]]
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -348,6 +351,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.demolitionCount = self.vb.demolitionCount + 1
 		specWarnDemolition:Show(self.vb.demolitionCount)
 		if self:IsMythic() then
+			self.vb.deprisCount = 0
 			timerDemolitionCD:Start(30.5, self.vb.demolitionCount + 1)
 		else
 			timerDemolitionCD:Start(nil, self.vb.demolitionCount + 1)
@@ -408,7 +412,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerThrowSlagBombsCD:Cancel()
 		countdownSlagBombs:Cancel()
 		if self:IsMythic() then
-			timerFallingDebrisCD:Start(10)
+			timerFallingDebrisCD:Start(10, 1)
 		end
 		timerAttachSlagBombsCD:Start(11)
 		countdownSlagBombs:Start(11)
