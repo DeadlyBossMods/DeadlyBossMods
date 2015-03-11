@@ -447,6 +447,7 @@ function mod:UNIT_DIED(args)
 			if self.Options.HudMapOnBreath then
 				DBMHudMap:Disable()
 			end
+			self:BossTargetScannerAbort(76874, "BreathTarget")
 		elseif cid == 76945 then
 			timerStampedeCD:Cancel()
 		elseif cid == 76946 then
@@ -472,7 +473,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnTantrum:Show(self.vb.tantrumCount)
 		timerTantrumCD:Start(34, self.vb.tantrumCount+1)--This one may also be 30 seconds, but I saw 34 consistently
 		voiceTantrum:Play("aesoon")
-	elseif spellId == 155497 then--Superheated Shrapnel
+	elseif spellId == 155603 then--Face Random Non-Tank (boss version)
 		specWarnSuperheatedShrapnel:Show()
 		timerSuperheatedShrapnelCD:Start()
 	elseif spellId == 155385 or spellId == 155515 then--Both versions of spell(boss and beast), they seem to have same cooldown so combining is fine
@@ -483,7 +484,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnPinDown:Show()
 		timerPinDownCD:Start()
 		countdownPinDown:Start()
-	elseif spellId == 155423 then--Face Random Non-Tank
+	elseif spellId == 155423 then--Face Random Non-Tank (beast version)
 		specWarnInfernoBreath:Show()
 		timerInfernoBreathCD:Start()
 		voiceInfernoBreath:Play("breathsoon")
