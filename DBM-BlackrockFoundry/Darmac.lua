@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--Because boss numbering tends to get out of wack with things constantly joining/leaving fight. I've only seen boss1 and boss2 but for good measure.
 )
 
---TODO, still verify first call of the pack in normal and LFR after each mount up, and engage. Call of pack must come BEFORE next mount up to verify it, otherwise the data is tainted
+--TODO, verify normal again to see if it works similar to LFR. heck, verify all modes to see if the failsafe exists in all modes and can further refine call of pack to lose that 1-2 second variation.
 --Boss basic attacks
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
 --Boss gained abilities (beast deaths grant boss new abilities)
@@ -173,14 +173,8 @@ local function updateBeastTimers(self, all, spellId, adjust)
 		countdownCallPack:Cancel()
 		countdownPinDown:Cancel()
 		if self:IsDifficulty("lfr") then--Todo, see if normal also does this, since the 41 second timer is both normal and LFR
-			--Needs review. it's very difficult to get cause of the LFR specific mounting up resetting. I need a LFR group with LOW dps
-		--	if self.vb.ElekkAbilities and self.vb.WolfAbilities then
-		--		timerCallthePackCD:Start(40)
-		--		countdownCallPack:Start(40)
-		--	else--Just Elekk
-		--		timerCallthePackCD:Start(48)
-		--		countdownCallPack:Start(48)
-		--	end
+			timerCallthePackCD:Start(24)
+			countdownCallPack:Start(24)
 		else
 			timerCallthePackCD:Start(11)
 			countdownCallPack:Start(11)
@@ -212,9 +206,7 @@ function mod:OnCombatStart(delay)
 	timerPinDownCD:Start(11-delay)
 	countdownPinDown:Start(11-delay)
 	if self:IsLFR() then
-		--Guessed. i fucked up and started log late
-		--But timer definitely longer on pull
-		--this SHOULD be pretty close but may need shortening by small amount
+		--Now confirmed.
 		timerCallthePackCD:Start(20-delay)--Time for cast finish, not cast start, because only cast finish is sure thing. cast start can be interrupted
 		countdownCallPack:Start(20-delay)
 	else
@@ -418,10 +410,14 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					timerTantrumCD:Cancel()
 				end
 				if self:IsDifficulty("lfr") then--ONLY LFR does this
-					countdownCallPack:Cancel()
-					timerCallthePackCD:Cancel()
-					timerCallthePackCD:Start(20)
-					countdownCallPack:Start(20)
+					local remaining = timerCallthePackCD:GetRemaining()
+					if remaining < 20 then--if less than 20, it's changed to 20, else, current timer finishes if > 20
+						DBM:Debug("Call timer less than 20 remaining, CD reset to 20 by blizzard failsafe")
+						countdownCallPack:Cancel()
+						timerCallthePackCD:Cancel()
+						timerCallthePackCD:Start(20)
+						countdownCallPack:Start(20)
+					end
 				end
 			end
 		end
