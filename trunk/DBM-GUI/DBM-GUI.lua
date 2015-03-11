@@ -936,18 +936,10 @@ function UpdateAnimationFrame(mod)
 	DBM_BossPreview:ClearModel()
 	DBM_BossPreview:SetDisplayInfo(displayId or mod.modelId or 0)
 	DBM_BossPreview:SetSequence(4)
-	if DBM.Options.ModelSoundValue == "Short" then
-		if DBM.Options.UseMasterVolume then
-			PlaySoundFile(mod.modelSoundShort or 0, "Master")
-		else
-			PlaySoundFile(mod.modelSoundShort or 0)
-		end
-	elseif DBM.Options.ModelSoundValue == "Long" then
-		if DBM.Options.UseMasterVolume then
-			PlaySoundFile(mod.modelSoundLong or 0, "Master")
-		else
-			PlaySoundFile(mod.modelSoundLong or 0)
-		end
+	if mod.modelSoundShort and DBM.Options.ModelSoundValue == "Short" then
+		DBM:PlaySoundFile(mod.modelSoundShort)
+	elseif mod.modelSoundLong and DBM.Options.ModelSoundValue == "Long" then
+		DBM:PlaySoundFile(mod.modelSoundLong)
 	end
 end
 
@@ -1429,7 +1421,15 @@ local function CreateOptionsMenu()
 		MiniMapIcon:SetScript("OnShow", function(self)
 			self:SetChecked( DBM.Options.ShowMinimapButton )
 		end)
-		local UseMasterVolume			= generaloptions:CreateCheckButton(L.UseMasterVolume, true, nil, "UseMasterVolume")
+		local soundChannelsList = {
+			{	text	= L.UseMasterChannel,	value 	= "Master"},
+			{	text	= L.UseDialogChannel,	value 	= "Dialog"},
+			{	text	= L.UseSFXChannel,		value 	= "SFX"},
+		}
+		local ChallengeTimerDropDown = generaloptions:CreateDropdown(L.UseSoundChannel, soundChannelsList, "DBM", "UseSoundChannel", function(value)
+			DBM.Options.UseSoundChannel = value
+		end)
+		ChallengeTimerDropDown:SetPoint("TOPLEFT", generaloptions.frame, "TOPLEFT", 0, -60)
 
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame, 120, 30)
 		bmrange:SetPoint('TOPLEFT', UseMasterVolume, "BOTTOMLEFT", 0, -5)
