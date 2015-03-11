@@ -35,7 +35,6 @@ local warnCharringBreath				= mod:NewStackAnnounce(155074, 2, nil, "Tank")
 
 local specWarnLavaSlash					= mod:NewSpecialWarningMove(155318, nil, nil, nil, nil, nil, 2)
 local specWarnMoltenTorrent				= mod:NewSpecialWarningYou(154932, nil, nil, nil, nil, nil, 2)
-local specWarnMoltenTorrentOther		= mod:NewSpecialWarningMoveTo(154932, false)--Strat dependant. most strats i saw ran these into meleee instead of running to the meteor target.
 local yellMoltenTorrent					= mod:NewFadesYell(154932)
 local specWarnCinderWolves				= mod:NewSpecialWarningSpell(155776, nil, nil, nil, nil, nil, 2)
 local specWarnOverheated				= mod:NewSpecialWarningSwitch(154950, "Tank")
@@ -44,7 +43,7 @@ local specWarnFixateEnded				= mod:NewSpecialWarningEnd(154952, false)
 local specWarnBlazinRadiance			= mod:NewSpecialWarningMoveAway(155277, nil, nil, nil, nil, nil, 2)
 local yellBlazinRadiance				= mod:NewYell(155277, nil, false)
 local specWarnFireStorm					= mod:NewSpecialWarningSpell(155493, nil, nil, nil, 2, nil, 2)
-local specWarnFireStormEnded			= mod:NewSpecialWarningEnd(155493)
+local specWarnFireStormEnded			= mod:NewSpecialWarningEnd(155493, nil, nil, nil, nil, nil, 2)
 local specWarnRisingFlames				= mod:NewSpecialWarningStack(163284, nil, 6)--stack guessed
 local specWarnRisingFlamesOther			= mod:NewSpecialWarningTaunt(163284, nil, nil, nil, nil, nil, 2)
 local specWarnCharringBreath			= mod:NewSpecialWarningStack(155074, nil, 2)--Assumed based on timing and casts, that you swap every breath.
@@ -76,7 +75,6 @@ local voiceFireStorm					= mod:NewVoice(155493) --aoe
 local voiceLavaSlash					= mod:NewVoice(155318) --runaway
 
 mod:AddRangeFrameOption("10/6")
-mod:AddArrowOption("TorrentArrow", 154932, false, true)--Depend strat arrow useful if ranged run to torrent person strat. arrow useless if run torrent into melee strat.
 mod:AddHudMapOption("HudMapOnFixate", 154952, false)
 
 local fixateTagets = {}
@@ -108,9 +106,6 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.TorrentArrow then
-		DBM.Arrow:Hide()
-	end
 	if self.Options.HudMapOnFixate then
 		DBMHudMap:Disable()
 	end
@@ -135,6 +130,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnCinderWolves:Show()
 		timerBlazingRadianceCD:Start(34)
 		timerFireStormCD:Start()
+		voiceFireStorm:Schedule(56.5, "aesoon")
 		countdownFireStorm:Start()
 		voiceCinderWolves:Play("killmob")
 	elseif spellId == 155074 then
@@ -161,7 +157,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMoltenTorrentCD:Start(44)
 		timerSummonCinderWolvesCD:Start()
 		countdownCinderWolves:Start()
-		voiceFireStorm:Play("aesoon")--maybe gather?
+		voiceFireStorm:Play("gather")
 	elseif spellId == 154952 then
 		--Schedule, do to dogs changing mind bug
 		if not fixateTagets[args.destName] then
@@ -216,11 +212,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellMoltenTorrent:Schedule(3, 3)
 			yellMoltenTorrent:Schedule(2, 4)
 			yellMoltenTorrent:Schedule(1, 5)
-		else
-			specWarnMoltenTorrentOther:Show(args.destName)
-			if self.Options.TorrentArrow then
-				DBM.Arrow:ShowRunTo(args.destName, 3, 5)
-			end
 		end
 	elseif spellId == 154950 then
 		specWarnOverheated:Show()
@@ -242,11 +233,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 154932 then
-		if self.Options.TorrentArrow then
-			DBM.Arrow:Hide()
-		end
 		if args:IsPlayer() then
-			yellMoltenTorrent:Cancel()--In case player dieds
+			yellMoltenTorrent:Cancel()--In case player dies
 		end
 	elseif spellId == 154950 then
 		timerOverheated:Cancel(args.destName)
@@ -268,6 +256,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 155493 then
 		specWarnFireStormEnded:Show()
+		if self:IsMelee() then
+			voiceFireStorm:Play("safenow")
+		else
+			voiceFireStorm:Play("scatter")
+		end
 	end
 end
 
