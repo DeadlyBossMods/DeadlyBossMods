@@ -103,11 +103,7 @@ do
 	local function setSound(self, option, sound)
 		DBM.Options[option] = sound
 		if sound ~= "none" then
-			if DBM.Options.UseMasterVolume then
-				PlaySoundFile(sound, "Master")
-			else
-				PlaySoundFile(sound)
-			end
+			DBM:PlaySoundFile(sound)
 		end
 	end
 
@@ -361,19 +357,11 @@ local function updateSound(num)
 	soundUpdate = GetTime()
 	if num == 1 then
 		if DBM.Options.RangeFrameSound1 ~= "none" then
-			if DBM.Options.UseMasterVolume then
-				PlaySoundFile(DBM.Options.RangeFrameSound1, "Master")
-			else
-				PlaySoundFile(DBM.Options.RangeFrameSound1)
-			end
+			DBM:PlaySoundFile(DBM.Options.RangeFrameSound1)
 		end
 	elseif num > 1 then
 		if DBM.Options.RangeFrameSound2 ~= "none" then
-			if DBM.Options.UseMasterVolume then
-				PlaySoundFile(DBM.Options.RangeFrameSound2, "Master")
-			else
-				PlaySoundFile(DBM.Options.RangeFrameSound2)
-			end
+			DBM:PlaySoundFile(DBM.Options.RangeFrameSound2)
 		end
 	end
 end

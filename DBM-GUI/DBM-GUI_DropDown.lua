@@ -86,11 +86,7 @@ do
 				self:GetParent().dropdown.value = self.entry.value
 				self:GetParent().dropdown.text = self.entry.text
 				if self.entry.sound then
-					if DBM.Options.UseMasterVolume then
-						PlaySoundFile(self.entry.value, "Master")
-					else
-						PlaySoundFile(self.entry.value)
-					end
+					DBM:PlaySoundFile(self.entry.value)
 				end
 				if self.entry.func then
 					self.entry.func(self.entry.value)
@@ -279,11 +275,7 @@ do
 		_G[dropdown:GetName().."Text"]:SetJustifyH("LEFT")
 		_G[dropdown:GetName().."Middle"]:SetWidth(width + 30)
 		_G[dropdown:GetName().."Button"]:SetScript("OnClick", function(self)
-			if DBM.Options.UseMasterVolume then
-				PlaySound("igMainMenuOptionCheckBoxOn", "Master")
-			else
-				PlaySound("igMainMenuOptionCheckBoxOn")
-			end
+			DBM:PlaySound("igMainMenuOptionCheckBoxOn")
 			if TabFrame1:IsShown() then
 				TabFrame1:HideMenu()
 				TabFrame1.dropdown = nil

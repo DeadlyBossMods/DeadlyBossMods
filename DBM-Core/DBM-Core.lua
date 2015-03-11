@@ -134,7 +134,7 @@ DBM.DefaultOptions = {
 	AutologBosses = false,
 	AdvancedAutologBosses = false,
 	LogOnlyRaidBosses = false,
-	UseMasterVolume = true,
+	UseSoundChannel = "Master",
 	LFDEnhance = true,
 	WorldBossNearAlert = false,
 	RLReadyCheckSound = true,
@@ -285,8 +285,7 @@ local bossModPrototype = {}
 local usedProfile = "Default"
 local dbmIsEnabled = true
 local blockEnable = false
-local cachedGetTime = GetTime()
-local lastCombatStarted = cachedGetTime
+local lastCombatStarted = GetTime()
 local loadcIds = {}
 local inCombat = {}
 local combatInfo = {}
@@ -1315,7 +1314,6 @@ do
 	local nextModSyncSpamUpdate = 0
 	mainFrame:SetScript("OnUpdate", function(self, elapsed)
 		local time = GetTime()
-		cachedGetTime = time
 
 		-- execute scheduled tasks
 		local nextTask = getMin()
@@ -2489,22 +2487,6 @@ function DBM:GetBossUnitId(name)
 	end
 end
 
--- An anti spam function to throttle spammy events (e.g. SPELL_AURA_APPLIED on all group members)
--- @param time the time to wait between two events (optional, default 2.5 seconds)
--- @param id the id to distinguish different events (optional, only necessary if your mod keeps track of two different spam events at the same time)
-function DBM:AntiSpam(time, id)
-	if GetTime() - (id and (self["lastAntiSpam" .. tostring(id)] or 0) or self.lastAntiSpam or 0) > (time or 2.5) then
-		if id then
-			self["lastAntiSpam" .. tostring(id)] = GetTime()
-		else
-			self.lastAntiSpam = GetTime()
-		end
-		return true
-	else
-		return false
-	end
-end
-
 ---------------
 --  Options  --
 ---------------
@@ -2956,7 +2938,7 @@ do
 	local lastLFGAlert = 0
 	function DBM:LFG_ROLE_CHECK_SHOW()
 		if not UnitIsGroupLeader("player") and self.Options.LFDEnhance and GetTime() - lastLFGAlert > 5 then
-			PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
+			self:PlaySoundFile("Sound\\interface\\levelup2.ogg")--Because regular sound uses SFX channel which is too low of volume most of time
 			lastLFGAlert = GetTime()
 		end
 	end
@@ -2965,7 +2947,7 @@ end
 function DBM:LFG_PROPOSAL_SHOW()
 	self.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 	if self.Options.LFDEnhance then
-		PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
+		self:PlaySoundFile("Sound\\interface\\levelup2.ogg")--Because regular sound uses SFX channel which is too low of volume most of time
 	end
 end
 
@@ -2979,7 +2961,7 @@ end
 
 function DBM:READY_CHECK()
 	if self.Options.RLReadyCheckSound and not BINDING_HEADER_oRA3 then--readycheck sound, if ora3 not installed (bad to have 2 mods do it)
-		PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
+		self:PlaySoundFile("Sound\\interface\\levelup2.ogg")--Because regular sound uses SFX channel which is too low of volume most of time
 	end
 end
 
@@ -3088,7 +3070,7 @@ function DBM:UPDATE_BATTLEFIELD_STATUS()
 			queuedBattlefield[i] = select(2, GetBattlefieldStatus(i))
 			self.Bars:CreateBar(85, queuedBattlefield[i], "Interface\\Icons\\Spell_Holy_BorrowedTime")	-- need to confirm the timer
 			if self.Options.LFDEnhance then
-				PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
+				self:PlaySoundFile("Sound\\interface\\levelup2.ogg")--Because regular sound uses SFX channel which is too low of volume most of time
 			end
 		elseif queuedBattlefield[i] then
 			self.Bars:CancelBar(queuedBattlefield[i])
@@ -3123,8 +3105,8 @@ end
 function DBM:CHALLENGE_MODE_START(mapID)
 	self:Debug("CHALLENGE_MODE_START fired for mapID "..mapID)
 	if self.Options.ChallengeBest == "None" then return end
-	local maps = GetChallengeModeMapTable()--Hopefully this returns WoD CMs and not MoP ones. or maybe it returns all of them?
-	for i = 1, 8 do--Either giong to be 8 for WoD, or 17 if it includes mop+wod
+	local maps = GetChallengeModeMapTable()
+	for i = 1, 8 do
 		local _, mapIDVerify = GetChallengeModeMapInfo(maps[i])--Even though we get mapid from CHALLENGE_MODE_START, we still need CM index since GetChallengeModeMapPlayerStats doesn't take mapID :\
 		if mapID == mapIDVerify then
 			local guildBest, realmBest = GetChallengeBestTime(mapID)
@@ -3149,25 +3131,12 @@ function DBM:CHALLENGE_MODE_RESET()
 	end
 end
 
---This event may not exist at all in game, just combat log, will have to verify.
 function DBM:CHALLENGE_MODE_END(mapID, success, medal, completionTime)
 	self:Debug("CHALLENGE_MODE_END fired for mapID "..mapID)
 	if self.Options.ChallengeBest == "None" then return end
 	if self.Bars:GetBar(DBM_SPEED_CLEAR_TIMER_TEXT) then
 		self.Bars:CancelBar(DBM_SPEED_CLEAR_TIMER_TEXT)
 	end
-end
-
-function DBM:GetTime()
-	return cachedGetTime
-end
-
-function DBM:GetCurrentArea()
-	return LastInstanceMapID
-end
-
-function DBM:GetGroupSize()
-	return LastGroupSize
 end
 
 --------------------------------
@@ -4399,11 +4368,7 @@ do
 			if voice ~= "None" then 
 				path = "Interface\\AddOns\\DBM-VP"..voice.."\\checkhp.ogg"
 			end
-			if DBM.Options.UseMasterVolume then
-				PlaySoundFile(path, "Master")
-			else
-				PlaySoundFile(path)
-			end
+			self:PlaySoundFile(path)
 		end
 	end
 
@@ -4525,7 +4490,6 @@ do
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
---			if v.noEEDetection then return end
 			if v.multiEncounterPullDetection then
 				for _, eId in ipairs(v.multiEncounterPullDetection) do
 					if encounterID == eId then
@@ -4564,7 +4528,7 @@ do
 					else--World Boss
 						scanForCombat(v.mod, v.mob, 0)
 						if (DBM.Options.WorldBossNearAlert or v.mod.Options.ReadyCheck) and not IsQuestFlaggedCompleted(v.mod.readyCheckQuestId) then
-							PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")
+							DBM:PlaySoundFile("Sound\\interface\\levelup2.ogg")
 						end
 					end
 				end
@@ -5005,7 +4969,7 @@ do
 				end
 			end
 			if self.Options.AFKHealthWarning and UnitIsUnit(uId, "player") and (health < 85) and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
-				PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.ogg", "master")--So fire an alert sound to save yourself from this person's behavior.
+				self:PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.ogg")--So fire an alert sound to save yourself from this person's behavior.
 			end
 		end
 	end
@@ -5439,13 +5403,41 @@ function DBM:GetCurrentInstanceDifficulty()
 	end
 end
 
+function DBM:GetCurrentArea()
+	return LastInstanceMapID
+end
+
+function DBM:GetGroupSize()
+	return LastGroupSize
+end
+
+function DBM:PlaySoundFile(path)
+	if self.Options.UseSoundChannel == "Master" then
+		PlaySoundFile(path, "Master")
+	elseif self.Options.UseSoundChannel == "Dialog" then
+		PlaySoundFile(path, "Dialog")
+	else
+		PlaySoundFile(path)
+	end
+end
+
+function DBM:PlaySound(path)
+	if self.Options.UseSoundChannel == "Master" then
+		PlaySound(path, "Master")
+	elseif self.Options.UseSoundChannel == "Dialog" then
+		PlaySound(path, "Dialog")
+	else
+		PlaySound(path)
+	end
+end
+
 function DBM:UNIT_DIED(args)
 	local GUID = args.destGUID
 	if self:IsCreatureGUID(GUID) then
 		self:OnMobKill(self:GetCIDFromGUID(GUID))
 	end
 	if self.Options.AFKHealthWarning and GUID == UnitGUID("player") and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
-		PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.ogg", "master")--So fire an alert sound to save yourself from this person's behavior.
+		self:PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.ogg")--So fire an alert sound to save yourself from this person's behavior.
 	end
 end
 DBM.UNIT_DESTROYED = DBM.UNIT_DIED
@@ -5985,6 +5977,22 @@ function DBM:RoleCheck(ignoreLoot)
 	--Loot reminder even if spec isn't known or we are in LFR where we have a valid for role without us being ones that set us.
 	if not ignoreLoot and lootrole and (role ~= lootrole) and self.Options.RoleSpecAlert then
 		self:AddMsg(DBM_CORE_LOOT_SPEC_REMINDER:format(_G[role] or DBM_CORE_UNKNOWN, _G[lootrole]))
+	end
+end
+
+-- An anti spam function to throttle spammy events (e.g. SPELL_AURA_APPLIED on all group members)
+-- @param time the time to wait between two events (optional, default 2.5 seconds)
+-- @param id the id to distinguish different events (optional, only necessary if your mod keeps track of two different spam events at the same time)
+function DBM:AntiSpam(time, id)
+	if GetTime() - (id and (self["lastAntiSpam" .. tostring(id)] or 0) or self.lastAntiSpam or 0) > (time or 2.5) then
+		if id then
+			self["lastAntiSpam" .. tostring(id)] = GetTime()
+		else
+			self.lastAntiSpam = GetTime()
+		end
+		return true
+	else
+		return false
 	end
 end
 
@@ -7547,11 +7555,7 @@ do
 				end
 			end
 			if self.sound then
-				if DBM.Options.UseMasterVolume then
-					PlaySoundFile(DBM.Options.RaidWarningSound, "Master")
-				else
-					PlaySoundFile(DBM.Options.RaidWarningSound)
-				end
+				DBM:PlaySoundFile(DBM.Options.RaidWarningSound)
 			end
 			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
 			fireEvent("DBM_Announce", message)
@@ -7779,11 +7783,7 @@ do
 	end
 
 	function soundPrototype:Play(file)
-		if DBM.Options.UseMasterVolume then
-			PlaySoundFile(file, "Master")
-		else
-			PlaySoundFile(file)
-		end
+		DBM:PlaySoundFile(file)
 	end
 
 	function soundPrototype:Schedule(t, ...)
@@ -7837,13 +7837,9 @@ do
 		if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
 		if not self.option or self.mod.Options[self.option] or always then
 			local path = "Interface\\AddOns\\DBM-VP"..voice.."\\"..name..".ogg"
-				--Example "Interface\\AddOns\\DBM-VPHenry\\dispelnow.ogg"
-				--Usage: voiceBerserkerRush:Play("dispelnow")
-			if DBM.Options.UseMasterVolume then
-				PlaySoundFile(path, "Master")
-			else
-				PlaySoundFile(path)
-			end
+			--Example "Interface\\AddOns\\DBM-VPHenry\\dispelnow.ogg"
+			--Usage: voiceBerserkerRush:Play("dispelnow")
+			DBM:PlaySoundFile(path)
 		end
 	end
 
@@ -8568,23 +8564,19 @@ do
 		if forceVoice then--For options example
 			voice = forceVoice
 		else
-			voice = DBM.Options.CountdownVoice
+			voice = self.Options.CountdownVoice
 		end
 		local path
 		local maxCount = 5
-		for i = 1, #DBM.Counts do
-			if DBM.Counts[i].value == voice then
-				path = DBM.Counts[i].path
-				maxCount = DBM.Counts[i].max
+		for i = 1, #self.Counts do
+			if self.Counts[i].value == voice then
+				path = self.Counts[i].path
+				maxCount = self.Counts[i].max
 				break
 			end
 		end
 		if not path or (number > maxCount) then return end
-		if DBM.Options.UseMasterVolume then
-			PlaySoundFile(path..number..".ogg", "Master")
-		else
-			PlaySoundFile(path..number..".ogg")
-		end
+		self:PlaySoundFile(path..number..".ogg")
 	end
 	
 	function DBM:RegisterCountSound(t, v, p, m)
@@ -8661,11 +8653,7 @@ do
 
 	function DBM:PlaySpecialWarningSound(soundId)
 		local sound = type(soundId) == "number" and self.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or self.Options.SpecialWarningSound
-		if self.Options.UseMasterVolume then
-			PlaySoundFile(sound, "Master")
-		else
-			PlaySoundFile(sound)
-		end
+		self:PlaySoundFile(sound)
 	end
 
 	local function testWarningEnd()
