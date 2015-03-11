@@ -32,6 +32,7 @@ local warnAttachSlagBombs			= mod:NewTargetAnnounce(157000, 4)
 
 --Stage One: The Blackrock Forge
 local specWarnDemolition			= mod:NewSpecialWarningCount(156425, nil, nil, nil, 2, nil, 2)
+local specWarnMassiveDemolition		= mod:NewSpecialWarningCount(156479, false, nil, nil, 2)
 local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 3, nil, 2)
 local specWarnMarkedforDeathOther	= mod:NewSpecialWarningTarget(156096, false)
 local yellMarkedforDeath			= mod:NewYell(156096)
@@ -55,6 +56,7 @@ local specWarnFallingDebris			= mod:NewSpecialWarningSpell(162585, nil, nil, nil
 --Stage One: The Blackrock Forge
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDemolitionCD				= mod:NewNextCountTimer(45, 156425)
+local timerMassiveDemolitionCD		= mod:NewNextCountTimer(6, 156479)
 local timerMarkedforDeathCD			= mod:NewNextTimer(15.5, 156096)
 local timerThrowSlagBombsCD			= mod:NewCDTimer(24.5, 156030)--It's a next timer, but sometimes delayed by Shattering Smash
 local timerShatteringSmashCD		= mod:NewCDCountTimer(45, 155992)--power based, can variate a little do to blizzard buggy power code.
@@ -350,12 +352,31 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		else
 			timerDemolitionCD:Start(nil, self.vb.demolitionCount + 1)
 		end
+		timerMassiveDemolitionCD:Start(nil, 1)
+		if self:IsMythic() then
+			timerMassiveDemolitionCD:Schedule(6, 3, 2)
+			specWarnMassiveDemolition:Schedule(6, 1)
+			timerMassiveDemolitionCD:Schedule(9, 3, 3)
+			specWarnMassiveDemolition:Schedule(9, 2)
+			timerMassiveDemolitionCD:Schedule(12, 3, 4)
+			specWarnMassiveDemolition:Schedule(12, 3)
+			specWarnMassiveDemolition:Schedule(15, 4)
+		else
+			timerMassiveDemolitionCD:Schedule(6, 5, 2)
+			specWarnMassiveDemolition:Schedule(6, 1)
+			timerMassiveDemolitionCD:Schedule(11, 5, 3)
+			specWarnMassiveDemolition:Schedule(11, 2)
+			specWarnMassiveDemolition:Schedule(16, 3)
+		end
 		voiceDemolition:Play("aesoon")
 	elseif spellId == 161347 then--Phase 2 Trigger
 		self.vb.phase = 2
 		self.vb.smashCount = 0
 		self.vb.siegemaker = 0
 		timerDemolitionCD:Cancel()
+		timerMassiveDemolitionCD:Cancel()
+		timerMassiveDemolitionCD:Unschedule()
+		specWarnMassiveDemolition:Cancel()
 		countdownSlagBombs:Cancel()
 		countdownSlagBombs:Start(11)
 		timerThrowSlagBombsCD:Cancel()
