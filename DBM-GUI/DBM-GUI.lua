@@ -1432,7 +1432,7 @@ local function CreateOptionsMenu()
 		SoundChannelDropdown:SetPoint("TOPLEFT", generaloptions.frame, "TOPLEFT", 0, -75)
 
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame, 120, 30)
-		bmrange:SetPoint('TOPLEFT', SoundChannelDropdown, "BOTTOMLEFT", 0, -5)
+		bmrange:SetPoint('TOPLEFT', SoundChannelDropdown, "BOTTOMLEFT", 15, -5)
 		bmrange:SetScript("OnClick", function(self)
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide(true)
