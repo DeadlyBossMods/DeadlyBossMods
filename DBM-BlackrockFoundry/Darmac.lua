@@ -23,8 +23,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--Because boss numbering tends to get out of wack with things constantly joining/leaving fight. I've only seen boss1 and boss2 but for good measure.
 )
 
---TODO, see if call pack beasts change on normal affects LFR too. I'm assuming it does because they tend to stay synced.
---TODO, see if above change also has any effect on FIRST cast and update "updatebeasttimers" functions accordingly if it does
+--TODO, still verify first call of the pack in normal and LFR after each mount up, and engage. Call of pack must come BEFORE next mount up to verify it, otherwise the data is tainted
 --Boss basic attacks
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
 --Boss gained abilities (beast deaths grant boss new abilities)
@@ -149,7 +148,7 @@ local function updateBeastTimers(self, all, spellId, adjust)
 			countdownPinDown:Cancel()
 			countdownCallPack:Cancel()
 			if self:IsDifficulty("lfr") then--Todo, see if normal also does this, since the 41 second timer is both normal and LFR
-				timerCallthePackCD:Start(26)
+				timerCallthePackCD:Start(26)--Verified twice over in LFR.
 				countdownCallPack:Start(26)
 			else
 				timerCallthePackCD:Start(17)
@@ -174,13 +173,14 @@ local function updateBeastTimers(self, all, spellId, adjust)
 		countdownCallPack:Cancel()
 		countdownPinDown:Cancel()
 		if self:IsDifficulty("lfr") then--Todo, see if normal also does this, since the 41 second timer is both normal and LFR
-			if self.vb.ElekkAbilities and self.vb.WolfAbilities then
-				timerCallthePackCD:Start(40)
-				countdownCallPack:Start(40)
-			else--Just Elekk
-				timerCallthePackCD:Start(48)
-				countdownCallPack:Start(48)
-			end
+			--Needs review. it's very difficult to get cause of the LFR specific mounting up resetting. I need a LFR group with LOW dps
+		--	if self.vb.ElekkAbilities and self.vb.WolfAbilities then
+		--		timerCallthePackCD:Start(40)
+		--		countdownCallPack:Start(40)
+		--	else--Just Elekk
+		--		timerCallthePackCD:Start(48)
+		--		countdownCallPack:Start(48)
+		--	end
 		else
 			timerCallthePackCD:Start(11)
 			countdownCallPack:Start(11)
