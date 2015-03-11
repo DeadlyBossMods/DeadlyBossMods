@@ -15,7 +15,7 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "DBM timers failed to skin during combat. Your tim
 DBM_CORE_BAD_LOAD					= "DBM has detected your mod for this instance failed to fully load correctly because of combat. As soon as you are out of combat, please do /console reloadui as soon as possible."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s could not be loaded because your DBM-Core does not meet requirements. An updated version is required"
 
-DBM_CORE_BLIZZ_BUGS					= "Do to changes in 6.1 that disabled playing .wav media, all custom user sounds have been reset to defaults to force wipe any bad/missing sounds a user may have set in their mods. This reset will not occur again and you're safe to reconfigure custom sounds once more. Remember, once you set custom sounds on one profile, you can copy sound settings from that profile to others from the mod stats window."
+DBM_CORE_BLIZZ_BUGS					= "Do to changes in 6.1 that disabled playing .wav media, all custom special warning sounds have been reset to defaults to force wipe any bad/missing sounds a user may have set in their mods. This reset will not occur again and you're safe to reconfigure custom sounds once more and copy to other characters with profiles features."
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM has disabled dynamic range frame on this fight do to insufficient information about number of players needed to affect clump check for a group of your size."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM has disabled add count warnings on this fight do to insufficient information about number of adds that spawn for a group of your size."
