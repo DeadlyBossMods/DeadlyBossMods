@@ -1407,7 +1407,7 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 185, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 200, true)
 
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
@@ -1426,13 +1426,13 @@ local function CreateOptionsMenu()
 			{	text	= L.UseDialogChannel,	value 	= "Dialog"},
 			{	text	= L.UseSFXChannel,		value 	= "SFX"},
 		}
-		local ChallengeTimerDropDown = generaloptions:CreateDropdown(L.UseSoundChannel, soundChannelsList, "DBM", "UseSoundChannel", function(value)
+		local SoundChannelDropdown = generaloptions:CreateDropdown(L.UseSoundChannel, soundChannelsList, "DBM", "UseSoundChannel", function(value)
 			DBM.Options.UseSoundChannel = value
 		end)
-		ChallengeTimerDropDown:SetPoint("TOPLEFT", generaloptions.frame, "TOPLEFT", 0, -60)
+		SoundChannelDropdown:SetPoint("TOPLEFT", generaloptions.frame, "TOPLEFT", 0, -75)
 
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame, 120, 30)
-		bmrange:SetPoint('TOPLEFT', UseMasterVolume, "BOTTOMLEFT", 0, -5)
+		bmrange:SetPoint('TOPLEFT', SoundChannelDropdown, "BOTTOMLEFT", 0, -5)
 		bmrange:SetScript("OnClick", function(self)
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide(true)
