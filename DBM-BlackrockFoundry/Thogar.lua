@@ -276,7 +276,44 @@ local otherVoice = {
 	[22] = "A2",
 	[23] = "B2D3",
 	[24] = "AX",
-	[25] = "A1",--Possibly also random?
+	[25] = "A1",
+	[26] = "C1D4",--Don't worry, B14 will be used on mythic i'm sure. sorry about this messup
+	[27] = "A2",
+	[28] = "A3",
+	[29] = "D3",
+	[30] = "A14",
+	[31] = "A4",
+	[32] = "A3",
+	[33] = "A2",
+	[34] = "A1",
+}
+
+local lfrVoice = {
+	[1] = "A4",
+	[2] = "A2",
+	[3] = "B1",
+	[4] = "A3",
+	[5] = "C4",
+	[6] = "A2",
+	[7] = "D3",
+	[8] = "A1",
+	[9] = "B3",
+	[10] = "A14",
+	[11] = "C1",
+	[12] = "A2",
+	[13] = "B4",
+	[14] = "A3",
+	[15] = "A2",
+	[16] = "A1",
+	[17] = "D2C4",
+	[18] = "A1",
+	[19] = "A3",
+	[20] = "C14",
+	[21] = "A2",
+	[22] = "A2",
+	[23] = "B2D3",
+	[24] = "AX",
+	[25] = "A1",
 	[26] = "C1D4",--Don't worry, B14 will be used on mythic i'm sure. sorry about this messup
 	[27] = "A2",
 	[28] = "A3",
@@ -551,8 +588,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				end
 			end
 		else
-			if otherVoice[count] and not adjusted then
-				voiceTrain:Play("Thogar\\"..otherVoice[count])
+			local whatVoice = self:IsLFR() and lfrVoice[count] or otherVoice[count]
+			if whatVoice and not adjusted then
+				voiceTrain:Play("Thogar\\"..whatVoice)
 			end
 			if count == 31 or count == 32 or count == 33 then
 				expectedTime = 4
