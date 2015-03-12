@@ -207,8 +207,8 @@ function mod:OnCombatStart(delay)
 	self.vb.FaultlineAbilites = false
 	self.vb.tantrumCount = 0
 	table.wipe(activeBossGUIDS)
-	timerPinDownCD:Start(11-delay)
-	countdownPinDown:Start(11-delay)
+	timerPinDownCD:Start(9.5-delay)
+	countdownPinDown:Start(9.5-delay)
 	if self:IsLFR() then
 		--Now confirmed.
 		timerCallthePackCD:Start(20-delay)--Time for cast finish, not cast start, because only cast finish is sure thing. cast start can be interrupted
