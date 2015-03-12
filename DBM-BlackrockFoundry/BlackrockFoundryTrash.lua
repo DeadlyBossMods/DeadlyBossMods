@@ -79,10 +79,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOverheadSmash:Show(args.destName)
 		end
 	elseif spellId == 175993 then
-		local target = self:GetBossTarget(args.destGUID)
-		if target and target == UnitName("player") then
-			specWarnLumberingStrength:Show()
-		end
+		specWarnLumberingStrength:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
