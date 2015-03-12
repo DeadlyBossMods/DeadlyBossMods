@@ -61,6 +61,10 @@ L= DBM:GetModLocalization(1123)
 --------------------
 L= DBM:GetModLocalization(1162)
 
+L:SetMiscLocalization({
+	ExRTNotice		= "ExRT rune position assignent received. Your position: %s"
+})
+
 --------------------------
 -- Beastlord Darmac --
 --------------------------

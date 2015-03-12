@@ -257,42 +257,65 @@ do
 	local playerName = UnitName("player")
 	local Ambiguate = Ambiguate
 	local assignedPosition
+	local lastPosition = nil
 	function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
 		if prefix ~= "EXRTADD" then return end
 		local subPrefix,pos1,name1,pos2,name2,pos3,name3 = strsplit("\t", message)
 		if subPrefix ~= "kromog" then return end
 		DBM:Debug("Sender: "..sender.."Pos1: "..pos1..", Name1: "..(name1 or "nil")..", Pos2: "..pos2..", Name2: "..(name2 or "nil")..", Pos3: "..pos3..", Name3: "..(name3 or "nil"), 3)
 		--Check if player removed from a cached assignment
+		local positionUpdate = false
 		if assignedPosition and pos1 and tonumber(pos1) == assignedPosition and name1 ~= playerName then
 			assignedPosition, playerX, playerY = nil, nil, nil
 			DBM:Debug("Player is no longer asisgned to position "..pos1)
+			lastPosition = nil
+			positionUpdate = true
 		end
 		if assignedPosition and pos2 and tonumber(pos2) == assignedPosition and name2 ~= playerName then
 			assignedPosition, playerX, playerY = nil, nil, nil
 			DBM:Debug("Player is no longer asisgned to position "..pos2)
+			lastPosition = nil
+			positionUpdate = true
 		end
 		if assignedPosition and pos3 and tonumber(pos3) == assignedPosition and name3 ~= playerName then
 			assignedPosition, playerX, playerY = nil, nil, nil
 			DBM:Debug("Player is no longer asisgned to position "..pos3)
+			lastPosition = nil
+			positionUpdate = true
 		end
 		--Now the add player assignment code
 		if name1 and Ambiguate(name1, "none") == playerName then
 			assignedPosition = tonumber(pos1)
 			playerX = runes[assignedPosition][2]
 			playerY = runes[assignedPosition][1]
-			DBM:Debug("Player is assigned to position "..assignedPosition..": "..playerX..", "..playerY)
+			DBM:Debug("Player is assigned to position "..assignedPosition..": "..playerX..", "..playerY, 2)
+			if not lastPosition or lastPosition and lastPosition ~= assignedPosition then
+				lastPosition = assignedPosition
+				positionUpdate = true
+			end
 		end
 		if name2 and Ambiguate(name2, "none") == playerName then
 			assignedPosition = tonumber(pos2)
 			playerX = runes[assignedPosition][2]
 			playerY = runes[assignedPosition][1]
-			DBM:Debug("Player is assigned to position "..assignedPosition..": "..playerX..", "..playerY)
+			DBM:Debug("Player is assigned to position "..assignedPosition..": "..playerX..", "..playerY, 2)
+			if not lastPosition or lastPosition and lastPosition ~= assignedPosition then
+				lastPosition = assignedPosition
+				positionUpdate = true
+			end
 		end
 		if name3 and Ambiguate(name3, "none") == playerName then
 			assignedPosition = tonumber(pos3)
 			playerX = runes[assignedPosition][2]
 			playerY = runes[assignedPosition][1]
-			DBM:Debug("Player is assigned to position "..assignedPosition..": "..playerX..", "..playerY)
+			DBM:Debug("Player is assigned to position "..assignedPosition..": "..playerX..", "..playerY, 2)
+			if not lastPosition or lastPosition and lastPosition ~= assignedPosition then
+				lastPosition = assignedPosition
+				positionUpdate = true
+			end
+		end
+		if positionUpdate then
+			DBM:AddMsg(L.ExRTNotice:format((lastPosition or NONE)))
 		end
 	end
 end
