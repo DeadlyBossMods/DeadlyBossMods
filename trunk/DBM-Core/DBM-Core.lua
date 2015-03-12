@@ -8338,7 +8338,7 @@ do
 		return unschedule(self.Show, self.mod, self, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice, extraArg)
 		if not text then
 			error("NewSpecialWarning: you must provide special warning text", 2)
 			return
@@ -8348,7 +8348,8 @@ do
 			optionVersion = string.sub(text, 14)
 			text, optionDefault, optionName, noSound, runSound = optionDefault, optionName, noSound, runSound, temp
 		end
-        if runSound == true then
+		hasVoice = extraArg or hasVoice
+		if runSound == true then
 			runSound = 2
 		elseif not runSound then
 			runSound = 1
@@ -8378,7 +8379,7 @@ do
 		return obj
 	end
 
-	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice)
+	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice, extraArg)
 		if not spellId then
 			error("newSpecialWarning: you must provide spellId", 2)
 			return
@@ -8388,6 +8389,7 @@ do
 			optionVersion = string.sub(spellId, 14)
 			spellId, optionDefault, optionName, noSound, runSound = optionDefault, optionName, noSound, runSound, temp
 		end
+		hasVoice = extraArg or hasVoice
 		if runSound == true then
 			runSound = 2
 		elseif not runSound then
@@ -8532,12 +8534,13 @@ do
 		return newSpecialWarning(self, "count", text, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, optionName, noSound, runSound, optionVersion, hasVoice)
+	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, optionName, noSound, runSound, optionVersion, hasVoice, extraArg)
 		if type(text) == "string" and text:match("OptionVersion") then
 			local temp = optionVersion
 			optionVersion = string.sub(text, 14)
 			text, optionDefault, stacks, optionName, noSound, runSound = optionDefault, stacks, optionName, noSound, runSound, temp
 		end
+		hasVoice = extraArg or hasVoice
 		return newSpecialWarning(self, "stack", text, stacks, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice)
 	end
 
@@ -8549,12 +8552,13 @@ do
 		return newSpecialWarning(self, "switchcount", text, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, optionName, noSound, runSound, optionVersion, hasVoice)
+	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, optionName, noSound, runSound, optionVersion, hasVoice, extraArg)
 		if type(text) == "string" and text:match("OptionVersion") then
 			local temp = optionVersion
 			optionVersion = string.sub(text, 14)
 			text, optionDefault, time, optionName, noSound, runSound = optionDefault, time, optionName, noSound, runSound, temp
 		end
+		hasVoice = extraArg or hasVoice
 		return newSpecialWarning(self, "prewarn", text, time, optionDefault, optionName, noSound, runSound, optionVersion, hasVoice)
 	end
 
