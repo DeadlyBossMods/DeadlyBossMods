@@ -42,7 +42,7 @@ local timerRipplingSmashCD			= mod:NewCDTimer(21, 157592)--If it comes off CD ea
 local timerStoneBreathCD			= mod:NewCDCountTimer(22, 156852)
 local timerSlamCD					= mod:NewCDTimer(23, 156704, nil, "Tank")
 local timerWarpedArmorCD			= mod:NewCDTimer(14, 156766, nil, "Tank")
-local timerTremblingEarthCD			= mod:NewCDTimer(178.5, 173917)
+local timerTremblingEarthCD			= mod:NewCDTimer(153.5, 173917)
 local timerTremblingEarth			= mod:NewBuffActiveTimer(25, 173917)
 local timerCalloftheMountain		= mod:NewCastTimer(5, 158217)
 
@@ -90,7 +90,7 @@ function mod:OnCombatStart(delay)
 	self.vb.stoneBreath = 0
 	timerStoneBreathCD:Start(8-delay, 1)--8-10
 	timerWarpedArmorCD:Start(15-delay)
-	timerSlamCD:Start(25-delay)--More data needed
+	timerSlamCD:Start(18-delay)--first can be 18-26
 	timerRipplingSmashCD:Start(23.5-delay)
 	timerGraspingEarthCD:Start(50-delay)--50-55 variable
 	berserkTimer:Start(-delay)
@@ -196,7 +196,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerRipplingSmashCD:Cancel()
 		timerWarpedArmorCD:Cancel()
 		timerStoneBreathCD:Cancel()
-		timerTremblingEarthCD:Start()
+		timerTremblingEarthCD:Schedule(25)
 		local remaining = timerGraspingEarthCD:GetRemaining()
 		if remaining < 50 then--Will come off cd during mythic phase, update timer because mythic phase is coded to prevent this from happening and will push ability to about 12-17 seconds after mythic phase ended
 			timerGraspingEarthCD:Start(62)
