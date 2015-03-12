@@ -132,7 +132,7 @@ local function updateBeastTimers(self, all, spellId, adjust)
 	end
 	if self.vb.RylakAbilities and (self:IsMythic() and spellId == 155459 or all) then--Dreadwing
 		timerSuperheatedShrapnelCD:Cancel()
-		timerSuperheatedShrapnelCD:Start(9-dismountAdjust)
+		timerSuperheatedShrapnelCD:Start(7.5-dismountAdjust)
 	end
 	if self.vb.ElekkAbilities and (self:IsMythic() and spellId == 163247 or all) then--Ironcrusher
 		timerTantrumCD:Cancel()
@@ -445,6 +445,7 @@ function mod:UNIT_DIED(args)
 		--when one dies, don't want to cancel wrong timers
 		if cid == 76884 then
 			timerSavageHowlCD:Cancel()
+			timerRendandTearCD:Cancel()
 		elseif cid == 76874 then
 			timerConflagCD:Cancel()
 			timerInfernoBreathCD:Cancel()
@@ -454,6 +455,7 @@ function mod:UNIT_DIED(args)
 			self:BossTargetScannerAbort(76874, "BreathTarget")
 		elseif cid == 76945 then
 			timerStampedeCD:Cancel()
+			timerTantrumCD:Cancel()
 		elseif cid == 76946 then
 			timerEpicenterCD:Cancel()
 			countdownEpicenter:Cancel()
