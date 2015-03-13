@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 157060 157054 156704 157592 158217",
 	"SPELL_CAST_SUCCESS 158130 170469",
-	"SPELL_AURA_APPLIED 156766 161923 173917 156852 157059",
+	"SPELL_AURA_APPLIED 156766 161923 173917 156852 157059 156861",
 	"SPELL_AURA_APPLIED_DOSE 156766"
 )
 
@@ -24,6 +24,7 @@ mod:RegisterEvents(
 local warnCrushingEarth				= mod:NewTargetAnnounce(161923, 3, nil, false)--Players who failed to move. Off by default since announcing failures is not something DBM generally does by default. Can't announce pre cast unfortunately. No detection
 local warnStoneGeyser				= mod:NewSpellAnnounce(158130, 2)
 local warnWarpedArmor				= mod:NewStackAnnounce(156766, 2, nil, "Tank")
+local warnFrenzy					= mod:NewSpellAnnounce(156861, 3)
 
 local specWarnGraspingEarth			= mod:NewSpecialWarningMoveTo(157060, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(157060), nil, nil, nil, 2)
 local specWarnThunderingBlows		= mod:NewSpecialWarningSpell(157054, nil, nil, nil, 3)
@@ -62,6 +63,7 @@ mod:AddHudMapOption("HudMapForRune", 157060)--TODO, maybe custom option text exp
 
 mod.vb.mountainCast = 0
 mod.vb.stoneBreath = 0
+mod.vb.frenzied = false
 local playerX, playerY = nil, nil
 
 --Not local functions, so they can also be used as a test functions as well
@@ -88,14 +90,16 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.mountainCast = 0
 	self.vb.stoneBreath = 0
+	self.vb.frenzied = false
 	timerStoneBreathCD:Start(8-delay, 1)--8-10
 	timerWarpedArmorCD:Start(15-delay)
-	timerSlamCD:Start(18-delay)--first can be 18-26
+	timerSlamCD:Start(14.5-delay)--first can be 14.5-26. Most of time it's 18-20
 	timerRipplingSmashCD:Start(23.5-delay)
-	timerGraspingEarthCD:Start(50-delay)--50-55 variable
+	timerGraspingEarthCD:Start(50-delay)--50-61 variable
 	berserkTimer:Start(-delay)
 	if self:IsMythic() then
-		timerTremblingEarthCD:Start(82.5-delay)
+		--Confirmed multiple pulls, ability IS 61 seconds after engage, but 9 times out of 10, delayed by the 50-61 variable cd that's on grasping earth, thus why it APPEARS to have 84-101 second timer most of time.
+		timerTremblingEarthCD:Start(61-delay)
 	end
 end
 
@@ -129,6 +133,12 @@ function mod:SPELL_CAST_START(args)
 		self:RuneStart()
 		if self:IsMythic() then
 			timerGraspingEarthCD:Start(122)
+			local remaining = timerTremblingEarthCD:GetRemaining()
+			if remaining < 32 then
+				DBM:Debug("Trembling earth CD extended by Grasping Earth")
+				timerTremblingEarthCD:Cancel()
+				timerTremblingEarthCD:Start(32)
+			end
 		else
 			timerGraspingEarthCD:Start()
 			timerRipplingSmashCD:Start(35)
@@ -153,8 +163,7 @@ function mod:SPELL_CAST_START(args)
 		voiceCallofMountain:Play("findshelter")
 		if self.vb.mountainCast == 3 then--Start timers for resume normal phase
 			timerStoneBreathCD:Start(9, self.vb.stoneBreath+1)--Or 12
-			timerWarpedArmorCD:Start(14)--or 17
-			--Above 2 timers are always either 9 and 14 or 12 and 17. Haven't figured out case for the +3sec to both of them yet
+			timerWarpedArmorCD:Start(12.5)--12.5-17
 			--First slam and first rippling still too variable to start here.
 			--after that they get back into their consistency
 			--Rippling smash is WILDLY variable on mythic, to point that any timer for it is completely useless
@@ -175,7 +184,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 156766 then
 		local amount = args.amount or 1
 		warnWarpedArmor:Show(args.destName, amount)
-		timerWarpedArmorCD:Start()
+		if self.vb.frenzied then
+			timerWarpedArmorCD:Start(11)
+		else
+			timerWarpedArmorCD:Start()
+		end
 		if amount >= 2 then
 			voiceWarpedArmor:Play("changemt")
 			if args:IsPlayer() then
@@ -189,6 +202,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 161923 then
 		warnCrushingEarth:CombinedShow(0.5, args.destName)
 	elseif spellId == 173917 then
+		self.vb.mountainCast = 0
 		specWarnTremblingEarth:Show()
 		timerTremblingEarth:Start()
 		countdownTremblingEarth:Start()
@@ -199,6 +213,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerTremblingEarthCD:Schedule(25)
 		local remaining = timerGraspingEarthCD:GetRemaining()
 		if remaining < 50 then--Will come off cd during mythic phase, update timer because mythic phase is coded to prevent this from happening and will push ability to about 12-17 seconds after mythic phase ended
+			DBM:Debug("Grasping earth CD extended by Trembling Earth")
+			timerGraspingEarthCD:Cancel()--Prevent timer debug from complaining
 			timerGraspingEarthCD:Start(62)
 		end
 	elseif spellId == 156852 then
@@ -209,6 +225,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 157059 and args:IsPlayer() then
 		voiceGraspingEarth:Play("safenow")
 		self:RuneOver()
+	elseif spellId == 156861 then
+		self.vb.frenzied = true
+		warnFrenzy:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
