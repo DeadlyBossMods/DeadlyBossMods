@@ -63,7 +63,7 @@ L= DBM:GetModLocalization(1123)
 L= DBM:GetModLocalization(1162)
 
 L:SetMiscLocalization({
-	ExRTNotice		= "ExRT 애드온으로 부터 위치 받음. 당신의 위치: %s"
+	ExRTNotice		= "ExRT 애드온으로부터 위치 받음 (%s|1이;가; 보냄). 당신의 위치: %s"
 })
 
 --------------------------
