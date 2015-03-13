@@ -315,7 +315,7 @@ do
 			end
 		end
 		if positionUpdate then
-			DBM:AddMsg(L.ExRTNotice:format((lastPosition or NONE)))
+			DBM:AddMsg(L.ExRTNotice:format(sender, (lastPosition or NONE)))
 		end
 	end
 end
