@@ -103,7 +103,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	shipMessage		= "準備裝填無畏號的主炮了！"
+	shipMessage		= "準備裝填無畏號的主砲了！"
 })
 
 --------------------------
