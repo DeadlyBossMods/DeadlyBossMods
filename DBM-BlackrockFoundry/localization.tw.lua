@@ -6,6 +6,12 @@ local L
 ---------------
 L= DBM:GetModLocalization(1161)
 
+L:SetOptionLocalization({
+	MythicSoakBehavior	= "為神話模式團隊設置分傷戰術的團隊警告",
+	ThreeGroup			= "三小隊一層的戰術",
+	TwoGroup			= "兩小隊兩層的戰術" 
+})
+
 ---------------------------
 -- Oregorger, The Devourer --
 ---------------------------
@@ -47,6 +53,10 @@ L= DBM:GetModLocalization(1123)
 --Kromog, Legend of the Mountain --
 --------------------
 L= DBM:GetModLocalization(1162)
+
+L:SetMiscLocalization({
+	ExRTNotice		= "%s發送ExRT的符文位置分配。你的位置為:%s"
+})
 
 --------------------------
 -- Beastlord Darmac --
