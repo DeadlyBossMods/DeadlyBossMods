@@ -525,7 +525,7 @@ end
 
 function mod:UNIT_HEALTH_FREQUENT(uId)
 	local hp = UnitHealth(uId) / UnitHealthMax(uId)
-	if hp < 0.20 and not self.vb.phase == 2 then
+	if hp < 0.20 and self.vb.phase ~= 2 then
 		timerShipCD:Cancel()
 		self.vb.phase = 2
 		warnPhase2:Show()
