@@ -62,13 +62,13 @@ local yellInfernoBreath				= mod:NewYell(154989)
 
 --Boss basic attacks
 mod:AddTimerLine(CORE_ABILITIES)--Core Abilities
-local timerPinDownCD				= mod:NewCDTimer("OptionVersion2", 20, 155365, nil, "Ranged")--Every 20 seconds unless delayed by other things. CD timer used for this reason
+local timerPinDownCD				= mod:NewCDTimer("OptionVersion2", 19, 155365, nil, "Ranged")--Every 19 seconds unless delayed by other things. CD timer used for this reason
 local timerCallthePackCD			= mod:NewCDTimer("OptionVersion2", 31.5, 154975, nil, "Tank")--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart. In rare cases, boss still interrupts his own cast/delays cast even when not caused by gaining beast buff
 --Boss gained abilities (beast deaths grant boss new abilities)
 mod:AddTimerLine(SPELL_BUCKET_ABILITIES_UNLOCKED)--Abilities Unlocked
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
 local timerSuperheatedShrapnelCD	= mod:NewCDTimer(15, 155499)--15-30sec variation observed.
-local timerTantrumCD				= mod:NewNextCountTimer(29.5, 162275)--No varation, ever. Always highest priority spell and always a next timer, now that all the update code is working 100%
+local timerTantrumCD				= mod:NewNextCountTimer(29.5, 162275)
 local timerEpicenterCD				= mod:NewCDCountTimer(20, 159043, nil, "Melee")
 --Beast abilities (living)
 mod:AddTimerLine(BATTLE_PET_DAMAGE_NAME_8)--Beast
@@ -477,7 +477,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 155520 then--Beastlord Darmac Tantrum
 		self.vb.tantrumCount = self.vb.tantrumCount + 1
 		specWarnTantrum:Show(self.vb.tantrumCount)
-		timerTantrumCD:Start(34, self.vb.tantrumCount+1)--This one may also be 30 seconds, but I saw 34 consistently
+		timerTantrumCD:Start(33, self.vb.tantrumCount+1)--This one may also be 30 seconds, but I saw 33 consistently
 		voiceTantrum:Play("aesoon")
 	elseif spellId == 155603 then--Face Random Non-Tank (boss version)
 		specWarnSuperheatedShrapnel:Show()
