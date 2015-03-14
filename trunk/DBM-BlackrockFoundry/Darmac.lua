@@ -67,7 +67,7 @@ local timerCallthePackCD			= mod:NewCDTimer("OptionVersion2", 31.5, 154975, nil,
 --Boss gained abilities (beast deaths grant boss new abilities)
 mod:AddTimerLine(SPELL_BUCKET_ABILITIES_UNLOCKED)--Abilities Unlocked
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
-local timerSuperheatedShrapnelCD	= mod:NewCDTimer(15, 155499)--15-30sec variation observed.
+local timerSuperheatedShrapnelCD	= mod:NewCDTimer(14.5, 155499)--15-30sec variation observed.
 local timerTantrumCD				= mod:NewNextCountTimer(29.5, 162275)
 local timerEpicenterCD				= mod:NewCDCountTimer(20, 159043, nil, "Melee")
 --Beast abilities (living)
@@ -79,7 +79,7 @@ local timerInfernoBreathCD			= mod:NewNextTimer(20, 154989)
 
 local berserkTimer					= mod:NewBerserkTimer(720)
 
-local countdownPinDown				= mod:NewCountdown(20.5, 154960, "Ranged")
+local countdownPinDown				= mod:NewCountdown(19, 154960, "Ranged")
 local countdownCallPack				= mod:NewCountdown("Alt31", 154975, "Tank")
 local countdownEpicenter			= mod:NewCountdown("AltTwo20", 159043, "Melee")
 
@@ -247,7 +247,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnSavageHowl:Schedule(1.5, args.sourceName)
 		end
 		timerSavageHowlCD:Start()
-		voiceSavageHowl:Play("trannow")
+		voiceSavageHowl:Schedule(1.5, "trannow")
 	elseif spellId == 159043 or spellId == 159045 then--Beast version/Boss version
 		self.vb.epicenterCount = self.vb.epicenterCount + 1
 		if self:IsMelee() and self:AntiSpam(3, 2) then
