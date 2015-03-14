@@ -351,6 +351,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:Schedule(40, checkSecondSlag, self)
 			elseif self.vb.slagCount == 2 then
 				self.vb.secondSlagSpawned = true
+			else
+				timerSlagElemental:Start(nil, self.vb.slagCount+1)
 			end
 			voiceSlagElemental:Play("ej9657")
 		end
@@ -590,9 +592,11 @@ do
 			end
 		else
 			local bossPower = UnitPower("boss1") --Get Boss Power
-			if bossPower >= 85 and not self.vb.blastWarned and totalTime > 10 then
+			if bossPower >= 85 and not self.vb.blastWarned then
 				self.vb.blastWarned = true
-				specWarnBlast:Show()
+				if totalTime > 10 then
+					specWarnBlast:Show()
+				end
 			elseif bossPower < 5 and self.vb.blastWarned then--Should catch 0, if not, at least 1-4 will fire it but then timer may be a second or so off
 				self.vb.blastWarned = false
 				timerBlastCD:Start(totalTime)

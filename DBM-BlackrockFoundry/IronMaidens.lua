@@ -160,8 +160,14 @@ local function checkBoatPlayer(self)
 	end
 	DBM:Debug("checkBoatPlayer finished")
 	boatMissionDone = false
+	self:Unschedule(boatReturnWarning)
 	timerBombardmentAlphaCD:Cancel()
 	timerWarmingUp:Cancel()
+	if playerOnBoat then -- leave boat
+		playerOnBoat = false
+		recoverTimers()
+		DBM:Debug("Player Leaving Boat")
+	end
 end
 
 local function boatReturnWarning()
@@ -193,12 +199,30 @@ local function recoverTimers()
 	end
 end
 
+local function checkBoatOn(self, count)
+	if isPlayerOnBoat() then
+		playerOnBoat = true
+		timerBloodRitualCD:Cancel()
+		timerRapidFireCD:Cancel()
+		timerBladeDashCD:Cancel()
+		timerHeartSeekerCD:Cancel()
+		timerConvulsiveShadowsCD:Cancel()
+		timerPenetratingShotCD:Cancel()
+		timerBombardmentAlphaCD:Cancel()
+		DBM:Debug("Player Entering Boat")
+	elseif count < 20 then
+		self:Schedule(1, checkBoatOn, self, count + 1)
+	end
+end
+
 function mod:BladeDashTarget(targetname, uId)
 	warnBladeDash:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnBladeDash:Show()
-	elseif self:CheckNearby(8, targetname) then
-		specWarnBladeDashOther:Show(targetname)
+	if self:IsMythic() then
+		if targetname == UnitName("player") then
+			specWarnBladeDash:Show()
+		elseif self:CheckNearby(8, targetname) then
+			specWarnBladeDashOther:Show(targetname)
+		end
 	end
 end
 
@@ -218,8 +242,7 @@ function mod:OnCombatStart(delay)
 	timerRapidFireCD:Start(15.5-delay)
 	timerShipCD:Start(59.5-delay)
 	self:RegisterShortTermEvents(
-		"UNIT_HEALTH_FREQUENT boss1 boss2 boss3",
-		"UNIT_POWER_FREQUENT player"
+		"UNIT_HEALTH_FREQUENT boss1 boss2 boss3"
 	)
 end
 
@@ -445,6 +468,8 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 158849 then
 		timerWarmingUp:Start()
+		boatMissionDone = false
+		self:Schedule(1, checkBoatOn, self, 1)
 		self:Schedule(25, checkBoatPlayer, self)
 	end
 end
@@ -477,20 +502,20 @@ function mod:OnSync(msg, guid)
 		end
 		timerBombardmentAlphaCD:Start(14.5)
 		if guid == Marak then
-			self:Schedule(7, function()
+			self:Schedule(3, function()
 				timerBloodRitualCD:Cancel()
 				timerHeartSeekerCD:Cancel()
 			end)
 			voiceShip:Play("1695ukurogg")
 		elseif guid == Sorka then
-			self:Schedule(7, function()
+			self:Schedule(3, function()
 				timerBladeDashCD:Cancel()
 				timerConvulsiveShadowsCD:Cancel()
 				timerDarkHuntCD:Cancel()
 			end)
 			voiceShip:Play("1695gorak")
 		elseif guid == Garan then
-			self:Schedule(7, function()
+			self:Schedule(3, function()
 				timerRapidFireCD:Cancel()
 				timerPenetratingShotCD:Cancel()
 				timerDeployTurretCD:Cancel()
@@ -511,27 +536,5 @@ function mod:UNIT_HEALTH_FREQUENT(uId)
 		self.vb.phase = 2
 		warnPhase2:Show()
 		self:UnregisterShortTermEvents()
-	end
-end
-
-function mod:UNIT_POWER_FREQUENT(_, powerType)
-	if powerType ~= "ALTERNATE" then return end
-	local power = UnitPower("player", 10)
-	if power == 1 and not playerOnBoat then -- on boat
-		playerOnBoat = true
-		boatMissionDone = false
-		timerBloodRitualCD:Cancel()
-		timerRapidFireCD:Cancel()
-		timerBladeDashCD:Cancel()
-		timerHeartSeekerCD:Cancel()
-		timerConvulsiveShadowsCD:Cancel()
-		timerPenetratingShotCD:Cancel()
-		timerBombardmentAlphaCD:Cancel()
-	elseif power == 0 and playerOnBoat then -- leave boat
-		playerOnBoat = false
-		boatMissionDone = false
-		recoverTimers()
-		self:Unschedule(boatReturnWarning)
-		DBM:Debug("Player Leaving Boat")
 	end
 end
