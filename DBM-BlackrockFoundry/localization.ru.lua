@@ -6,6 +6,12 @@ local L
 ---------------
 L= DBM:GetModLocalization(1161)
 
+L:SetOptionLocalization({
+	MythicSoakBehavior	= "Настройка получения стаков от Инфернального удара для спец предупреждений (эпох. сложность)",
+	ThreeGroup			= "3 группы по 1 стаку каждая",
+	TwoGroup			= "2 группы по 2 стака каждая"
+})
+
 ---------------------------
 -- Oregorger, The Devourer --
 ---------------------------
@@ -63,7 +69,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnSplitSoon	= "Спец-предупредение за 10 секунд до разделения рейда"
+	specWarnSplitSoon	= "Спец-предупредение за 10 секунд до разделения рейда",
+	InfoFrameSpeed		= "Настройка отображения след. поезда в информационном окне",
+	Immediately			= "Как только открываются двери для текущего поезда",
+	Delayed				= "После того как текущий поезд выехал"
 })
 
 L:SetMiscLocalization({
@@ -90,7 +99,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	shipMessage		= "prepares to man the Dreadnaught's Main Cannon!"
+	shipMessage		= "готовится занять позицию у главного орудия дредноута!"
 })
 
 --------------------------
