@@ -37,7 +37,6 @@ local Garan = EJ_GetSectionInfo(10025)
 
 --Ship
 local warnPhase2						= mod:NewPhaseAnnounce(2)
-local warnPhase2p						= mod:NewPrePhaseAnnounce(2)
 local warnShip							= mod:NewSpellAnnounce("ej10019", 3, 76204)
 ----Blackrock Deckhand
 local warnProtectiveEarth				= mod:NewSpellAnnounce("OptionVersion2", 158707, 3, nil, false)--Could not verify
@@ -147,6 +146,29 @@ local function isPlayerOnBoat()
 	end
 end
 
+local function recoverTimers()
+	timerBombardmentAlphaCD:Cancel()
+	timerWarmingUp:Cancel()
+	if savedAbilityTime["BloodRitual"] and (GetTime() - savedAbilityTime["BloodRitual"]) < 20 then
+		timerBloodRitualCD:Update(GetTime() - savedAbilityTime["BloodRitual"], 20)
+	end
+	if savedAbilityTime["RapidFire"] and (GetTime() - savedAbilityTime["RapidFire"]) < 30 then
+		timerRapidFireCD:Update(GetTime() - savedAbilityTime["RapidFire"], 30)
+	end
+	if savedAbilityTime["BladeDash"] and (GetTime() - savedAbilityTime["BladeDash"]) < 20 then
+		timerBladeDashCD:Update(GetTime() - savedAbilityTime["BladeDash"], 20)
+	end
+	if savedAbilityTime["HeartSeeker"] and (GetTime() - savedAbilityTime["HeartSeeker"]) < 70 then
+		timerHeartSeekerCD:Update(GetTime() - savedAbilityTime["HeartSeeker"], 70)
+	end
+	if savedAbilityTime["ConvulsiveShadows"] and (GetTime() - savedAbilityTime["ConvulsiveShadows"]) < 56.5 then
+		timerConvulsiveShadowsCD:Update(GetTime() - savedAbilityTime["ConvulsiveShadows"], 56.5)
+	end
+	if savedAbilityTime["PenetratingShot"] and (GetTime() - savedAbilityTime["PenetratingShot"]) < 28.8 then
+		timerPenetratingShotCD:Update(GetTime() - savedAbilityTime["PenetratingShot"], 28.8)
+	end
+end
+
 local function checkBoatPlayer(self)
 	DBM:Debug("checkBoatPlayer running", 3)
 	for uId in DBM:GetGroupMembers() do 
@@ -173,29 +195,6 @@ end
 local function boatReturnWarning()
 	if boatMissionDone and isPlayerOnBoat() then
 		specWarnReturnBase:Show()
-	end
-end
-
-local function recoverTimers()
-	timerBombardmentAlphaCD:Cancel()
-	timerWarmingUp:Cancel()
-	if savedAbilityTime["BloodRitual"] and (GetTime() - savedAbilityTime["BloodRitual"]) < 20 then
-		timerBloodRitualCD:Update(GetTime() - savedAbilityTime["BloodRitual"], 20)
-	end
-	if savedAbilityTime["RapidFire"] and (GetTime() - savedAbilityTime["RapidFire"]) < 30 then
-		timerRapidFireCD:Update(GetTime() - savedAbilityTime["RapidFire"], 30)
-	end
-	if savedAbilityTime["BladeDash"] and (GetTime() - savedAbilityTime["BladeDash"]) < 20 then
-		timerBladeDashCD:Update(GetTime() - savedAbilityTime["BladeDash"], 20)
-	end
-	if savedAbilityTime["HeartSeeker"] and (GetTime() - savedAbilityTime["HeartSeeker"]) < 70 then
-		timerHeartSeekerCD:Update(GetTime() - savedAbilityTime["HeartSeeker"], 70)
-	end
-	if savedAbilityTime["ConvulsiveShadows"] and (GetTime() - savedAbilityTime["ConvulsiveShadows"]) < 56.5 then
-		timerConvulsiveShadowsCD:Update(GetTime() - savedAbilityTime["ConvulsiveShadows"], 56.5)
-	end
-	if savedAbilityTime["PenetratingShot"] and (GetTime() - savedAbilityTime["PenetratingShot"]) < 28.8 then
-		timerPenetratingShotCD:Update(GetTime() - savedAbilityTime["PenetratingShot"], 28.8)
 	end
 end
 
@@ -468,9 +467,6 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 158849 then
 		timerWarmingUp:Start()
-		boatMissionDone = false
-		self:Schedule(1, checkBoatOn, self, 1)
-		self:Schedule(25, checkBoatPlayer, self)
 	end
 end
 
@@ -493,6 +489,8 @@ function mod:OnSync(msg, guid)
 			end
 		end
 	elseif msg == "Ship" and guid then--technically not guid but it's fine.
+		self:Schedule(1, checkBoatOn, self, 1)
+		self:Schedule(25, checkBoatPlayer, self)
 		boatMissionDone = false
 		self.vb.ship = self.vb.ship + 1
 		self.vb.alphaOmega = 1
@@ -527,10 +525,6 @@ end
 
 function mod:UNIT_HEALTH_FREQUENT(uId)
 	local hp = UnitHealth(uId) / UnitHealthMax(uId)
---	if hp < 0.25 and not self.vb.below25 then
-	--	self.vb.below25 = true
-	--	timerShipCD:Cancel()
-	--	warnPhase2p:Show()
 	if hp < 0.20 and not self.vb.phase == 2 then
 		timerShipCD:Cancel()
 		self.vb.phase = 2
