@@ -502,6 +502,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerProtoGrenadeCD:Start()
 	elseif spellId == 159481 and args:IsPlayer() then
 		bombFrom = args.sourceGUID
+		voiceDelayedSiegeBomb:Play("keepmoving")
 		yellDelayedSiegeBomb:Yell(1)
 		specWarnDelayedSiegeBombMove:Show()
 		timerDelayedSiegeBomb:Start(3, 2)
