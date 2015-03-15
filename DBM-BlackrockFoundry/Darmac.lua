@@ -62,12 +62,12 @@ local yellInfernoBreath				= mod:NewYell(154989)
 
 --Boss basic attacks
 mod:AddTimerLine(CORE_ABILITIES)--Core Abilities
-local timerPinDownCD				= mod:NewCDTimer("OptionVersion2", 19, 155365, nil, "Ranged")--Every 19 seconds unless delayed by other things. CD timer used for this reason
+local timerPinDownCD				= mod:NewCDTimer("OptionVersion2", 19.7, 155365, nil, "Ranged")--Every 19.7 seconds unless delayed by other things. CD timer used for this reason
 local timerCallthePackCD			= mod:NewCDTimer("OptionVersion2", 31.5, 154975, nil, "Tank")--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart. In rare cases, boss still interrupts his own cast/delays cast even when not caused by gaining beast buff
 --Boss gained abilities (beast deaths grant boss new abilities)
 mod:AddTimerLine(SPELL_BUCKET_ABILITIES_UNLOCKED)--Abilities Unlocked
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
-local timerSuperheatedShrapnelCD	= mod:NewCDTimer(14.5, 155499)--15-30sec variation observed.
+local timerSuperheatedShrapnelCD	= mod:NewCDTimer(14.2, 155499)
 local timerTantrumCD				= mod:NewNextCountTimer(29.5, 162275)
 local timerEpicenterCD				= mod:NewCDCountTimer(20, 159043, nil, "Melee")
 --Beast abilities (living)
@@ -79,7 +79,7 @@ local timerInfernoBreathCD			= mod:NewNextTimer(20, 154989)
 
 local berserkTimer					= mod:NewBerserkTimer(720)
 
-local countdownPinDown				= mod:NewCountdown(19, 154960, "Ranged")
+local countdownPinDown				= mod:NewCountdown(19.7, 154960, "Ranged")
 local countdownCallPack				= mod:NewCountdown("Alt31", 154975, "Tank")
 local countdownEpicenter			= mod:NewCountdown("AltTwo20", 159043, "Melee")
 
@@ -158,8 +158,8 @@ local function updateBeastTimers(self, all, spellId, adjust)
 				timerCallthePackCD:Start(17)
 				countdownCallPack:Start(17)
 			end
-			timerPinDownCD:Start(24)
-			countdownPinDown:Start(24)
+			timerPinDownCD:Start(23)
+			countdownPinDown:Start(23)
 		else--TODO, i need data on rylak with wolf (2) or rylak with elekk (2).
 			timerCallthePackCD:Cancel()--Just to not repeatedly see timer update before expires
 			timerPinDownCD:Cancel()--Just to not repeatedly see timer update before expires

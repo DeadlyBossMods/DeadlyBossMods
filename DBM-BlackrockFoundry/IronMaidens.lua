@@ -237,7 +237,7 @@ function mod:OnCombatStart(delay)
 --	end
 	playerOnBoat = false
 	timerBladeDashCD:Start(8-delay)
-	timerBloodRitualCD:Start(13-delay)
+	timerBloodRitualCD:Start(12.4-delay)
 	timerRapidFireCD:Start(15.5-delay)
 	timerShipCD:Start(59.5-delay)
 	self:RegisterShortTermEvents(
@@ -488,7 +488,7 @@ function mod:OnSync(msg, guid)
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(156631, "highlight", targetName, 5, 12, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
 			end
 		end
-	elseif msg == "Ship" and guid then--technically not guid but it's fine.
+	elseif msg == "Ship" and guid and self:AntiSpam(10, 2) then--technically not guid but it's fine.
 		self:Schedule(1, checkBoatOn, self, 1)
 		self:Schedule(25, checkBoatPlayer, self)
 		boatMissionDone = false
