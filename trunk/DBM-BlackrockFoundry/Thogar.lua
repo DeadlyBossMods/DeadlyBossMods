@@ -13,17 +13,13 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 160140 163753 159481",
 	"SPELL_CAST_SUCCESS 155864",
-	"SPELL_AURA_APPLIED 155921 165195",
-	"SPELL_AURA_APPLIED_DOSE 155921",
+	"SPELL_AURA_APPLIED 155921 165195 164380",
+	"SPELL_AURA_APPLIED_DOSE 155921 164380",
 	"SPELL_AURA_REFRESH 155921",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
---TODO, maybe range finder for when Man-at_arms is out (reckless Charge)
---TODO, train timers, as well as what mobs get off with each train.
---TODO, mythic "move out of fire" warnings and maybe cast warnings too
---TODO, add audio countdown for trains when the train timers are proven good and support whole fight.
 --Operator Thogar
 local warnProtoGrenade				= mod:NewSpellAnnounce(155864, 3)
 local warnEnkindle					= mod:NewStackAnnounce(155921, 2, nil, "Tank")
@@ -43,7 +39,7 @@ local specWarnIronbellow			= mod:NewSpecialWarningSpell(163753, nil, nil, nil, 2
 local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481)
 local yellDelayedSiegeBomb			= mod:NewYell(159481)
 local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", "-Healer")
---local specWarnObliteration		= mod:NewSpecialWarningMove(156494)--Debuff doesn't show in combat log, and dot persists after moving out of it so warning is pretty useless right now. TODO, see if UNIT_AURA player type check can work.
+local specWarnBurning				= mod:NewSpecialWarningMove(164380, nil, nil, nil, nil, nil, 2)--Mythic
 
 --Operator Thogar
 local timerProtoGrenadeCD			= mod:NewCDTimer(11, 155864)
@@ -59,6 +55,7 @@ local countdownTrain				= mod:NewCountdown(5, 176312)
 
 local voiceTrain					= mod:NewVoice(176312) --see mythicVoice{} otherVoice{} tables for more details
 local voiceProtoGrenade				= mod:NewVoice(165195) --runaway
+local voiceBurning					= mod:NewVoice(164380) --runaway
 
 mod:AddInfoFrameOption(176312)
 mod:AddSetIconOption("SetIconOnAdds", "ej9549", false, true)
@@ -517,6 +514,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceProtoGrenade:Play("runaway")
 --[[	elseif spellId == 156494 and args:IsPlayer() and self:AntiSpam(3, 2) then
 		specWarnObliteration:Show()--]]
+	--Applied debuffs, not damage. Damage occurs for 15 seconds even when player moves out of it, but player gains stack of debuff every second standing in fire.
+	elseif spellId == 164380 and args:IsPlayer() and self:AntiSpam(2, 3) then
+		specWarnBurning:Show()
+		voiceBurning:Play("runaway")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
