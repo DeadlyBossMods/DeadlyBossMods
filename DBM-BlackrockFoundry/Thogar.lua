@@ -38,7 +38,7 @@ local specWarnSplitSoon				= mod:NewSpecialWarning("specWarnSplitSoon")--TODO, m
 --Adds
 local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt("OptionVersion2", 160140, "-Healer")
 local specWarnIronbellow			= mod:NewSpecialWarningSpell(163753, nil, nil, nil, 2)
-local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481)
+local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481, nil, nil, nil, nil, nil, 2)
 local specWarnDelayedSiegeBombMove	= mod:NewSpecialWarningMove(159481)
 local yellDelayedSiegeBomb			= mod:NewCountYell(159481)
 local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", "-Healer")
@@ -59,6 +59,7 @@ local countdownTrain				= mod:NewCountdown(5, 176312)
 
 local voiceTrain					= mod:NewVoice(176312) --see mythicVoice{} otherVoice{} tables for more details
 local voiceProtoGrenade				= mod:NewVoice(165195) --runaway
+local voiceDelayedSiegeBomb			= mod:NewVoice(159481)
 
 mod:AddInfoFrameOption(176312)
 mod:AddSetIconOption("SetIconOnAdds", "ej9549", false, true)
@@ -447,6 +448,7 @@ function mod:BombTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		specWarnDelayedSiegeBomb:Show()
 		timerDelayedSiegeBomb:Start(6, 1)
+		voiceDelayedSiegeBomb:Play("bombrun")
 	end
 end
 
