@@ -560,11 +560,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			if mythicVoice[count] and not adjusted then
 				voiceTrain:Play("Thogar\\"..mythicVoice[count])
 			end
-			if count == 1 or count == 2 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 31 then
+			if count == 1 or count == 2 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 31 or count == 34 then
 				expectedTime = 5
 			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 32 then
 				expectedTime = 10
-			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 33 or count == 34 then
+			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 33 then
 				expectedTime = 15
 				if count == 20 then
 					specWarnSplitSoon:Cancel()
