@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 160140 163753 159481",
-	"SPELL_CAST_SUCCESS 155864",
+	"SPELL_CAST_SUCCESS 155864 159481",
 	"SPELL_AURA_APPLIED 155921 165195 164380",
 	"SPELL_AURA_APPLIED_DOSE 155921 164380",
 	"SPELL_AURA_REFRESH 155921",
@@ -39,7 +39,8 @@ local specWarnSplitSoon				= mod:NewSpecialWarning("specWarnSplitSoon")--TODO, m
 local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt("OptionVersion2", 160140, "-Healer")
 local specWarnIronbellow			= mod:NewSpecialWarningSpell(163753, nil, nil, nil, 2)
 local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481)
-local yellDelayedSiegeBomb			= mod:NewYell(159481)
+local specWarnDelayedSiegeBombMove	= mod:NewSpecialWarningMove(159481)
+local yellDelayedSiegeBomb			= mod:NewCountYell(159481)
 local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", "-Healer")
 local specWarnBurning				= mod:NewSpecialWarningStack(164380, nil, 2)--Mythic
 
@@ -50,6 +51,7 @@ local timerTrainCD					= mod:NewNextCountTimer("d15", 176312)
 --Adds
 --local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140)
 local timerIronbellowCD				= mod:NewCDTimer(8.5, 163753)
+local timerDelayedSiegeBomb			= mod:NewNextCountTimer(6, 159481)
 
 local berserkTimer					= mod:NewBerserkTimer(492)
 
@@ -73,6 +75,7 @@ local Reinforcements = EJ_GetSectionInfo(9537)
 local ManOArms = EJ_GetSectionInfo(9549)
 local Deforester = EJ_GetSectionInfo(10329)
 local fakeYellTime = 0
+local bombFrom = nil
 
 --Note, all trains spawn 5 second after yell for that train
 --this means that for 5 second cd trains you may see a yell for NEXT train as previous train is showing up. Do not confuse this!
@@ -443,7 +446,7 @@ function mod:BombTarget(targetname, uId)
 	warnDelayedSiegeBomb:CombinedShow(0.5, targetname)
 	if targetname == UnitName("player") then
 		specWarnDelayedSiegeBomb:Show()
-		yellDelayedSiegeBomb:Yell()
+		timerDelayedSiegeBomb:Start(6, 1)
 	end
 end
 
@@ -463,6 +466,7 @@ end
 
 function mod:OnCombatStart(delay)
 	fakeYellTime = 0
+	bombFrom = nil
 	self.vb.trainCount = 0
 	self.vb.infoCount = 0
 	timerProtoGrenadeCD:Start(6-delay)
@@ -493,6 +497,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 155864 and self:AntiSpam(2, 4) then
 		self:BossTargetScanner(76906, "GrenadeTarget", 0.05, 10)
 		timerProtoGrenadeCD:Start()
+	elseif spellId == 159481 and args:IsPlayer() then
+		bombFrom = args.sourceGUID
+		yellDelayedSiegeBomb:Yell(1)
+		specWarnDelayedSiegeBombMove:Show()
+		timerDelayedSiegeBomb:Start(3, 2)
+		yellDelayedSiegeBomb:Schedule(3, 2)
+		specWarnDelayedSiegeBombMove:Schedule(3)
+		timerDelayedSiegeBomb:Schedule(3, 3, 3)
+		yellDelayedSiegeBomb:Schedule(6, 3)
+		specWarnDelayedSiegeBombMove:Schedule(6)
 	end
 end
 
@@ -550,6 +564,11 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 80791 then
 		timerIronbellowCD:Cancel(args.destGUID)
+	elseif bombFrom and args.destGUID == bombFrom then
+		yellDelayedSiegeBomb:Cancel()
+		specWarnDelayedSiegeBombMove:Cancel()
+		timerDelayedSiegeBomb:Cancel()
+		timerDelayedSiegeBomb:Unschedule()
 	end
 end
 
