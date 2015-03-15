@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 )
 
 --Operator Thogar
-local warnProtoGrenade				= mod:NewSpellAnnounce(155864, 3)
+local warnProtoGrenade				= mod:NewTargetAnnounce(155864, 3)
 local warnEnkindle					= mod:NewStackAnnounce(155921, 2, nil, "Tank")
 local warnTrain						= mod:NewTargetCountAnnounce(176312, 4)
 --Adds
@@ -29,6 +29,8 @@ local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)
 
 --Operator Thogar
 local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195, nil, nil, nil, nil, nil, 2)
+local specWarnProtoGrenadeNear		= mod:NewSpecialWarningClose(165195)
+local yellProtoGrenade				= mod:NewYell(165195)
 local specWarnEnkindle				= mod:NewSpecialWarningStack(155921, nil, 2)--Maybe need 3 for new cd?
 local specWarnEnkindleOther			= mod:NewSpecialWarningTaunt(155921)
 local specWarnTrain					= mod:NewSpecialWarningDodge(176312, nil, nil, nil, 3)
@@ -445,6 +447,20 @@ function mod:BombTarget(targetname, uId)
 	end
 end
 
+function mod:GrenadeTarget(targetname, uId)
+	if not targetname then return end
+	warnProtoGrenade:Show(targetname)
+	if targetname == UnitName("player") then
+		yellProtoGrenade:Yell()
+		if self:AntiSpam(1.5, 5) then
+			specWarnProtoGrenade:Show()
+			voiceProtoGrenade:Play("runaway")
+		end
+	elseif self:CheckNearby(5, targetname) then
+		specWarnProtoGrenadeNear:Show()
+	end
+end
+
 function mod:OnCombatStart(delay)
 	fakeYellTime = 0
 	self.vb.trainCount = 0
@@ -475,7 +491,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 155864 and self:AntiSpam(2, 4) then
-		warnProtoGrenade:Show()
+		self:BossTargetScanner(76906, "GrenadeTarget", 0.05, 10)
 		timerProtoGrenadeCD:Start()
 	end
 end
@@ -514,7 +530,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif spellId == 165195 and args:IsPlayer() then
+	elseif spellId == 165195 and args:IsPlayer() and self:AntiSpam(1.5, 5) then
 		specWarnProtoGrenade:Show()
 		voiceProtoGrenade:Play("runaway")
 --[[	elseif spellId == 156494 and args:IsPlayer() and self:AntiSpam(3, 2) then
