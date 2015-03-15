@@ -39,7 +39,7 @@ local specWarnIronbellow			= mod:NewSpecialWarningSpell(163753, nil, nil, nil, 2
 local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481)
 local yellDelayedSiegeBomb			= mod:NewYell(159481)
 local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", "-Healer")
---local specWarnBurning				= mod:NewSpecialWarningMove(164380, nil, nil, nil, nil, nil, 2)--Mythic
+local specWarnBurning				= mod:NewSpecialWarningStack(164380, nil, 2)--Mythic
 
 --Operator Thogar
 local timerProtoGrenadeCD			= mod:NewCDTimer(11, 155864)
@@ -55,7 +55,6 @@ local countdownTrain				= mod:NewCountdown(5, 176312)
 
 local voiceTrain					= mod:NewVoice(176312) --see mythicVoice{} otherVoice{} tables for more details
 local voiceProtoGrenade				= mod:NewVoice(165195) --runaway
---local voiceBurning					= mod:NewVoice(164380) --runaway
 
 mod:AddInfoFrameOption(176312)
 mod:AddSetIconOption("SetIconOnAdds", "ej9549", false, true)
@@ -64,6 +63,7 @@ mod:AddDropdownOption("InfoFrameSpeed", {"Immediately", "Delayed"}, "Delayed", "
 mod.vb.trainCount = 0
 mod.vb.infoCount = 0
 local GetTime, UnitPosition = GetTime, UnitPosition
+local UnitDebuff = UnitDebuff
 local MovingTrain = GetSpellInfo(176312)
 local Train = GetSpellInfo(174806)
 local Cannon = GetSpellInfo(62357)
@@ -504,7 +504,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnEnkindle:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
-				if not UnitDebuff("player", GetSpellInfo(155921)) and not UnitIsDeadOrGhost("player") then
+				local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)
+				local debuffTime = 0
+				if expires then
+					debuffTime = expires - GetTime()
+				end
+				if debuffTime < 12 and not UnitIsDeadOrGhost("player") then--No debuff, or debuff will expire before next cast.
 					specWarnEnkindleOther:Show(args.destName)
 				end
 			end
@@ -515,9 +520,11 @@ function mod:SPELL_AURA_APPLIED(args)
 --[[	elseif spellId == 156494 and args:IsPlayer() and self:AntiSpam(3, 2) then
 		specWarnObliteration:Show()--]]
 	--Applied debuffs, not damage. Damage occurs for 15 seconds even when player moves out of it, but player gains stack of debuff every second standing in fire.
---	elseif spellId == 164380 and args:IsPlayer() and self:AntiSpam(2, 3) then
---		specWarnBurning:Show()
---		voiceBurning:Play("runaway")
+	elseif spellId == 164380 and args:IsPlayer() and self:AntiSpam(2, 3) then
+		local amount = args.amount or 1
+		if amount >= 2 then
+			specWarnBurning:Show(amount)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
