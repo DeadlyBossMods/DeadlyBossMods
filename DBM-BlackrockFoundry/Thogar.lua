@@ -39,7 +39,7 @@ local specWarnIronbellow			= mod:NewSpecialWarningSpell(163753, nil, nil, nil, 2
 local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481)
 local yellDelayedSiegeBomb			= mod:NewYell(159481)
 local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", "-Healer")
-local specWarnBurning				= mod:NewSpecialWarningMove(164380, nil, nil, nil, nil, nil, 2)--Mythic
+--local specWarnBurning				= mod:NewSpecialWarningMove(164380, nil, nil, nil, nil, nil, 2)--Mythic
 
 --Operator Thogar
 local timerProtoGrenadeCD			= mod:NewCDTimer(11, 155864)
@@ -55,7 +55,7 @@ local countdownTrain				= mod:NewCountdown(5, 176312)
 
 local voiceTrain					= mod:NewVoice(176312) --see mythicVoice{} otherVoice{} tables for more details
 local voiceProtoGrenade				= mod:NewVoice(165195) --runaway
-local voiceBurning					= mod:NewVoice(164380) --runaway
+--local voiceBurning					= mod:NewVoice(164380) --runaway
 
 mod:AddInfoFrameOption(176312)
 mod:AddSetIconOption("SetIconOnAdds", "ej9549", false, true)
@@ -515,9 +515,9 @@ function mod:SPELL_AURA_APPLIED(args)
 --[[	elseif spellId == 156494 and args:IsPlayer() and self:AntiSpam(3, 2) then
 		specWarnObliteration:Show()--]]
 	--Applied debuffs, not damage. Damage occurs for 15 seconds even when player moves out of it, but player gains stack of debuff every second standing in fire.
-	elseif spellId == 164380 and args:IsPlayer() and self:AntiSpam(2, 3) then
-		specWarnBurning:Show()
-		voiceBurning:Play("runaway")
+--	elseif spellId == 164380 and args:IsPlayer() and self:AntiSpam(2, 3) then
+--		specWarnBurning:Show()
+--		voiceBurning:Play("runaway")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
