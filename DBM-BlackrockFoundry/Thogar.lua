@@ -455,7 +455,6 @@ end
 
 function mod:GrenadeTarget(targetname, uId)
 	if not targetname then return end
-	warnProtoGrenade:Show(targetname)
 	if targetname == UnitName("player") then
 		yellProtoGrenade:Yell()
 		if self:AntiSpam(1.5, 5) then
@@ -464,6 +463,8 @@ function mod:GrenadeTarget(targetname, uId)
 		end
 	elseif self:CheckNearby(5, targetname) then
 		specWarnProtoGrenadeNear:Show(targetname)
+	else
+		warnProtoGrenade:Show(targetname)
 	end
 end
 
