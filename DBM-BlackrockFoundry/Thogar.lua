@@ -474,7 +474,6 @@ function mod:OnCombatStart(delay)
 	self.vb.trainCount = 0
 	self.vb.infoCount = 0
 	timerProtoGrenadeCD:Start(6-delay)
-	timerEnkindleCD:Start(15-delay)
 	if not self.Options.ShowedThogarMessage then
 		DBM:AddMsg(L.helperMessage)
 		self.Options.ShowedThogarMessage = true
