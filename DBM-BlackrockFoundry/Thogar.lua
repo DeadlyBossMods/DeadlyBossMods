@@ -56,7 +56,7 @@ local timerDelayedSiegeBomb			= mod:NewNextCountTimer(6, 159481)
 
 local berserkTimer					= mod:NewBerserkTimer(492)
 
-local countdownTrain				= mod:NewCountdown(5, 176312)
+local countdownTrain				= mod:NewCountdown(4.5, 176312)
 
 local voiceTrain					= mod:NewVoice(176312) --see mythicVoice{} otherVoice{} tables for more details
 local voiceProtoGrenade				= mod:NewVoice(165195) --runaway
@@ -589,7 +589,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			self.vb.trainCount = self.vb.trainCount + 1
 			showTrainWarning(self)
 			if msg == "Fake" then
-				countdownTrain:Start(3.5)
+				countdownTrain:Start(3.0)
 				laneCheck(self)
 			else
 				countdownTrain:Start()
