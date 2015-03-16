@@ -498,7 +498,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 155864 and self:AntiSpam(2, 4) then
-		self:BossTargetScanner(76906, "GrenadeTarget", 0.05, 10)
+		self:BossTargetScanner(76906, "GrenadeTarget", 0.05, 10, true, nil, false)
 		timerProtoGrenadeCD:Start()
 	elseif spellId == 159481 and args:IsPlayer() then
 		bombFrom = args.sourceGUID
