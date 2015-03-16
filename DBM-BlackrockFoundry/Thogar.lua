@@ -561,7 +561,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount >= 2 then
 			specWarnBurning:Show(amount)
 		end
-	elseif spellId == 160140 then
+	elseif spellId == 160140 and args:IsDestTypeHostile() then
 		specWarnCauterizingBoltDispel:Show(args.destName)
 	end
 end
