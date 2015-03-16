@@ -454,7 +454,10 @@ function mod:BombTarget(targetname, uId)
 end
 
 function mod:GrenadeTarget(targetname, uId)
-	if not targetname then return end
+	if not targetname then
+		warnProtoGrenade:Show(DBM_CORE_UNKNOWN)
+		return
+	end
 	if targetname == UnitName("player") then
 		yellProtoGrenade:Yell()
 		if self:AntiSpam(1.5, 5) then
@@ -498,7 +501,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 155864 and self:AntiSpam(2, 4) then
-		self:BossTargetScanner(76906, "GrenadeTarget", 0.05, 10, true, nil, false)
+		self:BossTargetScanner(76906, "GrenadeTarget", 0.05, 16, true, nil, false)
 		timerProtoGrenadeCD:Start()
 	elseif spellId == 159481 and args:IsPlayer() then
 		bombFrom = args.sourceGUID
