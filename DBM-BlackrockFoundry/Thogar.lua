@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 160140 163753 159481",
 	"SPELL_CAST_SUCCESS 155864 159481",
-	"SPELL_AURA_APPLIED 155921 165195 164380",
+	"SPELL_AURA_APPLIED 155921 165195 164380 160140",
 	"SPELL_AURA_APPLIED_DOSE 155921 164380",
 	"SPELL_AURA_REFRESH 155921",
 	"UNIT_DIED",
@@ -37,6 +37,7 @@ local specWarnTrain					= mod:NewSpecialWarningDodge(176312, nil, nil, nil, 3)
 local specWarnSplitSoon				= mod:NewSpecialWarning("specWarnSplitSoon")--TODO, maybe include types in the split?
 --Adds
 local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt("OptionVersion2", 160140, "-Healer")
+local specWarnCauterizingBoltDispel	= mod:NewSpecialWarningDispel(160140, "MagicDispeller")
 local specWarnIronbellow			= mod:NewSpecialWarningSpell(163753, nil, nil, nil, 2)
 local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481, nil, nil, nil, nil, nil, 2)
 local specWarnDelayedSiegeBombMove	= mod:NewSpecialWarningMove(159481)
@@ -501,7 +502,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 155864 and self:AntiSpam(2, 4) then
-		self:BossTargetScanner(76906, "GrenadeTarget", 0.05, 16, true, nil, false)
+		self:BossTargetScanner(76906, "GrenadeTarget", 0.05, 16, true, nil, true)
 		timerProtoGrenadeCD:Start()
 	elseif spellId == 159481 and args:IsPlayer() then
 		bombFrom = args.sourceGUID
@@ -560,6 +561,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount >= 2 then
 			specWarnBurning:Show(amount)
 		end
+	elseif spellId == 160140 then
+		specWarnCauterizingBoltDispel:Show(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
