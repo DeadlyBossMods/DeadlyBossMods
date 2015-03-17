@@ -35,6 +35,7 @@ local warnAttachSlagBombs			= mod:NewTargetAnnounce(157000, 4)
 local specWarnDemolition			= mod:NewSpecialWarningCount(156425, nil, nil, nil, 2, nil, 2)
 local specWarnMassiveDemolition		= mod:NewSpecialWarningCount(156479, false, nil, nil, 2)
 local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 3, nil, 2)
+local specWarnMFDPosition			= mod:NewSpecialWarning("specWarnMFDPosition", nil, false, nil, 1, nil, 4)--Mythic Position Assignment. No option, connected to specWarnMarkedforDeath
 local specWarnMarkedforDeathOther	= mod:NewSpecialWarningTarget(156096, false)
 local yellMarkedforDeath			= mod:NewYell(156096)
 local specWarnThrowSlagBombs		= mod:NewSpecialWarningSpell(156030, nil, nil, nil, 2, nil, 2)--This spell is not gtfo.
@@ -131,6 +132,11 @@ function mod:OnCombatStart(delay)
 	end
 	timerMarkedforDeathCD:Start(36-delay)
 	countdownMarkedforDeath:Start(36-delay)
+	if self:IsMythic() then
+		yellMarkedforDeath	= mod:NewYell(156096, L.customMFDSay)
+	else--In case do mythic first, heroic after, reset to non custom on pull
+		yellMarkedforDeath	= mod:NewYell(156096)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -195,9 +201,43 @@ function mod:SPELL_CAST_START(args)
 end
 
 local debuff = GetSpellInfo(156096)
-local function checkMarked()
+local playerName = UnitName("player")
+local function checkMarked(self)
 	if not UnitDebuff("player", debuff) then
 		voiceMarkedforDeath:Play("156096")
+	end
+	--Sort by raidid since combat log order may diff person to person
+	if self:IsMythic() then
+		local mfdFound = 0
+		local numGroupMembers = DBM:GetNumGroupMembers()
+		if numGroupMembers < 3 then return end--Future proofing solo raid. can't assign 3 positions if less than 3 people
+		for i = 1, numGroupMembers do
+			if UnitDebuff("raid"..i, debuff) then
+				mfdFound = mfdFound + 1
+				if UnitName("raid"..i) == playerName then
+					if mfdFound == 1 then
+						if self.Options.SpecWarn156096you then
+							specWarnMFDPosition:Show(L.left)
+						end
+						yellMarkedforDeath:Yell(L.left, playerName)
+						voiceMarkedforDeath:Schedule(0.7, "left")--Schedule another 0.7, for total of 1.2 second after "find shelder"
+					elseif mfdFound == 2 then
+						if self.Options.SpecWarn156096you then
+							specWarnMFDPosition:Show(L.center)
+						end
+						yellMarkedforDeath:Yell(L.center, playerName)
+						voiceMarkedforDeath:Schedule(0.7, "center")--Schedule another 0.7, for total of 1.2 second after "find shelder"
+					elseif mfdFound == 3 then
+						if self.Options.SpecWarn156096you then
+							specWarnMFDPosition:Show(L.right)
+						end
+						yellMarkedforDeath:Yell(L.right, playerName)
+						voiceMarkedforDeath:Schedule(0.7, "right")--Schedule another 0.7, for total of 1.2 second after "find shelder"
+					end
+				end
+				if mfdFound == 3 then break end
+			end
+		end
 	end
 end
 
@@ -211,6 +251,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+local function mfdYellDelay(self)
+	
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 156096 then
@@ -221,9 +265,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
-			yellMarkedforDeath:Yell()
 			voiceMarkedforDeath:Play("findshelter")
 			countdownMarkedforDeathFades:Start()
+			if not self:IsMythic() then
+				yellMarkedforDeath:Yell()
+			end
 		end
 		if self:AntiSpam(2, 3) then
 			local timer
@@ -233,7 +279,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timer = 15.5
 			end
 			timerImpalingThrow:Start()
-			self:Schedule(0.5, checkMarked)
+			self:Schedule(0.5, checkMarked, self)
 			timerMarkedforDeathCD:Start(timer)
 			countdownMarkedforDeath:Start(timer)
 			DBM:Debug("Running experimental timerShatteringSmashCD adjust because debugmode is enabled", 2)

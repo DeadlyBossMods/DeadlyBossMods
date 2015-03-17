@@ -232,7 +232,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	prewarn		= "%s in %s",
 	phase		= "Phase %s",
 	prephase	= "Phase %s soon",
-	count		= "%s (%%d)",
+	count		= "%s (%%s)",
 	stack		= "%s on >%%s< (%%d)"
 }
 
