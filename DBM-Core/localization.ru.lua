@@ -233,7 +233,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon 			= "Скоро %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn 		= "%s через %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase 			= "Фаза %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase 		= "Скоро фаза %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.count 			= "%s (%%d)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.count 			= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack 			= "%s на |3-5(>%%s<) (%%d)"
 
 local prewarnOption = "Предупреждать заранее о $spell:%s"

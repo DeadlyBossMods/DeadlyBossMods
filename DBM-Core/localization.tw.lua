@@ -229,7 +229,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon			= "%s即將到來"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn		= "%s在%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase			= "第%s階段"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase		= "第%s階段即將到來"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.count			= "%s (%%d)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.count			= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack			= ">%%s<中了%s (%%d)"
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target		= "提示$spell:%s的目標"

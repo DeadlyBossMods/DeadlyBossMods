@@ -162,7 +162,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon			= "%s imminente"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn		= "%s in %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase			= "Fase %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase		= "Fase %s imminente"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.count			= "%s (%%d)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.count			= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack			= "%s su >%%s< (%%d)"
 
 local prewarnOption = "Visualizza un pre-Avvertimento per $spell:%s"
