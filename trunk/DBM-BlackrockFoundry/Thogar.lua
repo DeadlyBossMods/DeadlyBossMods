@@ -429,9 +429,8 @@ end
 --Work In Progress
 --Timing may need tweaks. more Moves need adding.
 --Positions based on https://www.youtube.com/watch?v=0QC7BOEv2iE
-local function showHud(self, secondMove)
+local function showHud(self, train, secondMove)
 	if self.Options.HudMapForTrain then
-		local train = self.vb.trainCount
 		if train == 14 then--Move to skull
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "skull", 517, 3353, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 15 or train == 23 then--Move to triangle
@@ -613,15 +612,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			if msg == "Fake" then
 				countdownTrain:Start(3.0)
 				laneCheck(self)
-				if self:IsMythic() then
-					self:Schedule(5.5, showHud, self)
-				end
 			else
 				countdownTrain:Start()
 				self:Schedule(1.5, laneCheck, self)
-				if self:IsMythic() then
-					self:Schedule(7, showHud, self)
-				end
 			end
 		end
 		self:Unschedule(showInfoFrame)
@@ -635,14 +628,46 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 5
 			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 32 then
 				expectedTime = 10
+				if count == 14 then
+					if msg == "Fake" then
+						self:Schedule(5.5, showHud, count, self)
+					else
+						self:Schedule(7, showHud, count, self)
+					end
+				end
 			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 33 then
 				expectedTime = 15
 				if count == 20 then
 					specWarnSplitSoon:Cancel()
-					specWarnSplitSoon:Schedule(5)
+					if msg == "Fake" then
+						specWarnSplitSoon:Schedule(3.5)
+						self:Schedule(5.5, showHud, count, self)
+					else
+						specWarnSplitSoon:Schedule(5)
+						self:Schedule(7, showHud, count, self)
+					end	
 				end
 			elseif count == 4 or count == 15 or count == 18 or count == 19  or count == 21 or count == 27 or count == 28 then
 				expectedTime = 20
+				if count == 15 then
+					if msg == "Fake" then
+						self:Schedule(5.5, showHud, count, self)
+					else
+						self:Schedule(7, showHud, count, self)
+					end
+				elseif count == 18 then
+					if msg == "Fake" then
+						self:Schedule(5.5, showHud, count, self)
+					else
+						self:Schedule(7, showHud, count, self)
+					end
+				elseif count == 19 then
+					if msg == "Fake" then
+						self:Schedule(5.5, showHud, count, self)
+					else
+						self:Schedule(7, showHud, count, self)
+					end	
+				end
 			elseif count == 10 then
 				expectedTime = 25
 			elseif count == 9 then
