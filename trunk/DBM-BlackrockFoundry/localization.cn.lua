@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Mar 5, 2015@13217
+-- Last update: Mar 17, 2015@13331
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -58,6 +58,13 @@ L= DBM:GetModLocalization(1123)
 --------------------
 L= DBM:GetModLocalization(1162)
 
+L:SetMiscLocalization({
+	ExRTNotice		= "%s 向你指派了黃色符文的站立位置。你的位置: %s"
+ })
+
+
+
+
 --------------------------
 -- Beastlord Darmac --
 --------------------------
@@ -74,9 +81,9 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnSplitSoon	= "特殊警报：当团队需要在10秒后分轨时",
-	InfoFrameSpeed		= "Set when InfoFrame shows next train information",
-	Immediately			= "As soon as doors open for current train",
-	Delayed				= "After current train has come out" 
+	InfoFrameSpeed		= "设置显示下一班列车信息窗的时间",
+	Immediately			= "当门打开时",
+	Delayed				= "当列车出现时" 
 })
 
 L:SetMiscLocalization({
