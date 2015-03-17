@@ -118,6 +118,17 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(959)
 
+L:SetWarningLocalization({
+	specWarnMFDPosition	= "Marked Position: %s"
+})
+
+L:SetMiscLocalization({
+	customMFDSay	= "Marked %s on %s",
+	left			= "left",
+	center			= "center",
+	right			= "right"
+})
+
 -------------
 --  Trash  --
 -------------

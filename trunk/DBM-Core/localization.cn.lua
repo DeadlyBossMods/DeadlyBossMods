@@ -244,7 +244,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon				= "即将 %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn			= "%2$s后 %1$s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase				= "第%s阶段"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase			= "第%s阶段 即将到来"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.count				= "%s (%%d)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.count				= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack				= "%s -> >%%s< (%%d)"
 
 local prewarnOption			= "预警：$spell:%s"
