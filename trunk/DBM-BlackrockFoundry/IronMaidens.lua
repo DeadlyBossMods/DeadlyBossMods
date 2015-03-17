@@ -169,6 +169,12 @@ local function recoverTimers()
 	end
 end
 
+local function boatReturnWarning()
+	if boatMissionDone and isPlayerOnBoat() then
+		specWarnReturnBase:Show()
+	end
+end
+
 local function checkBoatPlayer(self)
 	DBM:Debug("checkBoatPlayer running", 3)
 	for uId in DBM:GetGroupMembers() do 
@@ -189,12 +195,6 @@ local function checkBoatPlayer(self)
 		playerOnBoat = false
 		recoverTimers()
 		DBM:Debug("Player Leaving Boat")
-	end
-end
-
-local function boatReturnWarning()
-	if boatMissionDone and isPlayerOnBoat() then
-		specWarnReturnBase:Show()
 	end
 end
 
