@@ -61,6 +61,8 @@ local timerBlazingRadianceCD			= mod:NewCDTimer(12, 155277, nil, false)--somewha
 local timerFireStormCD					= mod:NewNextTimer(63, 155493)
 local timerFireStorm					= mod:NewBuffActiveTimer(12, 155493)
 
+local berserkTimer						= mod:NewBerserkTimer(420)
+
 local countdownCinderWolves				= mod:NewCountdown(74, 155776)
 local countdownFireStorm				= mod:NewCountdown(63, 155493)--Same voice as wolves cause never happen at same time, in fact they alternate.
 local countdownEnchantedArmaments		= mod:NewCountdown("OptionVersion2", "Alt45", 156724, false)
@@ -97,6 +99,9 @@ function mod:OnCombatStart(delay)
 	timerMoltenTorrentCD:Start(30-delay)
 	timerSummonCinderWolvesCD:Start(60-delay)
 	countdownCinderWolves:Start(60-delay)
+	if self:IsMythic() then
+		berserkTimer:Start(-delay)
+	end
 	if self.Options.RangeFrame and self:IsRanged() then
 		DBM.RangeCheck:Show(6)
 	end
