@@ -25,9 +25,9 @@ local GetInstanceInfo = GetInstanceInfo
 local targetCanvasAlpha
 
 local textureLookup = {
-	diamond		= [[Interface\TARGETINGFRAME\UI-RAIDTARGETINGICON_3.BLP]],
 	star		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_1.blp]],
 	circle		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_2.blp]],
+	diamond		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_3.BLP]],
 	triangle	= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_4.blp]],
 	moon		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_5.blp]],
 	square		= [[Interface\TARGETINGFRAME\UI-RaidTargetingIcon_6.blp]],
@@ -1177,6 +1177,7 @@ function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r,
 end
 
 local encounterMarkers = {}
+local activeMarkers = 0
 function mod:RegisterEncounterMarker(spellid, name, marker)
 	if DBM.Options.DontShowHudMap2 then return end
 	if not self.HUDEnabled then
@@ -1184,6 +1185,7 @@ function mod:RegisterEncounterMarker(spellid, name, marker)
 	end
 	local key = spellid..name
 	encounterMarkers[key] = marker
+	activeMarkers = activeMarkers + 1
 	marker.RegisterCallback(self, "Free", "FreeEncounterMarker", key)
 end
 
@@ -1217,8 +1219,10 @@ end
 -- automatically called if marker was registered using RegisterEncounterMarker when "Free" callback fires (when time runs out for example)
 function mod:FreeEncounterMarker(key)
 	if not self.HUDEnabled then return end
+	if not encounterMarkers[key] then return end
 	encounterMarkers[key] = nil
-	if #encounterMarkers == 0 then--No markers left, disable hud
+	activeMarkers = activeMarkers - 1
+	if activeMarkers == 0 then--No markers left, disable hud
 		self:Disable()
 	end
 end
