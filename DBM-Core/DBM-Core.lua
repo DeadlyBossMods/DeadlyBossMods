@@ -7062,7 +7062,10 @@ function bossModPrototype:IsHealer()
 end
 
 function bossModPrototype:IsTanking(unit, boss)
-	if not unit then return false end
+	if not unit then
+		DBM:Debug("IsTanking passed with invalid unit", 2)
+		return false
+	end
 	--Prefer threat target first
 	if boss and UnitExists(boss) then--Only checking one bossID as requested
 		local tanking, status = UnitDetailedThreatSituation(unit, boss)
