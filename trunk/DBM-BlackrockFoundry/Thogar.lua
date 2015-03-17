@@ -64,6 +64,7 @@ local voiceDelayedSiegeBomb			= mod:NewVoice(159481)
 
 mod:AddInfoFrameOption(176312)
 mod:AddSetIconOption("SetIconOnAdds", "ej9549", false, true)
+mod:AddHudMapOption("HudMapForTrain", 176312, false)
 mod:AddDropdownOption("InfoFrameSpeed", {"Immediately", "Delayed"}, "Delayed", "misc")
 
 mod.vb.trainCount = 0
@@ -122,8 +123,6 @@ local mythicTrains = {
 	[36] = { [1] = Train, [2] = Train, [3] = Train, [4] = Train },--+15 after 35.(08:07)--berserk.
 }
 
---https://www.youtube.com/watch?v=yUgrmvksk7g
---https://www.youtube.com/watch?v=Gny-suQV8to
 local otherTrains = {
 	[1] = { [4] = Train },--+12 after pull (0:12)
 	[2] = { [2] = Train },--+10 after 1 (0:22)
@@ -427,6 +426,29 @@ local function updateInfoFrame()
 	return lines
 end
 
+--Work In Progress
+--Timing may need tweaks. more Moves need adding.
+--Positions based on https://www.youtube.com/watch?v=0QC7BOEv2iE
+local function showHud(self, secondMove)
+	if self.Options.HudMapForTrain then
+		local train = self.vb.trainCount
+		if train == 14 then--Move to skull
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "skull", 517, 3353, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+		elseif train == 15 or train == 23 then--Move to triangle
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+		elseif train == 18 then--Move to square
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "square", 590, 3352, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+		elseif secondMove and secondMove == 1 then----Move to star, also during train count 19, but later
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "star", 590, 3272, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+		elseif train == 19 then--Move to diamond
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			self:Schedule(7, showHud, self, 1)
+		elseif train == 20 then--Move to Moon
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "moon", 517, 3280, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+		end
+	end
+end
+
 local function showInfoFrame(self)
 	if self.Options.InfoFrame then
 		self.vb.infoCount = self.vb.trainCount + 1
@@ -591,9 +613,15 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			if msg == "Fake" then
 				countdownTrain:Start(3.0)
 				laneCheck(self)
+				if self:IsMythic() then
+					self:Schedule(5.5, showHud, self)
+				end
 			else
 				countdownTrain:Start()
 				self:Schedule(1.5, laneCheck, self)
+				if self:IsMythic() then
+					self:Schedule(7, showHud, self)
+				end
 			end
 		end
 		self:Unschedule(showInfoFrame)
