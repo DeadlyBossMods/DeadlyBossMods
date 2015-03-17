@@ -6461,7 +6461,7 @@ do
 			else--Scan success. (or failed to detect right target.) But some spells can be used on tanks, anyway warns tank if player scan. (enemy scan block it)
 				targetScanCount[cidOrGuid] = nil--Reset count for later use.
 				self:UnscheduleMethod("BossTargetScanner", cidOrGuid, returnFunc)--Unschedule all checks just to be sure none are running, we are done.
-				if (ignoreTank and self:IsTanking(targetuid, bossuid)) or (isEnemyScan and isFinalScan) then return end--If ignoreTank and tank detected, return nothing. If enemyScan and playerDetected, return nothing
+				if (ignoreTank or isEnemyScan) and isFinalScan then return end--If ignoreTank and tank detected, return nothing. If enemyScan and playerDetected, return nothing
 				self[returnFunc](self, targetname, targetuid, bossuid)--Return results to warning function with all variables.
 			end
 		else--target was nil, lets schedule a rescan here too.
