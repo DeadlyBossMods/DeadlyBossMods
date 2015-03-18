@@ -80,7 +80,8 @@ local specWarnBladeDash					= mod:NewSpecialWarningYou(155794)
 local specWarnBladeDashOther			= mod:NewSpecialWarningClose(155794)
 local specWarnConvulsiveShadows			= mod:NewSpecialWarningMoveAway(156214, nil, nil, nil, nil, nil, 2)--Does this still drop lingering shadows, if not moveaway is not appropriate
 local yellConvulsiveShadows				= mod:NewYell(156214, nil, false)
-local specWarnDarkHunt					= mod:NewSpecialWarningTarget(158315, false, nil, nil, nil, nil, 2)--Healer may want this, or raid leader
+local specWarnDarkHunt					= mod:NewSpecialWarningYou(158315)
+local specWarnDarkHuntOther				= mod:NewSpecialWarningTarget(158315, false, nil, nil, nil, nil, 2)--Healer may want this, or raid leader
 ----Marak the Blooded
 local specWarnBloodRitual				= mod:NewSpecialWarningYou(158078)
 local specWarnBloodRitualOther			= mod:NewSpecialWarningTarget("OptionVersion2", 158078, "Tank")
@@ -343,10 +344,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceConvulsiveShadows:Play("runaway")
 		end
 	elseif spellId == 158315 and (noFilter or not isPlayerOnBoat()) then
-		if self.Options.SpecWarn158315target then
-			specWarnDarkHunt:Show(args.destName)
+		if args:IsPlayer() then
+			if self:IsMythic() then
+				specWarnDarkHunt:Show()
+			end
 		else
-			warnDarkHunt:Show(args.destName)
+			if self.Options.SpecWarn158315target then
+				specWarnDarkHuntOther:Show(args.destName)
+			else
+				warnDarkHunt:Show(args.destName)
+			end
 		end
 		timerDarkHuntCD:Start() --8s
 		if args:IsPlayer() then
