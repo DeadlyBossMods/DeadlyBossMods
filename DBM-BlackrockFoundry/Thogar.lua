@@ -429,7 +429,7 @@ end
 --Work In Progress
 --Timing may need tweaks. more Moves need adding.
 --Positions based on https://www.youtube.com/watch?v=0QC7BOEv2iE
-local function showHud(self, train, secondMove)
+local function showHud(self, train)
 	if self.Options.HudMapForTrain then
 		if train == 14 then--Move to skull
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "skull", 517, 3353, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
@@ -437,11 +437,11 @@ local function showHud(self, train, secondMove)
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 18 then--Move to square
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "square", 590, 3352, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif secondMove and secondMove == 1 then----Move to star, also during train count 19, but later
+		elseif train == 19.5 then----Move to star, also during train count 19, but later
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "star", 590, 3272, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 19 then--Move to diamond
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-			self:Schedule(7, showHud, self, 1)
+			self:Schedule(7, showHud, self, 19.5)
 		elseif train == 20 then--Move to Moon
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "moon", 517, 3280, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		end
@@ -630,9 +630,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 10
 				if count == 14 then
 					if msg == "Fake" then
-						self:Schedule(5.5, showHud, count, self)
+						self:Schedule(5.5, showHud, self, count)
 					else
-						self:Schedule(7, showHud, count, self)
+						self:Schedule(7, showHud, self, count)
 					end
 				end
 			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 33 then
@@ -641,31 +641,31 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 					specWarnSplitSoon:Cancel()
 					if msg == "Fake" then
 						specWarnSplitSoon:Schedule(3.5)
-						self:Schedule(5.5, showHud, count, self)
+						self:Schedule(5.5, showHud, self, count)
 					else
 						specWarnSplitSoon:Schedule(5)
-						self:Schedule(7, showHud, count, self)
+						self:Schedule(7, showHud, self, count)
 					end	
 				end
 			elseif count == 4 or count == 15 or count == 18 or count == 19  or count == 21 or count == 27 or count == 28 then
 				expectedTime = 20
 				if count == 15 then
 					if msg == "Fake" then
-						self:Schedule(5.5, showHud, count, self)
+						self:Schedule(5.5, showHud, self, count)
 					else
-						self:Schedule(7, showHud, count, self)
+						self:Schedule(7, showHud, self, count)
 					end
 				elseif count == 18 then
 					if msg == "Fake" then
-						self:Schedule(5.5, showHud, count, self)
+						self:Schedule(5.5, showHud, self, count)
 					else
-						self:Schedule(7, showHud, count, self)
+						self:Schedule(7, showHud, self, count)
 					end
 				elseif count == 19 then
 					if msg == "Fake" then
-						self:Schedule(5.5, showHud, count, self)
+						self:Schedule(5.5, showHud, self, count)
 					else
-						self:Schedule(7, showHud, count, self)
+						self:Schedule(7, showHud, self, count)
 					end	
 				end
 			elseif count == 10 then
