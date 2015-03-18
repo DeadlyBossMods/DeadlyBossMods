@@ -123,7 +123,7 @@ local activeSlagGUIDS = {}
 local activePrimalGUIDS = {}
 local activePrimal = 0 -- health report variable. no sync
 local prevHealth = 100
-local yellVolatileFire2
+local yellVolatileFire2 = mod:NewFadesYell(176121, nil, true, false)
 local UnitDebuff = UnitDebuff
 
 local BombFilter, VolatileFilter

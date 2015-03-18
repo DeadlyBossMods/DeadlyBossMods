@@ -97,12 +97,15 @@ mod.vb.phase = 1
 mod.vb.demolitionCount = 0
 mod.vb.SlagEruption = 0
 mod.vb.smashCount = 0
+mod.vb.markCount = 0
 mod.vb.siegemaker = 0
 mod.vb.deprisCount = 0
 local smashTank = nil
 local UnitDebuff, UnitName = UnitDebuff, UnitName
 local DBMHudMap = DBMHudMap
 local tankFilter
+local warnMarkedforDeath2		= mod:NewTargetCountAnnounce(156096, 4, nil, nil, false)
+local timerMarkedforDeathCD2	= mod:NewNextCountTimer(15.5, 156096, nil, nil, false)
 do
 	tankFilter = function(uId)
 		if UnitName(uId) == smashTank then
@@ -261,7 +264,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SpecWarn156096target then
 			specWarnMarkedforDeathOther:CombinedShow(0.5, args.destName)
 		else
-			warnMarkedforDeath:CombinedShow(0.5, args.destName)
+			if self.vb.phase == 2 and self.Options.announceother156096target then
+				warnMarkedforDeath2:CombinedShow(0.5, args.destName)
+			else
+				warnMarkedforDeath:CombinedShow(0.5, args.destName)
+			end
 		end
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
@@ -272,6 +279,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self:AntiSpam(2, 3) then
+			self.vb.markCount = self.vb.markCount + 1
 			local timer
 			if self.vb.phase == 3 then
 				timer = 20.5
@@ -280,7 +288,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			timerImpalingThrow:Start()
 			self:Schedule(0.5, checkMarked, self)
-			timerMarkedforDeathCD:Start(timer)
+			if self.vb.phase == 2 and self.Options.Timer156096next then
+				if self.vb.markCount < 3 then
+					timerMarkedforDeathCD2:Start(timer, self.vb.markCount+1)
+				else
+					timerMarkedforDeathCD2:Start(timer, 1)
+				end
+			else
+				timerMarkedforDeathCD:Start(timer)
+			end
 			countdownMarkedforDeath:Start(timer)
 			DBM:Debug("Running experimental timerShatteringSmashCD adjust because debugmode is enabled", 2)
 			local elapsed, total = timerShatteringSmashCD:GetTime(self.vb.smashCount+1)
@@ -328,6 +344,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 156667 then
 		self.vb.siegemaker = self.vb.siegemaker + 1
+		self.vb.markCount = 0
 		if not self.Options.SpecWarnej9571spell then
 			warnSiegemaker:Show(self.vb.siegemaker)
 		else
@@ -442,7 +459,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerShatteringSmashCD:Start(21, 1)--21-23 variation. Boss power is set to 66/100 automatically by transitions
 		end
 		timerMarkedforDeathCD:Cancel()
-		timerMarkedforDeathCD:Start(25)
+		if self.vb.phase == 2 and self.Options.Timer156096next then
+			timerMarkedforDeathCD2:Start(25.5, 1)
+		else
+			timerMarkedforDeathCD:Start(25.5)
+		end
 		countdownMarkedforDeath:Cancel()
 		countdownMarkedforDeath:Start(25)
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(2))
