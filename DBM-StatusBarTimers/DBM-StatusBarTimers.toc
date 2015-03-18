@@ -8,6 +8,7 @@
 ## Notes-koKR: DBM 바 표시에 필요한 애드온입니다.
 ## Notes-zhTW: DBM 狀態條計時器函式庫
 ## Notes-zhCN: DBM 状态条计时器函数库
+## Dependencies: DBM-DefaultSkin
 ## SavedVariables: DBT_AllPersistentOptions
 ## LoadOnDemand: 0
 ## DefaultState: enabled
