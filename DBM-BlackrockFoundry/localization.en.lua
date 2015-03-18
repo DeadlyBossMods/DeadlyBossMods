@@ -102,12 +102,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1203)
 
 L:SetWarningLocalization({
-	specWarnReturnBase	= "Return to dock NOW!"
+	specWarnReturnBase	= "Return to dock!"
 })
 
 L:SetOptionLocalization({
 	specWarnReturnBase	= "Show special warning when boat player can safely return to dock",
-	filterBladeDance	= "Do not show special warning for $spell:155794 when affected by $spell:170395",
+	filterBladeDash		= "Do not show special warning for $spell:155794 when affected by $spell:170395",
 	filterBloodRitual	= "Do not show special warning for $spell:158078 when affected by $spell:170405"
 })
 
