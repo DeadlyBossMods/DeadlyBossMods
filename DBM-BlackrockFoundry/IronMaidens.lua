@@ -126,13 +126,15 @@ mod:AddSetIconOption("SetIconOnBloodRitual", 158078, true)
 mod:AddSetIconOption("SetIconOnHeartSeeker", 158010, true)
 mod:AddHudMapOption("HudMapOnRapidFire", 156631)--Green markers
 mod:AddHudMapOption("HudMapOnBloodRitual", 158078)--Red markers
+mod:AddBoolOption("filterBladeDash", true)
+mod:AddBoolOption("filterBloodRitual", true)
 
 mod.vb.phase = 1
 mod.vb.ship = 0
 mod.vb.alphaOmega = 0
 --mod.vb.below25 = false
 
-local UnitPosition, UnitIsConnected, GetTime =  UnitPosition, UnitIsConnected, GetTime
+local UnitPosition, UnitIsConnected, UnitDebuff, GetTime =  UnitPosition, UnitIsConnected, UnitDebuff, GetTime
 local savedAbilityTime = {}
 local playerOnBoat = false
 local boatMissionDone = false
@@ -219,6 +221,7 @@ function mod:BladeDashTarget(targetname, uId)
 	warnBladeDash:Show(targetname)
 	if self:IsMythic() then
 		if targetname == UnitName("player") then
+			if UnitDebuff("player", GetSpellInfo(170395)) and self.Options.filterBladeDash then return end
 			specWarnBladeDash:Show()
 		elseif self:CheckNearby(8, targetname) then
 			specWarnBladeDashOther:Show(targetname)
@@ -375,16 +378,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnBloodRitual:Show(args.destName)
 		end
-		if args:IsPlayer() then
-			specWarnBloodRitual:Show()
-			yellBloodRitual:Yell()
-			voiceBloodRitual:Play("158078")
-		end
 		if self.Options.SetIconOnBloodRitual and not self:IsLFR() then
 			self:SetIcon(args.destName, 2)
 		end
 		if self.Options.HudMapOnBloodRitual then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 7, 1, 0, 0, 0.5, nil, true):Pulse(0.5, 0.5)
+		end
+		if args:IsPlayer() then
+			yellBloodRitual:Yell()
+			if UnitDebuff("player", GetSpellInfo(170405)) and self.Options.filterBloodRitual then return end
+			specWarnBloodRitual:Show()
+			voiceBloodRitual:Play("158078")
 		end
 	elseif spellId == 156631 and (noFilter or not isPlayerOnBoat()) then
 		if self:AntiSpam(5, args.destName) then--check antispam so we don't warn if we got a user sync 3 seconds ago.
