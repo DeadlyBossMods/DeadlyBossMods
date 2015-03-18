@@ -111,6 +111,17 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(959)
 
+L:SetWarningLocalization({
+	specWarnMFDPosition	= "死亡標記站位：%s"
+})
+
+L:SetMiscLocalization({
+	customMFDSay	= "%2$s中了%1$s死亡標記",
+	left			= "左方",
+	center			= "中間",
+	right			= "右方"
+})
+
 -------------
 --  Trash  --
 -------------
