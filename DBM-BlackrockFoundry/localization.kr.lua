@@ -122,6 +122,17 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(959)
 
+L:SetWarningLocalization({
+	specWarnMFDPosition	= "표적 피할 위치: %s"
+})
+
+L:SetMiscLocalization({
+	customMFDSay	= "%2$s에게 죽음의 표적! (%1$s)",
+	left			= "왼쪽",
+	center			= "가운데",
+	right			= "오른쪽"
+})
+
 -------------
 --  Trash  --
 -------------
