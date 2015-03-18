@@ -472,7 +472,7 @@ end
 
 function mod:OnSync(msg, guid)
 	if not self:IsInCombat() then return end
-	if (not DBM.Options.DontShowFarWarnings or isPlayerOnBoat()) then return end--Anything below this line doesn't concern people on boat
+	if DBM.Options.DontShowFarWarnings and isPlayerOnBoat() then return end--Anything below this line doesn't concern people on boat
 	if msg == "RapidFireTarget" and guid then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		if self:AntiSpam(5, targetName) then--Set antispam if we got a sync, to block 3 second late SPELL_AURA_APPLIED if we got the early warning

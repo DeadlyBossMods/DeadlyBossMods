@@ -105,7 +105,7 @@ function mod:CustomHealthUpdate()
 				moteT = moteT + health
 				moteGUID[guid] = true
 				lmoteC = moteC
-				lmoteT = moteH
+				lmoteT = moteT
 				moteH[guid] = health
 			end
 		end
@@ -119,7 +119,7 @@ function mod:CustomHealthUpdate()
 				moteT = moteT + newhealth
 				moteGUID[guid] = true
 				lmoteC = moteC
-				lmoteT = moteH
+				lmoteT = moteT
 				moteH[guid] = newhealth
 			end
 		end
