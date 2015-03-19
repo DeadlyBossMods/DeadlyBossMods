@@ -1665,27 +1665,11 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:AddMsg(DBM_CORE_LAG_CHECKING)
 		DBM:Schedule(5, function() DBM:ShowLag() end)
 	elseif cmd:sub(1, 3) == "hud" then
-		local hudType, target, duration = string.split(" ", msg:sub(6):trim())
-		if not hudType then
+		local hudType, target, duration = string.split(" ", msg:sub(4):trim())
+		if hudType == "" then
 			for i, v in ipairs(DBM_CORE_HUD_USAGE) do
 				DBM:AddMsg(v)
 			end
-			return
-		end
-		local uId
-		if target:upper() == "TARGET" and UnitExists("target") then
-			uId = "target"
-		elseif target:upper() == "FOCUS" and UnitExists("focus") then
-			uId = "focus"
-		else--Try to use it as player name
-			uId = DBM:GetRaidUnitId(target)
-		end
-		if not uId then
-			DBM:AddMsg(DBM_CORE_HUD_INVALID_TARGET)
-			return
-		end
-		if UnitIsUnit("player", uId) and not DBM.Options.DebugMode then--Don't allow hud to self, except if debug mode is enabled, then hud to self useful for testing
-			DBM:AddMsg(DBM_CORE_HUD_INVALID_SELF)
 			return
 		end
 		local hudDuration = tonumber(duration) or 1200--if no duration defined. 20 minutes to cover even longest of fights
@@ -1693,8 +1677,29 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		if type(hudType) == "string" and hudType:trim() ~= "" then
 			if hudType:upper() == "HIDE" then
 				DBMHudMap:Disable()
-				success = true
-			elseif hudType:upper() == "GREEN" then
+				return
+			end
+			if not target then
+				DBM:AddMsg(DBM_CORE_HUD_INVALID_TARGET)
+				return
+			end
+			local uId
+			if target:upper() == "TARGET" and UnitExists("target") then
+				uId = "target"
+			elseif target:upper() == "FOCUS" and UnitExists("focus") then
+				uId = "focus"
+			else--Try to use it as player name
+				uId = DBM:GetRaidUnitId(target)
+			end
+			if not uId then
+				DBM:AddMsg(DBM_CORE_HUD_INVALID_TARGET)
+				return
+			end
+			if UnitIsUnit("player", uId) and not DBM.Options.DebugMode then--Don't allow hud to self, except if debug mode is enabled, then hud to self useful for testing
+				DBM:AddMsg(DBM_CORE_HUD_INVALID_SELF)
+				return
+			end
+			if hudType:upper() == "GREEN" then
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 5, hudDuration, 0, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
 				success = true
 			elseif hudType:upper() == "RED" then
