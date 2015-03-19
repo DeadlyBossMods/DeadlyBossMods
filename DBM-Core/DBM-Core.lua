@@ -1664,6 +1664,77 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		sendSync("L")
 		DBM:AddMsg(DBM_CORE_LAG_CHECKING)
 		DBM:Schedule(5, function() DBM:ShowLag() end)
+	elseif cmd:sub(1, 3) == "hud" then
+		local hudType, target, duration = string.split(" ", msg:sub(6):trim())
+		if not hudType then
+			for i, v in ipairs(DBM_CORE_HUD_USAGE) do
+				DBM:AddMsg(v)
+			end
+			return
+		end
+		local uId
+		if target:upper() == "TARGET" and UnitExists("target") then
+			uId = "target"
+		elseif target:upper() == "FOCUS" and UnitExists("focus") then
+			uId = "focus"
+		else--Try to use it as player name
+			uId = DBM:GetRaidUnitId(target)
+		end
+		if not uId then
+			DBM:AddMsg(DBM_CORE_HUD_INVALID_TARGET)
+			return
+		end
+		if UnitIsUnit("player", uId) and not DBM.Options.DebugMode then--Don't allow hud to self, except if debug mode is enabled, then hud to self useful for testing
+			DBM:AddMsg(DBM_CORE_HUD_INVALID_SELF)
+			return
+		end
+		local hudDuration = tonumber(duration) or 1200--if no duration defined. 20 minutes to cover even longest of fights
+		local success = false
+		if type(hudType) == "string" and hudType:trim() ~= "" then
+			if hudType:upper() == "HIDE" then
+				DBMHudMap:Disable()
+				success = true
+			elseif hudType:upper() == "GREEN" then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 5, hudDuration, 0, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
+				success = true
+			elseif hudType:upper() == "RED" then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 5, hudDuration, 1, 0, 0, 0.5, nil, false):Pulse(0.5, 0.5)
+				success = true
+			elseif hudType:upper() == "YELLOW" then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 5, hudDuration, 1, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
+				success = true
+			elseif hudType:upper() == "BLUE" then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 5, hudDuration, 0, 0, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				success = true
+			elseif hudType:upper() == "ICON" then
+				local icon = GetRaidTargetIndex(uId)
+				if not icon then
+					DBM:AddMsg(DBM_CORE_HUD_INVALID_ICON)
+					return
+				end
+				if icon == 8 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "skull", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				elseif icon == 7 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "cross", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				elseif icon == 6 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "square", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				elseif icon == 5 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "moon", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				elseif icon == 4 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "triangle", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				elseif icon == 3 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "diamond", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				elseif icon == 2 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "circle", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				elseif icon == 1 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "star", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				end
+				success = true
+			end
+		end
+		if success then
+			DBM:AddMsg(DBM_CORE_HUD_SUCCESS:format(strFromTime(hudDuration)))
+		end
 	elseif cmd:sub(1, 5) == "arrow" then
 		local x, y, z = string.split(" ", msg:sub(6):trim())
 		local xNum, yNum, zNum = tonumber(x or ""), tonumber(y or ""), tonumber(z or "")
