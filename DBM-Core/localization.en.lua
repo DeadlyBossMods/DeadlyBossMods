@@ -377,6 +377,19 @@ DBM_CORE_MOVE_WARNING_MESSAGE		= "Thanks for using Deadly Boss Mods"
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Special warning movable"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Special Warning"
 
+DBM_CORE_HUD_INVALID_TARGET			= "No valid target given for HUD"
+DBM_CORE_HUD_INVALID_SELF			= "Cannot use self as target for HUD"
+DBM_CORE_HUD_INVALID_ICON			= "Cannot use icon method for HUD on a target with no icon"
+DBM_CORE_HUD_SUCCESS				= "HUD successful started with your parameters. This will cancel after %s, or by calling '/dbm hud hide'."
+DBM_CORE_HUD_USAGE	= {
+	"DBM-HudMap usage:",
+	"/dbm hud <type> <target> <duration> creates a HUD that points to a player for the desired duration",
+	"Valid types: red, blue, green, yellow, icon (requires a target with raid icon)",
+	"Valid targets: target, focus, <playername>",
+	"Valid durations: any number (in seconds). If left blank, 20min will be used.",
+	"/dbm hud hide  disables and hides the HUD"
+}
+
 DBM_ARROW_MOVABLE					= "Arrow movable"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow usage:",
