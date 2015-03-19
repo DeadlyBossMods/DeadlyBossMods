@@ -1735,6 +1735,8 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "star", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
 				end
 				success = true
+			else
+				DBM:AddMsg(DBM_CORE_HUD_INVALID_TYPE)
 			end
 		end
 		if success then
