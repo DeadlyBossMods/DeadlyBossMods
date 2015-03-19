@@ -267,6 +267,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	interruptcount	= "%s - interrupt >%%s<! (%%d)",
 	you				= "%s on you",
 	target			= "%s on >%%s<",
+	targetcount		= "%s on >%%s< (%%d)",
 	taunt			= "%s on >%%s< - taunt now",
 	close			= "%s on >%%s< near you",
 	move			= "%s - move away",
@@ -308,6 +309,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 }
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetcount		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
