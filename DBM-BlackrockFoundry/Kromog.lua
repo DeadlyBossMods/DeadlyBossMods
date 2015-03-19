@@ -39,7 +39,6 @@ local specWarnCalloftheMountain		= mod:NewSpecialWarningCount(158217, nil, nil, 
 local timerGraspingEarthCD			= mod:NewCDTimer(114, 157060)--Unless see new logs on normal showing it can still be 111, raising to 115, average i saw was 116-119
 local timerThunderingBlowsCD		= mod:NewNextTimer(12, 157054)
 local timerRipplingSmashCD			= mod:NewCDTimer(21, 157592)--If it comes off CD early enough into ThunderingBlows/Grasping Earth, he skips a cast. Else, he'll cast it very soon after.
---local timerStoneGeyserCD			= mod:NewNextTimer(30, 158130)
 local timerStoneBreathCD			= mod:NewCDCountTimer(22, 156852)
 local timerSlamCD					= mod:NewCDTimer(23, 156704, nil, "Tank")
 local timerWarpedArmorCD			= mod:NewCDTimer(14, 156766, nil, "Tank")
@@ -53,7 +52,6 @@ local countdownThunderingBlows		= mod:NewCountdown(12, 157054)
 local countdownTremblingEarth		= mod:NewCountdownFades("Alt25", 173917)
 
 local voiceGraspingEarth 			= mod:NewVoice(157060)--157060, safenow
-local voiceWarpedArmor				= mod:NewVoice(156766)
 local voiceCallofMountain			= mod:NewVoice(158217)--Findshelter
 local voiceRipplingSmash			= mod:NewVoice(157592)
 local voiceStoneBreath	 			= mod:NewVoice(156852)
@@ -194,7 +192,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerWarpedArmorCD:Start()
 		end
 		if amount >= 2 then
-			voiceWarpedArmor:Play("changemt")
 			if args:IsPlayer() then
 				specWarnWarpedArmor:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
