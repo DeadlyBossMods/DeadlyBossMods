@@ -132,7 +132,7 @@ local function updateBeastTimers(self, all, spellId, adjust)
 	end
 	if self.vb.RylakAbilities and (self:IsMythic() and spellId == 155459 or all) then--Dreadwing
 		timerSuperheatedShrapnelCD:Cancel()
-		timerSuperheatedShrapnelCD:Start(7.5-dismountAdjust)
+		timerSuperheatedShrapnelCD:Start(7.3-dismountAdjust)
 	end
 	if self.vb.ElekkAbilities and (self:IsMythic() and spellId == 163247 or all) then--Ironcrusher
 		timerTantrumCD:Cancel()

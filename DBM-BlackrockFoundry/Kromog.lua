@@ -151,7 +151,11 @@ function mod:SPELL_CAST_START(args)
 		--after that they get back into their consistency
 	elseif spellId == 157592 then
 		specWarnRipplingSmash:Show()
-		timerRipplingSmashCD:Start()
+		if self.vb.frenzied then
+			timerRipplingSmashCD:Start(18.2)
+		else
+			timerRipplingSmashCD:Start()
+		end
 		voiceRipplingSmash:Play("shockwave")
 	elseif spellId == 156704 then
 		specWarnSlam:Show()
@@ -162,7 +166,7 @@ function mod:SPELL_CAST_START(args)
 		timerCalloftheMountain:Start()
 		voiceCallofMountain:Play("findshelter")
 		if self.vb.mountainCast == 3 then--Start timers for resume normal phase
-			timerStoneBreathCD:Start(9, self.vb.stoneBreath+1)--Or 12
+			timerStoneBreathCD:Start(8.7, self.vb.stoneBreath+1)--Or 12
 			timerWarpedArmorCD:Start(12.5)--12.5-17
 			--First slam and first rippling still too variable to start here.
 			--after that they get back into their consistency
@@ -185,7 +189,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		warnWarpedArmor:Show(args.destName, amount)
 		if self.vb.frenzied then
-			timerWarpedArmorCD:Start(11)
+			timerWarpedArmorCD:Start(10.2)
 		else
 			timerWarpedArmorCD:Start()
 		end
