@@ -80,8 +80,8 @@ local specWarnBladeDash					= mod:NewSpecialWarningYou(155794)
 local specWarnBladeDashOther			= mod:NewSpecialWarningClose(155794)
 local specWarnConvulsiveShadows			= mod:NewSpecialWarningMoveAway(156214, nil, nil, nil, nil, nil, 2)--Does this still drop lingering shadows, if not moveaway is not appropriate
 local yellConvulsiveShadows				= mod:NewYell(156214, nil, false)
-local specWarnDarkHunt					= mod:NewSpecialWarningYou(158315)
-local specWarnDarkHuntOther				= mod:NewSpecialWarningTarget(158315, false, nil, nil, nil, nil, 2)--Healer may want this, or raid leader
+local specWarnDarkHunt					= mod:NewSpecialWarningYou(158315, nil, nil, nil, nil, nil, 2)
+local specWarnDarkHuntOther				= mod:NewSpecialWarningTarget(158315, false)--Healer may want this, or raid leader
 ----Marak the Blooded
 local specWarnBloodRitual				= mod:NewSpecialWarningYou(158078)
 local specWarnBloodRitualOther			= mod:NewSpecialWarningTarget("OptionVersion2", 158078, "Tank")
@@ -99,7 +99,7 @@ local timerWarmingUp					= mod:NewCastTimer(90, 158849)
 mod:AddTimerLine(Garan)
 local timerRapidFireCD					= mod:NewCDTimer(30, 156626)
 local timerDarkHuntCD					= mod:NewCDTimer("OptionVersion2", 13.5, 158315, nil, false)--Important to know you have it, not very important to know it's coming soon.
-local timerPenetratingShotCD			= mod:NewCDTimer(28.8, 164271)--22-30 at least. maybe larger variation. Just small LFR sample size.
+local timerPenetratingShotCD			= mod:NewCDTimer(28.8, 164271)--22-30 at least. maybe larger variation.
 local timerDeployTurretCD				= mod:NewCDTimer(20.5, 158599)--20.5-23.5
 ----Enforcer Sorka
 mod:AddTimerLine(Sorka)
@@ -109,6 +109,11 @@ local timerConvulsiveShadowsCD			= mod:NewNextTimer(56.5, 156214)--Timer only en
 mod:AddTimerLine(Marak)
 local timerBloodRitualCD				= mod:NewCDTimer(20, 158078)
 local timerHeartSeekerCD				= mod:NewCDTimer("OptionVersion2", 70, 158010, nil, "Ranged")--Seriously a 74 second cd?
+
+local countdownShip						= mod:NewCountdown(198, "ej10019")
+local countdownWarmingUp				= mod:NewCountdown(90, 158849)
+local countdownBloodRitual				= mod:NewCountdownFades("Alt5", 158078, "Tank")
+local countdownDarkHunt					= mod:NewCountdownFades("AltTwo8", 158315)
 
 local voiceRapidFire					= mod:NewVoice(156631) --runout
 local voiceBloodRitual					= mod:NewVoice(158078, "Melee") --158078.ogg, farawayfromline
@@ -152,6 +157,7 @@ end
 local function recoverTimers()
 	timerBombardmentAlphaCD:Cancel()
 	timerWarmingUp:Cancel()
+	countdownWarmingUp:Cancel()
 	if savedAbilityTime["BloodRitual"] and (GetTime() - savedAbilityTime["BloodRitual"]) < 20 then
 		timerBloodRitualCD:Update(GetTime() - savedAbilityTime["BloodRitual"], 20)
 	end
@@ -194,6 +200,7 @@ local function checkBoatPlayer(self)
 	self:Unschedule(boatReturnWarning)
 	timerBombardmentAlphaCD:Cancel()
 	timerWarmingUp:Cancel()
+	countdownWarmingUp:Cancel()
 	if playerOnBoat then -- leave boat
 		playerOnBoat = false
 		recoverTimers()
@@ -244,6 +251,7 @@ function mod:OnCombatStart(delay)
 	timerBloodRitualCD:Start(12.4-delay)
 	timerRapidFireCD:Start(15.5-delay)
 	timerShipCD:Start(59.5-delay)
+	countdownShip:Start(59.5-delay)
 	self:RegisterShortTermEvents(
 		"UNIT_HEALTH_FREQUENT boss1 boss2 boss3"
 	)
@@ -348,9 +356,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 158315 and (noFilter or not isPlayerOnBoat()) then
 		if args:IsPlayer() then
-			if self:IsMythic() then
-				specWarnDarkHunt:Show()
-			end
+			voiceDarkHunt:Schedule(1.5, "defensive")
+			countdownDarkHunt:Start()
+			specWarnDarkHunt:Show()
 		else
 			if self.Options.SpecWarn158315target then
 				specWarnDarkHuntOther:Show(args.destName)
@@ -359,9 +367,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		timerDarkHuntCD:Start() --8s
-		if args:IsPlayer() then
-			voiceDarkHunt:Schedule(3, "defensive") --if a countdown is added for this spell, change schedule time to 1.5s
-		end
 	elseif spellId == 158010 and (noFilter or not isPlayerOnBoat()) then
 		warnBloodsoakedHeartseeker:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
@@ -388,8 +393,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellBloodRitual:Yell()
 			if UnitDebuff("player", GetSpellInfo(170405)) and self.Options.filterBloodRitual then return end
 			specWarnBloodRitual:Show()
-			voiceBloodRitual:Play("158078")
+			--voiceBloodRitual:Play("???")--Player needs a different warning than "far away from lines". player IS the line so they can't be far away from lines
+		else
+			voiceBloodRitual:Play("158078")--Good sound fit for everyone ELSE
 		end
+		countdownBloodRitual:Start()
 	elseif spellId == 156631 and (noFilter or not isPlayerOnBoat()) then
 		if self:AntiSpam(5, args.destName) then--check antispam so we don't warn if we got a user sync 3 seconds ago.
 			if self:CheckNearby(5, args.destName) and self.Options.SpecWarn156631close then
@@ -478,6 +486,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 158849 then
 		timerWarmingUp:Start()
+		countdownWarmingUp:Start()
 	end
 end
 
@@ -508,6 +517,7 @@ function mod:OnSync(msg, guid)
 		warnShip:Show()
 		if self.vb.ship < 3 then
 			timerShipCD:Start()
+			countdownShip:Start()
 		end
 		timerBombardmentAlphaCD:Start(14.5)
 		if guid == Marak then
@@ -538,6 +548,7 @@ function mod:UNIT_HEALTH_FREQUENT(uId)
 	local hp = UnitHealth(uId) / UnitHealthMax(uId)
 	if hp < 0.20 and self.vb.phase ~= 2 then
 		timerShipCD:Cancel()
+		countdownShip:Cancel()
 		self.vb.phase = 2
 		warnPhase2:Show()
 		self:UnregisterShortTermEvents()
