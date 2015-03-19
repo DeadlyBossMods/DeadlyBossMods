@@ -302,8 +302,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			local elapsed, total = timerShatteringSmashCD:GetTime(self.vb.smashCount+1)
 			local remaining = total - elapsed
 			DBM:Debug("Smash Elapsed: "..elapsed.." Smash Total: "..total.." Smash Remaining: "..remaining.." MFD Timer: "..timer, 2)
-			if (remaining > timer) and (remaining < timer+5.5) then--Marked for death will come off cd before timerShatteringSmashCD comes off cd and delay the cast
-				local extend = (timer+5.5)-remaining
+			if (remaining > timer) and (remaining < timer+6) then--Marked for death will come off cd before timerShatteringSmashCD comes off cd and delay the cast
+				local extend = (timer+6)-remaining
 				DBM:Debug("Delay detected, updating smash timer now. Extend: "..extend)
 				timerShatteringSmashCD:Update(elapsed, total+extend, self.vb.smashCount+1)
 				countdownShatteringSmash:Cancel()
