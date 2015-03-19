@@ -187,9 +187,10 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm timer endloop: Stops any looping ltimer or cltimer.",
 	"/dbm break <min>: Starts a break timer for <min> minutes. Gives all raid members with DBM a break timer (requires leader/promoted status).",
 	"/dbm pull <sec>: Starts a pull timer for <sec> seconds. Gives all raid members with DBM a pull timer (requires leader/promoted status).",
-	"/dbm arrow: Shows the DBM arrow, see /dbm arrow help for details.",
+	"/dbm arrow: Shows the DBM arrow, see '/dbm arrow help' for details.",
 	"/dbm lockout: Asks raid members for their current raid instance lockouts (aliases: lockouts, ids) (requires leader/promoted status).",
-	"/dbm lag: Performs a raid-wide latency check."
+	"/dbm lag: Performs a raid-wide latency check.",
+	"/dbm hud: Shows the DBM hud, see '/dbm hud' for details."
 }
 
 DBM_ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
