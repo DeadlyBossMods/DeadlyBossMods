@@ -378,6 +378,7 @@ DBM_CORE_MOVE_WARNING_MESSAGE		= "Thanks for using Deadly Boss Mods"
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Special warning movable"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Special Warning"
 
+DBM_CORE_HUD_INVALID_TYPE			= "Invalid HUD type defined"
 DBM_CORE_HUD_INVALID_TARGET			= "No valid target given for HUD"
 DBM_CORE_HUD_INVALID_SELF			= "Cannot use self as target for HUD"
 DBM_CORE_HUD_INVALID_ICON			= "Cannot use icon method for HUD on a target with no icon"
