@@ -36,7 +36,7 @@ local specWarnDemolition			= mod:NewSpecialWarningCount(156425, nil, nil, nil, 2
 local specWarnMassiveDemolition		= mod:NewSpecialWarningCount(156479, false, nil, nil, 2)
 local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 3, nil, 2)
 local specWarnMFDPosition			= mod:NewSpecialWarning("specWarnMFDPosition", nil, false, nil, 1, nil, 4)--Mythic Position Assignment. No option, connected to specWarnMarkedforDeath
-local specWarnMarkedforDeathOther	= mod:NewSpecialWarningTarget(156096, false)
+local specWarnMarkedforDeathOther	= mod:NewSpecialWarningTargetCount(156096, false)
 local yellMarkedforDeath			= mod:NewYell(156096)
 local specWarnThrowSlagBombs		= mod:NewSpecialWarningSpell(156030, nil, nil, nil, 2, nil, 2)--This spell is not gtfo.
 local specWarnShatteringSmash		= mod:NewSpecialWarningCount(155992, "Melee", nil, nil, nil, nil, 2)
@@ -59,7 +59,7 @@ local specWarnFallingDebris			= mod:NewSpecialWarningCount(162585, nil, nil, nil
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDemolitionCD				= mod:NewNextCountTimer(45, 156425)
 local timerMassiveDemolitionCD		= mod:NewNextCountTimer(6, 156479)
-local timerMarkedforDeathCD			= mod:NewNextTimer(15.5, 156096)
+local timerMarkedforDeathCD			= mod:NewNextCountTimer(15.5, 156096)
 local timerThrowSlagBombsCD			= mod:NewCDTimer(24.5, 156030)--It's a next timer, but sometimes delayed by Shattering Smash
 local timerShatteringSmashCD		= mod:NewCDCountTimer(45, 155992)--power based, can variate a little do to blizzard buggy power code.
 local timerImpalingThrow			= mod:NewCastTimer(5, 156111)--How long marked target has to aim throw at Debris Pile or Siegemaker
@@ -104,8 +104,6 @@ local smashTank = nil
 local UnitDebuff, UnitName = UnitDebuff, UnitName
 local DBMHudMap = DBMHudMap
 local tankFilter
-local warnMarkedforDeath2		= mod:NewTargetCountAnnounce(156096, 4, nil, nil, false)
-local timerMarkedforDeathCD2	= mod:NewNextCountTimer(15.5, 156096, nil, nil, false)
 do
 	tankFilter = function(uId)
 		if UnitName(uId) == smashTank then
@@ -126,6 +124,7 @@ function mod:OnCombatStart(delay)
 	self.vb.demolitionCount = 0
 	self.vb.SlagEruption = 0
 	self.vb.smashCount = 0
+	self.vb.markCount = 0
 	timerThrowSlagBombsCD:Start(5.5-delay)
 	countdownSlagBombs:Start(5.5-delay)
 	timerDemolitionCD:Start(15-delay, 1)
@@ -133,7 +132,7 @@ function mod:OnCombatStart(delay)
 	if self:IsTank() then--Ability only concerns tank in phase 1
 		countdownShatteringSmash:Start(21-delay)
 	end
-	timerMarkedforDeathCD:Start(36-delay)
+	timerMarkedforDeathCD:Start(36-delay, 1)
 	countdownMarkedforDeath:Start(36-delay)
 	if self:IsMythic() then
 		yellMarkedforDeath	= mod:NewYell(156096, L.customMFDSay)
@@ -261,23 +260,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 156096 then
-		if self.Options.SpecWarn156096target then
-			specWarnMarkedforDeathOther:CombinedShow(0.5, args.destName)
-		else
-			if self.vb.phase == 2 and self.Options.announceother156096target then
-				warnMarkedforDeath2:CombinedShow(0.5, args.destName)
-			else
-				warnMarkedforDeath:CombinedShow(0.5, args.destName)
-			end
-		end
-		if args:IsPlayer() then
-			specWarnMarkedforDeath:Show()
-			voiceMarkedforDeath:Play("findshelter")
-			countdownMarkedforDeathFades:Start()
-			if not self:IsMythic() then
-				yellMarkedforDeath:Yell()
-			end
-		end
 		if self:AntiSpam(2, 3) then
 			self.vb.markCount = self.vb.markCount + 1
 			local timer
@@ -288,15 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			timerImpalingThrow:Start()
 			self:Schedule(0.5, checkMarked, self)
-			if self.vb.phase == 2 and self.Options.Timer156096next then
-				if self.vb.markCount < 3 then
-					timerMarkedforDeathCD2:Start(timer, self.vb.markCount+1)
-				else
-					timerMarkedforDeathCD2:Start(timer, 1)
-				end
-			else
-				timerMarkedforDeathCD:Start(timer)
-			end
+			timerMarkedforDeathCD:Start(timer, self.vb.markCount+1)
 			countdownMarkedforDeath:Start(timer)
 			DBM:Debug("Running experimental timerShatteringSmashCD adjust because debugmode is enabled", 2)
 			local elapsed, total = timerShatteringSmashCD:GetTime(self.vb.smashCount+1)
@@ -308,6 +282,19 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerShatteringSmashCD:Update(elapsed, total+extend, self.vb.smashCount+1)
 				countdownShatteringSmash:Cancel()
 				countdownShatteringSmash:Start(remaining+extend)
+			end
+		end
+		if self.Options.SpecWarn156096targetcount then
+			specWarnMarkedforDeathOther:CombinedShow(0.5, args.destName, self.vb.markCount)
+		else
+			warnMarkedforDeath:CombinedShow(0.5, args.destName, self.vb.markCount)
+		end
+		if args:IsPlayer() then
+			specWarnMarkedforDeath:Show()
+			voiceMarkedforDeath:Play("findshelter")
+			countdownMarkedforDeathFades:Start()
+			if not self:IsMythic() then
+				yellMarkedforDeath:Yell()
 			end
 		end
 		if self.Options.SetIconOnMarked then
@@ -344,7 +331,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 156667 then
 		self.vb.siegemaker = self.vb.siegemaker + 1
-		self.vb.markCount = 0
 		if not self.Options.SpecWarnej9571spell then
 			warnSiegemaker:Show(self.vb.siegemaker)
 		else
@@ -440,6 +426,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.phase = 2
 		self.vb.smashCount = 0
 		self.vb.siegemaker = 0
+		self.vb.markCount = 0
 		timerDemolitionCD:Cancel()
 		timerMassiveDemolitionCD:Cancel()
 		timerMassiveDemolitionCD:Unschedule()
@@ -459,11 +446,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerShatteringSmashCD:Start(21, 1)--21-23 variation. Boss power is set to 66/100 automatically by transitions
 		end
 		timerMarkedforDeathCD:Cancel()
-		if self.vb.phase == 2 and self.Options.Timer156096next then
-			timerMarkedforDeathCD2:Start(25.5, 1)
-		else
-			timerMarkedforDeathCD:Start(25.5)
-		end
+		timerMarkedforDeathCD:Start(25.5, 1)
 		countdownMarkedforDeath:Cancel()
 		countdownMarkedforDeath:Start(25)
 		warnPhase:Show(DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase:format(2))
@@ -475,6 +458,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 161348 then--Phase 3 Trigger
 		self.vb.phase = 3
 		self.vb.smashCount = 0
+		self.vb.markCount = 0
 		timerSiegemakerCD:Cancel()
 		timerThrowSlagBombsCD:Cancel()
 		countdownSlagBombs:Cancel()
@@ -488,7 +472,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerShatteringSmashCD:Cancel()
 		timerShatteringSmashCD:Start(26, 1)--26-28 variation. Boss power is set to 33/100 automatically by transition (after short delay)
 		timerMarkedforDeathCD:Cancel()
-		timerMarkedforDeathCD:Start(17)
+		timerMarkedforDeathCD:Start(17, 1)
 		countdownMarkedforDeath:Cancel()
 		countdownMarkedforDeath:Start(17)
 		timerSlagEruptionCD:Start(31.5, 1)
