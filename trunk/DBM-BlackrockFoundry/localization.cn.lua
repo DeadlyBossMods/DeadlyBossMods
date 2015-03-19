@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Mar 17, 2015@13331
+-- Last update: Mar 18, 2015@13345
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -105,7 +105,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnReturnBase	= "特殊警报：当上船的玩家可以安全地返回码头时"
+	specWarnReturnBase	= "特殊警报：当上船的玩家可以安全地返回码头时",
+	filterBladeDash		= "当受到$spell:170395的影响时不显示$spell:155794的特殊警报",
+	filterBloodRitual	= "当受到$spell:170405的影响时不显示$spell:158078的特殊警报"
 })
 
 L:SetMiscLocalization({
@@ -116,6 +118,17 @@ L:SetMiscLocalization({
 -- Blackhand --
 --------------------------
 L= DBM:GetModLocalization(959)
+
+L:SetWarningLocalization({
+	specWarnMFDPosition	= "死亡标记站位：%s"
+})
+
+L:SetMiscLocalization({
+	customMFDSay	= "%2$s 中了 死亡标记(%1$s)!",
+	left			= "左",
+	center			= "中",
+	right			= "右"
+})
 
 -------------
 --  Trash  --
