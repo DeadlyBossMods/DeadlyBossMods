@@ -14,7 +14,7 @@ mod:RegisterEvents(
 	"RAID_BOSS_WHISPER"
 )
 
-local warnLivingBlaze				= mod:NewTargetAnnounce(159632, 3, nil, false)
+local warnLivingBlaze				= mod:NewTargetAnnounce(175583, 3, nil, false)
 local warnEmberInWind				= mod:NewTargetAnnounce(177855, 3, nil, false)
 
 local specWarnOverheadSmash			= mod:NewSpecialWarningTaunt(175765)
