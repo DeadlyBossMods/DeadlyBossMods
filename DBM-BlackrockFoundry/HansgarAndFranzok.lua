@@ -68,7 +68,7 @@ function mod:JumpTarget(targetname, uId)
 	else
 		warnJumpSlam:Show(targetname)--No reason to show this if you got a special warning. so reduce spam and display this only to let you know jump is far away and you're safe
 	end
-	self:BossTargetScanner(76973, "JumpTarget", 0.2, 40, true, nil, true, nil, targetname)
+	self:BossTargetScanner(76973, "JumpTarget", 0.2, 40, true, nil, nil, targetname)
 end
 
 function mod:OnCombatStart(delay)
@@ -163,7 +163,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if not self.vb.firstJump then
 			DBM:Debug("157922: firstJump true")
 			self.vb.firstJump = true
-			self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, true, nil, true)--Don't include tank in first scan should be enough of a filter for first, it'll grab whatever first non tank target he gets and set that as first jump target and it will be valid
+			self:BossTargetScanner(76973, "JumpTarget", 0.1, 80, true)--Don't include tank in first scan should be enough of a filter for first, it'll grab whatever first non tank target he gets and set that as first jump target and it will be valid
 		else--Not first jump
 			DBM:Debug("157922: firstJump false")
 		end
