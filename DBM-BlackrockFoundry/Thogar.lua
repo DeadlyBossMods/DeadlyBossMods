@@ -433,14 +433,14 @@ local function showHud(self, train)
 	if self.Options.HudMapForTrain then
 		if train == 1 or train == 15 or train == 28.5 then--Move to triangle
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
---		elseif train == 2 or train == 28 then--Move to Cross
---			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "cross", 517, 3353, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5
+		elseif train == 2 or train == 28 then--Move to Cross
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "cross", 566, 3277, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 7 or train == 21 or train == 23 or train == 26 then--Move to Triangle
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 9 or train == 11 or train == 32 then--Move to diamond
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
---		elseif train == 9.5 then--Move to Circle
---			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "circle", 517, 3353, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5
+		elseif train == 9.5 then--Move to Circle
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "circle", 590, 3313, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 14 then--Move to skull
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "skull", 517, 3353, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 17 then
@@ -642,7 +642,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				if count == 1 or count == 11 or count == 26 then
 					showHud(self, count)
 				elseif count == 2 then
-				--	self:Schedule(14-fakeAdjust, showHud, self, count)--Need to collect coords for cross, I forgot
+					self:Schedule(14-fakeAdjust, showHud, self, count)
 				end
 			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 32 then
 				expectedTime = 10
@@ -674,7 +674,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				elseif count == 21 then
 					self:Schedule(17, showHud, self, count)
 				elseif count == 28 then
-					--showHud(self, count)--Need coords for cross/X
+					showHud(self, count)
 					self:Schedule(19, showHud, self, 28.5)
 				end
 			elseif count == 10 then
@@ -683,7 +683,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 35
 				specWarnSplitSoon:Cancel()
 				specWarnSplitSoon:Schedule(25)--10 is a split, pre warn 10 seconds before 10
-				--self:Schedule(30-fakeAdjust, showHud, self, 9.5)--hud marker 5 seconds before split. later you move the better the bomb placements. Need coords still
+				self:Schedule(30-fakeAdjust, showHud, self, 9.5)--hud marker 5 seconds before split. later you move the better the bomb placements.
 			end
 			if expectedTime then
 				if msg == "Fake" then
