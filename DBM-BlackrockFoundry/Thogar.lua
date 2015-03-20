@@ -431,19 +431,30 @@ end
 --Positions based on https://www.youtube.com/watch?v=0QC7BOEv2iE
 local function showHud(self, train)
 	if self.Options.HudMapForTrain then
-		if train == 14 then--Move to skull
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "skull", 517, 3353, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 15 or train == 23 then--Move to triangle
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 18 then--Move to square
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "square", 590, 3352, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+		if train == 1 or train == 15 or train == 28.5 then--Move to triangle
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+--		elseif train == 2 or train == 28 then--Move to Cross
+--			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "cross", 517, 3353, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5
+		elseif train == 7 or train == 21 or train == 23 or train == 26 then--Move to Triangle
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+		elseif train == 9 or train == 11 or train == 32 then--Move to diamond
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+--		elseif train == 9.5 then--Move to Circle
+--			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "circle", 517, 3353, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5
+		elseif train == 14 then--Move to skull
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "skull", 517, 3353, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+		elseif train == 17 then
+			if self:IsMelee() then--Move to diamond for man at arms train
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			else--Move to triangle for Cannon
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			end
+		elseif train == 19 then
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "square", 590, 3352, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 19.5 then----Move to star, also during train count 19, but later
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "star", 590, 3272, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 19 then--Move to diamond
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-			self:Schedule(7, showHud, self, 19.5)
-		elseif train == 20 then--Move to Moon
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "moon", 517, 3280, 3, 5, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "star", 590, 3272, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+		elseif train == 20 or train == 22 then--Move to Moon
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "moon", 517, 3280, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		end
 	end
 end
@@ -582,8 +593,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount >= 2 then
 			specWarnBurning:Show(amount)
 		end
-	elseif spellId == 160140 and args:IsDestTypeHostile() then
-		specWarnCauterizingBoltDispel:Show(args.destName)
+	elseif spellId == 160140 and (args:GetDestCreatureID() == 80791 or args:GetDestCreatureID() == 77487) then--Mender or Man at arms. Filter the rest
+		specWarnCauterizingBoltDispel:CombinedShow(0.3, args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -605,6 +616,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	local trainLimit = self:IsMythic() and 36 or 35
 	if target == L.Train and self.vb.trainCount <= trainLimit then
 		local adjusted = (GetTime() - fakeYellTime) < 2-- yell followed by fakeyell within 2 sec. this should realyell of scheduled fakeyell. so do not increase count and only do adjust.
+		local fakeAdjust = 0
 		self:Unschedule(fakeTrainYell)--Always unschedule
 		if not adjusted then--do not adjust visible warn to prevent confusing. (although fakeyell worked early, maximum 3.5 sec. this is no matter. only adjust scheduled things.)
 			self.vb.trainCount = self.vb.trainCount + 1
@@ -612,6 +624,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			if msg == "Fake" then
 				countdownTrain:Start(3.0)
 				laneCheck(self)
+				fakeAdjust = 1.5
 			else
 				countdownTrain:Start()
 				self:Schedule(1.5, laneCheck, self)
@@ -626,47 +639,43 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			end
 			if count == 1 or count == 2 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 31 or count == 34 then
 				expectedTime = 5
+				if count == 1 or count == 11 or count == 26 then
+					showHud(self, count)
+				elseif count == 2 then
+				--	self:Schedule(14-fakeAdjust, showHud, self, count)--Need to collect coords for cross, I forgot
+				end
 			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 32 then
 				expectedTime = 10
 				if count == 14 then
-					if msg == "Fake" then
-						self:Schedule(5.5, showHud, self, count)
-					else
-						self:Schedule(7, showHud, self, count)
-					end
+					self:Schedule(10-fakeAdjust, showHud, self, count)
+				elseif count == 22 then
+					self:Schedule(8-fakeAdjust, showHud, self, count)
+				elseif count == 32 then
+					self:Schedule(4-fakeAdjust, showHud, self, count)
 				end
 			elseif count == 3 or count == 5 or count == 7 or count == 8 or count == 16 or count == 17 or count == 20 or count == 23 or count == 24 or count == 29 or count == 33 then
 				expectedTime = 15
-				if count == 20 then
+				if count == 7 then
+					showHud(self, count)
+				elseif count == 17 or count == 23 then
+					self:Schedule(10-fakeAdjust, showHud, self, count)
+				elseif count == 20 then
 					specWarnSplitSoon:Cancel()
-					if msg == "Fake" then
-						specWarnSplitSoon:Schedule(3.5)
-						self:Schedule(5.5, showHud, self, count)
-					else
-						specWarnSplitSoon:Schedule(5)
-						self:Schedule(7, showHud, self, count)
-					end	
+					specWarnSplitSoon:Schedule(5-fakeAdjust)
+					self:Schedule(8, showHud, self, count)
 				end
 			elseif count == 4 or count == 15 or count == 18 or count == 19  or count == 21 or count == 27 or count == 28 then
 				expectedTime = 20
 				if count == 15 then
-					if msg == "Fake" then
-						self:Schedule(5.5, showHud, self, count)
-					else
-						self:Schedule(7, showHud, self, count)
-					end
-				elseif count == 18 then
-					if msg == "Fake" then
-						self:Schedule(5.5, showHud, self, count)
-					else
-						self:Schedule(7, showHud, self, count)
-					end
+					self:Schedule(12-fakeAdjust, showHud, self, count)
 				elseif count == 19 then
-					if msg == "Fake" then
-						self:Schedule(5.5, showHud, self, count)
-					else
-						self:Schedule(7, showHud, self, count)
-					end	
+					showHud(self, count)
+					self:Schedule(20, showHud, self, 19.5)
+				elseif count == 21 then
+					self:Schedule(17, showHud, self, count)
+				elseif count == 28 then
+					--showHud(self, count)--Need coords for cross/X
+					self:Schedule(19, showHud, self, 28.5)
 				end
 			elseif count == 10 then
 				expectedTime = 25
@@ -674,6 +683,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 35
 				specWarnSplitSoon:Cancel()
 				specWarnSplitSoon:Schedule(25)--10 is a split, pre warn 10 seconds before 10
+				--self:Schedule(30-fakeAdjust, showHud, self, 9.5)--hud marker 5 seconds before split. later you move the better the bomb placements. Need coords still
 			end
 			if expectedTime then
 				if msg == "Fake" then
