@@ -113,6 +113,7 @@ local timerHeartSeekerCD				= mod:NewCDTimer("OptionVersion2", 70, 158010, nil, 
 local countdownShip						= mod:NewCountdown(198, "ej10019")
 local countdownWarmingUp				= mod:NewCountdown(90, 158849)
 local countdownBloodRitual				= mod:NewCountdownFades("Alt5", 158078, "Tank")
+local countdownBladeDash				= mod:NewCountdown("AltTwo8", 155794, "Tank")
 local countdownDarkHunt					= mod:NewCountdownFades("AltTwo8", 158315)
 
 local voiceRapidFire					= mod:NewVoice(156631) --runout
@@ -248,6 +249,9 @@ function mod:OnCombatStart(delay)
 --	end
 	playerOnBoat = false
 	timerBladeDashCD:Start(8-delay)
+	if self:IsMythic() then
+		countdownBladeDash:Start(8-delay)
+	end
 	timerBloodRitualCD:Start(12.4-delay)
 	timerRapidFireCD:Start(15.5-delay)
 	timerShipCD:Start(59.5-delay)
@@ -289,6 +293,9 @@ function mod:SPELL_CAST_START(args)
 		if noFilter or not isPlayerOnBoat() then
 			self:BossTargetScanner(77231, "BladeDashTarget", 0.1, 16)
 			timerBladeDashCD:Start()
+			if self:IsMythic() then
+				countdownBladeDash:Start()
+			end
 		end
 	elseif spellId == 158008 then
 		savedAbilityTime["HeartSeeker"] = GetTime()
@@ -457,6 +464,7 @@ function mod:UNIT_DIED(args)
 		timerDeployTurretCD:Cancel()
 	elseif cid == 77231 then--Sorka
 		timerBladeDashCD:Cancel()
+		countdownBladeDash:Cancel()
 		timerConvulsiveShadowsCD:Cancel()
 		timerDarkHuntCD:Cancel()
 	elseif cid == 78351 or cid == 78341 or cid == 78343 then--boat bosses
