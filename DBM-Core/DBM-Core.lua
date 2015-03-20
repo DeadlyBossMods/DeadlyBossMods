@@ -1290,7 +1290,7 @@ do
 				if (not f or v.func == f) and (not mod or v.mod == mod) then
 					match = true
 					for i = 1, select("#", ...) do
-						if select(i, ...) ~= v[i] then
+						if select(i, ...) ~= nil and select(i, ...) ~= v[i] then
 							match = false
 							break
 						end
