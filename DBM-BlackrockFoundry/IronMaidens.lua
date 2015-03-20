@@ -113,7 +113,7 @@ local timerHeartSeekerCD				= mod:NewCDTimer("OptionVersion2", 70, 158010, nil, 
 local countdownShip						= mod:NewCountdown(198, "ej10019")
 local countdownWarmingUp				= mod:NewCountdown(90, 158849)
 local countdownBloodRitual				= mod:NewCountdownFades("Alt5", 158078, "Tank")
-local countdownBladeDash				= mod:NewCountdown("AltTwo8", 155794, "Tank")
+local countdownBladeDash				= mod:NewCountdown("AltTwo20", 155794, "Tank")
 local countdownDarkHunt					= mod:NewCountdownFades("AltTwo8", 158315)
 
 local voiceRapidFire					= mod:NewVoice(156631) --runout
