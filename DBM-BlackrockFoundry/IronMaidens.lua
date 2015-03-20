@@ -27,9 +27,7 @@ mod:RegisterEventsInCombat(
 
 mod:SetBossHealthInfo(77557, 77231, 77477)
 
---TODO, find out how many bombardments there are so timer doesn't start after last one.
---TODO, add timers for deck abilities that need them?
---TODO, use x, y values from UnitPosition and remove map crap. Map stuff was only used because that could be coded without going into zone (just open map and mouse over shit)
+--TODO, does heroic still have blade dash and blood ritual during boat phases?
 local Ship	= EJ_GetSectionInfo(10019)
 local Marak = EJ_GetSectionInfo(10033)
 local Sorka = EJ_GetSectionInfo(10030)
@@ -41,18 +39,17 @@ local warnShip							= mod:NewSpellAnnounce("ej10019", 3, 76204)
 ----Blackrock Deckhand
 local warnProtectiveEarth				= mod:NewSpellAnnounce("OptionVersion2", 158707, 3, nil, false)--Could not verify
 ----Shattered Hand Deckhand
-local warnDeadlyThrow					= mod:NewSpellAnnounce(158692, 3)
-local warnFixate						= mod:NewTargetAnnounce(158702, 3)
+local warnFixate						= mod:NewTargetAnnounce("OptionVersion2", 158702, 3, nil, false)--extremely spammy
 --Ground
 ----Admiral Gar'an
 local warnRapidFire						= mod:NewTargetAnnounce(156631, 4)
 local warnPenetratingShot				= mod:NewTargetAnnounce(164271, 3)
 ----Enforcer Sorka
-local warnBladeDash						= mod:NewTargetAnnounce("OptionVersion2", 155794, 3, nil, "Ranged")--No longer targets melee, ever.
+local warnBladeDash						= mod:NewTargetCountAnnounce(155794, 3, nil, "Ranged|Tank")
 local warnConvulsiveShadows				= mod:NewTargetAnnounce("OptionVersion2", 156214, 3, nil, "Healer")
 local warnDarkHunt						= mod:NewTargetAnnounce("OptionVersion2", 158315, 4, nil, "Healer")
 ----Marak the Blooded
-local warnBloodRitual					= mod:NewTargetAnnounce(158078, 3)
+local warnBloodRitual					= mod:NewTargetCountAnnounce(158078, 3)
 local warnBloodsoakedHeartseeker		= mod:NewTargetAnnounce(158010, 4, nil, "Healer")
 local warnSanguineStrikes				= mod:NewTargetAnnounce(156601, 3, nil, "Healer")
 
@@ -84,7 +81,7 @@ local specWarnDarkHunt					= mod:NewSpecialWarningYou(158315, nil, nil, nil, nil
 local specWarnDarkHuntOther				= mod:NewSpecialWarningTarget(158315, false)--Healer may want this, or raid leader
 ----Marak the Blooded
 local specWarnBloodRitual				= mod:NewSpecialWarningYou(158078)
-local specWarnBloodRitualOther			= mod:NewSpecialWarningTarget("OptionVersion2", 158078, "Tank")
+local specWarnBloodRitualOther			= mod:NewSpecialWarningTargetCount(158078, "Tank")
 local yellBloodRitual					= mod:NewYell(158078)
 local specWarnBloodsoakedHeartseeker	= mod:NewSpecialWarningRun(158010, nil, nil, nil, 4, nil, 2)
 local yellHeartseeker					= mod:NewYell(158010, nil, false)
@@ -103,11 +100,11 @@ local timerPenetratingShotCD			= mod:NewCDTimer(28.8, 164271)--22-30 at least. m
 local timerDeployTurretCD				= mod:NewCDTimer(20.5, 158599)--20.5-23.5
 ----Enforcer Sorka
 mod:AddTimerLine(Sorka)
-local timerBladeDashCD					= mod:NewCDTimer("OptionVersion2", 20, 155794, nil, "Ranged")
+local timerBladeDashCD					= mod:NewCDCountTimer(20, 155794, nil, "Ranged|Tank")
 local timerConvulsiveShadowsCD			= mod:NewNextTimer(56.5, 156214)--Timer only enabled on mythicOn non mythic, it's just an unimportant dot. On mythic, MUCH more important because user has to run out of raid and get dispelled.
 ----Marak the Blooded
 mod:AddTimerLine(Marak)
-local timerBloodRitualCD				= mod:NewCDTimer(20, 158078)
+local timerBloodRitualCD				= mod:NewCDCountTimer(20, 158078)
 local timerHeartSeekerCD				= mod:NewCDTimer("OptionVersion2", 70, 158010, nil, "Ranged")--Seriously a 74 second cd?
 
 local countdownShip						= mod:NewCountdown(198, "ej10019")
@@ -121,7 +118,6 @@ local voiceBloodRitual					= mod:NewVoice(158078, "Melee") --158078.ogg, faraway
 local voiceHeartSeeker					= mod:NewVoice(158010) --spread
 local voiceShip							= mod:NewVoice("ej10019") --1695uktar, 1695gorak, 1695ukurogg
 local voiceEarthenbarrier				= mod:NewVoice(158708)  --int
---local voiceSanguineStrikes			= mod:NewVoice(156601, "Healer")) --healteam
 local voiceDeployTurret					= mod:NewVoice(158599, "Dps") --158599.ogg attack turret
 local voiceConvulsiveShadows			= mod:NewVoice(156214) --runaway, target
 local voiceDarkHunt						= mod:NewVoice(158315) --defensive, target
@@ -138,7 +134,8 @@ mod:AddBoolOption("filterBloodRitual", true)
 mod.vb.phase = 1
 mod.vb.ship = 0
 mod.vb.alphaOmega = 0
---mod.vb.below25 = false
+mod.vb.bloodRitual = 0
+mod.vb.bladeDash = 0
 
 local UnitPosition, UnitIsConnected, UnitDebuff, GetTime =  UnitPosition, UnitIsConnected, UnitDebuff, GetTime
 local savedAbilityTime = {}
@@ -155,18 +152,21 @@ local function isPlayerOnBoat()
 	end
 end
 
-local function recoverTimers()
+local function recoverTimers(self)
 	timerBombardmentAlphaCD:Cancel()
 	timerWarmingUp:Cancel()
 	countdownWarmingUp:Cancel()
-	if savedAbilityTime["BloodRitual"] and (GetTime() - savedAbilityTime["BloodRitual"]) < 20 then
-		timerBloodRitualCD:Update(GetTime() - savedAbilityTime["BloodRitual"], 20)
+	if not self:IsMythic() then
+		--These abilities cannot be cast during ANY boat phase on mythic, so no recovery needed, new timers start on mythic
+		if savedAbilityTime["BloodRitual"] and (GetTime() - savedAbilityTime["BloodRitual"]) < 20 then
+			timerBloodRitualCD:Update(GetTime() - savedAbilityTime["BloodRitual"], 20, self.vb.bloodRitual+1)
+		end
+		if savedAbilityTime["BladeDash"] and (GetTime() - savedAbilityTime["BladeDash"]) < 20 then
+			timerBladeDashCD:Update(GetTime() - savedAbilityTime["BladeDash"], 20, self.vb.bladeDash+1)
+		end
 	end
 	if savedAbilityTime["RapidFire"] and (GetTime() - savedAbilityTime["RapidFire"]) < 30 then
 		timerRapidFireCD:Update(GetTime() - savedAbilityTime["RapidFire"], 30)
-	end
-	if savedAbilityTime["BladeDash"] and (GetTime() - savedAbilityTime["BladeDash"]) < 20 then
-		timerBladeDashCD:Update(GetTime() - savedAbilityTime["BladeDash"], 20)
 	end
 	if savedAbilityTime["HeartSeeker"] and (GetTime() - savedAbilityTime["HeartSeeker"]) < 70 then
 		timerHeartSeekerCD:Update(GetTime() - savedAbilityTime["HeartSeeker"], 70)
@@ -204,8 +204,16 @@ local function checkBoatPlayer(self)
 	countdownWarmingUp:Cancel()
 	if playerOnBoat then -- leave boat
 		playerOnBoat = false
-		recoverTimers()
+		recoverTimers(self)
 		DBM:Debug("Player Leaving Boat")
+	end
+	self.vb.bladeDash = 0
+	self.vb.bloodRitual = 0
+	if self:IsMythic() then
+		--These abilites resume after boat phase ends on mythic
+		timerBladeDashCD:Start(5, 1)
+		countdownBladeDash:Start(5)
+		timerBloodRitualCD:Start(10, 1)
 	end
 end
 
@@ -227,13 +235,14 @@ local function checkBoatOn(self, count)
 end
 
 function mod:BladeDashTarget(targetname, uId)
-	warnBladeDash:Show(targetname)
 	if self:IsMythic() then
 		if targetname == UnitName("player") then
 			if UnitDebuff("player", GetSpellInfo(170395)) and self.Options.filterBladeDash then return end
 			specWarnBladeDash:Show()
 		elseif self:CheckNearby(8, targetname) then
 			specWarnBladeDashOther:Show(targetname)
+		else
+			warnBladeDash:Show(targetname, self.vb.bladeDash)
 		end
 	end
 end
@@ -241,19 +250,16 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.ship = 0
+	self.vb.bloodRitual = 0
+	self.vb.bladeDash = 0
 	self.vb.alphaOmega = 1
 	boatMissionDone = false
---	if self:IsMythic() then
---		self.vb.below25 = true--On mythic, they continue going onto boat until 20%
---	else
---		self.vb.below25 = false
---	end
 	playerOnBoat = false
-	timerBladeDashCD:Start(8-delay)
+	timerBladeDashCD:Start(8-delay, 1)
 	if self:IsMythic() then
 		countdownBladeDash:Start(8-delay)
 	end
-	timerBloodRitualCD:Start(12.4-delay)
+	timerBloodRitualCD:Start(12.4-delay, 1)
 	timerRapidFireCD:Start(15.5-delay)
 	timerShipCD:Start(59.5-delay)
 	countdownShip:Start(59.5-delay)
@@ -278,7 +284,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 158078 then
 		savedAbilityTime["BloodRitual"] = GetTime()
 		if noFilter or not isPlayerOnBoat() then--Blood Ritual. Still safest way to start timer, in case no sync
-			timerBloodRitualCD:Start()
+			timerBloodRitualCD:Start(nil, self.vb.bloodRitual+1)
 		end
 	elseif spellId == 156626 then--Rapid Fire. Still safest way to start timer, in case no sync
 		savedAbilityTime["RapidFire"] = GetTime()
@@ -290,10 +296,11 @@ function mod:SPELL_CAST_START(args)
 		voiceDeployTurret:Play("158599")
 		timerDeployTurretCD:Start()
 	elseif spellId == 155794 then
+		self.vb.bladeDash = self.vb.bladeDash + 1
 		savedAbilityTime["BladeDash"] = GetTime()
 		if noFilter or not isPlayerOnBoat() then
 			self:BossTargetScanner(77231, "BladeDashTarget", 0.1, 16)
-			timerBladeDashCD:Start()
+			timerBladeDashCD:Start(nil, self.vb.bladeDash+1)
 			if self:IsMythic() then
 				countdownBladeDash:Start()
 			end
@@ -310,7 +317,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 158707 and (noFilter or isPlayerOnBoat()) then
 		warnProtectiveEarth:Show()
 	elseif spellId == 158692 and (noFilter or isPlayerOnBoat()) then
-		warnDeadlyThrow:Show()
 		specWarnDeadlyThrow:Show()
 	end
 end
@@ -386,10 +392,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetSortedIcon(1, args.destName, 3, 3)
 		end
 	elseif spellId == 159724 and (noFilter or not isPlayerOnBoat()) then
-		if self.Options.SpecWarn158078target2 then
-			specWarnBloodRitualOther:Show(args.destName)
+		if self.Options.SpecWarn158078targetcount then
+			specWarnBloodRitualOther:Show(args.destName, self.vb.bloodRitual)
 		else
-			warnBloodRitual:Show(args.destName)
+			warnBloodRitual:Show(args.destName, self.vb.bloodRitual)
 		end
 		if self.Options.SetIconOnBloodRitual and not self:IsLFR() then
 			self:SetIcon(args.destName, 2)
@@ -425,7 +431,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--voiceSanguineStrikes:Play("healall")
 	--Begin Deck Abilities
 	elseif spellId == 158702 and (noFilter or isPlayerOnBoat()) then
-		warnFixate:Show(args.destName)
+		warnFixate:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() and self:AntiSpam(3, 1) then--it spams sometimes
 			specWarnFixate:Show()
 		end
@@ -529,10 +535,13 @@ function mod:OnSync(msg, guid)
 			countdownShip:Start()
 		end
 		--Timers that always cancel, regardless of boss going up
-		self:Schedule(3, function()
-			timerBladeDashCD:Cancel()
-			countdownBladeDash:Cancel()
-		end)
+		if self:IsMythic() then
+			self:Schedule(3, function()
+				timerBladeDashCD:Cancel()
+				countdownBladeDash:Cancel()
+				timerBloodRitualCD:Cancel()
+			end)
+		end
 		--Timers that always cancel, regardless of boss going up
 		timerBombardmentAlphaCD:Start(14.5)
 		if guid == Marak then
@@ -543,6 +552,8 @@ function mod:OnSync(msg, guid)
 			voiceShip:Play("1695ukurogg")
 		elseif guid == Sorka then
 			self:Schedule(3, function()
+				timerBladeDashCD:Cancel()
+				countdownBladeDash:Cancel()
 				timerConvulsiveShadowsCD:Cancel()
 				timerDarkHuntCD:Cancel()
 			end)
