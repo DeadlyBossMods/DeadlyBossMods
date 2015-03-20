@@ -51,6 +51,7 @@ local specWarnMassiveExplosion		= mod:NewSpecialWarningSpell(163008, nil, nil, n
 local specWarnSlagEruption			= mod:NewSpecialWarningCount(156928, nil, nil, nil, 2)
 local specWarnAttachSlagBombs		= mod:NewSpecialWarningYou(157000, nil, nil, nil, nil, nil, 2)--May change to sound 3, but I don't want it confused with the even more threatening marked for death, so for now will try 1
 local specWarnAttachSlagBombsOther	= mod:NewSpecialWarningTaunt(157000, nil, nil, nil, nil, nil, 2)
+local specWarnSlagPosition			= mod:NewSpecialWarning("specWarnSlagPosition", nil, false, nil, 1)
 local yellAttachSlagBombs			= mod:NewYell("OptionVersion2", 157000)
 local specWarnMassiveShatteringSmash= mod:NewSpecialWarningCount("OptionVersion2", 158054, nil, nil, nil, 3, nil, 2)
 local specWarnFallingDebris			= mod:NewSpecialWarningCount(162585, nil, nil, nil, 2)--Mythic (like Meteor)
@@ -211,6 +212,8 @@ local function checkMarked(self)
 		voiceMarkedforDeath:Play("156096")
 	end
 	--Sort by raidid since combat log order may diff person to person
+	--Order changed from left middle right to left right middle to match BW to prevent conflict in dual mod raids.
+	--This feature was suggested and started before that mod appeared, but since it exists, focus is on ensuring they work well together
 	if self:IsMythic() then
 		local mfdFound = 0
 		local numGroupMembers = DBM:GetNumGroupMembers()
@@ -247,7 +250,31 @@ end
 
 local slagDebuff = GetSpellInfo(156096)
 local function checkSlag(self)
-	
+	local slagFound = 0
+	local numGroupMembers = DBM:GetNumGroupMembers()
+	if numGroupMembers < 3 then return end--Future proofing solo raid. can't assign 3 positions if less than 3 people
+	--Was originally going to also do this as 3 positions, but changed to match BW for compatability, for users who want to run DBM in BW dominant raids.
+	--this however does not have the 1 melee 1 ranged check BW helper does, but that's because that code doesn't even work and there is no clean way to do it without mid fight inspecting.
+	--I bet that gets scrapped anyways. If he does fix his though I'll add it here.
+	for i = 1, numGroupMembers do
+		if UnitDebuff("raid"..i, slagDebuff) then--Tank excluded on purpose to match BW helper
+			slagFound = slagFound + 1
+			if UnitName("raid"..i) == playerName then
+				if slagFound == 1 then
+					if self.Options.SpecWarn157000you then
+						specWarnSlagPosition:Show(BACK)
+						yellMarkedforDeath:Yell(BACK, playerName)
+					end
+				elseif slagFound == 2 then
+					if self.Options.SpecWarn157000you then
+						specWarnSlagPosition:Show(L.middle)
+						yellMarkedforDeath:Yell(L.middle, playerName)
+					end
+				end
+			end
+			if slagFound == 2 then break end
+		end
+	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
@@ -258,10 +285,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFallingDebris:Start()
 		timerFallingDebrisCD:Start(nil, self.vb.deprisCount+1)
 	end
-end
-
-local function mfdYellDelay(self)
-	
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -322,7 +345,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnAttachSlagBombs:Show()
-			yellAttachSlagBombs:Yell()
+			if self:IsTank() or not self:IsMythic() then
+				yellAttachSlagBombs:Yell()
+			else
+				self:Schedule(0.5, checkSlag, self)
+			end
 			timerSlagBomb:Start()
 			voiceAttachSlagBombs:Play("runout")
 			if self.Options.RangeFrame then
