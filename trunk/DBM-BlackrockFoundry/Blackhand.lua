@@ -329,13 +329,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				countdownShatteringSmash:Cancel()
 				countdownShatteringSmash:Start(remaining+extend)
 			end
-			if self.vb.phase == 2 then
-				if self.vb.markCount2 < 3 then
-					self.vb.markCount2 = self.vb.markCount2 + 1
-				else
-					self.vb.markCount2 = 1
-				end
-			end
 		end
 		local countFormat = self.vb.markCount
 		if self.vb.phase == 2 then
