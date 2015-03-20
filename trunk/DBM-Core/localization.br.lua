@@ -255,7 +255,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.achievement	= "Exibir cronógrafo para %s"
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target			= "%s em >%%s<"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%d) em >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%s) em >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell			= "%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds			= "%s restantes: %%d"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast			= "Lançando %s: %.1f seg"

@@ -24,7 +24,7 @@ mod:RegisterEventsInCombat(
 --TODO, get damage ID for fire on ground created by Mortar
 local warnPhase						= mod:NewPhaseChangeAnnounce()
 --Stage One: The Blackrock Forge
-local warnMarkedforDeath			= mod:NewTargetAnnounce(156096, 4)--If not in combat log, find a RAID_BOSS_WHISPER event.
+local warnMarkedforDeath			= mod:NewTargetCountAnnounce(156096, 4)--If not in combat log, find a RAID_BOSS_WHISPER event.
 --Stage Two: Storage Warehouse
 local warnSiegemaker				= mod:NewCountAnnounce("ej9571", 3, 156667)
 local warnFixate					= mod:NewTargetAnnounce(156653, 4)
@@ -99,6 +99,7 @@ mod.vb.demolitionCount = 0
 mod.vb.SlagEruption = 0
 mod.vb.smashCount = 0
 mod.vb.markCount = 0
+mod.vb.markCount2 = 0
 mod.vb.siegemaker = 0
 mod.vb.deprisCount = 0
 local smashTank = nil
@@ -314,10 +315,15 @@ function mod:SPELL_AURA_APPLIED(args)
 				countdownShatteringSmash:Start(remaining+extend)
 			end
 		end
+		local countFormat = self.vb.markCount
+		if self.vb.phase == 2 then
+			self.vb.markCount2 = self.vb.markCount2 + 1
+			countFormat = self.vb.markCount.."-"..self.vb.markCount2
+		end
 		if self.Options.SpecWarn156096targetcount then
-			specWarnMarkedforDeathOther:CombinedShow(0.5, args.destName, self.vb.markCount)
+			specWarnMarkedforDeathOther:CombinedShow(0.5, countFormat, args.destName)
 		else
-			warnMarkedforDeath:CombinedShow(0.5, args.destName, self.vb.markCount)
+			warnMarkedforDeath:CombinedShow(0.5, countFormat, args.destName)
 		end
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
@@ -364,6 +370,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceAttachSlagBombs:Play("changemt")
 		end
 	elseif spellId == 156667 then
+		self.vb.markCount2 = 0
 		self.vb.siegemaker = self.vb.siegemaker + 1
 		if not self.Options.SpecWarnej9571spell then
 			warnSiegemaker:Show(self.vb.siegemaker)
@@ -461,6 +468,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.smashCount = 0
 		self.vb.siegemaker = 0
 		self.vb.markCount = 0
+		self.vb.markCount2 = 0
 		timerDemolitionCD:Cancel()
 		timerMassiveDemolitionCD:Cancel()
 		timerMassiveDemolitionCD:Unschedule()
