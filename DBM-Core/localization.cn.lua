@@ -235,7 +235,7 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "成就：限时击杀"
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target				= "%s -> >%%s<"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount		= "%s (%%d) -> >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount		= "%s (%%s) -> >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell				= "%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.ends 				= "%s 结束"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.fades				= "%s 消失"

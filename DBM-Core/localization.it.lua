@@ -154,7 +154,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.achievement	= "Visualizza Timer per %s"
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target			= "%s su >%%s<"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%d) su >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%s) su >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell			= "%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds			= "%s rimanente: %%d"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast			= "Lancio di %s: %.1f sec"
