@@ -136,8 +136,10 @@ function mod:OnCombatStart(delay)
 	countdownMarkedforDeath:Start(36-delay)
 	if self:IsMythic() then
 		yellMarkedforDeath	= mod:NewYell(156096, L.customMFDSay)
+		yellAttachSlagBombs	= mod:NewYell("OptionVersion2", 157000, L.customSlagSay)
 	else--In case do mythic first, heroic after, reset to non custom on pull
 		yellMarkedforDeath	= mod:NewYell(156096)
+		yellAttachSlagBombs	= mod:NewYell("OptionVersion2", 157000)
 	end
 end
 
@@ -202,10 +204,10 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-local debuff = GetSpellInfo(156096)
+local mfdDebuff = GetSpellInfo(156096)
 local playerName = UnitName("player")
 local function checkMarked(self)
-	if not UnitDebuff("player", debuff) then
+	if not UnitDebuff("player", mfdDebuff) then
 		voiceMarkedforDeath:Play("156096")
 	end
 	--Sort by raidid since combat log order may diff person to person
@@ -214,7 +216,7 @@ local function checkMarked(self)
 		local numGroupMembers = DBM:GetNumGroupMembers()
 		if numGroupMembers < 3 then return end--Future proofing solo raid. can't assign 3 positions if less than 3 people
 		for i = 1, numGroupMembers do
-			if UnitDebuff("raid"..i, debuff) then
+			if UnitDebuff("raid"..i, mfdDebuff) then
 				mfdFound = mfdFound + 1
 				if UnitName("raid"..i) == playerName then
 					if mfdFound == 1 then
@@ -225,22 +227,27 @@ local function checkMarked(self)
 						voiceMarkedforDeath:Schedule(0.7, "left")--Schedule another 0.7, for total of 1.2 second after "find shelder"
 					elseif mfdFound == 2 then
 						if self.Options.SpecWarn156096you then
-							specWarnMFDPosition:Show(L.center)
-						end
-						yellMarkedforDeath:Yell(L.center, playerName)
-						voiceMarkedforDeath:Schedule(0.7, "center")--Schedule another 0.7, for total of 1.2 second after "find shelder"
-					elseif mfdFound == 3 then
-						if self.Options.SpecWarn156096you then
 							specWarnMFDPosition:Show(L.right)
 						end
 						yellMarkedforDeath:Yell(L.right, playerName)
 						voiceMarkedforDeath:Schedule(0.7, "right")--Schedule another 0.7, for total of 1.2 second after "find shelder"
+					elseif mfdFound == 3 then
+						if self.Options.SpecWarn156096you then
+							specWarnMFDPosition:Show(L.middle)
+						end
+						yellMarkedforDeath:Yell(L.middle, playerName)
+						voiceMarkedforDeath:Schedule(0.7, "center")--Schedule another 0.7, for total of 1.2 second after "find shelder"
 					end
 				end
 				if mfdFound == 3 then break end
 			end
 		end
 	end
+end
+
+local slagDebuff = GetSpellInfo(156096)
+local function checkSlag(self)
+	
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
