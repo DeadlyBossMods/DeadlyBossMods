@@ -268,6 +268,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt		= "%s: >%%s< - 차단!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interruptcount= "%s: >%%s< - 차단! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you			= "당신에게 %s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= ">%%s<에게 %1$s!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetcount	= ">%%s<에게 %1$s! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt			= ">%%s<에게 %1$s - 도발!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close			= "가까운 곳에 %s (>%%s<)!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move			= "%s - 바닥 피하세요!"
@@ -305,6 +306,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack		= "당신이 $spell:%2$s %1$d중첩 이�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "$spell:%s 대상 전환 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetcount	= "$spell:%s 대상 특수 경고 보기"
 
 DBM_CORE_AUTO_TIMER_TEXTS.target			= "%s: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.cast				= "%s"
