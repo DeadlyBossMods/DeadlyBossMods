@@ -126,8 +126,9 @@ L:SetWarningLocalization({
 
 L:SetMiscLocalization({
 	customMFDSay	= "Marked %s on %s",
+	customSlagSay	= "Bomb %s on %s",
 	left			= "left",
-	center			= "center",
+	middle			= "middle",
 	right			= "right"
 })
 
