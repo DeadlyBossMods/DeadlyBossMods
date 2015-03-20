@@ -395,7 +395,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SpecWarn158078targetcount then
 			specWarnBloodRitualOther:Show(self.vb.bloodRitual, args.destName)
 		else
-			warnBloodRitual:Show(args.destName, self.vb.bloodRitual)
+			warnBloodRitual:Show(self.vb.bloodRitual, args.destName)
 		end
 		if self.Options.SetIconOnBloodRitual and not self:IsLFR() then
 			self:SetIcon(args.destName, 2)
