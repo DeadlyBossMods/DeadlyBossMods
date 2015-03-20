@@ -121,7 +121,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(959)
 
 L:SetWarningLocalization({
-	specWarnMFDPosition	= "Marked Position: %s"
+	specWarnMFDPosition		= "Marked Position: %s",
+	specWarnSlagPosition	= "Bomb Position: %s"
 })
 
 L:SetMiscLocalization({
