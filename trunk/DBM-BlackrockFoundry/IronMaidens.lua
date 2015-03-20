@@ -282,6 +282,7 @@ function mod:SPELL_CAST_START(args)
 		noFilter = true
 	end
 	if spellId == 158078 then
+		self.vb.bloodRitual = self.vb.bloodRitual + 1
 		savedAbilityTime["BloodRitual"] = GetTime()
 		if noFilter or not isPlayerOnBoat() then--Blood Ritual. Still safest way to start timer, in case no sync
 			timerBloodRitualCD:Start(nil, self.vb.bloodRitual+1)
