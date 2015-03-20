@@ -104,6 +104,7 @@ mod.vb.siegemaker = 0
 mod.vb.deprisCount = 0
 local smashTank = nil
 local UnitDebuff, UnitName = UnitDebuff, UnitName
+local markTargets = {}
 local DBMHudMap = DBMHudMap
 local tankFilter
 do
@@ -121,7 +122,18 @@ local function massiveOver(self)
 	end
 end
 
+local function warnMarked(self, countFormat)
+	local text = table.concat(markTargets, "<, >")
+	if self.Options.SpecWarn156096targetcount then
+		specWarnMarkedforDeathOther:Show(countFormat, text)
+	else
+		warnMarkedforDeath:Show(countFormat, text)
+	end
+	table.wipe(markTargets)
+end
+
 function mod:OnCombatStart(delay)
+	table.wipe(markTargets)
 	self.vb.phase = 1
 	self.vb.demolitionCount = 0
 	self.vb.SlagEruption = 0
@@ -293,6 +305,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 156096 then
 		if self:AntiSpam(2, 3) then
 			self.vb.markCount = self.vb.markCount + 1
+			if self.vb.phase == 2 then
+				self.vb.markCount2 = self.vb.markCount2 + 1
+			end
 			local timer
 			if self.vb.phase == 3 then
 				timer = 20.5
@@ -314,17 +329,21 @@ function mod:SPELL_AURA_APPLIED(args)
 				countdownShatteringSmash:Cancel()
 				countdownShatteringSmash:Start(remaining+extend)
 			end
+			if self.vb.phase == 2 then
+				if self.vb.markCount2 < 3 then
+					self.vb.markCount2 = self.vb.markCount2 + 1
+				else
+					self.vb.markCount2 = 1
+				end
+			end
 		end
 		local countFormat = self.vb.markCount
 		if self.vb.phase == 2 then
-			self.vb.markCount2 = self.vb.markCount2 + 1
 			countFormat = self.vb.markCount.."-"..self.vb.markCount2
 		end
-		if self.Options.SpecWarn156096targetcount then
-			specWarnMarkedforDeathOther:CombinedShow(0.5, countFormat, args.destName)
-		else
-			warnMarkedforDeath:CombinedShow(0.5, countFormat, args.destName)
-		end
+		markTargets[#markTargets + 1] = args.destName
+		self:Unschedule(warnMarked)
+		self:Schedule(0.5, warnMarked, self, countFormat)
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
 			voiceMarkedforDeath:Play("findshelter")
