@@ -222,7 +222,7 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Achievement"--BATTLE_PET_SOURCE_6
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target		= "%s on >%%s<",
-	targetcount	= "%s (%%d) on >%%s<",
+	targetcount	= "%s (%%s) on >%%s<",
 	spell		= "%s",
 	ends 		= "%s ended",
 	endtarget	= "%s ended: >%%s<",
@@ -267,7 +267,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	interruptcount	= "%s - interrupt >%%s<! (%%d)",
 	you				= "%s on you",
 	target			= "%s on >%%s<",
-	targetcount		= "%s on >%%s< (%%d)",
+	targetcount		= "%s (%%s) on >%%s< ",
 	taunt			= "%s on >%%s< - taunt now",
 	close			= "%s on >%%s< near you",
 	move			= "%s - move away",

@@ -228,7 +228,7 @@ DBM_CORE_GEAR_FISHING_POLE			= "낚싯대"
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적)"--BATTLE_PET_SOURCE_6
 
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target			= "%s: >%%s<"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%d): >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%s): >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell			= "%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.ends			= "%s 종료"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.endtarget		= "%s 종료: >%%s<"
@@ -268,7 +268,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt		= "%s: >%%s< - 차단!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interruptcount= "%s: >%%s< - 차단! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you			= "당신에게 %s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= ">%%s<에게 %1$s!"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetcount	= ">%%s<에게 %1$s! (%%d)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetcount	= ">%%s<에게 %1$s! (%%s)"--Fixme
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt			= ">%%s<에게 %1$s - 도발!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close			= "가까운 곳에 %s (>%%s<)!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move			= "%s - 바닥 피하세요!"
