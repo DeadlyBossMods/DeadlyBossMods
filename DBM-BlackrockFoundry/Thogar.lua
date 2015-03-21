@@ -475,14 +475,21 @@ function mod:test(num)
 	showInfoFrame(self)
 end
 
-function mod:BombTarget(targetname, uId)
+function mod:BombTarget(targetname, uId, bossuId)
 	if not targetname then return end
 	warnDelayedSiegeBomb:CombinedShow(0.5, targetname)
 	if targetname == UnitName("player") then
 		specWarnDelayedSiegeBomb:Show()
-		specWarnDelayedSiegeBombMove:Schedule(5, 1)
-		timerDelayedSiegeBomb:Start(5.5, 1)
 		voiceDelayedSiegeBomb:Play("bombrun")
+		local _, _, _, _, startTime, endTime = UnitCastingInfo(bossuId)
+		local time = ((endTime or 0) - (startTime or 0)) / 1000
+		if time then
+			specWarnDelayedSiegeBombMove:Schedule(time - 0.5, 1)
+			timerDelayedSiegeBomb:Start(time, 1)
+		else
+			specWarnDelayedSiegeBombMove:Schedule(4.4, 1)
+			timerDelayedSiegeBomb:Start(4.9, 1)
+		end
 	end
 end
 
