@@ -122,7 +122,11 @@ local function massiveOver(self)
 	end
 end
 
-local function warnMarked(self, countFormat)
+local function warnMarked(self)
+	local countFormat = self.vb.markCount
+	if self.vb.phase == 2 then
+		countFormat = self.vb.markCount.."-"..self.vb.markCount2
+	end
 	local text = table.concat(markTargets, "<, >")
 	if self.Options.SpecWarn156096targetcount then
 		specWarnMarkedforDeathOther:Show(countFormat, text)
@@ -330,13 +334,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				countdownShatteringSmash:Start(remaining+extend)
 			end
 		end
-		local countFormat = self.vb.markCount
-		if self.vb.phase == 2 then
-			countFormat = self.vb.markCount.."-"..self.vb.markCount2
-		end
 		markTargets[#markTargets + 1] = args.destName
 		self:Unschedule(warnMarked)
-		self:Schedule(0.5, warnMarked, self, countFormat)
+		self:Schedule(0.5, warnMarked, self)
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
 			voiceMarkedforDeath:Play("findshelter")
