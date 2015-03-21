@@ -106,6 +106,7 @@ local voiceFireCaller			= mod:NewVoice("ej9659", "Tank")
 local voiceSecurityGuard		= mod:NewVoice("ej9648", "Tank")
 
 mod:AddRangeFrameOption(8)
+mod:AddBoolOption("InfoFrame")
 mod:AddSetIconOption("SetIconOnFixate", 155196, false)
 mod:AddHudMapOption("HudMapOnBomb", 155192, false)
 mod:AddDropdownOption("VFYellType", {"Countdown", "Apply"}, "Countdown", "misc")
@@ -282,6 +283,9 @@ function mod:OnCombatEnd()
 	if self.Options.HudMapOnBomb then
 		DBMHudMap:Disable()
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 	self:UnregisterShortTermEvents()
 end
 
@@ -334,6 +338,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.RangeFrame and not UnitDebuff("player", args.spellName) then
 			DBM.RangeCheck:Show(8, BombFilter, nil, nil, nil, debuffTime + 0.5)
 		end
+		if self.vb.phase == 1 and self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(5, "playerbaddebuff", 155192)
+		end
 	elseif spellId == 155196 then
 		if not activeSlagGUIDS[args.sourceGUID] then
 			activeSlagGUIDS[args.sourceGUID] = true
@@ -356,17 +364,23 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			voiceSlagElemental:Play("ej9657")
 		end
-		warnFixate:CombinedShow(1, args.destName)
-		if args:IsPlayer() then
-			specWarnFixate:Show()
-		end
-		--Update icon number even if option not enabled, so recoveryable in case person with option DCs
-		if self.vb.lastSlagIcon == 6 then--1-6 should be more than enough before reset. Do not want to use skull or x since probably set on kill targets
-			self.vb.lastSlagIcon = 0
-		end
-		self.vb.lastSlagIcon = self.vb.lastSlagIcon + 1
-		if self.Options.SetIconOnFixate then
-			self:SetIcon(args.destName, self.vb.lastSlagIcon)
+		if self.vb.phase == 2 then
+			warnFixate:CombinedShow(0.5, args.destName)
+			if args:IsPlayer() then
+				specWarnFixate:Show()
+			end
+			--Update icon number even if option not enabled, so recoveryable in case person with option DCs
+			if self.vb.lastSlagIcon == 6 then--1-6 should be more than enough before reset. Do not want to use skull or x since probably set on kill targets
+				self.vb.lastSlagIcon = 0
+			end
+			self.vb.lastSlagIcon = self.vb.lastSlagIcon + 1
+			if self.Options.SetIconOnFixate then
+				self:SetIcon(args.destName, self.vb.lastSlagIcon)
+			end
+			if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+				DBM.InfoFrame:SetHeader(args.spellName)
+				DBM.InfoFrame:Show(5, "playerbaddebuff", 155196)
+			end
 		end
 	elseif spellId == 158345 and self:AntiSpam(10, 3) then--Might be SPELL_CAST_SUCCESS instead.
 		self.vb.shieldDown = self.vb.shieldDown + 1
@@ -506,6 +520,9 @@ function mod:UNIT_DIED(args)
 				DBM.BossHealth:Clear()
 				DBM.BossHealth:AddBoss(76806)
 			end
+			if self.Options.InfoFrame then
+				DBM.InfoFrame:Hide()
+			end
 		end
 	elseif cid == 76808 then--Regulators
 		self.vb.machinesDead = self.vb.machinesDead + 1
@@ -538,6 +555,9 @@ function mod:UNIT_DIED(args)
 			)
 			if self.Options.HudMapOnBomb then
 				DBMHudMap:Disable()
+			end
+			if self.Options.InfoFrame then
+				DBM.InfoFrame:Hide()
 			end
 		else--Only announce 1 remaining. 0 remaining not needed, because have phase2 warn. double warn no good
 			warnRegulators:Show(2 - self.vb.machinesDead)
