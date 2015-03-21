@@ -98,8 +98,8 @@ local mythicSoakOrder2Group = {
 	[7] = 2,
 	[8] = 2,
 	[9] = 1,
-	[10] = 2,
-	[11] = 1,
+	[10] = 1,
+	[11] = 2,
 	[12] = 2,
 }
 --Normal/heroic always best strat is 2 groups 1 stack each, repeating.
