@@ -498,14 +498,14 @@ do
 	local rotation, pixelsperyard, activeDots, numPlayers, circleColor, prevRange, prevThreshold, prevNumClosePlayer, prevclosestRange, prevColor, prevType = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	local unitList = {}
 
-	local function setDot(id)
+	local function setDot(id, sinTheta, cosTheta)
 		local dot = dots[id]
 		local x = dots[id].x
 		local y = dots[id].y
 		local range = dots[id].range
 		if range < (activeRange * 1.5) then -- if person is closer than 1.5 * range, show the dot. Else hide it
-			local dx = ((x * cos(rotation)) - (-y * sin(rotation))) * pixelsperyard -- Rotate the X,Y based on player facing
-			local dy = ((x * sin(rotation)) + (-y * cos(rotation))) * pixelsperyard
+			local dx = ((x * cosTheta) - (-y * sinTheta)) * pixelsperyard -- Rotate the X,Y based on player facing
+			local dy = ((x * sinTheta) + (-y * cosTheta)) * pixelsperyard
 			dot:ClearAllPoints()
 			dot:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
 			if not dot.isShown then
@@ -573,6 +573,8 @@ do
 		local playerX, playerY, _, playerMapId = UnitPosition("player")
 
 		rotation = (2 * pi) - GetPlayerFacing()
+		local sinTheta = sin(rotation)
+		local cosTheta = cos(rotation)
 		local closePlayer = 0
 		local closestRange = nil
 		local closetName = nil
@@ -610,7 +612,7 @@ do
 					dot.x = -cx
 					dot.y = -cy
 					dot.range = range
-					setDot(i)
+					setDot(i, sintheta, cosTheta)
 				end
 			elseif rEnabled and dot.isShown then
 				dot.isShown = nil

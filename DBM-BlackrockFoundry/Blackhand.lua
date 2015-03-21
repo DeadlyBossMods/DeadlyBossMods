@@ -269,7 +269,7 @@ local slagDebuff = GetSpellInfo(156096)
 local function checkSlag(self)
 	local slagFound = 0
 	local numGroupMembers = DBM:GetNumGroupMembers()
-	if numGroupMembers < 3 then return end--Future proofing solo raid. can't assign 3 positions if less than 3 people
+	if numGroupMembers < 3 then return end--Future proofing solo raid. can't assign 2 positions if less than 2 people
 	--Was originally going to also do this as 3 positions, but changed to match BW for compatability, for users who want to run DBM in BW dominant raids.
 	--this however does not have the 1 melee 1 ranged check BW helper does, but that's because that code doesn't even work and there is no clean way to do it without mid fight inspecting.
 	--I bet that gets scrapped anyways. If he does fix his though I'll add it here.
