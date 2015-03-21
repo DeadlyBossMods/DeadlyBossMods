@@ -517,7 +517,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerThrowSlagBombsCD:Cancel()
 		countdownSlagBombs:Cancel()
 		if self:IsMythic() then
-			timerFallingDebrisCD:Start(10, 1)
+			timerFallingDebrisCD:Start(11, 1)
 		end
 		timerAttachSlagBombsCD:Start(11)
 		countdownSlagBombs:Start(11)
