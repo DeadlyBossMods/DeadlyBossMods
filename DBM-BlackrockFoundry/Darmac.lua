@@ -16,8 +16,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 154960 155458 155459 155460 154981 155030 155236 155462 163247",
 	"SPELL_AURA_APPLIED_DOSE 155030 155236",
 	"SPELL_AURA_REMOVED 154960",
-	"SPELL_PERIODIC_DAMAGE 159044 162277 156824 155657",
-	"SPELL_ABSORBED 159044 162277 156824 155657",
+	"SPELL_PERIODIC_DAMAGE 159044 162277 156823 156824 155657",
+	"SPELL_ABSORBED 159044 162277 156823 156824 155657",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--Because boss numbering tends to get out of wack with things constantly joining/leaving fight. I've only seen boss1 and boss2 but for good measure.
@@ -48,6 +48,7 @@ local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil,
 local specWarnFlameInfusion			= mod:NewSpecialWarningMove(155657)
 local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2, nil, 2)
 local specWarnEpicenter				= mod:NewSpecialWarningMove(159043)
+local specWarnSuperheatedScrap		= mod:NewSpecialWarningMove(156823)
 --Beast abilities (living)
 local specWarnSavageHowl			= mod:NewSpecialWarningTarget(155198, "Tank|Healer")
 local specWarnSavageHowlDispel		= mod:NewSpecialWarningDispel("OptionVersion2", 155198, "RemoveEnrage", nil, nil, nil, nil, 2)
@@ -363,6 +364,8 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		specWarnInfernoPyre:Show()
 	elseif spellId == 155657 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnFlameInfusion:Show()
+	elseif spellId == 156823 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+		specWarnSuperheatedScrap:Show()
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
