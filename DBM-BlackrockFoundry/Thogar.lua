@@ -639,12 +639,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			end
 			if count == 1 or count == 2 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 31 then
 				expectedTime = 5
-				if count == 1 or count == 11 or count == 26 or count == 34 then
+				if count == 1 or count == 11 or count == 26 then
 					showHud(self, count)
 				elseif count == 2 then
 					self:Schedule(14-fakeAdjust, showHud, self, count)
 				end
-			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 32 then
+			elseif count == 6 or count == 14 or count == 22 or count == 30 or count == 32 or count == 34 then
 				expectedTime = 10
 				if count == 14 then
 					self:Schedule(10-fakeAdjust, showHud, self, count)
