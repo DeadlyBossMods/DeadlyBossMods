@@ -1311,6 +1311,24 @@ do
 		end
 	end
 	
+	
+	local wrappers = {}
+	local function range(max, cur, ...)
+		cur = cur or 1
+		if cur > max then
+			return ...
+		end
+		return cur, range(max, cur + 1, select(2, ...))
+	end
+	local function getWrapper(n)
+		wrappers[n] = wrappers[n] or loadstring(([[
+			return function(func, tbl)
+				return func(]] .. ("tbl[%s], "):rep(n):sub(0, -3) .. [[)
+			end
+		]]):format(range(n)))()
+		return wrappers[n]
+	end
+
 	local nextModSyncSpamUpdate = 0
 	mainFrame:SetScript("OnUpdate", function(self, elapsed)
 		local time = GetTime()
@@ -1319,7 +1337,15 @@ do
 		local nextTask = getMin()
 		while nextTask and nextTask.func and nextTask.time <= time do
 			deleteMin()
-			nextTask.func(unpack(nextTask))
+			local n = nextTask.n
+			if n == #nextTask then
+				nextTask.func(unpack(nextTask))
+			else
+				-- too many nil values (or a trailing nil)
+				-- this is bad because unpack will not work properly
+				-- TODO: is there a better solution?
+				getWrapper(n)(nextTask.func, nextTask)
+			end
 			pushCachedTable(nextTask)
 			nextTask = getMin()
 		end
@@ -1358,11 +1384,16 @@ do
 			v.time = GetTime() + t
 			v.func = f
 			v.mod = mod
-			for i = 1, select("#", ...) do
+			v.n = select("#", ...)
+			for i = 1, v.n do
 				v[i] = select(i, ...)
 			end
+			-- clear slots if necessary
+			for i = v.n + 1, 4 do
+				v[i] = nil
+			end
 		else -- create a new table
-			v = {time = GetTime() + t, func = f, mod = mod, ...}
+			v = {time = GetTime() + t, func = f, mod = mod, n = select("#", ...), ...}
 		end
 		insert(v)
 	end
