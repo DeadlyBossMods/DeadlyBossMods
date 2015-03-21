@@ -69,7 +69,7 @@ mod:AddTimerLine(SPELL_BUCKET_ABILITIES_UNLOCKED)--Abilities Unlocked
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
 local timerSuperheatedShrapnelCD	= mod:NewCDTimer(14.2, 155499)
 local timerTantrumCD				= mod:NewNextCountTimer(29.5, 162275)
-local timerEpicenterCD				= mod:NewCDCountTimer(20, 159043, nil, "Melee")
+local timerEpicenterCD				= mod:NewCDCountTimer(19.5, 159043, nil, "Melee")
 --Beast abilities (living)
 mod:AddTimerLine(BATTLE_PET_DAMAGE_NAME_8)--Beast
 local timerSavageHowlCD				= mod:NewCDTimer("OptionVersion2", 25, 155198, nil, "Healer|Tank|RemoveEnrage")
