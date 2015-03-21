@@ -637,9 +637,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			if mythicVoice[count] and not adjusted then
 				voiceTrain:Play("Thogar\\"..mythicVoice[count])
 			end
-			if count == 1 or count == 2 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 31 or count == 34 then
+			if count == 1 or count == 2 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 31 then
 				expectedTime = 5
-				if count == 1 or count == 11 or count == 26 then
+				if count == 1 or count == 11 or count == 26 or count == 34 then
 					showHud(self, count)
 				elseif count == 2 then
 					self:Schedule(14-fakeAdjust, showHud, self, count)
