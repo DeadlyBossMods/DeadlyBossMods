@@ -112,14 +112,16 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(959)
 
 L:SetWarningLocalization({
-	specWarnMFDPosition	= "死亡標記站位：%s"
+	specWarnMFDPosition		= "死亡標記站位：%s",
+	specWarnSlagPosition	= "裝置熔渣彈站位: %s"
 })
 
 L:SetMiscLocalization({
-	customMFDSay	= "%2$s中了%1$s死亡標記",
-	left			= "左方",
-	center			= "中間",
-	right			= "右方"
+	customMFDSay	= "%2$s中了死亡標記(%1$s)",
+	customSlagSay	= "%2$s中了裝置熔渣彈(%1$s)",
+	left			= "左",
+	center			= "中",
+	right			= "右"
 })
 
 -------------
