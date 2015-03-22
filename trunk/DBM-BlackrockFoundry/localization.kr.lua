@@ -112,8 +112,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnReturnBase	= "무쌍호에서 안전하게 본진으로 복귀할 수 있을때 특수 경고 보기",
-	filterBladeDash		= "$spell:170395 효과가 있을 경우 $spell:155794 특수 경고를 보이지 않기",
-	filterBloodRitual	= "$spell:170405 효과가 있을 경우 $spell:158078 특수 경고를 보이지 않기"
+	filterBladeDash2	= "$spell:170395 효과가 있을 경우 $spell:155794 특수 경고를 보이지 않기",
+	filterBloodRitual2	= "$spell:170405 효과가 있을 경우 $spell:158078 특수 경고를 보이지 않기"
 })
 
 L:SetMiscLocalization({
