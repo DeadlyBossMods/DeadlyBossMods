@@ -612,7 +612,7 @@ do
 					dot.x = -cx
 					dot.y = -cy
 					dot.range = range
-					setDot(i, sintheta, cosTheta)
+					setDot(i, sinTheta, cosTheta)
 				end
 			elseif rEnabled and dot.isShown then
 				dot.isShown = nil
