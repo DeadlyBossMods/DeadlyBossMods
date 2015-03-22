@@ -120,7 +120,7 @@ L:SetMiscLocalization({
 	customMFDSay	= "%2$s中了死亡標記(%1$s)",
 	customSlagSay	= "%2$s中了裝置熔渣彈(%1$s)",
 	left			= "左",
-	center			= "中",
+	middle			= "中",
 	right			= "右"
 })
 
