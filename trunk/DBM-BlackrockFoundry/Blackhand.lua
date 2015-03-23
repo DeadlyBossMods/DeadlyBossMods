@@ -62,7 +62,7 @@ local timerDemolitionCD				= mod:NewNextCountTimer(45, 156425)
 local timerMassiveDemolitionCD		= mod:NewNextCountTimer(6, 156479)
 local timerMarkedforDeathCD			= mod:NewNextCountTimer(15.5, 156096)
 local timerThrowSlagBombsCD			= mod:NewCDTimer(24.5, 156030)--It's a next timer, but sometimes delayed by Shattering Smash
-local timerShatteringSmashCD		= mod:NewCDCountTimer(45, 155992)--power based, can variate a little do to blizzard buggy power code.
+local timerShatteringSmashCD		= mod:NewCDCountTimer(44.5, 155992)--power based, can variate a little do to blizzard buggy power code.
 local timerImpalingThrow			= mod:NewCastTimer(5, 156111)--How long marked target has to aim throw at Debris Pile or Siegemaker
 --Stage Two: Storage Warehouse
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -489,7 +489,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownSlagBombs:Start(11)
 		timerThrowSlagBombsCD:Cancel()
 		timerThrowSlagBombsCD:Start(11)--11-12.5
-		timerSiegemakerCD:Start(15, 1)
+		timerSiegemakerCD:Start(16, 1)
 		countdownShatteringSmash:Cancel()
 		timerShatteringSmashCD:Cancel()
 		if self:IsMythic() then--Boss gain power faster on mythic phase 2
