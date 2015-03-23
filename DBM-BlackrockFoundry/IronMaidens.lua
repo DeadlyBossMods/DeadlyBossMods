@@ -241,11 +241,13 @@ end
 function mod:ConvulsiveTarget(targetname, uId)
 	if not targetname then return end
 	self.vb.shadowsWarned = true
-	warnConvulsiveShadows:Show(targetname)--Combined because a bad lingeringshadows drop may have multiple.
-	if self:IsMythic() and targetname == UnitName("player") then
-		specWarnConvulsiveShadows:Show()
-		yellConvulsiveShadows:Yell()
-		voiceConvulsiveShadows:Play("runaway")
+	if (noFilter or not isPlayerOnBoat()) then
+		warnConvulsiveShadows:Show(targetname)--Combined because a bad lingeringshadows drop may have multiple.
+		if self:IsMythic() and targetname == UnitName("player") then
+			specWarnConvulsiveShadows:Show()
+			yellConvulsiveShadows:Yell()
+			voiceConvulsiveShadows:Play("runaway")
+		end
 	end
 end
 
