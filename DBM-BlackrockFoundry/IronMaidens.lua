@@ -158,23 +158,6 @@ local function recoverTimers(self)
 	timerBombardmentAlphaCD:Cancel()
 	timerWarmingUp:Cancel()
 	countdownWarmingUp:Cancel()
-	if not self:IsMythic() then
-		--These abilities cannot be cast during ANY boat phase on mythic, so no recovery needed, new timers start on mythic
-		if savedAbilityTime["BloodRitual"] and (GetTime() - savedAbilityTime["BloodRitual"]) < 20 then
-			timerBloodRitualCD:Update(GetTime() - savedAbilityTime["BloodRitual"], 20, self.vb.bloodRitual+1)
-		end
-		if savedAbilityTime["BladeDash"] and (GetTime() - savedAbilityTime["BladeDash"]) < 20 then
-			timerBladeDashCD:Update(GetTime() - savedAbilityTime["BladeDash"], 20, self.vb.bladeDash+1)
-		end
-		--These abilities CAN be cast during boat phases, but the timer is reset on boat end so we don't want to fire invalid recovery
-		--TODO, if these resets in ALL modes, delete entirely
-		if savedAbilityTime["RapidFire"] and (GetTime() - savedAbilityTime["RapidFire"]) < 30 then
-			timerRapidFireCD:Update(GetTime() - savedAbilityTime["RapidFire"], 30)
-		end
-		if savedAbilityTime["PenetratingShot"] and (GetTime() - savedAbilityTime["PenetratingShot"]) < 28.8 then
-			timerPenetratingShotCD:Update(GetTime() - savedAbilityTime["PenetratingShot"], 28.8)
-		end
-	end
 	if savedAbilityTime["HeartSeeker"] and (GetTime() - savedAbilityTime["HeartSeeker"]) < 70 then
 		timerHeartSeekerCD:Update(GetTime() - savedAbilityTime["HeartSeeker"], 70)
 	end
@@ -216,21 +199,22 @@ local function checkBoatPlayer(self, npc)
 	self.vb.bladeDash = 0
 	self.vb.bloodRitual = 0
 	local bossPower = UnitPower("boss1")--All bosses have same power, doesn't matter which one checked
-	if self:IsMythic() then
-		--These abilites resume after boat phase ends on mythic
-		timerBladeDashCD:Start(5, 1)
-		countdownBladeDash:Start(5)
-		timerBloodRitualCD:Start(9.7, 1)
-		--These are altered by boar ending, even though boss continues casting it during boat phases.
-		timerRapidFireCD:Cancel()
-		timerRapidFireCD:Start(13)
-		if bossPower >= 30 then
-			if npc == Garan then--When garan returning, penetrating is always 27-28
-				timerPenetratingShotCD:Start(27)
-			else--When not garan returning, it's 24
-				timerPenetratingShotCD:Cancel()
-				timerPenetratingShotCD:Start(24)
-			end
+	--These abilites resume after boat phase ends on mythic, on other difficulties, they still reset
+	timerBladeDashCD:Cancel()
+	timerBladeDashCD:Start(5, 1)
+	countdownBladeDash:Cancel()
+	countdownBladeDash:Start(5)
+	timerBloodRitualCD:Cancel()
+	timerBloodRitualCD:Start(9.7, 1)
+	--These are altered by boar ending, even though boss continues casting it during boat phases.
+	timerRapidFireCD:Cancel()
+	timerRapidFireCD:Start(13)
+	if bossPower >= 30 then
+		if npc == Garan then--When garan returning, penetrating is always 27-28
+			timerPenetratingShotCD:Start(27)
+		else--When not garan returning, it's 24
+			timerPenetratingShotCD:Cancel()
+			timerPenetratingShotCD:Start(24)
 		end
 	end
 end
