@@ -494,7 +494,7 @@ function mod:BombTarget(targetname, uId, bossuId)
 end
 
 function mod:GrenadeTarget(targetname, uId)
-	if not targetname or (uId and self:IsTanking(uId, "boss1")) then
+	if not targetname then
 		warnProtoGrenade:Show(DBM_CORE_UNKNOWN)
 		return
 	end

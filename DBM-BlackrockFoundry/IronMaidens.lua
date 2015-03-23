@@ -13,7 +13,7 @@ mod:SetHotfixNoticeRev(12965)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 158708 158707 158692 158599 155794 158078 156626 158008",
+	"SPELL_CAST_START 158708 158707 158692 158599 155794 158078 156626 158008 156109",
 	"SPELL_CAST_SUCCESS 157854 157886 156109",
 	"SPELL_AURA_APPLIED 158702 164271 156214 158315 158010 159724 156631 156601",
 	"SPELL_AURA_REMOVED 159724 156631 158010",
@@ -57,6 +57,7 @@ local warnSanguineStrikes				= mod:NewTargetAnnounce(156601, 3, nil, "Healer")
 local specWarnBombardmentAlpha			= mod:NewSpecialWarningCount(157854, nil, nil, nil, 2)--From ship, but affects NON ship.
 local specWarnBombardmentOmega			= mod:NewSpecialWarningCount(157886, nil, nil, nil, 3)--From ship, but affects NON ship.
 local specWarnReturnBase				= mod:NewSpecialWarning("specWarnReturnBase")
+local specWarnBoatEnded					= mod:NewSpecialWarningEnd("ej10019")
 ----Blackrock Deckhand
 local specWarnEarthenbarrier			= mod:NewSpecialWarningInterrupt("OptionVersion2", 158708, "-Healer", nil, nil, nil, nil, 2)
 ----Shattered Hand Deckhand
@@ -136,6 +137,7 @@ mod.vb.ship = 0
 mod.vb.alphaOmega = 0
 mod.vb.bloodRitual = 0
 mod.vb.bladeDash = 0
+mod.vb.shadowsWarned = false
 
 local UnitPosition, UnitIsConnected, UnitDebuff, GetTime =  UnitPosition, UnitIsConnected, UnitDebuff, GetTime
 local savedAbilityTime = {}
@@ -206,6 +208,8 @@ local function checkBoatPlayer(self)
 		playerOnBoat = false
 		recoverTimers(self)
 		DBM:Debug("Player Leaving Boat")
+	else
+		specWarnBoatEnded:Show()
 	end
 	self.vb.bladeDash = 0
 	self.vb.bloodRitual = 0
@@ -231,6 +235,17 @@ local function checkBoatOn(self, count)
 		DBM:Debug("Player Entering Boat")
 	elseif count < 20 then
 		self:Schedule(1, checkBoatOn, self, count + 1)
+	end
+end
+
+function mod:ConvulsiveTarget(targetname, uId)
+	if not targetname then return end
+	self.vb.shadowsWarned = true
+	warnConvulsiveShadows:Show(targetname)--Combined because a bad lingeringshadows drop may have multiple.
+	if self:IsMythic() and targetname == UnitName("player") then
+		specWarnConvulsiveShadows:Show()
+		yellConvulsiveShadows:Yell()
+		voiceConvulsiveShadows:Play("runaway")
 	end
 end
 
@@ -319,6 +334,9 @@ function mod:SPELL_CAST_START(args)
 		warnProtectiveEarth:Show()
 	elseif spellId == 158692 and (noFilter or isPlayerOnBoat()) then
 		specWarnDeadlyThrow:Show()
+	elseif spellId == 156109 then
+		self.vb.shadowsWarned = false
+		self:BossTargetScanner(77231, "ConvulsiveTarget", 0.1, 16, true, nil, nil, nil, true)
 	end
 end
 
@@ -362,7 +380,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voicePenetratingShot:Play("gathershare")
 			end
 		end
-	elseif spellId == 156214 and (noFilter or not isPlayerOnBoat()) then
+	elseif spellId == 156214 and not self.vb.shadowsWarned and (noFilter or not isPlayerOnBoat()) then
 		warnConvulsiveShadows:CombinedShow(0.5, args.destName)--Combined because a bad lingeringshadows drop may have multiple.
 		if args:IsPlayer() and self:IsMythic() then
 			specWarnConvulsiveShadows:Show()
