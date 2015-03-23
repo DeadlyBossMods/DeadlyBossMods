@@ -154,18 +154,6 @@ local function isPlayerOnBoat()
 	end
 end
 
-local function recoverTimers(self)
-	timerBombardmentAlphaCD:Cancel()
-	timerWarmingUp:Cancel()
-	countdownWarmingUp:Cancel()
-	if savedAbilityTime["HeartSeeker"] and (GetTime() - savedAbilityTime["HeartSeeker"]) < 70 then
-		timerHeartSeekerCD:Update(GetTime() - savedAbilityTime["HeartSeeker"], 70)
-	end
-	if savedAbilityTime["ConvulsiveShadows"] and (GetTime() - savedAbilityTime["ConvulsiveShadows"]) < 56.5 then
-		timerConvulsiveShadowsCD:Update(GetTime() - savedAbilityTime["ConvulsiveShadows"], 56.5)
-	end
-end
-
 local function boatReturnWarning()
 	if boatMissionDone and isPlayerOnBoat() then
 		specWarnReturnBase:Show()
@@ -191,8 +179,6 @@ local function checkBoatPlayer(self, npc)
 	countdownWarmingUp:Cancel()
 	if playerOnBoat then -- leave boat
 		playerOnBoat = false
-		recoverTimers(self)
-		DBM:Debug("Player Leaving Boat")
 	else
 		specWarnBoatEnded:Show()
 	end
@@ -201,7 +187,7 @@ local function checkBoatPlayer(self, npc)
 	local bossPower = UnitPower("boss1")--All bosses have same power, doesn't matter which one checked
 	--These abilites resume after boat phase ends on mythic, on other difficulties, they still reset
 	timerBladeDashCD:Cancel()
-	timerBladeDashCD:Start(5, 1)
+	timerBladeDashCD:Start(5, 1)--5-6
 	countdownBladeDash:Cancel()
 	countdownBladeDash:Start(5)
 	timerBloodRitualCD:Cancel()
@@ -216,6 +202,10 @@ local function checkBoatPlayer(self, npc)
 			timerPenetratingShotCD:Cancel()
 			timerPenetratingShotCD:Start(24)
 		end
+		timerConvulsiveShadowsCD:Cancel()
+		timerConvulsiveShadowsCD:Start(36.5)--36.5-38
+		timerHeartSeekerCD:Cancel()
+		timerHeartSeekerCD:Start(57)
 	end
 end
 
@@ -523,20 +513,24 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			timerShipCD:Start()
 			countdownShip:Start()
 		end
-		--Timers that always cancel, regardless of boss going up
+		--Timers that always cancel on mythic, regardless of boss going up
 		if self:IsMythic() then
 			self:Schedule(3, function()
 				timerBladeDashCD:Cancel()
 				countdownBladeDash:Cancel()
 				timerBloodRitualCD:Cancel()
+				timerHeartSeekerCD:Cancel()
+			end)
+		else--This cancels in all modes
+			self:Schedule(3, function()
+				timerHeartSeekerCD:Cancel()
 			end)
 		end
-		--Timers that always cancel, regardless of boss going up
+		--Timers that always cancel on mythic, regardless of boss going up
 		timerBombardmentAlphaCD:Start(14.5)
 		if npc == Marak then
 			self:Schedule(3, function()
 				timerBloodRitualCD:Cancel()
-				timerHeartSeekerCD:Cancel()
 			end)
 			voiceShip:Play("1695ukurogg")
 		elseif npc == Sorka then
