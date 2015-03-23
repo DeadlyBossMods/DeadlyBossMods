@@ -36,6 +36,7 @@ local Garan = EJ_GetSectionInfo(10025)
 --Ship
 local warnPhase2						= mod:NewPhaseAnnounce(2)
 local warnShip							= mod:NewSpellAnnounce("ej10019", 3, 76204)
+local warnBombardmentAlpha				= mod:NewCountAnnounce(157854, 3)--From ship, but affects NON ship.
 ----Blackrock Deckhand
 local warnProtectiveEarth				= mod:NewSpellAnnounce("OptionVersion2", 158707, 3, nil, false)--Could not verify
 ----Shattered Hand Deckhand
@@ -54,7 +55,6 @@ local warnBloodsoakedHeartseeker		= mod:NewTargetAnnounce(158010, 4, nil, "Heale
 local warnSanguineStrikes				= mod:NewTargetAnnounce(156601, 3, nil, "Healer")
 
 --Ship
-local specWarnBombardmentAlpha			= mod:NewSpecialWarningCount(157854, nil, nil, nil, 2)--From ship, but affects NON ship.
 local specWarnBombardmentOmega			= mod:NewSpecialWarningCount(157886, nil, nil, nil, 3)--From ship, but affects NON ship.
 local specWarnReturnBase				= mod:NewSpecialWarning("specWarnReturnBase")
 local specWarnBoatEnded					= mod:NewSpecialWarningEnd("ej10019")
@@ -102,7 +102,7 @@ local timerDeployTurretCD				= mod:NewCDTimer(20.5, 158599)--20.5-23.5
 ----Enforcer Sorka
 mod:AddTimerLine(Sorka)
 local timerBladeDashCD					= mod:NewCDCountTimer(20, 155794, nil, "Ranged|Tank")
-local timerConvulsiveShadowsCD			= mod:NewNextTimer(56.5, 156214)--Timer only enabled on mythicOn non mythic, it's just an unimportant dot. On mythic, MUCH more important because user has to run out of raid and get dispelled.
+local timerConvulsiveShadowsCD			= mod:NewNextTimer(56, 156214)--Timer only enabled on mythicOn non mythic, it's just an unimportant dot. On mythic, MUCH more important because user has to run out of raid and get dispelled.
 ----Marak the Blooded
 mod:AddTimerLine(Marak)
 local timerBloodRitualCD				= mod:NewCDCountTimer(20, 158078)
@@ -166,9 +166,11 @@ local function recoverTimers(self)
 		if savedAbilityTime["BladeDash"] and (GetTime() - savedAbilityTime["BladeDash"]) < 20 then
 			timerBladeDashCD:Update(GetTime() - savedAbilityTime["BladeDash"], 20, self.vb.bladeDash+1)
 		end
-	end
-	if savedAbilityTime["RapidFire"] and (GetTime() - savedAbilityTime["RapidFire"]) < 30 then
-		timerRapidFireCD:Update(GetTime() - savedAbilityTime["RapidFire"], 30)
+		--This ability CAN be cast during boat phases, but the timer is reset on boat end so we don't want to fire invalid recovery
+		--TODO, if this timer resets in ALL modes, delete rapid fire recovery entirely
+		if savedAbilityTime["RapidFire"] and (GetTime() - savedAbilityTime["RapidFire"]) < 30 then
+			timerRapidFireCD:Update(GetTime() - savedAbilityTime["RapidFire"], 30)
+		end
 	end
 	if savedAbilityTime["HeartSeeker"] and (GetTime() - savedAbilityTime["HeartSeeker"]) < 70 then
 		timerHeartSeekerCD:Update(GetTime() - savedAbilityTime["HeartSeeker"], 70)
@@ -217,7 +219,10 @@ local function checkBoatPlayer(self)
 		--These abilites resume after boat phase ends on mythic
 		timerBladeDashCD:Start(5, 1)
 		countdownBladeDash:Start(5)
-		timerBloodRitualCD:Start(10, 1)
+		timerBloodRitualCD:Start(9.7, 1)
+		--This is altered by boar ending, even though boss continues casting it during boat phases.
+		timerRapidFireCD:Cancel()
+		timerRapidFireCD:Start(13)
 	end
 end
 
@@ -338,7 +343,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnDeadlyThrow:Show()
 	elseif spellId == 156109 then
 		self.vb.shadowsWarned = false
-		self:BossTargetScanner(77231, "ConvulsiveTarget", 0.1, 16, true, nil, nil, nil, true)
+		self:ScheduleMethod(0.1, "BossTargetScanner", 77231, "ConvulsiveTarget", 0.1, 13, true, nil, nil, nil, true)
 	end
 end
 
@@ -351,7 +356,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 157854 then
 		self:Schedule(14, boatReturnWarning)
 		if noFilter or not isPlayerOnBoat() then
-			specWarnBombardmentAlpha:Show(self.vb.alphaOmega)
+			warnBombardmentAlpha:Show(self.vb.alphaOmega)
 			timerBombardmentAlphaCD:Start()
 		end
 	elseif spellId == 157886 and (noFilter or not isPlayerOnBoat()) then
