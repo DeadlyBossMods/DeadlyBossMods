@@ -362,7 +362,7 @@ DBM_CORE_HUD_INVALID_TYPE			= "無效的HUD類型定義"
 DBM_CORE_HUD_INVALID_TARGET			= "無有效的HUD目標"
 DBM_CORE_HUD_INVALID_SELF			= "不能將HUD目标設定成自己"
 DBM_CORE_HUD_INVALID_ICON			= "不能設定對無團隊標記的目標"
-DBM_CORE_HUD_SUCCESS				= "HUD成功使用你的參數運作。這會在%s秒後取消，或是使用'/dbm hud hide'指令取消。"
+DBM_CORE_HUD_SUCCESS				= "HUD成功使用你的參數運作。這會在%s後取消，或是使用'/dbm hud hide'指令取消。"
 DBM_CORE_HUD_USAGE	= {
 	"DBM-HudMap 用法:",
 	"/dbm hud <類型> <目標> <持續時間>  建立一個指向玩家的HUD",
