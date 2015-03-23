@@ -166,10 +166,13 @@ local function recoverTimers(self)
 		if savedAbilityTime["BladeDash"] and (GetTime() - savedAbilityTime["BladeDash"]) < 20 then
 			timerBladeDashCD:Update(GetTime() - savedAbilityTime["BladeDash"], 20, self.vb.bladeDash+1)
 		end
-		--This ability CAN be cast during boat phases, but the timer is reset on boat end so we don't want to fire invalid recovery
-		--TODO, if this timer resets in ALL modes, delete rapid fire recovery entirely
+		--These abilities CAN be cast during boat phases, but the timer is reset on boat end so we don't want to fire invalid recovery
+		--TODO, if these resets in ALL modes, delete entirely
 		if savedAbilityTime["RapidFire"] and (GetTime() - savedAbilityTime["RapidFire"]) < 30 then
 			timerRapidFireCD:Update(GetTime() - savedAbilityTime["RapidFire"], 30)
+		end
+		if savedAbilityTime["PenetratingShot"] and (GetTime() - savedAbilityTime["PenetratingShot"]) < 28.8 then
+			timerPenetratingShotCD:Update(GetTime() - savedAbilityTime["PenetratingShot"], 28.8)
 		end
 	end
 	if savedAbilityTime["HeartSeeker"] and (GetTime() - savedAbilityTime["HeartSeeker"]) < 70 then
@@ -177,9 +180,6 @@ local function recoverTimers(self)
 	end
 	if savedAbilityTime["ConvulsiveShadows"] and (GetTime() - savedAbilityTime["ConvulsiveShadows"]) < 56.5 then
 		timerConvulsiveShadowsCD:Update(GetTime() - savedAbilityTime["ConvulsiveShadows"], 56.5)
-	end
-	if savedAbilityTime["PenetratingShot"] and (GetTime() - savedAbilityTime["PenetratingShot"]) < 28.8 then
-		timerPenetratingShotCD:Update(GetTime() - savedAbilityTime["PenetratingShot"], 28.8)
 	end
 end
 
@@ -189,13 +189,13 @@ local function boatReturnWarning()
 	end
 end
 
-local function checkBoatPlayer(self)
+local function checkBoatPlayer(self, npc)
 	DBM:Debug("checkBoatPlayer running", 3)
 	for uId in DBM:GetGroupMembers() do 
 		local _, y, _, playerMapId = UnitPosition(uId)
 		if UnitIsConnected(uId) and playerMapId == 1205 then
 			if y > 3196 then--found player on boat
-				self:Schedule(1, checkBoatPlayer, self)
+				self:Schedule(1, checkBoatPlayer, self, npc)
 				return
 			end
 		end
@@ -215,14 +215,23 @@ local function checkBoatPlayer(self)
 	end
 	self.vb.bladeDash = 0
 	self.vb.bloodRitual = 0
+	local bossPower = UnitPower("boss1")--All bosses have same power, doesn't matter which one checked
 	if self:IsMythic() then
 		--These abilites resume after boat phase ends on mythic
 		timerBladeDashCD:Start(5, 1)
 		countdownBladeDash:Start(5)
 		timerBloodRitualCD:Start(9.7, 1)
-		--This is altered by boar ending, even though boss continues casting it during boat phases.
+		--These are altered by boar ending, even though boss continues casting it during boat phases.
 		timerRapidFireCD:Cancel()
 		timerRapidFireCD:Start(13)
+		if bossPower >= 30 then
+			if npc == Garan then--When garan returning, penetrating is always 27-28
+				timerPenetratingShotCD:Start(27)
+			else--When not garan returning, it's 24
+				timerPenetratingShotCD:Cancel()
+				timerPenetratingShotCD:Start(24)
+			end
+		end
 	end
 end
 
@@ -322,7 +331,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.bladeDash = self.vb.bladeDash + 1
 		savedAbilityTime["BladeDash"] = GetTime()
 		if noFilter or not isPlayerOnBoat() then
-			self:BossTargetScanner(77231, "BladeDashTarget", 0.1, 16)
+			self:ScheduleMethod(0.1, "BossTargetScanner", 77231, "BladeDashTarget", 0.1, 16)
 			timerBladeDashCD:Start(nil, self.vb.bladeDash+1)
 			if self:IsMythic() then
 				countdownBladeDash:Start()
@@ -520,7 +529,48 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 	if msg:find(L.shipMessage) then
-		self:SendSync("Ship", npc)
+		self:Schedule(1, checkBoatOn, self, 1)
+		self:Schedule(25, checkBoatPlayer, self, npc)
+		boatMissionDone = false
+		self.vb.ship = self.vb.ship + 1
+		self.vb.alphaOmega = 1
+		warnShip:Show()
+		if self.vb.ship < 3 then
+			timerShipCD:Start()
+			countdownShip:Start()
+		end
+		--Timers that always cancel, regardless of boss going up
+		if self:IsMythic() then
+			self:Schedule(3, function()
+				timerBladeDashCD:Cancel()
+				countdownBladeDash:Cancel()
+				timerBloodRitualCD:Cancel()
+			end)
+		end
+		--Timers that always cancel, regardless of boss going up
+		timerBombardmentAlphaCD:Start(14.5)
+		if npc == Marak then
+			self:Schedule(3, function()
+				timerBloodRitualCD:Cancel()
+				timerHeartSeekerCD:Cancel()
+			end)
+			voiceShip:Play("1695ukurogg")
+		elseif npc == Sorka then
+			self:Schedule(3, function()
+				timerBladeDashCD:Cancel()
+				countdownBladeDash:Cancel()
+				timerConvulsiveShadowsCD:Cancel()
+				timerDarkHuntCD:Cancel()
+			end)
+			voiceShip:Play("1695gorak")
+		elseif npc == Garan then
+			self:Schedule(3, function()
+				timerRapidFireCD:Cancel()
+				timerPenetratingShotCD:Cancel()
+				timerDeployTurretCD:Cancel()
+			end)
+			voiceShip:Play("1695uktar")
+		end
 	end
 end
 
@@ -548,49 +598,6 @@ function mod:OnSync(msg, guid)
 			if self.Options.HudMapOnRapidFire then
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(156631, "highlight", targetName, 5, 12, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
 			end
-		end
-	elseif msg == "Ship" and guid and self:AntiSpam(10, 2) then--technically not guid but it's fine.
-		self:Schedule(1, checkBoatOn, self, 1)
-		self:Schedule(25, checkBoatPlayer, self)
-		boatMissionDone = false
-		self.vb.ship = self.vb.ship + 1
-		self.vb.alphaOmega = 1
-		warnShip:Show()
-		if self.vb.ship < 3 then
-			timerShipCD:Start()
-			countdownShip:Start()
-		end
-		--Timers that always cancel, regardless of boss going up
-		if self:IsMythic() then
-			self:Schedule(3, function()
-				timerBladeDashCD:Cancel()
-				countdownBladeDash:Cancel()
-				timerBloodRitualCD:Cancel()
-			end)
-		end
-		--Timers that always cancel, regardless of boss going up
-		timerBombardmentAlphaCD:Start(14.5)
-		if guid == Marak then
-			self:Schedule(3, function()
-				timerBloodRitualCD:Cancel()
-				timerHeartSeekerCD:Cancel()
-			end)
-			voiceShip:Play("1695ukurogg")
-		elseif guid == Sorka then
-			self:Schedule(3, function()
-				timerBladeDashCD:Cancel()
-				countdownBladeDash:Cancel()
-				timerConvulsiveShadowsCD:Cancel()
-				timerDarkHuntCD:Cancel()
-			end)
-			voiceShip:Play("1695gorak")
-		elseif guid == Garan then
-			self:Schedule(3, function()
-				timerRapidFireCD:Cancel()
-				timerPenetratingShotCD:Cancel()
-				timerDeployTurretCD:Cancel()
-			end)
-			voiceShip:Play("1695uktar")
 		end
 	end
 end
