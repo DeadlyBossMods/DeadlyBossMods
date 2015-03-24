@@ -77,6 +77,7 @@ local specWarnDeployTurret				= mod:NewSpecialWarningSwitch("OptionVersion3", 15
 local specWarnBladeDash					= mod:NewSpecialWarningYou(155794)
 local specWarnBladeDashOther			= mod:NewSpecialWarningClose(155794)
 local specWarnConvulsiveShadows			= mod:NewSpecialWarningMoveAway(156214, nil, nil, nil, nil, nil, 2)--Does this still drop lingering shadows, if not moveaway is not appropriate
+local specWarnConvulsiveShadowsOther	= mod:NewSpecialWarningTarget(156214, false)
 local yellConvulsiveShadows				= mod:NewYell(156214, nil, false)
 local specWarnDarkHunt					= mod:NewSpecialWarningYou(158315, nil, nil, nil, nil, nil, 2)
 local specWarnDarkHuntOther				= mod:NewSpecialWarningTarget(158315, false)--Healer may want this, or raid leader
@@ -231,7 +232,11 @@ function mod:ConvulsiveTarget(targetname, uId)
 	if not targetname then return end
 	self.vb.shadowsWarned = true
 	if (noFilter or not isPlayerOnBoat()) then
-		warnConvulsiveShadows:Show(targetname)--Combined because a bad lingeringshadows drop may have multiple.
+		if self.Options.SpecWarn156214target then
+			specWarnConvulsiveShadowsOther:Show(targetname)
+		else
+			warnConvulsiveShadows:Show(targetname)--Combined because a bad lingeringshadows drop may have multiple.
+		end
 		if self:IsMythic() and targetname == UnitName("player") then
 			specWarnConvulsiveShadows:Show()
 			yellConvulsiveShadows:Yell()
