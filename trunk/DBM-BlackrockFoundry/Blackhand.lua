@@ -565,7 +565,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerShatteringSmashCD:Cancel()
 		timerShatteringSmashCD:Start(26, 1)--26-28 variation. Boss power is set to 33/100 automatically by transition (after short delay)
 		timerMarkedforDeathCD:Cancel()
-		timerMarkedforDeathCD:Start(17, 1)
+		if self:IsMythic() then
+			timerMarkedforDeathCD:Start(22.5, 1)
+		else
+			timerMarkedforDeathCD:Start(17, 1)
+		end
 		countdownMarkedforDeath:Cancel()
 		countdownMarkedforDeath:Start(17)
 		timerSlagEruptionCD:Start(31.5, 1)
