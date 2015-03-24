@@ -108,8 +108,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnReturnBase	= "Show special warning when boat player can safely return to dock",
-	filterBladeDash2	= "Do not show special warning for $spell:155794 when affected by $spell:170395",
-	filterBloodRitual2	= "Do not show special warning for $spell:158078 when affected by $spell:170405"
+	filterBladeDash3	= "Do not show special warning for $spell:155794 when affected by $spell:170395",
+	filterBloodRitual3	= "Do not show special warning for $spell:158078 when affected by $spell:170405"
 })
 
 L:SetMiscLocalization({
