@@ -130,8 +130,8 @@ mod:AddSetIconOption("SetIconOnBloodRitual", 158078, true)
 mod:AddSetIconOption("SetIconOnHeartSeeker", 158010, true)
 mod:AddHudMapOption("HudMapOnRapidFire", 156631)--Green markers
 mod:AddHudMapOption("HudMapOnBloodRitual", 158078)--Red markers
-mod:AddBoolOption("filterBladeDash2", "Ranged")
-mod:AddBoolOption("filterBloodRitual2", "Ranged")
+mod:AddBoolOption("filterBladeDash3", false)
+mod:AddBoolOption("filterBloodRitual3", false)
 
 mod.vb.phase = 1
 mod.vb.ship = 0
@@ -252,7 +252,7 @@ end
 function mod:BladeDashTarget(targetname, uId)
 	if self:IsMythic() then
 		if targetname == UnitName("player") then
-			if UnitDebuff("player", GetSpellInfo(170395)) and self.Options.filterBladeDash2 then return end
+			if UnitDebuff("player", GetSpellInfo(170395)) and self.Options.filterBladeDash3 then return end
 			specWarnBladeDash:Show()
 		elseif self:CheckNearby(8, targetname) then
 			specWarnBladeDashOther:Show(targetname)
@@ -424,7 +424,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			yellBloodRitual:Yell()
-			if UnitDebuff("player", GetSpellInfo(170405)) and self.Options.filterBloodRitual2 then return end
+			if UnitDebuff("player", GetSpellInfo(170405)) and self.Options.filterBloodRitual3 then return end
 			specWarnBloodRitual:Show()
 			--voiceBloodRitual:Play("???")--Player needs a different warning than "far away from lines". player IS the line so they can't be far away from lines
 		else

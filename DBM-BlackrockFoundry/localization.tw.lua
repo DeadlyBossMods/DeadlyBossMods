@@ -101,8 +101,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnReturnBase	= "當船上玩家可以安全回到碼頭時顯示特別警告",
-	filterBladeDash		= "不要為$spell:155794顯示特別警告當中了$spell:170395",
-	filterBloodRitual	= "不要為$spell:158078顯示特別警告當中了$spell:170405"
+	filterBladeDash3	= "不要為$spell:155794顯示特別警告當中了$spell:170395",
+	filterBloodRitual3	= "不要為$spell:158078顯示特別警告當中了$spell:170405"
 })
 
 L:SetMiscLocalization({

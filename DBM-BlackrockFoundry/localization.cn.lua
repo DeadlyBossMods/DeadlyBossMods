@@ -106,8 +106,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnReturnBase	= "特殊警报：当上船的玩家可以安全地返回码头时",
-	filterBladeDash2	= "当受到$spell:170395的影响时不显示$spell:155794的特殊警报",
-	filterBloodRitual2	= "当受到$spell:170405的影响时不显示$spell:158078的特殊警报"
+	filterBladeDash3	= "当受到$spell:170395的影响时不显示$spell:155794的特殊警报",
+	filterBloodRitual3	= "当受到$spell:170405的影响时不显示$spell:158078的特殊警报"
 })
 
 L:SetMiscLocalization({
