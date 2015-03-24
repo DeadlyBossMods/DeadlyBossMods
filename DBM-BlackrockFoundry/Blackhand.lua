@@ -471,6 +471,7 @@ function mod:SPELL_ENERGIZE(_, _, _, _, destGUID, _, _, _, spellId, _, _, amount
 		local remaining = 25-bossPower
 		countdownShatteringSmash:Cancel()
 		countdownShatteringSmash:Start(remaining)
+		timerShatteringSmashCD:Cancel()--Prevent timer debug when updating timer
 		timerShatteringSmashCD:Start(remaining, self.vb.smashCount+1)
 	end
 end
