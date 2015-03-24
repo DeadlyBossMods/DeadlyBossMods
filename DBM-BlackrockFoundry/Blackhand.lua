@@ -231,36 +231,37 @@ local function checkMarked(self)
 	--Sort by raidid since combat log order may diff person to person
 	--Order changed from left middle right to left right middle to match BW to prevent conflict in dual mod raids.
 	--This feature was suggested and started before that mod appeared, but since it exists, focus is on ensuring they work well together
-	if self:IsMythic() then
-		local mfdFound = 0
-		local numGroupMembers = DBM:GetNumGroupMembers()
-		if numGroupMembers < 3 then return end--Future proofing solo raid. can't assign 3 positions if less than 3 people
-		for i = 1, numGroupMembers do
-			if UnitDebuff("raid"..i, mfdDebuff) then
-				mfdFound = mfdFound + 1
-				if UnitName("raid"..i) == playerName then
-					if mfdFound == 1 then
-						if self.Options.SpecWarn156096you then
-							specWarnMFDPosition:Show(L.left)
-						end
-						yellMarkedforDeath:Yell(L.left, playerName)
-						voiceMarkedforDeath:Schedule(0.7, "left")--Schedule another 0.7, for total of 1.2 second after "find shelder"
-					elseif mfdFound == 2 then
-						if self.Options.SpecWarn156096you then
-							specWarnMFDPosition:Show(L.right)
-						end
-						yellMarkedforDeath:Yell(L.right, playerName)
-						voiceMarkedforDeath:Schedule(0.7, "right")--Schedule another 0.7, for total of 1.2 second after "find shelder"
-					elseif mfdFound == 3 then
-						if self.Options.SpecWarn156096you then
-							specWarnMFDPosition:Show(L.middle)
-						end
-						yellMarkedforDeath:Yell(L.middle, playerName)
-						voiceMarkedforDeath:Schedule(0.7, "center")--Schedule another 0.7, for total of 1.2 second after "find shelder"
+	--Feature disabled until phase 3
+	if self:IsLFR() or self.vb.phase ~= 3 then return end
+	local mfdFound = 0
+	local numGroupMembers = DBM:GetNumGroupMembers()
+	local expectedTotal = self:IsMythic() and 3 or 2
+	if numGroupMembers < 3 then return end--Future proofing solo raid. can't assign 3 positions if less than 3 people
+	for i = 1, numGroupMembers do
+		if UnitDebuff("raid"..i, mfdDebuff) then
+			mfdFound = mfdFound + 1
+			if UnitName("raid"..i) == playerName then
+				if mfdFound == 1 then
+					if self.Options.SpecWarn156096you then
+						specWarnMFDPosition:Show(L.left)
 					end
+					yellMarkedforDeath:Yell(L.left, playerName)
+					voiceMarkedforDeath:Schedule(0.7, "left")--Schedule another 0.7, for total of 1.2 second after "find shelder"
+				elseif mfdFound == 2 then
+					if self.Options.SpecWarn156096you then
+						specWarnMFDPosition:Show(L.right)
+					end
+					yellMarkedforDeath:Yell(L.right, playerName)
+					voiceMarkedforDeath:Schedule(0.7, "right")--Schedule another 0.7, for total of 1.2 second after "find shelder"
+				elseif mfdFound == 3 then
+					if self.Options.SpecWarn156096you then
+						specWarnMFDPosition:Show(L.middle)
+					end
+					yellMarkedforDeath:Yell(L.middle, playerName)
+					voiceMarkedforDeath:Schedule(0.7, "center")--Schedule another 0.7, for total of 1.2 second after "find shelder"
 				end
-				if mfdFound == 3 then break end
 			end
+			if mfdFound == expectedTotal then break end
 		end
 	end
 end
@@ -341,7 +342,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMarkedforDeath:Show()
 			voiceMarkedforDeath:Play("findshelter")
 			countdownMarkedforDeathFades:Start()
-			if not self:IsMythic() then
+			if self:IsLFR() or self.vb.phase < 3 then
 				yellMarkedforDeath:Yell()
 			end
 		end
