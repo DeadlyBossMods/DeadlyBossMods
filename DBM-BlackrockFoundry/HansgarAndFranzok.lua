@@ -104,6 +104,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 153470 then
 		warnSkullcracker:Show()
+		timerSkullcrackerCD:Cancel()--avoid false timer debug if boss cancels cast to dodge stamper then starts cast again
 		timerSkullcrackerCD:Start()
 	end
 end
