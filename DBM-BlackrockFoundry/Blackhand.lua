@@ -103,7 +103,7 @@ mod.vb.markCount2 = 0
 mod.vb.siegemaker = 0
 mod.vb.deprisCount = 0
 local smashTank = nil
-local UnitDebuff, UnitName = UnitDebuff, UnitName
+local UnitDebuff, UnitName, UnitClass, UnitPowerMax = UnitDebuff, UnitName, UnitClass, UnitPowerMax
 local markTargets = {}
 local DBMHudMap = DBMHudMap
 local tankFilter
@@ -266,32 +266,70 @@ local function checkMarked(self)
 	end
 end
 
+local function meleeCheck(uId)
+	if UnitGroupRolesAssigned(uId) == "HEALER" then
+		return false
+	end
+	local _, class = UnitClass(uId)
+	--Because healers filtered out already, paladin and monk can only be melee if not "healer"
+	if class == "WARRIOR" or class == "ROGUE" or class == "DEATHKNIGHT" or class == "PALADIN" or class == "MONK" then
+		return true
+	end
+	--Inspect throttle exists, so have to do it this way
+	if class == "DRUID" or class == "SHAMAN" then
+		if UnitPowerMax(uId) < 35000 then
+			return true
+		end
+	end
+	return false
+end
+
 local slagDebuff = GetSpellInfo(156096)
 local function checkSlag(self)
-	local slagFound = 0
 	local numGroupMembers = DBM:GetNumGroupMembers()
-	if numGroupMembers < 3 then return end--Future proofing solo raid. can't assign 2 positions if less than 2 people
+	if numGroupMembers < 2 then return end--Future proofing solo raid. can't assign 2 positions if less than 2 people
 	--Was originally going to also do this as 3 positions, but changed to match BW for compatability, for users who want to run DBM in BW dominant raids.
-	--this however does not have the 1 melee 1 ranged check BW helper does, but that's because that code doesn't even work and there is no clean way to do it without mid fight inspecting.
-	--I bet that gets scrapped anyways. If he does fix his though I'll add it here.
+	--Looks like BW helper fixed melee check to not be broken. Now we have to match it to prevent mod conflict.
+	local slagFound = 0
+	local totalMelee = 0
+	local tempTable = {}
 	for i = 1, numGroupMembers do
-		if UnitDebuff("raid"..i, slagDebuff) then--Tank excluded on purpose to match BW helper
+		local unitID = "raid"..i
+		if UnitDebuff(unitID, slagDebuff) then--Tank excluded on purpose to match BW helper
 			slagFound = slagFound + 1
-			if UnitName("raid"..i) == playerName then
-				if slagFound == 1 then
-					if self.Options.SpecWarn157000you then
-						specWarnSlagPosition:Show(BACK)
-						yellMarkedforDeath:Yell(BACK, playerName)
-					end
-				elseif slagFound == 2 then
-					if self.Options.SpecWarn157000you then
-						specWarnSlagPosition:Show(L.middle)
-						yellMarkedforDeath:Yell(L.middle, playerName)
-					end
-				end
+			if meleeCheck(unitID) then
+				totalMelee = totalMelee + 1
 			end
+			table.insert(tempTable[slagFound], UnitName(unitID))
 			if slagFound == 2 then break end
 		end
+	end
+	if totalMelee == 1 then--Melee count exactly 1
+		--Assign melee to middle and ranged to back
+		local playerIsMelee = meleeCheck("player")
+		if playerIsMelee and ((tempTable[1] == playerName) or (tempTable[2] == playerName)) then
+			if self.Options.SpecWarn157000you then
+				specWarnSlagPosition:Show(L.middle)
+				yellMarkedforDeath:Yell(L.middle, playerName)
+			end
+		elseif not playerIsMelee and ((tempTable[1] == playerName) or (tempTable[2] == playerName)) then
+			if self.Options.SpecWarn157000you then
+				specWarnSlagPosition:Show(BACK)
+				yellMarkedforDeath:Yell(BACK, playerName)
+			end
+		end	
+	else--Just use roster order
+		if tempTable[1] == playerName then
+			if self.Options.SpecWarn157000you then
+				specWarnSlagPosition:Show(L.middle)
+				yellMarkedforDeath:Yell(L.middle, playerName)
+			end
+		elseif tempTable[2] == playerName then
+			if self.Options.SpecWarn157000you then
+				specWarnSlagPosition:Show(BACK)
+				yellMarkedforDeath:Yell(BACK, playerName)
+			end
+		end	
 	end
 end
 
