@@ -402,7 +402,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnAttachSlagBombs:Show()
-			if self:IsTank() or not self:IsMythic() then
+			if self:IsTank() or self:IsLFR() then
 				yellAttachSlagBombs:Yell()
 			else
 				self:Schedule(0.5, checkSlag, self)
