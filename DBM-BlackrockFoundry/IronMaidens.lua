@@ -231,6 +231,10 @@ end
 function mod:ConvulsiveTarget(targetname, uId)
 	if not targetname then return end
 	self.vb.shadowsWarned = true
+	local noFilter = false
+	if not DBM.Options.DontShowFarWarnings then
+		noFilter = true
+	end
 	if (noFilter or not isPlayerOnBoat()) then
 		if self.Options.SpecWarn156214target then
 			specWarnConvulsiveShadowsOther:Show(targetname)
