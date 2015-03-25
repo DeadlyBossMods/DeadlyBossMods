@@ -20,7 +20,7 @@
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-SubCategories: Holidays,Quests,Garrison Invasions
-## X-DBM-Mod-SubCategories-deDE: Feiertage,Quests,Garrison Invasions
+## X-DBM-Mod-SubCategories-deDE: Feiertage,Quests,Garnisonsinvasionen
 ## X-DBM-Mod-SubCategories-ruRU: Праздники,Задания,Garrison Invasions
 ## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,퀘스트,주둔지 침공
 ## X-DBM-Mod-SubCategories-zhTW: 節慶,任務,要塞入侵

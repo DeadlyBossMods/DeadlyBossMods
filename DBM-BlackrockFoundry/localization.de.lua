@@ -6,6 +6,12 @@ local L
 ---------------
 L= DBM:GetModLocalization(1161)
 
+L:SetOptionLocalization({
+	MythicSoakBehavior	= "Strategie für Infernoschlitzer im mythischen Schwierigkeitsgrad (für Spezialwarnungen)",
+	ThreeGroup			= "3 Gruppen (jede 1 Stapel)",
+	TwoGroup			= "2 Gruppen (jede 2 Stapel)"
+})
+
 ---------------------------
 -- Oregorger, The Devourer --
 ---------------------------
@@ -24,6 +30,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnRegulators		= "Verkünde die Anzahl der verbleibenden Hitzeregler",
 	warnBlastFrequency	= "Verkünde, wenn sich die $spell:155209 Häufigkeit erhöht",
+	InfoFrame			= "Zeige Infofenster für $spell:155192 und $spell:155196",
 	VFYellType			= "Typ des Schreis für Flüchtiges Feuer (nur mythischer Schwierigkeitsgrad)",
 	Countdown			= "Countdown bis zum Ablauf",
 	Apply				= "nur Erhalt"
@@ -47,6 +54,10 @@ L= DBM:GetModLocalization(1123)
 --Kromog, Legend of the Mountain --
 --------------------
 L= DBM:GetModLocalization(1162)
+
+L:SetMiscLocalization({
+	ExRTNotice		= "%s hat ExRT Positionszuweisungen für die Runen gesendet. Deine Position ist: %s"
+})
 
 --------------------------
 -- Beastlord Darmac --
@@ -85,21 +96,36 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1203)
 
 L:SetWarningLocalization({
-	specWarnReturnBase	= "Kehre JETZT zum Dock zurück!"
+	specWarnReturnBase	= "Kehre zum Dock zurück!"
 })
 
 L:SetOptionLocalization({
-	specWarnReturnBase	= "Spezialwarnung, wenn Spieler auf dem Schiff gefahrlos zum Dock zurückkehren können"
+	specWarnReturnBase	= "Spezialwarnung, wenn Spieler auf dem Schiff gefahrlos zum Dock zurückkehren können",
+	filterBladeDash3	= "Keine Spezialwarnung für $spell:155794, wenn du von $spell:170395 betroffen bist",
+	filterBloodRitual3	= "Keine Spezialwarnung für $spell:158078, wenn du von $spell:170405 betroffen bist"
 })
-	
+
 L:SetMiscLocalization({
-	shipMessage		= "prepares to man the Dreadnaught's Main Cannon!"--translate (trigger)
+	shipMessage		= "bereitet sich darauf vor, die Hauptkanone des Schlachtschiffs zu bemannen!"
 })
 
 --------------------------
 -- Blackhand --
 --------------------------
 L= DBM:GetModLocalization(959)
+
+L:SetWarningLocalization({
+	specWarnMFDPosition		= "Mark Position: %s",--translate
+	specWarnSlagPosition	= "Bomb Position: %s"--translate
+})
+
+L:SetMiscLocalization({
+	customMFDSay	= "Marked %s on %s",--translate
+	customSlagSay	= "Bomb %s on %s",--translate
+	left			= "left",--translate
+	middle			= "middle",--translate
+	right			= "right"--translate
+})
 
 -------------
 --  Trash  --
