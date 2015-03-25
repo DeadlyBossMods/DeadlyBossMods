@@ -33,7 +33,7 @@ local specWarnStoneBreath			= mod:NewSpecialWarningCount(156852, nil, nil, nil, 
 local specWarnSlam					= mod:NewSpecialWarningSpell(156704, "Tank")
 local specWarnWarpedArmor			= mod:NewSpecialWarningStack(156766, nil, 2)
 local specWarnWarpedArmorOther		= mod:NewSpecialWarningTaunt(156766)
-local specWarnTremblingEarth		= mod:NewSpecialWarningSpell(173917, nil, nil, nil, 2)
+local specWarnTremblingEarth		= mod:NewSpecialWarningCount(173917, nil, nil, nil, 2)
 local specWarnCalloftheMountain		= mod:NewSpecialWarningCount(158217, nil, nil, nil, 3, nil, 2)
 
 local timerGraspingEarthCD			= mod:NewCDTimer(114, 157060)--Unless see new logs on normal showing it can still be 111, raising to 115, average i saw was 116-119
@@ -61,6 +61,7 @@ mod:AddHudMapOption("HudMapForRune", 157060)--TODO, maybe custom option text exp
 
 mod.vb.mountainCast = 0
 mod.vb.stoneBreath = 0
+mod.vb.tremblingCast = 0
 mod.vb.frenzied = false
 local playerX, playerY = nil, nil
 
@@ -204,7 +205,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCrushingEarth:CombinedShow(0.5, args.destName)
 	elseif spellId == 173917 then
 		self.vb.mountainCast = 0
-		specWarnTremblingEarth:Show()
+		self.vb.tremblingCast = self.vb.tremblingCast + 1
+		specWarnTremblingEarth:Show(self.vb.tremblingCast)
 		timerTremblingEarth:Start()
 		countdownTremblingEarth:Start()
 		timerSlamCD:Cancel()
