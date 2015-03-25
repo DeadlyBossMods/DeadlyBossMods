@@ -42,7 +42,7 @@ local specWarnFixate					= mod:NewSpecialWarningYou(154952, nil, nil, nil, 3, ni
 local specWarnFixateEnded				= mod:NewSpecialWarningEnd(154952, false)
 local specWarnBlazinRadiance			= mod:NewSpecialWarningMoveAway(155277, nil, nil, nil, nil, nil, 2)
 local yellBlazinRadiance				= mod:NewYell(155277, nil, false)
-local specWarnFireStorm					= mod:NewSpecialWarningSpell(155493, nil, nil, nil, 2, nil, 2)
+local specWarnFireStorm					= mod:NewSpecialWarningCount(155493, nil, nil, nil, 2, nil, 2)
 local specWarnFireStormEnded			= mod:NewSpecialWarningEnd(155493, nil, nil, nil, nil, nil, 2)
 local specWarnRisingFlames				= mod:NewSpecialWarningStack(163284, nil, 6)--stack guessed
 local specWarnRisingFlamesOther			= mod:NewSpecialWarningTaunt(163284, nil, nil, nil, nil, nil, 2)
@@ -58,7 +58,7 @@ local timerOverheated					= mod:NewTargetTimer(14, 154950, nil, "Tank")
 local timerCharringBreathCD				= mod:NewNextTimer(5, 155074, nil, "Tank")
 local timerFixate						= mod:NewBuffFadesTimer(9.6, 154952)
 local timerBlazingRadianceCD			= mod:NewCDTimer(12, 155277, nil, false)--somewhat important but not important enough. there is just too much going on to be distracted by this timer
-local timerFireStormCD					= mod:NewNextTimer(63, 155493)
+local timerFireStormCD					= mod:NewNextCountTimer(63, 155493)
 local timerFireStorm					= mod:NewBuffActiveTimer(12, 155493)
 
 local berserkTimer						= mod:NewBerserkTimer(420)
@@ -79,6 +79,7 @@ local voiceLavaSlash					= mod:NewVoice(155318) --runaway
 mod:AddRangeFrameOption("10/6")
 mod:AddHudMapOption("HudMapOnFixate", 154952, false)
 
+mod.vb.firestorm = 0
 local fixateTagets = {}
 
 local function showFixate(self)
@@ -94,6 +95,7 @@ local function showFixate(self)
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.firestorm = 0
 	table.wipe(fixateTagets)
 	timerLavaSlashCD:Start(11-delay)
 	timerMoltenTorrentCD:Start(30-delay)
@@ -134,7 +136,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 155776 then
 		specWarnCinderWolves:Show()
 		timerBlazingRadianceCD:Start(34)
-		timerFireStormCD:Start()
+		timerFireStormCD:Start(nil, self.vb.firestorm+1)
 		voiceFireStorm:Schedule(56.5, "aesoon")
 		countdownFireStorm:Start()
 		voiceCinderWolves:Play("killmob")
@@ -146,7 +148,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 155277 then
-		warnBlazingRadiance:CombinedShow(0.5, args.destName)--Assume it can affect more than one target
+		warnBlazingRadiance:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnBlazinRadiance:Show()
 			yellBlazinRadiance:Yell()
@@ -156,7 +158,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 155493 then
-		specWarnFireStorm:Show()
+		self.vb.firestorm = self.vb.firestorm + 1
+		specWarnFireStorm:Show(self.vb.firestorm)
 		timerBlazingRadianceCD:Cancel()
 		timerFireStorm:Start()
 		timerMoltenTorrentCD:Start(44)
@@ -207,7 +210,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 154932 then
-		warnMoltenTorrent:Show(args.destName)
 		timerMoltenTorrentCD:Start()
 		if args:IsPlayer() then
 			specWarnMoltenTorrent:Show()
@@ -217,6 +219,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellMoltenTorrent:Schedule(3, 3)
 			yellMoltenTorrent:Schedule(2, 4)
 			yellMoltenTorrent:Schedule(1, 5)
+		else
+			warnMoltenTorrent:Show(args.destName)
 		end
 	elseif spellId == 154950 then
 		specWarnOverheated:Show()
