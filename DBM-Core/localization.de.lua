@@ -16,7 +16,7 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "Das Design der DBM-Timer konnte nicht im Kampf ge
 DBM_CORE_BAD_LOAD					= "Dein Boss Mod für diese Instanz konnte nicht vollständig korrekt im Kampf geladen werden. Bitte führe baldmöglichst nach Kampfende /reload aus."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s kann nicht geladen werden, da dein DBM-Core die Voraussetzungen nicht erfüllt. Es wird eine aktualisierte Version benötigt."
 
-DBM_CORE_BLIZZ_BUGS					= "Seit Patch 6.1 des Spiels ist die Wiedergabe von Sounddateien im .wav-Format nicht mehr möglich. Alle benutzerdefinierten Sounds von DBM wurden auf ihre Standardwerte zurückgesetzt, um sicherzustellen, dass keine ungültigen oder fehlenden Sounds eingestellt sind. Dieses Rücksetzen wird nicht erneut stattfinden und die benutzerdefinierten Sounds können nun neu eingestellt werden. Benutzerdefinierte Soundeinstellungen eines Profils können über die Statistikanzeige eines Boss Mods in weitere Profile kopiert werden."
+DBM_CORE_BLIZZ_BUGS					= "Seit Patch 6.1 des Spiels ist die Wiedergabe von Sounddateien im .wav-Format nicht mehr möglich. Alle benutzerdefinierten Spezialwarnungssounds wurden auf ihre Standardwerte zurückgesetzt, um sicherzustellen, dass keine ungültigen oder fehlenden Sounds eingestellt sind. Dieses Rücksetzen wird nicht erneut stattfinden und die benutzerdefinierten Sounds können nun neu eingestellt und in weitere Profile kopiert werden."
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM hat das dynamische Abstandsfenster für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, auf wieviel versammelte Spieler bei deiner Gruppengröße geprüft werden muss."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM hat Warnungen bezüglich der Anzahl der Gegner für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, wieviel Gegner bei deiner Gruppengröße erscheinen."
@@ -129,7 +129,7 @@ DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: Kein Boss Mod installiert."
 DBM_CORE_VERSIONCHECK_FOOTER		= "%d Spieler mit DBM und %d Spieler mit BigWigs gefunden."
 DBM_CORE_VERSIONCHECK_OUTDATED		= "Folgende %d Spieler haben veraltete DBM Versionen: %s"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Deine Version von Deadly Boss Mods ist veraltet! Bitte besuche http://www.deadlybossmods.com um die neueste Version herunterzuladen."
-DBM_CORE_VOICE_PACK_OUTDATED		= "In deinem DBM Sprachpack fehlen möglicherweise Sounds, die von dieser Version von DBM unterstützt werden. Der Soundfilter für Spezialwarnungen wurde deaktiviert. Bitte lade dir eine neuere Version des Spachpacks herunter oder kontaktiere den Autor des Sprachpacks für ein Update, welches die fehlenden Sounddateien enthält."
+DBM_CORE_VOICE_PACK_OUTDATED		= "In deinem DBM Sprachpack fehlen möglicherweise Sounds, die von dieser Version von DBM unterstützt werden. Einige Spezialwarnungssounds werden nicht unterdrückt für gesprochene Alarme, die von deiner Sprachpackversion nicht unterstützt werden. Bitte lade dir eine neuere Version des Spachpacks herunter oder kontaktiere den Autor des Sprachpacks für ein Update, welches die fehlenden Sounddateien enthält."
 DBM_CORE_VOICE_MISSING				= "Du hast einen DBM Sprachpack ausgewählt, der nicht gefunden werden konnte. Deine Auswahl wurde auf 'Kein Sprachpack' zurückgesetzt. Bitte stelle sicher, dass der Sprachpack korrekt installiert und in der Addon-Liste aktiviert wurde, falls dies ein Fehler ist."
 DBM_CORE_VOICE_COUNT_MISSING		= "Für die Countdown-Stimme %d ist ein Sprach-/Zählpack ausgewählt, der nicht gefunden werden konnte. Die Stimme wurde auf die Standardeinstellung zurückgesetzt."
 --DBM_BIG_WIGS
@@ -188,9 +188,10 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm timer endloop: Stoppt alle ltimer- und cltimer-Schleifen.",
 	"/dbm break <min>: Startet einen Pause-Timer für <min> Minuten. Schickt allen Schlachzugsmitgliedern mit DBM einen Pause-Timer (nur als Leiter/Assistent).",
 	"/dbm pull <sec>: Startet einen Pull-Timer für <sec> Sekunden. Schickt allen Schlachzugsmitgliedern mit DBM einen Pull-Timer (nur als Leiter/Assistent).",
-	"/dbm arrow: Zeigt den DBM-Pfeil, siehe /dbm arrow help für Details.",
+	"/dbm arrow: Zeigt den DBM-Pfeil, siehe '/dbm arrow help' für Details.",
 	"/dbm lockout: Fragt die Schlachtzugsmitglieder nach ihren derzeitigen Instanzsperren (IDs) (nur als Leiter/Assistent).",
-	"/dbm lag: Prüft die Latenz im gesamten Schlachtzug."
+	"/dbm lag: Prüft die Latenz im gesamten Schlachtzug.",
+	"/dbm hud: Zeige die DBM-HudMap, siehe '/dbm hud' für Details."
 }
 
 DBM_ERROR_NO_PERMISSION				= "Du hast nicht die benötigte Berechtigung für diesen Befehl!"
@@ -262,6 +263,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt			= "%s - unterbreche >%%s<!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interruptcount	= "%s - unterbreche >%%s<! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you				= "%s auf dir"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target			= "%s auf >%%s<"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetcount		= "%s (%%s) auf >%%s< "
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt				= "%s auf >%%s< - jetzt spotten"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close				= "%s auf >%%s< in deiner Nähe"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move				= "%s - geh weg"
@@ -300,6 +302,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Spezialwarnung bei >=%d Stapel von $s
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Spezialwarnung für Zielwechsel auf $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetcount		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: >%%s<"
@@ -364,6 +367,20 @@ DBM_CORE_MOVE_WARNING_BAR			= "bewegbare Schlachtzugwarnung"
 DBM_CORE_MOVE_WARNING_MESSAGE		= "Danke, dass du Deadly Boss Mods verwendest"
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "bewegbare Spezialwarnung"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Spezialwarnung"
+
+DBM_CORE_HUD_INVALID_TYPE			= "Der angegebene Typ für die HudMap ist ungültig."
+DBM_CORE_HUD_INVALID_TARGET			= "Es wurde kein gültiges Ziel für die HudMap angegeben."
+DBM_CORE_HUD_INVALID_SELF			= "Die HudMap kann nicht auf dich selbst zeigen."
+DBM_CORE_HUD_INVALID_ICON			= "Der Typ 'icon' für die HudMap kann nicht auf Ziele ohne gesetztem Schlachtzugzeichen angewendet werden."
+DBM_CORE_HUD_SUCCESS				= "Die HudMap wurde erfolgreich mit deinen Parametern gestartet. Sie läuft nach %s aus oder zuvor durch Aufruf von '/dbm hud hide'."
+DBM_CORE_HUD_USAGE	= {
+	"Benutzung der DBM-HudMap:",
+	"/dbm hud <Typ> <Ziel> <Dauer> erzeugt eine HudMap, die für die gewünschte Dauer auf einen Spieler zeigt",
+	"gültige Typen: red, blue, green, yellow, icon (benötigt ein Ziel mit gesetztem Schlachtzugzeichen)",
+	"gültige Ziele: target, focus, <Spielername>",
+	"gültige Dauer: beliebige Zahl (in Sekunden). 20 Minuten, falls Dauer nicht angegeben.",
+	"/dbm hud hide  deaktiviert und versteckt die HudMap"
+}
 
 DBM_ARROW_MOVABLE					= "Pfeil (bewegbar)"
 DBM_ARROW_ERROR_USAGE	= {
