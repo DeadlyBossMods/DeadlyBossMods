@@ -11,7 +11,7 @@ mod:SetHotfixNoticeRev(13129)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 160379 155186 156937 177756",
+	"SPELL_CAST_START 155186 156937 177756",
 	"SPELL_CAST_SUCCESS 155179 174726",
 	"SPELL_AURA_APPLIED 155192 174716 155196 158345 155242 155181 176121 155225 156934 155173",
 	"SPELL_AURA_APPLIED_DOSE 155242",
@@ -33,7 +33,7 @@ local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnElementalists			= mod:NewAddsLeftAnnounce("ej9655", 2, 91751)
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnVolatileFire			= mod:NewTargetAnnounce("OptionVersion2", 176121, 4, nil, false)--Spam. disable by default.
-local warnFireCaller			= mod:NewSpellAnnounce("ej9659", 3, 156937, "Tank")
+local warnFireCaller			= mod:NewCountAnnounce("ej9659", 3, 156937, "Tank")
 local warnSecurityGuard			= mod:NewSpellAnnounce("ej9648", 2, 160379, "Tank")
 --Phase 3
 local warnPhase3				= mod:NewPhaseAnnounce(3)
@@ -43,7 +43,6 @@ local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 local specWarnBomb				= mod:NewSpecialWarningMoveTo(155192, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(155192), nil, 3, nil, 2)
 local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("OptionVersion2", "ej9650", "-Healer", nil, nil, nil, nil, 2)
 local specWarnDeafeningRoar		= mod:NewSpecialWarningDodge("OptionVersion2", 177756, "Tank", nil, nil, 3)
-local specWarnDefense			= mod:NewSpecialWarningMove("OptionVersion2", 160379, false, nil, nil, nil, nil, true)--Doesn't work until 6.1. The CAST event doesn't exixst in 6.0
 local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, "-Healer", nil, nil, nil, nil, 2)
 local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932)
 local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, nil, nil, 2)
@@ -54,7 +53,7 @@ local specWarnMeltYou			= mod:NewSpecialWarningYou(155225)
 local specWarnMeltNear			= mod:NewSpecialWarningClose(155225, false)
 local specWarnMelt				= mod:NewSpecialWarningMove(155223, nil, nil, nil, nil, nil, 2)
 local yellMelt					= mod:NewYell(155223)
-local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, "-Healer")--if spammy, will switch to target/focus type only
+local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, "-Healer")
 local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
 local specVolatileFire			= mod:NewSpecialWarningMoveAway(176121)
 local yellVolatileFire			= mod:NewYell(176121)
@@ -94,7 +93,6 @@ local countdownVolatileFire		= mod:NewCountdownFades(8, 176121)
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceRepair				= mod:NewVoice(155179, "-Healer") --int
 local voiceBomb 				= mod:NewVoice(155192) --bombyou.ogg, bomb on you
-local voiceDefense 				= mod:NewVoice("OptionVersion2", 160379, false) --taunt mobout
 local voiceBellowsOperator 		= mod:NewVoice("ej9650", "-Healer")
 local voiceRupture				= mod:NewVoice(156932) --runaway
 local voiceMelt					= mod:NewVoice(155223) --runaway
@@ -118,6 +116,7 @@ mod.vb.shieldDown = 0
 mod.vb.lastTotal = 29
 mod.vb.phase = 1
 mod.vb.slagCount = 0
+mod.vb.fireCaller = 0
 mod.vb.lastSlagIcon = 0
 mod.vb.secondSlagSpawned = false
 local activeSlagGUIDS = {}
@@ -167,9 +166,10 @@ local function SecurityGuard(self)
 end
 
 local function FireCaller(self)
-	warnFireCaller:Show()
+	self.vb.fireCaller = self.vb.fireCaller + 1
+	warnFireCaller:Show(self.vb.fireCaller)
 	voiceFireCaller:Play("ej9659")
-	timerFireCaller:Start(45)
+	timerFireCaller:Start(45, self.vb.fireCaller+1)
 	self:Schedule(45, FireCaller, self)
 end
 
@@ -237,6 +237,7 @@ function mod:OnCombatStart(delay)
 	self.vb.shieldDown = 0
 	self.vb.phase = 1
 	self.vb.slagCount = 0
+	self.vb.fireCaller = 0
 	self.vb.lastSlagIcon = 0
 	local firstTimer = self:IsMythic() and 40 or self:IsHeroic() and 55.5 or 60
 	if self:AntiSpam(10, 0) then--Need to ignore loading on the pull
@@ -297,9 +298,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnPyroclasm:Show(args.sourceName)
 	elseif spellId == 177756 and self:CheckTankDistance(args.sourceGUID, 40) and self:AntiSpam(3.5, 7) then
 		specWarnDeafeningRoar:Show()
-	elseif spellId == 160379 and self:CheckTankDistance(args.sourceGUID, 40) then--Requires 6.1. The events on live don't work for this
-		specWarnDefense:Show()
-		voiceDefense:Play("mobout")
 	end
 end
 

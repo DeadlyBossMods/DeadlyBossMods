@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 --TODO, collect more data to figure out how roar starts/resumes on jump down. One pull/kill is not a sufficient sampling.
 local warnSkullcracker					= mod:NewSpellAnnounce(153470, 3, nil, false)--This seems pretty worthless.
 local warnShatteredVertebrae			= mod:NewStackAnnounce("OptionVersion2", 157139, 2, nil, false)--Possibly useless or changed. Needs further logs.
-local warnJumpSlam						= mod:NewTargetAnnounce("ej9854", 3)--Find pretty icon
+local warnJumpSlam						= mod:NewTargetCountAnnounce("ej9854", 3)--Find pretty icon
 
 local specWarnJumpSlam					= mod:NewSpecialWarningYou("ej9854")
 local specWarnJumpSlamNear				= mod:NewSpecialWarningClose("ej9854")
@@ -56,17 +56,19 @@ mod.vb.phase = 1
 mod.vb.stamperDodgeCount = 0
 mod.vb.bossUp = "NoBody"
 mod.vb.firstJump = false
+mod.vb.jumpCount = 0
 local cachedGUID = nil
 
 function mod:JumpTarget(targetname, uId)
 	if not targetname then return end
+	self.vb.jumpCount = self.vb.jumpCount + 1
 	if targetname == UnitName("player") then
 		specWarnJumpSlam:Show()
 		yellJumpSlam:Yell()
 	elseif self:CheckNearby(12, targetname) then--Near warning disabled on mythic, mythic mechanic requires being near it on purpose. Plus raid always stacked
 		specWarnJumpSlamNear:Show(targetname)
 	else
-		warnJumpSlam:Show(targetname)--No reason to show this if you got a special warning. so reduce spam and display this only to let you know jump is far away and you're safe
+		warnJumpSlam:Show(self.vb.jumpCount, targetname)--No reason to show this if you got a special warning. so reduce spam and display this only to let you know jump is far away and you're safe
 	end
 	self:BossTargetScanner(76973, "JumpTarget", 0.2, 40, true, nil, nil, targetname)
 end
@@ -156,6 +158,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countCripplingSupplex:Start()
 	elseif spellId == 157926 then--Jump Activation
 		self.vb.firstJump = false--So reset firstjump
+		self.vb.jumpCount = 0
 		DBM:Debug("157926: Jump Activation")
 		cachedGUID = UnitGUID(uId)
 		timerJumpSlamCD:Start()

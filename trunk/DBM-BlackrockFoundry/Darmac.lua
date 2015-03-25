@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--Because boss numbering tends to get out of wack with things constantly joining/leaving fight. I've only seen boss1 and boss2 but for good measure.
 )
 
---TODO, verify normal again to see if it works similar to LFR. heck, verify all modes to see if the failsafe exists in all modes and can further refine call of pack to lose that 1-2 second variation.
+--TODO, maybe combine the 4 beast ability target warnings into one option
 --Boss basic attacks
 local warnPinDownTargets			= mod:NewTargetAnnounce(154960, 3)
 --Boss gained abilities (beast deaths grant boss new abilities)
@@ -44,7 +44,7 @@ local specWarnPinDown				= mod:NewSpecialWarningSpell("OptionVersion3", 154960, 
 local yellPinDown					= mod:NewYell(154960)
 --Boss gained abilities (beast deaths grant boss new abilities)
 local specWarnRendandTear			= mod:NewSpecialWarningMove(155385, "Melee", nil, nil, nil, nil, 2)--Always returns to melee (tank)
-local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningSpell(155499, nil, nil, nil, 2)--Still iffy on it
+local specWarnSuperheatedShrapnel	= mod:NewSpecialWarningDodge(155499, nil, nil, nil, 2)
 local specWarnFlameInfusion			= mod:NewSpecialWarningMove(155657)
 local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2, nil, 2)
 local specWarnEpicenter				= mod:NewSpecialWarningMove(159043)
@@ -58,7 +58,7 @@ local specWarnSearingFangsOther		= mod:NewSpecialWarningTaunt(155030)--No eviden
 local specWarnInfernoPyre			= mod:NewSpecialWarningMove(156824)
 local specWarnCrushArmor			= mod:NewSpecialWarningStack(155236, nil, 3)--6-9 second cd, 15 second duration, 3 is smallest safe swap, sometimes 2 when favorable RNG
 local specWarnCrushArmorOther		= mod:NewSpecialWarningTaunt(155236)
-local specWarnInfernoBreath			= mod:NewSpecialWarningSpell(154989, nil, nil, nil, 2, nil, 2)
+local specWarnInfernoBreath			= mod:NewSpecialWarningDodge(154989, nil, nil, nil, 2, nil, 2)
 local yellInfernoBreath				= mod:NewYell(154989)
 
 --Boss basic attacks
@@ -362,9 +362,9 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		specWarnEpicenter:Show()
 	elseif spellId == 156824 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnInfernoPyre:Show()
-	elseif spellId == 155657 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+	elseif spellId == 155657 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnFlameInfusion:Show()
-	elseif spellId == 156823 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+	elseif spellId == 156823 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
 		specWarnSuperheatedScrap:Show()
 	end
 end
