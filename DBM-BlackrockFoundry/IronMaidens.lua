@@ -386,7 +386,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.penetratingShot = self.vb.penetratingShot + 1
 		if noFilter or not isPlayerOnBoat() then
 			if self.Options.SpecWarn164271target then
-				specWarnPenetratingShotOther:Show(self.vb.penetratingShot, targetname)
+				specWarnPenetratingShotOther:Show(self.vb.penetratingShot, args.destName)
 			else
 				warnPenetratingShot:Show(self.vb.penetratingShot, args.destName)
 			end
