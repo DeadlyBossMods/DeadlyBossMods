@@ -152,11 +152,11 @@ function mod:OnCombatStart(delay)
 	end
 	timerMarkedforDeathCD:Start(36-delay, 1)
 	countdownMarkedforDeath:Start(36-delay)
+	yellMarkedforDeath	= self:NewYell(156096)
 	if self:IsMythic() then
 		yellAttachSlagBombs	= self:NewYell("OptionVersion2", 157000, L.customSlagSay)
 	else--In case do mythic first, heroic after, reset to non custom on pull
 		yellAttachSlagBombs	= self:NewYell("OptionVersion2", 157000)
-		yellMarkedforDeath	= self:NewYell(156096)
 	end
 end
 
