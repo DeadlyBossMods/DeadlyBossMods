@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 156018 156040 155382 155064",
 	"SPELL_CAST_SUCCESS 155776 155074",
-	"SPELL_AURA_APPLIED 155277 155493 154952 163284 155074 154932 154950",
+	"SPELL_AURA_APPLIED 155277 154952 163284 155074 154932 154950",
 	"SPELL_AURA_APPLIED_DOSE 163284 155074",
 	"SPELL_AURA_REMOVED 155277 154932 154950 154952 155493",
 	"SPELL_PERIODIC_DAMAGE 155314",
@@ -263,13 +263,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if fixateTagets[args.destName] then
 			fixateTagets[args.destName] = nil
 		end
-	elseif spellId == 155493 then
-		specWarnFireStormEnded:Show()
-		if self:IsMelee() then
-			voiceFireStorm:Play("safenow")
-		else
-			voiceFireStorm:Play("scatter")
-		end
 	end
 end
 
@@ -294,41 +287,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 154914 then
 		warnLavaSlash:Show()
 		timerLavaSlashCD:Start()
+	elseif spellId == 155564 then--Firestorm (2 seconds faster than spell cast start
+		specWarnFireStormEnded:Show()
+		if self:IsMelee() then
+			voiceFireStorm:Play("safenow")
+		else
+			voiceFireStorm:Play("scatter")
+		end
 	end
 end
-
---[[
-Blizzard dog fixate bugs.
---Good Fixate
-"<223.35 14:20:47> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-0000DBAB80#Cinder Wolf#Player-84-061B9D28#Tenebear#154952#Fixate#DEBUFF#nil", -- [8683]
-"<223.35 14:20:47> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-00015BAB80#Cinder Wolf#Player-84-061BBF60#Fedor#154952#Fixate#DEBUFF#nil", -- [8684]
-"<223.35 14:20:47> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-0001DBAB80#Cinder Wolf#Player-84-061BBF60#Fedor#154952#Fixate#DEBUFF#nil",
-"<223.82 14:20:48> DBM_Announce#Fixate on >Tenebear<, >Fedor<", -- [20]
---Good Fixate
-"<233.36 14:20:57> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-0000DBAB80#Cinder Wolf#Player-84-07146D45#Skrabble#154952#Fixate#DEBUFF#nil", -- [9682]
-"<233.36 14:20:57> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-00015BAB80#Cinder Wolf#Player-84-06170BC0#Hauntd#154952#Fixate#DEBUFF#nil", -- [9683]
-"<233.36 14:20:57> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-0001DBAB80#Cinder Wolf#Player-84-061C0456#Gligz#154952#Fixate#DEBUFF#nil", -- [
-"<233.87 14:20:58> DBM_Announce#Fixate on >Skrabble<, >Hauntd<, >Gligz<", -- [23]
---Bad Fixate (dogs changed mind and switched targets 0.04 seconds after picking first targets
-"<243.35 14:21:07> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-0000DBAB80#Cinder Wolf#Player-84-061C0456#Gligz#154952#Fixate#DEBUFF#nil", -- [10795]
-"<243.35 14:21:07> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-00015BAB80#Cinder Wolf#Player-84-061B9D28#Tenebear#154952#Fixate#DEBUFF#nil", -- [10796]
-"<243.35 14:21:07> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-0001DBAB80#Cinder Wolf#Player-84-061C0E66#Will#154952#Fixate#DEBUFF#nil", -- [1
-"<243.39 14:21:07> [CLEU] SPELL_AURA_REMOVED#Creature-0-3017-1205-30555-76794-00015BAB80#Cinder Wolf#Player-84-061B9D28#Tenebear#154952#Fixate#DEBUFF#nil", -- [10810]
-"<243.39 14:21:07> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-00005BAB80#Overheated Cinder Wolf#Player-84-0714763A#Hartlin#154952#Fixate#DEBUFF#nil", -- [10811]
-"<243.39 14:21:07> [CLEU] SPELL_AURA_REMOVED#Creature-0-3017-1205-30555-76794-0000DBAB80#Cinder Wolf#Player-84-061C0456#Gligz#154952#Fixate#DEBUFF#nil", -- [10812]
-"<243.39 14:21:07> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-0000DBAB80#Cinder Wolf#Player-84-07146D45#Skrabble#154952#Fixate#DEBUFF#nil", -- [10813]
-"<243.39 14:21:07> [CLEU] SPELL_AURA_REMOVED#Creature-0-3017-1205-30555-76794-0001DBAB80#Cinder Wolf#Player-84-061C0E66#Will#154952#Fixate#DEBUFF#nil", -- [10814]
-"<243.39 14:21:07> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-0001DBAB80#Cinder Wolf#Player-84-0714763A#Hartlin#154952#Fixate#DEBUFF#nil", -- [10815]
-"<243.88 14:21:08> DBM_Announce#Fixate on >Gligz<, >Tenebear<, >Will<, >Hartlin<, >Skrabble<", -- [29]
---Bad Fixate (dogs changed mind and switched targets 0.02 seconds after picking first targets
-"<253.39 14:21:17> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-0000DBAB80#Cinder Wolf#Player-84-061C0456#Gligz#154952#Fixate#DEBUFF#nil", -- [11819]
-"<253.39 14:21:17> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-00005BAB80#Cinder Wolf#Player-84-061BDB6C#Zarastro#154952#Fixate#DEBUFF#nil", -- [11820]
-"<253.39 14:21:17> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-0001DBAB80#Cinder Wolf#Player-84-061C0E66#Will#154952#Fixate#DEBUFF#nil", -- [11821]
-"<253.41 14:21:17> [CLEU] SPELL_AURA_REMOVED#Creature-0-3017-1205-30555-76794-00005BAB80#Cinder Wolf#Player-84-061BDB6C#Zarastro#154952#Fixate#DEBUFF#nil", -- [11825]
-"<253.41 14:21:17> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-00005BAB80#Cinder Wolf#Player-84-061C0E66#Will#154952#Fixate#DEBUFF#nil", -- [11826]
-"<253.41 14:21:17> [CLEU] SPELL_AURA_REMOVED#Creature-0-3017-1205-30555-76794-0000DBAB80#Cinder Wolf#Player-84-061C0456#Gligz#154952#Fixate#DEBUFF#nil", -- [11827]
-"<253.41 14:21:17> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-0000DBAB80#Cinder Wolf#Player-84-07148F4E#Zevoa#154952#Fixate#DEBUFF#nil", -- [11828]
-"<253.41 14:21:17> [CLEU] SPELL_AURA_REMOVED#Creature-0-3017-1205-30555-76794-0001DBAB80#Cinder Wolf#Player-84-061C0E66#Will#154952#Fixate#DEBUFF#nil", -- [11829]
-"<253.41 14:21:17> [CLEU] SPELL_AURA_APPLIED#Creature-0-3017-1205-30555-76794-0001DBAB80#Cinder Wolf#Player-84-07148F4E#Zevoa#154952#Fixate#DEBUFF#nil", -- [11830]
-"<253.93 14:21:18> DBM_Announce#Fixate on >Gligz<, >Zarastro<, >Will<, >Zevoa<", -- [34]
---]]
