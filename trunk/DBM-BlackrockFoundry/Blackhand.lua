@@ -156,11 +156,11 @@ function mod:OnCombatStart(delay)
 		yellAttachSlagBombs	= self:NewYell("OptionVersion2", 157000, L.customSlagSay)
 	else--In case do mythic first, heroic after, reset to non custom on pull
 		yellAttachSlagBombs	= self:NewYell("OptionVersion2", 157000)
+		yellMarkedforDeath	= self:NewYell(156096)
 	end
 end
 
 function mod:OnCombatEnd()
-	yellMarkedforDeath	= self:NewYell(156096)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
