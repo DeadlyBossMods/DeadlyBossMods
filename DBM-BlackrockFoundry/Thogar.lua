@@ -429,33 +429,51 @@ end
 --Work In Progress
 --Timing may need tweaks. more Moves need adding.
 --Positions based on https://www.youtube.com/watch?v=0QC7BOEv2iE
-local function showHud(self, train)
+local function showHud(self, train, center)
 	if self.Options.HudMapForTrain then
 		DBMHudMap:FreeEncounterMarkerByTarget(176312, "TrainHelper")--Clear any current icon, before showing next move
-		if train == 1 or train == 15 or train == 28.5 then--Move to triangle
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 2 or train == 28 then--Move to Cross
+		--Regular Lane movements
+		local specialPosition = self:IsMelee() and 3328 or 3300--Melee west, ranged east, unless center is passed then center
+		if train == 9 then--Move to Circle (1)
+			if center then
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "circle", 590, 3314, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			else
+				--East (where adds jump down, everyone goes west on this move)
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "circle", 590, 3300, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			end
+		elseif train == 8 or train == 11 or train == 19.25 or train == 32 then--Move to diamond (2)
+			if center then
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3314, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			else
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, specialPosition, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			end
+		elseif train == 1 or train == 7 or train == 15 or train == 21 or train == 23 or train == 26 or train == 28.5 then--Move to triangle (3)
+			if center then
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3314, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			else
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 542, specialPosition, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			end
+		elseif train == 20 or train == 22 then--Move to Moon (4)
+			if center then
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "moon", 517, 3314, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			else
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "moon", 517, specialPosition, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			end
+		--Special lane movements (usually corners)
+		elseif train == 2 or train == 28 then--Move to Cross (2 special corner)
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "cross", 566, 3277, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 7 or train == 21 or train == 23 or train == 26 or train == 30 then--Move to Triangle
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 8 or train == 11 or train == 19.25 or train == 32 then--Move to diamond
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 9 then--Move to Circle
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "circle", 590, 3313, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 14 then--Move to skull
+		elseif train == 14 then--Move to skull (4 special corner)
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "skull", 517, 3353, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 17 then
+		elseif train == 17 then--Ranged and melee go to different lanes to avoid fire in on melee/adds in diamond while ranged kill cannon at triangle
 			if self:IsMelee() then--Move to diamond for man at arms train
 				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 			else--Move to triangle for Cannon
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3314, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 			end
-		elseif train == 19 then
+		elseif train == 19 then-- (1 special corner)
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "square", 590, 3352, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 19.5 then----Move to star, also during train count 19, but later
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "star", 590, 3272, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 20 or train == 22 then--Move to Moon
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "moon", 517, 3280, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		end
 	end
 end
@@ -683,7 +701,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 					self:Schedule(12-fakeAdjust, showHud, self, count)
 				elseif count == 19 then
 					showHud(self, count)
-					self:Schedule(12, showHud, self, 19.25)
+					self:Schedule(12, showHud, self, 19.25, true)--Group up center for deforester movement, after square.
 					self:Schedule(20, showHud, self, 19.5)
 				elseif count == 21 then
 					self:Schedule(17, showHud, self, count)
