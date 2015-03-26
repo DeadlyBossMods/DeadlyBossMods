@@ -1731,16 +1731,16 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 				return
 			end
 			if hudType:upper() == "GREEN" then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 5, hudDuration, 0, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 0, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
 				success = true
 			elseif hudType:upper() == "RED" then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 5, hudDuration, 1, 0, 0, 0.5, nil, false):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 1, 0, 0, 0.5, nil, false):Pulse(0.5, 0.5)
 				success = true
 			elseif hudType:upper() == "YELLOW" then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 5, hudDuration, 1, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 1, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
 				success = true
 			elseif hudType:upper() == "BLUE" then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 5, hudDuration, 0, 0, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 0, 0, 1, 0.5, nil, false):Pulse(0.5, 0.5)
 				success = true
 			elseif hudType:upper() == "ICON" then
 				local icon = GetRaidTargetIndex(uId)
@@ -1749,21 +1749,21 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 					return
 				end
 				if icon == 8 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "skull", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "skull", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
 				elseif icon == 7 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "cross", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "cross", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
 				elseif icon == 6 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "square", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "square", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
 				elseif icon == 5 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "moon", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "moon", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
 				elseif icon == 4 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "triangle", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "triangle", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
 				elseif icon == 3 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "diamond", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "diamond", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
 				elseif icon == 2 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "circle", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "circle", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
 				elseif icon == 1 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "star", UnitName(uId), 5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "star", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
 				end
 				success = true
 			else

@@ -431,30 +431,31 @@ end
 --Positions based on https://www.youtube.com/watch?v=0QC7BOEv2iE
 local function showHud(self, train)
 	if self.Options.HudMapForTrain then
+		DBMHudMap:FreeEncounterMarkerByTarget(176312, "TrainHelper")--Clear any current icon, before showing next move
 		if train == 1 or train == 15 or train == 28.5 then--Move to triangle
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 2 or train == 28 then--Move to Cross
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "cross", 566, 3277, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 7 or train == 21 or train == 23 or train == 26 then--Move to Triangle
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 9 or train == 11 or train == 32 then--Move to diamond
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
-		elseif train == 9.5 then--Move to Circle
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "circle", 590, 3313, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "cross", 566, 3277, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+		elseif train == 7 or train == 21 or train == 23 or train == 26 or train == 30 then--Move to Triangle
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+		elseif train == 8 or train == 11 or train == 19.25 or train == 32 then--Move to diamond
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+		elseif train == 9 then--Move to Circle
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "circle", 590, 3313, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 14 then--Move to skull
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "skull", 517, 3353, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "skull", 517, 3353, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 17 then
 			if self:IsMelee() then--Move to diamond for man at arms train
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 			else--Move to triangle for Cannon
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3316, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 			end
 		elseif train == 19 then
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "square", 590, 3352, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "square", 590, 3352, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 19.5 then----Move to star, also during train count 19, but later
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "star", 590, 3272, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "star", 590, 3272, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		elseif train == 20 or train == 22 then--Move to Moon
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "moon", 517, 3280, 3, 7, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "moon", 517, 3280, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
 		end
 	end
 end
@@ -525,6 +526,7 @@ function mod:OnCombatStart(delay)
 		self:Schedule(9.5, fakeTrainYell, self)
 		timerTrainCD:Start(12-delay, 1)
 		berserkTimer:Start()
+		showHud(self, 1)
 	else
 		self:Schedule(14.5, fakeTrainYell, self)
 		timerTrainCD:Start(17-delay, 1)
@@ -646,7 +648,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			end
 			if count == 1 or count == 2 or count == 11 or count == 12 or count == 13 or count == 25 or count == 26 or count == 31 then
 				expectedTime = 5
-				if count == 1 or count == 11 or count == 26 then
+				if count == 11 or count == 26 then
 					showHud(self, count)
 				elseif count == 2 then
 					self:Schedule(14-fakeAdjust, showHud, self, count)
@@ -657,6 +659,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 					self:Schedule(10-fakeAdjust, showHud, self, count)
 				elseif count == 22 then
 					self:Schedule(8-fakeAdjust, showHud, self, count)
+				elseif count == 30 then
+					showHud(self, count)
 				elseif count == 32 then
 					self:Schedule(4-fakeAdjust, showHud, self, count)
 				end
@@ -664,6 +668,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 15
 				if count == 7 then
 					showHud(self, count)
+				elseif count == 8 then
+					self:Schedule(12-fakeAdjust, showHud, self, count)
 				elseif count == 17 or count == 23 then
 					self:Schedule(10-fakeAdjust, showHud, self, count)
 				elseif count == 20 then
@@ -677,6 +683,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 					self:Schedule(12-fakeAdjust, showHud, self, count)
 				elseif count == 19 then
 					showHud(self, count)
+					self:Schedule(12, showHud, self, 19.25)
 					self:Schedule(20, showHud, self, 19.5)
 				elseif count == 21 then
 					self:Schedule(17, showHud, self, count)
@@ -690,7 +697,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				expectedTime = 35
 				specWarnSplitSoon:Cancel()
 				specWarnSplitSoon:Schedule(25)--10 is a split, pre warn 10 seconds before 10
-				self:Schedule(30-fakeAdjust, showHud, self, 9.5)--hud marker 5 seconds before split. later you move the better the bomb placements.
+				self:Schedule(30-fakeAdjust, showHud, self, count)--hud marker 5 seconds before split. later you move the better the bomb placements.
 			end
 			if expectedTime then
 				if msg == "Fake" then
