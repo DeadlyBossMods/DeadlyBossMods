@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 155247 155399 154975",
 	"SPELL_AURA_APPLIED 154960 155458 155459 155460 154981 155030 155236 155462 163247",
 	"SPELL_AURA_APPLIED_DOSE 155030 155236",
-	"SPELL_AURA_REMOVED 154960",
+	"SPELL_AURA_REMOVED 154960 154981",
 	"SPELL_PERIODIC_DAMAGE 159044 162277 156823 156824 155657",
 	"SPELL_ABSORBED 159044 162277 156823 156824 155657",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
@@ -94,6 +94,7 @@ local voiceTantrum					= mod:NewVoice(162275) --aesoon
 
 mod:AddRangeFrameOption("8/7/3", nil, "-Melee")
 mod:AddSetIconOption("SetIconOnSpear", 154960)--Not often I make icon options on by default but this one is universally important. YOu always break players out of spear, in any strat.
+mod:AddSetIconOption("SetIconOnConflag", 154981, false)
 mod:AddHudMapOption("HudMapOnBreath", 154989)
 
 mod.vb.RylakAbilities = false
@@ -297,8 +298,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			voicePinDown:Cancel()
 			voicePinDown:Schedule(0.5, "helpme")
 		end
-	elseif spellId == 154981 and self:CheckDispelFilter() then
-		specWarnConflag:CombinedShow(2, args.destName)
+	elseif spellId == 154981 then
+		if self:CheckDispelFilter() then
+			specWarnConflag:CombinedShow(2.3, args.destName)
+		end
+		if self.Options.SetIconOnConflag and not self:IsLFR() then
+			self:SetSortedIcon(2.3, args.destName, 1, 3)
+		end
 	elseif spellId == 155030 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 and amount >= 12 then--Stack assumed, may need revising
@@ -353,6 +359,8 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 local spellId = args.spellId
 	if spellId == 154960 and self.Options.SetIconOnSpear then
+		self:SetIcon(args.destName, 0)
+	elseif spellId == 154981 and self.Options.SetIconOnConflag and not self:IsLFR() then
 		self:SetIcon(args.destName, 0)
 	end
 end
