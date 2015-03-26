@@ -452,9 +452,6 @@ function mod:UNIT_DIED(args)
 		elseif cid == 76874 then
 			timerConflagCD:Cancel()
 			timerInfernoBreathCD:Cancel()
-			if self.Options.HudMapOnBreath then
-				DBMHudMap:Disable()
-			end
 			self:BossTargetScannerAbort(76874, "BreathTarget")
 		elseif cid == 76945 then
 			timerStampedeCD:Cancel()

@@ -153,15 +153,14 @@ function mod:OnCombatStart(delay)
 	timerMarkedforDeathCD:Start(36-delay, 1)
 	countdownMarkedforDeath:Start(36-delay)
 	if self:IsMythic() then
-		yellMarkedforDeath	= mod:NewYell(156096, L.customMFDSay)
-		yellAttachSlagBombs	= mod:NewYell("OptionVersion2", 157000, L.customSlagSay)
+		yellAttachSlagBombs	= self:NewYell("OptionVersion2", 157000, L.customSlagSay)
 	else--In case do mythic first, heroic after, reset to non custom on pull
-		yellMarkedforDeath	= mod:NewYell(156096)
-		yellAttachSlagBombs	= mod:NewYell("OptionVersion2", 157000)
+		yellAttachSlagBombs	= self:NewYell("OptionVersion2", 157000)
 	end
 end
 
 function mod:OnCombatEnd()
+	yellMarkedforDeath	= self:NewYell(156096)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -310,24 +309,24 @@ local function checkSlag(self)
 		if playerIsMelee and ((tempTable[1] == playerName) or (tempTable[2] == playerName)) then
 			if self.Options.SpecWarn157000you then
 				specWarnSlagPosition:Show(L.middle)
-				yellMarkedforDeath:Yell(L.middle, playerName)
+				yellAttachSlagBombs:Yell(L.middle, playerName)
 			end
 		elseif not playerIsMelee and ((tempTable[1] == playerName) or (tempTable[2] == playerName)) then
 			if self.Options.SpecWarn157000you then
 				specWarnSlagPosition:Show(BACK)
-				yellMarkedforDeath:Yell(BACK, playerName)
+				yellAttachSlagBombs:Yell(BACK, playerName)
 			end
 		end	
 	else--Just use roster order
 		if tempTable[1] == playerName then
 			if self.Options.SpecWarn157000you then
 				specWarnSlagPosition:Show(L.middle)
-				yellMarkedforDeath:Yell(L.middle, playerName)
+				yellAttachSlagBombs:Yell(L.middle, playerName)
 			end
 		elseif tempTable[2] == playerName then
 			if self.Options.SpecWarn157000you then
 				specWarnSlagPosition:Show(BACK)
-				yellMarkedforDeath:Yell(BACK, playerName)
+				yellAttachSlagBombs:Yell(BACK, playerName)
 			end
 		end	
 	end
@@ -558,6 +557,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownSlagBombs:Cancel()
 		if self:IsMythic() then
 			timerFallingDebrisCD:Start(11, 1)
+			yellMarkedforDeath	= self:NewYell(156096, L.customMFDSay)
 		end
 		timerAttachSlagBombsCD:Start(11)
 		countdownSlagBombs:Start(11)
