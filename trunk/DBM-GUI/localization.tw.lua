@@ -227,6 +227,7 @@ L.Area_SpamFilter			= "垃圾過濾選項"
 L.DontShowFarWarnings		= "不發送距離過遠的事件提示/計時器"
 L.StripServerName			= "隱藏警告和計時器的玩家伺服器名稱"
 L.SpamBlockBossWhispers		= "當戰鬥時過濾 &lt;DBM&gt; 密語警告"
+L.BlockVersionUpdateNotice	= "禁用彈出的更新通知"
 
 L.Area_SpecFilter			= "專精過濾選項"
 L.FilterTankSpec			= "非坦克專精時過濾掉坦克專精的特定警告 (註:不建議玩家關閉此選項因大多數的坦克嘲諷警告都是預設開啟。)"

@@ -233,6 +233,7 @@ L.Area_SpamFilter			= "信息过滤设置"
 L.DontShowFarWarnings		= "不为过远的事件显示计时条/警报"
 L.StripServerName			= "警告和计时器中不显示服务器名"
 L.SpamBlockBossWhispers		= "战斗中过滤DBM密语警报"
+L.BlockVersionUpdateNotice	= "禁用升级提示"
 
 L.Area_SpecFilter			= "角色过滤选项"
 L.FilterTankSpec			= "当非坦克专精时，过滤掉给予坦克的专用信息"
