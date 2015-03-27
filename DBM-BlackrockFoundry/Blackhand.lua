@@ -107,6 +107,8 @@ local UnitDebuff, UnitName, UnitClass, UnitPowerMax = UnitDebuff, UnitName, Unit
 local markTargets = {}
 local DBMHudMap = DBMHudMap
 local tankFilter
+local yellMFD2 = mod:NewYell(156096, L.customMFDSay, true, false)
+local yellSlag2 = mod:NewYell(157000, L.customSlagSay, true, false)
 do
 	tankFilter = function(uId)
 		if UnitName(uId) == smashTank then
@@ -152,12 +154,6 @@ function mod:OnCombatStart(delay)
 	end
 	timerMarkedforDeathCD:Start(36-delay, 1)
 	countdownMarkedforDeath:Start(36-delay)
-	yellMarkedforDeath	= self:NewYell(156096)
-	if self:IsMythic() then
-		yellAttachSlagBombs	= self:NewYell("OptionVersion2", 157000, L.customSlagSay)
-	else--In case do mythic first, heroic after, reset to non custom on pull
-		yellAttachSlagBombs	= self:NewYell("OptionVersion2", 157000)
-	end
 end
 
 function mod:OnCombatEnd()
@@ -244,19 +240,25 @@ local function checkMarked(self)
 					if self.Options.SpecWarn156096you then
 						specWarnMFDPosition:Show(L.left)
 					end
-					yellMarkedforDeath:Yell(L.left, playerName)
+					if self.Options.Yell156096 then
+						yellMFD2:Yell(L.left, playerName)
+					end
 					voiceMarkedforDeath:Schedule(0.7, "left")--Schedule another 0.7, for total of 1.2 second after "find shelder"
 				elseif mfdFound == 2 then
 					if self.Options.SpecWarn156096you then
 						specWarnMFDPosition:Show(L.right)
 					end
-					yellMarkedforDeath:Yell(L.right, playerName)
+					if self.Options.Yell156096 then
+						yellMFD2:Yell(L.right, playerName)
+					end
 					voiceMarkedforDeath:Schedule(0.7, "right")--Schedule another 0.7, for total of 1.2 second after "find shelder"
 				elseif mfdFound == 3 then
 					if self.Options.SpecWarn156096you then
 						specWarnMFDPosition:Show(L.middle)
 					end
-					yellMarkedforDeath:Yell(L.middle, playerName)
+					if self.Options.Yell156096 then
+						yellMFD2:Yell(L.middle, playerName)
+					end
 					voiceMarkedforDeath:Schedule(0.7, "center")--Schedule another 0.7, for total of 1.2 second after "find shelder"
 				end
 			end
@@ -309,12 +311,16 @@ local function checkSlag(self)
 		if playerIsMelee and ((tempTable[1] == playerName) or (tempTable[2] == playerName)) then
 			if self.Options.SpecWarn157000you then
 				specWarnSlagPosition:Show(L.middle)
-				yellAttachSlagBombs:Yell(L.middle, playerName)
+				if self.Options.Yell1570002 then
+					yellAttachSlagBombs:Yell(L.middle, playerName)
+				end
 			end
 		elseif not playerIsMelee and ((tempTable[1] == playerName) or (tempTable[2] == playerName)) then
 			if self.Options.SpecWarn157000you then
 				specWarnSlagPosition:Show(BACK)
-				yellAttachSlagBombs:Yell(BACK, playerName)
+				if self.Options.Yell1570002 then
+					yellAttachSlagBombs:Yell(BACK, playerName)
+				end
 			end
 		end	
 	else--Just use roster order
@@ -577,9 +583,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voicePhaseChange:Play("pthree")
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
-		end
-		if not self:IsLFR() then
-			yellMarkedforDeath	= self:NewYell(156096, L.customMFDSay)
 		end
 	end
 end

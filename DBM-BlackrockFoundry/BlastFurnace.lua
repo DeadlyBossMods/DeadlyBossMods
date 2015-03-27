@@ -255,13 +255,6 @@ function mod:OnCombatStart(delay)
 		countdownEngineer:Start(firstTimer)
 		berserkTimer:Start(-delay)
 	end
-	if self:IsMythic() then
-		if self.Options.VFYellType == "Countdown" then
-			yellVolatileFire2 = mod:NewFadesYell(176121, nil, true, false)
-		else
-			yellVolatileFire2 = nil
-		end
-	end
 	if DBM.BossHealth:IsShown() then
 		DBM.BossHealth:Clear()
 		self:Schedule(1, function()
@@ -416,7 +409,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				timerVolatileFire:Start(debuffTime)
 				specVolatileFire:Show()
-				if not self:IsLFR() then
+				if not self:IsLFR() and self.Options.Yell176121 then
 					if self:IsMythic() and self.Options.VFYellType == "Countdown" then
 						yellVolatileFire2:Schedule(debuffTime - 1, 1)
 						yellVolatileFire2:Schedule(debuffTime - 2, 2)
