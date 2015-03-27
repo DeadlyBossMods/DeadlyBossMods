@@ -53,17 +53,17 @@ local specWarnCharringBreathOther		= mod:NewSpecialWarningTaunt(155074)
 local timerLavaSlashCD					= mod:NewCDTimer(14.5, 155318, nil, false)
 local timerMoltenTorrentCD				= mod:NewCDTimer("OptionVersion2", 14, 154932, nil, "Ranged")
 local timerSummonEnchantedArmamentsCD	= mod:NewCDTimer("OptionVersion2", 45, 156724, nil, "Ranged")--45-47sec variation
-local timerSummonCinderWolvesCD			= mod:NewNextTimer(74, 155776)
+local timerSummonCinderWolvesCD			= mod:NewNextTimer(76, 155776)
 local timerOverheated					= mod:NewTargetTimer(14, 154950, nil, "Tank")
 local timerCharringBreathCD				= mod:NewNextTimer(5, 155074, nil, "Tank")
 local timerFixate						= mod:NewBuffFadesTimer(9.6, 154952)
 local timerBlazingRadianceCD			= mod:NewCDTimer(12, 155277, nil, false)--somewhat important but not important enough. there is just too much going on to be distracted by this timer
 local timerFireStormCD					= mod:NewNextCountTimer(63, 155493)
-local timerFireStorm					= mod:NewBuffActiveTimer(12, 155493)
+local timerFireStorm					= mod:NewBuffActiveTimer(14, 155493)
 
 local berserkTimer						= mod:NewBerserkTimer(420)
 
-local countdownCinderWolves				= mod:NewCountdown(74, 155776)
+local countdownCinderWolves				= mod:NewCountdown(76, 155776)
 local countdownFireStorm				= mod:NewCountdown(63, 155493)--Same voice as wolves cause never happen at same time, in fact they alternate.
 local countdownEnchantedArmaments		= mod:NewCountdown("OptionVersion2", "Alt45", 156724, false)
 local countdownOverheated				= mod:NewCountdownFades("Alt20", 154950, "Tank")
@@ -157,15 +157,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(10)
 			end
 		end
-	elseif spellId == 155493 then
-		self.vb.firestorm = self.vb.firestorm + 1
-		specWarnFireStorm:Show(self.vb.firestorm)
-		timerBlazingRadianceCD:Cancel()
-		timerFireStorm:Start()
-		timerMoltenTorrentCD:Start(44)
-		timerSummonCinderWolvesCD:Start()
-		countdownCinderWolves:Start()
-		voiceFireStorm:Play("gather")
 	elseif spellId == 154952 then
 		--Schedule, do to dogs changing mind bug
 		if not fixateTagets[args.destName] then
@@ -263,6 +254,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		if fixateTagets[args.destName] then
 			fixateTagets[args.destName] = nil
 		end
+	elseif spellId == 155493 then
+		specWarnFireStormEnded:Show()
+		if self:IsMelee() then
+			voiceFireStorm:Play("safenow")
+		else
+			voiceFireStorm:Play("scatter")
+		end
 	end
 end
 
@@ -288,11 +286,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnLavaSlash:Show()
 		timerLavaSlashCD:Start()
 	elseif spellId == 155564 then--Firestorm (2 seconds faster than spell cast start
-		specWarnFireStormEnded:Show()
-		if self:IsMelee() then
-			voiceFireStorm:Play("safenow")
-		else
-			voiceFireStorm:Play("scatter")
-		end
+		self.vb.firestorm = self.vb.firestorm + 1
+		specWarnFireStorm:Show(self.vb.firestorm)
+		timerBlazingRadianceCD:Cancel()
+		timerFireStorm:Start()
+		timerMoltenTorrentCD:Start(46)
+		timerSummonCinderWolvesCD:Start()
+		countdownCinderWolves:Start()
+		voiceFireStorm:Play("gather")
 	end
 end
