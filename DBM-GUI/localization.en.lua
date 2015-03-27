@@ -227,6 +227,7 @@ L.Area_SpamFilter			= "Spam Filter Options"
 L.DontShowFarWarnings		= "Do not show announces/timers for events that are far away"
 L.StripServerName			= "Strip realm name in warnings and timers"
 L.SpamBlockBossWhispers		= "Filter &lt;DBM&gt; warning whispers while fighting"
+L.BlockVersionUpdateNotice	= "Show more frequent 'out of date' notifications in chat frame instead of a popup."
 
 L.Area_SpecFilter			= "Role Filter Options"
 L.FilterTankSpec			= "Filter warnings designated for Tank role when not tank spec. (Note: Disabling this is not recommended for most users as 'taunt' warnings are now all on by default.)"
