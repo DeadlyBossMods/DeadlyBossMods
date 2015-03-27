@@ -157,6 +157,7 @@ L.Panel_SpamFilter				= "Filtri globali e di Spam"
 L.Area_SpamFilter				= "Filtri di Spam - Opzioni"
 L.HideBossEmoteFrame			= "Nascondi la finestra con i messaggi dei boss"
 L.SpamBlockBossWhispers			= "Filtra i sussurri di &lt;DBM&gt; durante i combattimenti"
+L.BlockVersionUpdateNotice		= "Disabilita il popup di notifica"
 L.ShowBBOnCombatStart			= "Fai un Check dei Benefici con Big Brother quando inizia un combattimento"
 L.BigBrotherAnnounceToRaid		= "Annuncia i risultati di Big Brother all'incursione"
 

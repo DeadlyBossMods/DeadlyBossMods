@@ -226,6 +226,7 @@ L.Area_SpamFilter				= "Options des filtres de spam"
 L.DontShowFarWarnings			= "Ne pas afficher les annonces/timers pour les événements distants"
 L.StripServerName				= "Ne pas afficher le royaume sur les alertes et les timers"
 L.SpamBlockBossWhispers			= "Filtrer les chuchotements d'alerte &lt;DBM&gt; pendant les rencontres"
+L.BlockVersionUpdateNotice		= "Désactiver le popup de notification de mise à jour"
 
 L.Area_SpecFilter			= "Options du filtre de Spécialisation"
 L.FilterTankSpec			= "Filtre les alertes réservées aux tanks si vous n'êtes pas en spé tank. (Note: Désactivé n'est pas recommandé car les alertes de taunt sont activés en permanence par défaut.)"

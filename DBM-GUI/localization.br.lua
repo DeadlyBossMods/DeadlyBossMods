@@ -237,6 +237,7 @@ L.Area_SpamFilter			= "Opções do filtro Global"
 L.DontShowFarWarnings		= "Não exibir anúncios/temporizadores para eventos que estão longe"
 L.StripServerName			= "Tira com nome do reino em avisos e temporizadores"
 L.SpamBlockBossWhispers		= "Filtra &lt;DBM&gt; avisos de sussurro enquanto estiver lutando"
+L.BlockVersionUpdateNotice	= "Desabilitar popup de notificação de atualização (Não recomendado)"
 
 
 L.Area_SpecFilter			= "Opções de especialização"
