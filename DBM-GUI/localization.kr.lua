@@ -223,7 +223,7 @@ L.SpamBlockNoRangeRestore	= "전투 종료시 거리창 설정 복구 안함"
 L.Area_SpamFilter			= "정보 숨기기"
 L.StripServerName			= "알림 및 바에서 서버명 보이지 않기"
 L.SpamBlockBossWhispers		= "전투 중 다른 공격대원 또는 파티원이 보낸 &lt;DBM&gt; 귓속말 감추기"
-L.BlockVersionUpdateNotice	= "업데이트 알림 창 끄기(추천하지 않음)"
+L.BlockVersionUpdateNotice	= "업데이트 팝업 창 끄기(대신 대화창으로 더 잦은 업데이트 알림이 표시됨)"
 
 L.Area_SpecFilter			= "역할 경고 숨기기"
 L.FilterTankSpec			= "방어 전담이 아닐 경우 방어 전담용 경고 보지 않기(참고: 도발 경고는 대부분 기본값으로 켜짐 상태이기 때문에 이 설정을 끄지 않는 것을 권장합니다.)"
