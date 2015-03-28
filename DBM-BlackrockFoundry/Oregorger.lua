@@ -70,7 +70,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.torrentCount = 0
-	timerRetchedBlackrockCD:Start(5-delay)--5-7
+	timerRetchedBlackrockCD:Start(4.5-delay)--5-7
 	timerExplosiveShardCD:Start(9.5-delay)
 	timerAcidTorrentCD:Start(11-delay, 1)
 	countdownAcidTorrent:Start(12-delay)
@@ -108,10 +108,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		specWarnHungerDriveEnded:Show()
 		voicePhaseChange:Play("phasechange")
 		timerRetchedBlackrockCD:Start(5)
-		timerExplosiveShardCD:Start(7)--7-9
+		timerExplosiveShardCD:Start(6)--7-9
 		timerAcidTorrentCD:Start(11, 1)--11-12
 		countdownAcidTorrent:Start(11)
-		timerBlackrockSpinesCD:Start(14)
+		timerBlackrockSpinesCD:Start(13)
 	elseif spellId == 156834 then
 		local bossPower = UnitPower("boss1")
 		if bossPower == 0 then return end--Avoid announce bug caused by SPELL_AURA_REMOVED fired at 0 energy, before boss going into frenzy)
