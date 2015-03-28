@@ -4896,6 +4896,9 @@ do
 				end
 			else--Reset ignoreBestkill after wipe
 				mod.ignoreBestkill = false
+				--It was a clean pull, so cancel timer recoveries which often fire for no reason on world bosses, after boss was pulled by us.
+				--Only want timer recovery on in progress world bosses.
+				self.Unschedule(self.RequestTimers)
 			end
 			--show health frame
 			if not mod.inScenario then
@@ -4977,7 +4980,7 @@ do
 						speedTimer:Start()
 					end
 				end
-				if self.Options.CRT_Enabled then
+				if self.Options.CRT_Enabled and savedDifficulty ~= "worldboss" then
 					if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 17 then--Flexible difficulties
 						local time = 90/LastGroupSize
 						time = time * 60
