@@ -58,13 +58,13 @@ local timerOverheated					= mod:NewTargetTimer(14, 154950, nil, "Tank")
 local timerCharringBreathCD				= mod:NewNextTimer(5, 155074, nil, "Tank")
 local timerFixate						= mod:NewBuffFadesTimer(9.6, 154952)
 local timerBlazingRadianceCD			= mod:NewCDTimer(12, 155277, nil, false)--somewhat important but not important enough. there is just too much going on to be distracted by this timer
-local timerFireStormCD					= mod:NewNextCountTimer(63, 155493)
+local timerFireStormCD					= mod:NewNextCountTimer(61, 155493)
 local timerFireStorm					= mod:NewBuffActiveTimer(14, 155493)
 
 local berserkTimer						= mod:NewBerserkTimer(420)
 
 local countdownCinderWolves				= mod:NewCountdown(76, 155776)
-local countdownFireStorm				= mod:NewCountdown(63, 155493)--Same voice as wolves cause never happen at same time, in fact they alternate.
+local countdownFireStorm				= mod:NewCountdown(61, 155493)--Same voice as wolves cause never happen at same time, in fact they alternate.
 local countdownEnchantedArmaments		= mod:NewCountdown("OptionVersion2", "Alt45", 156724, false)
 local countdownOverheated				= mod:NewCountdownFades("Alt20", 154950, "Tank")
 

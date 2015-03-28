@@ -35,7 +35,7 @@ local Garan = EJ_GetSectionInfo(10025)
 
 --Ship
 local warnPhase2						= mod:NewPhaseAnnounce(2)
-local warnShip							= mod:NewSpellAnnounce("ej10019", 3, 76204)
+local warnShip							= mod:NewTargetAnnounce("ej10019", 3, 76204)
 local warnBombardmentAlpha				= mod:NewCountAnnounce(157854, 3)--From ship, but affects NON ship.
 ----Blackrock Deckhand
 local warnProtectiveEarth				= mod:NewSpellAnnounce("OptionVersion2", 158707, 3, nil, false)--Could not verify
@@ -545,7 +545,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 		boatMissionDone = false
 		self.vb.ship = self.vb.ship + 1
 		self.vb.alphaOmega = 1
-		warnShip:Show()
+		warnShip:Show(npc)
 		if self.vb.ship < 3 then
 			timerShipCD:Start(nil, self.vb.ship+1)
 			countdownShip:Start()
