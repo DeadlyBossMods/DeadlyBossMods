@@ -59,7 +59,7 @@ L.Latency_Text				= "동기화 신호를 보낼 최대 지연시간 설정: %d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "DBM 바 설정"
 L.SKT_Enabled				= "우두머리별 설정을 무시하고 최고 기록 바 항상 보기"
-L.CRT_Enabled				= "다음 전투 부활 충전 바 보기(6.x 인스턴스에서만 작동)"
+L.CRT_Enabled				= "다음 전투 부활 충전 바 보기"
 L.ChallengeTimerOptions		= "도전 모드 최고 기록 바 설정"
 L.ChallengeTimerPersonal	= "개인 기록으로 보기"
 L.ChallengeTimerGuild		= "길드 기록으로 보기"
