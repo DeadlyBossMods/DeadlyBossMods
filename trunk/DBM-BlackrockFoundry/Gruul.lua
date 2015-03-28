@@ -125,8 +125,8 @@ function mod:OnCombatStart(delay)
 	self.vb.rampage = false
 	self.vb.firstWarned = false
 	if not self:IsMythic() then
-		timerInfernoSliceCD:Start(14-delay, 1)
-		countdownInfernoSlice:Start(14-delay)
+		timerInfernoSliceCD:Start(12.5-delay, 1)
+		countdownInfernoSlice:Start(12.5-delay)
 	else
 		timerInfernoSliceCD:Start(11-delay, 1)
 		countdownInfernoSlice:Start(11-delay)
