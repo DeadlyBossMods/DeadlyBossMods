@@ -4896,9 +4896,11 @@ do
 				end
 			else--Reset ignoreBestkill after wipe
 				mod.ignoreBestkill = false
-				--It was a clean pull, so cancel timer recoveries which often fire for no reason on world bosses, after boss was pulled by us.
-				--Only want timer recovery on in progress world bosses.
-				self.Unschedule(self.RequestTimers)
+				--It was a clean pull, so cancel timer recoveries which often fire for no reason if boss was pulled immediately after a mod load (cleanly)
+				--Only want timer recovery on in progress bosses, not clean pulls
+				if savedDifficulty == "worldboss" or event == "ENCOUNTER_START" or event == "IEEU" then
+					self.Unschedule(self.RequestTimers)
+				end
 			end
 			--show health frame
 			if not mod.inScenario then
