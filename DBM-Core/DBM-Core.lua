@@ -2452,6 +2452,27 @@ do
 		local _, _, _, _, _, _, _, _, instanceGroupSize = GetInstanceInfo()
 		LastGroupSize = instanceGroupSize
 	end
+	
+	function DBM:GetNumRealPlayersInZone()
+		if not IsInGroup() then return 1 end
+		local total = 0
+		local currentMapId = select(4, UnitPosition("player"))
+		if IsInRaid() then
+			for i = 1, GetNumGroupMembers() do
+				if select(4, UnitPosition("raid"..i)) == currentMapId then
+					total = total + 1
+				end
+			end
+		else
+			total = 1--add player/self for "party" count
+			for i = 1, GetNumSubgroupMembers() do
+				if select(4, UnitPosition("party"..i)) == currentMapId then
+					total = total + 1
+				end
+			end
+		end
+		return total
+	end
 
 	function DBM:GetRaidRank(name)
 		local name = name or playerName
@@ -4956,10 +4977,19 @@ do
 						speedTimer:Start()
 					end
 				end
-				if self.Options.CRT_Enabled and difficultyIndex >= 14 and difficultyIndex < 18 then--14-17 difficulties. Normal, Heroic, Mythic, LFR
-					local time = 90/LastGroupSize
-					time = time * 60
-					loopCRTimer(time, mod)
+				if self.Options.CRT_Enabled then
+					if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 17 then--Flexible difficulties
+						local time = 90/LastGroupSize
+						time = time * 60
+						loopCRTimer(time, mod)
+					else--Fixed difficulties (LastGroupSize cannot be trusted, this INCLUDES mythic. If you underman mythic then it is NOT 90/20)
+						local realGroupSize = self:GetNumRealPlayersInZone()
+						if realGroupSize > 1 then
+							local time = 90/realGroupSize
+							time = time * 60
+							loopCRTimer(time, mod)
+						end
+					end
 				end
 				--update boss left
 				if mod.numBoss then
