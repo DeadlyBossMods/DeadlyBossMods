@@ -1145,9 +1145,9 @@ do
 				healthCombatInitialized = true
 			end)
 			if IsInGroup() then
-				self:Schedule(15, self.RequestTimers, self, 3)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
-				self:Schedule(16.5, self.RequestTimers, self, 2)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
-				self:Schedule(18, self.RequestTimers, self, 1)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
+				self:Schedule(15, self.RequestTimers, self, 1)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
+				self:Schedule(20, self.RequestTimers, self, 2)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
+				self:Schedule(25, self.RequestTimers, self, 3)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
 			end
 		end
 	end
@@ -3416,10 +3416,10 @@ function DBM:LoadMod(mod, force)
 			timerRequestInProgress = true
 			-- Request timer to 3 person to prevent failure.
 			self.Unschedule(self.RequestTimers)--Unschedule the 3 requests done on dbm first load, so 6 requests aren't sent when reloading inside an instance
-			self:Schedule(8, self.RequestTimers, self, 3)
-			self:Schedule(10, self.RequestTimers, self, 2)
-			self:Schedule(12, self.RequestTimers, self, 1)
-			self:Schedule(12.5, function() timerRequestInProgress = false end)
+			self:Schedule(8, self.RequestTimers, self, 1)
+			self:Schedule(13, self.RequestTimers, self, 2)
+			self:Schedule(18, self.RequestTimers, self, 3)
+			self:Schedule(18.5, function() timerRequestInProgress = false end)
 		end
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
@@ -3703,6 +3703,7 @@ do
 	end
 	
 	whisperSyncHandlers["BTR2"] = function(sender, timer)
+		DBM.Unschedule(DBM.RequestTimers)--IF we got this, then we know immediately RequestTimers was successful, so abort
 		if #inCombat >= 1 then return end
 		if DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
 		timer = tonumber(timer or 0)
@@ -5072,6 +5073,7 @@ do
 				end
 			elseif self.Options.ShowRecoveryMessage then--show timer recovery message
 				self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
+				self.Unschedule(self.RequestTimers)--Timer recovery successful, abort other requests
 			end
 			if savedDifficulty == "worldboss" and not mod.noWBEsync then
 				if lastBossEngage[modId..playerRealm] and (GetTime() - lastBossEngage[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
