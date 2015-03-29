@@ -3415,7 +3415,7 @@ function DBM:LoadMod(mod, force)
 		if instanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
 			timerRequestInProgress = true
 			-- Request timer to 3 person to prevent failure.
-			self.Unschedule(self.RequestTimers)--Unschedule the 3 requests done on dbm first load, so 6 requests aren't sent when reloading inside an instance
+			self.Unschedule(self.RequestTimers)--Unschedule the requests done on dbm first load or if two mods loaded at same time (or if user manually loaded a bunch of mods at once)
 			self:Schedule(8, self.RequestTimers, self, 1)
 			self:Schedule(13, self.RequestTimers, self, 2)
 			self:Schedule(18, self.RequestTimers, self, 3)
@@ -3703,7 +3703,7 @@ do
 	end
 	
 	whisperSyncHandlers["BTR2"] = function(sender, timer)
-		DBM.Unschedule(DBM.RequestTimers)--IF we got this, then we know immediately RequestTimers was successful, so abort
+		DBM.Unschedule(DBM.RequestTimers)--IF we got BTR2 sync, then we know immediately RequestTimers was successful, so abort others
 		if #inCombat >= 1 then return end
 		if DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
 		timer = tonumber(timer or 0)
@@ -4897,9 +4897,9 @@ do
 				end
 			else--Reset ignoreBestkill after wipe
 				mod.ignoreBestkill = false
-				--It was a clean pull, so cancel timer recoveries which often fire for no reason if boss was pulled immediately after a mod load (cleanly)
+				--It was a clean pull, so cancel any RequestTimers which might fire after boss was pulled if boss was pulled right after mod load
 				--Only want timer recovery on in progress bosses, not clean pulls
-				if savedDifficulty == "worldboss" or event == "ENCOUNTER_START" or event == "IEEU" then
+				if startHp > 98 and (savedDifficulty == "worldboss" or event == "IEEU") or event == "ENCOUNTER_START" then
 					self.Unschedule(self.RequestTimers)
 				end
 			end
@@ -5073,7 +5073,6 @@ do
 				end
 			elseif self.Options.ShowRecoveryMessage then--show timer recovery message
 				self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
-				self.Unschedule(self.RequestTimers)--Timer recovery successful, abort other requests
 			end
 			if savedDifficulty == "worldboss" and not mod.noWBEsync then
 				if lastBossEngage[modId..playerRealm] and (GetTime() - lastBossEngage[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
@@ -5659,6 +5658,8 @@ do
 	function DBM:ReceiveCombatInfo(sender, mod, time)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
 			self:StartCombat(mod, time, "TIMER_RECOVERY")
+			--Recovery successful, someone sent info, abort other recovery requests
+			self.Unschedule(self.RequestTimers)
 		end
 	end
 
