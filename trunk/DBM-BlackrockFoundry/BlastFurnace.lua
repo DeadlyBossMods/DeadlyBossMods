@@ -102,6 +102,7 @@ local voiceVolatileFire			= mod:NewVoice(176121) --runout
 local voiceSlagElemental		= mod:NewVoice("ej9657", "-Tank")
 local voiceFireCaller			= mod:NewVoice("ej9659", "Tank")
 local voiceSecurityGuard		= mod:NewVoice("ej9648", "Tank")
+local voiceEngineer				= mod:NewVoice("ej9649", "Tank")
 
 mod:AddRangeFrameOption(8)
 mod:AddBoolOption("InfoFrame")
@@ -142,6 +143,7 @@ local UnitHealth, UnitHealthMax, GetTime = UnitHealth, UnitHealthMax, GetTime
 --Note: only thing that's still different in each mode
 local function Engineers(self)
 	warnEngineer:Show()
+	voiceEngineer:Play("ej9649")
 	if self:IsDifficulty("mythic", "normal") then
 		timerEngineer:Start(35)
 		self:Schedule(35, Engineers, self)
