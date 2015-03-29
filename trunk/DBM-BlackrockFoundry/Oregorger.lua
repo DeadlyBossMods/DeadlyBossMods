@@ -105,8 +105,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 155819 then
 		self.vb.torrentCount = 0
 		self:UnregisterShortTermEvents()
-		specWarnHungerDriveEnded:Show()
-		voicePhaseChange:Play("phasechange")
 		timerRetchedBlackrockCD:Start(5)
 		timerExplosiveShardCD:Start(6)--7-9
 		timerAcidTorrentCD:Start(11, 1)--11-12
@@ -174,5 +172,9 @@ function mod:UNIT_POWER_FREQUENT()
 	if (self:AntiSpam(10) or ore == 100) and lastOre ~= ore then
 		lastOre = ore
 		warnCollectOre:Show(ore)
+		if ore == 100 then
+			specWarnHungerDriveEnded:Show()
+			voicePhaseChange:Play("phasechange")
+		end
 	end
 end
