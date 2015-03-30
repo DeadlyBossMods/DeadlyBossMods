@@ -29,7 +29,7 @@ local warnMarkedforDeath			= mod:NewTargetCountAnnounce(156096, 4)--If not in co
 local warnSiegemaker				= mod:NewCountAnnounce("ej9571", 3, 156667)
 local warnFixate					= mod:NewTargetAnnounce(156653, 4)
 --Stage Three: Iron Crucible
-local warnAttachSlagBombs			= mod:NewTargetAnnounce(157000, 4)
+local warnAttachSlagBombs			= mod:NewTargetCountAnnounce(157000, 4)
 
 --Stage One: The Blackrock Forge
 local specWarnDemolition			= mod:NewSpecialWarningCount(156425, nil, nil, nil, 2, nil, 2)
@@ -71,7 +71,7 @@ local timerMassiveExplosion			= mod:NewCastTimer(5, 163008)
 --Stage Three: Iron Crucible
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerSlagEruptionCD			= mod:NewCDCountTimer(32.5, 156928)
-local timerAttachSlagBombsCD		= mod:NewCDTimer(25.5, 157000)--26-28. Do to increased cast time vs phase 1 and 2 slag bombs, timer is 1 second longer on CD
+local timerAttachSlagBombsCD		= mod:NewCDCountTimer(25.5, 157000)--26-28. Do to increased cast time vs phase 1 and 2 slag bombs, timer is 1 second longer on CD
 local timerSlagBomb					= mod:NewCastTimer(5, 157015)
 local timerFallingDebris			= mod:NewCastTimer(6, 162585)--Mythic
 local timerFallingDebrisCD			= mod:NewNextCountTimer(40, 162585)--Mythic
@@ -102,13 +102,18 @@ mod.vb.markCount = 0
 mod.vb.markCount2 = 0
 mod.vb.siegemaker = 0
 mod.vb.deprisCount = 0
+mod.vb.slagCastCount = 0
+local slagPlayerCount = 0--Doesn't seem to be any value in syncing this, this value is always 0 except for 0.2-2 seconds at most, recovery wouldn't give an accurate count.
 local smashTank = nil
 local UnitDebuff, UnitName, UnitClass, UnitPowerMax = UnitDebuff, UnitName, UnitClass, UnitPowerMax
 local markTargets = {}
+local slagTargets = {}
 local DBMHudMap = DBMHudMap
 local tankFilter
 local yellMFD2 = mod:NewYell(156096, L.customMFDSay, true, false)
 local yellSlag2 = mod:NewYell(157000, L.customSlagSay, true, false)
+local mfdDebuff = GetSpellInfo(156096)
+local playerName = UnitName("player")
 do
 	tankFilter = function(uId)
 		if UnitName(uId) == smashTank then
@@ -136,90 +141,7 @@ local function warnMarked(self)
 		warnMarkedforDeath:Show(countFormat, text)
 	end
 	table.wipe(markTargets)
-end
-
-function mod:OnCombatStart(delay)
-	table.wipe(markTargets)
-	self.vb.phase = 1
-	self.vb.demolitionCount = 0
-	self.vb.SlagEruption = 0
-	self.vb.smashCount = 0
-	self.vb.markCount = 0
-	timerThrowSlagBombsCD:Start(5.5-delay)
-	countdownSlagBombs:Start(5.5-delay)
-	timerDemolitionCD:Start(15-delay, 1)
-	timerShatteringSmashCD:Start(21-delay, 1)
-	if self:IsTank() then--Ability only concerns tank in phase 1
-		countdownShatteringSmash:Start(21-delay)
-	end
-	timerMarkedforDeathCD:Start(36-delay, 1)
-	countdownMarkedforDeath:Start(36-delay)
-end
-
-function mod:OnCombatEnd()
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
-	if self.Options.HudMapOnMFD then
-		DBMHudMap:Disable()
-	end
-end
-
-function mod:SPELL_CAST_START(args)
-	local spellId = args.spellId
-	if spellId == 155992 or spellId == 159142 then--Phase 1 and then phase 2 version.
-		self.vb.smashCount = self.vb.smashCount + 1
-		if self.vb.phase == 1 then
-			timerShatteringSmashCD:Start(30, self.vb.smashCount+1)
-			if self:IsTank() then--only warnk tank in phase 1
-				specWarnShatteringSmash:Show(self.vb.smashCount)
-				countdownShatteringSmash:Start(30)
-				voiceShatteringSmash:Play("carefly")
-			end
-		else
-			if self:IsMythic() then
-				timerShatteringSmashCD:Start(31.5, self.vb.smashCount+1)
-				countdownShatteringSmash:Start(31.5)
-			else
-				timerShatteringSmashCD:Start(nil, self.vb.smashCount+1)
-				countdownShatteringSmash:Start()--Not phase 1, concerns everyone not just tank
-			end
-			specWarnShatteringSmash:Show(self.vb.smashCount)--Warn all melee in phase 2
-			voiceShatteringSmash:Play("carefly")
-		end
-	elseif spellId == 156928 and self:AntiSpam(3, 5) then
-		self.vb.SlagEruption = self.vb.SlagEruption + 1
-		specWarnSlagEruption:Show(self.vb.SlagEruption)
-		timerSlagEruptionCD:Start(nil, self.vb.SlagEruption+1)
-	elseif spellId == 158054 then
-		smashTank = UnitName("boss1target")
-		self.vb.smashCount = self.vb.smashCount + 1
-		specWarnMassiveShatteringSmash:Show(self.vb.smashCount)
-		timerShatteringSmashCD:Start(24.5, self.vb.smashCount+1)--Use this cd bar in phase 3 as well, because text for "Massive Shattering Smash" too long.
-		countdownShatteringSmash:Start(24.5)
-		voiceShatteringSmash:Play("carefly")
-		if self.Options.RangeFrame and smashTank then
-			--Open regular range frame if you are the smash tank, even if you are a bomb, because now you don't have a choice.
-			if smashTank == UnitName("player") then
-				DBM.RangeCheck:Show(6)
-			--Don't open radar for massive smash if you are one of bomb targets
-			elseif not UnitDebuff("player", GetSpellInfo(157000)) and not UnitDebuff("player", GetSpellInfo(159179)) then
-				DBM.RangeCheck:Show(6, tankFilter)
-			end
-			self:Schedule(4, massiveOver, self)
-		end
-	--"<175.87 23:28:43> [CLEU] SPELL_CAST_START#Vehicle-0-3127-1205-1151-80660-0000732F74#自爆攻城戰車##nil#163008#巨大的爆炸#nil#nil", -- [13865]
-	--"<182.00 23:28:49> [CLEU] UNIT_DIED##nil#Vehicle-0-3127-1205-1151-80660-0000732F74#自爆攻城戰車#-1#false#nil#nil", -- [14611]
-	elseif spellId == 163008 then
-		specWarnMassiveExplosion:Show()
-		timerMassiveExplosion:Start()
-		voiceMassiveExplosion:Play("aesoon")
-	end
-end
-
-local mfdDebuff = GetSpellInfo(156096)
-local playerName = UnitName("player")
-local function checkMarked(self)
+	--Begin Check Marked function
 	if not UnitDebuff("player", mfdDebuff) then
 		voiceMarkedforDeath:Play("156096")
 	end
@@ -338,6 +260,92 @@ local function checkSlag(self)
 	end
 end
 
+--Do not combine slag functions. warnSlag includes tank, checkSlag does NOT include tank.
+local function warnSlag(self)
+	warnAttachSlagBombs:Show(self.vb.slagCastCount, table.concat(slagTargets, "<, >"))
+	table.wipe(slagTargets)
+end
+
+function mod:OnCombatStart(delay)
+	table.wipe(markTargets)
+	table.wipe(slagTargets)
+	self.vb.phase = 1
+	self.vb.demolitionCount = 0
+	self.vb.SlagEruption = 0
+	self.vb.smashCount = 0
+	self.vb.markCount = 0
+	timerThrowSlagBombsCD:Start(5.5-delay)
+	countdownSlagBombs:Start(5.5-delay)
+	timerDemolitionCD:Start(15-delay, 1)
+	timerShatteringSmashCD:Start(21-delay, 1)
+	if self:IsTank() then--Ability only concerns tank in phase 1
+		countdownShatteringSmash:Start(21-delay)
+	end
+	timerMarkedforDeathCD:Start(36-delay, 1)
+	countdownMarkedforDeath:Start(36-delay)
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+	if self.Options.HudMapOnMFD then
+		DBMHudMap:Disable()
+	end
+end
+
+function mod:SPELL_CAST_START(args)
+	local spellId = args.spellId
+	if spellId == 155992 or spellId == 159142 then--Phase 1 and then phase 2 version.
+		self.vb.smashCount = self.vb.smashCount + 1
+		if self.vb.phase == 1 then
+			timerShatteringSmashCD:Start(30, self.vb.smashCount+1)
+			if self:IsTank() then--only warnk tank in phase 1
+				specWarnShatteringSmash:Show(self.vb.smashCount)
+				countdownShatteringSmash:Start(30)
+				voiceShatteringSmash:Play("carefly")
+			end
+		else
+			if self:IsMythic() then
+				timerShatteringSmashCD:Start(31.5, self.vb.smashCount+1)
+				countdownShatteringSmash:Start(31.5)
+			else
+				timerShatteringSmashCD:Start(nil, self.vb.smashCount+1)
+				countdownShatteringSmash:Start()--Not phase 1, concerns everyone not just tank
+			end
+			specWarnShatteringSmash:Show(self.vb.smashCount)--Warn all melee in phase 2
+			voiceShatteringSmash:Play("carefly")
+		end
+	elseif spellId == 156928 and self:AntiSpam(3, 5) then
+		self.vb.SlagEruption = self.vb.SlagEruption + 1
+		specWarnSlagEruption:Show(self.vb.SlagEruption)
+		timerSlagEruptionCD:Start(nil, self.vb.SlagEruption+1)
+	elseif spellId == 158054 then
+		smashTank = UnitName("boss1target")
+		self.vb.smashCount = self.vb.smashCount + 1
+		specWarnMassiveShatteringSmash:Show(self.vb.smashCount)
+		timerShatteringSmashCD:Start(24.5, self.vb.smashCount+1)--Use this cd bar in phase 3 as well, because text for "Massive Shattering Smash" too long.
+		countdownShatteringSmash:Start(24.5)
+		voiceShatteringSmash:Play("carefly")
+		if self.Options.RangeFrame and smashTank then
+			--Open regular range frame if you are the smash tank, even if you are a bomb, because now you don't have a choice.
+			if smashTank == UnitName("player") then
+				DBM.RangeCheck:Show(6)
+			--Don't open radar for massive smash if you are one of bomb targets
+			elseif not UnitDebuff("player", GetSpellInfo(157000)) and not UnitDebuff("player", GetSpellInfo(159179)) then
+				DBM.RangeCheck:Show(6, tankFilter)
+			end
+			self:Schedule(4, massiveOver, self)
+		end
+	--"<175.87 23:28:43> [CLEU] SPELL_CAST_START#Vehicle-0-3127-1205-1151-80660-0000732F74#自爆攻城戰車##nil#163008#巨大的爆炸#nil#nil", -- [13865]
+	--"<182.00 23:28:49> [CLEU] UNIT_DIED##nil#Vehicle-0-3127-1205-1151-80660-0000732F74#自爆攻城戰車#-1#false#nil#nil", -- [14611]
+	elseif spellId == 163008 then
+		specWarnMassiveExplosion:Show()
+		timerMassiveExplosion:Start()
+		voiceMassiveExplosion:Play("aesoon")
+	end
+end
+
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 162579 then
@@ -351,7 +359,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 156096 then
-		if self:AntiSpam(2, 3) then
+		if self:AntiSpam(5, 3) then
 			self.vb.markCount = self.vb.markCount + 1
 			if self.vb.phase == 2 then
 				self.vb.markCount2 = self.vb.markCount2 + 1
@@ -363,7 +371,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				timer = 15.5
 			end
 			timerImpalingThrow:Start()
-			self:Schedule(0.5, checkMarked, self)
 			timerMarkedforDeathCD:Start(timer, self.vb.markCount+1)
 			countdownMarkedforDeath:Start(timer)
 			DBM:Debug("Running experimental timerShatteringSmashCD adjust because debugmode is enabled", 2)
@@ -380,7 +387,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		markTargets[#markTargets + 1] = args.destName
 		self:Unschedule(warnMarked)
-		self:Schedule(0.5, warnMarked, self)
+		if (self:IsMythic() and #markTargets == 3) or #markTargets == 2 then--Have all targets, warn immediately
+			warnMarked(self)
+		else
+			self:Schedule(0.5, warnMarked, self)
+		end
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
 			voiceMarkedforDeath:Play("findshelter")
@@ -399,18 +410,28 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.HudMapOnMFD then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
 		end
-	elseif spellId == 157000 or spellId == 159179 then--Combine tank version with non tank version
-		warnAttachSlagBombs:CombinedShow(0.5, args.destName)
-		if self:AntiSpam(2, 4) then
-			timerAttachSlagBombsCD:Start()
+	elseif spellId == 157000 then--Non Tank Version
+		if self:AntiSpam(5, 4) then
+			slagPlayerCount = 0--Reset to 0, once
+			self.vb.slagCastCount = self.vb.slagCastCount + 1
+			timerAttachSlagBombsCD:Start(nil, self.vb.slagCastCount+1)
 			countdownSlagBombs:Start(26)
+		end
+		slagPlayerCount = slagPlayerCount + 1--Add counter (not in antispam on purpose)
+		slagTargets[#slagTargets + 1] = args.destName
+		self:Unschedule(warnSlag)
+		if #slagTargets == 3 then--Have all 3 targets (including tank), warn immediately
+			warnSlag(self)
+		else
+			self:Schedule(2, warnSlag, self)
+		end
+		if slagPlayerCount == 2 then--Counter 2, do checkSlag immediately, this of course means function has to run for everyone instead of just player, but that's harmless
+			checkSlag(self)
 		end
 		if args:IsPlayer() then
 			specWarnAttachSlagBombs:Show()
-			if self:IsTank() or not self:IsMythic() then
+			if not self:IsMythic() then
 				yellAttachSlagBombs:Yell()
-			else
-				self:Schedule(0.5, checkSlag, self)
 			end
 			timerSlagBomb:Start()
 			voiceAttachSlagBombs:Play("runout")
@@ -418,13 +439,24 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(10)
 			end
 		end
-		--Tank stuff
-		if spellId == 159179 then--tank version
-			if not args:IsPlayer() then
-				specWarnAttachSlagBombsOther:Show(args.destName)
-			end
-			voiceAttachSlagBombs:Play("changemt")
+	elseif spellId == 159179 then--Tank version
+		slagTargets[#slagTargets + 1] = args.destName
+		self:Unschedule(warnSlag)
+		if #slagTargets == 3 then--Have all targets, warn immediately
+			warnSlag(self)
+		else
+			self:Schedule(2, warnSlag, self)
 		end
+		if args:IsPlayer() then
+			specWarnAttachSlagBombs:Show()
+			yellAttachSlagBombs:Yell()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
+		else
+			specWarnAttachSlagBombsOther:Show(args.destName)
+		end
+		voiceAttachSlagBombs:Play("changemt")
 	elseif spellId == 156667 then
 		self.vb.markCount2 = 0
 		self.vb.siegemaker = self.vb.siegemaker + 1
@@ -558,13 +590,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.phase = 3
 		self.vb.smashCount = 0
 		self.vb.markCount = 0
+		self.vb.slagCount = 0
 		timerSiegemakerCD:Cancel()
 		timerThrowSlagBombsCD:Cancel()
 		countdownSlagBombs:Cancel()
 		if self:IsMythic() then
 			timerFallingDebrisCD:Start(11, 1)
 		end
-		timerAttachSlagBombsCD:Start(11)
+		timerAttachSlagBombsCD:Start(11, 1)
 		countdownSlagBombs:Start(11)
 		countdownShatteringSmash:Cancel()
 		countdownShatteringSmash:Start(26)
