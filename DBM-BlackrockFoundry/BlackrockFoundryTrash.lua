@@ -11,6 +11,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START 156446 163194 171537",
 	"SPELL_AURA_APPLIED 175583 175594 175765 175993 177855 159750",
 	"SPELL_AURA_APPLIED_DOSE 175594",
+	"SPELL_AURA_REMOVED 159750",
 	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
@@ -87,11 +88,18 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 175993 then
 		specWarnLumberingStrength:Show()
 	elseif spellId == 159750 then--Mythic version (Blast Waves)
+		DBM:HideBlizzardEvents(1)--Blizzards frame completely covers dbms warnings here and stays on screen forever, so disable the stupid thing.
 		blastCount = 0
 		specWarnBlastWave:Show(volcanicBomb)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	if spellId == 159750 then--Mythic version (Blast Waves)
+		DBM:HideBlizzardEvents(0)
+	end
+end
 
 --[[
 --Boss Gains Blast Waves
@@ -113,14 +121,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 --]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if (spellId == 159751 or spellId == 159755) and self:LatencyCheck() then--Sub casts don't show in combat log. Block players who do not pass latency check from sending sync since have to set threshold so low
-		self:SendSync("BlastWave")--I hate this much sync spam, but blizzards tradition of hiding things form combat log from no reason, combined with a target that has no boss unitid, sucks.
-	end
-end
-
-function mod:OnSync(msg)
-	if not self.Options.Enabled then return end
-	if msg == "BlastWave" then
+	if (spellId == 159751 or spellId == 159755) and self:AntiSpam(1.5, 1) then--Sub casts don't show in combat log. Block players who do not pass latency check from sending sync since have to set threshold so low
 		blastCount = blastCount + 1
 		warnBlastWaves:Show(blastCount)
 	end
