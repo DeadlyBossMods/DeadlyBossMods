@@ -3796,10 +3796,10 @@ do
 				end
 				if #newerVersionPerson < 4 then
 					if #newerVersionPerson == 2 and updateNotificationDisplayed < 2 then--Only requires 2 for update notification.
+						DBM.NewerVersion = version
 						--Find min revision.
 						updateNotificationDisplayed = 2
 						--TODO, add clickable link to this message that triggers DBM:ShowUpdateReminder(displayVersion, version) so user can still copy address
-						--TODO, if out of date, show red OUT OF DATE on DBM gui with clickable button to bring up DBM:ShowUpdateReminder(displayVersion, version)
 						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
 						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
 						DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[%s]"):format(displayVersion, version, DBM_CORE_UPDATEREMINDER_URL or "http://www.deadlybossmods.com"))
