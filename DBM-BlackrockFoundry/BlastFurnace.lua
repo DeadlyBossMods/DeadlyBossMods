@@ -118,6 +118,8 @@ mod.vb.lastTotal = 29
 mod.vb.phase = 1
 mod.vb.slagCount = 0
 mod.vb.fireCaller = 0
+mod.vb.securityGuard = 0
+mod.vb.engineer = 0
 mod.vb.lastSlagIcon = 0
 mod.vb.secondSlagSpawned = false
 local activeSlagGUIDS = {}
@@ -142,7 +144,8 @@ end
 local UnitHealth, UnitHealthMax, GetTime = UnitHealth, UnitHealthMax, GetTime
 --Note: only thing that's still different in each mode
 local function Engineers(self)
-	warnEngineer:Show()
+	self.vb.engineer = self.vb.engineer + 1
+	warnEngineer:Show(self.vb.engineer)
 	voiceEngineer:Play("ej9649")
 	if self:IsDifficulty("mythic", "normal") then
 		timerEngineer:Start(35)
@@ -156,7 +159,8 @@ local function Engineers(self)
 end
 
 local function SecurityGuard(self)
-	warnSecurityGuard:Show()
+	self.vb.securityGuard = self.vb.securityGuard + 1
+	warnSecurityGuard:Show(self.vb.securityGuard)
 	voiceSecurityGuard:Play("ej9648")
 	if self.vb.phase == 1 then
 		timerSecurityGuard:Start(30.5)
@@ -240,6 +244,8 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.slagCount = 0
 	self.vb.fireCaller = 0
+	self.vb.securityGuard = 0
+	self.vb.engineer = 0
 	self.vb.lastSlagIcon = 0
 	local firstTimer = self:IsMythic() and 40 or self:IsHeroic() and 55.5 or 60
 	if self:AntiSpam(10, 0) then--Need to ignore loading on the pull
@@ -523,6 +529,7 @@ function mod:UNIT_DIED(args)
 			self.vb.phase = 2
 			self.vb.secondSlagSpawned = false
 			activePrimal = 0
+			self.vb.securityGuard = 0
 			prevHealth = 100
 			warnPhase2:Show()
 			self:Unschedule(Engineers)
