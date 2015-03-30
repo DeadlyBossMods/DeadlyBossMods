@@ -72,14 +72,14 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
 local timerBlastCD				= mod:NewCDTimer(25, 155209)--25 seconds base. shorter when loading is being channeled by operators.
 local timerRuptureCD			= mod:NewCDTimer(20, 156934)
-local timerEngineer				= mod:NewNextTimer(41, "ej9649", nil, nil, nil, 155179)
-local timerBellowsOperator		= mod:NewCDTimer(59, "ej9650", nil, nil, nil, 155181)--60-65second variation for sure
+local timerEngineer				= mod:NewNextCountTimer(41, "ej9649", nil, nil, nil, 155179)
+local timerBellowsOperator		= mod:NewCDCountTimer(59, "ej9650", nil, nil, nil, 155181)--60-65second variation for sure
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerVolatileFire			= mod:NewBuffFadesTimer(8, 176121)
 local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps")
 local timerSlagElemental		= mod:NewNextCountTimer(55, "ej9657", nil, "-Tank", nil, 155196)--Definitely 55 seconds, although current detection method may make it appear 1-2 seconds if slag has to run across room before casting first fixate
-local timerFireCaller			= mod:NewCDTimer(45, "ej9659", nil, "Tank", nil, 156937)--CD bars until accuracy verified
-local timerSecurityGuard		= mod:NewCDTimer(40, "ej9648", nil, "Tank", nil, 160379)--CD bars until accuracy verified
+local timerFireCaller			= mod:NewNextCountTimer(45, "ej9659", nil, "Tank", nil, 156937)
+local timerSecurityGuard		= mod:NewNextCountTimer(40, "ej9648", nil, "Tank", nil, 160379)
 
 local berserkTimer				= mod:NewBerserkTimer(780)
 
@@ -121,6 +121,7 @@ mod.vb.fireCaller = 0
 mod.vb.securityGuard = 0
 mod.vb.engineer = 0
 mod.vb.lastSlagIcon = 0
+mod.vb.bellowsOperator = 0
 mod.vb.secondSlagSpawned = false
 local activeSlagGUIDS = {}
 local activePrimalGUIDS = {}
@@ -145,14 +146,18 @@ local UnitHealth, UnitHealthMax, GetTime = UnitHealth, UnitHealthMax, GetTime
 --Note: only thing that's still different in each mode
 local function Engineers(self)
 	self.vb.engineer = self.vb.engineer + 1
-	warnEngineer:Show(self.vb.engineer)
+	local count = self.vb.engineer
+	warnEngineer:Show(count)
 	voiceEngineer:Play("ej9649")
+	if count < 12 then
+		voiceEngineer:Schedule(2, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
+	end
 	if self:IsDifficulty("mythic", "normal") then
-		timerEngineer:Start(35)
+		timerEngineer:Start(35, count+1)
 		self:Schedule(35, Engineers, self)
 		countdownEngineer:Start(35)
 	elseif self:IsHeroic() then
-		timerEngineer:Start(40.5)
+		timerEngineer:Start(40.5, count+1)
 		self:Schedule(40.5, Engineers, self)
 		countdownEngineer:Start(40.5)
 	end
@@ -160,22 +165,30 @@ end
 
 local function SecurityGuard(self)
 	self.vb.securityGuard = self.vb.securityGuard + 1
-	warnSecurityGuard:Show(self.vb.securityGuard)
+	local count = self.vb.securityGuard
+	warnSecurityGuard:Show(count)
 	voiceSecurityGuard:Play("ej9648")
+	if count < 12 then
+		voiceSecurityGuard:Schedule(2, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
+	end
 	if self.vb.phase == 1 then
-		timerSecurityGuard:Start(30.5)
+		timerSecurityGuard:Start(30.5, count+1)
 		self:Schedule(30.5, SecurityGuard, self)
 	else
-		timerSecurityGuard:Start(40)
+		timerSecurityGuard:Start(40, count+1)
 		self:Schedule(40, SecurityGuard, self)
 	end
 end
 
 local function FireCaller(self)
 	self.vb.fireCaller = self.vb.fireCaller + 1
-	warnFireCaller:Show(self.vb.fireCaller)
+	local count = self.vb.fireCaller
+	warnFireCaller:Show(count)
 	voiceFireCaller:Play("ej9659")
-	timerFireCaller:Start(45, self.vb.fireCaller+1)
+	if fireCaller < 12 then
+		voiceFireCaller:Schedule(2, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
+	end
+	timerFireCaller:Start(45, count+1)
 	self:Schedule(45, FireCaller, self)
 end
 
@@ -244,12 +257,13 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.slagCount = 0
 	self.vb.fireCaller = 0
-	self.vb.securityGuard = 0
-	self.vb.engineer = 0
+	self.vb.securityGuard = 1--First one on pull
+	self.vb.engineer = 1--First one on pull
 	self.vb.lastSlagIcon = 0
+	self.vb.bellowsOperator = 1--First one on pull
 	local firstTimer = self:IsMythic() and 40 or self:IsHeroic() and 55.5 or 60
 	if self:AntiSpam(10, 0) then--Need to ignore loading on the pull
-		timerBellowsOperator:Start(firstTimer)
+		timerBellowsOperator:Start(firstTimer, 2)
 	end
 	local blastTimer = self:IsMythic() and 24 or 29
 	self.vb.lastTotal = blastTimer
@@ -258,8 +272,8 @@ function mod:OnCombatStart(delay)
 	if not self:IsLFR() then
 		self:Schedule(firstTimer, SecurityGuard, self)
 		self:Schedule(firstTimer, Engineers, self)
-		timerSecurityGuard:Start(firstTimer)
-		timerEngineer:Start(firstTimer)
+		timerSecurityGuard:Start(firstTimer, 2)
+		timerEngineer:Start(firstTimer, 2)
 		countdownEngineer:Start(firstTimer)
 		berserkTimer:Start(-delay)
 	end
@@ -353,15 +367,19 @@ function mod:SPELL_AURA_APPLIED(args)
 			--But sometimes, for reason cannot find, it's 35 instead
 			--So in all modes, start 35 second timer
 			--Schedule 40 second check, if no 2nd slag by 40 seconds, start 15 second timer for remainder because 2nd will be 55
-			if self.vb.slagCount == 1 then
-				timerSlagElemental:Start(35, self.vb.slagCount+1)
+			local count = self.vb.slagCount
+			if count == 1 then
+				timerSlagElemental:Start(35, count+1)
 				self:Schedule(40, checkSecondSlag, self)
-			elseif self.vb.slagCount == 2 then
+			elseif count == 2 then
 				self.vb.secondSlagSpawned = true
 			else
-				timerSlagElemental:Start(nil, self.vb.slagCount+1)
+				timerSlagElemental:Start(nil, count+1)
 			end
 			voiceSlagElemental:Play("ej9657")
+			if count < 12 then
+				timerSlagElemental:Schedule(2, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
+			end
 		end
 		if self.vb.phase == 2 then
 			warnFixate:CombinedShow(0.5, args.destName)
@@ -405,8 +423,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 155181 and self:AntiSpam(10, 0) then--Loading (The two that come can be upwards of 5 seconds apart so at least 10 second antispam)
+		self.vb.bellowsOperator = self.vb.bellowsOperator + 1
 		specWarnBellowsOperator:Show()
-		timerBellowsOperator:Start()
+		timerBellowsOperator:Start(nil, self.vb.bellowsOperator+1)
 		voiceBellowsOperator:Play("killmob")
 	elseif spellId == 176121 then
 		warnVolatileFire:CombinedShow(1, args.destName)
@@ -543,9 +562,9 @@ function mod:UNIT_DIED(args)
 			if not self:IsLFR() then-- LFR do not have Slag Elemental.
 				timerSlagElemental:Start(13, 1)
 				self:Schedule(72, SecurityGuard, self)
-				timerSecurityGuard:Start(72)
+				timerSecurityGuard:Start(72, 1)
 				self:Schedule(76.5, FireCaller, self)
-				timerFireCaller:Start(76.5)
+				timerFireCaller:Start(76.5, 1)
 			end
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:Clear()

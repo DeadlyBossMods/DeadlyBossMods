@@ -8002,7 +8002,7 @@ do
 	end
 
 	--If no file at path, it should silenty fail. However, I want to try to only add NewVoice to mods for files that already exist.
-	function soundPrototype2:Play(name)
+	function soundPrototype2:Play(name, customPath)
 		local voice = DBM.Options.ChosenVoicePack
 		local always = DBM.Options.AlwaysPlayVoice
 		if voice == "None" then return end
@@ -8010,7 +8010,7 @@ do
 		--But still allow AlwaysPlayVoice to play as well.
 		if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
 		if not self.option or self.mod.Options[self.option] or always then
-			local path = "Interface\\AddOns\\DBM-VP"..voice.."\\"..name..".ogg"
+			local path = customPath or "Interface\\AddOns\\DBM-VP"..voice.."\\"..name..".ogg"
 			--Example "Interface\\AddOns\\DBM-VPHenry\\dispelnow.ogg"
 			--Usage: voiceBerserkerRush:Play("dispelnow")
 			DBM:PlaySoundFile(path)
