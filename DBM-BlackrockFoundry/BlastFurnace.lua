@@ -26,7 +26,7 @@ local warnRegulators			= mod:NewAnnounce("warnRegulators", 2, 156918)
 local warnBlastFrequency		= mod:NewAnnounce("warnBlastFrequency", 1, 155209, "Healer")
 local warnBomb					= mod:NewTargetAnnounce("OptionVersion2", 155192, 4, nil, false)
 local warnDropBombs				= mod:NewSpellAnnounce("OptionVersion2", 174726, 1, nil, "-Tank")
-local warnEngineer				= mod:NewSpellAnnounce("ej9649", 2, 155179)
+local warnEngineer				= mod:NewCountAnnounce("ej9649", 2, 155179)
 local warnRupture				= mod:NewTargetAnnounce(156932, 3)
 --Phase 2
 local warnPhase2				= mod:NewPhaseAnnounce(2)
@@ -34,7 +34,7 @@ local warnElementalists			= mod:NewAddsLeftAnnounce("ej9655", 2, 91751)
 local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnVolatileFire			= mod:NewTargetAnnounce("OptionVersion2", 176121, 4, nil, false)--Spam. disable by default.
 local warnFireCaller			= mod:NewCountAnnounce("ej9659", 3, 156937, "Tank")
-local warnSecurityGuard			= mod:NewSpellAnnounce("ej9648", 2, 160379, "Tank")
+local warnSecurityGuard			= mod:NewCountAnnounce("ej9648", 2, 160379, "Tank")
 --Phase 3
 local warnPhase3				= mod:NewPhaseAnnounce(3)
 local warnMelt					= mod:NewTargetAnnounce(155225, 4)--Every 10 sec.
