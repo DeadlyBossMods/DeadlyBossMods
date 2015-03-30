@@ -3796,10 +3796,18 @@ do
 				end
 				if #newerVersionPerson < 4 then
 					if #newerVersionPerson == 2 and updateNotificationDisplayed < 2 then--Only requires 2 for update notification.
-						DBM.NewerVersion = version
+						DBM.NewerVersion = displayVersion
+						--UGLY hack to get release version number instead of alpha one
+						if DBM.NewerVersion:find("alpha") then
+							local temp1, temp2 = string.split(" ", DBM.NewerVersion)--Strip down to just version, no alpha
+							local temp3, temp4, temp5 = string.split(".", temp1)--Strip version down to 3 numbers
+							temp5 = tonumber(temp5)
+							temp5 = temp5 - 1
+							temp5 = tostring(temp5)
+							DBM.NewerVersion = temp3.."."..temp4.."."..temp5
+						end
 						--Find min revision.
 						updateNotificationDisplayed = 2
-						--TODO, add clickable link to this message that triggers DBM:ShowUpdateReminder(displayVersion, version) so user can still copy address
 						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
 						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
 						DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[%s]"):format(displayVersion, version, DBM_CORE_UPDATEREMINDER_URL or "http://www.deadlybossmods.com"))
