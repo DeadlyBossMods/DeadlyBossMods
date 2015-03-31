@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(76814)--76794 Cinder Wolf, 80590 Aknor Steelbringer
 mod:SetEncounterID(1689)
 mod:SetZone()
-mod:SetHotfixNoticeRev(12869)
+mod:SetHotfixNoticeRev(13445)
 
 mod:RegisterCombat("combat")
 
