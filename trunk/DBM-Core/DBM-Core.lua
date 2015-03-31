@@ -55,7 +55,8 @@
 DBM = {
 	Revision = tonumber(("$Revision$"):sub(12, -3)),
 	DisplayVersion = "6.1.5 alpha", -- the string that is shown as version
-	ReleaseRevision = 13435 -- the revision of the latest stable version that is available
+	ReleaseRevision = 13435, -- the revision of the latest stable version that is available
+	HighestRelease = 13435--Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 }
 
 -- support for git svn which doesn't support svn keyword expansion
@@ -3550,7 +3551,11 @@ do
 		if mod and (mod.revision < modRevision) then
 			--TODO, maybe require at least 2 senders? this doesn't disable mod or make a popup though, just warn in chat that mod may have invalid timers/warnings do to a blizzard hotfix
 			if DBM:AntiSpam(3, "HOTFIX") then
-				DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HOTFIX)
+				if DBM.HighestRelease < modRevision then--There is a newer RELEASE version of DBM out that has this mods fixes
+					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HOTFIX)
+				else--This mods fixes are in an alpha version
+					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA)
+				end
 			end
 		end
 	end
@@ -3796,6 +3801,9 @@ do
 				end
 				if #newerVersionPerson < 4 then
 					if #newerVersionPerson == 2 and updateNotificationDisplayed < 2 then--Only requires 2 for update notification.
+						if DBM.HighestRelease < version then
+							DBM.HighestRelease = version
+						end
 						DBM.NewerVersion = displayVersion
 						--UGLY hack to get release version number instead of alpha one
 						if DBM.NewerVersion:find("alpha") then

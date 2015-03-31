@@ -85,6 +85,7 @@ DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Presiona " .. (IsMacClient() and "Cmd-
 DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Mostrar popup si hay nueva version de Deadly Boss Mods"
 DBM_CORE_UPDATEREMINDER_DISABLE		= "PELIGRO: Como tu versión de Deadly Boss Mods está drásticamente atrasada (%d revisiones), ha sido desabilitado hasta que actualices. Esto asegura que el código viejo e incompatible no provoque una pobre experiencia de juego para ti y el resto de tus compañeros de banda."
 DBM_CORE_UPDATEREMINDER_HOTFIX		= "Tu versión de DBM contiene valores incorrectos de los temporizadores y avisos en este encuentro. Esto se arreglará en versiones futuras o directamente descargando una versión alfa actualizada."
+DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA	= DBM_CORE_UPDATEREMINDER_HOTFIX--TEMP, FIX ME!
 
 DBM_CORE_MOVABLE_BAR				= "¡Muéveme!"
 
