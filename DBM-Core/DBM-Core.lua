@@ -56,8 +56,9 @@ DBM = {
 	Revision = tonumber(("$Revision$"):sub(12, -3)),
 	DisplayVersion = "6.1.5 alpha", -- the string that is shown as version
 	ReleaseRevision = 13435, -- the revision of the latest stable version that is available
-	HighestRelease = 13435--Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 }
+
+DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for git svn which doesn't support svn keyword expansion
 if not DBM.Revision then
