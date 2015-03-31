@@ -185,7 +185,7 @@ local function FireCaller(self)
 	local count = self.vb.fireCaller
 	warnFireCaller:Show(count)
 	voiceFireCaller:Play("ej9659")
-	if fireCaller < 12 then
+	if count < 12 then
 		voiceFireCaller:Schedule(2, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 	end
 	timerFireCaller:Start(45, count+1)
