@@ -199,7 +199,7 @@ local function checkBoatPlayer(self, npc)
 	countdownBladeDash:Cancel()
 	countdownBladeDash:Start(5)
 	timerBloodRitualCD:Cancel()
-	timerBloodRitualCD:Start(9.7, 1)
+	timerBloodRitualCD:Start(8.5, 1)
 	--These are altered by boar ending, even though boss continues casting it during boat phases.
 	timerRapidFireCD:Cancel()
 	timerRapidFireCD:Start(13, self.vb.rapidfire+1)
