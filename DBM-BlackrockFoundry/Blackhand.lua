@@ -566,7 +566,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownSlagBombs:Start(11)
 		timerThrowSlagBombsCD:Cancel()
 		timerThrowSlagBombsCD:Start(11)--11-12.5
-		timerSiegemakerCD:Start(16, 1)
+		timerSiegemakerCD:Start(15, 1)
 		countdownShatteringSmash:Cancel()
 		timerShatteringSmashCD:Cancel()
 		if self:IsMythic() then--Boss gain power faster on mythic phase 2
