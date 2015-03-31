@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Mar 22, 2015@13396
+-- Last update: Mar 28, 2015@13435
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -34,6 +34,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnRegulators		= "显示剩余的温度调节器数量",
 	warnBlastFrequency	= "当$spell:155209施法频率增加时发出警告",
+	InfoFrame			= "为$spell:155192和$spell:155196显示信息框架",
 	VFYellType			= "设定不稳定的火焰的大喊方式 (史诗模式)",
 	Countdown			= "倒数直到消失",
 	Apply				= "只有中了的时候"
@@ -87,6 +88,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Train			= GetSpellInfo(174806),
 	lane			= "轨道",
 	oneTrain		= "随机单轨道快车",
 	oneRandom		= "随机出现在一个轨道上",
