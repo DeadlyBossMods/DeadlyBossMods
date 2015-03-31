@@ -96,6 +96,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
+	local spellId = args.spellId
 	if spellId == 159750 then--Mythic version (Blast Waves)
 		DBM:HideBlizzardEvents(0)
 	end
