@@ -373,12 +373,13 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:Schedule(40, checkSecondSlag, self)
 			elseif count == 2 then
 				self.vb.secondSlagSpawned = true
+				timerSlagElemental:Start(nil, count+1)
 			else
 				timerSlagElemental:Start(nil, count+1)
 			end
 			voiceSlagElemental:Play("ej9657")
 			if count < 12 then
-				timerSlagElemental:Schedule(2, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
+				voiceSlagElemental:Schedule(2, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 			end
 		end
 		if self.vb.phase == 2 then
