@@ -5221,10 +5221,10 @@ do
 					end
 				end
 				if showConstantReminder and IsInGroup() and savedDifficulty ~= "lfr" and savedDifficulty ~= "lfr25" then
-					--Show message about 50% of time, when you wipe, while in a group that isn't LFR if you chose to disable update notification popup. I've seen far too many wipes caused by out of date mod versions
+					--Show message about 33% of time, when you wipe, while in a group that isn't LFR if you chose to disable update notification popup. I've seen far too many wipes caused by out of date mod versions
 					--These people need to know the wipe could very well be their fault.
-					local RNG = math.random(1, 2)
-					if RNG == 2 then
+					local RNG = math.random(1, 3)
+					if RNG == 3 then
 						self:AddMsg(DBM_CORE_OUT_OF_DATE_NAG)
 					end
 				end
