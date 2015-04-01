@@ -390,7 +390,7 @@ do
 			return
 		end
 		local enabled = GetAddOnEnableState(UnitName("player"), "DBM-DefaultSkin")
-		if enabled and enabled ~= 0 and (self.options.Skin and not skins[self.options.Skin].loaded or not self.options.Skin) then
+		if (enabled and (enabled ~= 0) and self.options.Skin and not skins[self.options.Skin].loaded) or not self.options.Skin then
 			-- The currently set skin is no longer loaded, revert to DefaultSkin. If enabled (else, person wants textureless bar on purpose)
 			self:SetSkin("DefaultSkin")
 		end
@@ -406,6 +406,9 @@ do
 		end
 		DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] = DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] or {}
 		self.options = setmetatable(DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id], optionMT)
+		if not self.options then
+			print("self.options is nil, DBT failure is here:", id or "id is nil")
+		end
 		self:Rearrange()
 		DBM:Schedule(2, delaySkinCheck, self)
 	end
