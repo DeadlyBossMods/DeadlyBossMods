@@ -397,7 +397,7 @@ do
 		--Change line number for sake of weeding out user error
 		--Change line number for sake of weeding out user error
 		--Change line number for sake of weeding out user error
-		if (enabled and (enabled ~= 0) and self.options.Skin and not skins[self.options.Skin].loaded) or not self.options.Skin then
+		if (enabled and enabled ~= 0 and self.options.Skin and not skins[self.options.Skin].loaded) or not self.options.Skin then
 			-- The currently set skin is no longer loaded, revert to DefaultSkin. If enabled (else, person wants textureless bar on purpose)
 			self:SetSkin("DefaultSkin")
 		end
@@ -413,11 +413,12 @@ do
 		end
 		DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] = DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] or {}
 		self.options = setmetatable(DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id], optionMT)
-		if not self.options then
+		self:Rearrange()
+		if self.options then--This shouldn't be needed but apparently it is.
+			DBM:Schedule(2, delaySkinCheck, self)
+		else
 			print("self.options is nil, DBT failure is here:", id or "id is nil")
 		end
-		self:Rearrange()
-		DBM:Schedule(2, delaySkinCheck, self)
 	end
 
 	function DBT:CreateProfile(id)
