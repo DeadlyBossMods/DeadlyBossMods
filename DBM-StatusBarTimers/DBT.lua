@@ -390,6 +390,13 @@ do
 			return
 		end
 		local enabled = GetAddOnEnableState(UnitName("player"), "DBM-DefaultSkin")
+		--Change line number for sake of weeding out user error
+		--Change line number for sake of weeding out user error
+		--Change line number for sake of weeding out user error
+		--Change line number for sake of weeding out user error
+		--Change line number for sake of weeding out user error
+		--Change line number for sake of weeding out user error
+		--Change line number for sake of weeding out user error
 		if (enabled and (enabled ~= 0) and self.options.Skin and not skins[self.options.Skin].loaded) or not self.options.Skin then
 			-- The currently set skin is no longer loaded, revert to DefaultSkin. If enabled (else, person wants textureless bar on purpose)
 			self:SetSkin("DefaultSkin")
