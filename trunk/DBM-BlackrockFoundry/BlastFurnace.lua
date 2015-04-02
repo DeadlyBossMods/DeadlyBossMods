@@ -13,9 +13,10 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 155186 156937 177756",
 	"SPELL_CAST_SUCCESS 155179 174726",
-	"SPELL_AURA_APPLIED 155192 174716 155196 158345 155242 155181 176121 155225 156934 155173",
+	"SPELL_AURA_APPLIED 155192 174716 155196 158345 155242 155181 176121 155225 156934 155173 159558",
+	"SPELL_AURA_REFRESH 155192 174716 159558",
 	"SPELL_AURA_APPLIED_DOSE 155242",
-	"SPELL_AURA_REMOVED 155192 174716 176121 155196 158345",
+	"SPELL_AURA_REMOVED 155192 174716 176121 155196 158345 159558",
 	"SPELL_PERIODIC_DAMAGE 156932 155223 155743",
 	"SPELL_ABSORBED 156932 155223 155743",
 	"UNIT_DIED",
@@ -129,6 +130,7 @@ local activePrimal = 0 -- health report variable. no sync
 local prevHealth = 100
 local yellVolatileFire2 = mod:NewFadesYell(176121, nil, true, false)
 local UnitDebuff = UnitDebuff
+local UnitHealth, UnitHealthMax, GetTime = UnitHealth, UnitHealthMax, GetTime
 
 local BombFilter, VolatileFilter
 do
@@ -142,7 +144,30 @@ do
 	end
 end
 
-local UnitHealth, UnitHealthMax, GetTime = UnitHealth, UnitHealthMax, GetTime
+local lines = {}
+
+local function sortInfoFrame(a, b) 
+	local a = lines[a]
+	local b = lines[b]
+	if not tonumber(a) then a = -1 end
+	if not tonumber(b) then b = -1 end
+	if a > b then return true else return false end
+end
+
+local function updateInfoFrame()
+	table.wipe(lines)
+	local boss2bombsNeeded, boss3bombsNeeded
+	if UnitExists("boss2") then
+		boss2bombsNeeded = UnitHealth("boss2")/100000
+		lines[L.Regulator] = L.bombNeeded:format(boss2bombsNeeded)
+	end
+	if UnitExists("boss3") then
+		boss3bombsNeeded = UnitHealth("boss3")/100000
+		lines[L.Regulator] = L.bombNeeded:format(boss3bombsNeeded)
+	end
+	return lines
+end
+
 --Note: only thing that's still different in each mode
 local function Engineers(self)
 	self.vb.engineer = self.vb.engineer + 1
@@ -290,6 +315,9 @@ function mod:OnCombatStart(delay)
 			end
 		end)
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Show(2, "function", updateInfoFrame, sortInfoFrame)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -328,7 +356,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if args:IsSpellID(155192, 174716) then
+	if args:IsSpellID(155192, 174716, 159558) then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local _, _, _, _, _, duration, expires = UnitDebuff(uId, args.spellName)
 		local debuffTime = expires - GetTime()
@@ -350,10 +378,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.RangeFrame and not UnitDebuff("player", args.spellName) then
 			DBM.RangeCheck:Show(8, BombFilter, nil, nil, nil, debuffTime + 0.5)
-		end
-		if self.vb.phase == 1 and self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(5, "playerbaddebuff", 155192)
 		end
 	elseif spellId == 155196 then
 		if not activeSlagGUIDS[args.sourceGUID] then
@@ -483,10 +507,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if args:IsSpellID(155192, 174716) then
+	if args:IsSpellID(155192, 174716, 159558) then
 		if self.Options.HudMapOnBomb then
 			DBMHudMap:FreeEncounterMarkerByTarget(155192, args.destName)
 		end
@@ -599,6 +624,10 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			DBM.BossHealth:AddBoss(unitGUID)
 		end
 	end
+end
+
+function mod:UNIT_HEALTH_FREQUENT(uId)
+	--76808 in case needed
 end
 
 do
