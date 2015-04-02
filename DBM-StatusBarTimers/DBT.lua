@@ -418,11 +418,7 @@ do
 		DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] = DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id] or {}
 		self.options = setmetatable(DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id], optionMT)
 		self:Rearrange()
-		if self.options then--This shouldn't be needed but apparently it is.
-			DBM:Schedule(2, delaySkinCheck, self)
-		else
-			print("self.options is nil, DBT failure is here:", id or "id is nil")
-		end
+		DBM:Schedule(2, delaySkinCheck, self)
 	end
 
 	function DBT:CreateProfile(id)
