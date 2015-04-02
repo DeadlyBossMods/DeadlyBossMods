@@ -395,7 +395,7 @@ do
 		local debugText3 = (enabled > 0) and "DefaultSkin is enabled. " or "DefaultSkin is disabled/missing. "
 		local loaded = tostring(skins[self.options.Skin].loaded)--Should tostring to either "nil" "true" or "false"
 		DBM:Debug(debugText1..debugText2..debugText3..loaded)
-		if enabled and enabled ~= 0 and (loaded ~= "true" or not self.options.Skin) then
+		if enabled and enabled ~= 0 and loaded ~= "true" then
 			-- The currently set skin is no longer loaded, revert to DefaultSkin. If enabled (else, person wants textureless bar on purpose)
 			self:SetSkin("DefaultSkin")
 			DBM:Debug("delaySkinCheck firing DefaultSkin successful")
