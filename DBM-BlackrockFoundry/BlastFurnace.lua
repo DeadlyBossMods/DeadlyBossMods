@@ -626,10 +626,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	end
 end
 
-function mod:UNIT_HEALTH_FREQUENT(uId)
-	--76808 in case needed
-end
-
 do
 	local totalTime = mod:IsMythic() and 24 or 29
 	local UnitPower = UnitPower
