@@ -693,7 +693,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 				elseif count == 20 then
 					specWarnSplitSoon:Cancel()
 					specWarnSplitSoon:Schedule(5-fakeAdjust)
-					self:Schedule(8, showHud, self, count)
+					self:Schedule(7, showHud, self, count)
 				end
 			elseif count == 4 or count == 15 or count == 18 or count == 19  or count == 21 or count == 27 or count == 28 then
 				expectedTime = 20
