@@ -156,14 +156,14 @@ end
 
 local function updateInfoFrame()
 	table.wipe(lines)
-	local boss2bombsNeeded, boss3bombsNeeded
-	if UnitExists("boss2") then
-		boss2bombsNeeded = UnitHealth("boss2")/100000
-		lines[L.Regulator] = L.bombNeeded:format(boss2bombsNeeded)
-	end
+	local boss3bombsNeeded, boss4bombsNeeded
 	if UnitExists("boss3") then
+		boss2bombsNeeded = UnitHealth("boss2")/100000
+		lines[L.Regulator.." 1"] = L.bombNeeded:format(boss3bombsNeeded)
+	end
+	if UnitExists("boss4") then
 		boss3bombsNeeded = UnitHealth("boss3")/100000
-		lines[L.Regulator] = L.bombNeeded:format(boss3bombsNeeded)
+		lines[L.Regulator.." 2"] = L.bombNeeded:format(boss4bombsNeeded)
 	end
 	return lines
 end
