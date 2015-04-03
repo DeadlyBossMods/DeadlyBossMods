@@ -633,7 +633,7 @@ do
 		if type == "ALTERNATE" then
 			totalTime = self:IsMythic() and 24 or 29
 			local altPower = UnitPower(uId, 10)
-			--Each time boss breaks interval of 25%. CD is reduced
+			--Each time boss breaks energy increments of 25. CD is reduced
 			if altPower == 100 then
 				totalTime = self:IsMythic() and 5 or 5.5--5-6
 			elseif altPower > 74 then
