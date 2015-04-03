@@ -175,7 +175,7 @@ local function Engineers(self)
 	warnEngineer:Show(count)
 	voiceEngineer:Play("ej9649")
 	if count < 12 then
-		voiceEngineer:Schedule(2, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
+		voiceEngineer:Schedule(1.5, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 	end
 	if self:IsDifficulty("mythic", "normal") then
 		timerEngineer:Start(35, count+1)
@@ -194,7 +194,7 @@ local function SecurityGuard(self)
 	warnSecurityGuard:Show(count)
 	voiceSecurityGuard:Play("ej9648")
 	if count < 12 then
-		voiceSecurityGuard:Schedule(2, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
+		voiceSecurityGuard:Schedule(1.5, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 	end
 	if self.vb.phase == 1 then
 		timerSecurityGuard:Start(30.5, count+1)
@@ -211,7 +211,7 @@ local function FireCaller(self)
 	warnFireCaller:Show(count)
 	voiceFireCaller:Play("ej9659")
 	if count < 12 then
-		voiceFireCaller:Schedule(2, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
+		voiceFireCaller:Schedule(1.5, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 	end
 	timerFireCaller:Start(45, count+1)
 	self:Schedule(45, FireCaller, self)
@@ -403,7 +403,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			voiceSlagElemental:Play("ej9657")
 			if count < 12 then
-				voiceSlagElemental:Schedule(2, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
+				voiceSlagElemental:Schedule(1.5, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 			end
 		end
 		if self.vb.phase == 2 then
