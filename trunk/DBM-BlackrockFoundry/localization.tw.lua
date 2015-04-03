@@ -37,7 +37,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	heatRegulator		= "熱能調節閥"
+	heatRegulator		= "熱能調節閥",
+	Regulator			= "調節閥%d",
+	bombNeeded			= "%d炸彈"
 })
 
 ------------------
@@ -77,7 +79,8 @@ L:SetOptionLocalization({
 	specWarnSplitSoon	= "團隊分開10秒前顯示特別警告",
 	InfoFrameSpeed		= "設定何時訊息框架顯示下一次列車的資訊",
 	Immediately			= "車門一開後立即顯示此班列車",
-	Delayed				= "在此班列車出站之後" 
+	Delayed				= "在此班列車出站之後",
+	HudMapUseIcons		= "為HudMap使用團隊圖示而非綠圈"
 })
 
 L:SetMiscLocalization({

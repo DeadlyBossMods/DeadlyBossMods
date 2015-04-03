@@ -6,7 +6,7 @@ L.MainFrame	= "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "翻譯:"
 L.TranslationBy 			= "Imbav@聖光之願"
-L.Website					= "拜訪我們的討論與支援論壇:|cFF73C2FBwww.deadlybossmods.com|r (代管於Elitist Jerks!)"
+L.Website					= "拜訪我們的討論與支援論壇:|cFF73C2FBwww.deadlybossmods.com|r 在推特上關注主要開發者@MysticalOS"
 L.WebsiteButton				= "論壇"
 
 L.OTabBosses	= "首領模組"
@@ -64,7 +64,7 @@ L.Latency_Text				= "設定最高延遲同步門檻:%d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "綜合DBM計時器選項"
 L.SKT_Enabled				= "永遠顯示快速戰勝計時器 (覆蓋特定首領選項)"
-L.CRT_Enabled				= "為下一次戰復充能顯示計時器(只有6.x難度)"
+L.CRT_Enabled				= "為下一次戰復充能顯示計時器"
 L.ChallengeTimerOptions		= "為挑戰模式設定最佳紀錄計時器"
 L.ChallengeTimerPersonal	= "個人"
 L.ChallengeTimerGuild		= GUILD
@@ -227,7 +227,7 @@ L.Area_SpamFilter			= "垃圾過濾選項"
 L.DontShowFarWarnings		= "不發送距離過遠的事件提示/計時器"
 L.StripServerName			= "隱藏警告和計時器的玩家伺服器名稱"
 L.SpamBlockBossWhispers		= "當戰鬥時過濾 &lt;DBM&gt; 密語警告"
-L.BlockVersionUpdateNotice	= "禁用彈出的更新通知"
+L.BlockVersionUpdateNotice	= "在聊天頻道顯示較高頻率的過期通知而非彈出視窗。"
 
 L.Area_SpecFilter			= "專精過濾選項"
 L.FilterTankSpec			= "非坦克專精時過濾掉坦克專精的特定警告 (註:不建議玩家關閉此選項因大多數的坦克嘲諷警告都是預設開啟。)"
