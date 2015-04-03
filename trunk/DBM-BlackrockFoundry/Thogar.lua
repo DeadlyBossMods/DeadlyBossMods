@@ -65,6 +65,7 @@ local voiceDelayedSiegeBomb			= mod:NewVoice(159481)
 mod:AddInfoFrameOption(176312)
 mod:AddSetIconOption("SetIconOnAdds", "ej9549", false, true)
 mod:AddHudMapOption("HudMapForTrain", 176312, false)
+mod:AddBoolOption("HudMapUseIcons")--Depending what is easier to see/understand, i may change this to default off
 mod:AddDropdownOption("InfoFrameSpeed", {"Immediately", "Delayed"}, "Delayed", "misc")
 
 mod.vb.trainCount = 0
@@ -431,49 +432,65 @@ end
 --Positions based on https://www.youtube.com/watch?v=0QC7BOEv2iE
 local function showHud(self, train, center)
 	if self.Options.HudMapForTrain then
+		local Red, Green, Blue = 1, 1, 1
+		local hudType = nil
+		if not self.Options.HudMapUseIcons then
+			hudType = "highlight"
+			Red, Green, Blue = 0, 1, 0
+		end
 		DBMHudMap:FreeEncounterMarkerByTarget(176312, "TrainHelper")--Clear any current icon, before showing next move
 		--Regular Lane movements
 		local specialPosition = self:IsMelee() and 3328 or 3300--Melee west, ranged east, unless center is passed then center
 		if train == 9 then--Move to Circle (1)
+			if not hudType then hudType = "circle" end
 			if center then
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "circle", 590, 3314, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 590, 3314, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			else
 				--East (where adds jump down, everyone goes west on this move)
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "circle", 590, 3300, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 590, 3300, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			end
 		elseif train == 8 or train == 11 or train == 19.25 or train == 32 then--Move to diamond (2)
+			if not hudType then hudType = "diamond" end
 			if center then
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3314, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 566, 3314, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			else
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, specialPosition, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 566, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			end
 		elseif train == 1 or train == 7 or train == 15 or train == 21 or train == 23 or train == 26 or train == 28.5 then--Move to triangle (3)
+			if not hudType then hudType = "triangle" end
 			if center then
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3314, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 544, 3314, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			else
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 542, specialPosition, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 542, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			end
 		elseif train == 20 or train == 22 then--Move to Moon (4)
+			if not hudType then hudType = "moon" end
 			if center then
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "moon", 517, 3314, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 517, 3314, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			else
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "moon", 517, specialPosition, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 517, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			end
 		--Special lane movements (usually corners)
 		elseif train == 2 or train == 28 then--Move to Cross (2 special corner)
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "cross", 566, 3277, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			if not hudType then hudType = "cross" end
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 566, 3277, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 		elseif train == 14 then--Move to skull (4 special corner)
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "skull", 517, 3353, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			if not hudType then hudType = "skull" end
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 517, 3353, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 		elseif train == 17 then--Ranged and melee go to different lanes to avoid fire in on melee/adds in diamond while ranged kill cannon at triangle
 			if self:IsMelee() then--Move to diamond for man at arms train
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "diamond", 566, 3332, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				if not hudType then hudType = "diamond" end
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 566, 3332, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			else--Move to triangle for Cannon
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "triangle", 544, 3314, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+				if not hudType then hudType = "triangle" end
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 544, 3314, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			end
 		elseif train == 19 then-- (1 special corner)
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "square", 590, 3352, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			if not hudType then hudType = "square" end
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 590, 3352, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 		elseif train == 19.5 then----Move to star, also during train count 19, but later
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", "star", 590, 3272, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			if not hudType then hudType = "star" end
+			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 590, 3272, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 		end
 	end
 end
