@@ -37,7 +37,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	heatRegulator		= "Heat Regulator",
-	Regulator			= "Regulator",--Can't use above, too long for infoframe
+	Regulator			= "Regulator %d",--Can't use above, too long for infoframe
 	bombNeeded			= "%d Bomb(s)"
 })
 
