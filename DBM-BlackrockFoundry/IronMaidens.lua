@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 158708 158707 158692 158599 155794 158078 156626 158008 156109",
-	"SPELL_CAST_SUCCESS 157854 157886 156109",
+	"SPELL_CAST_SUCCESS 157854 157886 156109 155794",
 	"SPELL_AURA_APPLIED 158702 164271 156214 158315 158010 159724 156631 156601",
 	"SPELL_AURA_REMOVED 159724 156631 158010",
 	"SPELL_PERIODIC_DAMAGE 158683",
@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED",
 	"RAID_BOSS_WHISPER",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"CHAT_MSG_ADDON",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
@@ -138,7 +139,7 @@ mod.vb.phase = 1
 mod.vb.ship = 0
 mod.vb.alphaOmega = 0
 mod.vb.bloodRitual = 0
-mod.vb.bladeDash = 0
+mod.vb.bladeDash = 1
 mod.vb.penetratingShot = 0
 mod.vb.convulsiveShadows = 0
 mod.vb.heartseeker = 0
@@ -190,7 +191,7 @@ local function checkBoatPlayer(self, npc)
 	else
 		specWarnBoatEnded:Show()
 	end
-	self.vb.bladeDash = 0
+	self.vb.bladeDash = 1
 	self.vb.bloodRitual = 0
 	local bossPower = UnitPower("boss1")--All bosses have same power, doesn't matter which one checked
 	--These abilites resume after boat phase ends on mythic, on other difficulties, they still reset
@@ -273,7 +274,7 @@ function mod:OnCombatStart(delay)
 	self.vb.ship = 0
 	self.vb.alphaOmega = 1
 	self.vb.bloodRitual = 0
-	self.vb.bladeDash = 0
+	self.vb.bladeDash = 1
 	self.vb.penetratingShot = 0
 	self.vb.convulsiveShadows = 0
 	self.vb.heartseeker = 0
@@ -326,7 +327,6 @@ function mod:SPELL_CAST_START(args)
 			timerDeployTurretCD:Start(nil, self.vb.turret+1)
 		end
 	elseif spellId == 155794 then
-		self.vb.bladeDash = self.vb.bladeDash + 1
 		if noFilter or not isPlayerOnBoat() then
 			self:ScheduleMethod(0.1, "BossTargetScanner", 77231, "BladeDashTarget", 0.1, 16)
 			timerBladeDashCD:Cancel()
@@ -351,6 +351,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnDeadlyThrow:Show()
 	elseif spellId == 156109 then
 		self.vb.shadowsWarned = false
+		--This count will be off if target dies during cast and boss recasts.
+		--However, unlike blade dash, it cannot be moved to success do to spread mechanic
 		self.vb.convulsiveShadows = self.vb.convulsiveShadows + 1
 		self:ScheduleMethod(0.1, "BossTargetScanner", 77231, "ConvulsiveTarget", 0.1, 13, true, nil, nil, nil, true)
 	end
@@ -375,6 +377,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if noFilter or not isPlayerOnBoat() then
 			timerConvulsiveShadowsCD:Start(nil, self.vb.convulsiveShadows+1)
 		end
+	elseif spellId == 155794 then
+		self.vb.bladeDash = self.vb.bladeDash + 1
 	end
 end
 
@@ -529,14 +533,10 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---Rapid fire is still 3 seconds faster to use emote instead of debuff.
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:156626") then
-		specWarnRapidFire:Show()
-		yellRapidFire:Yell()
-		voiceRapidFire:Play("runout")
-		voiceRapidFire:Schedule(2, "keepmove")
-		self:SendSync("RapidFireTarget", UnitGUID("player"))
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 158849 then
+		timerWarmingUp:Start()
+		countdownWarmingUp:Start()
 	end
 end
 
@@ -591,13 +591,44 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 158849 then
-		timerWarmingUp:Start()
-		countdownWarmingUp:Start()
+--Rapid fire is still 3 seconds faster to use emote instead of debuff.
+--Bigwigs doesn't sync Rapid Fire like DBM does, but they do sync ALL RAID_BOSS_WHISPER events.
+--So we can this for rapidfire targets sent by bigwigs
+RegisterAddonMessagePrefix("Transcriptor")
+function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
+	if prefix ~= "Transcriptor" then return end
+	if msg:find("spell:156626") then--Rapid fire
+		targetName = Ambiguate(targetName, "none")
+		if self:AntiSpam(5, targetName) then--Set antispam if we got a sync, to block 3 second late SPELL_AURA_APPLIED if we got the early warning
+			if self.Options.SetIconOnRapidFire and not self:IsLFR() then
+				self:SetIcon(targetName, 1, 10)
+			end
+			if DBM.Options.DontShowFarWarnings and isPlayerOnBoat() then return end--Anything below this line doesn't concern people on boat
+			if self:CheckNearby(5, targetName) and self.Options.SpecWarn156631close then
+				specWarnRapidFireNear:Show(targetName)
+			else
+				warnRapidFire:Show(self.vb.rapidfire, targetName)
+			end
+			if self.Options.HudMapOnRapidFire then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(156631, "highlight", targetName, 5, 12, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
+			end
+		end
 	end
 end
 
+
+--Rapid fire is still 3 seconds faster to use emote instead of debuff.
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:156626") then
+		specWarnRapidFire:Show()
+		yellRapidFire:Yell()
+		voiceRapidFire:Play("runout")
+		voiceRapidFire:Schedule(2, "keepmove")
+		self:SendSync("RapidFireTarget", UnitGUID("player"))--Remove before next DBM tag. using above method instead cuts dbms comms in half AND supports bigwigs, so no need to send double syncs (dbm also sends the transcriptor syncs for all RBW events)
+	end
+end
+
+--[[
 function mod:OnSync(msg, guid)
 	if not self:IsInCombat() then return end
 	if msg == "RapidFireTarget" and guid then
@@ -617,7 +648,7 @@ function mod:OnSync(msg, guid)
 			end
 		end
 	end
-end
+end--]]
 
 function mod:UNIT_HEALTH_FREQUENT(uId)
 	local hp = UnitHealth(uId) / UnitHealthMax(uId)
