@@ -329,8 +329,10 @@ function mod:SPELL_CAST_START(args)
 		self.vb.bladeDash = self.vb.bladeDash + 1
 		if noFilter or not isPlayerOnBoat() then
 			self:ScheduleMethod(0.1, "BossTargetScanner", 77231, "BladeDashTarget", 0.1, 16)
+			timerBladeDashCD:Cancel()
 			timerBladeDashCD:Start(nil, self.vb.bladeDash+1)
 			if self:IsMythic() then
+				countdownBladeDash:Cancel()
 				countdownBladeDash:Start()
 			end
 		end
