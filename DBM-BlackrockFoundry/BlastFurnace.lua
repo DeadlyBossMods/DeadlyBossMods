@@ -159,11 +159,11 @@ local function updateInfoFrame()
 	local boss3bombsNeeded, boss4bombsNeeded
 	if UnitExists("boss3") then
 		boss3bombsNeeded = math.ceil(UnitHealth("boss3")/100000)
-		lines[L.Regulator.." 1"] = L.bombNeeded:format(boss3bombsNeeded)
+		lines[L.Regulator:format(1)] = L.bombNeeded:format(boss3bombsNeeded)
 	end
 	if UnitExists("boss4") then
 		boss4bombsNeeded = math.ceil(UnitHealth("boss4")/100000)
-		lines[L.Regulator.." 2"] = L.bombNeeded:format(boss4bombsNeeded)
+		lines[L.Regulator:format(2)] = L.bombNeeded:format(boss4bombsNeeded)
 	end
 	return lines
 end
