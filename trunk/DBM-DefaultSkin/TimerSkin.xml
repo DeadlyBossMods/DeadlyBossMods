@@ -44,7 +44,7 @@
 								</Anchor>
 							</Anchors>
 						</FontString>
-						<FontString name="$parentName" inherits="GameFontHighlightSmall" justifyH="LEFT" text="">
+						<FontString name="$parentName" inherits="GameFontHighlightSmall" justifyH="LEFT" text="" wordwrap="false">
 							<Anchors>
      								<Anchor point="LEFT" relativePoint="LEFT">
 									<Offset>
