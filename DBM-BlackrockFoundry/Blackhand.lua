@@ -92,6 +92,7 @@ local voiceAttachSlagBombs			= mod:NewVoice(157000) --target: runout;
 
 mod:AddSetIconOption("SetIconOnMarked", 156096, true)
 mod:AddRangeFrameOption("6/10")
+mod:AddBoolOption("PositionsAllPhases", false)
 mod:AddHudMapOption("HudMapOnMFD", 156096)
 
 mod.vb.phase = 1
@@ -149,7 +150,7 @@ local function warnMarked(self)
 	--Order changed from left middle right to left right middle to match BW to prevent conflict in dual mod raids.
 	--This feature was suggested and started before that mod appeared, but since it exists, focus is on ensuring they work well together
 	--Feature disabled until phase 3
-	if self:IsLFR() or self.vb.phase ~= 3 then return end
+	if self:IsLFR() or (not self.Options.PositionsAllPhases and self.vb.phase ~= 3) then return end
 	local mfdFound = 0
 	local numGroupMembers = DBM:GetNumGroupMembers()
 	local expectedTotal = self:IsMythic() and 3 or 2
@@ -396,7 +397,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMarkedforDeath:Show()
 			voiceMarkedforDeath:Play("findshelter")
 			countdownMarkedforDeathFades:Start()
-			if self:IsLFR() or self.vb.phase < 3 then
+			if self:IsLFR() or (self.Options.PositionsAllPhases and self.vb.phase < 3) then
 				yellMarkedforDeath:Yell()
 			end
 		end
