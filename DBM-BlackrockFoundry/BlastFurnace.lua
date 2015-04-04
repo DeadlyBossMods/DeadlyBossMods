@@ -129,8 +129,7 @@ local activePrimalGUIDS = {}
 local activePrimal = 0 -- health report variable. no sync
 local prevHealth = 100
 local yellVolatileFire2 = mod:NewFadesYell(176121, nil, true, false)
-local UnitDebuff = UnitDebuff
-local UnitHealth, UnitHealthMax, GetTime = UnitHealth, UnitHealthMax, GetTime
+local UnitDebuff, UnitHealth, UnitHealthMax, GetTime, mceil = UnitDebuff, UnitHealth, UnitHealthMax, GetTime, math.ceil
 
 local BombFilter, VolatileFilter
 do
@@ -145,7 +144,6 @@ do
 end
 
 local lines = {}
-
 local function sortInfoFrame(a, b) 
 	local a = lines[a]
 	local b = lines[b]
@@ -158,11 +156,11 @@ local function updateInfoFrame()
 	table.wipe(lines)
 	local boss3bombsNeeded, boss4bombsNeeded
 	if UnitExists("boss3") then
-		boss3bombsNeeded = math.ceil(UnitHealth("boss3")/100000)
+		boss3bombsNeeded = mceil(UnitHealth("boss3")/100000)
 		lines[L.Regulator:format(1)] = L.bombNeeded:format(boss3bombsNeeded)
 	end
 	if UnitExists("boss4") then
-		boss4bombsNeeded = math.ceil(UnitHealth("boss4")/100000)
+		boss4bombsNeeded = mceil(UnitHealth("boss4")/100000)
 		lines[L.Regulator:format(2)] = L.bombNeeded:format(boss4bombsNeeded)
 	end
 	return lines

@@ -48,7 +48,6 @@
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 --
 
-
 -------------------------------
 --  Globals/Default Options  --
 -------------------------------
@@ -307,6 +306,7 @@ local healthCombatInitialized = false
 local pformat
 local schedule
 local unschedule
+local unscheduleAll
 local loadOptions
 local checkWipe
 local checkBossHealth
