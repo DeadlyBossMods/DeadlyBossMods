@@ -1402,7 +1402,15 @@ do
 	end
 
 	function unschedule(f, mod, ...)
+		if not f and not mod then
+			-- you really want to kill the complete scheduler? call unscheduleAll
+			error("cannot unschedule everything, pass a function and/or a mod")
+		end
 		return removeAllMatching(f, mod, ...)
+	end
+
+	function unscheduleAll()
+		return removeAllMatching()
 	end
 end
 
@@ -6021,7 +6029,7 @@ end
 --  Enable/Disable DBM  --
 --------------------------
 function DBM:Disable(forced)
-	unschedule()
+	unscheduleAll()
 	dbmIsEnabled = false
 	self.Options.Enabled = false
 	if forced then
