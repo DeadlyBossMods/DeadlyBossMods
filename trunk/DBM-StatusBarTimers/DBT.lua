@@ -737,6 +737,8 @@ function barPrototype:Update(elapsed)
 	local currentStyle = obj.options.Style
 	local sparkEnabled = currentStyle ~= "BigWigs" and obj.options.Spark
 	local isMoving = self.moving
+	local isFadingIn = self.fadingIn
+	local isEnlarged = self.enlarged
 	self.timer = self.timer - elapsed
 	local timerValue = self.timer
 	local totaltimeValue = self.totalTime
@@ -753,13 +755,13 @@ function barPrototype:Update(elapsed)
 		return self:Cancel()
 	else
 		if obj.options.FillUpBars then
-			if currentStyle == "BigWigs" and self.enlarged then
+			if currentStyle == "BigWigs" and isEnlarged then
 				bar:SetValue(1 - timerValue/(totaltimeValue < 11 and totaltimeValue or 11))
 			else
 				bar:SetValue(1 - timerValue/totaltimeValue)
 			end
 		else
-			if currentStyle == "BigWigs" and self.enlarged then
+			if currentStyle == "BigWigs" and isEnlarged then
 				bar:SetValue(timerValue/(totaltimeValue < 11 and totaltimeValue or 11))
 			else
 				bar:SetValue(timerValue/totaltimeValue)
@@ -767,10 +769,10 @@ function barPrototype:Update(elapsed)
 		end
 		timer:SetText(stringFromTimer(timerValue))
 	end
-	if self.fadingIn and self.fadingIn < 0.5 and currentStyle ~= "BigWigs" then
-		self.fadingIn = self.fadingIn + elapsed
-		frame:SetAlpha((self.fadingIn) / 0.5)
-	elseif self.fadingIn then
+	if isFadingIn and isFadingIn < 0.5 and currentStyle ~= "BigWigs" then
+		self.fadingIn = isFadingIn + elapsed
+		frame:SetAlpha((isFadingIn) / 0.5)
+	elseif isFadingIn then
 		self.fadingIn = nil
 	end
 	if timerValue <= 7.75 and not self.flashing and obj.options.Flash and currentStyle ~= "BigWigs" then
@@ -807,42 +809,47 @@ function barPrototype:Update(elapsed)
 		end
 		self.ftimer = self.ftimer + elapsed
 	end
-	if isMoving == "move" and self.moveElapsed <= 0.5 then
+	local melapsed = self.moveElapsed
+	if isMoving == "move" and melapsed <= 0.5 then
 		barIsAnimating = true
-		self.moveElapsed = self.moveElapsed + elapsed
-		local melapsed = self.moveElapsed
-		local newX = self.moveOffsetX + (obj.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"] - self.moveOffsetX) * (melapsed / 0.5)
+		self.moveElapsed = melapsed + elapsed
+		local newX = self.moveOffsetX + (obj.options[isEnlarged and "HugeBarXOffset" or "BarXOffset"] - self.moveOffsetX) * (melapsed / 0.5)
 		local newY
 		if obj.options.ExpandUpwards then
-			newY = self.moveOffsetY + (obj.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
+			newY = self.moveOffsetY + (obj.options[isEnlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
 		else
-			newY = self.moveOffsetY + (-obj.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
+			newY = self.moveOffsetY + (-obj.options[isEnlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
 		end
 		frame:ClearAllPoints()
 		frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
 	elseif isMoving == "move" then
 		barIsAnimating = false
 		self.moving = nil
+		isMoving = nil
 		self:SetPosition()
-	elseif isMoving == "enlarge" and self.moveElapsed <= 1 then
+	elseif isMoving == "enlarge" and melapsed <= 1 then
 		barIsAnimating = true
 		self:AnimateEnlarge(elapsed)
 	elseif isMoving == "enlarge" then
 		barIsAnimating = false
 		self.moving = nil
+		isMoving = nil
 		self.enlarged = true
+		isEnlarged = true
 		obj.hugeBars:Append(self)
 		self:ApplyStyle()
 	elseif isMoving == "nextEnlarge" then
 		barIsAnimating = false
 		self.moving = nil
+		isMoving = nil
 		self.enlarged = true
+		isEnlarged = true
 		obj.hugeBars:Append(self)
 		self:ApplyStyle()
 	end
 	local enlargeTime = currentStyle ~= "BigWigs" and obj.options.EnlargeBarsTime or 11
 	local enlargePer = currentStyle ~= "BigWigs" and obj.options.EnlargeBarsPercent or 0
-	if (timerValue <= enlargeTime or (timerValue/totaltimeValue) <= enlargePer) and not self.small and not self.enlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
+	if (timerValue <= enlargeTime or (timerValue/totaltimeValue) <= enlargePer) and not self.small and not isEnlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
 		self:RemoveFromList()
 		self:Enlarge()
 	end
