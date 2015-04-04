@@ -179,3 +179,12 @@ L = DBM:GetModLocalization("Annihilon")
 L:SetGeneralLocalization({
 	name = "Annihilon"
 })
+
+--------------
+--  Teluur  --
+--------------
+L = DBM:GetModLocalization("Teluur")
+
+L:SetGeneralLocalization({
+	name = "Teluur"
+})
