@@ -4929,7 +4929,7 @@ do
 				--It was a clean pull, so cancel any RequestTimers which might fire after boss was pulled if boss was pulled right after mod load
 				--Only want timer recovery on in progress bosses, not clean pulls
 				if startHp > 98 and (savedDifficulty == "worldboss" or event == "IEEU") or event == "ENCOUNTER_START" then
-					self.Unschedule(self.RequestTimers)
+					self:Unschedule(self.RequestTimers)
 				end
 			end
 			--show health frame
