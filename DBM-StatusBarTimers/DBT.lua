@@ -939,28 +939,32 @@ function barPrototype:ApplyStyle()
 	local sparkEnabled = self.owner.options.Style ~= "BigWigs" and self.owner.options.Spark
 	texture:SetTexture(self.owner.options.Texture)
 	if self.color then
-		bar:SetStatusBarColor(self.color.r, self.color.g, self.color.b)
+		local barRed, barGreen, barBlue = self.color.r, self.color.g, self.color.b
+		bar:SetStatusBarColor(barRed, barGreen, barBlue)
 		if sparkEnabled then
-			spark:SetVertexColor(self.color.r, self.color.g, self.color.b)
+			spark:SetVertexColor(barRed, barGreen, barBlue)
 		end
 	else
-		bar:SetStatusBarColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
+		local barStartRed, barStartGreen, barStartBlue = self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB
+		bar:SetStatusBarColor(barStartRed, barStartGreen, barStartBlue)
 		if sparkEnabled then
-			spark:SetVertexColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
+			spark:SetVertexColor(barStartRed, barStartGreen, barStartBlue)
 		end
 	end
-	name:SetTextColor(self.owner.options.TextColorR, self.owner.options.TextColorG, self.owner.options.TextColorB)
-	timer:SetTextColor(self.owner.options.TextColorR, self.owner.options.TextColorG, self.owner.options.TextColorB)
+	local barTextColorRed, barTextColorGreen, barTextColorBlue = self.owner.options.TextColorR, self.owner.options.TextColorG, self.owner.options.TextColorB
+	local barHeight, barWidth, barHugeWidth = self.owner.options.Height, self.owner.options.Width, self.owner.options.HugeWidth
+	name:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
+	timer:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
 	if self.owner.options.IconLeft then icon1:Show() else icon1:Hide() end
 	if self.owner.options.IconRight then icon2:Show() else icon2:Hide() end
-	if self.enlarged then bar:SetWidth(self.owner.options.HugeWidth); bar:SetHeight(self.owner.options.Height); else bar:SetWidth(self.owner.options.Width) bar:SetHeight(self.owner.options.Height); end
+	if self.enlarged then bar:SetWidth(barHugeWidth); bar:SetHeight(barHeight); else bar:SetWidth(barWidth) bar:SetHeight(barHeight); end
 	if self.enlarged then frame:SetScale(self.owner.options.HugeScale) else frame:SetScale(self.owner.options.Scale) end
 	if self.owner.options.IconLocked then
-		if self.enlarged then frame:SetWidth(self.owner.options.HugeWidth); frame:SetHeight(self.owner.options.Height); else frame:SetWidth(self.owner.options.Width); frame:SetHeight(self.owner.options.Height); end
-		icon1:SetWidth(self.owner.options.Height)
-		icon1:SetHeight(self.owner.options.Height)
-		icon2:SetWidth(self.owner.options.Height)
-		icon2:SetHeight(self.owner.options.Height)
+		if self.enlarged then frame:SetWidth(barHugeWidth); frame:SetHeight(barHeight); else frame:SetWidth(barWidth); frame:SetHeight(barHeight); end
+		icon1:SetWidth(barHeight)
+		icon1:SetHeight(barHeight)
+		icon2:SetWidth(barHeight)
+		icon2:SetHeight(barHeight)
 	end
 	self.frame:Show()
 	if sparkEnabled then
@@ -969,9 +973,10 @@ function barPrototype:ApplyStyle()
 	texture:SetAlpha(1)
 	bar:SetAlpha(1)
 	frame:SetAlpha(1)
-	name:SetFont(self.owner.options.Font, self.owner.options.FontSize)
+	local barFont, barFontSize = self.owner.options.Font, self.owner.options.FontSize
+	name:SetFont(barFont, barFontSize)
 	name:SetPoint("LEFT", bar, "LEFT", 3, 0)
-	timer:SetFont(self.owner.options.Font, self.owner.options.FontSize)
+	timer:SetFont(barFont, barFontSize)
 	self:Update(0)
 	applyFailed = false--Got to end with no script ran too long
 end
