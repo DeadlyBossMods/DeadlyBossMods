@@ -60,3 +60,4 @@ Holidays\Greench.lua
 Quests\Plants.lua
 Invasions\Invasions.lua
 Invasions\Annihilon.lua
+Invasions\Teluur.lua

@@ -29,6 +29,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 181098 then--Ammihilon Summon
 		DBM:StartCombat(DBM:GetModByName("Annihilon"), 0, "SPELL_CAST_SUCCESS")
+	elseif spellId == 181072 then--Teluur Summon
+		DBM:StartCombat(DBM:GetModByName("Teluur"), 0, "SPELL_CAST_SUCCESS")
 	end
 end
 
