@@ -4806,7 +4806,7 @@ function checkWipe(confirm)
 				DBM:EndCombat(inCombat[i], true)
 			end
 		else
-			local maxDelayTime = (savedDifficulty == "worldboss" and 30) or 5 --wait 25s more on worldboss do actual wipe.
+			local maxDelayTime = (savedDifficulty == "worldboss" and 15) or 5 --wait 10s more on worldboss do actual wipe.
 			for i, v in ipairs(inCombat) do
 				maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
 			end
