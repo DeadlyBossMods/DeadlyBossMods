@@ -3429,7 +3429,7 @@ function DBM:LoadMod(mod, force)
 		if instanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
 			timerRequestInProgress = true
 			-- Request timer to 3 person to prevent failure.
-			self.Unschedule(self.RequestTimers)--Unschedule the requests done on dbm first load or if two mods loaded at same time (or if user manually loaded a bunch of mods at once)
+			self:Unschedule(self.RequestTimers)--Unschedule the requests done on dbm first load or if two mods loaded at same time (or if user manually loaded a bunch of mods at once)
 			self:Schedule(8, self.RequestTimers, self, 1)
 			self:Schedule(13, self.RequestTimers, self, 2)
 			self:Schedule(18, self.RequestTimers, self, 3)
@@ -5688,7 +5688,7 @@ do
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
 			self:StartCombat(mod, time, "TIMER_RECOVERY")
 			--Recovery successful, someone sent info, abort other recovery requests
-			self.Unschedule(self.RequestTimers)
+			self:Unschedule(self.RequestTimers)
 		end
 	end
 
