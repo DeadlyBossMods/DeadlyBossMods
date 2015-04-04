@@ -129,6 +129,10 @@ L:SetWarningLocalization({
 	specWarnSlagPosition	= "Bomb Position: %s"
 })
 
+L:SetOptionLocalization({
+	PositionsAllPhases	= "Give positions in $spell:156096 yells during all phases (Instead of just phase 3. This is mostly for testing and assurances, this option is not actually recommended)"
+})
+
 L:SetMiscLocalization({
 	customMFDSay	= "Marked %s on %s",
 	customSlagSay	= "Bomb %s on %s",
