@@ -35,6 +35,7 @@ local warnClefthoof					= mod:NewTargetAnnounce(155462, 1)--Grants Epicenter
 --Beast abilities (living beasts)
 local warnSearingFangs				= mod:NewStackAnnounce(155030, 2, nil, "Tank")
 local warnInfernoBreath				= mod:NewTargetAnnounce(154989, 4)
+local warnSuperheatedScrap			= mod:NewTargetAnnounce(155499, 4)
 local warnCrushArmor				= mod:NewStackAnnounce(155236, 2, nil, "Tank")
 local warnStampede					= mod:NewSpellAnnounce(155247, 3)
 
@@ -49,6 +50,7 @@ local specWarnFlameInfusion			= mod:NewSpecialWarningMove(155657)
 local specWarnTantrum				= mod:NewSpecialWarningCount(162275, nil, nil, nil, 2, nil, 2)
 local specWarnEpicenter				= mod:NewSpecialWarningMove(159043)
 local specWarnSuperheatedScrap		= mod:NewSpecialWarningMove(156823)
+local yellSuperheated				= mod:NewYell(156823)
 --Beast abilities (living)
 local specWarnSavageHowl			= mod:NewSpecialWarningTarget(155198, "Tank|Healer")
 local specWarnSavageHowlDispel		= mod:NewSpecialWarningDispel("OptionVersion2", 155198, "RemoveEnrage", nil, nil, nil, nil, 2)
@@ -188,6 +190,18 @@ local function updateBeastTimers(self, all, spellId, adjust)
 		end
 		timerPinDownCD:Start(12)
 		countdownPinDown:Start(12)
+	end
+end
+
+function mod:SuperheatedTarget(targetname, uId)
+	if not targetname then return end
+	warnSuperheatedScrap:Show(targetname)
+	if targetname == UnitName("player") then
+		yellSuperheated:Yell()
+	end
+	if self.Options.HudMapOnBreath then
+		--Static marker, breath doesn't move once a target is picked. it's aimed at static location player WAS
+		DBMHudMap:RegisterStaticMarkerOnPartyMember(154989, "highlight", targetname, 5, 6.5, 1, 0, 0, 0.5):Pulse(0.5, 0.5)
 	end
 end
 
@@ -492,6 +506,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnSuperheatedShrapnel:Show()
 		voiceSuperheatedShrapnel:Play("breathsoon")
 		timerSuperheatedShrapnelCD:Start()
+		self:BossTargetScanner(76865, "SuperheatedTarget", 0.05, 40)--Apparently scanning this does work in LFR, but I've never seen him look at a target on mythic
 	elseif spellId == 155385 or spellId == 155515 then--Both versions of spell(boss and beast), they seem to have same cooldown so combining is fine
 		specWarnRendandTear:Show()
 		timerRendandTearCD:Start()
@@ -505,6 +520,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnInfernoBreath:Show()
 		timerInfernoBreathCD:Start()
 		voiceInfernoBreath:Play("breathsoon")
-		self:BossTargetScanner(76874, "BreathTarget", 0.05, 80)
+		self:BossTargetScanner(76874, "BreathTarget", 0.05, 40)
 	end
 end
