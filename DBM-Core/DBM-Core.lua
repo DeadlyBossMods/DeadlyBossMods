@@ -348,6 +348,7 @@ local canSetIcons = {}
 local iconSetRevision = {}
 local iconSetPerson = {}
 local addsGUIDs = {}
+local targetEventsRegistered = false
 
 local fakeBWRevision = 13006
 
@@ -1102,7 +1103,8 @@ do
 				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 				"UNIT_TARGETABLE_CHANGED",
-				"UNIT_SPELLCAST_SUCCEEDED",
+				"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
+				"UNIT_TARGET_UNFILTERED",
 				"ENCOUNTER_START",
 				"ENCOUNTER_END",
 				"BOSS_KILL",
@@ -3290,7 +3292,6 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 do
-	local targetEventsRegistered = false
 	local function FixForShittyComputers()
 		timerRequestInProgress = false
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
@@ -3305,7 +3306,7 @@ do
 		if instanceType == "none" or C_Garrison:IsOnGarrisonMap() then
 			LastInstanceType = "none"
 			if not targetEventsRegistered then
-				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED", "SCENARIO_UPDATE")
+				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "SCENARIO_UPDATE")
 				targetEventsRegistered = true
 			end
 		else
@@ -3476,16 +3477,15 @@ do
 	function DBM:UPDATE_MOUSEOVER_UNIT()
 		loadModByUnit()
 	end
-	
-	function DBM:UNIT_TARGET(uId)
+
+	function DBM:UNIT_TARGET_UNFILTERED(uId)
+		if targetEventsRegistered then--Allow outdoor mod loading
+			loadModByUnit(uId)
+		end
 		if (DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging())) and uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5" then
 			local targetName = uId == "boss1" and UnitName("boss1target") or uId == "boss2" and UnitName("boss2target") or uId == "boss3" and UnitName("boss3target") or uId == "boss4" and UnitName("boss4target") or uId == "boss5" and UnitName("boss5target") or "nil"
 			DBM:Debug(uId.." changed targets to "..targetName)
 		end
-	end
-
-	function DBM:UNIT_TARGET_UNFILTERED(uId)
-		loadModByUnit(uId)
 	end
 end
 
@@ -4599,9 +4599,7 @@ do
 		end
 	end
 
-	--TODO, waste less cpu and register Unit only events for boss1-5
 	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
-		if not (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5") then return end
 		--Changed, only fire for debug level 3 period. transcriptor running now only forces RBW2 and UTC.
 		--This event is way too spammy to see every time transcriptor running. Only want from time to time
 		self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3)
@@ -4981,7 +4979,6 @@ do
 			--process global options
 			self:HideBlizzardEvents(1)
 			self:StartLogging(0, nil)
-			DBM:RegisterShortTermEvents("UNIT_TARGET boss1 boss2 boss3 boss4 boss5")
 			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 then
 				if ObjectiveTrackerFrame:IsVisible() then
 					ObjectiveTrackerFrame:Hide()
@@ -5401,7 +5398,6 @@ do
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
 				self:Schedule(10, self.StopLogging, self)--small delay to catch kill/died combatlog events
 				self:HideBlizzardEvents(0)
-				DBM:UnregisterShortTermEvents()
 				self:Unschedule(checkBossHealth)
 				self:Unschedule(checkCustomBossHealth)
 				self:Unschedule(loopCRTimer)
