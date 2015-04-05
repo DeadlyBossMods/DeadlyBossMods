@@ -86,7 +86,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 156240 then
 		self.vb.torrentCount = self.vb.torrentCount + 1
-		if self.Options.SpecWarn156240spell then
+		if self.Options.SpecWarn156240count then
 			specWarnAcidTorrent:Show(self.vb.torrentCount)
 		else
 			warnAcidTorrent:Show(self.vb.torrentCount)
