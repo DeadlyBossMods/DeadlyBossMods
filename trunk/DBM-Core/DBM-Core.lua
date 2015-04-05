@@ -6651,6 +6651,7 @@ do
 	
 	function bossModPrototype:BossUnitTargetScannerAbort()
 		targetMonitor = nil
+		DBM:Debug("Boss unit target scan should be aborting.", 3)
 	end
 	
 	function bossModPrototype:BossUnitTargetScanner(unitId, returnFunc, scanTime)

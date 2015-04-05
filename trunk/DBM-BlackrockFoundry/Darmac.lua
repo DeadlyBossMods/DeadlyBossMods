@@ -475,7 +475,7 @@ function mod:UNIT_DIED(args)
 		elseif cid == 76874 then
 			timerConflagCD:Cancel()
 			timerInfernoBreathCD:Cancel()
-			self:BossTargetScannerAbort(76874, "BreathTarget")
+			self:BossUnitTargetScannerAbort()
 		elseif cid == 76945 then
 			timerStampedeCD:Cancel()
 			timerTantrumCD:Cancel()
