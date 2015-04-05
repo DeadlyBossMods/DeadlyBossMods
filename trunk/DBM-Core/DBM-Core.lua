@@ -3476,13 +3476,16 @@ do
 	function DBM:UPDATE_MOUSEOVER_UNIT()
 		loadModByUnit()
 	end
-
-	function DBM:UNIT_TARGET_UNFILTERED(uId)
-		loadModByUnit(uId)
+	
+	function DBM:UNIT_TARGET(uId)
 		if (DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging())) and uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5" then
 			local targetName = uId == "boss1" and UnitName("boss1target") or uId == "boss2" and UnitName("boss2target") or uId == "boss3" and UnitName("boss3target") or uId == "boss4" and UnitName("boss4target") or uId == "boss5" and UnitName("boss5target") or "nil"
 			DBM:Debug(uId.." changed targets to "..targetName)
 		end
+	end
+
+	function DBM:UNIT_TARGET_UNFILTERED(uId)
+		loadModByUnit(uId)
 	end
 end
 
@@ -4978,6 +4981,7 @@ do
 			--process global options
 			self:HideBlizzardEvents(1)
 			self:StartLogging(0, nil)
+			DBM:RegisterShortTermEvents("UNIT_TARGET boss1 boss2 boss3 boss4 boss5")
 			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 then
 				if ObjectiveTrackerFrame:IsVisible() then
 					ObjectiveTrackerFrame:Hide()
@@ -5397,6 +5401,7 @@ do
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
 				self:Schedule(10, self.StopLogging, self)--small delay to catch kill/died combatlog events
 				self:HideBlizzardEvents(0)
+				DBM:UnregisterShortTermEvents()
 				self:Unschedule(checkBossHealth)
 				self:Unschedule(checkCustomBossHealth)
 				self:Unschedule(loopCRTimer)
