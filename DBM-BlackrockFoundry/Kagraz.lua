@@ -148,7 +148,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownFireStorm:Start()
 		voiceCinderWolves:Play("killmob")
 		wolfIcon = 2
-		if self.Options.SetIconOnAdds then
+		if self.Options.SetIconOnAdds and not self:IsLFR() then
 			self:RegisterShortTermEvents(
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe vb.on pull
 			)
