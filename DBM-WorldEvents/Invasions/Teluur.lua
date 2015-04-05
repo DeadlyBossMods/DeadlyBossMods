@@ -8,93 +8,65 @@ mod:SetZone(1159, 1331, 1158, 1153, 1152, 1330)--4 of these not needed, but don'
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 180939 180932",
-	"SPELL_AURA_APPLIED 180950",
-	"SPELL_AURA_REMOVED 180950"
+	"SPELL_CAST_START 180849",
+	"SPELL_CAST_SUCCESS 180836 180849",
+	"SPELL_AURA_APPLIED 180836",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
---[[
---Annihilon
-local warnVoidBomb				= mod:NewTargetAnnounce(180939, 3)
-local warnWhirlingVoid			= mod:NewTargetAnnounce(180932, 2)
-local warnTwistMind				= mod:NewTargetAnnounce(180950, 4)
 
---Annihilon
-local specWarnVoidBomb			= mod:NewSpecialWarningYou(180939)
-local yellVoidBomb				= mod:NewYell(180939)
-local specWarnTwistMind			= mod:NewSpecialWarningSwitch(180950, "Dps")
+local warnPodlingSwarm			= mod:NewSpellAnnounce(180836, 2)
+local warnEntanglement			= mod:NewTargetAnnounce(180836, 3)--Players who didn't move and got caught
+local warnSpore					= mod:NewSpellAnnounce(180825, 3)--Hidden from combat log, until it's too late. Unit event gives enough time to run out but don't know who it's targeting then. target scanning seems to kinda work but not reliable enough. There is somewhat of a delay and often no target at all
 
---Annihilon
-local timerWhirlingVoidCD		= mod:NewCDTimer(14, 180932)
-local timerTwistMindCD			= mod:NewCDTimer(28, 180950)
+local specWarnEntanglement		= mod:NewSpecialWarningDodge(180836)--Dodgable. puts green swirly under random player. traps everyone there after 4 seconds. Target scanning not possible, warn everyone to check feet
+--local specWarnSpore				= mod:NewSpecialWarningRun(180825, nil, nil, nil, 4)
+--local yellSpore					= mod:NewYell(180825)
 
-mod:AddHudMapOption("HudMapOnMC", 180950)
-
-mod.vb.MCCount = 0
-
-function mod:VoidTarget(targetname, uId)
-	if not targetname then return end
-	warnWhirlingVoid:Show(targetname)
-end
-
-function mod:BombTarget(targetname, uId)
-	if not targetname then return end
-	if targetname == UnitName("player") then
-		specWarnVoidBomb:Show()
-		yellVoidBomb:Yell()
-	else
-		warnVoidBomb:Show(targetname)
-	end
-end
+local timerEntanglementCD		= mod:NewNextTimer(10, 180836)--CD is 10 unless delayed by podlings
+local timerPodlingSwarmCD		= mod:NewCDTimer(30, 180836)--30-32 variable, clearly a 30 second cd from cast finish or engage
+local timerSporeCD				= mod:NewCDTimer(15, 180825)--15-20
 
 function mod:OnCombatStart(delay)
-	self.vb.MCCount = 0
-	timerWhirlingVoidCD:Start(7.5)--Only one pull, small sample
-	timerTwistMindCD:Start(34)--Only one pull, small sample	
-end
-
-function mod:OnCombatEnd()
-	if self.Options.HudMapOnMC then
-		DBMHudMap:Disable()
-	end
+	timerEntanglementCD:Start(10)
+	timerSporeCD:Start(11)
+	timerPodlingSwarmCD:Start(30)
 end
 
 function mod:SPELL_CAST_START(args)
-	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 180939 then
-		self:BossTargetScanner(90802, "BombTarget", 0.05, 25)
-	elseif spellId == 180932 then
-		self:BossTargetScanner(90802, "VoidTarget", 0.05, 25)
+	if spellId == 180849 then
+		warnPodlingSwarm:Show()
+		timerEntanglementCD:Cancel()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 180836 then
+		specWarnEntanglement:Show()
+		timerEntanglementCD:Start()
+	elseif spellId == 180849 then
+		timerEntanglementCD:Start()--Will be cast 10 seconds after cast FINISH of podlings
+		timerPodlingSwarmCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 180950 then
-		self.vb.MCCount = self.vb.MCCount + 1
-		warnTwistMind:CombinedShow(0.5, args.destName)--Only saw 1 target in 12 person raid, but maybe scales up in larger raid size? so combined show just in case
-		if self:AntiSpam(2, 1) then
-			specWarnTwistMind:Show()
-			timerTwistMindCD:Start()
-		end
-		if self.Options.HudMapOnMC then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 30, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
-		end
+	if spellId == 180836 then
+		warnEntanglement:CombinedShow(0.5, args.destName)
 	end
 end
 
-function mod:SPELL_AURA_REMOVED(args)
-	if not self.Options.Enabled then return end
-	local spellId = args.spellId
-	if spellId == 180950 then
-		self.vb.MCCount = self.vb.MCCount - 1
-		if self.Options.HudMapOnMC then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
-		end
-		if self.vb.MCCount == 0 then
-			specWarnTwistMind:Show()
-			timerTwistMindCD:Start()
-		end
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 180825 and self:AntiSpam() then
+		self:SendSync("Spore")
 	end
-end--]]
+end
+
+function mod:OnSync(msg)
+	if msg == "Spore" then
+		warnSpore:Show()
+		timerSporeCD:Start()
+	end
+end

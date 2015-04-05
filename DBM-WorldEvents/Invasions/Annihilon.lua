@@ -59,7 +59,6 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 180939 then
 		self:BossTargetScanner(90802, "BombTarget", 0.05, 25)
@@ -69,7 +68,6 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 180950 then
 		self.vb.MCCount = self.vb.MCCount + 1
@@ -85,7 +83,6 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 180950 then
 		self.vb.MCCount = self.vb.MCCount - 1
