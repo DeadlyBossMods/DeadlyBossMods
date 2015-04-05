@@ -37,7 +37,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	heatRegulator		= "열기 조절 장치"
+	heatRegulator		= "열기 조절 장치",
+	Regulator			= "조절 장치 %d",
+	bombNeeded			= "폭탄 %d개 남음"
 })
 
 ------------------
@@ -81,7 +83,8 @@ L:SetWarningLocalization({
 	specWarnSplitSoon	= "10초 안에 공격대 상하로 분리하세요!",
 	InfoFrameSpeed		= "정보 창에서 언제 다음 기차를 보여줄 것인지 설정",
 	Immediately			= "등장할 기차 문이 열릴 때(5초전)",
-	Delayed				= "기차가 실제로 등장한 후" 
+	Delayed				= "기차가 실제로 등장한 후",
+	HudMapUseIcons		= "범위정보에 녹색원 대신 전술 목표 아이콘 사용하기"
 })
 
 L:SetOptionLocalization({
@@ -128,6 +131,10 @@ L= DBM:GetModLocalization(959)
 L:SetWarningLocalization({
 	specWarnMFDPosition		= "표적 피할 위치: %s",
 	specWarnSlagPosition	= "폭탄 피할 위치: %s"
+})
+
+L:SetOptionLocalization({
+	PositionsAllPhases	= "모든 단계에서 $spell:156096 대화 알림시 위치 정보 표기(기본은 3단계에만 사용합니다. 대체적으로 테스트 목적이 강하므로, 활성화는 추천 드리지 않습니다.)"
 })
 
 L:SetMiscLocalization({
