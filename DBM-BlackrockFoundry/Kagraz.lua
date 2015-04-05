@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(76814)--76794 Cinder Wolf, 80590 Aknor Steelbringer
 mod:SetEncounterID(1689)
 mod:SetZone()
+mod:SetUsedIcons(6, 5, 4, 3)
 mod:SetHotfixNoticeRev(13445)
 
 mod:RegisterCombat("combat")
@@ -77,10 +78,13 @@ local voiceFireStorm					= mod:NewVoice(155493) --aoe
 local voiceLavaSlash					= mod:NewVoice(155318) --runaway
 
 mod:AddRangeFrameOption("10/6")
+mod:AddSetIconOption("SetIconOnAdds", 155776, true, true)
 mod:AddHudMapOption("HudMapOnFixate", 154952, false)
 
 mod.vb.firestorm = 0
 local fixateTagets = {}
+local activeBossGUIDS = {}
+local wolfIcon = 2--Compatible with bigwigs and DXE
 
 local function showFixate(self)
 	local text = {}
@@ -96,7 +100,9 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.firestorm = 0
+	wolfIcon = 2
 	table.wipe(fixateTagets)
+	table.wipe(activeBossGUIDS)
 	timerLavaSlashCD:Start(11-delay)
 	timerMoltenTorrentCD:Start(30-delay)
 	timerSummonCinderWolvesCD:Start(60-delay)
@@ -110,6 +116,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -140,6 +147,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		voiceFireStorm:Schedule(56.5, "aesoon")
 		countdownFireStorm:Start()
 		voiceCinderWolves:Play("killmob")
+		wolfIcon = 2
+		if self.Options.SetIconOnAdds then
+			self:RegisterShortTermEvents(
+				"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe vb.on pull
+			)
+		end
 	elseif spellId == 155074 then
 		timerCharringBreathCD:Start()
 	end
@@ -271,6 +284,24 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	for i = 1, 5 do
+		local unitID = "boss"..i
+		local unitGUID = UnitGUID(unitID)
+		if UnitExists(unitID) and not activeBossGUIDS[unitGUID] then
+			local cid = self:GetCIDFromGUID(unitGUID)
+			if cid == 76794 then--Cinder Wolf
+				wolfIcon = wolfIcon + 1
+				activeBossGUIDS[unitGUID] = true
+				SetRaidTarget(unitID, wolfIcon)
+				if wolfIcon == self:IsMythic() and 6 or 4 then--All wolves marked
+					self:UnregisterShortTermEvents()
+				end
+			end
+		end
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 163644 then
