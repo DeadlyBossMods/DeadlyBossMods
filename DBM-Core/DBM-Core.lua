@@ -3489,7 +3489,7 @@ do
 			self:Debug(uId.." changed targets to "..targetName)
 		end
 		--Active BossUnitTargetScanner
-		if targetMonitor then
+		if targetMonitor and UnitExists(uId.."target") then
 			local modId, unitId, returnFunc = string.split("\t", targetMonitor)
 			local tanking, status = UnitDetailedThreatSituation(unitId, unitId.."target")--Tanking may return 0 if npc is temporarily looking at an NPC (IE fracture) but status will still be 3 on true tank
 			if tanking or (status == 3) then return end--It's a tank/highest threat, this method ignores tanks
