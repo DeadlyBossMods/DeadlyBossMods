@@ -3479,8 +3479,8 @@ do
 
 	function DBM:UNIT_TARGET_UNFILTERED(uId)
 		loadModByUnit(uId)
-		if (DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging())) and uId:find("boss") then
-			local targetName = uId == "boss1" and "boss1target" or uId == "boss2" and "boss2target" or uId == "boss3" and "boss3target" or uId == "boss4" and "boss4target" or uId == "boss5" and "boss5target"
+		if (DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging())) and uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5" then
+			local targetName = uId == "boss1" and UnitName("boss1target") or uId == "boss2" and UnitName("boss2target") or uId == "boss3" and UnitName("boss3target") or uId == "boss4" and UnitName("boss4target") or uId == "boss5" and UnitName("boss5target") or "nil"
 			DBM:Debug(uId.." changed targets to "..targetName)
 		end
 	end
