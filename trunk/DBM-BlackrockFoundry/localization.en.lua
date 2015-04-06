@@ -87,7 +87,11 @@ L:SetOptionLocalization({
 	InfoFrameSpeed		= "Set when InfoFrame shows next train information",
 	Immediately			= "As soon as doors open for current train",
 	Delayed				= "After current train has come out",
-	HudMapUseIcons		= "Use raid Icons for HudMap instead of green circle"
+	HudMapUseIcons		= "Use raid Icons for HudMap instead of green circle",
+	TrainVoiceAnnounce	= "Set when spoken alerts will play for trains",
+	LanesOnly			= "Only announce incoming lanes",
+	MovementsOnly		= "Only announce lane movements (Mythic Only)",
+	LanesandMovements	= "Announce incoming lanes & movmeents (Mythic Only)"
 })
 
 L:SetMiscLocalization({
