@@ -196,9 +196,11 @@ local function SecurityGuard(self)
 	end
 	if self.vb.phase == 1 then
 		timerSecurityGuard:Start(30.5, count+1)
+		countdownSecurityGuard:Start(30.5)
 		self:Schedule(30.5, SecurityGuard, self)
 	else
 		timerSecurityGuard:Start(40, count+1)
+		countdownSecurityGuard:Start(40)
 		self:Schedule(40, SecurityGuard, self)
 	end
 end
@@ -296,6 +298,7 @@ function mod:OnCombatStart(delay)
 		self:Schedule(firstTimer, SecurityGuard, self)
 		self:Schedule(firstTimer, Engineers, self)
 		timerSecurityGuard:Start(firstTimer, 2)
+		countdownSecurityGuard:Start(firstTimer)
 		timerEngineer:Start(firstTimer, 2)
 		countdownEngineer:Start(firstTimer)
 		berserkTimer:Start(-delay)
@@ -549,6 +552,7 @@ function mod:UNIT_DIED(args)
 		else
 			timerFireCaller:Cancel()
 			timerSecurityGuard:Cancel()
+			countdownSecurityGuard:Cancel()
 			timerSlagElemental:Cancel()
 			self:Unschedule(SecurityGuard)
 			self:Unschedule(FireCaller)
@@ -580,6 +584,7 @@ function mod:UNIT_DIED(args)
 			countdownEngineer:Cancel()
 			timerBellowsOperator:Cancel()
 			timerSecurityGuard:Cancel()
+			countdownSecurityGuard:Cancel()
 			self:Unschedule(SecurityGuard)
 			voicePhaseChange:Play("ptwo")
 			--Start adds timers. Seem same in all modes.
@@ -587,6 +592,7 @@ function mod:UNIT_DIED(args)
 				timerSlagElemental:Start(13, 1)
 				self:Schedule(72, SecurityGuard, self)
 				timerSecurityGuard:Start(72, 1)
+				countdownSecurityGuard:Start(72)
 				self:Schedule(76.5, FireCaller, self)
 				timerFireCaller:Start(76.5, 1)
 			end
