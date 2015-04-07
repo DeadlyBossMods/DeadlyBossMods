@@ -31,7 +31,7 @@ L:SetOptionLocalization({
 	warnRegulators		= "Verkünde die Anzahl der verbleibenden Hitzeregler",
 	warnBlastFrequency	= "Verkünde, wenn sich die $spell:155209 Häufigkeit erhöht",
 	InfoFrame			= "Zeige Infofenster für $spell:155192 und $spell:155196",
-	VFYellType			= "Typ des Schreis für Flüchtiges Feuer (nur mythischer Schwierigkeitsgrad)",
+	VFYellType2			= "Typ des Schreis für Flüchtiges Feuer (nur mythischer Schwierigkeitsgrad)",
 	Countdown			= "Countdown bis zum Ablauf",
 	Apply				= "nur Erhalt"
 })

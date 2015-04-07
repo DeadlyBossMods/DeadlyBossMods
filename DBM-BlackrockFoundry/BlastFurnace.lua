@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 155186 156937 177756",
-	"SPELL_CAST_SUCCESS 155179 174726",
+	"SPELL_CAST_SUCCESS 155179 174726 176121",
 	"SPELL_AURA_APPLIED 155192 174716 155196 158345 155242 155181 176121 155225 156934 155173 159558",
 	"SPELL_AURA_REFRESH 155192 174716 159558",
 	"SPELL_AURA_APPLIED_DOSE 155242",
@@ -43,9 +43,9 @@ local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 
 local specWarnBomb				= mod:NewSpecialWarningMoveTo(155192, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(155192), nil, 3, nil, 2)
 local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("OptionVersion2", "ej9650", "-Healer", nil, nil, nil, nil, 2)
-local specWarnDeafeningRoar		= mod:NewSpecialWarningDodge("OptionVersion2", 177756, "Tank", nil, nil, 3)
+local specWarnDeafeningRoar		= mod:NewSpecialWarningSpell(177756, "Tank")--Can't be dodged(was only dodgable on beta), was wrong warning for a long time. Also does a lot less damage than it did in beta too so not 3 anymore either.
 local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, "-Healer", nil, nil, nil, nil, 2)
-local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932)
+local specWarnRuptureOn			= mod:NewSpecialWarningYou("OptionVersion2", 156932, nil, nil, nil, 3)
 local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, nil, nil, 2)
 local yellRupture				= mod:NewYell(156932)
 --Phase 2
@@ -76,6 +76,7 @@ local timerRuptureCD			= mod:NewCDTimer(20, 156934)
 local timerEngineer				= mod:NewNextCountTimer(41, "ej9649", nil, nil, nil, 155179)
 local timerBellowsOperator		= mod:NewCDCountTimer(59, "ej9650", nil, nil, nil, 155181)--60-65second variation for sure
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
+local timerVolatileFireCD		= mod:NewCDTimer(21, 176121, nil, false)--Very useful, but off by default since it can be spammy if > 2 adds up at once.
 local timerVolatileFire			= mod:NewBuffFadesTimer(8, 176121)
 local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps")
 local timerSlagElemental		= mod:NewNextCountTimer(55, "ej9657", nil, "-Tank", nil, 155196)--Definitely 55 seconds, although current detection method may make it appear 1-2 seconds if slag has to run across room before casting first fixate
@@ -109,7 +110,7 @@ mod:AddRangeFrameOption(8)
 mod:AddBoolOption("InfoFrame")
 mod:AddSetIconOption("SetIconOnFixate", 155196, false)
 mod:AddHudMapOption("HudMapOnBomb", 155192, false)
-mod:AddDropdownOption("VFYellType", {"Countdown", "Apply"}, "Countdown", "misc")
+mod:AddDropdownOption("VFYellType2", {"Countdown", "Apply"}, "Apply", "misc")--Countdown is a spammy nightmare on mythic (almost always 10 targets get debuff at same time), let guilds opt into this if they want it.
 
 mod.vb.machinesDead = 0
 mod.vb.elementalistsRemaining = 4
@@ -129,7 +130,7 @@ local activePrimalGUIDS = {}
 local activePrimal = 0 -- health report variable. no sync
 local prevHealth = 100
 local yellVolatileFire2 = mod:NewFadesYell(176121, nil, true, false)
-local UnitDebuff, UnitHealth, UnitHealthMax, GetTime, mceil = UnitDebuff, UnitHealth, UnitHealthMax, GetTime, math.ceil
+local UnitDebuff, UnitHealth, UnitHealthMax, UnitGUID, GetTime, mceil = UnitDebuff, UnitHealth, UnitHealthMax, UnitGUID, GetTime, math.ceil
 
 local BombFilter, VolatileFilter
 do
@@ -154,14 +155,17 @@ end
 
 local function updateInfoFrame()
 	table.wipe(lines)
-	local boss3bombsNeeded, boss4bombsNeeded
-	if UnitExists("boss3") then
-		boss3bombsNeeded = mceil(UnitHealth("boss3")/100000)
-		lines[L.Regulator:format(1)] = L.bombNeeded:format(boss3bombsNeeded)
-	end
-	if UnitExists("boss4") then
-		boss4bombsNeeded = mceil(UnitHealth("boss4")/100000)
-		lines[L.Regulator:format(2)] = L.bombNeeded:format(boss4bombsNeeded)
+	local regulatorCount = 0
+	for i = 1, 4 do--Boss order can be random. regulators being 3/4 not guaranteed. Had some pull 1/4, 2/3, 3/4, etc. Must find this way
+		if UnitExists("boss"..i) then
+			local cid = DBM:GetCIDFromGUID(UnitGUID("boss"..i))
+			if cid == 76808 then--Heat Regulator
+				regulatorCount = regulatorCount + 1
+				local bombsNeeded = mceil(UnitHealth("boss"..i)/100000)
+				lines[L.Regulator:format(regulatorCount)] = L.bombNeeded:format(bombsNeeded)
+				if regulatorCount == 2 then break end
+			end
+		end
 	end
 	return lines
 end
@@ -213,6 +217,7 @@ local function FireCaller(self)
 	if count < 12 then
 		voiceFireCaller:Schedule(1.5, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 	end
+	timerVolatileFireCD:Start(7)--6-8
 	timerFireCaller:Start(45, count+1)
 	self:Schedule(45, FireCaller, self)
 end
@@ -351,6 +356,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		voiceRepair:Play("kickcast")
 	elseif spellId == 174726 and self:CheckTankDistance(args.sourceGUID, 40) and self:AntiSpam(2, 4) and self.vb.phase == 1 then
 		warnDropBombs:Show()
+	elseif spellId == 176121 then
+		timerVolatileFireCD:Start(args.sourceGUID)
 	end
 end
 
@@ -457,11 +464,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)
 		if expires then
 			local debuffTime = expires - GetTime()
-			if args:IsPlayer() then
+			if args:IsPlayer() and self:AntiSpam(3, 9) then
 				timerVolatileFire:Start(debuffTime)
 				specVolatileFire:Show()
 				if not self:IsLFR() and self.Options.Yell176121 then
-					if self:IsMythic() and self.Options.VFYellType == "Countdown" then
+					if self:IsMythic() and self.Options.VFYellType2 == "Countdown" then
 						yellVolatileFire2:Schedule(debuffTime - 1, 1)
 						yellVolatileFire2:Schedule(debuffTime - 2, 2)
 						yellVolatileFire2:Schedule(debuffTime - 3, 3)
@@ -471,7 +478,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 				end
 				if self.Options.RangeFrame then
-					DBM.RangeCheck:Show(8, nil, nil, nil, nil, debuffTime + 0.5)
+					DBM.RangeCheck:Show(8, nil, nil, nil, nil, debuffTime + 1)
 				end
 				countdownVolatileFire:Start(debuffTime)
 				voiceVolatileFire:Schedule(debuffTime - 4, "runout")
@@ -588,10 +595,10 @@ function mod:UNIT_DIED(args)
 			if not self:IsLFR() then-- LFR do not have Slag Elemental.
 				timerSlagElemental:Start(13, 1)
 				self:Schedule(72, SecurityGuard, self)
-				timerSecurityGuard:Start(72, 1)
-				countdownSecurityGuard:Start(72)
-				self:Schedule(76.5, FireCaller, self)
-				timerFireCaller:Start(76.5, 1)
+				timerSecurityGuard:Start(71.5, 1)
+				countdownSecurityGuard:Start(71.5)
+				self:Schedule(76, FireCaller, self)
+				timerFireCaller:Start(76, 1)
 			end
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:Clear()
@@ -610,6 +617,8 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 76809 then
 		timerRuptureCD:Cancel()
+	elseif cid == 76821 then--Firecaller
+		timerVolatileFireCD:Cancel(args.destGUID)
 	end
 end
 
@@ -640,9 +649,9 @@ do
 			elseif altPower > 74 then
 				totalTime = self:IsMythic() and 8 or 9--9-10
 			elseif altPower > 49 then
-				totalTime = self:IsMythic() and 12.5 or 15--15-16
+				totalTime = self:IsMythic() and 12 or 15--15-16
 			elseif altPower > 24 then
-				totalTime = self:IsMythic() and 18.3 or 19.5
+				totalTime = self:IsMythic() and 18 or 19.5
 			end
 			local powerRate = 100 / totalTime
 			if self.vb.lastTotal ~= totalTime then--CD changed
