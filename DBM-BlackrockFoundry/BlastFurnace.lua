@@ -125,6 +125,8 @@ mod.vb.engineer = 0
 mod.vb.lastSlagIcon = 0
 mod.vb.bellowsOperator = 0
 mod.vb.secondSlagSpawned = false
+local playerFixated = false
+local volatileFireDebuff = GetSpellInfo(176121)
 local activeSlagGUIDS = {}
 local activePrimalGUIDS = {}
 local activePrimal = 0 -- health report variable. no sync
@@ -135,12 +137,11 @@ local UnitDebuff, UnitHealth, UnitHealthMax, UnitGUID, GetTime, mceil = UnitDebu
 local BombFilter, VolatileFilter
 do
 	local Bomb = GetSpellInfo(155192)
-	local VolatileFire = GetSpellInfo(176121)
 	BombFilter = function(uId)
 		return UnitDebuff(uId, Bomb)
 	end
 	VolatileFilter = function(uId)
-		return UnitDebuff(uId, VolatileFire)
+		return UnitDebuff(uId, volatileFireDebuff)
 	end
 end
 
@@ -280,6 +281,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(activeSlagGUIDS)
 	table.wipe(activePrimalGUIDS)
 	prevHealth = 100
+	playerFixated = false
 	self.vb.machinesDead = 0
 	self.vb.elementalistsRemaining = 4
 	self.vb.blastWarned = false
@@ -413,23 +415,26 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceSlagElemental:Schedule(1.5, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 			end
 		end
-		if self.vb.phase == 2 then
-			warnFixate:CombinedShow(0.5, args.destName)
-			if args:IsPlayer() then
-				specWarnFixate:Show()
+		warnFixate:CombinedShow(1, args.destName)
+		if args:IsPlayer() then
+			playerFixated = true
+			specWarnFixate:Show()
+			--Open Range Frame for http://www.wowhead.com/spell=177744 (not in encounter journal but it's very important especially on mythic)
+			if self.Options.RangeFrame and not UnitDebuff("player", volatileFireDebuff) then
+				DBM.RangeCheck:Show(5)
 			end
-			--Update icon number even if option not enabled, so recoveryable in case person with option DCs
-			if self.vb.lastSlagIcon == 6 then--1-6 should be more than enough before reset. Do not want to use skull or x since probably set on kill targets
-				self.vb.lastSlagIcon = 0
-			end
-			self.vb.lastSlagIcon = self.vb.lastSlagIcon + 1
-			if self.Options.SetIconOnFixate then
-				self:SetIcon(args.destName, self.vb.lastSlagIcon)
-			end
-			if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-				DBM.InfoFrame:SetHeader(args.spellName)
-				DBM.InfoFrame:Show(5, "playerbaddebuff", 155196)
-			end
+		end
+		--Update icon number even if option not enabled, so recoveryable in case person with option DCs
+		if self.vb.lastSlagIcon == 6 then--1-6 should be more than enough before reset. Do not want to use skull or x since probably set on kill targets
+			self.vb.lastSlagIcon = 0
+		end
+		self.vb.lastSlagIcon = self.vb.lastSlagIcon + 1
+		if self.Options.SetIconOnFixate then
+			self:SetIcon(args.destName, self.vb.lastSlagIcon)
+		end
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(5, "playerbaddebuff", 155196)
 		end
 	elseif spellId == 158345 and self:AntiSpam(10, 3) then--Might be SPELL_CAST_SUCCESS instead.
 		specWarnShieldsDown:Show()
@@ -478,12 +483,12 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 				end
 				if self.Options.RangeFrame then
-					DBM.RangeCheck:Show(8, nil, nil, nil, nil, debuffTime + 1)
+					DBM.RangeCheck:Show(8)--Do not use auto hide scheduler here, it breaks playerFixated 5 yard spread coming back up. SPELL_AURA_REMOVED will handle
 				end
 				countdownVolatileFire:Start(debuffTime)
 				voiceVolatileFire:Schedule(debuffTime - 4, "runout")
 			end
-			if self.Options.RangeFrame and not UnitDebuff("player", args.spellName) then
+			if self.Options.RangeFrame and not UnitDebuff("player", args.spellName) and not playerFixated then
 				DBM.RangeCheck:Show(8, VolatileFilter, nil, nil, nil, debuffTime + 0.5)
 			end
 		end
@@ -525,9 +530,21 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerBomb:Cancel()
 		end
 	elseif spellId == 176121 and args:IsPlayer() and self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	elseif spellId == 155196 and self.Options.SetIconOnFixate then
-		self:SetIcon(args.destName, 0)
+		if playerFixated then
+			DBM.RangeCheck:Show(5)
+		else
+			DBM.RangeCheck:Hide()
+		end
+	elseif spellId == 155196 then
+		if self.Options.SetIconOnFixate then
+			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() then
+			playerFixated = false
+			if not UnitDebuff("player", volatileFireDebuff) then
+				DBM.RangeCheck:Hide()
+			end
+		end
 	elseif spellId == 158345 then
 		timerShieldsDown:Cancel(args.destGUID)
 	end
