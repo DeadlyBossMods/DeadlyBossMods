@@ -4644,6 +4644,9 @@ do
 	end
 	
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
+		if success == 0 then
+			self.Bars:CreateBar(10, DBM_CORE_TIMER_RESPAWN, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+		end
 		self:Debug("ENCOUNTER_END event fired: "..encounterID.." "..name.." "..difficulty.." "..size.." "..success)
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
