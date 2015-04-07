@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Mar 28, 2015@13435
+-- Last update: Apr 6, 2015@13545
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -41,7 +41,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	heatRegulator		= "温度调节器"
+	heatRegulator		= "温度调节器",
+	Regulator			= "调节器 %d",--Can't use above, too long for infoframe
+	bombNeeded			= "%d个炸弹"
 })
 
 ------------------
@@ -82,9 +84,14 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnSplitSoon	= "特殊警报：当团队需要在10秒后分轨时",
-	InfoFrameSpeed		= "设置显示下一班列车信息窗的时间",
+	InfoFrameSpeed		= "设置何时在信息窗显示下一班列车的信息",
 	Immediately			= "当门打开时",
-	Delayed				= "当列车出现时" 
+	Delayed				= "当列车出现时",
+	HudMapUseIcons		= "HudMap中，使用团队标记代替绿圈",
+	TrainVoiceAnnounce	= "设置语音报警下一班列车的信息类型（黑科技)",
+	LanesOnly			= "仅包含轨道信息",
+	MovementsOnly		= "仅包含走位信息 (史诗模式)",
+	LanesandMovements	= "同时包含轨道信息和走位信息 (史诗模式)"
 })
 
 L:SetMiscLocalization({
@@ -124,6 +131,10 @@ L= DBM:GetModLocalization(959)
 L:SetWarningLocalization({
 	specWarnMFDPosition		= "死亡标记站位：%s",
 	specWarnSlagPosition	= "炉渣炸弹站位：%s"
+})
+
+L:SetOptionLocalization({
+	PositionsAllPhases	= "在所有阶段受到$spell:156096影响时喊话 (原来只在第三阶段喊。测试目的。)"
 })
 
 L:SetMiscLocalization({
