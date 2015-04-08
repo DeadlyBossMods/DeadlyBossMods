@@ -13,7 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 156240 156179",
 	"SPELL_AURA_REMOVED 155819 156834",
 	"SPELL_AURA_REMOVED_DOSE 156834",
-	"SPELL_CAST_SUCCESS 156390 156834",
+	"SPELL_CAST_SUCCESS 156390 156834 155898",
 	"SPELL_PERIODIC_DAMAGE 156203",
 	"SPELL_ABSORBED 156203",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -25,6 +25,7 @@ mod:RegisterEventsInCombat(
 local warnAcidTorrent				= mod:NewCountAnnounce(156240, 3)
 local warnRetchedBlackrock			= mod:NewTargetAnnounce("OptionVersion2", 156179, 3, nil, "Ranged")
 local warnCollectOre				= mod:NewCountAnnounce(165184, 2)
+local warnRollingFury				= mod:NewCountAnnounce(155898, 3, nil, false)
 
 local specWarnBlackrockBarrage		= mod:NewSpecialWarningInterruptCount(156877, false, nil, nil, nil, nil, 3)--Off by default since only interruptors want this on for their duty
 local specWarnAcidTorrent			= mod:NewSpecialWarningCount(156240, "Tank", nil, nil, 3)--No voice filter, because voice is for tank swap that comes AFTER breath, this warning is to alert tank they need to move into position to soak breath, NOT taunt
@@ -51,6 +52,7 @@ local voiceAcidTorrent				= mod:NewVoice(156240)--changemt after 3 seconds (afte
 --local berserkTimer				= mod:NewBerserkTimer(324)--Auto berserk when reaching 3rd hunger drive phase. Time bariable because phase slightly variable.
 
 mod.vb.torrentCount = 0
+mod.vb.rollCount = 0
 
 local lastOre = 0 -- not need sync
 
@@ -139,6 +141,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerExplosiveShardCD:Start()
 	elseif spellId == 156834 then--Boss has gained Barrage casts
 		timerBlackrockSpinesCD:Start()
+	elseif spellId == 155898 then
+		self.vb.rollCount = self.vb.rollCount + 1
+		warnRollingFury:Show(self.vb.rollCount)
 	end
 end
 
@@ -153,6 +158,7 @@ mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 165127 then--Hunger Dive Phase
 		self.vb.feedingFrenzy = true
+		self.vb.rollCount = 0
 		timerBlackrockSpinesCD:Cancel()
 		timerRetchedBlackrockCD:Cancel()
 		timerAcidTorrentCD:Cancel()
