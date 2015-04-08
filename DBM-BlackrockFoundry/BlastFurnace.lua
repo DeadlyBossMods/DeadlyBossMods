@@ -57,6 +57,7 @@ local yellMelt					= mod:NewYell(155223)
 local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, "-Healer")
 local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
 local specVolatileFire			= mod:NewSpecialWarningMoveAway(176121)
+local specWarnTwoVolatileFire	= mod:NewSpecialWarning("specWarnTwoVolatileFire", nil, nil, nil, 3)--A person with double volatile fire is extremely dangerous, they will kill everyone
 local yellVolatileFire			= mod:NewYell(176121)
 --local specWarnSlagElemental		= mod:NewSpecialWarningSwitch("ej9657", "Dps")-- is really needed in mythic? needs review (Slay Elemental, 176143)
 local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", "Dps")
@@ -126,6 +127,7 @@ mod.vb.lastSlagIcon = 0
 mod.vb.bellowsOperator = 0
 mod.vb.secondSlagSpawned = false
 local playerFixated = false
+local playerVolatileCount = 0
 local volatileFireDebuff = GetSpellInfo(176121)
 local activeSlagGUIDS = {}
 local activePrimalGUIDS = {}
@@ -282,6 +284,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(activePrimalGUIDS)
 	prevHealth = 100
 	playerFixated = false
+	playerVolatileCount = 0
 	self.vb.machinesDead = 0
 	self.vb.elementalistsRemaining = 4
 	self.vb.blastWarned = false
@@ -469,24 +472,32 @@ function mod:SPELL_AURA_APPLIED(args)
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)
 		if expires then
 			local debuffTime = expires - GetTime()
-			if args:IsPlayer() and self:AntiSpam(3, 9) then
-				timerVolatileFire:Start(debuffTime)
-				specVolatileFire:Show()
-				if not self:IsLFR() and self.Options.Yell176121 then
-					if self:IsMythic() and self.Options.VFYellType2 == "Countdown" then
-						yellVolatileFire2:Schedule(debuffTime - 1, 1)
-						yellVolatileFire2:Schedule(debuffTime - 2, 2)
-						yellVolatileFire2:Schedule(debuffTime - 3, 3)
-						yellVolatileFire2:Schedule(debuffTime - 5, 5)
-					else
-						yellVolatileFire:Yell()
+			if args:IsPlayer() then
+				playerVolatileCount = playerVolatileCount + 1
+				if playerVolatileCount == 2 then
+					specWarnTwoVolatileFire:Show()
+					voiceVolatileFire:Schedule(debuffTime - 2, "defensive")
+				end
+				timerVolatileFire:Start(debuffTime, playerVolatileCount)--Pass playerVolatileCount as arg to have a timer for each debuff
+				if self:AntiSpam(3, 9) then
+					specVolatileFire:Show()
+					--Only one countdown/yell/runout alert though to avoid spam, user needs to get out of group for first expire, they just need to STAY out for second
+					countdownVolatileFire:Start(debuffTime)
+					voiceVolatileFire:Schedule(debuffTime - 4, "runout")
+					if not self:IsLFR() and self.Options.Yell176121 then
+						if self:IsMythic() and self.Options.VFYellType2 == "Countdown" then
+							yellVolatileFire2:Schedule(debuffTime - 1, 1)
+							yellVolatileFire2:Schedule(debuffTime - 2, 2)
+							yellVolatileFire2:Schedule(debuffTime - 3, 3)
+							yellVolatileFire2:Schedule(debuffTime - 5, 5)
+						else
+							yellVolatileFire:Yell()
+						end
+					end
+					if self.Options.RangeFrame then
+						DBM.RangeCheck:Show(8)--Do not use auto hide scheduler here, it breaks playerFixated 5 yard spread coming back up. SPELL_AURA_REMOVED will handle
 					end
 				end
-				if self.Options.RangeFrame then
-					DBM.RangeCheck:Show(8)--Do not use auto hide scheduler here, it breaks playerFixated 5 yard spread coming back up. SPELL_AURA_REMOVED will handle
-				end
-				countdownVolatileFire:Start(debuffTime)
-				voiceVolatileFire:Schedule(debuffTime - 4, "runout")
 			end
 			if self.Options.RangeFrame and not UnitDebuff("player", args.spellName) and not playerFixated then
 				DBM.RangeCheck:Show(8, VolatileFilter, nil, nil, nil, debuffTime + 0.5)
@@ -529,11 +540,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			timerBomb:Cancel()
 		end
-	elseif spellId == 176121 and args:IsPlayer() and self.Options.RangeFrame and not UnitDebuff("player", volatileFireDebuff) then
-		if playerFixated then
-			DBM.RangeCheck:Show(5)
-		else
-			DBM.RangeCheck:Hide()
+	elseif spellId == 176121 and args:IsPlayer() then
+		playerVolatileCount = playerVolatileCount - 1--Each debuff fires SPELL_AURA_REMOVED. There is no dose on this.
+		--https://www.warcraftlogs.com/reports/YjKftazDw3nbAqmC#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+176121
+		if self.Options.RangeFrame and not UnitDebuff("player", volatileFireDebuff) then
+			playerVolatileCount = 0--Just in case it gets off count somehow, it shouldn't, but setting to 0 when UnitDebuff is false is extra failsafe
+			if playerFixated then
+				DBM.RangeCheck:Show(5)
+			else
+				DBM.RangeCheck:Hide()
+			end
 		end
 	elseif spellId == 155196 then
 		if self.Options.SetIconOnFixate then
