@@ -22,17 +22,19 @@ L= DBM:GetModLocalization(1202)
 L= DBM:GetModLocalization(1154)
 
 L:SetWarningLocalization({
-	warnRegulators		= "Heat Regulator remaining: %d",
-	warnBlastFrequency	= "Blast frequency increased: Approx Every %d sec"
+	warnRegulators			= "Heat Regulator remaining: %d",
+	warnBlastFrequency		= "Blast frequency increased: Approx Every %d sec",
+	specWarnTwoVolatileFire	= "Double Volatile Fire on you!"
 })
 
 L:SetOptionLocalization({
-	warnRegulators		= "Announce how many Heat Regulator remain",
-	warnBlastFrequency	= "Announce when $spell:155209 frequency increased",
-	InfoFrame			= "Show info frame for $spell:155192 and $spell:155196",
-	VFYellType2			= "Set yell type for Volatile Fire (Mythic difficulty only)",
-	Countdown			= "Countdown until expires",
-	Apply				= "Only applied"
+	warnRegulators			= "Announce how many Heat Regulator remain",
+	warnBlastFrequency		= "Announce when $spell:155209 frequency increased",
+	specWarnTwoVolatileFire	= "Show special warning when you have double $spell:176121",
+	InfoFrame				= "Show info frame for $spell:155192 and $spell:155196",
+	VFYellType2				= "Set yell type for Volatile Fire (Mythic difficulty only)",
+	Countdown				= "Countdown until expires",
+	Apply					= "Only applied"
 })
 
 L:SetMiscLocalization({
