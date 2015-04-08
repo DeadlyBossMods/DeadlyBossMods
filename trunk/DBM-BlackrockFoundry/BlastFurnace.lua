@@ -529,7 +529,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			timerBomb:Cancel()
 		end
-	elseif spellId == 176121 and args:IsPlayer() and self.Options.RangeFrame then
+	elseif spellId == 176121 and args:IsPlayer() and self.Options.RangeFrame and not UnitDebuff("player", volatileFireDebuff) then
 		if playerFixated then
 			DBM.RangeCheck:Show(5)
 		else
