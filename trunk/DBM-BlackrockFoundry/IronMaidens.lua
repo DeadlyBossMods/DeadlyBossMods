@@ -593,7 +593,7 @@ end
 
 --Rapid fire is still 3 seconds faster to use emote instead of debuff.
 --Bigwigs doesn't sync Rapid Fire like DBM does, but they do sync ALL RAID_BOSS_WHISPER events.
---So we can this for rapidfire targets sent by bigwigs
+--So we can this for rapidfire targets sent by both bigwigs and DBM
 function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 	if prefix ~= "Transcriptor" then return end
 	if msg:find("spell:156626") then--Rapid fire
@@ -623,31 +623,8 @@ function mod:RAID_BOSS_WHISPER(msg)
 		yellRapidFire:Yell()
 		voiceRapidFire:Play("runout")
 		voiceRapidFire:Schedule(2, "keepmove")
-		self:SendSync("RapidFireTarget", UnitGUID("player"))--Remove before next DBM tag. using above method instead cuts dbms comms in half AND supports bigwigs, so no need to send double syncs (dbm also sends the transcriptor syncs for all RBW events)
 	end
 end
-
---[[
-function mod:OnSync(msg, guid)
-	if not self:IsInCombat() then return end
-	if msg == "RapidFireTarget" and guid then
-		local targetName = DBM:GetFullPlayerNameByGUID(guid)
-		if self:AntiSpam(5, targetName) then--Set antispam if we got a sync, to block 3 second late SPELL_AURA_APPLIED if we got the early warning
-			if self.Options.SetIconOnRapidFire and not self:IsLFR() then
-				self:SetIcon(targetName, 1, 10)
-			end
-			if DBM.Options.DontShowFarWarnings and isPlayerOnBoat() then return end--Anything below this line doesn't concern people on boat
-			if self:CheckNearby(5, targetName) and self.Options.SpecWarn156631close then
-				specWarnRapidFireNear:Show(targetName)
-			else
-				warnRapidFire:Show(self.vb.rapidfire, targetName)
-			end
-			if self.Options.HudMapOnRapidFire then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(156631, "highlight", targetName, 5, 12, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
-			end
-		end
-	end
-end--]]
 
 function mod:UNIT_HEALTH_FREQUENT(uId)
 	local hp = UnitHealth(uId) / UnitHealthMax(uId)
