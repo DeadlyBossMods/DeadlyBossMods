@@ -7,6 +7,7 @@ mod:SetEncounterID(1704)
 mod:SetZone()
 mod:SetUsedIcons(3, 2, 1)
 mod:SetHotfixNoticeRev(13480)
+mod:SetRespawnTime(30)--3rd party told, they say 33 second from visual despawn, which SHOULD be 30 seconds from ENCOUNTER_END event dbm uses
 
 mod:RegisterCombat("combat")
 
