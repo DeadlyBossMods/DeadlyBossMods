@@ -3909,16 +3909,6 @@ do
 			DBM:CreatePizzaTimer(time, text, nil, sender, true)
 		end
 	end
-	
-	syncHandlers["RBW3"] = function(sender, spellId, spellName)
-		if sender == playerName then return end
-		if not spellName then spellName = UNKNOWN end
-		local message = "RAID_BOSS_WHISPER on "..sender.." with spell of "..spellName.." ("..spellId..")"
-		if DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging()) then
-			DBM:Debug(message)
-		end
-		--fireEvent("DBM_Announce", message)
-	end
 
 	-- beware, ugly and missplaced code ahead
 	-- todo: move this somewhere else
@@ -4385,6 +4375,13 @@ do
 					self:Schedule(3, SendVersion)
 				end
 			end
+		elseif prefix == "Transcriptor" and msg then
+			if msg:find("spell:") and (DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging())) then
+				local spellId = string.match(msg, "spell:(%d+)") or UNKNOWN
+				local spellName = string.match(msg, "h%[(.-)%]|h") or UNKNOWN
+				local message = "RAID_BOSS_WHISPER on "..sender.." with spell of "..spellName.." ("..spellId..")"
+				DBM:Debug(message)
+			end
 		end
 	end
 	
@@ -4611,8 +4608,6 @@ do
 	end
 
 	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
-		--Changed, only fire for debug level 3 period. transcriptor running now only forces RBW2 and UTC.
-		--This event is way too spammy to see every time transcriptor running. Only want from time to time
 		self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3)
 	end
 
