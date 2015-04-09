@@ -351,7 +351,7 @@ local addsGUIDs = {}
 local targetEventsRegistered = false
 local targetMonitor = nil
 
-local fakeBWRevision = 13028
+local fakeBWRevision = 13032
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
