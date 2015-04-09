@@ -453,7 +453,7 @@ local function showHud(self, train, center)
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 				voiceTrain:Play("mm2")
 			end
-		elseif train == 8 or train == 11 or train == 19.25 or train == 32 then--Move to diamond (2)
+		elseif train == 8 or train == 11 or train == 19.25 then--Move to diamond (2)
 			if not hudType then hudType = "diamond" end
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 566, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
@@ -461,7 +461,12 @@ local function showHud(self, train, center)
 			end
 		elseif train == 1 or train == 7 or train == 15 or train == 21 or train == 23 or train == 26 or train == 28.5 then--Move to triangle (3)
 			if not hudType then hudType = "triangle" end
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 542, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+			if train == 1 then
+				specialPosition = self:IsMelee() and 3300 or 3328--Only train that does reverse specialPosition
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 542, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+			else
+				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 542, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+			end
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 				voiceTrain:Play("mm4")
 			end
@@ -478,7 +483,7 @@ local function showHud(self, train, center)
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 				voiceTrain:Play("mm7")
 			end
-		elseif train == 14 then--Move to skull (4 special corner)
+		elseif train == 14 or train == 32 then--Move to skull (4 special corner)
 			if not hudType then hudType = "skull" end
 			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 517, 3353, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
