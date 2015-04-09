@@ -4649,6 +4649,10 @@ do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
 			if v.noEEDetection then return end
+			if v.respawnTime then
+				print("respawnTimeTrue")
+				self.Bars:CreateBar(v.respawnTime, DBM_CORE_TIMER_RESPAWN, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+			end
 			if v.multiEncounterPullDetection then
 				for _, eId in ipairs(v.multiEncounterPullDetection) do
 					if encounterID == eId then
@@ -4656,9 +4660,6 @@ do
 							self:EndCombat(v, success == 0)
 							sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
 						else--hack wotlk instance EE bug. wotlk instances always wipe, so delay 3sec do actual wipe.
-							if v.respawnTime then
-								self.Bars:CreateBar(v.respawnTime, DBM_CORE_TIMER_RESPAWN, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-							end
 							self:Schedule(3, endCombat, v, success, encounterID)
 						end
 						return
