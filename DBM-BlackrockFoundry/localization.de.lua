@@ -23,21 +23,25 @@ L= DBM:GetModLocalization(1202)
 L= DBM:GetModLocalization(1154)
 
 L:SetWarningLocalization({
-	warnRegulators		= "Hitzeregler verbleibend: %d",
-	warnBlastFrequency	= "Flammenzunge Häufigkeit erhöht: ca. alle %d Sekunden"
+	warnRegulators			= "Hitzeregler verbleibend: %d",
+	warnBlastFrequency		= "Flammenzunge Häufigkeit erhöht: ca. alle %d Sekunden",
+	specWarnTwoVolatileFire	= "Doppeltes Flüchtiges Feuer auf dir!"
 })
 
 L:SetOptionLocalization({
-	warnRegulators		= "Verkünde die Anzahl der verbleibenden Hitzeregler",
-	warnBlastFrequency	= "Verkünde, wenn sich die $spell:155209 Häufigkeit erhöht",
-	InfoFrame			= "Zeige Infofenster für $spell:155192 und $spell:155196",
-	VFYellType2			= "Typ des Schreis für Flüchtiges Feuer (nur mythischer Schwierigkeitsgrad)",
-	Countdown			= "Countdown bis zum Ablauf",
-	Apply				= "nur Erhalt"
+	warnRegulators			= "Verkünde die Anzahl der verbleibenden Hitzeregler",
+	warnBlastFrequency		= "Verkünde, wenn sich die $spell:155209 Häufigkeit erhöht",
+	specWarnTwoVolatileFire	= "Spezialwarnung, wenn du $spell:176121 doppelt hast",
+	InfoFrame				= "Zeige Infofenster für $spell:155192 und $spell:155196",
+	VFYellType2				= "Typ des Schreis für Flüchtiges Feuer (nur mythischer Schwierigkeitsgrad)",
+	Countdown				= "Countdown bis zum Ablauf",
+	Apply					= "nur Erhalt"
 })
 
 L:SetMiscLocalization({
-	heatRegulator		= "Hitzeregler"
+	heatRegulator		= "Hitzeregler",
+	Regulator			= "Regler %d",
+	bombNeeded			= "%d Bombe(n)"
 })
 
 ------------------
@@ -77,7 +81,12 @@ L:SetOptionLocalization({
 	specWarnSplitSoon	= "Spezialwarnung 10 Sekunden bevor sich der Schlachtzug teilt",
 	InfoFrameSpeed		= "Infofenster zeigt nächste Zuginformation",
 	Immediately			= "sobald sich die Türen für den aktuellen Zug öffnen",
-	Delayed				= "nachdem der aktuelle Zug herausgekommen ist"
+	Delayed				= "nachdem der aktuelle Zug herausgekommen ist",
+	HudMapUseIcons		= "Use raid Icons for HudMap instead of green circle",--translate
+	TrainVoiceAnnounce	= "Set when spoken alerts will play for trains",--translate
+	LanesOnly			= "Only announce incoming lanes",--translate
+	MovementsOnly		= "Only announce lane movements (Mythic Only)",--translate
+	LanesandMovements	= "Announce incoming lanes & movmeents (Mythic Only)"--translate
 })
 
 L:SetMiscLocalization({
@@ -117,6 +126,10 @@ L= DBM:GetModLocalization(959)
 L:SetWarningLocalization({
 	specWarnMFDPosition		= "Mark Position: %s",--translate
 	specWarnSlagPosition	= "Bomb Position: %s"--translate
+})
+
+L:SetOptionLocalization({
+	PositionsAllPhases	= "Give positions for $spell:156096 yells during all phases (Instead of just phase 3. This is mostly for testing and assurances, this option is not actually recommended)"--translate
 })
 
 L:SetMiscLocalization({
