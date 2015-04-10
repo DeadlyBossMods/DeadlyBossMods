@@ -6,6 +6,7 @@ mod:SetCreatureID(90802)
 mod:SetZone(1159, 1331, 1158, 1153, 1152, 1330)--4 of these not needed, but don't know what's what ATM
 
 mod:RegisterCombat("combat")
+mod:SetMinCombatTime(15)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 180939 180932",
@@ -13,17 +14,14 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 180950"
 )
 
---Annihilon
 local warnVoidBomb				= mod:NewTargetAnnounce(180939, 3)
 local warnWhirlingVoid			= mod:NewTargetAnnounce(180932, 2)
 local warnTwistMind				= mod:NewTargetAnnounce(180950, 4)
 
---Annihilon
 local specWarnVoidBomb			= mod:NewSpecialWarningYou(180939)
 local yellVoidBomb				= mod:NewYell(180939)
 local specWarnTwistMind			= mod:NewSpecialWarningSwitch(180950, "Dps")
 
---Annihilon
 local timerWhirlingVoidCD		= mod:NewCDTimer(14, 180932)
 local timerTwistMindCD			= mod:NewCDTimer(28, 180950)
 
@@ -46,10 +44,12 @@ function mod:BombTarget(targetname, uId)
 	end
 end
 
-function mod:OnCombatStart(delay)
+function mod:OnCombatStart(delay, summonTriggered)
 	self.vb.MCCount = 0
-	timerWhirlingVoidCD:Start(7.5)--Only one pull, small sample
-	timerTwistMindCD:Start(34)--Only one pull, small sample	
+	if summonTriggered then
+		timerWhirlingVoidCD:Start(7.5)--Only one pull, small sample
+		timerTwistMindCD:Start(34)--Only one pull, small sample	
+	end
 end
 
 function mod:OnCombatEnd()

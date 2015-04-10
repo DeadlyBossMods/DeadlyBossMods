@@ -6,6 +6,7 @@ mod:SetCreatureID(90946)
 mod:SetZone(1159, 1331, 1158, 1153, 1152, 1330)--4 of these not needed, but don't know what's what ATM
 
 mod:RegisterCombat("combat")
+mod:SetMinCombatTime(15)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 180849",
@@ -26,10 +27,12 @@ local timerEntanglementCD		= mod:NewNextTimer(10, 180836)--CD is 10 unless delay
 local timerPodlingSwarmCD		= mod:NewCDTimer(30, 180836)--30-32 variable, clearly a 30 second cd from cast finish or engage
 local timerSporeCD				= mod:NewCDTimer(15, 180825)--15-20
 
-function mod:OnCombatStart(delay)
-	timerEntanglementCD:Start(10)
-	timerSporeCD:Start(11)
-	timerPodlingSwarmCD:Start(30)
+function mod:OnCombatStart(delay, summonTriggered)
+	if summonTriggered then
+		timerEntanglementCD:Start(10)
+		timerSporeCD:Start(11)
+		timerPodlingSwarmCD:Start(30)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
