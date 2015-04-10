@@ -23,17 +23,19 @@ L= DBM:GetModLocalization(1202)
 L= DBM:GetModLocalization(1154)
 
 L:SetWarningLocalization({
-	warnRegulators		= "열기 조절 장치 남음: %d",
-	warnBlastFrequency	= "폭파 시전 빈도 증가됨: 약 %d초 마다 시전"
+	warnRegulators			= "열기 조절 장치 남음: %d",
+	warnBlastFrequency		= "폭파 시전 빈도 증가됨: 약 %d초 마다 시전",
+	specWarnTwoVolatileFire	= "변덕스러운 불 중복됨!"
 })
 
 L:SetOptionLocalization({
-	warnRegulators		= "열기 조절 장치 남은숫자 알림 보기",
-	warnBlastFrequency	= "$spell:155209 시전 빈도 증가시 알림 보기",
-	InfoFrame			= "$spell:155192 와 $spell:155196 정보를 정보 창으로 보기",
-	VFYellType2			= "변덕스러운 불 대화 알림 방식 선택(신화 난이도)",
-	Countdown			= "남은시간 초세기",
-	Apply				= "받을때만 알리기"
+	warnRegulators			= "열기 조절 장치 남은숫자 알림 보기",
+	warnBlastFrequency		= "$spell:155209 시전 빈도 증가시 알림 보기",
+	specWarnTwoVolatileFire	= "$spell:176121 중복시 특수 경고 보기",
+	InfoFrame				= "$spell:155192 와 $spell:155196 정보를 정보 창으로 보기",
+	VFYellType2				= "변덕스러운 불 대화 알림 방식 선택(신화 난이도)",
+	Countdown				= "남은시간 초세기",
+	Apply					= "받을때만 알리기"
 })
 
 L:SetMiscLocalization({
@@ -91,7 +93,11 @@ L:SetOptionLocalization({
 	specWarnSplitSoon	= "공격대 분리 10초 전에 특수 경고 보기",
 	InfoFrameSpeed		= "다음 열차 정보 창 업데이트 시기 설정",
 	Immediately			= "다음 열차 등장 문이 열릴 때(5초 전)",
-	Delayed				= "열차가 실제로 등장하기 직전"
+	Delayed				= "열차가 실제로 등장하기 직전",
+	TrainVoiceAnnounce	= "다음 열차 음성 안내 방식 선택(신화 난이도)",
+	LanesOnly			= "선로 정보만 안내",
+	MovementsOnly		= "이동 방향만 안내(신화 난이도)",
+	LanesandMovements	= "선로 정보와 이동 방향 동시 안내(신화 난이도)"
 })
 
 L:SetMiscLocalization({
