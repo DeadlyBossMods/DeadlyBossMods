@@ -203,6 +203,7 @@ DBM_CORE_UNKNOWN					= "unknown"--UNKNOWN which is "Unknown" (does u vs U matter
 DBM_CORE_LEFT						= "Left"
 DBM_CORE_RIGHT						= "Right"
 DBM_CORE_BACK						= "Back"--BACK
+DBM_CORE_MIDDLE						= "Middle"
 DBM_CORE_FRONT						= "Front"
 DBM_CORE_INTERMISSION				= "Intermission"--No blizz global for this, and will probably be used in most end tier fights with intermission phases
 

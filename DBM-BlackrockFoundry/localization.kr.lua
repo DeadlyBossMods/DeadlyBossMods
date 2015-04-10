@@ -145,10 +145,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	customMFDSay	= "%2$s에게 죽음의 표적! (%1$s)",
-	customSlagSay	= "%2$s에게 잿가루 폭탄 부착! (%1$s)",
-	left			= "왼쪽",
-	middle			= "가운데",
-	right			= "오른쪽"
+	customSlagSay	= "%2$s에게 잿가루 폭탄 부착! (%1$s)"
 })
 
 -------------

@@ -134,10 +134,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	customMFDSay	= "Todesurteil %s auf %s",
-	customSlagSay	= "Bombe %s auf %s",
-	left			= "Links",
-	middle			= "Mitte",
-	right			= "Rechts"
+	customSlagSay	= "Bombe %s auf %s"
 })
 
 -------------

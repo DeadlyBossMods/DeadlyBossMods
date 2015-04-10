@@ -211,6 +211,7 @@ DBM_CORE_UNKNOWN					= "알 수 없음"--UNKNOWN
 DBM_CORE_LEFT						= "왼쪽"
 DBM_CORE_RIGHT						= "오른쪽"
 DBM_CORE_BACK						= "뒤쪽"--BACK
+DBM_CORE_MIDDLE						= "가운데"
 DBM_CORE_FRONT						= "앞쪽"
 DBM_CORE_INTERMISSION				= "사잇 단계"
 
