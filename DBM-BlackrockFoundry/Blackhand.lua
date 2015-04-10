@@ -162,26 +162,26 @@ local function warnMarked(self)
 			if UnitName("raid"..i) == playerName then
 				if mfdFound == 1 then
 					if self.Options.SpecWarn156096you then
-						specWarnMFDPosition:Show(L.left)
+						specWarnMFDPosition:Show(DBM_CORE_LEFT)
 					end
 					if self.Options.Yell156096 then
-						yellMFD2:Yell(L.left, playerName)
+						yellMFD2:Yell(DBM_CORE_LEFT, playerName)
 					end
 					voiceMarkedforDeath:Schedule(0.7, "left")--Schedule another 0.7, for total of 1.2 second after "find shelder"
 				elseif mfdFound == 2 then
 					if self.Options.SpecWarn156096you then
-						specWarnMFDPosition:Show(L.right)
+						specWarnMFDPosition:Show(DBM_CORE_RIGHT)
 					end
 					if self.Options.Yell156096 then
-						yellMFD2:Yell(L.right, playerName)
+						yellMFD2:Yell(DBM_CORE_RIGHT, playerName)
 					end
 					voiceMarkedforDeath:Schedule(0.7, "right")--Schedule another 0.7, for total of 1.2 second after "find shelder"
 				elseif mfdFound == 3 then
 					if self.Options.SpecWarn156096you then
-						specWarnMFDPosition:Show(L.middle)
+						specWarnMFDPosition:Show(DBM_CORE_MIDDLE)
 					end
 					if self.Options.Yell156096 then
-						yellMFD2:Yell(L.middle, playerName)
+						yellMFD2:Yell(DBM_CORE_MIDDLE, playerName)
 					end
 					voiceMarkedforDeath:Schedule(0.7, "center")--Schedule another 0.7, for total of 1.2 second after "find shelder"
 				end
@@ -234,29 +234,29 @@ local function checkSlag(self)
 		local playerIsMelee = meleeCheck("player")
 		if playerIsMelee and ((tempTable[1] == playerName) or (tempTable[2] == playerName)) then
 			if self.Options.SpecWarn157000you then
-				specWarnSlagPosition:Show(L.middle)
+				specWarnSlagPosition:Show(DBM_CORE_MIDDLE)
 				if self.Options.Yell1570002 then
-					yellSlag2:Yell(L.middle, playerName)
+					yellSlag2:Yell(DBM_CORE_MIDDLE, playerName)
 				end
 			end
 		elseif not playerIsMelee and ((tempTable[1] == playerName) or (tempTable[2] == playerName)) then
 			if self.Options.SpecWarn157000you then
-				specWarnSlagPosition:Show(BACK)
+				specWarnSlagPosition:Show(DBM_CORE_BACK)
 				if self.Options.Yell1570002 then
-					yellSlag2:Yell(BACK, playerName)
+					yellSlag2:Yell(DBM_CORE_BACK, playerName)
 				end
 			end
 		end	
 	else--Just use roster order
 		if tempTable[1] == playerName then
 			if self.Options.SpecWarn157000you then
-				specWarnSlagPosition:Show(L.middle)
-				yellSlag2:Yell(L.middle, playerName)
+				specWarnSlagPosition:Show(DBM_CORE_MIDDLE)
+				yellSlag2:Yell(DBM_CORE_MIDDLE, playerName)
 			end
 		elseif tempTable[2] == playerName then
 			if self.Options.SpecWarn157000you then
-				specWarnSlagPosition:Show(BACK)
-				yellSlag2:Yell(BACK, playerName)
+				specWarnSlagPosition:Show(DBM_CORE_BACK)
+				yellSlag2:Yell(DBM_CORE_BACK, playerName)
 			end
 		end	
 	end
