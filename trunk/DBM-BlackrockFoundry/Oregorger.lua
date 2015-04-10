@@ -49,10 +49,11 @@ local voiceRetchedBlackrock			= mod:NewVoice(156203)  --runaway
 local voiceBlackrockBarrage			= mod:NewVoice(156877, false)--kickcast
 local voiceAcidTorrent				= mod:NewVoice(156240)--changemt after 3 seconds (after cast finishes)
 
---local berserkTimer				= mod:NewBerserkTimer(324)--Auto berserk when reaching 3rd hunger drive phase. Time bariable because phase slightly variable.
+mod:AddDropdownOption("InterruptBehavior", {"Smart", "Fixed"}, "Smart", "misc")
 
 mod.vb.torrentCount = 0
 mod.vb.rollCount = 0
+mod.vb.interruptCount = 0
 
 local lastOre = 0 -- not need sync
 
@@ -72,6 +73,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.torrentCount = 0
+	self.vb.interruptCount = 0
 	timerRetchedBlackrockCD:Start(4.5-delay)--5-7
 	timerExplosiveShardCD:Start(9.5-delay)
 	timerAcidTorrentCD:Start(11-delay, 1)
@@ -115,8 +117,16 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 156834 then
 		local bossPower = UnitPower("boss1")
 		if bossPower == 0 then return end--Avoid announce bug caused by SPELL_AURA_REMOVED fired at 0 energy, before boss going into frenzy)
-		local amount = args.amount or 0--amount reported for all (SPELL_AURA_APPLIED_DOSE) but 0 (SPELL_AURA_REMOVED)
-		local kickCount = self:IsMythic() and (5 - amount) or (3 - amount)
+		local expectedTotal = self:IsMythic() and 5 or 3
+		if self.vb.interruptCount == expectedTotal then self.vb.interruptCount = 0 end--Even if this method is not used, keep info correct for sync
+		self.vb.interruptCount = self.vb.interruptCount + 1--Even if this method is not used, keep info correct for sync
+		local kickCount
+		if self.Options.InterruptBehavior == "Smart" then
+			local amount = args.amount or 0--amount reported for all (SPELL_AURA_APPLIED_DOSE) but 0 (SPELL_AURA_REMOVED)
+			kickCount = expectedTotal - amount
+		else
+			kickCount = self.vb.interruptCount
+		end
 		specWarnBlackrockBarrage:Show(args.sourceName, kickCount)
 		if kickCount == 1 then
 			voiceBlackrockBarrage:Play("kick1r")
@@ -179,6 +189,7 @@ function mod:UNIT_POWER_FREQUENT()
 		lastOre = ore
 		warnCollectOre:Show(ore)
 		if ore == 100 then
+			self.vb.interruptCount = 0
 			specWarnHungerDriveEnded:Show()
 			voicePhaseChange:Play("phasechange")
 		end
