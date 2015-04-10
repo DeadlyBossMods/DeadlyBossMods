@@ -139,14 +139,15 @@ DBM_CORE_UPDATEREMINDER_HEADER			= "Deine Version von Deadly Boss Mods ist veral
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "Deine Alphaversion von Deadly Boss Mods ist veraltet.\nDu liegst mindestens %d Revisionen zurück. Es wird empfohlen, die neueste Alphaversion oder neueste stabile Version von DBM zu benutzen. Die Funktionalität veralteter Alphaversionen kann schlecht oder unvollständig sein."
 DBM_CORE_UPDATEREMINDER_FOOTER			= "Drücke " .. (IsMacClient() and "Cmd-C" or "Strg+C")  ..  " um den Downloadlink in die Zwischenablage zu kopieren."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Drücke " .. (IsMacClient() and "Cmd-C" or "Strg+C")  ..  " um den Link in die Zwischenablage zu kopieren."
-DBM_CORE_UPDATEREMINDER_DISABLE			= "WARNUNG: Da dein Deadly Boss Mods extrem veraltet ist (mindestens %d Revisionen), hat es sich bis zu einer Aktualisierung deaktiviert. Derart alter und inkompatibler Code kann zu einem schlechten Spielerlebnis bei dir oder deinen Schlachtzugsmitgliedern führen."
-DBM_CORE_UPDATEREMINDER_HOTFIX			= "Deine Version von DBM wird für diesen Bosskampf falsche Timer und Warnungen anzeigen. Dies wurde in einer neueren Version von DBM korrigiert (oder in einer Alphaversion, falls eine neuere Releaseversion noch nicht verfügbar ist)."
-DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA	= DBM_CORE_UPDATEREMINDER_HOTFIX--TEMP, FIX ME!
+DBM_CORE_UPDATEREMINDER_DISABLE			= "WARNUNG: Da dein Deadly Boss Mods extrem veraltet ist, hat es sich bis zu einer Aktualisierung deaktiviert. Derart alter und inkompatibler Code kann zu einem schlechten Spielerlebnis bei dir oder deinen Schlachtzugsmitgliedern führen."
+DBM_CORE_UPDATEREMINDER_HOTFIX			= "Deine Version von DBM hat bekannte Probleme während dieses Bosskampfes, die durch ein Update auf die neueste DBM-Version behoben werden können."
+DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA	= "Deine Version von DBM hat bekannte Probleme während dieses Bosskampfes, die in einer künftigen DBM-Version behoben sind (oder in der neuesten Alphaversion)."
 DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "WARNUNG: Da dein Deadly Boss Mods veraltet und deshalb leider für diesen Major Patch des Spiels nicht mehr geeignet ist, hat es sich bis zu einer Aktualisierung deaktiviert. Alter und inkompatibler Code kann zu einem schlechten Spielerlebnis bei dir oder deinen Schlachtzugsmitgliedern führen. Bitte lade dir baldmöglichst eine neue Version von deadlybossmods.com oder Curse herunter."
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "WARNUNG: Du benutzt eine Version von Deadly Boss Mods die nicht für diese Version des Spiels gedacht ist. Bitte lade dir eine zum Spiel passende Version von deadlybossmods.com oder Curse herunter."
 DBM_CORE_VEM							= "WARNUNG: Du benutzt Deadly Boss Mods zusammen mit Voice Encounter Mods. DBM läuft nicht in dieser Konfiguration und wird deshalb nicht geladen."
 DBM_CORE_3RDPROFILES					= "WARNUNG: DBM-Profiles ist nicht kompatibel mit dieser Verson von DBM. Es muss entfernt werden bevor DBM genutzt werden kann um Konflikte zu vermeiden."
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "WARNUNG: Dieses Update von DBM arbeitet erst nach einem vollständigem Neustart des Spielclients korrekt. Das Update enthält neue Dateien oder Änderungen an .toc-Dateien, die nicht mit \"/reload\" geladen werden können. Die Funktionsfähigkeit von DBM kann beeinträchtigt sein und es können Fehler auftreten, bis du den Spielclient neu startest."
+DBM_CORE_OUT_OF_DATE_NAG				= "Deine Version von Deadly Boss Mods ist veraltet und du hast die Pop-up-Benachrichtigung ignoriert. Du solltest eine Aktualisierung durchführen, da du sonst wichtige Warnungen oder Timer verpassen könntest oder von dir automatische \"Schreie\" fehlen, mit denen der Rest deines Schlachtzuges rechnet."
 
 DBM_CORE_MOVABLE_BAR				= "Zieh mich!"
 
@@ -397,6 +398,7 @@ DBM_SPEED_KILL_TIMER_TEXT	= "Rekordzeit"
 DBM_SPEED_KILL_TIMER_OPTION	= "Zeige einen Timer zur Verbesserung deiner Rekordzeit"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "Abschlussbestzeit"
 DBM_COMBAT_RES_TIMER_TEXT	= "Kampfbelebung +"
+DBM_CORE_TIMER_RESPAWN		= "Wiedererscheinen"
 
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s möchte deine aktuellen Instanzsperren (IDs) einsehen.\n Möchtest Du diese Informationen an %s senden? Dieser Spieler wird in der Lage sein, diese Informationen während deiner aktuellen Sitzung abzufragen (also bis du dich neu einloggst)."
