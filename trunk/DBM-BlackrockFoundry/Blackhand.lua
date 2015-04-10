@@ -410,7 +410,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.HudMapOnMFD then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 5, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
 		end
 	elseif spellId == 157000 then--Non Tank Version
 		if self:AntiSpam(5, 4) then
