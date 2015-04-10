@@ -141,10 +141,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	customMFDSay	= "Marked %s on %s",
-	customSlagSay	= "Bomb %s on %s",
-	left			= "left",
-	middle			= "middle",
-	right			= "right"
+	customSlagSay	= "Bomb %s on %s"
 })
 
 -------------
