@@ -16,6 +16,12 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1202)
 
+L:SetOptionLocalization({
+	InterruptBehavior	= "Set behavior for interrupt warnings",
+	Smart				= "Interrupt warnings are based on bosses spine stacks",
+	Fixed				= "Interrupts use a 5 or 3 sequence no matter what (even if boss doesn't)"
+})
+
 ---------------------------
 -- The Blast Furnace --
 ---------------------------
