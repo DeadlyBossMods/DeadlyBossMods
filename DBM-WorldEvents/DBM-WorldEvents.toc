@@ -61,3 +61,5 @@ Quests\Plants.lua
 Invasions\Invasions.lua
 Invasions\Annihilon.lua
 Invasions\Teluur.lua
+Invasions\LadyFleshsear.lua
+Invasions\Drogan.lua
