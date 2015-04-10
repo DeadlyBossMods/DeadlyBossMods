@@ -82,11 +82,11 @@ L:SetOptionLocalization({
 	InfoFrameSpeed		= "Infofenster zeigt nächste Zuginformation",
 	Immediately			= "sobald sich die Türen für den aktuellen Zug öffnen",
 	Delayed				= "nachdem der aktuelle Zug herausgekommen ist",
-	HudMapUseIcons		= "Use raid Icons for HudMap instead of green circle",--translate
-	TrainVoiceAnnounce	= "Set when spoken alerts will play for trains",--translate
-	LanesOnly			= "Only announce incoming lanes",--translate
-	MovementsOnly		= "Only announce lane movements (Mythic Only)",--translate
-	LanesandMovements	= "Announce incoming lanes & movmeents (Mythic Only)"--translate
+	HudMapUseIcons		= "Benutze Schlachtzugzeichen für HudMap statt grünen Kreis",
+	TrainVoiceAnnounce	= "Gesprochene Warnungen für Züge",
+	LanesOnly			= "Verkünde nur Gleise mit ankommenden Zügen",
+	MovementsOnly		= "Verkünde nur Bewegungen zu einem anderen Gleis (nur mythisch)",
+	LanesandMovements	= "Verkünde Gleise mit ankommenden Zügen und Bewegungen (nur mythisch)"
 })
 
 L:SetMiscLocalization({
@@ -124,20 +124,20 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(959)
 
 L:SetWarningLocalization({
-	specWarnMFDPosition		= "Mark Position: %s",--translate
-	specWarnSlagPosition	= "Bomb Position: %s"--translate
+	specWarnMFDPosition		= "Todesurteil Position: %s",
+	specWarnSlagPosition	= "Bombe Position: %s"
 })
 
 L:SetOptionLocalization({
-	PositionsAllPhases	= "Give positions for $spell:156096 yells during all phases (Instead of just phase 3. This is mostly for testing and assurances, this option is not actually recommended)"--translate
+	PositionsAllPhases	= "Gebe Position in $spell:156096 Schreien während allen Phasen an (anstatt nur in Phase 3) (im Wesentlichen für Testzwecke, nicht empfohlen)"
 })
 
 L:SetMiscLocalization({
-	customMFDSay	= "Marked %s on %s",--translate
-	customSlagSay	= "Bomb %s on %s",--translate
-	left			= "left",--translate
-	middle			= "middle",--translate
-	right			= "right"--translate
+	customMFDSay	= "Todesurteil %s auf %s",
+	customSlagSay	= "Bombe %s auf %s",
+	left			= "Links",
+	middle			= "Mitte",
+	right			= "Rechts"
 })
 
 -------------
