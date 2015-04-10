@@ -78,7 +78,7 @@ local timerRuptureCD			= mod:NewCDTimer("OptionVersion2", 20, 156934, nil, "-Tan
 local timerEngineer				= mod:NewNextCountTimer(41, "ej9649", nil, nil, nil, 155179)
 local timerBellowsOperator		= mod:NewCDCountTimer(59, "ej9650", nil, nil, nil, 155181)--60-65second variation for sure
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerVolatileFireCD		= mod:NewCDTimer(21, 176121, nil, false)--Very useful, but off by default since it can be spammy if > 2 adds up at once.
+local timerVolatileFireCD		= mod:NewCDTimer(20, 176121, nil, false)--Very useful, but off by default since it can be spammy if > 2 adds up at once.
 local timerVolatileFire			= mod:NewBuffFadesTimer(8, 176121)
 local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps")
 local timerSlagElemental		= mod:NewNextCountTimer(55, "ej9657", nil, "-Tank", nil, 155196)--Definitely 55 seconds, although current detection method may make it appear 1-2 seconds if slag has to run across room before casting first fixate
@@ -127,9 +127,11 @@ mod.vb.engineer = 0
 mod.vb.lastSlagIcon = 0
 mod.vb.bellowsOperator = 0
 mod.vb.secondSlagSpawned = false
-local playerFixated = false
+mod.vb.volatileActive = 0
 local playerVolatileCount = 0
+local bombDebuff = GetSpellInfo(155192)
 local volatileFireDebuff = GetSpellInfo(176121)
+local fixateDebuff = GetSpellInfo(155196)
 local activeSlagGUIDS = {}
 local activePrimalGUIDS = {}
 local activePrimal = 0 -- health report variable. no sync
@@ -137,14 +139,16 @@ local prevHealth = 100
 local yellVolatileFire2 = mod:NewFadesYell(176121, nil, true, false)
 local UnitDebuff, UnitHealth, UnitHealthMax, UnitGUID, GetTime, mceil = UnitDebuff, UnitHealth, UnitHealthMax, UnitGUID, GetTime, math.ceil
 
-local BombFilter, VolatileFilter
+local BombFilter, VolatileFilter, FixateFilter
 do
-	local Bomb = GetSpellInfo(155192)
 	BombFilter = function(uId)
-		return UnitDebuff(uId, Bomb)
+		return UnitDebuff(uId, bombDebuff)
 	end
 	VolatileFilter = function(uId)
 		return UnitDebuff(uId, volatileFireDebuff)
+	end
+	FixateFilter = function(uId)
+		return UnitDebuff(uId, fixateDebuff)
 	end
 end
 
@@ -210,6 +214,31 @@ local function SecurityGuard(self)
 		timerSecurityGuard:Start(40, count+1)
 		countdownSecurityGuard:Start(40)
 		self:Schedule(40, SecurityGuard, self)
+	end
+end
+
+--Much better and smarter range checker.
+local function updateRangeFrame(self)
+	if not self.Options.RangeFrame then return end
+	if UnitDebuff("player", volatileFireDebuff) then--Volatile fire first
+		DBM.RangeCheck:Show(8)--Player has volatile fire, show everyone in 8 yards
+	else
+		playerVolatileCount = 0--Just in case it gets off count somehow, it shouldn't, but setting to 0 when UnitDebuff is false for volatileFireDebuff
+		if UnitDebuff("player", bombDebuff) then--Bomb 2nd priority
+			DBM.RangeCheck:Show(8)--Player has bomb, show everyone in 8 yards
+		elseif UnitDebuff("player", fixateDebuff) then--Fixate 3rd priority
+			DBM.RangeCheck:Show(5)--Player has fixate, show everyone in 5 yards.
+		else--No personal debuff, show range frame with other debuffs near us
+			if self.vb.phase == 1 then--Only bombs in phase 1
+				DBM.RangeCheck:Show(8, BombFilter)--Show any players within 8 yards if they have bomb debuff
+			else--Phase 2 or 3
+				if self.vb.volatileActive > 0 then--At least one active volatile fire in the raid
+					DBM.RangeCheck:Show(8, VolatileFilter)--Show any player within 8 yards if they have volatile fire debuff
+				else--No volatile fire, fixate on others range checker
+					DBM.RangeCheck:Show(5, FixateFilter)--Show any player within 5 yards if they are fixated.
+				end
+			end
+		end
 	end
 end
 
@@ -284,7 +313,6 @@ function mod:OnCombatStart(delay)
 	table.wipe(activeSlagGUIDS)
 	table.wipe(activePrimalGUIDS)
 	prevHealth = 100
-	playerFixated = false
 	playerVolatileCount = 0
 	self.vb.machinesDead = 0
 	self.vb.elementalistsRemaining = 4
@@ -296,6 +324,7 @@ function mod:OnCombatStart(delay)
 	self.vb.engineer = 1--First one on pull
 	self.vb.lastSlagIcon = 0
 	self.vb.bellowsOperator = 1--First one on pull
+	self.vb.volatileActive = 0
 	local firstTimer = self:IsMythic() and 40 or self:IsHeroic() and 55.5 or 60
 	if self:AntiSpam(10, 0) then--Need to ignore loading on the pull
 		timerBellowsOperator:Start(firstTimer, 2)
@@ -329,6 +358,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Show(2, "function", updateInfoFrame, sortInfoFrame)
 	end
+	updateRangeFrame(self)
 end
 
 function mod:OnCombatEnd()
@@ -380,17 +410,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if args:IsPlayer() then
+			updateRangeFrame(self)
 			timerBomb:Start(debuffTime)
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(8, nil, nil, nil, nil, debuffTime + 0.5)
-			end
 			if self:AntiSpam(2, 6) then
 				specWarnBomb:Show(L.heatRegulator)
 				voiceBomb:Play("bombrun")
 			end
-		end
-		if self.Options.RangeFrame and not UnitDebuff("player", args.spellName) then
-			DBM.RangeCheck:Show(8, BombFilter, nil, nil, nil, debuffTime + 0.5)
 		end
 	elseif spellId == 155196 then
 		if not activeSlagGUIDS[args.sourceGUID] then
@@ -421,12 +446,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnFixate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
-			playerFixated = true
 			specWarnFixate:Show()
 			--Open Range Frame for http://www.wowhead.com/spell=177744 (not in encounter journal but it's very important especially on mythic)
-			if self.Options.RangeFrame and not UnitDebuff("player", volatileFireDebuff) then
-				DBM.RangeCheck:Show(5)
-			end
+			updateRangeFrame(self)
 		end
 		--Update icon number even if option not enabled, so recoveryable in case person with option DCs
 		if self.vb.lastSlagIcon == 6 then--1-6 should be more than enough before reset. Do not want to use skull or x since probably set on kill targets
@@ -469,11 +491,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceBellowsOperator:Play("killmob")
 	elseif spellId == 176121 then
 		warnVolatileFire:CombinedShow(1, args.destName)
+		self.vb.volatileActive = self.vb.volatileActive + 1
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)
 		if expires then
 			local debuffTime = expires - GetTime()
 			if args:IsPlayer() then
+				updateRangeFrame(self)
 				playerVolatileCount = playerVolatileCount + 1
 				if playerVolatileCount == 2 then
 					specWarnTwoVolatileFire:Show()
@@ -495,13 +519,7 @@ function mod:SPELL_AURA_APPLIED(args)
 							yellVolatileFire:Yell()
 						end
 					end
-					if self.Options.RangeFrame then
-						DBM.RangeCheck:Show(8)--Do not use auto hide scheduler here, it breaks playerFixated 5 yard spread coming back up. SPELL_AURA_REMOVED will handle
-					end
 				end
-			end
-			if self.Options.RangeFrame and not UnitDebuff("player", args.spellName) and not playerFixated then
-				DBM.RangeCheck:Show(8, VolatileFilter, nil, nil, nil, debuffTime + 0.5)
 			end
 		end
 	elseif spellId == 155225 then
@@ -540,27 +558,21 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if args:IsPlayer() then
 			timerBomb:Cancel()
+			updateRangeFrame(self)
 		end
-	elseif spellId == 176121 and args:IsPlayer() then
-		playerVolatileCount = playerVolatileCount - 1--Each debuff fires SPELL_AURA_REMOVED. There is no dose on this.
-		--https://www.warcraftlogs.com/reports/YjKftazDw3nbAqmC#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+176121
-		if self.Options.RangeFrame and not UnitDebuff("player", volatileFireDebuff) then
-			playerVolatileCount = 0--Just in case it gets off count somehow, it shouldn't, but setting to 0 when UnitDebuff is false is extra failsafe
-			if playerFixated then
-				DBM.RangeCheck:Show(5)
-			else
-				DBM.RangeCheck:Hide()
-			end
+	elseif spellId == 176121 then
+		self.vb.volatileActive = self.vb.volatileActive - 1
+		if args:IsPlayer() then
+			playerVolatileCount = playerVolatileCount - 1--Each debuff fires SPELL_AURA_REMOVED. There is no dose on this.
+			--https://www.warcraftlogs.com/reports/YjKftazDw3nbAqmC#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+176121
+			updateRangeFrame(self)
 		end
-	elseif spellId == 155196 then
+	elseif spellId == 155196 and not UnitDebuff(args.destName, fixateDebuff) then
 		if self.Options.SetIconOnFixate then
 			self:SetIcon(args.destName, 0)
 		end
 		if args:IsPlayer() then
-			playerFixated = false
-			if not UnitDebuff("player", volatileFireDebuff) then
-				DBM.RangeCheck:Hide()
-			end
+			updateRangeFrame(self)
 		end
 	elseif spellId == 158345 then
 		timerShieldsDown:Cancel(args.destGUID)
@@ -600,6 +612,7 @@ function mod:UNIT_DIED(args)
 			warnPhase3:Show()
 			specWarnHeartoftheMountain:Show()
 			voicePhaseChange:Play("pthree")
+			updateRangeFrame(self)
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:Clear()
 				DBM.BossHealth:AddBoss(76806)
@@ -626,6 +639,7 @@ function mod:UNIT_DIED(args)
 			self:Unschedule(SecurityGuard)
 			voicePhaseChange:Play("ptwo")
 			--Start adds timers. Seem same in all modes.
+			updateRangeFrame(self)
 			if not self:IsLFR() then-- LFR do not have Slag Elemental.
 				timerSlagElemental:Start(13, 1)
 				self:Schedule(72, SecurityGuard, self)
@@ -640,9 +654,6 @@ function mod:UNIT_DIED(args)
 			self:RegisterShortTermEvents(
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 			)
-			if self.Options.HudMapOnBomb then
-				DBMHudMap:Disable()
-			end
 			if self.Options.InfoFrame then
 				DBM.InfoFrame:Hide()
 			end
