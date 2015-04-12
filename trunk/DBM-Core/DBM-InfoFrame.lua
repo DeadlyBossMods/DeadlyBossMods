@@ -519,11 +519,7 @@ function onUpdate(frame)
 			end
 		else
 			linesShown = linesShown + 1
-			if currentEvent == "enemypower" then--Green
-				frame:AddDoubleLine(icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
-			else
-				frame:AddDoubleLine(icon or leftText, rightText, color.R, color.G, color.B, 255, 255, 255)
-			end
+			frame:AddDoubleLine(icon or leftText, rightText, color.R, color.G, color.B, 255, 255, 255)
 		end
 	end
 	frame:Show()

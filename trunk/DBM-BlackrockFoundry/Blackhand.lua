@@ -23,6 +23,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, get damage ID for fire on ground created by Mortar
+--TODO, check position of highest threat tank in phase 2 and guess which siege engine is going to come out (and type for mythic)?
 local warnPhase						= mod:NewPhaseChangeAnnounce()
 --Stage One: The Blackrock Forge
 local warnMarkedforDeath			= mod:NewTargetCountAnnounce(156096, 4)--If not in combat log, find a RAID_BOSS_WHISPER event.
@@ -47,6 +48,7 @@ local specWarnSiegemaker			= mod:NewSpecialWarningCount("ej9571", false)--Kiter 
 local specWarnSiegemakerPlatingFades= mod:NewSpecialWarningFades("OptionVersion2", 156667, "Ranged")--Plating removed, NOW dps switch
 local specWarnFixate				= mod:NewSpecialWarningRun(156653, nil, nil, nil, 4)
 local yellFixate					= mod:NewYell(156653)
+local specWarnMortarSoon			= mod:NewSpecialWarningSoon(156530, "Ranged")--Mortar prefers the furthest targets from siege engine. It's ranged job to bait it to a wall
 local specWarnMassiveExplosion		= mod:NewSpecialWarningSpell(163008, nil, nil, nil, 2, nil, 2)--Mythic
 --Stage Three: Iron Crucible
 local specWarnSlagEruption			= mod:NewSpecialWarningCount(156928, nil, nil, nil, 2)
@@ -95,6 +97,7 @@ mod:AddSetIconOption("SetIconOnMarked", 156096, true)
 mod:AddRangeFrameOption("6/10")
 mod:AddBoolOption("PositionsAllPhases", false)
 mod:AddHudMapOption("HudMapOnMFD", 156096)
+mod:AddBoolOption("InfoFrame")
 
 mod.vb.phase = 1
 mod.vb.demolitionCount = 0
@@ -110,6 +113,7 @@ local smashTank = nil
 local UnitDebuff, UnitName, UnitClass, UnitPowerMax = UnitDebuff, UnitName, UnitClass, UnitPowerMax
 local markTargets = {}
 local slagTargets = {}
+local mortarsWarned = {}
 local DBMHudMap = DBMHudMap
 local tankFilter
 local yellMFD2 = mod:NewYell(156096, L.customMFDSay, true, false)
@@ -271,6 +275,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(markTargets)
 	table.wipe(slagTargets)
+	table.wipe(mortarsWarned)
 	self.vb.phase = 1
 	self.vb.demolitionCount = 0
 	self.vb.SlagEruption = 0
@@ -282,17 +287,24 @@ function mod:OnCombatStart(delay)
 	timerShatteringSmashCD:Start(21-delay, 1)
 	if self:IsTank() then--Ability only concerns tank in phase 1
 		countdownShatteringSmash:Start(21-delay)
+		if self.Options.InfoFrame then--Only tanks in phase 1
+			DBM.InfoFrame:Show(5, "enemypower", 1)
+		end
 	end
 	timerMarkedforDeathCD:Start(36-delay, 1)
 	countdownMarkedforDeath:Start(36-delay)
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
 	if self.Options.HudMapOnMFD then
 		DBMHudMap:Disable()
+	end
+	if self.Options.InfoFrame then--Only tanks in phase 1
+		DBM.InfoFrame:Hide()
 	end
 end
 
@@ -588,7 +600,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self.Options.RangeFrame and not self:IsMelee() then
 			DBM.RangeCheck:Show(6)
 		end
+		if self.Options.InfoFrame then--Everyone in phase 2 and 3
+			DBM.InfoFrame:Show(5, "enemypower", 1)
+		end
+		self:RegisterShortTermEvents(
+			"UNIT_POWER_FREQUENT boss2 boss3 boss4 boss5"
+		)
 	elseif spellId == 161348 then--Phase 3 Trigger
+		self:UnregisterShortTermEvents()
 		self.vb.phase = 3
 		self.vb.smashCount = 0
 		self.vb.markCount = 0
@@ -619,5 +638,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
+	end
+end
+
+function mod:UNIT_POWER_FREQUENT(uId)
+	local power = UnitPower(uId)
+	local guid = UnitGUID(uId)
+	if power > 80 and not mortarsWarned[guid] then
+		specWarnMortarSoon:Show()
+		mortarsWarned[guid] = true
 	end
 end
