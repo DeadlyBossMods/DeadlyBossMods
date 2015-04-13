@@ -24,6 +24,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_POWER_FREQUENT boss1"
 )
  
+--TODO, maybe switch phase 2 to custom infoframe, that shows both fixate targets and heat level. instead of just fixate targets.
 local warnRegulators			= mod:NewAnnounce("warnRegulators", 2, 156918)
 local warnBlastFrequency		= mod:NewAnnounce("warnBlastFrequency", 1, 155209, "Healer")
 local warnBomb					= mod:NewTargetAnnounce("OptionVersion2", 155192, 4, nil, false)
@@ -132,12 +133,13 @@ local playerVolatileCount = 0
 local bombDebuff = GetSpellInfo(155192)
 local volatileFireDebuff = GetSpellInfo(176121)
 local fixateDebuff = GetSpellInfo(155196)
+local heatName = GetSpellInfo(155242)
 local activeSlagGUIDS = {}
 local activePrimalGUIDS = {}
 local activePrimal = 0 -- health report variable. no sync
 local prevHealth = 100
 local yellVolatileFire2 = mod:NewFadesYell(176121, nil, true, false)
-local UnitDebuff, UnitHealth, UnitHealthMax, UnitGUID, GetTime, mceil = UnitDebuff, UnitHealth, UnitHealthMax, UnitGUID, GetTime, math.ceil
+local UnitDebuff, UnitHealth, UnitHealthMax, UnitPower, UnitGUID, GetTime, mceil = UnitDebuff, UnitHealth, UnitHealthMax, UnitPower, UnitGUID, GetTime, math.ceil
 
 local BombFilter, VolatileFilter, FixateFilter
 do
@@ -164,7 +166,7 @@ end
 local function updateInfoFrame()
 	table.wipe(lines)
 	local regulatorCount = 0
-	for i = 1, 4 do--Boss order can be random. regulators being 3/4 not guaranteed. Had some pull 1/4, 2/3, 3/4, etc. Must find this way
+	for i = 2, 4 do--Boss order can be random. regulators being 3/4 not guaranteed. Had some pull 2/3, 3/4, etc. Must check all 2-4
 		if UnitExists("boss"..i) then
 			local cid = DBM:GetCIDFromGUID(UnitGUID("boss"..i))
 			if cid == 76808 then--Heat Regulator
@@ -175,6 +177,7 @@ local function updateInfoFrame()
 			end
 		end
 	end
+	lines[heatName] = UnitPower("boss1", 10)--Heart of the mountain always boss1
 	return lines
 end
 
@@ -683,7 +686,6 @@ end
 
 do
 	local totalTime = mod:IsMythic() and 24 or 29
-	local UnitPower = UnitPower
 	function mod:UNIT_POWER_FREQUENT(uId, type)
 		if type == "ALTERNATE" then
 			totalTime = self:IsMythic() and 24 or 29

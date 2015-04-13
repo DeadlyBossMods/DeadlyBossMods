@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 local warnPhase						= mod:NewPhaseChangeAnnounce()
 --Stage One: The Blackrock Forge
 local warnMarkedforDeath			= mod:NewTargetCountAnnounce(156096, 4)--If not in combat log, find a RAID_BOSS_WHISPER event.
+local warnMassiveDemolition			= mod:NewCountAnnounce(156479, 3, "Ranged")--As a regular warning, not too spammy and perfectly reasonable for ranged to be on by default.
 --Stage Two: Storage Warehouse
 local warnSiegemaker				= mod:NewCountAnnounce("ej9571", 3, 156667)
 local warnFixate					= mod:NewTargetAnnounce(156653, 4)
@@ -552,18 +553,33 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerMassiveDemolitionCD:Start(nil, 1)
 		if self:IsMythic() then
 			timerMassiveDemolitionCD:Schedule(6, 3, 2)
-			specWarnMassiveDemolition:Schedule(6, 1)
 			timerMassiveDemolitionCD:Schedule(9, 3, 3)
-			specWarnMassiveDemolition:Schedule(9, 2)
 			timerMassiveDemolitionCD:Schedule(12, 3, 4)
-			specWarnMassiveDemolition:Schedule(12, 3)
-			specWarnMassiveDemolition:Schedule(15, 4)
+			if self.Options.SpecWarn156479count then
+				specWarnMassiveDemolition:Schedule(6, 1)
+				specWarnMassiveDemolition:Schedule(9, 2)
+				specWarnMassiveDemolition:Schedule(12, 3)
+				specWarnMassiveDemolition:Schedule(15, 4)
+			else
+				warnMassiveDemolition:Schedule(6, 1)
+				warnMassiveDemolition:Schedule(9, 2)
+				warnMassiveDemolition:Schedule(12, 3)
+				warnMassiveDemolition:Schedule(15, 4)
+			end
 		else
 			timerMassiveDemolitionCD:Schedule(6, 5, 2)
-			specWarnMassiveDemolition:Schedule(6, 1)
 			timerMassiveDemolitionCD:Schedule(11, 5, 3)
-			specWarnMassiveDemolition:Schedule(11, 2)
-			specWarnMassiveDemolition:Schedule(16, 3)
+			if self.Options.SpecWarn156479count then
+				specWarnMassiveDemolition:Schedule(6, 1)
+				specWarnMassiveDemolition:Schedule(11, 2)
+				specWarnMassiveDemolition:Schedule(16, 3)	
+			else
+				if not self:IsLFR() then
+					warnMassiveDemolition:Schedule(6, 1)
+					warnMassiveDemolition:Schedule(11, 2)
+					warnMassiveDemolition:Schedule(16, 3)
+				end
+			end
 		end
 		voiceDemolition:Play("aesoon")
 	elseif spellId == 161347 then--Phase 2 Trigger
@@ -576,6 +592,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerMassiveDemolitionCD:Cancel()
 		timerMassiveDemolitionCD:Unschedule()
 		specWarnMassiveDemolition:Cancel()
+		warnMassiveDemolition:Cancel()
 		countdownSlagBombs:Cancel()
 		countdownSlagBombs:Start(11)
 		timerThrowSlagBombsCD:Cancel()
