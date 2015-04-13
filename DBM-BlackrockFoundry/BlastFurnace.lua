@@ -23,8 +23,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED",
 	"UNIT_POWER_FREQUENT boss1"
 )
- 
---TODO, maybe switch phase 2 to custom infoframe, that shows both fixate targets and heat level. instead of just fixate targets.
+
 local warnRegulators			= mod:NewAnnounce("warnRegulators", 2, 156918)
 local warnBlastFrequency		= mod:NewAnnounce("warnBlastFrequency", 1, 155209, "Healer")
 local warnBomb					= mod:NewTargetAnnounce("OptionVersion2", 155192, 4, nil, false)
@@ -163,9 +162,12 @@ local function sortInfoFrame(a, b)
 	if a > b then return true else return false end
 end
 
-local function updateInfoFrame()
+local function updateInfoFrame1()
 	table.wipe(lines)
 	local regulatorCount = 0
+	--Show heat first
+	lines[heatName] = UnitPower("boss1", 10)--Heart of the mountain always boss1
+	--Show regulator progress second
 	for i = 2, 4 do--Boss order can be random. regulators being 3/4 not guaranteed. Had some pull 2/3, 3/4, etc. Must check all 2-4
 		if UnitExists("boss"..i) then
 			local cid = DBM:GetCIDFromGUID(UnitGUID("boss"..i))
@@ -177,7 +179,19 @@ local function updateInfoFrame()
 			end
 		end
 	end
+	return lines
+end
+
+local function updateInfoFrame2()
+	table.wipe(lines)
+	--Show Heat first
 	lines[heatName] = UnitPower("boss1", 10)--Heart of the mountain always boss1
+	--Show fixate debuffs second
+	for uId in DBM:GetGroupMembers() do
+		if UnitDebuff(uId, fixateDebuff) then
+			lines[UnitName(uId)] = ""
+		end
+	end
 	return lines
 end
 
@@ -359,7 +373,7 @@ function mod:OnCombatStart(delay)
 		end)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:Show(2, "function", updateInfoFrame, sortInfoFrame)
+		DBM.InfoFrame:Show(3, "function", updateInfoFrame1, sortInfoFrame)
 	end
 	updateRangeFrame(self)
 end
@@ -463,7 +477,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(5, "playerbaddebuff", 155196)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame2, sortInfoFrame)
 		end
 	elseif spellId == 158345 and self:AntiSpam(10, 3) then--Might be SPELL_CAST_SUCCESS instead.
 		specWarnShieldsDown:Show()
