@@ -5,7 +5,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetModelID(47785)
 mod:SetZone()
 mod.isTrashMod = true
-mod:SetMinSyncTime(2)--Need to accept syncs every 3 seconds.
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 156446 163194 171537",
