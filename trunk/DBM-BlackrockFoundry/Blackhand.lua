@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 local warnPhase						= mod:NewPhaseChangeAnnounce()
 --Stage One: The Blackrock Forge
 local warnMarkedforDeath			= mod:NewTargetCountAnnounce(156096, 4)--If not in combat log, find a RAID_BOSS_WHISPER event.
-local warnMassiveDemolition			= mod:NewCountAnnounce(156479, 3, "Ranged")--As a regular warning, not too spammy and perfectly reasonable for ranged to be on by default.
+local warnMassiveDemolition			= mod:NewCountAnnounce(156479, 3, nil, "Ranged")--As a regular warning, not too spammy and perfectly reasonable for ranged to be on by default.
 --Stage Two: Storage Warehouse
 local warnSiegemaker				= mod:NewCountAnnounce("ej9571", 3, 156667)
 local warnFixate					= mod:NewTargetAnnounce(156653, 4)
