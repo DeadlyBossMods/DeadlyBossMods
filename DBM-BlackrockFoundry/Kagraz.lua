@@ -295,7 +295,9 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			if cid == 76794 then--Cinder Wolf
 				wolfIcon = wolfIcon + 1
 				activeBossGUIDS[unitGUID] = true
-				SetRaidTarget(unitID, wolfIcon)
+				if self:CanSetIcon("SetIconOnAdds") then--Check if elected
+					SetRaidTarget(unitID, wolfIcon)
+				end
 				if wolfIcon == expectedTotal then--All wolves marked
 					self:UnregisterShortTermEvents()
 				end

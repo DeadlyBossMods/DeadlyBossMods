@@ -9961,6 +9961,13 @@ do
 		end
 	end
 
+	function bossModPrototype:CanSetIcon(optionName)
+		if canSetIcons[optionName] then
+			return true
+		end
+		return false
+	end
+
 	local mobUids = {"mouseover", "boss1", "boss2", "boss3", "boss4", "boss5"}
 	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName)
 		if not optionName then optionName = self.findFastestComputer[1] end
