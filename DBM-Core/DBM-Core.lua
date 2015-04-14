@@ -1045,6 +1045,7 @@ do
 							noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1,
 							noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
 							hasMythic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Mythic") or 0) == 1,
+							hasTimeWalker	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-TimeWalker") or 0) == 1,
 							isWorldBoss		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-World-Boss") or 0) == 1,
 							minRevision		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinCoreRevision") or 0),
 							modId			= addonName,
@@ -2736,6 +2737,8 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			stats.heroic25Pulls = stats.heroic25Pulls or 0
 			stats.lfr25Kills = stats.lfr25Kills or 0
 			stats.lfr25Pulls = stats.lfr25Pulls or 0
+			stats.timewalkerKills = stats.timewalkerKills or 0
+			stats.timewalkerPulls = stats.timewalkerPulls or 0
 			mod.stats = stats
 			--run OnInitialize function
 			if mod.OnInitialize then mod:OnInitialize() end
@@ -3031,6 +3034,8 @@ function DBM:ClearAllStats(modId)
 		defaultStats.heroic25Pulls = 0
 		defaultStats.lfr25Kills = 0
 		defaultStats.lfr25Pulls = 0
+		defaultStats.timewalkerKills = 0
+		defaultStats.timewalkerPulls = 0
 		mod.stats = {}
 		mod.stats = defaultStats
 		_G[savedStatsName][id] = {}
@@ -4864,6 +4869,7 @@ do
 		["heroic"] = "heroic",
 		["mythic"] = "mythic",
 		["worldboss"] = "normal",
+		["timewalker"] = "timewalker",
 		--Legacy
 		["lfr25"] = "lfr25",
 		["normal10"] = "normal",
@@ -5600,6 +5606,10 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "event5", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 20 then
 		return "event20", difficultyName.." - ", difficulty, instanceGroupSize
+--	elseif difficulty == 22 then--Unknown
+--		return "timewalker", difficultyName.." - ", difficulty, instanceGroupSize
+	elseif difficulty == 23 then--Needs confirmation, UI code seems incomplete. Also, what are 21 and 22?
+		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize
 	else--failsafe
 		return "normal5", "", difficulty, instanceGroupSize
 	end
