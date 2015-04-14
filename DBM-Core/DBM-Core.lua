@@ -11,7 +11,6 @@
 -- The localizations are written by:
 --    * enGB/enUS: Omegal				http://www.deadlybossmods.com
 --    * deDE: Ebmor						http://forums.elitistjerks.com/user/616736-ebmor/
---    * ruRU: Swix						stalker.kgv@gmail.com
 --    * ruRU: TOM_RUS					http://www.curseforge.com/profiles/TOM_RUS/
 --    * zhTW: Whyv						ultrashining@gmail.com
 --    * koKR: nBlueWiz					everfinale@gmail.com
@@ -21,6 +20,7 @@
 --    * deDE: Tandanu					http://www.deadlybossmods.com
 --    * ruRU: BootWin					bootwin@gmail.com
 --    * ruRU: Vampik					admin@vampik.ru
+--    * ruRU: Swix						stalker.kgv@gmail.com
 --    * zhTW: Hman						herman_c1@hotmail.com
 --    * zhTW: Azael/kc10577				paul.poon.kw@gmail.com
 --    * esES: Snamor/1nn7erpLaY      	romanscat@hotmail.com
@@ -350,6 +350,7 @@ local iconSetPerson = {}
 local addsGUIDs = {}
 local targetEventsRegistered = false
 local targetMonitor = nil
+local wowTOC = select(4, GetBuildInfo())
 
 local fakeBWRevision = 13032
 
@@ -1000,10 +1001,11 @@ do
 			end
 			onLoadCallbacks = nil
 			loadOptions()
---			if not GetAddOnEnableState then--Not 6.0
---				self:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
---				return
---			end
+			if wowTOC == 60200 then--6.2
+				self:AddMsg(DBM_CORE_UPDATEREMINDER_TESTVERSION)
+				dbmIsEnabled = false
+				return
+			end
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 				self:AddMsg(DBM_CORE_VEM)
 				dbmIsEnabled = false
