@@ -5606,10 +5606,10 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "event5", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 20 then
 		return "event20", difficultyName.." - ", difficulty, instanceGroupSize
---	elseif difficulty == 22 then--Unknown
---		return "timewalker", difficultyName.." - ", difficulty, instanceGroupSize
-	elseif difficulty == 23 then--Needs confirmation, UI code seems incomplete. Also, what are 21 and 22?
+	elseif difficulty == 23 then
 		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize
+	elseif difficulty == 24 then
+		return "timewalker", difficultyName.." - ", difficulty, instanceGroupSize
 	else--failsafe
 		return "normal5", "", difficulty, instanceGroupSize
 	end
