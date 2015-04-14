@@ -15,6 +15,7 @@
 ## X-DBM-Mod-Type: PARTY
 ## X-DBM-Mod-Category: WOD
 ## X-DBM-Mod-Has-Challenge: 1
+## X-DBM-Mod-Has-Mythic : 1
 ## X-DBM-Mod-SubCategoriesID: 1182, 1175, 1208, 1195, 1279, 1176, 1209, 1358
 ## X-DBM-Mod-Name: Party (WoD)
 ## X-DBM-Mod-Name-koKR: 5인 던전(드레노어의 전쟁군주)
