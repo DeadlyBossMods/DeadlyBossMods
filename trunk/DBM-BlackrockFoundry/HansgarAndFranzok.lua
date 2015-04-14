@@ -134,9 +134,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerDisruptingRoarCD:Cancel()
 			timerSkullcrackerCD:Cancel()
 		elseif cid == 76973 then--Hans
-			self:BossTargetScannerAbort(76973, "JumpTarget")
 			timerJumpSlamCD:Cancel()
 		end
+		self:BossTargetScannerAbort(76973, "JumpTarget")--Seems to interrupt jumping if EITHER boss jumps up
 		--The triggers are these percentages for sure but there is a delay before they do it so it always appears later, but the trigger has been triggered
 		if self.vb.phase == 2 then--First belt 85% (15 Energy) (fire plates)
 			specWarnSearingPlates:Show()
