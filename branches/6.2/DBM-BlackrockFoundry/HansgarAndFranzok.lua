@@ -5,7 +5,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(76974, 76973)
 mod:SetEncounterID(1693)
 mod:SetZone()
---mod:SetUsedIcons(5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(12934)
 
 mod:RegisterCombat("combat")
@@ -19,7 +18,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, find target scanning for skullcracker. Also, find out how it behaves when it's more than 1 target (just recast?)
---TODO, maybe use http://beta.wowhead.com/spell=154785 for aftershock/Shattered Vertebrae instead?'
 --TODO, collect more data to figure out how roar starts/resumes on jump down. One pull/kill is not a sufficient sampling.
 local warnSkullcracker					= mod:NewSpellAnnounce(153470, 3, nil, false)--This seems pretty worthless.
 local warnShatteredVertebrae			= mod:NewStackAnnounce("OptionVersion2", 157139, 2, nil, false)--Possibly useless or changed. Needs further logs.
@@ -134,9 +132,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerDisruptingRoarCD:Cancel()
 			timerSkullcrackerCD:Cancel()
 		elseif cid == 76973 then--Hans
-			self:BossTargetScannerAbort(76973, "JumpTarget")
 			timerJumpSlamCD:Cancel()
 		end
+		self:BossTargetScannerAbort(76973, "JumpTarget")--Seems to interrupt jumping if EITHER boss jumps up
 		--The triggers are these percentages for sure but there is a delay before they do it so it always appears later, but the trigger has been triggered
 		if self.vb.phase == 2 then--First belt 85% (15 Energy) (fire plates)
 			specWarnSearingPlates:Show()

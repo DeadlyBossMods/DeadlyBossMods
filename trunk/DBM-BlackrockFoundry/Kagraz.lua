@@ -21,7 +21,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---Pointless add fight starts with (need to keep alive for follower achievement
 local warnDevastatingSlam				= mod:NewSpellAnnounce("OptionVersion2", 156018, 4, nil, false)
 local warnDropHammer					= mod:NewSpellAnnounce("OptionVersion2", 156040, 3, nil, false)
 
