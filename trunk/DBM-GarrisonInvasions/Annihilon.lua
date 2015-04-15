@@ -1,9 +1,9 @@
-local mod	= DBM:NewMod("Annihilon", "DBM-WorldEvents", 3)
+local mod	= DBM:NewMod("Annihilon", "DBM-GarrisonInvasions")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(90802)
-mod:SetZone(1159, 1331, 1158, 1153, 1152, 1330)--4 of these not needed, but don't know what's what ATM
+mod:SetZone()
 
 mod:RegisterCombat("combat")
 mod:SetMinCombatTime(15)
