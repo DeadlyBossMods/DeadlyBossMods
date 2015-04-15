@@ -99,7 +99,7 @@ L:SetOptionLocalization({
 	TrainVoiceAnnounce	= "Set when spoken alerts will play for trains",
 	LanesOnly			= "Only announce incoming lanes",
 	MovementsOnly		= "Only announce lane movements (Mythic Only)",
-	LanesandMovements	= "Announce incoming lanes & movmeents (Mythic Only)"
+	LanesandMovements	= "Announce incoming lanes & movements (Mythic Only)"
 })
 
 L:SetMiscLocalization({
