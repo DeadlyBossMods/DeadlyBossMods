@@ -3314,7 +3314,7 @@ do
 		if instanceType == "none" or C_Garrison:IsOnGarrisonMap() then
 			LastInstanceType = "none"
 			if not targetEventsRegistered then
-				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "SCENARIO_UPDATE")
+				DBM:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT")
 				targetEventsRegistered = true
 			end
 		else
@@ -4587,21 +4587,6 @@ do
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type:find("combat") and isBossEngaged(v.multiMobPullDetection or v.mob) then
 					self:StartCombat(v.mod, 0, "IEEU")
-				end
-			end
-		end
-	end
-	
-	function DBM:SCENARIO_UPDATE()
-		if not C_Garrison:IsOnGarrisonMap() then return end
-		local name = C_Scenario.GetInfo()
-		if not name then return end-- fix false mod load when visiting other player garrision.
-		local enabled = GetAddOnEnableState(playerName, "DBM-WorldEvents")
-		if not IsAddOnLoaded("DBM-WorldEvents") and enabled ~= 0 then
-			for i, v in ipairs(self.AddOns) do
-				if v.modId == "DBM-WorldEvents" then
-					self:LoadMod(v, true)
-					break
 				end
 			end
 		end
