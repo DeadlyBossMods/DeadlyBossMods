@@ -1,0 +1,32 @@
+﻿## Interface: 60100
+## X-Min-Interface: 60000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Garrison Invasions|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0주둔지 침공|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0要塞入侵|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMGarrisonInvasions_AllSavedVars
+## SavedVariablesPerCharacter: DBMGarrisonInvasions_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: OTHER
+## X-DBM-Mod-Category: WOD
+## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-Mod-Name: Garrison Invasions
+## X-DBM-Mod-Name-zhTW: 要塞入侵
+## X-DBM-Mod-Name-koKR: 주둔지 침공
+## X-DBM-Mod-MapID: 1159, 1331, 1158, 1153, 1152, 1330, 1116
+## X-DBM-Mod-Sort: 151
+## X-DBM-Mod-MinCoreRevision: 12473
+localization.en.lua
+localization.fr.lua
+localization.tw.lua
+localization.kr.lua
+localization.de.lua
+localization.cn.lua
+localization.br.lua
+Invasions.lua
+Annihilon.lua
+Teluur.lua
+LadyFleshsear.lua
+Drogan.lua
