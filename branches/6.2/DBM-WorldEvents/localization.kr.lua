@@ -199,3 +199,12 @@ L = DBM:GetModLocalization("LadyFleshsear")
 L:SetGeneralLocalization({
 	name = "여군주 살점소각"
 })
+
+----------------------
+--  Commander Dro'gan  --
+----------------------
+L = DBM:GetModLocalization("Drogan")
+
+L:SetGeneralLocalization({
+	name = "사령관 드로관"
+})
