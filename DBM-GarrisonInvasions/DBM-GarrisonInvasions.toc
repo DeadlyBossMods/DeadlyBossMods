@@ -3,6 +3,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Garrison Invasions|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0주둔지 침공|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0要塞入侵|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Garnisonsinvasionen|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -15,6 +16,7 @@
 ## X-DBM-Mod-Name: Garrison Invasions
 ## X-DBM-Mod-Name-zhTW: 要塞入侵
 ## X-DBM-Mod-Name-koKR: 주둔지 침공
+## X-DBM-Mod-Name-deDE: Garnisonsinvasionen
 ## X-DBM-Mod-MapID: 1159, 1331, 1158, 1153, 1152, 1330, 1116
 ## X-DBM-Mod-Sort: 151
 ## X-DBM-Mod-MinCoreRevision: 12473
