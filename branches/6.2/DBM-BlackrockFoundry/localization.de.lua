@@ -17,6 +17,12 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1202)
 
+L:SetOptionLocalization({
+	InterruptBehavior	= "Verhalten der Unterbrechungswarnungen",
+	Smart				= "basierend auf dem Stapel von Schwarzfelsstacheln des Bosses",
+	Fixed				= "immer 5er- oder 3er-Sequenz nutzen (selbst wenn sich der Boss nicht so verhält)"
+})
+
 ---------------------------
 -- The Blast Furnace --
 ---------------------------
@@ -129,7 +135,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	PositionsAllPhases	= "Gebe Position in $spell:156096 Schreien während allen Phasen an (anstatt nur in Phase 3) (im Wesentlichen für Testzwecke, nicht empfohlen)"
+	PositionsAllPhases	= "Gebe Position in $spell:156096 Schreien während allen Phasen an (anstatt nur in Phase 3) (im Wesentlichen für Testzwecke, nicht empfohlen)",
+	InfoFrame			= "Zeige Infofenster für $spell:155992 und $spell:156530"
 })
 
 L:SetMiscLocalization({
