@@ -65,3 +65,12 @@ L = DBM:GetModLocalization("LadyFleshsear")
 L:SetGeneralLocalization({
 	name = "Lady Schindflamme"
 })
+
+----------------------
+--  Commander Dro'gan  --
+----------------------
+L = DBM:GetModLocalization("Drogan")
+
+L:SetGeneralLocalization({
+	name = "Kommandant Dro'gan"
+})
