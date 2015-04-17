@@ -131,7 +131,7 @@ local voicePenetratingShot				= mod:NewVoice(164271) --stack
 mod:AddSetIconOption("SetIconOnRapidFire", 156626, true)
 mod:AddSetIconOption("SetIconOnBloodRitual", 158078, true)
 mod:AddSetIconOption("SetIconOnHeartSeeker", 158010, true)
-mod:AddHudMapOption("HudMapOnRapidFire", 156631)--Green markers
+mod:AddHudMapOption("HudMapOnRapidFire", 156631)--Yellow markers
 mod:AddHudMapOption("HudMapOnBloodRitual", 158078)--Red markers
 mod:AddBoolOption("filterBladeDash3", false)
 mod:AddBoolOption("filterBloodRitual3", false)
