@@ -352,7 +352,7 @@ local targetEventsRegistered = false
 local targetMonitor = nil
 local wowTOC = select(4, GetBuildInfo())
 
-local fakeBWRevision = 13042
+local fakeBWRevision = 13052
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
