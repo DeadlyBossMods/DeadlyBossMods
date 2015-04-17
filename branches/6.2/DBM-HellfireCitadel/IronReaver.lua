@@ -59,8 +59,8 @@ local timerReactiveBomb				= mod:NewCastTimer(30, 186676)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
-local countdownFireBombExplodes		= mod:NewCountdownFades(45, 181999)--One countdown option for all types
-local countdownArtillery			= mod:NewCountdown("Alt13", 182280)--Duration not in spell tooltip, countdown add when duration discovered from testing
+local countdownFireBombExplodes		= mod:NewCountdown(45, 181999)--One countdown option for all types
+local countdownArtillery			= mod:NewCountdownFades("Alt13", 182280)--Duration not in spell tooltip, countdown add when duration discovered from testing
 
 local voiceArtillery				= mod:NewVoice(182280)--generic "justrun"? This is basically mark of chaos, but on anyone not just tank. Custom voice needed if justrun not informative enough?
 local voicePounding					= mod:NewVoice(182020)--aesoon
