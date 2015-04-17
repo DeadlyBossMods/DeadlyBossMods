@@ -15,9 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 182020 179889 182066 186449 181999 182668",
 	"SPELL_CAST_SUCCESS 187172 185250 185248",
 	"SPELL_AURA_APPLIED 182280 182534 186652 186667 186676",
-	"SPELL_AURA_REMOVED 182280 182534 186652 186667 186676",
-	"SPELL_PERIODIC_DAMAGE 182001",
-	"SPELL_ABSORBED 182001"
+	"SPELL_AURA_REMOVED 182280 182534 186652 186667 186676"
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"--For quick enable if not SPELL_AURA_APPLIED
 )
 
@@ -36,7 +34,7 @@ local warnFuelStreak				= mod:NewCastAnnounce(182668, 2)
 
 local specWarnArtillery				= mod:NewSpecialWarningMoveAway(182280, nil, nil, nil, 3, nil, 2)
 local yellArtillery					= mod:NewYell(182108)
-local specWarnUnstableOrbGTFO		= mod:NewSpecialWarningMove(182001, nil, nil, nil, nil, nil, 2)--Damage ID for sure, only one on wowhead that shows damage
+--local specWarnUnstableOrbGTFO		= mod:NewSpecialWarningMove(182001, nil, nil, nil, nil, nil, 2)--Damage ID for sure, only one on wowhead that shows damage
 local specWarnPounding				= mod:NewSpecialWarningSpell(182020, nil, nil, nil, 2, nil, 2)--182020 begincast, 182022 castsuccess according to wowhead
 local specWarnBlitz					= mod:NewSpecialWarningDodge(179889, nil, nil, nil, 2, nil, 2)
 local specWarnFallingSlam			= mod:NewSpecialWarningSpell(182066, nil, nil, nil, 2, nil, 2)
@@ -65,7 +63,7 @@ local countdownArtillery			= mod:NewCountdownFades("Alt13", 182280)--Duration no
 local voiceArtillery				= mod:NewVoice(182280)--generic "justrun"? This is basically mark of chaos, but on anyone not just tank. Custom voice needed if justrun not informative enough?
 local voicePounding					= mod:NewVoice(182020)--aesoon
 local voiceBlitz					= mod:NewVoice(179889)--chargemove
-local voiceUnstableOrbGTFO			= mod:NewVoice(182001)
+--local voiceUnstableOrbGTFO			= mod:NewVoice(182001)
 
 mod:AddRangeFrameOption(8, 182001)--TODO, make it show only when unstable orb is usuable, instead of entire fight. Only show it for those it can target, probably ranged?
 mod:AddSetIconOption("SetIconOnArtillery", 182280, true)
@@ -197,11 +195,3 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownFireBombExplodes:Start(30)
 	end
 end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 182001 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
-		specWarnUnstableOrbGTFO:Show()
-		voiceUnstableOrbGTFO:Play("runaway")
-	end
-end
-mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
