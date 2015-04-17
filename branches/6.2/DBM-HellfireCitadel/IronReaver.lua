@@ -120,7 +120,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 182280 then
-		warnArtillery:Show(args.destName)
+		warnArtillery:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnArtillery:Show()
 			yellArtillery:Yell()
@@ -128,7 +128,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			countdownArtillery:Start()
 		end
 		if self.Options.SetIconOnArtillery then
-			self:SetIcon(args.destName, 2)
+			self:SetSortedIcon(0.5, args.destName, 2, 3)
 		end
 		if self.Options.HudMapOnArt then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 13, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
