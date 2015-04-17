@@ -17,7 +17,7 @@
 ## X-DBM-Mod-Name-zhTW: 要塞入侵
 ## X-DBM-Mod-Name-koKR: 주둔지 침공
 ## X-DBM-Mod-Name-deDE: Garnisonsinvasionen
-## X-DBM-Mod-MapID: 1159, 1331, 1158, 1153, 1152, 1330, 1116
+## X-DBM-Mod-MapID: 1159, 1331, 1158, 1153, 1152, 1330, 1116, 1160, 1154
 ## X-DBM-Mod-Sort: 151
 ## X-DBM-Mod-MinCoreRevision: 12473
 localization.en.lua
