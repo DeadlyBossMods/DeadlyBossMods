@@ -5,74 +5,131 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(90284)
 mod:SetEncounterID(1785)
 mod:SetZone()
---mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
---mod:SetRespawnTime(20)
+mod:SetUsedIcons(4, 3, 2)
+--mod:SetRespawnTime(20)--I'm dumb and forgot
 
 mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 182020 179889 182066 186449 181999 182668",
-	"SPELL_CAST_SUCCESS 187172 185250 185248",
-	"SPELL_AURA_APPLIED 182280 182534 186652 186667 186676",
-	"SPELL_AURA_REMOVED 182280 182534 186652 186667 186676"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"--For quick enable if not SPELL_AURA_APPLIED
+	"SPELL_CAST_START 179889 182066 186449 181999 185282 182055 182668",
+	"SPELL_AURA_APPLIED 182280 182020 182074 182001",
+	"SPELL_AURA_APPLIED_DOSE 182074",
+	"SPELL_AURA_REMOVED 182280",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, check debuff duration for artillery
---TODO, check target scanning for unstable orb target (or if target is in SUCCESS event)
---TODO, verify orb cast ID
---TODO, check target scanning for blitz target
 --TODO, check falling slam for target scanning.
 --TODO, see if one of the instance cast spellids are earlier than channeled casts for falling slam
---TODO, check Firebomb CAST for target scanning
---TODO, verify bombs use SPELL_AURA_APPLIED/SPELL_AURA_REMOVED as I suspect
-local warnArtillery					= mod:NewTargetAnnounce(182280, 4)
-local warnUnstableOrb				= mod:NewSpellAnnounce(182001, 3)--What's cast ID? 182001, 187172, 185250, 185248. My money is on 185248
-local warnFirebomb					= mod:NewCastAnnounce(181999, 4)--Firebomb Cast
-local warnFuelStreak				= mod:NewCastAnnounce(182668, 2)
+local warnArtillery					= mod:NewTargetCountAnnounce(182280, 4)
+local warnUnstableOrb				= mod:NewTargetCountAnnounce(182001, 3, nil, false)--Off by default do to some frequent casts. Boss fires 2 orbs. anyone then hit on landing gets debuff, if ranged properly spread, 2 targets, if numpty, could be 30 targets
+local warnFuelStreak				= mod:NewCountAnnounce(182668, 3)
 
 local specWarnArtillery				= mod:NewSpecialWarningMoveAway(182280, nil, nil, nil, 3, nil, 2)
 local yellArtillery					= mod:NewYell(182108)
---local specWarnUnstableOrbGTFO		= mod:NewSpecialWarningMove(182001, nil, nil, nil, nil, nil, 2)--Damage ID for sure, only one on wowhead that shows damage
-local specWarnPounding				= mod:NewSpecialWarningSpell(182020, nil, nil, nil, 2, nil, 2)--182020 begincast, 182022 castsuccess according to wowhead
-local specWarnBlitz					= mod:NewSpecialWarningDodge(179889, nil, nil, nil, 2, nil, 2)
-local specWarnFallingSlam			= mod:NewSpecialWarningSpell(182066, nil, nil, nil, 2, nil, 2)
-local specWarnVolatileFirebomb		= mod:NewSpecialWarningSwitch(182534, "Dps")
-local specWarnQuickFuseFirebomb		= mod:NewSpecialWarningSwitch(186652, "Dps")--Mythic
-local specWarnBurningFirebomb		= mod:NewSpecialWarningSwitch(186667, "Dps")--Mythic
-local specWarnReactiveFirebomb		= mod:NewSpecialWarningSwitch(186676, "Tank")--Mythic
+local specWarnImmolation			= mod:NewSpecialWarningMove(182074, nil, nil, nil, 1, nil, 2)
+local specWarnBarrage				= mod:NewSpecialWarningCount(185282, nil, nil, nil, 2, nil, 2)--Count probably better than dodge
+local specWarnPounding				= mod:NewSpecialWarningCount(182020, nil, nil, nil, 2, nil, 2)
+local specWarnBlitz					= mod:NewSpecialWarningCount(179889, nil, nil, nil, 2, nil, 2)--Count probably better than dodge
+local specWarnFullCharge			= mod:NewSpecialWarningSpell(182055, nil, nil, nil, 1)
+local specWarnFallingSlam			= mod:NewSpecialWarningSpell(182066, nil, nil, nil, 2)--Phase change
+local specWarnFirebomb				= mod:NewSpecialWarningSwitchCount(181999, "-Healer", nil, nil, nil, 1, nil, 2)
 
---local timerArtilleryCD			= mod:NewCDTimer(107, 182108)--CD not known
---local timerUnstableOrbCD			= mod:NewCDTimer(107, 182001)--CD not known
---local timerPoundingCD				= mod:NewCDTimer(107, 182020)--CD not known
---local timerBlitzCD				= mod:NewCDTimer(107, 179889)--CD not known
---local timerFallingSlamCD			= mod:NewCDTimer(107, 182066)--CD not known
---local timerFirebombCD				= mod:NewCDTimer(107, 181999)--CD not known
-local timerVolatileBomb				= mod:NewCastTimer(45, 182534)
+--mod:AddTimerLine(ALL)--Uncomment when ground phase and air phase are done, don't want to enable this line now and incorrectly flag everything as "All"
+local timerArtilleryCD				= mod:NewNextCountTimer(15, 182108)
+--mod:AddTimerLine(ALL)--Find translation that works for "Ground Phase"
+local timerUnstableOrbCD			= mod:NewNextCountTimer(3, 182001, nil, "Ranged")
+local timerPoundingCD				= mod:NewNextCountTimer(24, 182020)
+local timerBlitzCD					= mod:NewNextCountTimer(5, 179889)
+local timerBarrageCD				= mod:NewNextCountTimer(15, 185282)
+local timerFullChargeCD				= mod:NewNextTimer(136, 182055)
+--mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)--Find translation that works for "Air Phase"
+local timerFallingSlamCD			= mod:NewNextTimer(54, 182066)
+local timerFuelLeakCD				= mod:NewNextCountTimer(15, 182668)--Fire bombs always immediately after, so no timer needed
+--All of bomb timers are time+2 because dbm starts timers at cast start of 181999
+local timerVolatileBomb				= mod:NewCastTimer(47, 182534, nil, "Dps")--The only timer that's on normal/heroic/lfr so not too spammy to have on
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerQuickFuseBomb			= mod:NewCastTimer(20, 186652)
-local timerBurningBomb				= mod:NewCastTimer(40, 186667)
-local timerReactiveBomb				= mod:NewCastTimer(30, 186676)
+local timerQuickFuseBomb			= mod:NewCastTimer(22, 186652, nil, false)--Timer spam, optional, maybe make rangeddps only default?
+local timerBurningBomb				= mod:NewCastTimer(42, 186667, nil, false)--Timer spam, optional, maybe make meleedps only by default?
+local timerReactiveBomb				= mod:NewCastTimer(32, 186676, nil, "Tank")--Since tanks only have 1 bomb to worry about. not too spammy to have on by default.
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
-local countdownFireBombExplodes		= mod:NewCountdown(45, 181999)--One countdown option for all types
-local countdownArtillery			= mod:NewCountdownFades("Alt13", 182280)--Duration not in spell tooltip, countdown add when duration discovered from testing
+local countdownFuelStreak			= mod:NewCountdown(15, 182668)
+local countdownBarrage				= mod:NewCountdown(15, 185282)
+local countdownArtillery			= mod:NewCountdown("AltTwo15", 182108)--Important to have different voice from fades, because they are happening at same time most of time
+local countdownArtilleryFade		= mod:NewCountdownFades("Alt13", 182280)--Duration not in spell tooltip, countdown add when duration discovered from testing
 
 local voiceArtillery				= mod:NewVoice(182280)--generic "justrun"? This is basically mark of chaos, but on anyone not just tank. Custom voice needed if justrun not informative enough?
 local voicePounding					= mod:NewVoice(182020)--aesoon
 local voiceBlitz					= mod:NewVoice(179889)--chargemove
---local voiceUnstableOrbGTFO			= mod:NewVoice(182001)
+local voiceImmolation				= mod:NewVoice(182074)
+local voiceBarrage					= mod:NewVoice(185282)--Shockwave, kind of
+local voiceFirebomb					= mod:NewVoice(181999)--Killmob
 
-mod:AddRangeFrameOption(8, 182001)--TODO, make it show only when unstable orb is usuable, instead of entire fight. Only show it for those it can target, probably ranged?
+mod:AddRangeFrameOption("8/30")
 mod:AddSetIconOption("SetIconOnArtillery", 182280, true)
 mod:AddHudMapOption("HudMapOnArt", 182108)
 
-function mod:OnCombatStart(delay)
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(8)
+mod.vb.artilleryActive = 0--Number of debuffs count. Room is MASSIVE and combat log range could be an issue. Unsure at this time. DBM didn't seem to miss any artillery debuffs in testing.
+mod.vb.groundPhase = true
+mod.vb.tankIcon = 2
+mod.vb.artilleryCount = 0--Cast count
+mod.vb.barrageCount = 0
+mod.vb.poundingCount = 0
+mod.vb.blitzCount = 0
+mod.vb.unstableOrbCount = 0
+mod.vb.firebombCount = 0
+mod.vb.fuelCount = 0
+--All timers are energy based and scripted. boss uses x ability at y energy.
+--These tables establish the cast sequence by ability.
+--If energy rates are different in different modes, then each table will need to be different.
+--These tables are Heroic timers. Hopefully all modes the same. If not, easily fixed
+local artilleryTimers = {9.3, 9, 30, 15, 9, 24, 15}--Phase 1, phase 2 is just 15
+local barrageTimers = {12, 30, 12, 45}
+local blitzTimers = {63, 5, 58, 4.7}
+local unstableOrbsTimers = {3, 3, 3, 9, 6, 3, 21, 3, 30, 15}--While it may seem most of the timers (3 seconds apart) aren't useful. they can be quite useful for grouped movement/healing in the larger gaps
+local poundingTimers = {33, 54, 24}
+
+local debuffFilter
+local UnitDebuff = UnitDebuff
+local debuffName = GetSpellInfo(182280)
+do
+	debuffFilter = function(uId)
+		if UnitDebuff(uId, debuffName) then
+			return true
+		end
 	end
+end
+
+local function updateRangeFrame(self)
+	if not self.Options.RangeFrame then return end
+	if self.vb.artilleryActive > 0 then--Artillery
+		if UnitDebuff("player", debuffName) then
+			DBM.RangeCheck:Show(30, nil)
+		else
+			DBM.RangeCheck:Show(30, debuffFilter)
+		end
+	elseif self:IsRanged() and self.vb.groundPhase then--Unstable Orb
+		DBM.RangeCheck:Show(8)
+	else
+		DBM.RangeCheck:Hide()
+	end
+end
+
+function mod:OnCombatStart(delay)
+	self.vb.artilleryActive = 0
+	self.vb.groundPhase = true
+	self.vb.tankIcon = 2
+	self.vb.artilleryCount = 0
+	self.vb.barrageCount = 0
+	self.vb.poundingCount = 0
+	self.vb.blitzCount = 0
+	self.vb.unstableOrbCount = 0
+	self.vb.firebombCount = 0
+	self.vb.fuelCount = 0
+	updateRangeFrame(self)
+	--Boss uses "Ground Phase" trigger after pull. Do not start timers here
 end
 
 function mod:OnCombatEnd()
@@ -86,74 +143,124 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 182020 then
-		specWarnPounding:Show()
-		voicePounding:Play("aesoon")
-	elseif spellId == 179889 then
-		specWarnBlitz:Show()
+	if spellId == 179889 then
+		self.vb.blitzCount = self.vb.blitzCount + 1
+		specWarnBlitz:Show(self.vb.blitzCount)
 		voiceBlitz:Play("chargemove")
-	elseif spellId == 182066 or spellId == 186449 then
-		DBM:Debug("Falling Slam is using spellid: "..spellId, 2)
-		specWarnFallingSlam:Show()
-	elseif spellId == 181999 then
-		if not self:IsMythic() then--Only one type of firebomb, give switch special warning now
-			specWarnVolatileFirebomb:Show()
-		else
-			warnFirebomb:Show()--Announce cast, but we can't announce type until it lands and gains one of the 3 mythic buffs
+		local cooldown = blitzTimers[self.vb.blitzCount]
+		if cooldown then
+			timerBlitzCD:Start(cooldown, cooldown+1)
 		end
+	elseif spellId == 182066 or spellId == 186449 then--182066 confirmed on heroic. Mythic uses 1.5 cast version (186449)?
+		self.vb.groundPhase = true
+		specWarnFallingSlam:Show()
+		updateRangeFrame(self)
+	elseif spellId == 181999 then
+		self.vb.firebombCount = self.vb.firebombCount + 1
+		specWarnFirebomb:Show(self.vb.firebombCount)
+		voiceFirebomb:Play("killmob")
+		--Count is used as a unique timer arg, so 2nd and 3rd bombs start different timers, not replace existing ones.
+		--Count doesn't show in timer text itself, they are cast timers.
+		timerVolatileBomb:Start(nil, self.vb.firebombCount)
+		if self:IsMythic() then
+			timerQuickFuseBomb:Start(nil, self.vb.firebombCount)
+			timerBurningBomb:Start(nil, self.vb.firebombCount)
+			timerReactiveBomb:Start(nil, self.vb.firebombCount)
+		end
+	elseif spellId == 185282 then
+		self.vb.barrageCount = self.vb.barrageCount + 1
+		specWarnBarrage:Show(self.vb.barrageCount)
+		local cooldown = barrageTimers[self.vb.barrageCount]
+		if cooldown then
+			timerBarrageCD:Start(cooldown, cooldown+1)
+			countdownBarrage:Start(cooldown)
+		end
+		voiceBarrage:Play("shockwave")
+	elseif spellId == 182055 then
+		specWarnFullCharge:Show()
+		self.vb.fuelCount = 0
+		self.vb.firebombCount = 0
+		self.vb.artilleryCount = 0--Also used in air phase, with it's own air phase counter
+		timerFuelLeakCD:Start(9, 1)
+		countdownFuelStreak:Start(9)
+		timerArtilleryCD:Start(9, 1)
+		countdownArtillery:Start(9)
+		timerFallingSlamCD:Start()
 	elseif spellId == 182668 then
-		warnFuelStreak:Show()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	--182001 187172 185250 185248
-	if spellId == 187172 or spellId == 185250 or spellId == 185248 then--I REALLY doubt it's 182001, so excluding to avoid spammy situation where sometimes fire on ground fires SPELL_CAST_SUCCESS every time someone runs through it
-		DBM:Debug("Unstable orb is using spellid: "..spellId, 2)
-		warnUnstableOrb:Show()
+		self.vb.fuelCount = self.vb.fuelCount + 1
+		warnFuelStreak:Show(self.vb.fuelCount)
+		if self.vb.fuelCount < 3 then
+			timerFuelLeakCD:Start(nil, self.vb.fuelCount+1)
+			countdownFuelStreak:Start()
+		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 182280 then
-		warnArtillery:CombinedShow(0.3, args.destName)
+		self.vb.artilleryActive = self.vb.artilleryActive + 1
+		warnArtillery:CombinedShow(0.3, self.vb.artilleryCount, args.destName)
+		if self:AntiSpam(3, 1) then
+			self.vb.artilleryCount = self.vb.artilleryCount + 1
+			if self.vb.groundPhase then
+				local cooldown = artilleryTimers[self.vb.artilleryCount]
+				if cooldown and self:IsTank() then--Only show timer to tanks in phase 1
+					timerArtilleryCD:Start(cooldown, cooldown+1)
+					countdownArtillery:Start(cooldown)
+				end
+			else
+				if self.vb.artilleryCount < 3 then--Only 3 casts in air phase
+					timerArtilleryCD:Start(15, self.vb.artilleryCount+1)
+					countdownArtillery:Start(15)
+				end
+			end
+		end
 		if args:IsPlayer() then
 			specWarnArtillery:Show()
 			yellArtillery:Yell()
 			voiceArtillery:Play("justrun")
-			countdownArtillery:Start()
+			countdownArtilleryFade:Start()
 		end
 		if self.Options.SetIconOnArtillery then
-			self:SetSortedIcon(0.5, args.destName, 2, 3)
+			if self.vb.groundPhase then--1 target, alternating icons because two debuffs will overlap but not cast at same time
+				self:SetIcon(args.destName, self.vb.tankIcon)
+				if self.vb.tankIcon == 2 then
+					self.vb.tankIcon = 3
+				else
+					self.vb.tankIcon = 2
+				end
+			else
+				self:SetSortedIcon(0.5, args.destName, 2, 3)--3 targets at once
+			end
 		end
 		if self.Options.HudMapOnArt then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 13, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
 		end
-	elseif spellId == 182534 then--Volatile
-		timerVolatileBomb:Start()
-		countdownFireBombExplodes:Start()
-	elseif spellId == 186652 then--Quickfuse
-		specWarnQuickFuseFirebomb:Show()
-		timerQuickFuseBomb:Start()
-		countdownFireBombExplodes:Start(20)
-	elseif spellId == 186667 then--Burning
-		specWarnBurningFirebomb:Show()
-		timerBurningBomb:Start()
-		countdownFireBombExplodes:Start(40)
-	elseif spellId == 186676 then--Reactive	
-		specWarnReactiveFirebomb:Show()
-		timerReactiveBomb:Start()
-		countdownFireBombExplodes:Start(30)
+		updateRangeFrame(self)
+	elseif spellId == 182020 then
+		self.vb.poundingCount = self.vb.poundingCount + 1
+		specWarnPounding:Show(self.vb.poundingCount)
+		voicePounding:Play("aesoon")
+		local cooldown = poundingTimers[self.vb.poundingCount]
+		if cooldown then
+			timerPoundingCD:Start(cooldown, cooldown+1)
+		end
+	elseif spellId == 182074 and args:IsPlayer() and self:AntiSpam(2, 2) then
+		specWarnImmolation:Show()
+		voiceImmolation:Play("runaway")
+	elseif spellId == 182001 then
+		warnUnstableOrb:CombinedShow(0.3, self.vb.unstableOrbCount, args.destName)
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 182280 then
+		self.vb.artilleryActive = self.vb.artilleryActive - 1
 		if args:IsPlayer() then
-			countdownArtillery:Cancel()
+			countdownArtilleryFade:Cancel()
 		end
 		if self.Options.SetIconOnArtillery then
 			self:SetIcon(args.destName, 0)
@@ -161,37 +268,32 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.HudMapOnArt then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
-	elseif spellId == 182534 then--Volatile
-		timerVolatileBomb:Cancel()
-		countdownFireBombExplodes:Cancel()
-	elseif spellId == 186652 then--Quickfuse
-		timerQuickFuseBomb:Cancel()
-		countdownFireBombExplodes:Cancel()
-	elseif spellId == 186667 then--Burning
-		timerBurningBomb:Cancel()
-		countdownFireBombExplodes:Cancel()
-	elseif spellId == 186676 then--Reactive	
-		timerReactiveBomb:Cancel()
-		countdownFireBombExplodes:Cancel()
+		updateRangeFrame(self)
 	end
 end
 
---In case this isn't in combat log
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 182534 then--Volatile
-		timerVolatileBomb:Start()
-		countdownFireBombExplodes:Start()
-	elseif spellId == 186652 then--Quickfuse
-		specWarnQuickFuseFirebomb:Show()
-		timerQuickFuseBomb:Start()
-		countdownFireBombExplodes:Start(20)
-	elseif spellId == 186667 then--Burning
-		specWarnBurningFirebomb:Show()
-		timerBurningBomb:Start()
-		countdownFireBombExplodes:Start(40)
-	elseif spellId == 186676 then--Reactive	
-		specWarnReactiveFirebomb:Show()
-		timerReactiveBomb:Start()
-		countdownFireBombExplodes:Start(30)
+	if spellId == 185250 and self:AntiSpam(2, 3) then--Unstable Orb Cast
+		self.vb.unstableOrbCount = self.vb.unstableOrbCount + 1
+		local cooldown = unstableOrbsTimers[self.vb.unstableOrbCount]
+		if cooldown then
+			timerUnstableOrbCD:Start(cooldown, cooldown+1)
+		end
+	elseif spellId == 181923 then--Ground Phase (using this to start timers because it's more accurate than "falling" cast, because falling cast is shorter on mythic)
+		--Reset Counts
+		self.vb.artilleryCount = 0
+		self.vb.barrageCount = 0
+		self.vb.blitzCount = 0
+		self.vb.poundingCount = 0
+		self.vb.unstableOrbCount = 0
+		--Start ground phase timers
+		timerUnstableOrbCD:Start(3, 1)
+		timerArtilleryCD:Start(9.3, 1)
+		countdownArtillery:Start(9.3)
+		timerBarrageCD:Start(12, 1)
+		countdownBarrage:Start(12)
+		timerPoundingCD:Start(33, 1)
+		timerBlitzCD:Start(63, 1)
+		timerFullChargeCD:Start()
 	end
 end
