@@ -20,6 +20,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_AURA_REMOVED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
+	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -165,6 +166,17 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end--]]
 
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 94455 then--Blademaster Jubei'thosr
+		--timerFelstormCD:Cancel()
+	elseif cid == 92144 then--Dia Darkwhisper
+		--timerReapCD:Cancel()
+		--timerDarknessCD:Cancel()
+	elseif cid == 92146 then--Gurthogg Bloodboil
+		
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 184682 then--Just a guess, but doesn't look like a spell that shows in combat log. they didn't bother to localize spellid or give it an icon or tooltip. Looks like 30% version of spell, that cancels reap and lasts rest of fight.
