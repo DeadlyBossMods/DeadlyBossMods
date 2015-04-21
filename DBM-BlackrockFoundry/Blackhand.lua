@@ -403,10 +403,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		markTargets[#markTargets + 1] = args.destName
 		self:Unschedule(warnMarked)
-		if (not self:IsMythic() and #markTargets == 2) or #markTargets == 3 then--Have all targets, warn immediately
+		local expectedMFDCount = self:IsMythic() and 3 or 2
+		if #markTargets == expectedMFDCount then--Have all targets, warn immediately
 			warnMarked(self)
 		else
-			self:Schedule(1, warnMarked, self)
+			self:Schedule(1.5, warnMarked, self)
 		end
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
@@ -417,11 +418,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.SetIconOnMarked then
-			if self:IsMythic() then
-				self:SetSortedIcon(1, args.destName, 1, 3)
-			else
-				self:SetSortedIcon(1, args.destName, 1, 2)
-			end
+			self:SetSortedIcon(1.5, args.destName, 1, expectedMFDCount)
 		end
 		if self.Options.HudMapOnMFD then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 5, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
