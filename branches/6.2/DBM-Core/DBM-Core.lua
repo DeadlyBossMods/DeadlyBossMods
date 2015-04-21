@@ -5220,6 +5220,7 @@ do
 				local totalKills = mod.stats[statVarTable[savedDifficulty].."Kills"]
 				if thisTime < 30 then -- Normally, one attempt will last at least 30 sec.
 					totalPulls = totalPulls - 1
+					mod.stats[statVarTable[savedDifficulty].."Pulls"] = totalPulls
 					if self.Options.ShowWipeMessage then
 						if scenario then
 							self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT:format(difficultyText..name, strFromTime(thisTime)))
