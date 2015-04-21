@@ -405,7 +405,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (self:IsMythic() and #markTargets == 3) or #markTargets == 2 then--Have all targets, warn immediately
 			warnMarked(self)
 		else
-			self:Schedule(1, warnMarked, self)
+			self:Schedule(3, warnMarked, self)
 		end
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
@@ -417,9 +417,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnMarked then
 			if self:IsMythic() then
-				self:SetSortedIcon(1, args.destName, 1, 3)
+				self:SetSortedIcon(3, args.destName, 1, 3)
 			else
-				self:SetSortedIcon(1, args.destName, 1, 2)
+				self:SetSortedIcon(3, args.destName, 1, 2)
 			end
 		end
 		if self.Options.HudMapOnMFD then
