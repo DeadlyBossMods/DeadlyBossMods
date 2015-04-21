@@ -7,7 +7,7 @@ mod:SetEncounterID(1704)
 mod:SetZone()
 mod:SetUsedIcons(3, 2, 1)
 mod:SetHotfixNoticeRev(13480)
-mod:SetRespawnTime(30)
+mod:SetRespawnTime(29.5)
 
 mod:RegisterCombat("combat")
 
@@ -41,7 +41,7 @@ local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 
 local specWarnMFDPosition			= mod:NewSpecialWarning("specWarnMFDPosition", nil, false, nil, 1, nil, 4)--Mythic Position Assignment. No option, connected to specWarnMarkedforDeath
 local specWarnMarkedforDeathOther	= mod:NewSpecialWarningTargetCount(156096, false)
 local yellMarkedforDeath			= mod:NewYell(156096)
-local specWarnThrowSlagBombs		= mod:NewSpecialWarningSpell(156030, nil, nil, nil, 2, nil, 2)--This spell is not gtfo.
+local specWarnThrowSlagBombs		= mod:NewSpecialWarningCount(156030, nil, nil, nil, 2, nil, 2)--This spell is not gtfo.
 local specWarnShatteringSmash		= mod:NewSpecialWarningCount(155992, "Melee", nil, nil, nil, nil, 2)
 local specWarnMoltenSlag			= mod:NewSpecialWarningMove(156401)
 --Stage Two: Storage Warehouse
@@ -65,7 +65,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDemolitionCD				= mod:NewNextCountTimer(45, 156425)
 local timerMassiveDemolitionCD		= mod:NewNextCountTimer(6, 156479)
 local timerMarkedforDeathCD			= mod:NewNextCountTimer(15.5, 156096)
-local timerThrowSlagBombsCD			= mod:NewCDTimer(24.5, 156030)--It's a next timer, but sometimes delayed by Shattering Smash
+local timerThrowSlagBombsCD			= mod:NewCDCountTimer(24.5, 156030, nil, "Melee")--It's a next timer, but sometimes delayed by Shattering Smash
 local timerShatteringSmashCD		= mod:NewCDCountTimer(44.5, 155992)--power based, can variate a little do to blizzard buggy power code.
 local timerImpalingThrow			= mod:NewCastTimer(5, 156111)--How long marked target has to aim throw at Debris Pile or Siegemaker
 --Stage Two: Storage Warehouse
@@ -282,7 +282,8 @@ function mod:OnCombatStart(delay)
 	self.vb.SlagEruption = 0
 	self.vb.smashCount = 0
 	self.vb.markCount = 0
-	timerThrowSlagBombsCD:Start(5.5-delay)
+	self.vb.slagCastCount = 0
+	timerThrowSlagBombsCD:Start(5.5-delay, 1)
 	countdownSlagBombs:Start(5.5-delay)
 	timerDemolitionCD:Start(15-delay, 1)
 	timerShatteringSmashCD:Start(21-delay, 1)
@@ -537,8 +538,9 @@ mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if (spellId == 156031 or spellId == 156998) and self:AntiSpam(2, 2) then--156031 phase 1, 156991 phase 2. 156998 is also usuable for phase 2 but 156991
-		specWarnThrowSlagBombs:Show()
-		timerThrowSlagBombsCD:Start()
+		self.vb.slagCastCount = self.vb.slagCastCount + 1
+		specWarnThrowSlagBombs:Show(self.vb.slagCastCount)
+		timerThrowSlagBombsCD:Start(nil, self.vb.slagCastCount+1)
 		countdownSlagBombs:Start()
 		voiceThrowSlagBombs:Play("bombsoon")
 	elseif spellId == 156425 then
@@ -588,6 +590,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.siegemaker = 0
 		self.vb.markCount = 0
 		self.vb.markCount2 = 0
+		self.vb.slagCastCount = 0
 		timerDemolitionCD:Cancel()
 		timerMassiveDemolitionCD:Cancel()
 		timerMassiveDemolitionCD:Unschedule()
@@ -596,7 +599,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownSlagBombs:Cancel()
 		countdownSlagBombs:Start(11)
 		timerThrowSlagBombsCD:Cancel()
-		timerThrowSlagBombsCD:Start(11)--11-12.5
+		timerThrowSlagBombsCD:Start(11, 1)--11-12.5
 		timerSiegemakerCD:Start(15, 1)
 		countdownShatteringSmash:Cancel()
 		timerShatteringSmashCD:Cancel()
@@ -628,7 +631,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.phase = 3
 		self.vb.smashCount = 0
 		self.vb.markCount = 0
-		self.vb.slagCount = 0
+		self.vb.slagCastCount = 0
 		timerSiegemakerCD:Cancel()
 		timerThrowSlagBombsCD:Cancel()
 		countdownSlagBombs:Cancel()
