@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1392, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(76877)
+--mod:SetCreatureID(76877)--Doesn't exist yet? Maybe next PTR build
 mod:SetEncounterID(1787)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
@@ -13,8 +13,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181292 181293 181296 181297 181299 181300",
-	"SPELL_CAST_SUCCESS 180068 180115 180116 180117 181305",
-	"SPELL_AURA_APPLIED 180244 181306",
+	"SPELL_CAST_SUCCESS 180068 180115 180116 180117 181305 181307",
+	"SPELL_AURA_APPLIED 180244 181306 186882",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 181306",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -25,15 +25,22 @@ mod:RegisterEventsInCombat(
 --TODO, fix leap ID, i'm suspect of it being instant cast, maybe it is though.
 --TODO, verify energy IDs, all of them had 2 Potential canidates.
 --TODO, target announce, maybe mark players in grasping hands.
+--TODO, figure out more tank stuffs and where to plug in "taunt" warnings.
+--TODO, other countdowns, other voices, once ability importance is assessed.
 local warnLeap						= mod:NewSpellAnnounce(180068, 3)
 local warnShadowEnergy				= mod:NewSpellAnnounce(180115, 2)
-local warnExplosiveEnergy			= mod:NewSpellAnnounce(180116, 3)
+local warnExplosiveEnergy			= mod:NewSpellAnnounce(180116, 3)--This one looks more dangerous than other 2, because it enables the Explosive Runes ability
 local warnFoulEnergy				= mod:NewSpellAnnounce(180117, 2)
 --These are probably temp, changed to better tank special warnings when better understood
 local warnSwat						= mod:NewSpellAnnounce(181305, 3, nil, "Tank|Healer")
 local warnExplosiveBurst			= mod:NewTargetAnnounce(181306, 4)--Concerns everyone
+local warnEnrage					= mod:NewSpellAnnounce(186882, 3)--Mythic?
 
 local specWarnPound					= mod:NewSpecialWarningSpell(180244, nil, nil, nil, 2, nil, 2)
+local specWarnExplosiveBurst		= mod:NewSpecialWarningYou(181306)
+local specWarnExplosiveBurstNear	= mod:NewSpecialWarningClose(181306, nil, nil, nil, 3, nil, 2)
+local specWarnFoulCrush				= mod:NewSpecialWarningSwitch(181307, "Dps|Tank")--Tweak it as needed once can figure out how to detect what tank it's on
+local yellExplosiveBurst			= mod:NewYell(181306)
 local specWarnEmpShadowWaves		= mod:NewSpecialWarningDodge(181293, nil, nil, nil, 2, nil, 2)
 local specWarnShadowWaves			= mod:NewSpecialWarningDodge(181292, nil, nil, nil, 2, nil, 2)
 local specWarnExplosiveRunes		= mod:NewSpecialWarningMoveTo(181296, "-Tank")--Might need tweaking once more visible strategy and quantity of runes observed.
@@ -56,10 +63,9 @@ local countdownExplosiveBurst		= mod:NewCountdown("Alt10", 181306)
 
 local voicePound					= mod:NewVoice(180244)--aesoon
 local voiceShadowWaves				= mod:NewVoice(181292)--watchwave
+local voiceExplosiveBurst			= mod:NewVoice(181306)--justrun
 
 mod:AddRangeFrameOption(40, 181306)
---mod:AddHudMapOption("HudMapOnShatter", 155530, false)
-
 
 local debuffFilter
 do
@@ -72,6 +78,16 @@ do
 	end
 end
 
+local function trippleBurstCheck(self, target, first)
+	if self:CheckNearby(41, target) then--Second and third check will use smaller range
+		specWarnExplosiveBurstNear:Show(target)
+		voiceExplosiveBurst:Play("justrun")
+	end
+	if first then
+		self:Schedule(2.5, trippleBurstCheck, self, target)
+	end
+end
+
 function mod:OnCombatStart(delay)
 
 end
@@ -80,9 +96,6 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---[[	if self.Options.HudMapOnShatter then
-		DBMHudMap:Disable()
-	end--]]
 end 
 
 function mod:SPELL_CAST_START(args)
@@ -119,12 +132,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--timerLeapCD:Start()
 	elseif spellId == 180115 then
 		warnShadowEnergy:Show()
-	elseif SpellId == 180116 then
+	elseif spellId == 180116 then
 		warnExplosiveEnergy:Show()
 	elseif spellId == 180117 then
 		warnFoulEnergy:Show()
 	elseif spellId == 181305 then
 		warnSwat:Show()
+		--timerTankSpecialCD:Start()
+	elseif spellId == 181307 then
+		specWarnFoulCrush:Show()
 		--timerTankSpecialCD:Start()
 	end
 end
@@ -133,8 +149,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 181306 then
 		--timerTankSpecialCD:Start()
+		countdownExplosiveBurst:Start()
 		if args:IsPlayer() then
-
+			specWarnExplosiveBurst:Show()
+			yellExplosiveBurst:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(40)
 			end
@@ -142,11 +160,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(40, debuffFilter)
 			end
-			if close then
-				
+			if self:CheckNearby(41, args.destName) then
+				specWarnExplosiveBurstNear:Show(args.destName)
+				voiceExplosiveBurst:Play("justrun")
 			else
 				warnExplosiveBurst:Show(args.destName)
 			end
+			--Check player distance 3x, like mark of chaos, don't let players run INTO it after they are safe
+			self:Schedule(3, trippleBurstCheck, self, args.destName, true)
 		end
 	elseif spellId == 180244 then
 		specWarnPound:Show()
@@ -159,6 +180,8 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 181306 then
+		self:Unschedule(trippleBurstCheck)
+		countdownExplosiveBurst:Cancel()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
