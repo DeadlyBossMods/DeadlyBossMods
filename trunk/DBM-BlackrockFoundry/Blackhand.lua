@@ -405,7 +405,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (self:IsMythic() and #markTargets == 3) or #markTargets == 2 then--Have all targets, warn immediately
 			warnMarked(self)
 		else
-			self:Schedule(0.5, warnMarked, self)
+			self:Schedule(1, warnMarked, self)
 		end
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
