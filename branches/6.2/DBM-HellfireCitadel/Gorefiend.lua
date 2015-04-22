@@ -36,6 +36,7 @@ local warnRagingCharge					= mod:NewSpellAnnounce(187814, 3, nil, "Melee")
 
 local specWarnShadowofDeath				= mod:NewSpecialWarningYou(179864)
 local specWarnTouchofDoom				= mod:NewSpecialWarningRun(179977, nil, nil, nil, 4, nil, 2)
+local yellTouchofDoom					= mod:NewYell(179977)
 local specWarnSharedFate				= mod:NewSpecialWarningMoveTo(179908, nil, nil, nil, 3)--Only non rooted player get moveto. rooted player can't do anything.
 local yellSharedFate					= mod:NewYell(179909)--Only rooted player should yell
 local specWarnFeastofSouls				= mod:NewSpecialWarningSpell(181973, nil, nil, nil, 2)--Energy based, probably no cd, maybe add a soon announce off UNIT POWER
@@ -127,6 +128,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnTouchofDoom:Show()
 			voiceTouchofDoom:Play("runout")
+			yellTouchofDoom:Yell()
 		end
 	elseif spellId == 179909 then--Root version
 		warnSharedFate:CombinedShow(0.5, args.destName)
