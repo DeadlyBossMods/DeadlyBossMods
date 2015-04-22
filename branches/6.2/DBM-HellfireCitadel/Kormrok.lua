@@ -10,7 +10,6 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181292 181293 181296 181297 181299 181300",
 	"SPELL_CAST_SUCCESS 180068 180115 180116 180117 181305 181307",
@@ -175,7 +174,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--timerPoundCD:Start()
 	end
 end
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+--mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
