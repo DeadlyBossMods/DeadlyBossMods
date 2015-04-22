@@ -52,7 +52,7 @@ local yellReap						= mod:NewYell(184476)
 local specWarnDarkness				= mod:NewSpecialWarningSpell(184674, nil, nil, nil, 2)--30% version I believe. Don't know how the above 30% version yet, can't find a valid castID for it, just damage ID
 --Gurtogg Bloodboil
 local specWarnFelRage				= mod:NewSpecialWarningYou(184360)
-local specWarnInsignificance		= mod:NewSpecialWarningTaunt(184356)
+--local specWarnInsignificance		= mod:NewSpecialWarningTaunt(184356)
 local specWarnDemolishingLeap		= mod:NewSpecialWarningRun(184366, nil, nil, nil, 4)--Damage reduced by distance, run away from boss
 
 --Blademaster Jubei'thos
@@ -142,8 +142,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 184847 and self:AntiSpam(3.5, 1) then--Probably stacks very rapidly, so using antispam for now until better method constructed
 		local amount = args.amount or 1
 		warnAcidicWound:Show(args.destName, amount)
-	elseif spellId == 184356 and not args:IsPlayer() then
-		specWarnInsignificance:Show(args.destName)
+--	elseif spellId == 184356 and not args:IsPlayer() then
+--		specWarnInsignificance:Show(args.destName)
 	elseif spellId == 184360 then
 		if args:IsPlayer() then
 			specWarnFelRage:Show()
