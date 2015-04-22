@@ -5,14 +5,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1426)
 
-L:SetWarningLocalization({
-
-})
-
-L:SetOptionLocalization({
-
-})
-
 L:SetMiscLocalization({
 
 })
@@ -46,6 +38,14 @@ L= DBM:GetModLocalization(1372)
 -- Shadow-Lord Iskar --
 --------------------------
 L= DBM:GetModLocalization(1433)
+
+L:SetWarningLocalization({
+	specWarnThrowAnzu =	"Throw Eye of Anzu to %s!"
+})
+
+L:SetOptionLocalization({
+	specWarnThrowAnzu =	"Show special warning when you need to throw $spell:179202"
+})
 
 --------------------------
 -- Fel Lord Zakuun --

@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 182049 181973 182788 181582",
+	"SPELL_CAST_START 182049 181973 182788 181582 187814",
 --	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -27,10 +27,12 @@ mod:RegisterEventsInCombat(
 --TODO, use syncing for non stomach timers, hidden, but still saved, to use timer recovery when leaving stomach.
 --TODO, UNIT_DIED and add timers for bellowingshout?
 --TODO, more voices? "run to player"? "Shadow of Death"?
+--TODO, raging charge just added in latest PTR build, 0.9 second cast that needs interrupting?
 local warnShadowofDeath					= mod:NewTargetAnnounce(179864, 3)
 local warnTouchofDoom					= mod:NewTargetAnnounce(179978, 4)
 local warnSharedFate					= mod:NewTargetAnnounce(179909, 4)--Announce all 2/3
 local warnHungerforLife					= mod:NewTargetAnnounce(180148, 3)
+local warnRagingCharge					= mod:NewSpellAnnounce(187814, 3, nil, "Melee")
 
 local specWarnShadowofDeath				= mod:NewSpecialWarningYou(179864)
 local specWarnTouchofDoom				= mod:NewSpecialWarningRun(179977, nil, nil, nil, 4, nil, 2)
@@ -39,6 +41,7 @@ local yellSharedFate					= mod:NewYell(179909)--Only rooted player should yell
 local specWarnFeastofSouls				= mod:NewSpecialWarningSpell(181973, nil, nil, nil, 2)--Energy based, probably no cd, maybe add a soon announce off UNIT POWER
 local specWarnHungerforLife				= mod:NewSpecialWarningRun(180148, nil, nil, nil, 4, nil, 2)
 local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer", nil, nil, 1, nil, 2)
+--local specWarnRagingCharge				= mod:NewSpecialWarningInterrupt(187814, "-Healer", nil, nil, 1, nil, 2)
 
 --local timerShadowofDeathCD			= mod:NewCDTimer(30, 179864)
 --local timerTouchofDoomCD				= mod:NewCDTimer(45, 179977)
@@ -97,6 +100,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 181582 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnBellowingShout:Show(args.sourceName)
 		voiceBellowingShout:Play("kickcast")
+	elseif spellId == 187814 then
+		warnRagingCharge:Show(args.sourceName)
 	end
 end
 
