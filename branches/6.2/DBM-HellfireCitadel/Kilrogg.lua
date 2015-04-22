@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 180199 180224 182428 180163 183917",
 	"SPELL_CAST_SUCCESS 181113",
-	"SPELL_AURA_APPLIED 180313 180200 180372 181488",
+	"SPELL_AURA_APPLIED 180313 180200 180372 181488 187089",
 	"SPELL_AURA_APPLIED_DOSE 180200",
 	"SPELL_AURA_REMOVED 181488",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -27,11 +27,13 @@ mod:RegisterEventsInCombat(
 --TODO, a way to detect hulking terror evolution.
 --TODO, verify if Encounter Spawn is used, if not, find timing to use repeater.
 --TODO, visions phase warnings, when better undrestood, drycoding them now would be too much guesswork
+--TODO, more stuff for the digest phase adds if merited
 --Boss
 local warnDemonicPossession			= mod:NewTargetAnnounce(180313, 4)
 local warnShreddedArmor				= mod:NewStackAnnounce(180200, 4, nil, "Tank|Healer")--Shouldn't happen, but is going to.
 local warnHeartseeker				= mod:NewTargetAnnounce(180372, 4)
 local warnVisionofDeath				= mod:NewTargetAnnounce(181488, 2)--The targets that got picked
+local warnCleansingAura				= mod:NewTargetAnnounce(187089, 1)
 --Adds
 local warnSavageStrikes				= mod:NewSpellAnnounce(180163, 3, nil, "Tank")--Need to assess damage amount on special vs non special warning
 
@@ -148,6 +150,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 180200 then
 		local amount = args.amount or 1
 		warnShreddedArmor:Show(args.destName, amount)
+	elseif spellId == 187089 then
+		warnCleansingAura:Show(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

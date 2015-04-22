@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 182049 181973 182788 181582 187814",
 --	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148",
+	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148 181295",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 179909 179908",
+	"SPELL_AURA_REMOVED 179909 179908 181295",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -47,10 +47,12 @@ local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer
 --local timerTouchofDoomCD				= mod:NewCDTimer(45, 179977)
 --local timerSharedFateCD				= mod:NewCDTimer(45, 179909)
 
+local timerDigest						= mod:NewCastTimer(40, 181295)
+
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
 local countdownShadowofDeath			= mod:NewCountdownFades("Alt5", 179864)
-local countdownDigest					= mod:NewCountdown("Alt45", 155080)--40+5
+local countdownDigest					= mod:NewCountdown("Alt40", 181295)--40+5
 
 local voiceTouchofDoom					= mod:NewVoice(179977)--runout
 local voiceHungerforLife				= mod:NewVoice(180148)--justrun
@@ -119,7 +121,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnShadowofDeath:Show()
 			countdownShadowofDeath:Start()
-			countdownDigest:Start()
 		end
 	elseif spellId == 179977 then
 		warnTouchofDoom:CombinedShow(0.5, args.destName)--More than 1 target?
@@ -161,6 +162,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnHungerforLife:Show()
 			voiceHungerforLife:Play("justrun")
 		end
+	elseif spellId == 181295 then
+		timerDigest:Start()
+		countdownDigest:Start()
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -183,6 +187,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.HudMapOnSharedFate then
 			DBMHudMap:FreeEncounterMarkerByTarget(179908, args.destName)
 		end
+	elseif spellId == 181295 and args:IsPlayer() then
+		timerDigest:Cancel()
+		countdownDigest:Cancel()
 	end
 end
 
