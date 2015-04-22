@@ -162,7 +162,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnHungerforLife:Show()
 			voiceHungerforLife:Play("justrun")
 		end
-	elseif spellId == 181295 then
+	elseif spellId == 181295 and args:IsPlayer() then
 		timerDigest:Start()
 		countdownDigest:Start()
 	end
