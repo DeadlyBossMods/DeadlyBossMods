@@ -133,8 +133,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 180372 then
-		warnHeartseeker:CombinedShow(0.3, args.destName)--Maybe more than one target, not sure. If only 1 target remove 0.3 delay
+	if spellId == 180372 and args:IsDestTypePlayer() then
+		warnHeartseeker:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnHeartSeeker:Show()
 			yellHeartSeeker:Yell()
