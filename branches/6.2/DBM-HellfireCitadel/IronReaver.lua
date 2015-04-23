@@ -147,9 +147,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.blitzCount = self.vb.blitzCount + 1
 		specWarnBlitz:Show(self.vb.blitzCount)
 		voiceBlitz:Play("chargemove")
-		local cooldown = blitzTimers[self.vb.blitzCount]
+		local cooldown = blitzTimers[self.vb.blitzCount+1]
 		if cooldown then
-			timerBlitzCD:Start(cooldown, cooldown+1)
+			timerBlitzCD:Start(cooldown, self.vb.blitzCount+1)
 		end
 	elseif spellId == 182066 or spellId == 186449 then--182066 confirmed on heroic. Mythic uses 1.5 cast version (186449)?
 		self.vb.groundPhase = true
@@ -170,9 +170,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 185282 then
 		self.vb.barrageCount = self.vb.barrageCount + 1
 		specWarnBarrage:Show(self.vb.barrageCount)
-		local cooldown = barrageTimers[self.vb.barrageCount]
+		local cooldown = barrageTimers[self.vb.barrageCount+1]
 		if cooldown then
-			timerBarrageCD:Start(cooldown, cooldown+1)
+			timerBarrageCD:Start(cooldown, self.vb.barrageCount+1)
 			countdownBarrage:Start(cooldown)
 		end
 		voiceBarrage:Play("shockwave")
@@ -204,9 +204,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(3, 1) then
 			self.vb.artilleryCount = self.vb.artilleryCount + 1
 			if self.vb.groundPhase then
-				local cooldown = artilleryTimers[self.vb.artilleryCount]
+				local cooldown = artilleryTimers[self.vb.artilleryCount+1]
 				if cooldown and self:IsTank() then--Only show timer to tanks in phase 1
-					timerArtilleryCD:Start(cooldown, cooldown+1)
+					timerArtilleryCD:Start(cooldown, self.vb.artilleryCount+1)
 					countdownArtillery:Start(cooldown)
 				end
 			else
@@ -242,9 +242,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.poundingCount = self.vb.poundingCount + 1
 		specWarnPounding:Show(self.vb.poundingCount)
 		voicePounding:Play("aesoon")
-		local cooldown = poundingTimers[self.vb.poundingCount]
+		local cooldown = poundingTimers[self.vb.poundingCount+1]
 		if cooldown then
-			timerPoundingCD:Start(cooldown, cooldown+1)
+			timerPoundingCD:Start(cooldown, self.vb.poundingCount+1)
 		end
 	elseif spellId == 182074 and args:IsPlayer() and self:AntiSpam(2, 2) then
 		specWarnImmolation:Show()
@@ -275,9 +275,9 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 185250 and self:AntiSpam(2, 3) then--Unstable Orb Cast
 		self.vb.unstableOrbCount = self.vb.unstableOrbCount + 1
-		local cooldown = unstableOrbsTimers[self.vb.unstableOrbCount]
+		local cooldown = unstableOrbsTimers[self.vb.unstableOrbCount+1]
 		if cooldown then
-			timerUnstableOrbCD:Start(cooldown, cooldown+1)
+			timerUnstableOrbCD:Start(cooldown, self.vb.unstableOrbCount+1)
 		end
 	elseif spellId == 181923 then--Ground Phase (using this to start timers because it's more accurate than "falling" cast, because falling cast is shorter on mythic)
 		--Reset Counts

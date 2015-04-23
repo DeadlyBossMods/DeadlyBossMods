@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1372, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(91809)
+mod:SetCreatureID(90199)
 mod:SetEncounterID(1783)
 mod:SetZone()
 mod:SetUsedIcons(2, 1)
@@ -12,48 +12,54 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 182049 181973 182788 181582 187814",
---	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148 181295",
---	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 179909 179908 181295",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_ABSORBED",
+	"SPELL_CAST_START 181973 181582 187814",
+	"SPELL_CAST_SUCCESS 179977 181085",
+	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148 181295 185982",
+	"SPELL_AURA_REMOVED 179909 179908 181295 181973 185982",
+	"SPELL_PERIODIC_DAMAGE 179995",
+	"SPELL_ABSORBED 179995",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, figure out surging shadows. i see no player applied debuff ID
---TODO, figure out crushing darkness. probably a rapid cast sequence of 3-5 missles with a non special warning count warning
---TODO, use syncing for non stomach timers, hidden, but still saved, to use timer recovery when leaving stomach.
+--Note, surging shadows every 7-13 seconds, with a 1 second cast time. too variable, too short to have warnings or timers. so just keep range frame up whole fight.
+--TODO< i'm still not sure crushing darkness is needed. I mean yeah it's avoidable, but even when not trying to avoid it, it rarely hit anything but pets. max melee range alone seems to avoid.
 --TODO, UNIT_DIED and add timers for bellowingshout?
 --TODO, more voices? "run to player"? "Shadow of Death"?
---TODO, raging charge just added in latest PTR build, 0.9 second cast that needs interrupting?
 local warnShadowofDeath					= mod:NewTargetAnnounce(179864, 3)
 local warnTouchofDoom					= mod:NewTargetAnnounce(179978, 4)
 local warnSharedFate					= mod:NewTargetAnnounce(179909, 4)--Announce all 2/3
-local warnHungerforLife					= mod:NewTargetAnnounce(180148, 3)
+local warnHungerforLife					= mod:NewTargetAnnounce(180148, 3, nil, false)--Knowing who has it not very important, only if it's on you
+local warnGoreboundSpiritSoon			= mod:NewSoonAnnounce("ej11020", 3, 187814)
 local warnRagingCharge					= mod:NewSpellAnnounce(187814, 3, nil, "Melee")
+local warnCrushingDarkness				= mod:NewCastAnnounce(180017, 3, 6, nil, "Melee")
 
 local specWarnShadowofDeath				= mod:NewSpecialWarningYou(179864)
+local specWarnShadowofDeathTank			= mod:NewSpecialWarningTaunt(179864)
 local specWarnTouchofDoom				= mod:NewSpecialWarningRun(179977, nil, nil, nil, 4, nil, 2)
 local yellTouchofDoom					= mod:NewYell(179977)
+local specWarnDoomWell					= mod:NewSpecialWarningMove(179995)
 local specWarnSharedFate				= mod:NewSpecialWarningMoveTo(179908, nil, nil, nil, 3)--Only non rooted player get moveto. rooted player can't do anything.
 local yellSharedFate					= mod:NewYell(179909)--Only rooted player should yell
-local specWarnFeastofSouls				= mod:NewSpecialWarningSpell(181973, nil, nil, nil, 2)--Energy based, probably no cd, maybe add a soon announce off UNIT POWER
+local specWarnFeastofSouls				= mod:NewSpecialWarningSpell(181973, nil, nil, nil, 2)--Energy based
+local specWarnFeastofSoulsEnded			= mod:NewSpecialWarningEnd(181973)
 local specWarnHungerforLife				= mod:NewSpecialWarningRun(180148, nil, nil, nil, 4, nil, 2)
+local specWarnEnragedSpirit				= mod:NewSpecialWarningSwitch("ej11378", "-Healer")
+local specWarnGoreboundSpirit			= mod:NewSpecialWarningSwitch("ej11020", "-Healer")
 local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer", nil, nil, 1, nil, 2)
---local specWarnRagingCharge				= mod:NewSpecialWarningInterrupt(187814, "-Healer", nil, nil, 1, nil, 2)
 
---local timerShadowofDeathCD			= mod:NewCDTimer(30, 179864)
---local timerTouchofDoomCD				= mod:NewCDTimer(45, 179977)
---local timerSharedFateCD				= mod:NewCDTimer(45, 179909)
+local timerShadowofDeathCD				= mod:NewNextCountTimer(30, 179864)--Sequenced timer, uses table.
+local timerTouchofDoomCD				= mod:NewNextTimer(18, 179977)
+local timerSharedFateCD					= mod:NewCDTimer(29, 179909)--29-31
+local timerCrushingDarknessCD			= mod:NewNextTimer(10, 179909, nil, "Melee")--Actually 16, but i delay start by 6 seconds for reduced spam
+local timerFeastofSouls					= mod:NewCDTimer(123.5, 181973)--Probably next timer too, or close to it, depends how consistent energy gains are, may have small variation, like gruul
 
 local timerDigest						= mod:NewCastTimer(40, 181295)
+local timerCrushingDarkness				= mod:NewCastTimer(6, 180017, nil, "Melee")
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
 local countdownShadowofDeath			= mod:NewCountdownFades("Alt5", 179864)
-local countdownDigest					= mod:NewCountdown("Alt40", 181295)--40+5
+local countdownDigest					= mod:NewCountdown("Alt40", 181295)
 
 local voiceTouchofDoom					= mod:NewVoice(179977)--runout
 local voiceHungerforLife				= mod:NewVoice(180148)--justrun
@@ -62,17 +68,27 @@ local voiceBellowingShout				= mod:NewVoice(181582, "-Healer")--kickcast
 mod:AddSetIconOption("SetIconOnFate", 179909)
 mod:AddHudMapOption("HudMapOnSharedFate", 179909)--Smart hud, distinquishes rooted from non rooted by color coding.
 mod:AddArrowOption("SharedFateArrow", 179909, true, 2)
-mod:AddRangeFrameOption(5, 182049)--Needs to be optimized when surging shadows is figured out.
+mod:AddRangeFrameOption(5, 182049)
 
 mod.vb.rootedFate = nil
 mod.vb.rootedFate2 = nil--Just in case, but if this happens you're doing things badly
+mod.vb.shadowOfDeathCount = 0
+local playerDown = false
+local shadowofDeathTimers = {2, 11, 17, 7, 28, 8}
 
 function mod:OnCombatStart(delay)
 	self.vb.rootedFate = nil
 	self.vb.rootedFate2 = nil
+	self.vb.shadowOfDeathCount = 0
+	playerDown = false
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
+--	timerShadowofDeathCD:Start(2-delay, 1)--It's 2 seconds, needed?
+	timerCrushingDarknessCD:Start(5-delay)
+	timerTouchofDoomCD:Start(9-delay)
+	timerSharedFateCD:Start(19-delay)
+	timerFeastofSouls:Start(-delay)
 end
 
 function mod:OnCombatEnd()
@@ -94,12 +110,8 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 182049 then
-		DBM:Debug("Surging Shadows Cast", 2)
-	elseif spellId == 181973 then
+	if spellId == 181973 then
 		specWarnFeastofSouls:Show()
-	elseif spellId == 182788 then
-		DBM:Debug("Crushing Darkness Cast", 2)
 	elseif spellId == 181582 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnBellowingShout:Show(args.sourceName)
 		voiceBellowingShout:Play("kickcast")
@@ -110,28 +122,47 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 155326 then
-
+	if spellId == 179977 then
+		timerTouchofDoomCD:Start()
+	elseif spellId == 181085 then
+		timerSharedFateCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 179864 then
-		warnShadowofDeath:CombinedShow(0.5, args.destName)--More than 1 target?
+		if self:AntiSpam(5, 4) then
+			self.vb.shadowOfDeathCount = self.vb.shadowOfDeathCount + 1
+			local cooldown = shadowofDeathTimers[self.vb.shadowOfDeathCount+1]
+			if cooldown then
+				timerShadowofDeathCD:Start(cooldown, self.vb.shadowOfDeathCount+1)
+			end
+		end
+		warnShadowofDeath:CombinedShow(0.5, self.vb.shadowOfDeathCount, args.destName)
 		if args:IsPlayer() then
 			specWarnShadowofDeath:Show()
 			countdownShadowofDeath:Start()
 		end
+		--Check if it's a tank
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId, "boss1") and not UnitIsUnit("player", UId) then
+			--It is a tank and we're not tanking. Fire taunt warning
+			specWarnShadowofDeathTank:Show(args.destName)
+		end
 	elseif spellId == 179977 then
-		warnTouchofDoom:CombinedShow(0.5, args.destName)--More than 1 target?
+		if not playerDown then
+			warnTouchofDoom:CombinedShow(0.5, args.destName)
+		end
 		if args:IsPlayer() then
 			specWarnTouchofDoom:Show()
 			voiceTouchofDoom:Play("runout")
 			yellTouchofDoom:Yell()
 		end
 	elseif spellId == 179909 then--Root version
-		warnSharedFate:CombinedShow(0.5, args.destName)
+		if not playerDown then
+			warnSharedFate:CombinedShow(0.5, args.destName)
+		end
 		if self.vb.rootedFate then--One already exists
 			self.vb.rootedFate2 = args.destName
 		else
@@ -144,8 +175,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetIcon(args.destName, 1)
 			end
 		end
-		if self.Options.HudMapOnSharedFate then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "highlight", args.destName, 3, 900, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)--Yellow
+		if self.Options.HudMapOnSharedFate and not playerDown then
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "highlight", args.destName, 3.5, 900, 1, 0, 0, 0.5, nil, true):Pulse(0.5, 0.5)--Red
 		end
 		if args:IsPlayer() then
 			yellSharedFate:Yell()
@@ -156,7 +187,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.5, sharedFateDelay, self)--Just in case rooted ID fires after non rooted ones
 		end
 		if self.Options.HudMapOnSharedFate then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "highlight", args.destName, 3, 900, 0, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)--Green
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "highlight", args.destName, 3.5, 900, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)--Yellow
 		end
 	elseif spellId == 180148 then
 		warnHungerforLife:CombinedShow(0.5, args.destName)--More than 1 target?
@@ -167,6 +198,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 181295 and args:IsPlayer() then
 		timerDigest:Start()
 		countdownDigest:Start()
+		playerDown = true
+	elseif spellId == 185982 and not playerDown then--Cast when a Enraged Spirit in stomach reaches 70%
+		warnGoreboundSpiritSoon:Show()
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -192,20 +226,39 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 181295 and args:IsPlayer() then
 		timerDigest:Cancel()
 		countdownDigest:Cancel()
+		playerDown = false
+	elseif spellId == 181973 then--Phase restart
+		self.vb.shadowOfDeathCount = 0
+		specWarnFeastofSoulsEnded:Show()
+		--Timers exactly same as pull
+		--timerShadowofDeathCD:Start(2, 1)
+		timerCrushingDarknessCD:Start(5)
+		timerTouchofDoomCD:Start(9)
+		timerSharedFateCD:Start(19)
+		timerFeastofSouls:Start()--This I can't confirm, but since others are same, hoping this is also the same
+	elseif spellId == 185982 and not playerDown then
+		--When it fades, it means it's casting Expel Soul and returning to surface as a Gorebound Spirit
+		--This is cleaner than IEEU and fires at same time
+		specWarnGoreboundSpirit:Show()
 	end
 end
 
---[[
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 173195 then
-		
+	if spellId == 180016 and self:AntiSpam(2, 1) then--Crushing Darkness
+		warnCrushingDarkness:Show()
+		timerCrushingDarkness:Start()
+		timerCrushingDarknessCD:Schedule(6)--Delay timer by 6 seconds, so it doesn't start until after cast timer ends, reduce timer spam
+	--"<39.51 18:23:36> [UNIT_SPELLCAST_SUCCEEDED] Gorefiend(Slootbag) [[boss1:Empower Spirits::0:180192]]", -- [2949]
+	--"<41.98 18:23:38> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#boss1#true#true#true#Gorefiend#Vehicle-0-2012-1448-7347-90199-0000381EB8#elite#375918859#boss2#true#true#true#Gorebound Spirit
+	elseif spellId == 185753 and playerDown then--Tank Add Exploit Protection (Enraged Spirit Spawn)
+		specWarnEnragedSpirit:Show()
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
-
+	if spellId == 179995 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+		specWarnDoomWell:Show()
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
---]]
