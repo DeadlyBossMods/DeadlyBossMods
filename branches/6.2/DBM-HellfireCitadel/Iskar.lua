@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181912 182216 181827 187998",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED 179202 185752 182325 187990 181824 179219 185510 181753 182178",
-	"SPELL_AURA_REMOVED 179202 185752 182325 187990 181824 179219 185510 181753",
+	"SPELL_AURA_APPLIED 179202 181957 182325 187990 181824 179219 185510 181753 182178 182200",
+	"SPELL_AURA_REMOVED 179202 181957 182325 187990 181824 179219 185510 181753",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, figure out how cooldowns work, maybe specials are on a shared cd and boss has phases? maybe all his crap has cds, can any of it overlap?
 --TODO, if it's confirmed certain abiltiies don't overlap, refine icon options to be more compatible with one another.
 local warnEyeofAnzu						= mod:NewTargetAnnounce(179202, 1)--EVERYONE needs to know where this is, at all times.
-local warnPhantasmalWinds				= mod:NewTargetAnnounce(185752, 3)--Announce to all, for things like life grips, body and soul, etc to keep them on platform while anzu person helps clear them.
+local warnPhantasmalWinds				= mod:NewTargetAnnounce(181957, 3)--Announce to all, for things like life grips, body and soul, etc to keep them on platform while anzu person helps clear them.
 local warnPhantasmalWounds				= mod:NewTargetAnnounce(182325, 3, nil, "Healer")
 local warnPhantasmalCorruption			= mod:NewTargetAnnounce(181824, 3, nil, "Tank")
 local warnPhantasmalFelBomb				= mod:NewTargetAnnounce(179219, 3, nil, false)--Fake fel bombs, they'll show up on radar but don't need to know targets if person with anzu isn't terrlbe at game. they have 5 seconds to find and throw to ONE target.
@@ -39,8 +39,8 @@ local warnFelConduit					= mod:NewCastAnnounce(181827, 3, nil, nil, "-Healer")
 
 local specWarnThrowAnzu					= mod:NewSpecialWarning("specWarnThrowAnzu")
 local specWarnFocusedBlast				= mod:NewSpecialWarningSpell(181912, nil, nil, nil, 2)
-local specWarnPhantasmalWinds			= mod:NewSpecialWarningYou(185752)
-local yellPhantasmalWinds				= mod:NewYell(185752)--So person with eye can see where the targets are faster
+local specWarnPhantasmalWinds			= mod:NewSpecialWarningYou(181957)
+local yellPhantasmalWinds				= mod:NewYell(181957)--So person with eye can see where the targets are faster
 local specWarnPhantasmalWounds			= mod:NewSpecialWarningYou(182325, false)
 local yellPhantasmalWounds				= mod:NewYell(182325, nil, false)--Can't see much reason to have THIS one on by default, but offered as an option.
 local specWarnPhantasmalCorruption		= mod:NewSpecialWarningYou(181824)--Not move away on purpose, correct way to handle is get eye of anzu, you do NOT move
@@ -55,7 +55,7 @@ local specWarnFelChakram				= mod:NewSpecialWarningMoveAway(182178)--This one yo
 local specWarnFelConduit				= mod:NewSpecialWarningInterrupt(181827, nil, nil, nil, 1, nil, 2)--On for everyone, filtered by eye of anzu, if this person can't interrupt, then they better pass it to someone who can
 
 --local timerFocusedBlastCD				= mod:NewCDTimer(107, 181912)
---local timerPhantasmalWindsCD			= mod:NewCDTimer(107, 185752)
+--local timerPhantasmalWindsCD			= mod:NewCDTimer(107, 181957)
 --local timerPhantasmalWoundsCD			= mod:NewCDTimer(107, 182325)
 --local timerPhantasmalCorruptionCD		= mod:NewCDTimer(107, 181824)
 --local timerPhantasmalFelBombCD		= mod:NewCDTimer(107, 179219)
@@ -71,7 +71,7 @@ local voiceFelChakram					= mod:NewVoice(182178)--runout
 
 mod:AddRangeFrameOption(15)--Both aoes are 15 yards, ref 187991 and 181748
 mod:AddSetIconOption("SetIconOnAnzu", 179909)--Star icon used, because they are the "Star" of the show, yes?
-mod:AddSetIconOption("SetIconOnWinds", 185752, false)
+mod:AddSetIconOption("SetIconOnWinds", 181957, false)
 mod:AddSetIconOption("SetIconOnWounds", 182325, false)
 mod:AddSetIconOption("SetIconOnFelBomb", 181753, true)--One of the two commented out has to go, can't do both, what's more important?
 
@@ -149,7 +149,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			playerHasAnzu = true
 		end
-	elseif spellId == 185752 then
+	elseif spellId == 181957 then
 		warnPhantasmalWinds:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnPhantasmalWinds:Show()
@@ -214,7 +214,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnDarkBindings:Show()
 		end
-	elseif spellId == 182178 then
+	elseif spellId == 182178 or spellId == 182200 then
 		warnFelChakram:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnFelChakram:Show()
@@ -233,7 +233,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			playerHasAnzu = false
 		end
-	elseif spellId == 185752 and self.Options.SetIconOnWind then
+	elseif spellId == 181957 and self.Options.SetIconOnWind then
 		self:SetIcon(args.destName, 0)
 	elseif spellId == 182325 and self.Options.SetIconOnWounds then
 		self:SetIcon(args.destName, 0)
