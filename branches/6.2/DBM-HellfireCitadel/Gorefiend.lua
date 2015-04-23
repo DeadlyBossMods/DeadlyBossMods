@@ -146,7 +146,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		--Check if it's a tank
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId, "boss1") and not UnitIsUnit("player", UId) then
+		if self:IsTanking(uId, "boss1") and not UnitIsUnit("player", uId) then
 			--It is a tank and we're not tanking. Fire taunt warning
 			specWarnShadowofDeathTank:Show(args.destName)
 		end

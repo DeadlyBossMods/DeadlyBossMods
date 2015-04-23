@@ -5,10 +5,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1426)
 
-L:SetMiscLocalization({
-
-})
-
 ---------------------------
 -- Iron Reaver --
 ---------------------------
@@ -28,6 +24,10 @@ L= DBM:GetModLocalization(1392)
 -- Kilrogg Deadeye --
 --------------
 L= DBM:GetModLocalization(1396)
+
+L:SetMiscLocalization({
+	BloodthirstersSoon		=	"Come brothers! Seize your destiny!"
+})
 
 --------------------
 --Gorefiend --
