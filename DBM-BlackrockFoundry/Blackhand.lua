@@ -413,7 +413,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMarkedforDeath:Show()
 			voiceMarkedforDeath:Play("findshelter")
 			countdownMarkedforDeathFades:Start()
-			if self:IsLFR() or (self.Options.PositionsAllPhases and self.vb.phase < 3) then
+			if self:IsLFR() or (not self.Options.PositionsAllPhases and self.vb.phase < 3) then
 				yellMarkedforDeath:Yell()
 			end
 		end
