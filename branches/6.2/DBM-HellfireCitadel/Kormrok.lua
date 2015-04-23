@@ -11,11 +11,11 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 181292 181293 181296 181297 181299 181300",
+	"SPELL_CAST_START 181292 181293 181296 181297 181299 181300 180244",
 	"SPELL_CAST_SUCCESS 180068 180115 180116 180117 181305 181307",
-	"SPELL_AURA_APPLIED 180244 181306 186882",
+	"SPELL_AURA_APPLIED 181306 186882",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 181306",
+	"SPELL_AURA_REMOVED 181306 180244",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -64,16 +64,36 @@ local voicePound					= mod:NewVoice(180244)--aesoon
 local voiceShadowWaves				= mod:NewVoice(181292)--watchwave
 local voiceExplosiveBurst			= mod:NewVoice(181306)--justrun
 
-mod:AddRangeFrameOption(40, 181306)
+mod:AddRangeFrameOption("4/40")
+
+mod.vb.explodingTank = nil
+mod.vb.poundActive = false
+local debuffName = GetSpellInfo(181306)
+local UnitDebuff = UnitDebuff
 
 local debuffFilter
 do
-	local debuffName = GetSpellInfo(181306)
-	local UnitDebuff = UnitDebuff
 	debuffFilter = function(uId)
 		if UnitDebuff(uId, debuffName) then
 			return true
 		end
+	end
+end
+
+local function updateRangeCheck(self)
+	if not self.Options.RangeFrame then return end
+	if self.vb.explodingTank then
+		if UnitDebuff("player", debuffName) then
+			DBM.RangeCheck:Show(40)
+		elseif not self:CheckNearby(41, self.vb.explodingTank) and self.vb.poundActive then--far enough from tank and pound is active, switch back to 4
+			DBM.RangeCheck:Show(4)
+		else
+			DBM.RangeCheck:Show(40, debuffFilter)
+		end
+	elseif self.vb.poundActive then
+		DBM.RangeCheck:Show(4)
+	else
+		DBM.RangeCheck:Hide()
 	end
 end
 
@@ -85,10 +105,12 @@ local function trippleBurstCheck(self, target, first)
 	if first then
 		self:Schedule(2.5, trippleBurstCheck, self, target)
 	end
+	updateRangeCheck(self)
 end
 
 function mod:OnCombatStart(delay)
-
+	self.vb.explodingTank = nil
+	self.vb.poundActive = false
 end
 
 function mod:OnCombatEnd()
@@ -121,6 +143,12 @@ function mod:SPELL_CAST_START(args)
 			specWarnGraspingHands:Show()
 		end
 		--timerGraspingHandsCD:Start()
+	elseif spellId == 180244 then
+		self.vb.poundActive = true
+		specWarnPound:Show()
+		voicePound:Play("aesoon")
+		--timerPoundCD:Start()
+		updateRangeCheck(self)
 	end
 end
 
@@ -147,18 +175,13 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 181306 then
+		self.vb.explodingTank = args.destName
 		--timerTankSpecialCD:Start()
 		countdownExplosiveBurst:Start()
 		if args:IsPlayer() then
 			specWarnExplosiveBurst:Show()
 			yellExplosiveBurst:Yell()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(40)
-			end
 		else
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(40, debuffFilter)
-			end
 			if self:CheckNearby(41, args.destName) then
 				specWarnExplosiveBurstNear:Show(args.destName)
 				voiceExplosiveBurst:Play("justrun")
@@ -168,10 +191,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Check player distance 3x, like mark of chaos, don't let players run INTO it after they are safe
 			self:Schedule(3, trippleBurstCheck, self, args.destName, true)
 		end
-	elseif spellId == 180244 then
-		specWarnPound:Show()
-		voicePound:Play("aesoon")
-		--timerPoundCD:Start()
+		updateRangeCheck(self)
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -179,11 +199,13 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 181306 then
+		self.vb.explodingTank = nil
 		self:Unschedule(trippleBurstCheck)
 		countdownExplosiveBurst:Cancel()
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
-		end
+		updateRangeCheck(self)
+	elseif spellId == 180244 then
+		self.vb.poundActive = false
+		updateRangeCheck(self)
 	end
 end
 
