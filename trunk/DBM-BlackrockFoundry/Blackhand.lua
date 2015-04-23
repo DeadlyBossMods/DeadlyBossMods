@@ -172,7 +172,7 @@ local function warnMarked(self)
 					if self.Options.Yell156096 then
 						yellMFD2:Yell(DBM_CORE_LEFT, playerName)
 					end
-					voiceMarkedforDeath:Schedule(0.7, "left")--Schedule another 0.7, for total of 1.2 second after "find shelder"
+					voiceMarkedforDeath:Play("left")--Schedule another 0.7, for total of 1.2 second after "find shelder"
 				elseif mfdFound == 2 then
 					if self.Options.SpecWarn156096you then
 						specWarnMFDPosition:Show(DBM_CORE_RIGHT)
@@ -180,7 +180,7 @@ local function warnMarked(self)
 					if self.Options.Yell156096 then
 						yellMFD2:Yell(DBM_CORE_RIGHT, playerName)
 					end
-					voiceMarkedforDeath:Schedule(0.7, "right")--Schedule another 0.7, for total of 1.2 second after "find shelder"
+					voiceMarkedforDeath:Play("right")--Schedule another 0.7, for total of 1.2 second after "find shelder"
 				elseif mfdFound == 3 then
 					if self.Options.SpecWarn156096you then
 						specWarnMFDPosition:Show(DBM_CORE_MIDDLE)
@@ -188,7 +188,7 @@ local function warnMarked(self)
 					if self.Options.Yell156096 then
 						yellMFD2:Yell(DBM_CORE_MIDDLE, playerName)
 					end
-					voiceMarkedforDeath:Schedule(0.7, "center")--Schedule another 0.7, for total of 1.2 second after "find shelder"
+					voiceMarkedforDeath:Play("center")--Schedule another 0.7, for total of 1.2 second after "find shelder"
 				end
 			end
 			if mfdFound == expectedTotal then break end
@@ -411,10 +411,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnMarkedforDeath:Show()
-			voiceMarkedforDeath:Play("findshelter")
 			countdownMarkedforDeathFades:Start()
 			if self:IsLFR() or (not self.Options.PositionsAllPhases and self.vb.phase < 3) then
 				yellMarkedforDeath:Yell()
+				voiceMarkedforDeath:Play("findshelter")
 			end
 		end
 		if self.Options.SetIconOnMarked then

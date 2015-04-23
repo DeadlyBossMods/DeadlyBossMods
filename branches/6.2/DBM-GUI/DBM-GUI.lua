@@ -3113,7 +3113,7 @@ do
 								top3value3:SetPoint("TOPLEFT", top3text3, "TOPLEFT", 80, 0)
 								top1header:SetText(PLAYER_DIFFICULTY2)
 								top2header:SetText(CHALLENGE_MODE)
-								top3header:SetText("TimeWalker")
+								top3header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 							else
 								--Use top1 and top2 area. (Heroic, Challenge)
 								top2header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
@@ -3175,7 +3175,7 @@ do
 								top3header:SetText(CHALLENGE_MODE)
 								bottom1header:SetText(PLAYER_DIFFICULTY6)
 								bottom1header:SetFontObject(GameFontDisableSmall)
-								bottom2header:SetText("TimeWalker")
+								bottom2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 								bottom2header:SetFontObject(GameFontDisableSmall)
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 								doubleline = doubleline + 1
@@ -3254,7 +3254,7 @@ do
 								--Set header text.
 								bottom1header:SetText(CHALLENGE_MODE)
 								bottom1header:SetFontObject(GameFontDisableSmall)
-								bottom2header:SetText("TimeWalker")
+								bottom2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 								bottom2header:SetFontObject(GameFontDisableSmall)
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
@@ -3308,7 +3308,7 @@ do
 							top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
 							--Set header text.
 							top1header:SetText(PLAYER_DIFFICULTY1)
-							top2header:SetText("TimeWalker")
+							top2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 						else
 							--Like one format
 							top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
@@ -3344,7 +3344,7 @@ do
 							top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
 							--Set header text.
 							top1header:SetText(PLAYER_DIFFICULTY2)
-							top2header:SetText("TimeWalker")
+							top2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 						else
 							--Like one format
 							top2header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
@@ -3388,7 +3388,7 @@ do
 							--Set header text.
 							top1header:SetText(PLAYER_DIFFICULTY1)
 							top2header:SetText(PLAYER_DIFFICULTY2)
-							top3header:SetText("TimeWalker")
+							top3header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 						else
 							--Use top1 and top2 area. (normal, Heroic)
 							top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
