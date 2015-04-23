@@ -147,6 +147,7 @@ DBM_CORE_UPDATEREMINDER_TESTVERSION		= "WARNING: You are using a version of Dead
 DBM_CORE_VEM							= "ПРЕДУПРЕЖДЕНИЕ: Вы используете Deadly Boss Mods и Voice Encounter Mods одновременно. DBM не был загружен, т.к. эти два аддона не могут работать вместе."
 DBM_CORE_3RDPROFILES					= "ПРЕДУПРЕЖДЕНИЕ: DBM-Profiles не совместим с этой версией DBM. Он должен быть удален прежде чем DBM сможет продолжить, чтобы избежать конфликтов."
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "ПРЕДУПРЕЖДЕНИЕ: Это обновление DBM не будет работать корректно если вы не перезапустите игровой клиент. Это обновление содержит новые файлы или изменения в .toc файле, которые не могут быть загружены через ReloadUI. Вы можете столкнуться со сломанной функциональностью или ошибками если продолжите без перезапуска клиента."
+DBM_CORE_OUT_OF_DATE_NAG				= "Ваша версия Deadly Boss Mods устарела и Вы выбрали опцию игнорировать всплывающее уведомление. Рекомендуется обновиться, чтобы не было отсутствующих важных предупреждений или таймеров, или крика от Вас, на который рассчитывает остальной рейд."
 
 DBM_CORE_MOVABLE_BAR				= "Перетащите!"
 
@@ -203,6 +204,7 @@ DBM_CORE_UNKNOWN					= "неизвестно"
 DBM_CORE_LEFT						= "Налево"
 DBM_CORE_RIGHT						= "Направо"
 DBM_CORE_BACK						= "Назад"
+DBM_CORE_MIDDLE						= "Середина"
 DBM_CORE_FRONT						= "Вперед"
 DBM_CORE_INTERMISSION				= "Переходная фаза"--No blizz global for this, and will probably be used in most end tier fights with intermission phases
 
@@ -302,6 +304,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Спец-предупреждение
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Спец-предупреждение о смене цели для $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetcount		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target 		= "%s: >%%s<"
