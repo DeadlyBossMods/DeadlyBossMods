@@ -64,13 +64,13 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Train			= GetSpellInfo(174806),--TODO, verify this translates in BR, it probably doesn't.
+	Train			= GetSpellInfo(174806),
 	lane			= "Pista",
-	oneTrain		= "1 pista aleatória: Trem",
+	oneTrain		= "Trem em 1 pista aleatória",
 	oneRandom		= "Aparece em 1 pista aleatória",
-	threeTrains		= "3 pistas aleatórias: Trens",
+	threeTrains		= "Trens em 3 pistas aleatórias",
 	threeRandom		= "Aparecem em 3 pistas aleatórias",
-	helperMessage	= "Esse encontro pode ser melhorado com mods de terceiros 'Thogar Assist' ou um dos muitos pacotes de vozes para DBM ( con avisos sonoros ) disponíveis no site da Curse."
+	helperMessage	= "Esse encontro pode ser melhorado com mods de terceiros 'Thogar Assist' ou um dos muitos pacotes de vozes para DBM ( com avisos sonoros ) disponíveis no site da Curse.com ."
 })
 
 --------------------------
