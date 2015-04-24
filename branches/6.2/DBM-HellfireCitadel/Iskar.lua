@@ -12,12 +12,14 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 181912 182216 181827 187998",
+	"SPELL_CAST_START 181912 181827 187998",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED 179202 181957 182325 187990 181824 179219 185510 181753 182178 182200",
 	"SPELL_AURA_REMOVED 179202 181957 182325 187990 181824 179219 185510 181753",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
+	"RAID_BOSS_WHISPER",
+	"CHAT_MSG_ADDON",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -26,15 +28,15 @@ mod:RegisterEventsInCombat(
 --TODO, really need ot see fight to get voices right, so most not added yet
 --TODO, figure out how cooldowns work, maybe specials are on a shared cd and boss has phases? maybe all his crap has cds, can any of it overlap?
 --TODO, if it's confirmed certain abiltiies don't overlap, refine icon options to be more compatible with one another.
-local warnEyeofAnzu						= mod:NewTargetAnnounce(179202, 1)--EVERYONE needs to know where this is, at all times.
-local warnPhantasmalWinds				= mod:NewTargetAnnounce(181957, 3)--Announce to all, for things like life grips, body and soul, etc to keep them on platform while anzu person helps clear them.
-local warnPhantasmalWounds				= mod:NewTargetAnnounce(182325, 3, nil, "Healer")
-local warnPhantasmalCorruption			= mod:NewTargetAnnounce(181824, 3, nil, "Tank")
+local warnEyeofAnzu						= mod:NewTargetAnnounce(179202, 1, nil, false)--Important, but spammy, Will do something fancy with infoframe to show target instead of spamming screen with warnings
+local warnPhantasmalWinds				= mod:NewTargetAnnounce(181957, 4)--Announce to all, for things like life grips, body and soul, etc to keep them on platform while anzu person helps clear them.
+local warnPhantasmalWounds				= mod:NewTargetAnnounce(182325, 2, nil, "Healer")
+local warnPhantasmalCorruption			= mod:NewTargetAnnounce(181824, 3)
 local warnPhantasmalFelBomb				= mod:NewTargetAnnounce(179219, 3, nil, false)--Fake fel bombs, they'll show up on radar but don't need to know targets if person with anzu isn't terrlbe at game. they have 5 seconds to find and throw to ONE target.
 local warnFelBomb						= mod:NewTargetAnnounce(181753, 3)
-local warnDarkBindings					= mod:NewTargetAnnounce(185510, 3)--Mythic (Chains of Despair Debuff)
-local warnIskarWarriorBird				= mod:NewAnnounce("Iskar, Warrior Bird", 3, 182216)--Can have a little fun with the PTR right?
-local warnFelChakram					= mod:NewTargetAnnounce(182178, 3)
+local warnDarkBindings					= mod:NewTargetAnnounce(185510, 4)--Mythic (Chains of Despair Debuff)
+local warnFelChakram					= mod:NewTargetAnnounce(182178, 4)
+local warnLaser							= mod:NewTargetAnnounce(182582, 3)
 local warnFelConduit					= mod:NewCastAnnounce(181827, 3, nil, nil, "-Healer")
 
 local specWarnThrowAnzu					= mod:NewSpecialWarning("specWarnThrowAnzu")
@@ -49,7 +51,9 @@ local specWarnPhantasmalFelBomb			= mod:NewSpecialWarningYou(179219)--Not move a
 local yellPhantasmalFelBomb				= mod:NewYell(179219, nil, false)--Fake bombs off by default, they will never explode and eye of anzu holder will get distracted
 local specWarnFelBomb					= mod:NewSpecialWarningYou(181753)--Not move away on purpose, correct way to handle is get eye of anzu, you do NOT move
 local yellFelBomb						= mod:NewYell(181753)--Yell for real fel bomb on by default only
-local specWarnFelBombDispel				= mod:NewSpecialWarningDispel(181753)--Doesn't need option default, it's filtered by mods anzu check
+local specWarnFelBombDispel				= mod:NewSpecialWarningDispel(181753)--Doesn't need option default, it's filtered by anzu check
+local specWarnFelLaser					= mod:NewSpecialWarningMoveAway(182582)
+local yellFelLaser						= mod:NewYell(182582)
 local specWarnDarkBindings				= mod:NewSpecialWarningYou(185510)--Mythic
 local specWarnFelChakram				= mod:NewSpecialWarningMoveAway(182178)--This one you DO move away, it's not dispelled by eye of anzu
 local specWarnFelConduit				= mod:NewSpecialWarningInterrupt(181827, nil, nil, nil, 1, nil, 2)--On for everyone, filtered by eye of anzu, if this person can't interrupt, then they better pass it to someone who can
@@ -68,12 +72,12 @@ local specWarnFelConduit				= mod:NewSpecialWarningInterrupt(181827, nil, nil, n
 local voiceFocusedBlast					= mod:NewVoice(181912)--gather
 local voiceFelConduit					= mod:NewVoice(181827)--kickcast
 local voiceFelChakram					= mod:NewVoice(182178)--runout
+local voiceFelLaser						= mod:NewVoice(182582)--runout
 
 mod:AddRangeFrameOption(15)--Both aoes are 15 yards, ref 187991 and 181748
-mod:AddSetIconOption("SetIconOnAnzu", 179909)--Star icon used, because they are the "Star" of the show, yes?
+mod:AddSetIconOption("SetIconOnAnzu", 179909, false)--Star icon used, because they are the "Star" of the show, yes?
 mod:AddSetIconOption("SetIconOnWinds", 181957, false)
-mod:AddSetIconOption("SetIconOnWounds", 182325, false)
-mod:AddSetIconOption("SetIconOnFelBomb", 181753, true)--One of the two commented out has to go, can't do both, what's more important?
+mod:AddSetIconOption("SetIconOnFelBomb", 181753, true)
 
 local playerHasAnzu = false
 local corruption = GetSpellInfo(181824)
@@ -119,8 +123,6 @@ function mod:SPELL_CAST_START(args)
 		if not UnitDebuff("player", corruption) and not UnitDebuff("player", realFelBomb) and not UnitDebuff("player", phantasmalFelBomb) and not UnitDebuff("player", darkBindings) then--Filter debuffs that kill other players
 			voiceFocusedBlast:Play("gather")
 		end
-	elseif spellId == 182216 then
-		warnIskarWarriorBird:Show()
 	elseif spellId == 181827 or spellId == 187998 then--Both versions of it. I assume the 5 second version is probably LFR/Normal
 		if playerHasAnzu then--Able to interrupt
 			--Maybe check role, if is Healer, call out to throw to a better interuptor instead of interrupt warning. Not sure there really is enough time for that though.
@@ -163,9 +165,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnPhantasmalWounds:Show()
 			yellPhantasmalWounds:Yell()
-		end
-		if self.Options.SetIconOnWounds then
-			self:SetSortedIcon(0.5, args.destName, 8, nil, true)--Start at 8 and count down
 		end
 	elseif spellId == 181824 or spellId == 187990 then
 		warnPhantasmalCorruption:Show(args.destName)
@@ -235,8 +234,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 181957 and self.Options.SetIconOnWind then
 		self:SetIcon(args.destName, 0)
-	elseif spellId == 182325 and self.Options.SetIconOnWounds then
-		self:SetIcon(args.destName, 0)
 	elseif (spellId == 181824 or spellId == 187990) then
 		if args:IsPlayer() then
 			updateRangeFrame(self)
@@ -251,6 +248,24 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.SetIconOnFelBomb then
 			self:SetIcon(args.destName, 0)
+		end
+	end
+end
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:182582") then
+		specWarnFelLaser:Show()
+		yellFelLaser:Yell()
+		voiceFelLaser:Play("runout")
+	end
+end
+
+function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
+	if prefix ~= "Transcriptor" then return end
+	if msg:find("spell:182582") then--
+		targetName = Ambiguate(targetName, "none")
+		if self:AntiSpam(5, targetName) then--Set antispam if we got a sync, to block 3 second late SPELL_AURA_APPLIED if we got the early warning
+			warnLaser:Show(targetName)
 		end
 	end
 end
