@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1394, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(93439)
+mod:SetCreatureID(90269)
 mod:SetEncounterID(1784)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
@@ -19,7 +19,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 182459 185241 180166 180164 185237 185238",
 	"SPELL_PERIODIC_DAMAGE 180604",
 	"SPELL_ABSORBED 180604",
-	"RAID_BOSS_WHISPER",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -33,6 +32,7 @@ local warnEdictofCondemnation				= mod:NewTargetAnnounce(182459, 3)
 local warnTouchofHarm						= mod:NewTargetAnnounce(180166, 3, nil, "Healer")
 local warnSealofDecay						= mod:NewStackAnnounce(180000, 2, nil, "Tank|Healer")
 --Stage One: Oppression
+local warnAnnihilationStrike				= mod:NewTargetAnnounce(180260, 4)
 --Stage Two: Contempt
 local warnAuraofContempt					= mod:NewSpellAnnounce(179986, 3)
 local warnTaintedShadows					= mod:NewSpellAnnounce(180533, 2)
@@ -48,7 +48,7 @@ local yellEdictofCondemnation				= mod:NewYell(182459)
 local specWarnTouchofHarm					= mod:NewSpecialWarningTarget(180166, false)
 --Stage One: Oppression
 local specWarnAnnihilatingStrike			= mod:NewSpecialWarningYou(180260)
---local specWarnAnnihilatingStrikeNear		= mod:NewSpecialWarningClose(180260)
+local specWarnAnnihilatingStrikeNear		= mod:NewSpecialWarningClose(180260)
 local yellAnnihilatingStrike				= mod:NewYell(180260)
 local specWarnInfernalTempest				= mod:NewSpecialWarningSpell(180300, nil, nil, nil, 2)
 ----Ancient Enforcer
@@ -100,6 +100,21 @@ do
 	end
 end--]]
 
+function mod:AnnTarget(targetname, uId)
+	if not targetname then
+		warnAnnihilationStrike:Show(DBM_CORE_UNKNOWN)
+		return
+	end
+	if targetname == UnitName("player") then
+		specWarnAnnihilatingStrike:Yell()
+		specWarnProtoGrenade:Show()
+	elseif self:CheckNearby(5, targetname) then
+		specWarnAnnihilatingStrikeNear:Show(targetname)
+	else
+		warnAnnihilationStrike:Show(targetname)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
@@ -117,6 +132,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 180260 then
 		--specWarnAnnihilatingStrike:Show()
 		--timerAnnihilatingStrikeCD:Start()
+		self:BossTargetScanner(90269, "AnnTarget", 0.05, 20, true)
 	elseif spellId == 180004 then
 		specWarnEnforcersOnslaught:Show()
 		--timerEnforcersOnslaughtCD:Start()
@@ -209,13 +225,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("180260") then
-		specWarnAnnihilatingStrike:Show()
-		yellAnnihilatingStrike:Yell()
-	end
-end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
