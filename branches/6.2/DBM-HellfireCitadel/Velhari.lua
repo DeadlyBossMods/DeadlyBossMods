@@ -12,13 +12,14 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 180260 180004 180533 180025 180608",
+	"SPELL_CAST_START 180260 180004 180533 180025 180608 180300",
 	"SPELL_CAST_SUCCESS 181113 179986 179991 180600",
-	"SPELL_AURA_APPLIED 182459 185241 180166 180164 185237 185238 180000 180300 180526 180025",
+	"SPELL_AURA_APPLIED 182459 185241 180166 180164 185237 185238 180000 180526 180025",
 	"SPELL_AURA_APPLIED_DOSE 180000",
 	"SPELL_AURA_REMOVED 182459 185241 180166 180164 185237 185238",
 	"SPELL_PERIODIC_DAMAGE 180604",
 	"SPELL_ABSORBED 180604",
+	"RAID_BOSS_WHISPER",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -32,7 +33,6 @@ local warnEdictofCondemnation				= mod:NewTargetAnnounce(182459, 3)
 local warnTouchofHarm						= mod:NewTargetAnnounce(180166, 3, nil, "Healer")
 local warnSealofDecay						= mod:NewStackAnnounce(180000, 2, nil, "Tank|Healer")
 --Stage One: Oppression
-local warnInfernalTempest					= mod:NewTargetAnnounce(180300, 3)
 --Stage Two: Contempt
 local warnAuraofContempt					= mod:NewSpellAnnounce(179986, 3)
 local warnTaintedShadows					= mod:NewSpellAnnounce(180533, 2)
@@ -47,9 +47,10 @@ local yellEdictofCondemnation				= mod:NewYell(182459)
 --local specWarnEdictofCondemnationOther	= mod:NewSpecialWarningMoveTo(182459, false)
 local specWarnTouchofHarm					= mod:NewSpecialWarningTarget(180166, false)
 --Stage One: Oppression
-local specWarnAnnihilatingStrike			= mod:NewSpecialWarningSpell(180260, false)--target scanning?
-local specWarnInfernalTempest				= mod:NewSpecialWarningYou(180300)
-local yellInfernalTempest					= mod:NewYell(180300)
+local specWarnAnnihilatingStrike			= mod:NewSpecialWarningYou(180260)
+--local specWarnAnnihilatingStrikeNear		= mod:NewSpecialWarningClose(180260)
+local yellAnnihilatingStrike				= mod:NewYell(180260)
+local specWarnInfernalTempest				= mod:NewSpecialWarningSpell(180300, nil, nil, nil, 2)
 ----Ancient Enforcer
 local specWarnAncientEnforcer				= mod:NewSpecialWarningSwitch("ej11155", "-Healer")
 local specWarnEnforcersOnslaught			= mod:NewSpecialWarningRun(180004, "Melee", nil, nil, 4, nil, 2)
@@ -114,7 +115,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 180260 then
-		specWarnAnnihilatingStrike:Show()
+		--specWarnAnnihilatingStrike:Show()
 		--timerAnnihilatingStrikeCD:Start()
 	elseif spellId == 180004 then
 		specWarnEnforcersOnslaught:Show()
@@ -125,6 +126,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 180608 then--No target filter, it's only interrupt onfight and it's VERY important
 		specWarnGaveloftheTyrant:Show(args.sourceName)
 		voiceGaveloftheTyrant:Play("carefly")
+	elseif spellId == 180300 then
+		specWarnInfernalTempest:Show()
 	end
 end
 
@@ -182,12 +185,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 180000 and self:AntiSpam(3, 1) then--Antispam temp, analyze stack counts and do it properly after combat data.
 		local amount = args.amount or 1
 		warnSealofDecay:Show(args.destName, amount)
-	elseif spellId == 180300 then
-		warnInfernalTempest:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnInfernalTempest:Show()
-			yellInfernalTempest:Yell()
-		end
 	elseif spellId == 180526 then
 		warnFontofCorruption:CombinedShow(0.3, args.destName)--One target?
 	elseif spellId == 180025 then
@@ -212,6 +209,13 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("180260") then
+		specWarnAnnihilatingStrike:Show()
+		yellAnnihilatingStrike:Yell()
+	end
+end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)

@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1392, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(76877)--Doesn't exist yet? Maybe next PTR build
+mod:SetCreatureID(90435)
 mod:SetEncounterID(1787)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
@@ -12,8 +12,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181292 181293 181296 181297 181299 181300 180244",
-	"SPELL_CAST_SUCCESS 180068 180115 180116 180117 181305 181307",
-	"SPELL_AURA_APPLIED 181306 186882",
+	"SPELL_CAST_SUCCESS 180068 181305 181307",
+	"SPELL_AURA_APPLIED 181306 186882 180115 180116 180117",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 181306 180244",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -33,7 +33,7 @@ local warnFoulEnergy				= mod:NewSpellAnnounce(180117, 2)
 --These are probably temp, changed to better tank special warnings when better understood
 local warnSwat						= mod:NewSpellAnnounce(181305, 3, nil, "Tank|Healer")
 local warnExplosiveBurst			= mod:NewTargetAnnounce(181306, 4)--Concerns everyone
-local warnEnrage					= mod:NewSpellAnnounce(186882, 3)--Mythic?
+local warnEnrage					= mod:NewSpellAnnounce(186882, 3)
 
 local specWarnPound					= mod:NewSpecialWarningSpell(180244, nil, nil, nil, 2, nil, 2)
 local specWarnExplosiveBurst		= mod:NewSpecialWarningYou(181306)
@@ -43,11 +43,11 @@ local yellExplosiveBurst			= mod:NewYell(181306)
 local specWarnEmpShadowWaves		= mod:NewSpecialWarningDodge(181293, nil, nil, nil, 2, nil, 2)
 local specWarnShadowWaves			= mod:NewSpecialWarningDodge(181292, nil, nil, nil, 2, nil, 2)
 local specWarnExplosiveRunes		= mod:NewSpecialWarningMoveTo(181296, "-Tank")--Might need tweaking once more visible strategy and quantity of runes observed.
-local specWarnGraspingHands			= mod:NewSpecialWarningSwitch(181299, "Dps")--Do tanks need to help? is it bad for tanks to help?
+local specWarnGraspingHands			= mod:NewSpecialWarningSwitch(181299)--Do tanks need to help? is it bad for tanks to help?
 --Empowered versions (made separate so users can set different sounds for the more dangerous versions if they choose)
 local specWarnEmpShadowWaves		= mod:NewSpecialWarningDodge(181293, nil, nil, nil, 2, nil, 2)
 local specWarnEmpExplosiveRunes		= mod:NewSpecialWarningMoveTo(181297, "-Tank")
-local specWarnDraggingHands			= mod:NewSpecialWarningSwitch(181300, "Dps")--Are these still dpsed?
+local specWarnDraggingHands			= mod:NewSpecialWarningSwitch(181300)
 
 --local timerLeapCD					= mod:NewCDTimer(107, 180068)
 --local timerPoundCD				= mod:NewCDTimer(107, 180244)
@@ -87,10 +87,10 @@ local function updateRangeCheck(self)
 			DBM.RangeCheck:Show(40)
 		elseif not self:CheckNearby(41, self.vb.explodingTank) and self.vb.poundActive then--far enough from tank and pound is active, switch back to 4
 			DBM.RangeCheck:Show(4)
-		else
+		else--No pound, tank still active, keep filtered radar up to prevent walking back into tank
 			DBM.RangeCheck:Show(40, debuffFilter)
 		end
-	elseif self.vb.poundActive then
+	elseif self.vb.poundActive then--Just pound, no tank debuff.
 		DBM.RangeCheck:Show(4)
 	else
 		DBM.RangeCheck:Hide()
@@ -157,12 +157,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 180068 then
 		warnLeap:Show()
 		--timerLeapCD:Start()
-	elseif spellId == 180115 then
-		warnShadowEnergy:Show()
-	elseif spellId == 180116 then
-		warnExplosiveEnergy:Show()
-	elseif spellId == 180117 then
-		warnFoulEnergy:Show()
 	elseif spellId == 181305 then
 		warnSwat:Show()
 		--timerTankSpecialCD:Start()
@@ -192,6 +186,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(3, trippleBurstCheck, self, args.destName, true)
 		end
 		updateRangeCheck(self)
+	elseif spellId == 180115 then
+		warnShadowEnergy:Show()
+	elseif spellId == 180116 then
+		warnExplosiveEnergy:Show()
+	elseif spellId == 180117 then
+		warnFoulEnergy:Show()
+	elseif spellId == 186882 then
+		warnEnrage:Show()
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

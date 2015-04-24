@@ -200,7 +200,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetSortedIcon(0.5, args.destName, 3)--Start at 3 and count up
 		end
 	elseif spellId == 182325 then
-		warnPhantasmalWounds:CombinedShow(0.3, args.destName)
+		warnPhantasmalWounds:CombinedShow(1, args.destName)--It goes out kind of slow
 		if self:AntiSpam(5, 1) then
 			timerPhantasmalWoundsCD:Start()
 		end
