@@ -106,8 +106,8 @@ function mod:AnnTarget(targetname, uId)
 		return
 	end
 	if targetname == UnitName("player") then
-		specWarnAnnihilatingStrike:Yell()
-		specWarnProtoGrenade:Show()
+		specWarnAnnihilatingStrike:Show()
+		yellAnnihilatingStrike:Yell()
 	elseif self:CheckNearby(5, targetname) then
 		specWarnAnnihilatingStrikeNear:Show(targetname)
 	else
