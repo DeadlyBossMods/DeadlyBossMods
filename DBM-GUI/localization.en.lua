@@ -184,6 +184,13 @@ L.SpecialWarnSound2			= "Set default sound for special warnings affecting everyo
 L.SpecialWarnSound3			= "Set default sound for VERY important special warnings"
 L.SpecialWarnSound4			= "Set default sound for run away special warnings"
 
+-- Tab: Heads Up Display Frame
+L.Panel_HUD					= "Heads Up Display"
+L.Area_HUDOptions			= "HUD Options"
+L.HUDColorOverride			= "Overide mod chosen colors for HUD"
+L.HUDColorSelect			= "HUD color %d"
+L.HUDSizeSlider				= "Circle Radius %0.1f. 0 lets mod decide"
+
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Spoken Alerts"
 L.Area_VoiceSelection		= "Voice Selections"
