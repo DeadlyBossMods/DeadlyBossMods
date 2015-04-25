@@ -185,7 +185,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetSortedIcon(0.7, args.destName, 8, nil, true)
 		end
 		if self.Options.HudMapOnSeeds then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 13, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 13, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
 	elseif spellId == 182008 then
 		warnLatentEnergy:CombinedShow(1, args.destName)

@@ -176,7 +176,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.HudMapOnSharedFate and not playerDown then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "highlight", args.destName, 3.5, 900, 1, 0, 0, 0.5, nil, true):Pulse(0.5, 0.5)--Red
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "highlight", args.destName, 3.5, 900, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
 		end
 		if args:IsPlayer() then
 			yellSharedFate:Yell()
@@ -187,7 +187,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.5, sharedFateDelay, self)--Just in case rooted ID fires after non rooted ones
 		end
 		if self.Options.HudMapOnSharedFate then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "highlight", args.destName, 3.5, 900, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)--Yellow
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "highlight", args.destName, 3.5, 900, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)--Yellow
 		end
 	elseif spellId == 180148 then
 		warnHungerforLife:CombinedShow(0.5, args.destName)--More than 1 target?

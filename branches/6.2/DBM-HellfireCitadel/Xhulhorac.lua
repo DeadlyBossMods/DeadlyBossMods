@@ -35,7 +35,6 @@ local timerRampageCD				= mod:NewCDTimer(107, 155539)
 --local voiceInfernoSlice				= mod:NewVoice(155080)
 
 --mod:AddRangeFrameOption(8, 155530)
---mod:AddHudMapOption("HudMapOnShatter", 155530, false)
 
 
 local debuffFilter
@@ -56,9 +55,6 @@ end
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	end
-	if self.Options.HudMapOnShatter then
-		DBMHudMap:Disable()
 	end
 end 
 
@@ -85,9 +81,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(8)
 			end
 		end
-		if self.Options.HudMapOnShatter then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "timer", args.destName, 8, 10, 0, 1, 0, 0.6):Appear():RegisterForAlerts():Rotate(360, 9.5)
-		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -97,9 +90,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 155323 then
 		if args:IsPlayer() and self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
-		end
-		if self.Options.HudMapOnShatter then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	end
 end

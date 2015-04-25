@@ -1163,17 +1163,53 @@ point_mt.__index = Point
 function mod:UpdateMode()
 end
 
-function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend)
-	return Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
+function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend, priority)
+	local red, green, blue = r, g, b
+	local size = radius
+	if priority then
+		if DBM.Options.HUDColorOverride then
+			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
+			red, green, blue = colors[1], colors[2], colors[3]
+			local checkSize = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
+		end
+		if checkSize > 0 then--0 means "Let mod decide"
+			size = checkSize
+		end
+	end
+	return Point:New(self.currentMap, x, y, nil, duration, texture, size, blend, red, green, blue, a)
 end
 
-function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
+function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend, priority)
+	local red, green, blue = r, g, b
+	local size = radius
+	if priority then
+		if DBM.Options.HUDColorOverride then
+			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
+			red, green, blue = colors[1], colors[2], colors[3]
+			local checkSize = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
+		end
+		if checkSize > 0 then--0 means "Let mod decide"
+			size = checkSize
+		end
+	end
 	local x, y = self:GetUnitPosition(person)
-	return Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
+	return Point:New(self.currentMap, x, y, nil, duration, texture, size, blend, red, green, blue, a)
 end
 
-function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
-	return Point:New(nil, nil, nil, person, duration, texture, radius, blend, r, g, b, a)
+function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend, priority)
+	local red, green, blue = r, g, b
+	local size = radius
+	if priority then
+		if DBM.Options.HUDColorOverride then
+			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
+			red, green, blue = colors[1], colors[2], colors[3]
+			local checkSize = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
+		end
+		if checkSize > 0 then--0 means "Let mod decide"
+			size = checkSize
+		end
+	end
+	return Point:New(nil, nil, nil, person, duration, texture, size, blend, red, green, blue, a)
 end
 
 local encounterMarkers = {}
@@ -1189,29 +1225,65 @@ function mod:RegisterEncounterMarker(spellid, name, marker)
 	marker.RegisterCallback(self, "Free", "FreeEncounterMarker", key)
 end
 
-function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, duration, r, g, b, a, blend)
+function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, duration, r, g, b, a, blend, priority)
+	local red, green, blue = r, g, b
+	local size = radius
+	if priority then
+		if DBM.Options.HUDColorOverride then
+			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
+			red, green, blue = colors[1], colors[2], colors[3]
+			local checkSize = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
+		end
+		if checkSize > 0 then--0 means "Let mod decide"
+			size = checkSize
+		end
+	end
 	local marker = encounterMarkers[spellid..name]
 	if marker ~= nil then return marker end
-	marker = Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
+	marker = Point:New(self.currentMap, x, y, nil, duration, texture, size, blend, red, green, blue, a)
 	self:RegisterEncounterMarker(spellid, name, marker)
 	return marker
 end
 
-function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf)
+function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf, priority)
 	if DBM.Options.FilterSelfHud and canFilterSelf and UnitIsUnit("player", person) then a = 0 end
+	local red, green, blue = r, g, b
+	local size = radius
+	if priority and a ~= 0 then
+		if DBM.Options.HUDColorOverride then
+			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
+			red, green, blue = colors[1], colors[2], colors[3]
+			local checkSize = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
+		end
+		if checkSize > 0 then--0 means "Let mod decide"
+			size = checkSize
+		end
+	end
 	local marker = encounterMarkers[spellid..person]
 	if marker ~= nil then return marker end
 	local x, y = self:GetUnitPosition(person)
-	marker = Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
+	marker = Point:New(self.currentMap, x, y, nil, duration, texture, size, blend, red, green, blue, a)
 	self:RegisterEncounterMarker(spellid, person, marker)
 	return marker
 end
 
-function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf)
+function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf, priority)
 	if DBM.Options.FilterSelfHud and canFilterSelf and UnitIsUnit("player", person) then a = 0 end
+	local red, green, blue = r, g, b
+	local size = radius
+	if priority and a ~= 0 then
+		if DBM.Options.HUDColorOverride then
+			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
+			red, green, blue = colors[1], colors[2], colors[3]
+			local checkSize = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
+		end
+		if checkSize > 0 then--0 means "Let mod decide"
+			size = checkSize
+		end
+	end
 	local marker = encounterMarkers[spellid..person]
 	if marker ~= nil then return marker end
-	marker = Point:New(nil, nil, nil, person, duration, texture, radius, blend, r, g, b, a)
+	marker = Point:New(nil, nil, nil, person, duration, texture, size, blend, red, green, blue, a)
 	self:RegisterEncounterMarker(spellid, person, marker)
 	return marker
 end

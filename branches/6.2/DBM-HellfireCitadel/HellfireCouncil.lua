@@ -68,7 +68,6 @@ local countdownReap					= mod:NewCountdownFades("Alt4", 184476)
 local voiceFelstorm					= mod:NewVoice(183701)--aesoon
 
 --mod:AddRangeFrameOption(8, 155530)
---mod:AddHudMapOption("HudMapOnShatter", 155530, false)
 
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local markofNecroDebuff = GetSpellInfo(184449)--Spell name should work, without knowing what right spellid is, For this anyways.
@@ -93,9 +92,6 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.HudMapOnShatter then
---		DBMHudMap:Disable()
---	end
 end 
 
 function mod:SPELL_CAST_START(args)

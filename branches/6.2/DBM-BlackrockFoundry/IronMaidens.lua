@@ -452,7 +452,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnBloodRitual:Show(self.vb.bloodRitual, args.destName)
 			end
 			if self.Options.HudMapOnBloodRitual then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 7, 1, 0, 0, 0.5, nil, true):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 7, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)
 			end
 			if args:IsPlayer() then
 				yellBloodRitual:Yell()
@@ -475,7 +475,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					warnRapidFire:Show(self.vb.rapidfire, args.destName)
 				end
 				if self.Options.HudMapOnRapidFire then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 9, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 9, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 				end
 			end
 		end
@@ -610,7 +610,7 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 				warnRapidFire:Show(self.vb.rapidfire, targetName)
 			end
 			if self.Options.HudMapOnRapidFire then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(156631, "highlight", targetName, 5, 12, 1, 1, 0, 0.5, nil, true):Pulse(0.5, 0.5)
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(156631, "highlight", targetName, 5, 12, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 			end
 		end
 	end
