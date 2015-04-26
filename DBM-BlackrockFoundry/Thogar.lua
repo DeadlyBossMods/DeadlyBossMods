@@ -636,7 +636,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 155921 then
 		local amount = args.amount or 1
-		warnEnkindle:Show(args.destName, amount)
 		timerEnkindleCD:Start()
 		if amount >= 2 then
 			if args:IsPlayer() then
@@ -649,8 +648,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 				if debuffTime < 12 and not UnitIsDeadOrGhost("player") then--No debuff, or debuff will expire before next cast.
 					specWarnEnkindleOther:Show(args.destName)
+				else
+					warnEnkindle:Show(args.destName, amount)
 				end
 			end
+		else
+			warnEnkindle:Show(args.destName, amount)
 		end
 	elseif spellId == 165195 and args:IsPlayer() and self:AntiSpam(1.5, 5) then
 		specWarnProtoGrenade:Show()

@@ -109,7 +109,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 156151 then
 		local amount = args.amount or 1
-		warnTenderizer:Show(args.destName, amount)
 		timerTenderizerCD:Start()
 		countdownTenderizer:Start()
 		if amount >= 2 then
@@ -119,8 +118,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				if not UnitDebuff("player", GetSpellInfo(156151)) and not UnitIsDeadOrGhost("player") then
 					specWarnTenderizerOther:Show(args.destName)
+				else
+					warnTenderizer:Show(args.destName, amount)
 				end
 			end
+		else
+			warnTenderizer:Show(args.destName, amount)
 		end
 	elseif spellId == 156598 then
 		self.vb.isFrenzied = true
