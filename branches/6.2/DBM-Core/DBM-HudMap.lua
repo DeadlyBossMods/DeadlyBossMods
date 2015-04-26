@@ -1172,7 +1172,7 @@ function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend
 			red, green, blue = colors[1], colors[2], colors[3]
 		end
 		if DBM.Options.HUDSizeOverride then
-			size = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
+			size = priority == 1 and DBM.Options.HUDSize1 or priority == 2 and DBM.Options.HUDSize2 or priority == 3 and DBM.Options.HUDSize3 or priority == 4 and DBM.Options.HUDSize4
 		end
 		if DBM.Options.HUDAlphaOverride then
 			alpha = priority == 1 and DBM.Options.HUDAlpha1 or priority == 2 and DBM.Options.HUDAlpha2 or priority == 3 and DBM.Options.HUDAlpha3 or priority == 4 and DBM.Options.HUDAlpha4
@@ -1193,7 +1193,7 @@ function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r
 			red, green, blue = colors[1], colors[2], colors[3]
 		end
 		if DBM.Options.HUDSizeOverride then
-			size = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
+			size = priority == 1 and DBM.Options.HUDSize1 or priority == 2 and DBM.Options.HUDSize2 or priority == 3 and DBM.Options.HUDSize3 or priority == 4 and DBM.Options.HUDSize4
 		end
 		if DBM.Options.HUDAlphaOverride then
 			alpha = priority == 1 and DBM.Options.HUDAlpha1 or priority == 2 and DBM.Options.HUDAlpha2 or priority == 3 and DBM.Options.HUDAlpha3 or priority == 4 and DBM.Options.HUDAlpha4
@@ -1215,7 +1215,7 @@ function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r,
 			red, green, blue = colors[1], colors[2], colors[3]
 		end
 		if DBM.Options.HUDSizeOverride then
-			size = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
+			size = priority == 1 and DBM.Options.HUDSize1 or priority == 2 and DBM.Options.HUDSize2 or priority == 3 and DBM.Options.HUDSize3 or priority == 4 and DBM.Options.HUDSize4
 		end
 		if DBM.Options.HUDAlphaOverride then
 			alpha = priority == 1 and DBM.Options.HUDAlpha1 or priority == 2 and DBM.Options.HUDAlpha2 or priority == 3 and DBM.Options.HUDAlpha3 or priority == 4 and DBM.Options.HUDAlpha4
@@ -1249,7 +1249,7 @@ function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, durati
 			red, green, blue = colors[1], colors[2], colors[3]
 		end
 		if DBM.Options.HUDSizeOverride then
-			size = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
+			size = priority == 1 and DBM.Options.HUDSize1 or priority == 2 and DBM.Options.HUDSize2 or priority == 3 and DBM.Options.HUDSize3 or priority == 4 and DBM.Options.HUDSize4
 		end
 		if DBM.Options.HUDAlphaOverride then
 			alpha = priority == 1 and DBM.Options.HUDAlpha1 or priority == 2 and DBM.Options.HUDAlpha2 or priority == 3 and DBM.Options.HUDAlpha3 or priority == 4 and DBM.Options.HUDAlpha4
@@ -1275,7 +1275,7 @@ function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius,
 			red, green, blue = colors[1], colors[2], colors[3]
 		end
 		if DBM.Options.HUDSizeOverride then
-			size = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
+			size = priority == 1 and DBM.Options.HUDSize1 or priority == 2 and DBM.Options.HUDSize2 or priority == 3 and DBM.Options.HUDSize3 or priority == 4 and DBM.Options.HUDSize4
 		end
 		if DBM.Options.HUDAlphaOverride then
 			alpha = priority == 1 and DBM.Options.HUDAlpha1 or priority == 2 and DBM.Options.HUDAlpha2 or priority == 3 and DBM.Options.HUDAlpha3 or priority == 4 and DBM.Options.HUDAlpha4
@@ -1302,7 +1302,7 @@ function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, 
 			red, green, blue = colors[1], colors[2], colors[3]
 		end
 		if DBM.Options.HUDSizeOverride then
-			size = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
+			size = priority == 1 and DBM.Options.HUDSize1 or priority == 2 and DBM.Options.HUDSize2 or priority == 3 and DBM.Options.HUDSize3 or priority == 4 and DBM.Options.HUDSize4
 		end
 		if DBM.Options.HUDAlphaOverride then
 			alpha = priority == 1 and DBM.Options.HUDAlpha1 or priority == 2 and DBM.Options.HUDAlpha2 or priority == 3 and DBM.Options.HUDAlpha3 or priority == 4 and DBM.Options.HUDAlpha4

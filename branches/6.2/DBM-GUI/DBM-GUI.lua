@@ -2430,6 +2430,12 @@ local function CreateOptionsMenu()
 		local check3 = hudArea:CreateCheckButton(L.HUDAlphaOverride, true, nil, "HUDAlphaOverride")
 		local check4 = hudArea:CreateCheckButton(L.HUDTextureOverride, true, nil, "HUDTextureOverride")
 
+		local showbutton = hudArea:CreateButton(L.SpecWarn_DemoButton, 120, 16)
+		showbutton:SetPoint('TOPRIGHT', hudArea.frame, "TOPRIGHT", -5, -5)
+		showbutton:SetNormalFontObject(GameFontNormalSmall)
+		showbutton:SetHighlightFontObject(GameFontNormalSmall)
+		showbutton:SetScript("OnClick", function() DBM:ShowTestHUD() end)
+
 		local Textures = {
 			{	text	= "Default (Alert Circle)",		value 	= "highlight" },
 			{	text	= "Gradient Circle",			value 	= "glow" },
@@ -2679,7 +2685,7 @@ local function CreateOptionsMenu()
 			local firstshow = true
 			huddalphaSlider4:HookScript("OnShow", function(self)
 				firstshow = true
-				self:SetValue(DBM.Options.HUDAlpha1)
+				self:SetValue(DBM.Options.HUDAlpha4)
 			end)
 			huddalphaSlider4:HookScript("OnValueChanged", function(self)
 				if firstshow then firstshow = false return end
