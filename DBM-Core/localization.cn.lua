@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Apr 6, 2015@13545
+-- Last update: Apr 25, 2015@13663
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -178,9 +178,9 @@ DBM_CORE_RANGECHECK_HIDE			= "隐藏"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d码"
 DBM_CORE_RANGECHECK_LOCK			= "锁定框体"
 DBM_CORE_RANGECHECK_OPTION_FRAMES	= "框体"
-DBM_CORE_RANGECHECK_OPTION_RADAR	= "显示雷达框体"
+DBM_CORE_RANGECHECK_OPTION_RADAR	= "显示距离雷达框体"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "显示文本框体"
-DBM_CORE_RANGECHECK_OPTION_BOTH		= "同时显示雷达和文本框体"
+DBM_CORE_RANGECHECK_OPTION_BOTH		= "同时显示距离雷达框体和文本框体"
 DBM_CORE_RANGERADAR_HEADER			= "距离%d码 玩家%d人"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d人在监视距离内（%d码）"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1f码)"--One target
@@ -206,7 +206,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm hud: 显示DBM hud，输入'/dbm hud'查询更多信息。"
 }
 
-DBM_ERROR_NO_PERMISSION				= "你无权进行该操作。(需要队长或助理权限?)"
+DBM_ERROR_NO_PERMISSION				= "权限不足。需要队长或助理权限。"
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "隐藏生命值框体"
 
@@ -406,7 +406,7 @@ DBM_SPEED_KILL_TIMER_TEXT	= "击杀记录"
 DBM_SPEED_KILL_TIMER_OPTION	= "计时条：最速击杀记录"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "最速清除"
 DBM_COMBAT_RES_TIMER_TEXT	= "下一次战复CD"
-
+DBM_CORE_TIMER_RESPAWN		= "刷新"
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s请求获取你现在副本的存档ID与进度。是否愿意向&s提交进度？\n\n注意：在接受后，他可以随时查看您当前的进度情况，直到您下线、掉线或重载用户界面。"
 DBM_ERROR_NO_RAID					= "使用该功能需要身处一个团队中。"
