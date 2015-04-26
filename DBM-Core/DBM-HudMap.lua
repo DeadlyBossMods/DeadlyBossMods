@@ -1170,10 +1170,9 @@ function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend
 		if DBM.Options.HUDColorOverride then
 			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
 			red, green, blue = colors[1], colors[2], colors[3]
-			local checkSize = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
 		end
-		if checkSize > 0 then--0 means "Let mod decide"
-			size = checkSize
+		if DBM.Options.HUDSizeOverride then--0 means "Let mod decide"
+			size = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
 		end
 	end
 	return Point:New(self.currentMap, x, y, nil, duration, texture, size, blend, red, green, blue, a)
@@ -1186,10 +1185,9 @@ function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r
 		if DBM.Options.HUDColorOverride then
 			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
 			red, green, blue = colors[1], colors[2], colors[3]
-			local checkSize = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
 		end
-		if checkSize > 0 then--0 means "Let mod decide"
-			size = checkSize
+		if DBM.Options.HUDSizeOverride then--0 means "Let mod decide"
+			size = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
 		end
 	end
 	local x, y = self:GetUnitPosition(person)
@@ -1203,10 +1201,9 @@ function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r,
 		if DBM.Options.HUDColorOverride then
 			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
 			red, green, blue = colors[1], colors[2], colors[3]
-			local checkSize = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
 		end
-		if checkSize > 0 then--0 means "Let mod decide"
-			size = checkSize
+		if DBM.Options.HUDSizeOverride then--0 means "Let mod decide"
+			size = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
 		end
 	end
 	return Point:New(nil, nil, nil, person, duration, texture, size, blend, red, green, blue, a)
@@ -1232,10 +1229,9 @@ function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, durati
 		if DBM.Options.HUDColorOverride then
 			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
 			red, green, blue = colors[1], colors[2], colors[3]
-			local checkSize = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
 		end
-		if checkSize > 0 then--0 means "Let mod decide"
-			size = checkSize
+		if DBM.Options.HUDSizeOverride then--0 means "Let mod decide"
+			size = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
 		end
 	end
 	local marker = encounterMarkers[spellid..name]
@@ -1253,10 +1249,9 @@ function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius,
 		if DBM.Options.HUDColorOverride then
 			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
 			red, green, blue = colors[1], colors[2], colors[3]
-			local checkSize = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
 		end
-		if checkSize > 0 then--0 means "Let mod decide"
-			size = checkSize
+		if DBM.Options.HUDSizeOverride then--0 means "Let mod decide"
+			size = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
 		end
 	end
 	local marker = encounterMarkers[spellid..person]
@@ -1275,10 +1270,9 @@ function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, 
 		if DBM.Options.HUDColorOverride then
 			local colors = priority == 1 and DBM.Options.HUDColor1 or priority == 2 and DBM.Options.HUDColor2 or priority == 3 and DBM.Options.HUDColor3 or priority == 4 and DBM.Options.HUDColor4
 			red, green, blue = colors[1], colors[2], colors[3]
-			local checkSize = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
 		end
-		if checkSize > 0 then--0 means "Let mod decide"
-			size = checkSize
+		if DBM.Options.HUDSizeOverride then--0 means "Let mod decide"
+			size = priority == 1 and DBM.Options.HUDSizeOption1 or priority == 2 and DBM.Options.HUDSizeOption2 or priority == 3 and DBM.Options.HUDSizeOption3 or priority == 4 and DBM.Options.HUDSizeOption4
 		end
 	end
 	local marker = encounterMarkers[spellid..person]
