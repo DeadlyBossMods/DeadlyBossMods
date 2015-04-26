@@ -12,8 +12,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 158057 157943 158134 158093 158200 157952 158415 158419 163336",
-	"SPELL_AURA_APPLIED 163372 167200 158241 163297",
-	"SPELL_AURA_APPLIED_DOSE 167200 158241",
+	"SPELL_AURA_APPLIED 163372 158241 163297",
+	"SPELL_AURA_APPLIED_DOSE 158241",
 	"SPELL_AURA_REFRESH 163372",
 	"SPELL_AURA_REMOVED 163372",
 	"SPELL_CAST_SUCCESS 158385",
@@ -23,7 +23,6 @@ mod:RegisterEventsInCombat(
 --Phemos
 local warnArcaneTwisted				= mod:NewTargetAnnounce("OptionVersion2", 163297, 2, nil, false)--Mythic, the boss that's going to use empowered abilities
 local warnArcaneVolatility			= mod:NewTargetAnnounce(163372, 4)--Mythic
-local warnArcaneWound				= mod:NewStackAnnounce("OptionVersion2", 167200, 2, nil, false)--Arcane debuff irrelevant. off by default, even for tanks unless blizz changes it.
 --Pol
 local warnPulverize					= mod:NewCountAnnounce(158385, 3)--158385 is primary activation with SPELL_CAST_SUCCESS, cast at start, followed by 3 channeled IDs using SPELL_CAST_START
 
@@ -317,9 +316,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(8, debuffFilter)
 			end
 		end
-	elseif spellId == 167200 then
-		local amount = args.amount or 1
-		warnArcaneWound:Show(args.destName, amount)
 	elseif spellId == 158241 and args:IsPlayer() and self:AntiSpam(3, 3) then
 		specWarnBlaze:Show()
 		voiceBlaze:Play("runaway")

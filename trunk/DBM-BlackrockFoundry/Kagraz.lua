@@ -186,7 +186,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 163284 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 then
-			warnRisingFlames:Show(args.destName, amount)
 			if amount >= 6 then
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnRisingFlames:Show(amount)
@@ -194,23 +193,30 @@ function mod:SPELL_AURA_APPLIED(args)
 					if not UnitDebuff("player", GetSpellInfo(163284)) and not UnitIsDeadOrGhost("player") then
 						specWarnRisingFlamesOther:Show(args.destName)
 						voiceRisingFlames:Play("changemt")
+					else
+						warnRisingFlames:Show(args.destName, amount)
 					end
 				end
+			else
+				warnRisingFlames:Show(args.destName, amount)
 			end
 		end
 	elseif spellId == 155074 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId, "boss1") or self:IsTanking(uId, "boss2") or self:IsTanking(uId, "boss3") or self:IsTanking(uId, "boss4") or self:IsTanking(uId, "boss5") then
 			local amount = args.amount or 1
-			warnCharringBreath:Show(args.destName, amount)
 			if amount >= 2 then
 				if args:IsPlayer() then
 					specWarnCharringBreath:Show(amount)
 				else--Taunt as soon as stacks are clear, regardless of stack count.
 					if not UnitDebuff("player", GetSpellInfo(155074)) and not UnitIsDeadOrGhost("player") then
 						specWarnCharringBreathOther:Show(args.destName)
+					else
+						warnCharringBreath:Show(args.destName, amount)
 					end
 				end
+			else
+				warnCharringBreath:Show(args.destName, amount)
 			end
 		end
 	elseif spellId == 154932 then

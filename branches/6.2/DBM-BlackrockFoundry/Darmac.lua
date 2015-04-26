@@ -323,27 +323,33 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 155030 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 and amount >= 12 then--Stack assumed, may need revising
-			warnSearingFangs:Show(args.destName, amount)
 			if amount >= 12 then
 				if args:IsPlayer() then
 					specWarnSearingFangs:Show(amount)
 				else
 					if not UnitDebuff("player", GetSpellInfo(155030)) and not UnitIsDeadOrGhost("player") then
 						specWarnSearingFangsOther:Show(args.destName)
+					else
+						warnSearingFangs:Show(args.destName, amount)
 					end
 				end
+			else
+				warnSearingFangs:Show(args.destName, amount)
 			end
 		end
 	elseif spellId == 155236 then
 		local amount = args.amount or 1
-		warnCrushArmor:Show(args.destName, amount)
 		if amount >= 3 and args:IsPlayer() then
 			specWarnCrushArmor:Show(amount)
 		elseif amount >= 2 and not args:IsPlayer() then--Swap at 2 WHEN POSSIBLE but 50/50 you have to go to 3.
 			if not UnitDebuff("player", GetSpellInfo(155236)) and not UnitIsDeadOrGhost("player") then
 				specWarnCrushArmorOther:Show(args.destName)
+			else
+				warnCrushArmor:Show(args.destName, amount)
 			end
 			voiceCrushArmor:Play("changemt")
+		else
+			warnCrushArmor:Show(args.destName, amount)
 		end
 	elseif args:IsSpellID(155458, 155459, 155460, 155462, 163247) then
 		DBM:Debug("SPELL_AURA_APPLIED, Boss absorbing beast abilities", 2)

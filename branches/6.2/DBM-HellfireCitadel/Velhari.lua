@@ -265,14 +265,17 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 	local spellId = args.spellId
 	if spellId == 180000 then--Omitting 1 stack since this stacks frequently, so DBM only announces 2/3 instead of 1-3 on something cast every 5 seconds.
 		local amount = args.amount
-		warnSealofDecay:Show(args.destName, amount)
 		if amount >= 3 and args:IsPlayer() then
 			specWarnSealofDecay:Show(amount)
 		elseif amount >= 2 and not args:IsPlayer() then--Swap at 2 WHEN POSSIBLE but 50/50 you have to go to 3.
 			if not UnitDebuff("player", GetSpellInfo(180000)) and not UnitIsDeadOrGhost("player") then
 				specWarnSealofDecayOther:Show(args.destName)
 				voiceSealofDecay:Play("tauntboss")
+			else
+				warnSealofDecay:Show(args.destName, amount)
 			end
+		else
+			warnSealofDecay:Show(args.destName, amount)
 		end
 	end
 end
