@@ -2424,9 +2424,11 @@ local function CreateOptionsMenu()
 
 	do
 		local hudPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_HUD, "option")
-		local hudArea = hudPanel:CreateArea(L.Area_HUDOptions, nil, 500, true)
+		local hudArea = hudPanel:CreateArea(L.Area_HUDOptions, nil, 560, true)
 		local check1 = hudArea:CreateCheckButton(L.HUDColorOverride, true, nil, "HUDColorOverride")
 		local check2 = hudArea:CreateCheckButton(L.HUDSizeOverride, true, nil, "HUDSizeOverride")
+		local check3 = hudArea:CreateCheckButton(L.HUDAlphaOverride, true, nil, "HUDAlphaOverride")
+		local check4 = hudArea:CreateCheckButton(L.HUDTextureOverride, true, nil, "HUDTextureOverride")
 
 		local Textures = {
 			{	text	= "Default (Alert Circle)",		value 	= "highlight" },
@@ -2447,7 +2449,7 @@ local function CreateOptionsMenu()
 		}
 		--Begin Row 1
 		local color1 = hudArea:CreateColorSelect(64)
-		color1:SetPoint('TOPLEFT', hudArea.frame, "TOPLEFT", 20, -80)
+		color1:SetPoint('TOPLEFT', hudArea.frame, "TOPLEFT", 20, -140)
 		local color1text = hudArea:CreateText(L.HUDColorSelect:format(1), 80)
 		color1text:SetPoint("BOTTOM", color1, "TOP", 5, 4)
 		local color1reset = hudArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -2476,7 +2478,7 @@ local function CreateOptionsMenu()
 		local Texture1DropDown = hudArea:CreateDropdown(L.HUDTextureSelect1, Textures, "DBM", "HUDTexture1", function(value)
 			DBM.Options.HUDTexture1 = value
 		end)
-		Texture1DropDown:SetPoint("TOPLEFT", hudArea.frame, "TOPLEFT", 100, -76)
+		Texture1DropDown:SetPoint("TOPLEFT", hudArea.frame, "TOPLEFT", 100, -136)
 		
 		local hudSizeSlider1 = hudArea:CreateSlider(L.HUDSizeSlider, 2, 5, 0.5, 160)   -- (text , min_value , max_value , step , width)
 		hudSizeSlider1:SetPoint('TOPLEFT', Texture1DropDown, "TOPLEFT", 20, -50)
@@ -2491,6 +2493,20 @@ local function CreateOptionsMenu()
 				DBM.Options.HUDSize1 = self:GetValue()
 			end)
 		end
+		local huddalphaSlider1 = hudArea:CreateSlider(L.HUDAlphaSlider, 0.1, 1, 0.1, 160)   -- (text , min_value , max_value , step , width)
+		huddalphaSlider1:SetPoint('BOTTOMLEFT', hudSizeSlider1, "BOTTOMLEFT", 180, -0)
+		do
+			local firstshow = true
+			huddalphaSlider1:HookScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.HUDAlpha1)
+			end)
+			huddalphaSlider1:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.HUDAlpha1 = self:GetValue()
+			end)
+		end		
+
 		--Being Row 2
 		local color2 = hudArea:CreateColorSelect(64)
 		color2:SetPoint('TOPLEFT', color1, "TOPLEFT", 0, -105)
@@ -2522,7 +2538,7 @@ local function CreateOptionsMenu()
 		local Texture2DropDown = hudArea:CreateDropdown(L.HUDTextureSelect2, Textures, "DBM", "HUDTexture2", function(value)
 			DBM.Options.HUDTexture2 = value
 		end)
-		Texture2DropDown:SetPoint("TOPLEFT", hudArea.frame, "TOPLEFT", 100, -181)
+		Texture2DropDown:SetPoint("TOPLEFT", hudArea.frame, "TOPLEFT", 100, -241)
 		
 		local hudSizeSlider2 = hudArea:CreateSlider(L.HUDSizeSlider, 2, 5, 0.5, 160)   -- (text , min_value , max_value , step , width)
 		hudSizeSlider2:SetPoint('TOPLEFT', Texture2DropDown, "TOPLEFT", 20, -50)
@@ -2537,6 +2553,19 @@ local function CreateOptionsMenu()
 				DBM.Options.HUDSize2 = self:GetValue()
 			end)
 		end
+		local huddalphaSlider2 = hudArea:CreateSlider(L.HUDAlphaSlider, 0.1, 1, 0.1, 160)   -- (text , min_value , max_value , step , width)
+		huddalphaSlider2:SetPoint('BOTTOMLEFT', hudSizeSlider2, "BOTTOMLEFT", 180, -0)
+		do
+			local firstshow = true
+			huddalphaSlider2:HookScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.HUDAlpha2)
+			end)
+			huddalphaSlider2:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.HUDAlpha2 = self:GetValue()
+			end)
+		end	
 
 		--Begin Row 3
 		local color3 = hudArea:CreateColorSelect(64)
@@ -2569,7 +2598,7 @@ local function CreateOptionsMenu()
 		local Texture3DropDown = hudArea:CreateDropdown(L.HUDTextureSelect3, Textures, "DBM", "HUDTexture3", function(value)
 			DBM.Options.HUDTexture3 = value
 		end)
-		Texture3DropDown:SetPoint("TOPLEFT", hudArea.frame, "TOPLEFT", 100, -286)
+		Texture3DropDown:SetPoint("TOPLEFT", hudArea.frame, "TOPLEFT", 100, -346)
 		
 		local hudSizeSlider3 = hudArea:CreateSlider(L.HUDSizeSlider, 2, 5, 0.5, 160)   -- (text , min_value , max_value , step , width)
 		hudSizeSlider3:SetPoint('TOPLEFT', Texture3DropDown, "TOPLEFT", 20, -50)
@@ -2584,6 +2613,20 @@ local function CreateOptionsMenu()
 				DBM.Options.HUDSize3 = self:GetValue()
 			end)
 		end
+		local huddalphaSlider3 = hudArea:CreateSlider(L.HUDAlphaSlider, 0.1, 1, 0.1, 160)   -- (text , min_value , max_value , step , width)
+		huddalphaSlider3:SetPoint('BOTTOMLEFT', hudSizeSlider3, "BOTTOMLEFT", 180, -0)
+		do
+			local firstshow = true
+			huddalphaSlider3:HookScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.HUDAlpha3)
+			end)
+			huddalphaSlider3:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.HUDAlpha3 = self:GetValue()
+			end)
+		end	
+
 		--Begin Row 4
 		local color4 = hudArea:CreateColorSelect(64)
 		color4:SetPoint('TOPLEFT', color3, "TOPLEFT", 0, -105)
@@ -2615,7 +2658,7 @@ local function CreateOptionsMenu()
 		local Texture4DropDown = hudArea:CreateDropdown(L.HUDTextureSelect4, Textures, "DBM", "HUDTexture4", function(value)
 			DBM.Options.HUDTexture4 = value
 		end)
-		Texture4DropDown:SetPoint("TOPLEFT", hudArea.frame, "TOPLEFT", 100, -391)
+		Texture4DropDown:SetPoint("TOPLEFT", hudArea.frame, "TOPLEFT", 100, -451)
 		
 		local hudSizeSlider4 = hudArea:CreateSlider(L.HUDSizeSlider, 2, 5, 0.5, 160)   -- (text , min_value , max_value , step , width)
 		hudSizeSlider4:SetPoint('TOPLEFT', Texture4DropDown, "TOPLEFT", 20, -50)
@@ -2630,6 +2673,20 @@ local function CreateOptionsMenu()
 				DBM.Options.HUDSize4 = self:GetValue()
 			end)
 		end
+		local huddalphaSlider4 = hudArea:CreateSlider(L.HUDAlphaSlider, 0.1, 1, 0.1, 160)   -- (text , min_value , max_value , step , width)
+		huddalphaSlider4:SetPoint('BOTTOMLEFT', hudSizeSlider4, "BOTTOMLEFT", 180, -0)
+		do
+			local firstshow = true
+			huddalphaSlider4:HookScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.HUDAlpha1)
+			end)
+			huddalphaSlider4:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.HUDAlpha4 = self:GetValue()
+			end)
+		end	
+
 		--End Rows
 		local resetbutton = hudArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 		resetbutton:SetPoint('BOTTOMRIGHT', hudArea.frame, "BOTTOMRIGHT", -5, 5)
@@ -2638,6 +2695,8 @@ local function CreateOptionsMenu()
 		resetbutton:SetScript("OnClick", function()
 			DBM.Options.HUDColorOverride = DBM.DefaultOptions.HUDColorOverride
 			DBM.Options.HUDSizeOverride = DBM.DefaultOptions.HUDSizeOverride
+			DBM.Options.HUDAlphaOverride = DBM.DefaultOptions.HUDAlphaOverride
+			DBM.Options.HUDTextureOverride = DBM.DefaultOptions.HUDTextureOverride
 			DBM.Options.HUDColor1 = DBM.DefaultOptions.HUDColor1
 			DBM.Options.HUDColor2 = DBM.DefaultOptions.HUDColor2
 			DBM.Options.HUDColor3 = DBM.DefaultOptions.HUDColor3
@@ -2646,12 +2705,18 @@ local function CreateOptionsMenu()
 			DBM.Options.HUDSize2 = DBM.DefaultOptions.HUDSize2
 			DBM.Options.HUDSize3 = DBM.DefaultOptions.HUDSize3
 			DBM.Options.HUDSize4 = DBM.DefaultOptions.HUDSize4
+			DBM.Options.HUDAlpha1 = DBM.DefaultOptions.HUDAlpha1
+			DBM.Options.HUDAlpha2 = DBM.DefaultOptions.HUDAlpha2
+			DBM.Options.HUDAlpha3 = DBM.DefaultOptions.HUDAlpha3
+			DBM.Options.HUDAlpha4 = DBM.DefaultOptions.HUDAlpha4
 			DBM.Options.HUDTexture1 = DBM.DefaultOptions.HUDTexture1
 			DBM.Options.HUDTexture2 = DBM.DefaultOptions.HUDTexture2
 			DBM.Options.HUDTexture3 = DBM.DefaultOptions.HUDTexture3
 			DBM.Options.HUDTexture4 = DBM.DefaultOptions.HUDTexture4
 			check1:SetChecked(DBM.Options.HUDColorOverride)
 			check2:SetChecked(DBM.Options.HUDSizeOverride)
+			check3:SetChecked(DBM.Options.HUDAlphaOverride)
+			check4:SetChecked(DBM.Options.HUDTextureOverride)
 			color1:SetColorRGB(DBM.Options.HUDColor1[1], DBM.Options.HUDColor1[2], DBM.Options.HUDColor1[3])
 			color2:SetColorRGB(DBM.Options.HUDColor2[1], DBM.Options.HUDColor2[2], DBM.Options.HUDColor2[3])
 			color3:SetColorRGB(DBM.Options.HUDColor3[1], DBM.Options.HUDColor3[2], DBM.Options.HUDColor3[3])
@@ -2660,6 +2725,10 @@ local function CreateOptionsMenu()
 			hudSizeSlider2:SetValue(DBM.DefaultOptions.HUDSize2)
 			hudSizeSlider3:SetValue(DBM.DefaultOptions.HUDSize3)
 			hudSizeSlider4:SetValue(DBM.DefaultOptions.HUDSize4)
+			huddalphaSlider1:SetValue(DBM.DefaultOptions.HUDAlpha1)
+			huddalphaSlider2:SetValue(DBM.DefaultOptions.HUDAlpha2)
+			huddalphaSlider3:SetValue(DBM.DefaultOptions.HUDAlpha3)
+			huddalphaSlider4:SetValue(DBM.DefaultOptions.HUDAlpha4)
 			Texture1DropDown:SetSelectedValue(DBM.Options.HUDTexture1)
 			Texture2DropDown:SetSelectedValue(DBM.Options.HUDTexture2)
 			Texture3DropDown:SetSelectedValue(DBM.Options.HUDTexture3)
