@@ -2423,6 +2423,253 @@ local function CreateOptionsMenu()
 	end
 
 	do
+		local hudPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_HUD, "option")
+		local hudArea = hudPanel:CreateArea(L.Area_HUDOptions, nil, 500, true)
+		local check1 = hudArea:CreateCheckButton(L.HUDColorOverride, true, nil, "HUDColorOverride")
+		local check2 = hudArea:CreateCheckButton(L.HUDSizeOverride, true, nil, "HUDSizeOverride")
+
+		local Textures = {
+			{	text	= "Default (Alert Circle)",		value 	= "highlight" },
+			{	text	= "Gradient Circle",			value 	= "glow" },
+			{	text	= "Party Raid Blip",			value 	= "party" },
+			{	text	= "Ring",						value 	= "ring" },
+			{	text	= "Rune 1",						value 	= "rune1" },
+			{	text	= "Rune 2",						value 	= "rune2" },
+			{	text	= "Rune 3",						value 	= "rune3" },
+			{	text	= "Rune 4",						value 	= "rune4" },
+			{	text	= "Paw",						value 	= "paw" },
+			{	text	= "Cyan Star",					value 	= "cyanstar" },
+			{	text	= "Summon",						value 	= "summon" },
+			{	text	= "Reticle",					value 	= "reticle" },
+			{	text	= "Fuzzy Ring",					value 	= "fuzzyring" },
+			{	text	= "Fat Ring",					value 	= "fatring" },
+			{	text	= "Swords",						value 	= "swords" },
+		}
+		--Begin Row 1
+		local color1 = hudArea:CreateColorSelect(64)
+		color1:SetPoint('TOPLEFT', hudArea.frame, "TOPLEFT", 20, -80)
+		local color1text = hudArea:CreateText(L.HUDColorSelect:format(1), 80)
+		color1text:SetPoint("BOTTOM", color1, "TOP", 5, 4)
+		local color1reset = hudArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		color1reset:SetPoint('TOP', color1, "BOTTOM", 5, -10)
+		color1reset:SetScript("OnClick", function(self)
+				DBM.Options.HUDColor1[1] = DBM.DefaultOptions.HUDColor1[1]
+				DBM.Options.HUDColor1[2] = DBM.DefaultOptions.HUDColor1[2]
+				DBM.Options.HUDColor1[3] = DBM.DefaultOptions.HUDColor1[3]
+				color1:SetColorRGB(DBM.Options.HUDColor1[1], DBM.Options.HUDColor1[2], DBM.Options.HUDColor1[3])
+		end)
+		do
+			local firstshow = true
+			color1:SetScript("OnShow", function(self)
+					firstshow = true
+					self:SetColorRGB(DBM.Options.HUDColor1[1], DBM.Options.HUDColor1[2], DBM.Options.HUDColor1[3])
+			end)
+			color1:SetScript("OnColorSelect", function(self)
+					if firstshow then firstshow = false return end
+					DBM.Options.HUDColor1[1] = select(1, self:GetColorRGB())
+					DBM.Options.HUDColor1[2] = select(2, self:GetColorRGB())
+					DBM.Options.HUDColor1[3] = select(3, self:GetColorRGB())
+					color1text:SetTextColor(self:GetColorRGB())
+			end)
+		end
+		
+		local Texture1DropDown = hudArea:CreateDropdown(L.HUDTextureSelect1, Textures, "DBM", "HUDTexture1", function(value)
+			DBM.Options.HUDTexture1 = value
+		end)
+		Texture1DropDown:SetPoint("TOPLEFT", hudArea.frame, "TOPLEFT", 100, -76)
+		
+		local hudSizeSlider1 = hudArea:CreateSlider(L.HUDSizeSlider, 2, 5, 0.5, 160)   -- (text , min_value , max_value , step , width)
+		hudSizeSlider1:SetPoint('TOPLEFT', Texture1DropDown, "TOPLEFT", 20, -50)
+		do
+			local firstshow = true
+			hudSizeSlider1:HookScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.HUDSize1)
+			end)
+			hudSizeSlider1:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.HUDSize1 = self:GetValue()
+			end)
+		end
+		--Being Row 2
+		local color2 = hudArea:CreateColorSelect(64)
+		color2:SetPoint('TOPLEFT', color1, "TOPLEFT", 0, -105)
+		local color2text = hudArea:CreateText(L.HUDColorSelect:format(2), 80)
+		color2text:SetPoint("BOTTOM", color2, "TOP", 5, 4)
+		local color2reset = hudArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		color2reset:SetPoint('TOP', color2, "BOTTOM", 5, -10)
+		color2reset:SetScript("OnClick", function(self)
+				DBM.Options.HUDColor2[1] = DBM.DefaultOptions.HUDColor2[1]
+				DBM.Options.HUDColor2[2] = DBM.DefaultOptions.HUDColor2[2]
+				DBM.Options.HUDColor2[3] = DBM.DefaultOptions.HUDColor2[3]
+				color2:SetColorRGB(DBM.Options.HUDColor2[1], DBM.Options.HUDColor2[2], DBM.Options.HUDColor2[3])
+		end)
+		do
+			local firstshow = true
+			color2:SetScript("OnShow", function(self)
+					firstshow = true
+					self:SetColorRGB(DBM.Options.HUDColor2[1], DBM.Options.HUDColor2[2], DBM.Options.HUDColor2[3])
+			end)
+			color2:SetScript("OnColorSelect", function(self)
+					if firstshow then firstshow = false return end
+					DBM.Options.HUDColor2[1] = select(1, self:GetColorRGB())
+					DBM.Options.HUDColor2[2] = select(2, self:GetColorRGB())
+					DBM.Options.HUDColor2[3] = select(3, self:GetColorRGB())
+					color2text:SetTextColor(self:GetColorRGB())
+			end)
+		end
+		
+		local Texture2DropDown = hudArea:CreateDropdown(L.HUDTextureSelect2, Textures, "DBM", "HUDTexture2", function(value)
+			DBM.Options.HUDTexture2 = value
+		end)
+		Texture2DropDown:SetPoint("TOPLEFT", hudArea.frame, "TOPLEFT", 100, -181)
+		
+		local hudSizeSlider2 = hudArea:CreateSlider(L.HUDSizeSlider, 2, 5, 0.5, 160)   -- (text , min_value , max_value , step , width)
+		hudSizeSlider2:SetPoint('TOPLEFT', Texture2DropDown, "TOPLEFT", 20, -50)
+		do
+			local firstshow = true
+			hudSizeSlider2:HookScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.HUDSize2)
+			end)
+			hudSizeSlider2:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.HUDSize2 = self:GetValue()
+			end)
+		end
+
+		--Begin Row 3
+		local color3 = hudArea:CreateColorSelect(64)
+		color3:SetPoint('TOPLEFT', color2, "TOPLEFT", 0, -105)
+		local color3text = hudArea:CreateText(L.HUDColorSelect:format(3), 80)
+		color3text:SetPoint("BOTTOM", color3, "TOP", 5, 4)
+		local color3reset = hudArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		color3reset:SetPoint('TOP', color3, "BOTTOM", 5, -10)
+		color3reset:SetScript("OnClick", function(self)
+				DBM.Options.HUDColor3[1] = DBM.DefaultOptions.HUDColor3[1]
+				DBM.Options.HUDColor3[2] = DBM.DefaultOptions.HUDColor3[2]
+				DBM.Options.HUDColor3[3] = DBM.DefaultOptions.HUDColor3[3]
+				color3:SetColorRGB(DBM.Options.HUDColor3[1], DBM.Options.HUDColor3[2], DBM.Options.HUDColor3[3])
+		end)
+		do
+			local firstshow = true
+			color3:SetScript("OnShow", function(self)
+					firstshow = true
+					self:SetColorRGB(DBM.Options.HUDColor3[1], DBM.Options.HUDColor3[2], DBM.Options.HUDColor3[3])
+			end)
+			color3:SetScript("OnColorSelect", function(self)
+					if firstshow then firstshow = false return end
+					DBM.Options.HUDColor3[1] = select(1, self:GetColorRGB())
+					DBM.Options.HUDColor3[2] = select(2, self:GetColorRGB())
+					DBM.Options.HUDColor3[3] = select(3, self:GetColorRGB())
+					color3text:SetTextColor(self:GetColorRGB())
+			end)
+		end
+		
+		local Texture3DropDown = hudArea:CreateDropdown(L.HUDTextureSelect3, Textures, "DBM", "HUDTexture3", function(value)
+			DBM.Options.HUDTexture3 = value
+		end)
+		Texture3DropDown:SetPoint("TOPLEFT", hudArea.frame, "TOPLEFT", 100, -286)
+		
+		local hudSizeSlider3 = hudArea:CreateSlider(L.HUDSizeSlider, 2, 5, 0.5, 160)   -- (text , min_value , max_value , step , width)
+		hudSizeSlider3:SetPoint('TOPLEFT', Texture3DropDown, "TOPLEFT", 20, -50)
+		do
+			local firstshow = true
+			hudSizeSlider3:HookScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.HUDSize3)
+			end)
+			hudSizeSlider3:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.HUDSize3 = self:GetValue()
+			end)
+		end
+		--Begin Row 4
+		local color4 = hudArea:CreateColorSelect(64)
+		color4:SetPoint('TOPLEFT', color3, "TOPLEFT", 0, -105)
+		local color4text = hudArea:CreateText(L.HUDColorSelect:format(4), 80)
+		color4text:SetPoint("BOTTOM", color4, "TOP", 5, 4)
+		local color4reset = hudArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		color4reset:SetPoint('TOP', color4, "BOTTOM", 5, -10)
+		color4reset:SetScript("OnClick", function(self)
+				DBM.Options.HUDColor4[1] = DBM.DefaultOptions.HUDColor4[1]
+				DBM.Options.HUDColor4[2] = DBM.DefaultOptions.HUDColor4[2]
+				DBM.Options.HUDColor4[3] = DBM.DefaultOptions.HUDColor4[3]
+				color4:SetColorRGB(DBM.Options.HUDColor4[1], DBM.Options.HUDColor4[2], DBM.Options.HUDColor4[3])
+		end)
+		do
+			local firstshow = true
+			color4:SetScript("OnShow", function(self)
+					firstshow = true
+					self:SetColorRGB(DBM.Options.HUDColor4[1], DBM.Options.HUDColor4[2], DBM.Options.HUDColor4[3])
+			end)
+			color4:SetScript("OnColorSelect", function(self)
+					if firstshow then firstshow = false return end
+					DBM.Options.HUDColor4[1] = select(1, self:GetColorRGB())
+					DBM.Options.HUDColor4[2] = select(2, self:GetColorRGB())
+					DBM.Options.HUDColor4[3] = select(3, self:GetColorRGB())
+					color4text:SetTextColor(self:GetColorRGB())
+			end)
+		end
+		
+		local Texture4DropDown = hudArea:CreateDropdown(L.HUDTextureSelect4, Textures, "DBM", "HUDTexture4", function(value)
+			DBM.Options.HUDTexture4 = value
+		end)
+		Texture4DropDown:SetPoint("TOPLEFT", hudArea.frame, "TOPLEFT", 100, -391)
+		
+		local hudSizeSlider4 = hudArea:CreateSlider(L.HUDSizeSlider, 2, 5, 0.5, 160)   -- (text , min_value , max_value , step , width)
+		hudSizeSlider4:SetPoint('TOPLEFT', Texture4DropDown, "TOPLEFT", 20, -50)
+		do
+			local firstshow = true
+			hudSizeSlider4:HookScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.HUDSize4)
+			end)
+			hudSizeSlider4:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.HUDSize4 = self:GetValue()
+			end)
+		end
+		--End Rows
+		local resetbutton = hudArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
+		resetbutton:SetPoint('BOTTOMRIGHT', hudArea.frame, "BOTTOMRIGHT", -5, 5)
+		resetbutton:SetNormalFontObject(GameFontNormalSmall)
+		resetbutton:SetHighlightFontObject(GameFontNormalSmall)
+		resetbutton:SetScript("OnClick", function()
+			DBM.Options.HUDColorOverride = DBM.DefaultOptions.HUDColorOverride
+			DBM.Options.HUDSizeOverride = DBM.DefaultOptions.HUDSizeOverride
+			DBM.Options.HUDColor1 = DBM.DefaultOptions.HUDColor1
+			DBM.Options.HUDColor2 = DBM.DefaultOptions.HUDColor2
+			DBM.Options.HUDColor3 = DBM.DefaultOptions.HUDColor3
+			DBM.Options.HUDColor4 = DBM.DefaultOptions.HUDColor4
+			DBM.Options.HUDSize1 = DBM.DefaultOptions.HUDSize1
+			DBM.Options.HUDSize2 = DBM.DefaultOptions.HUDSize2
+			DBM.Options.HUDSize3 = DBM.DefaultOptions.HUDSize3
+			DBM.Options.HUDSize4 = DBM.DefaultOptions.HUDSize4
+			DBM.Options.HUDTexture1 = DBM.DefaultOptions.HUDTexture1
+			DBM.Options.HUDTexture2 = DBM.DefaultOptions.HUDTexture2
+			DBM.Options.HUDTexture3 = DBM.DefaultOptions.HUDTexture3
+			DBM.Options.HUDTexture4 = DBM.DefaultOptions.HUDTexture4
+			check1:SetChecked(DBM.Options.HUDColorOverride)
+			check2:SetChecked(DBM.Options.HUDSizeOverride)
+			color1:SetColorRGB(DBM.Options.HUDColor1[1], DBM.Options.HUDColor1[2], DBM.Options.HUDColor1[3])
+			color2:SetColorRGB(DBM.Options.HUDColor2[1], DBM.Options.HUDColor2[2], DBM.Options.HUDColor2[3])
+			color3:SetColorRGB(DBM.Options.HUDColor3[1], DBM.Options.HUDColor3[2], DBM.Options.HUDColor3[3])
+			color4:SetColorRGB(DBM.Options.HUDColor4[1], DBM.Options.HUDColor4[2], DBM.Options.HUDColor4[3])
+			hudSizeSlider1:SetValue(DBM.DefaultOptions.HUDSize1)
+			hudSizeSlider2:SetValue(DBM.DefaultOptions.HUDSize2)
+			hudSizeSlider3:SetValue(DBM.DefaultOptions.HUDSize3)
+			hudSizeSlider4:SetValue(DBM.DefaultOptions.HUDSize4)
+			Texture1DropDown:SetSelectedValue(DBM.Options.HUDTexture1)
+			Texture2DropDown:SetSelectedValue(DBM.Options.HUDTexture2)
+			Texture3DropDown:SetSelectedValue(DBM.Options.HUDTexture3)
+			Texture4DropDown:SetSelectedValue(DBM.Options.HUDTexture4)
+		end)
+			
+		hudPanel:SetMyOwnHeight()
+	end
+
+	do
 		local spokenAlertsPanel 	= DBM_GUI_Frame:CreateNewPanel(L.Panel_SpokenAlerts, "option")
 		local spokenGeneralArea		= spokenAlertsPanel:CreateArea(L.Area_VoiceSelection, nil, 110, true)
 
