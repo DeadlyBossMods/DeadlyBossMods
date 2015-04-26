@@ -52,6 +52,8 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s was engaged %s ago, recovering timers..."
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor logging started."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor logging ended."
 
+DBM_CORE_COMBAT_STARTED_AI_TIMER	= "My CPU is a neural net processor; a learning computer. (This fight will use the new timer AI feature to generate timer approximations)"
+
 DBM_CORE_PROFILE_NOT_FOUND			= "<Deadly Boss Mods> Your current profile is corrupted. DBM will load 'Default' profile."
 DBM_CORE_PROFILE_CREATED			= "'%s' profile created."
 DBM_CORE_PROFILE_CREATE_ERROR		= "Create profile failed. Invalid profile name."
@@ -320,6 +322,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cast		= "%s",
 	active		= "%s ends",--Buff/Debuff/event on boss
 	fades		= "%s fades",--Buff/Debuff on players
+	ai			= "%s AI",
 	cd			= "%s CD",
 	cdcount		= "%s CD (%%d)",
 	cdsource	= "%s CD: >%%s<",
@@ -338,6 +341,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cast		= "Show timer for $spell:%s cast",
 	active		= "Show timer for $spell:%s duration",
 	fades		= "Show timer for when $spell:%s fades from players",
+	ai			= "Show AI timer for $spell:%s cooldown",
 	cd			= "Show timer for $spell:%s cooldown",
 	cdcount		= "Show timer for $spell:%s cooldown",
 	cdsource	= "Show timer (with source) for $spell:%s cooldown",--Maybe better wording?
