@@ -132,6 +132,7 @@ DBM.DefaultOptions = {
 	FilterInterrupt = true,
 	FilterDispel = true,
 	FilterSelfHud = true,
+	FilterAITimer = false,
 	AutologBosses = false,
 	AdvancedAutologBosses = false,
 	LogOnlyRaidBosses = false,
@@ -8985,11 +8986,42 @@ do
 							end
 						end
 					end
-					DBM.Bars:CancelBar(self.startedTimers[i])--ASSUMED location, review!
+					DBM.Bars:CancelBar(self.startedTimers[i])
 					self.startedTimers[i] = nil
 				end
 			end
 			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
+			if not DBM.Options.FilterAITimer and self.type == "ai" then--A learning timer
+				if timer > 1 then--Normal behavior.
+					if type(self.firstCastTimer) == "string" then--This is first cast of spell, we need to generate self.firstPullTimer
+						self.firstCastTimer = tonumber(self.firstCastTimer)
+						self.firstCastTimer = GetTime() - self.firstCastTimer--We have generated a self.firstCastTimer! Next pull, DBM should know timer for first cast next pull. FANCY!
+						DBM:Debug("AI timer learned a first timer of "..self.firstCastTimer, 2)
+					end
+					if self.lastCast then--We have a GetTime() on last cast
+						local timeLastCast = GetTime() - self.lastCast--Get time between current cast and last cast
+						if timeLastCast > 4 then--Prevent infinite loop cpu hang. Plus anything shorter than 5 seconds doesn't need a timer
+							if not self.lowestSeenCast or (self.lowestSeenCast and self.lowestSeenCast > timeLastCast) then--Always use lowest seen cast for a timer
+								self.lowestSeenCast = timeLastCast
+								DBM:Debug("AI timer learned a new lowest timer of "..self.lowestSeenCast, 2)
+							end
+						end
+					end
+					self.lastCast = GetTime()
+					if self.lowestSeenCast then--Always use lowest seen cast for timer
+						timer = self.lowestSeenCast
+					else
+						return--Don't start the bogus timer shoved into timer field in the mod
+					end
+				else--1 was sent, trigger a first Cast timer
+					if self.firstCastTimer then
+						timer = self.firstCastTimer
+					else--No first pull timer generated yet, set it to GetTime, as a string
+						self.firstCastTimer = tostring(GetTime())
+						return--Don't start the 1 second timer
+					end
+				end
+			end
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 			if DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
 				if not self.type or (self.type ~= "target" and self.type ~= "active" and self.type ~= "fades") then
@@ -9296,6 +9328,10 @@ do
 	
 	function bossModPrototype:NewRPTimer(...)
 		return newTimer(self, "roleplay", ...)
+	end
+	
+	function bossModPrototype:NewAITimer(...)
+		return newTimer(self, "ai", ...)
 	end
 
 	function bossModPrototype:GetLocalizedTimerText(timerType, spellId)
