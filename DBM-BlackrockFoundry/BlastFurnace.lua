@@ -491,7 +491,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 155242 then
 		local amount = args.amount or 1
-		warnHeat:Show(args.destName, amount)
 		if amount >= 3 then
 			voiceHeat:Play("changemt")
 			if args:IsPlayer() then
@@ -499,8 +498,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
 				if not UnitDebuff("player", GetSpellInfo(155242)) and not UnitIsDeadOrGhost("player") then
 					specWarnHeatOther:Show(args.destName)
+				else
+					warnHeat:Show(args.destName, amount)
 				end
 			end
+		else
+			warnHeat:Show(args.destName, amount)
 		end
 	elseif spellId == 155181 and self:AntiSpam(10, 0) then--Loading (The two that come can be upwards of 5 seconds apart so at least 10 second antispam)
 		self.vb.bellowsOperator = self.vb.bellowsOperator + 1

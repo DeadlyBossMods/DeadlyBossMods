@@ -187,7 +187,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 156766 then
 		local amount = args.amount or 1
-		warnWarpedArmor:Show(args.destName, amount)
 		if self.vb.frenzied then
 			timerWarpedArmorCD:Start(10.2)
 		else
@@ -199,8 +198,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
 				if not UnitDebuff("player", GetSpellInfo(156766)) and not UnitIsDeadOrGhost("player") then
 					specWarnWarpedArmorOther:Show(args.destName)
+				else
+					warnWarpedArmor:Show(args.destName, amount)
 				end
 			end
+		else
+			warnWarpedArmor:Show(args.destName, amount)
 		end
 	elseif spellId == 161923 then
 		warnCrushingEarth:CombinedShow(0.5, args.destName)

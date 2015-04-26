@@ -163,7 +163,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 163241 then
 		local amount = args.amount or 1
-		warnRot:Show(args.destName, amount)
 		if amount >= 3 then
 			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 				specWarnRot:Show(amount)
@@ -171,8 +170,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				if not UnitDebuff("player", GetSpellInfo(163241)) and not UnitIsDeadOrGhost("player") then
 					specWarnRotOther:Show(args.destName)
 					voiceRot:Play("changemt")
+				else
+					warnRot:Show(args.destName, amount)
 				end
 			end
+		else
+			warnRot:Show(args.destName, amount)
 		end
 	elseif spellId == 164125 and args:GetDestCreatureID() == 78491 then
 		specWarnCreepingMoss:Show()

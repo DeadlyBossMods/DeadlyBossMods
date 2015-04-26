@@ -149,15 +149,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 159178 then
 		local amount = args.amount or 1
-		warnOpenWounds:Show(args.destName, amount)
 		if amount >= 2 then--Stack count unknown
 			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 				specWarnOpenWounds:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
 				if not UnitDebuff("player", GetSpellInfo(159178)) and not UnitIsDeadOrGhost("player") then
 					specWarnOpenWoundsOther:Show(args.destName)
+				else
+					warnOpenWounds:Show(args.destName, amount)
 				end
 			end
+		else
+			warnOpenWounds:Show(args.destName, amount)
 		end
 	elseif spellId == 159202 then
 		warnPillar:Show()
