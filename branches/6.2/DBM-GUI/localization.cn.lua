@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Mar 11, 2015@13282
+-- Last update: Apr 25, 2015@13663
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -83,7 +83,7 @@ L.ModelSoundOptions			= "为模型查看器设置声音选项"
 L.ModelSoundShort			= "短"
 L.ModelSoundLong			= "长"
 
-L.Button_RangeFrame			= "显示/隐藏距离监视信息框体"
+L.Button_RangeFrame			= "显示/隐藏距离雷达框体"
 L.Button_InfoFrame			= "显示/隐藏信息框体"
 L.Button_TestBars			= "测试计时条"
 
@@ -130,9 +130,10 @@ L.ShowWipeMessage 			= "在聊天窗口中显示灭团信息"
 L.ShowGuildMessages 		= "在聊天窗口中显示工会开战，击杀，灭团信息"
 L.ShowRecoveryMessage 		= "在聊天窗口中显示计时条恢复信息"
 L.WhisperMessages			= "密语信息设置"
-L.AutoRespond 				= "在战斗中自动回复他人密语"
-L.EnableStatus 				= "回复“status”密语"
-L.WhisperStats 				= "在回复的密语中包含击杀或灭团次数统计信息"
+L.AutoRespond 				= "在战斗中自动回复私聊"
+L.EnableStatus 				= "回复“status”私聊当前战斗信息"
+L.WhisperStats 				= "在回复的私聊中包含击杀或灭团次数统计信息"
+L.DisableStatusWhisper 		= "屏蔽全团成员的自动回复私聊(需要团长权限)。 只对普通/英雄/神话团队和挑战/神话五人小队有效。"
 
 -- Tab: Barsetup
 L.BarSetup   				= "计时条设置"
@@ -171,12 +172,14 @@ L.Panel_SpecWarnFrame		= "特殊警报"
 L.Area_SpecWarn				= "特殊警报设置"
 L.SpecWarn_Enabled			= "显示首领技能特殊警报"
 L.SpecWarn_ClassColor		= "为特殊警报启用分职业着色"
-L.SpecWarn_FlashFrame		= "特殊警报时屏幕边缘泛光"
 L.ShowSWarningsInChat 		= "在聊天窗口中显示特殊警报"
+L.SpecWarn_FlashFrame		= "特殊警报时屏幕边缘泛光"
+
 L.SpecWarn_Font				= "特殊警报字体"
 L.SpecWarn_FontSize			= "字体大小: %d"
 L.SpecWarn_FontColor		= "字体颜色"
 L.SpecWarn_FontType			= "选择字体"
+L.SpecWarn_FlashRepeat		= "重复泛光"
 L.SpecWarn_FlashColor		= "泛光顏色 (%d)"
 L.SpecWarn_FlashDur			= "泛光持续时间: %0.1f"
 L.SpecWarn_FlashAlpha		= "泛光透明度: %0.1f"
@@ -187,6 +190,20 @@ L.SpecialWarnSound			= "针对你发出特殊警报时播放的声音"
 L.SpecialWarnSound2			= "针对所有人发出特殊警报时播放的声音(默认:当心)"
 L.SpecialWarnSound3			= "针对非常重要事件(灭团点)的特殊警报播放的声音(默认:毁灭)"
 L.SpecialWarnSound4			= "特殊警报: 快跑啊 小女孩"
+
+-- Tab: Heads Up Display Frame
+L.Panel_HUD					= "抬头显示设置(HUD)"
+L.Area_HUDOptions			= "HUD 选项"
+L.HUDColorOverride			= "全局HUD颜色"
+L.HUDSizeOverride			= "全局HUD大小"
+L.HUDAlphaOverride			= "全局HUD透明度"
+L.HUDTextureOverride		= "全局HUD材质 (当团队标记作为材质时不适用)"
+L.HUDColorSelect			= "HUD 颜色 %d"
+L.HUDTextureSelect1			= "选择主要HUD材质"
+L.HUDTextureSelect2			= "选择次要HUD材质"
+L.HUDTextureSelect3			= "选择第三HUD材质"
+L.HUDTextureSelect4			= "选择'跑向'HUD材质"
+L.HUDSizeSlider				= "圆环半径 %0.1f."
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "语音警告"
@@ -219,8 +236,8 @@ L.Area_SpamFilter_Outgoing	= "DBM全局过滤设置"
 L.SpamBlockNoShowAnnounce	= "不显示警报或播放警报音效"
 L.SpamBlockNoSendWhisper	= "不发送悄悄话提示给其他玩家"
 L.SpamBlockNoSetIcon		= "不设定标记在目标上"
-L.SpamBlockNoRangeFrame		= "不显示距离监视器"
-L.SpamBlockNoInfoFrame		= "不显示信息监视器"
+L.SpamBlockNoRangeFrame		= "不显示距离雷达框体"
+L.SpamBlockNoInfoFrame		= "不显示信息框体"
 L.SpamBlockNoHudMap			= "不显示HudMap"
 
 L.SpamBlockNoHealthFrame	= "不显示生命值监视器"

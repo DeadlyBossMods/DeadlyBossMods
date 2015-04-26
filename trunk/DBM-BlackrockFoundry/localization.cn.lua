@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Apr 11, 2015@13575
+-- Last update: Apr 25, 2015@13663
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -42,7 +42,7 @@ L:SetOptionLocalization({
 	warnRegulators			= "显示剩余的温度调节器生命值",
 	warnBlastFrequency		= "当$spell:155209施法频率增加时发出警告",
 	specWarnTwoVolatileFire	= "特殊警报：当你受到两层$spell:176121的影响时",
-	InfoFrame				= "为$spell:155192和$spell:155196显示信息框架",
+	InfoFrame				= "为$spell:155192和$spell:155196显示信息框体",
 	VFYellType2				= "设定$spell:176121的大喊方式 (史诗模式)",
 	Countdown				= "倒数直到消失",
 	Apply					= "只有中了的时候"
@@ -89,11 +89,11 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnSplitSoon	= "特殊警报：当团队需要在10秒后分轨时",
-	InfoFrameSpeed		= "设置何时在信息窗显示下一班列车的信息",
+	InfoFrameSpeed		= "设置何时在信息框体显示下一班列车的信息",
 	Immediately			= "当门打开时",
 	Delayed				= "当列车出现时",
-	HudMapUseIcons		= "HudMap中，使用团队标记代替绿圈",
-	TrainVoiceAnnounce	= "设置语音报警下一班列车的信息类型（黑科技)",
+	HudMapUseIcons		= "在HudMap中，使用团队标记代替绿圈",
+	TrainVoiceAnnounce	= "设置语音报警下一班列车的信息类型",
 	LanesOnly			= "仅包含轨道信息",
 	MovementsOnly		= "仅包含走位信息 (史诗模式)",
 	LanesandMovements	= "同时包含轨道信息和走位信息 (史诗模式)"
@@ -139,7 +139,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	PositionsAllPhases	= "在所有阶段受到$spell:156096影响时喊话 (原来只在第三阶段喊。测试目的。)"
+	PositionsAllPhases	= "在所有阶段受到$spell:156096影响时喊话 (原来只在第三阶段喊。测试目的。)",
+	InfoFrame			= " 为$spell:155992和$spell:156530显示信息框体"
 })
 
 L:SetMiscLocalization({

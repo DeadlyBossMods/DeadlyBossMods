@@ -1,8 +1,6 @@
-﻿-- Diablohu(diablohudream@gmail.com)
--- yleaf(yaroot@gmail.com)
--- Mini_Dragon(projecteurs@gmail.com)
--- Yike Xia
--- Last update: Jan 22, 2015@12534
+﻿-- Mini_Dragon(projecteurs@gmail.com)
+-- Special thanks to 178, Yike and Blizzard Entertainment
+-- Last update: Apr 25, 2015@13663
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -11,7 +9,6 @@ local L
 --------------------------
 --  Garrison Invasions  --
 --------------------------
--- Thanks Blizzard Entertainment
 L = DBM:GetModLocalization("GarrisonInvasions")
 
 L:SetGeneralLocalization({
@@ -45,4 +42,40 @@ L:SetMiscLocalization({
 	WildfireElemental	= "一个野火元素被召唤到了前门！",--Maybe combined "add" special warning most adds?
     --Iron Horde
 	Assassin			= "一名刺客正在猎杀你的守卫！"--Maybe combined "add" special warning most adds?
+})
+
+-----------------
+--  Annihilon  --
+-----------------
+L = DBM:GetModLocalization("Annihilon")
+
+L:SetGeneralLocalization({
+	name = "安妮希隆" --90802 What hell is this translation??? 什么鬼翻译。
+})
+
+--------------
+--  Teluur  --
+--------------
+L = DBM:GetModLocalization("Teluur")
+
+L:SetGeneralLocalization({
+	name = "特鲁尔"
+})
+
+----------------------
+--  Lady Fleshsear  --
+----------------------
+L = DBM:GetModLocalization("LadyFleshsear")
+
+L:SetGeneralLocalization({
+	name = "灼血魔女"
+})
+
+----------------------
+--  Commander Dro'gan  --
+----------------------
+L = DBM:GetModLocalization("Drogan")
+
+L:SetGeneralLocalization({
+	name = "指挥官多跟"
 })
