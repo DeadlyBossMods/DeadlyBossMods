@@ -132,7 +132,6 @@ DBM.DefaultOptions = {
 	FilterInterrupt = true,
 	FilterDispel = true,
 	FilterSelfHud = true,
-	FilterAITimer = false,
 	AutologBosses = false,
 	AdvancedAutologBosses = false,
 	LogOnlyRaidBosses = false,
@@ -271,6 +270,8 @@ DBM.DefaultOptions = {
 	AutoAcceptFriendInvite = false,
 	AutoAcceptGuildInvite = false,
 	FakeBWVersion = false,
+	AITimer = true,
+	AutoCorrectTimer = false,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 }
 
@@ -8975,14 +8976,16 @@ do
 		if not self.option or self.mod.Options[self.option] then
 			if self.type and self.type:find("count") and not self.allowdouble then--cdcount, nextcount. remove previous timer.
 				for i = #self.startedTimers, 1, -1 do
-					if DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
+					if DBM.Options.AutoCorrectTimer or (DBM.Options.DebugMode and DBM.Options.DebugLevel > 1) then
 						local bar = DBM.Bars:GetBar(self.startedTimers[i])
 						if bar then
 							local remaining = ("%.1f"):format(bar.timer)
 							local ttext = _G[bar.frame:GetName().."BarName"]:GetText() or ""
 							ttext = ttext.."("..self.id..")"
 							if bar.timer > 0.2 then
-								DBM:Debug("Timer "..ttext.. " refreshed before expires. Remaining time is : "..remaining, 2)
+								self.correctedCast = timer - bar.timer--Store what lowest timer is in timer object
+								self.correctedDiff = difficultyIndex--Store index of correction to ensure the change is only used in one difficulty (so a mythic timer doesn't alter heroic for example)
+								DBM:Debug("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining, 2)
 							end
 						end
 					end
@@ -8991,7 +8994,7 @@ do
 				end
 			end
 			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
-			if not DBM.Options.FilterAITimer and self.type == "ai" then--A learning timer
+			if DBM.Options.AITimer and self.type == "ai" then--A learning timer
 				if timer > 1 then--Normal behavior.
 					if self.firstCastTimer and type(self.firstCastTimer) == "string" then--This is first cast of spell, we need to generate self.firstPullTimer
 						self.firstCastTimer = tonumber(self.firstCastTimer)
@@ -9023,7 +9026,7 @@ do
 				end
 			end
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-			if DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
+			if DBM.Options.AutoCorrectTimer or (DBM.Options.DebugMode and DBM.Options.DebugLevel > 1) then
 				if not self.type or (self.type ~= "target" and self.type ~= "active" and self.type ~= "fades") then
 					local bar = DBM.Bars:GetBar(id)
 					if bar then
@@ -9031,10 +9034,17 @@ do
 						local ttext = _G[bar.frame:GetName().."BarName"]:GetText() or ""
 						ttext = ttext.."("..self.id..")"
 						if bar.timer > 0.2 then
-							DBM:Debug("Timer "..ttext.. " refreshed before expires. Remaining time is : "..remaining, 2)
+							self.correctedCast = timer - bar.timer--Store what lowest timer is for advanced user feature
+							self.correctedDiff = difficultyIndex--Store index of correction to ensure the change is only used in one difficulty (so a mythic timer doesn't alter heroic for example
+							DBM:Debug("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining, 2)
 						end
 					end
 				end
+			end
+			if DBM.Options.AutoCorrectTimer and self.correctedCast and self.correctedDiff and self.correctedDiff == difficultyIndex then
+				local debugtemp = timer - self.correctedCast
+				DBM:Debug("Timer autocorrected by "..debugtemp, 2)
+				timer = self.correctedCast
 			end
 			local bar = DBM.Bars:CreateBar(timer, id, self.icon)
 			if not bar then
