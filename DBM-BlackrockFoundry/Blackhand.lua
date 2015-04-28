@@ -323,8 +323,8 @@ function mod:SPELL_CAST_START(args)
 			end
 		else
 			if self:IsMythic() then
-				timerShatteringSmashCD:Start(31.5, self.vb.smashCount+1)
-				countdownShatteringSmash:Start(31.5)
+				timerShatteringSmashCD:Start(30.5, self.vb.smashCount+1)
+				countdownShatteringSmash:Start(30.5)
 			else
 				timerShatteringSmashCD:Start(nil, self.vb.smashCount+1)
 				countdownShatteringSmash:Start()--Not phase 1, concerns everyone not just tank
@@ -389,7 +389,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerImpalingThrow:Start()
 			timerMarkedforDeathCD:Start(timer, self.vb.markCount+1)
 			countdownMarkedforDeath:Start(timer)
-			DBM:Debug("Running experimental timerShatteringSmashCD adjust because debugmode is enabled", 2)
 			local elapsed, total = timerShatteringSmashCD:GetTime(self.vb.smashCount+1)
 			local remaining = total - elapsed
 			DBM:Debug("Smash Elapsed: "..elapsed.." Smash Total: "..total.." Smash Remaining: "..remaining.." MFD Timer: "..timer, 2)
