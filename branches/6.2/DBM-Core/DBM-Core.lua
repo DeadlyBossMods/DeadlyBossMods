@@ -8983,8 +8983,10 @@ do
 							local ttext = _G[bar.frame:GetName().."BarName"]:GetText() or ""
 							ttext = ttext.."("..self.id..")"
 							if bar.timer > 0.2 then
-								self.correctedCast = timer - bar.timer--Store what lowest timer is in timer object
-								self.correctedDiff = difficultyIndex--Store index of correction to ensure the change is only used in one difficulty (so a mythic timer doesn't alter heroic for example)
+								if timer then
+									self.correctedCast = timer - bar.timer--Store what lowest timer is in timer object
+									self.correctedDiff = difficultyIndex--Store index of correction to ensure the change is only used in one difficulty (so a mythic timer doesn't alter heroic for example)
+								end
 								DBM:Debug("Timer "..ttext.. " refreshed before expired. Remaining time is : "..remaining, 2)
 							end
 						end
