@@ -9041,7 +9041,7 @@ do
 					end
 				end
 			end
-			if DBM.Options.AutoCorrectTimer and self.correctedCast and self.correctedDiff and self.correctedDiff == difficultyIndex then
+			if DBM.Options.AutoCorrectTimer and self.correctedCast and self.correctedDiff and self.correctedDiff == difficultyIndex and self.correctedCast < timer then
 				local debugtemp = timer - self.correctedCast
 				DBM:Debug("Timer autocorrected by "..debugtemp, 2)
 				timer = self.correctedCast
