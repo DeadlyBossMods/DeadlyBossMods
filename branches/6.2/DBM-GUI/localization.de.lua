@@ -115,7 +115,7 @@ L.ShowLoadMessage 			= "Zeige Lademeldungen für Mods im Chatfenster"
 L.ShowPizzaMessage 			= "Zeige Meldungen für Timerbroadcasts im Chatfenster"
 L.ShowCombatLogMessage 		= "Zeige DBM-Meldungen für das spieleigene Kampflog im Chatfenster"
 L.ShowTranscriptorMessage	= "Zeige DBM-Meldungen für das \"Transcriptor\"-Log im Chatfenster"
-L.ShowAllVersions	 		= "Zeige Boss Mod Versionen aller Gruppenmitglieder im Chatfenster"
+L.ShowAllVersions	 		= "Zeige beim Durchführen einer Versionsprüfung die Boss Mod Versionen aller Gruppenmitglieder im Chatfenster (ansonsten nur eine Zusammenfassung der Aktualität)"
 L.CombatMessages			= "Kampfmeldungen"
 L.ShowEngageMessage 		= "Zeige Meldungen für den Beginn von Kämpfen im Chatfenster"
 L.ShowKillMessage 			= "Zeige Meldungen für Siege im Chatfenster"
@@ -126,6 +126,7 @@ L.WhisperMessages			= "Flüstermeldungen"
 L.AutoRespond 				= "Aktiviere automatische Antwort während eines Bosskampfes"
 L.EnableStatus 				= "Antworte auf 'status'-Flüsteranfragen"
 L.WhisperStats 				= "Füge Sieg-/Niederlagestatistik den Flüsterantworten hinzu"
+L.DisableStatusWhisper 		= "Deaktiviere 'status'-Flüsteranfragen für die gesamte Gruppe (nur als Gruppenleiter; nur für normale/heroische/mythische Schlachtzüge und Herausforderungsmodus/mythische Dungeons)"
 
 -- Tab: Barsetup
 L.BarSetup					= "Balkeneinstellungen"
@@ -182,6 +183,21 @@ L.SpecialWarnSound			= "Sound für Spezialwarnungen, die dich oder deine Rolle b
 L.SpecialWarnSound2			= "Sound für Spezialwarnungen, die jeden betreffen"
 L.SpecialWarnSound3			= "Sound für SEHR wichtige Spezialwarnungen"
 L.SpecialWarnSound4			= "Sound für \"Lauf weg!\"-Spezialwarnungen"
+
+-- Tab: Heads Up Display Frame
+L.Panel_HUD					= "HudMap"
+L.Area_HUDOptions			= "Einstellungen für die HudMap"
+L.HUDColorOverride			= "Überschreibe Mod-spezifische Farben für die HudMap"
+L.HUDSizeOverride			= "Überschreibe Mod-spezifische Größen für die HudMap"
+L.HUDAlphaOverride			= "Überschreibe Mod-spezifische Alphawerte (Transparenz) für die HudMap"
+L.HUDTextureOverride		= "Überschreibe Mod-spezifische Texturen für die HudMap (wirkt nicht für 'Schlachtzugzeichen' Textureinstellungen)"
+L.HUDColorSelect			= "HM Farbe %d"
+L.HUDTextureSelect1			= "Textur für primäre HudMap"
+L.HUDTextureSelect2			= "Textur für sekundäre HudMap"
+L.HUDTextureSelect3			= "Textur für tertiäre HudMap"
+L.HUDTextureSelect4			= "Textur für 'lauf zu' HudMap"
+L.HUDSizeSlider				= "Kreisradius: %0.1f"
+L.HUDAlphaSlider			= "Alpha: %0.1f"
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Gesprochene Warnungen"
@@ -281,6 +297,8 @@ L.AutoAcceptFriendInvite	= "Automatisch Gruppeneinladungen von Freunden akzeptie
 L.AutoAcceptGuildInvite		= "Automatisch Gruppeneinladungen von Gildenmitgliedern akzeptieren"
 L.Area_Advanced				= "Erweiterte Einstellungen"
 L.FakeBW					= "Bei Versionsprüfungen als \"BigWigs\" ausgeben, statt als DBM (nützlich für Gilden, die die Nutzung von \"BigWigs\" erzwingen)"
+L.AITimer					= "Erzeuge automatisch Timer für unbekannte Kämpfe mit der in DBM eingebauten Timer-KI (nützlich beim erstmaligen Pullen eines Test-Bosses, etwa auf Beta- oder PTR-Servern)"
+L.AutoCorrectTimer			= "Korrigiere automatisch zu lange Timer (nützlich für Gilden, die Kämpfe im topaktuellen \"End-Content\" bestreiten, für die noch keine aktualisierten Boss Mods verfügbar sind) Hinweis: Diese Einstellung kann auch einige Timer verschlechtern, falls bei Phasenwechseln, deren Behandlung in DBM bislang noch nicht geeignet programmiert wurde, Timerrücksetzungen stattfinden."
 
 L.PizzaTimer_Headline 		= 'Erstelle einen "Pizza-Timer"'
 L.PizzaTimer_Title			= 'Name (z.B. "Pizza!")'

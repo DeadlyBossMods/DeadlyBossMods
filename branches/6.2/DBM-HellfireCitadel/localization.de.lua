@@ -6,18 +6,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1426)
 
-L:SetWarningLocalization({
-
-})
-
-L:SetOptionLocalization({
-
-})
-
-L:SetMiscLocalization({
-
-})
-
 ---------------------------
 -- Iron Reaver --
 ---------------------------
@@ -38,6 +26,10 @@ L= DBM:GetModLocalization(1392)
 --------------
 L= DBM:GetModLocalization(1396)
 
+L:SetMiscLocalization({
+	BloodthirstersSoon		=	"Come brothers! Seize your destiny!"--translate
+})
+
 --------------------
 --Gorefiend --
 --------------------
@@ -47,6 +39,14 @@ L= DBM:GetModLocalization(1372)
 -- Shadow-Lord Iskar --
 --------------------------
 L= DBM:GetModLocalization(1433)
+
+L:SetWarningLocalization({
+	specWarnThrowAnzu =	"Throw Eye of Anzu to %s!"--translate
+})
+
+L:SetOptionLocalization({
+	specWarnThrowAnzu =	"Show special warning when you need to throw $spell:179202"--translate
+})
 
 --------------------------
 -- Fel Lord Zakuun --
