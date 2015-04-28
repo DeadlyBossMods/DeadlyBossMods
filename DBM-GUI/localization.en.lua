@@ -196,8 +196,8 @@ L.HUDTextureSelect1			= "Set texture for primary HUD"
 L.HUDTextureSelect2			= "Set texture for secondary HUD"
 L.HUDTextureSelect3			= "Set texture for tertiary HUD"
 L.HUDTextureSelect4			= "Set texture for 'run to' HUD"
-L.HUDSizeSlider				= "Circle Radius: %0.1f."
-L.HUDAlphaSlider			= "Alpha: %0.1f."
+L.HUDSizeSlider				= "Circle Radius: %0.1f"
+L.HUDAlphaSlider			= "Alpha: %0.1f"
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Spoken Alerts"
