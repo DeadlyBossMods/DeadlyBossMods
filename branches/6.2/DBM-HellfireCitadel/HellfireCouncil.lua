@@ -101,6 +101,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	DBM:AddMsg(DBM_CORE_COMBAT_STARTED_AI_TIMER)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end

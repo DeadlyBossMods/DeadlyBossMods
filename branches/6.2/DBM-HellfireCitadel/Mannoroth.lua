@@ -116,6 +116,7 @@ local function updateRangeFrame(self)
 end
 
 function mod:OnCombatStart(delay)
+	DBM:AddMsg(DBM_CORE_COMBAT_STARTED_AI_TIMER)
 	table.wipe(AddsSeen)
 	self.vb.DoomTargetCount = 0
 	timerCurseofLegionCD:Start(1-delay)
