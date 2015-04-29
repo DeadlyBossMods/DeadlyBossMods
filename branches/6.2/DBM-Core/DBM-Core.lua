@@ -9019,7 +9019,7 @@ do
 						return--Don't start the bogus timer shoved into timer field in the mod
 					end
 				else--1 was sent, trigger a first Cast timer
-					if self.firstCastTimer then
+					if self.firstCastTimer and type(self.firstCastTimer) == "number" then
 						timer = self.firstCastTimer
 					else--No first pull timer generated yet, set it to GetTime, as a string
 						self.firstCastTimer = tostring(GetTime())
