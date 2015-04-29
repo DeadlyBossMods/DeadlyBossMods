@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"RAID_BOSS_WHISPER",
-	"CHAT_MSG_ADDON",
+--	"CHAT_MSG_ADDON",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -106,7 +106,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 182635 then
+	if spellId == 182635 and args:IsSrcTypeHostile() then
 		timerReverberatingBlowCD:Start()
 		--countdownReverberatingBlow:Start()
 		self.vb.ReverberatingBlow = self.vb.ReverberatingBlow + 1

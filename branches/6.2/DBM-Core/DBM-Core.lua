@@ -6523,8 +6523,8 @@ function bossModPrototype:IsTrivial(level)
 	return false
 end
 
-function bossModPrototype:CheckInterruptFilter(sourceGUID)
-	if not DBM.Options.FilterInterrupt then return true end
+function bossModPrototype:CheckInterruptFilter(sourceGUID, skip)
+	if not DBM.Options.FilterInterrupt and not skip then return true end
 	if UnitGUID("target") == sourceGUID or UnitGUID("focus") == sourceGUID then
 		return true
 	end

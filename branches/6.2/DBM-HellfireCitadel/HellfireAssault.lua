@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1426, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(94515)--94515 Siegemaster Mar'tak
+--mod:SetCreatureID(94515)--94515 Siegemaster Mar'tak, fight one by door dying though not this guy
 mod:SetEncounterID(1778)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
@@ -13,12 +13,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184394 181155 183391 185816 180021 186845 186883 185649 180080",
-	"SPELL_CAST_SUCCESS 180874 185025",
+	"SPELL_CAST_SUCCESS 180874 185025 184370",
 	"SPELL_AURA_APPLIED 184369 180264 184238 184243",
 	"SPELL_AURA_APPLIED_DOSE 184238 184243",
 	"SPELL_AURA_REMOVED 184369",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
+	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -71,8 +72,8 @@ local specWarnRepair				= mod:NewSpecialWarningInterrupt(185816, "-Healer")
 --Felfire-Imbued Siege Vehicles
 
 --Siegemaster Mar'tak
---local timerHowlingAxeCD			= mod:NewCDTimer(107, 184369)
---local timerShockwaveCD			= mod:NewCDTimer(30, 184394)
+local timerHowlingAxeCD				= mod:NewAITimer(107, 184369)
+local timerShockwaveCD				= mod:NewAITimer(30, 184394)
 --Hellfire Reinforcements
 ----Gorebound Berserker (tank add probably)
 --local timerCowerCD				= mod:NewCDTimer(107, 184238)
@@ -115,7 +116,9 @@ function mod:LeapTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-
+	DBM:AddMsg(DBM_CORE_COMBAT_STARTED_AI_TIMER)
+	timerHowlingAxeCD:Start(1-delay)
+	timerShockwaveCD:Start(1-delay)
 end
 
 function mod:OnCombatEnd()
@@ -129,6 +132,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 184394 then
 		specWarnShockwave:Show()
 		voiceShockwave:Play("shockwave")
+		timerShockwaveCD:Start()
 	elseif spellId == 181155 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnIncinerate:Show(args.sourceName)
 	elseif (spellId == 180417 or spellId == 183452) and self:CheckInterruptFilter(args.sourceGUID) then--Two spellids because two different cast times (mob has two forms)
@@ -155,6 +159,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnFrontLineTransport:Show()
 	elseif spellId == 185025 then
 		warnCalltoArms:Show()
+	elseif spellId == 184370 then
+		timerHowlingAxeCD:Start()
 	end
 end
 
@@ -197,6 +203,21 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 94515 then--Siegemaster Mar'tak
+		timerHowlingAxeCD:Cancel()
+		timerShockwaveCD:Cancel()
+	elseif cid == 93858 then--Gorebound Berserker
+		
+	elseif cid == 93931 then--Gorebound Felcaster
+		
+	elseif cid == 93881 then--Contract Engineer
+		
+	--Vehicles too?
 	end
 end
 
