@@ -11,11 +11,11 @@ mod:SetMinCombatTime(15)
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 180849",
 	"SPELL_CAST_SUCCESS 180836 180849",
-	"SPELL_AURA_APPLIED 180836",
+	"SPELL_AURA_APPLIED 180837",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
-local warnPodlingSwarm			= mod:NewSpellAnnounce(180836, 2)
+local warnPodlingSwarm			= mod:NewSpellAnnounce(180849, 2)
 local warnEntanglement			= mod:NewTargetAnnounce(180836, 3)--Players who didn't move and got caught
 local warnSpore					= mod:NewSpellAnnounce(180825, 3)--Hidden from combat log, until it's too late. Unit event gives enough time to run out but don't know who it's targeting then. target scanning seems to kinda work but not reliable enough. There is somewhat of a delay and often no target at all
 
@@ -24,7 +24,7 @@ local specWarnEntanglement		= mod:NewSpecialWarningDodge(180836)--Dodgable. puts
 --local yellSpore					= mod:NewYell(180825)
 
 local timerEntanglementCD		= mod:NewCDTimer(8.2, 180836)--CD is 10 unless delayed by podlings
-local timerPodlingSwarmCD		= mod:NewCDTimer(30, 180836)--30-32 variable, clearly a 30 second cd from cast finish or engage
+local timerPodlingSwarmCD		= mod:NewCDTimer(30, 180849)--30-32 variable, clearly a 30 second cd from cast finish or engage
 local timerSporeCD				= mod:NewCDTimer(10, 180825)--10-20
 
 function mod:OnCombatStart(delay, summonTriggered)
@@ -56,7 +56,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 180836 and args:IsDestTypePlayer() then
+	if spellId == 180837 and args:IsDestTypePlayer() then
 		warnEntanglement:CombinedShow(1, args.destName)
 	end
 end
