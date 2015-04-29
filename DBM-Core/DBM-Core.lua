@@ -375,7 +375,7 @@ local targetMonitor = nil
 local statusWhisperDisabled = false
 local wowTOC = select(4, GetBuildInfo())
 
-local fakeBWRevision = 13075
+local fakeBWRevision = 13090
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
