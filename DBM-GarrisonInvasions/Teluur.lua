@@ -23,9 +23,9 @@ local specWarnEntanglement		= mod:NewSpecialWarningDodge(180836)--Dodgable. puts
 --local specWarnSpore				= mod:NewSpecialWarningRun(180825, nil, nil, nil, 4)
 --local yellSpore					= mod:NewYell(180825)
 
-local timerEntanglementCD		= mod:NewNextTimer(10, 180836)--CD is 10 unless delayed by podlings
+local timerEntanglementCD		= mod:NewCDTimer(8.2, 180836)--CD is 10 unless delayed by podlings
 local timerPodlingSwarmCD		= mod:NewCDTimer(30, 180836)--30-32 variable, clearly a 30 second cd from cast finish or engage
-local timerSporeCD				= mod:NewCDTimer(15, 180825)--15-20
+local timerSporeCD				= mod:NewCDTimer(10, 180825)--10-20
 
 function mod:OnCombatStart(delay, summonTriggered)
 	if summonTriggered then
@@ -56,8 +56,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 180836 then
-		warnEntanglement:CombinedShow(0.5, args.destName)
+	if spellId == 180836 and args:IsDestTypePlayer() then
+		warnEntanglement:CombinedShow(1, args.destName)
 	end
 end
 
