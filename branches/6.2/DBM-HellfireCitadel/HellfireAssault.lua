@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1426, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(94515)--94515 Siegemaster Mar'tak, fight one by door dying though not this guy
+mod:SetCreatureID(90019)--Main ID is door, door death= win. 94515 Siegemaster Mar'tak
 mod:SetEncounterID(1778)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
@@ -12,8 +12,8 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 184394 181155 183391 185816 180021 186845 186883 185649 180080",
-	"SPELL_CAST_SUCCESS 180874 185025 184370",
+	"SPELL_CAST_START 184394 181155 183391 185816 184370",
+	"SPELL_CAST_SUCCESS 180874 185025",
 	"SPELL_AURA_APPLIED 184369 180264 184238 184243",
 	"SPELL_AURA_APPLIED_DOSE 184238 184243",
 	"SPELL_AURA_REMOVED 184369",
@@ -23,10 +23,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, collect map data for hellfire cannons
---TODO, Verify a lot of shit
 --TODO, Check target scanning on everything
---TODO, Check what gets boss frames and what doesn't (mostly target scanning reliability)
 --TODO, Timers for abilities, timers for add/vehicle spawns
 --TODO, any GTFOs, HUDs, voices once mechanics better understood.
 --Siegemaster Mar'tak
@@ -42,13 +39,11 @@ local warnDemonicLeap				= mod:NewTargetAnnounce(183391, 3)--Totally assumes tar
 --Bomb announce maybe?
 --Felfire-Imbued Siege Vehicles
 ----Felfire Crusher
-local warnCrunsh					= mod:NewCastAnnounce(180021, 3)--Going with non special warning for now, since I don't know who's going to be tanking this, or if it's tanked.
+
 --Add burn too?
 ----Felfire Flamebelcher
-local warnFlameorb					= mod:NewCastAnnounce(186845, 3)--This has too many spellIDs, so not going to risk a special warning until i have a clearer picture of abilities cast sequence
-local warnBelchFlame				= mod:NewCastAnnounce(186883, 3)--Regular announce for now, change to special warning when map coords can be gathered for cannons, so can warn only players in impact area
+
 ----Felfire Artillery
-local warnArtilleryBlast			= mod:NewCastAnnounce(185649, 3)
 ----Felfire Demolisher (Heroic, Mythic)
 local warnFrontLineTransport		= mod:NewSpellAnnounce(180874, 3)
 ----Felfire Transporter (Mythic)
@@ -79,10 +74,9 @@ local timerShockwaveCD				= mod:NewAITimer(30, 184394)
 --local timerCowerCD				= mod:NewCDTimer(107, 184238)
 --local timerSlamCD					= mod:NewCDTimer(107, 184243)
 ----Gorebound Felcaster
---local timerIncinerateCD			= mod:NewCDTimer(107, 181155, nil, false)
 --local timerFelfireVolleyCD		= mod:NewCDTimer(107, 180417, nil, "-Healer")
 ----Contracted Engineer
---Bomb CD maybe?
+
 --Felfire-Imbued Siege Vehicles
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
@@ -116,7 +110,6 @@ function mod:LeapTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	DBM:AddMsg(DBM_CORE_COMBAT_STARTED_AI_TIMER)
 	timerHowlingAxeCD:Start(1-delay)
 	timerShockwaveCD:Start(1-delay)
 end
@@ -141,15 +134,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnRepair:Show(args.sourceName)
 	elseif spellId == 183391 then
 		self:BossTargetScanner(args.sourceGUID, "LeapTarget", 0.02, 30, true, nil, nil, nil, true)
-	elseif spellId == 180021 then
-		warnCrunsh:Show()
-	elseif spellId == 186845 then
-		warnFlameorb:Show()
-	elseif spellId == 186883 then
-		--Some fancy map shit here so this can be a special warning for people standing by the Hellfire Cannon
-		warnBelchFlame:Show()
-	elseif spellId == 185649 or spellId == 180080 then--180080 is probably mythic version, or they both trigger during cast and this will be a spammy mess.
-		warnArtilleryBlast:Show()
+	elseif spellId == 184370 then
+		timerHowlingAxeCD:Start()
 	end
 end
 
@@ -159,8 +145,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnFrontLineTransport:Show()
 	elseif spellId == 185025 then
 		warnCalltoArms:Show()
-	elseif spellId == 184370 then
-		timerHowlingAxeCD:Start()
 	end
 end
 
@@ -208,10 +192,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 94515 then--Siegemaster Mar'tak
-		timerHowlingAxeCD:Cancel()
-		timerShockwaveCD:Cancel()
-	elseif cid == 93858 then--Gorebound Berserker
+	if cid == 93858 then--Gorebound Berserker
 		
 	elseif cid == 93931 then--Gorebound Felcaster
 		
@@ -221,13 +202,15 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 173195 then
-		
+	if spellId == 184913 then--Haste (boss leaving)
+		timerHowlingAxeCD:Cancel()
+		timerShockwaveCD:Cancel()
 	end
 end
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
 
