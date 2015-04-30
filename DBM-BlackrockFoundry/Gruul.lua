@@ -7,7 +7,7 @@ mod:SetEncounterID(1691)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
 mod:SetHotfixNoticeRev(12859)
---mod:SetRespawnTime(20)--Need to verify. def a lot higher than 10. Not sure if 20 or 30
+mod:SetRespawnTime(30)
 
 mod:RegisterCombat("combat")
 
