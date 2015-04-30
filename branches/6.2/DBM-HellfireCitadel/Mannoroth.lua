@@ -13,22 +13,23 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181126 181132 181557 183376 181793 181792 181738 181799 182084 185830 181948 182040 182076 182077",
 	"SPELL_CAST_SUCCESS 181255 181180 181190 181597 182006",
-	"SPELL_AURA_APPLIED 181099 181275 181191 181354 181597 187347 182006",
+	"SPELL_AURA_APPLIED 181099 181275 181191 181597 182006",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 181099 181275",
+	"SPELL_AURA_REMOVED 181099 181275 185147 182212 185175",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_DIED",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, more usages for range frame?
 --TODO, no cast start events for Fel Implosion or Inferno? Find earlier event for them if possible, maybe target scan for location of impacts
 --TODO, figure out fel streak target scan
---TODO, verify 91349 is correct Mannoroth health/death id. It's only one listed in critiera for achievement. It's possible all ids are used and it needs to be changed every phase for boss health
---TODO, verify spellids and ranges of empowered felseekers and their ranges
 --TODO, do voices later, for this fight i need a lot of clarity first.
+--TODO, get timer for 2nd doom lord spawning, if some group decides to do portals in a bad order and not kill that portal summoner first
+--TODO, get longer phase 4 log because log i have isn't long enough to see why felstorm has a longer cd in phase 4
 --Adds
 ----Doom Lords
 local warnCurseoftheLegion			= mod:NewTargetAnnounce(181275, 3)--Spawn
@@ -37,10 +38,10 @@ local warnMarkofDoom				= mod:NewTargetAnnounce(181099, 4)
 local warnFelImplosion				= mod:NewSpellAnnounce(181255, 3)--Spawn
 ----Dread Infernals
 local warnInferno					= mod:NewSpellAnnounce(181180, 3)--Spawn
-local warnFelStreak					= mod:NewSpellAnnounce(181190, 3)--Change to target scan/personal/near warning if possible
+local warnFelStreak					= mod:NewSpellAnnounce(181190, 3, nil, "Melee")--Change to target scan/personal/near warning if possible
 --Mannoroth
 local warnGaze						= mod:NewTargetAnnounce(181597, 3)
-local warnFelseeker					= mod:NewCountAnnounce(181735, 3, nil, false)
+local warnFelseeker					= mod:NewCountAnnounce(181735, 3)
 
 --Adds
 ----Doom Lords
@@ -50,45 +51,47 @@ local specWarnMarkOfDoom			= mod:NewSpecialWarningYou(181099)
 local yellMarkOfDoom				= mod:NewYell(181099)--This need to know at apply, only player needs to know when it's fading
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(181126, "-Healer")
 ----Fel Imps
-local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, "-Healer")
+local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, "-Healer")--This warning is spammy if filter is disabled, so this mod does NOT honor filter setting, this warning is ALWAYS target filtered
 ----Dread Infernals
-local specWarnFelHellfire			= mod:NewSpecialWarningRun(181191, "Melee", nil, nil, 4)
+local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, "Melee", nil, nil, 4)
 --Mannoroth
 local specWarnGlaiveCombo			= mod:NewSpecialWarningSpell(181354, "Tank", nil, nil, 3)--Active mitigation or die mechanic
 local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, "Tank")--Swap Mechanic
 local specWarnFelHellStorm			= mod:NewSpecialWarningSpell(181557, nil, nil, nil, 2)
 local specWarnGaze					= mod:NewSpecialWarningYou(181597)
 local yellGaze						= mod:NewYell(181597)
-local specWarnFelSeeker				= mod:NewSpecialWarningSpell(181735, nil, nil, nil, 2)
-local specWarnShadowForce			= mod:NewSpecialWarningSpell(181799, nil, nil, nil, 2)
+local specWarnFelSeeker				= mod:NewSpecialWarningDodge(181735, nil, nil, nil, 2)
+local specWarnShadowForce			= mod:NewSpecialWarningSpell(181799, nil, nil, nil, 3)
 
 --Adds
 ----Doom Lords
-local timerCurseofLegionCD			= mod:NewAITimer(107, 181275)
---local timerMarkofDoomCD			= mod:NewCDTimer(107, 181099, nil, "-Tank")
---local timerShadowBoltVolleyCD		= mod:NewCDTimer(107, 181126, nil, "-Healer")
+--local timerCurseofLegionCD		= mod:NewCDTimer(107, 181275)
+local timerMarkofDoomCD				= mod:NewCDTimer(31.5, 181099, nil, "-Tank")
+local timerShadowBoltVolleyCD		= mod:NewCDTimer(13, 181126, nil, "-Healer")
 ----Fel Imps
-local timerFelImplosionCD			= mod:NewAITimer(107, 181255)
---local timerFelBlastCD				= mod:NewCDTimer(107, 181126, nil, false)--Somehow I suspect this is not a priority timer
+--local timerFelImplosionCD			= mod:NewCDTimer(107, 181255)
 ----Infernals
-local timerInfernoCD				= mod:NewAITimer(107, 181180)
-----local timerFelStreakCD			= mod:NewCDTimer(107, 181190)
+--local timerInfernoCD				= mod:NewCDTimer(107, 181180)
 --Mannoroth
-local timerGlaiveComboCD			= mod:NewAITimer(107, 181354, nil, "Tank")
-local timerFelHellstormCD			= mod:NewAITimer(107, 181557)
-local timerGazeCD					= mod:NewAITimer(107, 181597, nil, "-Tank")--Maybe tank helps, but for now, try to reduce timer spam for tanks who already have 2 extras
-local timerFelSeekerCD				= mod:NewAITimer(107, 181735)
-local timerShadowForceCD			= mod:NewAITimer(107, 181799)
+local timerGlaiveComboCD			= mod:NewCDTimer(30, 181354, nil, "Tank")--30 seconds unless delayed by something else
+local timerFelHellfireCD			= mod:NewCDTimer(35, 181557)--35, unless delayed by other things.
+local timerGazeCD					= mod:NewCDTimer(47.5, 181597)--As usual, some variation do to other abilities
+local timerFelSeekerCD				= mod:NewCDTimer(51, 181735)--Small sample size, confirm it's not shorter if not delayed by things.
+local timerShadowForceCD			= mod:NewCDTimer(52.5, 181799)
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
 local countdownMarkOfDoom			= mod:NewCountdownFades("Alt15", 181099)
+local countdownShadowForce			= mod:NewCountdown("AltTwo52", 181799)
 
 --local voiceInfernoSlice				= mod:NewVoice(155080)
 
 mod:AddRangeFrameOption(20, 181099)
 
 mod.vb.DoomTargetCount = 0
+mod.vb.portalsLeft = 3
+mod.vb.phase = 1
+--Phase 1 Imps, 35, 23, 15, 10
 
 local AddsSeen = {}
 local debuffFilter
@@ -116,12 +119,12 @@ local function updateRangeFrame(self)
 end
 
 function mod:OnCombatStart(delay)
-	DBM:AddMsg(DBM_CORE_COMBAT_STARTED_AI_TIMER)
+	self.vb.phase = 1
+	self.vb.portalsLeft = 3
 	table.wipe(AddsSeen)
 	self.vb.DoomTargetCount = 0
-	timerCurseofLegionCD:Start(1-delay)
-	timerFelImplosionCD:Start(1-delay)
-	timerInfernoCD:Start(1-delay)
+	--timerFelImplosionCD:Start(1-delay)
+	--timerInfernoCD:Start(1-delay)
 end
 
 function mod:OnCombatEnd()
@@ -134,22 +137,20 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 181557 or spellId == 181948 then
 		specWarnFelHellStorm:Show()
-		timerFelHellstormCD:Start()
+		timerFelHellfireCD:Start()
 	elseif spellId == 181126 then
-		--timerShadowBoltVolleyCD:Start(args.sourceGUID)
+		timerShadowBoltVolleyCD:Start(args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnShadowBoltVolley:Show(args.sourceName)
 		end
 	elseif spellId == 181132 then
-		--timerFelBlastCD:Start(args.sourceGUID)
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID, true) then
 			specWarnFelBlast:Show(args.sourceName)
 		end
 	elseif spellId == 183376 or spellId == 185830 then
 		specWarnMassiveBlast:Show()
 	elseif spellId == 181793 or spellId == 182077 then--Melee (10)
 		warnFelseeker:Show(10)
-		--Maybe spec warn melee when it's this one
 	elseif spellId == 181792 or spellId == 182076 then--Ranged (20)
 		warnFelseeker:Show(20)
 	elseif spellId == 181738 or spellId == 182040 then--Ranged (35)
@@ -157,6 +158,18 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 181799 or spellId == 182084 then
 		specWarnShadowForce:Show()
 		timerShadowForceCD:Start()
+		countdownShadowForce:Start(52.5)
+	end
+end
+
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	if spellId == 181255 and self:AntiSpam(10, 1) then--Imps
+		warnFelImplosion:Show()
+		--timerFelImplosionCD:Start()
+	elseif spellId == 181180 and self:AntiSpam(10, 2) then--Infernals
+		warnInferno:Show()
+		--timerInfernoCD:Start()
 	end
 end
 
@@ -164,13 +177,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 181255 then--Imps
 		warnFelImplosion:Show()
-		timerFelImplosionCD:Start()
+		--timerFelImplosionCD:Start()
 	elseif spellId == 181180 then--Infernals
 		warnInferno:Show()
-		timerInfernoCD:Start()
-	elseif spellId == 181190 then
+		--timerInfernoCD:Start()
+	elseif spellId == 181190 and self:AntiSpam(2, 3) then
 		warnFelStreak:Show()
-		--timerFelStreakCD:Start(args.sourceGUID)
 	elseif spellId == 181597 or spellId == 182006 then
 		timerGazeCD:Start()
 	end
@@ -179,7 +191,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 181275 then
-		timerCurseofLegionCD:Start()
+		--timerCurseofLegionCD:Start()
 		if args:IsPlayer() then
 			specWarnCurseofLegion:Show()
 			local _, _, _, _, _, _, expires = UnitDebuff("Player", args.spellName)
@@ -193,8 +205,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnCurseoftheLegion:Show(args.destName)
 		end
 	elseif spellId == 181099 then
-		--timerMarkofDoomCD:Start(args.sourceGUID)
+		timerMarkofDoomCD:Start(args.sourceGUID)
 		self.vb.DoomTargetCount = self.vb.DoomTargetCount + 1
+		warnMarkofDoom:CombinedShow(1.2, args.destName)--3 targets, pretty slowly
 		if args:IsPlayer() then
 			specWarnMarkOfDoom:Show()
 			countdownMarkOfDoom:Start()
@@ -203,11 +216,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		updateRangeFrame(self)
 	elseif spellId == 181191 and self:CheckInterruptFilter(args.sourceGUID, true) then--No sense in duplicating code, just use CheckInterruptFilter with arg to skip the filter setting check
 		specWarnFelHellfire:Show()--warn melee who are targetting infernal to run out if it's exploding
-	elseif spellId == 181354 or spellId == 187347 then
-		specWarnGlaiveCombo:Show()
-		timerGlaiveComboCD:Start()
 	elseif spellId == 181597 or spellId == 182006 then
-		warnGaze:CombinedShow(0.3, args.destName)--Assume multi for now, change to single if it's not
+		warnGaze:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnGaze:Show()
 			yellGaze:Yell()
@@ -224,6 +234,23 @@ function mod:SPELL_AURA_REMOVED(args)
 			countdownMarkOfDoom:Cancel()
 		end
 		updateRangeFrame(self)
+	elseif spellId == 185147 or spellId == 182212 or spellId == 185175 then--Portals
+		self.vb.portalsLeft = self.vb.portalsLeft - 1
+		if self.sb.portalsLeft == 0 then
+			self.vb.phase = 2
+			timerFelHellfireCD:Start(30)
+			timerGazeCD:Start(42)
+			timerGlaiveComboCD:Start(44)
+			timerFelSeekerCD:Start(59)
+		end
+		if spellId == 185147 then--Doom Lords Portal
+			--I'd add a cancel for the Doom Lords here, but since everyone killed this portal first
+			--no one ever actually learned what the cooldown was, so no timer to cancel yet!
+		elseif spellId == 182212 then--Infernals Portal
+			
+		elseif spellId == 185175 then--Imps Portal
+			
+		end
 	end
 end
 
@@ -236,18 +263,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetCIDFromGUID(unitGUID)
 			if cid == 91241 then--Doom Lord
 				--timerShadowBoltVolleyCD:Start(nil, unitGUID)
-				--timerMarkofDoomCD:Start(nil, unitGUID)
-			elseif cid == 91259 then--Fel Imp
-				--timerFelBlastCD:Start(nil, unitGUID)
-			elseif cid == 91270 then--Dread Infernal
-				--timerFelStreakCD:Start(nil, unitGUID)
-			elseif cid == 91409 or cid == 91369 or cid == 91349 or cid == 94362 then--Mannoroth, possibly all of them are used?
-				DBM:Debug("Mannoroth is "..cid)
-				timerGlaiveComboCD:Start(1)
-				timerFelHellstormCD:Start(1)
-				timerGazeCD:Start(1)
-				timerFelSeekerCD:Start(1)
-				--timerShadowForceCD:Start(1)--Doesn't gain ability first time he fires IEEU, only 2nd and 3rd. As such, until i know what CID is what phase, i cannot enable timer
+				timerMarkofDoomCD:Start(11, unitGUID)
 			end
 		end
 	end
@@ -255,29 +271,94 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 91305 then--Fel Iron Summoner
-		
-	elseif cid == 91241 then--Doom Lord
-		--timerMarkofDoomCD:Cancel(args.destGUID)
-		--timerShadowBoltVolleyCD:Cancel(args.destGUID)
-	elseif cid == 91259 then--Fel Imp
-		--timerFelBlastCD:Cancel(args.destGUID)
-	elseif cid == 91270 then--Dread Infernal
-		--timerFelStreakCD:Cancel(args.destGUID)
+	if cid == 91241 then--Doom Lord
+		timerMarkofDoomCD:Cancel(args.destGUID)
+		timerShadowBoltVolleyCD:Cancel(args.destGUID)
 	end
 end
 
+--Todo, verify mythic has no new emotes with guldan's name, if not, just check npc for "Gul'dan"
+--This function isn't required by mod, i purposely put start timers on later trigger that doesn't need localizing.
+--This just starts phase 3 and 4 earlier, if translation available.
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
+	if msg:find(L.felSpire) then
+		self.vb.phase = self.vb.phase + 1
+		if self.vb.phase == 3 then
+			timerFelHellfireCD:Cancel()
+			timerShadowForceCD:Cancel()
+			countdownShadowForce:Cancel()
+			timerGlaiveComboCD:Cancel()
+			timerGazeCD:Cancel()
+			timerFelSeekerCD:Cancel()
+			timerFelHellfireCD:Start(22.9)
+			timerShadowForceCD:Start(27.8)
+			countdownShadowForce:Start(27.8)
+			timerGazeCD:Start(40.5)
+			timerGlaiveComboCD:Start(41.2)--I suspect this isn't power based and may be 40.5-41.2
+			timerFelSeekerCD:Start(58.1)--^^
+		elseif self.vb.phase == 4 then
+			timerFelHellfireCD:Cancel()
+			timerShadowForceCD:Cancel()
+			countdownShadowForce:Cancel()
+			timerGlaiveComboCD:Cancel()
+			timerGazeCD:Cancel()
+			timerFelSeekerCD:Cancel()
+			timerFelHellfireCD:Start(13)
+			timerShadowForceCD:Start(21.5)
+			countdownShadowForce:Start(21.5)
+			timerGlaiveComboCD:Start(40.5)--I suspect this isn't power based and may be 40.5-41.2
+			timerGazeCD:Start(48)
+			timerFelSeekerCD:Start(58.5)--^^
+		end
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 181736 then--Felseeker. I suspect this is the first trigger, summoning a stalker npc to control the other casts
+	if spellId == 181735 then
 		specWarnFelSeeker:Show()
 		timerFelSeekerCD:Start()
+	elseif spellId == 181301 then--Summon Adds (Start Phase 2 imps/Infernal timers)
+
+	elseif spellId == 182262 then--Summon Adds (Start phase 3 Infernals Timers, cancel Imp timers)
+	
+	--Backup phase detection. a bit slower than CHAT_MSG_RAID_BOSS_EMOTE
+	elseif spellId == 182263 and self.vb.phase == 2 then--Phase 3
+		self.vb.phase = 3
+		timerFelHellfireCD:Cancel()
+		timerShadowForceCD:Cancel()
+		countdownShadowForce:Cancel()
+		timerGlaiveComboCD:Cancel()
+		timerGazeCD:Cancel()
+		timerFelSeekerCD:Cancel()
+		timerFelHellfireCD:Start(17.4)
+		timerShadowForceCD:Start(22.3)
+		countdownShadowForce:Start(22.3)
+		timerGazeCD:Start(35)
+		timerGlaiveComboCD:Start(35.7)
+		timerFelSeekerCD:Start(52.6)
+	elseif spellId == 185690 and self.vb.phase == 3 then--Phase 4
+		self.vb.phase = 4
+		timerFelHellfireCD:Cancel()
+		timerShadowForceCD:Cancel()
+		countdownShadowForce:Cancel()
+		timerGlaiveComboCD:Cancel()
+		timerGazeCD:Cancel()
+		timerFelSeekerCD:Cancel()
+		timerFelHellfireCD:Start(7.5)
+		timerShadowForceCD:Start(16)
+		countdownShadowForce:Start(16)
+		timerGlaiveComboCD:Start(35)
+		timerGazeCD:Start(42.5)
+		timerFelSeekerCD:Start(53)
+	elseif spellId == 181354 then--183377 or 185831 also usable with SPELL_CAST_START but i like this way more, cleaner.
+		specWarnGlaiveCombo:Show()
+		timerGlaiveComboCD:Start()
 	end
 end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
+	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 
 	end
 end

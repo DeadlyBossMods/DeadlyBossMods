@@ -72,6 +72,10 @@ L= DBM:GetModLocalization(1394)
 --------------------------
 L= DBM:GetModLocalization(1395)
 
+L:SetMiscLocalization({
+	felSpire		=	"begins to empower the Fel Spire!"
+})
+
 --------------------------
 -- Archimonde --
 --------------------------
