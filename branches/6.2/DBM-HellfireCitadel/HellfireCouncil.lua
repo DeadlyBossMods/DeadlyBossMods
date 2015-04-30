@@ -167,7 +167,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 184365 and not args:IsDestTypePlayer() then--IsDestTypePlayer because it could be wrong spellid and one applied to players when he lands on them, so to avoid spammy mess, filter
 		specWarnDemolishingLeap:Show()
-		timerDemoLeapCD:Start()
+		--timerDemoLeapCD:Start()
 	elseif spellId == 184449 then--Confirmed correct CAST spellid for heroic.
 		warnMarkoftheNecromancer:CombinedShow(0.3, args.destName)
 	end
@@ -188,7 +188,7 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 92142 then--Blademaster Jubei'thosr
 		timerFelstormCD:Cancel()
-		timerWindwalkCD:Cancel()
+		--timerMirrorImageCD:Cancel()
 	elseif cid == 92144 then--Dia Darkwhisper
 		timerMarkofNecroCD:Cancel()
 		timerNightmareVisageCD:Cancel()
