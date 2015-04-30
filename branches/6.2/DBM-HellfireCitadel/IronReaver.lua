@@ -177,6 +177,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		voiceBarrage:Play("shockwave")
 	elseif spellId == 182055 then
+		self.vb.groundPhase = false
 		specWarnFullCharge:Show()
 		self.vb.fuelCount = 0
 		self.vb.firebombCount = 0

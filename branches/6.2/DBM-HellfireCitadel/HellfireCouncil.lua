@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1432, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(94455, 92144, 92146)--Blademaster Jubei'thos (94455). Dia Darkwhisper (92144). Gurthogg Bloodboil (92146) 
+mod:SetCreatureID(92142, 92144, 92146)--Blademaster Jubei'thos (92142). Dia Darkwhisper (92144). Gurthogg Bloodboil (92146) 
 mod:SetEncounterID(1778)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
@@ -13,58 +13,54 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 184657 184476 183016",
-	"SPELL_CAST_SUCCESS 184449 183480",
+	"SPELL_CAST_START 184657 184476",
+	"SPELL_CAST_SUCCESS 184449 183480 184357",
 	"SPELL_AURA_APPLIED 183701 184847 184360 184365 184449",
 	"SPELL_AURA_APPLIED_DOSE 184847",
 --	"SPELL_AURA_REMOVED",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_ABSORBED",
+--	"SPELL_PERIODIC_DAMAGE 184652",
+--	"SPELL_PERIODIC_MISSED 184652",--Do not change to SPELL_ABSORB, SPELL_PERIODIC_MISSED always fires, ALWAYS, ABSORB doesn't exist in ANY of my logs
 	"UNIT_DIED",
+	"RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, see if 183016 is valid Fel Blade cast and if it can be target scanned. If not, probably not worth adding.
---TODO, see how mirror images (183734) works and how frequent it is. Not adding until I know whether spammy or not.
---TODO, figure out windwalk too (183480). Spellids for pretty much all of Blademaster Jubei'thos lack definitive clarity and have too many IDs for drycode
---TODO, Figure out what damn spellid Mark of the Nacromancer uses, cause it has like 8 of them. This is a MUST HAVE warning.
---TODO, add GTFO for standing in fire left on ground by marks, after reap, again after figure out which is right spellid, can't add now, wrong spellid and it'll spam bad warnings.
---TODO, Figure out rest of darkness
+--TODO, Fix GTFO for reap voids on ground. I'm not sure i have right spellid. I don't want to spam players to move out of something for an ID that's applied as a debuff. I need to video it to get right spellname/debuff
 --TODO, add bloodboil. mythic only?
---TODO, figure out swaps for Acidic Wound and add appropriate stack/taunt warnings.
---TODO< verify Demolishing Leap spellid/event
+--TODO, All 3 150 second cooldown abilities are silly and unpredictable. I don't think they will go live this way. Timers disabled for them all for now. ESPECIALLy mirror image which goes from being 150 second cd to NO cd below 30%
 --Blademaster Jubei'thos
---Things
+local warnMirrorImage				= mod:NewSpellAnnounce(183885, 2)
 --Dia Darkwhisper
 local warnMarkoftheNecromancer		= mod:NewTargetAnnounce(184449, 4, nil, false)--Off by default until i verify sp ellid, i don't want announce spam cause i guessed wrong one
 local warnReap						= mod:NewSpellAnnounce(184476, 4)--Generic warning if you don't have reap, just to know it's going on
 --Gurtogg Bloodboil
-local warnAcidicWound				= mod:NewStackAnnounce(184847, 2, nil, "Tank")
-local warnFelRage					= mod:NewTargetAnnounce(184360, 4)
+local warnAcidicWound				= mod:NewStackAnnounce(184847, 2, nil, "Tank")--As of PTR, this required no swaps, just the person with fel rage pulling boss away from tank long enough to clear stacks
+local warnFelRage					= mod:NewTargetCountAnnounce(184360, 4)
 
 --Blademaster Jubei'thos
 local specWarnFelstorm				= mod:NewSpecialWarningSpell(183701, nil, nil, nil, 2, nil, 2)
-local specWarnMirrorImage			= mod:NewSpecialWarningSwitch(183885, "Dps")--Triggered by windwalk
 --Dia Darkwhisper
 local specWarnNightmareVisage		= mod:NewSpecialWarningSpell(184657)--Doesn't option default, only warns highest threat
 local specWarnReap					= mod:NewSpecialWarningMoveAway(184476, nil, nil, nil, 3)--Everyone with Mark of Necromancer is going to drop void zones that last forever, they MUST get the hell out
+--local specWarnReapGTFO				= mod:NewSpecialWarningMove(184652)--On the ground version (GTFO)
 local yellReap						= mod:NewYell(184476)
-local specWarnDarkness				= mod:NewSpecialWarningSpell(184674, nil, nil, nil, 2)--30% version I believe. Don't know how the above 30% version yet, can't find a valid castID for it, just damage ID
+local specWarnDarkness				= mod:NewSpecialWarningSpell(184681, nil, nil, nil, 2)
 --Gurtogg Bloodboil
 local specWarnFelRage				= mod:NewSpecialWarningYou(184360)
 local specWarnDemolishingLeap		= mod:NewSpecialWarningRun(184366, nil, nil, nil, 4)--Damage reduced by distance, run away from boss
 
 --Blademaster Jubei'thos
-local timerFelBladeCD				= mod:NewAITimer(107, 183016)
-local timerMarkofNecroCD			= mod:NewAITimer(107, 184449, nil, false)
-local timerWindwalkCD				= mod:NewAITimer(107, 183480, nil, "-Healer")
+local timerMarkofNecroCD			= mod:NewCDTimer(60.5, 184449, nil, "Healer")
+--local timerMirrorImageCD			= mod:NewCDTimer(150, 183885)--Same as demo leap. the cd is so long that the timer is quite useless.
 --Dia Darkwhisper
-local timerFelstormCD				= mod:NewAITimer(107, 183701)
-local timerReapCD					= mod:NewAITimer(107, 184476)
-local timerNightmareVisageCD		= mod:NewAITimer(107, 184657, nil, "Tank")
+local timerFelstormCD				= mod:NewCDTimer(30.5, 183701)
+local timerReapCD					= mod:NewCDTimer(66, 184476)--66-71
+local timerNightmareVisageCD		= mod:NewCDTimer(30, 184657, nil, "Tank")
+--local timerDarknessCD				= mod:NewCDTimer(150, 184681)--Also bleh in consistency. I suspect all the 150 second abilities are undertuned and will all need fixing.
 --Gurtogg Bloodboil
-local timerRelRageCD				= mod:NewAITimer(107, 184360)
-local timerDemoLeapCD				= mod:NewAITimer(107, 184366)
+local timerRelRageCD				= mod:NewCDCountTimer(70, 184360)--70-84
+--local timerDemoLeapCD				= mod:NewCDTimer(150, 184366)--I think ability was flat broken, he used it like 1 out of 6 pulls. and when he did it was 2 and a half minute cd?
+local timerTaintedBloodCD			= mod:NewNextCountTimer(15.8, 184357)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
@@ -74,6 +70,10 @@ local voiceFelstorm					= mod:NewVoice(183701)--aesoon
 
 --mod:AddRangeFrameOption(8, 155530)
 
+mod.vb.DiaPushed = false
+mod.vb.GurtPushed = false
+mod.vb.taintedBloodCount = 0
+mod.vb.felRageCount = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local markofNecroDebuff = GetSpellInfo(184449)--Spell name should work, without knowing what right spellid is, For this anyways.
 
@@ -90,14 +90,17 @@ do
 end--]]
 
 function mod:OnCombatStart(delay)
-	timerFelBladeCD:Start(1-delay)
-	timerFelstormCD:Start(1-delay)
-	timerWindwalkCD:Start(1-delay)
-	timerReapCD:Start(1-delay)
-	timerMarkofNecroCD:Start(1-delay)
-	timerNightmareVisageCD:Start(1-delay)
-	timerRelRageCD:Start(1-delay)
-	timerDemoLeapCD:Start(1-delay)
+	self.vb.DiaPushed = false
+	self.vb.GurtPushed = false
+	self.vb.taintedBloodCount = 0
+	self.vb.felRageCount = 0
+	timerMarkofNecroCD:Start(7-delay)--7-13
+	timerNightmareVisageCD:Start(15.5-delay)
+	timerFelstormCD:Start(20.5-delay)
+	timerRelRageCD:Start(30.5-delay)
+	timerReapCD:Start(50-delay)--50-73 variation on pull, likely blizzard was tinkering/hotfixing it between pulls. verify on later testing
+	--timerMirrorImageCD:Start(-delay)--First one is 150-160 into fight, unless he hits 30% first, then he uses it earlier and spams rest of fight.
+	--timerDemoLeapCD:Start(230-delay)--First one 230 into fight. if you kill him first you NEVER see it. I doubt it'll stay this way
 end
 
 function mod:OnCombatEnd()
@@ -119,7 +122,9 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 184476 then
-		timerReapCD:Start()
+		if not self.vb.DiaPushed then--Don't start cd timer for her final reap she casts at 30%
+			timerReapCD:Start()
+		end
 		if UnitDebuff("player", markofNecroDebuff) then
 			specWarnReap:Show()
 			yellReap:Yell()
@@ -127,41 +132,43 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnReap:Show()
 		end
-	elseif spellId == 183016 then
-		timerFelBladeCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 184449 then
+	if spellId == 184449 then--Confirmed correct CAST spellid for heroic
 		timerMarkofNecroCD:Start()
-	elseif spellId == 183480 then
-		specWarnMirrorImage:Show()
-		timerWindwalkCD:Start()
+	elseif spellId == 183480 and self:AntiSpam(8, 1) then--Once he pushes 30%, he just spams this, so stop warning
+		warnMirrorImage:Show()
+	elseif spellId == 184357 then
+		self.vb.taintedBloodCount = self.vb.taintedBloodCount + 1
+		timerTaintedBloodCD:Start(nil, self.vb.taintedBloodCount+1)
+		if self.vb.GurtPushed then self.vb.GurtPushed = true end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 183701 then
+	if spellId == 183701 and args:GetDestCreatureID() == 92142 then--Only warn when jubei uses, not mirror image spam
 		specWarnFelstorm:Show()
 		voiceFelstorm:Play("aesoon")
 		timerFelstormCD:Start()
-	elseif spellId == 184847 and self:AntiSpam(3.5, 1) then--Probably stacks very rapidly, so using antispam for now until better method constructed
+	elseif spellId == 184847 and self:AntiSpam(3.5, 2) then--Probably stacks very rapidly, so using antispam for now until better method constructed
 		local amount = args.amount or 1
 		warnAcidicWound:Show(args.destName, amount)
 	elseif spellId == 184360 then
-		timerRelRageCD:Start()
+		self.vb.felRageCount = self.vb.felRageCount + 1
+		timerRelRageCD:Start(nil, self.vb.felRageCount+1)
 		if args:IsPlayer() then
 			specWarnFelRage:Show()
 		else
-			warnFelRage:Show(args.destName)
+			warnFelRage:Show(self.vb.felRageCount, args.destName)
 		end
 	elseif spellId == 184365 and not args:IsDestTypePlayer() then--IsDestTypePlayer because it could be wrong spellid and one applied to players when he lands on them, so to avoid spammy mess, filter
 		specWarnDemolishingLeap:Show()
 		timerDemoLeapCD:Start()
-	elseif spellId == 184449 then--Could be any number of spellids, has like 10 of the damn things
+	elseif spellId == 184449 then--Confirmed correct CAST spellid for heroic.
 		warnMarkoftheNecromancer:CombinedShow(0.3, args.destName)
 	end
 end
@@ -179,32 +186,37 @@ end--]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 94455 then--Blademaster Jubei'thosr
-		timerFelBladeCD:Cancel()
+	if cid == 92142 then--Blademaster Jubei'thosr
 		timerFelstormCD:Cancel()
 		timerWindwalkCD:Cancel()
 	elseif cid == 92144 then--Dia Darkwhisper
-		timerReapCD:Cancel()
 		timerMarkofNecroCD:Cancel()
 		timerNightmareVisageCD:Cancel()
 	elseif cid == 92146 then--Gurthogg Bloodboil
 		timerRelRageCD:Cancel()
-		timerDemoLeapCD:Cancel()
+		--timerDemoLeapCD:Cancel()
+		timerTaintedBloodCD:Cancel()
+	end
+end
+
+function mod:RAID_BOSS_EMOTE(msg)
+	if msg:find("spell:184681") then
+		specWarnDarkness:Show()
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 184682 then--Just a guess, but doesn't look like a spell that shows in combat log. they didn't bother to localize spellid or give it an icon or tooltip. Looks like 30% version of spell, that cancels reap and lasts rest of fight.
+	if spellId == 187183 then--Mark of the Necromancer (30% version that marks half of enemies, Dia)
+		self.vb.DiaPushed = true
 		timerReapCD:Cancel()
-		specWarnDarkness:Show()
 	end
 end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
-
+	if spellId == 184652 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+		specWarnReapGTFO:Show()
 	end
 end
-mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
---]]
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE--]]
+
