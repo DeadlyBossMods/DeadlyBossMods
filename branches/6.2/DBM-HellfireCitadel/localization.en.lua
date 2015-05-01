@@ -5,6 +5,14 @@ local L
 ---------------
 L= DBM:GetModLocalization(1426)
 
+L:SetTimerLocalization({
+	timerSiegeVehicleCD		= "Next Siege Vehicle",
+})
+
+L:SetOptionLocalization({
+	timerSiegeVehicleCD =	"Show timer for when new siege vehicles spawn"
+})
+
 L:SetMiscLocalization({
 	AddsSpawn1		=	"Comin' in hot!",
 	AddsSpawn2		=	"Fire in the hole!"
