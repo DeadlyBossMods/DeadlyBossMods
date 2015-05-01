@@ -167,7 +167,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif (spellId == 181288 or spellId == 182994) and args:IsDestTypePlayer() then
 		warnFelPrison:CombinedShow(1, args.destName)
 	elseif spellId == 182769 then
-		warnGhastlyFixation:CombinedShow(0.5, args.destName)
+		warnGhastlyFixation:CombinedShow(1.2, args.destName)
 		if args:IsPlayer() then
 			specWarnGhastlyFixation:Show()
 			yellGhastlyFixation:Yell()

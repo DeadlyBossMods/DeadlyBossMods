@@ -5,6 +5,11 @@ local L
 ---------------
 L= DBM:GetModLocalization(1426)
 
+L:SetMiscLocalization({
+	AddsSpawn1		=	"Comin' in hot!",
+	AddsSpawn2		=	"Fire in the hole!"
+})
+
 ---------------------------
 -- Iron Reaver --
 ---------------------------

@@ -14,18 +14,20 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184394 181155 183391 185816 184370",
 	"SPELL_CAST_SUCCESS 180874 185025",
-	"SPELL_AURA_APPLIED 184369 180264 184238 184243",
+	"SPELL_AURA_APPLIED 184369 180264 184238 184243 180927",
 	"SPELL_AURA_APPLIED_DOSE 184238 184243",
 	"SPELL_AURA_REMOVED 184369",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"UNIT_DIED",
+	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, Check target scanning on everything
 --TODO, Timers for abilities, timers for add/vehicle spawns
 --TODO, any GTFOs, HUDs, voices once mechanics better understood.
+--TODO, make voices for the 4 tank types by name, similar to Blast Furnace adds.
 --Siegemaster Mar'tak
 local warnHowlingAxe				= mod:NewTargetAnnounce(184369, 3)
 local warnFelfireMunitions			= mod:NewTargetAnnounce(180264, 1)--Total guesswork on spellid, might work, seems most logical spellid. Hoping this can be used to detect vehicles entering fight
@@ -70,6 +72,7 @@ local specWarnRepair				= mod:NewSpecialWarningInterrupt(185816, "-Healer")
 local timerHowlingAxeCD				= mod:NewAITimer(107, 184369)
 local timerShockwaveCD				= mod:NewAITimer(30, 184394)
 --Hellfire Reinforcements
+local timerReinforcementsCD			= mod:NewTimer(40, "timerReinforcementsCD")
 ----Gorebound Berserker (tank add probably)
 --local timerCowerCD				= mod:NewCDTimer(107, 184238)
 --local timerSlamCD					= mod:NewCDTimer(107, 184243)
@@ -78,6 +81,7 @@ local timerShockwaveCD				= mod:NewAITimer(30, 184394)
 ----Contracted Engineer
 
 --Felfire-Imbued Siege Vehicles
+local timerSiegeVehicleCD			= mod:NewTimer(60, "timerSiegeVehicleCD", 160240)--Cannot find any short text timers that will fit the bill
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
@@ -86,13 +90,12 @@ local countdownHowlingAxe			= mod:NewCountdownFades("Alt7", 184369)
 local voiceShockwave				= mod:NewVoice(184394)--shockwave
 
 mod:AddRangeFrameOption(8, 184369)
+--mod:AddSetIconOption("SetIconOnAdds", "ej11411", false, true)
 
-local function isNearHellfireCannon(self)
-	--Map shit, return true.
-	--Might need two functions, since some vehicles have bigger areas of impact within hellfire cannon than others
-	
-	return false
-end
+mod.vb.vehicleCount = 0
+local vehicleTimers = {38, 62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 43.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-2 seconds
+--Types: 1-Felfire Flamebelcher, 2-Felfire Crusher, 3-Felfire Artillery, 4-Felfire Demolisher, 5-Felfire Flamebelcher, 6-Felfire Artillery, 7-Felfire Demolisher, 8-Felfire Flamebelcher, 9-Felfire Crusher
+local addsTimers = {25, 45, 44, 44, 43, 43, 42, 42, 41, 40, 42, 40, 40}--Very tiny variance between pulls. Adds gradually get faster over time. that 42 is a strange fluke though. probably 40 with variance, the 40 before it i think should have been a 41 so the 42 was probably auto correction
 
 function mod:LeapTarget(targetname, uId)
 	if not targetname then
@@ -110,6 +113,7 @@ function mod:LeapTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.vehicleCount = 0
 	timerHowlingAxeCD:Start(1-delay)
 	timerShockwaveCD:Start(1-delay)
 end
@@ -173,7 +177,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			warnSlam:Show(args.destName, amount)
-		end	
+		end
+	elseif spellId == 180927 then--Vehicle Spawns
+		self.vb.vehicleCount = self.vb.vehicleCount + 1
+		if vehicleTimers[self.vb.vehicleCount] then
+			timerSiegeVehicleCD:Start(vehicleTimers[self.vb.vehicleCount])
+		end
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if cid == 90432 then--Felfire Flamebelcher
+			
+		elseif cid == 90410 then--Felfire Crusher
+			
+		elseif cid == 90485 then--Felfire Artillery
+			
+		elseif cid == 91103 then--Felfire Demolisher
+			
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -199,6 +218,25 @@ function mod:UNIT_DIED(args)
 	elseif cid == 93881 then--Contract Engineer
 		
 	--Vehicles too?
+	end
+end
+
+--Wish there was another way, but there isn't. This requires localizing
+function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
+	if msg == L.AddsSpawn1 or msg == L.AddsSpawn2 then
+		self:SendSync("Adds")
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "Adds" and self:AntiSpam(20, 4) and self:IsInCombat() then
+		self.vb.addsCount = self.vb.addsCount + 1
+		if addsTimers[self.vb.addsCount] then
+			timerReinforcementsCD:Start(addsTimers[self.vb.addsCount])
+		end
+		--if self.Options.SetIconOnAdds then
+		--	self:ScanForMobs(93931, 0, 8, nil, 0.2, 12)
+		--end
 	end
 end
 
