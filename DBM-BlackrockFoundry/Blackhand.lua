@@ -283,8 +283,8 @@ function mod:OnCombatStart(delay)
 	self.vb.smashCount = 0
 	self.vb.markCount = 0
 	self.vb.slagCastCount = 0
-	timerThrowSlagBombsCD:Start(5.5-delay, 1)
-	countdownSlagBombs:Start(5.5-delay)
+	timerThrowSlagBombsCD:Start(5.2-delay, 1)
+	countdownSlagBombs:Start(5.2-delay)
 	timerDemolitionCD:Start(15-delay, 1)
 	timerShatteringSmashCD:Start(21-delay, 1)
 	if self:IsTank() then--Ability only concerns tank in phase 1
