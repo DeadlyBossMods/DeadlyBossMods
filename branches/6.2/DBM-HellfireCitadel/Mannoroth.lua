@@ -94,8 +94,8 @@ mod.vb.infernalCount = 0
 local phase1ImpTimers = {15, 35, 23, 15, 10}--Spawn 33% faster each wave, but cannot confirm it goes lower than 10, if it does, next would be 6.6
 local phase2ImpTimers = {27.6, 46.2, 43.8}--Confirmed two pulls consistent, but no more than 3 spawns seen, don't know next one
 local phase1InfernalTimers = {18.4, 40}--That's all I have, strat is generally to kill doom lord portal first, then infernals, lastly imps.
-local phase2Infernaltimers = {53.3, 50}
-local phase3Infernaltimers = {43.2, 34.8}
+local phase2InfernalTimers = {53.3, 50}
+local phase3InfernalTimers = {43.2, 34.8}
 
 local AddsSeen = {}
 local debuffFilter
