@@ -18,14 +18,13 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 183701 184847 184360 184365 184449",
 	"SPELL_AURA_APPLIED_DOSE 184847",
 --	"SPELL_AURA_REMOVED",
---	"SPELL_PERIODIC_DAMAGE 184652",
---	"SPELL_PERIODIC_MISSED 184652",--Do not change to SPELL_ABSORB, SPELL_PERIODIC_MISSED always fires, ALWAYS, ABSORB doesn't exist in ANY of my logs
+	"SPELL_PERIODIC_DAMAGE 184652",
+	"SPELL_ABSORB 184652",
 	"UNIT_DIED",
 	"RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, Fix GTFO for reap voids on ground. I'm not sure i have right spellid. I don't want to spam players to move out of something for an ID that's applied as a debuff. I need to video it to get right spellname/debuff
 --TODO, add bloodboil. mythic only?
 --TODO, All 3 150 second cooldown abilities are silly and unpredictable. I don't think they will go live this way. Timers disabled for them all for now. ESPECIALLy mirror image which goes from being 150 second cd to NO cd below 30%
 --Blademaster Jubei'thos
@@ -41,13 +40,13 @@ local warnFelRage					= mod:NewTargetCountAnnounce(184360, 4)
 local specWarnFelstorm				= mod:NewSpecialWarningSpell(183701, nil, nil, nil, 2, nil, 2)
 --Dia Darkwhisper
 local specWarnNightmareVisage		= mod:NewSpecialWarningSpell(184657)--Doesn't option default, only warns highest threat
-local specWarnReap					= mod:NewSpecialWarningMoveAway(184476, nil, nil, nil, 3)--Everyone with Mark of Necromancer is going to drop void zones that last forever, they MUST get the hell out
---local specWarnReapGTFO				= mod:NewSpecialWarningMove(184652)--On the ground version (GTFO)
+local specWarnReap					= mod:NewSpecialWarningMoveAway(184476, nil, nil, nil, 3, nil, 2)--Everyone with Mark of Necromancer is going to drop void zones that last forever, they MUST get the hell out
+local specWarnReapGTFO				= mod:NewSpecialWarningMove(184652)--On the ground version (GTFO)
 local yellReap						= mod:NewYell(184476)
 local specWarnDarkness				= mod:NewSpecialWarningSpell(184681, nil, nil, nil, 2)
 --Gurtogg Bloodboil
 local specWarnFelRage				= mod:NewSpecialWarningYou(184360)
-local specWarnDemolishingLeap		= mod:NewSpecialWarningRun(184366, nil, nil, nil, 4)--Damage reduced by distance, run away from boss
+local specWarnDemolishingLeap		= mod:NewSpecialWarningDodge(184366, nil, nil, nil, 2)--Jumps around room, from side to side
 
 --Blademaster Jubei'thos
 local timerMarkofNecroCD			= mod:NewCDTimer(60.5, 184449, nil, "Healer")
@@ -67,6 +66,7 @@ local timerTaintedBloodCD			= mod:NewNextCountTimer(15.8, 184357)
 local countdownReap					= mod:NewCountdownFades("Alt4", 184476)
 
 local voiceFelstorm					= mod:NewVoice(183701)--aesoon
+local voiceReap						= mod:NewVoice(184476)--runout
 
 --mod:AddRangeFrameOption(8, 155530)
 
@@ -129,6 +129,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnReap:Show()
 			yellReap:Yell()
 			countdownReap:Start()
+			voiceReap:Play("runout")
 		else
 			warnReap:Show()
 		end
@@ -212,11 +213,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 184652 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnReapGTFO:Show()
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE--]]
-
+mod.SPELL_ABSORB = mod.SPELL_PERIODIC_DAMAGE

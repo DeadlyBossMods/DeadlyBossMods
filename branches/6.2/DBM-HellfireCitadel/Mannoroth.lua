@@ -12,10 +12,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181126 181132 181557 183376 181793 181792 181738 181799 182084 185830 181948 182040 182076 182077",
-	"SPELL_CAST_SUCCESS 181255 181180 181190 181597 182006",
+	"SPELL_CAST_SUCCESS 181190 181597 182006",
 	"SPELL_AURA_APPLIED 181099 181275 181191 181597 182006",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 181099 181275 185147 182212 185175",
+	"SPELL_AURA_REMOVED 181099 181275 185147 182212 185175 181597 182006",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
@@ -24,9 +24,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, more usages for range frame?
---TODO, no cast start events for Fel Implosion or Inferno? Find earlier event for them if possible, maybe target scan for location of impacts
---TODO, figure out fel streak target scan
 --TODO, do voices later, for this fight i need a lot of clarity first.
 --TODO, get timer for 2nd doom lord spawning, if some group decides to do portals in a bad order and not kill that portal summoner first
 --TODO, get longer phase 4 log because log i have isn't long enough to see why felstorm has a longer cd in phase 4
@@ -65,13 +62,13 @@ local specWarnShadowForce			= mod:NewSpecialWarningSpell(181799, nil, nil, nil, 
 
 --Adds
 ----Doom Lords
---local timerCurseofLegionCD		= mod:NewCDTimer(107, 181275)
+--local timerCurseofLegionCD		= mod:NewCDTimer(107, 181275)--Maybe see one day, in LFR or something when group is terrible or doesn't kill doom lord portal first
 local timerMarkofDoomCD				= mod:NewCDTimer(31.5, 181099, nil, "-Tank")
 local timerShadowBoltVolleyCD		= mod:NewCDTimer(13, 181126, nil, "-Healer")
 ----Fel Imps
---local timerFelImplosionCD			= mod:NewCDTimer(107, 181255)
+local timerFelImplosionCD			= mod:NewNextCountTimer(46, 181255)
 ----Infernals
---local timerInfernoCD				= mod:NewCDTimer(107, 181180)
+local timerInfernoCD				= mod:NewNextCountTimer(107, 181180)
 --Mannoroth
 local timerGlaiveComboCD			= mod:NewCDTimer(30, 181354, nil, "Tank")--30 seconds unless delayed by something else
 local timerFelHellfireCD			= mod:NewCDTimer(35, 181557)--35, unless delayed by other things.
@@ -87,11 +84,18 @@ local countdownShadowForce			= mod:NewCountdown("AltTwo52", 181799)
 --local voiceInfernoSlice				= mod:NewVoice(155080)
 
 mod:AddRangeFrameOption(20, 181099)
+mod:AddHudMapOption("HudMapOnGaze", 181597)
 
 mod.vb.DoomTargetCount = 0
 mod.vb.portalsLeft = 3
 mod.vb.phase = 1
---Phase 1 Imps, 35, 23, 15, 10
+mod.vb.impCount = 0
+mod.vb.infernalCount = 0
+local phase1ImpTimers = {15, 35, 23, 15, 10}--Spawn 33% faster each wave, but cannot confirm it goes lower than 10, if it does, next would be 6.6
+local phase2ImpTimers = {27.6, 46.2, 43.8}--Confirmed two pulls consistent, but no more than 3 spawns seen, don't know next one
+local phase1InfernalTimers = {18.4, 40}--That's all I have, strat is generally to kill doom lord portal first, then infernals, lastly imps.
+local phase2Infernaltimers = {53.3, 50}
+local phase3Infernaltimers = {43.2, 34.8}
 
 local AddsSeen = {}
 local debuffFilter
@@ -119,17 +123,22 @@ local function updateRangeFrame(self)
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.impCount = 0
+	self.vb.infernalCount = 0
 	self.vb.phase = 1
 	self.vb.portalsLeft = 3
 	table.wipe(AddsSeen)
 	self.vb.DoomTargetCount = 0
-	--timerFelImplosionCD:Start(1-delay)
-	--timerInfernoCD:Start(1-delay)
+	timerFelImplosionCD:Start(15-delay, 1)
+	timerInfernoCD:Start(18.4-delay, 1)
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.HudMapOnGaze then
+		DBMHudMap:Disable()
 	end
 end 
 
@@ -164,24 +173,42 @@ end
 
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
-	if spellId == 181255 and self:AntiSpam(10, 1) then--Imps
-		warnFelImplosion:Show()
-		--timerFelImplosionCD:Start()
-	elseif spellId == 181180 and self:AntiSpam(10, 2) then--Infernals
-		warnInferno:Show()
-		--timerInfernoCD:Start()
+	if spellId == 181255 and self:AntiSpam(7, 1) then--Imps
+		self.vb.impCount = self.vb.impCount + 1
+		warnFelImplosion:Show(self.vb.impCount)
+		local nextCount = self.vb.impCount + 1
+		if self.sb.phase == 1 then
+			if phase1ImpTimers[nextCount] then
+				timerFelImplosionCD:Start(phase1ImpTimers[nextCount], nextCount)
+			end
+		else
+			if phase2ImpTimers[nextCount] then
+				timerFelImplosionCD:Start(phase2ImpTimers[nextCount], nextCount)
+			end
+		end
+	elseif spellId == 181180 and self:AntiSpam(7, 2) then--Infernals
+		self.vb.infernalCount = self.vb.infernalCount + 1
+		warnInferno:Show(self.vb.infernalCount)
+		local nextCount = self.vb.infernalCount + 1
+		if self.sb.phase == 1 then
+			if phase1InfernalTimers[nextCount] then
+				timerInfernoCD:Start(phase1InfernalTimers[nextCount], nextCount)
+			end
+		elseif self.sb.phase == 2 then
+			if phase2InfernalTimers[nextCount] then
+				timerInfernoCD:Start(phase2InfernalTimers[nextCount], nextCount)
+			end
+		else
+			if phase3InfernalTimers[nextCount] then
+				timerInfernoCD:Start(phase3InfernalTimers[nextCount], nextCount)
+			end
+		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 181255 then--Imps
-		warnFelImplosion:Show()
-		--timerFelImplosionCD:Start()
-	elseif spellId == 181180 then--Infernals
-		warnInferno:Show()
-		--timerInfernoCD:Start()
-	elseif spellId == 181190 and self:AntiSpam(2, 3) then
+	if spellId == 181190 and self:AntiSpam(2, 3) then
 		warnFelStreak:Show()
 	elseif spellId == 181597 or spellId == 182006 then
 		timerGazeCD:Start()
@@ -222,6 +249,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGaze:Show()
 			yellGaze:Yell()
 		end
+		if self.Options.HudMapOnGaze then
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 8, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -249,7 +279,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		elseif spellId == 182212 then--Infernals Portal
 			
 		elseif spellId == 185175 then--Imps Portal
-			
+			timerFelImplosionCD:Cancel()
+		end
+	elseif spellId == 181597 or spellId == 182006 then
+		if self.Options.HudMapOnGaze then
+			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	end
 end
@@ -318,9 +352,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnFelSeeker:Show()
 		timerFelSeekerCD:Start()
 	elseif spellId == 181301 then--Summon Adds (Start Phase 2 imps/Infernal timers)
-
+		self.vb.impCount = 0
+		self.vb.infernalCount = 0
+		timerFelImplosionCD:Start(27.6, 1)
+		timerInfernoCD:Start(53.3, 1)
 	elseif spellId == 182262 then--Summon Adds (Start phase 3 Infernals Timers, cancel Imp timers)
-	
+		self.vb.infernalCount = 0
+		timerFelImplosionCD:Cancel()
+		timerInfernoCD:Cancel()
+		timerInfernoCD:Start(43.2, 1)
 	--Backup phase detection. a bit slower than CHAT_MSG_RAID_BOSS_EMOTE
 	elseif spellId == 182263 and self.vb.phase == 2 then--Phase 3
 		self.vb.phase = 3

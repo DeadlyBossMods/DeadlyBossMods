@@ -26,6 +26,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, Prisons had no workable targetting of any kind during test. Study of logs and even videos showed no valid target scanning, debuff, whisper, nothing. As such, only aoe warning :\
 --TODO, voice for reverberatingblow removed since it's instant cast and currently a bit wonky/buggy. Needs further review later.
+--TODO, currently no way to detect fel orbs detonating, or if there is i don't have it in any of my logs, with no debuff, can't cancel hud for orbs at this time
 --Soulbound Construct
 local warnReverberatingBlow			= mod:NewCountAnnounce(180008, 3)
 local warnFelPrison					= mod:NewTargetAnnounce(181288, 4)
@@ -85,6 +86,8 @@ local voiceGhastlyFixation			= mod:NewVoice(182769)--runout/keepmove
 local voiceGiftoftheManari			= mod:NewVoice(184124)--scatter
 
 mod:AddRangeFrameOption(10, 184124)
+--mod:AddHudMapOption("HudMapOnOrb", 180221)--Unusuble until there is a way to cancel it
+mod:AddHudMapOption("HudMapOnCharge", 182051)
 
 mod.vb.ReverberatingBlow = 0
 mod.vb.ManariTargets = 0
@@ -129,6 +132,9 @@ function mod:ChargeTarget(targetname, uId)
 		specWarnFelCharge:Show(targetname)
 		voiceFelblazeCharge:Play("chargemove")
 	end
+	if self.Options.HudMapOnCharge then
+		DBMHudMap:RegisterRangeMarkerOnPartyMember(182051, "highlight", targetname, 5, 4, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)
+	end
 end
 
 function mod:OrbTarget(targetname, uId)
@@ -140,9 +146,12 @@ function mod:OrbTarget(targetname, uId)
 			voiceVolatileFelOrb:Play("runout")
 			voiceVolatileFelOrb:Schedule(2, "keepmove")
 		end
-	else--
+	else
 		warnVolatileFelOrb:Show(targetname)
 	end
+--	if self.Options.HudMapOnOrb then
+--		DBMHudMap:RegisterRangeMarkerOnPartyMember(180221, "highlight", targetname, 5, 20, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
+--	end
 end
 
 function mod:OnCombatStart(delay)
@@ -157,6 +166,9 @@ end
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.HudMapOnCharge then
+		DBMHudMap:Disable()
 	end
 end 
 
