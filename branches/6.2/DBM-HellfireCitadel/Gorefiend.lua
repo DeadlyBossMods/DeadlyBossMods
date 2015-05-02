@@ -33,12 +33,12 @@ local warnGoreboundSpiritSoon			= mod:NewSoonAnnounce("ej11020", 3, 187814)
 local warnRagingCharge					= mod:NewSpellAnnounce(187814, 3, nil, "Melee")
 local warnCrushingDarkness				= mod:NewCastAnnounce(180017, 3, 6, nil, "Melee")
 
-local specWarnShadowofDeath				= mod:NewSpecialWarningYou(179864)
+local specWarnShadowofDeath				= mod:NewSpecialWarningYou(179864, nil, nil, nil, 1, nil, 5)
 local specWarnShadowofDeathTank			= mod:NewSpecialWarningTaunt(179864)
 local specWarnTouchofDoom				= mod:NewSpecialWarningRun(179977, nil, nil, nil, 4, nil, 2)
 local yellTouchofDoom					= mod:NewYell(179977)
 local specWarnDoomWell					= mod:NewSpecialWarningMove(179995)
-local specWarnSharedFate				= mod:NewSpecialWarningMoveTo(179908, nil, nil, nil, 3)--Only non rooted player get moveto. rooted player can't do anything.
+local specWarnSharedFate				= mod:NewSpecialWarningMoveTo(179908, nil, nil, nil, 3, nil, 5)--Only non rooted player get moveto. rooted player can't do anything.
 local yellSharedFate					= mod:NewYell(179909)--Only rooted player should yell
 local specWarnFeastofSouls				= mod:NewSpecialWarningSpell(181973, nil, nil, nil, 2)--Energy based
 local specWarnFeastofSoulsEnded			= mod:NewSpecialWarningEnd(181973)
@@ -64,6 +64,8 @@ local countdownDigest					= mod:NewCountdown("Alt40", 181295)
 local voiceTouchofDoom					= mod:NewVoice(179977)--runout
 local voiceHungerforLife				= mod:NewVoice(180148)--justrun
 local voiceBellowingShout				= mod:NewVoice(181582, "-Healer")--kickcast
+local voiceShadowofDeath				= mod:NewVoice(179864)--teleyou, new voice, teleport into a new phase phase
+local voiceSharedFate					= mod:NewVoice(179909)--linegather, new voice, like Blood-Queen Lana'thel's Pact of the Darkfallen, line gather will be better.
 
 mod:AddSetIconOption("SetIconOnFate", 179909)
 mod:AddHudMapOption("HudMapOnSharedFate", 179909)--Smart hud, distinquishes rooted from non rooted by color coding.
@@ -103,8 +105,10 @@ end
 local function sharedFateDelay(self)
 	if self.vb.rootedFate2 then--Check this first, assume you are linked to most recent
 		specWarnSharedFate:Show(self.vb.rootedFate2)
+		voiceSharedFate:Play("linegather")
 	elseif self.vb.rootedFate then
 		specWarnSharedFate:Show(self.vb.rootedFate)
+		voiceSharedFate:Play("linegather")
 	end
 end
 
@@ -143,6 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnShadowofDeath:Show()
 			countdownShadowofDeath:Start()
+			voiceShadowofDeath:Play("teleyou")
 		end
 		--Check if it's a tank
 		local uId = DBM:GetRaidUnitId(args.destName)

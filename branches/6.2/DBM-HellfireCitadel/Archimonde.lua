@@ -50,7 +50,7 @@ do
 end
 
 function mod:OnCombatStart(delay)
-
+	DBM:AddMsg(DBM_CORE_COMBAT_STARTED_AI_TIMER)
 end
 
 function mod:OnCombatEnd()

@@ -41,7 +41,7 @@ local specWarnFelstorm				= mod:NewSpecialWarningSpell(183701, nil, nil, nil, 2,
 --Dia Darkwhisper
 local specWarnNightmareVisage		= mod:NewSpecialWarningSpell(184657)--Doesn't option default, only warns highest threat
 local specWarnReap					= mod:NewSpecialWarningMoveAway(184476, nil, nil, nil, 3, nil, 2)--Everyone with Mark of Necromancer is going to drop void zones that last forever, they MUST get the hell out
-local specWarnReapGTFO				= mod:NewSpecialWarningMove(184652)--On the ground version (GTFO)
+local specWarnReapGTFO				= mod:NewSpecialWarningMove(184652, nil, nil, nil, 1, nil, 2)--On the ground version (GTFO)
 local yellReap						= mod:NewYell(184476)
 local specWarnDarkness				= mod:NewSpecialWarningSpell(184681, nil, nil, nil, 2)
 --Gurtogg Bloodboil
@@ -66,7 +66,8 @@ local timerTaintedBloodCD			= mod:NewNextCountTimer(15.8, 184357)
 local countdownReap					= mod:NewCountdownFades("Alt4", 184476)
 
 local voiceFelstorm					= mod:NewVoice(183701)--aesoon
-local voiceReap						= mod:NewVoice(184476)--runout
+local voiceReap						= mod:NewVoice(184476)--runout/runaway
+--local voiceDemolishingLeap			= mod:NewVoice(184366)--Watch step? not sure what to use yet. Not run out, he leaps several times, random locations, you must move away from targeting circles on ground
 
 --mod:AddRangeFrameOption(8, 155530)
 
@@ -104,7 +105,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	DBM:AddMsg(DBM_CORE_COMBAT_STARTED_AI_TIMER)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -216,6 +216,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 184652 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
 		specWarnReapGTFO:Show()
+		voiceReap:Play("runaway")
 	end
 end
 mod.SPELL_ABSORB = mod.SPELL_PERIODIC_DAMAGE

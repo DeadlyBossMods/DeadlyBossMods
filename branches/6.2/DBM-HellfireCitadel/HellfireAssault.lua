@@ -89,6 +89,8 @@ local countdownHowlingAxe			= mod:NewCountdownFades("Alt7", 184369)
 
 local voiceHowlingAxe				= mod:NewVoice(184369)--runout
 local voiceShockwave				= mod:NewVoice(184394)--shockwave
+local voiceIncinerate				= mod:NewVoice(181155, false)--kick
+local voiceFelfireVolley			= mod:NewVoice(180417, "-Healer")--kick
 local voiceRepair					= mod:NewVoice(185816)--kickcast
 
 mod:AddRangeFrameOption(8, 184369)
@@ -167,8 +169,10 @@ function mod:SPELL_CAST_START(args)
 		timerShockwaveCD:Start()
 	elseif spellId == 181155 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnIncinerate:Show(args.sourceName)
+		voiceIncinerate:Play("kickcast")
 	elseif (spellId == 180417 or spellId == 183452) and self:CheckInterruptFilter(args.sourceGUID) then--Two spellids because two different cast times (mob has two forms)
 		specWarnFelfireVolley:Show(args.sourceName)
+		voiceFelfireVolley:Play("kickcast")
 	elseif spellId == 185816 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnRepair:Show(args.sourceName)
 		voiceRepair:Play("kickcast")

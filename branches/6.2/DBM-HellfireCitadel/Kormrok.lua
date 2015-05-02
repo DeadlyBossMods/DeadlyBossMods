@@ -60,7 +60,7 @@ local countdownExplosiveBurst		= mod:NewCountdown("Alt10", 181306)
 
 local voicePound					= mod:NewVoice(180244)--aesoon
 local voiceShadowWaves				= mod:NewVoice(181292)--watchwave
-local voiceExplosiveBurst			= mod:NewVoice(181306)--justrun
+local voiceExplosiveBurst			= mod:NewVoice(181306)--runout
 local voiceGraspingHands			= mod:NewVoice(181299)--gather
 local voiceSwat						= mod:NewVoice(181305, "Tank")--carefly
 
@@ -207,7 +207,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			if self:CheckNearby(41, args.destName) then
 				specWarnExplosiveBurstNear:Show(args.destName)
-				voiceExplosiveBurst:Play("justrun")
+				voiceExplosiveBurst:Play("runout")
 			else
 				warnExplosiveBurst:Show(self.vb.explosiveBurst, args.destName)
 			end

@@ -28,12 +28,12 @@ local warnFuelStreak				= mod:NewCountAnnounce(182668, 3)
 local specWarnArtillery				= mod:NewSpecialWarningMoveAway(182280, nil, nil, nil, 3, nil, 2)
 local yellArtillery					= mod:NewYell(182108)
 local specWarnImmolation			= mod:NewSpecialWarningMove(182074, nil, nil, nil, 1, nil, 2)
-local specWarnBarrage				= mod:NewSpecialWarningCount(185282, nil, nil, nil, 2, nil, 2)--Count probably better than dodge
+local specWarnBarrage				= mod:NewSpecialWarningCount(185282, nil, nil, nil, 2, nil, 5)--Count probably better than dodge
 local specWarnPounding				= mod:NewSpecialWarningCount(182020, nil, nil, nil, 2, nil, 2)
 local specWarnBlitz					= mod:NewSpecialWarningCount(179889, nil, nil, nil, 2, nil, 2)--Count probably better than dodge
 local specWarnFullCharge			= mod:NewSpecialWarningSpell(182055, nil, nil, nil, 1)
 local specWarnFallingSlam			= mod:NewSpecialWarningSpell(182066, nil, nil, nil, 2)--Phase change
-local specWarnFirebomb				= mod:NewSpecialWarningSwitchCount(181999, "-Healer", nil, nil, nil, 1, nil, 2)
+local specWarnFirebomb				= mod:NewSpecialWarningSwitchCount(181999, "-Healer", nil, nil, 1, nil, 5)
 
 --mod:AddTimerLine(ALL)--Uncomment when ground phase and air phase are done, don't want to enable this line now and incorrectly flag everything as "All"
 local timerArtilleryCD				= mod:NewNextCountTimer(15, 182108)
@@ -60,12 +60,13 @@ local countdownBarrage				= mod:NewCountdown(15, 185282)
 local countdownArtillery			= mod:NewCountdown("AltTwo15", 182108)--Important to have different voice from fades, because they are happening at same time most of time
 local countdownArtilleryFade		= mod:NewCountdownFades("Alt13", 182280)--Duration not in spell tooltip, countdown add when duration discovered from testing
 
-local voiceArtillery				= mod:NewVoice(182280)--generic "justrun"? This is basically mark of chaos, but on anyone not just tank. Custom voice needed if justrun not informative enough?
+local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+local voiceArtillery				= mod:NewVoice(182280)--runout
 local voicePounding					= mod:NewVoice(182020)--aesoon
 local voiceBlitz					= mod:NewVoice(179889)--chargemove
-local voiceImmolation				= mod:NewVoice(182074)
-local voiceBarrage					= mod:NewVoice(185282)--Shockwave, kind of
-local voiceFirebomb					= mod:NewVoice(181999)--Killmob
+local voiceImmolation				= mod:NewVoice(182074)--runaway
+local voiceBarrage					= mod:NewVoice(185282)--185282
+local voiceFirebomb					= mod:NewVoice(181999)--attbomb
 
 mod:AddRangeFrameOption("8/30")
 mod:AddSetIconOption("SetIconOnArtillery", 182280, true)
@@ -155,10 +156,11 @@ function mod:SPELL_CAST_START(args)
 		self.vb.groundPhase = true
 		specWarnFallingSlam:Show()
 		updateRangeFrame(self)
+		voicePhaseChange:Play("phasechange")
 	elseif spellId == 181999 then
 		self.vb.firebombCount = self.vb.firebombCount + 1
 		specWarnFirebomb:Show(self.vb.firebombCount)
-		voiceFirebomb:Play("killmob")
+		voiceFirebomb:Play("attbomb")
 		--Count is used as a unique timer arg, so 2nd and 3rd bombs start different timers, not replace existing ones.
 		--Count doesn't show in timer text itself, they are cast timers.
 		timerVolatileBomb:Start(nil, self.vb.firebombCount)
@@ -175,7 +177,7 @@ function mod:SPELL_CAST_START(args)
 			timerBarrageCD:Start(cooldown, self.vb.barrageCount+1)
 			countdownBarrage:Start(cooldown)
 		end
-		voiceBarrage:Play("shockwave")
+		voiceBarrage:Play("185282")
 	elseif spellId == 182055 then
 		self.vb.groundPhase = false
 		specWarnFullCharge:Show()
@@ -187,6 +189,7 @@ function mod:SPELL_CAST_START(args)
 		timerArtilleryCD:Start(9, 1)
 		countdownArtillery:Start(9)
 		timerFallingSlamCD:Start()
+		voicePhaseChange:Play("phasechange")
 	elseif spellId == 182668 then
 		self.vb.fuelCount = self.vb.fuelCount + 1
 		warnFuelStreak:Show(self.vb.fuelCount)
@@ -220,7 +223,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnArtillery:Show()
 			yellArtillery:Yell()
-			voiceArtillery:Play("justrun")
+			voiceArtillery:Play("runout")
 			countdownArtilleryFade:Start()
 		end
 		if self.Options.SetIconOnArtillery then

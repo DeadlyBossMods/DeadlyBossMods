@@ -22,8 +22,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
---TODO, too many add types to use "killmob" 3x. I want add announces "Blood Globule" "Fel Blood Globule" and "Bloodthirster"
---TODO, kill big add is probably ok? Maybe Add "Hulking Terror" anyways for consistency and clarity?
 --TODO, more stuff for the eyes phase adds if merited
 --Boss
 local warnDemonicPossession			= mod:NewTargetAnnounce(180313, 4)
@@ -41,10 +39,10 @@ local yellHeartSeeker				= mod:NewYell(180372)
 local specWarnDeathThroes			= mod:NewSpecialWarningSpell(180224, nil, nil, nil, 2, nil, 2)
 local specWarnVisionofDeath			= mod:NewSpecialWarningSpell(182428)--Seems everyone goes down at some point, dps healers and off tank. Each getting different abiltiy when succeed
 --Adds
-local specWarnBloodGlob				= mod:NewSpecialWarningSwitch(180459, "Dps", nil, nil, 1, nil, 2)
-local specWarnFelBloodGlob			= mod:NewSpecialWarningSwitch(180199, "Dps", nil, nil, 3, nil, 2)
-local specWarnBloodthirster			= mod:NewSpecialWarningSwitch("ej11266", false, nil, nil, 1, nil, 2)--Very frequent, let specwarn be an option
-local specWarnHulkingTerror			= mod:NewSpecialWarningSwitch("ej11269", "Dps|Tank", nil, nil, 1, nil, 2)
+local specWarnBloodGlob				= mod:NewSpecialWarningSwitch(180459, "Dps", nil, nil, 1, nil, 5)
+local specWarnFelBloodGlob			= mod:NewSpecialWarningSwitch(180199, "Dps", nil, nil, 3, nil, 5)
+local specWarnBloodthirster			= mod:NewSpecialWarningSwitch("ej11266", false, nil, nil, 1, nil, 5)--Very frequent, let specwarn be an option
+local specWarnHulkingTerror			= mod:NewSpecialWarningSwitch("ej11269", "Dps|Tank", nil, nil, 1, nil, 5)
 local specWarnRendingHowl			= mod:NewSpecialWarningInterrupt(183917, "-Healer")
 
 --Boss
@@ -67,10 +65,10 @@ local countdownVisionofDeath			= mod:NewCountdown("Alt60", 181488)
 local voiceShred						= mod:NewVoice(180199)--defensive
 local voiceHeartSeeker					= mod:NewVoice(180372)--runout
 local voiceDeathThroes					= mod:NewVoice(180224)--aesoon
-local voiceBloodGlob					= mod:NewVoice(180459)--killmob
-local voiceFelBloodGlob					= mod:NewVoice(180199)--killmob
-local voiceBloodthirster				= mod:NewVoice("ej11266")--killmob
-local voiceHulkingTerror				= mod:NewVoice("ej11269")--killbigmob
+local voiceBloodGlob					= mod:NewVoice(180459)--180459
+local voiceFelBloodGlob					= mod:NewVoice(180199)--180199
+local voiceBloodthirster				= mod:NewVoice("ej11266")--ej11266
+local voiceHulkingTerror				= mod:NewVoice("ej11269")--ej11269
 
 mod:AddInfoFrameOption("ej11280")
 
@@ -125,10 +123,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 180410 then--Blood Globule
 		specWarnBloodGlob:Show()
-		voiceBloodGlob:Play("killmob")
+		voiceBloodGlob:Play("180459")
 	elseif spellId == 180413 then--Fel Blood Globule
 		specWarnFelBloodGlob:Show()
-		voiceFelBloodGlob:Play("killmob")
+		voiceFelBloodGlob:Play("180199")
 	end
 end
 
@@ -188,7 +186,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				else
 					warnBloodthirster:Show()
 				end
-				voiceBloodthirster:Play("killmob")
+				voiceBloodthirster:Play("ej11266")
 			end
 		end
 	end
@@ -199,7 +197,7 @@ end
 function mod:RAID_BOSS_EMOTE(msg, npc)
 	if npc == Bloodthirster then
 		specWarnHulkingTerror:Show()
-		voiceHulkingTerror:Play("killbigmob")
+		voiceHulkingTerror:Play("ej11269")
 	end
 end
 
