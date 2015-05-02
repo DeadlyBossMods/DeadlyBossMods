@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1427, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(92330)--Verify
+mod:SetCreatureID(92330)
 mod:SetEncounterID(1794)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
@@ -12,90 +12,146 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 182635 181288 182994 180221 182992 182051 183331 183329 184239 182392",
---	"SPELL_CAST_SUCCESS,
-	"SPELL_AURA_APPLIED 182038 180415 183017 184239 182769 182900",
+	"SPELL_CAST_START 181288 180221 182051 183331 183329 184239 182392",
+	"SPELL_CAST_SUCCESS 180008 184124",
+	"SPELL_AURA_APPLIED 182038 182769 182900 184124",
 	"SPELL_AURA_APPLIED_DOSE 182038",
---	"SPELL_AURA_REMOVED",
+	"SPELL_AURA_REMOVED 184124",
+	"UNIT_DIED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"RAID_BOSS_WHISPER",
---	"CHAT_MSG_ADDON",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
---TODO, maybe add icon marking once prisons are figured out. Assuming there is any way to free them
---TODO, figure out which version of each spell is actually friendly and hostile, so i can remove the hostile checks and friendly spell ids from most spells
---KILL RAID_BOSS_WHISPER and CHAT_MSG_ADDON if possible
+--TODO, Prisons had no workable targetting of any kind during test. Study of logs and even videos showed no valid target scanning, debuff, whisper, nothing. As such, only aoe warning :\
+--TODO, voice for reverberatingblow removed since it's instant cast and currently a bit wonky/buggy. Needs further review later.
 --Soulbound Construct
-local warnReverberatingBlow			= mod:NewCountAnnounce(182635, 3)
-local warnFelPrison					= mod:NewTargetAnnounce(180415, 4)
+local warnReverberatingBlow			= mod:NewCountAnnounce(180008, 3)
+local warnFelPrison					= mod:NewTargetAnnounce(181288, 4)
 local warnShatteredDefenses			= mod:NewStackAnnounce(182038, 3, nil, "Tank")
 local warnVolatileFelOrb			= mod:NewTargetAnnounce(180221, 4)
-local warnGhastlyFixation			= mod:NewTargetAnnounce(182769, 4)
-local warnVirulentHaunt				= mod:NewTargetAnnounce(182900, 4, nil, false)--Failed at fixate
+--Adds
+local warnGhastlyFixation			= mod:NewTargetAnnounce(182769, 4, nil, false)--Spammy
+local warnVirulentHaunt				= mod:NewTargetAnnounce(182900, 4, nil, false)--Failed at fixate. Also spammy
+local warnGiftoftheManari			= mod:NewTargetAnnounce(184124, 4)
 
 --Soulbound Construct
-local specWarnReverberatingBlow		= mod:NewSpecialWarningCount(182635, "Tank", nil, nil, 1, nil, 2)
-local specWarnFelPrison				= mod:NewSpecialWarningDodge(182994, nil, nil, nil, 2)
+local specWarnReverberatingBlow		= mod:NewSpecialWarningCount(180008, "Tank", nil, nil, 1)
+local specWarnFelPrison				= mod:NewSpecialWarningDodge(181288, nil, nil, nil, 2, nil, 2)
 local specWarnVolatileFelOrb		= mod:NewSpecialWarningRun(180221, nil, nil, nil, 4, nil, 2)
 local yellVolatileFelOrb			= mod:NewYell(180221)
-local specWarnFelCharge				= mod:NewSpecialWarningDodge(182051, nil, nil, nil, 2, nil, 2)
+local specWarnFelChargeYou			= mod:NewSpecialWarningYou(182051, nil, nil, nil, 1, nil, 2)
+local yellCharge					= mod:NewYell(182051)
+local specWarnFelCharge				= mod:NewSpecialWarningTarget(182051, "Melee", nil, nil, 2, nil, 2)--Boss will often go through melee most of time, so they still need generic warning.
 --Socrethar
-local specWarnUnseat				= mod:NewSpecialWarningInterrupt(183331, "-Healer", nil, nil, 1, nil, 2)
+local specWarnExertDominance		= mod:NewSpecialWarningInterrupt(183331, "-Healer", nil, nil, 1, nil, 2)
 local specWarnApocalypse			= mod:NewSpecialWarningSpell(183329, nil, nil, nil, 2, nil, 2)
 --Adds
 local specWarnShadowWordAgony		= mod:NewSpecialWarningInterrupt(184239, false, nil, nil, 1, nil, 2)
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(182392, "-Healer", nil, nil, 1, nil, 2)
 local specWarnGhastlyFixation		= mod:NewSpecialWarningRun(182769, nil, nil, nil, 4, nil, 2)
 local yellGhastlyFixation			= mod:NewYell(182769, nil, false)
+local specWarnSargereiDominator		= mod:NeSpecialWarningSwitch("ej11456", "-Healer")
+local specWarnGiftoftheManari		= mod:NewSpecialWarningYou(184124, nil, nil, nil, 1, nil, 2)
+local yellGiftoftheManari			= mod:NewYell(184124)
 
 --Soulbound Construct
-local timerReverberatingBlowCD		= mod:NewAITimer(13, 182635)--Change to count timer when changed to real timer
-local timerFelPrisonCD				= mod:NewAITimer(13, 182994)
-local timerVolatileFelOrbCD			= mod:NewAITimer(13, 180221)
+local timerReverberatingBlowCD		= mod:NewCDCountTimer(11, 180008)--11-12
+local timerFelPrisonCD				= mod:NewCDTimer(29, 182994)--29-33
+local timerVolatileFelOrbCD			= mod:NewNextTimer(23, 180221)
+local timerFelChargeCD				= mod:NewNextTimer(23, 182051)
 --Socrethar
-local timerUnseatCD					= mod:NewAITimer(13, 183331, nil, "-Healer")
-local timerApocalypseCD				= mod:NewAITimer(13, 183329)
+local timerExertDominanceCD			= mod:NewCDTimer(6, 183331, nil, "-Healer")
+local timerApocalypseCD				= mod:NewCDTimer(46, 183329)
 --Adds
---Not going to use AI timers for adds, because there could be a lot of adds, and plus AI timers don't support multiple of same timer via GUID so it'll screw up
+local timerGiftofManariCD			= mod:NewCDTimer(11, 184124)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
---local countdownReverberatingBlow	= mod:NewCountdown(12, 182635, "Tank")
+local countdownReverberatingBlow	= mod:NewCountdown(11, 180008, "Tank", nil, 3)--Cast every 11 seconds, so use 3 count, not 5 count. Tank only for now, up to tank to aim boss correct, rest of raid shouldn't need countdown spam
 
-local voiceReverberatingBlow		= mod:NewVoice(182635)--gathershare
-local voiceVolatileFelOrb			= mod:NewVoice(182635)--runout/keepmove
-local voiceFelblazeCharge			= mod:NewVoice(182051)--chargemove
-local voiceUnseat					= mod:NewVoice(183331, "-Healer")--kickcast
+--Construct
+local voiceVolatileFelOrb			= mod:NewVoice(180221)--runout/keepmove
+local voiceFelblazeCharge			= mod:NewVoice(182051)--runout/chargemove
+local voiceFelPrison				= mod:NewVoice(182994)--watchstep
+--Socrethar
+local voiceExertDominance			= mod:NewVoice(183331, "-Healer")--kickcast
 local voiceApocalypse				= mod:NewVoice(183329)--aesoon
 --Adds
 local voiceShadowWordAgony			= mod:NewVoice(184239, false)--kickcast
 local voiceShadowBoltVolley			= mod:NewVoice(182392, "-Healer")--kickcast
 local voiceGhastlyFixation			= mod:NewVoice(182769)--runout/keepmove
+local voiceGiftoftheManari			= mod:NewVoice(184124)--scatter
 
---mod:AddRangeFrameOption(8, 155530)
+mod:AddRangeFrameOption(10, 184124)
 
---[[
+mod.vb.ReverberatingBlow = 0
+mod.vb.ManariTargets = 0
+
+local debuffName = GetSpellInfo(184124)
+local UnitDebuff = UnitDebuff
 local debuffFilter
 do
-	local debuffName = GetSpellInfo(155323)
-	local UnitDebuff = UnitDebuff
 	debuffFilter = function(uId)
 		if UnitDebuff(uId, debuffName) then
 			return true
 		end
 	end
-end--]]
+end
 
-mod.vb.ReverberatingBlow = 0
+local function updateRangeFrame(self)
+	if not self.Options.RangeFrame then return end
+	if self.vb.ManariTargets > 0 then
+		if UnitDebuff("player", debuffName) then
+			DBM.RangeCheck:Show(10)
+		else
+			DBM.RangeCheck:Show(10, debuffFilter)
+		end
+	else
+		DBM.RangeCheck:Hide()
+	end
+end
+
+function mod:ChargeTarget(targetname, uId)
+	if not targetname then
+		specWarnFelCharge:Show(DBM_CORE_UNKNOWN)
+		voiceFelblazeCharge:Play("chargemove")
+		return
+	end
+	if targetname == UnitName("player") then
+		if self:AntiSpam(2, 2) then
+			specWarnFelChargeYou:Show()
+			yellCharge:Yell()
+			voiceFelblazeCharge:Play("runout")
+		end
+	else--Generic warning for anyone else. ranged can enable if needed, but melee default for sure
+		specWarnFelCharge:Show(targetname)
+		voiceFelblazeCharge:Play("chargemove")
+	end
+end
+
+function mod:OrbTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		if self:AntiSpam(2, 3) then
+			specWarnVolatileFelOrb:Show()
+			yellVolatileFelOrb:Yell()
+			voiceVolatileFelOrb:Play("runout")
+			voiceVolatileFelOrb:Schedule(2, "keepmove")
+		end
+	else--
+		warnVolatileFelOrb:Show(targetname)
+	end
+end
 
 function mod:OnCombatStart(delay)
-	DBM:AddMsg(DBM_CORE_COMBAT_STARTED_AI_TIMER)
 	self.vb.ReverberatingBlow = 0
-	timerReverberatingBlowCD:Start(1-delay)
-	timerFelPrisonCD:Start(1-delay)
-	timerVolatileFelOrbCD:Start(1-delay)
+	self.vb.ManariTargets = 0
+	timerReverberatingBlowCD:Start(7-delay, 1)
+	countdownReverberatingBlow:Start(7-delay)
+	timerFelPrisonCD:Start(25-delay)
+	timerVolatileFelOrbCD:Start(12-delay)
 end
 
 function mod:OnCombatEnd()
@@ -106,29 +162,22 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 182635 and args:IsSrcTypeHostile() then
-		timerReverberatingBlowCD:Start()
-		--countdownReverberatingBlow:Start()
-		self.vb.ReverberatingBlow = self.vb.ReverberatingBlow + 1
-		voiceReverberatingBlow:Play("gathershare")
-		if self.Options.SpecWarn182635count then
-			specWarnReverberatingBlow:Show(self.vb.ReverberatingBlow)
-		else
-			warnReverberatingBlow:Show(self.vb.ReverberatingBlow)
-		end
-	elseif (spellId == 180415 or spellId == 183017) and args:IsSrcTypeHostile() then
+	if spellId == 181288 then
 		specWarnFelPrison:Show()
 		timerFelPrisonCD:Start()
-	elseif (spellId == 180221 or spellId == 182992) and args:IsSrcTypeHostile() then
+		voiceFelPrison:Play("watchstep")
+	elseif spellId == 180221 then
 		timerVolatileFelOrbCD:Start()
-	elseif spellId == 182051 and args:IsSrcTypeHostile() then
-		specWarnFelCharge:Show()
-		voiceFelblazeCharge:Play("chargemove")
+		--Must have delay, to avoid same bug as oregorger. Boss has many target scans
+		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "OrbTarget", 0.1, 10, true)
+	elseif spellId == 182051 then
+		--Must have delay, to avoid same bug as oregorger. Boss has many target scans
+		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "ChargeTarget", 0.1, 10, true)
 	elseif spellId == 183331 then
-		timerUnseatCD:Start()
+		timerExertDominanceCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID) then
-			specWarnUnseat:Show(args.sourceName)
-			voiceUnseat:Play("kickcast")
+			specWarnExertDominance:Show(args.sourceName)
+			voiceExertDominance:Play("kickcast")
 		end
 	elseif spellId == 183329 then
 		specWarnApocalypse:Show()
@@ -143,13 +192,22 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
+
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 155326 then
-
+	if spellId == 180008 then
+		self.vb.ReverberatingBlow = self.vb.ReverberatingBlow + 1
+		timerReverberatingBlowCD:Start(nil, self.vb.ReverberatingBlow+1)
+		countdownReverberatingBlow:Start()
+		if self.Options.SpecWarn180008count then
+			specWarnReverberatingBlow:Show(self.vb.ReverberatingBlow)
+		else
+			warnReverberatingBlow:Show(self.vb.ReverberatingBlow)
+		end
+	elseif spellId == 184124 then
+		timerGiftofManariCD:Start(args.sourceGUID)
 	end
-end--]]
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
@@ -162,13 +220,9 @@ function mod:SPELL_AURA_APPLIED(args)
 
 			--end
 		end
-	elseif (spellId == 181288 or spellId == 182994) and args:IsDestTypePlayer() then
-		warnFelPrison:CombinedShow(1, args.destName)
-	elseif (spellId == 181288 or spellId == 182994) and args:IsDestTypePlayer() then
-		warnFelPrison:CombinedShow(1, args.destName)
 	elseif spellId == 182769 then
-		warnGhastlyFixation:CombinedShow(1.2, args.destName)
-		if args:IsPlayer() then
+		warnGhastlyFixation:CombinedShow(2, args.destName)
+		if args:IsPlayer() and self:AntiSpam(3, 1) then
 			specWarnGhastlyFixation:Show()
 			yellGhastlyFixation:Yell()
 			voiceGhastlyFixation:Play("runout")
@@ -176,48 +230,82 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 182900 then
 		warnVirulentHaunt:CombinedShow(0.5, args.destName)
-	elseif (spellId == 180221 or spellId == 182992) and args:IsDestTypePlayer() then
-		warnVolatileFelOrb:CombinedShow(0.3, args.destName)
+	elseif spellId == 184124 then
+		self.vb.ManariTargets = self.vb.ManariTargets + 1
+		warnGiftoftheManari:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnGiftoftheManari:Show()
+			yellGiftoftheManari:Yell()
+			voiceGiftoftheManari:Play("scatter")
+		end
+		updateRangeFrame(self)
+	elseif spellId == 184053 then--Fel Barrior (Boss becomes immune to damage, Sargerei Dominator spawned and must die)
+		specWarnSargereiDominator:Show()
+		timerGiftofManariCD:Start(12, args.sourceGUID)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
---[[
+
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 155323 then
-
-	end
-end--]]
-
---Change to combat log version if possible, but i'm not confident i can reliable drycode that to work, so coding it this way to make sure it works during test.
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:180221") or msg:find("spell:182992") then
-		specWarnVolatileFelOrb:Show()
-		yellVolatileFelOrb:Yell()
-		voiceVolatileFelOrb:Play("runout")
-		voiceVolatileFelOrb:Schedule(2, "keepmove")
+	if spellId == 184124 then
+		self.vb.ManariTargets = self.vb.ManariTargets - 1
+		updateRangeFrame(self)
 	end
 end
 
---[[
-function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
-	if prefix ~= "Transcriptor" then return end
-	if msg:find("spell:180221") or msg:find("spell:182992") then--Volatile Orb
-		targetName = Ambiguate(targetName, "none")
-		if self:AntiSpam(5, targetName) then--Set antispam if we got a sync, to block 3 second late SPELL_AURA_APPLIED if we got the early warning
-			warnRapidFire:Show(self.vb.rapidfire, targetName)
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 92767 then--Sargerei Dominator
+		timerGiftofManariCD:Cancel(args.destGUID)
+	end
+end
+
+--backup, in event of target scan fail.
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:180221") then--Orb
+		if self:AntiSpam(2, 3) then
+			specWarnVolatileFelOrb:Show()
+			yellVolatileFelOrb:Yell()
+			voiceVolatileFelOrb:Play("runout")
+			voiceVolatileFelOrb:Schedule(2, "keepmove")
+		end
+	elseif msg:find("spell:184247") then--Charge
+		if self:AntiSpam(2, 2) then
+			specWarnFelChargeYou:Show()
+			yellCharge:Yell()
+			voiceFelblazeCharge:Play("runout")
 		end
 	end
-end--]]
+end
 
---[[
+--"<127.45 18:26:51> [UNIT_SPELLCAST_SUCCEEDED] Soul of Socrethar(??) [[boss2:Soulfire Aura::0:183334]]", -- [4408]
+--"<127.46 18:26:51> [UNIT_TARGETABLE_CHANGED] boss2#true#true#true#Soul of Socrethar#Creature-0-2012-1448-1434-92330-000042AB3A#elite#111036000", -- [4411]
+--"<127.52 18:26:51> [UNIT_SPELLCAST_SUCCEEDED] Soulbound Construct(Grafarion) [[boss1:Construct is Good::0:180258]]", -- [4414]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 173195 then
-		
+	if spellId == 183334 then--Soulfire Aura. begin Socrethar phase
+		timerReverberatingBlowCD:Cancel()
+		countdownReverberatingBlow:Cancel()
+		timerFelPrisonCD:Cancel()
+		timerVolatileFelOrbCD:Cancel()
+		timerFelChargeCD:Cancel()
+		timerApocalypseCD:Start()--46-47. Small sample size (2 pulls)
+		self:RegisterShortTermEvents(
+			"UNIT_TARGETABLE_CHANGED"
+		)
 	end
 end
 
+function mod:UNIT_TARGETABLE_CHANGED(uId)
+	local cid = self:GetCIDFromGUID(UnitGUID(uId))
+	if (cid == 92330) and not UnitExists(uId) then--Socrethar returning inactive and construct phase beginning again.
+		timerExertDominanceCD:Cancel()
+		self:UnregisterShortTermEvents()
+	end
+end
+
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
 

@@ -69,8 +69,6 @@ local timerPhantasmalCorruptionCD		= mod:NewCDTimer(14, 181824, nil, "Tank")--14
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
---local countdownInfernoSlice			= mod:NewCountdown(12, 155080, "Tank")
-
 local voiceFocusedBlast					= mod:NewVoice(181912)--gather
 local voiceFelConduit					= mod:NewVoice(181827)--kickcast
 local voiceFelChakram					= mod:NewVoice(182178)--runout
