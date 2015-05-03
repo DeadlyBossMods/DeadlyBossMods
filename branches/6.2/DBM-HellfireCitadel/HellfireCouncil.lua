@@ -61,7 +61,7 @@ local timerRelRageCD				= mod:NewCDCountTimer(70, 184360)--70-84
 --local timerDemoLeapCD				= mod:NewCDTimer(150, 184366)--I think ability was flat broken, he used it like 1 out of 6 pulls. and when he did it was 2 and a half minute cd?
 local timerTaintedBloodCD			= mod:NewNextCountTimer(15.8, 184357)
 
---local berserkTimer				= mod:NewBerserkTimer(360)
+local berserkTimer					= mod:NewBerserkTimer(600)
 
 local countdownReap					= mod:NewCountdownFades("Alt4", 184476)
 
@@ -102,6 +102,7 @@ function mod:OnCombatStart(delay)
 	timerReapCD:Start(50-delay)--50-73 variation on pull, likely blizzard was tinkering/hotfixing it between pulls. verify on later testing
 	--timerMirrorImageCD:Start(-delay)--First one is 150-160 into fight, unless he hits 30% first, then he uses it earlier and spams rest of fight.
 	--timerDemoLeapCD:Start(230-delay)--First one 230 into fight. if you kill him first you NEVER see it. I doubt it'll stay this way
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
