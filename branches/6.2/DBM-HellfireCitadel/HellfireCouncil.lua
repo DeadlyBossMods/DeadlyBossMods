@@ -55,7 +55,7 @@ local timerMarkofNecroCD			= mod:NewCDTimer(60.5, 184449, nil, "Healer")
 local timerFelstormCD				= mod:NewCDTimer(30.5, 183701)
 local timerReapCD					= mod:NewCDTimer(66, 184476)--66-71
 local timerNightmareVisageCD		= mod:NewCDTimer(30, 184657, nil, "Tank")
---local timerDarknessCD				= mod:NewCDTimer(150, 184681)--Also bleh in consistency. I suspect all the 150 second abilities are undertuned and will all need fixing.
+local timerDarknessCD				= mod:NewCDTimer(150, 184681)--Also bleh in consistency. I suspect all the 150 second abilities are undertuned and will all need fixing.
 --Gurtogg Bloodboil
 local timerRelRageCD				= mod:NewCDCountTimer(70, 184360)--70-84
 --local timerDemoLeapCD				= mod:NewCDTimer(150, 184366)--I think ability was flat broken, he used it like 1 out of 6 pulls. and when he did it was 2 and a half minute cd?
@@ -100,6 +100,7 @@ function mod:OnCombatStart(delay)
 	timerFelstormCD:Start(20.5-delay)
 	timerRelRageCD:Start(30.5-delay)
 	timerReapCD:Start(50-delay)--50-73 variation on pull, likely blizzard was tinkering/hotfixing it between pulls. verify on later testing
+	timerDarknessCD:Start(76.5-delay)
 	--timerMirrorImageCD:Start(-delay)--First one is 150-160 into fight, unless he hits 30% first, then he uses it earlier and spams rest of fight.
 	--timerDemoLeapCD:Start(230-delay)--First one 230 into fight. if you kill him first you NEVER see it. I doubt it'll stay this way
 	berserkTimer:Start(-delay)
@@ -204,6 +205,7 @@ end
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:184681") then
 		specWarnDarkness:Show()
+		timerDarknessCD:Start()
 	end
 end
 

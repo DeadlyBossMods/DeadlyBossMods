@@ -76,7 +76,7 @@ mod.vb.rootedFate = nil
 mod.vb.rootedFate2 = nil--Just in case, but if this happens you're doing things badly
 mod.vb.shadowOfDeathCount = 0
 local playerDown = false
-local shadowofDeathTimers = {2, 11, 17, 7, 28, 8}
+local shadowofDeathTimers = {2, 11, 17, 7, 28, 8}--4 targets, 1 tank, 2 targets, 3 targets, 1 target, 3 targets (for LFR, scaling alters it some but ratios should be similar in all modes)
 
 function mod:OnCombatStart(delay)
 	self.vb.rootedFate = nil
@@ -149,7 +149,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			countdownShadowofDeath:Start()
 			voiceShadowofDeath:Play("teleyou")
 		end
-		--Check if it's a tank
+		--Check if it's a tank (todo, maybe just change it to count == 2 to reduce cpu, the tank is pretty much always 2/6
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId, "boss1") and not UnitIsUnit("player", uId) then
 			--It is a tank and we're not tanking. Fire taunt warning
