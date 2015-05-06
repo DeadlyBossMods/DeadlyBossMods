@@ -252,6 +252,7 @@ L.FilterDispels				= "Filter warnings for dispelable spells if your dispel is on
 L.FilterSelfHud				= "Filter yourself from HudMap (Excludes range based Hud functions)"
 
 L.Area_PullTimer			= "Pull, Break, Combat, & Custom Timer Filter Options"
+L.DontShowRespawn			= "Don't show boss respawn timer"
 L.DontShowPTNoID			= "Block Pull Timer if not sent from same zone as you"
 L.DontShowPT				= "Do not show Pull/Break Timer bar"
 L.DontShowPTText			= "Do not show announce text for Pull/Break Timer"
