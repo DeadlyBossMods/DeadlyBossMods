@@ -53,7 +53,7 @@ local specWarnShadowWordAgony		= mod:NewSpecialWarningInterrupt(184239, false, n
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(182392, "-Healer", nil, nil, 1, nil, 2)
 local specWarnGhastlyFixation		= mod:NewSpecialWarningRun(182769, nil, nil, nil, 4, nil, 2)
 local yellGhastlyFixation			= mod:NewYell(182769, nil, false)
-local specWarnSargereiDominator		= mod:NeSpecialWarningSwitch("ej11456", "-Healer")
+local specWarnSargereiDominator		= mod:NewSpecialWarningSwitch("ej11456", "-Healer")
 local specWarnGiftoftheManari		= mod:NewSpecialWarningYou(184124, nil, nil, nil, 1, nil, 2)
 local yellGiftoftheManari			= mod:NewYell(184124)
 
