@@ -357,7 +357,7 @@ local lastBossDefeat = {}
 local bossuIdFound = false
 local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
-local showConstantReminder = false
+local showConstantReminder = 0
 local tooltipsHidden = false
 local SWFilterDisabed = 3
 local currentSpecGroup = GetActiveSpecGroup()
@@ -3613,6 +3613,7 @@ do
 			--TODO, maybe require at least 2 senders? this doesn't disable mod or make a popup though, just warn in chat that mod may have invalid timers/warnings do to a blizzard hotfix
 			if DBM:AntiSpam(3, "HOTFIX") then
 				if DBM.HighestRelease < modRevision then--There is a newer RELEASE version of DBM out that has this mods fixes
+					showConstantReminder = 2
 					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HOTFIX)
 				else--This mods fixes are in an alpha version
 					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA)
@@ -3882,7 +3883,7 @@ do
 						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
 						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
 						DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[%s]"):format(displayVersion, version, DBM_CORE_UPDATEREMINDER_URL or "http://www.deadlybossmods.com"))
-						showConstantReminder = true
+						showConstantReminder = 1
 					elseif #newerVersionPerson == 3 then--Requires 3 for force disable.
 						--Find min revision.
 						local revDifference = mmin((raid[newerVersionPerson[1]].revision - DBM.Revision), (raid[newerVersionPerson[2]].revision - DBM.Revision), (raid[newerVersionPerson[3]].revision - DBM.Revision))
@@ -5095,6 +5096,10 @@ do
 				if self.Options.DisableStatusWhisper and UnitIsGroupLeader("player") and (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 or difficultyIndex == 23) then
 					sendSync("DSW")
 				end
+				--show hotfix notify
+				if mod.hotfixNoticeRev then
+					sendSync("HF", modId.."\t"..mod.hotfixNoticeRev)
+				end
 				--show bigbrother check
 				if self.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
 					if self.Options.BigBrotherAnnounceToRaid then
@@ -5129,10 +5134,6 @@ do
 					dummyMod.text:Cancel()
 					self.Bars:CancelBar(DBM_CORE_TIMER_PULL)
 					TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
-				end
-				--show hotfix notify
-				if mod.hotfixNoticeRev then
-					sendSync("HF", modId.."\t"..mod.hotfixNoticeRev)
 				end
 			elseif self.Options.ShowRecoveryMessage then--show timer recovery message
 				self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
@@ -5264,13 +5265,11 @@ do
 						end
 					end
 				end
-				if showConstantReminder and IsInGroup() and savedDifficulty ~= "lfr" and savedDifficulty ~= "lfr25" then
-					--Show message about 33% of time, when you wipe, while in a group that isn't LFR if you chose to disable update notification popup. I've seen far too many wipes caused by out of date mod versions
+				if showConstantReminder == 2 and IsInGroup() and savedDifficulty ~= "lfr" and savedDifficulty ~= "lfr25" then
+					showConstantReminder = 1
+					--Show message any time this is a mod that has a newer hotfix revision
 					--These people need to know the wipe could very well be their fault.
-					local RNG = math.random(1, 3)
-					if RNG == 3 then
-						self:AddMsg(DBM_CORE_OUT_OF_DATE_NAG)
-					end
+					self:AddMsg(DBM_CORE_OUT_OF_DATE_NAG)
 				end
 				local msg
 				for k, v in pairs(autoRespondSpam) do
