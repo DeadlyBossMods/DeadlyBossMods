@@ -5085,6 +5085,9 @@ do
 					end
 				end
 				--call OnCombatStart
+				if difficultyIndex == 16 then
+					self:AddMsg(DBM_CORE_NEED_LOGS)
+				end
 				if mod.OnCombatStart and not mod.ignoreBestkill then
 					mod:OnCombatStart(delay or 0, event == "PLAYER_REGEN_DISABLED_AND_MESSAGE" or event == "SPELL_CAST_SUCCESS")
 				end
