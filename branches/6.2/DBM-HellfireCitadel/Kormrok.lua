@@ -46,7 +46,7 @@ local timerLeapCD					= mod:NewCDTimer(113.5, 180068)
 --Times here are not relevant, they are all hard coded orders based on what buff boss has, real values are under 3 different phases
 local timerPoundCD					= mod:NewNextCountTimer(42, 180244)
 local timerFelOutpouringCD			= mod:NewNextTimer(107, 181292)
-local timerExplosiveRunesCD			= mod:NewNextTimer(48, 181297)
+local timerExplosiveRunesCD			= mod:NewNextTimer(48, 181296)
 local timerGraspingHandsCD			= mod:NewNextTimer(107, 181299)
 --Tank Debuffs. These are also hard coded, but in different place.
 local timerExplosiveBurstCD			= mod:NewNextCountTimer(40, 181306)--Everyone needs to know these 2
