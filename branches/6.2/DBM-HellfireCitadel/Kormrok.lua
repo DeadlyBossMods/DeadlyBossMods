@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181292 181293 181296 181297 181299 181300 180244 181305",
 	"SPELL_CAST_SUCCESS 181307",
-	"SPELL_AURA_APPLIED 181306 186882 180115 180116 180117",
+	"SPELL_AURA_APPLIED 181306 186882 180115 180116 180117 189197 189198 189199",
 	"SPELL_AURA_REMOVED 181306 180244",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
@@ -34,18 +34,18 @@ local specWarnExplosiveBurst		= mod:NewSpecialWarningYou(181306)
 local yellExplosiveBurst			= mod:NewYell(181306)
 local specWarnExplosiveBurstNear	= mod:NewSpecialWarningClose(181306, nil, nil, nil, 3, nil, 2)
 local specWarnFoulCrush				= mod:NewSpecialWarningSwitch(181307, "Dps|Tank")--Tweak it as needed once can figure out how to detect what tank it's on
-local specWarnShadowWaves			= mod:NewSpecialWarningDodge(181292, nil, nil, nil, 2, nil, 2)
+local specWarnFelOutpouring			= mod:NewSpecialWarningDodge(181292, nil, nil, nil, 2, nil, 2)
 local specWarnExplosiveRunes		= mod:NewSpecialWarningSpell(181296, "-Tank")--Leaving as a spell warning, MoveTo gives misleading info that everyone just runs toward them, only a few do who know what to do
 local specWarnGraspingHands			= mod:NewSpecialWarningSwitch(181299)
 --Empowered versions (made separate so users can set different sounds for the more dangerous versions if they choose)
-local specWarnEmpShadowWaves		= mod:NewSpecialWarningDodge(181293, nil, nil, nil, 2, nil, 2)
+local specWarnEmpFelOutpouring		= mod:NewSpecialWarningDodge(181293, nil, nil, nil, 2, nil, 2)
 local specWarnEmpExplosiveRunes		= mod:NewSpecialWarningSpell(181297, "-Tank")
 local specWarnDraggingHands			= mod:NewSpecialWarningSwitch(181300)
 
 local timerLeapCD					= mod:NewCDTimer(113.5, 180068)
 --Times here are not relevant, they are all hard coded orders based on what buff boss has, real values are under 3 different phases
 local timerPoundCD					= mod:NewNextCountTimer(42, 180244)
-local timerShadowWavesCD			= mod:NewNextTimer(107, 181292)
+local timerFelOutpouringCD			= mod:NewNextTimer(107, 181292)
 local timerExplosiveRunesCD			= mod:NewNextTimer(48, 181297)
 local timerGraspingHandsCD			= mod:NewNextTimer(107, 181299)
 --Tank Debuffs. These are also hard coded, but in different place.
@@ -59,7 +59,7 @@ local countdownGraspingHands		= mod:NewCountdown(40, 181299)
 local countdownExplosiveBurst		= mod:NewCountdown("Alt10", 181306)
 
 local voicePound					= mod:NewVoice(180244)--aesoon
-local voiceShadowWaves				= mod:NewVoice(181292)--watchwave
+local voiceFelOutpouring				= mod:NewVoice(181292)--watchwave
 local voiceExplosiveBurst			= mod:NewVoice(181306)--runout
 local voiceGraspingHands			= mod:NewVoice(181299)--gather
 local voiceSwat						= mod:NewVoice(181305, "Tank")--carefly
@@ -113,6 +113,7 @@ local function trippleBurstCheck(self, target, first)
 end
 
 function mod:OnCombatStart(delay)
+	print("DBM NOTICE: This fight was redesigned since heroic testing, timers probably won't work very well, if at all")
 	self.vb.explodingTank = nil
 	self.vb.poundActive = false
 	self.vb.poundCount = 0
@@ -129,11 +130,11 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 181292 or spellId == 181293 then
 		if spellId == 181293 then
-			specWarnEmpShadowWaves:Show()
+			specWarnEmpFelOutpouring:Show()
 		else
-			specWarnShadowWaves:Show()
+			specWarnFelOutpouring:Show()
 		end
-		voiceShadowWaves:Play("watchwave")
+		voiceFelOutpouring:Play("watchwave")
 	elseif spellId == 181296 or spellId == 181297 then
 		if spellId == 181297 then
 			specWarnEmpExplosiveRunes:Show()
@@ -191,8 +192,8 @@ local function delayedHands(self, time)
 	voiceGraspingHands:Schedule(time-5, "gather")
 end
 
-local function delayedShadowWaves(self, time)
-	timerShadowWavesCD:Start(time)
+local function delayedFelOutpouring(self, time)
+	timerFelOutpouringCD:Start(time)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -222,12 +223,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	--Each energy has it's own hard coded sequence of events/timers.
 	--So all timers need to be scheduled here, they aren't started by any ability casts
-	elseif spellId == 180115 then--Shadow Energy
+	elseif spellId == 180115 or spellId == 189197 then--Shadow Energy
 		self.vb.poundCount = 0
 		self.vb.swatCount = 0
 		warnShadowEnergy:Show()
-		timerShadowWavesCD:Start(11)
-		self:Schedule(11, delayedShadowWaves, self, 84)--95
+		timerFelOutpouringCD:Start(11)
+		self:Schedule(11, delayedFelOutpouring, self, 84)--95
 		timerSwatCD:Start(21, 1)
 		timerPoundCD:Start(37, 1)
 		self:Schedule(37, delayedPound, self, 48)--85
@@ -236,7 +237,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceGraspingHands:Schedule(64, "gather")
 		countdownGraspingHands:Start(69)
 		timerLeapCD:Start()
-	elseif spellId == 180116 then--Explosive Energy
+	elseif spellId == 180116 or spellId == 189198 then--Explosive Energy
 		self.vb.poundCount = 0
 		self.vb.explosiveBurst = 0
 		warnExplosiveEnergy:Show()
@@ -248,9 +249,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGraspingHandsCD:Start(43)
 		voiceGraspingHands:Schedule(38, "gather")
 		countdownGraspingHands:Start(43)
-		timerShadowWavesCD:Start(85)
+		timerFelOutpouringCD:Start(85)
 		timerLeapCD:Start()
-	elseif spellId == 180117 then--Foul Energy
+	elseif spellId == 180117 or spellId == 189199 then--Foul Energy
 		self.vb.poundCount = 0
 		self.vb.foulCrush = 0
 		warnFoulEnergy:Show()
@@ -260,7 +261,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(11, delayedHands, self, 90)--101
 		timerFoulCrushCD:Start(21, 1)
 		timerPoundCD:Start(27, 1)
-		timerShadowWavesCD:Start(43.5)
+		timerFelOutpouringCD:Start(43.5)
 		self:Schedule(27, delayedPound, self, 52)--79
 		timerExplosiveRunesCD:Start(69)
 		timerLeapCD:Start()

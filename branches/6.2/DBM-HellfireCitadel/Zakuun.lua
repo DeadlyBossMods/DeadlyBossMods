@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 179406 181461 179582",
+	"SPELL_CAST_START 179406 181461 179582 184690 184697",
 	"SPELL_CAST_SUCCESS 181508 179709",
 	"SPELL_AURA_APPLIED 181508 181515 182008 179670 179711 179681 179407 179667",
 	"SPELL_AURA_REMOVED 179711 181508 181515 179667"
@@ -24,6 +24,7 @@ mod:RegisterEventsInCombat(
 --Encounter-Wide Mechanics
 local warnLatentEnergy					= mod:NewTargetAnnounce(182008, 3, nil, false)--Spammy, optional
 local warnEnrage						= mod:NewSpellAnnounce(179681, 3)
+local warnRingofDestruction				= mod:NewSpellAnnounce(184697, 2)--Unknown, brand new mechanic added after fight was tested
 --Armed
 local warnRumblingFissure				= mod:NewCountAnnounce(179582, 2)
 local warnBefouled						= mod:NewTargetCountAnnounce(179711, 2, nil, "Healer")--Only healer really needs list of targets, player only needs to know if it's on self
@@ -44,6 +45,8 @@ local specWarnDisarmed					= mod:NewSpecialWarningSpell(179667)
 local specWarnSeedofDestruction			= mod:NewSpecialWarningYou(181508, nil, nil, nil, 3, nil, 2)
 local yellSeedsofDestruction			= mod:NewYell(181508)
 
+--Unknown
+local timerRingofDestructionCD			= mod:NewAITimer(40, 184697)
 --Armed
 local timerRumblingFissureCD			= mod:NewCDTimer(40, 179582)
 local timerBefouledCD					= mod:NewCDTimer(38, 179711)
@@ -115,6 +118,7 @@ function mod:OnCombatStart(delay)
 	timerCavitationCD:Start(35-delay, 1)
 	timerDisarmCD:Start(87.8-delay)
 	countdownDisarm:Start(87.8-delay)
+	timerRingofDestructionCD:Start(1-delay)
 end
 
 function mod:OnCombatEnd()
@@ -148,6 +152,8 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.Enraged or self.vb.FissureCount == 1 then--Only casts two between phases, unless enraged
 			timerRumblingFissureCD:Start(nil, self.vb.FissureCount+1)
 		end
+	elseif spellId == 184690 or spellId == 184697 then
+		warnRingofDestruction:Show()
 	end
 end
 
