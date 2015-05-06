@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_ABSORB 184652",
 	"UNIT_DIED",
 	"RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
 --TODO, add bloodboil. mythic only?

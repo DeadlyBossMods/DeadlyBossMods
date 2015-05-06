@@ -7,7 +7,7 @@ mod:SetEncounterID(1689)
 mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3)
 mod:SetHotfixNoticeRev(13445)
-mod:SetRespawnTime(30)
+mod:SetRespawnTime(29.5)
 
 mod:RegisterCombat("combat")
 
