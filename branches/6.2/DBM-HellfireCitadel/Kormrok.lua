@@ -117,7 +117,7 @@ function mod:OnCombatStart(delay)
 	self.vb.explodingTank = nil
 	self.vb.poundActive = false
 	self.vb.poundCount = 0
-	timerLeapCD:Start(12.5-delay)
+	timerLeapCD:Start(12-delay)
 end
 
 function mod:OnCombatEnd()
