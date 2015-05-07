@@ -65,10 +65,26 @@ L:SetOptionLocalization({
 --------------------------
 L= DBM:GetModLocalization(1391)
 
+L:SetOptionLocalization({
+	SeedsBehavior		= "Set seeds yell behavior",
+	Numbered			= "1, 2, 3, 4. Usable for any strat using numbered positions.",--Default
+	DirectionLine		= "Far Left, Middle Left, Middle Right, Far Right. Typical for straight line strat.",
+	CrossPerception		= "Front, Back, Left, Right. Typical for Cross strat",
+	CrossCardinal		= "North, South, East, West. Typical for Cross strat",
+	ExCardinal			= "NorthEast, Southeast, Northwest, Southwest. Typical for Ex strat"
+})
+
 --------------------------
 -- Xhul'horac --
 --------------------------
 L= DBM:GetModLocalization(1447)
+
+L:SetOptionLocalization({
+	ChainsBehavior		= "Set Fel Chains warning behavior",
+	Cast				= "Only give orininal target on begin cast. Timer syncs to cast start.",
+	Applied				= "Only give all targets affected on cast finish. Timer syncs to cast finish.",
+	Both				= "Give original target on cast start and all affected targets on cast finish. Timer syncs to cast start."
+})
 
 --------------------------
 -- Socrethar the Eternal --

@@ -189,7 +189,9 @@ end
 local function delayedHands(self, time)
 	timerGraspingHandsCD:Start(time)
 	countdownGraspingHands:Start(time)
-	voiceGraspingHands:Schedule(time-5, "gather")
+	if not self:IsMythic() then
+		voiceGraspingHands:Schedule(time-5, "gather")
+	end
 end
 
 local function delayedFelOutpouring(self, time)
@@ -234,7 +236,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(37, delayedPound, self, 48)--85
 		timerExplosiveRunesCD:Start(53)
 		timerGraspingHandsCD:Start(69)
-		voiceGraspingHands:Schedule(64, "gather")
+		if not self:IsMythic() then
+			voiceGraspingHands:Schedule(64, "gather")
+		end
 		countdownGraspingHands:Start(69)
 		timerLeapCD:Start()
 	elseif spellId == 180116 or spellId == 189198 then--Explosive Energy
@@ -247,7 +251,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerPoundCD:Start(27, 1)
 		self:Schedule(27, delayedPound, self, 42)--69
 		timerGraspingHandsCD:Start(43)
-		voiceGraspingHands:Schedule(38, "gather")
+		if not self:IsMythic() then
+			voiceGraspingHands:Schedule(38, "gather")
+		end
 		countdownGraspingHands:Start(43)
 		timerFelOutpouringCD:Start(85)
 		timerLeapCD:Start()
@@ -256,7 +262,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.foulCrush = 0
 		warnFoulEnergy:Show()
 		timerGraspingHandsCD:Start(11)
-		voiceGraspingHands:Schedule(6, "gather")
+		if not self:IsMythic() then
+			voiceGraspingHands:Schedule(6, "gather")
+		end
 		countdownGraspingHands:Start(11)
 		self:Schedule(11, delayedHands, self, 90)--101
 		timerFoulCrushCD:Start(21, 1)
