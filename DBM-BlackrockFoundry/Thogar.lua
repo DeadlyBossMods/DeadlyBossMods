@@ -48,7 +48,7 @@ local specWarnBurning				= mod:NewSpecialWarningStack(164380, nil, 2)--Mythic
 
 --Operator Thogar
 local timerProtoGrenadeCD			= mod:NewCDTimer(11, 155864)
-local timerEnkindleCD				= mod:NewCDTimer(11.7, 155921, nil, "Tank")
+local timerEnkindleCD				= mod:NewCDTimer(11.5, 155921, nil, "Tank")
 local timerTrainCD					= mod:NewNextCountTimer("d15", 176312)
 --Adds
 --local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140)

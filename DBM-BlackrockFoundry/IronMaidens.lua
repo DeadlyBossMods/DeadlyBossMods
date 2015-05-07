@@ -102,7 +102,7 @@ mod:AddTimerLine(Garan)
 local timerRapidFireCD					= mod:NewCDTimer(30, 156626)
 local timerDarkHuntCD					= mod:NewCDCountTimer(13.5, 158315, nil, false)--Important to know you have it, not very important to know it's coming soon.
 local timerPenetratingShotCD			= mod:NewCDCountTimer(28.8, 164271)--22-30 at least. maybe larger variation.
-local timerDeployTurretCD				= mod:NewCDCountTimer(20.5, 158599)--20.5-23.5
+local timerDeployTurretCD				= mod:NewCDCountTimer(20.2, 158599)--20.2-23.5
 ----Enforcer Sorka
 mod:AddTimerLine(Sorka)
 local timerBladeDashCD					= mod:NewCDCountTimer(20, 155794, nil, "Ranged|Tank")
