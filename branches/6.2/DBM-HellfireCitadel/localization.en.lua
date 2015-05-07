@@ -68,10 +68,17 @@ L= DBM:GetModLocalization(1391)
 L:SetOptionLocalization({
 	SeedsBehavior		= "Set seeds yell behavior",
 	Numbered			= "1, 2, 3, 4. Usable for any strat using numbered positions.",--Default
-	DirectionLine		= "Far Left, Middle Left, Middle Right, Far Right. Typical for straight line strat.",
+	DirectionLine		= "Far Left, Middle Left, Middle Right, Far Right. Typical for straight line strat",
 	CrossPerception		= "Front, Back, Left, Right. Typical for Cross strat",
 	CrossCardinal		= "North, South, East, West. Typical for Cross strat",
 	ExCardinal			= "NorthEast, Southeast, Northwest, Southwest. Typical for Ex strat"
+})
+
+L:SetMiscLocalization({
+	DBMConfigMsg		= "Raid leader sent %s configuration for seeds.",
+	BWConfigMsg			= "Raid leader is using BW, configuring DBM to <Insert whatever the hell bigwigs ends up doing for this here> to match BW for seeds.",
+	yellSeeds			+ "Seeds %s on %s"
+	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 
 --------------------------
