@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 179406 181461 179582 184690 184697",
+	"SPELL_CAST_START 179406 181461 179582",
 	"SPELL_CAST_SUCCESS 181508 179709",
 	"SPELL_AURA_APPLIED 181508 181515 182008 179670 179711 179681 179407 179667",
 	"SPELL_AURA_REMOVED 179711 181508 181515 179667"
@@ -22,10 +22,10 @@ mod:RegisterEventsInCombat(
 --TODO, need voice for "centerleft" and "centerright"
 --TODO, auto send latent energy targets down for disembodied?
 --TODO, see where guilds commonly put the 5 raid flares, then use HUD run to features for it as well
+--TODO, if blizzard keeps Befouled hidden from combat log, use a stupid "finddebuff" method
 --Encounter-Wide Mechanics
 local warnLatentEnergy					= mod:NewTargetAnnounce(182008, 3, nil, false)--Spammy, optional
 local warnEnrage						= mod:NewSpellAnnounce(179681, 3)
-local warnRingofDestruction				= mod:NewSpellAnnounce(184697, 2)--Unknown, brand new mechanic added after fight was tested
 --Armed
 local warnRumblingFissure				= mod:NewCountAnnounce(179582, 2)
 local warnBefouled						= mod:NewTargetCountAnnounce(179711, 2, nil, "Healer")--Only healer really needs list of targets, player only needs to know if it's on self
@@ -47,8 +47,6 @@ local specWarnSeedofDestruction			= mod:NewSpecialWarningYou(181508, nil, nil, n
 local specWarnSeedPosition				= mod:NewSpecialWarning("specWarnSeedPosition", nil, false, nil, 1, nil, 4)--Mythic Position Assignment. No option, connected to specWarnMarkedforDeath
 local yellSeedsofDestruction			= mod:NewYell(181508)
 
---Unknown
-local timerRingofDestructionCD			= mod:NewAITimer(40, 184697)
 --Armed
 local timerRumblingFissureCD			= mod:NewCDTimer(40, 179582)
 local timerBefouledCD					= mod:NewCDTimer(38, 179711)
@@ -56,7 +54,7 @@ local timerSoulCleaveCD					= mod:NewCDTimer(40, 179406)
 local timerCavitationCD					= mod:NewCDTimer(40, 181461)
 --Disarmed
 local timerDisarmCD						= mod:NewCDTimer(85.8, 179667)
-local timerSeedsofDestructionCD			= mod:NewCDTimer(14.5, 181508)
+local timerSeedsofDestructionCD			= mod:NewCDTimer(14.5, 181508)--14.5-16
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
@@ -166,13 +164,12 @@ function mod:OnCombatStart(delay)
 	self.vb.CavitationCount = 0
 	self.vb.SeedsCount = 0
 	self.vb.Enraged = false
-	timerRumblingFissureCD:Start(6-delay, 1)
-	timerBefouledCD:Start(17.5-delay, 1)
+	timerRumblingFissureCD:Start(5.5-delay, 1)
+	timerBefouledCD:Start(17-delay, 1)
 	timerSoulCleaveCD:Start(25-delay, 1)
 	timerCavitationCD:Start(35-delay, 1)
-	timerDisarmCD:Start(87.8-delay)
-	countdownDisarm:Start(87.8-delay)
-	timerRingofDestructionCD:Start(1-delay)
+	timerDisarmCD:Start(86.7-delay)
+	countdownDisarm:Start(86.7-delay)
 	if UnitIsGroupLeader("player") then
 		if self.Options.SeedsBehavior == "Iconed" then
 			self:SendSync("Iconed")
@@ -219,8 +216,6 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.Enraged or self.vb.FissureCount == 1 then--Only casts two between phases, unless enraged
 			timerRumblingFissureCD:Start(nil, self.vb.FissureCount+1)
 		end
-	elseif spellId == 184690 or spellId == 184697 then
-		warnRingofDestruction:Show()
 	end
 end
 
@@ -275,7 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 179667 then--Disarmed
 		self.vb.SeedsCount = 0
 		specWarnDisarmed:Show()
-		timerSeedsofDestructionCD:Start(8.5, 1)
+		timerSeedsofDestructionCD:Start(8.5, 1)--8.5-10
 		countdownSeedsofDestructionCD:Start(8.5)
 	elseif spellId == 179681 then--Enrage (has both armed and disarmed abilities)
 		timerDisarmCD:Cancel()--Assumed
