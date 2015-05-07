@@ -65,19 +65,25 @@ L:SetOptionLocalization({
 --------------------------
 L= DBM:GetModLocalization(1391)
 
+L:SetWarningLocalization({
+	specWarnSeedPosition =	"Seed Position: %s"
+})
+
 L:SetOptionLocalization({
-	SeedsBehavior		= "Set seeds yell behavior",
-	Numbered			= "1, 2, 3, 4. Usable for any strat using numbered positions.",--Default
-	DirectionLine		= "Far Left, Middle Left, Middle Right, Far Right. Typical for straight line strat",
-	CrossPerception		= "Front, Back, Left, Right. Typical for Cross strat",
-	CrossCardinal		= "North, South, East, West. Typical for Cross strat",
-	ExCardinal			= "NorthEast, Southeast, Northwest, Southwest. Typical for Ex strat"
+	SeedsBehavior		= "Set seeds yell behavior for raid (Requires raid leader)",
+	Iconed				= "Skull, Cross, Square, Moon, Triangle. Usuable for any strat using flare positions",--Default
+	Numbered			= "1, 2, 3, 4, 5. Usable for any strat using numbered positions.",
+	DirectionLine		= "Left, Middle Left, Middle, Middle Right, Right. Typical for straight line strat",
+	--Currently these 3 below are unused unless I see anyone want/need them
+	CrossPerception		= "Front, Back, Left, Right, Middle. Typical for Cross strat",--Unsure if viable with 5 targets/will remain
+	CrossCardinal		= "North, South, East, West, Middle. Typical for Cross strat",--Unsure if viable 5 targets/will remain
+	ExCardinal			= "NorthEast, Southeast, Northwest, Southwest, Middle. Typical for Ex strat"--Unsure if viable 5 targets/will remain
 })
 
 L:SetMiscLocalization({
-	DBMConfigMsg		= "Raid leader sent %s configuration for seeds.",
-	BWConfigMsg			= "Raid leader is using BW, configuring DBM to <Insert whatever the hell bigwigs ends up doing for this here> to match BW for seeds.",
-	yellSeeds			+ "Seeds %s on %s"
+	DBMConfigMsg		= "Seed configuration set to %s to match raid leaders configuration.",
+	BWConfigMsg			= "Raid leader is using Bigwigs, configuring DBM to <Insert whatever the hell bigwigs ends up doing for this here> to match BW for seeds.",
+	customSeedsSay		= "Seeds %s on %s"
 	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 

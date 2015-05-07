@@ -19,8 +19,9 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, two versions of seed? one with shorter duration? shorter one mythic?
---TODO, need voice for "Soul Cleave". Maybe voice for seeds as well. Not all strats are run out strats. Plus, might use run out for Befouled, if it's fixed.
+--TODO, need voice for "centerleft" and "centerright"
 --TODO, auto send latent energy targets down for disembodied?
+--TODO, see where guilds commonly put the 5 raid flares, then use HUD run to features for it as well
 --Encounter-Wide Mechanics
 local warnLatentEnergy					= mod:NewTargetAnnounce(182008, 3, nil, false)--Spammy, optional
 local warnEnrage						= mod:NewSpellAnnounce(179681, 3)
@@ -43,6 +44,7 @@ local specWarnBefouledOther				= mod:NewSpecialWarningTargetCount(179711, false)
 --Disarmed
 local specWarnDisarmed					= mod:NewSpecialWarningSpell(179667)
 local specWarnSeedofDestruction			= mod:NewSpecialWarningYou(181508, nil, nil, nil, 3, nil, 2)
+local specWarnSeedPosition				= mod:NewSpecialWarning("specWarnSeedPosition", nil, false, nil, 1, nil, 4)--Mythic Position Assignment. No option, connected to specWarnMarkedforDeath
 local yellSeedsofDestruction			= mod:NewYell(181508)
 
 --Unknown
@@ -68,10 +70,11 @@ local voiceWakeofDestruction			= mod:NewVoice(181499)--watchwave
 local voiceSeedsofDestruction			= mod:NewVoice(181508)--Runout
 
 mod:AddRangeFrameOption(10, 179711)
---Icon options will conflict at 25-30 players (when you get 5 targets for each debuff). Below that, they can coexist.
-mod:AddSetIconOption("SetIconOnBefouled", 179711, false)--Start at 1, ascending
+--Icon options will conflict on mythic or 25-30 players (when you get 5 targets for each debuff). Below that, they can coexist.
+--mod:AddSetIconOption("SetIconOnBefouled", 179711, false)--Start at 1, ascending--Disabled for now to avoid conflict, seeds icons are too important to create conflicts
 mod:AddSetIconOption("SetIconOnSeeds", 181508, true)--Start at 8, descending. On by default, because it's quite imperative to know who/where seed targets are at all times.
 mod:AddHudMapOption("HudMapOnSeeds", 181508)
+mod:AddDropdownOption("SeedsBehavior", {"Iconed", "Numbered", "DirectionLine"}, "Iconed", "misc")--CrossPerception, CrossCardinal, ExCardinal
 
 mod.vb.befouledTargets = 0
 mod.vb.FissureCount = 0
@@ -80,7 +83,9 @@ mod.vb.SoulCleaveCount = 0
 mod.vb.CavitationCount = 0
 mod.vb.SeedsCount = 0
 mod.vb.Enraged = false
-
+local yellSeeds2 = mod:NewYell(181508, L.customSeedsSay, true, false)
+local seedTargets = {}
+local seedsName = GetSpellInfo(181508)
 local befouledName = GetSpellInfo(179711)
 local UnitDebuff = UnitDebuff
 local debuffFilter
@@ -104,7 +109,56 @@ local function updateRangeFrame(self)
 	end
 end
 
+local playerName = UnitName("player")
+local yellType = "Icon"
+local iconedAssignments = {RAID_TARGET_8, RAID_TARGET_7, RAID_TARGET_6, RAID_TARGET_5, RAID_TARGET_4}
+local iconedVoiceAssignments = {"mm8", "mm7", "mm6", "mm5", "mm4"}
+local numberedAssignments = {1, 2, 3, 4, 5}
+local numberedVoiceAssignments = {"\\count\\1", "\\count\\2", "\\count\\3", "\\count\\4", "\\count\\5"}
+local DirectionLineAssignments = {DBM_CORE_LEFT, DBM_CORE_MIDDLE..DBM_CORE_LEFT, DBM_CORE_MIDDLE, DBM_CORE_MIDDLE..DBM_CORE_RIGHT, DBM_CORE_RIGHT}
+local DirectionVoiceAssignments = {"left", "centerleft", "center", "centerright", "right"}
+local function warnSeeds(self)
+	table.wipe(seedTargets)
+	--Sort by raidid since combat log order may diff person to person
+	if self:IsLFR() then return end
+	local seedsFound = 0
+	local numGroupMembers = DBM:GetNumGroupMembers()
+	local expectedTotal = self:IsMythic() and 5 or 4--TODO, verify it's always 4, flexible shit sucks for this
+	if numGroupMembers < expectedTotal+1 then return end--Future proofing solo raid. can't assign 3 positions if less than 3 people
+	--Generate type
+	local currentType
+	local currentVoice
+	if yellType == "Icon" then
+		currentType = iconedAssignments
+		currentVoice = iconedVoiceAssignments
+	elseif yellType == "Numbered" then
+		currentType = numberedAssignments
+		currentVoice = numberedVoiceAssignments
+	elseif yellType == "DirectionLine" then
+		currentType = DirectionLineAssignments
+		currentVoice = DirectionVoiceAssignments
+	end
+	for i = 1, numGroupMembers do
+		if UnitDebuff("raid"..i, seedsName) then
+			seedsFound = seedsFound + 1
+			if UnitName("raid"..i) == playerName then
+				if self.Options.SpecWarn181508you then
+					specWarnSeedPosition:Show(currentType[seedsFound])
+				end
+				if self.Options.Yell181508 then
+					yellSeeds2:Yell(currentType[seedsFound], playerName)
+				end
+				if currentVoice and currentVoice[seedsFound] then
+					voiceSeedsofDestruction:Play(currentVoice[seedsFound])
+				end
+			end
+			if seedsFound == expectedTotal then break end
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
+	table.wipe(seedTargets)
 	self.vb.befouledTargets = 0
 	self.vb.FissureCount = 0
 	self.vb.BefouledCount = 0
@@ -119,9 +173,22 @@ function mod:OnCombatStart(delay)
 	timerDisarmCD:Start(87.8-delay)
 	countdownDisarm:Start(87.8-delay)
 	timerRingofDestructionCD:Start(1-delay)
+	if UnitIsGroupLeader("player") then
+		if self.Options.SeedsBehavior == "Iconed" then
+			self:SendSync("Iconed")
+		elseif self.Options.SeedsBehavior == "Numbered" then
+			self:SendSync("Numbered")
+		elseif self.Options.SeedsBehavior == "DirectionLine" then
+			self:SendSync("DirectionLine")
+		end
+	else
+		--Fancy stuff to check boss mod version of group leader, find out if it's DBM or Bigwigs
+		--DBM:AddMsg(L.BWConfigMsg)
+	end
 end
 
 function mod:OnCombatEnd()
+	yellType = "Icon"--Reset on combat end, resetting on combat start could accidentally overright raid leaders assignment set on combat start.
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -179,8 +246,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSeedofDestruction:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnSeedofDestruction:Show()
-			yellSeedsofDestruction:Yell()
-			voiceSeedsofDestruction:Play("runout")
+			if self:IsLFR() then
+				yellSeedsofDestruction:Yell()
+				voiceSeedsofDestruction:Play("runout")
+			end
 		end
 		if self:AntiSpam(5, 3) then
 			specWarnWakeofDestruction:Schedule(3.5)--When debuff expires, waves (-1.5)
@@ -188,10 +257,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			countdownSeedsofDestruction:Start()--Everyone, because waves occur.
 		end
 		if self.Options.SetIconOnSeeds and not self:IsLFR() then
-			self:SetSortedIcon(0.7, args.destName, 8, nil, true)
+			self:SetSortedIcon(0.7, args.destName, 8, 5, true)
 		end
 		if self.Options.HudMapOnSeeds then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 13, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
+		end
+		seedTargets[#seedTargets + 1] = args.destName
+		self:Unschedule(warnSeeds)
+		local expectedCount = self:IsMythic() and 5 or 4
+		if #seedTargets == expectedCount then--Have all targets, warn immediately
+			warnSeeds(self)
+		else
+			self:Schedule(1.5, warnSeeds, self)--1.5 is probably a bit high, but not risking fragmentation again
 		end
 	elseif spellId == 182008 then
 		warnLatentEnergy:CombinedShow(1, args.destName)
@@ -218,9 +295,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnBefouled:CombinedShow(0.3, self.vb.BefouledCount, args.destName)
 		end
 		updateRangeFrame(self)
-		if self.Options.SetIconOnBefouled and not self:IsLFR() then
-			self:SetSortedIcon(0.7, args.destName, 1)
-		end
+--		if self.Options.SetIconOnBefouled and not self:IsLFR() then
+--			self:SetSortedIcon(0.7, args.destName, 1)
+--		end
 	elseif spellId == 179407 then
 		warnDisembodied:Show(self.vb.SoulCleaveCount, args.destName)
 		specWarnWakeofDestruction:Schedule(8.5)--Waves when they return (-1.5)
@@ -237,6 +314,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 179711 then
 		self.vb.befouledTargets = self.vb.befouledTargets - 1
 		updateRangeFrame(self)
+--		if self.Options.SetIconOnBefouled and not self:IsLFR() then
+--			self:SetIcon(args.destName, 0)
+--		end
 	elseif spellId == 181508 or spellId == 181515 then
 		if self.Options.SetIconOnSeeds and not self:IsLFR() then
 			self:SetIcon(args.destName, 0)--Number of targets not known yet, probably never will be if it's flexible and not mythic
@@ -257,4 +337,18 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerDisarmCD:Start()
 		countdownDisarm:Start()
 	end
+end
+
+function mod:OnSync(msg)
+	if self:IsLFR() then return end
+	if msg == "Iconed" then
+		yellType = "Icon"
+		DBM:AddMsg(L.DBMConfigMsg:format(msg))
+	elseif msg == "Numbered" then
+		yellType = "Numbered"
+		DBM:AddMsg(L.DBMConfigMsg:format(msg))
+	elseif msg == "DirectionLine" then
+		yellType = "DirectionLine"
+		DBM:AddMsg(L.DBMConfigMsg:format(msg))
+	end	
 end
