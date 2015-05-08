@@ -7248,7 +7248,48 @@ do
 		return false
 	end
 
-	function bossModPrototype:IsMelee()
+	function bossModPrototype:IsMeleeDps(uId)
+		if uId then--This version includes ONLY melee dps
+			local role = UnitGroupRolesAssigned(uId)
+			if role == "HEALER" or role == "TANK" then--Auto filter healer from dps check
+				return false
+			end
+			local _, class = UnitClass(uId)
+			if class == "WARRIOR" or class == "ROGUE" or class == "DEATHKNIGHT" then
+				return true
+			end
+			--Inspect throttle exists, so have to do it this way
+			if class == "DRUID" or class == "SHAMAN" or class == "PALADIN" or class == "MONK" then
+				if UnitPowerMax(uId) < 35000 then
+					return true
+				end
+			end
+			return false
+		end
+		if not currentSpecID then
+			DBM:SetCurrentSpecInfo()
+		end
+		if specRoleTable[currentSpecID]["MeleeDps"] then
+			return true
+		else
+			return false
+		end
+	end
+
+	function bossModPrototype:IsMelee(uId)
+		if uId then--This version includes monk healers as melee and tanks as melee
+			local _, class = UnitClass(uId)
+			if class == "WARRIOR" or class == "ROGUE" or class == "DEATHKNIGHT" or class == "MONK" then
+				return true
+			end
+			--Inspect throttle exists, so have to do it this way
+			if class == "DRUID" or class == "SHAMAN" or class == "PALADIN" then
+				if UnitPowerMax(uId) < 35000 then
+					return true
+				end
+			end
+			return false
+		end
 		if not currentSpecID then
 			DBM:SetCurrentSpecInfo()
 		end
@@ -7283,6 +7324,7 @@ do
 end
 
 function bossModPrototype:IsTank()
+	--IsTanking already handles external calls, no need here.
 	if not currentSpecID then
 		DBM:SetCurrentSpecInfo()
 	end
@@ -7294,7 +7336,13 @@ function bossModPrototype:IsTank()
 	end
 end
 
-function bossModPrototype:IsDps()
+function bossModPrototype:IsDps(uId)
+	if uId then--External unit call.
+		if UnitGroupRolesAssigned(uId) == "DAMAGER" then
+			return true
+		end
+		return false
+	end
 	if not currentSpecID then
 		DBM:SetCurrentSpecInfo()
 	end
@@ -7306,7 +7354,13 @@ function bossModPrototype:IsDps()
 	end
 end
 
-function bossModPrototype:IsHealer()
+function bossModPrototype:IsHealer(uId)
+	if uId then--External unit call.
+		if UnitGroupRolesAssigned(uId) == "HEALER" then
+			return true
+		end
+		return false
+	end
 	if not currentSpecID then
 		DBM:SetCurrentSpecInfo()
 	end
