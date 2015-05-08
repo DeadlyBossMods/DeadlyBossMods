@@ -196,24 +196,6 @@ local function warnMarked(self)
 	end
 end
 
-local function meleeCheck(uId)
-	if UnitGroupRolesAssigned(uId) == "HEALER" then
-		return false
-	end
-	local _, class = UnitClass(uId)
-	--Because healers filtered out already, paladin and monk can only be melee if not "healer"
-	if class == "WARRIOR" or class == "ROGUE" or class == "DEATHKNIGHT" or class == "PALADIN" or class == "MONK" then
-		return true
-	end
-	--Inspect throttle exists, so have to do it this way
-	if class == "DRUID" or class == "SHAMAN" then
-		if UnitPowerMax(uId) < 35000 then
-			return true
-		end
-	end
-	return false
-end
-
 local slagDebuff = GetSpellInfo(156096)
 local function checkSlag(self)
 	local numGroupMembers = DBM:GetNumGroupMembers()
@@ -227,7 +209,7 @@ local function checkSlag(self)
 		local unitID = "raid"..i
 		if UnitDebuff(unitID, slagDebuff) then--Tank excluded on purpose to match BW helper
 			slagFound = slagFound + 1
-			if meleeCheck(unitID) then
+			if self:IsMeleeDps(unitID) then
 				totalMelee = totalMelee + 1
 			end
 			tempTable[slagFound] = UnitName(unitID)
@@ -236,7 +218,7 @@ local function checkSlag(self)
 	end
 	if totalMelee == 1 then--Melee count exactly 1
 		--Assign melee to middle and ranged to back
-		local playerIsMelee = meleeCheck("player")
+		local playerIsMelee = self:IsMeleeDps()
 		if playerIsMelee and ((tempTable[1] == playerName) or (tempTable[2] == playerName)) then
 			if self.Options.SpecWarn157000you then
 				specWarnSlagPosition:Show(DBM_CORE_MIDDLE)
