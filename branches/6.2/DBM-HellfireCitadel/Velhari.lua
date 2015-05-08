@@ -24,7 +24,7 @@ mod:RegisterEventsInCombat(
 )
 
 --All
-local warnEdictofCondemnation				= mod:NewTargetAnnounce(182459, 3)
+local warnEdictofCondemnation				= mod:NewTargetCountAnnounce(182459, 3)
 local warnTouchofHarm						= mod:NewTargetAnnounce(180166, 3, nil, "Healer")--Todo, split new cast and jump into two different warnings?
 local warnSealofDecay						= mod:NewStackAnnounce(180000, 2, nil, "Tank|Healer")
 --Stage One: Oppression
