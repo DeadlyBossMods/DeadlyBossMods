@@ -75,7 +75,7 @@ local voiceFelChakram					= mod:NewVoice(182178)--runout
 local voiceFelLaser						= mod:NewVoice(182582)--runout
 
 mod:AddRangeFrameOption(15)--Both aoes are 15 yards, ref 187991 and 181748
-mod:AddSetIconOption("SetIconOnAnzu", 179909, false)
+mod:AddSetIconOption("SetIconOnAnzu", 179202, false)
 mod:AddSetIconOption("SetIconOnWinds", 181957, false)
 mod:AddSetIconOption("SetIconOnFelBomb", 181753, true)
 
