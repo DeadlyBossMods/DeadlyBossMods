@@ -70,7 +70,7 @@ local timerTouchofHarmCD					= mod:NewNextCountTimer(60, 180166, nil, "Healer")
 local timerAnnihilatingStrikeCD				= mod:NewNextCountTimer(10, 180260)
 local timerInfernalTempestCD				= mod:NewNextCountTimer(10, 180300)
 ----Ancient Enforcer
-local timerEnforcersOnslaughtCD				= mod:NewCDTimer(15, 180004, nil, "Melee")
+local timerEnforcersOnslaughtCD				= mod:NewCDTimer(14.2, 180004, nil, "Melee")
 --Stage Two: Contempt
 local timerFontofCorruptionCD				= mod:NewNextTimer(20, 180526)
 ----Ancient Harbinger
@@ -160,7 +160,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 180004 then
 		specWarnEnforcersOnslaught:Show()
 		voiceEnforcerOnslaught:Play("orbrun")
-		timerEnforcersOnslaughtCD:Start()
+		timerEnforcersOnslaughtCD:Start(12)
 	elseif spellId == 180025 then--No target filter, it's only interrupt onfight and it's VERY important
 		specWarnHarbingersMending:Show(args.sourceName)
 		voiceHarbingersMending:Play("kickcast")
