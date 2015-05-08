@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181912 181827 187998 181873",
-	"SPELL_CAST_SUCCESS 182178 181956",
+	"SPELL_CAST_SUCCESS 182178 181956 185510",
 	"SPELL_AURA_APPLIED 179202 181957 182325 187990 181824 179219 185510 181753 182178 182200",
 	"SPELL_AURA_REMOVED 179202 181957 182325 187990 181824 179219 185510 181753",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -61,7 +61,7 @@ local timerChakramCD					= mod:NewCDTimer(24.5, 182178)
 local timerPhantasmalWindsCD			= mod:NewCDTimer(37, 181957)
 local timerPhantasmalWoundsCD			= mod:NewCDTimer(30.5, 182325, nil, "Healer")--30.5-32
 local timerFocusedBlast					= mod:NewCastTimer(11, 181912)--Doesn't realy need a cd timer. he casts it twice back to back, then lands
---local timerDarkBindingsCD				= mod:NewCDTimer(107, 185456)
+local timerDarkBindingsCD				= mod:NewAITimer(107, 185456)
 --Adds
 local timerFelBombCD					= mod:NewCDTimer(18.5, 181753)
 local timerFelConduitCD					= mod:NewCDTimer(15, 181827)
@@ -122,6 +122,7 @@ function mod:OnCombatStart(delay)
 	timerPhantasmalWindsCD:Start(16.5-delay)
 	timerFelLaserCD:Start(18.5)
 	timerPhantasmalWoundsCD:Start(28-delay)
+	timerDarkBindingsCD:Start(1-delay)
 end
 
 function mod:OnCombatEnd()
@@ -158,6 +159,7 @@ function mod:SPELL_CAST_START(args)
 		timerChakramCD:Cancel()
 		timerPhantasmalWindsCD:Cancel()
 		timerPhantasmalWoundsCD:Cancel()
+		timerDarkBindingsCD:Cancel()
 	end
 end
 
@@ -172,9 +174,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerChakramCD:Start(self.vb.savedChakram+3)
 		timerPhantasmalWindsCD:Start(self.vb.savedWinds+5)
 		timerPhantasmalWoundsCD:Start(self.vb.savedWounds+5)
+		timerDarkBindingsCD:Start(2)--Probably doesn't work this way, but instead like the ones above
 		self.vb.savedChakram = nil
 		self.vb.savedWinds = nil
 		self.vb.savedWounds = nil
+	elseif spellId == 185510 then
+		timerDarkBindingsCD:Start()
 	end
 end
 
