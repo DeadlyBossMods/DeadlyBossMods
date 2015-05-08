@@ -214,7 +214,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 182459 or spellId == 185241 then--185241 mythic root version
 		self.vb.edictCount = self.vb.edictCount + 1
 		warnEdictofCondemnation:Show(self.vb.edictCount, args.destName)
-		timerEdictofCondemnationCD:start(nil, self.vb.edictCount+1)
+		timerEdictofCondemnationCD:Start(nil, self.vb.edictCount+1)
 		if args:IsPlayer() then
 			specWarnEdictofCondemnation:Show()
 			if not self:IsMythic() then
