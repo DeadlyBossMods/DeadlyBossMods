@@ -24,7 +24,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, really need ot see fight to get voices right, so most not added yet
 local warnEyeofAnzu						= mod:NewTargetAnnounce(179202, 1, nil, false)--Important, but spammy, Will do something fancy with infoframe to show target instead of spamming screen with warnings
 local warnPhantasmalWinds				= mod:NewTargetAnnounce(181957, 4)--Announce to all, for things like life grips, body and soul, etc to keep them on platform while anzu person helps clear them.
 local warnPhantasmalWounds				= mod:NewTargetAnnounce(182325, 2, nil, "Healer")
@@ -56,12 +55,12 @@ local specWarnFelChakram				= mod:NewSpecialWarningMoveAway(182178)
 local specWarnFelChakramTank			= mod:NewSpecialWarningTaunt(182178)
 local specWarnFelConduit				= mod:NewSpecialWarningInterrupt(181827, nil, nil, nil, 1, nil, 2)--On for everyone, filtered by eye of anzu, if this person can't interrupt, then they better pass it to someone who can
 
-local timerFelLaserCD					= mod:NewCDTimer(21, 182582)--Never pauses, used all phases
+local timerFelLaserCD					= mod:NewCDTimer(19.5, 182582)--19.5-22. Never pauses, used all phases
 local timerChakramCD					= mod:NewCDTimer(24.5, 182178)
 local timerPhantasmalWindsCD			= mod:NewCDTimer(37, 181957)
 local timerPhantasmalWoundsCD			= mod:NewCDTimer(30.5, 182325, nil, "Healer")--30.5-32
 local timerFocusedBlast					= mod:NewCastTimer(11, 181912)--Doesn't realy need a cd timer. he casts it twice back to back, then lands
-local timerDarkBindingsCD				= mod:NewAITimer(107, 185456)
+local timerDarkBindingsCD				= mod:NewCDTimer(34, 185456)
 --Adds
 local timerFelBombCD					= mod:NewCDTimer(18.5, 181753)
 local timerFelConduitCD					= mod:NewCDTimer(15, 181827)
@@ -120,9 +119,8 @@ function mod:OnCombatStart(delay)
 	updateRangeFrame(self)
 	timerChakramCD:Start(5-delay)
 	timerPhantasmalWindsCD:Start(16.5-delay)
-	timerFelLaserCD:Start(18.5)
+	timerFelLaserCD:Start(18.5)--Verify it can still be this low, every pull on mythic was 20-22
 	timerPhantasmalWoundsCD:Start(28-delay)
-	timerDarkBindingsCD:Start(1-delay)
 end
 
 function mod:OnCombatEnd()
@@ -174,12 +172,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerChakramCD:Start(self.vb.savedChakram+3)
 		timerPhantasmalWindsCD:Start(self.vb.savedWinds+5)
 		timerPhantasmalWoundsCD:Start(self.vb.savedWounds+5)
-		timerDarkBindingsCD:Start(2)--Probably doesn't work this way, but instead like the ones above
 		self.vb.savedChakram = nil
 		self.vb.savedWinds = nil
 		self.vb.savedWounds = nil
 	elseif spellId == 185510 then
-		timerDarkBindingsCD:Start()
+		timerDarkBindingsCD:Start(args.sourceGUID)
 	end
 end
 
@@ -336,6 +333,8 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				timerFelConduitCD:Start(4, unitGUID)
 			elseif cid == 91539 then--Fel Raven
 				timerPhantasmalCorruptionCD:Start(16, unitGUID)
+			elseif cid == 93625 then--Phantasmal Resonance
+				timerDarkBindingsCD:Start(23.6, unitGUID)
 			end
 		end
 	end
@@ -349,6 +348,8 @@ function mod:UNIT_DIED(args)
 		timerFelConduitCD:Cancel(args.destGUID)
 	elseif cid == 91539 then--Fel Raven
 		timerPhantasmalCorruptionCD:Cancel(args.destGUID)
+	elseif cid == 93625 then--Phantasmal Resonance
+		timerDarkBindingsCD:Cancel(args.destGUID)
 	end
 end
 
