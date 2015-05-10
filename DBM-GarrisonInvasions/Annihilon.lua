@@ -9,9 +9,9 @@ mod:RegisterCombat("combat")
 mod:SetMinCombatTime(15)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 180939 180932",
 	"SPELL_AURA_APPLIED 180950",
-	"SPELL_AURA_REMOVED 180950"
+	"SPELL_AURA_REMOVED 180950",
+	"UNIT_SPELLCAST_START"
 )
 
 local warnVoidBomb				= mod:NewTargetAnnounce(180939, 3)
@@ -51,15 +51,6 @@ function mod:OnCombatEnd()
 	end
 end
 
-function mod:SPELL_CAST_START(args)
-	local spellId = args.spellId
-	if spellId == 180939 then
-		self:BossTargetScanner(args.sourceGUID, "BombTarget", 0.04, 16)
-	elseif spellId == 180932 then
-		self:BossTargetScanner(args.sourceGUID, "VoidTarget", 0.04, 16)
-	end
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 180950 then
@@ -84,5 +75,22 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.vb.MCCount == 0 then
 			specWarnTwistMind:Show()
 		end
+	end
+end
+
+
+function mod:UNIT_SPELLCAST_START(uId, _, _, _, spellId)
+	if spellId == 180939 and self:AntiSpam(3, 1) then
+		self:SendSync("VoidBomb")
+	elseif spellId == 180932 and self:AntiSpam(3, 2) then
+		self:SendSync("WhirlingVoid")
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "VoidBomb" then
+		self:BossTargetScanner(args.sourceGUID, "BombTarget", 0.05, 16)
+	elseif msg == "WhirlingVoid" then
+		self:BossTargetScanner(args.sourceGUID, "VoidTarget", 0.04, 16)
 	end
 end
