@@ -163,7 +163,6 @@ L.BigBrotherAnnounceToRaid		= "Annuncia i risultati di Big Brother all'incursion
 
 L.Area_SpamFilter_Outgoing		= "Filtri Globali - Opzioni"
 L.SpamBlockNoShowAnnounce		= "Non visualizzare annunci o suoni"
-L.SpamBlockNoSendWhisper		= "Non mandare sussurri ad altri giocatori"
 L.SpamBlockNoSetIcon			= "Non impostare icone sui giocatori"
 
 
