@@ -88,9 +88,9 @@ function mod:UNIT_SPELLCAST_START(uId, _, _, _, spellId)
 end
 
 function mod:OnSync(msg, GUID)
-	if msg == "VoidBomb" then
+	if GUID and msg == "VoidBomb" then
 		self:BossTargetScanner(GUID, "BombTarget", 0.05, 16)
-	elseif msg == "WhirlingVoid" then
+	elseif GUID and msg == "WhirlingVoid" then
 		self:BossTargetScanner(GUID, "VoidTarget", 0.04, 16)
 	end
 end
