@@ -10,7 +10,7 @@ mod:SetMinCombatTime(15)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 180849",
-	"SPELL_CAST_SUCCESS 180836 180849",
+	"SPELL_CAST_SUCCESS 180836",
 	"SPELL_AURA_APPLIED 180837",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
@@ -20,26 +20,10 @@ local warnEntanglement			= mod:NewTargetAnnounce(180836, 3)--Players who didn't 
 local warnSpore					= mod:NewSpellAnnounce(180825, 3)--Hidden from combat log, until it's too late. Unit event gives enough time to run out but don't know who it's targeting then. target scanning seems to kinda work but not reliable enough. There is somewhat of a delay and often no target at all
 
 local specWarnEntanglement		= mod:NewSpecialWarningDodge(180836)--Dodgable. puts green swirly under random player. traps everyone there after 4 seconds. Target scanning not possible, warn everyone to check feet
---local specWarnSpore				= mod:NewSpecialWarningRun(180825, nil, nil, nil, 4)
---local yellSpore					= mod:NewYell(180825)
-
-local timerEntanglementCD		= mod:NewCDTimer(8.2, 180836)--CD is 10 unless delayed by podlings
-local timerPodlingSwarmCD		= mod:NewCDTimer(30, 180849)--30-32 variable, clearly a 30 second cd from cast finish or engage
-local timerSporeCD				= mod:NewCDTimer(10, 180825)--10-20
-
-function mod:OnCombatStart(delay, summonTriggered)
-	if summonTriggered then
-		timerEntanglementCD:Start(10)
-		timerSporeCD:Start(11)
-		timerPodlingSwarmCD:Start(30)
-	end
-end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 180849 then
 		warnPodlingSwarm:Show()
-		timerEntanglementCD:Cancel()
 	end
 end
 
@@ -47,10 +31,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 180836 then
 		specWarnEntanglement:Show()
-		timerEntanglementCD:Start()
-	elseif spellId == 180849 then
-		timerEntanglementCD:Start()--Will be cast 10 seconds after cast FINISH of podlings
-		timerPodlingSwarmCD:Start()
 	end
 end
 
@@ -70,6 +50,5 @@ end
 function mod:OnSync(msg)
 	if msg == "Spore" then
 		warnSpore:Show()
-		timerSporeCD:Start()
 	end
 end
