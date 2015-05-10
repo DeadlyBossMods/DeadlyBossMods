@@ -81,16 +81,16 @@ end
 
 function mod:UNIT_SPELLCAST_START(uId, _, _, _, spellId)
 	if spellId == 180939 and self:AntiSpam(3, 1) then
-		self:SendSync("VoidBomb")
+		self:SendSync("VoidBomb", UnitGUID(uId))
 	elseif spellId == 180932 and self:AntiSpam(3, 2) then
-		self:SendSync("WhirlingVoid")
+		self:SendSync("WhirlingVoid", UnitGUID(uId))
 	end
 end
 
-function mod:OnSync(msg)
+function mod:OnSync(msg, GUID)
 	if msg == "VoidBomb" then
-		self:BossTargetScanner(args.sourceGUID, "BombTarget", 0.05, 16)
+		self:BossTargetScanner(GUID, "BombTarget", 0.05, 16)
 	elseif msg == "WhirlingVoid" then
-		self:BossTargetScanner(args.sourceGUID, "VoidTarget", 0.04, 16)
+		self:BossTargetScanner(GUID, "VoidTarget", 0.04, 16)
 	end
 end
