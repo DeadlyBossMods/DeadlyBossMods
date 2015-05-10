@@ -20,8 +20,6 @@ local specWarnWhirlingAxe		= mod:NewSpecialWarningYou(180882)
 local yellWhirlingAxe			= mod:NewYell(180882)
 local specWarnChainGrasp		= mod:NewSpecialWarningYou(180880)--Persists for 30 seconds or until you get 30 yards from boss, whichever first.
 
-local timerWhirlingAxeCD		= mod:NewCDTimer(25, 180882)
-
 function mod:AxeTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
@@ -32,16 +30,9 @@ function mod:AxeTarget(targetname, uId)
 	end
 end
 
-function mod:OnCombatStart(delay, summonTriggered)
-	if summonTriggered then
-		timerWhirlingAxeCD:Start(12.5)--Only one pull, small sample
-	end
-end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 180882 then
-		timerWhirlingAxeCD:Start()
 		self:BossTargetScanner(90841, "AxeTarget", 0.05, 16)
 	end
 end
