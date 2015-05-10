@@ -231,7 +231,6 @@ DBM.DefaultOptions = {
 	DontShowBossAnnounces = false,
 	DontShowBossTimers = false,
 	DontShowFarWarnings = true,
-	DontSendBossWhispers = false,
 	DontSetIcons = false,
 	DontRestoreIcons = false,
 	DontShowRangeFrame = false,
@@ -6556,10 +6555,6 @@ function bossModPrototype:IsCriteriaCompleted(criteriaIDToCheck)
 		end
 	end
 	return false
-end
-
-function bossModPrototype:SendWhisper(msg, target)
-	return not DBM.Options.DontSendBossWhispers and sendWhisper(target, chatPrefixShort..msg)
 end
 
 function bossModPrototype:LatencyCheck()
