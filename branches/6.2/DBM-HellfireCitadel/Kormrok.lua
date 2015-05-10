@@ -42,7 +42,7 @@ local specWarnEmpFelOutpouring		= mod:NewSpecialWarningDodge(181293, nil, nil, n
 local specWarnEmpExplosiveRunes		= mod:NewSpecialWarningSpell(181297, "-Tank")
 local specWarnDraggingHands			= mod:NewSpecialWarningSwitch(181300)
 
-local timerLeapCD					= mod:NewCDTimer(113.5, 180068)
+local timerLeapCD					= mod:NewCDTimer(113.5, 180068)--Not techincally a leap timer, timer syncs up to when he gains next buff (leap ended)
 --Times here are not relevant, they are all hard coded orders based on what buff boss has, real values are under 3 different phases
 local timerPoundCD					= mod:NewNextCountTimer(42, 180244)
 local timerFelOutpouringCD			= mod:NewNextTimer(107, 181292)
@@ -59,7 +59,7 @@ local countdownGraspingHands		= mod:NewCountdown(40, 181299)
 local countdownExplosiveBurst		= mod:NewCountdown("Alt10", 181306)
 
 local voicePound					= mod:NewVoice(180244)--aesoon
-local voiceFelOutpouring				= mod:NewVoice(181292)--watchwave
+local voiceFelOutpouring			= mod:NewVoice(181292)--watchwave
 local voiceExplosiveBurst			= mod:NewVoice(181306)--runout
 local voiceGraspingHands			= mod:NewVoice(181299)--gather
 local voiceSwat						= mod:NewVoice(181305, "Tank")--carefly
@@ -225,7 +225,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	--Each energy has it's own hard coded sequence of events/timers.
 	--So all timers need to be scheduled here, they aren't started by any ability casts
-	elseif spellId == 180115 or spellId == 189197 then--Shadow Energy
+	elseif spellId == 180115 then--Shadow Energy
 		self.vb.poundCount = 0
 		self.vb.swatCount = 0
 		warnShadowEnergy:Show()
@@ -241,7 +241,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		countdownGraspingHands:Start(69)
 		timerLeapCD:Start()
-	elseif spellId == 180116 or spellId == 189198 then--Explosive Energy
+	--Non LFR phase changes need reworking post mechanics changes.
+	--Probably still mostly right but need minor tweaks
+	--https://www.warcraftlogs.com/reports/wmrpCd147nf2B3Dj/#type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+189197+or+ability.id+%3D+189199+or+ability.id+%3D+189198+or+(ability.id+%3D+180244+or+ability.id+%3D+181292+or+ability.id+%3D+181293+or+ability.id+%3D+181296+or+ablity.id+%3D+181297+or+ability.id+%3D+181299+or+ability.id+%3D+181300+or+ability.id+%3D+180244+or+ability.id+%3D+181305+or+ability.id+%3D+187165)+and+type+%3D+%22begincast%22+or+ability.id+%3D+181307+and+type+%3D+%22cast%22+or+ability.id+%3D+181306+and+type+%3D+%22applydebuff%22
+	elseif spellId == 180116 then--Explosive Energy
 		self.vb.poundCount = 0
 		self.vb.explosiveBurst = 0
 		warnExplosiveEnergy:Show()
@@ -257,7 +260,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownGraspingHands:Start(43)
 		timerFelOutpouringCD:Start(85)
 		timerLeapCD:Start()
-	elseif spellId == 180117 or spellId == 189199 then--Foul Energy
+	elseif spellId == 180117 then--Foul Energy
 		self.vb.poundCount = 0
 		self.vb.foulCrush = 0
 		warnFoulEnergy:Show()
@@ -273,6 +276,40 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(27, delayedPound, self, 52)--79
 		timerExplosiveRunesCD:Start(69)
 		timerLeapCD:Start()
+	--LFR is an ENTIRELY different fight
+	--Fortunately it's also different spellids for phase changes so easy separate rules
+	elseif spellId == 189197 then--Shadow Energy
+		--10 Outpouring, 40 pound, 55 outporing, 75 pound, 100 outpouring
+		self.vb.poundCount = 0
+		warnShadowEnergy:Show()
+		timerFelOutpouringCD:Start(10)
+		self:Schedule(10, delayedFelOutpouring, self, 45)--55
+		self:Schedule(45, delayedFelOutpouring, self, 45)--100
+		timerPoundCD:Start(40, 1)
+		self:Schedule(40, delayedPound, self, 35)--75
+		timerLeapCD:Start(124)
+	elseif spellId == 189198 then--Explosive Energy
+		--10 Runes, 30 pound, 45 runes, 55 pound, 80 runes
+		self.vb.poundCount = 0
+		warnExplosiveEnergy:Show()
+		timerExplosiveRunesCD:Start(10)
+		self:Schedule(10, delayedExplosiveRunes, self, 35)--45
+		self:Schedule(45, delayedExplosiveRunes, self, 35)--80
+		timerPoundCD:Start(30, 1)
+		self:Schedule(30, delayedPound, self, 25)--55
+		timerLeapCD:Start(93)
+	elseif spellId == 189199 then--Foul Energy
+		--10 grasping, 30 pound, 45 grasping, 55 pound, 80 grasping
+		self.vb.poundCount = 0
+		warnFoulEnergy:Show()
+		timerGraspingHandsCD:Start(10)
+		voiceGraspingHands:Schedule(5, "gather")
+		countdownGraspingHands:Start(10)
+		self:Schedule(10, delayedHands, self, 35)--45
+		self:Schedule(45, delayedHands, self, 35)--80
+		timerPoundCD:Start(30, 1)
+		self:Schedule(30, delayedPound, self, 25)--55
+		timerLeapCD:Start(93)
 	elseif spellId == 186882 then
 		warnEnrage:Show()
 	end
