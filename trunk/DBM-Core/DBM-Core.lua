@@ -6663,7 +6663,12 @@ do
 		else
 			name, uid, bossuid = getBossTarget(cidOrGuid, scanOnlyBoss)
 		end
-		if uid and (DBM:GetUnitCreatureId(uid) == 24207 or DBM:GetUnitCreatureId(uid) == 80258) then return nil, nil, nil end--filter army of the dead/Garrison Footman (basically same thing as army)
+		if uid then
+			local cid = DBM:GetUnitCreatureId(uid)
+			if cid == 24207 or cid == 80258 or cid == 87519 then--filter army of the dead/Garrison Footman (basically same thing as army)
+				return nil, nil, nil
+			end
+		end
 		return name, uid, bossuid
 	end
 
