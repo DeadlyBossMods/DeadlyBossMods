@@ -204,7 +204,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 182280 then
 		self.vb.artilleryActive = self.vb.artilleryActive + 1
-		warnArtillery:CombinedShow(0.3, self.vb.artilleryCount, args.destName)
 		if self:AntiSpam(3, 1) then
 			self.vb.artilleryCount = self.vb.artilleryCount + 1
 			if self.vb.groundPhase then
@@ -220,6 +219,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
+		warnArtillery:CombinedShow(0.3, self.vb.artilleryCount, args.destName)
 		if args:IsPlayer() then
 			specWarnArtillery:Show()
 			yellArtillery:Yell()
