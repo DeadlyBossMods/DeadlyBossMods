@@ -180,6 +180,21 @@ L.SpecialWarnSound2			= "특수 경고 소리 2 (SW2, 속성: 공격대 다수 �
 L.SpecialWarnSound3			= "특수 경고 소리 3 (SW3, 속성: 치명적인 피해를 입힘)"
 L.SpecialWarnSound4			= "특수 경고 소리 4 (SW4, 속성: 도망쳐야 함)"
 
+-- Tab: Heads Up Display Frame
+L.Panel_HUD					= "범위정보"
+L.Area_HUDOptions			= "범위정보 설정"
+L.HUDColorOverride			= "각 경고별로 지정된 색상을 무시하고 정해진 색상으로 보기"
+L.HUDSizeOverride			= "각 경고별로 지정된 크기를 무시하고 정해진 크기로 보기"
+L.HUDAlphaOverride			= "각 경고별로 지정된 투명도를 무시하고 정해진 투명도로 보기"
+L.HUDTextureOverride		= "각 경고별로 지정된 무늬를 무시(전술목표 아이콘 무늬 제외)"
+L.HUDColorSelect			= "색상 %d"
+L.HUDTextureSelect1			= "첫번째 범위정보의 무늬"
+L.HUDTextureSelect2			= "두번째 범위정보의 무늬"
+L.HUDTextureSelect3			= "세번째 범위정보의 무늬"
+L.HUDTextureSelect4			= "특정위치를 가리키는 범위 정보의 무늬"
+L.HUDSizeSlider				= "범위정보 크기: %0.1f"
+L.HUDAlphaSlider			= "범위정보 투명도: %0.1f"
+
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "음성안내"
 L.Area_VoiceSelection		= "음성선택"
@@ -210,6 +225,7 @@ L.Panel_SpamFilter			= "DBM 기능 끄기"
 L.Area_SpamFilter_Outgoing	= "기능 끄기 설정(다른 설정보다 항상 우선됨)"
 L.SpamBlockNoShowAnnounce	= "알림 보이지 않기"
 L.DontShowFarWarnings		= "멀리 떨어진 곳에서 시전된 주문 알림 및 바를 보이지 않기"
+L.SpamBlockNoShowTimers		= "바 보이지 않기"
 L.SpamBlockNoSetIcon		= "전술 목표 아이콘 설정하지 않기"
 L.SpamBlockNoRangeFrame		= "거리 창 보이지 않기"
 L.SpamBlockNoInfoFrame		= "정보 창 보이지 않기"
@@ -231,7 +247,8 @@ L.FilterInterrupts			= "자신의 대상이나 주시 대상이 아닌 대상의
 L.FilterDispels				= "해제 주문이 재사용 대기시간 중일 경우 해제 경고 보지 않기"
 L.FilterSelfHud				= "자기 자신의 범위 정보를 보이지 않기(거리 비례 범위 정보는 제외)"
 
-L.Area_PullTimer			= "특수 바(전투 예정/시작, 휴식, 사용자 바) 기능 끄기"
+L.Area_PullTimer			= "특수 바(전투 예정/시작, 휴식, 사용자 바, 재생성) 기능 끄기"
+L.DontShowRespawn			= "재생성 바 보이지 않기"
 L.DontShowPTNoID			= "같은 인스턴스에 있지 않은 사용자가 보낸 전투 예정 바 차단"
 L.DontShowPT				= "특수 바 숨기기"
 L.DontShowPTText			= "특수 바 관련 알림 숨기기"
@@ -277,6 +294,8 @@ L.AutoAcceptFriendInvite	= "친구가 보낸 파티 초대 자동 수락"
 L.AutoAcceptGuildInvite		= "길드원이 보낸 파티 초대 자동 수락"
 L.Area_Advanced				= "고급 설정"
 L.FakeBW					= "DBM 대신 BigWigs 사용자로 위장하기(BigWigs 사용을 강제하는 공격대에서 유용합니다.)"
+L.AITimer					= "DBM의 인공지능 기능을 사용하여 처음 마주치는 전투의 예상 대기시간 바를 생성(베타 또는 테스트 서버에서 최초 테스팅을 할때 특히 유용합니다.). 참고: 동일한 주문을 사용하는 쫄이 다수가 나오는 전투에서는 정상 작동하지 않을 수 있습니다."
+L.AutoCorrectTimer			= "지나치게 긴 대기시간 바를 자동으로 교정하기(경보가 업데이트 되지 않은 상위 난이도 공략시 유용합니다.). 참고: 이 설정은 일부 바의 작동을 더 나쁘게 만들 수 있습니다. 대표적인 경우라면, 단계 전환시 대기시간이 변경될 때가 해당됩니다."
 
 L.PizzaTimer_Headline 		= '사용자 지정 바 만들기'
 L.PizzaTimer_Title			= '이름(예: "Pizza!")'

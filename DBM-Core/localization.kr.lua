@@ -53,6 +53,8 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s 전투가 %s 전에 시작되었습니다
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor 기록을 시작합니다."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor 기록을 중단합니다."
 
+DBM_CORE_COMBAT_STARTED_AI_TIMER	= "DBM 인공지능 바가 작동합니다. (이 전투에서 사용될 주문들의 대기시간들을 추정해서 보여줍니다.)"
+
 DBM_CORE_PROFILE_NOT_FOUND			= "<Deadly Boss Mods> 현재 설정된 프로필이 손상되었습니다. 'Default' 프로필을 불러옵니다."
 DBM_CORE_PROFILE_CREATED			= "'%s' 프로필을 만들었습니다."
 DBM_CORE_PROFILE_CREATE_ERROR		= "프로필 생성 실패. 프로필 이름이 올바르지 않습니다."
@@ -148,7 +150,7 @@ DBM_CORE_UPDATEREMINDER_TESTVERSION		= "경고: 현재 게임 버전과 맞지 �
 DBM_CORE_VEM							= "경고: 당신은 DBM과 VEM을 동시에 사용중입니다. 현재 설정에서는 DBM이 작동하지 않으므로 DBM을 불러오지 않습니다."
 DBM_CORE_3RDPROFILES					= "경고: DBM-Profiles는 이 버전의 DBM과 호환되지 않습니다. 충돌을 방지하기 위해 해당 애드온을 제거하셔야 DBM을 불러올 수 있습니다."
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "경고: 지금 업데이트하신 DBM은 게임 클라이언트를 완전히 재시작하지 전까지 정상작동하지 않습니다. 이 업데이트는 새 파일이 추가되었거나 UI 재시작으로는 불러올 수 없는 TOC 변경이 포함되어 있습니다. 재시작 없이 사용하실 경우 오류가 발생하거나 작동하지 않을 수 있습니다."
-DBM_CORE_OUT_OF_DATE_NAG				= "경고: 현재 사용중인 DBM 버전이 오래되었으며 현재 업데이트 팝업 끄기가 선택된 상태입니다. 중요한 알림, 바 그리고 공격대원 모두가 볼 수 있는 대화 알림을 놓치지 않기 위해 업데이트 하시는 것을 강력하게 권장 드립니다."
+DBM_CORE_OUT_OF_DATE_NAG				= "경고: 현재 사용중인 DBM 버전이 오래되었습니다. 이 전투를 위한 중요한 알림, 바 그리고 공격대원 모두가 볼 수 있는 대화 알림을 놓치지 않기 위해 업데이트 하시는 것을 강력하게 권장 드립니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
@@ -315,6 +317,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.target			= "%s: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.cast				= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.active			= "%s 종료"
 DBM_CORE_AUTO_TIMER_TEXTS.fades				= "%s 사라짐"
+DBM_CORE_AUTO_TIMER_TEXTS.ai				= "%s 예정"
 DBM_CORE_AUTO_TIMER_TEXTS.cd				= "%s 가능"
 DBM_CORE_AUTO_TIMER_TEXTS.cdcount			= "%s 가능 (%%d)"
 DBM_CORE_AUTO_TIMER_TEXTS.cdsource			= "%s 가능: >%%s<"
@@ -331,6 +334,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.target			= "$spell:%s 약화효과 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast			= "$spell:%s 시전 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.active			= "$spell:%s 유지시간 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.fades			= "$spell:%s 남은시간 바 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.ai				= "$spell:%s 예정 바 보기(인공지능 사용)"
 DBM_CORE_AUTO_TIMER_OPTIONS.cd				= "$spell:%s 대기시간 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cdcount			= "$spell:%s 대기시간 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cdsource		= "$spell:%s 대기시간 바 보기"
