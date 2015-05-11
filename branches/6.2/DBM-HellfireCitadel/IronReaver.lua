@@ -86,11 +86,11 @@ mod.vb.fuelCount = 0
 --These tables establish the cast sequence by ability.
 --If energy rates are different in different modes, then each table will need to be different.
 --These tables are Heroic timers. Hopefully all modes the same. If not, easily fixed
-local artilleryTimers = {9.3, 9, 30, 15, 9, 24, 15}--Phase 1, phase 2 is just 15
-local barrageTimers = {12, 30, 12, 45}
+local artilleryTimers = {8.9, 9, 30, 15, 9, 24, 15}--Phase 1, phase 2 is just 15
+local barrageTimers = {11.7, 30, 12, 45}
 local blitzTimers = {63, 5, 58, 4.7}
 local unstableOrbsTimers = {3, 3, 3, 9, 6, 3, 21, 3, 30, 15}--While it may seem most of the timers (3 seconds apart) aren't useful. they can be quite useful for grouped movement/healing in the larger gaps
-local poundingTimers = {33, 54, 24}
+local poundingTimers = {32.6, 54, 24}
 
 local debuffFilter
 local UnitDebuff = UnitDebuff
@@ -292,12 +292,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.poundingCount = 0
 		self.vb.unstableOrbCount = 0
 		--Start ground phase timers
+		--Tiny variation in the firsts, 0.3-0.4, lowest times used. but for example 8.9 could be 9.3
 		timerUnstableOrbCD:Start(3, 1)
-		timerArtilleryCD:Start(9.3, 1)
-		countdownArtillery:Start(9.3)
-		timerBarrageCD:Start(12, 1)
-		countdownBarrage:Start(12)
-		timerPoundingCD:Start(33, 1)
+		timerArtilleryCD:Start(8.9, 1)
+		countdownArtillery:Start(8.9)
+		timerBarrageCD:Start(11.7, 1)
+		countdownBarrage:Start(11.7)
+		timerPoundingCD:Start(32.6, 1)
 		timerBlitzCD:Start(63, 1)
 		timerFullChargeCD:Start()
 	end
