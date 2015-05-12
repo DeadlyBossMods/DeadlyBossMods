@@ -22,10 +22,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, maybe a custom info frame that shows up to 3 players of each debuff "Feltouched" and "voidtouched". 6 total is enough. Players that are fire will be orange, players void will be purple.
---TODO, It's possible to warn primary chains target early with target scanning. but this probably won't last so fallback method will stay too
 --TODO, custom voice for void surge (186333) maybe. Void touched person needs to run into fire on purpose (while making sure not to have any other players nearby), the debuff puts out the fire on ground. So maybe "run into the fire?"
---
 --Fire Phase
 ----Boss
 local warnFelPortal					= mod:NewSpellAnnounce(187003, 2)
@@ -41,9 +38,9 @@ local warnOverwhelmingChaos			= mod:NewCountAnnounce(187204, 4)
 
 --Fight Wide
 local specWarnFelTouched			= mod:NewSpecialWarningYou(186134, false)
-local specWarnFelsinged				= mod:NewSpecialWarningMove(186073)--Fire GTFO
+local specWarnFelsinged				= mod:NewSpecialWarningMove(186073, nil, nil, nil, 1, nil, 2)--Fire GTFO
 local specWarnVoidTouched			= mod:NewSpecialWarningYou(186135, false)
-local specWarnWastingVoid			= mod:NewSpecialWarningMove(186063)--Void GTFO
+local specWarnWastingVoid			= mod:NewSpecialWarningMove(186063, nil, nil, nil, 1, nil, 2)--Void GTFO
 --Fire Phase
 ----Boss
 local specWarnFelStrike				= mod:NewSpecialWarningSpell(186271, "Tank")
@@ -84,7 +81,10 @@ local timerOverwhelmingChaosCD		= mod:NewAITimer(10, 187204)--Dungeon journal sa
 
 --local countdownInfernoSlice			= mod:NewCountdown(12, 155080, "Tank")
 
-local voiceFelSurge					= mod:NewVoice(186407)--runout
+local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+local voiceFelsinged				= mod:NewVoice(186073)	--run away
+local voiceFelSurge					= mod:NewVoice(186407)	--run out (because need to tell difference from run away GTFOs)
+local voiceWastingVoid				= mod:NewVoice(186063)  --run away
 
 --Warning behavior choices for Chains.
 --Cast only gives original target, not all targets, but does so 3 seconds faster. It allows the person to move early and change other players they affect with chains by pre moving.
@@ -185,8 +185,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 186063 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnWastingVoid:Show()
+		voiceWastingVoid:Play("runaway")
 	elseif spellId == 186073 and args:IsPlayer() and self:AntiSpam(2, 2) then
 		specWarnFelsinged:Show()
+		voiceFelsinged:Play("runaway")
 	elseif spellId == 186135 and args:IsPlayer() then
 		specWarnVoidTouched:Show()
 	elseif spellId == 186134 and args:IsPlayer() then
@@ -267,11 +269,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	--Phase events trigger slightly after portal events.
 	--Included because until the PHASE events happen, timers do not change
 	elseif spellId == 187225 then--Phase 2 (Purple Mode)
+		voicePhaseChange:Play("phasechange")
 		timerFelStrikeCD:Cancel()
 		timerFelSurgeCD:Cancel()
 		timerVoidStrikeCD:Start(8.5)
 		timerVoidSurgeCD:Start(19)
 	elseif spellId == 189047 then--Phase 3 (Shadowfel Phasing)
+		voicePhaseChange:Play("phasechange")
 		timerFelSurgeCD:Start(7)
 		timerFelStrikeCD:Start(8)
 	end

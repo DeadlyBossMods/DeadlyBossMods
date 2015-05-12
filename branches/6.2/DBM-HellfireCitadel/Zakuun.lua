@@ -66,6 +66,7 @@ local countdownSeedsofDestruction		= mod:NewCountdownFades("Alt5", 181508)--Alt 
 local voiceSoulCleave					= mod:NewVoice(179406)--"179406"
 local voiceWakeofDestruction			= mod:NewVoice(181499)--watchwave
 local voiceSeedsofDestruction			= mod:NewVoice(181508)--Runout
+local voiceEnrage						= mod:NewVoice(179681)--enrage
 
 mod:AddRangeFrameOption(10, 179711)
 --Icon options will conflict on mythic or 25-30 players (when you get 5 targets for each debuff). Below that, they can coexist.
@@ -277,6 +278,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownDisarm:Cancel()
 		self.vb.Enraged = true
 		warnEnrage:Show()
+		voiceEnrage:Play("enrage")
 		DBM:AddMsg("Timers may not be correct for remainder of fight. Do not have data beyond this point")
 		--TODO, figure out timers, depending on what phase he was in when he enraged, start timers that need starting, or maybe update all timers if that's how it works
 	elseif spellId == 179711 then

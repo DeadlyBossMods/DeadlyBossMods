@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 181190 181597 182006",
 	"SPELL_AURA_APPLIED 181099 181275 181191 181597 182006",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 181099 181275 185147 182212 185175 181597 182006",
+	"SPELL_AURA_REMOVED 181099 181275 185147 182212 185175 181597 182006 181275",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
@@ -24,9 +24,9 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, do voices later, for this fight i need a lot of clarity first.
 --TODO, get timer for 2nd doom lord spawning, if some group decides to do portals in a bad order and not kill that portal summoner first
 --TODO, get longer phase 4 log because log i have isn't long enough to see why felstorm has a longer cd in phase 4
+--TODO, custom voice for shadowforce? It works almost identical to helm of command from lei shen. Did that have a voice usuable here?
 --Adds
 ----Doom Lords
 local warnCurseoftheLegion			= mod:NewTargetAnnounce(181275, 3)--Spawn
@@ -44,20 +44,20 @@ local warnFelseeker					= mod:NewCountAnnounce(181735, 3)
 ----Doom Lords
 local specWarnCurseofLegion			= mod:NewSpecialWarningYou(181275)
 local yellCurseofLegion				= mod:NewFadesYell(181275)--Don't need to know when it's applied, only when it's fading does it do aoe/add spawn
-local specWarnMarkOfDoom			= mod:NewSpecialWarningYou(181099)
+local specWarnMarkOfDoom			= mod:NewSpecialWarningYou(181099, nil, nil, nil, 1, nil, 2)
 local yellMarkOfDoom				= mod:NewYell(181099)--This need to know at apply, only player needs to know when it's fading
-local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(181126, "-Healer")
+local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(181126, "-Healer", nil, nil, 1, nil, 2)
 ----Fel Imps
-local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, "-Healer")--This warning is spammy if filter is disabled, so this mod does NOT honor filter setting, this warning is ALWAYS target filtered
+local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, "-Healer", nil, nil, 1, nil, 2)--This warning is spammy if filter is disabled, so this mod does NOT honor filter setting, this warning is ALWAYS target filtered
 ----Dread Infernals
-local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, "Melee", nil, nil, 4)
+local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, "Melee", nil, nil, 4, nil, 2)
 --Mannoroth
-local specWarnGlaiveCombo			= mod:NewSpecialWarningSpell(181354, "Tank", nil, nil, 3)--Active mitigation or die mechanic
-local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, "Tank")--Swap Mechanic
-local specWarnFelHellStorm			= mod:NewSpecialWarningSpell(181557, nil, nil, nil, 2)
+local specWarnGlaiveCombo			= mod:NewSpecialWarningSpell(181354, "Tank", nil, nil, 3, nil, 2)--Active mitigation or die mechanic
+local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, "Tank", nil, nil, 1, nil, 2)--Swap Mechanic
+local specWarnFelHellStorm			= mod:NewSpecialWarningSpell(181557, nil, nil, nil, 2, nil, 2)
 local specWarnGaze					= mod:NewSpecialWarningYou(181597)
 local yellGaze						= mod:NewYell(181597)
-local specWarnFelSeeker				= mod:NewSpecialWarningDodge(181735, nil, nil, nil, 2)
+local specWarnFelSeeker				= mod:NewSpecialWarningDodge(181735, nil, nil, nil, 2, nil, 2)
 local specWarnShadowForce			= mod:NewSpecialWarningSpell(181799, nil, nil, nil, 3)
 
 --Adds
@@ -81,7 +81,15 @@ local timerShadowForceCD			= mod:NewCDTimer(52.5, 181799)
 local countdownMarkOfDoom			= mod:NewCountdownFades("Alt15", 181099)
 local countdownShadowForce			= mod:NewCountdown("AltTwo52", 181799)
 
---local voiceInfernoSlice				= mod:NewVoice(155080)
+local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+local voiceGaze						= mod:NewVoice(181597, false) --gather share
+local voiceMarkOfDoom				= mod:NewVoice(181099) --run out
+local voiceFelHellfire				= mod:NewVoice(181191, "Melee") --runaway
+local voiceShadowBoltVolley			= mod:NewVoice(181126, "-Healer")
+local voiceFelBlast					= mod:NewVoice(181132, "-Healer")
+local voiceFelSeeker				= mod:NewVoice(181132)--watchstep
+local voiceGlaiveCombo				= mod:NewVoice(181354, "Tank")--Defensive
+local voiceMassiveBlast				= mod:NewVoice(181359, "Tank")--changemt
 
 mod:AddRangeFrameOption(20, 181099)
 mod:AddHudMapOption("HudMapOnGaze", 181597)
@@ -151,13 +159,16 @@ function mod:SPELL_CAST_START(args)
 		timerShadowBoltVolleyCD:Start(args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnShadowBoltVolley:Show(args.sourceName)
+			voiceShadowBoltVolley:Play("kickcast")
 		end
 	elseif spellId == 181132 then
 		if self:CheckInterruptFilter(args.sourceGUID, true) then
 			specWarnFelBlast:Show(args.sourceName)
+			voiceFelBlast:Play("kickcast")
 		end
 	elseif spellId == 183376 or spellId == 185830 then
 		specWarnMassiveBlast:Show()
+		voiceMassiveBlast:Play("changemt")
 	elseif spellId == 181793 or spellId == 182077 then--Melee (10)
 		warnFelseeker:Show(10)
 	elseif spellId == 181792 or spellId == 182076 then--Ranged (20)
@@ -239,15 +250,22 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMarkOfDoom:Show()
 			countdownMarkOfDoom:Start()
 			yellMarkOfDoom:Yell()
+			voiceMarkOfDoom:Schedule(8.5, "runout")
 		end
 		updateRangeFrame(self)
 	elseif spellId == 181191 and self:CheckInterruptFilter(args.sourceGUID, true) then--No sense in duplicating code, just use CheckInterruptFilter with arg to skip the filter setting check
+		voiceFelHellfire:Play("runaway")
 		specWarnFelHellfire:Show()--warn melee who are targetting infernal to run out if it's exploding
 	elseif spellId == 181597 or spellId == 182006 then
 		warnGaze:CombinedShow(0.3, args.destName)
+		voiceGaze:Cancel()
 		if args:IsPlayer() then
 			specWarnGaze:Show()
 			yellGaze:Yell()
+		else
+			if not UnitDebuff("player", args.spellName) then
+				voiceGaze:Schedule(0.3, "gathershare")
+			end
 		end
 		if self.Options.HudMapOnGaze then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 8, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
@@ -272,6 +290,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerGazeCD:Start(42)
 			timerGlaiveComboCD:Start(44)
 			timerFelSeekerCD:Start(59)
+			voicePhaseChange:Play("ptwo")
 		end
 		if spellId == 185147 then--Doom Lords Portal
 			--I'd add a cancel for the Doom Lords here, but since everyone killed this portal first
@@ -284,6 +303,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 181597 or spellId == 182006 then
 		if self.Options.HudMapOnGaze then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		end
+	elseif spellId == 181275 then
+		if args:IsPlayer() then
+			yellCurseofLegion:Cancel()
 		end
 	end
 end
@@ -330,6 +353,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			timerGazeCD:Start(40.5)
 			timerGlaiveComboCD:Start(41.2)--I suspect this isn't power based and may be 40.5-41.2
 			timerFelSeekerCD:Start(58.1)--^^
+			voicePhaseChange:Play("pthree")
 		elseif self.vb.phase == 4 then
 			timerFelHellfireCD:Cancel()
 			timerShadowForceCD:Cancel()
@@ -343,6 +367,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			timerGlaiveComboCD:Start(40.5)--I suspect this isn't power based and may be 40.5-41.2
 			timerGazeCD:Start(48)
 			timerFelSeekerCD:Start(58.5)--^^
+			voicePhaseChange:Play("pfour")
 		end
 	end
 end
@@ -351,6 +376,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 181735 then
 		specWarnFelSeeker:Show()
 		timerFelSeekerCD:Start()
+		voiceFelSeeker:Play("watchstep")
 	elseif spellId == 181301 then--Summon Adds (Start Phase 2 imps/Infernal timers)
 		self.vb.impCount = 0
 		self.vb.infernalCount = 0
@@ -393,12 +419,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 181354 then--183377 or 185831 also usable with SPELL_CAST_START but i like this way more, cleaner.
 		specWarnGlaiveCombo:Show()
 		timerGlaiveComboCD:Start()
+		voiceGlaiveCombo:Play("defensive")
 	end
 end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
 
 	end
 end

@@ -46,7 +46,7 @@ local yellReap						= mod:NewYell(184476)
 local specWarnDarkness				= mod:NewSpecialWarningSpell(184681, nil, nil, nil, 2)
 --Gurtogg Bloodboil
 local specWarnFelRage				= mod:NewSpecialWarningYou(184360)
-local specWarnDemolishingLeap		= mod:NewSpecialWarningDodge(184366, nil, nil, nil, 2)--Jumps around room, from side to side
+local specWarnDemolishingLeap		= mod:NewSpecialWarningDodge(184366, nil, nil, nil, 2, nil, 2)--Jumps around room, from side to side
 
 --Blademaster Jubei'thos
 local timerMarkofNecroCD			= mod:NewCDTimer(60.5, 184449, nil, "Healer")
@@ -67,7 +67,7 @@ local countdownReap					= mod:NewCountdownFades("Alt4", 184476)
 
 local voiceFelstorm					= mod:NewVoice(183701)--aesoon
 local voiceReap						= mod:NewVoice(184476)--runout/runaway
---local voiceDemolishingLeap			= mod:NewVoice(184366)--Watch step? not sure what to use yet. Not run out, he leaps several times, random locations, you must move away from targeting circles on ground
+local voiceDemolishingLeap			= mod:NewVoice(184366)--runaway (Stll not sure I like run away for this. You may not have to move at all, run away implies you need to react, but this boss jumps to random spot in room, you have to check ground whether or not you need to move)
 
 --mod:AddRangeFrameOption(8, 155530)
 
@@ -171,6 +171,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 184365 and not args:IsDestTypePlayer() then--IsDestTypePlayer because it could be wrong spellid and one applied to players when he lands on them, so to avoid spammy mess, filter
 		specWarnDemolishingLeap:Show()
 		--timerDemoLeapCD:Start()
+		voiceDemolishingLeap:Play("runaway")
 	elseif spellId == 184449 then--Confirmed correct CAST spellid for heroic.
 		warnMarkoftheNecromancer:CombinedShow(0.3, args.destName)
 	end

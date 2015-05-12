@@ -51,7 +51,7 @@ local yellAnnihilatingStrike				= mod:NewYell(180260)
 local specWarnInfernalTempest				= mod:NewSpecialWarningCount(180300, nil, nil, nil, 2, nil, 2)
 ----Ancient Enforcer
 local specWarnAncientEnforcer				= mod:NewSpecialWarningSwitch("ej11155", "-Healer")
-local specWarnEnforcersOnslaught			= mod:NewSpecialWarningDodge(180004, nil, nil, nil, 1, nil, 2)
+local specWarnEnforcersOnslaught			= mod:NewSpecialWarningDodge(180004, nil, nil, nil, 1, nil, 5)
 --Stage Two: Contempt
 ----Ancient Harbinger
 local specWarnAncientHarbinger				= mod:NewSpecialWarningSwitch("ej11163", "-Healer")
@@ -83,11 +83,12 @@ local timerGaveloftheTyrantCD				= mod:NewNextCountTimer(10, 180608)
 
 local countdownAnnihilatingStrike			= mod:NewCountdown(10, 180260, nil, nil, 3)--It's same cd as Infernal tempest so going to use countdown for both. Starting count at 3 to avoid so much spam. every 10 seconds, 5-1 would be bit much. 3-1 important though
 
+local voicePhaseChange						= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceInfernalTempest					= mod:NewVoice(180300)--scatter
 local voiceEdictofCondemnation				= mod:NewVoice(182459)--runin or gather (mythic)
 local voiceHarbingersMending				= mod:NewVoice(180025)--kickcast/dispelboss
 local voiceGaveloftheTyrant					= mod:NewVoice(180608)--carefly
-local voiceEnforcerOnslaught				= mod:NewVoice(180004)--orbrun (I'm not sure that's accurate enough, you don't run from or toward orb, you dodge it). Maybe "watch orb" needed?
+local voiceEnforcerOnslaught				= mod:NewVoice(180004)--watchorb
 local voiceSealofDecay						= mod:NewVoice(180000)--tauntboss
 
 mod:AddRangeFrameOption(5)--Seems like range 5 for all spells. I think for this fight it's basically a constant spread out fight when possible to avoid extra damage.
@@ -159,7 +160,7 @@ function mod:SPELL_CAST_START(args)
 		self:BossTargetScanner(90269, "AnnTarget", 0.05, 20, true)
 	elseif spellId == 180004 then
 		specWarnEnforcersOnslaught:Show()
-		voiceEnforcerOnslaught:Play("orbrun")
+		voiceEnforcerOnslaught:Play("watchorb")
 		timerEnforcersOnslaughtCD:Start(12)
 	elseif spellId == 180025 then--No target filter, it's only interrupt onfight and it's VERY important
 		specWarnHarbingersMending:Show(args.sourceName)
@@ -190,12 +191,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownAnnihilatingStrike:Cancel()
 		timerInfernalTempestCD:Cancel()
 		timerFontofCorruptionCD:Start(22)
+		voicePhaseChange:Play("ptwo")
 	elseif spellId == 180533 then
 		warnTaintedShadows:Show()
 	elseif spellId == 179991 then--Aura of Malice (phase 3)
 		warnAuraofMalice:Show()
 		timerFontofCorruptionCD:Cancel()
 		timerBulwarkoftheTyrantCD:Start(nil, 1)
+		voicePhaseChange:Play("pthree")
 	elseif spellId == 180600 then
 		self.vb.bulwarkCount = self.vb.bulwarkCount + 1
 		warnBulwarkoftheTyrant:Show(self.vb.bulwarkCount, args.destName)
