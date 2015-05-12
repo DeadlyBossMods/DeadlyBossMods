@@ -9052,18 +9052,32 @@ do
 				end
 			end
 			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
+			--AI timer api:
+			--Starting ai timer with (1) indicates it's a first timer after pull
+			--Starting timer with (2) or (3) indicates it's a phase 2 or phase 3 first timer
+			--Starting AI timer with anything above 3 indicarets it's a regular timer and to use shortest time in between two regular casts
 			if self.type == "ai" then--A learning timer
 				if not DBM.Options.AITimer then return end
-				if timer > 2 then--Normal behavior.
+				if timer > 4 then--Normal behavior.
 					if self.firstCastTimer and type(self.firstCastTimer) == "string" then--This is first cast of spell, we need to generate self.firstPullTimer
 						self.firstCastTimer = tonumber(self.firstCastTimer)
 						self.firstCastTimer = GetTime() - self.firstCastTimer--We have generated a self.firstCastTimer! Next pull, DBM should know timer for first cast next pull. FANCY!
 						DBM:Debug("AI timer learned a first timer for pull of "..self.firstCastTimer, 2)
 					end
-					if self.phaseCastTimer and type(self.phaseCastTimer) == "string" then--This is first cast of spell after a phase transition, we need to generate self.phaseCastTimer
-						self.phaseCastTimer = tonumber(self.phaseCastTimer)
-						self.phaseCastTimer = GetTime() - self.phaseCastTimer--We have generated a self.phaseCastTimer!
-						DBM:Debug("AI timer learned a first timer for phase of "..self.phaseCastTimer, 2)
+					if self.phase4CastTimer and type(self.phase4CastTimer) == "string" then--This is first cast of spell after a phase transition, we need to generate self.phaseCastTimer
+						self.phase4CastTimer = tonumber(self.phase4CastTimer)
+						self.phase4CastTimer = GetTime() - self.phase4CastTimer--We have generated a self.phaseCastTimer!
+						DBM:Debug("AI timer learned a first timer for phase of "..self.phase4CastTimer, 2)
+					end
+					if self.phase3CastTimer and type(self.phase3CastTimer) == "string" then--This is first cast of spell after a phase transition, we need to generate self.phaseCastTimer
+						self.phase3CastTimer = tonumber(self.phase3CastTimer)
+						self.phase3CastTimer = GetTime() - self.phase3CastTimer--We have generated a self.phaseCastTimer!
+						DBM:Debug("AI timer learned a first timer for phase of "..self.phase3CastTimer, 2)
+					end
+					if self.phase2CastTimer and type(self.phase2CastTimer) == "string" then--This is first cast of spell after a phase transition, we need to generate self.phaseCastTimer
+						self.phase2CastTimer = tonumber(self.phase2CastTimer)
+						self.phase2CastTimer = GetTime() - self.phase2CastTimer--We have generated a self.phaseCastTimer!
+						DBM:Debug("AI timer learned a first timer for phase of "..self.phase2CastTimer, 2)
 					end
 					if self.lastCast then--We have a GetTime() on last cast
 						local timeLastCast = GetTime() - self.lastCast--Get time between current cast and last cast
@@ -9080,11 +9094,25 @@ do
 					else
 						return--Don't start the bogus timer shoved into timer field in the mod
 					end
-				elseif timer == 2 then
-					if self.phaseCastTimer and type(self.phaseCastTimer) == "number" then
-						timer = self.phaseCastTimer
+				elseif timer == 4 then
+					if self.phase4CastTimer and type(self.phase4CastTimer) == "number" then
+						timer = self.phase4CastTimer
 					else--No first pull timer generated yet, set it to GetTime, as a string
-						self.phaseCastTimer = tostring(GetTime())
+						self.phase4CastTimer = tostring(GetTime())
+						return--Don't start the 4 second timer
+					end
+				elseif timer == 3 then
+					if self.phase3CastTimer and type(self.phase3CastTimer) == "number" then
+						timer = self.phase3CastTimer
+					else--No first pull timer generated yet, set it to GetTime, as a string
+						self.phase3CastTimer = tostring(GetTime())
+						return--Don't start the 3 second timer
+					end
+				elseif timer == 2 then
+					if self.phase2CastTimer and type(self.phase2CastTimer) == "number" then
+						timer = self.phase2CastTimer
+					else--No first pull timer generated yet, set it to GetTime, as a string
+						self.phase2CastTimer = tostring(GetTime())
 						return--Don't start the 2 second timer
 					end
 				else--1 was sent, trigger a first Cast timer
