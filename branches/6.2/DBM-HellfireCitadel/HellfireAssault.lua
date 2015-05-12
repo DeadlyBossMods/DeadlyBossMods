@@ -98,7 +98,7 @@ mod:AddHudMapOption("HudMapOnAxe", 184369)
 mod:AddSetIconOption("SetIconOnAdds", "ej11411", false, true)--If last wave isn't dead before new wave, this icon option will screw up. A more complex solution may be needed. Or just accept that this will only work for guilds with high dps
 
 mod.vb.vehicleCount = 0
-local vehicleTimers = {38, 62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 43.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-2 seconds
+local vehicleTimers = {38, 62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 40.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-4 seconds
 --Types: 1-Felfire Flamebelcher, 2-Felfire Crusher, 3-Felfire Artillery, 4-Felfire Demolisher, 5-Felfire Flamebelcher, 6-Felfire Artillery, 7-Felfire Demolisher, 8-Felfire Flamebelcher, 9-Felfire Crusher
 local addsTimers = {25, 45, 44, 44, 43, 43, 42, 42, 41, 40, 42, 40, 40}--Very tiny variance between pulls. Adds gradually get faster over time. that 42 is a strange fluke though. probably 40 with variance, the 40 before it i think should have been a 41 so the 42 was probably auto correction
 local axeDebuff = GetSpellInfo(184369)
