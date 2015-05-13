@@ -89,8 +89,8 @@ end
 
 function mod:OnSync(msg, GUID)
 	if GUID and msg == "VoidBomb" then
-		self:BossTargetScanner(GUID, "BombTarget", 0.05, 16)
+		self:ScheduleMethod(0.2, "BossTargetScanner", GUID, "BombTarget", 0.05, 16)
 	elseif GUID and msg == "WhirlingVoid" then
-		self:BossTargetScanner(GUID, "VoidTarget", 0.04, 16)
+		self:ScheduleMethod(0.2, "BossTargetScanner", GUID, "VoidTarget", 0.04, 16)
 	end
 end
