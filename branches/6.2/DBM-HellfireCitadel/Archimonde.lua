@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 183254 182826 183817 183828 185590 184931 184265 186562 187180",
 	"SPELL_CAST_SUCCESS 183865",
-	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 187180 186961",
+	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 187180 186961 189895",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 186123 185014 187180 186961",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -44,6 +44,7 @@ local warnConsumeMagic				= mod:NewCastAnnounce(186562, 2)
 local warnDemonicFeedback			= mod:NewTargetAnnounce(187180, 3)
 local warnNetherBanish				= mod:NewTargetAnnounce(186961, 2)
 ----The Nether
+local warnVoidStarFixate			= mod:NewTargetAnnounce(189895, 2)
 
 --Phase 1: The Defiler
 local specWarnDoomfireFixate		= mod:NewSpecialWarningYou(182879, nil, nil, nil, 4)
@@ -68,6 +69,8 @@ local specWarnDemonicFeedbackOther	= mod:NewSpecialWarningTarget(187180, "Healer
 local specWarnNetherBanish			= mod:NewSpecialWarningYou(186961)
 local yellNetherBanish				= mod:NewFadesYell(186961)
 ----The Nether
+local specWarnVoidStarFixate		= mod:NewSpecialWarningYou(189895)--Maybe move away? depends how often it changes fixate targets
+local yellVoidStarFixate			= mod:NewYell(189895, nil, false)
 
 --Phase 1: The Defiler
 local timerDoomfireCD				= mod:NewAITimer(107, 182826)--182826 cast, 182879 fixate
@@ -282,6 +285,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnNetherBanish:Show(args.destName)
 		end
 		updateRangeFrame(self)
+	elseif spellId == 189895 then
+		warnVoidStarFixate:CombinedShow(0.3, args.destName)--More than one?
+		if args:IsPlayer() then
+			specWarnVoidStarFixate:Show()
+			yellVoidStarFixate:Yell()
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
