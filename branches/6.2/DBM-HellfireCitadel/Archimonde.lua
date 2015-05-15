@@ -14,9 +14,11 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 183254 182826 183817 183828 185590 184931 184265 186562 187180",
 	"SPELL_CAST_SUCCESS 183865",
-	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 187180 186961 189895",
+	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 187180 186961 189895 186123",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 186123 185014 187180 186961",
+	"RAID_BOSS_WHISPER",
+	"CHAT_MSG_ADDON",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"UNIT_DIED",
@@ -240,7 +242,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.HudMapOnWrought then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
 		end
-	elseif spellId == 185014 then--Focused Chaos
+--[[	elseif spellId == 185014 then--Focused Chaos
 		--self.vb.wroughtWarned = self.vb.wroughtWarned + 1
 		warnWroughtChaos:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -250,7 +252,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.HudMapOnWrought then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Yellow
-		end
+		end--]]
 	elseif spellId == 186574 then--Dreadstalker fixate
 		warnDreadFixate:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -318,6 +320,28 @@ function mod:UNIT_DIED(args)
 		timerDemonicHavocCD:Cancel()
 	elseif cid == 93616 then--Dreadstalker
 		
+	end
+end
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:185014") then
+		specWarnFocusedChaos:Show()
+		yellFocusedChaos:Yell()
+		countdownWroughtChaos:Start()
+	end
+end
+
+--per usual, use transcriptor message to get messages from both bigwigs and DBM, all without adding comms to this mod at all
+function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
+	if prefix ~= "Transcriptor" then return end
+	if msg:find("spell:185014") then--
+		targetName = Ambiguate(targetName, "none")
+		if self:AntiSpam(5, targetName) then--Antispam sync by target name, since this doesn't use dbms built in onsync handler.
+			warnWroughtChaos:CombinedShow(0.3, targetName)
+			if self.Options.HudMapOnWrought then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", targetName, 5, 5, 1, 1, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Yellow
+			end
+		end
 	end
 end
 
