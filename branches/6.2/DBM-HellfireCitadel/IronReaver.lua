@@ -85,7 +85,7 @@ mod.vb.fuelCount = 0
 --All timers are energy based and scripted. boss uses x ability at y energy.
 --These tables establish the cast sequence by ability.
 --If energy rates are different in different modes, then each table will need to be different.
---These tables are Heroic timers. Hopefully all modes the same. If not, easily fixed
+--These tables are Heroic/LFR timers. Hopefully all modes the same. If not, easily fixed
 local artilleryTimers = {8.9, 9, 30, 15, 9, 24, 15}--Phase 1, phase 2 is just 15
 local barrageTimers = {11.7, 30, 12, 45}
 local blitzTimers = {63, 5, 58, 4.7}

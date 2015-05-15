@@ -216,7 +216,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDoomfireFixate:Yell()
 		end
 	elseif spellId == 183634 then--Verify spellid
-		warnFelBurst:Show(args.destName)
+		warnFelBurst:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnFelBurst:Show()
 			yellFelBurst:Yell()
