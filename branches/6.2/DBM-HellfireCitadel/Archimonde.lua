@@ -339,7 +339,7 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 		if self:AntiSpam(5, targetName) then--Antispam sync by target name, since this doesn't use dbms built in onsync handler.
 			warnWroughtChaos:CombinedShow(0.3, targetName)
 			if self.Options.HudMapOnWrought then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", targetName, 5, 5, 1, 1, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Yellow
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "highlight", targetName, 5, 5, 1, 1, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Yellow
 			end
 		end
 	end
