@@ -7,6 +7,7 @@ mod:SetEncounterID(1788)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Unknown full spectrum of icons yet. Don't know how many debuffs go out.
 mod:SetRespawnTime(15)
+mod:DisableRegenDetection()--Boss returns true on UnitAffectingCombat when fighting his trash, making boss pre mature pull by REGEN method
 
 mod:RegisterCombat("combat")
 
@@ -66,7 +67,7 @@ local timerFelBombCD					= mod:NewCDTimer(18.5, 181753)
 local timerFelConduitCD					= mod:NewCDTimer(15, 181827)
 local timerPhantasmalCorruptionCD		= mod:NewCDTimer(14, 181824, nil, "Tank")--14-18
 
---local berserkTimer					= mod:NewBerserkTimer(360)
+local berserkTimer						= mod:NewBerserkTimer(480)
 
 local voiceFocusedBlast					= mod:NewVoice(181912)--gather
 local voiceFelConduit					= mod:NewVoice(181827)--kickcast
@@ -123,6 +124,7 @@ function mod:OnCombatStart(delay)
 	timerPhantasmalWindsCD:Start(16.5-delay)
 	timerFelLaserCD:Start(18.5)--Verify it can still be this low, every pull on mythic was 20-22
 	timerPhantasmalWoundsCD:Start(28-delay)
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
@@ -145,7 +147,7 @@ function mod:SPELL_CAST_START(args)
 		if playerHasAnzu then--Able to interrupt
 			specWarnFelConduit:Show()
 			if self:IsHealer() then--It's still on healer that did last dispel, they need to throw to better interruptor, probably tank
-				specWarnThrowAnzu(TANK)
+				specWarnThrowAnzu:Show(TANK)
 				voiceThrowAnzu:Play("179202m") --throw to melee (maybe change to throw to tank, in strat i saw, it was best to bounce eye between tank and healer since throwing to tank also made immune to Phantasmal Corruption as added bonus)
 			else
 				voiceFelConduit:Play("kickcast")
@@ -206,7 +208,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetSortedIcon(0.5, args.destName, 3)--Start at 3 and count up
 		end
 		if playerHasAnzu and self:AntiSpam(3, 1) then
-			specWarnThrowAnzu(args.spellName)
+			specWarnThrowAnzu:Show(args.spellName)
 			voiceThrowAnzu:Play("179202")
 		end
 	elseif spellId == 182325 then
@@ -227,7 +229,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellPhantasmalCorruption:Yell()
 		else
 			if playerHasAnzu then
-				specWarnThrowAnzu(args.destName)
+				specWarnThrowAnzu:Show(args.destName)
 				voiceThrowAnzu:Play("179202")
 			end
 		end
@@ -257,7 +259,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnFelBombDispel:Show(args.destName)
 					voiceFelBombDispel:Play("dispelnow")
 				else--Cannot dispel, get eye to a healer asap!
-					specWarnThrowAnzu(HEALER)
+					specWarnThrowAnzu:Show(HEALER)
 					voiceThrowAnzu:Play("179202h")
 				end
 			end
@@ -271,7 +273,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDarkBindings:Show()
 		end
 		if playerHasAnzu and self:AntiSpam(3, 1) then
-			specWarnThrowAnzu(args.spellName)
+			specWarnThrowAnzu:Show(args.spellName)
 			voiceThrowAnzu:Play("179202")
 		end
 	elseif spellId == 182178 or spellId == 182200 then
