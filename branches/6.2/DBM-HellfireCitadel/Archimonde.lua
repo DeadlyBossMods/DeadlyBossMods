@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 183865 184931 187180",
 	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 187180 186961 189895 186123 186662 186952",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 186123 185014 187180 186961 186952",
+	"SPELL_AURA_REMOVED 186123 185014 187180 186961 186952 184964",
 	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_WHISPER",
 	"CHAT_MSG_ADDON",
@@ -27,16 +27,21 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO< figure out rain of chaos (182225). periodic trigger of every 12 seconds. but how to detect? Logs show nothing, maybe have to schedule repeating loop
+--TODO< figure out rain of chaos (182225). periodic trigger of every 12 seconds. but how to detect? Logs show nothing, maybe have to schedule repeating loop. Need videos to verify timing before adding
+--TODO, custom voices for Shackled Torment. "Break Torment First" "Break Torment Second" or something like that. Code goes up to 5 but i'm not sure we actually need 5 voices. Better safe than sorry, can delete extras later
+--TODO, custom voices for wrought/focused. common strat seems to be focused chaos stand outside (Like this "--Boss". Or, line strat also valid (both outside like this "| Boss"). Maybe not say which strat to use but "focused chaos on you" and "wrought chaos on you". Important to know which you are, so not using "run out" on both of them
+--TODO, custom voice to "attack doomfire spirit" and "attack Death caller". Can't just use "attack mob" because if they spawn at same time there is a priority. If doomfire spirit is up I own't even play attack death caller sound until doomfire is dead.
+--TODO< rest of regular voices when i'mnot so tired
+--TODO, failsafes are at work for transitions i still don't have enough data for. for example, something seems to always cause the 2nd or 3rd fel burst to delay by a HUGE amount (20-30 seconds sometimes) but don't know what it is. Probalby phase transitions but it's not as simple as resetting timer. probably something more zon ozz
 --Phase 1: The Defiler
 local warnDoomfireFixate			= mod:NewTargetAnnounce(182879, 3)
 local warnFelBurst					= mod:NewTargetAnnounce(183817, 4)--Target scanning impossible. Cannot pre warn target until knock up
 local warnDemonicHavoc				= mod:NewTargetAnnounce(183865, 3)--Mythic
-local warnDesecrate					= mod:NewSpellAnnounce(185590, 2)
 --Phase 2: Hand of the Legion
 local warnShackledTorment			= mod:NewTargetAnnounce(184964, 3)
+local warnUnleashedTorment			= mod:NewAddsLeftAnnounce(185008, 2)--NewAddsLeftAnnounce perfect for this!
 local warnWroughtChaos				= mod:NewTargetAnnounce(184265, 4)--Combined both targets into one warning under primary spell name
-local warnDreadFixate				= mod:NewTargetAnnounce(186574, 2, nil, false)--No idea. 3 second fixate?
+local warnDreadFixate				= mod:NewTargetAnnounce(186574, 2, nil, false)--In case it matters on mythic, it was spammy on heroic and unimportant
 --Phase 3: The Twisting Nether
 local warnDemonicFeedback			= mod:NewTargetAnnounce(187180, 3)
 local warnNetherBanish				= mod:NewTargetAnnounce(186961, 2)
@@ -51,21 +56,23 @@ local specWarnAllureofFlames		= mod:NewSpecialWarningSpell(183254, nil, nil, nil
 local specWarnDeathCaller			= mod:NewSpecialWarningSwitch("ej11582", "Dps")--Tanks don't need switch, they have death brand special warning 2 seconds earlier
 local specWarnFelBurst				= mod:NewSpecialWarningYou(183817)
 local yellFelBurst					= mod:NewYell(183817)--Change yell to countdown mayeb when better understood
-local specWarnFelBurstNear			= mod:NewSpecialWarningClose(183817)
+local specWarnFelBurstNear			= mod:NewSpecialWarningMoveTo(183817, nil, nil, nil, 1, nil, 2)--Anyone near by should run in to help soak, should be mostly ranged but if it's close to melee, melee soaking too doesn't hurt
+local specWarnDesecrate				= mod:NewSpecialWarningDodge(185590, "Melee", nil, nil, 1, nil, 2)
 local specWarnDeathBrand			= mod:NewSpecialWarningSpell(183828, "Tank")
 --Phase 2: Hand of the Legion
-local specWarnShackledTorment		= mod:NewSpecialWarningYou(184964)
-local yellShackledTorment			= mod:NewYell(184964)
+local specWarnBreakShackle			= mod:NewSpecialWarning("specWarnBreakShackle", nil, nil, nil, 1)
+local yellShackledTorment			= mod:NewYell(184964, L.customShackledSay)
 local specWarnWroughtChaos			= mod:NewSpecialWarningMoveAway(186123, nil, nil, nil, 3)
 local yellWroughtChaos				= mod:NewYell(186123)
 local specWarnFocusedChaos			= mod:NewSpecialWarningMoveAway(185014, nil, nil, nil, 3)
 local yellFocusedChaos				= mod:NewYell(185014)
-local specWarnDreadFixate			= mod:NewSpecialWarningYou(186574, false)--Do you run from a 3 second fixate?
+local specWarnDreadFixate			= mod:NewSpecialWarningYou(186574, false)--In case it matters on mythic, it was spammy on heroic and unimportant
 --Phase 3: The Twisting Nether
 local specWarnDemonicFeedback		= mod:NewSpecialWarningYou(187180)
 local yellDemonicFeedback			= mod:NewYell(187180, nil, false)
 local specWarnDemonicFeedbackOther	= mod:NewSpecialWarningTarget(187180, "Healer")
 local specWarnNetherBanish			= mod:NewSpecialWarningYou(186961)
+local specWarnNetherBanishOther		= mod:NewSpecialWarningTaunt(186961)
 local yellNetherBanish				= mod:NewFadesYell(186961)
 ----The Nether
 local specWarnVoidStarFixate		= mod:NewSpecialWarningYou(189895)--Maybe move away? depends how often it changes fixate targets
@@ -94,9 +101,12 @@ local timerNetherBanishCD			= mod:NewCDTimer(61.9, 186961)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
+--countdowns kind of blow with this fights timer variations.
+--Everything but overfiend is a CD
+--I don't want to use a countdown on something thats 47-56 like allure
 local countdownWroughtChaos			= mod:NewCountdownFades(5, 184265)
 
---local voiceInfernoSlice			= mod:NewVoice(155080)
+local voiceFelBurst					= mod:NewVoice(183817)--Gathershare
 
 mod:AddRangeFrameOption("8/10")
 mod:AddSetIconOption("SetIconOnDemonicFeedback", 187180)
@@ -107,11 +117,14 @@ mod:AddBoolOption("FilterOtherPhase", true)
 mod.vb.phase = 1
 mod.vb.demonicFeedbacks = 0
 mod.vb.netherPortals = 0
+mod.vb.unleashedCountRemaining = 0
+local playerName = UnitName("player")
 local playerBanished = false
 local AddsSeen = {}
 local UnitDebuff = UnitDebuff
 local DemonicFeedback = GetSpellInfo(187180)
 local NetherBanish = GetSpellInfo(186961)
+local shackledDebuff = GetSpellInfo(184964)
 local demonicFilter, netherFilter
 do
 	demonicFilter = function(uId)
@@ -148,10 +161,54 @@ local function updateRangeFrame(self)
 	end
 end
 
+local function breakShackles(self)
+	--Sort by raidid since combat log order may diff person to person
+	local totalFound = 0
+	local numGroupMembers = DBM:GetNumGroupMembers()
+--	local expectedTotal = self:IsMythic() and 3 or 5--totals not yet known yet so just scan entire raid.
+--	On heroic i saw it alternating between 2 and 3, because of flex tech. Probably only mythic use exact count with slightly faster warn
+--	I thought about using auto scheduling and doing "break shackle now" with few seconds in between each, then i realized that'd do more harm that good, if raid is low and dbm says break shackle, you wipe.
+--	So now it just gives order, but you break at pace needed by your healers
+	local tempTable = {}
+	for i = 1, numGroupMembers do
+		if UnitDebuff("raid"..i, shackledDebuff) then
+			totalFound = totalFound + 1
+			local name = UnitName("raid"..i)
+			tempTable[#tempTable + 1] = name
+			if name == playerName then
+				if totalFound == 1 then
+					specWarnBreakShackle:Show(L.First)
+					yellShackledTorment:Yell(L.First, playerName)
+				elseif totalFound == 2 then
+					specWarnBreakShackle:Show(L.Second)
+					yellShackledTorment:Yell(L.Second, playerName)
+				elseif totalFound == 3 then
+					specWarnBreakShackle:Show(L.Third)
+					yellShackledTorment:Yell(L.Third, playerName)
+				elseif totalFound == 4 then
+					specWarnBreakShackle:Show(L.Fourth)
+					yellShackledTorment:Yell(L.Fourth, playerName)
+				elseif totalFound == 5 then
+					specWarnBreakShackle:Show(L.Fifth)
+					yellShackledTorment:Yell(L.Fifth, playerName)
+				end
+			end
+		end
+		--if totalFound == expectedTotal then break end
+	end
+	if not playerBanished or not self.Options.FilterOtherPhase then
+		--List is already in correct order, since it's generated by raid roster index, like assignments
+		--TODO, figure out how to stuff locations in table while retaining class coloring
+		local text = table.concat(tempTable, "<, >")
+		warnShackledTorment:Show(text)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.demonicFeedbacks = 0
 	self.vb.netherPortals = 0
+	self.vb.unleashedCountRemaining = 0
 	table.wipe(AddsSeen)
 	playerBanished = false
 	timerDoomfireCD:Start(6-delay)
@@ -187,7 +244,7 @@ function mod:SPELL_CAST_START(args)
 		timerDeathbrandCD:Start()
 		specWarnDeathBrand:Show()
 	elseif spellId == 185590 then
-		warnDesecrate:Show()
+		specWarnDesecrate:Show()
 		timerDesecrateCD:Start()
 		if self.vb.phase == 1 then
 			self.vb.phase = 1.5--85%
@@ -195,13 +252,15 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 184265 then
 --		self.vb.wroughtWarned = 0--Reset Counter
 		timerWroughtChaosCD:Start()
-		if self.vb.phase < 2 then--1 second slower than yell, without requiring using yell.
+		if self.vb.phase < 2 then--0.2-1 second slower than yell, without requiring using yell. Because of variation, I still prefer yell as primary even though this isn't much slower
 			self.vb.phase = 2
 			--Cancel stuff only used in phase 1
 			timerFelBurstCD:Cancel()
 			timerDesecrateCD:Cancel()
 			timerDoomfireCD:Cancel()
-			timerShackledTormentCD:Start(11.5)
+			timerAllureofFlamesCD()--Reset to 35.5-1
+			timerAllureofFlamesCD:Start(34.5)
+			timerShackledTormentCD:Start(11)
 		end
 	elseif spellId == 183864 then
 		timerShadowBlastCD:Start(args.sourceGUID)
@@ -232,17 +291,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFelBurst:Show()
 			yellFelBurst:Yell()
+		else
+			if self:CheckNearby(30, args.destName) then--Range subject to adjustment
+				specWarnFelBurstNear:CombinedShow(0.3, args.destName)--Combined show to prevent spam in a spread, if a spread happens targets are all together and requires even MORE people to soak.
+				voiceFelBurst:Cancel()--Avoid spam
+				voiceFelBurst:Schedule(0.3, "gathershare")
+			end
 		end
 	elseif spellId == 183865 then
 		warnDemonicHavoc:CombinedShow(0.3, args.destName)
 	elseif spellId == 184964 then
-		if not playerBanished or not self.Options.FilterOtherPhase then
-			warnShackledTorment:CombinedShow(0.3, args.destName)
-		end
-		if args:IsPlayer() then
-			specWarnShackledTorment:Show()
-			yellShackledTorment:Yell()
-		end
+		self.vb.unleashedCountRemaining = self.vb.unleashedCountRemaining + 1
+		self:Unschedule(breakShackles)
+		self:Schedule(0.3, breakShackles, self)
 	elseif spellId == 186123 then--Wrought Chaos
 		--self.vb.wroughtWarned = self.vb.wroughtWarned + 1
 		if args:IsPlayer() then
@@ -301,7 +362,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellNetherBanish:Schedule(3, 4)
 			yellNetherBanish:Schedule(2, 5)
 		else
-			warnNetherBanish:Show(args.destName)
+			--Barring any logical error, if special warning will show, don't show other warning
+			if self.Options.SpecWarn186961taunt and (not DBM.Options.FilterTankSpec or self:IsTank() and DBM.Options.FilterTankSpec) then
+				specWarnNetherBanishOther:Show()
+			else
+				warnNetherBanish:Show(args.destName)
+			end
 		end
 		updateRangeFrame(self)
 		if self.vb.phase < 3 then--Secondary phase 3 trigger, if yell not localized
@@ -347,6 +413,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		updateRangeFrame(self)
 	elseif spellId == 186952 and args:IsPlayer() then
 		playerBanished = false
+	elseif spellId == 184964 then
+		self.vb.unleashedCountRemaining = self.vb.unleashedCountRemaining - 1
+		if (not playerBanished or not self.Options.FilterOtherPhase) and not self:IsLFR() then
+			warnUnleashedTorment:Show(self.vb.unleashedCountRemaining)
+		end
 	end
 end
 
@@ -376,14 +447,16 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
+	--"<183.63 18:00:13> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I grow tired of this pointless game. You face the immortal Legion, scourge of a thousand worlds
+	--"<184.30 18:00:14> [CLEU] SPELL_CAST_START#Creature-0-2012-1448-150-91331-0000566A43#Archimonde##nil#184265#Wrought Chaos#nil#nil", -- [8782]
+	if msg == L.phase2 and self.vb.phase < 2 then
+		self:SendSync("phase2")
 	--"<263.67 18:01:33> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Look upon the endless forces of the Burning Legion and know the folly of your resistance.#Archimonde
 	--"<266.42 18:01:36> [CLEU] SPELL_AURA_APPLIED#Creature-0-2012-1448-150-93615-0000566CBD#Felborne Overfiend#Creature-0-2012-1448-150-93615-0000566CBD#Felborne Overfiend#186662#Heart of Argus#BUFF#nil", -- [12225]	
-	if msg == L.phase2point5 and self.vb.phase < 2.5 then
+	elseif msg == L.phase2point5 and self.vb.phase < 2.5 then
 		self:SendSync("phase25")
 	elseif msg == L.phase3 and self.vb.phase < 3 then
 		self:SendSync("phase3")
-	elseif msg == L.phase3point5 and self.vb.phase < 3.5 then
-		self:SendSync("phase35")
 	end
 end
 
@@ -414,14 +487,23 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 189953 then--Rain of Chaos (25% version). Phase 3.5
 		specWarnRainofChaos:Show()
-		if self.vb.phase == 3 then
+		if self.vb.phase < 3.5 then
 			self.vb.phase = 3.5
 		end
 	end
 end
 
 function mod:OnSync(msg)
-	if msg == "phase25" and self.vb.phase < 2.5 then
+	if msg == "phase2" and self.vb.phase < 2 then
+		self.vb.phase = 2
+		--Cancel stuff only used in phase 1
+		timerFelBurstCD:Cancel()
+		timerDesecrateCD:Cancel()
+		timerDoomfireCD:Cancel()
+		timerAllureofFlamesCD()--Reset to 35.5
+		timerAllureofFlamesCD:Start(35.5)
+		timerShackledTormentCD:Start(12)
+	elseif msg == "phase25" and self.vb.phase < 2.5 then
 		self.vb.phase = 2.5
 		timerShackledTormentCD:Cancel()--Resets to 40 here
 		timerShackledTormentCD:Start(40)
@@ -433,9 +515,6 @@ function mod:OnSync(msg)
 		timerDeathbrandCD:Cancel()--Done for rest of fight
 		timerShackledTormentCD:Cancel()--Resets to 51.4 here
 		timerShackledTormentCD:Start(51.4)
-	elseif msg == "phase35" and self.vb.phase < 3.5 then
-		self.vb.phase = 3.5
-		--This one does NOT alter shackled torment
 	end
 end
 
