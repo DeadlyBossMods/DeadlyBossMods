@@ -43,7 +43,7 @@ local warnPhase3				= mod:NewPhaseAnnounce(3)
 local warnMelt					= mod:NewTargetAnnounce(155225, 4)--Every 10 sec.
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 
-local specWarnBomb				= mod:NewSpecialWarningMoveTo(155192, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(155192), nil, 3, nil, 2)
+local specWarnBomb				= mod:NewSpecialWarningMoveTo(155192, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(155192), nil, 3, 2)
 local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("ej9650", "-Healer", nil, 2, nil, 2)
 local specWarnDeafeningRoar		= mod:NewSpecialWarningSpell(177756, "Tank")--Can't be dodged(was only dodgable on beta), was wrong warning for a long time. Also does a lot less damage than it did in beta too so not 3 anymore either.
 local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, "-Healer", nil, nil, nil, 2)
