@@ -8585,6 +8585,30 @@ do
 			end
 			local msg = pformat(self.text, unpack(argTable))
 			local text = msg:gsub(">.-<", classColoringFunction)
+			if self.hasNote then--Inject note into message
+				--Counts support different note for EACH count
+				if self.announceType == "count" or self.announceType == "switchcount" or self.announceType == "targetcount" then
+					local noteCount = argTable[1]--Count should be first arg in table
+					local noteText = self.mod.Options[self.option .. "SWNote"..noteCount]
+					if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
+						noteText = " ("..noteText..")"
+						text = text..noteText
+					end
+				elseif self.announceType == "interruptcount" then
+					local noteCount = argTable[2]--Count should be second arg in table, after source name
+					local noteText = self.mod.Options[self.option .. "SWNote"..noteCount]
+					if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
+						noteText = " ("..noteText..")"
+						text = text..noteText
+					end
+				else--Non count warnings will have one note, period
+					local noteText = self.mod.Options[self.option .. "SWNote1"]
+					if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
+						noteText = " ("..noteText..")"
+						text = text..noteText
+					end
+				end
+			end
 			DBM:AddSpecialWarning(text)
 			self.combinedcount = 0
 			self.combinedtext = {}
@@ -8675,9 +8699,10 @@ do
 				combinedtext = {},
 				combinedcount = 0,
 				mod = self,
-				sound = not runSound==0,
+				sound = runSound>0,
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 				hasVoice = hasVoice,
+				hasNote = hasNote,
 			},
 			mt
 		)
@@ -8685,7 +8710,7 @@ do
 		if optionId then
 			obj.voiceOptionId = hasVoice and "Voice"..optionId or nil
 			obj.option = optionId..(optionVersion or "")
-			self:AddSpecialWarningOption(optionId, optionDefault, runSound, "announce")
+			self:AddSpecialWarningOption(optionId, optionDefault, runSound, hasNote, "announce")
 		end
 		tinsert(self.specwarns, obj)
 		return obj
@@ -8731,9 +8756,10 @@ do
 				combinedcount = 0,
 				announceType = announceType,
 				mod = self,
-				sound = not runSound==0,
+				sound = runSound>0,
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 				hasVoice = hasVoice,
+				hasNote = hasNote,
 			},
 			mt
 		)
@@ -8762,7 +8788,7 @@ do
 				catType = "announcerole"
 			end
 			obj.voiceOptionId = hasVoice and "Voice"..spellId or nil
-			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType)
+			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, hasNote, catType)
 		end
 		tinsert(self.specwarns, obj)
 		return obj
@@ -9557,7 +9583,7 @@ function bossModPrototype:AddBoolOption(name, default, cat, func)
 	end
 end
 
-function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat)
+function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, noteLines, cat)
 	cat = cat or "misc"
 	self.DefaultOptions[name] = (default == nil) or default
 	self.DefaultOptions[name.."SWSound"] = defaultSound or 1
@@ -9566,6 +9592,12 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	end
 	self.Options[name] = (default == nil) or default
 	self.Options[name.."SWSound"] = defaultSound or 1
+	if noteLines then
+		for i = 1, noteLines do
+			self.DefaultOptions[name.."SWNote"..i] = ""--For some reason this is writing "false". Whatver, I coded around this
+			self.Options[name.."SWNote"..i] = ""
+		end
+	end
 	self:SetOptionCategory(name, cat)
 end
 
