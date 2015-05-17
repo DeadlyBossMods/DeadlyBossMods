@@ -4754,7 +4754,11 @@ do
 		end
 	end
 
-	function DBM:CHAT_MSG_MONSTER_YELL(msg)
+	function DBM:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
+		if IsEncounterInProgress() then
+			local targetName = target or "nil"
+			self:Debug("CHAT_MSG_MONSTER_YELL from "..npc.." while looking at"..targetName, 2)
+		end
 		return onMonsterMessage("yell", msg)
 	end
 
