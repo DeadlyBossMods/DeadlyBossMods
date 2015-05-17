@@ -390,16 +390,12 @@ do
 			return
 		end
 		local enabled = GetAddOnEnableState(UnitName("player"), "DBM-DefaultSkin")
-		local debugText1 = self.options and "self.options Exists. " or "self.options is nil. "
-		local debugText2 = self.options.Skin and "self.options.Skin exists. " or "self.options.Skin is nil. "
-		local debugText3 = (enabled > 0) and "DefaultSkin is enabled. " or "DefaultSkin is disabled/missing. "
 		local loaded = "nil"
 		if skins and self and self.options and self.options.Skin and skins[self.options.Skin] and skins[self.options.Skin].loaded then
 			loaded = tostring(skins[self.options.Skin].loaded)
 		else
 			DBM:Debug("delaySkinCheck detected corrupt skin settings attempting set back to DefaultSkin")
 		end
-		DBM:Debug(debugText1..debugText2..debugText3..loaded)
 		if enabled and enabled ~= 0 and loaded ~= "true" then
 			-- The currently set skin is no longer loaded, revert to DefaultSkin. If enabled (else, person wants textureless bar on purpose)
 			self:SetSkin("DefaultSkin")
