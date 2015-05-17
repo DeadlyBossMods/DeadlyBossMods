@@ -8589,17 +8589,21 @@ do
 				--Counts support different note for EACH count
 				if self.announceType == "count" or self.announceType == "switchcount" or self.announceType == "targetcount" then
 					local noteCount = argTable[1]--Count should be first arg in table
-					local noteText = self.mod.Options[self.option .. "SWNote"..noteCount]
-					if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
-						noteText = " ("..noteText..")"
-						text = text..noteText
+					if self.hasNote >= noteCount then
+						local noteText = self.mod.Options[self.option .. "SWNote"..noteCount]
+						if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
+							noteText = " ("..noteText..")"
+							text = text..noteText
+						end
 					end
 				elseif self.announceType == "interruptcount" then
 					local noteCount = argTable[2]--Count should be second arg in table, after source name
-					local noteText = self.mod.Options[self.option .. "SWNote"..noteCount]
-					if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
-						noteText = " ("..noteText..")"
-						text = text..noteText
+					if self.hasNote >= noteCount then
+						local noteText = self.mod.Options[self.option .. "SWNote"..noteCount]
+						if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
+							noteText = " ("..noteText..")"
+							text = text..noteText
+						end
 					end
 				else--Non count warnings will have one note, period
 					local noteText = self.mod.Options[self.option .. "SWNote1"]
