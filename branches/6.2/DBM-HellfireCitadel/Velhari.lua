@@ -63,19 +63,19 @@ local specWarnGaveloftheTyrant				= mod:NewSpecialWarningCount(180608, nil, nil,
 ----Ancient Sovereign
 local specWarnAncientSovereign				= mod:NewSpecialWarningSwitch("ej11170", "-Healer")
 
---All
+mod:AddTimerLine(ALL)--All
 local timerEdictofCondemnationCD			= mod:NewNextCountTimer(60, 182459)
 local timerTouchofHarmCD					= mod:NewNextCountTimer(60, 180166, nil, "Healer")
---Stage One: Oppression
+mod:AddTimerLine(SCENARIO_STAGE:format(1))--Stage One: Oppression
 local timerAnnihilatingStrikeCD				= mod:NewNextCountTimer(10, 180260)
 local timerInfernalTempestCD				= mod:NewNextCountTimer(10, 180300)
 ----Ancient Enforcer
 local timerEnforcersOnslaughtCD				= mod:NewCDTimer(14.2, 180004, nil, "Melee")
---Stage Two: Contempt
+mod:AddTimerLine(SCENARIO_STAGE:format(2))--Stage Two: Contempt
 local timerFontofCorruptionCD				= mod:NewNextTimer(20, 180526)
 ----Ancient Harbinger
 local timerHarbingersMendingCD				= mod:NewCDTimer(11.5, 180025)
---Stage Three: Malice
+mod:AddTimerLine(SCENARIO_STAGE:format(3))--Stage Three: Malice
 local timerBulwarkoftheTyrantCD				= mod:NewNextCountTimer(10, 180600)
 local timerGaveloftheTyrantCD				= mod:NewNextCountTimer(10, 180608)
 

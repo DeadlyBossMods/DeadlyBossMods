@@ -25,6 +25,10 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
+local Jubei		= EJ_GetSectionInfo(11488)
+local Dia		= EJ_GetSectionInfo(11489)
+local Gurtogg	= EJ_GetSectionInfo(11490)
+
 --TODO, add bloodboil. mythic only?
 --TODO, All 3 150 second cooldown abilities are silly and unpredictable. I don't think they will go live this way. Timers disabled for them all for now. ESPECIALLy mirror image which goes from being 150 second cd to NO cd below 30%
 --Blademaster Jubei'thos
@@ -48,14 +52,17 @@ local specWarnDarkness				= mod:NewSpecialWarningSpell(184681, nil, nil, nil, 2)
 local specWarnFelRage				= mod:NewSpecialWarningYou(184360)
 local specWarnDemolishingLeap		= mod:NewSpecialWarningDodge(184366, nil, nil, nil, 2, 2)--Jumps around room, from side to side
 
+mod:AddTimerLine(Gurtogg)
 --Blademaster Jubei'thos
 local timerMarkofNecroCD			= mod:NewCDTimer(60.5, 184449, nil, "Healer")
 --local timerMirrorImageCD			= mod:NewCDTimer(150, 183885)--Same as demo leap. the cd is so long that the timer is quite useless.
+mod:AddTimerLine(Dia)
 --Dia Darkwhisper
 local timerFelstormCD				= mod:NewCDTimer(30.5, 183701)
 local timerReapCD					= mod:NewCDTimer(66, 184476)--66-71
 local timerNightmareVisageCD		= mod:NewCDTimer(30, 184657, nil, "Tank")
 local timerDarknessCD				= mod:NewCDTimer(150, 184681)--Also bleh in consistency. I suspect all the 150 second abilities are undertuned and will all need fixing.
+mod:AddTimerLine(Gurtogg)
 --Gurtogg Bloodboil
 local timerRelRageCD				= mod:NewCDCountTimer(70, 184360)--70-84
 --local timerDemoLeapCD				= mod:NewCDTimer(150, 184366)--I think ability was flat broken, he used it like 1 out of 6 pulls. and when he did it was 2 and a half minute cd?

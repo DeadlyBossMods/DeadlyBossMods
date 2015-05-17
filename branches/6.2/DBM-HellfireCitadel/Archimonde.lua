@@ -81,6 +81,7 @@ local yellVoidStarFixate			= mod:NewYell(189895, nil, false)
 local specWarnRainofChaos			= mod:NewSpecialWarningSpell(189953, nil, nil, nil, 2)
 
 --Phase 1: The Defiler
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDoomfireCD				= mod:NewCDTimer(42.1, 182826)--182826 cast, 182879 fixate. Doomfire only fixates ranged, but ALL dps switch to it.
 local timerAllureofFlamesCD			= mod:NewCDTimer(47.5, 183254)
 local timerFelBurstCD				= mod:NewCDTimer(47.3, 183817, nil, "Ranged")--Only targets ranged
@@ -90,11 +91,13 @@ local timerDesecrateCD				= mod:NewCDTimer(27, 185590, nil, "Melee")--Only targe
 local timerShadowBlastCD			= mod:NewCDTimer(9.7, 183864, nil, "Tank")
 local timerDemonicHavocCD			= mod:NewAITimer(107, 183865)--Mythic, timer unknown, AI timer used until known
 --Phase 2: Hand of the Legion
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerShackledTormentCD		= mod:NewCDTimer(31.5, 184931)
 local timerWroughtChaosCD			= mod:NewCDTimer(51.7, 184265)
 --Phase 2.5
 local timerFelborneOverfiendCD		= mod:NewNextTimer(44.3, "ej11603", nil, nil, nil, 186662)
 --Phase 3: The Twisting Nether
+mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerDemonicFeedbackCD		= mod:NewCDTimer(16.9, 187180)
 local timerNetherBanishCD			= mod:NewCDTimer(61.9, 186961)
 ----The Nether

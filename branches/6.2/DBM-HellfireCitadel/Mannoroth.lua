@@ -61,6 +61,7 @@ local specWarnFelSeeker				= mod:NewSpecialWarningDodge(181735, nil, nil, nil, 2
 local specWarnShadowForce			= mod:NewSpecialWarningSpell(181799, nil, nil, nil, 3)
 
 --Adds
+mod:AddTimerLine(OTHER)
 ----Doom Lords
 --local timerCurseofLegionCD		= mod:NewCDTimer(107, 181275)--Maybe see one day, in LFR or something when group is terrible or doesn't kill doom lord portal first
 local timerMarkofDoomCD				= mod:NewCDTimer(31.5, 181099, nil, "-Tank")
@@ -70,6 +71,7 @@ local timerFelImplosionCD			= mod:NewNextCountTimer(46, 181255)
 ----Infernals
 local timerInfernoCD				= mod:NewNextCountTimer(107, 181180)
 --Mannoroth
+mod:AddTimerLine(L.name)
 local timerGlaiveComboCD			= mod:NewCDTimer(30, 181354, nil, "Tank")--30 seconds unless delayed by something else
 local timerFelHellfireCD			= mod:NewCDTimer(35, 181557)--35, unless delayed by other things.
 local timerGazeCD					= mod:NewCDTimer(47.5, 181597)--As usual, some variation do to other abilities

@@ -49,6 +49,7 @@ local timerFelOutpouringCD			= mod:NewNextTimer(107, 181292)
 local timerExplosiveRunesCD			= mod:NewNextTimer(48, 181296)
 local timerGraspingHandsCD			= mod:NewNextTimer(107, 181299)
 --Tank Debuffs. These are also hard coded, but in different place.
+mod:AddTimerLine(TANK)
 local timerExplosiveBurstCD			= mod:NewNextCountTimer(40, 181306)--Everyone needs to know these 2
 local timerFoulCrushCD				= mod:NewNextCountTimer(40, 181307)--Everyone needs to know these 2
 local timerSwatCD					= mod:NewNextCountTimer(40, 181305, nil, "Tank")
