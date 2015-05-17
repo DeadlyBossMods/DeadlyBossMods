@@ -24,7 +24,7 @@ local warnMadDash				= mod:NewSpellAnnounce(161090, 3)
 local specWarnX2101AMissile		= mod:NewSpecialWarningSpell(162407, nil, nil, nil, 2)--Large AOE damage
 local specWarnMadDash			= mod:NewSpecialWarningSpell(161090, nil, nil, nil, 2)--DPS version of this warning
 local specWarnMadDashInterrupt	= mod:NewSpecialWarningInterrupt(161090, true, false)--It's actually an interrupt warning for OTHER boss, not caster of this spell
-local specWarnSlam				= mod:NewSpecialWarningCast(162617, "SpellCaster", nil, nil, nil, nil, true)
+local specWarnSlam				= mod:NewSpecialWarningCast(162617, "SpellCaster", nil, nil, nil, 2)
 
 local timerVX18BCD				= mod:NewCDTimer(33, 162500)
 local timerX2101AMissileCD		= mod:NewCDTimer(40, 162407)

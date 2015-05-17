@@ -44,17 +44,17 @@ local warnMelt					= mod:NewTargetAnnounce(155225, 4)--Every 10 sec.
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 
 local specWarnBomb				= mod:NewSpecialWarningMoveTo(155192, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(155192), nil, 3, nil, 2)
-local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("OptionVersion2", "ej9650", "-Healer", nil, nil, nil, nil, 2)
+local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("ej9650", "-Healer", nil, 2, nil, 2)
 local specWarnDeafeningRoar		= mod:NewSpecialWarningSpell(177756, "Tank")--Can't be dodged(was only dodgable on beta), was wrong warning for a long time. Also does a lot less damage than it did in beta too so not 3 anymore either.
-local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, "-Healer", nil, nil, nil, nil, 2)
-local specWarnRuptureOn			= mod:NewSpecialWarningYou("OptionVersion2", 156932, nil, nil, nil, 3)
-local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, nil, nil, 2)
+local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, "-Healer", nil, nil, nil, 2)
+local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932, nil, nil, 2, 3)
+local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, nil, 2)
 local yellRupture				= mod:NewYell(156932)
 --Phase 2
 local specWarnFixate			= mod:NewSpecialWarningYou(155196)
 local specWarnMeltYou			= mod:NewSpecialWarningYou(155225)
 local specWarnMeltNear			= mod:NewSpecialWarningClose(155225, false)
-local specWarnMelt				= mod:NewSpecialWarningMove(155223, nil, nil, nil, nil, nil, 2)
+local specWarnMelt				= mod:NewSpecialWarningMove(155223, nil, nil, nil, nil, 2)
 local yellMelt					= mod:NewYell(155223)
 local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, "-Healer")
 local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
@@ -67,8 +67,8 @@ local specWarnEarthShield		= mod:NewSpecialWarningDispel(155173, "MagicDispeller
 local specWarnSlagPool			= mod:NewSpecialWarningMove(155743)
 --Phase 3
 local specWarnHeartoftheMountain= mod:NewSpecialWarningSwitch("ej10808", "Tank")
-local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3, nil, nil, nil, nil, 2)
-local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242, nil, nil, nil, nil, nil, 2)
+local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3, nil, nil, nil, 2)
+local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242, nil, nil, nil, nil, 2)
 --All
 local specWarnBlast				= mod:NewSpecialWarningSoon(155209, nil, nil, nil, 2)
 

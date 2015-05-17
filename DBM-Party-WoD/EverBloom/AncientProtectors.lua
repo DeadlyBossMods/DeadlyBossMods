@@ -34,7 +34,7 @@ local specWarnBriarskin				= mod:NewSpecialWarningInterrupt(168041, false)--if y
 local specWarnBriarskinDispel		= mod:NewSpecialWarningDispel(168041, false)--Not as important as rapid Tides and to assume you have at least two dispellers is big assumption
 local specWarnRapidTidesDispel		= mod:NewSpecialWarningDispel(168105, "MagicDispeller", nil, nil, 3)
 local specWarnSlash					= mod:NewSpecialWarningSpell(168383)
-local specWarnNoxious				= mod:NewSpecialWarningRun("OptionVersion2", 175997)
+local specWarnNoxious				= mod:NewSpecialWarningRun(175997, nil, nil, 2, 4)
 local specWarnBramble				= mod:NewSpecialWarningMove(167977)
 
 local timerShapersFortitude			= mod:NewTargetTimer("OptionVersion2", 15, 168520, nil, false)
