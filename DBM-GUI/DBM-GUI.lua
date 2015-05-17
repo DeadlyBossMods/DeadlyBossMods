@@ -450,6 +450,17 @@ do
 				self:SetSelectedValue(mod.Options[modvar])
 			end)
 		end
+		--[[
+		local noteButton--A nice little tiny note button next to drop down with note icon on it if possible, button will be too small for text. Good note icon can be used from blizz interface code/friends list somewhere
+		if modvar and modvar:find("SWNote") then
+			print("Note button Created")
+			noteButton  = self:CreateButton("N", 20, 20, nil, GameFontNormalSmall)
+			--noteButton:SetPoint('TOPRIGHT', panel.frame, "TOPRIGHT", -6, -6)
+			noteButton:SetScript("OnClick", function(self)
+				--On click, open an edit box that loads Notes so user can edit them
+				--On edit box two buttons. Save and cancel. Save saves note and cancel obviously cancels
+			end)
+		end--]]
 		local textbeside = button
 		local textpad = 0
 		local html
@@ -457,6 +468,11 @@ do
 			dropdown:SetPoint("LEFT", button, "RIGHT", -20, 2)
 			textbeside = dropdown
 			textpad = 35
+			--[[if noteButton then
+				noteButton:SetPoint('LEFT', dropdown, "RIGHT", -20, 2)
+				textbeside = noteButton
+				textpad = 70
+			end--]]
 		end
 		if name then -- switch all checkbutton frame to SimpleHTML frame (auto wrap)
 			_G[buttonName.."Text"] = CreateFrame("SimpleHTML", buttonName.."Text", button)
@@ -4128,7 +4144,11 @@ do
 					elseif type(mod.Options[v]) == "boolean" then
 						lastButton = button
 						if mod.Options[v .. "SWSound"] then
+							print("SWSound")
 							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v .. "SWSound")
+							--if mod.Options[v .. "SWNote"] then--This doesn't currently work unless commented out. no idea why
+							--	button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v .. "SWNote")
+							--end
 						else
 							button = catpanel:CreateCheckButton(mod.localization.options[v], true)
 						end
