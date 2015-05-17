@@ -9605,7 +9605,7 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, n
 	self.Options[name] = (default == nil) or default
 	self.Options[name.."SWSound"] = defaultSound or 1
 	if noteLines then
-		for i = 1, noteLines do
+		for i = 1, noteLines do--Possibly store it all in one option split by : or something instead of multiple options?
 			self.DefaultOptions[name.."SWNote"..i] = ""--For some reason this is writing "false". Whatver, I coded around this
 			self.Options[name.."SWNote"..i] = ""
 		end
