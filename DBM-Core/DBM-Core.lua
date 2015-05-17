@@ -8685,6 +8685,10 @@ do
 			error("NewSpecialWarning: you must provide remove optionversion hack", 2)
 			return
 		end
+		if hasNote then
+			--Help find mods with too many args
+			DBM:Debug("Notes loaded for "..text, 3)
+		end
 		if runSound == true then
 			runSound = 2
 		elseif not runSound then
@@ -8738,6 +8742,10 @@ do
 			spellName = EJ_GetSectionInfo(string.sub(spellId, 3)) or DBM_CORE_UNKNOWN
 		else
 			spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
+		end
+		if hasNote then
+			--Help find mods with too many args
+			DBM:Debug("Notes loaded for "..spellId.." ("..spellName..")", 3)
 		end
 		local text
 		if announceType == "prewarn" then
