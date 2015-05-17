@@ -22,14 +22,14 @@ local warnBlastWaves				= mod:NewCountAnnounce(159750, 4)--On mythic the minibos
 local specWarnOverheadSmash			= mod:NewSpecialWarningTaunt(175765)
 local specWarnBlastWave				= mod:NewSpecialWarningMoveTo(156446, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(156446))
 local specWarnInsatiableHunger		= mod:NewSpecialWarningRun(159632, nil, nil, nil, 4)
-local specWarnLumberingStrength		= mod:NewSpecialWarningRun("OptionVersion2", 175993, "Tank", nil, nil, 4)
+local specWarnLumberingStrength		= mod:NewSpecialWarningRun(175993, "Tank", nil, 2, 4)
 local specWarnLivingBlaze			= mod:NewSpecialWarningMoveAway(175583)
 local yellLivingBlaze				= mod:NewYell(175583)
 local specWarnEmberInWind			= mod:NewSpecialWarningMoveAway(177855)
 local specWarnFinalFlame			= mod:NewSpecialWarningDodge(163194, "MeleeDps")
 local specWarnReapingWhirl			= mod:NewSpecialWarningDodge(171537, "MeleeDps")
 local specWarnBurning				= mod:NewSpecialWarningStack(175594, nil, 8)
-local specWarnBurningOther			= mod:NewSpecialWarningTaunt(175594, nil, nil, nil, nil, nil, 2)
+local specWarnBurningOther			= mod:NewSpecialWarningTaunt(175594, nil, nil, nil, nil, 2)
 
 local voiceBurning					= mod:NewVoice(155242) --changemt
 

@@ -19,7 +19,7 @@ local warnVoidVortex			= mod:NewSpellAnnounce(152801, 3)
 local warnSoulShred				= mod:NewSpellAnnounce(152979, 3)
 local warnVoidDevastation		= mod:NewSpellAnnounce(153067, 4)
 
-local specWarnVoidVortex		= mod:NewSpecialWarningRun("OptionVersion2", 152801, nil, nil, nil, 4, nil, true)
+local specWarnVoidVortex		= mod:NewSpecialWarningRun(152801, nil, nil, 2, 4, 2)
 local specWarnSoulShred			= mod:NewSpecialWarningSpell(152979)
 local specWarnVoidDevastation	= mod:NewSpecialWarningSpell(153067, nil, nil, nil, 2)
 local specWarnVoidDevastationM	= mod:NewSpecialWarningMove(153070)
