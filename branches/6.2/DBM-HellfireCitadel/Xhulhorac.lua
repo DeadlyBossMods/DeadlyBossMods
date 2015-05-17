@@ -38,14 +38,14 @@ local warnOverwhelmingChaos			= mod:NewCountAnnounce(187204, 4)
 
 --Fight Wide
 local specWarnFelTouched			= mod:NewSpecialWarningYou(186134, false)
-local specWarnFelsinged				= mod:NewSpecialWarningMove(186073, nil, nil, nil, 1, nil, 2)--Fire GTFO
+local specWarnFelsinged				= mod:NewSpecialWarningMove(186073, nil, nil, nil, 1, 2)--Fire GTFO
 local specWarnVoidTouched			= mod:NewSpecialWarningYou(186135, false)
-local specWarnWastingVoid			= mod:NewSpecialWarningMove(186063, nil, nil, nil, 1, nil, 2)--Void GTFO
+local specWarnWastingVoid			= mod:NewSpecialWarningMove(186063, nil, nil, nil, 1, 2)--Void GTFO
 --Fire Phase
 ----Boss
 local specWarnFelStrike				= mod:NewSpecialWarningSpell(186271, "Tank")
 local specWarnEmpoweredFelStrike	= mod:NewSpecialWarningTaunt(188092, false)--Maybe redundant
-local specWarnFelSurge				= mod:NewSpecialWarningYou(186407, nil, nil, nil, 1, nil, 2)
+local specWarnFelSurge				= mod:NewSpecialWarningYou(186407, nil, nil, nil, 1, 2)
 local yellFelSurge					= mod:NewYell(186407)
 ----Adds
 local specWarnFelBlazeFlurry		= mod:NewSpecialWarningSpell(186453, "Tank")

@@ -34,17 +34,17 @@ local warnDisembodied					= mod:NewTargetCountAnnounce(179407, 2)--Needed to kno
 local warnSeedofDestruction				= mod:NewTargetCountAnnounce(181508, 4)
 
 --Encounter-Wide Mechanics
-local specWarnWakeofDestruction			= mod:NewSpecialWarningSpell(181499, nil, nil, nil, 2, nil, 2)--Triggered by 3 different things
+local specWarnWakeofDestruction			= mod:NewSpecialWarningSpell(181499, nil, nil, nil, 2, 2)--Triggered by 3 different things
 --Armed
 local specWarnDisarmedEnd				= mod:NewSpecialWarningEnd(179667)
-local specWarnSoulCleave				= mod:NewSpecialWarningCount(179406, "Melee", nil, nil, 1, nil, 5)
+local specWarnSoulCleave				= mod:NewSpecialWarningCount(179406, "Melee", nil, nil, 1, 5)
 local specWarnDisembodied				= mod:NewSpecialWarningTaunt(179407)
 local specWarnBefouled					= mod:NewSpecialWarningMoveAway(179711)--Aoe damage was disabled on ptr, bug?
 local specWarnBefouledOther				= mod:NewSpecialWarningTargetCount(179711, false)
 --Disarmed
 local specWarnDisarmed					= mod:NewSpecialWarningSpell(179667)
-local specWarnSeedofDestruction			= mod:NewSpecialWarningYou(181508, nil, nil, nil, 3, nil, 2)
-local specWarnSeedPosition				= mod:NewSpecialWarning("specWarnSeedPosition", nil, false, nil, 1, nil, 4)--Mythic Position Assignment. No option, connected to specWarnMarkedforDeath
+local specWarnSeedofDestruction			= mod:NewSpecialWarningYou(181508, nil, nil, nil, 3, 2)
+local specWarnSeedPosition				= mod:NewSpecialWarning("specWarnSeedPosition", nil, false, nil, 1, 4)--Mythic Position Assignment. No option, connected to specWarnMarkedforDeath
 local yellSeedsofDestruction			= mod:NewYell(181508)
 
 --Armed

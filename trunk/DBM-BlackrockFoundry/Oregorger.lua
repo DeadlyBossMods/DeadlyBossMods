@@ -33,7 +33,7 @@ local specWarnAcidTorrent			= mod:NewSpecialWarningCount(156240, "Tank", nil, ni
 local yellRetchedBlackrock			= mod:NewYell(156179)
 local specWarnRetchedBlackrockNear	= mod:NewSpecialWarningClose(156179)
 local specWarnRetchedBlackrock		= mod:NewSpecialWarningMove(156203, nil, nil, nil, nil, nil, 2)
-local specWarnExplosiveShard		= mod:NewSpecialWarningDodge("OptionVersion3", 156390, "MeleeDps")--No target scanning available. targets ONLY melee (except tanks)
+local specWarnExplosiveShard		= mod:NewSpecialWarningDodge(156390, "MeleeDps", nil, 3)--No target scanning available. targets ONLY melee (except tanks)
 local specWarnHungerDrive			= mod:NewSpecialWarningSpell("ej9964", nil, nil, nil, 2)
 local specWarnHungerDriveEnded		= mod:NewSpecialWarningFades("ej9964")
 

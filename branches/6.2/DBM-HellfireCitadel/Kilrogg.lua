@@ -33,16 +33,16 @@ local warnBloodthirster				= mod:NewSpellAnnounce("ej11266", 3, 131150)
 local warnSavageStrikes				= mod:NewSpellAnnounce(180163, 3, nil, "Tank")--Need to assess damage amount on special vs non special warning
 
 --Boss
-local specWarnShred					= mod:NewSpecialWarningSpell(180199, nil, nil, nil, 3, nil, 2)--Block, or get debuff
-local specWarnHeartSeeker			= mod:NewSpecialWarningRun(180372, nil, nil, nil, 4, nil, 2)--Must run as far from boss as possible
+local specWarnShred					= mod:NewSpecialWarningSpell(180199, nil, nil, nil, 3, 2)--Block, or get debuff
+local specWarnHeartSeeker			= mod:NewSpecialWarningRun(180372, nil, nil, nil, 4, 2)--Must run as far from boss as possible
 local yellHeartSeeker				= mod:NewYell(180372)
-local specWarnDeathThroes			= mod:NewSpecialWarningSpell(180224, nil, nil, nil, 2, nil, 2)
+local specWarnDeathThroes			= mod:NewSpecialWarningSpell(180224, nil, nil, nil, 2, 2)
 local specWarnVisionofDeath			= mod:NewSpecialWarningSpell(182428)--Seems everyone goes down at some point, dps healers and off tank. Each getting different abiltiy when succeed
 --Adds
-local specWarnBloodGlob				= mod:NewSpecialWarningSwitch(180459, "Dps", nil, nil, 1, nil, 5)
-local specWarnFelBloodGlob			= mod:NewSpecialWarningSwitch(180199, "Dps", nil, nil, 3, nil, 5)
-local specWarnBloodthirster			= mod:NewSpecialWarningSwitch("ej11266", false, nil, nil, 1, nil, 5)--Very frequent, let specwarn be an option
-local specWarnHulkingTerror			= mod:NewSpecialWarningSwitch("ej11269", "Dps|Tank", nil, nil, 1, nil, 5)
+local specWarnBloodGlob				= mod:NewSpecialWarningSwitch(180459, "Dps", nil, nil, 1, 5)
+local specWarnFelBloodGlob			= mod:NewSpecialWarningSwitch(180199, "Dps", nil, nil, 3, 5)
+local specWarnBloodthirster			= mod:NewSpecialWarningSwitch("ej11266", false, nil, nil, 1, 5)--Very frequent, let specwarn be an option
+local specWarnHulkingTerror			= mod:NewSpecialWarningSwitch("ej11269", "Dps|Tank", nil, nil, 1, 5)
 local specWarnRendingHowl			= mod:NewSpecialWarningInterrupt(183917, "-Healer")
 
 --Boss

@@ -28,17 +28,17 @@ local warnFoulEnergy				= mod:NewSpellAnnounce(180117, 2)
 local warnExplosiveBurst			= mod:NewTargetAnnounce(181306, 4)--Concerns everyone
 local warnEnrage					= mod:NewSpellAnnounce(186882, 3)
 
-local specWarnPound					= mod:NewSpecialWarningCount(180244, nil, nil, nil, 2, nil, 2)
-local specWarnSwat					= mod:NewSpecialWarningCount(181305, "Tank", nil, nil, 1, nil, 2)
+local specWarnPound					= mod:NewSpecialWarningCount(180244, nil, nil, nil, 2, 2)
+local specWarnSwat					= mod:NewSpecialWarningCount(181305, "Tank", nil, nil, 1, 2)
 local specWarnExplosiveBurst		= mod:NewSpecialWarningYou(181306)
 local yellExplosiveBurst			= mod:NewYell(181306)
-local specWarnExplosiveBurstNear	= mod:NewSpecialWarningClose(181306, nil, nil, nil, 3, nil, 2)
+local specWarnExplosiveBurstNear	= mod:NewSpecialWarningClose(181306, nil, nil, nil, 3, 2)
 local specWarnFoulCrush				= mod:NewSpecialWarningSwitch(181307, "Dps|Tank")--Tweak it as needed once can figure out how to detect what tank it's on
-local specWarnFelOutpouring			= mod:NewSpecialWarningDodge(181292, nil, nil, nil, 2, nil, 2)
+local specWarnFelOutpouring			= mod:NewSpecialWarningDodge(181292, nil, nil, nil, 2, 2)
 local specWarnExplosiveRunes		= mod:NewSpecialWarningSpell(181296, "-Tank")--Leaving as a spell warning, MoveTo gives misleading info that everyone just runs toward them, only a few do who know what to do
 local specWarnGraspingHands			= mod:NewSpecialWarningSwitch(181299)
 --Empowered versions (made separate so users can set different sounds for the more dangerous versions if they choose)
-local specWarnEmpFelOutpouring		= mod:NewSpecialWarningDodge(181293, nil, nil, nil, 2, nil, 2)
+local specWarnEmpFelOutpouring		= mod:NewSpecialWarningDodge(181293, nil, nil, nil, 2, 2)
 local specWarnEmpExplosiveRunes		= mod:NewSpecialWarningSpell(181297, "-Tank")
 local specWarnDraggingHands			= mod:NewSpecialWarningSwitch(181300)
 

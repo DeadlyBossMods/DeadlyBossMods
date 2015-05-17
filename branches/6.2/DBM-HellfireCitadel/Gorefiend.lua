@@ -33,19 +33,19 @@ local warnGoreboundSpiritSoon			= mod:NewSoonAnnounce("ej11020", 3, 187814)
 local warnRagingCharge					= mod:NewSpellAnnounce(187814, 3, nil, "Melee")
 local warnCrushingDarkness				= mod:NewCastAnnounce(180017, 3, 6, nil, "Melee")
 
-local specWarnShadowofDeath				= mod:NewSpecialWarningYou(179864, nil, nil, nil, 1, nil, 5)
+local specWarnShadowofDeath				= mod:NewSpecialWarningYou(179864, nil, nil, nil, 1, 5)
 local specWarnShadowofDeathTank			= mod:NewSpecialWarningTaunt(179864)
-local specWarnTouchofDoom				= mod:NewSpecialWarningRun(179977, nil, nil, nil, 4, nil, 2)
+local specWarnTouchofDoom				= mod:NewSpecialWarningRun(179977, nil, nil, nil, 4, 2)
 local yellTouchofDoom					= mod:NewYell(179977)
 local specWarnDoomWell					= mod:NewSpecialWarningMove(179995)
-local specWarnSharedFate				= mod:NewSpecialWarningMoveTo(179908, nil, nil, nil, 3, nil, 5)--Only non rooted player get moveto. rooted player can't do anything.
+local specWarnSharedFate				= mod:NewSpecialWarningMoveTo(179908, nil, nil, nil, 3, 2)--Only non rooted player get moveto. rooted player can't do anything.
 local yellSharedFate					= mod:NewYell(179909)--Only rooted player should yell
 local specWarnFeastofSouls				= mod:NewSpecialWarningSpell(181973, nil, nil, nil, 2)--Energy based
 local specWarnFeastofSoulsEnded			= mod:NewSpecialWarningEnd(181973)
-local specWarnHungerforLife				= mod:NewSpecialWarningRun(180148, nil, nil, nil, 4, nil, 2)
+local specWarnHungerforLife				= mod:NewSpecialWarningRun(180148, nil, nil, nil, 4, 2)
 local specWarnEnragedSpirit				= mod:NewSpecialWarningSwitch("ej11378", "-Healer")
 local specWarnGoreboundSpirit			= mod:NewSpecialWarningSwitch("ej11020", "-Healer")
-local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer", nil, nil, 1, nil, 2)
+local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer", nil, nil, 1, 2)
 
 local timerShadowofDeathCD				= mod:NewNextCountTimer(30, 179864)--Sequenced timer, uses table.
 local timerTouchofDoomCD				= mod:NewNextTimer(18, 179977)

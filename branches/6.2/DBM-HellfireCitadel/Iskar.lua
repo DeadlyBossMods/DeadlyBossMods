@@ -36,7 +36,7 @@ local warnFelChakram					= mod:NewTargetAnnounce(182178, 4)
 local warnLaser							= mod:NewTargetAnnounce(182582, 3)
 local warnFelConduit					= mod:NewCastAnnounce(181827, 3, nil, nil, "-Healer")
 
-local specWarnThrowAnzu					= mod:NewSpecialWarning("specWarnThrowAnzu", nil, nil, nil, 1, nil, 5)
+local specWarnThrowAnzu					= mod:NewSpecialWarning("specWarnThrowAnzu", nil, nil, nil, 1, 5)
 local specWarnFocusedBlast				= mod:NewSpecialWarningCount(181912, nil, nil, nil, 2)
 local specWarnPhantasmalWinds			= mod:NewSpecialWarningYou(181957)
 local yellPhantasmalWinds				= mod:NewYell(181957)--So person with eye can see where the targets are faster
@@ -48,13 +48,13 @@ local specWarnPhantasmalFelBomb			= mod:NewSpecialWarningYou(179219)--Not move a
 local yellPhantasmalFelBomb				= mod:NewYell(179219, nil, false)--Fake bombs off by default, they will never explode and eye of anzu holder will get distracted
 local specWarnFelBomb					= mod:NewSpecialWarningYou(181753)--Not move away on purpose, correct way to handle is get eye of anzu, you do NOT move
 local yellFelBomb						= mod:NewYell(181753)--Yell for real fel bomb on by default only
-local specWarnFelBombDispel				= mod:NewSpecialWarningDispel(181753, nil, nil, nil, 1, nil, 2)--Doesn't need option default, it's filtered by anzu check
-local specWarnFelLaser					= mod:NewSpecialWarningMoveAway(182582, nil, nil, nil, 1, nil, 2)
+local specWarnFelBombDispel				= mod:NewSpecialWarningDispel(181753, nil, nil, nil, 1, 2)--Doesn't need option default, it's filtered by anzu check
+local specWarnFelLaser					= mod:NewSpecialWarningMoveAway(182582, nil, nil, nil, 1, 2)
 local yellFelLaser						= mod:NewYell(182582)
 local specWarnDarkBindings				= mod:NewSpecialWarningYou(185510)--Mythic
-local specWarnFelChakram				= mod:NewSpecialWarningMoveAway(182178, nil, nil, nil, 1, nil, 2)
-local specWarnFelChakramTank			= mod:NewSpecialWarningTaunt(182178, nil, nil, nil, 1, nil, 2)
-local specWarnFelConduit				= mod:NewSpecialWarningInterrupt(181827, nil, nil, nil, 1, nil, 2)--On for everyone, filtered by eye of anzu, if this person can't interrupt, then they better pass it to someone who can
+local specWarnFelChakram				= mod:NewSpecialWarningMoveAway(182178, nil, nil, nil, 1, 2)
+local specWarnFelChakramTank			= mod:NewSpecialWarningTaunt(182178, nil, nil, nil, 1, 2)
+local specWarnFelConduit				= mod:NewSpecialWarningInterrupt(181827, nil, nil, nil, 1, 2)--On for everyone, filtered by eye of anzu, if this person can't interrupt, then they better pass it to someone who can
 
 local timerFelLaserCD					= mod:NewCDTimer(19.5, 182582)--19.5-22. Never pauses, used all phases
 local timerChakramCD					= mod:NewCDTimer(24.5, 182178)

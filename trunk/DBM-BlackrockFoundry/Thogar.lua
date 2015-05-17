@@ -29,7 +29,7 @@ local warnTrain						= mod:NewTargetCountAnnounce(176312, 4)
 local warnDelayedSiegeBomb			= mod:NewTargetAnnounce(159481, 3)
 
 --Operator Thogar
-local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195, nil, nil, nil, nil, nil, 2)
+local specWarnProtoGrenade			= mod:NewSpecialWarningMove(165195, nil, nil, nil, nil, 2)
 local specWarnProtoGrenadeNear		= mod:NewSpecialWarningClose(165195)
 local yellProtoGrenade				= mod:NewYell(165195)
 local specWarnEnkindle				= mod:NewSpecialWarningStack(155921, nil, 2)--Maybe need 3 for new cd?
@@ -37,10 +37,10 @@ local specWarnEnkindleOther			= mod:NewSpecialWarningTaunt(155921)
 local specWarnTrain					= mod:NewSpecialWarningDodge(176312, nil, nil, nil, 3)
 local specWarnSplitSoon				= mod:NewSpecialWarning("specWarnSplitSoon")--TODO, maybe include types in the split?
 --Adds
-local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt("OptionVersion2", 160140, "-Healer")
+local specWarnCauterizingBolt		= mod:NewSpecialWarningInterrupt(160140, "-Healer", nil, 2)
 local specWarnCauterizingBoltDispel	= mod:NewSpecialWarningDispel(160140, "MagicDispeller")
 local specWarnIronbellow			= mod:NewSpecialWarningSpell(163753, nil, nil, nil, 2)
-local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481, nil, nil, nil, nil, nil, 2)
+local specWarnDelayedSiegeBomb		= mod:NewSpecialWarningYou(159481, nil, nil, nil, nil, 2)
 local specWarnDelayedSiegeBombMove	= mod:NewSpecialWarningMove(159481)
 local yellDelayedSiegeBomb			= mod:NewCountYell(159481)
 local specWarnManOArms				= mod:NewSpecialWarningSwitch("ej9549", "-Healer")

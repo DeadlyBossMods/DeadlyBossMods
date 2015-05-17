@@ -12,7 +12,7 @@ mod:RegisterEvents(
 )
 mod.noStatistics = true
 
-local specWarnMarked			= mod:NewSpecialWarningRun("OptionVersion2", 102341, nil, nil, nil, 4)
+local specWarnMarked			= mod:NewSpecialWarningRun(102341, nil, nil, 2, 4)
 
 local timerGame					= mod:NewBuffActiveTimer(60, 102178)
 

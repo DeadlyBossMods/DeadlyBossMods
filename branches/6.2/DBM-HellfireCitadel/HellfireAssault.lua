@@ -48,9 +48,9 @@ local warnFelfireDemolisher			= mod:NewSpellAnnounce("ej11429", 4, 160240)--Hero
 ----Things
 
 --Siegemaster Mar'tak
-local specWarnHowlingAxe			= mod:NewSpecialWarningMoveAway(184369, nil, nil, nil, 1, nil, 2)
+local specWarnHowlingAxe			= mod:NewSpecialWarningMoveAway(184369, nil, nil, nil, 1, 2)
 local yellHowlingAxe				= mod:NewCountYell(184369)
-local specWarnShockwave				= mod:NewSpecialWarningDodge(184394, nil, nil, nil, 2, nil, 2)
+local specWarnShockwave				= mod:NewSpecialWarningDodge(184394, nil, nil, nil, 2, 2)
 --Hellfire Reinforcements
 local specWarnReinforcements		= mod:NewSpecialWarningSwitch("ej11406", "Tank")
 ----Gorebound Berserker (tank add probably)
@@ -64,7 +64,7 @@ local specWarnFelfireVolley			= mod:NewSpecialWarningInterrupt(180417, "-Healer"
 local specWarnDemonicLeap			= mod:NewSpecialWarningYou(183391)--Mythic
 local yellDemonicLeap				= mod:NewYell(183391)--Mythic
 ----Contracted Engineer
-local specWarnRepair				= mod:NewSpecialWarningInterrupt(185816, "-Healer", nil, nil, 1, nil, 2)
+local specWarnRepair				= mod:NewSpecialWarningInterrupt(185816, "-Healer", nil, nil, 1, 2)
 --Felfire-Imbued Siege Vehicles
 local specWarnDemolisher			= mod:NewSpecialWarningSwitch("ej11429", "Dps")--Heroic & Mythic only. Does massive aoe damage, has to be killed asap
 

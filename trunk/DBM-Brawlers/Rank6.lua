@@ -18,7 +18,7 @@ local warnTorrent				= mod:NewSpellAnnounce(124935, 4)--Proboskus
 local warnDisorientingShriek	= mod:NewSpellAnnounce(134795, 3)
 
 local specWarnHammerFist		= mod:NewSpecialWarningRun(141104, nil, nil, nil, 3)--Doctor FIST
-local specWarnRainDance			= mod:NewSpecialWarningSpell(124860, nil, nil, nil, true)--Proboskus
+local specWarnRainDance			= mod:NewSpecialWarningSpell(124860, nil, nil, nil, 2)--Proboskus
 local specWarnTorrent			= mod:NewSpecialWarningInterrupt(124935)--Proboskus
 local specWarnDisorientingShriek= mod:NewSpecialWarningInterrupt(134795)
 

@@ -26,8 +26,8 @@ local warnInhale				= mod:NewSpellAnnounce(153804, 4)
 local warnCorpseBreath			= mod:NewSpellAnnounce(165578, 2)
 local warnSubmerge				= mod:NewSpellAnnounce(177694, 1)
 
-local specWarnBodySlam			= mod:NewSpecialWarningDodge(154175, nil, nil, nil, 2, nil, true)
-local specWarnInhale			= mod:NewSpecialWarningSpell("OptionVersion2", 153804, nil, nil, nil, 4, nil, true)
+local specWarnBodySlam			= mod:NewSpecialWarningDodge(154175, nil, nil, nil, 2, 2)
+local specWarnInhale			= mod:NewSpecialWarningSpell(153804, nil, nil, 2, 4, 2)
 local specWarnInhaleEnd			= mod:NewSpecialWarningEnd(153804)
 local specWarnNecroticPitch		= mod:NewSpecialWarningMove(153692)
 

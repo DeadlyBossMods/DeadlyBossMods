@@ -21,10 +21,10 @@ local warnRejuvSerumCast			= mod:NewCastAnnounce(161203, 3)
 local warnToxicFumes				= mod:NewTargetAnnounce(162600, 3, nil, "Healer")
 local warnVilebloodSerum			= mod:NewSpellAnnounce(161209, 3)--Some may think this is spammy but the puddles tick literally instantly giving not much time to move before 2nd tick which may kill you.
 
-local specWarnDebilitatingFixation	= mod:NewSpecialWarningInterrupt("OptionVersion2", 161199, "-Healer", nil, nil, 3)
+local specWarnDebilitatingFixation	= mod:NewSpecialWarningInterrupt(161199, "-Healer", nil, 2, 3)
 local specWarnEruption				= mod:NewSpecialWarningDodge(155037, "Tank")
 local specWarnRejuvSerum			= mod:NewSpecialWarningDispel(161203, "MagicDispeller")
-local specWarnToxicFumes			= mod:NewSpecialWarningDispel("OptionVersion2", 162600, "RemovePoison")
+local specWarnToxicFumes			= mod:NewSpecialWarningDispel(162600, "RemovePoison", nil, 2)
 local specWarnVilebloodSerum		= mod:NewSpecialWarningMove(161288)
 
 local timerDebilitatingCD			= mod:NewNextTimer(20, 161199)--Every 20 seconds exactly, at least in challenge mode.

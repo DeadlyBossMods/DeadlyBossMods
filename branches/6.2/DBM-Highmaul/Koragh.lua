@@ -22,8 +22,6 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
---TODO, find number of targets of MC and add SetIconsUsed with correct icon count.
---TODO, see if MC works. I think it's every 3rd balls
 local warnCausticEnergy				= mod:NewTargetAnnounce("OptionVersion3", 161242, 3, nil, "Melee")
 local warnTrample					= mod:NewTargetAnnounce(163101, 3)--Technically it's supression field, then trample, but everyone is going to know it more by trample cause that's the part of it that matters
 local warnExpelMagicFrost			= mod:NewTargetAnnounce(161411, 3)
@@ -36,22 +34,21 @@ local warnExpelMagicFel				= mod:NewTargetAnnounce(172895, 4)
 
 local specWarnNullBarrier			= mod:NewSpecialWarningTarget(156803)--Only warn for boss
 local specWarnVulnerability			= mod:NewSpecialWarningTarget(160734)--Switched to target warning since some may be assined adds, some to boss, but all need to know when this phase starts
-local specWarnTrample				= mod:NewSpecialWarningYou(163101, nil, nil, nil, nil, nil, 2)
+local specWarnTrample				= mod:NewSpecialWarningYou(163101, nil, nil, nil, nil, 2)
 local yellTrample					= mod:NewYell(163101)
 local specWarnTrampleNear			= mod:NewSpecialWarningClose(163101)
-local specWarnExpelMagicFire		= mod:NewSpecialWarningMoveAway(162185, nil, nil, nil, nil, nil, 2)
-local specWarnExpelMagicShadow		= mod:NewSpecialWarningSpell(162184, "Healer", nil, nil, nil, nil, 2)
+local specWarnExpelMagicFire		= mod:NewSpecialWarningMoveAway(162185, nil, nil, nil, nil, 2)
+local specWarnExpelMagicShadow		= mod:NewSpecialWarningSpell(162184, "Healer", nil, nil, nil, 2)
 local specWarnExpelMagicFrostYou	= mod:NewSpecialWarningYou(161411, false)
-local specWarnExpelMagicFrost		= mod:NewSpecialWarningSpell(161411, false, nil, nil, nil, nil, 2)
-local specWarnExpelMagicArcaneYou	= mod:NewSpecialWarningMoveAway(162186, nil, nil, nil, 3, nil, 2)
-local specWarnExpelMagicArcane		= mod:NewSpecialWarningTaunt(162186, nil, nil, nil, nil, nil, 2)
+local specWarnExpelMagicFrost		= mod:NewSpecialWarningSpell(161411, false, nil, nil, nil, 2)
+local specWarnExpelMagicArcaneYou	= mod:NewSpecialWarningMoveAway(162186, nil, nil, nil, 3, 2)
+local specWarnExpelMagicArcane		= mod:NewSpecialWarningTaunt(162186, nil, nil, nil, nil, 2)
 local yellExpelMagicArcane			= mod:NewYell(162186)
-local specWarnBallsSoon				= mod:NewSpecialWarningPreWarn(161612, nil, 6.5, nil, nil, nil, nil, 2)
---local specWarnMCSoon				= mod:NewSpecialWarningPreWarn(163472, true, 6.5)
+local specWarnBallsSoon				= mod:NewSpecialWarningPreWarn(161612, nil, 6.5, nil, nil, nil, 2)
 local specWarnMC					= mod:NewSpecialWarningSwitch(163472, "Dps")
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
 local specWarnExpelMagicFel			= mod:NewSpecialWarningYou(172895)--Maybe needs "do not move" warning or at very least "try not to move" since sometimes you have to move for trample.
-local specWarnExpelMagicFelFades	= mod:NewSpecialWarning("specWarnExpelMagicFelFades", nil, nil, nil, 3, nil, 2)--No generic that describes this
+local specWarnExpelMagicFelFades	= mod:NewSpecialWarning("specWarnExpelMagicFelFades", nil, nil, nil, 3, 2)--No generic that describes this
 local yellExpelMagicFel				= mod:NewYell(172895)
 local specWarnExpelMagicFelMove		= mod:NewSpecialWarningMove(172917)--Under you (fire). If not enough maybe add periodic damage too?
 
@@ -111,9 +108,6 @@ local function ballsWarning(self)
 		voiceBalls:Play("161612")
 	else
 		warnBallsSoon:Show()--Everyone else
-		if self:IsMythic() and ((self.vb.ballsCount+1) % 2) == 0 then
---			specWarnMCSoon:Show()
-		end
 	end
 end
 

@@ -23,7 +23,7 @@ local warnTimeToFeed			= mod:NewTargetAnnounce(162415, 3)
 local warnBreakout				= mod:NewTargetAnnounce(178124, 2)
 
 local specWarnRendingSlashes	= mod:NewSpecialWarningDodge(161239, nil, nil, nil, 3)
-local specWarnRoar				= mod:NewSpecialWarningSpell(163054, nil, nil, nil, true)
+local specWarnRoar				= mod:NewSpecialWarningSpell(163054, nil, nil, nil, 2)
 local specWarnTimeToFeed		= mod:NewSpecialWarningYou(162415)--Can still move and attack during it, a personal warning lets a person immediately hit self heals/damage reduction abilities.
 local specWarnTimeToFeedOther	= mod:NewSpecialWarningTarget(162415, "Healer")
 local specWarnAcidSplash		= mod:NewSpecialWarningMove(178156)

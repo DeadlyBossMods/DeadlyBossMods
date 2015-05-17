@@ -35,18 +35,18 @@ local warnFixate					= mod:NewTargetAnnounce(156653, 4)
 local warnAttachSlagBombs			= mod:NewTargetCountAnnounce(157000, 4)
 
 --Stage One: The Blackrock Forge
-local specWarnDemolition			= mod:NewSpecialWarningCount(156425, nil, nil, nil, 2, nil, 2)
+local specWarnDemolition			= mod:NewSpecialWarningCount(156425, nil, nil, nil, 2, 2)
 local specWarnMassiveDemolition		= mod:NewSpecialWarningCount(156479, false, nil, nil, 2)
-local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 3, nil, 2)
-local specWarnMFDPosition			= mod:NewSpecialWarning("specWarnMFDPosition", nil, false, nil, 1, nil, 4)--Mythic Position Assignment. No option, connected to specWarnMarkedforDeath
+local specWarnMarkedforDeath		= mod:NewSpecialWarningYou(156096, nil, nil, nil, 3, 2)
+local specWarnMFDPosition			= mod:NewSpecialWarning("specWarnMFDPosition", nil, false, nil, 1, 4)--Mythic Position Assignment. No option, connected to specWarnMarkedforDeath
 local specWarnMarkedforDeathOther	= mod:NewSpecialWarningTargetCount(156096, false)
 local yellMarkedforDeath			= mod:NewYell(156096)
-local specWarnThrowSlagBombs		= mod:NewSpecialWarningCount(156030, nil, nil, nil, 2, nil, 2)--This spell is not gtfo.
-local specWarnShatteringSmash		= mod:NewSpecialWarningCount(155992, "Melee", nil, nil, nil, nil, 2)
+local specWarnThrowSlagBombs		= mod:NewSpecialWarningCount(156030, nil, nil, nil, 2, 2)--This spell is not gtfo.
+local specWarnShatteringSmash		= mod:NewSpecialWarningCount(155992, "Melee", nil, nil, nil, 2)
 local specWarnMoltenSlag			= mod:NewSpecialWarningMove(156401)
 --Stage Two: Storage Warehouse
 local specWarnSiegemaker			= mod:NewSpecialWarningCount("ej9571", false)--Kiter switch. off by default. 
-local specWarnSiegemakerPlatingFades= mod:NewSpecialWarningFades("OptionVersion2", 156667, "Ranged")--Plating removed, NOW dps switch
+local specWarnSiegemakerPlatingFades= mod:NewSpecialWarningFades(156667, "Ranged", nil, 2)--Plating removed, NOW dps switch
 local specWarnFixate				= mod:NewSpecialWarningRun(156653, nil, nil, nil, 4)
 local yellFixate					= mod:NewYell(156653)
 local specWarnMortarSoon			= mod:NewSpecialWarningSoon(156530, "Ranged")--Mortar prefers the furthest targets from siege engine. It's ranged job to bait it to a wall
@@ -57,7 +57,7 @@ local specWarnAttachSlagBombs		= mod:NewSpecialWarningYou(157000, nil, nil, nil,
 local specWarnAttachSlagBombsOther	= mod:NewSpecialWarningTaunt(157000, nil, nil, nil, nil, nil, 2)
 local specWarnSlagPosition			= mod:NewSpecialWarning("specWarnSlagPosition", nil, false, nil, 1)
 local yellAttachSlagBombs			= mod:NewYell("OptionVersion2", 157000)
-local specWarnMassiveShatteringSmash= mod:NewSpecialWarningCount("OptionVersion2", 158054, nil, nil, nil, 3, nil, 2)
+local specWarnMassiveShatteringSmash= mod:NewSpecialWarningCount(158054, nil, nil, 2, 3, 2)
 local specWarnFallingDebris			= mod:NewSpecialWarningCount(162585, nil, nil, nil, 2)--Mythic (like Meteor)
 
 --Stage One: The Blackrock Forge

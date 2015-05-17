@@ -44,20 +44,20 @@ local warnFelseeker					= mod:NewCountAnnounce(181735, 3)
 ----Doom Lords
 local specWarnCurseofLegion			= mod:NewSpecialWarningYou(181275)
 local yellCurseofLegion				= mod:NewFadesYell(181275)--Don't need to know when it's applied, only when it's fading does it do aoe/add spawn
-local specWarnMarkOfDoom			= mod:NewSpecialWarningYou(181099, nil, nil, nil, 1, nil, 2)
+local specWarnMarkOfDoom			= mod:NewSpecialWarningYou(181099, nil, nil, nil, 1, 2)
 local yellMarkOfDoom				= mod:NewYell(181099)--This need to know at apply, only player needs to know when it's fading
-local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(181126, "-Healer", nil, nil, 1, nil, 2)
+local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(181126, "-Healer", nil, nil, 1, 2)
 ----Fel Imps
-local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, "-Healer", nil, nil, 1, nil, 2)--This warning is spammy if filter is disabled, so this mod does NOT honor filter setting, this warning is ALWAYS target filtered
+local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, "-Healer", nil, nil, 1, 2)--This warning is spammy if filter is disabled, so this mod does NOT honor filter setting, this warning is ALWAYS target filtered
 ----Dread Infernals
-local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, "Melee", nil, nil, 4, nil, 2)
+local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, "Melee", nil, nil, 4, 2)
 --Mannoroth
-local specWarnGlaiveCombo			= mod:NewSpecialWarningSpell(181354, "Tank", nil, nil, 3, nil, 2)--Active mitigation or die mechanic
-local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, "Tank", nil, nil, 1, nil, 2)--Swap Mechanic
-local specWarnFelHellStorm			= mod:NewSpecialWarningSpell(181557, nil, nil, nil, 2, nil, 2)
+local specWarnGlaiveCombo			= mod:NewSpecialWarningSpell(181354, "Tank", nil, nil, 3, 2)--Active mitigation or die mechanic
+local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, "Tank", nil, nil, 1, 2)--Swap Mechanic
+local specWarnFelHellStorm			= mod:NewSpecialWarningSpell(181557, nil, nil, nil, 2, 2)
 local specWarnGaze					= mod:NewSpecialWarningYou(181597)
 local yellGaze						= mod:NewYell(181597)
-local specWarnFelSeeker				= mod:NewSpecialWarningDodge(181735, nil, nil, nil, 2, nil, 2)
+local specWarnFelSeeker				= mod:NewSpecialWarningDodge(181735, nil, nil, nil, 2, 2)
 local specWarnShadowForce			= mod:NewSpecialWarningSpell(181799, nil, nil, nil, 3)
 
 --Adds

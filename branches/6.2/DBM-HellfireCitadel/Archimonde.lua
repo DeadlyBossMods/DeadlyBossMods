@@ -56,8 +56,8 @@ local specWarnAllureofFlames		= mod:NewSpecialWarningSpell(183254, nil, nil, nil
 local specWarnDeathCaller			= mod:NewSpecialWarningSwitch("ej11582", "Dps")--Tanks don't need switch, they have death brand special warning 2 seconds earlier
 local specWarnFelBurst				= mod:NewSpecialWarningYou(183817)
 local yellFelBurst					= mod:NewYell(183817)--Change yell to countdown mayeb when better understood
-local specWarnFelBurstNear			= mod:NewSpecialWarningMoveTo(183817, nil, nil, nil, 1, nil, 2)--Anyone near by should run in to help soak, should be mostly ranged but if it's close to melee, melee soaking too doesn't hurt
-local specWarnDesecrate				= mod:NewSpecialWarningDodge(185590, "Melee", nil, nil, 1, nil, 2)
+local specWarnFelBurstNear			= mod:NewSpecialWarningMoveTo(183817, nil, nil, nil, 1, 2)--Anyone near by should run in to help soak, should be mostly ranged but if it's close to melee, melee soaking too doesn't hurt
+local specWarnDesecrate				= mod:NewSpecialWarningDodge(185590, "Melee", nil, nil, 1, 2)
 local specWarnDeathBrand			= mod:NewSpecialWarningSpell(183828, "Tank")
 --Phase 2: Hand of the Legion
 local specWarnBreakShackle			= mod:NewSpecialWarning("specWarnBreakShackle", nil, nil, nil, 1)

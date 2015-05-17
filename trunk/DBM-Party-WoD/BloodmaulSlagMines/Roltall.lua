@@ -19,7 +19,7 @@ local warnFieryBoulder			= mod:NewCountAnnounce(153247, 3)
 local warnHeatWave				= mod:NewSpellAnnounce(152940, 3)
 local warnBurningSlag			= mod:NewSpellAnnounce(152939, 3)
 
-local specWarnFieryBoulder		= mod:NewSpecialWarningSpell("OptionVersion2", 153247, nil, nil, nil, 2)--Important to everyone
+local specWarnFieryBoulder		= mod:NewSpecialWarningSpell(153247, nil, nil, 2, 2)--Important to everyone
 local specWarnHeatWave			= mod:NewSpecialWarningSpell(152940, false, nil, nil, 2)
 local specWarnBurningSlag		= mod:NewSpecialWarningSpell(152939, false, nil, nil, 2)
 local specWarnBurningSlagFire	= mod:NewSpecialWarningMove(152939)

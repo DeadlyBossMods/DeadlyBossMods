@@ -39,22 +39,22 @@ local warnGiftoftheManari			= mod:NewTargetAnnounce(184124, 4)
 
 --Soulbound Construct
 local specWarnReverberatingBlow		= mod:NewSpecialWarningCount(180008, "Tank", nil, nil, 1)
-local specWarnFelPrison				= mod:NewSpecialWarningDodge(181288, nil, nil, nil, 2, nil, 2)
-local specWarnVolatileFelOrb		= mod:NewSpecialWarningRun(180221, nil, nil, nil, 4, nil, 2)
+local specWarnFelPrison				= mod:NewSpecialWarningDodge(181288, nil, nil, nil, 2, 2)
+local specWarnVolatileFelOrb		= mod:NewSpecialWarningRun(180221, nil, nil, nil, 4, 2)
 local yellVolatileFelOrb			= mod:NewYell(180221)
-local specWarnFelChargeYou			= mod:NewSpecialWarningYou(182051, nil, nil, nil, 1, nil, 2)
+local specWarnFelChargeYou			= mod:NewSpecialWarningYou(182051, nil, nil, nil, 1, 2)
 local yellCharge					= mod:NewYell(182051)
-local specWarnFelCharge				= mod:NewSpecialWarningTarget(182051, "Melee", nil, nil, 2, nil, 2)--Boss will often go through melee most of time, so they still need generic warning.
+local specWarnFelCharge				= mod:NewSpecialWarningTarget(182051, "Melee", nil, nil, 2, 2)--Boss will often go through melee most of time, so they still need generic warning.
 --Socrethar
-local specWarnExertDominance		= mod:NewSpecialWarningInterrupt(183331, "-Healer", nil, nil, 1, nil, 2)
-local specWarnApocalypse			= mod:NewSpecialWarningSpell(183329, nil, nil, nil, 2, nil, 2)
+local specWarnExertDominance		= mod:NewSpecialWarningInterrupt(183331, "-Healer", nil, nil, 1, 2)
+local specWarnApocalypse			= mod:NewSpecialWarningSpell(183329, nil, nil, nil, 2, 2)
 --Adds
-local specWarnShadowWordAgony		= mod:NewSpecialWarningInterrupt(184239, false, nil, nil, 1, nil, 2)
-local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(182392, "-Healer", nil, nil, 1, nil, 2)
-local specWarnGhastlyFixation		= mod:NewSpecialWarningRun(182769, nil, nil, nil, 4, nil, 2)
+local specWarnShadowWordAgony		= mod:NewSpecialWarningInterrupt(184239, false, nil, nil, 1, 2)
+local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(182392, "-Healer", nil, nil, 1, 2)
+local specWarnGhastlyFixation		= mod:NewSpecialWarningRun(182769, nil, nil, nil, 4, 2)
 local yellGhastlyFixation			= mod:NewYell(182769, nil, false)
 local specWarnSargereiDominator		= mod:NewSpecialWarningSwitch("ej11456", "-Healer")
-local specWarnGiftoftheManari		= mod:NewSpecialWarningYou(184124, nil, nil, nil, 1, nil, 2)
+local specWarnGiftoftheManari		= mod:NewSpecialWarningYou(184124, nil, nil, nil, 1, 2)
 local yellGiftoftheManari			= mod:NewYell(184124)
 
 --Soulbound Construct

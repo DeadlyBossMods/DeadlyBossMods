@@ -30,7 +30,7 @@ local warnOnFire					= mod:NewTargetAnnounce(141388, 4)--Anthracite
 
 local specWarnRPS					= mod:NewSpecialWarning("specWarnRPS")--Ro-Shambo
 local specWarnEightChomps			= mod:NewSpecialWarningDodge(142788)--Mecha-Bruce
-local specWarnBlindCleave			= mod:NewSpecialWarningRun("OptionVersion2", 141192, nil, nil, nil, 4)--Blind Hero
+local specWarnBlindCleave			= mod:NewSpecialWarningRun(141192, nil, nil, 2, 4)--Blind Hero
 local specWarnBoomingBoogaloo		= mod:NewSpecialWarningSpell(140894, nil, nil, nil, 2)--Master Boom Boom
 local specWarnDeployBoom			= mod:NewSpecialWarningSpell(140912, nil, nil, nil, 3)--Master Boom Boom
 local specWarnSmolderingHeat		= mod:NewSpecialWarningYou(142400)--Anthracite

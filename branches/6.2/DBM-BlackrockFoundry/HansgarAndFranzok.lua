@@ -23,13 +23,13 @@ local warnJumpSlam						= mod:NewTargetCountAnnounce("ej9854", 3)--Find pretty i
 local specWarnJumpSlam					= mod:NewSpecialWarningYou("ej9854")
 local specWarnJumpSlamNear				= mod:NewSpecialWarningClose("ej9854")
 local yellJumpSlam						= mod:NewYell("ej9854")
-local specWarnDisruptingRoar			= mod:NewSpecialWarningCast("OptionVersion2", 160838, "SpellCaster", nil, nil, nil, nil, 2)
+local specWarnDisruptingRoar			= mod:NewSpecialWarningCast(160838, "SpellCaster", nil, 2, nil, 2)
 --Move specWarnCripplingSupplex to a health check, warn when near 85, 55, or 25%
-local specWarnCripplingSupplex			= mod:NewSpecialWarningPreWarn("OptionVersion2", 156938, "Tank|Healer", 3, nil, nil, 3)--pop a cooldown.
+local specWarnCripplingSupplex			= mod:NewSpecialWarningPreWarn(156938, "Tank|Healer", 3, nil, 3, 3)--pop a cooldown.
 local specWarnSearingPlates				= mod:NewSpecialWarningSpell(161570, nil, nil, nil, 2)
 local specWarnStampers					= mod:NewSpecialWarningSpell(174825, nil, nil, nil, 2)
-local specWarnSearingPlatesEnd			= mod:NewSpecialWarningEnd(161570, nil, nil, nil, nil, nil, 2)
-local specWarnStampersEnd				= mod:NewSpecialWarningEnd(174825, nil, nil, nil, nil, nil, 2)
+local specWarnSearingPlatesEnd			= mod:NewSpecialWarningEnd(161570, nil, nil, nil, nil, 2)
+local specWarnStampersEnd				= mod:NewSpecialWarningEnd(174825, nil, nil, nil, nil, 2)
 
 local timerDisruptingRoar				= mod:NewCastTimer(2.5, 160838, nil, "SpellCaster")
 local timerDisruptingRoarCD				= mod:NewCDTimer(45, 160838, nil, "SpellCaster")

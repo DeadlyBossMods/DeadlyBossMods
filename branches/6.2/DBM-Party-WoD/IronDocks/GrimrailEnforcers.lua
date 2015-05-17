@@ -25,11 +25,11 @@ local warnLavaSwipe				= mod:NewSpellAnnounce(165152, 2)
 local warnOgreTraps				= mod:NewCastAnnounce(163390, 3)
 local warnBigBoom				= mod:NewSpellAnnounce(163379, 1)
 
-local specWarnSanguineSphere	= mod:NewSpecialWarningReflect("OptionVersion2", 163689, "-Healer")
-local specWarnSanguineSphereEnd	= mod:NewSpecialWarningEnd("OptionVersion2", 163689, "-Healer")
+local specWarnSanguineSphere	= mod:NewSpecialWarningReflect(163689, "-Healer", nil, 2)
+local specWarnSanguineSphereEnd	= mod:NewSpecialWarningEnd(163689, "-Healer", nil, 2)
 local specWarnFlamingSlash		= mod:NewSpecialWarningDodge(163665, nil, nil, nil, 3)--Devastating in challenge modes. move or die.
 local specWarnLavaSwipe			= mod:NewSpecialWarningSpell(165152, nil, nil, nil, 2)
-local specWarnOgreTraps			= mod:NewSpecialWarningSpell("OptionVersion2", 163390, false)--Pre warning for bomb immediately after. Maybe change to a Soon warning with bomb spellid instead so that's clear?
+local specWarnOgreTraps			= mod:NewSpecialWarningSpell(163390, false, nil, 2)--Pre warning for bomb immediately after. Maybe change to a Soon warning with bomb spellid instead so that's clear?
 local specWarnBigBoom			= mod:NewSpecialWarningSpell(163379, nil, nil, nil, 2)--maybe use switch.
 
 local timerSanguineSphere		= mod:NewTargetTimer(15, 163689)
