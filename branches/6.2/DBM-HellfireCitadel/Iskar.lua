@@ -38,7 +38,7 @@ local warnFelConduit					= mod:NewCastAnnounce(181827, 3, nil, nil, "-Healer")
 
 local specWarnThrowAnzu					= mod:NewSpecialWarning("specWarnThrowAnzu", nil, nil, nil, 1, 5)
 local specWarnFocusedBlast				= mod:NewSpecialWarningCount(181912, nil, nil, nil, 2)
-local specWarnPhantasmalWinds			= mod:NewSpecialWarningYou(181957)
+local specWarnPhantasmalWinds			= mod:NewSpecialWarningYou(181957, nil, nil, nil, 3)
 local yellPhantasmalWinds				= mod:NewYell(181957)--So person with eye can see where the targets are faster
 local specWarnPhantasmalWounds			= mod:NewSpecialWarningYou(182325, false)
 local yellPhantasmalWounds				= mod:NewYell(182325, nil, false)--Can't see much reason to have THIS one on by default, but offered as an option.
