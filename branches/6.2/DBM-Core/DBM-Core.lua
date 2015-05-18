@@ -8590,7 +8590,7 @@ do
 					end
 				end
 			end
-			local msg = pformat(self.text, unpack(argTable))
+			local text = pformat(self.text, unpack(argTable))
 			if self.hasNote then--Inject note into message
 				--Counts support different note for EACH count
 				if self.announceType == "count" or self.announceType == "switchcount" or self.announceType == "targetcount" then
@@ -8619,7 +8619,7 @@ do
 					end
 				end
 			end
-			local text = msg:gsub(">.-<", classColoringFunction)
+			text = text:gsub(">.-<", classColoringFunction)
 			DBM:AddSpecialWarning(text)
 			self.combinedcount = 0
 			self.combinedtext = {}
