@@ -4757,7 +4757,7 @@ do
 	function DBM:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		if IsEncounterInProgress() then
 			local targetName = target or "nil"
-			self:Debug("CHAT_MSG_MONSTER_YELL from "..npc.." while looking at"..targetName, 2)
+			self:Debug("CHAT_MSG_MONSTER_YELL from "..npc.." while looking at "..targetName, 2)
 		end
 		return onMonsterMessage("yell", msg)
 	end
@@ -8588,7 +8588,6 @@ do
 				end
 			end
 			local msg = pformat(self.text, unpack(argTable))
-			local text = msg:gsub(">.-<", classColoringFunction)
 			if self.hasNote then--Inject note into message
 				--Counts support different note for EACH count
 				if self.announceType == "count" or self.announceType == "switchcount" or self.announceType == "targetcount" then
@@ -8617,6 +8616,7 @@ do
 					end
 				end
 			end
+			local text = msg:gsub(">.-<", classColoringFunction)
 			DBM:AddSpecialWarning(text)
 			self.combinedcount = 0
 			self.combinedtext = {}
