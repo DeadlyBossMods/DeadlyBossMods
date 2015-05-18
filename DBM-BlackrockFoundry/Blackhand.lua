@@ -196,8 +196,9 @@ local function warnMarked(self)
 	end
 end
 
-local slagDebuff = GetSpellInfo(156096)
+local slagDebuff = GetSpellInfo(157000)
 local function checkSlag(self)
+	DBM:Debug("checkSlag running", 2)
 	local numGroupMembers = DBM:GetNumGroupMembers()
 	if numGroupMembers < 2 then return end--Future proofing solo raid. can't assign 2 positions if less than 2 people
 	--Was originally going to also do this as 3 positions, but changed to match BW for compatability, for users who want to run DBM in BW dominant raids.
@@ -210,39 +211,47 @@ local function checkSlag(self)
 		if UnitDebuff(unitID, slagDebuff) then--Tank excluded on purpose to match BW helper
 			slagFound = slagFound + 1
 			if self:IsMeleeDps(unitID) then
+				DBM:Debug("Slag found on melee"..totalMelee, 2)
 				totalMelee = totalMelee + 1
 			end
 			tempTable[slagFound] = UnitName(unitID)
+			DBM:Debug("Slag "..slagFound.." found on "..UnitName(unitID), 2)
 			if slagFound == 2 then break end
 		end
 	end
 	if totalMelee == 1 then--Melee count exactly 1
+		DBM:Debug("Slag melee count exactly 1, should be assigning 1 ranged one melee")
 		--Assign melee to middle and ranged to back
 		local playerIsMelee = self:IsMeleeDps()
 		if playerIsMelee and ((tempTable[1] == playerName) or (tempTable[2] == playerName)) then
 			if self.Options.SpecWarn157000you then
 				specWarnSlagPosition:Show(DBM_CORE_MIDDLE)
-				if self.Options.Yell1570002 then
-					yellSlag2:Yell(DBM_CORE_MIDDLE, playerName)
-				end
+			end
+			if self.Options.Yell1570002 then
+				yellSlag2:Yell(DBM_CORE_MIDDLE, playerName)
 			end
 		elseif not playerIsMelee and ((tempTable[1] == playerName) or (tempTable[2] == playerName)) then
 			if self.Options.SpecWarn157000you then
 				specWarnSlagPosition:Show(DBM_CORE_BACK)
-				if self.Options.Yell1570002 then
-					yellSlag2:Yell(DBM_CORE_BACK, playerName)
-				end
+			end
+			if self.Options.Yell1570002 then
+				yellSlag2:Yell(DBM_CORE_BACK, playerName)
 			end
 		end	
 	else--Just use roster order
+		DBM:Debug("Slag on 2 ranged or 2 melee")
 		if tempTable[1] == playerName then
 			if self.Options.SpecWarn157000you then
 				specWarnSlagPosition:Show(DBM_CORE_MIDDLE)
+			end
+			if self.Options.Yell1570002 then
 				yellSlag2:Yell(DBM_CORE_MIDDLE, playerName)
 			end
 		elseif tempTable[2] == playerName then
 			if self.Options.SpecWarn157000you then
 				specWarnSlagPosition:Show(DBM_CORE_BACK)
+			end
+			if self.Options.Yell1570002 then
 				yellSlag2:Yell(DBM_CORE_BACK, playerName)
 			end
 		end	
