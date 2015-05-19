@@ -651,7 +651,7 @@ end
 function mod:UNIT_POWER_FREQUENT(uId)
 	local power = UnitPower(uId)
 	local guid = UnitGUID(uId)
-	if power > 80 and not mortarsWarned[guid] then
+	if power > 70 and not mortarsWarned[guid] then
 		specWarnMortarSoon:Show()
 		mortarsWarned[guid] = true
 	end
