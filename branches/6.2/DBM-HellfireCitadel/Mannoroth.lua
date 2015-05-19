@@ -11,7 +11,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 181126 181132 181557 183376 181793 181792 181738 181799 182084 185830 181948 182040 182076 182077",
+	"SPELL_CAST_START 181126 181132 181557 183376 181793 181792 181738 181799 182084 185830 181948 182040 182076 182077 186348",
 	"SPELL_CAST_SUCCESS 181190 181597 182006",
 	"SPELL_AURA_APPLIED 181099 181275 181191 181597 182006",
 	"SPELL_AURA_APPLIED_DOSE",
@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, get timer for 2nd doom lord spawning, if some group decides to do portals in a bad order and not kill that portal summoner first
 --TODO, get longer phase 4 log because log i have isn't long enough to see why felstorm has a longer cd in phase 4
 --TODO, custom voice for shadowforce? It works almost identical to helm of command from lei shen. Did that have a voice usuable here?
+--TODO, Mythic timers and whether or not they reset on phase changes
 --Adds
 ----Doom Lords
 local warnCurseoftheLegion			= mod:NewTargetAnnounce(181275, 3)--Spawn
@@ -51,6 +52,8 @@ local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(181126, "-Heale
 local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, "-Healer", nil, nil, 1, 2)--This warning is spammy if filter is disabled, so this mod does NOT honor filter setting, this warning is ALWAYS target filtered
 ----Dread Infernals
 local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, "Melee", nil, nil, 4, 2)
+----Gul'dan
+local specWarnWrathofGuldan			= mod:NewSpecialWarningSpell(186348, nil, nil, nil, 2)
 --Mannoroth
 local specWarnGlaiveCombo			= mod:NewSpecialWarningSpell(181354, "Tank", nil, nil, 3, 2)--Active mitigation or die mechanic
 local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, "Tank", nil, nil, 1, 2)--Swap Mechanic
@@ -63,13 +66,15 @@ local specWarnShadowForce			= mod:NewSpecialWarningSpell(181799, nil, nil, nil, 
 --Adds
 mod:AddTimerLine(OTHER)
 ----Doom Lords
---local timerCurseofLegionCD		= mod:NewCDTimer(107, 181275)--Maybe see one day, in LFR or something when group is terrible or doesn't kill doom lord portal first
+local timerCurseofLegionCD			= mod:NewAITimer(107, 181275)--Maybe see one day, in LFR or something when group is terrible or doesn't kill doom lord portal first
 local timerMarkofDoomCD				= mod:NewCDTimer(31.5, 181099, nil, "-Tank")
 local timerShadowBoltVolleyCD		= mod:NewCDTimer(13, 181126, nil, "-Healer")
 ----Fel Imps
 local timerFelImplosionCD			= mod:NewNextCountTimer(46, 181255)
 ----Infernals
 local timerInfernoCD				= mod:NewNextCountTimer(107, 181180)
+----Gul'dan
+local timerWrathofGuldanCD			= mod:NewAITimer(107, 186348)
 --Mannoroth
 mod:AddTimerLine(L.name)
 local timerGlaiveComboCD			= mod:NewCDTimer(30, 181354, nil, "Tank")--30 seconds unless delayed by something else
@@ -106,6 +111,7 @@ local phase2ImpTimers = {27.6, 46.2, 43.8}--Confirmed two pulls consistent, but 
 local phase1InfernalTimers = {18.4, 40}--That's all I have, strat is generally to kill doom lord portal first, then infernals, lastly imps.
 local phase2InfernalTimers = {53.3, 50}
 local phase3InfernalTimers = {43.2, 34.8}
+local portalDestroyed = false--Temp hack to prevent timer error on guessed mechanic
 
 local AddsSeen = {}
 local debuffFilter
@@ -133,6 +139,7 @@ local function updateRangeFrame(self)
 end
 
 function mod:OnCombatStart(delay)
+	portalDestroyed = false
 	self.vb.impCount = 0
 	self.vb.infernalCount = 0
 	self.vb.phase = 1
@@ -181,6 +188,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnShadowForce:Show()
 		timerShadowForceCD:Start()
 		countdownShadowForce:Start(52.5)
+	elseif spellId == 186348 then
+		specWarnWrathofGuldan:Show()
+		timerWrathofGuldanCD:Start()
 	end
 end
 
@@ -231,7 +241,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 181275 then
-		--timerCurseofLegionCD:Start()
+		timerCurseofLegionCD:Start()
 		if args:IsPlayer() then
 			specWarnCurseofLegion:Show()
 			local _, _, _, _, _, _, expires = UnitDebuff("Player", args.spellName)
@@ -285,6 +295,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		updateRangeFrame(self)
 	elseif spellId == 185147 or spellId == 182212 or spellId == 185175 then--Portals
+		--Note, if they don't die on mythic, switch to UNIT_died on the humanoid adds
 		self.vb.portalsLeft = self.vb.portalsLeft - 1
 		if self.sb.portalsLeft == 0 then
 			self.vb.phase = 2
@@ -293,8 +304,16 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerGlaiveComboCD:Start(44)
 			timerFelSeekerCD:Start(59)
 			voicePhaseChange:Play("ptwo")
+			if self:IsMythic() then
+				timerWrathofGuldanCD:Start(2)
+				if portalDestroyed then--Temp, to make AI timer work better
+					timerCurseofLegionCD:Start(2)--No idea if it works this way. doesn't say when he restores the portal, or if portal is every destroyed in first place.
+				end
+			end
 		end
 		if spellId == 185147 then--Doom Lords Portal
+			timerCurseofLegionCD:Cancel()
+			portalDestroyed = true
 			--I'd add a cancel for the Doom Lords here, but since everyone killed this portal first
 			--no one ever actually learned what the cooldown was, so no timer to cancel yet!
 		elseif spellId == 182212 then--Infernals Portal
@@ -404,6 +423,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerGazeCD:Start(35)
 		timerGlaiveComboCD:Start(35.7)
 		timerFelSeekerCD:Start(52.6)
+		if self:IsMythic() then
+			--Assumed it may not reset like other abilities
+			timerWrathofGuldanCD:Cancel()
+			timerWrathofGuldanCD:Start(3)
+		end
 	elseif spellId == 185690 and self.vb.phase == 3 then--Phase 4
 		self.vb.phase = 4
 		timerFelHellfireCD:Cancel()
@@ -418,6 +442,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerGlaiveComboCD:Start(35)
 		timerGazeCD:Start(42.5)
 		timerFelSeekerCD:Start(53)
+		if self:IsMythic() then
+			--Assumed it may not reset like other abilities
+			timerWrathofGuldanCD:Cancel()
+			timerWrathofGuldanCD:Start(4)
+		end
 	elseif spellId == 181354 then--183377 or 185831 also usable with SPELL_CAST_START but i like this way more, cleaner.
 		specWarnGlaiveCombo:Show()
 		timerGlaiveComboCD:Start()

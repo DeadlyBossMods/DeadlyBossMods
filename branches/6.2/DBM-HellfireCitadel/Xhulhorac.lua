@@ -12,23 +12,25 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 186271 186453 186292 186783 186546 186490",
-	"SPELL_CAST_SUCCESS 186407 186333 187204",
-	"SPELL_AURA_APPLIED 186073 186063 186134 186135 188092 186407 186333 186500",
+	"SPELL_CAST_START 186271 186453 186292 186783 186546 186490 189775 189779",
+	"SPELL_CAST_SUCCESS 186407 186333 187204 186490 189775",
+	"SPELL_AURA_APPLIED 186073 186063 186134 186135 188092 186407 186333 186500 189777",
 	"SPELL_AURA_APPLIED_DOSE 186073 186063",
---	"SPELL_AURA_REMOVED 186500",
+	"SPELL_AURA_REMOVED 189777",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, custom voice for void surge (186333) maybe. Void touched person needs to run into fire on purpose (while making sure not to have any other players nearby), the debuff puts out the fire on ground. So maybe "run into the fire?"
+--TODO, 189777 is probably not incombat log, it's probably hidden.
 --Fire Phase
 ----Boss
 local warnFelPortal					= mod:NewSpellAnnounce(187003, 2)
 local warnFelSurge					= mod:NewTargetAnnounce(186407, 3)
 ----Adds
 local warnFelChains					= mod:NewTargetAnnounce(186490, 3)
+local warnEmpoweredFelChains		= mod:NewTargetAnnounce(189775, 3)--Mythic
 --Void Phase
 ----Boss
 local warnVoidPortal				= mod:NewSpellAnnounce(187006, 2)
@@ -50,6 +52,7 @@ local yellFelSurge					= mod:NewYell(186407)
 ----Adds
 local specWarnFelBlazeFlurry		= mod:NewSpecialWarningSpell(186453, "Tank")
 local specWarnFelChains				= mod:NewSpecialWarningYou(186490)
+local specWarnEmpoweredFelChains	= mod:NewSpecialWarningYou(189775)
 local yellFelChains					= mod:NewYell(186490)
 --Void Phase
 ----Boss
@@ -59,6 +62,7 @@ local yellVoidSurge					= mod:NewYell(186333)
 ----Adds
 local specWarnWitheringGaze			= mod:NewSpecialWarningSpell(186783, "Tank")
 local specWarnBlackHole				= mod:NewSpecialWarningSpell(186546, nil, nil, nil, 2)
+local specWarnEmpBlackHole			= mod:NewSpecialWarningSpell(189779, nil, nil, nil, 2)--Mythic
 
 --Fire Phase
 ----Boss
@@ -67,6 +71,7 @@ local timerFelSurgeCD				= mod:NewCDTimer(30, 186407)
 ----Big Add
 local timerFelBlazeFlurryCD			= mod:NewCDTimer(15.9, 186453, nil, "Tank")
 local timerFelChainsCD				= mod:NewCDTimer(15.9, 186490, nil, "-Tank" )
+local timerEmpFelChainsCD			= mod:NewAITimer(15.9, 189775, nil, "-Tank" )--Temp, so can use AI timer for it. Will combine with above when data known
 --Void Phase
 ----Boss
 local timerVoidStrikeCD				= mod:NewCDTimer(14.6, 186292, nil, "Tank")--14.6-17
@@ -74,6 +79,7 @@ local timerVoidSurgeCD				= mod:NewCDTimer(30.5, 186333)
 ----Big Add
 local timerWitheringGazeCD			= mod:NewCDTimer(14.5, 186783)
 local timerBlackHoleCD				= mod:NewCDTimer(29.5, 186546)
+local timerEmpBlackHoleCD			= mod:NewAITimer(29.5, 189779)
 --End Phase
 local timerOverwhelmingChaosCD		= mod:NewAITimer(10, 187204)--Dungeon journal says every 10 seconds, but lets let the smart timer decide until I can confirm this
 
@@ -90,11 +96,37 @@ local voiceWastingVoid				= mod:NewVoice(186063)  --run away
 --Cast only gives original target, not all targets, but does so 3 seconds faster. It allows the person to move early and change other players they affect with chains by pre moving.
 --Applied gives all targets, this is the easier strat for most users, where they wait until everyone has it, then run in different directions.
 --Both, gives users ALL the information for everything so they can decide on their own. This will be default until I can see what becomes more popular. Maybe both will be what everyone ends up preferring.
+mod:AddRangeFrameOption(5, 189775)--Mythic
 mod:AddDropdownOption("ChainsBehavior", {"Cast", "Applied", "Both"}, "Both", "misc")
 
 mod.vb.ChaosCount = 0
+mod.vb.EmpFelChainCount = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local AddsSeen = {}
+
+local debuffFilter
+local debuffName = GetSpellInfo(189775)
+local UnitDebuff = UnitDebuff
+do
+	debuffFilter = function(uId)
+		if UnitDebuff(uId, debuffName) then
+			return true
+		end
+	end
+end
+
+local function updateRangeFrame(self)
+	if not self.Options.RangeFrame then return end
+	if self.vb.EmpFelChainCount > 0 then
+		if UnitDebuff("Player", debuffName) then
+			DBM.RangeCheck:Show(5)
+		else
+			DBM.RangeCheck:Show(5, debuffFilter)
+		end
+	else
+		DBM.RangeCheck:Hide()
+	end
+end
 
 function mod:FelChains(targetname, uId)
 	if targetname == UnitName("player") then
@@ -105,15 +137,27 @@ function mod:FelChains(targetname, uId)
 	end
 end
 
+function mod:EmpoweredFelChains(targetname, uId)
+	if targetname == UnitName("player") then
+		specWarnEmpoweredFelChains:Show()
+		yellFelChains:Yell()--Continue using shorter yell
+	else
+		warnEmpoweredFelChains:Show(targetname)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.ChaosCount = 0
+	self.vb.EmpFelChainCount = 0
 	table.wipe(AddsSeen)
 	timerFelStrikeCD:Start(-delay)
 	timerFelSurgeCD:Start(21.8-delay)
 end
 
 function mod:OnCombatEnd()
-
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end 
 
 function mod:SPELL_CAST_START(args)
@@ -156,10 +200,18 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 186546 then
 		specWarnBlackHole:Show()
 		timerBlackHoleCD:Start()
+	elseif spellId == 189779 then
+		specWarnEmpBlackHole:Show()
+		timerEmpBlackHoleCD:Start()
 	elseif spellId == 186490 then
 		if self.Options.ChainsBehavior ~= "Applied" then--Start timer and scanner if method is Both or Cast. Both prefers cast over applied, for the timer.
 			timerFelChainsCD:Start()
 			self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "FelChains", 0.1, 16)
+		end
+	elseif spellId == 189775 then
+		if self.Options.ChainsBehavior ~= "Applied" then--Start timer and scanner if method is Both or Cast. Both prefers cast over applied, for the timer.
+			timerEmpFelChainsCD:Start()
+			self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "EmpoweredFelChains", 0.1, 16)
 		end
 	end
 end
@@ -177,6 +229,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 186490 then
 		if self.Options.ChainsBehavior == "Applied" then--Start timer here if method is set to only applied
 			timerFelChainsCD:Start()
+		end
+	elseif spellId == 189775 then
+		if self.Options.ChainsBehavior == "Applied" then--Start timer here if method is set to only applied
+			timerEmpFelChainsCD:Start()
 		end
 	end
 end
@@ -214,17 +270,27 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFelChains:Show()
 			yellFelChains:Yell()
 		end
+	elseif spellId == 189777 then--Mythic chains
+		self.vb.EmpFelChainCount = self.vb.EmpFelChainCount + 1
+		if self.Options.ChainsBehavior ~= "Cast" then
+			warnEmpoweredFelChains:CombinedShow(0.3, args.destName)
+			if args:IsPlayer() then
+				specWarnEmpoweredFelChains:Show()
+				yellFelChains:Yell()
+			end	
+		end
+		updateRangeFrame(self)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
---[[
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 186500 then
-
+	if spellId == 189777 then
+		self.vb.EmpFelChainCount = self.vb.EmpFelChainCount - 1
+		updateRangeFrame(self)
 	end
-end--]]
+end
 
 --187196 is usuable with UNIT_SPELLCAST_SUCCEEDED, but it doesn't have which add is coming out, so it'd require a counting variable
 --187039 combat log event is usuable for second add but first add doesn't have combat log event
@@ -255,9 +321,15 @@ function mod:UNIT_DIED(args)
 	if cid == 94185 then--Vanguard Akkelion
 		timerFelBlazeFlurryCD:Cancel()
 		timerFelChainsCD:Cancel()
+		if self:IsMythic() then
+			timerEmpFelChainsCD:Start(1)
+		end
 	elseif cid == 94239 then--Omnus
 		timerWitheringGazeCD:Cancel()
 		timerBlackHoleCD:Cancel()
+		if self:IsMythic() then
+			timerEmpBlackHoleCD:Start(1)
+		end
 	end
 end
 
