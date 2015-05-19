@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: May 11, 2015@13734
+-- Last update: May 18, 2015@13760
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -15,7 +15,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerSiegeVehicleCD =	"倒计时：下一辆攻城车"
+	timerSiegeVehicleCD =	"计时条：下一辆攻城车"
 })
 
 L:SetMiscLocalization({
@@ -62,7 +62,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnThrowAnzu =	"特殊警报： 当你需要传递$spell:179202给他人时"
+	specWarnThrowAnzu =	"特殊警报：当你需要传递$spell:179202给他人时"
 })
 
 --------------------------
@@ -79,7 +79,6 @@ L:SetOptionLocalization({
 	Iconed				= "骷髅, 十字, 方块, 月亮, 三角. 适合分散式开场。",--Default
 	Numbered			= "1, 2, 3, 4, 5. 适合已分区的开场。",
 	DirectionLine		= "左, 左偏中, 中, 右偏中, 右. 适合直线式开场。",
-	--Currently these 3 below are unused unless I see anyone want/need them
 	CrossPerception		= "前, 后, 左, 右, 中. 适合十字形开场。",--Unsure if viable with 5 targets/will remain
 	CrossCardinal		= "北, 南, 东, 西, 中. 适合十字形开场。",--Unsure if viable 5 targets/will remain
 	ExCardinal			= "东北, 东南, 西北, 西南, 中. 适合十字形开场。"--Unsure if viable 5 targets/will remain
@@ -88,7 +87,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	DBMConfigMsg		= "团长已经将种子喊叫方式设定为 %s。",
 	BWConfigMsg			= "团长在用Bigwigs, DBM将会使用<Place Holder>的对应方式来提示。",
-	customSeedsSay		= "%2$s 中了 毁灭之种! (%1$s)"
+	customSeedsSay		= "%2$s 中了毁灭之种! (%1$s)"
 	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 
@@ -98,10 +97,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1447)
 
 L:SetOptionLocalization({
-	ChainsBehavior		= "设定邪能锁链的警告方式",
-	Cast				= "当施法开始时只给予原始目标警告。时间在开始施法时同步。",
-	Applied				= "当施法结束时给予所有受影响的目标警告。时间在开始施法时同步。",
-	Both				= "当施法开始时只给予原始目标警告，并当施法结束时给予所有受影响的目标警告。时间在开始施法时同步。"
+	ChainsBehavior		= "设定邪能锁链的警告方式。时间在开始施法时同步。",
+	Cast				= "当施法开始时只给予原始目标警告。",
+	Applied				= "当施法结束时给予所有受影响的目标警告。",
+	Both				= "开始和结束"
 })
 
 --------------------------
@@ -127,6 +126,28 @@ L:SetMiscLocalization({
 -- Archimonde --
 --------------------------
 L= DBM:GetModLocalization(1438)
+
+L:SetWarningLocalization({
+	specWarnBreakShackle	= "枷锁酷刑：拉断%s！"
+})
+
+L:SetOptionLocalization({
+	specWarnBreakShackle	= "特殊警报：当你受到$spell:184964影响时。DBM会自动分配拉断次序，使得伤害最小化。",
+	FilterOtherPhase		= "过滤掉不在同一阶段的事件"
+})
+
+L:SetMiscLocalization({
+	phase2				= "我受够这无聊的游戏了。你们将面对曾横行诸界的永生军团。",
+	phase2point5		= "面对现实吧，愚蠢的凡人。你们无法抵抗燃烧军团的无穷大军。",
+	phase3				= "够了！该结束这无谓的挣扎了！",
+	phase3point5		= "我要撕碎这可悲的世界！它的碎片将在扭曲虚空的不断撕扯下分崩离析！",
+	First				= "第一个",
+	Second				= "第二个",
+	Third				= "第三个",
+	Fourth				= "第四个",
+	Fifth				= "第五个",
+	customShackledSay	= "%2$s 中了%1$s枷锁!"
+})
 
 -------------
 --  Trash  --

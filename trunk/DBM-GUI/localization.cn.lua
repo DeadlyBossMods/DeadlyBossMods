@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Apr 25, 2015@13663
+-- Last update: May 18, 2015@13760
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -122,7 +122,7 @@ L.ShowLoadMessage 			= "在聊天窗口中显示模块载入信息"
 L.ShowPizzaMessage 			= "在聊天窗口中显示计时条广播信息"
 L.ShowCombatLogMessage 		= "在聊天窗口中显示DBM战斗记录"
 L.ShowTranscriptorMessage	= "在聊天窗口中显示DBM Transcriptor 记录"
-L.ShowAllVersions	 		= "在聊天窗口中显示所有团员的Boss模组版本"
+L.ShowAllVersions	 		= "当执行版本检查时,在聊天窗口中显示所有团员的Boss模组版本(如果禁用，仍旧显示过期/目前总结)"
 L.CombatMessages			= "战斗信息设置"
 L.ShowEngageMessage 		= "在聊天窗口中显示开战信息"
 L.ShowKillMessage 			= "在聊天窗口中显示击杀信息"
@@ -133,7 +133,7 @@ L.WhisperMessages			= "密语信息设置"
 L.AutoRespond 				= "在战斗中自动回复私聊"
 L.EnableStatus 				= "回复“status”私聊当前战斗信息"
 L.WhisperStats 				= "在回复的私聊中包含击杀或灭团次数统计信息"
-L.DisableStatusWhisper 		= "屏蔽全团成员的自动回复私聊(需要团长权限)。 只对普通/英雄/神话团队和挑战/神话五人小队有效。"
+L.DisableStatusWhisper 		= "屏蔽全团成员的自动回复私聊(需要团长权限)。只对普通/英雄/神话团队和挑战/神话五人小队有效。"
 
 -- Tab: Barsetup
 L.BarSetup   				= "计时条设置"
@@ -204,6 +204,7 @@ L.HUDTextureSelect2			= "选择次要HUD材质"
 L.HUDTextureSelect3			= "选择第三HUD材质"
 L.HUDTextureSelect4			= "选择'跑向'HUD材质"
 L.HUDSizeSlider				= "圆环半径 %0.1f."
+L.HUDAlphaSlider			= "透明度: %0.1f"
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "语音警告"
@@ -234,6 +235,7 @@ L.BarWidth					= "计量条宽度: %d"
 L.Panel_SpamFilter			= "DBM全局及信息过滤"
 L.Area_SpamFilter_Outgoing	= "DBM全局过滤设置"
 L.SpamBlockNoShowAnnounce	= "不显示警报或播放警报音效"
+L.SpamBlockNoShowTimers		= "不显示计时器"
 L.SpamBlockNoSetIcon		= "不设定标记在目标上"
 L.SpamBlockNoRangeFrame		= "不显示距离雷达框体"
 L.SpamBlockNoInfoFrame		= "不显示信息框体"
@@ -258,6 +260,7 @@ L.FilterDispels				= "当驱散技能在冷却时, 过滤掉驱散提示"
 L.FilterSelfHud				= "把自己从HudMap中过滤掉 (不包括和距离有关的功能)"
 
 L.Area_PullTimer			= "开怪倒计时过滤设置"
+L.DontShowRespawn			= "不显示Boss刷新计时器"
 L.DontShowPTNoID			= "不显示不同区域发送的倒计时"
 L.DontShowPT				= "不显示开怪倒计时条"
 L.DontShowPTText			= "不显示开怪倒计时文字"
@@ -303,6 +306,8 @@ L.AutoAcceptFriendInvite	= "自动接受来自好友列表里的好友的组队�
 L.AutoAcceptGuildInvite		= "自动接受同工会成员的组队邀请"
 L.Area_Advanced				= "高级选项"
 L.FakeBW					= "当检查Bigwig时，假装DBM就是Bigwig"
+L.AITimer					= "DBM为没遇见过的战斗使用人工智能自动产生计时器(在初期的Beta或PTR的Boss测试非常有帮助)。此功能不会对多目标技能生效。"
+L.AutoCorrectTimer			= "自动校正时间过长的计时器(适合在公会正在进行全新副本而DBM模块还没被更新至可靠的程度)。这选项可能会使某些计时器错乱，如Boss在阶段转换时重置技能CD而DBM实在无能为力o_O"
 
 L.PizzaTimer_Headline 		= '创造一个自定义计时器'
 L.PizzaTimer_Title			= '名字 (如 “泡面倒计时”)'
