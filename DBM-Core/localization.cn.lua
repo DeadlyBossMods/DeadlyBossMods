@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Apr 25, 2015@13663
+-- Last update: May 18, 2015@13760
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -59,6 +59,7 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s作战%s前开始，正在恢复计时条�
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor logging started."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor logging ended."
 
+DBM_CORE_COMBAT_STARTED_AI_TIMER	= "我的CPU是类神经网络处理器，一种学习型电脑。(本场战斗DBM将会使用人工智能来估计时间轴)。" --Terminator
 DBM_CORE_PROFILE_NOT_FOUND			= "<Deadly Boss Mods> 你当前的配置文件已损坏. 'Default' 默认配置文件会被应用."
 DBM_CORE_PROFILE_CREATED			= "配置文件 '%s' 已经创建."
 DBM_CORE_PROFILE_CREATE_ERROR		= "配置文件创建失败. 无效的配置文件名."
@@ -240,6 +241,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.target				= "%s -> >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount		= "%s (%%s) -> >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell				= "%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.ends 				= "%s 结束"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.endtarget			= "%s 结束: >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.fades				= "%s 消失"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds				= "%s剩余：%%d"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast				= "正在施放 %s：%.1f秒"
@@ -322,6 +324,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.target				= "%s: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.cast					= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.active				= "%s结束"--Buff/Debuff/event on boss
 DBM_CORE_AUTO_TIMER_TEXTS.fades					= "%s消失"--Buff/Debuff on players
+DBM_CORE_AUTO_TIMER_TEXTS.ai					= "%s人工智能计时冷却"
 DBM_CORE_AUTO_TIMER_TEXTS.cd					= "%s冷却"
 DBM_CORE_AUTO_TIMER_TEXTS.cdcount				= "%s冷却（%%d）"
 DBM_CORE_AUTO_TIMER_TEXTS.cdsource				= "%s冷却: >%%s<"
@@ -337,6 +340,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.target				= "计时条：$spell:%s减益效果持续
 DBM_CORE_AUTO_TIMER_OPTIONS.cast				= "计时条：$spell:%s施法时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.active				= "计时条：$spell:%s效果持续时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.fades				= "计时条：$spell:%s何时从玩家身上消失"
+DBM_CORE_AUTO_TIMER_OPTIONS.ai					= "计时条：$spell:%s人工智能冷却时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.cd					= "计时条：$spell:%s冷却时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.cdcount				= "计时条：$spell:%s冷却时间"
 DBM_CORE_AUTO_TIMER_OPTIONS.cdsource			= "计时条：$spell:%s冷却时间以及来源"
@@ -361,8 +365,8 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT			= "倒计时：$spell:%s的冷却时间倒
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2		= "倒计时：$spell:%s消失时"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT			= "倒计时：$spell:%s的持续时间正计时"
 DBM_CORE_AUTO_YELL_OPTION_TEXT				= "当你受到$spell:%s影响时大喊"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= UnitName("player") .. " 中了 %s!"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count		= UnitName("player") .. " 中了 %s! (%%d)"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= UnitName("player") .. " 中了%s!"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count		= UnitName("player") .. " 中了%s! (%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s 于%%d秒后消失"
 DBM_CORE_AUTO_HUD_OPTION_TEXT				= "为$spell:%s显示HudMap"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI			= "为多个机制显示HudMap"
@@ -383,6 +387,7 @@ DBM_CORE_HUD_INVALID_TYPE				= "无效的HUD类型"
 DBM_CORE_HUD_INVALID_TARGET				= "没有给定HUD目标"
 DBM_CORE_HUD_INVALID_SELF				= "不能把自己设定成HUD目标"
 DBM_CORE_HUD_INVALID_ICON				= "当使用团队标记作为HUD目标定义时，不能定义一个没有团队标记的目标"
+DBM_CORE_HUD_SUCCESS					= "HUD成功地使用了你的参数启动了。HUD会在%s关闭, 或者输入 '/dbm hud hide'来关闭"
 DBM_CORE_HUD_USAGE	= {
 	"DBM-HudMap 可用命令：",
 	"/dbm hud <类型> <目标> <持续时间>  新建一个指向玩家的HUD指示器",
@@ -403,10 +408,10 @@ DBM_ARROW_ERROR_USAGE	= {
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "击杀记录"
-DBM_SPEED_KILL_TIMER_OPTION	= "计时条：最速击杀记录"
+DBM_SPEED_KILL_TIMER_OPTION	= "计时条：最快击杀记录"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "最速清除"
-DBM_COMBAT_RES_TIMER_TEXT	= "下一次战复CD"
-DBM_CORE_TIMER_RESPAWN		= "刷新"
+DBM_COMBAT_RES_TIMER_TEXT	= "下一次可用战复"
+DBM_CORE_TIMER_RESPAWN		= "Boss刷新"
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s请求获取你现在副本的存档ID与进度。是否愿意向&s提交进度？\n\n注意：在接受后，他可以随时查看您当前的进度情况，直到您下线、掉线或重载用户界面。"
 DBM_ERROR_NO_RAID					= "使用该功能需要身处一个团队中。"
