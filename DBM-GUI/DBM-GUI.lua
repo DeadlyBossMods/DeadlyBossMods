@@ -473,7 +473,7 @@ do
 			if noteButton then
 				noteButton:SetPoint('LEFT', dropdown, "RIGHT", 35, 0)
 				textbeside = noteButton
-				textpad = 3
+				textpad = 2
 				widthAdjust = widthAdjust + dropdown:GetWidth() + noteButton:GetWidth()
 			else
 				textbeside = dropdown
