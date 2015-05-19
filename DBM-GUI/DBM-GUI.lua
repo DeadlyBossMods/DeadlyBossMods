@@ -457,10 +457,19 @@ do
 				noteButton:SetText("N")
 				noteButton.mytype = "button"
 				noteButton:SetScript("OnClick", function(self)
-					print(modvar.."SWNote1")
-					--On click, open an edit box that loads Notes so user can edit them
-					--If mod has multiple notes, have left and right arrows to switch between them, or multple edit boxes, but i think arrows is less shitty looking.
-					--On edit box two buttons. Save and cancel. Save saves note and cancel obviously cancel without saving changes.
+					local notecount = 0
+					for i = 1, 12 do
+						if mod.Options[modvar.."SWNote"..i] then
+							notecount = notecount + 1--Find out how many notes there are
+							--print(mod.Options[modvar.."SWNote"..i])--Debug only
+						else
+							print("This warning supports up to "..notecount.." notes.")
+							break
+						end
+					end
+					--On click, find out how many notes there are, pass it onto an edit box which will load type fields for all the notes from mod.Options[modvar.."SWNote"..i]
+					--Two options for this. arrows to switch between notes loaded into edit box. Or no arrows and just all the notes loaded into multiple edit boxes.
+					--On bottom of edit box, two buttons. Save and cancel. Save saves notes and cancel obviously cancel without saving changes.
 				end)
 			end
 		end
