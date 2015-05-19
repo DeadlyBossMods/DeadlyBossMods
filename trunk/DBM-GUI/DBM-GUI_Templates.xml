@@ -18,6 +18,59 @@
 		<DisabledTexture inherits="UIPanelButtonDisabledTexture"/>
 		<HighlightTexture inherits="UIPanelButtonHighlightTexture"/>
 	</Button>-->
+	<CheckButton name="DBMOptionsBaseCheckButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="26" y="26"/>
+		</Size>
+		<HitRectInsets>
+			<AbsInset left="0" right="-26" top="0" bottom="0"/>
+		</HitRectInsets>
+		<Scripts>
+			<OnClick>
+				if ( self:GetChecked() ) then
+					PlaySound("igMainMenuOptionCheckBoxOn");
+				else
+					PlaySound("igMainMenuOptionCheckBoxOff");
+				end
+				BlizzardOptionsPanel_CheckButton_OnClick(self);
+			</OnClick>
+			<OnEnter>
+				if ( self.tooltipText ) then
+					GameTooltip:SetOwner(self, self.tooltipOwnerPoint or "ANCHOR_RIGHT");
+					GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true);
+				end
+				if ( self.tooltipRequirement ) then
+					GameTooltip:AddLine(self.tooltipRequirement, 1.0, 1.0, 1.0, true);
+					GameTooltip:Show();
+				end
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+		<NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
+		<PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
+	 	<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
+		<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check"/>
+		<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled"/>		
+	</CheckButton>
+	
+	<CheckButton name="DBMOptionsCheckButtonTemplate" virtual="true" inherits="DBMOptionsBaseCheckButtonTemplate">
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</CheckButton>
+
 	<Button name="DBM_GUI_OptionsFramePanelButtonTemplate" virtual="true" inherits="UIPanelButtonTemplate"/>
 
 	<Button name="DBM_GUI_OptionsFrameTabButtonTemplate" virtual="true">

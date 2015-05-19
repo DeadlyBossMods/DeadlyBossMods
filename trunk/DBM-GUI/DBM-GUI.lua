@@ -426,7 +426,7 @@ do
 		if type(name) == "number" then
 			return DBM:AddMsg("CreateCheckButton: error: expected string, received number. You probably called mod:NewTimer(optionId) with a spell id."..name)
 		end
-		local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
+		local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'DBMOptionsCheckButtonTemplate')
 		local buttonName = button:GetName()
 		button.myheight = 25
 		button.mytype = "checkbutton"
