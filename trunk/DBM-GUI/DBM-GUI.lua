@@ -457,9 +457,10 @@ do
 				noteButton:SetText("N")
 				noteButton.mytype = "button"
 				noteButton:SetScript("OnClick", function(self)
-					print(modvar)
+					print(modvar.."SWNote1")
 					--On click, open an edit box that loads Notes so user can edit them
-					--On edit box two buttons. Save and cancel. Save saves note and cancel obviously cancels
+					--If mod has multiple notes, have left and right arrows to switch between them, or multple edit boxes, but i think arrows is less shitty looking.
+					--On edit box two buttons. Save and cancel. Save saves note and cancel obviously cancel without saving changes.
 				end)
 			end
 		end
