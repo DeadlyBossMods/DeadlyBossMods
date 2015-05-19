@@ -4144,7 +4144,6 @@ do
 					elseif type(mod.Options[v]) == "boolean" then
 						lastButton = button
 						if mod.Options[v .. "SWSound"] then
-							print("SWSound")
 							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v .. "SWSound")
 							--if mod.Options[v .. "SWNote"] then--This doesn't currently work unless commented out. no idea why
 							--	button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v .. "SWNote")
