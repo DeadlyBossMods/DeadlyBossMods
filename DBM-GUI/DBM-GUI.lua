@@ -441,38 +441,45 @@ do
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
 		local dropdown
-		if modvar and modvar:find("SWSound") then
+		local noteButton
+		if modvar then--Special warning, has modvar for sound and note
 			dropdown = self:CreateDropdown(nil, sounds, nil, nil, function(value)
-				mod.Options[modvar] = value
+				mod.Options[modvar.."SWSound"] = value
 				DBM:PlaySpecialWarningSound(value)
 			end, 20, 25, button)
 			dropdown:SetScript("OnShow", function(self)
-				self:SetSelectedValue(mod.Options[modvar])
+				self:SetSelectedValue(mod.Options[modvar.."SWSound"])
 			end)
+			if mod.Options[modvar .. "SWNote1"] then--Mod has note, insert note hack
+				noteButton = CreateFrame('Button', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_OptionsFramePanelButtonTemplate')
+				noteButton:SetWidth(25)
+				noteButton:SetHeight(25)
+				noteButton:SetText("N")
+				noteButton.mytype = "button"
+				noteButton:SetScript("OnClick", function(self)
+					print(modvar)
+					--On click, open an edit box that loads Notes so user can edit them
+					--On edit box two buttons. Save and cancel. Save saves note and cancel obviously cancels
+				end)
+			end
 		end
-		--[[
-		local noteButton--A nice little tiny note button next to drop down with note icon on it if possible, button will be too small for text. Good note icon can be used from blizz interface code/friends list somewhere
-		if modvar and modvar:find("SWNote") then
-			print("Note button Created")
-			noteButton  = self:CreateButton("N", 20, 20, nil, GameFontNormalSmall)
-			--noteButton:SetPoint('TOPRIGHT', panel.frame, "TOPRIGHT", -6, -6)
-			noteButton:SetScript("OnClick", function(self)
-				--On click, open an edit box that loads Notes so user can edit them
-				--On edit box two buttons. Save and cancel. Save saves note and cancel obviously cancels
-			end)
-		end--]]
-		local textbeside = button
+
 		local textpad = 0
+		local widthAdjust = 0
 		local html
+		local textbeside = button
 		if dropdown then
 			dropdown:SetPoint("LEFT", button, "RIGHT", -20, 2)
-			textbeside = dropdown
-			textpad = 35
-			--[[if noteButton then
-				noteButton:SetPoint('LEFT', dropdown, "RIGHT", -20, 2)
+			if noteButton then
+				noteButton:SetPoint('LEFT', dropdown, "RIGHT", 35, 0)
 				textbeside = noteButton
-				textpad = 70
-			end--]]
+				textpad = 3
+				widthAdjust = widthAdjust + dropdown:GetWidth() + noteButton:GetWidth()
+			else
+				textbeside = dropdown
+				textpad = 35
+				widthAdjust = widthAdjust + dropdown:GetWidth()
+			end
 		end
 		if name then -- switch all checkbutton frame to SimpleHTML frame (auto wrap)
 			_G[buttonName.."Text"] = CreateFrame("SimpleHTML", buttonName.."Text", button)
@@ -486,7 +493,7 @@ do
 			-- oscarucb: proper html encoding is required here for hyperlink line wrapping to work correctly
 			name = "<html><body><p>"..name.."</p></body></html>"
 		end
-		_G[buttonName .. 'Text']:SetWidth( self.frame:GetWidth() - 57 - ((dropdown and dropdown:GetWidth()) or 0))
+		_G[buttonName .. 'Text']:SetWidth( self.frame:GetWidth() - 57 - widthAdjust)
 		_G[buttonName .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
 
 		if textleft then
@@ -4144,10 +4151,7 @@ do
 					elseif type(mod.Options[v]) == "boolean" then
 						lastButton = button
 						if mod.Options[v .. "SWSound"] then
-							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v .. "SWSound")
-							--if mod.Options[v .. "SWNote"] then--This doesn't currently work unless commented out. no idea why
-							--	button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v .. "SWNote")
-							--end
+							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v)
 						else
 							button = catpanel:CreateCheckButton(mod.localization.options[v], true)
 						end
