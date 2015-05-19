@@ -164,7 +164,9 @@ function mod:SPELL_CAST_START(args)
 		timerEnforcersOnslaughtCD:Start(12)
 	elseif spellId == 180025 then--No target filter, it's only interrupt onfight and it's VERY important
 		specWarnHarbingersMending:Show(args.sourceName)
-		voiceHarbingersMending:Play("kickcast")
+		if not self:IsHealer() then
+			voiceHarbingersMending:Play("kickcast")
+		end
 	elseif spellId == 180608 then
 		self.vb.gavelCount = self.vb.gavelCount+1
 		specWarnGaveloftheTyrant:Show(self.vb.gavelCount)
@@ -260,7 +262,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFontofCorruption:CombinedShow(0.3, args.destName)
 	elseif spellId == 180025 then
 		specWarnHarbingersMendingDispel:Show(args.destName)
-		voiceHarbingersMending:Play("dispelboss")
+		if self:IsMagicDispeller() then
+			voiceHarbingersMending:Play("dispelboss")
+		end
 	end
 end
 
