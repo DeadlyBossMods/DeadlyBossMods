@@ -330,8 +330,8 @@ L.SelectModProfileCopy		= "Copy all settings from"
 L.SelectModProfileCopySound	= "Copy just sound setting from"
 L.SelectModProfileDelete	= "Delete mod settings for"
 
-L.NoteHeader				= "Insert your note text here. For alerts with multiple notes, separate notes with '|'"
-L.NoteFooter				= "Once note is updated just close box and it will be saved"
+L.NoteHeader				= "Insert your note text here. Enclosing a players name with >< class colors it. For alerts with multiple notes, separate notes with '|'"
+L.NoteFooter				= "Once note is updated just hit 'okay' and it will be saved"
 
 -- Misc
 L.FontHeight	= 16
