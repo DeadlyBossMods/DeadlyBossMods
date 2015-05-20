@@ -235,6 +235,7 @@ L.SpamBlockNoInfoFrame		= "Do not show info frame"
 L.SpamBlockNoHudMap			= "Do not show HudMap"
 L.SpamBlockNoHealthFrame	= "Do not show health frame"
 L.SpamBlockNoCountdowns		= "Do not play countdown sounds"
+L.SpamBlockNoYells			= "Do not send chat yells"
 L.SpamBlockNoIconRestore	= "Do not save icon states and restore them on combat end"
 L.SpamBlockNoRangeRestore	= "Do not restore range frame to previous state when mods call 'hide'"
 

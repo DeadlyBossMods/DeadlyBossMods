@@ -239,6 +239,7 @@ DBM.DefaultOptions = {
 	DontShowHudMap2 = false,
 	DontShowHealthFrame = false,
 	DontPlayCountdowns = false,
+	DontSendYells = false,
 	DontShowRespawn = false,
 	DontShowPT2 = false,
 	DontShowPTCountdownText = false,
@@ -8361,6 +8362,7 @@ do
 	end
 
 	function yellPrototype:Yell(...)
+		if DBM.Options.SpamBlockNoYells then return end
 		if not self.option or self.mod.Options[self.option] then
 			SendChatMessage(pformat(self.text, ...), self.chatType or "SAY")
 		end
