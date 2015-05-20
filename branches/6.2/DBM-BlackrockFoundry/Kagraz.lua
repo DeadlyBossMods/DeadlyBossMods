@@ -68,6 +68,7 @@ local countdownCinderWolves				= mod:NewCountdown(76, 155776)
 local countdownFireStorm				= mod:NewCountdown(61, 155493)--Same voice as wolves cause never happen at same time, in fact they alternate.
 local countdownEnchantedArmaments		= mod:NewCountdown("OptionVersion2", "Alt45", 156724, false)
 local countdownOverheated				= mod:NewCountdownFades("Alt20", 154950, "Tank")
+local countdownMoltenTorrent			= mod:NewCountdownFades("AltTwo6", 154932)
 
 local voiceMoltenTorrent				= mod:NewVoice(154932) --runin
 local voiceFixate						= mod:NewVoice(154952) --justrun
@@ -223,6 +224,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMoltenTorrentCD:Start()
 		if args:IsPlayer() then
 			specWarnMoltenTorrent:Show()
+			countdownMoltenTorrent:Start(6)
 			voiceMoltenTorrent:Play("runin")
 			yellMoltenTorrent:Schedule(5, 1)
 			yellMoltenTorrent:Schedule(4, 2)
