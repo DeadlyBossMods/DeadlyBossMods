@@ -73,14 +73,14 @@ local specWarnRapidFire					= mod:NewSpecialWarningRun(156631, nil, nil, nil, 4,
 local yellRapidFire						= mod:NewYell(156631)
 local specWarnRapidFireNear				= mod:NewSpecialWarningClose(156631, false)
 local specWarnPenetratingShot			= mod:NewSpecialWarningYou(164271, nil, nil, nil, nil, 2)
-local specWarnPenetratingShotOther		= mod:NewSpecialWarningTargetCount(164271, false)
+local specWarnPenetratingShotOther		= mod:NewSpecialWarningTargetCount(164271, false, nil, nil, nil, nil, 2)
 local yellPenetratingShot				= mod:NewYell(164271)
 local specWarnDeployTurret				= mod:NewSpecialWarningSwitch(158599, "RangedDps", nil, 3, 3, 2)--Switch warning since most need to switch and kill, but on for EVERYONE because tanks/healers need to avoid it while it's up
 ----Enforcer Sorka
 local specWarnBladeDash					= mod:NewSpecialWarningYou(155794)
 local specWarnBladeDashOther			= mod:NewSpecialWarningClose(155794)
 local specWarnConvulsiveShadows			= mod:NewSpecialWarningMoveAway(156214, nil, nil, nil, nil, 2)--Does this still drop lingering shadows, if not moveaway is not appropriate
-local specWarnConvulsiveShadowsOther	= mod:NewSpecialWarningTargetCount(156214, false)
+local specWarnConvulsiveShadowsOther	= mod:NewSpecialWarningTargetCount(156214, false, nil, nil, nil, nil, 2)
 local yellConvulsiveShadows				= mod:NewYell(156214, nil, false)
 local specWarnDarkHunt					= mod:NewSpecialWarningYou(158315, nil, nil, nil, nil, 2)
 local specWarnDarkHuntOther				= mod:NewSpecialWarningTarget(158315, false)--Healer may want this, or raid leader
