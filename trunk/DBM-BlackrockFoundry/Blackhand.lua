@@ -264,6 +264,11 @@ local function warnSlag(self)
 	table.wipe(slagTargets)
 end
 
+--/run DBM:GetModByName("959"):NoteTestFunction(1)
+function mod:NoteTestFunction(count)
+	specWarnShatteringSmash:Show(count)
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(markTargets)
 	table.wipe(slagTargets)
