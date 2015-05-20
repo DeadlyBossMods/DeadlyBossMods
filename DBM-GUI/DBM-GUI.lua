@@ -81,6 +81,97 @@ function DBM_GUI:ShowHide(forceshow)
 	end
 end
 
+--------------------
+--  Notes Editor  --
+--------------------
+do
+	local frame, fontstring, fontstringFooter, editBox
+
+	local function createFrame()
+		frame = CreateFrame("Frame", "DBMNotesEditor", UIParent)
+		frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
+		frame:SetWidth(430)
+		frame:SetHeight(140)
+		frame:SetPoint("TOP", 0, -230)
+		frame:SetBackdrop({
+			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32,
+			insets = {left = 11, right = 12, top = 12, bottom = 11},
+		})
+		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+		fontstring:SetWidth(410)
+		fontstring:SetHeight(0)
+		fontstring:SetPoint("TOP", 0, -16)
+		editBox = CreateFrame("EditBox", nil, frame)
+		do
+			local editBoxLeft = editBox:CreateTexture(nil, "BACKGROUND")
+			local editBoxRight = editBox:CreateTexture(nil, "BACKGROUND")
+			local editBoxMiddle = editBox:CreateTexture(nil, "BACKGROUND")
+			editBoxLeft:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Left")
+			editBoxLeft:SetHeight(32)
+			editBoxLeft:SetWidth(32)
+			editBoxLeft:SetPoint("LEFT", -14, 0)
+			editBoxLeft:SetTexCoord(0, 0.125, 0, 1)
+			editBoxRight:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Right")
+			editBoxRight:SetHeight(32)
+			editBoxRight:SetWidth(32)
+			editBoxRight:SetPoint("RIGHT", 6, 0)
+			editBoxRight:SetTexCoord(0.875, 1, 0, 1)
+			editBoxMiddle:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Right")
+			editBoxMiddle:SetHeight(32)
+			editBoxMiddle:SetWidth(1)
+			editBoxMiddle:SetPoint("LEFT", editBoxLeft, "RIGHT")
+			editBoxMiddle:SetPoint("RIGHT", editBoxRight, "LEFT")
+			editBoxMiddle:SetTexCoord(0, 0.9375, 0, 1)
+		end
+		editBox:SetHeight(32)
+		editBox:SetWidth(250)
+		editBox:SetPoint("TOP", fontstring, "BOTTOM", 0, -4)
+		editBox:SetFontObject("GameFontHighlight")
+		editBox:SetTextInsets(0, 0, 0, 1)
+		editBox:SetFocus()
+		editBox:SetText("")
+		fontstringFooter = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+		fontstringFooter:SetWidth(410)
+		fontstringFooter:SetHeight(0)
+		fontstringFooter:SetPoint("TOP", editBox, "BOTTOM", 0, 0)
+		local button = CreateFrame("Button", nil, frame)
+		button:SetHeight(24)
+		button:SetWidth(75)
+		button:SetPoint("BOTTOM", 0, 13)
+		button:SetNormalFontObject("GameFontNormal")
+		button:SetHighlightFontObject("GameFontHighlight")
+		button:SetNormalTexture(button:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
+		button:SetPushedTexture(button:CreateTexture(nil, nil, "UIPanelButtonDownTexture"))
+		button:SetHighlightTexture(button:CreateTexture(nil, nil, "UIPanelButtonHighlightTexture"))
+		button:SetText(OKAY)
+		button:SetScript("OnClick", function(self)
+			local mod = DBM_GUI.Noteframe.mod 
+			local modvar = DBM_GUI.Noteframe.modvar
+			mod.Options[modvar .. "SWNote"] = editBox:GetText() or ""
+			frame:Hide()
+		end)
+
+	end
+
+	function DBM_GUI:ShowNoteEditor(mod, modvar)
+		if not frame then
+			createFrame()
+			DBM_GUI.Noteframe = frame
+		end
+		frame:Show()
+		fontstring:SetText(L.NoteHeader)
+		fontstringFooter:SetText(L.NoteFooter)
+		DBM_GUI.Noteframe.mod = mod
+		DBM_GUI.Noteframe.modvar = modvar
+		if type(mod.Options[modvar .. "SWNote"]) == "string" then
+			editBox:SetText(mod.Options[modvar .. "SWNote"])
+		else
+			editBox:SetText("")
+		end
+	end
+end
+
 do
 	DBM_GUI_OptionsFrameTab1:SetText(L.OTabBosses)
 	DBM_GUI_OptionsFrameTab2:SetText(L.OTabOptions)
@@ -459,10 +550,9 @@ do
 				noteButton:SetScript("OnClick", function(self)
 					local noteText = mod.Options[modvar.."SWNote"]
 					if noteText then
-						print(tostring(noteText))--Debug only
+						DBM:Debug(tostring(noteText), 2)--Debug only
 					end
-					--Open an edit box that lets you edit a single notes line. Description text that says if it's a multinote to separate notes by "|"
-					--On bottom of edit box, two buttons. Save and cancel. Save saves notes and cancel obviously cancel without saving changes.
+					DBM_GUI:ShowNoteEditor(mod, modvar)
 				end)
 			end
 		end
