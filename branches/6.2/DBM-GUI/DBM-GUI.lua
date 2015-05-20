@@ -461,7 +461,7 @@ do
 					for i = 1, 12 do
 						if mod.Options[modvar.."SWNote"..i] then
 							notecount = notecount + 1--Find out how many notes there are
-							DBM:Debug(mod.Options[modvar.."SWNote"..i])--Debug only
+							DBM:Debug(tostring(mod.Options[modvar.."SWNote"..i]))--Debug only
 						else
 							print("DBM Notice: This warning supports up to "..notecount.." notes.")
 							break
