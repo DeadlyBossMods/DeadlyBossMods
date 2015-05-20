@@ -426,7 +426,7 @@ do
 		if type(name) == "number" then
 			return DBM:AddMsg("CreateCheckButton: error: expected string, received number. You probably called mod:NewTimer(optionId) with a spell id."..name)
 		end
-		local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
+		local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'DBMOptionsCheckButtonTemplate')
 		local buttonName = button:GetName()
 		button.myheight = 25
 		button.mytype = "checkbutton"
@@ -441,22 +441,55 @@ do
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
 		local dropdown
-		if modvar and modvar:find("SWSound") then
+		local noteButton
+		if modvar then--Special warning, has modvar for sound and note
 			dropdown = self:CreateDropdown(nil, sounds, nil, nil, function(value)
-				mod.Options[modvar] = value
+				mod.Options[modvar.."SWSound"] = value
 				DBM:PlaySpecialWarningSound(value)
 			end, 20, 25, button)
 			dropdown:SetScript("OnShow", function(self)
-				self:SetSelectedValue(mod.Options[modvar])
+				self:SetSelectedValue(mod.Options[modvar.."SWSound"])
 			end)
+			if mod.Options[modvar .. "SWNote1"] then--Mod has note, insert note hack
+				noteButton = CreateFrame('Button', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_OptionsFramePanelButtonTemplate')
+				noteButton:SetWidth(25)
+				noteButton:SetHeight(25)
+				noteButton:SetText("N")
+				noteButton.mytype = "button"
+				noteButton:SetScript("OnClick", function(self)
+					local notecount = 0
+					for i = 1, 12 do
+						if mod.Options[modvar.."SWNote"..i] then
+							notecount = notecount + 1--Find out how many notes there are
+							DBM:Debug(mod.Options[modvar.."SWNote"..i])--Debug only
+						else
+							print("DBM Notice: This warning supports up to "..notecount.." notes.")
+							break
+						end
+					end
+					--On click, find out how many notes there are, pass it onto an edit box which will load type fields for all the notes from mod.Options[modvar.."SWNote"..i]
+					--Two options for this. arrows to switch between notes loaded into edit box. Or no arrows and just all the notes loaded into multiple edit boxes.
+					--On bottom of edit box, two buttons. Save and cancel. Save saves notes and cancel obviously cancel without saving changes.
+				end)
+			end
 		end
-		local textbeside = button
+
 		local textpad = 0
+		local widthAdjust = 0
 		local html
+		local textbeside = button
 		if dropdown then
 			dropdown:SetPoint("LEFT", button, "RIGHT", -20, 2)
-			textbeside = dropdown
-			textpad = 35
+			if noteButton then
+				noteButton:SetPoint('LEFT', dropdown, "RIGHT", 35, 0)
+				textbeside = noteButton
+				textpad = 2
+				widthAdjust = widthAdjust + dropdown:GetWidth() + noteButton:GetWidth()
+			else
+				textbeside = dropdown
+				textpad = 35
+				widthAdjust = widthAdjust + dropdown:GetWidth()
+			end
 		end
 		if name then -- switch all checkbutton frame to SimpleHTML frame (auto wrap)
 			_G[buttonName.."Text"] = CreateFrame("SimpleHTML", buttonName.."Text", button)
@@ -470,7 +503,7 @@ do
 			-- oscarucb: proper html encoding is required here for hyperlink line wrapping to work correctly
 			name = "<html><body><p>"..name.."</p></body></html>"
 		end
-		_G[buttonName .. 'Text']:SetWidth( self.frame:GetWidth() - 57 - ((dropdown and dropdown:GetWidth()) or 0))
+		_G[buttonName .. 'Text']:SetWidth( self.frame:GetWidth() - 57 - widthAdjust)
 		_G[buttonName .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
 
 		if textleft then
@@ -4128,7 +4161,7 @@ do
 					elseif type(mod.Options[v]) == "boolean" then
 						lastButton = button
 						if mod.Options[v .. "SWSound"] then
-							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v .. "SWSound")
+							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v)
 						else
 							button = catpanel:CreateCheckButton(mod.localization.options[v], true)
 						end
