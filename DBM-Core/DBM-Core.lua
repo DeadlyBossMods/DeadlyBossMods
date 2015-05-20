@@ -9610,8 +9610,9 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, n
 	self.Options[name.."SWSound"] = defaultSound or 1
 	if noteLines then
 		for i = 1, noteLines do--Possibly store it all in one option split by : or something instead of multiple options?
-			self.DefaultOptions[name.."SWNote"..i] = ""--For some reason this is writing "false". Whatver, I coded around this
-			self.Options[name.."SWNote"..i] = ""
+			--Add default options only supports bool values, so it HAS to be true for the GUI to add button correctly. Editing it will turn it to a string as it's supposed to be
+			self.DefaultOptions[name.."SWNote"..i] = true
+			self.Options[name.."SWNote"..i] = true
 		end
 	end
 	self:SetOptionCategory(name, cat)
