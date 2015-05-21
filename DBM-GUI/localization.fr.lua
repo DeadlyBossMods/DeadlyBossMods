@@ -163,7 +163,6 @@ L.BarSort					= "Classer en fonction du temps restant" --was missing
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Alertes spéciales"
 L.Area_SpecWarn				= "Options des alertes spéciales"
-L.SpecWarn_Enabled			= "Afficher des alertes spéciales pour les techniques des boss"
 L.SpecWarn_FlashFrame		= "Faire flasher l'écran lors des alertes spéciales"
 L.SpecWarn_FlashFrameRepeat	= "Répéter %d fois (si activé)" --was missing
 L.ShowSWarningsInChat 		= "Afficher les alertes spéciales dans la fenêtre de discussion"

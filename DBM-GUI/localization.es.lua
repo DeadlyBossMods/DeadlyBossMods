@@ -165,7 +165,6 @@ L.BarFlash					= "Parpadear barras apunto de expirar"
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Avisos Especiales"
 L.Area_SpecWarn				= "Opciones de Avisos Especiales"
-L.SpecWarn_Enabled			= "Mostrar Avisos Especiales para habilidades de jefes"
 L.SpecWarn_FlashFrame		= "Mostrar un flash de pantalla para avisos especiales"
 L.SpecWarn_Font				= "Fuente usada para avisos especiales"
 L.SpecWarn_FontSize			= "Tamaño de fuente: %d"
