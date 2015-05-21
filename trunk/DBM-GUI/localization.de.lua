@@ -163,7 +163,6 @@ L.BarSort					= "Sortiere nach verbleibender Zeit"
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Spezialwarnungen"
 L.Area_SpecWarn				= "Einstellungen für Spezialwarnungen"
-L.SpecWarn_Enabled			= "Zeige Spezialwarnungen für Bossfähigkeiten"
 L.SpecWarn_ClassColor		= "Benutze Klassenfarben für Spezialwarnungen"
 L.ShowSWarningsInChat 		= "Zeige Spezialwarnungen im Chatfenster"
 L.SpecWarn_FlashFrame		= "Aufblinkender Bildschirm bei Spezialwarnungen"
