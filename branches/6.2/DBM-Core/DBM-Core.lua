@@ -8604,26 +8604,26 @@ do
 				end
 			end
 			local text = pformat(self.text, unpack(argTable))
-			if self.hasNote then--Inject note into message
-				local noteText = self.mod.Options[self.option .. "SWNote"]
-				if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
-					if self.hasNote > 1 then--Counts support different note for EACH count
-						local noteCount
-						local notesTable = {string.split("/", noteText)}
-						if self.announceType == "count" or self.announceType == "switchcount" or self.announceType == "targetcount" then
-							noteCount = argTable[1]--Count should be first arg in table
-						elseif self.announceType == "interruptcount" then
-							noteCount = argTable[2]
-						end
-						noteText = notesTable[noteCount]
-						if noteText and type(noteText) == "string" and noteText ~= "" then--Refilter after string split to make sure a note for this count exists
-							noteText = " ("..noteText..")"
-							text = text..noteText
-						end
-					else--Non count warnings will have one note, period
+			local noteText = self.mod.Options[self.option .. "SWNote"]
+			if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
+				local count1 = self.announceType == "count" or self.announceType == "switchcount" or self.announceType == "targetcount"
+				local count2 = self.announceType == "interruptcount"
+				if count1 or count2 then--Counts support different note for EACH count
+					local noteCount
+					local notesTable = {string.split("/", noteText)}
+					if count1 then
+						noteCount = argTable[1]--Count should be first arg in table
+					elseif count2 then
+						noteCount = argTable[2]--Count should be second arg in table
+					end
+					noteText = notesTable[noteCount]
+					if noteText and type(noteText) == "string" and noteText ~= "" then--Refilter after string split to make sure a note for this count exists
 						noteText = " ("..noteText..")"
 						text = text..noteText
 					end
+				else--Non count warnings will have one note, period
+					noteText = " ("..noteText..")"
+					text = text..noteText
 				end
 			end
 			text = text:gsub(">.-<", classColoringFunction)
@@ -8694,7 +8694,7 @@ do
 		return unschedule(self.Show, self.mod, self, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, hasNote)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice)
 		if not text then
 			error("NewSpecialWarning: you must provide special warning text", 2)
 			return
@@ -8703,11 +8703,6 @@ do
 			error("NewSpecialWarning: you must provide remove optionversion hack", 2)
 			return
 		end
-		if hasNote then
-			--Help find mods with too many args
-			DBM:Debug("Notes loaded for "..text, 3)
-		end
-		if not hasNote then hasNote = 1 end--hasNote only needs to be defined to enable multinotes for specific warnings. Basically hasNote = 1, just a solo note, hasNote = 2 multi note
 		if runSound == true then
 			runSound = 2
 		elseif not runSound then
@@ -8725,7 +8720,6 @@ do
 				sound = runSound>0,
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 				hasVoice = hasVoice,
-				hasNote = hasNote,
 			},
 			mt
 		)
@@ -8733,13 +8727,13 @@ do
 		if optionId then
 			obj.voiceOptionId = hasVoice and "Voice"..optionId or nil
 			obj.option = optionId..(optionVersion or "")
-			self:AddSpecialWarningOption(optionId, optionDefault, runSound, hasNote, "announce")
+			self:AddSpecialWarningOption(optionId, optionDefault, runSound, "announce")
 		end
 		tinsert(self.specwarns, obj)
 		return obj
 	end
 
-	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, optionVersion, runSound, hasVoice, hasNote)
+	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, optionVersion, runSound, hasVoice)
 		if not spellId then
 			error("newSpecialWarning: you must provide spellId", 2)
 			return
@@ -8762,11 +8756,6 @@ do
 		else
 			spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		end
-		if hasNote then
-			--Help find mods with too many args
-			DBM:Debug("Notes loaded for "..spellId.." ("..spellName..")", 3)
-		end
-		if not hasNote then hasNote = 1 end--hasNote only needs to be defined to enable multinotes for specific warnings. Basically hasNote = 1, just a solo note, hasNote = 2 multi note
 		local text
 		if announceType == "prewarn" then
 			if type(stacks) == "string" then
@@ -8787,7 +8776,6 @@ do
 				sound = runSound>0,
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 				hasVoice = hasVoice,
-				hasNote = hasNote,
 			},
 			mt
 		)
@@ -8816,7 +8804,7 @@ do
 				catType = "announcerole"
 			end
 			obj.voiceOptionId = hasVoice and "Voice"..spellId or nil
-			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, hasNote, catType)
+			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType)
 		end
 		tinsert(self.specwarns, obj)
 		return obj
@@ -9611,19 +9599,17 @@ function bossModPrototype:AddBoolOption(name, default, cat, func)
 	end
 end
 
-function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, noteLines, cat)
+function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat)
 	cat = cat or "misc"
 	self.DefaultOptions[name] = (default == nil) or default
 	self.DefaultOptions[name.."SWSound"] = defaultSound or 1
+	self.DefaultOptions[name.."SWNote"] = true
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
 	self.Options[name.."SWSound"] = defaultSound or 1
-	if noteLines then
-		self.DefaultOptions[name.."SWNote"] = true
-		self.Options[name.."SWNote"] = true
-	end
+	self.Options[name.."SWNote"] = true
 	self:SetOptionCategory(name, cat)
 end
 
