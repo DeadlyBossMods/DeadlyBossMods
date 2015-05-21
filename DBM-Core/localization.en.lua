@@ -245,7 +245,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 local prewarnOption = "Show pre-warning for $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target		= "Announce $spell:%s targets",
-	targetcount	= "Announce $spell:%s targets",
+	targetcount	= "Announce $spell:%s targets (with count)",
 	spell		= "Show warning for $spell:%s",
 	ends		= "Show warning when $spell:%s has ended",
 	endtarget	= "Show warning when $spell:%s has ended",
@@ -257,7 +257,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	phase		= "Announce Phase %s",
 	phasechange	= "Announce phase changes",
 	prephase	= "Show a prewarning for Phase %s",
-	count		= "Show warning for $spell:%s",
+	count		= "Show warning for $spell:%s (with count)",
 	stack		= "Announce $spell:%s stacks"
 }
 
@@ -290,31 +290,31 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
-	spell 		= "Show special warning for $spell:%s",
-	ends 		= "Show special warning when $spell:%s has ended",
-	fades 		= "Show special warning when $spell:%s has faded",
-	soon 		= "Show pre-special warning for $spell:%s",
-	prewarn 	= "Show pre-special warning %s seconds before $spell:%s",
-	dispel 		= "Show special warning to dispel/spellsteal $spell:%s",
-	interrupt	= "Show special warning to interrupt $spell:%s",
-	you 		= "Show special warning when you are affected by $spell:%s",
-	target 		= "Show special warning when someone is affected by $spell:%s",
-	taunt 		= "Show special warning to taunt when other tank affected by $spell:%s",
-	close 		= "Show special warning when someone close to you is affected by $spell:%s",
-	move 		= "Show special warning to move out from $spell:%s",
-	dodge 		= "Show special warning to dodge $spell:%s",
-	moveaway	= "Show special warning to move away from others for $spell:%s",
-	moveto		= "Show special warning to move to someone affected by $spell:%s",
-	run 		= "Show special warning to run away from $spell:%s",
-	cast 		= "Show special warning to stop casting for $spell:%s",--Spell Interrupt
-	reflect 	= "Show special warning to stop attacking $spell:%s",--Spell Reflect
-	count 		= "Show special warning for $spell:%s",
-	stack 		= "Show special warning when you are affected by >=%d stacks of $spell:%s",
-	switch		= "Show special warning to switch targets for $spell:%s"
+	spell 			= "Show special warning for $spell:%s",
+	ends 			= "Show special warning when $spell:%s has ended",
+	fades 			= "Show special warning when $spell:%s has faded",
+	soon 			= "Show pre-special warning for $spell:%s",
+	prewarn 		= "Show pre-special warning %s seconds before $spell:%s",
+	dispel 			= "Show special warning to dispel/spellsteal $spell:%s",
+	interrupt		= "Show special warning to interrupt $spell:%s",
+	interruptcount	= "Show special warning (with count) to interrupt $spell:%s",
+	you 			= "Show special warning when you are affected by $spell:%s",
+	target 			= "Show special warning when someone is affected by $spell:%s",
+	targetcount 	= "Show special warning (with count) when someone is affected by $spell:%s",
+	taunt 			= "Show special warning to taunt when other tank affected by $spell:%s",
+	close 			= "Show special warning when someone close to you is affected by $spell:%s",
+	move 			= "Show special warning to move out from $spell:%s",
+	dodge 			= "Show special warning to dodge $spell:%s",
+	moveaway		= "Show special warning to move away from others for $spell:%s",
+	moveto			= "Show special warning to move to someone affected by $spell:%s",
+	run 			= "Show special warning to run away from $spell:%s",
+	cast 			= "Show special warning to stop casting for $spell:%s",--Spell Interrupt
+	reflect 		= "Show special warning to stop attacking $spell:%s",--Spell Reflect
+	count 			= "Show special warning (with count) for $spell:%s",
+	stack 			= "Show special warning when you are affected by >=%d stacks of $spell:%s",
+	switch			= "Show special warning to switch targets for $spell:%s",
+	switchcount		= "Show special warning (with count) to switch targets for $spell:%s"
 }
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetcount		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
