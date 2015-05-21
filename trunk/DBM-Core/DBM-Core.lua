@@ -84,6 +84,7 @@ DBM.DefaultOptions = {
 	SpecialWarningSound2 = "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.ogg",
 	SpecialWarningSound3 = "Sound\\Creature\\KilJaeden\\KILJAEDEN02.ogg",
 	SpecialWarningSound4 = "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.ogg",
+	SpecialWarningSound5 = "Sound\\Creature\\Loathstare\\Loa_Naxx_Aggro02.ogg",
 	ModelSoundValue = "Short",
 	ChallengeBest = "Realm",
 	CountdownVoice = "Corsica",
@@ -123,8 +124,8 @@ DBM.DefaultOptions = {
 	HideBossEmoteFrame = true,
 	SpamBlockBossWhispers = true,
 	ShowMinimapButton = false,
-	ShowSpecialWarnings = true,
 	ShowFlashFrame = true,
+	SWarnNameInNote = true,
 	CustomSounds = 0,
 	AlwaysShowHealthFrame = false,
 	ShowBigBrotherOnCombatStart = false,
@@ -187,18 +188,22 @@ DBM.DefaultOptions = {
 	SpecialWarningFlashCol2 = {1.0, 0.5, 0.0},--Orange
 	SpecialWarningFlashCol3 = {1.0, 0.0, 0.0},--Red
 	SpecialWarningFlashCol4 = {1.0, 0.0, 1.0},--Purple
+	SpecialWarningFlashCol5 = {0.2, 1.0, 1.0},--Tealish
 	SpecialWarningFlashDura1 = 0.4,
 	SpecialWarningFlashDura2 = 0.4,
 	SpecialWarningFlashDura3 = 1,
 	SpecialWarningFlashDura4 = 0.7,
+	SpecialWarningFlashDura5 = 1,
 	SpecialWarningFlashAlph1 = 0.3,
 	SpecialWarningFlashAlph2 = 0.3,
 	SpecialWarningFlashAlph3 = 0.4,
 	SpecialWarningFlashAlph4 = 0.4,
+	SpecialWarningFlashAlph5 = 0.5,
 	SpecialWarningFlashRepeat1 = false,
 	SpecialWarningFlashRepeat2 = false,
 	SpecialWarningFlashRepeat3 = true,
 	SpecialWarningFlashRepeat4 = false,
+	SpecialWarningFlashRepeat5 = true,
 	SpecialWarningFlashRepeatAmount = 2,--Repeat 2 times, mean 3 flashes (first plus 2 repeat)
 	SWarnClassColor = true,
 	HUDColorOverride = false,
@@ -229,6 +234,7 @@ DBM.DefaultOptions = {
 	ArrowPoint = "TOP",
 	-- global boss mod settings (overrides mod-specific settings for some options)
 	DontShowBossAnnounces = false,
+	DontShowSpecialWarnings = false,
 	DontShowBossTimers = false,
 	DontShowFarWarnings = true,
 	DontSetIcons = false,
@@ -8571,7 +8577,7 @@ do
 	end
 
 	function specialWarningPrototype:Show(...)
-		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
+		if not DBM.Options.DontShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
 			if self.announceType == "taunt" and DBM.Options.FilterTankSpec and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
 			local argTable = {...}
 			if #self.combinedtext > 0 then
@@ -8591,6 +8597,7 @@ do
 			end
 			local text = pformat(self.text, unpack(argTable))
 			local noteText = self.mod.Options[self.option .. "SWNote"]
+			local noteHasName = false
 			if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
 				local count1 = self.announceType == "count" or self.announceType == "switchcount" or self.announceType == "targetcount"
 				local count2 = self.announceType == "interruptcount"
@@ -8604,10 +8611,16 @@ do
 					end
 					noteText = notesTable[noteCount]
 					if noteText and type(noteText) == "string" and noteText ~= "" then--Refilter after string split to make sure a note for this count exists
+						if DBM.Options.SWarnNameInNote and noteText:find(playerName) then
+							noteHasName = 5
+						end
 						noteText = " ("..noteText..")"
 						text = text..noteText
 					end
 				else--Non count warnings will have one note, period
+					if DBM.Options.SWarnNameInNote and noteText:find(playerName) then
+						noteHasName = 5
+					end
 					noteText = " ("..noteText..")"
 					text = text..noteText
 				end
@@ -8621,7 +8634,10 @@ do
 				self.mod:AddMsg(colorCode.."["..DBM_CORE_MOVE_SPECIAL_WARNING_TEXT.."] "..text.."|r", nil)
 			end
 			if not UnitIsDeadOrGhost("player") and DBM.Options.ShowFlashFrame then
-				if self.flash == 1 then
+				if noteHasName then
+					local repeatCount = DBM.Options.SpecialWarningFlashRepeat5 and DBM.Options.SpecialWarningFlashRepeatAmount or 0
+					DBM.Flash:Show(DBM.Options.SpecialWarningFlashCol5[1],DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3], DBM.Options.SpecialWarningFlashDura5, DBM.Options.SpecialWarningFlashAlph5, repeatCount)
+				elseif self.flash == 1 then
 					local repeatCount = DBM.Options.SpecialWarningFlashRepeat1 and DBM.Options.SpecialWarningFlashRepeatAmount or 0
 					DBM.Flash:Show(DBM.Options.SpecialWarningFlashCol1[1],DBM.Options.SpecialWarningFlashCol1[2], DBM.Options.SpecialWarningFlashCol1[3], DBM.Options.SpecialWarningFlashDura1, DBM.Options.SpecialWarningFlashAlph1, repeatCount)
 				elseif self.flash == 2 then
@@ -8638,7 +8654,7 @@ do
 			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
 			fireEvent("DBM_Announce", text)
 			if self.sound then
-				local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
+				local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or noteHasName or self.flash
 				if self.hasVoice and DBM.Options.ChosenVoicePack ~= "None" and self.hasVoice <= SWFilterDisabed and (type(soundId) == "number" and DBM.Options.VoiceOverSpecW2 == "DefaultOnly" or DBM.Options.VoiceOverSpecW2 == "All") and (DBM.Options.AlwaysPlayVoice or (self.mod.Options[self.voiceOptionId] or self.mod.Options[self.voiceOptionId.."2"] or self.mod.Options[self.voiceOptionId.."3"])) then return end
 				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
 					DBM:PlaySpecialWarningSound(soundId or 1)
@@ -9022,6 +9038,9 @@ do
 			elseif number == 4 then
 				local repeatCount = DBM.Options.SpecialWarningFlashRepeat4 and DBM.Options.SpecialWarningFlashRepeatAmount or 0
 				self.Flash:Show(self.Options.SpecialWarningFlashCol4[1],self.Options.SpecialWarningFlashCol4[2], self.Options.SpecialWarningFlashCol4[3], self.Options.SpecialWarningFlashDura4, self.Options.SpecialWarningFlashAlph4, repeatCount)
+			elseif number == 5 then
+				local repeatCount = DBM.Options.SpecialWarningFlashRepeat5 and DBM.Options.SpecialWarningFlashRepeatAmount or 0
+				self.Flash:Show(self.Options.SpecialWarningFlashCol5[1],self.Options.SpecialWarningFlashCol5[2], self.Options.SpecialWarningFlashCol5[3], self.Options.SpecialWarningFlashDura5, self.Options.SpecialWarningFlashAlph5, repeatCount)
 			end
 		end
 	end
