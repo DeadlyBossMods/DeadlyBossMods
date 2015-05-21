@@ -8707,6 +8707,7 @@ do
 			--Help find mods with too many args
 			DBM:Debug("Notes loaded for "..text, 3)
 		end
+		if not hasNote then hasNote = 1 end--hasNote only needs to be defined to enable multinotes for specific warnings. Basically hasNote = 1, just a solo note, hasNote = 2 multi note
 		if runSound == true then
 			runSound = 2
 		elseif not runSound then
@@ -8765,6 +8766,7 @@ do
 			--Help find mods with too many args
 			DBM:Debug("Notes loaded for "..spellId.." ("..spellName..")", 3)
 		end
+		if not hasNote then hasNote = 1 end--hasNote only needs to be defined to enable multinotes for specific warnings. Basically hasNote = 1, just a solo note, hasNote = 2 multi note
 		local text
 		if announceType == "prewarn" then
 			if type(stacks) == "string" then

@@ -153,7 +153,7 @@ function mod:SPELL_CAST_START(args)
 		if cooldown then
 			timerBlitzCD:Start(cooldown, self.vb.blitzCount+1)
 		end
-	elseif spellId == 182066 or spellId == 186449 then--182066 confirmed on heroic. Mythic uses 1.5 cast version (186449)?
+	elseif spellId == 182066 or spellId == 186449 then--182066 confirmed on heroic. Mythic uses 186449 (Confirmed)
 		self.vb.groundPhase = true
 		specWarnFallingSlam:Show()
 		updateRangeFrame(self)
