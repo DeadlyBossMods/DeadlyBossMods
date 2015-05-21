@@ -545,6 +545,7 @@ do
 				noteButton = CreateFrame('Button', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_OptionsFramePanelButtonTemplate')
 				noteButton:SetWidth(25)
 				noteButton:SetHeight(25)
+				noteButton.myheight = 0--Tells SetAutoDims that this button needs no additional space
 				noteButton:SetText("N")
 				noteButton.mytype = "button"
 				noteButton:SetScript("OnClick", function(self)
