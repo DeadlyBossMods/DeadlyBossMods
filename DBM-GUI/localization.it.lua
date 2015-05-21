@@ -134,7 +134,6 @@ L.ClickThrough				= "Disabilita i click sulle barre"
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Messaggi Speciali"
 L.Area_SpecWarn				= "Messaggi Speciali - Opzioni"
-L.SpecWarn_Enabled			= "Visualizza Messaggi Speciali per le abilita' dei Boss"
 L.SpecWarn_FlashFrame		= "Fai Lampeggiare lo schermo per i Messaggi Speciali"
 L.SpecWarn_Font				= "Carattere usato per i Messaggi Speciali"
 L.SpecWarn_DemoButton		= "Esempio"

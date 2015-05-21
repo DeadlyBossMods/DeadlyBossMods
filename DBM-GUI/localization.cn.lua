@@ -170,7 +170,6 @@ L.BarSort					= "按剩余时间排序"
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "特殊警报"
 L.Area_SpecWarn				= "特殊警报设置"
-L.SpecWarn_Enabled			= "显示首领技能特殊警报"
 L.SpecWarn_ClassColor		= "为特殊警报启用分职业着色"
 L.ShowSWarningsInChat 		= "在聊天窗口中显示特殊警报"
 L.SpecWarn_FlashFrame		= "特殊警报时屏幕边缘泛光"
