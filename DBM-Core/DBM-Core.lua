@@ -8595,7 +8595,7 @@ do
 				if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
 					if self.hasNote > 1 then--Counts support different note for EACH count
 						local noteCount
-						local notesTable = {string.split("|", noteText)}
+						local notesTable = {string.split("/", noteText)}
 						if self.announceType == "count" or self.announceType == "switchcount" or self.announceType == "targetcount" then
 							noteCount = argTable[1]--Count should be first arg in table
 						elseif self.announceType == "interruptcount" then
