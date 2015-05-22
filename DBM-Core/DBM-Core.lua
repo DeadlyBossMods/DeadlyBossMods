@@ -8596,38 +8596,40 @@ do
 				end
 			end
 			local text = pformat(self.text, unpack(argTable))
-			local noteText = self.mod.Options[self.option .. "SWNote"]
-			local noteHasName = false
-			if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
-				local count1 = self.announceType == "count" or self.announceType == "switchcount" or self.announceType == "targetcount"
-				local count2 = self.announceType == "interruptcount"
-				if count1 or count2 then--Counts support different note for EACH count
-					local noteCount
-					local notesTable = {string.split("/", noteText)}
-					if count1 then
-						noteCount = argTable[1]--Count should be first arg in table
-					elseif count2 then
-						noteCount = argTable[2]--Count should be second arg in table
-					end
-					if type(noteCount) == "string" then
-						--Probably a hypehnated double count like inferno slice or marked for death
-						local mainCount = string.split("-", noteCount)
-						noteCount = tonumber(mainCount)
-					end
-					noteText = notesTable[noteCount]
-					if noteText and type(noteText) == "string" and noteText ~= "" then--Refilter after string split to make sure a note for this count exists
+			if self.option then
+				local noteHasName = false
+				local noteText = self.mod.Options[self.option .. "SWNote"]
+				if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
+					local count1 = self.announceType == "count" or self.announceType == "switchcount" or self.announceType == "targetcount"
+					local count2 = self.announceType == "interruptcount"
+					if count1 or count2 then--Counts support different note for EACH count
+						local noteCount
+						local notesTable = {string.split("/", noteText)}
+						if count1 then
+							noteCount = argTable[1]--Count should be first arg in table
+						elseif count2 then
+							noteCount = argTable[2]--Count should be second arg in table
+						end
+						if type(noteCount) == "string" then
+							--Probably a hypehnated double count like inferno slice or marked for death
+							local mainCount = string.split("-", noteCount)
+							noteCount = tonumber(mainCount)
+						end
+						noteText = notesTable[noteCount]
+						if noteText and type(noteText) == "string" and noteText ~= "" then--Refilter after string split to make sure a note for this count exists
+							if DBM.Options.SWarnNameInNote and noteText:find(playerName) then
+								noteHasName = 5
+							end
+							noteText = " ("..noteText..")"
+							text = text..noteText
+						end
+					else--Non count warnings will have one note, period
 						if DBM.Options.SWarnNameInNote and noteText:find(playerName) then
 							noteHasName = 5
 						end
 						noteText = " ("..noteText..")"
 						text = text..noteText
 					end
-				else--Non count warnings will have one note, period
-					if DBM.Options.SWarnNameInNote and noteText:find(playerName) then
-						noteHasName = 5
-					end
-					noteText = " ("..noteText..")"
-					text = text..noteText
 				end
 			end
 			text = text:gsub(">.-<", classColoringFunction)
