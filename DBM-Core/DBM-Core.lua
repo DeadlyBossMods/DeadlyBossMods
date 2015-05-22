@@ -4668,6 +4668,50 @@ do
 		sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
 	end
 	
+	local function wipeRecoveryDelay(self)
+		--Wipe Recovery stuff
+		local ResSpell = GetSpellInfo(95223)--Cannot be mass resurrected
+		local MassResDebuff = 0
+		local playersOutofRange = 0
+		local playersAlive = 0
+		local playerIsDead = UnitIsDeadOrGhost("player")--Check if player alive or dead.
+		for i = 1, self:GetNumRealPlayersInZone() do
+			local unitId = "raid"..i
+			if UnitDebuff(unitId, ResSpell) then
+				MassResDebuff = MassResDebuff + 1
+			end
+			if not UnitIsDeadOrGhost(unitId) then
+				playersAlive = playersAlive + 1
+			end
+			local range = DBM.RangeCheck:GetDistance("player", unitId)
+			if range > 200 then--Very far away, released players probably
+				playersOutofRange = playersOutofRange + 1
+			end
+		end
+		if MassResDebuff > 0 then
+			print("DBM Debug: "..MassResDebuff.." players in raid are affected by mass resurrection debuff")
+			print("DBM Debug: There are currently "..playersAlive.." players alive and "..playersOutofRange.." players very far from your location (I.E. either they released, or you did)")
+		else
+			if playersAlive > 0 then--Mass resurrection possibly available
+				if playersOutofRange == 0 then
+					if playerIsDead then
+						print("DBM Debug: This is a test of wipe recovery function. No players have debuff, no one has released and there is a living player nearby, wait for mass resurrection!")
+					else
+						print("DBM Debug: This is a test of wipe recovery function. No players have debuff, no one has released and you are alive, cast mass resurrection!")
+					end
+				else
+					if playerIsDead then
+						print("DBM Debug: This is a test of wipe recovery function. No players have debuff. However, "..playersOutofRange.." players have already released. Consider releasing as well and holding mass ressurection")
+					else
+						print("DBM Debug: This is a test of wipe recovery function. No players have debuff. However, "..playersOutofRange.." players are out of range. Either you already released, or they did and you probably shouldn't use mass resurrection")
+					end
+				end
+			else
+				print("DBM Debug: This is a test of wipe recovery function. No players have debuff, but no one is alive. If anyone had a soulstone or battle rez, now is time to pop it. Otherwise run back")
+			end
+		end
+	end
+	
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
 		self:Debug("ENCOUNTER_END event fired: "..encounterID.." "..name.." "..difficulty.." "..size.." "..success)
 		for i = #inCombat, 1, -1 do
@@ -4699,6 +4743,7 @@ do
 				return
 			end
 		end
+		self:Schedule(3, wipeRecoveryDelay, self)
 	end
 	
 	function DBM:BOSS_KILL(encounterID, name)
