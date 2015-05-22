@@ -8596,8 +8596,8 @@ do
 				end
 			end
 			local text = pformat(self.text, unpack(argTable))
+			local noteHasName = false
 			if self.option then
-				local noteHasName = false
 				local noteText = self.mod.Options[self.option .. "SWNote"]
 				if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
 					local count1 = self.announceType == "count" or self.announceType == "switchcount" or self.announceType == "targetcount"
