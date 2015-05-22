@@ -8609,6 +8609,11 @@ do
 					elseif count2 then
 						noteCount = argTable[2]--Count should be second arg in table
 					end
+					if type(noteCount) == "string" then
+						--Probably a hypehnated double count like inferno slice or marked for death
+						local mainCount = string.split("-", noteCount)
+						noteCount = tonumber(mainCount)
+					end
 					noteText = notesTable[noteCount]
 					if noteText and type(noteText) == "string" and noteText ~= "" then--Refilter after string split to make sure a note for this count exists
 						if DBM.Options.SWarnNameInNote and noteText:find(playerName) then
