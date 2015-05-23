@@ -4743,7 +4743,9 @@ do
 				return
 			end
 		end
-		self:Schedule(3, wipeRecoveryDelay, self)
+		if IsInRaid() then
+			self:Schedule(3, wipeRecoveryDelay, self)
+		end
 	end
 	
 	function DBM:BOSS_KILL(encounterID, name)
