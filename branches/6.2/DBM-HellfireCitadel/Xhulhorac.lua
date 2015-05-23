@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1447, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(94521)--Or 93068
+mod:SetCreatureID(93068)
 mod:SetEncounterID(1800)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
