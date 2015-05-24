@@ -1032,19 +1032,22 @@ do
 			end
 			onLoadCallbacks = nil
 			loadOptions()
-			if wowTOC == 60200 then--6.2
-				self:AddMsg(DBM_CORE_UPDATEREMINDER_TESTVERSION)
+			if not IsTestBuild() and wowTOC >= 60200 then--6.2 retail, make user update to DBM 6.2
+				DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
 				dbmIsEnabled = false
+				blockEnable = true
 				return
 			end
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 				self:AddMsg(DBM_CORE_VEM)
 				dbmIsEnabled = false
+				blockEnable = true
 				return
 			end
 			if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
 				self:Schedule(10, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
 				dbmIsEnabled = false
+				blockEnable = true
 				return
 			end
 			self.Bars:LoadOptions("DBM")
@@ -1060,9 +1063,12 @@ do
 			for i = 1, GetNumAddOns() do
 				local addonName = GetAddOnInfo(i)
 				local enabled = GetAddOnEnableState(playerName, i)
+				local minToc = tonumber(GetAddOnMetadata(i, "X-Min-Interface"))
 				if GetAddOnMetadata(i, "X-DBM-Mod") and enabled ~= 0 then
 					if checkEntry(bannedMods, addonName) then
 						self:AddMsg("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
+					elseif minToc and minToc > wowTOC then
+						DBM:Debug(i.." not loaded because mod requires minimum toc of "..minToc)
 					else
 						local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
 						tinsert(self.AddOns, {
@@ -2201,20 +2207,17 @@ end
 do
 	local callOnLoad = {}
 	function DBM:LoadGUI()
---		if not GetAddOnEnableState then--Not 6.0
---			DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
---			return
---		end
+		if not IsTestBuild() and wowTOC >= 60200 then--6.2 retail, make user update to DBM 6.2
+			DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
+			
+			return
+		end
 		if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 			self:AddMsg(DBM_CORE_VEM)
-			dbmIsEnabled = false
-			blockEnable = true
 			return
 		end
 		if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
 			self:AddMsg(DBM_CORE_3RDPROFILES)
-			dbmIsEnabled = false
-			blockEnable = true
 			return
 		end
 		if blockEnable then
@@ -5143,6 +5146,9 @@ do
 							end
 						end
 					end
+				end
+				if IsTestBuild() and difficultyIndex == 16 then
+					self:AddMsg(DBM_CORE_NEED_LOGS)
 				end
 				--call OnCombatStart
 				if mod.OnCombatStart and not mod.ignoreBestkill then
