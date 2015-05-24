@@ -13,27 +13,15 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 180880"
 )
 
-local warnWhirlingAxe			= mod:NewTargetAnnounce(180882, 3)
+local warnWhirlingAxe			= mod:NewSpellAnnounce(180882, 3)
 local warnChainGrasp			= mod:NewTargetAnnounce(180880, 3)
 
-local specWarnWhirlingAxe		= mod:NewSpecialWarningYou(180882)
-local yellWhirlingAxe			= mod:NewYell(180882)
 local specWarnChainGrasp		= mod:NewSpecialWarningYou(180880)--Persists for 30 seconds or until you get 30 yards from boss, whichever first.
-
-function mod:AxeTarget(targetname, uId)
-	if not targetname then return end
-	if targetname == UnitName("player") then
-		specWarnWhirlingAxe:Show()
-		yellWhirlingAxe:Yell()
-	else
-		warnWhirlingAxe:Show(targetname)
-	end
-end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 180882 then
-		self:BossTargetScanner(90841, "AxeTarget", 0.05, 16)
+		warnWhirlingAxe:Show()
 	end
 end
 
