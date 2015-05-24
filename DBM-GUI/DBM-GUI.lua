@@ -545,7 +545,7 @@ do
 				noteButton:SetWidth(25)
 				noteButton:SetHeight(25)
 				noteButton.myheight = 0--Tells SetAutoDims that this button needs no additional space
-				noteButton:SetText("N")
+				noteButton:SetText("|TInterface/FriendsFrame/UI-FriendsFrame-Note.blp:14:0:3:-1|t")
 				noteButton.mytype = "button"
 				noteButton:SetScript("OnClick", function(self)
 					local noteText = mod.Options[modvar.."SWNote"]
