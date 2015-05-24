@@ -28,8 +28,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO< figure out rain of chaos (182225). periodic trigger of every 12 seconds. but how to detect? Logs show nothing, maybe have to schedule repeating loop. Need videos to verify timing before adding
---TODO, custom voices for Shackled Torment. "Break Torment First" "Break Torment Second" or something like that. Code goes up to 5 but i'm not sure we actually need 5 voices. Better safe than sorry, can delete extras later
---TODO, custom voices for wrought/focused. common strat seems to be focused chaos stand outside (Like this "--Boss". Or, line strat also valid (both outside like this "| Boss"). Maybe not say which strat to use but "focused chaos on you" and "wrought chaos on you". Important to know which you are, so not using "run out" on both of them
 --TODO, custom voice to "attack doomfire spirit" and "attack Death caller". Can't just use "attack mob" because if they spawn at same time there is a priority. If doomfire spirit is up I own't even play attack death caller sound until doomfire is dead.
 --TODO< rest of regular voices when i'mnot so tired
 --TODO, failsafes are at work for transitions i still don't have enough data for. for example, something seems to always cause the 2nd or 3rd fel burst to delay by a HUGE amount (20-30 seconds sometimes) but don't know what it is. Probalby phase transitions but it's not as simple as resetting timer. probably something more zon ozz
@@ -49,22 +47,22 @@ local warnNetherBanish				= mod:NewTargetAnnounce(186961, 2)
 local warnVoidStarFixate			= mod:NewTargetAnnounce(189895, 2)
 
 --Phase 1: The Defiler
-local specWarnDoomfire				= mod:NewSpecialWarningSwitch(189897, "Dps")
+local specWarnDoomfire				= mod:NewSpecialWarningSwitch(189897, "Dps", nil, nil, 1, 5)
 local specWarnDoomfireFixate		= mod:NewSpecialWarningYou(182879, nil, nil, nil, 4)
 local yellDoomfireFixate			= mod:NewYell(182826)--Use short name for yell
-local specWarnAllureofFlames		= mod:NewSpecialWarningSpell(183254, nil, nil, nil, 2)
-local specWarnDeathCaller			= mod:NewSpecialWarningSwitch("ej11582", "Dps")--Tanks don't need switch, they have death brand special warning 2 seconds earlier
+local specWarnAllureofFlames		= mod:NewSpecialWarningSpell(183254, nil, nil, nil, 2, 2)
+local specWarnDeathCaller			= mod:NewSpecialWarningSwitch("ej11582", "Dps", nil, nil, 1, 2)--Tanks don't need switch, they have death brand special warning 2 seconds earlier
 local specWarnFelBurst				= mod:NewSpecialWarningYou(183817)
 local yellFelBurst					= mod:NewYell(183817)--Change yell to countdown mayeb when better understood
 local specWarnFelBurstNear			= mod:NewSpecialWarningMoveTo(183817, nil, nil, nil, 1, 2)--Anyone near by should run in to help soak, should be mostly ranged but if it's close to melee, melee soaking too doesn't hurt
 local specWarnDesecrate				= mod:NewSpecialWarningDodge(185590, "Melee", nil, nil, 1, 2)
 local specWarnDeathBrand			= mod:NewSpecialWarningSpell(183828, "Tank")
 --Phase 2: Hand of the Legion
-local specWarnBreakShackle			= mod:NewSpecialWarning("specWarnBreakShackle", nil, nil, nil, 1)
+local specWarnBreakShackle			= mod:NewSpecialWarning("specWarnBreakShackle", nil, nil, nil, 1, 5)
 local yellShackledTorment			= mod:NewYell(184964, L.customShackledSay)
-local specWarnWroughtChaos			= mod:NewSpecialWarningMoveAway(186123, nil, nil, nil, 3)
+local specWarnWroughtChaos			= mod:NewSpecialWarningMoveAway(186123, nil, nil, nil, 3, 5)
 local yellWroughtChaos				= mod:NewYell(186123)
-local specWarnFocusedChaos			= mod:NewSpecialWarningMoveAway(185014, nil, nil, nil, 3)
+local specWarnFocusedChaos			= mod:NewSpecialWarningMoveAway(185014, nil, nil, nil, 3, 5)
 local yellFocusedChaos				= mod:NewYell(185014)
 local specWarnDreadFixate			= mod:NewSpecialWarningYou(186574, false)--In case it matters on mythic, it was spammy on heroic and unimportant
 --Phase 3: The Twisting Nether
@@ -110,6 +108,12 @@ local timerNetherBanishCD			= mod:NewCDTimer(61.9, 186961)
 local countdownWroughtChaos			= mod:NewCountdownFades(5, 184265)
 
 local voiceFelBurst					= mod:NewVoice(183817)--Gathershare
+local voiceShackledTorment			= mod:NewVoice(184964)--new voice: break torment first, etc
+local voiceDoomfire					= mod:NewVoice(189897, "Dps")--189897.ogg
+local voiceDeathCaller				= mod:NewVoice("ej11582", "Dps")--ej11582.ogg
+local voiceWroughtChaos				= mod:NewVoice(186123) --new voice
+local voiceFocusedChaos				= mod:NewVoice(185014) --new voice
+local voiceAllureofFlamesCD			= mod:NewVoice(183254) --just run
 
 mod:AddRangeFrameOption("8/10")
 mod:AddSetIconOption("SetIconOnDemonicFeedback", 187180)
@@ -182,18 +186,23 @@ local function breakShackles(self)
 				if totalFound == 1 then
 					specWarnBreakShackle:Show(L.First)
 					yellShackledTorment:Yell(L.First, playerName)
+					voiceShackledTorment:Play("184964a")
 				elseif totalFound == 2 then
 					specWarnBreakShackle:Show(L.Second)
 					yellShackledTorment:Yell(L.Second, playerName)
+					voiceShackledTorment:Play("184964b")
 				elseif totalFound == 3 then
 					specWarnBreakShackle:Show(L.Third)
 					yellShackledTorment:Yell(L.Third, playerName)
+					voiceShackledTorment:Play("184964c")
 				elseif totalFound == 4 then
 					specWarnBreakShackle:Show(L.Fourth)
 					yellShackledTorment:Yell(L.Fourth, playerName)
+					voiceShackledTorment:Play("184964d")
 				elseif totalFound == 5 then
 					specWarnBreakShackle:Show(L.Fifth)
 					yellShackledTorment:Yell(L.Fifth, playerName)
+					voiceShackledTorment:Play("184964e")
 				end
 			end
 		end
@@ -236,11 +245,13 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 183254 then
 		if not playerBanished or not self.Options.FilterOtherPhase then
 			specWarnAllureofFlames:Show()
+			voiceAllureofFlamesCD:Play("justrun")
 		end
 		timerAllureofFlamesCD:Start()
 	elseif spellId == 189897 then
 		specWarnDoomfire:Show()
 		timerDoomfireCD:Start()
+		voiceDoomfire:Play("189897")
 	elseif spellId == 183817 then
 		timerFelBurstCD:Start()
 	elseif spellId == 183828 then
@@ -313,6 +324,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnWroughtChaos:Show()
 			yellWroughtChaos:Yell()
 			countdownWroughtChaos:Start()
+			voiceWroughtChaos:Play("186123") --new voice
 		end
 		if not playerBanished or not self.Options.FilterOtherPhase then
 			warnWroughtChaos:CombinedShow(1, args.destName)
@@ -328,6 +340,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFocusedChaos:Show()
 			yellFocusedChaos:Yell()
 			countdownWroughtChaos:Start()
+			voiceFocusedChaos:Play("185014")
 		end
 		if self.Options.HudMapOnWrought then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
@@ -441,6 +454,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			if cid == 92740 then--Hellfire Deathcaller
 				specWarnDeathCaller:Show()
 				timerShadowBlastCD:Start(4.5, unitGUID)
+				voiceDeathCaller:Play("ej11582")
 				if self:IsMythic() then
 					timerDemonicHavocCD:Start(1, unitGUID)
 				end

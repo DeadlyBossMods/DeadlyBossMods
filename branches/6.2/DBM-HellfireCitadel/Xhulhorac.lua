@@ -22,7 +22,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, custom voice for void surge (186333) maybe. Void touched person needs to run into fire on purpose (while making sure not to have any other players nearby), the debuff puts out the fire on ground. So maybe "run into the fire?"
 --TODO, 189777 is probably not incombat log, it's probably hidden.
 --Fire Phase
 ----Boss
@@ -57,7 +56,7 @@ local yellFelChains					= mod:NewYell(186490)
 --Void Phase
 ----Boss
 local specWarnVoidStrike			= mod:NewSpecialWarningSpell(186292, "Tank")
-local specWarnVoidSurge				= mod:NewSpecialWarningYou(186333)
+local specWarnVoidSurge				= mod:NewSpecialWarningYou(186333, nil, nil, nil, 1, 5)
 local yellVoidSurge					= mod:NewYell(186333)
 ----Adds
 local specWarnWitheringGaze			= mod:NewSpecialWarningSpell(186783, "Tank")
@@ -91,6 +90,7 @@ local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_T
 local voiceFelsinged				= mod:NewVoice(186073)	--run away
 local voiceFelSurge					= mod:NewVoice(186407)	--run out (because need to tell difference from run away GTFOs)
 local voiceWastingVoid				= mod:NewVoice(186063)  --run away
+local voiceVoidSurge				= mod:NewVoice(186333)	--new voice
 
 --Warning behavior choices for Chains.
 --Cast only gives original target, not all targets, but does so 3 seconds faster. It allows the person to move early and change other players they affect with chains by pre moving.
@@ -263,6 +263,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnVoidSurge:Show()
 			yellVoidSurge:Yell()
+			voiceVoidSurge:Play("186333")
 		end
 	elseif spellId == 186500 and self.Options.ChainsBehavior ~= "Cast" then--Chains! (show warning if type is applied or both)
 		warnFelChains:CombinedShow(0.3, args.destName)
