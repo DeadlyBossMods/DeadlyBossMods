@@ -265,7 +265,7 @@ DBM.DefaultOptions = {
 	AlwaysShowSpeedKillTimer = true,
 	CRT_Enabled = false,
 	HelpMessageShown3 = false,
-	BugMessageShown = 1,
+	NewsMessageShown = 0,
 	MoviesSeen = {},
 	MovieFilter = "AfterFirst",
 	LastRevision = 0,
@@ -3867,7 +3867,7 @@ do
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
 			DBM:Debug("Received version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
-			if version > DBM.ReleaseRevision then -- Update reminder
+			if version > DBM.Revision then -- Update reminder
 				if not checkEntry(newerVersionPerson, sender) then
 					newerVersionPerson[#newerVersionPerson + 1] = sender
 					DBM:Debug("Newer version detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
@@ -4692,25 +4692,25 @@ do
 			end
 		end
 		if MassResDebuff > 0 then
-			print("DBM Debug: "..MassResDebuff.." players in raid are affected by mass resurrection debuff")
-			print("DBM Debug: There are currently "..playersAlive.." players alive and "..playersOutofRange.." players very far from your location (I.E. either they released, or you did)")
+			self:Debug(MassResDebuff.." players in raid are affected by mass resurrection debuff")
+			self:Debug("There are currently "..playersAlive.." players alive and "..playersOutofRange.." players very far from your location (I.E. either they released, or you did)")
 		else
 			if playersAlive > 0 then--Mass resurrection possibly available
 				if playersOutofRange == 0 then
 					if playerIsDead then
-						print("DBM Debug: This is a test of wipe recovery function. No players have debuff, no one has released and there is a living player nearby, wait for mass resurrection!")
+						self:Debug("No players have debuff, no one has released and there is a living player nearby, wait for mass resurrection!")
 					else
-						print("DBM Debug: This is a test of wipe recovery function. No players have debuff, no one has released and you are alive, cast mass resurrection!")
+						self:Debug("No players have debuff, no one has released and you are alive, cast mass resurrection!")
 					end
 				else
 					if playerIsDead then
-						print("DBM Debug: This is a test of wipe recovery function. No players have debuff. However, "..playersOutofRange.." players have already released. Consider releasing as well and holding mass ressurection")
+						self:Debug("No players have debuff. However, "..playersOutofRange.." players have already released. Consider releasing as well and holding mass ressurection")
 					else
-						print("DBM Debug: This is a test of wipe recovery function. No players have debuff. However, "..playersOutofRange.." players are out of range. Either you already released, or they did and you probably shouldn't use mass resurrection")
+						self:Debug("No players have debuff. However, "..playersOutofRange.." players are out of range. Either you already released, or they did and you probably shouldn't use mass resurrection")
 					end
 				end
 			else
-				print("DBM Debug: This is a test of wipe recovery function. No players have debuff, but no one is alive. If anyone had a soulstone or battle rez, now is time to pop it. Otherwise run back")
+				self:Debug("No players have debuff, but no one is alive. If anyone had a soulstone or battle rez, now is time to pop it. Otherwise run back")
 			end
 		end
 	end
@@ -5911,7 +5911,7 @@ do
 		end
 		self:Schedule(20, function() if not self.Options.ForumsMessageShown then self.Options.ForumsMessageShown = self.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
 		self:Schedule(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
-		self:Schedule(40, function() if DBM.Options.BugMessageShown < 2 then DBM.Options.BugMessageShown = 2 self:AddMsg(DBM_CORE_BLIZZ_BUGS) end end)
+		self:Schedule(40, function() if DBM.Options.NewsMessageShown < 1 then DBM.Options.NewsMessageShown = 1 self:AddMsg(DBM_CORE_WHATS_NEW) end end)
 		if type(RegisterAddonMessagePrefix) == "function" then
 			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
 				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up

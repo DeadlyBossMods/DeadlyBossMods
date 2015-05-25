@@ -16,8 +16,6 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "Os DBM temporizadores falharam em aparecer em com
 DBM_CORE_BAD_LOAD					= "DBM detectou que a sua mod desta área falhou ao tentar carregar por completo por estar em combate. Use o comando /reloadui assim que sair de combate para corrigir o problema."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s não foi carregado por não cumprir os requerimentos. Uma atualização da mod é necessária. Obrigado."
 
-DBM_CORE_BLIZZ_BUGS					= "Blizzard mudanças para addons na 6.0:\n1. Caso você jogue com efeitos sonoros habilitados, poderá 'perder' os de addons em combate, se os mesmos excederem o numero máximo de canais de sons. Para tentar corrigir isso, DBM agora força os canais de sons em 64, caso o perda de sim persista a única solução e desabilitar efeitos sonoros por completo."
-
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM desabilitou o quadro de alcance dinâmico nesta luta, por falta de informação sobre o numero de jogadores à ficarem amontoados para um grupo desse tamanho."
 
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM desabilitou aviso da contagem de adds nesta luta, por falta de informação da quantidade de adds para um grupo deste tamanho."
