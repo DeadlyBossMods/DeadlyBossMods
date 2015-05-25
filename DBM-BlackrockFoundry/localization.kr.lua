@@ -147,7 +147,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	PositionsAllPhases	= "모든 단계에서 $spell:156096 대화 알림시 위치 정보 표기(기본은 3단계에만 사용합니다. 대체적으로 테스트 목적이 강하므로, 활성화는 추천 드리지 않습니다.)",
+	PositionsAllPhases	= "모든 단계에서 $spell:156096 대화 알림시 위치 정보 표기(기본은 3단계에만 사용합니다. 일반적으로는 불필요합니다.)",
 	InfoFrame			= "$spell:155992 와 $spell:156530 정보를 정보 창으로 보기"
 })
 
