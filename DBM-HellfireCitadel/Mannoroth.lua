@@ -297,7 +297,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 185147 or spellId == 182212 or spellId == 185175 then--Portals
 		--Note, if they don't die on mythic, switch to UNIT_died on the humanoid adds
 		self.vb.portalsLeft = self.vb.portalsLeft - 1
-		if self.sb.portalsLeft == 0 then
+		if self.vb.portalsLeft == 0 then
 			self.vb.phase = 2
 			timerFelHellfireCD:Start(30)
 			timerGazeCD:Start(42)
