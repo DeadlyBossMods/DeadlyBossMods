@@ -18,6 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 181099 181275 185147 182212 185175 181597 182006 181275",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
+	"SPELL_SUMMON 181255 181180",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -49,7 +50,7 @@ local specWarnMarkOfDoom			= mod:NewSpecialWarningYou(181099, nil, nil, nil, 1, 
 local yellMarkOfDoom				= mod:NewYell(181099)--This need to know at apply, only player needs to know when it's fading
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(181126, "-Healer", nil, nil, 1, 2)
 ----Fel Imps
-local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, "-Healer", nil, nil, 1, 2)--This warning is spammy if filter is disabled, so this mod does NOT honor filter setting, this warning is ALWAYS target filtered
+local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, false, nil, 2, 1, 2)--Can be spammy, but someone may want it
 ----Dread Infernals
 local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, "Melee", nil, nil, 4, 2)
 ----Gul'dan
@@ -269,7 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceFelHellfire:Play("runaway")
 		specWarnFelHellfire:Show()--warn melee who are targetting infernal to run out if it's exploding
 	elseif spellId == 181597 or spellId == 182006 then
-		warnGaze:CombinedShow(0.3, args.destName)
+		warnGaze:CombinedShow(0.5, args.destName)--At least 0.5, maybe bigger needed if warning still splits
 		voiceGaze:Cancel()
 		if args:IsPlayer() then
 			specWarnGaze:Show()
@@ -297,11 +298,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 185147 or spellId == 182212 or spellId == 185175 then--Portals
 		--Note, if they don't die on mythic, switch to UNIT_died on the humanoid adds
 		self.vb.portalsLeft = self.vb.portalsLeft - 1
-		if self.vb.portalsLeft == 0 then
+		if self.vb.portalsLeft == 0 and self:AntiSpam(10, 4) then
 			self.vb.phase = 2
-			timerFelHellfireCD:Start(30)
-			timerGazeCD:Start(42)
-			timerGlaiveComboCD:Start(44)
+			timerFelHellfireCD:Start(29)
+			timerGazeCD:Start(41)
+			timerGlaiveComboCD:Start(43)
 			timerFelSeekerCD:Start(59)
 			voicePhaseChange:Play("ptwo")
 			if self:IsMythic() then
@@ -359,7 +360,7 @@ end
 --This function isn't required by mod, i purposely put start timers on later trigger that doesn't need localizing.
 --This just starts phase 3 and 4 earlier, if translation available.
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
-	if msg:find(L.felSpire) then
+	if msg:find(L.felSpire) and self:AntiSpam(10, 4) then
 		self.vb.phase = self.vb.phase + 1
 		if self.vb.phase == 3 then
 			timerFelHellfireCD:Cancel()
@@ -371,9 +372,11 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			timerFelHellfireCD:Start(22.9)
 			timerShadowForceCD:Start(27.8)
 			countdownShadowForce:Start(27.8)
+			--BOth gaze and combo seem 40, which you get first is random, and it'll delay other ability
+			--however they are BOTH 40ish, don't let one log fool
 			timerGazeCD:Start(40.5)
-			timerGlaiveComboCD:Start(41.2)--I suspect this isn't power based and may be 40.5-41.2
-			timerFelSeekerCD:Start(58.1)--^^
+			timerGlaiveComboCD:Start(40.9)
+			timerFelSeekerCD:Start(58)
 			voicePhaseChange:Play("pthree")
 		elseif self.vb.phase == 4 then
 			timerFelHellfireCD:Cancel()
@@ -382,12 +385,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			timerGlaiveComboCD:Cancel()
 			timerGazeCD:Cancel()
 			timerFelSeekerCD:Cancel()
-			timerFelHellfireCD:Start(13)
-			timerShadowForceCD:Start(21.5)
-			countdownShadowForce:Start(21.5)
-			timerGlaiveComboCD:Start(40.5)--I suspect this isn't power based and may be 40.5-41.2
-			timerGazeCD:Start(48)
-			timerFelSeekerCD:Start(58.5)--^^
+			timerFelHellfireCD:Start(12.7)
+			timerGazeCD:Start(30)
+			timerGlaiveComboCD:Start(38.6)
+			timerShadowForceCD:Start(45)
+			countdownShadowForce:Start(45)
+			timerFelSeekerCD:Start(58.2)
 			voicePhaseChange:Play("pfour")
 		end
 	end
@@ -408,7 +411,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerFelImplosionCD:Cancel()
 		timerInfernoCD:Cancel()
 		timerInfernoCD:Start(43.2, 1)
-	--Backup phase detection. a bit slower than CHAT_MSG_RAID_BOSS_EMOTE
+	--Backup phase detection. a bit slower than CHAT_MSG_RAID_BOSS_EMOTE (5.5 seconds slower)
 	elseif spellId == 182263 and self.vb.phase == 2 then--Phase 3
 		self.vb.phase = 3
 		timerFelHellfireCD:Cancel()
@@ -421,8 +424,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerShadowForceCD:Start(22.3)
 		countdownShadowForce:Start(22.3)
 		timerGazeCD:Start(35)
-		timerGlaiveComboCD:Start(35.7)
-		timerFelSeekerCD:Start(52.6)
+		timerGlaiveComboCD:Start(45.4)
+		timerFelSeekerCD:Start(53)
 		if self:IsMythic() then
 			--Assumed it may not reset like other abilities
 			timerWrathofGuldanCD:Cancel()
@@ -436,12 +439,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerGlaiveComboCD:Cancel()
 		timerGazeCD:Cancel()
 		timerFelSeekerCD:Cancel()
-		timerFelHellfireCD:Start(7.5)
-		timerShadowForceCD:Start(16)
-		countdownShadowForce:Start(16)
-		timerGlaiveComboCD:Start(35)
-		timerGazeCD:Start(42.5)
-		timerFelSeekerCD:Start(53)
+		timerFelHellfireCD:Start(7.2)
+		timerGazeCD:Start(25)
+		timerGlaiveComboCD:Start(33.1)
+		timerShadowForceCD:Start(40)
+		countdownShadowForce:Start(40)
+		timerFelSeekerCD:Start(52.7)
 		if self:IsMythic() then
 			--Assumed it may not reset like other abilities
 			timerWrathofGuldanCD:Cancel()
