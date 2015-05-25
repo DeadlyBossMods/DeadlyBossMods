@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184657 184476",
-	"SPELL_CAST_SUCCESS 184449 183480 184357",
+	"SPELL_CAST_SUCCESS 184449 183480 184357 184355",
 	"SPELL_AURA_APPLIED 183701 184847 184360 184365 184449",
 	"SPELL_AURA_APPLIED_DOSE 184847",
 --	"SPELL_AURA_REMOVED",
@@ -52,21 +52,22 @@ local specWarnDarkness				= mod:NewSpecialWarningSpell(184681, nil, nil, nil, 2)
 local specWarnFelRage				= mod:NewSpecialWarningYou(184360)
 local specWarnDemolishingLeap		= mod:NewSpecialWarningDodge(184366, nil, nil, nil, 2, 2)--Jumps around room, from side to side
 
-mod:AddTimerLine(Gurtogg)
+mod:AddTimerLine(Jubei)
 --Blademaster Jubei'thos
-local timerMarkofNecroCD			= mod:NewCDTimer(60.5, 184449, nil, "Healer")
---local timerMirrorImageCD			= mod:NewCDTimer(150, 183885)--Same as demo leap. the cd is so long that the timer is quite useless.
+--local timerFelstormCD				= mod:NewCDTimer(30.5, 183701)
+local timerMirrorImageCD			= mod:NewCDTimer(150, 183885)--Same as demo leap. the cd is so long that the timer is quite useless.
 mod:AddTimerLine(Dia)
 --Dia Darkwhisper
-local timerFelstormCD				= mod:NewCDTimer(30.5, 183701)
-local timerReapCD					= mod:NewCDTimer(66, 184476)--66-71
+local timerMarkofNecroCD			= mod:NewCDTimer(60.5, 184449, nil, "Healer")
+local timerReapCD					= mod:NewCDTimer(64.6, 184476)--66-71
 local timerNightmareVisageCD		= mod:NewCDTimer(30, 184657, nil, "Tank")
 local timerDarknessCD				= mod:NewCDTimer(150, 184681)--Also bleh in consistency. I suspect all the 150 second abilities are undertuned and will all need fixing.
 mod:AddTimerLine(Gurtogg)
 --Gurtogg Bloodboil
-local timerRelRageCD				= mod:NewCDCountTimer(70, 184360)--70-84
---local timerDemoLeapCD				= mod:NewCDTimer(150, 184366)--I think ability was flat broken, he used it like 1 out of 6 pulls. and when he did it was 2 and a half minute cd?
+local timerRelRageCD				= mod:NewCDCountTimer(62, 184360)--62-84 (maybe this is HP based, cause this variation is stupid)
+local timerDemoLeapCD				= mod:NewCDTimer(150, 184366)--I think ability was flat broken, he used it like 1 out of 6 pulls. and when he did it was 2 and a half minute cd?
 local timerTaintedBloodCD			= mod:NewNextCountTimer(15.8, 184357)
+local timerBloodBoilCD				= mod:NewCDTimer(7.3, 184355, nil, false)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -79,7 +80,6 @@ local voiceDemolishingLeap			= mod:NewVoice(184366)--runaway (Stll not sure I li
 --mod:AddRangeFrameOption(8, 155530)
 
 mod.vb.DiaPushed = false
-mod.vb.GurtPushed = false
 mod.vb.taintedBloodCount = 0
 mod.vb.felRageCount = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
@@ -99,17 +99,16 @@ end--]]
 
 function mod:OnCombatStart(delay)
 	self.vb.DiaPushed = false
-	self.vb.GurtPushed = false
 	self.vb.taintedBloodCount = 0
 	self.vb.felRageCount = 0
 	timerMarkofNecroCD:Start(7-delay)--7-13
-	timerNightmareVisageCD:Start(15.5-delay)
-	timerFelstormCD:Start(20.5-delay)
+	timerNightmareVisageCD:Start(15-delay)
+--	timerFelstormCD:Start(20.5-delay)--Review
 	timerRelRageCD:Start(30.5-delay)
 	timerReapCD:Start(50-delay)--50-73 variation on pull, likely blizzard was tinkering/hotfixing it between pulls. verify on later testing
 	timerDarknessCD:Start(76.5-delay)
-	--timerMirrorImageCD:Start(-delay)--First one is 150-160 into fight, unless he hits 30% first, then he uses it earlier and spams rest of fight.
-	--timerDemoLeapCD:Start(230-delay)--First one 230 into fight. if you kill him first you NEVER see it. I doubt it'll stay this way
+	timerMirrorImageCD:Start(-delay)--First one is 150-160 into fight, unless he hits 30% first, then he uses it earlier and spams rest of fight.
+	timerDemoLeapCD:Start(230-delay)--First one 230 into fight. if you kill him first you NEVER see it.
 	berserkTimer:Start(-delay)
 end
 
@@ -142,6 +141,8 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnReap:Show()
 		end
+	elseif spellId == 184355 then
+		timerBloodBoilCD:Start()
 	end
 end
 
@@ -151,10 +152,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMarkofNecroCD:Start()
 	elseif spellId == 183480 and self:AntiSpam(8, 1) then--Once he pushes 30%, he just spams this, so stop warning
 		warnMirrorImage:Show()
+		timerMirrorImageCD:Cancel()--Just cancel it first time he casts it, after he starts using ability he keeps using it Timer is strictly for when he starts using it
 	elseif spellId == 184357 then
 		self.vb.taintedBloodCount = self.vb.taintedBloodCount + 1
 		timerTaintedBloodCD:Start(nil, self.vb.taintedBloodCount+1)
-		if self.vb.GurtPushed then self.vb.GurtPushed = true end
 	end
 end
 
@@ -163,7 +164,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 183701 and args:GetDestCreatureID() == 92142 then--Only warn when jubei uses, not mirror image spam
 		specWarnFelstorm:Show()
 		voiceFelstorm:Play("aesoon")
-		timerFelstormCD:Start()
+--		timerFelstormCD:Start()
 	elseif spellId == 184847 and self:AntiSpam(3.5, 2) then--Probably stacks very rapidly, so using antispam for now until better method constructed
 		local amount = args.amount or 1
 		warnAcidicWound:Show(args.destName, amount)
@@ -199,13 +200,13 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 92142 then--Blademaster Jubei'thosr
 		timerFelstormCD:Cancel()
-		--timerMirrorImageCD:Cancel()
+		timerMirrorImageCD:Cancel()
 	elseif cid == 92144 then--Dia Darkwhisper
 		timerMarkofNecroCD:Cancel()
 		timerNightmareVisageCD:Cancel()
 	elseif cid == 92146 then--Gurthogg Bloodboil
 		timerRelRageCD:Cancel()
-		--timerDemoLeapCD:Cancel()
+		timerDemoLeapCD:Cancel()
 		timerTaintedBloodCD:Cancel()
 	end
 end
