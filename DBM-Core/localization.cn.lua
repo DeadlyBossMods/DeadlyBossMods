@@ -22,8 +22,6 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "DBM无法在战斗中更换皮肤。请先在非�
 DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，有些计时器可能会错误。请在离开战斗后马上重载界面。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本过旧。请升级DBM。"
 
-DBM_CORE_BLIZZ_BUGS					= "6.1 禁用了用.wav 文件播放，所有的语音配置都被重置了一次。这个恢复到默认值只会发生一次，然后你可以再次重新设定自定义音效。记住，一旦你在某个配置文件下设定了自定义音效，你可以从模组状态窗口复制音效配置到另一个配置文件。"
-
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "由于玩家数量不足，DBM 无法开启倒计时。"
 DBM_CORE_DYNAMIC_MULTIPLE			= "由于玩家数量不足，DBM 禁用了多个功能。"
