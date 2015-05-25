@@ -12,10 +12,11 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 179406 181461 179582",
+	"SPELL_CAST_START 179406 179582",
 	"SPELL_CAST_SUCCESS 181508 179709",
 	"SPELL_AURA_APPLIED 181508 181515 182008 179670 179711 179681 179407 179667",
-	"SPELL_AURA_REMOVED 179711 181508 181515 179667"
+	"SPELL_AURA_REMOVED 179711 181508 181515 179667",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, two versions of seed? one with shorter duration? shorter one mythic?
@@ -54,7 +55,7 @@ local timerSoulCleaveCD					= mod:NewCDTimer(40, 179406)
 local timerCavitationCD					= mod:NewCDTimer(40, 181461)
 --Disarmed
 local timerDisarmCD						= mod:NewCDTimer(85.8, 179667)
-local timerSeedsofDestructionCD			= mod:NewCDTimer(14.5, 181508)--14.5-16
+local timerSeedsofDestructionCD			= mod:NewCDCountTimer(14.5, 181508)--14.5-16
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
@@ -158,6 +159,13 @@ local function warnSeeds(self)
 	end
 end
 
+local function warnWake(self)
+	if self:AntiSpam(3, 1) then
+		specWarnWakeofDestruction:Show()
+		voiceWakeofDestruction:Play("watchwave")
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(seedTargets)
 	self.vb.befouledTargets = 0
@@ -206,13 +214,6 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.Enraged or self.vb.SoulCleaveCount == 1 then--Only casts two between phases, unless enraged
 			timerSoulCleaveCD:Start(nil, self.vb.SoulCleaveCount+1)
 		end
-	elseif spellId == 181461 then
-		self.vb.CavitationCount = self.vb.CavitationCount + 1
-		specWarnWakeofDestruction:Show()
-		voiceWakeofDestruction:Play("watchwave")
-		if self.vb.Enraged or self.vb.CavitationCount == 1 then--Only casts two between phases, unless enraged
-			timerCavitationCD:Start(nil, self.vb.CavitationCount+1)
-		end
 	elseif spellId == 179582 then
 		self.vb.FissureCount = self.vb.FissureCount + 1
 		warnRumblingFissure:Show(self.vb.FissureCount)
@@ -241,7 +242,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 181508 or spellId == 181515 then--No idea what 181515 is. 181508 confirmed heroic
-		warnSeedofDestruction:CombinedShow(0.3, args.destName)
+		warnSeedofDestruction:CombinedShow(0.3, self.vb.SeedsCount, args.destName)
 		if args:IsPlayer() then
 			specWarnSeedofDestruction:Show()
 			if self:IsLFR() then
@@ -249,9 +250,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceSeedsofDestruction:Play("runout")
 			end
 		end
-		if self:AntiSpam(5, 3) then
-			specWarnWakeofDestruction:Schedule(3.5)--When debuff expires, waves (-1.5)
-			voiceWakeofDestruction:Schedule(3.5, "watchwave")
+		if self:AntiSpam(5, 2) then
+			self:Schedule(3.5, warnWake, self)
 			countdownSeedsofDestruction:Start()--Everyone, because waves occur.
 		end
 		if self.Options.SetIconOnSeeds and not self:IsLFR() then
@@ -278,11 +278,17 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 179681 then--Enrage (has both armed and disarmed abilities)
 		timerDisarmCD:Cancel()--Assumed
 		countdownDisarm:Cancel()
+		timerCavitationCD:Cancel()
+		timerSeedsofDestructionCD:Cancel()
+		countdownSeedsofDestructionCD:Cancel()
 		self.vb.Enraged = true
+		self.vb.CavitationCount = 0
+		self.vb.SeedsCount = 0
 		warnEnrage:Show()
 		voiceEnrage:Play("enrage")
-		DBM:AddMsg("Timers may not be correct for remainder of fight. Do not have data beyond this point")
-		--TODO, figure out timers, depending on what phase he was in when he enraged, start timers that need starting, or maybe update all timers if that's how it works
+		timerSeedsofDestructionCD:Start(27, 1)
+		countdownSeedsofDestructionCD:Start(27)
+		timerCavitationCD:Start(35.5, 1)
 	elseif spellId == 179711 then
 		self.vb.befouledTargets = self.vb.befouledTargets + 1
 		if args:IsPlayer() then
@@ -299,9 +305,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --		end
 	elseif spellId == 179407 then
 		warnDisembodied:Show(self.vb.SoulCleaveCount, args.destName)
-		specWarnWakeofDestruction:Schedule(8.5)--Waves when they return (-1.5)
-		voiceWakeofDestruction:Schedule(8.5, "watchwave")
-		countdownDisembodied:Start()--Everyone, because waves occur
+		countdownDisembodied:Start()
 		if not args:IsPlayer() then
 			specWarnDisembodied:Show(args.destName)
 		end
@@ -335,6 +339,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerCavitationCD:Start(33, 1)
 		timerDisarmCD:Start()
 		countdownDisarm:Start()
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 181461 then--Sometimes does NOT show in combat log, this is only accurate way
+		self.vb.CavitationCount = self.vb.CavitationCount + 1
+		warnWake(self)
+		if self.vb.Enraged or self.vb.CavitationCount == 1 then--Only casts two between phases, unless enraged
+			timerCavitationCD:Start(nil, self.vb.CavitationCount+1)
+		end	
 	end
 end
 
