@@ -24,9 +24,9 @@ HellfireCouncil.lua
 Kilrogg.lua
 Gorefiend.lua
 Iskar.lua
+Socrethar.lua
 Zakuun.lua
 Xhulhorac.lua
-Socrethar.lua
 Velhari.lua
 Mannoroth.lua
 Archimonde.lua
