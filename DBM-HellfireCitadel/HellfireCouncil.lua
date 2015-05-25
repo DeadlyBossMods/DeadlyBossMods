@@ -199,7 +199,7 @@ end--]]
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 92142 then--Blademaster Jubei'thosr
-		timerFelstormCD:Cancel()
+		--timerFelstormCD:Cancel()
 		timerMirrorImageCD:Cancel()
 	elseif cid == 92144 then--Dia Darkwhisper
 		timerMarkofNecroCD:Cancel()
