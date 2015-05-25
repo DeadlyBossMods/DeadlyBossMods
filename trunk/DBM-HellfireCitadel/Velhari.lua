@@ -55,7 +55,7 @@ local specWarnEnforcersOnslaught			= mod:NewSpecialWarningDodge(180004, nil, nil
 --Stage Two: Contempt
 ----Ancient Harbinger
 local specWarnAncientHarbinger				= mod:NewSpecialWarningSwitch("ej11163", "-Healer")
-local specWarnHarbingersMending				= mod:NewSpecialWarningInterrupt(180025, "-Healer", nil, nil, 2, 2)
+local specWarnHarbingersMending				= mod:NewSpecialWarningInterrupt(180025, "-Healer", nil, nil, 1, 2)
 local specWarnHarbingersMendingDispel		= mod:NewSpecialWarningDispel(180025, "MagicDispeller")--if interrupt is missed (likely at some point, cast gets faster each time). Then it MUST be dispelled
 --Stage Three: Malice
 local specWarnDespoiledGround				= mod:NewSpecialWarningMove(180604)
