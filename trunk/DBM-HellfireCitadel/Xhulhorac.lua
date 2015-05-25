@@ -12,10 +12,10 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 186271 186453 186292 186783 186546 186490 189775 189779",
-	"SPELL_CAST_SUCCESS 186407 186333 187204 186490 189775",
-	"SPELL_AURA_APPLIED 186073 186063 186134 186135 188092 186407 186333 186500 189777",
-	"SPELL_AURA_APPLIED_DOSE 186073 186063",
+	"SPELL_CAST_START 190223 186453 190224 186783 186546 186490 189775 189779",
+	"SPELL_CAST_SUCCESS 186407 186333 186490 189775",
+	"SPELL_AURA_APPLIED 186073 186063 186134 186135 188092 186407 186333 186500 189777 186448 187204 186785",
+	"SPELL_AURA_APPLIED_DOSE 186073 186063 186448 186785",
 	"SPELL_AURA_REMOVED 189777",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_DIED",
@@ -29,11 +29,14 @@ local warnFelPortal					= mod:NewSpellAnnounce(187003, 2)
 local warnFelSurge					= mod:NewTargetAnnounce(186407, 3)
 ----Adds
 local warnFelChains					= mod:NewTargetAnnounce(186490, 3)
+local warnFelBlazeFlurry			= mod:NewStackAnnounce(186448, 2, nil, "Tank")
 local warnEmpoweredFelChains		= mod:NewTargetAnnounce(189775, 3)--Mythic
 --Void Phase
 ----Boss
 local warnVoidPortal				= mod:NewSpellAnnounce(187006, 2)
 local warnVoidSurge					= mod:NewTargetAnnounce(186333, 3)
+----
+local warnWitheringGaze				= mod:NewStackAnnounce(186785, 2, nil, "Tank")
 --End Phase
 local warnOverwhelmingChaos			= mod:NewCountAnnounce(187204, 4)
 
@@ -50,6 +53,7 @@ local specWarnFelSurge				= mod:NewSpecialWarningYou(186407, nil, nil, nil, 1, 2
 local yellFelSurge					= mod:NewYell(186407)
 ----Adds
 local specWarnFelBlazeFlurry		= mod:NewSpecialWarningSpell(186453, "Tank")
+local specWarnFelBlazeFlurryOther	= mod:NewSpecialWarningTaunt(186448)--Debuff must swap for
 local specWarnFelChains				= mod:NewSpecialWarningYou(186490)
 local specWarnEmpoweredFelChains	= mod:NewSpecialWarningYou(189775)
 local yellFelChains					= mod:NewYell(186490)
@@ -60,6 +64,7 @@ local specWarnVoidSurge				= mod:NewSpecialWarningYou(186333, nil, nil, nil, 1, 
 local yellVoidSurge					= mod:NewYell(186333)
 ----Adds
 local specWarnWitheringGaze			= mod:NewSpecialWarningSpell(186783, "Tank")
+local specWarnWitheringGazeOther	= mod:NewSpecialWarningTaunt(186785)--Debuff must swap for
 local specWarnBlackHole				= mod:NewSpecialWarningSpell(186546, nil, nil, nil, 2)
 local specWarnEmpBlackHole			= mod:NewSpecialWarningSpell(189779, nil, nil, nil, 2)--Mythic
 
@@ -80,7 +85,7 @@ local timerWitheringGazeCD			= mod:NewCDTimer(14.5, 186783)
 local timerBlackHoleCD				= mod:NewCDTimer(29.5, 186546)
 local timerEmpBlackHoleCD			= mod:NewAITimer(29.5, 189779)
 --End Phase
-local timerOverwhelmingChaosCD		= mod:NewAITimer(10, 187204)--Dungeon journal says every 10 seconds, but lets let the smart timer decide until I can confirm this
+local timerOverwhelmingChaosCD		= mod:NewNextTimer(10, 187204)
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
@@ -150,7 +155,7 @@ function mod:OnCombatStart(delay)
 	self.vb.ChaosCount = 0
 	self.vb.EmpFelChainCount = 0
 	table.wipe(AddsSeen)
-	timerFelStrikeCD:Start(-delay)
+	timerFelStrikeCD:Start(8-delay)
 	timerFelSurgeCD:Start(21.8-delay)
 end
 
@@ -162,7 +167,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 186271 then
+	if spellId == 190223 then
 		timerFelStrikeCD:Start()
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
@@ -171,7 +176,7 @@ function mod:SPELL_CAST_START(args)
 				break
 			end
 		end
-	elseif spellId == 186292 then
+	elseif spellId == 190224 then
 		timerVoidStrikeCD:Start()
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
@@ -222,10 +227,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFelSurgeCD:Start()
 	elseif spellId == 186333 then
 		timerVoidSurgeCD:Start()
-	elseif spellId == 187204 then
-		self.vb.ChaosCount = self.vb.ChaosCount + 1
-		warnOverwhelmingChaos:Show(self.vb.ChaosCount)
-		timerOverwhelmingChaosCD:Start()
 	elseif spellId == 186490 then
 		if self.Options.ChainsBehavior == "Applied" then--Start timer here if method is set to only applied
 			timerFelChainsCD:Start()
@@ -281,6 +282,36 @@ function mod:SPELL_AURA_APPLIED(args)
 			end	
 		end
 		updateRangeFrame(self)
+	elseif spellId == 186448 then
+		local amount = args.amount or 1
+		if amount >= 3 then
+			if not args:IsPlayer() then
+				if not UnitDebuff("player", GetSpellInfo(186448)) and not UnitIsDeadOrGhost("player") then
+					specWarnFelBlazeFlurryOther:Show(args.destName)
+				else
+					warnFelBlazeFlurry:Show(args.destName, amount)
+				end
+			end
+		else
+			warnFelBlazeFlurry:Show(args.destName, amount)
+		end
+	elseif spellId == 186785 then
+		local amount = args.amount or 1
+		if amount >= 3 then
+			if not args:IsPlayer() then
+				if not UnitDebuff("player", GetSpellInfo(186785)) and not UnitIsDeadOrGhost("player") then
+					specWarnWitheringGazeOther:Show(args.destName)
+				else
+					warnWitheringGaze:Show(args.destName, amount)
+				end
+			end
+		else
+			warnWitheringGaze:Show(args.destName, amount)
+		end
+	elseif spellId == 187204 then
+		self.vb.ChaosCount = self.vb.ChaosCount + 1
+		warnOverwhelmingChaos:Show(self.vb.ChaosCount)
+		timerOverwhelmingChaosCD:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -308,7 +339,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				else--Sync tiner up with cast
 					timerFelChainsCD:Start(12)
 				end
-				timerFelBlazeFlurryCD:Start(6)
+				timerFelBlazeFlurryCD:Start(5.5)
 			elseif cid == 94239 then--Omnus
 				timerWitheringGazeCD:Start(9)
 				timerBlackHoleCD:Start(18)
@@ -349,7 +380,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerVoidSurgeCD:Start(19)
 	elseif spellId == 189047 then--Phase 3 (Shadowfel Phasing)
 		voicePhaseChange:Play("phasechange")
+		timerVoidStrikeCD:Cancel()--Regardless of what was left on timer, he will use it immediately after shadowfel phasing
+		timerVoidSurgeCD:Cancel()
 		timerFelSurgeCD:Start(7)
 		timerFelStrikeCD:Start(8)
+		timerVoidSurgeCD:Start(17)--Regardless of what was left on timer, this resets to 17
 	end
 end
