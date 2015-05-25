@@ -330,6 +330,7 @@ L.ModAllReset				= "Reset all mod settings"
 L.ModAllStatReset			= "Reset all mod stats"
 L.SelectModProfileCopy		= "Copy all settings from"
 L.SelectModProfileCopySound	= "Copy just sound setting from"
+L.SelectModProfileCopyNote	= "Copy just note setting from"
 L.SelectModProfileDelete	= "Delete mod settings for"
 
 L.NoteHeader				= "Insert your note text here. Enclosing a players name with >< class colors it. For alerts with multiple notes, separate notes with '/'"
