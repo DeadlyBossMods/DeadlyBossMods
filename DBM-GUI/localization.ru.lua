@@ -166,6 +166,7 @@ L.Panel_SpecWarnFrame		= "Специальные предупреждения"
 L.Area_SpecWarn				= "Настройка специальных предупреждений"
 L.SpecWarn_ClassColor		= "Использовать цвета классов для спец-предупреждений"
 L.ShowSWarningsInChat 		= "Показывать спец-предупреждения в окне чата"
+L.SWarnNameInNote			= "Использовать SW5 настройки если пользовательская заметка содержит ваше имя"
 L.SpecWarn_FlashFrame		= "Мигать экраном во время специальных предупреждений"
 L.SpecWarn_FlashFrameRepeat	= "Повторять %d раз (если включено)"
 L.SpecWarn_Font				= "Выбор шрифта для специальных предупреждений"
@@ -183,6 +184,22 @@ L.SpecialWarnSound			= "Звук спец-предупреждения для в
 L.SpecialWarnSound2			= "Звук спец-предупреждения для всех"
 L.SpecialWarnSound3			= "Звук очень важного спец-предупреждения"
 L.SpecialWarnSound4			= "Звук для спец-предупреждений \"убегайте\""
+L.SpecialWarnSound5			= "Звук по умолчанию для спец-предупреждений с заметками, содержащими ваше имя"
+
+-- Tab: Heads Up Display Frame
+L.Panel_HUD					= "Heads Up Display"
+L.Area_HUDOptions			= "Настройки HUD"
+L.HUDColorOverride			= "Переопределить выбранные модулями цвета для HUD"
+L.HUDSizeOverride			= "Переопределить выбранные модулями размеры для HUD"
+L.HUDAlphaOverride			= "Переопределить выбранную модулями прозрачность для HUD"
+L.HUDTextureOverride		= "Переопределить выбранные модулями текстуры для HUD (не применяется для настроек типа 'метка')"
+L.HUDColorSelect			= "Цвет HUD %d"
+L.HUDTextureSelect1			= "Текстура для основного HUD"
+L.HUDTextureSelect2			= "Текстура для вторичного HUD"
+L.HUDTextureSelect3			= "Текстура для третичного HUD"
+L.HUDTextureSelect4			= "Текстура для 'бежать к' HUD"
+L.HUDSizeSlider				= "Радиус круга: %0.1f"
+L.HUDAlphaSlider			= "Прозрачность: %0.1f"
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Голосовые предупреждения"
@@ -213,12 +230,15 @@ L.BarWidth					= "Ширина индикатора: %d"
 L.Panel_SpamFilter			= "Общие и спам-фильтры"
 L.Area_SpamFilter_Outgoing	= "Параметры общего фильтра"
 L.SpamBlockNoShowAnnounce	= "Не объявлять или предупреждать звуком игрока"
+L.SpamBlockNoSpecWarn		= "Не показывать спец-предупреждения и не проигрывать звуки для них"
+L.SpamBlockNoShowTimers		= "Не показывать таймеры (отсчет времени)"
 L.SpamBlockNoSetIcon		= "Не устанавливать метки на цели"
 L.SpamBlockNoRangeFrame		= "Не отображать окно проверки дистанции"
 L.SpamBlockNoInfoFrame		= "Не отображать информационное окно"
 L.SpamBlockNoHudMap			= "Не отображать HudMap"
 L.SpamBlockNoHealthFrame	= "Не отображать окно здоровья"
 L.SpamBlockNoCountdowns		= "Не воспроизводить звуки обратного отсчета"
+L.SpamBlockNoYells			= "Не отправлять крики в чат"
 L.SpamBlockNoIconRestore	= "Не сохранять состояние меток и восстанавливать их после боя"
 L.SpamBlockNoRangeRestore	= "Не восстанавливать окно проверки дистанции в предыдущее состояние при скрытии модулями"
 
@@ -227,7 +247,7 @@ L.Area_SpamFilter			= "Параметры спам-фильтра"
 L.DontShowFarWarnings		= "Не отображать предупреждения/таймеры для событий, которые далеко"
 L.StripServerName			= "Удалять имя сервера в предупреждениях и таймерах"
 L.SpamBlockBossWhispers		= "Фильтрация &lt;DBM&gt; предупреждений шепотом в бою"
-L.BlockVersionUpdateNotice		= "Отключить уведомление о доступном обновлении (не рекомендуется)"
+L.BlockVersionUpdateNotice	= "Отключить уведомление о доступном обновлении (не рекомендуется)"
 
 L.Area_SpecFilter			= "Параметры фильтра по роли"
 L.FilterTankSpec			= "Фильтровать предупреждения для роли танка когда не в специализации танка"
@@ -236,6 +256,7 @@ L.FilterDispels				= "Фильтровать предупреждения для
 L.FilterSelfHud				= "Фильтровать себя на HudMap (кроме функций проверки дистанции)"
 
 L.Area_PullTimer			= "Параметры фильтра таймеров пулла/боя/пользов."
+L.DontShowRespawn			= "Не отображать таймер появления босса"
 L.DontShowPTNoID			= "Блокировать таймер пулла, отправленный из другой зоны"
 L.DontShowPT				= "Не отображать индикатор таймера пулла"
 L.DontShowPTText			= "Не отображать текст объявления для таймера пулла"
@@ -281,6 +302,8 @@ L.AutoAcceptFriendInvite	= "Автоматически принимать при
 L.AutoAcceptGuildInvite		= "Автоматически принимать приглашения в группу от согильдийцев"
 L.Area_Advanced				= "Дополнительные настройки"
 L.FakeBW					= "Притворяться BigWigs вместо DBM при приверке версий (Полезно для гильдий которые заставляют использовать BigWigs)"
+L.AITimer					= "Automatically generate timers for never before seen fights using DBM's built in timer AI (Useful for pulling a test boss for the very first time such as beta or PTR). Note: This won't work for properlty for multiple adds with same ability."
+L.AutoCorrectTimer			= "Automatically correct timers that are too long (Useful for guilds pulling cutting edge content that boss mods aren't updated for yet). Note: This option may also make some timers worse if boss resets timers on phase changes that DBM isn't coded to handle properly yet."
 
 L.PizzaTimer_Headline 		= 'Создать "Pizza Timer"'
 L.PizzaTimer_Title			= 'Название (например, "Pizza!")'
@@ -308,7 +331,10 @@ L.ModAllReset				= "Сбросить все настройки модуля"
 L.ModAllStatReset			= "Сбросить всю статистику модуля"
 L.SelectModProfileCopy		= "Скопировать все настройки из"
 L.SelectModProfileCopySound	= "Скопировать настройки звука из"
+L.SelectModProfileCopyNote	= "Скопировать заметки из"
 L.SelectModProfileDelete	= "Удалить настройки модуля для"
+L.NoteHeader				= "Insert your note text here. Enclosing a players name with >< class colors it. For alerts with multiple notes, separate notes with '/'"
+L.NoteFooter				= "Once note is updated just hit 'okay' and it will be saved"
 
 -- Misc
 L.FontHeight	= 16
