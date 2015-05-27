@@ -16,6 +16,8 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "DBM timers failed to skin during combat. Your tim
 DBM_CORE_BAD_LOAD					= "DBM не удалось полностью загрузить модуль для этого подземелья, т.к. вы находитесь в режиме боя. Как только вы выйдите из боя, пожалуйста сделайте /console reloadui как можно скорее."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s не может быть загружен потому что ваш DBM-Core не соответствует требованиям. Требуется обновленная версия."
 
+DBM_CORE_WHATS_NEW					= "Новое в этой версии: DBM теперь поддерживает персонализированные заметки в каждом спец-предупреждении. А также пользовательский звук предупреждения/мигание если заметка содержит ваше имя."
+
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM отключил динамическое окно проверки дистанции на этом боссе, т.к. нет точной информации о необходимом количестве игроков в одном скоплении для рейда вашего размера."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM отключил предупреждения о появлении помощников на этом боссе, т.к. нет точной информации о количестве помощников, которые появляются в рейде вашего размера."
 DBM_CORE_DYNAMIC_MULTIPLE			= "DBM отключил несколько таймеров и предупреждений на этом боссе, т.к. нет точной информации о том, как работают механики энкаунтера для рейда вашего размера."
@@ -32,7 +34,7 @@ DBM_CORE_COMBAT_STARTED				= "%s вступает в бой. Удачи! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s вступает в бой (в процессе). Удачи! :)"
 DBM_CORE_GUILD_COMBAT_STARTED		= "Гильдия вступает в бой с %s"
 DBM_CORE_SCENARIO_STARTED			= "%s начат. Удачи! :)"
-DBM_CORE_SCENARIO_STARTED_IN_PROGRESS	= "Вы зашли в %s (в процессе). Удачи! :)"
+DBM_CORE_SCENARIO_STARTED_IN_PROGRESS	= "Вы зашли в сценарий %s (в процессе). Удачи! :)"
 DBM_CORE_BOSS_DOWN					= "%s погибает спустя %s!"
 DBM_CORE_BOSS_DOWN_I				= "%s погибает! Общее количество побед у Вас %d."
 DBM_CORE_BOSS_DOWN_L				= "%s погибает спустя %s! Ваш последний бой длился %s, а лучший бой длился %s. Общее количество побед у Вас %d."
@@ -50,6 +52,8 @@ DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s закончился спустя %s. Н�
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s был атакован %s назад, восстанавливаю таймеры..."
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Логирование с помощью Transcriptor начато."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Логирование с помощью Transcriptor окончено."
+
+DBM_CORE_COMBAT_STARTED_AI_TIMER	= "My CPU is a neural net processor; a learning computer. (This fight will use the new timer AI feature to generate timer approximations)"
 
 DBM_CORE_PROFILE_NOT_FOUND			= "<Deadly Boss Mods> Ваш текущий профиль поврежден. DBM загрузит профиль 'По умолчанию'."
 DBM_CORE_PROFILE_CREATED			= "Профиль '%s' создан."
@@ -239,7 +243,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack 			= "%s на |3-5(>%%s<) (%%d)"
 
 local prewarnOption = "Предупреждать заранее о $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target 		= "Объявлять цели заклинания $spell:%s"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetcount	= "Объявлять цели заклинания $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetcount	= "Объявлять цели заклинания $spell:%s (со счетчиком)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell 		= "Предупреждение для $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.ends			= "Предупреждать об окончании $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.endtarget	= "Предупреждать об окончании $spell:%s (цель)"
@@ -251,7 +255,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn 		= prewarnOption
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 		= "Объявлять фазу %s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phasechange	= "Объявлять смены фаз"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase 	= "Предупреждать заранее о фазе %s"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count 		= "Предупреждение для $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count 		= "Предупреждение для $spell:%s (со счетчиком)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack 		= "Объявлять количество стаков $spell:%s"
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.spell				= "%s!"
@@ -279,36 +283,38 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch 			= ">%s< - переключитесь"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount 		= ">%s< - переключитесь (%%d)"
 
 -- Auto-generated Special Warning Localizations
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 		= "Спец-предупреждение для $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.ends 		= "Спец-предупреждение об окончании $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.fades 		= "Спец-предупреждение о спадении $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon 		= "Спец-предупреждение что скоро $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.prewarn 	= "Спец-предупреждение за %s сек. до $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel 		= "Спец-предупреждение для рассеивания/похищения заклинания $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt	= "Спец-предупреждение для прерывания заклинания $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you 		= "Спец-предупреждение, когда на вас $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target 		= "Спец-предупреждение, когда на ком-то $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt 		= "Спец-предупреждение \"затаунти\", когда на другом танке $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 		= "Спец-предупреждение, когда на ком-то рядом с вами $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 		= "Спец-предупреждение \"отбегите\" для $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge 		= "Спец-предупреждение \"избегайте\" для $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway	= "Спец-предупреждение \"отбегите от остальных\" для $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveto		= "Спец-предупреждение \"бегите к кому-то\", на ком $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run 		= "Спец-предупреждение \"убегайте\" для $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast 		= "Спец-предупреждение \"прекратите чтение заклинаний\" для $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect 	= "Спец-предупреждение \"прекратите атаку\" для $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 		= "Спец-предупреждение для $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Спец-предупреждение, когда на вас >=%d стаков $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Спец-предупреждение о смене цели для $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetcount		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 			= "Спец-предупреждение для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.ends 			= "Спец-предупреждение об окончании $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.fades 			= "Спец-предупреждение о спадении $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon 			= "Спец-предупреждение что скоро $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.prewarn 		= "Спец-предупреждение за %s сек. до $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel 			= "Спец-предупреждение для рассеивания/похищения заклинания $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt		= "Спец-предупреждение для прерывания заклинания $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= "Спец-предупреждение (со счетчиком) для прерывания заклинания $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you 			= "Спец-предупреждение, когда на вас $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target 			= "Спец-предупреждение, когда на ком-то $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetcount		= "Спец-предупреждение (со счетчиком), когда на ком-то $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt 			= "Спец-предупреждение \"затаунти\", когда на другом танке $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 			= "Спец-предупреждение, когда на ком-то рядом с вами $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 			= "Спец-предупреждение \"отбегите\" для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge 			= "Спец-предупреждение \"избегайте\" для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway		= "Спец-предупреждение \"отбегите от остальных\" для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveto			= "Спец-предупреждение \"бегите к кому-то\", на ком $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run 			= "Спец-предупреждение \"убегайте\" для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast 			= "Спец-предупреждение \"прекратите чтение заклинаний\" для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect 		= "Спец-предупреждение \"прекратите атаку\" для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 			= "Спец-предупреждение (со счетчиком) для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 			= "Спец-предупреждение, когда на вас >=%d стаков $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch			= "Спец-предупреждение о смене цели для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount 	= "Спец-предупреждение (со счетчиком) о смене цели для $spell:%s"
+
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target 		= "%s: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.cast 			= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.active		= "%s заканчивается" --Buff/Debuff/event on boss
 DBM_CORE_AUTO_TIMER_TEXTS.fades			= "%s спадает" --Buff/Debuff on players
+DBM_CORE_AUTO_TIMER_TEXTS.ai			= "%s ИИ"
 DBM_CORE_AUTO_TIMER_TEXTS.cd 			= "Восст. %s"
 DBM_CORE_AUTO_TIMER_TEXTS.cdcount		= "Восст. %s (%%d)"
 DBM_CORE_AUTO_TIMER_TEXTS.cdsource		= "Восст. %s: >%%s<"
@@ -324,6 +330,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.target 		= "Отсчет времени действ
 DBM_CORE_AUTO_TIMER_OPTIONS.cast 		= "Отсчет времени применения заклинания $spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.active 		= "Отсчет времени действия $spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.fades		= "Отсчет времени до спадения $spell:%s с игроков"
+DBM_CORE_AUTO_TIMER_OPTIONS.ai			= "Отсчет времени до восстановления $spell:%s (ИИ)"
 DBM_CORE_AUTO_TIMER_OPTIONS.cd 			= "Отсчет времени до восстановления $spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.cdcount 	= "Отсчет времени до восстановления $spell:%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.cdsource	= "Отсчет времени до восстановления $spell:%s (с источником)"
@@ -365,6 +372,20 @@ DBM_CORE_MOVE_WARNING_MESSAGE		= "Спасибо за использование
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Индикатор спец-предупреждения"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Специальное предупреждение"
 
+DBM_CORE_HUD_INVALID_TYPE			= "Задан неверный тип HUD"
+DBM_CORE_HUD_INVALID_TARGET			= "Не задана корректная цель для HUD"
+DBM_CORE_HUD_INVALID_SELF			= "Нельзя использовать себя как цель для HUD"
+DBM_CORE_HUD_INVALID_ICON			= "Тип icon не может быть использован на цели без метки"
+DBM_CORE_HUD_SUCCESS				= "HUD запущен с вашими параметрами. Он будет отключен через %s, или с помощью '/dbm hud hide'."
+DBM_CORE_HUD_USAGE	= {
+	"Использование DBM-HudMap:",
+	"/dbm hud <тип> <цель> <длительность> создает HUD который указывает на игрока в течение желаемой длительности",
+	"Возможные типы: red, blue, green, yellow, icon (требуется цель с рейдовой меткой)",
+	"Возможные цели: target, focus, <имя игрока>",
+	"Длительность: любое число (в секундах). Если не задано, то используется 20 мин.",
+	"/dbm hud hide  отключает и скрывает HUD"
+}
+
 DBM_ARROW_MOVABLE					= "Индикатор стрелки"
 DBM_ARROW_ERROR_USAGE	= {
 	"Использование DBM-Arrow:",
@@ -379,6 +400,7 @@ DBM_SPEED_KILL_TIMER_TEXT	= "Рекордная победа"
 DBM_SPEED_KILL_TIMER_OPTION	= "Отсчёт времени вашей самой быстрой победы"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "Лучшее прохождение"
 DBM_COMBAT_RES_TIMER_TEXT	= "След. заряд БР"
+DBM_CORE_TIMER_RESPAWN		= "Появление босса"
 
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s запрашивает разрешение на просмотр ваших текущих сохранений подземелий.\nВы хотите предоставить %s такое право? Этот игрок получит возможность запрашивать эту информацию без уведомления в течение вашей текущей игровой сессии."
