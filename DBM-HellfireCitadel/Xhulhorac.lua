@@ -135,8 +135,10 @@ end
 
 function mod:FelChains(targetname, uId)
 	if targetname == UnitName("player") then
-		specWarnFelChains:Show()
-		yellFelChains:Yell()
+		if self:AntiSpam(5, 3) then
+			specWarnFelChains:Show()
+			yellFelChains:Yell()
+		end
 	else
 		warnFelChains:Show(targetname)
 	end
@@ -268,7 +270,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 186500 and self.Options.ChainsBehavior ~= "Cast" then--Chains! (show warning if type is applied or both)
 		warnFelChains:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(5, 3) then
 			specWarnFelChains:Show()
 			yellFelChains:Yell()
 		end
