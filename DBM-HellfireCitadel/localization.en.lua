@@ -14,8 +14,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	AddsSpawn1		=	"Comin' in hot!",
-	AddsSpawn2		=	"Fire in the hole!"
+	AddsSpawn1		=	"Comin' in hot!",--Blizzard seems to have disabled these
+	AddsSpawn2		=	"Fire in the hole!",--Blizzard seems to have disabled these
+	BossLeaving		=	"I'll be back..."
 })
 
 ---------------------------
