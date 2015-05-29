@@ -463,7 +463,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		updateRangeFrame(self)
-	elseif spellid == 190703 then
+	elseif spellId == 190703 then
 		timerSourceofChaosCD:Start()
 		if args:IsPlayer() then
 			specWarnSourceofChaos:Show()
