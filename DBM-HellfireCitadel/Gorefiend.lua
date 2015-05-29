@@ -21,17 +21,14 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---Note, surging shadows every 7-13 seconds, with a 1 second cast time. too variable, too short to have warnings or timers. so just keep range frame up whole fight.
---TODO< i'm still not sure crushing darkness is needed. I mean yeah it's avoidable, but even when not trying to avoid it, it rarely hit anything but pets. max melee range alone seems to avoid.
---TODO, UNIT_DIED and add timers for bellowingshout?
---TODO, more voices? "run to player"? "Shadow of Death"?
-local warnShadowofDeath					= mod:NewTargetAnnounce(179864, 3)
+--TODO, Touch of Doom was 25 seconds in LFR, tested after heroic. changed? VERIFY
+local warnShadowofDeath					= mod:NewTargetCountAnnounce(179864, 3)
 local warnTouchofDoom					= mod:NewTargetAnnounce(179978, 4)
-local warnSharedFate					= mod:NewTargetAnnounce(179909, 4)--Announce all 2/3
+local warnSharedFate					= mod:NewTargetCountAnnounce(179909, 4)--Announce all 2/3
 local warnHungerforLife					= mod:NewTargetAnnounce(180148, 3, nil, false)--Knowing who has it not very important, only if it's on you
 local warnGoreboundSpiritSoon			= mod:NewSoonAnnounce("ej11020", 3, 187814)
 local warnRagingCharge					= mod:NewSpellAnnounce(187814, 3, nil, "Melee")
-local warnCrushingDarkness				= mod:NewCastAnnounce(180017, 3, 6, nil, "Melee")
+local warnCrushingDarkness				= mod:NewCastAnnounce(180017, 3, 6, nil, false)
 
 local specWarnShadowofDeath				= mod:NewSpecialWarningYou(179864, nil, nil, nil, 1, 5)
 local specWarnShadowofDeathTank			= mod:NewSpecialWarningTaunt(179864)
@@ -48,13 +45,13 @@ local specWarnGoreboundSpirit			= mod:NewSpecialWarningSwitch("ej11020", "-Heale
 local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer", nil, nil, 1, 2)
 
 local timerShadowofDeathCD				= mod:NewNextCountTimer(30, 179864)--Sequenced timer, uses table.
-local timerTouchofDoomCD				= mod:NewNextTimer(18, 179977)
-local timerSharedFateCD					= mod:NewCDTimer(29, 179909)--29-31
-local timerCrushingDarknessCD			= mod:NewNextTimer(10, 179909, nil, "Melee")--Actually 16, but i delay start by 6 seconds for reduced spam
-local timerFeastofSouls					= mod:NewCDTimer(123.5, 181973)--Probably next timer too, or close to it, depends how consistent energy gains are, may have small variation, like gruul
+local timerTouchofDoomCD				= mod:NewCDTimer(18, 179977)--25 seconds in LFR, tested after heroic. changed? VERIFY
+local timerSharedFateCD					= mod:NewNextCountTimer(29, 179909)--29-31
+local timerCrushingDarknessCD			= mod:NewNextTimer(10, 180017, nil, "Melee")--Actually 16, but i delay start by 6 seconds for reduced spam
+local timerFeastofSouls					= mod:NewNextTimer(123.5, 181973)--Probably next timer too, or close to it, depends how consistent energy gains are, may have small variation, like gruul
 
 local timerDigest						= mod:NewCastTimer(40, 181295)
-local timerCrushingDarkness				= mod:NewCastTimer(6, 180017, nil, "Melee")
+local timerCrushingDarkness				= mod:NewCastTimer(6, 180017, nil, false)
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
@@ -75,13 +72,16 @@ mod:AddRangeFrameOption(5, 182049)
 mod.vb.rootedFate = nil
 mod.vb.rootedFate2 = nil--Just in case, but if this happens you're doing things badly
 mod.vb.shadowOfDeathCount = 0
+mod.vb.sharedFateCount = 0
 local playerDown = false
-local shadowofDeathTimers = {2, 11, 17, 7, 28, 8}--4 targets, 1 tank, 2 targets, 3 targets, 1 target, 3 targets (for LFR, scaling alters it some but ratios should be similar in all modes)
+local shadowofDeathTimers = {2, 11, 17, 7, 28, 8}--4 dps, 1 tank, 2 healers (or 1 healer 1 dps?), 3 dps, 1 healer, 3 dps (for LFR, scaling alters it some but ratios should be similar in all modes)
+local sharedFateTimers = {19, 28, 25, 22}
 
 function mod:OnCombatStart(delay)
 	self.vb.rootedFate = nil
 	self.vb.rootedFate2 = nil
 	self.vb.shadowOfDeathCount = 0
+	self.vb.sharedFateCount = 0
 	playerDown = false
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
@@ -89,7 +89,7 @@ function mod:OnCombatStart(delay)
 --	timerShadowofDeathCD:Start(2-delay, 1)--It's 2 seconds, needed?
 	timerCrushingDarknessCD:Start(5-delay)
 	timerTouchofDoomCD:Start(9-delay)
-	timerSharedFateCD:Start(19-delay)
+	timerSharedFateCD:Start(19-delay, 1)
 	timerFeastofSouls:Start(-delay)
 end
 
@@ -129,7 +129,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 179977 then
 		timerTouchofDoomCD:Start()
 	elseif spellId == 181085 then
-		timerSharedFateCD:Start()
+		self.vb.sharedFateCount = self.vb.sharedFateCount + 1
+		local cooldown = sharedFateTimers[self.vb.sharedFateCount+1]
+		if cooldown then
+			timerSharedFateCD:Start(cooldown, self.vb.shadowOfDeathCount+1)
+		end
 	end
 end
 
@@ -187,11 +191,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellSharedFate:Yell()
 		end
 	elseif spellId == 179908 then--Non root version (must run to rooted player)
-		warnSharedFate:CombinedShow(0.5, args.destName)
+		warnSharedFate:CombinedShow(0.5, self.vb.sharedFateCount, args.destName)
 		if args:IsPlayer() then
 			self:Schedule(0.5, sharedFateDelay, self)--Just in case rooted ID fires after non rooted ones
 		end
-		if self.Options.HudMapOnSharedFate then
+		if self.Options.HudMapOnSharedFate and not playerDown then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "highlight", args.destName, 3.5, 900, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)--Yellow
 		end
 	elseif spellId == 180148 then
@@ -239,8 +243,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		--timerShadowofDeathCD:Start(2, 1)
 		timerCrushingDarknessCD:Start(5)
 		timerTouchofDoomCD:Start(9)
-		timerSharedFateCD:Start(19)
-		timerFeastofSouls:Start()--This I can't confirm, but since others are same, hoping this is also the same
+		timerSharedFateCD:Start(19, 1)
+		timerFeastofSouls:Start()
 	elseif spellId == 185982 and not playerDown then
 		--When it fades, it means it's casting Expel Soul and returning to surface as a Gorebound Spirit
 		--This is cleaner than IEEU and fires at same time
