@@ -10,14 +10,14 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 180199 180224 182428 180163 183917",
 	"SPELL_CAST_SUCCESS 180410 180413",
-	"SPELL_AURA_APPLIED 180313 180200 180372 181488",
+	"SPELL_AURA_APPLIED 180313 180200 188929 181488",
 	"SPELL_AURA_APPLIED_DOSE 180200",
 	"SPELL_AURA_REMOVED 181488",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_EMOTE",
 	"UNIT_DIED"
 )
@@ -36,8 +36,8 @@ local warnSavageStrikes				= mod:NewSpellAnnounce(180163, 3, nil, "Tank")--Need 
 local specWarnShred					= mod:NewSpecialWarningSpell(180199, nil, nil, nil, 3, 2)--Block, or get debuff
 local specWarnHeartSeeker			= mod:NewSpecialWarningRun(180372, nil, nil, nil, 4, 2)--Must run as far from boss as possible
 local yellHeartSeeker				= mod:NewYell(180372)
-local specWarnDeathThroes			= mod:NewSpecialWarningSpell(180224, nil, nil, nil, 2, 2)
-local specWarnVisionofDeath			= mod:NewSpecialWarningSpell(182428)--Seems everyone goes down at some point, dps healers and off tank. Each getting different abiltiy when succeed
+local specWarnDeathThroes			= mod:NewSpecialWarningCount(180224, nil, nil, nil, 2, 2)
+local specWarnVisionofDeath			= mod:NewSpecialWarningCount(182428)--Seems everyone goes down at some point, dps healers and off tank. Each getting different abiltiy when succeed
 --Adds
 local specWarnBloodGlob				= mod:NewSpecialWarningSwitch(180459, "Dps", nil, nil, 1, 5)
 local specWarnFelBloodGlob			= mod:NewSpecialWarningSwitch(180199, "Dps", nil, nil, 3, 5)
@@ -50,12 +50,12 @@ local specWarnRendingHowl			= mod:NewSpecialWarningInterrupt(183917, "-Healer")
 --CDs used for all of them because of them screwing with eachother.
 --Coding them perfectly is probably possible but VERY ugly, would require tones of calculating on the overlaps and lots of on fly adjusting.
 --Adjusting one timer like blackhand no big deal, checking time remaining on THREE other abilities any time one of these are cast, and on fly adjusting, no
-local timerShredCD					= mod:NewCDTimer(18, 180199, nil, "Tank")
+local timerShredCD					= mod:NewCDTimer(17, 180199, nil, "Tank")
 local timerHeartseekerCD			= mod:NewCDTimer(25, 180372)
-local timerVisionofDeathCD			= mod:NewCDTimer(75, 181488)
-local timerDeathThroesCD			= mod:NewCDTimer(40, 180224)
+local timerVisionofDeathCD			= mod:NewCDCountTimer(75, 181488)
+local timerDeathThroesCD			= mod:NewCDCountTimer(40, 180224)
 --Adds
-local timerBloodthirsterCD			= mod:NewCDCountTimer(75, "ej11266", nil, nil, nil, 131150)
+local timerBloodthirsterCD			= mod:NewNextCountTimer(75, "ej11266", nil, nil, nil, 131150)
 --local timerRendingHowlCD				= mod:NewCDTimer(30, 183917)
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
@@ -72,13 +72,23 @@ local voiceHulkingTerror				= mod:NewVoice("ej11269")--ej11269
 
 mod:AddInfoFrameOption("ej11280")
 
+mod.vb.berserkerCount = 0
+mod.vb.deathThrowsCount = 0
+mod.vb.visionsCount = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local felCorruption = GetSpellInfo(182159)
 local Bloodthirster = EJ_GetSectionInfo(11266)
 local AddsSeen = {}
 
 function mod:OnCombatStart(delay)
-	timerBloodthirsterCD:Start(6-delay)
+	self.vb.berserkerCount = 0
+	self.vb.deathThrowsCount = 0
+	self.vb.visionsCount = 0
+	timerBloodthirsterCD:Start(6-delay, 1)
+	timerShredCD:Start(10-delay)
+	timerHeartseekerCD:Start(-delay)
+	timerDeathThroesCD:Start(39-delay, 1)
+	timerVisionofDeathCD:Start(61-delay, 1)
 	table.wipe(AddsSeen)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(felCorruption)
@@ -105,12 +115,14 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 180224 then
-		specWarnDeathThroes:Show()
+		self.vb.deathThrowsCount = self.vb.deathThrowsCount + 1
+		specWarnDeathThroes:Show(self.vb.deathThrowsCount)
 		voiceDeathThroes:Play("aesoon")
-		timerDeathThroesCD:Start()
+		timerDeathThroesCD:Start(nil, self.vb.deathThrowsCount+1)
 	elseif spellId == 182428 then
-		specWarnVisionofDeath:Show()
-		timerVisionofDeathCD:Start()
+		self.vb.visionsCount = self.vb.visionsCount + 1
+		specWarnVisionofDeath:Show(self.vb.visionsCount)
+		timerVisionofDeathCD:Start(nil, self.vb.visionsCount+1)
 	elseif spellId == 180163 then
 		warnSavageStrikes:Show()
 	elseif spellId == 183917 and self:CheckInterruptFilter(args.sourceGUID) then
@@ -132,7 +144,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 180372 and args:IsDestTypePlayer() then
+	if spellId == 188929 and args:IsDestTypePlayer() then
 		warnHeartseeker:Show(args.destName)
 		timerHeartseekerCD:Start()
 		if args:IsPlayer() then
@@ -203,7 +215,8 @@ end
 
 function mod:OnSync(msg)
 	if msg == "BloodthirstersSoon" and self:IsInCombat() then
-		timerBloodthirsterCD:Start()
+		self.vb.berserkerCount = self.vb.berserkerCount + 1
+		timerBloodthirsterCD:Start(nil, self.vb.berserkerCount+1)
 	end
 end
 
