@@ -104,7 +104,7 @@ function mod:OnCombatStart(delay)
 	timerMarkofNecroCD:Start(7-delay)--7-13
 	timerNightmareVisageCD:Start(15-delay)
 --	timerFelstormCD:Start(20.5-delay)--Review
-	timerRelRageCD:Start(30.5-delay)
+	timerRelRageCD:Start(30.5-delay, 1)
 	timerReapCD:Start(50-delay)--50-73 variation on pull, likely blizzard was tinkering/hotfixing it between pulls. verify on later testing
 	timerDarknessCD:Start(76.5-delay)
 	timerMirrorImageCD:Start(-delay)--First one is 150-160 into fight, unless he hits 30% first, then he uses it earlier and spams rest of fight.
@@ -165,9 +165,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnFelstorm:Show()
 		voiceFelstorm:Play("aesoon")
 --		timerFelstormCD:Start()
-	elseif spellId == 184847 and self:AntiSpam(3.5, 2) then--Probably stacks very rapidly, so using antispam for now until better method constructed
+	elseif spellId == 184847 and self:AntiSpam(4, 2) then--Probably stacks very rapidly, so using antispam for now until better method constructed
 		local amount = args.amount or 1
-		warnAcidicWound:Show(args.destName, amount)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			warnAcidicWound:Show(args.destName, amount)
+		end
 	elseif spellId == 184360 then
 		self.vb.felRageCount = self.vb.felRageCount + 1
 		timerRelRageCD:Start(nil, self.vb.felRageCount+1)
