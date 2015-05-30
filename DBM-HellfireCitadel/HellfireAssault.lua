@@ -10,7 +10,6 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184394 181155 185816 180417 183452 181968",
 	"SPELL_AURA_APPLIED 180079 184238 184243 180927 184369 180076",
@@ -24,11 +23,10 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"--Have to register all unit ids to catch the boss when she casts haste
 )
 
---TODO, make voices for the 5 tank types by name, similar to Blast Furnace adds.
+--TODO, make voices for the 5 tank types by name, similar to Blast Furnace adds. They will be announced when they spawn (as well as what side they are on for mythic)
 --TODO, tank swaps for slam?
 --TODO, add interrupt voice to volley of it actually is interruptable, if not, remove special warning instead.
---TODO, rework adds timers in absense of yells, plus see if blizzard changed way they spawn, since they seemed to be a bit more staggered in mythic (not waves but instead 1 entering at a time every few seconds)
---TODO, figure out grute and Grand corruptor U'rogg because sometimes they spawn sometimes they don't. when they do its a random time too. wtf? 
+--TODO, rework adds timers in absense of yells, plus see if blizzard changed way they spawn, since they seemed to be a bit more staggered in mythic
 --Siegemaster Mar'tak
 local warnHowlingAxe				= mod:NewTargetAnnounce(184369, 3)
 local warnFelfireMunitions			= mod:NewTargetAnnounce(180079, 1)
@@ -64,7 +62,7 @@ local specWarnCower					= mod:NewSpecialWarningTaunt(184238, "Tank")
 ----Gorebound Felcaster
 local specWarnIncinerate			= mod:NewSpecialWarningInterrupt(181155, false)--Seems less important of two spells, maybe both need interrupting though?
 local specWarnMetamorphosis			= mod:NewSpecialWarningSwitch(181968, "Dps")--Switch and get dead if they transform, they do TONS of damage transformed
-local specWarnFelfireVolley			= mod:NewSpecialWarningInterrupt(180417, "-Healer")--Journal says interruptable, but it was not interruptable. what's the bug? journal or mob?
+--local specWarnFelfireVolley			= mod:NewSpecialWarningInterrupt(180417, "-Healer")--Journal says interruptable, but it was not interruptable. what's the bug? journal or mob?
 ----Contracted Engineer
 local specWarnRepair				= mod:NewSpecialWarningInterrupt(185816, "-Healer", nil, nil, 1, 2)
 ----Grute
@@ -94,23 +92,71 @@ local countdownHowlingAxe			= mod:NewCountdownFades("Alt7", 184369)
 local voiceHowlingAxe				= mod:NewVoice(184369)--runout
 local voiceShockwave				= mod:NewVoice(184394)--shockwave
 local voiceIncinerate				= mod:NewVoice(181155, false)--kick
-local voiceFelfireVolley			= mod:NewVoice(180417, "-Healer")--kick
+--local voiceFelfireVolley			= mod:NewVoice(180417, "-Healer")--kick
 local voiceRepair					= mod:NewVoice(185816)--kickcast
 
 mod:AddRangeFrameOption(8, 184369)
 mod:AddHudMapOption("HudMapOnAxe", 184369)
 --mod:AddSetIconOption("SetIconOnAdds", "ej11411", false, true)--If last wave isn't dead before new wave, this icon option will screw up. A more complex solution may be needed. Or just accept that this will only work for guilds with high dps
 
+--[[
+Times are not exact, there are variations, timer tables will probably use lowest seen variation between two vehicles
+LFR/Normal Vehicles
+0:39 Felfire Flamebelcher
+1:43 Felfire Crusher
+2:39 Felfire Artillery
+3:42 Felfire Crusher
+4:38 Felfire Flamebelcher
+5:42 Felfire Artillery
+6:40 Felfire Crusher
+7:20 Felfire Flamebelcher
+8:20 Felfire Crusher
+
+Heroic Vehicles
+0:39 Felfire Flamebelcher
+1:43 Felfire Crusher
+2:39 Felfire Artillery
+3:42 Felfire Demolisher
+4:38 Felfire Flamebelcher
+5:42 Felfire Artillery
+6:40 Felfire Demolisher
+7:20 Felfire Flamebelcher
+8:20 Felfire Crusher
+
+Mythic Vehicles
+https://www.warcraftlogs.com/reports/nvaX4f3P7GkxqmNc#type=summary&hostility=1&fight=12&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+180927+and+type+%3D+%22applybuff%22
+https://www.warcraftlogs.com/reports/rQWG71xhLgnbvdYq#fight=12&type=summary&hostility=1&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+180927+and+type+%3D+%22applybuff%22
+1-0:52.604 Felfire Artillery (Left)
+2-0:55.101 Felfire Artillery (Right)
+3-1:13.435 Felfire Demolisher (Left)
+4-1:21.140 Felfire Flamebelcher (Right)
+5-2:07.661 Felfire Flamebelcher (Left)
+6-2:15.773 Felfire Demolisher (Right)
+7-2:53.171 Felfire Artillery (Left)
+8-3:01.320 Felfire Flamebelcher (Right)
+9-**3:05.578 Felfire Transporter (carrying Grand Corruptor U'rogg) (Center)
+10-**3:17.606 Felfire Crusher (Center)
+11-**3:55.651 Felfire Demolisher (carrying Grute) (Center)
+12-5:02.780 Felfire Flamebelcher (Left)
+13-5:04.395 Felfire Artillery (Right)
+14-5:53.196 Felfire Demolisher (Left)
+15-6:00.048 Felfire Transporter (Right)
+16-6:28.507 Felfire Flamebelcher (Left)
+17-6:35.465 Felfire Demolisher (Right)
+18-7:09.281 Felfire Demolisher (Left)
+19-7:14.914 Felfire Flamebelcher (Right)
+20-7:38.913 Felfire Transporter (Left)
+21-7:40.126 Felfire Demolisher (Right)
+--]]
+
 mod.vb.vehicleCount = 0
 --mod.vb.addsCount = 0
 mod.vb.axeActive = false
-local vehicleTimers = {38, 62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 40.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-4 seconds
---Types: 1-Felfire Flamebelcher, 2-Felfire Crusher, 3-Felfire Artillery, 4-Felfire Demolisher, 5-Felfire Flamebelcher, 6-Felfire Artillery, 7-Felfire Demolisher, 8-Felfire Flamebelcher, 9-Felfire Crusher
-local mythicVehicleTimers = {53, 20, 6, 48, 7, 37.5, 7.5, 5, 10, 40}-- There is slight variation on them, 1-3 seconds
---Types: 1-Two Felfire Artillery, 2-Felfire Demolisher, 3-Felfire Flamebelcher, 4-Felfire Flamebelcher, 5-Felfire demolisher, 6-Felfire Artillery, 7-Felfire Flamebelcher, 8-Felfire Transporter, 9-Felfire Crusher, 10-Felfire Demolisher
+local vehicleTimers = {62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 40.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-4 seconds
+local mythicVehicleTimers = {20, 25, 54, 54, 44, 46, 12, 15.5, 50, 67, 68.5, 50.5, 55.5, 35, 35, 40, 39.5, 29.5, 25}--Done in a weird way, for dual timers support. Pretend it's two tables combined into 1. First time is time between1 and 3, second time between 2 and 4, etc.
 --local addsTimers = {25, 45, 44, 44, 43, 43, 42, 42, 41, 40, 42, 40, 40}--Very tiny variance between pulls. Adds gradually get faster over time. that 42 is a strange fluke though. probably 40 with variance, the 40 before it i think should have been a 41 so the 42 was probably auto correction
 local axeDebuff = GetSpellInfo(184369)
-
+local axeFilter
 do
 	axeFilter = function(uId)
 		if UnitDebuff(uId, axeDebuff) then
@@ -139,9 +185,10 @@ function mod:OnCombatStart(delay)
 	timerShockwaveCD:Start(6-delay)
 --	timerReinforcementsCD:Start(25-delay, 1)
 	if self:IsMythic() then
-		timerSiegeVehicleCD:Start(53-delay, 1)
+		timerSiegeVehicleCD:Start(52.5-delay, "("..DBM_CORE_LEFT..")")
+		timerSiegeVehicleCD:Start(55-delay, "("..DBM_CORE_RIGHT..")")
 	else
-		timerSiegeVehicleCD:Start(38-delay, 1)
+		timerSiegeVehicleCD:Start(38-delay, "")
 	end
 end
 
@@ -163,9 +210,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 181155 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnIncinerate:Show(args.sourceName)
 		voiceIncinerate:Play("kickcast")
-	elseif (spellId == 180417 or spellId == 183452) and self:CheckInterruptFilter(args.sourceGUID) then--Two spellids because two different cast times (mob has two forms)
-		specWarnFelfireVolley:Show(args.sourceName)
-		voiceFelfireVolley:Play("kickcast")
+--	elseif (spellId == 180417 or spellId == 183452) and self:CheckInterruptFilter(args.sourceGUID) then--Two spellids because two different cast times (mob has two forms)
+--		specWarnFelfireVolley:Show(args.sourceName)
+--		voiceFelfireVolley:Play("kickcast")
 	elseif spellId == 185816 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnRepair:Show(args.sourceName)
 		voiceRepair:Play("kickcast")
@@ -198,28 +245,51 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnSlam:Show(args.destName, amount)
 		end
 	elseif spellId == 180927 then--Vehicle Spawns
-		if self:AntiSpam(10, args.sourceName) then--Mythic gets two at a time
-			self.vb.vehicleCount = self.vb.vehicleCount + 1
-			local nextAddsCount = self.vb.vehicleCount + 1
-			if vehicleTimers[nextAddsCount] then
-				timerSiegeVehicleCD:Start(vehicleTimers[nextAddsCount], nextAddsCount)
-			end
-		end
+		self.vb.vehicleCount = self.vb.vehicleCount + 1
+		local Count = self.vb.vehicleCount
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 90432 then--Felfire Flamebelcher
-			warnFelfireFlamebelcher:Show(self.vb.vehicleCount)
+			warnFelfireFlamebelcher:Show(Count)
 		elseif cid == 90410 then--Felfire Crusher
-			warnFelfireCrusher:Show(self.vb.vehicleCount)
+			warnFelfireCrusher:Show(Count)
 		elseif cid == 90485 then--Felfire Artillery
-			warnFelfireArtillery:Show(self.vb.vehicleCount)
+			warnFelfireArtillery:Show(Count)
 		elseif cid == 91103 then--Felfire Demolisher
 			if self.Options.SpecWarnej11429switch then
 				specWarnDemolisher:Show()
 			else
-				warnFelfireDemolisher:Show(self.vb.vehicleCount)
+				warnFelfireDemolisher:Show(Count)
 			end
 		elseif cid == 93435 then--Felfire Transporter
-			warnFelfireTransporter:Show(self.vb.vehicleCount)
+			warnFelfireTransporter:Show(Count)
+		end
+		if self:IsMythic() then
+			--Confusing way to do it but it's best way to do it for dual timer support
+			--Code will create left and right and center timers and will almost always show 2 timers at once for the split format of fight
+			--Center timers are only exception
+			if Count == 1 or Count == 3 or Count == 5 or Count == 12 or Count == 14 or Count == 16 or Count == 18 then--Left
+				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_LEFT..")")
+				DBM:Debug("Starting a left vehicle timer")
+			elseif Count == 2 or Count == 4 or Count == 6 or Count == 13 or Count == 15 or Count == 17 or Count == 19 then--Right
+				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_RIGHT..")")
+				DBM:Debug("Starting a right vehicle timer")
+			elseif Count == 11 then--Last center, start both next left and right timers
+				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count-1], "("..DBM_CORE_LEFT..")")--Time for this one stored in 10 slot in table
+				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_RIGHT..")")
+				DBM:Debug("Starting a left and a right vehicle timer after center phase")
+			elseif Count == 7 or Count == 8 or Count == 9 then--Center
+				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_MIDDLE..")")
+				DBM:Debug("Starting a Center timer")
+			elseif Count == 10 then--No timer started at 10
+				DBM:Debug("Doing nothing for vehicle 10")
+				return
+			else
+				DBM:AddMsg("No Vehicle timer information beyond this point. If you have logs of this fight, please share them")
+			end
+		else
+			if vehicleTimers[Count] then
+				timerSiegeVehicleCD:Start(vehicleTimers[Count], "")
+			end
 		end
 	elseif spellId == 184369 then
 		warnHowlingAxe:CombinedShow(0.3, args.destName)

@@ -6,7 +6,7 @@ local L
 L= DBM:GetModLocalization(1426)
 
 L:SetTimerLocalization({
-	timerSiegeVehicleCD		= "Next Siege Vehicle",
+	timerSiegeVehicleCD		= "Next Vehicle %s",
 })
 
 L:SetOptionLocalization({
