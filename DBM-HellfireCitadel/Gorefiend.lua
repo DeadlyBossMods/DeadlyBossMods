@@ -13,8 +13,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181973 181582 187814",
-	"SPELL_CAST_SUCCESS 179977 181085",
-	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148 181295 185982",
+	"SPELL_CAST_SUCCESS 179977 182170 181085",
+	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148 181295 185982 189434",
 	"SPELL_AURA_REMOVED 179909 179908 181295 181973 185982",
 	"SPELL_PERIODIC_DAMAGE 179995",
 	"SPELL_ABSORBED 179995",
@@ -128,6 +128,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 179977 then
 		timerTouchofDoomCD:Start()
+	elseif spellId == 182170 then--LFR version
+		timerTouchofDoomCD:Start(25)
 	elseif spellId == 181085 then
 		self.vb.sharedFateCount = self.vb.sharedFateCount + 1
 		local cooldown = sharedFateTimers[self.vb.sharedFateCount+1]
@@ -159,7 +161,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--It is a tank and we're not tanking. Fire taunt warning
 			specWarnShadowofDeathTank:Show(args.destName)
 		end
-	elseif spellId == 179977 then
+	elseif spellId == 179977 or spellId == 189434 then
 		if not playerDown then
 			warnTouchofDoom:CombinedShow(0.5, args.destName)
 		end
@@ -199,8 +201,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "highlight", args.destName, 3.5, 900, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)--Yellow
 		end
 	elseif spellId == 180148 then
-		warnHungerforLife:CombinedShow(0.5, args.destName)--More than 1 target?
-		if args:IsPlayer() then
+		warnHungerforLife:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() and self:AntiSpam(5, 2) then
 			specWarnHungerforLife:Show()
 			voiceHungerforLife:Play("justrun")
 		end
