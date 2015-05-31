@@ -84,7 +84,7 @@ end
 --  Notes Editor  --
 --------------------
 do
-	local frame, fontstring, fontstringFooter, editBox
+	local frame, fontstring, fontstringFooter, editBox, button3
 
 	local function createFrame()
 		frame = CreateFrame("Frame", "DBMNotesEditor", UIParent)
@@ -137,7 +137,7 @@ do
 		local button = CreateFrame("Button", nil, frame)
 		button:SetHeight(24)
 		button:SetWidth(75)
-		button:SetPoint("BOTTOM", 0, 13)
+		button:SetPoint("BOTTOM", 80, 13)
 		button:SetNormalFontObject("GameFontNormal")
 		button:SetHighlightFontObject("GameFontHighlight")
 		button:SetNormalTexture(button:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
@@ -148,25 +148,79 @@ do
 			local mod = DBM_GUI.Noteframe.mod 
 			local modvar = DBM_GUI.Noteframe.modvar
 			mod.Options[modvar .. "SWNote"] = editBox:GetText() or ""
+			DBM_GUI.Noteframe.mod = nil
+			DBM_GUI.Noteframe.modvar = nil
 			frame:Hide()
 		end)
-
+		local button2 = CreateFrame("Button", nil, frame)
+		button2:SetHeight(24)
+		button2:SetWidth(75)
+		button2:SetPoint("BOTTOM", 0, 13)
+		button2:SetNormalFontObject("GameFontNormal")
+		button2:SetHighlightFontObject("GameFontHighlight")
+		button2:SetNormalTexture(button2:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
+		button2:SetPushedTexture(button2:CreateTexture(nil, nil, "UIPanelButtonDownTexture"))
+		button2:SetHighlightTexture(button2:CreateTexture(nil, nil, "UIPanelButtonHighlightTexture"))
+		button2:SetText(CANCEL)
+		button2:SetScript("OnClick", function(self)
+			DBM_GUI.Noteframe.mod = nil
+			DBM_GUI.Noteframe.modvar = nil
+			frame:Hide()
+		end)
+		button3 = CreateFrame("Button", nil, frame)
+		button3:SetHeight(24)
+		button3:SetWidth(75)
+		button3:SetPoint("BOTTOM", -80, 13)
+		button3:SetNormalFontObject("GameFontNormal")
+		button3:SetHighlightFontObject("GameFontHighlight")
+		button3:SetNormalTexture(button3:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
+		button3:SetPushedTexture(button3:CreateTexture(nil, nil, "UIPanelButtonDownTexture"))
+		button3:SetHighlightTexture(button3:CreateTexture(nil, nil, "UIPanelButtonHighlightTexture"))
+		button3:SetText(SHARE_QUEST_ABBREV)
+		button3:SetScript("OnClick", function(self)
+			local modid = DBM_GUI.Noteframe.mod.id
+			local modvar = DBM_GUI.Noteframe.modvar
+			local syncText = editBox:GetText() or ""
+			if syncText == "" then
+				DBM:AddMsg(L.NoteShareErrorBlank)
+			elseif IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() and not C_Garrison:IsOnGarrisonMap() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
+				DBM:AddMsg(L.NoteShareErrorGroupFinder)
+			else
+				local msg = mod.id.."\t"..modvar.."\t"..syncText
+				if IsInRaid() then
+					SendAddonMessage("D4", "NS\t" .. msg, "RAID")
+					DBM:AddMsg(L.NoteShared)
+				elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
+					SendAddonMessage("D4", "NS\t" .. msg, "PARTY")
+					DBM:AddMsg(L.NoteShared)
+				else--Solo
+					DBM:AddMsg(L.NoteShareErrorSolo)
+				end
+			end
+		end)
 	end
 
-	function DBM_GUI:ShowNoteEditor(mod, modvar)
+	function DBM_GUI:ShowNoteEditor(mod, modvar, syncText, sender)
 		if not frame then
 			createFrame()
 			DBM_GUI.Noteframe = frame
 		end
 		frame:Show()
-		fontstring:SetText(L.NoteHeader)
 		fontstringFooter:SetText(L.NoteFooter)
 		DBM_GUI.Noteframe.mod = mod
 		DBM_GUI.Noteframe.modvar = modvar
-		if type(mod.Options[modvar .. "SWNote"]) == "string" then
-			editBox:SetText(mod.Options[modvar .. "SWNote"])
+		if syncText then
+			button3:Hide()--Don't show share button in shared notes
+			fontstring:SetText(L.NoteShredHeader:format(sender))
+			editBox:SetText(syncText)
 		else
-			editBox:SetText("")
+			button3:Show()
+			fontstring:SetText(L.NoteHeader)
+			if type(mod.Options[modvar .. "SWNote"]) == "string" then
+				editBox:SetText(mod.Options[modvar .. "SWNote"])
+			else
+				editBox:SetText("")
+			end
 		end
 	end
 end
@@ -3061,6 +3115,7 @@ local function CreateOptionsMenu()
 		spamOutArea:CreateCheckButton(L.SpamBlockNoHealthFrame, true, nil, "DontShowHealthFrame")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoCountdowns, true, nil, "DontPlayCountdowns")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoYells, true, nil, "DontSendYells")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoNoteSync, true, nil, "BlockNoteSync")
 
 		local spamArea = spamPanel:CreateArea(L.Area_SpamFilter, nil, 170, true)
 		spamArea:CreateCheckButton(L.DontShowFarWarnings, true, nil, "DontShowFarWarnings")
