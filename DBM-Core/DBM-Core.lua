@@ -246,6 +246,7 @@ DBM.DefaultOptions = {
 	DontShowHealthFrame = false,
 	DontPlayCountdowns = false,
 	DontSendYells = false,
+	BlockNoteSync = true,
 	DontShowRespawn = false,
 	DontShowPT2 = false,
 	DontShowPTCountdownText = false,
@@ -3573,12 +3574,26 @@ do
 	-- WBE = World Boss engage info
 	-- WBD = World Boss defeat info
 	-- DSW = Disable Send Whisper
+	-- NS = Note Share
 
 	syncHandlers["M"] = function(sender, mod, revision, event, ...)
 		mod = DBM:GetModByName(mod or "")
 		if mod and event and revision then
 			revision = tonumber(revision) or 0
 			mod:ReceiveSync(event, sender, revision, ...)
+		end
+	end
+	
+	syncHandlers["NS"] = function(sender, modid, modvar, text)
+		if sender == playerName then return end
+		if DBM.Options.BlockNoteSync then return end
+		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() and not C_Garrison:IsOnGarrisonMap() then return end
+		--^^You are in LFR, BG, or LFG. Block note syncs. They shouldn't be sendable, but in case someone edits DBM^^
+		local mod = DBM:GetModByName(modid or "")
+		if mod and modvar and text and text ~= "" then
+			DBM_GUI:ShowNoteEditor(mod, modvar, text, sender)
+		else
+			DBM:AddMsg(sender.." attempted to share note text with you for mod id:"..modid..". However, this mod is not uninstalled or is not loaded. If you need this note, make sure you load the mods they are sharing notes for and ask them to share again")
 		end
 	end
 

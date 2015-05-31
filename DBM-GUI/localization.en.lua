@@ -238,6 +238,7 @@ L.SpamBlockNoHudMap			= "Do not show HudMap"
 L.SpamBlockNoHealthFrame	= "Do not show health frame"
 L.SpamBlockNoCountdowns		= "Do not play countdown sounds"
 L.SpamBlockNoYells			= "Do not send chat yells"
+L.SpamBlockNoNoteSync		= "Do not accept shared notes"
 L.SpamBlockNoIconRestore	= "Do not save icon states and restore them on combat end"
 L.SpamBlockNoRangeRestore	= "Do not restore range frame to previous state when mods call 'hide'"
 
@@ -334,7 +335,13 @@ L.SelectModProfileCopyNote	= "Copy just note setting from"
 L.SelectModProfileDelete	= "Delete mod settings for"
 
 L.NoteHeader				= "Insert your note text here. Enclosing a players name with >< class colors it. For alerts with multiple notes, separate notes with '/'"
-L.NoteFooter				= "Once note is updated just hit 'okay' and it will be saved"
+L.NoteFooter				= "Press 'Okay' to accept changes or 'Cancel' to decline changes"
+L.NoteShredHeader			= "%s has shared below note text. If you accept it, it will overwrite your existing note"
+
+L.NoteShared				= "You're note has been sent to the group"
+L.NoteShareErrorSolo		= "Lonely? Shouldn't be passing notes to yourself"
+L.NoteShareErrorBlank		= "Cannot share blank notes"
+L.NoteShareErrorGroupFinder	= "Notes cannot be shared in BGs, LFR, or LFG"
 
 -- Misc
 L.FontHeight	= 16
