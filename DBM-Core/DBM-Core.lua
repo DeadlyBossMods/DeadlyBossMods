@@ -3591,7 +3591,11 @@ do
 		--^^You are in LFR, BG, or LFG. Block note syncs. They shouldn't be sendable, but in case someone edits DBM^^
 		local mod = DBM:GetModByName(modid or "")
 		if mod and modvar and text and text ~= "" then
-			DBM_GUI:ShowNoteEditor(mod, modvar, text, sender)
+			if DBM:AntiSpam(5, modvar) then--Don't allow calling same note more than once per 5 seconds
+				DBM_GUI:ShowNoteEditor(mod, modvar, text, sender)
+			else
+				DBM:Debug(sender.." is attempting to send too many notes so notes are being throttled")
+			end
 		else
 			DBM:AddMsg(sender.." attempted to share note text with you for mod id:"..modid..". However, this mod is not uninstalled or is not loaded. If you need this note, make sure you load the mods they are sharing notes for and ask them to share again")
 		end
