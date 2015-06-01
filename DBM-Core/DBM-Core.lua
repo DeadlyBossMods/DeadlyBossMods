@@ -3586,7 +3586,7 @@ do
 	
 	syncHandlers["NS"] = function(sender, modid, modvar, text, abilityName)
 		if sender == playerName then return end
-		if DBM.Options.BlockNoteSync then return end
+		if DBM.Options.BlockNoteSync or InCombatLockdown() then return end
 		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() and not C_Garrison:IsOnGarrisonMap() then return end
 		--^^You are in LFR, BG, or LFG. Block note syncs. They shouldn't be sendable, but in case someone edits DBM^^
 		local mod = DBM:GetModByName(modid or "")
@@ -3598,7 +3598,7 @@ do
 				DBM:Debug(sender.." is attempting to send too many notes so notes are being throttled")
 			end
 		else
-			DBM:AddMsg(sender.." attempted to share note text with you for mod id:"..modid..". However, this mod is not uninstalled or is not loaded. If you need this note, make sure you load the mods they are sharing notes for and ask them to share again")
+			DBM:AddMsg(DBM_CORE_NOTE_SHARE_FAIL:format(sender, ability))
 		end
 	end
 
