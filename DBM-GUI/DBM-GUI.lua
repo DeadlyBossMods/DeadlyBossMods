@@ -150,6 +150,7 @@ do
 			mod.Options[modvar .. "SWNote"] = editBox:GetText() or ""
 			DBM_GUI.Noteframe.mod = nil
 			DBM_GUI.Noteframe.modvar = nil
+			DBM_GUI.Noteframe.abilityName = nil
 			frame:Hide()
 		end)
 		local button2 = CreateFrame("Button", nil, frame)
@@ -165,6 +166,7 @@ do
 		button2:SetScript("OnClick", function(self)
 			DBM_GUI.Noteframe.mod = nil
 			DBM_GUI.Noteframe.modvar = nil
+			DBM_GUI.Noteframe.abilityName = nil
 			frame:Hide()
 		end)
 		button3 = CreateFrame("Button", nil, frame)
@@ -180,13 +182,14 @@ do
 		button3:SetScript("OnClick", function(self)
 			local modid = DBM_GUI.Noteframe.mod.id
 			local modvar = DBM_GUI.Noteframe.modvar
+			local abilityName = DBM_GUI.Noteframe.abilityName
 			local syncText = editBox:GetText() or ""
 			if syncText == "" then
 				DBM:AddMsg(L.NoteShareErrorBlank)
 			elseif IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() and not C_Garrison:IsOnGarrisonMap() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
 				DBM:AddMsg(L.NoteShareErrorGroupFinder)
 			else
-				local msg = modid.."\t"..modvar.."\t"..syncText
+				local msg = modid.."\t"..modvar.."\t"..syncText.."\t"..abilityName
 				if IsInRaid() then
 					SendAddonMessage("D4", "NS\t" .. msg, "RAID")
 					DBM:AddMsg(L.NoteShared)
@@ -200,7 +203,7 @@ do
 		end)
 	end
 
-	function DBM_GUI:ShowNoteEditor(mod, modvar, syncText, sender)
+	function DBM_GUI:ShowNoteEditor(mod, modvar, abilityName, syncText, sender)
 		if not frame then
 			createFrame()
 			DBM_GUI.Noteframe = frame
@@ -209,13 +212,14 @@ do
 		fontstringFooter:SetText(L.NoteFooter)
 		DBM_GUI.Noteframe.mod = mod
 		DBM_GUI.Noteframe.modvar = modvar
+		DBM_GUI.Noteframe.abilityName = abilityName
 		if syncText then
 			button3:Hide()--Don't show share button in shared notes
-			fontstring:SetText(L.NoteShredHeader:format(sender))
+			fontstring:SetText(L.NoteShredHeader:format(sender, abilityName))
 			editBox:SetText(syncText)
 		else
 			button3:Show()
-			fontstring:SetText(L.NoteHeader)
+			fontstring:SetText(L.NoteHeader:format(abilityName))
 			if type(mod.Options[modvar .. "SWNote"]) == "string" then
 				editBox:SetText(mod.Options[modvar .. "SWNote"])
 			else
@@ -575,13 +579,22 @@ do
 		button.myheight = 25
 		button.mytype = "checkbutton"
 		-- font strings do not support hyperlinks, so check if we need one...
+		local noteSpellName = name
 		if name:find("%$spell:ej") then -- it is in fact a journal link :-)
 			name = name:gsub("%$spell:ej(%d+)", "$journal:%1")
 		end
 		if name:find("%$spell:") then
+			if modvar then
+				local spellId = string.match(name, "spell:(%d+)")
+				noteSpellName = GetSpellInfo(spellId)
+			end
 			name = name:gsub("%$spell:(%d+)", replaceSpellLinks)
 		end
 		if name:find("%$journal:") then
+			if modvar then
+				local spellId = string.match(name, "journal:(%d+)")
+				noteSpellName = EJ_GetSectionInfo(spellId)
+			end
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
 		local dropdown
@@ -606,7 +619,7 @@ do
 					if noteText then
 						DBM:Debug(tostring(noteText), 2)--Debug only
 					end
-					DBM_GUI:ShowNoteEditor(mod, modvar)
+					DBM_GUI:ShowNoteEditor(mod, modvar, noteSpellName)
 				end)
 			end
 		end
