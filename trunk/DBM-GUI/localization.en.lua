@@ -342,6 +342,7 @@ L.NoteShared				= "You're note has been sent to the group"
 L.NoteShareErrorSolo		= "Lonely? Shouldn't be passing notes to yourself"
 L.NoteShareErrorBlank		= "Cannot share blank notes"
 L.NoteShareErrorGroupFinder	= "Notes cannot be shared in BGs, LFR, or LFG"
+L.NoteShareErrorAlreadyOpen	= "%s tried to send you a note for %s, but this was ignored to prevent you from losing the note you are currently editing"
 
 -- Misc
 L.FontHeight	= 16
