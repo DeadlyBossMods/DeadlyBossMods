@@ -3584,7 +3584,7 @@ do
 		end
 	end
 	
-	syncHandlers["NS"] = function(sender, modid, modvar, text)
+	syncHandlers["NS"] = function(sender, modid, modvar, text, abilityName)
 		if sender == playerName then return end
 		if DBM.Options.BlockNoteSync then return end
 		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() and not C_Garrison:IsOnGarrisonMap() then return end
@@ -3592,7 +3592,8 @@ do
 		local mod = DBM:GetModByName(modid or "")
 		if mod and modvar and text and text ~= "" then
 			if DBM:AntiSpam(5, modvar) then--Don't allow calling same note more than once per 5 seconds
-				DBM_GUI:ShowNoteEditor(mod, modvar, text, sender)
+				local ability = abilityName or DBM_CORE_UNKNOWN
+				DBM_GUI:ShowNoteEditor(mod, modvar, ability, text, sender)
 			else
 				DBM:Debug(sender.." is attempting to send too many notes so notes are being throttled")
 			end
