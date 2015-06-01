@@ -334,9 +334,9 @@ L.SelectModProfileCopySound	= "Copy just sound setting from"
 L.SelectModProfileCopyNote	= "Copy just note setting from"
 L.SelectModProfileDelete	= "Delete mod settings for"
 
-L.NoteHeader				= "Insert your note text here. Enclosing a players name with >< class colors it. For alerts with multiple notes, separate notes with '/'"
+L.NoteHeader				= "Enter your note text here for %s. Enclosing a players name with >< class colors it. For alerts with multiple notes, separate notes with '/'"
 L.NoteFooter				= "Press 'Okay' to accept changes or 'Cancel' to decline changes"
-L.NoteShredHeader			= "%s has shared below note text. If you accept it, it will overwrite your existing note"
+L.NoteShredHeader			= "%s has shared below note text for %s. If you accept it, it will overwrite your existing note"
 
 L.NoteShared				= "You're note has been sent to the group"
 L.NoteShareErrorSolo		= "Lonely? Shouldn't be passing notes to yourself"
