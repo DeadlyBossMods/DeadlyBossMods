@@ -3592,8 +3592,12 @@ do
 		local mod = DBM:GetModByName(modid or "")
 		if mod and modvar and text and text ~= "" then
 			if DBM:AntiSpam(5, modvar) then--Don't allow calling same note more than once per 5 seconds
-				local ability = abilityName or DBM_CORE_UNKNOWN
-				DBM_GUI:ShowNoteEditor(mod, modvar, ability, text, sender)
+				if DBM_GUI then
+					local ability = abilityName or DBM_CORE_UNKNOWN
+					DBM_GUI:ShowNoteEditor(mod, modvar, ability, text, sender)
+				else
+					DBM:AddMsg(sender.." sent a note but DBM GUI isn't loaded yet, gui must be loaded")
+				end
 			else
 				DBM:Debug(sender.." is attempting to send too many notes so notes are being throttled")
 			end
