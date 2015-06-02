@@ -75,6 +75,9 @@ DBM_CORE_MPROFILE_DELETE_SUCCESS	= "%s's (%d專精)模組設定已被刪除。"
 DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "不能刪除使用中的模組設定。"
 DBM_CORE_MPROFILE_DELETE_S_ERROR	= "配置檔來源已經損毀，設定不能被刪除或是部分刪除，刪除已失敗。"
 
+DBM_CORE_NoteHeader			= "在這輸入你的註記。使用>角色名<會套用職業顏色。需要多個註記使用'/'分開。"
+DBM_CORE_NoteFooter			= "一旦註記更新完成則點擊'確定'就會儲存"
+
 DBM_CORE_ALLMOD_DEFAULT_LOADED		= "此副本所有的選項設定已套用預設值。"
 DBM_CORE_ALLMOD_STATS_RESETED		= "所有模組狀態已經被重置。"
 DBM_CORE_MOD_DEFAULT_LOADED			= "此戰鬥的預設選項已套用。"

@@ -333,8 +333,6 @@ L.SelectModProfileCopy		= "Скопировать все настройки из
 L.SelectModProfileCopySound	= "Скопировать настройки звука из"
 L.SelectModProfileCopyNote	= "Скопировать заметки из"
 L.SelectModProfileDelete	= "Удалить настройки модуля для"
-L.NoteHeader				= "Insert your note text here. Enclosing a players name with >< class colors it. For alerts with multiple notes, separate notes with '/'"
-L.NoteFooter				= "Once note is updated just hit 'okay' and it will be saved"
 
 -- Misc
 L.FontHeight	= 16

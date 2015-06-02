@@ -341,8 +341,5 @@ L.SelectModProfileCopySound	= "只复制声音选项："
 L.SelectModProfileCopyNote	= "只复制自定义字符串："
 L.SelectModProfileDelete	= "删除Boss模块选项："
 
-L.NoteHeader				= "在此输入你的自定义字符串。在 >< 中插入玩家名称并会被按职业着色。如 >萌萌恋<。多字符串请用 / 隔开。"
-L.NoteFooter				= "输入完毕后按确定保存。"
-
 -- Misc
 L.FontHeight	= 20
