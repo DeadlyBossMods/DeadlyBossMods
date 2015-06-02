@@ -330,8 +330,5 @@ L.SelectModProfileCopySound	= "소리 설정 복사"
 L.SelectModProfileCopyNote	= "메모 설정 복사"
 L.SelectModProfileDelete	= "설정 삭제"
 
-L.NoteHeader				= "메모를 여기에 입력하세요. 캐릭터명을 >< 로 감싸면 직업색상으로 표시됩니다. 여러개의 메모가 필요한 경우 '/'로 분리하세요."
-L.NoteFooter				= "메모가 업데이트 된 경우 확인 버튼을 누르면 저장됩니다."
-
 -- Misc
 L.FontHeight = 16

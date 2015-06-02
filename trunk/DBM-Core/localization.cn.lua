@@ -82,6 +82,9 @@ DBM_CORE_MPROFILE_DELETE_SUCCESS	= "%s(%d专精)的模块设置已经被删除."
 DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "无法删除一个正在使用的模块配置文件."
 DBM_CORE_MPROFILE_DELETE_S_ERROR	= "删除的源出错. 配置文件可能被篡改."
 
+DBM_CORE_NoteHeader					= "在此输入你的自定义字符串。在 >< 中插入玩家名称并会被按职业着色。如 >萌萌恋<。多字符串请用 / 隔开。"
+DBM_CORE_NoteFooter					= "输入完毕后按确定保存。"
+
 DBM_CORE_ALLMOD_DEFAULT_LOADED		= "本副本里的所有Boss配置已经被初始化"
 DBM_CORE_ALLMOD_STATS_RESETED		= "所有模组的状态已被重置"
 DBM_CORE_MOD_DEFAULT_LOADED			= "将会使用默认设置来进行本场战斗"

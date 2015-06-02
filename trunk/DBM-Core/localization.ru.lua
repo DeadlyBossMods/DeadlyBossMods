@@ -77,6 +77,9 @@ DBM_CORE_MPROFILE_DELETE_SUCCESS	= "Настройки модуля от %s (с�
 DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "Невозможно удалить настройки модуля, используемого в данный момент."
 DBM_CORE_MPROFILE_DELETE_S_ERROR	= "Источник поврежден. Настройки не удалены или удалены частично. Удалить не удалось."
 
+DBM_CORE_NoteHeader				= "Insert your note text here. Enclosing a players name with >< class colors it. For alerts with multiple notes, separate notes with '/'"
+DBM_CORE_NoteFooter				= "Once note is updated just hit 'okay' and it will be saved"
+
 DBM_CORE_ALLMOD_DEFAULT_LOADED		= "Настройки по умолчанию были загружены для всех модулей в этом подземелье."
 DBM_CORE_ALLMOD_STATS_RESETED		= "Вся статистика модуля была сброшена."
 DBM_CORE_MOD_DEFAULT_LOADED			= "Настройки по умолчанию для этого боя были загружены."
