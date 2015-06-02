@@ -332,8 +332,5 @@ L.SelectModProfileCopy		= "複製所有設定"
 L.SelectModProfileCopySound	= "只複製音效設定"
 L.SelectModProfileDelete	= "刪除模組設定"
 
-L.NoteHeader				= "在這輸入你的註記。使用>角色名<會套用職業顏色。需要多個註記使用'/'分開。"
-L.NoteFooter				= "一旦註記更新完成則點擊'確定'就會儲存"
-
 -- Misc
 L.FontHeight	= 18

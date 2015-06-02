@@ -334,15 +334,5 @@ L.SelectModProfileCopySound	= "Copy just sound setting from"
 L.SelectModProfileCopyNote	= "Copy just note setting from"
 L.SelectModProfileDelete	= "Delete mod settings for"
 
-L.NoteHeader				= "Enter your note text here for %s. Enclosing a players name with >< class colors it. For alerts with multiple notes, separate notes with '/'"
-L.NoteFooter				= "Press 'Okay' to accept changes or 'Cancel' to decline changes"
-L.NoteShredHeader			= "%s has shared below note text for %s. If you accept it, it will overwrite your existing note"
-
-L.NoteShared				= "You're note has been sent to the group"
-L.NoteShareErrorSolo		= "Lonely? Shouldn't be passing notes to yourself"
-L.NoteShareErrorBlank		= "Cannot share blank notes"
-L.NoteShareErrorGroupFinder	= "Notes cannot be shared in BGs, LFR, or LFG"
-L.NoteShareErrorAlreadyOpen	= "%s tried to send you a note for %s, but this was ignored to prevent you from losing the note you are currently editing"
-
 -- Misc
 L.FontHeight	= 16

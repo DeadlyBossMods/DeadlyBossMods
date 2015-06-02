@@ -77,6 +77,9 @@ DBM_CORE_MPROFILE_DELETE_SUCCESS	= "%s의 전문화%d 설정을 삭제하였습�
 DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "현재 사용중인 설정은 삭제할 수 없습니다."
 DBM_CORE_MPROFILE_DELETE_S_ERROR	= "삭제할 설정이 없거나 올바르지 않습니다. 설정이 삭제되지 않았거나 일부만 삭제됩니다."
 
+DBM_CORE_NoteHeader					= "메모를 여기에 입력하세요. 캐릭터명을 >< 로 감싸면 직업색상으로 표시됩니다. 여러개의 메모가 필요한 경우 '/'로 분리하세요."
+DBM_CORE_NoteFooter					= "메모가 업데이트 된 경우 확인 버튼을 누르면 저장됩니다."
+
 DBM_CORE_ALLMOD_DEFAULT_LOADED		= "현재 경보의 기본 설정을 불러왔습니다."
 DBM_CORE_ALLMOD_STATS_RESETED		= "현재 경보의 통계가 초기화 됩니다."
 DBM_CORE_MOD_DEFAULT_LOADED			= "현재 전투의 기본 설정을 불러왔습니다."
