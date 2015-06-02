@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: May 18, 2015@13760
+-- Last update: Jun 2, 2015@13840
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -15,12 +15,13 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerSiegeVehicleCD =	"计时条：下一辆攻城车"
+	timerSiegeVehicleCD =	"计时条：下一辆攻城车-%s"
 })
 
 L:SetMiscLocalization({
 	AddsSpawn1		=	"乘胜追击！",
-	AddsSpawn2		=	"投掷手雷！"
+	AddsSpawn2		=	"投掷手雷！",
+	BossLeaving		=	"我会回来的..."
 })
 
 ---------------------------

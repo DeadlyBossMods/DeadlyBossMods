@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: May 25, 2015@13821
+-- Last update: Jun 2, 2015@13840
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -14,7 +14,7 @@ DBM_FORUMS_MESSAGE					= "发现BUG或错误的计时条?你希望要让某些�
 DBM_FORUMS_COPY_URL_DIALOG			= "拜访我们的讨论与支持论坛\r\n(hosted by Elitist Jerks!)"
 
 DBM_CORE_LOAD_MOD_ERROR				= "读取%s模块时发生错误：%s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "成功读取%s模块。在聊天框输入 /dbm 或 /dbm help 可进行更多设置。"
+DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 模块已加载。在聊天框输入 /dbm 可设置自定义语音或注记等选项。"
 DBM_CORE_LOAD_MOD_COMBAT			= "延迟读取模块 '%s' 直到你脱离战斗。"
 DBM_CORE_LOAD_GUI_ERROR				= "无法读取图形界面：%s"
 DBM_CORE_LOAD_GUI_COMBAT			= "DBM无法在战斗中初始化图形界面。请先在非战斗状态打开图形设置界面，之后的战斗中就可以自由打开和关闭该界面了。"
@@ -22,7 +22,7 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "DBM无法在战斗中更换皮肤。请先在非�
 DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，有些计时器可能会错误。请在离开战斗后马上重载界面。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本过旧。请升级DBM。"
 
-DBM_CORE_WHATS_NEW					= "最新更新：DBM现在支持给每一个特殊警告添加自定义文本，就像自定义警告声音/闪光一样，甚至可以带上自己的名字。"
+DBM_CORE_WHATS_NEW					= "最新更新：DBM现在支持给每一个特殊警告添加自定义注记，就像自定义警告声音/闪光一样，甚至可以带上自己的名字。"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "由于玩家数量不足，DBM 无法开启倒计时。"
@@ -82,8 +82,18 @@ DBM_CORE_MPROFILE_DELETE_SUCCESS	= "%s(%d专精)的模块设置已经被删除."
 DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "无法删除一个正在使用的模块配置文件."
 DBM_CORE_MPROFILE_DELETE_S_ERROR	= "删除的源出错. 配置文件可能被篡改."
 
-DBM_CORE_NOTEHEADER					= "在此输入你的自定义字符串。在 >< 中插入玩家名称并会被按职业着色。如 >萌萌恋<。多字符串请用 / 隔开。"
-DBM_CORE_NOTEFOOTER					= "输入完毕后按确定保存。"
+DBM_CORE_NOTE_SHARE_SUCCESS			= "%s向你分享了他的%s的自定义注记"
+DBM_CORE_NOTE_SHARE_LINK			= "点击这里打开注记"
+DBM_CORE_NOTE_SHARE_FAIL			= "%s想向你分享他的%s的自定义注记，但是相关的副本模块并没有被安装或被加载。如果你需要这个注记，请确保相关模块被正确加载，然后请小伙伴再向你分享一次。"
+
+DBM_CORE_NOTEHEADER					= "在此输入你针对%s的注记。在 >< 中插入玩家名字会被按职业着色。例子:'我种>下一棵<种子'。这个牧师会被染色成白色。多字符串请用 / 隔开。"
+DBM_CORE_NOTEFOOTER					= "点击确定接受改变，点击取消放弃改变"
+DBM_CORE_NOTESHAREDHEADER			= "%s想向你分享他的%s的自定义注记。如果你接受这个注记，你原来的注记会被覆盖。"
+DBM_CORE_NOTESHARED					= "你的注记已经成功地分享给小伙伴了。"
+DBM_CORE_NOTESHAREERRORSOLO			= "寂寞了？起码要找个小伙伴分享吧。"
+DBM_CORE_NOTESHAREERRORBLANK		= "无法分享空白注记。"
+DBM_CORE_NOTESHAREERRORGROUPFINDER	= "无法在战场，随机小队，随机团里分享注记。"
+DBM_CORE_NOTESHAREERRORALREADYOPEN	= "为防止未保存的改变，当注记编辑器打开的时候无法分享注记。"
 
 DBM_CORE_ALLMOD_DEFAULT_LOADED		= "本副本里的所有Boss配置已经被初始化"
 DBM_CORE_ALLMOD_STATS_RESETED		= "所有模组的状态已被重置"
