@@ -246,7 +246,7 @@ DBM.DefaultOptions = {
 	DontShowHealthFrame = false,
 	DontPlayCountdowns = false,
 	DontSendYells = false,
-	BlockNoteSync = true,
+	BlockNoteShare = false,
 	DontShowRespawn = false,
 	DontShowPT2 = false,
 	DontShowPTCountdownText = false,
@@ -2162,7 +2162,7 @@ do
 	end
 
 	local function linkHook(self, link, string, button, ...)
-		local linkType, arg1, arg2, arg3 = strsplit(":", link)
+		local linkType, arg1, arg2, arg3, arg4, arg5, arg6 = strsplit(":", link)
 		if linkType ~= "DBM" then
 			return
 		end
@@ -2178,6 +2178,13 @@ do
 			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG)
 		elseif arg1 == "showRaidIdResults" then
 			DBM:ShowRaidIDRequestResults()
+		elseif arg1 == "noteshare" then
+			local mod = DBM:GetModByName(arg2 or "")
+			if mod then
+				DBM:ShowNoteEditor(mod, arg3, arg4, arg5, arg6)
+			else--Should not happen, since mod was verified before getting this far, but just in case
+				DBM:Debug("Bad note share, mod not valid")
+			end
 		end
 	end
 
@@ -3586,14 +3593,16 @@ do
 	
 	syncHandlers["NS"] = function(sender, modid, modvar, text, abilityName)
 		if sender == playerName then return end
-		if DBM.Options.BlockNoteSync or InCombatLockdown() then return end
+		if DBM.Options.BlockNoteShare or InCombatLockdown() then return end
 		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() and not C_Garrison:IsOnGarrisonMap() then return end
 		--^^You are in LFR, BG, or LFG. Block note syncs. They shouldn't be sendable, but in case someone edits DBM^^
 		local mod = DBM:GetModByName(modid or "")
+		local ability = abilityName or DBM_CORE_UNKNOWN
 		if mod and modvar and text and text ~= "" then
 			if DBM:AntiSpam(5, modvar) then--Don't allow calling same note more than once per 5 seconds
-				local ability = abilityName or DBM_CORE_UNKNOWN
-				DBM:ShowNoteEditor(mod, modvar, ability, text, sender)
+				DBM:AddMsg(DBM_CORE_NOTE_SHARE_SUCCESS:format(sender, abilityName))
+				--Need to use modid in URL because we cannot insert a mod table into one
+				DBM:AddMsg(("|HDBM:noteshare:%s:%s:%s:%s:%s|h|cff3588ff[%s]"):format(modid, modvar, ability, text, sender, DBM_CORE_NOTE_SHARE_LINK))
 			else
 				DBM:Debug(sender.." is attempting to send too many notes so notes are being throttled")
 			end
@@ -4655,19 +4664,19 @@ do
 			local abilityName = DBM.Noteframe.abilityName
 			local syncText = editBox:GetText() or ""
 			if syncText == "" then
-				DBM:AddMsg(DBM_CORE_NoteShareErrorBlank)
+				DBM:AddMsg(DBM_CORE_NOTESHAREERRORBLANK)
 			elseif IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() and not C_Garrison:IsOnGarrisonMap() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-				DBM:AddMsg(DBM_CORE_NoteShareErrorGroupFinder)
+				DBM:AddMsg(DBM_CORE_NOTESHAREERRORGROUPFINDER)
 			else
 				local msg = modid.."\t"..modvar.."\t"..syncText.."\t"..abilityName
 				if IsInRaid() then
 					SendAddonMessage("D4", "NS\t" .. msg, "RAID")
-					DBM:AddMsg(DBM_CORE_NoteShared)
+					DBM:AddMsg(DBM_CORE_NOTESHARED)
 				elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
 					SendAddonMessage("D4", "NS\t" .. msg, "PARTY")
-					DBM:AddMsg(DBM_CORE_NoteShared)
+					DBM:AddMsg(DBM_CORE_NOTESHARED)
 				else--Solo
-					DBM:AddMsg(DBM_CORE_NoteShareErrorSolo)
+					DBM:AddMsg(DBM_CORE_NOTESHAREERRORSOLO)
 				end
 			end
 		end)
@@ -4679,23 +4688,21 @@ do
 			DBM.Noteframe = frame
 		end
 		if frame:IsShown() and syncText then
-			--Prevent someone interrupting you editing a note and causing you to lose your work.
-			--If frame is already open, perform no action
-			DBM:AddMsg(DBM_CORE_NoteShareErrorAlreadyOpen:format(sender, abilityName))
+			DBM:AddMsg(DBM_CORE_NOTESHAREERRORALREADYOPEN)
 			return
 		end
 		frame:Show()
-		fontstringFooter:SetText(DBM_CORE_NoteFooter)
+		fontstringFooter:SetText(DBM_CORE_NOTEFOOTER)
 		DBM.Noteframe.mod = mod
 		DBM.Noteframe.modvar = modvar
 		DBM.Noteframe.abilityName = abilityName
 		if syncText then
 			button3:Hide()--Don't show share button in shared notes
-			fontstring:SetText(DBM_CORE_NoteShredHeader:format(sender, abilityName))
+			fontstring:SetText(DBM_CORE_NOTESHAREDHEADER:format(sender, abilityName))
 			editBox:SetText(syncText)
 		else
 			button3:Show()
-			fontstring:SetText(DBM_CORE_NoteHeader:format(abilityName))
+			fontstring:SetText(DBM_CORE_NOTEHEADER:format(abilityName))
 			if type(mod.Options[modvar .. "SWNote"]) == "string" then
 				editBox:SetText(mod.Options[modvar .. "SWNote"])
 			else
