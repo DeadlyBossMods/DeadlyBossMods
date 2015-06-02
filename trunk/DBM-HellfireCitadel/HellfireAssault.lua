@@ -62,13 +62,13 @@ local specWarnCower					= mod:NewSpecialWarningTaunt(184238, "Tank")
 ----Gorebound Felcaster
 local specWarnIncinerate			= mod:NewSpecialWarningInterrupt(181155, false)--Seems less important of two spells, maybe both need interrupting though?
 local specWarnMetamorphosis			= mod:NewSpecialWarningSwitch(181968, "Dps")--Switch and get dead if they transform, they do TONS of damage transformed
---local specWarnFelfireVolley			= mod:NewSpecialWarningInterrupt(180417, "-Healer")--Journal says interruptable, but it was not interruptable. what's the bug? journal or mob?
+--local specWarnFelfireVolley		= mod:NewSpecialWarningInterrupt(180417, "-Healer")--Journal says interruptable, but it was not interruptable. what's the bug? journal or mob?
 ----Contracted Engineer
 local specWarnRepair				= mod:NewSpecialWarningInterrupt(185816, "-Healer", nil, nil, 1, 2)
 ----Grute
 
 --Felfire-Imbued Siege Vehicles
-local specWarnDemolisher			= mod:NewSpecialWarningSwitch("ej11429", "Dps")--Heroic & Mythic only. Does massive aoe damage, has to be killed asap
+local specWarnDemolisher			= mod:NewSpecialWarningSwitch("ej11429", "Dps", nil, nil, 1, 5)--Heroic & Mythic only. Does massive aoe damage, has to be killed asap
 
 --Siegemaster Mar'tak
 local timerHowlingAxeCD				= mod:NewCDTimer(8.47, 184369)
@@ -94,6 +94,7 @@ local voiceShockwave				= mod:NewVoice(184394)--shockwave
 local voiceIncinerate				= mod:NewVoice(181155, false)--kick
 --local voiceFelfireVolley			= mod:NewVoice(180417, "-Healer")--kick
 local voiceRepair					= mod:NewVoice(185816)--kickcast
+local voiceFelfireSiegeVehicles		= mod:NewVoice("ej11428")--One option for all 5, because less cluttered options better in this case I think.
 
 mod:AddRangeFrameOption(8, 184369)
 mod:AddHudMapOption("HudMapOnAxe", 184369)
@@ -250,18 +251,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 90432 then--Felfire Flamebelcher
 			warnFelfireFlamebelcher:Show(Count)
+			voiceFelfireSiegeVehicles:Play("ej11437")
 		elseif cid == 90410 then--Felfire Crusher
 			warnFelfireCrusher:Show(Count)
+			voiceFelfireSiegeVehicles:Play("ej11439")
 		elseif cid == 90485 then--Felfire Artillery
 			warnFelfireArtillery:Show(Count)
+			voiceFelfireSiegeVehicles:Play("ej11435")
 		elseif cid == 91103 then--Felfire Demolisher
 			if self.Options.SpecWarnej11429switch then
 				specWarnDemolisher:Show()
 			else
 				warnFelfireDemolisher:Show(Count)
 			end
+			voiceFelfireSiegeVehicles:Play("ej11429")
 		elseif cid == 93435 then--Felfire Transporter
 			warnFelfireTransporter:Show(Count)
+			voiceFelfireSiegeVehicles:Play("ej11712")
 		end
 		if self:IsMythic() then
 			--Confusing way to do it but it's best way to do it for dual timer support
@@ -270,21 +276,32 @@ function mod:SPELL_AURA_APPLIED(args)
 			if Count == 1 or Count == 3 or Count == 5 or Count == 12 or Count == 14 or Count == 16 or Count == 18 then--Left
 				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_LEFT..")")
 				DBM:Debug("Starting a left vehicle timer")
+				voiceFelfireSiegeVehicles:Schedule(1, "left")--Schedule voice here because it's a left vehicle starting a timer for another left vehicle
 			elseif Count == 2 or Count == 4 or Count == 6 or Count == 13 or Count == 15 or Count == 17 or Count == 19 then--Right
 				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_RIGHT..")")
 				DBM:Debug("Starting a right vehicle timer")
+				voiceFelfireSiegeVehicles:Schedule(1, "right")--Schedule voice here because it's a right vehicle starting a timer for another right vehicle
 			elseif Count == 11 then--Last center, start both next left and right timers
 				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count-1], "("..DBM_CORE_LEFT..")")--Time for this one stored in 10 slot in table
 				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_RIGHT..")")
 				DBM:Debug("Starting a left and a right vehicle timer after center phase")
+				voiceFelfireSiegeVehicles:Schedule(1, "center")
 			elseif Count == 7 or Count == 8 or Count == 9 then--Center
 				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_MIDDLE..")")
 				DBM:Debug("Starting a Center timer")
+				if Count == 7 then--Need a left voice
+					voiceFelfireSiegeVehicles:Schedule(1, "left")
+				elseif Count == 8 then--Now right voice
+					voiceFelfireSiegeVehicles:Schedule(1, "right")
+				else--Finally, center voice
+					voiceFelfireSiegeVehicles:Schedule(1, "center")
+				end
 			elseif Count == 10 then--No timer started at 10
-				DBM:Debug("Doing nothing for vehicle 10")
+				DBM:Debug("Doing no timer for vehicle 10")
+				voiceFelfireSiegeVehicles:Schedule(1, "center")
 				return
 			else
-				DBM:AddMsg("No Vehicle timer information beyond this point. If you have logs of this fight, please share them")
+				DBM:AddMsg("No Vehicle timer information beyond this point. If you have log or video of this pull, please share it")
 			end
 		else
 			if vehicleTimers[Count] then

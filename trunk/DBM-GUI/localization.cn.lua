@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: May 25, 2015@13821
+-- Last update: Jun 2, 2015@13840
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -172,7 +172,7 @@ L.Panel_SpecWarnFrame		= "特殊警报"
 L.Area_SpecWarn				= "特殊警报设置"
 L.SpecWarn_ClassColor		= "为特殊警报启用分职业着色"
 L.ShowSWarningsInChat 		= "在聊天窗口中显示特殊警报"
-L.SWarnNameInNote			= "使用自定义文本的特殊警报请选择SW5"
+L.SWarnNameInNote			= "使用自定义注记的特殊警报请选择SW5"
 L.SpecWarn_FlashFrame		= "特殊警报时屏幕边缘泛光"
 L.SpecWarn_FlashFrameRepeat	= "重复 %d 次 (如果开启的话)"
 L.SpecWarn_Font				= "特殊警报字体"
@@ -190,7 +190,7 @@ L.SpecialWarnSound			= "针对你的行为发出特殊警报时播放的声音"
 L.SpecialWarnSound2			= "针对所有人发出特殊警报时播放的声音(默认:当心)"
 L.SpecialWarnSound3			= "针对非常重要事件(灭团点)的特殊警报播放的声音(默认:毁灭)"
 L.SpecialWarnSound4			= "特殊警报: 快跑啊 小女孩"
-L.SpecialWarnSound5			= "使用自定义文本的特殊警报的声音"
+L.SpecialWarnSound5			= "使用自定义注记特殊警报的声音"
 
 -- Tab: Heads Up Display Frame
 L.Panel_HUD					= "抬头显示设置(HUD)"
@@ -246,6 +246,7 @@ L.SpamBlockNoHudMap			= "不显示HudMap"
 L.SpamBlockNoHealthFrame	= "不显示生命值监视器"
 L.SpamBlockNoCountdowns		= "不要播放倒数语音"
 L.SpamBlockNoYells			= "不要再战斗中大喊我中了..."
+L.SpamBlockNoNoteSync		= "不接受别人分享的自定义注记"
 L.SpamBlockNoIconRestore	= "当战斗结束后不保存团队标记状态(大饼 星星 月亮 方块这些)"
 L.SpamBlockNoRangeRestore	= "当boss暂时消失时不恢复距离指示器"
 
@@ -338,8 +339,8 @@ L.ModAllReset				= "重置所有Boss模块选项"
 L.ModAllStatReset			= "重置所有Boss模块状态"
 L.SelectModProfileCopy		= "复制所有选项："
 L.SelectModProfileCopySound	= "只复制声音选项："
-L.SelectModProfileCopyNote	= "只复制自定义字符串："
-L.SelectModProfileDelete	= "删除Boss模块选项："
+L.SelectModProfileCopyNote	= "只复制自定义注记："
+L.SelectModProfileDelete	= "删除Boss模块设置："
 
 -- Misc
 L.FontHeight	= 20
