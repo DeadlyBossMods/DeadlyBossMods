@@ -264,7 +264,6 @@ L.FilterDispels				= "当驱散技能在冷却时, 过滤掉驱散提示"
 L.FilterSelfHud				= "把自己从HudMap中过滤掉 (不包括和距离有关的功能)"
 
 L.Area_PullTimer			= "开怪倒计时过滤设置"
-L.DontShowRespawn			= "不显示Boss刷新计时器"
 L.DontShowPTNoID			= "不显示不同区域发送的倒计时"
 L.DontShowPT				= "不显示开怪倒计时条"
 L.DontShowPTText			= "不显示开怪倒计时文字"

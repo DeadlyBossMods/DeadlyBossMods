@@ -255,7 +255,6 @@ L.FilterDispels				= "過濾可驅散技能如果你的驅散技正在冷卻中"
 L.FilterSelfHud				= "從HudMap過濾你自己(排除Hud的距離功能)"
 
 L.Area_PullTimer			= "開怪計時器過濾選項"
-L.DontShowRespawn			= "不要顯示首領重生計時器"
 L.DontShowPTNoID			= "阻擋與你不同區域ID送出的開怪倒數計時條"
 L.DontShowPT				= "不要顯示開怪倒數計時條"
 L.DontShowPTText			= "不要顯示開怪提示文字"
