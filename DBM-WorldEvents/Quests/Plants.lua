@@ -24,7 +24,6 @@ local specWarnWave				= mod:NewSpecialWarning("specWarnWave", nil, nil, nil, 2)
 --local timerWave					= mod:NewTimer(170, "timerWave")
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 local wave = 0
 local addCount = 0

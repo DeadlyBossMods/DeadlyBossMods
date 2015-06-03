@@ -19,7 +19,6 @@ local specWarnSpitAcid			= mod:NewSpecialWarningSpell(141013)--Nibbleh
 local timerSpitAcidCD			= mod:NewNextTimer(20, 141013)--Nibbleh
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 mod:AddBoolOption("SetIconOnDominika", true)--Dominika the Illusionist 
 
 local brawlersMod = DBM:GetModByName("Brawlers")

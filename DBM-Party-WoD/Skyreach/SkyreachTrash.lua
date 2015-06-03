@@ -19,7 +19,6 @@ local voiceSolarDetonation			= mod:NewVoice(160288)
 mod:AddRangeFrameOption(3, 160288)--Range guessed. Maybe 5. one tooltip says 1.5 but it def seemed bigger then that. closer to 3-5
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 mod.vb.debuffCount = 0
 local Debuff = GetSpellInfo(160288)

@@ -33,7 +33,6 @@ local timerShadowStrikes		= mod:NewBuffActiveTimer(15, 126209)--Akama
 local timerChainLightningCD		= mod:NewCDTimer(17, 39945)--Akama
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 

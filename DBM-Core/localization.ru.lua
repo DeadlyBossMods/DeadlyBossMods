@@ -400,7 +400,6 @@ DBM_ARROW_ERROR_USAGE	= {
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Рекордная победа"
-DBM_SPEED_KILL_TIMER_OPTION	= "Отсчёт времени вашей самой быстрой победы"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "Лучшее прохождение"
 DBM_COMBAT_RES_TIMER_TEXT	= "След. заряд БР"
 DBM_CORE_TIMER_RESPAWN		= "Появление босса"

@@ -26,7 +26,6 @@ local yellArcaneVol					= mod:NewYell(166200)
 local specWarnWildFlames			= mod:NewSpecialWarningMove(173827)
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 mod:AddRangeFrameOption(8, 166200)
 
 local debuff = GetSpellInfo(166200)
