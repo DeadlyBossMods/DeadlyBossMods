@@ -236,6 +236,7 @@ DBM.DefaultOptions = {
 	DontShowBossAnnounces = false,
 	DontShowSpecialWarnings = false,
 	DontShowBossTimers = false,
+	DontShowUserTimers = false,
 	DontShowFarWarnings = true,
 	DontSetIcons = false,
 	DontRestoreIcons = false,
@@ -247,7 +248,6 @@ DBM.DefaultOptions = {
 	DontPlayCountdowns = false,
 	DontSendYells = false,
 	BlockNoteShare = false,
-	DontShowRespawn = false,
 	DontShowPT2 = false,
 	DontShowPTCountdownText = false,
 	DontPlayPTCountdown = false,
@@ -265,6 +265,8 @@ DBM.DefaultOptions = {
 	MCMessageShown = false,
 	AlwaysShowSpeedKillTimer = true,
 	CRT_Enabled = false,
+	ShowRespawn = true,
+	ShowQueuePop = true,
 	HelpMessageShown3 = false,
 	NewsMessageShown = 0,
 	MoviesSeen = {},
@@ -3143,7 +3145,9 @@ do
 end
 
 function DBM:LFG_PROPOSAL_SHOW()
-	self.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+	if self.Options.ShowQueuePop and not self.Options.DontShowBossTimers then
+		self.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+	end
 	if self.Options.LFDEnhance then
 		self:PlaySoundFile("Sound\\interface\\levelup2.ogg", true)--Because regular sound uses SFX channel which is too low of volume most of time
 	end
@@ -3265,8 +3269,10 @@ end
 function DBM:UPDATE_BATTLEFIELD_STATUS()
 	for i = 1, 2 do
 		if GetBattlefieldStatus(i) == "confirm" then
-			queuedBattlefield[i] = select(2, GetBattlefieldStatus(i))
-			self.Bars:CreateBar(85, queuedBattlefield[i], "Interface\\Icons\\Spell_Holy_BorrowedTime")	-- need to confirm the timer
+			if self.Options.ShowQueuePop and not self.Options.DontShowBossTimers then
+				queuedBattlefield[i] = select(2, GetBattlefieldStatus(i))
+				self.Bars:CreateBar(85, queuedBattlefield[i], "Interface\\Icons\\Spell_Holy_BorrowedTime")	-- need to confirm the timer
+			end
 			if self.Options.LFDEnhance then
 				self:PlaySoundFile("Sound\\interface\\levelup2.ogg", true)--Because regular sound uses SFX channel which is too low of volume most of time
 			end
@@ -3303,6 +3309,7 @@ end
 function DBM:CHALLENGE_MODE_START(mapID)
 	self:Debug("CHALLENGE_MODE_START fired for mapID "..mapID)
 	if self.Options.ChallengeBest == "None" then return end
+	if self.Options.DontShowBossTimers then return end
 	local maps = GetChallengeModeMapTable()
 	for i = 1, 8 do
 		local _, mapIDVerify = GetChallengeModeMapInfo(maps[i])--Even though we get mapid from CHALLENGE_MODE_START, we still need CM index since GetChallengeModeMapPlayerStats doesn't take mapID :\
@@ -3729,7 +3736,7 @@ do
 		end
 		dummyMod.text:Cancel()
 		if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
-		if not DBM.Options.DontShowPT2 then
+		if not DBM.Options.DontShowPT2 and not DBM.Options.DontShowUserTimers then
 			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
 		if not DBM.Options.DontPlayPTCountdown then
@@ -3791,7 +3798,7 @@ do
 		end
 		dummyMod2.text:Cancel()
 		if timer == 0 then return end--"/dbm break 0" will strictly be used to cancel the break timer (which is why we let above part of code run but not below)
-		if not DBM.Options.DontShowPT2 then
+		if not DBM.Options.DontShowPT2 and not DBM.Options.DontShowUserTimers then
 			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
 		if not DBM.Options.DontPlayPTCountdown then
@@ -3826,7 +3833,7 @@ do
 			dummyMod2.countdown = dummyMod2:NewCountdown(0, 0, nil, nil, nil, true)
 			dummyMod2.text = dummyMod2:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
-		if not DBM.Options.DontShowPT2 then
+		if not DBM.Options.DontShowPT2 and not DBM.Options.DontShowUserTimers then
 			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
 		if not DBM.Options.DontPlayPTCountdown then
@@ -3967,6 +3974,7 @@ do
 
 	syncHandlers["U"] = function(sender, time, text)
 		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
+		if DBM.Options.DontShowUserTimers then return end
 		if DBM:GetRaidRank(sender) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then return end
 		if sender == playerName then return end
 		time = tonumber(time or 0)
@@ -3978,6 +3986,7 @@ do
 	
 	syncHandlers["CU"] = function(sender, time, text)
 		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
+		if DBM.Options.DontShowUserTimers then return end
 		if DBM:GetRaidRank(sender) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then return end
 		if sender == playerName then return end
 		time = tonumber(time or 0)
@@ -4903,7 +4912,7 @@ do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
 			if v.noEEDetection then return end
-			if v.respawnTime and success == 0 and not self.Options.DontShowRespawn then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
+			if v.respawnTime and success == 0 and self.Options.ShowRespawn and not self.Options.DontShowBossTimers then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
 				self.Bars:CreateBar(v.respawnTime, DBM_CORE_TIMER_RESPAWN, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 			end
 			if v.multiEncounterPullDetection then
@@ -5288,7 +5297,7 @@ do
 						speedTimer:Start()
 					end
 				end
-				if self.Options.CRT_Enabled and savedDifficulty ~= "worldboss" then
+				if self.Options.CRT_Enabled and savedDifficulty ~= "worldboss" and not self.Options.DontShowBossTimers then
 					if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 17 then--Flexible difficulties
 						local time = 90/LastGroupSize
 						time = time * 60

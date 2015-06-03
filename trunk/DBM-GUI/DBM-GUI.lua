@@ -1494,27 +1494,9 @@ local function CreateOptionsMenu()
 		latencySlider:SetPoint('BOTTOMLEFT', bmrange, "BOTTOMLEFT", 10, -40)
 		latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.LatencyThreshold) end)
 		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.LatencyThreshold = self:GetValue() end)
-		----
-		local generaltimeroptions = DBM_GUI_Frame:CreateArea(L.TimerGeneral, nil, 125)
-		generaltimeroptions.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
-
-		local SKT_Enabled	= generaltimeroptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer")
-		local CRT_Enabled	= generaltimeroptions:CreateCheckButton(L.CRT_Enabled, true, nil, "CRT_Enabled")
-
-		local challengeTimers = {
-			{	text	= L.Disable,				value	= "None" },
-			{	text	= L.ChallengeTimerPersonal,	value 	= "Personal"},
-			{	text	= L.ChallengeTimerGuild,	value 	= "Guild"},
-			{	text	= L.ChallengeTimerRealm,	value 	= "Realm"},
-		}
-		local ChallengeTimerDropDown = generaltimeroptions:CreateDropdown(L.ChallengeTimerOptions, challengeTimers, "DBM", "ChallengeBest", function(value)
-			DBM.Options.ChallengeBest = value
-		end)
-		ChallengeTimerDropDown:SetPoint("TOPLEFT", generaltimeroptions.frame, "TOPLEFT", 0, -85)
 
 		--Model viewer options
-		local modelarea = DBM_GUI_Frame:CreateArea(L.ModelOptions, nil, 90)
-		modelarea.frame:SetPoint('TOPLEFT', generaltimeroptions.frame, "BOTTOMLEFT", 0, -20)
+		local modelarea = DBM_GUI_Frame:CreateArea(L.ModelOptions, nil, 90, true)
 
 		local enablemodels	= modelarea:CreateCheckButton(L.EnableModels,  true, nil, "EnableModels")--Needs someone smarter then me to hide/disable this option if not 4.0.6+
 
@@ -2970,16 +2952,19 @@ local function CreateOptionsMenu()
 		spamOutArea:CreateCheckButton(L.SpamBlockNoShowAnnounce, true, nil, "DontShowBossAnnounces")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoSpecWarn, true, nil, "DontShowSpecialWarnings")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoShowTimers, true, nil, "DontShowBossTimers")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoShowUTimers, true, nil, "DontShowUserTimers")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetIcons")
-		spamOutArea:CreateCheckButton(L.SpamBlockNoIconRestore, true, nil, "DontRestoreIcons")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoRangeFrame, true, nil, "DontShowRangeFrame")
-		spamOutArea:CreateCheckButton(L.SpamBlockNoRangeRestore, true, nil, "DontRestoreRange")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoInfoFrame, true, nil, "DontShowInfoFrame")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoHudMap, true, nil, "DontShowHudMap2")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoHealthFrame, true, nil, "DontShowHealthFrame")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoCountdowns, true, nil, "DontPlayCountdowns")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoYells, true, nil, "DontSendYells")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoNoteSync, true, nil, "BlockNoteShare")
+
+		local spamRestoreArea = spamPanel:CreateArea(L.Area_Restore, nil, 170, true)
+		spamRestoreArea:CreateCheckButton(L.SpamBlockNoIconRestore, true, nil, "DontRestoreIcons")
+		spamRestoreArea:CreateCheckButton(L.SpamBlockNoRangeRestore, true, nil, "DontRestoreRange")
 
 		local spamArea = spamPanel:CreateArea(L.Area_SpamFilter, nil, 170, true)
 		spamArea:CreateCheckButton(L.DontShowFarWarnings, true, nil, "DontShowFarWarnings")
@@ -2993,7 +2978,6 @@ local function CreateOptionsMenu()
 		spamSpecArea:CreateCheckButton(L.FilterSelfHud, true, nil, "FilterSelfHud")
 
 		local spamPTArea = spamPanel:CreateArea(L.Area_PullTimer, nil, 180, true)
-		spamPTArea:CreateCheckButton(L.DontShowRespawn, true, nil, "DontShowRespawn")
 		spamPTArea:CreateCheckButton(L.DontShowPTNoID, true, nil, "DontShowPTNoID")
 		spamPTArea:CreateCheckButton(L.DontShowPT, true, nil, "DontShowPT2")
 		spamPTArea:CreateCheckButton(L.DontShowPTText, true, nil, "DontShowPTText")
@@ -3006,6 +2990,7 @@ local function CreateOptionsMenu()
 		PTSlider:HookScript("OnValueChanged", function(self) DBM.Options.PTCountThreshold = mfloor(self:GetValue()) end)
 
 		spamPTArea:AutoSetDimension()
+		spamRestoreArea:AutoSetDimension()
 		spamArea:AutoSetDimension()
 		spamSpecArea:AutoSetDimension()
 		spamOutArea:AutoSetDimension()
@@ -3059,6 +3044,24 @@ local function CreateOptionsMenu()
 		local WorldBossNearAlert	= soundAlertsArea:CreateCheckButton(L.WorldBossNearAlert, true, nil, "WorldBossNearAlert")
 		local RLReadyCheckSound		= soundAlertsArea:CreateCheckButton(L.RLReadyCheckSound, true, nil, "RLReadyCheckSound")
 		local AFKHealthWarning		= soundAlertsArea:CreateCheckButton(L.AFKHealthWarning, true, nil, "AFKHealthWarning")
+
+		local generaltimeroptions	= extraFeaturesPanel:CreateArea(L.TimerGeneral, nil, 125, true)
+
+		local SKT_Enabled	= generaltimeroptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer")
+		local CRT_Enabled	= generaltimeroptions:CreateCheckButton(L.CRT_Enabled, true, nil, "CRT_Enabled")
+		local RespawnTimer	= generaltimeroptions:CreateCheckButton(L.ShowRespawn, true, nil, "ShowRespawn")
+		local QueueTimer	= generaltimeroptions:CreateCheckButton(L.ShowQueuePop, true, nil, "ShowQueuePop")
+
+		local challengeTimers = {
+			{	text	= L.Disable,				value	= "None" },
+			{	text	= L.ChallengeTimerPersonal,	value 	= "Personal"},
+			{	text	= L.ChallengeTimerGuild,	value 	= "Guild"},
+			{	text	= L.ChallengeTimerRealm,	value 	= "Realm"},
+		}
+		local ChallengeTimerDropDown = generaltimeroptions:CreateDropdown(L.ChallengeTimerOptions, challengeTimers, "DBM", "ChallengeBest", function(value)
+			DBM.Options.ChallengeBest = value
+		end)
+		ChallengeTimerDropDown:SetPoint("TOPLEFT", generaltimeroptions.frame, "TOPLEFT", 0, -125)
 
 		local bossLoggingArea		= extraFeaturesPanel:CreateArea(L.Area_AutoLogging, nil, 100, true)
 		local AutologBosses			= bossLoggingArea:CreateCheckButton(L.AutologBosses, true, nil, "AutologBosses")
@@ -3126,6 +3129,7 @@ local function CreateOptionsMenu()
 		-- END Pizza Timer
 		chatAlertsArea:AutoSetDimension()
 		soundAlertsArea:AutoSetDimension()
+		generaltimeroptions:AutoSetDimension()
 		bossLoggingArea:AutoSetDimension()
 		if thirdPartyArea then
 			thirdPartyArea:AutoSetDimension()

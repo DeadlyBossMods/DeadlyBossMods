@@ -252,7 +252,6 @@ L.FilterDispels				= "해제 주문이 재사용 대기시간 중일 경우 해�
 L.FilterSelfHud				= "자기 자신의 범위 정보를 보이지 않기(거리 비례 범위 정보는 제외)"
 
 L.Area_PullTimer			= "특수 바(전투 예정/시작, 휴식, 사용자 바, 재생성) 기능 끄기"
-L.DontShowRespawn			= "재생성 바 보이지 않기"
 L.DontShowPTNoID			= "같은 인스턴스에 있지 않은 사용자가 보낸 전투 예정 바 차단"
 L.DontShowPT				= "특수 바 숨기기"
 L.DontShowPTText			= "특수 바 관련 알림 숨기기"

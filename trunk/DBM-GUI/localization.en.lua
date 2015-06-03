@@ -61,14 +61,6 @@ L.UseMasterChannel			= "Master audio channel."
 L.UseDialogChannel			= "Dialog audio channel."
 L.UseSFXChannel				= "Sound Effects (SFX) audio channel."
 L.Latency_Text				= "Set max latency sync threshold: %d"
--- Tab: General Timer Options
-L.TimerGeneral 				= "General DBM Timer Options"
-L.SKT_Enabled				= "Always show record victory timer (Overrides boss-specific option)"
-L.CRT_Enabled				= "Show timer for next combat ressurection charge"
-L.ChallengeTimerOptions		= "Set option for challenge mode best clear timer"
-L.ChallengeTimerPersonal	= "Personal"
-L.ChallengeTimerGuild		= GUILD
-L.ChallengeTimerRealm		= "Realm"
 
 L.ModelOptions				= "3D Model Viewer Options"
 L.EnableModels				= "Enable 3D models in boss options"
@@ -230,7 +222,8 @@ L.Panel_SpamFilter			= "DBM Global Disables & Filters"
 L.Area_SpamFilter_Outgoing	= "DBM Global Disable & Filter Options"
 L.SpamBlockNoShowAnnounce	= "Do not show announces or play warning sounds"
 L.SpamBlockNoSpecWarn		= "Do not show special warnings or play special warning sounds"
-L.SpamBlockNoShowTimers		= "Do not show timers"
+L.SpamBlockNoShowTimers		= "Do not show mod timers (Boss Mod/CM/LFG/Respawn)"
+L.SpamBlockNoShowUTimers	= "Do not show user sent timers (Custom/Pull/Break)"
 L.SpamBlockNoSetIcon		= "Do not set icons on targets"
 L.SpamBlockNoRangeFrame		= "Do not show range frame"
 L.SpamBlockNoInfoFrame		= "Do not show info frame"
@@ -239,6 +232,8 @@ L.SpamBlockNoHealthFrame	= "Do not show health frame"
 L.SpamBlockNoCountdowns		= "Do not play countdown sounds"
 L.SpamBlockNoYells			= "Do not send chat yells"
 L.SpamBlockNoNoteSync		= "Do not accept shared notes"
+
+L.Area_Restore				= "DBM Restore Options (Whether DBM restores previous user state when mods finish)"
 L.SpamBlockNoIconRestore	= "Do not save icon states and restore them on combat end"
 L.SpamBlockNoRangeRestore	= "Do not restore range frame to previous state when mods call 'hide'"
 
@@ -256,7 +251,6 @@ L.FilterDispels				= "Filter warnings for dispelable spells if your dispel is on
 L.FilterSelfHud				= "Filter yourself from HudMap (Excludes range based Hud functions)"
 
 L.Area_PullTimer			= "Pull, Break, Combat, & Custom Timer Filter Options"
-L.DontShowRespawn			= "Don't show boss respawn timer"
 L.DontShowPTNoID			= "Block Pull Timer if not sent from same zone as you"
 L.DontShowPT				= "Do not show Pull/Break Timer bar"
 L.DontShowPTText			= "Do not show announce text for Pull/Break Timer"
@@ -281,19 +275,33 @@ L.AfterFirst				= "After each movie has played once"
 L.Always					= ALWAYS
 
 L.Panel_ExtraFeatures		= "Extra Features"
+--
 L.Area_ChatAlerts			= "Text Alert Options"
 L.RoleSpecAlert				= "Show alert message on raid join when your loot spec does not match current spec"
 L.CheckGear					= "Show gear alert message during pull (when your equipped ilvl is much lower than bag ilvl (40+) or main weapon is not equipped)"
 L.WorldBossAlert			= "Show alert message when world bosses might have been engaged on your realm by guildies or friends (inaccurate if sender is CRZed)"
+--
 L.Area_SoundAlerts			= "Sound Alert Options"
 L.LFDEnhance				= "Play readycheck sound for role checks &amp; BG/LFG proposals in Master or Dialog audio channel (I.E. sounds work even if SFX are off and are generally louder)"
 L.WorldBossNearAlert		= "Play readycheck sound when world bosses you are near to are pulled that you need (Overrides boss-specific option)"
 L.RLReadyCheckSound			= "Play readycheck sounds from actual ready checks through Master or Dialog audio channel."
 L.AFKHealthWarning			= "Play alert sound if you are losing health while AFK"
+--
+L.TimerGeneral 				= "Timer Options"
+L.SKT_Enabled				= "Always show record victory timer (Overrides boss-specific option)"
+L.CRT_Enabled				= "Show timer for next combat ressurection charge"
+L.ShowRespawn				= "Show boss respawn timer after a wipe"
+L.ShowQueuePop				= "Show time remaining to accept a queue pop (LFG,BG,etc)"
+L.ChallengeTimerOptions		= "Set option for challenge mode best clear timer"
+L.ChallengeTimerPersonal	= "Personal"
+L.ChallengeTimerGuild		= GUILD
+L.ChallengeTimerRealm		= "Realm"
+--
 L.Area_AutoLogging			= "Auto Logging Options"
 L.AutologBosses				= "Automatically record boss encounters using blizzard combat log (Use /dbm pull before bosses to start logging early for pre pots and other events.)"
 L.AdvancedAutologBosses		= "Automatically record boss encounters with Transcriptor"
 L.LogOnlyRaidBosses			= "Only record raid boss encounters (exclude Raid Finder/party/scenario)"
+--
 L.Area_3rdParty				= "3rd Party Addon Options"
 L.ShowBBOnCombatStart		= "Perform Big Brother buff check on combat start"
 L.BigBrotherAnnounceToRaid	= "Announce Big Brother results to raid"
