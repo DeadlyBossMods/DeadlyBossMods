@@ -25,7 +25,6 @@ local berserkTimer			= mod:NewBerserkTimer(120)--all fights have a 2 min enrage 
 mod:AddBoolOption("SpectatorMode", true)
 mod:AddBoolOption("SpeakOutQueue", true)
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 local playerIsFighting = false
 local currentFighter = nil

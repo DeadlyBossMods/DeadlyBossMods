@@ -19,7 +19,6 @@ local timerGame					= mod:NewBuffActiveTimer(60, 102178)
 local countdownGame				= mod:NewCountdownFades(60, 102178)
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 102341 and UnitGUID("pet") == args.destGUID and self:AntiSpam() then

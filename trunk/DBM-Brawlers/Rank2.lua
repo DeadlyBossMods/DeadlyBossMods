@@ -24,7 +24,6 @@ local timerThrowNetCD			= mod:NewCDTimer(20, 133308)--Fran and Riddoh
 local timerGoblinDeviceCD		= mod:NewCDTimer(22, 133227)--Fran and Riddoh
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 

@@ -23,7 +23,6 @@ local timerFireLineCD			= mod:NewCDTimer(15, 133607)--Vian the Volatile
 local timerDevastatingThrustCD	= mod:NewCDTimer(12, 134777)--Ixx
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 mod:AddBoolOption("SetIconOnBlat", true)--Blat
 
 local brawlersMod = DBM:GetModByName("Brawlers")

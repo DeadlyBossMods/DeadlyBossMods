@@ -17,7 +17,6 @@ local MagicWingsCountdown			= mod:NewCountdownFades(7.5, 102116)
 local markWings = false
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 local function wingsRemoved()
 	markWings = false

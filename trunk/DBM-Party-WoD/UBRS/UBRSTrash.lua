@@ -32,7 +32,6 @@ local timerSmashCD						= mod:NewCDTimer(13, 155572)
 local timerEruptionCD					= mod:NewCDTimer(10, 155037, nil, false)--10-15 sec variation. May be distracting or spammy since two of them
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled or self:IsDifficulty("normal5") then return end

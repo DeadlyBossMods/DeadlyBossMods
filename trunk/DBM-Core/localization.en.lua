@@ -425,7 +425,6 @@ DBM_ARROW_ERROR_USAGE	= {
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Record Victory"
-DBM_SPEED_KILL_TIMER_OPTION	= "Show a timer to beat your fastest victory"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "Best Clear"
 DBM_COMBAT_RES_TIMER_TEXT	= "Next CR Charge"
 DBM_CORE_TIMER_RESPAWN		= "Respawn"

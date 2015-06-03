@@ -17,7 +17,6 @@ local timerGame		= mod:NewBuffActiveTimer(60, 101871)
 local countdownGame	= mod:NewCountdownFades(60, 101871)
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 mod:AddBoolOption("SetBubbles", true)--Because the NPC is an annoying and keeps doing chat says while you're shooting which cover up the targets if bubbles are on.
 
 local CVAR = false

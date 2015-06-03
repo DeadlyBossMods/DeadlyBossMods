@@ -28,7 +28,6 @@ local specWarnShrapnelblast				= mod:NewSpecialWarningMove(166675, "Tank", nil, 
 local specWarnThunderzone				= mod:NewSpecialWarningMove(166340)
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 function mod:FlametongueTarget(targetname, uId)
 	if not targetname then return end

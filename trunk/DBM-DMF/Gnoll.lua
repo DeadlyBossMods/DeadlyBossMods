@@ -27,7 +27,6 @@ local gameEarnedPoints = 0
 local gameMaxPoints = 0
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 101612 and args:IsPlayer() then

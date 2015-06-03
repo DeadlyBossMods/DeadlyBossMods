@@ -22,7 +22,6 @@ local specWarnBuilding			= mod:NewSpecialWarning("specWarnBuilding")
 --local timerCombatStart			= mod:NewCombatTimer(44)--rollplay for first pull
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if not self.Options.Enabled then return end
