@@ -4868,6 +4868,7 @@ do
 		local MassResDebuff = 0
 		local playersOutofRange = 0
 		local playersAlive = 0
+		local playersDead = 0
 		local playerIsDead = UnitIsDeadOrGhost("player")--Check if player alive or dead.
 		for i = 1, self:GetNumRealPlayersInZone() do
 			local unitId = "raid"..i
@@ -4876,6 +4877,8 @@ do
 			end
 			if not UnitIsDeadOrGhost(unitId) then
 				playersAlive = playersAlive + 1
+			else
+				playersDead = playersDead + 1
 			end
 			local range = DBM.RangeCheck:GetDistance("player", unitId)
 			if range > 200 then--Very far away, released players probably
@@ -4887,18 +4890,26 @@ do
 			self:Debug("There are currently "..playersAlive.." players alive and "..playersOutofRange.." players very far from your location (I.E. either they released, or you did)")
 		else
 			if playersAlive > 0 then--Mass resurrection possibly available
-				if playersOutofRange == 0 then
-					if playerIsDead then
-						self:Debug("No players have debuff, no one has released and there is a living player nearby, wait for mass resurrection!")
+				if playersDead > 0 then
+					if playersOutofRange == 0 then
+						if playerIsDead then
+							self:Debug("No players have debuff, no one has released and there is a living player nearby, wait for mass resurrection!")
+						else
+							if playersDead > 4 then--At least 5 dead
+								self:Debug("No players have debuff, no one has released and you are alive, cast mass resurrection!")
+							else
+								self:Debug("No players have debuff, no one has released and you are alive, but only "..playersDead.." players are dead, consider using single ressurections")
+							end
+						end
 					else
-						self:Debug("No players have debuff, no one has released and you are alive, cast mass resurrection!")
+						if playerIsDead then
+							self:Debug("No players have debuff. However, "..playersOutofRange.." players have already released. Consider releasing as well and holding mass ressurection")
+						else
+							self:Debug("No players have debuff. However, "..playersOutofRange.." players are out of range. Either you already released, or they did and you probably shouldn't use mass resurrection")
+						end
 					end
 				else
-					if playerIsDead then
-						self:Debug("No players have debuff. However, "..playersOutofRange.." players have already released. Consider releasing as well and holding mass ressurection")
-					else
-						self:Debug("No players have debuff. However, "..playersOutofRange.." players are out of range. Either you already released, or they did and you probably shouldn't use mass resurrection")
-					end
+					self:Debug("Everyone is alive, congrats!")
 				end
 			else
 				self:Debug("No players have debuff, but no one is alive. If anyone had a soulstone or battle rez, now is time to pop it. Otherwise run back")
