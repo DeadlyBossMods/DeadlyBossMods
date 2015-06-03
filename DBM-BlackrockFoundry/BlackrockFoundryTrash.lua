@@ -34,7 +34,6 @@ local specWarnBurningOther			= mod:NewSpecialWarningTaunt(175594, nil, nil, nil,
 local voiceBurning					= mod:NewVoice(155242) --changemt
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 local volcanicBomb = GetSpellInfo(156413)
 local blastCount = 0--Non synced variable, because mods that don't use start/endcombat don't have timer recovery

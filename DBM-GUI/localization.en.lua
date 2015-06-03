@@ -288,7 +288,7 @@ L.RLReadyCheckSound			= "Play readycheck sounds from actual ready checks through
 L.AFKHealthWarning			= "Play alert sound if you are losing health while AFK"
 --
 L.TimerGeneral 				= "Timer Options"
-L.SKT_Enabled				= "Always show record victory timer (Overrides boss-specific option)"
+L.SKT_Enabled				= "Show record victory timer (Overrides boss-specific option)"
 L.CRT_Enabled				= "Show timer for next combat ressurection charge"
 L.ShowRespawn				= "Show boss respawn timer after a wipe"
 L.ShowQueuePop				= "Show time remaining to accept a queue pop (LFG,BG,etc)"

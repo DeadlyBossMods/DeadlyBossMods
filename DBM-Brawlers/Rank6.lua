@@ -28,7 +28,6 @@ local timerTorrentCD			= mod:NewCDTimer(18, 124935)--Proboskus
 local timerShriekCD				= mod:NewCDTimer(23, 134795)
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 

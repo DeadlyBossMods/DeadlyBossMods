@@ -17,7 +17,6 @@ local specWarnOverheadSmash			= mod:NewSpecialWarningTaunt(175765)
 local yellLivingBlaze				= mod:NewYell(175583)
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 
 function mod:SPELL_CAST_START(args)

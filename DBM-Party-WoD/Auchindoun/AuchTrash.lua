@@ -21,7 +21,6 @@ local specWarnFelStomp				= mod:NewSpecialWarningDodge(157173, "Tank")
 local specWarnArbitersHammer		= mod:NewSpecialWarningInterrupt(157797)
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled or self:IsDifficulty("normal5") then return end

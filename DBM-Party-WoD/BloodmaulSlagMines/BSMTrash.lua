@@ -23,7 +23,6 @@ local specWarnSubjugate					= mod:NewSpecialWarningDispel(151697, "Healer")
 local specWarnSlaversRage				= mod:NewSpecialWarningDispel(151965, "RemoveEnrage")
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 local UnitExists, UnitGUID, UnitAffectingCombat = UnitExists, UnitGUID, UnitAffectingCombat
 local function validWarning(GUID)

@@ -283,7 +283,6 @@ DBM_ARROW_ERROR_USAGE	= {
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Superar récord"
-DBM_SPEED_KILL_TIMER_OPTION	= "Mostrar tiempo para superar tu muerte más rápida"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "Tu mejro récord"
 
 

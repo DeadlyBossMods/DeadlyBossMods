@@ -398,7 +398,6 @@ DBM_ARROW_ERROR_USAGE	= {
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Rekordzeit"
-DBM_SPEED_KILL_TIMER_OPTION	= "Zeige einen Timer zur Verbesserung deiner Rekordzeit"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "Abschlussbestzeit"
 DBM_COMBAT_RES_TIMER_TEXT	= "Kampfbelebung +"
 DBM_CORE_TIMER_RESPAWN		= "Wiedererscheinen"

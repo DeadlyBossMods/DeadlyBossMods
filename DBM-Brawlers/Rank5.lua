@@ -19,7 +19,6 @@ local timerPolymorphCD		= mod:NewCDTimer(35, 133362)--Millie Watt
 local timerChompCD			= mod:NewCDTimer(8, 135342)--Bruce
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 

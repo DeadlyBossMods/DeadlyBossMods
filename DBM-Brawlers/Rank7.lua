@@ -36,7 +36,6 @@ local timerGhostCD				= mod:NewNextTimer(13, 133465)--Battletron
 local timerDivineCircleCD		= mod:NewCDTimer(35, 142585)--Insufficent data to say if accurate with certainty
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 local remainingMines = 8

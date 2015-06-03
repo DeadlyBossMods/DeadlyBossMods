@@ -296,7 +296,6 @@ DBM_ARROW_ERROR_USAGE	= {
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Record à battre"
-DBM_SPEED_KILL_TIMER_OPTION	= "Afficher le timer de délai pour battre votre record"
 DBM_SPEED_CLEAR_TIMER_TEXT      = "Meilleur clean"
 
 
