@@ -69,8 +69,11 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 150678 and not args:IsDestTypePlayer() then
-		warnMoltenCore:Show(args.destName)
-		specWarnMoltenCore:Show(args.destName)
+		if self.Options.SpecWarn150678dispel then
+			specWarnMoltenCore:Show(args.destName)
+		else
+			warnMoltenCore:Show(args.destName)
+		end
 		voiceMoltenCore:Play("dispelboss")
 	end
 end
