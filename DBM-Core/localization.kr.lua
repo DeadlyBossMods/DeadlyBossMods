@@ -77,8 +77,18 @@ DBM_CORE_MPROFILE_DELETE_SUCCESS	= "%s의 전문화%d 설정을 삭제하였습�
 DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "현재 사용중인 설정은 삭제할 수 없습니다."
 DBM_CORE_MPROFILE_DELETE_S_ERROR	= "삭제할 설정이 없거나 올바르지 않습니다. 설정이 삭제되지 않았거나 일부만 삭제됩니다."
 
-DBM_CORE_NOTEHEADER					= "메모를 여기에 입력하세요. 캐릭터명을 >< 로 감싸면 직업색상으로 표시됩니다. 여러개의 메모가 필요한 경우 '/'로 분리하세요."
-DBM_CORE_NOTEFOOTER					= "메모가 업데이트 된 경우 확인 버튼을 누르면 저장됩니다."
+DBM_CORE_NOTE_SHARE_SUCCESS			= "%s|1이;가; %s에 대한 메모를 공유했습니다."
+DBM_CORE_NOTE_SHARE_LINK			= "메모를 확인하려면 여기를 클릭"
+DBM_CORE_NOTE_SHARE_FAIL			= "%s|1이;가; %s에 대한 메모를 공유하려고 하였습니다. 하지만 관련된 경고를 설치되지 않았거나 불러오지 않은 상태입니다. 해당 메모가 필요한 경우, 관련된 경고를 불러오고 나서 보낸 사람에게 재요청을 하시기 바랍니다."
+
+DBM_CORE_NOTEHEADER					= "%에 대한 메모를 여기에 입력하세요. 캐릭터명을 >< 로 감싸면 직업색상으로 표시됩니다. 여러개의 메모가 필요한 경우 '/'로 분리하세요."
+DBM_CORE_NOTEFOOTER					= "저장: '확인', 취소: '취소' 버튼을 누르세요."
+DBM_CORE_NOTESHAREDHEADER			= "%s|1이;가; %s에 대한 메모를 공유하려고 하려고 합니다. 수락할 경우 이미 존재하는 메모를 덮어쓰게 됩니다."
+DBM_CORE_NOTESHARED					= "메모를 공격대 또는 파티에게 성공적으로 보냈습니다."
+DBM_CORE_NOTESHAREERRORSOLO			= "자기 자신에게는 메모를 보낼 수 없습니다."
+DBM_CORE_NOTESHAREERRORBLANK		= "빈 메모는 공유할 수 없습니다."
+DBM_CORE_NOTESHAREERRORGROUPFINDER	= "전장, 공격대 찾기, 파티 찾기 파티에서는 메모를 공유할 수 없습니다."
+DBM_CORE_NOTESHAREERRORALREADYOPEN	= "메모 편집창이 이미 열려 있는 경우 편집중인 메모 손실을 방지하기 위해 공유 메모창을 열수 없습니다."
 
 DBM_CORE_ALLMOD_DEFAULT_LOADED		= "현재 경보의 기본 설정을 불러왔습니다."
 DBM_CORE_ALLMOD_STATS_RESETED		= "현재 경보의 통계가 초기화 됩니다."
