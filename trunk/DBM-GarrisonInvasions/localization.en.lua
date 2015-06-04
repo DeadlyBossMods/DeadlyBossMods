@@ -73,3 +73,12 @@ L = DBM:GetModLocalization("Drogan")
 L:SetGeneralLocalization({
 	name = "Commander Dro'gan"
 })
+
+----------------------------
+-- Mage Lord Gogg'nathog  --
+----------------------------
+L = DBM:GetModLocalization("Goggnathog")
+
+L:SetGeneralLocalization({
+	name = "Mage Lord Gogg'nathog"
+})
