@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(1426)
 
 L:SetTimerLocalization({
-	timerSiegeVehicleCD	= "다음 공성 차량"
+	timerSiegeVehicleCD	= "다음 차량: %s"
 })
 
 L:SetOptionLocalization({
@@ -15,8 +15,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	AddsSpawn1			=	"Comin' in hot!",
-	AddsSpawn2			=	"Fire in the hole!"
+	AddsSpawn1		=	"Comin' in hot!",--Blizzard seems to have disabled these
+	AddsSpawn2		=	"Fire in the hole!",--Blizzard seems to have disabled these
+	BossLeaving		=	"I'll be back..."
 })
 
 ---------------------------
