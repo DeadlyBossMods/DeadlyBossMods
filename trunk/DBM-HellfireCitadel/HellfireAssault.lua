@@ -153,7 +153,7 @@ https://www.warcraftlogs.com/reports/rQWG71xhLgnbvdYq#fight=12&type=summary&host
 mod.vb.vehicleCount = 0
 --mod.vb.addsCount = 0
 mod.vb.axeActive = false
-local normalVehicleTimers = {81.8, 64.7, 80.9, 62.4, 76.6}
+local normalVehicleTimers = {81.8, 64.7, 80.9, 62.4, 76.6, 64}
 local vehicleTimers = {62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 40.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-4 seconds
 local mythicVehicleTimers = {20, 25, 54, 54, 44, 46, 12, 15.5, 50, 67, 68.5, 50.5, 55.5, 35, 35, 40, 39.5, 29.5, 25}--Done in a weird way, for dual timers support. Pretend it's two tables combined into 1. First time is time between1 and 3, second time between 2 and 4, etc.
 --local addsTimers = {25, 45, 44, 44, 43, 43, 42, 42, 41, 40, 42, 40, 40}--Very tiny variance between pulls. Adds gradually get faster over time. that 42 is a strange fluke though. probably 40 with variance, the 40 before it i think should have been a 41 so the 42 was probably auto correction
