@@ -53,7 +53,7 @@ local timerQuickFuseBomb			= mod:NewCastTimer(22, 186652, nil, false)--Timer spa
 local timerBurningBomb				= mod:NewCastTimer(42, 186667, nil, false)--Timer spam, optional, maybe make meleedps only by default?
 local timerReactiveBomb				= mod:NewCastTimer(32, 186676, nil, "Tank")--Since tanks only have 1 bomb to worry about. not too spammy to have on by default.
 
-local berserkTimer					= mod:NewBerserkTimer(600)
+--local berserkTimer					= mod:NewBerserkTimer(600)
 
 local countdownFuelStreak			= mod:NewCountdown(15, 182668)
 local countdownBarrage				= mod:NewCountdown(15, 185282)
@@ -130,7 +130,7 @@ function mod:OnCombatStart(delay)
 	self.vb.firebombCount = 0
 	self.vb.fuelCount = 0
 	updateRangeFrame(self)
-	berserkTimer:Start(-delay)
+--	berserkTimer:Start(-delay)
 	--Boss uses "Ground Phase" trigger after pull. Do not start timers here
 end
 

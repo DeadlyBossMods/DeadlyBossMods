@@ -23,10 +23,10 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"--Have to register all unit ids to catch the boss when she casts haste
 )
 
---TODO, make voices for the 5 tank types by name, similar to Blast Furnace adds. They will be announced when they spawn (as well as what side they are on for mythic)
 --TODO, tank swaps for slam?
 --TODO, add interrupt voice to volley of it actually is interruptable, if not, remove special warning instead.
 --TODO, rework adds timers in absense of yells, plus see if blizzard changed way they spawn, since they seemed to be a bit more staggered in mythic
+--TODO, on normal they changed vehicle spawn rates to be slower. But LFR had heroic rates, So now need to see if LFR also uses slower timers, for now, ASSUMING yes and coded it as such.
 --Siegemaster Mar'tak
 local warnHowlingAxe				= mod:NewTargetAnnounce(184369, 3)
 local warnFelfireMunitions			= mod:NewTargetAnnounce(180079, 1)
@@ -153,6 +153,7 @@ https://www.warcraftlogs.com/reports/rQWG71xhLgnbvdYq#fight=12&type=summary&host
 mod.vb.vehicleCount = 0
 --mod.vb.addsCount = 0
 mod.vb.axeActive = false
+local normalVehicleTimers = {81.8, 64.7, 80.9, 62.4, 76.6}
 local vehicleTimers = {62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 40.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-4 seconds
 local mythicVehicleTimers = {20, 25, 54, 54, 44, 46, 12, 15.5, 50, 67, 68.5, 50.5, 55.5, 35, 35, 40, 39.5, 29.5, 25}--Done in a weird way, for dual timers support. Pretend it's two tables combined into 1. First time is time between1 and 3, second time between 2 and 4, etc.
 --local addsTimers = {25, 45, 44, 44, 43, 43, 42, 42, 41, 40, 42, 40, 40}--Very tiny variance between pulls. Adds gradually get faster over time. that 42 is a strange fluke though. probably 40 with variance, the 40 before it i think should have been a 41 so the 42 was probably auto correction
@@ -217,7 +218,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 185816 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnRepair:Show(args.sourceName)
 		voiceRepair:Play("kickcast")
-	elseif spellId == 181968 then
+	elseif spellId == 181968 and self:AntiSpam(3, 1) then
 		specWarnMetamorphosis:Show()
 	end
 end
@@ -304,8 +305,18 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM:AddMsg("No Vehicle timer information beyond this point. If you have log or video of this pull, please share it")
 			end
 		else
-			if vehicleTimers[Count] then
-				timerSiegeVehicleCD:Start(vehicleTimers[Count], "")
+			if self:IsHeroic() then
+				if vehicleTimers[Count] then
+					timerSiegeVehicleCD:Start(vehicleTimers[Count], "")
+				else
+					DBM:AddMsg("No Vehicle timer information beyond this point. If you have log or video of this pull, please share it")
+				end
+			else
+				if normalVehicleTimers[Count] then
+					timerSiegeVehicleCD:Start(normalVehicleTimers[Count], "")
+				else
+					DBM:AddMsg("No Vehicle timer information beyond this point. If you have log or video of this pull, please share it")
+				end
 			end
 		end
 	elseif spellId == 184369 then
