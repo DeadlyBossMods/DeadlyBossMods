@@ -26,7 +26,7 @@ local warnUnstableOrb				= mod:NewTargetCountAnnounce(182001, 3, nil, false)--Of
 local warnFuelStreak				= mod:NewCountAnnounce(182668, 3)
 
 local specWarnArtillery				= mod:NewSpecialWarningMoveAway(182280, nil, nil, nil, 3, 2)
-local yellArtillery					= mod:NewYell(182108)
+local yellArtillery					= mod:NewFadesYell(182108)
 local specWarnImmolation			= mod:NewSpecialWarningMove(182074, nil, nil, nil, 1, 2)
 local specWarnBarrage				= mod:NewSpecialWarningCount(185282, nil, nil, nil, 2, 5)--Count probably better than dodge
 local specWarnPounding				= mod:NewSpecialWarningCount(182020, nil, nil, nil, 2, 2)
@@ -223,7 +223,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnArtillery:CombinedShow(0.3, self.vb.artilleryCount, args.destName)
 		if args:IsPlayer() then
 			specWarnArtillery:Show()
-			yellArtillery:Yell()
+			yellArtillery:Schedule(11, 1)
+			yellArtillery:Schedule(10, 2)
+			yellArtillery:Schedule(9, 3)
+			yellArtillery:Schedule(8, 4)
+			yellArtillery:Schedule(7, 5)
 			voiceArtillery:Play("runout")
 			countdownArtilleryFade:Start()
 		end
@@ -266,6 +270,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.artilleryActive = self.vb.artilleryActive - 1
 		if args:IsPlayer() then
 			countdownArtilleryFade:Cancel()
+			yellArtillery:Cancel()
 		end
 		if self.Options.SetIconOnArtillery then
 			self:SetIcon(args.destName, 0)
