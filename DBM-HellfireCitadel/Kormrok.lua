@@ -127,6 +127,8 @@ function mod:OnCombatEnd()
 	end
 end 
 
+--(ability.id = 181292 or ability.id = 181293 or ability.id = 181296 or ability.id = 181297 or ability.id = 181299 or ability.id = 181300 or ability.id = 180244 or ability.id = 181305) and type = "begincast" or ability.id = 181307 and type = "cast" or (ability.id = 181306 or ability.id = 180115 or ability.id = 180116 or ability.id = 180117 or ability.id = 189197 or ability.id = 189198 or ability.id = 189199 or ability.id = 186882) and (type = "applybuff" or type = "applydebuff")
+--(ability.id = 181292 or ability.id = 181293 or ability.id = 181296 or ability.id = 181297 or ability.id = 181299 or ability.id = 181300 or ability.id = 180244 or ability.id = 181305) and type = "begincast" or ability.id = 181307 and type = "cast" or (ability.id = 181306 or ability.id = 186882) and (type = "applybuff" or type = "applydebuff") or ability.id = 180115 or ability.id = 180116 or ability.id = 180117 or ability.id = 189197 or ability.id = 189198 or ability.id = 189199
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 181292 or spellId == 181293 then
@@ -159,8 +161,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnSwat:Show(self.vb.swatCount)
 		voiceSwat:Play("carefly")
 		if self.vb.swatCount == 1 then
-			timerSwatCD:Start(32, 2)
-		elseif self.vb.swatCount == 2 then
+			timerSwatCD:Start(self:IsNormal() and 38 or 32, 2)
+		elseif not self:IsNormal() and self.vb.swatCount == 2 then--Normal doesn't get a 3rd swat (NOT CONFIRMED)
 			timerSwatCD:Start(52, 3)
 		end
 	end
@@ -172,9 +174,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.foulCrush = self.vb.foulCrush + 1
 		specWarnFoulCrush:Show(self.vb.foulCrush)
 		if self.vb.foulCrush == 1 then
-			timerFoulCrushCD:Start(36, 2)
+			timerFoulCrushCD:Start(self:IsNormal() and 50 or 36, 2)
 		elseif self.vb.foulCrush == 2 then
-			timerFoulCrushCD:Start(32, 3)
+			timerFoulCrushCD:Start(self:IsNormal() and 38 or 32, 3)
 		end
 	end
 end
@@ -220,8 +222,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		updateRangeCheck(self)
 		if self.vb.explosiveBurst == 1 then
-			timerExplosiveBurstCD:Start(32, 2)
-		elseif self.vb.explosiveBurst == 2 then
+			timerExplosiveBurstCD:Start(self:IsNormal() and 38 or 32, 2)
+		elseif not self:IsNormal() and self.vb.explosiveBurst == 2 then--Doesn't cast a 3rd time on normal
 			timerExplosiveBurstCD:Start(52, 3)
 		end
 	--Each energy has it's own hard coded sequence of events/timers.
@@ -230,18 +232,31 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.poundCount = 0
 		self.vb.swatCount = 0
 		warnShadowEnergy:Show()
-		timerFelOutpouringCD:Start(11)
-		self:Schedule(11, delayedFelOutpouring, self, 84)--95
-		timerSwatCD:Start(21, 1)
-		timerPoundCD:Start(37, 1)
-		self:Schedule(37, delayedPound, self, 48)--85
-		timerExplosiveRunesCD:Start(53)
-		timerGraspingHandsCD:Start(69)
-		if not self:IsMythic() then
-			voiceGraspingHands:Schedule(64, "gather")
+		if self:IsNormal() then
+			timerFelOutpouringCD:Start(13)
+			self:Schedule(13, delayedFelOutpouring, self, 100)--113
+			timerSwatCD:Start(37, 1)
+			timerPoundCD:Start(45, 1)
+			self:Schedule(45, delayedPound, self, 50)--95
+			timerExplosiveRunesCD:Start(63)
+			--timerGraspingHandsCD:Start(69)--Wasn't used on normal, bug?
+			--voiceGraspingHands:Schedule(64, "gather")
+			--countdownGraspingHands:Start(69)
+			timerLeapCD:Start(135.5)
+		else
+			timerFelOutpouringCD:Start(11)
+			self:Schedule(11, delayedFelOutpouring, self, 84)--95
+			timerSwatCD:Start(21, 1)
+			timerPoundCD:Start(37, 1)
+			self:Schedule(37, delayedPound, self, 48)--85
+			timerExplosiveRunesCD:Start(53)
+			timerGraspingHandsCD:Start(69)
+			if not self:IsMythic() then
+				voiceGraspingHands:Schedule(64, "gather")
+			end
+			countdownGraspingHands:Start(69)
+			timerLeapCD:Start()
 		end
-		countdownGraspingHands:Start(69)
-		timerLeapCD:Start()
 	--Non LFR phase changes need reworking post mechanics changes.
 	--Probably still mostly right but need minor tweaks
 	--https://www.warcraftlogs.com/reports/wmrpCd147nf2B3Dj/#type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+189197+or+ability.id+%3D+189199+or+ability.id+%3D+189198+or+(ability.id+%3D+180244+or+ability.id+%3D+181292+or+ability.id+%3D+181293+or+ability.id+%3D+181296+or+ablity.id+%3D+181297+or+ability.id+%3D+181299+or+ability.id+%3D+181300+or+ability.id+%3D+180244+or+ability.id+%3D+181305+or+ability.id+%3D+187165)+and+type+%3D+%22begincast%22+or+ability.id+%3D+181307+and+type+%3D+%22cast%22+or+ability.id+%3D+181306+and+type+%3D+%22applydebuff%22
@@ -249,34 +264,60 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.poundCount = 0
 		self.vb.explosiveBurst = 0
 		warnExplosiveEnergy:Show()
-		timerExplosiveRunesCD:Start(11)
-		self:Schedule(11, delayedExplosiveRunes, self, 48)--59
-		timerExplosiveBurstCD:Start(21, 1)
-		timerPoundCD:Start(27, 1)
-		self:Schedule(27, delayedPound, self, 42)--69
-		timerGraspingHandsCD:Start(43)
-		if not self:IsMythic() then
-			voiceGraspingHands:Schedule(38, "gather")
+		if self:IsNormal() then
+			timerExplosiveRunesCD:Start(13)
+			self:Schedule(13, delayedExplosiveRunes, self, 58)--71
+			timerExplosiveBurstCD:Start(25, 1)
+			timerPoundCD:Start(33, 1)
+			self:Schedule(33, delayedPound, self, 50)--83
+--			timerGraspingHandsCD:Start(43)--Wasn't used on normal, bug?
+--			voiceGraspingHands:Schedule(38, "gather")
+--			countdownGraspingHands:Start(43)
+			timerFelOutpouringCD:Start(99)
+			timerLeapCD:Start(135.5)
+		else
+			timerExplosiveRunesCD:Start(11)
+			self:Schedule(11, delayedExplosiveRunes, self, 48)--59
+			timerExplosiveBurstCD:Start(21, 1)
+			timerPoundCD:Start(27, 1)
+			self:Schedule(27, delayedPound, self, 42)--69
+			timerGraspingHandsCD:Start(43)
+			if not self:IsMythic() then
+				voiceGraspingHands:Schedule(38, "gather")
+			end
+			countdownGraspingHands:Start(43)
+			timerFelOutpouringCD:Start(85)
+			timerLeapCD:Start()
 		end
-		countdownGraspingHands:Start(43)
-		timerFelOutpouringCD:Start(85)
-		timerLeapCD:Start()
 	elseif spellId == 180117 then--Foul Energy
 		self.vb.poundCount = 0
 		self.vb.foulCrush = 0
 		warnFoulEnergy:Show()
-		timerGraspingHandsCD:Start(11)
-		if not self:IsMythic() then
-			voiceGraspingHands:Schedule(6, "gather")
+		if self:IsNormal() then
+			voiceGraspingHands:Schedule(8, "gather")
+			timerGraspingHandsCD:Start(13)
+			countdownGraspingHands:Start(13)
+			self:Schedule(13, delayedHands, self, 108)--121
+			timerFoulCrushCD:Start(25, 1)
+			timerPoundCD:Start(33, 1)
+			self:Schedule(33, delayedPound, self, 62)--95
+			timerFelOutpouringCD:Start(51)
+			timerExplosiveRunesCD:Start(83)
+			timerLeapCD:Start(135.5)
+		else
+			if not self:IsMythic() then
+				voiceGraspingHands:Schedule(6, "gather")
+			end
+			timerGraspingHandsCD:Start(11)
+			countdownGraspingHands:Start(11)
+			self:Schedule(11, delayedHands, self, 90)--101
+			timerFoulCrushCD:Start(21, 1)
+			timerPoundCD:Start(27, 1)
+			self:Schedule(27, delayedPound, self, 52)--79
+			timerFelOutpouringCD:Start(43.5)
+			timerExplosiveRunesCD:Start(69)
+			timerLeapCD:Start()
 		end
-		countdownGraspingHands:Start(11)
-		self:Schedule(11, delayedHands, self, 90)--101
-		timerFoulCrushCD:Start(21, 1)
-		timerPoundCD:Start(27, 1)
-		timerFelOutpouringCD:Start(43.5)
-		self:Schedule(27, delayedPound, self, 52)--79
-		timerExplosiveRunesCD:Start(69)
-		timerLeapCD:Start()
 	--LFR is an ENTIRELY different fight
 	--Fortunately it's also different spellids for phase changes so easy separate rules
 	elseif spellId == 189197 then--Shadow Energy
