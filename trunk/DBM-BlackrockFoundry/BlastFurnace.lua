@@ -67,7 +67,7 @@ local specWarnEarthShield		= mod:NewSpecialWarningDispel(155173, "MagicDispeller
 local specWarnSlagPool			= mod:NewSpecialWarningMove(155743)
 --Phase 3
 local specWarnHeartoftheMountain= mod:NewSpecialWarningSwitch("ej10808", "Tank")
-local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 3, nil, nil, nil, 2)
+local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 2, nil, nil, nil, 2)
 local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242, nil, nil, nil, nil, 2)
 --All
 local specWarnBlast				= mod:NewSpecialWarningSoon(155209, nil, nil, nil, 2)
@@ -491,7 +491,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 155242 then
 		local amount = args.amount or 1
-		if amount >= 3 then
+		if amount >= 2 then
 			voiceHeat:Play("changemt")
 			if args:IsPlayer() then
 				specWarnHeat:Show(amount)
