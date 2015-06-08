@@ -31,7 +31,7 @@ L:SetMiscLocalization({
 	rylakSpawn			= "戰場上的騷動吸引了一隻萊拉克！",--Source npc Darkwing Scavenger, target playername
 	terrifiedWorker		= "害怕的工人在空地上被抓住了！",
 	sneakySpy			= "的間諜趁亂闖進了要塞！",--Shortened to cut out "horde/alliance"
-	buildingAttack		= "你的%s受到攻擊了！",--Your Salvage Yard is under attack! 食腐骨蟲聞到牠的下一頓大餐了！
+	buildingAttack		= "%s受到攻擊了！",--Your Salvage Yard is under attack! 食腐骨蟲聞到牠的下一頓大餐了！
 	--Ogre
 	GorianwarCaller		= "一位戈利安戰鬥法師進入戰場！",--Maybe combined "add" special warning most adds?
 	WildfireElemental	= "有個野火元素被召喚到大門前！",--Maybe combined "add" special warning most adds?
@@ -73,4 +73,13 @@ L = DBM:GetModLocalization("Drogan")
 
 L:SetGeneralLocalization({
 	name = "指揮官德羅甘"
+})
+
+----------------------------
+-- Mage Lord Gogg'nathog  --
+----------------------------
+L = DBM:GetModLocalization("Goggnathog")
+
+L:SetGeneralLocalization({
+	name = "法師領主勾那索格"
 })
