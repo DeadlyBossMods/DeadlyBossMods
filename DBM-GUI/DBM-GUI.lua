@@ -2974,6 +2974,7 @@ local function CreateOptionsMenu()
 		local spamSpecArea = spamPanel:CreateArea(L.Area_SpecFilter, nil, 120, true)
 		spamSpecArea:CreateCheckButton(L.FilterTankSpec, true, nil, "FilterTankSpec")
 		spamSpecArea:CreateCheckButton(L.FilterInterrupts, true, nil, "FilterInterrupt")
+		spamSpecArea:CreateCheckButton(L.FilterInterruptNoteName, true, nil, "FilterInterruptNoteName")
 		spamSpecArea:CreateCheckButton(L.FilterDispels, true, nil, "FilterDispel")
 		spamSpecArea:CreateCheckButton(L.FilterSelfHud, true, nil, "FilterSelfHud")
 
