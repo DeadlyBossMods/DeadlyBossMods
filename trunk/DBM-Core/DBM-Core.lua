@@ -1039,18 +1039,18 @@ do
 			onLoadCallbacks = nil
 			loadOptions()
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
-				self:Schedule(10, function() self:AddMsg(DBM_CORE_VEM) end)
 				self:Disable(true)
+				self:Schedule(10, function() self:AddMsg(DBM_CORE_VEM) end)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
-				self:Schedule(10, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
 				self:Disable(true)
+				self:Schedule(10, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
 				return
 			end
 			--DBM is disabled and DBM is not forced disabled because of major patch
 			if dbmToc >= wowTOC and not self.Options.Enabled then
-				self:AddMsg(DBM_CORE_DISABLED_REMINDER)
+				self:Schedule(10, function() self:AddMsg(DBM_CORE_DISABLED_REMINDER) end)
 			end
 			self.Bars:LoadOptions("DBM")
 			self.Arrow:LoadPosition()
