@@ -1031,7 +1031,7 @@ do
 
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
-			dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "Interface"))
+			dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "X-Min-Interface"))
 			isLoaded = true
 			for i, v in ipairs(onLoadCallbacks) do
 				xpcall(v, geterrorhandler())
