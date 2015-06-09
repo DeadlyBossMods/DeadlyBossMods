@@ -65,20 +65,29 @@ L:SetGeneralLocalization({
 	name = "Lady Fleshsear"
 })
 
-----------------------
+-------------------------
 --  Commander Dro'gan  --
-----------------------
+-------------------------
 L = DBM:GetModLocalization("Drogan")
 
 L:SetGeneralLocalization({
 	name = "Commander Dro'gan"
 })
 
-----------------------------
--- Mage Lord Gogg'nathog  --
-----------------------------
+-----------------------------
+--  Mage Lord Gogg'nathog  --
+-----------------------------
 L = DBM:GetModLocalization("Goggnathog")
 
 L:SetGeneralLocalization({
 	name = "Mage Lord Gogg'nathog"
+})
+
+------------
+--  Gaur  --
+------------
+L = DBM:GetModLocalization("Gaur")
+
+L:SetGeneralLocalization({
+	name = "Gaur"
 })

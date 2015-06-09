@@ -18,6 +18,8 @@ local warnChainGrasp			= mod:NewTargetAnnounce(180880, 3)
 
 local specWarnChainGrasp		= mod:NewSpecialWarningYou(180880)--Persists for 30 seconds or until you get 30 yards from boss, whichever first.
 
+--local voiceChainGrasp			= mod:NewVoice(180880)--runout? For this, you have to run away from boss by 30 yards to break chain
+
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 180882 then
@@ -30,6 +32,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 180880 then
 		if args:IsPlayer() then
 			specWarnChainGrasp:Show()
+			--voiceChainGrasp:Play("runout")
 		else
 			warnChainGrasp:Show(args.destName)
 		end
