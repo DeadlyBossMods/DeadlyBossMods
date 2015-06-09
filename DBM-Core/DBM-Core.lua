@@ -1040,15 +1040,12 @@ do
 			loadOptions()
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 				self:Schedule(10, function() self:AddMsg(DBM_CORE_VEM) end)
-				dbmIsEnabled = false
-				blockEnable = true
+				self:Disable(true)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
 				self:Schedule(10, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
-				dbmIsEnabled = false
-				blockEnable = true
-				DBM:Disable(true)
+				self:Disable(true)
 				return
 			end
 			--DBM is disabled and DBM is not forced disabled because of major patch
