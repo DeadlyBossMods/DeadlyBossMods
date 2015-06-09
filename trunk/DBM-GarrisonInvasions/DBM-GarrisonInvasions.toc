@@ -33,3 +33,4 @@ Teluur.lua
 LadyFleshsear.lua
 Drogan.lua
 Goggnathog.lua
+Gaur.lua
