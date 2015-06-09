@@ -18,10 +18,13 @@ mod:RegisterEventsInCombat(
 local warnRainofFire			= mod:NewSpellAnnounce(180774, 3)
 local warnOverwhelmingFlames	= mod:NewTargetAnnounce(180776, 4)
 
-local specWarnOverwhelmingFlames= mod:NewSpecialWarningMoveAway(180776)
+local specWarnOverwhelmingFlames= mod:NewSpecialWarningMoveAway(180776, nil, nil, nil, 1, 2)
 local yellOverwhelmingFlames	= mod:NewYell(180776)
-local specWarnRainofFireGTFO	= mod:NewSpecialWarningMove(180775)
-local specWarnCallofFlame		= mod:NewSpecialWarningSpell(180779, nil, nil, nil, 2)
+local specWarnRainofFireGTFO	= mod:NewSpecialWarningMove(180775, nil, nil, nil, 1, 2)
+local specWarnCallofFlame		= mod:NewSpecialWarningSpell(180779, nil, nil, nil, 2)--Don't really remember what this does to voice it right now
+
+local voiceOverwhelmingFlames	= mod:NewVoice(180776)--runout
+local voiceRainofFireGTFO		= mod:NewVoice(180775)--runaway
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -44,6 +47,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnOverwhelmingFlames:Show()
 			yellOverwhelmingFlames:Yell()
+			voiceOverwhelmingFlames:Play("runout")
 		end
 	end
 end
@@ -51,5 +55,6 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 180775 and destGUID == UnitGUID("player") and self:AntiSpam(2.5, 1) then
 		specWarnRainofFireGTFO:Show()
+		voiceRainofFireGTFO:Play("runaway")
 	end
 end
