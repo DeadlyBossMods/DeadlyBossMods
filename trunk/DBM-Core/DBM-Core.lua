@@ -386,6 +386,7 @@ local targetEventsRegistered = false
 local targetMonitor = nil
 local statusWhisperDisabled = false
 local wowTOC = select(4, GetBuildInfo())
+local dbmToc = 0
 
 local fakeBWRevision = 13165
 
@@ -1030,20 +1031,15 @@ do
 
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
+			dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "Interface"))
 			isLoaded = true
 			for i, v in ipairs(onLoadCallbacks) do
 				xpcall(v, geterrorhandler())
 			end
 			onLoadCallbacks = nil
 			loadOptions()
-			if not IsTestBuild() and wowTOC >= 60200 then--6.2 retail, make user update to DBM 6.2
-				DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
-				dbmIsEnabled = false
-				blockEnable = true
-				return
-			end
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
-				self:AddMsg(DBM_CORE_VEM)
+				self:Schedule(10, function() self:AddMsg(DBM_CORE_VEM) end)
 				dbmIsEnabled = false
 				blockEnable = true
 				return
@@ -1052,7 +1048,12 @@ do
 				self:Schedule(10, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
 				dbmIsEnabled = false
 				blockEnable = true
+				DBM:Disable(true)
 				return
+			end
+			--DBM is disabled and DBM is not forced disabled because of major patch
+			if dbmToc >= wowTOC and not self.Options.Enabled then
+				self:AddMsg(DBM_CORE_DISABLED_REMINDER)
 			end
 			self.Bars:LoadOptions("DBM")
 			self.Arrow:LoadPosition()
@@ -2218,11 +2219,6 @@ end
 do
 	local callOnLoad = {}
 	function DBM:LoadGUI()
-		if not IsTestBuild() and wowTOC >= 60200 then--6.2 retail, make user update to DBM 6.2
-			DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
-			
-			return
-		end
 		if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 			self:AddMsg(DBM_CORE_VEM)
 			return
@@ -2257,6 +2253,9 @@ do
 			tsort(callOnLoad, function(v1, v2) return v1[2] < v2[2] end)
 			for i, v in ipairs(callOnLoad) do v[1]() end
 			collectgarbage("collect")
+		end
+		if not self.Options.Enabled then
+			self:AddMsg(DBM_CORE_DISABLED_REMINDER)
 		end
 		return DBM_GUI:ShowHide()
 	end
@@ -3936,17 +3935,22 @@ do
 						--Find min revision.
 						local revDifference = mmin((raid[newerVersionPerson[1]].revision - DBM.Revision), (raid[newerVersionPerson[2]].revision - DBM.Revision), (raid[newerVersionPerson[3]].revision - DBM.Revision))
 						--The following code requires at least THREE people to send that higher revision (I just upped it from 2). That should be more than adaquate.
-						if revDifference > 200 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
+						--Disable if out of date and it's a major patch.
+						if dbmToc < wowTOC then
+							updateNotificationDisplayed = 3
+							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
+							DBM:Disable(true)
+						--Disable if revision grossly out of date even if not major patch.
+						elseif revDifference > 200 then
 							if updateNotificationDisplayed < 3 then
 								updateNotificationDisplayed = 3
-								DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE)
 								DBM:Disable(true)
 							end
 						end
 					end
 				end
 			end
-			if DBM.DisplayVersion:find("alpha") and #newerVersionPerson < 2 and #newerRevisionPerson < 2 and updateNotificationDisplayed < 2 and (revision - DBM.Revision) > 30 then--Revision 20 can be increased in 1 day, so raised it to 30. Requires 2 person.
+			if DBM.DisplayVersion:find("alpha") and #newerVersionPerson < 2 and #newerRevisionPerson < 2 and updateNotificationDisplayed < 2 and (revision - DBM.Revision) > 40 then--Revision 20 can be increased in 1 day, so raised it to 40. Requires 2 person.
 				if not checkEntry(newerRevisionPerson, sender) then
 					newerRevisionPerson[#newerRevisionPerson + 1] = sender
 					DBM:Debug("Newer revision detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))

@@ -120,7 +120,7 @@ local DirectionVoiceAssignments = {"left", "centerleft", "center", "centerright"
 local function warnSeeds(self)
 	table.wipe(seedTargets)
 	--Sort by raidid since combat log order may diff person to person
-	if self:IsLFR() and not IsTestBuild() then return end
+	if self:IsLFR() then return end
 	local seedsFound = 0
 	local numGroupMembers = DBM:GetNumGroupMembers()
 	local expectedTotal = self:IsMythic() and 5 or 4--TODO, verify it's always 4, flexible shit sucks for this
