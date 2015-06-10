@@ -105,7 +105,7 @@ end
 
 local function updateRangeFrame(self)
 	if not self.Options.RangeFrame then return end
-	if self.vb.artilleryActive > 0 then--Artillery
+	if (self:IsTank() or not self.vb.groundPhase) and self.vb.artilleryActive > 0 then--Artillery
 		if UnitDebuff("player", debuffName) then
 			DBM.RangeCheck:Show(30, nil)
 		else
