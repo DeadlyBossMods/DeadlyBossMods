@@ -128,7 +128,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	shipMessage		= "prepares to man the Dreadnaught's Main Cannon!"
+	shipMessage		= "prepares to man the Dreadnaught's Main Cannon!",
+	EarlyBladeDash	= "Too slow!"
 })
 
 --------------------------
