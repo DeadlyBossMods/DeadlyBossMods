@@ -594,7 +594,7 @@ end
 
 --"<9.87 23:50:29> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Too slow!#Enforcer Sorka###Etsi
 --"<10.92 23:50:30> [DBM_Announce] DBM_Announce#Blade Dash on |r|cff9382c9Etsi|r|cffffb200 near you", -- [691]
-function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
+function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, targetname)
 	if msg:find(L.EarlyBladeDash) then
 		if self:IsMythic() and self:AntiSpam(5, 3) then
 			if targetname == UnitName("player") then
