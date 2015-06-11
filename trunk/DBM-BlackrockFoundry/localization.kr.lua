@@ -133,7 +133,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	shipMessage			= "주 대포를 쏠 준비를 합니다!"
+	shipMessage			= "주 대포를 쏠 준비를 합니다!",
+	EarlyBladeDash		= "너무 느려."
 })
 
 --------------------------
