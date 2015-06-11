@@ -286,7 +286,7 @@ L.RLReadyCheckSound			= "전투 준비 소리를 주 음량 또는 대화 음량
 L.AFKHealthWarning			= "자리 비움 상태 도중 체력이 줄면 경고음 듣기"
 --
 L.TimerGeneral 				= "DBM 바 설정"
-L.SKT_Enabled				= "우두머리별 설정을 무시하고 최고 기록 바 항상 보기"
+L.SKT_Enabled				= "최고 기록 바 보기"
 L.CRT_Enabled				= "다음 전투 부활 충전 바 보기"
 L.DontShowRespawn			= "전멸 후 재생성 바 보이기"
 L.ShowQueuePop				= "팝업창 남은 시간 바 보기(공격대 찾기/전장/기타)"
