@@ -132,7 +132,7 @@ function mod:SPELL_CAST_START(args)
 		voiceGraspingEarth:Play("157060")
 		self:RuneStart()
 		if self:IsMythic() then
-			timerGraspingEarthCD:Start(122)
+			timerGraspingEarthCD:Start(66)
 			local remaining = timerTremblingEarthCD:GetRemaining()
 			if remaining < 32 then
 				DBM:Debug("Trembling earth CD extended by Grasping Earth")
