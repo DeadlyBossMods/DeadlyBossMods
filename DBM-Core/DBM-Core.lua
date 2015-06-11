@@ -4884,7 +4884,7 @@ do
 				playersDead = playersDead + 1
 			end
 			local range = DBM.RangeCheck:GetDistance("player", unitId)
-			if range > 200 then--Very far away, released players probably
+			if range > 250 then--Very far away, released players probably
 				playersOutofRange = playersOutofRange + 1
 			end
 		end
