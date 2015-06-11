@@ -244,6 +244,7 @@ L.BlockVersionUpdateNotice	= "업데이트 팝업 창 끄기(대신 대화창으
 L.Area_SpecFilter			= "역할 경고 숨기기"
 L.FilterTankSpec			= "방어 전담이 아닐 경우 방어 전담용 경고 보지 않기(참고: 도발 경고는 대부분 기본값으로 켜짐 상태이기 때문에 이 설정을 끄지 않는 것을 권장합니다.)"
 L.FilterInterrupts			= "자신의 대상이나 주시 대상이 아닌 대상의 차단 경고 보지 않기(참고: 차단 실패시 공격대 전체에 치명적인 영향을 주는 주문에는 적용되지 않습니다.)"
+L.FilterInterruptNoteName	= "차단 경고 메모에 자신이 포함되지 않은 경우 경고 보지 않기"
 L.FilterDispels				= "해제 주문이 재사용 대기시간 중일 경우 해제 경고 보지 않기"
 L.FilterSelfHud				= "자기 자신의 범위 정보를 보이지 않기(거리 비례 범위 정보는 제외)"
 
