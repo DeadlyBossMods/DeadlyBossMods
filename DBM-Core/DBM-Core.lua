@@ -4866,6 +4866,7 @@ do
 	
 	local function wipeRecoveryDelay(self)
 		--Wipe Recovery stuff
+		self:Debug("wipeRecoveryDelay running")
 		local ResSpell = GetSpellInfo(95223)--Cannot be mass resurrected
 		local MassResDebuff = 0
 		local playersOutofRange = 0
@@ -4921,6 +4922,9 @@ do
 	
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
 		self:Debug("ENCOUNTER_END event fired: "..encounterID.." "..name.." "..difficulty.." "..size.." "..success)
+		if IsInRaid() then
+			self:Schedule(3, wipeRecoveryDelay, self)
+		end
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
@@ -4949,9 +4953,6 @@ do
 				end
 				return
 			end
-		end
-		if IsInRaid() then
-			self:Schedule(3, wipeRecoveryDelay, self)
 		end
 	end
 	
