@@ -16,7 +16,7 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "전투 도중 DBM 바 스킨 설정에 실패했�
 DBM_CORE_BAD_LOAD					= "DBM이 현재 인스턴스의 경고를 완전히 불러오지 못한 것을 발견했습니다. 전투가 종료된 후에, /console reloadui 명령어를 입력하여 경고를 다시 불러오시기 바랍니다."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "현재 사용중인 DBM 버전은 '%s' 경보에 필요한 기능이 없습니다. 새로운 DBM을 설치하셔야 이 경보를 불러올 수 있습니다."
 
-DBM_CORE_WHATS_NEW					= "이 버전의 새로운 기능: 각종 특수 경고에 개인 메모 설정이 가능합니다. 메모에 당신이 포함된 경우, 소리나 반짝임 설정 또한 가능합니다."
+DBM_CORE_WHATS_NEW					= "이 버전의 새로운 기능: 메모 기능이 개선되었으며, 공유가 가능합니다. 자세한 사항은 공식 홈페이지를 참고하여 주시기 바랍니다."
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대원 숫자에 맞는 근접판정 정보를 알 수 없기 때문에 DBM이 이 전투에서 거리 창을 비활성화 했습니다."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "현재 공격대원 숫자에 맞는 쫄 소환 정보를 알 수 없기 때문에 DBM이 이 전투에서 소환 횟수 정보를 비활성화 했습니다."
@@ -151,11 +151,11 @@ DBM_CORE_VOICE_COUNT_MISSING		= "%d번째 초세기 소리를 음성안내 또�
 --DBM_BIG_WIGS_ALPHA (Same as English locales)
 
 DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 DBM 버전이 오래되었습니다.\n%s(r%d) 이상으로 업데이트 가능합니다. 아래 사이트 또는 curse, wowinterface 에서 다운로드 가능합니다."
-DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 DBM alpha 버전이 오래되었습니다. r%d 이상 업데이트 가능합니다. 가능한 빠른 시일내로 최신버전으로 업데이트 하시기 바랍니다. 계속 사용하실 경우 잘못된 경고를 표시할 수도 있습니다."
+DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 DBM alpha 버전이 오래되었습니다. r%d 이상 업데이트 가능합니다. 가능한 빠른 시일내로 최신 알파 또는 정식 버전으로 업데이트 하시기 바랍니다. 계속 사용하실 경우 잘못된 경고를 표시할 수도 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 주소를 복사하실 수 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 주소를 복사하실 수 있습니다."
 DBM_CORE_UPDATEREMINDER_URL				= "http://www.inven.co.kr/board/powerbbs.php?come_idx=3716"
-DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 현재 사용중인 DBM 버전은 지나치게 오래되어 업데이트를 하지 않으면 사용하실 수 없습니다. 이것은 당신 및 공격대원에게 잘못된 알림으로 혼동을 주지 않기 위함입니다. 계속 사용하시려면 지금 즉시 최신 버전으로 업데이트하여 주시기 바랍니다."
+DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 현재 사용중인 DBM 버전은 지나치게 오래되어 강제 비활성화 되며, 활성화 하실 수 없습니다. 이것은 당신 및 공격대원에게 잘못된 알림으로 혼동을 주지 않기 위함입니다. 계속 사용하시려면 지금 즉시 최신 버전으로 업데이트하여 주시기 바랍니다."
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "지금 사용하시는 DBM 버전은 이 전투에서 잘못된 경고를 표시합니다. 이 오류는 다음 버전으로 업데이트 하시면 수정됩니다."
 DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA	= "지금 사용하시는 DBM 버전은 이 전투에서 잘못된 경고를 표시합니다. 이 오류는 다음에 출시될 버전 또는 최신 알파 버전으로 업데이트 하시면 수정됩니다."
 DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "경고: DBM 버전이 오래되어 현재 게임 버전에서는 작동하지 않을 것입니다. 당신 또는 같은 공격대원에게 잘못된 알림을 보내거나 게임이 느려지는 것을 막기 위함을 양해하여 주시기 바랍니다. 지금 당장 최신 버전으로 업데이트 하여 주시기 바랍니다."
@@ -164,6 +164,7 @@ DBM_CORE_VEM							= "경고: 당신은 DBM과 VEM을 동시에 사용중입니�
 DBM_CORE_3RDPROFILES					= "경고: DBM-Profiles는 이 버전의 DBM과 호환되지 않습니다. 충돌을 방지하기 위해 해당 애드온을 제거하셔야 DBM을 불러올 수 있습니다."
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "경고: 지금 업데이트하신 DBM은 게임 클라이언트를 완전히 재시작하지 전까지 정상작동하지 않습니다. 이 업데이트는 새 파일이 추가되었거나 UI 재시작으로는 불러올 수 없는 TOC 변경이 포함되어 있습니다. 재시작 없이 사용하실 경우 오류가 발생하거나 작동하지 않을 수 있습니다."
 DBM_CORE_OUT_OF_DATE_NAG				= "경고: 현재 사용중인 DBM 버전이 오래되었습니다. 이 전투를 위한 중요한 알림, 바 그리고 공격대원 모두가 볼 수 있는 대화 알림을 놓치지 않기 위해 업데이트 하시는 것을 강력하게 권장 드립니다."
+DBM_CORE_DISABLED_REMINDER				= "알림: DBM을 정상적으로 불러왔으나 현재 설정에서 비활성화 되어 있습니다. 활성화 하려면 /dbm 을 대화창에 입력하고 설정 - 전역 설정 항목에서 'DBM 사용' 항목을 체크해 주시기 바랍니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
