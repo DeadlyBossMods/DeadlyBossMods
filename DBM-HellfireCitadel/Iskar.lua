@@ -78,7 +78,7 @@ local voiceThrowAnzu					= mod:NewVoice(179202)	--New, 179202,"throw eye to some
 
 mod:AddRangeFrameOption(15)--Both aoes are 15 yards, ref 187991 and 181748
 mod:AddSetIconOption("SetIconOnAnzu", 179202, false)
-mod:AddSetIconOption("SetIconOnWinds", 181957, false)
+mod:AddSetIconOption("SetIconOnWinds", 181957, true)
 mod:AddSetIconOption("SetIconOnFelBomb", 181753, true)
 
 mod.vb.focusedBlast = 0
@@ -120,10 +120,16 @@ function mod:OnCombatStart(delay)
 	playerHasAnzu = false
 	table.wipe(AddsSeen)
 	updateRangeFrame(self)
-	timerChakramCD:Start(5-delay)
-	timerPhantasmalWindsCD:Start(16.5-delay)
-	timerFelLaserCD:Start(18.5)--Verify it can still be this low, every pull on mythic was 20-22
-	timerPhantasmalWoundsCD:Start(28-delay)
+	timerChakramCD:Start(5-delay)--Seems still 5 in all modes
+	if self:IsNormal() then--Normal timers are about 40% slower on pull, 20% slower rest of fight
+		timerFelLaserCD:Start(25)
+		timerPhantasmalWindsCD:Start(30-delay)
+		timerPhantasmalWoundsCD:Start(44-delay)
+	else
+		timerPhantasmalWindsCD:Start(16.5-delay)
+		timerFelLaserCD:Start(18.5)--Verify it can still be this low, every pull on mythic was 20-22
+		timerPhantasmalWoundsCD:Start(28-delay)
+	end
 	berserkTimer:Start(-delay)
 end
 
@@ -172,9 +178,17 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 182178 then
-		timerChakramCD:Start()
+		if self:IsNormal() then
+			timerChakramCD:Start(35)
+		else
+			timerChakramCD:Start()
+		end
 	elseif spellId == 181956 then
-		timerPhantasmalWindsCD:Start()
+		if self:IsNormal() then
+			timerPhantasmalWindsCD:Start(46)
+		else
+			timerPhantasmalWindsCD:Start()
+		end
 	elseif spellId == 181912 and self.vb.focusedBlast == 2 then--Air phase over immediately after he finishes casting 2nd blast.
 		--Timers resume with +3-7, sometimes more. Extreme cases I suspect just got delayed by laser or some other channeled spell
 		timerChakramCD:Start(self.vb.savedChakram+3)
@@ -204,7 +218,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnPhantasmalWinds:Show()
 			yellPhantasmalWinds:Yell()
 		end
-		if self.Options.SetIconOnWinds then
+		if self.Options.SetIconOnWinds and not self:IsLFR() then
 			self:SetSortedIcon(0.5, args.destName, 3)--Start at 3 and count up
 		end
 		if playerHasAnzu and self:AntiSpam(3, 1) then
@@ -214,7 +228,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 182325 then
 		warnPhantasmalWounds:CombinedShow(1, args.destName)--It goes out kind of slow
 		if self:AntiSpam(5, 2) then
-			timerPhantasmalWoundsCD:Start()
+			if self:IsNormal() then
+				timerPhantasmalWoundsCD:Start(40)
+			else
+				timerPhantasmalWoundsCD:Start()
+			end
 		end
 		if args:IsPlayer() then
 			specWarnPhantasmalWounds:Show()
@@ -245,7 +263,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 181753 then
 		warnFelBomb:Show(args.destName)
-		timerFelBombCD:Start(args.sourceGUID)
+		if self:IsNormal() then
+			timerFelBombCD:Start(23, args.sourceGUID)
+		else
+			timerFelBombCD:Start(args.sourceGUID)
+		end
 		if args:IsPlayer() then
 			updateRangeFrame(self)
 			specWarnFelBomb:Show()
@@ -375,7 +397,11 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 182582 or spellId == 184630 then--Fel Incineration
-		timerFelLaserCD:Start()
+		if self:IsNormal() then
+			timerFelLaserCD:Start(23)
+		else
+			timerFelLaserCD:Start()
+		end
 	end
 end
 
