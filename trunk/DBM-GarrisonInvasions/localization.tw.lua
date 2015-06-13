@@ -83,3 +83,12 @@ L = DBM:GetModLocalization("Goggnathog")
 L:SetGeneralLocalization({
 	name = "法師領主勾那索格"
 })
+
+------------
+--  Gaur  --
+------------
+L = DBM:GetModLocalization("Gaur")
+
+L:SetGeneralLocalization({
+	name = "勾爾"
+})

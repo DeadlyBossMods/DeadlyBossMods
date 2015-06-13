@@ -121,7 +121,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	shipMessage		= "準備裝填無畏號的主砲了！"
+	shipMessage		= "準備裝填無畏號的主砲了！",
+	EarlyBladeDash	= "太慢了。"
 })
 
 --------------------------
