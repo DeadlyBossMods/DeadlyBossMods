@@ -74,6 +74,18 @@ mod.vb.rootedFate2 = nil--Just in case, but if this happens you're doing things 
 mod.vb.shadowOfDeathCount = 0
 mod.vb.sharedFateCount = 0
 local playerDown = false
+--[[
+TODO, update shadow of death timers for role and count
+TODO, code in 10 player count to know that 1:05 cast does NOT happen if players < 11
+Time   Player Role   # of players sent, if your raid size is...
+                          10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29
+0:02      DPS             1   1   1   2   2   2   2   2   2   3   3   3   3   3   3   4   4   4   4   4
+0:13      Tank            1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1
+0:30      Healer          1   1   1   1   1   1   1   1   1   1   2   2   2   2   2   2   2   2   2   2
+0:38      DPS             1   1   1   1   1   2   2   2   2   2   2   3   3   3   3   3   3   4   4   4
+1:05      Healer          0   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   2
+1:14      DPS             1   1   1   1   1   1   1   2   2   2   2   2   2   3   3   3   3   4   4   4
+--]]
 local shadowofDeathTimers = {2, 11, 17, 7, 28, 8}--4 dps, 1 tank, 2 healers (or 1 healer 1 dps?), 3 dps, 1 healer, 3 dps (for LFR, scaling alters it some but ratios should be similar in all modes)
 local sharedFateTimers = {19, 28, 25, 22}
 
