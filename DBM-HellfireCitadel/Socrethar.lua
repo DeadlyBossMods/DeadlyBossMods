@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181288 182051 183331 183329 184239 182392 188693",
-	"SPELL_CAST_SUCCESS 180008 184124 190776",
+	"SPELL_CAST_SUCCESS 180008 184124 190776 183023",
 	"SPELL_AURA_APPLIED 182038 182769 182900 184124 188666 189627",
 	"SPELL_AURA_APPLIED_DOSE 182038",
 	"SPELL_AURA_REMOVED 184124 189627",
@@ -33,6 +33,8 @@ local warnReverberatingBlow			= mod:NewCountAnnounce(180008, 3)
 local warnShatteredDefenses			= mod:NewStackAnnounce(182038, 3, nil, "Tank")
 local warnVolatileFelOrb			= mod:NewTargetAnnounce(180221, 4)
 local warnFelCharge					= mod:NewTargetAnnounce(182051, 3)
+--Socrethar
+local warnEjectSoul					= mod:NewSpellAnnounce(183023, 2)
 --Adds
 local warnGhastlyFixation			= mod:NewTargetAnnounce(182769, 3, nil, false)--Spammy
 local warnVirulentHaunt				= mod:NewTargetAnnounce(182900, 4, nil, false)--Failed at fixate. Also spammy
@@ -72,6 +74,8 @@ local timerApocalypticFelburstCD	= mod:NewCDCountTimer(30, 188693)
 local timerExertDominanceCD			= mod:NewCDTimer(6, 183331, nil, "-Healer")
 local timerApocalypseCD				= mod:NewCDTimer(46, 183329)
 --Adds
+local timerSargereiDominatorCD		= mod:NewCDTimer(60, "ej11456", nil, nil, nil, 184053)--CD needs verifying, no log saw 2 of them in a phase. phase always ended or boss died before 2nd add, i know it's at least longer than 60 sec tho
+local timerHauntingSoulCD			= mod:NewCDTimer(30, "ej11462", nil, nil, nil, 182769)
 local timerGiftofManariCD			= mod:NewCDTimer(11, 184124)
 --Mythic
 local timerVoraciousSoulstalkerCD	= mod:NewCDCountTimer(11, "ej11778", nil, nil, nil, 190776)
@@ -137,7 +141,7 @@ function mod:ChargeTarget(targetname, uId)
 		return
 	end
 	if targetname == UnitName("player") then
-		if self:AntiSpam(2, 2) then
+		if self:AntiSpam(2, 3) then
 			specWarnFelChargeYou:Show()
 			yellCharge:Yell()
 			voiceFelblazeCharge:Play("runout")
@@ -158,8 +162,8 @@ function mod:OnCombatStart(delay)
 	self.vb.ManariTargets = 0
 	self.vb.felBurstCount = 0
 	self.vb.mythicAddSpawn = 0
-	timerReverberatingBlowCD:Start(6.5-delay, 1)
-	countdownReverberatingBlow:Start(6.5-delay)
+	timerReverberatingBlowCD:Start(6.3-delay, 1)
+	countdownReverberatingBlow:Start(6.3-delay)
 	timerVolatileFelOrbCD:Start(12-delay)
 	timerFelChargeCD:Start(29-delay)
 	timerFelPrisonCD:Start(51-delay)--Seems drastically changed. 51 in all newer logs
@@ -182,9 +186,18 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 181288 then
 		specWarnFelPrison:Show()
-		timerFelPrisonCD:Start()
+		if self:IsNormal() then
+			timerFelPrisonCD:Start(46.4)
+		else
+			timerFelPrisonCD:Start()
+		end
 		voiceFelPrison:Play("watchstep")
 	elseif spellId == 182051 then
+		if self:IsNormal() then
+			timerFelChargeCD:Start(30)
+		else
+			timerFelChargeCD:Start()
+		end
 		--Must have delay, to avoid same bug as oregorger. Boss has 2 target scans
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "ChargeTarget", 0.1, 10, true)
 	elseif spellId == 183331 then
@@ -230,6 +243,27 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if cooldown then
 			timerVoraciousSoulstalkerCD:Start(cooldown, self.vb.mythicAddSpawn+1)
 		end
+	elseif spellId == 183023 then--Eject Soul
+		warnEjectSoul:Show()
+		timerReverberatingBlowCD:Cancel()
+		countdownReverberatingBlow:Cancel()
+		timerFelPrisonCD:Cancel()
+		timerVolatileFelOrbCD:Cancel()
+		timerFelChargeCD:Cancel()
+		timerApocalypticFelburstCD:Cancel()
+		timerTransition:Start()--Time until boss is attackable
+		if self:IsNormal() then
+			timerSargereiDominatorCD:Start(25)--25
+			timerHauntingSoulCD:Start(30)--30-33
+			timerApocalypseCD:Start(53)
+		else
+			--timerSargereiDominatorCD:Start()--TODO
+			--timerHauntingSoulCD:Start(30)--TODO
+			timerApocalypseCD:Start()--46-47. Small sample size (2 pulls) (NEEDS new review, had to change phase detection trigger since old spellid now hidden)
+		end
+		self:RegisterShortTermEvents(
+			"UNIT_TARGETABLE_CHANGED"
+		)
 	end
 end
 
@@ -251,6 +285,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellGhastlyFixation:Yell()
 			voiceGhastlyFixation:Play("runout")
 			voiceGhastlyFixation:Schedule(2, "keepmove")
+		end
+		if self:AntiSpam(28, 2) then--Shitty way of doing it, but if a player dies fixate changes and will start false timer any other way
+			timerHauntingSoulCD:Start()
 		end
 	elseif spellId == 188666 then
 		if args:IsPlayer() then
@@ -274,9 +311,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		updateRangeFrame(self)
 	elseif spellId == 184053 then--Fel Barrior (Boss becomes immune to damage, Sargerei Dominator spawned and must die)
 		specWarnSargereiDominator:Show()
+		--timerSargereiDominatorCD:Start()--TODO, verify
 		timerGiftofManariCD:Start(12, args.sourceGUID)
 	elseif spellId == 189627 then
-		timerVolatileFelOrbCD:Start()
+		if self:IsNormal() then
+			timerVolatileFelOrbCD:Start(30)
+		else
+			timerVolatileFelOrbCD:Start()
+		end
 		if args:IsPlayer() then
 			specWarnVolatileFelOrb:Show()
 			yellVolatileFelOrb:Yell()
@@ -315,7 +357,7 @@ end
 --backup, in event of target scan fail.
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:184247") then--Charge
-		if self:AntiSpam(2, 2) then
+		if self:AntiSpam(2, 3) then
 			specWarnFelChargeYou:Show()
 			yellCharge:Yell()
 			voiceFelblazeCharge:Play("runout")
@@ -323,31 +365,17 @@ function mod:RAID_BOSS_WHISPER(msg)
 	end
 end
 
---"<127.45 18:26:51> [UNIT_SPELLCAST_SUCCEEDED] Soul of Socrethar(??) [[boss2:Soulfire Aura::0:183334]]", -- [4408]
---"<127.46 18:26:51> [UNIT_TARGETABLE_CHANGED] boss2#true#true#true#Soul of Socrethar#Creature-0-2012-1448-1434-92330-000042AB3A#elite#111036000", -- [4411]
---"<127.52 18:26:51> [UNIT_SPELLCAST_SUCCEEDED] Soulbound Construct(Grafarion) [[boss1:Construct is Good::0:180258]]", -- [4414]
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 183023 then--Eject Soul. begin Socrethar phase
-		timerReverberatingBlowCD:Cancel()
-		countdownReverberatingBlow:Cancel()
-		timerFelPrisonCD:Cancel()
-		timerVolatileFelOrbCD:Cancel()
-		timerFelChargeCD:Cancel()
-		timerApocalypticFelburstCD:Cancel()
-		timerTransition:Start()--Time until boss is attackable
-		timerApocalypseCD:Start()--46-47. Small sample size (2 pulls) (NEEDS new review, had to change phase detection trigger since old spellid now hidden)
-		self:RegisterShortTermEvents(
-			"UNIT_TARGETABLE_CHANGED"
-		)
-	end
-end
-
+--"<319.39 14:07:11> [UNIT_TARGETABLE_CHANGED] boss1#false#false#true#Soul of Socrethar#Creature-0-2083-1448-3074-92330-00007BAAB0#elite#68266252", -- [6778]
+--"<321.83 14:07:13> [UNIT_SPELLCAST_SUCCEEDED] Soulbound Construct(??) [[boss2:Construct is Evil::0:180257]]", -- [6826]
 function mod:UNIT_TARGETABLE_CHANGED(uId)
 	local cid = self:GetCIDFromGUID(UnitGUID(uId))
 	if (cid == 92330) and not UnitExists(uId) then--Socrethar returning inactive and construct phase beginning again.
 		self.vb.felBurstCount = 0
 		self.vb.ReverberatingBlow = 0
 		timerExertDominanceCD:Cancel()
+		timerSargereiDominatorCD:Cancel()
+		timerHauntingSoulCD:Cancel()
+		timerApocalypseCD:Cancel()
 		self:UnregisterShortTermEvents()
 		--TODO, need a log that goes long enough to get first timers afer construct hostile again
 	end
@@ -355,7 +383,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
+	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 
 	end
 end
