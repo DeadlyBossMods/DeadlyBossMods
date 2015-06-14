@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 180260 180004 180533 180025 180608 180300",
 	"SPELL_CAST_SUCCESS 179986 179991 180600 180526",
-	"SPELL_AURA_APPLIED 182459 185241 180166 180164 185237 185238 180526 180025",
+	"SPELL_AURA_APPLIED 182459 185241 180166 180164 185237 185238 180526 180025 180000",
 	"SPELL_AURA_APPLIED_DOSE 180000",
 	"SPELL_AURA_REMOVED 182459 185241",
 	"SPELL_PERIODIC_DAMAGE 180604",
@@ -23,6 +23,7 @@ mod:RegisterEventsInCombat(
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--(ability.id = 180260 or ability.id = 180004 or ability.id = 180025 or ability.id = 180608 or ability.id = 180300 or ability.id = 180533) and type = "begincast" or (ability.id = 179986 or ability.id = 179991 or ability.id = 180600 or ability.id = 180526) and type = "cast" or (ability.id = 182459 or ability.id = 185241 or ability.id = 180166 or ability.id = 185237) and type = "applydebuff" or ability.id = 180000 and not type = "removedebuff"
 --All
 local warnEdictofCondemnation				= mod:NewTargetCountAnnounce(182459, 3)
 local warnTouchofHarm						= mod:NewTargetAnnounce(180166, 3, nil, "Healer")--Todo, split new cast and jump into two different warnings?
@@ -31,7 +32,7 @@ local warnSealofDecay						= mod:NewStackAnnounce(180000, 2, nil, "Tank|Healer")
 local warnAnnihilationStrike				= mod:NewTargetCountAnnounce(180260, 4)
 --Stage Two: Contempt
 local warnAuraofContempt					= mod:NewSpellAnnounce(179986, 3)
-local warnTaintedShadows					= mod:NewSpellAnnounce(180533, 2)
+local warnTaintedShadows					= mod:NewSpellAnnounce(180533, 2, nil, false)--Every 5 seconds, spammy
 local warnFontofCorruption					= mod:NewTargetAnnounce(180526, 3)
 --Stage Three: Malice
 local warnAuraofMalice						= mod:NewSpellAnnounce(179991, 3)
@@ -65,16 +66,17 @@ local specWarnAncientSovereign				= mod:NewSpecialWarningSwitch("ej11170", "-Hea
 
 mod:AddTimerLine(ALL)--All
 local timerEdictofCondemnationCD			= mod:NewNextCountTimer(60, 182459)
-local timerTouchofHarmCD					= mod:NewNextCountTimer(60, 180166, nil, "Healer")
+local timerTouchofHarmCD					= mod:NewNextCountTimer(45, 180166, nil, "Healer")
 mod:AddTimerLine(SCENARIO_STAGE:format(1))--Stage One: Oppression
 local timerAnnihilatingStrikeCD				= mod:NewNextCountTimer(10, 180260)
 local timerInfernalTempestCD				= mod:NewNextCountTimer(10, 180300)
 ----Ancient Enforcer
 local timerEnforcersOnslaughtCD				= mod:NewCDTimer(14.2, 180004, nil, "Melee")
 mod:AddTimerLine(SCENARIO_STAGE:format(2))--Stage Two: Contempt
+local timerTaintedShadowsCD					= mod:NewNextTimer(5, 180533, nil, "Tank")
 local timerFontofCorruptionCD				= mod:NewNextTimer(20, 180526)
 ----Ancient Harbinger
-local timerHarbingersMendingCD				= mod:NewCDTimer(11.5, 180025)
+local timerHarbingersMendingCD				= mod:NewCDTimer(11, 180025)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))--Stage Three: Malice
 local timerBulwarkoftheTyrantCD				= mod:NewNextCountTimer(10, 180600)
 local timerGaveloftheTyrantCD				= mod:NewNextCountTimer(10, 180608)
@@ -131,8 +133,8 @@ function mod:OnCombatStart(delay)
 	self.vb.bulwarkCount = 0
 	self.vb.gavelCount = 0
 	timerAnnihilatingStrikeCD:Start(10-delay, 1)
-	timerTouchofHarmCD:Start(17-delay, 1)
-	timerEdictofCondemnationCD:Start(57.5-delay, 1)
+	timerTouchofHarmCD:Start(16.8-delay, 1)
+	timerEdictofCondemnationCD:Start(57-delay, 1)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -161,7 +163,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 180004 then
 		specWarnEnforcersOnslaught:Show()
 		voiceEnforcerOnslaught:Play("watchorb")
-		timerEnforcersOnslaughtCD:Start(12)
+		if self:IsNormal() then
+			timerEnforcersOnslaughtCD:Start(18)
+		else
+			timerEnforcersOnslaughtCD:Start(12)--Reverify
+		end
 	elseif spellId == 180025 then--No target filter, it's only interrupt onfight and it's VERY important
 		specWarnHarbingersMending:Show(args.sourceName)
 		if not self:IsHealer() then
@@ -179,11 +185,12 @@ function mod:SPELL_CAST_START(args)
 		self.vb.annihilationCount = 0
 		timerAnnihilatingStrikeCD:Start(nil, 1)
 		countdownAnnihilatingStrike:Start()
+	elseif spellId == 180533 then
+		warnTaintedShadows:Show()
+		timerTaintedShadowsCD:Start()
 	end
 end
 
---Not holding breath, but it'll be nice...
---If not, these guy will probably ise IEEU or an emote/yell
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 179986 then--Aura of Contempt (phase 2)
@@ -192,10 +199,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerAnnihilatingStrikeCD:Cancel()
 		countdownAnnihilatingStrike:Cancel()
 		timerInfernalTempestCD:Cancel()
+		timerTaintedShadowsCD:Start()
 		timerFontofCorruptionCD:Start(22)
 		voicePhaseChange:Play("ptwo")
-	elseif spellId == 180533 then
-		warnTaintedShadows:Show()
 	elseif spellId == 179991 then--Aura of Malice (phase 3)
 		warnAuraofMalice:Show()
 		timerFontofCorruptionCD:Cancel()
@@ -265,6 +271,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsMagicDispeller() then
 			voiceHarbingersMending:Play("dispelboss")
 		end
+	elseif spellId == 180000 then
+		warnSealofDecay:Show(args.destName, 1)
 	end
 end
 
