@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Apr 25, 2015@13663
+-- Last update: Jun 10, 2015@13867
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -125,7 +125,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	shipMessage		= "准备操纵无畏舰的主炮"
+	shipMessage		= "准备操纵无畏舰的主炮",
+	EarlyBladeDash	= "太慢了！"
 })
 
 --------------------------
