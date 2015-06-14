@@ -235,7 +235,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.cd			= "%s CD"
 DBM_CORE_AUTO_TIMER_TEXTS.cdcount		= "%s CD (%%d)"
 DBM_CORE_AUTO_TIMER_TEXTS.cdsource	= "%s CD: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.next		= "Siguiente %s"
-DBM_CORE_AUTO_TIMER_TEXTS.nextcount	= "Siguiente %s (%%d)"
+DBM_CORE_AUTO_TIMER_TEXTS.nextcount	= "Siguiente %s (%%s)"
 DBM_CORE_AUTO_TIMER_TEXTS.nextsource	= "Siguiente %s: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
 

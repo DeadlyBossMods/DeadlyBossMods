@@ -236,7 +236,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.cd			= "%s recarrega"
 DBM_CORE_AUTO_TIMER_TEXTS.cdcount		= "%s recarrega (%%d)"
 DBM_CORE_AUTO_TIMER_TEXTS.cdsource		= "%s recarrega: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.next			= "Próx. %s"
-DBM_CORE_AUTO_TIMER_TEXTS.nextcount		= "Próx. %s (%%d)"
+DBM_CORE_AUTO_TIMER_TEXTS.nextcount		= "Próx. %s (%%s)"
 DBM_CORE_AUTO_TIMER_TEXTS.nextsource	= "Próx %s: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
 
