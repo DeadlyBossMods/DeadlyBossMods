@@ -342,7 +342,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cdsource	= "%s CD: >%%s<",
 	cdspecial	= "Special Ability CD",
 	next		= "Next %s",
-	nextcount	= "Next %s (%%d)",
+	nextcount	= "Next %s (%%s)",
 	nextsource	= "Next %s: >%%s<",
 	nextspecial	= "Next Special Ability",
 	achievement	= "%s",
@@ -451,3 +451,8 @@ DBM_CORE_LAG_CHECKING				= "Checking raid Latency..."
 DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - Latency Results"
 DBM_CORE_LAG_ENTRY					= "%s: World delay [%d ms] / Home delay [%d ms]"
 DBM_CORE_LAG_FOOTER					= "No Response: %s"
+
+--Globals are fixed to 16 pixel, we use same path but 22 pixel size. This is why not using blizzard globals
+DBM_CORE_TANK_ICON = "|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:22:22:0:0:64:64:0:19:22:41|t"
+DBM_CORE_HEALER_ICON = "|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:22:22:0:0:64:64:20:39:1:20|t"
+DBM_CORE_DAMAGE_ICON = "|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:22:22:0:0:64:64:20:39:22:41|t"

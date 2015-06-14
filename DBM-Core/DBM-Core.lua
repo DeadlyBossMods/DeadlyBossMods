@@ -4697,10 +4697,11 @@ do
 		if not frame then
 			createFrame()
 			DBM.Noteframe = frame
-		end
-		if frame:IsShown() and syncText then
-			DBM:AddMsg(DBM_CORE_NOTESHAREERRORALREADYOPEN)
-			return
+		else
+			if frame:IsShown() and syncText then
+				DBM:AddMsg(DBM_CORE_NOTESHAREERRORALREADYOPEN)
+				return
+			end
 		end
 		frame:Show()
 		fontstringFooter:SetText(DBM_CORE_NOTEFOOTER)
