@@ -273,7 +273,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId, "boss1") then
 			local amount = args.amount or 1
-			warnShatteredDefenses:Show(amount)
+			warnShatteredDefenses:Show(args.destName, amount)
 			--if amount % 2 == 0 or amount >= 5 then
 
 			--end
