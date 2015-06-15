@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(92330)
 mod:SetEncounterID(1794)
 mod:SetZone()
---mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
+mod:SetUsedIcons(1)
 --mod:SetRespawnTime(20)
 
 mod:RegisterCombat("combat")
@@ -58,7 +58,7 @@ local specWarnShadowWordAgony		= mod:NewSpecialWarningInterrupt(184239, false, n
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(182392, "-Healer", nil, nil, 1, 2)
 local specWarnGhastlyFixation		= mod:NewSpecialWarningRun(182769, nil, nil, nil, 4, 2)
 local yellGhastlyFixation			= mod:NewYell(182769, nil, false)
-local specWarnSargereiDominator		= mod:NewSpecialWarningSwitch("ej11456", "-Healer")
+local specWarnSargereiDominator		= mod:NewSpecialWarningSwitch("ej11456", "-Healer", nil, nil, 3)
 local specWarnGiftoftheManari		= mod:NewSpecialWarningYou(184124, nil, nil, nil, 1, 2)
 local yellGiftoftheManari			= mod:NewYell(184124)
 local specWarnEternalHunger			= mod:NewSpecialWarningRun(188666, nil, nil, nil, 4, 2)--Mythic
@@ -82,7 +82,8 @@ local timerVoraciousSoulstalkerCD	= mod:NewCDCountTimer(11, "ej11778", nil, nil,
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
-local countdownReverberatingBlow	= mod:NewCountdown(11, 180008, "Tank", nil, 3)--Cast every 11 seconds, so use 3 count, not 5 count. Tank only for now, up to tank to aim boss correct, rest of raid shouldn't need countdown spam
+local countdownReverberatingBlow	= mod:NewCountdown(17, 180008, "Tank", nil, 4)--Every 17 seconds now, so count last 4
+local countdownCharge				= mod:NewCountdown("Alt23", 182051)
 
 --Construct
 local voiceVolatileFelOrb			= mod:NewVoice(180221)--runout/keepmove
@@ -102,6 +103,7 @@ local voiceEternalHunger			= mod:NewVoice(188666)--runout/keepmove
 mod:AddRangeFrameOption(10, 184124)
 mod:AddHudMapOption("HudMapOnOrb", 180221)
 mod:AddHudMapOption("HudMapOnCharge", 182051)
+mod:AddSetIconOption("SetIconOnCharge", 182051, true)
 
 mod.vb.ReverberatingBlow = 0
 mod.vb.felBurstCount = 0
@@ -155,6 +157,9 @@ function mod:ChargeTarget(targetname, uId)
 	if self.Options.HudMapOnCharge then
 		DBMHudMap:RegisterRangeMarkerOnPartyMember(182051, "highlight", targetname, 5, 4, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)
 	end
+	if self.Options.SetIconOnCharge then
+		self:SetIcon(targetname, 1, 4)
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -166,6 +171,7 @@ function mod:OnCombatStart(delay)
 	countdownReverberatingBlow:Start(6.3-delay)
 	timerVolatileFelOrbCD:Start(12-delay)
 	timerFelChargeCD:Start(29-delay)
+	countdownCharge:Start(29-delay)
 	timerFelPrisonCD:Start(51-delay)--Seems drastically changed. 51 in all newer logs
 	if self:IsMythic() then
 		timerVoraciousSoulstalkerCD:Start(20-delay, 1)
@@ -195,8 +201,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 182051 then
 		if self:IsNormal() then
 			timerFelChargeCD:Start(30)
+			countdownCharge:Start(30)
 		else
 			timerFelChargeCD:Start()
+			countdownCharge:Start()
 		end
 		--Must have delay, to avoid same bug as oregorger. Boss has 2 target scans
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "ChargeTarget", 0.1, 10, true)
