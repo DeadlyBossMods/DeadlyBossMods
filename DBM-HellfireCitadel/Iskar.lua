@@ -4,6 +4,8 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(90316)
 mod:SetEncounterID(1788)
+mod:DisableESCombatDetection()--Remove if blizz fixes trash firing ENCOUNTER_START
+mod:SetMinSyncRevision(13887)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Unknown full spectrum of icons yet. Don't know how many debuffs go out.
 mod:SetRespawnTime(15)
