@@ -252,8 +252,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 181824 or spellId == 187990 then
 		warnPhantasmalCorruption:Show(args.destName)
-		timerPhantasmalCorruptionCD:Start(args.sourceGUID)
-		countdownCorruption:Start()
+		if self:IsNormal() then
+			timerPhantasmalCorruptionCD:Start(21, args.sourceGUID)
+			countdownCorruption:Start(21)
+		else
+			timerPhantasmalCorruptionCD:Start(args.sourceGUID)
+			countdownCorruption:Start()
+		end
 		if args:IsPlayer() then
 			updateRangeFrame(self)
 			specWarnPhantasmalCorruption:Show()
