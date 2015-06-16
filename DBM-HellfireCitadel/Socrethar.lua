@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, Prisons had no workable targetting of any kind during test. Study of logs and even videos showed no valid target scanning, debuff, whisper, nothing. As such, only aoe warning :\
 --TODO, voice for reverberatingblow removed since it's instant cast and currently a bit wonky/buggy. Needs further review later.
 --TODO, first construct timers after a soul phase
---ability.id = 183331 and overkill > 0 or (ability.id = 181288 or ability.id = 182051 or ability.id = 183331 or ability.id = 183329 or ability.id = 188693) and type = "begincast" or (ability.id = 180008 or ability.id = 184124 or ability.id = 190776 or ability.id = 183023) and type = "cast" or (ability.id = 184053 or ability.id = 189627) and (type = "applydebuff" or type = "applybuff")
+--(ability.id = 183331 or ability.name="Soul Dispersion") and overkill > 0 or (ability.id = 181288 or ability.id = 182051 or ability.id = 183331 or ability.id = 183329 or ability.id = 188693) and type = "begincast" or (ability.id = 180008 or ability.id = 184124 or ability.id = 190776 or ability.id = 183023) and type = "cast" or (ability.id = 184053 or ability.id = 189627) and (type = "applydebuff" or type = "applybuff")
 --Soulbound Construct
 local warnReverberatingBlow			= mod:NewCountAnnounce(180008, 3)
 --local warnFelPrison					= mod:NewTargetAnnounce(181288, 4)
@@ -79,7 +79,7 @@ local timerSargereiDominatorCD		= mod:NewCDTimer(60, "ej11456", nil, nil, nil, 1
 local timerHauntingSoulCD			= mod:NewCDTimer(30, "ej11462", nil, nil, nil, 182769)
 local timerGiftofManariCD			= mod:NewCDTimer(11, 184124)
 --Mythic
-local timerVoraciousSoulstalkerCD	= mod:NewCDCountTimer(11, "ej11778", nil, nil, nil, 190776)
+local timerVoraciousSoulstalkerCD	= mod:NewCDCountTimer(60, "ej11778", nil, nil, nil, 190776)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
@@ -264,10 +264,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 190776 then--Voracious Soulstalker Spawning
 		self.vb.mythicAddSpawn = self.vb.mythicAddSpawn + 1
-		local cooldown = mythicAddtimers[self.vb.mythicAddSpawn+1]
-		if cooldown then
-			timerVoraciousSoulstalkerCD:Start(cooldown, self.vb.mythicAddSpawn+1)
-		end
+		timerVoraciousSoulstalkerCD:Start(60, self.vb.mythicAddSpawn+1)
 	elseif spellId == 183023 then--Eject Soul
 		warnEjectSoul:Show()
 		timerReverberatingBlowCD:Cancel()
@@ -410,15 +407,18 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		timerHauntingSoulCD:Cancel()
 		timerApocalypseCD:Cancel()
 		self:UnregisterShortTermEvents()
-		timerReverberatingBlowCD:Start(10, 1)
-		countdownReverberatingBlow:Start(10)
 		timerVolatileFelOrbCD:Start(13)
 		timerFelChargeCD:Start(30.5)
 		countdownCharge:Start(30.5)
 		timerFelPrisonCD:Start(50)
 		if self:IsMythic() then
+			timerReverberatingBlowCD:Start(13, 1)
+			countdownReverberatingBlow:Start(13)
 			timerVoraciousSoulstalkerCD:Start(20, 1)
 			timerApocalypticFelburstCD:Start()
+		else
+			timerReverberatingBlowCD:Start(10, 1)
+			countdownReverberatingBlow:Start(10)
 		end
 	end
 end
