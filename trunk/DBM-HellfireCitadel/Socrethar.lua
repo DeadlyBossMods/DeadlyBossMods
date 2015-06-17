@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, Prisons had no workable targetting of any kind during test. Study of logs and even videos showed no valid target scanning, debuff, whisper, nothing. As such, only aoe warning :\
 --TODO, voice for reverberatingblow removed since it's instant cast and currently a bit wonky/buggy. Needs further review later.
 --TODO, first construct timers after a soul phase
---(ability.id = 183331 or ability.name="Soul Dispersion") and overkill > 0 or (ability.id = 181288 or ability.id = 182051 or ability.id = 183331 or ability.id = 183329 or ability.id = 188693) and type = "begincast" or (ability.id = 180008 or ability.id = 184124 or ability.id = 190776 or ability.id = 183023) and type = "cast" or (ability.id = 184053 or ability.id = 189627) and (type = "applydebuff" or type = "applybuff")
+--(ability.id = 183331 or ability.name="Soul Dispersion") and overkill > 0 or ability.id = 190466 or (ability.id = 181288 or ability.id = 182051 or ability.id = 183331 or ability.id = 183329 or ability.id = 188693) and type = "begincast" or (ability.id = 180008 or ability.id = 184124 or ability.id = 190776 or ability.id = 183023) and type = "cast" or (ability.id = 184053 or ability.id = 189627) and (type = "applydebuff" or type = "applybuff")
 --Soulbound Construct
 local warnReverberatingBlow			= mod:NewCountAnnounce(180008, 3)
 --local warnFelPrison					= mod:NewTargetAnnounce(181288, 4)
