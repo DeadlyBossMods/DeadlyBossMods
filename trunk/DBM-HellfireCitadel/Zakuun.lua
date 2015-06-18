@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 179406 179582",
-	"SPELL_CAST_SUCCESS 181508 179709",
+	"SPELL_CAST_SUCCESS 181508 181515 179709",
 	"SPELL_AURA_APPLIED 181508 181515 182008 179670 179711 179681 179407 179667",
 	"SPELL_AURA_REMOVED 179711 181508 181515 179667",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -225,15 +225,18 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 181508 then--Seed
+	if spellId == 181508 or spellId == 181515 then--181508 disarmed version, 181515 enraged version
 		self.vb.SeedsCount = self.vb.SeedsCount + 1
-		if self.vb.Enraged or self.vb.SeedsCount == 1 then--Only casts two between phases, unless enraged
+		if self.vb.Enraged then
+			timerSeedsofDestructionCD:Start(40, self.vb.SeedsCount+1)
+			countdownSeedsofDestructionCD:Start(40)
+		elseif self.vb.SeedsCount < 2 then--Only casts two between phases, unless enraged
 			timerSeedsofDestructionCD:Start(nil, self.vb.SeedsCount+1)
 			countdownSeedsofDestructionCD:Start(14.5)
 		end
 	elseif spellId == 179709 then--Foul
 		self.vb.BefouledCount = self.vb.BefouledCount + 1
-		if self.vb.Enraged or self.vb.BefouledCount == 1 then--Only casts two between phases, unless enraged
+		if self.vb.Enraged or self.vb.BefouledCount < 2 then--Only casts two between phases, unless enraged
 			timerBefouledCD:Start(nil, self.vb.BefouledCount+1)
 		end
 	end
@@ -241,7 +244,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 181508 or spellId == 181515 then--No idea what 181515 is. 181508 confirmed heroic
+	if spellId == 181508 or spellId == 181515 then--181508 disarmed version, 181515 enraged version
 		warnSeedofDestruction:CombinedShow(0.3, self.vb.SeedsCount, args.destName)
 		if args:IsPlayer() then
 			specWarnSeedofDestruction:Show()
