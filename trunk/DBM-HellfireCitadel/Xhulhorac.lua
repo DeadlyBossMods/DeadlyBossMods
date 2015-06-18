@@ -29,14 +29,14 @@ local warnFelPortal					= mod:NewSpellAnnounce(187003, 2)
 local warnFelSurge					= mod:NewTargetAnnounce(186407, 3)
 ----Adds
 local warnFelChains					= mod:NewTargetAnnounce(186490, 3)
-local warnFelBlazeFlurry			= mod:NewStackAnnounce(186448, 2, nil, "Tank")
+--local warnFelBlazeFlurry			= mod:NewStackAnnounce(186448, 2, nil, "Tank")
 local warnEmpoweredFelChains		= mod:NewTargetAnnounce(189775, 3)--Mythic
 --Void Phase
 ----Boss
 local warnVoidPortal				= mod:NewSpellAnnounce(187006, 2)
 local warnVoidSurge					= mod:NewTargetAnnounce(186333, 3)
 ----
-local warnWitheringGaze				= mod:NewStackAnnounce(186785, 2, nil, "Tank")
+--local warnWitheringGaze				= mod:NewStackAnnounce(186785, 2, nil, "Tank")
 --End Phase
 local warnOverwhelmingChaos			= mod:NewCountAnnounce(187204, 4)
 
@@ -48,12 +48,11 @@ local specWarnWastingVoid			= mod:NewSpecialWarningMove(186063, nil, nil, nil, 1
 --Fire Phase
 ----Boss
 local specWarnFelStrike				= mod:NewSpecialWarningSpell(186271, "Tank")
-local specWarnEmpoweredFelStrike	= mod:NewSpecialWarningTaunt(188092, false)--Maybe redundant
 local specWarnFelSurge				= mod:NewSpecialWarningYou(186407, nil, nil, nil, 1, 2)
 local yellFelSurge					= mod:NewYell(186407)
 ----Adds
 local specWarnFelBlazeFlurry		= mod:NewSpecialWarningSpell(186453, "Tank")
-local specWarnFelBlazeFlurryOther	= mod:NewSpecialWarningTaunt(186448)--Debuff must swap for
+--local specWarnFelBlazeFlurryOther	= mod:NewSpecialWarningTaunt(186453)
 local specWarnFelChains				= mod:NewSpecialWarningYou(186490)
 local specWarnEmpoweredFelChains	= mod:NewSpecialWarningYou(189775)
 local yellFelChains					= mod:NewYell(186490)
@@ -64,7 +63,7 @@ local specWarnVoidSurge				= mod:NewSpecialWarningYou(186333, nil, nil, nil, 1, 
 local yellVoidSurge					= mod:NewYell(186333)
 ----Adds
 local specWarnWitheringGaze			= mod:NewSpecialWarningSpell(186783, "Tank")
-local specWarnWitheringGazeOther	= mod:NewSpecialWarningTaunt(186785)--Debuff must swap for
+--local specWarnWitheringGazeOther	= mod:NewSpecialWarningTaunt(186785)--Debuff must swap for
 local specWarnBlackHole				= mod:NewSpecialWarningSpell(186546, nil, nil, nil, 2)
 local specWarnEmpBlackHole			= mod:NewSpecialWarningSpell(189779, nil, nil, nil, 2)--Mythic
 
@@ -284,7 +283,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end	
 		end
 		updateRangeFrame(self)
-	elseif spellId == 186448 then
+--[[	elseif spellId == 186448 then
 		local amount = args.amount or 1
 		if amount >= 3 then
 			if not args:IsPlayer() then
@@ -309,7 +308,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		else
 			warnWitheringGaze:Show(args.destName, amount)
-		end
+		end--]]
 	elseif spellId == 187204 then
 		self.vb.ChaosCount = self.vb.ChaosCount + 1
 		warnOverwhelmingChaos:Show(self.vb.ChaosCount)
