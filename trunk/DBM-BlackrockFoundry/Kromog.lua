@@ -21,7 +21,15 @@ mod:RegisterEvents(
 	"CHAT_MSG_ADDON"--Has to be out of combat
 )
 
---TODO, see how second trembling earth CD works and if current code even works for other timers. Mythic pulls were very short :\
+--Expression:  (ability.id = 157060 or ability.id = 158217) and type = "begincast" or ability.id = 173917 and type = "applybuff"
+--TODO, FUCK this fight and it's timers. It's impossible to make them correct in all cases. they are just FAR too god damn variable
+--https://www.warcraftlogs.com/reports/rHwKLVfXPQCYBcvW#fight=3&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id+%3D+157060+or+ability.id+%3D+158217)+and+type+%3D+%22begincast%22+or+ability.id+%3D+173917+and+type+%3D+%22applybuff%22
+--https://www.warcraftlogs.com/reports/W3Z9mzCvYADkfyG6#fight=27&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id+%3D+157060+or+ability.id+%3D+158217)+and+type+%3D+%22begincast%22+or+ability.id+%3D+173917+and+type+%3D+%22applybuff%22
+--https://www.warcraftlogs.com/reports/kvpLjynmPgNMFJtB#fight=13&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id+%3D+157060+or+ability.id+%3D+158217)+and+type+%3D+%22begincast%22+or+ability.id+%3D+173917+and+type+%3D+%22applybuff%22+
+--https://www.warcraftlogs.com/reports/dPLkxbZpCQj7R3D2#fight=8&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id+%3D+157060+or+ability.id+%3D+158217)+and+type+%3D+%22begincast%22+or+ability.id+%3D+173917+and+type+%3D+%22applybuff%22
+--https://www.warcraftlogs.com/reports/tyV24fQzhNnKjbDk#pins=2%24Off%24%23244F4B%24expression%24+(ability.id+%3D+157060+or+ability.id+%3D+158217)+and+type+%3D+%22begincast%22+or+ability.id+%3D+173917+and+type+%3D+%22applybuff%22&view=events&fight=6
+--Even more variations I don't have off hand. Basically because the cds are variable, and the two abilities delay eachother, it's a roulette and toss up what the fuck is even gonna happen from pull to pull.
+--I still hold I at least try to get a lot closer than BW does which has even more wrong timers. However, it's IMPOSSIBLE to ever get them correct without the damn wow source code
 local warnCrushingEarth				= mod:NewTargetAnnounce(161923, 3, nil, false)--Players who failed to move. Off by default since announcing failures is not something DBM generally does by default. Can't announce pre cast unfortunately. No detection
 local warnStoneGeyser				= mod:NewSpellAnnounce(158130, 2)
 local warnWarpedArmor				= mod:NewStackAnnounce(156766, 2, nil, "Tank")
