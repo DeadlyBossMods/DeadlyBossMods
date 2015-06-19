@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 190223 186453 190224 186783 186546 186490 189775 189779",
 	"SPELL_CAST_SUCCESS 186407 186333 186490 189775",
-	"SPELL_AURA_APPLIED 186073 186063 186134 186135 188092 186407 186333 186500 189777 186448 187204 186785",
+	"SPELL_AURA_APPLIED 186073 186063 186134 186135 186407 186333 186500 189777 186448 187204 186785",
 	"SPELL_AURA_APPLIED_DOSE 186073 186063 186448 186785 187204",
 	"SPELL_AURA_REMOVED 189777",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
@@ -50,6 +50,7 @@ local specWarnWastingVoid			= mod:NewSpecialWarningMove(186063, nil, nil, nil, 1
 --Fire Phase
 ----Boss
 local specWarnFelStrike				= mod:NewSpecialWarningSpell(186271, "Tank")
+local specWarnEmpoweredFelStrike	= mod:NewSpecialWarningTaunt(188092, false)--Maybe redundant
 local specWarnFelSurge				= mod:NewSpecialWarningYou(186407, nil, nil, nil, 1, 2)
 local yellFelSurge					= mod:NewYell(186407)
 local specWarnImps					= mod:NewSpecialWarningSwitchCount("ej11694", "Dps")
@@ -293,8 +294,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnVoidTouched:Show()
 	elseif spellId == 186134 and args:IsPlayer() then
 		specWarnFelTouched:Show()
-	elseif spellId == 188092 and not args:IsPlayer() then
-		specWarnEmpoweredFelStrike:Show(args.destName)
 	elseif spellId == 186407 then
 		warnFelSurge:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
