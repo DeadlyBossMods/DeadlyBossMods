@@ -60,7 +60,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 186961 then
 		warnDarkFate:Show(args.destName)
 		if args:IsPlayer() then
-			specWarnNetherBanish:Show()
 			yellDarkFate:Schedule(14, 1)
 			yellDarkFate:Schedule(13, 2)
 			yellDarkFate:Schedule(12, 3)
