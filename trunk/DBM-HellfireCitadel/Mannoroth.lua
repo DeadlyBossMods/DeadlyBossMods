@@ -57,7 +57,8 @@ local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, "Melee", nil, n
 local specWarnWrathofGuldan			= mod:NewSpecialWarningSpell(186348, nil, nil, nil, 2)
 --Mannoroth
 local specWarnGlaiveCombo			= mod:NewSpecialWarningSpell(181354, "Tank", nil, nil, 3, 2)--Active mitigation or die mechanic
-local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, "Tank", nil, nil, 1, 2)--Swap Mechanic
+local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, nil, nil, nil, 1, 2)
+local specWarnMassiveBlastOther		= mod:NewSpecialWarningTaunt(181359, nil, nil, nil, 1, 2)
 local specWarnFelHellStorm			= mod:NewSpecialWarningSpell(181557, nil, nil, nil, 2, 2)
 local specWarnGaze					= mod:NewSpecialWarningYou(181597)
 local yellGaze						= mod:NewYell(181597)
@@ -181,8 +182,14 @@ function mod:SPELL_CAST_START(args)
 			voiceFelBlast:Play("kickcast")
 		end
 	elseif spellId == 183376 or spellId == 185830 then
-		specWarnMassiveBlast:Show()
-		voiceMassiveBlast:Play("changemt")
+		voiceMassiveBlast:Schedule(1, "changemt")
+		local targetName, uId, bossuid = self:GetBossTarget(91349, true)
+		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
+		if tanking or (status == 3) then--Player is current target
+			specWarnMassiveBlast:Show()
+		else
+			specWarnMassiveBlast:Schedule(1, targetName)
+		end
 	elseif spellId == 181793 or spellId == 182077 then--Melee (10)
 		warnFelseeker:Show(10)
 	elseif spellId == 181792 or spellId == 182076 then--Ranged (20)
