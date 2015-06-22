@@ -8,9 +8,14 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 189595 189612",
-	"SPELL_AURA_APPLIED 189533 188476 182644 186961",
+	"SPELL_AURA_APPLIED 189533 188476 182644 186961 189512",
 	"SPELL_AURA_REMOVED 186961"
 )
+
+--First time mod loads, inject custom sound for kaz
+if not mod.Options.SpecWarn189512youSWSound then
+	mod.Options.SpecWarn189512youSWSound = "Sound\\Creature\\KazRogal\\CAV_Kaz_Mark02.ogg"
+end
 
 --TODO, http://ptr.wowhead.com/spell=188510/graggra-smash
 --http://ptr.wowhead.com/spell=188448/blazing-fel-touch
@@ -26,6 +31,7 @@ local specWarnSeverSoulOther		= mod:NewSpecialWarningTaunt(189533, nil, nil, nil
 local specWarnBadBreathOther		= mod:NewSpecialWarningTaunt(188476, nil, nil, nil, 1, 2)
 local specWarnRendingHowl			= mod:NewSpecialWarningInterrupt(189612, "-Healer", nil, nil, 1, 2)
 local yellDarkFate					= mod:NewFadesYell(182644)
+local specWarnMarkofKaz				= mod:NewSpecialWarningYou(189512)
 
 local voiceSeverSoul				= mod:NewVoice(189533, "Tank")--changemt
 local voiceCrowdControl				= mod:NewVoice(189595)--turnaway
@@ -65,6 +71,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDarkFate:Schedule(12, 3)
 			yellDarkFate:Schedule(11, 4)
 			yellDarkFate:Schedule(10, 5)
+		end
+	elseif spellId == 189512 then
+		if args:IsPlayer() then
+			specWarnMarkofKaz:Show()
 		end
 	end
 end
