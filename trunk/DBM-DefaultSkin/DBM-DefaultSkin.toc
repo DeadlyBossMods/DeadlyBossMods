@@ -1,4 +1,4 @@
-﻿## Interface: 60100
+﻿## Interface: 60200
 ## X-Min-Interface: 60000
 ## Title:|cffffe00a<|r|cffff7d0aDBM Skin|r|cffffe00a>|r |cff69ccf0Classic Timer Skin|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM 스킨|r|cffffe00a>|r |cff69ccf0기본 바 스킨|r
