@@ -34,3 +34,4 @@ Xhulhorac.lua
 Velhari.lua
 Mannoroth.lua
 Archimonde.lua
+HellfireCitadelTrash.lua
