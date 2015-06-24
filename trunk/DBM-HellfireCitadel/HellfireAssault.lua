@@ -52,7 +52,7 @@ local warnFelfireTransporter		= mod:NewCountAnnounce("ej11712", 4, 160240)--Myth
 
 --Siegemaster Mar'tak
 local specWarnHowlingAxe			= mod:NewSpecialWarningMoveAway(184369, nil, nil, nil, 1, 2)
-local yellHowlingAxe				= mod:NewCountYell(184369)
+local yellHowlingAxe				= mod:NewYell(184369)
 local specWarnShockwave				= mod:NewSpecialWarningDodge(184394, nil, nil, nil, 2, 2)
 --Hellfire Reinforcements
 local specWarnReinforcements		= mod:NewSpecialWarningSwitch("ej11406", "Tank")
@@ -153,7 +153,9 @@ https://www.warcraftlogs.com/reports/rQWG71xhLgnbvdYq#fight=12&type=summary&host
 mod.vb.vehicleCount = 0
 --mod.vb.addsCount = 0
 mod.vb.axeActive = false
-local normalVehicleTimers = {81.8, 64.7, 80.9, 62.4, 76.6, 64}
+--Vehicles spawn early if killed fast enough, these are times they spawn whether ready or not (still 2-3 sec variation)
+--ability.id = 180927 and type = "applybuff" or overkill > 0 and target.name in ("Felfire Crusher", "Felfire Artillery", "Felfire Demolisher", "Felfire Flamebelcher")
+local normalVehicleTimers = {72, 59, 63, 60, 58, 55, 38, 46}
 local vehicleTimers = {62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 40.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-4 seconds
 local mythicVehicleTimers = {20, 25, 54, 54, 44, 46, 12, 15.5, 50, 67, 68.5, 50.5, 55.5, 35, 35, 40, 39.5, 29.5, 25}--Done in a weird way, for dual timers support. Pretend it's two tables combined into 1. First time is time between1 and 3, second time between 2 and 4, etc.
 --local addsTimers = {25, 45, 44, 44, 43, 43, 42, 42, 41, 40, 42, 40, 40}--Very tiny variance between pulls. Adds gradually get faster over time. that 42 is a strange fluke though. probably 40 with variance, the 40 before it i think should have been a 41 so the 42 was probably auto correction
@@ -184,13 +186,13 @@ function mod:OnCombatStart(delay)
 	self.vb.vehicleCount = 0
 --	self.vb.addsCount = 0
 	timerHowlingAxeCD:Start(5-delay)
-	timerShockwaveCD:Start(6-delay)
+	timerShockwaveCD:Start(5.8-delay)
 --	timerReinforcementsCD:Start(25-delay, 1)
 	if self:IsMythic() then
 		timerSiegeVehicleCD:Start(52.5-delay, "("..DBM_CORE_LEFT..")")
 		timerSiegeVehicleCD:Start(55-delay, "("..DBM_CORE_RIGHT..")")
 	else
-		timerSiegeVehicleCD:Start(38-delay, "")
+		timerSiegeVehicleCD:Start(37.8-delay, "")
 	end
 end
 
@@ -305,6 +307,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM:AddMsg("No Vehicle timer information beyond this point. If you have log or video of this pull, please share it")
 			end
 		else
+			timerSiegeVehicleCD:Cancel()--Cancel timer to prevent debug error, if all adds killed fast enough, next vehicle spawns early!
 			if self:IsHeroic() then
 				if vehicleTimers[Count] then
 					timerSiegeVehicleCD:Start(vehicleTimers[Count], "")
