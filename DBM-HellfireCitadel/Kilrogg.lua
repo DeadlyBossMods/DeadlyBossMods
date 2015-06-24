@@ -41,8 +41,8 @@ local specWarnVisionofDeath			= mod:NewSpecialWarningCount(182428)--Seems everyo
 --Adds
 local specWarnBloodGlob				= mod:NewSpecialWarningSwitch(180459, "Dps", nil, nil, 1, 5)
 local specWarnFelBloodGlob			= mod:NewSpecialWarningSwitch(180199, "Dps", nil, nil, 3, 5)
-local specWarnBloodthirster			= mod:NewSpecialWarningSwitch("ej11266", false, nil, nil, 1, 5)--Very frequent, let specwarn be an option
-local specWarnHulkingTerror			= mod:NewSpecialWarningSwitch("ej11269", "Dps|Tank", nil, nil, 1, 5)
+local specWarnBloodthirster			= mod:NewSpecialWarningSwitch("ej11266", "Dps", nil, 2, 1, 5)--Very frequent, let specwarn be an option
+local specWarnHulkingTerror			= mod:NewSpecialWarningSwitch("ej11269", "Tank", nil, 2, 1, 5)
 local specWarnRendingHowl			= mod:NewSpecialWarningInterrupt(183917, "-Healer")
 
 --Boss
@@ -55,20 +55,21 @@ local timerHeartseekerCD			= mod:NewCDTimer(25, 180372)
 local timerVisionofDeathCD			= mod:NewCDCountTimer(75, 181488)
 local timerDeathThroesCD			= mod:NewCDCountTimer(40, 180224)
 --Adds
-local timerBloodthirsterCD			= mod:NewNextCountTimer(75, "ej11266", nil, nil, nil, 131150)
+local timerBloodthirsterCD			= mod:NewCDCountTimer(70.5, "ej11266", nil, nil, nil, 131150)
 --local timerRendingHowlCD				= mod:NewCDTimer(30, 183917)
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
-local countdownVisionofDeath			= mod:NewCountdown("Alt60", 181488)
+local countdownVisionofDeathCD			= mod:NewCountdown(75, 181488, "Tank")
+local countdownVisionofDeath			= mod:NewCountdownFades("Alt60", 181488)
 
 local voiceShred						= mod:NewVoice(180199)--defensive
 local voiceHeartSeeker					= mod:NewVoice(180372)--runout
 local voiceDeathThroes					= mod:NewVoice(180224)--aesoon
 local voiceBloodGlob					= mod:NewVoice(180459)--180459
 local voiceFelBloodGlob					= mod:NewVoice(180199)--180199
-local voiceBloodthirster				= mod:NewVoice("ej11266")--ej11266
-local voiceHulkingTerror				= mod:NewVoice("ej11269")--ej11269
+local voiceBloodthirster				= mod:NewVoice("ej11266", "Dps", nil, 2)--ej11266
+local voiceHulkingTerror				= mod:NewVoice("ej11269", "Tank", nil, 2)--ej11269
 
 mod:AddInfoFrameOption("ej11280")
 
@@ -89,6 +90,7 @@ function mod:OnCombatStart(delay)
 	timerHeartseekerCD:Start(-delay)
 	timerDeathThroesCD:Start(39-delay, 1)
 	timerVisionofDeathCD:Start(61-delay, 1)
+	countdownVisionofDeathCD:Start(61-delay)
 	table.wipe(AddsSeen)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(felCorruption)
@@ -123,6 +125,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.visionsCount = self.vb.visionsCount + 1
 		specWarnVisionofDeath:Show(self.vb.visionsCount)
 		timerVisionofDeathCD:Start(nil, self.vb.visionsCount+1)
+		countdownVisionofDeathCD:Start()
 	elseif spellId == 180163 then
 		warnSavageStrikes:Show()
 	elseif spellId == 183917 and self:CheckInterruptFilter(args.sourceGUID) then
@@ -192,7 +195,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if unitGUID and not AddsSeen[unitGUID] then
 			AddsSeen[unitGUID] = true
 			local cid = self:GetCIDFromGUID(unitGUID)
-			if (cid == 92038 or cid == 90521 or cid == 93369) and self:AntiSpam(3, 1) then--Salivating Bloodthirster. Antispam should filter the two that jump down together
+			if (cid == 92038 or cid == 90521 or cid == 93369) and self:AntiSpam(3, 1) and not self:IsTank() then--Salivating Bloodthirster. Antispam should filter the two that jump down together
 				if self.Options.SpecWarnej11266switch then
 					specWarnBloodthirster:Show()
 				else

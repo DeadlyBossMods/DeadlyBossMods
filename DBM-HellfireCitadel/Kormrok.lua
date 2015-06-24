@@ -232,18 +232,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.poundCount = 0
 		self.vb.swatCount = 0
 		warnShadowEnergy:Show()
-		if self:IsNormal() then
-			timerFelOutpouringCD:Start(13)
-			self:Schedule(13, delayedFelOutpouring, self, 100)--113
-			timerSwatCD:Start(37, 1)
-			timerPoundCD:Start(45, 1)
-			self:Schedule(45, delayedPound, self, 50)--95
-			timerExplosiveRunesCD:Start(63)
-			--timerGraspingHandsCD:Start(69)--Wasn't used on normal, bug?
-			--voiceGraspingHands:Schedule(64, "gather")
-			--countdownGraspingHands:Start(69)
-			timerLeapCD:Start(135.5)
-		else
+		if self:IsMythic() then
 			timerFelOutpouringCD:Start(11)
 			self:Schedule(11, delayedFelOutpouring, self, 84)--95
 			timerSwatCD:Start(21, 1)
@@ -251,11 +240,19 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(37, delayedPound, self, 48)--85
 			timerExplosiveRunesCD:Start(53)
 			timerGraspingHandsCD:Start(69)
-			if not self:IsMythic() then
-				voiceGraspingHands:Schedule(64, "gather")
-			end
 			countdownGraspingHands:Start(69)
 			timerLeapCD:Start()
+		else
+			timerFelOutpouringCD:Start(13)
+			self:Schedule(13, delayedFelOutpouring, self, 100)--113
+			timerSwatCD:Start(37, 1)
+			timerPoundCD:Start(45, 1)
+			self:Schedule(45, delayedPound, self, 50)--95
+			timerExplosiveRunesCD:Start(63)
+			voiceGraspingHands:Schedule(78, "gather")
+			timerGraspingHandsCD:Start(83)
+			countdownGraspingHands:Start(83)
+			timerLeapCD:Start(135.5)
 		end
 	--Non LFR phase changes need reworking post mechanics changes.
 	--Probably still mostly right but need minor tweaks
@@ -264,36 +261,43 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.poundCount = 0
 		self.vb.explosiveBurst = 0
 		warnExplosiveEnergy:Show()
-		if self:IsNormal() then
-			timerExplosiveRunesCD:Start(13)
-			self:Schedule(13, delayedExplosiveRunes, self, 58)--71
-			timerExplosiveBurstCD:Start(25, 1)
-			timerPoundCD:Start(33, 1)
-			self:Schedule(33, delayedPound, self, 50)--83
---			timerGraspingHandsCD:Start(43)--Wasn't used on normal, bug?
---			voiceGraspingHands:Schedule(38, "gather")
---			countdownGraspingHands:Start(43)
-			timerFelOutpouringCD:Start(99)
-			timerLeapCD:Start(135.5)
-		else
+		if self:IsMythic() then
 			timerExplosiveRunesCD:Start(11)
 			self:Schedule(11, delayedExplosiveRunes, self, 48)--59
 			timerExplosiveBurstCD:Start(21, 1)
 			timerPoundCD:Start(27, 1)
 			self:Schedule(27, delayedPound, self, 42)--69
 			timerGraspingHandsCD:Start(43)
-			if not self:IsMythic() then
-				voiceGraspingHands:Schedule(38, "gather")
-			end
 			countdownGraspingHands:Start(43)
 			timerFelOutpouringCD:Start(85)
 			timerLeapCD:Start()
+		else
+			timerExplosiveRunesCD:Start(13)
+			self:Schedule(13, delayedExplosiveRunes, self, 58)--71
+			timerExplosiveBurstCD:Start(25, 1)
+			timerPoundCD:Start(33, 1)
+			self:Schedule(33, delayedPound, self, 50)--83
+			voiceGraspingHands:Schedule(46, "gather")
+			timerGraspingHandsCD:Start(51)
+			countdownGraspingHands:Start(51)
+			timerFelOutpouringCD:Start(99)
+			timerLeapCD:Start(135.5)
 		end
 	elseif spellId == 180117 then--Foul Energy
 		self.vb.poundCount = 0
 		self.vb.foulCrush = 0
 		warnFoulEnergy:Show()
-		if self:IsNormal() then
+		if self:IsMythic() then
+			timerGraspingHandsCD:Start(11)
+			countdownGraspingHands:Start(11)
+			self:Schedule(11, delayedHands, self, 90)--101
+			timerFoulCrushCD:Start(21, 1)
+			timerPoundCD:Start(27, 1)
+			self:Schedule(27, delayedPound, self, 52)--79
+			timerFelOutpouringCD:Start(43.5)
+			timerExplosiveRunesCD:Start(69)
+			timerLeapCD:Start()
+		else
 			voiceGraspingHands:Schedule(8, "gather")
 			timerGraspingHandsCD:Start(13)
 			countdownGraspingHands:Start(13)
@@ -304,19 +308,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerFelOutpouringCD:Start(51)
 			timerExplosiveRunesCD:Start(83)
 			timerLeapCD:Start(135.5)
-		else
-			if not self:IsMythic() then
-				voiceGraspingHands:Schedule(6, "gather")
-			end
-			timerGraspingHandsCD:Start(11)
-			countdownGraspingHands:Start(11)
-			self:Schedule(11, delayedHands, self, 90)--101
-			timerFoulCrushCD:Start(21, 1)
-			timerPoundCD:Start(27, 1)
-			self:Schedule(27, delayedPound, self, 52)--79
-			timerFelOutpouringCD:Start(43.5)
-			timerExplosiveRunesCD:Start(69)
-			timerLeapCD:Start()
 		end
 	--LFR is an ENTIRELY different fight
 	--Fortunately it's also different spellids for phase changes so easy separate rules
