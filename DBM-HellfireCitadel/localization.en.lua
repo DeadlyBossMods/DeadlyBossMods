@@ -48,6 +48,18 @@ L:SetMiscLocalization({
 --------------------
 L= DBM:GetModLocalization(1372)
 
+L:SetTimerLocalization({
+	SoDDPS		= "Next Shadows (%s)",
+	SoDTank		= "Next Shadows (%s)",
+	SoDHealer	= "Next Shadows (%s)",
+})
+
+L:SetOptionLocalization({
+	SoDDPS		= "Show timer for next $spell:179864 affecting Damagers",
+	SoDTank		= "Show timer for next $spell:179864 affecting Tanks",
+	SoDHealer	= "Show timer for next $spell:179864 affecting Healers"
+})
+
 --------------------------
 -- Shadow-Lord Iskar --
 --------------------------
