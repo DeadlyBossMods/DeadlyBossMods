@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: Jun 2, 2015@13840
+-- Last update: Jun 24 10:37 PDT, 2015@13913
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -53,6 +53,17 @@ L:SetMiscLocalization({
 --------------------
 L= DBM:GetModLocalization(1372)
 
+L:SetTimerLocalization({
+	SoDDPS		= "下一次死亡之影 (%s)",
+	SoDTank		= "下一次死亡之影 (%s)",
+	SoDHealer	= "下一次死亡之影 (%s)"
+})
+
+L:SetOptionLocalization({
+	SoDDPS		= "计时条：下一次针对DPS的$spell:179864",
+	SoDTank		= "计时条：下一次针对坦克的$spell:179864",
+	SoDHealer	= "计时条：下一次针对治疗的$spell:179864"
+})
 --------------------------
 -- Shadow-Lord Iskar --
 --------------------------

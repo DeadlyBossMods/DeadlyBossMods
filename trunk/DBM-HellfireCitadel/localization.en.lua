@@ -51,7 +51,7 @@ L= DBM:GetModLocalization(1372)
 L:SetTimerLocalization({
 	SoDDPS		= "Next Shadows (%s)",
 	SoDTank		= "Next Shadows (%s)",
-	SoDHealer	= "Next Shadows (%s)",
+	SoDHealer	= "Next Shadows (%s)"
 })
 
 L:SetOptionLocalization({
