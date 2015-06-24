@@ -270,8 +270,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhantasmalFelBomb:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			updateRangeFrame(self)
-			specWarnPhantasmalFelBomb:Show()
-			yellPhantasmalFelBomb:Yell()
+			specWarnPhantasmalFelBomb:Schedule(0.3)
+			yellPhantasmalFelBomb:Schedule(0.3)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(15)
 			end
@@ -287,6 +287,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			updateRangeFrame(self)
+			specWarnPhantasmalFelBomb:Cancel()
+			yellPhantasmalFelBomb:Cancel()
 			specWarnFelBomb:Show()
 			yellFelBomb:Yell()
 			if self.Options.RangeFrame then
