@@ -586,7 +586,7 @@ function mod:OnSync(msg)
 		timerFelBurstCD:Cancel()
 		timerDesecrateCD:Cancel()
 		timerDoomfireCD:Cancel()
-		timerAllureofFlamesCD()--Reset to 35.5
+		timerAllureofFlamesCD:Cancel()--Reset to 35.5
 		timerAllureofFlamesCD:Start(35.5)
 		timerShackledTormentCD:Start(12)
 	elseif msg == "phase25" and self.vb.phase < 2.5 then
