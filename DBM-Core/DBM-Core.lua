@@ -8398,6 +8398,7 @@ do
 			return
 		end
 		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			DBM:Debug("Voice for "..spellId.." is using OptionVersion hack. this is not needed, this only has 4 args, do this properly", 2)
 			local temp = optionVersion
 			optionVersion = string.sub(spellId, 14)
 			spellId, optionDefault, optionName = optionDefault, optionName, temp
