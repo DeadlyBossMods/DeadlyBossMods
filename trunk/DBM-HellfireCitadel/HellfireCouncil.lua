@@ -106,7 +106,7 @@ function mod:OnCombatStart(delay)
 --	timerFelstormCD:Start(20.5-delay)--Review
 	timerRelRageCD:Start(30.5-delay, 1)
 	timerReapCD:Start(50-delay)--50-73 variation on pull, likely blizzard was tinkering/hotfixing it between pulls. verify on later testing
-	timerDarknessCD:Start(76.5-delay)
+	timerDarknessCD:Start(75-delay)
 	timerMirrorImageCD:Start(-delay)--First one is 150-160 into fight, unless he hits 30% first, then he uses it earlier and spams rest of fight.
 	timerDemoLeapCD:Start(230-delay)--First one 230 into fight. if you kill him first you NEVER see it.
 	berserkTimer:Start(-delay)
