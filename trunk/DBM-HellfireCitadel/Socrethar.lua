@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181288 182051 183331 183329 184239 182392 188693",
 	"SPELL_CAST_SUCCESS 180008 184124 190776 183023",
-	"SPELL_AURA_APPLIED 182038 182769 182900 184124 188666 189627",
+	"SPELL_AURA_APPLIED 182038 182769 182900 184124 188666 189627 190466",
 	"SPELL_AURA_APPLIED_DOSE 182038",
-	"SPELL_AURA_REMOVED 184124 189627",
+	"SPELL_AURA_REMOVED 184124 189627 190466",
 	"UNIT_DIED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
@@ -110,6 +110,7 @@ mod.vb.ReverberatingBlow = 0
 mod.vb.felBurstCount = 0
 mod.vb.ManariTargets = 0
 mod.vb.mythicAddSpawn = 0
+local playerInConstruct = false
 local mythicAddtimers = {20, 60, 75}--Don't have more than this
 --[[
 Dominator Times Observed on Normal and raid sizes
@@ -176,6 +177,7 @@ function mod:OnCombatStart(delay)
 	self.vb.ManariTargets = 0
 	self.vb.felBurstCount = 0
 	self.vb.mythicAddSpawn = 0
+	playerInConstruct = false
 	timerReverberatingBlowCD:Start(6.3-delay, 1)
 	countdownReverberatingBlow:Start(6.3-delay)
 	timerVolatileFelOrbCD:Start(12-delay)
@@ -219,7 +221,7 @@ function mod:SPELL_CAST_START(args)
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "ChargeTarget", 0.1, 10, true)
 	elseif spellId == 183331 then
 		timerExertDominanceCD:Start()
-		if self:CheckInterruptFilter(args.sourceGUID) then
+		if self:CheckInterruptFilter(args.sourceGUID) and not playerInConstruct then
 			specWarnExertDominance:Show(args.sourceName)
 			voiceExertDominance:Play("kickcast")
 		end
@@ -358,6 +360,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.HudMapOnOrb then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(180221, "highlight", args.destName, 5, 20, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
+	elseif spellId == 190466 and args:IsPlayer() then
+		playerInConstruct = true
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -371,6 +375,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.HudMapOnOrb then
 			DBMHudMap:FreeEncounterMarkerByTarget(180221, args.destName)
 		end
+	elseif spellId == 190466 and args:IsPlayer() then
+		playerInConstruct = false
 	end
 end
 
