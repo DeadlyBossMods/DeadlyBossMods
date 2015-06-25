@@ -40,7 +40,7 @@ local specWarnDeathThroes			= mod:NewSpecialWarningCount(180224, nil, nil, nil, 
 local specWarnVisionofDeath			= mod:NewSpecialWarningCount(182428)--Seems everyone goes down at some point, dps healers and off tank. Each getting different abiltiy when succeed
 --Adds
 local specWarnBloodGlob				= mod:NewSpecialWarningSwitch(180459, "Dps", nil, nil, 1, 5)
-local specWarnFelBloodGlob			= mod:NewSpecialWarningSwitch(180199, "Dps", nil, nil, 3, 5)
+local specWarnFelBloodGlob			= mod:NewSpecialWarningSwitch(180413, "Dps", nil, nil, 3, 5)
 local specWarnBloodthirster			= mod:NewSpecialWarningSwitch("ej11266", "Dps", nil, 2, 1, 5)--Very frequent, let specwarn be an option
 local specWarnHulkingTerror			= mod:NewSpecialWarningSwitch("ej11269", "Tank", nil, 2, 1, 5)
 local specWarnRendingHowl			= mod:NewSpecialWarningInterrupt(183917, "-Healer")
@@ -67,7 +67,7 @@ local voiceShred						= mod:NewVoice(180199)--defensive
 local voiceHeartSeeker					= mod:NewVoice(180372)--runout
 local voiceDeathThroes					= mod:NewVoice(180224)--aesoon
 local voiceBloodGlob					= mod:NewVoice(180459)--180459
-local voiceFelBloodGlob					= mod:NewVoice(180199)--180199
+local voiceFelBloodGlob					= mod:NewVoice(180413)--180199 (wrong spellID for voice do to my mistake)
 local voiceBloodthirster				= mod:NewVoice("ej11266", "Dps", nil, 2)--ej11266
 local voiceHulkingTerror				= mod:NewVoice("ej11269", "Tank", nil, 2)--ej11269
 
