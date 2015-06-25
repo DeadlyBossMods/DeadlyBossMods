@@ -142,7 +142,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnBreakShackle	= "$spell:184964 대상이 된 경우 특수 경고 보기. 이 경고는 최소의 피해만 줄 수 있는 대상에게 자동 할당됩니다.",
+	specWarnBreakShackle	= "$spell:184964 대상이 된 경우 특수 경고 보기(빠지는 순서가 자동으로 할당됩니다.)",
 	FilterOtherPhase		= "당신과 다른 위상에 있는 주문 경고 숨기기"
 })
 
