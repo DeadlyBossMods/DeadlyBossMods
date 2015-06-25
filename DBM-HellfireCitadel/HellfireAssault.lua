@@ -5,14 +5,14 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(90019)--Main ID is door, door death= win. 94515 Siegemaster Mar'tak
 mod:SetEncounterID(1778)
 mod:SetZone()
---mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
+mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(13909)
 --mod:SetRespawnTime(20)
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 184394 181155 185816 180417 183452 181968",
+	"SPELL_CAST_START 184394 181155 185816 183452 181968",
 	"SPELL_AURA_APPLIED 180079 184238 184243 180927 184369 180076",
 	"SPELL_AURA_APPLIED_DOSE 184243",
 	"SPELL_AURA_REMOVED 184369",
@@ -25,14 +25,13 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, tank swaps for slam?
---TODO, add interrupt voice to volley of it actually is interruptable, if not, remove special warning instead.
---TODO, rework adds timers in absense of yells, plus see if blizzard changed way they spawn, since they seemed to be a bit more staggered in mythic
 --TODO, on normal they changed vehicle spawn rates to be slower. But LFR had heroic rates, So now need to see if LFR also uses slower timers, for now, ASSUMING yes and coded it as such.
 --Siegemaster Mar'tak
 local warnHowlingAxe				= mod:NewTargetAnnounce(184369, 3)
 local warnFelfireMunitions			= mod:NewTargetAnnounce(180079, 1)
 --Hellfire Reinforcements
-local warnReinforcements			= mod:NewCountAnnounce("ej11406", 3)--Needs icon
+local warnFelCaster					= mod:NewCountAnnounce("ej11411", 3, 181155)
+local warnBerserker					= mod:NewCountAnnounce("ej11425", 3, 184243)
 ----Gorebound Berserker (tank add probably)
 local warnSlam						= mod:NewStackAnnounce(184243, 3, nil, "Tank")--How many stacks to swap? or is there a swap?
 ----Grand Corruptor U'rogg
@@ -56,14 +55,14 @@ local specWarnHowlingAxe			= mod:NewSpecialWarningMoveAway(184369, nil, nil, nil
 local yellHowlingAxe				= mod:NewYell(184369)
 local specWarnShockwave				= mod:NewSpecialWarningDodge(184394, nil, nil, nil, 2, 2)
 --Hellfire Reinforcements
-local specWarnReinforcements		= mod:NewSpecialWarningSwitch("ej11406", "Tank")
+local specWarnReinforcements		= mod:NewSpecialWarningSwitch("ej11406", false, nil, 2)--Generic warning for tanks to pick up new adds if they want to enable it
 ----Gorebound Berserker (tank add)
 local specWarnCower					= mod:NewSpecialWarningTaunt(184238, "Tank")
 --Some specail warnings for taunts or stacks or something here, probably.
 ----Gorebound Felcaster
-local specWarnIncinerate			= mod:NewSpecialWarningInterrupt(181155, false)--Seems less important of two spells, maybe both need interrupting though?
+local specWarnIncinerate			= mod:NewSpecialWarningInterrupt(181155, false)--Seems less important of two spells
 local specWarnMetamorphosis			= mod:NewSpecialWarningSwitch(181968, "Dps")--Switch and get dead if they transform, they do TONS of damage transformed
---local specWarnFelfireVolley		= mod:NewSpecialWarningInterrupt(180417, "-Healer")--Journal says interruptable, but it was not interruptable. what's the bug? journal or mob?
+local specWarnFelfireVolley			= mod:NewSpecialWarningInterrupt(183452, "-Healer")
 ----Contracted Engineer
 local specWarnRepair				= mod:NewSpecialWarningInterrupt(185816, "-Healer", nil, nil, 1, 2)
 ----Grute
@@ -75,7 +74,8 @@ local specWarnDemolisher			= mod:NewSpecialWarningSwitch("ej11429", "Dps", nil, 
 local timerHowlingAxeCD				= mod:NewCDTimer(8.47, 184369)
 local timerShockwaveCD				= mod:NewCDTimer(8.5, 184394)
 --Hellfire Reinforcements
---local timerReinforcementsCD			= mod:NewCDCountTimer(40, "ej9713")--Not the real joural entry, but best and shortest name (11406 is real one, but Hellfire Reinforcements too long for timer)
+local timerFelCastersCD				= mod:NewCDCountTimer(40, "ej11411", nil, nil, nil, 181155)
+local timerBerserkersCD				= mod:NewCDCountTimer(40, "ej11425", nil, nil, nil, 184243)
 ----Gorebound Berserker (tank add probably)
 --local timerCowerCD				= mod:NewCDTimer(107, 184238)
 --local timerSlamCD					= mod:NewCDTimer(107, 184243)
@@ -93,13 +93,13 @@ local countdownHowlingAxe			= mod:NewCountdownFades("Alt7", 184369)
 local voiceHowlingAxe				= mod:NewVoice(184369)--runout
 local voiceShockwave				= mod:NewVoice(184394)--shockwave
 local voiceIncinerate				= mod:NewVoice(181155, false)--kick
---local voiceFelfireVolley			= mod:NewVoice(180417, "-Healer")--kick
+local voiceFelfireVolley			= mod:NewVoice(180417, "-Healer")--kick
 local voiceRepair					= mod:NewVoice(185816)--kickcast
 local voiceFelfireSiegeVehicles		= mod:NewVoice("ej11428")--One option for all 5, because less cluttered options better in this case I think.
 
 mod:AddRangeFrameOption(8, 184369)
 mod:AddHudMapOption("HudMapOnAxe", 184369)
---mod:AddSetIconOption("SetIconOnAdds", "ej11411", false, true)--If last wave isn't dead before new wave, this icon option will screw up. A more complex solution may be needed. Or just accept that this will only work for guilds with high dps
+mod:AddSetIconOption("SetIconOnAdds", "ej11411", false, true)--If last wave isn't dead before new wave, this icon option will screw up. A more complex solution may be needed. Or just accept that this will only work for guilds with high dps
 
 --[[
 Times are not exact, there are variations, timer tables will probably use lowest seen variation between two vehicles
@@ -152,14 +152,17 @@ https://www.warcraftlogs.com/reports/rQWG71xhLgnbvdYq#fight=12&type=summary&host
 --]]
 
 mod.vb.vehicleCount = 0
---mod.vb.addsCount = 0
+mod.vb.felcasterCount = 0
+mod.vb.felCastersAlive = 0
+mod.vb.berserkerCount = 0
 mod.vb.axeActive = false
 --Vehicles spawn early if killed fast enough, these are times they spawn whether ready or not (still 2-3 sec variation)
 --ability.id = 180927 and type = "applybuff" or overkill > 0 and target.name in ("Felfire Crusher", "Felfire Artillery", "Felfire Demolisher", "Felfire Flamebelcher")
 local normalVehicleTimers = {72, 59, 63, 60, 58, 55, 38, 46}
 local vehicleTimers = {62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 40.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-4 seconds
 local mythicVehicleTimers = {20, 25, 54, 54, 44, 46, 12, 15.5, 50, 67, 68.5, 50.5, 55.5, 35, 35, 40, 39.5, 29.5, 25}--Done in a weird way, for dual timers support. Pretend it's two tables combined into 1. First time is time between1 and 3, second time between 2 and 4, etc.
---local addsTimers = {25, 45, 44, 44, 43, 43, 42, 42, 41, 40, 42, 40, 40}--Very tiny variance between pulls. Adds gradually get faster over time. that 42 is a strange fluke though. probably 40 with variance, the 40 before it i think should have been a 41 so the 42 was probably auto correction
+local berserkerTimers = {55.9, 26, 14.4, 36.7, 38.8, 49.5, 66.8, 38.7, 65.8, 47.4}--30 (first) is omitted
+local felcasterTimers = {8.5, 32.2, 39.5, 45.6, 50.9, 31.1, 36.7, 10, 103.8, 0.3, 27.8, 47.2}--35 (first) is omitted
 local axeDebuff = GetSpellInfo(184369)
 local axeFilter
 do
@@ -185,14 +188,17 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.vehicleCount = 0
---	self.vb.addsCount = 0
+	self.vb.felcasterCount = 0
+	self.vb.berserkerCount = 0
+	self.vb.felCastersAlive = 0
 	timerHowlingAxeCD:Start(5-delay)
 	timerShockwaveCD:Start(5.8-delay)
---	timerReinforcementsCD:Start(25-delay, 1)
 	if self:IsMythic() then
 		timerSiegeVehicleCD:Start(52.5-delay, "("..DBM_CORE_LEFT..")")
 		timerSiegeVehicleCD:Start(55-delay, "("..DBM_CORE_RIGHT..")")
 	else
+		timerBerserkersCD:Start(30-delay, 1)
+		timerFelCastersCD:start(35-delay, 1)
 		timerSiegeVehicleCD:Start(37.8-delay, "")
 	end
 end
@@ -215,9 +221,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 181155 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnIncinerate:Show(args.sourceName)
 		voiceIncinerate:Play("kickcast")
---	elseif (spellId == 180417 or spellId == 183452) and self:CheckInterruptFilter(args.sourceGUID) then--Two spellids because two different cast times (mob has two forms)
---		specWarnFelfireVolley:Show(args.sourceName)
---		voiceFelfireVolley:Play("kickcast")
+	elseif spellId == 183452 and self:CheckInterruptFilter(args.sourceGUID) then--Two spellids because two different cast times (mob has two forms)
+		specWarnFelfireVolley:Show(args.sourceName)
+		voiceFelfireVolley:Play("kickcast")
 	elseif spellId == 185816 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnRepair:Show(args.sourceName)
 		voiceRepair:Play("kickcast")
@@ -355,18 +361,53 @@ function mod:UNIT_DIED(args)
 	if cid == 93858 then--Gorebound Berserker
 		
 	elseif cid == 93931 then--Gorebound Felcaster
-		
+		self.vb.felCastersAlive = self.vb.felCastersAlive - 1
 	elseif cid == 93881 then--Contract Engineer
 		
 	end
 end
 
---Wish there was another way, but there isn't. This requires localizing
-function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
-	if msg == L.AddsSpawn1 or msg == L.AddsSpawn2 then
-		self:SendSync("Adds")
-	elseif msg == L.BossLeaving and self:AntiSpam(20, 2) then
+local felCaster = EJ_GetSectionInfo(11411)
+local berserker = EJ_GetSectionInfo(11425)
+--local dragoon = EJ_GetSectionInfo(11407)--Unused, add has no yell at this time
+--local SiegemasterMartak = EJ_GetSectionInfo(11484)--Unused, maybe used as a filter if needed
+--Massive TODO. Get sides for mythic and only warn for side you are on if possible (iffy at best)
+function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
+	if msg == L.BossLeaving and self:AntiSpam(20, 2) then
 		self:SendSync("BossLeaving")
+	elseif npc == felCaster or npc == dragoon or npc == berserker then
+		if self:AntiSpam(5, 6) then
+			specWarnReinforcements:Show()
+		end
+		if npc == felCaster then
+			self.vb.felcasterCount = self.vb.felcasterCount + 1
+			warnFelCaster:Show(self.vb.felcasterCount)
+			if self.Options.SetIconOnAdds then
+				--Set icons starting at 6, not using skull and x, those will probably be used to auto mark terrors in a later feature
+				self:ScanForMobs(93931, 0, 6-self.vb.felCastersAlive, nil, 0.2, 10)
+			end
+			if self:IsMythic() then
+			
+			else
+				if felcasterTimers[self.vb.felcasterCount] then
+					timerFelCastersCD:Start(felcasterTimers[self.vb.felcasterCount], self.vb.felcasterCount+1)
+				end
+			end
+			self.vb.felCastersAlive = self.vb.felCastersAlive + 1
+		elseif npc == berserker then
+			self.vb.berserkerCount = self.vb.berserkerCount + 1
+			warnBerserker:Show(self.vb.berserkerCount)
+--			if self.Options.SetIconOnAdds then
+--				self:ScanForMobs(93858, 0, 8, nil, 0.2, 12)
+--			end
+			if self:IsMythic() then
+			
+			else
+				if berserkerTimers[self.vb.berserkerCount] then
+					timerBerserkersCD:Start(berserkerTimers[self.vb.berserkerCount], self.vb.berserkerCount+1)
+				end
+			end
+		end
 	end
 end
 
@@ -391,22 +432,6 @@ function mod:OnSync(msg)
 		if self.Options.HudMapOnAxe then
 			DBMHudMap:Disable()
 		end
-		--No longer reliable, blizz has disabled the yell most of time. it went from every adds set, to maybe 1 in 10 having yell.
-		--Adds willneed videos and scheduled loops and other stupid shit since blizz likes to make mod authoring miserable
---[[	elseif msg == "Adds" and self:AntiSpam(20, 4) then
-		self.vb.addsCount = self.vb.addsCount + 1
-		if self.Options.SpecWarnej11406switchcount then
-			specWarnReinforcements:Show(self.vb.addsCount)
-		else
-			warnReinforcements:Show(self.vb.addsCount)
-		end
-		local nextCount = self.vb.addsCount+1
-		if addsTimers[nextCount] then
-			timerReinforcementsCD:Start(addsTimers[nextCount], nextCount)
-		end
-		if self.Options.SetIconOnAdds then
-			self:ScanForMobs(93931, 0, 8, nil, 0.2, 12)
-		end--]]
 	end
 end
 
