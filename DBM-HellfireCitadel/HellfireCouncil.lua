@@ -45,7 +45,7 @@ local specWarnFelstorm				= mod:NewSpecialWarningSpell(183701, nil, nil, nil, 2,
 --Dia Darkwhisper
 local specWarnNightmareVisage		= mod:NewSpecialWarningSpell(184657)--Doesn't option default, only warns highest threat
 local specWarnReap					= mod:NewSpecialWarningMoveAway(184476, nil, nil, nil, 3, 2)--Everyone with Mark of Necromancer is going to drop void zones that last forever, they MUST get the hell out
-local specWarnReapGTFO				= mod:NewSpecialWarningMove(184652, nil, nil, nil, 1, 2)--On the ground version (GTFO)
+local specWarnReapGTFO				= mod:NewSpecialWarningMove(30533, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move:format(184652), nil, 1, 2)--On the ground version (GTFO)
 local yellReap						= mod:NewYell(184476)
 local specWarnDarkness				= mod:NewSpecialWarningSpell(184681, nil, nil, nil, 2)
 --Gurtogg Bloodboil
