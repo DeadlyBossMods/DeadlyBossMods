@@ -7,7 +7,7 @@ mod:SetEncounterID(1787)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
 mod:SetHotfixNoticeRev(13910)
---mod:SetRespawnTime(20)
+mod:SetRespawnTime(18)--18 is an odd one, but definitely was 18
 
 mod:RegisterCombat("combat")
 

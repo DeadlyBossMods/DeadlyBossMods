@@ -11,11 +11,11 @@ mod:SetRespawnTime(30)
 
 mod:RegisterCombat("combat")
 
-
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181973 181582 187814",
 	"SPELL_CAST_SUCCESS 179977 182170 181085",
-	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148 181295 185982 189434",
+	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148 181295 185982 189434 185190",
+	"SPELL_AURA_APPLIED_DOSE 185190",
 	"SPELL_AURA_REMOVED 179909 179908 181295 181973 185982",
 	"SPELL_PERIODIC_DAMAGE 179995",
 	"SPELL_ABSORBED 179995",
@@ -43,6 +43,8 @@ local specWarnFeastofSoulsEnded			= mod:NewSpecialWarningEnd(181973)
 local specWarnHungerforLife				= mod:NewSpecialWarningRun(180148, nil, nil, nil, 4, 2)
 local specWarnEnragedSpirit				= mod:NewSpecialWarningSwitch("ej11378", "-Healer")
 local specWarnGoreboundSpirit			= mod:NewSpecialWarningSwitch("ej11020", "-Healer")
+local specWarnBurning					= mod:NewSpecialWarningStack(185190, nil, 5)
+local specWarnBurningOther				= mod:NewSpecialWarningTaunt(185190, nil, nil, nil, nil, 2)
 local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer", nil, nil, 1, 2)
 
 local timerShadowofDeathCDDps			= mod:NewTimer(30, "SoDDPS", 179864, "Dps")
@@ -66,6 +68,7 @@ local voiceHungerforLife				= mod:NewVoice(180148)--justrun
 local voiceBellowingShout				= mod:NewVoice(181582, "-Healer")--kickcast
 local voiceShadowofDeath				= mod:NewVoice(179864)--teleyou, new voice, teleport into a new phase phase
 local voiceSharedFate					= mod:NewVoice(179909)--linegather, new voice, like Blood-Queen Lana'thel's Pact of the Darkfallen, line gather will be better.
+local voiceBurning						= mod:NewVoice(185190) --changemt
 
 mod:AddSetIconOption("SetIconOnFate", 179909)
 mod:AddHudMapOption("HudMapOnSharedFate", 179909)--Smart hud, distinquishes rooted from non rooted by color coding.
@@ -78,9 +81,8 @@ mod.vb.shadowOfDeathCount = 0
 mod.vb.sharedFateCount = 0
 local playerDown = false
 local playersCount = 0
-
+local sharedFateTimers = {19, 28, 25, 22}
 --[[
-TODO, update shadow of death timers for role and count
 Time   Player Role   # of players sent, if your raid size is...
                           10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29
 0:02      DPS             1   1   1   2   2   2   2   2   2   3   3   3   3   3   3   4   4   4   4   4
@@ -103,7 +105,6 @@ Mythic
 --local shadowofDeathTimers = {2, 11, 17, 7, 28, 8}
 --local shadowofDeathTimers10 = {2, 11, 17, 7, 36}--Special case, 1:05 cast doesn't happen with exactly 10 players.
 --local shadowofDeathTimersMythic = {2, 6, 12, 9, 27, 8, 3, 15}
-local sharedFateTimers = {19, 28, 25, 22}
 
 function mod:OnCombatStart(delay)
 	self.vb.rootedFate = nil
@@ -290,9 +291,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		playerDown = true
 	elseif spellId == 185982 and not playerDown then--Cast when a Enraged Spirit in stomach reaches 70%
 		warnGoreboundSpiritSoon:Show()
+	elseif spellId == 185190 then
+		local amount = args.amount or 1
+		if (amount >= 5) and self:AntiSpam(3, 5) then
+			voiceBurning:Play("changemt")
+			if args:IsPlayer() then
+				specWarnBurning:Show(amount)
+			else--Taunt as soon as stacks are clear, regardless of stack count.
+				if not UnitDebuff("player", GetSpellInfo(185190)) and not UnitIsDeadOrGhost("player") then
+					specWarnBurningOther:Show(args.destName)
+				end
+			end
+		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
