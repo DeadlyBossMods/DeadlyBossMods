@@ -26,6 +26,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--(ability.id = 181557 or ability.id = 181948 or ability.id = 181799 or ability.id = 182084 or ability.id = 186348) and type = "begincast" or (ability.id = 181597 or ability.id = 182006) and type = "cast" or (ability.id = 185147 or ability.id = 182212 or ability.id = 185175) and type = "removebuff"
 --TODO, get timer for 2nd doom lord spawning, if some group decides to do portals in a bad order and not kill that portal summoner first
 --TODO, get longer phase 4 log because log i have isn't long enough to see why felstorm has a longer cd in phase 4
 --TODO, custom voice for shadowforce? It works almost identical to helm of command from lei shen. Did that have a voice usuable here?
@@ -307,7 +308,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
+ 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 181099 then
@@ -331,8 +332,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.vb.portalsLeft == 0 and self:AntiSpam(10, 4) then
 			self.vb.phase = 2
-			timerFelHellfireCD:Start(29)
-			timerGazeCD:Start(41)
+			timerFelHellfireCD:Start(28)
+			timerGazeCD:Start(40)
 			timerGlaiveComboCD:Start(43)
 			timerFelSeekerCD:Start(59)
 			warnPhase2:Show()
