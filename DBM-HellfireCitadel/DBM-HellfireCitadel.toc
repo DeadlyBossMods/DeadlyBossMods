@@ -5,6 +5,7 @@
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0地狱火堡垒|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0지옥불 성채|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0地獄火堡壘|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Цитадель адского пламени|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -21,6 +22,7 @@ localization.de.lua
 localization.cn.lua
 localization.kr.lua
 localization.tw.lua
+localization.ru.lua
 HellfireAssault.lua
 IronReaver.lua
 Kormrok.lua
