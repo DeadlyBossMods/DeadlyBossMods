@@ -49,6 +49,18 @@ L:SetMiscLocalization({
 --------------------
 L= DBM:GetModLocalization(1372)
 
+L:SetTimerLocalization({
+	SoDDPS		= "다음 그림자 (%s)",
+	SoDTank		= "다음 그림자 (%s)",
+	SoDHealer	= "다음 그림자 (%s)"
+})
+
+L:SetOptionLocalization({
+	SoDDPS		= "다음 $spell:179864 대상 바 보기(공격 전담)",
+	SoDTank		= "다음 $spell:179864 대상 바 보기(방어 전담)",
+	SoDHealer	= "다음 $spell:179864 대상 바 보기(치유 전담)"
+})
+
 --------------------------
 -- Shadow-Lord Iskar --
 --------------------------
@@ -95,7 +107,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1447)
 
 L:SetOptionLocalization({
-	ChainsBehavior		= "Fel Chains 경고 방식 설정",
+	ChainsBehavior		= "지옥의 사슬 경고 방식 설정",
 	Cast				= "시전 시작시 바라보는 대상만 알림. 바는 시전 시작에 맞추어 갱신됩니다.",
 	Applied				= "시전 완료후 모든 대상 알림. 바는 시전 완료에 맞추어 갱신됩니다.",
 	Both				= "시작 및 완료시 모두 알림. 바는 시전 시작에 맞추어 갱신됩니다."
@@ -126,7 +138,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1438)
 
 L:SetWarningLocalization({
-	specWarnBreakShackle	= "Shackled Torment: Break %s!"
+	specWarnBreakShackle	= "구속된 고통: %s로 빠지세요!"
 })
 
 L:SetOptionLocalization({
