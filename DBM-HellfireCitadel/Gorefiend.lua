@@ -45,9 +45,9 @@ local specWarnEnragedSpirit				= mod:NewSpecialWarningSwitch("ej11378", "-Healer
 local specWarnGoreboundSpirit			= mod:NewSpecialWarningSwitch("ej11020", "-Healer")
 local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer", nil, nil, 1, 2)
 
-local timerShadowofDeathCDDps			= mod:NewTimer(30, "SoDDPS", "Dps", 179864)
-local timerShadowofDeathCDTank			= mod:NewTimer(30, "SoDTank", "Tank", 179864)
-local timerShadowofDeathCDHealer		= mod:NewTimer(30, "SoDHealer", "Healer", 179864)
+local timerShadowofDeathCDDps			= mod:NewTimer(30, "SoDDPS", 179864, "Dps")
+local timerShadowofDeathCDTank			= mod:NewTimer(30, "SoDTank", 179864, "Tank")
+local timerShadowofDeathCDHealer		= mod:NewTimer(30, "SoDHealer", 179864, "Healer")
 local timerTouchofDoomCD				= mod:NewCDTimer(18, 179977)--25 seconds in LFR, tested after heroic. changed? VERIFY
 local timerSharedFateCD					= mod:NewNextCountTimer(29, 179909)--29-31
 local timerCrushingDarknessCD			= mod:NewNextTimer("OptionVersion2", 10, 180017, nil, false)--Actually 16, but i delay start by 6 seconds for reduced spam
