@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181292 181293 181296 181297 181299 181300 180244 181305",
 	"SPELL_CAST_SUCCESS 181307",
-	"SPELL_AURA_APPLIED 181306 186882 180115 180116 180117 189197 189198 189199",
+	"SPELL_AURA_APPLIED 181306 186882 180115 180116 180117 189197 189198 189199 186879 186880 186881",
 	"SPELL_AURA_REMOVED 181306 180244"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
@@ -74,6 +74,7 @@ mod.vb.poundCount = 0
 mod.vb.explosiveBurst = 0
 mod.vb.foulCrush = 0
 mod.vb.swatCount = 0
+mod.vb.enraged = false
 local debuffName = GetSpellInfo(181306)
 local UnitDebuff = UnitDebuff
 
@@ -119,6 +120,7 @@ function mod:OnCombatStart(delay)
 	self.vb.explodingTank = nil
 	self.vb.poundActive = false
 	self.vb.poundCount = 0
+	self.vb.enraged = false
 	timerLeapCD:Start(12-delay)
 end
 
@@ -128,8 +130,7 @@ function mod:OnCombatEnd()
 	end
 end 
 
---(ability.id = 181292 or ability.id = 181293 or ability.id = 181296 or ability.id = 181297 or ability.id = 181299 or ability.id = 181300 or ability.id = 180244 or ability.id = 181305) and type = "begincast" or ability.id = 181307 and type = "cast" or (ability.id = 181306 or ability.id = 180115 or ability.id = 180116 or ability.id = 180117 or ability.id = 189197 or ability.id = 189198 or ability.id = 189199 or ability.id = 186882) and (type = "applybuff" or type = "applydebuff")
---(ability.id = 181292 or ability.id = 181293 or ability.id = 181296 or ability.id = 181297 or ability.id = 181299 or ability.id = 181300 or ability.id = 180244 or ability.id = 181305) and type = "begincast" or ability.id = 181307 and type = "cast" or (ability.id = 181306 or ability.id = 186882) and (type = "applybuff" or type = "applydebuff") or ability.id = 180115 or ability.id = 180116 or ability.id = 180117 or ability.id = 189197 or ability.id = 189198 or ability.id = 189199
+--(ability.id = 181292 or ability.id = 181293 or ability.id = 181296 or ability.id = 181297 or ability.id = 181299 or ability.id = 181300 or ability.id = 180244 or ability.id = 181305) and type = "begincast" or ability.id = 181307 and type = "cast" or (ability.id = 181306 or ability.id = 180115 or ability.id = 180116 or ability.id = 180117 or ability.id = 189197 or ability.id = 189198 or ability.id = 189199 or ability.id = 186882 or ability.id = 186879 or ability.id = 186880 or ability.id = 186881) and (type = "applybuff" or type = "applydebuff")
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 181292 or spellId == 181293 then
@@ -161,11 +162,12 @@ function mod:SPELL_CAST_START(args)
 		self.vb.swatCount = self.vb.swatCount + 1
 		specWarnSwat:Show(self.vb.swatCount)
 		voiceSwat:Play("carefly")
-		if self.vb.swatCount == 1 then
-			timerSwatCD:Start(self:IsNormal() and 38 or 32, 2)
-		elseif not self:IsNormal() and self.vb.swatCount == 2 then--Normal doesn't get a 3rd swat (NOT CONFIRMED)
-			timerSwatCD:Start(52, 3)
-		end
+		local isFaster = self:IsMythic() or self.vb.enraged
+--		if self.vb.swatCount == 1 then
+			timerSwatCD:Start(isFaster and 32 or 38, self.vb.swatCount+1)
+--		elseif self.vb.swatCount == 2 then
+--			timerSwatCD:Start(38, 3)
+--		end
 	end
 end
 
@@ -174,10 +176,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 181307 then
 		self.vb.foulCrush = self.vb.foulCrush + 1
 		specWarnFoulCrush:Show(self.vb.foulCrush)
+		local isFaster = self:IsMythic() or self.vb.enraged
 		if self.vb.foulCrush == 1 then
-			timerFoulCrushCD:Start(self:IsNormal() and 50 or 36, 2)
+			timerFoulCrushCD:Start(isFaster and 42 or 50, 2)
 		elseif self.vb.foulCrush == 2 then
-			timerFoulCrushCD:Start(self:IsNormal() and 38 or 32, 3)
+			timerFoulCrushCD:Start(isFaster and 32 or 38, 3)
 		end
 	end
 end
@@ -222,18 +225,19 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(3, trippleBurstCheck, self, args.destName, true)
 		end
 		updateRangeCheck(self)
+		local isFaster = self:IsMythic() or self.vb.enraged
 		if self.vb.explosiveBurst == 1 then
-			timerExplosiveBurstCD:Start(self:IsNormal() and 38 or 32, 2)
-		elseif not self:IsNormal() and self.vb.explosiveBurst == 2 then--Doesn't cast a 3rd time on normal
-			timerExplosiveBurstCD:Start(52, 3)
+			timerExplosiveBurstCD:Start(isFaster and 32 or 38, 2)
+		elseif self.vb.explosiveBurst == 2 then
+			timerExplosiveBurstCD:Start(isFaster and 42 or 50, 3)
 		end
 	--Each energy has it's own hard coded sequence of events/timers.
 	--So all timers need to be scheduled here, they aren't started by any ability casts
-	elseif spellId == 180115 then--Shadow Energy
+	elseif spellId == 180115 or spellId == 186879 then--Shadow Energy (186879 enraged version)
 		self.vb.poundCount = 0
 		self.vb.swatCount = 0
 		warnShadowEnergy:Show()
-		if self:IsMythic() then
+		if self:IsMythic() or spellId == 186879 then
 			timerFelOutpouringCD:Start(11)
 			self:Schedule(11, delayedFelOutpouring, self, 84)--95
 			timerSwatCD:Start(21, 1)
@@ -257,12 +261,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	--Non LFR phase changes need reworking post mechanics changes.
 	--Probably still mostly right but need minor tweaks
-	--https://www.warcraftlogs.com/reports/wmrpCd147nf2B3Dj/#type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+189197+or+ability.id+%3D+189199+or+ability.id+%3D+189198+or+(ability.id+%3D+180244+or+ability.id+%3D+181292+or+ability.id+%3D+181293+or+ability.id+%3D+181296+or+ablity.id+%3D+181297+or+ability.id+%3D+181299+or+ability.id+%3D+181300+or+ability.id+%3D+180244+or+ability.id+%3D+181305+or+ability.id+%3D+187165)+and+type+%3D+%22begincast%22+or+ability.id+%3D+181307+and+type+%3D+%22cast%22+or+ability.id+%3D+181306+and+type+%3D+%22applydebuff%22
-	elseif spellId == 180116 then--Explosive Energy
+	elseif spellId == 180116 or spellId == 186880 then--Explosive Energy (186880 enrage version)
 		self.vb.poundCount = 0
 		self.vb.explosiveBurst = 0
 		warnExplosiveEnergy:Show()
-		if self:IsMythic() then
+		if self:IsMythic() or spellId == 186880 then
 			timerExplosiveRunesCD:Start(11)
 			self:Schedule(11, delayedExplosiveRunes, self, 48)--59
 			timerExplosiveBurstCD:Start(21, 1)
@@ -277,18 +280,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(13, delayedExplosiveRunes, self, 58)--71
 			timerExplosiveBurstCD:Start(25, 1)
 			timerPoundCD:Start(33, 1)
-			self:Schedule(33, delayedPound, self, 50)--83
+			self:Schedule(33, delayedPound, self, 62)--95
 			voiceGraspingHands:Schedule(46, "gather")
 			timerGraspingHandsCD:Start(51)
 			countdownGraspingHands:Start(51)
-			timerFelOutpouringCD:Start(99)
+			timerFelOutpouringCD:Start(71)
 			timerLeapCD:Start(135.5)
 		end
-	elseif spellId == 180117 then--Foul Energy
+	elseif spellId == 180117 or spellId == 186881 then--Foul Energy (186881 enrage version)
 		self.vb.poundCount = 0
 		self.vb.foulCrush = 0
 		warnFoulEnergy:Show()
-		if self:IsMythic() then
+		if self:IsMythic() or spellId == 186881 then
 			timerGraspingHandsCD:Start(11)
 			countdownGraspingHands:Start(11)
 			self:Schedule(11, delayedHands, self, 90)--101
@@ -345,6 +348,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(30, delayedPound, self, 25)--55
 		timerLeapCD:Start(93)
 	elseif spellId == 186882 then
+		self.vb.enraged = true
 		warnEnrage:Show()
 	end
 end
