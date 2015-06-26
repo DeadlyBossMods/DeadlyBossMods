@@ -87,6 +87,7 @@ L:SetOptionLocalization({
 	Iconed				= "Skull, Cross, Square, Moon, Triangle. Usuable for any strat using flare positions",--Default
 	Numbered			= "1, 2, 3, 4, 5. Usable for any strat using numbered positions.",
 	DirectionLine		= "Left, Middle Left, Middle, Middle Right, Right. Typical for straight line strat",
+	FreeForAll			= "Free for all. Assign no positions, just use basic yell",
 	--Currently these 3 below are unused unless I see anyone want/need them
 	CrossPerception		= "Front, Back, Left, Right, Middle. Typical for Cross strat",--Unsure if viable with 5 targets/will remain
 	CrossCardinal		= "North, South, East, West, Middle. Typical for Cross strat",--Unsure if viable 5 targets/will remain

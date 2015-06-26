@@ -74,7 +74,7 @@ local voiceEnrage						= mod:NewVoice(179681)--enrage
 --mod:AddSetIconOption("SetIconOnBefouled", 179711, false)--Start at 1, ascending--Disabled for now to avoid conflict, seeds icons are too important to create conflicts
 mod:AddSetIconOption("SetIconOnSeeds", 181508, true)--Start at 8, descending. On by default, because it's quite imperative to know who/where seed targets are at all times.
 mod:AddHudMapOption("HudMapOnSeeds", 181508)
-mod:AddDropdownOption("SeedsBehavior", {"Iconed", "Numbered", "DirectionLine"}, "Iconed", "misc")--CrossPerception, CrossCardinal, ExCardinal
+mod:AddDropdownOption("SeedsBehavior", {"Iconed", "Numbered", "DirectionLine", "FreeForAll"}, "Iconed", "misc")--CrossPerception, CrossCardinal, ExCardinal
 
 mod.vb.befouledTargets = 0
 mod.vb.FissureCount = 0
@@ -84,7 +84,7 @@ mod.vb.CavitationCount = 0
 mod.vb.SeedsCount = 0
 mod.vb.Enraged = false
 local yellSeeds2 = mod:NewYell(181508, L.customSeedsSay, true, false)
-local seedTargets = {}
+local seedTargets = 0
 local seedsName = GetSpellInfo(181508)
 local befouledName = GetSpellInfo(179711)
 local UnitDebuff = UnitDebuff
@@ -140,7 +140,7 @@ local numberedVoiceAssignments = {"\\count\\1", "\\count\\2", "\\count\\3", "\\c
 local DirectionLineAssignments = {DBM_CORE_LEFT, DBM_CORE_MIDDLE..DBM_CORE_LEFT, DBM_CORE_MIDDLE, DBM_CORE_MIDDLE..DBM_CORE_RIGHT, DBM_CORE_RIGHT}
 local DirectionVoiceAssignments = {"left", "centerleft", "center", "centerright", "right"}
 local function warnSeeds(self)
-	table.wipe(seedTargets)
+	seedTargets = 0
 	--Sort by raidid since combat log order may diff person to person
 	if self:IsLFR() then return end
 	local seedsFound = 0
@@ -189,7 +189,7 @@ local function warnWake(self)
 end
 
 function mod:OnCombatStart(delay)
-	table.wipe(seedTargets)
+	seedTargets = 0
 	self.vb.befouledTargets = 0
 	self.vb.FissureCount = 0
 	self.vb.BefouledCount = 0
@@ -210,6 +210,8 @@ function mod:OnCombatStart(delay)
 			self:SendSync("Numbered")
 		elseif self.Options.SeedsBehavior == "DirectionLine" then
 			self:SendSync("DirectionLine")
+		elseif self.Options.SeedsBehavior == "FreeForAll" then
+			self:SendSync("FreeForAll")
 		end
 	else
 		--Fancy stuff to check boss mod version of group leader, find out if it's DBM or Bigwigs
@@ -271,7 +273,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSeedofDestruction:CombinedShow(0.3, self.vb.SeedsCount, args.destName)
 		if args:IsPlayer() then
 			specWarnSeedofDestruction:Show()
-			if self:IsLFR() then
+			if self:IsLFR() or yellType == "FreeForAll" then
 				yellSeedsofDestruction:Yell()
 				voiceSeedsofDestruction:Play("runout")
 			end
@@ -286,10 +288,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.HudMapOnSeeds then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 13, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
-		seedTargets[#seedTargets + 1] = args.destName
+		if yellType == "FreeForAll" then return end--Free for all, don't do any of fancy stuff
+		seedTargets = seedTargets + 1
 		self:Unschedule(warnSeeds)
 		local expectedCount = self:IsMythic() and 5 or 4
-		if #seedTargets == expectedCount then--Have all targets, warn immediately
+		if seedTargets == expectedCount then--Have all targets, warn immediately
 			warnSeeds(self)
 		else
 			self:Schedule(1.5, warnSeeds, self)--1.5 is probably a bit high, but not risking fragmentation again
@@ -389,6 +392,9 @@ function mod:OnSync(msg)
 		DBM:AddMsg(L.DBMConfigMsg:format(msg))
 	elseif msg == "DirectionLine" then
 		yellType = "DirectionLine"
+		DBM:AddMsg(L.DBMConfigMsg:format(msg))
+	elseif msg == "FreeForAll" then
+		yellType = "FreeForAll"
 		DBM:AddMsg(L.DBMConfigMsg:format(msg))
 	end	
 end
