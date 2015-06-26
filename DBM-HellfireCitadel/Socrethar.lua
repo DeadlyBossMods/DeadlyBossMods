@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181288 182051 183331 183329 184239 182392 188693",
 	"SPELL_CAST_SUCCESS 180008 184124 190776 183023",
-	"SPELL_AURA_APPLIED 182038 182769 182900 184124 188666 189627 190466",
+	"SPELL_AURA_APPLIED 182038 182769 182900 184124 188666 189627 190466 184053",
 	"SPELL_AURA_APPLIED_DOSE 182038",
-	"SPELL_AURA_REMOVED 184124 189627 190466",
+	"SPELL_AURA_REMOVED 184124 189627 190466 184053",
 	"UNIT_DIED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
@@ -52,7 +52,7 @@ local yellCharge					= mod:NewYell(182051)
 local specWarnFelCharge				= mod:NewSpecialWarningTarget(182051, "Melee", nil, nil, 2, 2)--Boss will often go through melee most of time, so they still need generic warning.
 local specWarnApocalypticFelburst	= mod:NewSpecialWarningCount(188693, nil, nil, nil, 2)--Mythic
 --Socrethar
-local specWarnExertDominance		= mod:NewSpecialWarningInterrupt(183331, "-Healer", nil, nil, 1, 2)
+local specWarnExertDominance		= mod:NewSpecialWarningInterruptCount(183331, "-Healer", nil, nil, 1, 2)
 local specWarnApocalypse			= mod:NewSpecialWarningSpell(183329, nil, nil, nil, 2, 2)
 --Adds
 local specWarnShadowWordAgony		= mod:NewSpecialWarningInterrupt(184239, false, nil, nil, 1, 2)
@@ -76,7 +76,7 @@ local timerExertDominanceCD			= mod:NewCDTimer(6, 183331, nil, "-Healer")
 local timerApocalypseCD				= mod:NewCDTimer(46, 183329)
 --Adds
 local timerSargereiDominatorCD		= mod:NewCDTimer(60, "ej11456", nil, nil, nil, 184053)--CD needs verifying, no log saw 2 of them in a phase. phase always ended or boss died before 2nd add, i know it's at least longer than 60 sec tho
-local timerHauntingSoulCD			= mod:NewCDTimer(30, "ej11462", nil, nil, nil, 182769)
+local timerHauntingSoulCD			= mod:NewCDCountTimer(30, "ej11462", nil, nil, nil, 182769)
 local timerGiftofManariCD			= mod:NewCDTimer(11, 184124)
 --Mythic
 local timerVoraciousSoulstalkerCD	= mod:NewCDCountTimer(60, "ej11778", nil, nil, nil, 190776)
@@ -110,8 +110,10 @@ mod.vb.ReverberatingBlow = 0
 mod.vb.felBurstCount = 0
 mod.vb.ManariTargets = 0
 mod.vb.mythicAddSpawn = 0
+mod.vb.ghostSpawn = 0
+mod.vb.kickCount = 0
+mod.vb.barrierUp = false
 local playerInConstruct = false
-local mythicAddtimers = {20, 60, 75}--Don't have more than this
 --[[
 Dominator Times Observed on Normal and raid sizes
 10: 2:20
@@ -177,6 +179,9 @@ function mod:OnCombatStart(delay)
 	self.vb.ManariTargets = 0
 	self.vb.felBurstCount = 0
 	self.vb.mythicAddSpawn = 0
+	self.vb.ghostSpawn = 0
+	self.vb.kickCount = 0
+	self.vb.barrierUp = false
 	playerInConstruct = false
 	timerReverberatingBlowCD:Start(6.3-delay, 1)
 	countdownReverberatingBlow:Start(6.3-delay)
@@ -220,10 +225,20 @@ function mod:SPELL_CAST_START(args)
 		--Must have delay, to avoid same bug as oregorger. Boss has 2 target scans
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "ChargeTarget", 0.1, 10, true)
 	elseif spellId == 183331 then
-		timerExertDominanceCD:Start()
-		if self:CheckInterruptFilter(args.sourceGUID) and not playerInConstruct then
-			specWarnExertDominance:Show(args.sourceName)
-			voiceExertDominance:Play("kickcast")
+		if self.vb.kickCount >= 3 then
+			self.vb.kickCount = 0
+		end
+		self.vb.kickCount = self.vb.kickCount + 1
+		timerExertDominanceCD:Start(nil, self.vb.kickCount+1)
+		if self:CheckInterruptFilter(args.sourceGUID) and not playerInConstruct and not self.vb.barrierUp then
+			specWarnExertDominance:Show(args.sourceName, self.vb.kickCount)
+			if self.vb.kickCount == 1 then
+				voiceExertDominance:Play("kick1r")
+			elseif self.vb.kickCount == 2 then
+				voiceExertDominance:Play("kick2r")
+			elseif self.vb.kickCount == 3 then
+				voiceExertDominance:Play("kick3r")
+			end
 		end
 	elseif spellId == 183329 then
 		specWarnApocalypse:Show()
@@ -309,7 +324,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceGhastlyFixation:Schedule(2, "keepmove")
 		end
 		if self:AntiSpam(28, 2) then--Shitty way of doing it, but if a player dies fixate changes and will start false timer any other way
-			timerHauntingSoulCD:Start()
+			self.vb.ghostSpawn = self.vb.ghostSpawn + 1
+			timerHauntingSoulCD:Start(nil, self.vb.ghostSpawn+1)
 		end
 	elseif spellId == 188666 then
 		if args:IsPlayer() then
@@ -332,6 +348,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		updateRangeFrame(self)
 	elseif spellId == 184053 then--Fel Barrior (Boss becomes immune to damage, Sargerei Dominator spawned and must die)
+		self.vb.barrierUp = true
 		specWarnSargereiDominator:Show()
 		if self:IsNormal() then
 			timerSargereiDominatorCD:Start(140)--i've seen 2:20 to 3:00 variation, but no log shorter than 2:20 ever, so that's minimum time
@@ -360,7 +377,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.HudMapOnOrb then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(180221, "highlight", args.destName, 5, 20, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
-	elseif spellId == 190466 and args:IsPlayer() then
+	elseif spellId == 190466 and args.sourceName == UnitName("player") then
 		playerInConstruct = true
 	end
 end
@@ -377,6 +394,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 190466 and args:IsPlayer() then
 		playerInConstruct = false
+	elseif spellId == 184053 then
+		self.vb.barrierUp = false
 	end
 end
 

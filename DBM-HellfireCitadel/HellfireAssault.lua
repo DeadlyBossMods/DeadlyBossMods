@@ -375,7 +375,7 @@ local berserker = EJ_GetSectionInfo(11425)
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	if msg == L.BossLeaving and self:AntiSpam(20, 2) then
 		self:SendSync("BossLeaving")
-	elseif npc == felCaster or npc == dragoon or npc == berserker then
+	elseif npc == felCaster or npc == berserker then
 		if self:AntiSpam(5, 6) then
 			specWarnReinforcements:Show()
 		end
