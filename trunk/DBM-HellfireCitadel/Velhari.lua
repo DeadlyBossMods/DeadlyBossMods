@@ -6,7 +6,7 @@ mod:SetCreatureID(90269)
 mod:SetEncounterID(1784)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
-mod:SetRespawnTime(29.5)
+mod:SetRespawnTime(29.5)--40?
 
 mod:RegisterCombat("combat")
 
@@ -43,7 +43,7 @@ local specWarnEdictofCondemnation			= mod:NewSpecialWarningYou(182459, nil, nil,
 local specWarnEdictofCondemnationOther		= mod:NewSpecialWarningMoveTo(185241, "Ranged")--Mythic, they can't run in, you have to run to them, they are rooted.
 local yellEdictofCondemnation				= mod:NewFadesYell(182459)
 local specWarnTouchofHarm					= mod:NewSpecialWarningTarget(180166, false)
-local specWarnSealofDecay					= mod:NewSpecialWarningStack(180000, nil, 3)
+local specWarnSealofDecay					= mod:NewSpecialWarningStack(180000, nil, 2)
 local specWarnSealofDecayOther				= mod:NewSpecialWarningTaunt(180000, nil, nil, nil, nil, 2)
 --Stage One: Oppression
 local specWarnAnnihilatingStrike			= mod:NewSpecialWarningYou(180260)
@@ -54,6 +54,7 @@ local specWarnInfernalTempest				= mod:NewSpecialWarningCount(180300, nil, nil, 
 local specWarnAncientEnforcer				= mod:NewSpecialWarningSwitch("ej11155", "-Healer")
 local specWarnEnforcersOnslaught			= mod:NewSpecialWarningDodge(180004, nil, nil, nil, 1, 5)
 --Stage Two: Contempt
+local specWarnFontofCorruption				= mod:NewSpecialWarningYou(180526)
 ----Ancient Harbinger
 local specWarnAncientHarbinger				= mod:NewSpecialWarningSwitch("ej11163", "-Healer")
 local specWarnHarbingersMending				= mod:NewSpecialWarningInterrupt(180025, "-Healer", nil, nil, 1, 2)
@@ -65,13 +66,14 @@ local specWarnGaveloftheTyrant				= mod:NewSpecialWarningCount(180608, nil, nil,
 local specWarnAncientSovereign				= mod:NewSpecialWarningSwitch("ej11170", "-Healer")
 
 mod:AddTimerLine(ALL)--All
+local timerSealofDecayCD					= mod:NewCDTimer(6, 180000, nil, false)--I don't think it's really needed, but at least make it an option
 local timerEdictofCondemnationCD			= mod:NewNextCountTimer(60, 182459)
 local timerTouchofHarmCD					= mod:NewNextCountTimer(45, 180166, nil, "Healer")
 mod:AddTimerLine(SCENARIO_STAGE:format(1))--Stage One: Oppression
 local timerAnnihilatingStrikeCD				= mod:NewNextCountTimer(10, 180260)
 local timerInfernalTempestCD				= mod:NewNextCountTimer(10, 180300)
 ----Ancient Enforcer
-local timerEnforcersOnslaughtCD				= mod:NewCDTimer(14.2, 180004, nil, "Melee")
+local timerEnforcersOnslaughtCD				= mod:NewCDTimer(18, 180004, nil, "Tank")
 mod:AddTimerLine(SCENARIO_STAGE:format(2))--Stage Two: Contempt
 local timerTaintedShadowsCD					= mod:NewNextTimer(5, 180533, nil, "Tank")
 local timerFontofCorruptionCD				= mod:NewNextTimer(20, 180526)
@@ -106,6 +108,7 @@ mod.vb.gavelCount = 0
 local AncientEnforcer = EJ_GetSectionInfo(11155)
 local AncientHarbinger = EJ_GetSectionInfo(11163)
 local AncientSovereign = EJ_GetSectionInfo(11170)
+local TyrantVelhari = EJ_GetEncounterInfo(1394)
 
 function mod:AnnTarget(targetname, uId)
 	if not targetname then
@@ -132,6 +135,7 @@ function mod:OnCombatStart(delay)
 	self.vb.infernalTempestCount = 0
 	self.vb.bulwarkCount = 0
 	self.vb.gavelCount = 0
+	timerSealofDecayCD:Start(3.5-delay)
 	timerAnnihilatingStrikeCD:Start(10-delay, 1)
 	timerTouchofHarmCD:Start(16.8-delay, 1)
 	timerEdictofCondemnationCD:Start(57-delay, 1)
@@ -163,13 +167,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 180004 then
 		specWarnEnforcersOnslaught:Show()
 		voiceEnforcerOnslaught:Play("watchorb")
-		if self:IsNormal() then
-			timerEnforcersOnslaughtCD:Start(18)
-		else
-			timerEnforcersOnslaughtCD:Start(12)--Reverify
-		end
+		timerEnforcersOnslaughtCD:Start()
 	elseif spellId == 180025 then--No target filter, it's only interrupt onfight and it's VERY important
 		specWarnHarbingersMending:Show(args.sourceName)
+		timerHarbingersMendingCD:Start()
 		if not self:IsHealer() then
 			voiceHarbingersMending:Play("kickcast")
 		end
@@ -263,9 +264,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnTouchofHarm:CombinedShow(0.3, args.destName)
 		end
-
 	elseif spellId == 180526 then
 		warnFontofCorruption:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnFontofCorruption:Show()
+		end
 	elseif spellId == 180025 then
 		specWarnHarbingersMendingDispel:Show(args.destName)
 		if self:IsMagicDispeller() then
@@ -273,21 +276,31 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 180000 then
 		warnSealofDecay:Show(args.destName, 1)
+		timerSealofDecayCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	local spellId = args.spellId
 	if spellId == 180000 then--Omitting 1 stack since this stacks frequently, so DBM only announces 2/3 instead of 1-3 on something cast every 5 seconds.
+		timerSealofDecayCD:Start()
 		local amount = args.amount
-		if amount >= 3 and args:IsPlayer() then
-			specWarnSealofDecay:Show(amount)
-		elseif amount >= 2 and not args:IsPlayer() then--Swap at 2 WHEN POSSIBLE but 50/50 you have to go to 3.
-			if not UnitDebuff("player", GetSpellInfo(180000)) and not UnitIsDeadOrGhost("player") then
-				specWarnSealofDecayOther:Show(args.destName)
-				voiceSealofDecay:Play("tauntboss")
+		if amount >= 2 then
+			if args:IsPlayer() then
+				specWarnSealofDecay:Show(amount)
 			else
-				warnSealofDecay:Show(args.destName, amount)
+				local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)
+				local debuffTime = 0
+				if expires then
+					debuffTime = expires - GetTime()
+				end
+				--Swap at 2 WHEN POSSIBLE but sometimes you have to go to 3.
+				if debuffTime < 6 and not UnitIsDeadOrGhost("player") then
+					specWarnSealofDecayOther:Show(args.destName)
+					voiceSealofDecay:Play("tauntboss")
+				else
+					warnSealofDecay:Show(args.destName, amount)
+				end
 			end
 		else
 			warnSealofDecay:Show(args.destName, amount)
@@ -316,7 +329,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if npc == AncientEnforcer then
 		specWarnAncientEnforcer:Show()
 		timerEnforcersOnslaughtCD:Start()
-	elseif target and npc == AncientHarbinger then--Emotes with npc name as AncientHarbinger also fire for heals, but those emotes, target is nil. spawn emote, target is boss name
+	elseif target and target == TyrantVelhari and npc == AncientHarbinger then--Emotes with npc name as AncientHarbinger also fire for heals, but those emotes, target is nil or "". spawn emote, target is boss name
 		specWarnAncientHarbinger:Show()
 		timerHarbingersMendingCD:Start(19)
 	elseif npc == AncientSovereign then
