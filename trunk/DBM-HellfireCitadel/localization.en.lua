@@ -110,7 +110,7 @@ L:SetOptionLocalization({
 	ChainsBehavior		= "Set Fel Chains warning behavior",
 	Cast				= "Only give original target on cast start. Timer syncs to cast start.",
 	Applied				= "Only give targets affected on cast end. Timer syncs to cast end.",
-	Both				= "Give original target on cast start and targets affected on cast end. Timer syncs to cast start."
+	Both				= "Give original target on cast start and targets affected on cast end."
 })
 
 --------------------------
