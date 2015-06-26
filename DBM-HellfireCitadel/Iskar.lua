@@ -40,6 +40,7 @@ local warnFelChakram					= mod:NewTargetAnnounce(182178, 4)
 local warnLaser							= mod:NewTargetAnnounce(182582, 3)
 local warnFelConduit					= mod:NewCastAnnounce(181827, 3, nil, nil, "-Healer")
 
+local specWarnEyeofAnzu					= mod:NewSpecialWarningYou(179202)
 local specWarnThrowAnzu					= mod:NewSpecialWarning("specWarnThrowAnzu", nil, nil, nil, 1, 5)
 local specWarnFocusedBlast				= mod:NewSpecialWarningCount(181912, nil, nil, nil, 2)
 local specWarnPhantasmalWinds			= mod:NewSpecialWarningYou(181957, nil, nil, nil, 3)
@@ -220,6 +221,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 1)
 		end
 		if args:IsPlayer() then
+			specWarnEyeofAnzu:Show()
 			playerHasAnzu = true
 		end
 	elseif spellId == 181957 then
