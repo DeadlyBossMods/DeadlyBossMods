@@ -198,7 +198,7 @@ function mod:OnCombatStart(delay)
 		timerSiegeVehicleCD:Start(55-delay, "("..DBM_CORE_RIGHT..")")
 	else
 		timerBerserkersCD:Start(30-delay, 1)
-		timerFelCastersCD:start(35-delay, 1)
+		timerFelCastersCD:Start(35-delay, 1)
 		timerSiegeVehicleCD:Start(37.8-delay, "")
 	end
 end
