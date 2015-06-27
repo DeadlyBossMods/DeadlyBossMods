@@ -57,8 +57,7 @@ local specWarnApocalypse			= mod:NewSpecialWarningSpell(183329, nil, nil, nil, 2
 --Adds
 local specWarnShadowWordAgony		= mod:NewSpecialWarningInterrupt(184239, false, nil, nil, 1, 2)
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(182392, "-Healer", nil, nil, 1, 2)
-local specWarnGhastlyFixation		= mod:NewSpecialWarningRun(182769, nil, nil, nil, 4, 2)
-local yellGhastlyFixation			= mod:NewYell(182769, nil, false)
+local specWarnGhastlyFixation		= mod:NewSpecialWarningYou(182769, nil, nil, nil, 1)--You don't run out or kite. you position yourself so ghosts go through fire dropped by construct
 local specWarnSargereiDominator		= mod:NewSpecialWarningSwitch("ej11456", "-Healer", nil, nil, 3)
 local specWarnGiftoftheManari		= mod:NewSpecialWarningYou(184124, nil, nil, nil, 1, 2)
 local yellGiftoftheManari			= mod:NewYell(184124)
@@ -97,7 +96,7 @@ local voiceApocalypse				= mod:NewVoice(183329)--aesoon
 --Adds
 local voiceShadowWordAgony			= mod:NewVoice(184239, false)--kickcast
 local voiceShadowBoltVolley			= mod:NewVoice(182392, "-Healer")--kickcast
-local voiceGhastlyFixation			= mod:NewVoice(182769)--runout/keepmove
+--local voiceGhastlyFixation			= mod:NewVoice(182769)--runout/keepmove
 local voiceGiftoftheManari			= mod:NewVoice(184124)--scatter
 local voiceEternalHunger			= mod:NewVoice(188666)--runout/keepmove
 
@@ -319,9 +318,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnGhastlyFixation:CombinedShow(2, args.destName)
 		if args:IsPlayer() and self:AntiSpam(3, 1) then
 			specWarnGhastlyFixation:Show()
-			yellGhastlyFixation:Yell()
-			voiceGhastlyFixation:Play("runout")
-			voiceGhastlyFixation:Schedule(2, "keepmove")
+--			voiceGhastlyFixation:Play("runout")
+--			voiceGhastlyFixation:Schedule(2, "keepmove")
 		end
 		if self:AntiSpam(28, 2) then--Shitty way of doing it, but if a player dies fixate changes and will start false timer any other way
 			self.vb.ghostSpawn = self.vb.ghostSpawn + 1
