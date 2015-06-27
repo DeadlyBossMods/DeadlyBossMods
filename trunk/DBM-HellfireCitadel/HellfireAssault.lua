@@ -6,7 +6,7 @@ mod:SetCreatureID(90019)--Main ID is door, door death= win. 94515 Siegemaster Ma
 mod:SetEncounterID(1778)
 mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(13909)
+mod:SetHotfixNoticeRev(13937)
 --mod:SetRespawnTime(20)
 
 mod:RegisterCombat("combat")

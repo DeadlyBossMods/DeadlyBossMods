@@ -6,6 +6,7 @@ mod:SetCreatureID(89890)
 mod:SetEncounterID(1777)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
+mod:SetHotfixNoticeRev(13940)
 mod:SetRespawnTime(30)
 
 mod:RegisterCombat("combat")
@@ -82,7 +83,6 @@ mod.vb.SeedsCount = 0
 mod.vb.Enraged = false
 local yellSeeds2 = mod:NewYell(181508, L.customSeedsSay, true, false)
 local seedTargets = {}
-local seedsName = GetSpellInfo(181508)
 local befouledName = GetSpellInfo(179711)
 local UnitDebuff = UnitDebuff
 local debuffFilter
@@ -132,19 +132,17 @@ local function warnSeeds(self)
 	--Sort alphabetical to match bigwigs, and since combat log order may diff person to person
 	table.sort(seedsTargets)
 	for i = 1, #seedsTargets do
-		if UnitDebuff("raid"..i, seedsName) then
-			local targetName = UnitName(seedsTargets[i])
-			DBM:Debug(targetName.." is seeds "..seedsFound.."They are assigned "..currentType[seedsFound], 2)
-			if targetName == playerName then
-				if self.Options.SpecWarn181508you then
-					specWarnSeedPosition:Show(currentType[seedsFound])
-				end
-				if self.Options.Yell181508 then
-					yellSeeds2:Yell(currentType[seedsFound], playerName)
-				end
-				if currentVoice and currentVoice[seedsFound] then
-					voiceSeedsofDestruction:Play(currentVoice[seedsFound])
-				end
+		local targetName = UnitName(seedsTargets[i])
+		DBM:Debug(targetName.." is seeds "..seedsFound.."They are assigned "..currentType[seedsFound], 2)
+		if targetName == playerName then
+			if self.Options.SpecWarn181508you then
+				specWarnSeedPosition:Show(currentType[seedsFound])
+			end
+			if self.Options.Yell181508 then
+				yellSeeds2:Yell(currentType[seedsFound], playerName)
+			end
+			if currentVoice and currentVoice[seedsFound] then
+				voiceSeedsofDestruction:Play(currentVoice[seedsFound])
 			end
 		end
 	end
