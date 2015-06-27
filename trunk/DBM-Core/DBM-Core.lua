@@ -6830,6 +6830,16 @@ function bossModPrototype:LatencyCheck()
 	return select(4, GetNetStats()) < DBM.Options.LatencyThreshold
 end
 
+function bossModPrototype:CheckBigWigs(name)
+	if raid[name].bwrevision then
+		return raid[name].bwrevision
+	elseif raid[name].bwarevision then
+		return raid[name].bwarevision
+	else
+		return false
+	end
+end
+
 bossModPrototype.AntiSpam = DBM.AntiSpam
 bossModPrototype.GetUnitCreatureId = DBM.GetUnitCreatureId
 bossModPrototype.GetCIDFromGUID = DBM.GetCIDFromGUID
