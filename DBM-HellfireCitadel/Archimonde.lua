@@ -28,9 +28,9 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--(ability.id = 183254 or ability.id = 189897 or ability.id = 183817 or ability.id = 183828 or ability.id = 185590 or ability.id = 184265 or ability.id = 183864 or ability.id = 190506 or ability.id = 184931) and type = "begincast" or (ability.id = 183865 or ability.id = 187180) and type = "cast" or (ability.id = 186662 or ability.id = 186961) and type = "applydebuff"
 --TODO< figure out rain of chaos (182225). periodic trigger of every 12 seconds. but how to detect? Logs show nothing, maybe have to schedule repeating loop. Need videos to verify timing before adding
 --TODO, custom voice to "attack doomfire spirit" and "attack Death caller". Can't just use "attack mob" because if they spawn at same time there is a priority. If doomfire spirit is up I own't even play attack death caller sound until doomfire is dead.
---TODO< rest of regular voices when i'mnot so tired
 --TODO, failsafes are at work for transitions i still don't have enough data for. for example, something seems to always cause the 2nd or 3rd fel burst to delay by a HUGE amount (20-30 seconds sometimes) but don't know what it is. Probalby phase transitions but it's not as simple as resetting timer. probably something more zon ozz
 --Phase 1: The Defiler
 local warnDoomfireFixate			= mod:NewTargetAnnounce(182879, 3)
@@ -109,7 +109,7 @@ local timerWroughtChaosCD			= mod:NewCDTimer(51.7, 184265)
 local timerFelborneOverfiendCD		= mod:NewNextTimer(44.3, "ej11603", nil, nil, nil, 186662)
 --Phase 3: The Twisting Nether
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
-local timerDemonicFeedbackCD		= mod:NewCDTimer(16.9, 187180)
+local timerDemonicFeedbackCD		= mod:NewCDTimer(35, 187180)
 local timerNetherBanishCD			= mod:NewCDTimer(61.9, 186961)
 ----The Nether
 --Mythic
