@@ -148,6 +148,7 @@ local function warnSeeds(self)
 			self:SetIcon(args.destName, i)
 		end
 	end
+	warnSeedofDestruction:Show(self.vb.SeedsCount, table.concat(seedsTargets, "<, >"))
 end
 
 local function warnWake(self)
@@ -253,7 +254,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 181508 or spellId == 181515 then--181508 disarmed version, 181515 enraged version
-		warnSeedofDestruction:CombinedShow(0.3, self.vb.SeedsCount, args.destName)
 		if args:IsPlayer() then
 			specWarnSeedofDestruction:Show()
 			if self:IsLFR() or yellType == "FreeForAll" then
