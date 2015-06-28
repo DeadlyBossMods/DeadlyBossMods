@@ -294,7 +294,7 @@ function mod:SPELL_CAST_START(args)
 			timerFelBurstCD:Cancel()
 			timerDesecrateCD:Cancel()
 			timerDoomfireCD:Cancel()
-			timerAllureofFlamesCD()--Reset to 35.5-1
+			--timerAllureofFlamesCD:Start()--Reset to 35.5-1
 			timerAllureofFlamesCD:Start(34.5)
 			timerShackledTormentCD:Start(11)
 		end
