@@ -6,7 +6,7 @@ mod:SetCreatureID(89890)
 mod:SetEncounterID(1777)
 mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3, 2, 1)--Seeds ever go over 5?
-mod:SetHotfixNoticeRev(13945)
+mod:SetHotfixNoticeRev(13947)
 mod:SetRespawnTime(30)
 
 mod:RegisterCombat("combat")
@@ -132,7 +132,7 @@ local function warnSeeds(self)
 	--Sort alphabetical to match bigwigs, and since combat log order may diff person to person
 	table.sort(seedsTargets)
 	for i = 1, #seedsTargets do
-		local targetName = UnitName(seedsTargets[i])
+		local targetName = seedsTargets[i]
 		if targetName == playerName then
 			if self.Options.SpecWarn181508you then
 				specWarnSeedPosition:Show(currentType[i])
