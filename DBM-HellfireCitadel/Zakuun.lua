@@ -82,7 +82,7 @@ mod.vb.CavitationCount = 0
 mod.vb.SeedsCount = 0
 mod.vb.Enraged = false
 local yellSeeds2 = mod:NewYell(181508, L.customSeedsSay, true, false)
-local seedTargets = {}
+local seedsTargets = {}
 local befouledName = GetSpellInfo(179711)
 local UnitDebuff = UnitDebuff
 local debuffFilter
@@ -133,16 +133,15 @@ local function warnSeeds(self)
 	table.sort(seedsTargets)
 	for i = 1, #seedsTargets do
 		local targetName = UnitName(seedsTargets[i])
-		DBM:Debug(targetName.." is seeds "..seedsFound.."They are assigned "..currentType[seedsFound], 2)
 		if targetName == playerName then
 			if self.Options.SpecWarn181508you then
-				specWarnSeedPosition:Show(currentType[seedsFound])
+				specWarnSeedPosition:Show(currentType[i])
 			end
 			if self.Options.Yell181508 then
-				yellSeeds2:Yell(currentType[seedsFound], playerName)
+				yellSeeds2:Yell(currentType[i], playerName)
 			end
-			if currentVoice and currentVoice[seedsFound] then
-				voiceSeedsofDestruction:Play(currentVoice[seedsFound])
+			if currentVoice and currentVoice[i] then
+				voiceSeedsofDestruction:Play(currentVoice[i])
 			end
 		end
 	end
@@ -170,7 +169,7 @@ local function delayModCheck(self)
 end
 
 function mod:OnCombatStart(delay)
-	table.wipe(seedTargets)
+	table.wipe(seedsTargets)
 	self.vb.befouledTargets = 0
 	self.vb.FissureCount = 0
 	self.vb.BefouledCount = 0
@@ -225,7 +224,7 @@ function mod:SPELL_CAST_START(args)
 			timerRumblingFissureCD:Start(nil, self.vb.FissureCount+1)
 		end
 	elseif spellId == 179709 then--Foul
-		table.wipe(seedTargets)
+		table.wipe(seedsTargets)
 	end
 end
 
