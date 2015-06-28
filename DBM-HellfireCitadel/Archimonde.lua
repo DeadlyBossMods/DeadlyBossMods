@@ -34,6 +34,8 @@ mod:RegisterEventsInCombat(
 --TODO, failsafes are at work for transitions i still don't have enough data for. for example, something seems to always cause the 2nd or 3rd fel burst to delay by a HUGE amount (20-30 seconds sometimes) but don't know what it is. Probalby phase transitions but it's not as simple as resetting timer. probably something more zon ozz
 --Phase 1: The Defiler
 local warnDoomfireFixate			= mod:NewTargetAnnounce(182879, 3)
+local warnAllureofFlamesSoon		= mod:NewSoonAnnounce(183254, 2)
+local warnFelBurstSoon				= mod:NewSoonAnnounce(183817, 3)
 local warnFelBurst					= mod:NewTargetAnnounce(183817, 4)--Target scanning impossible. Cannot pre warn target until knock up
 local warnDemonicHavoc				= mod:NewTargetAnnounce(183865, 3)--Mythic
 --Phase 2: Hand of the Legion
@@ -93,7 +95,7 @@ local specWarnSourceofChaosOthers	= mod:NewSpecialWarningSwitch(190703)--Maybe e
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDoomfireCD				= mod:NewCDTimer(42.1, 182826)--182826 cast, 182879 fixate. Doomfire only fixates ranged, but ALL dps switch to it.
 local timerAllureofFlamesCD			= mod:NewCDTimer(47.5, 183254)
-local timerFelBurstCD				= mod:NewCDTimer(47.3, 183817, nil, "Ranged")--Only targets ranged
+local timerFelBurstCD				= mod:NewCDTimer(47, 183817, nil, "Ranged")--Only targets ranged (47-65 variation)
 local timerDeathbrandCD				= mod:NewCDTimer(42.5, 183828)--Everyone, for tanks/healers to know when debuff/big hit, for dps to know add coming
 local timerDesecrateCD				= mod:NewCDTimer(27, 185590, nil, "Melee")--Only targets melee
 ----Hellfire Deathcaller
@@ -133,7 +135,8 @@ local voiceFocusedChaos				= mod:NewVoice(185014) --new voice
 local voiceAllureofFlamesCD			= mod:NewVoice(183254) --just run
 
 mod:AddRangeFrameOption("8/10")
-mod:AddSetIconOption("SetIconOnDemonicFeedback", 187180)
+mod:AddSetIconOption("SetIconOnShackledTorment", 184964, true)
+mod:AddSetIconOption("SetIconOnDemonicFeedback2", 187180, false)
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
 mod:AddBoolOption("FilterOtherPhase", true)
 
@@ -227,6 +230,9 @@ local function breakShackles(self)
 				yellShackledTorment:Yell(L.Fifth, playerName)
 				voiceShackledTorment:Play("184964e")
 			end
+			if self.Options.SetIconOnShackledTorment then
+				self:SetIcon(name, i)
+			end
 		end
 	end
 	if not playerBanished or not self.Options.FilterOtherPhase then
@@ -248,7 +254,9 @@ function mod:OnCombatStart(delay)
 	timerDoomfireCD:Start(6-delay)
 	timerDeathbrandCD:Start(18-delay)
 	timerAllureofFlamesCD:Start(30-delay)
-	timerFelBurstCD:Start(41-delay)
+	warnAllureofFlamesSoon:Schedule(25-delay)
+	warnFelBurstSoon:Schedule(35-delay)
+	timerFelBurstCD:Start(40-delay)
 	DBM:AddMsg(DBM_CORE_COMBAT_STARTED_AI_TIMER)--One ai timer remains, for mythic
 	updateRangeFrame(self)
 end
@@ -269,12 +277,14 @@ function mod:SPELL_CAST_START(args)
 			specWarnAllureofFlames:Show()
 			voiceAllureofFlamesCD:Play("justrun")
 		end
+		warnAllureofFlamesSoon:Schedule(42)
 		timerAllureofFlamesCD:Start()
 	elseif spellId == 189897 then
 		specWarnDoomfire:Show()
 		timerDoomfireCD:Start()
 		voiceDoomfire:Play("189897")
 	elseif spellId == 183817 then
+		warnFelBurstSoon:Schedule(42)
 		timerFelBurstCD:Start()
 	elseif spellId == 183828 then
 		timerDeathbrandCD:Start()
@@ -291,10 +301,13 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase < 2 then--0.2-1 second slower than yell, without requiring using yell. Because of variation, I still prefer yell as primary even though this isn't much slower
 			self.vb.phase = 2
 			--Cancel stuff only used in phase 1
+			warnFelBurstSoon:Cancel()
 			timerFelBurstCD:Cancel()
 			timerDesecrateCD:Cancel()
 			timerDoomfireCD:Cancel()
+			warnAllureofFlamesSoon:Cancel()
 			timerAllureofFlamesCD:Cancel()--Reset to 35.5-1
+			warnAllureofFlamesSoon:Scheudle(29.5)
 			timerAllureofFlamesCD:Start(34.5)
 			timerShackledTormentCD:Start(11)
 		end
@@ -391,8 +404,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDemonicFeedback:Show()
 			yellDemonicFeedback:Yell()
 		end
-		if self.Options.SetIconOnDemonicFeedback and not self:IsLFR() then
-			self:SetSortedIcon(0.7, args.destName, 1)
+		if self.Options.SetIconOnDemonicFeedback2 and not self:IsLFR() then
+			self:SetSortedIcon(0.7, args.destName, 8, nil, true)
 		end
 		updateRangeFrame(self)
 	elseif spellId == 186961 then
@@ -417,6 +430,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.vb.phase < 3 then--Secondary phase 3 trigger, if yell not localized
 			self.vb.phase = 3
 			timerAllureofFlamesCD:Cancel()--Done for rest of fight
+			warnAllureofFlamesSoon:Cancel()
 			timerDeathbrandCD:Cancel()--Done for rest of fight
 			timerShackledTormentCD:Cancel()--Resets to 51.4-6 here
 			timerDemonicFeedbackCD:Start(11)
@@ -478,7 +492,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 187180 then
 		self.vb.demonicFeedbacks = self.vb.demonicFeedbacks - 1
-		if self.Options.SetIconOnDemonicFeedback and not self:IsLFR() then
+		if self.Options.SetIconOnDemonicFeedback2 and not self:IsLFR() then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 186961 then
@@ -490,6 +504,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.unleashedCountRemaining = self.vb.unleashedCountRemaining - 1
 		if (not playerBanished or not self.Options.FilterOtherPhase) and not self:IsLFR() then
 			warnUnleashedTorment:Show(self.vb.unleashedCountRemaining)
+		end
+		if self.Options.SetIconOnShackledTorment then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 190400 then
 		self.vb.touchOfLegionRemaining = self.vb.touchOfLegionRemaining - 1
@@ -578,10 +595,13 @@ function mod:OnSync(msg)
 	if msg == "phase2" and self.vb.phase < 2 then
 		self.vb.phase = 2
 		--Cancel stuff only used in phase 1
+		warnFelBurstSoon:Cancel()
 		timerFelBurstCD:Cancel()
 		timerDesecrateCD:Cancel()
 		timerDoomfireCD:Cancel()
 		timerAllureofFlamesCD:Cancel()--Reset to 35.5
+		warnAllureofFlamesSoon:Cancel()
+		warnAllureofFlamesSoon:Schedule(30.5)
 		timerAllureofFlamesCD:Start(35.5)
 		timerShackledTormentCD:Start(12)
 	elseif msg == "phase25" and self.vb.phase < 2.5 then
@@ -592,6 +612,7 @@ function mod:OnSync(msg)
 		self.vb.phase = 3
 		timerNetherBanishCD:Start(6)
 		timerDemonicFeedbackCD:Start(17)
+		warnAllureofFlamesSoon:Cancel()
 		timerAllureofFlamesCD:Cancel()--Done for rest of fight
 		timerDeathbrandCD:Cancel()--Done for rest of fight
 		timerShackledTormentCD:Cancel()--Resets to 51.4 here
