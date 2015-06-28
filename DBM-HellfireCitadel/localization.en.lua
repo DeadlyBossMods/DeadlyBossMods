@@ -84,7 +84,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SeedsBehavior		= "Set seeds yell behavior for raid (Requires raid leader)",
-	Iconed				= "Skull, Cross, Square, Moon, Triangle. Usuable for any strat using flare positions",--Default
+	Iconed				= "Star, Circle, Diamond, Triangle, Moon. Usuable for any strat using flare positions",--Default
 	Numbered			= "1, 2, 3, 4, 5. Usable for any strat using numbered positions.",
 	DirectionLine		= "Left, Middle Left, Middle, Middle Right, Right. Typical for straight line strat",
 	FreeForAll			= "Free for all. Assign no positions, just use basic yell",
