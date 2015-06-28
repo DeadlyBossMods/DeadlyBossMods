@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(89890)
 mod:SetEncounterID(1777)
 mod:SetZone()
-mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
+mod:SetUsedIcons(6, 5, 4, 3, 2, 1)--Seeds ever go over 5?
 mod:SetHotfixNoticeRev(13940)
 mod:SetRespawnTime(30)
 
@@ -108,8 +108,8 @@ end
 
 local playerName = UnitName("player")
 local yellType = "Icon"
-local iconedAssignments = {RAID_TARGET_8, RAID_TARGET_7, RAID_TARGET_6, RAID_TARGET_5, RAID_TARGET_4}
-local iconedVoiceAssignments = {"mm8", "mm7", "mm6", "mm5", "mm4"}
+local iconedAssignments = {RAID_TARGET_1, RAID_TARGET_2, RAID_TARGET_3, RAID_TARGET_4, RAID_TARGET_5}
+local iconedVoiceAssignments = {"mm1", "mm2", "mm3", "mm4", "mm5"}
 local numberedAssignments = {1, 2, 3, 4, 5}
 local numberedVoiceAssignments = {"\\count\\1", "\\count\\2", "\\count\\3", "\\count\\4", "\\count\\5"}
 local DirectionLineAssignments = {DBM_CORE_LEFT, DBM_CORE_MIDDLE..DBM_CORE_LEFT, DBM_CORE_MIDDLE, DBM_CORE_MIDDLE..DBM_CORE_RIGHT, DBM_CORE_RIGHT}
@@ -145,7 +145,7 @@ local function warnSeeds(self)
 			end
 		end
 		if self.Options.SetIconOnSeeds and not self:IsLFR() then
-			self:SetIcon(args.destName, 9-i)
+			self:SetIcon(args.destName, i)
 		end
 	end
 end
@@ -271,7 +271,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if yellType == "FreeForAll" then return end--Free for all, don't do any of fancy stuff
 		seedsTargets[#seedsTargets+1] = args.destName
 		self:Unschedule(warnSeeds)
-		local expectedCount = self:IsMythic() and 5 or 10--(non mythic who knows seeds count, need a table for this
+		local expectedCount = self:IsMythic() and 5 or 4--(30 man is still only 4 seeds)
 		if #seedsTargets == expectedCount then--Have all targets, warn immediately
 			warnSeeds(self)
 		else
@@ -310,7 +310,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnBefouled:CombinedShow(0.3, self.vb.BefouledCount, args.destName)
 			end
 --			if self.Options.SetIconOnBefouled and not self:IsLFR() then
---				self:SetSortedIcon(0.7, args.destName, 1)
+--				self:SetSortedIcon(0.7, args.destName, 8, nil, true)
 --			end
 		end
 		updateRangeFrame(self)
