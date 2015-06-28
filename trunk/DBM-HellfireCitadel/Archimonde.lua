@@ -333,7 +333,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFelBurst:Show()
 			yellFelBurst:Yell()
 		else
-			if self:CheckNearby(30, args.destName) then--Range subject to adjustment
+			if self:CheckNearby(30, args.destName) and not UnitDebuff("player", args.spellName) then--Range subject to adjustment
 				specWarnFelBurstNear:CombinedShow(0.3, args.destName)--Combined show to prevent spam in a spread, if a spread happens targets are all together and requires even MORE people to soak.
 				voiceFelBurst:Cancel()--Avoid spam
 				voiceFelBurst:Schedule(0.3, "gathershare")
