@@ -80,14 +80,15 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1391)
 
 L:SetWarningLocalization({
-	specWarnSeedPosition =	"Seed Position: %s"
+	specWarnSeedPosition =	"Позиция для Семени: %s"
 })
 
 L:SetOptionLocalization({
-	SeedsBehavior		= "Set seeds yell behavior for raid (Requires raid leader)",
-	Iconed				= "Star, Circle, Diamond, Triangle, Moon. Usuable for any strat using flare positions",--Default
-	Numbered			= "1, 2, 3, 4, 5. Usable for any strat using numbered positions.",
-	DirectionLine		= "Left, Middle Left, Middle, Middle Right, Right. Typical for straight line strat",
+	SeedsBehavior		= "Поведение крика для Семя разрушения (требуется лидер рейда)",
+	Iconed				= "Звезда, Круг, Ромб, Треугольник, Луна. Применимо для любой стратегии, использующей метки на полу",--Default
+	Numbered			= "1, 2, 3, 4, 5. Применимо для любой стратегии, использующей нумерованные позиции",
+	DirectionLine		= "Лево, Слева от середины, Середина, Справа от середины, Право. Для стратегии в одну линию",
+	FreeForAll			= "Свободное. Позиция не задается, используется обычный крик",
 	--Currently these 3 below are unused unless I see anyone want/need them
 	CrossPerception		= "Front, Back, Left, Right, Middle. Typical for Cross strat",--Unsure if viable with 5 targets/will remain
 	CrossCardinal		= "North, South, East, West, Middle. Typical for Cross strat",--Unsure if viable 5 targets/will remain
@@ -95,9 +96,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	DBMConfigMsg		= "Seed configuration set to %s to match raid leaders configuration.",
-	BWConfigMsg			= "Raid leader is using Bigwigs, configuring DBM to <Insert whatever the hell bigwigs ends up doing for this here> to match BW for seeds.",
-	customSeedsSay		= "Seeds %s on %s"
+	DBMConfigMsg		= "Конфигурация для Семя разрушения установлена в %s, чтобы соответствовать конфигурации рейд лидера.",
+	BWConfigMsg			= "Рейд лидер использует Bigwigs, конфигурируем DBM на использование нумерованных позиций, чтобы соответствовать BW",
+	customSeedsSay		= "Семя %s на %s"
 	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 
@@ -107,10 +108,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1447)
 
 L:SetOptionLocalization({
-	ChainsBehavior		= "Set Fel Chains warning behavior",
-	Cast				= "Only give original target on cast start. Timer syncs to cast start.",
-	Applied				= "Only give targets affected on cast end. Timer syncs to cast end.",
-	Both				= "Give original target on cast start and targets affected on cast end. Timer syncs to cast start."
+	ChainsBehavior		= "Поведение предупреждения для Цепи Скверны",
+	Cast				= "Выдавать только начальную цель в начале каста. Таймер синхронизируется по началу каста.",
+	Applied				= "Выдавать цели в конце каста. Таймер синхронизируется по окончанию каста.",
+	Both				= "Выдавать начальную цель в начале каста и другие цели в конце каста."
 })
 
 --------------------------
@@ -138,12 +139,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1438)
 
 L:SetWarningLocalization({
-	specWarnBreakShackle	= "Shackled Torment: Break %s!"
+	specWarnBreakShackle	= "Скованное страдание: выбейте %s!"
 })
 
 L:SetOptionLocalization({
-	specWarnBreakShackle	= "Show special warning when affected by $spell:184964. This warning auto assigns break order to minimize similtanious damage.",
-	FilterOtherPhase		= "Filter out warnings for events not in same phase as you"
+	specWarnBreakShackle	= "Спец-предупреждение для $spell:184964. Это предупреждение автоматически назначает последовательность выбивания, чтобы минимизировать урон.",
+	FilterOtherPhase		= "Фильтровать предупреждения для событий из другой фазы"
 })
 
 L:SetMiscLocalization({
@@ -156,7 +157,7 @@ L:SetMiscLocalization({
 	Third				= "Третий",
 	Fourth				= "Четвертый",--Just in case, not sure how many targets in 30 man raid
 	Fifth				= "Пятый",--Just in case, not sure how many targets in 30 man raid
-	customShackledSay	= "%s Shackle on %s"
+	customShackledSay	= "%s сковывание на %s"
 })
 
 -------------
