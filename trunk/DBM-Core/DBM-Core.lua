@@ -5312,17 +5312,25 @@ do
 						speedTimer:Start()
 					end
 				end
-				if self.Options.CRT_Enabled and savedDifficulty ~= "worldboss" and not self.Options.DontShowBossTimers then
-					if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 17 then--Flexible difficulties
+				--Combat Rez timer, if not a world boss or 5 man dungeon.
+				if self.Options.CRT_Enabled and difficultyIndex ~= 0 and difficultyIndex ~= 1 and difficultyIndex ~= 2 and difficultyIndex ~= 19 and difficultyIndex ~= 24 and not self.Options.DontShowBossTimers then
+					local charges, maxCharges, started, duration = GetSpellCharges(20484)
+					if charges then
+						local time = duration - (GetTime() - started)
+						loopCRTimer(time, mod)
+						self:Debug("CRT started by charges", 2)
+					elseif difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 17 then--Flexible difficulties
 						local time = 90/LastGroupSize
 						time = time * 60
 						loopCRTimer(time, mod)
+						self:Debug("CRT started by Flexible code", 2)
 					else--Fixed difficulties (LastGroupSize cannot be trusted, this INCLUDES mythic. If you underman mythic then it is NOT 90/20)
 						local realGroupSize = self:GetNumRealPlayersInZone()
 						if realGroupSize > 1 then
 							local time = 90/realGroupSize
 							time = time * 60
 							loopCRTimer(time, mod)
+							self:Debug("CRT started by iffy fixed size code", 2)
 						end
 					end
 				end
