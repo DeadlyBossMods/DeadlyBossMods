@@ -95,7 +95,7 @@ local specWarnSourceofChaosOthers	= mod:NewSpecialWarningSwitch(190703)--Maybe e
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDoomfireCD				= mod:NewCDTimer(42.1, 182826)--182826 cast, 182879 fixate. Doomfire only fixates ranged, but ALL dps switch to it.
 local timerAllureofFlamesCD			= mod:NewCDTimer(47.5, 183254)
-local timerFelBurstCD				= mod:NewCDTimer(47, 183817, nil, "Ranged")--Only targets ranged (47-65 variation)
+local timerFelBurstCD				= mod:NewCDTimer(52, 183817, nil, "Ranged")--Only targets ranged (52-70 variation)
 local timerDeathbrandCD				= mod:NewCDTimer(42.5, 183828)--Everyone, for tanks/healers to know when debuff/big hit, for dps to know add coming
 local timerDesecrateCD				= mod:NewCDTimer(27, 185590, nil, "Melee")--Only targets melee
 ----Hellfire Deathcaller
@@ -284,7 +284,7 @@ function mod:SPELL_CAST_START(args)
 		timerDoomfireCD:Start()
 		voiceDoomfire:Play("189897")
 	elseif spellId == 183817 then
-		warnFelBurstSoon:Schedule(42)
+		warnFelBurstSoon:Schedule(47)
 		timerFelBurstCD:Start()
 	elseif spellId == 183828 then
 		timerDeathbrandCD:Start()
