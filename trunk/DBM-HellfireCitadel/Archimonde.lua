@@ -6,7 +6,7 @@ mod:SetCreatureID(91331)--Doomfire Spirit (92208), Hellfire Deathcaller (92740),
 mod:SetEncounterID(1799)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
-mod:SetHotfixNoticeRev(13939)
+mod:SetHotfixNoticeRev(13959)
 --mod:SetRespawnTime(20)
 
 mod:RegisterCombat("combat")
