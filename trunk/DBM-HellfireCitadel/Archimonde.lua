@@ -8,23 +8,22 @@ mod:SetMinSyncRevision(13964)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
 mod:SetHotfixNoticeRev(13959)
---mod:SetRespawnTime(20)
+--mod.respawnTime = 20
 
 mod:RegisterCombat("combat")
 
-
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225",
+	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050",
 	"SPELL_CAST_SUCCESS 183865 184931 187180",
-	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190400 190703",
+	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190400 190703 187255",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 190400",
+	"SPELL_PERIODIC_DAMAGE 187255",
+	"SPELL_ABSORBED 187255",
 	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_WHISPER",
 	"CHAT_MSG_ADDON",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_ABSORBED",
 	"UNIT_DIED"
 )
 
@@ -70,8 +69,10 @@ local specWarnNetherBanish			= mod:NewSpecialWarningYou(186961)
 local specWarnNetherBanishOther		= mod:NewSpecialWarningTargetCount(186961)
 local yellNetherBanish				= mod:NewFadesYell(186961)
 ----The Nether
+local specWarnTouchofShadows		= mod:NewSpecialWarningInterruptCount(190050)
 local specWarnVoidStarFixate		= mod:NewSpecialWarningYou(189895)--Maybe move away? depends how often it changes fixate targets
 local yellVoidStarFixate			= mod:NewYell(189895, nil, false)
+local specWarnNetherStorm			= mod:NewSpecialWarningMove(187255)
 --Phase 3.5
 local specWarnRainofChaos			= mod:NewSpecialWarningCount(189953, nil, nil, nil, 2)
 --Mythic
@@ -144,6 +145,7 @@ mod.vb.unleashedCountRemaining = 0
 mod.vb.touchOfLegionRemaining = 0
 mod.vb.netherBanish = 0
 mod.vb.rainOfChaos = 0
+mod.vb.TouchOfShadows = 0
 local shacklesTargets = {}
 local playerName = UnitName("player")
 local playerBanished = false
@@ -245,6 +247,7 @@ function mod:OnCombatStart(delay)
 	self.vb.touchOfLegionRemaining = 0
 	self.vb.netherBanish = 0
 	self.vb.rainOfChaos = 0
+	self.vb.TouchOfShadows = 0
 	table.wipe(AddsSeen)
 	playerBanished = false
 	timerDoomfireCD:Start(6-delay)
@@ -341,6 +344,14 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase < 3.5 then
 			self.vb.phase = 3.5
 		end
+	elseif spellId == 190050 then
+		--To ensure propper syncing and everyones mod has same count, the count isn't in the filter
+		if self.vb.TouchOfShadows == 2 then self.vb.TouchOfShadows = 0 end
+		self.vb.TouchOfShadows = self.vb.TouchOfShadows + 1
+		--Actual interrupt is filtered of course.
+		if self:CheckInterruptFilter(args.sourceGUID) and playerBanished then
+			specWarnTouchofShadows:Show(args.sourceName, self.vb.TouchOfShadows)
+		end
 	end
 end
 
@@ -417,6 +428,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 186961 then
 		self.vb.netherPortal = true
 		self.vb.netherBanish = self.vb.netherBanish + 1
+		self.vb.TouchOfShadows = 0
 		timerNetherBanishCD:Start(nil, self.vb.netherBanish+1)
 		countdownNetherBanish:Start()
 		if args:IsPlayer() then
@@ -490,6 +502,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			specWarnSourceofChaosOthers:Show()
 		end
+	elseif spellId == 187255 and args:IsPlayer() and self:AntiSpam(2, 2) then
+		specWarnNetherStorm:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -626,11 +640,10 @@ function mod:OnSync(msg)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
-
+	if spellId == 187255 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+		specWarnNetherStorm:Show()
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
---]]
+
