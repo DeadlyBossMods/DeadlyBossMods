@@ -150,7 +150,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	phase2				= "I grow tired of this pointless game. You face the immortal Legion, scourge of a thousand worlds.",--1 second faster than CLEU. Probably not needed, but just in case
 	phase2point5		= "Look upon the endless forces of the Burning Legion and know the folly of your resistance.",--3 seconds faster than CLEU, used as primary, slower CLEU secondary
-	phase3				= "Enough! Your meaningless struggle ends now!",--6 seconds faster than CLEU, used as primary, slower CLEU secondary
+	phase3				= "Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine!",--11 seconds faster than CLEU, used as primary, slower CLEU secondary
 	phase3point5		= "I will shatter this pathetic world! Its broken husk will be torn apart in the twisting nether for all time!",--Not currently used. seems fire at same time as UNIT event that's present. Here only in case things change from now and live
 	First				= "첫번째",
 	Second				= "두번째",
