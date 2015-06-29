@@ -9,7 +9,7 @@ mod:SetMinSyncRevision(13887)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Unknown full spectrum of icons yet. Don't know how many debuffs go out.
 mod:SetHotfixNoticeRev(13912)
-mod:SetRespawnTime(15)
+mod.respawnTime = 15
 mod:DisableRegenDetection()--Boss returns true on UnitAffectingCombat when fighting his trash, making boss pre mature pull by REGEN method
 
 mod:RegisterCombat("combat")

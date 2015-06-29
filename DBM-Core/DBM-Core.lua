@@ -10315,10 +10315,6 @@ function bossModPrototype:SetHotfixNoticeRev(revision)
 	self.hotfixNoticeRev = revision
 end
 
-function bossModPrototype:SetRespawnTime(time)
-	self.respawnTime = time
-end
-
 -----------------
 --  Scheduler  --
 -----------------
