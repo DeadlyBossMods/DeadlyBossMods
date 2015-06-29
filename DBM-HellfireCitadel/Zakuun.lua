@@ -145,7 +145,7 @@ local function warnSeeds(self)
 			end
 		end
 		if self.Options.SetIconOnSeeds and not self:IsLFR() then
-			self:SetIcon(args.destName, i)
+			self:SetIcon(targetName, i)
 		end
 	end
 	warnSeedofDestruction:Show(self.vb.SeedsCount, table.concat(seedsTargets, "<, >"))
