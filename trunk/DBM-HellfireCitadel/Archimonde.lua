@@ -127,7 +127,7 @@ local timerSourceofChaosCD			= mod:NewAITimer(107, 190703)
 local countdownWroughtChaos			= mod:NewCountdownFades("AltTwo5", 184265)
 local countdownNetherBanish			= mod:NewCountdown(61.9, 186961)
 local countdownDemonicFeedback		= mod:NewCountdown("Alt35", 186961)
-local countdownDeathBrand			= mod:NewCountdown("AltTwo5", 183828)
+local countdownDeathBrand			= mod:NewCountdown("AltTwo42", 183828)
 
 local voiceFelBurst					= mod:NewVoice(183817)--Gathershare
 local voiceShackledTorment			= mod:NewVoice(184964)--new voice: break torment first, etc
@@ -428,7 +428,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			--Barring any logical error, if special warning will show, don't show other warning
 			if self.Options.SpecWarn186961taunt and (not DBM.Options.FilterTankSpec or self:IsTank() and DBM.Options.FilterTankSpec) then
-				specWarnNetherBanishOther:Show()
+				specWarnNetherBanishOther:Show(args.destName)
 			else
 				warnNetherBanish:Show(args.destName)
 			end
