@@ -151,7 +151,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	phase2				= "我受够这无聊的游戏了。你们将面对曾横行诸界的永生军团。",
 	phase2point5		= "面对现实吧，愚蠢的凡人。你们无法抵抗燃烧军团的无穷大军。",
-	phase3				= "够了！该结束这无谓的挣扎了！",
+	phase3				= "Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine!",
 	phase3point5		= "我要撕碎这可悲的世界！它的碎片将在扭曲虚空的不断撕扯下分崩离析！",
 	First				= "第一个",
 	Second				= "第二个",
