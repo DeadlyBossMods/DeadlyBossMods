@@ -15,3 +15,8 @@ L= DBM:GetModLocalization(1211)
 -- Rukhmar --
 --------------
 L= DBM:GetModLocalization(1262)
+
+-------------------------
+-- Supreme Lord Kazzak --
+-------------------------
+L= DBM:GetModLocalization(1452)
