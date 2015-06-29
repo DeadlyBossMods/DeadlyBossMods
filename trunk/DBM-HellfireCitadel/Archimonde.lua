@@ -124,7 +124,10 @@ local timerSourceofChaosCD			= mod:NewAITimer(107, 190703)
 --countdowns kind of blow with this fights timer variations.
 --Everything but overfiend is a CD
 --I don't want to use a countdown on something thats 47-56 like allure
-local countdownWroughtChaos			= mod:NewCountdownFades(5, 184265)
+local countdownWroughtChaos			= mod:NewCountdownFades("AltTwo5", 184265)
+local countdownNetherBanish			= mod:NewCountdown(61.9, 186961)
+local countdownDemonicFeedback		= mod:NewCountdown("Alt35", 186961)
+local countdownDeathBrand			= mod:NewCountdown("AltTwo5", 183828)
 
 local voiceFelBurst					= mod:NewVoice(183817)--Gathershare
 local voiceShackledTorment			= mod:NewVoice(184964)--new voice: break torment first, etc
@@ -253,6 +256,7 @@ function mod:OnCombatStart(delay)
 	playerBanished = false
 	timerDoomfireCD:Start(6-delay)
 	timerDeathbrandCD:Start(18-delay)
+	countdownDeathBrand:Start(18-delay)
 	timerAllureofFlamesCD:Start(30-delay)
 	warnAllureofFlamesSoon:Schedule(25-delay)
 	warnFelBurstSoon:Schedule(35-delay)
@@ -287,8 +291,9 @@ function mod:SPELL_CAST_START(args)
 		warnFelBurstSoon:Schedule(47)
 		timerFelBurstCD:Start()
 	elseif spellId == 183828 then
-		timerDeathbrandCD:Start()
 		specWarnDeathBrand:Show()
+		timerDeathbrandCD:Start()
+		countdownDeathBrand:Start()
 	elseif spellId == 185590 then
 		specWarnDesecrate:Show()
 		timerDesecrateCD:Start()
@@ -329,6 +334,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerShackledTormentCD:Start()
 	elseif spellId == 187180 then
 		timerDemonicFeedbackCD:Start()
+		countdownDemonicFeedback:Start()
 	end
 end
 
@@ -411,6 +417,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 186961 then
 		self.vb.netherPortals = self.vb.netherPortals + 1
 		timerNetherBanishCD:Start()
+		countdownNetherBanish:Start()
 		if args:IsPlayer() then
 			specWarnNetherBanish:Show()
 			yellNetherBanish:Schedule(6, 1)
@@ -432,8 +439,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerAllureofFlamesCD:Cancel()--Done for rest of fight
 			warnAllureofFlamesSoon:Cancel()
 			timerDeathbrandCD:Cancel()--Done for rest of fight
+			countdownDeathBrand:Cancel()
 			timerShackledTormentCD:Cancel()--Resets to 51.4-6 here
 			timerDemonicFeedbackCD:Start(11)
+			countdownDemonicFeedback:Start(11)
 			timerShackledTormentCD:Start(45.4)
 		end
 	elseif spellId == 189895 and (playerBanished or not self.Options.FilterOtherPhase) then
@@ -611,10 +620,13 @@ function mod:OnSync(msg)
 	elseif msg == "phase3" and self.vb.phase < 3 then
 		self.vb.phase = 3
 		timerNetherBanishCD:Start(6)
+		countdownNetherBanish:Start(6)
 		timerDemonicFeedbackCD:Start(17)
+		countdownDemonicFeedback:Start(17)
 		warnAllureofFlamesSoon:Cancel()
 		timerAllureofFlamesCD:Cancel()--Done for rest of fight
 		timerDeathbrandCD:Cancel()--Done for rest of fight
+		countdownDeathBrand:Cancel()
 		timerShackledTormentCD:Cancel()--Resets to 51.4 here
 		timerShackledTormentCD:Start(51.4)
 	end
