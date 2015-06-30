@@ -97,8 +97,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	DBMConfigMsg		= "Конфигурация для Семя разрушения установлена в %s, чтобы соответствовать конфигурации рейд лидера.",
-	BWConfigMsg			= "Рейд лидер использует Bigwigs, конфигурируем DBM на использование нумерованных позиций, чтобы соответствовать BW",
-	customSeedsSay		= "Семя %s на %s"
+	BWConfigMsg			= "Рейд лидер использует Bigwigs, конфигурируем DBM на использование нумерованных позиций, чтобы соответствовать BW"
 	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 

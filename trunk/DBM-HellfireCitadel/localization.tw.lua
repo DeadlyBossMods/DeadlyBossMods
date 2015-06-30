@@ -84,8 +84,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	DBMConfigMsg		= "Seed configuration set to %s to match raid leaders configuration.",
-	BWConfigMsg			= "Raid leader is using Bigwigs, configuring DBM to <Insert whatever the hell bigwigs ends up doing for this here> to match BW for seeds.",
-	customSeedsSay		= "Seeds %s on %s"
+	BWConfigMsg			= "Raid leader is using Bigwigs, configuring DBM to <Insert whatever the hell bigwigs ends up doing for this here> to match BW for seeds."
 	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 

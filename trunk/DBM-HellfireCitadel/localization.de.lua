@@ -97,8 +97,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	DBMConfigMsg		= "Die Positionierungsschreie für Saat der Zerstörung wurden wie beim Schlachtzugsleiter auf \"%s\" gesetzt.",
-	BWConfigMsg			= "Der Schlachtzugsleiter nutzt \"BigWigs\". Die Positionierungsschreie für Saat der Zerstörung wurden zur Angleichung an \"BigWigs\" auf <...> gesetzt.",
-	customSeedsSay		= "Saat %s auf %s"
+	BWConfigMsg			= "Der Schlachtzugsleiter nutzt \"BigWigs\". Die Positionierungsschreie für Saat der Zerstörung wurden zur Angleichung an \"BigWigs\" auf <...> gesetzt."
 })
 
 --------------------------
