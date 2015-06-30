@@ -5,9 +5,9 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(91349)--91305 Fel Iron Summoner
 mod:SetEncounterID(1795)
 mod:SetZone()
---mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
+mod:SetUsedIcons(3, 2, 1)
 mod:SetHotfixNoticeRev(13912)
---mod.respawnTime = 20
+mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
 
@@ -75,7 +75,7 @@ mod:AddTimerLine(OTHER)
 ----Doom Lords
 local timerCurseofLegionCD			= mod:NewAITimer(107, 181275)--Maybe see one day, in LFR or something when group is terrible or doesn't kill doom lord portal first
 local timerMarkofDoomCD				= mod:NewCDTimer(31.5, 181099, nil, "-Tank")
-local timerShadowBoltVolleyCD		= mod:NewCDTimer(13, 181126, nil, "-Healer")
+local timerShadowBoltVolleyCD		= mod:NewCDTimer(12.2, 181126, nil, "-Healer")
 ----Fel Imps
 local timerFelImplosionCD			= mod:NewNextCountTimer(46, 181255)
 ----Infernals
@@ -113,15 +113,17 @@ mod.vb.portalsLeft = 3
 mod.vb.phase = 1
 mod.vb.impCount = 0
 mod.vb.infernalCount = 0
-local phase1ImpTimers = {15, 33, 24, 15, 10}--Spawn 33% faster each wave, but cannot confirm it goes lower than 10, if it does, next would be 6.6
-local phase1ImpTimersN = {15, 32.2, 24, 24}--Normal doesn't go below 24? need larger sample size
-local phase2ImpTimers = {7, 27.6, 46.2, 43.8}--Probably out of date
-local phase2ImpTimersN = {7, 36.5, 40, 39.5, 30.5, 30}--Confirmed normal on final PTR testing
-local phase1InfernalTimers = {18.4, 40, 30, 30}--Verify heroic same way, unlike imps, seems to match earlier heroic data
-local phase2InfernalTimers = {53.3, 50}
-local phase2InfernalTimersN = {7, 62, 44.8, 44.8, 35}--62
-local phase3InfernalTimers = {43.2, 34.8}
-local phase3InfernalTimersN = {46.1, 34.8, 35}
+mod.vb.ignoreAdds = false
+local phase1ImpTimers = {15, 32.2, 24, 15, 10}--Spawn 33% faster each wave, but cannot confirm it goes lower than 10, if it does, next would be 6.6
+local phase1ImpTimersN = {15, 32.2, 24, 24}--Normal doesn't go below 24? need larger sample size. Normal differently two 24s in a row and didn't drop to 15
+local phase2ImpTimers = {42.2, 40, 39, 30.5, 30}--The same, for now
+local phase2ImpTimersN = {42.2, 40, 39, 30.5, 30}--But normal may have a lower limit, like phase 1, so coded in two tables for now.
+local phase1InfernalTimers = {18.4, 40, 30, 20, 20, 20}--Confirmed this far on heroic
+local phase1InfernalTimersN = {18.4, 40, 30, 30}--Normal probably doesn't drop below 30?
+local phase2InfernalTimers = {66.5, 44.8, 44.8, 35}--So far normal and heroic same, but if phase goes on longer probably different (with normal having a higher minimum)
+local phase2InfernalTimersN = {66.5, 44.8, 44.8, 35}--So far normal and heroic same, but if phase goes on longer probably different (with normal having a higher minimum)
+local phase3InfernalTimers = {46.1, 34.8, 35, 34.8, 34.8}--Again, the same now, but two tables FOR NOW until I can confirm whether or not they differ for REALLY long pulls
+local phase3InfernalTimersN = {46.1, 34.8, 35, 34.8, 34.8}--^^
 local portalDestroyed = false--Temp hack to prevent timer error on guessed mechanic
 
 local AddsSeen = {}
@@ -149,8 +151,13 @@ local function updateRangeFrame(self)
 	end
 end
 
+local function clearIgnore(self)
+	self.vb.ignoreAdds = false
+end
+
 function mod:OnCombatStart(delay)
 	portalDestroyed = false
+	self.vb.ignoreAdds = false
 	self.vb.impCount = 0
 	self.vb.infernalCount = 0
 	self.vb.phase = 1
@@ -214,7 +221,7 @@ end
 
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
-	if spellId == 181255 and self:AntiSpam(7, 1) then--Imps
+	if spellId == 181255 and self:AntiSpam(7, 1) and not self.vb.ignoreAdds then--Imps
 		self.vb.impCount = self.vb.impCount + 1
 		warnFelImplosion:Show(self.vb.impCount)
 		local nextCount = self.vb.impCount + 1
@@ -229,12 +236,12 @@ function mod:SPELL_SUMMON(args)
 				timerFelImplosionCD:Start(timers2, nextCount)
 			end
 		end
-	elseif spellId == 181180 and self:AntiSpam(7, 2) then--Infernals
+	elseif spellId == 181180 and self:AntiSpam(7, 2) and not self.vb.ignoreAdds then--Infernals
 		self.vb.infernalCount = self.vb.infernalCount + 1
 		warnInferno:Show(self.vb.infernalCount)
 		local nextCount = self.vb.infernalCount + 1
 		if self.vb.phase == 1 then
-			local timers1 = phase1InfernalTimers[nextCount]
+			local timers1 = self:IsNormal() and phase1InfernalTimersN[nextCount] or phase1InfernalTimers[nextCount]
 			if timers1 then
 				timerInfernoCD:Start(timers1, nextCount)
 			end
@@ -330,7 +337,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		elseif spellId == 185175 then--Imps Portal
 			timerFelImplosionCD:Cancel()
 		end
-		if self.vb.portalsLeft == 0 and self:AntiSpam(10, 4) then
+		if self.vb.portalsLeft == 0 and self:AntiSpam(10, 4) and self:IsIncombat() then
 			self.vb.phase = 2
 			timerFelHellfireCD:Start(28)
 			timerGazeCD:Start(40)
@@ -338,10 +345,13 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerFelSeekerCD:Start(59)
 			warnPhase2:Show()
 			voicePhaseChange:Play("ptwo")
-			self.vb.impCount = 0
-			self.vb.infernalCount = 0
-			timerFelImplosionCD:Start(7, 1)--VERIFY all modes on live. TODO, figure out how to detect when he skips the 7 second one and waits for 2nd to start
-			timerInfernoCD:Start(7, 1)--VERIFY all modes on live. TODO, figure out how to detect when he skips the 7 second one and waits for 2nd to start
+			--First casts are often variable and sometimes don't happen at all, and messes up mod, so DBM will ignore first cast and start timers for reliable 2nd+
+			self.vb.ignoreAdds = true
+			self:Schedule(20, clearIgnore, self)
+			self.vb.impCount = 1
+			self.vb.infernalCount = 1
+			timerFelImplosionCD:Start(42, 2)
+			timerInfernoCD:Start(66.5, 2)
 			if self:IsMythic() then
 				timerWrathofGuldanCD:Start(2)
 				if portalDestroyed then--Temp, to make AI timer work better
@@ -390,31 +400,22 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 	if msg:find(L.felSpire) and self:AntiSpam(10, 4) then
 		self.vb.phase = self.vb.phase + 1
 		if self.vb.phase == 3 then
+			self.vb.infernalCount = 0
 			timerFelHellfireCD:Cancel()
 			timerShadowForceCD:Cancel()
 			countdownShadowForce:Cancel()
 			timerGlaiveComboCD:Cancel()
 			timerGazeCD:Cancel()
 			timerFelSeekerCD:Cancel()
---			if self:IsNormal() then--Seems normal has boss start slightly lower energy
-				timerFelHellfireCD:Start(27.8)
-				timerShadowForceCD:Start(32.6)
-				countdownShadowForce:Start(32.6)
-				--BOth gaze and combo seem 40, which you get first is random, and it'll delay other ability
-				--however they are BOTH 40ish, don't let one log fool
-				timerGazeCD:Start(44.5)
-				timerGlaiveComboCD:Start(44.9)
-				timerInfernoCD:Start(46.1, 1)
-				timerFelSeekerCD:Start(68)
---[[			else--TODO, verify heroic actually is still this way and doesn't just use the new updated normal timers
-				timerFelHellfireCD:Start(22.9)
-				timerShadowForceCD:Start(27.8)
-				countdownShadowForce:Start(27.8)
-				timerGazeCD:Start(40.5)
-				timerGlaiveComboCD:Start(40.9)
-				timerInfernoCD:Start(46.1, 1)--VERIFY
-				timerFelSeekerCD:Start(58)
-			end--]]
+			timerFelHellfireCD:Start(27.8)
+			timerShadowForceCD:Start(32.6)
+			countdownShadowForce:Start(32.6)
+			--BOth gaze and combo seem 40, which you get first is random, and it'll delay other ability
+			--however they are BOTH 40ish, don't let one log fool
+			timerGazeCD:Start(44.5)
+			timerGlaiveComboCD:Start(44.9)
+			timerInfernoCD:Start(46.1, 1)
+			timerFelSeekerCD:Start(68)
 			warnPhase3:Show()
 			voicePhaseChange:Play("pthree")
 		elseif self.vb.phase == 4 then
@@ -425,21 +426,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			timerGazeCD:Cancel()
 			timerFelSeekerCD:Cancel()
 			timerInfernoCD:Cancel()
---			if self:IsNormal() then
-				timerFelHellfireCD:Start(16.9)
-				timerGlaiveComboCD:Start(27.8)
-				timerGazeCD:Start(35.6)
-				timerShadowForceCD:Start(47.3)
-				countdownShadowForce:Start(47.3)
-				timerFelSeekerCD:Start(65.6)
---[[			else--VERIFY these aren't also changed, like normal
-				timerFelHellfireCD:Start(12.7)
-				timerGazeCD:Start(30)
-				timerGlaiveComboCD:Start(38.6)
-				timerShadowForceCD:Start(45)
-				countdownShadowForce:Start(45)
-				timerFelSeekerCD:Start(58.2)
-			end--]]
+			timerFelHellfireCD:Start(16.9)
+			timerGlaiveComboCD:Start(27.8)
+			timerGazeCD:Start(35.6)
+			timerShadowForceCD:Start(47.3)
+			countdownShadowForce:Start(47.3)
+			timerFelSeekerCD:Start(65.6)
 			warnPhase4:Show()
 			voicePhaseChange:Play("pfour")
 		end
@@ -467,23 +459,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerGlaiveComboCD:Cancel()
 		timerGazeCD:Cancel()
 		timerFelSeekerCD:Cancel()
---		if self:IsNormal() then--Seems normal has small variation
-			timerFelHellfireCD:Start(22.3)
-			timerShadowForceCD:Start(27.1)
-			countdownShadowForce:Start(27.1)
-			timerGazeCD:Start(39.0)
-			timerGlaiveComboCD:Start(39.4)
-			timerInfernoCD:Start(40.73, 1)
-			timerFelSeekerCD:Start(62.5)
---[[		else--TODO, verify heroic actually is still this way and doesn't just use the new updated normal timers
-			timerFelHellfireCD:Start(17.4)
-			timerShadowForceCD:Start(22.3)
-			countdownShadowForce:Start(22.3)
-			timerGazeCD:Start(35)
-			timerInfernoCD:Start(40.73, 1)--VERIFY
-			timerGlaiveComboCD:Start(45.4)
-			timerFelSeekerCD:Start(53)
-		end--]]
+		timerFelHellfireCD:Start(22.3)
+		timerShadowForceCD:Start(27.1)
+		countdownShadowForce:Start(27.1)
+		timerGazeCD:Start(39.0)
+		timerGlaiveComboCD:Start(39.4)
+		timerInfernoCD:Start(40.73, 1)
+		timerFelSeekerCD:Start(62.5)
 		if self:IsMythic() then
 			--Assumed it may not reset like other abilities
 			timerWrathofGuldanCD:Cancel()
@@ -500,21 +482,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerGazeCD:Cancel()
 		timerFelSeekerCD:Cancel()
 		timerInfernoCD:Cancel()
---		if self:IsNormal() then
-			timerFelHellfireCD:Start(11.4)
-			timerGlaiveComboCD:Start(22.3)
-			timerGazeCD:Start(30.1)
-			timerShadowForceCD:Start(41.8)
-			countdownShadowForce:Start(45.8)
-			timerFelSeekerCD:Start(60.1)
---[[		else--VERIFY these aren't also changed, like normal
-			timerFelHellfireCD:Start(7.2)
-			timerGazeCD:Start(25)
-			timerGlaiveComboCD:Start(33.1)
-			timerShadowForceCD:Start(40)
-			countdownShadowForce:Start(40)
-			timerFelSeekerCD:Start(52.7)
-		end--]]
+		timerFelHellfireCD:Start(11.4)
+		timerGlaiveComboCD:Start(22.3)
+		timerGazeCD:Start(30.1)
+		timerShadowForceCD:Start(41.8)
+		countdownShadowForce:Start(45.8)
+		timerFelSeekerCD:Start(60.1)
 		if self:IsMythic() then
 			--Assumed it may not reset like other abilities
 			timerWrathofGuldanCD:Cancel()

@@ -65,7 +65,7 @@ local specWarnFocusedChaos			= mod:NewSpecialWarningMoveAway(185014, nil, nil, n
 local yellFocusedChaos				= mod:NewYell(185014)
 local specWarnDreadFixate			= mod:NewSpecialWarningYou(186574, false)--In case it matters on mythic, it was spammy on heroic and unimportant
 --Phase 3: The Twisting Nether
-local specWarnDemonicFeedback		= mod:NewSpecialWarningSpell(187180, nil, nil, nil, 2)
+local specWarnDemonicFeedback		= mod:NewSpecialWarningCount(187180, nil, nil, nil, 3)
 local specWarnNetherBanish			= mod:NewSpecialWarningYou(186961)
 local specWarnNetherBanishOther		= mod:NewSpecialWarningTargetCount(186961)
 local yellNetherBanish				= mod:NewFadesYell(186961)
@@ -338,7 +338,7 @@ function mod:SPELL_CAST_START(args)
 		table.wipe(shacklesTargets)
 	elseif spellId == 187180 then
 		self.vb.demonicCount = self.vb.demonicCount + 1
-		specWarnDemonicFeedback:Show(self.vb.demonicCount)
+--		specWarnDemonicFeedback:Show(self.vb.demonicCount)
 		timerDemonicFeedbackCD:Start(nil, self.vb.demonicCount+1)
 		countdownDemonicFeedback:Start()
 	elseif spellId == 182225 then
@@ -374,7 +374,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerShackledTormentCD:Start()
 	elseif spellId == 187180 then
 		self.vb.demonicFeedback = false
-		self:Schedule(29, setDemonicFeedback, self)
+		self:Schedule(27.5, setDemonicFeedback, self)
+		specWarnDemonicFeedback:Schedule(27.5, self.vb.demonicCount+1)
 	end
 end
 
@@ -460,6 +461,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerAllureofFlamesCD:Cancel()--Done for rest of fight
 			timerDeathbrandCD:Cancel()--Done for rest of fight
 			countdownDeathBrand:Cancel()
+			self:Schedule(12, setDemonicFeedback, self)
+			specWarnDemonicFeedback:Schedule(12, 1)
 			timerDemonicFeedbackCD:Start(18)
 			countdownDemonicFeedback:Start(18)
 			timerShackledTormentCD:Cancel()--Resets to 55-11 here
@@ -653,6 +656,8 @@ function mod:OnSync(msg)
 		timerNetherBanishCD:Start(11)
 		countdownNetherBanish:Start(11)
 		timerDemonicFeedbackCD:Start(29)--29-33
+		self:Schedule(23, setDemonicFeedback, self)
+		specWarnDemonicFeedback:Schedule(23, 1)
 		countdownDemonicFeedback:Start(29)
 		timerShackledTormentCD:Cancel()--Resets to 55 here
 		timerShackledTormentCD:Start(55)
