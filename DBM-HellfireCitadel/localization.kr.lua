@@ -97,8 +97,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	DBMConfigMsg		= "씨앗 위치 알림 방법이 공격대장 설정과 동일하게 하기 위해 %s로 설정되었습니다.",
-	BWConfigMsg			= "공격대장이 BigWigs를 사용합니다. BigWigs와 동일한 경고를 하기 위해 번호 알림으로 설정됩니다.",
-	customSeedsSay		= "%s 에게 씨앗!(%s)"
+	BWConfigMsg			= "공격대장이 BigWigs를 사용합니다. BigWigs와 동일한 경고를 하기 위해 번호 알림으로 설정됩니다."
 	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 

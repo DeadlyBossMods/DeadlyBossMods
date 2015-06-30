@@ -98,8 +98,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	DBMConfigMsg		= "团长已经将种子喊叫方式设定为 %s。",
-	BWConfigMsg			= "团长在用Bigwigs, DBM将会使用<Place Holder>的对应方式来提示。",
-	customSeedsSay		= "%2$s 中了毁灭之种! (%1$s)"
+	BWConfigMsg			= "团长在用Bigwigs, DBM将会使用<Place Holder>的对应方式来提示。"
 	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 
