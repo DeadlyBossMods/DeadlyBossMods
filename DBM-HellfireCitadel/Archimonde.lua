@@ -24,8 +24,8 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_WHISPER",
 	"CHAT_MSG_ADDON",
-	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
 --(ability.id = 183254 or ability.id = 189897 or ability.id = 183817 or ability.id = 183828 or ability.id = 185590 or ability.id = 184265 or ability.id = 183864 or ability.id = 190506 or ability.id = 184931 or ability.id = 187180) and type = "begincast" or (ability.id = 183865) and type = "cast" or (ability.id = 186662 or ability.id = 186961) and (type = "applydebuff" or type = "applybuff")
@@ -152,7 +152,6 @@ mod.vb.InfernalsActive = 0
 local shacklesTargets = {}
 local playerName = UnitName("player")
 local playerBanished = false
-local AddsSeen = {}
 local UnitDebuff, UnitDetailedThreatSituation = UnitDebuff, UnitDetailedThreatSituation
 local NetherBanish = GetSpellInfo(186961)
 local shackledDebuff = GetSpellInfo(184964)
@@ -247,7 +246,6 @@ function mod:OnCombatStart(delay)
 	self.vb.rainOfChaos = 0
 	self.vb.TouchOfShadows = 0
 	self.vb.InfernalsActive = 0
-	table.wipe(AddsSeen)
 	playerBanished = false
 	timerDoomfireCD:Start(6-delay)
 	timerDeathbrandCD:Start(15.5-delay)
@@ -562,24 +560,6 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-	for i = 1, 5 do
-		local unitGUID = UnitGUID("boss"..i)
-		if unitGUID and not AddsSeen[unitGUID] then
-			AddsSeen[unitGUID] = true
-			local cid = self:GetCIDFromGUID(unitGUID)
-			if cid == 92740 then--Hellfire Deathcaller
-				--timerShadowBlastCD ommited because it's used near instantly on spawn.
-				specWarnDeathCaller:Show()
-				voiceDeathCaller:Play("ej11582")
-				if self:IsMythic() then
-					timerDemonicHavocCD:Start(1, unitGUID)
-				end
-			end
-		end
-	end
-end
-
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	--"<183.63 18:00:13> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I grow tired of this pointless game. You face the immortal Legion, scourge of a thousand worlds
 	--"<184.30 18:00:14> [CLEU] SPELL_CAST_START#Creature-0-2012-1448-150-91331-0000566A43#Archimonde##nil#184265#Wrought Chaos#nil#nil", -- [8782]
@@ -614,6 +594,18 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "highlight", targetName, 5, 5, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
 				end
 			end
+		end
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 187621 then
+		local unitGUID = UnitGUID(uId)
+		--timerShadowBlastCD ommited because it's used near instantly on spawn.
+		specWarnDeathCaller:Show()
+		voiceDeathCaller:Play("ej11582")
+		if self:IsMythic() then
+			timerDemonicHavocCD:Start(1, unitGUID)
 		end
 	end
 end
