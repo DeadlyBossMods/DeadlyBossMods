@@ -8,11 +8,10 @@ mod:SetZone()
 mod:SetUsedIcons(3, 2, 1)
 mod:SetHotfixNoticeRev(13912)
 mod.respawnTime = 30
-
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 181126 181132 181557 183376 181793 181792 181738 181799 182084 185830 181948 182040 182076 182077 186348",
+	"SPELL_CAST_START 181126 181132 181557 183376 181793 181792 181738 181799 182084 185830 181948 182040 182076 182077 186348 181099 181597 182006",
 	"SPELL_CAST_SUCCESS 181190 181597 182006",
 	"SPELL_AURA_APPLIED 181099 181275 181191 181597 182006",
 	"SPELL_AURA_APPLIED_DOSE",
@@ -52,7 +51,7 @@ local warnFelseeker					= mod:NewCountAnnounce(181735, 3)
 local specWarnCurseofLegion			= mod:NewSpecialWarningYou(181275)
 local yellCurseofLegion				= mod:NewFadesYell(181275)--Don't need to know when it's applied, only when it's fading does it do aoe/add spawn
 local specWarnMarkOfDoom			= mod:NewSpecialWarningYou(181099, nil, nil, nil, 1, 2)
-local yellMarkOfDoom				= mod:NewYell(181099)--This need to know at apply, only player needs to know when it's fading
+local yellMarkOfDoom				= mod:NewPosYell(181099)--This need to know at apply, only player needs to know when it's fading
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(181126, "-Healer", nil, nil, 1, 2)
 ----Fel Imps
 local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, false, nil, 2, 1, 2)--Can be spammy, but someone may want it
@@ -66,7 +65,7 @@ local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, nil, nil, nil,
 local specWarnMassiveBlastOther		= mod:NewSpecialWarningTaunt(181359, nil, nil, nil, 1, 2)
 local specWarnFelHellStorm			= mod:NewSpecialWarningSpell(181557, nil, nil, nil, 2, 2)
 local specWarnGaze					= mod:NewSpecialWarningYou(181597)
-local yellGaze						= mod:NewYell(181597)
+local yellGaze						= mod:NewPosYell(181597)
 local specWarnFelSeeker				= mod:NewSpecialWarningDodge(181735, nil, nil, nil, 2, 2)
 local specWarnShadowForce			= mod:NewSpecialWarningSpell(181799, nil, nil, nil, 3)
 
@@ -86,8 +85,8 @@ local timerWrathofGuldanCD			= mod:NewAITimer(107, 186348)
 mod:AddTimerLine(L.name)
 local timerGlaiveComboCD			= mod:NewCDTimer(30, 181354, nil, "Tank")--30 seconds unless delayed by something else
 local timerFelHellfireCD			= mod:NewCDTimer(35, 181557)--35, unless delayed by other things.
-local timerGazeCD					= mod:NewCDTimer(47.5, 181597)--As usual, some variation do to other abilities
-local timerFelSeekerCD				= mod:NewCDTimer(50.9, 181735)--Small sample size, confirm it's not shorter if not delayed by things.
+local timerGazeCD					= mod:NewCDTimer(47.1, 181597)--As usual, some variation do to other abilities
+local timerFelSeekerCD				= mod:NewCDTimer(50, 181735)--Small sample size, confirm it's not shorter if not delayed by things.
 local timerShadowForceCD			= mod:NewCDTimer(52.2, 181799)
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
@@ -126,7 +125,10 @@ local phase3InfernalTimers = {46.1, 34.8, 35, 34.8, 34.8}--Again, the same now, 
 local phase3InfernalTimersN = {46.1, 34.8, 35, 34.8, 34.8}--^^
 local portalDestroyed = false--Temp hack to prevent timer error on guessed mechanic
 
+local gazeTargets = {}
+local doomTargets = {}
 local AddsSeen = {}
+local playerName = UnitName("player")
 local debuffFilter
 local debuffName = GetSpellInfo(181099)
 local UnitDebuff = UnitDebuff
@@ -155,14 +157,40 @@ local function clearIgnore(self)
 	self.vb.ignoreAdds = false
 end
 
+local function warnGazeTargts(self)
+	table.sort(gazeTargets)
+	warnGaze:Show(table.concat(gazeTargets, "<, >"))
+	if self:IsLFR() then return end
+	for i = 1, #gazeTargets do
+		local name = gazeTargets[i]
+		if name == playerName then
+			yellGaze:Yell(i)
+		end
+	end
+end
+
+local function breakDoom(self)
+	table.sort(doomTargets)
+	warnMarkofDoom:Show(table.concat(doomTargets, "<, >"))
+	if self:IsLFR() then return end
+	for i = 1, #doomTargets do
+		local name = doomTargets[i]
+		if name == playerName then
+			yellMarkOfDoom:Yell(i)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
+	table.wipe(doomTargets)
+	table.wipe(gazeTargets)
+	table.wipe(AddsSeen)
 	portalDestroyed = false
 	self.vb.ignoreAdds = false
 	self.vb.impCount = 0
 	self.vb.infernalCount = 0
 	self.vb.phase = 1
 	self.vb.portalsLeft = 3
-	table.wipe(AddsSeen)
 	self.vb.DoomTargetCount = 0
 	timerFelImplosionCD:Start(15-delay, 1)
 	timerInfernoCD:Start(18.4-delay, 1)--Verify, seems 20 now
@@ -216,6 +244,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 186348 then
 		specWarnWrathofGuldan:Show()
 		timerWrathofGuldanCD:Start()
+	elseif spellId == 181099 then
+		table.wipe(doomTargets)
+	elseif spellId == 181597 or spellId == 182006 then
+		table.wipe(gazeTargets)
 	end
 end
 
@@ -286,12 +318,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 181099 then
 		timerMarkofDoomCD:Start(args.sourceGUID)
+		doomTargets[#doomTargets+1] = args.destName
 		self.vb.DoomTargetCount = self.vb.DoomTargetCount + 1
-		warnMarkofDoom:CombinedShow(1.2, args.destName)--3 targets, pretty slowly
+		self:Unschedule(breakDoom)
+		self:Schedule(1.3, breakDoom, self)--3 targets, pretty slowly. I've seen at least 1.2, so make this 1.3, maybe more if needed
 		if args:IsPlayer() then
 			specWarnMarkOfDoom:Show()
 			countdownMarkOfDoom:Start()
-			yellMarkOfDoom:Yell()
 			voiceMarkOfDoom:Schedule(8.5, "runout")
 		end
 		updateRangeFrame(self)
@@ -299,11 +332,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceFelHellfire:Play("runaway")
 		specWarnFelHellfire:Show()--warn melee who are targetting infernal to run out if it's exploding
 	elseif spellId == 181597 or spellId == 182006 then
-		warnGaze:CombinedShow(0.5, args.destName)--At least 0.5, maybe bigger needed if warning still splits
+		gazeTargets[#gazeTargets+1] = args.destName
+		self:Unschedule(warnGazeTargts)
+		self:Schedule(0.5, warnGazeTargts, self)--At least 0.5, maybe bigger needed if warning still splits
 		voiceGaze:Cancel()
 		if args:IsPlayer() then
 			specWarnGaze:Show()
-			yellGaze:Yell()
 		else
 			if not UnitDebuff("player", args.spellName) then
 				voiceGaze:Schedule(0.3, "gathershare")

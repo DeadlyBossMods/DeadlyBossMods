@@ -143,8 +143,7 @@ L:SetMiscLocalization({
 	Second				= "Second",
 	Third				= "Third",
 	Fourth				= "Fourth",--Just in case, not sure how many targets in 30 man raid
-	Fifth				= "Fifth",--Just in case, not sure how many targets in 30 man raid
-	customShackledSay	= "%s Shackle on %s"
+	Fifth				= "Fifth"--Just in case, not sure how many targets in 30 man raid
 })
 
 -------------

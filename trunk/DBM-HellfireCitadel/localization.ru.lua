@@ -156,8 +156,7 @@ L:SetMiscLocalization({
 	Second				= "Второй",
 	Third				= "Третий",
 	Fourth				= "Четвертый",--Just in case, not sure how many targets in 30 man raid
-	Fifth				= "Пятый",--Just in case, not sure how many targets in 30 man raid
-	customShackledSay	= "%s сковывание на %s"
+	Fifth				= "Пятый"--Just in case, not sure how many targets in 30 man raid
 })
 
 -------------

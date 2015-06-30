@@ -58,7 +58,7 @@ local specWarnDesecrate				= mod:NewSpecialWarningDodge(185590, "Melee", nil, ni
 local specWarnDeathBrand			= mod:NewSpecialWarningSpell(183828, "Tank", nil, nil, 1, 2)
 --Phase 2: Hand of the Legion
 local specWarnBreakShackle			= mod:NewSpecialWarning("specWarnBreakShackle", nil, nil, nil, 1, 5)
-local yellShackledTorment			= mod:NewYell(184964, L.customShackledSay)
+local yellShackledTorment			= mod:NewPosYell(184964)
 local specWarnWroughtChaos			= mod:NewSpecialWarningMoveAway(186123, nil, nil, nil, 3, 5)
 local yellWroughtChaos				= mod:NewYell(186123)
 local specWarnFocusedChaos			= mod:NewSpecialWarningMoveAway(185014, nil, nil, nil, 3, 5)
@@ -204,39 +204,34 @@ local function breakShackles(self)
 --	I thought about using auto scheduling and doing "break shackle now" with few seconds in between each, then i realized that'd do more harm that good, if raid is low and dbm says break shackle, you wipe.
 --	So now it just gives order, but you break at pace needed by your healers
 	table.sort(shacklesTargets)
+	if not playerBanished or not self.Options.FilterOtherPhase then
+		warnShackledTorment:Show(table.concat(shacklesTargets, "<, >"))
+	end
+	if self:IsLFR() then return end
 	for i = 1, #shacklesTargets do
-		local name = UnitName(shacklesTargets[i])
+		local name = shacklesTargets[i]
 		if name == playerName then
+			yellShackledTorment:Yell(i)
 			if i == 1 then
 				specWarnBreakShackle:Show(L.First)
-				yellShackledTorment:Yell(L.First, playerName)
 				voiceShackledTorment:Play("184964a")
 			elseif i == 2 then
 				specWarnBreakShackle:Show(L.Second)
-				yellShackledTorment:Yell(L.Second, playerName)
 				voiceShackledTorment:Play("184964b")
 			elseif i == 3 then
 				specWarnBreakShackle:Show(L.Third)
-				yellShackledTorment:Yell(L.Third, playerName)
 				voiceShackledTorment:Play("184964c")
 			elseif i == 4 then
 				specWarnBreakShackle:Show(L.Fourth)
-				yellShackledTorment:Yell(L.Fourth, playerName)
 				voiceShackledTorment:Play("184964d")
 			elseif i == 5 then
 				specWarnBreakShackle:Show(L.Fifth)
-				yellShackledTorment:Yell(L.Fifth, playerName)
 				voiceShackledTorment:Play("184964e")
 			end
 		end
 		if self.Options.SetIconOnShackledTorment2 then
 			self:SetIcon(name, i)
 		end
-	end
-	if not playerBanished or not self.Options.FilterOtherPhase then
-		--List in message is already in correct break order, since it's sorted first.
-		local text = table.concat(shacklesTargets, "<, >")
-		warnShackledTorment:Show(text)
 	end
 end
 
