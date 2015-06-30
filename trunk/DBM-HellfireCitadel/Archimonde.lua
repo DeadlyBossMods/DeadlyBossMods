@@ -6,7 +6,7 @@ mod:SetCreatureID(91331)--Doomfire Spirit (92208), Hellfire Deathcaller (92740),
 mod:SetEncounterID(1799)
 mod:SetMinSyncRevision(13964)
 mod:SetZone()
---mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(13959)
 --mod.respawnTime = 20
 
@@ -18,6 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190400 190703 187255",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 190400",
+	"SPELL_SUMMON 187108",
 	"SPELL_PERIODIC_DAMAGE 187255",
 	"SPELL_ABSORBED 187255",
 	"CHAT_MSG_MONSTER_YELL",
@@ -133,7 +134,8 @@ local voiceFocusedChaos				= mod:NewVoice(185014) --new voice
 local voiceAllureofFlamesCD			= mod:NewVoice(183254) --just run
 
 mod:AddRangeFrameOption("6/8/10")
-mod:AddSetIconOption("SetIconOnShackledTorment", 184964, true)
+mod:AddSetIconOption("SetIconOnShackledTorment2", 184964, false)
+mod:AddSetIconOption("SetIconOnInfernals", "ej11618", true, true)
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
 mod:AddBoolOption("FilterOtherPhase", true)
 
@@ -146,6 +148,7 @@ mod.vb.touchOfLegionRemaining = 0
 mod.vb.netherBanish = 0
 mod.vb.rainOfChaos = 0
 mod.vb.TouchOfShadows = 0
+mod.vb.InfernalsActive = 0
 local shacklesTargets = {}
 local playerName = UnitName("player")
 local playerBanished = false
@@ -226,7 +229,7 @@ local function breakShackles(self)
 				voiceShackledTorment:Play("184964e")
 			end
 		end
-		if self.Options.SetIconOnShackledTorment then
+		if self.Options.SetIconOnShackledTorment2 then
 			self:SetIcon(name, i)
 		end
 	end
@@ -248,6 +251,7 @@ function mod:OnCombatStart(delay)
 	self.vb.netherBanish = 0
 	self.vb.rainOfChaos = 0
 	self.vb.TouchOfShadows = 0
+	self.vb.InfernalsActive = 0
 	table.wipe(AddsSeen)
 	playerBanished = false
 	timerDoomfireCD:Start(6-delay)
@@ -343,6 +347,13 @@ function mod:SPELL_CAST_START(args)
 		timerRainofChaosCD:Start(nil, self.vb.rainOfChaos+1)
 		if self.vb.phase < 3.5 then
 			self.vb.phase = 3.5
+		end
+		if self.Options.SetIconOnInfernals then
+			if self.vb.InfernalsActive > 0 then--Last set isn't dead yet, use alternate icons
+				self:ScanForMobs(94412, 2, 5, 3, 0.4, 20, "SetIconOnInfernals")
+			else
+				self:ScanForMobs(94412, 2, 8, 3, 0.4, 20, "SetIconOnInfernals")
+			end
 		end
 	elseif spellId == 190050 then
 		--To ensure propper syncing and everyones mod has same count, the count isn't in the filter
@@ -524,7 +535,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if (not playerBanished or not self.Options.FilterOtherPhase) and not self:IsLFR() then
 			warnUnleashedTorment:Show(self.vb.unleashedCountRemaining)
 		end
-		if self.Options.SetIconOnShackledTorment then
+		if self.Options.SetIconOnShackledTorment2 then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 190400 then
@@ -537,11 +548,19 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+function mod:SPELL_SUMMON(args)
+	if args.spellId == 187108 then--Infernal Doombringer Spawn
+		self.vb.InfernalsActive = self.vb.InfernalsActive + 1
+	end
+end
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 92740 then--Hellfire Deathcaller
 		timerDemonicHavocCD:Cancel(args.destGUID)
 		timerShadowBlastCD:Cancel(args.destGUID)
+	elseif cid == 94412 then--Infernal Doombringer
+		self.vb.InfernalsActive = self.vb.InfernalsActive - 1
 	end
 end
 
