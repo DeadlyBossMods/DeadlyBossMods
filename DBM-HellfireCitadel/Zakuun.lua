@@ -81,7 +81,7 @@ mod.vb.SoulCleaveCount = 0
 mod.vb.CavitationCount = 0
 mod.vb.SeedsCount = 0
 mod.vb.Enraged = false
-local yellSeeds2 = mod:NewYell(181508, L.customSeedsSay, true, false)
+local yellSeeds2 = mod:NewPosYell(181508, nil, true, false)
 local seedsTargets = {}
 local befouledName = GetSpellInfo(179711)
 local UnitDebuff = UnitDebuff
@@ -138,7 +138,7 @@ local function warnSeeds(self)
 				specWarnSeedPosition:Show(currentType[i])
 			end
 			if self.Options.Yell181508 then
-				yellSeeds2:Yell(currentType[i], playerName)
+				yellSeeds2:Yell(currentType[i])
 			end
 			if currentVoice and currentVoice[i] then
 				voiceSeedsofDestruction:Play(currentVoice[i])

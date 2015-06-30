@@ -157,8 +157,7 @@ L:SetMiscLocalization({
 	Second				= "第二个",
 	Third				= "第三个",
 	Fourth				= "第四个",
-	Fifth				= "第五个",
-	customShackledSay	= "%2$s 中了%1$s枷锁!"
+	Fifth				= "第五个"
 })
 
 -------------
