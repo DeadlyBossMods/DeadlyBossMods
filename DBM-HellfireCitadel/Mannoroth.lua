@@ -396,7 +396,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			timerGlaiveComboCD:Cancel()
 			timerGazeCD:Cancel()
 			timerFelSeekerCD:Cancel()
-			if self:IsNormal() then--Seems normal has boss start slightly lower energy
+--			if self:IsNormal() then--Seems normal has boss start slightly lower energy
 				timerFelHellfireCD:Start(27.8)
 				timerShadowForceCD:Start(32.6)
 				countdownShadowForce:Start(32.6)
@@ -406,7 +406,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 				timerGlaiveComboCD:Start(44.9)
 				timerInfernoCD:Start(46.1, 1)
 				timerFelSeekerCD:Start(68)
-			else--TODO, verify heroic actually is still this way and doesn't just use the new updated normal timers
+--[[			else--TODO, verify heroic actually is still this way and doesn't just use the new updated normal timers
 				timerFelHellfireCD:Start(22.9)
 				timerShadowForceCD:Start(27.8)
 				countdownShadowForce:Start(27.8)
@@ -414,7 +414,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 				timerGlaiveComboCD:Start(40.9)
 				timerInfernoCD:Start(46.1, 1)--VERIFY
 				timerFelSeekerCD:Start(58)
-			end
+			end--]]
 			warnPhase3:Show()
 			voicePhaseChange:Play("pthree")
 		elseif self.vb.phase == 4 then
@@ -425,21 +425,21 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			timerGazeCD:Cancel()
 			timerFelSeekerCD:Cancel()
 			timerInfernoCD:Cancel()
-			if self:IsNormal() then
+--			if self:IsNormal() then
 				timerFelHellfireCD:Start(16.9)
 				timerGlaiveComboCD:Start(27.8)
 				timerGazeCD:Start(35.6)
 				timerShadowForceCD:Start(47.3)
 				countdownShadowForce:Start(47.3)
 				timerFelSeekerCD:Start(65.6)
-			else--VERIFY these aren't also changed, like normal
+--[[			else--VERIFY these aren't also changed, like normal
 				timerFelHellfireCD:Start(12.7)
 				timerGazeCD:Start(30)
 				timerGlaiveComboCD:Start(38.6)
 				timerShadowForceCD:Start(45)
 				countdownShadowForce:Start(45)
 				timerFelSeekerCD:Start(58.2)
-			end
+			end--]]
 			warnPhase4:Show()
 			voicePhaseChange:Play("pfour")
 		end
@@ -467,7 +467,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerGlaiveComboCD:Cancel()
 		timerGazeCD:Cancel()
 		timerFelSeekerCD:Cancel()
-		if self:IsNormal() then--Seems normal has small variation
+--		if self:IsNormal() then--Seems normal has small variation
 			timerFelHellfireCD:Start(22.3)
 			timerShadowForceCD:Start(27.1)
 			countdownShadowForce:Start(27.1)
@@ -475,7 +475,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerGlaiveComboCD:Start(39.4)
 			timerInfernoCD:Start(40.73, 1)
 			timerFelSeekerCD:Start(62.5)
-		else--TODO, verify heroic actually is still this way and doesn't just use the new updated normal timers
+--[[		else--TODO, verify heroic actually is still this way and doesn't just use the new updated normal timers
 			timerFelHellfireCD:Start(17.4)
 			timerShadowForceCD:Start(22.3)
 			countdownShadowForce:Start(22.3)
@@ -483,7 +483,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerInfernoCD:Start(40.73, 1)--VERIFY
 			timerGlaiveComboCD:Start(45.4)
 			timerFelSeekerCD:Start(53)
-		end
+		end--]]
 		if self:IsMythic() then
 			--Assumed it may not reset like other abilities
 			timerWrathofGuldanCD:Cancel()
@@ -500,21 +500,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerGazeCD:Cancel()
 		timerFelSeekerCD:Cancel()
 		timerInfernoCD:Cancel()
-		if self:IsNormal() then
+--		if self:IsNormal() then
 			timerFelHellfireCD:Start(11.4)
 			timerGlaiveComboCD:Start(22.3)
 			timerGazeCD:Start(30.1)
 			timerShadowForceCD:Start(41.8)
 			countdownShadowForce:Start(45.8)
 			timerFelSeekerCD:Start(60.1)
-		else--VERIFY these aren't also changed, like normal
+--[[		else--VERIFY these aren't also changed, like normal
 			timerFelHellfireCD:Start(7.2)
 			timerGazeCD:Start(25)
 			timerGlaiveComboCD:Start(33.1)
 			timerShadowForceCD:Start(40)
 			countdownShadowForce:Start(40)
 			timerFelSeekerCD:Start(52.7)
-		end
+		end--]]
 		if self:IsMythic() then
 			--Assumed it may not reset like other abilities
 			timerWrathofGuldanCD:Cancel()
