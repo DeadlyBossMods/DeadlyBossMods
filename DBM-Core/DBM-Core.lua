@@ -8682,6 +8682,10 @@ do
 	function bossModPrototype:NewFadesYell(...)
 		return newYell(self, "fade", ...)
 	end
+	
+	function bossModPrototype:NewPosYell(...)
+		return newYell(self, "position", ...)
+	end
 end
 
 ------------------------------

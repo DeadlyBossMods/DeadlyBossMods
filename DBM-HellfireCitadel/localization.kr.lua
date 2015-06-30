@@ -156,8 +156,7 @@ L:SetMiscLocalization({
 	Second				= "두번째",
 	Third				= "세번째",
 	Fourth				= "네번째",--Just in case, not sure how many targets in 30 man raid
-	Fifth				= "다섯번째",--Just in case, not sure how many targets in 30 man raid
-	customShackledSay	= "%2$s에게 구속된 고통! (%1$s)"
+	Fifth				= "다섯번째"--Just in case, not sure how many targets in 30 man raid
 })
 
 -------------

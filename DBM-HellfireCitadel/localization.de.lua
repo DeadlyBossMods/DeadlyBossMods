@@ -155,8 +155,7 @@ L:SetMiscLocalization({
 	Second				= "Zweiter",
 	Third				= "Dritter",
 	Fourth				= "Vierter",
-	Fifth				= "Fünfter",
-	customShackledSay	= "%s Gefesselt auf %s"
+	Fifth				= "Fünfter"
 })
 
 -------------
