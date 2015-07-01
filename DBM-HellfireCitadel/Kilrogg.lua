@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
+--(ability.id - 180199 or ability.id = 180224 or ability.id = 182428 or ability.id = 180163 or ability.id = 183917) and type = "begincast" or (ability.id = 180410 or ability.id = 180413) and type = "cast" or ability.id = 188929 and type = "applydebuff"
 --TODO, more stuff for the eyes phase adds if merited
 --Boss
 local warnDemonicPossession			= mod:NewTargetAnnounce(180313, 4)
