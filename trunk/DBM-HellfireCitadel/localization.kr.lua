@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(1426)
 
 L:SetTimerLocalization({
-	timerSiegeVehicleCD	= "다음 차량: %s"
+	timerSiegeVehicleCD	= "다음 공성 차량: %s"
 })
 
 L:SetOptionLocalization({
@@ -15,9 +15,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	AddsSpawn1		=	"Comin' in hot!",--Blizzard seems to have disabled these
-	AddsSpawn2		=	"Fire in the hole!",--Blizzard seems to have disabled these
-	BossLeaving		=	"I'll be back..."
+	AddsSpawn1		=	"Comin' in hot!",--Blizzard seems to have disabled these (찾지 못함)
+	AddsSpawn2		=	"Fire in the hole!",--Blizzard seems to have disabled these (찾지 못함)
+	BossLeaving		=	"I'll be back..."--조금만 기다리라고...
 })
 
 ---------------------------
@@ -41,7 +41,7 @@ L= DBM:GetModLocalization(1392)
 L= DBM:GetModLocalization(1396)
 
 L:SetMiscLocalization({
-	BloodthirstersSoon		=	"Come brothers! Seize your destiny!"
+	BloodthirstersSoon		=	"와라, 형제들이여! 운명을 손에 넣어라!"
 })
 
 --------------------
@@ -129,7 +129,7 @@ L= DBM:GetModLocalization(1394)
 L= DBM:GetModLocalization(1395)
 
 L:SetMiscLocalization({
-	felSpire		=	"begins to empower the Fel Spire!"
+	felSpire		=	"힘을 불어넣기 시작합니다!"
 })
 
 --------------------------
@@ -147,10 +147,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	phase2				= "I grow tired of this pointless game. You face the immortal Legion, scourge of a thousand worlds.",--1 second faster than CLEU. Probably not needed, but just in case
-	phase2point5		= "Look upon the endless forces of the Burning Legion and know the folly of your resistance.",--3 seconds faster than CLEU, used as primary, slower CLEU secondary
-	phase3				= "Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine!",--11 seconds faster than CLEU, used as primary, slower CLEU secondary
-	phase3point5		= "I will shatter this pathetic world! Its broken husk will be torn apart in the twisting nether for all time!",--Not currently used. seems fire at same time as UNIT event that's present. Here only in case things change from now and live
+	phase2				= "무의미한 놀음은 이제 지겹구나. 네놈들이 맞서는 건 불멸의 군단, 모든 세계의 재앙이다.",--1 second faster than CLEU. Probably not needed, but just in case
+	phase2point5		= "보아라, 불타는 군단의 무한한 힘을. 깨달아라. 저항해도 소용없음을.",--3 seconds faster than CLEU, used as primary, slower CLEU secondary
+	phase3				= "록타르 오가르! 놈들이 도망간다! 차원문으로 가자! 굴단의 목은 내 것이다!",--11 seconds faster than CLEU, used as primary, slower CLEU secondary
+	phase3point5		= "내 직접 이 망할 세상을 쪼개주마! 두동강 내어 그 잔해를 뒤틀린 황천에 던져버리겠다!",--Not currently used. seems fire at same time as UNIT event that's present. Here only in case things change from now and live
 	First				= "첫번째",
 	Second				= "두번째",
 	Third				= "세번째",
