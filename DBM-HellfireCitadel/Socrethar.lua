@@ -346,7 +346,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsNormal() then
 			timerGiftofManariCD:Start(14, args.sourceGUID)
 		else
-			timerGiftofManariCD:Start(12, args.sourceGUID)
+			timerGiftofManariCD:Start(11, args.sourceGUID)
 		end
 	elseif spellId == 189627 then
 		if self:IsNormal() then
