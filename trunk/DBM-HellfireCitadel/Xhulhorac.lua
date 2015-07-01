@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--(ability.id = 190223 or ability.id = 190224 or ability.id = 186453 or ability.id = 186783 or ability.id = 186546 or ability.id = 189779 or ability.id = 186490 or ability.id = 189775) and type = "begincast" or (ability.id = 186407 or ability.id = 186333) and type = "cast" or ability.id = 187204 and type = "applybuff" or (target.id = 94185 or target.id =  94239) and type = "death"
 --TODO, 189777 is probably not incombat log, it's probably hidden.
 --Fire Phase
 ----Boss
