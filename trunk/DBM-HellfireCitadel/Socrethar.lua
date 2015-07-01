@@ -290,15 +290,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFelChargeCD:Cancel()
 		timerApocalypticFelburstCD:Cancel()
 		timerTransition:Start()--Time until boss is attackable
-		if self:IsNormal() then
-			timerSargereiDominatorCD:Start(25)--25
-			timerHauntingSoulCD:Start(30)--30-33
-			timerApocalypseCD:Start(53)
-		else
-			--timerSargereiDominatorCD:Start()--TODO
-			--timerHauntingSoulCD:Start(30)--TODO
-			timerApocalypseCD:Start()--46-47. Small sample size (2 pulls) (NEEDS new review, had to change phase detection trigger since old spellid now hidden)
-		end
+		timerSargereiDominatorCD:Start(25)--25
+		timerHauntingSoulCD:Start(30)--30-33
+		timerApocalypseCD:Start(53)--53-58
 		self:RegisterShortTermEvents(
 			"UNIT_TARGETABLE_CHANGED"
 		)
@@ -348,11 +342,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 184053 then--Fel Barrior (Boss becomes immune to damage, Sargerei Dominator spawned and must die)
 		self.vb.barrierUp = true
 		specWarnSargereiDominator:Show()
-		if self:IsNormal() then
-			timerSargereiDominatorCD:Start(140)--i've seen 2:20 to 3:00 variation, but no log shorter than 2:20 ever, so that's minimum time
-		else
-			--timerSargereiDominatorCD:Start()--TODO, verify
-		end
+		timerSargereiDominatorCD:Start()
 		if self:IsNormal() then
 			timerGiftofManariCD:Start(14, args.sourceGUID)
 		else
