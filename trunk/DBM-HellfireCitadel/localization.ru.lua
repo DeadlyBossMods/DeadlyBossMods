@@ -97,7 +97,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	DBMConfigMsg		= "Конфигурация для Семя разрушения установлена в %s, чтобы соответствовать конфигурации рейд лидера.",
-	BWConfigMsg			= "Рейд лидер использует Bigwigs, конфигурируем DBM на использование нумерованных позиций, чтобы соответствовать BW"
+	BWConfigMsg			= "Рейд лидер использует Bigwigs, DBM автоматически настроен на использование нумерованных позиций"
 	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 
@@ -129,7 +129,7 @@ L= DBM:GetModLocalization(1394)
 L= DBM:GetModLocalization(1395)
 
 L:SetMiscLocalization({
-	felSpire		=	"begins to empower the Fel Spire!"
+	felSpire		=	"начинает усиливать шпиль Скверны!"
 })
 
 --------------------------
@@ -142,7 +142,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnBreakShackle	= "Спец-предупреждение для $spell:184964. Это предупреждение автоматически назначает последовательность выбивания, чтобы минимизировать урон.",
+	specWarnBreakShackle	= "Спец-предупреждение для $spell:184964. Это предупреждение автоматически назначает последовательность разрывания, чтобы минимизировать урон.",
 	FilterOtherPhase		= "Фильтровать предупреждения для событий из другой фазы"
 })
 
@@ -150,7 +150,7 @@ L:SetMiscLocalization({
 	phase2				= "Мне надоела эта бесцельная забава. Пред вами — бессмертный Легион, бич тысячи миров.",--1 second faster than CLEU. Probably not needed, but just in case
 	phase2point5		= "Узрите несметные войска Пылающего Легиона и осознайте всю тщетность борьбы!",--3 seconds faster than CLEU, used as primary, slower CLEU secondary
 	phase3				= "Лок'тар огар! Мы тесним их! К порталу! С Гул'даном я разберусь сам!",--11 seconds faster than CLEU, used as primary, slower CLEU secondary
-	phase3point5		= "I will shatter this pathetic world! Its broken husk will be torn apart in the twisting nether for all time!",--Not currently used. seems fire at same time as UNIT event that's present. Here only in case things change from now and live
+	phase3point5		= "Я разрушу этот жалкий мир! Его останки будут разбросаны по Круговерти Пустоты!",--Not currently used. seems fire at same time as UNIT event that's present. Here only in case things change from now and live
 	First				= "Первый",
 	Second				= "Второй",
 	Third				= "Третий",
