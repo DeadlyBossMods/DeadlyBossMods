@@ -59,7 +59,7 @@ local specWarnApocalypse			= mod:NewSpecialWarningSpell(183329, nil, nil, nil, 2
 local specWarnShadowWordAgony		= mod:NewSpecialWarningInterrupt(184239, false, nil, nil, 1, 2)
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(182392, "-Healer", nil, nil, 1, 2)
 local specWarnGhastlyFixation		= mod:NewSpecialWarningYou(182769, nil, nil, nil, 1)--You don't run out or kite. you position yourself so ghosts go through fire dropped by construct
-local specWarnSargereiDominator		= mod:NewSpecialWarningSwitch("ej11456", "-Healer", nil, nil, 3)
+local specWarnSargereiDominator		= mod:NewSpecialWarningSwitchCount("ej11456", "-Healer", nil, nil, 3)
 local specWarnGiftoftheManari		= mod:NewSpecialWarningYou(184124, nil, nil, nil, 1, 2)
 local yellGiftoftheManari			= mod:NewYell(184124)
 local specWarnEternalHunger			= mod:NewSpecialWarningRun(188666, nil, nil, nil, 4, 2)--Mythic
@@ -75,7 +75,7 @@ local timerApocalypticFelburstCD	= mod:NewCDCountTimer(30, 188693)
 local timerExertDominanceCD			= mod:NewCDTimer(5, 183331, nil, "-Healer")
 local timerApocalypseCD				= mod:NewCDTimer(46, 183329)
 --Adds
-local timerSargereiDominatorCD		= mod:NewCDTimer(60, "ej11456", nil, nil, nil, 184053)--CD needs verifying, no log saw 2 of them in a phase. phase always ended or boss died before 2nd add, i know it's at least longer than 60 sec tho
+local timerSargereiDominatorCD		= mod:NewNextCountTimer(60, "ej11456", nil, nil, nil, 184053)--CD needs verifying, no log saw 2 of them in a phase. phase always ended or boss died before 2nd add, i know it's at least longer than 60 sec tho
 local timerHauntingSoulCD			= mod:NewCDCountTimer(30, "ej11462", nil, nil, nil, 182769)
 local timerGiftofManariCD			= mod:NewCDTimer(11, 184124)
 --Mythic
@@ -113,6 +113,7 @@ mod.vb.mythicAddSpawn = 0
 mod.vb.ghostSpawn = 0
 mod.vb.kickCount = 0
 mod.vb.barrierUp = false
+mod.vb.dominatorCount = 0
 local playerInConstruct = false
 --[[
 Dominator Times Observed on Normal and raid sizes
@@ -181,6 +182,7 @@ function mod:OnCombatStart(delay)
 	self.vb.mythicAddSpawn = 0
 	self.vb.ghostSpawn = 0
 	self.vb.kickCount = 0
+	self.vb.dominatorCount = 0
 	self.vb.barrierUp = false
 	playerInConstruct = false
 	timerReverberatingBlowCD:Start(6.3-delay, 1)
@@ -283,6 +285,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.mythicAddSpawn = self.vb.mythicAddSpawn + 1
 		timerVoraciousSoulstalkerCD:Start(60, self.vb.mythicAddSpawn+1)
 	elseif spellId == 183023 then--Eject Soul
+		self.vb.dominatorCount = 0
+		self.vb.ghostSpawn = 0
+		self.vb.kickCount = 0
 		warnEjectSoul:Show()
 		timerReverberatingBlowCD:Cancel()
 		countdownReverberatingBlow:Cancel()
@@ -291,7 +296,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFelChargeCD:Cancel()
 		timerApocalypticFelburstCD:Cancel()
 		timerTransition:Start()--Time until boss is attackable
-		timerSargereiDominatorCD:Start(25)--25
+		timerSargereiDominatorCD:Start(23, 1)
 		timerHauntingSoulCD:Start(30)--30-33
 		timerApocalypseCD:Start(53)--53-58
 		self:RegisterShortTermEvents(
@@ -342,8 +347,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		updateRangeFrame(self)
 	elseif spellId == 184053 then--Fel Barrior (Boss becomes immune to damage, Sargerei Dominator spawned and must die)
 		self.vb.barrierUp = true
-		specWarnSargereiDominator:Show()
-		timerSargereiDominatorCD:Start()
+		self.vb.dominatorCount = self.vb.dominatorCount + 1
+		specWarnSargereiDominator:Show(self.vb.dominatorCount)
+		if self.vb.dominatorCount == 2 then--For some reason 3rd one is 10 seconds later than rest
+			timerSargereiDominatorCD:Start(70, self.vb.dominatorCount+1)
+		else
+			timerSargereiDominatorCD:Start(nil, self.vb.dominatorCount+1)
+		end
 		if self:IsNormal() then
 			timerGiftofManariCD:Start(14, args.sourceGUID)
 		else
