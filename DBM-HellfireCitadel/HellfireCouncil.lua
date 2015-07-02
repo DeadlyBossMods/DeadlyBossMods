@@ -225,41 +225,44 @@ function mod:UNIT_DIED(args)
 		self.vb.diaDead = true
 		timerMarkofNecroCD:Cancel()
 		timerNightmareVisageCD:Cancel()
-		local remaining = timerDarknessCD:GetRemaining()
+		local elapsed, total = timerDarknessCD:GetTime()
 		timerDarknessCD:Cancel()
-		if remaining > 0 then--Timer existed, which means it was next
+		if elapsed > 0 then--Timer existed, which means it was next
+			DBM:Debug("updating specials timer", 2)
 			--So now we update next based on remaining bosses
 			if not self.vb.jubeiDead then--Images next if jubei lives
-				timerMirrorImageCD:Start(remaining)
+				timerMirrorImageCD:Update(elapsed, total)
 			else--Only bloodboil left, leap
-				timerDemoLeapCD:Start(remaining)
+				timerDemoLeapCD:Update(elapsed, total)
 			end
 		end
 	elseif cid == 92142 then--Blademaster Jubei'thosr
 		self.vb.jubeiDead = true
 		--timerFelstormCD:Cancel()
-		local remaining = timerMirrorImageCD:GetRemaining()
+		local elapsed, total = timerMirrorImageCD:GetTime()
 		timerMirrorImageCD:Cancel()
-		if remaining > 0 then--Timer existed, which means it was next
+		if elapsed > 0 then--Timer existed, which means it was next
+			DBM:Debug("updating specials timer", 2)
 			--So now we update next based on remaining bosses
 			if not self.vb.bloodboilDead then--Leap is next if bloodboil not dead
-				timerDemoLeapCD:Start(remaining)
+				timerDemoLeapCD:Start(elapsed, total)
 			else--Only dia left left, darkness will be next
-				timerDarknessCD:Start(remaining)
+				timerDarknessCD:Start(elapsed, total)
 			end
 		end
 	elseif cid == 92146 then--Gurthogg Bloodboil
 		self.vb.bloodboilDead = true
 		timerRelRageCD:Cancel()
 		timerTaintedBloodCD:Cancel()
-		local remaining = timerDemoLeapCD:GetRemaining()
+		local elapsed, total = timerDemoLeapCD:GetTime()
 		timerDemoLeapCD:Cancel()
-		if remaining > 0 then--Timer existed, which means it was next
+		if elapsed > 0 then--Timer existed, which means it was next
+			DBM:Debug("updating specials timer", 2)
 			--So now we update next based on remaining bosses
 			if not self.vb.diaDead then--Dia lives, darkness next
-				timerDarknessCD:Start(remaining)
+				timerDarknessCD:Start(elapsed, total)
 			else--Only jubei left, images.
-				timerMirrorImageCD:Start(remaining)
+				timerMirrorImageCD:Start(elapsed, total)
 			end
 		end
 	end
