@@ -76,7 +76,7 @@ local countdownPhantasmalWinds			= mod:NewCountdown(35, 181957)
 local countdownFelBomb					= mod:NewCountdown("Alt18", 181753)
 local countdownCorruption				= mod:NewCountdown("AltTwo14", 181824, "Tank")
 
-local berserkTimer						= mod:NewBerserkTimer(480)
+--local berserkTimer						= mod:NewBerserkTimer(480)
 
 local voiceFocusedBlast					= mod:NewVoice(181912)--gather
 local voiceFelConduit					= mod:NewVoice(181827)--kickcast
@@ -141,7 +141,7 @@ function mod:OnCombatStart(delay)
 		timerFelLaserCD:Start(18.5)--Verify it can still be this low, every pull on mythic was 20-22
 		timerPhantasmalWoundsCD:Start(28-delay)
 	end
-	berserkTimer:Start(-delay)
+--	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
