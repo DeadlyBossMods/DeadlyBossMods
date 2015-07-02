@@ -74,8 +74,8 @@ local specWarnDemolisher			= mod:NewSpecialWarningSwitch("ej11429", "Dps", nil, 
 local timerHowlingAxeCD				= mod:NewCDTimer(8.47, 184369)
 local timerShockwaveCD				= mod:NewCDTimer(8.5, 184394)
 --Hellfire Reinforcements
-local timerFelCastersCD				= mod:NewCDCountTimer(40, "ej11411", nil, nil, nil, 181155)
-local timerBerserkersCD				= mod:NewCDCountTimer(40, "ej11425", nil, nil, nil, 184243)
+local timerFelCastersCD				= mod:NewCDCountTimer(40, "ej11411", nil, nil, nil, nil, 181155)
+local timerBerserkersCD				= mod:NewCDCountTimer(40, "ej11425", nil, nil, nil, nil, 184243)
 ----Gorebound Berserker (tank add probably)
 --local timerCowerCD				= mod:NewCDTimer(107, 184238)
 --local timerSlamCD					= mod:NewCDTimer(107, 184243)

@@ -44,7 +44,7 @@ local countdownTenderizer			= mod:NewCountdown("Alt17", 156151, "Tank")
 local countdownBoundingCleave		= mod:NewCountdown(60, 156160)
 
 local voiceCleave					= mod:NewVoice(156157, "Melee")
-local voiceTenderizer				= mod:NewVoice("OptionVersion2", 156151)
+local voiceTenderizer				= mod:NewVoice(156151, nil, nil, 2)
 local voiceGushingWound				= mod:NewVoice(156152, false)--off by default because only one person needs to run out in most strats, not everyone. Only that person should enable option
 local voiceFrenzy					= mod:NewVoice(156598)
 local voiceBoundingCleaveSoon		= mod:NewVoice(156160)

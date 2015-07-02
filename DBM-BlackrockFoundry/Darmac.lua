@@ -66,8 +66,8 @@ local yellInfernoBreath				= mod:NewYell(154989)
 
 --Boss basic attacks
 mod:AddTimerLine(CORE_ABILITIES)--Core Abilities
-local timerPinDownCD				= mod:NewCDTimer("OptionVersion2", 19.7, 155365, nil, "Ranged")--Every 19.7 seconds unless delayed by other things. CD timer used for this reason
-local timerCallthePackCD			= mod:NewCDTimer("OptionVersion2", 31.5, 154975, nil, "Tank")--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart. In rare cases, boss still interrupts his own cast/delays cast even when not caused by gaining beast buff
+local timerPinDownCD				= mod:NewCDTimer(19.7, 155365, nil, "Ranged", 2)--Every 19.7 seconds unless delayed by other things. CD timer used for this reason
+local timerCallthePackCD			= mod:NewCDTimer(31.5, 154975, nil, "Tank", 2)--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart. In rare cases, boss still interrupts his own cast/delays cast even when not caused by gaining beast buff
 --Boss gained abilities (beast deaths grant boss new abilities)
 mod:AddTimerLine(SPELL_BUCKET_ABILITIES_UNLOCKED)--Abilities Unlocked
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
@@ -76,8 +76,8 @@ local timerTantrumCD				= mod:NewNextCountTimer(29.5, 162275)
 local timerEpicenterCD				= mod:NewCDCountTimer(19.5, 159043, nil, "Melee")
 --Beast abilities (living)
 mod:AddTimerLine(BATTLE_PET_DAMAGE_NAME_8)--Beast
-local timerSavageHowlCD				= mod:NewCDTimer("OptionVersion2", 25, 155198, nil, "Healer|Tank|RemoveEnrage")
-local timerConflagCD				= mod:NewCDTimer("OptionVersion2", 20, 155399, nil, "Healer")
+local timerSavageHowlCD				= mod:NewCDTimer(25, 155198, nil, "Healer|Tank|RemoveEnrage", 2)
+local timerConflagCD				= mod:NewCDTimer(20, 155399, nil, "Healer", 2)
 local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
 local timerInfernoBreathCD			= mod:NewNextTimer(20, 154989)
 
@@ -87,7 +87,7 @@ local countdownPinDown				= mod:NewCountdown(19.7, 154960, "Ranged")
 local countdownCallPack				= mod:NewCountdown("Alt31", 154975, "Tank")
 local countdownEpicenter			= mod:NewCountdown("AltTwo20", 159043, "Melee")
 
-local voiceCallthePack				= mod:NewVoice("OptionVersion2", 154975, "Tank") --killmob
+local voiceCallthePack				= mod:NewVoice(154975, "Tank", nil, 2) --killmob
 local voiceSavageHowl				= mod:NewVoice(155198, "RemoveEnrage") --trannow
 local voicePinDown					= mod:NewVoice(154960, "Ranged") --helpme
 local voiceInfernoBreath			= mod:NewVoice(154989) --breathsoon

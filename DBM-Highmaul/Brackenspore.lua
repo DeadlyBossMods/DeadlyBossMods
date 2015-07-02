@@ -42,8 +42,8 @@ local timerInfestingSporesCD		= mod:NewCDCountTimer(57, 159996)--57-63 variation
 local timerRotCD					= mod:NewCDTimer(10, 163241, nil, false)--it's a useful timer, but not mandatory and this fight has A LOT of timers so off by default for clutter reduction
 local timerNecroticBreathCD			= mod:NewCDTimer(32, 159219, nil, "Tank|Healer")
 --Adds (all adds are actually NEXT timers however they get dleayed by infesting spores and necrotic breath sometimes so i'm leaving as CD for now)
-local timerSporeShooterCD			= mod:NewCDTimer("OptionVersion2", 57, 163594, nil, "RangedDps")
-local timerFungalFleshEaterCD		= mod:NewCDCountTimer(120, "ej9995", nil, "-Healer", nil, 163142)
+local timerSporeShooterCD			= mod:NewCDTimer(57, 163594, nil, "RangedDps", 2)
+local timerFungalFleshEaterCD		= mod:NewCDCountTimer(120, "ej9995", nil, "-Healer", nil, nil, 163142)
 local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, "Melee")
 local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, "MeleeDps")
 local timerLivingMushroomCD			= mod:NewCDCountTimer(55.5, 160022, nil, "Healer")
@@ -56,7 +56,7 @@ local countdownInfestingSpores		= mod:NewCountdown(57, 159996)--The variation on
 local countdownFungalFleshEater		= mod:NewCountdown("Alt120", "ej9995", "-Healer")
 
 local voiceInfestingSpores			= mod:NewVoice(159996)
-local voiceRot						= mod:NewVoice("OptionVersion2", 163241)
+local voiceRot						= mod:NewVoice(163241, nil, nil, 2)
 local voiceLivingMushroom			= mod:NewVoice(160022)
 local voiceRejuvMushroom			= mod:NewVoice(160021)
 local voiceMindFungus				= mod:NewVoice(163141, "Dps")

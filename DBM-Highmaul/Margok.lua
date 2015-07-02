@@ -110,7 +110,7 @@ local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605, nil, "Tank")
 local timerMarkOfChaosCD						= mod:NewCDTimer(50.5, 158605, nil, "Tank")
 local timerForceNovaCD							= mod:NewCDCountTimer(45, 157349)--45-52
 local timerForceNovaFortification				= mod:NewNextTimer(9, 157349)--For repeating nova
-local timerSummonArcaneAberrationCD				= mod:NewCDCountTimer(45, "ej9945", nil, "-Healer", nil, 156471)--45-52 Variation Noted
+local timerSummonArcaneAberrationCD				= mod:NewCDCountTimer(45, "ej9945", nil, "-Healer", nil, nil, 156471)--45-52 Variation Noted
 --Intermission: Lineage of Power
 mod:AddTimerLine(DBM_CORE_INTERMISSION)
 local timerTransition							= mod:NewPhaseTimer(74)
@@ -140,7 +140,7 @@ local voiceAcceleratedAssault					= mod:NewVoice(159515, "Tank")
 local voiceMarkOfChaos							= mod:NewVoice(158605)
 local voicePhaseChange							= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceFixate								= mod:NewVoice(157763)
-local voiceArcaneAberration						= mod:NewVoice("OptionVersion2", 156471, "-Healer")
+local voiceArcaneAberration						= mod:NewVoice(156471, "-Healer", nil, 2)
 local voiceEnvelopingNight 						= mod:NewVoice(165876)
 local voiceGrowingDarkness						= mod:NewVoice(176533)
 local voiceBranded								= mod:NewVoice(156225)

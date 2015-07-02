@@ -39,7 +39,7 @@ local specWarnFelPool				= mod:NewSpecialWarningMove(153616)
 local specWarnFelSpark				= mod:NewSpecialWarningMove(153726)
 
 local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396)--20sec cd but can be massively delayed by adds phases
-local timerFelLash					= mod:NewTargetTimer("OptionVersion2", 7.5, 153234, nil, "Tank|Healer")
+local timerFelLash					= mod:NewTargetTimer(7.5, 153234, nil, "Tank|Healer", 2)
 local timerClawsOfArgus				= mod:NewBuffActiveTimer(20, 153764)
 local timerClawsOfArgusCD			= mod:NewNextTimer(70, 153764)
 

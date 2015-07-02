@@ -9607,7 +9607,7 @@ do
 		end
 	end
 
-	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
+	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, colorType, r, g, b)
 		local icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and GetSpellTexture(icon)) or icon or "Interface\\Icons\\Spell_Nature_WispSplode"
 		local obj = setmetatable(
 			{
@@ -9630,14 +9630,22 @@ do
 
 	-- new constructor for the new auto-localized timer types
 	-- note that the function might look unclear because it needs to handle different timer types, especially achievement timers need special treatment
-	-- todo: disable the timer if the player already has the achievement and when the ACHIEVEMENT_EARNED event is fired
-	-- problem: heroic/normal achievements :[
-	-- local achievementTimers = {}
-	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, optionVersion)
+	-- local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, optionVersion, colorType)
+	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, colorType, texture, r, g, b)
 		if type(timer) == "string" and timer:match("OptionVersion") then
-			local temp = optionVersion
-			optionVersion = string.sub(timer, 14)
-			timer, spellId, timerText, optionDefault, optionName, texture, r, g, b = spellId, timerText, optionDefault, optionName, texture, r, g, b, temp
+			DBM:Debug("OptionVersion hack depricated, remove it from: "..spellId)
+			return
+		end
+		if type(colorType) == "number" and colorType > 4 then
+			DBM:Debug("texture is in the colorType arg for: "..spellId)
+			return
+		end
+		--Use option optionName for optionVersion as well, no reason to split.
+		--This ensures that remaining arg positions match for auto generated and regular NewTimer
+		local optionVersion
+		if type(optionName) == "number" then
+			optionVersion = optionName
+			optionName = nil
 		end
 		local allowdouble
 		if type(timer) == "string" and timer:match("d%d+") then

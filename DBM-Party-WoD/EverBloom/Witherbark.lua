@@ -32,7 +32,7 @@ local specWarnBrittleBarkEnd	= mod:NewSpecialWarningEnd(164275, false)--Added fo
 local timerParchedGrasp			= mod:NewCDTimer(12, 164357)
 
 local voiceLivingLeaves			= mod:NewVoice(169495)
-local voiceUncheckedGrowth		= mod:NewVoice("OptionVersion2", 164294, false)--Almost no one kill them. tank picks up, but dps burn boss.
+local voiceUncheckedGrowth		= mod:NewVoice(164294, false, nil, 2)--Almost no one kill them. tank picks up, but dps burn boss.
 
 
 function mod:OnCombatStart(delay)

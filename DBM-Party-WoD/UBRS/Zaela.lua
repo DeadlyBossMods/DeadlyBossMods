@@ -28,7 +28,7 @@ local timerReboundingBladeCD	= mod:NewNextTimer(10.5, 155705, nil, false)
 local timerBlackIronCycloneCD	= mod:NewCDTimer(19.5, 155721)--19.5-23sec variation in phase 2. phase 1 seems diff
 local timerZaelaReturns			= mod:NewTimer(26.5, "timerZaelaReturns", 166041)
 
-local countdownDestructiveSmite	= mod:NewCountdown("OptionVersion2", 15.5, 155673, "Tank")
+local countdownDestructiveSmite	= mod:NewCountdown(15.5, 155673, "Tank", nil, nil, nil, nil, 2)
 
 local voiceCyclone				= mod:NewVoice(155721)
 local voicePhaseChange			= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
