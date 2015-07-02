@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: Jun 24 10:37 PDT, 2015@13913
+-- Last update: Jul 2 2015, 6:12 UTC@13993
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -11,17 +11,17 @@ local L
 L= DBM:GetModLocalization(1426)
 
 L:SetTimerLocalization({
-	timerSiegeVehicleCD		= "下一辆攻城车"
+	timerSiegeVehicleCD		= "下一辆攻城车-%s"
 })
 
 L:SetOptionLocalization({
-	timerSiegeVehicleCD =	"计时条：下一辆攻城车-%s"
+	timerSiegeVehicleCD =	"计时条：下一辆攻城车"
 })
 
 L:SetMiscLocalization({
 	AddsSpawn1		=	"乘胜追击！",
 	AddsSpawn2		=	"投掷手雷！",
-	BossLeaving		=	"我会回来的..."
+	BossLeaving		=	"我会回来的..."--无法确定全角还是半角句号。有问题请联系我
 })
 
 ---------------------------
@@ -57,7 +57,7 @@ L:SetTimerLocalization({
 	SoDDPS		= "下一次死亡之影 (%s)",
 	SoDTank		= "下一次死亡之影 (%s)",
 	SoDHealer	= "下一次死亡之影 (%s)"
-})
+}) 
 
 L:SetOptionLocalization({
 	SoDDPS		= "计时条：下一次针对DPS的$spell:179864",
@@ -98,7 +98,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	DBMConfigMsg		= "团长已经将种子喊叫方式设定为 %s。",
-	BWConfigMsg			= "团长在用Bigwigs, DBM将会使用<Place Holder>的对应方式来提示。"
+	BWConfigMsg			= "团长在用Bigwigs, DBM将会使用数字来提示。"
 	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 
@@ -150,7 +150,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	phase2				= "我受够这无聊的游戏了。你们将面对曾横行诸界的永生军团。",
 	phase2point5		= "面对现实吧，愚蠢的凡人。你们无法抵抗燃烧军团的无穷大军。",
-	phase3				= "Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine!",
+	phase3				= "他们撤退了！去传送门！古尔丹是我的！",--Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine! 听写自 /unknown/356BC09F9FDC589B_1125761.ogg
 	phase3point5		= "我要撕碎这可悲的世界！它的碎片将在扭曲虚空的不断撕扯下分崩离析！",
 	First				= "第一个",
 	Second				= "第二个",

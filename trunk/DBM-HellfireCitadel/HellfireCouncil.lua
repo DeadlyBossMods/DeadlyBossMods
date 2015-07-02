@@ -60,7 +60,7 @@ local timerMirrorImageCD			= mod:NewCDTimer(75, 183885)
 mod:AddTimerLine(Dia)
 --Dia Darkwhisper
 local timerMarkofNecroCD			= mod:NewCDTimer(60.5, 184449, nil, "Healer")
-local timerReapCD					= mod:NewCDTimer(64.6, 184476)--66-71
+local timerReapCD					= mod:NewCDTimer(61.6, 184476)--66-71
 local timerNightmareVisageCD		= mod:NewCDTimer(30, 184657, nil, "Tank")
 local timerDarknessCD				= mod:NewCDTimer(75, 184681)
 mod:AddTimerLine(Gurtogg)

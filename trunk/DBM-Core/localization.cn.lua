@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Jun 10, 2015@13867
+-- Last update: Jul 2 2015, 2:42 UTC@13993
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -382,6 +382,7 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT				= "当你受到$spell:%s影响时大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= UnitName("player") .. " 中了%s!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count		= UnitName("player") .. " 中了%s! (%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s 于%%d秒后消失"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player") .. " 中了%s! (%%s)"
 DBM_CORE_AUTO_HUD_OPTION_TEXT				= "为$spell:%s显示HudMap"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI			= "为多个机制显示HudMap"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT				= "距离监视(%s码)：$spell:%s"--string used for range so we can use things like "5/2" as a value for that field
