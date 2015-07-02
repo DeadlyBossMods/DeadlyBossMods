@@ -6,6 +6,7 @@ mod:SetCreatureID(92142, 92144, 92146)--Blademaster Jubei'thos (92142). Dia Dark
 mod:SetEncounterID(1778)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
+mod:SetHotfixNoticeRev(13990)
 mod:SetBossHPInfoToHighest()
 --mod.respawnTime = 20
 
