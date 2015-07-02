@@ -70,7 +70,7 @@ local timerShatteringSmashCD		= mod:NewCDCountTimer(44.5, 155992)--power based, 
 local timerImpalingThrow			= mod:NewCastTimer(5, 156111)--How long marked target has to aim throw at Debris Pile or Siegemaker
 --Stage Two: Storage Warehouse
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerSiegemakerCD				= mod:NewNextCountTimer(50, "ej9571", nil, nil, nil, 156667)
+local timerSiegemakerCD				= mod:NewNextCountTimer(50, "ej9571", nil, nil, nil, nil, 156667)
 local timerMassiveExplosion			= mod:NewCastTimer(5, 163008)
 --Stage Three: Iron Crucible
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
@@ -86,7 +86,7 @@ local countdownMarkedforDeath		= mod:NewCountdown("AltTwo25", 156096, "-Tank")
 local countdownMarkedforDeathFades	= mod:NewCountdownFades("AltTwo5", 156096)--Same voice should be fine, never will overlap, and both for same spell, so people will understand
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceSiegemaker				= mod:NewVoice("OptionVersion2", "ej9571", "Ranged") -- ej9571.ogg tank coming
+local voiceSiegemaker				= mod:NewVoice("ej9571", "Ranged", nil, 2) -- ej9571.ogg tank coming
 local voiceShatteringSmash			= mod:NewVoice(155992, "Melee") --carefly
 local voiceMarkedforDeath			= mod:NewVoice(156096) --target: findshelter; else: 156096.ogg marked for death
 local voiceDemolition				= mod:NewVoice(156425) --AOE

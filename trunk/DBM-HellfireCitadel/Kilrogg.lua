@@ -56,21 +56,21 @@ local timerHeartseekerCD			= mod:NewCDTimer(25, 180372)
 local timerVisionofDeathCD			= mod:NewCDCountTimer(75, 181488)
 local timerDeathThroesCD			= mod:NewCDCountTimer(40, 180224)
 --Adds
-local timerBloodthirsterCD			= mod:NewCDCountTimer(70.3, "ej11266", nil, nil, nil, 131150)
---local timerRendingHowlCD				= mod:NewCDTimer(30, 183917)
+local timerBloodthirsterCD			= mod:NewCDCountTimer(70.3, "ej11266", nil, nil, nil, nil, 131150)
+--local timerRendingHowlCD			= mod:NewCDTimer(30, 183917)
 
---local berserkTimer					= mod:NewBerserkTimer(360)
+--local berserkTimer				= mod:NewBerserkTimer(360)
 
-local countdownVisionofDeathCD			= mod:NewCountdown(75, 181488, "Tank")
-local countdownVisionofDeath			= mod:NewCountdownFades("Alt60", 181488)
+local countdownVisionofDeathCD		= mod:NewCountdown(75, 181488, "Tank")
+local countdownVisionofDeath		= mod:NewCountdownFades("Alt60", 181488)
 
-local voiceShred						= mod:NewVoice(180199)--defensive
-local voiceHeartSeeker					= mod:NewVoice(180372)--runout
-local voiceDeathThroes					= mod:NewVoice(180224)--aesoon
-local voiceBloodGlob					= mod:NewVoice(180459)--180459
-local voiceFelBloodGlob					= mod:NewVoice(180413)--180199 (wrong spellID for voice do to my mistake)
-local voiceBloodthirster				= mod:NewVoice("ej11266", "Dps", nil, 2)--ej11266
-local voiceHulkingTerror				= mod:NewVoice("ej11269", "Tank", nil, 2)--ej11269
+local voiceShred					= mod:NewVoice(180199)--defensive
+local voiceHeartSeeker				= mod:NewVoice(180372)--runout
+local voiceDeathThroes				= mod:NewVoice(180224)--aesoon
+local voiceBloodGlob				= mod:NewVoice(180459)--180459
+local voiceFelBloodGlob				= mod:NewVoice(180413)--180199 (wrong spellID for voice do to my mistake)
+local voiceBloodthirster			= mod:NewVoice("ej11266", "Dps", nil, 2)--ej11266
+local voiceHulkingTerror			= mod:NewVoice("ej11269", "Tank", nil, 2)--ej11269
 
 mod:AddInfoFrameOption("ej11280")
 

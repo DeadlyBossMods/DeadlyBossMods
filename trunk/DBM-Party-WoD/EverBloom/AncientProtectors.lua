@@ -37,7 +37,7 @@ local specWarnSlash					= mod:NewSpecialWarningSpell(168383)
 local specWarnNoxious				= mod:NewSpecialWarningRun(175997, nil, nil, 2, 4)
 local specWarnBramble				= mod:NewSpecialWarningMove(167977)
 
-local timerShapersFortitude			= mod:NewTargetTimer("OptionVersion2", 15, 168520, nil, false)
+local timerShapersFortitude			= mod:NewTargetTimer(15, 168520, nil, false, 2)
 local timerNoxiousCD				= mod:NewCDTimer(16, 175997, nil, "Melee")
 local timerGraspingVineCD			= mod:NewNextTimer(31.5, 168375)
 

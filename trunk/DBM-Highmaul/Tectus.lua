@@ -42,8 +42,8 @@ local specWarnRavingAssault			= mod:NewSpecialWarningDodge(163312, "Melee", nil,
 local specWarnEarthenFlechettes		= mod:NewSpecialWarningDodge(162968, "Melee", nil, nil, nil, 2)
 local specWarnGiftOfEarth			= mod:NewSpecialWarningCount(162894, "Melee", nil, nil, nil, 2)
 
-local timerEarthwarperCD			= mod:NewNextTimer(40, "ej10061", nil, nil, nil, 162894)--Both of these get delayed by upheavel
-local timerBerserkerCD				= mod:NewNextTimer(40, "ej10062", nil, "Tank", nil, 163312)--Both of these get delayed by upheavel
+local timerEarthwarperCD			= mod:NewNextTimer(40, "ej10061", nil, nil, nil, nil, 162894)--Both of these get delayed by upheavel
+local timerBerserkerCD				= mod:NewNextTimer(40, "ej10062", nil, "Tank", nil, nil, 163312)--Both of these get delayed by upheavel
 local timerGiftOfEarthCD			= mod:NewCDTimer(10.5, 162894, nil, "Melee")--10.5 but obviously delayed if stuns were used.
 local timerEarthenFlechettesCD		= mod:NewCDTimer(14, 162968, nil, "Melee")--14 but obviously delayed if stuns were used. Also tends to be recast immediately if stun interrupted
 local timerCrystalBarrageCD			= mod:NewNextSourceTimer(30, 162346, nil, false)--Very accurate but spammy mess with 4+ adds up.
