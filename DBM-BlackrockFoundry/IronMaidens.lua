@@ -93,7 +93,7 @@ local yellHeartseeker					= mod:NewYell(158010, nil, false)
 
 --Ship
 mod:AddTimerLine(Ship)
-local timerShipCD						= mod:NewNextCountTimer(198, "ej10019", nil, nil, nil, 76204)
+local timerShipCD						= mod:NewNextCountTimer(198, "ej10019", nil, nil, nil, nil, 76204)
 local timerBombardmentAlphaCD			= mod:NewNextTimer(18, 157854)
 local timerWarmingUp					= mod:NewCastTimer(90, 158849)
 --Ground
@@ -119,11 +119,11 @@ local countdownBladeDash				= mod:NewCountdown("AltTwo20", 155794, "Tank")
 local countdownDarkHunt					= mod:NewCountdownFades("AltTwo8", 158315)
 
 local voiceRapidFire					= mod:NewVoice(156631) --runout
-local voiceBloodRitual					= mod:NewVoice("OptionVersion2", 158078, "MeleeDps") --158078.ogg, farawayfromline
+local voiceBloodRitual					= mod:NewVoice(158078, "MeleeDps", nil, 2) --158078.ogg, farawayfromline
 local voiceHeartSeeker					= mod:NewVoice(158010) --spread
 local voiceShip							= mod:NewVoice("ej10019") --1695uktar, 1695gorak, 1695ukurogg
 local voiceEarthenbarrier				= mod:NewVoice(158708)  --int
-local voiceDeployTurret					= mod:NewVoice("OptionVersion2", 158599, "RangedDps") --158599.ogg attack turret
+local voiceDeployTurret					= mod:NewVoice(158599, "RangedDps", nil, 2) --158599.ogg attack turret
 local voiceConvulsiveShadows			= mod:NewVoice(156214) --runaway, target
 local voiceDarkHunt						= mod:NewVoice(158315) --defensive, target
 local voicePenetratingShot				= mod:NewVoice(164271) --stack

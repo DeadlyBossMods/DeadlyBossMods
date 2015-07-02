@@ -75,11 +75,11 @@ local timerApocalypticFelburstCD	= mod:NewCDCountTimer(30, 188693)
 local timerExertDominanceCD			= mod:NewCDTimer(5, 183331, nil, "-Healer")
 local timerApocalypseCD				= mod:NewCDTimer(46, 183329)
 --Adds
-local timerSargereiDominatorCD		= mod:NewNextCountTimer(60, "ej11456", nil, nil, nil, 184053)--CD needs verifying, no log saw 2 of them in a phase. phase always ended or boss died before 2nd add, i know it's at least longer than 60 sec tho
-local timerHauntingSoulCD			= mod:NewCDCountTimer(30, "ej11462", nil, nil, nil, 182769)
+local timerSargereiDominatorCD		= mod:NewNextCountTimer(60, "ej11456", nil, nil, nil, nil, 184053)--CD needs verifying, no log saw 2 of them in a phase. phase always ended or boss died before 2nd add, i know it's at least longer than 60 sec tho
+local timerHauntingSoulCD			= mod:NewCDCountTimer(30, "ej11462", nil, nil, nil, nil, 182769)
 local timerGiftofManariCD			= mod:NewCDTimer(11, 184124)
 --Mythic
-local timerVoraciousSoulstalkerCD	= mod:NewCDCountTimer(60, "ej11778", nil, nil, nil, 190776)
+local timerVoraciousSoulstalkerCD	= mod:NewCDCountTimer(60, "ej11778", nil, nil, nil, nil, 190776)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 

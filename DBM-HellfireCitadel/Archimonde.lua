@@ -99,7 +99,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerShackledTormentCD		= mod:NewCDTimer(31.5, 184931)
 local timerWroughtChaosCD			= mod:NewCDTimer(51.7, 184265)
 --Phase 2.5
-local timerFelborneOverfiendCD		= mod:NewNextTimer(44.3, "ej11603", nil, nil, nil, 186662)
+local timerFelborneOverfiendCD		= mod:NewNextTimer(44.3, "ej11603", nil, nil, nil, nil, 186662)
 --Phase 3: The Twisting Nether
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerDemonicFeedbackCD		= mod:NewCDTimer(35, 187180)
