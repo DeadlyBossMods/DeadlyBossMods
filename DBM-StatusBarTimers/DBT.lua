@@ -147,14 +147,13 @@ options = {
 		type = "number",
 		default = 0,
 	},
-	--Add(blue)
 	StartColorAR = {
 		type = "number",
-		default = 0,
+		default = 0.375,
 	},
 	StartColorAG = {
 		type = "number",
-		default = 0.7,
+		default = 0.545,
 	},
 	StartColorAB = {
 		type = "number",
@@ -162,17 +161,16 @@ options = {
 	},
 	EndColorAR = {
 		type = "number",
-		default = 0,
+		default = 0.15,
 	},
 	EndColorAG = {
 		type = "number",
-		default = 0,
+		default = 0.385,
 	},
 	EndColorAB = {
 		type = "number",
 		default = 1,
 	},
-	--AOE (Green)
 	StartColorAER = {
 		type = "number",
 		default = 0.5,
@@ -187,7 +185,7 @@ options = {
 	},
 	EndColorAER = {
 		type = "number",
-		default = 0,
+		default = 0.11,
 	},
 	EndColorAEG = {
 		type = "number",
@@ -195,16 +193,15 @@ options = {
 	},
 	EndColorAEB = {
 		type = "number",
-		default = 1,
+		default = 0.3,
 	},
-	--Debuff (Purple)
 	StartColorDR = {
 		type = "number",
-		default = 1,
+		default = 0.9,
 	},
 	StartColorDG = {
 		type = "number",
-		default = 0.5,
+		default = 0.3,
 	},
 	StartColorDB = {
 		type = "number",
@@ -222,26 +219,25 @@ options = {
 		type = "number",
 		default = 1,
 	},
-	--Interrupt (Teal)
 	StartColorIR = {
 		type = "number",
-		default = 0.2,
+		default = 0.47,
 	},
 	StartColorIG = {
 		type = "number",
-		default = 1,
+		default = 0.97,
 	},
 	StartColorIB = {
 		type = "number",
-		default = 0.1,
+		default = 1,
 	},
 	EndColorIR = {
 		type = "number",
-		default = 0.8,
+		default = 0.047,
 	},
 	EndColorIG = {
 		type = "number",
-		default = 0.8,
+		default = 0.88,
 	},
 	EndColorIB = {
 		type = "number",
