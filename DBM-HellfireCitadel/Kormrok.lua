@@ -44,17 +44,17 @@ local specWarnEmpFelOutpouring		= mod:NewSpecialWarningDodge(181293, nil, nil, n
 local specWarnEmpExplosiveRunes		= mod:NewSpecialWarningSpell(181297, "-Tank")
 local specWarnDraggingHands			= mod:NewSpecialWarningSwitch(181300)
 
-local timerLeapCD					= mod:NewCDTimer(113.5, 180068)--Not techincally a leap timer, timer syncs up to when he gains next buff (leap ended)
+local timerLeapCD					= mod:NewCDTimer(113.5, 180068, nil, nil, nil, 6)--Not techincally a leap timer, timer syncs up to when he gains next buff (leap ended)
 --Times here are not relevant, they are all hard coded orders based on what buff boss has, real values are under 3 different phases
 local timerPoundCD					= mod:NewNextCountTimer(42, 180244, nil, nil, nil, 2)
 local timerFelOutpouringCD			= mod:NewNextTimer(107, 181292, nil, nil, nil, 2)
-local timerExplosiveRunesCD			= mod:NewNextTimer(48, 181296)
+local timerExplosiveRunesCD			= mod:NewNextTimer(48, 181296, nil, nil, nil, 5)
 local timerGraspingHandsCD			= mod:NewNextTimer(107, 181299, nil, nil, nil, 1)
 --Tank Debuffs. These are also hard coded, but in different place.
 mod:AddTimerLine(TANK)
 local timerExplosiveBurstCD			= mod:NewNextCountTimer(40, 181306, nil, nil, nil, 3)--Everyone needs to know these 2
 local timerFoulCrushCD				= mod:NewNextCountTimer(40, 181307, nil, nil, nil, 1)--Everyone needs to know these 2
-local timerSwatCD					= mod:NewNextCountTimer(40, 181305, nil, "Tank")
+local timerSwatCD					= mod:NewNextCountTimer(40, 181305, nil, "Tank", nil, 5)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)--Was 8 min on heroic PTR, but that also might have been a bug so will wait to confirm
 

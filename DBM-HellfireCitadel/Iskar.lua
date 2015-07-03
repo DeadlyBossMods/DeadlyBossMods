@@ -64,7 +64,7 @@ local specWarnFelConduit				= mod:NewSpecialWarningInterrupt(181827, nil, nil, n
 local timerFelLaserCD					= mod:NewCDTimer(16, 182582, nil, nil, nil, 3)--16-22. Never pauses, used all phases
 local timerChakramCD					= mod:NewCDTimer(33, 182178, nil, nil, nil, 3)
 local timerPhantasmalWindsCD			= mod:NewCDTimer(35, 181957, nil, nil, nil, 3)
-local timerPhantasmalWoundsCD			= mod:NewCDTimer(30.5, 182325, nil, "Healer", nil, 3)--30.5-32
+local timerPhantasmalWoundsCD			= mod:NewCDTimer(30.5, 182325, nil, "Healer|Tank", nil, 5)--30.5-32
 local timerFocusedBlast					= mod:NewCastTimer(11, 181912, nil, nil, nil, 2)--Doesn't realy need a cd timer. he casts it twice back to back, then lands
 local timerDarkBindingsCD				= mod:NewCDTimer(34, 185456, nil, nil, nil, 3)
 --Adds

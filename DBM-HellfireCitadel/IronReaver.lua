@@ -42,16 +42,16 @@ local timerUnstableOrbCD			= mod:NewNextCountTimer(3, 182001, nil, "Ranged", nil
 local timerPoundingCD				= mod:NewNextCountTimer(24, 182020, nil, nil, nil, 2)
 local timerBlitzCD					= mod:NewNextCountTimer(5, 179889)
 local timerBarrageCD				= mod:NewNextCountTimer(15, 185282)
-local timerFullChargeCD				= mod:NewNextTimer(136, 182055)
+local timerFullChargeCD				= mod:NewNextTimer(136, 182055, nil, nil, nil, 6)
 --mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)--Find translation that works for "Air Phase"
-local timerFallingSlamCD			= mod:NewNextTimer(54, 182066)
-local timerFuelLeakCD				= mod:NewNextCountTimer(15, 182668)--Fire bombs always immediately after, so no timer needed
+local timerFallingSlamCD			= mod:NewNextTimer(54, 182066, nil, nil, nil, 6)
+local timerFuelLeakCD				= mod:NewNextCountTimer(15, 182668, nil, nil, nil, 2)--Fire bombs always immediately after, so no timer needed
 --All of bomb timers are time+2 because dbm starts timers at cast start of 181999
-local timerVolatileBomb				= mod:NewCastTimer(47, 182534, nil, "Dps")--The only timer that's on normal/heroic/lfr so not too spammy to have on
+local timerVolatileBomb				= mod:NewCastTimer(47, 182534, nil, "Dps", nil, 5)--The only timer that's on normal/heroic/lfr so not too spammy to have on
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerQuickFuseBomb			= mod:NewCastTimer(22, 186652, nil, false)--Timer spam, optional, maybe make rangeddps only default?
-local timerBurningBomb				= mod:NewCastTimer(42, 186667, nil, false)--Timer spam, optional, maybe make meleedps only by default?
-local timerReactiveBomb				= mod:NewCastTimer(32, 186676, nil, "Tank")--Since tanks only have 1 bomb to worry about. not too spammy to have on by default.
+local timerQuickFuseBomb			= mod:NewCastTimer(22, 186652, nil, false, nil, 5)--Timer spam, optional, maybe make rangeddps only default?
+local timerBurningBomb				= mod:NewCastTimer(42, 186667, nil, false, nil, 5)--Timer spam, optional, maybe make meleedps only by default?
+local timerReactiveBomb				= mod:NewCastTimer(32, 186676, nil, "Tank", nil, 5)--Since tanks only have 1 bomb to worry about. not too spammy to have on by default.
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 

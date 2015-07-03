@@ -83,7 +83,7 @@ local timerInfernoCD				= mod:NewNextCountTimer(107, 181180, nil, nil, nil, 1)
 local timerWrathofGuldanCD			= mod:NewAITimer(107, 186348, nil, nil, nil, 3)
 --Mannoroth
 mod:AddTimerLine(L.name)
-local timerGlaiveComboCD			= mod:NewCDTimer(30, 181354, nil, "Tank")--30 seconds unless delayed by something else
+local timerGlaiveComboCD			= mod:NewCDTimer(30, 181354, nil, "Tank", nil, 5)--30 seconds unless delayed by something else
 local timerFelHellfireCD			= mod:NewCDTimer(35, 181557, nil, nil, nil, 2)--35, unless delayed by other things.
 local timerGazeCD					= mod:NewCDTimer(47.1, 181597, nil, nil, nil, 3)--As usual, some variation do to other abilities
 local timerFelSeekerCD				= mod:NewCDTimer(50, 181735, nil, nil, nil, 2)--Small sample size, confirm it's not shorter if not delayed by things.

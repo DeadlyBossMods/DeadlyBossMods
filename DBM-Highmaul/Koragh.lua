@@ -52,18 +52,18 @@ local specWarnExpelMagicFelFades	= mod:NewSpecialWarning("specWarnExpelMagicFelF
 local yellExpelMagicFel				= mod:NewYell(172895)
 local specWarnExpelMagicFelMove		= mod:NewSpecialWarningMove(172917)--Under you (fire). If not enough maybe add periodic damage too?
 
-local timerVulnerability			= mod:NewBuffActiveTimer(23, 160734)--more like 23-24 than 20
+local timerVulnerability			= mod:NewBuffActiveTimer(23, 160734, nil, nil, nil, 6)--more like 23-24 than 20
 local timerTrampleCD				= mod:NewCDTimer(16, 163101)
 local timerExpelMagicFire			= mod:NewBuffFadesTimer(11.5, 162185, nil, false, 2)--Has countdown, and fight has a lot of itmers now, i found this timer HIGHLY distracting when trying to process multiple important ability cds at once.
 local timerExpelMagicFireCD			= mod:NewCDTimer(58, 162185)--58-66 Variation
 local timerExpelMagicFrost			= mod:NewBuffActiveTimer(20, 161411, nil, false, 3)
-local timerExpelMagicFrostCD		= mod:NewCDTimer(60, 161411)--60-63 variation
-local timerExpelMagicShadowCD		= mod:NewCDTimer(59, 162184, nil, "Tank|Healer")--60-63 variation
+local timerExpelMagicFrostCD		= mod:NewCDTimer(60, 161411, nil, nil, nil, 2)--60-63 variation
+local timerExpelMagicShadowCD		= mod:NewCDTimer(59, 162184, nil, "Tank|Healer", nil, 5)--60-63 variation
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, "Tank|Healer")
-local timerExpelMagicArcaneCD		= mod:NewCDTimer(26, 162186, nil, "Tank")--26-32
-local timerBallsCD					= mod:NewNextCountTimer(30, 161612)
+local timerExpelMagicArcaneCD		= mod:NewCDTimer(26, 162186, nil, "Tank", nil, 5)--26-32
+local timerBallsCD					= mod:NewNextCountTimer(30, 161612, nil, nil, nil, 5)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerExpelMagicFelCD			= mod:NewCDTimer(15.5, 172895, nil, "-Tank", 2)--Mythic
+local timerExpelMagicFelCD			= mod:NewCDTimer(15.5, 172895, nil, "-Tank", 2, 3)--Mythic
 local timerExpelMagicFel			= mod:NewBuffFadesTimer(12, 172895)--Mythic
 
 local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)

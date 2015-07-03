@@ -92,7 +92,7 @@ local timerFelBurstCD				= mod:NewCDTimer(52, 183817, nil, "Ranged", nil, 3)--On
 local timerDeathbrandCD				= mod:NewCDTimer(42.5, 183828, nil, nil, nil, 1)--Everyone, for tanks/healers to know when debuff/big hit, for dps to know add coming
 local timerDesecrateCD				= mod:NewCDTimer(27, 185590, nil, "Melee", nil, 2)--Only targets melee
 ----Hellfire Deathcaller
-local timerShadowBlastCD			= mod:NewCDTimer(9.7, 183864, nil, "Tank", nil, 2)
+local timerShadowBlastCD			= mod:NewCDTimer(9.7, 183864, nil, "Tank", nil, 5)
 local timerDemonicHavocCD			= mod:NewAITimer(107, 183865, nil, nil, nil, 3)--Mythic, timer unknown, AI timer used until known
 --Phase 2: Hand of the Legion
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -103,7 +103,7 @@ local timerFelborneOverfiendCD		= mod:NewNextTimer(44.3, "ej11603", nil, nil, ni
 --Phase 3: The Twisting Nether
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerDemonicFeedbackCD		= mod:NewCDTimer(35, 187180, nil, nil, nil, 2)
-local timerNetherBanishCD			= mod:NewCDCountTimer(61.9, 186961, nil, nil, nil, 3)
+local timerNetherBanishCD			= mod:NewCDCountTimer(61.9, 186961, nil, nil, nil, 5)
 --Phase 3.5:
 local timerRainofChaosCD			= mod:NewCDCountTimer(62, 182225, nil, nil, nil, 2)
 ----The Nether

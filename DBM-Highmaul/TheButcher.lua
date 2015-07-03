@@ -31,11 +31,11 @@ local specWarnBoundingCleave		= mod:NewSpecialWarningCount(156160, nil, nil, nil
 local specWarnBoundingCleaveEnded	= mod:NewSpecialWarningEnd(156160)
 local specWarnPaleVitriol			= mod:NewSpecialWarningMove(163046, nil, nil, nil, nil, 2)--Mythic
 
-local timerCleaveCD					= mod:NewCDTimer(6, 156157, nil, false)
-local timerTenderizerCD				= mod:NewCDTimer(15.2, 156151, nil, "Tank")
-local timerCleaverCD				= mod:NewCDTimer(7.5, 156143, nil, "Tank")
+local timerCleaveCD					= mod:NewCDTimer(6, 156157, nil, false, nil, 5)
+local timerTenderizerCD				= mod:NewCDTimer(15.2, 156151, nil, "Tank", nil, 5)
+local timerCleaverCD				= mod:NewCDTimer(7.5, 156143, nil, "Tank", nil, 5)
 local timerGushingWounds			= mod:NewBuffFadesTimer(15, 156152)
-local timerBoundingCleaveCD			= mod:NewNextCountTimer(60, 156160)
+local timerBoundingCleaveCD			= mod:NewNextCountTimer(60, 156160, nil, nil, nil, 2)
 local timerBoundingCleave			= mod:NewCastTimer(15, 156160)
 
 local berserkTimer					= mod:NewBerserkTimer(300)

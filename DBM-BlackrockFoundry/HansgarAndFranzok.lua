@@ -33,11 +33,11 @@ local specWarnStampersEnd				= mod:NewSpecialWarningEnd(174825, nil, nil, nil, n
 
 local timerDisruptingRoar				= mod:NewCastTimer(2.5, 160838, nil, "SpellCaster")
 local timerDisruptingRoarCD				= mod:NewCDTimer(45, 160838, nil, "SpellCaster")
-local timerSkullcrackerCD				= mod:NewCDTimer(22, 153470, nil, "Healer")
-local timerCripplingSupplex				= mod:NewCastTimer(9.5, 156938, nil, "Tank|Healer")
+local timerSkullcrackerCD				= mod:NewCDTimer(22, 153470, nil, "Healer", nil, 5)
+local timerCripplingSupplex				= mod:NewCastTimer(9.5, 156938, nil, "Tank|Healer", nil, 5)
 local timerJumpSlamCD					= mod:NewNextTimer(34, "ej9854")
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerSmartStamperCD				= mod:NewNextTimer(12, 162124)--Activation
+local timerSmartStamperCD				= mod:NewNextTimer(12, 162124, nil, nil, nil, 6)--Activation
 
 --local berserkTimer						= mod:NewBerserkTimer(360)
 

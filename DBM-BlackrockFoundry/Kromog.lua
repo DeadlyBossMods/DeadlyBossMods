@@ -45,14 +45,14 @@ local specWarnWarpedArmorOther		= mod:NewSpecialWarningTaunt(156766)
 local specWarnTremblingEarth		= mod:NewSpecialWarningCount(173917, nil, nil, nil, 2)
 local specWarnCalloftheMountain		= mod:NewSpecialWarningCount(158217, nil, nil, nil, 3, 2)
 
-local timerGraspingEarthCD			= mod:NewCDTimer(114, 157060)--Unless see new logs on normal showing it can still be 111, raising to 115, average i saw was 116-119
+local timerGraspingEarthCD			= mod:NewCDTimer(114, 157060, nil, nil, nil, 6)--Unless see new logs on normal showing it can still be 111, raising to 115, average i saw was 116-119
 local timerThunderingBlowsCD		= mod:NewNextTimer(12, 157054, nil, nil, nil, 2)
 local timerRipplingSmashCD			= mod:NewCDTimer(21, 157592)--If it comes off CD early enough into ThunderingBlows/Grasping Earth, he skips a cast. Else, he'll cast it very soon after.
 local timerStoneBreathCD			= mod:NewCDCountTimer(22, 156852, nil, nil, nil, 2)
-local timerSlamCD					= mod:NewCDTimer(23, 156704, nil, "Tank")
-local timerWarpedArmorCD			= mod:NewCDTimer(14, 156766, nil, "Tank")
-local timerTremblingEarthCD			= mod:NewCDTimer(153.5, 173917)
-local timerTremblingEarth			= mod:NewBuffActiveTimer(25, 173917)
+local timerSlamCD					= mod:NewCDTimer(23, 156704, nil, "Tank", nil, 5)
+local timerWarpedArmorCD			= mod:NewCDTimer(14, 156766, nil, "Tank", nil, 5)
+local timerTremblingEarthCD			= mod:NewCDTimer(153.5, 173917, nil, nil, nil, 6)
+local timerTremblingEarth			= mod:NewBuffActiveTimer(25, 173917, nil, nil, nil, 6)
 local timerCalloftheMountain		= mod:NewCastTimer(5, 158217)
 
 local berserkTimer					= mod:NewBerserkTimer(540)

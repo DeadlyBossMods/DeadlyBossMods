@@ -37,10 +37,10 @@ local specWarnFlameJet				= mod:NewSpecialWarningMove(159311)
 local specWarnOnTheHunt				= mod:NewSpecialWarningMoveTo(162497, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(162497), nil, nil, 2)--Does not need yell, tigers don't cleave other targets like berserker rush does.
 
 local timerPillarCD					= mod:NewNextTimer(20, "ej9394", nil, nil, nil, nil, 159202)
-local timerChainHurlCD				= mod:NewNextTimer(106, 159947)--177776
-local timerSweeperCD				= mod:NewTimer(55, "timerSweeperCD", 177258)
+local timerChainHurlCD				= mod:NewNextTimer(106, 159947, nil, nil, nil, 6)--177776
+local timerSweeperCD				= mod:NewTimer(55, "timerSweeperCD", 177258, nil, nil, 6)
 local timerBerserkerRushCD			= mod:NewCDTimer(45, 158986)--45 to 70 variation. Small indication that you can use a sequence to get it a little more accurate but even then it's variable. Pull1: 48, 60, 46, 70, 45, 51, 46, 70. Pull2: 48, 60, 50, 55, 45. Mythic pull1, 48, 50, 57, 49
-local timerImpaleCD					= mod:NewCDTimer(43.5, 159113, nil, "Tank|Healer")--Highly variable now, seems better adjusted for berserker rush interaction
+local timerImpaleCD					= mod:NewCDTimer(43.5, 159113, nil, "Tank|Healer", nil, 5)--Highly variable now, seems better adjusted for berserker rush interaction
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerTigerCD					= mod:NewNextTimer(110, "ej9396", nil, "-Tank", nil, 1, 162497)
 
