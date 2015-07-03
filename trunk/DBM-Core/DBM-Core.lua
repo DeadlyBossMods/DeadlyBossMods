@@ -6384,11 +6384,7 @@ end
 do
 	local testMod
 	local testWarning1, testWarning2, testWarning3
-	local testTimer1
-	local testTimer2
-	local testTimer3
-	local testTimer4
-	local testTimer5
+	local testTimer1, testTimer2, testTimer3, testTimer4, testTimer5, testTimer6, testTimer7
 	local testCount1
 	local testCount2
 	local testSpecialWarning1
@@ -6406,19 +6402,23 @@ do
 			testTimer3 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness", false, nil, 3)
 			testTimer4 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Nature_WispSplode", false, nil, 4)
 			testTimer5 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Fire_SelfDestruct", false, nil, 2)
+			testTimer6 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Nature_WispSplode", false, nil, 5)
+			testTimer7 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Nature_WispSplode", false, nil, 6)
 			testCount1 = testMod:NewCountdown(0, 0, nil, nil, nil, true)
 			testCount2 = testMod:NewCountdown(0, 0, nil, nil, nil, true, true)
 			testSpecialWarning1 = testMod:NewSpecialWarning("%s")
 			testSpecialWarning2 = testMod:NewSpecialWarning(" %s ", nil, nil, nil, 2)
 			testSpecialWarning3 = testMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3) -- hack: non auto-generated special warnings need distinct names (we could go ahead and give them proper names with proper localization entries, but this is much easier)
 		end
-		testTimer4:Start(20, "Important Interrupt")
 		testTimer1:Start(10, "Test Bar")
 		testTimer2:Start(30, "Adds")
 		testTimer3:Start(43, "Evil Debuff")
+		testTimer4:Start(20, "Important Interrupt")
+		testTimer5:Start(60, "Boom!")
+		testTimer6:Start(35, "Handle your Roll")
+		testTimer7:Start(50, "Next Phase")
 		testCount1:Cancel()
 		testCount1:Start(43)
-		testTimer5:Start(60, "Boom!")
 		testCount2:Cancel()
 		testCount2:Start(60)
 		testWarning1:Cancel()
