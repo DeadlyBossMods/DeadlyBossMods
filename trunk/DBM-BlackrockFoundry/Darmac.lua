@@ -67,12 +67,12 @@ local yellInfernoBreath				= mod:NewYell(154989)
 --Boss basic attacks
 mod:AddTimerLine(CORE_ABILITIES)--Core Abilities
 local timerPinDownCD				= mod:NewCDTimer(19.7, 155365, nil, "Ranged", 2)--Every 19.7 seconds unless delayed by other things. CD timer used for this reason
-local timerCallthePackCD			= mod:NewCDTimer(31.5, 154975, nil, "Tank", 2)--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart. In rare cases, boss still interrupts his own cast/delays cast even when not caused by gaining beast buff
+local timerCallthePackCD			= mod:NewCDTimer(31.5, 154975, nil, "Tank", 2, 1)--almost always 31, but cd resets to 11 whenever boss dismounts a beast (causing some calls to be less or greater than 31 seconds apart. In rare cases, boss still interrupts his own cast/delays cast even when not caused by gaining beast buff
 --Boss gained abilities (beast deaths grant boss new abilities)
 mod:AddTimerLine(SPELL_BUCKET_ABILITIES_UNLOCKED)--Abilities Unlocked
 local timerRendandTearCD			= mod:NewCDTimer(12, 155385)
 local timerSuperheatedShrapnelCD	= mod:NewCDTimer(14.2, 155499)
-local timerTantrumCD				= mod:NewNextCountTimer(29.5, 162275)
+local timerTantrumCD				= mod:NewNextCountTimer(29.5, 162275, nil, nil, nil, 2)
 local timerEpicenterCD				= mod:NewCDCountTimer(19.5, 159043, nil, "Melee")
 --Beast abilities (living)
 mod:AddTimerLine(BATTLE_PET_DAMAGE_NAME_8)--Beast

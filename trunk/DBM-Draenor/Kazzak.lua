@@ -21,7 +21,7 @@ local specWarnDoom					= mod:NewSpecialWarningSpell(187466, nil, nil, nil, 2)
 local specWarnMark					= mod:NewSpecialWarningYou(187668)
 local yellMark						= mod:NewYell(187668)
 
-local timerDoomD					= mod:NewCDTimer(52, 187466)
+local timerDoomD					= mod:NewCDTimer(52, 187466, nil, nil, nil, 3)
 
 --mod:AddReadyCheckOption(37462, false)
 mod:AddRangeFrameOption(8, 187668)

@@ -104,13 +104,13 @@ local specWarnGrowingDarkness					= mod:NewSpecialWarningMove(176533, nil, nil, 
 local specWarnDarkStar							= mod:NewSpecialWarningSpell(178607, nil, nil, nil, 2)--Change to target/near warning if targetscanning or any other method to detect target possible.
 
 --All Phases (No need to use different timers for empowered abilities. Short names better for timers.)
-local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238, nil, "-Tank")--Pretty much a next timer, HOWEVER can get delayed by other abilities so only reason it's CD timer anyways
+local timerArcaneWrathCD						= mod:NewCDTimer(50, 156238, nil, "-Tank", nil, 3)--Pretty much a next timer, HOWEVER can get delayed by other abilities so only reason it's CD timer anyways
 local timerDestructiveResonanceCD				= mod:NewCDTimer(15, 156467, nil, "-Melee")--16-30sec variation noted. I don't like it
 local timerMarkOfChaos							= mod:NewTargetTimer(8, 158605, nil, "Tank")
-local timerMarkOfChaosCD						= mod:NewCDTimer(50.5, 158605, nil, "Tank")
-local timerForceNovaCD							= mod:NewCDCountTimer(45, 157349)--45-52
-local timerForceNovaFortification				= mod:NewNextTimer(9, 157349)--For repeating nova
-local timerSummonArcaneAberrationCD				= mod:NewCDCountTimer(45, "ej9945", nil, "-Healer", nil, nil, 156471)--45-52 Variation Noted
+local timerMarkOfChaosCD						= mod:NewCDTimer(50.5, 158605, nil, "Tank", nil, 3)
+local timerForceNovaCD							= mod:NewCDCountTimer(45, 157349, nil, nil, nil, 2)--45-52
+local timerForceNovaFortification				= mod:NewNextTimer(9, 157349, nil, nil, nil, 2)--For repeating nova
+local timerSummonArcaneAberrationCD				= mod:NewCDCountTimer(45, "ej9945", nil, "-Healer", nil, 1, 156471)--45-52 Variation Noted
 --Intermission: Lineage of Power
 mod:AddTimerLine(DBM_CORE_INTERMISSION)
 local timerTransition							= mod:NewPhaseTimer(74)
@@ -123,7 +123,7 @@ local timerGlimpseOfMadnessCD					= mod:NewNextCountTimer(27, 165243)
 local timerInfiniteDarknessCD					= mod:NewNextTimer(62, 165102)
 local timerEnvelopingNightCD					= mod:NewNextCountTimer(63, 165876)--60 seconds plus 3 second cast
 local timerDarkStarCD							= mod:NewCDTimer(61, 178607)--61-65 Variations noticed
-local timerNightTwistedCD						= mod:NewTimer(30, "timerNightTwistedCD", 172138)
+local timerNightTwistedCD						= mod:NewTimer(30, "timerNightTwistedCD", 172138, nil, nil, 1)
 
 local countdownArcaneWrath						= mod:NewCountdown("OptionVersion2", 50, 156238, false)--Important to the assigned soakers on mythic, but pretty much spam to everyone else
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, "Tank")

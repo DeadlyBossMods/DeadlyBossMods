@@ -52,12 +52,12 @@ local specWarnRendingHowl			= mod:NewSpecialWarningInterrupt(183917, "-Healer")
 --Coding them perfectly is probably possible but VERY ugly, would require tones of calculating on the overlaps and lots of on fly adjusting.
 --Adjusting one timer like blackhand no big deal, checking time remaining on THREE other abilities any time one of these are cast, and on fly adjusting, no
 local timerShredCD					= mod:NewCDTimer(17, 180199, nil, "Tank")
-local timerHeartseekerCD			= mod:NewCDTimer(25, 180372)
+local timerHeartseekerCD			= mod:NewCDTimer(25, 180372, nil, nil, nil, 3)
 local timerVisionofDeathCD			= mod:NewCDCountTimer(75, 181488)
-local timerDeathThroesCD			= mod:NewCDCountTimer(40, 180224)
+local timerDeathThroesCD			= mod:NewCDCountTimer(40, 180224, nil, nil, nil, 2)
 --Adds
-local timerBloodthirsterCD			= mod:NewCDCountTimer(70.3, "ej11266", nil, nil, nil, nil, 131150)
---local timerRendingHowlCD			= mod:NewCDTimer(30, 183917)
+local timerBloodthirsterCD			= mod:NewCDCountTimer(70.3, "ej11266", nil, nil, nil, 1, 131150)
+--local timerRendingHowlCD			= mod:NewCDTimer(30, 183917, nil, nil, nil, 4)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
