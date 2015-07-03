@@ -74,7 +74,7 @@ local specWarnEmpBlackHole			= mod:NewSpecialWarningSpell(189779, nil, nil, nil,
 
 --Fire Phase
 ----Boss
-local timerFelStrikeCD				= mod:NewCDTimer(15.8, 186271, nil, "Tank")--15.8-17
+local timerFelStrikeCD				= mod:NewCDTimer(15, 186271, nil, "Tank")--15.8-17
 local timerFelSurgeCD				= mod:NewCDTimer(30, 186407)
 local timerImpCD					= mod:NewNextTimer(25, "ej11694", nil, nil, nil, nil, 112866)
 ----Big Add
@@ -188,11 +188,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 190223 then
-		if self.vb.phase >= 3 then
-			timerFelStrikeCD:Start(15)
-		else
-			timerFelStrikeCD:Start()
-		end
+		timerFelStrikeCD:Start()
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
@@ -384,7 +380,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				end
 				timerFelBlazeFlurryCD:Start(5.5)
 			elseif cid == 94239 then--Omnus
-				timerWitheringGazeCD:Start(9)
+				timerWitheringGazeCD:Start(4)
 				timerBlackHoleCD:Start(18)
 			end
 		end
@@ -425,8 +421,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerFelSurgeCD:Cancel()
 		countdownFelSurge:Cancel()
 		timerVoidStrikeCD:Start(8.5)
-		timerVoidSurgeCD:Start(19)
-		countdownVoidSurge:Start(19)
+		timerVoidSurgeCD:Start(17.8)
+		countdownVoidSurge:Start(17.8)
 	elseif spellId == 189047 then--Phase 3 (Shadowfel Phasing)
 		self.vb.phase = 3
 		voicePhaseChange:Play("phasechange")

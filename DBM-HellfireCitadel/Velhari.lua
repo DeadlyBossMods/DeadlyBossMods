@@ -6,7 +6,7 @@ mod:SetCreatureID(90269)
 mod:SetEncounterID(1784)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
-mod.respawnTime = 38--Def less than 40 but much greater than 30. i have a video of a 38 second respawn
+mod.respawnTime = 39--Def less than 40 but much greater than 30. i have a video of a 38 second respawn
 
 mod:RegisterCombat("combat")
 
