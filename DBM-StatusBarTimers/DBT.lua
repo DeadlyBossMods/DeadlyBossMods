@@ -287,15 +287,15 @@ options = {
 	},
 	EndColorPR = {
 		type = "number",
-		default = 1,
+		default = 0.5,
 	},
 	EndColorPG = {
 		type = "number",
-		default = 0.505,
+		default = 0.41,
 	},
 	EndColorPB = {
 		type = "number",
-		default = 0.16,
+		default = 0.285,
 	},
 	TextColorR = {
 		type = "number",
