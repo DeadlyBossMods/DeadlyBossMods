@@ -61,16 +61,16 @@ local specWarnFelChakram				= mod:NewSpecialWarningMoveAway(182178, nil, nil, ni
 local specWarnFelChakramTank			= mod:NewSpecialWarningTaunt(182178, nil, nil, nil, 1, 2)
 local specWarnFelConduit				= mod:NewSpecialWarningInterrupt(181827, nil, nil, nil, 1, 2)--On for everyone, filtered by eye of anzu, if this person can't interrupt, then they better pass it to someone who can
 
-local timerFelLaserCD					= mod:NewCDTimer(16, 182582)--16-22. Never pauses, used all phases
-local timerChakramCD					= mod:NewCDTimer(33, 182178)
-local timerPhantasmalWindsCD			= mod:NewCDTimer(35, 181957)
-local timerPhantasmalWoundsCD			= mod:NewCDTimer(30.5, 182325, nil, "Healer")--30.5-32
-local timerFocusedBlast					= mod:NewCastTimer(11, 181912)--Doesn't realy need a cd timer. he casts it twice back to back, then lands
-local timerDarkBindingsCD				= mod:NewCDTimer(34, 185456)
+local timerFelLaserCD					= mod:NewCDTimer(16, 182582, nil, nil, nil, 3)--16-22. Never pauses, used all phases
+local timerChakramCD					= mod:NewCDTimer(33, 182178, nil, nil, nil, 3)
+local timerPhantasmalWindsCD			= mod:NewCDTimer(35, 181957, nil, nil, nil, 3)
+local timerPhantasmalWoundsCD			= mod:NewCDTimer(30.5, 182325, nil, "Healer", nil, 3)--30.5-32
+local timerFocusedBlast					= mod:NewCastTimer(11, 181912, nil, nil, nil, 2)--Doesn't realy need a cd timer. he casts it twice back to back, then lands
+local timerDarkBindingsCD				= mod:NewCDTimer(34, 185456, nil, nil, nil, 3)
 --Adds
-local timerFelBombCD					= mod:NewCDTimer(18.5, 181753)
-local timerFelConduitCD					= mod:NewCDTimer(15, 181827)
-local timerPhantasmalCorruptionCD		= mod:NewCDTimer(14, 181824, nil, "Tank")--14-18
+local timerFelBombCD					= mod:NewCDTimer(18.5, 181753, nil, nil, nil, 3)
+local timerFelConduitCD					= mod:NewCDTimer(15, 181827, nil, nil, nil, 4)
+local timerPhantasmalCorruptionCD		= mod:NewCDTimer(14, 181824, nil, "Tank", nil, 3)--14-18
 
 local countdownPhantasmalWinds			= mod:NewCountdown(35, 181957)
 local countdownFelBomb					= mod:NewCountdown("Alt18", 181753)

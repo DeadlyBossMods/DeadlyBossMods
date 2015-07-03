@@ -36,10 +36,10 @@ local specWarnFallingSlam			= mod:NewSpecialWarningSpell(182066, nil, nil, nil, 
 local specWarnFirebomb				= mod:NewSpecialWarningSwitchCount(181999, "-Healer", nil, nil, 1, 5)
 
 --mod:AddTimerLine(ALL)--Uncomment when ground phase and air phase are done, don't want to enable this line now and incorrectly flag everything as "All"
-local timerArtilleryCD				= mod:NewNextCountTimer(15, 182108)
+local timerArtilleryCD				= mod:NewNextCountTimer(15, 182108, nil, nil, nil, 3)
 --mod:AddTimerLine(ALL)--Find translation that works for "Ground Phase"
-local timerUnstableOrbCD			= mod:NewNextCountTimer(3, 182001, nil, "Ranged")
-local timerPoundingCD				= mod:NewNextCountTimer(24, 182020)
+local timerUnstableOrbCD			= mod:NewNextCountTimer(3, 182001, nil, "Ranged", nil, 2)
+local timerPoundingCD				= mod:NewNextCountTimer(24, 182020, nil, nil, nil, 2)
 local timerBlitzCD					= mod:NewNextCountTimer(5, 179889)
 local timerBarrageCD				= mod:NewNextCountTimer(15, 185282)
 local timerFullChargeCD				= mod:NewNextTimer(136, 182055)
@@ -55,7 +55,6 @@ local timerReactiveBomb				= mod:NewCastTimer(32, 186676, nil, "Tank")--Since ta
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
 
-local countdownFuelStreak			= mod:NewCountdown(15, 182668)
 local countdownBarrage				= mod:NewCountdown(15, 185282)
 local countdownArtillery			= mod:NewCountdown("AltTwo15", 182108)--Important to have different voice from fades, because they are happening at same time most of time
 local countdownArtilleryFade		= mod:NewCountdownFades("Alt13", 182280)--Duration not in spell tooltip, countdown add when duration discovered from testing
@@ -186,7 +185,6 @@ function mod:SPELL_CAST_START(args)
 		self.vb.firebombCount = 0
 		self.vb.artilleryCount = 0--Also used in air phase, with it's own air phase counter
 		timerFuelLeakCD:Start(9, 1)
-		countdownFuelStreak:Start(9)
 		timerArtilleryCD:Start(9, 1)
 		countdownArtillery:Start(9)
 		timerFallingSlamCD:Start()
@@ -196,7 +194,6 @@ function mod:SPELL_CAST_START(args)
 		warnFuelStreak:Show(self.vb.fuelCount)
 		if self.vb.fuelCount < 3 then
 			timerFuelLeakCD:Start(nil, self.vb.fuelCount+1)
-			countdownFuelStreak:Start()
 		end
 	end
 end

@@ -71,11 +71,11 @@ local specWarnRepair				= mod:NewSpecialWarningInterrupt(185816, "-Healer", nil,
 local specWarnDemolisher			= mod:NewSpecialWarningSwitch("ej11429", "Dps", nil, nil, 1, 5)--Heroic & Mythic only. Does massive aoe damage, has to be killed asap
 
 --Siegemaster Mar'tak
-local timerHowlingAxeCD				= mod:NewCDTimer(8.47, 184369)
-local timerShockwaveCD				= mod:NewCDTimer(8.5, 184394)
+local timerHowlingAxeCD				= mod:NewCDTimer(8.47, 184369, nil, nil, nil, 3)
+local timerShockwaveCD				= mod:NewCDTimer(8.5, 184394, nil, nil, nil, 2)
 --Hellfire Reinforcements
-local timerFelCastersCD				= mod:NewCDCountTimer(40, "ej11411", nil, nil, nil, nil, 181155)
-local timerBerserkersCD				= mod:NewCDCountTimer(40, "ej11425", nil, nil, nil, nil, 184243)
+local timerFelCastersCD				= mod:NewCDCountTimer(40, "ej11411", nil, nil, nil, 1, 181155)
+local timerBerserkersCD				= mod:NewCDCountTimer(40, "ej11425", nil, nil, nil, 1, 184243)
 ----Gorebound Berserker (tank add probably)
 --local timerCowerCD				= mod:NewCDTimer(107, 184238)
 --local timerSlamCD					= mod:NewCDTimer(107, 184243)
@@ -84,7 +84,7 @@ local timerBerserkersCD				= mod:NewCDCountTimer(40, "ej11425", nil, nil, nil, n
 ----Contracted Engineer
 
 --Felfire-Imbued Siege Vehicles
-local timerSiegeVehicleCD			= mod:NewTimer(60, "timerSiegeVehicleCD", 160240)--Cannot find any short text timers that will fit the bill
+local timerSiegeVehicleCD			= mod:NewTimer(60, "timerSiegeVehicleCD", 160240, nil, nil, 1)--Cannot find any short text timers that will fit the bill
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 

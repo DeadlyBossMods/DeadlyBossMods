@@ -55,20 +55,20 @@ local specWarnDemolishingLeap		= mod:NewSpecialWarningDodge(184366, nil, nil, ni
 
 mod:AddTimerLine(Jubei)
 --Blademaster Jubei'thos
---local timerFelstormCD				= mod:NewCDTimer(30.5, 183701)
-local timerMirrorImageCD			= mod:NewCDTimer(75, 183885)
+--local timerFelstormCD				= mod:NewCDTimer(30.5, 183701, nil, nil, nil, 2)
+local timerMirrorImageCD			= mod:NewCDTimer(75, 183885, nil, nil, nil, 1)
 mod:AddTimerLine(Dia)
 --Dia Darkwhisper
-local timerMarkofNecroCD			= mod:NewCDTimer(60.5, 184449, nil, "Healer")
-local timerReapCD					= mod:NewCDTimer(61.6, 184476)--66-71
+local timerMarkofNecroCD			= mod:NewCDTimer(60.5, 184449, nil, "Healer", nil, 3)
+local timerReapCD					= mod:NewCDTimer(61.6, 184476, nil, nil, nil, 3)--66-71
 local timerNightmareVisageCD		= mod:NewCDTimer(30, 184657, nil, "Tank")
-local timerDarknessCD				= mod:NewCDTimer(75, 184681)
+local timerDarknessCD				= mod:NewCDTimer(75, 184681, nil, nil, nil, 2)
 mod:AddTimerLine(Gurtogg)
 --Gurtogg Bloodboil
-local timerRelRageCD				= mod:NewCDCountTimer(62, 184360)--62-84 (maybe this is HP based, cause this variation is stupid)
-local timerDemoLeapCD				= mod:NewCDTimer(75, 184366)--Most will never see this ability since he's 3rd in the special rotation and he dies first in most strats
+local timerRelRageCD				= mod:NewCDCountTimer(62, 184360, nil, nil, nil, 3)--62-84 (maybe this is HP based, cause this variation is stupid)
+local timerDemoLeapCD				= mod:NewCDTimer(75, 184366, nil, nil, nil, 2)--Most will never see this ability since he's 3rd in the special rotation and he dies first in most strats
 local timerTaintedBloodCD			= mod:NewNextCountTimer(15.8, 184357)
-local timerBloodBoilCD				= mod:NewCDTimer(7.3, 184355, nil, false)
+local timerBloodBoilCD				= mod:NewCDTimer(7.3, 184355, nil, false, nil, 3)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
