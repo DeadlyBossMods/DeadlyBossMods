@@ -6384,7 +6384,11 @@ end
 do
 	local testMod
 	local testWarning1, testWarning2, testWarning3
-	local testTimer
+	local testTimer1
+	local testTimer2
+	local testTimer3
+	local testTimer4
+	local testTimer5
 	local testCount1
 	local testCount2
 	local testSpecialWarning1
@@ -6397,25 +6401,26 @@ do
 			testWarning1 = testMod:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Nature_WispSplode")
 			testWarning2 = testMod:NewAnnounce("%s", 2, "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness")
 			testWarning3 = testMod:NewAnnounce("%s", 3, "Interface\\Icons\\Spell_Fire_SelfDestruct")
-			testTimer = testMod:NewTimer(20, "%s", nil, false)
+			testTimer1 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Nature_WispSplode", false)
+			testTimer2 = testMod:NewTimer(20, "%s", "Interface\\ICONS\\INV_Misc_Head_Orc_01.blp", false, nil, 1)
+			testTimer3 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness", false, nil, 3)
+			testTimer4 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Nature_WispSplode", false, nil, 4)
+			testTimer5 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Fire_SelfDestruct", false, nil, 2)
 			testCount1 = testMod:NewCountdown(0, 0, nil, nil, nil, true)
 			testCount2 = testMod:NewCountdown(0, 0, nil, nil, nil, true, true)
 			testSpecialWarning1 = testMod:NewSpecialWarning("%s")
 			testSpecialWarning2 = testMod:NewSpecialWarning(" %s ", nil, nil, nil, 2)
 			testSpecialWarning3 = testMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3) -- hack: non auto-generated special warnings need distinct names (we could go ahead and give them proper names with proper localization entries, but this is much easier)
 		end
-		testTimer:Start(20, "Pew Pew Pew...")
-		testTimer:UpdateIcon("Interface\\Icons\\Spell_Nature_Starfall", "Pew Pew Pew...")
-		testTimer:Start(10, "Test Bar")
-		testTimer:UpdateIcon("Interface\\Icons\\Spell_Nature_WispSplode", "Test Bar")
-		testTimer:Start(43, "Evil Spell")
+		testTimer4:Start(20, "Important Interrupt")
+		testTimer1:Start(10, "Test Bar")
+		testTimer2:Start(30, "Adds")
+		testTimer3:Start(43, "Evil Debuff")
 		testCount1:Cancel()
 		testCount1:Start(43)
-		testTimer:UpdateIcon("Interface\\Icons\\Spell_Shadow_ShadesOfDarkness", "Evil Spell")
-		testTimer:Start(60, "Boom!")
+		testTimer5:Start(60, "Boom!")
 		testCount2:Cancel()
 		testCount2:Start(60)
-		testTimer:UpdateIcon("Interface\\Icons\\Spell_Fire_SelfDestruct", "Boom!")
 		testWarning1:Cancel()
 		testWarning2:Cancel()
 		testWarning3:Cancel()
