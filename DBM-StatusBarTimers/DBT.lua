@@ -147,6 +147,106 @@ options = {
 		type = "number",
 		default = 0,
 	},
+	--Add(blue)
+	StartColorAR = {
+		type = "number",
+		default = 0,
+	},
+	StartColorAG = {
+		type = "number",
+		default = 0.7,
+	},
+	StartColorAB = {
+		type = "number",
+		default = 1,
+	},
+	EndColorAR = {
+		type = "number",
+		default = 0,
+	},
+	EndColorAG = {
+		type = "number",
+		default = 0,
+	},
+	EndColorAB = {
+		type = "number",
+		default = 1,
+	},
+	--AOE (Green)
+	StartColorAER = {
+		type = "number",
+		default = 0.5,
+	},
+	StartColorAEG = {
+		type = "number",
+		default = 1,
+	},
+	StartColorAEB = {
+		type = "number",
+		default = 0.5,
+	},
+	EndColorAER = {
+		type = "number",
+		default = 0,
+	},
+	EndColorAEG = {
+		type = "number",
+		default = 1,
+	},
+	EndColorAEB = {
+		type = "number",
+		default = 1,
+	},
+	--Debuff (Purple)
+	StartColorDR = {
+		type = "number",
+		default = 1,
+	},
+	StartColorDG = {
+		type = "number",
+		default = 0.5,
+	},
+	StartColorDB = {
+		type = "number",
+		default = 1,
+	},
+	EndColorDR = {
+		type = "number",
+		default = 1,
+	},
+	EndColorDG = {
+		type = "number",
+		default = 0,
+	},
+	EndColorDB = {
+		type = "number",
+		default = 1,
+	},
+	--Interrupt (Teal)
+	StartColorIR = {
+		type = "number",
+		default = 0.2,
+	},
+	StartColorIG = {
+		type = "number",
+		default = 1,
+	},
+	StartColorIB = {
+		type = "number",
+		default = 0.1,
+	},
+	EndColorIR = {
+		type = "number",
+		default = 0.8,
+	},
+	EndColorIG = {
+		type = "number",
+		default = 0.8,
+	},
+	EndColorIB = {
+		type = "number",
+		default = 1,
+	},
 	TextColorR = {
 		type = "number",
 		default = 1,
@@ -504,7 +604,7 @@ do
 	end
 	local mt = {__index = barPrototype}
 
-	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy)
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType)
 		if timer <= 0 then return end
 		if (self.numBars or 0) >= 15 and not isDummy then return end
 		local newBar = self:GetBar(id)
@@ -535,6 +635,7 @@ do
 				newBar.fadingIn = 0
 				newBar.small = small
 				newBar.color = color
+				newBar.colorType = colorType
 				newBar.flashing = nil
 			else  -- duplicate code ;(
 				newBar = setmetatable({
@@ -549,6 +650,7 @@ do
 					small = small,
 					color = color,
 					flashing = nil,
+					colorType = colorType,
 					lastUpdate = GetTime()
 				}, mt)
 			end
@@ -739,9 +841,30 @@ function barPrototype:Update(elapsed)
 	local timerValue = self.timer
 	local totaltimeValue = self.totalTime
 	if obj.options.DynamicColor and not self.color then
-		local r = obj.options.StartColorR  + (obj.options.EndColorR - obj.options.StartColorR) * (1 - timerValue/totaltimeValue)
-		local g = obj.options.StartColorG  + (obj.options.EndColorG - obj.options.StartColorG) * (1 - timerValue/totaltimeValue)
-		local b = obj.options.StartColorB  + (obj.options.EndColorB - obj.options.StartColorB) * (1 - timerValue/totaltimeValue)
+		local r, g, b
+		if self.colorType then
+			if self.colorType == 1 then--Add
+				r = obj.options.StartColorAR  + (obj.options.EndColorAR - obj.options.StartColorAR) * (1 - timerValue/totaltimeValue)
+				g = obj.options.StartColorAG  + (obj.options.EndColorAG - obj.options.StartColorAG) * (1 - timerValue/totaltimeValue)
+				b = obj.options.StartColorAB  + (obj.options.EndColorAB - obj.options.StartColorAB) * (1 - timerValue/totaltimeValue)
+			elseif self.colorType == 2 then--AOE
+				r = obj.options.StartColorAER  + (obj.options.EndColorAER - obj.options.StartColorAER) * (1 - timerValue/totaltimeValue)
+				g = obj.options.StartColorAEG  + (obj.options.EndColorAEG - obj.options.StartColorAEG) * (1 - timerValue/totaltimeValue)
+				b = obj.options.StartColorAEB  + (obj.options.EndColorAEB - obj.options.StartColorAEB) * (1 - timerValue/totaltimeValue)
+			elseif self.colorType == 3 then--Debuff
+				r = obj.options.StartColorDR  + (obj.options.EndColorDR - obj.options.StartColorDR) * (1 - timerValue/totaltimeValue)
+				g = obj.options.StartColorDG  + (obj.options.EndColorDG - obj.options.StartColorDG) * (1 - timerValue/totaltimeValue)
+				b = obj.options.StartColorDB  + (obj.options.EndColorDB - obj.options.StartColorDB) * (1 - timerValue/totaltimeValue)
+			elseif self.colorType == 4 then--Interrupt
+				r = obj.options.StartColorIR  + (obj.options.EndColorIR - obj.options.StartColorIR) * (1 - timerValue/totaltimeValue)
+				g = obj.options.StartColorIG  + (obj.options.EndColorIG - obj.options.StartColorIG) * (1 - timerValue/totaltimeValue)
+				b = obj.options.StartColorIB  + (obj.options.EndColorIB - obj.options.StartColorIB) * (1 - timerValue/totaltimeValue)
+			end
+		else
+			r = obj.options.StartColorR  + (obj.options.EndColorR - obj.options.StartColorR) * (1 - timerValue/totaltimeValue)
+			g = obj.options.StartColorG  + (obj.options.EndColorG - obj.options.StartColorG) * (1 - timerValue/totaltimeValue)
+			b = obj.options.StartColorB  + (obj.options.EndColorB - obj.options.StartColorB) * (1 - timerValue/totaltimeValue)
+		end
 		bar:SetStatusBarColor(r, g, b)
 		if sparkEnabled then
 			spark:SetVertexColor(r, g, b)

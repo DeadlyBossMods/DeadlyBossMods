@@ -9473,7 +9473,7 @@ do
 				DBM:Debug("Timer autocorrected by "..debugtemp, 2)
 				timer = self.correctedCast
 			end
-			local bar = DBM.Bars:CreateBar(timer, id, self.icon)
+			local bar = DBM.Bars:CreateBar(timer, id, self.icon, nil, nil, nil, nil, self.colorType)
 			if not bar then
 				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 			end
@@ -9615,6 +9615,7 @@ do
 				timer = timer,
 				id = name,
 				icon = icon,
+				colorType = colorType,
 				r = r,
 				g = g,
 				b = b,
@@ -9687,6 +9688,7 @@ do
 				timer = timer,
 				id = id,
 				icon = icon,
+				colorType = colorType,
 				r = r,
 				g = g,
 				b = b,

@@ -37,7 +37,7 @@ local specWarnPetrifyingSlam		= mod:NewSpecialWarningMoveAway(155326, nil, nil, 
 
 local timerInfernoSliceCD			= mod:NewCDCountTimer(11, 155080)--Variable do to energy bugs (gruul not gain power consistently)
 local timerSpecialCD				= mod:NewCDSpecialTimer(20.5)
-local timerPetrifyingSlamCD			= mod:NewCDCountTimer(60, 155323)--60-70 variation
+local timerPetrifyingSlamCD			= mod:NewCDCountTimer(60, 155323, nil, nil, nil, 2)--60-70 variation
 local timerOverheadSmashCD			= mod:NewCDCountTimer(20.5, 155301)--20-42 variation
 local timerShatter					= mod:NewCastTimer(8, 155529)
 local timerRampage					= mod:NewBuffActiveTimer(30, 155539)

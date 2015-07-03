@@ -75,22 +75,22 @@ local specWarnEmpBlackHole			= mod:NewSpecialWarningSpell(189779, nil, nil, nil,
 --Fire Phase
 ----Boss
 local timerFelStrikeCD				= mod:NewCDTimer(15, 186271, nil, "Tank")--15.8-17
-local timerFelSurgeCD				= mod:NewCDTimer(30, 186407)
-local timerImpCD					= mod:NewNextTimer(25, "ej11694", nil, nil, nil, nil, 112866)
+local timerFelSurgeCD				= mod:NewCDTimer(30, 186407, nil, nil, nil, 3)
+local timerImpCD					= mod:NewNextTimer(25, "ej11694", nil, nil, nil, 1, 112866)
 ----Big Add
 local timerFelBlazeFlurryCD			= mod:NewCDTimer(15.9, 186453, nil, "Tank")
-local timerFelChainsCD				= mod:NewCDTimer(15.9, 186490, nil, "-Tank" )
-local timerEmpFelChainsCD			= mod:NewAITimer(15.9, 189775, nil, "-Tank" )--Temp, so can use AI timer for it. Will combine with above when data known
+local timerFelChainsCD				= mod:NewCDTimer(15.9, 186490, nil, "-Tank", nil, 3)
+local timerEmpFelChainsCD			= mod:NewAITimer(15.9, 189775, nil, "-Tank", nil, 3)--Temp, so can use AI timer for it. Will combine with above when data known
 --Void Phase
 ----Boss
 local timerVoidStrikeCD				= mod:NewCDTimer(17, 186292, nil, "Tank")
-local timerVoidSurgeCD				= mod:NewCDTimer(30, 186333)
+local timerVoidSurgeCD				= mod:NewCDTimer(30, 186333, nil, nil, nil, 3)
 ----Big Add
 local timerWitheringGazeCD			= mod:NewCDTimer(14.5, 186783)
 local timerBlackHoleCD				= mod:NewCDTimer(29.5, 186546)
 local timerEmpBlackHoleCD			= mod:NewAITimer(29.5, 189779)
 --End Phase
-local timerOverwhelmingChaosCD		= mod:NewNextCountTimer(10, 187204)
+local timerOverwhelmingChaosCD		= mod:NewNextCountTimer(10, 187204, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
