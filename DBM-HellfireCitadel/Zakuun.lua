@@ -47,12 +47,12 @@ local specWarnSeedPosition				= mod:NewSpecialWarning("specWarnSeedPosition", ni
 local yellSeedsofDestruction			= mod:NewYell(181508)
 
 --Armed
-local timerRumblingFissureCD			= mod:NewCDTimer(40, 179582)
+local timerRumblingFissureCD			= mod:NewCDTimer(40, 179582, nil, nil, nil, 5)
 local timerBefouledCD					= mod:NewCDTimer(38, 179711, nil, nil, nil, 3)
 local timerSoulCleaveCD					= mod:NewCDTimer(40, 179406, nil, nil, nil, 3)
 local timerCavitationCD					= mod:NewCDTimer(40, 181461, nil, nil, nil, 2)
 --Disarmed
-local timerDisarmCD						= mod:NewCDTimer(85.8, 179667)
+local timerDisarmCD						= mod:NewCDTimer(85.8, 179667, nil, nil, nil, 6)
 local timerSeedsofDestructionCD			= mod:NewCDCountTimer(14.5, 181508, nil, nil, nil, 3)--14.5-16
 
 --local berserkTimer					= mod:NewBerserkTimer(360)

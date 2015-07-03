@@ -76,8 +76,8 @@ local timerTantrumCD				= mod:NewNextCountTimer(29.5, 162275, nil, nil, nil, 2)
 local timerEpicenterCD				= mod:NewCDCountTimer(19.5, 159043, nil, "Melee")
 --Beast abilities (living)
 mod:AddTimerLine(BATTLE_PET_DAMAGE_NAME_8)--Beast
-local timerSavageHowlCD				= mod:NewCDTimer(25, 155198, nil, "Healer|Tank|RemoveEnrage", 2)
-local timerConflagCD				= mod:NewCDTimer(20, 155399, nil, "Healer", 2)
+local timerSavageHowlCD				= mod:NewCDTimer(25, 155198, nil, "Healer|Tank|RemoveEnrage", 2, 5)
+local timerConflagCD				= mod:NewCDTimer(20, 155399, nil, "Healer", 2, 5)
 local timerStampedeCD				= mod:NewCDTimer(20, 155247)--20-30 as usual
 local timerInfernoBreathCD			= mod:NewNextTimer(20, 154989)
 

@@ -39,15 +39,15 @@ local specWarnFungalFlesheater		= mod:NewSpecialWarningSwitch("ej9995", "-Healer
 local specWarnMindFungus			= mod:NewSpecialWarningSwitch(163141, "Dps", nil, nil, nil, 2)
 
 local timerInfestingSporesCD		= mod:NewCDCountTimer(57, 159996, nil, nil, nil, 2)--57-63 variation
-local timerRotCD					= mod:NewCDTimer(10, 163241, nil, false)--it's a useful timer, but not mandatory and this fight has A LOT of timers so off by default for clutter reduction
-local timerNecroticBreathCD			= mod:NewCDTimer(32, 159219, nil, "Tank|Healer")
+local timerRotCD					= mod:NewCDTimer(10, 163241, nil, false, nil, 5)--it's a useful timer, but not mandatory and this fight has A LOT of timers so off by default for clutter reduction
+local timerNecroticBreathCD			= mod:NewCDTimer(32, 159219, nil, "Tank|Healer", nil, 5)
 --Adds (all adds are actually NEXT timers however they get dleayed by infesting spores and necrotic breath sometimes so i'm leaving as CD for now)
-local timerSporeShooterCD			= mod:NewCDTimer(57, 163594, nil, "RangedDps", 2)
+local timerSporeShooterCD			= mod:NewCDTimer(57, 163594, nil, "RangedDps", 2, 1)
 local timerFungalFleshEaterCD		= mod:NewCDCountTimer(120, "ej9995", nil, "-Healer", nil, 1, 163142)
-local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, "Melee")
-local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, "MeleeDps")
-local timerLivingMushroomCD			= mod:NewCDCountTimer(55.5, 160022, nil, "Healer")
-local timerRejuvMushroomCD			= mod:NewCDCountTimer(130, 160021, nil, "Healer")
+local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, "Melee", nil, 4)
+local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, "MeleeDps", nil, 1)
+local timerLivingMushroomCD			= mod:NewCDCountTimer(55.5, 160022, nil, "Healer", nil, 5)
+local timerRejuvMushroomCD			= mod:NewCDCountTimer(130, 160021, nil, "Healer", nil, 5)
 local berserkTimer					= mod:NewBerserkTimer(600)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerSpecialCD				= mod:NewCDSpecialTimer(20)--Mythic Specials. Shared cd, which special he uses is random. 20-25 second variation, unless delayed by spores. then 20-25+10
