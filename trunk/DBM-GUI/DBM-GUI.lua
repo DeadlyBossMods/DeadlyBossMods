@@ -1709,14 +1709,154 @@ local function CreateOptionsMenu()
 		--            Bar Options           --
 		--------------------------------------
 		local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
-
-		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 400, true)
-
-		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
-		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
+		
+		local BarColors = BarSetupPanel:CreateArea(L.AreaTitle_BarColors, nil, 400, true)
+		local movemebutton = BarColors:CreateButton(L.MoveMe, 100, 16)
+		movemebutton:SetPoint('BOTTOMRIGHT', BarColors.frame, "TOPRIGHT", 0, -1)
 		movemebutton:SetNormalFontObject(GameFontNormalSmall)
 		movemebutton:SetHighlightFontObject(GameFontNormalSmall)
 		movemebutton:SetScript("OnClick", function() DBM.Bars:ShowMovableBar() end)
+		
+		--Color Type 1 (Adds)
+		local color1Type1 = BarColors:CreateColorSelect(64)
+		local color2Type1 = BarColors:CreateColorSelect(64)
+		color1Type1:SetPoint('TOPLEFT', BarColors.frame, "TOPLEFT", 30, -65)
+		color2Type1:SetPoint('TOPLEFT', color1Type1, "TOPRIGHT", 20, 0)
+
+		local color1Type1reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		local color2Type1reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		color1Type1reset:SetPoint('TOP', color1Type1, "BOTTOM", 5, -10)
+		color2Type1reset:SetPoint('TOP', color2Type1, "BOTTOM", 5, -10)
+		color1Type1reset:SetScript("OnClick", function(self)
+			color1Type1:SetColorRGB(DBM.Bars:GetDefaultOption("StartColorAR"), DBM.Bars:GetDefaultOption("StartColorAG"), DBM.Bars:GetDefaultOption("StartColorAB"))
+		end)
+		color2Type1reset:SetScript("OnClick", function(self)
+			color2Type1:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorAR"), DBM.Bars:GetDefaultOption("EndColorAG"), DBM.Bars:GetDefaultOption("EndColorAB"))
+		end)
+
+		local color1Type1text = BarColors:CreateText(L.BarStartColorAdd, 80)
+		local color2Type1text = BarColors:CreateText(L.BarEndColorAdd, 80)
+		color1Type1text:SetPoint("BOTTOM", color1Type1, "TOP", 0, 4)
+		color2Type1text:SetPoint("BOTTOM", color2Type1, "TOP", 0, 4)
+		color1Type1:SetScript("OnShow", function(self) self:SetColorRGB(
+			DBM.Bars:GetOption("StartColorAR"),
+			DBM.Bars:GetOption("StartColorAG"),
+			DBM.Bars:GetOption("StartColorAB"))
+			color1Type1text:SetTextColor(
+			DBM.Bars:GetOption("StartColorAR"),
+			DBM.Bars:GetOption("StartColorAG"),
+			DBM.Bars:GetOption("StartColorAB")
+			)
+		end)
+		color2Type1:SetScript("OnShow", function(self) self:SetColorRGB(
+			DBM.Bars:GetOption("EndColorAR"),
+			DBM.Bars:GetOption("EndColorAG"),
+			DBM.Bars:GetOption("EndColorAB"))
+			color2Type1text:SetTextColor(
+			DBM.Bars:GetOption("EndColorAR"),
+			DBM.Bars:GetOption("EndColorAG"),
+			DBM.Bars:GetOption("EndColorAB")
+			)
+		end)
+		color1Type1:SetScript("OnColorSelect", function(self)
+			DBM.Bars:SetOption("StartColorAR", select(1, self:GetColorRGB()))
+			DBM.Bars:SetOption("StartColorAG", select(2, self:GetColorRGB()))
+			DBM.Bars:SetOption("StartColorAB", select(3, self:GetColorRGB()))
+			color1Type1text:SetTextColor(self:GetColorRGB())
+		end)
+		color2Type1:SetScript("OnColorSelect", function(self)
+			DBM.Bars:SetOption("EndColorAR", select(1, self:GetColorRGB()))
+			DBM.Bars:SetOption("EndColorAG", select(2, self:GetColorRGB()))
+			DBM.Bars:SetOption("EndColorAB", select(3, self:GetColorRGB()))
+			color2Type1text:SetTextColor(self:GetColorRGB())
+		end)
+		
+		local dummybarcolor1 = DBM.Bars:CreateDummyBar(1)
+		dummybarcolor1.frame:SetParent(BarColors.frame)
+		dummybarcolor1.frame:SetPoint("TOP", color2Type1text, "LEFT", 10, 40)
+		dummybarcolor1.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor1:Update(elapsed) end)
+		do
+			-- little hook to prevent this bar from changing size/scale
+			local old = dummybarcolor1.ApplyStyle
+			function dummybarcolor1:ApplyStyle(...)
+				old(self, ...)
+				self.frame:SetWidth(183)
+				self.frame:SetScale(0.9)
+				_G[self.frame:GetName().."Bar"]:SetWidth(183)
+			end
+		end
+		--Color Type 2 (AOE)
+		local color1Type2 = BarColors:CreateColorSelect(64)
+		local color2Type2 = BarColors:CreateColorSelect(64)
+		color1Type2:SetPoint('TOPLEFT', BarColors.frame, "TOPLEFT", 250, -65)
+		color2Type2:SetPoint('TOPLEFT', color1Type2, "TOPRIGHT", 20, 0)
+
+		local color1Type2reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		local color2Type2reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		color1Type2reset:SetPoint('TOP', color1Type2, "BOTTOM", 5, -10)
+		color2Type2reset:SetPoint('TOP', color2Type2, "BOTTOM", 5, -10)
+		color1Type2reset:SetScript("OnClick", function(self)
+			color1Type2:SetColorRGB(DBM.Bars:GetDefaultOption("StartColorAER"), DBM.Bars:GetDefaultOption("StartColorAEG"), DBM.Bars:GetDefaultOption("StartColorAEB"))
+		end)
+		color2Type2reset:SetScript("OnClick", function(self)
+			color2Type2:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorAER"), DBM.Bars:GetDefaultOption("EndColorAEG"), DBM.Bars:GetDefaultOption("EndColorAEB"))
+		end)
+
+		local color1Type2text = BarColors:CreateText(L.BarStartColorAOE, 80)
+		local color2Type2text = BarColors:CreateText(L.BarEndColorAOE, 80)
+		color1Type2text:SetPoint("BOTTOM", color1Type2, "TOP", 0, 4)
+		color2Type2text:SetPoint("BOTTOM", color2Type2, "TOP", 0, 4)
+		color1Type2:SetScript("OnShow", function(self) self:SetColorRGB(
+			DBM.Bars:GetOption("StartColorAER"),
+			DBM.Bars:GetOption("StartColorAEG"),
+			DBM.Bars:GetOption("StartColorAEB"))
+			color1Type2text:SetTextColor(
+			DBM.Bars:GetOption("StartColorAER"),
+			DBM.Bars:GetOption("StartColorAEG"),
+			DBM.Bars:GetOption("StartColorAEB")
+			)
+		end)
+		color2Type2:SetScript("OnShow", function(self) self:SetColorRGB(
+			DBM.Bars:GetOption("EndColorAER"),
+			DBM.Bars:GetOption("EndColorAEG"),
+			DBM.Bars:GetOption("EndColorAEB"))
+			color2Type2text:SetTextColor(
+			DBM.Bars:GetOption("EndColorAER"),
+			DBM.Bars:GetOption("EndColorAEG"),
+			DBM.Bars:GetOption("EndColorAEB")
+			)
+		end)
+		color1Type2:SetScript("OnColorSelect", function(self)
+			DBM.Bars:SetOption("StartColorAER", select(1, self:GetColorRGB()))
+			DBM.Bars:SetOption("StartColorAEG", select(2, self:GetColorRGB()))
+			DBM.Bars:SetOption("StartColorAEB", select(3, self:GetColorRGB()))
+			color1Type2text:SetTextColor(self:GetColorRGB())
+		end)
+		color2Type2:SetScript("OnColorSelect", function(self)
+			DBM.Bars:SetOption("EndColorAER", select(1, self:GetColorRGB()))
+			DBM.Bars:SetOption("EndColorAEG", select(2, self:GetColorRGB()))
+			DBM.Bars:SetOption("EndColorAEB", select(3, self:GetColorRGB()))
+			color2Type2text:SetTextColor(self:GetColorRGB())
+		end)
+		
+		local dummybarcolor2 = DBM.Bars:CreateDummyBar(2)
+		dummybarcolor2.frame:SetParent(BarColors.frame)
+		dummybarcolor2.frame:SetPoint("TOP", color2Type2text, "LEFT", 10, 40)
+		dummybarcolor2.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor2:Update(elapsed) end)
+		do
+			-- little hook to prevent this bar from changing size/scale
+			local old = dummybarcolor2.ApplyStyle
+			function dummybarcolor2:ApplyStyle(...)
+				old(self, ...)
+				self.frame:SetWidth(183)
+				self.frame:SetScale(0.9)
+				_G[self.frame:GetName().."Bar"]:SetWidth(183)
+			end
+		end
+		--Color Type 3 (Debuff)
+		
+		--General Options
+		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 400, true)
 
 		local maindummybar = DBM.Bars:CreateDummyBar()
 		maindummybar.frame:SetParent(BarSetup.frame)
@@ -1754,37 +1894,37 @@ local function CreateOptionsMenu()
 		color1text:SetPoint("BOTTOM", color1, "TOP", 0, 4)
 		color2text:SetPoint("BOTTOM", color2, "TOP", 0, 4)
 		color1:SetScript("OnShow", function(self) self:SetColorRGB(
-								DBM.Bars:GetOption("StartColorR"),
-								DBM.Bars:GetOption("StartColorG"),
-								DBM.Bars:GetOption("StartColorB"))
-								color1text:SetTextColor(
-									DBM.Bars:GetOption("StartColorR"),
-									DBM.Bars:GetOption("StartColorG"),
-									DBM.Bars:GetOption("StartColorB")
-								)
-							  end)
+			DBM.Bars:GetOption("StartColorR"),
+			DBM.Bars:GetOption("StartColorG"),
+			DBM.Bars:GetOption("StartColorB"))
+			color1text:SetTextColor(
+			DBM.Bars:GetOption("StartColorR"),
+			DBM.Bars:GetOption("StartColorG"),
+			DBM.Bars:GetOption("StartColorB")
+			)
+		end)
 		color2:SetScript("OnShow", function(self) self:SetColorRGB(
-								DBM.Bars:GetOption("EndColorR"),
-								DBM.Bars:GetOption("EndColorG"),
-								DBM.Bars:GetOption("EndColorB"))
-								color2text:SetTextColor(
-									DBM.Bars:GetOption("EndColorR"),
-									DBM.Bars:GetOption("EndColorG"),
-									DBM.Bars:GetOption("EndColorB")
-								)
-							  end)
+			DBM.Bars:GetOption("EndColorR"),
+			DBM.Bars:GetOption("EndColorG"),
+			DBM.Bars:GetOption("EndColorB"))
+			color2text:SetTextColor(
+			DBM.Bars:GetOption("EndColorR"),
+			DBM.Bars:GetOption("EndColorG"),
+			DBM.Bars:GetOption("EndColorB")
+			)
+		end)
 		color1:SetScript("OnColorSelect", function(self)
-							DBM.Bars:SetOption("StartColorR", select(1, self:GetColorRGB()))
-							DBM.Bars:SetOption("StartColorG", select(2, self:GetColorRGB()))
-							DBM.Bars:SetOption("StartColorB", select(3, self:GetColorRGB()))
-							color1text:SetTextColor(self:GetColorRGB())
-						  end)
+			DBM.Bars:SetOption("StartColorR", select(1, self:GetColorRGB()))
+			DBM.Bars:SetOption("StartColorG", select(2, self:GetColorRGB()))
+			DBM.Bars:SetOption("StartColorB", select(3, self:GetColorRGB()))
+			color1text:SetTextColor(self:GetColorRGB())
+		end)
 		color2:SetScript("OnColorSelect", function(self)
-							DBM.Bars:SetOption("EndColorR", select(1, self:GetColorRGB()))
-							DBM.Bars:SetOption("EndColorG", select(2, self:GetColorRGB()))
-							DBM.Bars:SetOption("EndColorB", select(3, self:GetColorRGB()))
-							color2text:SetTextColor(self:GetColorRGB())
-						  end)
+			DBM.Bars:SetOption("EndColorR", select(1, self:GetColorRGB()))
+			DBM.Bars:SetOption("EndColorG", select(2, self:GetColorRGB()))
+			DBM.Bars:SetOption("EndColorB", select(3, self:GetColorRGB()))
+			color2text:SetTextColor(self:GetColorRGB())
+		end)
 
 		local Textures = MixinSharedMedia3("statusbar", {
 			{	text	= "Default",	value 	= "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.tga", 	texture	= "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.tga"	},
