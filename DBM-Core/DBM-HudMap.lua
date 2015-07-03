@@ -243,8 +243,8 @@ do
 end
 
 function mod:OnInitialize()
-	self.canvas = CreateFrame("Frame", "DBMHudMapCanvas", UIParent)
-	self.canvas:SetSize(UIParent:GetWidth(), UIParent:GetHeight())
+	self.canvas = CreateFrame("Frame", "DBMHudMapCanvas", WorldFrame)
+	self.canvas:SetSize(UIParent:GetWidth(), WorldFrame:GetHeight())
 	self.canvas:SetPoint("CENTER")
 	self.activeObjects = 0
 	self.HUDEnabled = false

@@ -689,9 +689,9 @@ do
 		self.flashing = nil
 		_G[self.frame:GetName().."BarSpark"]:SetAlpha(1)
 	end
-	function DBT:CreateDummyBar()
+	function DBT:CreateDummyBar(colorType)
 		dummyBars = dummyBars + 1
-		local dummy = self:CreateBar(25, "dummy"..dummyBars, "Interface\\Icons\\Spell_Nature_WispSplode", nil, true, nil, true)
+		local dummy = self:CreateBar(25, "dummy"..dummyBars, "Interface\\Icons\\Spell_Nature_WispSplode", nil, true, nil, true, colorType)
 		dummy:SetText("Dummy")
 		dummy:Cancel()
 		self.bars[dummy] = true
