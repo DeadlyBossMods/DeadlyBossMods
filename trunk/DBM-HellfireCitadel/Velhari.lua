@@ -67,16 +67,16 @@ local specWarnGaveloftheTyrant				= mod:NewSpecialWarningCount(180608, nil, nil,
 local specWarnAncientSovereign				= mod:NewSpecialWarningSwitch("ej11170", "-Healer")
 
 mod:AddTimerLine(ALL)--All
-local timerSealofDecayCD					= mod:NewCDTimer(6, 180000, nil, false)--I don't think it's really needed, but at least make it an option
+local timerSealofDecayCD					= mod:NewCDTimer(6, 180000, nil, false, nil, 5)--I don't think it's really needed, but at least make it an option
 local timerEdictofCondemnationCD			= mod:NewNextCountTimer(60, 182459, nil, nil, nil, 3)
 local timerTouchofHarmCD					= mod:NewNextCountTimer(45, 180166, nil, "Healer", nil, 3)
 mod:AddTimerLine(SCENARIO_STAGE:format(1))--Stage One: Oppression
 local timerAnnihilatingStrikeCD				= mod:NewNextCountTimer(10, 180260, nil, nil, nil, 3)
 local timerInfernalTempestCD				= mod:NewNextCountTimer(10, 180300, nil, nil, nil, 2)
 ----Ancient Enforcer
-local timerEnforcersOnslaughtCD				= mod:NewCDTimer(18, 180004, nil, "Tank")
+local timerEnforcersOnslaughtCD				= mod:NewCDTimer(18, 180004, nil, "Tank", nil, 5)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))--Stage Two: Contempt
-local timerTaintedShadowsCD					= mod:NewNextTimer(5, 180533, nil, "Tank")
+local timerTaintedShadowsCD					= mod:NewNextTimer(5, 180533, nil, "Tank", nil, 5)
 local timerFontofCorruptionCD				= mod:NewNextTimer(20, 180526, nil, nil, nil, 3)
 ----Ancient Harbinger
 local timerHarbingersMendingCD				= mod:NewCDTimer(11, 180025, nil, nil, nil, 4)

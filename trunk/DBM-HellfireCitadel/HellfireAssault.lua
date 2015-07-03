@@ -72,13 +72,13 @@ local specWarnDemolisher			= mod:NewSpecialWarningSwitch("ej11429", "Dps", nil, 
 
 --Siegemaster Mar'tak
 local timerHowlingAxeCD				= mod:NewCDTimer(8.47, 184369, nil, nil, nil, 3)
-local timerShockwaveCD				= mod:NewCDTimer(8.5, 184394, nil, nil, nil, 2)
+local timerShockwaveCD				= mod:NewCDTimer(8.5, 184394)
 --Hellfire Reinforcements
 local timerFelCastersCD				= mod:NewCDCountTimer(40, "ej11411", nil, nil, nil, 1, 181155)
 local timerBerserkersCD				= mod:NewCDCountTimer(40, "ej11425", nil, nil, nil, 1, 184243)
 ----Gorebound Berserker (tank add probably)
---local timerCowerCD				= mod:NewCDTimer(107, 184238)
---local timerSlamCD					= mod:NewCDTimer(107, 184243)
+--local timerCowerCD				= mod:NewCDTimer(107, 184238, nil, nil, nil, 5)
+--local timerSlamCD					= mod:NewCDTimer(107, 184243, nil, nil, nil, 5)
 ----Gorebound Felcaster
 --local timerFelfireVolleyCD		= mod:NewCDTimer(107, 180417, nil, "-Healer")
 ----Contracted Engineer

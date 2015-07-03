@@ -48,13 +48,13 @@ local specWarnBurning					= mod:NewSpecialWarningStack(185190, nil, 5)
 local specWarnBurningOther				= mod:NewSpecialWarningTaunt(185190, nil, nil, nil, nil, 2)
 local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer", nil, nil, 1, 2)
 
-local timerShadowofDeathCDDps			= mod:NewTimer(30, "SoDDPS", 179864, "Dps", nil, 3)
-local timerShadowofDeathCDTank			= mod:NewTimer(30, "SoDTank", 179864, "Tank", nil, 3)
-local timerShadowofDeathCDHealer		= mod:NewTimer(30, "SoDHealer", 179864, "Healer", nil, 3)
+local timerShadowofDeathCDDps			= mod:NewTimer(30, "SoDDPS", 179864, "Dps", nil, 5)
+local timerShadowofDeathCDTank			= mod:NewTimer(30, "SoDTank", 179864, "Tank", nil, 5)
+local timerShadowofDeathCDHealer		= mod:NewTimer(30, "SoDHealer", 179864, "Healer", nil, 5)
 local timerTouchofDoomCD				= mod:NewCDTimer(18, 179977, nil, nil, nil, 3)--25 seconds in LFR, tested after heroic. changed? VERIFY
 local timerSharedFateCD					= mod:NewNextCountTimer(29, 179909, nil, nil, nil, 3)--29-31
 local timerCrushingDarknessCD			= mod:NewNextTimer(10, 180017, nil, false, 2, 2)--Actually 16, but i delay start by 6 seconds for reduced spam
-local timerFeastofSouls					= mod:NewNextTimer(123.5, 181973)--Probably next timer too, or close to it, depends how consistent energy gains are, may have small variation, like gruul
+local timerFeastofSouls					= mod:NewNextTimer(123.5, 181973, nil, nil, nil, 6)--Probably next timer too, or close to it, depends how consistent energy gains are, may have small variation, like gruul
 
 local timerDigest						= mod:NewCastTimer(40, 181295)
 local timerCrushingDarkness				= mod:NewCastTimer(6, 180017, nil, false)
