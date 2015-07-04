@@ -2057,7 +2057,10 @@ do
 		if sender and ignore[sender] then return end
 		text = text:sub(1, 16)
 		text = text:gsub("%%t", UnitName("target") or "<no target>")
-		if time < 2 then
+		if time == 0 then--Allow canceling by 0
+			self.Bars:CancelBar(text)
+		end
+		if time < 3 then
 			self:AddMsg(DBM_PIZZA_ERROR_USAGE)
 			return
 		end
