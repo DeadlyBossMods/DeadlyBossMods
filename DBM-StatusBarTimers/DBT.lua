@@ -175,27 +175,27 @@ options = {
 	--Type 2 (AOE)
 	StartColorAER = {
 		type = "number",
-		default = 0.5,
+		default = 1,
 	},
 	StartColorAEG = {
 		type = "number",
-		default = 1,
+		default = 0.466,
 	},
 	StartColorAEB = {
 		type = "number",
-		default = 0.5,
+		default = 0.459,
 	},
 	EndColorAER = {
 		type = "number",
-		default = 0.11,
+		default = 1,
 	},
 	EndColorAEG = {
 		type = "number",
-		default = 1,
+		default = 0.043,
 	},
 	EndColorAEB = {
 		type = "number",
-		default = 0.3,
+		default = 0.247,
 	},
 	--Type 3 (Debuff)
 	StartColorDR = {
@@ -250,27 +250,27 @@ options = {
 	--Type 5 (Role)
 	StartColorRR = {
 		type = "number",
-		default = 1,
+		default = 0.5,
 	},
 	StartColorRG = {
 		type = "number",
-		default = 0.466,
+		default = 1,
 	},
 	StartColorRB = {
 		type = "number",
-		default = 0.459,
+		default = 0.5,
 	},
 	EndColorRR = {
 		type = "number",
-		default = 1,
+		default = 0.11,
 	},
 	EndColorRG = {
 		type = "number",
-		default = 0.043,
+		default = 1,
 	},
 	EndColorRB = {
 		type = "number",
-		default = 0.247,
+		default = 0.3,
 	},
 	--Type 6 (Phase)
 	StartColorPR = {
