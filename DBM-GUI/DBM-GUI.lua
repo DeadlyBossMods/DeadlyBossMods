@@ -2128,24 +2128,9 @@ local function CreateOptionsMenu()
 		--General Options
 		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 400, true)
 
-		local maindummybar = DBM.Bars:CreateDummyBar()
-		maindummybar.frame:SetParent(BarSetup.frame)
-		maindummybar.frame:SetPoint("BOTTOM", BarSetup.frame, "TOP", 0, -35)
-		maindummybar.frame:SetScript("OnUpdate", function(self, elapsed) maindummybar:Update(elapsed) end)
-		do
-			-- little hook to prevent this bar from changing size/scale
-			local old = maindummybar.ApplyStyle
-			function maindummybar:ApplyStyle(...)
-				old(self, ...)
-				self.frame:SetWidth(183)
-				self.frame:SetScale(0.9)
-				_G[self.frame:GetName().."Bar"]:SetWidth(183)
-			end
-		end
-
 		local color1 = BarSetup:CreateColorSelect(64)
 		local color2 = BarSetup:CreateColorSelect(64)
-		color1:SetPoint('TOPLEFT', BarSetup.frame, "TOPLEFT", 20, -60)
+		color1:SetPoint('TOPLEFT', BarSetup.frame, "TOPLEFT", 30, -60)
 		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 20, 0)
 
 		local color1reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -2195,6 +2180,21 @@ local function CreateOptionsMenu()
 			DBM.Bars:SetOption("EndColorB", select(3, self:GetColorRGB()))
 			color2text:SetTextColor(self:GetColorRGB())
 		end)
+		
+		local maindummybar = DBM.Bars:CreateDummyBar()
+		maindummybar.frame:SetParent(BarSetup.frame)
+		maindummybar.frame:SetPoint("TOP", color2text, "LEFT", 10, 40)
+		maindummybar.frame:SetScript("OnUpdate", function(self, elapsed) maindummybar:Update(elapsed) end)
+		do
+			-- little hook to prevent this bar from changing size/scale
+			local old = maindummybar.ApplyStyle
+			function maindummybar:ApplyStyle(...)
+				old(self, ...)
+				self.frame:SetWidth(183)
+				self.frame:SetScale(0.9)
+				_G[self.frame:GetName().."Bar"]:SetWidth(183)
+			end
+		end
 
 		local Textures = MixinSharedMedia3("statusbar", {
 			{	text	= "Default",	value 	= "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.tga", 	texture	= "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.tga"	},
@@ -2207,7 +2207,7 @@ local function CreateOptionsMenu()
 		local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures, "DBT", "Texture", function(value)
 			DBM.Bars:SetOption("Texture", value)
 		end)
-		TextureDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -55)
+		TextureDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -35)
 
 		local Styles = {
 			{	text	= L.BarDBM,				value	= "DBM" },
@@ -2248,6 +2248,9 @@ local function CreateOptionsMenu()
 
 		local SortBars = BarSetup:CreateCheckButton(L.BarSort, false, nil, nil, "Sort")
 		SortBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT", 0, 0)
+		
+		local ColorBars = BarSetup:CreateCheckButton(L.BarColorByType, false, nil, nil, "ColorByType")
+		ColorBars:SetPoint("TOPLEFT", SortBars, "BOTTOMLEFT", 0, 0)
 
 		-- Functions for bar setup
 		local function createDBTOnShowHandler(option)
@@ -2301,7 +2304,7 @@ local function CreateOptionsMenu()
 		EnlargePerecntSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarsPercent"))
 
 		local SparkBars = BarSetup:CreateCheckButton(L.BarSpark, false, nil, nil, "Spark")
-		SparkBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT", 0, -65)
+		SparkBars:SetPoint("TOPLEFT", ClickThrough, "BOTTOMLEFT", 0, -85)
 
 		local FlashBars = BarSetup:CreateCheckButton(L.BarFlash, false, nil, nil, "Flash")
 		FlashBars:SetPoint("TOPLEFT", SparkBars, "BOTTOMLEFT", 0, 0)
