@@ -176,8 +176,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local isMoreFaster = self:IsMythic() and self.vb.enraged
 		local isFaster = self:IsMythic() or self.vb.enraged
 		if self.vb.foulCrush == 1 then
-			--Mythic enraged 30/23 not confirmed. Guessed based on likeliness
-			timerFoulCrushCD:Start(isMoreFaster and 30 or isFaster and 42 or 50, 2)
+			--Mythic enraged 23 not confirmed. Guessed based on likeliness
+			timerFoulCrushCD:Start(isMoreFaster and 31 or isFaster and 42 or 50, 2)
 		elseif self.vb.foulCrush == 2 then
 			timerFoulCrushCD:Start(isMoreFaster and 23 or isFaster and 32 or 38, 3)
 		end
@@ -316,11 +316,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerGraspingHandsCD:Start(8)
 			countdownGraspingHands:Start(8)
 --			self:Schedule(8, delayedHands, self, 90)--101
---			timerFoulCrushCD:Start(21, 1)
---			timerPoundCD:Start(27, 1)
---			self:Schedule(27, delayedPound, self, 52)--79
---			timerFelOutpouringCD:Start(43.5)
---			timerExplosiveRunesCD:Start(69)
+			timerFoulCrushCD:Start(15, 1)
+			timerPoundCD:Start(19, 1)
+--			self:Schedule(19, delayedPound, self, 52)--79
+			timerFelOutpouringCD:Start(31)
+			timerExplosiveRunesCD:Start(50)
 			timerLeapCD:Start(96)
 		elseif (self:IsMythic() and spellId == 180117) or spellId == 186881 then
 			timerGraspingHandsCD:Start(11)
