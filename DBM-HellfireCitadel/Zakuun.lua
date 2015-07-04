@@ -11,7 +11,6 @@ mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
 
-
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 179406 179582 179709",
 	"SPELL_CAST_SUCCESS 181508 181515 179709",

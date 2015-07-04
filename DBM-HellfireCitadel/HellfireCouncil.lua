@@ -16,7 +16,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184657 184476",
 	"SPELL_CAST_SUCCESS 184449 183480 184357 184355 184476",
-	"SPELL_AURA_APPLIED 183701 184847 184360 184365 184449 185065 185066",
+	"SPELL_AURA_APPLIED 183701 184847 184360 184365 184449 184450 185065 185066",
 	"SPELL_AURA_APPLIED_DOSE 184847",
 --	"SPELL_AURA_REMOVED",
 	"SPELL_PERIODIC_DAMAGE 184652",
@@ -208,9 +208,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		else--Only bloodboil is left, leap will repeat
 			timerDemoLeapCD:Start()
 		end
-	elseif spellId == 184449 then--Confirmed correct CAST spellid for heroic.
+	elseif spellId == 184449 then--Confirmed correct CAST spellid (new targets from boss)
 		warnMarkoftheNecromancer:CombinedShow(0.3, args.destName)
-	elseif (spellId == 185065 or spellId == 185066) and self.vb.reapActive and args:IsPlayer() then--Your idiot healer dipselled mark in middle of reap cast, warn you to run out and hope you have less than 0.5 seconds to do it.
+	elseif (spellId == 184450 or spellId == 185065 or spellId == 185066) and self.vb.reapActive and args:IsPlayer() then--Dispel IDs.
+		--Your idiot healer dipselled mark in middle of reap cast, warn you to run out and hope you have less than 0.5 seconds to do it.
 		specWarnReap:Show()
 		yellReap:Yell()
 		voiceReap:Play("runout")

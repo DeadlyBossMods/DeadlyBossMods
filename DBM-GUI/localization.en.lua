@@ -167,6 +167,7 @@ L.Bar_EnlargePercent		= "Bar enlarges below percent: %0.1f%%"
 L.BarSpark					= "Bar spark"
 L.BarFlash					= "Flash bar about to expire"
 L.BarSort					= "Sort by remaining time"
+L.BarColorByType			= "Color by type"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Special Warnings"

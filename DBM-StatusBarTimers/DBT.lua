@@ -107,6 +107,10 @@ options = {
 		type = "boolean",
 		default = true,
 	},
+	ColorByType = {
+		type = "boolean",
+		default = true,
+	},
 	IconLeft = {
 		type = "boolean",
 		default = true,
@@ -657,6 +661,8 @@ do
 	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType)
 		if timer <= 0 then return end
 		if (self.numBars or 0) >= 15 and not isDummy then return end
+		--Most efficient place to block it, nil colorType instead of checking option every update
+		if not self.options.ColorByType then colorType = nil end
 		local newBar = self:GetBar(id)
 		if newBar then -- update an existing bar
 			newBar.lastUpdate = GetTime()
