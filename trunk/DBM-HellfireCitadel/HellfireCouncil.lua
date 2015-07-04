@@ -15,8 +15,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184657 184476",
-	"SPELL_CAST_SUCCESS 184449 183480 184357 184355",
-	"SPELL_AURA_APPLIED 183701 184847 184360 184365 184449",
+	"SPELL_CAST_SUCCESS 184449 183480 184357 184355 184476",
+	"SPELL_AURA_APPLIED 183701 184847 184360 184365 184449 185065 185066",
 	"SPELL_AURA_APPLIED_DOSE 184847",
 --	"SPELL_AURA_REMOVED",
 	"SPELL_PERIODIC_DAMAGE 184652",
@@ -87,6 +87,7 @@ mod.vb.felRageCount = 0
 mod.vb.diaDead = false
 mod.vb.jubeiDead = false
 mod.vb.bloodboilDead = false
+mod.vb.reapActive = false
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local markofNecroDebuff = GetSpellInfo(184449)--Spell name should work, without knowing what right spellid is, For this anyways.
 
@@ -107,6 +108,7 @@ function mod:OnCombatStart(delay)
 	self.vb.diaDead = false
 	self.vb.jubeiDead = false
 	self.vb.bloodboilDead = false
+	self.vb.reapActive = false
 	self.vb.taintedBloodCount = 0
 	self.vb.felRageCount = 0
 	timerMarkofNecroCD:Start(7-delay)--7-13
@@ -136,6 +138,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 184476 then
+		self.vb.reapActive = true
 		if not self.vb.DiaPushed then--Don't start cd timer for her final reap she casts at 30%
 			timerReapCD:Start()
 		end
@@ -169,6 +172,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 184357 then
 		self.vb.taintedBloodCount = self.vb.taintedBloodCount + 1
 		timerTaintedBloodCD:Start(nil, self.vb.taintedBloodCount+1)
+	elseif spellId == 184476 then
+		self.vb.reapActive = false
 	end
 end
 
@@ -205,6 +210,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 184449 then--Confirmed correct CAST spellid for heroic.
 		warnMarkoftheNecromancer:CombinedShow(0.3, args.destName)
+	elseif (spellId == 185065 or spellId == 185066) and self.vb.reapActive and args:IsPlayer() then--Your idiot healer dipselled mark in middle of reap cast, warn you to run out and hope you have less than 0.5 seconds to do it.
+		specWarnReap:Show()
+		yellReap:Yell()
+		voiceReap:Play("runout")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
