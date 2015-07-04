@@ -2050,6 +2050,11 @@ do
 	local fakeMod -- dummy mod for the count sound effects
 	--Standard Pizza Timer
 	function DBM:CreatePizzaTimer(time, text, broadcast, sender, count, loop, terminate)
+		if not fakeMod then
+			fakeMod = self:NewMod("CreateCountTimerDummy")
+			self:GetModLocalization("CreateCountTimerDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
+			fakeMod.countdown = fakeMod:NewCountdown(0, 0, nil, nil, nil, true)
+		end
 		if terminate or time == 0 then
 			self:Unschedule(loopTimer)
 			fakeMod.countdown:Cancel()
