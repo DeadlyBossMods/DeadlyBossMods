@@ -9648,9 +9648,8 @@ do
 			DBM:Debug("OptionVersion hack depricated, remove it from: "..spellId)
 			return
 		end
-		if type(colorType) == "number" and colorType > 4 then
+		if type(colorType) == "number" and colorType > 6 then
 			DBM:Debug("texture is in the colorType arg for: "..spellId)
-			return
 		end
 		--Use option optionName for optionVersion as well, no reason to split.
 		--This ensures that remaining arg positions match for auto generated and regular NewTimer
