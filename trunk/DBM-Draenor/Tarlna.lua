@@ -30,7 +30,7 @@ local specWarnSavageVinesNear		= mod:NewSpecialWarningClose(176004)
 local specWarnGrowUntamedMandragora	= mod:NewSpecialWarningSwitch(176013, "-Healer", nil, nil, nil, 2)
 local specWarnNoxiousSpit			= mod:NewSpecialWarningMove(176037)
 
---local timerColossalBlowCD			= mod:NewNextTimer(60, 175973)
+--local timerColossalBlowCD			= mod:NewNextTimer(60, 175973, nil, nil, nil, 3)
 local timerGenesis					= mod:NewCastTimer(14, 169613)
 local timerGenesisCD				= mod:NewCDTimer(45, 169613, nil, nil, nil, 5)--45-60 variation
 local timerGrowUntamedMandragoraCD	= mod:NewCDTimer(30, 176013, nil, nil, nil, 1)

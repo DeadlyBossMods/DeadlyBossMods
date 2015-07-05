@@ -30,8 +30,8 @@ local yellMagmaSpit			= mod:NewYell(155051)
 local specWarnMagmaPool		= mod:NewSpecialWarningMove(155057)
 local specWarnEngulfingFire	= mod:NewSpecialWarningDodge(154996, nil, nil, nil, 3)
 
-local timerEngulfingFireCD	= mod:NewCDTimer(24, 154996)
-local timerSwirlingWinds	= mod:NewBuffActiveTimer(20, 167203)
+local timerEngulfingFireCD	= mod:NewCDTimer(24, 154996, nil, nil, nil, 3)
+local timerSwirlingWinds	= mod:NewBuffActiveTimer(20, 167203, nil, nil, nil, 6)
 
 local voiceEngulfingFire	= mod:NewVoice(154996)
 local voiceBurningRage		= mod:NewVoice(155620, "RemoveEnrage")

@@ -25,9 +25,9 @@ local specWarnWildSlam			= mod:NewSpecialWarningSpell(150753, nil, nil, nil, 2)-
 
 --local timerFerociousYellCD--12~18. large variable?
 --local timerRaiseMinersCD--14~26. large variable. useless.
-local timerCrushingLeapCD		= mod:NewCDTimer(23, 150751)--23~25 variable.
+local timerCrushingLeapCD		= mod:NewCDTimer(23, 150751, nil, nil, nil, 3)--23~25 variable.
 --local timerEarthCrushCD--13~21. large variable. useless.
-local timerWildSlamCD			= mod:NewCDTimer(23, 150753)--23~24 variable.
+local timerWildSlamCD			= mod:NewCDTimer(23, 150753, nil, nil, nil, 2)--23~24 variable.
 
 local voiceFerociousYell		= mod:NewVoice(150759, "-Healer")
 local voiceRaiseMiners			= mod:NewVoice(150801)

@@ -31,8 +31,8 @@ local specWarnLensFlare		= mod:NewSpecialWarningMove(154043)
 local specWarnAdd			= mod:NewSpecialWarning("specWarnAdd", "Dps")
 local specWarnShielding		= mod:NewSpecialWarningInterrupt(154055, "Dps")
 
-local timerLenseFlareCD		= mod:NewCDTimer(38, 154032)
-local timerCastDownCD		= mod:NewCDTimer(38, 153954)
+local timerLenseFlareCD		= mod:NewCDTimer(38, 154032, nil, nil, nil, 3)
+local timerCastDownCD		= mod:NewCDTimer(38, 153954, nil, nil, nil, 1)
 
 local voiceCastDown			= mod:NewVoice(153954)
 local voiceLensFlare		= mod:NewVoice(154032)

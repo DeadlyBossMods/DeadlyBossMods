@@ -20,8 +20,8 @@ local warnEnergize		= mod:NewSpellAnnounce(154159, 3)
 local specWarnBurst		= mod:NewSpecialWarningCount(154135, nil, nil, nil, 2)
 local specWarnSmash		= mod:NewSpecialWarningDodge(154110, "Tank", nil, 2)
 
-local timerEnergozeCD	= mod:NewNextTimer(20, 154159)
-local timerBurstCD		= mod:NewCDCountTimer(23, 154135)
+local timerEnergozeCD	= mod:NewNextTimer(20, 154159, nil, nil, nil, 5)
+local timerBurstCD		= mod:NewCDCountTimer(23, 154135, nil, nil, nil, 2)
 
 mod.vb.burstCount = 0
 local skyTrashMod = DBM:GetModByName("SkyreachTrash")

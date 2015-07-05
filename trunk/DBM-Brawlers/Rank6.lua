@@ -23,8 +23,8 @@ local specWarnTorrent			= mod:NewSpecialWarningInterrupt(124935)--Proboskus
 local specWarnDisorientingShriek= mod:NewSpecialWarningInterrupt(134795)
 
 local timerFallenKin			= mod:NewBuffActiveTimer(2, 134789)--Yikkan Izu
-local timerRainDanceCD			= mod:NewCDTimer(18, 124860)--Proboskus
-local timerTorrentCD			= mod:NewCDTimer(18, 124935)--Proboskus
+local timerRainDanceCD			= mod:NewCDTimer(18, 124860, nil, nil, nil, 2)--Proboskus
+local timerTorrentCD			= mod:NewCDTimer(18, 124935, nil, nil, nil, 4)--Proboskus
 local timerShriekCD				= mod:NewCDTimer(23, 134795)
 
 mod:RemoveOption("HealthFrame")

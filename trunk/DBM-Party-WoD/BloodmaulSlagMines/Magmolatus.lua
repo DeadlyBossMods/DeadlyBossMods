@@ -36,7 +36,7 @@ local specWarnSlagSmash			= mod:NewSpecialWarningDodge(150023, "Melee")
 local specWarnMoltenImpact		= mod:NewSpecialWarningSpell(150038, nil, nil, nil, 2)
 local specWarnWitheringFlames	= mod:NewSpecialWarningDispel(150032, "Healer")
 
-local timerMoltenImpactCD		= mod:NewNextTimer(21.5, 150038)
+local timerMoltenImpactCD		= mod:NewNextTimer(21.5, 150038, nil, nil, nil, 1)
 
 local voiceRuination			= mod:NewVoice("ej8622", "-Healer")
 local voiceCalamity				= mod:NewVoice("ej8626", "-Healer")
