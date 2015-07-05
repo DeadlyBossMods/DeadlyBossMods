@@ -9490,7 +9490,10 @@ do
 				DBM:Debug("Timer autocorrected by "..debugtemp, 2)
 				timer = self.correctedCast
 			end
-			local colorId = self.mod.Options[self.option .. "TColor"]
+			local colorId = 0
+			if self.option then
+				colorId = self.mod.Options[self.option .. "TColor"]
+			end
 			local bar = DBM.Bars:CreateBar(timer, id, self.icon, nil, nil, nil, nil, colorId)
 			if not bar then
 				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
