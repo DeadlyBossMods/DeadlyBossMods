@@ -27,10 +27,10 @@ local specWarnSpinningSpear		= mod:NewSpecialWarningDodge(162058, "Tank", nil, 2
 local specWarnMark				= mod:NewSpecialWarningMoveAway(163447)
 local yellMark					= mod:NewYell(163447)
 
-local timerFreezingSnareCD		= mod:NewNextTimer(20, 162066)
-local timerSpinningSpearCD		= mod:NewNextTimer(20, 162058)
+local timerFreezingSnareCD		= mod:NewNextTimer(20, 162066, nil, nil, nil, 3)
+local timerSpinningSpearCD		= mod:NewNextTimer(20, 162058, nil, "Tank", 2, 5)
 local timerMark					= mod:NewTargetTimer(5, 163447)
-local timerMarkCD				= mod:NewNextTimer(20, 163447)
+local timerMarkCD				= mod:NewNextTimer(20, 163447, nil, nil, nil, 3)
 
 local voiceFreezingSnare		= mod:NewVoice(162066)
 local voiceMark					= mod:NewVoice(163447)

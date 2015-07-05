@@ -20,8 +20,8 @@ local warnEmerged				= mod:NewAnnounce("Emerged", 2, "Interface\\AddOns\\DBM-Cor
 
 local specWarnAttack			= mod:NewSpecialWarning("specWarnAttack")
 
-local timerEmerge				= mod:NewTimer(35.5, "EmergeTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
-local timerSubmerge				= mod:NewTimer(92, "SubmergTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")--Variable, 92-96
+local timerEmerge				= mod:NewTimer(35.5, "EmergeTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp", nil, nil, 6)
+local timerSubmerge				= mod:NewTimer(92, "SubmergTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp", nil, nil, 6)--Variable, 92-96
 
 function mod:OnCombatStart(delay)
 	timerSubmerge:Start(95-delay)--first is 95, rest are 92

@@ -28,7 +28,7 @@ local specWarnMagmaEruption		= mod:NewSpecialWarningMove(150784)
 local specWarnMoltenCore		= mod:NewSpecialWarningDispel(150678, "MagicDispeller")
 
 local timerMagmaEruptionCD		= mod:NewCDTimer(20, 150784)
-local timerUnstableSlagCD		= mod:NewCDTimer(20, 150755)
+local timerUnstableSlagCD		= mod:NewCDTimer(20, 150755, nil, nil, nil, 1)
 
 local countdownUnstableSlag		= mod:NewCountdown(20, 150755)
 

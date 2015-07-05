@@ -31,8 +31,8 @@ local specWarnCompleteHeal		= mod:NewSpecialWarningInterrupt(142621, nil, nil, n
 local specWarnDivineCircle		= mod:NewSpecialWarningDodge(142585)--Ahoo'ru
 
 local timerRockets				= mod:NewBuffActiveTimer(9, 133212)--Max Megablast
-local timerShadowboltCD			= mod:NewCDTimer(12, 125212)--Dark Summoner
-local timerGhostCD				= mod:NewNextTimer(13, 133465)--Battletron
+local timerShadowboltCD			= mod:NewCDTimer(12, 125212, nil, nil, nil, 4)--Dark Summoner
+local timerGhostCD				= mod:NewNextTimer(13, 133465, nil, nil, nil, 1)--Dark Summoner
 local timerDivineCircleCD		= mod:NewCDTimer(35, 142585)--Insufficent data to say if accurate with certainty
 
 mod:RemoveOption("HealthFrame")

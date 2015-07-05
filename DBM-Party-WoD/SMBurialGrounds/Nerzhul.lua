@@ -23,8 +23,8 @@ local specWarnOmenOfDeathNear	= mod:NewSpecialWarningClose(154350)
 local yellOmenOfDeath			= mod:NewYell(154350)
 local specWarnMalevolence		= mod:NewSpecialWarningDodge(154442, nil, nil, nil, 2, 2)
 
-local timerRitualOfBonesCD		= mod:NewCDTimer(50.5, 154671)
-local timerOmenOfDeathCD		= mod:NewCDTimer(10.5, 154350)
+local timerRitualOfBonesCD		= mod:NewCDTimer(50.5, 154671, nil, nil, nil, 1)
+local timerOmenOfDeathCD		= mod:NewCDTimer(10.5, 154350, nil, nil, nil, 3)
 
 local voiceRitualOfBones		= mod:NewVoice(154671)
 local voiceOmenOfDeath			= mod:NewVoice(154350)

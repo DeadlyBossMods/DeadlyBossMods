@@ -19,9 +19,9 @@ local warnGoblinDevice			= mod:NewSpellAnnounce(133227, 4)--Fran and Riddoh
 local specWarnStormCloud		= mod:NewSpecialWarningInterrupt(135234)--Kirrawk
 local specWarnGoblinDevice		= mod:NewSpecialWarningSpell(133227)--Fran and Riddoh
 
-local timerSummonTwisterCD		= mod:NewCDTimer(15, 132670)--Kirrawk
-local timerThrowNetCD			= mod:NewCDTimer(20, 133308)--Fran and Riddoh
-local timerGoblinDeviceCD		= mod:NewCDTimer(22, 133227)--Fran and Riddoh
+local timerSummonTwisterCD		= mod:NewCDTimer(15, 132670, nil, nil, nil, 3)--Kirrawk
+local timerThrowNetCD			= mod:NewCDTimer(20, 133308, nil, nil, nil, 3)--Fran and Riddoh
+local timerGoblinDeviceCD		= mod:NewCDTimer(22, 133227, nil, nil, nil, 3)--Fran and Riddoh
 
 mod:RemoveOption("HealthFrame")
 

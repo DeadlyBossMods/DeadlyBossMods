@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 local specWarnColossalSlam		= mod:NewSpecialWarningDodge(175791, nil, nil, nil, 2, 2)
 local specWarnCallofEarth		= mod:NewSpecialWarningSpell(175827)
 
-local timerColossalSlamCD		= mod:NewCDTimer(16, 175791)--16-35 second variation? Then again was a bad pull with no tank, boss running loose so may have affected timer
+local timerColossalSlamCD		= mod:NewCDTimer(16, 175791, nil, nil, nil, 3)--16-35 second variation? Then again was a bad pull with no tank, boss running loose so may have affected timer
 local timerCallofEarthCD		= mod:NewCDTimer(90, 175827, nil, nil, nil, 1)
 
 local voiceColossalSlam			= mod:NewVoice(175791)

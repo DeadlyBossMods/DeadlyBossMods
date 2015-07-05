@@ -19,8 +19,8 @@ local specWarnFireLine			= mod:NewSpecialWarningDodge(133607)--Vian the Volatile
 local specWarnDevastatingThrust	= mod:NewSpecialWarningDodge(134777)--Ixx
 
 local timerVolatileFlamesCD		= mod:NewCDTimer(11, 134740)--Vian the Volatile
-local timerFireLineCD			= mod:NewCDTimer(15, 133607)--Vian the Volatile
-local timerDevastatingThrustCD	= mod:NewCDTimer(12, 134777)--Ixx
+local timerFireLineCD			= mod:NewCDTimer(15, 133607, nil, nil, nil, 3)--Vian the Volatile
+local timerDevastatingThrustCD	= mod:NewCDTimer(12, 134777, nil, nil, nil, 3)--Ixx
 
 mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("SetIconOnBlat", true)--Blat

@@ -38,10 +38,10 @@ local specWarnFelblast				= mod:NewSpecialWarningInterrupt(154221, "-Healer")--V
 local specWarnFelPool				= mod:NewSpecialWarningMove(153616)
 local specWarnFelSpark				= mod:NewSpecialWarningMove(153726)
 
-local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396)--20sec cd but can be massively delayed by adds phases
-local timerFelLash					= mod:NewTargetTimer(7.5, 153234, nil, "Tank|Healer", 2)
+local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396, nil, nil, nil, 3)--20sec cd but can be massively delayed by adds phases
+local timerFelLash					= mod:NewTargetTimer(7.5, 153234, nil, "Tank|Healer", 2, 5)
 local timerClawsOfArgus				= mod:NewBuffActiveTimer(20, 153764)
-local timerClawsOfArgusCD			= mod:NewNextTimer(70, 153764)
+local timerClawsOfArgusCD			= mod:NewNextTimer(70, 153764, nil, nil, nil, 6)
 
 local countdownClawsOfArgus			= mod:NewCountdown(70, 153764)
 local countdownCurtainOfFlame		= mod:NewCountdown("Alt20", 153396)
