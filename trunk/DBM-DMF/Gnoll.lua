@@ -53,16 +53,12 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellID)
 	if spellID == 102044 then--Hogger
-		if gameEarnedPoints < 30 then--You earned 30 points in first game, stop counting points you didn't earn so you get more accurate depiction of hwo many you missed, not how many you ignored when you finished.
-			gameMaxPoints = gameMaxPoints + 3
-		end
-		if self:AntiSpam() then
+		gameMaxPoints = gameMaxPoints + 3
+		if self:AntiSpam(2, 1) then
 			specWarnHogger:Show()
 		end
 	elseif spellID == 102036 then--Gnoll
-		if gameEarnedPoints < 30 then
-			gameMaxPoints = gameMaxPoints + 1
-		end
+		gameMaxPoints = gameMaxPoints + 1
 		warnGnoll:Show()
 	end
 end
