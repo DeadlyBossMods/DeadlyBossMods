@@ -87,7 +87,7 @@ local timerGlaiveComboCD			= mod:NewCDTimer(30, 181354, nil, "Tank", nil, 5)--30
 local timerFelHellfireCD			= mod:NewCDTimer(35, 181557, nil, nil, nil, 2)--35, unless delayed by other things.
 local timerGazeCD					= mod:NewCDTimer(47.1, 181597, nil, nil, nil, 3)--As usual, some variation do to other abilities
 local timerFelSeekerCD				= mod:NewCDTimer(50, 181735, nil, nil, nil, 2)--Small sample size, confirm it's not shorter if not delayed by things.
-local timerShadowForceCD			= mod:NewCDTimer(52.2, 181799)
+local timerShadowForceCD			= mod:NewCDTimer(52.2, 181799, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 

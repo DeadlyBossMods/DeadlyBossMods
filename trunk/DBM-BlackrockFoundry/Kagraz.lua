@@ -51,9 +51,9 @@ local specWarnCharringBreath			= mod:NewSpecialWarningStack(155074, nil, 2)--Ass
 local specWarnCharringBreathOther		= mod:NewSpecialWarningTaunt(155074)
 --
 
-local timerLavaSlashCD					= mod:NewCDTimer(14.5, 155318, nil, false)
+local timerLavaSlashCD					= mod:NewCDTimer(14.5, 155318, nil, false, nil, 3)
 local timerMoltenTorrentCD				= mod:NewCDTimer(14, 154932, nil, "Ranged", 2, 3)
-local timerSummonEnchantedArmamentsCD	= mod:NewCDTimer(45, 156724, nil, "Ranged", 2)--45-47sec variation
+local timerSummonEnchantedArmamentsCD	= mod:NewCDTimer(45, 156724, nil, "Ranged", 2, 3)--45-47sec variation
 local timerSummonCinderWolvesCD			= mod:NewNextTimer(76, 155776, nil, nil, nil, 1)
 local timerOverheated					= mod:NewTargetTimer(14, 154950, nil, "Tank", nil, 5)
 local timerCharringBreathCD				= mod:NewNextTimer(5, 155074, nil, "Tank", nil, 5)

@@ -40,8 +40,8 @@ local timerArtilleryCD				= mod:NewNextCountTimer(15, 182108, nil, nil, nil, 3)
 --mod:AddTimerLine(ALL)--Find translation that works for "Ground Phase"
 local timerUnstableOrbCD			= mod:NewNextCountTimer(3, 182001, nil, "Ranged", nil, 2)
 local timerPoundingCD				= mod:NewNextCountTimer(24, 182020, nil, nil, nil, 2)
-local timerBlitzCD					= mod:NewNextCountTimer(5, 179889)
-local timerBarrageCD				= mod:NewNextCountTimer(15, 185282)
+local timerBlitzCD					= mod:NewNextCountTimer(5, 179889, nil, nil, nil, 3)
+local timerBarrageCD				= mod:NewNextCountTimer(15, 185282, nil, nil, nil, 3)
 local timerFullChargeCD				= mod:NewNextTimer(136, 182055, nil, nil, nil, 6)
 --mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)--Find translation that works for "Air Phase"
 local timerFallingSlamCD			= mod:NewNextTimer(54, 182066, nil, nil, nil, 6)
