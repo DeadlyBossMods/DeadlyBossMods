@@ -8,7 +8,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 101612",
 	"SPELL_AURA_REMOVED 101612",
 	"UNIT_SPELLCAST_SUCCEEDED player",
-	"QUEST_WATCH_UPDATE"
+	"UNIT_POWER_FREQUENT player"
 )
 mod.noStatistics = true
 
@@ -67,6 +67,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellID)
 	end
 end
 
-function mod:QUEST_WATCH_UPDATE()
-	gameEarnedPoints = gameEarnedPoints + 1
+function mod:UNIT_POWER_FREQUENT(uId, type)
+	if type == "ALTERNATE" then
+		gameEarnedPoints = UnitPower("player", 10)
+	end
 end
