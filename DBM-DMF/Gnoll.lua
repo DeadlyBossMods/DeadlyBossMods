@@ -67,7 +67,7 @@ function mod:UNIT_POWER_FREQUENT(uId, type)
 	if type == "ALTERNATE" then
 		local playerPower = UnitPower("player", 10)
 		if playerPower > gameEarnedPoints then
-			gameEarnedPoints = UnitPower("player", 10)
+			gameEarnedPoints = playerPower
 		end
 	end
 end
