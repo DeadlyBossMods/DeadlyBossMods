@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Jun 2, 2015@13840
+-- Last update: Jul 5 2015, 20:54 UTC@14031
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -150,6 +150,23 @@ L.Slider_BarOffSetX 		= "X偏移: %d"
 L.Slider_BarOffSetY 		= "Y偏移: %d"
 L.Slider_BarWidth 			= "宽度: %d"
 L.Slider_BarScale 			= "缩放: %0.2f"
+
+--Types
+L.BarStartColorAdd			= "初始颜色 (小怪入场)"
+L.BarEndColorAdd			= "结束颜色 (小怪入场)"
+L.BarStartColorAOE			= "初始颜色 (AOE)"
+L.BarEndColorAOE			= "结束颜色 (AOE)"
+L.BarStartColorDebuff		= "初始颜色 (Debuff)"
+L.BarEndColorDebuff			= "结束颜色 (Debuff)"
+L.BarStartColorInterrupt	= "初始颜色 (打断)"
+L.BarEndColorInterrupt		= "结束颜色 (打断)"
+L.BarStartColorRole			= "初始颜色 (Role)"
+L.BarEndColorRole			= "结束颜色 (Role)"
+L.BarStartColorPhase		= "初始颜色 (阶段转换)"
+L.BarEndColorPhase			= "结束颜色 (阶段转换)"
+
+-- Tab: Timers
+L.AreaTitle_BarColors		= "按类型分类着色"
 L.AreaTitle_BarSetup 		= "计时条综合设置"
 L.AreaTitle_BarSetupSmall 	= "小型计时条设置"
 L.AreaTitle_BarSetupHuge 	= "大型计时条设置"
@@ -166,6 +183,7 @@ L.Bar_EnlargePercent		= "在%0.1f%%后计时条变大"
 L.BarSpark					= "计时条闪光"
 L.BarFlash					= "当计时条快走完时闪动"
 L.BarSort					= "按剩余时间排序"
+L.BarColorByType			= "计时条按类型分类着色"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "特殊警报"
