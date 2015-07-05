@@ -417,8 +417,18 @@ do
 		{ sound=true, text = "SW 3", value = 3 },
 		{ sound=true, text = "SW 4", value = 4 },
 	})
+	
+	local tcolors = {
+		{ text = "Generic", value = 0 },
+		{ text = "Add", value = 1 },
+		{ text = "AOE", value = 2 },
+		{ text = "Targeted", value = 3 },
+		{ text = "Interrupt", value = 4 },
+		{ text = "Role", value = 5 },
+		{ text = "Phase", value = 6 },
+	}
 
-	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, mod, modvar, globalvar)
+	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, mod, modvar, globalvar, isTimer)
 		if not name then
 			return
 		end
@@ -435,14 +445,14 @@ do
 			name = name:gsub("%$spell:ej(%d+)", "$journal:%1")
 		end
 		if name:find("%$spell:") then
-			if modvar then
+			if not isTimer and modvar then
 				local spellId = string.match(name, "spell:(%d+)")
 				noteSpellName = GetSpellInfo(spellId)
 			end
 			name = name:gsub("%$spell:(%d+)", replaceSpellLinks)
 		end
 		if name:find("%$journal:") then
-			if modvar then
+			if not isTimer and modvar then
 				local spellId = string.match(name, "journal:(%d+)")
 				noteSpellName = EJ_GetSectionInfo(spellId)
 			end
@@ -451,27 +461,36 @@ do
 		local dropdown
 		local noteButton
 		if modvar then--Special warning, has modvar for sound and note
-			dropdown = self:CreateDropdown(nil, sounds, nil, nil, function(value)
-				mod.Options[modvar.."SWSound"] = value
-				DBM:PlaySpecialWarningSound(value)
-			end, 20, 25, button)
-			dropdown:SetScript("OnShow", function(self)
-				self:SetSelectedValue(mod.Options[modvar.."SWSound"])
-			end)
-			if mod.Options[modvar .. "SWNote"] then--Mod has note, insert note hack
-				noteButton = CreateFrame('Button', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_OptionsFramePanelButtonTemplate')
-				noteButton:SetWidth(25)
-				noteButton:SetHeight(25)
-				noteButton.myheight = 0--Tells SetAutoDims that this button needs no additional space
-				noteButton:SetText("|TInterface/FriendsFrame/UI-FriendsFrame-Note.blp:14:0:3:-1|t")
-				noteButton.mytype = "button"
-				noteButton:SetScript("OnClick", function(self)
-					local noteText = mod.Options[modvar.."SWNote"]
-					if noteText then
-						DBM:Debug(tostring(noteText), 2)--Debug only
-					end
-					DBM:ShowNoteEditor(mod, modvar, noteSpellName)
+			if isTimer then
+				dropdown = self:CreateDropdown(nil, tcolors, nil, nil, function(value)
+					mod.Options[modvar.."TColor"] = value
+				end, 20, 25, button)
+				dropdown:SetScript("OnShow", function(self)
+					self:SetSelectedValue(mod.Options[modvar.."TColor"])
 				end)
+			else
+				dropdown = self:CreateDropdown(nil, sounds, nil, nil, function(value)
+					mod.Options[modvar.."SWSound"] = value
+					DBM:PlaySpecialWarningSound(value)
+				end, 20, 25, button)
+				dropdown:SetScript("OnShow", function(self)
+					self:SetSelectedValue(mod.Options[modvar.."SWSound"])
+				end)
+				if mod.Options[modvar .. "SWNote"] then--Mod has note, insert note hack
+					noteButton = CreateFrame('Button', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_OptionsFramePanelButtonTemplate')
+					noteButton:SetWidth(25)
+					noteButton:SetHeight(25)
+					noteButton.myheight = 0--Tells SetAutoDims that this button needs no additional space
+					noteButton:SetText("|TInterface/FriendsFrame/UI-FriendsFrame-Note.blp:14:0:3:-1|t")
+					noteButton.mytype = "button"
+					noteButton:SetScript("OnClick", function(self)
+						local noteText = mod.Options[modvar.."SWNote"]
+						if noteText then
+							DBM:Debug(tostring(noteText), 2)--Debug only
+						end
+						DBM:ShowNoteEditor(mod, modvar, noteSpellName)
+					end)
+				end
 			end
 		end
 
@@ -4683,7 +4702,9 @@ do
 						button = catpanel:CreateLine(v.text)
 					elseif type(mod.Options[v]) == "boolean" then
 						lastButton = button
-						if mod.Options[v .. "SWSound"] then
+						if mod.Options[v .. "TColor"] then
+							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v, nil, true)
+						elseif mod.Options[v .. "SWSound"] then
 							button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v)
 						else
 							button = catpanel:CreateCheckButton(mod.localization.options[v], true)
