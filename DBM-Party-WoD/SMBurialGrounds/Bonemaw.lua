@@ -31,11 +31,11 @@ local specWarnInhale			= mod:NewSpecialWarningSpell(153804, nil, nil, 2, 4, 2)
 local specWarnInhaleEnd			= mod:NewSpecialWarningEnd(153804)
 local specWarnNecroticPitch		= mod:NewSpecialWarningMove(153692)
 
-local timerBodySlamCD			= mod:NewCDSourceTimer(30, 154175)
-local timerInhaleCD				= mod:NewCDTimer(35, 153804)
+local timerBodySlamCD			= mod:NewCDSourceTimer(30, 154175, nil, nil, nil, 3)
+local timerInhaleCD				= mod:NewCDTimer(35, 153804, nil, nil, nil, 6)
 local timerInhale				= mod:NewBuffActiveTimer(9, 153804)
-local timerCorpseBreathCD		= mod:NewCDTimer(28, 165578, nil, false)--32-37 Variation, also not that important so off by default since there will already be up to 3 smash timers
-local timerSubmergeCD			= mod:NewCDTimer(80, 177694)
+local timerCorpseBreathCD		= mod:NewCDTimer(28, 165578, nil, false, nil, 5)--32-37 Variation, also not that important so off by default since there will already be up to 3 smash timers
+local timerSubmergeCD			= mod:NewCDTimer(80, 177694, nil, nil, nil, 6)
 
 local voiceBodySlam				= mod:NewVoice(154175)
 local voiceInhale				= mod:NewVoice(153804)

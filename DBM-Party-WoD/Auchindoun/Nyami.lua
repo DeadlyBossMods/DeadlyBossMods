@@ -24,8 +24,8 @@ local specWarnSoulVesselEnd		= mod:NewSpecialWarningEnd(155327)
 local specWarnTornSpirits		= mod:NewSpecialWarningSwitch(153991, "-Healer")
 
 local timerSoulVessel			= mod:NewBuffActiveTimer(11.5, 155327)
-local timerSoulVesselCD			= mod:NewCDTimer(51.5, 155327)
-local timerTornSpiritsCD		= mod:NewCDTimer(25.5, 153991)
+local timerSoulVesselCD			= mod:NewCDTimer(51.5, 155327, nil, nil, nil, 6)
+local timerTornSpiritsCD		= mod:NewCDTimer(25.5, 153991, nil, nil, nil, 1)
 
 local voiceSWP					= mod:NewVoice(154477, "Healer")
 local voiceSoulVessel			= mod:NewVoice(155327)

@@ -27,7 +27,7 @@ local warnHorsemanSoldiers		= mod:NewAnnounce("warnHorsemanSoldiers", 2, 97133)
 local warnHorsemanHead			= mod:NewAnnounce("warnHorsemanHead", 3)
 
 --local timerCombatStart			= mod:NewCombatTimer(17)--rollplay for first pull
-local timerConflag				= mod:NewTargetTimer(4, 42380)
+local timerConflag				= mod:NewTargetTimer(4, 42380, nil, "Healer")
 local timerSquashSoul			= mod:NewTargetTimer(15, 42514)
 
 function mod:SPELL_AURA_APPLIED(args)

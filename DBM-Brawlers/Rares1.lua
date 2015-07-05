@@ -45,12 +45,12 @@ local specWarnBoomingBoogaloo		= mod:NewSpecialWarningSpell(140894, nil, nil, ni
 local specWarnDeployBoom			= mod:NewSpecialWarningSpell(140912, nil, nil, nil, 3)--Master Boom Boom 
 
 local timerPowerCrystalCD			= mod:NewCDTimer(13, 133398)--Millhouse Manastorm
-local timerBlueCrushCD				= mod:NewNextTimer(30, 133262)--Epicus Maximus
-local timerDestructolaserCD			= mod:NewNextTimer(30, 133250)--Epicus Maximus
---local timerStaticChargeCD			= mod:NewCDTimer(24, 135621)--Master Boom Boom
+local timerBlueCrushCD				= mod:NewNextTimer(30, 133262, nil, nil, nil, 4)--Epicus Maximus
+local timerDestructolaserCD			= mod:NewNextTimer(30, 133250, nil, nil, nil, 3)--Epicus Maximus
+--local timerStaticChargeCD			= mod:NewCDTimer(24, 135621, nil, nil, nil, 4)--Master Boom Boom
 local timerDarkZoneCD				= mod:NewNextTimer(29, 133346)--Fjoll
 local timerChargingCD				= mod:NewCDTimer(20, 133253)--Crush
-local timerEarthSeedCD				= mod:NewCDTimer(15.5, 134743)--Leona Earthwind
+local timerEarthSeedCD				= mod:NewCDTimer(15.5, 134743, nil, nil, nil, 1)--Leona Earthwind
 local timerSolarBeamCD				= mod:NewCDTimer(18.5, 129888)--Leona Earthwind
 local timerHeatedPokers				= mod:NewBuffActiveTimer(8, 133286)--Dungeon Master Vishas
 local timerHeatedPokersCD			= mod:NewCDTimer(29, 133286)--Dungeon Master Vishas

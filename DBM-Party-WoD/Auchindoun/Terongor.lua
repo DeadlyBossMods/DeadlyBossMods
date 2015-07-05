@@ -53,19 +53,19 @@ local yellWarnChaosWave			= mod:NewYell(157001)
 local specWarnDoom				= mod:NewSpecialWarningTarget(156965, false)
 
 --Basic Abilities
-local timerDrainLifeCD			= mod:NewCDTimer(15, 156854)--15~18 variation
-local timerFixate				= mod:NewTargetTimer(12, 157168, nil, "-Tank", 3)
-local timerRainOfFireCD			= mod:NewCDTimer(12, 156857)--12-22sec variation phase 2. Unknown Phase 1 repeat timer
+local timerDrainLifeCD			= mod:NewCDTimer(15, 156854, nil, nil, nil, 4)--15~18 variation
+local timerFixate				= mod:NewTargetTimer(12, 157168, nil, "-Tank", 3, 3)
+local timerRainOfFireCD			= mod:NewCDTimer(12, 156857, nil, nil, nil, 4)--12-22sec variation phase 2. Unknown Phase 1 repeat timer
 --Destruction Abilities
-local timerChaosBoltCD			= mod:NewCDTimer(20.5, 156975)--20-25 variation.
-local timerImmolateCD			= mod:NewCDTimer(12, 156964, nil, "Healer")--Only timer that's probably not variable
+local timerChaosBoltCD			= mod:NewCDTimer(20.5, 156975, nil, nil, nil, 4)--20-25 variation.
+local timerImmolateCD			= mod:NewCDTimer(12, 156964, nil, "Healer", nil, 5)--Only timer that's probably not variable
 --Affliction Abilities
 local timerSeedOfMelevolence	= mod:NewTargetTimer(18, 156921, nil, "-Tank")
-local timerSeedOfMelevolenceCD	= mod:NewCDTimer(22, 156921)--22-25
+local timerSeedOfMelevolenceCD	= mod:NewCDTimer(22, 156921, nil, nil, nil, 3)--22-25
 --local timerExhaustionCD		= mod:NewCDTimer(14, 164841)--14~24 variation. Large variation, seems useless.
 --Demonic Abilities
-local timerChaosWaveCD			= mod:NewCDTimer(13, 157001)--13-17 variation
-local timerDemonicLeapCD		= mod:NewCDTimer(20, 157039)
+local timerChaosWaveCD			= mod:NewCDTimer(13, 157001, nil, nil, nil, 3)--13-17 variation
+local timerDemonicLeapCD		= mod:NewCDTimer(20, 157039, nil, nil, nil, 3)
 
 --Affliction Abilities
 local countdownSeedOfMelevolence= mod:NewCountdownFades(18, 156921)

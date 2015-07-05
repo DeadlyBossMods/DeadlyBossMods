@@ -24,10 +24,10 @@ local specWarnSoulShred			= mod:NewSpecialWarningSpell(152979)
 local specWarnVoidDevastation	= mod:NewSpecialWarningSpell(153067, nil, nil, nil, 2)
 local specWarnVoidDevastationM	= mod:NewSpecialWarningMove(153070)
 
-local timerVoidVortexCD			= mod:NewCDTimer(72, 152801)
-local timerSoulShredCD			= mod:NewNextTimer(71, 152979)
+local timerVoidVortexCD			= mod:NewCDTimer(72, 152801, nil, nil, nil, 2)
+local timerSoulShredCD			= mod:NewNextTimer(71, 152979, nil, nil, nil, 6)
 local timerSoulShred			= mod:NewBuffFadesTimer(20, 152979)
-local timerVoidDevastationCD	= mod:NewNextTimer(71, 153067)
+local timerVoidDevastationCD	= mod:NewNextTimer(71, 153067, nil, nil, nil, 3)
 
 local voiceWarnSoulShred		= mod:NewVoice(152979)
 local voiceVoidVortex			= mod:NewVoice(152801)
