@@ -6403,13 +6403,13 @@ do
 			testWarning1 = testMod:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Nature_WispSplode")
 			testWarning2 = testMod:NewAnnounce("%s", 2, "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness")
 			testWarning3 = testMod:NewAnnounce("%s", 3, "Interface\\Icons\\Spell_Fire_SelfDestruct")
-			testTimer1 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Nature_WispSplode", false)
-			testTimer2 = testMod:NewTimer(20, "%s", "Interface\\ICONS\\INV_Misc_Head_Orc_01.blp", false, nil, 1)
-			testTimer3 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness", false, nil, 3)
-			testTimer4 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Nature_WispSplode", false, nil, 4)
-			testTimer5 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Fire_SelfDestruct", false, nil, 2)
-			testTimer6 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Nature_WispSplode", false, nil, 5)
-			testTimer7 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Nature_WispSplode", false, nil, 6)
+			testTimer1 = testMod:NewTimer(20, "%s", "Interface\\Icons\\Spell_Nature_WispSplode", nil, nil)
+			testTimer2 = testMod:NewTimer(20, "%s ", "Interface\\ICONS\\INV_Misc_Head_Orc_01.blp", nil, nil, 1)
+			testTimer3 = testMod:NewTimer(20, "%s  ", "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness", nil, nil, 3)
+			testTimer4 = testMod:NewTimer(20, "%s   ", "Interface\\Icons\\Spell_Nature_WispSplode", nil, nil, 4)
+			testTimer5 = testMod:NewTimer(20, "%s    ", "Interface\\Icons\\Spell_Fire_SelfDestruct", nil, nil, 2)
+			testTimer6 = testMod:NewTimer(20, "%s     ", "Interface\\Icons\\Spell_Nature_WispSplode", nil, nil, 5)
+			testTimer7 = testMod:NewTimer(20, "%s      ", "Interface\\Icons\\Spell_Nature_WispSplode", nil, nil, 6)
 			testCount1 = testMod:NewCountdown(0, 0, nil, nil, nil, true)
 			testCount2 = testMod:NewCountdown(0, 0, nil, nil, nil, true, true)
 			testSpecialWarning1 = testMod:NewSpecialWarning("%s")
@@ -8921,7 +8921,7 @@ do
 						if DBM.Options.SWarnNameInNote and noteText:find(playerName) then
 							noteHasName = 5
 						end
-						if self.announceType:find("switch") then
+						if self.announceType and self.announceType:find("switch") then
 							noteText = noteText:gsub(">.-<", classColoringFunction)--Class color note text before combining with warning text.
 						end
 						noteText = " ("..noteText..")"
@@ -8930,7 +8930,7 @@ do
 				end
 			end
 			--No stripping on switch warnings, ever. They will NEVER have player name, but often have adds with "-" in name
-			if not self.announceType:find("switch") then
+			if self.announceType and not self.announceType:find("switch") then
 				text = text:gsub(">.-<", classColoringFunction)
 			end
 			DBM:AddSpecialWarning(text)
@@ -9490,7 +9490,8 @@ do
 				DBM:Debug("Timer autocorrected by "..debugtemp, 2)
 				timer = self.correctedCast
 			end
-			local bar = DBM.Bars:CreateBar(timer, id, self.icon, nil, nil, nil, nil, self.colorType)
+			local colorId = self.mod.Options[self.option .. "TColor"]
+			local bar = DBM.Bars:CreateBar(timer, id, self.icon, nil, nil, nil, nil, colorId)
 			if not bar then
 				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 			end
@@ -9617,10 +9618,10 @@ do
 		end
 	end
 
-	function timerPrototype:AddOption(optionDefault, optionName)
+	function timerPrototype:AddOption(optionDefault, optionName, colorType)
 		if optionName ~= false then
 			self.option = optionName or self.id
-			self.mod:AddBoolOption(self.option, optionDefault, "timer")
+			self.mod:AddBoolOption(self.option, optionDefault, "timer", nil, colorType)
 		end
 	end
 
@@ -9641,7 +9642,7 @@ do
 			},
 			mt
 		)
-		obj:AddOption(optionDefault, optionName)
+		obj:AddOption(optionDefault, optionName, colorType)
 		tinsert(self.timers, obj)
 		return obj
 	end
@@ -9714,7 +9715,7 @@ do
 			},
 			mt
 		)
-		obj:AddOption(optionDefault, optionName)
+		obj:AddOption(optionDefault, optionName, colorType)
 		tinsert(self.timers, obj)
 		-- todo: move the string creation to the GUI with SetFormattedString...
 		if timerType == "achievement" then
@@ -9907,13 +9908,19 @@ end
 ---------------
 --  Options  --
 ---------------
-function bossModPrototype:AddBoolOption(name, default, cat, func)
+function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption)
 	cat = cat or "misc"
 	self.DefaultOptions[name] = (default == nil) or default
+	if cat == "timer" then
+		self.DefaultOptions[name.."TColor"] = extraOption or 0
+	end
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
+	if cat == "timer" then
+		self.Options[name.."TColor"] = extraOption or 0
+	end
 	self:SetOptionCategory(name, cat)
 	if func then
 		self.optionFuncs = self.optionFuncs or {}

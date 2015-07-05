@@ -896,10 +896,10 @@ function barPrototype:Update(elapsed)
 	self.timer = self.timer - elapsed
 	local timerValue = self.timer
 	local totaltimeValue = self.totalTime
+	local colorCount = self.colorType
 	if obj.options.DynamicColor and not self.color then
 		local r, g, b
-		if self.colorType then
-			local colorCount = self.colorType
+		if colorCount and colorCount >= 1 then
 			if colorCount == 1 then--Add
 				r = obj.options.StartColorAR  + (obj.options.EndColorAR - obj.options.StartColorAR) * (1 - timerValue/totaltimeValue)
 				g = obj.options.StartColorAG  + (obj.options.EndColorAG - obj.options.StartColorAG) * (1 - timerValue/totaltimeValue)
