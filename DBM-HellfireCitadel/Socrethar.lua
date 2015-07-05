@@ -66,10 +66,10 @@ local specWarnEternalHunger			= mod:NewSpecialWarningRun(188666, nil, nil, nil, 
 local yellEternalHunger				= mod:NewYell(188666, nil, false)
 
 --Soulbound Construct
-local timerReverberatingBlowCD		= mod:NewCDCountTimer(17, 180008)--Seems changed to 17, formerly 11, review in later tests/live
-local timerFelPrisonCD				= mod:NewCDTimer(29, 182994)--29-33
+local timerReverberatingBlowCD		= mod:NewCDCountTimer(17, 180008, nil, nil, nil, 5)--Seems changed to 17, formerly 11, review in later tests/live
+local timerFelPrisonCD				= mod:NewCDTimer(29, 182994, nil, nil, nil, 3)--29-33
 local timerVolatileFelOrbCD			= mod:NewCDTimer(23, 180221, nil, nil, nil, 3)
-local timerFelChargeCD				= mod:NewCDTimer(23, 182051)
+local timerFelChargeCD				= mod:NewCDTimer(23, 182051, nil, nil, nil, 3)
 local timerApocalypticFelburstCD	= mod:NewCDCountTimer(30, 188693, nil, nil, nil, 2)
 --Socrethar
 local timerExertDominanceCD			= mod:NewCDTimer(5, 183331, nil, "-Healer", nil, 4)

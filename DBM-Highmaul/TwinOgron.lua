@@ -46,10 +46,10 @@ local timerWhirlwindCD				= mod:NewNextCountTimer(33, 157943, nil, nil, nil, 2)
 local timerQuakeCD					= mod:NewNextCountTimer(34, 158200, nil, nil, nil, 2)
 --Pol (84 seconds full rotation, 28-29 seconds in between)
 mod:AddTimerLine((EJ_GetSectionInfo(9595)))
-local timerShieldChargeCD			= mod:NewNextTimer(28, 158134)
-local timerInterruptingShoutCD		= mod:NewNextTimer(28, 158093)
+local timerShieldChargeCD			= mod:NewNextTimer(28, 158134, nil, nil, nil, 3)
+local timerInterruptingShoutCD		= mod:NewNextTimer(28, 158093)--No color classificatoin for this, hmm
 local timerInterruptingShout		= mod:NewCastTimer(3, 158093, nil, "SpellCaster")
-local timerPulverizeCD				= mod:NewNextTimer(29, 158385)
+local timerPulverizeCD				= mod:NewNextTimer(29, 158385, nil, nil, nil, 3)--Aoe vs targeted, difficult classification, it's a bit of both
 --^^Even though 6 cd timers, coded smart to only need 2 up at a time, by using the predictability of "next ability" timing.
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerArcaneTwistedCD			= mod:NewNextTimer(55, 163297, nil, nil, nil, 6)

@@ -65,7 +65,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDemolitionCD				= mod:NewNextCountTimer(45, 156425, nil, nil, nil, 2)
 local timerMassiveDemolitionCD		= mod:NewNextCountTimer(6, 156479, nil, nil, nil, 2)
 local timerMarkedforDeathCD			= mod:NewNextCountTimer(15.5, 156096, nil, nil, nil, 3)
-local timerThrowSlagBombsCD			= mod:NewCDCountTimer(24.5, 156030, nil, "Melee")--It's a next timer, but sometimes delayed by Shattering Smash
+local timerThrowSlagBombsCD			= mod:NewCDCountTimer(24.5, 156030, nil, "Melee", nil, 3)--It's a next timer, but sometimes delayed by Shattering Smash
 local timerShatteringSmashCD		= mod:NewCDCountTimer(44.5, 155992, nil, nil, nil, 5)--power based, can variate a little do to blizzard buggy power code.
 local timerImpalingThrow			= mod:NewCastTimer(5, 156111)--How long marked target has to aim throw at Debris Pile or Siegemaker
 --Stage Two: Storage Warehouse
