@@ -12,7 +12,6 @@ mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 
-
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184657 184476",
 	"SPELL_CAST_SUCCESS 184449 183480 184357 184355 184476",
@@ -230,8 +229,10 @@ function mod:SPELL_AURA_REMOVED(args)
 end--]]
 
 function mod:UNIT_DIED(args)
+	DBM:Debug("UNIT_DIED fired", 2)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 92144 then--Dia Darkwhisper
+		DBM:Debug("Dia died", 2)
 		self.vb.diaDead = true
 		timerMarkofNecroCD:Cancel()
 		timerNightmareVisageCD:Cancel()
@@ -247,6 +248,7 @@ function mod:UNIT_DIED(args)
 			end
 		end
 	elseif cid == 92142 then--Blademaster Jubei'thosr
+		DBM:Debug("Jubei died", 2)
 		self.vb.jubeiDead = true
 		--timerFelstormCD:Cancel()
 		local elapsed, total = timerMirrorImageCD:GetTime()
@@ -261,6 +263,7 @@ function mod:UNIT_DIED(args)
 			end
 		end
 	elseif cid == 92146 then--Gurthogg Bloodboil
+		DBM:Debug("Gurthogg died", 2)
 		self.vb.bloodboilDead = true
 		timerRelRageCD:Cancel()
 		timerTaintedBloodCD:Cancel()

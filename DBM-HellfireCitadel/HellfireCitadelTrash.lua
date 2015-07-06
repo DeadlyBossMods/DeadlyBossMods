@@ -62,7 +62,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSeverSoulOther:Show(args.destName)
 		end
 	elseif spellId == 188476 and not args:IsPlayer() and not UnitDebuff("player", GetSpellInfo(188476)) then
-		specWarnBadBreathOther:Show(args.destName)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			specWarnBadBreathOther:Show(args.destName)
+		end
 	elseif spellId == 186961 then
 		warnDarkFate:Show(args.destName)
 		if args:IsPlayer() then
