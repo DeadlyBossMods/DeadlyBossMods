@@ -5,7 +5,8 @@ DBM_CORE_NEED_LOGS					= "DBM이 현재 전투 경고를 원할히 하기 위해
 DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력하면 설정창이 나타납니다. 각 경고는 최초 불러오기시 캐릭터 특성에 맞는 적절한 경고를 선택합니다. 선택된 경고는 설정창에서 언제든지 변경이 가능합니다."
 
 DBM_FORUMS_MESSAGE					= "오류를 발견하셨나요? 일부 전투에서 추가 경고가 있으면 좋을텐데라고 생각하셨나요?\n그렇다면 DBM 사용자 포럼을 방문해 보세요. 주소는 |HDBM:forums|h|cff3588ffhttp://www.inven.co.kr/board/powerbbs.php?come_idx=3716|r 입니다. 클릭하시면 주소를 복사할 수 있습니다."
-DBM_FORUMS_COPY_URL_DIALOG			= "문의/건의사항은 DBM 사용자 포럼에 남겨주세요.\r\n서비스 제공: 와우 인벤"
+DBM_FORUMS_COPY_URL_DIALOG			= "DBM 사용자 포럼을 방문해 보세요."
+DBM_FORUMS_COPY_URL_DIALOG_NEWS		= "문의/건의사항이 있을 경우 포럼에 방문하셔서 글을 남겨주세요."
 
 DBM_CORE_LOAD_MOD_ERROR				= "%s 경보를 불러오는 중 오류 발생: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 경보를 불러왔습니다! 사용자 정의 경고 소리나 개인 메모가 필요한경우 /dbm 을 입력하세요."
