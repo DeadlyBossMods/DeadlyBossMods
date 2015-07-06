@@ -229,7 +229,7 @@ function mod:SPELL_CAST_START(args)
 		if tanking or (status == 3) then--Player is current target
 			specWarnMassiveBlast:Show()
 		else
-			specWarnMassiveBlast:Schedule(1, targetName)
+			specWarnMassiveBlastOther:Schedule(1, targetName)
 		end
 	elseif spellId == 181793 or spellId == 182077 then--Melee (10)
 		warnFelseeker:Show(10)
