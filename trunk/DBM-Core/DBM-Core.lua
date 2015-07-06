@@ -269,7 +269,7 @@ DBM.DefaultOptions = {
 	ShowRespawn = true,
 	ShowQueuePop = true,
 	HelpMessageShown3 = false,
-	NewsMessageShown = 1,
+	NewsMessageShown = 2,
 	MoviesSeen = {},
 	MovieFilter = "AfterFirst",
 	LastRevision = 0,
@@ -2184,6 +2184,8 @@ do
 			showPopupConfirmIgnore(ignore, cancel)
 		elseif arg1 == "update" then
 			DBM:ShowUpdateReminder(arg2, arg3) -- displayVersion, revision
+		elseif arg1 == "forumsnews" then
+			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG, "http://forums.elitistjerks.com/topic/133665-new-feature-color-bars-by-type/")
 		elseif arg1 == "forums" then
 			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG)
 		elseif arg1 == "showRaidIdResults" then
@@ -4493,7 +4495,7 @@ end
 --  Update Reminder  --
 -----------------------
 do
-	local frame, fontstring, fontstringFooter
+	local frame, fontstring, fontstringFooter, editBox, urlText
 
 	local function createFrame()
 		frame = CreateFrame("Frame", "DBMUpdateReminder", UIParent)
@@ -4510,7 +4512,7 @@ do
 		fontstring:SetWidth(410)
 		fontstring:SetHeight(0)
 		fontstring:SetPoint("TOP", 0, -16)
-		local editBox = CreateFrame("EditBox", nil, frame)
+		editBox = CreateFrame("EditBox", nil, frame)
 		do
 			local editBoxLeft = editBox:CreateTexture(nil, "BACKGROUND")
 			local editBoxRight = editBox:CreateTexture(nil, "BACKGROUND")
@@ -4538,10 +4540,10 @@ do
 		editBox:SetFontObject("GameFontHighlight")
 		editBox:SetTextInsets(0, 0, 0, 1)
 		editBox:SetFocus()
-		editBox:SetText(DBM_CORE_UPDATEREMINDER_URL or "http://www.deadlybossmods.com")
+		editBox:SetText(urlText)
 		editBox:HighlightText()
 		editBox:SetScript("OnTextChanged", function(self)
-			editBox:SetText(DBM_CORE_UPDATEREMINDER_URL or "http://www.deadlybossmods.com")
+			editBox:SetText(urlText)
 			editBox:HighlightText()
 		end)
 		fontstringFooter = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -4564,9 +4566,13 @@ do
 
 	end
 
-	function DBM:ShowUpdateReminder(newVersion, newRevision, text)
+	function DBM:ShowUpdateReminder(newVersion, newRevision, text, url)
+		urlText = url or DBM_CORE_UPDATEREMINDER_URL or "http://www.deadlybossmods.com"
 		if not frame then
 			createFrame()
+		else
+			editBox:SetText(urlText)
+			editBox:HighlightText()
 		end
 		frame:Show()
 		if newVersion then
@@ -6122,7 +6128,7 @@ do
 		end
 		self:Schedule(20, function() if not self.Options.ForumsMessageShown then self.Options.ForumsMessageShown = self.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
 		self:Schedule(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
-		self:Schedule(40, function() if DBM.Options.NewsMessageShown < 2 then DBM.Options.NewsMessageShown = 2 self:AddMsg(DBM_CORE_WHATS_NEW) end end)
+		self:Schedule(40, function() if DBM.Options.NewsMessageShown < 3 then DBM.Options.NewsMessageShown = 3 self:AddMsg(DBM_CORE_WHATS_NEW) end end)
 		if type(RegisterAddonMessagePrefix) == "function" then
 			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
 				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
