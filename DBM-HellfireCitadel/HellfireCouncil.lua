@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184657 184476",
 	"SPELL_CAST_SUCCESS 184449 183480 184357 184355 184476",
-	"SPELL_AURA_APPLIED 183701 184847 184360 184365 184449 184450 185065 185066",
+	"SPELL_AURA_APPLIED 183701 184847 184360 184365 184449 184450 185065 185066 184652",
 	"SPELL_AURA_APPLIED_DOSE 184847",
 --	"SPELL_AURA_REMOVED",
 	"SPELL_PERIODIC_DAMAGE 184652",
@@ -215,6 +215,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnReap:Show()
 		yellReap:Yell()
 		voiceReap:Play("runout")
+	elseif spellId == 184652 and args:IsPlayer() and self:AntiSpam(2, 3) then
+		specWarnReapGTFO:Show()
+		voiceReap:Play("runaway")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
