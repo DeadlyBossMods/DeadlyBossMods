@@ -6427,7 +6427,7 @@ do
 		testTimer3:Start(43, "Evil Debuff")
 		testTimer4:Start(20, "Important Interrupt")
 		testTimer5:Start(60, "Boom!")
-		testTimer6:Start(35, "Handle your Roll")
+		testTimer6:Start(35, "Handle your Role")
 		testTimer7:Start(50, "Next Phase")
 		testCount1:Cancel()
 		testCount1:Start(43)
