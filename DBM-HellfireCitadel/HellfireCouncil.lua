@@ -21,6 +21,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 184652",
 	"SPELL_ABSORB 184652",
 	"UNIT_DIED",
+	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
@@ -247,8 +248,9 @@ function mod:UNIT_DIED(args)
 				timerDemoLeapCD:Update(elapsed, total)
 			end
 		end
+	--His doesn't work, other 2 do
 	elseif cid == 92142 then--Blademaster Jubei'thosr
-		DBM:Debug("Jubei died", 2)
+		DBM:Debug("Jubei died (CLEU)", 2)
 		self.vb.jubeiDead = true
 		--timerFelstormCD:Cancel()
 		local elapsed, total = timerMirrorImageCD:GetTime()
@@ -291,6 +293,26 @@ function mod:RAID_BOSS_EMOTE(msg)
 			timerDemoLeapCD:Start()
 		else--Only dia is left, darkness will repeat
 			timerDarknessCD:Start()
+		end
+	end
+end
+
+--Probably temporary. IEEU or UTC will probably be usuable but i need a transcriptor log to verify. I deleted all mine
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg:find(L.Jubeideath) or msg == L.Jubeideath then
+		DBM:Debug("Jubei died (Yell)", 2)
+		self.vb.jubeiDead = true
+		--timerFelstormCD:Cancel()
+		local elapsed, total = timerMirrorImageCD:GetTime()
+		timerMirrorImageCD:Cancel()
+		if elapsed > 0 then--Timer existed, which means it was next
+			DBM:Debug("updating specials timer", 2)
+			--So now we update next based on remaining bosses
+			if not self.vb.bloodboilDead then--Leap is next if bloodboil not dead
+				timerDemoLeapCD:Start(elapsed, total)
+			else--Only dia left left, darkness will be next
+				timerDarknessCD:Start(elapsed, total)
+			end
 		end
 	end
 end
