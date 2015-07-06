@@ -12,7 +12,7 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 179406 179582 179709",
+	"SPELL_CAST_START 179406 179582 181508 181515",
 	"SPELL_CAST_SUCCESS 181508 181515 179709",
 	"SPELL_AURA_APPLIED 181508 181515 182008 179670 179711 179681 179407 179667 189030 189031 189032",
 	"SPELL_AURA_REMOVED 179711 181508 181515 179667 189030 189031 189032",
@@ -226,7 +226,7 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.Enraged or self.vb.FissureCount == 1 then--Only casts two between phases, unless enraged
 			timerRumblingFissureCD:Start(nil, self.vb.FissureCount+1)
 		end
-	elseif spellId == 179709 then--Foul
+	elseif spellId == 181508 or spellId == 181515 then--Seeds
 		table.wipe(seedsTargets)
 	end
 end
