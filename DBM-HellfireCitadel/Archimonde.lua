@@ -344,9 +344,9 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self.Options.SetIconOnInfernals then
 			if self.vb.InfernalsActive > 0 then--Last set isn't dead yet, use alternate icons
-				self:ScanForMobs(94412, 2, 5, 3, 0.4, 25, "SetIconOnInfernals")
+				self:ScanForMobs(94412, 0, 5, 3, 0.4, 25, "SetIconOnInfernals")
 			else
-				self:ScanForMobs(94412, 2, 8, 3, 0.4, 25, "SetIconOnInfernals")
+				self:ScanForMobs(94412, 0, 8, 3, 0.4, 25, "SetIconOnInfernals")
 			end
 		end
 	elseif spellId == 190050 then
