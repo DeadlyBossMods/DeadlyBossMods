@@ -302,9 +302,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			updateRangeFrame(self)
 			specWarnPhantasmalFelBomb:Schedule(0.3)
 			yellPhantasmalFelBomb:Schedule(0.3)
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(15)
-			end
 		end
 	elseif spellId == 181753 then
 		warnFelBomb:Show(args.destName)
