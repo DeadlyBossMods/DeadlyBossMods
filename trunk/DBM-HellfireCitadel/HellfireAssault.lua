@@ -99,7 +99,7 @@ local voiceFelfireSiegeVehicles		= mod:NewVoice("ej11428")--One option for all 5
 
 mod:AddRangeFrameOption(8, 184369)
 mod:AddHudMapOption("HudMapOnAxe", 184369)
-mod:AddSetIconOption("SetIconOnAdds", "ej11411", false, true)--If last wave isn't dead before new wave, this icon option will screw up. A more complex solution may be needed. Or just accept that this will only work for guilds with high dps
+--mod:AddSetIconOption("SetIconOnAdds", "ej11411", false, true)--If last wave isn't dead before new wave, this icon option will screw up. A more complex solution may be needed. Or just accept that this will only work for guilds with high dps
 
 --[[
 Times are not exact, there are variations, timer tables will probably use lowest seen variation between two vehicles
@@ -338,7 +338,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceHowlingAxe:Play("runout")
 			updateRangeFrame(self, true)
 		end
-		if self.Options.HudMapOnArt then
+		if self.Options.HudMapOnAxe then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(184369, "highlight", args.destName, 5, 7, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
 	elseif spellId == 180076 then
@@ -350,7 +350,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 184369 then
-		if self.Options.HudMapOnArt then
+		if self.Options.HudMapOnAxe then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	end
@@ -382,10 +382,10 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		if npc == felCaster then
 			self.vb.felcasterCount = self.vb.felcasterCount + 1
 			warnFelCaster:Show(self.vb.felcasterCount)
-			if self.Options.SetIconOnAdds then
+			--if self.Options.SetIconOnAdds then
 				--Set icons starting at 6, not using skull and x, those will probably be used to auto mark terrors in a later feature
-				self:ScanForMobs(93931, 0, 6-self.vb.felCastersAlive, nil, 0.2, 15)
-			end
+			--	self:ScanForMobs(93931, 0, 6-self.vb.felCastersAlive, nil, 0.2, 15)
+			--end
 			if self:IsMythic() then
 			
 			else
