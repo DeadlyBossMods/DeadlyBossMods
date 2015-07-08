@@ -12,8 +12,8 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 179406 179582 181508 181515",
-	"SPELL_CAST_SUCCESS 181508 181515 179709",
+	"SPELL_CAST_START 179406 181508 181515",
+	"SPELL_CAST_SUCCESS 181508 181515 179709 179582",
 	"SPELL_AURA_APPLIED 181508 181515 182008 179670 179711 179681 179407 179667 189030 189031 189032",
 	"SPELL_AURA_REMOVED 179711 181508 181515 179667 189030 189031 189032",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -21,6 +21,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, auto send latent energy targets down for disembodied?
 --TODO, maybe add a "breaking soon" to 189031 or 189032
+--(ability.id = 179406) and type = "begincast" or (ability.id = 181508 or ability.id = 181515 or ability.id = 179709 or ability.id = 179582) and type = "cast" or (ability.id = 179667 or ability.id = 179681)
 --Encounter-Wide Mechanics
 local warnLatentEnergy					= mod:NewTargetAnnounce(182008, 3, nil, false)--Spammy, optional
 local warnEnrage						= mod:NewSpellAnnounce(179681, 3)
@@ -46,7 +47,7 @@ local specWarnSeedPosition				= mod:NewSpecialWarning("specWarnSeedPosition", ni
 local yellSeedsofDestruction			= mod:NewYell(181508)
 
 --Armed
-local timerRumblingFissureCD			= mod:NewCDTimer(40, 179582, nil, nil, nil, 5)
+local timerRumblingFissureCD			= mod:NewCDTimer(39, 179582, nil, nil, nil, 5)
 local timerBefouledCD					= mod:NewCDTimer(38, 179711, nil, nil, nil, 3)
 local timerSoulCleaveCD					= mod:NewCDTimer(40, 179406, nil, nil, nil, 3)
 local timerCavitationCD					= mod:NewCDTimer(40, 181461, nil, nil, nil, 2)
@@ -225,12 +226,6 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.Enraged or self.vb.SoulCleaveCount == 1 then--Only casts two between phases, unless enraged
 			timerSoulCleaveCD:Start(nil, self.vb.SoulCleaveCount+1)
 		end
-	elseif spellId == 179582 then
-		self.vb.FissureCount = self.vb.FissureCount + 1
-		warnRumblingFissure:Show(self.vb.FissureCount)
-		if self.vb.Enraged or self.vb.FissureCount == 1 then--Only casts two between phases, unless enraged
-			timerRumblingFissureCD:Start(nil, self.vb.FissureCount+1)
-		end
 	elseif spellId == 181508 or spellId == 181515 then--Seeds
 		table.wipe(seedsTargets)
 	end
@@ -246,6 +241,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		elseif self.vb.SeedsCount < 2 then--Only casts two between phases, unless enraged
 			timerSeedsofDestructionCD:Start(nil, self.vb.SeedsCount+1)
 			countdownSeedsofDestructionCD:Start(14.5)
+		end
+	elseif spellId == 179582 and self:AntiSpam(5, 4) then
+		self.vb.FissureCount = self.vb.FissureCount + 1
+		warnRumblingFissure:Show(self.vb.FissureCount)
+		if self.vb.Enraged or self.vb.FissureCount == 1 then--Only casts two between phases, unless enraged
+			timerRumblingFissureCD:Start(nil, self.vb.FissureCount+1)
 		end
 	elseif spellId == 179709 then--Foul
 		self.vb.BefouledCount = self.vb.BefouledCount + 1
@@ -293,11 +294,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCavitationCD:Cancel()
 		timerSeedsofDestructionCD:Cancel()
 		countdownSeedsofDestructionCD:Cancel()
+		timerRumblingFissureCD:Cancel()
 		self.vb.Enraged = true
 		self.vb.CavitationCount = 0
 		self.vb.SeedsCount = 0
+		self.vb.FissureCount = 0
 		warnEnrage:Show()
 		voiceEnrage:Play("enrage")
+		timerRumblingFissureCD:Start(6, 1)--Keep an eye on this
 		timerSeedsofDestructionCD:Start(27, 1)
 		countdownSeedsofDestructionCD:Start(27)
 		timerCavitationCD:Start(35.5, 1)
@@ -341,7 +345,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.SoulCleaveCount = 0
 		self.vb.CavitationCount = 0
 		specWarnDisarmedEnd:Show()
-		timerRumblingFissureCD:Start(3.5, 1)
+		timerRumblingFissureCD:Start(6, 1)--Keep an eye on this
 		timerBefouledCD:Start(13.5, 1)
 		timerSoulCleaveCD:Start(23, 1)
 		timerCavitationCD:Start(33, 1)
