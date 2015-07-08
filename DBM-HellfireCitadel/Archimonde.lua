@@ -368,8 +368,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerShackledTormentCD:Start()
 	elseif spellId == 187180 then
 		self.vb.demonicFeedback = false
-		self:Schedule(27.5, setDemonicFeedback, self)
-		specWarnDemonicFeedback:Schedule(27.5, self.vb.demonicCount+1)
+		self:Schedule(28, setDemonicFeedback, self)
+		specWarnDemonicFeedback:Schedule(28, self.vb.demonicCount+1)
 	end
 end
 
@@ -455,8 +455,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerAllureofFlamesCD:Cancel()--Done for rest of fight
 			timerDeathbrandCD:Cancel()--Done for rest of fight
 			countdownDeathBrand:Cancel()
-			self:Schedule(12, setDemonicFeedback, self)
-			specWarnDemonicFeedback:Schedule(12, 1)
+			self:Schedule(12.5, setDemonicFeedback, self)
+			specWarnDemonicFeedback:Schedule(12.5, 1)
 			timerDemonicFeedbackCD:Start(18)
 			countdownDemonicFeedback:Start(18)
 			timerShackledTormentCD:Cancel()--Resets to 55-11 here
@@ -644,7 +644,7 @@ function mod:OnSync(msg)
 		timerNetherBanishCD:Start(11)
 		countdownNetherBanish:Start(11)
 		timerDemonicFeedbackCD:Start(29)--29-33
-		self:Schedule(23, setDemonicFeedback, self)
+		self:Schedule(23.5, setDemonicFeedback, self)
 		specWarnDemonicFeedback:Schedule(23, 1)
 		countdownDemonicFeedback:Start(29)
 		timerShackledTormentCD:Cancel()--Resets to 55 here
