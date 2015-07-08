@@ -32,7 +32,7 @@ local warnGoreboundSpiritSoon			= mod:NewSoonAnnounce("ej11020", 3, 187814)
 local warnRagingCharge					= mod:NewSpellAnnounce(187814, 3, nil, "Melee")
 local warnCrushingDarkness				= mod:NewCastAnnounce(180017, 3, 6, nil, false)
 
-local specWarnShadowofDeath				= mod:NewSpecialWarningYou(179864, nil, nil, nil, 1, 5)
+local specWarnShadowofDeath				= mod:NewSpecialWarning("specWarnShadowofDeath", nil, nil, nil, 1, 5)
 local specWarnShadowofDeathTank			= mod:NewSpecialWarningTaunt(179864)
 local specWarnTouchofDoom				= mod:NewSpecialWarningRun(179977, nil, nil, nil, 4, 2)
 local yellTouchofDoom					= mod:NewYell(179977)
@@ -231,7 +231,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnShadowofDeath:CombinedShow(0.5, self.vb.shadowOfDeathCount, args.destName)
 		if args:IsPlayer() then
-			specWarnShadowofDeath:Show(self.vb.shadowOfDeathCount)
+			specWarnShadowofDeath:Show(args.spellName, self.vb.shadowOfDeathCount)
 			countdownShadowofDeath:Start()
 			voiceShadowofDeath:Play("teleyou")
 		end
