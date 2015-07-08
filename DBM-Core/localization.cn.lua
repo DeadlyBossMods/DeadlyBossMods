@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Jul 5 2015, 20:54 UTC@14031
+-- Last update: Jul 8 2015, 8:04 UTC@14062
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -11,7 +11,8 @@ DBM_CORE_NEED_LOGS					= "DBM 需要战斗记录器 (http://www.wowace.com/addon
 DBM_HOW_TO_USE_MOD					= "欢迎使用DBM。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。DBM 会在你第一次使用时读取你的职业和专精并做出相应设置，但是有些设置需要手动开启。"
 
 DBM_FORUMS_MESSAGE					= "发现BUG或错误的计时条?你希望要让某些模组有新的警告，计时器或是特别功能?\n拜访新的Deadly Boss Mods |HDBM:论坛|h|cff3588ffhttp://www.deadlybossmods.com|r (你可以点击链接复制网址)"
-DBM_FORUMS_COPY_URL_DIALOG			= "拜访我们的讨论与支持论坛\r\n(hosted by Elitist Jerks!)"
+DBM_FORUMS_COPY_URL_DIALOG			= "拜访我们的讨论与支持论坛"
+DBM_FORUMS_COPY_URL_DIALOG_NEWS		= "想知道更多关于新功能的信息请拜访我们的论坛"
 
 DBM_CORE_LOAD_MOD_ERROR				= "读取%s模块时发生错误：%s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 模块已加载。在聊天框输入 /dbm 可设置自定义语音或注记等选项。"
@@ -22,7 +23,7 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "DBM无法在战斗中更换皮肤。请先在非�
 DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，有些计时器可能会错误。请在离开战斗后马上重载界面。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本过旧。请升级DBM。"
 
-DBM_CORE_WHATS_NEW					= "最新更新：DBM现在支持计时条类型分类着色了。请大家前往计时条选项页折腾。"
+DBM_CORE_WHATS_NEW					= "最新更新：DBM现在支持计时条类型分类着色了。想要知道更多可以 |HDBM:forumsnews|h|cff3588ff 点击此处|r 访问我们的论坛"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "由于玩家数量不足，DBM 无法开启倒计时。"
