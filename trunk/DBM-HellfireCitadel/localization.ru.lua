@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(1426)
 
 L:SetTimerLocalization({
-	timerSiegeVehicleCD		= "След. %s машина",
+	timerSiegeVehicleCD		= "След. осад. машина %s",
 })
 
 L:SetOptionLocalization({
@@ -48,6 +48,10 @@ L:SetMiscLocalization({
 --Gorefiend --
 --------------------
 L= DBM:GetModLocalization(1372)
+
+L:SetWarningLocalization({
+	specWarnShadowofDeath	= "%s (%d) на вас"
+})
 
 L:SetTimerLocalization({
 	SoDDPS		= "След. Тени (%s)",
