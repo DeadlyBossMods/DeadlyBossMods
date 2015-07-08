@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Jul 5 2015, 20:54 UTC@14031
+-- Last update: Jul 8 2015, 8:04 UTC@14062
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -156,8 +156,8 @@ L.BarStartColorAdd			= "初始颜色 (小怪入场)"
 L.BarEndColorAdd			= "结束颜色 (小怪入场)"
 L.BarStartColorAOE			= "初始颜色 (AOE)"
 L.BarEndColorAOE			= "结束颜色 (AOE)"
-L.BarStartColorDebuff		= "初始颜色 (Debuff)"
-L.BarEndColorDebuff			= "结束颜色 (Debuff)"
+L.BarStartColorDebuff		= "初始颜色 (点名技能)"
+L.BarEndColorDebuff			= "结束颜色 (点名技能)"
 L.BarStartColorInterrupt	= "初始颜色 (打断)"
 L.BarEndColorInterrupt		= "结束颜色 (打断)"
 L.BarStartColorRole			= "初始颜色 (Role)"
