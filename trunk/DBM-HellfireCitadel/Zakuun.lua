@@ -68,7 +68,6 @@ local voiceEnrage						= mod:NewVoice(179681)--enrage
 
 mod:AddRangeFrameOption(10, 179711)
 --Icon options will conflict on mythic or 25-30 players (when you get 5 targets for each debuff). Below that, they can coexist.
---mod:AddSetIconOption("SetIconOnBefouled", 179711, false)--Start at 1, ascending--Disabled for now to avoid conflict, seeds icons are too important to create conflicts
 mod:AddSetIconOption("SetIconOnSeeds", 181508, true)--Start at 8, descending. On by default, because it's quite imperative to know who/where seed targets are at all times.
 mod:AddHudMapOption("HudMapOnSeeds", 181508)
 mod:AddDropdownOption("SeedsBehavior", {"Iconed", "Numbered", "DirectionLine", "FreeForAll"}, "Iconed", "misc")--CrossPerception, CrossCardinal, ExCardinal
@@ -114,7 +113,10 @@ local numberedVoiceAssignments = {"\\count\\1", "\\count\\2", "\\count\\3", "\\c
 local DirectionLineAssignments = {DBM_CORE_LEFT, DBM_CORE_MIDDLE..DBM_CORE_LEFT, DBM_CORE_MIDDLE, DBM_CORE_MIDDLE..DBM_CORE_RIGHT, DBM_CORE_RIGHT}
 local DirectionVoiceAssignments = {"left", "centerleft", "center", "centerright", "right"}
 local function warnSeeds(self)
-	if self:IsLFR() then return end
+	--Sort alphabetical to match bigwigs, and since combat log order may diff person to person
+	table.sort(seedsTargets)
+	warnSeedofDestruction:Show(self.vb.SeedsCount, table.concat(seedsTargets, "<, >"))
+	if self:IsLFR() or yellType == "FreeForAll" then return end
 	--Generate type
 	local currentType
 	local currentVoice
@@ -128,8 +130,6 @@ local function warnSeeds(self)
 		currentType = DirectionLineAssignments
 		currentVoice = DirectionVoiceAssignments
 	end
-	--Sort alphabetical to match bigwigs, and since combat log order may diff person to person
-	table.sort(seedsTargets)
 	for i = 1, #seedsTargets do
 		local targetName = seedsTargets[i]
 		if targetName == playerName then
@@ -147,7 +147,6 @@ local function warnSeeds(self)
 			self:SetIcon(targetName, i)
 		end
 	end
-	warnSeedofDestruction:Show(self.vb.SeedsCount, table.concat(seedsTargets, "<, >"))
 end
 
 local function warnWake(self)
@@ -159,15 +158,21 @@ end
 
 local function delayModCheck(self)
 	--Might be better if bigwigs just sent a "Numbered" sync on engage vs making 29 dbm users version check their raid leader.
+	local leaderHasBW = false
 	if IsInRaid() and not IsPartyLFG() then--Future proof in case solo/not in a raid
 		for i = 1, GetNumGroupMembers() do
-			if UnitIsGroupLeader("raid"..i, LE_PARTY_CATEGORY_HOME) then
-				self:CheckBigWigs(UnitName("raid"..i))
+			local uId = "raid"..i
+			if UnitIsGroupLeader(uId, LE_PARTY_CATEGORY_HOME) then
+				if self:CheckBigWigs(UnitName(uId)) then
+					leaderHasBW = true
+				end
 				break
 			end
 		end
-		DBM:AddMsg(L.BWConfigMsg)
-		yellType = "Numbered"
+		if leaderHasBW then
+			DBM:AddMsg(L.BWConfigMsg)
+			yellType = "Numbered"
+		end
 	end
 end
 
@@ -267,14 +272,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.HudMapOnSeeds then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 13, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
-		if yellType == "FreeForAll" then return end--Free for all, don't do any of fancy stuff
 		seedsTargets[#seedsTargets+1] = args.destName
 		self:Unschedule(warnSeeds)
 		local expectedCount = self:IsMythic() and 5 or 4--(30 man is still only 4 seeds)
 		if #seedsTargets == expectedCount then--Have all targets, warn immediately
 			warnSeeds(self)
 		else
-			self:Schedule(0.3, warnSeeds, self)--0.3 may be too short, verify
+			self:Schedule(0.5, warnSeeds, self)--0.5 may be too short, verify
 		end
 	elseif spellId == 182008 then
 		warnLatentEnergy:CombinedShow(1, args.destName)
@@ -308,9 +312,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				warnBefouled:CombinedShow(0.3, self.vb.BefouledCount, args.destName)
 			end
---			if self.Options.SetIconOnBefouled and not self:IsLFR() then
---				self:SetSortedIcon(0.7, args.destName, 8, nil, true)
---			end
 		end
 		updateRangeFrame(self)
 	elseif spellId == 179407 then
@@ -326,9 +327,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 189030 or spellId == 189031 or spellId == 189032 then--All versions
 		self.vb.befouledTargets = self.vb.befouledTargets - 1
---		if self.Options.SetIconOnBefouled and not self:IsLFR() then
---			self:SetIcon(args.destName, 0)
---		end
 		updateRangeFrame(self)
 	elseif spellId == 181508 or spellId == 181515 then
 		if self.Options.SetIconOnSeeds and not self:IsLFR() then
