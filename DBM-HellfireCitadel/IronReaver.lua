@@ -85,7 +85,8 @@ mod.vb.fuelCount = 0
 --These tables establish the cast sequence by ability.
 --If energy rates are different in different modes, then each table will need to be different.
 --These tables are Heroic/LFR timers. Hopefully all modes the same. If not, easily fixed
-local artilleryTimers = {8.9, 9, 30, 15, 9, 24, 15}--Phase 1, phase 2 is just 15
+local artilleryTimers = {9, 9, 30, 15, 9, 24, 15}--Phase 1, phase 2 is just 15
+local artilleryTimersN = {9, 39, 15, 33, 15}
 local barrageTimers = {11.7, 30, 12, 45}
 local blitzTimers = {63, 5, 58, 4.7}
 local unstableOrbsTimers = {3, 3, 3, 9, 6, 3, 21, 3, 30, 15}--While it may seem most of the timers (3 seconds apart) aren't useful. they can be quite useful for grouped movement/healing in the larger gaps
@@ -205,7 +206,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(3, 1) then
 			self.vb.artilleryCount = self.vb.artilleryCount + 1
 			if self.vb.groundPhase then
-				local cooldown = artilleryTimers[self.vb.artilleryCount+1]
+				local timersTable = self:IsDifficulty("lfr", "normal") and artilleryTimersN or artilleryTimers
+				local cooldown = timersTable[self.vb.artilleryCount+1]
 				if cooldown and self:IsTank() then--Only show timer to tanks in phase 1
 					timerArtilleryCD:Start(cooldown, self.vb.artilleryCount+1)
 					countdownArtillery:Start(cooldown)
