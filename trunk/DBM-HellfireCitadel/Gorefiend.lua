@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---(ability.id = 181973 or ability.id = 181582 or ability.id = 187814) and type = "begincast" or (ability.id = 179977 or ability.id = 182170 or ability.id = 181085) and type = "cast" or (ability.id = 179864 or ability.id = 185982) and (type = "applydebuff" or type = "applybuff")
+--(ability.id = 181973 or ability.id = 181582 or ability.id = 187814) and type = "begincast" or (ability.id = 179977 or ability.id = 182170 or ability.id = 181085) and type = "cast" or (ability.id = 179864 or ability.id = 185982 or ability.id = 189131) and (type = "applydebuff" or type = "applybuff")
 --TODO, Touch of Doom was 25 seconds in LFR, tested after heroic. changed? VERIFY
 local warnShadowofDeath					= mod:NewTargetCountAnnounce(179864, 3)
 local warnTouchofDoom					= mod:NewTargetAnnounce(179978, 4)
@@ -83,6 +83,15 @@ mod.vb.sharedFateCount = 0
 local playerDown = false
 local playersCount = 0
 local sharedFateTimers = {19, 28, 25, 22}
+local digestFilter
+do
+	local digestDebuff = GetSpellInfo(181295)
+	digestFilter = function(uId)
+		if UnitDebuff(uId, digestDebuff) then
+			return true
+		end
+	end
+end
 --[[
 Time   Player Role   # of players sent, if your raid size is...
                           10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29
@@ -115,7 +124,7 @@ function mod:OnCombatStart(delay)
 	playerDown = false
 	playersCount = DBM:GetGroupSize()
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(5)
+		DBM.RangeCheck:Show(5, digestDebuff)
 	end
 	if self:IsMythic() then
 		timerShadowofDeathCDDps:Start(2-delay, "2x"..DBM_CORE_DAMAGE_ICON)
@@ -287,9 +296,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceHungerforLife:Play("justrun")
 		end
 	elseif spellId == 181295 and args:IsPlayer() then
-		timerDigest:Start()
-		countdownDigest:Start()
+		if self:IsMythic() then
+			timerDigest:Start(30)
+			countdownDigest:Start(30)
+		else
+			timerDigest:Start()
+			countdownDigest:Start()
+		end
 		playerDown = true
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	elseif spellId == 185982 and not playerDown then--Cast when a Enraged Spirit in stomach reaches 70%
 		warnGoreboundSpiritSoon:Show()
 	elseif spellId == 185190 then
@@ -330,6 +347,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerDigest:Cancel()
 		countdownDigest:Cancel()
 		playerDown = false
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(5, digestDebuff)
+		end
 	elseif spellId == 181973 then--Phase restart
 		self.vb.shadowOfDeathCount = 0
 		specWarnFeastofSoulsEnded:Show()

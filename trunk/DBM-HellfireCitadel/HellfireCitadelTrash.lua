@@ -8,8 +8,8 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 189595 189612",
-	"SPELL_AURA_APPLIED 189533 188476 182644 186961 189512 187990 179219",
-	"SPELL_AURA_REMOVED 186961 187990 179219"
+	"SPELL_AURA_APPLIED 189533 188476 182644 186961 189512 187990 179219 187110",
+	"SPELL_AURA_REMOVED 186961 187990 179219 187110"
 )
 
 --First time mod loads, inject custom sound for kaz
@@ -35,6 +35,8 @@ local specWarnPhantasmalCorruption	= mod:NewSpecialWarningYou(187990)
 local yellPhantasmalCorruption		= mod:NewYell(187990)
 local specWarnPhantasmalFelBomb		= mod:NewSpecialWarningMoveAway(179219)--On trash, it is a move away
 local yellPhantasmalFelBomb			= mod:NewYell(179219)
+local specWarnFocusedFire			= mod:NewSpecialWarningYou(187110)
+local yellFocusedFire				= mod:NewYell(187110)
 local specWarnMarkofKaz				= mod:NewSpecialWarningYou(189512)
 
 local voiceSeverSoul				= mod:NewVoice(189533, "Tank")--changemt
@@ -102,6 +104,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(15)
 			end
 		end
+	elseif spellId == 187110 and args:IsPlayer() then
+		specWarnFocusedFire:Show()
+		yellFocusedFire:Yell()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(5, nil, nil, 2, true)--2 players or 3? 3 minimum right now i suppose since mythic is about 550k
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -113,6 +121,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 187990 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	elseif spellId == 179219 and args:IsPlayer() and self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	elseif spellId == 187110 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
 end
