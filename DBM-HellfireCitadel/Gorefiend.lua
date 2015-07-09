@@ -87,7 +87,7 @@ local digestFilter
 do
 	local digestDebuff = GetSpellInfo(181295)
 	digestFilter = function(uId)
-		if UnitDebuff(uId, digestDebuff) then
+		if not UnitDebuff(uId, digestDebuff) then
 			return true
 		end
 	end
@@ -124,7 +124,7 @@ function mod:OnCombatStart(delay)
 	playerDown = false
 	playersCount = DBM:GetGroupSize()
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(5, digestDebuff)
+		DBM.RangeCheck:Show(5, digestFilter)
 	end
 	if self:IsMythic() then
 		timerShadowofDeathCDDps:Start(2-delay, "2x"..DBM_CORE_DAMAGE_ICON)
@@ -348,7 +348,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		countdownDigest:Cancel()
 		playerDown = false
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(5, digestDebuff)
+			DBM.RangeCheck:Show(5, digestFilter)
 		end
 	elseif spellId == 181973 then--Phase restart
 		self.vb.shadowOfDeathCount = 0
