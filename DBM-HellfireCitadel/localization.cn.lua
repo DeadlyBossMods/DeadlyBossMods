@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: Jul 8 2015, 8:04 UTC@14062
+-- Last update: Jul 8 2015, 23:00 UTC@14064
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -57,6 +57,10 @@ L:SetMiscLocalization({
 --------------------
 L= DBM:GetModLocalization(1372)
 
+L:SetWarningLocalization({
+	specWarnShadowofDeath	= "你被第%d次死亡之影点名！"
+})
+
 L:SetTimerLocalization({
 	SoDDPS		= "下一次死亡之影 (%s)",
 	SoDTank		= "下一次死亡之影 (%s)",
@@ -74,7 +78,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1433)
 
 L:SetWarningLocalization({
-	specWarnThrowAnzu =	"快传安苏之眼给%s!"
+	specWarnThrowAnzu =	"快传安苏之眼给%s！"
 })
 
 L:SetOptionLocalization({
