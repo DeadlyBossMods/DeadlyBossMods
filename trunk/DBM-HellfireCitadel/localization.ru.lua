@@ -30,6 +30,10 @@ L= DBM:GetModLocalization(1425)
 ---------------------------
 L= DBM:GetModLocalization(1432)
 
+L:SetMiscLocalization({
+	Jubeideath		=	"Я - вечное пламя!"
+})
+
 ------------------
 -- Kormrok --
 ------------------
@@ -50,7 +54,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1372)
 
 L:SetWarningLocalization({
-	specWarnShadowofDeath	= "%s (%d) на вас"
+	specWarnShadowofDeath	= "Тень смерти (%d) на вас"
 })
 
 L:SetTimerLocalization({
