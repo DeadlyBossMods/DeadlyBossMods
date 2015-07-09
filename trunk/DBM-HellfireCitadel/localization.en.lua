@@ -53,7 +53,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1372)
 
 L:SetWarningLocalization({
-	specWarnShadowofDeath	= "%s (%d) on you"
+	specWarnShadowofDeath	= "Shadow of Death (%d) on you"
 })
 
 L:SetTimerLocalization({

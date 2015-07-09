@@ -231,7 +231,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnShadowofDeath:CombinedShow(0.5, self.vb.shadowOfDeathCount, args.destName)
 		if args:IsPlayer() then
-			specWarnShadowofDeath:Show(args.spellName, self.vb.shadowOfDeathCount)
+			specWarnShadowofDeath:Show(self.vb.shadowOfDeathCount)
 			countdownShadowofDeath:Start()
 			voiceShadowofDeath:Play("teleyou")
 		end
