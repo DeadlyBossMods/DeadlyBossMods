@@ -252,7 +252,7 @@ function mod:UNIT_DIED(args)
 			end
 		end
 	--His doesn't work, other 2 do
-	elseif cid == 92142 then--Blademaster Jubei'thosr
+	elseif cid == 92142 and not self.vb.jubeiDead then--Blademaster Jubei'thosr
 		DBM:Debug("Jubei died (CLEU)", 2)
 		self.vb.jubeiDead = true
 		--timerFelstormCD:Cancel()
@@ -302,7 +302,7 @@ end
 
 --Probably temporary. IEEU or UTC will probably be usuable but i need a transcriptor log to verify. I deleted all mine
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg:find(L.Jubeideath) or msg == L.Jubeideath then
+	if (msg:find(L.Jubeideath) or msg == L.Jubeideath) and not self.vb.jubeiDead then
 		DBM:Debug("Jubei died (Yell)", 2)
 		self.vb.jubeiDead = true
 		--timerFelstormCD:Cancel()
@@ -324,6 +324,23 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 187183 then--Mark of the Necromancer (30% version that marks half of enemies, Dia)
 		self.vb.DiaPushed = true
 		timerReapCD:Cancel()
+	--"<116.00 21:54:41> [UNIT_SPELLCAST_SUCCEEDED] Blademaster Jubei'thos(Omegal) [[boss2:Ghostly::0:190618]]", -- [7030]
+	--"<116.05 21:54:41> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I am everburning!#Blademaster Jubei'thos#####0#0##0#196#nil#0#false#false#false", -- [7037]
+	elseif spellId == 190618 and not self.vb.jubeiDead then--Jubei Dying
+		DBM:Debug("Jubei died (UNIT_SPELLCAST_SUCCEEDED)", 2)
+		self.vb.jubeiDead = true
+		--timerFelstormCD:Cancel()
+		local elapsed, total = timerMirrorImageCD:GetTime()
+		timerMirrorImageCD:Cancel()
+		if elapsed > 0 then--Timer existed, which means it was next
+			DBM:Debug("updating specials timer", 2)
+			--So now we update next based on remaining bosses
+			if not self.vb.bloodboilDead then--Leap is next if bloodboil not dead
+				timerDemoLeapCD:Update(elapsed, total)
+			else--Only dia left left, darkness will be next
+				timerDarknessCD:Update(elapsed, total)
+			end
+		end
 	end
 end
 
