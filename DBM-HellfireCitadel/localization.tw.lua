@@ -30,6 +30,10 @@ L= DBM:GetModLocalization(1425)
 ---------------------------
 L= DBM:GetModLocalization(1432)
 
+L:SetMiscLocalization({
+	Jubeideath		=	"我永不熄滅！"
+})
+
 ------------------
 -- Kormrok --
 ------------------
@@ -48,6 +52,10 @@ L:SetMiscLocalization({
 --Gorefiend --
 --------------------
 L= DBM:GetModLocalization(1372)
+
+L:SetWarningLocalization({
+	specWarnShadowofDeath	= "你中了死亡之影(%d)"
+})
 
 L:SetTimerLocalization({
 	SoDDPS		= "下一次死亡之影(%s)",
@@ -150,7 +158,7 @@ L:SetMiscLocalization({
 	phase2				= "我玩膩這種無聊的遊戲了。面對永垂不朽的軍團，萬千世界的災禍吧！",
 	phase2point5		= "看看燃燒軍團的軍容有多壯盛，就知道你們無謂的抵抗有多愚蠢。",
 	phase3				= "不勝即亡！惡魔被逼退了！攻向傳送門！把古爾丹留給我！",
-	phase3point5		= "I will shatter this pathetic world! Its broken husk will be torn apart in the twisting nether for all time!",--Not currently used. seems fire at same time as UNIT event that's present. Here only in case things change from now and live
+	phase3point5		= "我要粉碎這個世界！世上的一切都會在扭曲虛空化為碎片！直到永遠！",
 	First				= "第一個",
 	Second				= "第二個",
 	Third				= "第三個",
