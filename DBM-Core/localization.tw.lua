@@ -16,7 +16,7 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "DBM計時條在戰鬥中套用外觀失敗。你�
 DBM_CORE_BAD_LOAD					= "DBM偵測到你的此副本的模組在戰鬥中讀取失敗。一旦脫離戰鬥，請立即輸入/consoel reloadui重新載入。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s不能被讀取因為你的DBM核心未達需求，請更新版本。"
 
-DBM_CORE_WHATS_NEW					= "此版本新功能： DBM註記功能已經可以分享或其他增進遊戲體驗的功能。需要更多有關於註記更新或如何使用，請拜訪我們的討論區。"
+DBM_CORE_WHATS_NEW					= "此版本新功能： DBM計時器可以根據不同類型的技能上色。此功能可以從計時條樣式去設定。想知道此功能的詳細資訊請至|HDBM:forumsnews|h|cff3588ffclicking here|r"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM已中禁用動態距離框架，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM已中禁用小怪計數警告，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
