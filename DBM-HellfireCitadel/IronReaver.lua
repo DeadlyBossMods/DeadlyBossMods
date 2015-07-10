@@ -38,7 +38,7 @@ local specWarnFirebomb				= mod:NewSpecialWarningSwitchCount(181999, "-Healer", 
 --mod:AddTimerLine(ALL)--Uncomment when ground phase and air phase are done, don't want to enable this line now and incorrectly flag everything as "All"
 local timerArtilleryCD				= mod:NewNextCountTimer(15, 182108, nil, nil, nil, 3)
 --mod:AddTimerLine(ALL)--Find translation that works for "Ground Phase"
-local timerUnstableOrbCD			= mod:NewNextCountTimer(3, 182001, nil, "Ranged", nil, 2)
+local timerUnstableOrbCD			= mod:NewNextCountTimer(3, 182001, nil, "Ranged", nil, 3)
 local timerPoundingCD				= mod:NewNextCountTimer(24, 182020, nil, nil, nil, 2)
 local timerBlitzCD					= mod:NewNextCountTimer(5, 179889, nil, nil, nil, 3)
 local timerBarrageCD				= mod:NewNextCountTimer(15, 185282, nil, nil, nil, 3)
@@ -89,7 +89,7 @@ local artilleryTimers = {9, 9, 30, 15, 9, 24, 15}--Phase 1, phase 2 is just 15
 local artilleryTimersN = {9, 39, 15, 33, 15}
 local barrageTimers = {11.7, 30, 12, 45}
 local blitzTimers = {63, 5, 58, 4.7}
-local unstableOrbsTimers = {3, 3, 3, 9, 6, 3, 21, 3, 30, 15}--While it may seem most of the timers (3 seconds apart) aren't useful. they can be quite useful for grouped movement/healing in the larger gaps
+local unstableOrbsTimers = {3, 3, 3, 9, 6, 3, 21, 3, 30, 15}--These don't seem nearly this bad anymore? Review them for changes
 local poundingTimers = {32.6, 54, 24}
 
 local debuffFilter
