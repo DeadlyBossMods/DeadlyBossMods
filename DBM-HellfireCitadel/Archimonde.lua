@@ -641,7 +641,7 @@ function mod:OnSync(msg)
 		timerAllureofFlamesCD:Cancel()--Done for rest of fight
 		timerDeathbrandCD:Cancel()--Done for rest of fight
 		countdownDeathBrand:Cancel()
-		timerNetherBanishCD:Start(11)
+		timerNetherBanishCD:Start(11, 1)
 		countdownNetherBanish:Start(11)
 		timerDemonicFeedbackCD:Start(29)--29-33
 		self:Schedule(23.5, setDemonicFeedback, self)
