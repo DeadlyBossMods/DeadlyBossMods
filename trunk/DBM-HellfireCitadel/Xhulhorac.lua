@@ -38,6 +38,7 @@ local warnEmpoweredFelChains		= mod:NewTargetAnnounce(189775, 3)--Mythic
 local warnVoidPortal				= mod:NewSpellAnnounce(187006, 2)
 local warnVoidSurge					= mod:NewTargetAnnounce(186333, 3)
 local warnVoidStrike				= mod:NewSpellAnnounce(186292, 3, nil, "Tank")
+local warnVoids						= mod:NewCountAnnounce("ej11714", 2, 697, "Ranged")
 ----
 --local warnWitheringGaze			= mod:NewStackAnnounce(186785, 2, nil, "Tank")
 --End Phase
@@ -85,6 +86,7 @@ local timerEmpFelChainsCD			= mod:NewAITimer(15.9, 189775, nil, "-Tank", nil, 3)
 ----Boss
 local timerVoidStrikeCD				= mod:NewCDTimer(17, 186292, nil, "Tank", nil, 5)
 local timerVoidSurgeCD				= mod:NewCDTimer(30, 186333, nil, nil, nil, 3)
+local timerVoidsCD					= mod:NewNextTimer(30, "ej11714", nil, "Ranged", nil, 1, 697)
 ----Big Add
 local timerWitheringGazeCD			= mod:NewCDTimer(14.5, 186783, nil, "Tank", 2, 5)
 local timerBlackHoleCD				= mod:NewCDTimer(29.5, 186546, nil, nil, nil, 5)
@@ -114,6 +116,7 @@ mod:AddDropdownOption("ChainsBehavior", {"Cast", "Applied", "Both"}, "Both", "mi
 mod.vb.EmpFelChainCount = 0
 mod.vb.phase = 1
 mod.vb.impCount = 0
+mod.vb.voidCount = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local AddsSeen = {}
 
@@ -141,12 +144,22 @@ local function updateRangeFrame(self)
 	end
 end
 
+--You can use their first cast, but scheduling is more accurate from what i've tested
+--First cast will break if imps are stunned/interrupted by gorefiends grip on spawn and don't begin their first cast
+--not to mention their first cast is a good 1.5-2 seconds after spawn, if it isn't prevented
 local function ImpRepeater(self)
 	self.vb.impCount = self.vb.impCount + 1
 	specWarnImps:Show(self.vb.impCount)
 	timerImpCD:Start(nil, self.vb.impCount+1)
 	countdownImps:Start()
 	self:Schedule(25, ImpRepeater, self)
+end
+
+local function VoidsRepeater(self)
+	self.vb.voidCount = self.vb.voidCount + 1
+	warnVoids:Show(self.vb.voidCount)
+	timerVoidsCD:Start(nil, self.vb.voidCount+1)
+	self:Schedule(30, VoidsRepeater, self)
 end
 
 function mod:FelChains(targetname, uId)
@@ -173,6 +186,7 @@ function mod:OnCombatStart(delay)
 	self.vb.EmpFelChainCount = 0
 	self.vb.phase = 1
 	self.vb.impCount = 0
+	self.vb.voidCount = 0
 	table.wipe(AddsSeen)
 	timerFelStrikeCD:Start(8-delay)
 	timerFelSurgeCD:Start(21-delay)
@@ -407,12 +421,16 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 187006 then--Activate Void Portal
 		warnVoidPortal:Show()
+		if not self:IsLFR() then
+			timerVoidsCD:Start(11.5)
+			self:Schedule(11.5, VoidsRepeater, self)
+		end
 	elseif spellId == 187003 then--Activate Fel Portal
 		warnFelPortal:Show()
 		if not self:IsLFR() then
-			timerImpCD:Start(12)
-			countdownImps:Start(12)
-			self:Schedule(12, ImpRepeater, self)
+			timerImpCD:Start(11.5)
+			countdownImps:Start(11.5)
+			self:Schedule(11.5, ImpRepeater, self)
 		end
 	elseif spellId == 187225 then--Phase 2 (Purple Mode)
 		self.vb.phase = 2
