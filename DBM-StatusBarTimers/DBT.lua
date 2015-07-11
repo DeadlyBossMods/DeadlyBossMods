@@ -389,6 +389,10 @@ options = {
 		type = "string",
 		default = STANDARD_TEXT_FONT,
 	},
+	FontFlag = {
+		type = "string",
+		default = "None",
+	},
 	FontSize = {
 		type = "number",
 		default = 10
@@ -1182,10 +1186,10 @@ function barPrototype:ApplyStyle()
 	texture:SetAlpha(1)
 	bar:SetAlpha(1)
 	frame:SetAlpha(1)
-	local barFont, barFontSize = self.owner.options.Font, self.owner.options.FontSize
-	name:SetFont(barFont, barFontSize)
+	local barFont, barFontSize, barFontFlag = self.owner.options.Font, self.owner.options.FontSize, self.owner.options.FontFlag
+	name:SetFont(barFont, barFontSize, barFontFlag)
 	name:SetPoint("LEFT", bar, "LEFT", 3, 0)
-	timer:SetFont(barFont, barFontSize)
+	timer:SetFont(barFont, barFontSize, barFontFlag)
 	self:Update(0)
 	applyFailed = false--Got to end with no script ran too long
 end
