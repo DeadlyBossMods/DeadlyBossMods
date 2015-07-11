@@ -436,7 +436,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 	if msg:find(L.felSpire) and self:AntiSpam(10, 4) then
 		self.vb.phase = self.vb.phase + 1
 		if self.vb.phase == 3 then
-			self.vb.infernalCount = 0
 			timerFelHellfireCD:Cancel()
 			timerShadowForceCD:Cancel()
 			countdownShadowForce:Cancel()
@@ -452,7 +451,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			timerGazeCD:Start(44.5)
 			timerGlaiveComboCD:Start(44.9)
 			countdownGlaiveCombo:Start(44.9)
-			timerInfernoCD:Start(46.1, 1)
+			self.vb.ignoreAdds = true
+			self:Schedule(20, clearIgnore, self)
+			self.vb.infernalCount = 1
+			timerInfernoCD:Start(46.1, 2)
 			timerFelSeekerCD:Start(68)
 			warnPhase3:Show()
 			voicePhaseChange:Play("pthree")
@@ -490,7 +492,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	--Backup phase detection. a bit slower than CHAT_MSG_RAID_BOSS_EMOTE (5.5 seconds slower)
 	elseif spellId == 182263 and self.vb.phase == 2 then--Phase 3
 		self.vb.phase = 3
-		self.vb.infernalCount = 0
 		timerFelImplosionCD:Cancel()
 		timerInfernoCD:Cancel()
 		timerFelHellfireCD:Cancel()
@@ -506,6 +507,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerGazeCD:Start(39.0)
 		timerGlaiveComboCD:Start(39.4)
 		countdownGlaiveCombo:Start(39.4)
+		self.vb.ignoreAdds = true
+		self:Schedule(20, clearIgnore, self)
+		self.vb.infernalCount = 1
+		timerInfernoCD:Start(46.1, 2)
 		timerInfernoCD:Start(40.73, 1)
 		timerFelSeekerCD:Start(62.5)
 		if self:IsMythic() then
