@@ -191,7 +191,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnRisingFlames:Show(amount)
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitDebuff("player", GetSpellInfo(163284)) and not UnitIsDeadOrGhost("player") then
+					if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
 						specWarnRisingFlamesOther:Show(args.destName)
 						voiceRisingFlames:Play("changemt")
 					else

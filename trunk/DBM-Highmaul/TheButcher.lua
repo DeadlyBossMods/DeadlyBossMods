@@ -116,7 +116,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnTenderizer:Show(amount)
 			else
-				if not UnitDebuff("player", GetSpellInfo(156151)) and not UnitIsDeadOrGhost("player") then
+				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
 					specWarnTenderizerOther:Show(args.destName)
 				else
 					warnTenderizer:Show(args.destName, amount)
