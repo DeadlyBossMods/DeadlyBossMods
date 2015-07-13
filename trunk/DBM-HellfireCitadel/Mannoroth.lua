@@ -195,6 +195,9 @@ function mod:OnCombatStart(delay)
 	self.vb.DoomTargetCount = 0
 	timerFelImplosionCD:Start(15-delay, 1)
 	timerInfernoCD:Start(18.4-delay, 1)--Verify, seems 20 now
+	if self:IsMythic() then
+		DBM:AddMsg("This mod will not work correctly on mythic. Not until someones makes their logs available for this. Or more idealy, captures logs with transcriptor so the phase change detection can be fixed.")
+	end
 end
 
 function mod:OnCombatEnd()
