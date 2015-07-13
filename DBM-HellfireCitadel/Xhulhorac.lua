@@ -22,8 +22,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---(ability.id = 190223 or ability.id = 190224 or ability.id = 186453 or ability.id = 186783 or ability.id = 186546 or ability.id = 189779 or ability.id = 186490 or ability.id = 189775) and type = "begincast" or (ability.id = 186407 or ability.id = 186333) and type = "cast" or ability.id = 187204 and type = "applybuff" or (target.id = 94185 or target.id =  94239) and type = "death"
---TODO, 189777 is probably not incombat log, it's probably hidden.
+--(target.id = 94185 or target.id =  94239) and type = "death" or (ability.id = 190223 or ability.id = 190224 or ability.id = 186453 or ability.id = 186783 or ability.id = 186546 or ability.id = 189779 or ability.id = 186490 or ability.id = 189775) and type = "begincast" or (ability.id = 186407 or ability.id = 186333) and type = "cast" or ability.id = 187204 and type = "applybuff"
 --Fire Phase
 ----Boss
 local warnFelPortal					= mod:NewSpellAnnounce(187003, 2)
@@ -31,7 +30,6 @@ local warnFelSurge					= mod:NewTargetAnnounce(186407, 3)
 local warnFelStrike					= mod:NewSpellAnnounce(186271, 3, nil, "Tank")
 ----Adds
 local warnFelChains					= mod:NewTargetAnnounce(186490, 3)
---local warnFelBlazeFlurry			= mod:NewStackAnnounce(186448, 2, nil, "Tank")
 local warnEmpoweredFelChains		= mod:NewTargetAnnounce(189775, 3)--Mythic
 --Void Phase
 ----Boss
@@ -40,7 +38,6 @@ local warnVoidSurge					= mod:NewTargetAnnounce(186333, 3)
 local warnVoidStrike				= mod:NewSpellAnnounce(186292, 3, nil, "Tank")
 local warnVoids						= mod:NewCountAnnounce("ej11714", 2, 697, "Ranged")
 ----
---local warnWitheringGaze			= mod:NewStackAnnounce(186785, 2, nil, "Tank")
 --End Phase
 local warnOverwhelmingChaos			= mod:NewCountAnnounce(187204, 4)
 
@@ -58,7 +55,6 @@ local yellFelSurge					= mod:NewYell(186407)
 local specWarnImps					= mod:NewSpecialWarningSwitchCount("ej11694", "Dps")
 ----Adds
 local specWarnFelBlazeFlurry		= mod:NewSpecialWarningSpell(186453, "Tank")
---local specWarnFelBlazeFlurryOther	= mod:NewSpecialWarningTaunt(186453)
 local specWarnFelChains				= mod:NewSpecialWarningYou(186490)
 local specWarnEmpoweredFelChains	= mod:NewSpecialWarningYou(189775)
 local yellFelChains					= mod:NewYell(186490)
@@ -69,7 +65,6 @@ local specWarnVoidSurge				= mod:NewSpecialWarningYou(186333, nil, nil, nil, 1, 
 local yellVoidSurge					= mod:NewYell(186333)
 ----Adds
 local specWarnWitheringGaze			= mod:NewSpecialWarningSpell(186783, "Tank")
---local specWarnWitheringGazeOther	= mod:NewSpecialWarningTaunt(186785)--Debuff must swap for
 local specWarnBlackHole				= mod:NewSpecialWarningSpell(186546, nil, nil, nil, 2)
 local specWarnEmpBlackHole			= mod:NewSpecialWarningSpell(189779, nil, nil, nil, 2)--Mythic
 
@@ -80,8 +75,8 @@ local timerFelSurgeCD				= mod:NewCDTimer(30, 186407, nil, nil, nil, 3)
 local timerImpCD					= mod:NewNextTimer(25, "ej11694", nil, nil, nil, 1, 112866)
 ----Big Add
 local timerFelBlazeFlurryCD			= mod:NewCDTimer(15.9, 186453, nil, "Tank", nil, 5)
-local timerFelChainsCD				= mod:NewCDTimer(15.9, 186490, nil, "-Tank", nil, 3)
-local timerEmpFelChainsCD			= mod:NewAITimer(15.9, 189775, nil, "-Tank", nil, 3)--Temp, so can use AI timer for it. Will combine with above when data known
+local timerFelChainsCD				= mod:NewCDTimer(30, 186490, nil, "-Tank", nil, 3)--30-34. Often 34 but it can and will be 30 sometimes.
+local timerEmpFelChainsCD			= mod:NewCDTimer(30, 189775, nil, "-Tank", nil, 3)--Merge with timerFelChainsCD?
 --Void Phase
 ----Boss
 local timerVoidStrikeCD				= mod:NewCDTimer(17, 186292, nil, "Tank", nil, 5)
@@ -90,7 +85,7 @@ local timerVoidsCD					= mod:NewNextTimer(30, "ej11714", nil, "Ranged", nil, 1, 
 ----Big Add
 local timerWitheringGazeCD			= mod:NewCDTimer(14.5, 186783, nil, "Tank", 2, 5)
 local timerBlackHoleCD				= mod:NewCDTimer(29.5, 186546, nil, nil, nil, 5)
-local timerEmpBlackHoleCD			= mod:NewAITimer(29.5, 189779, nil, nil, nil, 5)
+local timerEmpBlackHoleCD			= mod:NewCDTimer(29.5, 189779, nil, nil, nil, 5)--Merge with timerBlackHoleCD?
 --End Phase
 local timerOverwhelmingChaosCD		= mod:NewNextCountTimer(10, 187204, nil, nil, nil, 3)
 
@@ -335,32 +330,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end	
 		end
 		updateRangeFrame(self)
---[[	elseif spellId == 186448 then
-		local amount = args.amount or 1
-		if amount >= 3 then
-			if not args:IsPlayer() then
-				if not UnitDebuff("player", GetSpellInfo(186448)) and not UnitIsDeadOrGhost("player") then
-					specWarnFelBlazeFlurryOther:Show(args.destName)
-				else
-					warnFelBlazeFlurry:Show(args.destName, amount)
-				end
-			end
-		else
-			warnFelBlazeFlurry:Show(args.destName, amount)
-		end
-	elseif spellId == 186785 then
-		local amount = args.amount or 1
-		if amount >= 3 then
-			if not args:IsPlayer() then
-				if not UnitDebuff("player", GetSpellInfo(186785)) and not UnitIsDeadOrGhost("player") then
-					specWarnWitheringGazeOther:Show(args.destName)
-				else
-					warnWitheringGaze:Show(args.destName, amount)
-				end
-			end
-		else
-			warnWitheringGaze:Show(args.destName, amount)
-		end--]]
 	elseif spellId == 187204 then
 		local amount = args.amount or 1
 		warnOverwhelmingChaos:Show(amount)
@@ -407,13 +376,13 @@ function mod:UNIT_DIED(args)
 		timerFelBlazeFlurryCD:Cancel()
 		timerFelChainsCD:Cancel()
 		if self:IsMythic() then
-			timerEmpFelChainsCD:Start(1)
+			timerEmpFelChainsCD:Start(28)
 		end
 	elseif cid == 94239 then--Omnus
 		timerWitheringGazeCD:Cancel()
 		timerBlackHoleCD:Cancel()
 		if self:IsMythic() then
-			timerEmpBlackHoleCD:Start(1)
+			timerEmpBlackHoleCD:Start(18)
 		end
 	end
 end
