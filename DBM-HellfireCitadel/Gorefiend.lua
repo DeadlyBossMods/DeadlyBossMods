@@ -316,7 +316,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnBurning:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
-				if not UnitDebuff("player", GetSpellInfo(185190)) and not UnitIsDeadOrGhost("player") then
+				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
 					specWarnBurningOther:Show(args.destName)
 				end
 			end
