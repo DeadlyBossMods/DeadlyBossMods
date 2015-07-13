@@ -328,7 +328,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				if args:IsPlayer() then
 					specWarnSearingFangs:Show(amount)
 				else
-					if not UnitDebuff("player", GetSpellInfo(155030)) and not UnitIsDeadOrGhost("player") then
+					if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
 						specWarnSearingFangsOther:Show(args.destName)
 					else
 						warnSearingFangs:Show(args.destName, amount)

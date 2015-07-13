@@ -153,7 +153,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 				specWarnOpenWounds:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
-				if not UnitDebuff("player", GetSpellInfo(159178)) and not UnitIsDeadOrGhost("player") then
+				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
 					specWarnOpenWoundsOther:Show(args.destName)
 				else
 					warnOpenWounds:Show(args.destName, amount)
