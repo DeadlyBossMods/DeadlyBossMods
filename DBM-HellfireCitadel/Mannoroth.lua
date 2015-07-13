@@ -14,7 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181126 181132 181557 183376 181793 181792 181738 181799 182084 185830 181948 182040 182076 182077 186348 181099 181597 182006",
 	"SPELL_CAST_SUCCESS 181190 181597 182006",
 	"SPELL_AURA_APPLIED 181099 181275 181191 181597 182006",
-	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_APPLIED_DOSE 181119",
 	"SPELL_AURA_REMOVED 181099 181275 185147 182212 185175 181597 182006 181275",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
@@ -34,6 +34,7 @@ mod:RegisterEventsInCombat(
 ----Doom Lords
 local warnCurseoftheLegion			= mod:NewTargetAnnounce(181275, 3)--Spawn
 local warnMarkofDoom				= mod:NewTargetAnnounce(181099, 4)
+local warnDoomSpike					= mod:NewStackAnnounce(181119, 3, nil, "Tank")
 ----Fel Imp
 local warnFelImplosion				= mod:NewCountAnnounce(181255, 3)--Spawn
 ----Dread Infernals
@@ -53,6 +54,7 @@ local yellCurseofLegion				= mod:NewFadesYell(181275)--Don't need to know when i
 local specWarnMarkOfDoom			= mod:NewSpecialWarningYou(181099, nil, nil, nil, 1, 2)
 local yellMarkOfDoom				= mod:NewPosYell(181099)--This need to know at apply, only player needs to know when it's fading
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(181126, "-Healer", nil, nil, 1, 2)
+local specWarnDoomSpikeOther		= mod:NewSpecialWarningTaunt(181119, nil, nil, nil, 1, 2)
 ----Fel Imps
 local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, false, nil, 2, 1, 2)--Can be spammy, but someone may want it
 ----Dread Infernals
@@ -195,7 +197,11 @@ function mod:OnCombatStart(delay)
 	self.vb.DoomTargetCount = 0
 	timerFelImplosionCD:Start(15-delay, 1)
 	timerInfernoCD:Start(18.4-delay, 1)--Verify, seems 20 now
+	timerCurseofLegionCD:Start(1)
 	if self:IsMythic() then
+		--Start fight on phase 2?
+		--Do phase 2 or phase 1 infernal/imp timers get used on combat start?
+		timerWrathofGuldanCD:Start(1)
 		DBM:AddMsg("This mod will not work correctly on mythic. Not until someones makes their logs available for this. Or more idealy, captures logs with transcriptor so the phase change detection can be fixed.")
 	end
 end
@@ -350,6 +356,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.HudMapOnGaze then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 8, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
+	elseif spellId == 181119 then
+		local amount = args.amount or 1
+		if amount % 3 == 0 or amount > 6 then
+			warnDoomSpike:Show(args.destName, amount)
+			if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+				specWarnDoomSpikeOther:Show(args.destName)
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -377,11 +391,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.vb.portalsLeft == 0 and self:AntiSpam(10, 4) and self:IsInCombat() then
 			self.vb.phase = 2
-			timerFelHellfireCD:Start(28)
-			timerGazeCD:Start(40)
-			timerGlaiveComboCD:Start(42.5)
-			countdownGlaiveCombo:Start(42.5)
-			timerFelSeekerCD:Start(58)
+			--These should be active already from pull on mythic
+			--Whether or not they update is unknown, better to start no timers until more info
+			if not self:IsMythic() then
+				timerFelHellfireCD:Start(28)
+				timerGazeCD:Start(40)
+				timerGlaiveComboCD:Start(42.5)
+				countdownGlaiveCombo:Start(42.5)
+				timerFelSeekerCD:Start(58)
+			end
 			warnPhase2:Show()
 			voicePhaseChange:Play("ptwo")
 			--First casts are often variable and sometimes don't happen at all, and messes up mod, so DBM will ignore first cast and start timers for reliable 2nd+
@@ -391,12 +409,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			self.vb.infernalCount = 1
 			timerFelImplosionCD:Start(42, 2)
 			timerInfernoCD:Start(65.5, 2)
-			if self:IsMythic() then
-				timerWrathofGuldanCD:Start(2)
-				if portalDestroyed then--Temp, to make AI timer work better
-					timerCurseofLegionCD:Start(2)--No idea if it works this way. doesn't say when he restores the portal, or if portal is every destroyed in first place.
-				end
-			end
 		end
 	elseif spellId == 181597 or spellId == 182006 then
 		if self.Options.HudMapOnGaze then
