@@ -7,6 +7,7 @@ mod:SetEncounterID(1778)
 mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(13937)
+mod.syncThreshold = 4
 --mod.respawnTime = 20
 
 mod:RegisterCombat("combat")
@@ -24,6 +25,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"--Have to register all unit ids to catch the boss when she casts haste
 )
 
+--ability.id = 180927 and type = "applybuff" or overkill > 0 and target.name in ("Felfire Crusher", "Felfire Artillery", "Felfire Demolisher", "Felfire Flamebelcher")
 --Siegemaster Mar'tak
 local warnHowlingAxe				= mod:NewTargetAnnounce(184369, 3)
 local warnFelfireMunitions			= mod:NewTargetAnnounce(180079, 1)
@@ -98,63 +100,12 @@ mod:AddRangeFrameOption(8, 184369)
 mod:AddHudMapOption("HudMapOnAxe", 184369)
 --mod:AddSetIconOption("SetIconOnAdds", "ej11411", false, true)--If last wave isn't dead before new wave, this icon option will screw up. A more complex solution may be needed. Or just accept that this will only work for guilds with high dps
 
---[[
-Times are not exact, there are variations, timer tables will probably use lowest seen variation between two vehicles
-LFR/Normal Vehicles
-0:39 Felfire Flamebelcher
-1:43 Felfire Crusher
-2:39 Felfire Artillery
-3:42 Felfire Crusher
-4:38 Felfire Flamebelcher
-5:42 Felfire Artillery
-6:40 Felfire Crusher
-7:20 Felfire Flamebelcher
-8:20 Felfire Crusher
-
-Heroic Vehicles
-0:39 Felfire Flamebelcher
-1:43 Felfire Crusher
-2:39 Felfire Artillery
-3:42 Felfire Demolisher
-4:38 Felfire Flamebelcher
-5:42 Felfire Artillery
-6:40 Felfire Demolisher
-7:20 Felfire Flamebelcher
-8:20 Felfire Crusher
-
-Mythic Vehicles
-https://www.warcraftlogs.com/reports/nvaX4f3P7GkxqmNc#type=summary&hostility=1&fight=12&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+180927+and+type+%3D+%22applybuff%22
-https://www.warcraftlogs.com/reports/rQWG71xhLgnbvdYq#fight=12&type=summary&hostility=1&view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+180927+and+type+%3D+%22applybuff%22
-1-0:52.604 Felfire Artillery (Left)
-2-0:55.101 Felfire Artillery (Right)
-3-1:13.435 Felfire Demolisher (Left)
-4-1:21.140 Felfire Flamebelcher (Right)
-5-2:07.661 Felfire Flamebelcher (Left)
-6-2:15.773 Felfire Demolisher (Right)
-7-2:53.171 Felfire Artillery (Left)
-8-3:01.320 Felfire Flamebelcher (Right)
-9-**3:05.578 Felfire Transporter (carrying Grand Corruptor U'rogg) (Center)
-10-**3:17.606 Felfire Crusher (Center)
-11-**3:55.651 Felfire Demolisher (carrying Grute) (Center)
-12-5:02.780 Felfire Flamebelcher (Left)
-13-5:04.395 Felfire Artillery (Right)
-14-5:53.196 Felfire Demolisher (Left)
-15-6:00.048 Felfire Transporter (Right)
-16-6:28.507 Felfire Flamebelcher (Left)
-17-6:35.465 Felfire Demolisher (Right)
-18-7:09.281 Felfire Demolisher (Left)
-19-7:14.914 Felfire Flamebelcher (Right)
-20-7:38.913 Felfire Transporter (Left)
-21-7:40.126 Felfire Demolisher (Right)
---]]
-
 mod.vb.vehicleCount = 0
 mod.vb.felcasterCount = 0
 mod.vb.felCastersAlive = 0
 mod.vb.berserkerCount = 0
 mod.vb.axeActive = false
 --Vehicles spawn early if killed fast enough, these are times they spawn whether ready or not (still 2-3 sec variation)
---ability.id = 180927 and type = "applybuff" or overkill > 0 and target.name in ("Felfire Crusher", "Felfire Artillery", "Felfire Demolisher", "Felfire Flamebelcher")
 local normalVehicleTimers = {72, 59, 63, 60, 58, 55, 38, 46}
 local vehicleTimers = {62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 40.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-4 seconds
 local mythicVehicleTimers = {19.6, 23.6, 54, 54, 36.5, 35.7, 12, 12.6, 30.3, 67, 68.5, 50.5, 55.5, 33.8, 33.4, 35, 31.7, 29.5, 25}--Done in a weird way, for dual timers support. Pretend it's two tables combined into 1. First time is time between1 and 3, second time between 2 and 4, etc.
@@ -373,34 +324,10 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		if self:AntiSpam(5, 6) then
 			specWarnReinforcements:Show()
 		end
-		if npc == felCaster then
-			self.vb.felcasterCount = self.vb.felcasterCount + 1
-			warnFelCaster:Show(self.vb.felcasterCount)
-			--if self.Options.SetIconOnAdds then
-				--Set icons starting at 6, not using skull and x, those will probably be used to auto mark terrors in a later feature
-			--	self:ScanForMobs(93931, 0, 6-self.vb.felCastersAlive, nil, 0.2, 15)
-			--end
-			if self:IsMythic() then
-			
-			else
-				if felcasterTimers[self.vb.felcasterCount] then
-					timerFelCastersCD:Start(felcasterTimers[self.vb.felcasterCount], self.vb.felcasterCount+1)
-				end
-			end
-			self.vb.felCastersAlive = self.vb.felCastersAlive + 1
-		elseif npc == berserker then
-			self.vb.berserkerCount = self.vb.berserkerCount + 1
-			warnBerserker:Show(self.vb.berserkerCount)
---			if self.Options.SetIconOnAdds then
---				self:ScanForMobs(93858, 0, 8, nil, 0.2, 12)
---			end
-			if self:IsMythic() then
-			
-			else
-				if berserkerTimers[self.vb.berserkerCount] then
-					timerBerserkersCD:Start(berserkerTimers[self.vb.berserkerCount], self.vb.berserkerCount+1)
-				end
-			end
+		if npc == felCaster and self:LatencyCheck() then
+			self:SendSync("Felcaster")
+		elseif npc == berserker and self:LatencyCheck() then
+			self:SendSync("Berserker")
 		end
 	end
 end
@@ -425,6 +352,34 @@ function mod:OnSync(msg)
 		end
 		if self.Options.HudMapOnAxe then
 			DBMHudMap:Disable()
+		end
+	elseif msg == "Felcaster" then
+		self.vb.felcasterCount = self.vb.felcasterCount + 1
+		warnFelCaster:Show(self.vb.felcasterCount)
+		--if self.Options.SetIconOnAdds then
+			--Set icons starting at 6, not using skull and x, those will probably be used to auto mark terrors in a later feature
+		--	self:ScanForMobs(93931, 0, 6-self.vb.felCastersAlive, nil, 0.2, 15)
+		--end
+		if self:IsMythic() then
+		
+		else
+			if felcasterTimers[self.vb.felcasterCount] then
+				timerFelCastersCD:Start(felcasterTimers[self.vb.felcasterCount], self.vb.felcasterCount+1)
+			end
+		end
+		self.vb.felCastersAlive = self.vb.felCastersAlive + 1
+	elseif msg == "Berserker" then
+		self.vb.berserkerCount = self.vb.berserkerCount + 1
+		warnBerserker:Show(self.vb.berserkerCount)
+--		if self.Options.SetIconOnAdds then
+--			self:ScanForMobs(93858, 0, 8, nil, 0.2, 12)
+--		end
+		if self:IsMythic() then
+		
+		else
+			if berserkerTimers[self.vb.berserkerCount] then
+				timerBerserkersCD:Start(berserkerTimers[self.vb.berserkerCount], self.vb.berserkerCount+1)
+			end
 		end
 	end
 end

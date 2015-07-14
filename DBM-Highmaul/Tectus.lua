@@ -11,7 +11,7 @@ mod:SetModelSound("sound\\creature\\tectus\\VO_60_HMR_TECTUS_AGGRO_01.ogg", "sou
 mod:SetHotfixNoticeRev(13109)
 
 mod:RegisterCombat("combat")
-mod:SetMinSyncTime(4)--Rise Mountain can occur pretty often.
+mod.syncThreshold = 4--Rise Mountain can occur pretty often.
 mod:SetWipeTime(30)
 
 mod:RegisterEventsInCombat(

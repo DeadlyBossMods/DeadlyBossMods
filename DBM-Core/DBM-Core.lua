@@ -10341,10 +10341,6 @@ function bossModPrototype:SetMinSyncRevision(revision)
 	self.minSyncRevision = revision
 end
 
-function bossModPrototype:SetMinSyncTime(time)
-	self.syncThreshold = time
-end
-
 function bossModPrototype:SetHotfixNoticeRev(revision)
 	self.hotfixNoticeRev = revision
 end
