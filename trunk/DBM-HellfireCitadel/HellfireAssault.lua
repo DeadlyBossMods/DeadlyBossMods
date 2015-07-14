@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184394 181155 185816 183452 181968",
-	"SPELL_AURA_APPLIED 180079 184238 184243 180927 184369 180076",
+	"SPELL_AURA_APPLIED 180079 184243 180927 184369 180076",
 	"SPELL_AURA_APPLIED_DOSE 184243",
 	"SPELL_AURA_REMOVED 184369",
 	"SPELL_CAST_SUCCESS 184370",
@@ -24,8 +24,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"--Have to register all unit ids to catch the boss when she casts haste
 )
 
---TODO, tank swaps for slam?
---TODO, on normal they changed vehicle spawn rates to be slower. But LFR had heroic rates, So now need to see if LFR also uses slower timers, for now, ASSUMING yes and coded it as such.
 --Siegemaster Mar'tak
 local warnHowlingAxe				= mod:NewTargetAnnounce(184369, 3)
 local warnFelfireMunitions			= mod:NewTargetAnnounce(180079, 1)
@@ -33,7 +31,7 @@ local warnFelfireMunitions			= mod:NewTargetAnnounce(180079, 1)
 local warnFelCaster					= mod:NewCountAnnounce("ej11411", 3, 181155)
 local warnBerserker					= mod:NewCountAnnounce("ej11425", 3, 184243)
 ----Gorebound Berserker (tank add probably)
-local warnSlam						= mod:NewStackAnnounce(184243, 3, nil, "Tank")--How many stacks to swap? or is there a swap?
+local warnSlam						= mod:NewStackAnnounce(184243, 3, nil, false)--Useful, but optional, only useful if dps is too low
 ----Grand Corruptor U'rogg
 local warnSiphon					= mod:NewTargetAnnounce(180076, 3, nil, "Healer")--Maybe needs to be special warning, who knows
 
@@ -57,7 +55,7 @@ local specWarnShockwave				= mod:NewSpecialWarningDodge(184394, nil, nil, nil, 2
 --Hellfire Reinforcements
 local specWarnReinforcements		= mod:NewSpecialWarningSwitch("ej11406", false, nil, 2)--Generic warning for tanks to pick up new adds if they want to enable it
 ----Gorebound Berserker (tank add)
-local specWarnCower					= mod:NewSpecialWarningTaunt(184238, "Tank")
+
 --Some specail warnings for taunts or stacks or something here, probably.
 ----Gorebound Felcaster
 local specWarnIncinerate			= mod:NewSpecialWarningInterrupt(181155, false)--Seems less important of two spells
@@ -77,10 +75,9 @@ local timerShockwaveCD				= mod:NewCDTimer(8.5, 184394, nil, nil, nil, 3)
 local timerFelCastersCD				= mod:NewCDCountTimer(40, "ej11411", nil, nil, nil, 1, 181155)
 local timerBerserkersCD				= mod:NewCDCountTimer(40, "ej11425", nil, nil, nil, 1, 184243)
 ----Gorebound Berserker (tank add probably)
---local timerCowerCD				= mod:NewCDTimer(107, 184238, nil, nil, nil, 5)
 --local timerSlamCD					= mod:NewCDTimer(107, 184243, nil, nil, nil, 5)
 ----Gorebound Felcaster
---local timerFelfireVolleyCD		= mod:NewCDTimer(107, 180417, nil, "-Healer", nil, 4)
+
 ----Contracted Engineer
 
 --Felfire-Imbued Siege Vehicles
@@ -160,7 +157,7 @@ mod.vb.axeActive = false
 --ability.id = 180927 and type = "applybuff" or overkill > 0 and target.name in ("Felfire Crusher", "Felfire Artillery", "Felfire Demolisher", "Felfire Flamebelcher")
 local normalVehicleTimers = {72, 59, 63, 60, 58, 55, 38, 46}
 local vehicleTimers = {62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 40.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-4 seconds
-local mythicVehicleTimers = {20, 25, 54, 54, 44, 46, 12, 15.5, 50, 67, 68.5, 50.5, 55.5, 35, 35, 40, 39.5, 29.5, 25}--Done in a weird way, for dual timers support. Pretend it's two tables combined into 1. First time is time between1 and 3, second time between 2 and 4, etc.
+local mythicVehicleTimers = {19.6, 23.6, 54, 54, 36.5, 35.7, 12, 12.6, 30.3, 67, 68.5, 50.5, 55.5, 33.8, 33.4, 35, 31.7, 29.5, 25}--Done in a weird way, for dual timers support. Pretend it's two tables combined into 1. First time is time between1 and 3, second time between 2 and 4, etc.
 local berserkerTimers = {55.9, 26, 14.4, 36.7, 38.8, 49.5, 66.8, 38.7, 65.8, 47.4}--30 (first) is omitted
 local felcasterTimers = {8.5, 32.2, 39.5, 45.6, 50.9, 31.1, 36.7, 10, 103.8, 0.3, 27.8, 47.2}--35 (first) is omitted
 local axeDebuff = GetSpellInfo(184369)
@@ -191,7 +188,7 @@ function mod:OnCombatStart(delay)
 	self.vb.felcasterCount = 0
 	self.vb.berserkerCount = 0
 	self.vb.felCastersAlive = 0
-	timerHowlingAxeCD:Start(5-delay)
+	timerHowlingAxeCD:Start(4.7-delay)
 	timerShockwaveCD:Start(5.8-delay)
 	if self:IsMythic() then
 		timerSiegeVehicleCD:Start(52.5-delay, "("..DBM_CORE_LEFT..")")
@@ -242,13 +239,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 180079 then
 		warnFelfireMunitions:CombinedShow(2, args.destName)
-	elseif spellId == 184238 then
-		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId) then--Its on a tank
-			if not args:IsPlayer() and not UnitDebuff("player", args.spellName) then--But not us
-				specWarnCower:Show(args.destName)--Taunt off other tank
-			end
-		end
 	elseif spellId == 184243 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
@@ -297,7 +287,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM:Debug("Starting a left and a right vehicle timer after center phase")
 				voiceFelfireSiegeVehicles:Schedule(1, "center")
 			elseif Count == 7 or Count == 8 or Count == 9 then--Center
-				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_MIDDLE..")")
+				if Count == 8 then--Hack to allow timer not to overwrite another center timer
+					timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "( "..DBM_CORE_MIDDLE.." )")
+				else
+					timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_MIDDLE..")")
+				end
 				DBM:Debug("Starting a Center timer")
 				if Count == 7 then--Need a left voice
 					voiceFelfireSiegeVehicles:Schedule(1, "left")
