@@ -38,7 +38,7 @@ local specWarnFirebomb				= mod:NewSpecialWarningSwitchCount(181999, "-Healer", 
 --mod:AddTimerLine(ALL)--Uncomment when ground phase and air phase are done, don't want to enable this line now and incorrectly flag everything as "All"
 local timerArtilleryCD				= mod:NewNextCountTimer(15, 182108, nil, nil, nil, 3)
 --mod:AddTimerLine(ALL)--Find translation that works for "Ground Phase"
-local timerUnstableOrbCD			= mod:NewNextCountTimer(3, 182001, nil, "Ranged", nil, 3)
+local timerUnstableOrbCD			= mod:NewNextCountTimer(24, 182001, nil, "Ranged", 2, 3)
 local timerPoundingCD				= mod:NewNextCountTimer(24, 182020, nil, nil, nil, 2)
 local timerBlitzCD					= mod:NewNextCountTimer(5, 179889, nil, nil, nil, 3)
 local timerBarrageCD				= mod:NewNextCountTimer(15, 185282, nil, nil, nil, 3)
@@ -46,14 +46,9 @@ local timerFullChargeCD				= mod:NewNextTimer(136, 182055, nil, nil, nil, 6)
 --mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)--Find translation that works for "Air Phase"
 local timerFallingSlamCD			= mod:NewNextTimer(54, 182066, nil, nil, nil, 6)
 local timerFuelLeakCD				= mod:NewNextCountTimer(15, 182668, nil, nil, nil, 2)--Fire bombs always immediately after, so no timer needed
---All of bomb timers are time+2 because dbm starts timers at cast start of 181999
-local timerVolatileBomb				= mod:NewCastTimer(47, 182534, nil, "Dps", nil, 5)--The only timer that's on normal/heroic/lfr so not too spammy to have on
-mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerQuickFuseBomb			= mod:NewCastTimer(22, 186652, nil, false, nil, 5)--Timer spam, optional, maybe make rangeddps only default?
-local timerBurningBomb				= mod:NewCastTimer(42, 186667, nil, false, nil, 5)--Timer spam, optional, maybe make meleedps only by default?
-local timerReactiveBomb				= mod:NewCastTimer(32, 186676, nil, "Tank", nil, 5)--Since tanks only have 1 bomb to worry about. not too spammy to have on by default.
+local timerVolatileBombCD			= mod:NewNextCountTimer(15, 182534, nil, nil, nil, 1)
 
---local berserkTimer					= mod:NewBerserkTimer(600)
+--local berserkTimer				= mod:NewBerserkTimer(600)
 
 local countdownBarrage				= mod:NewCountdown(15, 185282)
 local countdownArtillery			= mod:NewCountdown("AltTwo15", 182108)--Important to have different voice from fades, because they are happening at same time most of time
@@ -89,7 +84,7 @@ local artilleryTimers = {9, 9, 30, 15, 9, 24, 15}--Phase 1, phase 2 is just 15
 local artilleryTimersN = {9, 39, 15, 33, 15}
 local barrageTimers = {11.7, 30, 12, 45}
 local blitzTimers = {63, 5, 58, 4.7}
-local unstableOrbsTimers = {3, 3, 3, 9, 6, 3, 21, 3, 30, 15}--These don't seem nearly this bad anymore? Review them for changes
+local unstableOrbsTimers = {3, 18, 24, 24, 24}--Nerfed considerbly, useful now.
 local poundingTimers = {32.6, 54, 24}
 
 local debuffFilter
@@ -119,19 +114,11 @@ local function updateRangeFrame(self)
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.artilleryActive = 0
-	self.vb.groundPhase = true
-	self.vb.tankIcon = 2
-	self.vb.artilleryCount = 0
-	self.vb.barrageCount = 0
-	self.vb.poundingCount = 0
-	self.vb.blitzCount = 0
-	self.vb.unstableOrbCount = 0
-	self.vb.firebombCount = 0
-	self.vb.fuelCount = 0
+	self.vb.artilleryActive = 0--Only one that should reset on pull
 	updateRangeFrame(self)
---	berserkTimer:Start(-delay)
+	--berserkTimer:Start(-delay)
 	--Boss uses "Ground Phase" trigger after pull. Do not start timers here
+	--No reason to reset variables here either, they also reset on ground phase trigger 1 second after pull
 end
 
 function mod:OnCombatEnd()
@@ -154,21 +141,18 @@ function mod:SPELL_CAST_START(args)
 			timerBlitzCD:Start(cooldown, self.vb.blitzCount+1)
 		end
 	elseif spellId == 182066 or spellId == 186449 then--182066 confirmed on heroic. Mythic uses 186449 (Confirmed)
-		self.vb.groundPhase = true
 		specWarnFallingSlam:Show()
 		updateRangeFrame(self)
 		voicePhaseChange:Play("phasechange")
 	elseif spellId == 181999 then
 		self.vb.firebombCount = self.vb.firebombCount + 1
-		specWarnFirebomb:Show(self.vb.firebombCount)
+		local count = self.vb.firebombCount
+		specWarnFirebomb:Show(count)
 		voiceFirebomb:Play("attbomb")
-		--Count is used as a unique timer arg, so 2nd and 3rd bombs start different timers, not replace existing ones.
-		--Count doesn't show in timer text itself, they are cast timers.
-		timerVolatileBomb:Start(nil, self.vb.firebombCount)
-		if self:IsMythic() then
-			timerQuickFuseBomb:Start(nil, self.vb.firebombCount)
-			timerBurningBomb:Start(nil, self.vb.firebombCount)
-			timerReactiveBomb:Start(nil, self.vb.firebombCount)
+		if self.vb.groundPhase then--Should only happen on mythic
+			timerVolatileBombCD:Start(count == 1 and 42 or 69, self.vb.firebombCount+1)
+		else
+			timerVolatileBombCD:Start(15, self.vb.firebombCount+1)--Always 2 seconds after fuel streak, seems redundant to have both. Keeping for now.
 		end
 	elseif spellId == 185282 then
 		self.vb.barrageCount = self.vb.barrageCount + 1
@@ -290,11 +274,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif spellId == 181923 then--Ground Phase (using this to start timers because it's more accurate than "falling" cast, because falling cast is shorter on mythic)
 		--Reset Counts
+		self.vb.groundPhase = true
+		self.vb.tankIcon = 2
 		self.vb.artilleryCount = 0
 		self.vb.barrageCount = 0
-		self.vb.blitzCount = 0
 		self.vb.poundingCount = 0
+		self.vb.blitzCount = 0
 		self.vb.unstableOrbCount = 0
+		self.vb.firebombCount = 0
 		--Start ground phase timers
 		--Tiny variation in the firsts, 0.3-0.4, lowest times used. but for example 8.9 could be 9.3
 		timerUnstableOrbCD:Start(3, 1)
@@ -305,5 +292,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerPoundingCD:Start(32.6, 1)
 		timerBlitzCD:Start(63, 1)
 		timerFullChargeCD:Start()
+		if self:IsMythic() then
+			timerVolatileBombCD:Start(9, 1)
+		end
 	end
 end
