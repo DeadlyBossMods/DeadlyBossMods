@@ -34,6 +34,7 @@ mod:RegisterEventsInCombat(
 local warnDoomfireFixate			= mod:NewTargetAnnounce(182879, 3)
 local warnAllureofFlamesSoon		= mod:NewSoonAnnounce(183254, 2)
 local warnFelBurstSoon				= mod:NewSoonAnnounce(183817, 3)
+local warnFelBurst					= mod:NewTargetAnnounce(183817, 3)
 local warnDemonicHavoc				= mod:NewTargetAnnounce(183865, 3)--Mythic
 --Phase 2: Hand of the Legion
 local warnShackledTorment			= mod:NewTargetAnnounce(184964, 3)
@@ -382,6 +383,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDoomfireFixate:Yell()
 		end
 	elseif spellId == 183634 then
+		warnFelBurst:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnFelBurst:Show()
 			yellFelBurst:Yell()
