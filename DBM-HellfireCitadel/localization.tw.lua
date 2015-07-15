@@ -155,10 +155,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	phase2				= "我玩膩這種無聊的遊戲了。面對永垂不朽的軍團，萬千世界的災禍吧！",
 	phase2point5		= "看看燃燒軍團的軍容有多壯盛，就知道你們無謂的抵抗有多愚蠢。",
-	phase3				= "不勝即亡！惡魔被逼退了！攻向傳送門！把古爾丹留給我！",
-	phase3point5		= "我要粉碎這個世界！世上的一切都會在扭曲虛空化為碎片！直到永遠！",
 	First				= "第一個",
 	Second				= "第二個",
 	Third				= "第三個",

@@ -156,7 +156,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	phase2point5		= "Look upon the endless forces of the Burning Legion and know the folly of your resistance.",--3 seconds faster than CLEU, used as primary, slower CLEU secondary
-	phase3point5		= "I will shatter this pathetic world! Its broken husk will be torn apart in the twisting nether for all time!",--Not currently used. seems fire at same time as UNIT event that's present. Here only in case things change from now and live
 	First				= "First",
 	Second				= "Second",
 	Third				= "Third",
