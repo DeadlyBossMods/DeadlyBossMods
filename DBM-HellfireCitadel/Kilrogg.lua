@@ -59,7 +59,7 @@ local timerDeathThroesCD			= mod:NewCDCountTimer(40, 180224, nil, nil, nil, 2)
 local timerBloodthirsterCD			= mod:NewCDCountTimer(70.3, "ej11266", nil, nil, nil, 1, 131150)
 local timerRendingHowlCD			= mod:NewNextTimer(6, 183917, nil, "-Healer", 2, 4)
 
---local berserkTimer				= mod:NewBerserkTimer(360)
+local berserkTimer					= mod:NewBerserkTimer(600)
 
 local countdownVisionofDeathCD		= mod:NewCountdown(75, 181488, "Tank")
 local countdownVisionofDeath		= mod:NewCountdownFades("Alt60", 181488)
@@ -94,6 +94,7 @@ function mod:OnCombatStart(delay)
 	timerDeathThroesCD:Start(39-delay, 1)
 	timerVisionofDeathCD:Start(61-delay, 1)
 	countdownVisionofDeathCD:Start(61-delay)
+	berserkTimer:Start(-delay)
 	table.wipe(AddsSeen)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(felCorruption)
