@@ -151,10 +151,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	phase2				= "무의미한 놀음은 이제 지겹구나. 네놈들이 맞서는 건 불멸의 군단, 모든 세계의 재앙이다.",--1 second faster than CLEU. Probably not needed, but just in case
 	phase2point5		= "보아라, 불타는 군단의 무한한 힘을. 깨달아라. 저항해도 소용없음을.",--3 seconds faster than CLEU, used as primary, slower CLEU secondary
-	phase3				= "록타르 오가르! 놈들이 도망간다! 차원문으로 가자! 굴단의 목은 내 것이다!",--11 seconds faster than CLEU, used as primary, slower CLEU secondary
-	phase3point5		= "내 직접 이 망할 세상을 쪼개주마! 두동강 내어 그 잔해를 뒤틀린 황천에 던져버리겠다!",--Not currently used. seems fire at same time as UNIT event that's present. Here only in case things change from now and live
 	First				= "첫번째",
 	Second				= "두번째",
 	Third				= "세번째",

@@ -146,10 +146,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	phase2				= "I grow tired of this pointless game. You face the immortal Legion, scourge of a thousand worlds.",--translate (trigger)
 	phase2point5		= "Look upon the endless forces of the Burning Legion and know the folly of your resistance.",--translate (trigger)
-	phase3				= "Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine!",--translate (trigger)
-	phase3point5		= "I will shatter this pathetic world! Its broken husk will be torn apart in the twisting nether for all time!",--translate (trigger) (unused)
 	First				= "Erster",
 	Second				= "Zweiter",
 	Third				= "Dritter",
