@@ -15,17 +15,15 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050",
 	"SPELL_CAST_SUCCESS 183865 184931 187180",
-	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190400 190703 187255",
+	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190400 190703 187255 185014",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 190400",
 	"SPELL_SUMMON 187108",
 	"SPELL_PERIODIC_DAMAGE 187255",
 	"SPELL_ABSORBED 187255",
 	"CHAT_MSG_MONSTER_YELL",
-	"RAID_BOSS_WHISPER",
-	"CHAT_MSG_ADDON",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
 --(ability.id = 183254 or ability.id = 189897 or ability.id = 183817 or ability.id = 183828 or ability.id = 185590 or ability.id = 184265 or ability.id = 183864 or ability.id = 190506 or ability.id = 184931 or ability.id = 187180) and type = "begincast" or (ability.id = 183865) and type = "cast" or (ability.id = 186662 or ability.id = 186961) and (type = "applydebuff" or type = "applybuff")
@@ -37,10 +35,13 @@ local warnFelBurstSoon				= mod:NewSoonAnnounce(183817, 3)
 local warnFelBurst					= mod:NewTargetAnnounce(183817, 3)
 local warnDemonicHavoc				= mod:NewTargetAnnounce(183865, 3)--Mythic
 --Phase 2: Hand of the Legion
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 local warnShackledTorment			= mod:NewTargetAnnounce(184964, 3)
 local warnUnleashedTorment			= mod:NewAddsLeftAnnounce(185008, 2)--NewAddsLeftAnnounce perfect for this!
-local warnWroughtChaos				= mod:NewTargetAnnounce(184265, 4)--Combined both targets into one warning under primary spell name
+local warnWroughtChaos				= mod:NewTargetCountAnnounce(184265, 4)--Combined both targets into one warning under primary spell name
 local warnDreadFixate				= mod:NewTargetAnnounce(186574, 2, nil, false)--In case it matters on mythic, it was spammy on heroic and unimportant
+--Phase 3
+local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 ----The Nether
 local warnVoidStarFixate			= mod:NewTargetAnnounce(189895, 2)
 --Mythic
@@ -66,6 +67,7 @@ local specWarnFocusedChaos			= mod:NewSpecialWarningMoveAway(185014, nil, nil, n
 local yellFocusedChaos				= mod:NewYell(185014)
 local specWarnDreadFixate			= mod:NewSpecialWarningYou(186574, false)--In case it matters on mythic, it was spammy on heroic and unimportant
 --Phase 3: The Twisting Nether
+local specWarnDemonicFeedbackSoon	= mod:NewSpecialWarningSoon(187180, nil, nil, nil, 1)
 local specWarnDemonicFeedback		= mod:NewSpecialWarningCount(187180, nil, nil, nil, 3)
 local specWarnNetherBanish			= mod:NewSpecialWarningYou(186961)
 local specWarnNetherBanishOther		= mod:NewSpecialWarningTargetCount(186961)
@@ -125,6 +127,7 @@ local countdownNetherBanish			= mod:NewCountdown(61.9, 186961)
 local countdownDemonicFeedback		= mod:NewCountdown("Alt35", 186961)
 local countdownDeathBrand			= mod:NewCountdown("AltTwo42", 183828)
 
+local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceDeathBrand				= mod:NewVoice(183828, "Tank")--defensive/tauntboss
 local voiceFelBurst					= mod:NewVoice(183817)--Gathershare
 local voiceShackledTorment			= mod:NewVoice(184964)--new voice: break torment first, etc
@@ -150,6 +153,7 @@ mod.vb.netherBanish = 0
 mod.vb.rainOfChaos = 0
 mod.vb.TouchOfShadows = 0
 mod.vb.InfernalsActive = 0
+mod.vb.wroughtWarned = 0
 local shacklesTargets = {}
 local playerName = UnitName("player")
 local playerBanished = false
@@ -201,7 +205,8 @@ local function setDemonicFeedback(self)
 end
 
 local function breakShackles(self)
---	I thought about using auto scheduling and doing "break shackle now" with few seconds in between each, then i realized that'd do more harm that good, if raid is low and dbm says break shackle, you wipe.
+--	I thought about using auto scheduling and doing "break shackle now" with few seconds in between each
+--	then i realized that'd do more harm that good, if raid is low and dbm says break shackle, you wipe.
 --	So now it just gives order, but you break at pace needed by your healers
 	table.sort(shacklesTargets)
 	if not playerBanished or not self.Options.FilterOtherPhase then
@@ -237,7 +242,6 @@ end
 
 --/run DBM:GetModByName("1438"):OnCombatStart(0)
 function mod:OnCombatStart(delay)
-	table.wipe(shacklesTargets)
 	self.vb.phase = 1
 	self.vb.demonicCount = 0
 	self.vb.demonicFeedback = false
@@ -256,7 +260,9 @@ function mod:OnCombatStart(delay)
 	warnAllureofFlamesSoon:Schedule(25-delay)
 	warnFelBurstSoon:Schedule(35-delay)
 	timerFelBurstCD:Start(40-delay)
-	DBM:AddMsg(DBM_CORE_COMBAT_STARTED_AI_TIMER)--One ai timer remains, for mythic
+	if self:IsMythic() then
+		DBM:AddMsg(DBM_CORE_COMBAT_STARTED_AI_TIMER)--One ai timer remains, for mythic
+	end
 	updateRangeFrame(self)
 end
 
@@ -298,32 +304,13 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 185590 then
 		specWarnDesecrate:Show()
 		timerDesecrateCD:Start()
-		if self.vb.phase == 1 then
+		if self.vb.phase < 1.5 then
 			DBM:Debug("Phase 1 begin CLEU")
 			self.vb.phase = 1.5--85%
 		end
 	elseif spellId == 184265 then
---		self.vb.wroughtWarned = 0--Reset Counter
+		self.vb.wroughtWarned = 0--Reset Counter
 		timerWroughtChaosCD:Start()
-		if self.vb.phase < 2 then--0.2-1 second slower than yell, without requiring using yell. Because of variation, I still prefer yell as primary even though this isn't much slower
-			DBM:Debug("Phase 2 begin CLEU")
-			self.vb.phase = 2
-			--Cancel stuff only used in phase 1
-			warnFelBurstSoon:Cancel()
-			timerFelBurstCD:Cancel()
-			timerDesecrateCD:Cancel()
-			timerDoomfireCD:Cancel()
-			timerDeathbrandCD:Cancel()
-			countdownDeathBrand:Cancel()
-			warnAllureofFlamesSoon:Cancel()
-			timerAllureofFlamesCD:Cancel()--Reset to 35.5-1
-			timerShackledTormentCD:Start(19)
-			timerDeathbrandCD:Start(29)
-			countdownDeathBrand:Start(29)
-			warnAllureofFlamesSoon:Schedule(29.5)
-			timerAllureofFlamesCD:Start(34.5)
-			updateRangeFrame(self)
-		end
 	elseif spellId == 183864 then
 		timerShadowBlastCD:Start(args.sourceGUID)
 	elseif spellId == 190506 then
@@ -333,7 +320,7 @@ function mod:SPELL_CAST_START(args)
 		table.wipe(shacklesTargets)
 	elseif spellId == 187180 then
 		self.vb.demonicCount = self.vb.demonicCount + 1
---		specWarnDemonicFeedback:Show(self.vb.demonicCount)
+		specWarnDemonicFeedback:Show(self.vb.demonicCount)
 		timerDemonicFeedbackCD:Start(nil, self.vb.demonicCount+1)
 		countdownDemonicFeedback:Start()
 	elseif spellId == 182225 then
@@ -370,7 +357,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 187180 then
 		self.vb.demonicFeedback = false
 		self:Schedule(28, setDemonicFeedback, self)
-		specWarnDemonicFeedback:Schedule(28, self.vb.demonicCount+1)
+		specWarnDemonicFeedbackSoon:Schedule(28)
 	end
 end
 
@@ -402,7 +389,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(breakShackles)
 		self:Schedule(0.3, breakShackles, self)
 	elseif spellId == 186123 then--Wrought Chaos
-		--self.vb.wroughtWarned = self.vb.wroughtWarned + 1
+		self.vb.wroughtWarned = self.vb.wroughtWarned + 1--Wrought is always first, so incriment count here
 		if args:IsPlayer() then
 			specWarnWroughtChaos:Show()
 			yellWroughtChaos:Yell()
@@ -410,15 +397,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceWroughtChaos:Play("186123") --new voice
 		end
 		if not playerBanished or not self.Options.FilterOtherPhase then
-			warnWroughtChaos:CombinedShow(1, args.destName)
+			warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
 			if self.Options.HudMapOnWrought then
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Yellow
 			end
 		end
 	elseif spellId == 185014 then--Focused Chaos
-		print("If you see this message, it means blizzard made Focused Chaos visible in combat log, please report this to @mysticalos on twitter")
-		--self.vb.wroughtWarned = self.vb.wroughtWarned + 1
---[[		warnWroughtChaos:CombinedShow(0.3, args.destName)
+		warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
 		if args:IsPlayer() then
 			specWarnFocusedChaos:Show()
 			yellFocusedChaos:Yell()
@@ -427,7 +412,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.HudMapOnWrought then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
-		end--]]
+		end
 	elseif spellId == 186574 then--Dreadstalker fixate
 		warnDreadFixate:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
@@ -450,20 +435,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnNetherBanishOther:Show(self.vb.netherBanish, args.destName)
 		end
 		updateRangeFrame(self)
-		if self.vb.phase < 3 then--Secondary phase 3 trigger, if yell not localized
-			DBM:Debug("Phase 3 begin CLEU")
-			self.vb.phase = 3
-			warnAllureofFlamesSoon:Cancel()
-			timerAllureofFlamesCD:Cancel()--Done for rest of fight
-			timerDeathbrandCD:Cancel()--Done for rest of fight
-			countdownDeathBrand:Cancel()
-			self:Schedule(12.5, setDemonicFeedback, self)
-			specWarnDemonicFeedback:Schedule(12.5, 1)
-			timerDemonicFeedbackCD:Start(18)
-			countdownDemonicFeedback:Start(18)
-			timerShackledTormentCD:Cancel()--Resets to 55-11 here
-			timerShackledTormentCD:Start(44)
-		end
 	elseif spellId == 189895 and (playerBanished or not self.Options.FilterOtherPhase) then
 		warnVoidStarFixate:CombinedShow(0.3, args.destName)--5 on mythic
 		if args:IsPlayer() then
@@ -564,40 +535,10 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	--"<183.63 18:00:13> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I grow tired of this pointless game. You face the immortal Legion, scourge of a thousand worlds
-	--"<184.30 18:00:14> [CLEU] SPELL_CAST_START#Creature-0-2012-1448-150-91331-0000566A43#Archimonde##nil#184265#Wrought Chaos#nil#nil", -- [8782]
-	if msg == L.phase2 and self.vb.phase < 2 then
-		self:SendSync("phase2")
 	--"<263.67 18:01:33> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Look upon the endless forces of the Burning Legion and know the folly of your resistance.#Archimonde
 	--"<266.42 18:01:36> [CLEU] SPELL_AURA_APPLIED#Creature-0-2012-1448-150-93615-0000566CBD#Felborne Overfiend#Creature-0-2012-1448-150-93615-0000566CBD#Felborne Overfiend#186662#Heart of Argus#BUFF#nil", -- [12225]	
-	elseif msg == L.phase2point5 and self.vb.phase < 2.5 then
+	if msg == L.phase2point5 and self.vb.phase < 2.5 then
 		self:SendSync("phase25")
-	elseif msg == L.phase3 and self.vb.phase < 3 then
-		self:SendSync("phase3")
-	end
-end
-
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:185014") then
-		specWarnFocusedChaos:Show()
-		yellFocusedChaos:Yell()
-		countdownWroughtChaos:Start()
-	end
-end
-
---per usual, use transcriptor message to get messages from both bigwigs and DBM, all without adding comms to this mod at all
-function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
-	if prefix ~= "Transcriptor" then return end
-	if msg:find("spell:185014") then--
-		targetName = Ambiguate(targetName, "none")
-		if self:AntiSpam(3, targetName) then--Antispam sync by target name, since this doesn't use dbms built in onsync handler.
-			if not playerBanished or not self.Options.FilterOtherPhase then
-				warnWroughtChaos:CombinedShow(1, targetName)
-				if self.Options.HudMapOnWrought then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "highlight", targetName, 5, 5, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
-				end
-			end
-		end
 	end
 end
 
@@ -610,25 +551,55 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self:IsMythic() then
 			timerDemonicHavocCD:Start(1, unitGUID)
 		end
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "phase2" and self.vb.phase < 2 then
-		DBM:Debug("Phase 2 begin yell")
+--	"<143.60 23:47:14> [UNIT_SPELLCAST_SUCCEEDED] Archimonde(Stellar) [[boss1:Allow Phase 2 Spells::0:190117]]", -- [4158]
+--	"<143.64 23:47:14> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#The light will not fail!#Exarch Yrel###Archimonde##0#0##0#2601#nil#0#false#false#false", 
+--	"<148.61 23:47:19> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I grow tired of this pointless game. You face the immortal Legion, scourge of a thousand worlds.#Archimond
+--	"<149.68 23:47:20> [CLEU] SPELL_CAST_START#Creature-0-3023-1448-20662-91331-000010BEEC#Archimonde##nil#184265#Wrought Chaos#nil#nil", -- [4314]
+	elseif spellId == 190117 then--Phase 2 trigger
 		self.vb.phase = 2
 		--Cancel stuff only used in phase 1
 		warnFelBurstSoon:Cancel()
 		timerFelBurstCD:Cancel()
 		timerDesecrateCD:Cancel()
 		timerDoomfireCD:Cancel()
-		timerAllureofFlamesCD:Cancel()--Reset to 35.5
+		--Cancel stuff that resets in phase 2
+		timerAllureofFlamesCD:Cancel()
 		warnAllureofFlamesSoon:Cancel()
-		warnAllureofFlamesSoon:Schedule(30.5)
-		timerAllureofFlamesCD:Start(35.5)
-		timerShackledTormentCD:Start(12)
+		timerDeathbrandCD:Cancel()
+		countdownDeathBrand:Cancel()
+		--Begin phase 2
+		warnPhase2:Show()
+		voicePhaseChange:Play("ptwo")
+		timerWroughtChaosCD:Start(6)
+		timerDeathbrandCD:Start(35)--35-39
+		countdownDeathBrand:Start(35)
+		warnAllureofFlamesSoon:Schedule(35.5)
+		timerAllureofFlamesCD:Start(40.5)--40-45
+		timerShackledTormentCD:Start(17)--17-25 (almost always 25, but sometimes it comes earlier, unsure why)
 		updateRangeFrame(self)
-	elseif msg == "phase25" and self.vb.phase < 2.5 then
+--	"<301.70 23:49:52> [UNIT_SPELLCAST_SUCCEEDED] Archimonde(Omegal) [[boss1:Allow Phase 3 Spells::0:190118]]", -- [8737]
+--	"<301.70 23:49:52> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine!#Grommash Hellscream###Grommash H
+	elseif spellId == 190118 then--Phase 3 trigger
+		self.vb.phase = 3
+		warnAllureofFlamesSoon:Cancel()
+		timerAllureofFlamesCD:Cancel()--Done for rest of fight
+		timerDeathbrandCD:Cancel()--Done for rest of fight
+		countdownDeathBrand:Cancel()
+		warnPhase3:Show()
+		voicePhaseChange:Play("pthree")
+		timerNetherBanishCD:Start(11, 1)
+		countdownNetherBanish:Start(11)
+		timerDemonicFeedbackCD:Start(29)--29-33
+		self:Schedule(23.5, setDemonicFeedback, self)
+		specWarnDemonicFeedbackSoon:Schedule(23)
+		countdownDemonicFeedback:Start(29)
+		timerShackledTormentCD:Cancel()--Resets to 55 here
+		timerShackledTormentCD:Start(55)
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "phase25" and self.vb.phase < 2.5 then
 		DBM:Debug("Phase 2.5 begin yell")
 		self.vb.phase = 2.5
 		local elapsed, total = timerShackledTormentCD:GetTime()
@@ -636,21 +607,6 @@ function mod:OnSync(msg)
 			DBM:Debug("timerShackledTormentCD updated", 2)
 			timerShackledTormentCD:Update(elapsed, total+5)--5 seconds is added to timer on 2.5 transition (give or take, need to know exact addition but need to see more data, since timer is variable as is)
 		end
-	elseif msg == "phase3" and self.vb.phase < 3 then
-		DBM:Debug("Phase 3 begin yell")
-		self.vb.phase = 3
-		warnAllureofFlamesSoon:Cancel()
-		timerAllureofFlamesCD:Cancel()--Done for rest of fight
-		timerDeathbrandCD:Cancel()--Done for rest of fight
-		countdownDeathBrand:Cancel()
-		timerNetherBanishCD:Start(11, 1)
-		countdownNetherBanish:Start(11)
-		timerDemonicFeedbackCD:Start(29)--29-33
-		self:Schedule(23.5, setDemonicFeedback, self)
-		specWarnDemonicFeedback:Schedule(23, 1)
-		countdownDemonicFeedback:Start(29)
-		timerShackledTormentCD:Cancel()--Resets to 55 here
-		timerShackledTormentCD:Start(55)
 	end
 end
 
