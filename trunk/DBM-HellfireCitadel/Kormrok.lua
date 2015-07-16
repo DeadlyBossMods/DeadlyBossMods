@@ -88,6 +88,7 @@ do
 	end
 end
 
+--Change range to 30 yards in 6.2.1, or on live if it's confirmed to be 30 yards on live
 local function updateRangeCheck(self)
 	if not self.Options.RangeFrame then return end
 	if self.vb.explodingTank then
@@ -117,7 +118,6 @@ local function trippleBurstCheck(self, target, first)
 end
 
 function mod:OnCombatStart(delay)
-	print("DBM NOTICE: This fight was redesigned since heroic testing, timers probably won't work very well, if at all")
 	self.vb.explodingTank = nil
 	self.vb.poundActive = false
 	self.vb.poundCount = 0
