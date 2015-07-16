@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(1426)
 
 L:SetTimerLocalization({
-	timerSiegeVehicleCD		= "Nächste Maschine %s",
+	timerSiegeVehicleCD		= "Nächste Maschine %s"
 })
 
 L:SetOptionLocalization({
@@ -17,7 +17,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	AddsSpawn1		=	"Comin' in hot!",--translate (trigger) (unused)
 	AddsSpawn2		=	"Fire in the hole!",--translate (trigger) (unused)
-	BossLeaving		=	"I'll be back..."--translate (trigger)
+	BossLeaving		=	"Ich bin gleich wieder da..."
 })
 
 ---------------------------
@@ -30,6 +30,10 @@ L= DBM:GetModLocalization(1425)
 ---------------------------
 L= DBM:GetModLocalization(1432)
 
+L:SetMiscLocalization({
+	Jubeideath		=	"Ich bin die ewige Flamme!"
+})
+
 ------------------
 -- Kormrok --
 ------------------
@@ -41,13 +45,17 @@ L= DBM:GetModLocalization(1392)
 L= DBM:GetModLocalization(1396)
 
 L:SetMiscLocalization({
-	BloodthirstersSoon		=	"Come brothers! Seize your destiny!"--translate (trigger)
+	BloodthirstersSoon		=	"Kommt, Brüder! Eure Bestimmung wartet!"
 })
 
 --------------------
 --Gorefiend --
 --------------------
 L= DBM:GetModLocalization(1372)
+
+L:SetWarningLocalization({
+	specWarnShadowofDeath	= "Schatten des Todes (%d) auf dir"
+})
 
 L:SetTimerLocalization({
 	SoDDPS		= "Nächste Schatten (%s)",
@@ -56,9 +64,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SoDDPS		= "Zeige Zeit bis nächste $spell:179864 die DDs betreffen",
-	SoDTank		= "Zeige Zeit bis nächste $spell:179864 die Tanks betreffen",
-	SoDHealer	= "Zeige Zeit bis nächste $spell:179864 die Heiler betreffen"
+	SoDDPS					= "Zeige Zeit bis nächste $spell:179864 die DDs betreffen",
+	SoDTank					= "Zeige Zeit bis nächste $spell:179864 die Tanks betreffen",
+	SoDHealer				= "Zeige Zeit bis nächste $spell:179864 die Heiler betreffen"
 })
 
 --------------------------
@@ -85,7 +93,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SeedsBehavior		= "Auswahl der Positionierungsschreie für Saat der Zerstörung (nur als Schlachtzugsleiter)",
-	Iconed				= "Totenschädel, Kreuz, Quadrat, Mond, Dreieck (für Strategien mit Weltmarkierungen)",
+	Iconed				= "Stern, Kreis, Diamant, Dreieck, Mond (für Strategien mit Weltmarkierungen)",
 	Numbered			= "1, 2, 3, 4, 5 (für Strategien mit nummerierten Positionen)",
 	DirectionLine		= "Links, Mitte Links, Mitte, Mitte Rechts, Rechts (typisch für geradlinige Formationen)", 
 	FreeForAll			= "Nur Standardschrei verwenden (ohne Positionszuweisung)",
@@ -97,7 +105,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	DBMConfigMsg		= "Die Positionierungsschreie für Saat der Zerstörung wurden wie beim Schlachtzugsleiter auf \"%s\" gesetzt.",
-	BWConfigMsg			= "Der Schlachtzugsleiter nutzt \"BigWigs\". Die Positionierungsschreie für Saat der Zerstörung wurden zur Angleichung an \"BigWigs\" auf <...> gesetzt."
+	BWConfigMsg			= "Der Schlachtzugsleiter nutzt \"BigWigs\". DBM wird für die Schreie für Saat der Zerstörung automatisch \"nummerierte Positionen\" verwenden."
 })
 
 --------------------------

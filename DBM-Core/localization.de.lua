@@ -5,7 +5,8 @@ DBM_CORE_NEED_LOGS					= "DBM benötigt Transcriptor (http://www.wowace.com/addo
 DBM_HOW_TO_USE_MOD					= "Willkommen bei DBM. Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. DBM versucht dies für dich zu tun, indem es beim ersten Start deine Spezialisierung scannt, aber du kannst zusätzliche Einstellungen aktivieren."
 
 DBM_FORUMS_MESSAGE					= "Du hast einen Bug oder einen falschen Timer gefunden? Du glaubst einige Mods würden zusätzliche Warnungen, Timer oder Spezialfeatures benötigen?\nBesuche die neuen Deadly Boss Mods Foren für Diskussionen, Fehlermeldungen und Featurewünsche: |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (Du kannst auf den Link klicken um ihn zu kopieren.)"
-DBM_FORUMS_COPY_URL_DIALOG			= "Besuche unsere Diskussions- und Support-Foren\r\n(gehostet von Elitist Jerks!)"
+DBM_FORUMS_COPY_URL_DIALOG			= "Besuche unsere Diskussions- und Support-Foren"
+DBM_FORUMS_COPY_URL_DIALOG_NEWS		= "Besuche unser Forum um mehr über dieses Feature und seine Verwendung zu erfahren"
 
 DBM_CORE_LOAD_MOD_ERROR				= "Fehler beim Laden der Boss Mods für %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Boss Mods für '%s' geladen. Für weitere Einstellungen wie benutzerdefinierte Sounds und individuelle Warnnotizen /dbm eingeben."
@@ -16,7 +17,7 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "Das Design der DBM-Timer konnte nicht im Kampf ge
 DBM_CORE_BAD_LOAD					= "Dein Boss Mod für diese Instanz konnte nicht vollständig korrekt im Kampf geladen werden. Bitte führe baldmöglichst nach Kampfende /reload aus."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s kann nicht geladen werden, da dein DBM-Core die Voraussetzungen nicht erfüllt. Es wird eine aktualisierte Version benötigt."
 
-DBM_CORE_WHATS_NEW					= "Neu in dieser Version: DBM-Notizen wurden verbessert und können jetzt geteilt werden. Weitere Informationen und eine Anleitung zur Nutzung der Notizfunktionalität findest du in unserem Forum."
+DBM_CORE_WHATS_NEW					= "Neu in dieser Version: DBM-Timer unterstützen nun verschiedene Farben basierend auf dem Timertyp (Add, AOE, Anvisiert, Unterbrechung, Rolle, Phase). Um mehr über dieses Feature zu erfahren kannst du |HDBM:forumsnews|h|cff3588ffhier klicken|r."
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM hat das dynamische Abstandsfenster für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, auf wieviel versammelte Spieler bei deiner Gruppengröße geprüft werden muss."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM hat Warnungen bezüglich der Anzahl der Gegner für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, wieviel Gegner bei deiner Gruppengröße erscheinen."
@@ -373,6 +374,7 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Schreie, wenn du von $spell:%s betroffen bis
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= "%s auf " .. UnitName("player") .. "!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= "%s auf " .. UnitName("player") .. "! (%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s endet in %%d"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position = "%s %%s auf "..UnitName("player")
 
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Zeige HudMap für $spell:%s"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Zeige HudMap für diverse Mechaniken"
