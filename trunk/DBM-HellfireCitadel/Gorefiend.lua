@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181973 181582 187814",
 	"SPELL_CAST_SUCCESS 179977 182170 181085",
-	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148 181295 185982 189434 185190",
-	"SPELL_AURA_APPLIED_DOSE 185190",
+	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148 181295 185982 189434 185189",
+	"SPELL_AURA_APPLIED_DOSE 185189",
 	"SPELL_AURA_REMOVED 179909 179908 181295 181973 185982",
 	"SPELL_PERIODIC_DAMAGE 179995",
 	"SPELL_ABSORBED 179995",
@@ -44,8 +44,8 @@ local specWarnFeastofSoulsEnded			= mod:NewSpecialWarningEnd(181973)
 local specWarnHungerforLife				= mod:NewSpecialWarningRun(180148, nil, nil, nil, 4, 2)
 local specWarnEnragedSpirit				= mod:NewSpecialWarningSwitch("ej11378", "-Healer")
 local specWarnGoreboundSpirit			= mod:NewSpecialWarningSwitch("ej11020", "-Healer")
-local specWarnBurning					= mod:NewSpecialWarningStack(185190, nil, 5)
-local specWarnBurningOther				= mod:NewSpecialWarningTaunt(185190, nil, nil, nil, nil, 2)
+local specWarnBurning					= mod:NewSpecialWarningStack(185189, nil, 5)
+local specWarnBurningOther				= mod:NewSpecialWarningTaunt(185189, nil, nil, nil, nil, 2)
 local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer", nil, nil, 1, 2)
 
 local timerShadowofDeathCDDps			= mod:NewTimer(30, "SoDDPS", 179864, "Dps", nil, 5)
@@ -69,7 +69,7 @@ local voiceHungerforLife				= mod:NewVoice(180148)--justrun
 local voiceBellowingShout				= mod:NewVoice(181582, "-Healer")--kickcast
 local voiceShadowofDeath				= mod:NewVoice(179864)--teleyou, new voice, teleport into a new phase phase
 local voiceSharedFate					= mod:NewVoice(179909)--linegather, new voice, like Blood-Queen Lana'thel's Pact of the Darkfallen, line gather will be better.
-local voiceBurning						= mod:NewVoice(185190) --changemt
+local voiceBurning						= mod:NewVoice(185189) --changemt
 
 mod:AddSetIconOption("SetIconOnFate", 179909)
 mod:AddHudMapOption("HudMapOnSharedFate", 179909)--Smart hud, distinquishes rooted from non rooted by color coding.
@@ -309,7 +309,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 185982 and not playerDown then--Cast when a Enraged Spirit in stomach reaches 70%
 		warnGoreboundSpiritSoon:Show()
-	elseif spellId == 185190 then
+	elseif spellId == 185189 then
 		local amount = args.amount or 1
 		if (amount >= 5) and self:AntiSpam(3, 5) then
 			voiceBurning:Play("changemt")
