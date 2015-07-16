@@ -360,7 +360,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		if amount % 3 == 0 or amount > 6 then
 			warnDoomSpike:Show(args.destName, amount)
-			if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+			if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") and self:AntiSpam(3, 6) then
 				specWarnDoomSpikeOther:Show(args.destName)
 			end
 		end
