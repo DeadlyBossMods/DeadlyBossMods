@@ -486,15 +486,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerFelSeekerCD:Start()
 		voiceFelSeeker:Play("watchstep")
 	elseif spellId == 181301 then--Summon Adds (phase 2 start)
+		DBM:Debug("Summon adds 181301 fired", 2)
 		self.vb.ignoreAdds = false
 		self.vb.impCount = 0
 		self.vb.infernalCount = 0
 		timerFelImplosionCD:Start(24.5, 1)
 		timerInfernoCD:Start(47.5, 1)
 	elseif spellId == 182262 then--Summon Adds (phase 3 start)
+		DBM:Debug("Summon adds 182262 fired", 2)
 		self.vb.ignoreAdds = false
 		self.vb.infernalCount = 0
 		timerInfernoCD:Start(28, 1)
+	elseif spellId == 181156 then--Exists on wowhead and added in 6.2, likely related to this fight but unknown purpose, probably mythic?
+		DBM:Debug("Summon adds 181156 fired", 2)
 	--Backup phase detection. a bit slower than CHAT_MSG_RAID_BOSS_EMOTE (5.5 seconds slower)
 	elseif spellId == 182263 and self.vb.phase == 2 then--Phase 3
 		self.vb.phase = 3
