@@ -118,15 +118,14 @@ mod.vb.infernalCount = 0
 mod.vb.ignoreAdds = false
 local phase1ImpTimers = {15, 32.2, 24, 15, 10}--Spawn 33% faster each wave, but cannot confirm it goes lower than 10, if it does, next would be 6.6
 local phase1ImpTimersN = {15, 32.2, 24, 24}--Normal doesn't go below 24? need larger sample size. Normal differently two 24s in a row and didn't drop to 15
-local phase2ImpTimers = {42.2, 40, 39, 30.5, 30}--The same, for now
-local phase2ImpTimersN = {42.2, 40, 39, 30.5, 30}--But normal may have a lower limit, like phase 1, so coded in two tables for now.
+local phase2ImpTimers = {24.5, 39, 39, 30.5, 30}--The same, for now
+local phase2ImpTimersN = {24.5, 39, 39, 30.5, 30}--But normal may have a lower limit, like phase 1, so coded in two tables for now.
 local phase1InfernalTimers = {18.4, 40, 30, 20, 20, 20}--Confirmed this far on heroic
 local phase1InfernalTimersN = {18.4, 40, 30, 30}--Normal probably doesn't drop below 30?
-local phase2InfernalTimers = {66.5, 44.8, 44.8, 35}--So far normal and heroic same, but if phase goes on longer probably different (with normal having a higher minimum)
-local phase2InfernalTimersN = {66.5, 44.8, 44.8, 35}--So far normal and heroic same, but if phase goes on longer probably different (with normal having a higher minimum)
-local phase3InfernalTimers = {46.1, 34.8, 35, 34.8, 34.8}--Again, the same now, but two tables FOR NOW until I can confirm whether or not they differ for REALLY long pulls
-local phase3InfernalTimersN = {46.1, 34.8, 35, 34.8, 34.8}--^^
-local portalDestroyed = false--Temp hack to prevent timer error on guessed mechanic
+local phase2InfernalTimers = {47.5, 44.8, 44.8, 35}--So far normal and heroic same, but if phase goes on longer probably different (with normal having a higher minimum)
+local phase2InfernalTimersN = {47.5, 44.8, 44.8, 35}--So far normal and heroic same, but if phase goes on longer probably different (with normal having a higher minimum)
+local phase3InfernalTimers = {28, 34.8, 35, 34.8, 34.8}--Again, the same now, but two tables FOR NOW until I can confirm whether or not they differ for REALLY long pulls
+local phase3InfernalTimersN = {28, 34.8, 35, 34.8, 34.8}--^^
 
 local gazeTargets = {}
 local doomTargets = {}
@@ -154,10 +153,6 @@ local function updateRangeFrame(self)
 	else
 		DBM.RangeCheck:Hide()
 	end
-end
-
-local function clearIgnore(self)
-	self.vb.ignoreAdds = false
 end
 
 local function warnGazeTargts(self)
@@ -188,7 +183,6 @@ function mod:OnCombatStart(delay)
 	table.wipe(doomTargets)
 	table.wipe(gazeTargets)
 	table.wipe(AddsSeen)
-	portalDestroyed = false
 	self.vb.ignoreAdds = false
 	self.vb.impCount = 0
 	self.vb.infernalCount = 0
@@ -263,9 +257,10 @@ end
 
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
-	if spellId == 181255 and self:AntiSpam(7, 1) and not self.vb.ignoreAdds then--Imps
+	if spellId == 181255 and self:AntiSpam(4, 1) then--Imps
 		self.vb.impCount = self.vb.impCount + 1
 		warnFelImplosion:Show(self.vb.impCount)
+		if self.vb.ignoreAdds then return end--Ignore late sets of adds that spawn after phase transition but before summon adds script runs that updates timers for new phase
 		local nextCount = self.vb.impCount + 1
 		if self.vb.phase == 1 then
 			local timers1 = self:IsNormal() and phase1ImpTimersN[nextCount] or phase1ImpTimers[nextCount]
@@ -278,9 +273,10 @@ function mod:SPELL_SUMMON(args)
 				timerFelImplosionCD:Start(timers2, nextCount)
 			end
 		end
-	elseif spellId == 181180 and self:AntiSpam(7, 2) and not self.vb.ignoreAdds then--Infernals
+	elseif spellId == 181180 and self:AntiSpam(4, 2) then--Infernals
 		self.vb.infernalCount = self.vb.infernalCount + 1
 		warnInferno:Show(self.vb.infernalCount)
+		if self.vb.ignoreAdds then return end--Ignore late sets of adds that spawn after phase transition but before summon adds script runs that updates timers for new phase
 		local nextCount = self.vb.infernalCount + 1
 		if self.vb.phase == 1 then
 			local timers1 = self:IsNormal() and phase1InfernalTimersN[nextCount] or phase1InfernalTimers[nextCount]
@@ -377,11 +373,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		updateRangeFrame(self)
 	elseif spellId == 185147 or spellId == 182212 or spellId == 185175 then--Portals
-		--Note, if they don't die on mythic, switch to UNIT_died on the humanoid adds
 		self.vb.portalsLeft = self.vb.portalsLeft - 1
 		if spellId == 185147 then--Doom Lords Portal
 			timerCurseofLegionCD:Cancel()
-			portalDestroyed = true
 			--I'd add a cancel for the Doom Lords here, but since everyone killed this portal first
 			--no one ever actually learned what the cooldown was, so no timer to cancel yet!
 		elseif spellId == 182212 then--Infernals Portal
@@ -391,6 +385,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.vb.portalsLeft == 0 and self:AntiSpam(10, 4) and self:IsInCombat() then
 			self.vb.phase = 2
+			self.vb.ignoreAdds = true
 			--These should be active already from pull on mythic
 			--Whether or not they update is unknown, better to start no timers until more info
 			if not self:IsMythic() then
@@ -402,13 +397,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 			warnPhase2:Show()
 			voicePhaseChange:Play("ptwo")
-			--First casts are often variable and sometimes don't happen at all, and messes up mod, so DBM will ignore first cast and start timers for reliable 2nd+
-			self.vb.ignoreAdds = true
-			self:Schedule(20, clearIgnore, self)
-			self.vb.impCount = 1
-			self.vb.infernalCount = 1
-			timerFelImplosionCD:Start(42, 2)
-			timerInfernoCD:Start(65.5, 2)
 		end
 	elseif spellId == 181597 or spellId == 182006 then
 		if self.Options.HudMapOnGaze then
@@ -467,9 +455,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			timerGlaiveComboCD:Start(44.9)
 			countdownGlaiveCombo:Start(44.9)
 			self.vb.ignoreAdds = true
-			self:Schedule(20, clearIgnore, self)
-			self.vb.infernalCount = 1
-			timerInfernoCD:Start(46.1, 2)
 			timerFelSeekerCD:Start(68)
 			warnPhase3:Show()
 			voicePhaseChange:Play("pthree")
@@ -500,13 +485,20 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnFelSeeker:Show()
 		timerFelSeekerCD:Start()
 		voiceFelSeeker:Play("watchstep")
-	elseif spellId == 181301 then--Summon Adds
-		--Still needed? Doesn't work way I thought
-	elseif spellId == 182262 then--Summon Adds
-		--Still Needed?
+	elseif spellId == 181301 then--Summon Adds (phase 2 start)
+		self.vb.ignoreAdds = false
+		self.vb.impCount = 0
+		self.vb.infernalCount = 0
+		timerFelImplosionCD:Start(24.5, 1)
+		timerInfernoCD:Start(47.5, 1)
+	elseif spellId == 182262 then--Summon Adds (phase 3 start)
+		self.vb.ignoreAdds = false
+		self.vb.infernalCount = 0
+		timerInfernoCD:Start(28, 1)
 	--Backup phase detection. a bit slower than CHAT_MSG_RAID_BOSS_EMOTE (5.5 seconds slower)
 	elseif spellId == 182263 and self.vb.phase == 2 then--Phase 3
 		self.vb.phase = 3
+		self.vb.ignoreAdds = true
 		timerFelImplosionCD:Cancel()
 		timerInfernoCD:Cancel()
 		timerFelHellfireCD:Cancel()
@@ -522,11 +514,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerGazeCD:Start(39.0)
 		timerGlaiveComboCD:Start(39.4)
 		countdownGlaiveCombo:Start(39.4)
-		self.vb.ignoreAdds = true
-		self:Schedule(20, clearIgnore, self)
-		self.vb.infernalCount = 1
-		timerInfernoCD:Start(46.1, 2)
-		timerInfernoCD:Start(40.73, 1)
 		timerFelSeekerCD:Start(62.5)
 		if self:IsMythic() then
 			--Assumed it may not reset like other abilities
