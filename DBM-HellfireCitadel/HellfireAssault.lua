@@ -8,7 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(13937)
 mod.syncThreshold = 4
---mod.respawnTime = 20
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
