@@ -93,11 +93,11 @@ local function updateRangeCheck(self)
 	if not self.Options.RangeFrame then return end
 	if self.vb.explodingTank then
 		if UnitDebuff("player", debuffName) then
-			DBM.RangeCheck:Show(40)
-		elseif not self:CheckNearby(41, self.vb.explodingTank) and self.vb.poundActive then--far enough from tank and pound is active, switch back to 4
+			DBM.RangeCheck:Show(30)
+		elseif not self:CheckNearby(31, self.vb.explodingTank) and self.vb.poundActive then--far enough from tank and pound is active, switch back to 4
 			DBM.RangeCheck:Show(4)
 		else--No pound, tank still active, keep filtered radar up to prevent walking back into tank
-			DBM.RangeCheck:Show(40, debuffFilter)
+			DBM.RangeCheck:Show(30, debuffFilter)
 		end
 	elseif self.vb.poundActive then--Just pound, no tank debuff.
 		DBM.RangeCheck:Show(4)
@@ -107,7 +107,7 @@ local function updateRangeCheck(self)
 end
 
 local function trippleBurstCheck(self, target, first)
-	if self:CheckNearby(41, target) then--Second and third check will use smaller range
+	if self:CheckNearby(31, target) then--Second and third check will use smaller range
 		specWarnExplosiveBurstNear:Show(target)
 		voiceExplosiveBurst:Play("justrun")
 	end
@@ -214,7 +214,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnExplosiveBurst:Show()
 			yellExplosiveBurst:Yell()
 		else
-			if self:CheckNearby(41, args.destName) then
+			if self:CheckNearby(31, args.destName) then
 				specWarnExplosiveBurstNear:Show(args.destName)
 				voiceExplosiveBurst:Play("runout")
 			else
