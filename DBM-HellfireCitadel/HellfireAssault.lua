@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184394 181155 185816 183452 181968",
 	"SPELL_AURA_APPLIED 180079 184243 180927 184369 180076",
 	"SPELL_AURA_APPLIED_DOSE 184243",
-	"SPELL_AURA_REMOVED 184369",
+	"SPELL_AURA_REMOVED 184369 184243",
 	"SPELL_CAST_SUCCESS 184370",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
@@ -88,7 +88,7 @@ local timerSiegeVehicleCD			= mod:NewTimer(60, "timerSiegeVehicleCD", 160240, ni
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
 local countdownHowlingAxe			= mod:NewCountdownFades("Alt7", 184369)
-local countdownSlam					= mod:NewCountdownFades("Alt12", 184243, "Tank")
+local countdownSlam					= mod:NewCountdownFades("Alt11", 184243, false)
 
 local voiceHowlingAxe				= mod:NewVoice(184369)--runout
 local voiceShockwave				= mod:NewVoice(184394)--shockwave
@@ -198,6 +198,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnSlam:Show(args.destName, amount)
 		end
 		if args:IsPlayer() then
+			countdownSlam:Cancel()
 			countdownSlam:Start()
 		end
 	elseif spellId == 180927 then--Vehicle Spawns
@@ -302,6 +303,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.HudMapOnAxe then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
+	elseif spellId == 184243 and args:IsPlayer() then
+		countdownSlam:Cancel()
 	end
 end
 
