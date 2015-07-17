@@ -389,12 +389,14 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 187006 then--Activate Void Portal
+		voicePhaseChange:Play("phasechange")
 		warnVoidPortal:Show()
 		if not self:IsLFR() then
 			timerVoidsCD:Start(10.5)
 			self:Schedule(10.5, VoidsRepeater, self)
 		end
 	elseif spellId == 187003 then--Activate Fel Portal
+		voicePhaseChange:Play("phasechange")
 		warnFelPortal:Show()
 		if not self:IsLFR() then
 			timerImpCD:Start(10.5)
@@ -403,7 +405,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif spellId == 187225 then--Phase 2 (Purple Mode)
 		self.vb.phase = 2
-		voicePhaseChange:Play("phasechange")
 		timerFelStrikeCD:Cancel()
 		timerFelSurgeCD:Cancel()
 		countdownFelSurge:Cancel()
