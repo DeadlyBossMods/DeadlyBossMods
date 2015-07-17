@@ -490,12 +490,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.ignoreAdds = false
 		self.vb.impCount = 0
 		self.vb.infernalCount = 0
+		timerFelImplosionCD:Cancel()
+		timerInfernoCD:Cancel()
 		timerFelImplosionCD:Start(24.5, 1)
 		timerInfernoCD:Start(47.5, 1)
 	elseif spellId == 182262 then--Summon Adds (phase 3 start)
 		DBM:Debug("Summon adds 182262 fired", 2)
 		self.vb.ignoreAdds = false
 		self.vb.infernalCount = 0
+		timerFelImplosionCD:Cancel()
+		timerInfernoCD:Cancel()
 		timerInfernoCD:Start(28, 1)
 	elseif spellId == 181156 then--Exists on wowhead and added in 6.2, likely related to this fight but unknown purpose, probably mythic?
 		DBM:Debug("Summon adds 181156 fired", 2)
@@ -503,8 +507,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 182263 and self.vb.phase == 2 then--Phase 3
 		self.vb.phase = 3
 		self.vb.ignoreAdds = true
-		timerFelImplosionCD:Cancel()
-		timerInfernoCD:Cancel()
 		timerFelHellfireCD:Cancel()
 		timerShadowForceCD:Cancel()
 		countdownShadowForce:Cancel()
