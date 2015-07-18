@@ -153,7 +153,11 @@ function mod:OnCombatStart(delay)
 			timerShadowRiposteCD:Start(9.5-delay)
 		end
 	end
-	berserkTimer:Start(-delay)
+	if self:IsNormal() then--Harder berserk on normal vs all other difficulties. Kromog all over again.
+		berserkTimer:Start(480-delay)
+	else
+		berserkTimer:Start(-delay)
+	end
 end
 
 function mod:OnCombatEnd()
