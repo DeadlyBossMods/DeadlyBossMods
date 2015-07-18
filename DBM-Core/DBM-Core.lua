@@ -6799,6 +6799,7 @@ function bossModPrototype:IsEvent()
 end
 
 function bossModPrototype:IsTrivial(level)
+	if difficultyIndex == 24 then return false end--Timewalker dungeon, ignore level and return false for trivial
 	if playerLevel >= level then
 		return true
 	end
