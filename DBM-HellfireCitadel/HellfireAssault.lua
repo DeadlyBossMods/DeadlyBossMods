@@ -13,7 +13,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 184394 181155 185816 183452 181968",
+	"SPELL_CAST_START 184394 181155 185816 183452 181968 180945",
 	"SPELL_AURA_APPLIED 180079 184243 180927 184369 180076",
 	"SPELL_AURA_APPLIED_DOSE 184243",
 	"SPELL_AURA_REMOVED 184369 184243",
@@ -46,6 +46,7 @@ local warnFelfireFlamebelcher		= mod:NewCountAnnounce("ej11437", 2, 160240)
 local warnFelfireArtillery			= mod:NewCountAnnounce("ej11435", 3, 160240)
 ----Felfire Demolisher (Heroic, Mythic)
 local warnFelfireDemolisher			= mod:NewCountAnnounce("ej11429", 4, 160240)--Heroic & Mythic only
+local warnNova						= mod:NewSpellAnnounce(180945, 3)
 ----Felfire Transporter (Mythic)
 local warnFelfireTransporter		= mod:NewCountAnnounce("ej11712", 4, 160240)--Mythic Only
 ----Things
@@ -106,12 +107,16 @@ mod.vb.felcasterCount = 0
 mod.vb.felCastersAlive = 0
 mod.vb.berserkerCount = 0
 mod.vb.axeActive = false
---Vehicles spawn early if killed fast enough, these are times they spawn whether ready or not (still 2-3 sec variation)
+--Vehicles spawn early if killed fast enough, these are times they spawn whether ready or not (still a very large variation)
 local normalVehicleTimers = {72, 59, 63, 60, 58, 55, 38, 46}
 local vehicleTimers = {62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 40.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-4 seconds
 local mythicVehicleTimers = {19.6, 23.6, 54, 54, 36.5, 35.7, 12, 12.6, 30.3, 67, 68.5, 50.5, 55.5, 33.8, 33.4, 35, 31.7, 29.5, 25}--Done in a weird way, for dual timers support. Pretend it's two tables combined into 1. First time is time between1 and 3, second time between 2 and 4, etc.
+--Not all the adds yell, so timers are only for the ones that do. this is first boss and I just don't care enough to write a scheduling function
+--Especially do the variation in max spawn times AND the fact they spawn early if dps is high
 local berserkerTimers = {55.9, 26, 14.4, 36.7, 38.8, 49.5, 66.8, 38.7, 65.8, 47.4}--30 (first) is omitted
+local mythicberserkerTimers = {54.7, 59.6, 140.7, 39.7, 46.5, 28.5, 38.9}--29.5 (first) omitted
 local felcasterTimers = {8.5, 32.2, 39.5, 45.6, 50.9, 31.1, 36.7, 10, 103.8, 0.3, 27.8, 47.2}--35 (first) is omitted
+local mythicfelcasterTimers = {9.5, 160, 33.8, 49.4, 41.3, 44.9, 70.6}--35 (first) is omitted.
 local axeDebuff = GetSpellInfo(184369)
 local axeFilter
 do
@@ -142,12 +147,12 @@ function mod:OnCombatStart(delay)
 	self.vb.felCastersAlive = 0
 	timerHowlingAxeCD:Start(4.7-delay)
 	timerShockwaveCD:Start(5.8-delay)
+	timerBerserkersCD:Start(29.5-delay, 1)
+	timerFelCastersCD:Start(35-delay, 1)
 	if self:IsMythic() then
 		timerSiegeVehicleCD:Start(52.5-delay, "("..DBM_CORE_LEFT..")")
 		timerSiegeVehicleCD:Start(55-delay, "("..DBM_CORE_RIGHT..")")
 	else
-		timerBerserkersCD:Start(30-delay, 1)
-		timerFelCastersCD:Start(35-delay, 1)
 		timerSiegeVehicleCD:Start(37.8-delay, "")
 	end
 end
@@ -178,6 +183,8 @@ function mod:SPELL_CAST_START(args)
 		voiceRepair:Play("kickcast")
 	elseif spellId == 181968 and self:AntiSpam(3, 1) then
 		specWarnMetamorphosis:Show()
+	elseif spellId == 180945 then
+		warnNova:Show()
 	end
 end
 function mod:SPELL_CAST_SUCCESS(args)
@@ -368,7 +375,9 @@ function mod:OnSync(msg)
 		--	self:ScanForMobs(93931, 0, 6-self.vb.felCastersAlive, nil, 0.2, 15)
 		--end
 		if self:IsMythic() then
-		
+			if mythicfelcasterTimers[self.vb.felcasterCount] then
+				timerFelCastersCD:Start(mythicfelcasterTimers[self.vb.felcasterCount], self.vb.felcasterCount+1)
+			end
 		else
 			if felcasterTimers[self.vb.felcasterCount] then
 				timerFelCastersCD:Start(felcasterTimers[self.vb.felcasterCount], self.vb.felcasterCount+1)
@@ -382,7 +391,9 @@ function mod:OnSync(msg)
 --			self:ScanForMobs(93858, 0, 8, nil, 0.2, 12)
 --		end
 		if self:IsMythic() then
-		
+			if mythicberserkerTimers[self.vb.berserkerCount] then
+				timerBerserkersCD:Start(mythicberserkerTimers[self.vb.berserkerCount], self.vb.berserkerCount+1)
+			end
 		else
 			if berserkerTimers[self.vb.berserkerCount] then
 				timerBerserkersCD:Start(berserkerTimers[self.vb.berserkerCount], self.vb.berserkerCount+1)
