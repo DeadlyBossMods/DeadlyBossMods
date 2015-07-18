@@ -111,7 +111,7 @@ mod.vb.axeActive = false
 local normalVehicleTimers = {72, 59, 63, 60, 58, 55, 38, 46}
 local vehicleTimers = {62.7, 56.6, 60.9, 56.7, 60.9, 57.2, 40.3, 59.4}--Longest pull, 541 seconds. There is slight variation on them, 1-4 seconds
 local mythicVehicleTimers = {19.6, 23.6, 54, 54, 36.5, 35.7, 12, 12.6, 30.3, 67, 68.5, 50.5, 55.5, 33.8, 33.4, 35, 31.7, 29.5, 25}--Done in a weird way, for dual timers support. Pretend it's two tables combined into 1. First time is time between1 and 3, second time between 2 and 4, etc.
---Not all the adds yell, so timers are only for the ones that do. this is first boss and I just don't care enough to write a scheduling function
+--The adds that jump off vehicles do not have a yell, so timers are only for the ones that get launched in that do yell.
 --Especially do the variation in max spawn times AND the fact they spawn early if dps is high
 local berserkerTimers = {55.9, 26, 14.4, 36.7, 38.8, 49.5, 66.8, 38.7, 65.8, 47.4}--30 (first) is omitted
 local mythicberserkerTimers = {54.7, 59.6, 140.7, 39.7, 46.5, 28.5, 38.9}--29.5 (first) omitted
