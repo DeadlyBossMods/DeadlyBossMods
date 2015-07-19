@@ -75,11 +75,13 @@ mod:AddSetIconOption("SetIconOnFate", 179909)
 mod:AddHudMapOption("HudMapOnSharedFate", 179909)--Smart hud, distinquishes rooted from non rooted by color coding.
 mod:AddArrowOption("SharedFateArrow", 179909, true, 2)
 mod:AddRangeFrameOption(5, 182049)
+mod:AddInfoFrameOption(181295)
 
 mod.vb.rootedFate = nil
 mod.vb.rootedFate2 = nil--Just in case, but if this happens you're doing things badly
 mod.vb.shadowOfDeathCount = 0
 mod.vb.sharedFateCount = 0
+mod.vb.playersWithDigest = 0
 local playerDown = false
 local playersCount = 0
 local sharedFateTimers = {19, 28, 25, 22}
@@ -121,6 +123,7 @@ function mod:OnCombatStart(delay)
 	self.vb.rootedFate2 = nil
 	self.vb.shadowOfDeathCount = 0
 	self.vb.sharedFateCount = 0
+	self.vb.playersWithDigest = 0
 	playerDown = false
 	playersCount = DBM:GetGroupSize()
 	if self.Options.RangeFrame then
@@ -158,6 +161,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.HudMapOnSharedFate then
 		DBMHudMap:Disable()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end 
 
@@ -295,17 +301,24 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnHungerforLife:Show()
 			voiceHungerforLife:Play("justrun")
 		end
-	elseif spellId == 181295 and args:IsPlayer() then
-		if self:IsMythic() then
-			timerDigest:Start(30)
-			countdownDigest:Start(30)
-		else
-			timerDigest:Start()
-			countdownDigest:Start()
+	elseif spellId == 181295 then
+		self.vb.playersWithDigest = self.vb.playersWithDigest + 1
+		if args:IsPlayer() then
+			if self:IsMythic() then
+				timerDigest:Start(30)
+				countdownDigest:Start(30)
+			else
+				timerDigest:Start()
+				countdownDigest:Start()
+			end
+			playerDown = true
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
 		end
-		playerDown = true
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
+		if self.Options.InfoFrame and self.vb.playersWithDigest == 1 then--coming from 0, open infoframe
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(10, "playerdebuffremaining", 181295)
 		end
 	elseif spellId == 185982 and not playerDown then--Cast when a Enraged Spirit in stomach reaches 70%
 		warnGoreboundSpiritSoon:Show()
@@ -343,12 +356,18 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.HudMapOnSharedFate then
 			DBMHudMap:FreeEncounterMarkerByTarget(179908, args.destName)
 		end
-	elseif spellId == 181295 and args:IsPlayer() then
-		timerDigest:Cancel()
-		countdownDigest:Cancel()
-		playerDown = false
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(5, digestFilter)
+	elseif spellId == 181295 then
+		self.vb.playersWithDigest = self.vb.playersWithDigest - 1
+		if args:IsPlayer() then
+			timerDigest:Cancel()
+			countdownDigest:Cancel()
+			playerDown = false
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(5, digestFilter)
+			end
+		end
+		if self.Options.InfoFrame and self.vb.playersWithDigest == 0 then
+			DBM.InfoFrame:Hide()
 		end
 	elseif spellId == 181973 then--Phase restart
 		self.vb.shadowOfDeathCount = 0
