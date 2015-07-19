@@ -318,7 +318,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.InfoFrame and self.vb.playersWithDigest == 1 then--coming from 0, open infoframe
 			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(10, "playerdebuffremaining", 181295)
+			DBM.InfoFrame:Show(10, "playerdebuffremaining", args.spellName)
 		end
 	elseif spellId == 185982 and not playerDown then--Cast when a Enraged Spirit in stomach reaches 70%
 		warnGoreboundSpiritSoon:Show()
