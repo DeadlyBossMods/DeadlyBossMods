@@ -79,6 +79,7 @@ local UnitPosition = UnitPosition
 local GetRaidRosterInfo, GetPartyAssignment, UnitGroupRolesAssigned = GetRaidRosterInfo, GetPartyAssignment, UnitGroupRolesAssigned
 local twipe = table.wipe
 local select = select
+local mfloor = math.floor
 
 ---------------------
 --  Dropdown Menu  --
@@ -343,7 +344,7 @@ local function updatePlayerDebuffRemaining()
 		local _, _, _, _, _, _, expires = UnitDebuff(uId, spellName)
 		if expires then
 			local debuffTime = expires - GetTime()
-			lines[UnitName(uId)] = debuffTime
+			lines[UnitName(uId)] = mfloor(debuffTime)
 		end
 	end
 	updateLines()
