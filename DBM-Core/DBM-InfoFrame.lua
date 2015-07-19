@@ -557,8 +557,8 @@ function infoFrame:Show(maxLines, event, ...)
 	end
 	frame = frame or createFrame()
 
-	if event == "health" then
-		sortingAsc = true	-- Person who misses the most HP to be at threshold is listed on top
+	if event == "health" or event == "playerdebuffremaining" then
+		sortingAsc = true	-- Sort lowest first
 	end
 
 	if events[currentEvent] then
