@@ -81,6 +81,9 @@ local twipe = table.wipe
 local select = select
 local mfloor = math.floor
 
+-- for Phanx' Class Colors
+local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
+
 ---------------------
 --  Dropdown Menu  --
 ---------------------
@@ -520,6 +523,10 @@ function onUpdate(frame)
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(leftText)) or "player"--Prevent nil logical error
 			local addedSelf
 			if unitId and select(4, UnitPosition(unitId)) == currentMapId then
+				local _, class = UnitClass(unitId)
+				if class then
+					color = RAID_CLASS_COLORS[class]
+				end
 				linesShown = linesShown + 1
 				if leftText == UnitName("player") then--It's player.
 					addedSelf = true
@@ -529,15 +536,15 @@ function onUpdate(frame)
 						frame:AddDoubleLine(icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
 					end
 				else--It's not player, do nothing special with it. Ordinary white text.
-					frame:AddDoubleLine(icon or leftText, rightText, color.R, color.G, color.B, 255, 255, 255)
+					frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
 				end
 			end
 			if not addedSelf and DBM.Options.InfoFrameShowSelf and currentEvent == "playerpower" then-- Only Shows on playerpower event.
-				frame:AddDoubleLine(UnitName("player"), lines[UnitName("player")], color.R, color.G, color.B, 255, 255, 255)
+				frame:AddDoubleLine(UnitName("player"), lines[UnitName("player")], color.r, color.g, color.b, 255, 255, 255)
 			end
 		else
 			linesShown = linesShown + 1
-			frame:AddDoubleLine(icon or leftText, rightText, color.R, color.G, color.B, 255, 255, 255)
+			frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
 		end
 	end
 	frame:Show()
