@@ -335,6 +335,21 @@ local function updateBadPlayerDebuffs()
 	updateIcons()
 end
 
+--Debuffs with important durations that we track
+local function updatePlayerDebuffRemaining()
+	twipe(lines)
+	local spellName = GetSpellInfo(value[1])
+	for uId in DBM:GetGroupMembers() do
+		local _, _, _, _, _, _, expires = UnitDebuff(uId, spellName)
+		if expires then
+			local debuffTime = expires - GetTime()
+			lines[UnitName(uId)] = debuffTime
+		end
+	end
+	updateLines()
+	updateIcons()
+end
+
 --Duplicate of updateBadPlayerDebuffs
 --needed when specific spellid must be checked because spellname for more than 1 spell
 local function updateBadPlayerDebuffsBySpellID()
@@ -451,6 +466,7 @@ local events = {
 	["playerbuff"] = updatePlayerBuffs,
 	["playergooddebuff"] = updateGoodPlayerDebuffs,
 	["playerbaddebuff"] = updateBadPlayerDebuffs,
+	["playerdebuffremaining"] = updatePlayerDebuffRemaining,
 	["playerbaddebuffbyspellid"] = updateBadPlayerDebuffsBySpellID,
 	["reverseplayerbaddebuff"] = updateReverseBadPlayerDebuffs,
 	["playeraggro"] = updatePlayerAggro,
@@ -470,6 +486,7 @@ local friendlyEvents = {
 	["playerbuff"] = true,
 	["playergooddebuff"] = true,
 	["playerbaddebuff"] = true,
+	["playerdebuffremaining"] = true,
 	["playerbaddebuffbyspellid"] = true,
 	["reverseplayerbaddebuff"] = true,
 	["playeraggro"] = true,
@@ -505,7 +522,7 @@ function onUpdate(frame)
 				linesShown = linesShown + 1
 				if leftText == UnitName("player") then--It's player.
 					addedSelf = true
-					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerbaddebuffbyspellid" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
+					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerbaddebuffbyspellid" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
 						frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 255, 255)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
 					else--Green
 						frame:AddDoubleLine(icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
