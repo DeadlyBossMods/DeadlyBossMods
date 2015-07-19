@@ -288,7 +288,7 @@ end
 --Buffs that are good to have, therefor bad not to have them.
 local function updatePlayerBuffs()
 	twipe(lines)
-	local spellName = GetSpellInfo(value[1])
+	local spellName = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
 		if tankIgnored and UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) then
@@ -305,7 +305,7 @@ end
 --Debuffs that are good to have, therefor it's bad NOT to have them.
 local function updateGoodPlayerDebuffs()
 	twipe(lines)
-	local spellName = GetSpellInfo(value[1])
+	local spellName = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
 		if tankIgnored and UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) then
@@ -322,7 +322,7 @@ end
 --Debuffs that are bad to have, therefor it is bad to have them.
 local function updateBadPlayerDebuffs()
 	twipe(lines)
-	local spellName = GetSpellInfo(value[1])
+	local spellName = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
 		if tankIgnored and UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) then
@@ -339,7 +339,7 @@ end
 --Debuffs with important durations that we track
 local function updatePlayerDebuffRemaining()
 	twipe(lines)
-	local spellName = GetSpellInfo(value[1])
+	local spellName = value[1]
 	for uId in DBM:GetGroupMembers() do
 		local _, _, _, _, _, _, expires = UnitDebuff(uId, spellName)
 		if expires then
@@ -355,7 +355,7 @@ end
 --needed when specific spellid must be checked because spellname for more than 1 spell
 local function updateBadPlayerDebuffsBySpellID()
 	twipe(lines)
-	local spellName = GetSpellInfo(value[1])
+	local spellName = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
 		if tankIgnored and UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) then
@@ -372,7 +372,7 @@ end
 --Debuffs that are bad to have, but we want to show players who do NOT have them
 local function updateReverseBadPlayerDebuffs()
 	twipe(lines)
-	local spellName = GetSpellInfo(value[1])
+	local spellName = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
 		if tankIgnored and UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1) then
@@ -388,7 +388,7 @@ end
 
 local function updatePlayerBuffStacks()
 	twipe(lines)
-	local spellName = GetSpellInfo(value[1])
+	local spellName = value[1]
 	for uId in DBM:GetGroupMembers() do
 		if UnitBuff(uId, spellName) then
 			lines[UnitName(uId)] = select(4, UnitBuff(uId, spellName))
@@ -400,7 +400,7 @@ end
 
 local function updatePlayerDebuffStacks()
 	twipe(lines)
-	local spellName = GetSpellInfo(value[1])
+	local spellName = value[1]
 	for uId in DBM:GetGroupMembers() do
 		if UnitDebuff(uId, spellName) then
 			lines[UnitName(uId)] = select(4, UnitDebuff(uId, spellName))
@@ -559,6 +559,12 @@ function infoFrame:Show(maxLines, event, ...)
 
 	if event == "health" or event == "playerdebuffremaining" then
 		sortingAsc = true	-- Sort lowest first
+	end
+	
+	--If spellId is given as value one, convert to spell name on show instead of in every onupdate
+	--this also allows spell name to be given by mod, since value 1 verifies it's a number
+	if type(value[1]) == "number" and event ~= "health" and event ~= "function" and event ~= "playertargets" and event ~= "playeraggro" and event ~= "playerpower" and event ~= "enemypower" and event ~= "test" then
+		value[1] = GetSpellInfo(value[1])
 	end
 
 	if events[currentEvent] then
