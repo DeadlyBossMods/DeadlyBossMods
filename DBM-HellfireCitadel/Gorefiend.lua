@@ -362,7 +362,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerDigest:Cancel()
 			countdownDigest:Cancel()
 			playerDown = false
-			if self.Options.RangeFrame then
+			if self.Options.RangeFrame and self:IsInCombat() then
 				DBM.RangeCheck:Show(5, digestFilter)
 			end
 		end
