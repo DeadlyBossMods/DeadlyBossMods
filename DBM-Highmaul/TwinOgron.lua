@@ -97,7 +97,6 @@ do
 end
 
 local lines = {}
-
 local function sortInfoFrame(a, b) 
 	local a = lines[a]
 	local b = lines[b]
