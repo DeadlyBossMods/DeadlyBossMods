@@ -142,6 +142,7 @@ mod:AddSetIconOption("SetIconOnShackledTorment2", 184964, false)
 mod:AddSetIconOption("SetIconOnInfernals", "ej11618", true, true)
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
 mod:AddBoolOption("FilterOtherPhase", true)
+mod:AddInfoFrameOption(184964)
 
 mod.vb.phase = 1
 mod.vb.demonicCount = 0
@@ -173,6 +174,32 @@ do
 			return true
 		end
 	end
+end
+
+local lines = {}
+local function sortInfoFrame(a, b) 
+	local a = lines[a]
+	local b = lines[b]
+	if not tonumber(a) then a = -1 end
+	if not tonumber(b) then b = -1 end
+	if a < b then return true else return false end
+end
+
+local function updateInfoFrame()
+	table.wipe(lines)
+	local total = 0
+	for i = 1, #shacklesTargets do
+		local name = shacklesTargets[i]
+		local uId = DBM:GetRaidUnitId(name)
+		if UnitDebuff(uId, shackledDebuff) then
+			total = total + 1
+			lines[name] = i
+		end
+	end
+	if total == 0 then--None found, hide infoframe because all broke
+		DBM.InfoFrame:Hide()
+	end
+	return lines
 end
 
 local function updateRangeFrame(self)
@@ -237,6 +264,9 @@ local function breakShackles(self)
 		if self.Options.SetIconOnShackledTorment2 then
 			self:SetIcon(name, i)
 		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
+		end
 	end
 end
 
@@ -272,6 +302,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.HudMapOnWrought then
 		DBMHudMap:Disable()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end 
 
