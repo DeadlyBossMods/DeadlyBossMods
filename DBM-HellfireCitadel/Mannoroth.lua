@@ -109,6 +109,7 @@ local voiceMassiveBlast				= mod:NewVoice(181359, "Tank")--changemt
 
 mod:AddRangeFrameOption(20, 181099)
 mod:AddHudMapOption("HudMapOnGaze", 181597)
+mod:AddInfoFrameOption(181597)
 
 mod.vb.DoomTargetCount = 0
 mod.vb.portalsLeft = 3
@@ -155,6 +156,33 @@ local function updateRangeFrame(self)
 	end
 end
 
+local lines = {}
+local function sortInfoFrame(a, b) 
+	local a = lines[a]
+	local b = lines[b]
+	if not tonumber(a) then a = -1 end
+	if not tonumber(b) then b = -1 end
+	if a < b then return true else return false end
+end
+
+local gaze1, gaze2 = GetSpellInfo(181597), GetSpellInfo(182006)
+local function updateInfoFrame()
+	table.wipe(lines)
+	local total = 0
+	for i = 1, #gazeTargets do
+		local name = gazeTargets[i]
+		local uId = DBM:GetRaidUnitId(name)
+		if UnitDebuff(uId, gaze1) or UnitDebuff(uId, gaze2) then
+			total = total + 1
+			lines[name] = i
+		end
+	end
+	if total == 0 then--None found, hide infoframe because all broke
+		DBM.InfoFrame:Hide()
+	end
+	return lines
+end
+
 local function warnGazeTargts(self)
 	table.sort(gazeTargets)
 	warnGaze:Show(table.concat(gazeTargets, "<, >"))
@@ -164,6 +192,9 @@ local function warnGazeTargts(self)
 		if name == playerName then
 			yellGaze:Yell(i)
 		end
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 	end
 end
 
