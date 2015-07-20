@@ -543,6 +543,14 @@ function onUpdate(frame)
 				frame:AddDoubleLine(UnitName("player"), lines[UnitName("player")], color.r, color.g, color.b, 255, 255, 255)
 			end
 		else
+			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(leftText))
+			if unitId then
+				--Class color names in custom functions too, IF unitID exists
+				local _, class = UnitClass(unitId)
+				if class then
+					color = RAID_CLASS_COLORS[class]
+				end
+			end
 			linesShown = linesShown + 1
 			frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
 		end
