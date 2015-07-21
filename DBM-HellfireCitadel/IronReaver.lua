@@ -11,6 +11,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
+	"SPELL_CAST_SUCCESS 186676 186667 186660 188294 182523",
 	"SPELL_CAST_START 179889 182066 186449 181999 185282 182055 182668",
 	"SPELL_AURA_APPLIED 182280 182020 182074 182001",
 	"SPELL_AURA_APPLIED_DOSE 182074",
@@ -48,7 +49,7 @@ local timerFallingSlamCD			= mod:NewNextTimer(54, 182066, nil, nil, nil, 6)
 local timerFuelLeakCD				= mod:NewNextCountTimer(15, 182668, nil, nil, nil, 2)--Fire bombs always immediately after, so no timer needed
 local timerVolatileBombCD			= mod:NewNextCountTimer(15, 182534, nil, nil, nil, 1)
 
---local berserkTimer				= mod:NewBerserkTimer(600)
+local berserkTimer					= mod:NewBerserkTimer(514)
 
 local countdownBarrage				= mod:NewCountdown(15, 185282)
 local countdownArtillery			= mod:NewCountdown("AltTwo15", 182108)--Important to have different voice from fades, because they are happening at same time most of time
@@ -113,7 +114,6 @@ local function sortInfoFrame(a, b)
 	if a > b then return true else return false end
 end
 
-local reactiveName, burningName, quickfuseName, reinforcedName, volatileName = GetSpellInfo(186676), GetSpellInfo(186667), GetSpellInfo(186660), GetSpellInfo(188294), GetSpellInfo(182523)
 local function updateInfoFrame()
 	table.wipe(lines)
 	local total = mod.vb.burningCount + mod.vb.reactiveCount + mod.vb.quickfuseCount + mod.vb.volatileCount + mod.vb.reinforcedCount
@@ -164,6 +164,9 @@ function mod:OnCombatStart(delay)
 	--berserkTimer:Start(-delay)
 	--Boss uses "Ground Phase" trigger after pull. Do not start timers here
 	--No reason to reset variables here either, they also reset on ground phase trigger 1 second after pull
+	if self:IsMythic() then
+		berserkTimer:Start(-delay)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -177,6 +180,22 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 end 
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	--bombs exploding
+	if spellId == 186676 then--Reactive
+		self.vb.reactiveCount = self.vb.reactiveCount - 1
+	elseif spellId == 186667 then--Burning
+		self.vb.burningCount = self.vb.burningCount - 1
+	elseif spellId == 186660 then--Quick-Fuse
+		self.vb.quickfuseCount = self.vb.quickfuseCount - 1
+	elseif spellId == 188294 then--Reinforced
+		self.vb.reinforcedCount = self.vb.reinforcedCount - 1
+	elseif spellId == 182523 then--Volatile
+		self.vb.volatileCount = self.vb.volatileCount - 1
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
