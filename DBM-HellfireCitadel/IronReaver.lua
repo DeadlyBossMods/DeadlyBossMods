@@ -11,7 +11,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_SUCCESS 186676 186667 186660 188294 182523",
+	"SPELL_CAST_SUCCESS 186684 186666 186660 188293 182523",
 	"SPELL_CAST_START 179889 182066 186449 181999 185282 182055 182668",
 	"SPELL_AURA_APPLIED 182280 182020 182074 182001",
 	"SPELL_AURA_APPLIED_DOSE 182074",
@@ -182,16 +182,17 @@ function mod:OnCombatEnd()
 	end
 end 
 
+--(ability.id = 186684 or ability.id = 186666 or ability.id = 186660 or ability.id = 188293 or ability.id = 182523) and type = "cast"
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	--bombs exploding
-	if spellId == 186676 then--Reactive
+	if spellId == 186684 then--Reactive
 		self.vb.reactiveCount = self.vb.reactiveCount - 1
-	elseif spellId == 186667 then--Burning
+	elseif spellId == 186666 then--Burning
 		self.vb.burningCount = self.vb.burningCount - 1
 	elseif spellId == 186660 then--Quick-Fuse
 		self.vb.quickfuseCount = self.vb.quickfuseCount - 1
-	elseif spellId == 188294 then--Reinforced
+	elseif spellId == 188293 then--Reinforced
 		self.vb.reinforcedCount = self.vb.reinforcedCount - 1
 	elseif spellId == 182523 then--Volatile
 		self.vb.volatileCount = self.vb.volatileCount - 1
@@ -232,6 +233,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 		end
 	elseif spellId == 185282 then

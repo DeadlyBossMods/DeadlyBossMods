@@ -265,6 +265,7 @@ local function breakShackles(self)
 			self:SetIcon(name, i)
 		end
 		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(shackledDebuff)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 		end
 	end
