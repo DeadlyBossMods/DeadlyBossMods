@@ -220,7 +220,11 @@ function mod:SPELL_CAST_START(args)
 		voiceFirebomb:Play("attbomb")
 		if self.vb.groundPhase then--Should only happen on mythic
 			self.vb.volatileCount = self.vb.volatileCount + 5
-			timerVolatileBombCD:Start(count == 1 and 42 or 69, self.vb.firebombCount+1)
+			if count == 1 then
+				timerVolatileBombCD:Start(42, count+1)
+			elseif count == 2 then
+				timerVolatileBombCD:Start(69, count+1)
+			end
 		else
 			timerVolatileBombCD:Start(15, self.vb.firebombCount+1)--Always 2 seconds after fuel streak, seems redundant to have both. Keeping for now.
 			if self:IsMythic() then
