@@ -62,7 +62,7 @@ local timerCrushingDarkness				= mod:NewCastTimer(6, 180017, nil, false)
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
 local countdownShadowofDeath			= mod:NewCountdownFades("Alt5", 179864)
-local countdownDigest					= mod:NewCountdown("Alt40", 181295)
+local countdownDigest					= mod:NewCountdown("Alt40", 181295, nil, nil, 8)
 
 local voiceTouchofDoom					= mod:NewVoice(179977)--runout
 local voiceHungerforLife				= mod:NewVoice(180148)--justrun
