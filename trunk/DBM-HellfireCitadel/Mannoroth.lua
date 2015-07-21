@@ -194,6 +194,7 @@ local function warnGazeTargts(self)
 		end
 	end
 	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(gaze1)
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 	end
 end
