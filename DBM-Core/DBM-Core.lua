@@ -4938,7 +4938,7 @@ do
 	
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
 		self:Debug("ENCOUNTER_END event fired: "..encounterID.." "..name.." "..difficulty.." "..size.." "..success)
-		if IsInRaid() then
+		if IsInRaid() and success == 0 then
 			self:Schedule(3, wipeRecoveryDelay, self)
 		end
 		for i = #inCombat, 1, -1 do
