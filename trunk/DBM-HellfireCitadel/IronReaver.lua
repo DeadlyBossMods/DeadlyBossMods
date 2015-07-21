@@ -155,6 +155,11 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.artilleryActive = 0--Only one that should reset on pull
+	self.vb.volatileCount = 0
+	self.vb.quickfuseCount = 0
+	self.vb.reactiveCount = 0
+	self.vb.burningCount = 0
+	self.vb.reinforcedCount = 0
 	updateRangeFrame(self)
 	--berserkTimer:Start(-delay)
 	--Boss uses "Ground Phase" trigger after pull. Do not start timers here
