@@ -3949,7 +3949,7 @@ do
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
 							DBM:Disable(true)
 						--Disable if revision grossly out of date even if not major patch.
-						elseif revDifference > 200 then
+						elseif revDifference > 150 then
 							if updateNotificationDisplayed < 3 then
 								updateNotificationDisplayed = 3
 								DBM:Disable(true)
