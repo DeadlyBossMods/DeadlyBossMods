@@ -6,7 +6,7 @@ mod:SetCreatureID(89890)
 mod:SetEncounterID(1777)
 mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3, 2, 1)--Seeds ever go over 5?
-mod:SetHotfixNoticeRev(14038)
+mod:SetHotfixNoticeRev(14060)
 mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
