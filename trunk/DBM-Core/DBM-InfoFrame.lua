@@ -56,7 +56,7 @@ local onUpdate
 local dropdownFrame
 local initializeDropdown
 local currentMapId
-local maxlines
+local maxlines = 5
 local currentEvent
 local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
 local lines = {}
@@ -504,7 +504,7 @@ function onUpdate(frame)
 		events[currentEvent]()
 	else
 		frame:Hide()
-		error("DBM-InfoFrame: Unsupported event", 2)
+		--error("DBM-InfoFrame: Unsupported event", 2)
 	end
 	local color = NORMAL_FONT_COLOR
 	frame:ClearLines()
@@ -614,8 +614,6 @@ function infoFrame:Hide()
 	twipe(sortedLines)
 	twipe(updateCallbacks)
 	headerText = "DBM Info Frame"
-	maxlines = nil
-	currentEvent = nil
 	twipe(value)
 	if frame then
 		if frame.ticker then
@@ -624,6 +622,7 @@ function infoFrame:Hide()
 		end
 		frame:Hide()
 	end
+	currentEvent = nil
 end
 
 function infoFrame:IsShown()
