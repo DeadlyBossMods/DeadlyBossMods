@@ -400,9 +400,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voicePhaseChange:Play("phasechange")
 		warnFelPortal:Show()
 		if not self:IsLFR() then
-			timerImpCD:Start(10.5)
-			countdownImps:Start(10.5)
-			self:Schedule(10.5, ImpRepeater, self)
+			timerImpCD:Start(10)
+			countdownImps:Start(10)
+			self:Schedule(10, ImpRepeater, self)
 		end
 	elseif spellId == 187225 then--Phase 2 (Purple Mode)
 		self.vb.phase = 2
