@@ -161,13 +161,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMarkofNecroCD:Start()
 	elseif spellId == 183480 and self:AntiSpam(8, 1) then
 		warnMirrorImage:Show()
-		countdownSpecial:Start()
+		countdownSpecial:Start(72.8)
 		if not self.vb.bloodboilDead then--Leap is next if bloodboil not dead
-			timerDemoLeapCD:Start()
+			timerDemoLeapCD:Start(72.8)
 		elseif not self.vb.diaDead then--Bloodboil is dead but dia isn't, darkness next
-			timerDarknessCD:Start()
+			timerDarknessCD:Start(72.8)
 		else--Only Jubei left, mirror images will be next
-			timerMirrorImageCD:Start()
+			timerMirrorImageCD:Start(72.8)
 		end
 	elseif spellId == 184357 then
 		self.vb.taintedBloodCount = self.vb.taintedBloodCount + 1
