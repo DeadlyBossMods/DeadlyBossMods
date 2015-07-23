@@ -2480,7 +2480,7 @@ local function CreateOptionsMenu()
 			DBM:UpdateSpecialWarningOptions()
 			DBM:ShowTestSpecialWarning(nil, 1)
 		end)
-		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 100, -165)
+		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 100, -148)
 
 		local FontStyles = {
 			{	text	= L.None,					value 	= "None"						},
