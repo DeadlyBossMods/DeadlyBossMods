@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: Jul 8 2015, 23:00 UTC@14064
+-- Last update: Jul 23 2015, 16:34 UTC@14126
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -96,9 +96,10 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SeedsBehavior		= "设定种子的喊叫方式 (需要团长权限)",
-	Iconed				= "骷髅, 十字, 方块, 月亮, 三角. 适合分散式开场。",--Default
+	Iconed				= "星星, 大饼, 菱形, 三角, 月亮。 适合分散式开场。",--Default
 	Numbered			= "1, 2, 3, 4, 5. 适合已分区的开场。",
 	DirectionLine		= "左, 左偏中, 中, 右偏中, 右. 适合直线式开场。",
+	FreeForAll			= "自由发挥. 不分配位置, 只大喊。",
 	CrossPerception		= "前, 后, 左, 右, 中. 适合十字形开场。",--Unsure if viable with 5 targets/will remain
 	CrossCardinal		= "北, 南, 东, 西, 中. 适合十字形开场。",--Unsure if viable 5 targets/will remain
 	ExCardinal			= "东北, 东南, 西北, 西南, 中. 适合十字形开场。"--Unsure if viable 5 targets/will remain
