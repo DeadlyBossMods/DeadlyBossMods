@@ -17,6 +17,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 182280 182020 182074 182001",
 	"SPELL_AURA_APPLIED_DOSE 182074",
 	"SPELL_AURA_REMOVED 182280",
+	"SPELL_DAMAGE 182523",
+	"SPELL_MISSED 182523",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -367,6 +369,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		updateRangeFrame(self)
 	end
 end
+
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId) -- captures spellid 161612, 161576
+	if spellId == 182523 and self:AntiSpam(5, 4) then
+		self.vb.volatileCount = self.vb.volatileCount - 1
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
