@@ -105,7 +105,7 @@ function mod:RuneStart(spellId)
 	--		DBM.Arrow:ShowRunTo(playerX, playerY, 0)
 	--	end
 		if self.Options.HudMapForRune then
-			DBMHudMap:RegisterPositionMarker(157060, "HudMapForRune", "highlight", playerX, playerY, 3, 20, 0, 1, 0, 0.5, nil, 4):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterPositionMarker(157060, "HudMapForRune", "highlight", playerX, playerY, 3, 12, 0, 1, 0, 0.5, nil, 4):Pulse(0.5, 0.5)
 		end
 	end
 end
