@@ -74,7 +74,7 @@ local voiceSwat						= mod:NewVoice(181305, "Tank")--carefly
 
 mod:AddRangeFrameOption("4/40")
 --mod:AddArrowOption("RuneArrow", 157060, false, 3)--Off by default, because hud does a much better job, and in case user is running both Exorsus Raid Tools and DBM (ExRT has it's own arrow)
-mod:AddHudMapOption("HudMapForRune", 181296)--Localize better later, right now it just needs testing
+mod:AddHudMapOption("HudMapForRune", 181202)
 
 mod.vb.explodingTank = nil
 mod.vb.poundActive = false
@@ -100,12 +100,12 @@ function mod:RuneStart(spellId)
 	elseif spellId == 181300 then
 		playerX, playerY = playerGreenX, playerGreenY
 	end
-	if playerX and playerY then
+	if spellId and playerX and playerY then
 	--	if self.Options.RuneArrow then
 	--		DBM.Arrow:ShowRunTo(playerX, playerY, 0)
 	--	end
 		if self.Options.HudMapForRune then
-			DBMHudMap:RegisterPositionMarker(157060, "HudMapForRune", "highlight", playerX, playerY, 3, 12, 0, 1, 0, 0.5, nil, 4):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterPositionMarker(spellId, "HudMapForRune", "highlight", playerX, playerY, 3, 15, 0, 1, 0, 0.5, nil, 4):Pulse(0.5, 0.5)
 		end
 	end
 end
@@ -443,7 +443,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---Figure out why he does this way, change to a proper way using existing CLEU events
+--Figure out why he does this way, change to using existing CLEU events if possible
 function mod:RAID_BOSS_EMOTE(msg, npc)
 	if msg:find("spell:181293") and msg:find("INV_Bijou_Purple") then
 		self:RuneStart(181293)
@@ -462,7 +462,6 @@ do
 		DBM:AddMsg(L.ExRTNotice:format(sender, (assignedPositionOrange or NONE), (assignedPositionGreen or NONE), (assignedPositionPurple or NONE)))
 	end
 	--Exorsus Raid Tools Comm snooping to detect player assignment even if player isn't running Exorsus Raid Tools.
-	--Runes locations are from ExRT and not 100% vetted accurate.
 	local runes = {
 		[1] = {-388.10,4209.00},
 		[2] = {-354.50,4208.60},
