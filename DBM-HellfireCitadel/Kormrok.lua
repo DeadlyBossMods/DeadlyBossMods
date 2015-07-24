@@ -15,10 +15,15 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181292 181293 181296 181297 181299 181300 180244 181305",
 	"SPELL_CAST_SUCCESS 181307",
 	"SPELL_AURA_APPLIED 181306 186882 180115 180116 180117 189197 189198 189199 186879 186880 186881",
-	"SPELL_AURA_REMOVED 181306 180244"
+	"SPELL_AURA_REMOVED 181306 180244",
+	"RAID_BOSS_EMOTE"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
+)
+
+mod:RegisterEvents(
+	"CHAT_MSG_ADDON"--Has to be out of combat
 )
 
 --(ability.id = 181292 or ability.id = 181293 or ability.id = 181296 or ability.id = 181297 or ability.id = 181299 or ability.id = 181300 or ability.id = 180244 or ability.id = 181305) and type = "begincast" or ability.id = 181307 and type = "cast" or (ability.id = 181306 or ability.id = 180115 or ability.id = 180116 or ability.id = 180117 or ability.id = 189197 or ability.id = 189198 or ability.id = 189199 or ability.id = 186882 or ability.id = 186879 or ability.id = 186880 or ability.id = 186881) and (type = "applybuff" or type = "applydebuff")
@@ -68,6 +73,8 @@ local voiceGraspingHands			= mod:NewVoice(181299)--gather
 local voiceSwat						= mod:NewVoice(181305, "Tank")--carefly
 
 mod:AddRangeFrameOption("4/40")
+--mod:AddArrowOption("RuneArrow", 157060, false, 3)--Off by default, because hud does a much better job, and in case user is running both Exorsus Raid Tools and DBM (ExRT has it's own arrow)
+mod:AddHudMapOption("HudMapForRune", 181296)--Localize better later, right now it just needs testing
 
 mod.vb.explodingTank = nil
 mod.vb.poundActive = false
@@ -78,6 +85,39 @@ mod.vb.swatCount = 0
 mod.vb.enraged = false
 local debuffName = GetSpellInfo(181306)
 local UnitDebuff = UnitDebuff
+local playerOrangeX, playerOrangeY = nil, nil
+local playerGreenX, playerGreenY = nil, nil
+local playerPurpleX, playerPurpleY = nil, nil
+
+--Not local functions, so they can also be used as a test functions as well
+--/run DBM:GetModByName("1392"):RuneStart(181293)
+function mod:RuneStart(spellId)
+	local playerX, playerY
+	if spellId == 181293 then
+		playerX, playerY = playerPurpleX, playerPurpleY
+	elseif spellId == 181297 then
+		playerX, playerY = playerOrangeX, playerOrangeY
+	elseif spellId == 181300 then
+		playerX, playerY = playerGreenX, playerGreenY
+	end
+	if playerX and playerY then
+	--	if self.Options.RuneArrow then
+	--		DBM.Arrow:ShowRunTo(playerX, playerY, 0)
+	--	end
+		if self.Options.HudMapForRune then
+			DBMHudMap:RegisterPositionMarker(157060, "HudMapForRune", "highlight", playerX, playerY, 3, 20, 0, 1, 0, 0.5, nil, 4):Pulse(0.5, 0.5)
+		end
+	end
+end
+
+function mod:RuneOver()
+--	if self.Options.RuneArrow then
+--		DBM.RangeCheck:Hide()
+--	end
+	if self.Options.HudMapForRune then
+		DBMHudMap:Disable()
+	end
+end
 
 local debuffFilter
 do
@@ -128,6 +168,12 @@ end
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+--	if self.Options.RuneArrow then
+--		DBM.RangeCheck:Hide()
+--	end
+	if self.Options.HudMapForRune then
+		DBMHudMap:Disable()
 	end
 end 
 
@@ -394,5 +440,153 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 180244 then
 		self.vb.poundActive = false
 		updateRangeCheck(self)
+	end
+end
+
+--Figure out why he does this way, change to a proper way using existing CLEU events
+function mod:RAID_BOSS_EMOTE(msg, npc)
+	if msg:find("spell:181293") and msg:find("INV_Bijou_Purple") then
+		self:RuneStart(181293)
+	elseif msg:find("spell:181297") and msg:find("INV_Bijou_Orange") then
+		self:RuneStart(181297)
+	elseif msg:find("spell:181300") and msg:find("INV_Bijou_Green") then
+		self:RuneStart(181300)
+	end
+end
+do
+	RegisterAddonMessagePrefix("EXRTADD")
+	local playerName = UnitName("player")
+	local Ambiguate = Ambiguate
+	local assignedPositionOrange, assignedPositionGreen, assignedPositionPurple
+	local function delayedNotice(self, sender)
+		DBM:AddMsg(L.ExRTNotice:format(sender, (assignedPositionOrange or NONE), (assignedPositionGreen or NONE), (assignedPositionPurple or NONE)))
+	end
+	--Exorsus Raid Tools Comm snooping to detect player assignment even if player isn't running Exorsus Raid Tools.
+	--Runes locations are from ExRT and not 100% vetted accurate.
+	local runes = {
+		[1] = {-388.10,4209.00},
+		[2] = {-354.50,4208.60},
+		[3] = {-339.80,4210.80},
+		[4] = {-321.50,4210.20},
+		[5] = {-396.90,4227.70},
+		[6] = {-380.00,4223.90},
+		[7] = {-365.50,4224.90},
+		[8] = {-345.40,4223.80},
+		[9] = {-331.50,4220.00},
+		[10] = {-388.60,4241.30},
+		[11] = {-367.80,4241.80},
+		[12] = {-354.90,4238.60},
+		[13] = {-338.40,4243.40},
+		[14] = {-321.70,4243.10},
+		[15] = {-394.80,4258.40},
+		[16] = {-384.40,4253.80},
+		[17] = {-363.00,4258.30},
+		[18] = {-347.70,4253.60},
+		[19] = {-328.10,4252.60},
+		[20] = {-308.90,4253.00},
+		[21] = {-389.80,4269.90},
+		[22] = {-372.70,4271.60},
+		[23] = {-356.70,4270.40},
+		[24] = {-336.10,4270.40},
+		[25] = {-318.90,4271.40},
+		[26] = {-302.50,4271.00},
+		[27] = {-362.50,4283.60},
+		[28] = {-345.30,4283.00},
+		[29] = {-329.70,4287.20},
+		[30] = {-355.60,4301.30},
+		[31] = {-336.30,4299.70},
+		[32] = {-320.60,4303.30},
+		[33] = {-304.10,4301.50},
+		[34] = {-300.10,4240.10},
+		[35] = {-294.10,4255.20},
+		[36] = {-311.10,4281.70},
+		[37] = {-295.40,4285.90},
+		[38] = {-284.20,4270.00},
+		[39] = {-343.30,4316.10},
+		[40] = {-328.00,4318.30},
+		[41] = {-310.80,4318.40},
+		[42] = {-294.40,4316.50},
+		[43] = {-273.20,4315.90},
+		[44] = {-259.50,4317.70},
+		[45] = {-241.50,4315.60},
+		[46] = {-332.80,4329.70},
+		[47] = {-318.50,4332.70},
+		[48] = {-301.50,4333.20},
+		[49] = {-286.20,4329.10},
+		[50] = {-268.70,4329.80},
+		[51] = {-313.60,4344.40},
+		[52] = {-292.10,4344.00},
+		[53] = {-360.50,4318.30},
+		[54] = {-354.60,4329.70},
+		[55] = {-326.80,4343.50},
+		[56] = {-274.10,4345.40},
+		[57] = {-248.40,4329.20},
+		[58] = {-235.10,4332.30},
+		[59] = {-285.10,4299.00},
+		[60] = {-265.20,4299.00},
+		[61] = {-249.50,4303.40},
+		[62] = {-230.90,4297.20},
+		[63] = {-275.00,4288.40},
+		[64] = {-259.00,4283.00},
+		[65] = {-240.50,4284.10},
+		[66] = {-222.50,4286.70},
+		[67] = {-269.60,4272.00},
+		[68] = {-249.50,4269.60},
+		[69] = {-231.50,4267.30},
+		[70] = {-257.30,4253.20},
+		[71] = {-240.20,4253.80},
+		[72] = {-278.90,4255.20},
+	}
+	function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
+		if prefix ~= "EXRTADD" then return end
+		local subPrefix,pos1,name1,pos2,name2,pos3,name3 = strsplit("\t", message)
+		if subPrefix ~= "kormrok" then return end
+		sender = Ambiguate(sender, "none")
+		if DBM:GetRaidRank(sender) == 0 and IsInGroup() then return end
+		local tempPos1, tempPos2, TempPos3 = pos1 or "nil", pos2 or "nil", pos3 or "nil"
+		DBM:Debug("Sender: "..sender.."Pos1: "..tempPos1..", Name1: "..(name1 or "nil")..", Pos2: "..tempPos2..", Name2: "..(name2 or "nil")..", Pos3: "..TempPos3..", Name3: "..(name3 or "nil"), 3)
+		--Check if player removed from a cached assignment
+		--Now the add player assignment code
+		if name1 and Ambiguate(name1, "none") == playerName then
+			local number = tonumber(pos1)
+			if number < 100 then--Orange
+				assignedPositionOrange = number
+				playerOrangeX, playerOrangeY = runes[assignedPositionOrange][2], runes[assignedPositionOrange][1]
+			elseif number < 200 then--Green
+				assignedPositionGreen = number-100
+				playerGreenX, playerGreenY = runes[assignedPositionGreen][2], runes[assignedPositionGreen][1]
+			else--Purple
+				assignedPositionPurple = number-200
+				playerPurpleX, playerPurpleY = runes[assignedPositionPurple][2], runes[assignedPositionPurple][1]
+			end
+		end
+		if name2 and Ambiguate(name2, "none") == playerName then
+			local number = tonumber(pos2)
+			if number < 100 then--Orange
+				assignedPositionOrange = number
+				playerOrangeX, playerOrangeY = runes[assignedPositionOrange][2], runes[assignedPositionOrange][1]
+			elseif number < 200 then--Green
+				assignedPositionGreen = number-100
+				playerGreenX, playerGreenY = runes[assignedPositionGreen][2], runes[assignedPositionGreen][1]
+			else--Purple
+				assignedPositionPurple = number-200
+				playerPurpleX, playerPurpleY = runes[assignedPositionPurple][2], runes[assignedPositionPurple][1]
+			end
+		end
+		if name3 and Ambiguate(name3, "none") == playerName then
+			local number = tonumber(pos3)
+			if number < 100 then--Orange
+				assignedPositionOrange = number
+				playerOrangeX, playerOrangeY = runes[assignedPositionOrange][2], runes[assignedPositionOrange][1]
+			elseif number < 200 then--Green
+				assignedPositionGreen = number-100
+				playerGreenX, playerGreenY = runes[assignedPositionGreen][2], runes[assignedPositionGreen][1]
+			else--Purple
+				assignedPositionPurple = number-200
+				playerPurpleX, playerPurpleY = runes[assignedPositionPurple][2], runes[assignedPositionPurple][1]
+			end
+		end
+		self:Unschedule(delayedNotice)
+		self:Schedule(1, delayedNotice, self, sender)
 	end
 end

@@ -38,6 +38,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1392)
 
+L:SetMiscLocalization({
+	ExRTNotice		= "%s sent ExRT position assignents. Your positions: Orange:%s, Green:%s, Purple:%s"
+})
+
 --------------
 -- Kilrogg Deadeye --
 --------------
