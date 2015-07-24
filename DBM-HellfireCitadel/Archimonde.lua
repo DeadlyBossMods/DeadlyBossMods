@@ -229,6 +229,9 @@ end
 local function setDemonicFeedback(self)
 	self.vb.demonicFeedback = true
 	updateRangeFrame(self)
+	if not playerBanished or not self.Options.FilterOtherPhase then
+		specWarnDemonicFeedbackSoon:Show()
+	end
 end
 
 local function breakShackles(self)
@@ -354,12 +357,16 @@ function mod:SPELL_CAST_START(args)
 		table.wipe(shacklesTargets)
 	elseif spellId == 187180 then
 		self.vb.demonicCount = self.vb.demonicCount + 1
-		specWarnDemonicFeedback:Show(self.vb.demonicCount)
+		if not playerBanished or not self.Options.FilterOtherPhase then
+			specWarnDemonicFeedback:Show(self.vb.demonicCount)
+		end
 		timerDemonicFeedbackCD:Start(nil, self.vb.demonicCount+1)
 		countdownDemonicFeedback:Start()
 	elseif spellId == 182225 then
 		self.vb.rainOfChaos = self.vb.rainOfChaos + 1
-		specWarnRainofChaos:Show(self.vb.rainOfChaos)
+		if not playerBanished or not self.Options.FilterOtherPhase then
+			specWarnRainofChaos:Show(self.vb.rainOfChaos)
+		end
 		timerRainofChaosCD:Start(nil, self.vb.rainOfChaos+1)
 		if self.vb.phase < 3.5 then
 			self.vb.phase = 3.5
@@ -391,7 +398,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 187180 then
 		self.vb.demonicFeedback = false
 		self:Schedule(28, setDemonicFeedback, self)
-		specWarnDemonicFeedbackSoon:Schedule(28)
 	end
 end
 
@@ -433,7 +439,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not playerBanished or not self.Options.FilterOtherPhase then
 			warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
 			if self.Options.HudMapOnWrought then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Yellow
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)--Yellow
 			end
 		end
 	elseif spellId == 185014 then--Focused Chaos
@@ -445,7 +451,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceFocusedChaos:Play("185014")
 		end
 		if self.Options.HudMapOnWrought then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
 		end
 	elseif spellId == 186574 then--Dreadstalker fixate
 		warnDreadFixate:CombinedShow(0.3, args.destName)
