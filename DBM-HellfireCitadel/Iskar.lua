@@ -48,6 +48,9 @@ local specWarnEyeofAnzu					= mod:NewSpecialWarningYou(179202)
 local specWarnThrowAnzu					= mod:NewSpecialWarning("specWarnThrowAnzu", nil, nil, nil, 1, 5)
 local specWarnFocusedBlast				= mod:NewSpecialWarningCount(181912, nil, nil, nil, 2)
 local specWarnPhantasmalWinds			= mod:NewSpecialWarningYou(181957, nil, nil, nil, 3)
+local specWarnFelChakram				= mod:NewSpecialWarningMoveAway(182178, nil, nil, nil, 1, 2)
+local yellFelChakram					= mod:NewYell(182178)
+local specWarnFelChakramTank			= mod:NewSpecialWarningTaunt(182178, nil, nil, nil, 1, 2)
 local yellPhantasmalWinds				= mod:NewYell(181957)--So person with eye can see where the targets are faster
 local specWarnPhantasmalWounds			= mod:NewSpecialWarningYou(182325, false)
 local yellPhantasmalWounds				= mod:NewYell(182325, nil, false)--Can't see much reason to have THIS one on by default, but offered as an option.
@@ -63,8 +66,6 @@ local specWarnFelBomb					= mod:NewSpecialWarningYou(181753)--Not move away on p
 local yellFelBomb						= mod:NewYell(181753)--Yell for real fel bomb on by default only
 local specWarnFelBombDispel				= mod:NewSpecialWarningDispel(181753, nil, nil, nil, 1, 2)--Doesn't need option default, it's filtered by anzu check
 local specWarnDarkBindings				= mod:NewSpecialWarningYou(185510)--Mythic
-local specWarnFelChakram				= mod:NewSpecialWarningMoveAway(182178, nil, nil, nil, 1, 2)
-local specWarnFelChakramTank			= mod:NewSpecialWarningTaunt(182178, nil, nil, nil, 1, 2)
 local specWarnFelConduit				= mod:NewSpecialWarningInterrupt(181827, nil, nil, nil, 1, 2)--On for everyone, filtered by eye of anzu, if this person can't interrupt, then they better pass it to someone who can
 
 local timerFelLaserCD					= mod:NewCDTimer(16, 182582, nil, nil, nil, 3)--16-22. Never pauses, used all phases
@@ -353,6 +354,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFelChakram:Show()
 			voiceFelChakram:Play("runout")
+			yellFelChakram:Yell()
 		end
 		--Check if it's a tank
 		local uId = DBM:GetRaidUnitId(args.destName)
