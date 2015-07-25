@@ -64,7 +64,7 @@ local yellShackledTorment			= mod:NewPosYell(184964)
 local specWarnWroughtChaos			= mod:NewSpecialWarningMoveAway(186123, nil, nil, nil, 3, 5)
 local yellWroughtChaos				= mod:NewYell(186123)
 local specWarnFocusedChaos			= mod:NewSpecialWarningMoveAway(185014, nil, nil, nil, 3, 5)
-local yellFocusedChaos				= mod:NewYell(185014)
+local yellFocusedChaos				= mod:NewFadesYell(185014)
 local specWarnDreadFixate			= mod:NewSpecialWarningYou(186574, false)--In case it matters on mythic, it was spammy on heroic and unimportant
 --Phase 3: The Twisting Nether
 local specWarnDemonicFeedbackSoon	= mod:NewSpecialWarningSoon(187180, nil, nil, nil, 1)
@@ -449,6 +449,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFocusedChaos:Yell()
 			countdownWroughtChaos:Start()
 			voiceFocusedChaos:Play("185014")
+			yellFocusedChaos:Yell(5)
+			yellFocusedChaos:Schedule(4, 1)
+			yellFocusedChaos:Schedule(3, 2)
+			yellFocusedChaos:Schedule(2, 3)
+			yellFocusedChaos:Schedule(1, 4)
 		end
 		if self.Options.HudMapOnWrought then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
