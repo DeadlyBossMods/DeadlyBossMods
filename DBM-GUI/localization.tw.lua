@@ -88,6 +88,7 @@ L.ShowFakedRaidWarnings 	= "以偽裝團隊警告資訊的方式顯示警告內�
 L.WarningIconLeft 			= "左側顯示圖示"
 L.WarningIconRight 			= "右側顯示圖示"
 L.WarningIconChat 			= "在聊天視窗顯示圖示"
+L.WarningAlphabetical		= "依字母排序"
 L.Warn_FontType				= "選擇字型"
 L.Warn_FontStyle			= "字型風格"
 L.Warn_FontShadow			= "陰影"
