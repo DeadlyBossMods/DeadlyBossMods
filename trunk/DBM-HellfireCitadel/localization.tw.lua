@@ -39,6 +39,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1392)
 
+L:SetMiscLocalization({
+	ExRTNotice		= "%s 送出ExRT的位置分配。你的位置：橘:%s, 綠:%s, 紫:%s"
+})
+
 --------------
 -- Kilrogg Deadeye --
 --------------
