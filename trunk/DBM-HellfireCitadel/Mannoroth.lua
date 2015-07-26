@@ -239,6 +239,9 @@ function mod:OnCombatStart(delay)
 	self.vb.portalsLeft = 3
 	self.vb.DoomTargetCount = 0
 	if self:IsMythic() then
+		--I've seen 1 sec variance on all of these timers.
+		--yes most of time +1 to all of these timers is more accurate
+		--but sometimes, everything does come 1 sec early, so that's why
 		timerCurseofLegionCD:Start(23, 1)
 		timerFelHellfireCD:Start(28)
 		timerGlaiveComboCD:Start(42.5)
@@ -246,8 +249,7 @@ function mod:OnCombatStart(delay)
 		timerFelImplosionCD:Start(45-delay, 1)
 		timerFelSeekerCD:Start(57.8)
 		timerGazeCD:Start(68)
-		timerInfernoCD:Start(70-delay, 1)--Verify, seems 20 now
-		DBM:AddMsg("This mod may contain errors on mythic. Log captured with Transcriptor may be needed to perfect this mod.")
+		timerInfernoCD:Start(70-delay, 1)
 	else
 		timerCurseofLegionCD:Start(6, 1)
 		timerFelImplosionCD:Start(15-delay, 1)
@@ -293,8 +295,8 @@ function mod:SPELL_CAST_START(args)
 		warnFelseeker:Show(10)
 	elseif spellId == 181792 or spellId == 182076 then--Ranged (20)
 		warnFelseeker:Show(20)
-	elseif spellId == 181738 or spellId == 182040 then--Ranged (35)
-		warnFelseeker:Show(35)
+	elseif spellId == 181738 or spellId == 182040 then--Ranged (30)
+		warnFelseeker:Show(30)
 	elseif spellId == 181799 or spellId == 182084 then
 		timerShadowForceCD:Start()
 		countdownShadowForce:Start(52.5)
@@ -506,6 +508,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 	if msg:find(L.felSpire) and self:AntiSpam(10, 4) then
 		self.vb.phase = self.vb.phase + 1
 		if self.vb.phase == 3 then
+			self.vb.ignoreAdds = true
 			timerFelHellfireCD:Cancel()
 			timerShadowForceCD:Cancel()
 			countdownShadowForce:Cancel()
@@ -516,27 +519,19 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			timerFelHellfireCD:Start(27.8)
 			timerShadowForceCD:Start(32.6)
 			countdownShadowForce:Start(32.6)
-			--BOth gaze and combo seem 40, which you get first is random, and it'll delay other ability
-			--however they are BOTH 40ish, don't let one log fool
+			--BOth gaze and combo seem 44, which you get first is random, and it'll delay other ability
+			--however they are BOTH 44ish, don't let one log fool
 			timerGazeCD:Start(44.5)
 			timerGlaiveComboCD:Start(44.9)
 			countdownGlaiveCombo:Start(44.9)
 			timerFelSeekerCD:Start(68)
 			warnPhase3:Show()
 			voicePhaseChange:Play("pthree")
-			if self:IsMythic() then--Not sure this emote even happens on mythic
-				self.vb.impCount = 0
-				self.vb.doomlordCount = 0
-				timerCurseofLegionCD:Cancel()
-				timerFelImplosionCD:Cancel()
-				timerInfernoCD:Cancel()
-				timerWrathofGuldanCD:Start(9.5)--Still requires transcriptor log to be precise
-				timerFelImplosionCD:Start(40, 1)--Probably not right place to start it but without transcirtor, this is only way
-				timerCurseofLegionCD:Start(62.4, 1)--This may not be correct place to do it but it's only place I can do it using WCL public logs. Need transcriptor to verify
-			else
-				self.vb.ignoreAdds = true
+			if self:IsMythic() then
+				timerWrathofGuldanCD:Start(10)
 			end
 		elseif self.vb.phase == 4 then
+			self.vb.ignoreAdds = true
 			timerFelHellfireCD:Cancel()
 			timerShadowForceCD:Cancel()
 			countdownShadowForce:Cancel()
@@ -554,12 +549,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			timerFelSeekerCD:Start(65.6)
 			warnPhase4:Show()
 			voicePhaseChange:Play("pfour")
-			if self:IsMythic() then--Not sure this emote even happens on mythic
-				self.vb.impCount = 0
-				timerCurseofLegionCD:Cancel()
-				timerWrathofGuldanCD:Start(15)--Still requires transcriptor log to be precise
-				timerFelImplosionCD:Cancel()--is this correct place to start it?
-				timerFelImplosionCD:Start(25, 1)
+			if self:IsMythic() then
+				timerWrathofGuldanCD:Start(16.7)
 			end
 		end
 	end
@@ -570,33 +561,41 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnFelSeeker:Show()
 		timerFelSeekerCD:Start()
 		voiceFelSeeker:Play("watchstep")
-	elseif spellId == 181301 then--Summon Adds (phase 2 start)
+	elseif spellId == 181301 then--Summon Adds (phase 2 start/Mythic Phase 3)
 		DBM:Debug("Summon adds 181301 fired", 2)
 		self.vb.ignoreAdds = false
 		self.vb.impCount = 0
-		self.vb.infernalCount = 0
-		--TODO, fix on mythic these adds timers
+		timerFelImplosionCD:Cancel()
+		timerInfernoCD:Cancel()
+		timerFelImplosionCD:Start(24.3, 1)--Seems same for all difficulties on this one
 		if not self:IsMythic() then
-			timerFelImplosionCD:Cancel()
-			timerInfernoCD:Cancel()
-			timerFelImplosionCD:Start(24.5, 1)
+			self.vb.infernalCount = 0
 			timerInfernoCD:Start(47.5, 1)
+		else
+			self.vb.doomlordCount = 0
+			timerCurseofLegionCD:Cancel()
+			timerCurseofLegionCD:Start(46.2, 1)--Verify more thoroughly. More transcriptor logs
 		end
-	elseif spellId == 182262 then--Summon Adds (phase 3 start)
+	elseif spellId == 182262 then--Summon Adds (phase 3 start/Mythic Phase 4)
 		DBM:Debug("Summon adds 182262 fired", 2)
 		self.vb.ignoreAdds = false
-		self.vb.infernalCount = 0
-		--TODO, fix on mythic these adds timers
+		timerFelImplosionCD:Cancel()
 		if not self:IsMythic() then
-			timerFelImplosionCD:Cancel()
+			self.vb.infernalCount = 0
 			timerInfernoCD:Cancel()
 			timerInfernoCD:Start(28, 1)
+		else
+			self.vb.impCount = 0
+			timerCurseofLegionCD:Cancel()--Done for rest of fight
+			timerFelImplosionCD:Start(24.3, 1)
 		end
-	elseif spellId == 181156 then--Exists on wowhead and added in 6.2, likely related to this fight but unknown purpose, probably mythic?
+	elseif spellId == 181156 then--Summon Adds, Phase 2 mythic (about 18 seconds into fight)
+		--Maybe move first add spawns here? seems accurate starting firsts on pull though
 		DBM:Debug("Summon adds 181156 fired", 2)
 	--Backup phase detection. a bit slower than CHAT_MSG_RAID_BOSS_EMOTE (5.5 seconds slower)
 	elseif spellId == 182263 and self.vb.phase == 2 then--Phase 3
 		self.vb.phase = 3
+		self.vb.ignoreAdds = true
 		timerFelHellfireCD:Cancel()
 		timerShadowForceCD:Cancel()
 		countdownShadowForce:Cancel()
@@ -614,18 +613,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPhase3:Show()
 		voicePhaseChange:Play("pthree")
 		if self:IsMythic() then
-			self.vb.impCount = 0
-			timerCurseofLegionCD:Cancel()
-			timerFelImplosionCD:Cancel()
-			timerInfernoCD:Cancel()
-			timerWrathofGuldanCD:Start(4.5)--Still requires transcriptor log to be precise
-			timerFelImplosionCD:Start(35, 1)--Probably not right place to start it but without transcirtor, this is only way
-			timerCurseofLegionCD:Start(57.4)--This may not be correct place to do it but it's only place I can do it using WCL public logs. Need transcriptor to verify
-		else
-			self.vb.ignoreAdds = true
+			timerWrathofGuldanCD:Start(4.8)
 		end
 	elseif spellId == 185690 and self.vb.phase == 3 then--Phase 4
 		self.vb.phase = 4
+		self.vb.ignoreAdds = true
 		timerFelHellfireCD:Cancel()
 		timerShadowForceCD:Cancel()
 		countdownShadowForce:Cancel()
@@ -644,11 +636,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPhase4:Show()
 		voicePhaseChange:Play("pfour")
 		if self:IsMythic() then
-			self.vb.impCount = 0
-			timerCurseofLegionCD:Cancel()
-			timerWrathofGuldanCD:Start(10)--Still requires transcriptor log to be precise
-			timerFelImplosionCD:Cancel()--is this correct place to start it?
-			timerFelImplosionCD:Start(20, 1)
+			timerWrathofGuldanCD:Start(11.2)
 		end
 	elseif spellId == 181354 then--183377 or 185831 also usable with SPELL_CAST_START but i like this way more, cleaner than Antispamming the other spellids
 		specWarnGlaiveCombo:Show()
