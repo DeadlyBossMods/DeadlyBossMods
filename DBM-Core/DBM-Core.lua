@@ -2215,7 +2215,7 @@ end
 do
 	local old = ItemRefTooltip.SetHyperlink -- we have to hook this function since the default ChatFrame code assumes that all links except for player and channel links are valid arguments for this function
 	function ItemRefTooltip:SetHyperlink(link, ...)
-		if link:sub(0, 4) == "DBM:" then
+		if link and link:sub(0, 4) == "DBM:" then
 			return
 		end
 		return old(self, link, ...)
