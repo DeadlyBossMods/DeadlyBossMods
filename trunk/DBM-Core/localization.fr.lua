@@ -199,6 +199,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel		= "%s on >%%s< - dissipez maintenant"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt		= "%s - interrompez >%%s<!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interruptcount= "%s - interrompez >%%s<! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you             = "%s sur vous"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.youcount         = "%s (%%s) sur vous"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= "%s sur >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt           = "%s sur >%%s< - provoquez maintenant"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close		= "%s sur >%%s< près de vous"
@@ -224,6 +225,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.prewarn         = "Afficher une alerte préventi
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel 		= "Afficher une alerte spéciale lorsque $spell:%s doit être dissipé/volé"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt	= "Afficher une alerte spéciale lorsque $spell:%s doit être interrompu"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you 		= "Afficher une alerte spéciale lorsque vous subissez $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.youcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you--Temp, translate correctly (with count_
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target 		= "Afficher une alerte spéciale lorsque quelqu'un subit $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt           = "Afficher une alerte spéciale de provoquer lorsque l'autre tank subit $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 		= "Afficher une alerte spéciale lorsque quelqu'un proche de vous subit $spell:%s"
@@ -237,8 +239,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect         = "Afficher une alerte spéciale
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count           = "Afficher une alerte spéciale pour $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Afficher une alerte spéciale lorsque vous cumulez >=%d stacks de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch 		= "Afficher une alerte spéciale de changement de cible pour\n $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch--Temp, translate correctly (with count_
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt--Temp, translate correctly (with count_
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: >%%s<"

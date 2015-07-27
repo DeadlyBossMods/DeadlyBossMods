@@ -53,10 +53,6 @@ L:SetMiscLocalization({
 --------------------
 L= DBM:GetModLocalization(1372)
 
-L:SetWarningLocalization({
-	specWarnShadowofDeath	= "Тень смерти (%d) на вас"
-})
-
 L:SetTimerLocalization({
 	SoDDPS		= "След. Тени (%s)",
 	SoDTank		= "След. Тени (%s)",

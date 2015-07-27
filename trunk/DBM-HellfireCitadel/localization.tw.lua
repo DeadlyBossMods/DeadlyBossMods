@@ -57,10 +57,6 @@ L:SetMiscLocalization({
 --------------------
 L= DBM:GetModLocalization(1372)
 
-L:SetWarningLocalization({
-	specWarnShadowofDeath	= "你中了死亡之影(%d)"
-})
-
 L:SetTimerLocalization({
 	SoDDPS		= "下一次死亡之影(%s)",
 	SoDTank		= "下一次死亡之影(%s)",

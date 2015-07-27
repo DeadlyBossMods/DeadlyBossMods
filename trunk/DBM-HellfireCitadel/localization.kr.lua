@@ -53,10 +53,6 @@ L:SetMiscLocalization({
 --------------------
 L= DBM:GetModLocalization(1372)
 
-L:SetWarningLocalization({
-	specWarnShadowofDeath	= "당신에게 죽음의 그림자 (%d)"
-})
-
 L:SetTimerLocalization({
 	SoDDPS		= "다음 그림자 (%s)",
 	SoDTank		= "다음 그림자 (%s)",
