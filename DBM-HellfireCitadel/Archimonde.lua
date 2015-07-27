@@ -52,12 +52,12 @@ local specWarnDoomfire				= mod:NewSpecialWarningSwitch(189897, "Dps", nil, nil,
 local specWarnDoomfireFixate		= mod:NewSpecialWarningYou(182879, nil, nil, nil, 4)
 local yellDoomfireFixate			= mod:NewYell(182826)--Use short name for yell
 local specWarnAllureofFlames		= mod:NewSpecialWarningSpell(183254, nil, nil, nil, 2, 2)
-local specWarnDeathCaller			= mod:NewSpecialWarningSwitch("ej11582", "Dps", nil, nil, 1, 2)--Tanks don't need switch, they have death brand special warning 2 seconds earlier
+local specWarnDeathCaller			= mod:NewSpecialWarningSwitchCount("ej11582", "Dps", nil, nil, 1, 2)--Tanks don't need switch, they have death brand special warning 2 seconds earlier
 local specWarnFelBurst				= mod:NewSpecialWarningYou(183817)
 local yellFelBurst					= mod:NewYell(183817)--Change yell to countdown mayeb when better understood
 local specWarnFelBurstNear			= mod:NewSpecialWarningMoveTo(183817, nil, nil, nil, 1, 2)--Anyone near by should run in to help soak, should be mostly ranged but if it's close to melee, melee soaking too doesn't hurt
 local specWarnDesecrate				= mod:NewSpecialWarningDodge(185590, "Melee", nil, nil, 1, 2)
-local specWarnDeathBrand			= mod:NewSpecialWarningSpell(183828, "Tank", nil, nil, 1, 2)
+local specWarnDeathBrand			= mod:NewSpecialWarningCount(183828, "Tank", nil, nil, 1, 2)
 --Phase 2: Hand of the Legion
 local specWarnBreakShackle			= mod:NewSpecialWarning("specWarnBreakShackle", nil, nil, nil, 1, 5)
 local yellShackledTorment			= mod:NewPosYell(184964)
@@ -92,7 +92,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDoomfireCD				= mod:NewCDTimer(42.1, 182826, nil, nil, nil, 1)--182826 cast, 182879 fixate. Doomfire only fixates ranged, but ALL dps switch to it.
 local timerAllureofFlamesCD			= mod:NewCDTimer(47.5, 183254, nil, nil, nil, 2)
 local timerFelBurstCD				= mod:NewCDTimer(52, 183817, nil, "Ranged", nil, 3)--Only targets ranged (52-70 variation)
-local timerDeathbrandCD				= mod:NewCDTimer(42.5, 183828, nil, nil, nil, 1)--Everyone, for tanks/healers to know when debuff/big hit, for dps to know add coming
+local timerDeathbrandCD				= mod:NewCDCountTimer(42.5, 183828, nil, nil, nil, 1)--Everyone, for tanks/healers to know when debuff/big hit, for dps to know add coming
 local timerDesecrateCD				= mod:NewCDTimer(27, 185590, nil, "Melee", nil, 2)--Only targets melee
 ----Hellfire Deathcaller
 local timerShadowBlastCD			= mod:NewCDTimer(9.7, 183864, nil, "Tank", nil, 5)
@@ -155,6 +155,7 @@ mod.vb.rainOfChaos = 0
 mod.vb.TouchOfShadows = 0
 mod.vb.InfernalsActive = 0
 mod.vb.wroughtWarned = 0
+mod.vb.deathBrandCount = 0
 local shacklesTargets = {}
 local playerName = UnitName("player")
 local playerBanished = false
@@ -286,9 +287,10 @@ function mod:OnCombatStart(delay)
 	self.vb.rainOfChaos = 0
 	self.vb.TouchOfShadows = 0
 	self.vb.InfernalsActive = 0
+	self.vb.deathBrandCount = 0
 	playerBanished = false
 	timerDoomfireCD:Start(6-delay)
-	timerDeathbrandCD:Start(15.5-delay)
+	timerDeathbrandCD:Start(15.5-delay, 1)
 	countdownDeathBrand:Start(15.5-delay)
 	timerAllureofFlamesCD:Start(30-delay)
 	warnAllureofFlamesSoon:Schedule(25-delay)
@@ -329,8 +331,9 @@ function mod:SPELL_CAST_START(args)
 		warnFelBurstSoon:Schedule(47)
 		timerFelBurstCD:Start()
 	elseif spellId == 183828 then
-		specWarnDeathBrand:Show()
-		timerDeathbrandCD:Start()
+		self.vb.deathBrandCount = self.vb.deathBrandCount + 1
+		specWarnDeathBrand:Show(self.vb.deathBrandCount)
+		timerDeathbrandCD:Start(nil, self.vb.deathBrandCount+1)
 		countdownDeathBrand:Start()
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then
@@ -591,7 +594,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 187621 then
 		local unitGUID = UnitGUID(uId)
 		--timerShadowBlastCD ommited because it's used near instantly on spawn.
-		specWarnDeathCaller:Show()
+		specWarnDeathCaller:Show(self.vb.deathBrandCount)
 		voiceDeathCaller:Play("ej11582")
 		if self:IsMythic() then
 			timerDemonicHavocCD:Start(1, unitGUID)
@@ -616,7 +619,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
 		timerWroughtChaosCD:Start(6)
-		timerDeathbrandCD:Start(35)--35-39
+		timerDeathbrandCD:Start(35, self.vb.deathBrandCount+1)--35-39
 		countdownDeathBrand:Start(35)
 		warnAllureofFlamesSoon:Schedule(35.5)
 		timerAllureofFlamesCD:Start(40.5)--40-45
