@@ -183,6 +183,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 		= "Mostra un Avviso Speciale per $spell:
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel 		= "Mostra un Avviso Speciale per dissipare/rubare $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt	= "Mostra un Avviso Speciale per interrompere $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you 		= "Mostra un Avviso Speciale quando sei afflitto da $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.youcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you--Temp, translate correctly (with count)
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target 		= "Mostra un Avviso Speciale quando qualcuno e' afflitto da $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 		= "Mostra un Avviso Speciale quando qualcuno vicino a te e' afflitto da $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 		= "Mostra un Avviso Speciale quando sei afflitto da\n $spell:%s"
@@ -191,14 +192,15 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run 		= "Mostra un Avviso Speciale per $spell:%s
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast 		= "Mostra un Avviso Speciale per il lancio di $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Mostra un Avviso Speciale per Accumuli >=%d di $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Mostra un Avviso Speciale per cambiare Bersaglio per $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch--Temp, translate correctly (with count)
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt--Temp, translate correctly (with count)
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.spell		= "%s!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel	= "%s su >%%s< - rimuovilo ora!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt	= "%s - interrompi >%%s<!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interruptcount	= "%s - interrompi >%%s<! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you		= "%s su di te"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.youcount	= "%s (%%s) su di te"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target	= "%s su >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close		= "%s su >%%s< vicino a te"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move		= "%s - Spostati"
