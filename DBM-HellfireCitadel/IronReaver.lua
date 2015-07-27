@@ -316,7 +316,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellArtillery:Schedule(9.5, 3)
 			yellArtillery:Schedule(8.5, 4)
 			yellArtillery:Schedule(7.5, 5)
-			voiceArtillery:Play("runout")
+			voiceArtillery:Schedule(5, "runout")
 			countdownArtilleryFade:Start()
 		end
 		if self.Options.SetIconOnArtillery then
