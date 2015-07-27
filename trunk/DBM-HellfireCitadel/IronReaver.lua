@@ -310,7 +310,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnArtillery:CombinedShow(0.3, self.vb.artilleryCount, args.destName)
 		if args:IsPlayer() then
-			specWarnArtillery:Show()
+			specWarnArtillery:Schedule(5)
 			yellArtillery:Schedule(11.5, 1)
 			yellArtillery:Schedule(10.5, 2)
 			yellArtillery:Schedule(9.5, 3)
@@ -357,6 +357,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 182280 then
 		self.vb.artilleryActive = self.vb.artilleryActive - 1
 		if args:IsPlayer() then
+			specWarnArtillery:Cancel()
 			countdownArtilleryFade:Cancel()
 			yellArtillery:Cancel()
 		end
