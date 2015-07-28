@@ -233,7 +233,6 @@ function mod:SPELL_AURA_REMOVED(args)
 end--]]
 
 function mod:UNIT_DIED(args)
-	DBM:Debug("UNIT_DIED fired", 2)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 92144 then--Dia Darkwhisper
 		DBM:Debug("Dia died", 2)
