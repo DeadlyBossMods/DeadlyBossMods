@@ -432,7 +432,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(breakShackles)
 		self:Schedule(0.3, breakShackles, self)
 	elseif spellId == 186123 then--Wrought Chaos
-		self.vb.wroughtWarned = self.vb.wroughtWarned + 1--Wrought is always first, so incriment count here
 		if args:IsPlayer() then
 			specWarnWroughtChaos:Show()
 			yellWroughtChaos:Yell()
@@ -440,13 +439,24 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceWroughtChaos:Play("186123") --new voice
 		end
 		if not playerBanished or not self.Options.FilterOtherPhase then
-			warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
+			if not IsMythic() then
+				self.vb.wroughtWarned = self.vb.wroughtWarned + 1
+				warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
+			else
+				if self:AntiSpam(3, 3) then
+					self.vb.wroughtWarned = self.vb.wroughtWarned + 1
+					warnWroughtChaos:Show(self.vb.wroughtWarned, FRIENDS_FRIENDS_CHOICE_EVERYONE)--"Everyone"
+				end
+			end
 			if self.Options.HudMapOnWrought then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)--Yellow
+				if self:IsMythic() then--Entire raid gets it, must use a small hud
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 2.5, 5, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)--Yellow
+				else
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)--Yellow
+				end
 			end
 		end
 	elseif spellId == 185014 then--Focused Chaos
-		warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
 		if args:IsPlayer() then
 			specWarnFocusedChaos:Show()
 			yellFocusedChaos:Yell()
@@ -458,8 +468,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFocusedChaos:Schedule(2, 3)
 			yellFocusedChaos:Schedule(1, 4)
 		end
-		if self.Options.HudMapOnWrought then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
+		if not playerBanished or not self.Options.FilterOtherPhase then
+			if not IsMythic() then
+				warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
+			end
+			if self.Options.HudMapOnWrought then
+				if self:IsMythic() then--Entire raid gets it, must use a small hud
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 2.5, 5, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
+				else
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
+				end
+			end
 		end
 	elseif spellId == 186574 then--Dreadstalker fixate
 		warnDreadFixate:CombinedShow(0.3, args.destName)
