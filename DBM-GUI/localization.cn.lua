@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Jul 8 2015, 8:04 UTC@14062
+-- Last update: Jul 28 2015, 1:22 UTC@14062
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -103,6 +103,7 @@ L.ShowFakedRaidWarnings 	= "以伪装团队警报信息的方式显示警报内�
 L.WarningIconLeft 			= "左侧显示图标"
 L.WarningIconRight 			= "右侧显示图标"
 L.WarningIconChat 			= "在聊天窗口中显示图标"
+L.WarningAlphabetical		= "按字母顺序排序"
 L.Warn_FontType				= "选择字体"
 L.Warn_FontStyle			= "选择样式"
 L.Warn_FontShadow			= "阴影"

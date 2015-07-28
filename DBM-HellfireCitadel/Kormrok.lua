@@ -15,8 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181292 181293 181296 181297 181299 181300 180244 181305",
 	"SPELL_CAST_SUCCESS 181307",
 	"SPELL_AURA_APPLIED 181306 186882 180115 180116 180117 189197 189198 189199 186879 186880 186881",
-	"SPELL_AURA_REMOVED 181306 180244",
-	"RAID_BOSS_EMOTE"
+	"SPELL_AURA_REMOVED 181306 180244"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -92,6 +91,7 @@ local playerPurpleX, playerPurpleY = nil, nil
 --Not local functions, so they can also be used as a test functions as well
 --/run DBM:GetModByName("1392"):RuneStart(181293)
 function mod:RuneStart(spellId)
+	if not self:IsMythic() then return end
 	local playerX, playerY
 	if spellId == 181293 then
 		playerX, playerY = playerPurpleX, playerPurpleY
@@ -105,7 +105,7 @@ function mod:RuneStart(spellId)
 	--		DBM.Arrow:ShowRunTo(playerX, playerY, 0)
 	--	end
 		if self.Options.HudMapForRune then
-			DBMHudMap:RegisterPositionMarker(spellId, "HudMapForRune", "highlight", playerX, playerY, 3, 15, 0, 1, 0, 0.5, nil, 4):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterPositionMarker(spellId, "HudMapForRune", "highlight", playerX, playerY, 3, 8, 0, 1, 0, 0.5, nil, 4):Pulse(0.5, 0.5)
 		end
 	end
 end
@@ -284,12 +284,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.poundCount = 0
 		self.vb.swatCount = 0
 		warnShadowEnergy:Show()
+		self:RuneStart(181293)
 		if self:IsMythic() and spellId == 186879 then--Mythic AND enraged
 			timerFelOutpouringCD:Start(8)
 			self:Schedule(8, delayedFelOutpouring, self, 65)--73
 			timerSwatCD:Start(23, 1)
-			timerPoundCD:Start(27, 1)
-			self:Schedule(27, delayedPound, self, 30)--57
+			timerPoundCD:Start(26, 1)
+			self:Schedule(26, delayedPound, self, 30)--57
 			timerExplosiveRunesCD:Start(39)
 			timerGraspingHandsCD:Start(50)
 			countdownGraspingHands:Start(50)
@@ -322,6 +323,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.poundCount = 0
 		self.vb.explosiveBurst = 0
 		warnExplosiveEnergy:Show()
+		self:RuneStart(181297)
 		if (self:IsMythic() and spellId == 186880) then
 			timerExplosiveRunesCD:Start(8)
 --			self:Schedule(8, delayedExplosiveRunes, self, 48)--59
@@ -330,7 +332,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --			self:Schedule(19, delayedPound, self, 42)--69
 --			timerGraspingHandsCD:Start(43)
 --			countdownGraspingHands:Start(43)
---			timerFelOutpouringCD:Start(85)
+--			timerFelOutpouringCD:Start(59)
 			timerLeapCD:Start(96)
 		elseif (self:IsMythic() and spellId == 180116) or spellId == 186880 then
 			timerExplosiveRunesCD:Start(11)
@@ -340,7 +342,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(27, delayedPound, self, 42)--69
 			timerGraspingHandsCD:Start(43)
 			countdownGraspingHands:Start(43)
-			timerFelOutpouringCD:Start(85)
+			timerFelOutpouringCD:Start(59)
 			timerLeapCD:Start()
 		else
 			timerExplosiveRunesCD:Start(13)
@@ -358,6 +360,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.poundCount = 0
 		self.vb.foulCrush = 0
 		warnFoulEnergy:Show()
+		self:RuneStart(181300)
 		if (self:IsMythic() and spellId == 186881) then
 			timerGraspingHandsCD:Start(8)
 			countdownGraspingHands:Start(8)
@@ -443,16 +446,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---Figure out why he does this way, change to using existing CLEU events if possible
-function mod:RAID_BOSS_EMOTE(msg, npc)
-	if msg:find("spell:181293") and msg:find("INV_Bijou_Purple") then
-		self:RuneStart(181293)
-	elseif msg:find("spell:181297") and msg:find("INV_Bijou_Orange") then
-		self:RuneStart(181297)
-	elseif msg:find("spell:181300") and msg:find("INV_Bijou_Green") then
-		self:RuneStart(181300)
-	end
-end
 do
 	RegisterAddonMessagePrefix("EXRTADD")
 	local playerName = UnitName("player")
