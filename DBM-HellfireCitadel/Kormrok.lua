@@ -32,7 +32,7 @@ local warnShadowEnergy				= mod:NewSpellAnnounce(180115, 2)
 local warnExplosiveEnergy			= mod:NewSpellAnnounce(180116, 3)--This one looks more dangerous than other 2, because it enables the Explosive Runes ability
 local warnFoulEnergy				= mod:NewSpellAnnounce(180117, 2)
 --These are probably temp, changed to better tank special warnings when better understood
-local warnExplosiveBurst			= mod:NewTargetAnnounce(181306, 4)--Concerns everyone
+local warnExplosiveBurst			= mod:NewTargetCountAnnounce(181306, 4)--Concerns everyone
 local warnEnrage					= mod:NewSpellAnnounce(186882, 3)
 
 local specWarnPound					= mod:NewSpecialWarningCount(180244, nil, nil, nil, 2, 2)
