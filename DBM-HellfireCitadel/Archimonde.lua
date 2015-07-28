@@ -439,7 +439,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceWroughtChaos:Play("186123") --new voice
 		end
 		if not playerBanished or not self.Options.FilterOtherPhase then
-			if not IsMythic() then
+			if not self:IsMythic() then
 				self.vb.wroughtWarned = self.vb.wroughtWarned + 1
 				warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
 			else
@@ -469,7 +469,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFocusedChaos:Schedule(1, 4)
 		end
 		if not playerBanished or not self.Options.FilterOtherPhase then
-			if not IsMythic() then
+			if not self:IsMythic() then
 				warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
 			end
 			if self.Options.HudMapOnWrought then
