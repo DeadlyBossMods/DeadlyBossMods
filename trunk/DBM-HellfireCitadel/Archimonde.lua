@@ -257,12 +257,6 @@ local function breakShackles(self)
 			elseif i == 3 then
 				specWarnBreakShackle:Show(L.Third)
 				voiceShackledTorment:Play("184964c")
-			elseif i == 4 then
-				specWarnBreakShackle:Show(L.Fourth)
-				voiceShackledTorment:Play("184964d")
-			elseif i == 5 then
-				specWarnBreakShackle:Show(L.Fifth)
-				voiceShackledTorment:Play("184964e")
 			end
 		end
 		if self.Options.SetIconOnShackledTorment2 then
@@ -430,7 +424,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		shacklesTargets[#shacklesTargets+1] = args.destName
 		self.vb.unleashedCountRemaining = self.vb.unleashedCountRemaining + 1
 		self:Unschedule(breakShackles)
-		self:Schedule(0.3, breakShackles, self)
+		if #shacklesTargets == 3 then
+			breakShackles(self)
+		else
+			self:Schedule(0.5, breakShackles, self)
+		end
 	elseif spellId == 186123 then--Wrought Chaos
 		if args:IsPlayer() then
 			specWarnWroughtChaos:Show()
