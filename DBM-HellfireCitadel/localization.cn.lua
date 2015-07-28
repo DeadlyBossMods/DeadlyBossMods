@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: Jul 23 2015, 16:34 UTC@14126
+-- Last update: Jul 28 2015, 1:30 UTC@14126
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -42,6 +42,10 @@ L:SetMiscLocalization({
 -- Kormrok --
 ------------------
 L= DBM:GetModLocalization(1392)
+
+L:SetMiscLocalization({
+	ExRTNotice		= "%s 向你指派了ExRT的位置。你的位置: 橙色:%s, 绿色:%s, 紫色:%s"
+})
 
 --------------
 -- Kilrogg Deadeye --
@@ -135,9 +139,7 @@ L= DBM:GetModLocalization(1394)
 L= DBM:GetModLocalization(1395)
 
 L:SetMiscLocalization({
-	--TODO, this translation doesn't exist on mythic, but one below does for phase changes. Is translations wrong, or just different on mythic?
-	--"<488.43 15:20:03> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#|cFFFF0000%s|r開始強化惡魔尖塔！#古爾丹###瑪諾洛斯##0#0##0#15315#nil#0#false#false#false", -- [37867]
-	felSpire		=	"开始强化邪能尖塔！"--開始強化惡魔尖塔 looks close, so maybe it was changed?
+	felSpire		=	"开始强化邪能尖塔！"
 })
 
 --------------------------
