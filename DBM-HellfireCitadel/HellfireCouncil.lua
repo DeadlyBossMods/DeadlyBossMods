@@ -15,8 +15,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184657 184476",
 	"SPELL_CAST_SUCCESS 184449 183480 184357 184355 184476",
-	"SPELL_AURA_APPLIED 183701 184847 184360 184365 184449 184450 185065 185066 184652",
-	"SPELL_AURA_APPLIED_DOSE 184847",
+	"SPELL_AURA_APPLIED 183701 184847 184360 184365 184449 184450 185065 185066 184652 184355",
+	"SPELL_AURA_APPLIED_DOSE 184847 184355",
 --	"SPELL_AURA_REMOVED",
 	"SPELL_PERIODIC_DAMAGE 184652",
 	"SPELL_ABSORB 184652",
@@ -52,6 +52,7 @@ local specWarnDarkness				= mod:NewSpecialWarningSpell(184681, nil, nil, nil, 2)
 --Gurtogg Bloodboil
 local specWarnFelRage				= mod:NewSpecialWarningYou(184360)
 local specWarnDemolishingLeap		= mod:NewSpecialWarningDodge(184366, nil, nil, nil, 2, 2)--Jumps around room, from side to side
+local specWarnBloodBoil				= mod:NewSpecialWarningStack(184355, nil, 3)
 
 mod:AddTimerLine(Jubei)
 --Blademaster Jubei'thos
@@ -218,6 +219,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 184652 and args:IsPlayer() and self:AntiSpam(2, 3) then
 		specWarnReapGTFO:Show()
 		voiceReap:Play("runaway")
+	elseif spellId == 184355 then
+		local amount = args.amount or 1
+		if not self:IsTank() and args:IsPlayer() and amount >= 3 then
+			specWarnBloodBoil:Show(amount)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
