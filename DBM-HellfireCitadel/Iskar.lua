@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181912 181827 187998 181873 185345",
 	"SPELL_CAST_SUCCESS 182178 181956 185510",
 	"SPELL_AURA_APPLIED 179202 181957 182325 187990 181824 179219 185510 181753 182178 182200",
-	"SPELL_AURA_REMOVED 179202 181957 182325 187990 181824 179219 185510 181753",
+	"SPELL_AURA_REMOVED 179202 181957 182325 187990 181824 179219 185510 181753 182178 182200",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"RAID_BOSS_WHISPER",
@@ -97,17 +97,20 @@ mod:AddRangeFrameOption(15)--Both aoes are 15 yards, ref 187991 and 181748
 mod:AddSetIconOption("SetIconOnAnzu", 179202, false)
 mod:AddSetIconOption("SetIconOnWinds", 181957, true)
 mod:AddSetIconOption("SetIconOnFelBomb", 181753, true)
+mod:AddHudMapOption("HudMapOnChakram", 182178)
 
 mod.vb.focusedBlast = 0
 mod.vb.savedChakram = nil
 mod.vb.savedWinds = nil
 mod.vb.savedWounds = nil
 mod.vb.savedRiposte = nil
+local chakramTargets = {}
 local playerHasAnzu = false
 local corruption = GetSpellInfo(181824)
 local phantasmalFelBomb = GetSpellInfo(179219)
 local realFelBomb = GetSpellInfo(181753)
 local darkBindings = GetSpellInfo(185510)
+local playerName = UnitName("player")
 local AddsSeen = {}
 
 local debuffFilter
@@ -130,6 +133,41 @@ local function updateRangeFrame(self)
 	end
 end
 
+local function showChakram(self)
+	warnFelChakram:Show(table.concat(chakramTargets, "<, >"))
+	--Chakram is always thrown ranged-->melee-->Tank
+	--Need to determine roles for the hud
+	if not self.Options.HudMapOnChakram then return end
+	local melee, ranged, tank = nil, nil, nil
+	for i = 1, #chakramTargets do
+		local name = chakramTargets[i]
+		local uId = DBM:GetRaidUnitId(name)
+		if self:IsMeleeDps(uId) then--Melee
+			melee = chakramTargets[i]
+			DBM:Debug("Melee Chakram found: "..melee, 2)
+		elseif self:IsTanking(uId, "boss1") then--Tank
+			tank = chakramTargets[i]
+			DBM:Debug("Tank Chakram found: "..tank, 2)
+		else--Ranged
+			ranged = chakramTargets[i]
+			DBM:Debug("Tank Chakram found: "..ranged, 2)
+		end
+	end
+	if melee and tank and ranged then
+		DBM:Debug("All Chakram found!", 2)
+		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "highlight", ranged, 5, 5, 1, 1, 0, 1, nil, false, 1):Pulse(0.5, 0.5)
+		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "highlight", melee, 5, 5, 1, 1, 0, 1, nil, false, 1):Pulse(0.5, 0.5)
+		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "highlight", tank, 5, 5, 1, 1, 0, 1, nil, false, 1):Pulse(0.5, 0.5)
+		if playerName == melee or playerName == melee or playerName == melee then--Player in it, green lines
+			DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, ranged, melee, nil, nil, nil, nil)
+			DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, melee, tank, nil, nil, nil, nil)
+		else--Red lines
+			DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, ranged, melee, nil, nil, nil, nil)
+			DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, melee, tank, nil, nil, nil, nil)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.focusedBlast = 0
 	self.vb.savedChakram = nil
@@ -138,6 +176,7 @@ function mod:OnCombatStart(delay)
 	self.vb.savedRiposte = nil
 	playerHasAnzu = false
 	table.wipe(AddsSeen)
+	table.wipe(chakramTargets)
 	updateRangeFrame(self)
 	timerChakramCD:Start(5-delay)--Seems still 5 in all modes
 	if self:IsNormal() then--Normal timers are about 40% slower on pull, 20% slower rest of fight
@@ -164,6 +203,9 @@ end
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.HudMapOnChakram then
+		DBMHudMap:Disable()
 	end
 end 
 
@@ -218,6 +260,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 182178 then
+		table.wipe(chakramTargets)
 		timerChakramCD:Start()
 	elseif spellId == 181956 then
 		if self:IsNormal() then
@@ -350,7 +393,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceThrowAnzu:Play("179202")
 		end
 	elseif spellId == 182178 or spellId == 182200 then
-		warnFelChakram:CombinedShow(0.3, args.destName)
+		chakramTargets[#chakramTargets+1] = args.destName
+		self:Unschedule(showChakram)
+		if #chakramTargets == 3 then
+			showChakram(self)
+		else
+			self:Schedule(0.5, showChakram, self)
+		end
 		if args:IsPlayer() then
 			specWarnFelChakram:Show()
 			voiceFelChakram:Play("runout")
@@ -392,6 +441,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.SetIconOnFelBomb then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 182178 or spellId == 182200 then
+		if self.Options.HudMapOnChakram then
+			DBMHudMap:FreeEncounterMarkerByTarget(182178, args.destName)
 		end
 	end
 end

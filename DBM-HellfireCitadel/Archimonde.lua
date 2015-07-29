@@ -617,6 +617,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 187050 then
 		self.vb.markOfLegionRemaining = self.vb.markOfLegionRemaining + 1
 		legionTargets[#legionTargets+1] = args.destName
+		self:Unschedule(showMarkOfLegion)
 		if #legionTargets == 4 then
 			showMarkOfLegion(self)
 		else
