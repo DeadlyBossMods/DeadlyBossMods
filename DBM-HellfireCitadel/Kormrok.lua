@@ -106,7 +106,7 @@ function mod:RuneStart(spellId)
 	--		DBM.Arrow:ShowRunTo(playerX, playerY, 0)
 	--	end
 		if self.Options.HudMapForRune then
-			local m1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", playerName, 0, 8, 0, 1, 0, 0.5):Appear()--tiny dot for self, to create line PoO
+			local m1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", playerName, 0.1, 8, 0, 1, 0, 0.5):Appear()--tiny dot for self, to create line PoO
 			local m2 = DBMHudMap:RegisterPositionMarker(spellId, "HudMapForRune", "highlight", playerX, playerY, 3, 8, 0, 1, 0, 0.5, nil, 4):Pulse(0.5, 0.5)--Rune location
 			m2:EdgeTo(m1, nil, 8, 0, 1, 0, 1)--Now draw line between player and rune
 		end
