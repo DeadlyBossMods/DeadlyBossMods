@@ -83,6 +83,7 @@ L.ShowFakedRaidWarnings 	= "대화창 알림 메세지를 공격대 경보처럼
 L.WarningIconLeft 			= "알림 왼쪽에 주문 아이콘 보기"
 L.WarningIconRight 			= "알림 오른쪽에 주문 아이콘 보기"
 L.WarningIconChat 			= "대화창 알림 메세지에 주문 아이콘 보기"
+L.WarningAlphabetical		= "다수 대상 알림을 이름 순으로 정렬"
 L.Warn_FontType				= "글꼴"
 L.Warn_FontStyle			= "글꼴 속성"
 L.Warn_FontShadow			= "그림자"
