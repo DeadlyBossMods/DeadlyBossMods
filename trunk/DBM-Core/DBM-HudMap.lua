@@ -16,7 +16,8 @@ local updateFrame = CreateFrame("Frame")
 local onUpdate, Point, Edge
 local followedUnits = {}
 local callbacks = CallbackHandler:New(mod)
---local activeMarkers = 0
+local activeMarkers = 0
+local encounterMarkers = {}
 
 local GetNumGroupMembers, GetNumSubgroupMembers = GetNumGroupMembers, GetNumSubgroupMembers
 local GetTime, UIParent = GetTime, UIParent
@@ -275,13 +276,12 @@ function mod:Disable()
 	if not self.HUDEnabled then return end
 	DBM:Debug("HudMap Deactivating", 2)
 	self:FreeEncounterMarkers()
+	Edge:ClearAll()
 	--Anything else needed? maybe clear all marks, hide any frames, etc?
 	self.mainFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	self.mainFrame:UnregisterEvent("LOADING_SCREEN_DISABLED")
 	self.mainFrame:Hide()
 	self.HUDEnabled = false
-	wipe(activeEdgeList)
-	wipe(activePointList)
 	if updateFrame.ticker then
 		updateFrame.ticker:Cancel()
 		updateFrame.ticker = nil
@@ -517,10 +517,11 @@ Edge = setmetatable({
 		self.srcPlayer, self.dstPlayer, self.sx, self.sy, self.dx, self.dy = nil, nil, nil, nil, nil, nil
 		activeEdgeList[self] = nil
 
-		if #activeEdgeList == 0 and #activePointList == 0 then--No markers left, disable hud
+		tinsert(edgeCache, self)
+		activeMarkers = activeMarkers - 1
+		if activeMarkers == 0 then--No markers left, disable hud
 			mod:Disable()
 		end
-		tinsert(edgeCache, self)
 		return nil
 	end,
 	New = function(self, r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime)
@@ -554,6 +555,7 @@ Edge = setmetatable({
 		t.srcPlayer, t.dstPlayer = srcPlayer, dstPlayer
 		t.sx, t.sy, t.dx, t.dy = sx, sy, dx, dy
 		activeEdgeList[t] = true
+		activeMarkers = activeMarkers + 1
 		return t
 	end,
 	SetColor = function(self, r, g, b, a)
@@ -592,6 +594,11 @@ Edge = setmetatable({
 			self.dy = y
 		end
 		return self
+	end,
+	ClearAll = function(self)
+		for t, _ in pairs(activeEdgeList) do
+			t:Free()
+		end
 	end,
 	UpdateAll = function(self)
 		if(self ~= Edge) then return end
@@ -653,7 +660,6 @@ Edge = setmetatable({
 }, object_mt)
 
 function mod:AddEdge(r, g, b, a, lifetime, srcPlayer, dstPlayer, sx, sy, dx, dy)
---	activeMarkers = activeMarkers + 1
 	if DBM.Options.DontShowHudMap2 then return end
 	if not self.HUDEnabled then
 		self:Enable()
@@ -1238,7 +1244,6 @@ function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r,
 	return Point:New(nil, nil, nil, person, duration, graphic, size, blend, red, green, blue, alpha)
 end
 
-local encounterMarkers = {}
 function mod:RegisterEncounterMarker(spellid, name, marker)
 	if DBM.Options.DontShowHudMap2 then return end
 	if not self.HUDEnabled then
@@ -1246,7 +1251,7 @@ function mod:RegisterEncounterMarker(spellid, name, marker)
 	end
 	local key = spellid..name
 	encounterMarkers[key] = marker
---	activeMarkers = activeMarkers + 1
+	activeMarkers = activeMarkers + 1
 	marker.RegisterCallback(self, "Free", "FreeEncounterMarker", key)
 end
 
@@ -1333,8 +1338,8 @@ function mod:FreeEncounterMarker(key)
 	if not self.HUDEnabled then return end
 	if not encounterMarkers[key] then return end
 	encounterMarkers[key] = nil
---	activeMarkers = activeMarkers - 1
-	if #activeEdgeList == 0 and #activePointList == 0 then--No markers left, disable hud
+	activeMarkers = activeMarkers - 1
+	if activeMarkers == 0 then--No markers left, disable hud
 		self:Disable()
 	end
 end
