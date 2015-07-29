@@ -11,7 +11,7 @@ mod.respawnTime = 39--Def less than 40 but much greater than 30. i have a video 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 180260 180004 180533 180025 180608 180300",
+	"SPELL_CAST_START 180260 180004 180533 180608 180300",
 	"SPELL_CAST_SUCCESS 179986 179991 180600 180526",
 	"SPELL_AURA_APPLIED 182459 185241 180166 180164 185237 185238 180526 180025 180000",
 	"SPELL_AURA_APPLIED_DOSE 180000",
@@ -19,8 +19,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 180604",
 	"SPELL_ABSORBED 180604",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_DIED"
---	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_START boss2 boss3 boss4"
 )
 
 --(ability.id = 180260 or ability.id = 180004 or ability.id = 180025 or ability.id = 180608 or ability.id = 180300 or ability.id = 180533) and type = "begincast" or (ability.id = 179986 or ability.id = 179991 or ability.id = 180600 or ability.id = 180526) and type = "cast" or (ability.id = 182459 or ability.id = 185241 or ability.id = 180166 or ability.id = 185237) and type = "applydebuff" or ability.id = 180000 and not type = "removedebuff"
@@ -174,12 +174,6 @@ function mod:SPELL_CAST_START(args)
 			timerEnforcersOnslaughtCD:Start()
 		end
 		timerEnforcersOnslaughtCD:Start()
-	elseif spellId == 180025 then--No target filter, it's only interrupt onfight and it's VERY important
-		specWarnHarbingersMending:Show(args.sourceName)
-		timerHarbingersMendingCD:Start()
-		if not self:IsHealer() then
-			voiceHarbingersMending:Play("kickcast")
-		end
 	elseif spellId == 180608 then
 		self.vb.gavelCount = self.vb.gavelCount+1
 		specWarnGaveloftheTyrant:Show(self.vb.gavelCount)
@@ -341,6 +335,16 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		timerHarbingersMendingCD:Start(19)
 	elseif npc == AncientSovereign then
 		specWarnAncientSovereign:Show()
+	end
+end
+
+function mod:UNIT_SPELLCAST_START(uId, _, _, _, spellId)
+	if spellId == 180025 then
+		specWarnHarbingersMending:Show(args.sourceName)
+		timerHarbingersMendingCD:Start()
+		if not self:IsHealer() then
+			voiceHarbingersMending:Play("kickcast")
+		end
 	end
 end
 
