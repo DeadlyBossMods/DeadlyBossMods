@@ -553,7 +553,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				local _, sourceClass = UnitClass(sourceUId)
 				local _, destClass = UnitClass(destUId)
 				local sourceColor, destColor = RAID_CLASS_COLORS[sourceClass], RAID_CLASS_COLORS[destClass]
-				if UnitIsUnit("player", sourceUId) or UnitIsUnit("player", UnitIsUnit("player", sourceUId)) then--Player is in connection, green line
+				if UnitIsUnit("player", sourceUId) or UnitIsUnit("player", destUId) then--Player is in connection, green line
 					--create points for your own line
 					if UnitIsUnit("player", sourceUId) then
 						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.sourceName, 1.5, 5, sourceColor.r, sourceColor.g, sourceColor.b, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
