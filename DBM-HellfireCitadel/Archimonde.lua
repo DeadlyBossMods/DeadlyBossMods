@@ -520,13 +520,6 @@ function mod:SPELL_AURA_APPLIED(args)
 					warnWroughtChaos:Show(self.vb.wroughtWarned, FRIENDS_FRIENDS_CHOICE_EVERYONE)--"Everyone"
 				end
 			end
-			if self.Options.HudMapOnWrought then
-				if self:IsMythic() then--Entire raid gets it, must use a small hud
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 2.5, 5, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)--Yellow
-				else
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)--Yellow
-				end
-			end
 		end
 	elseif spellId == 185014 then--Focused Chaos
 		if args:IsPlayer() then
@@ -545,10 +538,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
 			end
 			if self.Options.HudMapOnWrought then
-				if self:IsMythic() then--Entire raid gets it, must use a small hud
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 2.5, 5, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
-				else
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 5, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
+				if args.sourceName == playerName or args.destName == playerName then--Players connection, green lines
+					DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, args.sourceName, args.destName, nil, nil, nil, nil)
+				else--red lines for non player lines
+					DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, args.sourceName, args.destName, nil, nil, nil, nil)
 				end
 			end
 		end
