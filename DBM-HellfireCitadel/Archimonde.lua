@@ -13,11 +13,11 @@ mod:SetHotfixNoticeRev(14087)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050",
+	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050 187050 190394 190686 190821",
 	"SPELL_CAST_SUCCESS 183865 184931 187180",
-	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190400 190703 187255 185014",
+	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190703 187255 185014 187050",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 190400",
+	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 187050",
 	"SPELL_SUMMON 187108",
 	"SPELL_PERIODIC_DAMAGE 187255",
 	"SPELL_ABSORBED 187255",
@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
 
 --(ability.id = 183254 or ability.id = 189897 or ability.id = 183817 or ability.id = 183828 or ability.id = 185590 or ability.id = 184265 or ability.id = 183864 or ability.id = 190506 or ability.id = 184931 or ability.id = 187180) and type = "begincast" or (ability.id = 183865) and type = "cast" or (ability.id = 186662 or ability.id = 186961) and (type = "applydebuff" or type = "applybuff")
 --TODO, failsafes are at work for transitions i still don't have enough data for. for example, something seems to always cause the 2nd or 3rd fel burst to delay by a HUGE amount (20-30 seconds sometimes) but don't know what it is. Probalby phase transitions but it's not as simple as resetting timer. probably something more zon ozz
+--TODO, figure out what to do with touch of the legion (190400)
 --Phase 1: The Defiler
 local warnDoomfireFixate			= mod:NewTargetAnnounce(182879, 3)
 local warnAllureofFlamesSoon		= mod:NewSoonAnnounce(183254, 2)
@@ -45,7 +46,7 @@ local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 ----The Nether
 local warnVoidStarFixate			= mod:NewTargetAnnounce(189895, 2)
 --Mythic
-local warnTouchofLegion				= mod:NewTargetAnnounce(190400, 4)
+local warnMarkOfLegion				= mod:NewTargetAnnounce(187050, 4)
 
 --Phase 1: The Defiler
 local specWarnDoomfire				= mod:NewSpecialWarningSwitch(189897, "Dps", nil, nil, 1, 5)
@@ -80,12 +81,16 @@ local specWarnNetherStorm			= mod:NewSpecialWarningMove(187255)
 --Phase 3.5
 local specWarnRainofChaos			= mod:NewSpecialWarningCount(189953, nil, nil, nil, 2)
 --Mythic
-local specWarnSeethingCorruption	= mod:NewSpecialWarningSpell(190506, nil, nil, nil, 2)
-local specWarnTouchofLegion			= mod:NewSpecialWarningYou(190400)--Somehow i suspect this replaces fel burst. It's basically same mechanic, but on multiple people and slightly larger
-local yellTouchofLegion				= mod:NewFadesYell(190400)
-local specWarnSourceofChaos			= mod:NewSpecialWarningYou(190703)
+local specWarnDarkConduit			= mod:NewSpecialWarningCount(190394)--Not sure how to classify yet. or who to exclude
+local specWarnSeethingCorruption	= mod:NewSpecialWarningCount(190506, nil, nil, nil, 2)
+local specWarnMarkOfLegion			= mod:NewSpecialWarningYou(187050)--Somehow i suspect this replaces fel burst. It's basically same mechanic, but on multiple people and slightly larger
+local yellMarkOfLegion				= mod:NewFadesYell(187050)
+local yellMarkOfLegionPoS			= mod:NewPosYell(187050)
+local specWarnSourceofChaosYou		= mod:NewSpecialWarningYou(190703)
 local yellSourceofChaos				= mod:NewYell(190703)
-local specWarnSourceofChaosOthers	= mod:NewSpecialWarningSwitch(190703)--Maybe exclude ranged or healers. Not sure if just dps is enough to soak it, at very least dps have to kill it
+local specWarnSourceofChaos			= mod:NewSpecialWarningSwitchCount(190703, "Dps")--Maybe exclude ranged or healers. Not sure if just dps is enough to soak it, at very least dps have to kill it
+local specWarnInfernals				= mod:NewSpecialWarningSwitchCount(187111, "-Healer")--Tanks should probably help pick these up and spread them
+local specWarnTwistedDarkness		= mod:NewSpecialWarningSwitchCount(190821, "RangedDps")
 
 --Phase 1: The Defiler
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
@@ -96,7 +101,7 @@ local timerDeathbrandCD				= mod:NewCDCountTimer(42.5, 183828, nil, nil, nil, 1)
 local timerDesecrateCD				= mod:NewCDTimer(27, 185590, nil, "Melee", nil, 2)--Only targets melee
 ----Hellfire Deathcaller
 local timerShadowBlastCD			= mod:NewCDTimer(9.7, 183864, nil, "Tank", nil, 5)
-local timerDemonicHavocCD			= mod:NewAITimer(107, 183865, nil, nil, nil, 3)--Mythic, timer unknown, AI timer used until known
+local timerDemonicHavocCD			= mod:NewAITimer(107, 183865, nil, nil, nil, 3)--Mythic, timer unknown, AI timer used until known. I'm not sure this ability still exists
 --Phase 2: Hand of the Legion
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerShackledTormentCD		= mod:NewCDTimer(31.5, 184931, nil, nil, nil, 3)
@@ -111,11 +116,12 @@ local timerNetherBanishCD			= mod:NewCDCountTimer(61.9, 186961, nil, nil, nil, 5
 local timerRainofChaosCD			= mod:NewCDCountTimer(62, 182225, nil, nil, nil, 2)
 ----The Nether
 --Mythic
-local timerSeethingCorruptionCD		= mod:NewAITimer(107, 190506, nil, nil, nil, 2)
-local timerTouchOfLegionCD			= mod:NewAITimer(107, 190400, nil, nil, nil, 3)
-local timerTouchOfLegion			= mod:NewTargetTimer(12, 190400, nil, false)
-local timerSourceofChaosCD			= mod:NewAITimer(107, 190703, nil, nil, nil, 3)
-
+local timerDarkConduitCD			= mod:NewCDCountTimer(107, 190394, nil, nil, nil, 3)
+local timerMarkOfLegionCD			= mod:NewCDCountTimer(107, 187050, nil, nil, nil, 3)
+local timerInfernalsCD				= mod:NewCDCountTimer(107, 187111, nil, nil, nil, 1, 1122)
+local timerSourceofChaosCD			= mod:NewCDCountTimer(107, 190703, nil, nil, 2, 1)
+local timerTwistedDarknessCD		= mod:NewCDCountTimer(107, 190821, nil, nil, nil, 1)
+local timerSeethingCorruptionCD		= mod:NewCDCountTimer(107, 190506, nil, nil, nil, 2)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
@@ -139,6 +145,7 @@ local voiceAllureofFlamesCD			= mod:NewVoice(183254) --just run
 
 mod:AddRangeFrameOption("6/8/10")
 mod:AddSetIconOption("SetIconOnShackledTorment2", 184964, false)
+mod:AddSetIconOption("SetIconOnMarkOfLegion", 187050, true)
 mod:AddSetIconOption("SetIconOnInfernals", "ej11618", true, true)
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
 mod:AddBoolOption("FilterOtherPhase", true)
@@ -149,29 +156,45 @@ mod.vb.demonicCount = 0
 mod.vb.demonicFeedback = false
 mod.vb.netherPortals = 0
 mod.vb.unleashedCountRemaining = 0
-mod.vb.touchOfLegionRemaining = 0
+mod.vb.markOfLegionCast = 0
+mod.vb.markOfLegionRemaining = 0
 mod.vb.netherBanish = 0
 mod.vb.rainOfChaos = 0
 mod.vb.TouchOfShadows = 0
 mod.vb.InfernalsActive = 0
 mod.vb.wroughtWarned = 0
+--Mythic sync variables
 mod.vb.deathBrandCount = 0
+mod.vb.darkConduitCast = 0
+mod.vb.InfernalsCast = 0
+mod.vb.sourceOfChaosCast = 0
+mod.vb.twistedDarknessCast = 0
+mod.vb.seethingCorruptionCount = 0
+--Mythic sequence timers for phase 3 (Made by video, subject to inaccuracies until logs available)
+local legionTimers = {22, 63, 60, 60, 50, 45}
+local darkConduitTimers = {10, 123, 95, 55, 50}
+local infernalTimers = {37, 63, 63, 55, 68, 40}--Seems off. that 68 is oddball.
+local sourceofChaosTimers = {50, 58, 76, 78}--Seens off as well, but who knows, maybe.
+local twistedDarknessTimers = {79, 76, 42, 40, 72}--Also seems off, could be missing one
+local seethingCorruptionTimers = {120, 52, 70, 30, 40}--Really just need logs to verify this nonsense
+--Range frame/filter shit
 local shacklesTargets = {}
+local legionTargets = {}
 local playerName = UnitName("player")
 local playerBanished = false
 local UnitDebuff, UnitDetailedThreatSituation = UnitDebuff, UnitDetailedThreatSituation
 local NetherBanish = GetSpellInfo(186961)
 local shackledDebuff = GetSpellInfo(184964)
-local touchOfLegionDebuff = GetSpellInfo(190400)
-local netherFilter, touchOfLegionFilter
+local markOfLegionDebuff = GetSpellInfo(187050)
+local netherFilter, markOfLegionFilter
 do
 	netherFilter = function(uId)
 		if UnitDebuff(uId, NetherBanish) then
 			return true
 		end
 	end
-	touchOfLegionFilter = function(uId)
-		if UnitDebuff(uId, touchOfLegionDebuff) then
+	markOfLegionFilter = function(uId)
+		if UnitDebuff(uId, markOfLegionDebuff) then
 			return true
 		end
 	end
@@ -207,11 +230,11 @@ local function updateRangeFrame(self)
 	if not self.Options.RangeFrame then return end
 	if self.vb.demonicFeedback then
 		DBM.RangeCheck:Show(6)
-	elseif self.vb.touchOfLegionRemaining > 0 then
-		if UnitDebuff("player", touchOfLegionDebuff) then
+	elseif self.vb.markOfLegionRemaining > 0 then
+		if UnitDebuff("player", markOfLegionDebuff) then
 			DBM.RangeCheck:Show(10)
 		else
-			DBM.RangeCheck:Show(10, touchOfLegionFilter)
+			DBM.RangeCheck:Show(10, markOfLegionFilter)
 		end
 	elseif self.vb.netherPortal then
 		--Blue post says 8, but pretty sure it's 10. The visual was bigger than 8
@@ -232,6 +255,20 @@ local function setDemonicFeedback(self)
 	updateRangeFrame(self)
 	if not playerBanished or not self.Options.FilterOtherPhase then
 		specWarnDemonicFeedbackSoon:Show()
+	end
+end
+
+local function showMarkOfLegion(self)
+	table.sort(legionTargets)
+	warnMarkOfLegion:Show(table.concat(legionTargets, "<, >"))
+	for i = 1, #legionTargets do
+		local name = legionTargets[i]
+		if name == playerName then
+			yellMarkOfLegionPoS:Yell(i)
+		end
+		if self.Options.SetIconOnMarkOfLegion then
+			self:SetIcon(name, i)
+		end
 	end
 end
 
@@ -276,7 +313,7 @@ function mod:OnCombatStart(delay)
 	self.vb.demonicFeedback = false
 	self.vb.netherPortal = false
 	self.vb.unleashedCountRemaining = 0
-	self.vb.touchOfLegionRemaining = 0
+	self.vb.markOfLegionRemaining = 0
 	self.vb.netherBanish = 0
 	self.vb.rainOfChaos = 0
 	self.vb.TouchOfShadows = 0
@@ -291,7 +328,12 @@ function mod:OnCombatStart(delay)
 	warnFelBurstSoon:Schedule(35-delay)
 	timerFelBurstCD:Start(40-delay)
 	if self:IsMythic() then
-		DBM:AddMsg(DBM_CORE_COMBAT_STARTED_AI_TIMER)--One ai timer remains, for mythic
+		self.vb.markOfLegionCast = 0
+		self.vb.darkConduitCast = 0
+		self.vb.InfernalsCast = 0
+		self.vb.sourceOfChaosCast = 0
+		self.vb.twistedDarknessCast = 0
+		self.vb.seethingCorruptionCount = 0
 	end
 	updateRangeFrame(self)
 end
@@ -348,8 +390,12 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 183864 then
 		timerShadowBlastCD:Start(args.sourceGUID)
 	elseif spellId == 190506 then
-		specWarnSeethingCorruption:Show()
-		timerSeethingCorruptionCD:Start()
+		self.vb.seethingCorruptionCount = self.vb.seethingCorruptionCount + 1
+		specWarnSeethingCorruption:Show(self.vb.seethingCorruptionCount)
+		local cooldown = seethingCorruptionTimers[self.vb.seethingCorruptionCount+1]
+		if cooldown then
+			timerSeethingCorruptionCD:Start(cooldown, self.vb.seethingCorruptionCount+1)
+		end
 	elseif spellId == 184931 then
 		table.wipe(shacklesTargets)
 	elseif spellId == 187180 then
@@ -382,6 +428,34 @@ function mod:SPELL_CAST_START(args)
 		--Actual interrupt is filtered of course.
 		if self:CheckInterruptFilter(args.sourceGUID) and playerBanished then
 			specWarnTouchofShadows:Show(args.sourceName, self.vb.TouchOfShadows)
+		end
+	elseif spellId == 187050 then
+		self.vb.markOfLegionCast = self.vb.markOfLegionCast + 1
+		table.wipe(legionTargets)
+		local cooldown = legionTimers[self.vb.markOfLegionCast+1]
+		if cooldown then
+			timerMarkOfLegionCD:Start(cooldown, self.vb.markOfLegionCast+1)
+		end
+	elseif spellId == 190394 then
+		self.vb.darkConduitCast = self.vb.darkConduitCast + 1
+		specWarnDarkConduit:Show(self.vb.darkConduitCast)
+		local cooldown = darkConduitTimers[self.vb.darkConduitCast+1]
+		if cooldown then
+			timerDarkConduitCD:Start(cooldown, self.vb.darkConduitCast+1)
+		end
+	elseif spellId == 190686 then--Summon source of chaos
+		self.vb.sourceOfChaosCast = self.vb.sourceOfChaosCast + 1
+		specWarnSourceofChaos:Show(self.vb.sourceOfChaosCast)
+		local cooldown = sourceofChaosTimers[self.vb.sourceOfChaosCast+1]
+		if cooldown then
+			timerSourceofChaosCD:Start(cooldown, self.vb.sourceOfChaosCast+1)
+		end
+	elseif spellId == 190821 then--Stars
+		self.vb.twistedDarknessCast = self.vb.twistedDarknessCast + 1
+		specWarnTwistedDarkness:Show(self.vb.twistedDarknessCast)
+		local cooldown = twistedDarknessTimers[self.vb.twistedDarknessCast+1]
+		if cooldown then
+			timerTwistedDarknessCD:Start(cooldown, self.vb.twistedDarknessCast+1)
 		end
 	end
 end
@@ -519,34 +593,32 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 186952 and args:IsPlayer() then
 		playerBanished = true
-	elseif spellId == 190400 then
-		self.vb.touchOfLegionRemaining = self.vb.touchOfLegionRemaining + 1
+	elseif spellId == 187050 then
+		self.vb.markOfLegionRemaining = self.vb.markOfLegionRemaining + 1
+		legionTargets[#legionTargets+1] = args.destName
+		if #legionTargets == 4 then
+			showMarkOfLegion(self)
+		else
+			self:Schedule(0.5, showMarkOfLegion, self)
+		end
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)--Find out what our specific seed timer is
-		warnTouchofLegion:CombinedShow(0.5, args.destName)
-		if self:AntiSpam(3, 1) then
-			timerTouchOfLegionCD:Start()
-		end
 		if expires then
-			local remaining = expires-GetTime()
-			timerTouchOfLegion:Start(remaining, args.destName)--Maybe info frame showing player names and expire order better than showing a bunch of timers?
 			if args:IsPlayer() then
-				specWarnTouchofLegion:Show()
-				yellTouchofLegion:Schedule(remaining-1, 1)
-				yellTouchofLegion:Schedule(remaining-2, 2)
-				yellTouchofLegion:Schedule(remaining-3, 3)
-				yellTouchofLegion:Schedule(remaining-4, 4)
-				yellTouchofLegion:Schedule(remaining-5, 5)
+				local remaining = expires-GetTime()
+				specWarnMarkOfLegion:Show()
+				yellMarkOfLegion:Schedule(remaining-1, 1)
+				yellMarkOfLegion:Schedule(remaining-2, 2)
+				yellMarkOfLegion:Schedule(remaining-3, 3)
+				yellMarkOfLegion:Schedule(remaining-4, 4)
+				yellMarkOfLegion:Schedule(remaining-5, 5)
 			end
 		end
 		updateRangeFrame(self)
 	elseif spellId == 190703 then
-		timerSourceofChaosCD:Start()
 		if args:IsPlayer() then
-			specWarnSourceofChaos:Show()
+			specWarnSourceofChaosYou:Show()
 			yellSourceofChaos:Yell()
-		else
-			specWarnSourceofChaosOthers:Show()
 		end
 	elseif spellId == 187255 and args:IsPlayer() and self:AntiSpam(2, 2) then
 		specWarnNetherStorm:Show()
@@ -573,13 +645,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnShackledTorment2 then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 190400 then
-		self.vb.touchOfLegionRemaining = self.vb.touchOfLegionRemaining - 1
-		timerTouchOfLegion:Cancel(args.destName)
+	elseif spellId == 187050 then
+		self.vb.markOfLegionRemaining = self.vb.markOfLegionRemaining - 1
 		if args:IsPlayer() then
-			yellTouchofLegion:Cancel()
+			yellMarkOfLegion:Cancel()
 		end
 		updateRangeFrame(self)
+		if self.Options.SetIconOnMarkOfLegion then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
@@ -592,8 +666,8 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 92740 then--Hellfire Deathcaller
-		timerDemonicHavocCD:Cancel(args.destGUID)
 		timerShadowBlastCD:Cancel(args.destGUID)
+		timerDemonicHavocCD:Cancel(args.destGUID)
 	elseif cid == 94412 then--Infernal Doombringer
 		self.vb.InfernalsActive = self.vb.InfernalsActive - 1
 	end
@@ -613,9 +687,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		--timerShadowBlastCD ommited because it's used near instantly on spawn.
 		specWarnDeathCaller:Show(self.vb.deathBrandCount)
 		voiceDeathCaller:Play("ej11582")
-		if self:IsMythic() then
-			timerDemonicHavocCD:Start(1, unitGUID)
-		end
+		timerDemonicHavocCD:Start(1, unitGUID)
 --	"<143.60 23:47:14> [UNIT_SPELLCAST_SUCCEEDED] Archimonde(Stellar) [[boss1:Allow Phase 2 Spells::0:190117]]", -- [4158]
 --	"<143.64 23:47:14> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#The light will not fail!#Exarch Yrel###Archimonde##0#0##0#2601#nil#0#false#false#false", 
 --	"<148.61 23:47:19> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I grow tired of this pointless game. You face the immortal Legion, scourge of a thousand worlds.#Archimond
@@ -649,17 +721,35 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnAllureofFlamesSoon:Cancel()
 		timerAllureofFlamesCD:Cancel()--Done for rest of fight
 		timerDeathbrandCD:Cancel()--Done for rest of fight
+		timerShackledTormentCD:Cancel()--Resets to 55 on non mythic, no longer cast on mythic
 		countdownDeathBrand:Cancel()
 		warnPhase3:Show()
 		voicePhaseChange:Play("pthree")
-		timerNetherBanishCD:Start(11, 1)
-		countdownNetherBanish:Start(11)
-		timerDemonicFeedbackCD:Start(29)--29-33
-		self:Schedule(23.5, setDemonicFeedback, self)
-		specWarnDemonicFeedbackSoon:Schedule(23)
-		countdownDemonicFeedback:Start(29)
-		timerShackledTormentCD:Cancel()--Resets to 55 here
-		timerShackledTormentCD:Start(55)
+		if not self:IsMythic() then
+			timerNetherBanishCD:Start(11, 1)
+			countdownNetherBanish:Start(11)
+			timerDemonicFeedbackCD:Start(29)--29-33
+			self:Schedule(23.5, setDemonicFeedback, self)
+			specWarnDemonicFeedbackSoon:Schedule(23)
+			countdownDemonicFeedback:Start(29)
+			timerShackledTormentCD:Start(55)
+		else
+			--All need work, actual logs would be nice
+			timerWroughtChaosCD:Cancel()
+			timerDarkConduitCD:Start(10, 1)
+			timerMarkOfLegionCD:Start(22, 1)
+			timerInfernalsCD:Start(37, 1)
+			timerSourceofChaosCD:Start(50, 1)
+			timerTwistedDarknessCD:Start(79, 1)
+			timerSeethingCorruptionCD:Start(nil, 1)
+		end
+	elseif spellId == 187111 then--Infernal Doombringer Spawn
+		self.vb.InfernalsActive = self.vb.InfernalsActive + 1
+		specWarnInfernals:Show(self.vb.InfernalsActive)
+		local cooldown = infernalTimers[self.vb.InfernalsActive+1]
+		if cooldown then
+			timerInfernalsCD:Start(cooldown, self.vb.InfernalsActive+1)
+		end
 	end
 end
 
