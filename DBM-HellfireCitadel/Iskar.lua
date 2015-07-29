@@ -150,7 +150,7 @@ local function showChakram(self)
 			DBM:Debug("Tank Chakram found: "..tank, 2)
 		else--Ranged
 			ranged = chakramTargets[i]
-			DBM:Debug("Tank Chakram found: "..ranged, 2)
+			DBM:Debug("Ranged Chakram found: "..ranged, 2)
 		end
 	end
 	if melee and tank and ranged then
@@ -158,12 +158,12 @@ local function showChakram(self)
 		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "highlight", ranged, 5, 5, 1, 1, 0, 1, nil, false, 1):Pulse(0.5, 0.5)
 		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "highlight", melee, 5, 5, 1, 1, 0, 1, nil, false, 1):Pulse(0.5, 0.5)
 		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "highlight", tank, 5, 5, 1, 1, 0, 1, nil, false, 1):Pulse(0.5, 0.5)
-		if playerName == melee or playerName == melee or playerName == melee then--Player in it, green lines
+		if playerName == melee or playerName == ranged or playerName == tank then--Player in it, green lines
 			DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, ranged, melee, nil, nil, nil, nil)
 			DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, melee, tank, nil, nil, nil, nil)
-		else--Red lines
-			DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, ranged, melee, nil, nil, nil, nil)
-			DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, melee, tank, nil, nil, nil, nil)
+		else--Yellow lines
+			DBMHudMap:AddEdge(1, 1, 0, 0.5, 5, ranged, melee, nil, nil, nil, nil)
+			DBMHudMap:AddEdge(1, 1, 0, 0.5, 5, melee, tank, nil, nil, nil, nil)
 		end
 	end
 end
