@@ -1114,14 +1114,9 @@ function DBT:ApplyStyle()
 	for bar in self:GetBarIterator() do
 		bar:ApplyStyle()
 	end
-	if applyFailed then
-		applyFailed = false
-		DBM:AddMsg(DBM_CORE_LOAD_SKIN_COMBAT)
-	end
 end
 
 function barPrototype:ApplyStyle()
-	applyFailed = true
 	local frame = self.frame
 	local frame_name = frame:GetName()
 	local bar = _G[frame_name.."Bar"]
@@ -1132,6 +1127,7 @@ function barPrototype:ApplyStyle()
 	local name = _G[frame_name.."BarName"]
 	local timer = _G[frame_name.."BarTimer"]
 	local sparkEnabled = self.owner.options.Style ~= "BigWigs" and self.owner.options.Spark
+	local enlarged = self.enlarged
 	texture:SetTexture(self.owner.options.Texture)
 	if self.color then
 		local barRed, barGreen, barBlue = self.color.r, self.color.g, self.color.b
@@ -1170,10 +1166,10 @@ function barPrototype:ApplyStyle()
 	timer:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue)
 	if self.owner.options.IconLeft then icon1:Show() else icon1:Hide() end
 	if self.owner.options.IconRight then icon2:Show() else icon2:Hide() end
-	if self.enlarged then bar:SetWidth(barHugeWidth); bar:SetHeight(barHeight); else bar:SetWidth(barWidth) bar:SetHeight(barHeight); end
-	if self.enlarged then frame:SetScale(self.owner.options.HugeScale) else frame:SetScale(self.owner.options.Scale) end
+	if enlarged then bar:SetWidth(barHugeWidth); bar:SetHeight(barHeight); else bar:SetWidth(barWidth) bar:SetHeight(barHeight); end
+	if enlarged then frame:SetScale(self.owner.options.HugeScale) else frame:SetScale(self.owner.options.Scale) end
 	if self.owner.options.IconLocked then
-		if self.enlarged then frame:SetWidth(barHugeWidth); frame:SetHeight(barHeight); else frame:SetWidth(barWidth); frame:SetHeight(barHeight); end
+		if enlarged then frame:SetWidth(barHugeWidth); frame:SetHeight(barHeight); else frame:SetWidth(barWidth); frame:SetHeight(barHeight); end
 		icon1:SetWidth(barHeight)
 		icon1:SetHeight(barHeight)
 		icon2:SetWidth(barHeight)
@@ -1191,7 +1187,6 @@ function barPrototype:ApplyStyle()
 	name:SetPoint("LEFT", bar, "LEFT", 3, 0)
 	timer:SetFont(barFont, barFontSize, barFontFlag)
 	self:Update(0)
-	applyFailed = false--Got to end with no script ran too long
 end
 
 local function updateOrientation(self)
