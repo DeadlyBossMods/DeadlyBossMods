@@ -1788,7 +1788,14 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 				DBM:AddMsg(DBM_CORE_HUD_INVALID_SELF)
 				return
 			end
-			if hudType:upper() == "GREEN" then
+			if hudType:upper() == "ARROW" then
+				local _, targetClass = UnitClass(uId)
+				local color2 = RAID_CLASS_COLORS[targetClass]
+				local m1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", playerName, 0, hudDuration, 0, 1, 0, 1, nil, false):Appear()
+				local m2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 1.5, hudDuration, color2.r, color2.g, color2.b, 1, nil, false):Appear()
+				m2:EdgeTo(m1, nil, hudDuration, 0, 1, 0, 1)
+				success = true
+			elseif hudType:upper() == "GREEN" then
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 0, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
 				success = true
 			elseif hudType:upper() == "RED" then
