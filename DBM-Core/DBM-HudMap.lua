@@ -16,6 +16,7 @@ local updateFrame = CreateFrame("Frame")
 local onUpdate, Point, Edge
 local followedUnits = {}
 local callbacks = CallbackHandler:New(mod)
+--local activeMarkers = 0
 
 local GetNumGroupMembers, GetNumSubgroupMembers = GetNumGroupMembers, GetNumSubgroupMembers
 local GetTime, UIParent = GetTime, UIParent
@@ -279,6 +280,8 @@ function mod:Disable()
 	self.mainFrame:UnregisterEvent("LOADING_SCREEN_DISABLED")
 	self.mainFrame:Hide()
 	self.HUDEnabled = false
+	wipe(activeEdgeList)
+	wipe(activePointList)
 	if updateFrame.ticker then
 		updateFrame.ticker:Cancel()
 		updateFrame.ticker = nil
@@ -514,6 +517,9 @@ Edge = setmetatable({
 		self.srcPlayer, self.dstPlayer, self.sx, self.sy, self.dx, self.dy = nil, nil, nil, nil, nil, nil
 		activeEdgeList[self] = nil
 
+		if #activeEdgeList == 0 and #activePointList == 0 then--No markers left, disable hud
+			mod:Disable()
+		end
 		tinsert(edgeCache, self)
 		return nil
 	end,
@@ -647,6 +653,11 @@ Edge = setmetatable({
 }, object_mt)
 
 function mod:AddEdge(r, g, b, a, lifetime, srcPlayer, dstPlayer, sx, sy, dx, dy)
+--	activeMarkers = activeMarkers + 1
+	if DBM.Options.DontShowHudMap2 then return end
+	if not self.HUDEnabled then
+		self:Enable()
+	end
 	return Edge:New(r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime)
 end
 
@@ -1228,7 +1239,6 @@ function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r,
 end
 
 local encounterMarkers = {}
-local activeMarkers = 0
 function mod:RegisterEncounterMarker(spellid, name, marker)
 	if DBM.Options.DontShowHudMap2 then return end
 	if not self.HUDEnabled then
@@ -1236,7 +1246,7 @@ function mod:RegisterEncounterMarker(spellid, name, marker)
 	end
 	local key = spellid..name
 	encounterMarkers[key] = marker
-	activeMarkers = activeMarkers + 1
+--	activeMarkers = activeMarkers + 1
 	marker.RegisterCallback(self, "Free", "FreeEncounterMarker", key)
 end
 
@@ -1323,8 +1333,8 @@ function mod:FreeEncounterMarker(key)
 	if not self.HUDEnabled then return end
 	if not encounterMarkers[key] then return end
 	encounterMarkers[key] = nil
-	activeMarkers = activeMarkers - 1
-	if activeMarkers == 0 then--No markers left, disable hud
+--	activeMarkers = activeMarkers - 1
+	if #activeEdgeList == 0 and #activePointList == 0 then--No markers left, disable hud
 		self:Disable()
 	end
 end
