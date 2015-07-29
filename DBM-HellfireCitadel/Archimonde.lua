@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 183865 184931 187180",
 	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190703 187255 185014 187050",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 187050",
+	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 187050 183634",
 	"SPELL_SUMMON 187108",
 	"SPELL_PERIODIC_DAMAGE 187255",
 	"SPELL_ABSORBED 187255",
@@ -147,6 +147,8 @@ mod:AddRangeFrameOption("6/8/10")
 mod:AddSetIconOption("SetIconOnShackledTorment2", 184964, false)
 mod:AddSetIconOption("SetIconOnMarkOfLegion", 187050, true)
 mod:AddSetIconOption("SetIconOnInfernals", "ej11618", true, true)
+mod:AddHudMapOption("HudMapOnFelBurst", 183634)
+mod:AddHudMapOption("HudMapOnShackledTorment", 184964, false)--off by default, may be much for most. Also a mythic only option
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
 mod:AddBoolOption("FilterOtherPhase", true)
 mod:AddInfoFrameOption(184964)
@@ -344,7 +346,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.HudMapOnWrought then
+	if self.Options.HudMapOnWrought or self.Options.HudMapOnFelBurst or self.Options.HudMapOnShackledTorment then
 		DBMHudMap:Disable()
 	end
 	if self.Options.InfoFrame then
@@ -494,6 +496,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceFelBurst:Schedule(0.3, "gathershare")
 			end
 		end
+		if self.Options.HudMapOnFelBurst then
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 5, 0, 1, 0, 0.5):Appear()
+		end
 	elseif spellId == 183865 then
 		warnDemonicHavoc:CombinedShow(0.3, args.destName)
 	elseif spellId == 184964 then
@@ -504,6 +509,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			breakShackles(self)
 		else
 			self:Schedule(0.5, breakShackles, self)
+		end
+		if self.Options.HudMapOnShackledTorment and self:IsMythic() then
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "timer", args.destName, 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():Rotate(360, 9.5)
 		end
 	elseif spellId == 186123 then--Wrought Chaos
 		if args:IsPlayer() then
@@ -645,6 +653,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.HudMapOnWrought then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
+	elseif spellId == 183634 then
+		if self.Options.HudMapOnFelBurst then
+			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		end
 	elseif spellId == 186961 then
 		self.vb.netherPortal = false
 		updateRangeFrame(self)
@@ -657,6 +669,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.SetIconOnShackledTorment2 then
 			self:SetIcon(args.destName, 0)
+		end
+		if self.Options.HudMapOnShackledTorment and self:IsMythic() then
+			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	elseif spellId == 187050 then
 		self.vb.markOfLegionRemaining = self.vb.markOfLegionRemaining - 1
