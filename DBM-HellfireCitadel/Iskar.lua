@@ -221,7 +221,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 181827 or spellId == 187998 then--Both versions of it. I assume the 5 second version is probably LFR/Normal
 		timerFelConduitCD:Start(args.sourceGUID)
 		if playerHasAnzu then--Able to interrupt
-			specWarnFelConduit:Show()
+			specWarnFelConduit:Show(args.sourceName)
 			if self:IsHealer() then--It's still on healer that did last dispel, they need to throw to better interruptor, probably tank
 				specWarnThrowAnzu:Show(TANK)
 				voiceThrowAnzu:Play("179202m") --throw to melee (maybe change to throw to tank, in strat i saw, it was best to bounce eye between tank and healer since throwing to tank also made immune to Phantasmal Corruption as added bonus)
