@@ -90,9 +90,9 @@ local playerGreenX, playerGreenY = nil, nil
 local playerPurpleX, playerPurpleY = nil, nil
 
 --Not local functions, so they can also be used as a test functions as well
---/run DBM:GetModByName("1392"):RuneStart(181293)
-function mod:RuneStart(spellId)
-	if not self:IsMythic() then return end
+--/run DBM:GetModByName("1392"):RuneStart(181293, true)
+function mod:RuneStart(spellId, force)
+	if not self:IsMythic() and not force then return end
 	local playerX, playerY
 	if spellId == 181293 then
 		playerX, playerY = playerPurpleX, playerPurpleY
