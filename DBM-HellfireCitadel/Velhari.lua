@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 179986 179991 180600 180526",
 	"SPELL_AURA_APPLIED 182459 185241 180166 180164 185237 185238 180526 180025 180000",
 	"SPELL_AURA_APPLIED_DOSE 180000",
-	"SPELL_AURA_REMOVED 182459 185241",
+	"SPELL_AURA_REMOVED 182459 185241 180526",
 	"SPELL_PERIODIC_DAMAGE 180604",
 	"SPELL_ABSORBED 180604",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -87,6 +87,8 @@ local timerGaveloftheTyrantCD				= mod:NewNextCountTimer(10, 180608)
 --local berserkTimer						= mod:NewBerserkTimer(360)
 
 local countdownAnnihilatingStrike			= mod:NewCountdown(10, 180260, nil, nil, 3)--It's same cd as Infernal tempest so going to use countdown for both. Starting count at 3 to avoid so much spam. every 10 seconds, 5-1 would be bit much. 3-1 important though
+local countdownBulwarkofTyrant				= mod:NewCountdown(10, 180608, nil, nil, 3)
+local countdownFontofCorruption				= mod:NewCountdownFades("Alt50", 180526, false)
 
 local voicePhaseChange						= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceInfernalTempest					= mod:NewVoice(180300)--scatter
@@ -179,6 +181,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnGaveloftheTyrant:Show(self.vb.gavelCount)
 		voiceGaveloftheTyrant:Play("carefly")
 		timerBulwarkoftheTyrantCD:Start(nil, 1)
+		countdownBulwarkofTyrant:Start()
 	elseif spellId == 180300 then
 		self.vb.infernalTempestCount = self.vb.infernalTempestCount + 1
 		specWarnInfernalTempest:Show(self.vb.infernalTempestCount)
@@ -207,6 +210,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnAuraofMalice:Show()
 		timerFontofCorruptionCD:Cancel()
 		timerBulwarkoftheTyrantCD:Start(nil, 1)
+		countdownBulwarkofTyrant:Start()
 		voicePhaseChange:Play("pthree")
 	elseif spellId == 180600 then
 		self.vb.bulwarkCount = self.vb.bulwarkCount + 1
@@ -216,6 +220,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerBulwarkoftheTyrantCD:Start(nil, self.vb.bulwarkCount+1)
 		end
+		countdownBulwarkofTyrant:Start()
 	elseif spellId == 180526 then
 		timerFontofCorruptionCD:Start()
 	end
@@ -269,6 +274,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFontofCorruption:Show()
 			yellFontofCorruption:Yell()
+			countdownFontofCorruption:Start()
 		end
 	elseif spellId == 180025 then
 		specWarnHarbingersMendingDispel:Show(args.destName)
@@ -315,6 +321,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		--For icon option, or something.
 		if self.Options.HudMapEdict then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		end
+	elseif spellId == 180526 then
+		if args:IsPlayer() then
+			countdownFontofCorruption:Cancel()
 		end
 	end
 end
