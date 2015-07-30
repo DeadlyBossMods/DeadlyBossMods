@@ -55,7 +55,7 @@ local yellDoomfireFixate			= mod:NewYell(182826)--Use short name for yell
 local specWarnAllureofFlames		= mod:NewSpecialWarningSpell(183254, nil, nil, nil, 2, 2)
 local specWarnDeathCaller			= mod:NewSpecialWarningSwitchCount("ej11582", "Dps", nil, nil, 1, 2)--Tanks don't need switch, they have death brand special warning 2 seconds earlier
 local specWarnFelBurst				= mod:NewSpecialWarningYou(183817)
-local yellFelBurst					= mod:NewYell(183817)--Change yell to countdown mayeb when better understood
+local yellFelBurst					= mod:NewPosYell(183817)--Change yell to countdown mayeb when better understood
 local specWarnFelBurstNear			= mod:NewSpecialWarningMoveTo(183817, nil, nil, nil, 1, 2)--Anyone near by should run in to help soak, should be mostly ranged but if it's close to melee, melee soaking too doesn't hurt
 local specWarnDesecrate				= mod:NewSpecialWarningDodge(185590, "Melee", nil, nil, 1, 2)
 local specWarnDeathBrand			= mod:NewSpecialWarningCount(183828, "Tank", nil, nil, 1, 2)
@@ -144,10 +144,11 @@ local voiceFocusedChaos				= mod:NewVoice(185014) --new voice
 local voiceAllureofFlamesCD			= mod:NewVoice(183254) --just run
 
 mod:AddRangeFrameOption("6/8/10")
+mod:AddSetIconOption("SetIconOnFelBurst", 183634, true)
 mod:AddSetIconOption("SetIconOnShackledTorment2", 184964, false)
 mod:AddSetIconOption("SetIconOnMarkOfLegion", 187050, true)
 mod:AddSetIconOption("SetIconOnInfernals2", "ej11618", false, true)
-mod:AddHudMapOption("HudMapOnFelBurst", 183634)
+mod:AddHudMapOption("HudMapOnFelBurst2", 183634, false)
 mod:AddHudMapOption("HudMapOnShackledTorment", 184964, false)--off by default, may be much for most. Also a mythic only option
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
 mod:AddBoolOption("FilterOtherPhase", true)
@@ -184,11 +185,13 @@ local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 --Range frame/filter shit
 local shacklesTargets = {}
 local legionTargets = {}
+local felburstTargets = {}
 local playerName = UnitName("player")
 local playerBanished = false
 local UnitDebuff, UnitDetailedThreatSituation, UnitClass, UnitIsUnit = UnitDebuff, UnitDetailedThreatSituation, UnitClass, UnitIsUnit
 local NetherBanish = GetSpellInfo(186961)
 local shackledDebuff = GetSpellInfo(184964)
+local felburstDebuff = GetSpellInfo(183634)
 local markOfLegionDebuff = GetSpellInfo(187050)
 local netherFilter, markOfLegionFilter
 do
@@ -216,6 +219,15 @@ end
 local function updateInfoFrame()
 	table.wipe(lines)
 	local total = 0
+	for i = 1, #felburstTargets do
+		if i == 9 then break end--It's a wipe, plus can't do more than 8 of these with icons
+		local name = felburstTargets[i]
+		local uId = DBM:GetRaidUnitId(name)
+		if UnitDebuff(uId, felburstDebuff) then
+			total = total + 1
+			lines[name] = i
+		end
+	end
 	for i = 1, #shacklesTargets do
 		local name = shacklesTargets[i]
 		local uId = DBM:GetRaidUnitId(name)
@@ -231,7 +243,7 @@ local function updateInfoFrame()
 end
 
 local function updateRangeFrame(self)
-	if not self.Options.RangeFrame then return end
+	if not self.Options.RangeFrame or not self:IsInCombat() then return end
 	if self.vb.demonicFeedback then
 		DBM.RangeCheck:Show(6)
 	elseif self.vb.markOfLegionRemaining > 0 then
@@ -273,6 +285,25 @@ local function showMarkOfLegion(self)
 		if self.Options.SetIconOnMarkOfLegion then
 			self:SetIcon(name, i)
 		end
+	end
+end
+
+local function showFelburstTargets(self)
+	table.sort(felburstTargets)
+	warnFelBurst:Show(table.concat(felburstTargets, "<, >"))
+	for i = 1, #felburstTargets do
+		if i == 9 then break end--It's a wipe, plus can't do more than 8 of these with icons
+		local name = felburstTargets[i]
+		if name == playerName then
+			yellFelBurst:Yell(i)
+		end
+		if self.Options.SetIconOnFelBurst then
+			self:SetIcon(name, i)
+		end
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(felburstDebuff)
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 	end
 end
 
@@ -368,6 +399,7 @@ function mod:SPELL_CAST_START(args)
 		timerDoomfireCD:Start()
 		voiceDoomfire:Play("189897")
 	elseif spellId == 183817 then
+		table.wipe(felburstTargets)
 		warnFelBurstSoon:Schedule(47)
 		timerFelBurstCD:Start()
 	elseif spellId == 183828 then
@@ -485,10 +517,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDoomfireFixate:Yell()
 		end
 	elseif spellId == 183634 then
-		warnFelBurst:CombinedShow(0.3, args.destName)
+		felburstTargets[#felburstTargets+1] = args.destName
+		self:Unschedule(showFelburstTargets)
+		self:Schedule(0.3, showFelburstTargets, self)--Change to 0.5 for laggy users?
 		if args:IsPlayer() then
 			specWarnFelBurst:Show()
-			yellFelBurst:Yell()
 		else
 			if self:CheckNearby(30, args.destName) and not UnitDebuff("player", args.spellName) and not self:IsTank() then--Range subject to adjustment
 				specWarnFelBurstNear:CombinedShow(0.3, args.destName)--Combined show to prevent spam in a spread, if a spread happens targets are all together and requires even MORE people to soak.
@@ -496,7 +529,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceFelBurst:Schedule(0.3, "gathershare")
 			end
 		end
-		if self.Options.HudMapOnFelBurst then
+		if self.Options.HudMapOnFelBurst2 then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 5, 0, 1, 0, 0.5):Appear()
 		end
 	elseif spellId == 183865 then
@@ -655,8 +688,11 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	elseif spellId == 183634 then
-		if self.Options.HudMapOnFelBurst then
+		if self.Options.HudMapOnFelBurst2 then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		end
+		if self.Options.SetIconOnFelBurst then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 186961 then
 		self.vb.netherPortal = false
@@ -723,6 +759,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 --	"<149.68 23:47:20> [CLEU] SPELL_CAST_START#Creature-0-3023-1448-20662-91331-000010BEEC#Archimonde##nil#184265#Wrought Chaos#nil#nil", -- [4314]
 	elseif spellId == 190117 then--Phase 2 trigger
 		self.vb.phase = 2
+		table.wipe(felburstTargets)--Just to reduce infoframe overhead
 		--Cancel stuff only used in phase 1
 		warnFelBurstSoon:Cancel()
 		timerFelBurstCD:Cancel()
@@ -764,6 +801,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerShackledTormentCD:Start(55)
 		else
 			--All need work, actual logs would be nice
+			table.wipe(shacklesTargets)--Just to reduce infoframe overhead
 			timerWroughtChaosCD:Cancel()
 			timerDarkConduitCD:Start(10, 1)
 			timerMarkOfLegionCD:Start(22, 1)
