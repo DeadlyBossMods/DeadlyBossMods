@@ -549,6 +549,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "timer", args.destName, 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():Rotate(360, 9.5)
 		end
 	elseif spellId == 186123 then--Wrought Chaos
+		if self:AntiSpam(3, 3) then
+			self.vb.wroughtWarned = self.vb.wroughtWarned + 1
+		end
 		if args:IsPlayer() then
 			specWarnWroughtChaos:Show()
 			yellWroughtChaos:Yell()
@@ -557,13 +560,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if not playerBanished or not self.Options.FilterOtherPhase then
 			if not self:IsMythic() then
-				self.vb.wroughtWarned = self.vb.wroughtWarned + 1
 				warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
-			else
-				if self:AntiSpam(3, 3) then
-					self.vb.wroughtWarned = self.vb.wroughtWarned + 1
-					warnWroughtChaos:Show(self.vb.wroughtWarned, FRIENDS_FRIENDS_CHOICE_EVERYONE)--"Everyone"
-				end
 			end
 		end
 	elseif spellId == 185014 then--Focused Chaos
@@ -590,6 +587,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				local sourceColor, destColor = RAID_CLASS_COLORS[sourceClass], RAID_CLASS_COLORS[destClass]
 				if UnitIsUnit("player", sourceUId) or UnitIsUnit("player", destUId) then--Player is in connection, green line
 					--create points for your own line
+					warnWroughtChaos:CombinedShow(0.1, self.vb.wroughtWarned, args.sourceName)
+					warnWroughtChaos:CombinedShow(0.1, self.vb.wroughtWarned, args.destName)
 					if UnitIsUnit("player", sourceUId) then
 						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.sourceName, 1.5, 5, sourceColor.r, sourceColor.g, sourceColor.b, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
 						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 1, 5, destColor.r, destColor.g, destColor.b, 0.5, nil, false):Pulse(0.5, 0.5)
