@@ -146,7 +146,7 @@ local voiceAllureofFlamesCD			= mod:NewVoice(183254) --just run
 mod:AddRangeFrameOption("6/8/10")
 mod:AddSetIconOption("SetIconOnShackledTorment2", 184964, false)
 mod:AddSetIconOption("SetIconOnMarkOfLegion", 187050, true)
-mod:AddSetIconOption("SetIconOnInfernals", "ej11618", true, true)
+mod:AddSetIconOption("SetIconOnInfernals2", "ej11618", false, true)
 mod:AddHudMapOption("HudMapOnFelBurst", 183634)
 mod:AddHudMapOption("HudMapOnShackledTorment", 184964, false)--off by default, may be much for most. Also a mythic only option
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
@@ -418,11 +418,11 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase < 3.5 then
 			self.vb.phase = 3.5
 		end
-		if self.Options.SetIconOnInfernals then
+		if self.Options.SetIconOnInfernals2 then
 			if self.vb.InfernalsActive > 0 then--Last set isn't dead yet, use alternate icons
-				self:ScanForMobs(94412, 0, 5, 3, 0.4, 25, "SetIconOnInfernals")
+				self:ScanForMobs(94412, 0, 5, 3, 0.4, 25, "SetIconOnInfernals2")
 			else
-				self:ScanForMobs(94412, 0, 8, 3, 0.4, 25, "SetIconOnInfernals")
+				self:ScanForMobs(94412, 0, 8, 3, 0.4, 25, "SetIconOnInfernals2")
 			end
 		end
 	elseif spellId == 190050 then
