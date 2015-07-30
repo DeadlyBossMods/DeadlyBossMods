@@ -141,7 +141,7 @@ function mod:OnCombatStart(delay)
 	timerTouchofHarmCD:Start(16.8-delay, 1)
 	timerEdictofCondemnationCD:Start(57-delay, 1)
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(5)
+		DBM.RangeCheck:Show(4)
 	end
 end
 

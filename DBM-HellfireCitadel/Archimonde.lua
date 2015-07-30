@@ -244,7 +244,9 @@ end
 
 local function updateRangeFrame(self)
 	if not self.Options.RangeFrame or not self:IsInCombat() then return end
-	if self.vb.demonicFeedback then
+	if playerBanished and not self:IsMythic() then
+		DBM.RangeCheck:Hide()
+	elseif self.vb.demonicFeedback then
 		DBM.RangeCheck:Show(6)
 	elseif self.vb.markOfLegionRemaining > 0 then
 		if UnitDebuff("player", markOfLegionDebuff) then
@@ -355,7 +357,7 @@ function mod:OnCombatStart(delay)
 	self.vb.InfernalsActive = 0
 	self.vb.deathBrandCount = 0
 	playerBanished = false
-	timerDoomfireCD:Start(6-delay)
+	timerDoomfireCD:Start(5.1-delay)
 	timerDeathbrandCD:Start(15.5-delay, 1)
 	countdownDeathBrand:Start(15.5-delay)
 	timerAllureofFlamesCD:Start(30-delay)
@@ -647,6 +649,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 186952 and args:IsPlayer() then
 		playerBanished = true
+		updateRangeFrame(self)
 	elseif spellId == 187050 then
 		self.vb.markOfLegionRemaining = self.vb.markOfLegionRemaining + 1
 		legionTargets[#legionTargets+1] = args.destName
@@ -699,6 +702,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		updateRangeFrame(self)
 	elseif spellId == 186952 and args:IsPlayer() then
 		playerBanished = false
+		updateRangeFrame(self)
 	elseif spellId == 184964 then
 		self.vb.unleashedCountRemaining = self.vb.unleashedCountRemaining - 1
 		if (not playerBanished or not self.Options.FilterOtherPhase) and not self:IsLFR() then
