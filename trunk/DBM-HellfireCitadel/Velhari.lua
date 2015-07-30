@@ -340,7 +340,7 @@ end
 
 function mod:UNIT_SPELLCAST_START(uId, _, _, _, spellId)
 	if spellId == 180025 then
-		specWarnHarbingersMending:Show(args.sourceName)
+		specWarnHarbingersMending:Show(AncientHarbinger)
 		timerHarbingersMendingCD:Start()
 		if not self:IsHealer() then
 			voiceHarbingersMending:Play("kickcast")
