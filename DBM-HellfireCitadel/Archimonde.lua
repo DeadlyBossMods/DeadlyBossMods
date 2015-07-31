@@ -592,18 +592,18 @@ function mod:SPELL_AURA_APPLIED(args)
 					warnWroughtChaos:CombinedShow(0.1, self.vb.wroughtWarned, args.sourceName)
 					warnWroughtChaos:CombinedShow(0.1, self.vb.wroughtWarned, args.destName)
 					if UnitIsUnit("player", sourceUId) then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.sourceName, 1.5, 5, sourceColor.r, sourceColor.g, sourceColor.b, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 1, 5, destColor.r, destColor.g, destColor.b, 0.5, nil, false):Pulse(0.5, 0.5)
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.75, 5, sourceColor.r, sourceColor.g, sourceColor.b, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, destColor.r, destColor.g, destColor.b, 0.5, nil, false):Pulse(0.5, 0.5)
 					else
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.sourceName, 1, 5, sourceColor.r, sourceColor.g, sourceColor.b, 0.5, nil, false):Pulse(0.5, 0.5)
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 1.5, 5, destColor.r, destColor.g, destColor.b, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, sourceColor.r, sourceColor.g, sourceColor.b, 0.5, nil, false):Pulse(0.5, 0.5)
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.75, 5, destColor.r, destColor.g, destColor.b, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
 					end
 					--create line
 					DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, args.sourceName, args.destName, nil, nil, nil, nil)
 				else--red lines for non player lines
 					--Create Points
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.sourceName, 1, 5, sourceColor.r, sourceColor.g, sourceColor.b, 0.5, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 1, 5, destColor.r, destColor.g, destColor.b, 0.5, nil, false):Pulse(0.5, 0.5)
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, sourceColor.r, sourceColor.g, sourceColor.b, 0.5, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, destColor.r, destColor.g, destColor.b, 0.5, nil, false):Pulse(0.5, 0.5)
 					--Create Line
 					DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, args.sourceName, args.destName, nil, nil, nil, nil)
 				end
