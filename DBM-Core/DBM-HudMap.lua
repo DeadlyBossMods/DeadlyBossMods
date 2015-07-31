@@ -366,7 +366,7 @@ local animations = {
 	end
 }
 
-local function DrawRouteLineCustom(T, C, sx, sy, ex, ey, w, relPoint)
+local function DrawRouteLineCustom(T, C, sx, sy, ex, ey, w, extend, relPoint)
 	if (not relPoint) then relPoint = "BOTTOMLEFT"; end
 
 	-- Determine dimensions and center point of line
@@ -394,6 +394,9 @@ local function DrawRouteLineCustom(T, C, sx, sy, ex, ey, w, relPoint)
 	local s,c = -dy / l, dx / l;
 	local sc = s * c;
 
+--	if extend then
+--		l = l + 500
+--	end
 	-- Calculate bounding box size and texture coordinates
 	local Bwid, Bhgt, BLx, BLy, TLx, TLy, TRx, TRy, BRx, BRy;
 	if (dy >= 0) then
@@ -657,7 +660,7 @@ Edge = setmetatable({
 			local hyp = pow((ax*ax) + (ay*ay), 0.5)
 			if hyp > 15 then
 				self.texture:Show()
-				DrawRouteLineCustom(self.texture, mod.canvas, sx, sy, dx, dy, w);
+				DrawRouteLineCustom(self.texture, mod.canvas, sx, sy, dx, dy, w, self.extend);
 			else
 				self.texture:Hide()
 			end
@@ -994,7 +997,7 @@ do
 			return self
 		end,
 
-		EdgeFrom = function(self, point_or_unit_or_x, to_y, lifetime, r, g, b, a)
+		EdgeFrom = function(self, point_or_unit_or_x, to_y, lifetime, r, g, b, a, w, extend)
 			local fromPlayer = self.follow
 			local unit, x, y
 			if type(point_or_unit_or_x) == "table" then
@@ -1006,7 +1009,7 @@ do
 				x = to_y ~= nil and point_or_unit_or_x
 				y = to_y
 			end
-			local edge = Edge:New(r, g, b, a, fromPlayer, unit, self.stickX, self.stickY, x, y, lifetime)
+			local edge = Edge:New(r, g, b, a, fromPlayer, unit, self.stickX, self.stickY, x, y, lifetime, w, extend)
 			self:AttachEdge(edge)
 			if type(point_or_unit_or_x) == "table" then
 				point_or_unit_or_x:AttachEdge(edge)
@@ -1017,7 +1020,7 @@ do
 			return edge
 		end,
 
-		EdgeTo = function(self, point_or_unit_or_x, from_y, lifetime, r, g, b, a)
+		EdgeTo = function(self, point_or_unit_or_x, from_y, lifetime, r, g, b, a, w, extend)
 			local toPlayer = self.follow
 			local unit, x, y
 			if type(point_or_unit_or_x) == "table" then
@@ -1030,7 +1033,7 @@ do
 				y = from_y
 			end
 
-			local edge = Edge:New(r, g, b, a, unit, toPlayer, x, y, self.stickX, self.stickY, lifetime)
+			local edge = Edge:New(r, g, b, a, unit, toPlayer, x, y, self.stickX, self.stickY, lifetime, w, extend)
 			self:AttachEdge(edge)
 			if type(point_or_unit_or_x) == "table" then
 				point_or_unit_or_x:AttachEdge(edge)
