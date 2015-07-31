@@ -134,31 +134,39 @@ local function updateRangeFrame(self)
 	end
 end
 
+local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 local function showChakram(self)
 	warnFelChakram:Show(table.concat(chakramTargets, "<, >"))
 	--Chakram is always thrown ranged-->melee-->Tank
 	--Need to determine roles for the hud
 	if not self.Options.HudMapOnChakram then return end
-	local melee, ranged, tank = nil, nil, nil
+	local ranged, melee, tank = nil, nil, nil
+	local class1, class2, class3 = nil, nil, nil
 	for i = 1, #chakramTargets do
 		local name = chakramTargets[i]
 		local uId = DBM:GetRaidUnitId(name)
+		if not uId then return end--Prevent errors if person leaves group
+		local _, class = UnitClass(uId)
 		if self:IsMeleeDps(uId) then--Melee
 			melee = chakramTargets[i]
+			class2 = class
 			DBM:Debug("Melee Chakram found: "..melee, 2)
 		elseif self:IsTanking(uId, "boss1") then--Tank
 			tank = chakramTargets[i]
+			class3 = class
 			DBM:Debug("Tank Chakram found: "..tank, 2)
 		else--Ranged
 			ranged = chakramTargets[i]
+			class1 = class
 			DBM:Debug("Ranged Chakram found: "..ranged, 2)
 		end
 	end
-	if melee and tank and ranged then
+	if ranged and melee and tank then
+		local Color1, Color2, Color3 = RAID_CLASS_COLORS[class1], RAID_CLASS_COLORS[class2], RAID_CLASS_COLORS[class3]
 		DBM:Debug("All Chakram found!", 2)
-		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "highlight", ranged, 5, 5, 1, 1, 0, 1, nil, false, 1):Pulse(0.5, 0.5)
-		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "highlight", melee, 5, 5, 1, 1, 0, 1, nil, false, 1):Pulse(0.5, 0.5)
-		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "highlight", tank, 5, 5, 1, 1, 0, 1, nil, false, 1):Pulse(0.5, 0.5)
+		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "party", ranged, 0.75, 6, Color1.r, Color1.g, Color1.b, 1, nil, false):Appear()
+		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "party", melee, 0.75, 6, Color2.r, Color2.g, Color2.b, 1, nil, false):Appear()
+		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "party", tank, 0.75, 6, Color3.r, Color3.g, Color3.b, 1, nil, false):Appear()
 		if playerName == melee or playerName == ranged or playerName == tank then--Player in it, green lines
 			DBMHudMap:AddEdge(0, 1, 0, 0.5, 6, ranged, melee, nil, nil, nil, nil)
 			DBMHudMap:AddEdge(0, 1, 0, 0.5, 6, melee, tank, nil, nil, nil, nil)
