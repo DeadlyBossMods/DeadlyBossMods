@@ -366,7 +366,7 @@ local animations = {
 	end
 }
 
-local function DrawRouteLineCustom(T, C, sx, sy, ex, ey, w, relPoint)
+local function DrawRouteLineCustom(T, C, sx, sy, ex, ey, w, relPoint, extend)
 	if (not relPoint) then relPoint = "BOTTOMLEFT"; end
 
 	-- Determine dimensions and center point of line
@@ -381,6 +381,12 @@ local function DrawRouteLineCustom(T, C, sx, sy, ex, ey, w, relPoint)
 
 	-- Calculate actual length of line
 	local l = sqrt((dx * dx) + (dy * dy));
+	
+	-- Add length to line if extend is true
+	-- TODO: Get right length to extend line to edge of HUD
+	if extend then
+		l = l + 100
+	end
 
 	-- Quick escape if it's zero length
 	if (l == 0) then
@@ -524,7 +530,7 @@ Edge = setmetatable({
 		end
 		return nil
 	end,
-	New = function(self, r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime)
+	New = function(self, r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime, width, extend)
 		local t = tremove(edgeCache)
 		if not t then
 			t = setmetatable({}, edge_mt)
@@ -553,7 +559,7 @@ Edge = setmetatable({
 		t.lifetime = type(lifetime) == "number" and GetTime() + lifetime or nil
 		t:SetColor(r, g, b, a)
 		t.srcPlayer, t.dstPlayer = srcPlayer, dstPlayer
-		t.sx, t.sy, t.dx, t.dy = sx, sy, dx, dy
+		t.sx, t.sy, t.dx, t.dy, t.width, t.extend = sx, sy, dx, dy, width, extend
 		activeEdgeList[t] = true
 		activeMarkers = activeMarkers + 1
 		return t
@@ -611,7 +617,7 @@ Edge = setmetatable({
 			self:Free()
 			return
 		end
-		local sx, sy, dx, dy
+		local sx, sy, dx, dy, width
 		if self.srcPlayer then
 			sx, sy = mod:GetUnitPosition(self.srcPlayer)
 		elseif self.srcPoint then
@@ -626,6 +632,12 @@ Edge = setmetatable({
 			dx, dy = self.dstPoint:Location()
 		elseif self.dx and self.dy then
 			dx, dy = self.dx, self.dy
+		end
+		
+		if self.width then
+			width = self.width
+		else
+			width = 100
 		end
 
 		local visible
@@ -651,7 +663,7 @@ Edge = setmetatable({
 			local hyp = pow((ax*ax) + (ay*ay), 0.5)
 			if hyp > 15 then
 				self.texture:Show()
-				DrawRouteLineCustom(self.texture, mod.canvas, sx, sy, dx, dy, 100);
+				DrawRouteLineCustom(self.texture, mod.canvas, sx, sy, dx, dy, width, self.extend);
 			else
 				self.texture:Hide()
 			end
@@ -659,12 +671,12 @@ Edge = setmetatable({
 	end,
 }, object_mt)
 
-function mod:AddEdge(r, g, b, a, lifetime, srcPlayer, dstPlayer, sx, sy, dx, dy)
+function mod:AddEdge(r, g, b, a, lifetime, srcPlayer, dstPlayer, sx, sy, dx, dy, width, extend)
 	if DBM.Options.DontShowHudMap2 then return end
 	if not self.HUDEnabled then
 		self:Enable()
 	end
-	return Edge:New(r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime)
+	return Edge:New(r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime, width, extend)
 end
 
 do
@@ -1011,7 +1023,7 @@ do
 			return edge
 		end,
 
-		EdgeTo = function(self, point_or_unit_or_x, from_y, lifetime, r, g, b, a)
+		EdgeTo = function(self, point_or_unit_or_x, from_y, lifetime, r, g, b, a, width, extend)
 			local toPlayer = self.follow
 			local unit, x, y
 			if type(point_or_unit_or_x) == "table" then
@@ -1024,7 +1036,7 @@ do
 				y = from_y
 			end
 
-			local edge = Edge:New(r, g, b, a, unit, toPlayer, x, y, self.stickX, self.stickY, lifetime)
+			local edge = Edge:New(r, g, b, a, unit, toPlayer, x, y, self.stickX, self.stickY, lifetime, width, extend)
 			self:AttachEdge(edge)
 			if type(point_or_unit_or_x) == "table" then
 				point_or_unit_or_x:AttachEdge(edge)
