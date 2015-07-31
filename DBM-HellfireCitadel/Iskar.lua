@@ -19,8 +19,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 182178 181956 185510 181912",
 	"SPELL_AURA_APPLIED 179202 181957 182325 187990 181824 179219 185510 181753 182178 182200",
 	"SPELL_AURA_REMOVED 179202 181957 182325 187990 181824 179219 185510 181753 182178 182200",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_ABSORBED",
+	"SPELL_PERIODIC_DAMAGE 182600",
+	"SPELL_PERIODIC_MISSED 182600",
 	"RAID_BOSS_WHISPER",
 	"CHAT_MSG_ADDON",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
@@ -55,6 +55,7 @@ local yellPhantasmalWinds				= mod:NewYell(181957)--So person with eye can see w
 local specWarnPhantasmalWounds			= mod:NewSpecialWarningYou(182325, false)
 local yellPhantasmalWounds				= mod:NewYell(182325, nil, false)--Can't see much reason to have THIS one on by default, but offered as an option.
 local specWarnFelLaser					= mod:NewSpecialWarningMoveAway(182582, nil, nil, nil, 1, 2)
+local specWarnFelLaserGTFO				= mod:NewSpecialWarningMove(182600, nil, nil, nil, 1, 2)
 local yellFelLaser						= mod:NewYell(182582)
 local specWarnShadowRiposte				= mod:NewSpecialWarningSpell(185345, nil, nil, nil, 3)--Has eye of anzu, they need to know this badly.
 --Adds
@@ -388,7 +389,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnDarkBindings:Show()
 		end
-		if playerHasAnzu and self:AntiSpam(3, 1) then
+		if playerHasAnzu and self:AntiSpam(3, 3) then
 			specWarnThrowAnzu:Show(args.spellName)
 			voiceThrowAnzu:Play("179202")
 		end
@@ -448,6 +449,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 182600 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+		specWarnFelLaserGTFO:Show()
+		voiceFelLaser:Play("runaway")
+	end
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:182582") then
@@ -513,12 +522,3 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
-
-	end
-end
-mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
---]]
