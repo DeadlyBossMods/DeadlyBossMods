@@ -150,7 +150,7 @@ mod:AddSetIconOption("SetIconOnShackledTorment2", 184964, false)
 mod:AddSetIconOption("SetIconOnMarkOfLegion", 187050, true)
 mod:AddSetIconOption("SetIconOnInfernals2", "ej11618", false, true)
 mod:AddHudMapOption("HudMapOnFelBurst2", 183634, false)
-mod:AddHudMapOption("HudMapOnShackledTorment", 184964, false)--off by default, may be much for most. Also a mythic only option
+mod:AddHudMapOption("HudMapOnShackledTorment2", 184964, true)
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
 mod:AddBoolOption("FilterOtherPhase", true)
 mod:AddInfoFrameOption(184964)
@@ -380,7 +380,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.HudMapOnWrought or self.Options.HudMapOnFelBurst or self.Options.HudMapOnShackledTorment then
+	if self.Options.HudMapOnWrought or self.Options.HudMapOnFelBurst or self.Options.HudMapOnShackledTorment2 then
 		DBMHudMap:Disable()
 	end
 	if self.Options.InfoFrame then
@@ -547,7 +547,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.5, breakShackles, self)
 		end
-		if self.Options.HudMapOnShackledTorment and self:IsMythic() then
+		if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
 			DBMHudMap:RegisterStaticMarkerOnPartyMember(spellId, "timer", args.destName, 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():Rotate(360, 9.5)
 		end
 	elseif spellId == 186123 then--Wrought Chaos
@@ -712,7 +712,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnShackledTorment2 then
 			self:SetIcon(args.destName, 0)
 		end
-		if self.Options.HudMapOnShackledTorment and self:IsMythic() then
+		if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	elseif spellId == 187050 then
