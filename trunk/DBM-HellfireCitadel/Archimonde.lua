@@ -38,7 +38,7 @@ local warnFelBurst					= mod:NewTargetAnnounce(183817, 3)
 local warnDemonicHavoc				= mod:NewTargetAnnounce(183865, 3)--Mythic
 --Phase 2: Hand of the Legion
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
-local warnShackledTorment			= mod:NewTargetAnnounce(184964, 3)
+local warnShackledTorment			= mod:NewTargetCountAnnounce(184964, 3)
 local warnUnleashedTorment			= mod:NewAddsLeftAnnounce(185008, 2)--NewAddsLeftAnnounce perfect for this!
 local warnWroughtChaos				= mod:NewTargetCountAnnounce(184265, 4)--Combined both targets into one warning under primary spell name
 local warnDreadFixate				= mod:NewTargetAnnounce(186574, 2, nil, false)--In case it matters on mythic, it was spammy on heroic and unimportant
@@ -105,7 +105,7 @@ local timerShadowBlastCD			= mod:NewCDTimer(9.7, 183864, nil, "Tank", nil, 5)
 local timerDemonicHavocCD			= mod:NewAITimer(107, 183865, nil, nil, nil, 3)--Mythic, timer unknown, AI timer used until known. I'm not sure this ability still exists
 --Phase 2: Hand of the Legion
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerShackledTormentCD		= mod:NewCDTimer(31.5, 184931, nil, nil, nil, 3)
+local timerShackledTormentCD		= mod:NewCDCountTimer(31.5, 184931, nil, nil, nil, 3)
 local timerWroughtChaosCD			= mod:NewCDTimer(51.7, 184265, nil, nil, nil, 3)
 --Phase 2.5
 local timerFelborneOverfiendCD		= mod:NewNextTimer(44.3, "ej11603", nil, nil, nil, 1, 186662)
@@ -167,6 +167,7 @@ mod.vb.rainOfChaos = 0
 mod.vb.TouchOfShadows = 0
 mod.vb.InfernalsActive = 0
 mod.vb.wroughtWarned = 0
+mod.vb.tormentCast = 0
 --Mythic sync variables
 mod.vb.deathBrandCount = 0
 mod.vb.darkConduitCast = 0
@@ -316,7 +317,7 @@ local function breakShackles(self)
 --	So now it just gives order, but you break at pace needed by your healers
 	table.sort(shacklesTargets)
 	if not playerBanished or not self.Options.FilterOtherPhase then
-		warnShackledTorment:Show(table.concat(shacklesTargets, "<, >"))
+		warnShackledTorment:Show(self.vb.tormentCast, table.concat(shacklesTargets, "<, >"))
 	end
 	if self:IsLFR() then return end
 	for i = 1, #shacklesTargets do
@@ -357,6 +358,7 @@ function mod:OnCombatStart(delay)
 	self.vb.TouchOfShadows = 0
 	self.vb.InfernalsActive = 0
 	self.vb.deathBrandCount = 0
+	self.vb.tormentCast = 0
 	playerBanished = false
 	timerDoomfireCD:Start(5.1-delay)
 	timerDeathbrandCD:Start(15.5-delay, 1)
@@ -505,7 +507,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 183865 then
 		timerDemonicHavocCD:Start(nil, args.sourceGUID)
 	elseif spellId == 184931 then
-		timerShackledTormentCD:Start()
+		self.vb.tormentCast = self.vb.tormentCast + 1
+		if self.vb.phase < 3 then
+			timerShackledTormentCD:Start(37, self.vb.tormentCast+1)
+		else
+			timerShackledTormentCD:Start(31, self.vb.tormentCast+1)
+		end
 	elseif spellId == 187180 then
 		self.vb.demonicFeedback = false
 		self:Schedule(28, setDemonicFeedback, self)
@@ -642,11 +649,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.vb.phase < 2.5 then--First spawn is about 4 seconds after phase 2.5 trigger yell
 			DBM:Debug("Phase 2.5 begin CLEU")
 			self.vb.phase = 2.5
-			local elapsed, total = timerShackledTormentCD:GetTime()
-			if elapsed > 0 and total > 0 then
-				DBM:Debug("timerShackledTormentCD updated", 2)
-				timerShackledTormentCD:Update(elapsed, total+5)--5 seconds is added to timer on 2.5 transition (give or take, need to know exact addition but need to see more data, since timer is variable as is)
-			end
+--			local elapsed, total = timerShackledTormentCD:GetTime()
+--			if elapsed > 0 and total > 0 then
+--				DBM:Debug("timerShackledTormentCD updated", 2)
+--				timerShackledTormentCD:Update(elapsed, total+5)--5 seconds is added to timer on 2.5 transition (give or take, need to know exact addition but need to see more data, since timer is variable as is)
+--			end
 		end
 	elseif spellId == 186952 and args:IsPlayer() then
 		playerBanished = true
@@ -787,7 +794,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		updateRangeFrame(self)
 --	"<301.70 23:49:52> [UNIT_SPELLCAST_SUCCEEDED] Archimonde(Omegal) [[boss1:Allow Phase 3 Spells::0:190118]]", -- [8737]
 --	"<301.70 23:49:52> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine!#Grommash Hellscream###Grommash H
-	elseif spellId == 190118 then--Phase 3 trigger
+	elseif spellId == 190118 or spellId == 190310 then--Phase 3 trigger
 		self.vb.phase = 3
 		warnAllureofFlamesSoon:Cancel()
 		timerAllureofFlamesCD:Cancel()--Done for rest of fight
@@ -829,11 +836,11 @@ function mod:OnSync(msg)
 	if msg == "phase25" and self.vb.phase < 2.5 then
 		DBM:Debug("Phase 2.5 begin yell")
 		self.vb.phase = 2.5
-		local elapsed, total = timerShackledTormentCD:GetTime()
-		if elapsed > 0 and total > 0 then
-			DBM:Debug("timerShackledTormentCD updated", 2)
-			timerShackledTormentCD:Update(elapsed, total+5)--5 seconds is added to timer on 2.5 transition (give or take, need to know exact addition but need to see more data, since timer is variable as is)
-		end
+--		local elapsed, total = timerShackledTormentCD:GetTime()
+--		if elapsed > 0 and total > 0 then
+--			DBM:Debug("timerShackledTormentCD updated", 2)
+--			timerShackledTormentCD:Update(elapsed, total+5)--5 seconds is added to timer on 2.5 transition (give or take, need to know exact addition but need to see more data, since timer is variable as is)
+--		end
 	end
 end
 
