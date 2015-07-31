@@ -555,7 +555,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.5, breakShackles, self)
 		end
 		if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(spellId, "timer", args.destName, 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():Rotate(360, 9.5)
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(spellId, "timer", args.destName, 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts("all"):Rotate(360, 9.5)
 		end
 	elseif spellId == 186123 then--Wrought Chaos
 		if self:AntiSpam(3, 3) then
