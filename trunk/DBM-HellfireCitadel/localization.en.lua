@@ -29,10 +29,6 @@ L= DBM:GetModLocalization(1425)
 ---------------------------
 L= DBM:GetModLocalization(1432)
 
-L:SetMiscLocalization({
-	Jubeideath		=	"I am everburning!"
-})
-
 ------------------
 -- Kormrok --
 ------------------
