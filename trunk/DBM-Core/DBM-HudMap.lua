@@ -17,6 +17,8 @@ local onUpdate, Point, Edge
 local followedUnits = {}
 local callbacks = CallbackHandler:New(mod)
 local activeMarkers = 0
+local hudarActive = false
+local playerName = UnitName("player")
 local encounterMarkers = {}
 
 local GetNumGroupMembers, GetNumSubgroupMembers = GetNumGroupMembers, GetNumSubgroupMembers
@@ -277,6 +279,7 @@ function mod:Disable()
 	DBM:Debug("HudMap Deactivating", 2)
 	self:FreeEncounterMarkers()
 	Edge:ClearAll()
+	if hudarActive then return end--Don't disable if hudar is open
 	--Anything else needed? maybe clear all marks, hide any frames, etc?
 	self.mainFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	self.mainFrame:UnregisterEvent("LOADING_SCREEN_DISABLED")
@@ -285,6 +288,16 @@ function mod:Disable()
 	if updateFrame.ticker then
 		updateFrame.ticker:Cancel()
 		updateFrame.ticker = nil
+	end
+end
+
+function mod:ToggleHudar(r, hide)
+	if hudarActive or hide then
+		hudarActive = false
+		self:FreeEncounterMarkerByTarget(143430, playerName)
+	else
+		hudarActive = true
+		self:RegisterRangeMarkerOnPartyMember(143430, "timer", playerName, r, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts("all"):Rotate(360, 9.5)
 	end
 end
 
@@ -1368,6 +1381,7 @@ end
 function mod:FreeEncounterMarkers()
 	if not self.HUDEnabled then return end
 	for k, v in pairs(encounterMarkers) do
+		if encounterMarkers[k] == 143430 .. playerName then break end--Don't deactivate Hudar in this call
 		encounterMarkers[k] = v:Free()
 	end
 end
