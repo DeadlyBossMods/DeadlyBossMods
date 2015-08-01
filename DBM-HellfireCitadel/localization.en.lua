@@ -146,6 +146,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreakShackle	= "Show special warning when affected by $spell:184964. This warning auto assigns break order to minimize similtanious damage.",
+	ExtendWroughtHud		= "Extend the HUD lines beyond the $spell:185014 target",
 	FilterOtherPhase		= "Filter out warnings for events not in same phase as you"
 })
 
