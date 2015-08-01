@@ -676,6 +676,10 @@ function mod:AddEdge(r, g, b, a, lifetime, srcPlayer, dstPlayer, sx, sy, dx, dy,
 	return Edge:New(r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime, w, extend)
 end
 
+function mod:ClearAllEdges()
+	Edge:ClearAll()
+end
+
 do
 	Point = setmetatable({
 		Free = function(self, noAnimate)
