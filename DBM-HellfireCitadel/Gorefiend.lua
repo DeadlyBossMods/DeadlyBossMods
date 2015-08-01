@@ -73,7 +73,6 @@ local voiceBurning						= mod:NewVoice(185189) --changemt
 
 mod:AddSetIconOption("SetIconOnFate", 179909)
 mod:AddHudMapOption("HudMapOnSharedFate", 179909)--Smart hud, distinquishes rooted from non rooted by color coding.
-mod:AddArrowOption("SharedFateArrow", 179909, true, 2)
 mod:AddRangeFrameOption(5, 182049)
 mod:AddInfoFrameOption(181295)
 
@@ -114,9 +113,6 @@ Mythic
 69s: 1 tank
 84s: 2 DPS
 --]]
---local shadowofDeathTimers = {2, 11, 17, 7, 28, 8}
---local shadowofDeathTimers10 = {2, 11, 17, 7, 36}--Special case, 1:05 cast doesn't happen with exactly 10 players.
---local shadowofDeathTimersMythic = {2, 6, 12, 9, 27, 8, 3, 15}
 
 function mod:OnCombatStart(delay)
 	self.vb.rootedFate = nil
@@ -171,9 +167,11 @@ local function sharedFateDelay(self)
 	if self.vb.rootedFate2 then--Check this first, assume you are linked to most recent
 		specWarnSharedFate:Show(self.vb.rootedFate2)
 		voiceSharedFate:Play("linegather")
+		DBMHudMap:AddEdge(0, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate2)
 	elseif self.vb.rootedFate then
 		specWarnSharedFate:Show(self.vb.rootedFate)
 		voiceSharedFate:Play("linegather")
+		DBMHudMap:AddEdge(0, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate)
 	end
 end
 
@@ -282,7 +280,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.HudMapOnSharedFate and not playerDown then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "highlight", args.destName, 3.5, 900, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "highlight", args.destName, 3.5, 600, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
 		end
 		if args:IsPlayer() then
 			yellSharedFate:Yell()
@@ -293,7 +291,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.5, sharedFateDelay, self)--Just in case rooted ID fires after non rooted ones
 		end
 		if self.Options.HudMapOnSharedFate and not playerDown then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "highlight", args.destName, 3.5, 900, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)--Yellow
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "highlight", args.destName, 3.5, 600, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)--Yellow
 		end
 	elseif spellId == 180148 then
 		warnHungerforLife:CombinedShow(0.5, args.destName)
@@ -348,6 +346,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.HudMapOnSharedFate then
 			DBMHudMap:FreeEncounterMarkerByTarget(179909, args.destName)
+			DBMHudMap:ClearAllEdges()
 		end
 		if self.Options.SetIconOnFate then
 			self:SetIcon(args.destName, 0)
