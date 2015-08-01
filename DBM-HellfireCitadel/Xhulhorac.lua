@@ -352,7 +352,8 @@ end
 --I just trust INSTANCE_ENCOUNTER_ENGAGE_UNIT more, especially if blizzard screws with hidden events some more
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	for i = 1, 5 do
-		local unitGUID = UnitGUID("boss"..i)
+		local uId = "boss"..i
+		local unitGUID = UnitGUID(uId)
 		if unitGUID and not AddsSeen[unitGUID] then
 			AddsSeen[unitGUID] = true
 			local cid = self:GetCIDFromGUID(unitGUID)
@@ -363,9 +364,15 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					timerFelChainsCD:Start(12)
 				end
 				timerFelBlazeFlurryCD:Start(5.5)
+				if DBM.BossHealth:IsShown() then
+					DBM.BossHealth:AddBoss(cid, UnitName(uId))
+				end
 			elseif cid == 94239 then--Omnus
 				timerWitheringGazeCD:Start(4)
 				timerBlackHoleCD:Start(18)
+				if DBM.BossHealth:IsShown() then
+					DBM.BossHealth:AddBoss(cid, UnitName(uId))
+				end
 			end
 		end
 	end
@@ -379,11 +386,17 @@ function mod:UNIT_DIED(args)
 		if self:IsMythic() then
 			timerEmpFelChainsCD:Start(28)
 		end
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:RemoveBoss(cid)
+		end
 	elseif cid == 94239 then--Omnus
 		timerWitheringGazeCD:Cancel()
 		timerBlackHoleCD:Cancel()
 		if self:IsMythic() then
 			timerEmpBlackHoleCD:Start(18)
+		end
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:RemoveBoss(cid)
 		end
 	end
 end
