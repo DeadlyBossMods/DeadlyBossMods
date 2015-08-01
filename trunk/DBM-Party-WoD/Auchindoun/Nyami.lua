@@ -32,7 +32,7 @@ local voiceSoulVessel			= mod:NewVoice(155327)
 local voiceTornSpirits			= mod:NewVoice(153994)
 
 function mod:OnCombatStart(delay)
-	timerSoulVesselCD:Start(22-delay)
+	timerSoulVesselCD:Start(20-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
