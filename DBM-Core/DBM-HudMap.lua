@@ -637,7 +637,12 @@ Edge = setmetatable({
 		end
 
 		if self.dstPlayer then
-			dx, dy = mod:GetUnitPosition(self.dstPlayer)
+			if self.extend then
+				local destx, desty = mod:GetUnitPosition(self.dstPlayer)
+				dx, dy = self:Extend(sx, sy, destx, desty, 30)	
+			else
+				dx, dy = mod:GetUnitPosition(self.dstPlayer)
+			end
 		elseif self.dstPoint then
 			dx, dy = self.dstPoint:Location()
 		elseif self.dx and self.dy then
@@ -671,11 +676,11 @@ Edge = setmetatable({
 			local ax = dx - sx
 			local ay = dy - sy
 			local hyp = pow((ax*ax) + (ay*ay), 0.5)
-			if self.extend then
+			--if self.extend then
 				--print(sx .. " " .. sy .. " " .. dx .. " " .. dy)
-				dx, dy = self:Extend(sx, sy, dx, dy, 100)
+			--	dx, dy = self:Extend(sx, sy, dx, dy, 100)
 				--print(sx .. " " .. sy .. " " .. dx .. " " .. dy)
-			end
+			--end
 			if hyp > 15 then
 				self.texture:Show()
 				DrawRouteLineCustom(self.texture, mod.canvas, sx, sy, dx, dy, w, self.extend);
@@ -685,21 +690,21 @@ Edge = setmetatable({
 		end
 	end,
 	Extend = function(self, sx, sy, dx, dy, dist)
-            local cx = dx - sx;
-            local cy = dy - sy;
+		local cx = dx - sx;
+		local cy = dy - sy;
 
-            local len = sqrt(cx * cx + cy * cy);
+		local len = sqrt(cx * cx + cy * cy);
 
-            local ex = cx / len;
-            local ey = cy / len;
+		local ex = cx / len;
+		local ey = cy / len;
 
-            local nx = ex * dist;
-            local ny = ey * dist;
+		local nx = ex * dist;
+		local ny = ey * dist;
 
-            local x = nx + dx;
-            local y = ny + dy;
+		local x = nx + dx;
+		local y = ny + dy;
 
-            return x, y;
+		return x, y;
 	end,
 }, object_mt)
 
