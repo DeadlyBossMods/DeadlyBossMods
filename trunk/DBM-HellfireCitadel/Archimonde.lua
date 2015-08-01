@@ -152,6 +152,7 @@ mod:AddSetIconOption("SetIconOnInfernals2", "ej11618", false, true)
 mod:AddHudMapOption("HudMapOnFelBurst2", 183634, false)
 mod:AddHudMapOption("HudMapOnShackledTorment2", 184964, true)
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
+mod:AddBoolOption("ExtendWroughtHud", true)
 mod:AddBoolOption("FilterOtherPhase", true)
 mod:AddInfoFrameOption(184964)
 
@@ -606,13 +607,21 @@ function mod:SPELL_AURA_APPLIED(args)
 						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.75, 5, destColor.r, destColor.g, destColor.b, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
 					end
 					--create line
-					DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, args.sourceName, args.destName, nil, nil, nil, nil, 150)
+					if self.Options.ExtendWroughtHud then
+						DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, args.sourceName, args.destName, nil, nil, nil, nil, 150, true)
+					else
+						DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, args.sourceName, args.destName, nil, nil, nil, nil, 150)
+					end
 				else--red lines for non player lines
 					--Create Points
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, sourceColor.r, sourceColor.g, sourceColor.b, 0.5, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, destColor.r, destColor.g, destColor.b, 0.5, nil, false):Pulse(0.5, 0.5)
 					--Create Line
-					DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, args.sourceName, args.destName, nil, nil, nil, nil, 150)
+					if self.Options.ExtendWroughtHud then
+						DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, args.sourceName, args.destName, nil, nil, nil, nil, 150, true)
+					else
+						DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, args.sourceName, args.destName, nil, nil, nil, nil, 150)
+					end
 				end
 			end
 		end
