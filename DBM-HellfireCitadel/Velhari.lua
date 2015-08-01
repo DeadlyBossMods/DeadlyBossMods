@@ -272,9 +272,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 180526 then
 		warnFontofCorruption:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
+			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific seed timer is
+			if expires then
+				local remaining = expires-GetTime()
+				countdownFontofCorruption:Start(remaining)
+			end
 			specWarnFontofCorruption:Show()
 			yellFontofCorruption:Yell()
-			countdownFontofCorruption:Start()
 		end
 	elseif spellId == 180025 then
 		specWarnHarbingersMendingDispel:Show(args.destName)
