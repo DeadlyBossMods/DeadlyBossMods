@@ -1903,6 +1903,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 end
 
 do
+	local hudarActive = false
 	local function updateRangeFrame(r, reverse)
 		if DBM.RangeCheck:IsShown() then
 			DBM.RangeCheck:Hide(true)
@@ -1914,13 +1915,27 @@ do
 			end
 		end
 	end
+	local function updateHudar(r)
+		if hudarActive then
+			hudarActive = false
+			DBMHudMap:FreeEncounterMarkerByTarget(143430, playerName)
+		else
+			hudarActive = true
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(143430, "timer", playerName, r, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts("all"):Rotate(360, 9.5)
+		end
+	end
 	SLASH_DBMRANGE1 = "/range"
 	SLASH_DBMRANGE2 = "/distance"
+	SLASH_DBMHUDAR1 = "/hudar"
 	SLASH_DBMRRANGE1 = "/rrange"
 	SLASH_DBMRRANGE2 = "/rdistance"
 	SlashCmdList["DBMRANGE"] = function(msg)
 		local r = tonumber(msg) or 10
 		updateRangeFrame(r, false)
+	end
+	SlashCmdList["DBMHUDAR"] = function(msg)
+		local r = tonumber(msg) or 10
+		updateHudar(r)
 	end
 	SlashCmdList["DBMRRANGE"] = function(msg)
 		local r = tonumber(msg) or 10
