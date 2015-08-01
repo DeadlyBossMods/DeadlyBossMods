@@ -21,7 +21,7 @@ local hudarActive = false
 local playerName = UnitName("player")
 local encounterMarkers = {}
 
-local GetNumGroupMembers, GetNumSubgroupMembers = GetNumGroupMembers, GetNumSubgroupMembers
+local GetNumGroupMembers, GetNumSubgroupMembers, IsInRaid = GetNumGroupMembers, GetNumSubgroupMembers, IsInRaid
 local GetTime, UIParent = GetTime, UIParent
 local UnitExists, UnitIsUnit, UnitPosition, GetPlayerFacing = UnitExists, UnitIsUnit, UnitPosition, GetPlayerFacing
 local GetInstanceInfo = GetInstanceInfo
@@ -158,7 +158,7 @@ end
 local function groupIter(state, index)
 	if index < 0 then return end
 	local raid, party = GetNumGroupMembers(), GetNumSubgroupMembers()
-	local prefix = raid > 0 and "raid" or "party"
+	local prefix = IsInRaid() and "raid" or "party"
 	local unit = prefix .. index
 	if UnitExists(unit) then
 		return index + 1, unit
