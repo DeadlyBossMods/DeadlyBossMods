@@ -338,12 +338,21 @@ mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if npc == AncientEnforcer then
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:AddBoss(90270, AncientEnforcer)
+		end
 		specWarnAncientEnforcer:Show()
 		timerEnforcersOnslaughtCD:Start()
 	elseif target and target == TyrantVelhari and npc == AncientHarbinger then--Emotes with npc name as AncientHarbinger also fire for heals, but those emotes, target is nil or "". spawn emote, target is boss name
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:AddBoss(90271, AncientHarbinger)
+		end
 		specWarnAncientHarbinger:Show()
 		timerHarbingersMendingCD:Start(19)
 	elseif npc == AncientSovereign then
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:AddBoss(90272, AncientSovereign)
+		end
 		specWarnAncientSovereign:Show()
 	end
 end
@@ -362,9 +371,18 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 91304 or cid == 90270 then--Ancient Enforcer
 		timerEnforcersOnslaughtCD:Cancel()
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:RemoveBoss(cid)
+		end
 	elseif cid == 91302 or cid == 90271 then--Ancient Harbinger
 		timerHarbingersMendingCD:Cancel()
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:RemoveBoss(cid)
+		end
 	elseif cid == 91303 or cid == 90272 then--Ancient Sovereign
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:RemoveBoss(cid)
+		end
 		--Doesn't use anything interesting? Shield cd probably won't seem useful, but who knows
 	end
 end
