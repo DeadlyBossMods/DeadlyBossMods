@@ -671,6 +671,11 @@ Edge = setmetatable({
 			local ax = dx - sx
 			local ay = dy - sy
 			local hyp = pow((ax*ax) + (ay*ay), 0.5)
+			if self.extend then
+				--print(sx .. " " .. sy .. " " .. dx .. " " .. dy)
+				dx, dy = self:Extend(sx, sy, dx, dy, 100)
+				--print(sx .. " " .. sy .. " " .. dx .. " " .. dy)
+			end
 			if hyp > 15 then
 				self.texture:Show()
 				DrawRouteLineCustom(self.texture, mod.canvas, sx, sy, dx, dy, w, self.extend);
@@ -678,6 +683,23 @@ Edge = setmetatable({
 				self.texture:Hide()
 			end
 		end
+	end,
+	Extend = function(self, sx, sy, dx, dy, dist)
+            local cx = dx - sx;
+            local cy = dy - sy;
+
+            local len = sqrt(cx * cx + cy * cy);
+
+            local ex = cx / len;
+            local ey = cy / len;
+
+            local nx = ex * dist;
+            local ny = ey * dist;
+
+            local x = nx + dx;
+            local y = ny + dy;
+
+            return x, y;
 	end,
 }, object_mt)
 
