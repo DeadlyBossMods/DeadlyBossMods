@@ -1240,7 +1240,7 @@ do
 	function DBM:UnregisterCallback(event, f)
 		if not event or not callbacks[event] then return end
 		if f then
-			tremove(callbacks[event], f)
+			callbacks[event][f] = nil
 		else
 			callbacks[event] = nil
 		end

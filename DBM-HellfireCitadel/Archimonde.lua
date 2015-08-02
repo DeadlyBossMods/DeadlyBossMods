@@ -13,7 +13,7 @@ mod:SetHotfixNoticeRev(14087)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050 187050 190394 190686 190821",
+	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050 187050 190394 190686 190821 186663",
 	"SPELL_CAST_SUCCESS 183865 184931 187180",
 	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190703 187255 185014 187050",
 	"SPELL_AURA_APPLIED_DOSE",
@@ -42,6 +42,7 @@ local warnShackledTorment			= mod:NewTargetCountAnnounce(184964, 3)
 local warnUnleashedTorment			= mod:NewAddsLeftAnnounce(185008, 2)--NewAddsLeftAnnounce perfect for this!
 local warnWroughtChaos				= mod:NewTargetCountAnnounce(184265, 4)--Combined both targets into one warning under primary spell name
 local warnDreadFixate				= mod:NewTargetAnnounce(186574, 2, nil, false)--In case it matters on mythic, it was spammy on heroic and unimportant
+local warnOverfiend					= mod:NewCountAnnounce("ej11603", 3, 186662)
 --Phase 3
 local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 ----The Nether
@@ -68,6 +69,7 @@ local yellWroughtChaos				= mod:NewYell(186123)
 local specWarnFocusedChaos			= mod:NewSpecialWarningMoveAway(185014, nil, nil, nil, 3, 5)
 local yellFocusedChaos				= mod:NewFadesYell(185014)
 local specWarnDreadFixate			= mod:NewSpecialWarningYou(186574, false)--In case it matters on mythic, it was spammy on heroic and unimportant
+local specWarnFlamesOfArgus			= mod:NewSpecialWarningInterrupt(186663, "-Healer")
 --Phase 3: The Twisting Nether
 local specWarnDemonicFeedbackSoon	= mod:NewSpecialWarningSoon(187180, nil, nil, nil, 1)
 local specWarnDemonicFeedback		= mod:NewSpecialWarningCount(187180, nil, nil, nil, 3)
@@ -108,7 +110,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerShackledTormentCD		= mod:NewCDCountTimer(31.5, 184931, nil, nil, nil, 3)
 local timerWroughtChaosCD			= mod:NewCDTimer(51.7, 184265, nil, nil, nil, 3)
 --Phase 2.5
-local timerFelborneOverfiendCD		= mod:NewNextTimer(44.3, "ej11603", nil, nil, nil, 1, 186662)
+local timerFelborneOverfiendCD		= mod:NewNextCountTimer(44.3, "ej11603", nil, nil, nil, 1, 186662)
 --Phase 3: The Twisting Nether
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerDemonicFeedbackCD		= mod:NewCDTimer(35, 187180, nil, nil, nil, 2)
@@ -169,6 +171,7 @@ mod.vb.TouchOfShadows = 0
 mod.vb.InfernalsActive = 0
 mod.vb.wroughtWarned = 0
 mod.vb.tormentCast = 0
+mod.vb.overfiendCount = 0
 --Mythic sync variables
 mod.vb.deathBrandCount = 0
 mod.vb.darkConduitCast = 0
@@ -348,13 +351,13 @@ local function breakShackles(self, spellName)
 	end
 	if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
 		if playerHasShackle then
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[1], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName):Rotate(360, 9.5)
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[2], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName):Rotate(360, 9.5)
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[3], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName):Rotate(360, 9.5)
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[1], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName, spellName):Rotate(360, 9.5)
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[2], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName, spellName):Rotate(360, 9.5)
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[3], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName, spellName):Rotate(360, 9.5)
 		else
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[1], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():Rotate(360, 9.5)
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[2], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():Rotate(360, 9.5)
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[3], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():Rotate(360, 9.5)
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[1], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(nil, spellName):Rotate(360, 9.5)
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[2], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(nil, spellName):Rotate(360, 9.5)
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[3], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(nil, spellName):Rotate(360, 9.5)
 		end
 	end
 end
@@ -373,6 +376,7 @@ function mod:OnCombatStart(delay)
 	self.vb.InfernalsActive = 0
 	self.vb.deathBrandCount = 0
 	self.vb.tormentCast = 0
+	self.vb.overfiendCount = 0
 	playerBanished = false
 	timerDoomfireCD:Start(5.1-delay)
 	timerDeathbrandCD:Start(15.5-delay, 1)
@@ -513,6 +517,8 @@ function mod:SPELL_CAST_START(args)
 		if cooldown then
 			timerTwistedDarknessCD:Start(cooldown, self.vb.twistedDarknessCast+1)
 		end
+	elseif spellId == 186663 then
+		specWarnFlamesOfArgus:Show(args.sourceName)
 	end
 end
 
@@ -664,7 +670,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellVoidStarFixate:Yell()
 		end
 	elseif spellId == 186662 then--Felborne Overfiend Spawn
-		timerFelborneOverfiendCD:Start()
+		self.vb.overfiendCount = self.vb.overfiendCount + 1
+		warnOverfiend:Show(self.vb.overfiendCount)
+		timerFelborneOverfiendCD:Start(nil, self.vb.overfiendCount+1)
 		if self.vb.phase < 2.5 then--First spawn is about 4 seconds after phase 2.5 trigger yell
 			DBM:Debug("Phase 2.5 begin CLEU")
 			self.vb.phase = 2.5

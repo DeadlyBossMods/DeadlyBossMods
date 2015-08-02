@@ -936,6 +936,11 @@ do
 
 			local alert = false
 			if type(self.shouldUpdateRange) == "string" and self.shouldUpdateRange ~= "all" then--Spellname passed, debuff filter
+				if not UnitDebuff("player", self.shouldUpdateRange) then--Debuff faded from player, auto switch to "all" type
+					self.shouldUpdateRange = true
+					self:UpdateAlerts(self)
+					return
+				end
 				for index, unit in group() do
 					if not UnitDebuff(unit, self.shouldUpdateRange) and not UnitIsDead(unit) then
 						alert = mod:DistanceToPoint(unit, x, y) < self.radius
