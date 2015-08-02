@@ -71,6 +71,7 @@ L.ModelSoundLong			= TOAST_DURATION_LONG
 L.Button_RangeFrame			= "Show/hide range frame"
 L.Button_InfoFrame			= "Show/hide info frame"
 L.Button_TestBars			= "Start test bars"
+L.Button_ResetInfoRange		= "Reset Info/Range frames"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Raid Warnings"
