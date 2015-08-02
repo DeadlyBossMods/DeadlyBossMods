@@ -23,7 +23,7 @@ local encounterMarkers = {}
 
 local GetNumGroupMembers, GetNumSubgroupMembers, IsInRaid = GetNumGroupMembers, GetNumSubgroupMembers, IsInRaid
 local GetTime, UIParent = GetTime, UIParent
-local UnitExists, UnitIsUnit, UnitPosition, GetPlayerFacing = UnitExists, UnitIsUnit, UnitPosition, GetPlayerFacing
+local UnitExists, UnitIsUnit, UnitPosition, UnitDebuff, GetPlayerFacing = UnitExists, UnitIsUnit, UnitPosition, UnitDebuff, GetPlayerFacing
 local GetInstanceInfo = GetInstanceInfo
 
 local targetCanvasAlpha
@@ -937,7 +937,7 @@ do
 			local alert = false
 			if type(self.shouldUpdateRange) == "string" and self.shouldUpdateRange ~= "all" then--Spellname passed, debuff filter
 				for index, unit in group() do
-					if not UnitDebuff(unit, self.shouldUpdateRange) then
+					if not UnitDebuff(unit, self.shouldUpdateRange) and not UnitIsDead(unit) then
 						alert = mod:DistanceToPoint(unit, x, y) < self.radius
 						if alert then break end
 					end
