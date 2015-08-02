@@ -16,7 +16,8 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "DBM timers failed to skin during combat. Your tim
 DBM_CORE_BAD_LOAD					= "DBM has detected your mod for this instance failed to fully load correctly because of combat. As soon as you are out of combat, please do /console reloadui as soon as possible."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s could not be loaded because your DBM-Core does not meet requirements. An updated version is required"
 
-DBM_CORE_WHATS_NEW					= "New in this version: DBM timers now support multiple colors based on what type of spell the timer is for. To learn more about this feature you can read about it by |HDBM:forumsnews|h|cff3588ffclicking here|r"
+DBM_CORE_WHATS_NEW					= "New in this version: /DBM help has been cleaned up a ton to be more readable and some new commands added. Several mods have been enhanced to make better use of HUD, especially Archimond."
+--DBM_CORE_WHATS_NEW_LINK			= "New in this version: DBM timers now support multiple colors based on what type of spell the timer is for. To learn more about this feature you can read about it by |HDBM:forumsnews|h|cff3588ffclicking here|r"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM has disabled dynamic range frame on this fight do to insufficient information about number of players needed to affect clump check for a group of your size."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM has disabled add count warnings on this fight do to insufficient information about number of adds that spawn for a group of your size."
@@ -198,18 +199,31 @@ DBM_LFG_INVITE						= "LFG Invite"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Available slash commands:",
-	"/range <number> or /distance <number>: Shows range frame. /rrange or /rdistance to reverse colors.",
-	"/dbm version: Performs a raid-wide version check (alias: ver).",
 	"/dbm unlock: Shows a movable status bar timer (alias: move).",
-	"/dbm timer/ctimer/ltimer/cltimer <x> <text>: Starts a <x> second DBM Timer with the name <text>.",
-	"/dbm broadcast timer/ctimer/ltimer/cltimer <x> <text>: Broadcasts a <x> second DBM Timer with the name <text> to the raid (requires leader/promoted status).",
-	"/dbm timer endloop: Stops any looping ltimer or cltimer.",
-	"/dbm break <min>: Starts a break timer for <min> minutes. Gives all raid members with DBM a break timer (requires leader/promoted status).",
-	"/dbm pull <sec>: Starts a pull timer for <sec> seconds. Gives all raid members with DBM a pull timer (requires leader/promoted status).",
+	"/range <number> or /distance <number>: Shows range frame. /rrange or /rdistance to reverse colors.",
+	"/hudar <number>: Shows HUD based range finder.",
+	"/dbm timer: Starts a custom DBM timer, see '/dbm timer' for details.",
 	"/dbm arrow: Shows the DBM arrow, see '/dbm arrow help' for details.",
-	"/dbm lockout: Asks raid members for their current raid instance lockouts (aliases: lockouts, ids) (requires leader/promoted status).",
-	"/dbm lag: Performs a raid-wide latency check.",
-	"/dbm hud: Shows the DBM hud, see '/dbm hud' for details."
+	"/dbm hud: Shows the DBM hud, see '/dbm hud' for details.",
+	"/dbm help2: Shows raid management slash commands"
+}
+DBM_CORE_SLASHCMD_HELP2				= {
+	"Available slash commands:",
+	"/dbm pull <sec>: Sends a pull timer for <sec> seconds to the raid (requires leader/promoted).",
+	"/dbm break <min>: Sends a break timer for <min> minutes to the raid (requires leader/promoted).",
+	"/dbm version: Performs a boss mod version check (alias: ver).",
+	"/dbm version2: Performs a boss mod version check that also whispers out of date users (alias: ver2).",
+	"/dbm lockout: Asks raid members for their current raid instance lockouts (aliases: lockouts, ids) (requires leader/promoted).",
+	"/dbm lag: Performs a raid-wide latency check."
+}
+DBM_CORE_TIMER_USAGE	= {
+	"DBM timer commands:",
+	"/dbm timer <sec> <text>: Starts a <sec> second timer with your <text>.",
+	"/dbm ctimer <sec> <text>: Starts a timer that also has countdown text.",
+	"/dbm ltimer <sec> <text>: Starts a timer that also automatically loops until canceled.",
+	"/dbm cltimer <sec> <text>: Starts a timer that also has countdown text and loops until canceled.",
+	"('Broadcast' in front of any timer also shares it with raid if leader/promoted)",
+	"/dbm timer endloop: Stops any looping ltimer or cltimer."
 }
 
 DBM_ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
