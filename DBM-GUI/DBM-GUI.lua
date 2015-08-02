@@ -1514,6 +1514,23 @@ local function CreateOptionsMenu()
 		latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.LatencyThreshold) end)
 		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.LatencyThreshold = self:GetValue() end)
 
+		local resetbutton = generaloptions:CreateButton(L.Button_ResetInfoRange, 120, 16)
+		resetbutton:SetPoint('BOTTOMRIGHT', generaloptions.frame, "BOTTOMRIGHT", -5, 5)
+		resetbutton:SetNormalFontObject(GameFontNormalSmall)
+		resetbutton:SetHighlightFontObject(GameFontNormalSmall)
+		resetbutton:SetScript("OnClick", function()
+			DBM.Options.InfoFrameX = DBM.DefaultOptions.InfoFrameX
+			DBM.Options.InfoFrameY = DBM.DefaultOptions.InfoFrameY
+			DBM.Options.InfoFramePoint = DBM.DefaultOptions.InfoFramePoint
+			DBM.Options.RangeFrameX = DBM.DefaultOptions.RangeFrameX
+			DBM.Options.RangeFrameY = DBM.DefaultOptions.RangeFrameY
+			DBM.Options.RangeFramePoint = DBM.DefaultOptions.RangeFramePoint
+			DBM.Options.RangeFrameRadarX = DBM.DefaultOptions.RangeFrameRadarX
+			DBM.Options.RangeFrameRadarY = DBM.DefaultOptions.RangeFrameRadarY
+			DBM.Options.RangeFrameRadarPoint = DBM.DefaultOptions.RangeFrameRadarPoint
+			DBM:RepositionFrames()
+		end)
+
 		--Model viewer options
 		local modelarea = DBM_GUI_Frame:CreateArea(L.ModelOptions, nil, 90, true)
 
