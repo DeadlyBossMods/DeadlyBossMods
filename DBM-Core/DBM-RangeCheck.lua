@@ -398,7 +398,7 @@ function createTextFrame()
 	end)
 	textFrame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing()
-		ValidateFramePosition(self)
+		--ValidateFramePosition(self)
 		local point, _, _, x, y = self:GetPoint(1)
 		DBM.Options.RangeFrameX = x
 		DBM.Options.RangeFrameY = y
@@ -430,7 +430,7 @@ function createRadarFrame()
 	end)
 	radarFrame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing()
-		ValidateFramePosition(self)
+		--ValidateFramePosition(self)
 		local point, _, _, x, y = self:GetPoint(1)
 		DBM.Options.RangeFrameRadarX = x
 		DBM.Options.RangeFrameRadarY = y
