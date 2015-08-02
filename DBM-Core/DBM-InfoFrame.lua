@@ -159,7 +159,7 @@ function createFrame()
 	end)
 	frame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing()
-		ValidateFramePosition(self)
+		--ValidateFramePosition(self)
 		local point, _, _, x, y = self:GetPoint(1)
 		DBM.Options.InfoFrameX = x
 		DBM.Options.InfoFrameY = y
