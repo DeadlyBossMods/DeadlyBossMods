@@ -231,7 +231,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerFoulCrushCD:Start(isMoreFaster and 23 or isFaster and 32 or 38, 3)
 		end
 	elseif spellId == 181299 or spellId == 181300 then
-		updateRangeCheck(self, true)
+		updateRangeCheck(self)
 	end
 end
 
