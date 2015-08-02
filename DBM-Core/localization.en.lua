@@ -426,21 +426,21 @@ DBM_CORE_HUD_INVALID_ICON			= "Cannot use icon method for HUD on a target with n
 DBM_CORE_HUD_SUCCESS				= "HUD successful started with your parameters. This will cancel after %s, or by calling '/dbm hud hide'."
 DBM_CORE_HUD_USAGE	= {
 	"DBM-HudMap usage:",
-	"/dbm hud <type> <target> <duration> creates a HUD that points to a player for the desired duration",
+	"/dbm hud <type> <target> <duration>: Creates a HUD that points to a player for the desired duration",
 	"Valid types: arrow, red, blue, green, yellow, icon (requires a target with raid icon)",
 	"Valid targets: target, focus, <playername>",
 	"Valid durations: any number (in seconds). If left blank, 20min will be used.",
-	"/dbm hud hide  disables and hides the HUD"
+	"/dbm hud hide:  disables and hides the HUD"
 }
 
 DBM_ARROW_MOVABLE					= "Arrow movable"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow usage:",
-	"/dbm arrow <x> <y>  creates an arrow that points to a specific location (using world coordinates)",
-	"/dbm arrow map <x> <y>  creates an arrow that points to a specific location (using zone map coordinates)",
-	"/dbm arrow <player>  creates and arrow that points to a specific player in your party or raid (case sensitive!)",
-	"/dbm arrow hide  hides the arrow",
-	"/dbm arrow move  makes the arrow movable"
+	"/dbm arrow <x> <y>: Creates an arrow that points to a specific location (using world coordinates)",
+	"/dbm arrow map <x> <y>: Creates an arrow that points to a specific location (using zone map coordinates)",
+	"/dbm arrow <player>: Creates and arrow that points to a specific player in your party or raid (case sensitive!)",
+	"/dbm arrow hide: Hides the arrow",
+	"/dbm arrow move: Makes the arrow movable"
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Record Victory"
