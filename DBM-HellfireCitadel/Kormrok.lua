@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181292 181293 181296 181297 181299 181300 180244 181305",
-	"SPELL_CAST_SUCCESS 181307",
+	"SPELL_CAST_SUCCESS 181307 181299 181300",
 	"SPELL_AURA_APPLIED 181306 186882 180115 180116 180117 189197 189198 189199 186879 186880 186881",
 	"SPELL_AURA_REMOVED 181306 180244"
 --	"SPELL_PERIODIC_DAMAGE",
@@ -131,8 +131,7 @@ do
 	end
 end
 
---Change range to 30 yards in 6.2.1, or on live if it's confirmed to be 30 yards on live
-local function updateRangeCheck(self)
+local function updateRangeCheck(self, force)
 	if not self.Options.RangeFrame then return end
 	if self.vb.explodingTank then
 		if UnitDebuff("player", debuffName) then
@@ -142,7 +141,7 @@ local function updateRangeCheck(self)
 		else--No pound, tank still active, keep filtered radar up to prevent walking back into tank
 			DBM.RangeCheck:Show(30, debuffFilter)
 		end
-	elseif self.vb.poundActive then--Just pound, no tank debuff.
+	elseif self.vb.poundActive or force then--Just pound, no tank debuff.
 		DBM.RangeCheck:Show(4)
 	else
 		DBM.RangeCheck:Hide()
@@ -201,6 +200,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			specWarnGraspingHands:Show()
 		end
+		updateRangeCheck(self, true)
 	elseif spellId == 180244 then
 		self.vb.poundActive = true
 		self.vb.poundCount = self.vb.poundCount + 1
@@ -230,6 +230,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		elseif self.vb.foulCrush == 2 then
 			timerFoulCrushCD:Start(isMoreFaster and 23 or isFaster and 32 or 38, 3)
 		end
+	elseif spellId == 181299 or spellId == 181300 then
+		updateRangeCheck(self, true)
 	end
 end
 
