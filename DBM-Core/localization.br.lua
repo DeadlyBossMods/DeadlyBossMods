@@ -189,16 +189,30 @@ DBM_LFG_INVITE						= "Aceitar convite"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Comandos disponíveis:",
-	"/dbm version: Realiza uma checagem de versão de toda a raid. (ou: ver).",
---	"/dbm version2: Realiza uma checagem de versão de toda a raid e sussurra para avisando os membros que estão desatualizados (alias: ver2).",
 	"/dbm unlock: Exibe uma barra de cronógrafo móvel. (ou: move).",
-	"/dbm timer <x> <texto>: Inicia um cronógrafo de <x> segundos com o nome <texto>.",
-	"/dbm broadcast timer <x> <texto>: Espalha um cronógrafo de <x> segundos com o nome <texto> para a raid (requer status de líder/guia).",
+	"/range <number> or /distance <number>: Shows range frame. /rrange or /rdistance to reverse colors.",--Translate
+	"/dbm timer: Starts a custom DBM timer, see '/dbm timer' for details.",--Translate
+	"/dbm arrow: Exibe a seta do DBM, veja /dbm arrow help para detalhes.",
+	"/dbm hud: Shows the DBM hud, see '/dbm hud' for details.",--Translate
+	"/dbm help2: Shows raid management slash commands."--Translate
+}
+DBM_CORE_SLASHCMD_HELP2				= {
+	"Comandos disponíveis:",
+	"/dbm version: Realiza uma checagem de versão de toda a raid. (ou: ver).",
+	"/dbm version2: Realiza uma checagem de versão de toda a raid e sussurra para avisando os membros que estão desatualizados (alias: ver2).",
 	"/dbm break <min>: Inicia um cronógrafo de intervalo de <min> minutos. Dá a todos os integrantes da raid um cronógrafo de intervalo (requer status de líder/guia).",
 	"/dbm pull <seg>: Dispara um cronógrafo para iniciar a luta em <seg> segundos. Dá a todos os integrantes da raid um cronógrafo para iniciar a luta (requer status de líder/guia).",
-	"/dbm arrow: Exibe a seta do DBM, veja /dbm arrow help para detalhes.",
-	"/dbm lockout: Pergunta a todos os membros da raid, por seus vínculos de raid (ou: lockouts, ids) (requer status de líder/guia)..",
-	"/dbm help: Exibe essa mensagem."
+	"/dbm lockout: Pergunta a todos os membros da raid, por seus vínculos de raid (ou: lockouts, ids) (requer status de líder/guia).."
+}
+--Translate all of these
+DBM_CORE_TIMER_USAGE	= {
+	"DBM timer commands:",
+	"/dbm timer <time> <text>: Starts a <x> second DBM Timer with the name <text>.",
+	"/dbm ctimer <time> <text>: Starts a timer that also has countdown text.",
+	"/dbm ltimer <time> <text>: Starts a timer that also automatically loops until canceled.",
+	"/dbm cltimer <time> <text>: Starts a timer that also has countdown text and loops until canceled.",
+	"('Broadcast' in front of any timer also shares it with raid if leader/promoted)",
+	"/dbm timer endloop: Stops any looping ltimer or cltimer."
 }
 
 DBM_ERROR_NO_PERMISSION				= "Você não tem as permissões necessárias para fazer isso."
