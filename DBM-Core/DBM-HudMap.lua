@@ -935,7 +935,14 @@ do
 			local x, y = self:Location()
 
 			local alert = false
-			if self.shouldUpdateRange == "all" or (self.follow and UnitIsUnit(self.follow, "player")) then
+			if type(self.shouldUpdateRange) == "string" and self.shouldUpdateRange ~= "all" then--Spellname passed, debuff filter
+				for index, unit in group() do
+					if not UnitDebuff(unit, self.shouldUpdateRange) then
+						alert = mod:DistanceToPoint(unit, x, y) < self.radius
+						if alert then break end
+					end
+				end
+			elseif self.shouldUpdateRange == "all" or (self.follow and UnitIsUnit(self.follow, "player")) then
 				for index, unit in group() do
 					if not UnitIsUnit(unit, "player") and not UnitIsDead(unit) then
 						alert = mod:DistanceToPoint(unit, x, y) < self.radius
