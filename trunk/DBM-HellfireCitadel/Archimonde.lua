@@ -312,7 +312,7 @@ local function showFelburstTargets(self)
 	end
 end
 
-local function breakShackles(self)
+local function breakShackles(self, spellName)
 --	I thought about using auto scheduling and doing "break shackle now" with few seconds in between each
 --	then i realized that'd do more harm that good, if raid is low and dbm says break shackle, you wipe.
 --	So now it just gives order, but you break at pace needed by your healers
@@ -321,9 +321,11 @@ local function breakShackles(self)
 		warnShackledTorment:Show(self.vb.tormentCast, table.concat(shacklesTargets, "<, >"))
 	end
 	if self:IsLFR() then return end
+	local playerHasShackle = false
 	for i = 1, #shacklesTargets do
 		local name = shacklesTargets[i]
 		if name == playerName then
+			playerHasShackle = true
 			yellShackledTorment:Yell(i)
 			if i == 1 then
 				specWarnBreakShackle:Show(L.First)
@@ -342,6 +344,17 @@ local function breakShackles(self)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(shackledDebuff)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
+		end
+	end
+	if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
+		if playerHasShackle then
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[1], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName):Rotate(360, 9.5)
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[2], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName):Rotate(360, 9.5)
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[3], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName):Rotate(360, 9.5)
+		else
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[1], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():Rotate(360, 9.5)
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[2], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():Rotate(360, 9.5)
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "timer", shacklesTargets[3], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():Rotate(360, 9.5)
 		end
 	end
 end
@@ -551,12 +564,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.unleashedCountRemaining = self.vb.unleashedCountRemaining + 1
 		self:Unschedule(breakShackles)
 		if #shacklesTargets == 3 then
-			breakShackles(self)
+			breakShackles(self, args.spellName)
 		else
-			self:Schedule(0.5, breakShackles, self)
-		end
-		if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(spellId, "timer", args.destName, 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts("all"):Rotate(360, 9.5)
+			self:Schedule(0.5, breakShackles, self, args.spellName)
 		end
 	elseif spellId == 186123 then--Wrought Chaos
 		if self:AntiSpam(3, 3) then
