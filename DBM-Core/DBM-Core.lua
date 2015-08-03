@@ -1217,13 +1217,12 @@ do
 	end
 
 	function DBM:IsCallbackRegistered(event, f)
-		if not event then
-			error("Usage: DBM:IsCallbackRegistered(event, callbackFunc(optional))", 2)
+		if not event or type(f) ~= "function" then
+			error("Usage: IsCallbackRegistered(event, callbackFunc)", 2)
 		end
-		if f then
-			return callbacks[event][f] and true or false
-		else
-			return callbacks[event] and true or false
+		if not callbacks[event] then return end
+		for i = 1, #callbacks[event] do
+			if callbacks[event][i] == f then return true end
 		end
 		return false
 	end
@@ -1238,11 +1237,13 @@ do
 	end
 
 	function DBM:UnregisterCallback(event, f)
-		if not event or not callbacks[event] then return end
-		if f then
-			callbacks[event][f] = nil
-		else
-			callbacks[event] = nil
+		if not event or type(f) ~= "function" then
+			error("Usage: UnregisterCallback(event, callbackFunc)", 2)
+		end
+		if not callbacks[event] then return end
+		--> checking from the end to start and not stoping after found one result in case of a func being twice registered.
+		for i = #callbacks[event], 1, -1 do
+			if callbacks[event][i] == f then tremove (callbacks[event], i) end
 		end
 	end
 end
