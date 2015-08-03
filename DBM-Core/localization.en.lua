@@ -199,6 +199,7 @@ DBM_LFG_INVITE						= "LFG Invite"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Available slash commands:",
+	"-----------------",
 	"/dbm unlock: Shows a movable status bar timer (alias: move).",
 	"/range <number> or /distance <number>: Shows range frame. /rrange or /rdistance to reverse colors.",
 	"/hudar <number>: Shows HUD based range finder.",
@@ -209,6 +210,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 }
 DBM_CORE_SLASHCMD_HELP2				= {
 	"Available slash commands:",
+	"-----------------",
 	"/dbm pull <sec>: Sends a pull timer for <sec> seconds to the raid (requires leader/promoted).",
 	"/dbm break <min>: Sends a break timer for <min> minutes to the raid (requires leader/promoted).",
 	"/dbm version: Performs a boss mod version check (alias: ver).",
@@ -218,6 +220,7 @@ DBM_CORE_SLASHCMD_HELP2				= {
 }
 DBM_CORE_TIMER_USAGE	= {
 	"DBM timer commands:",
+	"-----------------",
 	"/dbm timer <sec> <text>: Starts a <sec> second timer with your <text>.",
 	"/dbm ctimer <sec> <text>: Starts a timer that also has countdown text.",
 	"/dbm ltimer <sec> <text>: Starts a timer that also automatically loops until canceled.",
@@ -426,6 +429,7 @@ DBM_CORE_HUD_INVALID_ICON			= "Cannot use icon method for HUD on a target with n
 DBM_CORE_HUD_SUCCESS				= "HUD successful started with your parameters. This will cancel after %s, or by calling '/dbm hud hide'."
 DBM_CORE_HUD_USAGE	= {
 	"DBM-HudMap usage:",
+	"-----------------",
 	"/dbm hud <type> <target> <duration>: Creates a HUD that points to a player for the desired duration",
 	"Valid types: arrow, red, blue, green, yellow, icon (requires a target with raid icon)",
 	"Valid targets: target, focus, <playername>",
@@ -436,6 +440,7 @@ DBM_CORE_HUD_USAGE	= {
 DBM_ARROW_MOVABLE					= "Arrow movable"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow usage:",
+	"-----------------",
 	"/dbm arrow <x> <y>: Creates an arrow that points to a specific location (using world coordinates)",
 	"/dbm arrow map <x> <y>: Creates an arrow that points to a specific location (using zone map coordinates)",
 	"/dbm arrow <player>: Creates and arrow that points to a specific player in your party or raid (case sensitive!)",
