@@ -66,6 +66,7 @@ L.ModelSoundLong			= "긴 음성"
 L.Button_RangeFrame			= "거리 창 보기"
 L.Button_InfoFrame			= "정보 창 보기"
 L.Button_TestBars			= "시험 경보 시작"
+L.Button_ResetInfoRange		= "거리/정보 창 위치 초기화"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "알림"
