@@ -119,13 +119,13 @@ local function sharedFateDelay(self)
 		specWarnSharedFate:Show(self.vb.rootedFate2)
 		voiceSharedFate:Play("linegather")
 		if self.Options.HudMapOnSharedFate then
-			DBMHudMap:AddEdge(0, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate2)
+			DBMHudMap:AddEdge(1, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate2)
 		end
 	elseif self.vb.rootedFate then
 		specWarnSharedFate:Show(self.vb.rootedFate)
 		voiceSharedFate:Play("linegather")
 		if self.Options.HudMapOnSharedFate then
-			DBMHudMap:AddEdge(0, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate)
+			DBMHudMap:AddEdge(1, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate)
 		end
 	end
 end
