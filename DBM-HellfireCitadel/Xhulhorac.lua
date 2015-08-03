@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(93068)
 mod:SetEncounterID(1800)
 mod:SetZone()
---mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
+mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
 mod:SetHotfixNoticeRev(14078)
 mod.respawnTime = 29
 
@@ -107,11 +107,13 @@ local voiceVoidSurge				= mod:NewVoice(186333)	--new voice
 --Applied gives all targets, this is the easier strat for most users, where they wait until everyone has it, then run in different directions.
 --Both, gives users ALL the information for everything so they can decide on their own. This will be default until I can see what becomes more popular. Maybe both will be what everyone ends up preferring.
 mod:AddRangeFrameOption(5, 189775)--Mythic
+mod:AddSetIconOption("SetIconOnImps", "ej11694", true, true)
 mod:AddDropdownOption("ChainsBehavior", {"Cast", "Applied", "Both"}, "Both", "misc")
 
 mod.vb.EmpFelChainCount = 0
 mod.vb.phase = 1
 mod.vb.impCount = 0
+mod.vb.impActive = 0
 mod.vb.voidCount = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local AddsSeen = {}
@@ -145,10 +147,18 @@ end
 --not to mention their first cast is a good 1.5-2 seconds after spawn, if it isn't prevented
 local function ImpRepeater(self)
 	self.vb.impCount = self.vb.impCount + 1
+	self.vb.impActive = self.vb.impActive + 3
 	specWarnImps:Show(self.vb.impCount)
 	timerImpCD:Start(nil, self.vb.impCount+1)
 	countdownImps:Start()
 	self:Schedule(25, ImpRepeater, self)
+	if self.Options.SetIconOnImps then
+		if self.vb.impActive > 0 then--Last set isn't dead yet, use alternate icons
+			self:ScanForMobs(94231, 0, 5, 3, 0.3, 10, "SetIconOnImps")
+		else
+			self:ScanForMobs(94231, 0, 8, 3, 0.3, 10, "SetIconOnImps")
+		end
+	end
 end
 
 local function VoidsRepeater(self)
@@ -182,6 +192,7 @@ function mod:OnCombatStart(delay)
 	self.vb.EmpFelChainCount = 0
 	self.vb.phase = 1
 	self.vb.impCount = 0
+	self.vb.impActive = 0
 	self.vb.voidCount = 0
 	table.wipe(AddsSeen)
 	timerFelStrikeCD:Start(8-delay)
@@ -398,6 +409,8 @@ function mod:UNIT_DIED(args)
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:RemoveBoss(cid)
 		end
+	elseif cid == 94231 then--Imps
+		self.vb.impActive = self.vb.impActive - 1
 	end
 end
 
