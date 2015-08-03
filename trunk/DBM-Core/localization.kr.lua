@@ -17,7 +17,8 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "전투 도중 DBM 바 스킨 설정에 실패했�
 DBM_CORE_BAD_LOAD					= "DBM이 현재 인스턴스의 경고를 완전히 불러오지 못한 것을 발견했습니다. 전투가 종료된 후에, /console reloadui 명령어를 입력하여 경고를 다시 불러오시기 바랍니다."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "현재 사용중인 DBM 버전은 '%s' 경보에 필요한 기능이 없습니다. 새로운 DBM을 설치하셔야 이 경보를 불러올 수 있습니다."
 
-DBM_CORE_WHATS_NEW					= "이 버전의 새로운 기능: 바가 갖고 있는 정보별로 다른 바 색상을 지정하는 기능이 추가되었습니다. 바 설정에서 색상을 변경 가능합니다."
+DBM_CORE_WHATS_NEW					= "이 버전의 새로운 기능: /DBM help 명령어가 개선되었으며 일부 명령어가 추가되었습니다. 범위정보 기능이 대폭 강화되었으며. 특히 아키몬드가 많이 강화되었습니다."
+--DBM_CORE_WHATS_NEW_LINK			= "이 버전의 새로운 기능: 바가 갖고 있는 정보별로 다른 바 색상을 지정하는 기능이 추가되었습니다. 바 설정에서 색상을 변경 가능합니다."
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대원 숫자에 맞는 근접판정 정보를 알 수 없기 때문에 DBM이 이 전투에서 거리 창을 비활성화 했습니다."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "현재 공격대원 숫자에 맞는 쫄 소환 정보를 알 수 없기 때문에 DBM이 이 전투에서 소환 횟수 정보를 비활성화 했습니다."
@@ -200,24 +201,35 @@ DBM_CORE_INFOFRAME_SHOW_SELF		= "내 정보 항상 보기"
 DBM_LFG_INVITE						= "던전 입장"
 
 DBM_CORE_SLASHCMD_HELP				= {
-	"명령어 일람:",
-	"/range <number>, /distance <number>: 거리창을 표시, /rrange, /rdistance 는 색상을 반대로 표시",
-	"/dbm version(ver): 공격대원의 DBM 버전 확인",
+	"사용가능 명령어:",
+	"----------------",
 	"/dbm unlock(move): 20초 동안 바 위치 조정 가능 상태가 됨",
-	"* 아래 명령어의 숫자나 글자를 입력할때 < > 는 입력하지 않음 *",
-	"/dbm timer/ctimer/ltimer/cltimer <숫자> <글자>: <글자>에 입력한 대로 <숫자>초 동안 지속되는 바를 생성",
-	"/dbm broadcast timer/ctimer/ltimer/cltimer <숫자> <글자>: <글자>에 입력한 대로 <숫자>초 동안 지속되는 바를 생성 후 모든 공격대원에게 보냄(승급 권한 필요)",
-	" - timer: 평범한 바",
-	" - ctimer: 초세기 글자 및 소리가 추가된 바",
-	" - ltimer: 계속 반복되는 바", 
-	" - cltimer: 계속 반복되며, 초세기 글자 및 숫자가 보이는 바",
-	"/dbm timer endloop: ltimer 또는 cltimer 바의 반복을 멈춤.",
-	"/dbm break <숫자>: <숫자>분 지속되는 휴식 바를 보냄. DBM을 설치한 모든 공격대원이 볼 수 있음(승급 권한 필요)",
-	"/dbm pull <숫자>: <숫자>초 후 전투 예정 바를 보냄. DBM을 설치한 모든 공격대원이 볼 수 있음(승급 권한 필요)",
-	"/dbm arrow: DBM 화살표 도움말을 봄",
-	"/dbm lockout: 현재 공격대원에게 공격대 귀속 정보를 요청(승급 권한 필요)",
-	"/dbm lag: 공격대원의 지연시간을 확인함",
-	"/dbm hud: DBM 범위표시 도움말을 봄"
+	"/range <숫자>, /distance <숫자>: 거리창 표시, /rrange, /rdistance 는 색상을 반대로 표시",
+	"/hudar <number>: 범위정보 기반 거리창 표시",
+	"/dbm timer: 사용자 정의 DBM 바를 시작, 도움말은 '/dbm timer' 참조",
+	"/dbm arrow: DBM 화살표 표시, 도움말은 '/dbm arrow help' 참조",
+	"/dbm hud: DBM 범위정보 표시, 도움말은 '/dbm hud' 참조",
+	"/dbm help2: 공격대 관리에 관련된 명령어 표시"
+}
+DBM_CORE_SLASHCMD_HELP2				= {
+	"사용가능 명령어:",
+	"----------------",
+	"/dbm pull <숫자>: <숫자>초 후 전투 예정 명령을 보냄(승급 권한 필요)",
+	"/dbm break <숫자>: <숫자>분 지속되는 휴식 명령을 보냄(승급 권한 필요)",
+	"/dbm version(ver): 공격대원의 DBM 버전 확인",
+	"/dbm version2(ver2): 공격대원의 DBM 버전 확인 후 구버전 사용자에게 귓속말 알림 보내기",
+	"/dbm lockout(lockouts, ids): 현재 공격대원에게 공격대 귀속 정보를 요청(승급 권한 필요)",
+	"/dbm lag: 공격대원의 지연시간을 확인함"
+}
+DBM_CORE_TIMER_USAGE	= {
+	"DBM 바 명령어:",
+	"--------------",
+	"/dbm timer <sec> <text>: <숫자>초 지속되는 <글자>바 생성",
+	"/dbm ctimer <sec> <text>: 초세기를 포함한 바 생성",
+	"/dbm ltimer <sec> <text>: 계속해서 반복되는 바 생성",
+	"/dbm cltimer <sec> <text>: 계속해서 반복되며, 초세기를 포함한 바 생성",
+	"(타이머 명칭앞에 'broadcast'를 입력하면 바를 공격대에 공유함. 단, 승급 권한 필요)",
+	"/dbm timer endloop: ltimer 또는 cltimer 작동을 멈춤"
 }
 
 DBM_ERROR_NO_PERMISSION				= "해당 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
@@ -401,23 +413,25 @@ DBM_CORE_HUD_INVALID_ICON			= "대상에게 전술 목표 아이콘이 설정되
 DBM_CORE_HUD_SUCCESS				= "범위정보를 %s동안 표시합니다. '/dbm hud hide'를 입력하시면 즉시 숨길 수 있습니다."
 DBM_CORE_HUD_USAGE	= {
 	"DBM 범위정보 사용법:",
-	"/dbm hud <형식> <대상> <지속시간> 지정된 형식으로 지정된 대상을 가리키는 범위정보를 만듭니다. <지속시간>초 동안 지속됩니다.",
-	"유효한 형식: red, blue, green, yellow, icon (대상에게 전술 목표 아이콘이 설정되어 있어야 합니다.)",
+	"--------------------",
+	"/dbm hud <형식> <대상> <지속시간>: 지정된 형식으로 지정된 대상을 가리키는 범위정보를 만듬. <지속시간>초 동안 지속됨.",
+	"유효한 형식: arrow, red, blue, green, yellow, icon(대상에게 전술 목표 아이콘이 설정되어 있어야 함)",
 	"유효한 대상: target, focus, <대상이름>",
-	"유효한 시간: 아무 숫자(초단위). 빈칸일 경우, 20분이 사용됩니다.",
-	"/dbm hud hide  범위정보를 숨기고 비활성화 합니다."
+	"유효한 시간: 아무 숫자(초단위). 빈칸일 경우, 20분간 적용됨",
+	"/dbm hud hide: 범위정보를 숨기고 비활성화함"
 }
 
 DBM_ARROW_MOVABLE						= "화살표 움직이기"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM 화살표 사용법:",
-	"/dbm arrow <x> <y>  지정된 좌표(X/Y) 방향으로 화살표를 만듭니다. 세계지도 좌표 사용",
-	"/dbm arrow map <x> <y>  지정된 좌표(X/Y) 방향으로 화살표를 만듭니다. 지역지도 좌표를 사용합니다.",
-	"/dbm arrow <대상이름>  현재 파티 또는 공격대의 <대상이름> 방향으로 화살표를 만듭니다. 대소문자를 구분합니다.",
-	"/dbm arrow target  현재 대상 방향으로 화살표를 만듭니다.",
-	"/dbm arrow focus  현재 주시대상 방향으로 화살표를 만듭니다.",
-	"/dbm arrow move  화살표가 25초 동안 이동가능 상태가 됩니다.",
-	"/dbm arrow hide  화살표를 화면에서 숨깁니다."
+	"------------------",
+	"/dbm arrow <x> <y>: 지정된 좌표(X/Y) 방향으로 화살표를 만듬. 세계지도 좌표 사용",
+	"/dbm arrow map <x> <y>: 지정된 좌표(X/Y) 방향으로 화살표를 만듬. 지역지도 좌표를 사용",
+	"/dbm arrow <대상>: 현재 파티 또는 공격대의 <대상> 방향으로 화살표를 만듬. 대소문자를 구분함",
+	"/dbm arrow target: 현재 대상 방향으로 화살표를 만듬",
+	"/dbm arrow focus: 현재 주시대상 방향으로 화살표를 만듬",
+	"/dbm arrow move: 화살표가 25초 동안 이동가능 상태가 됨",
+	"/dbm arrow hide: 화살표를 화면에서 숨김"
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "최고 기록"
