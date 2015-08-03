@@ -26,6 +26,8 @@ local GetTime, UIParent = GetTime, UIParent
 local UnitExists, UnitIsUnit, UnitPosition, UnitDebuff, GetPlayerFacing = UnitExists, UnitIsUnit, UnitPosition, UnitDebuff, GetPlayerFacing
 local GetInstanceInfo = GetInstanceInfo
 
+local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
+
 local targetCanvasAlpha
 
 local textureLookup = {
@@ -999,7 +1001,7 @@ do
 			if not r and text then
 				local _, cls = UnitClass(text)
 				if cls and RAID_CLASS_COLORS[cls] then
-					r, g, b, a = unpack(RAID_CLASS_COLORS[cls])
+					r, g, b = RAID_CLASS_COLORS[cls].r, RAID_CLASS_COLORS[cls].g, RAID_CLASS_COLORS[cls].b
 				end
 			end
 			self.text.r = r or self.text.r
@@ -1267,6 +1269,15 @@ function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend
 end
 
 function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend, priority)
+	if not r and person then--Auto generate class color if colors were left nil
+		local _, cls = UnitClass(person)
+		if cls and RAID_CLASS_COLORS[cls] then
+			r, g, b = RAID_CLASS_COLORS[cls].r, RAID_CLASS_COLORS[cls].g, RAID_CLASS_COLORS[cls].b
+		else
+			DBM:Debug("HudMap Marker failed, no color defined and no unit class")
+			return--Should not happen, but prevent error if it does
+		end
+	end
 	local red, green, blue = r, g, b
 	local size, alpha, graphic = radius, a, texture
 	if priority then
@@ -1289,6 +1300,15 @@ function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r
 end
 
 function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend, priority)
+	if not r and person then--Auto generate class color if colors were left nil
+		local _, cls = UnitClass(person)
+		if cls and RAID_CLASS_COLORS[cls] then
+			r, g, b = RAID_CLASS_COLORS[cls].r, RAID_CLASS_COLORS[cls].g, RAID_CLASS_COLORS[cls].b
+		else
+			DBM:Debug("HudMap Marker failed, no color defined and no unit class")
+			return--Should not happen, but prevent error if it does
+		end
+	end
 	local red, green, blue = r, g, b
 	local size, alpha, graphic = radius, a, texture
 	if priority then
@@ -1347,6 +1367,15 @@ end
 
 function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf, priority)
 	if DBM.Options.FilterSelfHud and canFilterSelf and UnitIsUnit("player", person) then a = 0 end
+	if not r and person then--Auto generate class color if colors were left nil
+		local _, cls = UnitClass(person)
+		if cls and RAID_CLASS_COLORS[cls] then
+			r, g, b = RAID_CLASS_COLORS[cls].r, RAID_CLASS_COLORS[cls].g, RAID_CLASS_COLORS[cls].b
+		else
+			DBM:Debug("HudMap Marker failed, no color defined and no unit class")
+			return--Should not happen, but prevent error if it does
+		end
+	end
 	local red, green, blue = r, g, b
 	local size, alpha, graphic = radius, a, texture
 	if priority and a ~= 0 then
@@ -1374,6 +1403,15 @@ end
 
 function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, duration, r, g, b, a, blend, canFilterSelf, priority)
 	if DBM.Options.FilterSelfHud and canFilterSelf and UnitIsUnit("player", person) then a = 0 end
+	if not r and person then--Auto generate class color if colors were left nil
+		local _, cls = UnitClass(person)
+		if cls and RAID_CLASS_COLORS[cls] then
+			r, g, b = RAID_CLASS_COLORS[cls].r, RAID_CLASS_COLORS[cls].g, RAID_CLASS_COLORS[cls].b
+		else
+			DBM:Debug("HudMap Marker failed, no color defined and no unit class")
+			return--Should not happen, but prevent error if it does
+		end
+	end
 	local red, green, blue = r, g, b
 	local size, alpha, graphic = radius, a, texture
 	if priority and a ~= 0 then
