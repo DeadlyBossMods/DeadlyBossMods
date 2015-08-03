@@ -201,7 +201,7 @@ options = {
 		type = "number",
 		default = 0.247,
 	},
-	--Type 3 (Debuff)
+	--Type 3 (Targeted)
 	StartColorDR = {
 		type = "number",
 		default = 0.9,

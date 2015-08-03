@@ -154,6 +154,7 @@ mod:AddSetIconOption("SetIconOnInfernals2", "ej11618", false, true)
 mod:AddHudMapOption("HudMapOnFelBurst2", 183634, false)
 mod:AddHudMapOption("HudMapOnShackledTorment2", 184964, true)
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
+mod:AddHudMapOption("HudMapMarkofLegion", 187050, false)
 mod:AddBoolOption("ExtendWroughtHud2", false)
 mod:AddBoolOption("FilterOtherPhase", true)
 mod:AddInfoFrameOption(184964)
@@ -290,6 +291,17 @@ local function showMarkOfLegion(self)
 		end
 		if self.Options.SetIconOnMarkOfLegion then
 			self:SetIcon(name, i)
+		end
+		if self.Options.HudMapMarkofLegion then
+			if i == 1 then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match star
+			elseif i == 2 then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match circle
+			elseif i == 3 then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
+			else
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
+			end
 		end
 	end
 end
@@ -752,6 +764,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		updateRangeFrame(self)
 		if self.Options.SetIconOnMarkOfLegion then
 			self:SetIcon(args.destName, 0)
+		end
+		if self.Options.HudMapMarkofLegion then
+			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	end
 end
