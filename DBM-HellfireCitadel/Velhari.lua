@@ -55,6 +55,7 @@ local specWarnAncientEnforcer				= mod:NewSpecialWarningSwitch("ej11155", "-Heal
 local specWarnEnforcersOnslaught			= mod:NewSpecialWarningDodge(180004, nil, nil, nil, 1, 5)
 --Stage Two: Contempt
 local specWarnFontofCorruption				= mod:NewSpecialWarningYou(180526)
+local specWarnFontofCorruptionOver			= mod:NewSpecialWarningEnd(180526)
 local yellFontofCorruption					= mod:NewYell(180526)
 ----Ancient Harbinger
 local specWarnAncientHarbinger				= mod:NewSpecialWarningSwitch("ej11163", "-Healer")
@@ -328,6 +329,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 180526 then
 		if args:IsPlayer() then
+			specWarnFontofCorruptionOver:Show()
 			countdownFontofCorruption:Cancel()
 		end
 	end
