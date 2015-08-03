@@ -361,13 +361,13 @@ local function breakShackles(self, spellName)
 	end
 	if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
 		if playerHasShackle then
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[1], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName):SetLabel(shacklesTargets[1])
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[2], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName):SetLabel(shacklesTargets[2])
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[3], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName):SetLabel(shacklesTargets[3])
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[1], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName, shacklesTargets[1])
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[2], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName, shacklesTargets[2])
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[3], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName, shacklesTargets[3])
 		else
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[1], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():SetLabel(shacklesTargets[1])
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[2], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():SetLabel(shacklesTargets[2])
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[3], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts():SetLabel(shacklesTargets[3])
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[1], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(nil, shacklesTargets[1])
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[2], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(nil, shacklesTargets[2])
+			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[3], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(nil, shacklesTargets[3])
 		end
 	end
 end
