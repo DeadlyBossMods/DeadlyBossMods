@@ -72,7 +72,7 @@ local voiceSharedFate					= mod:NewVoice(179909)--linegather, new voice, like Bl
 local voiceBurning						= mod:NewVoice(185189) --changemt
 
 mod:AddSetIconOption("SetIconOnFate", 179909)
-mod:AddHudMapOption("HudMapOnSharedFate", 179909)--Smart hud, distinquishes rooted from non rooted by color coding.
+mod:AddHudMapOption("HudMapOnSharedFate", 179909)--Smart hud, distinquishes rooted from non rooted by larger dot/font and lines/arrows
 mod:AddRangeFrameOption(5, 182049)
 mod:AddInfoFrameOption(181295)
 
@@ -118,11 +118,15 @@ local function sharedFateDelay(self)
 	if self.vb.rootedFate2 then--Check this first, assume you are linked to most recent
 		specWarnSharedFate:Show(self.vb.rootedFate2)
 		voiceSharedFate:Play("linegather")
-		DBMHudMap:AddEdge(0, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate2)
+		if self.Options.HudMapOnSharedFate then
+			DBMHudMap:AddEdge(0, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate2)
+		end
 	elseif self.vb.rootedFate then
 		specWarnSharedFate:Show(self.vb.rootedFate)
 		voiceSharedFate:Play("linegather")
-		DBMHudMap:AddEdge(0, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate)
+		if self.Options.HudMapOnSharedFate then
+			DBMHudMap:AddEdge(0, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate)
+		end
 	end
 end
 
@@ -280,7 +284,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.HudMapOnSharedFate and not playerDown then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "highlight", args.destName, 3.5, 600, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)--Red
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "party", args.destName, 0.75, 600, nil, nil, nil, 0.8, nil, true):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -17, 11, nil)
 		end
 		if args:IsPlayer() then
 			yellSharedFate:Yell()
@@ -291,7 +295,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.5, sharedFateDelay, self)--Just in case rooted ID fires after non rooted ones
 		end
 		if self.Options.HudMapOnSharedFate and not playerDown then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "highlight", args.destName, 3.5, 600, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)--Yellow
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "party", args.destName, 0.5, 600, nil, nil, nil, 0.8, nil, true):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
 		end
 	elseif spellId == 180148 then
 		warnHungerforLife:CombinedShow(0.5, args.destName)
