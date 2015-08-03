@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Jul 8 2015, 8:04 UTC@14062
+-- Last update: Aug 3 2015, 7:49 UTC@14226
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -23,7 +23,8 @@ DBM_CORE_LOAD_SKIN_COMBAT			= "DBM无法在战斗中更换皮肤。请先在非�
 DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，有些计时器可能会错误。请在离开战斗后马上重载界面。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本过旧。请升级DBM。"
 
-DBM_CORE_WHATS_NEW					= "最新更新：DBM现在支持计时条类型分类着色了。想要知道更多可以 |HDBM:forumsnews|h|cff3588ff 点击此处|r 访问我们的论坛"
+DBM_CORE_WHATS_NEW					= "最新更新：DBM帮助菜单(/dbm help)加入了一些新的命令, 它变得更加友好了. 有一些模组的HUD功能被强化了, 特别是阿克蒙德."
+--DBM_CORE_WHATS_NEW_LINK			= "最新更新: 想要知道更多可以 |HDBM:forumsnews|h|cff3588ff 点击此处|r 访问我们的论坛"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "由于玩家数量不足，DBM 无法开启倒计时。"
@@ -206,19 +207,35 @@ DBM_CORE_INFOFRAME_SHOW_SELF		= "总是显示你的能量"		-- Always show your 
 DBM_LFG_INVITE						= "随机副本确认"
 
 DBM_CORE_SLASHCMD_HELP				= {
-	"可用命令：",
-	"/range <number> 或者 /distance <number>: 显示距离雷达窗体. 使用 /rrange 或者 /rdistance 翻转颜色.",
-	"/dbm version:进行团队范围的DBM版本检测（也可使用：ver）",
-	"/dbm unlock:显示一个可移动的计时条，可通过对它来移动所有DBM计时条的位置（也可使用：move）",
-	"/dbm timer/ctimer/ltimer/cltimer <x> <text>: 启动一个 <x> 秒的计时器。文本内容为 <text>.",
-	"/dbm broadcast timer <x> <文本>:向团队广播一个以<文本>为名称的时间为<x>秒的倒计时(需要队长或助理权限)。",
-	"/dbm timer endloop: 停止所有的 ltimer 和 cltimer.",
-	"/dbm break <分钟>: 开始一个<分钟>时间的休息计时条。并向所有团队成员发送这个DBM休息计时条(需要队长或助理权限)。",
-	"/dbm pull <秒>: 开始一个<秒>时间的开怪计时条。 并向所有团队成员发送这个DBM开怪计时条(需要队长或助理权限)。",
+	"可用命令:",
+	"-----------------",
+	"/dbm unlock: 显示一个可移动的计时条，可通过对它来移动所有DBM计时条的位置(也可使用: move)。",
+	"/range <码> 或者 /distance <码>: 显示距离雷达窗体。使用 /rrange 或者 /rdistance 翻转颜色。",
+	"/hudar <码>: 显示基于HUD的距离显示器提示器。",
+	"/dbm timer: 启动一个DBM计时器，输入'/dbm timer'查询更多信息。",
 	"/dbm arrow: 显示DBM箭头，输入'/dbm arrow'查询更多信息。",
-	"/dbm lockout: 查询团队成员当前的副本锁定状态(副本CD)(也可使用：lockouts, ids)(需要队长或助理权限)。",
-	"/dbm lag: 检测全团网络延时",
-	"/dbm hud: 显示DBM hud，输入'/dbm hud'查询更多信息。"
+	"/dbm hud: 显示DBM hud，输入'/dbm hud'查询更多信息。",
+	"/dbm help2: 显示用于团队的命令"
+}
+DBM_CORE_SLASHCMD_HELP2				= {
+	"可用命令:",
+	"-----------------",
+	"/dbm pull <秒>: 向所有团队成员发送一个长度为<秒>的开怪计时条(需要队长或助理权限)。",
+	"/dbm break <分钟>: 向所有团队成员发送一个长度为<分钟>的狂暴计时条(需要队长或助理权限)。",
+	"/dbm version: 进行团队范围的DBM版本检测(也可使用: ver)",
+	"/dbm version2: 进行团队范围的DBM版本检测并密语那些过期版本用户(也可使用: ver)",
+	"/dbm lockout: 查询团队成员当前的副本锁定状态(副本CD)(也可使用: lockouts, ids)(需要队长或助理权限)。",
+	"/dbm lag: 检测全团网络延时"
+}
+DBM_CORE_TIMER_USAGE	= {
+	"DBM计时器可用命令:",
+	"-----------------",
+	"/dbm timer <秒> <文本>: 启动一个<文本>为名称，长度为<秒>的计时器。",
+	"/dbm ctimer <秒> <文本>: 启动一个<文本>为名称，长度为<秒>的倒计时计时器。",
+	"/dbm ltimer <秒> <文本>: 启动一个<文本>为名称，长度为<秒>的循环计时器。",
+	"/dbm cltimer <秒> <文本>: 启动一个<文本>为名称，长度为<秒>的循环倒计时计时器。",
+	"('Broadcast' 在 'timer' 前会向所有团队成员发送这个计时器(需要队长或助理权限)。",
+	"/dbm timer endloop: 停止所有的 ltimer（循环计时器） 和 cltimer（循环倒计时计时器）."
 }
 
 DBM_ERROR_NO_PERMISSION				= "权限不足。需要队长或助理权限。"
@@ -408,16 +425,18 @@ DBM_CORE_HUD_INVALID_ICON				= "当使用团队标记作为HUD目标定义时，
 DBM_CORE_HUD_SUCCESS					= "HUD成功地使用了你的参数启动了。HUD会在%s关闭, 或者输入 '/dbm hud hide'来关闭"
 DBM_CORE_HUD_USAGE	= {
 	"DBM-HudMap 可用命令：",
+	"-----------------",
 	"/dbm hud <类型> <目标> <持续时间>  新建一个指向玩家的HUD指示器",
-	"变量-类型: red, blue, green, yellow, icon (请输入英语。如果类型是团队标记需要给目标标记团队标记)",
-	"变量-目标: target, focus, <玩家名字> (请输入英语。如果是玩家名字请区分大小写)",
+	"变量-类型: arrow, red, blue, green, yellow, icon (请输入英语。如果类型是团队标记需要给目标标记团队标记)",
+	"变量-目标: target, focus, <玩家名字> (如果是玩家名字是拉丁字母请区分大小写)",
 	"变量-持续时间: 秒数. 如果这个参数留空, 默认为20分钟",
-	"/dbm hud hide  清空并关闭HUD"
+	"/dbm hud hide: 清空并关闭HUD"
 }
 
 DBM_ARROW_MOVABLE				= "可移动箭头"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 可用命令：",
+	"-----------------",
 	"/dbm arrow <x> <y>  新建一个箭头到指定位置(使用世界坐标系)",
 	"/dbm arrow map <x> <y>  新建一个箭头到指定位置 (使用区域地图坐标系)",
 	"/dbm arrow <玩家名字>  新建一个箭头并指向你队伍或团队中特定的玩家。请区分大小写。",

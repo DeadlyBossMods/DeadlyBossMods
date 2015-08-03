@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Jul 28 2015, 1:22 UTC@14062
+-- Last update: Aug 3 2015, 10:26 UTC@14226
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -86,6 +86,7 @@ L.ModelSoundLong			= "长"
 L.Button_RangeFrame			= "显示/隐藏距离雷达框体"
 L.Button_InfoFrame			= "显示/隐藏信息框体"
 L.Button_TestBars			= "测试计时条"
+L.Button_ResetInfoRange		= "重置信息/距离雷达框体"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "团队警报"
