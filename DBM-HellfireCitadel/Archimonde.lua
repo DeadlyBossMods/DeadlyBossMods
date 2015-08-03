@@ -186,8 +186,6 @@ local infernalTimers = {37, 63, 63, 55, 68, 40}--Seems off. that 68 is oddball.
 local sourceofChaosTimers = {50, 58, 76, 78}--Seens off as well, but who knows, maybe.
 local twistedDarknessTimers = {79, 76, 42, 40, 72}--Also seems off, could be missing one
 local seethingCorruptionTimers = {120, 52, 70, 30, 40}--Really just need logs to verify this nonsense
--- for Phanx' Class Colors
-local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 --Range frame/filter shit
 local shacklesTargets = {}
 local legionTargets = {}
@@ -561,7 +559,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.HudMapOnFelBurst2 then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 5, 0, 1, 0, 0.5):Appear()
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 5, 0, 1, 0, 0.5):Appear():SetLabel(args.destName)
 		end
 	elseif spellId == 183865 then
 		warnDemonicHavoc:CombinedShow(0.3, args.destName)
@@ -608,19 +606,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.HudMapOnWrought then
 				local sourceUId, destUId = DBM:GetRaidUnitId(args.sourceName), DBM:GetRaidUnitId(args.destName)
 				if not sourceUId or not destUId then return end--They left raid? prevent nil error. this will probably only happen in LFR
-				local _, sourceClass = UnitClass(sourceUId)
-				local _, destClass = UnitClass(destUId)
-				local sourceColor, destColor = RAID_CLASS_COLORS[sourceClass], RAID_CLASS_COLORS[destClass]
 				if UnitIsUnit("player", sourceUId) or UnitIsUnit("player", destUId) then--Player is in connection, green line
 					--create points for your own line
 					warnWroughtChaos:CombinedShow(0.1, self.vb.wroughtWarned, args.sourceName)
 					warnWroughtChaos:CombinedShow(0.1, self.vb.wroughtWarned, args.destName)
 					if UnitIsUnit("player", sourceUId) then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.9, 5, sourceColor.r, sourceColor.g, sourceColor.b, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, destColor.r, destColor.g, destColor.b, 0.5, nil, false):Pulse(0.5, 0.5)
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.9, 5, nil, nil, nil, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Pulse(0.5, 0.5)
 					else
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, sourceColor.r, sourceColor.g, sourceColor.b, 0.5, nil, false):Pulse(0.5, 0.5)
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.9, 5, destColor.r, destColor.g, destColor.b, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Pulse(0.5, 0.5)
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.9, 5, nil, nil, nil, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
 					end
 					--create line
 					if self.Options.ExtendWroughtHud2 then
@@ -630,8 +625,8 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 				else--red lines for non player lines
 					--Create Points
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, sourceColor.r, sourceColor.g, sourceColor.b, 0.5, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, destColor.r, destColor.g, destColor.b, 0.5, nil, false):Pulse(0.5, 0.5)
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Pulse(0.5, 0.5)
 					--Create Line
 					if self.Options.ExtendWroughtHud2 then
 						DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, args.sourceName, args.destName, nil, nil, nil, nil, 150, true)
