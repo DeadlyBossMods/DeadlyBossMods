@@ -31,7 +31,6 @@ local warnHeartseeker				= mod:NewTargetAnnounce(180372, 4)
 local warnVisionofDeath				= mod:NewTargetAnnounce(181488, 2)--The targets that got picked
 --Adds
 local warnBloodthirster				= mod:NewSpellAnnounce("ej11266", 3, 131150)
-local warnSavageStrikes				= mod:NewSpellAnnounce(180163, 3, nil, "Tank")--Need to assess damage amount on special vs non special warning
 
 --Boss
 local specWarnShred					= mod:NewSpecialWarningSpell(180199, nil, nil, nil, 3, 2)--Block, or get debuff
@@ -40,6 +39,7 @@ local yellHeartSeeker				= mod:NewYell(180372)
 local specWarnDeathThroes			= mod:NewSpecialWarningCount(180224, nil, nil, nil, 2, 2)
 local specWarnVisionofDeath			= mod:NewSpecialWarningCount(182428)--Seems everyone goes down at some point, dps healers and off tank. Each getting different abiltiy when succeed
 --Adds
+local specWarnSavageStrikes			= mod:NewSpecialWarningSpell(180163, nil, nil, nil, 1, 2)
 local specWarnBloodGlob				= mod:NewSpecialWarningSwitch(180459, "Dps", nil, nil, 1, 5)
 local specWarnFelBloodGlob			= mod:NewSpecialWarningSwitch(180413, "Dps", nil, nil, 3, 5)
 local specWarnBloodthirster			= mod:NewSpecialWarningSwitch("ej11266", "Dps", nil, 2, 1, 5)--Very frequent, let specwarn be an option
@@ -62,9 +62,11 @@ local timerRendingHowlCD			= mod:NewNextTimer(6, 183917, nil, "-Healer", 2, 4)
 local berserkTimer					= mod:NewBerserkTimer(600)
 
 local countdownVisionofDeathCD		= mod:NewCountdown(75, 181488, "Tank")
+local countdownShred				= mod:NewCountdown("Alt17", 180199, "Tank")
 local countdownVisionofDeath		= mod:NewCountdownFades("Alt60", 181488)
 
 local voiceShred					= mod:NewVoice(180199)--defensive
+local voiceSavageStrikes			= mod:NewVoice(180163)--defensive
 local voiceHeartSeeker				= mod:NewVoice(180372)--runout
 local voiceDeathThroes				= mod:NewVoice(180224)--aesoon
 local voiceBloodGlob				= mod:NewVoice(180459)--180459
@@ -90,6 +92,7 @@ function mod:OnCombatStart(delay)
 	self.vb.visionsCount = 0
 	timerBloodthirsterCD:Start(6-delay, 1)
 	timerShredCD:Start(10-delay)
+	countdownShred:Start(10-delay)
 	timerHeartseekerCD:Start(-delay)
 	timerDeathThroesCD:Start(39-delay, 1)
 	timerVisionofDeathCD:Start(61-delay, 1)
@@ -112,6 +115,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 180199 then
 		timerShredCD:Start()
+		countdownShred:Start()
 		for i = 1, 5 do--Maybe only 1 needed, but don't know if any adds take boss IDs
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
@@ -131,8 +135,15 @@ function mod:SPELL_CAST_START(args)
 		timerVisionofDeathCD:Start(nil, self.vb.visionsCount+1)
 		countdownVisionofDeathCD:Start()
 	elseif spellId == 180163 then
-		warnSavageStrikes:Show()
 		timerRendingHowlCD:Start(9.8, args.sourceGUID)--Savage strikes, replaces either 2nd or 3rd Howl. When it does, next howl is always 10 seconds later
+		for i = 1, 5 do--Maybe only 1 needed, but don't know if any adds take boss IDs
+			local bossUnitID = "boss"..i
+			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
+				specWarnSavageStrikes:Show()--Show warning only to the tank he's on, not both tanks, avoid confusion
+				voiceSavageStrikes:Play("defensive")
+				break
+			end
+		end
 	elseif spellId == 183917 then
 		if not HowlByGUID[args.sourceGUID] then HowlByGUID[args.sourceGUID] = 0 end
 		HowlByGUID[args.sourceGUID] = HowlByGUID[args.sourceGUID] + 1
