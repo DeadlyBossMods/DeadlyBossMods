@@ -156,6 +156,7 @@ mod:AddHudMapOption("HudMapOnShackledTorment2", 184964, true)
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
 mod:AddHudMapOption("HudMapMarkofLegion", 187050, false)
 mod:AddBoolOption("ExtendWroughtHud2", false)
+mod:AddBoolOption("NamesWroughtHud", true)
 mod:AddBoolOption("FilterOtherPhase", true)
 mod:AddInfoFrameOption(184964)
 
@@ -584,6 +585,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.5, breakShackles, self, args.spellName)
 		end
+		if self.Options.HudMapOnShackledTorment2 and self:IsMythic() and args:IsPlayer() then
+			--Set a dot on player so they can find their orientation to their circle
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(1849642, "party", args.destName, 0.9, 5, nil, nil, nil, 1, nil, false):Appear()
+		end
 	elseif spellId == 186123 then--Wrought Chaos
 		if self:AntiSpam(3, 3) then
 			self.vb.wroughtWarned = self.vb.wroughtWarned + 1
@@ -623,11 +628,21 @@ function mod:SPELL_AURA_APPLIED(args)
 					warnWroughtChaos:CombinedShow(0.1, self.vb.wroughtWarned, args.sourceName)
 					warnWroughtChaos:CombinedShow(0.1, self.vb.wroughtWarned, args.destName)
 					if UnitIsUnit("player", sourceUId) then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.9, 5, nil, nil, nil, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Pulse(0.5, 0.5)
+						if self.Options.NamesWroughtHud then
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.9, 5, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger (no label on player dot)
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
+						else
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.9, 5, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Appear()
+						end
 					else
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Pulse(0.5, 0.5)
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.9, 5, nil, nil, nil, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
+						if self.Options.NamesWroughtHud then
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.9, 5, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger (no label on player dot)
+						else
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Pulse(0.5, 0.5)
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.9, 5, nil, nil, nil, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
+						end
 					end
 					--create line
 					if self.Options.ExtendWroughtHud2 then
@@ -637,8 +652,13 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 				else--red lines for non player lines
 					--Create Points
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Pulse(0.5, 0.5)
+					if self.Options.NamesWroughtHud then
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
+					else
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Appear()
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Appear()
+					end
 					--Create Line
 					if self.Options.ExtendWroughtHud2 then
 						DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, args.sourceName, args.destName, nil, nil, nil, nil, 150, true)
@@ -755,6 +775,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+			if args:IsPlayer() then
+				DBMHudMap:FreeEncounterMarkerByTarget(1849642, args.destName)
+			end
 		end
 	elseif spellId == 187050 then
 		self.vb.markOfLegionRemaining = self.vb.markOfLegionRemaining - 1
