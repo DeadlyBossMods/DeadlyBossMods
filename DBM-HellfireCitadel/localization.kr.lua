@@ -147,7 +147,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreakShackle	= "$spell:184964 대상이 된 경우 특수 경고 보기(빠지는 순서가 자동으로 할당됩니다.)",
-	ExtendWroughtHud2		= "$spell:185014 대상에게 범위 정보 연장(선모양이 부정확할 수 있습니다.)",
+	ExtendWroughtHud2		= "$spell:185014 대상에게 범위정보 연장(선모양이 부정확할 수 있습니다.)",
+	NamesWroughtHud			= "$spell:185014 대상 이름을 포함한 범위정보 보기",
 	FilterOtherPhase		= "당신과 다른 위상에 있는 주문 경고 숨기기"
 })
 
