@@ -118,15 +118,15 @@ local function sharedFateDelay(self)
 	if self.vb.rootedFate2 then--Check this first, assume you are linked to most recent
 		specWarnSharedFate:Show(self.vb.rootedFate2)
 		voiceSharedFate:Play("linegather")
-		if self.Options.HudMapOnSharedFate then
-			DBMHudMap:AddEdge(1, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate2)
-		end
+--		if self.Options.HudMapOnSharedFate then
+--			DBMHudMap:AddEdge(1, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate2)
+--		end
 	elseif self.vb.rootedFate then
 		specWarnSharedFate:Show(self.vb.rootedFate)
 		voiceSharedFate:Play("linegather")
-		if self.Options.HudMapOnSharedFate then
-			DBMHudMap:AddEdge(1, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate)
-		end
+--		if self.Options.HudMapOnSharedFate then
+--			DBMHudMap:AddEdge(1, 1, 0, 0.5, 600, UnitName("player"), self.vb.rootedFate)
+--		end
 	end
 end
 
@@ -296,6 +296,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.HudMapOnSharedFate and not playerDown then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "party", args.destName, 0.5, 600, nil, nil, nil, 0.8, nil, true):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
+			DBMHudMap:AddEdge(1, 1, 0, 0.5, 600, args.destName, self.vb.rootedFate2 or self.vb.rootedFate)
 		end
 	elseif spellId == 180148 then
 		warnHungerforLife:CombinedShow(0.5, args.destName)
