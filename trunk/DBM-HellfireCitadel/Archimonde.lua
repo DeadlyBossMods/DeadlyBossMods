@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 )
 
 --(ability.id = 183254 or ability.id = 189897 or ability.id = 183817 or ability.id = 183828 or ability.id = 185590 or ability.id = 184265 or ability.id = 183864 or ability.id = 190506 or ability.id = 184931 or ability.id = 187180) and type = "begincast" or (ability.id = 183865) and type = "cast" or (ability.id = 186662 or ability.id = 186961) and (type = "applydebuff" or type = "applybuff")
---
+--(ability.id = 190394 or ability.id = 190686 or ability.id = 190821 or ability.id = 190506 or ability.id = 187108) and type = "begincast" or (ability.id = 188514) and type = "cast" or ability.id = 187108
 --TODO, failsafes are at work for transitions i still don't have enough data for. for example, something seems to always cause the 2nd or 3rd fel burst to delay by a HUGE amount (20-30 seconds sometimes) but don't know what it is. Probalby phase transitions but it's not as simple as resetting timer. probably something more zon ozz
 --TODO, figure out what to do with touch of the legion (190400)
 --Phase 1: The Defiler
@@ -87,7 +87,7 @@ local specWarnRainofChaos			= mod:NewSpecialWarningCount(189953, nil, nil, nil, 
 --Mythic
 local specWarnDarkConduit			= mod:NewSpecialWarningCount(190394)--Not sure how to classify yet. or who to exclude
 local specWarnSeethingCorruption	= mod:NewSpecialWarningCount(190506, nil, nil, nil, 2)
-local specWarnMarkOfLegion			= mod:NewSpecialWarningYou(187050)--Somehow i suspect this replaces fel burst. It's basically same mechanic, but on multiple people and slightly larger
+local specWarnMarkOfLegion			= mod:NewSpecialWarningYouCount(187050)--Somehow i suspect this replaces fel burst. It's basically same mechanic, but on multiple people and slightly larger
 local yellMarkOfLegion				= mod:NewFadesYell(187050)
 local yellMarkOfLegionPoS			= mod:NewPosYell(187050)
 local specWarnSourceofChaosYou		= mod:NewSpecialWarningYou(190703)
@@ -285,26 +285,41 @@ local function setDemonicFeedback(self)
 end
 
 local function showMarkOfLegion(self)
-	table.sort(legionTargets)
+	--5,7,9,11 seconds. Sorted lowest to highest
 	warnMarkOfLegion:Show(table.concat(legionTargets, "<, >"))
 	for i = 1, #legionTargets do
 		local name = legionTargets[i]
-		if name == playerName then
-			yellMarkOfLegionPoS:Yell(i)
-		end
-		if self.Options.SetIconOnMarkOfLegion then
-			self:SetIcon(name, i)
-		end
-		if self.Options.HudMapMarkofLegion then
-			if i == 1 then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match star
-			elseif i == 2 then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match circle
-			elseif i == 3 then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
-			else
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
+		local uId = DBM:GetRaidUnitId(name)
+		local _, _, _, _, _, _, expires = UnitDebuff(uId, spellName)
+		if expires then
+			roundedTime = math.floor(debuffTime+0.5)
+			local debuffTime = expires - GetTime()
+			if name == playerName then
+				yellMarkOfLegionPoS:Yell(roundedTime)
 			end
+			if self.Options.SetIconOnMarkOfLegion then
+				--This should work, if times are actually these values
+				if expires < 5.1 then
+					self:SetIcon(name, 1)
+				elseif expires < 7.1 then
+					self:SetIcon(name, 2)
+				elseif expires < 9.1 then
+					self:SetIcon(name, 3)
+				else
+					self:SetIcon(name, 4)
+				end
+			end
+			if self.Options.HudMapMarkofLegion then
+				if expires < 5.1 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match star
+				elseif expires < 7.1 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match circle
+				elseif expires < 9.1 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
+				else
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
+				end
+			end	
 		end
 	end
 end
@@ -732,7 +747,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if expires then
 			if args:IsPlayer() then
 				local remaining = expires-GetTime()
-				specWarnMarkOfLegion:Show()
+				local rounded = math.floor(remaining+0.5)
+				specWarnMarkOfLegion:Show(rounded)
 				yellMarkOfLegion:Schedule(remaining-1, 1)
 				yellMarkOfLegion:Schedule(remaining-2, 2)
 				yellMarkOfLegion:Schedule(remaining-3, 3)
@@ -741,6 +757,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		updateRangeFrame(self)
+		if self.Options.InfoFrame and self.vb.markOfLegionRemaining == 1 then--coming from 0, open infoframe
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(4, "playerdebuffremaining", args.spellName)
+		end
 	elseif spellId == 190703 then
 		if args:IsPlayer() then
 			specWarnSourceofChaosYou:Show()
@@ -796,6 +816,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.HudMapMarkofLegion then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		end
+		if self.Options.InfoFrame and self.vb.markOfLegionRemaining == 0 then
+			DBM.InfoFrame:Hide()
 		end
 	end
 end
