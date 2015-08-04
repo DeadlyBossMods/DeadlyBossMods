@@ -135,6 +135,7 @@ local countdownWroughtChaos			= mod:NewCountdownFades("AltTwo5", 184265)
 local countdownNetherBanish			= mod:NewCountdown(61.9, 186961)
 local countdownDemonicFeedback		= mod:NewCountdown("Alt35", 186961)
 local countdownDeathBrand			= mod:NewCountdown("AltTwo42", 183828)
+local countdownShackledTorment		= mod:NewCountdown("AltTwo42", 184931, "-Tank")
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceDeathBrand				= mod:NewVoice(183828, "Tank")--defensive/tauntboss
@@ -541,8 +542,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.tormentCast = self.vb.tormentCast + 1
 		if self.vb.phase < 3 then
 			timerShackledTormentCD:Start(37, self.vb.tormentCast+1)
+			countdownShackledTorment:Start(37)
 		else
 			timerShackledTormentCD:Start(31, self.vb.tormentCast+1)
+			countdownShackledTorment:Start(31)
 		end
 	elseif spellId == 187180 then
 		self.vb.demonicFeedback = false
@@ -851,6 +854,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnAllureofFlamesSoon:Schedule(35.5)
 		timerAllureofFlamesCD:Start(40.5)--40-45
 		timerShackledTormentCD:Start(17)--17-25 (almost always 25, but sometimes it comes earlier, unsure why)
+		countdownShackledTorment:Start(17)
 		updateRangeFrame(self)
 --	"<301.70 23:49:52> [UNIT_SPELLCAST_SUCCEEDED] Archimonde(Omegal) [[boss1:Allow Phase 3 Spells::0:190118]]", -- [8737]
 --	"<301.70 23:49:52> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine!#Grommash Hellscream###Grommash H
@@ -860,6 +864,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerAllureofFlamesCD:Cancel()--Done for rest of fight
 		timerDeathbrandCD:Cancel()--Done for rest of fight
 		timerShackledTormentCD:Cancel()--Resets to 55 on non mythic, no longer cast on mythic
+		countdownShackledTorment:Cancel()
 		countdownDeathBrand:Cancel()
 		warnPhase3:Show()
 		voicePhaseChange:Play("pthree")
@@ -871,6 +876,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			specWarnDemonicFeedbackSoon:Schedule(23)
 			countdownDemonicFeedback:Start(29)
 			timerShackledTormentCD:Start(55)
+			countdownShackledTorment:Start(55)
 		else
 			--All need work, actual logs would be nice
 			table.wipe(shacklesTargets)--Just to reduce infoframe overhead
