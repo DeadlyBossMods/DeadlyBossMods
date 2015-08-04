@@ -508,7 +508,7 @@ function mod:SPELL_CAST_START(args)
 		if cooldown then
 			timerMarkOfLegionCD:Start(cooldown, self.vb.markOfLegionCast+1)
 		end
-	elseif spellId == 190394 then
+	elseif spellId == 190394 and self:AntiSpam(15, 4) then
 		self.vb.darkConduitCast = self.vb.darkConduitCast + 1
 		specWarnDarkConduit:Show(self.vb.darkConduitCast)
 		local cooldown = darkConduitTimers[self.vb.darkConduitCast+1]
