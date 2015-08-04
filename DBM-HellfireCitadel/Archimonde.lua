@@ -13,8 +13,8 @@ mod:SetHotfixNoticeRev(14087)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050 187050 190394 190686 190821 186663",
-	"SPELL_CAST_SUCCESS 183865 184931 187180",
+	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050 190394 190686 190821 186663 188514",
+	"SPELL_CAST_SUCCESS 183865 184931 187180 188514",
 	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190703 187255 185014 187050",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 187050 183634",
@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 )
 
 --(ability.id = 183254 or ability.id = 189897 or ability.id = 183817 or ability.id = 183828 or ability.id = 185590 or ability.id = 184265 or ability.id = 183864 or ability.id = 190506 or ability.id = 184931 or ability.id = 187180) and type = "begincast" or (ability.id = 183865) and type = "cast" or (ability.id = 186662 or ability.id = 186961) and (type = "applydebuff" or type = "applybuff")
+--
 --TODO, failsafes are at work for transitions i still don't have enough data for. for example, something seems to always cause the 2nd or 3rd fel burst to delay by a HUGE amount (20-30 seconds sometimes) but don't know what it is. Probalby phase transitions but it's not as simple as resetting timer. probably something more zon ozz
 --TODO, figure out what to do with touch of the legion (190400)
 --Phase 1: The Defiler
@@ -501,13 +502,6 @@ function mod:SPELL_CAST_START(args)
 		if self:CheckInterruptFilter(args.sourceGUID) and playerBanished then
 			specWarnTouchofShadows:Show(args.sourceName, self.vb.TouchOfShadows)
 		end
-	elseif spellId == 187050 then
-		self.vb.markOfLegionCast = self.vb.markOfLegionCast + 1
-		table.wipe(legionTargets)
-		local cooldown = legionTimers[self.vb.markOfLegionCast+1]
-		if cooldown then
-			timerMarkOfLegionCD:Start(cooldown, self.vb.markOfLegionCast+1)
-		end
 	elseif spellId == 190394 and self:AntiSpam(15, 4) then
 		self.vb.darkConduitCast = self.vb.darkConduitCast + 1
 		specWarnDarkConduit:Show(self.vb.darkConduitCast)
@@ -531,6 +525,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 186663 then
 		specWarnFlamesOfArgus:Show(args.sourceName)
+	elseif spellId == 188514 then
+		table.wipe(legionTargets)
 	end
 end
 
@@ -550,6 +546,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 187180 then
 		self.vb.demonicFeedback = false
 		self:Schedule(28, setDemonicFeedback, self)
+	elseif spellId == 188514 then
+		self.vb.markOfLegionCast = self.vb.markOfLegionCast + 1
+		table.wipe(legionTargets)
+		local cooldown = legionTimers[self.vb.markOfLegionCast+1]
+		if cooldown then
+			timerMarkOfLegionCD:Start(cooldown, self.vb.markOfLegionCast+1)
+		end
 	end
 end
 
