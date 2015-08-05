@@ -172,7 +172,7 @@ local function delayModCheck(self)
 		end
 		if leaderHasBW then
 			DBM:AddMsg(L.BWConfigMsg)
-			yellType = "Numbered"
+			yellType = "Iconed"
 		end
 	end
 end
