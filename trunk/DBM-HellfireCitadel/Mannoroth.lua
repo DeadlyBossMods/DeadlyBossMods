@@ -209,7 +209,7 @@ local function warnGazeTargts(self)
 		end
 	end
 	if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-		--DBM.InfoFrame:SetHeader(gaze1)
+		DBM.InfoFrame:SetHeader(gaze1)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame)
 	end
 end
@@ -424,8 +424,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnWrathofGuldan:Show()
 			yellWrathofGuldan:Yell()
 		end
-		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-			DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(args.spellName)--Always set header to wrath if wrath is present
+			if not DBM.InfoFrame:IsShown() then
+				DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame)
+			end
 		end
 	end
 end
