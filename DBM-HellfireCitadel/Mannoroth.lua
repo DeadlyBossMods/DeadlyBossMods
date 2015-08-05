@@ -179,7 +179,7 @@ local function updateInfoFrame()
 		local uId = DBM:GetRaidUnitId(name)
 		if UnitDebuff(uId, gaze1) or UnitDebuff(uId, gaze2) then
 			total = total + 1
-			lines[name] = i
+			lines[name] = gaze1.."("..i..")"
 		end
 	end
 	--Mythic, show guldan targets and number of charges left
