@@ -66,8 +66,8 @@ local specWarnVoidSurge				= mod:NewSpecialWarningYou(186333, nil, nil, nil, 1, 
 local yellVoidSurge					= mod:NewYell(186333)
 ----Adds
 local specWarnWitheringGaze			= mod:NewSpecialWarningSpell(186783, "Tank")
-local specWarnBlackHole				= mod:NewSpecialWarningSpell(186546, nil, nil, nil, 2)
-local specWarnEmpBlackHole			= mod:NewSpecialWarningSpell(189779, nil, nil, nil, 2)--Mythic
+local specWarnBlackHole				= mod:NewSpecialWarningCount(186546, nil, nil, nil, 2)
+local specWarnEmpBlackHole			= mod:NewSpecialWarningCount(189779, nil, nil, nil, 2)--Mythic
 
 --Fire Phase
 ----Boss
@@ -85,8 +85,8 @@ local timerVoidSurgeCD				= mod:NewCDTimer(30, 186333, nil, nil, nil, 3)
 local timerVoidsCD					= mod:NewNextTimer(30, "ej11714", nil, "Ranged", nil, 1, 697)
 ----Big Add
 local timerWitheringGazeCD			= mod:NewCDTimer(14.5, 186783, nil, "Tank", 2, 5)
-local timerBlackHoleCD				= mod:NewCDTimer(29.5, 186546, nil, nil, nil, 5)
-local timerEmpBlackHoleCD			= mod:NewCDTimer(29.5, 189779, nil, nil, nil, 5)--Merge with timerBlackHoleCD?
+local timerBlackHoleCD				= mod:NewCDCountTimer(29.5, 186546, nil, nil, nil, 5)
+local timerEmpBlackHoleCD			= mod:NewCDCountTimer(29.5, 189779, nil, nil, nil, 5)--Merge with timerBlackHoleCD?
 --End Phase
 local timerOverwhelmingChaosCD		= mod:NewNextCountTimer(10, 187204, nil, nil, nil, 3)
 
@@ -115,6 +115,7 @@ mod.vb.phase = 1
 mod.vb.impCount = 0
 mod.vb.impActive = 0
 mod.vb.voidCount = 0
+mod.vb.blackHoleCount = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local AddsSeen = {}
 
@@ -194,6 +195,7 @@ function mod:OnCombatStart(delay)
 	self.vb.impCount = 0
 	self.vb.impActive = 0
 	self.vb.voidCount = 0
+	self.vb.blackHoleCount = 0
 	table.wipe(AddsSeen)
 	timerFelStrikeCD:Start(8-delay)
 	timerFelSurgeCD:Start(21-delay)
@@ -255,11 +257,13 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 186546 then
-		specWarnBlackHole:Show()
-		timerBlackHoleCD:Start()
+		self.vb.blackHoleCount = self.vb.blackHoleCount + 1
+		specWarnBlackHole:Show(self.vb.blackHoleCount)
+		timerBlackHoleCD:Start(nil, self.vb.blackHoleCount+1)
 	elseif spellId == 189779 then
-		specWarnEmpBlackHole:Show()
-		timerEmpBlackHoleCD:Start()
+		self.vb.blackHoleCount = self.vb.blackHoleCount + 1
+		specWarnEmpBlackHole:Show(self.vb.blackHoleCount)
+		timerEmpBlackHoleCD:Start(nil, self.vb.blackHoleCount+1)
 	elseif spellId == 186490 then
 		if self.Options.ChainsBehavior ~= "Applied" then--Start timer and scanner if method is Both or Cast. Both prefers cast over applied, for the timer.
 			if self:IsNormal() then
@@ -380,7 +384,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				end
 			elseif cid == 94239 then--Omnus
 				timerWitheringGazeCD:Start(4)
-				timerBlackHoleCD:Start(18)
+				timerBlackHoleCD:Start(18, 1)
 				if DBM.BossHealth:IsShown() then
 					DBM.BossHealth:AddBoss(cid, UnitName(uId))
 				end
@@ -404,7 +408,7 @@ function mod:UNIT_DIED(args)
 		timerWitheringGazeCD:Cancel()
 		timerBlackHoleCD:Cancel()
 		if self:IsMythic() then
-			timerEmpBlackHoleCD:Start(18)
+			timerEmpBlackHoleCD:Start(18, self.vb.blackHoleCount+1)
 		end
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:RemoveBoss(cid)
