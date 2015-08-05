@@ -110,7 +110,7 @@ local voiceGlaiveCombo				= mod:NewVoice(181354, "Tank")--Defensive
 local voiceMassiveBlast				= mod:NewVoice(181359, "Tank")--changemt
 
 mod:AddRangeFrameOption(20, 181099)
---mod:AddHudMapOption("HudMapOnGaze", 181597)
+mod:AddHudMapOption("HudMapOnGaze2", 181597, false)
 mod:AddInfoFrameOption(181597)
 
 mod.vb.DoomTargetCount = 0
@@ -261,9 +261,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.HudMapOnGaze then
---		DBMHudMap:Disable()
---	end
+	if self.Options.HudMapOnGaze2 then
+		DBMHudMap:Disable()
+	end
 end 
 
 function mod:SPELL_CAST_START(args)
@@ -406,9 +406,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceGaze:Schedule(0.3, "gathershare")
 			end
 		end
---		if self.Options.HudMapOnGaze then
---			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 8, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
---		end
+		if self.Options.HudMapOnGaze2 then
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 8, nil, nil, nil, 0.5, nil, true):Appear():SetLabel(args.destName)
+		end
 	elseif spellId == 181119 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 or amount > 6 then
@@ -469,9 +469,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 181597 or spellId == 182006 then
---		if self.Options.HudMapOnGaze then
---			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
---		end
+		if self.Options.HudMapOnGaze2 then
+			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		end
 	elseif spellId == 181275 then
 		if args:IsPlayer() then
 			yellCurseofLegion:Cancel()
