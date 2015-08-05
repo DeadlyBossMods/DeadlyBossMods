@@ -347,13 +347,13 @@ local function updatePlayerDebuffRemaining()
 		local _, _, _, _, _, _, expires = UnitDebuff(uId, spellName)
 		if expires then
 			local debuffTime = expires - GetTime()
-			if debuffTime < 5 then
-				lines[UnitName(uId)] = "|cffff0000"..mfloor(debuffTime).."|r"--Red
-			elseif debuffTime < 10 then
-				lines[UnitName(uId)] = "|cff990000"..mfloor(debuffTime).."|r"--Orange
-			else
+		--	if debuffTime < 5 then
+			--	lines[UnitName(uId)] = "|cffff0000"..mfloor(debuffTime).."|r"--Red
+			--elseif debuffTime < 10 then
+			--	lines[UnitName(uId)] = "|cff990000"..mfloor(debuffTime).."|r"--Orange
+			--else
 				lines[UnitName(uId)] = mfloor(debuffTime)
-			end
+			--end
 		end
 	end
 	updateLines()
