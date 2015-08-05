@@ -92,9 +92,9 @@ local timerOverwhelmingChaosCD		= mod:NewNextCountTimer(10, 187204, nil, nil, ni
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
-local countdownFelSurge				= mod:NewCountdown(30, 186407, "-Tank")
-local countdownVoidSurge			= mod:NewCountdown("Alt30", 186333, "-Tank")
-local countdownImps					= mod:NewCountdown("AltTwo25", "ej11694", "Dps")
+local countdownFelSurge				= mod:NewCountdown(30, 186407, "-Tank", nil, 3)
+local countdownVoidSurge			= mod:NewCountdown("Alt30", 186333, "Ranged", nil, 3)
+local countdownImps					= mod:NewCountdown("AltTwo25", "ej11694", "Dps", nil, 4)
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceFelsinged				= mod:NewVoice(186073)	--run away
