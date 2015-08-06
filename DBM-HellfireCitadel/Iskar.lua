@@ -445,9 +445,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 182178 or spellId == 182200 then
-		if self.Options.HudMapOnChakram then
-			DBMHudMap:FreeEncounterMarkerByTarget(182178, args.destName)
-		end
+--		if self.Options.HudMapOnChakram then
+--			DBMHudMap:FreeEncounterMarkerByTarget(182178, args.destName)
+--		end
 	end
 end
 
