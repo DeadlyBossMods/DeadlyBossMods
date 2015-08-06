@@ -176,7 +176,6 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerEnforcersOnslaughtCD:Start()
 		end
-		timerEnforcersOnslaughtCD:Start()
 	elseif spellId == 180608 then
 		self.vb.gavelCount = self.vb.gavelCount+1
 		specWarnGaveloftheTyrant:Show(self.vb.gavelCount)
