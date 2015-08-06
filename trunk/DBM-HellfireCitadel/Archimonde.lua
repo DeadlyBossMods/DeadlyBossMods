@@ -284,7 +284,7 @@ local function setDemonicFeedback(self)
 	end
 end
 
-local function showMarkOfLegion(self)
+local function showMarkOfLegion(self, spellName)
 	--5,7,9,11 seconds. Sorted lowest to highest
 	warnMarkOfLegion:Show(table.concat(legionTargets, "<, >"))
 	for i = 1, #legionTargets do
@@ -319,7 +319,9 @@ local function showMarkOfLegion(self)
 				else
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
 				end
-			end	
+			end
+		else
+			DBM:Debug("showMarkOfLegion failed to set icons/hud because debuff duration is nil")
 		end
 	end
 end
@@ -738,9 +740,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		legionTargets[#legionTargets+1] = args.destName
 		self:Unschedule(showMarkOfLegion)
 		if #legionTargets == 4 then
-			showMarkOfLegion(self)
+			showMarkOfLegion(self, args.spellName)
 		else
-			self:Schedule(0.5, showMarkOfLegion, self)
+			self:Schedule(0.5, showMarkOfLegion, self, args.spellName)
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)--Find out what our specific seed timer is
@@ -758,6 +760,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		updateRangeFrame(self)
 		if self.Options.InfoFrame and self.vb.markOfLegionRemaining == 1 then--coming from 0, open infoframe
+			DBM:Debug("Mark of Legion InfoFrame should be opening")
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(4, "playerdebuffremaining", args.spellName)
 		end
@@ -826,6 +829,14 @@ end
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 187108 then--Infernal Doombringer Spawn
 		self.vb.InfernalsActive = self.vb.InfernalsActive + 1
+		if self:AntiSpam(15, 5) then
+			self.vb.InfernalsCast = self.vb.InfernalsCast + 1
+			specWarnInfernals:Show(self.vb.InfernalsCast)
+			local cooldown = infernalTimers[self.vb.InfernalsCast+1]
+			if cooldown then
+				timerInfernalsCD:Start(cooldown, self.vb.InfernalsCast+1)
+			end
+		end
 	end
 end
 
@@ -907,19 +918,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			--All need work, actual logs would be nice
 			table.wipe(shacklesTargets)--Just to reduce infoframe overhead
 			timerWroughtChaosCD:Cancel()
-			timerDarkConduitCD:Start(10, 1)
-			timerMarkOfLegionCD:Start(22, 1)
-			timerInfernalsCD:Start(37, 1)
-			timerSourceofChaosCD:Start(50, 1)
-			timerTwistedDarknessCD:Start(79, 1)
-			timerSeethingCorruptionCD:Start(nil, 1)
-		end
-	elseif spellId == 187111 then--Infernal Doombringer Spawn
-		self.vb.InfernalsActive = self.vb.InfernalsActive + 1
-		specWarnInfernals:Show(self.vb.InfernalsActive)
-		local cooldown = infernalTimers[self.vb.InfernalsActive+1]
-		if cooldown then
-			timerInfernalsCD:Start(cooldown, self.vb.InfernalsActive+1)
+			timerDarkConduitCD:Start(8, 1)
+			timerMarkOfLegionCD:Start(20, 1)
+			timerInfernalsCD:Start(35, 1)
+			timerSourceofChaosCD:Start(48, 1)
+			timerTwistedDarknessCD:Start(77, 1)
+			timerSeethingCorruptionCD:Start(105, 1)
 		end
 	end
 end
