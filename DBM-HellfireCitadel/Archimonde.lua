@@ -593,7 +593,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.HudMapOnFelBurst2 then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 5, 0, 1, 0, 0.5):Appear():SetLabel(args.destName)
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 5, nil, nil, nil, 0.5):Appear():SetLabel(args.destName)
 		end
 	elseif spellId == 183865 then
 		warnDemonicHavoc:CombinedShow(0.3, args.destName)
