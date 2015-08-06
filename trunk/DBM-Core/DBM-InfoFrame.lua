@@ -537,22 +537,22 @@ function onUpdate(frame)
 				if leftText == UnitName("player") then--It's player.
 					addedSelf = true
 					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerbaddebuffbyspellid" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
-						if currentEvent == "playerdebuffremaining" then
-							if tonumber(rightText) < 5 then
-								frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 0, 0)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
-							elseif tonumber(rightText) < 10 then
-								frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 127.5, 0)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
-							else
-								frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 0, 0)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
-							end
-						else
-							frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 255, 255)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
-						end
+						frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 255, 255)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
 					else--Green
 						frame:AddDoubleLine(icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
 					end
 				else--It's not player, do nothing special with it. Ordinary class colored text.
-					frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
+					if currentEvent == "playerdebuffremaining" then
+						if tonumber(rightText) < 5 then
+							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 0, 0)--Red
+						elseif tonumber(rightText) < 10 then
+							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 127.5, 0)--Orange
+						else
+							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)--White
+						end
+					else
+						frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
+					end
 				end
 			end
 			if not addedSelf and DBM.Options.InfoFrameShowSelf and currentEvent == "playerpower" then-- Only Shows on playerpower event.
