@@ -829,7 +829,7 @@ end
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 187108 then--Infernal Doombringer Spawn
 		self.vb.InfernalsActive = self.vb.InfernalsActive + 1
-		if self:AntiSpam(15, 5) then
+		if self:AntiSpam(15, 5) and self:IsMythic() then
 			self.vb.InfernalsCast = self.vb.InfernalsCast + 1
 			specWarnInfernals:Show(self.vb.InfernalsCast)
 			local cooldown = infernalTimers[self.vb.InfernalsCast+1]
