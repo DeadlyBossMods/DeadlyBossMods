@@ -230,7 +230,7 @@ function mod:SPELL_AURA_APPLIED(args)
 						numPlayers = 4
 					end
 					--Adjust count for 3rd cast off the 2nd cast above
-					if count == 4 and (playersCount == 15 or playersCount == 16 or playersCount == 21 or playersCount == 22 or playersCount == 25 or playersCount == 26) then--subtrack 1 from above for 2nd cast
+					if count == 4 and (playersCount == 15 or playersCount == 16 or playersCount == 21 or playersCount == 22) then--subtrack 1 from above for 2nd cast
 						numPlayers = numPlayers - 1
 					end
 					timerShadowofDeathCDDps:Start(36, numPlayers.."x"..DBM_CORE_DAMAGE_ICON)
