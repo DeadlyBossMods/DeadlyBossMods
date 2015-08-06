@@ -155,9 +155,9 @@ local function ImpRepeater(self)
 	self:Schedule(25, ImpRepeater, self)
 	if self.Options.SetIconOnImps then
 		if self.vb.impActive > 0 then--Last set isn't dead yet, use alternate icons
-			self:ScanForMobs(94231, 0, 5, 3, 0.3, 10, "SetIconOnImps")
+			self:ScanForMobs(94231, 0, 5, 3, 0.2, 10, "SetIconOnImps")
 		else
-			self:ScanForMobs(94231, 0, 8, 3, 0.3, 10, "SetIconOnImps")
+			self:ScanForMobs(94231, 0, 8, 3, 0.2, 10, "SetIconOnImps")
 		end
 	end
 end
