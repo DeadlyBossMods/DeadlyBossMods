@@ -184,12 +184,12 @@ mod.vb.sourceOfChaosCast = 0
 mod.vb.twistedDarknessCast = 0
 mod.vb.seethingCorruptionCount = 0
 --Mythic sequence timers for phase 3 (Made by video, subject to inaccuracies until logs available)
-local legionTimers = {22, 63, 60, 60, 50, 45}
-local darkConduitTimers = {10, 123, 95, 55, 50}
-local infernalTimers = {37, 63, 63, 55, 68, 40}--Seems off. that 68 is oddball.
-local sourceofChaosTimers = {50, 58, 76, 78}--Seens off as well, but who knows, maybe.
-local twistedDarknessTimers = {79, 76, 42, 40, 72}--Also seems off, could be missing one
-local seethingCorruptionTimers = {120, 52, 70, 30, 40}--Really just need logs to verify this nonsense
+local legionTimers = {20, 63, 60, 60, 50, 45}
+local darkConduitTimers = {8, 123, 95, 55, 50}
+local infernalTimers = {35, 63, 63, 55, 68, 40}--Seems off. that 68 is oddball.
+local sourceofChaosTimers = {49, 58, 76, 78}--Seens off as well, but who knows, maybe.
+local twistedDarknessTimers = {75, 76, 42, 40, 72}--Also seems off, could be missing one
+local seethingCorruptionTimers = {61, 58, 52, 70, 30, 40}--Really just need logs to verify this nonsense
 --Range frame/filter shit
 local shacklesTargets = {}
 local legionTargets = {}
@@ -921,9 +921,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerDarkConduitCD:Start(8, 1)
 			timerMarkOfLegionCD:Start(20, 1)
 			timerInfernalsCD:Start(35, 1)
-			timerSourceofChaosCD:Start(48, 1)
-			timerTwistedDarknessCD:Start(77, 1)
-			timerSeethingCorruptionCD:Start(105, 1)
+			timerSourceofChaosCD:Start(49, 1)
+			timerSeethingCorruptionCD:Start(61, 1)
+			timerTwistedDarknessCD:Start(75, 1)
 		end
 	end
 end
