@@ -669,7 +669,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 					--create line
 					if self.Options.ExtendWroughtHud2 then
-						DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150, true)
+						DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150, nil, true)
 					else
 						DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150)
 					end
@@ -684,7 +684,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 					--Create Line
 					if self.Options.ExtendWroughtHud2 then
-						DBMHudMap:AddEdge(1, 0, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150, true)
+						DBMHudMap:AddEdge(1, 0, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150, nil, true)
 					else
 						DBMHudMap:AddEdge(1, 0, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150)
 					end
