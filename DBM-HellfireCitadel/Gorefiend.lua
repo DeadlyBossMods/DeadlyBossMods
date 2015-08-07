@@ -399,7 +399,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerTouchofDoomCD:Start(9)
 		timerSharedFateCD:Start(19, 1)
 		timerFeastofSouls:Start()
-		if self.Options.RangeFrame then
+		if self.Options.RangeFrame and self:IsInCombat() then
 			DBM.RangeCheck:Show(5, digestFilter)
 		end
 	elseif spellId == 185982 and not playerDown then
