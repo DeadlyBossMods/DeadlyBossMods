@@ -302,7 +302,6 @@ local function showMarkOfLegion(self, spellName)
 				yellMarkOfLegionPoS:Yell(roundedTime)
 			end
 			if self.Options.SetIconOnMarkOfLegion then
-				DBM:Debug("Mark of legion setting icon. roundedTime is : "..roundedTime)
 				--This should work, if times are actually these values
 				if roundedTime == 5 then
 					self:SetIcon(name, 1)
@@ -315,7 +314,6 @@ local function showMarkOfLegion(self, spellName)
 				end
 			end
 			if self.Options.HudMapMarkofLegion then
-				DBM:Debug("Mark of legion setting Hud. roundedTime is : "..roundedTime)
 				if roundedTime == 5 then
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match star
 				elseif roundedTime == 7 then
@@ -326,8 +324,6 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
 				end
 			end
-		else
-			DBM:Debug("showMarkOfLegion failed to set icons/hud because debuff duration is nil")
 		end
 	end
 end
@@ -754,12 +750,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		playerBanished = true
 		updateRangeFrame(self)
 	elseif spellId == 187050 then
-		DBM:Debug("Mark of legion applied to "..args.destName)
 		self.vb.markOfLegionRemaining = self.vb.markOfLegionRemaining + 1
 		legionTargets[#legionTargets+1] = args.destName
 		self:Unschedule(showMarkOfLegion)
 		if #legionTargets == 4 then
-			DBM:Debug("Mark of legion on 4 targets running showMarkOfLegion now")
 			showMarkOfLegion(self, args.spellName)
 		else
 			self:Schedule(0.5, showMarkOfLegion, self, args.spellName)
