@@ -185,12 +185,12 @@ mod.vb.sourceOfChaosCast = 0
 mod.vb.twistedDarknessCast = 0
 mod.vb.seethingCorruptionCount = 0
 --Mythic sequence timers for phase 3 (Made by video, subject to inaccuracies until logs available)
-local legionTimers = {20, 63, 60, 60, 50, 45}
-local darkConduitTimers = {8, 123, 95, 55, 50}
-local infernalTimers = {35, 63, 63, 55, 68, 40}--Seems off. that 68 is oddball.
-local sourceofChaosTimers = {49, 58, 76, 78}--Seens off as well, but who knows, maybe.
-local twistedDarknessTimers = {75, 76, 42, 40, 72}--Also seems off, could be missing one
-local seethingCorruptionTimers = {61, 58, 52, 70, 30, 40}--Really just need logs to verify this nonsense
+local legionTimers = {20, 63, 60, 60, 50, 45}--Verified up to second 60, rest by video
+local darkConduitTimers = {8, 123, 95, 55, 50}-- Verified up to 123, Rest by video
+local infernalTimers = {35, 63, 63, 55, 68, 40}--Verified by log up to second 63. Rest by video
+local sourceofChaosTimers = {49, 58, 76, 78}--Verified by log up to 76. Rest by video
+local twistedDarknessTimers = {75, 78, 42, 40, 72}--Verifed up to 42 by logs, rest by video
+local seethingCorruptionTimers = {61, 58, 52, 70, 30, 40}--Verified up to 52 by log, rest by video
 --Range frame/filter shit
 local shacklesTargets = {}
 local legionTargets = {}
