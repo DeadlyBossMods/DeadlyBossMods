@@ -301,6 +301,7 @@ local function showMarkOfLegion(self, spellName)
 				--Possibly auto assign like http://puu.sh/jsyr5/7014c50cb3.jpg
 				yellMarkOfLegionPoS:Yell(roundedTime)
 			end
+			expires = tonumber(expires)
 			if self.Options.SetIconOnMarkOfLegion then
 				--This should work, if times are actually these values
 				if expires < 5.1 then
@@ -667,19 +668,23 @@ function mod:SPELL_AURA_APPLIED(args)
 							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5.5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
 							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.9, 5.5, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger (no label on player dot)
 						else
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5.5, nil, nil, nil, 0.5, nil, false):Pulse(0.5, 0.5)
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.9, 5.5, nil, nil, nil, 1, nil, false):Pulse(0.5, 0.5)--Players own dot bigger
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5.5, nil, nil, nil, 0.5, nil, false):Appear()
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.9, 5.5, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger
 						end
 					end
 					--create line
 					if self.Options.ExtendWroughtHud2 then
 						if self.Options.AlternateHudLine then
-							DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150, "beam1", true)
+							DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 15, "beam1", true)
 						else
 							DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150, nil, true)
 						end
 					else
-						DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150)
+						if self.Options.AlternateHudLine then
+							DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 15, "beam1")
+						else
+							DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150)
+						end
 					end
 				else--red lines for non player lines
 					--Create Points
@@ -693,7 +698,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					--Create Line
 					if self.Options.ExtendWroughtHud2 then
 						if self.Options.AlternateHudLine then
-							DBMHudMap:AddEdge(1, 0, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150, "beam1", true)
+							DBMHudMap:AddEdge(1, 0, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 15, "beam1", true)
 						else
 							DBMHudMap:AddEdge(1, 0, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150, nil, true)
 						end
