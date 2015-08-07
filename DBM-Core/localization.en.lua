@@ -400,12 +400,17 @@ DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "Play spoken alerts for phase changes"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Play countdown sound for $spell:%s cooldown"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Play countdown sound for when $spell:%s fades"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Play countout sound for $spell:%s duration"
-DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Yell when you are affected by $spell:%s"
+DBM_CORE_AUTO_YELL_OPTION_TEXT = {
+	yell		= "Yell when you are affected by $spell:%s",
+	count		= "Yell (with count) when you are affected by $spell:%s",
+	fade		= "Yell (with countdown) when $spell:%s is fading",
+	position	= "Yell (with position) when you are affected by $spell:%s"
+}
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
-	yell	= "%s on " .. UnitName("player") .. "!",
-	count	= "%s on " .. UnitName("player") .. "! (%%d)",
-	fade	= "%s fading in %%d",
-	position = "%s %%s on "..UnitName("player")
+	yell		= "%s on " .. UnitName("player") .. "!",
+	count		= "%s on " .. UnitName("player") .. "! (%%d)",
+	fade		= "%s fading in %%d",
+	position 	= "{rt%d}%%s %%s on "..UnitName("player").."{rt%%d}"
 }
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Show HudMap for $spell:%s"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Show HudMap for various mechanics"
