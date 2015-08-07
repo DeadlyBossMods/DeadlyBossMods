@@ -259,7 +259,7 @@ local function updateRangeFrame(self)
 		DBM.RangeCheck:Show(6)
 	elseif self.vb.markOfLegionRemaining > 0 then
 		if UnitDebuff("player", markOfLegionDebuff) then
-			DBM.RangeCheck:Show(10)
+			DBM.RangeCheck:Show(10, nil, nil, 4, true)
 		else
 			DBM.RangeCheck:Show(10, markOfLegionFilter)
 		end
@@ -287,6 +287,9 @@ end
 
 local function showMarkOfLegion(self, spellName)
 	--5,7,9,11 seconds. Sorted lowest to highest
+	--5, 7 on melee, 9, 11 on ranged.
+	--DBM auto sorts icons to 1-5, 2-7, 3-9, 4-11
+	--Yell format is "<icon>Mark (expireTime) on <playername><icon>"
 	warnMarkOfLegion:Show(table.concat(legionTargets, "<, >"))
 	for i = 1, #legionTargets do
 		local name = legionTargets[i]
@@ -295,33 +298,45 @@ local function showMarkOfLegion(self, spellName)
 		if expires then
 			local debuffTime = expires - GetTime()
 			local roundedTime = math.floor(debuffTime+0.5)
-			if name == playerName then
-				--TODO< enhance yell more
-				--5, 7 on melee, 9, 11 on ranged.
-				--Possibly auto assign like http://puu.sh/jsyr5/7014c50cb3.jpg
-				yellMarkOfLegionPoS:Yell(roundedTime)
-			end
-			if self.Options.SetIconOnMarkOfLegion then
-				--This should work, if times are actually these values
-				if roundedTime == 5 then
+			if roundedTime == 5 then
+				if self.Options.SetIconOnMarkOfLegion then
 					self:SetIcon(name, 1)
-				elseif roundedTime == 7 then
+				end
+				if self.Options.HudMapMarkofLegion then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match star
+				end
+				if name == playerName then
+					yellMarkOfLegionPoS:Yell(1, roundedTime, 1)
+				end
+			elseif roundedTime == 7 then
+				if self.Options.SetIconOnMarkOfLegion then
 					self:SetIcon(name, 2)
-				elseif roundedTime == 9 then
+				end
+				if self.Options.HudMapMarkofLegion then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match circle
+				end
+				if name == playerName then
+					yellMarkOfLegionPoS:Yell(2, roundedTime, 2)
+				end
+			elseif roundedTime == 9 then
+				if self.Options.SetIconOnMarkOfLegion then
 					self:SetIcon(name, 3)
-				else
+				end
+				if self.Options.HudMapMarkofLegion then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
+				end
+				if name == playerName then
+					yellMarkOfLegionPoS:Yell(3, roundedTime, 3)
+				end
+			else
+				if self.Options.SetIconOnMarkOfLegion then
 					self:SetIcon(name, 4)
 				end
-			end
-			if self.Options.HudMapMarkofLegion then
-				if roundedTime == 5 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match star
-				elseif roundedTime == 7 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match circle
-				elseif roundedTime == 9 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
-				else
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
+				if self.Options.HudMapMarkofLegion then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)
+				end
+				if name == playerName then
+					yellMarkOfLegionPoS:Yell(4, roundedTime, 4)
 				end
 			end
 		end
@@ -335,7 +350,7 @@ local function showFelburstTargets(self)
 		if i == 9 then break end--It's a wipe, plus can't do more than 8 of these with icons
 		local name = felburstTargets[i]
 		if name == playerName then
-			yellFelBurst:Yell(i)
+			yellFelBurst:Yell(i, i, i)
 		end
 		if self.Options.SetIconOnFelBurst then
 			self:SetIcon(name, i)
@@ -361,7 +376,7 @@ local function breakShackles(self, spellName)
 		local name = shacklesTargets[i]
 		if name == playerName then
 			playerHasShackle = true
-			yellShackledTorment:Yell(i)
+			yellShackledTorment:Yell(i, i, i)
 			if i == 1 then
 				specWarnBreakShackle:Show(L.First)
 				voiceShackledTorment:Play("184964a")

@@ -205,7 +205,7 @@ local function warnGazeTargts(self)
 	for i = 1, #gazeTargets do
 		local name = gazeTargets[i]
 		if name == playerName then
-			yellGaze:Yell(i)
+			yellGaze:Yell(i, i, i)
 		end
 	end
 	if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
@@ -221,7 +221,7 @@ local function breakDoom(self)
 	for i = 1, #doomTargets do
 		local name = doomTargets[i]
 		if name == playerName then
-			yellMarkOfDoom:Yell(i)
+			yellMarkOfDoom:Yell(i, i, i)
 		end
 	end
 end

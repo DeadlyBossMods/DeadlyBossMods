@@ -331,7 +331,7 @@ DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Set icons on $spell:%s"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Tocar som \"Fuja garotinha\" para $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Tocar som de contagem regressiva para $spell:%s"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT	= "Tocar som de contagem regressiva para duração de $spell:%s"
-DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Gritar quando você é afetado por $spell:%s"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.yell		= "Gritar quando você é afetado por $spell:%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= "%s em " .. UnitName("player") .. "!"
 
 
