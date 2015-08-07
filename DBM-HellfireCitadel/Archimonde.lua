@@ -301,25 +301,24 @@ local function showMarkOfLegion(self, spellName)
 				--Possibly auto assign like http://puu.sh/jsyr5/7014c50cb3.jpg
 				yellMarkOfLegionPoS:Yell(roundedTime)
 			end
-			expires = tonumber(expires)
 			if self.Options.SetIconOnMarkOfLegion then
 				--This should work, if times are actually these values
-				if expires < 5.1 then
+				if roundedTime == 5 then
 					self:SetIcon(name, 1)
-				elseif expires < 7.1 then
+				elseif roundedTime == 7 then
 					self:SetIcon(name, 2)
-				elseif expires < 9.1 then
+				elseif roundedTime == 9 then
 					self:SetIcon(name, 3)
 				else
 					self:SetIcon(name, 4)
 				end
 			end
 			if self.Options.HudMapMarkofLegion then
-				if expires < 5.1 then
+				if roundedTime == 5 then
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match star
-				elseif expires < 7.1 then
+				elseif roundedTime == 7 then
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match circle
-				elseif expires < 9.1 then
+				elseif roundedTime == 9 then
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
 				else
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
