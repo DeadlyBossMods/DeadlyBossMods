@@ -296,6 +296,9 @@ local function showMarkOfLegion(self, spellName)
 			local debuffTime = expires - GetTime()
 			local roundedTime = math.floor(debuffTime+0.5)
 			if name == playerName then
+				--TODO< enhance yell more
+				--5, 7 on melee, 9, 11 on ranged.
+				--Possibly auto assign like http://puu.sh/jsyr5/7014c50cb3.jpg
 				yellMarkOfLegionPoS:Yell(roundedTime)
 			end
 			if self.Options.SetIconOnMarkOfLegion then
