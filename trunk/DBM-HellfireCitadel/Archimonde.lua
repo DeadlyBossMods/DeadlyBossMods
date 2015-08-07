@@ -285,6 +285,11 @@ local function setDemonicFeedback(self)
 	end
 end
 
+--/run DBM:GetModByName("1438"):YellTest(1)
+function mod:YellTest(n)
+	yellMarkOfLegionPoS:Yell(5, n, n)
+end
+
 local function showMarkOfLegion(self, spellName)
 	--5,7,9,11 seconds. Sorted lowest to highest
 	--5, 7 on melee, 9, 11 on ranged.
@@ -306,7 +311,7 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match star
 				end
 				if name == playerName then
-					yellMarkOfLegionPoS:Yell(1, roundedTime, 1)
+					yellMarkOfLegionPoS:Yell(roundedTime, 1, 1)
 				end
 			elseif roundedTime == 7 then
 				if self.Options.SetIconOnMarkOfLegion then
@@ -316,7 +321,7 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match circle
 				end
 				if name == playerName then
-					yellMarkOfLegionPoS:Yell(2, roundedTime, 2)
+					yellMarkOfLegionPoS:Yell(roundedTime, 2, 2)
 				end
 			elseif roundedTime == 9 then
 				if self.Options.SetIconOnMarkOfLegion then
@@ -326,7 +331,7 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
 				end
 				if name == playerName then
-					yellMarkOfLegionPoS:Yell(3, roundedTime, 3)
+					yellMarkOfLegionPoS:Yell(roundedTime, 3, 3)
 				end
 			else
 				if self.Options.SetIconOnMarkOfLegion then
@@ -336,7 +341,7 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)
 				end
 				if name == playerName then
-					yellMarkOfLegionPoS:Yell(4, roundedTime, 4)
+					yellMarkOfLegionPoS:Yell(roundedTime, 4, 4)
 				end
 			end
 		end

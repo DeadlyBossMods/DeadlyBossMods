@@ -138,7 +138,7 @@ local function warnSeeds(self)
 				specWarnSeedPosition:Show(currentType[i])
 			end
 			if self.Options.Yell181508 then
-				yellSeeds2:Yell(i, currentType[i], i)
+				yellSeeds2:Yell(currentType[i], i, i)
 			end
 			if currentVoice and currentVoice[i] then
 				voiceSeedsofDestruction:Play(currentVoice[i])
