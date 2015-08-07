@@ -410,7 +410,7 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
 	yell		= "%s on " .. UnitName("player") .. "!",
 	count		= "%s on " .. UnitName("player") .. "! (%%d)",
 	fade		= "%s fading in %%d",
-	position 	= "{rt%d}%%s %%s on "..UnitName("player").."{rt%%d}"
+	position 	= "%s %%s on {rt%%d}"..UnitName("player").."{rt%%d}"
 }
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Show HudMap for $spell:%s"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Show HudMap for various mechanics"
