@@ -543,9 +543,9 @@ function onUpdate(frame)
 					end
 				else--It's not player, do nothing special with it. Ordinary class colored text.
 					if currentEvent == "playerdebuffremaining" then
-						if tonumber(rightText) < 5 then
+						if tonumber(rightText) < 6 then
 							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 0, 0)--Red
-						elseif tonumber(rightText) < 10 then
+						elseif tonumber(rightText) < 11 then
 							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 127.5, 0)--Orange
 						else
 							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)--White
