@@ -59,6 +59,7 @@ local textureLookup = {
 	fuzzyring	= [[SPELLS\WHITERINGTHIN128.BLP]],
 	fatring		= [[SPELLS\WhiteRingFat128.blp]],
 	swords		= [[SPELLS\Strength_128.blp]],
+	beam1		= [[Textures\SPELLCHAINEFFECTS\Beam_01.blp]]
 }
 
 local textureKeys, textureVals = {}, {}
@@ -178,7 +179,8 @@ mod.group = group
 local pointCache, edgeCache = {}, {}
 local activePointList, activeEdgeList = {}, {}
 
-local zoomScale, targetZoomScale = 45, 40
+local zoomScale, targetZoomScale, fixedZoomScale = 45, 40, nil
+local lastPlayerX, lastPlayerY
 
 do
 	local fine, coarse = 1 / 60, 3
@@ -186,22 +188,19 @@ do
 	local zoomDelay, fadeInDelay, fadeOutDelay = 0.5, 0.25, 0.5
 
 	local function computeNewScale()
+		if fixedZoomScale then return fixedZoomScale end
 		local px, py = mod:GetUnitPosition("player")
+		lastPlayerX, lastPlayerY = px, py
 		local maxDistance = 0
-		local activeObjects = 0
 		for point, _ in pairs(activePointList) do
 			local d = point:Distance(px, py, true)
-			local maxSize = 200
-			if (d > 0 and d < maxSize and not point.persist) or point.alwaysShow then
-				activeObjects = activeObjects + 1
-			end
 
 			if d > 0 and d < 200 and d > maxDistance then
 				maxDistance = d
 			end
 		end
-		if maxDistance < 30 then maxDistance = 30 end
-		return maxDistance, activeObjects
+		if maxDistance < 20 then maxDistance = 20 end
+		return maxDistance
 	end
 
 	function onUpdate(self, t)
@@ -217,9 +216,7 @@ do
 			local elapsed = fine * steps
 			fineTotal = fineTotal - elapsed
 
-			local zoom
-			zoom, mod.activeObjects = computeNewScale()
-			targetZoomScale = zoom
+			targetZoomScale = computeNewScale()
 			local currentAlpha = mod.canvas:GetAlpha()
 			if targetCanvasAlpha and currentAlpha ~= targetCanvasAlpha then
 				local newAlpha
@@ -252,7 +249,6 @@ function mod:OnInitialize()
 	self.canvas = CreateFrame("Frame", "DBMHudMapCanvas", UIParent)
 	self.canvas:SetSize(UIParent:GetWidth(), UIParent:GetHeight())
 	self.canvas:SetPoint("CENTER")
-	self.activeObjects = 0
 	self.HUDEnabled = false
 end
 
@@ -542,7 +538,7 @@ Edge = setmetatable({
 		end
 		return nil
 	end,
-	New = function(self, r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime, w, extend)
+	New = function(self, r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime, texfile, w, extend)
 		local t = tremove(edgeCache)
 		if not t then
 			t = setmetatable({}, edge_mt)
@@ -553,9 +549,7 @@ Edge = setmetatable({
 			t.frame:SetFrameStrata("LOW")
 			t.texture = t.frame:CreateTexture()
 			t.texture:SetAllPoints()
-			-- local line = "Interface\\TaxiFrame\\UI-Taxi-Line"
-			local line = "Interface\\AddOns\\DBM-Core\\textures\\line"
-			t.texture:SetTexture(line)
+			t.texture:SetTexture(textureLookup[texfile] or texfile or [[Interface\AddOns\DBM-Core\textures\line]])
 
 			t.fadeOutGroup = t.frame:CreateAnimationGroup()
 			t.fadeOut = t.fadeOutGroup:CreateAnimation("alpha")
@@ -641,7 +635,16 @@ Edge = setmetatable({
 		if self.dstPlayer then
 			if self.extend then
 				local destx, desty = mod:GetUnitPosition(self.dstPlayer)
-				dx, dy = self:Extend(sx, sy, destx, desty, 30)	
+				--local dists = mod:DistanceBetweenPoints(sx, sy, lastPlayerX, lastPlayerY)
+				local distd = mod:DistanceBetweenPoints(destx, desty, lastPlayerX, lastPlayerY)
+				--local extendValue = zoomScale * 1.25 - dists - distd
+				local extendValue = zoomScale - distd
+				if extendValue > 0 then
+					--print("Extending line by "..extendValue.." (scale "..zoomScale..")")
+					dx, dy = self:Extend(sx, sy, destx, desty, extendValue)
+				else
+					dx, dy = destx, desty
+				end
 			else
 				dx, dy = mod:GetUnitPosition(self.dstPlayer)
 			end
@@ -710,12 +713,12 @@ Edge = setmetatable({
 	end,
 }, object_mt)
 
-function mod:AddEdge(r, g, b, a, lifetime, srcPlayer, dstPlayer, sx, sy, dx, dy, w, extend)
+function mod:AddEdge(r, g, b, a, lifetime, srcPlayer, dstPlayer, sx, sy, dx, dy, w, texfile, extend)
 	if DBM.Options.DontShowHudMap2 then return end
 	if not self.HUDEnabled then
 		self:Enable()
 	end
-	return Edge:New(r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime, w, extend)
+	return Edge:New(r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime, texfile, w, extend)
 end
 
 function mod:ClearAllEdges()
@@ -1055,7 +1058,7 @@ do
 			return self
 		end,
 
-		EdgeFrom = function(self, point_or_unit_or_x, to_y, lifetime, r, g, b, a, w, extend)
+		EdgeFrom = function(self, point_or_unit_or_x, to_y, lifetime, r, g, b, a, w, texfile, extend)
 			local fromPlayer = self.follow
 			local unit, x, y
 			if type(point_or_unit_or_x) == "table" then
@@ -1067,7 +1070,7 @@ do
 				x = to_y ~= nil and point_or_unit_or_x
 				y = to_y
 			end
-			local edge = Edge:New(r, g, b, a, fromPlayer, unit, self.stickX, self.stickY, x, y, lifetime, w, extend)
+			local edge = Edge:New(r, g, b, a, fromPlayer, unit, self.stickX, self.stickY, x, y, lifetime, texfile, w, extend)
 			self:AttachEdge(edge)
 			if type(point_or_unit_or_x) == "table" then
 				point_or_unit_or_x:AttachEdge(edge)
@@ -1078,7 +1081,7 @@ do
 			return edge
 		end,
 
-		EdgeTo = function(self, point_or_unit_or_x, from_y, lifetime, r, g, b, a, w, extend)
+		EdgeTo = function(self, point_or_unit_or_x, from_y, lifetime, r, g, b, a, w, texfile, extend)
 			local toPlayer = self.follow
 			local unit, x, y
 			if type(point_or_unit_or_x) == "table" then
@@ -1091,7 +1094,7 @@ do
 				y = from_y
 			end
 
-			local edge = Edge:New(r, g, b, a, unit, toPlayer, x, y, self.stickX, self.stickY, lifetime, w, extend)
+			local edge = Edge:New(r, g, b, a, unit, toPlayer, x, y, self.stickX, self.stickY, lifetime, texfile, w, extend)
 			self:AttachEdge(edge)
 			if type(point_or_unit_or_x) == "table" then
 				point_or_unit_or_x:AttachEdge(edge)
@@ -1243,9 +1246,6 @@ do
 end
 edge_mt.__index = Edge
 point_mt.__index = Point
-
-function mod:UpdateMode()
-end
 
 function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend, priority)
 	local red, green, blue = r, g, b
@@ -1463,40 +1463,27 @@ function mod:FreeEncounterMarkers()
 	end
 end
 
-function mod:DistanceToPoint(unit, x, y)
-	local x1, y1 = self:GetUnitPosition(unit)
-	local x2, y2 = x, y
+function mod:DistanceBetweenPoints(x1, y1, x2, y2)
 	local dx = x2 - x1
 	local dy = y2 - y1
-	return abs(pow((dx*dx)+(dy*dy), 0.5))
+	return abs(pow((dx*dx)+(dy*dy), 0.5))	
+end
+
+function mod:DistanceToPoint(unit, x, y)
+	local x1, y1 = self:GetUnitPosition(unit)
+	return self:DistanceBetweenPoints(x1, y1, x, y)
 end
 
 function mod:UnitDistance(unitA, unitB)
 	local x1, y1 = self:GetUnitPosition(unitA)
 	local x2, y2 = self:GetUnitPosition(unitB)
-	local dx = x2 - x1
-	local dy = y2 - y1
-	return abs(pow((dx*dx)+(dy*dy), 0.5))
+	return self:DistanceBetweenPoints(x1, y1, x2, y2)
 end
 
 function mod:GetUnitPosition(unit)
 	if not unit then return nil, nil end
 	local x, y = UnitPosition(unit)
 	return x, y
-end
-
-do
-	local a, b
-	function mod:Measure(restart)
-		local a2, b2 = self:GetUnitPosition("player")
-		if restart or not a then
-			a, b = a2, b2
-		else
-			local c, d = (a2 - a), (b2 - b)
-			print(math.sqrt((c*c)+(d*d)))
-			a, b = nil, nil
-		end
-	end
 end
 
 function mod:SetZoom(zoom, zoomChange)
@@ -1512,6 +1499,10 @@ function mod:SetZoom(zoom, zoomChange)
 	elseif targetZoomScale > 200 then
 		targetZoomScale = 200
 	end
+end
+
+function mod:SetFixedZoom(zoom)
+	fixedZoomScale = zoom
 end
 
 function mod:Update()
