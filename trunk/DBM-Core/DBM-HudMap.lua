@@ -59,7 +59,7 @@ local textureLookup = {
 	fuzzyring	= [[SPELLS\WHITERINGTHIN128.BLP]],
 	fatring		= [[SPELLS\WhiteRingFat128.blp]],
 	swords		= [[SPELLS\Strength_128.blp]],
-	beam1		= [[Textures\SPELLCHAINEFFECTS\Beam_01.blp]]
+	beam1		= [[Textures\SPELLCHAINEFFECTS\Beam_01]]
 }
 
 local textureKeys, textureVals = {}, {}
