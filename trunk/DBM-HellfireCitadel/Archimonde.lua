@@ -1010,6 +1010,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			table.wipe(shacklesTargets)--Just to reduce infoframe overhead
 			timerWroughtChaosCD:Cancel()
 			timerDarkConduitCD:Start(8, 1)
+			setDarkConduit(self)
 			timerMarkOfLegionCD:Start(20, 1)
 			timerInfernalsCD:Start(35, 1)
 			countdownSourceofChaos:Start(49)
