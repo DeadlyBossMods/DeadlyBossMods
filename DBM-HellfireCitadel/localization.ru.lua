@@ -35,6 +35,10 @@ L= DBM:GetModLocalization(1432)
 ------------------
 L= DBM:GetModLocalization(1392)
 
+L:SetMiscLocalization({
+	ExRTNotice		= "%s отправил присвоенные позиции ExRT. Ваши позиции: оранж.:%s, зел.:%s, фиол.:%s"
+})
+
 --------------
 -- Kilrogg Deadeye --
 --------------
@@ -143,6 +147,9 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreakShackle	= "Спец-предупреждение для $spell:184964. Это предупреждение автоматически назначает последовательность разрывания, чтобы минимизировать урон.",
+	ExtendWroughtHud2		= "Продлять линии HUD за цель $spell:185014 (может уменьшить точность линии)",
+	AlternateHudLine		= "Использовать альтернативную текстуру линии для линий HUD между целями $spell:185014",
+	NamesWroughtHud			= "Отображать имена игроков для целей $spell:185014",
 	FilterOtherPhase		= "Фильтровать предупреждения для событий из другой фазы"
 })
 
