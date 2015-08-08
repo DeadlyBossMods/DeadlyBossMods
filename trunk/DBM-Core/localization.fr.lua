@@ -10,7 +10,6 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "Modules '%s' chargés. Pour plus d'options, tapez
 DBM_CORE_LOAD_MOD_COMBAT                        = "Chargement de '%s' reporté jusqu'à la fin du combat"
 DBM_CORE_LOAD_GUI_ERROR				= "Impossible de charger l'interface: %s"
 DBM_CORE_LOAD_GUI_COMBAT                        = "GUI ne peut pas se charger initialement en combat. GUI sera chargé après le combat. Une fois le GUI chargé, vous pourrez le charger en combat." --load?reload?change?
-DBM_CORE_LOAD_SKIN_COMBAT                       = "Erreur du chargement des apparances des timers DBM du combat. Vos timers ne fonctionneront probablement pas correctement et vont générer des erreurs lua. Ceci est généralement causé par un add-on tiers essayant de modifier l'apparence des timers en cours de combat. Il est recommandé de recharger l'UI après le combat"
 DBM_CORE_BAD_LOAD                                       = "DBM a détecté une erreur de chargement du mod de l'instance car vous êtes en combat. Dès que vous sortez de combat veuillez entrer /console reloadui le plus vite possible."
  
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP       = "DBM a désactivé la vérification du nombre de joueurs à portée sur ce combat pour cause de manque d'information sur le nombre de joueurs requis regroupés pour votre taille de raid."
