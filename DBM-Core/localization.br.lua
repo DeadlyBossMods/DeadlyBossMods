@@ -12,7 +12,6 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "Módulo '%s' carregado. Para mais opções, digit
 DBM_CORE_LOAD_MOD_COMBAT			= "Carregamento de '%s' adiado até que você saia de combate"
 DBM_CORE_LOAD_GUI_ERROR				= "Não foi possível carregar interface gráfica: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "A interface gráfica não pode ser carregada em combate e será assim que você o sair. Quando estiver carregada, você poderá chama-la em combate."
-DBM_CORE_LOAD_SKIN_COMBAT			= "Os DBM temporizadores falharam em aparecer em combate e provavelmente funcionarão incorretamente, além de gerar diversos erros no lua. Isso ocorre geralmente por tentativas de mods de terceiros aplicando skins em combate. Recomendamos que você use o comando /reloadui assim que sair de combate."
 DBM_CORE_BAD_LOAD					= "DBM detectou que a sua mod desta área falhou ao tentar carregar por completo por estar em combate. Use o comando /reloadui assim que sair de combate para corrigir o problema."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s não foi carregado por não cumprir os requerimentos. Uma atualização da mod é necessária. Obrigado."
 
