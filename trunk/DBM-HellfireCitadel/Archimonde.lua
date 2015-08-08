@@ -675,11 +675,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 185014 then--Focused Chaos
 		if args:IsPlayer() then
 			specWarnFocusedChaos:Show()
-			yellFocusedChaos:Yell()
 			countdownWroughtChaos:Start()
 			voiceFocusedChaos:Play("185014")
 			yellFocusedChaos:Yell(5)
-			yellFocusedChaos:Schedule(4, 1)
 			yellFocusedChaos:Schedule(3, 2)
 			yellFocusedChaos:Schedule(2, 3)
 			yellFocusedChaos:Schedule(1, 4)
