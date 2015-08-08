@@ -65,7 +65,7 @@ local timerSwatCD					= mod:NewNextCountTimer(40, 181305, nil, "Tank", nil, 5)
 local countdownGraspingHands		= mod:NewCountdown(40, 181299)
 local countdownExplosiveBurst		= mod:NewCountdown("Alt10", 181306)
 
-local voicePound					= mod:NewVoice(180244)--aesoon
+local voicePound					= mod:NewVoice(180244)--scatter
 local voiceFelOutpouring			= mod:NewVoice(181292)--watchwave
 local voiceExplosiveBurst			= mod:NewVoice(181306)--runout
 local voiceGraspingHands			= mod:NewVoice(181299)--gather
@@ -205,7 +205,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.poundActive = true
 		self.vb.poundCount = self.vb.poundCount + 1
 		specWarnPound:Show(self.vb.poundCount)
-		voicePound:Play("aesoon")
+		voicePound:Play("scatter")
 		updateRangeCheck(self)
 	elseif spellId == 181305 then
 		self.vb.swatCount = self.vb.swatCount + 1

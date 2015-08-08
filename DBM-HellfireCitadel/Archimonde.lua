@@ -50,6 +50,7 @@ local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 local warnVoidStarFixate			= mod:NewTargetAnnounce(189895, 2)
 --Mythic
 local warnMarkOfLegion				= mod:NewTargetAnnounce(187050, 4)
+local warnDarkConduit				= mod:NewCountAnnounce(190394, 2, nil, "Ranged")
 
 --Phase 1: The Defiler
 local specWarnDoomfire				= mod:NewSpecialWarningSwitch(189897, "Dps", nil, nil, 1, 5)
@@ -72,8 +73,8 @@ local yellFocusedChaos				= mod:NewFadesYell(185014)
 local specWarnDreadFixate			= mod:NewSpecialWarningYou(186574, false)--In case it matters on mythic, it was spammy on heroic and unimportant
 local specWarnFlamesOfArgus			= mod:NewSpecialWarningInterrupt(186663, "-Healer")
 --Phase 3: The Twisting Nether
-local specWarnDemonicFeedbackSoon	= mod:NewSpecialWarningSoon(187180, nil, nil, nil, 1)
-local specWarnDemonicFeedback		= mod:NewSpecialWarningCount(187180, nil, nil, nil, 3)
+local specWarnDemonicFeedbackSoon	= mod:NewSpecialWarningSoon(187180, nil, nil, nil, 1, 2)
+local specWarnDemonicFeedback		= mod:NewSpecialWarningCount(187180, nil, nil, nil, 3, 2)
 local specWarnNetherBanish			= mod:NewSpecialWarningYou(186961)
 local specWarnNetherBanishOther		= mod:NewSpecialWarningTargetCount(186961)
 local yellNetherBanish				= mod:NewFadesYell(186961)
@@ -85,8 +86,8 @@ local specWarnNetherStorm			= mod:NewSpecialWarningMove(187255)
 --Phase 3.5
 local specWarnRainofChaos			= mod:NewSpecialWarningCount(189953, nil, nil, nil, 2)
 --Mythic
-local specWarnDarkConduit			= mod:NewSpecialWarningCount(190394)--Not sure how to classify yet. or who to exclude
-local specWarnSeethingCorruption	= mod:NewSpecialWarningCount(190506, nil, nil, nil, 2)
+local specWarnDarkConduitSoon		= mod:NewSpecialWarningSoon(190394, "Ranged", nil, nil, 1, 2)
+local specWarnSeethingCorruption	= mod:NewSpecialWarningCount(190506, nil, nil, nil, 2, 2)
 local specWarnMarkOfLegion			= mod:NewSpecialWarningYouCount(187050)--Somehow i suspect this replaces fel burst. It's basically same mechanic, but on multiple people and slightly larger
 local yellMarkOfLegion				= mod:NewFadesYell(187050)
 local yellMarkOfLegionPoS			= mod:NewPosYell(187050)
@@ -148,7 +149,10 @@ local voiceDoomfire					= mod:NewVoice(189897, "Dps")--189897.ogg
 local voiceDeathCaller				= mod:NewVoice("ej11582", "Dps")--ej11582.ogg
 local voiceWroughtChaos				= mod:NewVoice(186123) --new voice
 local voiceFocusedChaos				= mod:NewVoice(185014) --new voice
+local voiceDemonicFeedback			= mod:NewVoice(186961) --spread/scatter
 local voiceAllureofFlamesCD			= mod:NewVoice(183254) --just run
+local voiceDarkConduit				= mod:NewVoice(190394, "Ranged") --spread/scatter
+local voiceSeethingCorruption		= mod:NewVoice(190506) --watch step
 
 mod:AddRangeFrameOption("6/8/10")
 mod:AddSetIconOption("SetIconOnFelBurst", 183634, true)
@@ -182,10 +186,12 @@ mod.vb.overfiendCount = 0
 --Mythic sync variables
 mod.vb.deathBrandCount = 0
 mod.vb.darkConduitCast = 0
+mod.vb.darkConduitSpawn = 0
 mod.vb.InfernalsCast = 0
 mod.vb.sourceOfChaosCast = 0
 mod.vb.twistedDarknessCast = 0
 mod.vb.seethingCorruptionCount = 0
+mod.vb.darkConduit = false
 --Mythic sequence timers for phase 3 (Made by video, subject to inaccuracies until logs available)
 local legionTimers = {20, 63, 60, 60, 50, 45}--Verified up to second 60, rest by video
 local darkConduitTimers = {8, 123, 95, 55, 50}-- Verified up to 95, Rest by video
@@ -259,12 +265,6 @@ local function updateRangeFrame(self)
 		DBM.RangeCheck:Hide()
 	elseif self.vb.demonicFeedback then
 		DBM.RangeCheck:Show(6)
-	elseif self.vb.markOfLegionRemaining > 0 then
-		if UnitDebuff("player", markOfLegionDebuff) then
-			DBM.RangeCheck:Show(10, nil, nil, 4, true)
-		else
-			DBM.RangeCheck:Show(10, markOfLegionFilter)
-		end
 	elseif self.vb.netherPortal then
 		--Blue post says 8, but pretty sure it's 10. The visual was bigger than 8
 		if UnitDebuff("player", NetherBanish) then
@@ -272,11 +272,28 @@ local function updateRangeFrame(self)
 		else
 			DBM.RangeCheck:Show(10, netherFilter)
 		end
-	elseif self.vb.phase < 2 and self:IsRanged() then--Fel burst in phase 1
+	elseif (self.vb.darkConduit or self.vb.phase < 2) and self:IsRanged() then--Fel burst in phase 1, dark conduit in phase 3 mythic
 		DBM.RangeCheck:Show(8)
+	elseif self.vb.markOfLegionRemaining > 0 then
+		if UnitDebuff("player", markOfLegionDebuff) then
+			DBM.RangeCheck:Show(10, nil, nil, 4, true)
+		else
+			DBM.RangeCheck:Show(10, markOfLegionFilter)
+		end
 	else
 		DBM.RangeCheck:Hide()
 	end
+end
+
+local function setDarkConduit(self, clear)
+	if clear then
+		self.vb.darkConduit = false
+	else
+		self.vb.darkConduit = true
+		specWarnDarkConduitSoon:Show()
+		voiceDarkConduit:Play("scatter")
+	end
+	updateRangeFrame(self)
 end
 
 local function setDemonicFeedback(self)
@@ -284,6 +301,7 @@ local function setDemonicFeedback(self)
 	updateRangeFrame(self)
 	if not playerBanished or not self.Options.FilterOtherPhase then
 		specWarnDemonicFeedbackSoon:Show()
+		voiceDemonicFeedback:Play("scattersoon")
 	end
 end
 
@@ -457,10 +475,12 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		self.vb.markOfLegionCast = 0
 		self.vb.darkConduitCast = 0
+		self.vb.darkConduitSpawn = 0
 		self.vb.InfernalsCast = 0
 		self.vb.sourceOfChaosCast = 0
 		self.vb.twistedDarknessCast = 0
 		self.vb.seethingCorruptionCount = 0
+		self.vb.darkConduit = false
 	end
 	updateRangeFrame(self)
 end
@@ -526,12 +546,14 @@ function mod:SPELL_CAST_START(args)
 			timerSeethingCorruptionCD:Start(cooldown, self.vb.seethingCorruptionCount+1)
 			countdownSeethingCorruption:Start(cooldown)
 		end
+		voiceSeethingCorruption:Play("watchstep")
 	elseif spellId == 184931 then
 		table.wipe(shacklesTargets)
 	elseif spellId == 187180 then
 		self.vb.demonicCount = self.vb.demonicCount + 1
 		if not playerBanished or not self.Options.FilterOtherPhase then
 			specWarnDemonicFeedback:Show(self.vb.demonicCount)
+			voiceDemonicFeedback:Play("scatter")
 		end
 		timerDemonicFeedbackCD:Start(nil, self.vb.demonicCount+1)
 		countdownDemonicFeedback:Start()
@@ -559,13 +581,20 @@ function mod:SPELL_CAST_START(args)
 		if self:CheckInterruptFilter(args.sourceGUID) and playerBanished then
 			specWarnTouchofShadows:Show(args.sourceName, self.vb.TouchOfShadows)
 		end
-	elseif spellId == 190394 and self:AntiSpam(15, 4) then
-		self.vb.darkConduitCast = self.vb.darkConduitCast + 1
-		specWarnDarkConduit:Show(self.vb.darkConduitCast)
-		local cooldown = darkConduitTimers[self.vb.darkConduitCast+1]
-		if cooldown then
-			timerDarkConduitCD:Start(cooldown, self.vb.darkConduitCast+1)
+	elseif spellId == 190394 then
+		if self:AntiSpam(15, 4) then
+			self.vb.darkConduitSpawn = 0
+			self.vb.darkConduitCast = self.vb.darkConduitCast + 1
+			self:Schedule(8, setDarkConduit, self, true)--Clear current dark conduit radar after 8 seconds (it take 5 seconds for all 3 to spawn)
+			voiceDarkConduit:Play("watchstep")
+			local cooldown = darkConduitTimers[self.vb.darkConduitCast+1]
+			if cooldown then
+				timerDarkConduitCD:Start(cooldown, self.vb.darkConduitCast+1)
+				self:Schedule(cooldown-8, setDarkConduit, self)--Show radar 8 seconds before next dark conduit
+			end
 		end
+		self.vb.darkConduitSpawn = self.vb.darkConduitSpawn + 1
+		warnDarkConduit:Show(self.vb.darkConduitSpawn)
 	elseif spellId == 190686 then--Summon source of chaos
 		--Cancel sourceOfChaosCheck, spell cast on time
 		self:Unschedule(sourceOfChaosCheck)
