@@ -69,8 +69,9 @@ L.ModelSoundShort			= SHORT
 L.ModelSoundLong			= TOAST_DURATION_LONG
 
 L.Button_RangeFrame			= "顯示/隱藏距離監視器"
-L.Button_InfoFrame			= "顯示/隱藏訊息框架"
+L.Button_InfoFrame			= "顯示/隱藏訊息監視器"
 L.Button_TestBars			= "測試計時條"
+L.Button_ResetInfoRange		= "重置訊息/距離監視器"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "團隊警告"

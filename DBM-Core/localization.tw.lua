@@ -4,8 +4,9 @@ DBM_CORE_NEED_SUPPORT				= "你是否擁有良好的程式開發或語言能力?
 DBM_CORE_NEED_LOGS					= "DBM需要Transcriptor (http://www.wowace.com/addons/transcriptor/) 去紀錄測試伺服器的戰鬥紀錄讓插件更加完美。如果你願意幫忙，請使用transcriptor去紀錄這些戰鬥過程然後將記錄發佈在http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing/ (請壓縮這些紀錄檔，這些檔案會很龐大)。僅需要6.0的團隊戰鬥紀錄，不需要五人副本的紀錄。"
 DBM_HOW_TO_USE_MOD					= "歡迎使用DBM。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。DBM會在第一次啟動時嘗試掃描你的職業天賦，但有些選項你可能想打開。"
 
-DBM_FORUMS_MESSAGE					= "發現臭蟲或錯誤的計時器?你希望要讓某些模組有新的警告，計時器或是特別功能?\nDeadly Boss Mods討論，臭蟲回報與功能要求論壇 |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (你可以點擊連結去複製網址)"
-DBM_FORUMS_COPY_URL_DIALOG			= "來拜訪我們新的討論與支援論壇\r\n(代管於Elitist Jerks!)"
+DBM_FORUMS_MESSAGE					= "發現臭蟲或錯誤的計時器?你希望要讓某些模組有新的警告，計時器或是特別功能?\nDeadly Boss Mods討論，臭蟲回報與功能要求討論區 |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (你可以點擊連結去複製網址)"
+DBM_FORUMS_COPY_URL_DIALOG			= "來拜訪我們新的討論與支援討論區"
+DBM_FORUMS_COPY_URL_DIALOG_NEWS		= "想知道新功能以及如何運作，拜訪我們的討論區"
 
 DBM_CORE_LOAD_MOD_ERROR				= "載入%s模組時發生錯誤：%s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "成功載入%s模組。輸入/dbm 可自訂警告音效和個人化註記。"
@@ -15,7 +16,8 @@ DBM_CORE_LOAD_GUI_COMBAT			= "圖形介面不能在戰鬥中初始化。圖形�
 DBM_CORE_BAD_LOAD					= "DBM偵測到你的此副本的模組在戰鬥中讀取失敗。一旦脫離戰鬥，請立即輸入/consoel reloadui重新載入。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s不能被讀取因為你的DBM核心未達需求，請更新版本。"
 
-DBM_CORE_WHATS_NEW					= "此版本新功能： DBM計時器可以根據不同類型的技能上色。此功能可以從計時條樣式去設定。想知道此功能的詳細資訊請至|HDBM:forumsnews|h|cff3588ffclicking here|r"
+DBM_CORE_WHATS_NEW					= "此版本新功能：有幾個模組的HUD功能改進，特別是阿克蒙德。"
+--DBM_CORE_WHATS_NEW_LINK			= "此版本新功能： DBM計時器可以根據不同類型的技能上色。此功能可以從計時條樣式去設定。想知道此功能的詳細資訊請至|HDBM:forumsnews|h|cff3588ffclicking here|r"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM已中禁用動態距離框架，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM已中禁用小怪計數警告，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
@@ -194,19 +196,35 @@ DBM_CORE_INFOFRAME_SHOW_SELF		= "總是顯示你的能量"
 DBM_LFG_INVITE						= "地城準備確認"
 
 DBM_CORE_SLASHCMD_HELP				= {
-	"可用命令：",
-	"/range <數字> or /distance <數字>: 顯示距離框架。/rrange 或 /rdistance 顯示相反色。",
-	"/dbm version：進行團隊範圍內的版本檢測（也可使用：ver）。",
+	"可用指令：",
+	"-----------------",
 	"/dbm unlock：顯示一個可移動的計時器（也可使用：move）。",
-	"/dbm timer/ctimer/ltimer/cltimer <x> <文字>：開始一個以<文字>為名稱的時間為<x>秒的計時器。",
-	"/dbm broadcast timer <x> <文字>：向團隊廣播一個以<文字>為名稱，時間為<x>秒的計時器（需要團隊隊長或助理權限）。",
-	"/dbm timer endloop：停止任何無限循環的計時器。",
-	"/dbm break <分鐘>: 開始休息計時器<分鐘>。向所有團隊成員發送一個DBM休息計時器（需要團隊隊長或助理權限）。",
+	"/range <數字> 或 /distance <數字>: 顯示距離框架。/rrange 或 /rdistance 顯示相反色。",
+	"/hudar <數字>: 顯示HUD距離顯示器。",
+	"/dbm timer: 啟動DBM自訂計時器，輸入'/dbm timer'獲得更多訊息。",
+	"/dbm arrow: 顯示DBM箭頭，輸入'/dbm arrow help'獲得更多訊息。",
+	"/dbm hud: 顯示DBM hud，輸入'/dbm hud'獲得更多訊息。",
+	"/dbm help2: 顯示團隊管理可用指令"
+}
+DBM_CORE_SLASHCMD_HELP2				= {
+	"可用指令：",
+	"-----------------",
 	"/dbm pull <秒數>: 開始備戰計時器<秒數>。向所有團隊成員發送一個DBM備戰計時器（需要團隊隊長或助理權限）。",
-	"/dbm arrow: 顯示DBM箭頭, 輸入'/dbm arrow help'獲得更多訊息。",
+	"/dbm break <分鐘>: 開始休息計時器<分鐘>。向所有團隊成員發送一個DBM休息計時器（需要團隊隊長或助理權限）。",
+	"/dbm version：進行團隊的版本檢測（也可使用：ver）。",
+	"/dbm version2: 進行團隊的版本檢測並密語提醒過期的使用者（也可使用：ver2）。",
 	"/dbm lockout: 向團隊成員請求他們當前的團隊副本鎖定訊息(鎖定訊息、副本id) (需要團隊隊長或助理權限)。",
-	"/dbm lag: 進行團隊範圍內的網路延遲檢測。",
-	"/dbm hud: 顯示DBM hud，輸入'/dbm hud'獲得更多訊息。"
+	"/dbm lag: 進行團隊範圍內的網路延遲檢測。"
+}
+DBM_CORE_TIMER_USAGE	= {
+	"DBM計時器指令：",
+	"-----------------",
+	"/dbm timer <秒> <文字>: 啟用計時器。",
+	"/dbm ctimer <秒> <文字>: 啟用計時器包含倒數文字。",
+	"/dbm ltimer <秒> <文字>: 啟用會自動循環的計時器。",
+	"/dbm cltimer <秒> <文字>: 啟用會自動循環及倒數文字的計時器。",
+	"(在任何計時器指令前加入'Broadcast'可以把指令分享給團隊（需要團隊隊長或助理權限）)",
+	"/dbm timer endloop：停止任何無限循環的計時器。"
 }
 
 DBM_ERROR_NO_PERMISSION				= "無權進行此操作。"
@@ -390,7 +408,7 @@ DBM_CORE_HUD_SUCCESS				= "HUD成功使用你的參數運作。這會在%s後取
 DBM_CORE_HUD_USAGE	= {
 	"DBM-HudMap 用法:",
 	"/dbm hud <類型> <目標> <持續時間>  建立一個指向玩家的HUD",
-	"有效類型: red, blue, green, yellow, icon(需要團隊標記)",
+	"有效類型: arrow, red, blue, green, yellow, icon(需要團隊標記)",
 	"有效目標: target, focus, <玩家名字>",
 	"有效持續時間: 任何秒數。如果無輸入值則預設為20分鐘",
 	"/dbm hud hide  關閉並隱藏HUD"
