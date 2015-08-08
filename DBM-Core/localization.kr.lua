@@ -13,7 +13,6 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 경보를 불러왔습니다! 사용자 정�
 DBM_CORE_LOAD_MOD_COMBAT			= "오류 방지를 위해 전투가 종료 될때까지 '%s' 경보를 불러오지 않습니다."
 DBM_CORE_LOAD_GUI_ERROR				= "설정창을 불러올 수 없습니다: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "전투 중에는 설정창을 불러올 수 없습니다. 전투가 종료되면 설정창이 열릴 것입니다. 이후에는 전투 중이라도 설정창을 불러 올 수 있습니다."
-DBM_CORE_LOAD_SKIN_COMBAT			= "전투 도중 DBM 바 스킨 설정에 실패했습니다. 바가 정상 작동하지 않을 것이며 다수의 lua 오류가 발생할 수 있습니다. 이 오류는 DBM 바에 스킨을 적용하는 제3의 애드온이 있을 때 주로 발생합니다. 전투 종료 후 /reload 명령어를 입력하여 UI를 재시작 해주시기 바랍니다."
 DBM_CORE_BAD_LOAD					= "DBM이 현재 인스턴스의 경고를 완전히 불러오지 못한 것을 발견했습니다. 전투가 종료된 후에, /console reloadui 명령어를 입력하여 경고를 다시 불러오시기 바랍니다."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "현재 사용중인 DBM 버전은 '%s' 경보에 필요한 기능이 없습니다. 새로운 DBM을 설치하셔야 이 경보를 불러올 수 있습니다."
 
