@@ -71,15 +71,15 @@ local yellWroughtChaos				= mod:NewYell(186123)
 local specWarnFocusedChaos			= mod:NewSpecialWarningMoveAway(185014, nil, nil, nil, 3, 5)
 local yellFocusedChaos				= mod:NewFadesYell(185014)
 local specWarnDreadFixate			= mod:NewSpecialWarningYou(186574, false)--In case it matters on mythic, it was spammy on heroic and unimportant
-local specWarnFlamesOfArgus			= mod:NewSpecialWarningInterrupt(186663, "-Healer")
+local specWarnFlamesOfArgus			= mod:NewSpecialWarningInterrupt(186663, "-Healer", nil, nil, 1, 2)
 --Phase 3: The Twisting Nether
 local specWarnDemonicFeedbackSoon	= mod:NewSpecialWarningSoon(187180, nil, nil, nil, 1, 2)
 local specWarnDemonicFeedback		= mod:NewSpecialWarningCount(187180, nil, nil, nil, 3, 2)
-local specWarnNetherBanish			= mod:NewSpecialWarningYou(186961)
+local specWarnNetherBanish			= mod:NewSpecialWarningYou(186961, nil, nil, nil, 1, 5)
 local specWarnNetherBanishOther		= mod:NewSpecialWarningTargetCount(186961)
 local yellNetherBanish				= mod:NewFadesYell(186961)
 ----The Nether
-local specWarnTouchofShadows		= mod:NewSpecialWarningInterruptCount(190050)
+local specWarnTouchofShadows		= mod:NewSpecialWarningInterruptCount(190050, nil, nil, nil, 1, 5)
 local specWarnVoidStarFixate		= mod:NewSpecialWarningYou(189895)--Maybe move away? depends how often it changes fixate targets
 local yellVoidStarFixate			= mod:NewYell(189895, nil, false)
 local specWarnNetherStorm			= mod:NewSpecialWarningMove(187255)
@@ -121,6 +121,7 @@ local timerNetherBanishCD			= mod:NewCDCountTimer(61.9, 186961, nil, nil, nil, 5
 local timerRainofChaosCD			= mod:NewCDCountTimer(62, 182225, nil, nil, nil, 2)
 ----The Nether
 --Mythic
+mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerDarkConduitCD			= mod:NewCDCountTimer(107, 190394, nil, "-Melee", 2, 3)
 local timerMarkOfLegionCD			= mod:NewCDCountTimer(107, 187050, nil, nil, nil, 3)
 local timerInfernalsCD				= mod:NewCDCountTimer(107, 187111, nil, nil, nil, 1, 1122)
@@ -149,8 +150,11 @@ local voiceDoomfire					= mod:NewVoice(189897, "Dps")--189897.ogg
 local voiceDeathCaller				= mod:NewVoice("ej11582", "Dps")--ej11582.ogg
 local voiceWroughtChaos				= mod:NewVoice(186123) --new voice
 local voiceFocusedChaos				= mod:NewVoice(185014) --new voice
+local voiceFlamesofArgus			= mod:NewVoice(186663, "-Healer") --kickcast
 local voiceDemonicFeedback			= mod:NewVoice(186961) --spread/scatter
 local voiceAllureofFlamesCD			= mod:NewVoice(183254) --just run
+local voiceNetherBanish				= mod:NewVoice(186961) --teleyou
+local voiceTouchofShadows			= mod:NewVoice(190050) --kick1r/kick2r
 local voiceDarkConduit				= mod:NewVoice(190394, "Ranged") --spread/scatter
 local voiceSeethingCorruption		= mod:NewVoice(190506) --watch step
 
@@ -579,7 +583,13 @@ function mod:SPELL_CAST_START(args)
 		self.vb.TouchOfShadows = self.vb.TouchOfShadows + 1
 		--Actual interrupt is filtered of course.
 		if self:CheckInterruptFilter(args.sourceGUID) and playerBanished then
-			specWarnTouchofShadows:Show(args.sourceName, self.vb.TouchOfShadows)
+			local count = self.vb.TouchOfShadows
+			specWarnTouchofShadows:Show(args.sourceName, count)
+			if count == 1 then
+				voiceTouchofShadows:Play("kick1r.ogg")
+			else
+				voiceTouchofShadows:Play("kick2r.ogg")
+			end
 		end
 	elseif spellId == 190394 then
 		if self:AntiSpam(15, 4) then
@@ -616,6 +626,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 186663 then
 		specWarnFlamesOfArgus:Show(args.sourceName)
+		voiceFlamesofArgus:Play("kickcast")
 	elseif spellId == 188514 then
 		table.wipe(legionTargets)
 	end
@@ -788,6 +799,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownNetherBanish:Start()
 		if args:IsPlayer() then
 			specWarnNetherBanish:Show()
+			voiceNetherBanish:Play("teleyou")
 			yellNetherBanish:Schedule(6, 1)
 			yellNetherBanish:Schedule(5, 2)
 			yellNetherBanish:Schedule(4, 3)
