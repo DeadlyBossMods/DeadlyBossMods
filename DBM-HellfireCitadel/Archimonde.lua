@@ -188,11 +188,11 @@ mod.vb.twistedDarknessCast = 0
 mod.vb.seethingCorruptionCount = 0
 --Mythic sequence timers for phase 3 (Made by video, subject to inaccuracies until logs available)
 local legionTimers = {20, 63, 60, 60, 50, 45}--Verified up to second 60, rest by video
-local darkConduitTimers = {8, 123, 95, 55, 50}-- Verified up to 123, Rest by video
-local infernalTimers = {35, 63, 63, 55, 68, 40}--Verified by log up to second 63. Rest by video
+local darkConduitTimers = {8, 123, 95, 55, 50}-- Verified up to 95, Rest by video
+local infernalTimers = {35, 63, 63, 55, 68, 40}--Verified by log up to 55. Rest by video
 local sourceofChaosTimers = {49, 58, 76, 78}--Verified by log up to 76. Rest by video
-local twistedDarknessTimers = {75, 78, 42, 40, 72}--Verifed up to 42 by logs, rest by video
-local seethingCorruptionTimers = {61, 58, 52, 70, 30, 40}--Verified up to 52 by log, rest by video
+local twistedDarknessTimers = {75, 78, 42, 40, 72}--Verifed up to 40 by logs, rest by video
+local seethingCorruptionTimers = {61, 58, 52, 70, 30, 40}--Verified up to 70 by log, rest by video
 --Range frame/filter shit
 local shacklesTargets = {}
 local legionTargets = {}
@@ -890,6 +890,13 @@ function mod:SPELL_SUMMON(args)
 			local cooldown = infernalTimers[self.vb.InfernalsCast+1]
 			if cooldown then
 				timerInfernalsCD:Start(cooldown, self.vb.InfernalsCast+1)
+			end
+			if self.Options.SetIconOnInfernals2 then
+				if self.vb.InfernalsCast < 3 then--Only 3 infernals expected
+					self:ScanForMobs(94412, 0, 5, 3, 0.2, 20, "SetIconOnInfernals2")
+				else--4 expected
+					self:ScanForMobs(94412, 0, 5, 4, 0.2, 20, "SetIconOnInfernals2")
+				end
 			end
 		end
 	end
