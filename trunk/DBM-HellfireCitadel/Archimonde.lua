@@ -120,7 +120,7 @@ local timerNetherBanishCD			= mod:NewCDCountTimer(61.9, 186961, nil, nil, nil, 5
 local timerRainofChaosCD			= mod:NewCDCountTimer(62, 182225, nil, nil, nil, 2)
 ----The Nether
 --Mythic
-local timerDarkConduitCD			= mod:NewCDCountTimer(107, 190394, nil, nil, nil, 3)
+local timerDarkConduitCD			= mod:NewCDCountTimer(107, 190394, nil, "-Melee", 2, 3)
 local timerMarkOfLegionCD			= mod:NewCDCountTimer(107, 187050, nil, nil, nil, 3)
 local timerInfernalsCD				= mod:NewCDCountTimer(107, 187111, nil, nil, nil, 1, 1122)
 local timerSourceofChaosCD			= mod:NewCDCountTimer(107, 190703, nil, nil, 2, 1)
@@ -137,6 +137,8 @@ local countdownNetherBanish			= mod:NewCountdown(61.9, 186961)
 local countdownDemonicFeedback		= mod:NewCountdown("Alt35", 186961)
 local countdownDeathBrand			= mod:NewCountdown("AltTwo42", 183828)
 local countdownShackledTorment		= mod:NewCountdown("AltTwo42", 184931, "-Tank")
+local countdownSeethingCorruption	= mod:NewCountdown(61.9, 190506)
+local countdownSourceofChaos		= mod:NewCountdown("Alt35", 190703, "Tank")
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceDeathBrand				= mod:NewVoice(183828, "Tank")--defensive/tauntboss
@@ -292,9 +294,11 @@ end
 
 local function showMarkOfLegion(self, spellName)
 	--5,7,9,11 seconds. Sorted lowest to highest
-	--5, 7 on melee, 9, 11 on ranged.
+	--5, 7 on melee, 9, 11 on ranged (if enough alive anyways)
 	--DBM auto sorts icons to 1-5, 2-7, 3-9, 4-11
-	--Yell format is "<icon>Mark (expireTime) on <playername><icon>"
+	--Yell format is "<icon>Mark (expireTime) on <playername><icon>" . Icon assignments should be more than enough
+	--MELEE, RANGED, DBM_CORE_LEFT, DBM_CORE_RIGHT (http://puu.sh/jsyr5/7014c50cb3.jpg)
+	--Melee/ranged left/right is still an idea but i don't think will be needed. Not with fixed icons/debuff durations being assigned consistently.
 	warnMarkOfLegion:Show(table.concat(legionTargets, "<, >"))
 	for i = 1, #legionTargets do
 		local name = legionTargets[i]
@@ -414,6 +418,19 @@ local function breakShackles(self, spellName)
 	end
 end
 
+--Source of Chaos can be skipped, so we need to runa backup check to see if it was missed, and start timer for next one
+local function sourceOfChaosCheck(self)
+	self.vb.sourceOfChaosCast = self.vb.sourceOfChaosCast + 1
+	local cooldown = sourceofChaosTimers[self.vb.sourceOfChaosCast+1]
+	if cooldown then
+		--Subtrack 5 from next cd, since this check is running 5 seconds late
+		timerSourceofChaosCD:Start(cooldown-5, self.vb.sourceOfChaosCast+1)
+		countdownSourceofChaos:Start(cooldown-5)
+		--Schedule Late check for 5 seconds AFTER cast
+		self:Schedule(cooldown, sourceOfChaosCheck, self)
+	end
+end
+
 --/run DBM:GetModByName("1438"):OnCombatStart(0)
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
@@ -507,6 +524,7 @@ function mod:SPELL_CAST_START(args)
 		local cooldown = seethingCorruptionTimers[self.vb.seethingCorruptionCount+1]
 		if cooldown then
 			timerSeethingCorruptionCD:Start(cooldown, self.vb.seethingCorruptionCount+1)
+			countdownSeethingCorruption:Start(cooldown)
 		end
 	elseif spellId == 184931 then
 		table.wipe(shacklesTargets)
@@ -549,11 +567,16 @@ function mod:SPELL_CAST_START(args)
 			timerDarkConduitCD:Start(cooldown, self.vb.darkConduitCast+1)
 		end
 	elseif spellId == 190686 then--Summon source of chaos
+		--Cancel sourceOfChaosCheck, spell cast on time
+		self:Unschedule(sourceOfChaosCheck)
 		self.vb.sourceOfChaosCast = self.vb.sourceOfChaosCast + 1
 		specWarnSourceofChaos:Show(self.vb.sourceOfChaosCast)
 		local cooldown = sourceofChaosTimers[self.vb.sourceOfChaosCast+1]
 		if cooldown then
 			timerSourceofChaosCD:Start(cooldown, self.vb.sourceOfChaosCast+1)
+			countdownSourceofChaos:Start(cooldown)
+			--Schedule Late check for 5 seconds AFTER cast
+			self:Schedule(cooldown+5, sourceOfChaosCheck, self)
 		end
 	elseif spellId == 190821 then--Stars
 		self.vb.twistedDarknessCast = self.vb.twistedDarknessCast + 1
@@ -955,8 +978,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerDarkConduitCD:Start(8, 1)
 			timerMarkOfLegionCD:Start(20, 1)
 			timerInfernalsCD:Start(35, 1)
+			countdownSourceofChaos:Start(49)
 			timerSourceofChaosCD:Start(49, 1)
 			timerSeethingCorruptionCD:Start(61, 1)
+			countdownSeethingCorruption:Start(61)
 			timerTwistedDarknessCD:Start(75, 1)
 		end
 	end
