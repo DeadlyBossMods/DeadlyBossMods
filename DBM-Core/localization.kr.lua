@@ -1,7 +1,7 @@
 ﻿if (GetLocale() == "koKR") then
 
-DBM_CORE_NEED_SUPPORT				= "문의/건의사항은 설정 화면에서 사용자 포럼 버튼을 누른 후, DBM 사용자 포럼에 남겨 주시기 바랍니다. DBM Team은 프로그래밍 또는 외국어에 능통하신 분의 도움을 기다리고 있습니다. 자세한 사항은 everfinale@gmail.com 으로 메일을 보내주세요."
-DBM_CORE_NEED_LOGS					= "DBM이 현재 전투 경고를 원할히 하기 위해서는 Transcriptor(http://www.wowace.com/addons/transcriptor/) 기록이 필요합니다. 가능하시다면, 현재 전투를 Transcriptor로 기록하신 후에 everfinale@gmail.com 으로 메일을 보내주세요."
+DBM_CORE_NEED_SUPPORT				= "문의/건의사항은 설정 화면에서 사용자 포럼 버튼을 누른 후, DBM 사용자 포럼에 남겨 주시기 바랍니다."
+DBM_CORE_NEED_LOGS					= "DBM이 전투 경고를 원할히 하기 위해서는 Transcriptor(http://www.wowace.com/addons/transcriptor/) 기록이 필요합니다. 가능하시다면, 현재 전투를 Transcriptor로 기록하신 후에 everfinale@gmail.com 으로 메일을 보내주세요. 7.0 전투 로그가 필요합니다."
 DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력하면 설정창이 나타납니다. 각 경고는 최초 불러오기시 캐릭터 특성에 맞는 적절한 경고를 선택합니다. 선택된 경고는 설정창에서 언제든지 변경이 가능합니다."
 
 DBM_FORUMS_MESSAGE					= "오류를 발견하셨나요? 일부 전투에서 추가 경고가 있으면 좋을텐데라고 생각하셨나요?\n그렇다면 DBM 사용자 포럼을 방문해 보세요. 주소는 |HDBM:forums|h|cff3588ffhttp://www.inven.co.kr/board/powerbbs.php?come_idx=3716|r 입니다. 클릭하시면 주소를 복사할 수 있습니다."
@@ -16,7 +16,7 @@ DBM_CORE_LOAD_GUI_COMBAT			= "전투 중에는 설정창을 불러올 수 없습
 DBM_CORE_BAD_LOAD					= "DBM이 현재 인스턴스의 경고를 완전히 불러오지 못한 것을 발견했습니다. 전투가 종료된 후에, /console reloadui 명령어를 입력하여 경고를 다시 불러오시기 바랍니다."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "현재 사용중인 DBM 버전은 '%s' 경보에 필요한 기능이 없습니다. 새로운 DBM을 설치하셔야 이 경보를 불러올 수 있습니다."
 
-DBM_CORE_WHATS_NEW					= "이 버전의 새로운 기능: /DBM help 명령어가 개선되었으며 일부 명령어가 추가되었습니다. 범위정보 기능이 대폭 강화되었으며. 특히 아키몬드가 많이 강화되었습니다."
+DBM_CORE_WHATS_NEW					= "이 버전의 새로운 기능: 범위정보 기능이 대폭 강화되었으며. 특히 아키몬드에서 많이 강화되었습니다. 또한 신화 난이도를 진행하고 있는 길드와의 공동 작업을 통해 신화 아키몬드를 대폭 개선하였습니다."
 --DBM_CORE_WHATS_NEW_LINK			= "이 버전의 새로운 기능: 바가 갖고 있는 정보별로 다른 바 색상을 지정하는 기능이 추가되었습니다. 바 설정에서 색상을 변경 가능합니다."
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대원 숫자에 맞는 근접판정 정보를 알 수 없기 때문에 DBM이 이 전투에서 거리 창을 비활성화 했습니다."
@@ -386,10 +386,13 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 이전에 초세기 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "$spell:%s 남은시간 초세기 듣기"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 진행시간 초세기 듣기"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.yell		= "$spell:%s 대상이 된 경우 대화로 알리기"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.count	= "$spell:%s 대상이 된 경우 대화로 알리기(횟수 포함)"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.fade		= "$spell:%s 대상이 된 경우 대화로 알리기(초세기 포함)"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.position	= "$spell:%s 대상이 된 경우 대화로 알리기(위치 포함)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= UnitName("player").."에게 %s!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= UnitName("player").."에게 %s! (%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s %%d초 후 사라짐!"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").."에게 %s! (%%s)".."{rt%%d}"--Arg order is going to be a problem. any way to word differently for playername at end?
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").."{rt%%3$d}에게 %s! (%%$1s - {rt%%2$d})"
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "$spell:%s 범위 정보를 화면에서 보기"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "다양한 범위 정보를 화면에서 보기"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 관련 거리 창 보기(%1$sm)"
