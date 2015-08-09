@@ -197,12 +197,12 @@ mod.vb.twistedDarknessCast = 0
 mod.vb.seethingCorruptionCount = 0
 mod.vb.darkConduit = false
 --Mythic sequence timers for phase 3 (Made by video, subject to inaccuracies until logs available)
-local legionTimers = {20, 63, 60, 60, 50, 45}--Verified up to second 60, rest by video
-local darkConduitTimers = {8, 123, 95, 55, 50}-- Verified up to 95, Rest by video
-local infernalTimers = {35, 63, 63, 55, 68, 40}--Verified by log up to 55. Rest by video
-local sourceofChaosTimers = {49, 58, 76, 78}--Verified by log up to 76. Rest by video
-local twistedDarknessTimers = {75, 78, 42, 40, 72}--Verifed up to 40 by logs, rest by video
-local seethingCorruptionTimers = {61, 58, 52, 70, 30, 40}--Verified up to 70 by log, rest by video
+local legionTimers = {20, 63, 60, 60, 48, 46, 47}--All verified by log
+local darkConduitTimers = {8, 123, 95, 56, 52}-- All verified by log
+local infernalTimers = {35, 63, 63, 55, 68, 41}--All verified by log
+local sourceofChaosTimers = {49, 58, 76, 78}--All verified by log
+local twistedDarknessTimers = {75, 78, 42, 40, 72}--All verified by log
+local seethingCorruptionTimers = {61, 58, 52, 70, 30, 41}--All verified by log
 --Range frame/filter shit
 local shacklesTargets = {}
 local legionTargets = {}
@@ -841,7 +841,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.5, showMarkOfLegion, self, args.spellName)
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
-		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)--Find out what our specific seed timer is
+		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)
 		if expires then
 			if args:IsPlayer() then
 				local remaining = expires-GetTime()
@@ -935,8 +935,10 @@ function mod:SPELL_SUMMON(args)
 			if self.Options.SetIconOnInfernals2 then
 				if self.vb.InfernalsCast < 3 then--Only 3 infernals expected
 					self:ScanForMobs(94412, 0, 5, 3, 0.2, 20, "SetIconOnInfernals2")
-				else--4 expected
+				elseif self.vb.InfernalsCast < 6 then--4 infernals expected
 					self:ScanForMobs(94412, 0, 5, 4, 0.2, 20, "SetIconOnInfernals2")
+				else--5 expected
+					self:ScanForMobs(94412, 0, 5, 5, 0.2, 20, "SetIconOnInfernals2")
 				end
 			end
 		end
