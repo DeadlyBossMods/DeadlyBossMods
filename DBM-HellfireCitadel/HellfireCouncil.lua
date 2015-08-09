@@ -86,7 +86,7 @@ local voiceFelstorm					= mod:NewVoice(183701)--aesoon
 local voiceReap						= mod:NewVoice(184476)--runout/runaway
 local voiceDemolishingLeap			= mod:NewVoice(184366)--runaway (Stll not sure I like run away for this. You may not have to move at all, run away implies you need to react, but this boss jumps to random spot in room, you have to check ground whether or not you need to move)
 
---mod:AddRangeFrameOption(8, 155530)
+mod:AddRangeFrameOption(8, 184476)
 
 mod.vb.DiaPushed = false
 mod.vb.taintedBloodCount = 0
@@ -99,19 +99,6 @@ mod.vb.firstReap = false
 mod.vb.vissageCount = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local markofNecroDebuff = GetSpellInfo(184449)--Spell name should work, without knowing what right spellid is, For this anyways.
-
---[[
-local debuffFilter
-do
-	local debuffName = GetSpellInfo(155323)
-	local UnitDebuff = UnitDebuff
-	debuffFilter = function(uId)
-		if UnitDebuff(uId, debuffName) then
-			return true
-		end
-	end
-end--]]
-
 
 local function delayedReapCheck(self)
 	--Fires 55 seconds after combat start, unless 50 second reap happens.
@@ -172,6 +159,9 @@ function mod:SPELL_CAST_START(args)
 			yellReap:Yell()
 			countdownReap:Start()
 			voiceReap:Play("runout")
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(8)
+			end
 		else
 			warnReap:Show()
 		end
@@ -200,6 +190,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerTaintedBloodCD:Start(nil, self.vb.taintedBloodCount+1)
 	elseif spellId == 184476 then
 		self.vb.reapActive = false
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	end
 end
 
@@ -240,6 +233,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnReap:Show()
 		yellReap:Yell()
 		voiceReap:Play("runout")
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(8)--Guessed, could be 10
+		end
 	elseif spellId == 184652 and args:IsPlayer() and self:AntiSpam(2, 3) then
 		specWarnReapGTFO:Show()
 		voiceReap:Play("runaway")
