@@ -110,6 +110,7 @@ local voiceGlaiveCombo				= mod:NewVoice(181354, "Tank")--Defensive
 local voiceMassiveBlast				= mod:NewVoice(181359, "Tank")--changemt
 
 mod:AddRangeFrameOption(20, 181099)
+mod:AddSetIconOption("SetIconOnGaze", 181597, false)
 mod:AddHudMapOption("HudMapOnGaze2", 181597, false)
 mod:AddInfoFrameOption(181597)
 
@@ -206,6 +207,9 @@ local function warnGazeTargts(self)
 		local name = gazeTargets[i]
 		if name == playerName then
 			yellGaze:Yell(i, i, i)
+		end
+		if self.Options.SetIconOnGaze then
+			self:SetIcon(name, i)
 		end
 	end
 	if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
@@ -471,6 +475,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 181597 or spellId == 182006 then
 		if self.Options.HudMapOnGaze2 then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		end
+		if self.Options.SetIconOnGaze then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 181275 then
 		if args:IsPlayer() then
