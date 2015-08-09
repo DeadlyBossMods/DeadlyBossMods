@@ -2222,6 +2222,8 @@ do
 			showPopupConfirmIgnore(ignore, cancel)
 		elseif arg1 == "update" then
 			DBM:ShowUpdateReminder(arg2, arg3) -- displayVersion, revision
+		elseif arg == "localizersneeded" then
+			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG, "http://forums.elitistjerks.com/topic/132449-dbm-localizers-needed/")
 		elseif arg1 == "forumsnews" then
 			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG_NEWS, "http://forums.elitistjerks.com/topic/133665-new-feature-color-bars-by-type/")
 		elseif arg1 == "forums" then
