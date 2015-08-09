@@ -270,7 +270,7 @@ DBM.DefaultOptions = {
 	CRT_Enabled = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
-	HelpMessageShown3 = false,
+	HelpMessageVersion = 1,
 	NewsMessageShown = 3,
 	MoviesSeen = {},
 	MovieFilter = "AfterFirst",
@@ -6164,11 +6164,11 @@ end
 do
 	function DBM:PLAYER_ENTERING_WORLD()
 		if GetLocale() == "ptBR" or GetLocale() == "frFR" or GetLocale() == "esES" or GetLocale() == "esMX" or GetLocale() == "itIT" then
-			self:Schedule(10, function() if not self.Options.HelpMessageShown3 then self.Options.HelpMessageShown3 = true self:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
+			self:Schedule(10, function() if self.Options.HelpMessageVersion < 2 then self.Options.HelpMessageVersion = 2 self:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
 		end
 		self:Schedule(20, function() if not self.Options.ForumsMessageShown then self.Options.ForumsMessageShown = self.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
 		self:Schedule(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
-		self:Schedule(40, function() if DBM.Options.NewsMessageShown < 4 then DBM.Options.NewsMessageShown = 4 self:AddMsg(DBM_CORE_WHATS_NEW) end end)
+		self:Schedule(40, function() if self.Options.NewsMessageShown < 4 then self.Options.NewsMessageShown = 4 self:AddMsg(DBM_CORE_WHATS_NEW) end end)
 		if type(RegisterAddonMessagePrefix) == "function" then
 			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
 				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
