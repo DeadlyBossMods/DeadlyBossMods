@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 179986 179991 180600 180526",
 	"SPELL_AURA_APPLIED 182459 185241 180166 180164 185237 185238 180526 180025 180000",
 	"SPELL_AURA_APPLIED_DOSE 180000",
-	"SPELL_AURA_REMOVED 182459 185241 180526",
+	"SPELL_AURA_REMOVED 182459 185241 180526 180300",
 	"SPELL_PERIODIC_DAMAGE 180604",
 	"SPELL_ABSORBED 180604",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -90,7 +90,7 @@ local timerGaveloftheTyrantCD				= mod:NewNextCountTimer(10, 180608)
 
 local countdownAnnihilatingStrike			= mod:NewCountdown(10, 180260, nil, nil, 3)--It's same cd as Infernal tempest so going to use countdown for both. Starting count at 3 to avoid so much spam. every 10 seconds, 5-1 would be bit much. 3-1 important though
 local countdownBulwarkofTyrant				= mod:NewCountdown(10, 180608, nil, nil, 3)
-local countdownFontofCorruption				= mod:NewCountdownFades("Alt50", 180526, false)
+local countdownFontofCorruption				= mod:NewCountdownFades("Alt50", 180526)
 
 local voicePhaseChange						= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceInfernalTempest					= mod:NewVoice(180300)--scatter
@@ -100,7 +100,7 @@ local voiceGaveloftheTyrant					= mod:NewVoice(180608)--carefly
 local voiceEnforcerOnslaught				= mod:NewVoice(180004)--watchorb
 local voiceSealofDecay						= mod:NewVoice(180000)--tauntboss
 
-mod:AddRangeFrameOption(5)--Seems like range 5 for all spells. I think for this fight it's basically a constant spread out fight when possible to avoid extra damage.
+mod:AddRangeFrameOption("5/4")
 mod:AddHudMapOption("HudMapOnStrike", 180260)
 mod:AddHudMapOption("HudMapEdict", 182459)
 
@@ -110,10 +110,22 @@ mod.vb.infernalTempestCount = 0
 mod.vb.annihilationCount = 0
 mod.vb.bulwarkCount = 0
 mod.vb.gavelCount = 0
+mod.vb.phase = 1
 local AncientEnforcer = EJ_GetSectionInfo(11155)
 local AncientHarbinger = EJ_GetSectionInfo(11163)
 local AncientSovereign = EJ_GetSectionInfo(11170)
 local TyrantVelhari = EJ_GetEncounterInfo(1394)
+
+local debuffFilter
+local UnitDebuff = UnitDebuff
+local debuffName = GetSpellInfo(180526)
+do
+	debuffFilter = function(uId)
+		if UnitDebuff(uId, debuffName) then
+			return true
+		end
+	end
+end
 
 function mod:AnnTarget(targetname, uId)
 	if not targetname then
@@ -140,13 +152,11 @@ function mod:OnCombatStart(delay)
 	self.vb.infernalTempestCount = 0
 	self.vb.bulwarkCount = 0
 	self.vb.gavelCount = 0
+	self.vb.phase = 1
 	timerSealofDecayCD:Start(3.5-delay)
 	timerAnnihilatingStrikeCD:Start(10-delay, 1)
 	timerTouchofHarmCD:Start(16.8-delay, 1)
 	timerEdictofCondemnationCD:Start(57-delay, 1)
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(4)
-	end
 end
 
 function mod:OnCombatEnd()
@@ -190,6 +200,9 @@ function mod:SPELL_CAST_START(args)
 		self.vb.annihilationCount = 0
 		timerAnnihilatingStrikeCD:Start(nil, 1)
 		countdownAnnihilatingStrike:Start()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(4)
+		end
 	elseif spellId == 180533 then
 		warnTaintedShadows:Show()
 		timerTaintedShadowsCD:Start()
@@ -199,6 +212,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 179986 then--Aura of Contempt (phase 2)
+		self.vb.phase = 2
 		warnAuraofContempt:Show()
 		--Cancel phase 1 abilities
 		timerAnnihilatingStrikeCD:Cancel()
@@ -207,12 +221,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerTaintedShadowsCD:Start()
 		timerFontofCorruptionCD:Start(22)
 		voicePhaseChange:Play("ptwo")
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(5, debuffFilter)
+		end
 	elseif spellId == 179991 then--Aura of Malice (phase 3)
+		self.vb.phase = 3
 		warnAuraofMalice:Show()
 		timerFontofCorruptionCD:Cancel()
 		timerBulwarkoftheTyrantCD:Start(nil, 1)
 		countdownBulwarkofTyrant:Start()
 		voicePhaseChange:Play("pthree")
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	elseif spellId == 180600 then
 		self.vb.bulwarkCount = self.vb.bulwarkCount + 1
 		warnBulwarkoftheTyrant:Show(self.vb.bulwarkCount, args.destName)
@@ -280,6 +301,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			specWarnFontofCorruption:Show()
 			yellFontofCorruption:Yell()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(5, not debuffFilter)
+			end
 		end
 	elseif spellId == 180025 then
 		specWarnHarbingersMendingDispel:Show(args.destName)
@@ -331,7 +355,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			specWarnFontofCorruptionOver:Show()
 			countdownFontofCorruption:Cancel()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(5, debuffFilter)
+			end
 		end
+	elseif spellId == 180300 and self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 
