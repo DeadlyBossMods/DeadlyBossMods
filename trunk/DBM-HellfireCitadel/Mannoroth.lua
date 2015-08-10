@@ -378,7 +378,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellCurseofLegion:Schedule(debuffTime - 1, 1)
 			yellCurseofLegion:Schedule(debuffTime - 2, 2)
 			yellCurseofLegion:Schedule(debuffTime - 3, 3)
-			yellCurseofLegion:Schedule(debuffTime - 2, 4)
+			yellCurseofLegion:Schedule(debuffTime - 4, 4)
 			yellCurseofLegion:Schedule(debuffTime - 5, 5)
 		else
 			warnCurseoftheLegion:Show(self.vb.doomlordCount, args.destName)
