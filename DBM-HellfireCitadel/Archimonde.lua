@@ -418,6 +418,13 @@ local function breakShackles(self, spellName)
 				specWarnBreakShackle:Show(L.Third)
 				voiceShackledTorment:Play("184964c")
 			end
+			if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
+				DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", name, 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName, name)
+			end
+		else
+			if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
+				DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", name, 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(nil, name)
+			end
 		end
 		if self.Options.SetIconOnShackledTorment2 then
 			self:SetIcon(name, i)
@@ -425,17 +432,6 @@ local function breakShackles(self, spellName)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(shackledDebuff)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
-		end
-	end
-	if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
-		if playerHasShackle then
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[1], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName, shacklesTargets[1])
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[2], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName, shacklesTargets[2])
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[3], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName, shacklesTargets[3])
-		else
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[1], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(nil, shacklesTargets[1])
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[2], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(nil, shacklesTargets[2])
-			DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[3], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(nil, shacklesTargets[3])
 		end
 	end
 end
