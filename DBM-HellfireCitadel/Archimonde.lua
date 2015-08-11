@@ -244,7 +244,7 @@ local function updateInfoFrame()
 		if i == 9 then break end--It's a wipe, plus can't do more than 8 of these with icons
 		local name = felburstTargets[i]
 		local uId = DBM:GetRaidUnitId(name)
-		if UnitDebuff(uId, felburstDebuff) then
+		if uId and UnitDebuff(uId, felburstDebuff) then
 			total = total + 1
 			lines[name] = i
 		end
@@ -252,7 +252,7 @@ local function updateInfoFrame()
 	for i = 1, #shacklesTargets do
 		local name = shacklesTargets[i]
 		local uId = DBM:GetRaidUnitId(name)
-		if UnitDebuff(uId, shackledDebuff) then
+		if uId and UnitDebuff(uId, shackledDebuff) then
 			total = total + 1
 			lines[name] = i
 		end
