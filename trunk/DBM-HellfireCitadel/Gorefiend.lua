@@ -12,7 +12,7 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 181973 181582 187814",
+	"SPELL_CAST_START 181973 181582 187814 181085",
 	"SPELL_CAST_SUCCESS 179977 182170 181085",
 	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148 181295 185982 189434 185189",
 	"SPELL_AURA_APPLIED_DOSE 185189",
@@ -78,13 +78,15 @@ mod:AddRangeFrameOption(5, 182049)
 mod:AddInfoFrameOption(181295)
 
 mod.vb.rootedFate = nil
-mod.vb.rootedFate2 = nil--Just in case, but if this happens you're doing things badly
 mod.vb.shadowOfDeathCount = 0
 mod.vb.sharedFateCount = 0
 mod.vb.playersWithDigest = 0
 local playerDown = false
 local playersCount = 0
 local sharedFateTimers = {19, 28, 25, 22}
+local sharedFateTargets = {}
+local playerHasFate = false
+local playerName = UnitName("player")
 local digestFilter
 do
 	local digestDebuff = GetSpellInfo(181295)
@@ -116,22 +118,34 @@ Mythic
 --]]
 
 local function sharedFateDelay(self)
-	if self.vb.rootedFate2 then--Check this first, assume you are linked to most recent
-		specWarnSharedFate:Show(self.vb.rootedFate2)
-		voiceSharedFate:Play("linegather")
-	elseif self.vb.rootedFate then
-		specWarnSharedFate:Show(self.vb.rootedFate)
-		voiceSharedFate:Play("linegather")
+	if self.vb.rootedFate then
+		warnSharedFate:Show(self.vb.sharedFateCount, table.concat(sharedFateTargets, "<, >"))
+		for i = 1, #sharedFateTargets do
+			local name = sharedFateTargets[i]
+			if name == playerName then
+				specWarnSharedFate:Show(self.vb.rootedFate)
+				voiceSharedFate:Play("linegather")
+			end
+			if self.Options.HudMapOnSharedFate and not playerDown and (playerHasFate or not self.Options.ShowOnlyPlayer) then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "party", self.vb.rootedFate, 0.75, 10, nil, nil, nil, 0.8, nil, true):Appear():SetLabel(self.vb.rootedFate, nil, nil, nil, nil, nil, 0.8, nil, -17, 11, nil)
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "party", name, 0.5, 10, nil, nil, nil, 0.8, nil, true):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
+				if name == playerName or self.vb.rootedFate == playerName then--Green line since player is in link
+					DBMHudMap:AddEdge(0, 1, 0, 0.5, 10, sharedFateTargets[i], self.vb.rootedFate)
+				else--Yellow Line since player is not in link
+					DBMHudMap:AddEdge(1, 1, 0, 0.5, 10, sharedFateTargets[i], self.vb.rootedFate)
+				end
+			end
+		end
 	end
 end
 
 function mod:OnCombatStart(delay)
 	self.vb.rootedFate = nil
-	self.vb.rootedFate2 = nil
 	self.vb.shadowOfDeathCount = 0
 	self.vb.sharedFateCount = 0
 	self.vb.playersWithDigest = 0
 	playerDown = false
+	playerHasFate = false
 	playersCount = DBM:GetGroupSize()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5, digestFilter)
@@ -187,6 +201,8 @@ function mod:SPELL_CAST_START(args)
 		voiceBellowingShout:Play("kickcast")
 	elseif spellId == 187814 then
 		warnRagingCharge:Show(args.sourceName)
+	elseif spellId == 181085 then
+		table.wipe(sharedFateTargets)
 	end
 end
 
@@ -267,39 +283,27 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellTouchofDoom:Yell()
 		end
 	elseif spellId == 179909 then--Root version
+		if args:IsPlayer() then
+			playerHasFate = true
+			yellSharedFate:Yell()
+		end
 		if not playerDown then
 			warnSharedFate:CombinedShow(0.5, args.destName)
 		end
-		if self.vb.rootedFate then--One already exists
-			self.vb.rootedFate2 = args.destName
-		else
-			self.vb.rootedFate = args.destName
-		end
+		self.vb.rootedFate = args.destName
 		if self.Options.SetIconOnFate then
-			if self.vb.rootedFate2 then
-				self:SetIcon(args.destName, 2)
-			else
-				self:SetIcon(args.destName, 1)
-			end
-		end
-		if self.Options.HudMapOnSharedFate and not playerDown then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "party", args.destName, 0.75, 600, nil, nil, nil, 0.8, nil, true):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -17, 11, nil)
-		end
-		if args:IsPlayer() then
-			yellSharedFate:Yell()
+			self:SetIcon(args.destName, 1)
 		end
 	elseif spellId == 179908 then--Non root version (must run to rooted player)
-		warnSharedFate:CombinedShow(0.5, self.vb.sharedFateCount, args.destName)
 		if args:IsPlayer() then
-			self:Schedule(0.5, sharedFateDelay, self)--Just in case rooted ID fires after non rooted ones
+			playerHasFate = true
 		end
-		if self.Options.HudMapOnSharedFate and not playerDown then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "party", args.destName, 0.5, 600, nil, nil, nil, 0.8, nil, true):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
-			if args.IsPlayer() then
-				DBMHudMap:AddEdge(0, 1, 0, 0.5, 10, args.destName, self.vb.rootedFate2 or self.vb.rootedFate)
-			elseif not self.Options.ShowOnlyPlayer then
-				DBMHudMap:AddEdge(1, 1, 0, 0.5, 10, args.destName, self.vb.rootedFate2 or self.vb.rootedFate)
-			end
+		sharedFateTargets[#sharedFateTargets+1] = args.destName
+		local expectedTargets = self:IsMythic() and 4 or 3
+		if #sharedFateTargets == expectedTargets then
+			sharedFateDelay(self)
+		else
+			self:Schedule(0.5, sharedFateDelay, self)
 		end
 	elseif spellId == 180148 then
 		warnHungerforLife:CombinedShow(0.5, args.destName)
@@ -347,11 +351,10 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 179909 then--Root version
-		if self.vb.rootedFate == args.destName then
-			self.vb.rootedFate = nil
-		elseif self.vb.rootedFate2 == args.destName then
-			self.vb.rootedFate2 = nil
+		if args:IsPlayer() then
+			playerHasFate = false
 		end
+		self.vb.rootedFate = nil
 		if self.Options.HudMapOnSharedFate then
 			DBMHudMap:FreeEncounterMarkerByTarget(179909, args.destName)
 			DBMHudMap:ClearAllEdges()
@@ -360,6 +363,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 179908 then--Non root version (must run to rooted player)
+		if args:IsPlayer() then
+			playerHasFate = false
+		end
 		if self.Options.HudMapOnSharedFate then
 			DBMHudMap:FreeEncounterMarkerByTarget(179908, args.destName)
 		end

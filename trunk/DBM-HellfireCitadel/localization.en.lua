@@ -53,16 +53,16 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1372)
 
 L:SetTimerLocalization({
-	SoDDPS		= "Next Shadows (%s)",
-	SoDTank		= "Next Shadows (%s)",
-	SoDHealer	= "Next Shadows (%s)"
+	SoDDPS2		= "Next Shadows (%s)",
+	SoDTank2	= "Next Shadows (%s)",
+	SoDHealer2	= "Next Shadows (%s)"
 })
 
 L:SetOptionLocalization({
-	SoDDPS			= "Show timer for next $spell:179864 affecting Damagers",
-	SoDTank			= "Show timer for next $spell:179864 affecting Tanks",
-	SoDHealer		= "Show timer for next $spell:179864 affecting Healers",
-	ShowOnlyPlayer = "Only show HudMap line if player is part of it."
+	SoDDPS2			= "Show timer for next $spell:179864 affecting Damagers",
+	SoDTank2		= "Show timer for next $spell:179864 affecting Tanks",
+	SoDHealer2		= "Show timer for next $spell:179864 affecting Healers",
+	ShowOnlyPlayer	= "Only show HudMap for $spell:179909 if player is a participant"
 })
 
 --------------------------
