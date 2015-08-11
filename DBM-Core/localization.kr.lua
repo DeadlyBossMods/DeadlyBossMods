@@ -27,9 +27,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s 입니다. 현재 선택
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM의 전술 목표 아이콘 설정이 모두 활성화 되어 있는 것이 확인했습니다. 아이콘 충돌을 방지하기 위해 두 애드온중 하나의 아이콘 설정을 비활성화 해주시기 바랍니다."
 
-DBM_CORE_PROVINGGROUNDS_AD			= "현재 인스턴스에서 DBM-ProvingGrounds 경고 사용이 가능합니다. deadlybossmods.com 또는 와우 인벤에서 다운로드 받으실 수 있습니다. 이 메세지는 한 번만 표시됩니다."
-
-DBM_CORE_MOLTENCORE_AD				= "현재 인스턴스에서 DBM-MC 경고 사용이 가능합니다. deadlybossmods.com 또는 와우 인벤에서 다운로드 받으실 수 있습니다. 이 메세지는 한 번만 표시됩니다."
+DBM_CORE_MOD_AVAILABLE				= "현재 인스턴스에서 %s 경고 사용이 가능합니다. |HDBM:forums|h|cff3588ffdeadlybossmods.com|r 또는 와우 인벤에서 다운로드 받으실 수 있습니다. 이 메세지는 한 번만 표시됩니다."
 
 DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가하였습니다. 행운을 빕니다! :)"
