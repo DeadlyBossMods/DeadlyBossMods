@@ -62,7 +62,7 @@ L:SetOptionLocalization({
 	SoDDPS2			= "Show timer for next $spell:179864 affecting Damagers",
 	SoDTank2		= "Show timer for next $spell:179864 affecting Tanks",
 	SoDHealer2		= "Show timer for next $spell:179864 affecting Healers",
-	ShowOnlyPlayer	= "Only show HudMap for $spell:179909 if player is a participant"
+	ShowOnlyPlayer	= "Only show HudMap for $spell:179909 if you are a participant"
 })
 
 --------------------------
