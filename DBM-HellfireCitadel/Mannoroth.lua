@@ -129,20 +129,26 @@ local phase1InfernalTimers = {18.4, 40, 30, 20, 20, 20}--Confirmed this far on h
 local phase1InfernalTimersN = {18.4, 40, 30, 30}--Normal probably doesn't drop below 30?
 local phase2InfernalTimers = {47.5, 44.8, 44.8, 35}--So far normal and heroic same, but if phase goes on longer probably different (with normal having a higher minimum)
 local phase2InfernalTimersN = {47.5, 44.8, 44.8, 35}--So far normal and heroic same, but if phase goes on longer probably different (with normal having a higher minimum)
-local phase3InfernalTimers = {28, 34.8, 35, 34.8, 34.8}--Again, the same now, but two tables FOR NOW until I can confirm whether or not they differ for REALLY long pulls
-local phase3InfernalTimersN = {28, 34.8, 35, 34.8, 34.8}--^^
+--local phase3InfernalTimers = {28, 34.8, 35, 34.8, 34.8}--Again, the same now, but two tables FOR NOW until I can confirm whether or not they differ for REALLY long pulls
+--local phase3InfernalTimersN = {28, 34.8, 35, 34.8, 34.8}--^^
 
 local gazeTargets = {}
 local doomTargets = {}
 local guldanTargets = {}
 local AddsSeen = {}
 local playerName = UnitName("player")
-local debuffFilter
-local debuffName = GetSpellInfo(181099)
+local doomFilter, guldanFilter
+local doomName = GetSpellInfo(181099)
+local guldanName = GetSpellInfo(186362)
 local UnitDebuff = UnitDebuff
 do
-	debuffFilter = function(uId)
-		if UnitDebuff(uId, debuffName) then
+	doomFilter = function(uId)
+		if UnitDebuff(uId, doomName) then
+			return true
+		end
+	end
+	guldanFilter = function(uId)
+		if UnitDebuff(uId, guldanName) then
 			return true
 		end
 	end
@@ -151,10 +157,16 @@ end
 local function updateRangeFrame(self)
 	if not self.Options.RangeFrame then return end
 	if self.vb.DoomTargetCount > 0 then
-		if UnitDebuff("Player", debuffName) then
+		if UnitDebuff("Player", doomName) then
 			DBM.RangeCheck:Show(20)
 		else
-			DBM.RangeCheck:Show(20, debuffFilter)
+			DBM.RangeCheck:Show(20, doomFilter)
+		end
+	elseif #guldanTargets > 0 then
+		if UnitDebuff("Player", guldanName) then
+			DBM.RangeCheck:Show(15)
+		else
+			DBM.RangeCheck:Show(15, guldanFilter)
 		end
 	else
 		DBM.RangeCheck:Hide()
@@ -170,7 +182,7 @@ local function sortInfoFrame(a, b)
 	if a < b then return true else return false end
 end
 
-local gaze1, gaze2, guldanSpellName = GetSpellInfo(181597), GetSpellInfo(182006), GetSpellInfo(186362)
+local gaze1, gaze2 = GetSpellInfo(181597), GetSpellInfo(182006)
 local function updateInfoFrame()
 	table.wipe(lines)
 	local total = 0
@@ -178,6 +190,7 @@ local function updateInfoFrame()
 	for i = 1, #gazeTargets do
 		local name = gazeTargets[i]
 		local uId = DBM:GetRaidUnitId(name)
+		if not uId then break end
 		if UnitDebuff(uId, gaze1) or UnitDebuff(uId, gaze2) then
 			total = total + 1
 			lines["|cFF9932CD"..name.."|r"] = i
@@ -187,7 +200,8 @@ local function updateInfoFrame()
 	for i = 1, #guldanTargets do
 		local name = guldanTargets[i]
 		local uId = DBM:GetRaidUnitId(name)
-		local _, _, _, currentStack = UnitDebuff(uId, guldanSpellName)
+		if not uId then break end
+		local _, _, _, currentStack = UnitDebuff(uId, guldanName)
 		if currentStack then
 			total2 = total2 + 1
 			lines[name] = currentStack
@@ -349,10 +363,10 @@ function mod:SPELL_SUMMON(args)
 				timerInfernoCD:Start(timers2, nextCount)
 			end
 		else
-			local timers3 = self:IsNormal() and phase3InfernalTimersN[nextCount] or phase3InfernalTimers[nextCount]
-			if timers3 then
-				timerInfernoCD:Start(timers3, nextCount)
-			end
+--			local timers3 = self:IsNormal() and phase3InfernalTimersN[nextCount] or phase3InfernalTimers[nextCount]
+--			if timers3 then
+				timerInfernoCD:Start(34.8, nextCount)
+--			end
 		end
 	end
 end
@@ -434,6 +448,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame)
 			end
 		end
+		updateRangeFrame(self)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -485,6 +500,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 186362 then--Only cast once per phase transition (twice whole fight)
 		table.remove(guldanTargets, args.destName)
+		updateRangeFrame(self)
 	end
 end
 
