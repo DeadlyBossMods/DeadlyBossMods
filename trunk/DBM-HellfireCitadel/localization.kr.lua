@@ -54,15 +54,15 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1372)
 
 L:SetTimerLocalization({
-	SoDDPS		= "다음 그림자 (%s)",
-	SoDTank		= "다음 그림자 (%s)",
-	SoDHealer	= "다음 그림자 (%s)"
+	SoDDPS2		= "다음 그림자 (%s)",
+	SoDTank2	= "다음 그림자 (%s)",
+	SoDHealer2	= "다음 그림자 (%s)"
 })
 
 L:SetOptionLocalization({
-	SoDDPS		= "다음 $spell:179864 대상 바 보기(공격 전담)",
-	SoDTank		= "다음 $spell:179864 대상 바 보기(방어 전담)",
-	SoDHealer	= "다음 $spell:179864 대상 바 보기(치유 전담)"
+	SoDDPS2		= "다음 $spell:179864 대상 바 보기(공격 전담)",
+	SoDTank2	= "다음 $spell:179864 대상 바 보기(방어 전담)",
+	SoDHealer2	= "다음 $spell:179864 대상 바 보기(치유 전담)"
 })
 
 --------------------------

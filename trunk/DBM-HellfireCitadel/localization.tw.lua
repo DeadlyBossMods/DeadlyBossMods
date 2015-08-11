@@ -54,15 +54,15 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1372)
 
 L:SetTimerLocalization({
-	SoDDPS		= "下一次死亡之影(%s)",
-	SoDTank		= "下一次死亡之影(%s)",
-	SoDHealer	= "下一次死亡之影(%s)"
+	SoDDPS2		= "下一次死亡之影(%s)",
+	SoDTank2	= "下一次死亡之影(%s)",
+	SoDHealer2	= "下一次死亡之影(%s)"
 })
 
 L:SetOptionLocalization({
-	SoDDPS		= "為下一個傷害職中了$spell:179864顯示計時器",
-	SoDTank		= "為下一個坦克職中了$spell:179864顯示計時器",
-	SoDHealer	= "為下一個治療職中了$spell:179864顯示計時器"
+	SoDDPS2		= "為下一個傷害職中了$spell:179864顯示計時器",
+	SoDTank2	= "為下一個坦克職中了$spell:179864顯示計時器",
+	SoDHealer2	= "為下一個治療職中了$spell:179864顯示計時器"
 })
 
 --------------------------

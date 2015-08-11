@@ -54,15 +54,15 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1372)
 
 L:SetTimerLocalization({
-	SoDDPS		= "След. Тени (%s)",
-	SoDTank		= "След. Тени (%s)",
-	SoDHealer	= "След. Тени (%s)"
+	SoDDPS2		= "След. Тени (%s)",
+	SoDTank2	= "След. Тени (%s)",
+	SoDHealer2	= "След. Тени (%s)"
 })
 
 L:SetOptionLocalization({
-	SoDDPS		= "Отсчет времени до след. $spell:179864 (дд)",
-	SoDTank		= "Отсчет времени до след. $spell:179864 (танки)",
-	SoDHealer	= "Отсчет времени до след. $spell:179864 (хилы)"
+	SoDDPS2		= "Отсчет времени до след. $spell:179864 (дд)",
+	SoDTank2	= "Отсчет времени до след. $spell:179864 (танки)",
+	SoDHealer2	= "Отсчет времени до след. $spell:179864 (хилы)"
 })
 
 --------------------------
