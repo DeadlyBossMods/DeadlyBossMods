@@ -24,9 +24,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "A sua especialização atual é %s. A sua escol
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM detectou que você tem ícones habilitados tanto no BigWigs quanto no DBM. Por favor desabilite um dos dois para evitar conflitos com o líder da raid"
 
-DBM_CORE_PROVINGGROUNDS_AD			= "DBM-ProvingGrounds esta disponível para este conteúdo. Esta disponível em deadlybossmods.com ou no site da curse. Está mensagem só será exibida uma vez."
-
-DBM_CORE_MOLTENCORE_AD				= "DBM-MC esta disponível para este conteúdo. Esta disponível em deadlybossmods.com. Está mensagem só será exibida uma vez."
+DBM_CORE_MOD_AVAILABLE				= "%s esta disponível para este conteúdo. Esta disponível em |HDBM:forums|h|cff3588ffdeadlybossmods.com|r. Está mensagem só será exibida uma vez."
 
 DBM_CORE_COMBAT_STARTED				= "%s na mira. Boa sorte e divirta-se! :)"
 

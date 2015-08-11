@@ -27,9 +27,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "你目前的專精為:%s。而你目前的拾�
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM偵測到你同時開啟BigWigs和DBM的團隊圖示。請關閉其中之一的團隊圖示功能以免與你的隊伍隊長產生衝突。"
 
-DBM_CORE_PROVINGGROUNDS_AD			= "試煉之地DBM-ProvingGrounds的DBM插件已經可供使用。你可以在deadlybossmods.com或Curse上找到。此訊息只會顯示一次。"
-
-DBM_CORE_MOLTENCORE_AD				= "熔火之心DBM-MC的DBM插件已經可供使用。你可以在deadlybossmods.com或Curse上找到。此訊息只會顯示一次。."
+DBM_CORE_MOD_AVAILABLE				= "熔火之心%s的DBM插件已經可供使用。你可以在|HDBM:forums|h|cff3588ffdeadlybossmods.com|r或Curse上找到。此訊息只會顯示一次。."
 
 DBM_CORE_COMBAT_STARTED				= "%s開戰。祝好運與盡興! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "與%s開戰已進行的戰鬥。祝好運與盡興! :)"

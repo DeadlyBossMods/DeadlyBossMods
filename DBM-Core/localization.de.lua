@@ -26,9 +26,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "Deine aktuelle Spezialisierung ist %s. Deine ak
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM hat festgestellt, dass du das Setzen von Schlachtzugzeichen in \"BigWigs\" und in \"DBM\" aktiviert hast. Bitte deaktiviere das Setzen von Zeichen in einem der beiden Addons um Konflikte zu vermeiden."
 
-DBM_CORE_PROVINGGROUNDS_AD			= "Das Mod \"DBM-ProvingGrounds\" ist für diesen Spielinhalt verfügbar. Du kannst es auf deadlybossmods.com oder Curse finden. Dieser Hinweis wird nur einmal angezeigt."
-
-DBM_CORE_MOLTENCORE_AD				= "Das Mod \"DBM-MC\" ist für diesen Spielinhalt verfügbar. Weitere Informationen findest du auf deadlybossmods.com. Dieser Hinweis wird nur einmal angezeigt."
+DBM_CORE_MOD_AVAILABLE				= "Das Mod \"%s\" ist für diesen Spielinhalt verfügbar. Weitere Informationen findest du auf |HDBM:forums|h|cff3588ffdeadlybossmods.com|r. Dieser Hinweis wird nur einmal angezeigt."
 
 DBM_CORE_COMBAT_STARTED				= "Kampf gegen %s hat begonnen. Viel Glück! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "Du wurdest in den laufenden Kampf gegen %s verwickelt. Viel Glück! :)"
