@@ -33,9 +33,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "你当前的人物专精为 %s。你当前的�
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM检测到你同时开启了Bigwigs,请关闭自动标记以避免冲突。"
 
-DBM_CORE_PROVINGGROUNDS_AD			= "6.0 版本的 DBM-ProvingGrounds （白虎寺挑战模块） 已经上线了. 旧的模块 DBM-ProvingGrounds-MoP 已经被禁用. 你可以删除旧版本并且在 deadlybossmods.com 或 Curse 上找到新版本。本消息只显示一次。"
-
-DBM_CORE_MOLTENCORE_AD				= "DBM-MC （熔火之心模块） 已经为100级40人随机模式适配。你可以在 deadlybossmods.com 上找到新版本。本消息只显示一次。"
+DBM_CORE_MOD_AVAILABLE				= "%s （熔火之心模块） 已经为100级40人随机模式适配。你可以在 |HDBM:forums|h|cff3588ffdeadlybossmods.com|r 上找到新版本。本消息只显示一次。"
 
 DBM_CORE_COMBAT_STARTED				= "%s作战开始，祝你走运 :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "已进行的战斗-%s正在作战。祝你走运 :)"
