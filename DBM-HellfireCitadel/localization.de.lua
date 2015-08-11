@@ -50,15 +50,15 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1372)
 
 L:SetTimerLocalization({
-	SoDDPS		= "Nächste Schatten (%s)",
-	SoDTank		= "Nächste Schatten (%s)",
-	SoDHealer	= "Nächste Schatten (%s)"
+	SoDDPS2		= "Nächste Schatten (%s)",
+	SoDTank2	= "Nächste Schatten (%s)",
+	SoDHealer2	= "Nächste Schatten (%s)"
 })
 
 L:SetOptionLocalization({
-	SoDDPS					= "Zeige Zeit bis nächste $spell:179864 die DDs betreffen",
-	SoDTank					= "Zeige Zeit bis nächste $spell:179864 die Tanks betreffen",
-	SoDHealer				= "Zeige Zeit bis nächste $spell:179864 die Heiler betreffen"
+	SoDDPS2					= "Zeige Zeit bis nächste $spell:179864 die DDs betreffen",
+	SoDTank2				= "Zeige Zeit bis nächste $spell:179864 die Tanks betreffen",
+	SoDHealer2				= "Zeige Zeit bis nächste $spell:179864 die Heiler betreffen"
 })
 
 --------------------------

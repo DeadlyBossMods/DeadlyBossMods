@@ -48,9 +48,9 @@ local specWarnBurning					= mod:NewSpecialWarningStack(185189, nil, 5)
 local specWarnBurningOther				= mod:NewSpecialWarningTaunt(185189, nil, nil, nil, nil, 2)
 local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer", nil, nil, 1, 2)
 
-local timerShadowofDeathCDDps			= mod:NewTimer(30, "SoDDPS", 179864, "Dps", nil, 5)
-local timerShadowofDeathCDTank			= mod:NewTimer(30, "SoDTank", 179864, "Tank", nil, 5)
-local timerShadowofDeathCDHealer		= mod:NewTimer(30, "SoDHealer", 179864, "Healer", nil, 5)
+local timerShadowofDeathCDDps			= mod:NewTimer(30, "SoDDPS2", 179864, "Dps", nil, 5)
+local timerShadowofDeathCDTank			= mod:NewTimer(30, "SoDTank2", 179864, "Tank", nil, 5)
+local timerShadowofDeathCDHealer		= mod:NewTimer(30, "SoDHealer2", 179864, "Healer", nil, 5)
 local timerTouchofDoomCD				= mod:NewCDTimer(18, 179977, nil, nil, nil, 3)--25 seconds in LFR, tested after heroic. changed? VERIFY
 local timerSharedFateCD					= mod:NewNextCountTimer(29, 179909, nil, nil, nil, 3)--29-31
 local timerCrushingDarknessCD			= mod:NewNextTimer(10, 180017, nil, false, 2, 2)--Actually 16, but i delay start by 6 seconds for reduced spam
@@ -73,6 +73,7 @@ local voiceBurning						= mod:NewVoice(185189) --changemt
 
 mod:AddSetIconOption("SetIconOnFate", 179909)
 mod:AddHudMapOption("HudMapOnSharedFate", 179909)--Smart hud, distinquishes rooted from non rooted by larger dot/font and lines/arrows
+mod:AddBoolOption("ShowOnlyPlayer", false)
 mod:AddRangeFrameOption(5, 182049)
 mod:AddInfoFrameOption(181295)
 
@@ -294,7 +295,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.HudMapOnSharedFate and not playerDown then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "party", args.destName, 0.5, 600, nil, nil, nil, 0.8, nil, true):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
-			DBMHudMap:AddEdge(1, 1, 0, 0.5, 600, args.destName, self.vb.rootedFate2 or self.vb.rootedFate)
+			if args.IsPlayer() then
+				DBMHudMap:AddEdge(0, 1, 0, 0.5, 10, args.destName, self.vb.rootedFate2 or self.vb.rootedFate)
+			elseif not self.Options.ShowOnlyPlayer then
+				DBMHudMap:AddEdge(1, 1, 0, 0.5, 10, args.destName, self.vb.rootedFate2 or self.vb.rootedFate)
+			end
 		end
 	elseif spellId == 180148 then
 		warnHungerforLife:CombinedShow(0.5, args.destName)
