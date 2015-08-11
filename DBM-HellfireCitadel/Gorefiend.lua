@@ -73,7 +73,7 @@ local voiceBurning						= mod:NewVoice(185189) --changemt
 
 mod:AddSetIconOption("SetIconOnFate", 179909)
 mod:AddHudMapOption("HudMapOnSharedFate", 179909)--Smart hud, distinquishes rooted from non rooted by larger dot/font and lines/arrows
-mod:AddBoolOption("ShowOnlyPlayer", false)
+mod:AddBoolOption("ShowOnlyPlayer", true)
 mod:AddRangeFrameOption(5, 182049)
 mod:AddInfoFrameOption(181295)
 
