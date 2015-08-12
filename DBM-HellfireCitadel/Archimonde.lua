@@ -532,12 +532,22 @@ function mod:SPELL_CAST_START(args)
 		specWarnDesecrate:Show()
 		timerDesecrateCD:Start()
 		if self.vb.phase < 1.5 then
-			DBM:Debug("Phase 1 begin CLEU")
+			DBM:Debug("Phase 1 begin CLEU", 2)
 			self.vb.phase = 1.5--85%
 		end
 	elseif spellId == 184265 then
 		self.vb.wroughtWarned = 0--Reset Counter
 		timerWroughtChaosCD:Start()
+		--Timer extender. Encounter failsafe. If < 7 seconds remaining on torment when wrought is cast, it's extended to 7 seconds
+		local elapsed, total = timerShackledTormentCD:GetTime(self.vb.tormentCast+1)
+		local remaining = total - elapsed
+		if total > 0 and remaining < 7 then
+			DBM:Debug("timerShackledTormentCD extender activated. Time remaining less than 7 when wrought chaos started")
+			local extend = 7 - remaining
+			timerShackledTormentCD:Update(elapsed, total+extend, self.vb.tormentCast+1)
+			countdownShackledTorment:Cancel()
+			countdownShackledTorment:Start(7)
+		end
 	elseif spellId == 183864 then
 		timerShadowBlastCD:Start(args.sourceGUID)
 	elseif spellId == 190506 then
@@ -637,8 +647,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 184931 then
 		self.vb.tormentCast = self.vb.tormentCast + 1
 		if self.vb.phase < 3 then
-			timerShackledTormentCD:Start(37, self.vb.tormentCast+1)
-			countdownShackledTorment:Start(37)
+			timerShackledTormentCD:Start(36.5, self.vb.tormentCast+1)
+			countdownShackledTorment:Start(36.5)
 		else
 			timerShackledTormentCD:Start(31, self.vb.tormentCast+1)
 			countdownShackledTorment:Start(31)
@@ -818,13 +828,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnOverfiend:Show(self.vb.overfiendCount)
 		timerFelborneOverfiendCD:Start(nil, self.vb.overfiendCount+1)
 		if self.vb.phase < 2.5 then--First spawn is about 4 seconds after phase 2.5 trigger yell
-			DBM:Debug("Phase 2.5 begin CLEU")
+			DBM:Debug("Phase 2.5 begin CLEU", 2)
 			self.vb.phase = 2.5
---			local elapsed, total = timerShackledTormentCD:GetTime()
---			if elapsed > 0 and total > 0 then
---				DBM:Debug("timerShackledTormentCD updated", 2)
---				timerShackledTormentCD:Update(elapsed, total+5)--5 seconds is added to timer on 2.5 transition (give or take, need to know exact addition but need to see more data, since timer is variable as is)
---			end
 		end
 	elseif spellId == 186952 and args:IsPlayer() then
 		playerBanished = true
@@ -993,8 +998,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownDeathBrand:Start(35)
 		warnAllureofFlamesSoon:Schedule(35.5)
 		timerAllureofFlamesCD:Start(40.5)--40-45
-		timerShackledTormentCD:Start(17)--17-25 (almost always 25, but sometimes it comes earlier, unsure why)
-		countdownShackledTorment:Start(17)
+		timerShackledTormentCD:Start(25)--17-25 (almost always 25, but sometimes it comes earlier, unsure why)
+		countdownShackledTorment:Start(25)
 		updateRangeFrame(self)
 --	"<301.70 23:49:52> [UNIT_SPELLCAST_SUCCEEDED] Archimonde(Omegal) [[boss1:Allow Phase 3 Spells::0:190118]]", -- [8737]
 --	"<301.70 23:49:52> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine!#Grommash Hellscream###Grommash H
@@ -1036,13 +1041,8 @@ end
 
 function mod:OnSync(msg)
 	if msg == "phase25" and self.vb.phase < 2.5 then
-		DBM:Debug("Phase 2.5 begin yell")
+		DBM:Debug("Phase 2.5 begin yell", 2)
 		self.vb.phase = 2.5
---		local elapsed, total = timerShackledTormentCD:GetTime()
---		if elapsed > 0 and total > 0 then
---			DBM:Debug("timerShackledTormentCD updated", 2)
---			timerShackledTormentCD:Update(elapsed, total+5)--5 seconds is added to timer on 2.5 transition (give or take, need to know exact addition but need to see more data, since timer is variable as is)
---		end
 	end
 end
 
