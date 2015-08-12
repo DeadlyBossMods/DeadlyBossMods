@@ -40,6 +40,7 @@ local Gurtogg	= EJ_GetSectionInfo(11490)
 local warnMirrorImage				= mod:NewSpellAnnounce(183885, 2)
 --Dia Darkwhisper
 local warnMarkoftheNecromancer		= mod:NewTargetAnnounce(184449, 4, nil, false)--Off by default until i verify sp ellid, i don't want announce spam cause i guessed wrong one
+local warnReapDelayed				= mod:NewAnnounce("reapDelayed", 2, 184476)
 local warnReap						= mod:NewSpellAnnounce(184476, 4)--Generic warning if you don't have reap, just to know it's going on
 --Gurtogg Bloodboil
 local warnAcidicWound				= mod:NewStackAnnounce(184847, 2, nil, "Tank")--As of PTR, this required no swaps, just the person with fel rage pulling boss away from tank long enough to clear stacks
@@ -67,7 +68,7 @@ local timerWickedStrikeCD			= mod:NewCDTimer(11, 186993, nil, nil, nil, 2)
 mod:AddTimerLine(Dia)
 --Dia Darkwhisper
 local timerMarkofNecroCD			= mod:NewCDTimer(60, 184449, nil, "Healer", nil, 5)
-local timerReapCD					= mod:NewCDTimer(55, 184476, nil, nil, nil, 3)--55-71
+local timerReapCD					= mod:NewCDTimer(54, 184476, nil, nil, nil, 3)--54-71
 local timerNightmareVisageCD		= mod:NewCDTimer(30, 184657, nil, "Tank", nil, 5)
 local timerDarknessCD				= mod:NewCDTimer(75, 184681, nil, nil, nil, 2)
 mod:AddTimerLine(Gurtogg)
@@ -95,17 +96,17 @@ mod.vb.diaDead = false
 mod.vb.jubeiDead = false
 mod.vb.bloodboilDead = false
 mod.vb.reapActive = false
-mod.vb.firstReap = false
-mod.vb.vissageCount = 0
+--mod.vb.firstReap = false
+mod.vb.visageCount = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local markofNecroDebuff = GetSpellInfo(184449)--Spell name should work, without knowing what right spellid is, For this anyways.
 
-local function delayedReapCheck(self)
+--[[local function delayedReapCheck(self)
 	--Fires 55 seconds after combat start, unless 50 second reap happens.
 	if not self.vb.firstReap then--reap wasn't cast at 50 seconds, it'll be cast at 65+
 		timerReapCD:Start(10)--Start 10 second timer for 65 second reap
 	end
-end
+end--]]
 
 function mod:OnCombatStart(delay)
 	self.vb.DiaPushed = false
@@ -113,15 +114,15 @@ function mod:OnCombatStart(delay)
 	self.vb.jubeiDead = false
 	self.vb.bloodboilDead = false
 	self.vb.reapActive = false
-	self.vb.firstReap = false
+--	self.vb.firstReap = false
 	self.vb.taintedBloodCount = 0
 	self.vb.felRageCount = 0
-	self.vb.vissageCount = 0
+	self.vb.visageCount = 0
 	timerMarkofNecroCD:Start(7-delay)--7-13
 	timerNightmareVisageCD:Start(15-delay)
 --	timerFelstormCD:Start(20.5-delay)--Review
 	timerRelRageCD:Start(30-delay, 1)
-	timerReapCD:Start(50-delay)--50-73 variation on pull. It's USUALLY between 65-67, but every so often, it's 50 for some reason https://www.warcraftlogs.com/reports/HN42ftpvVk3BYQjJ#fight=5&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24(target.id+%3D+92142+or+target.id+%3D+92144+or+target.id+%3D+92146)+and+type+%3D+%22death%22+or+(ability.id+%3D+184657+or+ability.id+%3D+184476+or+ability.id+%3D+184355)+and+type+%3D+%22begincast%22+or+(ability.id+%3D+184449+or+ability.id+%3D+183480+or+ability.id+%3D+184357)+and+type+%3D+%22cast%22+or+(ability.id+%3D+183701+or+ability.id+%3D+184360+or+ability.id+%3D+184365)+and+type+%3D+%22applydebuff%22+or+ability.id+%3D+184674
+	timerReapCD:Start(50-delay)--50-73 variation on pull. It's USUALLY between 65-67, because it's delayed by visage. But not always: reason https://www.warcraftlogs.com/reports/HN42ftpvVk3BYQjJ#fight=5&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24(target.id+%3D+92142+or+target.id+%3D+92144+or+target.id+%3D+92146)+and+type+%3D+%22death%22+or+(ability.id+%3D+184657+or+ability.id+%3D+184476+or+ability.id+%3D+184355)+and+type+%3D+%22begincast%22+or+(ability.id+%3D+184449+or+ability.id+%3D+183480+or+ability.id+%3D+184357)+and+type+%3D+%22cast%22+or+(ability.id+%3D+183701+or+ability.id+%3D+184360+or+ability.id+%3D+184365)+and+type+%3D+%22applydebuff%22+or+ability.id+%3D+184674
 	timerDarknessCD:Start(75-delay)
 	berserkTimer:Start(-delay)
 	self:Schedule(55, delayedReapCheck, self)
@@ -136,21 +137,29 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 184657 then
-		self.vb.vissageCount = self.vb.vissageCount + 1
-		timerNightmareVisageCD:Start(nil, self.vb.vissageCount+1)
+		self.vb.visageCount = self.vb.visageCount + 1
+		timerNightmareVisageCD:Start(nil, self.vb.visageCount+1)
 		for i = 1, 5 do--Maybe only 1-3 needed, but don't know if any adds take boss IDs, plus, it'll abort when it finds right one anyways
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
-				specWarnNightmareVisage:Show(self.vb.vissageCount)--Show warning only to the tank she's on, not both tanks, avoid confusion
+				specWarnNightmareVisage:Show(self.vb.visageCount)--Show warning only to the tank she's on, not both tanks, avoid confusion
 				break
 			end
 		end
+		local elapsed, total = timerReapCD:GetTime()
+		local remaining = total - elapsed
+		if remaining < 17.5 then--delayed by visage
+			warnReapDelayed:Schedule(11.5)
+			local extend = 17.5 - remaining
+			DBM:Debug("experimental timer extend firing for reap. Extend amount: "..extend)
+			timerReapCD:Update(elapsed, total+extend)
+		end
 	elseif spellId == 184476 then
 		timerMarkofNecroCD:Start(14)--Always 14 seconds after reap
-		if not self.vb.firstReap then
-			self.vb.firstReap = true
-			self:Unschedule(delayedReapCheck)
-		end
+--		if not self.vb.firstReap then
+--			self.vb.firstReap = true
+--			self:Unschedule(delayedReapCheck)
+--		end
 		self.vb.reapActive = true
 		if not self.vb.DiaPushed then--Don't start cd timer for her final reap she casts at 30%
 			timerReapCD:Start()
