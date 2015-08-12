@@ -3399,6 +3399,23 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 do
+	local function checkMods(self)
+		if LastInstanceMapID == 1148 and not self.Options.PGMessageShown and not GetAddOnInfo("DBM-ProvingGrounds") then
+			self.Options.PGMessageShown = true
+			self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-ProvingGrounds"))
+		elseif LastInstanceMapID == 409 and not self.Options.MCMessageShown and not GetAddOnInfo("DBM-MC") then
+			self.Options.MCMessageShown = true
+			self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-MC"))
+		--Surely a less shitty way of checking "this is a BC dungeon"?
+		elseif (LastInstanceMapID == 540 or LastInstanceMapID == 558 or LastInstanceMapID == 556 or LastInstanceMapID == 555 or LastInstanceMapID == 542 or LastInstanceMapID == 546 or LastInstanceMapID == 545 or LastInstanceMapID == 547 or LastInstanceMapID == 553 or LastInstanceMapID == 554 or LastInstanceMapID == 552 or LastInstanceMapID == 557 or LastInstanceMapID == 269 or LastInstanceMapID == 560 or LastInstanceMapID == 543 or LastInstanceMapID == 585) and difficultyIndex == 24 and not self.Options.BCTWMessageShown and not GetAddOnInfo("DBM-Party-BC") then
+			self.Options.BCTWMessageShown = true
+			self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-Party-BC"))
+		--Surely a less shitty way of checking "this is a wrath dungeon"?
+		elseif (LastInstanceMapID == 619 or LastInstanceMapID == 601 or LastInstanceMapID == 595 or LastInstanceMapID == 600 or LastInstanceMapID == 604 or LastInstanceMapID == 602 or LastInstanceMapID == 599 or LastInstanceMapID == 576 or LastInstanceMapID == 578 or LastInstanceMapID == 574 or LastInstanceMapID == 575 or LastInstanceMapID == 608 or LastInstanceMapID == 658 or LastInstanceMapID == 632 or LastInstanceMapID == 668 or LastInstanceMapID == 650) and difficultyIndex == 24 and not self.Options.WOTLKTWMessageShown and not GetAddOnInfo("DBM-Party-WotLK") then
+			self.Options.WOTLKTWMessageShown = true
+			self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-Party-WotLK"))
+		end
+	end
 	local function FixForShittyComputers(self)
 		timerRequestInProgress = false
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
@@ -3429,20 +3446,8 @@ do
 			end
 		end
 		-- LoadMod
+		checkMods(self)
 		self:LoadModsOnDemand("mapId", mapID)
-		if LastInstanceMapID == 1148 and not self.Options.PGMessageShown and not GetAddOnInfo("DBM-ProvingGrounds") then
-			self.Options.PGMessageShown = true
-			self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-ProvingGrounds"))
-		elseif LastInstanceMapID == 409 and not self.Options.MCMessageShown and not GetAddOnInfo("DBM-MC") then
-			self.Options.MCMessageShown = true
-			self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-MC"))
-		elseif difficultyIndex == 24 and not self.Options.BCTWMessageShown and not GetAddOnInfo("DBM-Party-BC") then
-			self.Options.BCTWMessageShown = true
-			self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-Party-BC"))
-		elseif difficultyIndex == 24 and not self.Options.WOTLKTWMessageShown and not GetAddOnInfo("DBM-Party-WotLK") then
-			self.Options.WOTLKTWMessageShown = true
-			self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-Party-WotLK"))
-		end
 	end
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
