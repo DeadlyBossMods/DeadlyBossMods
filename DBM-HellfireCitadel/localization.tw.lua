@@ -62,7 +62,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	SoDDPS2		= "為下一個傷害職中了$spell:179864顯示計時器",
 	SoDTank2	= "為下一個坦克職中了$spell:179864顯示計時器",
-	SoDHealer2	= "為下一個治療職中了$spell:179864顯示計時器"
+	SoDHealer2	= "為下一個治療職中了$spell:179864顯示計時器",
+	ShowOnlyPlayer	= "只顯示HudMap在當你參與到$spell:179909時"
+	
 })
 
 --------------------------
