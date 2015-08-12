@@ -499,7 +499,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellCurseofLegion:Cancel()
 		end
 	elseif spellId == 186362 then--Only cast once per phase transition (twice whole fight)
-		table.remove(guldanTargets, args.destName)
+		tDeleteItem(guldanTargets, args.destName)
 		updateRangeFrame(self)
 	end
 end
