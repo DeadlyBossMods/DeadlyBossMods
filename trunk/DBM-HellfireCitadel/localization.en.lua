@@ -29,6 +29,14 @@ L= DBM:GetModLocalization(1425)
 ---------------------------
 L= DBM:GetModLocalization(1432)
 
+L:SetWarningLocalization({
+	reapDelayed =	"Reap after Visage ends"
+})
+
+L:SetOptionLocalization({
+	reapDelayed =	DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon:format(184476)
+})
+
 ------------------
 -- Kormrok --
 ------------------
