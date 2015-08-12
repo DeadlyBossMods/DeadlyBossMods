@@ -6,7 +6,7 @@ mod:SetCreatureID(92142, 92144, 92146)--Blademaster Jubei'thos (92142). Dia Dark
 mod:SetEncounterID(1778)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
-mod:SetHotfixNoticeRev(14078)
+mod:SetHotfixNoticeRev(14321)
 mod:SetBossHPInfoToHighest()
 --mod.respawnTime = 20
 
@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184657 184476",
-	"SPELL_CAST_SUCCESS 184449 183480 184357 184355 184476",
+	"SPELL_CAST_SUCCESS 183480 184357 184355 184476",
 	"SPELL_AURA_APPLIED 183701 184847 184360 184365 184449 184450 185065 185066 184652 184355",
 	"SPELL_AURA_APPLIED_DOSE 184847 184355",
 --	"SPELL_AURA_REMOVED",
@@ -146,6 +146,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 184476 then
+		timerMarkofNecroCD:Start(14)--Always 14 seconds after reap
 		if not self.vb.firstReap then
 			self.vb.firstReap = true
 			self:Unschedule(delayedReapCheck)
@@ -172,9 +173,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 184449 then--Confirmed correct CAST spellid for heroic
-		timerMarkofNecroCD:Start()
-	elseif spellId == 183480 and self:AntiSpam(8, 1) then
+	if spellId == 183480 and self:AntiSpam(8, 1) then
 		warnMirrorImage:Show()
 		countdownSpecial:Start(72.8)
 		timerMirrorImage:Start()
