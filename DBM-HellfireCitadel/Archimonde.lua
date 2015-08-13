@@ -541,6 +541,7 @@ function mod:SPELL_CAST_START(args)
 		--Timer extender. Encounter failsafe. If < 7 seconds remaining on torment when wrought is cast, it's extended to 7 seconds
 		local elapsed, total = timerShackledTormentCD:GetTime(self.vb.tormentCast+1)
 		local remaining = total - elapsed
+		timerShackledTormentCD:Cancel()
 		if total > 0 and remaining < 7 then
 			DBM:Debug("timerShackledTormentCD extender activated. Time remaining less than 7 when wrought chaos started")
 			local extend = 7 - remaining
