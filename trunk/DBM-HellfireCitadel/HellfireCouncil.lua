@@ -139,7 +139,7 @@ function mod:OnCombatStart(delay)
 	timerReapCD:Start(50-delay)--50-73 variation on pull. It's USUALLY between 65-67, because it's delayed by visage. But not always: reason https://www.warcraftlogs.com/reports/HN42ftpvVk3BYQjJ#fight=5&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24(target.id+%3D+92142+or+target.id+%3D+92144+or+target.id+%3D+92146)+and+type+%3D+%22death%22+or+(ability.id+%3D+184657+or+ability.id+%3D+184476+or+ability.id+%3D+184355)+and+type+%3D+%22begincast%22+or+(ability.id+%3D+184449+or+ability.id+%3D+183480+or+ability.id+%3D+184357)+and+type+%3D+%22cast%22+or+(ability.id+%3D+183701+or+ability.id+%3D+184360+or+ability.id+%3D+184365)+and+type+%3D+%22applydebuff%22+or+ability.id+%3D+184674
 	timerDarknessCD:Start(75-delay)
 	berserkTimer:Start(-delay)
-	self:Schedule(55, delayedReapCheck, self)
+--	self:Schedule(55, delayedReapCheck, self)
 end
 
 function mod:OnCombatEnd()
@@ -162,11 +162,17 @@ function mod:SPELL_CAST_START(args)
 		end
 		local elapsed, total = timerReapCD:GetTime()
 		local remaining = total - elapsed
+		timerReapCD:Cancel()
 		if remaining < 17.5 then--delayed by visage
 			warnReapDelayed:Schedule(11.5)
-			local extend = 17.5 - remaining
-			DBM:Debug("experimental timer extend firing for reap. Extend amount: "..extend)
-			timerReapCD:Update(elapsed, total+extend)
+			if total == 0 then--Timer already expired
+				DBM:Debug("experimental timer extend firing for reap. Extend amount: "..17.5)
+				timerReapCD:Start(17.5)
+			else
+				local extend = 17.5 - remaining
+				DBM:Debug("experimental timer extend firing for reap. Extend amount: "..extend)
+				timerReapCD:Update(elapsed, total+extend)
+			end
 		end
 	elseif spellId == 184476 then
 		timerMarkofNecroCD:Start(14)--Always 14 seconds after reap
