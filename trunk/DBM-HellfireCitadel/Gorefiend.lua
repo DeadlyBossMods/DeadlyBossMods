@@ -119,7 +119,6 @@ Mythic
 
 local function sharedFateDelay(self)
 	if self.vb.rootedFate then
-		warnSharedFate:Show(self.vb.sharedFateCount, table.concat(sharedFateTargets, "<, >"))
 		for i = 1, #sharedFateTargets do
 			local name = sharedFateTargets[i]
 			if name == playerName then
@@ -288,7 +287,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellSharedFate:Yell()
 		end
 		if not playerDown then
-			warnSharedFate:CombinedShow(0.5, args.destName)
+			warnSharedFate:CombinedShow(0.5, self.vb.sharedFateCount, args.destName)
 		end
 		self.vb.rootedFate = args.destName
 		if self.Options.SetIconOnFate then
@@ -298,8 +297,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			playerHasFate = true
 		end
+		if not playerDown then
+			warnSharedFate:CombinedShow(0.5, self.vb.sharedFateCount, args.destName)
+		end
 		sharedFateTargets[#sharedFateTargets+1] = args.destName
 		local expectedTargets = self:IsMythic() and 4 or 3
+		self:Unschedule(sharedFateDelay)
 		if #sharedFateTargets == expectedTargets then
 			sharedFateDelay(self)
 		else
