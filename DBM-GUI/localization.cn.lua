@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Aug 3 2015, 10:26 UTC@14226
+-- Last update: Aug 12 2015, 9:44 UTC@14330
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -68,14 +68,6 @@ L.UseMasterChannel			= "主声道"
 L.UseDialogChannel			= "对话声道"
 L.UseSFXChannel				= "音效声道"
 L.Latency_Text				= "设定启用同步功能的最高延迟阈值：%d"
--- Tab: General Timer Options
-L.TimerGeneral 				= "DBM计时条综合设置"
-L.SKT_Enabled				= "总是显示最速胜利计时条(覆盖首领特定的选项)"
-L.CRT_Enabled				= "显示下一次可战复CD (限德拉诺团队本)"
-L.ChallengeTimerOptions		= "设置挑战模式最佳记录计时条"
-L.ChallengeTimerPersonal	= "个人"
-L.ChallengeTimerGuild		= "公会"
-L.ChallengeTimerRealm		= "服务器"
 
 L.ModelOptions				= "3D模型选项"
 L.EnableModels				= "在首领选项中启用3D模型"
@@ -308,19 +300,34 @@ L.AfterFirst				= "仅第一次播放"
 L.Always					= "总是跳过"
 
 L.Panel_ExtraFeatures		= "其他功能"
+--
 L.Area_ChatAlerts			= "文字提示警告选项"
 L.RoleSpecAlert				= "当进入团队时，如果拾取专精与当前角色专精不同，则显示警告。"
 L.CheckGear					= "当你身上的装备装等低于背包装等40点时显示警告。(可能没有装备某物品或装备了低等级的任务道具或没有装备主武器)"
 L.WorldBossAlert			= "当世界Boss进入战斗后发送警告，这个信息可能是你的朋友或者同工会成员发送的。 (由于跨服，卡位面等因素，可能不准确)"
+--
 L.Area_SoundAlerts			= "语音警告选项"
 L.LFDEnhance				= "当发起角色检查或随机团队/战场就绪时，在主声道播放准备音效 (即使关闭了音效)"
-L.WorldBossNearAlert		= "当世界附近的Boss进入战斗时发出特殊音效 (全局设置，覆盖单独BOSS设置)"
+L.WorldBossNearAlert		= "当世界附近的Boss进入战斗时发出特殊音效(覆盖单独BOSS设置)"
 L.RLReadyCheckSound			= "在主声道/对话声道播放检查准备音效"
 L.AFKHealthWarning			= "当你在挂机/暂离而受到伤害时发出警报"
+L.AutoReplySound			= "当收到DBM可自动回复的信息时发出警报"
+--
+L.TimerGeneral 				= "DBM计时条综合设置"
+L.SKT_Enabled				= "总是显示最速胜利计时条(覆盖单独BOSS设置)"
+L.CRT_Enabled				= "显示下一次可战复CD(限德拉诺团队本)"
+L.ShowRespawn				= "Boss战斗未完成时显示Boss刷新计时条"
+L.ShowQueuePop				= "显示随机小队/团队查找器确认计时条"
+L.ChallengeTimerOptions		= "设置挑战模式最佳记录计时条"
+L.ChallengeTimerPersonal	= "个人"
+L.ChallengeTimerGuild		= "公会"
+L.ChallengeTimerRealm		= "服务器"
+--
 L.Area_AutoLogging			= "自动日志记录选项"
 L.AutologBosses				= "自动采用官方格式记录日志。 (使用 /dbm pull 可提前记录并使得记录更准确，如提前偷药水或是召唤大军。)"
 L.AdvancedAutologBosses		= "自动采用 Transcriptor 记录日志"
 L.LogOnlyRaidBosses			= "只记录团队Boss，而不记录随机团队，5人本，场景战役。"
+--
 L.Area_3rdParty				= "第三方插件选项"
 L.ShowBBOnCombatStart		= "战斗开始时使用Big Brother的buff检测"
 L.BigBrotherAnnounceToRaid	= "报告Big Brother的检测结果给团队"

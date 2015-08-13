@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: Aug 6 2015, 6:47 UTC@14262
+-- Last update: Aug 12 2015, 9:29 UTC@14330
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -66,7 +66,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	SoDDPS2		= "计时条：下一次针对DPS的$spell:179864",
 	SoDTank2	= "计时条：下一次针对坦克的$spell:179864",
-	SoDHealer2	= "计时条：下一次针对治疗的$spell:179864"
+	SoDHealer2	= "计时条：下一次针对治疗的$spell:179864",
+	ShowOnlyPlayer	= "只在你被$spell:179909点名时显示HUD"
 })
 --------------------------
 -- Shadow-Lord Iskar --
@@ -150,6 +151,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specWarnBreakShackle	= "特殊警报：当你受到$spell:184964影响时。DBM会自动分配拉断次序，使得伤害最小化。",
 	ExtendWroughtHud2		= "将HUD连线延长到受到$spell:185014影响的目标上。 (可能会导致连线准确度下降)",
+	AlternateHudLine		= "在HUD中使用代替的线条材质来指示$spell:185014",
 	NamesWroughtHud			= "在HUD中显示受到$spell:185014影响的目标的姓名",
 	FilterOtherPhase		= "过滤掉不在同一阶段的事件"
 })
