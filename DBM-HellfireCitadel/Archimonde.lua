@@ -744,19 +744,19 @@ function mod:SPELL_AURA_APPLIED(args)
 					warnWroughtChaos:CombinedShow(0.1, self.vb.wroughtWarned, args.destName)
 					if UnitIsUnit("player", sourceUId) then
 						if self.Options.NamesWroughtHud then
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.9, 5.5, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger (no label on player dot)
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5.5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.9, 5.25, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger (no label on player dot)
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
 						else
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.9, 5.5, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5.5, nil, nil, nil, 0.5, nil, false):Appear()
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.9, 5.2, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear()
 						end
 					else
 						if self.Options.NamesWroughtHud then
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5.5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.9, 5.5, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger (no label on player dot)
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.9, 5.25, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger (no label on player dot)
 						else
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5.5, nil, nil, nil, 0.5, nil, false):Appear()
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.9, 5.5, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear()
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.9, 5.25, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger
 						end
 					end
 					--create line
@@ -776,11 +776,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				else--red lines for non player lines
 					--Create Points
 					if self.Options.NamesWroughtHud then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
 					else
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Appear()
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.5, 5, nil, nil, nil, 0.5, nil, false):Appear()
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear()
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear()
 					end
 					--Create Line
 					if self.Options.ExtendWroughtHud2 then
