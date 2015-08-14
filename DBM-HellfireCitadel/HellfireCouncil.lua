@@ -96,7 +96,7 @@ mod.vb.diaDead = false
 mod.vb.jubeiDead = false
 mod.vb.bloodboilDead = false
 mod.vb.reapActive = false
-mod.vb.firstReap = false
+--mod.vb.firstReap = false
 mod.vb.visageCount = 0
 local felRageTimers = {28, 80, 60, 85}--Post august 11th hotfix timers.
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
@@ -128,7 +128,7 @@ function mod:OnCombatStart(delay)
 	self.vb.jubeiDead = false
 	self.vb.bloodboilDead = false
 	self.vb.reapActive = false
-	self.vb.firstReap = false
+--	self.vb.firstReap = false
 	self.vb.taintedBloodCount = 0
 	self.vb.felRageCount = 0
 	self.vb.visageCount = 0
@@ -165,7 +165,7 @@ function mod:SPELL_CAST_START(args)
 		timerReapCD:Cancel()
 		if remaining < 17.5 then--delayed by visage
 			warnReapDelayed:Schedule(11.5)
-			if total == 0 and not self.vb.firstReap then--Pull reap delayed by visage
+			if total == 0 then--Pull reap delayed by visage
 				DBM:Debug("experimental timer extend firing for reap. Extend amount: "..17.5)
 				timerReapCD:Start(17.5)
 			else
@@ -176,10 +176,10 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 184476 then
 		timerMarkofNecroCD:Start(14)--Always 14 seconds after reap
-		if not self.vb.firstReap then
-			self.vb.firstReap = true
+--		if not self.vb.firstReap then
+--			self.vb.firstReap = true
 --			self:Unschedule(delayedReapCheck)
-		end
+--		end
 		self.vb.reapActive = true
 		if not self.vb.DiaPushed then--Don't start cd timer for her final reap she casts at 30%
 			timerReapCD:Start()
