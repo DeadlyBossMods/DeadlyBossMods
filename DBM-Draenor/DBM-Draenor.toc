@@ -25,6 +25,7 @@ localization.de.lua
 localization.ru.lua
 localization.tw.lua
 localization.br.lua
+localization.cn.lua
 Drov.lua
 Tarlna.lua
 Rukhmar.lua
