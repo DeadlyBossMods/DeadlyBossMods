@@ -53,7 +53,7 @@ local timerSlamCD					= mod:NewCDTimer(23, 156704, nil, "Tank", nil, 5)
 local timerWarpedArmorCD			= mod:NewCDTimer(14, 156766, nil, "Tank", nil, 5)
 local timerTremblingEarthCD			= mod:NewCDTimer(153.5, 173917, nil, nil, nil, 6)
 local timerTremblingEarth			= mod:NewBuffActiveTimer(25, 173917, nil, nil, nil, 6)
-local timerCalloftheMountain		= mod:NewCastTimer(5, 158217)
+local timerCalloftheMountain		= mod:NewCastTimer(5, 158217, nil, nil, nil, 2)
 
 local berserkTimer					= mod:NewBerserkTimer(540)
 

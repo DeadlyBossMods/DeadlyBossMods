@@ -436,7 +436,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 186362 then--Only cast once per phase transition (twice whole fight)
-		table.insert(guldanTargets, args.destName)
+		if not tContains(guldanTargets, args.destName) then
+			table.insert(guldanTargets, args.destName)
+		end
 		warnWrathofGuldan:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnWrathofGuldan:Show()
