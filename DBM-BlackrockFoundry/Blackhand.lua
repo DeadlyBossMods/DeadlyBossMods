@@ -71,7 +71,7 @@ local timerImpalingThrow			= mod:NewCastTimer(5, 156111)--How long marked target
 --Stage Two: Storage Warehouse
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerSiegemakerCD				= mod:NewNextCountTimer(50, "ej9571", nil, nil, nil, 1, 156667)
-local timerMassiveExplosion			= mod:NewCastTimer(5, 163008)
+local timerMassiveExplosion			= mod:NewCastTimer(5, 163008, nil, nil, nil, 2)
 --Stage Three: Iron Crucible
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerSlagEruptionCD			= mod:NewCDCountTimer(32.5, 156928, nil, nil, nil, 2)
