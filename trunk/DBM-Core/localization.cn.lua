@@ -2,12 +2,12 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Aug 3 2015, 7:49 UTC@14226
+-- Last update: Aug 14 2015, 6:39 UTC@14333
 
 if GetLocale() ~= "zhCN" then return end
 
-DBM_CORE_NEED_SUPPORT				= "如果你会编程并且英语不错，请来帮助我们完善DBM中文翻译。请访问 http://forums.elitistjerks.com/topic/132449-dbm-localizers-needed/ 获取更多消息。"
-DBM_CORE_NEED_LOGS					= "DBM 需要战斗记录器 (http://www.wowace.com/addons/transcriptor/) 的日志来使得技能判断更准确. 如果你想帮忙，请用 transcriptor 记录并上传日志文件到 http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing/ (请压缩他们). 我们现在只对团本数据感兴趣."
+DBM_CORE_NEED_SUPPORT				= "如果你会编程并且英语不错，请来帮助我们完善DBM中文翻译。请|HDBM:localizersneeded|h|cff3588ff点击此处|获取更多消息。"
+DBM_CORE_NEED_LOGS					= "DBM需要战斗记录器 (http://www.wowace.com/addons/transcriptor/) 的日志来使得技能判断更准确。如果你想帮忙，请用 transcriptor 记录并上传日志文件到我们的论坛。我们现在只对7.0的数据感兴趣。"
 DBM_HOW_TO_USE_MOD					= "欢迎使用DBM。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。DBM 会在你第一次使用时读取你的职业和专精并做出相应设置，但是有些设置需要手动开启。"
 
 DBM_FORUMS_MESSAGE					= "发现BUG或错误的计时条?你希望要让某些模组有新的警告，计时器或是特别功能?\n拜访新的Deadly Boss Mods |HDBM:论坛|h|cff3588ffhttp://www.deadlybossmods.com|r (你可以点击链接复制网址)"
@@ -22,7 +22,7 @@ DBM_CORE_LOAD_GUI_COMBAT			= "DBM无法在战斗中初始化图形界面。请�
 DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，有些计时器可能会错误。请在离开战斗后马上重载界面。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本过旧。请升级DBM。"
 
-DBM_CORE_WHATS_NEW					= "最新更新：DBM帮助菜单(/dbm help)加入了一些新的命令, 它变得更加友好了. 有一些模组的HUD功能被强化了, 特别是阿克蒙德."
+DBM_CORE_WHATS_NEW					= "最新更新：DBM帮助菜单(/dbm help)加入了一些新的命令，它变得更加友好了。有一些模组的HUD功能被强化了，特别是阿克蒙德。我们和世界知名工会合作，改善了神话模式下阿克蒙德模组的表现。"
 --DBM_CORE_WHATS_NEW_LINK			= "最新更新: 想要知道更多可以 |HDBM:forumsnews|h|cff3588ff 点击此处|r 访问我们的论坛"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
@@ -33,7 +33,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "你当前的人物专精为 %s。你当前的�
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM检测到你同时开启了Bigwigs,请关闭自动标记以避免冲突。"
 
-DBM_CORE_MOD_AVAILABLE				= "%s （熔火之心模块） 已经为100级40人随机模式适配。你可以在 |HDBM:forums|h|cff3588ffdeadlybossmods.com|r 上找到新版本。本消息只显示一次。"
+DBM_CORE_MOD_AVAILABLE				= "DBM已经为%s制作了相关模块。你可以在 |HDBM:forums|h|cff3588ffdeadlybossmods.com|r 或Curse上找到新版本。本消息只显示一次。"
 
 DBM_CORE_COMBAT_STARTED				= "%s作战开始，祝你走运 :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "已进行的战斗-%s正在作战。祝你走运 :)"
