@@ -175,7 +175,9 @@ function mod:OnCombatStart(delay)
 	end
 	timerCrushingDarknessCD:Start(5-delay)
 	timerTouchofDoomCD:Start(9-delay)
-	timerSharedFateCD:Start(19-delay, 1)
+	if not self:IsLFR() then
+		timerSharedFateCD:Start(19-delay, 1)
+	end
 	timerFeastofSouls:Start(-delay)
 end
 
@@ -280,7 +282,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not playerDown then
 			warnTouchofDoom:CombinedShow(0.5, args.destName)
 		end
-		if args:IsPlayer() then
+		if args:IsPlayer() and not self:IsLFR() then
 			specWarnTouchofDoom:Show()
 			voiceTouchofDoom:Play("runout")
 			yellTouchofDoom:Yell()
@@ -364,7 +366,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.rootedFate = nil
 		if self.Options.HudMapOnSharedFate then
 			DBMHudMap:FreeEncounterMarkerByTarget(179909, args.destName)
-			--DBMHudMap:ClearAllEdges()
+			--fDBMHudMap:ClearAllEdges()
 		end
 		if self.Options.SetIconOnFate then
 			self:SetIcon(args.destName, 0)
@@ -415,7 +417,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		timerCrushingDarknessCD:Start(5)
 		timerTouchofDoomCD:Start(9)
-		timerSharedFateCD:Start(19, 1)
+		if not self:IsLFR() then
+			timerSharedFateCD:Start(19, 1)
+		end
 		timerFeastofSouls:Start()
 		if self.Options.RangeFrame and self:IsInCombat() then
 			DBM.RangeCheck:Show(5, digestFilter)
