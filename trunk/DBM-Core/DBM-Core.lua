@@ -7360,7 +7360,7 @@ do
 	}]]
 
 	local specRoleTable = {
-		[62] = {	--Aracne Mage
+		[62] = {	--Arcane Mage
 			["Dps"] = true,
 			["Ranged"] = true,
 			["RangedDps"] = true,
@@ -7585,6 +7585,9 @@ do
 	--disable flag check normally because double flag check comsumes more cpu on mod load.
 	function bossModPrototype:GetRoleFlagValue(flag)
 		if not flag then return false end
+		if not currentSpecID then
+			DBM:SetCurrentSpecInfo()
+		end
 		local flags = {strsplit("|", flag)}
 		for i = 1, #flags do
 			local flagText = flags[i]
