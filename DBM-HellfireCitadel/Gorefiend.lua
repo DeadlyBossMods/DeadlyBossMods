@@ -119,19 +119,23 @@ Mythic
 
 local function sharedFateDelay(self)
 	if self.vb.rootedFate then
+		if self.Options.HudMapOnSharedFate and not playerDown and (playerHasFate or not self.Options.ShowOnlyPlayer) then
+			local marker1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "party", self.vb.rootedFate, 0.6, 10, nil, nil, nil, 0.5):Appear():SetLabel(self.vb.rootedFate, nil, nil, nil, nil, nil, 0.8, nil, -17, 11, nil)
+		end
 		for i = 1, #sharedFateTargets do
 			local name = sharedFateTargets[i]
 			if name == playerName then
 				specWarnSharedFate:Show(self.vb.rootedFate)
 				voiceSharedFate:Play("linegather")
 			end
-			if self.Options.HudMapOnSharedFate and not playerDown and (playerHasFate or not self.Options.ShowOnlyPlayer) then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "party", self.vb.rootedFate, 0.75, 10, nil, nil, nil, 0.8, nil, true):Appear():SetLabel(self.vb.rootedFate, nil, nil, nil, nil, nil, 0.8, nil, -17, 11, nil)
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "party", name, 0.5, 10, nil, nil, nil, 0.8, nil, true):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
+			if marker1 then
+				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "party", name, 0.4, 10, nil, nil, nil, 0.5):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
 				if name == playerName or self.vb.rootedFate == playerName then--Green line since player is in link
-					DBMHudMap:AddEdge(0, 1, 0, 0.5, 10, sharedFateTargets[i], self.vb.rootedFate)
+					marker1:EdgeTo(marker2, nil, 10, 0, 1, 0, 0.5)
+					--DBMHudMap:AddEdge(0, 1, 0, 0.5, 10, sharedFateTargets[i], self.vb.rootedFate)
 				else--Yellow Line since player is not in link
-					DBMHudMap:AddEdge(1, 1, 0, 0.5, 10, sharedFateTargets[i], self.vb.rootedFate)
+					marker1:EdgeTo(marker2, nil, 10, 1, 1, 0, 0.5)
+					--DBMHudMap:AddEdge(1, 1, 0, 0.5, 10, sharedFateTargets[i], self.vb.rootedFate)
 				end
 			end
 		end
@@ -360,7 +364,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.rootedFate = nil
 		if self.Options.HudMapOnSharedFate then
 			DBMHudMap:FreeEncounterMarkerByTarget(179909, args.destName)
-			DBMHudMap:ClearAllEdges()
+			--DBMHudMap:ClearAllEdges()
 		end
 		if self.Options.SetIconOnFate then
 			self:SetIcon(args.destName, 0)
