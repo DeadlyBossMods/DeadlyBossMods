@@ -264,7 +264,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 90523 then--Hulking Terror
+	if cid == 90523 or cid == 92744 then--Hulking Terror
 		HowlByGUID[args.sourceGUID] = nil
 		timerRendingHowlCD:Cancel(args.destGUID)
 	end
