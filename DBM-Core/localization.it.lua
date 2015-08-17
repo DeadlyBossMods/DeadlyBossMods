@@ -208,8 +208,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodge 	= DBM_CORE_AUTO_SPEC_WARN_TEXTS.move--FIXME
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run		= "%s - Corri Via!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast		= "%s - Smetti di Attaccare!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "%s (%%d)"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch	= ">%s< - Cambia Bersaglio"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= ">%s< - Cambia Bersaglio (%%d)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch	= "%s - Cambia Bersaglio"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - Cambia Bersaglio (%%d)"
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Imposta Icone sui bersagli di $spell:%s"
