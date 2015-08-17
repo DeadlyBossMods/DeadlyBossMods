@@ -34,7 +34,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	reapDelayed =	DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon:format(184476)
+	reapDelayed =	DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon:format(184476)
 })
 
 ------------------
