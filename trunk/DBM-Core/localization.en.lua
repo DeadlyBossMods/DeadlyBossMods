@@ -314,8 +314,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	reflect			= "%s on >%%s< - stop attacking",
 	count			= "%s! (%%s)",
 	stack			= "%%d stacks of %s on you",
-	switch			= ">%s< - switch targets",
-	switchcount		= ">%s< - switch targets (%%d)"
+	switch			= "%s - switch targets",
+	switchcount		= "%s - switch targets (%%d)"
 }
 
 -- Auto-generated Special Warning Localizations

@@ -319,8 +319,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodge 	= DBM_CORE_AUTO_SPEC_WARN_TEXTS.move--FIXME
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run		= "%s - corra para longe"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast		= "%s - pare de lançar"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "%s (%%d)"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch	= ">%s< - mude de alvo"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= ">%s< - mude de alvo (%%d)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch	= "%s - mude de alvo"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - mude de alvo (%%d)"
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Colocar ícones nos alvos de $spell:%s"
