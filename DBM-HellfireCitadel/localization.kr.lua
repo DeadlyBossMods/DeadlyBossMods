@@ -30,6 +30,10 @@ L= DBM:GetModLocalization(1425)
 ---------------------------
 L= DBM:GetModLocalization(1432)
 
+L:SetWarningLocalization({
+	reapDelayed =	"악몽의 형상 종료 후 수확"
+})
+
 ------------------
 -- Kormrok --
 ------------------
@@ -62,7 +66,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	SoDDPS2		= "다음 $spell:179864 대상 바 보기(공격 전담)",
 	SoDTank2	= "다음 $spell:179864 대상 바 보기(방어 전담)",
-	SoDHealer2	= "다음 $spell:179864 대상 바 보기(치유 전담)"
+	SoDHealer2	= "다음 $spell:179864 대상 바 보기(치유 전담)",
+	ShowOnlyPlayer	= "$spell:179909 대상일 경우에만 범위정보 표시"
 })
 
 --------------------------
