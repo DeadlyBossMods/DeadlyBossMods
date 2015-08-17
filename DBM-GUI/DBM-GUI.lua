@@ -2248,7 +2248,7 @@ local function CreateOptionsMenu()
 
 		local Styles = {
 			{	text	= L.BarDBM,				value	= "DBM" },
-			{	text	= L.BarBigWigs,			value 	= "BigWigs" }
+			{	text	= L.BarSimple,			value 	= "NoAnim" }
 		}
 
 		local StyleDropDown = BarSetup:CreateDropdown(L.BarStyle, Styles, "DBT", "Style", function(value)
@@ -2346,8 +2346,8 @@ local function CreateOptionsMenu()
 
 		local EnlargeTimeSlider = BarSetup:CreateSlider(L.Bar_EnlargeTime, 6, 30, 1)
 		EnlargeTimeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -350)
-		EnlargeTimeSlider:SetScript("OnShow", createDBTOnShowHandler("EnlargeBarsTime"))
-		EnlargeTimeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarsTime"))
+		EnlargeTimeSlider:SetScript("OnShow", createDBTOnShowHandler("EnlargeBarTime"))
+		EnlargeTimeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("EnlargeBarTime"))
 
 		local EnlargePerecntSlider = BarSetup:CreateSlider(L.Bar_EnlargePercent, 0, 50, 0.5)
 		EnlargePerecntSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -390)
