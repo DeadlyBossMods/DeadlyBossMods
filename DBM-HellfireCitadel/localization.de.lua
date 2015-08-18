@@ -88,11 +88,7 @@ L:SetOptionLocalization({
 	Iconed				= "Stern, Kreis, Diamant, Dreieck, Mond (für Strategien mit Weltmarkierungen)",
 	Numbered			= "1, 2, 3, 4, 5 (für Strategien mit nummerierten Positionen)",
 	DirectionLine		= "Links, Mitte Links, Mitte, Mitte Rechts, Rechts (typisch für geradlinige Formationen)", 
-	FreeForAll			= "Nur Standardschrei verwenden (ohne Positionszuweisung)",
-	--Currently these 3 below are unused unless I see anyone want/need them
-	CrossPerception		= "Vorne, Hinten, Links, Rechts, Mitte. (typisch für Strategien mit Kreuzformationen)",
-	CrossCardinal		= "Norden, Süden, Osten, Westen, Mitte. (typisch für Strategien mit Kreuzformationen)",
-	ExCardinal			= "Nordosten, Südosten, Nordwesten, Südwesten, Mitte (typisch für \"Ex\" Strategien)"
+	FreeForAll			= "Nur Standardschrei verwenden (ohne Positionszuweisung)"
 })
 
 L:SetMiscLocalization({

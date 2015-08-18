@@ -97,17 +97,12 @@ L:SetOptionLocalization({
 	Iconed				= "별, 동그라미, 다이아, 역삼각형, 달(기둥 위치를 사용할 경우)",--Default
 	Numbered			= "1, 2, 3, 4, 5(번호로 지정된 위치를 사용할 경우)",
 	DirectionLine		= "왼쪽, 중앙 왼쪽, 중앙, 중앙 오른쪽, 오른쪽.(일직선 진형을 사용할 경우)",
-	FreeForAll			= "위지 지정하지 않음. 기본 대화 알림 사용",
-	--Currently these 3 below are unused unless I see anyone want/need them
-	CrossPerception		= "앞, 뒤, 가운데, 왼쪽, 오른쪽(십자가 진형을 사용할 경우)",--Unsure if viable with 5 targets/will remain
-	CrossCardinal		= "동쪽, 서쪽, 남쪽, 북쪽, 가운데(십자가 진형을 사용할 경우)",--Unsure if viable 5 targets/will remain
-	ExCardinal			= "북동, 남동, 북서, 남북, 가운데(사각형 진형을 사용할 경우)"--Unsure if viable 5 targets/will remain
+	FreeForAll			= "위지 지정하지 않음. 기본 대화 알림 사용"
 })
 
 L:SetMiscLocalization({
 	DBMConfigMsg		= "씨앗 위치 알림 방법이 공격대장 설정과 동일하게 하기 위해 %s로 설정되었습니다.",
 	BWConfigMsg			= "공격대장이 BigWigs를 사용합니다. BigWigs와 동일한 경고를 하기 위해 번호 알림으로 설정됩니다."
-	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 
 --------------------------
