@@ -44,7 +44,7 @@ local specWarnFeastofSoulsEnded			= mod:NewSpecialWarningEnd(181973)
 local specWarnHungerforLife				= mod:NewSpecialWarningRun(180148, nil, nil, nil, 4, 2)
 local specWarnEnragedSpirit				= mod:NewSpecialWarningSwitch("ej11378", "-Healer")
 local specWarnGoreboundSpirit			= mod:NewSpecialWarningSwitch("ej11020", "-Healer")
-local specWarnBurning					= mod:NewSpecialWarningStack(185189, nil, 5)
+local specWarnBurning					= mod:NewSpecialWarningStack(185189, nil, 4)
 local specWarnBurningOther				= mod:NewSpecialWarningTaunt(185189, nil, nil, nil, nil, 2)
 local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer", nil, nil, 1, 2)
 
@@ -344,7 +344,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnGoreboundSpiritSoon:Show()
 	elseif spellId == 185189 then
 		local amount = args.amount or 1
-		if (amount >= 5) and self:AntiSpam(3, 5) then
+		if (amount >= 4) and self:AntiSpam(3, 5) then
 			voiceBurning:Play("changemt")
 			if args:IsPlayer() then
 				specWarnBurning:Show(amount)
