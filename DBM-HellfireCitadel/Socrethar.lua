@@ -105,6 +105,7 @@ mod:AddRangeFrameOption(10, 184124)
 mod:AddHudMapOption("HudMapOnOrb", 180221)
 mod:AddHudMapOption("HudMapOnCharge", 182051)
 mod:AddSetIconOption("SetIconOnCharge", 182051, true)
+mod:AddDropdownOption("InterruptBehavior", {"Count3Resume", "Count3Reset", "Count4Resume", "Count4Reset"}, "Count3Resume", "misc")
 
 mod.vb.ReverberatingBlow = 0
 mod.vb.felBurstCount = 0
@@ -114,6 +115,7 @@ mod.vb.ghostSpawn = 0
 mod.vb.kickCount = 0
 mod.vb.barrierUp = false
 mod.vb.dominatorCount = 0
+mod.vb.interruptBehavior = "Count3Resume"
 local playerInConstruct = false
 --[[
 Dominator Times Observed on Normal and raid sizes
@@ -176,6 +178,7 @@ function mod:ChargeTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.interruptBehavior = "Count3Resume"
 	self.vb.ReverberatingBlow = 0
 	self.vb.ManariTargets = 0
 	self.vb.felBurstCount = 0
@@ -194,6 +197,17 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerVoraciousSoulstalkerCD:Start(20-delay, 1)
 		timerApocalypticFelburstCD:Start(33.7-delay)
+	end
+	if UnitIsGroupLeader("player") and not self:IsLFR() then
+		if self.Options.InterruptBehavior == "Count3Resume" then
+			self:SendSync("Count3Resume")
+		elseif self.Options.InterruptBehavior == "Count3Reset" then
+			self:SendSync("Count3Reset")
+		elseif self.Options.InterruptBehavior == "Count4Resume" then
+			self:SendSync("Count4Resume")
+		elseif self.Options.InterruptBehavior == "Count4Reset" then
+			self:SendSync("Count4Reset")
+		end
 	end
 end
 
@@ -227,7 +241,7 @@ function mod:SPELL_CAST_START(args)
 		--Must have delay, to avoid same bug as oregorger. Boss has 2 target scans
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "ChargeTarget", 0.1, 10, true)
 	elseif spellId == 183331 then
-		if self.vb.kickCount >= 3 then
+		if (self.vb.interruptBehavior == "Count3Resume" or self.vb.interruptBehavior == "Count3Reset") and self.vb.kickCount >= 3 or self.vb.kickCount >= 4 then
 			self.vb.kickCount = 0
 		end
 		self.vb.kickCount = self.vb.kickCount + 1
@@ -240,6 +254,8 @@ function mod:SPELL_CAST_START(args)
 				voiceExertDominance:Play("kick2r")
 			elseif self.vb.kickCount == 3 then
 				voiceExertDominance:Play("kick3r")
+			elseif self.vb.kickCount == 4 then
+				voiceExertDominance:Play("kick4r")
 			end
 		end
 	elseif spellId == 183329 then
@@ -395,6 +411,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		playerInConstruct = false
 	elseif spellId == 184053 then
 		self.vb.barrierUp = false
+		if self.vb.interruptBehavior == "Count3Reset" or self.vb.interruptBehavior == "Count4Reset" then
+			local elapsed, total = timerExertDominanceCD:GetTime(nil, self.vb.kickCount+1)
+			if total > 0 then--Timer exists
+				timerExertDominanceCD:Cancel()
+				timerExertDominanceCD:Update(elapsed, total, 1)--Update timer to show count start over
+			end
+			self.vb.kickCount = 0
+		end
 	end
 end
 
@@ -443,6 +467,19 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 			countdownReverberatingBlow:Start(10)
 		end
 	end
+end
+
+function mod:OnSync(msg)
+	if self:IsLFR() then return end
+	if msg == "Count3Resume" then
+		self.vb.interruptBehavior = "Count3Resume"
+	elseif msg == "Count3Reset" then
+		self.vb.interruptBehavior = "Count3Reset"
+	elseif msg == "Count4Resume" then
+		self.vb.interruptBehavior = "Count4Resume"
+	elseif msg == "Count4Reset" then
+		self.vb.interruptBehavior = "Count4Reset"
+	end	
 end
 
 --[[

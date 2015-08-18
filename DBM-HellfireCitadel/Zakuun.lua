@@ -80,6 +80,7 @@ mod.vb.SoulCleaveCount = 0
 mod.vb.CavitationCount = 0
 mod.vb.SeedsCount = 0
 mod.vb.Enraged = false
+mod.vb.yellType = "Icon"
 local yellSeeds2 = mod:NewPosYell(181508, nil, true, false)
 local seedsTargets = {}
 local befouledName = GetSpellInfo(179711)
@@ -106,7 +107,6 @@ local function updateRangeFrame(self)
 end
 
 local playerName = UnitName("player")
-local yellType = "Icon"
 local iconedAssignments = {RAID_TARGET_1, RAID_TARGET_2, RAID_TARGET_3, RAID_TARGET_4, RAID_TARGET_5}
 local iconedVoiceAssignments = {"mm1", "mm2", "mm3", "mm4", "mm5"}
 local numberedAssignments = {1, 2, 3, 4, 5}
@@ -117,17 +117,17 @@ local function warnSeeds(self)
 	--Sort alphabetical to match bigwigs, and since combat log order may diff person to person
 	table.sort(seedsTargets)
 	warnSeedofDestruction:Show(self.vb.SeedsCount, table.concat(seedsTargets, "<, >"))
-	if self:IsLFR() or yellType == "FreeForAll" then return end
+	if self:IsLFR() or self.vb.yellType == "FreeForAll" then return end
 	--Generate type
 	local currentType
 	local currentVoice
-	if yellType == "Icon" then
+	if self.vb.yellType == "Icon" then
 		currentType = iconedAssignments
 		currentVoice = iconedVoiceAssignments
-	elseif yellType == "Numbered" then
+	elseif self.vb.yellType == "Numbered" then
 		currentType = numberedAssignments
 		currentVoice = numberedVoiceAssignments
-	elseif yellType == "DirectionLine" then
+	elseif self.vb.yellType == "DirectionLine" then
 		currentType = DirectionLineAssignments
 		currentVoice = DirectionVoiceAssignments
 	end
@@ -172,7 +172,7 @@ local function delayModCheck(self)
 		end
 		if leaderHasBW then
 			DBM:AddMsg(L.BWConfigMsg)
-			yellType = "Icon"
+			self.vb.yellType = "Icon"
 		end
 	end
 end
@@ -208,7 +208,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	yellType = "Icon"--Reset on combat end, resetting on combat start could accidentally overright raid leaders assignment set on combat start.
+	self.vb.yellType = "Icon"--Reset on combat end, resetting on combat start could accidentally overright raid leaders assignment set on combat start.
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
@@ -261,7 +261,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 181508 or spellId == 181515 then--181508 disarmed version, 181515 enraged version
 		if args:IsPlayer() then
 			specWarnSeedofDestruction:Show()
-			if self:IsLFR() or yellType == "FreeForAll" then
+			if self:IsLFR() or self.vb.yellType == "FreeForAll" then
 				yellSeedsofDestruction:Yell()
 				voiceSeedsofDestruction:Play("runout")
 			end
@@ -368,19 +368,19 @@ function mod:OnSync(msg)
 	if self:IsLFR() then return end
 	if msg == "Iconed" then
 		self:Unschedule(delayModCheck)
-		yellType = "Icon"
+		self.vb.yellType = "Icon"
 		DBM:AddMsg(L.DBMConfigMsg:format(msg))
 	elseif msg == "Numbered" then
 		self:Unschedule(delayModCheck)
-		yellType = "Numbered"
+		self.vb.yellType = "Numbered"
 		DBM:AddMsg(L.DBMConfigMsg:format(msg))
 	elseif msg == "DirectionLine" then
 		self:Unschedule(delayModCheck)
-		yellType = "DirectionLine"
+		self.vb.yellType = "DirectionLine"
 		DBM:AddMsg(L.DBMConfigMsg:format(msg))
 	elseif msg == "FreeForAll" then
 		self:Unschedule(delayModCheck)
-		yellType = "FreeForAll"
+		self.vb.yellType = "FreeForAll"
 		DBM:AddMsg(L.DBMConfigMsg:format(msg))
 	end	
 end
