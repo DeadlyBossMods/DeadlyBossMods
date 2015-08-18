@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: Aug 12 2015, 9:29 UTC@14330
+-- Last update: Aug 18 2015, 15:13 UTC@14354
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -120,6 +120,14 @@ L:SetOptionLocalization({
 -- Socrethar the Eternal --
 --------------------------
 L= DBM:GetModLocalization(1427)
+
+L:SetOptionLocalization({
+	InterruptBehavior	= "设置打断方式 (需要团长权限)",
+	Count3Resume		= "3人循环打断, 邪能壁垒后继续计数",--Default
+	Count3Reset			= "3人循环打断, 邪能壁垒时重置计数",
+	Count4Resume		= "4人循环打断, 邪能壁垒后继续计数",
+	Count4Reset			= "4人循环打断, 邪能壁垒时重置计数"
+})
 
 --------------------------
 -- Tyrant Velhari --
