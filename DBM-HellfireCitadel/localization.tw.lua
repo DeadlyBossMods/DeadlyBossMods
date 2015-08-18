@@ -94,17 +94,12 @@ L:SetOptionLocalization({
 	Iconed				= "星星,圈圈,鑽石,三角,月亮。適用於用於分散站位",
 	Numbered			= "1, 2, 3, 4, 5。適用於分區站位",
 	DirectionLine		= "左, 中偏左, 中間, 中偏右, 右。適用於直線站位",
-	FreeForAll			= "自由模式。不指定佔位，只使用普通的大喊",
-	--Currently these 3 below are unused unless I see anyone want/need them
-	CrossPerception		= "前, 後, 左, 右, 中。適用於十字站位",
-	CrossCardinal		= "北, 南, 東, 西, 中。適用於十字站位",
-	ExCardinal			= "東北, 東南, 西北, 西南, 中。適用於十字站位"
+	FreeForAll			= "自由模式。不指定佔位，只使用普通的大喊"
 })
 
 L:SetMiscLocalization({
 	DBMConfigMsg		= "種子設定已設定為%s以符合團隊隊長設定。",
 	BWConfigMsg			= "團隊隊長使用Bigwigs中，設定DBM為編號以符合Bigwigs的種子大喊。"
-	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 
 --------------------------
