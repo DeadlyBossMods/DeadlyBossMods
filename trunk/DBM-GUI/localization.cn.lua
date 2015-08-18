@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Aug 12 2015, 9:44 UTC@14330
+-- Last update: Aug 17 2015, 17:44 UTC@14349
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -20,6 +20,7 @@ L.OTabBosses				= "模块"
 L.OTabOptions				= "选项"
 
 L.TabCategory_Options 		= "综合设置"
+L.TabCategory_LEG	 		= "军团再临"
 L.TabCategory_WOD	 		= "德拉诺之王"
 L.TabCategory_MOP	 		= "熊猫人之谜"
 L.TabCategory_CATA	 		= "大地的裂变"
@@ -134,7 +135,7 @@ L.BarSetup   				= "计时条设置"
 L.BarTexture 				= "计时条材质"
 L.BarStyle					= "计时条样式"
 L.BarDBM					= "DBM"
-L.BarSimple					= "Simple (没动画)"
+L.BarSimple					= "简易(没动画)"
 L.BarStartColor				= "初始颜色"
 L.BarEndColor 				= "结束颜色"
 L.Bar_Font					= "计时条字体"
