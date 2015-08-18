@@ -92,17 +92,12 @@ L:SetOptionLocalization({
 	Iconed				= "Метки на полу: Звезда, Круг, Ромб, Треугольник, Луна",--Default
 	Numbered			= "Нумерованные позиции: 1, 2, 3, 4, 5",
 	DirectionLine		= "Лево, Слева от середины, Середина, Справа от середины, Право. Для стратегии в одну линию",
-	FreeForAll			= "Свободное. Позиция не задается, используется обычный крик",
-	--Currently these 3 below are unused unless I see anyone want/need them
-	CrossPerception		= "Front, Back, Left, Right, Middle. Typical for Cross strat",--Unsure if viable with 5 targets/will remain
-	CrossCardinal		= "North, South, East, West, Middle. Typical for Cross strat",--Unsure if viable 5 targets/will remain
-	ExCardinal			= "NorthEast, Southeast, Northwest, Southwest, Middle. Typical for Ex strat"--Unsure if viable 5 targets/will remain
+	FreeForAll			= "Свободное. Позиция не задается, используется обычный крик"
 })
 
 L:SetMiscLocalization({
 	DBMConfigMsg		= "Конфигурация для Семя разрушения установлена в %s, чтобы соответствовать конфигурации рейд лидера.",
 	BWConfigMsg			= "Рейд лидер использует Bigwigs, DBM автоматически настроен на использование нумерованных позиций"
-	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 
 --------------------------
