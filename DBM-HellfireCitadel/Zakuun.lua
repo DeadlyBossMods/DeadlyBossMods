@@ -271,7 +271,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			countdownSeedsofDestruction:Start()--Everyone, because waves occur.
 		end
 		if self.Options.HudMapOnSeeds then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 13, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 13, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
 		seedsTargets[#seedsTargets+1] = args.destName
 		self:Unschedule(warnSeeds)
