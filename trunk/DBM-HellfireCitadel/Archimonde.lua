@@ -712,7 +712,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnWroughtChaos:Show()
-			yellWroughtChaos:Yell()
+			if not self:IsMythic() then
+				yellWroughtChaos:Yell()
+			end
 			countdownWroughtChaos:Start()
 			voiceWroughtChaos:Play("186123") --new voice
 		end
@@ -726,19 +728,23 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFocusedChaos:Show()
 			countdownWroughtChaos:Start()
 			voiceFocusedChaos:Play("185014")
-			yellFocusedChaos:Yell(5)
-			yellFocusedChaos:Schedule(3, 2)
-			yellFocusedChaos:Schedule(2, 3)
-			yellFocusedChaos:Schedule(1, 4)
+			if not self:IsMythic() then
+				yellFocusedChaos:Yell(5)
+				yellFocusedChaos:Schedule(3, 2)
+				yellFocusedChaos:Schedule(2, 3)
+				yellFocusedChaos:Schedule(1, 4)
+			end
 		end
 		if not playerBanished or not self.Options.FilterOtherPhase then
+			local time = 5
 			if not self:IsMythic() then
 				warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
+			else
+				time = 6
 			end
 			if self.Options.HudMapOnWrought then
 				local sourceUId, destUId = DBM:GetRaidUnitId(args.sourceName), DBM:GetRaidUnitId(args.destName)
 				if not sourceUId or not destUId then return end--They left raid? prevent nil error. this will probably only happen in LFR
-				local time = self:IsMythic() and 6 or 5
 				if UnitIsUnit("player", sourceUId) or UnitIsUnit("player", destUId) then--Player is in connection, green line
 					--create points for your own line
 					warnWroughtChaos:CombinedShow(0.1, self.vb.wroughtWarned, args.sourceName)
