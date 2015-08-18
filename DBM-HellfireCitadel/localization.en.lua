@@ -100,17 +100,12 @@ L:SetOptionLocalization({
 	Iconed				= "Star, Circle, Diamond, Triangle, Moon. Usuable for any strat using flare positions",--Default
 	Numbered			= "1, 2, 3, 4, 5. Usable for any strat using numbered positions.",
 	DirectionLine		= "Left, Middle Left, Middle, Middle Right, Right. Typical for straight line strat",
-	FreeForAll			= "Free for all. Assign no positions, just use basic yell",
-	--Currently these 3 below are unused unless I see anyone want/need them
-	CrossPerception		= "Front, Back, Left, Right, Middle. Typical for Cross strat",--Unsure if viable with 5 targets/will remain
-	CrossCardinal		= "North, South, East, West, Middle. Typical for Cross strat",--Unsure if viable 5 targets/will remain
-	ExCardinal			= "NorthEast, Southeast, Northwest, Southwest, Middle. Typical for Ex strat"--Unsure if viable 5 targets/will remain
+	FreeForAll			= "Free for all. Assign no positions, just use basic yell"
 })
 
 L:SetMiscLocalization({
 	DBMConfigMsg		= "Seed configuration set to %s to match raid leaders configuration.",
 	BWConfigMsg			= "Raid leader is using Bigwigs, DBM automatically configured to use Numbered."
-	--TODO, talk to some guilds, maybe trim list above, add finalized directions here
 })
 
 --------------------------
@@ -129,6 +124,14 @@ L:SetOptionLocalization({
 -- Socrethar the Eternal --
 --------------------------
 L= DBM:GetModLocalization(1427)
+
+L:SetOptionLocalization({
+	InterruptBehavior	= "Set interrupt behavior for raid (Requires raid leader)",
+	Count3Resume		= "3 person rotation that resumes where left off when barrier drops",--Default
+	Count3Reset			= "3 person rotation that resets to 1 when barrier drops",
+	Count4Resume		= "4 person rotation that resumes where left off when barrier drops",
+	Count4Reset			= "4 person rotation that resets to 1 when barrier drops"
+})
 
 --------------------------
 -- Tyrant Velhari --
