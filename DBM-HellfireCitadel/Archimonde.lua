@@ -738,59 +738,60 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.HudMapOnWrought then
 				local sourceUId, destUId = DBM:GetRaidUnitId(args.sourceName), DBM:GetRaidUnitId(args.destName)
 				if not sourceUId or not destUId then return end--They left raid? prevent nil error. this will probably only happen in LFR
+				local time = self:IsMythic() and 6 or 5
 				if UnitIsUnit("player", sourceUId) or UnitIsUnit("player", destUId) then--Player is in connection, green line
 					--create points for your own line
 					warnWroughtChaos:CombinedShow(0.1, self.vb.wroughtWarned, args.sourceName)
 					warnWroughtChaos:CombinedShow(0.1, self.vb.wroughtWarned, args.destName)
 					if UnitIsUnit("player", sourceUId) then
 						if self.Options.NamesWroughtHud then
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.9, 5.25, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger (no label on player dot)
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.9, time, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger (no label on player dot)
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, time, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
 						else
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.9, 5.2, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear()
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.9, time, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, time, nil, nil, nil, 0.5, nil, false):Appear()
 						end
 					else
 						if self.Options.NamesWroughtHud then
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.9, 5.25, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger (no label on player dot)
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.5, time, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.9, time, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger (no label on player dot)
 						else
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear()
-							DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.9, 5.25, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.5, time, nil, nil, nil, 0.5, nil, false):Appear()
+							DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.9, time, nil, nil, nil, 1, nil, false):Appear()--Players own dot bigger
 						end
 					end
 					--create line
 					if self.Options.ExtendWroughtHud2 then
 						if self.Options.AlternateHudLine then
-							DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 25, "beam1", true)
+							DBMHudMap:AddEdge(0, 1, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 25, "beam1", true)
 						else
-							DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150, nil, true)
+							DBMHudMap:AddEdge(0, 1, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 150, nil, true)
 						end
 					else
 						if self.Options.AlternateHudLine then
-							DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 25, "beam1")
+							DBMHudMap:AddEdge(0, 1, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 25, "beam1")
 						else
-							DBMHudMap:AddEdge(0, 1, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150)
+							DBMHudMap:AddEdge(0, 1, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 150)
 						end
 					end
 				else--red lines for non player lines
 					--Create Points
 					if self.Options.NamesWroughtHud then
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.5, time, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, time, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -13, 10, nil)
 					else
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear()
-						DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, 5.25, nil, nil, nil, 0.5, nil, false):Appear()
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(186123, "party", args.sourceName, 0.5, time, nil, nil, nil, 0.5, nil, false):Appear()
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, time, nil, nil, nil, 0.5, nil, false):Appear()
 					end
 					--Create Line
 					if self.Options.ExtendWroughtHud2 then
 						if self.Options.AlternateHudLine then
-							DBMHudMap:AddEdge(1, 0, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 15, "beam1", true)
+							DBMHudMap:AddEdge(1, 0, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 15, "beam1", true)
 						else
-							DBMHudMap:AddEdge(1, 0, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150, nil, true)
+							DBMHudMap:AddEdge(1, 0, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 150, nil, true)
 						end
 					else
-						DBMHudMap:AddEdge(1, 0, 0, 0.5, 5.5, args.sourceName, args.destName, nil, nil, nil, nil, 150)
+						DBMHudMap:AddEdge(1, 0, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 150)
 					end
 				end
 			end
