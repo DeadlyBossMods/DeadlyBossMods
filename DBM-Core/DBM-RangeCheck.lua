@@ -70,7 +70,7 @@ local dims
 --------------------------------------------------------
 local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
-local UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat, UnitExists = UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitAffectingCombat, UnitExists
+local UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, UnitAffectingCombat, UnitExists = UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, UnitAffectingCombat, UnitExists
 local IsInRaid, GetNumGroupMembers, GetNumSubgroupMembers = IsInRaid, GetNumGroupMembers, GetNumSubgroupMembers
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetTime = GetTime
@@ -585,7 +585,7 @@ do
 			local uId = unitList[i]
 			local dot = dots[i]
 			local x, y, _, mapId = UnitPosition(uId)
-			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and (not filter or filter(uId)) then
+			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitInPhase(uId) and (not filter or filter(uId)) then
 				local cy = x - playerX
 				local cx = y - playerY
 				local range = (cx * cx + cy * cy) ^ 0.5

@@ -64,6 +64,7 @@ local sortingAsc
 local sortedLines = {}
 local icons = {}
 local value = {}
+local playerName = UnitName("player")
 
 -------------------
 -- Local Globals --
@@ -268,8 +269,8 @@ local function updatePlayerPower()
 			lines[UnitName(uId)] = UnitPower(uId, powerType)
 		end
 	end
-	if DBM.Options.InfoFrameShowSelf and not lines[UnitName("player")] and UnitPower("player", powerType) > 0 then
-		lines[UnitName("player")] = UnitPower("player", powerType)
+	if DBM.Options.InfoFrameShowSelf and not lines[playerName] and UnitPower("player", powerType) > 0 then
+		lines[playerName] = UnitPower("player", powerType)
 	end
 	updateLines()
 	updateIcons()
@@ -347,13 +348,7 @@ local function updatePlayerDebuffRemaining()
 		local _, _, _, _, _, _, expires = UnitDebuff(uId, spellName)
 		if expires then
 			local debuffTime = expires - GetTime()
-		--	if debuffTime < 5 then
-			--	lines[UnitName(uId)] = "|cffff0000"..mfloor(debuffTime).."|r"--Red
-			--elseif debuffTime < 10 then
-			--	lines[UnitName(uId)] = "|cff990000"..mfloor(debuffTime).."|r"--Orange
-			--else
-				lines[UnitName(uId)] = mfloor(debuffTime)
-			--end
+			lines[UnitName(uId)] = mfloor(debuffTime)
 		end
 	end
 	updateLines()
@@ -534,7 +529,7 @@ function onUpdate(frame)
 					color = RAID_CLASS_COLORS[class]
 				end
 				linesShown = linesShown + 1
-				if leftText == UnitName("player") then--It's player.
+				if leftText == playerName then--It's player.
 					addedSelf = true
 					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerbaddebuffbyspellid" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
 						frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 255, 255)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
@@ -556,7 +551,7 @@ function onUpdate(frame)
 				end
 			end
 			if not addedSelf and DBM.Options.InfoFrameShowSelf and currentEvent == "playerpower" then-- Only Shows on playerpower event.
-				frame:AddDoubleLine(UnitName("player"), lines[UnitName("player")], color.r, color.g, color.b, 255, 255, 255)
+				frame:AddDoubleLine(playerName, lines[playerName], color.r, color.g, color.b, 255, 255, 255)
 			end
 		else
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(leftText))
