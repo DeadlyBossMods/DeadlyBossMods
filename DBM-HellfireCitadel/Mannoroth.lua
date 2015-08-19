@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181126 181132 181557 183376 181793 181792 181738 181799 182084 185830 181948 182040 182076 182077 181099 181597 182006",
-	"SPELL_CAST_SUCCESS 181190 181597 182006",
+	"SPELL_CAST_SUCCESS 181190 181597 182006 181275",
 	"SPELL_AURA_APPLIED 181099 181275 181191 181597 182006 186362",
 	"SPELL_AURA_APPLIED_DOSE 181119",
 	"SPELL_AURA_REMOVED 181099 181275 185147 182212 185175 181597 182006 181275 186362",
@@ -377,14 +377,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnFelStreak:Show()
 	elseif spellId == 181597 or spellId == 182006 then
 		timerGazeCD:Start()
+	elseif spellId == 181275 then
+		self.vb.doomlordCount = self.vb.doomlordCount + 1
+		timerCurseofLegionCD:Start(nil, self.vb.doomlordCount+1)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 181275 then
-		self.vb.doomlordCount = self.vb.doomlordCount + 1
-		timerCurseofLegionCD:Start(nil, self.vb.doomlordCount+1)
 		if args:IsPlayer() then
 			specWarnCurseofLegion:Show()
 			local _, _, _, _, _, _, expires = UnitDebuff("Player", args.spellName)
