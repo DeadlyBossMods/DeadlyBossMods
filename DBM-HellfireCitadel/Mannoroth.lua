@@ -53,7 +53,7 @@ local warnFelseeker					= mod:NewCountAnnounce(181735, 3)
 local specWarnCurseofLegion			= mod:NewSpecialWarningYou(181275)
 local yellCurseofLegion				= mod:NewFadesYell(181275)--Don't need to know when it's applied, only when it's fading does it do aoe/add spawn
 local specWarnMarkOfDoom			= mod:NewSpecialWarningYou(181099, nil, nil, nil, 1, 2)
-local yellMarkOfDoom				= mod:NewPosYell(181099)--This need to know at apply, only player needs to know when it's fading
+local yellMarkOfDoom				= mod:NewPosYell(181099, 31348)--This need to know at apply, only player needs to know when it's fading
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(181126, "-Healer", nil, nil, 1, 2)
 local specWarnDoomSpikeOther		= mod:NewSpecialWarningTaunt(181119, nil, nil, nil, 1, 2)
 ----Fel Imps
@@ -69,7 +69,7 @@ local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, nil, nil, nil,
 local specWarnMassiveBlastOther		= mod:NewSpecialWarningTaunt(181359, nil, nil, nil, 1, 2)
 local specWarnFelHellStorm			= mod:NewSpecialWarningSpell(181557, nil, nil, nil, 2, 2)
 local specWarnGaze					= mod:NewSpecialWarningYou(181597)
-local yellGaze						= mod:NewPosYell(181597)
+local yellGaze						= mod:NewPosYell(181597, 134029)
 local specWarnFelSeeker				= mod:NewSpecialWarningDodge(181735, nil, nil, nil, 2, 2)
 local specWarnShadowForce			= mod:NewSpecialWarningSpell(181799, nil, nil, nil, 3)
 
@@ -137,10 +137,11 @@ local doomTargets = {}
 local guldanTargets = {}
 local AddsSeen = {}
 local playerName = UnitName("player")
-local doomFilter, guldanFilter
 local doomName = GetSpellInfo(181099)
 local guldanName = GetSpellInfo(186362)
+local gaze1, gaze2 = GetSpellInfo(181597), GetSpellInfo(182006)
 local UnitDebuff = UnitDebuff
+local doomFilter, guldanFilter
 do
 	doomFilter = function(uId)
 		if UnitDebuff(uId, doomName) then
@@ -173,44 +174,45 @@ local function updateRangeFrame(self)
 	end
 end
 
-local lines = {}
-local function sortInfoFrame(a, b) 
-	local a = lines[a]
-	local b = lines[b]
-	if not tonumber(a) then a = -1 end
-	if not tonumber(b) then b = -1 end
-	if a < b then return true else return false end
-end
-
-local gaze1, gaze2 = GetSpellInfo(181597), GetSpellInfo(182006)
-local function updateInfoFrame()
-	table.wipe(lines)
-	local total = 0
-	local total2 = 0
-	for i = 1, #gazeTargets do
-		local name = gazeTargets[i]
-		local uId = DBM:GetRaidUnitId(name)
-		if not uId then break end
-		if UnitDebuff(uId, gaze1) or UnitDebuff(uId, gaze2) then
-			total = total + 1
-			lines["|cFF9932CD"..name.."|r"] = i
+local updateInfoFrame
+do
+	local lines = {}
+	local function sortInfoFrame(a, b) 
+		local a = lines[a]
+		local b = lines[b]
+		if not tonumber(a) then a = -1 end
+		if not tonumber(b) then b = -1 end
+		if a < b then return true else return false end
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		local total = 0
+		local total2 = 0
+		for i = 1, #gazeTargets do
+			local name = gazeTargets[i]
+			local uId = DBM:GetRaidUnitId(name)
+			if not uId then break end
+			if UnitDebuff(uId, gaze1) or UnitDebuff(uId, gaze2) then
+				total = total + 1
+				lines["|cFF9932CD"..name.."|r"] = i
+			end
 		end
-	end
-	--Mythic, show guldan targets and number of charges left
-	for i = 1, #guldanTargets do
-		local name = guldanTargets[i]
-		local uId = DBM:GetRaidUnitId(name)
-		if not uId then break end
-		local _, _, _, currentStack = UnitDebuff(uId, guldanName)
-		if currentStack then
-			total2 = total2 + 1
-			lines[name] = currentStack
+		--Mythic, show guldan targets and number of charges left
+		for i = 1, #guldanTargets do
+			local name = guldanTargets[i]
+			local uId = DBM:GetRaidUnitId(name)
+			if not uId then break end
+			local _, _, _, currentStack = UnitDebuff(uId, guldanName)
+			if currentStack then
+				total2 = total2 + 1
+				lines[name] = currentStack
+			end
 		end
+		if total == 0 and total2 == 0 then--None found, hide infoframe because all broke
+			DBM.InfoFrame:Hide()
+		end
+		return lines
 	end
-	if total == 0 and total2 == 0 then--None found, hide infoframe because all broke
-		DBM.InfoFrame:Hide()
-	end
-	return lines
 end
 
 local function warnGazeTargts(self)

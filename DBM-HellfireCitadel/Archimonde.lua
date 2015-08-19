@@ -228,39 +228,41 @@ do
 	end
 end
 
-local lines = {}
-local function sortInfoFrame(a, b) 
-	local a = lines[a]
-	local b = lines[b]
-	if not tonumber(a) then a = -1 end
-	if not tonumber(b) then b = -1 end
-	if a < b then return true else return false end
-end
-
-local function updateInfoFrame()
-	table.wipe(lines)
-	local total = 0
-	for i = 1, #felburstTargets do
-		if i == 9 then break end--It's a wipe, plus can't do more than 8 of these with icons
-		local name = felburstTargets[i]
-		local uId = DBM:GetRaidUnitId(name)
-		if uId and UnitDebuff(uId, felburstDebuff) then
-			total = total + 1
-			lines[name] = i
+local updateInfoFrame
+do
+	local lines = {}
+	local function sortInfoFrame(a, b) 
+		local a = lines[a]
+		local b = lines[b]
+		if not tonumber(a) then a = -1 end
+		if not tonumber(b) then b = -1 end
+		if a < b then return true else return false end
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		local total = 0
+		for i = 1, #felburstTargets do
+			if i == 9 then break end--It's a wipe, plus can't do more than 8 of these with icons
+			local name = felburstTargets[i]
+			local uId = DBM:GetRaidUnitId(name)
+			if uId and UnitDebuff(uId, felburstDebuff) then
+				total = total + 1
+				lines[name] = i
+			end
 		end
-	end
-	for i = 1, #shacklesTargets do
-		local name = shacklesTargets[i]
-		local uId = DBM:GetRaidUnitId(name)
-		if uId and UnitDebuff(uId, shackledDebuff) then
-			total = total + 1
-			lines[name] = i
+		for i = 1, #shacklesTargets do
+			local name = shacklesTargets[i]
+			local uId = DBM:GetRaidUnitId(name)
+			if uId and UnitDebuff(uId, shackledDebuff) then
+				total = total + 1
+				lines[name] = i
+			end
 		end
+		if total == 0 then--None found, hide infoframe because all broke
+			DBM.InfoFrame:Hide()
+		end
+		return lines
 	end
-	if total == 0 then--None found, hide infoframe because all broke
-		DBM.InfoFrame:Hide()
-	end
-	return lines
 end
 
 local function updateRangeFrame(self)
@@ -307,11 +309,6 @@ local function setDemonicFeedback(self)
 		specWarnDemonicFeedbackSoon:Show()
 		voiceDemonicFeedback:Play("scattersoon")
 	end
-end
-
---/run DBM:GetModByName("1438"):YellTest(1)
-function mod:YellTest(n)
-	yellMarkOfLegionPoS:Yell(5, n, n)
 end
 
 local function showMarkOfLegion(self, spellName)
