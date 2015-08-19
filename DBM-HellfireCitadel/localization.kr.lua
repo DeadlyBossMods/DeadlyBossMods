@@ -122,6 +122,14 @@ L:SetOptionLocalization({
 --------------------------
 L= DBM:GetModLocalization(1427)
 
+L:SetOptionLocalization({
+	InterruptBehavior	= "지배권 행사 차단 경고 방식 설정(공객대장 권한 필요)",
+	Count3Resume		= "3명 차단, 보호막 종료 후 차단 횟수 유지",--Default
+	Count3Reset			= "3명 차단, 보호막 종료 후 1번부터 다시 시작",
+	Count4Resume		= "4명 차단, 보호막 종료 후 차단 횟수 유지",
+	Count4Reset			= "4명 차단, 보호막 종료 후 1번부터 다시 시작"
+})
+
 --------------------------
 -- Tyrant Velhari --
 --------------------------

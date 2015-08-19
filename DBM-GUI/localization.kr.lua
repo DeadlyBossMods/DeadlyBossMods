@@ -14,6 +14,7 @@ L.OTabBosses	= "우두머리"
 --L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options		= "전역 설정"
+L.TabCategory_LEG	 		= "군단"
 L.TabCategory_PVP	 		= "PvP"
 L.TabCategory_OTHER			= "기타 우두머리 경보"
 
