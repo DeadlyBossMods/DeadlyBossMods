@@ -321,7 +321,9 @@ local function showMarkOfLegion(self, spellName)
 	warnMarkOfLegion:Show(table.concat(legionTargets, "<, >"))
 	for i = 1, #legionTargets do
 		local name = legionTargets[i]
+		if not name then break end
 		local uId = DBM:GetRaidUnitId(name)
+		if not uId then break end
 		local _, _, _, _, _, _, expires = UnitDebuff(uId, spellName)
 		if expires then
 			local debuffTime = expires - GetTime()
@@ -402,6 +404,8 @@ local function breakShackles(self, spellName)
 	local playerHasShackle = false
 	for i = 1, #shacklesTargets do
 		local name = shacklesTargets[i]
+		if not name then break end
+		if not DBM:GetRaidUnitId(name) then break end
 		if name == playerName then
 			playerHasShackle = true
 			yellShackledTorment:Yell(i, i, i)
@@ -426,10 +430,13 @@ local function breakShackles(self, spellName)
 	end
 	if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
 		for i = 1, #shacklesTargets do
+			local name = shacklesTargets[i]
+			if not name then break end
+			if not DBM:GetRaidUnitId(name) then break end
 			if playerHasShackle then
-				DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[i], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName, shacklesTargets[i])
+				DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", name, 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(spellName, name)
 			else
-				DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", shacklesTargets[i], 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(nil, shacklesTargets[i])
+				DBMHudMap:RegisterStaticMarkerOnPartyMember(184964, "highlight", name, 25, nil, 0, 1, 0, 0.3):Appear():RegisterForAlerts(nil, name)
 			end
 		end
 	end
