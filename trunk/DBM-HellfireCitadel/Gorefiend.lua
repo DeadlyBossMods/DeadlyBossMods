@@ -33,7 +33,7 @@ local warnRagingCharge					= mod:NewSpellAnnounce(187814, 3, nil, "Melee")
 local warnCrushingDarkness				= mod:NewCastAnnounce(180017, 3, 6, nil, false)
 
 local specWarnShadowofDeath				= mod:NewSpecialWarningYouCount(179864, nil, nil, nil, 1, 5)
-local specWarnShadowofDeathTank			= mod:NewSpecialWarningTaunt(179864)
+local specWarnShadowofDeathTank			= mod:NewSpecialWarningTaunt(179864, nil, nil, nil, 1, 2)
 local specWarnTouchofDoom				= mod:NewSpecialWarningRun(179977, nil, nil, nil, 4, 2)
 local yellTouchofDoom					= mod:NewYell(179977)
 local specWarnDoomWell					= mod:NewSpecialWarningMove(179995)
@@ -87,15 +87,6 @@ local sharedFateTimers = {19, 28, 25, 22}
 local sharedFateTargets = {}
 local playerHasFate = false
 local playerName = UnitName("player")
-local digestFilter
-do
-	local digestDebuff = GetSpellInfo(181295)
-	digestFilter = function(uId)
-		if not UnitDebuff(uId, digestDebuff) then
-			return true
-		end
-	end
-end
 --[[
 Time   Player Role   # of players sent, if your raid size is...
                           10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29
@@ -129,7 +120,7 @@ local function sharedFateDelay(self)
 				specWarnSharedFate:Show(self.vb.rootedFate)
 				voiceSharedFate:Play("linegather")
 			end
-			if marker1 then
+			if marker1 and name and DBM:GetRaidUnitId(name) then
 				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "party", name, 0.4, 10, nil, nil, nil, 0.5):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
 				if name == playerName or self.vb.rootedFate == playerName then--Green line since player is in link
 					marker1:EdgeTo(marker2, nil, 10, 0, 1, 0, 0.5)
@@ -152,7 +143,7 @@ function mod:OnCombatStart(delay)
 	playerHasFate = false
 	playersCount = DBM:GetGroupSize()
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(5, digestFilter)
+		DBM.RangeCheck:Show(5)
 	end
 	if self:IsMythic() then
 		timerShadowofDeathCDDps:Start(2-delay, "2x"..DBM_CORE_DAMAGE_ICON)
@@ -278,6 +269,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId, "boss1") and not UnitIsUnit("player", uId) then
 			--It is a tank and we're not tanking. Fire taunt warning
 			specWarnShadowofDeathTank:Show(args.destName)
+			voiceShadowofDeath:Play("tauntboss")
 		end
 	elseif spellId == 179977 or spellId == 189434 then
 		if not playerDown then
@@ -386,7 +378,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			countdownDigest:Cancel()
 			playerDown = false
 			if self.Options.RangeFrame and self:IsInCombat() then
-				DBM.RangeCheck:Show(5, digestFilter)
+				DBM.RangeCheck:Show(5)
 			end
 		end
 		if self.Options.InfoFrame and self.vb.playersWithDigest == 0 then
@@ -423,7 +415,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		timerFeastofSouls:Start()
 		if self.Options.RangeFrame and self:IsInCombat() then
-			DBM.RangeCheck:Show(5, digestFilter)
+			DBM.RangeCheck:Show(5)
 		end
 	elseif spellId == 185982 and not playerDown then
 		--When it fades, it means it's casting Expel Soul and returning to surface as a Gorebound Spirit
