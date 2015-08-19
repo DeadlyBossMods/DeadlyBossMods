@@ -228,7 +228,7 @@ local function warnGazeTargts(self)
 	end
 	if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 		DBM.InfoFrame:SetHeader(gaze1)
-		DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame)
+		DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame, true)
 	end
 end
 
@@ -448,7 +448,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)--Always set header to wrath if wrath is present
 			if not DBM.InfoFrame:IsShown() then
-				DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame)
+				DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame, true)
 			end
 		end
 		updateRangeFrame(self)

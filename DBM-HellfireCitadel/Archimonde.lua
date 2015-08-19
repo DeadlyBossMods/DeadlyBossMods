@@ -389,7 +389,7 @@ local function showFelburstTargets(self)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(felburstDebuff)
-		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame, true)
 	end
 end
 
@@ -424,7 +424,7 @@ local function breakShackles(self, spellName)
 		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(shackledDebuff)
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame, true)
 		end
 	end
 	if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
