@@ -295,6 +295,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSeedsofDestructionCD:Cancel()
 		countdownSeedsofDestructionCD:Cancel()
 		timerRumblingFissureCD:Cancel()
+		timerSoulCleaveCD:Cancel()
 		self.vb.Enraged = true
 		self.vb.CavitationCount = 0
 		self.vb.SeedsCount = 0
