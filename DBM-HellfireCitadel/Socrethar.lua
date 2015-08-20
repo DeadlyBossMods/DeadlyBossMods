@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181288 182051 183331 183329 184239 182392 188693",
 	"SPELL_CAST_SUCCESS 180008 184124 190776 183023",
-	"SPELL_AURA_APPLIED 182038 182769 182900 184124 188666 189627 190466 184053",
+	"SPELL_AURA_APPLIED 182038 182769 182900 184124 188666 189627 190466 184053 183017",
 	"SPELL_AURA_APPLIED_DOSE 182038",
-	"SPELL_AURA_REMOVED 184124 189627 190466 184053",
+	"SPELL_AURA_REMOVED 184124 189627 190466 184053 183017",
 	"UNIT_DIED",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
 --(ability.id = 183331 or ability.name="Soul Dispersion") and overkill > 0 or ability.id = 190466 or (ability.id = 181288 or ability.id = 182051 or ability.id = 183331 or ability.id = 183329 or ability.id = 188693) and type = "begincast" or (ability.id = 180008 or ability.id = 184124 or ability.id = 190776 or ability.id = 183023) and type = "cast" or (ability.id = 184053 or ability.id = 189627) and (type = "applydebuff" or type = "applybuff")
 --Soulbound Construct
 local warnReverberatingBlow			= mod:NewCountAnnounce(180008, 3)
---local warnFelPrison					= mod:NewTargetAnnounce(181288, 4)
+local warnFelPrison					= mod:NewTargetAnnounce(183017, 3)
 local warnShatteredDefenses			= mod:NewStackAnnounce(182038, 3, nil, "Tank")
 local warnVolatileFelOrb			= mod:NewTargetAnnounce(180221, 4)
 local warnFelCharge					= mod:NewTargetAnnounce(182051, 3)
@@ -74,6 +74,7 @@ local timerApocalypticFelburstCD	= mod:NewCDCountTimer(30, 188693, nil, nil, nil
 --Socrethar
 local timerExertDominanceCD			= mod:NewCDTimer(5, 183331, nil, "-Healer", nil, 4)
 local timerApocalypseCD				= mod:NewCDTimer(46, 183329, nil, nil, nil, 2)
+local timerPrisonActive				= mod:NewTargetTimer(60, 183017, nil, nil, nil, 5)
 --Adds
 local timerSargereiDominatorCD		= mod:NewNextCountTimer(60, "ej11456", nil, nil, nil, 1, 184053)--CD needs verifying, no log saw 2 of them in a phase. phase always ended or boss died before 2nd add, i know it's at least longer than 60 sec tho
 local timerHauntingSoulCD			= mod:NewCDCountTimer(30, "ej11462", nil, nil, nil, 1, 182769)
@@ -394,6 +395,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 190466 and args.sourceName == UnitName("player") then
 		playerInConstruct = true
+	elseif spellId == 183017 and self:AntiApam(5, args.destName) then
+		warnFelPrison:CombinedShow(0.3, args.destName)
+		--Only show target timer for adds
+		if not DBM:GetRaidUnitId(args.destName) then
+			timerPrisonActive:Start(args.destName, args.destGUID)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -419,6 +426,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 			self.vb.kickCount = 0
 		end
+	elseif spellId == 183017 then
+		timerPrisonActive:Cancel(args.destName, args.destGUID)
 	end
 end
 

@@ -111,6 +111,8 @@ local voiceMassiveBlast				= mod:NewVoice(181359, "Tank")--changemt
 
 mod:AddRangeFrameOption(20, 181099)
 mod:AddSetIconOption("SetIconOnGaze", 181597, false)
+mod:AddSetIconOption("SetIconOnDoom", 181099, false)
+mod:AddSetIconOption("SetIconOnWrath", 186348, false)
 mod:AddHudMapOption("HudMapOnGaze2", 181597, false)
 mod:AddInfoFrameOption(181597)
 
@@ -120,6 +122,7 @@ mod.vb.phase = 1
 mod.vb.impCount = 0
 mod.vb.infernalCount = 0
 mod.vb.doomlordCount = 0
+mod.vb.wrathIcon = 8
 mod.vb.ignoreAdds = false
 local phase1ImpTimers = {15, 32.2, 24, 15, 10}--Spawn 33% faster each wave, but cannot confirm it goes lower than 10, if it does, next would be 6.6
 local phase1ImpTimersN = {15, 32.2, 24, 24}--Normal doesn't go below 24? need larger sample size. Normal differently two 24s in a row and didn't drop to 15
@@ -243,6 +246,9 @@ local function breakDoom(self)
 		if name == playerName then
 			yellMarkOfDoom:Yell(i, i, i)
 		end
+		if self.Options.SetIconOnDoom then
+			self:SetIcon(name, i)
+		end
 	end
 end
 
@@ -259,6 +265,7 @@ function mod:OnCombatStart(delay)
 	self.vb.portalsLeft = 3
 	self.vb.DoomTargetCount = 0
 	if self:IsMythic() then
+		self.vb.wrathIcon = 8
 		--I've seen 1 sec variance on all of these timers.
 		--yes most of time +1 to all of these timers is more accurate
 		--but sometimes, everything does come 1 sec early, so that's why
@@ -453,6 +460,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame, true)
 			end
 		end
+		if self.Options.SetIconOnWrath then
+			self:SetIcon(args.destName, self.vb.wrathIcon)
+		end
+		self.vb.wrathIcon = self.vb.wrathIcon - 1--Update icon even if icon option off, for sync accuracy
 		updateRangeFrame(self)
 	end
 end
@@ -466,6 +477,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			countdownMarkOfDoom:Cancel()
 		end
 		updateRangeFrame(self)
+		if self.Options.SetIconOnDoom then
+			self:SetIcon(args.destName, 0)
+		end
 	elseif spellId == 185147 or spellId == 182212 or spellId == 185175 then--Portals
 		self.vb.portalsLeft = self.vb.portalsLeft - 1
 		if spellId == 185147 and not self:IsMythic() then--Doom Lords Portal
@@ -506,6 +520,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 186362 then--Only cast once per phase transition (twice whole fight)
 		tDeleteItem(guldanTargets, args.destName)
 		updateRangeFrame(self)
+		if self.Options.SetIconOnWrath then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
@@ -559,6 +576,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			warnPhase3:Show()
 			voicePhaseChange:Play("pthree")
 			if self:IsMythic() then
+				self.vb.wrathIcon = 8
 				timerWrathofGuldanCD:Start(10)
 			end
 		elseif self.vb.phase == 4 then
@@ -581,6 +599,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			warnPhase4:Show()
 			voicePhaseChange:Play("pfour")
 			if self:IsMythic() then
+				self.vb.wrathIcon = 8
 				timerWrathofGuldanCD:Start(16.7)
 			end
 		end
