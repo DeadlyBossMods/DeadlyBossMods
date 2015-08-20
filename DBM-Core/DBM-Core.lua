@@ -8716,7 +8716,7 @@ do
 		end
 		--Passed spellid as yellText.
 		--Auto localize spelltext using yellText instead
-		if type(yellText) == "number" then
+		if yellText and type(yellText) == "number" then
 			displayText = DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(GetSpellInfo(yellText) or DBM_CORE_UNKNOWN)
 		end
 		local obj = setmetatable(

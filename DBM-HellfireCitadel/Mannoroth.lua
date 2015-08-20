@@ -53,7 +53,7 @@ local warnFelseeker					= mod:NewCountAnnounce(181735, 3)
 local specWarnCurseofLegion			= mod:NewSpecialWarningYou(181275)
 local yellCurseofLegion				= mod:NewFadesYell(181275)--Don't need to know when it's applied, only when it's fading does it do aoe/add spawn
 local specWarnMarkOfDoom			= mod:NewSpecialWarningYou(181099, nil, nil, nil, 1, 2)
-local yellMarkOfDoom				= mod:NewPosYell(181099, 31348)--This need to know at apply, only player needs to know when it's fading
+local yellMarkOfDoom				= mod:NewPosYell(181099)--31348, This need to know at apply, only player needs to know when it's fading
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(181126, "-Healer", nil, nil, 1, 2)
 local specWarnDoomSpikeOther		= mod:NewSpecialWarningTaunt(181119, nil, nil, nil, 1, 2)
 ----Fel Imps
@@ -69,7 +69,7 @@ local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, nil, nil, nil,
 local specWarnMassiveBlastOther		= mod:NewSpecialWarningTaunt(181359, nil, nil, nil, 1, 2)
 local specWarnFelHellStorm			= mod:NewSpecialWarningSpell(181557, nil, nil, nil, 2, 2)
 local specWarnGaze					= mod:NewSpecialWarningYou(181597)
-local yellGaze						= mod:NewPosYell(181597, 134029)
+local yellGaze						= mod:NewPosYell(181597)--134029
 local specWarnFelSeeker				= mod:NewSpecialWarningDodge(181735, nil, nil, nil, 2, 2)
 local specWarnShadowForce			= mod:NewSpecialWarningSpell(181799, nil, nil, nil, 3)
 
