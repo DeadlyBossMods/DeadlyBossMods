@@ -168,8 +168,9 @@ function mod:OnCombatStart(delay)
 	end
 	timerFeastofSouls:Start(-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(args.spellName)
-		DBM.InfoFrame:Show(10, "playerdebuffremaining", args.spellName)
+		local spellName = GetSpellInfo(181295)
+		DBM.InfoFrame:SetHeader(spellName)
+		DBM.InfoFrame:Show(10, "playerdebuffremaining", spellName)
 	end
 end
 
