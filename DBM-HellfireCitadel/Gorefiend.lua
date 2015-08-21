@@ -80,7 +80,6 @@ mod:AddInfoFrameOption(181295)
 mod.vb.rootedFate = nil
 mod.vb.shadowOfDeathCount = 0
 mod.vb.sharedFateCount = 0
-mod.vb.playersWithDigest = 0
 local playerDown = false
 local playersCount = 0
 local sharedFateTimers = {19, 28, 25, 22}
@@ -124,10 +123,8 @@ local function sharedFateDelay(self)
 				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "party", name, 0.4, 10, nil, nil, nil, 0.5):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
 				if name == playerName or self.vb.rootedFate == playerName then--Green line since player is in link
 					marker1:EdgeTo(marker2, nil, 10, 0, 1, 0, 0.5)
-					--DBMHudMap:AddEdge(0, 1, 0, 0.5, 10, sharedFateTargets[i], self.vb.rootedFate)
 				else--Yellow Line since player is not in link
 					marker1:EdgeTo(marker2, nil, 10, 1, 1, 0, 0.5)
-					--DBMHudMap:AddEdge(1, 1, 0, 0.5, 10, sharedFateTargets[i], self.vb.rootedFate)
 				end
 			end
 		end
@@ -138,7 +135,6 @@ function mod:OnCombatStart(delay)
 	self.vb.rootedFate = nil
 	self.vb.shadowOfDeathCount = 0
 	self.vb.sharedFateCount = 0
-	self.vb.playersWithDigest = 0
 	playerDown = false
 	playerHasFate = false
 	playersCount = DBM:GetGroupSize()
@@ -171,6 +167,10 @@ function mod:OnCombatStart(delay)
 		timerSharedFateCD:Start(19-delay, 1)
 	end
 	timerFeastofSouls:Start(-delay)
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(args.spellName)
+		DBM.InfoFrame:Show(10, "playerdebuffremaining", args.spellName)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -192,6 +192,12 @@ function mod:SPELL_CAST_START(args)
 		specWarnFeastofSouls:Show()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
+		end
+		--Switch to debuff tracking on mythic feast.
+		if self.Options.InfoFrame and self:IsMythic() then
+			local spellName = GetSpellInfo(179867)
+			DBM.InfoFrame:SetHeader(spellName)
+			DBM.InfoFrame:Show(10, "playerbaddebuff", spellName)
 		end
 	elseif spellId == 181582 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnBellowingShout:Show(args.sourceName)
@@ -314,7 +320,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceHungerforLife:Play("justrun")
 		end
 	elseif spellId == 181295 then
-		self.vb.playersWithDigest = self.vb.playersWithDigest + 1
 		if args:IsPlayer() then
 			if self:IsMythic() then
 				timerDigest:Start(30)
@@ -327,10 +332,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
-		end
-		if self.Options.InfoFrame and self.vb.playersWithDigest == 1 then--coming from 0, open infoframe
-			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(10, "playerdebuffremaining", args.spellName)
 		end
 	elseif spellId == 185982 and not playerDown then--Cast when a Enraged Spirit in stomach reaches 70%
 		warnGoreboundSpiritSoon:Show()
@@ -381,9 +382,6 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Show(5)
 			end
 		end
-		if self.Options.InfoFrame and self.vb.playersWithDigest == 0 then
-			DBM.InfoFrame:Hide()
-		end
 	elseif spellId == 181973 then--Phase restart
 		self.vb.shadowOfDeathCount = 0
 		specWarnFeastofSoulsEnded:Show()
@@ -392,6 +390,12 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerShadowofDeathCDDps:Start(2, "2x"..DBM_CORE_DAMAGE_ICON)
 			timerShadowofDeathCDTank:Start(9, "1x"..DBM_CORE_TANK_ICON)
 			timerShadowofDeathCDHealer:Start(21, "2x"..DBM_CORE_HEALER_ICON)
+			if self.Options.InfoFrame then
+				--Switch back to digest
+				local spellName = GetSpellInfo(181295)
+				DBM.InfoFrame:SetHeader(spellName)
+				DBM.InfoFrame:Show(10, "playerdebuffremaining", spellName)
+			end
 		else
 			local numDpsPlayers = 1
 			local numHealerPlayers = 1
