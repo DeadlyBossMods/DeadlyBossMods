@@ -177,10 +177,10 @@ local function updateRangeFrame(self)
 	end
 end
 
-local updateInfoFrame
+local updateInfoFrame, sortInfoFrame
 do
 	local lines = {}
-	local function sortInfoFrame(a, b) 
+	sortInfoFrame = function(a, b)
 		local a = lines[a]
 		local b = lines[b]
 		if not tonumber(a) then a = -1 end
