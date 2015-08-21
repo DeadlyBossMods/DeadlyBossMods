@@ -68,6 +68,7 @@ local voiceSeedsofDestruction			= mod:NewVoice(181508)--Runout
 local voiceEnrage						= mod:NewVoice(179681)--enrage
 
 mod:AddRangeFrameOption(10, 179711)
+mod:AddInfoFrameOption(182008, false)
 --Icon options will conflict on mythic or 25-30 players (when you get 5 targets for each debuff). Below that, they can coexist.
 mod:AddSetIconOption("SetIconOnSeeds", 181508, true)--Start at 8, descending. On by default, because it's quite imperative to know who/where seed targets are at all times.
 mod:AddHudMapOption("HudMapOnSeeds", 181508)
@@ -205,15 +206,23 @@ function mod:OnCombatStart(delay)
 	else--No sync was sent, lets see if raid leader is bigwigs user.
 		self:Schedule(5, delayModCheck, self)--Do this after 5 seconds, allow time to see if we get a sync
 	end
+	if self.Options.InfoFrame then
+		local spellName = GetSpellInfo(182008)
+		DBM.InfoFrame:SetHeader(spellName)
+		DBM.InfoFrame:Show(10, "playerbaddebuff", spellName, true)
+	end
 end
 
 function mod:OnCombatEnd()
 	self.vb.yellType = "Icon"--Reset on combat end, resetting on combat start could accidentally overright raid leaders assignment set on combat start.
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 	if self.Options.HudMapOnSeeds then
 		DBMHudMap:Disable()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end 
 
