@@ -197,6 +197,8 @@ function mod:OnCombatStart(delay)
 	end
 	if self:IsNormal() then--Harder berserk on normal vs all other difficulties. Kromog all over again.
 		berserkTimer:Start(480-delay)
+	elseif self:IsMythic() then
+		berserkTimer:Start(510-delay)
 	else
 		berserkTimer:Start(-delay)
 	end
