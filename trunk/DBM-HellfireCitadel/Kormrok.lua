@@ -48,7 +48,7 @@ local specWarnEmpFelOutpouring		= mod:NewSpecialWarningDodge(181293, nil, nil, n
 local specWarnEmpExplosiveRunes		= mod:NewSpecialWarningSpell(181297, "-Tank")
 local specWarnDraggingHands			= mod:NewSpecialWarningSwitch(181300)
 
-local timerLeapCD					= mod:NewCDTimer(113.5, 180068, nil, nil, nil, 6)--Not techincally a leap timer, timer syncs up to when he gains next buff (leap ended)
+local timerLeapCD					= mod:NewPhaseTimer(113.5)--Not techincally a leap timer, timer syncs up to when he gains next buff (leap ended)
 --Times here are not relevant, they are all hard coded orders based on what buff boss has, real values are under 3 different phases
 local timerPoundCD					= mod:NewNextCountTimer(42, 180244, nil, nil, nil, 2)
 local timerFelOutpouringCD			= mod:NewNextTimer(107, 181292, nil, nil, nil, 2)
