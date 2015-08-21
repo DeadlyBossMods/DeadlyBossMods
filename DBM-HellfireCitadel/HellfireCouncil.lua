@@ -62,7 +62,7 @@ local specWarnBloodBoil				= mod:NewSpecialWarningStack(184355, nil, 3)
 mod:AddTimerLine(Jubei)
 --Blademaster Jubei'thos
 --local timerFelstormCD				= mod:NewCDTimer(30.5, 183701, nil, nil, nil, 2)
-local timerMirrorImage				= mod:NewBuffActiveTimer(52, 183885, nil, nil, nil, 6)--About 52
+local timerMirrorImage				= mod:NewBuffActiveTimer(51.5, 183885, nil, nil, nil, 6)--About 51.5
 local timerMirrorImageCD			= mod:NewCDTimer(75, 183885, nil, nil, nil, 1)
 local timerWickedStrikeCD			= mod:NewCDTimer(11, 186993, nil, nil, nil, 2)
 mod:AddTimerLine(Dia)
@@ -271,7 +271,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)--Guessed, could be 10
 		end
-	elseif spellId == 184652 and args:IsPlayer() and self:AntiSpam(2, 3) then
+	elseif spellId == 184652 and args:IsPlayer() and self:AntiSpam(1.75, 3) then
 		specWarnReapGTFO:Show()
 		voiceReap:Play("runaway")
 	elseif spellId == 184355 then
@@ -403,7 +403,7 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 184652 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+	if spellId == 184652 and destGUID == UnitGUID("player") and self:AntiSpam(1.75, 3) then
 		specWarnReapGTFO:Show()
 		voiceReap:Play("runaway")
 	end

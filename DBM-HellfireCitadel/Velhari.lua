@@ -63,7 +63,7 @@ local specWarnAncientHarbinger				= mod:NewSpecialWarningSwitch("ej11163", "-Hea
 local specWarnHarbingersMending				= mod:NewSpecialWarningInterrupt(180025, "-Healer", nil, nil, 1, 2)
 local specWarnHarbingersMendingDispel		= mod:NewSpecialWarningDispel(180025, "MagicDispeller")--if interrupt is missed (likely at some point, cast gets faster each time). Then it MUST be dispelled
 --Stage Three: Malice
-local specWarnDespoiledGround				= mod:NewSpecialWarningMove(180604)
+local specWarnDespoiledGround				= mod:NewSpecialWarningMove(180604, nil, nil, nil, 1, 1)
 local specWarnGaveloftheTyrant				= mod:NewSpecialWarningCount(180608, nil, nil, nil, 2, 2)
 ----Ancient Sovereign
 local specWarnAncientSovereign				= mod:NewSpecialWarningSwitch("ej11170", "-Healer")
@@ -99,6 +99,7 @@ local voiceHarbingersMending				= mod:NewVoice(180025)--kickcast/dispelboss
 local voiceGaveloftheTyrant					= mod:NewVoice(180608)--carefly
 local voiceEnforcerOnslaught				= mod:NewVoice(180004)--watchorb
 local voiceSealofDecay						= mod:NewVoice(180000)--tauntboss
+local voiceVoidZone							= mod:NewVoice(180604)--runaway
 
 mod:AddRangeFrameOption("5/4")
 mod:AddHudMapOption("HudMapOnStrike", 180260)
@@ -367,6 +368,7 @@ end
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 180604 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnDespoiledGround:Show()
+		voiceVoidZone:Play("runaway")
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
