@@ -3286,6 +3286,9 @@ do
 		--First check realID
 		if self.Options.AutoAcceptFriendInvite then
 			self:Debug("AutoAcceptFriendInvite is true", 2)
+			--if BNet_GetToonPresenceID(sender) then--6.2.2
+			--	AcceptPartyInvite()
+			--end
 			local _, numBNetOnline = BNGetNumFriends()
 			for i = 1, numBNetOnline do
 				local presenceID, _, _, _, _, _, _, isOnline = BNGetFriendInfo(i)
