@@ -343,6 +343,9 @@ local newerRevisionPerson = {}
 local combatInitialized = false
 local healthCombatInitialized = false
 local pformat
+local schedulerFrame = CreateFrame("Frame", "DBMScheduler")
+schedulerFrame:Hide()
+local startScheduler
 local schedule
 local unschedule
 local unscheduleAll
@@ -1403,7 +1406,8 @@ do
 	end
 
 	local nextModSyncSpamUpdate = 0
-	mainFrame:SetScript("OnUpdate", function(self, elapsed)
+	--mainFrame:SetScript("OnUpdate", function(self, elapsed)
+	local function onUpdate(self, elapsed)
 		local time = GetTime()
 
 		-- execute scheduled tasks
@@ -1445,9 +1449,23 @@ do
 				modSyncSpam[k] = nil
 			end
 		end
-	end)
+		if not nextTask and #updateFunctions == 0 then--Nothing left, stop scheduler
+			schedulerFrame:SetScript("OnUpdate", nil)
+			schedulerFrame:Hide()
+			DBM:Debug("DBM Scheduler Deactivated", 2)
+		end
+	end
+
+	function startScheduler()
+		if not schedulerFrame:IsShown() then
+			DBM:Debug("DBM Scheduler Activated", 2)
+			schedulerFrame:Show()
+			schedulerFrame:SetScript("OnUpdate", onUpdate)
+		end
+	end
 
 	function schedule(t, f, mod, ...)
+		startScheduler()
 		if type(f) ~= "function" then
 			error("usage: schedule(time, func, [mod, args...])", 2)
 		end
@@ -6454,7 +6472,7 @@ function DBM:AddMsg(text, prefix)
 end
 
 function DBM:Debug(text, level)
-	if not self.Options.DebugMode then return end
+	if not self.Options or not self.Options.DebugMode then return end
 	if (level or 1) <= DBM.Options.DebugLevel then
 		local frame = _G[tostring(DBM.Options.ChatFrame)]
 		frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
@@ -6788,10 +6806,18 @@ function bossModPrototype:SetUsedIcons(...)
 end
 
 function bossModPrototype:RegisterOnUpdateHandler(func, interval)
+	startScheduler()
 	if type(func) ~= "function" then return end
 	self.elapsed = 0
 	self.updateInterval = interval or 0
 	updateFunctions[self] = func
+end
+
+function bossModPrototype:UnregisterOnUpdateHandler(func)
+	if type(func) ~= "function" then return end
+	self.elapsed = nil
+	self.updateInterval = nil
+	tremove(updateFunctions[self], func)
 end
 
 --------------
