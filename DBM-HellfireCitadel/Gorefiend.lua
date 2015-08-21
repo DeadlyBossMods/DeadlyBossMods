@@ -374,7 +374,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBMHudMap:FreeEncounterMarkerByTarget(179908, args.destName)
 		end
 	elseif spellId == 181295 then
-		self.vb.playersWithDigest = self.vb.playersWithDigest - 1
 		if args:IsPlayer() then
 			timerDigest:Cancel()
 			countdownDigest:Cancel()
