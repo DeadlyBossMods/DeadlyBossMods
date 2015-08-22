@@ -103,7 +103,7 @@ local voiceVoidZone							= mod:NewVoice(180604)--runaway
 
 mod:AddRangeFrameOption("5/4")
 mod:AddHudMapOption("HudMapOnStrike", 180260)
-mod:AddHudMapOption("HudMapEdict", 182459)
+mod:AddHudMapOption("HudMapEdict2", 182459, false)
 
 mod.vb.touchofHarmCount = 0
 mod.vb.edictCount = 0
@@ -142,7 +142,7 @@ function mod:AnnTarget(targetname, uId)
 		warnAnnihilationStrike:Show(self.vb.annihilationCount, targetname)
 	end
 	if self.Options.HudMapOnStrike then
-		DBMHudMap:RegisterRangeMarkerOnPartyMember(180260, "highlight", targetname, 5, 4, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)
+		DBMHudMap:RegisterRangeMarkerOnPartyMember(180260, "highlight", targetname, 4, 4, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)
 	end
 end
 
@@ -164,7 +164,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.HudMapOnStrike or self.Options.HudMapEdict then
+	if self.Options.HudMapOnStrike or self.Options.HudMapEdict2 then
 		DBMHudMap:Disable()
 	end
 end 
@@ -275,7 +275,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceEdictofCondemnation:Schedule(5, "gather")
 			end
 		end
-		if self.Options.HudMapEdict then
+		if self.Options.HudMapEdict2 then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 9, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
 	elseif args:IsSpellID(180166, 185237) then--Casts
@@ -349,7 +349,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 182459 or spellId == 185241 then
 		--For icon option, or something.
-		if self.Options.HudMapEdict then
+		if self.Options.HudMapEdict2 then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	elseif spellId == 180526 then
