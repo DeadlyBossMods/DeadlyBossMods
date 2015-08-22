@@ -573,9 +573,6 @@ do
 		self.options = setmetatable(DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id], optionMT)
 		self:Rearrange()
 		DBM:Schedule(2, delaySkinCheck, self)
-		if self.options.BarStyle == "BigWigs" then
-			self:SetOption("BarStyle", "NoAnim")
-		end
 	end
 
 	function DBT:CreateProfile(id)
