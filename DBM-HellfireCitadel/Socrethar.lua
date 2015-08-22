@@ -395,7 +395,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 190466 and args.sourceName == UnitName("player") then
 		playerInConstruct = true
-	elseif spellId == 183017 and self:AntiApam(5, args.destName) then
+	elseif spellId == 183017 and self:AntiSpam(5, args.destName) then
 		warnFelPrison:CombinedShow(0.3, args.destName)
 		--Only show target timer for adds
 		if not DBM:GetRaidUnitId(args.destName) then
