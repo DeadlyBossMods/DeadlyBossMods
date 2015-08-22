@@ -167,7 +167,6 @@ local function createBar(self, name, ...) -- the vararg will also contain the na
 end
 
 
-
 ------------------
 --  Bar Update  --
 ------------------
