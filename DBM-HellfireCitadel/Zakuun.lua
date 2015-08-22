@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(89890)
 mod:SetEncounterID(1777)
 mod:SetZone()
-mod:SetUsedIcons(6, 5, 4, 3, 2, 1)--Seeds ever go over 5?
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(14060)
 mod.respawnTime = 30
 
@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 179406 181508 181515",
 	"SPELL_CAST_SUCCESS 181508 181515 179709 179582",
 	"SPELL_AURA_APPLIED 181508 181515 182008 179670 179711 179681 179407 179667 189030 189031 189032",
-	"SPELL_AURA_REMOVED 179711 181508 181515 179667 189030 189031 189032",
+	"SPELL_AURA_REMOVED 179711 181508 181515 179667 189030 189031 189032 182008",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -71,6 +71,7 @@ mod:AddRangeFrameOption(10, 179711)
 mod:AddInfoFrameOption(182008, false)
 --Icon options will conflict on mythic or 25-30 players (when you get 5 targets for each debuff). Below that, they can coexist.
 mod:AddSetIconOption("SetIconOnSeeds", 181508, true)--Start at 8, descending. On by default, because it's quite imperative to know who/where seed targets are at all times.
+mod:AddSetIconOption("SetIconOnLatent", 182008, false)
 mod:AddHudMapOption("HudMapOnSeeds", 181508)
 mod:AddDropdownOption("SeedsBehavior", {"Iconed", "Numbered", "DirectionLine", "FreeForAll"}, "Iconed", "misc")--CrossPerception, CrossCardinal, ExCardinal
 
@@ -82,6 +83,7 @@ mod.vb.CavitationCount = 0
 mod.vb.SeedsCount = 0
 mod.vb.Enraged = false
 mod.vb.yellType = "Icon"
+mod.vb.latentIcon = 8
 local yellSeeds2 = mod:NewPosYell(181508, nil, true, false)
 local seedsTargets = {}
 local befouledName = GetSpellInfo(179711)
@@ -186,6 +188,7 @@ function mod:OnCombatStart(delay)
 	self.vb.SoulCleaveCount = 0
 	self.vb.CavitationCount = 0
 	self.vb.SeedsCount = 0
+	self.vb.latentIcon = 8
 	self.vb.Enraged = false
 	timerRumblingFissureCD:Start(5.5-delay, 1)
 	timerBefouledCD:Start(17-delay, 1)
@@ -292,6 +295,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 182008 then
 		warnLatentEnergy:CombinedShow(1, args.destName)
+		if self.Options.SetIconOnLatent then
+			if self.vb.latentIcon == 0 then self.vb.latentIcon = 8 end
+			self:SetIcon(args.destName, self.vb.latentIcon)
+			self.vb.latentIcon = self.vb.latentIcon - 1
+		end
 	elseif spellId == 179667 then--Disarmed
 		self.vb.SeedsCount = 0
 		specWarnDisarmed:Show()
@@ -361,6 +369,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerCavitationCD:Start(33, 1)
 		timerDisarmCD:Start()
 		countdownDisarm:Start()
+	elseif spellId == 182008 and self.Options.SetIconOnLatent then
+		self:SetIcon(args.destName, 0)
 	end
 end
 
