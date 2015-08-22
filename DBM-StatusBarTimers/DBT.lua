@@ -405,9 +405,9 @@ options = {
 		type = "string",
 		default = "DefaultSkin"
 	},
-	Style = {
+	BarStyle = {
 		type = "string",
-		default = "DBM",
+		default = "NoAnim",
 	},
 }
 
@@ -573,8 +573,8 @@ do
 		self.options = setmetatable(DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id], optionMT)
 		self:Rearrange()
 		DBM:Schedule(2, delaySkinCheck, self)
-		if self.options.Style == "BigWigs" then
-			self:SetOption("Style", "NoAnim")
+		if self.options.BarStyle == "BigWigs" then
+			self:SetOption("BarStyle", "NoAnim")
 		end
 	end
 
@@ -720,7 +720,7 @@ do
 			newFrame.obj = newBar
 			self.numBars = (self.numBars or 0) + 1
 			totalBars = self.numBars
-			local enlargeTime = self.options.Style ~= "NoAnim" and self.options.EnlargeBarTime or 11
+			local enlargeTime = self.options.BarStyle ~= "NoAnim" and self.options.EnlargeBarTime or 11
 			if (timer <= enlargeTime or huge) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
 				newBar.enlarged = true
 				newBar.huge = true
@@ -852,8 +852,8 @@ end
 
 function barPrototype:SetElapsed(elapsed)
 	self.timer = self.totalTime - elapsed
-	local enlargeTime = self.owner.options.Style ~= "NoAnim" and self.owner.options.EnlargeBarTime or 11
-	local enlargePer = self.owner.options.Style ~= "NoAnim" and self.owner.options.EnlargeBarsPercent or 0
+	local enlargeTime = self.owner.options.BarStyle ~= "NoAnim" and self.owner.options.EnlargeBarTime or 11
+	local enlargePer = self.owner.options.BarStyle ~= "NoAnim" and self.owner.options.EnlargeBarsPercent or 0
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) then
 		self:ResetAnimations()
 	elseif self.owner.options.Sort and self.moving ~= "enlarge" then
@@ -896,7 +896,7 @@ function barPrototype:Update(elapsed)
 	local timer = _G[frame_name.."BarTimer"]
 	local obj = self.owner
 	local barOptions = obj.options
-	local currentStyle = barOptions.Style
+	local currentStyle = barOptions.BarStyle
 	local sparkEnabled = currentStyle ~= "NoAnim" and barOptions.Spark
 	local isMoving = self.moving
 	local isFadingIn = self.fadingIn
@@ -1131,7 +1131,7 @@ function barPrototype:ApplyStyle()
 	local name = _G[frame_name.."BarName"]
 	local timer = _G[frame_name.."BarTimer"]
 	local barOptions = self.owner.options
-	local sparkEnabled = barOptions.Style ~= "NoAnim" and barOptions.Spark
+	local sparkEnabled = barOptions.BarStyle ~= "NoAnim" and barOptions.Spark
 	local enlarged = self.enlarged
 	texture:SetTexture(barOptions.Texture)
 	if self.color then
@@ -1383,7 +1383,7 @@ function barPrototype:MoveToNextPosition()
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local newY = self.frame:GetTop()
-	if self.owner.options.Style ~= "NoAnim" then
+	if self.owner.options.BarStyle ~= "NoAnim" then
 		self.frame:ClearAllPoints()
 		self.frame:SetPoint(self.movePoint, newAnchor, self.moveRelPoint, -(newX - oldX), -(newY - oldY))
 		self.moving = "move"
@@ -1412,7 +1412,7 @@ function barPrototype:Enlarge()
 	local newY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
 	self.frame:SetPoint("TOP", newAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
-	self.moving = self.owner.options.Style == "NoAnim" and "nextEnlarge" or "enlarge"
+	self.moving = self.owner.options.BarStyle == "NoAnim" and "nextEnlarge" or "enlarge"
 	self.moveAnchor = newAnchor
 	self.moveOffsetX = -(newX - oldX)
 	self.moveOffsetY = -(newY - oldY)
