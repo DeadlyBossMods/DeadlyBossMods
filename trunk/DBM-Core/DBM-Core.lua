@@ -1023,9 +1023,72 @@ end
 --  OnLoad  --
 --------------
 do
-
 	local isLoaded = false
 	local onLoadCallbacks = {}
+	
+	local function runDelayedFunctions(self)
+		--Check if voice pack missing
+		local activeVP = self.Options.ChosenVoicePack
+		if (activeVP ~= "None" and not self.VoiceVersions[activeVP]) or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0) then--A voice pack is selected that does not belong
+			self.Options.ChosenVoicePack = "None"--Set ChosenVoicePack back to None
+			self:AddMsg(DBM_CORE_VOICE_MISSING)
+		end
+		--Check if any of countdown sounds are using missing voice pack
+		local voice1 = self.Options.CountdownVoice
+		local voice2 = self.Options.CountdownVoice2
+		local voice3 = self.Options.CountdownVoice3v2
+		if voice1 == "None" then--Migrate to new setting
+			self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice
+			self.Options.DontPlayCountdowns = true
+		end
+		if voice1 == "Yike" then--Migration for CN Users
+			if self.VoiceVersions["Yike"] then
+				self.Options.CountdownVoice = "VP:Yike"
+			else
+				self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice--Defaults
+			end
+		end
+		local found1, found2, found3 = false, false, false
+		for i = 1, #DBM.Counts do
+			if self.Counts[i].value == self.Options.CountdownVoice then
+				found1 = true
+			end
+			if self.Counts[i].value == self.Options.CountdownVoice2 then
+				found2 = true
+			end
+			if self.Counts[i].value == self.Options.CountdownVoice3v2 then
+				found3 = true
+			end
+		end
+		if not found1 then
+			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(1))
+			self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice
+		end
+		if not found2 then
+			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(2))
+			self.Options.CountdownVoice2 = self.DefaultOptions.CountdownVoice2
+		end
+		if not found3 then
+			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(3))
+			self.Options.CountdownVoice3v2 = self.DefaultOptions.CountdownVoice3v2
+		end
+		--Break timer recovery
+		--Try local settings
+		if self.Options.tempBreak then
+			local timer, startTime = string.split("/", self.Options.tempBreak)
+			local elapsed = GetTime() - tonumber(startTime)
+			local remaining = timer - elapsed
+			if remaining > 0 then
+				SendAddonMessage("D4", "BTR2\t"..remaining, "WHISPER", playerName)
+			else--It must have ended while we were offline, kill variable.
+				self.Options.tempBreak = nil
+			end
+		--Try asking top two DBM version in group
+		elseif IsInGroup() then
+			self:Schedule(2.5, self.RequestTimers, self, 1)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
+			self:Schedule(5, self.RequestTimers, self, 2)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
+		end
+	end
 
 	-- register a callback that will be executed once the addon is fully loaded (ADDON_LOADED fired, saved vars are available)
 	function DBM:RegisterOnLoadCallback(cb)
@@ -1140,7 +1203,7 @@ do
 						end
 					end
 				end
-				self:Schedule(8, self.CheckVoicePackAvailable, self)
+				self:Schedule(10, runDelayedFunctions, self)
 			end
 			tsort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
 			self:RegisterEvents(
@@ -1197,11 +1260,6 @@ do
 			self:Schedule(20, function()--Delay UNIT_HEALTH combat start for 20 sec. (not to break Timer Recovery stuff)
 				healthCombatInitialized = true
 			end)
-			if IsInGroup() then
-				self:Schedule(10, self.RequestTimers, self, 1)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
-				self:Schedule(12.5, self.RequestTimers, self, 2)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
-				self:Schedule(15, self.RequestTimers, self, 3)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
-			end
 		end
 	end
 end
@@ -2580,7 +2638,7 @@ do
 	end
 
 	function DBM:GROUP_ROSTER_UPDATE()
-		self:Schedule(1.5, updateAllRoster, self)
+		self:Schedule(2, updateAllRoster, self)
 	end
 	
 	function DBM:INSTANCE_GROUP_SIZE_CHANGED()
@@ -3865,13 +3923,39 @@ do
 			end
 		end
 	end
-	
+
+	local function breakTimerStart(self, timer, sender)
+		self.Options.tempBreak = timer.."/"..GetTime()
+		if not self.Options.DontShowPT2 then
+			self.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+		end
+		if not self.Options.DontPlayPTCountdown then
+			dummyMod2.countdown:Start(timer)
+		end
+		if not self.Options.DontShowPTCountdownText then
+			local threshold = DBM.Options.PTCountThreshold
+			if timer > threshold then
+				self:Schedule(timer-threshold, countDownTextDelay, threshold)
+			else
+				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+			end
+		end
+		if not self.Options.DontShowPTText then
+			dummyMod2.text:Show(DBM_CORE_BREAK_START:format(floor(timer/60*100)/100, sender))
+			if timer/60 > 10 then dummyMod2.text:Schedule(timer - 10*60, DBM_CORE_BREAK_MIN:format(10)) end
+			if timer/60 > 5 then dummyMod2.text:Schedule(timer - 5*60, DBM_CORE_BREAK_MIN:format(5)) end
+			if timer/60 > 2 then dummyMod2.text:Schedule(timer - 2*60, DBM_CORE_BREAK_MIN:format(2)) end
+			if timer/60 > 1 then dummyMod2.text:Schedule(timer - 1*60, DBM_CORE_BREAK_MIN:format(1)) end
+			dummyMod2.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER)
+		end
+		self:Schedule(timer, function() self.Options.tempBreak = nil end)
+	end
+
 	syncHandlers["BT"] = function(sender, timer)
 		if DBM.Options.DontShowUserTimers then return end
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 			return
 		end
-		timer = tonumber(timer or 0)
 		if not dummyMod2 then
 			dummyMod2 = DBM:NewMod("BreakTimerCountdownDummy")
 			DBM:GetModLocalization("BreakTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
@@ -3890,64 +3974,24 @@ do
 			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")--easiest way to nil out timers on TimerTracker frame. This frame just has no actual star/stop functions
 		end
 		dummyMod2.text:Cancel()
+		DBM.Options.tempBreak = nil
+		timer = tonumber(timer or 0)
 		if timer == 0 then return end--"/dbm break 0" will strictly be used to cancel the break timer (which is why we let above part of code run but not below)
-		if not DBM.Options.DontShowPT2 then
-			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-		end
-		if not DBM.Options.DontPlayPTCountdown then
-			dummyMod2.countdown:Start(timer)
-		end
-		if not DBM.Options.DontShowPTCountdownText then
-			local threshold = DBM.Options.PTCountThreshold
-			if timer > threshold then
-				DBM:Schedule(timer-threshold, countDownTextDelay, threshold)
-			else
-				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
-			end
-		end
-		if not DBM.Options.DontShowPTText then
-			dummyMod2.text:Show(DBM_CORE_BREAK_START:format(timer/60, sender))
-			if timer/60 > 10 then dummyMod2.text:Schedule(timer - 10*60, DBM_CORE_BREAK_MIN:format(10)) end
-			if timer/60 > 5 then dummyMod2.text:Schedule(timer - 5*60, DBM_CORE_BREAK_MIN:format(5)) end
-			if timer/60 > 2 then dummyMod2.text:Schedule(timer - 2*60, DBM_CORE_BREAK_MIN:format(2)) end
-			if timer/60 > 1 then dummyMod2.text:Schedule(timer - 1*60, DBM_CORE_BREAK_MIN:format(1)) end
-			dummyMod2.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER)
-		end
+		breakTimerStart(DBM, timer, sender)
 	end
 	
 	whisperSyncHandlers["BTR2"] = function(sender, timer)
 		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR2 sync, then we know immediately RequestTimers was successful, so abort others
 		if #inCombat >= 1 then return end
 		if DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
-		timer = tonumber(timer or 0)
 		if not dummyMod2 then
 			dummyMod2 = DBM:NewMod("BreakTimerCountdownDummy")
 			DBM:GetModLocalization("BreakTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
 			dummyMod2.countdown = dummyMod2:NewCountdown(0, 0, nil, nil, nil, true)
 			dummyMod2.text = dummyMod2:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
-		if not DBM.Options.DontShowPT2 and not DBM.Options.DontShowUserTimers then
-			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-		end
-		if not DBM.Options.DontPlayPTCountdown then
-			dummyMod2.countdown:Start(timer)
-		end
-		if not DBM.Options.DontShowPTCountdownText then
-			local threshold = DBM.Options.PTCountThreshold
-			if timer > threshold then
-				DBM:Schedule(timer-threshold, countDownTextDelay, threshold)
-			else
-				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
-			end
-		end
-		if not DBM.Options.DontShowPTText then
-			dummyMod2.text:Show(DBM_CORE_BREAK_START:format(floor(timer/60*100)/100, sender))
-			if timer/60 > 10 then dummyMod2.text:Schedule(timer - 10*60, DBM_CORE_BREAK_MIN:format(10)) end
-			if timer/60 > 5 then dummyMod2.text:Schedule(timer - 5*60, DBM_CORE_BREAK_MIN:format(5)) end
-			if timer/60 > 2 then dummyMod2.text:Schedule(timer - 2*60, DBM_CORE_BREAK_MIN:format(2)) end
-			if timer/60 > 1 then dummyMod2.text:Schedule(timer - 1*60, DBM_CORE_BREAK_MIN:format(1)) end
-			dummyMod2.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER)
-		end
+		timer = tonumber(timer or 0)
+		breakTimerStart(DBM, timer, sender)
 	end
 
 	local function SendVersion()
@@ -4530,7 +4574,7 @@ do
 			return
 		end
 		local handler
-		if channel == "WHISPER" and sender ~= playerName then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
+		if channel == "WHISPER" and (sender ~= playerName or prefix == "BTR2") then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
 			handler = whisperSyncHandlers[prefix]
 		else
 			handler = syncHandlers[prefix]
@@ -9372,54 +9416,6 @@ do
 		--Insert into counts table.
 		if t and v and p and m then
 			tinsert(self.Counts, { text = t, value = v, path = p, max = m })
-		end
-	end
-
-	function DBM:CheckVoicePackAvailable()
-		--Check if voice pack missing
-		local activeVP = self.Options.ChosenVoicePack
-		if (activeVP ~= "None" and not self.VoiceVersions[activeVP]) or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0) then--A voice pack is selected that does not belong
-			self.Options.ChosenVoicePack = "None"--Set ChosenVoicePack back to None
-			self:AddMsg(DBM_CORE_VOICE_MISSING)
-		end
-		--Check if any of countdown sounds are using missing voice pack
-		local voice1 = self.Options.CountdownVoice
-		local voice2 = self.Options.CountdownVoice2
-		local voice3 = self.Options.CountdownVoice3v2
-		if voice1 == "None" then--Migrate to new setting
-			self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice
-			self.Options.DontPlayCountdowns = true
-		end
-		if voice1 == "Yike" then--Migration for CN Users
-			if self.VoiceVersions["Yike"] then
-				self.Options.CountdownVoice = "VP:Yike"
-			else
-				self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice--Defaults
-			end
-		end
-		local found1, found2, found3 = false, false, false
-		for i = 1, #DBM.Counts do
-			if self.Counts[i].value == self.Options.CountdownVoice then
-				found1 = true
-			end
-			if self.Counts[i].value == self.Options.CountdownVoice2 then
-				found2 = true
-			end
-			if self.Counts[i].value == self.Options.CountdownVoice3v2 then
-				found3 = true
-			end
-		end
-		if not found1 then
-			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(1))
-			self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice
-		end
-		if not found2 then
-			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(2))
-			self.Options.CountdownVoice2 = self.DefaultOptions.CountdownVoice2
-		end
-		if not found3 then
-			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(3))
-			self.Options.CountdownVoice3v2 = self.DefaultOptions.CountdownVoice3v2
 		end
 	end
 
