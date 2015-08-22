@@ -32,9 +32,9 @@ local specWarnBadBreathOther		= mod:NewSpecialWarningTaunt(188476, nil, nil, nil
 local specWarnRendingHowl			= mod:NewSpecialWarningInterrupt(189612, "-Healer", nil, nil, 1, 2)
 local yellDarkFate					= mod:NewFadesYell(182644)
 local specWarnPhantasmalCorruption	= mod:NewSpecialWarningYou(187990)
-local yellPhantasmalCorruption		= mod:NewYell(187990)--144421
+local yellPhantasmalCorruption		= mod:NewYell(187990, 144421)
 local specWarnPhantasmalFelBomb		= mod:NewSpecialWarningMoveAway(179219)--On trash, it is a move away
-local yellPhantasmalFelBomb			= mod:NewYell(179219)--49685
+local yellPhantasmalFelBomb			= mod:NewYell(179219, 49685)
 local specWarnFocusedFire			= mod:NewSpecialWarningYou(187110)
 local yellFocusedFire				= mod:NewYell(187110)
 local specWarnMarkofKaz				= mod:NewSpecialWarningYou(189512)
@@ -45,6 +45,16 @@ local voiceRendingHowl				= mod:NewVoice(189612, "-Healer")--kickcast
 
 mod:RemoveOption("HealthFrame")
 mod:AddRangeFrameOption(15)
+
+--/run DBM:GetModByName("HellfireCitadelTrash"):DebugYells()
+function mod:DebugYells()
+	yellPhantasmalCorruption:Yell()
+	yellPhantasmalFelBomb:Yell()
+	local Archi = DBM:GetModByName("1438")
+	local Mani = DBM:GetModByName("1395")
+	Archi:DebugYells()
+	Mani:DebugYells()
+end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
