@@ -6985,9 +6985,9 @@ function bossModPrototype:LatencyCheck()
 end
 
 function bossModPrototype:CheckBigWigs(name)
-	if raid[name].bwrevision then
+	if raid[name] and raid[name].bwrevision then
 		return raid[name].bwrevision
-	elseif raid[name].bwarevision then
+	elseif raid[name] and raid[name].bwarevision then
 		return raid[name].bwarevision
 	else
 		return false
