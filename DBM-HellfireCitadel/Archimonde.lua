@@ -89,8 +89,8 @@ local specWarnRainofChaos			= mod:NewSpecialWarningCount(189953, nil, nil, nil, 
 local specWarnDarkConduitSoon		= mod:NewSpecialWarningSoon(190394, "Ranged", nil, nil, 1, 2)
 local specWarnSeethingCorruption	= mod:NewSpecialWarningCount(190506, nil, nil, nil, 2, 2)
 local specWarnMarkOfLegion			= mod:NewSpecialWarningYouCount(187050)--Somehow i suspect this replaces fel burst. It's basically same mechanic, but on multiple people and slightly larger
-local yellMarkOfLegion				= mod:NewFadesYell(187050)
-local yellMarkOfLegionPoS			= mod:NewPosYell(187050)
+local yellMarkOfLegion				= mod:NewFadesYell(187050, 28836)
+local yellMarkOfLegionPoS			= mod:NewPosYell(187050, 28836)
 local specWarnSourceofChaosYou		= mod:NewSpecialWarningYou(190703)
 local yellSourceofChaos				= mod:NewYell(190703)
 local specWarnSourceofChaos			= mod:NewSpecialWarningSwitchCount(190703, "Dps")--Maybe exclude ranged or healers. Not sure if just dps is enough to soak it, at very least dps have to kill it
@@ -453,6 +453,11 @@ local function sourceOfChaosCheck(self)
 		--Schedule Late check for 5 seconds AFTER cast
 		self:Schedule(cooldown, sourceOfChaosCheck, self)
 	end
+end
+
+function mod:DebugYells()
+	yellMarkOfLegion:Yell(1)
+	yellMarkOfLegionPoS:Yell(5, 1, 1)
 end
 
 --/run DBM:GetModByName("1438"):OnCombatStart(0)
