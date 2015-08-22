@@ -167,7 +167,7 @@ local function delayModCheck(self)
 		for i = 1, GetNumGroupMembers() do
 			local uId = "raid"..i
 			if UnitIsGroupLeader(uId, LE_PARTY_CATEGORY_HOME) then
-				if self:CheckBigWigs(UnitName(uId)) then
+				if self:CheckBigWigs(DBM:GetUnitFullName(uId)) then
 					leaderHasBW = true
 				end
 				break
