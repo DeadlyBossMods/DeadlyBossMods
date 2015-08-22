@@ -1517,10 +1517,10 @@ do
 	end
 
 	function schedule(t, f, mod, ...)
-		startScheduler()
 		if type(f) ~= "function" then
 			error("usage: schedule(time, func, [mod, args...])", 2)
 		end
+		startScheduler()
 		local v
 		if numChachedTables > 0 and select("#", ...) <= 4 then -- a cached table is available and all arguments fit into an array with four slots
 			v = popCachedTable()
