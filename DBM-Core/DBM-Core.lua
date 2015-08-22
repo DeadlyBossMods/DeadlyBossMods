@@ -1848,7 +1848,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd:sub(1, 3) == "lag" then
 		sendSync("L")
 		DBM:AddMsg(DBM_CORE_LAG_CHECKING)
-		DBM:Schedule(5, function() DBM:ShowLag() end)
+		C_TimerAfter(5, function() DBM:ShowLag() end)
 	elseif cmd:sub(1, 3) == "hud" then
 		local hudType, target, duration = string.split(" ", msg:sub(4):trim())
 		if hudType == "" then
@@ -2476,7 +2476,7 @@ do
 
 	--	save playerinfo into raid table on load. (for solo raid)
 	DBM:RegisterOnLoadCallback(function()
-		DBM:Schedule(5, function()
+		C_TimerAfter(5, function()
 			if not raid[playerName] then
 				raid[playerName] = {}
 				raid[playerName].name = playerName
@@ -2630,6 +2630,7 @@ do
 	end
 
 	function DBM:GROUP_ROSTER_UPDATE()
+		self:Unschedule(updateAllRoster)
 		self:Schedule(2, updateAllRoster, self)
 	end
 	
@@ -3631,7 +3632,7 @@ function DBM:LoadMod(mod, force)
 			self:Schedule(7, self.RequestTimers, self, 1)
 			self:Schedule(10, self.RequestTimers, self, 2)
 			self:Schedule(13, self.RequestTimers, self, 3)
-			self:Schedule(15, function() timerRequestInProgress = false end)
+			C_TimerAfter(15, function() timerRequestInProgress = false end)
 		end
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
@@ -4385,7 +4386,7 @@ do
 					DBM:Schedule(0.99, DBM.AddMsg, DBM, DBM_INSTANCE_INFO_ALL_RESPONSES)
 					allResponded = true
 				end
-				DBM:Schedule(1, showResults) --Delay results so we allow time for same sender to send more than 1 lockout, otherwise, if we get expectedResponses before all data is sent from 1 user, we clip some of their data.
+				C_TimerAfter(1, showResults) --Delay results so we allow time for same sender to send more than 1 lockout, otherwise, if we get expectedResponses before all data is sent from 1 user, we clip some of their data.
 			end
 		end
 
@@ -4528,7 +4529,7 @@ do
 			self:Schedule(17, updateInstanceInfo, 45, true)
 			self:Schedule(32, updateInstanceInfo, 30)
 			self:Schedule(48, updateInstanceInfo, 15)
-			self:Schedule(62, showResults)
+			C_TimerAfter(62, showResults)
 		end
 	end
 
@@ -8171,19 +8172,19 @@ do
 
 	do
 		local anchorFrame
-		local function moveEnd()
+		local function moveEnd(self)
 			moving = false
 			anchorFrame:Hide()
 			if anchorFrame.ticker then
 				anchorFrame.ticker:Cancel()
 				anchorFrame.ticker = nil
 			end
-			font1elapsed = DBM.Options.WarningDuration
-			font2elapsed = DBM.Options.WarningDuration
-			font3elapsed = DBM.Options.WarningDuration
+			font1elapsed = self.Options.WarningDuration
+			font2elapsed = self.Options.WarningDuration
+			font3elapsed = self.Options.WarningDuration
 			frame:SetFrameStrata("HIGH")
-			DBM:Unschedule(moveEnd)
-			DBM.Bars:CancelBar(DBM_CORE_MOVE_WARNING_BAR)
+			self:Unschedule(moveEnd)
+			self.Bars:CancelBar(DBM_CORE_MOVE_WARNING_BAR)
 		end
 
 		function DBM:MoveWarning()
@@ -8212,7 +8213,7 @@ do
 					self.Options.WarningPoint = point
 					self.Options.WarningX = xOfs
 					self.Options.WarningY = yOfs
-					self:Schedule(15, moveEnd)
+					self:Schedule(15, moveEnd, self)
 					self.Bars:CreateBar(15, DBM_CORE_MOVE_WARNING_BAR)
 				end)
 			end
@@ -8223,7 +8224,7 @@ do
 				anchorFrame:Show()
 				anchorFrame.ticker = anchorFrame.ticker or C_TimerNewTicker(5, function() self:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE) end)
 				self:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
-				self:Schedule(15, moveEnd)
+				self:Schedule(15, moveEnd, self)
 				self.Bars:CreateBar(15, DBM_CORE_MOVE_WARNING_BAR)
 				frame:Show()
 				frame:SetFrameStrata("TOOLTIP")
@@ -8938,14 +8939,14 @@ do
 
 	do
 		local anchorFrame
-		local function moveEnd()
+		local function moveEnd(self)
 			moving = false
 			anchorFrame:Hide()
-			font1elapsed = DBM.Options.SpecialWarningDuration
-			font2elapsed = DBM.Options.SpecialWarningDuration
+			font1elapsed = self.Options.SpecialWarningDuration
+			font2elapsed = self.Options.SpecialWarningDuration
 			frame:SetFrameStrata("HIGH")
-			DBM:Unschedule(moveEnd)
-			DBM.Bars:CancelBar(DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
+			self:Unschedule(moveEnd)
+			self.Bars:CancelBar(DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
 		end
 
 		function DBM:MoveSpecialWarning()
@@ -8974,7 +8975,7 @@ do
 					self.Options.SpecialWarningPoint = point
 					self.Options.SpecialWarningX = xOfs
 					self.Options.SpecialWarningY = yOfs
-					self:Schedule(15, moveEnd)
+					self:Schedule(15, moveEnd, self)
 					self.Bars:CreateBar(15, DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
 				end)
 			end
@@ -8985,7 +8986,7 @@ do
 				anchorFrame:Show()
 				DBM:AddSpecialWarning(DBM_CORE_MOVE_SPECIAL_WARNING_TEXT)
 				DBM:AddSpecialWarning(DBM_CORE_MOVE_SPECIAL_WARNING_TEXT)
-				self:Schedule(15, moveEnd)
+				self:Schedule(15, moveEnd, self)
 				self.Bars:CreateBar(15, DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
 				frame:Show()
 				frame:SetFrameStrata("TOOLTIP")
@@ -10543,7 +10544,7 @@ do
 					self[returnFunc](self, target, i)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
 				end
 			end
-			self:Schedule(1.5, clearSortTable)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+			C_TimerAfter(1.5, clearSortTable)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 		end
 
 		function bossModPrototype:SetAlphaIcon(delay, target, maxIcon, returnFunc)
@@ -10592,7 +10593,7 @@ do
 					self[returnFunc](self, v, icon)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
 				end
 			end
-			self:Schedule(1.5, clearSortTable)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+			C_TimerAfter(1.5, clearSortTable)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 		end
 
 		function bossModPrototype:SetSortedIcon(delay, target, startIcon, maxIcon, reverseIcon, returnFunc)
