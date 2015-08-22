@@ -2101,8 +2101,8 @@ local function CreateOptionsMenu()
 			{	text	= L.BarSimple,			value 	= "NoAnim" }
 		}
 
-		local StyleDropDown = BarSetup:CreateDropdown(L.BarStyle, Styles, "DBT", "Style", function(value)
-			DBM.Bars:SetOption("Style", value)
+		local StyleDropDown = BarSetup:CreateDropdown(L.BarStyle, Styles, "DBT", "BarStyle", function(value)
+			DBM.Bars:SetOption("BarStyle", value)
 		end)
 		StyleDropDown:SetPoint("TOPLEFT", TextureDropDown, "BOTTOMLEFT", 0, -10)
 
