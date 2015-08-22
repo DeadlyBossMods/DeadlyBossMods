@@ -464,7 +464,6 @@ end
 
 do
 	RegisterAddonMessagePrefix("EXRTADD")
-	local playerName = UnitName("player")
 	local Ambiguate = Ambiguate
 	local assignedPositionOrange, assignedPositionGreen, assignedPositionPurple
 	local function delayedNotice(self, sender)
