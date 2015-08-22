@@ -396,7 +396,7 @@ local statusWhisperDisabled = false
 local wowTOC = select(4, GetBuildInfo())
 local dbmToc = 0
 
-local fakeBWRevision = 13633
+local fakeBWRevision = 13648
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -1428,7 +1428,9 @@ do
 		end
 
 		-- execute OnUpdate handlers of all modules
+		local foundModFunctions = 0
 		for i, v in pairs(updateFunctions) do
+			foundModFunctions = foundModFunctions + 1
 			if i.Options.Enabled and (not i.zones or i.zones[LastInstanceMapID]) then
 				i.elapsed = (i.elapsed or 0) + elapsed
 				if i.elapsed >= (i.updateInterval or 0) then
@@ -1449,7 +1451,7 @@ do
 				modSyncSpam[k] = nil
 			end
 		end
-		if not nextTask and #updateFunctions == 0 then--Nothing left, stop scheduler
+		if not nextTask and foundModFunctions == 0 then--Nothing left, stop scheduler
 			schedulerFrame:SetScript("OnUpdate", nil)
 			schedulerFrame:Hide()
 			DBM:Debug("DBM Scheduler Deactivated", 2)
