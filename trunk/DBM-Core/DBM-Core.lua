@@ -440,6 +440,7 @@ local GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroup
 local LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns = LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns
 local PlaySoundFile, PlaySound = PlaySoundFile, PlaySound
 local Ambiguate = Ambiguate
+local C_TimerNewTicker, C_TimerAfter = C_Timer.NewTicker, C_Timer.After
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
@@ -1075,7 +1076,7 @@ do
 				self.Options.tempBreak = nil
 			end
 		--Try asking top two DBM version in group
-		elseif IsInGroup() then
+		elseif IsInGroup() and not timerRequestInProgress then
 			self:Schedule(2.5, self.RequestTimers, self, 1)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
 			self:Schedule(5, self.RequestTimers, self, 2)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
 		end
@@ -1101,17 +1102,17 @@ do
 			loadOptions(self)
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 				self:Disable(true)
-				self:Schedule(10, function() self:AddMsg(DBM_CORE_VEM) end)
+				C_TimerAfter(10, function() self:AddMsg(DBM_CORE_VEM) end)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
 				self:Disable(true)
-				self:Schedule(10, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
+				C_TimerAfter(10, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
 				return
 			end
 			--DBM is disabled and DBM is not forced disabled
 			if dbmToc >= wowTOC and not self.Options.Enabled then
-				self:Schedule(10, function() self:AddMsg(DBM_CORE_DISABLED_REMINDER) end)
+				C_TimerAfter(10, function() self:AddMsg(DBM_CORE_DISABLED_REMINDER) end)
 			end
 			self.Bars:LoadOptions("DBM")
 			self.Arrow:LoadPosition()
@@ -1131,7 +1132,7 @@ do
 					if checkEntry(bannedMods, addonName) then
 						self:AddMsg("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 					elseif minToc and minToc > wowTOC then
-						DBM:Debug(i.." not loaded because mod requires minimum toc of "..minToc)
+						self:Debug(i.." not loaded because mod requires minimum toc of "..minToc)
 					else
 						local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
 						tinsert(self.AddOns, {
@@ -1194,7 +1195,6 @@ do
 						end
 					end
 				end
-				self:Schedule(10, runDelayedFunctions, self)
 			end
 			tsort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
 			self:RegisterEvents(
@@ -1245,12 +1245,13 @@ do
 			RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
 			self:GROUP_ROSTER_UPDATE()
 			--self:LOADING_SCREEN_DISABLED()--Initial testing shows it isn't needed here and wastes cpu running funcion twice, because actual event always fires at login, AFTER addonloadded. Will remove this line if it works out ok
-			self:Schedule(1.5, function()
+			C_TimerAfter(1.5, function()
 				combatInitialized = true
 			end)
-			self:Schedule(20, function()--Delay UNIT_HEALTH combat start for 20 sec. (not to break Timer Recovery stuff)
+			C_TimerAfter(20, function()--Delay UNIT_HEALTH combat start for 20 sec. (not to break Timer Recovery stuff)
 				healthCombatInitialized = true
 			end)
+			self:Schedule(10, runDelayedFunctions, self)
 		end
 	end
 end
@@ -3495,13 +3496,13 @@ do
 		end
 	end
 	local function FixForShittyComputers(self)
-		timerRequestInProgress = false
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
 		self:Debug("Instance Check fired with mapID "..mapID.." and difficulty "..difficulty)
 		if LastInstanceMapID == mapID then
 			self:Debug("No action taken because mapID hasn't changed since last check")
 			return
 		end--ID hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh phase 4 is a loading screen)
+		timerRequestInProgress = false
 		LastInstanceMapID = mapID
 		LastGroupSize = instanceGroupSize
 		difficultyIndex = difficulty
@@ -3630,7 +3631,7 @@ function DBM:LoadMod(mod, force)
 			self:Schedule(7, self.RequestTimers, self, 1)
 			self:Schedule(10, self.RequestTimers, self, 2)
 			self:Schedule(13, self.RequestTimers, self, 3)
-			self:Schedule(14, function() timerRequestInProgress = false end)
+			self:Schedule(15, function() timerRequestInProgress = false end)
 		end
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
@@ -3939,7 +3940,7 @@ do
 			if timer/60 > 1 then dummyMod2.text:Schedule(timer - 1*60, DBM_CORE_BREAK_MIN:format(1)) end
 			dummyMod2.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER)
 		end
-		self:Schedule(timer, function() self.Options.tempBreak = nil end)
+		C_TimerAfter(timer, function() self.Options.tempBreak = nil end)
 	end
 
 	syncHandlers["BT"] = function(sender, timer)
@@ -4900,7 +4901,7 @@ do
 		healthCombatInitialized = false
 		DBM:Schedule(0.5, scanForCombat, combatInfo.mod, mob, 0.5)
 		DBM:Schedule(2, scanForCombat, combatInfo.mod, mob, 2)
-		DBM:Schedule(2.1, function()
+		C_TimerAfter(2.1, function()
 			healthCombatInitialized = true
 		end)
 	end
@@ -6247,11 +6248,11 @@ end
 do
 	function DBM:PLAYER_ENTERING_WORLD()
 		if GetLocale() == "ptBR" or GetLocale() == "frFR" or GetLocale() == "esES" or GetLocale() == "esMX" or GetLocale() == "itIT" then
-			self:Schedule(10, function() if self.Options.HelpMessageVersion < 2 then self.Options.HelpMessageVersion = 2 self:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
+			C_TimerAfter(10, function() if self.Options.HelpMessageVersion < 2 then self.Options.HelpMessageVersion = 2 self:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
 		end
-		self:Schedule(20, function() if not self.Options.ForumsMessageShown then self.Options.ForumsMessageShown = self.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
-		self:Schedule(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
-		self:Schedule(40, function() if self.Options.NewsMessageShown < 4 then self.Options.NewsMessageShown = 4 self:AddMsg(DBM_CORE_WHATS_NEW) end end)
+		C_TimerAfter(20, function() if not self.Options.ForumsMessageShown then self.Options.ForumsMessageShown = self.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
+		C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
+		C_TimerAfter(40, function() if self.Options.NewsMessageShown < 4 then self.Options.NewsMessageShown = 4 self:AddMsg(DBM_CORE_WHATS_NEW) end end)
 		if type(RegisterAddonMessagePrefix) == "function" then
 			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
 				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
@@ -8138,7 +8139,7 @@ do
 			font1:Show()
 			font1u:Show()
 			added = true
-			frame.font1ticker = frame.font1ticker or C_Timer.NewTicker(0.05, fontHide1)
+			frame.font1ticker = frame.font1ticker or C_TimerNewTicker(0.05, fontHide1)
 		elseif not frame.font2ticker then
 			font2elapsed = 0
 			font2.lastUpdate = GetTime()
@@ -8146,7 +8147,7 @@ do
 			font2:Show()
 			font2u:Show()
 			added = true
-			frame.font2ticker = frame.font2ticker or C_Timer.NewTicker(0.05, fontHide2)
+			frame.font2ticker = frame.font2ticker or C_TimerNewTicker(0.05, fontHide2)
 		elseif not frame.font3ticker or force then
 			font3elapsed = 0
 			font3.lastUpdate = GetTime()
@@ -8155,7 +8156,7 @@ do
 			font3u:Show()
 			fontHide3()
 			added = true
-			frame.font3ticker = frame.font3ticker or C_Timer.NewTicker(0.05, fontHide3)
+			frame.font3ticker = frame.font3ticker or C_TimerNewTicker(0.05, fontHide3)
 		end
 		if not added then
 			local prevText1 = font2:GetText()
@@ -8220,7 +8221,7 @@ do
 			else
 				moving = true
 				anchorFrame:Show()
-				anchorFrame.ticker = anchorFrame.ticker or C_Timer.NewTicker(5, function() self:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE) end)
+				anchorFrame.ticker = anchorFrame.ticker or C_TimerNewTicker(5, function() self:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE) end)
 				self:AddWarning(DBM_CORE_MOVE_WARNING_MESSAGE)
 				self:Schedule(15, moveEnd)
 				self.Bars:CreateBar(15, DBM_CORE_MOVE_WARNING_BAR)
@@ -8918,14 +8919,14 @@ do
 			font1:SetText(text)
 			font1:Show()
 			added = true
-			frame.font1ticker = frame.font1ticker or C_Timer.NewTicker(0.05, fontHide1)
+			frame.font1ticker = frame.font1ticker or C_TimerNewTicker(0.05, fontHide1)
 		elseif not frame.font2ticker or force then
 			font2elapsed = 0
 			font2.lastUpdate = GetTime()
 			font2:SetText(text)
 			font2:Show()
 			added = true
-			frame.font2ticker = frame.font2ticker or C_Timer.NewTicker(0.05, fontHide2)
+			frame.font2ticker = frame.font2ticker or C_TimerNewTicker(0.05, fontHide2)
 		end
 		if not added then
 			local prevText1 = font2:GetText()
