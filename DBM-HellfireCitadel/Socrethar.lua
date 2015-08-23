@@ -15,7 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 181288 182051 183331 183329 184239 182392 188693",
 	"SPELL_CAST_SUCCESS 180008 184124 190776 183023",
-	"SPELL_AURA_APPLIED 182038 182769 182900 184124 188666 189627 190466 184053 183017",
+	"SPELL_AURA_APPLIED 182038 182769 182900 184124 188666 189627 190466 184053 183017 180415",
 	"SPELL_AURA_APPLIED_DOSE 182038",
 	"SPELL_AURA_REMOVED 184124 189627 190466 184053 183017",
 	"UNIT_DIED",
@@ -395,7 +395,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 190466 and args.sourceName == UnitName("player") then
 		playerInConstruct = true
-	elseif spellId == 183017 and self:AntiSpam(5, args.destName) then
+	elseif (spellId == 183017 or spellId == 180415) and self:AntiSpam(5, args.destName) then
 		warnFelPrison:CombinedShow(0.3, args.destName)
 		--Only show target timer for adds
 		if not DBM:GetRaidUnitId(args.destName) then
