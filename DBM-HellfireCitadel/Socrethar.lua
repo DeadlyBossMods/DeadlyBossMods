@@ -113,20 +113,12 @@ mod.vb.felBurstCount = 0
 mod.vb.ManariTargets = 0
 mod.vb.mythicAddSpawn = 0
 mod.vb.ghostSpawn = 0
-mod.vb.kickCount = 0
+mod.vb.kickCount2 = 0
 mod.vb.barrierUp = false
 mod.vb.dominatorCount = 0
 mod.vb.interruptBehavior = "Count3Resume"
 local playerInConstruct = false
---[[
-Dominator Times Observed on Normal and raid sizes
-10: 2:20
-12: 2:20
-13: 2:34
-14: 2:41
-21: 2:19
---]]
-
+local exertSpellName = GetSpellInfo(183331)
 local debuffName = GetSpellInfo(184124)
 local UnitDebuff = UnitDebuff
 local debuffFilter
@@ -185,7 +177,7 @@ function mod:OnCombatStart(delay)
 	self.vb.felBurstCount = 0
 	self.vb.mythicAddSpawn = 0
 	self.vb.ghostSpawn = 0
-	self.vb.kickCount = 0
+	self.vb.kickCount2 = 0
 	self.vb.dominatorCount = 0
 	self.vb.barrierUp = false
 	playerInConstruct = false
@@ -242,21 +234,23 @@ function mod:SPELL_CAST_START(args)
 		--Must have delay, to avoid same bug as oregorger. Boss has 2 target scans
 		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "ChargeTarget", 0.1, 10, true)
 	elseif spellId == 183331 then
-		if (self.vb.interruptBehavior == "Count3Resume" or self.vb.interruptBehavior == "Count3Reset") and self.vb.kickCount >= 3 or self.vb.kickCount >= 4 then
-			self.vb.kickCount = 0
+		if (self.vb.interruptBehavior == "Count3Resume" or self.vb.interruptBehavior == "Count3Reset") and self.vb.kickCount2 >= 3 or self.vb.kickCount2 >= 4 then
+			self.vb.kickCount2 = 0
 		end
-		self.vb.kickCount = self.vb.kickCount + 1
-		timerExertDominanceCD:Start(nil, self.vb.kickCount+1)
-		if self:CheckInterruptFilter(args.sourceGUID) and not playerInConstruct and not self.vb.barrierUp then
-			specWarnExertDominance:Show(args.sourceName, self.vb.kickCount)
-			if self.vb.kickCount == 1 then
-				voiceExertDominance:Play("kick1r")
-			elseif self.vb.kickCount == 2 then
-				voiceExertDominance:Play("kick2r")
-			elseif self.vb.kickCount == 3 then
-				voiceExertDominance:Play("kick3r")
-			elseif self.vb.kickCount == 4 then
-				voiceExertDominance:Play("kick4r")
+		timerExertDominanceCD:Start(nil, self.vb.kickCount2+1)
+		if not self.vb.barrierUp then
+			self.vb.kickCount2 = self.vb.kickCount2 + 1
+			if self:CheckInterruptFilter(args.sourceGUID) and not playerInConstruct then
+				specWarnExertDominance:Show(args.sourceName, self.vb.kickCount2)
+				if self.vb.kickCount2 == 1 then
+					voiceExertDominance:Play("kick1r")
+				elseif self.vb.kickCount2 == 2 then
+					voiceExertDominance:Play("kick2r")
+				elseif self.vb.kickCount2 == 3 then
+					voiceExertDominance:Play("kick3r")
+				elseif self.vb.kickCount2 == 4 then
+					voiceExertDominance:Play("kick4r")
+				end
 			end
 		end
 	elseif spellId == 183329 then
@@ -304,7 +298,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 183023 then--Eject Soul
 		self.vb.dominatorCount = 0
 		self.vb.ghostSpawn = 0
-		self.vb.kickCount = 0
+		self.vb.kickCount2 = 0
 		warnEjectSoul:Show()
 		timerReverberatingBlowCD:Cancel()
 		countdownReverberatingBlow:Cancel()
@@ -419,12 +413,31 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 184053 then
 		self.vb.barrierUp = false
 		if self.vb.interruptBehavior == "Count3Reset" or self.vb.interruptBehavior == "Count4Reset" then
-			local elapsed, total = timerExertDominanceCD:GetTime(nil, self.vb.kickCount+1)
+			local elapsed, total = timerExertDominanceCD:GetTime(nil, self.vb.kickCount2+1)
 			if total > 0 then--Timer exists
 				timerExertDominanceCD:Cancel()
 				timerExertDominanceCD:Update(elapsed, total, 1)--Update timer to show count start over
 			end
-			self.vb.kickCount = 0
+			self.vb.kickCount2 = 0
+		end
+		--Check if there is an interruptable cast in progress when barrier drops
+		local name, _, _, _, _, endTime = UnitCastingInfo("boss1")
+		if not name then return end
+		if name == exertSpellName and GetTime() - endTime > 0.5 then--It's still possible to interrupt it
+			if self.vb.kickCount2 == 0 then self.vb.kickCount2 = 1 end
+			if self:CheckInterruptFilter(args.destGUID) and not playerInConstruct then
+				specWarnExertDominance:Show(args.destName, self.vb.kickCount2)
+				if self.vb.kickCount2 == 1 then
+					voiceExertDominance:Play("kick1r")
+				elseif self.vb.kickCount2 == 2 then
+					voiceExertDominance:Play("kick2r")
+				elseif self.vb.kickCount2 == 3 then
+					voiceExertDominance:Play("kick3r")
+				elseif self.vb.kickCount2 == 4 then
+					voiceExertDominance:Play("kick4r")
+				end
+			end
+			self.vb.kickCount2 = self.vb.kickCount2 + 1
 		end
 	elseif spellId == 183017 then
 		timerPrisonActive:Cancel(args.destName, args.destGUID)
