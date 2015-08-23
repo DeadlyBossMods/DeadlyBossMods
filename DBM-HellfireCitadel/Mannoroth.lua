@@ -418,11 +418,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		doomTargets[#doomTargets+1] = args.destName
 		self.vb.DoomTargetCount = self.vb.DoomTargetCount + 1
 		self:Unschedule(breakDoom)
-		self:Schedule(1.3, breakDoom, self)--3 targets, pretty slowly. I've seen at least 1.2, so make this 1.3, maybe more if needed
+		if #doomTargets == 3 then
+			breakDoom(self)
+		else
+			self:Schedule(1.3, breakDoom, self)--3 targets, pretty slowly. I've seen at least 1.2, so make this 1.3, maybe more if needed
+		end
 		if args:IsPlayer() then
 			specWarnMarkOfDoom:Show()
 			countdownMarkOfDoom:Start()
-			voiceMarkOfDoom:Schedule(8.5, "runout")
+			voiceMarkOfDoom:Play("runout")
 		end
 		updateRangeFrame(self)
 	elseif spellId == 181191 and self:CheckInterruptFilter(args.sourceGUID, true) then--No sense in duplicating code, just use CheckInterruptFilter with arg to skip the filter setting check
@@ -431,7 +435,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 181597 or spellId == 182006 then
 		gazeTargets[#gazeTargets+1] = args.destName
 		self:Unschedule(warnGazeTargts)
-		self:Schedule(0.5, warnGazeTargts, self)--At least 0.5, maybe bigger needed if warning still splits
+		if #gazeTargets == 3 then
+			warnGazeTargts(self)
+		else
+			self:Schedule(1, warnGazeTargts, self)--At least 0.5, maybe bigger needed if warning still splits
+		end
 		voiceGaze:Cancel()
 		if args:IsPlayer() then
 			specWarnGaze:Show()
