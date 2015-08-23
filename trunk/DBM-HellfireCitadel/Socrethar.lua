@@ -326,7 +326,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 182038 then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if self:IsTanking(uId, "boss1") then
+		if uId and self:IsTanking(uId, "boss1") then
 			local amount = args.amount or 1
 			warnShatteredDefenses:Cancel()
 			warnShatteredDefenses:Schedule(0.3, args.destName, amount)
@@ -370,7 +370,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerSargereiDominatorCD:Start(130, self.vb.dominatorCount+1)
 		else
 			if self.vb.dominatorCount % 2 == 0 then--Every portal swap adds 10 seconds to next spawn, so 3, 5, 7 etc
-				timerSargereiDominatorCD:Start(70, self.vb.dominatorCount+1)
+				timerSargereiDominatorCD:Start(68.5, self.vb.dominatorCount+1)
 			else
 				timerSargereiDominatorCD:Start(nil, self.vb.dominatorCount+1)
 			end
