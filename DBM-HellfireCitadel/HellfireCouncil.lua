@@ -23,7 +23,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 184652",
 	"SPELL_PERIODIC_MISSED 184652",
 	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
@@ -64,7 +63,7 @@ mod:AddTimerLine(Jubei)
 --local timerFelstormCD				= mod:NewCDTimer(30.5, 183701, nil, nil, nil, 2)
 local timerMirrorImage				= mod:NewBuffActiveTimer(51.5, 183885, nil, nil, nil, 6)--About 51.5
 local timerMirrorImageCD			= mod:NewCDTimer(75, 183885, nil, nil, nil, 1)
-local timerWickedStrikeCD			= mod:NewCDTimer(11, 186993, nil, nil, nil, 2)
+local timerWickedStrikeCD			= mod:NewCDTimer(10.5, 186993, nil, nil, nil, 2)
 mod:AddTimerLine(Dia)
 --Dia Darkwhisper
 local timerMarkofNecroCD			= mod:NewCDTimer(60, 184449, nil, "Healer", nil, 5)
@@ -93,6 +92,7 @@ mod.vb.DiaPushed = false
 mod.vb.taintedBloodCount = 0
 mod.vb.felRageCount = 0
 mod.vb.diaDead = false
+mod.vb.jubeiGone = false
 mod.vb.jubeiDead = false
 mod.vb.bloodboilDead = false
 mod.vb.reapActive = false
@@ -125,10 +125,10 @@ end--]]
 function mod:OnCombatStart(delay)
 	self.vb.DiaPushed = false
 	self.vb.diaDead = false
+	self.vb.jubeiGone = false
 	self.vb.jubeiDead = false
 	self.vb.bloodboilDead = false
 	self.vb.reapActive = false
---	self.vb.firstReap = false
 	self.vb.taintedBloodCount = 0
 	self.vb.felRageCount = 0
 	self.vb.visageCount = 0
@@ -163,14 +163,14 @@ function mod:SPELL_CAST_START(args)
 		if not self.vb.DiaPushed then
 			local elapsed, total = timerReapCD:GetTime()
 			local remaining = total - elapsed
-			if remaining < 17.5 then--delayed by visage
+			if remaining < 16.5 then--delayed by visage
 				timerReapCD:Cancel()
 				warnReapDelayed:Schedule(11.5)
 				if total == 0 then--Pull reap delayed by visage
-					DBM:Debug("experimental timer extend firing for reap. Extend amount: "..17.5)
-					timerReapCD:Start(17.5)
+					DBM:Debug("experimental timer extend firing for reap. Extend amount: "..16.5)
+					timerReapCD:Start(16.5)
 				else
-					local extend = 17.5 - remaining
+					local extend = 16.5 - remaining
 					DBM:Debug("experimental timer extend firing for reap. Extend amount: "..extend)
 					timerReapCD:Update(elapsed, total+extend)
 				end
@@ -205,6 +205,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 183480 and self:AntiSpam(8, 1) then
+		self.vb.jubeiGone = true
 		warnMirrorImage:Show()
 		countdownSpecial:Start(72.8)
 		timerMirrorImage:Start()
@@ -346,7 +347,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:RAID_BOSS_EMOTE(msg)
+function mod:RAID_BOSS_EMOTE(msg, npc)
 	if msg:find("spell:184681") then
 		specWarnDarkness:Show()
 		countdownSpecial:Start()
@@ -357,12 +358,8 @@ function mod:RAID_BOSS_EMOTE(msg)
 		else--Only dia is left, darkness will repeat
 			timerDarknessCD:Start()
 		end
-	end
-end
-
---Probably temporary. IEEU or UTC will probably be usuable but i need a transcriptor log to verify. I deleted all mine
-function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if npc == Jubei and target == Dia then--Jubei yells "Your darkness burns within me!" with Dia as target when returning from mirror images
+	elseif npc == Jubei and self.vb.jubeiGone then--Jubei Returning
+		self.vb.jubeiGone = false
 		timerMirrorImage:Cancel()
 	end
 end
