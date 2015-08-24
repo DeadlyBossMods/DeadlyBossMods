@@ -16,8 +16,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 181099 181275 181191 181597 182006 186362",
 	"SPELL_AURA_APPLIED_DOSE 181119",
 	"SPELL_AURA_REMOVED 181099 181275 185147 182212 185175 181597 182006 181275 186362",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_ABSORBED",
+	"SPELL_DAMAGE 181192",
+	"SPELL_MISSED 181192",
 	"SPELL_SUMMON 181255 181180",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_DIED",
@@ -59,7 +59,7 @@ local specWarnDoomSpikeOther		= mod:NewSpecialWarningTaunt(181119, nil, nil, nil
 ----Fel Imps
 local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, false, nil, 2, 1, 2)--Can be spammy, but someone may want it
 ----Dread Infernals
-local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, "Melee", nil, nil, 4, 2)
+local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, nil, nil, 2, 4, 2)
 ----Gul'dan
 local specWarnWrathofGuldan			= mod:NewSpecialWarningYou(186362, nil, nil, nil, 1)
 local yellWrathofGuldan				= mod:NewYell(186362, 169826)
@@ -102,7 +102,7 @@ local countdownShadowForce			= mod:NewCountdown("AltTwo52", 181799)
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceGaze						= mod:NewVoice(181597, false) --gather share
 local voiceMarkOfDoom				= mod:NewVoice(181099) --run out
-local voiceFelHellfire				= mod:NewVoice(181191, "Melee") --runaway
+local voiceFelHellfire				= mod:NewVoice(181191, nil, nil, 2) --runaway
 local voiceShadowBoltVolley			= mod:NewVoice(181126, "-Healer")
 local voiceFelBlast					= mod:NewVoice(181132, "-Healer")
 local voiceFelSeeker				= mod:NewVoice(181132)--watchstep
@@ -429,7 +429,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceMarkOfDoom:Play("runout")
 		end
 		updateRangeFrame(self)
-	elseif spellId == 181191 and self:CheckInterruptFilter(args.sourceGUID, true) then--No sense in duplicating code, just use CheckInterruptFilter with arg to skip the filter setting check
+	elseif spellId == 181191 and self:CheckInterruptFilter(args.sourceGUID, true) and self:IsMelee() and self:AntiSpam(2, 5) then--No sense in duplicating code, just use CheckInterruptFilter with arg to skip the filter setting check
 		voiceFelHellfire:Play("runaway")
 		specWarnFelHellfire:Show()--warn melee who are targetting infernal to run out if it's exploding
 	elseif spellId == 181597 or spellId == 182006 then
@@ -710,11 +710,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
 
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 181192 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
+		voiceFelHellfire:Play("runaway")
+		specWarnFelHellfire:Show()
 	end
 end
-mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
---]]
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
