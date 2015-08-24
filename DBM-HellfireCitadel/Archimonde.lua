@@ -49,7 +49,7 @@ local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 ----The Nether
 local warnVoidStarFixate			= mod:NewTargetAnnounce(189895, 2)
 --Mythic
-local warnMarkOfLegion				= mod:NewTargetAnnounce(187050, 4)
+local warnMarkOfLegion				= mod:NewTargetCountAnnounce(187050, 4)
 local warnDarkConduit				= mod:NewCountAnnounce(190394, 2, nil, "Ranged")
 
 --Phase 1: The Defiler
@@ -318,7 +318,7 @@ local function showMarkOfLegion(self, spellName)
 	--Yell format is "<icon>Mark (expireTime) on <playername><icon>" . Icon assignments should be more than enough
 	--MELEE, RANGED, DBM_CORE_LEFT, DBM_CORE_RIGHT (http://puu.sh/jsyr5/7014c50cb3.jpg)
 	--Melee/ranged left/right is still an idea but i don't think will be needed. Not with fixed icons/debuff durations being assigned consistently.
-	warnMarkOfLegion:Show(table.concat(legionTargets, "<, >"))
+	warnMarkOfLegion:Show(self.vb.markOfLegionCast, table.concat(legionTargets, "<, >"))
 	for i = 1, #legionTargets do
 		local name = legionTargets[i]
 		if not name then break end
