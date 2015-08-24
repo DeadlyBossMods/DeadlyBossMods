@@ -2675,6 +2675,11 @@ do
 	function DBM:GetPlayerNameByGUID(guid)
 		return raidGuids[guid] and raidGuids[guid]:gsub("%-.*$", "")
 	end
+
+	function DBM:GetRaidRosterId(name)
+		local raidMember = raid[name] or raid[UnitName(name) or ""]
+		return raidMember and raidMember.id
+	end
 end
 
 do
