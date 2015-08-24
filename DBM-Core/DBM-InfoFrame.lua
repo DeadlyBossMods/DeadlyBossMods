@@ -78,10 +78,10 @@ local UnitDebuff, UnitBuff = UnitDebuff, UnitBuff
 local UnitIsDeadOrGhost, UnitThreatSituation = UnitIsDeadOrGhost, UnitThreatSituation
 local GetSpellInfo = GetSpellInfo
 local UnitPosition = UnitPosition
-local GetRaidRosterInfo, GetPartyAssignment, UnitGroupRolesAssigned = GetRaidRosterInfo, GetPartyAssignment, UnitGroupRolesAssigned
 local twipe = table.wipe
 local select, tonumber = select, tonumber
 local mfloor = math.floor
+local getRaidRosterId = DBM.GetRaidRosterId
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
@@ -189,22 +189,19 @@ local updateCallbacks = {}
 local function sortFuncDesc(a, b) return lines[a] > lines[b] end
 local function sortFuncAsc(a, b) return lines[a] < lines[b] end
 local function namesortFuncAsc(a, b) return a < b end
+local function sortRaidRooster(a, b) return getRaidRosterId(DBM, a) < getRaidRosterId(DBM, b) end
 local function updateLines()
 	twipe(sortedLines)
-	--TODO, fix this. Even if you disable sorting completely. 
-	--sortedLines does not match lines
-	--Right now it's literally IMPOSSIBLE to have an infoframe sorted by raid roster index
-	--Which is why users had ot use bigwigs for ra-den
-	--and they can't use DBM for gorefiend since soul helper doesn't sort right either.
 	for i in pairs(lines) do
 		sortedLines[#sortedLines + 1] = i
 	end
-	if not noSort then
-		if sortingAsc then
-			table.sort(sortedLines, sortFuncAsc)
-		else
-			table.sort(sortedLines, sortFuncDesc)
-		end
+	if noSort then
+		-- noSort actually means: sort by raid rooster id
+		table.sort(sortedLines, sortRaidRooster)
+	elseif sortingAsc then
+		table.sort(sortedLines, sortFuncAsc)
+	else
+		table.sort(sortedLines, sortFuncDesc)
 	end
 	for i, v in ipairs(updateCallbacks) do
 		v(sortedLines)
