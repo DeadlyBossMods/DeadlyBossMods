@@ -2468,6 +2468,7 @@ do
 				raid[playerName].rank = 0
 				raid[playerName].class = class
 				raid[playerName].id = "player"
+				raid[playerName].groupId = 0
 				raid[playerName].revision = DBM.Revision
 				raid[playerName].version = DBM.ReleaseRevision
 				raid[playerName].displayVersion = DBM.DisplayVersion
@@ -2507,6 +2508,7 @@ do
 					raid[name].subgroup = subgroup
 					raid[name].class = className
 					raid[name].id = id
+					raid[name].groupId = i
 					raid[name].guid = UnitGUID(id) or ""
 					raid[name].updated = true
 					raidGuids[UnitGUID(id) or ""] = name
@@ -2564,6 +2566,7 @@ do
 				raid[name].rank = rank
 				raid[name].class = className
 				raid[name].id = id
+				raid[name].groupId = i
 				raid[name].updated = true
 				raidGuids[UnitGUID(id) or ""] = name
 			end
@@ -2604,6 +2607,7 @@ do
 			raid[playerName].rank = 0
 			raid[playerName].class = class
 			raid[playerName].id = "player"
+			raid[playerName].groupId = 0
 			raid[playerName].revision = DBM.Revision
 			raid[playerName].version = DBM.ReleaseRevision
 			raid[playerName].displayVersion = DBM.DisplayVersion
@@ -2676,9 +2680,9 @@ do
 		return raidGuids[guid] and raidGuids[guid]:gsub("%-.*$", "")
 	end
 
-	function DBM:GetRaidRosterId(name)
-		local raidMember = raid[name] or raid[UnitName(name) or ""]
-		return raidMember and raidMember.id
+	function DBM:GetGroupId(name)
+		local raidMember = raid[name] or raid[GetUnitName(name, true) or ""]
+		return raidMember and raidMember.groupId or 0
 	end
 end
 
