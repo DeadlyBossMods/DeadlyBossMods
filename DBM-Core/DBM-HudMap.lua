@@ -4,7 +4,7 @@
 local ADDON_NAME = ...
 
 DBMHudMap = {}
-DBMHudMap.mainFrame = CreateFrame("Frame", "DBMHudMapFrame")
+local mainFrame = CreateFrame("Frame", "DBMHudMapFrame")
 local mod = DBMHudMap
 
 local wipe, type, pairs, ipairs, tinsert, tremove, tonumber, setmetatable, select, unpack = table.wipe, type, pairs, ipairs, table.insert, table.remove, tonumber, setmetatable, select, unpack
@@ -256,9 +256,9 @@ function mod:Enable()
 	if DBM.Options.DontShowHudMap2 or self.HUDEnabled then return end
 	DBM:Debug("HudMap Activating", 2)
 	self.currentMap = select(8, GetInstanceInfo())
-	self.mainFrame:Show()
-	self.mainFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-	self.mainFrame:RegisterEvent("LOADING_SCREEN_DISABLED")
+	mainFrame:Show()
+--	mainFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	mainFrame:RegisterEvent("LOADING_SCREEN_DISABLED")
 	self.canvas:SetAlpha(1)
 	self:UpdateCanvasPosition()
 
@@ -279,9 +279,9 @@ function mod:Disable()
 	Edge:ClearAll()
 	if hudarActive then return end--Don't disable if hudar is open
 	--Anything else needed? maybe clear all marks, hide any frames, etc?
-	self.mainFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-	self.mainFrame:UnregisterEvent("LOADING_SCREEN_DISABLED")
-	self.mainFrame:Hide()
+--	mainFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	mainFrame:UnregisterEvent("LOADING_SCREEN_DISABLED")
+	mainFrame:Hide()
 	self.HUDEnabled = false
 	if updateFrame.ticker then
 		updateFrame.ticker:Cancel()
@@ -304,8 +304,8 @@ do
 		if event == "ADDON_LOADED" and select(1, ...) == ADDON_NAME then
 			mod:OnInitialize()
 			--mod:Enable()
-			mod.mainFrame:UnregisterEvent("ADDON_LOADED")
-		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
+			mainFrame:UnregisterEvent("ADDON_LOADED")
+--[[		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
 			local timestamp, clevent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID = ...
 			if clevent == "UNIT_DIED" then
 				for k, v in pairs(followedUnits) do
@@ -313,14 +313,14 @@ do
 						v:Free()
 					end
 				end
-			end
+			end--]]
 		elseif event == "LOADING_SCREEN_DISABLED" then
 			mod.currentMap = select(8, GetInstanceInfo())
 		end
 	end
 
-	mod.mainFrame:SetScript("OnEvent", onEvent)
-	mod.mainFrame:RegisterEvent("ADDON_LOADED")
+	mainFrame:SetScript("OnEvent", onEvent)
+	mainFrame:RegisterEvent("ADDON_LOADED")
 end
 
 function mod:PointExists(id)
