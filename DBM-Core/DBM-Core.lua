@@ -1041,7 +1041,7 @@ do
 			end
 		end
 		local found1, found2, found3 = false, false, false
-		for i = 1, #DBM.Counts do
+		for i = 1, #self.Counts do
 			if self.Counts[i].value == self.Options.CountdownVoice then
 				found1 = true
 			end
@@ -1563,10 +1563,6 @@ end
 
 function DBM:Unschedule(f, ...)
 	return unschedule(f, nil, ...)
-end
-
-function DBM:ForceUpdate()
-	mainFrame:GetScript("OnUpdate")(mainFrame, 0)
 end
 
 ---------------
