@@ -61,6 +61,7 @@ local currentEvent
 local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
 local lines = {}
 local sortingAsc
+local noSort
 local sortedLines = {}
 local icons = {}
 local value = {}
@@ -190,13 +191,20 @@ local function sortFuncAsc(a, b) return lines[a] < lines[b] end
 local function namesortFuncAsc(a, b) return a < b end
 local function updateLines()
 	twipe(sortedLines)
+	--TODO, fix this. Even if you disable sorting completely. 
+	--sortedLines does not match lines
+	--Right now it's literally IMPOSSIBLE to have an infoframe sorted by raid roster index
+	--Which is why users had ot use bigwigs for ra-den
+	--and they can't use DBM for gorefiend since soul helper doesn't sort right either.
 	for i in pairs(lines) do
 		sortedLines[#sortedLines + 1] = i
 	end
-	if sortingAsc then
-		table.sort(sortedLines, sortFuncAsc)
-	else
-		table.sort(sortedLines, sortFuncDesc)
+	if not noSort then
+		if sortingAsc then
+			table.sort(sortedLines, sortFuncAsc)
+		else
+			table.sort(sortedLines, sortFuncDesc)
+		end
 	end
 	for i, v in ipairs(updateCallbacks) do
 		v(sortedLines)
@@ -587,6 +595,10 @@ function infoFrame:Show(maxLines, event, ...)
 		sortingAsc = true	-- Sort lowest first
 	end
 	
+	if event == "playerbuff" or event == "playerbaddebuff" or event == "playergooddebuff" then
+		noSort = value[3]
+	end
+	
 	--If spellId is given as value one, convert to spell name on show instead of in every onupdate
 	--this also allows spell name to be given by mod, since value 1 verifies it's a number
 	if type(value[1]) == "number" and event ~= "health" and event ~= "function" and event ~= "playertargets" and event ~= "playeraggro" and event ~= "playerpower" and event ~= "enemypower" and event ~= "test" then
@@ -634,6 +646,8 @@ function infoFrame:Hide()
 		frame:Hide()
 	end
 	currentEvent = nil
+	noSort = nil
+	sortingAsc = nil
 end
 
 function infoFrame:IsShown()
