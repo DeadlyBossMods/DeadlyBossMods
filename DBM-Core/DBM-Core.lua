@@ -10767,7 +10767,7 @@ do
 			if timeNow < scanExpires[scanID] then--scan for limited times.
 				self:ScheduleMethod(scanInterval, "ScanForMobs", creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName)
 			else
-				DBM:Debug("Stopping ScanForMobs for: "..(optionName or "nil"))
+				DBM:Debug("Stopping ScanForMobs for: "..(optionName or "nil"), 2)
 				--clear variables
 				scanExpires[scanID] = nil
 				addsIcon[scanID] = nil
