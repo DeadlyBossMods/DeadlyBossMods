@@ -183,7 +183,6 @@ mod.vb.markOfLegionRemaining = 0
 mod.vb.netherBanish = 0
 mod.vb.rainOfChaos = 0
 mod.vb.TouchOfShadows = 0
-mod.vb.InfernalsActive = 0
 mod.vb.wroughtWarned = 0
 mod.vb.tormentCast = 0
 mod.vb.overfiendCount = 0
@@ -471,7 +470,6 @@ function mod:OnCombatStart(delay)
 	self.vb.netherBanish = 0
 	self.vb.rainOfChaos = 0
 	self.vb.TouchOfShadows = 0
-	self.vb.InfernalsActive = 0
 	self.vb.deathBrandCount = 0
 	self.vb.tormentCast = 0
 	self.vb.overfiendCount = 0
@@ -584,11 +582,7 @@ function mod:SPELL_CAST_START(args)
 			self.vb.phase = 3.5
 		end
 		if self.Options.SetIconOnInfernals2 then
-			if self.vb.InfernalsActive > 0 then--Last set isn't dead yet, use alternate icons
-				self:ScanForMobs(94412, 0, 5, 3, 0.4, 25, "SetIconOnInfernals2")
-			else
-				self:ScanForMobs(94412, 0, 8, 3, 0.4, 25, "SetIconOnInfernals2")
-			end
+			self:ScanForMobs(94412, 1, 1, 3, 0.4, 25, "SetIconOnInfernals2")
 		end
 	elseif spellId == 190050 then
 		--To ensure propper syncing and everyones mod has same count, the count isn't in the filter
@@ -942,7 +936,6 @@ end
 
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 187108 then--Infernal Doombringer Spawn
-		self.vb.InfernalsActive = self.vb.InfernalsActive + 1
 		if self:AntiSpam(15, 5) and self:IsMythic() then
 			self.vb.InfernalsCast = self.vb.InfernalsCast + 1
 			specWarnInfernals:Show(self.vb.InfernalsCast)
@@ -952,11 +945,11 @@ function mod:SPELL_SUMMON(args)
 			end
 			if self.Options.SetIconOnInfernals2 then
 				if self.vb.InfernalsCast < 3 then--Only 3 infernals expected
-					self:ScanForMobs(94412, 0, 5, 3, 0.2, 20, "SetIconOnInfernals2")
+					self:ScanForMobs(94412, 1, 1, 3, 0.2, 20, "SetIconOnInfernals2")
 				elseif self.vb.InfernalsCast < 6 then--4 infernals expected
-					self:ScanForMobs(94412, 0, 5, 4, 0.2, 20, "SetIconOnInfernals2")
+					self:ScanForMobs(94412, 1, 1, 4, 0.2, 20, "SetIconOnInfernals2")
 				else--5 expected
-					self:ScanForMobs(94412, 0, 5, 5, 0.2, 20, "SetIconOnInfernals2")
+					self:ScanForMobs(94412, 1, 1, 5, 0.2, 20, "SetIconOnInfernals2")
 				end
 			end
 		end
@@ -968,8 +961,6 @@ function mod:UNIT_DIED(args)
 	if cid == 92740 then--Hellfire Deathcaller
 		timerShadowBlastCD:Cancel(args.destGUID)
 		timerDemonicHavocCD:Cancel(args.destGUID)
-	elseif cid == 94412 then--Infernal Doombringer
-		self.vb.InfernalsActive = self.vb.InfernalsActive - 1
 	end
 end
 
