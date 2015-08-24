@@ -117,12 +117,17 @@ local AncientHarbinger = EJ_GetSectionInfo(11163)
 local AncientSovereign = EJ_GetSectionInfo(11170)
 local TyrantVelhari = EJ_GetEncounterInfo(1394)
 
-local debuffFilter
+local debuffFilter, debuffFilter2
 local UnitDebuff = UnitDebuff
 local debuffName = GetSpellInfo(180526)
 do
 	debuffFilter = function(uId)
 		if UnitDebuff(uId, debuffName) then
+			return true
+		end
+	end
+	debuffFilter2 = function(uId)
+		if not UnitDebuff(uId, debuffName) then
 			return true
 		end
 	end
@@ -303,7 +308,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFontofCorruption:Show()
 			yellFontofCorruption:Yell()
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(5, not debuffFilter)
+				DBM.RangeCheck:Show(5, debuffFilter2)
 			end
 		end
 	elseif spellId == 180025 then
