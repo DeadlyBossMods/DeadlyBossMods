@@ -81,7 +81,7 @@ local UnitPosition = UnitPosition
 local twipe = table.wipe
 local select, tonumber = select, tonumber
 local mfloor = math.floor
-local getRaidRosterId = DBM.GetRaidRosterId
+local getGroupId = DBM.GetGroupId
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
@@ -189,15 +189,15 @@ local updateCallbacks = {}
 local function sortFuncDesc(a, b) return lines[a] > lines[b] end
 local function sortFuncAsc(a, b) return lines[a] < lines[b] end
 local function namesortFuncAsc(a, b) return a < b end
-local function sortRaidRooster(a, b) return getRaidRosterId(DBM, a) < getRaidRosterId(DBM, b) end
+local function sortGroupId(a, b) return getGroupId(DBM, a) < getGroupId(DBM, b) end
 local function updateLines()
 	twipe(sortedLines)
 	for i in pairs(lines) do
 		sortedLines[#sortedLines + 1] = i
 	end
 	if noSort then
-		-- noSort actually means: sort by raid rooster id
-		table.sort(sortedLines, sortRaidRooster)
+		-- noSort actually means: sort by group id
+		table.sort(sortedLines, sortGroupId)
 	elseif sortingAsc then
 		table.sort(sortedLines, sortFuncAsc)
 	else
