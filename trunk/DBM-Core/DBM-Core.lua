@@ -247,7 +247,6 @@ DBM.DefaultOptions = {
 	DontShowPTNoID = false,
 	DontShowCTCount = false,
 	DontShowFlexMessage = false,
-	--
 	PTCountThreshold = 5,
 	LatencyThreshold = 250,
 	BigBrotherAnnounceToRaid = false,
@@ -4850,6 +4849,7 @@ end
 ----------------------
 do
 	local targetList = {}
+	local cachedmod, cachedmob = nil, nil
 	local function buildTargetList()
 		local uId = (IsInRaid() and "raid") or "party"
 		for i = 0, GetNumGroupMembers() do
@@ -4867,25 +4867,29 @@ do
 	end
 
 	local function scanForCombat(mod, mob, delay)
-		if not checkEntry(inCombat, mod) then
+		mod = mod or cachedmod
+		mob = mob or cachedmob
+		delay = delay or 2
+		if not checkEntry(inCombat, cachedmob) then
 			buildTargetList()
-			local _, iType = GetInstanceInfo()
 			if targetList[mob] then
 				if delay > 0 and UnitAffectingCombat(targetList[mob]) then
 					DBM:StartCombat(mod, delay, "PLAYER_REGEN_DISABLED")
-				elseif (delay == 0) and iType == "none" then
+				elseif (delay == 0) then
 					DBM:StartCombat(mod, 0, "PLAYER_REGEN_DISABLED_AND_MESSAGE")
 				end
 			end
 			clearTargetList()
 		end
+		cachedmod, cachedmob = nil, nil
 	end
 
 
 	local function checkForPull(mob, combatInfo)
 		healthCombatInitialized = false
-		DBM:Schedule(0.5, scanForCombat, combatInfo.mod, mob, 0.5)
-		DBM:Schedule(2, scanForCombat, combatInfo.mod, mob, 2)
+		cachedmod, cachedmob = combatInfo.mod, mob
+--		C_TimerAfter(0.5, scanForCombat, combatInfo.mod, mob, 0.5)
+		C_TimerAfter(2, scanForCombat)
 		C_TimerAfter(2.1, function()
 			healthCombatInitialized = true
 		end)
