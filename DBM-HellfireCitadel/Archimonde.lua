@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050 190394 190686 190821 186663 188514",
-	"SPELL_CAST_SUCCESS 183865 184931 187180 188514",
+	"SPELL_CAST_SUCCESS 183865 184931 187180 188514 183254",
 	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190703 187255 185014 187050",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 187050 183634",
@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
 --TODO, figure out what to do with touch of the legion (190400)
 --Phase 1: The Defiler
 local warnDoomfireFixate			= mod:NewTargetAnnounce(182879, 3)
-local warnAllureofFlamesSoon		= mod:NewSoonAnnounce(183254, 2)
+local warnAllureofFlames			= mod:NewCastAnnounce(183254, 2)
 local warnFelBurstSoon				= mod:NewSoonAnnounce(183817, 3)
 local warnFelBurstCast				= mod:NewCastAnnounce(183817, 3)
 local warnFelBurst					= mod:NewTargetAnnounce(183817, 3)
@@ -56,7 +56,7 @@ local warnDarkConduit				= mod:NewCountAnnounce(190394, 2, nil, "Ranged")
 local specWarnDoomfire				= mod:NewSpecialWarningSwitch(189897, "Dps", nil, nil, 1, 5)
 local specWarnDoomfireFixate		= mod:NewSpecialWarningYou(182879, nil, nil, nil, 4)
 local yellDoomfireFixate			= mod:NewYell(182826)--Use short name for yell
-local specWarnAllureofFlames		= mod:NewSpecialWarningSpell(183254, nil, nil, nil, 2, 2)
+local specWarnAllureofFlames		= mod:NewSpecialWarningDodge(183254, nil, nil, nil, 2, 2)
 local specWarnDeathCaller			= mod:NewSpecialWarningSwitchCount("ej11582", "Dps", nil, nil, 1, 2)--Tanks don't need switch, they have death brand special warning 2 seconds earlier
 local specWarnFelBurst				= mod:NewSpecialWarningYou(183817)
 local yellFelBurst					= mod:NewPosYell(183817)--Change yell to countdown mayeb when better understood
@@ -480,7 +480,6 @@ function mod:OnCombatStart(delay)
 	timerDeathbrandCD:Start(15.5-delay, 1)
 	countdownDeathBrand:Start(15.5-delay)
 	timerAllureofFlamesCD:Start(30-delay)
-	warnAllureofFlamesSoon:Schedule(25-delay)
 	warnFelBurstSoon:Schedule(35-delay)
 	timerFelBurstCD:Start(40-delay)
 	if self:IsMythic() then
@@ -511,11 +510,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 183254 then
-		if not playerBanished or not self.Options.FilterOtherPhase then
-			specWarnAllureofFlames:Show()
-			voiceAllureofFlamesCD:Play("justrun")
-		end
-		warnAllureofFlamesSoon:Schedule(42)
+		warnAllureofFlames:Show()
 		timerAllureofFlamesCD:Start()
 	elseif spellId == 189897 then
 		specWarnDoomfire:Show()
@@ -673,6 +668,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if cooldown then
 			timerMarkOfLegionCD:Start(cooldown, self.vb.markOfLegionCast+1)
 		end
+	elseif spellId == 183254 then
+		specWarnAllureofFlames:Show()
+		voiceAllureofFlamesCD:Play("justrun")
 	end
 end
 
@@ -1004,7 +1002,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerDoomfireCD:Cancel()
 		--Cancel stuff that resets in phase 2
 		timerAllureofFlamesCD:Cancel()
-		warnAllureofFlamesSoon:Cancel()
 		timerDeathbrandCD:Cancel()
 		countdownDeathBrand:Cancel()
 		--Begin phase 2
@@ -1013,7 +1010,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerWroughtChaosCD:Start(6)
 		timerDeathbrandCD:Start(35, self.vb.deathBrandCount+1)--35-39
 		countdownDeathBrand:Start(35)
-		warnAllureofFlamesSoon:Schedule(35.5)
 		timerAllureofFlamesCD:Start(40.5)--40-45
 		timerShackledTormentCD:Start(25)--17-25 (almost always 25, but sometimes it comes earlier, unsure why)
 		countdownShackledTorment:Start(25)
@@ -1022,7 +1018,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 --	"<301.70 23:49:52> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine!#Grommash Hellscream###Grommash H
 	elseif spellId == 190118 or spellId == 190310 then--Phase 3 trigger
 		self.vb.phase = 3
-		warnAllureofFlamesSoon:Cancel()
 		timerAllureofFlamesCD:Cancel()--Done for rest of fight
 		timerDeathbrandCD:Cancel()--Done for rest of fight
 		timerShackledTormentCD:Cancel()--Resets to 55 on non mythic, no longer cast on mythic
