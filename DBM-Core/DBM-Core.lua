@@ -383,7 +383,7 @@ local statusWhisperDisabled = false
 local wowTOC = select(4, GetBuildInfo())
 local dbmToc = 0
 
-local fakeBWRevision = 13648
+local fakeBWRevision = 13662
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -2618,7 +2618,7 @@ do
 
 	function DBM:GROUP_ROSTER_UPDATE()
 		self:Unschedule(updateAllRoster)
-		self:Schedule(2, updateAllRoster, self)
+		self:Schedule(1.5, updateAllRoster, self)
 	end
 	
 	function DBM:INSTANCE_GROUP_SIZE_CHANGED()
