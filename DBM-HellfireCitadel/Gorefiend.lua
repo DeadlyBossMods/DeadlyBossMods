@@ -390,7 +390,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerShadowofDeathCDDps:Start(2, "2x"..DBM_CORE_DAMAGE_ICON)
 			timerShadowofDeathCDTank:Start(9, "1x"..DBM_CORE_TANK_ICON)
 			timerShadowofDeathCDHealer:Start(21, "2x"..DBM_CORE_HEALER_ICON)
-			if self.Options.InfoFrame then
+			if self.Options.InfoFrame and self:IsInCombat() then
 				--Switch back to digest
 				local spellName = GetSpellInfo(181295)
 				DBM.InfoFrame:SetHeader(spellName)
