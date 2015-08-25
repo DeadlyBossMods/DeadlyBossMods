@@ -590,6 +590,8 @@ function infoFrame:Show(maxLines, event, ...)
 
 	if event == "health" or event == "playerdebuffremaining" then
 		sortingAsc = true	-- Sort lowest first
+	else
+		sortingAsc = nil
 	end
 	
 	if event == "playerbuff" or event == "playerbaddebuff" or event == "playergooddebuff" then
