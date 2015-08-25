@@ -594,6 +594,8 @@ function infoFrame:Show(maxLines, event, ...)
 	
 	if event == "playerbuff" or event == "playerbaddebuff" or event == "playergooddebuff" then
 		noSort = value[3]
+	else
+		noSort = nil
 	end
 	
 	--If spellId is given as value one, convert to spell name on show instead of in every onupdate
