@@ -74,7 +74,7 @@ local UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitI
 local IsInRaid, GetNumGroupMembers, GetNumSubgroupMembers = IsInRaid, GetNumGroupMembers, GetNumSubgroupMembers
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetTime = GetTime
-local max, sin, cos, pi = math.max, math.sin, math.cos, math.pi
+local max, sin, cos, pi, pi2 = math.max, math.sin, math.cos, math.pi, math.pi * 2
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
@@ -572,7 +572,7 @@ do
 
 		local playerX, playerY, _, playerMapId = UnitPosition("player")
 
-		rotation = (2 * pi) - GetPlayerFacing()
+		rotation = pi2 - GetPlayerFacing()
 		local sinTheta = sin(rotation)
 		local cosTheta = cos(rotation)
 		local closePlayer = 0
