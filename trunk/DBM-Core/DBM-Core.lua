@@ -1053,14 +1053,14 @@ do
 		end
 		--Break timer recovery
 		--Try local settings
-		if self.Options.tempBreak then
-			local timer, startTime = string.split("/", self.Options.tempBreak)
-			local elapsed = GetTime() - tonumber(startTime)
+		if self.Options.tempBreak2 then
+			local timer, startTime = string.split("/", self.Options.tempBreak2)
+			local elapsed = time() - tonumber(startTime)
 			local remaining = timer - elapsed
 			if remaining > 0 then
-				SendAddonMessage("D4", "BTR2\t"..remaining, "WHISPER", playerName)
+				SendAddonMessage("D4", "BTR3\t"..remaining, "WHISPER", playerName)
 			else--It must have ended while we were offline, kill variable.
-				self.Options.tempBreak = nil
+				self.Options.tempBreak2 = nil
 			end
 		--Try asking top two DBM version in group
 		elseif IsInGroup() and not timerRequestInProgress then
@@ -1821,6 +1821,10 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		end
 		local timer = tonumber(cmd:sub(6)) or 5
 		local timer = timer * 60
+		if timer > 60 then
+			DBM:AddMsg(DBM_CORE_BREAK_USAGE)
+			return
+		end
 		sendSync("BT", timer)
 	elseif cmd:sub(1, 4) == "pull" then
 		if (DBM:GetRaidRank(playerName) == 0 and IsInGroup()) or IsEncounterInProgress() then
@@ -3910,7 +3914,7 @@ do
 	end
 
 	local function breakTimerStart(self, timer, sender)
-		self.Options.tempBreak = timer.."/"..GetTime()
+		self.Options.tempBreak2 = timer.."/"..time()
 		if not self.Options.DontShowPT2 then
 			self.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
@@ -3933,11 +3937,13 @@ do
 			if timer/60 > 1 then dummyMod2.text:Schedule(timer - 1*60, DBM_CORE_BREAK_MIN:format(1)) end
 			dummyMod2.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER)
 		end
-		C_TimerAfter(timer, function() self.Options.tempBreak = nil end)
+		C_TimerAfter(timer, function() self.Options.tempBreak2 = nil end)
 	end
 
 	syncHandlers["BT"] = function(sender, timer)
 		if DBM.Options.DontShowUserTimers then return end
+		timer = tonumber(timer or 0)
+		if timer > 60 then return end
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 			return
 		end
@@ -3959,13 +3965,15 @@ do
 			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")--easiest way to nil out timers on TimerTracker frame. This frame just has no actual star/stop functions
 		end
 		dummyMod2.text:Cancel()
-		DBM.Options.tempBreak = nil
-		timer = tonumber(timer or 0)
+		DBM.Options.tempBreak2 = nil
 		if timer == 0 then return end--"/dbm break 0" will strictly be used to cancel the break timer (which is why we let above part of code run but not below)
 		breakTimerStart(DBM, timer, sender)
 	end
 	
-	whisperSyncHandlers["BTR2"] = function(sender, timer)
+	whisperSyncHandlers["BTR3"] = function(sender, timer)
+		if DBM.Options.DontShowUserTimers then return end
+		timer = tonumber(timer or 0)
+		if timer > 60 then return end
 		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR2 sync, then we know immediately RequestTimers was successful, so abort others
 		if #inCombat >= 1 then return end
 		if DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
@@ -3975,7 +3983,6 @@ do
 			dummyMod2.countdown = dummyMod2:NewCountdown(0, 0, nil, nil, nil, true)
 			dummyMod2.text = dummyMod2:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
-		timer = tonumber(timer or 0)
 		breakTimerStart(DBM, timer, sender)
 	end
 
@@ -4559,7 +4566,7 @@ do
 			return
 		end
 		local handler
-		if channel == "WHISPER" and (sender ~= playerName or prefix == "BTR2") then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
+		if channel == "WHISPER" and (sender ~= playerName or prefix == "BTR3") then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
 			handler = whisperSyncHandlers[prefix]
 		else
 			handler = syncHandlers[prefix]
@@ -6184,7 +6191,7 @@ do
 			--But only if we are not in combat with a boss
 			if self.Bars:GetBar(DBM_CORE_TIMER_BREAK) then
 				local remaining = self.Bars:GetBar(DBM_CORE_TIMER_BREAK).timer
-				SendAddonMessage("D4", "BTR2\t"..remaining, "WHISPER", target)
+				SendAddonMessage("D4", "BTR3\t"..remaining, "WHISPER", target)
 			end
 			return
 		end
