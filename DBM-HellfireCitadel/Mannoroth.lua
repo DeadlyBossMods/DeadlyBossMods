@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 181190 181597 182006 181275",
 	"SPELL_AURA_APPLIED 181099 181275 181191 181597 182006 186362",
 	"SPELL_AURA_APPLIED_DOSE 181119",
-	"SPELL_AURA_REMOVED 181099 181275 185147 182212 185175 181597 182006 181275 186362",
+	"SPELL_AURA_REMOVED 181099 181275 185147 182212 185175 181597 182006 181275 186362 181119",
 	"SPELL_DAMAGE 181192",
 	"SPELL_MISSED 181192",
 	"SPELL_SUMMON 181255 181180",
@@ -138,13 +138,15 @@ local phase2InfernalTimersN = {47.5, 44.8, 44.8, 35}--So far normal and heroic s
 local gazeTargets = {}
 local doomTargets = {}
 local guldanTargets = {}
+local doomSpikeTargets = {}
 local AddsSeen = {}
 local playerName = UnitName("player")
 local doomName = GetSpellInfo(181099)
 local guldanName = GetSpellInfo(186362)
+local doomSpikeName = GetSpellInfo(181119)
 local gaze1, gaze2 = GetSpellInfo(181597), GetSpellInfo(182006)
 local UnitDebuff = UnitDebuff
-local doomFilter, guldanFilter
+local doomFilter, guldanFilter, doomSpikeFilter
 do
 	doomFilter = function(uId)
 		if UnitDebuff(uId, doomName) then
@@ -156,11 +158,22 @@ do
 			return true
 		end
 	end
+	doomSpikeFilter = function(uId)
+		if UnitDebuff(uId, guldanName) then
+			return true
+		end
+	end
 end
 
 local function updateRangeFrame(self)
 	if not self.Options.RangeFrame then return end
-	if self.vb.DoomTargetCount > 0 then
+	if self:IsTank() and #doomSpikeTargets > 0 then
+		if UnitDebuff("Player", doomSpikeName) then
+			DBM.RangeCheck:Show(30)
+		else
+			DBM.RangeCheck:Show(30, doomSpikeFilter)
+		end
+	elseif self.vb.DoomTargetCount > 0 then
 		if UnitDebuff("Player", doomName) then
 			DBM.RangeCheck:Show(20)
 		else
@@ -171,6 +184,19 @@ local function updateRangeFrame(self)
 			DBM.RangeCheck:Show(15)
 		else
 			DBM.RangeCheck:Show(15, guldanFilter)
+		end
+	elseif not self:IsTank() and #doomSpikeTargets > 0 then
+		local showDoomSpike = false
+		for i = 1, #doomSpikeTargets do
+			local name = doomSpikeTargets[i]
+			if name and self:CheckNearby(31, name) then
+				showDoomSpike = true
+				break
+			end
+		end
+		if showDoomSpike then
+			--Only show doom spike if you have no debuffs
+			DBM.RangeCheck:Show(30, doomSpikeFilter)
 		end
 	else
 		DBM.RangeCheck:Hide()
@@ -263,6 +289,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(gazeTargets)
 	table.wipe(AddsSeen)
 	table.wipe(guldanTargets)
+	table.wipe(doomSpikeTargets)
 	self.vb.ignoreAdds = false
 	self.vb.impCount = 0
 	self.vb.infernalCount = 0
@@ -459,6 +486,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnDoomSpikeOther:Show(args.destName)
 			end
 		end
+		if self:IsMythic() then
+			if not tContains(doomSpikeTargets, args.destName) then
+				table.insert(doomSpikeTargets, args.destName)
+			end
+			updateRangeFrame(self)
+		end
 	elseif spellId == 186362 then--Only cast once per phase transition (twice whole fight)
 		if not tContains(guldanTargets, args.destName) then
 			table.insert(guldanTargets, args.destName)
@@ -537,6 +570,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnWrath then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif spellId == 181119 and self:IsMythic() then
+		tDeleteItem(doomSpikeTargets, args.destName)
+		updateRangeFrame(self)
 	end
 end
 
