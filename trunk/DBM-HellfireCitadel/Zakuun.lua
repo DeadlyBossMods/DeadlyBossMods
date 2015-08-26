@@ -337,7 +337,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		updateRangeFrame(self)
 	elseif spellId == 179407 then
-		warnDisembodied:Show(self.vb.SoulCleaveCount, args.destName)
+		warnDisembodied:CombinedShow(0.3, self.vb.SoulCleaveCount, args.destName)
 		countdownDisembodied:Start()
 		if not args:IsPlayer() then
 			specWarnDisembodied:Show(args.destName)
