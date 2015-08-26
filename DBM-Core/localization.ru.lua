@@ -16,7 +16,7 @@ DBM_CORE_LOAD_GUI_COMBAT			= "GUI не может быть изначально 
 DBM_CORE_BAD_LOAD					= "DBM не удалось полностью загрузить модуль для этого подземелья, т.к. вы находитесь в режиме боя. Как только вы выйдите из боя, пожалуйста сделайте /console reloadui как можно скорее."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s не может быть загружен потому что ваш DBM-Core не соответствует требованиям. Требуется обновленная версия."
 
-DBM_CORE_WHATS_NEW					= "Новое в этой версии: таймеры DBM теперь поддерживают несколько цветов в зависимости от типа заклинания, для которого они предназначены. Чтобы узнать больше об этой возможности, вы можете прочитать о ней |HDBM:forumsnews|h|cff3588ffнажав здесь|r"
+--DBM_CORE_WHATS_NEW					= "Новое в этой версии: таймеры DBM теперь поддерживают несколько цветов в зависимости от типа заклинания, для которого они предназначены. Чтобы узнать больше об этой возможности, вы можете прочитать о ней |HDBM:forumsnews|h|cff3588ffнажав здесь|r"--Uncomment when updated
 --DBM_CORE_WHATS_NEW_LINK			= "New in this version: DBM timers now support multiple colors based on what type of spell the timer is for. To learn more about this feature you can read about it by |HDBM:forumsnews|h|cff3588ffclicking here|r"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM отключил динамическое окно проверки дистанции на этом боссе, т.к. нет точной информации о необходимом количестве игроков в одном скоплении для рейда вашего размера."
