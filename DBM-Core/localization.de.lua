@@ -16,7 +16,7 @@ DBM_CORE_LOAD_GUI_COMBAT			= "Die grafische Benutzeroberfläche kann nicht im Ka
 DBM_CORE_BAD_LOAD					= "Dein Boss Mod für diese Instanz konnte nicht vollständig korrekt im Kampf geladen werden. Bitte führe baldmöglichst nach Kampfende /reload aus."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s kann nicht geladen werden, da dein DBM-Core die Voraussetzungen nicht erfüllt. Es wird eine aktualisierte Version benötigt."
 
-DBM_CORE_WHATS_NEW					= "Neu in dieser Version: DBM-Timer unterstützen nun verschiedene Farben basierend auf dem Timertyp (Add, AOE, Anvisiert, Unterbrechung, Rolle, Phase). Um mehr über dieses Feature zu erfahren kannst du |HDBM:forumsnews|h|cff3588ffhier klicken|r."
+--DBM_CORE_WHATS_NEW					= "Neu in dieser Version: DBM-Timer unterstützen nun verschiedene Farben basierend auf dem Timertyp (Add, AOE, Anvisiert, Unterbrechung, Rolle, Phase). Um mehr über dieses Feature zu erfahren kannst du |HDBM:forumsnews|h|cff3588ffhier klicken|r."--Uncomment when updated
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM hat das dynamische Abstandsfenster für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, auf wieviel versammelte Spieler bei deiner Gruppengröße geprüft werden muss."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM hat Warnungen bezüglich der Anzahl der Gegner für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, wieviel Gegner bei deiner Gruppengröße erscheinen."
