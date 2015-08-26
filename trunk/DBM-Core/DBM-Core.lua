@@ -1820,11 +1820,11 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			return
 		end
 		local timer = tonumber(cmd:sub(6)) or 5
-		local timer = timer * 60
 		if timer > 60 then
 			DBM:AddMsg(DBM_CORE_BREAK_USAGE)
 			return
 		end
+		timer = timer * 60
 		sendSync("BT", timer)
 	elseif cmd:sub(1, 4) == "pull" then
 		if (DBM:GetRaidRank(playerName) == 0 and IsInGroup()) or IsEncounterInProgress() then
