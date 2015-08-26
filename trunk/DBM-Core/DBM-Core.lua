@@ -3943,7 +3943,7 @@ do
 	syncHandlers["BT"] = function(sender, timer)
 		if DBM.Options.DontShowUserTimers then return end
 		timer = tonumber(timer or 0)
-		if timer > 60 then return end
+		if timer > 3600 then return end
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 			return
 		end
@@ -3973,7 +3973,7 @@ do
 	whisperSyncHandlers["BTR3"] = function(sender, timer)
 		if DBM.Options.DontShowUserTimers then return end
 		timer = tonumber(timer or 0)
-		if timer > 60 then return end
+		if timer > 3600 then return end
 		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR2 sync, then we know immediately RequestTimers was successful, so abort others
 		if #inCombat >= 1 then return end
 		if DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
