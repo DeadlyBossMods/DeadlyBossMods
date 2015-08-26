@@ -9614,7 +9614,7 @@ do
 			msg = msg:gsub(">.-<", stripServerName)
 			bar:SetText(msg)
 			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
-			fireEvent("DBM_TimerStart", id, msg, self.icon, timer)
+			fireEvent("DBM_TimerStart", id, msg, timer, self.icon)
 			tinsert(self.startedTimers, id)
 			self.mod:Unschedule(removeEntry, self.startedTimers, id)
 			self.mod:Schedule(timer, removeEntry, self.startedTimers, id)
