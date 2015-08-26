@@ -971,7 +971,6 @@ DBM_GUI_Options = CreateNewFauxScrollFrameList()
 
 
 local UpdateAnimationFrame, CreateAnimationFrame
-
 function UpdateAnimationFrame(mod)
 	DBM_BossPreview.currentMod = mod
 	local displayId = nil
@@ -2273,7 +2272,6 @@ local function CreateOptionsMenu()
 		HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 		HugeBarOffsetYSlider:SetScript("OnShow", createDBTOnShowHandler("HugeBarYOffset"))
 		HugeBarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
-
 
 		BarSetupPanel:SetMyOwnHeight()
 	end
@@ -3694,6 +3692,9 @@ do
 				twipe(modProfileDropdown)
 				local savedVarsName = addon.modId:gsub("-", "").."_AllSavedVars"
 				for charname, charTable in pairs(_G[savedVarsName]) do
+					--TODO, this fails to add characters to table for any char that has more than one spec.
+					--Option table in pairs search never finds an actual option table and returns spec name instead
+					--Result being that entire char table missing fromm menu
 					for bossid, optionTable in pairs(charTable) do
 						for i = 0, 3 do
 							if optionTable[i] then
