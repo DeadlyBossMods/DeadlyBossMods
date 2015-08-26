@@ -3692,20 +3692,17 @@ do
 				twipe(modProfileDropdown)
 				local savedVarsName = addon.modId:gsub("-", "").."_AllSavedVars"
 				for charname, charTable in pairs(_G[savedVarsName]) do
-					--TODO, this fails to add characters to table for any char that has more than one spec.
-					--Option table in pairs search never finds an actual option table and returns spec name instead
-					--Result being that entire char table missing fromm menu
-					--Options table: http://pastebin.com/mU1Fb0xK
-					--Result: http://mysticalos.com/dbm_options_menu_bug.jpg
 					for bossid, optionTable in pairs(charTable) do
-						for i = 0, 3 do
-							if optionTable[i] then
-								local displayText = (i == 0 and charname.." ("..ALL..")") or charname.." ("..SPECIALIZATION..i.."-"..(charTable["talent"..i] or "")..")"
-								local dropdown = { text = displayText, value = charname.."|"..tostring(i) }
-								tinsert(modProfileDropdown, dropdown)
+						if type(optionTable) == "table" then
+							for i = 0, 3 do
+								if optionTable[i] then
+									local displayText = (i == 0 and charname.." ("..ALL..")") or charname.." ("..SPECIALIZATION..i.."-"..(charTable["talent"..i] or "")..")"
+									local dropdown = { text = displayText, value = charname.."|"..tostring(i) }
+									tinsert(modProfileDropdown, dropdown)
+								end
 							end
+							break
 						end
-						break
 					end
 				end
 			end)
