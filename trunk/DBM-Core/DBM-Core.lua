@@ -2459,7 +2459,7 @@ do
 
 	--	save playerinfo into raid table on load. (for solo raid)
 	DBM:RegisterOnLoadCallback(function()
-		C_TimerAfter(5, function()
+		C_TimerAfter(6, function()
 			if not raid[playerName] then
 				raid[playerName] = {}
 				raid[playerName].name = playerName
