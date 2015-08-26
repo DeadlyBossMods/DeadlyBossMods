@@ -8312,7 +8312,7 @@ do
 				DBM:PlaySoundFile(DBM.Options.RaidWarningSound)
 			end
 			--This callback sucks, it needs useful information for external mods to listen to it better, such as mod and spellid
-			fireEvent("DBM_Announce", message)
+			fireEvent("DBM_Announce", message, self.icon)
 		else
 			self.combinedcount = 0
 			self.combinedtext = {}
