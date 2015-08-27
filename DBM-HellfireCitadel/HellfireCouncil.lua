@@ -186,7 +186,7 @@ function mod:SPELL_CAST_START(args)
 		if not self.vb.DiaPushed then--Don't start cd timer for her final reap she casts at 30%
 			timerReapCD:Start()
 		end
-		if UnitDebuff("player", markofNecroDebuff) then
+		if UnitDebuff("player", markofNecroDebuff) and self:AntiSpam(5, 5) then
 			specWarnReap:Show()
 			yellReap:Yell()
 			countdownReap:Start()
