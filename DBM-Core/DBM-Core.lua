@@ -3492,7 +3492,7 @@ do
 			self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-Party-WotLK"))
 		end
 	end
-	local function FixForShittyComputers(self)
+	local function SecondaryLoadCheck(self)
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
 		self:Debug("Instance Check fired with mapID "..mapID.." and difficulty "..difficulty)
 		if LastInstanceMapID == mapID then
@@ -3528,9 +3528,9 @@ do
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
 		self:Debug("LOADING_SCREEN_DISABLED fired")
-		FixForShittyComputers(self)
-		self:Unschedule(FixForShittyComputers)
-		self:Schedule(5, FixForShittyComputers, self)
+		SecondaryLoadCheck(self)
+		self:Unschedule(SecondaryLoadCheck)
+		self:Schedule(5, SecondaryLoadCheck, self)
 	end
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
@@ -3616,19 +3616,20 @@ function DBM:LoadMod(mod, force)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
-		local _, instanceType, difficultyID, _, _, _, _, mapID = GetInstanceInfo()
-		if difficultyID == 8 then
+		if difficultyIndex == 8 then
 			RequestChallengeModeMapInfo()
-			RequestChallengeModeLeaders(mapID)
+			RequestChallengeModeLeaders(LastInstanceMapID)
 		end
 		if instanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
-			timerRequestInProgress = true
-			-- Request timer to 3 person to prevent failure.
-			self:Unschedule(self.RequestTimers)--Unschedule the requests done on dbm first load or if two mods loaded at same time (or if user manually loaded a bunch of mods at once)
-			self:Schedule(7, self.RequestTimers, self, 1)
-			self:Schedule(10, self.RequestTimers, self, 2)
-			self:Schedule(13, self.RequestTimers, self, 3)
-			C_TimerAfter(15, function() timerRequestInProgress = false end)
+			if not timerRequestInProgress then
+				timerRequestInProgress = true
+				-- Request timer to 3 person to prevent failure.
+				self:Unschedule(self.RequestTimers)
+				self:Schedule(7, self.RequestTimers, self, 1)
+				self:Schedule(10, self.RequestTimers, self, 2)
+				self:Schedule(13, self.RequestTimers, self, 3)
+				C_TimerAfter(15, function() timerRequestInProgress = false end)
+			end
 		end
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
@@ -3974,7 +3975,7 @@ do
 		if DBM.Options.DontShowUserTimers then return end
 		timer = tonumber(timer or 0)
 		if timer > 3600 then return end
-		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR2 sync, then we know immediately RequestTimers was successful, so abort others
+		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR3 sync, then we know immediately RequestTimers was successful, so abort others
 		if #inCombat >= 1 then return end
 		if DBM.Bars:GetBar(DBM_CORE_TIMER_BREAK) then return end--Already recovered. Prevent duplicate recovery
 		if not dummyMod2 then
@@ -4079,7 +4080,7 @@ do
 					end
 				end
 			end
-			if DBM.DisplayVersion:find("alpha") and #newerVersionPerson < 2 and #newerRevisionPerson < 2 and updateNotificationDisplayed < 2 and (revision - DBM.Revision) > 40 then--Revision 20 can be increased in 1 day, so raised it to 40. Requires 2 person.
+			if DBM.DisplayVersion:find("alpha") and #newerVersionPerson < 2 and #newerRevisionPerson < 2 and updateNotificationDisplayed < 2 and (revision - DBM.Revision) > 30 then--Revision 20 can be increased in 1 day, so raised it to 30. Requires 2 person.
 				if not checkEntry(newerRevisionPerson, sender) then
 					newerRevisionPerson[#newerRevisionPerson + 1] = sender
 					DBM:Debug("Newer revision detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
