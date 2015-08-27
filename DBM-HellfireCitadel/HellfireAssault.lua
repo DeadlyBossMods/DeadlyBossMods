@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 180079 184243 180927 184369 180076",
 	"SPELL_AURA_APPLIED_DOSE 184243",
 	"SPELL_AURA_REMOVED 184369 184243",
-	"SPELL_CAST_SUCCESS 184370",
+	"SPELL_CAST_SUCCESS 184370 190748",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"UNIT_DIED",
@@ -38,6 +38,8 @@ local warnBerserker					= mod:NewCountAnnounce("ej11425", 3, 184243)
 local warnSlam						= mod:NewStackAnnounce("OptionVersion2", 184243, 3, nil, false)--Useful, but optional, only useful if dps is too low
 ----Grand Corruptor U'rogg
 local warnSiphon					= mod:NewTargetAnnounce(180076, 3, nil, "Healer")--Maybe needs to be special warning, who knows
+----Grute
+local warnCannon					= mod:NewTargetAnnounce(190748, 2)
 
 --Felfire-Imbued Siege Vehicles
 ----Felfire Crusher
@@ -69,6 +71,9 @@ local specWarnFelfireVolley			= mod:NewSpecialWarningInterrupt(183452, "-Healer"
 ----Contracted Engineer
 local specWarnRepair				= mod:NewSpecialWarningInterrupt(185816, "-Healer", nil, nil, 1, 2)
 ----Grute
+local specWarnCannon				= mod:NewSpecialWarningDodge(190748, nil, nil, nil, 1)
+local yellCannon					= mod:NewYell(190748)
+local specWarnCannonNear			= mod:NewSpecialWarningClose(190748, nil, nil, nil, 1)
 
 --Felfire-Imbued Siege Vehicles
 local specWarnDemolisher			= mod:NewSpecialWarningSwitch("ej11429", "Dps", nil, nil, 1, 5)--Heroic & Mythic only. Does massive aoe damage, has to be killed asap
@@ -142,6 +147,18 @@ local function updateRangeFrame(self, show)
 	end
 end
 
+function mod:CannonTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		yellCannon:Yell()
+		specWarnCannon:Show()
+	elseif self:CheckNearby(5, targetname) then
+		specWarnCannonNear:Show(targetname)
+	else
+		warnCannon:Show(targetname)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.vehicleCount = 0
 	self.vb.felcasterCount = 0
@@ -193,6 +210,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 184370 then--Axe over
 		updateRangeFrame(self)
+	elseif spellId == 190748 then
+		self:BossTargetScanner(95653, "CannonTarget", 0.2, 10, true, nil, nil, nil, true)
 	end
 end
 
