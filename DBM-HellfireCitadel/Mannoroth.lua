@@ -59,7 +59,7 @@ local specWarnDoomSpikeOther		= mod:NewSpecialWarningTaunt(181119, nil, nil, nil
 ----Fel Imps
 local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, false, nil, 2, 1, 2)--Can be spammy, but someone may want it
 ----Dread Infernals
-local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, nil, nil, 2, 4, 2)
+local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, nil, nil, 3, 1, 2)
 ----Gul'dan
 local specWarnWrathofGuldan			= mod:NewSpecialWarningYou(186362, nil, nil, nil, 1)
 local yellWrathofGuldan				= mod:NewYell(186362, 169826)
