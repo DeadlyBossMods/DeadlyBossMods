@@ -1,4 +1,4 @@
-if GetLocale() ~= "ruRU" then return end
+﻿if GetLocale() ~= "ruRU" then return end
 local L
 
 -----------------------
@@ -6,24 +6,21 @@ local L
 -----------------------
 L= DBM:GetModLocalization(1291)
 
-L:SetMiscLocalization({
-	Pull				= "TODO: Get Pull Yell!"
-})
-
 -----------------------
 -- Tarlna the Ageless --
 -----------------------
 L= DBM:GetModLocalization(1211)
-
-L:SetMiscLocalization({
-	Pull				= "TODO: Get Pull Yell!"
-})
 
 --------------
 -- Rukhmar --
 --------------
 L= DBM:GetModLocalization(1262)
 
+-------------------------
+-- Supreme Lord Kazzak --
+-------------------------
+L= DBM:GetModLocalization(1452)
+
 L:SetMiscLocalization({
-	Pull				= "TODO: Get Pull Yell!"
+	Pull				= "Вы познаете мощь Легиона!"
 })
