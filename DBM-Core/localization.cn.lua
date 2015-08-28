@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Aug 17 2015, 17:38 UTC@14349
+-- Last update: Aug 27 2015, 20:53 UTC@14447
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -22,7 +22,7 @@ DBM_CORE_LOAD_GUI_COMBAT			= "DBM无法在战斗中初始化图形界面。请�
 DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，有些计时器可能会错误。请在离开战斗后马上重载界面。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本过旧。请升级DBM。"
 
---DBM_CORE_WHATS_NEW					= "最新更新：DBM帮助菜单(/dbm help)加入了一些新的命令，它变得更加友好了。有一些模组的HUD功能被强化了，特别是阿克蒙德。我们和世界知名工会合作，改善了神话模式下阿克蒙德模组的表现。"--Uncomment when updated
+DBM_CORE_WHATS_NEW					= "最新更新：DBM改进了函数回调，第三方模组的数据获取变得更容易了。"
 --DBM_CORE_WHATS_NEW_LINK			= "最新更新: 想要知道更多可以 |HDBM:forumsnews|h|cff3588ff 点击此处|r 访问我们的论坛"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
