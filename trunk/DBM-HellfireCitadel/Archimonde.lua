@@ -626,24 +626,18 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 183254 then
 		warnAllureofFlames:Show()
 		timerAllureofFlamesCD:Start()
-		if DBM.Options.DebugMode then
-			updateAllTimers(self, 7)
-		end
+		updateAllTimers(self, 7)
 	elseif spellId == 189897 then
 		specWarnDoomfire:Show()
 		timerDoomfireCD:Start()
 		voiceDoomfire:Play("189897")
-		if DBM.Options.DebugMode then
-			updateAllTimers(self, 7)
-		end
+		updateAllTimers(self, 7)
 	elseif spellId == 183817 then
 		table.wipe(felburstTargets)
 		warnFelBurstCast:Show()
 		warnFelBurstSoon:Schedule(47)
 		timerFelBurstCD:Start()
-		if DBM.Options.DebugMode then
-			updateAllTimers(self, 7)
-		end
+		updateAllTimers(self, 7)
 	elseif spellId == 183828 then
 		self.vb.deathBrandCount = self.vb.deathBrandCount + 1
 		specWarnDeathBrand:Show(self.vb.deathBrandCount)
@@ -655,9 +649,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			voiceDeathBrand:Play("tauntboss")
 		end
-		if DBM.Options.DebugMode then
-			updateAllTimers(self, 6)
-		end
+		updateAllTimers(self, 6)
 	elseif spellId == 185590 then
 		specWarnDesecrate:Show()
 		timerDesecrateCD:Start()
@@ -665,15 +657,11 @@ function mod:SPELL_CAST_START(args)
 			DBM:Debug("Phase 1 begin CLEU", 2)
 			self.vb.phase = 1.5--85%
 		end
-		if DBM.Options.DebugMode then
-			updateAllTimers(self, 7)
-		end
+		updateAllTimers(self, 7)
 	elseif spellId == 184265 then
 		self.vb.wroughtWarned = 0--Reset Counter
 		timerWroughtChaosCD:Start()
-		if DBM.Options.DebugMode then
-			updateAllTimers(self, 7)
-		end
+		updateAllTimers(self, 7)
 	elseif spellId == 183864 then
 		timerShadowBlastCD:Start(args.sourceGUID)
 	elseif spellId == 190506 then
@@ -695,9 +683,7 @@ function mod:SPELL_CAST_START(args)
 			timerShackledTormentCD:Start(31, self.vb.tormentCast+1)
 			countdownShackledTorment:Start(31)
 		end
-		if DBM.Options.DebugMode then
-			updateAllTimers(self, 7)
-		end
+		updateAllTimers(self, 7)
 	elseif spellId == 187180 then
 		self.vb.demonicCount = self.vb.demonicCount + 1
 		if not playerBanished or not self.Options.FilterOtherPhase then
@@ -706,9 +692,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerDemonicFeedbackCD:Start(nil, self.vb.demonicCount+1)
 		countdownDemonicFeedback:Start()
-		if DBM.Options.DebugMode then
-			updateAllTimers(self, 3.5)
-		end
+		updateAllTimers(self, 3.5)
 	elseif spellId == 182225 then
 		self.vb.rainOfChaos = self.vb.rainOfChaos + 1
 		if not playerBanished or not self.Options.FilterOtherPhase then
@@ -773,9 +757,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 186961 then
 		self.vb.netherBanish = self.vb.netherBanish + 1
 		timerNetherBanishCD:Start(nil, self.vb.netherBanish+1)
---		if DBM.Options.DebugMode then--Inconclusive logs. Could not find any data supporting this extention
---			updateAllTimers(self, 7)
---		end
+--		updateAllTimers(self, 7)--Inconclusive logs. Could not find any data supporting this extention
 	end
 end
 
