@@ -13,8 +13,8 @@ mod:SetHotfixNoticeRev(14407)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050 190394 190686 190821 186663 188514",
-	"SPELL_CAST_SUCCESS 183865 184931 187180 188514 183254",
+	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050 190394 190686 190821 186663 188514 186961",
+	"SPELL_CAST_SUCCESS 183865 187180 188514 183254",
 	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190703 187255 185014 187050",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 187050 183634",
@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
---(ability.id = 183254 or ability.id = 189897 or ability.id = 183817 or ability.id = 183828 or ability.id = 185590 or ability.id = 184265 or ability.id = 183864 or ability.id = 190506 or ability.id = 184931 or ability.id = 187180) and type = "begincast" or (ability.id = 183865) and type = "cast" or (ability.id = 186662 or ability.id = 186961) and (type = "applydebuff" or type = "applybuff")
+--(ability.id = 183254 or ability.id = 182225 or ability.id = 189897 or ability.id = 183817 or ability.id = 183828 or ability.id = 185590 or ability.id = 184265 or ability.id = 190506 or ability.id = 184931 or ability.id = 187180) and type = "begincast" or (ability.id = 183865) and type = "cast" or (ability.id = 186662 or ability.id = 186961) and (type = "applydebuff" or type = "applybuff")
 --(ability.id = 190394 or ability.id = 190686 or ability.id = 190821 or ability.id = 190506 or ability.id = 187108) and type = "begincast" or (ability.id = 188514) and type = "cast" or ability.id = 187108
 --TODO, failsafes are at work for transitions i still don't have enough data for. for example, something seems to always cause the 2nd or 3rd fel burst to delay by a HUGE amount (20-30 seconds sometimes) but don't know what it is. Probalby phase transitions but it's not as simple as resetting timer. probably something more zon ozz
 --TODO, figure out what to do with touch of the legion (190400)
@@ -459,6 +459,122 @@ function mod:DebugYells()
 	yellMarkOfLegionPoS:Yell(5, 1, 1)
 end
 
+--Ugly as shit, but it vastly improves timer accuracy by accounting for archimonds ICD code
+--Shackled torment, wrought chaos, allure of flames, felburst, and doomfire all trigger 7 second ICD
+--Death brand triggers a 6 second ICD, not 7
+--Demonic Feedback triggers 3.5 second ICD
+--Rain of chaos doesn't trigger ICD nor is affected by it
+--Nether banish IS affected by ICD but inconclusive on whether it CAUSES one
+local function updateAllTimers(self, ICD)
+	DBM:Debug("updateAllTimers running", 3)
+	local phase = self.vb.phase
+	if phase < 2 then
+		if timerDoomfireCD:GetRemaining() < ICD then
+			local elapsed, total = timerDoomfireCD:GetTime()
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerDoomfireCD extended by: "..extend, 2)
+			timerDoomfireCD:Cancel()
+			timerDoomfireCD:Update(elapsed, total+extend)
+		end
+		if timerAllureofFlamesCD:GetRemaining() < ICD then
+			local elapsed, total = timerAllureofFlamesCD:GetTime()
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerAllureofFlamesCD extended by: "..extend, 2)
+			timerAllureofFlamesCD:Cancel()
+			timerAllureofFlamesCD:Update(elapsed, total+extend)
+		end
+		if timerFelBurstCD:GetRemaining() < ICD then
+			local elapsed, total = timerFelBurstCD:GetTime()
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerFelBurstCD extended by: "..extend, 2)
+			timerFelBurstCD:Cancel()
+			timerFelBurstCD:Update(elapsed, total+extend)
+		end
+		if timerDeathbrandCD:GetRemaining(self.vb.deathBrandCount+1) < ICD then
+			local elapsed, total = timerDeathbrandCD:GetTime(self.vb.deathBrandCount+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerDeathbrandCD extended by: "..extend, 2)
+			timerDeathbrandCD:Cancel()
+			timerDeathbrandCD:Update(elapsed, total+extend, self.vb.deathBrandCount+1)
+		end
+		if phase == 1.5 then
+			if timerDesecrateCD:GetRemaining() < ICD then
+				local elapsed, total = timerDesecrateCD:GetTime()
+				local extend = ICD - (total-elapsed)
+				DBM:Debug("timerDesecrateCD extended by: "..extend, 2)
+				timerDesecrateCD:Cancel()
+				timerDesecrateCD:Update(elapsed, total+extend)
+			end
+		end
+	elseif phase < 3 then
+		if timerAllureofFlamesCD:GetRemaining() < ICD then
+			local elapsed, total = timerAllureofFlamesCD:GetTime()
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerAllureofFlamesCD extended by: "..extend, 2)
+			timerAllureofFlamesCD:Cancel()
+			timerAllureofFlamesCD:Update(elapsed, total+extend)
+		end
+		if timerShackledTormentCD:GetRemaining(self.vb.tormentCast+1) < ICD then
+			local elapsed, total = timerShackledTormentCD:GetTime(self.vb.tormentCast+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerShackledTormentCD extended by: "..extend, 2)
+			timerShackledTormentCD:Cancel()
+			timerShackledTormentCD:Update(elapsed, total+extend, self.vb.tormentCast+1)
+			countdownShackledTorment:Cancel()
+			countdownShackledTorment:Start(ICD)
+		end
+		if timerWroughtChaosCD:GetRemaining() < ICD then
+			local elapsed, total = timerWroughtChaosCD:GetTime()
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerWroughtChaosCD extended by: "..extend, 2)
+			timerWroughtChaosCD:Cancel()
+			timerWroughtChaosCD:Update(elapsed, total+extend)
+		end
+		if timerDeathbrandCD:GetRemaining(self.vb.deathBrandCount+1) < ICD then
+			local elapsed, total = timerDeathbrandCD:GetTime(self.vb.deathBrandCount+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerDeathbrandCD extended by: "..extend, 2)
+			timerDeathbrandCD:Cancel()
+			timerDeathbrandCD:Update(elapsed, total+extend, self.vb.deathBrandCount+1)
+		end
+	else
+		if timerShackledTormentCD:GetRemaining(self.vb.tormentCast+1) < ICD then
+			local elapsed, total = timerShackledTormentCD:GetTime(self.vb.tormentCast+1)
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerShackledTormentCD extended by: "..extend, 2)
+			timerShackledTormentCD:Cancel()
+			timerShackledTormentCD:Update(elapsed, total+extend, self.vb.tormentCast+1)
+			countdownShackledTorment:Cancel()
+			countdownShackledTorment:Start(ICD)
+		end
+		if timerWroughtChaosCD:GetRemaining() < ICD then
+			local elapsed, total = timerWroughtChaosCD:GetTime()
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerWroughtChaosCD extended by: "..extend, 2)
+			timerWroughtChaosCD:Cancel()
+			timerWroughtChaosCD:Update(elapsed, total+extend)
+		end
+		if timerDemonicFeedbackCD:GetRemaining() < ICD then
+			local elapsed, total = timerDemonicFeedbackCD:GetTime()
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerDemonicFeedbackCD extended by: "..extend, 2)
+			timerDemonicFeedbackCD:Cancel()
+			timerDemonicFeedbackCD:Update(elapsed, total+extend)
+			countdownDemonicFeedback:Cancel()
+			countdownDemonicFeedback:Start(ICD)
+		end
+		if timerNetherBanishCD:GetRemaining() < ICD then
+			local elapsed, total = timerNetherBanishCD:GetTime()
+			local extend = ICD - (total-elapsed)
+			DBM:Debug("timerNetherBanishCD extended by: "..extend, 2)
+			timerNetherBanishCD:Cancel()
+			timerNetherBanishCD:Update(elapsed, total+extend)
+			countdownNetherBanish:Cancel()
+			countdownNetherBanish:Start(ICD)
+		end
+	end
+end
+
 --/run DBM:GetModByName("1438"):OnCombatStart(0)
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
@@ -510,15 +626,24 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 183254 then
 		warnAllureofFlames:Show()
 		timerAllureofFlamesCD:Start()
+		if DBM.Options.DebugMode then
+			updateAllTimers(self, 7)
+		end
 	elseif spellId == 189897 then
 		specWarnDoomfire:Show()
 		timerDoomfireCD:Start()
 		voiceDoomfire:Play("189897")
+		if DBM.Options.DebugMode then
+			updateAllTimers(self, 7)
+		end
 	elseif spellId == 183817 then
 		table.wipe(felburstTargets)
 		warnFelBurstCast:Show()
 		warnFelBurstSoon:Schedule(47)
 		timerFelBurstCD:Start()
+		if DBM.Options.DebugMode then
+			updateAllTimers(self, 7)
+		end
 	elseif spellId == 183828 then
 		self.vb.deathBrandCount = self.vb.deathBrandCount + 1
 		specWarnDeathBrand:Show(self.vb.deathBrandCount)
@@ -530,6 +655,9 @@ function mod:SPELL_CAST_START(args)
 		else
 			voiceDeathBrand:Play("tauntboss")
 		end
+		if DBM.Options.DebugMode then
+			updateAllTimers(self, 6)
+		end
 	elseif spellId == 185590 then
 		specWarnDesecrate:Show()
 		timerDesecrateCD:Start()
@@ -537,19 +665,14 @@ function mod:SPELL_CAST_START(args)
 			DBM:Debug("Phase 1 begin CLEU", 2)
 			self.vb.phase = 1.5--85%
 		end
+		if DBM.Options.DebugMode then
+			updateAllTimers(self, 7)
+		end
 	elseif spellId == 184265 then
 		self.vb.wroughtWarned = 0--Reset Counter
 		timerWroughtChaosCD:Start()
-		--Timer extender. Encounter failsafe. If < 7 seconds remaining on torment when wrought is cast, it's extended to 7 seconds
-		local elapsed, total = timerShackledTormentCD:GetTime(self.vb.tormentCast+1)
-		local remaining = total - elapsed
-		timerShackledTormentCD:Cancel()
-		if total > 0 and remaining < 7 then
-			DBM:Debug("timerShackledTormentCD extender activated. Time remaining less than 7 when wrought chaos started")
-			local extend = 7 - remaining
-			timerShackledTormentCD:Update(elapsed, total+extend, self.vb.tormentCast+1)
-			countdownShackledTorment:Cancel()
-			countdownShackledTorment:Start(7)
+		if DBM.Options.DebugMode then
+			updateAllTimers(self, 7)
 		end
 	elseif spellId == 183864 then
 		timerShadowBlastCD:Start(args.sourceGUID)
@@ -564,6 +687,17 @@ function mod:SPELL_CAST_START(args)
 		voiceSeethingCorruption:Play("watchstep")
 	elseif spellId == 184931 then
 		table.wipe(shacklesTargets)
+		self.vb.tormentCast = self.vb.tormentCast + 1
+		if self.vb.phase < 3 then
+			timerShackledTormentCD:Start(36.5, self.vb.tormentCast+1)
+			countdownShackledTorment:Start(36.5)
+		else
+			timerShackledTormentCD:Start(31, self.vb.tormentCast+1)
+			countdownShackledTorment:Start(31)
+		end
+		if DBM.Options.DebugMode then
+			updateAllTimers(self, 7)
+		end
 	elseif spellId == 187180 then
 		self.vb.demonicCount = self.vb.demonicCount + 1
 		if not playerBanished or not self.Options.FilterOtherPhase then
@@ -572,6 +706,9 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerDemonicFeedbackCD:Start(nil, self.vb.demonicCount+1)
 		countdownDemonicFeedback:Start()
+		if DBM.Options.DebugMode then
+			updateAllTimers(self, 3.5)
+		end
 	elseif spellId == 182225 then
 		self.vb.rainOfChaos = self.vb.rainOfChaos + 1
 		if not playerBanished or not self.Options.FilterOtherPhase then
@@ -633,6 +770,12 @@ function mod:SPELL_CAST_START(args)
 		voiceFlamesofArgus:Play("kickcast")
 	elseif spellId == 188514 then
 		table.wipe(legionTargets)
+	elseif spellId == 186961 then
+		self.vb.netherBanish = self.vb.netherBanish + 1
+		timerNetherBanishCD:Start(nil, self.vb.netherBanish+1)
+--		if DBM.Options.DebugMode then--Inconclusive logs. Could not find any data supporting this extention
+--			updateAllTimers(self, 7)
+--		end
 	end
 end
 
@@ -640,15 +783,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 183865 then
 		timerDemonicHavocCD:Start(nil, args.sourceGUID)
-	elseif spellId == 184931 then
-		self.vb.tormentCast = self.vb.tormentCast + 1
-		if self.vb.phase < 3 then
-			timerShackledTormentCD:Start(36.5, self.vb.tormentCast+1)
-			countdownShackledTorment:Start(36.5)
-		else
-			timerShackledTormentCD:Start(31, self.vb.tormentCast+1)
-			countdownShackledTorment:Start(31)
-		end
 	elseif spellId == 187180 then
 		self.vb.demonicFeedback = false
 		self:Schedule(28, setDemonicFeedback, self)
@@ -712,8 +846,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnWroughtChaos:Show()
 			if not self:IsMythic() then
 				yellWroughtChaos:Yell()
+				countdownWroughtChaos:Start()
+			else
+				countdownWroughtChaos:Start(6)
 			end
-			countdownWroughtChaos:Start()
 			voiceWroughtChaos:Play("186123") --new voice
 		end
 		if not playerBanished or not self.Options.FilterOtherPhase then
@@ -724,13 +860,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 185014 then--Focused Chaos
 		if args:IsPlayer() then
 			specWarnFocusedChaos:Show()
-			countdownWroughtChaos:Start()
 			voiceFocusedChaos:Play("185014")
 			if not self:IsMythic() then
 				yellFocusedChaos:Yell(5)
 				yellFocusedChaos:Schedule(3, 2)
 				yellFocusedChaos:Schedule(2, 3)
 				yellFocusedChaos:Schedule(1, 4)
+				countdownWroughtChaos:Start()
+			else
+				countdownWroughtChaos:Start(6)
 			end
 		end
 		if not playerBanished or not self.Options.FilterOtherPhase then
@@ -809,7 +947,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.netherPortal = true
 		self.vb.netherBanish = self.vb.netherBanish + 1
 		self.vb.TouchOfShadows = 0
-		timerNetherBanishCD:Start(nil, self.vb.netherBanish+1)
 		countdownNetherBanish:Start()
 		if args:IsPlayer() then
 			specWarnNetherBanish:Show()
@@ -999,7 +1136,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerDeathbrandCD:Start(35, self.vb.deathBrandCount+1)--35-39
 		countdownDeathBrand:Start(35)
 		timerAllureofFlamesCD:Start(40.5)--40-45
-		timerShackledTormentCD:Start(25)--17-25 (almost always 25, but sometimes it comes earlier, unsure why)
+		timerShackledTormentCD:Start(25, self.vb.tormentCast+1)--17-25 (almost always 25, but sometimes it comes earlier, unsure why)
 		countdownShackledTorment:Start(25)
 		updateRangeFrame(self)
 --	"<301.70 23:49:52> [UNIT_SPELLCAST_SUCCEEDED] Archimonde(Omegal) [[boss1:Allow Phase 3 Spells::0:190118]]", -- [8737]
@@ -1014,13 +1151,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPhase3:Show()
 		voicePhaseChange:Play("pthree")
 		if not self:IsMythic() then
-			timerNetherBanishCD:Start(11, 1)
-			countdownNetherBanish:Start(11)
+			timerNetherBanishCD:Start(10.9, 1)
+			countdownNetherBanish:Start(10.9)
 			timerDemonicFeedbackCD:Start(29)--29-33
 			self:Schedule(23.5, setDemonicFeedback, self)
 			specWarnDemonicFeedbackSoon:Schedule(23)
 			countdownDemonicFeedback:Start(29)
-			timerShackledTormentCD:Start(55)
+			timerShackledTormentCD:Start(55, self.vb.tormentCast+1)
 			countdownShackledTorment:Start(55)
 		else
 			--All need work, actual logs would be nice
