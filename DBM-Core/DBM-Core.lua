@@ -1491,13 +1491,11 @@ do
 		if not nextTask and foundModFunctions == 0 then--Nothing left, stop scheduler
 			schedulerFrame:SetScript("OnUpdate", nil)
 			schedulerFrame:Hide()
-			DBM:Debug("DBM Scheduler Deactivated", 2)
 		end
 	end
 
 	function startScheduler()
 		if not schedulerFrame:IsShown() then
-			DBM:Debug("DBM Scheduler Activated", 2)
 			schedulerFrame:Show()
 			schedulerFrame:SetScript("OnUpdate", onUpdate)
 		end
@@ -2836,7 +2834,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 		local mod = DBM:GetModByName(id)
 		-- migrate old option
 		if _G[oldSavedVarsName] and _G[oldSavedVarsName][id] then
-			self:Debug("LoadModOptions: Found old options, importing")
+			self:Debug("LoadModOptions: Found old options, importing", 2)
 			local oldTable = _G[oldSavedVarsName][id]
 			_G[oldSavedVarsName][id] = nil
 			savedOptions[id][profileNum] = oldTable
@@ -4601,7 +4599,7 @@ do
 				local spellId = string.match(msg, "spell:(%d+)") or UNKNOWN
 				local spellName = string.match(msg, "h%[(.-)%]|h") or UNKNOWN
 				local message = "RAID_BOSS_WHISPER on "..sender.." with spell of "..spellName.." ("..spellId..")"
-				DBM:Debug(message)
+				self:Debug(message)
 			end
 		end
 	end
@@ -9638,7 +9636,7 @@ do
 			--timer: Raw timer value (number).
 			--Icon: Texture Path for Icon
 			--type: Timer type (Cooldowns: cd, cdcount, nextcount, nextsource, cdspecial, nextspecial, phase, ai. Durations: target, active, fades, roleplay. Casting: cast)
-			--spellId: Raw spellid if available (most timers will have spellId or EJ ID unless it's a specific timer not tied to ability such as pull or combat start or rez timers.
+			--spellId: Raw spellid if available (most timers will have spellId or EJ ID unless it's a specific timer not tied to ability such as pull or combat start or rez timers. EJ id will be in format ej%d
 			--colorID: Type classification (1-Add, 2-Aoe, 3-targeted ability, 4-Interrupt, 5-Role, 6-Phase)
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
 			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, self.spellId, colorId, self.mod.id)
