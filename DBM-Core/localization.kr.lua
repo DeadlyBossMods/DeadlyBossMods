@@ -16,7 +16,7 @@ DBM_CORE_LOAD_GUI_COMBAT			= "전투 중에는 설정창을 불러올 수 없습
 DBM_CORE_BAD_LOAD					= "DBM이 현재 인스턴스의 경고를 완전히 불러오지 못한 것을 발견했습니다. 전투가 종료된 후에, /console reloadui 명령어를 입력하여 경고를 다시 불러오시기 바랍니다."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "현재 사용중인 DBM 버전은 '%s' 경보에 필요한 기능이 없습니다. 새로운 DBM을 설치하셔야 이 경보를 불러올 수 있습니다."
 
---DBM_CORE_WHATS_NEW					= "이 버전의 새로운 기능: 범위정보 기능이 대폭 강화되었으며. 특히 아키몬드에서 많이 강화되었습니다. 또한 신화 난이도를 진행하고 있는 길드와의 공동 작업을 통해 신화 아키몬드를 대폭 개선하였습니다."--Uncomment when updated
+DBM_CORE_WHATS_NEW					= "DBM 바 및 경고가 다른 애드온에게 더 많은 정보를 제공하도록 개선되었습니."
 --DBM_CORE_WHATS_NEW_LINK			= "이 버전의 새로운 기능: 바가 갖고 있는 정보별로 다른 바 색상을 지정하는 기능이 추가되었습니다. 바 설정에서 색상을 변경 가능합니다."
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대원 숫자에 맞는 근접판정 정보를 알 수 없기 때문에 DBM이 이 전투에서 거리 창을 비활성화 했습니다."
@@ -241,6 +241,7 @@ DBM_CORE_MIDDLE						= "가운데"
 DBM_CORE_FRONT						= "앞쪽"
 DBM_CORE_INTERMISSION				= "사잇 단계"
 
+DBM_CORE_BREAK_USAGE				= "쉬는 시간은 60분을 초과할 수 없습니다. 쉬는시간은 초단위가 아니라 분단위로 입력하셔야 합니다."
 DBM_CORE_BREAK_START				= "쉬는시간 시작 -- %s분 남았습니다! (%s|1이;가; 보냄)"
 DBM_CORE_BREAK_MIN					= "%s분 후 쉬는시간이 끝납니다!"
 DBM_CORE_BREAK_SEC					= "%s초 후 쉬는시간이 끝납니다!"
