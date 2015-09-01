@@ -1644,7 +1644,7 @@ function DBM:RepositionFrames()
 		DBMRangeCheck:SetPoint(self.Options.RangeFramePoint, UIParent, self.Options.RangeFramePoint, self.Options.RangeFrameX, self.Options.RangeFrameY)
 	end
 	if DBMRangeCheckRadar then
-		DBMInfoFrame:ClearAllPoints()
+		DBMRangeCheckRadar:ClearAllPoints()
 		DBMRangeCheckRadar:SetPoint(self.Options.RangeFrameRadarPoint, UIParent, self.Options.RangeFrameRadarPoint, self.Options.RangeFrameRadarX, self.Options.RangeFrameRadarY)
 	end
 	if DBMInfoFrame then
