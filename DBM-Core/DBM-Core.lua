@@ -6054,9 +6054,10 @@ function DBM:GetGroupSize()
 end
 
 function DBM:PlaySoundFile(path, ignoreSFX)
-	if self.Options.UseSoundChannel == "Dialog" then
+	local soundSetting = self.Options.UseSoundChannel
+	if soundSetting == "Dialog" then
 		PlaySoundFile(path, "Dialog")
-	elseif ignoreSFX or self.Options.UseSoundChannel == "Master" then
+	elseif ignoreSFX or soundSetting == "Master" then
 		PlaySoundFile(path, "Master")
 	else
 		PlaySoundFile(path)
@@ -6064,9 +6065,10 @@ function DBM:PlaySoundFile(path, ignoreSFX)
 end
 
 function DBM:PlaySound(path)
-	if self.Options.UseSoundChannel == "Master" then
+	local soundSetting = self.Options.UseSoundChannel
+	if soundSetting == "Master" then
 		PlaySound(path, "Master")
-	elseif self.Options.UseSoundChannel == "Dialog" then
+	elseif soundSetting == "Dialog" then
 		PlaySound(path, "Dialog")
 	else
 		PlaySound(path)
