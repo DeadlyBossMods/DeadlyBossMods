@@ -1016,6 +1016,11 @@ do
 			self.text.yOff = yOff or self.text.yOff or 0
 
 			if not text or text == "" then
+				local f, s, m = self.text:GetFont()
+				local font = f or STANDARD_TEXT_FONT
+				local size = fontSize or 20 or s
+				local outline = outline or "THICKOUTLINE" or m
+				self.text:SetFont(font, size, outline)
 				self.text:SetText(nil)
 				self.text:Hide()
 			else
@@ -1023,7 +1028,7 @@ do
 				self.text:SetTextColor(self.text.r, self.text.g, self.text.b, self.text.a)
 				self.text:Show()
 				local f, s, m = self.text:GetFont()
-				local font = f
+				local font = f or STANDARD_TEXT_FONT
 				local size = fontSize or 20 or s
 				local outline = outline or "THICKOUTLINE" or m
 				self.text:SetFont(font, size, outline)
