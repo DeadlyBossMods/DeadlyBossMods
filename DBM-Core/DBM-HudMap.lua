@@ -1017,7 +1017,7 @@ do
 
 			if not text or text == "" then
 				local f, s, m = self.text:GetFont()
-				local font = f or STANDARD_TEXT_FONT
+				local font = DBM.STANDARD_TEXT_FONT or f
 				local size = fontSize or 20 or s
 				local outline = outline or "THICKOUTLINE" or m
 				self.text:SetFont(font, size, outline)
@@ -1028,7 +1028,7 @@ do
 				self.text:SetTextColor(self.text.r, self.text.g, self.text.b, self.text.a)
 				self.text:Show()
 				local f, s, m = self.text:GetFont()
-				local font = f or STANDARD_TEXT_FONT
+				local font = DBM.STANDARD_TEXT_FONT or f
 				local size = fontSize or 20 or s
 				local outline = outline or "THICKOUTLINE" or m
 				self.text:SetFont(font, size, outline)

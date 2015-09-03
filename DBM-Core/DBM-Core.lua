@@ -304,6 +304,7 @@ DBM.Counts = {
 ------------------------
 DBM_DISABLE_ZONE_DETECTION = newproxy(false)
 DBM_OPTION_SPACER = newproxy(false)
+DBM.STANDARD_TEXT_FONT = STANDARD_TEXT_FONT--Some UI skins taint this stupidly, with blank fonts, try to grab a clean version
 
 --------------
 --  Locals  --
