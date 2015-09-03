@@ -30,7 +30,6 @@ mod:RegisterEventsInCombat(
 --TODO, first construct timers after a soul phase
 --(ability.id = 183331 or ability.name="Soul Dispersion") and overkill > 0 or ability.id = 190466 or (ability.id = 181288 or ability.id = 182051 or ability.id = 183331 or ability.id = 183329 or ability.id = 188693) and type = "begincast" or (ability.id = 180008 or ability.id = 184124 or ability.id = 190776 or ability.id = 183023) and type = "cast" or (ability.id = 184053 or ability.id = 189627) and (type = "applydebuff" or type = "applybuff")
 --Soulbound Construct
-local warnReverberatingBlow			= mod:NewCountAnnounce(180008, 3)
 local warnFelPrison					= mod:NewTargetAnnounce(183017, 3)
 local warnShatteredDefenses			= mod:NewStackAnnounce(182038, 3, nil, "Tank")
 local warnVolatileFelOrb			= mod:NewTargetAnnounce(180221, 4)
@@ -281,11 +280,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.ReverberatingBlow = self.vb.ReverberatingBlow + 1
 		timerReverberatingBlowCD:Start(nil, self.vb.ReverberatingBlow+1)
 		countdownReverberatingBlow:Start()
-		if self.Options.SpecWarn180008count then
-			specWarnReverberatingBlow:Show(self.vb.ReverberatingBlow)
-		else
-			warnReverberatingBlow:Show(self.vb.ReverberatingBlow)
-		end
+		specWarnReverberatingBlow:Show(self.vb.ReverberatingBlow)
 	elseif spellId == 184124 then
 		if self:IsNormal() then
 			timerGiftofManariCD:Start(30, args.sourceGUID)
@@ -336,7 +331,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.ghostSpawn = self.vb.ghostSpawn + 1
 			timerHauntingSoulCD:Start(nil, self.vb.ghostSpawn+1)
 		end
-	elseif spellId == 188666 then
+	elseif spellId == 188666 and args:IsDestTypePlayer() then
 		if args:IsPlayer() then
 			specWarnEternalHunger:Show()
 			yellEternalHunger:Yell()
