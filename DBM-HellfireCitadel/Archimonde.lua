@@ -115,7 +115,7 @@ local timerWroughtChaosCD			= mod:NewCDTimer(51.7, 184265, nil, nil, nil, 3)
 local timerFelborneOverfiendCD		= mod:NewNextCountTimer(44.3, "ej11603", nil, nil, nil, 1, 186662)
 --Phase 3: The Twisting Nether
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
-local timerDemonicFeedbackCD		= mod:NewCDTimer(35, 187180, nil, nil, nil, 2)
+local timerDemonicFeedbackCD		= mod:NewCDCountTimer(35, 187180, nil, nil, nil, 2)
 local timerNetherBanishCD			= mod:NewCDCountTimer(61.9, 186961, nil, nil, nil, 5)
 --Phase 3.5:
 local timerRainofChaosCD			= mod:NewCDCountTimer(62, 182225, nil, nil, nil, 2)
@@ -466,6 +466,7 @@ end
 --Rain of chaos doesn't trigger ICD nor is affected by it
 --Nether banish IS affected by ICD but inconclusive on whether it CAUSES one
 local function updateAllTimers(self, ICD)
+	if not DBM.Options.DebugMode then return end
 	DBM:Debug("updateAllTimers running", 3)
 	local phase = self.vb.phase
 	if phase < 2 then
@@ -554,21 +555,21 @@ local function updateAllTimers(self, ICD)
 			timerWroughtChaosCD:Cancel()
 			timerWroughtChaosCD:Update(elapsed, total+extend)
 		end
-		if timerDemonicFeedbackCD:GetRemaining() < ICD then
-			local elapsed, total = timerDemonicFeedbackCD:GetTime()
+		if timerDemonicFeedbackCD:GetRemaining(self.vb.demonicCount+1) < ICD then
+			local elapsed, total = timerDemonicFeedbackCD:GetTime(self.vb.demonicCount+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerDemonicFeedbackCD extended by: "..extend, 2)
 			timerDemonicFeedbackCD:Cancel()
-			timerDemonicFeedbackCD:Update(elapsed, total+extend)
+			timerDemonicFeedbackCD:Update(elapsed, total+extend, self.vb.demonicCount+1)
 			countdownDemonicFeedback:Cancel()
 			countdownDemonicFeedback:Start(ICD)
 		end
-		if timerNetherBanishCD:GetRemaining() < ICD then
-			local elapsed, total = timerNetherBanishCD:GetTime()
+		if timerNetherBanishCD:GetRemaining(self.vb.netherBanish+1) < ICD then
+			local elapsed, total = timerNetherBanishCD:GetTime(self.vb.netherBanish+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerNetherBanishCD extended by: "..extend, 2)
 			timerNetherBanishCD:Cancel()
-			timerNetherBanishCD:Update(elapsed, total+extend)
+			timerNetherBanishCD:Update(elapsed, total+extend, self.vb.netherBanish+1)
 			countdownNetherBanish:Cancel()
 			countdownNetherBanish:Start(ICD)
 		end
@@ -1136,7 +1137,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if not self:IsMythic() then
 			timerNetherBanishCD:Start(10.9, 1)
 			countdownNetherBanish:Start(10.9)
-			timerDemonicFeedbackCD:Start(29)--29-33
+			timerDemonicFeedbackCD:Start(29, 1)--29-33
 			self:Schedule(23.5, setDemonicFeedback, self)
 			specWarnDemonicFeedbackSoon:Schedule(23)
 			countdownDemonicFeedback:Start(29)
