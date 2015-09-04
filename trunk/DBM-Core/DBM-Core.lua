@@ -163,7 +163,7 @@ DBM.DefaultOptions = {
 	WarningPoint = "CENTER",
 	WarningX = 0,
 	WarningY = 260,
-	WarningFont = STANDARD_TEXT_FONT,
+	WarningFont = DBM.STANDARD_TEXT_FONT,
 	WarningFontSize = 20,
 	WarningFontStyle = "None",
 	WarningFontShadow = true,
@@ -171,7 +171,7 @@ DBM.DefaultOptions = {
 	SpecialWarningPoint = "CENTER",
 	SpecialWarningX = 0,
 	SpecialWarningY = 75,
-	SpecialWarningFont = STANDARD_TEXT_FONT,
+	SpecialWarningFont = DBM.STANDARD_TEXT_FONT,
 	SpecialWarningFontSize = 50,
 	SpecialWarningFontStyle = "THICKOUTLINE",
 	SpecialWarningFontShadow = false,
@@ -304,7 +304,19 @@ DBM.Counts = {
 ------------------------
 DBM_DISABLE_ZONE_DETECTION = newproxy(false)
 DBM_OPTION_SPACER = newproxy(false)
-DBM.STANDARD_TEXT_FONT = STANDARD_TEXT_FONT--Some UI skins taint this stupidly, with blank fonts, try to grab a clean version
+--Hard code STANDARD_TEXT_FONT since skimming mods like to taint it (or worse, set it to nil, wtf?)
+--http://forums.elitistjerks.com/topic/133901-bug-report-hudmap/#entry2282069
+if (LOCALE_koKR) then
+	DBM.STANDARD_TEXT_FONT = "Fonts\\2002.TTF"
+elseif (LOCALE_zhCN) then
+	DBM.STANDARD_TEXT_FONT = "Fonts\\ARKai_T.ttf"
+elseif (LOCALE_zhTW) then
+	DBM.STANDARD_TEXT_FONT = "Fonts\\blei00d.TTF"
+elseif (LOCALE_ruRU) then
+	DBM.STANDARD_TEXT_FONT = "Fonts\\FRIZQT___CYR.TTF"
+else
+	DBM.STANDARD_TEXT_FONT = "Fonts\\FRIZQT__.TTF"
+end
 
 --------------
 --  Locals  --
