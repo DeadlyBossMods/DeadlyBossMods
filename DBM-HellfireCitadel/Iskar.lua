@@ -74,7 +74,7 @@ local timerChakramCD					= mod:NewCDTimer(33, 182178, nil, nil, nil, 3)
 local timerPhantasmalWindsCD			= mod:NewCDTimer(35, 181957, nil, nil, nil, 3)
 local timerPhantasmalWoundsCD			= mod:NewCDTimer(30.5, 182325, nil, "Healer", 2, 5)--30.5-32
 local timerFocusedBlast					= mod:NewCastTimer(11, 181912, nil, nil, nil, 2)--Doesn't realy need a cd timer. he casts it twice back to back, then lands
-local timerShadowRiposteCD				= mod:NewCDTimer(26, 185345, nil, nil, nil, 3)
+local timerShadowRiposteCD				= mod:NewCDTimer(23.5, 185345, nil, nil, nil, 3)
 --Adds
 local timerFelBombCD					= mod:NewCDTimer(18.5, 181753, nil, nil, nil, 3)
 local timerFelConduitCD					= mod:NewCDTimer(15, 181827, nil, nil, nil, 4)
@@ -251,8 +251,7 @@ function mod:SPELL_CAST_START(args)
 		timerPhantasmalWoundsCD:Cancel()
 		timerDarkBindingsCD:Cancel()
 		timerShadowRiposteCD:Cancel()
-	elseif spellId == 185345 then
-		timerShadowRiposteCD:Start()
+	elseif spellId == 185345 and not args:IsSrcTypePlayer() then
 		if playerHasAnzu then
 			specWarnShadowRiposte:Show()
 		else
@@ -289,6 +288,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.savedRiposte = nil
 	elseif spellId == 185510 then
 		timerDarkBindingsCD:Start(args.sourceGUID)
+	elseif spellId == 185345 and not args:IsSrcTypePlayer() then
+		timerShadowRiposteCD:Start()
 	end
 end
 
