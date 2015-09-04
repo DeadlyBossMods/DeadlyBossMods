@@ -1016,11 +1016,6 @@ do
 			self.text.yOff = yOff or self.text.yOff or 0
 
 			if not text or text == "" then
-				local f, s, m = self.text:GetFont()
-				local font = DBM.STANDARD_TEXT_FONT or f
-				local size = fontSize or 20 or s
-				local outline = outline or "THICKOUTLINE" or m
-				self.text:SetFont(font, size, outline)
 				self.text:SetText(nil)
 				self.text:Hide()
 			else
@@ -1148,7 +1143,7 @@ do
 				t.frame:SetFrameStrata("LOW")
 				t.frame.owner = t
 				t.text = t.frame:CreateFontString()
-				t.text:SetFont(STANDARD_TEXT_FONT, 10, "")
+				t.text:SetFont(DBM.STANDARD_TEXT_FONT, 10, "")
 				t.text:SetDrawLayer("OVERLAY")
 				t.text:SetPoint("BOTTOM", t.frame, "CENTER")
 				t.edges = {}
