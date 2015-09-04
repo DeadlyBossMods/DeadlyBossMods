@@ -243,7 +243,7 @@ DBM_CORE_BREAK_START				= "Break starting now -- you have %s minute(s)! (Sent by
 DBM_CORE_BREAK_MIN					= "Break ends in %s minute(s)!"
 DBM_CORE_BREAK_SEC					= "Break ends in %s seconds!"
 DBM_CORE_TIMER_BREAK				= "Break time!"
-DBM_CORE_ANNOUNCE_BREAK_OVER		= "Break time is over"
+DBM_CORE_ANNOUNCE_BREAK_OVER		= "Break has ended"
 
 DBM_CORE_TIMER_PULL					= "Pull in"
 DBM_CORE_ANNOUNCE_PULL				= "Pull in %d sec. (Sent by %s)"
