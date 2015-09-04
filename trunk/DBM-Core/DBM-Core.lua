@@ -60,6 +60,20 @@ if class == "MAGE" or class == "WARLOCK" and class == "HUNTER" and class == "ROG
 end
 DBM_CharSavedRevision = 1
 
+--Hard code STANDARD_TEXT_FONT since skimming mods like to taint it (or worse, set it to nil, wtf?)
+--http://forums.elitistjerks.com/topic/133901-bug-report-hudmap/#entry2282069
+if (LOCALE_koKR) then
+	DBM.STANDARD_TEXT_FONT = "Fonts\\2002.TTF"
+elseif (LOCALE_zhCN) then
+	DBM.STANDARD_TEXT_FONT = "Fonts\\ARKai_T.ttf"
+elseif (LOCALE_zhTW) then
+	DBM.STANDARD_TEXT_FONT = "Fonts\\blei00d.TTF"
+elseif (LOCALE_ruRU) then
+	DBM.STANDARD_TEXT_FONT = "Fonts\\FRIZQT___CYR.TTF"
+else
+	DBM.STANDARD_TEXT_FONT = "Fonts\\FRIZQT__.TTF"
+end
+
 DBM.DefaultOptions = {
 	WarningColors = {
 		{r = 0.41, g = 0.80, b = 0.94}, -- Color 1 - #69CCF0 - Turqoise
@@ -304,19 +318,6 @@ DBM.Counts = {
 ------------------------
 DBM_DISABLE_ZONE_DETECTION = newproxy(false)
 DBM_OPTION_SPACER = newproxy(false)
---Hard code STANDARD_TEXT_FONT since skimming mods like to taint it (or worse, set it to nil, wtf?)
---http://forums.elitistjerks.com/topic/133901-bug-report-hudmap/#entry2282069
-if (LOCALE_koKR) then
-	DBM.STANDARD_TEXT_FONT = "Fonts\\2002.TTF"
-elseif (LOCALE_zhCN) then
-	DBM.STANDARD_TEXT_FONT = "Fonts\\ARKai_T.ttf"
-elseif (LOCALE_zhTW) then
-	DBM.STANDARD_TEXT_FONT = "Fonts\\blei00d.TTF"
-elseif (LOCALE_ruRU) then
-	DBM.STANDARD_TEXT_FONT = "Fonts\\FRIZQT___CYR.TTF"
-else
-	DBM.STANDARD_TEXT_FONT = "Fonts\\FRIZQT__.TTF"
-end
 
 --------------
 --  Locals  --
