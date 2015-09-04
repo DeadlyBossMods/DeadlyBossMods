@@ -13,8 +13,8 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 181288 182051 183331 183329 184239 182392 188693",
-	"SPELL_CAST_SUCCESS 180008 184124 190776 183023",
+	"SPELL_CAST_START 180008 181288 182051 183331 183329 184239 182392 188693",
+	"SPELL_CAST_SUCCESS 184124 190776 183023",
 	"SPELL_AURA_APPLIED 182038 182769 182900 184124 188666 189627 190466 184053 183017 180415",
 	"SPELL_AURA_APPLIED_DOSE 182038",
 	"SPELL_AURA_REMOVED 184124 189627 190466 184053 183017",
@@ -50,7 +50,8 @@ local yellVolatileFelOrb			= mod:NewYell(180221)
 local specWarnFelChargeYou			= mod:NewSpecialWarningYou(182051, nil, nil, nil, 1, 2)
 local yellCharge					= mod:NewYell(182051)
 local specWarnFelCharge				= mod:NewSpecialWarningTarget(182051, "Melee", nil, nil, 2, 2)--Boss will often go through melee most of time, so they still need generic warning.
-local specWarnApocalypticFelburst	= mod:NewSpecialWarningCount(188693, nil, nil, nil, 2)--Mythic
+local specWarnApocalypticFelburst	= mod:NewSpecialWarningCount(188693, nil, nil, nil, 2, 2)--Mythic
+local specWarnSoulstalker			= mod:NewSpecialWarningCount("ej11778", nil, nil, nil, 2, 2)
 --Socrethar
 local specWarnExertDominance		= mod:NewSpecialWarningInterruptCount(183331, "-Healer", nil, nil, 1, 2)
 local specWarnApocalypse			= mod:NewSpecialWarningSpell(183329, nil, nil, nil, 2, 2)
@@ -79,7 +80,7 @@ local timerSargereiDominatorCD		= mod:NewNextCountTimer(60, "ej11456", nil, nil,
 local timerHauntingSoulCD			= mod:NewCDCountTimer(30, "ej11462", nil, nil, nil, 1, 182769)
 local timerGiftofManariCD			= mod:NewCDTimer(11, 184124, nil, nil, nil, 3)
 --Mythic
-local timerVoraciousSoulstalkerCD	= mod:NewCDCountTimer(60, "ej11778", nil, nil, nil, 1, 190776)
+local timerVoraciousSoulstalkerCD	= mod:NewCDCountTimer(59.5, "ej11778", nil, nil, nil, 1, 190776)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
@@ -90,6 +91,8 @@ local countdownCharge				= mod:NewCountdown("Alt23", 182051)
 local voiceVolatileFelOrb			= mod:NewVoice(180221)--runout/keepmove
 local voiceFelblazeCharge			= mod:NewVoice(182051)--runout/chargemove
 local voiceFelPrison				= mod:NewVoice(182994)--watchstep
+local voiceFelBurst					= mod:NewVoice(188693)--watchstep
+local voiceVoraciousSoulstalker		= mod:NewVoice("ej11778")--watchstep
 --Socrethar
 local timerTransition				= mod:NewPhaseTimer(6.5)
 local voiceExertDominance			= mod:NewVoice(183331, "-Healer")--kickcast
@@ -180,15 +183,15 @@ function mod:OnCombatStart(delay)
 	self.vb.dominatorCount = 0
 	self.vb.barrierUp = false
 	playerInConstruct = false
-	timerReverberatingBlowCD:Start(6.3-delay, 1)
-	countdownReverberatingBlow:Start(6.3-delay)
+	timerReverberatingBlowCD:Start(4.3-delay, 1)
+	countdownReverberatingBlow:Start(4.3-delay)
 	timerVolatileFelOrbCD:Start(12-delay)
 	timerFelChargeCD:Start(29-delay)
 	countdownCharge:Start(29-delay)
 	timerFelPrisonCD:Start(51-delay)--Seems drastically changed. 51 in all newer logs
 	if self:IsMythic() then
 		timerVoraciousSoulstalkerCD:Start(20-delay, 1)
-		timerApocalypticFelburstCD:Start(33.7-delay)
+		timerApocalypticFelburstCD:Start(33.7-delay, 1)
 	end
 	if UnitIsGroupLeader("player") and not self:IsLFR() then
 		if self.Options.InterruptBehavior == "Count3Resume" then
@@ -214,7 +217,12 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 181288 then
+	if spellId == 180008 then
+		self.vb.ReverberatingBlow = self.vb.ReverberatingBlow + 1
+		timerReverberatingBlowCD:Start(nil, self.vb.ReverberatingBlow+1)
+		countdownReverberatingBlow:Start()
+		specWarnReverberatingBlow:Show(self.vb.ReverberatingBlow)
+	elseif spellId == 181288 then
 		specWarnFelPrison:Show()
 		if self:IsNormal() then
 			timerFelPrisonCD:Start(46.4)
@@ -270,18 +278,14 @@ function mod:SPELL_CAST_START(args)
 		self.vb.felBurstCount = self.vb.felBurstCount + 1
 		specWarnApocalypticFelburst:Show(self.vb.felBurstCount)
 		timerApocalypticFelburstCD:Start()
+		voiceFelBurst:Play("watchstep")
 	end
 end
 
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 180008 then
-		self.vb.ReverberatingBlow = self.vb.ReverberatingBlow + 1
-		timerReverberatingBlowCD:Start(nil, self.vb.ReverberatingBlow+1)
-		countdownReverberatingBlow:Start()
-		specWarnReverberatingBlow:Show(self.vb.ReverberatingBlow)
-	elseif spellId == 184124 then
+	if spellId == 184124 then
 		if self:IsNormal() then
 			timerGiftofManariCD:Start(30, args.sourceGUID)
 		else
@@ -289,6 +293,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 190776 then--Voracious Soulstalker Spawning
 		self.vb.mythicAddSpawn = self.vb.mythicAddSpawn + 1
+		specWarnSoulstalker:Show(self.vb.mythicAddSpawn)
+		voiceVoraciousSoulstalker:Play("watchstep")
 		timerVoraciousSoulstalkerCD:Start(60, self.vb.mythicAddSpawn+1)
 	elseif spellId == 183023 then--Eject Soul
 		self.vb.dominatorCount = 0
@@ -475,13 +481,13 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		countdownCharge:Start(30.5)
 		timerFelPrisonCD:Start(50)
 		if self:IsMythic() then
-			timerReverberatingBlowCD:Start(13, 1)
-			countdownReverberatingBlow:Start(13)
+			timerReverberatingBlowCD:Start(11, 1)
+			countdownReverberatingBlow:Start(11)
 			timerVoraciousSoulstalkerCD:Start(20, 1)
-			timerApocalypticFelburstCD:Start()
+			timerApocalypticFelburstCD:Start(nil, 1)
 		else
-			timerReverberatingBlowCD:Start(10, 1)
-			countdownReverberatingBlow:Start(10)
+			timerReverberatingBlowCD:Start(8, 1)
+			countdownReverberatingBlow:Start(8)
 		end
 	end
 end
