@@ -55,6 +55,21 @@ local L = DBM_GUI_Translations
 local modelFrameCreated = false
 local soundsRegistered = false
 
+--Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
+--http://forums.elitistjerks.com/topic/133901-bug-report-hudmap/#entry2282069
+local standardFont = STANDARD_TEXT_FONT
+if (LOCALE_koKR) then
+	standardFont = "Fonts\\2002.TTF"
+elseif (LOCALE_zhCN) then
+	standardFont = "Fonts\\ARKai_T.ttf"
+elseif (LOCALE_zhTW) then
+	standardFont = "Fonts\\blei00d.TTF"
+elseif (LOCALE_ruRU) then
+	standardFont = "Fonts\\FRIZQT___CYR.TTF"
+else
+	standardFont = "Fonts\\FRIZQT__.TTF"
+end
+
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
 --------------------------------------------------------
@@ -1443,7 +1458,7 @@ local function CreateOptionsMenu()
 
 		-- RaidWarn Font
 		local Fonts = MixinSharedMedia3("font", {
-			{	text	= "Default",		value 	= DBM.STANDARD_TEXT_FONT,		font = DBM.STANDARD_TEXT_FONT		},
+			{	text	= "Default",		value 	= standardFont,					font = standardFont		},
 			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
 			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
 			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
