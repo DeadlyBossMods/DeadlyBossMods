@@ -70,18 +70,19 @@ local ipairs, pairs, next, type = ipairs, pairs, next, type
 local tinsert = table.insert
 local GetTime = GetTime
 
---Hard code STANDARD_TEXT_FONT since skimming mods like to taint it (or worse, set it to nil, wtf?)
+--Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
 --http://forums.elitistjerks.com/topic/133901-bug-report-hudmap/#entry2282069
+local standardFont = STANDARD_TEXT_FONT
 if (LOCALE_koKR) then
-	DBT.STANDARD_TEXT_FONT = "Fonts\\2002.TTF"
+	standardFont = "Fonts\\2002.TTF"
 elseif (LOCALE_zhCN) then
-	DBT.STANDARD_TEXT_FONT = "Fonts\\ARKai_T.ttf"
+	standardFont = "Fonts\\ARKai_T.ttf"
 elseif (LOCALE_zhTW) then
-	DBT.STANDARD_TEXT_FONT = "Fonts\\blei00d.TTF"
+	standardFont = "Fonts\\blei00d.TTF"
 elseif (LOCALE_ruRU) then
-	DBT.STANDARD_TEXT_FONT = "Fonts\\FRIZQT___CYR.TTF"
+	standardFont = "Fonts\\FRIZQT___CYR.TTF"
 else
-	DBT.STANDARD_TEXT_FONT = "Fonts\\FRIZQT__.TTF"
+	standardFont = "Fonts\\FRIZQT__.TTF"
 end
 
 
@@ -401,7 +402,7 @@ options = {
 	},
 	Font = {
 		type = "string",
-		default = DBT.STANDARD_TEXT_FONT,
+		default = standardFont,
 	},
 	FontFlag = {
 		type = "string",

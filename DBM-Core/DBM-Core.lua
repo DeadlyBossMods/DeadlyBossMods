@@ -60,18 +60,19 @@ if class == "MAGE" or class == "WARLOCK" and class == "HUNTER" and class == "ROG
 end
 DBM_CharSavedRevision = 1
 
---Hard code STANDARD_TEXT_FONT since skimming mods like to taint it (or worse, set it to nil, wtf?)
+--Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
 --http://forums.elitistjerks.com/topic/133901-bug-report-hudmap/#entry2282069
+local standardFont = STANDARD_TEXT_FONT
 if (LOCALE_koKR) then
-	DBM.STANDARD_TEXT_FONT = "Fonts\\2002.TTF"
+	standardFont = "Fonts\\2002.TTF"
 elseif (LOCALE_zhCN) then
-	DBM.STANDARD_TEXT_FONT = "Fonts\\ARKai_T.ttf"
+	standardFont = "Fonts\\ARKai_T.ttf"
 elseif (LOCALE_zhTW) then
-	DBM.STANDARD_TEXT_FONT = "Fonts\\blei00d.TTF"
+	standardFont = "Fonts\\blei00d.TTF"
 elseif (LOCALE_ruRU) then
-	DBM.STANDARD_TEXT_FONT = "Fonts\\FRIZQT___CYR.TTF"
+	standardFont = "Fonts\\FRIZQT___CYR.TTF"
 else
-	DBM.STANDARD_TEXT_FONT = "Fonts\\FRIZQT__.TTF"
+	standardFont = "Fonts\\FRIZQT__.TTF"
 end
 
 DBM.DefaultOptions = {
@@ -177,7 +178,7 @@ DBM.DefaultOptions = {
 	WarningPoint = "CENTER",
 	WarningX = 0,
 	WarningY = 260,
-	WarningFont = DBM.STANDARD_TEXT_FONT,
+	WarningFont = standardFont,
 	WarningFontSize = 20,
 	WarningFontStyle = "None",
 	WarningFontShadow = true,
@@ -185,7 +186,7 @@ DBM.DefaultOptions = {
 	SpecialWarningPoint = "CENTER",
 	SpecialWarningX = 0,
 	SpecialWarningY = 75,
-	SpecialWarningFont = DBM.STANDARD_TEXT_FONT,
+	SpecialWarningFont = standardFont,
 	SpecialWarningFontSize = 50,
 	SpecialWarningFontStyle = "THICKOUTLINE",
 	SpecialWarningFontShadow = false,
