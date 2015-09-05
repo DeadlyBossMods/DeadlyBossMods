@@ -588,6 +588,9 @@ do
 		self.options = setmetatable(DBT_AllPersistentOptions[_G["DBM_UsedProfile"]][id], optionMT)
 		self:Rearrange()
 		DBM:Schedule(2, delaySkinCheck, self)
+		if not self.options.Font then--Fix font if it's nil
+			self.options.Font = standardFont
+		end
 	end
 
 	function DBT:CreateProfile(id)
