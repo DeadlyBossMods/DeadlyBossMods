@@ -28,6 +28,21 @@ local GetInstanceInfo = GetInstanceInfo
 
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 
+--Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
+--http://forums.elitistjerks.com/topic/133901-bug-report-hudmap/#entry2282069
+local standardFont = STANDARD_TEXT_FONT
+if (LOCALE_koKR) then
+	standardFont = "Fonts\\2002.TTF"
+elseif (LOCALE_zhCN) then
+	standardFont = "Fonts\\ARKai_T.ttf"
+elseif (LOCALE_zhTW) then
+	standardFont = "Fonts\\blei00d.TTF"
+elseif (LOCALE_ruRU) then
+	standardFont = "Fonts\\FRIZQT___CYR.TTF"
+else
+	standardFont = "Fonts\\FRIZQT__.TTF"
+end
+
 local targetCanvasAlpha
 
 local textureLookup = {
@@ -1023,9 +1038,9 @@ do
 				self.text:SetTextColor(self.text.r, self.text.g, self.text.b, self.text.a)
 				self.text:Show()
 				local f, s, m = self.text:GetFont()
-				local font = DBM.STANDARD_TEXT_FONT or f
-				local size = fontSize or 20 or s
-				local outline = outline or "THICKOUTLINE" or m
+				local font = f or standardFont
+				local size = fontSize or s or 20
+				local outline = outline or m or "THICKOUTLINE"
 				self.text:SetFont(font, size, outline)
 				self.text:SetText(text)
 			end
@@ -1143,7 +1158,7 @@ do
 				t.frame:SetFrameStrata("LOW")
 				t.frame.owner = t
 				t.text = t.frame:CreateFontString()
-				t.text:SetFont(DBM.STANDARD_TEXT_FONT, 10, "")
+				t.text:SetFont(standardFont, 10, "")
 				t.text:SetDrawLayer("OVERLAY")
 				t.text:SetPoint("BOTTOM", t.frame, "CENTER")
 				t.edges = {}
