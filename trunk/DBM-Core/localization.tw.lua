@@ -1,7 +1,7 @@
 ﻿if GetLocale() ~= "zhTW" then return end
 
-DBM_CORE_NEED_SUPPORT				= "你是否擁有良好的程式開發或語言能力? 如果是的話, DBM團隊真的需要你的幫助以保持成為WOW裡最佳的首領模組。觀看 www.deadlybossmods.com 或發送郵件到 tandanu@deadlybossmods.com 或 nitram@deadlybossmods.com 來加入團隊。"
-DBM_CORE_NEED_LOGS					= "DBM需要Transcriptor (http://www.wowace.com/addons/transcriptor/) 去紀錄測試伺服器的戰鬥紀錄讓插件更加完美。如果你願意幫忙，請使用transcriptor去紀錄這些戰鬥過程然後將記錄發佈在http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing/ (請壓縮這些紀錄檔，這些檔案會很龐大)。僅需要6.0的團隊戰鬥紀錄，不需要五人副本的紀錄。"
+DBM_CORE_NEED_SUPPORT				= "你是否擁有良好的程式開發或語言能力? 如果是的話, DBM需要你的本地化翻譯。拜訪我們的討論區|HDBM:localizersneeded|h|cff3588ffclicking here|r"
+DBM_CORE_NEED_LOGS					= "DBM需要Transcriptor (http://www.wowace.com/addons/transcriptor/) 去紀錄測試伺服器的戰鬥紀錄讓插件更加完美。如果你願意幫忙，請使用transcriptor去紀錄這些戰鬥過程然後將記錄發佈在。需要7.0的團隊和五人副本戰鬥紀錄，。"
 DBM_HOW_TO_USE_MOD					= "歡迎使用DBM。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。DBM會在第一次啟動時嘗試掃描你的職業天賦，但有些選項你可能想打開。"
 
 DBM_FORUMS_MESSAGE					= "發現臭蟲或錯誤的計時器?你希望要讓某些模組有新的警告，計時器或是特別功能?\nDeadly Boss Mods討論，臭蟲回報與功能要求討論區 |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (你可以點擊連結去複製網址)"
@@ -16,7 +16,7 @@ DBM_CORE_LOAD_GUI_COMBAT			= "圖形介面不能在戰鬥中初始化。圖形�
 DBM_CORE_BAD_LOAD					= "DBM偵測到你的此副本的模組在戰鬥中讀取失敗。一旦脫離戰鬥，請立即輸入/consoel reloadui重新載入。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s不能被讀取因為你的DBM核心未達需求，請更新版本。"
 
---DBM_CORE_WHATS_NEW					= "此版本新功能：有幾個模組的HUD功能改進，特別是阿克蒙德，還有神話模式的改進。"--Uncomment when updated
+DBM_CORE_WHATS_NEW					= "此版本新功能：增進協力插件的DBM事件存取資訊回傳。"
 --DBM_CORE_WHATS_NEW_LINK			= "此版本新功能： DBM計時器可以根據不同類型的技能上色。此功能可以從計時條樣式去設定。想知道此功能的詳細資訊請至|HDBM:forumsnews|h|cff3588ffclicking here|r"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM已中禁用動態距離框架，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
@@ -237,6 +237,7 @@ DBM_CORE_MIDDLE						= "中"
 DBM_CORE_FRONT						= "前"
 DBM_CORE_INTERMISSION				= "中場時間"
 
+DBM_CORE_BREAK_USAGE				= "休息時間不能長於60分鐘。請確定你輸入的時間是分鐘不是秒。"
 DBM_CORE_BREAK_START				= "現在開始休息-你有%s分鐘!"
 DBM_CORE_BREAK_MIN					= "%s分鐘後休息時間結束!"
 DBM_CORE_BREAK_SEC					= "%s秒後休息時間結束!"
