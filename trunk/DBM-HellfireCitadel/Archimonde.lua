@@ -466,7 +466,7 @@ end
 --Rain of chaos doesn't trigger ICD nor is affected by it
 --Nether banish IS affected by ICD but inconclusive on whether it CAUSES one
 local function updateAllTimers(self, ICD)
-	if not DBM.Options.DebugMode then return end
+--	if not DBM.Options.DebugMode then return end
 	DBM:Debug("updateAllTimers running", 3)
 	local phase = self.vb.phase
 	if phase < 2 then
@@ -497,6 +497,8 @@ local function updateAllTimers(self, ICD)
 			DBM:Debug("timerDeathbrandCD extended by: "..extend, 2)
 			timerDeathbrandCD:Cancel()
 			timerDeathbrandCD:Update(elapsed, total+extend, self.vb.deathBrandCount+1)
+			countdownDeathBrand:Cancel()
+			countdownDeathBrand:Start(ICD)
 		end
 		if phase == 1.5 then
 			if timerDesecrateCD:GetRemaining() < ICD then
@@ -537,6 +539,8 @@ local function updateAllTimers(self, ICD)
 			DBM:Debug("timerDeathbrandCD extended by: "..extend, 2)
 			timerDeathbrandCD:Cancel()
 			timerDeathbrandCD:Update(elapsed, total+extend, self.vb.deathBrandCount+1)
+			countdownDeathBrand:Cancel()
+			countdownDeathBrand:Start(ICD)
 		end
 	else
 		if timerShackledTormentCD:GetRemaining(self.vb.tormentCast+1) < ICD then
