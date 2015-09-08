@@ -86,6 +86,7 @@ local timerVoraciousSoulstalkerCD	= mod:NewCDCountTimer(59.5, "ej11778", nil, ni
 
 local countdownReverberatingBlow	= mod:NewCountdown(17, 180008, "Tank", nil, 4)--Every 17 seconds now, so count last 4
 local countdownCharge				= mod:NewCountdown("Alt23", 182051)
+local countdownSouls				= mod:NewCountdown(30, "ej11462")
 
 --Construct
 local voiceVolatileFelOrb			= mod:NewVoice(180221)--runout/keepmove
@@ -119,6 +120,7 @@ mod.vb.kickCount2 = 0
 mod.vb.barrierUp = false
 mod.vb.dominatorCount = 0
 mod.vb.interruptBehavior = "Count3Resume"
+local soulsSeen = {}
 local playerInConstruct = false
 local exertSpellName = GetSpellInfo(183331)
 local debuffName = GetSpellInfo(184124)
@@ -183,6 +185,7 @@ function mod:OnCombatStart(delay)
 	self.vb.dominatorCount = 0
 	self.vb.barrierUp = false
 	playerInConstruct = false
+	table.wipe(soulsSeen)
 	timerReverberatingBlowCD:Start(4.3-delay, 1)
 	countdownReverberatingBlow:Start(4.3-delay)
 	timerVolatileFelOrbCD:Start(12-delay)
@@ -310,6 +313,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerTransition:Start()--Time until boss is attackable
 		timerSargereiDominatorCD:Start(23, 1)
 		timerHauntingSoulCD:Start(30)--30-33
+		countdownSouls:Start(30)
 		timerApocalypseCD:Start(53)--53-58
 		self:RegisterShortTermEvents(
 			"UNIT_TARGETABLE_CHANGED"
@@ -333,9 +337,22 @@ function mod:SPELL_AURA_APPLIED(args)
 --			voiceGhastlyFixation:Play("runout")
 --			voiceGhastlyFixation:Schedule(2, "keepmove")
 		end
-		if self:AntiSpam(28, 2) then--Shitty way of doing it, but if a player dies fixate changes and will start false timer any other way
-			self.vb.ghostSpawn = self.vb.ghostSpawn + 1
-			timerHauntingSoulCD:Start(nil, self.vb.ghostSpawn+1)
+		if not soulsSeen[args.sourceGUID] then
+			soulsSeen[args.sourceGUID] = true
+			if self:AntiSpam(10, 2) then--Antispam also needed to filter all but first ghost after a fresh spawn
+				self.vb.ghostSpawn = self.vb.ghostSpawn + 1
+				if self.vb.ghostSpawn % 3 == 0 then--Every portal swap adds 10-11 seconds to next spawn, so 4, 7, 10 etc
+					timerHauntingSoulCD:Start(41, self.vb.ghostSpawn+1)
+					if playerInConstruct then
+						countdownSouls:Start(41)
+					end
+				else
+					timerHauntingSoulCD:Start(nil, self.vb.ghostSpawn+1)
+					if playerInConstruct then
+						countdownSouls:Start(30)
+					end
+				end
+			end
 		end
 	elseif spellId == 188666 and args:IsDestTypePlayer() then
 		if args:IsPlayer() then
@@ -388,8 +405,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.HudMapOnOrb then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(180221, "highlight", args.destName, 5, 20, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
-	elseif spellId == 190466 and args.sourceName == UnitName("player") then
-		playerInConstruct = true
+	elseif spellId == 190466 then
+		if args:IsPlayer() then
+			playerInConstruct = true
+		else
+			--At time this starts, don't know who construct will be
+			--So started for all, then canceled for all but player who becomes construct
+			countdownSouls:Cancel()
+		end
 	elseif (spellId == 183017 or spellId == 180415) and self:AntiSpam(5, args.destName) then
 		warnFelPrison:CombinedShow(0.3, args.destName)
 		--Only show target timer for adds
@@ -474,6 +497,7 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 		timerExertDominanceCD:Cancel()
 		timerSargereiDominatorCD:Cancel()
 		timerHauntingSoulCD:Cancel()
+		countdownSouls:Cancel()
 		timerApocalypseCD:Cancel()
 		self:UnregisterShortTermEvents()
 		timerVolatileFelOrbCD:Start(13)
