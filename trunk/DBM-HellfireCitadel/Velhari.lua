@@ -79,7 +79,7 @@ local timerInfernalTempestCD				= mod:NewNextCountTimer(10, 180300, nil, nil, ni
 local timerEnforcersOnslaughtCD				= mod:NewCDTimer(18, 180004, nil, "Tank", nil, 5)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))--Stage Two: Contempt
 local timerTaintedShadowsCD					= mod:NewNextTimer(5, 180533, nil, "Tank", nil, 5)
-local timerFontofCorruptionCD				= mod:NewNextTimer(20, 180526, nil, nil, nil, 3)
+local timerFontofCorruptionCD				= mod:NewNextTimer(19.6, 180526, nil, nil, nil, 3)
 ----Ancient Harbinger
 local timerHarbingersMendingCD				= mod:NewCDTimer(11, 180025, nil, nil, nil, 4)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))--Stage Three: Malice
@@ -392,7 +392,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			DBM.BossHealth:AddBoss(90271, AncientHarbinger)
 		end
 		specWarnAncientHarbinger:Show()
-		timerHarbingersMendingCD:Start(19)
+		timerHarbingersMendingCD:Start(19)--VERIFY
 	elseif npc == AncientSovereign then
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:AddBoss(90272, AncientSovereign)
@@ -405,10 +405,13 @@ function mod:UNIT_SPELLCAST_START(uId, _, _, _, spellId)
 	if spellId == 180025 then
 		if self.vb.interruptCount == 2 then self.vb.interruptCount = 0 end
 		self.vb.interruptCount = self.vb.interruptCount + 1
+		local count = self.vb.interruptCount
 		specWarnHarbingersMending:Show(AncientHarbinger, self.vb.interruptCount)
 		timerHarbingersMendingCD:Start()
-		if not self:IsHealer() then
-			voiceHarbingersMending:Play("kickcast")
+		if count == 1 then
+			voiceHarbingersMending:Play("kick1r.ogg")
+		elseif count == 2 then
+			voiceHarbingersMending:Play("kick2r.ogg")
 		end
 	end
 end
