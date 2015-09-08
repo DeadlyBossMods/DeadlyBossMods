@@ -338,9 +338,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		updateRangeFrame(self)
 	elseif spellId == 179407 then
 		warnDisembodied:CombinedShow(0.3, self.vb.SoulCleaveCount, args.destName)
-		countdownDisembodied:Start()
-		if not args:IsPlayer() then
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if not args:IsPlayer() and self:IsTanking(uId, "boss1") then
 			specWarnDisembodied:Show(args.destName)
+			countdownDisembodied:Start()
 		end
 	end
 end
