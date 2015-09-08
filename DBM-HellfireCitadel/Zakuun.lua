@@ -341,6 +341,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if not args:IsPlayer() and self:IsTanking(uId, "boss1") then
 			specWarnDisembodied:Show(args.destName)
+		end
+		if args:IsPlayer() then
 			countdownDisembodied:Start()
 		end
 	end

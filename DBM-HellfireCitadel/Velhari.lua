@@ -60,7 +60,7 @@ local specWarnFontofCorruptionOver			= mod:NewSpecialWarningEnd(180526)
 local yellFontofCorruption					= mod:NewYell(180526)
 ----Ancient Harbinger
 local specWarnAncientHarbinger				= mod:NewSpecialWarningSwitch("ej11163", "-Healer")
-local specWarnHarbingersMending				= mod:NewSpecialWarningInterrupt(180025, "-Healer", nil, nil, 1, 2)
+local specWarnHarbingersMending				= mod:NewSpecialWarningInterruptCount(180025, "-Healer", nil, nil, 1, 2)
 local specWarnHarbingersMendingDispel		= mod:NewSpecialWarningDispel(180025, "MagicDispeller")--if interrupt is missed (likely at some point, cast gets faster each time). Then it MUST be dispelled
 --Stage Three: Malice
 local specWarnDespoiledGround				= mod:NewSpecialWarningMove(180604, nil, nil, nil, 1, 1)
@@ -112,6 +112,7 @@ mod.vb.annihilationCount = 0
 mod.vb.bulwarkCount = 0
 mod.vb.gavelCount = 0
 mod.vb.phase = 1
+mod.vb.interruptCount = 0
 local AncientEnforcer = EJ_GetSectionInfo(11155)
 local AncientHarbinger = EJ_GetSectionInfo(11163)
 local AncientSovereign = EJ_GetSectionInfo(11170)
@@ -159,6 +160,7 @@ function mod:OnCombatStart(delay)
 	self.vb.bulwarkCount = 0
 	self.vb.gavelCount = 0
 	self.vb.phase = 1
+	self.vb.interruptCount = 0
 	timerSealofDecayCD:Start(3.5-delay)
 	timerAnnihilatingStrikeCD:Start(10-delay, 1)
 	timerTouchofHarmCD:Start(16.8-delay, 1)
@@ -312,7 +314,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 180025 then
-		specWarnHarbingersMendingDispel:Show(args.destName)
+		if self.vb.interruptCount == 2 then self.vb.interruptCount = 0 end
+		self.vb.interruptCount = self.vb.interruptCount + 1
+		specWarnHarbingersMendingDispel:Show(args.destName, self.vb.interruptCount)
 		if self:IsMagicDispeller() then
 			voiceHarbingersMending:Play("dispelboss")
 		end
