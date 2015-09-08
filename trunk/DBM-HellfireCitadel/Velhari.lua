@@ -314,9 +314,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 180025 then
-		if self.vb.interruptCount == 2 then self.vb.interruptCount = 0 end
-		self.vb.interruptCount = self.vb.interruptCount + 1
-		specWarnHarbingersMendingDispel:Show(args.destName, self.vb.interruptCount)
+		specWarnHarbingersMendingDispel:Show(args.destName)
 		if self:IsMagicDispeller() then
 			voiceHarbingersMending:Play("dispelboss")
 		end
@@ -405,7 +403,9 @@ end
 
 function mod:UNIT_SPELLCAST_START(uId, _, _, _, spellId)
 	if spellId == 180025 then
-		specWarnHarbingersMending:Show(AncientHarbinger)
+		if self.vb.interruptCount == 2 then self.vb.interruptCount = 0 end
+		self.vb.interruptCount = self.vb.interruptCount + 1
+		specWarnHarbingersMending:Show(AncientHarbinger, self.vb.interruptCount)
 		timerHarbingersMendingCD:Start()
 		if not self:IsHealer() then
 			voiceHarbingersMending:Play("kickcast")
