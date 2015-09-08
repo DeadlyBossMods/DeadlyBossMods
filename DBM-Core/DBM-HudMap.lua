@@ -23,7 +23,7 @@ local encounterMarkers = {}
 
 local GetNumGroupMembers, GetNumSubgroupMembers, IsInRaid = GetNumGroupMembers, GetNumSubgroupMembers, IsInRaid
 local GetTime, UIParent = GetTime, UIParent
-local UnitExists, UnitIsUnit, UnitPosition, UnitDebuff, GetPlayerFacing = UnitExists, UnitIsUnit, UnitPosition, UnitDebuff, GetPlayerFacing
+local UnitExists, UnitIsUnit, UnitPosition, UnitDebuff, UnitIsConnected, GetPlayerFacing = UnitExists, UnitIsUnit, UnitPosition, UnitDebuff, UnitIsConnected, GetPlayerFacing
 local GetInstanceInfo = GetInstanceInfo
 
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
