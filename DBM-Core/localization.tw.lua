@@ -54,7 +54,7 @@ DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor結束紀錄。"
 
 DBM_CORE_COMBAT_STARTED_AI_TIMER	= "我的CPU是類神經網路處理器，一種學習型電腦。(此戰鬥會使用新的AI計時器功能去產生計時器的近似值)"
 
-DBM_CORE_PROFILE_NOT_FOUND			= "<Deadly Boss Mods>你目前的配置檔已經損毀。DBM會載入'Default'配置檔。"
+DBM_CORE_PROFILE_NOT_FOUND			= "<DBM>你目前的配置檔已經損毀。DBM會載入'Default'配置檔。"
 DBM_CORE_PROFILE_CREATED			= "配置檔'%s'已建立。"
 DBM_CORE_PROFILE_CREATE_ERROR		= "建立配置檔失敗，無效的配置檔名稱。"
 DBM_CORE_PROFILE_CREATE_ERROR_D		= "建立配置檔失敗，配置檔'%s'已存在。"
