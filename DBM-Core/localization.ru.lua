@@ -54,7 +54,7 @@ DBM_CORE_TRANSCRIPTOR_LOG_END		= "Логирование с помощью Trans
 
 DBM_CORE_COMBAT_STARTED_AI_TIMER	= "My CPU is a neural net processor; a learning computer. (This fight will use the new timer AI feature to generate timer approximations)"
 
-DBM_CORE_PROFILE_NOT_FOUND			= "<Deadly Boss Mods> Ваш текущий профиль поврежден. DBM загрузит профиль 'По умолчанию'."
+DBM_CORE_PROFILE_NOT_FOUND			= "<DBM> Ваш текущий профиль поврежден. DBM загрузит профиль 'По умолчанию'."
 DBM_CORE_PROFILE_CREATED			= "Профиль '%s' создан."
 DBM_CORE_PROFILE_CREATE_ERROR		= "Не удалось создать профиль. Некорректное имя профиля."
 DBM_CORE_PROFILE_CREATE_ERROR_D		= "Не удалось создать профиль. Профиль '%s' уже существует."

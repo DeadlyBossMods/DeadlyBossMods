@@ -50,7 +50,7 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "Luta contra %s começou %s atrás, reajustan
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Gravação do Transcritor começou."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Gravação do Transcritor finalizado."
 
-DBM_CORE_PROFILE_NOT_FOUND			= "<Deadly Boss Mods> Seu perfil atual esta corrompido. DBM carregara o perfil 'padrão/default'."
+DBM_CORE_PROFILE_NOT_FOUND			= "<DBM> Seu perfil atual esta corrompido. DBM carregara o perfil 'padrão/default'."
 DBM_CORE_PROFILE_CREATED			= "'%s' perfil criado."
 DBM_CORE_PROFILE_CREATE_ERROR		= "Falha ao criar perfil. nome de perfil invalido."
 DBM_CORE_PROFILE_CREATE_ERROR_D		= "Falha ao criar perfil. '%s' perfil já existe."

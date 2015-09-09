@@ -53,7 +53,7 @@ DBM_CORE_TRANSCRIPTOR_LOG_END		= "\"Transcriptor\"-Aufzeichnung beendet."
 
 DBM_CORE_COMBAT_STARTED_AI_TIMER	= "Meine CPU ist ein neuronaler Prozessor, ein lernender Computer. (Dieser Kampf wird die neuen KI-Funktionen zur Erzeugung von Timernäherungen verwenden.)"
 
-DBM_CORE_PROFILE_NOT_FOUND			= "<Deadly Boss Mods> Dein derzeitiges Profil ist korrupt. DBM wird das Profil 'Default' laden."
+DBM_CORE_PROFILE_NOT_FOUND			= "<DBM> Dein derzeitiges Profil ist korrupt. DBM wird das Profil 'Default' laden."
 DBM_CORE_PROFILE_CREATED			= "Profil '%s' erzeugt."
 DBM_CORE_PROFILE_CREATE_ERROR		= "Erzeugen des Profils fehlgeschlagen. Ungültiger Profilname."
 DBM_CORE_PROFILE_CREATE_ERROR_D		= "Erzeugen des Profils fehlgeschlagen. Profil '%s' existiert bereits."

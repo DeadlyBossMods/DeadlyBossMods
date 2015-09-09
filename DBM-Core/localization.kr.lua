@@ -54,7 +54,7 @@ DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor 기록을 중단합니다."
 
 DBM_CORE_COMBAT_STARTED_AI_TIMER	= "DBM 인공지능 바가 작동합니다. (이 전투에서 사용될 주문들의 대기시간들을 추정해서 보여줍니다.)"
 
-DBM_CORE_PROFILE_NOT_FOUND			= "<Deadly Boss Mods> 현재 설정된 프로필이 손상되었습니다. 'Default' 프로필을 불러옵니다."
+DBM_CORE_PROFILE_NOT_FOUND			= "<DBM> 현재 설정된 프로필이 손상되었습니다. 'Default' 프로필을 불러옵니다."
 DBM_CORE_PROFILE_CREATED			= "'%s' 프로필을 만들었습니다."
 DBM_CORE_PROFILE_CREATE_ERROR		= "프로필 생성 실패. 프로필 이름이 올바르지 않습니다."
 DBM_CORE_PROFILE_CREATE_ERROR_D		= "프로필 생성 실패. '%s' 프로필이 이미 존재합니다."
