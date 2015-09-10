@@ -1135,6 +1135,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerShackledTormentCD:Cancel()--Resets to 55 on non mythic, no longer cast on mythic
 		countdownShackledTorment:Cancel()
 		countdownDeathBrand:Cancel()
+		timerFelborneOverfiendCD:Cancel()
 		warnPhase3:Show()
 		voicePhaseChange:Play("pthree")
 		if not self:IsMythic() then
