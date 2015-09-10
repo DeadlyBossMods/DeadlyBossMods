@@ -568,7 +568,8 @@ local function updateAllTimers(self, ICD)
 			countdownDemonicFeedback:Cancel()
 			countdownDemonicFeedback:Start(ICD)
 		end
-		if timerNetherBanishCD:GetRemaining(self.vb.netherBanish+1) < ICD then
+		--Don't know what's wrong with this shit.
+--[[		if timerNetherBanishCD:GetRemaining(self.vb.netherBanish+1) < ICD then
 			local elapsed, total = timerNetherBanishCD:GetTime(self.vb.netherBanish+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerNetherBanishCD extended by: "..extend, 2)
@@ -576,7 +577,7 @@ local function updateAllTimers(self, ICD)
 			timerNetherBanishCD:Update(elapsed, total+extend, self.vb.netherBanish+1)
 			countdownNetherBanish:Cancel()
 			countdownNetherBanish:Start(ICD)
-		end
+		end--]]
 	end
 end
 
