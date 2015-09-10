@@ -180,7 +180,7 @@ mod.vb.netherPortals = 0
 mod.vb.unleashedCountRemaining = 0
 mod.vb.markOfLegionCast = 0
 mod.vb.markOfLegionRemaining = 0
-mod.vb.netherBanish = 0
+mod.vb.netherBanish2 = 0
 mod.vb.rainOfChaos = 0
 mod.vb.TouchOfShadows = 0
 mod.vb.wroughtWarned = 0
@@ -568,16 +568,15 @@ local function updateAllTimers(self, ICD)
 			countdownDemonicFeedback:Cancel()
 			countdownDemonicFeedback:Start(ICD)
 		end
-		--Don't know what's wrong with this shit.
---[[		if timerNetherBanishCD:GetRemaining(self.vb.netherBanish+1) < ICD then
-			local elapsed, total = timerNetherBanishCD:GetTime(self.vb.netherBanish+1)
+		if timerNetherBanishCD:GetRemaining(self.vb.netherBanish2+1) < ICD then
+			local elapsed, total = timerNetherBanishCD:GetTime(self.vb.netherBanish2+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerNetherBanishCD extended by: "..extend, 2)
 			timerNetherBanishCD:Cancel()
-			timerNetherBanishCD:Update(elapsed, total+extend, self.vb.netherBanish+1)
+			timerNetherBanishCD:Update(elapsed, total+extend, self.vb.netherBanish2+1)
 			countdownNetherBanish:Cancel()
 			countdownNetherBanish:Start(ICD)
-		end--]]
+		end
 	end
 end
 
@@ -589,7 +588,7 @@ function mod:OnCombatStart(delay)
 	self.vb.netherPortal = false
 	self.vb.unleashedCountRemaining = 0
 	self.vb.markOfLegionRemaining = 0
-	self.vb.netherBanish = 0
+	self.vb.netherBanish2 = 0
 	self.vb.rainOfChaos = 0
 	self.vb.TouchOfShadows = 0
 	self.vb.deathBrandCount = 0
@@ -761,8 +760,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 188514 then
 		table.wipe(legionTargets)
 	elseif spellId == 186961 then
-		self.vb.netherBanish = self.vb.netherBanish + 1
-		timerNetherBanishCD:Start(nil, self.vb.netherBanish+1)
+		self.vb.netherBanish2 = self.vb.netherBanish2 + 1
+		timerNetherBanishCD:Start(nil, self.vb.netherBanish2+1)
 --		updateAllTimers(self, 7)--Inconclusive logs. Could not find any data supporting this extention
 	end
 end
@@ -933,7 +932,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 186961 then
 		self.vb.netherPortal = true
-		self.vb.netherBanish = self.vb.netherBanish + 1
 		self.vb.TouchOfShadows = 0
 		countdownNetherBanish:Start()
 		if args:IsPlayer() then
@@ -946,7 +944,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellNetherBanish:Schedule(2, 5)
 		else
 			voiceNetherBanish:Play("telesoon")
-			specWarnNetherBanishOther:Show(self.vb.netherBanish, args.destName)
+			specWarnNetherBanishOther:Show(self.vb.netherBanish2, args.destName)
 		end
 		updateRangeFrame(self)
 	elseif spellId == 189895 and (playerBanished or not self.Options.FilterOtherPhase) then
