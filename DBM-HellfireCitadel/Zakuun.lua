@@ -150,6 +150,19 @@ local function warnSeeds(self)
 		if self.Options.SetIconOnSeeds and not self:IsLFR() then
 			self:SetIcon(targetName, i)
 		end
+		if self.Options.HudMapOnSeeds then
+			if i == 1 then--Yellow to match Star
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(181508, "star", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
+			elseif i == 2 then--Orange to match Circle
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(181508, "circle", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
+			elseif i == 3 then--Purple to match Diamond
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(181508, "diamond", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
+			elseif i == 4 then--Green to match Triangle
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(181508, "triangle", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
+			else--White to match  Moon
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(181508, "moon", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
+			end
+		end
 	end
 end
 
@@ -282,9 +295,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(3.5, warnWake, self)
 			countdownSeedsofDestruction:Start()--Everyone, because waves occur.
 		end
-		if self.Options.HudMapOnSeeds then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 13, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
-		end
 		seedsTargets[#seedsTargets+1] = args.destName
 		self:Unschedule(warnSeeds)
 		local expectedCount = self:IsMythic() and 5 or 4--(30 man is still only 4 seeds)
@@ -356,10 +366,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		updateRangeFrame(self)
 	elseif spellId == 181508 or spellId == 181515 then
 		if self.Options.SetIconOnSeeds and not self:IsLFR() then
-			self:SetIcon(args.destName, 0)--Number of targets not known yet, probably never will be if it's flexible and not mythic
+			self:SetIcon(args.destName, 0)
 		end
 		if self.Options.HudMapOnSeeds then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+			DBMHudMap:FreeEncounterMarkerByTarget(181508, args.destName)
 		end
 	elseif spellId == 179667 then--Disarmed removed (armed)
 		self.vb.FissureCount = 0
