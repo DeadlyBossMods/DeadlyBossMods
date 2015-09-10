@@ -332,7 +332,7 @@ local function showMarkOfLegion(self, spellName)
 					self:SetIcon(name, 1)
 				end
 				if self.Options.HudMapMarkofLegion then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match star
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match Star
 				end
 				if name == playerName then
 					yellMarkOfLegionPoS:Yell(roundedTime, 1, 1)
@@ -342,7 +342,7 @@ local function showMarkOfLegion(self, spellName)
 					self:SetIcon(name, 2)
 				end
 				if self.Options.HudMapMarkofLegion then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match circle
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match Circle
 				end
 				if name == playerName then
 					yellMarkOfLegionPoS:Yell(roundedTime, 2, 2)
@@ -362,7 +362,7 @@ local function showMarkOfLegion(self, spellName)
 					self:SetIcon(name, 4)
 				end
 				if self.Options.HudMapMarkofLegion then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
 				end
 				if name == playerName then
 					yellMarkOfLegionPoS:Yell(roundedTime, 4, 4)
