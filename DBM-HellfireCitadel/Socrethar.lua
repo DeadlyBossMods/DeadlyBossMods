@@ -6,7 +6,7 @@ mod:SetCreatureID(92330)
 mod:SetEncounterID(1794)
 mod:SetZone()
 mod:SetUsedIcons(1)
-mod:SetHotfixNoticeRev(14460)
+mod:SetHotfixNoticeRev(14483)
 --mod.respawnTime = 20
 
 mod:RegisterCombat("combat")
@@ -413,7 +413,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--So started for all, then canceled for all but player who becomes construct
 			countdownSouls:Cancel()
 		end
-	elseif (spellId == 183017 or spellId == 180415) and self:AntiSpam(5, args.destName) and not args:GetDestCreatureID() == 91765 then
+	elseif (spellId == 183017 or spellId == 180415) and self:AntiSpam(5, args.destName) and args:GetDestCreatureID() ~= 91765 then
 		warnFelPrison:CombinedShow(0.3, args.destName)
 		--Only show target timer for adds
 		if not DBM:GetRaidUnitId(args.destName) then
