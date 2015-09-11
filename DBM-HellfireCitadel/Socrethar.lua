@@ -406,7 +406,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(180221, "highlight", args.destName, 5, 20, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
 	elseif spellId == 190466 then
-		if args:IsPlayer() then
+		if args.sourceGUID == UnitGUID("player") then
 			playerInConstruct = true
 		else
 			--At time this starts, don't know who construct will be
@@ -432,7 +432,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.HudMapOnOrb then
 			DBMHudMap:FreeEncounterMarkerByTarget(180221, args.destName)
 		end
-	elseif spellId == 190466 and args:IsPlayer() then
+	elseif spellId == 190466 and args.sourceGUID == UnitGUID("player") then
 		playerInConstruct = false
 	elseif spellId == 184053 then
 		self.vb.barrierUp = false
