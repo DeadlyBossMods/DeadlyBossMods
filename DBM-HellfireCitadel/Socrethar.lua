@@ -341,7 +341,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			soulsSeen[args.sourceGUID] = true
 			if self:AntiSpam(10, 2) then--Antispam also needed to filter all but first ghost after a fresh spawn
 				self.vb.ghostSpawn = self.vb.ghostSpawn + 1
-				if self.vb.ghostSpawn % 3 == 0 then--Every portal swap adds 10-11 seconds to next spawn, so 4, 7, 10 etc
+				if self.vb.ghostSpawn % 4 == 0 then--Every portal swap adds 10-11 seconds to next spawn, so 5, 9, 13 etc
 					timerHauntingSoulCD:Start(41, self.vb.ghostSpawn+1)
 					if playerInConstruct then
 						countdownSouls:Start(41)
@@ -413,7 +413,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--So started for all, then canceled for all but player who becomes construct
 			countdownSouls:Cancel()
 		end
-	elseif (spellId == 183017 or spellId == 180415) and self:AntiSpam(5, args.destName) then
+	elseif (spellId == 183017 or spellId == 180415) and self:AntiSpam(5, args.destName) and not args:GetDestCreatureID() == 91765 then
 		warnFelPrison:CombinedShow(0.3, args.destName)
 		--Only show target timer for adds
 		if not DBM:GetRaidUnitId(args.destName) then
