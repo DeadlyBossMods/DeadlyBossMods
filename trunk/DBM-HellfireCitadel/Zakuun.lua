@@ -301,7 +301,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if #seedsTargets == expectedCount then--Have all targets, warn immediately
 			warnSeeds(self)
 		else
-			self:Schedule(0.5, warnSeeds, self)--0.5 may be too short, verify
+			if expectedCount == 5 then--Mythic, wait longer. Above all else on mythic we must have all 5 targets
+				self:Schedule(1, warnSeeds, self)
+			else--not mythic, can't wait forever since non mythic doesn't have an immediate warn when expected cap reached.
+				self:Schedule(0.5, warnSeeds, self)
+			end
 		end
 	elseif spellId == 182008 then
 		warnLatentEnergy:CombinedShow(1, args.destName)
