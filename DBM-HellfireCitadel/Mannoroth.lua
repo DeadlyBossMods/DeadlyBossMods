@@ -448,7 +448,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if #doomTargets == 3 then
 			breakDoom(self)
 		else
-			self:Schedule(1.3, breakDoom, self)--3 targets, pretty slowly. I've seen at least 1.2, so make this 1.3, maybe more if needed
+			self:Schedule(2, breakDoom, self)--3 targets, pretty slowly. I've seen at least 1.2, so make this 1.3, maybe more if needed
 		end
 		if args:IsPlayer() then
 			specWarnMarkOfDoom:Show()
