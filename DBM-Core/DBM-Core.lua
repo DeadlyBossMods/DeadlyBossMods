@@ -2191,9 +2191,16 @@ do
 		if sender then self:ShowPizzaInfo(text, sender) end
 		if count then
 			if not fakeMod then
+				local threshold = self.Options.PTCountThreshold
 				fakeMod = self:NewMod("CreateCountTimerDummy")
 				self:GetModLocalization("CreateCountTimerDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
-				fakeMod.countdown = fakeMod:NewCountdown(0, 0, nil, nil, nil, true)
+				local adjustedThreshold = 5
+				if threshold > 10 then
+					adjustedThreshold = 10
+				else
+					adjustedThreshold = floor(threshold)
+				end
+				fakeMod.countdown = fakeMod:NewCountdown(0, 0, nil, nil, adjustedThreshold, true)
 			end
 			if not self.Options.DontPlayPTCountdown then
 				fakeMod.countdown:Cancel()
@@ -2202,7 +2209,7 @@ do
 			if not self.Options.DontShowPTCountdownText then
 				self:Unschedule(countDownTextDelay)
 				TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
-				local threshold = DBM.Options.PTCountThreshold
+				local threshold = self.Options.PTCountThreshold
 				if time > threshold then
 					self:Schedule(time-threshold, countDownTextDelay, threshold)
 				else
@@ -3870,9 +3877,16 @@ do
 			return
 		end
 		if not dummyMod then
+			local threshold = DBM.Options.PTCountThreshold
+			local adjustedThreshold = 5
+			if threshold > 10 then
+				adjustedThreshold = 10
+			else
+				adjustedThreshold = floor(threshold)
+			end
 			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
 			DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
-			dummyMod.countdown = dummyMod:NewCountdown(0, 0, nil, nil, nil, true)
+			dummyMod.countdown = dummyMod:NewCountdown(0, 0, nil, nil, adjustedThreshold, true)
 			dummyMod.text = dummyMod:NewAnnounce("%s", 1, 2457)
 			dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
 		end
@@ -3962,9 +3976,16 @@ do
 			return
 		end
 		if not dummyMod2 then
+			local threshold = DBM.Options.PTCountThreshold
+			local adjustedThreshold = 5
+			if threshold > 10 then
+				adjustedThreshold = 10
+			else
+				adjustedThreshold = floor(threshold)
+			end
 			dummyMod2 = DBM:NewMod("BreakTimerCountdownDummy")
 			DBM:GetModLocalization("BreakTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
-			dummyMod2.countdown = dummyMod2:NewCountdown(0, 0, nil, nil, nil, true)
+			dummyMod2.countdown = dummyMod2:NewCountdown(0, 0, nil, nil, adjustedThreshold, true)
 			dummyMod2.text = dummyMod2:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
 		--Cancel any existing break timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
