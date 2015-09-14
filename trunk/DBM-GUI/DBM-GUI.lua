@@ -433,14 +433,16 @@ do
 		{ sound=true, text = "SW 4", value = 4 },
 	})
 	
+	--TODO, this should be localized
 	local tcolors = {
-		{ text = "Generic Color", value = 0 },
-		{ text = "Add Color", value = 1 },
-		{ text = "AOE Color", value = 2 },
-		{ text = "Targeted Color", value = 3 },
-		{ text = "Interrupt Color", value = 4 },
-		{ text = "Role Color", value = 5 },
-		{ text = "Phase Color", value = 6 },
+		{ text = "Generic", value = 0 },
+		{ text = "Add", value = 1 },
+		{ text = "AOE", value = 2 },
+		{ text = "Targeted", value = 3 },
+		{ text = "Interrupt", value = 4 },
+		{ text = "Role", value = 5 },
+		{ text = "Phase", value = 6 },
+		{ text = "Important (User)", value = 7 },
 	}
 
 	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, mod, modvar, globalvar, isTimer)
