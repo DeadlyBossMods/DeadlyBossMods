@@ -761,7 +761,8 @@ do
 			self.numBars = (self.numBars or 0) + 1
 			totalBars = self.numBars
 			local enlargeTime = self.options.BarStyle ~= "NoAnim" and self.options.EnlargeBarTime or 11
-			if (colorType and colorType == 7 or (timer <= enlargeTime or huge)) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
+			local importantBar = colorType and colorType == 7
+			if (importantBar or (timer <= enlargeTime or huge)) and self:GetOption("HugeBarsEnabled") then -- start enlarged
 				newBar.enlarged = true
 				newBar.huge = true
 				self.hugeBars:Append(newBar)
@@ -769,7 +770,11 @@ do
 				newBar.huge = nil
 				self.smallBars:Append(newBar)
 			end
-			newBar:SetText(id)
+			if importantBar then
+				newBar:SetText(DBM_CORE_DEADLY_ICON..id)
+			else
+				newBar:SetText(id)
+			end
 			newBar:SetIcon(icon)
 			self.bars[newBar] = true
 			newBar:ApplyStyle()
@@ -945,6 +950,7 @@ function barPrototype:Update(elapsed)
 	local timerValue = self.timer
 	local totaltimeValue = self.totalTime
 	local colorCount = self.colorType
+	local enlargeHack = false
 	if barOptions.DynamicColor and not self.color then
 		local r, g, b
 		if colorCount and colorCount >= 1 then
@@ -973,6 +979,7 @@ function barPrototype:Update(elapsed)
 				g = barOptions.StartColorPG  + (barOptions.EndColorPG - barOptions.StartColorPG) * (1 - timerValue/totaltimeValue)
 				b = barOptions.StartColorPB  + (barOptions.EndColorPB - barOptions.StartColorPB) * (1 - timerValue/totaltimeValue)
 			elseif colorCount == 7 then--Important
+				enlargeHack = true
 				r = barOptions.StartColorUIR  + (barOptions.EndColorUIR - barOptions.StartColorUIR) * (1 - timerValue/totaltimeValue)
 				g = barOptions.StartColorUIG  + (barOptions.EndColorUIG - barOptions.StartColorUIG) * (1 - timerValue/totaltimeValue)
 				b = barOptions.StartColorUIB  + (barOptions.EndColorUIB - barOptions.StartColorUIB) * (1 - timerValue/totaltimeValue)
@@ -991,13 +998,13 @@ function barPrototype:Update(elapsed)
 		return self:Cancel()
 	else
 		if barOptions.FillUpBars then
-			if currentStyle == "NoAnim" and isEnlarged then
+			if currentStyle == "NoAnim" and isEnlarged and not enlargeHack then
 				bar:SetValue(1 - timerValue/(totaltimeValue < 11 and totaltimeValue or 11))
 			else
 				bar:SetValue(1 - timerValue/totaltimeValue)
 			end
 		else
-			if currentStyle == "NoAnim" and isEnlarged then
+			if currentStyle == "NoAnim" and isEnlarged and not enlargeHack then
 				bar:SetValue(timerValue/(totaltimeValue < 11 and totaltimeValue or 11))
 			else
 				bar:SetValue(timerValue/totaltimeValue)
