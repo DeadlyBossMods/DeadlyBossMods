@@ -1113,7 +1113,7 @@ do
 				return
 			end
 			--DBM is disabled and DBM is not forced disabled
-			if dbmToc >= wowTOC and not self.Options.Enabled then
+			if not dbmIsEnabled and not blockEnable then
 				C_TimerAfter(10, function() self:AddMsg(DBM_CORE_DISABLED_REMINDER) end)
 			end
 			self.Bars:LoadOptions("DBM")
@@ -2381,7 +2381,7 @@ do
 			for i, v in ipairs(callOnLoad) do v[1]() end
 			collectgarbage("collect")
 		end
-		if not self.Options.Enabled then
+		if not dbmIsEnabled and not blockEnable then
 			self:AddMsg(DBM_CORE_DISABLED_REMINDER)
 		end
 		return DBM_GUI:ShowHide()
@@ -3573,7 +3573,7 @@ end
 
 --Scenario mods
 function DBM:ScenarioCheck()
-	if combatInfo[LastInstanceMapID] then
+	if dbmIsEnabled and combatInfo[LastInstanceMapID] then
 		for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 			if (v.type == "scenario") and checkEntry(v.msgs, LastInstanceMapID) then
 				self:StartCombat(v.mod, 0, "LOADING_SCREEN_DISABLED")
@@ -3778,7 +3778,7 @@ do
 	end
 
 	syncHandlers["C"] = function(sender, delay, mod, modRevision, startHp, dbmRevision)
-		if sender == playerName then return end
+		if not dbmIsEnabled or sender == playerName then return end
 		if LastInstanceType == "pvp" then return end
 		if LastInstanceType == "none" and (not UnitAffectingCombat("player") or #inCombat > 0) then--world boss
 			local senderuId = DBM:GetRaidUnitId(sender)
@@ -4108,6 +4108,7 @@ do
 						elseif revDifference > 150 then
 							if updateNotificationDisplayed < 3 then
 								updateNotificationDisplayed = 3
+								DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE)
 								DBM:Disable(true)
 							end
 						end
@@ -4952,7 +4953,7 @@ do
 	function DBM:PLAYER_REGEN_DISABLED()
 		lastCombatStarted = GetTime()
 		if not combatInitialized then return end
-		if combatInfo[LastInstanceMapID] then
+		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type:find("combat") and not v.noRegenDetection then
 					if v.multiMobPullDetection then
@@ -4994,7 +4995,7 @@ do
 
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if timerRequestInProgress then return end--do not start ieeu combat if timer request is progressing. (not to break Timer Recovery stuff)
-		if combatInfo[LastInstanceMapID] then
+		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type:find("combat") and isBossEngaged(v.multiMobPullDetection or v.mob) then
 					self:StartCombat(v.mod, 0, "IEEU")
@@ -5016,7 +5017,7 @@ do
 
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
 		self:Debug("ENCOUNTER_START event fired: "..encounterID.." "..name.." "..difficulty.." "..size)
-		if combatInfo[LastInstanceMapID] then
+		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if not v.noESDetection then
 					if v.multiEncounterPullDetection then
@@ -5166,7 +5167,7 @@ do
 	-- called for all mob chat events
 	local function onMonsterMessage(self, type, msg)
 		-- pull detection
-		if combatInfo[LastInstanceMapID] then
+		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type == type and checkEntry(v.msgs, msg) or v.type == type .. "_regex" and checkExpressionList(v.msgs, msg) then
 					self:StartCombat(v.mod, 0, "MONSTER_MESSAGE")
@@ -5633,7 +5634,7 @@ do
 			health = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		end
 		if not health or health < 5 then return end -- no worthy of combat start if health is below 5%
-		if InCombatLockdown() then
+		if dbmIsEnabled and InCombatLockdown() then
 			if cId ~= 0 and not bossHealth[cId] and bossIds[cId] and UnitAffectingCombat(uId) and healthCombatInitialized then -- StartCombat by UNIT_HEALTH.
 				if combatInfo[LastInstanceMapID] then
 					for i, v in ipairs(combatInfo[LastInstanceMapID]) do
@@ -6172,7 +6173,7 @@ do
 	end
 
 	function DBM:ReceiveCombatInfo(sender, mod, time)
-		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
+		if dbmIsEnabled and sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
 			self:StartCombat(mod, time, "TIMER_RECOVERY")
 			--Recovery successful, someone sent info, abort other recovery requests
 			self:Unschedule(self.RequestTimers)
