@@ -12,7 +12,7 @@ local abs, pow, sqrt, sin, cos, atan2, floor, ceil, min, max, pi, pi2 = math.abs
 local error, print = error, print
 
 local CallbackHandler = LibStub:GetLibrary("CallbackHandler-1.0")
-local updateFrame = CreateFrame("Frame")
+local updateFrame = CreateFrame("Frame", "DBMHudMapUpdateFrame")
 local onUpdate, Point, Edge
 local followedUnits = {}
 local callbacks = CallbackHandler:New(mod)
@@ -264,6 +264,7 @@ function mod:OnInitialize()
 	self.canvas = CreateFrame("Frame", "DBMHudMapCanvas", UIParent)
 	self.canvas:SetSize(UIParent:GetWidth(), UIParent:GetHeight())
 	self.canvas:SetPoint("CENTER")
+	self.canvas:Hide()
 	self.HUDEnabled = false
 end
 
@@ -274,6 +275,7 @@ function mod:Enable()
 	mainFrame:Show()
 --	mainFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	mainFrame:RegisterEvent("LOADING_SCREEN_DISABLED")
+	self.canvas:Show()
 	self.canvas:SetAlpha(1)
 	self:UpdateCanvasPosition()
 
@@ -282,6 +284,7 @@ function mod:Enable()
 	self:SetZoom()
 	self.canvas:SetBackdrop(nil)
 	self.HUDEnabled = true
+	updateFrame:Show()
 	if not updateFrame.ticker then
 		updateFrame.ticker = C_Timer.NewTicker(0.035, function() onUpdate(updateFrame, 0.035) end)
 	end
@@ -296,7 +299,9 @@ function mod:Disable()
 	--Anything else needed? maybe clear all marks, hide any frames, etc?
 --	mainFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	mainFrame:UnregisterEvent("LOADING_SCREEN_DISABLED")
+	self.canvas:Hide()
 	mainFrame:Hide()
+	updateFrame:Hide()
 	self.HUDEnabled = false
 	if updateFrame.ticker then
 		updateFrame.ticker:Cancel()
