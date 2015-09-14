@@ -316,6 +316,31 @@ options = {
 		type = "number",
 		default = 0.285,
 	},
+	--Type 7 (Important/User set only)
+	StartColorUIR = {
+		type = "number",
+		default = 1,
+	},
+	StartColorUIG = {
+		type = "number",
+		default = 0.466,
+	},
+	StartColorUIB = {
+		type = "number",
+		default = 0.459,
+	},
+	EndColorUIR = {
+		type = "number",
+		default = 1,
+	},
+	EndColorUIG = {
+		type = "number",
+		default = 0.043,
+	},
+	EndColorUIB = {
+		type = "number",
+		default = 0.247,
+	},
 	TextColorR = {
 		type = "number",
 		default = 1,
@@ -736,7 +761,7 @@ do
 			self.numBars = (self.numBars or 0) + 1
 			totalBars = self.numBars
 			local enlargeTime = self.options.BarStyle ~= "NoAnim" and self.options.EnlargeBarTime or 11
-			if (timer <= enlargeTime or huge) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
+			if (colorType and colorType == 7 or (timer <= enlargeTime or huge)) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
 				newBar.enlarged = true
 				newBar.huge = true
 				self.hugeBars:Append(newBar)
@@ -947,6 +972,10 @@ function barPrototype:Update(elapsed)
 				r = barOptions.StartColorPR  + (barOptions.EndColorPR - barOptions.StartColorPR) * (1 - timerValue/totaltimeValue)
 				g = barOptions.StartColorPG  + (barOptions.EndColorPG - barOptions.StartColorPG) * (1 - timerValue/totaltimeValue)
 				b = barOptions.StartColorPB  + (barOptions.EndColorPB - barOptions.StartColorPB) * (1 - timerValue/totaltimeValue)
+			elseif colorCount == 7 then--Important
+				r = barOptions.StartColorUIR  + (barOptions.EndColorUIR - barOptions.StartColorUIR) * (1 - timerValue/totaltimeValue)
+				g = barOptions.StartColorUIG  + (barOptions.EndColorUIG - barOptions.StartColorUIG) * (1 - timerValue/totaltimeValue)
+				b = barOptions.StartColorUIB  + (barOptions.EndColorUIB - barOptions.StartColorUIB) * (1 - timerValue/totaltimeValue)
 			end
 		else
 			r = barOptions.StartColorR  + (barOptions.EndColorR - barOptions.StartColorR) * (1 - timerValue/totaltimeValue)
@@ -1171,6 +1200,8 @@ function barPrototype:ApplyStyle()
 				barStartRed, barStartGreen, barStartBlue = barOptions.StartColorRR, barOptions.StartColorRG, barOptions.StartColorRB
 			elseif colorCount == 6 then--Phase
 				barStartRed, barStartGreen, barStartBlue = barOptions.StartColorPR, barOptions.StartColorPG, barOptions.StartColorPB
+			elseif colorCount == 7 then--Important
+				barStartRed, barStartGreen, barStartBlue = barOptions.StartColorUIR, barOptions.StartColorUIG, barOptions.StartColorUIB
 			end
 		else
 			barStartRed, barStartGreen, barStartBlue = barOptions.StartColorR, barOptions.StartColorG, barOptions.StartColorB
