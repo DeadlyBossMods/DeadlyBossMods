@@ -482,3 +482,6 @@ DBM_CORE_LAG_FOOTER					= "No Response: %s"
 DBM_CORE_TANK_ICON = "|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:22:22:0:0:64:64:0:19:22:41|t"
 DBM_CORE_HEALER_ICON = "|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:22:22:0:0:64:64:20:39:1:20|t"
 DBM_CORE_DAMAGE_ICON = "|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:22:22:0:0:64:64:20:39:22:41|t"
+
+DBM_CORE_DEADLY_ICON = "|TInterface\AddOns\DBM-Core\textures\ej-deadly.tga:22:22|t"
+DBM_CORE_HEROIC_ICON = "|TInterface\AddOns\DBM-Core\textures\ej-heroic.tga:22:22|t"
