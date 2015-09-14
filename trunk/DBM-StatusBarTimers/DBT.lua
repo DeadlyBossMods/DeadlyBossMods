@@ -770,11 +770,7 @@ do
 				newBar.huge = nil
 				self.smallBars:Append(newBar)
 			end
-			if importantBar then
-				newBar:SetText(DBM_CORE_DEADLY_ICON..id)
-			else
-				newBar:SetText(id)
-			end
+			newBar:SetText(id)
 			newBar:SetIcon(icon)
 			self.bars[newBar] = true
 			newBar:ApplyStyle()
@@ -910,7 +906,12 @@ function barPrototype:SetElapsed(elapsed)
 end
 
 function barPrototype:SetText(text)
-	_G[self.frame:GetName().."BarName"]:SetText(text)
+	if self.colorType and self.colorType == 7 then
+		--DBM_CORE_DAMAGE_ICON is temp. I'm just not smart enough to get DBM_CORE_DEADLY_ICON or DBM_CORE_HEROIC_ICON to work right
+		_G[self.frame:GetName().."BarName"]:SetText(DBM_CORE_DAMAGE_ICON..text)
+	else
+		_G[self.frame:GetName().."BarName"]:SetText(text)
+	end
 end
 
 function barPrototype:SetIcon(icon)
