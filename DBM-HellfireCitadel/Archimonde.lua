@@ -134,11 +134,11 @@ local timerSeethingCorruptionCD		= mod:NewCDCountTimer(107, 190506, nil, nil, ni
 --countdowns kind of blow with this fights timer variations.
 --Everything but overfiend is a CD
 --I don't want to use a countdown on something thats 47-56 like allure or 52-70 like felburst
-local countdownWroughtChaos			= mod:NewCountdownFades("AltTwo5", 184265)
-local countdownNetherBanish			= mod:NewCountdown(61.9, 186961)
-local countdownDemonicFeedback		= mod:NewCountdown("Alt35", 186961)
-local countdownDeathBrand			= mod:NewCountdown("AltTwo42", 183828)
-local countdownShackledTorment		= mod:NewCountdown("AltTwo42", 184931, "-Tank")
+local countdownWroughtChaos			= mod:NewCountdownFades("AltTwo5", 184265, nil, nil, 3)
+local countdownNetherBanish			= mod:NewCountdown(61.9, 186961, nil, nil, 3)
+local countdownDemonicFeedback		= mod:NewCountdown("Alt35", 186961, nil, nil, 3)
+local countdownDeathBrand			= mod:NewCountdown("AltTwo42", 183828, nil, nil, 3)
+local countdownShackledTorment		= mod:NewCountdown("AltTwo42", 184931, "-Tank", nil, 3)
 local countdownSeethingCorruption	= mod:NewCountdown(61.9, 190506)
 local countdownSourceofChaos		= mod:NewCountdown("Alt35", 190703, "Tank")
 
