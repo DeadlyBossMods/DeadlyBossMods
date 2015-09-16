@@ -101,9 +101,9 @@ local specWarnTwistedDarkness		= mod:NewSpecialWarningSwitchCount(190821, "Range
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDoomfireCD				= mod:NewCDTimer(42.1, 182826, nil, nil, nil, 1)--182826 cast, 182879 fixate. Doomfire only fixates ranged, but ALL dps switch to it.
 local timerAllureofFlamesCD			= mod:NewCDTimer(47.5, 183254, nil, nil, nil, 2)
-local timerFelBurstCD				= mod:NewCDTimer(52, 183817, nil, "Ranged", nil, 3)--Only targets ranged (52-70 variation)
+local timerFelBurstCD				= mod:NewCDTimer(52, 183817, nil, nil, 2, 3)
 local timerDeathbrandCD				= mod:NewCDCountTimer(42.5, 183828, nil, nil, nil, 1)--Everyone, for tanks/healers to know when debuff/big hit, for dps to know add coming
-local timerDesecrateCD				= mod:NewCDTimer(27, 185590, nil, "Melee", nil, 2)--Only targets melee
+local timerDesecrateCD				= mod:NewCDTimer(27, 185590, nil, nil, 2, 2)
 ----Hellfire Deathcaller
 local timerShadowBlastCD			= mod:NewCDTimer(9.7, 183864, nil, "Tank", nil, 5)
 local timerDemonicHavocCD			= mod:NewAITimer(107, 183865, nil, nil, nil, 3)--Mythic, timer unknown, AI timer used until known. I'm not sure this ability still exists
@@ -146,8 +146,8 @@ local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_T
 local voiceDeathBrand				= mod:NewVoice(183828, "Tank")--defensive/tauntboss
 local voiceFelBurst					= mod:NewVoice(183817)--Gathershare
 local voiceShackledTorment			= mod:NewVoice(184964)--new voice: break torment first, etc
-local voiceDoomfire					= mod:NewVoice(189897, "Dps")--189897.ogg
-local voiceDeathCaller				= mod:NewVoice("ej11582", "Dps")--ej11582.ogg
+local voiceDoomfire					= mod:NewVoice(189897, "Dps")--189897
+local voiceDeathCaller				= mod:NewVoice("ej11582", "Dps")--ej11582
 local voiceWroughtChaos				= mod:NewVoice(186123) --new voice
 local voiceFocusedChaos				= mod:NewVoice(185014) --new voice
 local voiceFlamesofArgus			= mod:NewVoice(186663, "-Healer") --kickcast
