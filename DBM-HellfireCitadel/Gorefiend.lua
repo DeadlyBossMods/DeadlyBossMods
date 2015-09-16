@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(90199)
 mod:SetEncounterID(1783)
 mod:SetZone()
-mod:SetUsedIcons(1)
+mod:SetUsedIcons(4, 3, 2, 1)
 mod:SetHotfixNoticeRev(14418)
 mod.respawnTime = 30
 
@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 179977 182170 181085",
 	"SPELL_AURA_APPLIED 179864 179977 179909 179908 180148 181295 185982 189434 185189",
 	"SPELL_AURA_APPLIED_DOSE 185189",
-	"SPELL_AURA_REMOVED 179909 179908 181295 181973 185982",
+	"SPELL_AURA_REMOVED 179909 179908 181295 181973 185982 179977 189434",
 	"SPELL_PERIODIC_DAMAGE 179995",
 	"SPELL_ABSORBED 179995",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -72,6 +72,7 @@ local voiceSharedFate					= mod:NewVoice(179909)--linegather, new voice, like Bl
 local voiceBurning						= mod:NewVoice(185189) --changemt
 
 mod:AddSetIconOption("SetIconOnFate", 179909)
+mod:AddSetIconOption("SetIconOnDoom", 179977, false)
 mod:AddHudMapOption("HudMapOnSharedFate", 179909)--Smart hud, distinquishes rooted from non rooted by larger dot/font and lines/arrows
 mod:AddBoolOption("ShowOnlyPlayer", true)
 mod:AddRangeFrameOption(5, 182049)
@@ -287,6 +288,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceTouchofDoom:Play("runout")
 			yellTouchofDoom:Yell()
 		end
+		if self.Options.SetIconOnDoom then
+			self:SetAlphaIcon(0.5, args.destName, 2)
+		end
 	elseif spellId == 179909 then--Root version
 		if args:IsPlayer() then
 			playerHasFate = true
@@ -423,8 +427,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 185982 and not playerDown then
 		--When it fades, it means it's casting Expel Soul and returning to surface as a Gorebound Spirit
-		--This is cleaner than IEEU and fires at same time
 		specWarnGoreboundSpirit:Show()
+	elseif spellId == 179977 or spellId == 189434 then
+		if self.Options.SetIconOnDoom then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
@@ -434,8 +441,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnCrushingDarkness:Show()
 		timerCrushingDarkness:Start()
 		timerCrushingDarknessCD:Schedule(6)--Delay timer by 6 seconds, so it doesn't start until after cast timer ends, reduce timer spam
-	--"<39.51 18:23:36> [UNIT_SPELLCAST_SUCCEEDED] Gorefiend(Slootbag) [[boss1:Empower Spirits::0:180192]]", -- [2949]
-	--"<41.98 18:23:38> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#boss1#true#true#true#Gorefiend#Vehicle-0-2012-1448-7347-90199-0000381EB8#elite#375918859#boss2#true#true#true#Gorebound Spirit
 	elseif spellId == 185753 and playerDown then--Tank Add Exploit Protection (Enraged Spirit Spawn)
 		specWarnEnragedSpirit:Show()
 	end

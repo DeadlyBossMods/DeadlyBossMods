@@ -244,6 +244,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 180600 then
 		self.vb.bulwarkCount = self.vb.bulwarkCount + 1
+		if self:IsTank() then
+			specWarnDespoiledGround:Show()
+			voiceVoidZone:Play("runaway")
+		end
 		warnBulwarkoftheTyrant:Show(self.vb.bulwarkCount, args.destName)
 		if self.vb.bulwarkCount == 3 then
 			timerGaveloftheTyrantCD:Start(nil, self.vb.gavelCount+1)
@@ -409,9 +413,9 @@ function mod:UNIT_SPELLCAST_START(uId, _, _, _, spellId)
 		specWarnHarbingersMending:Show(AncientHarbinger, self.vb.interruptCount)
 		timerHarbingersMendingCD:Start()
 		if count == 1 then
-			voiceHarbingersMending:Play("kick1r.ogg")
+			voiceHarbingersMending:Play("kick1r")
 		elseif count == 2 then
-			voiceHarbingersMending:Play("kick2r.ogg")
+			voiceHarbingersMending:Play("kick2r")
 		end
 	end
 end

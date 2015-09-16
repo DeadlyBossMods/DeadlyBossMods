@@ -314,7 +314,7 @@ local function showMarkOfLegion(self, spellName)
 	--5,7,9,11 seconds. Sorted lowest to highest
 	--5, 7 on melee, 9, 11 on ranged (if enough alive anyways)
 	--DBM auto sorts icons to 1-5, 2-7, 3-9, 4-11
-	--Yell format is "<icon>Mark (expireTime) on <playername><icon>" . Icon assignments should be more than enough
+	--Yell format is "Mark (expireTime) on <icon><playername><icon>" . Icon assignments should be more than enough
 	--MELEE, RANGED, DBM_CORE_LEFT, DBM_CORE_RIGHT (http://puu.sh/jsyr5/7014c50cb3.jpg)
 	--Melee/ranged left/right is still an idea but i don't think will be needed. Not with fixed icons/debuff durations being assigned consistently.
 	warnMarkOfLegion:Show(self.vb.markOfLegionCast, table.concat(legionTargets, "<, >"))
@@ -335,6 +335,7 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match Star
 				end
 				if name == playerName then
+					specWarnMarkOfLegion:Show(roundedTime.."-"..RAID_TARGET_1)
 					yellMarkOfLegionPoS:Yell(roundedTime, 1, 1)
 				end
 			elseif roundedTime == 7 then
@@ -345,6 +346,7 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match Circle
 				end
 				if name == playerName then
+					specWarnMarkOfLegion:Show(roundedTime.."-"..RAID_TARGET_2)
 					yellMarkOfLegionPoS:Yell(roundedTime, 2, 2)
 				end
 			elseif roundedTime == 9 then
@@ -355,6 +357,7 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
 				end
 				if name == playerName then
+					specWarnMarkOfLegion:Show(roundedTime.."-"..RAID_TARGET_3)
 					yellMarkOfLegionPoS:Yell(roundedTime, 3, 3)
 				end
 			else
@@ -365,6 +368,7 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
 				end
 				if name == playerName then
+					specWarnMarkOfLegion:Show(roundedTime.."-"..RAID_TARGET_4)
 					yellMarkOfLegionPoS:Yell(roundedTime, 4, 4)
 				end
 			end
@@ -716,9 +720,9 @@ function mod:SPELL_CAST_START(args)
 			local count = self.vb.TouchOfShadows
 			specWarnTouchofShadows:Show(args.sourceName, count)
 			if count == 1 then
-				voiceTouchofShadows:Play("kick1r.ogg")
+				voiceTouchofShadows:Play("kick1r")
 			else
-				voiceTouchofShadows:Play("kick2r.ogg")
+				voiceTouchofShadows:Play("kick2r")
 			end
 		end
 	elseif spellId == 190394 then
@@ -978,8 +982,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if expires then
 			if args:IsPlayer() then
 				local remaining = expires-GetTime()
-				local rounded = math.floor(remaining+0.5)
-				specWarnMarkOfLegion:Show(rounded)
 				yellMarkOfLegion:Schedule(remaining-1, 1)
 				yellMarkOfLegion:Schedule(remaining-2, 2)
 				yellMarkOfLegion:Schedule(remaining-3, 3)
