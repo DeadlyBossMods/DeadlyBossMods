@@ -309,7 +309,7 @@ L.LFDEnhance				= "Play readycheck sound for role checks &amp; BG/LFG proposals 
 L.WorldBossNearAlert		= "Play readycheck sound when world bosses you are near to are pulled that you need (Overrides boss-specific option)"
 L.RLReadyCheckSound			= "Play readycheck sounds from actual ready checks through Master or Dialog audio channel."
 L.AFKHealthWarning			= "Play alert sound if you are losing health while AFK"
-L.AutoReplySound			= "Play alert sound when recieving DBM auto reply whisper"
+L.AutoReplySound			= "Play alert sound when receiving DBM auto reply whisper"
 --
 L.TimerGeneral 				= "Timer Options"
 L.SKT_Enabled				= "Show record victory timer for current fight if available"
