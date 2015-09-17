@@ -151,8 +151,8 @@ L.BarStartColorRole			= "Start color (Role)"
 L.BarEndColorRole			= "End color (Role)"
 L.BarStartColorPhase		= "Start color (Phase)"
 L.BarEndColorPhase			= "End color (Phase)"
-L.BarStartColorUI			= "Start color (User Important)"
-L.BarEndColorUI				= "End color (User Important)"
+L.BarStartColorUI			= "Start color (User)"
+L.BarEndColorUI				= "End color (User)"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "Bar Colors by timer type"
