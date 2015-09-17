@@ -58,7 +58,7 @@ local timerVisionofDeathCD			= mod:NewCDCountTimer(75, 181488, nil, nil, nil, 5)
 local timerDeathThroesCD			= mod:NewCDCountTimer(40, 180224, nil, nil, nil, 2)
 --Adds
 local timerBloodthirsterCD			= mod:NewCDCountTimer(70.3, "ej11266", nil, nil, nil, 1, 131150)
-local timerRendingHowlCD			= mod:NewNextTimer(6, 183917, nil, "-Healer", 2, 4)
+local timerRendingHowlCD			= mod:NewNextTimer(6, 183917, nil, "-Healer", 2, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 

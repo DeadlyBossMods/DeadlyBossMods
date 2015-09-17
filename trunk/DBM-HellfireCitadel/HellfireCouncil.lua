@@ -66,7 +66,7 @@ local timerMirrorImageCD			= mod:NewCDTimer(75, 183885, nil, nil, nil, 1)
 local timerWickedStrikeCD			= mod:NewCDTimer(10.5, 186993, nil, nil, nil, 2)
 mod:AddTimerLine(Dia)
 --Dia Darkwhisper
-local timerMarkofNecroCD			= mod:NewCDTimer(60, 184449, nil, "Healer", nil, 5)
+local timerMarkofNecroCD			= mod:NewCDTimer(60, 184449, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)
 local timerReapCD					= mod:NewCDTimer(54, 184476, nil, nil, nil, 3)--54-71
 local timerNightmareVisageCD		= mod:NewCDTimer(30, 184657, nil, "Tank", nil, 5)
 local timerDarknessCD				= mod:NewCDTimer(75, 184681, nil, nil, nil, 2)
@@ -75,7 +75,7 @@ mod:AddTimerLine(Gurtogg)
 local timerFelRageCD				= mod:NewCDCountTimer(60, 184360, nil, nil, nil, 3)--60-84 (maybe this is HP based, cause this variation is stupid)
 local timerDemoLeapCD				= mod:NewCDTimer(75, 184366, nil, nil, nil, 2)--Most will never see this ability since he's 3rd in the special rotation and he dies first in most strats
 local timerTaintedBloodCD			= mod:NewNextCountTimer(15.8, 184357)
-local timerBloodBoilCD				= mod:NewCDTimer(7.3, 184355, nil, false, nil, 3)
+local timerBloodBoilCD				= mod:NewCDTimer(7.3, 184355, nil, false, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
