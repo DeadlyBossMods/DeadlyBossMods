@@ -485,11 +485,11 @@ DBM_CORE_DAMAGE_ICON = "|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:22:
 --Importance Icons
 DBM_CORE_HEROIC_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:102:118:7:27|t"
 DBM_CORE_DEADLY_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:7:27|t"
-DBM_CORE_IMPORTANT_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:168:182:7:27|t"
+DBM_CORE_IMPORTANT_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:7:27|t"
 --Type Icons
-DBM_CORE_INTERRUPT_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:198:214:7:27|t"
-DBM_CORE_MAGIC_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:229:247:7:27|t"
-DBM_CORE_POISON_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:39:55:40:58|t"
-DBM_CORE_DISEASE_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:70:86:40:58|t"
-DBM_CORE_CURSE_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:6:21:40:58|t"
-DBM_CORE_ENRAGE_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:102:118:40:58|t"
+DBM_CORE_INTERRUPT_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:198:214:7:27|t"
+DBM_CORE_MAGIC_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:229:247:7:27|t"
+DBM_CORE_POISON_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:40:58|t"
+DBM_CORE_DISEASE_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:40:58|t"
+DBM_CORE_CURSE_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:40:58|t"
+DBM_CORE_ENRAGE_ICON = "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:102:118:40:58|t"

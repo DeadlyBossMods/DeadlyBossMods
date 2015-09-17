@@ -77,7 +77,7 @@ local timerImpCD					= mod:NewNextTimer(25, "ej11694", nil, nil, nil, 1, 112866)
 ----Big Add
 local timerFelBlazeFlurryCD			= mod:NewCDTimer(15.9, 186453, nil, "Tank", nil, 5)
 local timerFelChainsCD				= mod:NewCDTimer(30, 186490, nil, "-Tank", nil, 3)--30-34. Often 34 but it can and will be 30 sometimes.
-local timerEmpFelChainsCD			= mod:NewCDTimer(30, 189775, nil, "-Tank", nil, 3)--Merge with timerFelChainsCD?
+local timerEmpFelChainsCD			= mod:NewCDTimer(30, 189775, nil, "-Tank", nil, 3, nil, DBM_CORE_HEROIC_ICON)--Merge with timerFelChainsCD?
 --Void Phase
 ----Boss
 local timerVoidStrikeCD				= mod:NewCDTimer(17, 186292, nil, "Tank", nil, 5)
@@ -86,9 +86,9 @@ local timerVoidsCD					= mod:NewNextTimer(30, "ej11714", nil, "Ranged", nil, 1, 
 ----Big Add
 local timerWitheringGazeCD			= mod:NewCDTimer(14.5, 186783, nil, "Tank", 2, 5)
 local timerBlackHoleCD				= mod:NewCDCountTimer(29.5, 186546, nil, nil, nil, 5)
-local timerEmpBlackHoleCD			= mod:NewCDCountTimer(29.5, 189779, nil, nil, nil, 5)--Merge with timerBlackHoleCD?
+local timerEmpBlackHoleCD			= mod:NewCDCountTimer(29.5, 189779, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)--Merge with timerBlackHoleCD?
 --End Phase
-local timerOverwhelmingChaosCD		= mod:NewNextCountTimer(10, 187204, nil, nil, nil, 3)
+local timerOverwhelmingChaosCD		= mod:NewNextCountTimer(10, 187204, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
