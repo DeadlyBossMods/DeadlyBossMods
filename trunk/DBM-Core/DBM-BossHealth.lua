@@ -21,6 +21,7 @@ local anchor
 local header
 local dropdownFrame
 --local sortingEnabled
+local tremove, tinsert = table.remove, table.insert
 
 do
 	local id = 0
@@ -139,7 +140,7 @@ local function createFrame(self)
 end
 
 local function createBar(self, name, ...) -- the vararg will also contain the name, see method AddBoss for details (TODO: this should be handled earlier, seriously...)
-	local bar = table.remove(barCache, #barCache) or CreateFrame("Frame", "DBM_BossHealth_Bar_"..getBarId(), anchor, "DBMBossHealthBarTemplate")
+	local bar = tremove(barCache, #barCache) or CreateFrame("Frame", "DBM_BossHealth_Bar_"..getBarId(), anchor, "DBMBossHealthBarTemplate")
 	bar:Show()
 	local bartext = _G[bar:GetName().."BarName"]
 	local barborder = _G[bar:GetName().."BarBorder"]
@@ -314,7 +315,7 @@ local function addBoss(self, name, ...) -- name, cId1, cId2, ..., cIdN, name
 	if not anchor or not anchor:IsShown() then
 		return
 	end
-	table.insert(bars, createBar(self, name, ...))
+	tinsert(bars, createBar(self, name, ...))
 	updateBarStyle(bars[#bars], #bars)
 end
 
@@ -347,7 +348,7 @@ function bossHealth:RemoveBoss(cId)
 			bar:Hide()
 			bar:ClearAllPoints()
 			barCache[#barCache + 1] = bar
-			table.remove(bars, i)
+			tremove(bars, i)
 		end
 	end
 end
