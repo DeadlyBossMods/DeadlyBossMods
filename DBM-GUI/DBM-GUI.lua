@@ -2086,7 +2086,7 @@ local function CreateOptionsMenu()
 		local dummybarcolor7 = DBM.Bars:CreateDummyBar(7)
 		dummybarcolor7.frame:SetParent(BarColors.frame)
 		dummybarcolor7.frame:SetPoint("TOP", color2Type7text, "LEFT", 10, 40)
-		dummybarcolor7.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor5:Update(elapsed) end)
+		dummybarcolor7.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor7:Update(elapsed) end)
 		do
 			-- little hook to prevent this bar from changing size/scale
 			local old = dummybarcolor7.ApplyStyle
