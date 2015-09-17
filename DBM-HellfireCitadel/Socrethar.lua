@@ -71,9 +71,9 @@ local timerReverberatingBlowCD		= mod:NewCDCountTimer(17, 180008, nil, nil, nil,
 local timerFelPrisonCD				= mod:NewCDTimer(29, 182994, nil, nil, nil, 3)--29-33
 local timerVolatileFelOrbCD			= mod:NewCDTimer(23, 180221, nil, nil, nil, 3)
 local timerFelChargeCD				= mod:NewCDTimer(23, 182051, nil, nil, nil, 3)
-local timerApocalypticFelburstCD	= mod:NewCDCountTimer(30, 188693, nil, nil, nil, 2)
+local timerApocalypticFelburstCD	= mod:NewCDCountTimer(30, 188693, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON)
 --Socrethar
-local timerExertDominanceCD			= mod:NewCDCountTimer(5, 183331, nil, "-Healer", nil, 4)
+local timerExertDominanceCD			= mod:NewCDCountTimer(5, 183331, nil, "-Healer", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerApocalypseCD				= mod:NewCDTimer(46, 183329, nil, nil, nil, 2)
 local timerPrisonActive				= mod:NewTargetTimer(60, 183017, nil, nil, nil, 5)
 --Adds
@@ -81,7 +81,7 @@ local timerSargereiDominatorCD		= mod:NewNextCountTimer(60, "ej11456", nil, nil,
 local timerHauntingSoulCD			= mod:NewCDCountTimer(29, "ej11462", nil, nil, nil, 1, 182769)
 local timerGiftofManariCD			= mod:NewCDTimer(11, 184124, nil, nil, nil, 3)
 --Mythic
-local timerVoraciousSoulstalkerCD	= mod:NewCDCountTimer(59.5, "ej11778", nil, nil, nil, 1, 190776)
+local timerVoraciousSoulstalkerCD	= mod:NewCDCountTimer(59.5, "ej11778", nil, nil, nil, 1, 190776, DBM_CORE_HEROIC_ICON)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
