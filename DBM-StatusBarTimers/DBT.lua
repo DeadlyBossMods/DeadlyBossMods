@@ -709,7 +709,7 @@ do
 	end
 	local mt = {__index = barPrototype}
 
-	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType)
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon)
 		if timer <= 0 then return end
 		if (self.numBars or 0) >= 15 and not isDummy then return end
 		--Most efficient place to block it, nil colorType instead of checking option every update
@@ -723,7 +723,7 @@ do
 			newBar:SetElapsed(0) -- same
 			if newBar.dead then return end
 			newBar:ApplyStyle()
-			newBar:SetText(id)
+			newBar:SetText(id, inlineIcon)
 			newBar:SetIcon(icon)
 		else -- create a new one
 			newBar = next(unusedBarObjects, nil)
@@ -744,6 +744,7 @@ do
 				newBar.color = color
 				newBar.colorType = colorType
 				newBar.flashing = nil
+				newBar.inlineIcon = inlineIcon
 			else  -- duplicate code ;(
 				newBar = setmetatable({
 					frame = newFrame,
@@ -758,6 +759,7 @@ do
 					color = color,
 					flashing = nil,
 					colorType = colorType,
+					inlineIcon = inlineIcon,
 					lastUpdate = GetTime()
 				}, mt)
 			end
@@ -774,7 +776,7 @@ do
 				newBar.huge = nil
 				self.smallBars:Append(newBar)
 			end
-			newBar:SetText(id)
+			newBar:SetText(id, inlineIcon)
 			newBar:SetIcon(icon)
 			self.bars[newBar] = true
 			newBar:ApplyStyle()
@@ -797,10 +799,10 @@ do
 		self.flashing = nil
 		_G[self.frame:GetName().."BarSpark"]:SetAlpha(1)
 	end
-	function DBT:CreateDummyBar(colorType)
+	function DBT:CreateDummyBar(colorType, inlineIcon)
 		dummyBars = dummyBars + 1
-		local dummy = self:CreateBar(25, "dummy"..dummyBars, "Interface\\Icons\\Spell_Nature_WispSplode", nil, true, nil, true, colorType)
-		dummy:SetText("Dummy")
+		local dummy = self:CreateBar(25, "dummy"..dummyBars, "Interface\\Icons\\Spell_Nature_WispSplode", nil, true, nil, true, colorType, inlineIcon)
+		dummy:SetText("Dummy", inlineIcon)
 		dummy:Cancel()
 		self.bars[dummy] = true
 		unusedBars[#unusedBars] = nil
@@ -909,13 +911,10 @@ function barPrototype:SetElapsed(elapsed)
 	self:Update(0)
 end
 
-function barPrototype:SetText(text)
-	if self.colorType and self.colorType == 7 then
-		--DBM_CORE_DAMAGE_ICON is temp. I'm just not smart enough to get DBM_CORE_DEADLY_ICON or DBM_CORE_HEROIC_ICON to work right
-		_G[self.frame:GetName().."BarName"]:SetText(DBM_CORE_DAMAGE_ICON..text)
-	else
-		_G[self.frame:GetName().."BarName"]:SetText(text)
-	end
+function barPrototype:SetText(text, inlineIcon)
+	--Force change color type 7 yo custom inlineIcon
+	local forcedIcon = (self.colorType and self.colorType == 7) and DBM_CORE_IMPORTANT_ICON or inlineIcon or ""
+	_G[self.frame:GetName().."BarName"]:SetText(forcedIcon..text)
 end
 
 function barPrototype:SetIcon(icon)

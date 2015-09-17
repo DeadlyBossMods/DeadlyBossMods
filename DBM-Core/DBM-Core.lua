@@ -9671,7 +9671,7 @@ do
 				msg = pformat(self.text, ...)
 			end
 			msg = msg:gsub(">.-<", stripServerName)
-			bar:SetText(msg)
+			bar:SetText(msg, self.inlineIcon)
 			--ID: Internal DBM timer ID
 			--msg: Timer Text
 			--timer: Raw timer value (number).
@@ -9774,7 +9774,7 @@ do
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
 		if bar then
-			return bar:SetText(name)
+			return bar:SetText(name, self.inlineIcon)
 		end
 	end
 
@@ -9801,7 +9801,7 @@ do
 		end
 	end
 
-	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, colorType, r, g, b)
+	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, colorType, inlineIcon, r, g, b)
 		local icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and GetSpellTexture(icon)) or icon or "Interface\\Icons\\Spell_Nature_WispSplode"
 		local obj = setmetatable(
 			{
@@ -9810,6 +9810,7 @@ do
 				id = name,
 				icon = icon,
 				colorType = colorType,
+				inlineIcon = inlineIcon,
 				r = r,
 				g = g,
 				b = b,
@@ -9825,8 +9826,7 @@ do
 
 	-- new constructor for the new auto-localized timer types
 	-- note that the function might look unclear because it needs to handle different timer types, especially achievement timers need special treatment
-	-- local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, optionVersion, colorType)
-	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, colorType, texture, r, g, b)
+	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, colorType, texture, inlineIcon, r, g, b)
 		if type(timer) == "string" and timer:match("OptionVersion") then
 			DBM:Debug("OptionVersion hack depricated, remove it from: "..spellId)
 			return
@@ -9882,6 +9882,7 @@ do
 				id = id,
 				icon = icon,
 				colorType = colorType,
+				inlineIcon = inlineIcon,
 				r = r,
 				g = g,
 				b = b,
