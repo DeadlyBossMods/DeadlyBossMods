@@ -323,11 +323,11 @@ options = {
 	},
 	StartColorUIG = {
 		type = "number",
-		default = 0.466,
+		default = 1,
 	},
 	StartColorUIB = {
 		type = "number",
-		default = 0.459,
+		default = 0.0627450980392157,
 	},
 	EndColorUIR = {
 		type = "number",
@@ -335,11 +335,11 @@ options = {
 	},
 	EndColorUIG = {
 		type = "number",
-		default = 0.043,
+		default = 0.92156862745098,
 	},
 	EndColorUIB = {
 		type = "number",
-		default = 0.247,
+		default = 0.0117647058823529,
 	},
 	TextColorR = {
 		type = "number",

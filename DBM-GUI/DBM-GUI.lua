@@ -1613,7 +1613,7 @@ local function CreateOptionsMenu()
 		--------------------------------------
 		local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 		
-		local BarColors = BarSetupPanel:CreateArea(L.AreaTitle_BarColors, nil, 480, true)
+		local BarColors = BarSetupPanel:CreateArea(L.AreaTitle_BarColors, nil, 635, true)
 		local movemebutton = BarColors:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', BarColors.frame, "TOPRIGHT", 0, -1)
 		movemebutton:SetNormalFontObject(GameFontNormalSmall)
@@ -2028,6 +2028,76 @@ local function CreateOptionsMenu()
 				_G[self.frame:GetName().."Bar"]:SetWidth(183)
 			end
 		end
+
+		--Color Type 7 (Important (User))
+		local color1Type7 = BarColors:CreateColorSelect(64)
+		local color2Type7 = BarColors:CreateColorSelect(64)
+		color1Type7:SetPoint('TOPLEFT', BarColors.frame, "TOPLEFT", 30, -530)
+		color2Type7:SetPoint('TOPLEFT', color1Type7, "TOPRIGHT", 20, 0)
+
+		local color1Type7reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		local color2Type7reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		color1Type7reset:SetPoint('TOP', color1Type7, "BOTTOM", 5, -10)
+		color2Type7reset:SetPoint('TOP', color2Type7, "BOTTOM", 5, -10)
+		color1Type7reset:SetScript("OnClick", function(self)
+			color1Type7:SetColorRGB(DBM.Bars:GetDefaultOption("StartColorUIR"), DBM.Bars:GetDefaultOption("StartColorUIG"), DBM.Bars:GetDefaultOption("StartColorUIB"))
+		end)
+		color2Type7reset:SetScript("OnClick", function(self)
+			color2Type7:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorUIR"), DBM.Bars:GetDefaultOption("EndColorUIG"), DBM.Bars:GetDefaultOption("EndColorUIB"))
+		end)
+
+		local color1Type7text = BarColors:CreateText(L.BarStartColorRole, 80)
+		local color2Type7text = BarColors:CreateText(L.BarEndColorRole, 80)
+		color1Type7text:SetPoint("BOTTOM", color1Type7, "TOP", 0, 4)
+		color2Type7text:SetPoint("BOTTOM", color2Type7, "TOP", 0, 4)
+		color1Type7:SetScript("OnShow", function(self) self:SetColorRGB(
+			DBM.Bars:GetOption("StartColorUIR"),
+			DBM.Bars:GetOption("StartColorUIG"),
+			DBM.Bars:GetOption("StartColorUIB"))
+			color1Type7text:SetTextColor(
+			DBM.Bars:GetOption("StartColorUIR"),
+			DBM.Bars:GetOption("StartColorUIG"),
+			DBM.Bars:GetOption("StartColorUIB")
+			)
+		end)
+		color2Type7:SetScript("OnShow", function(self) self:SetColorRGB(
+			DBM.Bars:GetOption("EndColorUIR"),
+			DBM.Bars:GetOption("EndColorUIG"),
+			DBM.Bars:GetOption("EndColorUIB"))
+			color2Type7text:SetTextColor(
+			DBM.Bars:GetOption("EndColorUIR"),
+			DBM.Bars:GetOption("EndColorUIG"),
+			DBM.Bars:GetOption("EndColorUIB")
+			)
+		end)
+		color1Type7:SetScript("OnColorSelect", function(self)
+			DBM.Bars:SetOption("StartColorUIR", select(1, self:GetColorRGB()))
+			DBM.Bars:SetOption("StartColorUIG", select(2, self:GetColorRGB()))
+			DBM.Bars:SetOption("StartColorUIB", select(3, self:GetColorRGB()))
+			color1Type7text:SetTextColor(self:GetColorRGB())
+		end)
+		color2Type7:SetScript("OnColorSelect", function(self)
+			DBM.Bars:SetOption("EndColorUIR", select(1, self:GetColorRGB()))
+			DBM.Bars:SetOption("EndColorUIG", select(2, self:GetColorRGB()))
+			DBM.Bars:SetOption("EndColorUIB", select(3, self:GetColorRGB()))
+			color2Type7text:SetTextColor(self:GetColorRGB())
+		end)
+		
+		local dummybarcolor7 = DBM.Bars:CreateDummyBar(7)
+		dummybarcolor7.frame:SetParent(BarColors.frame)
+		dummybarcolor7.frame:SetPoint("TOP", color2Type7text, "LEFT", 10, 40)
+		dummybarcolor7.frame:SetScript("OnUpdate", function(self, elapsed) dummybarcolor5:Update(elapsed) end)
+		do
+			-- little hook to prevent this bar from changing size/scale
+			local old = dummybarcolor7.ApplyStyle
+			function dummybarcolor7:ApplyStyle(...)
+				old(self, ...)
+				self.frame:SetWidth(183)
+				self.frame:SetScale(0.9)
+				_G[self.frame:GetName().."Bar"]:SetWidth(183)
+			end
+		end
+
 		--General Options
 		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 430, true)
 

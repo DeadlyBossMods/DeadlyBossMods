@@ -13,11 +13,11 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 184394 181155 185816 183452 181968 180945",
+	"SPELL_CAST_START 184394 181155 185816 183452 181968 180945 190748",
 	"SPELL_AURA_APPLIED 180079 184243 180927 184369 180076",
 	"SPELL_AURA_APPLIED_DOSE 184243",
 	"SPELL_AURA_REMOVED 184369 184243",
-	"SPELL_CAST_SUCCESS 184370 190748",
+	"SPELL_CAST_SUCCESS 184370",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_ABSORBED",
 	"UNIT_DIED",
@@ -204,14 +204,14 @@ function mod:SPELL_CAST_START(args)
 		specWarnMetamorphosis:Show()
 	elseif spellId == 180945 then
 		warnNova:Show()
+	elseif spellId == 190748 then
+		self:BossTargetScanner(95653, "CannonTarget", 0.2, 10, true, nil, nil, nil, true)
 	end
 end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 184370 then--Axe over
 		updateRangeFrame(self)
-	elseif spellId == 190748 then
-		self:BossTargetScanner(95653, "CannonTarget", 0.2, 10, true, nil, nil, nil, true)
 	end
 end
 
