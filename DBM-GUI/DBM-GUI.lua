@@ -2046,8 +2046,8 @@ local function CreateOptionsMenu()
 			color2Type7:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorUIR"), DBM.Bars:GetDefaultOption("EndColorUIG"), DBM.Bars:GetDefaultOption("EndColorUIB"))
 		end)
 
-		local color1Type7text = BarColors:CreateText(L.BarStartColorRole, 80)
-		local color2Type7text = BarColors:CreateText(L.BarEndColorRole, 80)
+		local color1Type7text = BarColors:CreateText(L.BarStartColorUI, 80)
+		local color2Type7text = BarColors:CreateText(L.BarEndColorUI, 80)
 		color1Type7text:SetPoint("BOTTOM", color1Type7, "TOP", 0, 4)
 		color2Type7text:SetPoint("BOTTOM", color2Type7, "TOP", 0, 4)
 		color1Type7:SetScript("OnShow", function(self) self:SetColorRGB(
