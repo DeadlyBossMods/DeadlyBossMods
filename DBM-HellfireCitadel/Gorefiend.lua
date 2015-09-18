@@ -327,8 +327,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 181295 then
 		if args:IsPlayer() then
 			if self:IsMythic() then
-				timerDigest:Start(30)
-				countdownDigest:Start(30)
+				timerDigest:Start(35)
+				countdownDigest:Start(35)
 			else
 				timerDigest:Start()
 				countdownDigest:Start()
