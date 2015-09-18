@@ -126,6 +126,10 @@ options = {
 		type = "boolean",
 		default = true,
 	},
+	InlineIcons = {
+		type = "boolean",
+		default = true,
+	},
 	IconLeft = {
 		type = "boolean",
 		default = true,
@@ -714,6 +718,7 @@ do
 		if (self.numBars or 0) >= 15 and not isDummy then return end
 		--Most efficient place to block it, nil colorType instead of checking option every update
 		if not self.options.ColorByType then colorType = nil end
+		if not self.options.InlineIcons then inlineIcon = nil end
 		local newBar = self:GetBar(id)
 		if newBar then -- update an existing bar
 			newBar.lastUpdate = GetTime()
