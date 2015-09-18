@@ -2238,6 +2238,9 @@ local function CreateOptionsMenu()
 		
 		local ColorBars = BarSetup:CreateCheckButton(L.BarColorByType, false, nil, nil, "ColorByType")
 		ColorBars:SetPoint("TOPLEFT", SortBars, "BOTTOMLEFT", 0, 0)
+		
+		local InlineIcons = BarSetup:CreateCheckButton(L.BarInlineIcons, false, nil, nil, "InlineIcons")
+		InlineIcons:SetPoint("LEFT", ColorBars, "LEFT", 130, 0)
 
 		-- Functions for bar setup
 		local function createDBTOnShowHandler(option)
