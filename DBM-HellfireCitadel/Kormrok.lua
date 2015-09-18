@@ -58,7 +58,7 @@ local timerGraspingHandsCD			= mod:NewNextTimer(107, 181299, nil, nil, nil, 1)
 mod:AddTimerLine(TANK)
 local timerExplosiveBurstCD			= mod:NewNextCountTimer(40, 181306, nil, nil, nil, 3)--Everyone needs to know these 2
 local timerFoulCrushCD				= mod:NewNextCountTimer(40, 181307, nil, nil, nil, 1)--Everyone needs to know these 2
-local timerSwatCD					= mod:NewNextCountTimer(40, 181305, nil, "Tank", nil, 5)
+local timerSwatCD					= mod:NewNextCountTimer(40, 181305, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)--Was 8 min on heroic PTR, but that also might have been a bug so will wait to confirm
 

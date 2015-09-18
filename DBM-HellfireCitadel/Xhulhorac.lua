@@ -71,20 +71,20 @@ local specWarnEmpBlackHole			= mod:NewSpecialWarningCount(189779, nil, nil, nil,
 
 --Fire Phase
 ----Boss
-local timerFelStrikeCD				= mod:NewCDTimer(15, 186271, nil, "Tank", nil, 5)--15.8-17
+local timerFelStrikeCD				= mod:NewCDTimer(15, 186271, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--15.8-17
 local timerFelSurgeCD				= mod:NewCDTimer(30, 186407, nil, nil, nil, 3)
 local timerImpCD					= mod:NewNextTimer(25, "ej11694", nil, nil, nil, 1, 112866)
 ----Big Add
-local timerFelBlazeFlurryCD			= mod:NewCDTimer(15.9, 186453, nil, "Tank", nil, 5)
+local timerFelBlazeFlurryCD			= mod:NewCDTimer(15.9, 186453, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFelChainsCD				= mod:NewCDTimer(30, 186490, nil, "-Tank", nil, 3)--30-34. Often 34 but it can and will be 30 sometimes.
 local timerEmpFelChainsCD			= mod:NewCDTimer(30, 189775, nil, "-Tank", nil, 3, nil, DBM_CORE_HEROIC_ICON)--Merge with timerFelChainsCD?
 --Void Phase
 ----Boss
-local timerVoidStrikeCD				= mod:NewCDTimer(17, 186292, nil, "Tank", nil, 5)
+local timerVoidStrikeCD				= mod:NewCDTimer(17, 186292, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerVoidSurgeCD				= mod:NewCDTimer(30, 186333, nil, nil, nil, 3)
 local timerVoidsCD					= mod:NewNextTimer(30, "ej11714", nil, "Ranged", nil, 1, 697)
 ----Big Add
-local timerWitheringGazeCD			= mod:NewCDTimer(14.5, 186783, nil, "Tank", 2, 5)
+local timerWitheringGazeCD			= mod:NewCDTimer(14.5, 186783, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
 local timerBlackHoleCD				= mod:NewCDCountTimer(29.5, 186546, nil, nil, nil, 5)
 local timerEmpBlackHoleCD			= mod:NewCDCountTimer(29.5, 189779, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)--Merge with timerBlackHoleCD?
 --End Phase
