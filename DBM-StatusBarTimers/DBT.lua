@@ -727,7 +727,7 @@ do
 			newBar:SetElapsed(0) -- same
 			if newBar.dead then return end
 			newBar:ApplyStyle()
-			newBar:SetText(id, inlineIcon)--Redundant? seems to work with out. This is directly called by startbar in DBM core
+			newBar:SetText(id)
 			newBar:SetIcon(icon)
 		else -- create a new one
 			newBar = next(unusedBarObjects, nil)
@@ -780,7 +780,7 @@ do
 				newBar.huge = nil
 				self.smallBars:Append(newBar)
 			end
-			newBar:SetText(id, inlineIcon)--Redundant? seems to work with out. This is directly called by startbar in DBM core
+			newBar:SetText(id)
 			newBar:SetIcon(icon)
 			self.bars[newBar] = true
 			newBar:ApplyStyle()
