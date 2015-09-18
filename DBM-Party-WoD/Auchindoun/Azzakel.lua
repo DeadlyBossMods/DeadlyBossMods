@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
-local warnFelLash					= mod:NewTargetAnnounce("OptionVersion2", 153234, 3, nil, "Tank|Healer")
+local warnFelLash					= mod:NewTargetAnnounce(153234, 3, nil, "Tank|Healer", 2)
 local warnFelStomp					= mod:NewCastAnnounce(157173, 3, nil, nil, "Tank")
 local warnClawsOfArgus				= mod:NewSpellAnnounce(153764, 3)
 local warnSummonFelguard			= mod:NewSpellAnnounce(164081, 3, 56285, "-Healer")

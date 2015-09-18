@@ -22,11 +22,11 @@ mod:SetBossHealthInfo(83894, 83892, 83893)
 
 --Timers are too difficult to do, rapidTides messes up any chance of ever having decent timers.
 local warnRevitalizingWaters		= mod:NewSpellAnnounce(168082, 4)
-local warnBriarskin					= mod:NewTargetAnnounce("OptionVersion2", 168041, 3, nil, "MagicDispeller")
+local warnBriarskin					= mod:NewTargetAnnounce(168041, 3, nil, "MagicDispeller", 2)
 local warnRapidTides				= mod:NewTargetAnnounce(168105, 4)
 local warnGraspingVine				= mod:NewTargetAnnounce(168375, 2)
-local warnSlash						= mod:NewSpellAnnounce("OptionVersion3", 168383, 3)
-local warnNoxious					= mod:NewSpellAnnounce("OptionVersion2", 175997, 3)
+local warnSlash						= mod:NewSpellAnnounce(168383, 3, nil, nil, 3)
+local warnNoxious					= mod:NewSpellAnnounce(175997, 3, nil, nil, 2)
 local warnShapersFortitude			= mod:NewTargetAnnounce(168520, 3)
 
 local specWarnRevitalizingWaters	= mod:NewSpecialWarningInterrupt(168082, "-Healer")

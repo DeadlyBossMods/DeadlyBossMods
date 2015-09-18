@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 --Basic Abilities
 local warnDrainLife				= mod:NewTargetAnnounce(156854, 4)
 local warnRainOfFire			= mod:NewSpellAnnounce(156857, 3)
-local warnFixate				= mod:NewTargetAnnounce("OptionVersion2", 157168, 2)
+local warnFixate				= mod:NewTargetAnnounce(157168, 2, nil, nil, 2)
 --Affliction Abilities
 local warnSeedOfMalevolence		= mod:NewTargetAnnounce(156921, 3)
 --Destruction Abilities

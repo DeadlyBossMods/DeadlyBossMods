@@ -40,9 +40,9 @@ local warnPhase2						= mod:NewPhaseAnnounce(2)
 local warnShip							= mod:NewTargetAnnounce("ej10019", 3, 76204)
 local warnBombardmentAlpha				= mod:NewCountAnnounce(157854, 3)--From ship, but affects NON ship.
 ----Blackrock Deckhand
-local warnProtectiveEarth				= mod:NewSpellAnnounce("OptionVersion2", 158707, 3, nil, false)--Could not verify
+local warnProtectiveEarth				= mod:NewSpellAnnounce(158707, 3, nil, false, 2)--Could not verify
 ----Shattered Hand Deckhand
-local warnFixate						= mod:NewTargetAnnounce("OptionVersion2", 158702, 3, nil, false)--extremely spammy
+local warnFixate						= mod:NewTargetAnnounce(158702, 3, nil, false, 2)--extremely spammy
 --Ground
 ----Admiral Gar'an
 local warnRapidFire						= mod:NewTargetCountAnnounce(156631, 4)
