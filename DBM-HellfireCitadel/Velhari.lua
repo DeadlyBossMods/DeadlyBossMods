@@ -55,7 +55,7 @@ local specWarnInfernalTempest				= mod:NewSpecialWarningCount(180300, nil, nil, 
 local specWarnAncientEnforcer				= mod:NewSpecialWarningSwitch("ej11155", "-Healer")
 local specWarnEnforcersOnslaught			= mod:NewSpecialWarningDodge(180004, nil, nil, nil, 1, 5)
 --Stage Two: Contempt
-local specWarnFontofCorruption				= mod:NewSpecialWarningYou(180526)
+local specWarnFontofCorruption				= mod:NewSpecialWarningYou(180526, nil, nil, 2, 3)
 local specWarnFontofCorruptionOver			= mod:NewSpecialWarningEnd(180526)
 local yellFontofCorruption					= mod:NewYell(180526)
 ----Ancient Harbinger
@@ -76,7 +76,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))--Stage One: Oppression
 local timerAnnihilatingStrikeCD				= mod:NewNextCountTimer(10, 180260, nil, nil, nil, 3)
 local timerInfernalTempestCD				= mod:NewNextCountTimer(10, 180300, nil, nil, nil, 2)
 ----Ancient Enforcer
-local timerEnforcersOnslaughtCD				= mod:NewCDTimer(18, 180004, nil, "Tank", nil, 5)
+local timerEnforcersOnslaughtCD				= mod:NewCDTimer(18, 180004, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))--Stage Two: Contempt
 local timerTaintedShadowsCD					= mod:NewNextTimer(5, 180533, nil, "Tank", nil, 5)
 local timerFontofCorruptionCD				= mod:NewNextTimer(19.6, 180526, nil, nil, nil, 3)
