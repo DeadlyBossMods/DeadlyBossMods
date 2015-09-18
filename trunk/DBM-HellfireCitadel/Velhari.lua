@@ -89,8 +89,8 @@ local timerGaveloftheTyrantCD				= mod:NewNextCountTimer(10, 180608)
 --local berserkTimer						= mod:NewBerserkTimer(360)
 
 local countdownAnnihilatingStrike			= mod:NewCountdown(10, 180260, nil, nil, 3)--It's same cd as Infernal tempest so going to use countdown for both. Starting count at 3 to avoid so much spam. every 10 seconds, 5-1 would be bit much. 3-1 important though
-local countdownBulwarkofTyrant				= mod:NewCountdown(10, 180608, nil, nil, 3)
 local countdownFontofCorruption				= mod:NewCountdownFades("Alt50", 180526)
+local countdownBulwarkofTyrant				= mod:NewCountdown(10, 180608, nil, nil, 3)
 
 local voicePhaseChange						= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceInfernalTempest					= mod:NewVoice(180300)--scatter
@@ -244,7 +244,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 180600 then
 		self.vb.bulwarkCount = self.vb.bulwarkCount + 1
-		if self:IsTank() then
+		if (self:IsTank() or self:CheckNearby(5, args.destName)) and self:AntiSpam(2, 1) then
 			specWarnDespoiledGround:Show()
 			voiceVoidZone:Play("runaway")
 		end
