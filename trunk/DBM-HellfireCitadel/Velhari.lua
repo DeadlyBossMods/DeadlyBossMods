@@ -69,9 +69,9 @@ local specWarnGaveloftheTyrant				= mod:NewSpecialWarningCount(180608, nil, nil,
 local specWarnAncientSovereign				= mod:NewSpecialWarningSwitch("ej11170", "-Healer")
 
 mod:AddTimerLine(ALL)--All
-local timerSealofDecayCD					= mod:NewCDTimer(6, 180000, nil, false, nil, 5)--I don't think it's really needed, but at least make it an option
-local timerEdictofCondemnationCD			= mod:NewNextCountTimer(60, 182459, nil, nil, nil, 3)
-local timerTouchofHarmCD					= mod:NewNextCountTimer(45, 180166, nil, "Healer", nil, 3)
+local timerSealofDecayCD					= mod:NewCDTimer(6, 180000, nil, false, nil, 5, nil, DBM_CORE_TANK_ICON)--I don't think it's really needed, but at least make it an option
+local timerEdictofCondemnationCD			= mod:NewNextCountTimer(60, 182459, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerTouchofHarmCD					= mod:NewNextCountTimer(45, 180166, nil, "Healer", nil, 3, nil, DBM_CORE_HEALER_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(1))--Stage One: Oppression
 local timerAnnihilatingStrikeCD				= mod:NewNextCountTimer(10, 180260, nil, nil, nil, 3)
 local timerInfernalTempestCD				= mod:NewNextCountTimer(10, 180300, nil, nil, nil, 2)
