@@ -12,9 +12,9 @@ mod:RegisterEvents(
 )
 
 --Maybe add auto range finder for moveaway warnings, and REMOVED event to close it after
-local warnRuneofDestruction			= mod:NewTargetAnnounce("OptionVersion2", 175636, 3, nil, false)
-local warnRadiatingPoison			= mod:NewTargetAnnounce("OptionVersion2", 172066, 3, nil, false)
-local warnArcaneVol					= mod:NewTargetAnnounce("OptionVersion2", 166200, 3, nil, false)
+local warnRuneofDestruction			= mod:NewTargetAnnounce(175636, 3, nil, false, 2)
+local warnRadiatingPoison			= mod:NewTargetAnnounce(172066, 3, nil, false, 2)
+local warnArcaneVol					= mod:NewTargetAnnounce(166200, 3, nil, false, 2)
 
 local specWarnRuneofDisintegration	= mod:NewSpecialWarningMove(175654)
 local specWarnRuneofDestruction		= mod:NewSpecialWarningMoveAway(175636)

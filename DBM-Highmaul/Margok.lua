@@ -31,17 +31,17 @@ mod:RegisterEventsInCombat(
 --All Phases
 local warnPhase									= mod:NewPhaseChangeAnnounce()
 mod:AddBoolOption("warnBranded", true, "announce")
-local warnBranded								= mod:NewStackAnnounce("OptionVersion2", 156225, 4, nil, nil, false)
-local warnBrandedDisplacement					= mod:NewStackAnnounce("OptionVersion2", 164004, 4, nil, nil, false)
-local warnBrandedFortification					= mod:NewStackAnnounce("OptionVersion2", 164005, 4, nil, nil, false)
-local warnBrandedReplication					= mod:NewStackAnnounce("OptionVersion2", 164006, 4, nil, nil, false)
+local warnBranded								= mod:NewStackAnnounce(156225, 4, nil, nil, false)
+local warnBrandedDisplacement					= mod:NewStackAnnounce(164004, 4, nil, nil, false)
+local warnBrandedFortification					= mod:NewStackAnnounce(164005, 4, nil, nil, false)
+local warnBrandedReplication					= mod:NewStackAnnounce(164006, 4, nil, nil, false)
 mod:AddBoolOption("warnMarkOfChaos", true, "announce")
-local warnMarkOfChaos							= mod:NewTargetAnnounce("OptionVersion2", 158605, 4, nil, nil, false)
-local warnMarkOfChaosDisplacement				= mod:NewTargetAnnounce("OptionVersion2", 164176, 4, nil, nil, false)
-local warnMarkOfChaosFortification				= mod:NewTargetAnnounce("OptionVersion2", 164178, 4, nil, nil, false)
-local warnMarkOfChaosReplication				= mod:NewTargetAnnounce("OptionVersion2", 164191, 4, nil, nil, false)
+local warnMarkOfChaos							= mod:NewTargetAnnounce(158605, 4, nil, nil, false)
+local warnMarkOfChaosDisplacement				= mod:NewTargetAnnounce(164176, 4, nil, nil, false)
+local warnMarkOfChaosFortification				= mod:NewTargetAnnounce(164178, 4, nil, nil, false)
+local warnMarkOfChaosReplication				= mod:NewTargetAnnounce(164191, 4, nil, nil, false)
 --Intermission: Dormant Runestones
-local warnFixate								= mod:NewTargetAnnounce("OptionVersion3", 157763, 3)
+local warnFixate								= mod:NewTargetAnnounce(157763, 3, nil, nil, 3)
 --Intermission: Lineage of Power
 local warnCrushArmor							= mod:NewStackAnnounce(158553, 2, nil, "Tank")
 --Mythic

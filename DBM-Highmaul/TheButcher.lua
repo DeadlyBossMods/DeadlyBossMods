@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 --TODO, Probably fix the update bar if it lua errors or doesn't work right.
 local warnCleave					= mod:NewCountAnnounce(156157, 2, nil, false)
 local warnTenderizer				= mod:NewStackAnnounce(156151, 2, nil, "Tank")
-local warnCleaver					= mod:NewSpellAnnounce("OptionVersion2", 156143, 3, nil, false)--Saberlash
+local warnCleaver					= mod:NewSpellAnnounce(156143, 3, nil, false, 2)--Saberlash
 local warnFrenzy					= mod:NewSpellAnnounce(156598, 4)
 
 local specWarnTenderizer			= mod:NewSpecialWarningStack(156151, nil, 2)

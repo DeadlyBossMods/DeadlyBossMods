@@ -22,14 +22,14 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnCausticEnergy				= mod:NewTargetAnnounce("OptionVersion3", 161242, 3, nil, "Melee")
+local warnCausticEnergy				= mod:NewTargetAnnounce(161242, 3, nil, "Melee", 2)
 local warnTrample					= mod:NewTargetAnnounce(163101, 3)--Technically it's supression field, then trample, but everyone is going to know it more by trample cause that's the part of it that matters
 local warnExpelMagicFrost			= mod:NewTargetAnnounce(161411, 3)
 local warnExpelMagicArcane			= mod:NewTargetAnnounce(162186, 4)
 local warnBallsSoon					= mod:NewPreWarnAnnounce(161612, 6.5, 2)
 local warnBallsHit					= mod:NewCountAnnounce(161612, 2)
 local warnMC						= mod:NewTargetAnnounce(163472, 4)--Mythic
-local warnForfeitPower				= mod:NewCastAnnounce("OptionVersion2", 163517, 4, nil, nil, false)--Definitely Spammy (can have 8 up at once)
+local warnForfeitPower				= mod:NewCastAnnounce(163517, 4, nil, nil, false, 2)--Definitely Spammy (can have 8 up at once)
 local warnExpelMagicFel				= mod:NewTargetAnnounce(172895, 4)
 
 local specWarnNullBarrier			= mod:NewSpecialWarningTarget(156803)--Only warn for boss

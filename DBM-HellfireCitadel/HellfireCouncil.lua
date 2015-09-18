@@ -42,7 +42,7 @@ local warnMarkoftheNecromancer		= mod:NewTargetAnnounce(184449, 4, nil, false)--
 local warnReapDelayed				= mod:NewAnnounce("reapDelayed", 2, 184476)
 local warnReap						= mod:NewSpellAnnounce(184476, 4)--Generic warning if you don't have reap, just to know it's going on
 --Gurtogg Bloodboil
-local warnAcidicWound				= mod:NewStackAnnounce(184847, 2, nil, "Tank")--As of PTR, this required no swaps, just the person with fel rage pulling boss away from tank long enough to clear stacks
+local warnAcidicWound				= mod:NewStackAnnounce(184847, 2, nil, false, 2)--As of PTR, this required no swaps, just the person with fel rage pulling boss away from tank long enough to clear stacks
 local warnFelRage					= mod:NewTargetCountAnnounce(184360, 4)
 
 --Blademaster Jubei'thos

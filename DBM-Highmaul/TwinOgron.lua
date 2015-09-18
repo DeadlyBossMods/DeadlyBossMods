@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 )
 
 --Phemos
-local warnArcaneTwisted				= mod:NewTargetAnnounce("OptionVersion2", 163297, 2, nil, false)--Mythic, the boss that's going to use empowered abilities
+local warnArcaneTwisted				= mod:NewTargetAnnounce(163297, 2, nil, false, 2)--Mythic, the boss that's going to use empowered abilities
 local warnArcaneVolatility			= mod:NewTargetAnnounce(163372, 4)--Mythic
 --Pol
 local warnPulverize					= mod:NewCountAnnounce(158385, 3)--158385 is primary activation with SPELL_CAST_SUCCESS, cast at start, followed by 3 channeled IDs using SPELL_CAST_START
