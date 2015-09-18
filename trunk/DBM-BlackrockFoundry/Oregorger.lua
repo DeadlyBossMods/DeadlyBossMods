@@ -24,7 +24,7 @@ mod:RegisterEventsInCombat(
 "<4.4 14:25:47> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#true#true#Oregorger#Creature:0:3314:1205:13906:77182
 "<328.2 14:31:10> CHAT_MSG_RAID_BOSS_EMOTE#Oregorger has gone insane from hunger!#Oregorger#####0#0##0#164#0000000000000000#0#false#false", -- [5]--]]
 local warnAcidTorrent				= mod:NewCountAnnounce(156240, 3)
-local warnRetchedBlackrock			= mod:NewTargetAnnounce("OptionVersion2", 156179, 3, nil, "Ranged")
+local warnRetchedBlackrock			= mod:NewTargetAnnounce(156179, 3, nil, "Ranged", 2)
 local warnCollectOre				= mod:NewCountAnnounce(165184, 2)
 local warnRollingFury				= mod:NewCountAnnounce(155898, 3, nil, false)
 

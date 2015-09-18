@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 
 local warnRitualOfBones			= mod:NewSpellAnnounce(154671, 4)
 local warnOmenOfDeath			= mod:NewTargetAnnounce(154350, 3)
-local warnMalevolence			= mod:NewSpellAnnounce("OptionVersion2", 154442, 3)--Some tank has terrible move. May need everyone
+local warnMalevolence			= mod:NewSpellAnnounce(154442, 3, nil, nil, 2)--Some tank has terrible move. May need everyone
 
 local specWarnRitualOfBones		= mod:NewSpecialWarningSpell(154671, nil, nil, nil, 2)
 local specWarnOmenOfDeath		= mod:NewSpecialWarningMove(154350)
