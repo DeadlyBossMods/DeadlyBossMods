@@ -718,7 +718,6 @@ do
 		if (self.numBars or 0) >= 15 and not isDummy then return end
 		--Most efficient place to block it, nil colorType instead of checking option every update
 		if not self.options.ColorByType then colorType = nil end
-		if not self.options.InlineIcons then inlineIcon = nil end
 		local newBar = self:GetBar(id)
 		if newBar then -- update an existing bar
 			newBar.lastUpdate = GetTime()
@@ -728,7 +727,7 @@ do
 			newBar:SetElapsed(0) -- same
 			if newBar.dead then return end
 			newBar:ApplyStyle()
-			newBar:SetText(id, inlineIcon)
+			newBar:SetText(id, inlineIcon)--Redundant? seems to work with out. This is directly called by startbar in DBM core
 			newBar:SetIcon(icon)
 		else -- create a new one
 			newBar = next(unusedBarObjects, nil)
@@ -781,7 +780,7 @@ do
 				newBar.huge = nil
 				self.smallBars:Append(newBar)
 			end
-			newBar:SetText(id, inlineIcon)
+			newBar:SetText(id, inlineIcon)--Redundant? seems to work with out. This is directly called by startbar in DBM core
 			newBar:SetIcon(icon)
 			self.bars[newBar] = true
 			newBar:ApplyStyle()
@@ -917,6 +916,7 @@ function barPrototype:SetElapsed(elapsed)
 end
 
 function barPrototype:SetText(text, inlineIcon)
+	if not self.owner.options.InlineIcons then inlineIcon = nil end
 	--Force change color type 7 yo custom inlineIcon
 	local forcedIcon = (self.colorType and self.colorType == 7) and DBM_CORE_IMPORTANT_ICON or inlineIcon or ""
 	_G[self.frame:GetName().."BarName"]:SetText(forcedIcon..text)
