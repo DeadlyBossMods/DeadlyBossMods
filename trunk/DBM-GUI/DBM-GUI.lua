@@ -2193,7 +2193,7 @@ local function CreateOptionsMenu()
 		StyleDropDown:SetPoint("TOPLEFT", TextureDropDown, "BOTTOMLEFT", 0, -10)
 
 		local Fonts = MixinSharedMedia3("font", {
-			{	text	= "Default",		value 	= DBM.STANDARD_TEXT_FONT,		font = DBM.STANDARD_TEXT_FONT	},
+			{	text	= "Default",		value 	= standardFont,					font = standardFont	},
 			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
 			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
 			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
@@ -2424,7 +2424,7 @@ local function CreateOptionsMenu()
 		end
 
 		local Fonts = MixinSharedMedia3("font", {
-			{	text	= "Default",		value 	= DBM.STANDARD_TEXT_FONT,		font = DBM.STANDARD_TEXT_FONT	},
+			{	text	= "Default",		value 	= standardFont,					font = standardFont	},
 			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
 			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
 			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
