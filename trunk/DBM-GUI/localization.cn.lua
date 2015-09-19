@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Aug 17 2015, 17:44 UTC@14349
+-- Last update: Sep 19 2015, 22:49 UTC@14519
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -134,7 +134,7 @@ L.DisableStatusWhisper 		= "屏蔽全团成员的自动回复私聊(需要团长
 L.BarSetup   				= "计时条设置"
 L.BarTexture 				= "计时条材质"
 L.BarStyle					= "计时条样式"
-L.BarDBM					= "DBM"
+L.BarDBM					= "DBM(有动画)"
 L.BarSimple					= "简易(没动画)"
 L.BarStartColor				= "初始颜色"
 L.BarEndColor 				= "结束颜色"
@@ -155,10 +155,17 @@ L.BarStartColorDebuff		= "初始颜色 (点名技能)"
 L.BarEndColorDebuff			= "结束颜色 (点名技能)"
 L.BarStartColorInterrupt	= "初始颜色 (打断)"
 L.BarEndColorInterrupt		= "结束颜色 (打断)"
-L.BarStartColorRole			= "初始颜色 (Role)"
-L.BarEndColorRole			= "结束颜色 (Role)"
+L.BarStartColorRole			= "初始颜色 (剧情)"
+L.BarEndColorRole			= "结束颜色 (剧情)"
 L.BarStartColorPhase		= "初始颜色 (阶段转换)"
 L.BarEndColorPhase			= "结束颜色 (阶段转换)"
+L.BarStartColorUI			= "初始颜色 (自定义)"
+L.BarEndColorUI				= "结束颜色 (自定义)"
+--Type 7 options
+L.Bar7Header				= "自定义计时条选项"
+L.Bar7ForceLarge			= "总是使用大型计时条"
+L.Bar7CustomInline			= "使用自定义 '!' 图标"
+L.Bar7Footer				= "(测试用计时条)"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "按类型分类着色"
@@ -228,7 +235,7 @@ L.CountdownVoice2			= "设置第二倒计时语音"
 L.CountdownVoice3			= "设置第三倒计时语音"
 L.VoicePackChoice			= "设置语音报警的语音包(快躲开！)"
 L.Area_CountdownOptions		= "倒计时选项"
-L.ShowCountdownText			= "为第一倒计时显示文本"
+L.ShowCountdownText			= "为第一倒计时显示大型数字(倒计时数字)"
 L.Area_VoicePackOptions		= "语音包选项(第三方)"
 L.SpecWarn_NoSoundsWVoice	= "当技能存在语音包语音时，屏蔽播放特殊警报声（当心，毁灭）"
 L.SWFNever					= "从不"
