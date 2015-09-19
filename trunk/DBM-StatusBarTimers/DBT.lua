@@ -345,6 +345,14 @@ options = {
 		type = "number",
 		default = 0.0117647058823529,
 	},
+	Bar7ForceLarge = {
+		type = "boolean",
+		default = false,
+	},
+	Bar7CustomInline = {
+		type = "boolean",
+		default = true,
+	},
 	TextColorR = {
 		type = "number",
 		default = 1,
@@ -380,10 +388,6 @@ options = {
 	HugeBarsEnabled = {
 		type = "boolean",
 		default = true,
-	},
-	ForceHugeUIBar = {
-		type = "boolean",
-		default = false,
 	},
 	HugeWidth = {
 		type = "number",
@@ -771,7 +775,7 @@ do
 			self.numBars = (self.numBars or 0) + 1
 			totalBars = self.numBars
 			local enlargeTime = self.options.BarStyle ~= "NoAnim" and self.options.EnlargeBarTime or 11
-			local importantBar = colorType and colorType == 7 and self:GetOption("ForceHugeUIBar")
+			local importantBar = colorType and colorType == 7 and self:GetOption("Bar7ForceLarge")
 			if (importantBar or (timer <= enlargeTime or huge)) and self:GetOption("HugeBarsEnabled") then -- start enlarged
 				newBar.enlarged = true
 				newBar.huge = true
@@ -918,7 +922,7 @@ end
 function barPrototype:SetText(text, inlineIcon)
 	if not self.owner.options.InlineIcons then inlineIcon = nil end
 	--Force change color type 7 yo custom inlineIcon
-	local forcedIcon = (self.colorType and self.colorType == 7) and DBM_CORE_IMPORTANT_ICON or inlineIcon or ""
+	local forcedIcon = (self.colorType and self.colorType == 7 and self.owner.options.Bar7CustomInline) and DBM_CORE_IMPORTANT_ICON or inlineIcon or ""
 	_G[self.frame:GetName().."BarName"]:SetText(forcedIcon..text)
 end
 
@@ -988,8 +992,7 @@ function barPrototype:Update(elapsed)
 				g = barOptions.StartColorPG  + (barOptions.EndColorPG - barOptions.StartColorPG) * (1 - timerValue/totaltimeValue)
 				b = barOptions.StartColorPB  + (barOptions.EndColorPB - barOptions.StartColorPB) * (1 - timerValue/totaltimeValue)
 			elseif colorCount == 7 then--Important
-				if barOptions.ForceHugeUIBar then
-					print(barOptions.ForceHugeUIBar)
+				if barOptions.Bar7ForceLarge then
 					enlargeHack = true
 				end
 				r = barOptions.StartColorUIR  + (barOptions.EndColorUIR - barOptions.StartColorUIR) * (1 - timerValue/totaltimeValue)

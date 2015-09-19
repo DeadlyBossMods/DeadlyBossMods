@@ -2098,6 +2098,16 @@ local function CreateOptionsMenu()
 			end
 		end
 
+		--Type 7 Extra Options
+		local bar7OptionsText = BarColors:CreateText(L.Bar7Header, 405, nil, nil, "LEFT")
+		bar7OptionsText:SetPoint("TOPLEFT", color2Type7text, "TOPLEFT", 150, 0)
+		local forceLarge = BarColors:CreateCheckButton(L.Bar7ForceLarge, false, nil, nil, "Bar7ForceLarge")
+		forceLarge:SetPoint("TOPLEFT", bar7OptionsText, "BOTTOMLEFT", 0, 0)
+		local customInline = BarColors:CreateCheckButton(L.Bar7CustomInline, false, nil, nil, "Bar7CustomInline")
+		customInline:SetPoint("TOPLEFT", forceLarge, "BOTTOMLEFT", 0, 0)
+		local bar7OptionsText2 = BarColors:CreateText(L.Bar7Footer, 405, nil, nil, "LEFT")
+		bar7OptionsText2:SetPoint("TOPLEFT", customInline, "TOPLEFT", 0, -60)
+
 		--General Options
 		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 430, true)
 

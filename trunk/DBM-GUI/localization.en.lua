@@ -153,6 +153,11 @@ L.BarStartColorPhase		= "Start color (Phase)"
 L.BarEndColorPhase			= "End color (Phase)"
 L.BarStartColorUI			= "Start color (User)"
 L.BarEndColorUI				= "End color (User)"
+--Type 7 options
+L.Bar7Header				= "User Bar Options"
+L.Bar7ForceLarge			= "Always use large bar"
+L.Bar7CustomInline			= "Use custom '!' inline icon"
+L.Bar7Footer				= "(Dummy Bar won't live update)"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "Bar Colors by timer type"
