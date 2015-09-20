@@ -96,9 +96,9 @@ DBM_CORE_MOD_DEFAULT_LOADED			= "Настройки по умолчанию дл
 DBM_CORE_WORLDBOSS_ENGAGED			= "В вашем игровом мире возможно начался бой с %s (%s процентов здоровья, отправил %s)."
 DBM_CORE_WORLDBOSS_DEFEATED			= "%s возможно был побежден в вашем игровом мире (отправил %s)."
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%d сек"
+DBM_CORE_TIMER_FORMAT_SECS			= "%s сек"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d мин"
-DBM_CORE_TIMER_FORMAT				= "%d мин %d сек"
+DBM_CORE_TIMER_FORMAT				= "%d мин %s сек"
 
 DBM_CORE_MIN						= "мин"
 DBM_CORE_MIN_FMT					= "%d мин"
@@ -239,7 +239,7 @@ DBM_CORE_MIDDLE						= "Середина"
 DBM_CORE_FRONT						= "Вперед"
 DBM_CORE_INTERMISSION				= "Переходная фаза"--No blizz global for this, and will probably be used in most end tier fights with intermission phases
 
-DBM_CORE_BREAK_START				= "Перерыв начинается -- у вас есть %s мин.!"
+DBM_CORE_BREAK_START				= "Перерыв начинается -- у вас есть %s!"
 DBM_CORE_BREAK_MIN					= "Перерыв заканчивается через %s мин.!"
 DBM_CORE_BREAK_SEC					= "Перерыв заканчивается через %s сек.!"
 DBM_CORE_TIMER_BREAK				= "Перерыв!"

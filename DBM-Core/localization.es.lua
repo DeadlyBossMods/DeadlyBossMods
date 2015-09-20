@@ -35,9 +35,9 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s empezó %s atrás. Recalibrando temporiza
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Comenzando transcripción."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Terminando transcripción."
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%d |4segundo:segundos;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%s |4segundo:segundos;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minuto:minutos;"
-DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minutos; y %d |4segundo:segundos;"
+DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minutos; y %s |4segundo:segundos;"
 
 DBM_CORE_MIN						= "min"
 DBM_CORE_MIN_FMT					= "%d min"
@@ -141,7 +141,7 @@ DBM_CORE_RIGHT						= "Derecha"
 DBM_CORE_BACK						= "Detrás"--BACK
 DBM_CORE_FRONT						= "Delante"
 
-DBM_CORE_BREAK_START				= "¡El descanso empieza ahora -- tienes %s minuto(s)!"
+DBM_CORE_BREAK_START				= "¡El descanso empieza ahora -- tienes %s!"
 DBM_CORE_BREAK_MIN					= "¡El descanso acaba en %s minuto(s)!"
 DBM_CORE_BREAK_SEC					= "¡El descanso acaba en %s segundos!"
 DBM_CORE_TIMER_BREAK				= "¡Descanso!"

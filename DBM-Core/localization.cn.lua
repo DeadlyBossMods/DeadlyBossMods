@@ -101,9 +101,9 @@ DBM_CORE_MOD_DEFAULT_LOADED			= "将会使用默认设置来进行本场战斗"
 DBM_CORE_WORLDBOSS_ENGAGED			= "世界Boss-%s可能正在作战。当前还有%s的生命值。 (由%s的DBM发送)"
 DBM_CORE_WORLDBOSS_DEFEATED			= "世界Boss-%s可能战斗结束了。 (由%s的DBM发送)"
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%d秒"
+DBM_CORE_TIMER_FORMAT_SECS			= "%s秒"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d分钟"
-DBM_CORE_TIMER_FORMAT				= "%d分%d秒"
+DBM_CORE_TIMER_FORMAT				= "%d分%s秒"
 
 DBM_CORE_MIN						= "分"
 DBM_CORE_MIN_FMT					= "%d分"

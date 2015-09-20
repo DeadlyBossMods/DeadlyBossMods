@@ -14,9 +14,9 @@ DBM_CORE_COMBAT_ENDED_AT			= "Combattimento contro %s (%s) finito dopo %s."
 DBM_CORE_COMBAT_ENDED_AT_LONG		= "Combattimento contro %s (%s) finito dopo %s. Hai %d sconfitte in questa difficolta'."
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s e' stato ingaggiato %s fa, recupero dei timer..."
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%d |4secondo:secondi;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%s |4secondo:secondi;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minuto:minuti;"
-DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minuti; e %d |4secondo:secondi;"
+DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minuti; e %s |4secondo:secondi;"
 
 DBM_CORE_MIN						= "min"
 DBM_CORE_MIN_FMT					= "%d min"
@@ -115,7 +115,7 @@ DBM_CORE_RIGHT						= "Right"--Translate
 DBM_CORE_BACK						= "Back"--Translate
 DBM_CORE_FRONT						= "Front"--Translate
 
-DBM_CORE_BREAK_START				= "Pausa iniziata-- Hai %s minuto(i)!"
+DBM_CORE_BREAK_START				= "Pausa iniziata-- Hai %s!"
 DBM_CORE_BREAK_MIN					= "La Pausa finisce tra %s minuto(i)!"
 DBM_CORE_BREAK_SEC					= "La Pausa finisce tra %s secondi!"
 DBM_CORE_TIMER_BREAK				= "Pausa!"
