@@ -79,9 +79,9 @@ DBM_CORE_MOD_DEFAULT_LOADED			= "Foram carregadas opções padrão para esta lut
 DBM_CORE_WORLDBOSS_ENGAGED			= "%s foi possivelmente puxado no seu reino %s por cento de vida. (Enviado por %s)"
 DBM_CORE_WORLDBOSS_DEFEATED			= "%s foi possivelmente derrotado no seu reino (Enviado por %s)."
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%d |4segundo:segundos;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%s |4segundo:segundos;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minuto:minutos;"
-DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minutos; e %d |4segundo:segundos;"
+DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minutos; e %s |4segundo:segundos;"
 
 DBM_CORE_MIN						= "min"
 DBM_CORE_MIN_FMT					= "%d min"
@@ -226,7 +226,7 @@ DBM_CORE_BACK						= "Atrás"
 DBM_CORE_FRONT						= "A frente"
 DBM_CORE_INTERMISSION				= "Intermissão"--No blizz global for this, and will probably be used in most end tier fights with intermission phases
 
-DBM_CORE_BREAK_START				= "Intervalo começando agora -- você tem %s minuto(s)!"
+DBM_CORE_BREAK_START				= "Intervalo começando agora -- você tem %s!"
 DBM_CORE_BREAK_MIN					= "Intervalo encerra-se em %s minuto(s)!"
 DBM_CORE_BREAK_SEC					= "Intervalo encerra-se em %s segundos!"
 DBM_CORE_TIMER_BREAK				= "Intervalo!"

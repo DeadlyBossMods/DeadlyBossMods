@@ -95,9 +95,9 @@ DBM_CORE_MOD_DEFAULT_LOADED			= "Standardeinstellungen für diesen Kampf geladen
 DBM_CORE_WORLDBOSS_ENGAGED			= "Kampf gegen %s wurde möglicherweise auf deinem Realm bei %s Prozent Leben begonnen. (gesendet von %s)"
 DBM_CORE_WORLDBOSS_DEFEATED			= "%s wurde möglichweise auf deinem Realm besiegt. (gesendet von %s)"
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%d |4Sekunde:Sekunden;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%s |4Sekunde:Sekunden;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4Minute:Minuten;"
-DBM_CORE_TIMER_FORMAT				= "%d |4Minute:Minuten; und %d |4Sekunde:Sekunden;"
+DBM_CORE_TIMER_FORMAT				= "%d |4Minute:Minuten; und %s |4Sekunde:Sekunden;"
 
 DBM_CORE_MIN						= "Min"
 DBM_CORE_MIN_FMT					= "%d Min"
@@ -222,7 +222,7 @@ DBM_CORE_MIDDLE						= "Mitte"
 DBM_CORE_FRONT						= "Vorne"
 DBM_CORE_INTERMISSION				= "Übergang"
 
-DBM_CORE_BREAK_START				= "Pause startet jetzt -- du hast %s Minute(n)! (gesendet von: %s)"
+DBM_CORE_BREAK_START				= "Pause startet jetzt -- du hast %s! (gesendet von: %s)"
 DBM_CORE_BREAK_MIN					= "Pause endet in %s Minute(n)!"
 DBM_CORE_BREAK_SEC					= "Pause endet in %s Sekunden!"
 DBM_CORE_TIMER_BREAK				= "Pause!"
