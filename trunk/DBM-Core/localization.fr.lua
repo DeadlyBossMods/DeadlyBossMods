@@ -43,9 +43,9 @@ DBM_CORE_TRANSCRIPTOR_LOG_END           = "Fin du log de Transcriptor."
 DBM_CORE_WORLDBOSS_ENGAGED                      = "%s a probablement été engagé sur votre royaume à %s de vie. (Envoyé par %s)"
 DBM_CORE_WORLDBOSS_DEFEATED                     = "%s a probablement été tué sur votre royaume (Envoyé par %s)."
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%d |4seconde:secondes;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%s |4seconde:secondes;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minute:minutes;"
-DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; et %d |4seconde:secondes;"
+DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; et %s |4seconde:secondes;"
 
 DBM_CORE_MIN						= "min"
 DBM_CORE_MIN_FMT					= "%d min"
@@ -145,7 +145,7 @@ DBM_CORE_RIGHT						= "Droite"
 DBM_CORE_BACK						= "Derrière"
 DBM_CORE_FRONT						= "Devant"--"En face"?/In front
 
-DBM_CORE_BREAK_START				= "La pause commence maintenant -- vous avez %s minute(s)!"
+DBM_CORE_BREAK_START				= "La pause commence maintenant -- vous avez %s!"
 DBM_CORE_BREAK_MIN					= "Fin de la pause dans %s minute(s) !"
 DBM_CORE_BREAK_SEC					= "Fin de la pause dans %s secondes !"
 DBM_CORE_TIMER_BREAK				= "Pause !"

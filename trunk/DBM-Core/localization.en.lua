@@ -95,9 +95,9 @@ DBM_CORE_MOD_DEFAULT_LOADED			= "Default options for this fight have been loaded
 DBM_CORE_WORLDBOSS_ENGAGED			= "%s was possibly engaged on your realm at %s percent health. (Sent by %s)"
 DBM_CORE_WORLDBOSS_DEFEATED			= "%s was possibly defeated on your realm (Sent by %s)."
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%d |4second:seconds;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%s |4second:seconds;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minute:minutes;"
-DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; and %d |4second:seconds;"
+DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; and %s |4second:seconds;"
 
 DBM_CORE_MIN						= "min"
 DBM_CORE_MIN_FMT					= "%d min"
@@ -239,7 +239,7 @@ DBM_CORE_FRONT						= "Front"
 DBM_CORE_INTERMISSION				= "Intermission"--No blizz global for this, and will probably be used in most end tier fights with intermission phases
 
 DBM_CORE_BREAK_USAGE				= "Break timer cannot be longer than 60 minutes. Make sure you're inputting time in minutes and not seconds."
-DBM_CORE_BREAK_START				= "Break starting now -- you have %s minute(s)! (Sent by %s)"
+DBM_CORE_BREAK_START				= "Break starting now -- you have %s! (Sent by %s)"
 DBM_CORE_BREAK_MIN					= "Break ends in %s minute(s)!"
 DBM_CORE_BREAK_SEC					= "Break ends in %s seconds!"
 DBM_CORE_TIMER_BREAK				= "Break time!"

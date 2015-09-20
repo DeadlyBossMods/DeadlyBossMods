@@ -96,9 +96,9 @@ DBM_CORE_MOD_DEFAULT_LOADED			= "此戰鬥的預設選項已套用。"
 DBM_CORE_WORLDBOSS_ENGAGED			= "在你的伺服器上的%s已在百分之%s時開戰(%s發送)。"
 DBM_CORE_WORLDBOSS_DEFEATED			= "在你的伺服器上的%s已被擊敗(%s發送)。"
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%d秒"
+DBM_CORE_TIMER_FORMAT_SECS			= "%s秒"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d分鐘"
-DBM_CORE_TIMER_FORMAT				= "%d分%d秒"
+DBM_CORE_TIMER_FORMAT				= "%d分%s秒"
 
 DBM_CORE_MIN						= "分"
 DBM_CORE_MIN_FMT					= "%d分"
