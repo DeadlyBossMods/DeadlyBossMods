@@ -1844,7 +1844,12 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
 		local timer = tonumber(cmd:sub(5)) or 10
-		sendSync("PT", timer.."\t"..LastInstanceMapID)
+		local targetName = (UnitExists("target") and UnitIsEnemy("player", "target")) and UnitName("target") or nil--Filter non enemies in case player isn't targetting bos but another player/pet
+		if targetName then
+			sendSync("PT", timer.."\t"..LastInstanceMapID.."\t"..targetName)
+		else
+			sendSync("PT", timer.."\t"..LastInstanceMapID)
+		end
 	elseif cmd:sub(1, 3) == "lag" then
 		sendSync("L")
 		DBM:AddMsg(DBM_CORE_LAG_CHECKING)
@@ -3866,7 +3871,7 @@ do
 
 	local dummyMod -- dummy mod for the pull timer
 	local dummyMod2 -- dummy mod for the break timer
-	syncHandlers["PT"] = function(sender, timer, lastMapID)
+	syncHandlers["PT"] = function(sender, timer, lastMapID, target)
 		if DBM.Options.DontShowUserTimers then return end
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 			return
@@ -3918,8 +3923,13 @@ do
 			end
 		end
 		if not DBM.Options.DontShowPTText then
-			dummyMod.text:Show(DBM_CORE_ANNOUNCE_PULL:format(timer, sender))
-			dummyMod.text:Schedule(timer, DBM_CORE_ANNOUNCE_PULL_NOW)
+			if target then
+				dummyMod.text:Show(DBM_CORE_ANNOUNCE_PULL:format(target, timer, sender))
+				dummyMod.text:Schedule(timer, DBM_CORE_ANNOUNCE_PULL_NOW:format(target))
+			else
+				dummyMod.text:Show(DBM_CORE_ANNOUNCE_PULL:format(timer, sender))
+				dummyMod.text:Schedule(timer, DBM_CORE_ANNOUNCE_PULL_NOW)
+			end
 		end
 		DBM:StartLogging(timer, checkForActualPull)
 		if DBM.Options.CheckGear then
