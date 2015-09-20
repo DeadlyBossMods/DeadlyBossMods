@@ -3924,8 +3924,8 @@ do
 		end
 		if not DBM.Options.DontShowPTText then
 			if target then
-				dummyMod.text:Show(DBM_CORE_ANNOUNCE_PULL:format(target, timer, sender))
-				dummyMod.text:Schedule(timer, DBM_CORE_ANNOUNCE_PULL_NOW:format(target))
+				dummyMod.text:Show(DBM_CORE_ANNOUNCE_PULL_TARGET:format(target, timer, sender))
+				dummyMod.text:Schedule(timer, DBM_CORE_ANNOUNCE_PULL_NOW_TARGET:format(target))
 			else
 				dummyMod.text:Show(DBM_CORE_ANNOUNCE_PULL:format(timer, sender))
 				dummyMod.text:Schedule(timer, DBM_CORE_ANNOUNCE_PULL_NOW)
