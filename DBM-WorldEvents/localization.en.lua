@@ -74,6 +74,19 @@ L:SetMiscLocalization({
 	YellBarrel			= "Barrel on me!"
 })
 
+----------------
+--  Brewfest  --
+----------------
+L = DBM:GetModLocalization("Brew")
+
+L:SetGeneralLocalization({
+	name = "Brewfest"
+})
+
+L:SetOptionLocalization({
+	NormalizeVolume			= "Automatically normalize the DIALOG sound channel volume to match music sound channel volume when in Brewfest area so that it's not so annoyingly loud"
+})
+
 -----------------------------
 --  The Headless Horseman  --
 -----------------------------
