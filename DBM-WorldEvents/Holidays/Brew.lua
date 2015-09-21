@@ -23,6 +23,7 @@ mod:RegisterEvents(
 --local timerCleaveCD			= mod:NewCDTimer(8.5, 104903, nil, nil, nil, 6)
 --local timerStarfallCD			= mod:NewCDTimer(15, 26540, nil, nil, nil, 2)
 
+mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("NormalizeVolume", true, "misc")
 
 local setActive = false
