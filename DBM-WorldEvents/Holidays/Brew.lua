@@ -27,25 +27,24 @@ mod:RegisterEvents(
 local setActive = false
 local function CheckEventActive()
 	local _, month, day, year = CalendarGetDate()
-	local curMonth, curYear = CalendarGetMonth()
-	local monthOffset = -12 * (curYear - year) + month - curMonth
-	local numEvents = CalendarGetNumDayEvents(monthOffset, day)
-
-	for i=1, numEvents do
-		local _, eventHour, _, eventType, state, _, texture = CalendarGetDayEvent(monthOffset, day, i)
-		if texture == "Calendar_Brewfest" then
-			if state == "ONGOING" then
-				setActive = true
-			end
+	print(month, day, year)
+	if month == 9 then
+		if day >= 20 then
+			setActive = true
+		end
+	elseif month == 10 then
+		if day < 7 then
+			setActive = true
 		end
 	end
 end
+CheckEventActive()
 
 --Volume normalizing or disabling for blizzard stupidly putting the area's music on DIALOG audio channel, making it blaringly loud
 local function setDialog(self, set)
 --Sound_EnableDialog
 	if set then
-		local musicVolume = tonumber(GetCVarBool("ChatMusicVolume"))
+		local musicVolume = tonumber(GetCVar("Sound_MusicVolume"))
 		self.Options.SoundOption = tonumber(GetCVarBool("Sound_DialogVolume")) or 1
 		if musicVolume then--Normalize volume to music volume level
 			DBM:Debug("Setting normalized volume to music volume of: "..musicVolume)
@@ -64,7 +63,9 @@ local function setDialog(self, set)
 end
 
 function mod:ZONE_CHANGED_NEW_AREA()
+	DBM:Debug("ZONE_CHANGED_NEW_AREA fired. setActive is: "..tostring(setActive), 2)
 	if setActive then
+		DBM:Debug("setActive true", 2)
 		local set_Z = GetCurrentMapAreaID()
 		SetMapToCurrentZone()
 		local true_Z = GetCurrentMapAreaID()
