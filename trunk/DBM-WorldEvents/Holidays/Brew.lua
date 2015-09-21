@@ -45,9 +45,10 @@ CheckEventActive()
 local function setDialog(self, set)
 	if not self.Options.NormalizeVolume then return end
 	if set then
+		local musicEnabled = GetCVarBool("Sound_EnableMusic") or true
 		local musicVolume = tonumber(GetCVar("Sound_MusicVolume"))
 		self.Options.SoundOption = tonumber(GetCVarBool("Sound_DialogVolume")) or 1
-		if musicVolume then--Normalize volume to music volume level
+		if musicEnabled and musicVolume then--Normalize volume to music volume level
 			DBM:Debug("Setting normalized volume to music volume of: "..musicVolume)
 			SetCVar("Sound_DialogVolume", musicVolume)
 		else--Just mute it
