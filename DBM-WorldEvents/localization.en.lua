@@ -84,7 +84,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	NormalizeVolume			= "Automatically normalize the DIALOG sound channel volume to match music sound channel volume when in Brewfest area so that it's not so annoyingly loud"
+	NormalizeVolume			= "Automatically normalize the DIALOG sound channel volume to match music sound channel volume when in Brewfest area so that it's not so annoyingly loud. (If music sound volume is not set, then volume will be muted.)"
 })
 
 -----------------------------
