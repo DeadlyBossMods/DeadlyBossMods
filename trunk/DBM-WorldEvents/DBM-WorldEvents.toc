@@ -40,7 +40,7 @@
 ## X-DBM-Mod-Name-frFR: Évènements Mondiaux
 ## X-DBM-Mod-MapID: 230,189,33,547,1004, 1, 0
 ## X-DBM-Mod-Sort: 150
-## X-DBM-Mod-LoadCID: 55003,54499,15467,15466,49687,15664,96448
+## X-DBM-Mod-LoadCID: 55003,54499,15467,15466,49687,15664,96448,23558,27215,23486
 ## X-DBM-Mod-MinCoreRevision: 12473
 localization.en.lua
 localization.ru.lua
@@ -55,6 +55,7 @@ Holidays\Omen.lua
 Holidays\ApothecaryTrio.lua
 Holidays\Ahune.lua
 Holidays\CorenDirebrew.lua
+Holidays\Brew.lua
 Holidays\HeadlessHorseman.lua
 Holidays\Greench.lua
 Holidays\Grumpus.lua
