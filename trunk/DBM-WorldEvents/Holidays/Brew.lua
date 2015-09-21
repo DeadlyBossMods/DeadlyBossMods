@@ -76,6 +76,11 @@ function mod:ZONE_CHANGED_NEW_AREA()
 		else
 			setDialog(self)
 		end
+	else
+		--Even if event isn't active. If a sound option was stored, restore it
+		if self.Options.SoundOption then
+			setDialog(self)
+		end
 	end
 end
 mod.OnInitialize = mod.ZONE_CHANGED_NEW_AREA
