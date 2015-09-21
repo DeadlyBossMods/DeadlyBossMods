@@ -23,11 +23,11 @@ mod:RegisterEvents(
 --local timerCleaveCD			= mod:NewCDTimer(8.5, 104903, nil, nil, nil, 6)
 --local timerStarfallCD			= mod:NewCDTimer(15, 26540, nil, nil, nil, 2)
 
---
+mod:AddBoolOption("NormalizeVolume", true, "misc")
+
 local setActive = false
 local function CheckEventActive()
 	local _, month, day, year = CalendarGetDate()
-	print(month, day, year)
 	if month == 9 then
 		if day >= 20 then
 			setActive = true
@@ -42,7 +42,7 @@ CheckEventActive()
 
 --Volume normalizing or disabling for blizzard stupidly putting the area's music on DIALOG audio channel, making it blaringly loud
 local function setDialog(self, set)
---Sound_EnableDialog
+	if not self.Options.NormalizeVolume then return end
 	if set then
 		local musicVolume = tonumber(GetCVar("Sound_MusicVolume"))
 		self.Options.SoundOption = tonumber(GetCVarBool("Sound_DialogVolume")) or 1
@@ -63,9 +63,7 @@ local function setDialog(self, set)
 end
 
 function mod:ZONE_CHANGED_NEW_AREA()
-	DBM:Debug("ZONE_CHANGED_NEW_AREA fired. setActive is: "..tostring(setActive), 2)
 	if setActive then
-		DBM:Debug("setActive true", 2)
 		local set_Z = GetCurrentMapAreaID()
 		SetMapToCurrentZone()
 		local true_Z = GetCurrentMapAreaID()
