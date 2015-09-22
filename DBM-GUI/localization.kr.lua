@@ -146,6 +146,13 @@ L.BarStartColorRole			= "시작 색상(역할)"
 L.BarEndColorRole			= "종료 색상(역할)"
 L.BarStartColorPhase		= "시작 색상(단계)"
 L.BarEndColorPhase			= "종료 색상(단계)"
+L.BarStartColorUI			= "시작 색상(사용자)"
+L.BarEndColorUI				= "종료 색상(사용자)"
+--Type 7 options
+L.Bar7Header				= "사용자 바 설정"
+L.Bar7ForceLarge			= "항상 커다란 바 사용"
+L.Bar7CustomInline			= "내부 '!' 아이콘 사용"
+L.Bar7Footer				= "(실시간 업데이트 미적용)"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "종류별 바 색상"
@@ -166,6 +173,7 @@ L.BarSpark					= "바 끝 강조"
 L.BarFlash					= "만료되기 직전의 바를 깜빡이기"
 L.BarSort					= "남은 시간을 기준으로 정렬"
 L.BarColorByType			= "종류에 따라 바 색상 구분하기"
+L.BarInlineIcons			= "내부 아이콘 사용"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "특수 경고"
