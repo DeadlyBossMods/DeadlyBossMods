@@ -395,7 +395,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		end
 		specWarnAncientEnforcer:Show()
 		if self:IsMythic() then
-			timerEnforcersOnslaughtCD:Start(13.5)
+			timerEnforcersOnslaughtCD:Start(13)
 		else
 			timerEnforcersOnslaughtCD:Start()
 		end
