@@ -9499,7 +9499,7 @@ do
 				self:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
 				SWFilterDisabed = self.VoiceVersions[value]--Set disable to version on current voice pack
 			else
-				SWFilterDisabed = 3
+				SWFilterDisabed = 5
 			end
 		end
 	end
