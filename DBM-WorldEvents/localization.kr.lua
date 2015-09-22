@@ -75,6 +75,19 @@ L:SetMiscLocalization{
 	YellBarrel			= "저에게 맥주통!"
 }
 
+----------------
+--  Brewfest  --
+----------------
+L = DBM:GetModLocalization("Brew")
+
+L:SetGeneralLocalization({
+	name = "가을 축제"
+})
+
+L:SetOptionLocalization({
+	NormalizeVolume			= "가을 축제 지역에서 소음 문제 해결을 위해 대화 음량을 배경음 음량에 맞추어 자동 조절하기(배경음이 설정되지 않았을 경우 대화 음량은 음소거 됩니다.)"
+})
+
 -----------------------------
 --  The Headless Horseman  --
 -----------------------------
