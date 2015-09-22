@@ -8509,36 +8509,40 @@ do
 		return obj
 	end
 
+	function bossModPrototype:NewYouAnnounce(spellId, color, ...)
+		return newAnnounce(self, "you", spellId, color or 1, ...)
+	end
+
 	function bossModPrototype:NewTargetAnnounce(spellId, color, ...)
-		return newAnnounce(self, "target", spellId, color or 2, ...)
+		return newAnnounce(self, "target", spellId, color or 3, ...)
 	end
 
 	function bossModPrototype:NewTargetCountAnnounce(spellId, color, ...)
-		return newAnnounce(self, "targetcount", spellId, color or 2, ...)
+		return newAnnounce(self, "targetcount", spellId, color or 3, ...)
 	end
 
 	function bossModPrototype:NewSpellAnnounce(spellId, color, ...)
-		return newAnnounce(self, "spell", spellId, color or 3, ...)
+		return newAnnounce(self, "spell", spellId, color or 2, ...)
 	end
 
 	function bossModPrototype:NewEndAnnounce(spellId, color, ...)
-		return newAnnounce(self, "ends", spellId, color or 3, ...)
+		return newAnnounce(self, "ends", spellId, color or 2, ...)
 	end
 
 	function bossModPrototype:NewEndTargetAnnounce(spellId, color, ...)
-		return newAnnounce(self, "endtarget", spellId, color or 3, ...)
+		return newAnnounce(self, "endtarget", spellId, color or 2, ...)
 	end
 
 	function bossModPrototype:NewFadesAnnounce(spellId, color, ...)
-		return newAnnounce(self, "fades", spellId, color or 3, ...)
+		return newAnnounce(self, "fades", spellId, color or 2, ...)
 	end
 
 	function bossModPrototype:NewAddsLeftAnnounce(spellId, color, ...)
-		return newAnnounce(self, "adds", spellId, color or 2, ...)
+		return newAnnounce(self, "adds", spellId, color or 3, ...)
 	end
 
 	function bossModPrototype:NewCountAnnounce(spellId, color, ...)
-		return newAnnounce(self, "count", spellId, color or 3, ...)
+		return newAnnounce(self, "count", spellId, color or 2, ...)
 	end
 
 	function bossModPrototype:NewStackAnnounce(spellId, color, ...)
