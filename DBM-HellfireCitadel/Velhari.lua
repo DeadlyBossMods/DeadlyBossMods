@@ -81,7 +81,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(2))--Stage Two: Contempt
 local timerTaintedShadowsCD					= mod:NewNextTimer(5, 180533, nil, "Tank", nil, 5)
 local timerFontofCorruptionCD				= mod:NewNextTimer(19.6, 180526, nil, nil, nil, 3)
 ----Ancient Harbinger
-local timerHarbingersMendingCD				= mod:NewCDTimer(11, 180025, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerHarbingersMendingCD				= mod:NewCDTimer(10.5, 180025, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))--Stage Three: Malice
 local timerBulwarkoftheTyrantCD				= mod:NewNextCountTimer(10, 180600)
 local timerGaveloftheTyrantCD				= mod:NewNextCountTimer(10, 180608)
@@ -89,8 +89,10 @@ local timerGaveloftheTyrantCD				= mod:NewNextCountTimer(10, 180608)
 --local berserkTimer						= mod:NewBerserkTimer(360)
 
 local countdownAnnihilatingStrike			= mod:NewCountdown(10, 180260, nil, nil, 3)--It's same cd as Infernal tempest so going to use countdown for both. Starting count at 3 to avoid so much spam. every 10 seconds, 5-1 would be bit much. 3-1 important though
-local countdownFontofCorruption				= mod:NewCountdownFades("Alt50", 180526)
+local countdownInfernalTempest				= mod:NewCountdown("Alt50", 180300)
+local countdownFontofCorruption				= mod:NewCountdownFades("AltTwo50", 180526)
 local countdownBulwarkofTyrant				= mod:NewCountdown(10, 180608, nil, nil, 3)
+local countdownGavel						= mod:NewCountdown("Alt10", 180608, nil, nil, 3)
 
 local voicePhaseChange						= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceInfernalTempest					= mod:NewVoice(180300)--scatter
@@ -182,16 +184,17 @@ function mod:SPELL_CAST_START(args)
 		self.vb.annihilationCount = self.vb.annihilationCount + 1
 		if self.vb.annihilationCount == 3 then--Infernal tempest next
 			timerInfernalTempestCD:Start(10, self.vb.infernalTempestCount+1)
+			countdownInfernalTempest:Start()
 		else
 			timerAnnihilatingStrikeCD:Start(nil, self.vb.annihilationCount+1)
+			countdownAnnihilatingStrike:Start()
 		end
-		countdownAnnihilatingStrike:Start()
 		self:BossTargetScanner(90269, "AnnTarget", 0.05, 20, true)
 	elseif spellId == 180004 then
 		specWarnEnforcersOnslaught:Show()
 		voiceEnforcerOnslaught:Play("watchorb")
 		if self:IsMythic() then
-			timerEnforcersOnslaughtCD:Start(11)
+			timerEnforcersOnslaughtCD:Start(10)
 		else
 			timerEnforcersOnslaughtCD:Start()
 		end
@@ -251,10 +254,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBulwarkoftheTyrant:Show(self.vb.bulwarkCount, args.destName)
 		if self.vb.bulwarkCount == 3 then
 			timerGaveloftheTyrantCD:Start(nil, self.vb.gavelCount+1)
+			countdownGavel:Start()
 		else
 			timerBulwarkoftheTyrantCD:Start(nil, self.vb.bulwarkCount+1)
+			countdownBulwarkofTyrant:Start()
 		end
-		countdownBulwarkofTyrant:Start()
 	elseif spellId == 180526 then
 		timerFontofCorruptionCD:Start()
 	end
@@ -390,7 +394,11 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			DBM.BossHealth:AddBoss(90270, AncientEnforcer)
 		end
 		specWarnAncientEnforcer:Show()
-		timerEnforcersOnslaughtCD:Start()
+		if self:IsMythic() then
+			timerEnforcersOnslaughtCD:Start(13.5)
+		else
+			timerEnforcersOnslaughtCD:Start()
+		end
 	elseif target and target == TyrantVelhari and npc == AncientHarbinger then--Emotes with npc name as AncientHarbinger also fire for heals, but those emotes, target is nil or "". spawn emote, target is boss name
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:AddBoss(90271, AncientHarbinger)
