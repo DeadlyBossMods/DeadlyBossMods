@@ -258,6 +258,7 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Achievement"--BATTLE_PET_SOURCE_6
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
+	you			= "%s on YOU",
 	target		= "%s on >%%s<",
 	targetcount	= "%s (%%s) on >%%s<",
 	spell		= "%s",
@@ -276,6 +277,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 
 local prewarnOption = "Show pre-warning for $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
+	you			= "Announce when $spell:%s on you",
 	target		= "Announce $spell:%s targets",
 	targetcount	= "Announce $spell:%s targets (with count)",
 	spell		= "Show warning for $spell:%s",
