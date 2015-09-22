@@ -41,32 +41,32 @@ local warnBulwarkoftheTyrant				= mod:NewTargetCountAnnounce(180600, 2)
 
 --All
 local specWarnEdictofCondemnation			= mod:NewSpecialWarningYouCount(182459, nil, nil, nil, 1, 2)
-local specWarnEdictofCondemnationOther		= mod:NewSpecialWarningMoveTo(185241, "Ranged")--Mythic, they can't run in, you have to run to them, they are rooted.
+local specWarnEdictofCondemnationOther		= mod:NewSpecialWarningMoveTo(185241, false, nil, 2, 1, 2)--Varying strats, so off by default
 local yellEdictofCondemnation				= mod:NewFadesYell(182459)
 local specWarnTouchofHarm					= mod:NewSpecialWarningTarget(180166, false)
 local specWarnSealofDecay					= mod:NewSpecialWarningStack(180000, nil, 2)
-local specWarnSealofDecayOther				= mod:NewSpecialWarningTaunt(180000, nil, nil, nil, nil, 2)
+local specWarnSealofDecayOther				= mod:NewSpecialWarningTaunt(180000, nil, nil, nil, 1, 2)
 --Stage One: Oppression
 local specWarnAnnihilatingStrike			= mod:NewSpecialWarningYou(180260)
 local specWarnAnnihilatingStrikeNear		= mod:NewSpecialWarningClose(180260)
 local yellAnnihilatingStrike				= mod:NewYell(180260)
 local specWarnInfernalTempest				= mod:NewSpecialWarningCount(180300, nil, nil, nil, 2, 2)
 ----Ancient Enforcer
-local specWarnAncientEnforcer				= mod:NewSpecialWarningSwitch("ej11155", "-Healer")
-local specWarnEnforcersOnslaught			= mod:NewSpecialWarningDodge(180004, nil, nil, nil, 1, 5)
+local specWarnAncientEnforcer				= mod:NewSpecialWarningSwitch("ej11155", "-Healer", nil, nil, 1, 2)
+local specWarnEnforcersOnslaught			= mod:NewSpecialWarningDodge(180004, "Tank", nil, 2, 1, 5)
 --Stage Two: Contempt
 local specWarnFontofCorruption				= mod:NewSpecialWarningYou(180526, nil, nil, 2, 3)
 local specWarnFontofCorruptionOver			= mod:NewSpecialWarningEnd(180526)
 local yellFontofCorruption					= mod:NewYell(180526)
 ----Ancient Harbinger
-local specWarnAncientHarbinger				= mod:NewSpecialWarningSwitch("ej11163", "-Healer")
+local specWarnAncientHarbinger				= mod:NewSpecialWarningSwitch("ej11163", "-Healer", nil, nil, 1, 2)
 local specWarnHarbingersMending				= mod:NewSpecialWarningInterruptCount(180025, "-Healer", nil, nil, 1, 2)
-local specWarnHarbingersMendingDispel		= mod:NewSpecialWarningDispel(180025, "MagicDispeller")--if interrupt is missed (likely at some point, cast gets faster each time). Then it MUST be dispelled
+local specWarnHarbingersMendingDispel		= mod:NewSpecialWarningDispel(180025, "MagicDispeller", nil, nil, 1, 2)--if interrupt is missed (likely at some point, cast gets faster each time). Then it MUST be dispelled
 --Stage Three: Malice
 local specWarnDespoiledGround				= mod:NewSpecialWarningMove(180604, nil, nil, nil, 1, 1)
 local specWarnGaveloftheTyrant				= mod:NewSpecialWarningCount(180608, nil, nil, nil, 2, 2)
 ----Ancient Sovereign
-local specWarnAncientSovereign				= mod:NewSpecialWarningSwitch("ej11170", "-Healer")
+local specWarnAncientSovereign				= mod:NewSpecialWarningSwitch("ej11170", "-Healer", nil, nil, 1, 2)
 
 mod:AddTimerLine(ALL)--All
 local timerSealofDecayCD					= mod:NewCDTimer(6, 180000, nil, false, nil, 5, nil, DBM_CORE_TANK_ICON)--I don't think it's really needed, but at least make it an option
@@ -95,13 +95,17 @@ local countdownBulwarkofTyrant				= mod:NewCountdown(10, 180608, nil, nil, 3)
 local countdownGavel						= mod:NewCountdown("Alt10", 180608, nil, nil, 3)
 
 local voicePhaseChange						= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
-local voiceInfernalTempest					= mod:NewVoice(180300)--scatter
-local voiceEdictofCondemnation				= mod:NewVoice(182459)--runin or gather (mythic)
+local voiceEnforcer							= mod:NewVoice("ej11155", "-Healer")--bigmob
+local voiceHarbinger						= mod:NewVoice("ej11163", "-Healer")--bigmob
+local voiceSovereign						= mod:NewVoice("ej11170", "-Healer")--bigmob
+local voiceInfernalTempest					= mod:NewVoice(180300)--watchstep
+local voiceEdictofCondemnation				= mod:NewVoice(182459)--runin or gather
 local voiceHarbingersMending				= mod:NewVoice(180025)--kickcast/dispelboss
 local voiceGaveloftheTyrant					= mod:NewVoice(180608)--carefly
-local voiceEnforcerOnslaught				= mod:NewVoice(180004)--watchorb
+local voiceEnforcerOnslaught				= mod:NewVoice(180004, "Tank", nil, 2)--watchorb
 local voiceSealofDecay						= mod:NewVoice(180000)--tauntboss
 local voiceVoidZone							= mod:NewVoice(180604)--runaway
+--stopmove
 
 mod:AddRangeFrameOption("5/4")
 mod:AddHudMapOption("HudMapOnStrike", 180260)
@@ -207,7 +211,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 180300 then
 		self.vb.infernalTempestCount = self.vb.infernalTempestCount + 1
 		specWarnInfernalTempest:Show(self.vb.infernalTempestCount)
-		voiceInfernalTempest:Play("scatter")
+		voiceInfernalTempest:Play("watchstep")
 		self.vb.annihilationCount = 0
 		timerAnnihilatingStrikeCD:Start(nil, 1)
 		countdownAnnihilatingStrike:Start()
@@ -272,23 +276,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEdictofCondemnationCD:Start(nil, self.vb.edictCount+1)
 		if args:IsPlayer() then
 			specWarnEdictofCondemnation:Show(self.vb.edictCount)
-			if not self:IsMythic() then
-				--If not mythic, just run it into melee, like flamebender
-				--Movement does damage to players so 1 person moving better than many
-				voiceEdictofCondemnation:Play("runin")
-			end
+			voiceEdictofCondemnation:Play("runin")
 			yellEdictofCondemnation:Schedule(8, 1)
 			yellEdictofCondemnation:Schedule(7, 2)
 			yellEdictofCondemnation:Schedule(6, 3)
 			yellEdictofCondemnation:Schedule(5, 4)
 			yellEdictofCondemnation:Schedule(4, 5)
-		elseif self:IsMythic() then
-			--Good delay? More adjusting needed? probably don't want to run in and stand there 9 seconds
-			--you want to spread. for too many mechanics, so currently runs you in at 4.5 seconds remaining
+		end
+		if self.Options.SpecWarn185241moveto then--This specific voice only meant for specWarnEdictofCondemnationOther
 			specWarnEdictofCondemnationOther:Schedule(5, args.destName)
-			if self.Options.SpecWarn185241moveto then--This specific voice only meant for specWarnEdictofCondemnationOther
-				voiceEdictofCondemnation:Schedule(5, "gather")
-			end
+			voiceEdictofCondemnation:Schedule(5, "gather")
 		end
 		if self.Options.HudMapEdict2 then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 9, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
@@ -394,6 +391,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			DBM.BossHealth:AddBoss(90270, AncientEnforcer)
 		end
 		specWarnAncientEnforcer:Show()
+		voiceEnforcer:Play("bigmob")
 		if self:IsMythic() then
 			timerEnforcersOnslaughtCD:Start(13)
 		else
@@ -404,12 +402,14 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			DBM.BossHealth:AddBoss(90271, AncientHarbinger)
 		end
 		specWarnAncientHarbinger:Show()
+		voiceHarbinger:Play("bigmob")
 		timerHarbingersMendingCD:Start(19)--VERIFY
 	elseif npc == AncientSovereign then
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:AddBoss(90272, AncientSovereign)
 		end
 		specWarnAncientSovereign:Show()
+		voiceSovereign:Play("bigmob")
 	end
 end
 
