@@ -83,8 +83,8 @@ local timerFontofCorruptionCD				= mod:NewNextTimer(19.6, 180526, nil, nil, nil,
 ----Ancient Harbinger
 local timerHarbingersMendingCD				= mod:NewCDTimer(10.5, 180025, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))--Stage Three: Malice
-local timerBulwarkoftheTyrantCD				= mod:NewNextCountTimer(10, 180600)
-local timerGaveloftheTyrantCD				= mod:NewNextCountTimer(10, 180608)
+local timerBulwarkoftheTyrantCD				= mod:NewNextCountTimer(10, 180600, nil, nil, nil, 3)
+local timerGaveloftheTyrantCD				= mod:NewNextCountTimer(10, 180608, nil, nil, nil, 2)
 
 --local berserkTimer						= mod:NewBerserkTimer(360)
 
