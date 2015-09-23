@@ -259,6 +259,7 @@ DBM_CORE_GEAR_FISHING_POLE			= "낚싯대"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적)"--BATTLE_PET_SOURCE_6
 
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.you			= "당신에게 %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target			= "%s: >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%s): >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell			= "%s"
@@ -274,6 +275,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase		= "곧 %s 단계"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.count			= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack			= "%s: >%%s< (%%d)"
 
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.you			= "당신이 $spell:%s 대상이 된 경우 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target		= "$spell:%s 대상 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetcount	= "$spell:%s 대상 알림 보기(횟수 포함)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell		= "$spell:%s 알림 보기"
