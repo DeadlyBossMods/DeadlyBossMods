@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Sep 19 2015, 22:49 UTC@14519
+-- Last update: Sep 23 2015, 06:46 UTC@14543
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -257,6 +257,8 @@ DBM_CORE_ANNOUNCE_BREAK_OVER		= "休息已结束"
 DBM_CORE_TIMER_PULL					= "开怪倒计时"
 DBM_CORE_ANNOUNCE_PULL				= "%d秒后开怪 （由 %s 发送）"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "开怪！"
+DBM_CORE_ANNOUNCE_PULL_TARGET		= "%2$d秒后开搞%1$s!（由 %3$s 发送）"
+DBM_CORE_ANNOUNCE_PULL_NOW_TARGET	= "开搞 %s！"
 DBM_CORE_GEAR_WARNING				= "警告：请检查你的装备。你当前的装备装等比背包装等低了 %d 点"
 DBM_CORE_GEAR_WARNING_WEAPON		= "警告：请检查你的武器并确保已被正确装备"
 DBM_CORE_GEAR_FISHING_POLE			= "钓鱼竿"
@@ -266,6 +268,7 @@ DBM_CORE_GEAR_FISHING_POLE			= "钓鱼竿"
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "成就：限时击杀"
 
 -- Auto-generated Warning Localizations
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.you				= "你中了%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target				= "%s -> >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount		= "%s (%%s) -> >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell				= "%s"
@@ -282,6 +285,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.count				= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack				= "%s -> >%%s< (%%d)"
 
 local prewarnOption			= "预警：$spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.you				= "警报：中了%s时"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target			= "警报：$spell:%s的目标"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetcount		= "警报：$spell:%s的目标(带计数)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell			= "警报：$spell:%s"
