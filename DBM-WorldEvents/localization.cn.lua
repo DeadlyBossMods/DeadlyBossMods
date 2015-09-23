@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- Mini_Dragon(projecteurs@gmail.com)
 -- Yike Xia
--- Last update: Jan 22, 2015@12534
+-- Last update: Sep 23 2015, 06:10 UTC@14543
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -84,6 +84,19 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellBarrel		= "我中了空桶！"
+})
+
+----------------
+--  Brewfest  --
+----------------
+L = DBM:GetModLocalization("Brew")
+
+L:SetGeneralLocalization({
+	name = "美酒节"
+})
+
+L:SetOptionLocalization({
+	NormalizeVolume			= "在美酒节任务区域内，自动将对话声道的音量调节成音乐声道的音量。(如果音乐没有开启，对话声道会变静音。)"
 })
 
 -------------------------
