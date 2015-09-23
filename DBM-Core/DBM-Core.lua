@@ -111,16 +111,11 @@ DBM.DefaultOptions = {
 	WarningIconChat = true,
 	WarningAlphabetical = true,
 	StripServerName = true,
-	ShowCombatLogMessage = true,
-	ShowTranscriptorMessage = true,
 	ShowAllVersions = true,
-	ShowLoadMessage = true,
 	ShowPizzaMessage = true,
 	ShowEngageMessage = true,
-	ShowKillMessage = true,
-	ShowWipeMessage = true,
+	ShowDefeatMessage = true,
 	ShowGuildMessages = true,
-	ShowRecoveryMessage = true,
 	AutoRespond = true,
 	StatusEnabled = true,
 	WhisperStats = false,
@@ -3634,9 +3629,7 @@ function DBM:LoadMod(mod, force)
 		return false
 	else
 		self:Debug("LoadAddOn should have succeeded for "..mod.name, 2)
-		if self.Options.ShowLoadMessage then--Make load option optional for advanced users, option is NOT in the GUI.
-			self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
-		end
+		self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
 		self:LoadModOptions(mod.modId, InCombatLockdown(), true)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
@@ -3782,7 +3775,7 @@ do
 		end
 	end
 
-	syncHandlers["C"] = function(sender, delay, mod, modRevision, startHp, dbmRevision)
+	syncHandlers["C"] = function(sender, delay, mod, modRevision, startHp, dbmRevision, modHFRevision)
 		if not dbmIsEnabled or sender == playerName then return end
 		if LastInstanceType == "pvp" then return end
 		if LastInstanceType == "none" and (not UnitAffectingCombat("player") or #inCombat > 0) then--world boss
@@ -3802,10 +3795,21 @@ do
 				mod = DBM:GetModByName(mod or "")
 				modRevision = tonumber(modRevision or 0) or 0
 				dbmRevision = tonumber(dbmRevision or 0) or 0
+				modHFRevision = tonumber(modHFRevision or 0) or 0
 				startHp = tonumber(startHp or -1) or -1
 				if dbmRevision < 10481 then return end
 				if mod and delay and (not mod.zones or mod.zones[LastInstanceMapID]) and (not mod.minSyncRevision or modRevision >= mod.minSyncRevision) then
 					DBM:StartCombat(mod, delay + lag, "SYNC from - "..sender, true, startHp)
+					if mod.revision < modHFRevision then--mod.revision because we want to compare to OUR revision not senders
+						if DBM:AntiSpam(3, "HOTFIX") then
+							if DBM.HighestRelease < modHFRevision then--There is a newer RELEASE version of DBM out that has this mods fixes
+								showConstantReminder = 2
+								DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HOTFIX)
+							else--This mods fixes are in an alpha version
+								DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA)
+							end
+						end
+					end
 				end
 			end
 		end
@@ -3815,22 +3819,6 @@ do
 		if (DBM:GetRaidRank(sender) ~= 2 or not IsInGroup()) then return end--If not on group, we're probably sender, don't disable status. IF not leader, someone is trying to spoof this, block that too
 		statusWhisperDisabled = true
 		DBM:Debug("Raid leader has disabled status whispers")
-	end
-
-	syncHandlers["HF"] = function(sender, mod, modRevision)
-		mod = DBM:GetModByName(mod or "")
-		modRevision = tonumber(modRevision or 0) or 0
-		if mod and (mod.revision < modRevision) then
-			--TODO, maybe require at least 2 senders? this doesn't disable mod or make a popup though, just warn in chat that mod may have invalid timers/warnings do to a blizzard hotfix
-			if DBM:AntiSpam(3, "HOTFIX") then
-				if DBM.HighestRelease < modRevision then--There is a newer RELEASE version of DBM out that has this mods fixes
-					showConstantReminder = 2
-					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HOTFIX)
-				else--This mods fixes are in an alpha version
-					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA)
-				end
-			end
-		end
 	end
 
 	syncHandlers["IS"] = function(sender, guid, ver, optionName)
@@ -5557,14 +5545,10 @@ do
 				end
 				--send "C" sync
 				if not synced then
-					sendSync("C", (delay or 0).."\t"..modId.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision)
+					sendSync("C", (delay or 0).."\t"..modId.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision.."\t"..(mod.hotfixNoticeRev or 0))
 				end
 				if self.Options.DisableStatusWhisper and UnitIsGroupLeader("player") and (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 or difficultyIndex == 23) then
 					sendSync("DSW")
-				end
-				--show hotfix notify
-				if mod.hotfixNoticeRev then
-					sendSync("HF", modId.."\t"..mod.hotfixNoticeRev)
 				end
 				--show bigbrother check
 				if self.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
@@ -5601,7 +5585,7 @@ do
 					self.Bars:CancelBar(DBM_CORE_TIMER_PULL)
 					TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
 				end
-			elseif self.Options.ShowRecoveryMessage then--show timer recovery message
+			else
 				self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
 			end
 			if savedDifficulty == "worldboss" and not mod.noWBEsync then
@@ -5781,7 +5765,7 @@ do
 					end
 				end
 				local totalKills = mod.stats[statVarTable[savedDifficulty].."Kills"]
-				if self.Options.ShowKillMessage then
+				if self.Options.ShowDefeatMessage then
 					local msg = ""
 					if not mod.combatInfo.pull then--was a bad pull so we ignored thisTime, should never happen
 						if scenario then
@@ -5987,9 +5971,7 @@ do
 		if self.Options.AutologBosses then--Start logging here to catch pre pots.
 			if not LoggingCombat() then
 				autoLog = true
-				if self.Options.ShowCombatLogMessage then
-					self:AddMsg("|cffffff00"..COMBATLOGENABLED.."|r")
-				end
+				self:AddMsg("|cffffff00"..COMBATLOGENABLED.."|r")
 				LoggingCombat(true)
 				if checkFunc then
 					self:Unschedule(checkFunc)
@@ -6000,9 +5982,7 @@ do
 		if self.Options.AdvancedAutologBosses and Transcriptor then
 			if not Transcriptor:IsLogging() then
 				autoTLog = true
-				if self.Options.ShowTranscriptorMessage then
-					self:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_START.."|r")
-				end
+				self:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_START.."|r")
 				Transcriptor:StartLog(1)
 			end
 			if checkFunc then
@@ -6015,17 +5995,13 @@ do
 	function DBM:StopLogging()
 		if self.Options.AutologBosses and LoggingCombat() and autoLog then
 			autoLog = false
-			if self.Options.ShowCombatLogMessage then
-				self:AddMsg("|cffffff00"..COMBATLOGDISABLED.."|r")
-			end
+			self:AddMsg("|cffffff00"..COMBATLOGDISABLED.."|r")
 			LoggingCombat(false)
 		end
 		if self.Options.AdvancedAutologBosses and Transcriptor and autoTLog then
 			if Transcriptor:IsLogging() then
 				autoTLog = false
-				if self.Options.ShowTranscriptorMessage then
-					self:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_END.."|r")
-				end
+				self:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_END.."|r")
 				Transcriptor:StopLog(1)
 			end
 		end
