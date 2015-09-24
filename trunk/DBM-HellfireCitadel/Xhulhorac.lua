@@ -84,7 +84,7 @@ local timerVoidStrikeCD				= mod:NewCDTimer(17, 186292, nil, "Tank", nil, 5, nil
 local timerVoidSurgeCD				= mod:NewCDTimer(30, 186333, nil, nil, nil, 3)
 local timerVoidsCD					= mod:NewNextTimer(30, "ej11714", nil, "Ranged", nil, 1, 697)
 ----Big Add
-local timerWitheringGazeCD			= mod:NewCDTimer(14.5, 186783, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
+local timerWitheringGazeCD			= mod:NewCDTimer(24, 186783, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
 local timerBlackHoleCD				= mod:NewCDCountTimer(29.5, 186546, nil, nil, nil, 5)
 local timerEmpBlackHoleCD			= mod:NewCDCountTimer(29.5, 189779, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)--Merge with timerBlackHoleCD?
 --End Phase
@@ -244,11 +244,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 186783 then
-		if self:IsNormal() then
-			timerWitheringGazeCD:Start(24)
-		else
-			timerWitheringGazeCD:Start()
-		end
+		timerWitheringGazeCD:Start()
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
@@ -256,22 +252,18 @@ function mod:SPELL_CAST_START(args)
 				break
 			end
 		end
-		local elapsed, total = timerBlackHoleCD:GetTime(self.vb.blackHoleCount+1)
-		local remaining = total - elapsed
-		if remaining < 10.5 then--Black hole is delayed by Withering Gaze
-			timerBlackHoleCD:Cancel()
-			if total == 0 then--Timer had already experted, start new one for 10 seconds
-				timerBlackHoleCD:Start(10.5, self.vb.blackHoleCount+1)
-			else
-				local extend = 10.5 - remaining
-				DBM:Debug("experimental timer extend firing for Black Hole. Extend amount: "..extend)
-				timerBlackHoleCD:Update(elapsed, total+extend, self.vb.blackHoleCount+1)
-			end
-		end
 	elseif spellId == 186546 then
 		self.vb.blackHoleCount = self.vb.blackHoleCount + 1
 		specWarnBlackHole:Show(self.vb.blackHoleCount)
-		timerBlackHoleCD:Start(nil, self.vb.blackHoleCount+1)
+		if self.vb.blackHoleCount == 2 then
+		--Smart auto correct may not be needed. I've never seen a log where this wasn't delayed at least 9 seconds.
+		--I have seen some delayed as much as 12 though, so timer auto correct would still be more accurate...
+		--But that level of pickyness may not be worth complexity and testing involved for auto correct code
+		--https://www.warcraftlogs.com/reports/yWRb9vqd7JBPar6L#fight=4&type=summary&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id+%3D+186783+or+ability.id+%3D+186546)+and+type+%3D+%22begincast%22+or+ability.id+%3D+186783+and+type+%3D+%22removedebuff%22
+			timerBlackHoleCD:Start(39, self.vb.blackHoleCount+1)
+		else
+			timerBlackHoleCD:Start(nil, self.vb.blackHoleCount+1)
+		end
 	elseif spellId == 189779 then
 		self.vb.blackHoleCount = self.vb.blackHoleCount + 1
 		specWarnEmpBlackHole:Show(self.vb.blackHoleCount)
