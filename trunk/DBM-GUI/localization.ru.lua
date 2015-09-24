@@ -14,6 +14,7 @@ L.OTabBosses				= "Боссы"
 L.OTabOptions				= "Настройки"
 
 L.TabCategory_Options	 	= "Общие параметры"
+L.TabCategory_LEG	 		= "Legion"
 L.TabCategory_WOD	 		= "Warlords of Draenor"
 L.TabCategory_MOP	 		= "Туманы Пандарии"
 L.TabCategory_CATA	 		= "Катаклизм"
@@ -72,6 +73,7 @@ L.ModelSoundLong			= "Длинное"
 L.Button_RangeFrame			= "Окно проверки дистанции"
 L.Button_InfoFrame			= "Окно информации"
 L.Button_TestBars			= "Проверка индикаторов"
+L.Button_ResetInfoRange		= "Сбросить информ./дист. окна"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Предупреждения для рейда"
@@ -89,6 +91,7 @@ L.ShowFakedRaidWarnings 	= "Показывать предупреждения в
 L.WarningIconLeft 			= "Отображать значок с левой стороны"
 L.WarningIconRight 			= "Отображать значок с правой стороны"
 L.WarningIconChat 			= "Отображать значки в окне чата"
+L.WarningAlphabetical		= "Сортировать имена по алфавиту"
 L.Warn_FontType				= "Выбор шрифта"
 L.Warn_FontStyle			= "Флаги шрифта"
 L.Warn_FontShadow			= "Тень"
@@ -144,6 +147,13 @@ L.BarStartColorRole			= "Начальный цвет (Роль)"
 L.BarEndColorRole			= "Конечный цвет (Роль)"
 L.BarStartColorPhase		= "Начальный цвет (Фаза)"
 L.BarEndColorPhase			= "Конечный цвет (Фаза)"
+L.BarStartColorUI			= "Начальный цвет (Польз.)"
+L.BarEndColorUI				= "Конечный цвет (Польз.)"
+--Type 7 options
+L.Bar7Header				= "Параметры пользовательского индикатора"
+L.Bar7ForceLarge			= "Всегда использовать большой индикатор"
+L.Bar7CustomInline			= "Использовать пользовательскую '!' встроенную иконку"
+L.Bar7Footer				= "(Dummy Bar won't live update)"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "Цвета индикатора по типу таймера"
@@ -300,6 +310,7 @@ L.LFDEnhance				= "Проигрывать звук проверки готовн
 L.WorldBossNearAlert		= "Проигрывать звук проверки готовности когда неподалеку пулят нужных вам боссов вне подземелья (переопределяет настройку для конкретного босса)"
 L.RLReadyCheckSound			= "Проигрывать звук проверки готовности при проверке готовности через основной аудио канал или канал диалогов"
 L.AFKHealthWarning			= "Звуковое оповещение если вы теряете здоровье во время АФК"
+L.AutoReplySound			= "Звуковое оповещение при получении авто-ответа шепотом от DBM"
 --
 L.TimerGeneral 				= "Параметры таймера"
 L.SKT_Enabled				= "Всегда отображать таймер рекордной победы<br/>(переопределяет настройку для конкретного босса)"
