@@ -174,6 +174,7 @@ L.BarSpark					= "Искрение индикатора"
 L.BarFlash					= "Мигание когда индикатор скоро исчезнет"
 L.BarSort					= "Сортировать по ставшемуся времени"
 L.BarColorByType			= "Цвет по типу"
+L.BarInlineIcons			= "Показывать встроенные иконки"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Специальные предупреждения"
