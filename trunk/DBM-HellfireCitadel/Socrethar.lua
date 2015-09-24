@@ -75,7 +75,6 @@ local timerApocalypticFelburstCD	= mod:NewCDCountTimer(30, 188693, nil, nil, nil
 --Socrethar
 local timerExertDominanceCD			= mod:NewCDCountTimer(5, 183331, nil, "-Healer", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerApocalypseCD				= mod:NewCDTimer(46, 183329, nil, nil, nil, 2)
-local timerPrisonActive				= mod:NewTargetTimer(60, 183017, nil, nil, nil, 5)
 --Adds
 local timerSargereiDominatorCD		= mod:NewNextCountTimer(60, "ej11456", nil, nil, nil, 1, 184053)--CD needs verifying, no log saw 2 of them in a phase. phase always ended or boss died before 2nd add, i know it's at least longer than 60 sec tho
 local timerHauntingSoulCD			= mod:NewCDCountTimer(29, "ej11462", nil, nil, nil, 1, 182769)
@@ -418,10 +417,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif (spellId == 183017 or spellId == 180415) and self:AntiSpam(5, args.destName) and args:GetDestCreatureID() ~= 91765 then
 		warnFelPrison:CombinedShow(0.3, args.destName)
-		--Only show target timer for adds
-		if not DBM:GetRaidUnitId(args.destName) then
-			timerPrisonActive:Start(args.destName, args.destGUID)
-		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -466,8 +461,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 			self.vb.kickCount2 = self.vb.kickCount2 + 1
 		end
-	elseif spellId == 183017 then
-		timerPrisonActive:Cancel(args.destName, args.destGUID)
 	end
 end
 
