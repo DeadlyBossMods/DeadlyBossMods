@@ -386,30 +386,32 @@ end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-	if npc == AncientEnforcer then
-		if DBM.BossHealth:IsShown() then
-			DBM.BossHealth:AddBoss(90270, AncientEnforcer)
+	if target and target == TyrantVelhari then
+		if npc == AncientEnforcer then
+			if DBM.BossHealth:IsShown() then
+				DBM.BossHealth:AddBoss(90270, AncientEnforcer)
+			end
+			specWarnAncientEnforcer:Show()
+			voiceEnforcer:Play("bigmob")
+			if self:IsMythic() then
+				timerEnforcersOnslaughtCD:Start(13)
+			else
+				timerEnforcersOnslaughtCD:Start()
+			end
+		elseif npc == AncientHarbinger then--Emotes with npc name as AncientHarbinger also fire for heals, but those emotes, target is nil or "". spawn emote, target is boss name
+			if DBM.BossHealth:IsShown() then
+				DBM.BossHealth:AddBoss(90271, AncientHarbinger)
+			end
+			specWarnAncientHarbinger:Show()
+			voiceHarbinger:Play("bigmob")
+			timerHarbingersMendingCD:Start(19)--VERIFY
+		elseif npc == AncientSovereign then
+			if DBM.BossHealth:IsShown() then
+				DBM.BossHealth:AddBoss(90272, AncientSovereign)
+			end
+			specWarnAncientSovereign:Show()
+			voiceSovereign:Play("bigmob")
 		end
-		specWarnAncientEnforcer:Show()
-		voiceEnforcer:Play("bigmob")
-		if self:IsMythic() then
-			timerEnforcersOnslaughtCD:Start(13)
-		else
-			timerEnforcersOnslaughtCD:Start()
-		end
-	elseif target and target == TyrantVelhari and npc == AncientHarbinger then--Emotes with npc name as AncientHarbinger also fire for heals, but those emotes, target is nil or "". spawn emote, target is boss name
-		if DBM.BossHealth:IsShown() then
-			DBM.BossHealth:AddBoss(90271, AncientHarbinger)
-		end
-		specWarnAncientHarbinger:Show()
-		voiceHarbinger:Play("bigmob")
-		timerHarbingersMendingCD:Start(19)--VERIFY
-	elseif npc == AncientSovereign then
-		if DBM.BossHealth:IsShown() then
-			DBM.BossHealth:AddBoss(90272, AncientSovereign)
-		end
-		specWarnAncientSovereign:Show()
-		voiceSovereign:Play("bigmob")
 	end
 end
 
