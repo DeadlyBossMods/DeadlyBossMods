@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 190223 186453 190224 186783 186546 186490 189775 189779",
-	"SPELL_CAST_SUCCESS 186407 186333 186490 189775",
+	"SPELL_CAST_SUCCESS 186407 186333 186490 189775 186453 186783",
 	"SPELL_AURA_APPLIED 186073 186063 186134 186135 186407 186333 186500 189777 186448 187204 186785",
 	"SPELL_AURA_APPLIED_DOSE 186073 186063 186448 186785 187204",
 	"SPELL_AURA_REMOVED 189777",
@@ -72,19 +72,19 @@ local specWarnEmpBlackHole			= mod:NewSpecialWarningCount(189779, nil, nil, nil,
 --Fire Phase
 ----Boss
 local timerFelStrikeCD				= mod:NewCDTimer(15, 186271, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--15.8-17
-local timerFelSurgeCD				= mod:NewCDTimer(30, 186407, nil, nil, nil, 3)
+local timerFelSurgeCD				= mod:NewCDTimer(29, 186407, nil, "-Tank", 2, 3)
 local timerImpCD					= mod:NewNextTimer(25, "ej11694", nil, nil, nil, 1, 112866)
 ----Big Add
-local timerFelBlazeFlurryCD			= mod:NewCDTimer(15.9, 186453, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerFelBlazeFlurryCD			= mod:NewCDTimer(12.9, 186453, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFelChainsCD				= mod:NewCDTimer(30, 186490, nil, "-Tank", nil, 3)--30-34. Often 34 but it can and will be 30 sometimes.
 local timerEmpFelChainsCD			= mod:NewCDTimer(30, 189775, nil, "-Tank", nil, 3, nil, DBM_CORE_HEROIC_ICON)--Merge with timerFelChainsCD?
 --Void Phase
 ----Boss
 local timerVoidStrikeCD				= mod:NewCDTimer(17, 186292, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerVoidSurgeCD				= mod:NewCDTimer(30, 186333, nil, nil, nil, 3)
+local timerVoidSurgeCD				= mod:NewCDTimer(29, 186333, nil, "-Tank", 2, 3)
 local timerVoidsCD					= mod:NewNextTimer(30, "ej11714", nil, "Ranged", nil, 1, 697)
 ----Big Add
-local timerWitheringGazeCD			= mod:NewCDTimer(24, 186783, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
+local timerWitheringGazeCD			= mod:NewCDTimer(22, 186783, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
 local timerBlackHoleCD				= mod:NewCDCountTimer(29.5, 186546, nil, nil, nil, 5)
 local timerEmpBlackHoleCD			= mod:NewCDCountTimer(29.5, 189779, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)--Merge with timerBlackHoleCD?
 --End Phase
@@ -235,7 +235,6 @@ function mod:SPELL_CAST_START(args)
 		end
 		warnVoidStrike:Show()--Should not show if specWarnVoidStrike did
 	elseif spellId == 186453 then
-		timerFelBlazeFlurryCD:Start()
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
@@ -244,7 +243,6 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 186783 then
-		timerWitheringGazeCD:Start()
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
@@ -270,16 +268,10 @@ function mod:SPELL_CAST_START(args)
 		timerEmpBlackHoleCD:Start(nil, self.vb.blackHoleCount+1)
 	elseif spellId == 186490 then
 		if self.Options.ChainsBehavior ~= "Applied" then--Start timer and scanner if method is Both or Cast. Both prefers cast over applied, for the timer.
-			if self:IsNormal() then
-				timerFelChainsCD:Start(30)
-			else
-				timerFelChainsCD:Start()
-			end
 			self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "FelChains", 0.1, 16)
 		end
 	elseif spellId == 189775 then
 		if self.Options.ChainsBehavior ~= "Applied" then--Start timer and scanner if method is Both or Cast. Both prefers cast over applied, for the timer.
-			timerEmpFelChainsCD:Start()
 			self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "EmpoweredFelChains", 0.1, 16)
 		end
 	end
@@ -295,16 +287,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownVoidSurge:Start()
 	elseif spellId == 186490 then
 		if self.Options.ChainsBehavior == "Applied" then--Start timer here if method is set to only applied
-			if self:IsNormal() then
-				timerFelChainsCD:Start(30)
-			else
-				timerFelChainsCD:Start()
-			end
+			timerFelChainsCD:Start()
+		else
+			timerFelChainsCD:Start(27)--30-3 for timer to be for cast BEGIN
 		end
 	elseif spellId == 189775 then
 		if self.Options.ChainsBehavior == "Applied" then--Start timer here if method is set to only applied
 			timerEmpFelChainsCD:Start()
+		else
+			timerEmpFelChainsCD:Start(27)--30-3
 		end
+	elseif spellId == 186453 then
+		timerFelBlazeFlurryCD:Start()
+	elseif spellId == 186783 then
+		timerWitheringGazeCD:Start()
 	end
 end
 
@@ -423,14 +419,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 187006 then--Activate Void Portal
-		voicePhaseChange:Play("phasechange")
-		warnVoidPortal:Show()
-		if not self:IsLFR() then
-			timerVoidsCD:Start(10.5)
-			self:Schedule(10.5, VoidsRepeater, self)
-		end
-	elseif spellId == 187003 then--Activate Fel Portal
+	if spellId == 187003 then--Activate Fel Portal
 		voicePhaseChange:Play("phasechange")
 		warnFelPortal:Show()
 		if not self:IsLFR() then
@@ -438,14 +427,24 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			countdownImps:Start(10)
 			self:Schedule(10, ImpRepeater, self)
 		end
-	elseif spellId == 187225 then--Phase 2 (Purple Mode)
-		self.vb.phase = 2
+	elseif spellId == 187006 then--Activate Void Portal
+		voicePhaseChange:Play("phasechange")
+		warnVoidPortal:Show()
 		timerFelStrikeCD:Cancel()
 		timerFelSurgeCD:Cancel()
 		countdownFelSurge:Cancel()
-		timerVoidStrikeCD:Start(8.5)
-		timerVoidSurgeCD:Start(17.8)
-		countdownVoidSurge:Start(17.8)
+		if not self:IsLFR() then
+			timerVoidsCD:Start(10.5)
+			self:Schedule(10.5, VoidsRepeater, self)
+		end
+		if self:IsMythic() then
+			timerVoidStrikeCD:Start(9.5)--Only true in mythic, since phase 3 is triggered at end of this
+		end
+	elseif spellId == 187225 and not self:IsMythic() then--Phase 2 (Purple Mode). Event happens in mythic but is skipped, so should be ignored for CPU saving
+		self.vb.phase = 2
+		timerVoidStrikeCD:Start(8.5)--TODO, reverify?
+		timerVoidSurgeCD:Start(17.8)--TODO, reverify?
+		countdownVoidSurge:Start(17.8)--TODO, reverify?
 	elseif spellId == 189047 then--Phase 3 (Shadowfel Phasing)
 		self.vb.phase = 3
 		voicePhaseChange:Play("phasechange")
@@ -455,8 +454,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerFelSurgeCD:Start(7)
 		countdownFelSurge:Start(7)
 		timerFelStrikeCD:Start(8)
-		timerVoidSurgeCD:Start(17)--Regardless of what was left on timer, this resets to 17
-		countdownVoidSurge:Start(17)
+		timerVoidSurgeCD:Start(16)--Regardless of what was left on timer, this resets to 16
+		countdownVoidSurge:Start(16)
 	elseif spellId == 187209 then--Overwhelming Chaos (Activation)
 		self.vb.phase = 4
 		timerImpCD:Cancel()
