@@ -348,10 +348,10 @@ L.PizzaTimer_ButtonStart 	= "Начать отсчет"
 L.PizzaTimer_BroadCast		= "Транслировать рейду"
 
 L.Panel_Profile				= "Профили"
-L.Area_CreateProfile		= "Создание профиля"
+L.Area_CreateProfile		= "Создание профиля настроек DBM Core"
 L.EnterProfileName			= "Введите имя профиля"
-L.CreateProfile				= "Создать профиль настроек DBM Core"
-L.Area_ApplyProfile			= "Выбор активного профиля настроек DBM Core"
+L.CreateProfile				= "Создать новый профиль с стандартными настройками"--Might go off screen?
+L.Area_ApplyProfile			= "Выбор активного профиля"
 L.SelectProfileToApply		= "Выберите профиль для применения"
 L.Area_CopyProfile			= "Копирование профиля настроек DBM Core"
 L.SelectProfileToCopy		= "Выберите профиль для копирования"
