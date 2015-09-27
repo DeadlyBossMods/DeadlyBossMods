@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 190223 186453 190224 186783 186546 186490 189775 189779",
-	"SPELL_CAST_SUCCESS 186407 186333 186490 189775 186453 186783",
+	"SPELL_CAST_SUCCESS 186407 186333 186490 189775 186453 186783 190223 190224",
 	"SPELL_AURA_APPLIED 186073 186063 186134 186135 186407 186333 186500 189777 186448 187204 186785",
 	"SPELL_AURA_APPLIED_DOSE 186073 186063 186448 186785 187204",
 	"SPELL_AURA_REMOVED 189777",
@@ -71,7 +71,7 @@ local specWarnEmpBlackHole			= mod:NewSpecialWarningCount(189779, nil, nil, nil,
 
 --Fire Phase
 ----Boss
-local timerFelStrikeCD				= mod:NewCDTimer(15, 186271, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--15.8-17
+local timerFelStrikeCD				= mod:NewCDTimer(13, 186271, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--15.8-17
 local timerFelSurgeCD				= mod:NewCDTimer(29, 186407, nil, "-Tank", 2, 3)
 local timerImpCD					= mod:NewNextTimer(25, "ej11694", nil, nil, nil, 1, 112866)
 ----Big Add
@@ -80,7 +80,7 @@ local timerFelChainsCD				= mod:NewCDTimer(30, 186490, nil, "-Tank", nil, 3)--30
 local timerEmpFelChainsCD			= mod:NewCDTimer(30, 189775, nil, "-Tank", nil, 3, nil, DBM_CORE_HEROIC_ICON)--Merge with timerFelChainsCD?
 --Void Phase
 ----Boss
-local timerVoidStrikeCD				= mod:NewCDTimer(17, 186292, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerVoidStrikeCD				= mod:NewCDTimer(15, 186292, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerVoidSurgeCD				= mod:NewCDTimer(29, 186333, nil, "-Tank", 2, 3)
 local timerVoidsCD					= mod:NewNextTimer(30, "ej11714", nil, "Ranged", nil, 1, 697)
 ----Big Add
@@ -101,6 +101,7 @@ local voiceFelsinged				= mod:NewVoice(186073)	--run away
 local voiceFelSurge					= mod:NewVoice(186407)	--run out (because need to tell difference from run away GTFOs)
 local voiceWastingVoid				= mod:NewVoice(186063)  --run away
 local voiceVoidSurge				= mod:NewVoice(186333)	--new voice
+local voicePhasing					= mod:NewVoice(189047)	--changemt
 
 --Warning behavior choices for Chains.
 --Cast only gives original target, not all targets, but does so 3 seconds faster. It allows the person to move early and change other players they affect with chains by pre moving.
@@ -211,7 +212,6 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 190223 then
-		timerFelStrikeCD:Start()
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
@@ -221,11 +221,6 @@ function mod:SPELL_CAST_START(args)
 		end
 		warnFelStrike:Show()--Should not show if specWarnFelStrike did
 	elseif spellId == 190224 then
-		if self.vb.phase >= 3 then
-			timerVoidStrikeCD:Start(15)
-		else
-			timerVoidStrikeCD:Start()
-		end
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
@@ -301,6 +296,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFelBlazeFlurryCD:Start()
 	elseif spellId == 186783 then
 		timerWitheringGazeCD:Start()
+	elseif spellId == 190223 then
+		timerFelStrikeCD:Start()
+		if self.vb.phase >= 3 then
+			voicePhasing:Play("changemt")
+		end
+	elseif spellId == 190224 then
+		if self.vb.phase >= 3 then
+			timerVoidStrikeCD:Start(13)
+			voicePhasing:Play("changemt")
+		else
+			timerVoidStrikeCD:Start()
+		end
 	end
 end
 
