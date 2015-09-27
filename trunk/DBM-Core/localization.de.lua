@@ -1,7 +1,7 @@
 if GetLocale() ~= "deDE" then return end
 
-DBM_CORE_NEED_SUPPORT				= "Hey, bist du ein Programmierer oder gut in Fremdsprachen? Falls ja, benötigt DBM deine Hilfe, um in mehr Sprachen übersetzt zu werden. Hilf uns hier http://forums.elitistjerks.com/topic/132449-dbm-localizers-needed/"
-DBM_CORE_NEED_LOGS					= "DBM benötigt Transcriptor (http://www.wowace.com/addons/transcriptor/) Logs dieser Testkämpfe um möglichst gute Mods bereitstellen zu können. Falls du helfen willst, dann zeichne diese Testkämpfe mit Transcriptor auf und lade sie hier hoch: http://forums.elitistjerks.com/topic/132677-deadly-boss-mods-60-testing/ (bitte vorher einzippen, die Logs können sonst sehr groß werden). Es werden nur Logs von 6.0 Schlachtzügen benötigt. Logs von Dungeons sind nicht erforderlich."
+DBM_CORE_NEED_SUPPORT				= "Hey, bist du ein Programmierer oder gut in Fremdsprachen? Falls ja, benötigt DBM deine Hilfe, um in mehr Sprachen übersetzt zu werden. Falls du helfen kannst, dann besuche |HDBM:localizersneeded|h|cff3588ffunser Forum|r."
+DBM_CORE_NEED_LOGS					= "DBM benötigt Transcriptor (http://www.wowace.com/addons/transcriptor/) Logs dieser Testkämpfe um möglichst gute Mods bereitstellen zu können. Falls du helfen willst, dann zeichne diese Testkämpfe mit Transcriptor auf und poste sie in unser Forum. Es werden nur Logs von 7.0 Schlachtzügen und Dungeons benötigt."
 DBM_HOW_TO_USE_MOD					= "Willkommen bei DBM. Tippe /dbm help für eine Liste unterstützter Kommandos. Für den Zugriff auf Einstellungen tippe /dbm in den Chat um die Konfiguration zu beginnen. Lade gewünschte Zonen manuell um jegliche Boss-spezifische Einstellungen nach deinen Wünschen zu konfigurieren. DBM versucht dies für dich zu tun, indem es beim ersten Start deine Spezialisierung scannt, aber du kannst zusätzliche Einstellungen aktivieren."
 
 DBM_FORUMS_MESSAGE					= "Du hast einen Bug oder einen falschen Timer gefunden? Du glaubst einige Mods würden zusätzliche Warnungen, Timer oder Spezialfeatures benötigen?\nBesuche die neuen Deadly Boss Mods Foren für Diskussionen, Fehlermeldungen und Featurewünsche: |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (Du kannst auf den Link klicken um ihn zu kopieren.)"
@@ -16,7 +16,8 @@ DBM_CORE_LOAD_GUI_COMBAT			= "Die grafische Benutzeroberfläche kann nicht im Ka
 DBM_CORE_BAD_LOAD					= "Dein Boss Mod für diese Instanz konnte nicht vollständig korrekt im Kampf geladen werden. Bitte führe baldmöglichst nach Kampfende /reload aus."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s kann nicht geladen werden, da dein DBM-Core die Voraussetzungen nicht erfüllt. Es wird eine aktualisierte Version benötigt."
 
---DBM_CORE_WHATS_NEW					= "Neu in dieser Version: DBM-Timer unterstützen nun verschiedene Farben basierend auf dem Timertyp (Add, AOE, Anvisiert, Unterbrechung, Rolle, Phase). Um mehr über dieses Feature zu erfahren kannst du |HDBM:forumsnews|h|cff3588ffhier klicken|r."--Uncomment when updated
+--DBM_CORE_WHATS_NEW
+--DBM_CORE_WHATS_NEW_LINK--translate
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM hat das dynamische Abstandsfenster für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, auf wieviel versammelte Spieler bei deiner Gruppengröße geprüft werden muss."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM hat Warnungen bezüglich der Anzahl der Gegner für diesen Kampf deaktiviert, da nicht genügend Informationen vorliegen, wieviel Gegner bei deiner Gruppengröße erscheinen."
@@ -26,7 +27,7 @@ DBM_CORE_LOOT_SPEC_REMINDER			= "Deine aktuelle Spezialisierung ist %s. Deine ak
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM hat festgestellt, dass du das Setzen von Schlachtzugzeichen in \"BigWigs\" und in \"DBM\" aktiviert hast. Bitte deaktiviere das Setzen von Zeichen in einem der beiden Addons um Konflikte zu vermeiden."
 
-DBM_CORE_MOD_AVAILABLE				= "Das Mod \"%s\" ist für diesen Spielinhalt verfügbar. Weitere Informationen findest du auf |HDBM:forums|h|cff3588ffdeadlybossmods.com|r. Dieser Hinweis wird nur einmal angezeigt."
+DBM_CORE_MOD_AVAILABLE				= "Das Mod \"%s\" ist für diesen Spielinhalt verfügbar. Du kannst es auf |HDBM:forums|h|cff3588ffdeadlybossmods.com|r oder Curse finden. Dieser Hinweis wird nur einmal angezeigt."
 
 DBM_CORE_COMBAT_STARTED				= "Kampf gegen %s hat begonnen. Viel Glück! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "Du wurdest in den laufenden Kampf gegen %s verwickelt. Viel Glück! :)"
@@ -196,18 +197,33 @@ DBM_LFG_INVITE						= "Einladung der Gruppensuche"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Verfügbare Slash-Kommandos:",
-	"/range <number> oder /distance <number>: Zeige Abstandsfenster. /rrange oder /rdistance um die Farben zu invertieren.",
-	"/dbm version: Prüft die Version im gesamten Schlachtzug (Alias: ver).",
+	"-----------------",
 	"/dbm unlock: Zeigt einen bewegbaren Timer an (alias: move).",
-	"/dbm timer/ctimer/ltimer/cltimer <x> <text>: Startet einen <x> Sekunden langen DBM-Timer mit dem Namen <text>.",
-	"/dbm broadcast timer/ctimer/ltimer/cltimer <x> <text>: Schickt einen <x> Sekunden langen DBM-Timer mit dem Namen <text> an den Schlachtzug (nur als Leiter/Assistent).",
-	"/dbm timer endloop: Stoppt alle ltimer- und cltimer-Schleifen.",
-	"/dbm break <min>: Startet einen Pause-Timer für <min> Minuten. Schickt allen Schlachzugsmitgliedern mit DBM einen Pause-Timer (nur als Leiter/Assistent).",
-	"/dbm pull <sec>: Startet einen Pull-Timer für <sec> Sekunden. Schickt allen Schlachzugsmitgliedern mit DBM einen Pull-Timer (nur als Leiter/Assistent).",
+	"/range <number> oder /distance <number>: Zeige Abstandsfenster. /rrange oder /rdistance um die Farben zu invertieren.",
+	"/hudar <number>: Zeige HudMap-basierenden Abstandssucher.",
+	"/dbm timer: Startet einen benutzerdefinierten DBM-Timer, siehe '/dbm timer' für Details.",
 	"/dbm arrow: Zeigt den DBM-Pfeil, siehe '/dbm arrow help' für Details.",
-	"/dbm lockout: Fragt die Schlachtzugsmitglieder nach ihren derzeitigen Instanzsperren (IDs) (nur als Leiter/Assistent).",
+	"/dbm hud: Zeige die DBM-HudMap, siehe '/dbm hud' für Details.",
+	"/dbm help2: Zeige Slash-Kommandos für das Management von Schlachtzügen."
+}
+DBM_CORE_SLASHCMD_HELP2				= {
+	"Verfügbare Slash-Kommandos:",
+	"-----------------",
+	"/dbm pull <sec>: Schickt einen Pull-Timer für <sec> Sekunden an alle Schlachzugsmitglieder (nur als Leiter/Assistent).",
+	"/dbm break <min>: Schickt einen Pause-Timer für <min> Minuten an alle Schlachzugsmitglieder (nur als Leiter/Assistent).",
+	"/dbm version: Führt eine Boss Mod Versionsprüfung durch (Alias: ver).",
+	"/dbm version2: Führt eine Boss Mod Versionsprüfung durch und flüstert Nutzer mit veralteten Versionen an (Alias: ver2).",
+	"/dbm lockout: Fragt die Schlachtzugsmitglieder nach ihren derzeitigen Instanzsperren (IDs) (nur als Leiter/Assistent) (Aliase: lockouts, ids).",
 	"/dbm lag: Prüft die Latenz im gesamten Schlachtzug.",
-	"/dbm hud: Zeige die DBM-HudMap, siehe '/dbm hud' für Details."
+}
+DBM_CORE_TIMER_USAGE	= {
+	"DBM-Timer Kommandos:",
+	"/dbm timer <sec> <text>: Startet einen <sec> Sekunden langen Timer mit deinem <text>.",
+	"/dbm ctimer <sec> <text>: Startet einen Timer mit Countdown.",
+	"/dbm ltimer <sec> <text>: Startet einen Timer, der automatisch wiederholt wird, bis er abgebrochen wird.",
+	"/dbm cltimer <sec> <text>: Startet einen Timer mit Countdown, der automatisch wiederholt wird, bis er abgebrochen wird.",
+	"/dbm broadcast timer/ctimer/ltimer/cltimer <sec> <text>: schickt den Timer an den Schlachtzug (nur als Leiter/Assistent).",
+	"/dbm timer endloop: Stoppt alle ltimer- und cltimer-Schleifen.",
 }
 
 DBM_ERROR_NO_PERMISSION				= "Du hast nicht die benötigte Berechtigung für diesen Befehl!"
@@ -222,6 +238,7 @@ DBM_CORE_MIDDLE						= "Mitte"
 DBM_CORE_FRONT						= "Vorne"
 DBM_CORE_INTERMISSION				= "Übergang"
 
+DBM_CORE_BREAK_USAGE				= "Ein Pause-Timer kann nicht länger als 60 Minuten sein. Beachte bitte, dass für Pausen-Timer die Zeit in Minuten (und nicht in Sekunden) anzugeben ist."
 DBM_CORE_BREAK_START				= "Pause startet jetzt -- du hast %s! (gesendet von: %s)"
 DBM_CORE_BREAK_MIN					= "Pause endet in %s Minute(n)!"
 DBM_CORE_BREAK_SEC					= "Pause endet in %s Sekunden!"
@@ -231,6 +248,8 @@ DBM_CORE_ANNOUNCE_BREAK_OVER		= "Pause ist vorbei"
 DBM_CORE_TIMER_PULL					= "Pull in"
 DBM_CORE_ANNOUNCE_PULL				= "Pull in %d Sekunden. (gesendet von: %s)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull jetzt!"
+DBM_CORE_ANNOUNCE_PULL_TARGET		= "Pulle %s in %d Sekunden. (gesendet von: %s)"
+DBM_CORE_ANNOUNCE_PULL_NOW_TARGET	= "Pulle %s jetzt!"
 DBM_CORE_GEAR_WARNING				= "Warnung: Prüfe deine Ausrüstung. Deine angelegte Gegenstandsstufe ist um %d niedriger als die in deinen Taschen."
 DBM_CORE_GEAR_WARNING_WEAPON		= "Warnung: Prüfe ob du deine Waffe korrekt angelegt hast."
 DBM_CORE_GEAR_FISHING_POLE			= "Angelrute"
@@ -238,6 +257,7 @@ DBM_CORE_GEAR_FISHING_POLE			= "Angelrute"
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Zeit für Erfolg"
 
 -- Auto-generated Warning Localizations
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.you		= "%s auf DIR"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target		= "%s auf >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%s) auf >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell		= "%s"
@@ -254,6 +274,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.count		= "%s (%%s)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack		= "%s auf >%%s< (%%d)"
 
 local prewarnOption = "Zeige Vorwarnung für $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.you			= "Verkünde, wenn du von $spell:%s betroffen bist"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target		= "Verkünde Ziele von $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetcount	= "Verkünde Ziele von $spell:%s (mit Zählung)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell		= "Zeige Warnung für $spell:%s"
@@ -369,11 +390,17 @@ DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "Spiele gesprochene Warnungen für Phasenwec
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Spiele akustischen Countdown bis $spell:%s gewirkt wird"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Spiele akustischen Countdown bis $spell:%s schwindet"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Zähle akustisch die Dauer von $spell:%s"
+
 DBM_CORE_AUTO_YELL_OPTION_TEXT.yell		= "Schreie, wenn du von $spell:%s betroffen bist"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.count	= "Schreie (mit Zählung), wenn du von $spell:%s betroffen bist"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.fade		= "Schreie (mit Countdown), wenn $spell:%s endet"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.position	= "Schreie (mit Position), wenn du von $spell:%s betroffen bist"
+
+
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= "%s auf " .. UnitName("player") .. "!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= "%s auf " .. UnitName("player") .. "! (%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s endet in %%d"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position = "%s %%s auf ".."{rt%%d}"..UnitName("player").."{rt%%d}"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position = "%s %%s auf {rt%%d}"..UnitName("player").."{rt%%d}"
 
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Zeige HudMap für $spell:%s"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Zeige HudMap für diverse Mechaniken"
@@ -397,21 +424,23 @@ DBM_CORE_HUD_INVALID_ICON			= "Der Typ 'icon' für die HudMap kann nicht auf Zie
 DBM_CORE_HUD_SUCCESS				= "Die HudMap wurde erfolgreich mit deinen Parametern gestartet. Sie läuft nach %s aus oder zuvor durch Aufruf von '/dbm hud hide'."
 DBM_CORE_HUD_USAGE	= {
 	"Benutzung der DBM-HudMap:",
-	"/dbm hud <Typ> <Ziel> <Dauer> erzeugt eine HudMap, die für die gewünschte Dauer auf einen Spieler zeigt",
-	"gültige Typen: red, blue, green, yellow, icon (benötigt ein Ziel mit gesetztem Schlachtzugzeichen)",
+	"-----------------",
+	"/dbm hud <Typ> <Ziel> <Dauer>: Erzeugt eine HudMap, die für die gewünschte Dauer auf einen Spieler zeigt",
+	"gültige Typen: arrow, red, blue, green, yellow, icon (benötigt ein Ziel mit gesetztem Schlachtzugzeichen)",
 	"gültige Ziele: target, focus, <Spielername>",
 	"gültige Dauer: beliebige Zahl (in Sekunden). 20 Minuten, falls Dauer nicht angegeben.",
-	"/dbm hud hide  deaktiviert und versteckt die HudMap"
+	"/dbm hud hide: Deaktiviert und versteckt die HudMap"
 }
 
 DBM_ARROW_MOVABLE					= "Pfeil (bewegbar)"
 DBM_ARROW_ERROR_USAGE	= {
 	"Benutzung des DBM-Pfeils:",
-	"/dbm arrow <x> <y>  erzeugt einen Pfeil, der auf einen bestimmten Ort zeigt (benutzt Weltkoordinaten)",
-	"/dbm arrow map <x> <y>  erzeugt einen Pfeil, der auf einen bestimmten Ort zeigt (benutzt Kartenkoordinaten der Zone)",
-	"/dbm arrow <player>  erzeugt einen Pfeil, der auf einen bestimmten Spieler in deiner Gruppe oder deinem Schlachtzug zeigt (unterscheidet Groß-/Kleinschreibung)",
-	"/dbm arrow hide  versteckt den Pfeil",
-	"/dbm arrow move  macht den Pfeil beweglich"
+	"-----------------",
+	"/dbm arrow <x> <y>: Erzeugt einen Pfeil, der auf einen bestimmten Ort zeigt (benutzt Weltkoordinaten)",
+	"/dbm arrow map <x> <y>: Erzeugt einen Pfeil, der auf einen bestimmten Ort zeigt (benutzt Kartenkoordinaten der Zone)",
+	"/dbm arrow <player>: Erzeugt einen Pfeil, der auf einen bestimmten Spieler in deiner Gruppe oder deinem Schlachtzug zeigt (unterscheidet Groß-/Kleinschreibung)",
+	"/dbm arrow hide: Versteckt den Pfeil",
+	"/dbm arrow move: Macht den Pfeil beweglich"
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Rekordzeit"
@@ -441,7 +470,18 @@ DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - Latenzergebnisse"
 DBM_CORE_LAG_ENTRY					= "%s: %dms (Welt) / %dms (Standort)"
 DBM_CORE_LAG_FOOTER					= "Keine Antwort: %s"
 
-
+--Role Icons
 --DBM_CORE_TANK_ICON
 --DBM_CORE_HEALER_ICON
 --DBM_CORE_DAMAGE_ICON
+--Importance Icons
+--DBM_CORE_HEROIC_ICON
+--DBM_CORE_DEADLY_ICON
+--DBM_CORE_IMPORTANT_ICON
+--Type Icons
+--DBM_CORE_INTERRUPT_ICON
+--DBM_CORE_MAGIC_ICON
+--DBM_CORE_POISON_ICON
+--DBM_CORE_DISEASE_ICON
+--DBM_CORE_CURSE_ICON
+--DBM_CORE_ENRAGE_ICON

@@ -30,10 +30,18 @@ L= DBM:GetModLocalization(1425)
 ---------------------------
 L= DBM:GetModLocalization(1432)
 
+L:SetWarningLocalization({
+	reapDelayed =	"Ernte nachdem Erscheinung endet"
+})
+
 ------------------
 -- Kormrok --
 ------------------
 L= DBM:GetModLocalization(1392)
+
+L:SetMiscLocalization({
+	ExRTNotice		= "%s hat ExRT Positionszuweisungen gesendet. Deine Positionen sind: Orange:%s, Grün:%s, Violett:%s"
+})
 
 --------------
 -- Kilrogg Deadeye --
@@ -56,9 +64,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SoDDPS2					= "Zeige Zeit bis nächste $spell:179864 die DDs betreffen",
-	SoDTank2				= "Zeige Zeit bis nächste $spell:179864 die Tanks betreffen",
-	SoDHealer2				= "Zeige Zeit bis nächste $spell:179864 die Heiler betreffen"
+	SoDDPS2			= "Zeige Zeit bis nächste $spell:179864 die DDs betreffen",
+	SoDTank2		= "Zeige Zeit bis nächste $spell:179864 die Tanks betreffen",
+	SoDHealer2		= "Zeige Zeit bis nächste $spell:179864 die Heiler betreffen",
+	ShowOnlyPlayer	= "Zeige HudMap für $spell:179909 nur, falls du beteiligt bist"
 })
 
 --------------------------
@@ -113,6 +122,14 @@ L:SetOptionLocalization({
 --------------------------
 L= DBM:GetModLocalization(1427)
 
+L:SetOptionLocalization({
+	InterruptBehavior	= "Auswahl des Unterbrechungsverhaltens für Vorherrschaft (nur als Schlachtzugsleiter)",
+	Count3Resume		= "3-Personen-Rotation, die fortgesetzt wird, wenn die Barriere fällt",
+	Count3Reset			= "3-Personen-Rotation, die auf 1 zurückgesetzt wird, wenn die Barriere fällt",
+	Count4Resume		= "4-Personen-Rotation, die fortgesetzt wird, wenn die Barriere fällt",
+	Count4Reset			= "4-Personen-Rotation, die auf 1 zurückgesetzt wird, wenn die Barriere fällt"
+})
+
 --------------------------
 -- Tyrant Velhari --
 --------------------------
@@ -138,6 +155,9 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreakShackle	= "Spezialwarnung, wenn du von $spell:184964 betroffen bist (diese Warnung weist zur Minimierung des gleichzeitigen Schadens die Brechungsreihenfolge automatisch zu)",
+	ExtendWroughtHud2		= "Erweitere die HudMap-Linien über das Ziel von $spell:185014 hinaus (kann die Liniengenauigkeit verringern)",
+	AlternateHudLine		= "Nutze alternative Linientextur für HudMap-Linien zwischen Zielen von $spell:185014",
+	NamesWroughtHud			= "Zeige Spielernamen in HudMap für Ziele von $spell:185014",
 	FilterOtherPhase		= "Zeige keine Warnungen für Ereignisse, die sich nicht in deiner Phase befinden"
 })
 
