@@ -13,7 +13,8 @@ L.OTabBosses	= "Bosse"
 L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options	 	= "Allgemeine Einstellungen"
-L.TabCategory_WoD	 		= EXPANSION_NAME5
+L.TabCategory_LEG	 		= "Legion"
+L.TabCategory_WOD	 		= EXPANSION_NAME5
 L.TabCategory_MOP	 		= EXPANSION_NAME4
 L.TabCategory_CATA	 		= EXPANSION_NAME3
 L.TabCategory_WOTLK 		= EXPANSION_NAME2
@@ -71,6 +72,7 @@ L.ModelSoundLong			= TOAST_DURATION_LONG
 L.Button_RangeFrame			= "Zeige Abstandsfenster"
 L.Button_InfoFrame			= "Zeige Infofenster"
 L.Button_TestBars			= "Starte Testbalken"
+L.Button_ResetInfoRange		= "Info-/Abstandsfenster zurücksetzen"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Schlachtzugwarnungen"
@@ -88,6 +90,7 @@ L.ShowFakedRaidWarnings 	= "Zeige Warnungen als künstliche Schlachtzugwarnungen
 L.WarningIconLeft 			= "Zeige Symbol links an"
 L.WarningIconRight 			= "Zeige Symbol rechts an"
 L.WarningIconChat 			= "Zeige Symbole im Chatfenster"
+L.WarningAlphabetical		= "Sortiere Namen alphabetisch"
 L.Warn_FontType				= "Schriftart"
 L.Warn_FontStyle			= "Schriftstil"
 L.Warn_FontShadow			= "Schatten"
@@ -107,7 +110,7 @@ L.ShowPizzaMessage 			= "Zeige Meldungen für Timerbroadcasts im Chatfenster"
 L.ShowAllVersions	 		= "Zeige beim Durchführen einer Versionsprüfung die Boss Mod Versionen aller Gruppenmitglieder im Chatfenster (ansonsten nur eine Zusammenfassung der Aktualität)"
 L.CombatMessages			= "Kampfmeldungen"
 L.ShowEngageMessage 		= "Zeige Meldungen für den Beginn von Kämpfen im Chatfenster"
-L.ShowDefeatMessage 		= "Zeige Meldungen für Siege im Chatfenster"
+L.ShowDefeatMessage 		= "Zeige Meldungen für Siege/Niederlagen im Chatfenster"
 L.ShowGuildMessages 		= "Zeige Meldungen für Kampfbeginn/Siege/Niederlagen deiner Gilde im Chatfenster"
 L.WhisperMessages			= "Flüstermeldungen"
 L.AutoRespond 				= "Aktiviere automatische Antwort während eines Bosskampfes"
@@ -119,8 +122,8 @@ L.DisableStatusWhisper 		= "Deaktiviere 'status'-Flüsteranfragen für die gesam
 L.BarSetup					= "Balkeneinstellungen"
 L.BarTexture				= "Balkentextur"
 L.BarStyle					= "Balkenstil"
-L.BarDBM					= "DBM"
-L.BarSimple					= "Simple (keine Animation)"
+L.BarDBM					= "DBM (mit Animationen)"
+L.BarSimple					= "Einfach (ohne Animationen)"
 L.BarStartColor				= "Startfarbe"
 L.BarEndColor 				= "Endfarbe"
 L.Bar_Font					= "Schriftart für Balken"
@@ -143,6 +146,13 @@ L.BarStartColorRole			= "Startfarbe (Rolle)"
 L.BarEndColorRole			= "Endfarbe (Rolle)"
 L.BarStartColorPhase		= "Startfarbe (Phase)"
 L.BarEndColorPhase			= "Endfarbe (Phase)"
+L.BarStartColorUI			= "Startfarbe (Nutzer)"
+L.BarEndColorUI				= "Endfarbe (Nutzer)"
+--Type 7 options
+L.Bar7Header				= "Einstellungen für Nutzerbalken"
+L.Bar7ForceLarge			= "Nutze immer großen Balken"
+L.Bar7CustomInline			= "Zeichen '!' einbetten"
+L.Bar7Footer				= "(keine Live-Aktual. der Dummy-Balken)"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "Balkenfarben nach Timertyp"
@@ -163,6 +173,7 @@ L.BarSpark					= "Balkenfunken"
 L.BarFlash					= "Aufblinkende Balken bei baldigem Ablauf"
 L.BarSort					= "Sortiere nach verbleibender Zeit"
 L.BarColorByType			= "Einfärbung nach Typ"
+L.BarInlineIcons			= "Zeichen einbetten"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Spezialwarnungen"
@@ -299,6 +310,7 @@ L.LFDEnhance				= "Spiele \"Bereitschaftscheck\"-Sound für Rollenabfragen und E
 L.WorldBossNearAlert		= "Spiele \"Bereitschaftscheck\"-Sound, wenn Weltbosse in deiner Nähe gepullt werden, die du brauchst (Boss-spezifische Einstellung)"
 L.RLReadyCheckSound			= "Spiele \"Bereitschaftscheck\"-Sounds von tatsächlichen Bereitschaftschecks im Master- oder Dialog-Audiokanal"
 L.AFKHealthWarning			= "Spiele Alarmsound, wenn du Gesundheit verlierst, während du als nicht an der Tastatur (\"AFK\") markiert bist"
+--L.AutoReplySound			--translate? (misleading option..)
 --
 L.TimerGeneral 				= "Allgemeine Einstellungen für Timer"
 L.SKT_Enabled				= "Zeige Timer für Rekordzeit für aktuellen Kampf (falls verfügbar)"
@@ -335,9 +347,9 @@ L.PizzaTimer_ButtonStart 	= "Starte Timer"
 L.PizzaTimer_BroadCast		= "Anderen Schlachtzugspielern anzeigen"
 
 L.Panel_Profile				= "Profile"
-L.Area_CreateProfile		= "Profilerzeugung"
+L.Area_CreateProfile		= "Profilerzeugung für DBM Core Einstellungen"
 L.EnterProfileName			= "Profilnamen eingeben"
-L.CreateProfile				= "Erzeuge Profil für DBM Core Einstellungen"
+L.CreateProfile				= "Erzeuge Profil mit Standardeinstellungen"
 L.Area_ApplyProfile			= "Aktives Profil für DBM Core Einstellungen"
 L.SelectProfileToApply		= "Anzuwendendes Profil auswählen"
 L.Area_CopyProfile			= "Kopiere Profil für DBM Core Einstellungen"
