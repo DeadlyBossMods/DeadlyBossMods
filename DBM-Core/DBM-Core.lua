@@ -1666,335 +1666,356 @@ end
 ----------------------
 --  Slash Commands  --
 ----------------------
-SLASH_DEADLYBOSSMODS1 = "/dbm"
-SlashCmdList["DEADLYBOSSMODS"] = function(msg)
-	local cmd = msg:lower()
-	if cmd == "ver" or cmd == "version" then
-		DBM:ShowVersions(false)
-	elseif cmd == "ver2" or cmd == "version2" then
-		DBM:ShowVersions(true)
-	elseif cmd == "unlock" or cmd == "move" then
-		DBM.Bars:ShowMovableBar()
-	elseif cmd == "help2" then
-		for i, v in ipairs(DBM_CORE_SLASHCMD_HELP2) do DBM:AddMsg(v) end
-	elseif cmd == "help" then
-		for i, v in ipairs(DBM_CORE_SLASHCMD_HELP) do DBM:AddMsg(v) end
-	elseif cmd:sub(1, 13) == "timer endloop" then
-		DBM:CreatePizzaTimer(time, "", nil, nil, nil, nil, true)
-	elseif cmd:sub(1, 5) == "timer" then
-		local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
-		if not (time and text) then
-			for i, v in ipairs(DBM_CORE_TIMER_USAGE) do DBM:AddMsg(v) end
-			--DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
-			return
-		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		time = min * 60 + sec
-		DBM:CreatePizzaTimer(time, text)
-	elseif cmd:sub(1, 6) == "ctimer" then
-		local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
-		if not (time and text) then
-			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
-			return
-		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		time = min * 60 + sec
-		DBM:CreatePizzaTimer(time, text, nil, nil, true)
-	elseif cmd:sub(1, 6) == "ltimer" then
-		local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
-		if not (time and text) then
-			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
-			return
-		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		time = min * 60 + sec
-		DBM:CreatePizzaTimer(time, text, nil, nil, nil, true)
-	elseif cmd:sub(1, 7) == "cltimer" then
-		local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
-		if not (time and text) then
-			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
-			return
-		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		time = min * 60 + sec
-		DBM:CreatePizzaTimer(time, text, nil, nil, true, true)
-	elseif cmd:sub(1, 15) == "broadcast timer" then--Standard Timer
-		local permission = true
-		if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
-			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
-			permission = false
-		end
-		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
-		if not (time and text) then
-			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
-			return
-		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		time = min * 60 + sec
-		DBM:CreatePizzaTimer(time, text, permission)
-	elseif cmd:sub(1, 16) == "broadcast ctimer" then
-		local permission = true
-		if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
-			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
-			permission = false
-		end
-		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
-		if not (time and text) then
-			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
-			return
-		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		time = min * 60 + sec
-		DBM:CreatePizzaTimer(time, text, permission, nil, true)
-	elseif cmd:sub(1, 16) == "broadcast ltimer" then
-		local permission = true
-		if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
-			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
-			permission = false
-		end
-		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
-		if not (time and text) then
-			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
-			return
-		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		time = min * 60 + sec
-		DBM:CreatePizzaTimer(time, text, permission, nil, nil, true)
-	elseif cmd:sub(1, 17) == "broadcast cltimer" then
-		local permission = true
-		if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
-			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
-			permission = false
-		end
-		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
-		if not (time and text) then
-			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
-			return
-		end
-		local min, sec = string.split(":", time)
-		min = tonumber(min or "") or 0
-		sec = tonumber(sec or "")
-		if min and not sec then
-			sec = min
-			min = 0
-		end
-		time = min * 60 + sec
-		DBM:CreatePizzaTimer(time, text, permission, nil, true, true)
-	elseif cmd:sub(0,5) == "break" then
-		if IsInGroup() and (DBM:GetRaidRank(playerName) == 0 or IsPartyLFG()) or IsEncounterInProgress() then--No break timers if not assistant or if it's dungeon/raid finder
-			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
-			return
-		end
-		local timer = tonumber(cmd:sub(6)) or 5
-		if timer > 60 then
-			DBM:AddMsg(DBM_CORE_BREAK_USAGE)
-			return
-		end
-		timer = timer * 60
-		sendSync("BT", timer)
-	elseif cmd:sub(1, 4) == "pull" then
+do
+	local function Pull(timer)
 		if (DBM:GetRaidRank(playerName) == 0 and IsInGroup()) or IsEncounterInProgress() then
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
-		local timer = tonumber(cmd:sub(5)) or 10
 		local targetName = (UnitExists("target") and UnitIsEnemy("player", "target")) and UnitName("target") or nil--Filter non enemies in case player isn't targetting bos but another player/pet
 		if targetName then
 			sendSync("PT", timer.."\t"..LastInstanceMapID.."\t"..targetName)
 		else
 			sendSync("PT", timer.."\t"..LastInstanceMapID)
 		end
-	elseif cmd:sub(1, 3) == "lag" then
-		sendSync("L")
-		DBM:AddMsg(DBM_CORE_LAG_CHECKING)
-		C_TimerAfter(5, function() DBM:ShowLag() end)
-	elseif cmd:sub(1, 3) == "hud" then
-		local hudType, target, duration = string.split(" ", msg:sub(4):trim())
-		if hudType == "" then
-			for i, v in ipairs(DBM_CORE_HUD_USAGE) do
-				DBM:AddMsg(v)
-			end
+	end
+	local function Break(timer)
+		if IsInGroup() and (DBM:GetRaidRank(playerName) == 0 or IsPartyLFG()) or IsEncounterInProgress() then--No break timers if not assistant or if it's dungeon/raid finder
+			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 			return
 		end
-		local hudDuration = tonumber(duration) or 1200--if no duration defined. 20 minutes to cover even longest of fights
-		local success = false
-		if type(hudType) == "string" and hudType:trim() ~= "" then
-			if hudType:upper() == "HIDE" then
-				DBMHudMap:Disable()
+		if timer > 60 then
+			DBM:AddMsg(DBM_CORE_BREAK_USAGE)
+			return
+		end
+		timer = timer * 60
+		sendSync("BT", timer)
+	end
+	
+	SLASH_DEADLYBOSSMODS1 = "/dbm"
+	if not BigWigs then
+		--Register pull and break slash commands for BW converts, if BW isn't loaded
+		--This shouldn't raise an issue since BW SHOULD load before DBM in any case they are both present.
+		SLASH_DEADLYBOSSMODPULL1 = "/pull"
+		SLASH_DEADLYBOSSMODBREAK1 = "/break"
+		SlashCmdList["DEADLYBOSSMODPULL"] = function(msg)
+			Pull(tonumber(msg) or 10)
+		end
+		SlashCmdList["DEADLYBOSSMODBREAK"] = function(msg)
+			Break(tonumber(msg) or 10)
+		end
+	end
+	SlashCmdList["DEADLYBOSSMODS"] = function(msg)
+		local cmd = msg:lower()
+		if cmd == "ver" or cmd == "version" then
+			DBM:ShowVersions(false)
+		elseif cmd == "ver2" or cmd == "version2" then
+			DBM:ShowVersions(true)
+		elseif cmd == "unlock" or cmd == "move" then
+			DBM.Bars:ShowMovableBar()
+		elseif cmd == "help2" then
+			for i, v in ipairs(DBM_CORE_SLASHCMD_HELP2) do DBM:AddMsg(v) end
+		elseif cmd == "help" then
+			for i, v in ipairs(DBM_CORE_SLASHCMD_HELP) do DBM:AddMsg(v) end
+		elseif cmd:sub(1, 13) == "timer endloop" then
+			DBM:CreatePizzaTimer(time, "", nil, nil, nil, nil, true)
+		elseif cmd:sub(1, 5) == "timer" then
+			local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
+			if not (time and text) then
+				for i, v in ipairs(DBM_CORE_TIMER_USAGE) do DBM:AddMsg(v) end
+				--DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
 				return
 			end
-			if not target then
-				DBM:AddMsg(DBM_CORE_HUD_INVALID_TARGET)
+			local min, sec = string.split(":", time)
+			min = tonumber(min or "") or 0
+			sec = tonumber(sec or "")
+			if min and not sec then
+				sec = min
+				min = 0
+			end
+			time = min * 60 + sec
+			DBM:CreatePizzaTimer(time, text)
+		elseif cmd:sub(1, 6) == "ctimer" then
+			local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
+			if not (time and text) then
+				DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
 				return
 			end
-			local uId
-			if target:upper() == "TARGET" and UnitExists("target") then
-				uId = "target"
-			elseif target:upper() == "FOCUS" and UnitExists("focus") then
-				uId = "focus"
-			else--Try to use it as player name
-				uId = DBM:GetRaidUnitId(target)
+			local min, sec = string.split(":", time)
+			min = tonumber(min or "") or 0
+			sec = tonumber(sec or "")
+			if min and not sec then
+				sec = min
+				min = 0
 			end
-			if not uId then
-				DBM:AddMsg(DBM_CORE_HUD_INVALID_TARGET)
+			time = min * 60 + sec
+			DBM:CreatePizzaTimer(time, text, nil, nil, true)
+		elseif cmd:sub(1, 6) == "ltimer" then
+			local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
+			if not (time and text) then
+				DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
 				return
 			end
-			if UnitIsUnit("player", uId) and not DBM.Options.DebugMode then--Don't allow hud to self, except if debug mode is enabled, then hud to self useful for testing
-				DBM:AddMsg(DBM_CORE_HUD_INVALID_SELF)
+			local min, sec = string.split(":", time)
+			min = tonumber(min or "") or 0
+			sec = tonumber(sec or "")
+			if min and not sec then
+				sec = min
+				min = 0
+			end
+			time = min * 60 + sec
+			DBM:CreatePizzaTimer(time, text, nil, nil, nil, true)
+		elseif cmd:sub(1, 7) == "cltimer" then
+			local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
+			if not (time and text) then
+				DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
 				return
 			end
-			if hudType:upper() == "ARROW" then
-				local _, targetClass = UnitClass(uId)
-				local color2 = RAID_CLASS_COLORS[targetClass]
-				local m1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "party", playerName, 0.1, hudDuration, 0, 1, 0, 1, nil, false):Appear()
-				local m2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "party", UnitName(uId), 0.75, hudDuration, color2.r, color2.g, color2.b, 1, nil, false):Appear()
-				m2:EdgeTo(m1, nil, hudDuration, 0, 1, 0, 1)
-				success = true
-			elseif hudType:upper() == "GREEN" then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 0, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
-				success = true
-			elseif hudType:upper() == "RED" then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 1, 0, 0, 0.5, nil, false):Pulse(0.5, 0.5)
-				success = true
-			elseif hudType:upper() == "YELLOW" then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 1, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
-				success = true
-			elseif hudType:upper() == "BLUE" then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 0, 0, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-				success = true
-			elseif hudType:upper() == "ICON" then
-				local icon = GetRaidTargetIndex(uId)
-				if not icon then
-					DBM:AddMsg(DBM_CORE_HUD_INVALID_ICON)
+			local min, sec = string.split(":", time)
+			min = tonumber(min or "") or 0
+			sec = tonumber(sec or "")
+			if min and not sec then
+				sec = min
+				min = 0
+			end
+			time = min * 60 + sec
+			DBM:CreatePizzaTimer(time, text, nil, nil, true, true)
+		elseif cmd:sub(1, 15) == "broadcast timer" then--Standard Timer
+			local permission = true
+			if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
+				DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+				permission = false
+			end
+			local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
+			if not (time and text) then
+				DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
+				return
+			end
+			local min, sec = string.split(":", time)
+			min = tonumber(min or "") or 0
+			sec = tonumber(sec or "")
+			if min and not sec then
+				sec = min
+				min = 0
+			end
+			time = min * 60 + sec
+			DBM:CreatePizzaTimer(time, text, permission)
+		elseif cmd:sub(1, 16) == "broadcast ctimer" then
+			local permission = true
+			if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
+				DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+				permission = false
+			end
+			local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
+			if not (time and text) then
+				DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
+				return
+			end
+			local min, sec = string.split(":", time)
+			min = tonumber(min or "") or 0
+			sec = tonumber(sec or "")
+			if min and not sec then
+				sec = min
+				min = 0
+			end
+			time = min * 60 + sec
+			DBM:CreatePizzaTimer(time, text, permission, nil, true)
+		elseif cmd:sub(1, 16) == "broadcast ltimer" then
+			local permission = true
+			if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
+				DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+				permission = false
+			end
+			local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
+			if not (time and text) then
+				DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
+				return
+			end
+			local min, sec = string.split(":", time)
+			min = tonumber(min or "") or 0
+			sec = tonumber(sec or "")
+			if min and not sec then
+				sec = min
+				min = 0
+			end
+			time = min * 60 + sec
+			DBM:CreatePizzaTimer(time, text, permission, nil, nil, true)
+		elseif cmd:sub(1, 17) == "broadcast cltimer" then
+			local permission = true
+			if DBM:GetRaidRank(playerName) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then
+				DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+				permission = false
+			end
+			local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
+			if not (time and text) then
+				DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
+				return
+			end
+			local min, sec = string.split(":", time)
+			min = tonumber(min or "") or 0
+			sec = tonumber(sec or "")
+			if min and not sec then
+				sec = min
+				min = 0
+			end
+			time = min * 60 + sec
+			DBM:CreatePizzaTimer(time, text, permission, nil, true, true)
+		elseif cmd:sub(0,5) == "break" then
+			local timer = tonumber(cmd:sub(6)) or 5
+			Break(timer)
+		elseif cmd:sub(1, 4) == "pull" then
+			local timer = tonumber(cmd:sub(5)) or 10
+			Pull(timer)
+		elseif cmd:sub(1, 3) == "lag" then
+			sendSync("L")
+			DBM:AddMsg(DBM_CORE_LAG_CHECKING)
+			C_TimerAfter(5, function() DBM:ShowLag() end)
+		elseif cmd:sub(1, 3) == "hud" then
+			local hudType, target, duration = string.split(" ", msg:sub(4):trim())
+			if hudType == "" then
+				for i, v in ipairs(DBM_CORE_HUD_USAGE) do
+					DBM:AddMsg(v)
+				end
+				return
+			end
+			local hudDuration = tonumber(duration) or 1200--if no duration defined. 20 minutes to cover even longest of fights
+			local success = false
+			if type(hudType) == "string" and hudType:trim() ~= "" then
+				if hudType:upper() == "HIDE" then
+					DBMHudMap:Disable()
 					return
 				end
-				if icon == 8 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "skull", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-				elseif icon == 7 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "cross", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-				elseif icon == 6 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "square", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-				elseif icon == 5 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "moon", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-				elseif icon == 4 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "triangle", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-				elseif icon == 3 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "diamond", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-				elseif icon == 2 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "circle", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
-				elseif icon == 1 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "star", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				if not target then
+					DBM:AddMsg(DBM_CORE_HUD_INVALID_TARGET)
+					return
 				end
-				success = true
-			else
-				DBM:AddMsg(DBM_CORE_HUD_INVALID_TYPE)
+				local uId
+				if target:upper() == "TARGET" and UnitExists("target") then
+					uId = "target"
+				elseif target:upper() == "FOCUS" and UnitExists("focus") then
+					uId = "focus"
+				else--Try to use it as player name
+					uId = DBM:GetRaidUnitId(target)
+				end
+				if not uId then
+					DBM:AddMsg(DBM_CORE_HUD_INVALID_TARGET)
+					return
+				end
+				if UnitIsUnit("player", uId) and not DBM.Options.DebugMode then--Don't allow hud to self, except if debug mode is enabled, then hud to self useful for testing
+					DBM:AddMsg(DBM_CORE_HUD_INVALID_SELF)
+					return
+				end
+				if hudType:upper() == "ARROW" then
+					local _, targetClass = UnitClass(uId)
+					local color2 = RAID_CLASS_COLORS[targetClass]
+					local m1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "party", playerName, 0.1, hudDuration, 0, 1, 0, 1, nil, false):Appear()
+					local m2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "party", UnitName(uId), 0.75, hudDuration, color2.r, color2.g, color2.b, 1, nil, false):Appear()
+					m2:EdgeTo(m1, nil, hudDuration, 0, 1, 0, 1)
+					success = true
+				elseif hudType:upper() == "GREEN" then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 0, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
+					success = true
+				elseif hudType:upper() == "RED" then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 1, 0, 0, 0.5, nil, false):Pulse(0.5, 0.5)
+					success = true
+				elseif hudType:upper() == "YELLOW" then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 1, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
+					success = true
+				elseif hudType:upper() == "BLUE" then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", UnitName(uId), 3.5, hudDuration, 0, 0, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					success = true
+				elseif hudType:upper() == "ICON" then
+					local icon = GetRaidTargetIndex(uId)
+					if not icon then
+						DBM:AddMsg(DBM_CORE_HUD_INVALID_ICON)
+						return
+					end
+					if icon == 8 then
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "skull", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					elseif icon == 7 then
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "cross", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					elseif icon == 6 then
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "square", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					elseif icon == 5 then
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "moon", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					elseif icon == 4 then
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "triangle", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					elseif icon == 3 then
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "diamond", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					elseif icon == 2 then
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "circle", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					elseif icon == 1 then
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(12345, "star", UnitName(uId), 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+					end
+					success = true
+				else
+					DBM:AddMsg(DBM_CORE_HUD_INVALID_TYPE)
+				end
 			end
-		end
-		if success then
-			DBM:AddMsg(DBM_CORE_HUD_SUCCESS:format(strFromTime(hudDuration)))
-		end
-	elseif cmd:sub(1, 5) == "arrow" then
-		local x, y, z = string.split(" ", msg:sub(6):trim())
-		local xNum, yNum, zNum = tonumber(x or ""), tonumber(y or ""), tonumber(z or "")
-		local success
-		if xNum and yNum then
-			DBM.Arrow:ShowRunTo(xNum, yNum, 0)
-			success = true
-		elseif type(x) == "string" and x:trim() ~= "" then
-			local subCmd = x:trim()
-			if subCmd:upper() == "HIDE" then
-				DBM.Arrow:Hide()
-				success = true
-			elseif subCmd:upper() == "MOVE" then
-				DBM.Arrow:Move()
-				success = true
-			elseif subCmd:upper() == "TARGET" then
-				DBM.Arrow:ShowRunTo("target")
-				success = true
-			elseif subCmd:upper() == "FOCUS" then
-				DBM.Arrow:ShowRunTo("focus")
-				success = true
-			elseif subCmd:upper() == "MAP" then
-				DBM.Arrow:ShowRunTo(yNum, zNum, 0, nil, true)
-				success = true
-			elseif DBM:GetRaidUnitId(subCmd) then
-				DBM.Arrow:ShowRunTo(subCmd)
-				success = true
+			if success then
+				DBM:AddMsg(DBM_CORE_HUD_SUCCESS:format(strFromTime(hudDuration)))
 			end
-		end
-		if not success then
-			for i, v in ipairs(DBM_ARROW_ERROR_USAGE) do
-				DBM:AddMsg(v)
+		elseif cmd:sub(1, 5) == "arrow" then
+			local x, y, z = string.split(" ", msg:sub(6):trim())
+			local xNum, yNum, zNum = tonumber(x or ""), tonumber(y or ""), tonumber(z or "")
+			local success
+			if xNum and yNum then
+				DBM.Arrow:ShowRunTo(xNum, yNum, 0)
+				success = true
+			elseif type(x) == "string" and x:trim() ~= "" then
+				local subCmd = x:trim()
+				if subCmd:upper() == "HIDE" then
+					DBM.Arrow:Hide()
+					success = true
+				elseif subCmd:upper() == "MOVE" then
+					DBM.Arrow:Move()
+					success = true
+				elseif subCmd:upper() == "TARGET" then
+					DBM.Arrow:ShowRunTo("target")
+					success = true
+				elseif subCmd:upper() == "FOCUS" then
+					DBM.Arrow:ShowRunTo("focus")
+					success = true
+				elseif subCmd:upper() == "MAP" then
+					DBM.Arrow:ShowRunTo(yNum, zNum, 0, nil, true)
+					success = true
+				elseif DBM:GetRaidUnitId(subCmd) then
+					DBM.Arrow:ShowRunTo(subCmd)
+					success = true
+				end
 			end
+			if not success then
+				for i, v in ipairs(DBM_ARROW_ERROR_USAGE) do
+					DBM:AddMsg(v)
+				end
+			end
+		elseif cmd:sub(1, 7) == "lockout" or cmd:sub(1, 3) == "ids" then
+			if DBM:GetRaidRank(playerName) == 0 then
+				return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+			end
+			if not IsInRaid() then
+				return DBM:AddMsg(DBM_ERROR_NO_RAID)
+			end
+			DBM:RequestInstanceInfo()
+		elseif cmd:sub(1, 10) == "debuglevel" then
+			local level = tonumber(cmd:sub(11)) or 1
+			if level < 1 or level > 3 then
+				DBM:AddMsg("Invalid Value. Debug Level must be between 1 and 3.")
+				return
+			end
+			DBM.Options.DebugLevel = level
+			DBM:AddMsg("Debug Level is " .. level)
+		elseif cmd:sub(1, 5) == "debug" then
+			DBM.Options.DebugMode = DBM.Options.DebugMode == false and true or false
+			DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
+		elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
+			local x, y, _, map = UnitPosition("player")
+			SetMapToCurrentZone()
+			local mapID = GetCurrentMapAreaID()
+			local mapx, mapy = GetPlayerMapPosition("player")
+			DBM:AddMsg(("Location Information\nYou are at zone %u (%s): x=%f, y=%f.\nLocal Map ID %u (%s): x=%f, y=%f"):format(map, GetRealZoneText(map), x, y, mapID, GetZoneText(), mapx, mapy))
+		else
+			DBM:LoadGUI()
 		end
-	elseif cmd:sub(1, 7) == "lockout" or cmd:sub(1, 3) == "ids" then
-		if DBM:GetRaidRank(playerName) == 0 then
-			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
-		end
-		if not IsInRaid() then
-			return DBM:AddMsg(DBM_ERROR_NO_RAID)
-		end
-		DBM:RequestInstanceInfo()
-	elseif cmd:sub(1, 10) == "debuglevel" then
-		local level = tonumber(cmd:sub(11)) or 1
-		if level < 1 or level > 3 then
-			DBM:AddMsg("Invalid Value. Debug Level must be between 1 and 3.")
-			return
-		end
-		DBM.Options.DebugLevel = level
-		DBM:AddMsg("Debug Level is " .. level)
-	elseif cmd:sub(1, 5) == "debug" then
-		DBM.Options.DebugMode = DBM.Options.DebugMode == false and true or false
-		DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
-	elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
-		local x, y, _, map = UnitPosition("player")
-		SetMapToCurrentZone()
-		local mapID = GetCurrentMapAreaID()
-		local mapx, mapy = GetPlayerMapPosition("player")
-		DBM:AddMsg(("Location Information\nYou are at zone %u (%s): x=%f, y=%f.\nLocal Map ID %u (%s): x=%f, y=%f"):format(map, GetRealZoneText(map), x, y, mapID, GetZoneText(), mapx, mapy))
-	else
-		DBM:LoadGUI()
 	end
 end
 
