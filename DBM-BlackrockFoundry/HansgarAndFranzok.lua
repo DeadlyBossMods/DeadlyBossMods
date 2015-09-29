@@ -42,7 +42,7 @@ local timerSmartStamperCD				= mod:NewNextTimer(12, 162124, nil, nil, nil, 6)--A
 --local berserkTimer						= mod:NewBerserkTimer(360)
 
 local countSmartStampers				= mod:NewCountdown(12, 160582)
-local countCripplingSupplex				= mod:NewCountdown("OptionVersion2", "Alt9.5", 156938, "Tank|Healer")
+local countCripplingSupplex				= mod:NewCountdown("Alt9.5", 156938, "Tank|Healer", 2)
 
 local voiceEnvironmentalThreats			= mod:NewVoice("ej10089")
 local voiceDisruptingRoar				= mod:NewVoice(160838, "SpellCaster")

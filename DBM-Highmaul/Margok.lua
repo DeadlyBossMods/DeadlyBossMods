@@ -125,7 +125,7 @@ local timerEnvelopingNightCD					= mod:NewNextCountTimer(63, 165876, nil, nil, n
 local timerDarkStarCD							= mod:NewCDTimer(61, 178607, nil, nil, nil, 3)--61-65 Variations noticed
 local timerNightTwistedCD						= mod:NewTimer(30, "timerNightTwistedCD", 172138, nil, nil, 1)
 
-local countdownArcaneWrath						= mod:NewCountdown("OptionVersion2", 50, 156238, false)--Important to the assigned soakers on mythic, but pretty much spam to everyone else
+local countdownArcaneWrath						= mod:NewCountdown(50, 156238, false, 2)--Important to the assigned soakers on mythic, but pretty much spam to everyone else
 local countdownMarkofChaos						= mod:NewCountdown("Alt50", 158605, "Tank")
 local countdownForceNova						= mod:NewCountdown("AltTwo45", 157349)
 local countdownTransition						= mod:NewCountdown(74, 157278)

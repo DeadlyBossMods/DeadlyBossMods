@@ -435,7 +435,7 @@ local GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID = GetS
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant, UnitRealmRelationship = GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant, UnitRealmRelationship
 local LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns = LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns
---local PlaySoundFile, PlaySound = PlaySoundFile, PlaySound
+local PlaySoundFile, PlaySound = PlaySoundFile, PlaySound
 local Ambiguate = Ambiguate
 local C_TimerNewTicker, C_TimerAfter = C_Timer.NewTicker, C_Timer.After
 
@@ -8432,7 +8432,7 @@ do
 	end
 
 	-- new constructor (auto-localized warnings and options, yay!)
-	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, oldOptionVersion)
+	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound)
 		if not spellId then
 			error("newAnnounce: you must provide spellId", 2)
 			return
@@ -8442,10 +8442,9 @@ do
 			optionVersion = optionName
 			optionName = nil
 		end
-		if type(spellId) == "string" and spellId:match("OptionVersion") then--LEGACY hack, remove when new DBM core and other mods released
-			DBM:Debug("newAnnounce for "..spellId.." is using OptionVersion hack. this is depricated", 2)
-			local temp = oldOptionVersion
-			spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound = color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, temp
+		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			print("newAnnounce for "..color.." is using OptionVersion hack. this is depricated")
+			return
 		end
 		local unparsedId = spellId
 		local spellName
@@ -8546,34 +8545,34 @@ do
 		return newAnnounce(self, "stack", spellId, color or 2, ...)
 	end
 
-	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName, noArg, noSound, oldOptionVersion)
+	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName, noArg, noSound)
 		local optionVersion
 		if type(optionName) == "number" then
 			optionVersion = optionName
 			optionName = nil
 		end
 		if type(spellId) == "string" and spellId:match("OptionVersion") then--LEGACY hack, remove when new DBM core and other mods released
-			local temp = oldOptionVersion
-			spellId, color, castTime, icon, optionDefault, optionName, noArg, noSound = color, castTime, icon, optionDefault, optionName, noArg, noSound, temp
+			print("NewCastAnnounce is using OptionVersion and this is depricated for "..color)
+			return
 		end
-		return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime, nil, noSound, optionVersion)
+		return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime, nil, noSound)
 	end
 
 	function bossModPrototype:NewSoonAnnounce(spellId, color, ...)
 		return newAnnounce(self, "soon", spellId, color or 1, ...)
 	end
 
-	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName, noArg, noSound, oldOptionVersion)
+	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName, noArg, noSound)
 		local optionVersion
 		if type(optionName) == "number" then
 			optionVersion = optionName
 			optionName = nil
 		end
 		if type(spellId) == "string" and spellId:match("OptionVersion") then--LEGACY hack, remove when new DBM core and other mods released
-			local temp = oldOptionVersion
-			spellId, time, color, icon, optionDefault, optionName, noArg, noSound = time, color, icon, optionDefault, optionName, noArg, noSound, temp
+			print("NewCastAnnounce is using OptionVersion and this is depricated for "..color)
+			return
 		end
-		return newAnnounce(self, "prewarn", spellId, color or 1, icon, optionDefault, optionName, nil, time, noSound, optionVersion)
+		return newAnnounce(self, "prewarn", spellId, color or 1, icon, optionDefault, optionName, nil, time, noSound)
 	end
 
 	function bossModPrototype:NewPhaseAnnounce(phase, color, icon, ...)
@@ -8631,14 +8630,12 @@ do
 	local mt = { __index = soundPrototype2 }
 	function bossModPrototype:NewVoice(spellId, optionDefault, optionName, optionVersion)
 		if not spellId and not optionName then
-			error("NewVoice: you must provide either spellId or optionName", 2)
+			print("NewVoice: you must provide either spellId or optionName", 2)
 			return
 		end
 		if type(spellId) == "string" and spellId:match("OptionVersion") then
-			DBM:Debug("Voice for "..spellId.." is using OptionVersion hack. this is not needed, this only has 4 args, do this properly", 2)
-			local temp = optionVersion
-			optionVersion = string.sub(spellId, 14)
-			spellId, optionDefault, optionName = optionDefault, optionName, temp
+			print("NewVoice for "..optionDefault.." is using OptionVersion hack. this is not needed, this only has 4 args, do this properly")
+			return
 		end
 		self.numSounds = self.numSounds and self.numSounds + 1 or 1
 		local obj = setmetatable(
@@ -8691,6 +8688,7 @@ end
 ----------------------------
 do
 	local countdownProtoType = {}
+	local cachedPath, cachedMax, lastVoice = nil, 5, nil
 	local mt = {__index = countdownProtoType}
 
 	local function showCountdown(timer)
@@ -8716,22 +8714,29 @@ do
 				end
 			end
 			if DBM.Options.DontPlayCountdowns then return end
-			local voice = DBM.Options.CountdownVoice
-			local voice2 = DBM.Options.CountdownVoice2
-			local voice3 = DBM.Options.CountdownVoice3v2
+			local voice
 			if self.alternateVoice == 2 then
-				voice = voice2
-			end
-			if self.alternateVoice == 3 then
-				voice = voice3
+				voice = DBM.Options.CountdownVoice2
+			elseif self.alternateVoice == 3 then
+				voice = DBM.Options.CountdownVoice3v2
+			else
+				voice = DBM.Options.CountdownVoice
 			end
 			local path
 			local maxCount = 5
-			for i = 1, #DBM.Counts do
-				if DBM.Counts[i].value == voice then
-					path = DBM.Counts[i].path
-					maxCount = DBM.Counts[i].max
-					break
+			if cachedPath and lastVoice == voice then
+				path = cachedPath
+				maxCount = cachedMax or 5
+			else
+				lastVoice = voice
+				for i = 1, #DBM.Counts do
+					if DBM.Counts[i].value == voice then
+						path = DBM.Counts[i].path
+						cachedPath = path
+						maxCount = DBM.Counts[i].max
+						cachedMax = maxCount
+						break
+					end
 				end
 			end
 			if self.type == "Countout" then
@@ -8765,24 +8770,31 @@ do
 	end
 	countdownProtoType.Stop = countdownProtoType.Cancel
 
-	local function newCountdown(self, countdownType, timer, spellId, optionDefault, optionName, count, textDisabled, altVoice, optionVersion)
+	local function newCountdown(self, countdownType, timer, spellId, optionDefault, optionName, count, textDisabled, altVoice)
 		if not spellId and not optionName then
-			error("NewCountdown: you must provide either spellId or optionName", 2)
+			print("NewCountdown: you must provide either spellId or optionName", 2)
 			return
 		end
 		if type(timer) == "string" and timer:match("OptionVersion") then
-			local temp = optionVersion
-			optionVersion = string.sub(timer, 14)
-			timer, spellId, optionDefault, optionName, count, textDisabled, altVoice = spellId, optionDefault, optionName, count, textDisabled, altVoice, temp
+			print("OptionVersion depricated for newCountdown :"..optionDefault)
+			return
+		end
+		local optionVersion
+		if type(optionName) == "number" then
+			optionVersion = optionName
+			optionName = nil
 		end
 		if altVoice == true then altVoice = 2 end--Compat
-		if type(timer) == "string" and timer:match("AltTwo") then
-			altVoice = 3
-			timer = tonumber(string.sub(timer, 7))
-		elseif type(timer) == "string" and timer:match("Alt") then
-			altVoice = 2
-			timer = tonumber(string.sub(timer, 4))
+		if type(timer) == "string" then
+			if timer:match("AltTwo") then
+				altVoice = 3
+				timer = tonumber(string.sub(timer, 7))
+			elseif timer:match("Alt") then
+				altVoice = 2
+				timer = tonumber(string.sub(timer, 4))
+			end
 		end
+		--TODO, maybe make this not use an entire sound object?
 		local sound5 = self:NewSound(5, true, false)
 		timer = timer or 10
 		count = count or 5
@@ -8837,15 +8849,19 @@ end
 do
 	local yellPrototype = {}
 	local mt = { __index = yellPrototype }
-	local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType, optionVersion)
+	local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType)
 		if not spellId and not yellText then
 			error("NewYell: you must provide either spellId or yellText", 2)
 			return
 		end
 		if type(spellId) == "string" and spellId:match("OptionVersion") then
-			local temp = optionVersion
-			optionVersion = string.sub(spellId, 14)
-			spellId, yellText, optionDefault, optionName, chatType = yellText, optionDefault, optionName, chatType, temp
+			print("newYell for: "..yellText.." is using OptionVersion hack. This is depricated")
+			return
+		end
+		local optionVersion
+		if type(optionName) == "number" then
+			optionVersion = optionName
+			optionName = nil
 		end
 		local displayText
 		if not yellText then
@@ -9241,7 +9257,7 @@ do
 			return
 		end
 		if type(text) == "string" and text:match("OptionVersion") then
-			error("NewSpecialWarning: you must provide remove optionversion hack", 2)
+			print("NewSpecialWarning: you must provide remove optionversion hack for "..optionDefault)
 			return
 		end
 		if runSound == true then
@@ -9280,7 +9296,7 @@ do
 			return
 		end
 		if type(spellId) == "string" and spellId:match("OptionVersion") then
-			error("NewSpecialWarning: you must provide remove optionversion hack", 2)
+			print("NewSpecialWarning: you must provide remove optionversion hack for"..stacks)
 			return
 		end
 		if runSound == true then
@@ -9440,7 +9456,7 @@ do
 
 	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, ...)
 		if type(text) == "string" and text:match("OptionVersion") then
-			error("NewSpecialWarning: you must provide remove optionversion hack", 2)
+			print("NewSpecialWarning: you must provide remove optionversion hack for "..optionDefault)
 		end
 		return newSpecialWarning(self, "stack", text, stacks, optionDefault, ...)
 	end
@@ -9455,7 +9471,7 @@ do
 
 	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, ...)
 		if type(text) == "string" and text:match("OptionVersion") then
-			error("NewSpecialWarning: you must provide remove optionversion hack", 2)
+			print("NewSpecialWarning: you must provide remove optionversion hack for "..optionDefault)
 		end
 		return newSpecialWarning(self, "prewarn", text, time, optionDefault, ...)
 	end
