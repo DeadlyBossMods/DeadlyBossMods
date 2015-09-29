@@ -88,8 +88,8 @@ local timerSecurityGuard		= mod:NewNextCountTimer(40, "ej9648", nil, "Tank", nil
 
 local berserkTimer				= mod:NewBerserkTimer(780)
 
-local countdownBlast			= mod:NewCountdown("OptionVersion2", 30, 155209, false)
-local countdownEngineer			= mod:NewCountdown("OptionVersion2", "AltTwo41", "ej9649", "Tank")
+local countdownBlast			= mod:NewCountdown(30, 155209, false, 2)
+local countdownEngineer			= mod:NewCountdown("AltTwo41", "ej9649", "Tank", 2)
 --Phase 2 countdowns, no conflict with phase 1 countdowns
 local countdownFireCaller		= mod:NewCountdown("AltTwo64", "ej9659", "Tank")
 local countdownSecurityGuard	= mod:NewCountdown("Alt41", "ej9648", "Tank")
