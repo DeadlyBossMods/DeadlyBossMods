@@ -6,7 +6,7 @@ mod:SetCreatureID(92330)
 mod:SetEncounterID(1794)
 mod:SetZone()
 mod:SetUsedIcons(1)
-mod:SetHotfixNoticeRev(14483)
+mod:SetHotfixNoticeRev(14550)
 --mod.respawnTime = 20
 
 mod:RegisterCombat("combat")
