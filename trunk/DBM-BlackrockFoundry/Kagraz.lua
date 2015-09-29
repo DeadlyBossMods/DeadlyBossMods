@@ -66,7 +66,7 @@ local berserkTimer						= mod:NewBerserkTimer(420)
 
 local countdownCinderWolves				= mod:NewCountdown(76, 155776)
 local countdownFireStorm				= mod:NewCountdown(61, 155493)--Same voice as wolves cause never happen at same time, in fact they alternate.
-local countdownEnchantedArmaments		= mod:NewCountdown("OptionVersion2", "Alt45", 156724, false)
+local countdownEnchantedArmaments		= mod:NewCountdown("Alt45", 156724, false, 2)
 local countdownOverheated				= mod:NewCountdownFades("Alt20", 154950, "Tank")
 local countdownMoltenTorrent			= mod:NewCountdownFades("AltTwo6", 154932)
 
