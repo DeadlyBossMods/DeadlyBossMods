@@ -56,7 +56,7 @@ local specWarnFelSurge				= mod:NewSpecialWarningYou(186407, nil, nil, nil, 1, 2
 local yellFelSurge					= mod:NewYell(186407)
 local specWarnImps					= mod:NewSpecialWarningSwitchCount("ej11694", "Dps")
 ----Adds
-local specWarnFelBlazeFlurry		= mod:NewSpecialWarningSpell(186453, "Tank")
+local specWarnFelBlazeFlurry		= mod:NewSpecialWarningSpell(186453, "Tank", nil, nil, 1, 2)
 local specWarnFelChains				= mod:NewSpecialWarningYou(186490)
 local specWarnEmpoweredFelChains	= mod:NewSpecialWarningYou(189775)
 local yellFelChains					= mod:NewYell(186490)
@@ -66,7 +66,7 @@ local specWarnVoidStrike			= mod:NewSpecialWarningSpell(186292, "Tank")
 local specWarnVoidSurge				= mod:NewSpecialWarningYou(186333, nil, nil, nil, 1, 5)
 local yellVoidSurge					= mod:NewYell(186333)
 ----Adds
-local specWarnWitheringGaze			= mod:NewSpecialWarningSpell(186783, "Tank")
+local specWarnWitheringGaze			= mod:NewSpecialWarningSpell(186783, "Tank", nil, nil, 1, 2)
 local specWarnBlackHole				= mod:NewSpecialWarningCount(186546, nil, nil, nil, 2)
 local specWarnEmpBlackHole			= mod:NewSpecialWarningCount(189779, nil, nil, nil, 2)--Mythic
 
@@ -86,8 +86,8 @@ local timerVoidSurgeCD				= mod:NewCDTimer(29, 186333, nil, "-Tank", 2, 3)
 local timerVoidsCD					= mod:NewNextTimer(30, "ej11714", nil, "Ranged", nil, 1, 697)
 ----Big Add
 local timerWitheringGazeCD			= mod:NewCDTimer(22, 186783, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
-local timerBlackHoleCD				= mod:NewCDCountTimer(29.5, 186546, nil, nil, nil, 5)
-local timerEmpBlackHoleCD			= mod:NewCDCountTimer(29.5, 189779, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)--Merge with timerBlackHoleCD?
+local timerBlackHoleCD				= mod:NewCDCountTimer(29.5, 186546, nil, "-Tank", 2, 5)
+local timerEmpBlackHoleCD			= mod:NewCDCountTimer(29.5, 189779, nil, "-Tank", 2, 5, nil, DBM_CORE_HEROIC_ICON)--Merge with timerBlackHoleCD?
 --End Phase
 local timerOverwhelmingChaosCD		= mod:NewNextCountTimer(10, 187204, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
@@ -103,6 +103,8 @@ local voiceFelSurge					= mod:NewVoice(186407)	--run out (because need to tell d
 local voiceWastingVoid				= mod:NewVoice(186063)  --run away
 local voiceVoidSurge				= mod:NewVoice(186333)	--new voice
 local voicePhasing					= mod:NewVoice(189047)	--changemt
+local voiceFelblazeFlurry			= mod:NewVoice(186453, "Tank")	--defensive
+local voiceWitheringGaze			= mod:NewVoice(186783, "Tank")	--defensive
 
 --Warning behavior choices for Chains.
 --Cast only gives original target, not all targets, but does so 3 seconds faster. It allows the person to move early and change other players they affect with chains by pre moving.
@@ -238,6 +240,7 @@ function mod:SPELL_CAST_START(args)
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
 				playerTanking = 1--Set player tanking to vanguard
 				specWarnFelBlazeFlurry:Show()--So show tank warning
+				voiceFelblazeFlurry:Play("defensive")
 				break
 			end
 		end
@@ -247,6 +250,7 @@ function mod:SPELL_CAST_START(args)
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
 				playerTanking = 2--Set player tanking to void walker
 				specWarnWitheringGaze:Show()--So show tank warning
+				voiceWitheringGaze:Play("defensive")
 				break
 			end
 		end
@@ -307,25 +311,35 @@ function mod:SPELL_CAST_SUCCESS(args)
 			if not self:IsMythic() or playerTanking == 0 then
 				if not args:IsPlayer() then--Just warn whoever THIS strike didn't hit
 					specWarnPhasing:Show(args.destName)
+					voicePhasing:Play("tauntboss")
+				else
+					voicePhasing:Play("changemt")
 				end
 			elseif playerTanking == 2 then--VoidWalker Tank
 				--Fel strike just finished, void strike next so voidwalker tank needs to take it
 				specWarnPhasing:Show(args.destName)
+				voicePhasing:Play("tauntboss")
+			else
+				voicePhasing:Play("changemt")
 			end
-			voicePhasing:Play("changemt")
 		end
 	elseif spellId == 190224 then
 		if self.vb.phase >= 3 then
 			if not self:IsMythic() or playerTanking == 0 then--Just warn whoever THIS strike didn't hit
 				if not args:IsPlayer() then
 					specWarnPhasing:Show(args.destName)
+					voicePhasing:Play("tauntboss")
+				else
+					voicePhasing:Play("changemt")
 				end
 			elseif playerTanking == 1 then--Vanguard Tank
 				--void strike just finished, fel strike next so vanguard tank needs to take it
 				specWarnPhasing:Show(args.destName)
+				voicePhasing:Play("tauntboss")
+			else
+				voicePhasing:Play("changemt")
 			end
 			timerVoidStrikeCD:Start(13)
-			voicePhasing:Play("changemt")
 		else
 			timerVoidStrikeCD:Start()
 		end
@@ -482,7 +496,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 189047 then--Phase 3 (Shadowfel Phasing)
 		self.vb.phase = 3
 		voicePhaseChange:Play("phasechange")
-		timerVoidStrikeCD:Cancel()--Regardless of what was left on timer, he will use it immediately after shadowfel phasing
+		if not self:IsMythic() then
+			timerVoidStrikeCD:Cancel()--Regardless of what was left on timer, he will use it immediately after shadowfel phasing
+		end
 		timerVoidSurgeCD:Cancel()
 		countdownVoidSurge:Cancel()
 		timerFelSurgeCD:Start(7)
