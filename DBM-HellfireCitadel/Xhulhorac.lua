@@ -47,6 +47,7 @@ local specWarnFelTouched			= mod:NewSpecialWarningYou(186134, false)
 local specWarnFelsinged				= mod:NewSpecialWarningMove(186073, nil, nil, nil, 1, 2)--Fire GTFO
 local specWarnVoidTouched			= mod:NewSpecialWarningYou(186135, false)
 local specWarnWastingVoid			= mod:NewSpecialWarningMove(186063, nil, nil, nil, 1, 2)--Void GTFO
+local specWarnPhasing				= mod:NewSpecialWarningTaunt(189047, nil, nil, nil, 1, 2)--May need smarter code.
 --Fire Phase
 ----Boss
 local specWarnFelStrike				= mod:NewSpecialWarningSpell(186271, "Tank")
@@ -117,6 +118,7 @@ mod.vb.impCount = 0
 mod.vb.impActive = 0
 mod.vb.voidCount = 0
 mod.vb.blackHoleCount = 0
+local playerTanking = 0--1 Vanguard, 2 void walker
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local AddsSeen = {}
 
@@ -197,6 +199,7 @@ function mod:OnCombatStart(delay)
 	self.vb.impActive = 0
 	self.vb.voidCount = 0
 	self.vb.blackHoleCount = 0
+	playerTanking = 0
 	table.wipe(AddsSeen)
 	timerFelStrikeCD:Start(8-delay)
 	timerFelSurgeCD:Start(21-delay)
@@ -233,6 +236,7 @@ function mod:SPELL_CAST_START(args)
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
+				playerTanking = 1--Set player tanking to vanguard
 				specWarnFelBlazeFlurry:Show()--So show tank warning
 				break
 			end
@@ -241,6 +245,7 @@ function mod:SPELL_CAST_START(args)
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
+				playerTanking = 2--Set player tanking to void walker
 				specWarnWitheringGaze:Show()--So show tank warning
 				break
 			end
@@ -299,10 +304,26 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 190223 then
 		timerFelStrikeCD:Start()
 		if self.vb.phase >= 3 then
+			if not self:IsMythic() or playerTanking == 0 then
+				if not args:IsPlayer() then--Just warn whoever THIS strike didn't hit
+					specWarnPhasing:Show(args.destName)
+				end
+			elseif playerTanking == 2 then--VoidWalker Tank
+				--Fel strike just finished, void strike next so voidwalker tank needs to take it
+				specWarnPhasing:Show(args.destName)
+			end
 			voicePhasing:Play("changemt")
 		end
 	elseif spellId == 190224 then
 		if self.vb.phase >= 3 then
+			if not self:IsMythic() or playerTanking == 0 then--Just warn whoever THIS strike didn't hit
+				if not args:IsPlayer() then
+					specWarnPhasing:Show(args.destName)
+				end
+			elseif playerTanking == 1 then--Vanguard Tank
+				--void strike just finished, fel strike next so vanguard tank needs to take it
+				specWarnPhasing:Show(args.destName)
+			end
 			timerVoidStrikeCD:Start(13)
 			voicePhasing:Play("changemt")
 		else
@@ -411,6 +432,9 @@ function mod:UNIT_DIED(args)
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:RemoveBoss(cid)
 		end
+		if playerTanking == 1 then
+			playerTanking = 0--Vanguard died, set player tanking to 0
+		end
 	elseif cid == 94239 then--Omnus
 		timerWitheringGazeCD:Cancel()
 		timerBlackHoleCD:Cancel()
@@ -419,6 +443,9 @@ function mod:UNIT_DIED(args)
 		end
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:RemoveBoss(cid)
+		end
+		if playerTanking == 2 then
+			playerTanking = 0--Omnus died, set player tanking to 0
 		end
 	elseif cid == 94231 then--Imps
 		self.vb.impActive = self.vb.impActive - 1
