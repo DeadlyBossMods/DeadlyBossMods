@@ -435,7 +435,7 @@ local GetSpecialization, GetSpecializationInfo, GetSpecializationInfoByID = GetS
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant, UnitRealmRelationship = GetPartyAssignment, UnitGroupRolesAssigned, UnitIsGroupLeader, UnitIsGroupAssistant, UnitRealmRelationship
 local LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns = LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddOns
-local PlaySoundFile, PlaySound = PlaySoundFile, PlaySound
+--local PlaySoundFile, PlaySound = PlaySoundFile, PlaySound
 local Ambiguate = Ambiguate
 local C_TimerNewTicker, C_TimerAfter = C_Timer.NewTicker, C_Timer.After
 
