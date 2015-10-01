@@ -1127,7 +1127,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		--Begin phase 2
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
-		timerWroughtChaosCD:Start(6)
+		if not self:IsFaceroll() then
+			timerWroughtChaosCD:Start(6)
+		end
 		timerDeathbrandCD:Start(35, self.vb.deathBrandCount+1)--35-39
 		countdownDeathBrand:Start(35)
 		timerAllureofFlamesCD:Start(40.5)--40-45
