@@ -532,7 +532,7 @@ local function updateAllTimers(self, ICD)
 			countdownShackledTorment:Cancel()
 			countdownShackledTorment:Start(ICD)
 		end
-		if timerWroughtChaosCD:GetRemaining() < ICD then
+		if not self:IsFaceroll() and timerWroughtChaosCD:GetRemaining() < ICD then
 			local elapsed, total = timerWroughtChaosCD:GetTime()
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerWroughtChaosCD extended by: "..extend, 2)
@@ -558,7 +558,7 @@ local function updateAllTimers(self, ICD)
 			countdownShackledTorment:Cancel()
 			countdownShackledTorment:Start(ICD)
 		end
-		if timerWroughtChaosCD:GetRemaining() < ICD then
+		if not self:IsFaceroll() and timerWroughtChaosCD:GetRemaining() < ICD then
 			local elapsed, total = timerWroughtChaosCD:GetTime()
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerWroughtChaosCD extended by: "..extend, 2)
