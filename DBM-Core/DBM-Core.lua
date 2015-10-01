@@ -6950,6 +6950,14 @@ function bossModPrototype:IsLFR()
 	return false
 end
 
+function bossModPrototype:IsFaceroll()
+	local diff = DBM:GetCurrentInstanceDifficulty()
+	if diff == "normal" or diff == "lfr" then
+		return true
+	end
+	return false
+end
+
 function bossModPrototype:IsNormal()
 	local diff = DBM:GetCurrentInstanceDifficulty()
 	if diff == "normal" or diff == "normal5" or diff == "normal10" or diff == "normal25" then

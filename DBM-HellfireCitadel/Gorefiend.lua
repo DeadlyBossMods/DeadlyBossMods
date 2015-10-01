@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 --TODO, Touch of Doom was 25 seconds in LFR, tested after heroic. changed? VERIFY
 local warnShadowofDeath					= mod:NewTargetCountAnnounce(179864, 3)
 local warnTouchofDoom					= mod:NewTargetAnnounce(179978, 4)
-local warnSharedFate					= mod:NewTargetCountAnnounce(179909, 4)--Announce all 2/3
+local warnSharedFate					= mod:NewTargetCountAnnounce(179909, 4, nil, "-Tank", 2)--Announce all 2/3
 local warnHungerforLife					= mod:NewTargetAnnounce(180148, 3, nil, false)--Knowing who has it not very important, only if it's on you
 local warnGoreboundSpiritSoon			= mod:NewSoonAnnounce("ej11020", 3, 187814)
 local warnRagingCharge					= mod:NewSpellAnnounce(187814, 3, nil, "Melee")
@@ -52,7 +52,7 @@ local timerShadowofDeathCDDps			= mod:NewTimer(30, "SoDDPS2", 179864, "Dps", nil
 local timerShadowofDeathCDTank			= mod:NewTimer(30, "SoDTank2", 179864, "Tank", nil, 5)
 local timerShadowofDeathCDHealer		= mod:NewTimer(30, "SoDHealer2", 179864, "Healer", nil, 5)
 local timerTouchofDoomCD				= mod:NewCDTimer(18, 179977, nil, nil, nil, 3)--25 seconds in LFR, tested after heroic. changed? VERIFY
-local timerSharedFateCD					= mod:NewNextCountTimer(29, 179909, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--29-31
+local timerSharedFateCD					= mod:NewNextCountTimer(29, 179909, nil, "-Tank", 2, 3, nil, DBM_CORE_DEADLY_ICON)--29-31
 local timerCrushingDarknessCD			= mod:NewNextTimer(10, 180017, nil, false, 2, 2)--Actually 16, but i delay start by 6 seconds for reduced spam
 local timerFeastofSouls					= mod:NewNextTimer(123.5, 181973, nil, nil, nil, 6)--Probably next timer too, or close to it, depends how consistent energy gains are, may have small variation, like gruul
 
@@ -164,7 +164,7 @@ function mod:OnCombatStart(delay)
 	end
 	timerCrushingDarknessCD:Start(5-delay)
 	timerTouchofDoomCD:Start(9-delay)
-	if not self:IsLFR() then
+	if not self:IsFaceroll() then
 		timerSharedFateCD:Start(19-delay, 1)
 	end
 	timerFeastofSouls:Start(-delay)
@@ -418,7 +418,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		timerCrushingDarknessCD:Start(5)
 		timerTouchofDoomCD:Start(9)
-		if not self:IsLFR() then
+		if not self:IsFaceroll() then
 			timerSharedFateCD:Start(19, 1)
 		end
 		timerFeastofSouls:Start()
