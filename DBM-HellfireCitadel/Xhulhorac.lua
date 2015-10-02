@@ -119,6 +119,7 @@ mod.vb.impCount = 0
 mod.vb.impActive = 0
 mod.vb.voidCount = 0
 mod.vb.blackHoleCount = 0
+mod.vb.bothDead = 0
 local playerTanking = 0--1 Vanguard, 2 void walker
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local AddsSeen = {}
@@ -200,6 +201,7 @@ function mod:OnCombatStart(delay)
 	self.vb.impActive = 0
 	self.vb.voidCount = 0
 	self.vb.blackHoleCount = 0
+	self.vb.bothDead = 0
 	playerTanking = 0
 	table.wipe(AddsSeen)
 	timerFelStrikeCD:Start(8-delay)
@@ -311,7 +313,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				--Fel strike just finished, void strike next so voidwalker tank needs to take it
 				specWarnPhasing:Show(args.destName)
 				voicePhasing:Play("tauntboss")
-			elseif not self:IsMythic() or playerTanking == 0 then
+			elseif self.vb.bothDead == 2 or (not self:IsMythic() and playerTanking == 0) then
 				if not args:IsPlayer() then--Just warn whoever THIS strike didn't hit
 					specWarnPhasing:Show(args.destName)
 					voicePhasing:Play("tauntboss")
@@ -328,7 +330,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				--void strike just finished, fel strike next so vanguard tank needs to take it
 				specWarnPhasing:Show(args.destName)
 				voicePhasing:Play("tauntboss")
-			elseif not self:IsMythic() or playerTanking == 0 then--Just warn whoever THIS strike didn't hit
+			elseif self.vb.bothDead == 2 or (not self:IsMythic() and playerTanking == 0) then
 				if not args:IsPlayer() then
 					specWarnPhasing:Show(args.destName)
 					voicePhasing:Play("tauntboss")
@@ -437,6 +439,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 94185 then--Vanguard Akkelion
+		self.vb.bothDead = self.vb.bothDead + 1
 		timerFelBlazeFlurryCD:Cancel()
 		timerFelChainsCD:Cancel()
 		if self:IsMythic() then
@@ -449,6 +452,7 @@ function mod:UNIT_DIED(args)
 			playerTanking = 0--Vanguard died, set player tanking to 0
 		end
 	elseif cid == 94239 then--Omnus
+		self.vb.bothDead = self.vb.bothDead + 1
 		timerWitheringGazeCD:Cancel()
 		timerBlackHoleCD:Cancel()
 		if self:IsMythic() then
