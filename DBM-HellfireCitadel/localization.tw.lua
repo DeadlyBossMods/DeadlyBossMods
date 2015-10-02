@@ -151,7 +151,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1438)
 
 L:SetWarningLocalization({
-	specWarnBreakShackle	= "束縛折磨：拉斷%s!"
+	specWarnBreakShackle	= "束縛折磨：%s拉斷!"
 })
 
 L:SetOptionLocalization({
