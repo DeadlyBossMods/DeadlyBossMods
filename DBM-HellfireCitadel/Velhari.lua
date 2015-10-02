@@ -404,7 +404,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			end
 			specWarnAncientHarbinger:Show()
 			voiceHarbinger:Play("bigmob")
-			timerHarbingersMendingCD:Start(19)--VERIFY
+			timerHarbingersMendingCD:Start(17)--VERIFY
 		elseif npc == AncientSovereign then
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:AddBoss(90272, AncientSovereign)
