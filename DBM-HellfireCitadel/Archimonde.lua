@@ -89,7 +89,7 @@ local specWarnRainofChaos			= mod:NewSpecialWarningCount(189953, nil, nil, nil, 
 --Mythic
 local specWarnDarkConduitSoon		= mod:NewSpecialWarningSoon(190394, "Ranged", nil, nil, 1, 2)
 local specWarnSeethingCorruption	= mod:NewSpecialWarningCount(190506, nil, nil, nil, 2, 2)
-local specWarnMarkOfLegion			= mod:NewSpecialWarningYouCount(187050)--Somehow i suspect this replaces fel burst. It's basically same mechanic, but on multiple people and slightly larger
+local specWarnMarkOfLegion			= mod:NewSpecialWarningYouCount(187050)
 local yellMarkOfLegion				= mod:NewFadesYell(187050, 28836)
 local yellMarkOfLegionPoS			= mod:NewPosYell(187050, 28836)
 local specWarnSourceofChaosYou		= mod:NewSpecialWarningYou(190703)
