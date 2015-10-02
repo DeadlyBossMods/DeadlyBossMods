@@ -75,6 +75,19 @@ L:SetMiscLocalization({
 	YellBarrel			= "我中了空桶(暈)"
 })
 
+----------------
+--  Brewfest  --
+----------------
+L = DBM:GetModLocalization("Brew")
+
+L:SetGeneralLocalization({
+	name = "啤酒節"
+})
+
+L:SetOptionLocalization({
+	NormalizeVolume			= "在啤酒節區域時，自動地調整對話聲道以匹配音樂聲道的音量。(如果音樂聲道沒有開啟，則會設成静音。)"
+})
+
 -----------------------------
 --  The Headless Horseman  --
 -----------------------------
@@ -104,6 +117,15 @@ L = DBM:GetModLocalization("Greench")
 
 L:SetGeneralLocalization({
 	name = "可惡的格林奇"
+})
+
+---------------
+--  Grumpus  --
+---------------
+L = DBM:GetModLocalization("Grumpus")
+
+L:SetGeneralLocalization({
+	name = "壞心鬼"
 })
 
 --------------------------
