@@ -51,12 +51,11 @@ local specWarnPhasing				= mod:NewSpecialWarningTaunt(189047, nil, nil, nil, 1, 
 --Fire Phase
 ----Boss
 local specWarnFelStrike				= mod:NewSpecialWarningSpell(186271, "Tank")
-local specWarnEmpoweredFelStrike	= mod:NewSpecialWarningTaunt(188092, false)--Maybe redundant
 local specWarnFelSurge				= mod:NewSpecialWarningYou(186407, nil, nil, nil, 1, 2)
 local yellFelSurge					= mod:NewYell(186407)
 local specWarnImps					= mod:NewSpecialWarningSwitchCount("ej11694", "Dps")
 ----Adds
-local specWarnFelBlazeFlurry		= mod:NewSpecialWarningSpell(186453, "Tank", nil, nil, 1, 2)
+local specWarnFelBlazeFlurry		= mod:NewSpecialWarningSpell(186453, "Tank", nil, nil, 3, 2)
 local specWarnFelChains				= mod:NewSpecialWarningYou(186490)
 local specWarnEmpoweredFelChains	= mod:NewSpecialWarningYou(189775)
 local yellFelChains					= mod:NewYell(186490)
@@ -308,34 +307,34 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 190223 then
 		timerFelStrikeCD:Start()
 		if self.vb.phase >= 3 then
-			if not self:IsMythic() or playerTanking == 0 then
+			if playerTanking == 2 then--VoidWalker Tank
+				--Fel strike just finished, void strike next so voidwalker tank needs to take it
+				specWarnPhasing:Show(args.destName)
+				voicePhasing:Play("tauntboss")
+			elseif not self:IsMythic() or playerTanking == 0 then
 				if not args:IsPlayer() then--Just warn whoever THIS strike didn't hit
 					specWarnPhasing:Show(args.destName)
 					voicePhasing:Play("tauntboss")
 				else
 					voicePhasing:Play("changemt")
 				end
-			elseif playerTanking == 2 then--VoidWalker Tank
-				--Fel strike just finished, void strike next so voidwalker tank needs to take it
-				specWarnPhasing:Show(args.destName)
-				voicePhasing:Play("tauntboss")
 			else
 				voicePhasing:Play("changemt")
 			end
 		end
 	elseif spellId == 190224 then
 		if self.vb.phase >= 3 then
-			if not self:IsMythic() or playerTanking == 0 then--Just warn whoever THIS strike didn't hit
+			if playerTanking == 1 then--Vanguard Tank
+				--void strike just finished, fel strike next so vanguard tank needs to take it
+				specWarnPhasing:Show(args.destName)
+				voicePhasing:Play("tauntboss")
+			elseif not self:IsMythic() or playerTanking == 0 then--Just warn whoever THIS strike didn't hit
 				if not args:IsPlayer() then
 					specWarnPhasing:Show(args.destName)
 					voicePhasing:Play("tauntboss")
 				else
 					voicePhasing:Play("changemt")
 				end
-			elseif playerTanking == 1 then--Vanguard Tank
-				--void strike just finished, fel strike next so vanguard tank needs to take it
-				specWarnPhasing:Show(args.destName)
-				voicePhasing:Play("tauntboss")
 			else
 				voicePhasing:Play("changemt")
 			end
