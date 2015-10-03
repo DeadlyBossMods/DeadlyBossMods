@@ -97,7 +97,7 @@ DBM_CORE_WORLDBOSS_DEFEATED         = "%s a probablement été tué sur votre ro
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%.2f |4seconde:secondes;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minute:minutes;"
-DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; et %s |4seconde:secondes;"
+DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; et %.2f |4seconde:secondes;"
 
 DBM_CORE_MIN						= "min"
 DBM_CORE_MIN_FMT					= "%d min"

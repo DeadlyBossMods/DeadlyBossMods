@@ -81,7 +81,7 @@ DBM_CORE_WORLDBOSS_DEFEATED			= "%s foi possivelmente derrotado no seu reino (En
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%.2f |4segundo:segundos;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minuto:minutos;"
-DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minutos; e %s |4segundo:segundos;"
+DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minutos; e %.2f |4segundo:segundos;"
 
 DBM_CORE_MIN						= "min"
 DBM_CORE_MIN_FMT					= "%d min"
