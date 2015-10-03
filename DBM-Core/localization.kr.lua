@@ -98,7 +98,7 @@ DBM_CORE_WORLDBOSS_DEFEATED			= "현재 서버의 %s 우두머리가 처치된 �
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%.2f|4초:초;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d|4분:분;"
-DBM_CORE_TIMER_FORMAT				= "%d|4분:분; %s|4초:초;"
+DBM_CORE_TIMER_FORMAT				= "%d|4분:분; %.2f|4초:초;"
 
 DBM_CORE_MIN						= "분"
 DBM_CORE_MIN_FMT					= "%d분"

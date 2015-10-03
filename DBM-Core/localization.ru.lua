@@ -98,7 +98,7 @@ DBM_CORE_WORLDBOSS_DEFEATED			= "%s возможно был побежден в 
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%.2f сек"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d мин"
-DBM_CORE_TIMER_FORMAT				= "%d мин %s сек"
+DBM_CORE_TIMER_FORMAT				= "%d мин %.2f сек"
 
 DBM_CORE_MIN						= "мин"
 DBM_CORE_MIN_FMT					= "%d мин"

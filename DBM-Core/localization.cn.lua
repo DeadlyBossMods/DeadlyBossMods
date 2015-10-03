@@ -103,7 +103,7 @@ DBM_CORE_WORLDBOSS_DEFEATED			= "世界Boss-%s可能战斗结束了。 (由%s的
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%.2f秒"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d分钟"
-DBM_CORE_TIMER_FORMAT				= "%d分%s秒"
+DBM_CORE_TIMER_FORMAT				= "%d分%.2f秒"
 
 DBM_CORE_MIN						= "分"
 DBM_CORE_MIN_FMT					= "%d分"

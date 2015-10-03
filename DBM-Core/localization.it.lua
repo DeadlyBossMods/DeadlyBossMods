@@ -16,7 +16,7 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s e' stato ingaggiato %s fa, recupero dei t
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%.2f |4secondo:secondi;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minuto:minuti;"
-DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minuti; e %s |4secondo:secondi;"
+DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minuti; e %.2f |4secondo:secondi;"
 
 DBM_CORE_MIN						= "min"
 DBM_CORE_MIN_FMT					= "%d min"
