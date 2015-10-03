@@ -96,7 +96,7 @@ DBM_CORE_MOD_DEFAULT_LOADED			= "현재 전투의 기본 설정을 불러왔습�
 DBM_CORE_WORLDBOSS_ENGAGED			= "현재 서버의 %s 전투가 약 %s 퍼센트의 체력으로 시작된 것으로 보입니다. %s|1이;가; 정보를 보냈습니다."
 DBM_CORE_WORLDBOSS_DEFEATED			= "현재 서버의 %s 우두머리가 처치된 것으로 보입니다. %s|1이;가; 정보를 보냈습니다."
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%s|4초:초;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%.2f|4초:초;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d|4분:분;"
 DBM_CORE_TIMER_FORMAT				= "%d|4분:분; %s|4초:초;"
 

@@ -79,7 +79,7 @@ DBM_CORE_MOD_DEFAULT_LOADED			= "Foram carregadas opções padrão para esta lut
 DBM_CORE_WORLDBOSS_ENGAGED			= "%s foi possivelmente puxado no seu reino %s por cento de vida. (Enviado por %s)"
 DBM_CORE_WORLDBOSS_DEFEATED			= "%s foi possivelmente derrotado no seu reino (Enviado por %s)."
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%s |4segundo:segundos;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%.2f |4segundo:segundos;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minuto:minutos;"
 DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minutos; e %s |4segundo:segundos;"
 
