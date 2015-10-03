@@ -95,7 +95,7 @@ DBM_CORE_MOD_DEFAULT_LOADED			= "Les options par défaut pour ce combat ont ét�
 DBM_CORE_WORLDBOSS_ENGAGED          = "%s a probablement été engagé sur votre royaume à %s de vie. (Envoyé par %s)"
 DBM_CORE_WORLDBOSS_DEFEATED         = "%s a probablement été tué sur votre royaume (Envoyé par %s)."
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%d |4seconde:secondes;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%.2f |4seconde:secondes;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minute:minutes;"
 DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; et %s |4seconde:secondes;"
 

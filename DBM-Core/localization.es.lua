@@ -35,7 +35,7 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s empezó %s atrás. Recalibrando temporiza
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Comenzando transcripción."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Terminando transcripción."
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%s |4segundo:segundos;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%.2f |4segundo:segundos;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minuto:minutos;"
 DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minutos; y %s |4segundo:segundos;"
 

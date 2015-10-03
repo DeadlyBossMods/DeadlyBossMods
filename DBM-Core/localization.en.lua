@@ -95,7 +95,7 @@ DBM_CORE_MOD_DEFAULT_LOADED			= "Default options for this fight have been loaded
 DBM_CORE_WORLDBOSS_ENGAGED			= "%s was possibly engaged on your realm at %s percent health. (Sent by %s)"
 DBM_CORE_WORLDBOSS_DEFEATED			= "%s was possibly defeated on your realm (Sent by %s)."
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%s |4second:seconds;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%.2f |4second:seconds;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minute:minutes;"
 DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; and %s |4second:seconds;"
 

@@ -96,7 +96,7 @@ DBM_CORE_MOD_DEFAULT_LOADED			= "Настройки по умолчанию дл
 DBM_CORE_WORLDBOSS_ENGAGED			= "В вашем игровом мире возможно начался бой с %s (%s процентов здоровья, отправил %s)."
 DBM_CORE_WORLDBOSS_DEFEATED			= "%s возможно был побежден в вашем игровом мире (отправил %s)."
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%s сек"
+DBM_CORE_TIMER_FORMAT_SECS			= "%.2f сек"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d мин"
 DBM_CORE_TIMER_FORMAT				= "%d мин %s сек"
 
