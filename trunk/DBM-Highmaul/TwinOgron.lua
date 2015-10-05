@@ -264,7 +264,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnQuake:Show(self.vb.QuakeCount)
 		timerWhirlwindCD:Start(PhemosEnergyRate, self.vb.WWCount+1)
 		countdownPhemos:Start(PhemosEnergyRate)
-		voicePhemos:Schedule(PhemosEnergyRate - 6.5, "157943") --ww
+		voicePhemos:Schedule(PhemosEnergyRate - 6.5, "157943")--Probably get this sound file renamed to "whirlwind" in 7.0
 	elseif spellId == 157952 then--Pulverize first cast that needs range finder
 		self.vb.PulverizeCount = self.vb.PulverizeCount + 1
 		warnPulverize:Show(self.vb.PulverizeCount)
