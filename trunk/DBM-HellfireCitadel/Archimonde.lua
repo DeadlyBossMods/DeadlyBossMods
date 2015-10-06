@@ -955,7 +955,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnNetherBanishOther:Show(self.vb.netherBanish2, args.destName)
 		end
 		updateRangeFrame(self)
-	elseif spellId == 189895 and (playerBanished or not self.Options.FilterOtherPhase) then
+	elseif spellId == 189895 and (self:IsMythic() or playerBanished or not self.Options.FilterOtherPhase) then
 		warnVoidStarFixate:CombinedShow(0.3, args.destName)--5 on mythic
 		if args:IsPlayer() then
 			specWarnVoidStarFixate:Show()
