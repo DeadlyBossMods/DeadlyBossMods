@@ -444,12 +444,13 @@ function mod:UNIT_DIED(args)
 		timerFelChainsCD:Cancel()
 		if self:IsMythic() then
 			timerEmpFelChainsCD:Start(28)
+		else
+			if playerTanking == 1 then
+				playerTanking = 0--Vanguard died, set player tanking to 0
+			end
 		end
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:RemoveBoss(cid)
-		end
-		if playerTanking == 1 then
-			playerTanking = 0--Vanguard died, set player tanking to 0
 		end
 	elseif cid == 94239 then--Omnus
 		self.vb.bothDead = self.vb.bothDead + 1
@@ -457,12 +458,13 @@ function mod:UNIT_DIED(args)
 		timerBlackHoleCD:Cancel()
 		if self:IsMythic() then
 			timerEmpBlackHoleCD:Start(18, self.vb.blackHoleCount+1)
+		else
+			if playerTanking == 2 then
+				playerTanking = 0--Omnus died, set player tanking to 0
+			end
 		end
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:RemoveBoss(cid)
-		end
-		if playerTanking == 2 then
-			playerTanking = 0--Omnus died, set player tanking to 0
 		end
 	elseif cid == 94231 then--Imps
 		self.vb.impActive = self.vb.impActive - 1
