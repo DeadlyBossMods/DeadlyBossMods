@@ -81,7 +81,7 @@ local specWarnNetherBanishOther		= mod:NewSpecialWarningTargetCount(186961, nil,
 local yellNetherBanish				= mod:NewFadesYell(186961)
 ----The Nether
 local specWarnTouchofShadows		= mod:NewSpecialWarningInterruptCount(190050, nil, nil, nil, 1, 5)
-local specWarnVoidStarFixate		= mod:NewSpecialWarningYou(189895)--Maybe move away? depends how often it changes fixate targets
+local specWarnVoidStarFixate		= mod:NewSpecialWarningYou(189895, nil, nil, nil, 1, 5)
 local yellVoidStarFixate			= mod:NewYell(189895, nil, false)
 local specWarnNetherStorm			= mod:NewSpecialWarningMove(187255)
 --Phase 3.5
@@ -159,6 +159,7 @@ local voiceNetherBanish				= mod:NewVoice(186961) --teleyou
 local voiceTouchofShadows			= mod:NewVoice(190050) --kick1r/kick2r
 local voiceDarkConduit				= mod:NewVoice(190394, "Ranged") --spread/scatter
 local voiceSeethingCorruption		= mod:NewVoice(190506) --watch step
+local voiceVoidStarFixate			= mod:NewVoice(189895) --orbrun
 
 mod:AddRangeFrameOption("6/8/10")
 mod:AddSetIconOption("SetIconOnFelBurst", 183634, true)
@@ -962,6 +963,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnVoidStarFixate:Show()
 			yellVoidStarFixate:Yell()
+			voiceVoidStarFixate:Play("orbrun")
 		end
 	elseif spellId == 186662 then--Felborne Overfiend Spawn
 		self.vb.overfiendCount = self.vb.overfiendCount + 1
