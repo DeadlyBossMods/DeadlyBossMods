@@ -830,9 +830,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.5, breakShackles, self, args.spellName)
 		end
-		if self.Options.HudMapOnShackledTorment2 and self:IsMythic() and args:IsPlayer() then
-			--Set a dot on player so they can find their orientation to their circle
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(1849642, "party", args.destName, 0.9, 5, nil, nil, nil, 1, nil, false):Appear()
+		if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
+			--Set a dot on player so they can find their orientation to circles
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(1849642, "party", args.destName, 0.9, 30, nil, nil, nil, 1, nil, false):Appear()
 		end
 	elseif spellId == 186123 then--Wrought Chaos
 		if self:AntiSpam(3, 3) then
@@ -1045,7 +1045,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.HudMapOnShackledTorment2 and self:IsMythic() then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
-			if args:IsPlayer() then
+			if self.vb.unleashedCountRemaining == 0 then--none remaining, remove players shackle
 				DBMHudMap:FreeEncounterMarkerByTarget(1849642, args.destName)
 			end
 		end
