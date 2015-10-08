@@ -514,8 +514,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 187209 then--Overwhelming Chaos (Activation)
 		self.vb.phase = 4
 		timerImpCD:Cancel()
+		timerVoidsCD:Cancel()
 		countdownImps:Cancel()
 		self:Unschedule(ImpRepeater)
+		self:Unschedule(VoidsRepeater)
 		timerOverwhelmingChaosCD:Start(nil, 1)
 	end
 end
