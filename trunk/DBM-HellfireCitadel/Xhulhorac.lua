@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 190223 186453 190224 186783 186546 186490 189775 189779",
+	"SPELL_CAST_START 190223 186453 190224 186783 186546 186490 189775 189779 188939",
 	"SPELL_CAST_SUCCESS 186407 186333 186490 189775 186453 186783 190223 190224",
 	"SPELL_AURA_APPLIED 186073 186063 186134 186135 186407 186333 186500 189777 186448 187204 186785",
 	"SPELL_AURA_APPLIED_DOSE 186073 186063 186448 186785 187204",
@@ -174,6 +174,11 @@ local function VoidsRepeater(self)
 	self:Schedule(30, VoidsRepeater, self)
 end
 
+function mod:VoidTarget(targetname, uId)
+	if not targetname then return end
+	DBM:Debug("Void teleport on: "..targetname, 2)
+end
+
 function mod:FelChains(targetname, uId)
 	if targetname == UnitName("player") then
 		if self:AntiSpam(5, 3) then
@@ -279,6 +284,8 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.ChainsBehavior ~= "Applied" then--Start timer and scanner if method is Both or Cast. Both prefers cast over applied, for the timer.
 			self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "EmpoweredFelChains", 0.1, 16)
 		end
+	elseif spellId == 188939 then
+		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "VoidTarget", 0.1, 16)
 	end
 end
 
