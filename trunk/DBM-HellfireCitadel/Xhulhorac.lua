@@ -225,18 +225,36 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 190223 then
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
-			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
-				specWarnFelStrike:Show()--So show tank warning
-				return
+			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID then
+				if UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
+					specWarnFelStrike:Show()--So show tank warning
+					return
+				else
+					--Not Tanking
+					if playerTanking == 1 and not UnitDebuff("player", GetSpellInfo(186135)) then--Vanguard Tank
+						--You're the Vanguard tank and do NOT have aggro for this strike or void debuff, taunt NOW
+						specWarnPhasing:Show(DBM_CORE_UNKNOWN)
+						voicePhasing:Play("tauntboss")
+					end
+				end
 			end
 		end
 		warnFelStrike:Show()--Should not show if specWarnFelStrike did
 	elseif spellId == 190224 then
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
-			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
-				specWarnVoidStrike:Show()--So show tank warning
-				return
+			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID then
+				if UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
+					specWarnVoidStrike:Show()--So show tank warning
+					return
+				else
+					--Not Tanking
+					if playerTanking == 2 and not UnitDebuff("player", GetSpellInfo(186134)) then--VoidWalker Tank
+						--You're the void walker tank and do NOT have aggro for this strike or fel debuff, taunt NOW
+						specWarnPhasing:Show(DBM_CORE_UNKNOWN)
+						voicePhasing:Play("tauntboss")
+					end
+				end
 			end
 		end
 		warnVoidStrike:Show()--Should not show if specWarnVoidStrike did
@@ -285,7 +303,7 @@ function mod:SPELL_CAST_START(args)
 			self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "EmpoweredFelChains", 0.1, 16)
 		end
 	elseif spellId == 188939 then
-		self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "VoidTarget", 0.1, 16)
+		self:ScheduleMethod(0.2, "BossTargetScanner", args.sourceGUID, "VoidTarget", 0.1, 16)
 	end
 end
 
