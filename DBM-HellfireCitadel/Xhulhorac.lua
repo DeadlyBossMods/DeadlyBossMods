@@ -29,6 +29,7 @@ mod:RegisterEventsInCombat(
 local warnFelPortal					= mod:NewSpellAnnounce(187003, 2)
 local warnFelSurge					= mod:NewTargetAnnounce(186407, 3)
 local warnFelStrike					= mod:NewSpellAnnounce(186271, 3, nil, "Tank")
+local warnImps						= mod:NewCountAnnounce("ej11694", 2, 112866, "Melee")
 ----Adds
 local warnFelChains					= mod:NewTargetAnnounce(186490, 3)
 local warnEmpoweredFelChains		= mod:NewTargetAnnounce(189775, 3)--Mythic
@@ -64,6 +65,7 @@ local yellFelChains					= mod:NewYell(186490)
 local specWarnVoidStrike			= mod:NewSpecialWarningSpell(186292, "Tank")
 local specWarnVoidSurge				= mod:NewSpecialWarningYou(186333, nil, nil, nil, 1, 5)
 local yellVoidSurge					= mod:NewYell(186333)
+local specWarnVoids					= mod:NewSpecialWarningCount("ej11714", "Ranged")
 ----Adds
 local specWarnWitheringGaze			= mod:NewSpecialWarningSpell(186783, "Tank", nil, nil, 1, 2)
 local specWarnBlackHole				= mod:NewSpecialWarningCount(186546, nil, nil, nil, 2)
@@ -154,7 +156,11 @@ end
 local function ImpRepeater(self)
 	self.vb.impCount = self.vb.impCount + 1
 	self.vb.impActive = self.vb.impActive + 3
-	specWarnImps:Show(self.vb.impCount)
+	if self.Options.SpecWarnej11694switchcount then
+		specWarnImps:Show(self.vb.impCount)
+	else
+		warnImps:Show(self.vb.impCount)
+	end
 	timerImpCD:Start(nil, self.vb.impCount+1)
 	countdownImps:Start()
 	self:Schedule(25, ImpRepeater, self)
@@ -169,7 +175,11 @@ end
 
 local function VoidsRepeater(self)
 	self.vb.voidCount = self.vb.voidCount + 1
-	warnVoids:Show(self.vb.voidCount)
+	if self.Options.SpecWarnej11714count then
+		specWarnVoids:Show(self.vb.voidCount)
+	else
+		warnVoids:Show(self.vb.voidCount)
+	end
 	timerVoidsCD:Start(nil, self.vb.voidCount+1)
 	self:Schedule(30, VoidsRepeater, self)
 end
