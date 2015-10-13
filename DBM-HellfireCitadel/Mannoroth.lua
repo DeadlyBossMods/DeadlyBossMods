@@ -33,7 +33,7 @@ mod:RegisterEventsInCombat(
 ----Doom Lords
 local warnCurseoftheLegion			= mod:NewTargetCountAnnounce(181275, 3)--Spawn
 local warnMarkofDoom				= mod:NewTargetAnnounce(181099, 4)
-local warnDoomSpike					= mod:NewStackAnnounce(181119, 3, nil, "Tank")
+local warnDoomSpike					= mod:NewStackAnnounce(181119, 3, nil, false, 2)
 ----Fel Imp
 local warnFelImplosion				= mod:NewCountAnnounce(181255, 3)--Spawn
 ----Dread Infernals
@@ -55,7 +55,7 @@ local yellCurseofLegion				= mod:NewFadesYell(181275)--Don't need to know when i
 local specWarnMarkOfDoom			= mod:NewSpecialWarningYou(181099, nil, nil, nil, 1, 2)
 local yellMarkOfDoom				= mod:NewPosYell(181099, 31348)-- This need to know at apply, only player needs to know when it's fading
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(181126, "-Healer", nil, nil, 1, 2)
-local specWarnDoomSpikeOther		= mod:NewSpecialWarningTaunt(181119, nil, nil, nil, 1, 2)
+local specWarnDoomSpikeOther		= mod:NewSpecialWarningTaunt(181119, false, nil, 2, 1, 2)--Optional, most guilds 3 tank and don't swap for this so off by default
 ----Fel Imps
 local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, false, nil, 2, 1, 2)--Can be spammy, but someone may want it
 ----Dread Infernals
@@ -78,7 +78,7 @@ mod:AddTimerLine(OTHER)
 ----Doom Lords
 local timerCurseofLegionCD			= mod:NewNextCountTimer(65, 181275, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)--Maybe see one day, in LFR or something when group is terrible or doesn't kill doom lord portal first
 local timerMarkofDoomCD				= mod:NewCDTimer(31.5, 181099, nil, "-Tank", nil, 3)
-local timerShadowBoltVolleyCD		= mod:NewCDTimer(12, 181126, nil, "-Healer", nil, 4)
+--local timerShadowBoltVolleyCD		= mod:NewCDTimer(12, 181126, nil, "-Healer", nil, 4)
 ----Fel Imps
 local timerFelImplosionCD			= mod:NewNextCountTimer(46, 181255, nil, nil, nil, 1)
 ----Infernals
@@ -302,8 +302,8 @@ function mod:OnCombatStart(delay)
 		--I've seen 1 sec variance on all of these timers.
 		--yes most of time +1 to all of these timers is more accurate
 		--but sometimes, everything does come 1 sec early, so that's why
-		timerCurseofLegionCD:Start(23, 1)
-		timerFelHellfireCD:Start(28)
+		timerCurseofLegionCD:Start(22, 1)
+		timerFelHellfireCD:Start(27.8)
 		timerGlaiveComboCD:Start(42.5)
 		countdownGlaiveCombo:Start(42.5)
 		timerFelImplosionCD:Start(45-delay, 1)
@@ -332,7 +332,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnFelHellStorm:Show()
 		timerFelHellfireCD:Start()
 	elseif spellId == 181126 then
-		timerShadowBoltVolleyCD:Start(args.sourceGUID)
+--		timerShadowBoltVolleyCD:Start(args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnShadowBoltVolley:Show(args.sourceName)
 			voiceShadowBoltVolley:Play("kickcast")
@@ -349,6 +349,7 @@ function mod:SPELL_CAST_START(args)
 		if tanking or (status == 3) then--Player is current target
 			specWarnMassiveBlast:Show()
 		else
+			if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, targetName) then return end--You are not near current tank, you're probably 3rd tank on Doom Guards that never taunts massive blast
 			specWarnMassiveBlastOther:Schedule(1, targetName)
 		end
 	elseif spellId == 181793 or spellId == 182077 then--Melee (10)
@@ -595,7 +596,7 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 91241 then--Doom Lord
 		timerMarkofDoomCD:Cancel(args.destGUID)
-		timerShadowBoltVolleyCD:Cancel(args.destGUID)
+--		timerShadowBoltVolleyCD:Cancel(args.destGUID)
 	end
 end
 
