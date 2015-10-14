@@ -89,10 +89,6 @@ L:SetOptionLocalization({
 --------------------------
 L= DBM:GetModLocalization(1391)
 
-L:SetWarningLocalization({
-	specWarnSeedPosition =	"種子位置: %s"
-})
-
 L:SetOptionLocalization({
 	SeedsBehavior		= "設定團隊的種子大喊行為(需要團隊隊長)",
 	Iconed				= "星星,圈圈,鑽石,三角,月亮。適用於用於分散站位",

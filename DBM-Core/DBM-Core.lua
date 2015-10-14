@@ -7048,6 +7048,13 @@ function bossModPrototype:CheckBigWigs(name)
 	end
 end
 
+do
+	local iconStrings = {[1] = RAID_TARGET_1, [2] = RAID_TARGET_2, [3] = RAID_TARGET_3, [4] = RAID_TARGET_4, [5] = RAID_TARGET_5, [6] = RAID_TARGET_6, [7] = RAID_TARGET_7, [8] = RAID_TARGET_8,}
+	function bossModPrototype:IconNumToString(number)
+		return iconStrings[number]
+	end
+end
+
 bossModPrototype.AntiSpam = DBM.AntiSpam
 bossModPrototype.GetUnitCreatureId = DBM.GetUnitCreatureId
 bossModPrototype.GetCIDFromGUID = DBM.GetCIDFromGUID
@@ -9426,6 +9433,10 @@ do
 	
 	function bossModPrototype:NewSpecialWarningYouCount(text, optionDefault, ...)
 		return newSpecialWarning(self, "youcount", text, nil, optionDefault, ...)
+	end
+	
+	function bossModPrototype:NewSpecialWarningYouPos(text, optionDefault, ...)
+		return newSpecialWarning(self, "youpos", text, nil, optionDefault, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarningTarget(text, optionDefault, ...)

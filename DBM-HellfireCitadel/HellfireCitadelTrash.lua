@@ -51,16 +51,6 @@ mod:AddRangeFrameOption(15)
 
 local Bloodthirster = EJ_GetSectionInfo(11266)
 
---/run DBM:GetModByName("HellfireCitadelTrash"):DebugYells()
-function mod:DebugYells()
-	yellPhantasmalCorruption:Yell()
-	yellPhantasmalFelBomb:Yell()
-	local Archi = DBM:GetModByName("1438")
-	local Mani = DBM:GetModByName("1395")
-	Archi:DebugYells()
-	Mani:DebugYells()
-end
-
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
