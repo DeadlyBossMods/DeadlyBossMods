@@ -89,7 +89,7 @@ local specWarnRainofChaos			= mod:NewSpecialWarningCount(189953, nil, nil, nil, 
 --Mythic
 local specWarnDarkConduitSoon		= mod:NewSpecialWarningSoon(190394, "Ranged", nil, nil, 1, 2)
 local specWarnSeethingCorruption	= mod:NewSpecialWarningCount(190506, nil, nil, nil, 2, 2)
-local specWarnMarkOfLegion			= mod:NewSpecialWarningYouCount(187050, nil, nil, 2, 3)
+local specWarnMarkOfLegion			= mod:NewSpecialWarningYouPos(187050, nil, nil, 2, 3, 5)
 local yellMarkOfLegion				= mod:NewFadesYell(187050, 28836)
 local yellMarkOfLegionPoS			= mod:NewPosYell(187050, 28836)
 local specWarnSourceofChaosYou		= mod:NewSpecialWarningYou(190703)
@@ -159,6 +159,7 @@ local voiceNetherBanish				= mod:NewVoice(186961) --teleyou
 local voiceTouchofShadows			= mod:NewVoice(190050) --kick1r/kick2r
 local voiceDarkConduit				= mod:NewVoice(190394, "Ranged") --spread/scatter
 local voiceSeethingCorruption		= mod:NewVoice(190506) --watch step
+local voiceMarkOfLegion				= mod:NewVoice(187050) --mmX
 local voiceVoidStarFixate			= mod:NewVoice(189895) --orbrun
 
 mod:AddRangeFrameOption("6/8/10")
@@ -340,6 +341,7 @@ local function showMarkOfLegion(self, spellName)
 				if name == playerName then
 					specWarnMarkOfLegion:Show(roundedTime.."-"..RAID_TARGET_1)
 					yellMarkOfLegionPoS:Yell(roundedTime, 1, 1)
+					voiceMarkOfLegion:Play("mm1")
 				end
 			elseif roundedTime == 7 then
 				if self.Options.SetIconOnMarkOfLegion then
@@ -351,6 +353,7 @@ local function showMarkOfLegion(self, spellName)
 				if name == playerName then
 					specWarnMarkOfLegion:Show(roundedTime.."-"..RAID_TARGET_2)
 					yellMarkOfLegionPoS:Yell(roundedTime, 2, 2)
+					voiceMarkOfLegion:Play("mm2")
 				end
 			elseif roundedTime == 9 then
 				if self.Options.SetIconOnMarkOfLegion then
@@ -362,6 +365,7 @@ local function showMarkOfLegion(self, spellName)
 				if name == playerName then
 					specWarnMarkOfLegion:Show(roundedTime.."-"..RAID_TARGET_3)
 					yellMarkOfLegionPoS:Yell(roundedTime, 3, 3)
+					voiceMarkOfLegion:Play("mm3")
 				end
 			else
 				if self.Options.SetIconOnMarkOfLegion then
@@ -373,6 +377,7 @@ local function showMarkOfLegion(self, spellName)
 				if name == playerName then
 					specWarnMarkOfLegion:Show(roundedTime.."-"..RAID_TARGET_4)
 					yellMarkOfLegionPoS:Yell(roundedTime, 4, 4)
+					voiceMarkOfLegion:Play("mm4")
 				end
 			end
 		end
@@ -459,11 +464,6 @@ local function sourceOfChaosCheck(self)
 		--Schedule Late check for 5 seconds AFTER cast
 		self:Schedule(cooldown, sourceOfChaosCheck, self)
 	end
-end
-
-function mod:DebugYells()
-	yellMarkOfLegion:Yell(1)
-	yellMarkOfLegionPoS:Yell(5, 1, 1)
 end
 
 --Ugly as shit, but it vastly improves timer accuracy by accounting for archimonds ICD code

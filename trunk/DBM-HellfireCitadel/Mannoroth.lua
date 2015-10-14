@@ -111,7 +111,7 @@ local voiceMassiveBlast				= mod:NewVoice(181359, "Tank")--changemt
 
 mod:AddRangeFrameOption(20, 181099)
 mod:AddSetIconOption("SetIconOnGaze", 181597, false)
-mod:AddSetIconOption("SetIconOnDoom", 181099, false)
+mod:AddSetIconOption("SetIconOnDoom2", 181099, true)
 mod:AddSetIconOption("SetIconOnWrath", 186348, false)
 mod:AddHudMapOption("HudMapOnGaze2", 181597, false)
 mod:AddInfoFrameOption(181597)
@@ -270,18 +270,18 @@ local function breakDoom(self)
 	for i = 1, #doomTargets do
 		local name = doomTargets[i]
 		if name == playerName then
+			specWarnMarkOfDoom:Show(self:IconNumToString(i))
+			if self:IsMythic() then
+				voiceMarkOfDoom:Play("mm"..i)
+			else
+				voiceMarkOfDoom:Play("runout")
+			end
 			yellMarkOfDoom:Yell(i, i, i)
 		end
-		if self.Options.SetIconOnDoom then
+		if self.Options.SetIconOnDoom2 then
 			self:SetIcon(name, i)
 		end
 	end
-end
-
-function mod:DebugYells()
-	yellMarkOfDoom:Yell(1, 1, 1)
-	yellGaze:Yell(1, 1, 1)
-	yellWrathofGuldan:Yell()
 end
 
 function mod:OnCombatStart(delay)
@@ -452,9 +452,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(2, breakDoom, self)--3 targets, pretty slowly. I've seen at least 1.2, so make this 1.3, maybe more if needed
 		end
 		if args:IsPlayer() then
-			specWarnMarkOfDoom:Show()
 			countdownMarkOfDoom:Start()
-			voiceMarkOfDoom:Play("runout")
 		end
 		updateRangeFrame(self)
 	elseif spellId == 181191 and self:CheckInterruptFilter(args.sourceGUID, true) and self:IsMelee() and self:AntiSpam(2, 5) then--No sense in duplicating code, just use CheckInterruptFilter with arg to skip the filter setting check
@@ -525,7 +523,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			countdownMarkOfDoom:Cancel()
 		end
 		updateRangeFrame(self)
-		if self.Options.SetIconOnDoom then
+		if self.Options.SetIconOnDoom2 and not self:IsLFR() then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 185147 or spellId == 182212 or spellId == 185175 then--Portals
@@ -558,7 +556,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.HudMapOnGaze2 then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
-		if self.Options.SetIconOnGaze then
+		if self.Options.SetIconOnGaze and not self:IsLFR() then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 181275 then

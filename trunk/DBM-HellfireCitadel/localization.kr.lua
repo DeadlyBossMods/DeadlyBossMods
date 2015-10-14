@@ -88,10 +88,6 @@ L:SetOptionLocalization({
 --------------------------
 L= DBM:GetModLocalization(1391)
 
-L:SetWarningLocalization({
-	specWarnSeedPosition =	"씨앗 위치: %s"
-})
-
 L:SetOptionLocalization({
 	SeedsBehavior		= "씨앗 위치 알림 방법 설정(공격대장 권한 필요)",
 	Iconed				= "별, 동그라미, 다이아, 역삼각형, 달(기둥 위치를 사용할 경우)",--Default
