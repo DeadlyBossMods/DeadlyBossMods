@@ -91,10 +91,6 @@ L:SetOptionLocalization({
 --------------------------
 L= DBM:GetModLocalization(1391)
 
-L:SetWarningLocalization({
-	specWarnSeedPosition =	"Seed Position: %s"
-})
-
 L:SetOptionLocalization({
 	SeedsBehavior		= "Set seeds yell behavior for raid (Requires raid leader)",
 	Iconed				= "Star, Circle, Diamond, Triangle, Moon. Usuable for any strat using flare positions",--Default

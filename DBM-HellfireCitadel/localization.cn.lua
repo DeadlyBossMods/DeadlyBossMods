@@ -87,10 +87,6 @@ L:SetOptionLocalization({
 --------------------------
 L= DBM:GetModLocalization(1391)
 
-L:SetWarningLocalization({
-	specWarnSeedPosition =	"种子位置：%s"
-})
-
 L:SetOptionLocalization({
 	SeedsBehavior		= "设定种子的喊叫方式 (需要团长权限)",
 	Iconed				= "星星, 大饼, 菱形, 三角, 月亮。 适合分散式开场。",--Default

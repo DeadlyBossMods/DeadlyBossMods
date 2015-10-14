@@ -88,10 +88,6 @@ L:SetOptionLocalization({
 --------------------------
 L= DBM:GetModLocalization(1391)
 
-L:SetWarningLocalization({
-	specWarnSeedPosition =	"Saatposition: %s"
-})
-
 L:SetOptionLocalization({
 	SeedsBehavior		= "Auswahl der Positionierungsschreie für Saat der Zerstörung (nur als Schlachtzugsleiter)",
 	Iconed				= "Stern, Kreis, Diamant, Dreieck, Mond (für Strategien mit Weltmarkierungen)",

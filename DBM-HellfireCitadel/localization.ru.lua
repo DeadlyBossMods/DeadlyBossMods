@@ -88,10 +88,6 @@ L:SetOptionLocalization({
 --------------------------
 L= DBM:GetModLocalization(1391)
 
-L:SetWarningLocalization({
-	specWarnSeedPosition =	"Позиция для Семени: %s"
-})
-
 L:SetOptionLocalization({
 	SeedsBehavior		= "Поведение крика для Семя разрушения (требуется лидер рейда)",
 	Iconed				= "Метки на полу: Звезда, Круг, Ромб, Треугольник, Луна",--Default
