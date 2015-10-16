@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 190223 186453 190224 186783 186546 186490 189775 189779 188939",
-	"SPELL_CAST_SUCCESS 186407 186333 186490 189775 186453 186783 190223 190224",
+	"SPELL_CAST_SUCCESS 186407 186333 186490 189775 186453 186783 186271 186292",
 	"SPELL_AURA_APPLIED 186073 186063 186134 186135 186407 186333 186500 189777 186448 187204 186785",
 	"SPELL_AURA_APPLIED_DOSE 186073 186063 186448 186785 187204",
 	"SPELL_AURA_REMOVED 189777",
@@ -341,7 +341,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFelBlazeFlurryCD:Start()
 	elseif spellId == 186783 then
 		timerWitheringGazeCD:Start()
-	elseif spellId == 190223 then
+	elseif spellId == 186271 then--190223 is not valid, because it returns target boss had at cast start, even if a taunt happened mid cast.
 		timerFelStrikeCD:Start()
 		if self.vb.phase >= 3 then
 			if playerTanking == 2 then--VoidWalker Tank
@@ -359,7 +359,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				voicePhasing:Play("changemt")
 			end
 		end
-	elseif spellId == 190224 then
+	elseif spellId == 186292 then--190224 is not valid, because it returns target boss had at cast start, even if a taunt happened mid cast.
 		if self.vb.phase >= 3 then
 			if playerTanking == 1 then--Vanguard Tank
 				--void strike just finished, fel strike next so vanguard tank needs to take it

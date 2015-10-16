@@ -169,6 +169,7 @@ function mod:OnCombatStart(delay)
 	self.vb.interruptCount = 0
 	timerSealofDecayCD:Start(3.5-delay)
 	timerAnnihilatingStrikeCD:Start(10-delay, 1)
+	countdownAnnihilatingStrike:Start(10-delay)
 	timerTouchofHarmCD:Start(16.8-delay, 1)
 	timerEdictofCondemnationCD:Start(57-delay, 1)
 end
