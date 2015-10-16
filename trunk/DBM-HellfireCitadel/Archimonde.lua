@@ -35,7 +35,7 @@ local warnDoomfireFixate			= mod:NewTargetAnnounce(182879, 3)
 local warnAllureofFlames			= mod:NewCastAnnounce(183254, 2)
 local warnFelBurstSoon				= mod:NewSoonAnnounce(183817, 3)
 local warnFelBurstCast				= mod:NewCastAnnounce(183817, 3)
-local warnFelBurst					= mod:NewTargetAnnounce(183817, 3)
+local warnFelBurst					= mod:NewTargetAnnounce(183817, 3, nil, true, 2)
 local warnDemonicHavoc				= mod:NewTargetAnnounce(183865, 3)--Mythic
 local warnLight						= mod:NewYouAnnounce(183963, 1)
 --Phase 2: Hand of the Legion
