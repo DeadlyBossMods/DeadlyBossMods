@@ -76,7 +76,7 @@ local specWarnShadowForce			= mod:NewSpecialWarningSpell(181799, nil, nil, nil, 
 --Adds
 mod:AddTimerLine(OTHER)
 ----Doom Lords
-local timerCurseofLegionCD			= mod:NewNextCountTimer(65, 181275, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)--Maybe see one day, in LFR or something when group is terrible or doesn't kill doom lord portal first
+local timerCurseofLegionCD			= mod:NewNextCountTimer(64.8, 181275, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)--Maybe see one day, in LFR or something when group is terrible or doesn't kill doom lord portal first
 local timerMarkofDoomCD				= mod:NewCDTimer(31.5, 181099, nil, "-Tank", nil, 3)
 --local timerShadowBoltVolleyCD		= mod:NewCDTimer(12, 181126, nil, "-Healer", nil, 4)
 ----Fel Imps
@@ -443,13 +443,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 181099 then
 		timerMarkofDoomCD:Start(args.sourceGUID)
-		doomTargets[#doomTargets+1] = args.destName
+		if not tContains(doomTargets, args.destName) then
+			doomTargets[#doomTargets+1] = args.destName
+		end
 		self.vb.DoomTargetCount = self.vb.DoomTargetCount + 1
 		self:Unschedule(breakDoom)
 		if #doomTargets == 3 then
 			breakDoom(self)
 		else
-			self:Schedule(2, breakDoom, self)--3 targets, pretty slowly. I've seen at least 1.2, so make this 1.3, maybe more if needed
+			self:Schedule(2.5, breakDoom, self)--3 targets, pretty slowly. I've seen at least 1.2, so make this 1.3, maybe more if needed
 		end
 		if args:IsPlayer() then
 			countdownMarkOfDoom:Start()
@@ -459,7 +461,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceFelHellfire:Play("runaway")
 		specWarnFelHellfire:Show()--warn melee who are targetting infernal to run out if it's exploding
 	elseif spellId == 181597 or spellId == 182006 then
-		gazeTargets[#gazeTargets+1] = args.destName
+		if not tContains(gazeTargets, args.destName) then
+			gazeTargets[#gazeTargets+1] = args.destName
+		end
 		self:Unschedule(warnGazeTargts)
 		if #gazeTargets == 3 then
 			warnGazeTargts(self)
