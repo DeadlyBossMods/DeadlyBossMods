@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Sep 19 2015, 22:49 UTC@14519
+-- Last update: Oct 16 2015, 03:43 UTC@14597
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -170,17 +170,18 @@ L.AreaTitle_BarSetupHuge 	= "大型计时条设置"
 L.EnableHugeBar 			= "开启大型计时条（2号计时条）"
 L.BarIconLeft 				= "左侧图标"
 L.BarIconRight 				= "右侧图标"
-L.ExpandUpwards				= "计时条向上伸展" --感谢飘去的梦， 木沐的小胖狼@NGA
+L.ExpandUpwards				= "快消失的计时条在上"
 L.FillUpBars				= "填充计时条"
 L.ClickThrough				= "禁用鼠标点击事件（允许你点击计时条后面的目标）"
 L.Bar_Decimal				= "%d秒以内显示小数点"
-L.Bar_DBMOnly				= "以下设置只对 \"DBM\" 计时条有效."
-L.Bar_EnlargeTime			= "在%d后计时条变大"
+L.Bar_DBMOnly				= "以下设置只对 \"DBM\" 计时条有效 (两个判断的操作符是或，任一就变大)"
+L.Bar_EnlargeTime			= "在%d秒后计时条变大"
 L.Bar_EnlargePercent		= "在%0.1f%%后计时条变大"
 L.BarSpark					= "计时条闪光"
-L.BarFlash					= "当计时条快走完时闪动"
+L.BarFlash					= "快走完时闪动"
 L.BarSort					= "按剩余时间排序"
-L.BarColorByType			= "计时条按类型分类着色"
+L.BarColorByType			= "按类着色"
+L.BarInlineIcons			= "显示条内图标"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "特殊警报"
@@ -275,6 +276,7 @@ L.BlockVersionUpdateNotice	= "禁用升级提示"
 L.Area_SpecFilter			= "角色过滤选项"
 L.FilterTankSpec			= "当非坦克专精时，过滤掉给予坦克的专用信息"
 L.FilterInterrupts			= "当目标没有被选中或设置为焦点时，过滤掉打断提示 (注意: 这对那些不打断就灭团的技能无效)"
+L.FilterInterruptNoteName	= "当自定义注记内没有包含你的名字的时候，过滤掉打断提示 (带计数)"
 L.FilterDispels				= "当驱散技能在冷却时, 过滤掉驱散提示"
 L.FilterSelfHud				= "把自己从HudMap中过滤掉 (不包括和距离有关的功能)"
 
@@ -351,9 +353,9 @@ L.PizzaTimer_ButtonStart	= "开始计时"
 L.PizzaTimer_BroadCast		= "向全团广播"
 
 L.Panel_Profile				= "配置文件"
-L.Area_CreateProfile        = "创建一个配置文件"
+L.Area_CreateProfile        = "创建DBM核心配置"
 L.EnterProfileName			= "输入配置文件名称"
-L.CreateProfile				= "创建DBM核心配置文件"
+L.CreateProfile				= "创建带有默认设置的配置文件"
 L.Area_ApplyProfile			= "选择一个已有的DBM核心配置文件并应用它"
 L.SelectProfileToApply		= "选择一个配置文件并应用"
 L.Area_CopyProfile			= "复制一个配置文件"
