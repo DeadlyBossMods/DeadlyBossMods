@@ -1061,6 +1061,7 @@ do
 			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(3))
 			self.Options.CountdownVoice3v2 = self.DefaultOptions.CountdownVoice3v2
 		end
+		self:BuildVoiceCountdownCache()
 		--Break timer recovery
 		--Try local settings
 		if self.Options.tempBreak2 then
@@ -8717,8 +8718,34 @@ end
 ----------------------------
 do
 	local countdownProtoType = {}
-	local cachedPath, cachedMax, lastVoice = nil, 5, nil
+	local voice1, voice2, voice3 = nil, nil, nil
+	local voice1max, voice2max, voice3max = 5, 5, 5
+	local path1, path2, path3 = nil, nil, nil
 	local mt = {__index = countdownProtoType}
+	
+	function DBM:BuildVoiceCountdownCache()
+		voice1 = self.Options.CountdownVoice
+		voice2 = self.Options.CountdownVoice2
+		voice3 = self.Options.CountdownVoice3v2
+		local voicesFound = 0
+		for i = 1, #self.Counts do
+			if voicesFound == 3 then return end
+			local curVoice = self.Counts[i]
+			if curVoice.value == voice1 then
+				path1 = curVoice.path
+				voice1max = curVoice.max
+				voicesFound = voicesFound + 1
+			elseif curVoice.value == voice2 then
+				path2 = curVoice.path
+				voice2max = curVoice.max
+				voicesFound = voicesFound + 1
+			elseif curVoice.value == voice3 then
+				path3 = curVoice.path
+				voice3max = curVoice.max
+				voicesFound = voicesFound + 1
+			end
+		end
+	end
 
 	local function showCountdown(timer)
 		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
@@ -8743,30 +8770,23 @@ do
 				end
 			end
 			if DBM.Options.DontPlayCountdowns then return end
-			local voice
-			if self.alternateVoice == 2 then
-				voice = DBM.Options.CountdownVoice2
-			elseif self.alternateVoice == 3 then
-				voice = DBM.Options.CountdownVoice3v2
-			else
-				voice = DBM.Options.CountdownVoice
+			if not path1 then
+				DBM:Debug("Voice cache not built at time of countdownProtoType:Start. On fly caching.")
+				DBM:BuildVoiceCountdownCache()
 			end
-			local path
-			local maxCount = 5
-			if cachedPath and lastVoice == voice then
-				path = cachedPath
-				maxCount = cachedMax or 5
+			local voice, maxCount, path
+			if self.alternateVoice == 2 then
+				voice = voice2
+				maxCount = voice2max
+				path = path2
+			elseif self.alternateVoice == 3 then
+				voice = voice3
+				maxCount = voice3max
+				path = path3
 			else
-				lastVoice = voice
-				for i = 1, #DBM.Counts do
-					if DBM.Counts[i].value == voice then
-						path = DBM.Counts[i].path
-						cachedPath = path
-						maxCount = DBM.Counts[i].max
-						cachedMax = maxCount
-						break
-					end
-				end
+				voice = voice1 or DBM.Options.CountdownVoice
+				maxCount = voice1max
+				path = path1
 			end
 			if self.type == "Countout" then
 				for i = 1, timer do
