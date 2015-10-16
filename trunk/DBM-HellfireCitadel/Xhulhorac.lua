@@ -243,7 +243,8 @@ function mod:SPELL_CAST_START(args)
 					--Not Tanking
 					if playerTanking == 1 and not UnitDebuff("player", GetSpellInfo(186135)) then--Vanguard Tank
 						--You're the Vanguard tank and do NOT have aggro for this strike or void debuff, taunt NOW
-						specWarnPhasing:Show(DBM_CORE_UNKNOWN)
+						local targetName = UnitName(bossUnitID.."target") or DBM_CORE_UNKNOWN
+						specWarnPhasing:Show(targetName)
 						voicePhasing:Play("tauntboss")
 					end
 				end
@@ -261,7 +262,8 @@ function mod:SPELL_CAST_START(args)
 					--Not Tanking
 					if playerTanking == 2 and not UnitDebuff("player", GetSpellInfo(186134)) then--VoidWalker Tank
 						--You're the void walker tank and do NOT have aggro for this strike or fel debuff, taunt NOW
-						specWarnPhasing:Show(DBM_CORE_UNKNOWN)
+						local targetName = UnitName(bossUnitID.."target") or DBM_CORE_UNKNOWN
+						specWarnPhasing:Show(targetName)
 						voicePhasing:Play("tauntboss")
 					end
 				end
