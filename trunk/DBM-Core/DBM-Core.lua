@@ -410,6 +410,13 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-VPKiwiBeta",--Renamed to DBM-VPKiwi in final version.
 }
 
+
+-----------------
+--  Libraries  --
+-----------------
+local LL = LibStub("LibLatency")
+
+
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
 --------------------------------------------------------
@@ -1868,7 +1875,7 @@ do
 			local timer = tonumber(cmd:sub(5)) or 10
 			Pull(timer)
 		elseif cmd:sub(1, 3) == "lag" then
-			sendSync("L")
+			LL:RequestLatency()
 			DBM:AddMsg(DBM_CORE_LAG_CHECKING)
 			C_TimerAfter(5, function() DBM:ShowLag() end)
 		elseif cmd:sub(1, 3) == "hud" then
@@ -2134,6 +2141,8 @@ do
 	end
 end
 
+
+-- Lag checking
 do
 	local sortLag = {}
 	local nolagResponse = {}
@@ -2168,6 +2177,14 @@ do
 			sortLag[i] = nil
 		end
 	end
+	
+	LL:Register("DBM", function(homelag, worldlag, sender, channel)
+		if sender and raid[sender] then
+			raid[sender].homelag = homelag
+			raid[sender].worldlag = worldlag
+		end
+	end)
+
 end
 
 -------------------
@@ -4157,19 +4174,6 @@ do
 			end
 		end
 		DBM:GROUP_ROSTER_UPDATE()
-	end
-
-	syncHandlers["L"] = function(sender)
-		local _, _, home, world = GetNetStats()
-		sendSync("LAG", ("%d\t%d"):format(home, world))
-	end
-
-	syncHandlers["LAG"] = function(sender, homelag, worldlag)
-		homelag, worldlag = tonumber(homelag or ""), tonumber(worldlag or "")
-		if homelag and worldlag and raid[sender] then
-			raid[sender].homelag = homelag
-			raid[sender].worldlag = worldlag
-		end
 	end
 
 	syncHandlers["U"] = function(sender, time, text)
