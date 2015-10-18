@@ -1,4 +1,4 @@
-﻿## Interface: 60200
+## Interface: 60200
 ## X-Min-Interface: 60200
 ## Title:|cffffd200Deadly Boss Mods|r |cff69ccf0Core|r
 ## Title-zhCN:|cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
@@ -23,6 +23,7 @@ Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 Libs\LibChatAnims\LibChatAnims.xml
 Libs\LibSharedMedia-3.0\lib.xml
+Libs\LibLatency\LibLatency.xml
 #@end-no-lib-strip@
 
 localization.en.lua
