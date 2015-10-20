@@ -264,10 +264,10 @@ local function warnGazeTargts(self)
 end
 
 local function breakDoom(self)
-	table.sort(doomTargets)
+--	table.sort(doomTargets)
 	warnMarkofDoom:Show(table.concat(doomTargets, "<, >"))
 	if self:IsLFR() then return end
-	for i = 1, #doomTargets do
+--[[	for i = 1, #doomTargets do
 		local name = doomTargets[i]
 		if name == playerName then
 			specWarnMarkOfDoom:Show(self:IconNumToString(i))
@@ -281,7 +281,7 @@ local function breakDoom(self)
 		if self.Options.SetIconOnDoom2 then
 			self:SetIcon(name, i)
 		end
-	end
+	end--]]
 end
 
 function mod:OnCombatStart(delay)
@@ -443,18 +443,30 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 181099 then
 		timerMarkofDoomCD:Start(args.sourceGUID)
-		if not tContains(doomTargets, args.destName) then
-			doomTargets[#doomTargets+1] = args.destName
+		local name = args.destName
+		if not tContains(doomTargets, name) then
+			doomTargets[#doomTargets+1] = name
 		end
+		local count = #doomTargets
 		self.vb.DoomTargetCount = self.vb.DoomTargetCount + 1
 		self:Unschedule(breakDoom)
-		if #doomTargets == 3 then
+		if count == 3 then
 			breakDoom(self)
 		else
-			self:Schedule(2.5, breakDoom, self)--3 targets, pretty slowly. I've seen at least 1.2, so make this 1.3, maybe more if needed
+			self:Schedule(2, breakDoom, self)--3 targets, pretty slowly. I've seen at least 1.2, so make this 1.3, maybe more if needed
 		end
 		if args:IsPlayer() then
+			specWarnMarkOfDoom:Show(self:IconNumToString(count))
 			countdownMarkOfDoom:Start()
+			if self:IsMythic() then
+				voiceMarkOfDoom:Play("mm"..count)
+			else
+				voiceMarkOfDoom:Play("runout")
+			end
+			yellMarkOfDoom:Yell(count, count, count)
+		end
+		if self.Options.SetIconOnDoom2 then
+			self:SetIcon(name, count)
 		end
 		updateRangeFrame(self)
 	elseif spellId == 181191 and self:CheckInterruptFilter(args.sourceGUID, true) and self:IsMelee() and self:AntiSpam(2, 5) then--No sense in duplicating code, just use CheckInterruptFilter with arg to skip the filter setting check
