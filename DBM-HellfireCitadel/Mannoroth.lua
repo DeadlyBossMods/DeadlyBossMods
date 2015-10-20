@@ -105,7 +105,8 @@ local voiceMarkOfDoom				= mod:NewVoice(181099) --run out
 local voiceFelHellfire				= mod:NewVoice(181191, nil, nil, 2) --runaway
 local voiceShadowBoltVolley			= mod:NewVoice(181126, "-Healer")
 local voiceFelBlast					= mod:NewVoice(181132, "-Healer")
-local voiceFelSeeker				= mod:NewVoice(181132)--watchstep
+local voiceFelSeeker				= mod:NewVoice(181735)--watchstep
+local voiceFelHellstorm				= mod:NewVoice(181557)--watchstep
 local voiceGlaiveCombo				= mod:NewVoice(181354, "Tank")--Defensive
 local voiceMassiveBlast				= mod:NewVoice(181359, "Tank")--changemt
 
@@ -264,24 +265,7 @@ local function warnGazeTargts(self)
 end
 
 local function breakDoom(self)
---	table.sort(doomTargets)
 	warnMarkofDoom:Show(table.concat(doomTargets, "<, >"))
-	if self:IsLFR() then return end
---[[	for i = 1, #doomTargets do
-		local name = doomTargets[i]
-		if name == playerName then
-			specWarnMarkOfDoom:Show(self:IconNumToString(i))
-			if self:IsMythic() then
-				voiceMarkOfDoom:Play("mm"..i)
-			else
-				voiceMarkOfDoom:Play("runout")
-			end
-			yellMarkOfDoom:Yell(i, i, i)
-		end
-		if self.Options.SetIconOnDoom2 then
-			self:SetIcon(name, i)
-		end
-	end--]]
 end
 
 function mod:OnCombatStart(delay)
@@ -299,17 +283,6 @@ function mod:OnCombatStart(delay)
 	self.vb.DoomTargetCount = 0
 	if self:IsMythic() then
 		self.vb.wrathIcon = 8
-		--I've seen 1 sec variance on all of these timers.
-		--yes most of time +1 to all of these timers is more accurate
-		--but sometimes, everything does come 1 sec early, so that's why
-		timerCurseofLegionCD:Start(22, 1)
-		timerFelHellfireCD:Start(27.8)
-		timerGlaiveComboCD:Start(42.5)
-		countdownGlaiveCombo:Start(42.5)
-		timerFelImplosionCD:Start(45-delay, 1)
-		timerFelSeekerCD:Start(57.8)
-		timerGazeCD:Start(68)
-		timerInfernoCD:Start(70-delay, 1)
 	else
 		timerCurseofLegionCD:Start(5.2, 1)
 		timerFelImplosionCD:Start(13.5-delay, 1)
@@ -330,6 +303,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 181557 or spellId == 181948 then
 		specWarnFelHellStorm:Show()
+		voiceFelHellstorm:Play("watchstep")
 		timerFelHellfireCD:Start()
 	elseif spellId == 181126 then
 --		timerShadowBoltVolleyCD:Start(args.sourceGUID)
@@ -401,7 +375,7 @@ function mod:SPELL_SUMMON(args)
 				timerInfernoCD:Start(timers1, nextCount)
 			end
 		elseif self.vb.phase == 2 then
-			local timers2 = self:IsMythic() and 55 or self:IsNormal() and phase2InfernalTimersN[nextCount] or phase2InfernalTimers[nextCount]
+			local timers2 = self:IsMythic() and 54.8 or self:IsNormal() and phase2InfernalTimersN[nextCount] or phase2InfernalTimers[nextCount]
 			if timers2 then
 				timerInfernoCD:Start(timers2, nextCount)
 			end
@@ -682,7 +656,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.impCount = 0
 		timerFelImplosionCD:Cancel()
 		timerInfernoCD:Cancel()
-		timerFelImplosionCD:Start(24.3, 1)--Seems same for all difficulties on this one
+		timerFelImplosionCD:Start(22, 1)--Seems same for all difficulties on this one
 		if not self:IsMythic() then
 			self.vb.infernalCount = 0
 			timerInfernoCD:Start(47.5, 1)
@@ -702,11 +676,20 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		else
 			self.vb.impCount = 0
 			timerCurseofLegionCD:Cancel()--Done for rest of fight
-			timerFelImplosionCD:Start(24.3, 1)
+			timerFelImplosionCD:Start(22, 1)
 		end
 	elseif spellId == 181156 then--Summon Adds, Phase 2 mythic (about 18 seconds into fight)
-		--Maybe move first add spawns here? seems accurate starting firsts on pull though
+		--Starting mythic timers here is far more accurate. Starting on engage can be as much as 5 seconds off
+		--since summon adds (when mannorth starts actually gaining energy) can variate from encounter_start
 		DBM:Debug("Summon adds 181156 fired", 2)
+		timerCurseofLegionCD:Start(6, 1)
+		timerFelHellfireCD:Start(10.9)
+		timerGlaiveComboCD:Start(25.5)
+		countdownGlaiveCombo:Start(25.5)
+		timerFelImplosionCD:Start(27.7, 1)
+		timerFelSeekerCD:Start(40.8)
+		timerGazeCD:Start(52)--52-54
+		timerInfernoCD:Start(53, 1)
 	--Backup phase detection. a bit slower than CHAT_MSG_RAID_BOSS_EMOTE (5.5 seconds slower)
 	elseif spellId == 182263 and self.vb.phase == 2 then--Phase 3
 		self.vb.phase = 3
@@ -760,7 +743,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voiceGlaiveCombo:Play("defensive")
 	end
 end
-
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 181192 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
