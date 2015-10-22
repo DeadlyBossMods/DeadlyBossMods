@@ -73,7 +73,7 @@ local timerVolatileFelOrbCD			= mod:NewCDTimer(23, 180221, nil, nil, nil, 3)
 local timerFelChargeCD				= mod:NewCDTimer(23, 182051, nil, nil, nil, 3)
 local timerApocalypticFelburstCD	= mod:NewCDCountTimer(30, 188693, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON)
 --Socrethar
-local timerExertDominanceCD			= mod:NewCDCountTimer(5, 183331, nil, "-Healer", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerExertDominanceCD			= mod:NewCDCountTimer(4.5, 183331, nil, "-Healer", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerApocalypseCD				= mod:NewCDTimer(46, 183329, nil, nil, nil, 2)
 --Adds
 local timerSargereiDominatorCD		= mod:NewNextCountTimer(60, "ej11456", nil, nil, nil, 1, 184053)--CD needs verifying, no log saw 2 of them in a phase. phase always ended or boss died before 2nd add, i know it's at least longer than 60 sec tho
