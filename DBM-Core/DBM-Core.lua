@@ -47,8 +47,8 @@ DBM = {
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
 -- support for git svn which doesn't support svn keyword expansion
+-- just use the latest release revision
 if not DBM.Revision then
-	-- just use the latest release revision
 	DBM.Revision = DBM.ReleaseRevision
 end
 
