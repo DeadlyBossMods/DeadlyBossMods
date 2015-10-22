@@ -8810,7 +8810,10 @@ do
 				maxCount = voice1max
 				path = path1
 			end
-			if not path then return end--Should not happen but apparently it does somehow
+			if not path then--Should not happen but apparently it does somehow
+				DBM:Debug("Voice path failed in countdownProtoType:Start.")
+				return
+			end
 			if self.type == "Countout" then
 				for i = 1, timer do
 					if i < maxCount then
