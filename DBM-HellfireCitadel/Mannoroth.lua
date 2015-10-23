@@ -687,8 +687,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerGlaiveComboCD:Start(25.5)
 		countdownGlaiveCombo:Start(25.5)
 		timerFelImplosionCD:Start(27.7, 1)
-		timerFelSeekerCD:Start(40.8)
-		timerGazeCD:Start(52)--52-54
+		timerFelSeekerCD:Start(40.2)
+		timerGazeCD:Start(50.8)--50.8-53
 		timerInfernoCD:Start(53, 1)
 	--Backup phase detection. a bit slower than CHAT_MSG_RAID_BOSS_EMOTE (5.5 seconds slower)
 	elseif spellId == 182263 and self.vb.phase == 2 then--Phase 3

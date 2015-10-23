@@ -1050,13 +1050,14 @@ do
 		end
 		local found1, found2, found3 = false, false, false
 		for i = 1, #self.Counts do
-			if self.Counts[i].value == self.Options.CountdownVoice then
+			local voice = self.Counts[i].value
+			if voice == self.Options.CountdownVoice then
 				found1 = true
 			end
-			if self.Counts[i].value == self.Options.CountdownVoice2 then
+			if voice == self.Options.CountdownVoice2 then
 				found2 = true
 			end
-			if self.Counts[i].value == self.Options.CountdownVoice3v2 then
+			if voice == self.Options.CountdownVoice3v2 then
 				found3 = true
 			end
 		end
@@ -8798,17 +8799,17 @@ do
 			end
 			local voice, maxCount, path
 			if self.alternateVoice == 2 then
-				voice = voice2
-				maxCount = voice2max
-				path = path2
+				voice = voice2 or DBM.DefaultOptions.CountdownVoice2
+				maxCount = voice2max or 10
+				path = path2 or "Interface\\AddOns\\DBM-Core\\Sounds\\Kolt\\"
 			elseif self.alternateVoice == 3 then
-				voice = voice3
-				maxCount = voice3max
-				path = path3
+				voice = voice3 or DBM.DefaultOptions.CountdownVoice3v2
+				maxCount = voice3max or 5
+				path = path3 or "Interface\\AddOns\\DBM-Core\\Sounds\\Heroes\\Necromancer\\"
 			else
-				voice = voice1 or DBM.Options.CountdownVoice
-				maxCount = voice1max
-				path = path1
+				voice = voice1 or DBM.DefaultOptions.CountdownVoice
+				maxCount = voice1max or 10
+				path = path1 or "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\"
 			end
 			if not path then--Should not happen but apparently it does somehow
 				DBM:Debug("Voice path failed in countdownProtoType:Start.")
