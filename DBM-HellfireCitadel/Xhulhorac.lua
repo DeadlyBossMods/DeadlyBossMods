@@ -348,9 +348,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.phase >= 3 then
 			if playerTanking == 2 then--VoidWalker Tank
 				--Fel strike just finished, void strike next so voidwalker tank needs to take it
-				specWarnPhasing:Show(args.destName)
-				voicePhasing:Play("tauntboss")
-			elseif self.vb.bothDead == 2 or (not self:IsMythic() and playerTanking == 0) then
+				if not args:IsPlayer() then
+					specWarnPhasing:Show(args.destName)
+					voicePhasing:Play("tauntboss")
+				end
+			elseif self.vb.bothDead == 2 and playerTanking == 0 then
 				if not args:IsPlayer() then--Just warn whoever THIS strike didn't hit
 					specWarnPhasing:Show(args.destName)
 					voicePhasing:Play("tauntboss")
@@ -365,9 +367,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.phase >= 3 then
 			if playerTanking == 1 then--Vanguard Tank
 				--void strike just finished, fel strike next so vanguard tank needs to take it
-				specWarnPhasing:Show(args.destName)
-				voicePhasing:Play("tauntboss")
-			elseif self.vb.bothDead == 2 or (not self:IsMythic() and playerTanking == 0) then
+				if not args:IsPlayer() then
+					specWarnPhasing:Show(args.destName)
+					voicePhasing:Play("tauntboss")
+				end
+			elseif self.vb.bothDead == 2 and playerTanking == 0 then
 				if not args:IsPlayer() then
 					specWarnPhasing:Show(args.destName)
 					voicePhasing:Play("tauntboss")
