@@ -682,13 +682,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		--Starting mythic timers here is far more accurate. Starting on engage can be as much as 5 seconds off
 		--since summon adds (when mannorth starts actually gaining energy) can variate from encounter_start
 		DBM:Debug("Summon adds 181156 fired", 2)
-		timerCurseofLegionCD:Start(6, 1)
+		timerCurseofLegionCD:Start(5.2, 1)
 		timerFelHellfireCD:Start(10.9)
 		timerGlaiveComboCD:Start(25.5)
 		countdownGlaiveCombo:Start(25.5)
-		timerFelImplosionCD:Start(27.7, 1)
+		timerFelImplosionCD:Start(27.4, 1)
 		timerFelSeekerCD:Start(40.2)
-		timerGazeCD:Start(50.8)--50.8-53
+		timerGazeCD:Start(50.7)--50.8-53
 		timerInfernoCD:Start(53, 1)
 	--Backup phase detection. a bit slower than CHAT_MSG_RAID_BOSS_EMOTE (5.5 seconds slower)
 	elseif spellId == 182263 and self.vb.phase == 2 then--Phase 3
