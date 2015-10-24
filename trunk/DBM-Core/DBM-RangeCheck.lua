@@ -687,7 +687,7 @@ do
 			local uId2 = x
 			x, y = UnitPosition(uId2)
 			if not x then
-				print("getDistanceBetween failed for: " .. uId .. " (" .. UnitExists(uId) .. ") and " .. uId2 .. " (" .. UnitExists(uId2) .. ")")
+				print("getDistanceBetween failed for: " .. uId .. " (" .. tostring(UnitExists(uId)) .. ") and " .. uId2 .. " (" .. tostring(UnitExists(uId2)) .. ")")
 				return
 			end
 		end
