@@ -4946,7 +4946,6 @@ end
 ----------------------
 do
 	local targetList = {}
-	local cachedmod, cachedmob = nil, nil
 	local function buildTargetList()
 		local uId = (IsInRaid() and "raid") or "party"
 		for i = 0, GetNumGroupMembers() do
@@ -4964,10 +4963,7 @@ do
 	end
 
 	local function scanForCombat(mod, mob, delay)
-		mod = mod or cachedmod
-		mob = mob or cachedmob
-		delay = delay or 2
-		if not checkEntry(inCombat, cachedmob) then
+		if not checkEntry(inCombat, mob) then
 			buildTargetList()
 			if targetList[mob] then
 				if delay > 0 and UnitAffectingCombat(targetList[mob]) then
@@ -4978,15 +4974,15 @@ do
 			end
 			clearTargetList()
 		end
-		cachedmod, cachedmob = nil, nil
 	end
 
 
 	local function checkForPull(mob, combatInfo)
 		healthCombatInitialized = false
-		cachedmod, cachedmob = combatInfo.mod, mob
---		C_TimerAfter(0.5, scanForCombat, combatInfo.mod, mob, 0.5)
-		C_TimerAfter(2, scanForCombat)
+		--This just can't be avoided, tryig to save cpu by using C_TimerAfter broke this
+		--This needs the redundancy and ability to pass args.
+		DBM:Schedule(0.5, scanForCombat, combatInfo.mod, mob, 0.5)
+		DBM:Schedule(2, scanForCombat, combatInfo.mod, mob, 2)
 		C_TimerAfter(2.1, function()
 			healthCombatInitialized = true
 		end)
