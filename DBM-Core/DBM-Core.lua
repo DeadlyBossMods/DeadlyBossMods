@@ -3326,6 +3326,7 @@ do
 	local lastLFGAlert = 0
 	function DBM:LFG_ROLE_CHECK_SHOW()
 		if not UnitIsGroupLeader("player") and self.Options.LFDEnhance and GetTime() - lastLFGAlert > 5 then
+			FlashClientIcon()
 			self:PlaySoundFile("Sound\\interface\\levelup2.ogg", true)--Because regular sound uses SFX channel which is too low of volume most of time
 			lastLFGAlert = GetTime()
 		end
@@ -3337,6 +3338,7 @@ function DBM:LFG_PROPOSAL_SHOW()
 		self.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 	end
 	if self.Options.LFDEnhance then
+		FlashClientIcon()
 		self:PlaySoundFile("Sound\\interface\\levelup2.ogg", true)--Because regular sound uses SFX channel which is too low of volume most of time
 	end
 end
@@ -3351,6 +3353,7 @@ end
 
 function DBM:READY_CHECK()
 	if self.Options.RLReadyCheckSound and not BINDING_HEADER_oRA3 then--readycheck sound, if ora3 not installed (bad to have 2 mods do it)
+		FlashClientIcon()
 		self:PlaySoundFile("Sound\\interface\\levelup2.ogg", true)--Because regular sound uses SFX channel which is too low of volume most of time
 	end
 end
@@ -3954,6 +3957,7 @@ do
 		end
 		dummyMod.text:Cancel()
 		if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
+		FlashClientIcon()
 		if not DBM.Options.DontShowPT2 then
 			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 			fireEvent("DBM_TimerStart", "pull", DBM_CORE_TIMER_PULL, timer, "Interface\\Icons\\Spell_Holy_BorrowedTime")--Most args missing because pull timer simply doesn't have them.
