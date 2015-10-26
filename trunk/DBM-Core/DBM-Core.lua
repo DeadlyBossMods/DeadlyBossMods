@@ -3326,7 +3326,7 @@ do
 	local lastLFGAlert = 0
 	function DBM:LFG_ROLE_CHECK_SHOW()
 		if not UnitIsGroupLeader("player") and self.Options.LFDEnhance and GetTime() - lastLFGAlert > 5 then
-			FlashClientIcon()
+			self:FlashClientIcon()
 			self:PlaySoundFile("Sound\\interface\\levelup2.ogg", true)--Because regular sound uses SFX channel which is too low of volume most of time
 			lastLFGAlert = GetTime()
 		end
@@ -3338,7 +3338,7 @@ function DBM:LFG_PROPOSAL_SHOW()
 		self.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 	end
 	if self.Options.LFDEnhance then
-		FlashClientIcon()
+		self:FlashClientIcon()
 		self:PlaySoundFile("Sound\\interface\\levelup2.ogg", true)--Because regular sound uses SFX channel which is too low of volume most of time
 	end
 end
@@ -3353,7 +3353,7 @@ end
 
 function DBM:READY_CHECK()
 	if self.Options.RLReadyCheckSound and not BINDING_HEADER_oRA3 then--readycheck sound, if ora3 not installed (bad to have 2 mods do it)
-		FlashClientIcon()
+		self:FlashClientIcon()
 		self:PlaySoundFile("Sound\\interface\\levelup2.ogg", true)--Because regular sound uses SFX channel which is too low of volume most of time
 	end
 end
@@ -3957,7 +3957,7 @@ do
 		end
 		dummyMod.text:Cancel()
 		if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
-		FlashClientIcon()
+		DBM:FlashClientIcon()
 		if not DBM.Options.DontShowPT2 then
 			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 			fireEvent("DBM_TimerStart", "pull", DBM_CORE_TIMER_PULL, timer, "Interface\\Icons\\Spell_Holy_BorrowedTime")--Most args missing because pull timer simply doesn't have them.
@@ -5014,7 +5014,7 @@ do
 			end
 		end
 		if self.Options.AFKHealthWarning and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
-			FlashClientIcon()
+			self:FlashClientIcon()
 			local voice = DBM.Options.ChosenVoicePack
 			local path = "Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
 			if voice ~= "None" then 
@@ -5223,7 +5223,7 @@ do
 					else--World Boss
 						scanForCombat(v.mod, v.mob, 0)
 						if v.mod.readyCheckQuestId and (self.Options.WorldBossNearAlert or v.mod.Options.ReadyCheck) and not IsQuestFlaggedCompleted(v.mod.readyCheckQuestId) then
-							FlashClientIcon()
+							self:FlashClientIcon()
 							self:PlaySoundFile("Sound\\interface\\levelup2.ogg", true)
 						end
 					end
@@ -5521,7 +5521,7 @@ do
 				end
 			end
 			fireEvent("pull", mod, delay, synced, startHp)
-			FlashClientIcon()
+			self:FlashClientIcon()
 			--serperate timer recovery and normal start.
 			if event ~= "TIMER_RECOVERY" then
 				--add pull count
@@ -6154,7 +6154,7 @@ function DBM:UNIT_DIED(args)
 		self:OnMobKill(self:GetCIDFromGUID(GUID))
 	end
 	if self.Options.AFKHealthWarning and GUID == UnitGUID("player") and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
-		FlashClientIcon()
+		self:FlashClientIcon()
 		self:PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.ogg")--So fire an alert sound to save yourself from this person's behavior.
 	end
 end
@@ -6722,6 +6722,12 @@ function DBM:AntiSpam(time, id)
 		return true
 	else
 		return false
+	end
+end
+
+function DBM:FlashClientIcon()
+	if self:AntiSpam(5, "FLASH") then
+		FlashClientIcon()
 	end
 end
 
