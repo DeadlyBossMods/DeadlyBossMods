@@ -5014,6 +5014,7 @@ do
 			end
 		end
 		if self.Options.AFKHealthWarning and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
+			FlashClientIcon()
 			local voice = DBM.Options.ChosenVoicePack
 			local path = "Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
 			if voice ~= "None" then 
@@ -5222,6 +5223,7 @@ do
 					else--World Boss
 						scanForCombat(v.mod, v.mob, 0)
 						if v.mod.readyCheckQuestId and (self.Options.WorldBossNearAlert or v.mod.Options.ReadyCheck) and not IsQuestFlaggedCompleted(v.mod.readyCheckQuestId) then
+							FlashClientIcon()
 							self:PlaySoundFile("Sound\\interface\\levelup2.ogg", true)
 						end
 					end
@@ -5519,6 +5521,7 @@ do
 				end
 			end
 			fireEvent("pull", mod, delay, synced, startHp)
+			FlashClientIcon()
 			--serperate timer recovery and normal start.
 			if event ~= "TIMER_RECOVERY" then
 				--add pull count
