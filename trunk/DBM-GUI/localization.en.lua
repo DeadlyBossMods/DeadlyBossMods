@@ -305,12 +305,12 @@ L.RoleSpecAlert				= "Show alert message on raid join when your loot spec does n
 L.CheckGear					= "Show gear alert message during pull (when your equipped ilvl is much lower than bag ilvl (40+) or main weapon is not equipped)"
 L.WorldBossAlert			= "Show alert message when world bosses might have been engaged on your realm by guildies or friends (inaccurate if sender is CRZed)"
 --
-L.Area_SoundAlerts			= "Sound Alert Options"
-L.LFDEnhance				= "Play readycheck sound for role checks &amp; BG/LFG proposals in Master or Dialog audio channel (I.E. sounds work even if SFX are off and are generally louder)"
-L.WorldBossNearAlert		= "Play readycheck sound when world bosses you are near to are pulled that you need (Overrides boss-specific option)"
-L.RLReadyCheckSound			= "Play readycheck sounds from actual ready checks through Master or Dialog audio channel."
-L.AFKHealthWarning			= "Play alert sound if you are losing health while AFK"
-L.AutoReplySound			= "Play alert sound when receiving DBM auto reply whisper"
+L.Area_SoundAlerts			= "Sound/Flash Alert Options"
+L.LFDEnhance				= "Play ready check sound and flash application icon for role checks &amp; BG/LFG proposals in Master or Dialog audio channel (I.E. sounds work even if SFX are off and are generally louder)"
+L.WorldBossNearAlert		= "Play ready check sound and flash application icon when world bosses you are near to are pulled that you need"
+L.RLReadyCheckSound			= "When a ready check is performed, play sound through Master or Dialog audio channel and flash application icon."
+L.AFKHealthWarning			= "Play alert sound and flash application icon if you are losing health while AFK"
+L.AutoReplySound			= "Play alert sound and flash application icon when receiving DBM auto reply whisper"
 --
 L.TimerGeneral 				= "Timer Options"
 L.SKT_Enabled				= "Show record victory timer for current fight if available"
