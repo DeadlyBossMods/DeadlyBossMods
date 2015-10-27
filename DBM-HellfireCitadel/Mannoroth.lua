@@ -618,6 +618,16 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 				self.vb.wrathIcon = 8
 				timerWrathofGuldanCD:Start(10)
 			end
+			--Detect when adds timers will reset (by 181301) before they come off cd, and cancel them early
+			if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 18 then
+				timerFelImplosionCD:Cancel()
+			end
+			if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 18 then
+				timerInfernoCD:Cancel()
+			end
+			if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 18 then
+				timerCurseofLegionCD:Cancel()
+			end
 		elseif self.vb.phase == 4 then
 			self.vb.ignoreAdds = true
 			timerFelHellfireCD:Cancel()
@@ -682,10 +692,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		--Starting mythic timers here is far more accurate. Starting on engage can be as much as 5 seconds off
 		--since summon adds (when mannorth starts actually gaining energy) can variate from encounter_start
 		DBM:Debug("Summon adds 181156 fired", 2)
-		timerCurseofLegionCD:Start(5.2, 1)
-		timerFelHellfireCD:Start(10.9)
-		timerGlaiveComboCD:Start(25.5)
-		countdownGlaiveCombo:Start(25.5)
+		timerCurseofLegionCD:Start(5, 1)
+		timerFelHellfireCD:Start(10.5)
+		timerGlaiveComboCD:Start(25.2)
+		countdownGlaiveCombo:Start(25.2)
 		timerFelImplosionCD:Start(27.4, 1)
 		timerFelSeekerCD:Start(40.2)
 		timerGazeCD:Start(50.7)--50.8-53
