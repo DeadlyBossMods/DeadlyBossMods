@@ -663,7 +663,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		else
 			self.vb.doomlordCount = 0
 			timerCurseofLegionCD:Cancel()
-			timerCurseofLegionCD:Start(46.2, 1)--Verify more thoroughly. More transcriptor logs
+			timerCurseofLegionCD:Start(45, 1)
 		end
 	elseif spellId == 182262 then--Summon Adds (phase 3 start/Mythic Phase 4)
 		DBM:Debug("Summon adds 182262 fired", 2)
