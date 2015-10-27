@@ -27,8 +27,6 @@ local voiceMC					= mod:NewVoice(163472, "Dps")--findmc
 
 mod:AddHudMapOption("HudMapOnMC", 180950)
 
-mod.vb.MCCount = 0
-
 function mod:VoidTarget(targetname, uId)
 	if not targetname then return end
 	warnWhirlingVoid:Show(targetname)
@@ -45,10 +43,6 @@ function mod:BombTarget(targetname, uId)
 	end
 end
 
-function mod:OnCombatStart(delay)
-	self.vb.MCCount = 0
-end
-
 function mod:OnCombatEnd()
 	if self.Options.HudMapOnMC then
 		DBMHudMap:Disable()
@@ -58,7 +52,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 180950 then
-		self.vb.MCCount = self.vb.MCCount + 1
 		warnTwistMind:CombinedShow(0.5, args.destName)--Only saw 1 target in 12 person raid, but maybe scales up in larger raid size? so combined show just in case
 		if self:AntiSpam(2, 1) then
 			specWarnTwistMind:Show()
@@ -73,12 +66,8 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 180950 then
-		self.vb.MCCount = self.vb.MCCount - 1
 		if self.Options.HudMapOnMC then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
-		end
-		if self.vb.MCCount == 0 then
-			specWarnTwistMind:Show()
 		end
 	end
 end
