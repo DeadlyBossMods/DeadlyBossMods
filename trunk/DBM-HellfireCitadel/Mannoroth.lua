@@ -588,7 +588,6 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---Todo, verify mythic has no new emotes with guldan's name, if not, just check npc for "Gul'dan"
 --This function isn't required by mod, i purposely put start timers on later trigger that doesn't need localizing.
 --This just starts phase 3 and 4 earlier, if translation available.
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
@@ -722,6 +721,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voicePhaseChange:Play("pthree")
 		if self:IsMythic() then
 			timerWrathofGuldanCD:Start(4.8)
+		end
+		--Detect when adds timers will reset (by 181301) before they come off cd, and cancel them early
+		if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 12.5 then
+			timerFelImplosionCD:Cancel()
+		end
+		if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 12.5 then
+			timerInfernoCD:Cancel()
+		end
+		if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 12.5 then
+			timerCurseofLegionCD:Cancel()
 		end
 	elseif spellId == 185690 and self.vb.phase == 3 then--Phase 4
 		self.vb.phase = 4
