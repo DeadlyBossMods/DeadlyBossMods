@@ -618,13 +618,13 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 				timerWrathofGuldanCD:Start(10)
 			end
 			--Detect when adds timers will reset (by 181301) before they come off cd, and cancel them early
-			if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 17.5 then
+			if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 15.5 then
 				timerFelImplosionCD:Cancel()
 			end
-			if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 17.5 then
+			if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 15.5 then
 				timerInfernoCD:Cancel()
 			end
-			if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 17.5 then
+			if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 15.5 then
 				timerCurseofLegionCD:Cancel()
 			end
 		elseif self.vb.phase == 4 then
@@ -723,13 +723,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerWrathofGuldanCD:Start(4.8)
 		end
 		--Detect when adds timers will reset (by 181301) before they come off cd, and cancel them early
-		if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 12 then
+		if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 10 then
 			timerFelImplosionCD:Cancel()
 		end
-		if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 12 then
+		if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 10 then
 			timerInfernoCD:Cancel()
 		end
-		if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 12 then
+		if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 10 then
 			timerCurseofLegionCD:Cancel()
 		end
 	elseif spellId == 185690 and self.vb.phase == 3 then--Phase 4
