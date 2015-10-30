@@ -2193,7 +2193,7 @@ do
 			end
 		end)
 	else
-		self:AddMsg(DBM_CORE_UPDATE_REQUIRES_RELAUNCH)
+		DBM:AddMsg(DBM_CORE_UPDATE_REQUIRES_RELAUNCH)
 	end
 
 end
