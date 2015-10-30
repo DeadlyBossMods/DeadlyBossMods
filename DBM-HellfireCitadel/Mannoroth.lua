@@ -80,7 +80,7 @@ local timerCurseofLegionCD			= mod:NewNextCountTimer(64.8, 181275, nil, nil, nil
 local timerMarkofDoomCD				= mod:NewCDTimer(31.5, 181099, nil, "-Tank", nil, 3)
 --local timerShadowBoltVolleyCD		= mod:NewCDTimer(12, 181126, nil, "-Healer", nil, 4)
 ----Fel Imps
-local timerFelImplosionCD			= mod:NewNextCountTimer(46, 181255, nil, nil, nil, 1)
+local timerFelImplosionCD			= mod:NewNextCountTimer(46, 181255, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 ----Infernals
 local timerInfernoCD				= mod:NewNextCountTimer(107, 181180, nil, nil, nil, 1)
 ----Gul'dan
