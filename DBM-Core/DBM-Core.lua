@@ -3513,10 +3513,12 @@ function DBM:CHALLENGE_MODE_START(mapID)
 	self:Debug("CHALLENGE_MODE_START fired for mapID "..mapID)
 	if self.Options.ChallengeBest == "None" then return end
 	if self.Options.DontShowBossTimers then return end
+	RequestChallengeModeMapInfo()
 	local maps = GetChallengeModeMapTable()
 	for i = 1, 8 do
 		local _, mapIDVerify = GetChallengeModeMapInfo(maps[i])--Even though we get mapid from CHALLENGE_MODE_START, we still need CM index since GetChallengeModeMapPlayerStats doesn't take mapID :\
 		if mapID == mapIDVerify then
+			RequestChallengeModeLeaders(mapID)
 			local guildBest, realmBest = GetChallengeBestTime(mapID)
 			local lastTime, bestTime, medal = GetChallengeModeMapPlayerStats(maps[i])
 			if bestTime and self.Options.ChallengeBest == "Personal" then
@@ -3696,10 +3698,6 @@ function DBM:LoadMod(mod, force)
 		self:LoadModOptions(mod.modId, InCombatLockdown(), true)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
-		end
-		if difficultyIndex == 8 then
-			RequestChallengeModeMapInfo()
-			RequestChallengeModeLeaders(LastInstanceMapID)
 		end
 		if LastInstanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
 			if not timerRequestInProgress then
