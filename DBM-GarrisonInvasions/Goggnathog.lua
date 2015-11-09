@@ -49,7 +49,7 @@ local function updateRangeFrame(self)
 		if UnitDebuff("player", debuffName) then
 			DBM.RangeCheck:Show(10)
 		else
-			DBM.RangeCheck:Show(10, debuffName)
+			DBM.RangeCheck:Show(10, debuffFilter)
 		end
 	else
 		DBM.RangeCheck:Hide()
