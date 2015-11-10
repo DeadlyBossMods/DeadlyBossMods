@@ -6727,7 +6727,6 @@ end
 
 function DBM:FlashClientIcon()
 	if self:AntiSpam(5, "FLASH") then
-		self:Debug("FlashClientIcon fired", 2)
 		FlashClientIcon()
 	end
 end
