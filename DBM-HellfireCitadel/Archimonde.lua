@@ -165,7 +165,7 @@ local voiceVoidStarFixate			= mod:NewVoice(189895) --orbrun
 mod:AddRangeFrameOption("6/8/10")
 mod:AddSetIconOption("SetIconOnFelBurst", 183634, true)
 mod:AddSetIconOption("SetIconOnShackledTorment2", 184964, false)
-mod:AddSetIconOption("SetIconOnMarkOfLegion", 187050, true)
+mod:AddSetIconOption("SetIconOnMarkOfLegion2", 187050, true)
 mod:AddSetIconOption("SetIconOnInfernals2", "ej11618", false, true)
 mod:AddHudMapOption("HudMapOnFelBurst2", 183634, "Ranged")
 mod:AddHudMapOption("HudMapOnShackledTorment2", 184964, true)
@@ -332,7 +332,7 @@ local function showMarkOfLegion(self, spellName)
 			local debuffTime = expires - GetTime()
 			local roundedTime = math.floor(debuffTime+0.5)
 			if roundedTime == 5 then
-				if self.Options.SetIconOnMarkOfLegion then
+				if self.Options.SetIconOnMarkOfLegion2 then
 					self:SetIcon(name, 1)
 				end
 				if self.Options.HudMapMarkofLegion then
@@ -344,7 +344,7 @@ local function showMarkOfLegion(self, spellName)
 					voiceMarkOfLegion:Play("mm1")
 				end
 			elseif roundedTime == 7 then
-				if self.Options.SetIconOnMarkOfLegion then
+				if self.Options.SetIconOnMarkOfLegion2 then
 					self:SetIcon(name, 2)
 				end
 				if self.Options.HudMapMarkofLegion then
@@ -356,7 +356,7 @@ local function showMarkOfLegion(self, spellName)
 					voiceMarkOfLegion:Play("mm2")
 				end
 			elseif roundedTime == 9 then
-				if self.Options.SetIconOnMarkOfLegion then
+				if self.Options.SetIconOnMarkOfLegion2 then
 					self:SetIcon(name, 3)
 				end
 				if self.Options.HudMapMarkofLegion then
@@ -368,7 +368,7 @@ local function showMarkOfLegion(self, spellName)
 					voiceMarkOfLegion:Play("mm3")
 				end
 			else
-				if self.Options.SetIconOnMarkOfLegion then
+				if self.Options.SetIconOnMarkOfLegion2 then
 					self:SetIcon(name, 4)
 				end
 				if self.Options.HudMapMarkofLegion then
@@ -1052,7 +1052,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellMarkOfLegion:Cancel()
 		end
 		updateRangeFrame(self)
-		if self.Options.SetIconOnMarkOfLegion then
+		if self.Options.SetIconOnMarkOfLegion2 then
 			self:SetIcon(args.destName, 0)
 		end
 		if self.Options.HudMapMarkofLegion then
