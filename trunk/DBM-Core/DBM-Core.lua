@@ -9454,9 +9454,9 @@ do
 			elseif announceType == "taunt" or announceType == "dispel" or announceType == "interrupt" or announceType == "interruptcount" then
 				catType = "announcerole"
 			end
-			obj.voiceOptionId = hasVoice and "Voice"..spellId or nil
 			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType)
 		end
+		obj.voiceOptionId = hasVoice and "Voice"..spellId or nil
 		tinsert(self.specwarns, obj)
 		return obj
 	end
