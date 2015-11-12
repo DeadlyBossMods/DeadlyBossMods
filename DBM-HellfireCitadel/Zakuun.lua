@@ -42,8 +42,8 @@ local specWarnBefouled					= mod:NewSpecialWarningMoveAway(179711)--Aoe damage w
 local specWarnBefouledOther				= mod:NewSpecialWarningTargetCount(179711, false)
 --Disarmed
 local specWarnDisarmed					= mod:NewSpecialWarningSpell(179667)
-local specWarnSeedofDestruction			= mod:NewSpecialWarningYou(181508, nil, nil, nil, 3, 2)
-local specWarnSeedPosition				= mod:NewSpecialWarningYouPos(181508, nil, false, nil, 1, 4)--Mythic Position Assignment. No option, connected to specWarnMarkedforDeath
+local specWarnSeedofDestruction			= mod:NewSpecialWarningYou(181508, nil, nil, nil, 3, 4)
+local specWarnSeedPosition				= mod:NewSpecialWarningYouPos(181515, nil, false, nil, 1, 4)--Mythic Position Assignment. No option, connected to specWarnMarkedforDeath
 local yellSeedsofDestruction			= mod:NewYell(181508)
 
 --Armed
