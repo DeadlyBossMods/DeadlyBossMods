@@ -682,6 +682,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			self.vb.infernalCount = 0
 			timerInfernoCD:Cancel()
 			timerInfernoCD:Start(28, 1)
+			timerFelImplosionCD:Start(7, 1)
 		else
 			self.vb.impCount = 0
 			timerCurseofLegionCD:Cancel()--Done for rest of fight
