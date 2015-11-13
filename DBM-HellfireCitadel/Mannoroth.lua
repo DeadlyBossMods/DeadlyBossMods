@@ -16,8 +16,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 181099 181275 181191 181597 182006 186362",
 	"SPELL_AURA_APPLIED_DOSE 181119",
 	"SPELL_AURA_REMOVED 181099 181275 185147 182212 185175 181597 182006 181275 186362 181119",
-	"SPELL_DAMAGE 181192",
-	"SPELL_MISSED 181192",
+	"SPELL_DAMAGE 181192 190070",
+	"SPELL_MISSED 181192 190070",
 	"SPELL_SUMMON 181255 181180",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_DIED",
@@ -62,7 +62,8 @@ local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, false, nil, 2
 local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, nil, nil, 3, 1, 2)
 ----Gul'dan
 local specWarnWrathofGuldan			= mod:NewSpecialWarningYou(186362, nil, nil, nil, 1)
-local yellWrathofGuldan				= mod:NewYell(186362, 169826)
+local yellWrathofGuldan				= mod:NewPosYell(186362, 169826)
+local specWarnFelPillar				= mod:NewSpecialWarningDodge(190070, nil, nil, 3, 1, 2)
 --Mannoroth
 local specWarnGlaiveCombo			= mod:NewSpecialWarningSpell(181354, "Tank", nil, nil, 3, 2)--Active mitigation or die mechanic
 local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, nil, nil, nil, 1, 2)
@@ -109,6 +110,7 @@ local voiceFelSeeker				= mod:NewVoice(181735)--watchstep
 local voiceFelHellstorm				= mod:NewVoice(181557)--watchstep
 local voiceGlaiveCombo				= mod:NewVoice(181354, "Tank")--Defensive
 local voiceMassiveBlast				= mod:NewVoice(181359, "Tank")--changemt
+local voiceFelPillar				= mod:NewVoice(190070)--runaway
 
 mod:AddRangeFrameOption(20, 181099)
 mod:AddSetIconOption("SetIconOnGaze", 181597, false)
@@ -486,18 +488,19 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(guldanTargets, args.destName)
 		end
 		warnWrathofGuldan:CombinedShow(0.3, args.destName)
+		local icon = self.vb.wrathIcon
+		if self.Options.SetIconOnWrath then
+			self:SetIcon(args.destName, icon)
+		end
 		if args:IsPlayer() then
 			specWarnWrathofGuldan:Show()
-			yellWrathofGuldan:Yell()
+			yellWrathofGuldan:Yell(icon, icon, icon)
 		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)--Always set header to wrath if wrath is present
 			if not DBM.InfoFrame:IsShown() then
 				DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame, true)
 			end
-		end
-		if self.Options.SetIconOnWrath then
-			self:SetIcon(args.destName, self.vb.wrathIcon)
 		end
 		self.vb.wrathIcon = self.vb.wrathIcon - 1--Update icon even if icon option off, for sync accuracy
 		updateRangeFrame(self)
@@ -682,11 +685,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			self.vb.infernalCount = 0
 			timerInfernoCD:Cancel()
 			timerInfernoCD:Start(28, 1)
-			timerFelImplosionCD:Start(7, 1)
+			timerFelImplosionCD:Start(22, 1)
 		else
 			self.vb.impCount = 0
 			timerCurseofLegionCD:Cancel()--Done for rest of fight
-			timerFelImplosionCD:Start(22, 1)
+			timerFelImplosionCD:Start(7, 1)
 		end
 	elseif spellId == 181156 then--Summon Adds, Phase 2 mythic (about 18 seconds into fight)
 		--Starting mythic timers here is far more accurate. Starting on engage can be as much as 5 seconds off
@@ -721,6 +724,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPhase3:Show()
 		voicePhaseChange:Play("pthree")
 		if self:IsMythic() then
+			self.vb.wrathIcon = 8
 			timerWrathofGuldanCD:Start(4.8)
 		end
 		--Detect when adds timers will reset (by 181301) before they come off cd, and cancel them early
@@ -754,6 +758,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPhase4:Show()
 		voicePhaseChange:Play("pfour")
 		if self:IsMythic() then
+			self.vb.wrathIcon = 8
 			timerWrathofGuldanCD:Start(11.2)
 		end
 	elseif spellId == 181354 then--183377 or 185831 also usable with SPELL_CAST_START but i like this way more, cleaner than Antispamming the other spellids
@@ -766,8 +771,11 @@ end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 181192 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
-		voiceFelHellfire:Play("runaway")
 		specWarnFelHellfire:Show()
+		voiceFelHellfire:Play("runaway")
+	elseif spellId == 190070 and destGUID == UnitGUID("player") and self:AntiSpam(1.5, 7) then
+		specWarnFelPillar:Show()
+		voiceFelPillar:Play("runaway")
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
