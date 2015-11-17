@@ -440,7 +440,7 @@ DBM_CORE_HUD_USAGE	= {
 	"DBM-HudMap usage:",
 	"-----------------",
 	"/dbm hud <type> <target> <duration>: Creates a HUD that points to a player for the desired duration",
-	"Valid types: arrow, red, blue, green, yellow, icon (requires a target with raid icon)",
+	"Valid types: arrow, dot, red, blue, green, yellow, icon (requires a target with raid icon)",
 	"Valid targets: target, focus, <playername>",
 	"Valid durations: any number (in seconds). If left blank, 20min will be used.",
 	"/dbm hud hide:  disables and hides the HUD"
