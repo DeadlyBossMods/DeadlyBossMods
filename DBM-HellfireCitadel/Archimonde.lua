@@ -331,7 +331,7 @@ local function showMarkOfLegion(self, spellName)
 		if expires then
 			local debuffTime = expires - GetTime()
 			local roundedTime = math.floor(debuffTime+0.5)
-			if roundedTime == 5 then
+			if i == 1 then
 				if self.Options.SetIconOnMarkOfLegion2 then
 					self:SetIcon(name, 1)
 				end
@@ -343,7 +343,7 @@ local function showMarkOfLegion(self, spellName)
 					yellMarkOfLegionPoS:Yell(roundedTime, 1, 1)
 					voiceMarkOfLegion:Play("mm1")
 				end
-			elseif roundedTime == 7 then
+			elseif i == 2 then
 				if self.Options.SetIconOnMarkOfLegion2 then
 					self:SetIcon(name, 2)
 				end
@@ -355,7 +355,7 @@ local function showMarkOfLegion(self, spellName)
 					yellMarkOfLegionPoS:Yell(roundedTime, 2, 2)
 					voiceMarkOfLegion:Play("mm2")
 				end
-			elseif roundedTime == 9 then
+			elseif i == 3 then
 				if self.Options.SetIconOnMarkOfLegion2 then
 					self:SetIcon(name, 3)
 				end
