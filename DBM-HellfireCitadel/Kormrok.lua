@@ -330,7 +330,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:RuneStart(181297)
 		if (self:IsMythic() and spellId == 186880) then
 			timerExplosiveRunesCD:Start(8)
-			self:Schedule(8, delayedExplosiveRunes, self, 40)--48
+			self:Schedule(8, delayedExplosiveRunes, self, 63)--71
 			timerExplosiveBurstCD:Start(15, 1)
 			self:Schedule(15, delayedExplosiveBurst, self, 23, 2)
 			self:Schedule(38, delayedExplosiveBurst, self, 30, 3)
@@ -342,7 +342,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerLeapCD:Start(96)
 		elseif (self:IsMythic() and spellId == 180116) or spellId == 186880 then
 			timerExplosiveRunesCD:Start(11)
-			self:Schedule(11, delayedExplosiveRunes, self, 48)--59
+			self:Schedule(11, delayedExplosiveRunes, self, 90)--101
 			timerExplosiveBurstCD:Start(21, 1)
 			self:Schedule(21, delayedExplosiveBurst, self, 32, 2)
 			self:Schedule(53, delayedExplosiveBurst, self, 42, 3)
@@ -354,7 +354,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerLeapCD:Start()
 		else
 			timerExplosiveRunesCD:Start(13)
-			self:Schedule(13, delayedExplosiveRunes, self, 58)--71
+			self:Schedule(13, delayedExplosiveRunes, self, 108)--121
 			timerExplosiveBurstCD:Start(25, 1)
 			self:Schedule(25, delayedExplosiveBurst, self, 38, 2)
 			self:Schedule(63, delayedExplosiveBurst, self, 50, 3)
