@@ -670,6 +670,8 @@ function mod:SPELL_CAST_START(args)
 			DBM:Debug("Phase 1 begin CLEU", 2)
 			self.vb.phase = 1.5--85%
 			updateAllTimers(self, 7)
+		else
+			updateAllTimers(self, 1.5)
 		end
 	elseif spellId == 184265 then
 		self.vb.wroughtWarned = 0--Reset Counter
