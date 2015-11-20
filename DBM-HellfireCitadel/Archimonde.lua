@@ -107,7 +107,7 @@ local timerDeathbrandCD				= mod:NewCDCountTimer(42.5, 183828, nil, nil, nil, 1)
 local timerDesecrateCD				= mod:NewCDTimer(27, 185590, nil, nil, 2, 2)
 local timerLightCD					= mod:NewNextTimer(10, 183963, nil, nil, nil, 5)
 ----Hellfire Deathcaller
-local timerShadowBlastCD			= mod:NewCDTimer(9.7, 183864, nil, "Tank", nil, 5)
+local timerShadowBlastCD			= mod:NewCDTimer(7.3, 183864, nil, "Tank", nil, 5)
 local timerDemonicHavocCD			= mod:NewAITimer(107, 183865, nil, nil, nil, 3)--Mythic, timer unknown, AI timer used until known. I'm not sure this ability still exists
 --Phase 2: Hand of the Legion
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -669,8 +669,8 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase < 1.5 then
 			DBM:Debug("Phase 1 begin CLEU", 2)
 			self.vb.phase = 1.5--85%
+			updateAllTimers(self, 7)
 		end
-		updateAllTimers(self, 7)
 	elseif spellId == 184265 then
 		self.vb.wroughtWarned = 0--Reset Counter
 		timerWroughtChaosCD:Start()
