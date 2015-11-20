@@ -104,7 +104,7 @@ local timerDoomfireCD				= mod:NewCDTimer(42.1, 182826, nil, nil, nil, 1)--18282
 local timerAllureofFlamesCD			= mod:NewCDTimer(47.5, 183254, nil, nil, nil, 2)
 local timerFelBurstCD				= mod:NewCDTimer(52, 183817, nil, nil, 2, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerDeathbrandCD				= mod:NewCDCountTimer(42.5, 183828, nil, nil, nil, 1)--Everyone, for tanks/healers to know when debuff/big hit, for dps to know add coming
-local timerDesecrateCD				= mod:NewCDTimer(27, 185590, nil, nil, 2, 2)
+local timerDesecrateCD				= mod:NewCDTimer(26.8, 185590, nil, nil, 2, 2)
 local timerLightCD					= mod:NewNextTimer(10, 183963, nil, nil, nil, 5)
 ----Hellfire Deathcaller
 local timerShadowBlastCD			= mod:NewCDTimer(7.3, 183864, nil, "Tank", nil, 5)
