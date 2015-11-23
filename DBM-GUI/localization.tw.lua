@@ -305,12 +305,12 @@ L.RoleSpecAlert				= "當你加入團隊時捨取專精不符合你目前專精�
 L.CheckGear					= "開怪時顯示裝備警告訊息 (當你裝備的裝備等級低於包包裡40等以上或主手武器沒有裝備時顯示警告訊息)"
 L.WorldBossAlert			= "當你的工會成員或是朋友可能在你的伺服器上開戰世界首領時顯示警告訊息(如果發送者是被戰復的會不準確)"
 --
-L.Area_SoundAlerts			= "聲音警告選項"
-L.LFDEnhance				= "使用主要或對話聲音頻道播放準備確認音效給角色確認和戰場/隨機團隊進場(I.E. 即使因為被關閉了也會發出音效而且很大聲!)"
-L.WorldBossNearAlert		= "當你需要的世界首領在你附近開戰播放準備確認音效(蓋過特定首領選項)"
-L.RLReadyCheckSound			= "從主要或對話音效頻道播放準備確認音效"
-L.AFKHealthWarning			= "播放警告聲音假如你在暫離時被攻擊"
-L.AutoReplySound			= "當接收到DBM自動回覆密語時播放警告聲"
+L.Area_SoundAlerts			= "聲音/閃爍警告選項"
+L.LFDEnhance				= "使用主要或對話聲音頻道播放準備確認音效和閃爍應用程式圖示給角色確認和戰場/隨機團隊進場(I.E. 即使音效被關閉了也會發出音效而且很大聲!)"
+L.WorldBossNearAlert		= "當你需要的世界首領在你附近開戰播放準備確認音效和閃爍應用程式圖示"
+L.RLReadyCheckSound			= "從主要或對話音效頻道播放準備確認音效和閃爍應用程式圖示"
+L.AFKHealthWarning			= "播放警告聲音和閃爍應用程式圖示假如你在暫離時被攻擊"
+L.AutoReplySound			= "當接收到DBM自動回覆密語時播放警告聲和閃爍應用程式圖示"
 --
 L.TimerGeneral 				= "計時器選項"
 L.SKT_Enabled				= "顯示目前戰鬥的最佳紀錄勝利計時器"
