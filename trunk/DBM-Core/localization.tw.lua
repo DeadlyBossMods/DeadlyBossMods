@@ -300,6 +300,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.you			= "你中了%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.youcount		= "你中了%s (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.youpos		= "你中了%s (站位：%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= ">%%s<中了%s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetcount	= ">%%s<中了%s (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt			= ">%%s<中了%s - 快嘲諷"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close			= "你附近的>%%s<中了%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move			= "%s - 快移動"
@@ -416,7 +417,7 @@ DBM_CORE_HUD_SUCCESS				= "HUD成功使用你的參數運作。這會在%s後取
 DBM_CORE_HUD_USAGE	= {
 	"DBM-HudMap 用法:",
 	"/dbm hud <類型> <目標> <持續時間>  建立一個指向玩家的HUD",
-	"有效類型: arrow, red, blue, green, yellow, icon(需要團隊標記)",
+	"有效類型: arrow, dot, red, blue, green, yellow, icon(需要團隊標記)",
 	"有效目標: target, focus, <玩家名字>",
 	"有效持續時間: 任何秒數。如果無輸入值則預設為20分鐘",
 	"/dbm hud hide  關閉並隱藏HUD"
