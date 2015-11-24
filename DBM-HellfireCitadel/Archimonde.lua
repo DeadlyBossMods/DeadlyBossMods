@@ -100,7 +100,7 @@ local specWarnTwistedDarkness		= mod:NewSpecialWarningSwitchCount(190821, "Range
 
 --Phase 1: The Defiler
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerDoomfireCD				= mod:NewCDTimer(42, 182826, nil, nil, nil, 1)--182826 cast, 182879 fixate. Doomfire only fixates ranged, but ALL dps switch to it.
+local timerDoomfireCD				= mod:NewCDTimer(41.5, 182826, nil, nil, nil, 1)--182826 cast, 182879 fixate. Doomfire only fixates ranged, but ALL dps switch to it.
 local timerAllureofFlamesCD			= mod:NewCDTimer(47.5, 183254, nil, nil, nil, 2)
 local timerFelBurstCD				= mod:NewCDTimer(52, 183817, nil, nil, 2, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerDeathbrandCD				= mod:NewCDCountTimer(42.5, 183828, nil, nil, nil, 1)--Everyone, for tanks/healers to know when debuff/big hit, for dps to know add coming
@@ -154,7 +154,8 @@ local voiceWroughtChaos				= mod:NewVoice(186123) --new voice
 local voiceFocusedChaos				= mod:NewVoice(185014) --new voice
 local voiceFlamesofArgus			= mod:NewVoice(186663, "-Healer") --kickcast
 local voiceDemonicFeedback			= mod:NewVoice(186961) --spread/scatter
-local voiceAllureofFlamesCD			= mod:NewVoice(183254) --just run
+local voiceAllureofFlames			= mod:NewVoice(183254) --watch step
+local voiceDesecrate				= mod:NewVoice(185590) --watch step
 local voiceNetherBanish				= mod:NewVoice(186961) --teleyou
 local voiceTouchofShadows			= mod:NewVoice(190050) --kick1r/kick2r
 local voiceDarkConduit				= mod:NewVoice(190394, "Ranged") --spread/scatter
@@ -172,7 +173,7 @@ mod:AddHudMapOption("HudMapOnShackledTorment2", 184964, true)
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
 mod:AddHudMapOption("HudMapMarkofLegion", 187050, false)
 mod:AddBoolOption("ExtendWroughtHud3", true)
-mod:AddBoolOption("AlternateHudLine", false)
+--mod:AddBoolOption("AlternateHudLine", false)
 mod:AddBoolOption("NamesWroughtHud", true)
 mod:AddBoolOption("FilterOtherPhase", true)
 mod:AddInfoFrameOption(184964)
@@ -655,6 +656,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.deathBrandCount = self.vb.deathBrandCount + 1
 		specWarnDeathBrand:Show(self.vb.deathBrandCount)
 		timerDeathbrandCD:Start(nil, self.vb.deathBrandCount+1)
+		countdownDeathBrand:Cancel()
 		countdownDeathBrand:Start()
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then
@@ -665,6 +667,7 @@ function mod:SPELL_CAST_START(args)
 		updateAllTimers(self, 5)
 	elseif spellId == 185590 then
 		specWarnDesecrate:Show()
+		voiceDesecrate:Play("watchstep")
 		timerDesecrateCD:Start()
 		if self.vb.phase < 1.5 then
 			DBM:Debug("Phase 1.5 begin CLEU", 2)
@@ -790,7 +793,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 183254 then
 		specWarnAllureofFlames:Show()
-		voiceAllureofFlamesCD:Play("justrun")
+		voiceAllureofFlames:Play("watchstep")
 	elseif spellId == 185590 then
 		timerLightCD:Start()
 	end
@@ -897,17 +900,17 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 					--create line
 					if self.Options.ExtendWroughtHud3 then
-						if self.Options.AlternateHudLine then
-							DBMHudMap:AddEdge(0, 1, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 25, "beam1", true)
-						else
+					--	if self.Options.AlternateHudLine then
+					--		DBMHudMap:AddEdge(0, 1, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 25, "beam1", true)
+					--	else
 							DBMHudMap:AddEdge(0, 1, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 150, nil, true)
-						end
+					--	end
 					else
-						if self.Options.AlternateHudLine then
-							DBMHudMap:AddEdge(0, 1, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 25, "beam1")
-						else
+					--	if self.Options.AlternateHudLine then
+					--		DBMHudMap:AddEdge(0, 1, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 25, "beam1")
+					--	else
 							DBMHudMap:AddEdge(0, 1, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 150)
-						end
+					--	end
 					end
 				else--red lines for non player lines
 					--Create Points
@@ -920,11 +923,11 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 					--Create Line
 					if self.Options.ExtendWroughtHud3 then
-						if self.Options.AlternateHudLine then
-							DBMHudMap:AddEdge(1, 0, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 15, "beam1", true)
-						else
+					--	if self.Options.AlternateHudLine then
+					--		DBMHudMap:AddEdge(1, 0, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 25, "beam1", true)
+					--	else
 							DBMHudMap:AddEdge(1, 0, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 150, nil, true)
-						end
+					--	end
 					else
 						DBMHudMap:AddEdge(1, 0, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 150)
 					end
@@ -1132,6 +1135,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerWroughtChaosCD:Start(5.2)
 		end
 		timerDeathbrandCD:Start(35, self.vb.deathBrandCount+1)--35-39
+		countdownDeathBrand:Cancel()
 		countdownDeathBrand:Start(35)
 		timerAllureofFlamesCD:Start(40.5)--40-45
 		timerShackledTormentCD:Start(25, self.vb.tormentCast+1)--17-25 (almost always 25, but sometimes it comes earlier, unsure why)

@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Oct 16 2015, 03:43 UTC@14597
+-- Last update: Nov 24 2015, 03:07 UTC@14665
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -38,7 +38,7 @@ L.BossModLoad_now 			= [[该模块尚未启动。
 L.PosX 						= 'X坐标'
 L.PosY 						= 'Y坐标'
 
-L.MoveMe					= '移动'
+L.MoveMe					= '移动我'
 L.Button_OK 				= '确定'
 L.Button_Cancel 			= '取消'
 L.Button_LoadMod 			= '加载模块'
@@ -225,7 +225,7 @@ L.HUDAlphaSlider			= "透明度: %0.1f"
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "语音警告"
-L.Area_VoiceSelection		= "语音选项"
+L.Area_VoiceSelection		= "语音选择"
 L.CountdownVoice			= "设置第一倒计时语音"
 L.CountdownVoice2			= "设置第二倒计时语音"
 L.CountdownVoice3			= "设置第三倒计时语音"
@@ -249,7 +249,7 @@ L.HP_ShowDemo				= "显示框体"
 L.BarWidth					= "计量条宽度: %d"
 
 -- Tab: Global Filter
-L.Panel_SpamFilter			= "DBM全局及信息过滤"
+L.Panel_SpamFilter			= "DBM全局过滤"
 L.Area_SpamFilter_Outgoing	= "DBM全局过滤设置"
 L.SpamBlockNoShowAnnounce	= "不显示警报或播放警报音效"
 L.SpamBlockNoSpecWarn		= "不要显示特殊特殊警报和特殊警报音效"
@@ -258,20 +258,21 @@ L.SpamBlockNoSetIcon		= "不设定标记在目标上"
 L.SpamBlockNoRangeFrame		= "不显示距离雷达框体"
 L.SpamBlockNoInfoFrame		= "不显示信息框体"
 L.SpamBlockNoHudMap			= "不显示HudMap"
-
 L.SpamBlockNoHealthFrame	= "不显示生命值监视器"
 L.SpamBlockNoCountdowns		= "不要播放倒数语音"
 L.SpamBlockNoYells			= "不要再战斗中大喊我中了..."
 L.SpamBlockNoNoteSync		= "不接受别人分享的自定义注记"
-L.SpamBlockNoIconRestore	= "当战斗结束后不保存团队标记状态(大饼 星星 月亮 方块这些)"
-L.SpamBlockNoRangeRestore	= "当boss暂时消失时不恢复距离指示器"
+
+L.Area_Restore				= "DBM战斗结束重置设置"
+L.SpamBlockNoIconRestore	= "当战斗结束后不保存团队标记状态并重置"
+L.SpamBlockNoRangeRestore	= "当Boss模块隐藏距离窗体时不重置窗体位置"
 
 -- Tab: Spam Filter
 L.Area_SpamFilter			= "信息过滤设置"
 L.DontShowFarWarnings		= "不为过远的事件显示计时条/警报"
 L.StripServerName			= "警告和计时器中不显示服务器名"
 L.SpamBlockBossWhispers		= "战斗中过滤DBM密语警报"
-L.BlockVersionUpdateNotice	= "禁用升级提示"
+L.BlockVersionUpdateNotice	= "禁用DBM过期窗口并改在聊天窗口提示"
 
 L.Area_SpecFilter			= "角色过滤选项"
 L.FilterTankSpec			= "当非坦克专精时，过滤掉给予坦克的专用信息"
@@ -280,10 +281,10 @@ L.FilterInterruptNoteName	= "当自定义注记内没有包含你的名字的时
 L.FilterDispels				= "当驱散技能在冷却时, 过滤掉驱散提示"
 L.FilterSelfHud				= "把自己从HudMap中过滤掉 (不包括和距离有关的功能)"
 
-L.Area_PullTimer			= "开怪倒计时过滤设置"
+L.Area_PullTimer			= "开怪和倒计时过滤设置"
 L.DontShowPTNoID			= "不显示不同区域发送的倒计时"
-L.DontShowPT				= "不显示开怪倒计时条"
-L.DontShowPTText			= "不显示开怪倒计时文字"
+L.DontShowPT				= "不显示开怪和倒计时条"
+L.DontShowPTText			= "不显示开怪和倒计时文字"
 L.DontPlayPTCountdown		= "不播放开怪倒计时语音"
 L.DontShowPTCountdownText	= "不显示开怪倒计时动画"
 L.PT_Threshold				= "不显示高于%d秒的倒计时动画"
@@ -311,16 +312,16 @@ L.RoleSpecAlert				= "当进入团队时，如果拾取专精与当前角色专�
 L.CheckGear					= "当你身上的装备装等低于背包装等40点时显示警告。(可能没有装备某物品或装备了低等级的任务道具或没有装备主武器)"
 L.WorldBossAlert			= "当世界Boss进入战斗后发送警告，这个信息可能是你的朋友或者同工会成员发送的。 (由于跨服，卡位面等因素，可能不准确)"
 --
-L.Area_SoundAlerts			= "语音警告选项"
-L.LFDEnhance				= "当发起角色检查或随机团队/战场就绪时，在主声道播放准备音效 (即使关闭了音效)"
-L.WorldBossNearAlert		= "当世界附近的Boss进入战斗时发出特殊音效(覆盖单独BOSS设置)"
-L.RLReadyCheckSound			= "在主声道/对话声道播放检查准备音效"
-L.AFKHealthWarning			= "当你在挂机/暂离而受到伤害时发出警报"
-L.AutoReplySound			= "当收到DBM可自动回复的信息时发出警报"
+L.Area_SoundAlerts			= "语音/闪动警告选项"
+L.LFDEnhance				= "当发起角色检查或随机团队/战场就绪时，在主声道播放准备音效(即使关闭了音效而且很大声！)并闪烁图标"
+L.WorldBossNearAlert		= "当世界附近的Boss进入战斗时播放准备音效(覆盖单独BOSS设置)并闪烁图标"
+L.RLReadyCheckSound			= "在主声道/对话声道播放检查准备音效并闪烁图标"
+L.AFKHealthWarning			= "当你在挂机/暂离而受到伤害时播放音效并闪烁图标(你会死)"
+L.AutoReplySound			= "当收到DBM可自动回复的信息时播放音效并闪烁图标"
 --
-L.TimerGeneral 				= "DBM计时条综合设置"
+L.TimerGeneral 				= "计时器选项"
 L.SKT_Enabled				= "总是显示最速胜利计时条(覆盖单独BOSS设置)"
-L.CRT_Enabled				= "显示下一次可战复CD(限德拉诺团队本)"
+L.CRT_Enabled				= "显示下一次可战复CD"
 L.ShowRespawn				= "Boss战斗未完成时显示Boss刷新计时条"
 L.ShowQueuePop				= "显示随机小队/团队查找器确认计时条"
 L.ChallengeTimerOptions		= "设置挑战模式最佳记录计时条"
