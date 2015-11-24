@@ -662,7 +662,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			voiceDeathBrand:Play("tauntboss")
 		end
-		updateAllTimers(self, 6)--Possibly change to 5.5 or 5
+		updateAllTimers(self, 5)
 	elseif spellId == 185590 then
 		specWarnDesecrate:Show()
 		timerDesecrateCD:Start()
