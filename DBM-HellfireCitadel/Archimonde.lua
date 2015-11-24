@@ -473,7 +473,7 @@ end
 --Demonic Feedback triggers 3.5 second ICD
 --Rain of chaos doesn't trigger ICD nor is affected by it
 --Nether banish IS affected by ICD but inconclusive on whether it CAUSES one
-local function updateAllTimers(self, ICD)
+local function updateAllTimers(self, ICD, AllureSpecial)
 --	if not DBM.Options.DebugMode then return end
 	DBM:Debug("updateAllTimers running", 3)
 	local phase = self.vb.phase
@@ -485,7 +485,7 @@ local function updateAllTimers(self, ICD)
 			timerDoomfireCD:Cancel()
 			timerDoomfireCD:Update(elapsed, total+extend)
 		end
-		if timerAllureofFlamesCD:GetRemaining() < ICD then
+		if not AllureSpecial and timerAllureofFlamesCD:GetRemaining() < ICD then
 			local elapsed, total = timerAllureofFlamesCD:GetTime()
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerAllureofFlamesCD extended by: "..extend, 2)
@@ -518,7 +518,7 @@ local function updateAllTimers(self, ICD)
 			end
 		end
 	elseif phase < 3 then
-		if timerAllureofFlamesCD:GetRemaining() < ICD then
+		if not AllureSpecial and timerAllureofFlamesCD:GetRemaining() < ICD then
 			local elapsed, total = timerAllureofFlamesCD:GetTime()
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerAllureofFlamesCD extended by: "..extend, 2)
@@ -669,10 +669,11 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase < 1.5 then
 			DBM:Debug("Phase 1 begin CLEU", 2)
 			self.vb.phase = 1.5--85%
-			updateAllTimers(self, 7)
+--			updateAllTimers(self, 7)
 		else
-			updateAllTimers(self, 1.5)
+--			updateAllTimers(self, 1.5)
 		end
+		updateAllTimers(self, 7, true)
 	elseif spellId == 184265 then
 		self.vb.wroughtWarned = 0--Reset Counter
 		timerWroughtChaosCD:Start()
@@ -1191,4 +1192,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
-
