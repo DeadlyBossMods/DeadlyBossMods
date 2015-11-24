@@ -171,7 +171,7 @@ mod:AddHudMapOption("HudMapOnFelBurst2", 183634, "Ranged")
 mod:AddHudMapOption("HudMapOnShackledTorment2", 184964, true)
 mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
 mod:AddHudMapOption("HudMapMarkofLegion", 187050, false)
-mod:AddBoolOption("ExtendWroughtHud2", false)
+mod:AddBoolOption("ExtendWroughtHud3", true)
 mod:AddBoolOption("AlternateHudLine", false)
 mod:AddBoolOption("NamesWroughtHud", true)
 mod:AddBoolOption("FilterOtherPhase", true)
@@ -509,7 +509,7 @@ local function updateAllTimers(self, ICD, AllureSpecial)
 			countdownDeathBrand:Start(ICD)
 		end
 		if phase == 1.5 then
-			if timerDesecrateCD:GetRemaining() < ICD then
+			if not AllureSpecial and timerDesecrateCD:GetRemaining() < ICD then
 				local elapsed, total = timerDesecrateCD:GetTime()
 				local extend = ICD - (total-elapsed)
 				DBM:Debug("timerDesecrateCD extended by: "..extend, 2)
@@ -639,7 +639,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 183254 then
 		warnAllureofFlames:Show()
 		timerAllureofFlamesCD:Start()
-		updateAllTimers(self, 6)
+		updateAllTimers(self, 6, true)
 	elseif spellId == 189897 then
 		specWarnDoomfire:Show()
 		timerDoomfireCD:Start()
@@ -662,7 +662,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			voiceDeathBrand:Play("tauntboss")
 		end
-		updateAllTimers(self, 6)
+		updateAllTimers(self, 6)--Possibly change to 5.5 or 5
 	elseif spellId == 185590 then
 		specWarnDesecrate:Show()
 		timerDesecrateCD:Start()
@@ -896,7 +896,7 @@ function mod:SPELL_AURA_APPLIED(args)
 						end
 					end
 					--create line
-					if self.Options.ExtendWroughtHud2 then
+					if self.Options.ExtendWroughtHud3 then
 						if self.Options.AlternateHudLine then
 							DBMHudMap:AddEdge(0, 1, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 25, "beam1", true)
 						else
@@ -919,7 +919,7 @@ function mod:SPELL_AURA_APPLIED(args)
 						DBMHudMap:RegisterRangeMarkerOnPartyMember(185014, "party", args.destName, 0.5, time, nil, nil, nil, 0.5, nil, false):Appear()
 					end
 					--Create Line
-					if self.Options.ExtendWroughtHud2 then
+					if self.Options.ExtendWroughtHud3 then
 						if self.Options.AlternateHudLine then
 							DBMHudMap:AddEdge(1, 0, 0, 0.5, time, args.sourceName, args.destName, nil, nil, nil, nil, 15, "beam1", true)
 						else
