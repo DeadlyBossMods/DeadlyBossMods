@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050 190394 190686 190821 186663 188514 186961",
 	"SPELL_CAST_SUCCESS 183865 187180 188514 183254 185590",
-	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190703 187255 185014 187050 183963",
-	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 187050 183634 183963",
+	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190703 187255 185014 187050 183963 183586",
+	"SPELL_AURA_APPLIED_DOSE 183586",
+	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 187050 183634 183963 183586",
 	"SPELL_SUMMON 187108",
 	"SPELL_PERIODIC_DAMAGE 187255",
 	"SPELL_ABSORBED 187255",
@@ -50,6 +50,7 @@ local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 ----The Nether
 local warnVoidStarFixate			= mod:NewTargetAnnounce(189895, 2)
 --Mythic
+local warnDoomFireStack				= mod:NewStackAnnounce(183586, 3)
 local warnMarkOfLegion				= mod:NewTargetCountAnnounce(187050, 4)
 local warnDarkConduit				= mod:NewCountAnnounce(190394, 2, nil, "Ranged")
 
@@ -90,6 +91,7 @@ local specWarnRainofChaos			= mod:NewSpecialWarningCount(189953, nil, nil, nil, 
 local specWarnDarkConduitSoon		= mod:NewSpecialWarningSoon(190394, "Ranged", nil, nil, 1, 2)
 local specWarnSeethingCorruption	= mod:NewSpecialWarningCount(190506, nil, nil, nil, 2, 2)
 local specWarnMarkOfLegion			= mod:NewSpecialWarningYouPos(187050, nil, nil, 2, 3, 5)
+local yellDoomFireFades				= mod:NewFadesYell(183586, nil, false)
 local yellMarkOfLegion				= mod:NewFadesYell(187050, 28836)
 local yellMarkOfLegionPoS			= mod:NewPosYell(187050, 28836)
 local specWarnSourceofChaosYou		= mod:NewSpecialWarningYou(190703)
@@ -1012,6 +1014,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnNetherStorm:Show()
 	elseif spellId == 183963 and args:IsPlayer() and self:AntiSpam(5, 6) then
 		warnLight:Show()
+	elseif spellId == 183586 and args:IsPlayer() then
+		local amount = args.amount or 1
+		warnDoomFireStack:Cancel()--Just a little anti spam
+		warnDoomFireStack:Schedule(2, args.destName, amount)
+		yellDoomFireFades:Cancel()
+		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)
+		if expires then
+			if args:IsPlayer() then
+				local remaining = expires-GetTime()
+				yellDoomFireFades:Schedule(remaining-1, 1)
+				yellDoomFireFades:Schedule(remaining-2, 2)
+				yellDoomFireFades:Schedule(remaining-3, 3)
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -1064,6 +1080,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame and self.vb.markOfLegionRemaining == 0 then
 			DBM.InfoFrame:Hide()
 		end
+	elseif spellId == 183586 and args:IsPlayer() then
+		warnDoomFireStack:Cancel()
+		yellDoomFireFades:Cancel()
 	end
 end
 
