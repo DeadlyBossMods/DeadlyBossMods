@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Oct 16 2015, 00:46 UTC@14597
+-- Last update: Nov 24 2015, 02:41 UTC@14665
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -437,7 +437,7 @@ DBM_CORE_HUD_USAGE	= {
 	"DBM-HudMap 可用命令：",
 	"-----------------",
 	"/dbm hud <类型> <目标> <持续时间>  新建一个指向玩家的HUD指示器",
-	"变量-类型: arrow, red, blue, green, yellow, icon (请输入英语。如果类型是团队标记需要给目标标记团队标记)",
+	"变量-类型: arrow, dot, red, blue, green, yellow, icon (请输入英语。需要相应的带团队标记的目标。)",
 	"变量-目标: target, focus, <玩家名字> (如果是玩家名字是拉丁字母请区分大小写)",
 	"变量-持续时间: 秒数. 如果这个参数留空, 默认为20分钟",
 	"/dbm hud hide: 清空并关闭HUD"
