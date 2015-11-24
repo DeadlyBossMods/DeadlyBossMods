@@ -639,7 +639,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 183254 then
 		warnAllureofFlames:Show()
 		timerAllureofFlamesCD:Start()
-		updateAllTimers(self, 7)
+		updateAllTimers(self, 6)
 	elseif spellId == 189897 then
 		specWarnDoomfire:Show()
 		timerDoomfireCD:Start()
@@ -667,11 +667,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnDesecrate:Show()
 		timerDesecrateCD:Start()
 		if self.vb.phase < 1.5 then
-			DBM:Debug("Phase 1 begin CLEU", 2)
+			DBM:Debug("Phase 1.5 begin CLEU", 2)
 			self.vb.phase = 1.5--85%
---			updateAllTimers(self, 7)
-		else
---			updateAllTimers(self, 1.5)
 		end
 		updateAllTimers(self, 7, true)
 	elseif spellId == 184265 then
