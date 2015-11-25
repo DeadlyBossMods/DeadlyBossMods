@@ -68,9 +68,9 @@ local specWarnDeathBrand			= mod:NewSpecialWarningCount(183828, "Tank", nil, nil
 --Phase 2: Hand of the Legion
 local specWarnBreakShackle			= mod:NewSpecialWarning("specWarnBreakShackle", nil, nil, nil, 1, 5)
 local yellShackledTorment			= mod:NewPosYell(184964)
-local specWarnWroughtChaos			= mod:NewSpecialWarningMoveAway(186123, nil, nil, nil, 3, 5)
+local specWarnWroughtChaos			= mod:NewSpecialWarningYou(186123, nil, nil, nil, 3, 5)
 local yellWroughtChaos				= mod:NewYell(186123)
-local specWarnFocusedChaos			= mod:NewSpecialWarningMoveAway(185014, nil, nil, nil, 3, 5)
+local specWarnFocusedChaos			= mod:NewSpecialWarningYou(185014, nil, nil, nil, 3, 5)
 local yellFocusedChaos				= mod:NewFadesYell(185014)
 local specWarnDreadFixate			= mod:NewSpecialWarningYou(186574, false)--In case it matters on mythic, it was spammy on heroic and unimportant
 local specWarnFlamesOfArgus			= mod:NewSpecialWarningInterrupt(186663, "-Healer", nil, nil, 1, 2)
@@ -141,7 +141,7 @@ local timerSeethingCorruptionCD		= mod:NewCDCountTimer(107, 190506, nil, nil, ni
 local countdownWroughtChaos			= mod:NewCountdownFades("AltTwo5", 184265, nil, nil, 3)
 local countdownNetherBanish			= mod:NewCountdown(61.9, 186961, nil, nil, 3)
 local countdownDemonicFeedback		= mod:NewCountdown("Alt35", 186961, nil, nil, 3)
-local countdownDeathBrand			= mod:NewCountdown("AltTwo42", 183828, nil, nil, 3)
+local countdownDeathBrand			= mod:NewCountdown("AltTwo42", 183828, "Tank", 2, 3)
 local countdownShackledTorment		= mod:NewCountdown("AltTwo42", 184931, "-Tank", nil, 3)
 local countdownSeethingCorruption	= mod:NewCountdown(61.9, 190506)
 local countdownSourceofChaos		= mod:NewCountdown("Alt35", 190703, "Tank")
@@ -321,9 +321,9 @@ local function showMarkOfLegion(self, spellName)
 	--5,7,9,11 seconds. Sorted lowest to highest
 	--5, 7 on melee, 9, 11 on ranged (if enough alive anyways)
 	--DBM auto sorts icons to 1-5, 2-7, 3-9, 4-11
-	--Yell format is "Mark (expireTime) on <icon><playername><icon>" . Icon assignments should be more than enough
+	--Yell format is "Mark (location) on <icon><playername><icon>" .
 	--MELEE, RANGED, DBM_CORE_LEFT, DBM_CORE_RIGHT (http://puu.sh/jsyr5/7014c50cb3.jpg)
-	--Melee/ranged left/right is still an idea but i don't think will be needed. Not with fixed icons/debuff durations being assigned consistently.
+	--Melee/ranged left/right is now the default since too many users felt weak aura's were required because running to icons by icon assignments was hard.
 	warnMarkOfLegion:Show(self.vb.markOfLegionCast, table.concat(legionTargets, "<, >"))
 	for i = 1, #legionTargets do
 		local name = legionTargets[i]
@@ -342,8 +342,8 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match Star
 				end
 				if name == playerName then
-					specWarnMarkOfLegion:Show(roundedTime.."-"..RAID_TARGET_1)
-					yellMarkOfLegionPoS:Yell(roundedTime, 1, 1)
+					specWarnMarkOfLegion:Show(MELEE.."-"..DBM_CORE_LEFT)
+					yellMarkOfLegionPoS:Yell(MELEE.."-"..DBM_CORE_LEFT, 1, 1)
 					voiceMarkOfLegion:Play("mm1")
 				end
 			elseif i == 2 then
@@ -354,8 +354,8 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match Circle
 				end
 				if name == playerName then
-					specWarnMarkOfLegion:Show(roundedTime.."-"..RAID_TARGET_2)
-					yellMarkOfLegionPoS:Yell(roundedTime, 2, 2)
+					specWarnMarkOfLegion:Show(MELEE.."-"..DBM_CORE_RIGHT)
+					yellMarkOfLegionPoS:Yell(MELEE.."-"..DBM_CORE_RIGHT, 2, 2)
 					voiceMarkOfLegion:Play("mm2")
 				end
 			elseif i == 3 then
@@ -366,8 +366,8 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
 				end
 				if name == playerName then
-					specWarnMarkOfLegion:Show(roundedTime.."-"..RAID_TARGET_3)
-					yellMarkOfLegionPoS:Yell(roundedTime, 3, 3)
+					specWarnMarkOfLegion:Show(RANGED.."-"..DBM_CORE_LEFT)
+					yellMarkOfLegionPoS:Yell(RANGED.."-"..DBM_CORE_LEFT, 3, 3)
 					voiceMarkOfLegion:Play("mm3")
 				end
 			else
@@ -378,8 +378,8 @@ local function showMarkOfLegion(self, spellName)
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
 				end
 				if name == playerName then
-					specWarnMarkOfLegion:Show(roundedTime.."-"..RAID_TARGET_4)
-					yellMarkOfLegionPoS:Yell(roundedTime, 4, 4)
+					specWarnMarkOfLegion:Show(RANGED.."-"..DBM_CORE_RIGHT)
+					yellMarkOfLegionPoS:Yell(RANGED.."-"..DBM_CORE_RIGHT, 4, 4)
 					voiceMarkOfLegion:Play("mm4")
 				end
 			end
@@ -839,16 +839,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 186123 then--Wrought Chaos
 		if self:AntiSpam(3, 3) then
 			self.vb.wroughtWarned = self.vb.wroughtWarned + 1
+			if self:IsMythic() then
+				--Only warn once on mythic instead of spamming it, since you always get all of them
+				specWarnWroughtChaos:Show()
+				voiceWroughtChaos:Play("186123")
+			end
 		end
 		if args:IsPlayer() then
-			specWarnWroughtChaos:Show()
 			if not self:IsMythic() then
+				specWarnWroughtChaos:Show()
+				voiceWroughtChaos:Play("186123")
 				yellWroughtChaos:Yell()
 				countdownWroughtChaos:Start()
 			else
 				countdownWroughtChaos:Start(6)
 			end
-			voiceWroughtChaos:Play("186123") --new voice
 		end
 		if not playerBanished or not self.Options.FilterOtherPhase then
 			if not self:IsMythic() then
@@ -857,9 +862,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 185014 then--Focused Chaos
 		if args:IsPlayer() then
-			specWarnFocusedChaos:Show()
-			voiceFocusedChaos:Play("185014")
 			if not self:IsMythic() then
+				specWarnFocusedChaos:Show()
+				voiceFocusedChaos:Play("185014")
 				yellFocusedChaos:Yell(5)
 				yellFocusedChaos:Schedule(3, 2)
 				yellFocusedChaos:Schedule(2, 3)
