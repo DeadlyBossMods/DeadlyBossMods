@@ -2998,7 +2998,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 	end
 	_G[savedVarsName][fullname] = savedOptions
 	if profileNum > 0 then
-		_G[savedVarsName][fullname]["talent"..profileNum] = profileNum == 3 and gladStance or currentSpecName
+		_G[savedVarsName][fullname]["talent"..profileNum] = profileNum == 3 and (gladStance or "Glad Stance Temp") or currentSpecName
 		self:Debug("LoadModOptions: Finished loading ".._G[savedVarsName][fullname]["talent"..profileNum])
 	end
 	_G[savedStatsName] = savedStats
