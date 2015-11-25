@@ -6064,7 +6064,7 @@ do
 end
 
 function DBM:SetCurrentSpecInfo()
-	if UnitBuff("player", gladStance) then 
+	if gladStance and UnitBuff("player", gladStance) then 
 		currentSpecGroup = 3 -- give 3rd spec option only for glad stance.
 		currentSpecID = 74 -- temp id for glad warrior, bliz not uses it
 	else
@@ -6698,7 +6698,7 @@ function DBM:RoleCheck(ignoreLoot)
 	local _, _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
 	if not InCombatLockdown() and ((IsPartyLFG() and (difficultyIndex == 14 or difficultyIndex == 15)) or not IsPartyLFG()) then
 		local tempRole--Use temp role because we still want Role to be "tank" for loot check comparison at bottom (gladiators still use tank gear)
-		if role == "TANK" and UnitBuff("player", gladStance) then--Special handling for gladiator stance
+		if gladStance and role == "TANK" and UnitBuff("player", gladStance) then--Special handling for gladiator stance
 			currentSpecGroup = 3 -- give 3rd spec option only for glad stance.
 			currentSpecID = 74 -- temp id for glad warrior, bliz not uses it
 			tempRole = "DAMAGER"
@@ -7734,6 +7734,17 @@ do
 			["RaidCooldown"] = true,--Revival
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
+		},
+		[577] = {	--Havok Demon Hunter
+			["Dps"] = true,
+			["Melee"] = true,
+			["MeleeDps"] = true,
+			["Physical"] = true,
+		},
+		[581] = {	--Vengeance Demon Hunter
+			["Tank"] = true,
+			["Melee"] = true,
+			["Physical"] = true,
 		},
 	}
 	specRoleTable[63] = specRoleTable[62]--Frost Mage
