@@ -301,6 +301,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt			= "%s - unterbreche >%%s<!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interruptcount	= "%s - unterbreche >%%s<! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you				= "%s auf dir"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.youcount			= "%s (%%s) auf dir"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.youpos			= "%s (Position: %%s) auf dir"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target			= "%s auf >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetcount		= "%s (%%s) auf >%%s< "
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt				= "%s auf >%%s< - jetzt spotten"
@@ -328,6 +329,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt		= "Spezialwarnung zum Unterbrechen vo
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= "Spezialwarnung (mit Zählung) zum Unterbrechen von $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you 			= "Spezialwarnung, wenn du von $spell:%s betroffen bist"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.youcount		= "Spezialwarnung (mit Zählung), wenn du von $spell:%s betroffen bist"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.youpos			= "Spezialwarnung (mit Position), wenn du von $spell:%s betroffen bist"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target 			= "Spezialwarnung, wenn jemand von $spell:%s betroffen ist"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetcount 	= "Spezialwarnung (mit Zählung), wenn jemand von $spell:%s betroffen ist"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt 			= "Spezialwarnung zum Spotten, wenn der andere Tank von $spell:%s betroffen ist"
@@ -426,7 +428,7 @@ DBM_CORE_HUD_USAGE	= {
 	"Benutzung der DBM-HudMap:",
 	"-----------------",
 	"/dbm hud <Typ> <Ziel> <Dauer>: Erzeugt eine HudMap, die für die gewünschte Dauer auf einen Spieler zeigt",
-	"gültige Typen: arrow, red, blue, green, yellow, icon (benötigt ein Ziel mit gesetztem Schlachtzugzeichen)",
+	"gültige Typen: arrow, dot, red, blue, green, yellow, icon (benötigt ein Ziel mit gesetztem Schlachtzugzeichen)",
 	"gültige Ziele: target, focus, <Spielername>",
 	"gültige Dauer: beliebige Zahl (in Sekunden). 20 Minuten, falls Dauer nicht angegeben.",
 	"/dbm hud hide: Deaktiviert und versteckt die HudMap"
