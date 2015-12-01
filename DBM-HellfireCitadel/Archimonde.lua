@@ -138,10 +138,10 @@ local timerSeethingCorruptionCD		= mod:NewCDCountTimer(107, 190506, nil, nil, ni
 --countdowns kind of blow with this fights timer variations.
 --Everything but overfiend is a CD
 --I don't want to use a countdown on something thats 47-56 like allure or 52-70 like felburst
-local countdownWroughtChaos			= mod:NewCountdownFades("AltTwo5", 184265, nil, nil, 3)
+local countdownWroughtChaos			= mod:NewCountdownFades("Alt5", 184265, nil, nil, 3)
 local countdownNetherBanish			= mod:NewCountdown(61.9, 186961, nil, nil, 3)
 local countdownDemonicFeedback		= mod:NewCountdown("Alt35", 186961, nil, nil, 3)
-local countdownDeathBrand			= mod:NewCountdown("AltTwo42", 183828, "Tank", 2, 3)
+local countdownDeathBrand			= mod:NewCountdown(42, 183828, "Tank", 2, 3)
 local countdownShackledTorment		= mod:NewCountdown("AltTwo42", 184931, "-Tank", nil, 3)
 local countdownSeethingCorruption	= mod:NewCountdown(61.9, 190506)
 local countdownSourceofChaos		= mod:NewCountdown("Alt35", 190703, "Tank")
@@ -1159,7 +1159,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerWroughtChaosCD:Start(5.2)
 		end
 		timerDeathbrandCD:Start(35, self.vb.deathBrandCount+1)--35-39
-		countdownDeathBrand:Cancel()
 		countdownDeathBrand:Start(35)
 		timerAllureofFlamesCD:Start(40.5)--40-45
 		timerShackledTormentCD:Start(25, self.vb.tormentCast+1)--17-25 (almost always 25, but sometimes it comes earlier, unsure why)
