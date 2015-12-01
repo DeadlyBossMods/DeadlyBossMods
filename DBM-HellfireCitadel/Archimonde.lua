@@ -607,8 +607,8 @@ function mod:OnCombatStart(delay)
 	self.vb.overfiendCount = 0
 	playerBanished = false
 	timerDoomfireCD:Start(5.1-delay)
-	timerDeathbrandCD:Start(15.5-delay, 1)
-	countdownDeathBrand:Start(15.5-delay)
+	timerDeathbrandCD:Start(15-delay, 1)
+	countdownDeathBrand:Start(15-delay)
 	timerAllureofFlamesCD:Start(30-delay)
 	warnFelBurstSoon:Schedule(35-delay)
 	timerFelBurstCD:Start(40-delay)
