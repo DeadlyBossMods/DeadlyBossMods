@@ -839,7 +839,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 186123 then--Wrought Chaos
 		if self:AntiSpam(3, 3) then
 			self.vb.wroughtWarned = self.vb.wroughtWarned + 1
-			if self:IsMythic() then
+			if self:IsMythic() and self:AntiSpam(20, 7) and self:IsAlive() then
 				--Only warn once on mythic instead of spamming it, since you always get all of them
 				specWarnWroughtChaos:Show()
 				voiceWroughtChaos:Play("186123")
