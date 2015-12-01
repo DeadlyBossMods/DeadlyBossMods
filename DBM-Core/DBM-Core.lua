@@ -10587,6 +10587,10 @@ function bossModPrototype:IsInCombat()
 	return self.inCombat
 end
 
+function bossModPrototype:IsAlive()
+	return not UnitIsDeadOrGhost("player")
+end
+
 function bossModPrototype:SetMinCombatTime(t)
 	self.minCombatTime = t
 end
