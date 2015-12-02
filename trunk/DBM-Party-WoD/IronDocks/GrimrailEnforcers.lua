@@ -54,10 +54,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnFlamingSlash:Show()
 		if self:IsNormal() then
 			timerFlamingSlashCD:Start(41.5)
+			countdownFlamingSlash:Start(41.5)
 		else
 			timerFlamingSlashCD:Start()
+			countdownFlamingSlash:Start()
 		end
-		countdownFlamingSlash:Start()
 	elseif spellId == 163390 then
 		warnOgreTraps:Show()
 		specWarnOgreTraps:Show()
