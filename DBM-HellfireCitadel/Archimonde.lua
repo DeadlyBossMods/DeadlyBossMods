@@ -499,6 +499,7 @@ local function updateAllTimers(self, ICD, AllureSpecial)
 			local elapsed, total = timerFelBurstCD:GetTime()
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerFelBurstCD extended by: "..extend, 2)
+			warnFelBurstSoon:Cancel()
 			timerFelBurstCD:Cancel()
 			timerFelBurstCD:Update(elapsed, total+extend)
 		end
@@ -574,6 +575,7 @@ local function updateAllTimers(self, ICD, AllureSpecial)
 			local elapsed, total = timerDemonicFeedbackCD:GetTime(self.vb.demonicCount+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerDemonicFeedbackCD extended by: "..extend, 2)
+			specWarnDemonicFeedbackSoon:Cancel()
 			timerDemonicFeedbackCD:Cancel()
 			timerDemonicFeedbackCD:Update(elapsed, total+extend, self.vb.demonicCount+1)
 			countdownDemonicFeedback:Cancel()
@@ -655,8 +657,11 @@ function mod:SPELL_CAST_START(args)
 		timerFelBurstCD:Start()
 		updateAllTimers(self, 7)
 	elseif spellId == 183828 then
-		self.vb.deathBrandCount = self.vb.deathBrandCount + 1
+		if self:AntiSpam(10, 8) then
+			self.vb.deathBrandCount = self.vb.deathBrandCount + 1
+		end
 		specWarnDeathBrand:Show(self.vb.deathBrandCount)
+		timerDeathbrandCD:Cancel()
 		timerDeathbrandCD:Start(nil, self.vb.deathBrandCount+1)
 		countdownDeathBrand:Cancel()
 		countdownDeathBrand:Start()
@@ -1181,7 +1186,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			countdownNetherBanish:Start(10.9)
 			timerDemonicFeedbackCD:Start(29, 1)--29-33
 			self:Schedule(23.5, setDemonicFeedback, self)
-			specWarnDemonicFeedbackSoon:Schedule(23)
 			countdownDemonicFeedback:Start(29)
 			timerShackledTormentCD:Start(55, self.vb.tormentCast+1)
 			countdownShackledTorment:Start(55)
