@@ -159,7 +159,7 @@ L:SetOptionLocalization({
 	NamesWroughtHud			= "Show player names HUD for $spell:185014 targets",
 	FilterOtherPhase		= "Filter out warnings for events not in same phase as you",
 	MarkBehavior			= "Set Mark of Legion yell behavior for raid (Requires raid leader)",
-	Numbered				= "1, 2, 3, 4. Usable for any strat using numbered positions.",--Default
+	Numbered				= "Star, Circle, Diamond, Triangle. Usable for any strat using numbered/flare positions.",--Default
 	LocSmallFront			= "Melee Left/Right(star,circle), Ranged Left/Right(diamond,triangle). Short debuffs in melee.",
 	LocSmallBack			= "Melee Left/Right(diamond,triangle), Ranged Left/Right(star,circle). Short debuffs at ranged."
 })
