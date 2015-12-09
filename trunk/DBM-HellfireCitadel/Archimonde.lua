@@ -179,6 +179,7 @@ mod:AddBoolOption("ExtendWroughtHud3", true)
 mod:AddBoolOption("NamesWroughtHud", true)
 mod:AddBoolOption("FilterOtherPhase", true)
 mod:AddInfoFrameOption(184964)
+mod:AddDropdownOption("MarkBehavior", {"Numbered", "LocSmallFront", "LocSmallBack"}, "Numbered", "misc")
 
 mod.vb.phase = 1
 mod.vb.demonicCount = 0
@@ -202,10 +203,11 @@ mod.vb.sourceOfChaosCast = 0
 mod.vb.twistedDarknessCast = 0
 mod.vb.seethingCorruptionCount = 0
 mod.vb.darkConduit = false
+mod.vb.MarkBehavior = "Numbered"
 --Mythic sequence timers for phase 3 (Made by video, subject to inaccuracies until logs available)
 local legionTimers = {20, 63, 60, 60, 48, 46, 47}--All verified by log
 local darkConduitTimers = {8, 123, 95, 56, 52}-- All verified by log
-local infernalTimers = {35, 63, 63, 55, 68, 41}--All verified by log
+local infernalTimers = {35, 62.5, 63, 55, 68, 41}--All verified by log
 local sourceofChaosTimers = {49, 58, 76, 78}--All verified by log
 local twistedDarknessTimers = {75, 78, 42, 40, 72}--All verified by log
 local seethingCorruptionTimers = {61, 58, 52, 70, 30, 41}--All verified by log
@@ -330,58 +332,108 @@ local function showMarkOfLegion(self, spellName)
 		if not name then break end
 		local uId = DBM:GetRaidUnitId(name)
 		if not uId then break end
-		local _, _, _, _, _, _, expires = UnitDebuff(uId, spellName)
-		if expires then
-			local debuffTime = expires - GetTime()
-			local roundedTime = math.floor(debuffTime+0.5)
-			if i == 1 then
-				if self.Options.SetIconOnMarkOfLegion2 then
-					self:SetIcon(name, 1)
-				end
-				if self.Options.HudMapMarkofLegion then
+		if self.vb.MarkBehavior == "Numbered" then
+		
+		elseif self.vb.MarkBehavior == "LocSmallFront" then
+
+		elseif self.vb.MarkBehavior == "LocSmallBack" then
+		
+		end
+		if i == 1 then
+			local number, position = i, MELEE
+			if self.vb.MarkBehavior == "LocSmallBack" then
+				number, position = 3, RANGED
+			end
+			local message = position.."-"..DBM_CORE_LEFT
+			if self.vb.MarkBehavior == "Numbered" then
+				message = number
+			end
+			if self.Options.SetIconOnMarkOfLegion2 then
+				self:SetIcon(name, number)
+			end
+			if self.Options.HudMapMarkofLegion then
+				if number == 3 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
+				else
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match Star
 				end
-				if name == playerName then
-					specWarnMarkOfLegion:Show(MELEE.."-"..DBM_CORE_LEFT)
-					yellMarkOfLegionPoS:Yell(MELEE.."-"..DBM_CORE_LEFT, 1, 1)
-					voiceMarkOfLegion:Play("mm1")
-				end
-			elseif i == 2 then
-				if self.Options.SetIconOnMarkOfLegion2 then
-					self:SetIcon(name, 2)
-				end
-				if self.Options.HudMapMarkofLegion then
+			end
+			if name == playerName then
+				specWarnMarkOfLegion:Show(message)
+				yellMarkOfLegionPoS:Yell(message, number, number)
+				voiceMarkOfLegion:Play("mm"..number)
+			end
+		elseif i == 2 then
+			local number, position = i, MELEE
+			if self.vb.MarkBehavior == "LocSmallBack" then
+				number, position = 4, RANGED
+			end
+			local message = position.."-"..DBM_CORE_RIGHT
+			if self.vb.MarkBehavior == "Numbered" then
+				message = number
+			end
+			if self.Options.SetIconOnMarkOfLegion2 then
+				self:SetIcon(name, number)
+			end
+			if self.Options.HudMapMarkofLegion then
+				if number == 4 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
+				else
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match Circle
 				end
-				if name == playerName then
-					specWarnMarkOfLegion:Show(MELEE.."-"..DBM_CORE_RIGHT)
-					yellMarkOfLegionPoS:Yell(MELEE.."-"..DBM_CORE_RIGHT, 2, 2)
-					voiceMarkOfLegion:Play("mm2")
-				end
-			elseif i == 3 then
-				if self.Options.SetIconOnMarkOfLegion2 then
-					self:SetIcon(name, 3)
-				end
-				if self.Options.HudMapMarkofLegion then
+			end
+			if name == playerName then
+				specWarnMarkOfLegion:Show(message)
+				yellMarkOfLegionPoS:Yell(message, number, number)
+				voiceMarkOfLegion:Play("mm"..number)
+			end
+		elseif i == 3 then
+			local number, position = i, RANGED
+			if self.vb.MarkBehavior == "LocSmallBack" then
+				number, position = 1, MELEE
+			end
+			local message = position.."-"..DBM_CORE_LEFT
+			if self.vb.MarkBehavior == "Numbered" then
+				message = number
+			end
+			if self.Options.SetIconOnMarkOfLegion2 then
+				self:SetIcon(name, number)
+			end
+			if self.Options.HudMapMarkofLegion then
+				if number == 1 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match Star
+				else
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
 				end
-				if name == playerName then
-					specWarnMarkOfLegion:Show(RANGED.."-"..DBM_CORE_LEFT)
-					yellMarkOfLegionPoS:Yell(RANGED.."-"..DBM_CORE_LEFT, 3, 3)
-					voiceMarkOfLegion:Play("mm3")
-				end
-			else
-				if self.Options.SetIconOnMarkOfLegion2 then
-					self:SetIcon(name, 4)
-				end
-				if self.Options.HudMapMarkofLegion then
+			end
+			if name == playerName then
+				specWarnMarkOfLegion:Show(message)
+				yellMarkOfLegionPoS:Yell(message, number, number)
+				voiceMarkOfLegion:Play("mm"..number)
+			end
+		else
+			local number, position = i, RANGED
+			if self.vb.MarkBehavior == "LocSmallBack" then
+				number, position = 2, MELEE
+			end
+			local message = position.."-"..DBM_CORE_RIGHT
+			if self.vb.MarkBehavior == "Numbered" then
+				message = number
+			end
+			if self.Options.SetIconOnMarkOfLegion2 then
+				self:SetIcon(name, number)
+			end
+			if self.Options.HudMapMarkofLegion then
+				if number == 2 then
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match Circle
+				else
 					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
 				end
-				if name == playerName then
-					specWarnMarkOfLegion:Show(RANGED.."-"..DBM_CORE_RIGHT)
-					yellMarkOfLegionPoS:Yell(RANGED.."-"..DBM_CORE_RIGHT, 4, 4)
-					voiceMarkOfLegion:Play("mm4")
-				end
+			end
+			if name == playerName then
+				specWarnMarkOfLegion:Show(message)
+				yellMarkOfLegionPoS:Yell(message, number, number)
+				voiceMarkOfLegion:Play("mm"..number)
 			end
 		end
 	end
@@ -476,6 +528,8 @@ end
 --Demonic Feedback triggers 3.5 second ICD
 --Rain of chaos doesn't trigger ICD nor is affected by it
 --Nether banish IS affected by ICD but inconclusive on whether it CAUSES one
+--Allure and desecreate do not trigger ICD for eachother but trigger them for everythinge else in phase 1.5
+--Allure and shackles don't trigger ICDs fore achother but do for everything else in phase 2
 local function updateAllTimers(self, ICD, AllureSpecial)
 --	if not DBM.Options.DebugMode then return end
 	DBM:Debug("updateAllTimers running", 3)
@@ -615,6 +669,7 @@ function mod:OnCombatStart(delay)
 	warnFelBurstSoon:Schedule(35-delay)
 	timerFelBurstCD:Start(40-delay)
 	if self:IsMythic() then
+		self.vb.MarkBehavior = "Numbered"
 		self.vb.markOfLegionCast = 0
 		self.vb.darkConduitCast = 0
 		self.vb.darkConduitSpawn = 0
@@ -1202,6 +1257,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerSeethingCorruptionCD:Start(61, 1)
 			countdownSeethingCorruption:Start(61)
 			timerTwistedDarknessCD:Start(75, 1)
+			if UnitIsGroupLeader("player") then
+				if self.Options.MarkBehavior == "Numbered" then
+					self:SendSync("Numbered")
+				elseif self.Options.MarkBehavior == "LocSmallFront" then
+					self:SendSync("LocSmallFront")
+				elseif self.Options.MarkBehavior == "LocSmallBack" then
+					self:SendSync("LocSmallBack")
+				end
+			end
 		end
 	end
 end
@@ -1210,6 +1274,12 @@ function mod:OnSync(msg)
 	if msg == "phase25" and self.vb.phase < 2.5 then
 		DBM:Debug("Phase 2.5 begin yell", 2)
 		self.vb.phase = 2.5
+	elseif msg == "Numbered" then
+		self.vb.MarkBehavior = "Numbered"
+	elseif msg == "LocSmallFront" then
+		self.vb.MarkBehavior = "LocSmallFront"
+	elseif msg == "LocSmallBack" then
+		self.vb.MarkBehavior = "LocSmallBack"
 	end
 end
 
