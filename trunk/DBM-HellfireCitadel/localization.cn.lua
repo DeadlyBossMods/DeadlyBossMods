@@ -150,7 +150,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreakShackle	= "特殊警报：当你受到$spell:184964影响时。DBM会自动分配拉断次序，使得伤害最小化。",
-	ExtendWroughtHud2		= "将HUD连线延长到受到$spell:185014影响的目标上。 (可能会导致连线准确度下降)",
+	ExtendWroughtHud3		= "将HUD连线延长到受到$spell:185014影响的目标上。 (可能会导致连线准确度下降)",
 	AlternateHudLine		= "在HUD中使用代替的线条材质来指示$spell:185014",
 	NamesWroughtHud			= "在HUD中显示受到$spell:185014影响的目标的姓名",
 	FilterOtherPhase		= "过滤掉不在同一阶段的事件"

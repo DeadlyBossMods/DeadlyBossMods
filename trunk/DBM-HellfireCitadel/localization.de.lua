@@ -151,7 +151,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreakShackle	= "Spezialwarnung, wenn du von $spell:184964 betroffen bist (diese Warnung weist zur Minimierung des gleichzeitigen Schadens die Brechungsreihenfolge automatisch zu)",
-	ExtendWroughtHud2		= "Erweitere die HudMap-Linien über das Ziel von $spell:185014 hinaus (kann die Liniengenauigkeit verringern)",
+	ExtendWroughtHud3		= "Erweitere die HudMap-Linien über das Ziel von $spell:185014 hinaus (kann die Liniengenauigkeit verringern)",
 	AlternateHudLine		= "Nutze alternative Linientextur für HudMap-Linien zwischen Zielen von $spell:185014",
 	NamesWroughtHud			= "Zeige Spielernamen in HudMap für Ziele von $spell:185014",
 	FilterOtherPhase		= "Zeige keine Warnungen für Ereignisse, die sich nicht in deiner Phase befinden"
