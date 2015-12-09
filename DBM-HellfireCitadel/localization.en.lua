@@ -154,14 +154,14 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreakShackle	= "Show special warning when affected by $spell:184964. This warning auto assigns break order to minimize similtanious damage.",
-	ExtendWroughtHud2		= "Extend the HUD lines beyond the $spell:185014 target (May diminish line accuracy)",
+	ExtendWroughtHud3		= "Extend the HUD lines beyond the $spell:185014 target (May diminish line accuracy)",
 	AlternateHudLine		= "Use alternate line texture for HUD lines between $spell:185014 targets",
 	NamesWroughtHud			= "Show player names HUD for $spell:185014 targets",
 	FilterOtherPhase		= "Filter out warnings for events not in same phase as you",
 	MarkBehavior			= "Set Mark of Legion yell behavior for raid (Requires raid leader)",
-	Numbered				= "Star, Circle, Diamond, Triangle. Usable for any strat using numbered/flare positions.",--Default
-	LocSmallFront			= "Melee Left/Right(star,circle), Ranged Left/Right(diamond,triangle). Short debuffs in melee.",
-	LocSmallBack			= "Melee Left/Right(diamond,triangle), Ranged Left/Right(star,circle). Short debuffs at ranged."
+	Numbered				= "Star, Circle, Diamond, Triangle. Usable for any strat using flare positions.",--Default
+	LocSmallFront			= "Melee L/R(Star,Circle), Ranged L/R(Diamond,Triangle). Short debuffs in melee.",
+	LocSmallBack			= "Melee L/R(Diamond,Triangle), Ranged L/R(Star,Circle). Short debuffs at ranged."
 })
 
 L:SetMiscLocalization({
