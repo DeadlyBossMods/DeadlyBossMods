@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: Aug 18 2015, 15:13 UTC@14354
+-- Last update: Dec 9 2015, 20:25 UTC@14693
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -153,7 +153,11 @@ L:SetOptionLocalization({
 	ExtendWroughtHud3		= "将HUD连线延长到受到$spell:185014影响的目标上。 (可能会导致连线准确度下降)",
 	AlternateHudLine		= "在HUD中使用代替的线条材质来指示$spell:185014",
 	NamesWroughtHud			= "在HUD中显示受到$spell:185014影响的目标的姓名",
-	FilterOtherPhase		= "过滤掉不在同一阶段的事件"
+	FilterOtherPhase		= "过滤掉不在同一阶段的事件",
+	MarkBehavior			= "设定$spell:187051的喊叫方式（需要团长权限）",
+	Numbered				= "星星，大饼，菱形，三角。 适合任何站位方式。",--Default
+	LocSmallFront			= "近战（左星星，右大饼），远程（左菱形，右三角）。Debuff时间短的去近战位。",
+	LocSmallBack			= "近战（左菱形，右三角），远程（左星星，右大饼）。Debuff时间短的去远程位。"
 })
 
 L:SetMiscLocalization({
