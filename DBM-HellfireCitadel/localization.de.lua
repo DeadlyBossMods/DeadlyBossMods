@@ -158,7 +158,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	phase2point5		= "Look upon the endless forces of the Burning Legion and know the folly of your resistance.",--translate (trigger)
+	phase2point5		= "Seht die endlosen Ränge der Brennenden Legion und erkennt die Ausichtslosigkeit Eurer Wiederwehr!",
 	First				= "Erster",
 	Second				= "Zweiter",
 	Third				= "Dritter",
