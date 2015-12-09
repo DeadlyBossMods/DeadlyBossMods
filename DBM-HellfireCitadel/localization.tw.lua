@@ -152,7 +152,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreakShackle	= "當中了$spell:184964時顯示特別警告。此警告會自動分配拉斷順序去最小化承受傷害。",
-	ExtendWroughtHud2		= "把HUB連線延伸到$spell:185014目標 (可能會降低連線精準度)",
+	ExtendWroughtHud3		= "把HUB連線延伸到$spell:185014目標 (可能會降低連線精準度)",
 	AlternateHudLine		= "為$spell:185014之間的目標HUD連線使用替代連線材質",
 	NamesWroughtHud			= "為$spell:185014目標顯示HUD的玩家名稱",
 	FilterOtherPhase		= "過濾掉與你不同階段的警告"
