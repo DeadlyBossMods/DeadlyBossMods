@@ -5755,21 +5755,24 @@ do
 				if thisTime < 30 then -- Normally, one attempt will last at least 30 sec.
 					totalPulls = totalPulls - 1
 					mod.stats[statVarTable[savedDifficulty].."Pulls"] = totalPulls
-					if scenario then
-						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT:format(difficultyText..name, strFromTime(thisTime)))
-					else
-						self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(difficultyText..name, wipeHP, strFromTime(thisTime)))
-						--No reason to GCE it here, so omited on purpose.
+					if self.Options.ShowDefeatMessage then
+						if scenario then
+							self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT:format(difficultyText..name, strFromTime(thisTime)))
+						else
+							self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(difficultyText..name, wipeHP, strFromTime(thisTime)))
+							--No reason to GCE it here, so omited on purpose.
+						end
 					end
-
 				else
-					if scenario then
-						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT_LONG:format(difficultyText..name, strFromTime(thisTime), totalPulls - totalKills))
-					else
-						self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
-						if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 then
-							if InGuildParty() then--Guild Group
-								SendAddonMessage("D4", "GCE\t"..modId.."\t2\t1\t"..strFromTime(thisTime).."\t"..wipeHP.."\t"..difficultyIndex, "GUILD")
+					if self.Options.ShowDefeatMessage then
+						if scenario then
+							self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT_LONG:format(difficultyText..name, strFromTime(thisTime), totalPulls - totalKills))
+						else
+							self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
+							if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 then
+								if InGuildParty() then--Guild Group
+									SendAddonMessage("D4", "GCE\t"..modId.."\t2\t1\t"..strFromTime(thisTime).."\t"..wipeHP.."\t"..difficultyIndex, "GUILD")
+								end
 							end
 						end
 					end
