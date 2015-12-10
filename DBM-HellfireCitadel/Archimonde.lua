@@ -888,7 +888,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 183865 then
 		warnDemonicHavoc:CombinedShow(0.3, args.destName)
-	elseif spellId == 184964 then
+	elseif spellId == 184964 and not playerBanished then
 		shacklesTargets[#shacklesTargets+1] = args.destName
 		self.vb.unleashedCountRemaining = self.vb.unleashedCountRemaining + 1
 		self:Unschedule(breakShackles)
