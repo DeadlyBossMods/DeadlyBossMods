@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050 190394 190686 190821 186663 188514 186961 190313",
-	"SPELL_CAST_SUCCESS 183865 187180 188514 183254 185590",
-	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190703 187255 185014 187050 183963 183586",
+	"SPELL_CAST_SUCCESS 187180 188514 183254 185590",
+	"SPELL_AURA_APPLIED 182879 183634 184964 186574 186961 189895 186123 186662 186952 190703 187255 185014 187050 183963 183586",
 	"SPELL_AURA_APPLIED_DOSE 183586",
 	"SPELL_AURA_REMOVED 186123 185014 186961 186952 184964 187050 183634 183963 183586",
 	"SPELL_SUMMON 187108",
@@ -36,7 +36,6 @@ local warnAllureofFlames			= mod:NewCastAnnounce(183254, 2)
 local warnFelBurstSoon				= mod:NewSoonAnnounce(183817, 3)
 local warnFelBurstCast				= mod:NewCastAnnounce(183817, 3)
 local warnFelBurst					= mod:NewTargetAnnounce(183817, 3, nil, true, 2)
-local warnDemonicHavoc				= mod:NewTargetAnnounce(183865, 3)--Mythic
 local warnLight						= mod:NewYouAnnounce(183963, 1)
 --Phase 2: Hand of the Legion
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
@@ -110,7 +109,6 @@ local timerDesecrateCD				= mod:NewCDTimer(26.3, 185590, nil, nil, 2, 2)
 local timerLightCD					= mod:NewNextTimer(10, 183963, nil, nil, nil, 5)
 ----Hellfire Deathcaller
 local timerShadowBlastCD			= mod:NewCDTimer(7.3, 183864, nil, "Tank", nil, 5)
-local timerDemonicHavocCD			= mod:NewAITimer(107, 183865, nil, nil, nil, 3)--Mythic, timer unknown, AI timer used until known. I'm not sure this ability still exists
 --Phase 2: Hand of the Legion
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerShackledTormentCD		= mod:NewCDCountTimer(31.5, 184931, nil, nil, nil, 3)
@@ -172,14 +170,14 @@ mod:AddSetIconOption("SetIconOnMarkOfLegion2", 187050, true)
 mod:AddSetIconOption("SetIconOnInfernals2", "ej11618", false, true)
 mod:AddHudMapOption("HudMapOnFelBurst2", 183634, "Ranged")
 mod:AddHudMapOption("HudMapOnShackledTorment2", 184964, true)
-mod:AddHudMapOption("HudMapOnWrought", 184265)--Yellow on caster (wrought chaos), red on target (focused chaos)
+mod:AddHudMapOption("HudMapOnWrought", 184265)
 mod:AddHudMapOption("HudMapMarkofLegion", 187050, false)
 mod:AddBoolOption("ExtendWroughtHud3", true)
 --mod:AddBoolOption("AlternateHudLine", false)
 mod:AddBoolOption("NamesWroughtHud", true)
 mod:AddBoolOption("FilterOtherPhase", true)
 mod:AddInfoFrameOption(184964)
-mod:AddDropdownOption("MarkBehavior", {"Numbered", "LocSmallFront", "LocSmallBack"}, "Numbered", "misc")
+mod:AddDropdownOption("MarkBehavior", {"Numbered", "LocSmallFront", "LocSmallBack", "NoAssignment"}, "Numbered", "misc")
 
 mod.vb.phase = 1
 mod.vb.demonicCount = 0
@@ -328,18 +326,12 @@ local function showMarkOfLegion(self, spellName)
 	--MELEE, RANGED, DBM_CORE_LEFT, DBM_CORE_RIGHT (http://puu.sh/jsyr5/7014c50cb3.jpg)
 	--Melee/ranged left/right is now the default since too many users felt weak aura's were required because running to icons by icon assignments was hard.
 	warnMarkOfLegion:Show(self.vb.markOfLegionCast, table.concat(legionTargets, "<, >"))
+	if self.vb.MarkBehavior == "NoAssignment" then return end
 	for i = 1, #legionTargets do
 		local name = legionTargets[i]
 		if not name then break end
 		local uId = DBM:GetRaidUnitId(name)
 		if not uId then break end
-		if self.vb.MarkBehavior == "Numbered" then
-		
-		elseif self.vb.MarkBehavior == "LocSmallFront" then
-
-		elseif self.vb.MarkBehavior == "LocSmallBack" then
-		
-		end
 		if i == 1 then
 			local number, position = i, MELEE
 			if self.vb.MarkBehavior == "LocSmallBack" then
@@ -849,9 +841,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 183865 then
-		timerDemonicHavocCD:Start(nil, args.sourceGUID)
-	elseif spellId == 187180 then
+	if spellId == 187180 then
 		self.vb.demonicFeedback = false
 		self:Schedule(28, setDemonicFeedback, self)
 	elseif spellId == 188514 then
@@ -893,8 +883,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.HudMapOnFelBurst2 then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 5, nil, nil, nil, 0.5):Appear():SetLabel(args.destName)
 		end
-	elseif spellId == 183865 then
-		warnDemonicHavoc:CombinedShow(0.3, args.destName)
 	elseif spellId == 184964 then
 		shacklesTargets[#shacklesTargets+1] = args.destName
 		self.vb.unleashedCountRemaining = self.vb.unleashedCountRemaining + 1
@@ -1271,6 +1259,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 					self:SendSync("LocSmallFront")
 				elseif self.Options.MarkBehavior == "LocSmallBack" then
 					self:SendSync("LocSmallBack")
+				elseif self.Options.MarkBehavior == "NoAssignment" then
+					self:SendSync("NoAssignment")
 				end
 			end
 		end
@@ -1287,6 +1277,8 @@ function mod:OnSync(msg)
 		self.vb.MarkBehavior = "LocSmallFront"
 	elseif msg == "LocSmallBack" then
 		self.vb.MarkBehavior = "LocSmallBack"
+	elseif msg == "NoAssignment" then
+		self.vb.MarkBehavior = "NoAssignment"
 	end
 end
 
