@@ -13,7 +13,7 @@ mod:SetHotfixNoticeRev(14584)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050 190394 190686 190821 186663 188514 186961",
+	"SPELL_CAST_START 183254 189897 183817 183828 185590 184265 183864 190506 184931 187180 182225 190050 190394 190686 190821 186663 188514 186961 190313",
 	"SPELL_CAST_SUCCESS 183865 187180 188514 183254 185590",
 	"SPELL_AURA_APPLIED 182879 183634 183865 184964 186574 186961 189895 186123 186662 186952 190703 187255 185014 187050 183963 183586",
 	"SPELL_AURA_APPLIED_DOSE 183586",
@@ -837,6 +837,13 @@ function mod:SPELL_CAST_START(args)
 		self.vb.netherBanish2 = self.vb.netherBanish2 + 1
 		timerNetherBanishCD:Start(nil, self.vb.netherBanish2+1)
 --		updateAllTimers(self, 7)--Inconclusive logs. Could not find any data supporting this extention
+	elseif spellId == 190313 then
+		playerBanished = true
+		timerAllureofFlamesCD:Cancel()--Done for rest of fight
+		timerDeathbrandCD:Cancel()--Done for rest of fight
+		timerShackledTormentCD:Cancel()--Resets to 55 on non mythic, no longer cast on mythic
+		countdownShackledTorment:Cancel()
+		countdownDeathBrand:Cancel()
 	end
 end
 
@@ -888,7 +895,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 183865 then
 		warnDemonicHavoc:CombinedShow(0.3, args.destName)
-	elseif spellId == 184964 and not playerBanished then
+	elseif spellId == 184964 then
 		shacklesTargets[#shacklesTargets+1] = args.destName
 		self.vb.unleashedCountRemaining = self.vb.unleashedCountRemaining + 1
 		self:Unschedule(breakShackles)
@@ -1229,15 +1236,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 --	"<301.70 23:49:52> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine!#Grommash Hellscream###Grommash H
 	elseif spellId == 190118 or spellId == 190310 then--Phase 3 trigger
 		self.vb.phase = 3
-		timerAllureofFlamesCD:Cancel()--Done for rest of fight
-		timerDeathbrandCD:Cancel()--Done for rest of fight
-		timerShackledTormentCD:Cancel()--Resets to 55 on non mythic, no longer cast on mythic
-		countdownShackledTorment:Cancel()
-		countdownDeathBrand:Cancel()
 		timerFelborneOverfiendCD:Cancel()
 		warnPhase3:Show()
 		voicePhaseChange:Play("pthree")
 		if not self:IsMythic() then
+			timerAllureofFlamesCD:Cancel()--Done for rest of fight
+			timerDeathbrandCD:Cancel()--Done for rest of fight
+			timerShackledTormentCD:Cancel()--Resets to 55 on non mythic, no longer cast on mythic
+			countdownShackledTorment:Cancel()
+			countdownDeathBrand:Cancel()
 			timerNetherBanishCD:Start(10.9, 1)
 			countdownNetherBanish:Start(10.9)
 			timerDemonicFeedbackCD:Start(29, 1)--29-33
@@ -1246,7 +1253,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerShackledTormentCD:Start(55, self.vb.tormentCast+1)
 			countdownShackledTorment:Start(55)
 		else
-			playerBanished = true
 			table.wipe(shacklesTargets)--Just to reduce infoframe overhead
 			timerWroughtChaosCD:Cancel()
 			timerDarkConduitCD:Start(8, 1)
