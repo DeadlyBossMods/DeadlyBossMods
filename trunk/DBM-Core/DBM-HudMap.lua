@@ -22,7 +22,7 @@ local playerName = UnitName("player")
 local encounterMarkers = {}
 
 local GetNumGroupMembers, GetNumSubgroupMembers, IsInRaid = GetNumGroupMembers, GetNumSubgroupMembers, IsInRaid
-local GetTime, UIParent = GetTime, UIParent
+local GetTime, WorldFrame = GetTime, WorldFrame
 local UnitExists, UnitIsUnit, UnitPosition, UnitDebuff, UnitIsConnected, GetPlayerFacing = UnitExists, UnitIsUnit, UnitPosition, UnitDebuff, UnitIsConnected, GetPlayerFacing
 local GetInstanceInfo = GetInstanceInfo
 
@@ -261,8 +261,8 @@ do
 end
 
 function mod:OnInitialize()
-	self.canvas = CreateFrame("Frame", "DBMHudMapCanvas", UIParent)
-	self.canvas:SetSize(UIParent:GetWidth(), UIParent:GetHeight())
+	self.canvas = CreateFrame("Frame", "DBMHudMapCanvas", WorldFrame)
+	self.canvas:SetSize(WorldFrame:GetWidth(), WorldFrame:GetHeight())
 	self.canvas:SetPoint("CENTER")
 	self.canvas:Hide()
 	self.HUDEnabled = false
@@ -280,7 +280,7 @@ function mod:Enable()
 	self:UpdateCanvasPosition()
 
 	targetZoomScale = 6
-	self.pixelsPerYard = UIParent:GetHeight() / self:GetMinimapSize()
+	self.pixelsPerYard = WorldFrame:GetHeight() / self:GetMinimapSize()
 	self:SetZoom()
 	self.canvas:SetBackdrop(nil)
 	self.HUDEnabled = true
@@ -354,8 +354,8 @@ end
 
 function mod:UpdateCanvasPosition()
 	self.canvas:ClearAllPoints()
-	self.canvas:SetPoint("CENTER", UIParent, "CENTER")
-	self.canvas:SetSize((UIParent:GetHeight() * 0.48) * 2, (UIParent:GetHeight() * 0.48) * 2)
+	self.canvas:SetPoint("CENTER", WorldFrame, "CENTER")
+	self.canvas:SetSize((WorldFrame:GetHeight() * 0.48) * 2, (WorldFrame:GetHeight() * 0.48) * 2)
 end
 
 -----------------------------------
@@ -1549,8 +1549,8 @@ do
 		local distance = sqrt((e*e)+(f*f)) + offset
 		local scaleFactor
 		if distance ~= 0 then
-			scaleFactor = 1 - ((UIParent:GetHeight() * 0.48) / distance)
-			if distance > (UIParent:GetHeight() * 0.48) then
+			scaleFactor = 1 - ((WorldFrame:GetHeight() * 0.48) / distance)
+			if distance > (WorldFrame:GetHeight() * 0.48) then
 				dx = dx + (scaleFactor * e)
 				dy = dy + (scaleFactor * f)
 			end
@@ -1561,7 +1561,7 @@ do
 	local function ClipPointToEdges(dx, dy, offset)
 		local nx, ny
 		local px, py = 0, 0
-		local z2 = (UIParent:GetHeight() * 0.48)
+		local z2 = (WorldFrame:GetHeight() * 0.48)
 		dx, dy = ClipPointToRadius(dx, dy, offset)
 		nx = min(max(dx, px - z2 + offset), px + z2 - offset)
 		ny = min(max(dy, py - z2 + offset), py + z2 - offset)
@@ -1573,7 +1573,7 @@ do
 	end
 
 	function mod:LocationToMinimapOffset(x, y, alwaysShow, radiusOffset, pixelOffset)
-		mod.pixelsPerYard = (UIParent:GetHeight() * 0.48) / zoomScale
+		mod.pixelsPerYard = (WorldFrame:GetHeight() * 0.48) / zoomScale
 
 		local px, py = self:GetUnitPosition("player")
 		local dx, dy
@@ -1603,7 +1603,7 @@ do
 	end
 
 	function mod:RangeToPixels(range)
-		mod.pixelsPerYard = (UIParent:GetHeight() * 0.48) / zoomScale
+		mod.pixelsPerYard = (WorldFrame:GetHeight() * 0.48) / zoomScale
 		return mod.pixelsPerYard * range
 	end
 end
