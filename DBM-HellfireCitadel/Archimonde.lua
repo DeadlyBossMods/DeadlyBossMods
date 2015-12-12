@@ -171,7 +171,7 @@ mod:AddSetIconOption("SetIconOnInfernals2", "ej11618", false, true)
 mod:AddHudMapOption("HudMapOnFelBurst2", 183634, "Ranged")
 mod:AddHudMapOption("HudMapOnShackledTorment2", 184964, true)
 mod:AddHudMapOption("HudMapOnWrought", 184265)
-mod:AddHudMapOption("HudMapMarkofLegion", 187050, false)
+mod:AddHudMapOption("HudMapMarkofLegion2", 187050, true)
 mod:AddBoolOption("ExtendWroughtHud3", true)
 --mod:AddBoolOption("AlternateHudLine", false)
 mod:AddBoolOption("NamesWroughtHud", true)
@@ -327,6 +327,7 @@ local function showMarkOfLegion(self, spellName)
 	--Melee/ranged left/right is now the default since too many users felt weak aura's were required because running to icons by icon assignments was hard.
 	warnMarkOfLegion:Show(self.vb.markOfLegionCast, table.concat(legionTargets, "<, >"))
 	if self.vb.MarkBehavior == "NoAssignment" then return end
+	local playerHasMark = UnitDebuff("player", spellName)
 	for i = 1, #legionTargets do
 		local name = legionTargets[i]
 		if not name then break end
@@ -344,11 +345,11 @@ local function showMarkOfLegion(self, spellName)
 			if self.Options.SetIconOnMarkOfLegion2 then
 				self:SetIcon(name, number)
 			end
-			if self.Options.HudMapMarkofLegion then
+			if self.Options.HudMapMarkofLegion2 then
 				if number == 3 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():RegisterForAlerts(nil, name, spellName)--Purple to match Diamond
 				else
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match Star
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():RegisterForAlerts(nil, name, spellName)--Yellow to match Star
 				end
 			end
 			if name == playerName then
@@ -368,11 +369,11 @@ local function showMarkOfLegion(self, spellName)
 			if self.Options.SetIconOnMarkOfLegion2 then
 				self:SetIcon(name, number)
 			end
-			if self.Options.HudMapMarkofLegion then
+			if self.Options.HudMapMarkofLegion2 then
 				if number == 4 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():RegisterForAlerts(spellName, name, true)--Green to match Triangle
 				else
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match Circle
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():RegisterForAlerts(spellName, name, true)--Orange to match Circle
 				end
 			end
 			if name == playerName then
@@ -392,11 +393,11 @@ local function showMarkOfLegion(self, spellName)
 			if self.Options.SetIconOnMarkOfLegion2 then
 				self:SetIcon(name, number)
 			end
-			if self.Options.HudMapMarkofLegion then
+			if self.Options.HudMapMarkofLegion2 then
 				if number == 1 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match Star
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():RegisterForAlerts(spellName, name, true)--Yellow to match Star
 				else
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():RegisterForAlerts(spellName, name, true)--Purple to match Diamond
 				end
 			end
 			if name == playerName then
@@ -416,11 +417,11 @@ local function showMarkOfLegion(self, spellName)
 			if self.Options.SetIconOnMarkOfLegion2 then
 				self:SetIcon(name, number)
 			end
-			if self.Options.HudMapMarkofLegion then
+			if self.Options.HudMapMarkofLegion2 then
 				if number == 2 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match Circle
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():RegisterForAlerts(spellName, name, true)--Orange to match Circle
 				else
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
+					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():RegisterForAlerts(spellName, name, true)--Green to match Triangle
 				end
 			end
 			if name == playerName then
@@ -429,6 +430,9 @@ local function showMarkOfLegion(self, spellName)
 				voiceMarkOfLegion:Play("mm"..number)
 			end
 		end
+	end
+	if not playerHasMark then
+		DBMHudMap:RegisterRangeMarkerOnPartyMember(1870502, "party", playerName, 0.9, 12, nil, nil, nil, 1, nil, false):Appear()
 	end
 end
 
@@ -1135,8 +1139,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnMarkOfLegion2 then
 			self:SetIcon(args.destName, 0)
 		end
-		if self.Options.HudMapMarkofLegion then
+		if self.Options.HudMapMarkofLegion2 then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+			if self.vb.markOfLegionRemaining == 0 then
+				DBMHudMap:FreeEncounterMarkerByTarget(1870502, playerName)
+			end
 		end
 		if self.Options.InfoFrame and self.vb.markOfLegionRemaining == 0 then
 			DBM.InfoFrame:Hide()
