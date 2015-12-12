@@ -929,10 +929,11 @@ do
 			return self
 		end,
 
-		RegisterForAlerts = function(self, bool, alertLabel)
+		RegisterForAlerts = function(self, bool, alertLabel, reverse)
 			if bool == nil then bool = true end
 			self.alertLabel = alertLabel
 			self.shouldUpdateRange = bool
+			self.reverse = reverse
 			return self
 		end,
 
@@ -963,15 +964,30 @@ do
 
 			local alert = false
 			if type(self.shouldUpdateRange) == "string" and self.shouldUpdateRange ~= "all" then--Spellname passed, debuff filter
-				if not UnitDebuff("player", self.shouldUpdateRange) then--Debuff faded from player, auto switch to "all" type
-					self.shouldUpdateRange = true
-					self:UpdateAlerts(self)
-					return
-				end
-				for index, unit in group() do
-					if not UnitDebuff(unit, self.shouldUpdateRange) and not UnitIsDead(unit) then
-						alert = mod:DistanceToPoint(unit, x, y) < self.radius
-						if alert then break end
+				if self.reverse then
+					if not UnitDebuff("player", self.shouldUpdateRange) then--Debuff faded from player, auto switch to "all" type
+						self.shouldUpdateRange = true
+						self.reverse = nil
+						self:UpdateAlerts(self)
+						return
+					end
+					for index, unit in group() do
+						if UnitDebuff(unit, self.shouldUpdateRange) then
+							alert = mod:DistanceToPoint(unit, x, y) < self.radius
+							if alert then break end
+						end
+					end
+				else
+					if not UnitDebuff("player", self.shouldUpdateRange) then--Debuff faded from player, auto switch to "all" type
+						self.shouldUpdateRange = true
+						self:UpdateAlerts(self)
+						return
+					end
+					for index, unit in group() do
+						if not UnitDebuff(unit, self.shouldUpdateRange) and not UnitIsDead(unit) then
+							alert = mod:DistanceToPoint(unit, x, y) < self.radius
+							if alert then break end
+						end
 					end
 				end
 			elseif self.shouldUpdateRange == "all" or (self.follow and UnitIsUnit(self.follow, "player")) then
@@ -1156,6 +1172,7 @@ do
 			-- Alert
 			data.alertLabel = self.alertLabel
 			data.shouldUpdateRange = self.shouldUpdateRange
+			data.reverse = self.reverse
 		end,
 
 		New = function(self, map, x, y, follow, lifetime, texfile, size, blend, r, g, b, a)
@@ -1235,6 +1252,7 @@ do
 			-- These need to be reset so that reconstitution via broadcasts don't get pooched up.
 			t.id = nil
 			t.shouldUpdateRange = nil
+			t.reverse = nil
 			t.pulseSize = nil
 			t.rotateAmount = nil
 
