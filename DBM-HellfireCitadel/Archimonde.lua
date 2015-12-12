@@ -347,9 +347,17 @@ local function showMarkOfLegion(self, spellName)
 			end
 			if self.Options.HudMapMarkofLegion2 then
 				if number == 3 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():RegisterForAlerts(nil, name, spellName)--Purple to match Diamond
+					if name == playerName then--If player has THIS mark, don't register alerts for it, because this player wants players in their own circle
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
+					else
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():RegisterForAlerts(nil, name)--Purple to match Diamond
+					end
 				else
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():RegisterForAlerts(nil, name, spellName)--Yellow to match Star
+					if name == playerName then--If player has THIS mark, don't register alerts for it, because this player wants players in their own circle
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match Star
+					else
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():RegisterForAlerts(nil, name)--Yellow to match Star
+					end
 				end
 			end
 			if name == playerName then
@@ -371,9 +379,17 @@ local function showMarkOfLegion(self, spellName)
 			end
 			if self.Options.HudMapMarkofLegion2 then
 				if number == 4 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():RegisterForAlerts(spellName, name, true)--Green to match Triangle
+					if name == playerName then--If player has THIS mark, don't register alerts for it, because this player wants players in their own circle
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
+					else
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():RegisterForAlerts(nil, name)--Green to match Triangle
+					end
 				else
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():RegisterForAlerts(spellName, name, true)--Orange to match Circle
+					if name == playerName then--If player has THIS mark, don't register alerts for it, because this player wants players in their own circle
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match Circle
+					else
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():RegisterForAlerts(nil, name)--Orange to match Circle
+					end
 				end
 			end
 			if name == playerName then
@@ -395,9 +411,17 @@ local function showMarkOfLegion(self, spellName)
 			end
 			if self.Options.HudMapMarkofLegion2 then
 				if number == 1 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():RegisterForAlerts(spellName, name, true)--Yellow to match Star
+					if name == playerName then--If player has THIS mark, don't register alerts for it, because this player wants players in their own circle
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():SetLabel(name)--Yellow to match Star
+					else
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 1, 0, 0.5):Appear():RegisterForAlerts(nil, name)--Yellow to match Star
+					end
 				else
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():RegisterForAlerts(spellName, name, true)--Purple to match Diamond
+					if name == playerName then--If player has THIS mark, don't register alerts for it, because this player wants players in their own circle
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():SetLabel(name)--Purple to match Diamond
+					else
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0, 1, 0.5):Appear():RegisterForAlerts(nil, name)--Purple to match Diamond
+					end
 				end
 			end
 			if name == playerName then
@@ -419,9 +443,17 @@ local function showMarkOfLegion(self, spellName)
 			end
 			if self.Options.HudMapMarkofLegion2 then
 				if number == 2 then
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():RegisterForAlerts(spellName, name, true)--Orange to match Circle
+					if name == playerName then--If player has THIS mark, don't register alerts for it, because this player wants players in their own circle
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():SetLabel(name)--Orange to match Circle
+					else
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 1, 0.5, 0, 0.5):Appear():RegisterForAlerts(nil, name)--Orange to match Circle
+					end
 				else
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():RegisterForAlerts(spellName, name, true)--Green to match Triangle
+					if name == playerName then--If player has THIS mark, don't register alerts for it, because this player wants players in their own circle
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():SetLabel(name)--Green to match Triangle
+					else
+						DBMHudMap:RegisterRangeMarkerOnPartyMember(187050, "highlight", name, 10, 12, 0, 1, 0, 0.5):Appear():RegisterForAlerts(nil, name)--Green to match Triangle
+					end
 				end
 			end
 			if name == playerName then
