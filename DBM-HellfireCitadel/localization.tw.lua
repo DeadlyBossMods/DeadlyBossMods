@@ -155,7 +155,12 @@ L:SetOptionLocalization({
 	ExtendWroughtHud3		= "把HUB連線延伸到$spell:185014目標 (可能會降低連線精準度)",
 	AlternateHudLine		= "為$spell:185014之間的目標HUD連線使用替代連線材質",
 	NamesWroughtHud			= "為$spell:185014目標顯示HUD的玩家名稱",
-	FilterOtherPhase		= "過濾掉與你不同階段的警告"
+	FilterOtherPhase		= "過濾掉與你不同階段的警告",
+	MarkBehavior			= "設置燃燒軍團印記大喊方式(需要團隊隊長)",
+	Numbered				= "星星、圈圈、鑽石、三角。適用任何站位的打法。",--Default
+	LocSmallFront			= "近戰(左星星、右圈圈)、遠程(左鑽石、右三角)。 短時間減益在近戰。",
+	LocSmallBack			= "近戰(左鑽石、右三角)、遠程(左星星、右圈圈)。 短時間減益在遠程。",
+	NoAssignment			= "為整個團隊禁用所有站位大喊/訊息，還有HUD指示。"
 })
 
 L:SetMiscLocalization({
