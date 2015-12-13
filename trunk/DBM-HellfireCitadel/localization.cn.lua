@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: Dec 9 2015, 20:25 UTC@14693
+-- Last update: Dec 13 2015, 04:13 UTC@14710
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -157,7 +157,8 @@ L:SetOptionLocalization({
 	MarkBehavior			= "设定$spell:187051的喊叫方式（需要团长权限）",
 	Numbered				= "星星，大饼，菱形，三角。 适合任何站位方式。",--Default
 	LocSmallFront			= "近战（左星星，右大饼），远程（左菱形，右三角）。Debuff时间短的去近战位。",
-	LocSmallBack			= "近战（左菱形，右三角），远程（左星星，右大饼）。Debuff时间短的去远程位。"
+	LocSmallBack			= "近战（左菱形，右三角），远程（左星星，右大饼）。Debuff时间短的去远程位。",
+	NoAssignment			= "关闭全部提示。如果你用了其他插件。"
 })
 
 L:SetMiscLocalization({

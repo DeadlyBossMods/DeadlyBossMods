@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Nov 24 2015, 02:41 UTC@14665
+-- Last update: Dec 13 2015, 04:13 UTC@14710
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -314,7 +314,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.you				= "你中了%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.youcount			= "你中了%s (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.youpos			= "你中了%s (位置:%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target			= ">%%s<中了%s"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetcount		= ">%%s<中了%s (%%d)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetcount		= ">%%2$s<中了%s (%%1$s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt				= ">%%s<中了%s - 快嘲讽"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close				= "你附近的>%%s<中了%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move				= "%s - 快躲开"
