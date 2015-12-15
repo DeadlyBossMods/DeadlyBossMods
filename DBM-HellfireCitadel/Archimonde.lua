@@ -865,13 +865,14 @@ function mod:SPELL_CAST_START(args)
 		self.vb.netherBanish2 = self.vb.netherBanish2 + 1
 		timerNetherBanishCD:Start(nil, self.vb.netherBanish2+1)
 --		updateAllTimers(self, 7)--Inconclusive logs. Could not find any data supporting this extention
-	elseif spellId == 190313 then
+	elseif spellId == 190313 then--Nether Ascention
 		playerBanished = true
-		timerAllureofFlamesCD:Cancel()--Done for rest of fight
-		timerDeathbrandCD:Cancel()--Done for rest of fight
-		timerShackledTormentCD:Cancel()--Resets to 55 on non mythic, no longer cast on mythic
+		timerAllureofFlamesCD:Cancel()
+		timerDeathbrandCD:Cancel()
+		timerShackledTormentCD:Cancel()
 		countdownShackledTorment:Cancel()
 		countdownDeathBrand:Cancel()
+		timerWroughtChaosCD:Cancel()
 	end
 end
 
@@ -1279,7 +1280,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			countdownShackledTorment:Start(55)
 		else
 			table.wipe(shacklesTargets)--Just to reduce infoframe overhead
-			timerWroughtChaosCD:Cancel()
 			timerDarkConduitCD:Start(8, 1)
 			setDarkConduit(self)
 			timerMarkOfLegionCD:Start(20, 1)
