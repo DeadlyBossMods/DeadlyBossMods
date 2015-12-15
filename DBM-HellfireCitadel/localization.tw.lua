@@ -159,7 +159,7 @@ L:SetOptionLocalization({
 	MarkBehavior			= "設置燃燒軍團印記大喊方式(需要團隊隊長)",
 	Numbered				= "星星、圈圈、鑽石、三角。適用任何站位的打法。",--Default
 	LocSmallFront			= "近戰(左星星、右圈圈)、遠程(左鑽石、右三角)。 短時間減益在近戰。",
-	LocSmallBack			= "近戰(左鑽石、右三角)、遠程(左星星、右圈圈)。 短時間減益在遠程。",
+	LocSmallBack			= "近戰(左星星、右圈圈)、遠程(左鑽石、右三角)。 短時間減益在遠程。",
 	NoAssignment			= "為整個團隊禁用所有站位大喊/訊息，還有HUD指示。"
 })
 

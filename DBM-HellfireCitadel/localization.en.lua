@@ -161,7 +161,7 @@ L:SetOptionLocalization({
 	MarkBehavior			= "Set Mark of Legion yell behavior for raid (Requires raid leader)",
 	Numbered				= "Star, Circle, Diamond, Triangle. Usable for any strat using flare positions.",--Default
 	LocSmallFront			= "Melee L/R(Star,Circle), Ranged L/R(Diamond,Triangle). Short debuffs in melee.",
-	LocSmallBack			= "Melee L/R(Diamond,Triangle), Ranged L/R(Star,Circle). Short debuffs at ranged.",
+	LocSmallBack			= "Melee L/R(Star,Circle), Ranged L/R(Diamond,Triangle). Short debuffs at ranged.",
 	NoAssignment			= "Disable all position yells/messages, icons, and HUD for entire raid."
 })
 
