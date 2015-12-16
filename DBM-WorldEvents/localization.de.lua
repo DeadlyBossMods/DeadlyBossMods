@@ -119,15 +119,6 @@ L:SetGeneralLocalization({
 	name = "Der monströse Griesgram"
 })
 
----------------
---  Grumpus  --
----------------
-L = DBM:GetModLocalization("Grumpus")
-
-L:SetGeneralLocalization({
-	name = "Grumpus"
-})
-
 --------------------------
 --  Plants Vs. Zombies  --
 --------------------------
