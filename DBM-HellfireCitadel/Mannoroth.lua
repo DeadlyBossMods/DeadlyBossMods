@@ -97,8 +97,8 @@ local timerShadowForceCD			= mod:NewCDTimer(52.2, 181799, nil, nil, nil, 3, nil,
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
 local countdownGlaiveCombo			= mod:NewCountdown("Alt30", 181354, "Tank")
-local countdownMarkOfDoom			= mod:NewCountdownFades("Alt15", 181099)
-local countdownShadowForce			= mod:NewCountdown("AltTwo52", 181799)
+local countdownMarkOfDoom			= mod:NewCountdownFades("AltTwo15", 181099)
+local countdownShadowForce			= mod:NewCountdown(52, 181799)
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceGaze						= mod:NewVoice(181597, false) --gather share
