@@ -119,15 +119,6 @@ L:SetGeneralLocalization({
 	name = "썩은내 그린치"
 })
 
----------------
---  Grumpus  --
----------------
-L = DBM:GetModLocalization("Grumpus")
-
-L:SetGeneralLocalization({
-	name = "투덜이"
-})
-
 --------------------------
 --  Plants Vs. Zombies  --
 --------------------------
