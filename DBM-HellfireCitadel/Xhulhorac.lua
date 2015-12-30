@@ -244,8 +244,10 @@ function mod:SPELL_CAST_START(args)
 					if self.vb.phase >= 3 and playerTanking == 1 and not UnitDebuff("player", GetSpellInfo(186135)) then--Vanguard Tank
 						--You're the Vanguard tank and do NOT have aggro for this strike or void debuff, taunt NOW
 						local targetName = UnitName(bossUnitID.."target") or DBM_CORE_UNKNOWN
-						specWarnPhasing:Show(targetName)
-						voicePhasing:Play("tauntboss")
+						if self:AntiSpam(3, targetName) then
+							specWarnPhasing:Show(targetName)
+							voicePhasing:Play("tauntboss")
+						end
 					end
 				end
 			end
@@ -263,8 +265,10 @@ function mod:SPELL_CAST_START(args)
 					if self.vb.phase >= 3 and playerTanking == 2 and not UnitDebuff("player", GetSpellInfo(186134)) then--VoidWalker Tank
 						--You're the void walker tank and do NOT have aggro for this strike or fel debuff, taunt NOW
 						local targetName = UnitName(bossUnitID.."target") or DBM_CORE_UNKNOWN
-						specWarnPhasing:Show(targetName)
-						voicePhasing:Play("tauntboss")
+						if self:AntiSpam(3, targetName) then
+							specWarnPhasing:Show(targetName)
+							voicePhasing:Play("tauntboss")
+						end
 					end
 				end
 			end
@@ -349,13 +353,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 			if playerTanking == 2 then--VoidWalker Tank
 				--Fel strike just finished, void strike next so voidwalker tank needs to take it
 				if not args:IsPlayer() then
-					specWarnPhasing:Show(args.destName)
-					voicePhasing:Play("tauntboss")
+					if self:AntiSpam(3, args.destName) then
+						specWarnPhasing:Show(args.destName)
+						voicePhasing:Play("tauntboss")
+					end
 				end
 			elseif self.vb.bothDead == 2 and playerTanking == 0 then
 				if not args:IsPlayer() then--Just warn whoever THIS strike didn't hit
-					specWarnPhasing:Show(args.destName)
-					voicePhasing:Play("tauntboss")
+					if self:AntiSpam(3, args.destName) then
+						specWarnPhasing:Show(args.destName)
+						voicePhasing:Play("tauntboss")
+					end
 				else
 					voicePhasing:Play("changemt")
 				end
@@ -368,13 +376,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 			if playerTanking == 1 then--Vanguard Tank
 				--void strike just finished, fel strike next so vanguard tank needs to take it
 				if not args:IsPlayer() then
-					specWarnPhasing:Show(args.destName)
-					voicePhasing:Play("tauntboss")
+					if self:AntiSpam(3, args.destName) then
+						specWarnPhasing:Show(args.destName)
+						voicePhasing:Play("tauntboss")
+					end
 				end
 			elseif self.vb.bothDead == 2 and playerTanking == 0 then
 				if not args:IsPlayer() then
-					specWarnPhasing:Show(args.destName)
-					voicePhasing:Play("tauntboss")
+					if self:AntiSpam(3, args.destName) then
+						specWarnPhasing:Show(args.destName)
+						voicePhasing:Play("tauntboss")
+					end
 				else
 					voicePhasing:Play("changemt")
 				end
