@@ -463,7 +463,7 @@ local function showMarkOfLegion(self, spellName)
 			end
 		end
 	end
-	if not playerHasMark then
+	if self.Options.HudMapMarkofLegion2 and not playerHasMark then
 		DBMHudMap:RegisterRangeMarkerOnPartyMember(1870502, "party", playerName, 0.9, 12, nil, nil, nil, 1, nil, false):Appear()
 	end
 end
