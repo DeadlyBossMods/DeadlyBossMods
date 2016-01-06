@@ -140,7 +140,7 @@ L= DBM:GetModLocalization(1394)
 L= DBM:GetModLocalization(1395)
 
 L:SetOptionLocalization({
-	CustomAssignWrath	= "Set $spell:186348 icons based on player roles (May conflict with other boss mods, including other DBM users who don't have this enabled)"
+	CustomAssignWrath	= "Set $spell:186348 icons based on player roles (Must be enabled by raid leader. May conflict with BW or out of date DBM versions)"
 })
 
 L:SetMiscLocalization({
