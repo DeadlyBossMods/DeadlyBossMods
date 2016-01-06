@@ -139,6 +139,10 @@ L= DBM:GetModLocalization(1394)
 --------------------------
 L= DBM:GetModLocalization(1395)
 
+L:SetOptionLocalization({
+	CustomAssignWrath	= "Set $spell:186348 icons based on player roles (May conflict with other boss mods, including other DBM users who don't have this enabled)"
+})
+
 L:SetMiscLocalization({
 	felSpire		=	"begins to empower the Fel Spire!"
 })
