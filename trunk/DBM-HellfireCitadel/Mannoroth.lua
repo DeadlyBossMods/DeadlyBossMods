@@ -531,7 +531,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				if #guldanTargets == 5 then
 					setWrathIcons(self)
 				else
-					self:Schedule(0.5, setWrathIcons, self)
+					self:Schedule(1, setWrathIcons, self)
 				end
 			else
 				self:SetIcon(args.destName, icon)
