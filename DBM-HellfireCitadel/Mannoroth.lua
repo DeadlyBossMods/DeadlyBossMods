@@ -62,7 +62,7 @@ local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(181132, false, nil, 2
 ----Dread Infernals
 local specWarnFelHellfire			= mod:NewSpecialWarningDodge(181191, nil, nil, 3, 1, 2)
 ----Gul'dan
-local specWarnWrathofGuldan			= mod:NewSpecialWarningYou(186362, nil, nil, nil, 1)
+local specWarnWrathofGuldan			= mod:NewSpecialWarningYou(186362, nil, nil, nil, 1, 5)
 local yellWrathofGuldan				= mod:NewPosYell(186362, 169826)
 local specWarnFelPillar				= mod:NewSpecialWarningDodge(190070, nil, nil, 3, 1, 2)
 --Mannoroth
@@ -103,7 +103,7 @@ local countdownShadowForce			= mod:NewCountdown(52, 181799)
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceGaze						= mod:NewVoice(181597, false) --gather share
-local voiceMarkOfDoom				= mod:NewVoice(181099) --run out
+local voiceMarkOfDoom				= mod:NewVoice(181099) --run out/mm
 local voiceFelHellfire				= mod:NewVoice(181191, nil, nil, 2) --runaway
 local voiceShadowBoltVolley			= mod:NewVoice(181126, "-Healer")
 local voiceFelBlast					= mod:NewVoice(181132, "-Healer")
@@ -112,6 +112,7 @@ local voiceFelHellstorm				= mod:NewVoice(181557)--watchstep
 local voiceGlaiveCombo				= mod:NewVoice(181354, "Tank")--Defensive
 local voiceMassiveBlast				= mod:NewVoice(181359, "Tank")--changemt
 local voiceFelPillar				= mod:NewVoice(190070)--runaway
+local voiceWrath					= mod:NewVoice(186348)--mm
 
 mod:AddRangeFrameOption(20, 181099)
 mod:AddSetIconOption("SetIconOnGaze", 181597, false)
@@ -322,6 +323,7 @@ local function setWrathIcons(self)
 		self:SetIcon(melee2, 4)
 		if playerIcon then
 			yellWrathofGuldan:Yell(playerIcon, playerIcon, playerIcon)
+			voiceWrath:Play("mm"..playerIcon)
 		end
 	end
 end
@@ -564,6 +566,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnWrathofGuldan:Show()
 			if icon then
 				yellWrathofGuldan:Yell(icon, icon, icon)
+				voiceWrath:Play("mm"..icon)
 			end
 		end
 		if self.Options.InfoFrame then
