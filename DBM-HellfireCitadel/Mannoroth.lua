@@ -116,6 +116,7 @@ mod:AddRangeFrameOption(20, 181099)
 mod:AddSetIconOption("SetIconOnGaze", 181597, false)
 mod:AddSetIconOption("SetIconOnDoom2", 181099, true)
 mod:AddSetIconOption("SetIconOnWrath", 186348, false)
+mod:AddBoolOption("CustomAssignWrath", false)
 mod:AddHudMapOption("HudMapOnGaze2", 181597, false)
 mod:AddInfoFrameOption(181597)
 
@@ -268,6 +269,41 @@ end
 
 local function breakDoom(self)
 	warnMarkofDoom:Show(table.concat(doomTargets, "<, >"))
+end
+
+local function setWrathIcons(self)
+	local ranged1, ranged2, melee1, melee2, healer = nil, nil, nil, nil, nil
+	for i = 1, #guldanTargets do
+		local name = guldanTargets[i]
+		local uId = DBM:GetRaidUnitId(name)
+		if not uId then return end--Prevent errors if person leaves group
+		if self:IsMeleeDps(uId) then--Melee
+			if melee1 then
+				melee2 = guldanTargets[i]
+			else
+				melee1 = guldanTargets[i]
+			end
+			DBM:Debug("Melee wrath found: "..guldanTargets[i], 2)
+		elseif self:IsHealer(uId) then--Healer
+			healer = guldanTargets[i]
+			DBM:Debug("Healer wrath found: "..guldanTargets[i], 2)
+		else--Ranged
+			if ranged1 then
+				ranged2 = guldanTargets[i]
+			else
+				ranged1 = guldanTargets[i]
+			end
+			DBM:Debug("Ranged wrath found: "..guldanTargets[i], 2)
+		end
+	end
+	if ranged1 and ranged2 and melee1 and melee2 and healer then
+		DBM:Debug("All wrath found!", 2)
+		self:SetIcon(healer, 8)
+		self:SetIcon(ranged1, 7)
+		self:SetIcon(ranged2, 6)
+		self:SetIcon(melee1, 5)
+		self:SetIcon(melee2, 4)
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -490,7 +526,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnWrathofGuldan:CombinedShow(0.3, args.destName)
 		local icon = self.vb.wrathIcon
 		if self.Options.SetIconOnWrath then
-			self:SetIcon(args.destName, icon)
+			if self.Options.CustomAssignWrath then
+				self:Unschedule(setWrathIcons)
+				if #guldanTargets == 5 then
+					setWrathIcons(self)
+				else
+					self:Schedule(0.5, setWrathIcons, self)
+				end
+			else
+				self:SetIcon(args.destName, icon)
+			end
 		end
 		if args:IsPlayer() then
 			specWarnWrathofGuldan:Show()
