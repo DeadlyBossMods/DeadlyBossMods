@@ -7,6 +7,7 @@ mod:SetEncounterID(1795)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(14612)
+mod:SetMinSyncRevision(14728)
 mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
@@ -273,27 +274,43 @@ end
 
 local function setWrathIcons(self)
 	local ranged1, ranged2, melee1, melee2, healer = nil, nil, nil, nil, nil
+	local playerIcon = nil
 	for i = 1, #guldanTargets do
 		local name = guldanTargets[i]
 		local uId = DBM:GetRaidUnitId(name)
 		if not uId then return end--Prevent errors if person leaves group
 		if self:IsMeleeDps(uId) then--Melee
 			if melee1 then
-				melee2 = guldanTargets[i]
+				melee2 = name
+				if name == playerName then
+					playerIcon = 4
+				end
 			else
-				melee1 = guldanTargets[i]
+				melee1 = name
+				if name == playerName then
+					playerIcon = 5
+				end
 			end
-			DBM:Debug("Melee wrath found: "..guldanTargets[i], 2)
+			DBM:Debug("Melee wrath found: "..name, 2)
 		elseif self:IsHealer(uId) then--Healer
-			healer = guldanTargets[i]
-			DBM:Debug("Healer wrath found: "..guldanTargets[i], 2)
+			healer = name
+			DBM:Debug("Healer wrath found: "..name, 2)
+			if name == playerName then
+				playerIcon = 8
+			end
 		else--Ranged
 			if ranged1 then
-				ranged2 = guldanTargets[i]
+				ranged2 = name
+				if name == playerName then
+					playerIcon = 6
+				end
 			else
-				ranged1 = guldanTargets[i]
+				ranged1 = name
+				if name == playerName then
+					playerIcon = 7
+				end
 			end
-			DBM:Debug("Ranged wrath found: "..guldanTargets[i], 2)
+			DBM:Debug("Ranged wrath found: "..name, 2)
 		end
 	end
 	if ranged1 and ranged2 and melee1 and melee2 and healer then
@@ -303,6 +320,9 @@ local function setWrathIcons(self)
 		self:SetIcon(ranged2, 6)
 		self:SetIcon(melee1, 5)
 		self:SetIcon(melee2, 4)
+		if playerIcon then
+			yellWrathofGuldan:Yell(playerIcon, playerIcon, playerIcon)
+		end
 	end
 end
 
@@ -321,6 +341,9 @@ function mod:OnCombatStart(delay)
 	self.vb.DoomTargetCount = 0
 	if self:IsMythic() then
 		self.vb.wrathIcon = 8
+		if UnitIsGroupLeader("player") and self.Options.CustomAssignWrath then
+			self:SendSync("WrathByRole")
+		end
 	else
 		timerCurseofLegionCD:Start(5.2, 1)
 		timerFelImplosionCD:Start(13.5-delay, 1)
@@ -526,7 +549,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnWrathofGuldan:CombinedShow(0.3, args.destName)
 		local icon = self.vb.wrathIcon
 		if self.Options.SetIconOnWrath then
-			if self.Options.CustomAssignWrath then
+			if not icon then
 				self:Unschedule(setWrathIcons)
 				if #guldanTargets == 5 then
 					setWrathIcons(self)
@@ -539,7 +562,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnWrathofGuldan:Show()
-			yellWrathofGuldan:Yell(icon, icon, icon)
+			if icon then
+				yellWrathofGuldan:Yell(icon, icon, icon)
+			end
 		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)--Always set header to wrath if wrath is present
@@ -547,7 +572,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame, true)
 			end
 		end
-		self.vb.wrathIcon = self.vb.wrathIcon - 1--Update icon even if icon option off, for sync accuracy
+		if self.vb.wrathIcon then
+			self.vb.wrathIcon = self.vb.wrathIcon - 1--Update icon even if icon option off, for sync accuracy
+		end
 		updateRangeFrame(self)
 	end
 end
@@ -662,7 +689,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			warnPhase3:Show()
 			voicePhaseChange:Play("pthree")
 			if self:IsMythic() then
-				self.vb.wrathIcon = 8
+				if self.vb.wrathIcon then
+					self.vb.wrathIcon = 8
+				end
 				timerWrathofGuldanCD:Start(10)
 			end
 			--Detect when adds timers will reset (by 181301) before they come off cd, and cancel them early
@@ -695,7 +724,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			warnPhase4:Show()
 			voicePhaseChange:Play("pfour")
 			if self:IsMythic() then
-				self.vb.wrathIcon = 8
+				if self.vb.wrathIcon then
+					self.vb.wrathIcon = 8
+				end
 				timerWrathofGuldanCD:Start(16.7)
 			end
 		end
@@ -769,7 +800,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPhase3:Show()
 		voicePhaseChange:Play("pthree")
 		if self:IsMythic() then
-			self.vb.wrathIcon = 8
+			if self.vb.wrathIcon then
+				self.vb.wrathIcon = 8
+			end
 			timerWrathofGuldanCD:Start(4.8)
 		end
 		--Detect when adds timers will reset (by 181301) before they come off cd, and cancel them early
@@ -803,7 +836,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPhase4:Show()
 		voicePhaseChange:Play("pfour")
 		if self:IsMythic() then
-			self.vb.wrathIcon = 8
+			if self.vb.wrathIcon then
+				self.vb.wrathIcon = 8
+			end
 			timerWrathofGuldanCD:Start(11.2)
 		end
 	elseif spellId == 181354 then--183377 or 185831 also usable with SPELL_CAST_START but i like this way more, cleaner than Antispamming the other spellids
@@ -825,3 +860,8 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
+function mod:OnSync(msg)
+	if msg == "WrathByRole" then
+		self.vb.wrathIcon = false
+	end
+end
