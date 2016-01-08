@@ -6,8 +6,8 @@ mod:SetCreatureID(91349)--91305 Fel Iron Summoner
 mod:SetEncounterID(1795)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(14612)
-mod:SetMinSyncRevision(14728)
+mod:SetHotfixNoticeRev(14732)
+mod:SetMinSyncRevision(14732)
 mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
@@ -317,10 +317,10 @@ local function setWrathIcons(self)
 	if ranged1 and ranged2 and melee1 and melee2 and healer then
 		DBM:Debug("All wrath found!", 2)
 		self:SetIcon(healer, 8)
-		self:SetIcon(ranged1, 7)
-		self:SetIcon(ranged2, 6)
-		self:SetIcon(melee1, 5)
-		self:SetIcon(melee2, 4)
+		self:SetIcon(melee1, 7)
+		self:SetIcon(melee2, 6)
+		self:SetIcon(ranged1, 5)
+		self:SetIcon(ranged2, 4)
 		if playerIcon then
 			yellWrathofGuldan:Yell(playerIcon, playerIcon, playerIcon)
 			voiceWrath:Play("mm"..playerIcon)
