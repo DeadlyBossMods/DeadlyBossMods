@@ -136,6 +136,10 @@ L= DBM:GetModLocalization(1394)
 --------------------------
 L= DBM:GetModLocalization(1395)
 
+L:SetOptionLocalization({
+	CustomAssignWrath	= "Setze $spell:186348 Zeichen basierend auf Spielerrollen (muss vom Schlachtzugsleiter aktiviert werden, kann zu Konflikten mit \"BigWigs\" oder veralteten DBM-Versionen führen)"
+})
+
 L:SetMiscLocalization({
 	felSpire		=	"begins to empower the Fel Spire!"--translate (trigger)
 })
@@ -154,11 +158,16 @@ L:SetOptionLocalization({
 	ExtendWroughtHud3		= "Erweitere die HudMap-Linien über das Ziel von $spell:185014 hinaus (kann die Liniengenauigkeit verringern)",
 	AlternateHudLine		= "Nutze alternative Linientextur für HudMap-Linien zwischen Zielen von $spell:185014",
 	NamesWroughtHud			= "Zeige Spielernamen in HudMap für Ziele von $spell:185014",
-	FilterOtherPhase		= "Zeige keine Warnungen für Ereignisse, die sich nicht in deiner Phase befinden"
+	FilterOtherPhase		= "Zeige keine Warnungen für Ereignisse, die sich nicht in deiner Phase befinden",
+	MarkBehavior			= "Auswahl der Positionierungsschreie für Mal der Legion (nur als Schlachtzugsleiter)",
+	Numbered				= "Stern, Kreis, Diamant, Dreieck (für Strategien mit Weltmarkierungen)",
+	LocSmallFront			= "Nah L/R (Stern, Kreis), Fern L/R (Diamant, Dreieck), kurze Debuffs Nah",
+	LocSmallBack			= "Nah L/R (Stern, Kreis), Fern L/R (Diamant, Dreieck), kurze Debuffs Fern",
+	NoAssignment			= "Deaktiviere Positionierungsschreie, -zeichen und -HUD bei allen im Schlachtzug"
 })
 
 L:SetMiscLocalization({
-	phase2point5		= "Seht die endlosen Ränge der Brennenden Legion und erkennt die Ausichtslosigkeit Eurer Wiederwehr!",
+	phase2point5		= "Seht die endlosen Ränge der Brennenden Legion und erkennt die Ausichtslosigkeit Eurer Widerwehr!",
 	First				= "Erster",
 	Second				= "Zweiter",
 	Third				= "Dritter",
