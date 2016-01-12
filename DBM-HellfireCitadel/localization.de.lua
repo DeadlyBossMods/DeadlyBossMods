@@ -141,7 +141,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	felSpire		=	"begins to empower the Fel Spire!"--translate (trigger)
+	felSpire		=	"beginnt, die Teufelsspitze zu verstärken!"
 })
 
 --------------------------
