@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: Dec 13 2015, 04:13 UTC@14710
+-- Last update: Jan 10 2016, 22:03 UTC@14733
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -134,6 +134,10 @@ L= DBM:GetModLocalization(1394)
 -- Mannoroth --
 --------------------------
 L= DBM:GetModLocalization(1395)
+
+L:SetOptionLocalization({
+	CustomAssignWrath	= "使用玩家角色决定$spell:186348的图标(团长开启有效, 可能和BW或过期DBM冲突)"
+})
 
 L:SetMiscLocalization({
 	felSpire		=	"开始强化邪能尖塔！"
