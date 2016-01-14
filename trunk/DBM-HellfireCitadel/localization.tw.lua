@@ -137,6 +137,10 @@ L= DBM:GetModLocalization(1394)
 --------------------------
 L= DBM:GetModLocalization(1395)
 
+L:SetOptionLocalization({
+	CustomAssignWrath	= "基於角色專精設置$spell:186348的團隊圖示(必須由團隊隊長開啟。可能會與BW或過期DBM衝突)"
+})
+
 L:SetMiscLocalization({
 	felSpire		=	"開始強化惡魔尖塔！"
 })
