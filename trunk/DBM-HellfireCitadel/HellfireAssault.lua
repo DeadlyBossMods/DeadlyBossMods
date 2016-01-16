@@ -18,8 +18,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 184243",
 	"SPELL_AURA_REMOVED 184369 184243",
 	"SPELL_CAST_SUCCESS 184370",
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_ABSORBED",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED"--Have to register all unit ids to catch the boss when she casts haste
@@ -425,12 +423,3 @@ function mod:OnSync(msg)
 		end
 	end
 end
-
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 173192 and destGUID == UnitGUID("player") and self:AntiSpam(2, 6) then
-
-	end
-end
-mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE--]]
-
