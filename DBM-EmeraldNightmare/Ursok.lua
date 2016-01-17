@@ -6,7 +6,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(100497)
 mod:SetEncounterID(1841)
 mod:SetZone()
---mod:SetUsedIcons(8, 7, 6, 3, 2, 1)
+mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(12324)
 
 mod:RegisterCombat("combat")
@@ -26,8 +26,9 @@ mod:RegisterEventsInCombat(
 --TODO, find a good voice for roaring. Maybe watch step? move away?
 --TODO, figure out a good number to repeat for charge count
 local warnFocusedGaze				= mod:NewTargetAnnounce(198006, 3)
+local warnBloodFrenzy				= mod:NewSpellAnnounce(198388, 4)
 
-local specWarnFocusedGaze			= mod:NewSpecialWarningYou(198006, nil, nil, nil, 1, 2)
+local specWarnFocusedGaze			= mod:NewSpecialWarningYou(198006, nil, nil, nil, 1, 6)
 local yellFocusedGaze				= mod:NewYell(198006)
 local specWarnRoaringCacophony		= mod:NewSpecialWarningCount(197969, nil, nil, nil, 2)--Don't know what voice to give it yet, i'll figure it out.
 local specWarnMiasma				= mod:NewSpecialWarningMove(205611, nil, nil, nil, 1, 2)
@@ -42,15 +43,21 @@ local berserkTimer					= mod:NewBerserkTimer(300)
 
 --local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
 
---local voiceFocusedGaze			= mod:NewVoice(198006)--chargemove? For this charge you actually do NOT want to move. you run and help soak it so unsure of voice selection yet
+local voiceFocusedGaze				= mod:NewVoice(198006, "-Tank")--targetyou/share
 local voiceOverwhelm				= mod:NewVoice(197943)--Tauntboss/changemt
 local voiceMiasma					= mod:NewVoice(205611)--runaway
+local voiceBloodFrenzy				= mod:NewVoice(198388)
 --local voiceRoaringCacophony			= mod:NewVoice(197969)--watchstep
 
+mod:AddSetIconOption("SetIconOnCharge", 198006, true)
+--mod:AddHudMapOption("HudMapOnCharge", 198006)
+
 mod.vb.roarCount = 0
+mod.vb.chargeCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.roarCount = 0
+	self.vb.chargeCount = 0
 	timerOverwhelmCD:Start(-delay)
 	timerRendFleshCD:Start(13-delay)
 	timerFocusedGazeCD:Start(19-delay)
@@ -58,7 +65,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-
+--	if self.Options.HudMapOnCharge then
+--		DBMHudMap:Disable()
+--	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -87,11 +96,22 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 198006 then
+		self.vb.chargeCount = self.vb.chargeCount + 1
 		warnFocusedGaze:Show(args.destName)
 		timerFocusedGazeCD:Start()
 		if args:IsPlayer() then
 			specWarnFocusedGaze:Show()
 			yellFocusedGaze:Yell()
+			voiceFocusedGaze:Play("targetyou")
+		--This code still needs unbalanced check so it doesn't warn player with debuff to soak
+		elseif ( self.vb.chargeCount % 2) then
+			voiceFocusedGaze:Play("shareone")
+		else
+			voiceFocusedGaze:Play("sharetwo")	
+		--This code still needs unbalanced check so it doesn't warn player with debuff to soak
+		end
+		if self.Options.SetIconOnCharge then
+			self:SetIcon(args.destName, 1)
 		end
 	elseif spellId == 197943 then
 		if not args:IsPlayer() then
@@ -100,13 +120,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			voiceOverwhelm:Play("changemt")
 		end
+	elseif spellId == 198388 then
+		warnBloodFrenzy:Show()
+		voiceBloodFrenzy:Play("frenzy")
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 162186 then
-
+	if spellId == 198006 then
+		if self.Options.SetIconOnCharge then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 

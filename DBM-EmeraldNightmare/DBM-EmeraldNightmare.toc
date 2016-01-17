@@ -12,8 +12,9 @@
 ## X-DBM-Mod-Has-Mythic : 1
 ## X-DBM-Mod-Sort: 055
 ## X-DBM-Mod-MapID: 1520
-## X-DBM-Mod-MinCoreRevision: 12473
+## X-DBM-Mod-MinCoreRevision: 14737
 localization.en.lua
+localization.cn.lua
 Nythendra.lua
 Ursok.lua
 NightmareDragons.lua
