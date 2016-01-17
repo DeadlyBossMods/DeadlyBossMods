@@ -1,3 +1,7 @@
+-- Mini Dragon(projecteurs@gmail.com)
+-- Last update: Jan 16 2016, 20:10 UTC@14738
+
+if GetLocale() ~= "zhCN" then return end
 local L
 
 ---------------
@@ -38,5 +42,5 @@ L= DBM:GetModLocalization(1726)
 L = DBM:GetModLocalization("EmeraldNightmareTrash")
 
 L:SetGeneralLocalization({
-	name =	"Emerald Nightmare Trash"
+	name =	"翡翠梦魇小怪"
 })
