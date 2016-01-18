@@ -50,7 +50,7 @@ local voiceBloodFrenzy				= mod:NewVoice(198388)
 --local voiceRoaringCacophony			= mod:NewVoice(197969)--watchstep
 
 mod:AddSetIconOption("SetIconOnCharge", 198006, true)
---mod:AddHudMapOption("HudMapOnCharge", 198006)
+mod:AddHudMapOption("HudMapOnCharge", 198006)
 
 mod.vb.roarCount = 0
 mod.vb.chargeCount = 0
@@ -65,9 +65,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.HudMapOnCharge then
---		DBMHudMap:Disable()
---	end
+	if self.Options.HudMapOnCharge then
+		DBMHudMap:Disable()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -113,6 +113,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnCharge then
 			self:SetIcon(args.destName, 1)
 		end
+		if self.Options.HudMapOnCharge then
+			if args:IsPlayer() then
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 8, nil, nil, nil, 0.5):Appear():SetLabel(args.destName)
+			else
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 8, nil, nil, nil, 0.5):Appear():RegisterForAlerts(nil, args.destName)
+			end
+		end
 	elseif spellId == 197943 then
 		if not args:IsPlayer() then
 			specWarnOverwhelm:Show(args.destName)
@@ -131,6 +138,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 198006 then
 		if self.Options.SetIconOnCharge then
 			self:SetIcon(args.destName, 0)
+		end
+		if self.Options.HudMapOnCharge then
+			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	end
 end
