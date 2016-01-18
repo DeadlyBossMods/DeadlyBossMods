@@ -6743,8 +6743,8 @@ end
 --To speed up creating new mods.
 function DBM:FindDungeonIDs()
 	for i=1, 2000 do
-		local dungeon = GetDungeonInfo(i)
-		if dungeon then
+		local dungeon = GetRealZoneText(i)
+		if dungeon and dungeon ~= "" then
 			self:AddMsg(i..": "..dungeon)
 		end
 	end
@@ -6759,6 +6759,8 @@ function DBM:FindInstanceIDs()
 	end
 end
 
+--/run DBM:FindEncounterIDs(768)--Emerald Nightmare
+--/run DBM:FindEncounterIDs(786)--Suramar Raid
 function DBM:FindEncounterIDs(instanceID, diff)
 	if not instanceID then
 		self:AddMsg("Error: Function requires instanceID be provided")
@@ -6774,6 +6776,9 @@ function DBM:FindEncounterIDs(instanceID, diff)
 		end
 	end
 end
+
+--Taint the script that disables /run /dump, etc
+ScriptsDisallowedForBeta = function() return false end
 
 -------------------
 --  Movie Filter --
