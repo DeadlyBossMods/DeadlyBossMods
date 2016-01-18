@@ -1,0 +1,21 @@
+﻿## Interface: 70000
+## X-Min-Interface: 70000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Suramar|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMSuramar_AllSavedVars
+## SavedVariablesPerCharacter: DBMSuramar_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: LEG
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 054
+## X-DBM-Mod-MapID: 1530
+## X-DBM-Mod-MinCoreRevision: 14737
+localization.en.lua
+CrystalScorp.lua
+ChronoAnomaly.lua
+Trilliax.lua
+Krosus.lua
+Astromancer.lua
