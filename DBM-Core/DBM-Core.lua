@@ -6169,7 +6169,7 @@ DBM.UNIT_DESTROYED = DBM.UNIT_DIED
 --  Timer recovery  --
 ----------------------
 do
-	local requestedFrom = nil
+	local requestedFrom = {}
 	local requestTime = 0
 	local clientUsed = {}
 	local sortMe = {}
@@ -6209,21 +6209,22 @@ do
 		end
 		if not selectedClient then return end
 		self:Debug("Requesting timer recovery to "..selectedClient.name)
-		requestedFrom = selectedClient.name
+		requestedFrom[selectedClient.name] = true
 		requestTime = GetTime()
 		SendAddonMessage("D4", "RT", "WHISPER", selectedClient.name)
 	end
 
 	function DBM:ReceiveCombatInfo(sender, mod, time)
-		if dbmIsEnabled and sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
+		if dbmIsEnabled and requestedFrom[sender] and (GetTime() - requestTime) < 5 and #inCombat == 0 then
 			self:StartCombat(mod, time, "TIMER_RECOVERY")
 			--Recovery successful, someone sent info, abort other recovery requests
 			self:Unschedule(self.RequestTimers)
+			twipe(requestedFrom)
 		end
 	end
 
 	function DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, ...)
-		if sender == requestedFrom and (GetTime() - requestTime) < 5 then
+		if requestedFrom[sender] and (GetTime() - requestTime) < 5 then
 			local lag = select(4, GetNetStats()) / 1000
 			for i, v in ipairs(mod.timers) do
 				if v.id == id then
@@ -6235,7 +6236,7 @@ do
 	end
 
 	function DBM:ReceiveVariableInfo(sender, mod, name, value)
-		if sender == requestedFrom and (GetTime() - requestTime) < 5 then
+		if requestedFrom[sender] and (GetTime() - requestTime) < 5 then
 			if value == "true" then
 				mod.vb[name] = true
 			elseif value == "false" then
