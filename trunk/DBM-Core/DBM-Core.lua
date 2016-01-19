@@ -1085,10 +1085,6 @@ do
 			else--It must have ended while we were offline, kill variable.
 				self.Options.tempBreak2 = nil
 			end
-		--Try asking top two DBM version in group
-		elseif IsInGroup() and not timerRequestInProgress then
-			self:Schedule(2.5, self.RequestTimers, self, 1)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
-			self:Schedule(5, self.RequestTimers, self, 2)--Break timer recovery doesn't work if outside the zone when reloadui or relogging (no loadmod). Need request timer here.
 		end
 	end
 
@@ -2035,6 +2031,11 @@ do
 			local mapID = GetCurrentMapAreaID()
 			local mapx, mapy = GetPlayerMapPosition("player")
 			DBM:AddMsg(("Location Information\nYou are at zone %u (%s): x=%f, y=%f.\nLocal Map ID %u (%s): x=%f, y=%f"):format(map, GetRealZoneText(map), x, y, mapID, GetZoneText(), mapx, mapy))
+		elseif cmd:sub(1, 7) == "request" then
+			DBM:Unschedule(DBM.RequestTimers)
+			DBM:RequestTimers(1)
+			DBM:RequestTimers(2)
+			DBM:RequestTimers(3)
 		else
 			DBM:LoadGUI()
 		end
@@ -3589,7 +3590,6 @@ do
 			self:Debug("No action taken because mapID hasn't changed since last check")
 			return
 		end--ID hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh phase 4 is a loading screen)
-		timerRequestInProgress = false
 		LastInstanceMapID = mapID
 		LastGroupSize = instanceGroupSize
 		difficultyIndex = difficulty
@@ -3617,6 +3617,7 @@ do
 	end
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
+		timerRequestInProgress = false
 		self:Debug("LOADING_SCREEN_DISABLED fired")
 		SecondaryLoadCheck(self)
 		self:Unschedule(SecondaryLoadCheck)
