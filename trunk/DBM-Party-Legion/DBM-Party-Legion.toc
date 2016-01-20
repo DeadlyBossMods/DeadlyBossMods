@@ -13,7 +13,7 @@
 ## X-DBM-Mod-Category: LEG
 ## X-DBM-Mod-Has-Challenge: 1
 ## X-DBM-Mod-Has-Mythic : 1
-## X-DBM-Mod-SubCategoriesID: 1501, 1466, 1456, 1477
+## X-DBM-Mod-SubCategoriesID: 1501, 1466, 1456, 1477, 1458, 1516, 1571, 1492, 1544, 1493
 ## X-DBM-Mod-Name: Party (Legion)
 ## X-DBM-Mod-Name-deDE: Gruppe (WoD)
 ## X-DBM-Mod-Name-ruRU: Групповые подземелья (Legion)
@@ -22,7 +22,7 @@
 ## X-DBM-Mod-Name-ptBR: Masmorras (Legion)
 ## X-DBM-Mod-Name-frFR: Groupe (Legion)
 ## X-DBM-Mod-Sort: 060
-## X-DBM-Mod-MapID: 1501, 1466, 1456, 1477
+## X-DBM-Mod-MapID: 1501, 1466, 1456, 1477, 1458, 1516, 1571, 1492, 1544, 1493
 ## X-DBM-Mod-MinCoreRevision: 14737
 localization.en.lua
 BlackRookHold\AmalgamSouls.lua
@@ -43,3 +43,31 @@ HallsOfValor\Hymdall.lua
 HallsOfValor\Hyrja.lua
 HallsOfValor\KingSkovald.lua
 HallsOfValor\Odyn.lua
+NeltharionsLair\Dargrul.lua
+NeltharionsLair\Naraxas.lua
+NeltharionsLair\Rokmora.lua
+NeltharionsLair\Ularogg.lua
+SuramarCatacombs\GeneralXakal.lua
+SuramarCatacombs\Ivanyr.lua
+SuramarCatacombs\Naltira.lua
+SuramarCatacombs\NightwellSentry.lua
+SuramarCatacombs\Vandros.lua
+SuramarNobleDistrict\HighCouncillor.lua
+SuramarNobleDistrict\Talixae.lua
+SuramarNobleDistrict\Volendis.lua
+MawOfSouls\Harbaron.lua
+MawOfSouls\Helya.lua
+MawOfSouls\Ymiron.lua
+VioletHold\Anubesset.lua
+VioletHold\FelLordBetrug.lua
+VioletHold\Festerface.lua
+VioletHold\MillificentManastorm.lua
+VioletHold\MindflayerKaahrj.lua
+VioletHold\PrincessThalena.lua
+VioletHold\Saelorn.lua
+VioletHold\Shivermaw.lua
+GroveOfWarden\Ashgolm.lua
+GroveOfWarden\Cordana.lua
+GroveOfWarden\Glazer.lua
+GroveOfWarden\TirathonSaltheril.lua
+GroveOfWarden\Tormentorum.lua
