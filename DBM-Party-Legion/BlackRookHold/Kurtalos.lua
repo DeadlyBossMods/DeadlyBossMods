@@ -2,80 +2,81 @@ local mod	= DBM:NewMod(1672, "DBM-Party-Legion", 1, 740)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(98965)--TODO, maybe other CID for the actual boss unit that dies, the demon of phase 2?
+mod:SetCreatureID(98965, 98970)
 mod:SetEncounterID(1835)
 mod:SetZone()
+mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
-	"SPELL_SUMMON",
+	"SPELL_CAST_START 198820 199143 199193",
+	"SPELL_CAST_SUCCESS 198635",
+	"SPELL_AURA_REMOVED 199193",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
+local warnCloud						= mod:NewSpellAnnounce(199143, 2)
 
---local specWarnCurtainOfFlame		= mod:NewSpecialWarningMoveAway(153396)
+local specWarnDarkblast				= mod:NewSpecialWarningDodge(198820, nil, nil, nil, 2)
+local specWarnGuile					= mod:NewSpecialWarningDodge(199193, nil, nil, nil, 2)
+local specWarnGuileEnded			= mod:NewSpecialWarningEnd(199193)
 
---local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396, nil, nil, nil, 3)
+local timerDarkBlastCD				= mod:NewCDTimer(19, 198820, nil, nil, nil, 3)
+local timerUnerringShearCD			= mod:NewCDTimer(13, 198635, nil, "Tank", nil, 5)
+local timerGuileCD					= mod:NewCDTimer(39, 199193, nil, nil, nil, 6)
+local timerGuile					= mod:NewBuffFadesTimer(24, 199193, nil, nil, nil, 6)
+--local timerCloudCD					= mod:NewCDTimer(32.8, 199143, nil, nil, nil, 3)
 
 --local voiceCurtainOfFlame			= mod:NewVoice(153392)
 
---mod:AddRangeFrameOption(5, 153396)
+mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
-
+	self.vb.phase = 1
+	timerUnerringShearCD:Start(6-delay)
+	timerDarkBlastCD:Start(10-delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 153396 then
-
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 153392 then
-
+	if args.spellId == 198635 then
+		timerUnerringShearCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 153392 then
-
+	if spellId == 199193 then
+		specWarnGuileEnded:Show()
+		timerGuileCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 153764 then
-
+	if spellId == 198820 then
+		if self.vb.phase == 1 then
+			timerDarkBlastCD:Start()
+		end
+	elseif spellId == 199143 then
+		warnCloud:Show()
+--		timerCloudCD:Start()
+	elseif spellId == 199193 then
+		specWarnGuile:Show()
+		timerGuile:Start()
 	end
 end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 153616 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 153500 then
-
+	if spellId == 117624 then
+		self.vb.phase = 2
+		timerDarkBlastCD:Cancel()
+		timerUnerringShearCD:Cancel()
+--		timerCloudCD:Start(12)
+		timerGuileCD:Start(24)
 	end
 end
---]]
