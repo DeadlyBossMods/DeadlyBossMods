@@ -33,7 +33,7 @@ local specWarnEyeBeam				= mod:NewSpecialWarningYou(197687, nil, nil, nil, 1, 2)
 local yellEyeBeam					= mod:NewYell(197687)
 
 local timerBrutalGlaiveCD			= mod:NewCDTimer(15, 197546, nil, nil, nil, 3)
-local timerVengefulGlaiveCD			= mod:NewCDTimer(11, 197418, nil, "Tank", nil, 5)--11-16, delayed by dark rush
+local timerVengefulGlaiveCD			= mod:NewCDTimer(11, 197418, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--11-16, delayed by dark rush
 local timerDarkRushCD				= mod:NewCDTimer(30, 197478, nil, nil, nil, 3)
 
 local voiceBrutalGlaive				= mod:NewVoice(197546)--runout

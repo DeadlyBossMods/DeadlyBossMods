@@ -24,7 +24,7 @@ local yellSwirlingScythe			= mod:NewYell(195254)
 
 local timerSwirlingScytheCD			= mod:NewCDTimer(20.5, 195254, nil, nil, nil, 3)--20-27
 local timerSoulEchoesCD				= mod:NewNextTimer(27.5, 194966, nil, nil, nil, 3)
-local timerReapSoulCD				= mod:NewNextTimer(13, 194956, nil, nil, nil, 5)
+local timerReapSoulCD				= mod:NewNextTimer(13, 194956, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 
 local voiceSwirlingScythe			= mod:NewVoice(195254)
 local voiceSoulEchos				= mod:NewVoice(194966)
