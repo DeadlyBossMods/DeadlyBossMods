@@ -8,29 +8,61 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
-	"SPELL_SUMMON",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_AURA_APPLIED 194966",
+	"SPELL_CAST_START 195254 194966 194956",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
---local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
+local warnSwirlingScythe			= mod:NewTargetAnnounce(195254, 2)
+local warnSoulEchoes				= mod:NewTargetAnnounce(194966, 2)
 
---local specWarnCurtainOfFlame		= mod:NewSpecialWarningMoveAway(153396)
+local specWarnReapSoul				= mod:NewSpecialWarningDodge(194956, "Tank", nil, nil, 3)
+local specWarnSoulEchos				= mod:NewSpecialWarningRun(194966, nil, nil, nil, 1, 2)
+local specWarnSwirlingScythe		= mod:NewSpecialWarningDodge(195254, nil, nil, nil, 1, 2)
+local yellSwirlingScythe			= mod:NewYell(195254)
 
---local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396, nil, nil, nil, 3)
+local timerSwirlingScytheCD			= mod:NewCDTimer(20.5, 195254, nil, nil, nil, 3)--20-27
+local timerSoulEchoesCD				= mod:NewNextTimer(27.5, 194966, nil, nil, nil, 3)
+local timerReapSoulCD				= mod:NewNextTimer(13, 194956, nil, nil, nil, 5)
 
---local voiceCurtainOfFlame			= mod:NewVoice(153392)
+local voiceSwirlingScythe			= mod:NewVoice(195254)
+local voiceSoulEchos				= mod:NewVoice(194966)
 
---mod:AddRangeFrameOption(5, 153396)
+--mod:AddRangeFrameOption(5, 194966)
+
+function mod:ScytheTarget(targetname, uId)
+	if not targetname then
+		warnSwirlingScythe:Show(DBM_CORE_UNKNOWN)
+		return
+	end
+	if targetname == UnitName("player") then
+		specWarnSwirlingScythe:Show()
+		voiceSwirlingScythe:Play("runaway")
+		yellSwirlingScythe:Yell()
+	else
+		warnSwirlingScythe:Show(targetname)
+	end
+end
+
+function mod:SoulTarget(targetname, uId)
+	if not targetname then
+		warnSoulEchoes:Show(DBM_CORE_UNKNOWN)
+		return
+	end
+	if targetname == UnitName("player") then
+		specWarnSoulEchos:Show()
+		voiceSoulEchos:Play("runaway")
+		voiceSoulEchos:Schedule(1, "keepmove")
+	else
+		warnSoulEchoes:Show(targetname)
+	end
+end
 
 function mod:OnCombatStart(delay)
-
+	timerSwirlingScytheCD:Start(8-delay)
+	timerSoulEchoesCD:Start(16-delay)
+	timerReapSoulCD:Start(20-delay)
 end
 
 function mod:OnCombatEnd()
@@ -39,43 +71,26 @@ function mod:OnCombatEnd()
 --	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 153396 then
-
-	end
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 153392 then
-
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 153392 then
-
+	if spellId == 194966 and self:AntiSpam(3, 1) then--Secondary Soul echos warning that's 2 seconds slower than yell trickory
+		warnSoulEchoes:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnSoulEchos:Show()
+		end
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 153764 then
-
+	if spellId == 195254 then
+		timerSwirlingScytheCD:Start()
+		self:BossTargetScanner(98542, "ScytheTarget", 0.1, 20, true, nil, nil, nil, true)
+	elseif spellId == 194966 then
+		timerSoulEchoesCD:Start()
+		self:BossTargetScanner(98542, "SoulTarget", 0.1, 20, true, nil, nil, nil, true)
+	elseif spellId == 194956 then
+		specWarnReapSoul:Show()
+		timerReapSoulCD:Start()
 	end
 end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 153616 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 153500 then
-
-	end
-end
---]]
