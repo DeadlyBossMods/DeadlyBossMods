@@ -1084,8 +1084,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellMarkOfLegion:Schedule(remaining-1, 1)
 				yellMarkOfLegion:Schedule(remaining-2, 2)
 				yellMarkOfLegion:Schedule(remaining-3, 3)
-				yellMarkOfLegion:Schedule(remaining-4, 4)
-				yellMarkOfLegion:Schedule(remaining-5, 5)
 			end
 		end
 		updateRangeFrame(self)

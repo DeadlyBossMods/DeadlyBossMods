@@ -86,7 +86,7 @@ local timerFelImplosionCD			= mod:NewNextCountTimer(46, 181255, nil, nil, nil, 1
 ----Infernals
 local timerInfernoCD				= mod:NewNextCountTimer(107, 181180, nil, nil, nil, 1)
 ----Gul'dan
-local timerWrathofGuldanCD			= mod:NewCDTimer(107, 186348, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerWrathofGuldanCD			= mod:NewNextTimer(107, 186348, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --Mannoroth
 mod:AddTimerLine(L.name)
 local timerGlaiveComboCD			= mod:NewCDTimer(30, 181354, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--30 seconds unless delayed by something else
@@ -316,11 +316,13 @@ local function setWrathIcons(self)
 	end
 	if ranged1 and ranged2 and melee1 and melee2 and healer then
 		DBM:Debug("All wrath found!", 2)
-		self:SetIcon(healer, 8)
-		self:SetIcon(melee1, 7)
-		self:SetIcon(melee2, 6)
-		self:SetIcon(ranged1, 5)
-		self:SetIcon(ranged2, 4)
+		if self.Options.SetIconOnWrath then
+			self:SetIcon(healer, 8)
+			self:SetIcon(melee1, 7)
+			self:SetIcon(melee2, 6)
+			self:SetIcon(ranged1, 5)
+			self:SetIcon(ranged2, 4)
+		end
 		if playerIcon then
 			yellWrathofGuldan:Yell(playerIcon, playerIcon, playerIcon)
 			voiceWrath:Play("mm"..playerIcon)
@@ -550,15 +552,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnWrathofGuldan:CombinedShow(0.3, args.destName)
 		local icon = self.vb.wrathIcon
-		if self.Options.SetIconOnWrath then
-			if not icon then
-				self:Unschedule(setWrathIcons)
-				if #guldanTargets == 5 then
-					setWrathIcons(self)
-				else
-					self:Schedule(1, setWrathIcons, self)
-				end
+		if not icon then
+			self:Unschedule(setWrathIcons)
+			if #guldanTargets == 5 then
+				setWrathIcons(self)
 			else
+				self:Schedule(1, setWrathIcons, self)
+			end
+		else
+			if self.Options.SetIconOnWrath then
 				self:SetIcon(args.destName, icon)
 			end
 		end
@@ -716,7 +718,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			countdownGlaiveCombo:Cancel()
 			timerGazeCD:Cancel()
 			timerFelSeekerCD:Cancel()
-			timerInfernoCD:Cancel()
+			if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 10 then
+				timerInfernoCD:Cancel()
+			end
 			timerFelHellfireCD:Start(16.9)
 			timerGlaiveComboCD:Start(27.8)
 			countdownGlaiveCombo:Start(27.8)
@@ -727,6 +731,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			warnPhase4:Show()
 			voicePhaseChange:Play("pfour")
 			if self:IsMythic() then
+				if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 10 then
+					timerFelImplosionCD:Cancel()
+				end
+				if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 10 then
+					timerCurseofLegionCD:Cancel()
+				end
 				if self.vb.wrathIcon then
 					self.vb.wrathIcon = 8
 				end
@@ -809,13 +819,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerWrathofGuldanCD:Start(4.8)
 		end
 		--Detect when adds timers will reset (by 181301) before they come off cd, and cancel them early
-		if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 9.5 then
+		if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 4.8 then
 			timerFelImplosionCD:Cancel()
 		end
-		if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 9.5 then
+		if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 4.8 then
 			timerInfernoCD:Cancel()
 		end
-		if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 9.5 then
+		if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 4.8 then
 			timerCurseofLegionCD:Cancel()
 		end
 	elseif spellId == 185690 and self.vb.phase == 3 then--Phase 4
@@ -828,7 +838,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownGlaiveCombo:Cancel()
 		timerGazeCD:Cancel()
 		timerFelSeekerCD:Cancel()
-		timerInfernoCD:Cancel()
+		if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 4.8 then
+			timerInfernoCD:Cancel()
+		end
 		timerFelHellfireCD:Start(11.4)
 		timerGlaiveComboCD:Start(22.3)
 		countdownGlaiveCombo:Start(22.3)
@@ -839,6 +851,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPhase4:Show()
 		voicePhaseChange:Play("pfour")
 		if self:IsMythic() then
+			if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 4.8 then
+				timerFelImplosionCD:Cancel()
+			end
+			if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 4.8 then
+				timerCurseofLegionCD:Cancel()
+			end
 			if self.vb.wrathIcon then
 				self.vb.wrathIcon = 8
 			end
