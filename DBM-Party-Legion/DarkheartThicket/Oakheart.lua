@@ -8,29 +8,44 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
-	"SPELL_SUMMON",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_CAST_START 204666 204646 204574 204667"
 )
 
---local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
+local warnShatteredEarth			= mod:NewSpellAnnounce(204666, 2)
+local warnThrowTarget				= mod:NewTargetAnnounce(204646, 2)--This is target the tank is THROWN at.
 
---local specWarnCurtainOfFlame		= mod:NewSpecialWarningMoveAway(153396)
+local specWarnRoots					= mod:NewSpecialWarningDodge(204574, nil, nil, nil, 2, 2)
+local yellThrow						= mod:NewYell(204646)--yell so others can avoid splash damage. I don't think target can avoid
+local specWarnBreath				= mod:NewSpecialWarningSpell(204667, "Tank", nil, nil, 1, 2)
 
---local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396, nil, nil, nil, 3)
+local timerShatteredEarthCD			= mod:NewCDTimer(46, 204666, nil, nil, nil, 2)--Not enough sample size
+local timerThrowCD					= mod:NewCDTimer(28, 204646, nil, nil, nil, 3)--29-31
+local timerRootsCD					= mod:NewCDTimer(23, 204574, nil, nil, nil, 3)--23-31
+local timerBreathCD					= mod:NewCDTimer(26.5, 204667, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
---local voiceCurtainOfFlame			= mod:NewVoice(153392)
+local voiceRoots					= mod:NewVoice(204574)--watchstep
+local voiceBreath					= mod:NewVoice(204574, "Tank")--Defensive
 
 --mod:AddRangeFrameOption(5, 153396)
 
-function mod:OnCombatStart(delay)
+function mod:ThrowTarget(targetname, uId)
+	if not targetname then
+		return
+	end
+	if targetname == UnitName("player") then
+		--Can this be dodged? personal warning?
+		yellThrow:Yell()
+	else
+		warnThrowTarget:Show(targetname)
+	end
+end
 
+function mod:OnCombatStart(delay)
+	timerShatteredEarthCD:Start(7-delay)
+	timerRootsCD:Start(11-delay)
+	timerBreathCD:Start(18-delay)
+	timerThrowCD:Start(29-delay)
 end
 
 function mod:OnCombatEnd()
@@ -39,43 +54,21 @@ function mod:OnCombatEnd()
 --	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 153396 then
-
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 153392 then
-
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 153392 then
-
-	end
-end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 153764 then
-
+	if spellId == 204646 then
+		timerThrowCD:Start()
+		self:BossTargetScanner(103344, "ThrowTarget", 0.1, 12, true, nil, nil, nil, true)
+	elseif spellId == 204666 then
+		warnShatteredEarth:Show()
+		timerShatteredEarthCD:Start()
+	elseif spellId == 204574 then
+		specWarnRoots:Show()
+		voiceRoots:Play("watchstep")
+		timerRootsCD:Start()
+	elseif spellId == 204667 then
+		specWarnBreath:Show()
+		voiceBreath:Play("defensive")
+		timerBreathCD:Start()
 	end
 end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 153616 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 153500 then
-
-	end
-end
---]]

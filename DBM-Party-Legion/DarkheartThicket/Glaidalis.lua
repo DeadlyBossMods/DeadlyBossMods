@@ -8,74 +8,80 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
-	"SPELL_SUMMON",
+	"SPELL_CAST_START 198379",
+	"SPELL_CAST_SUCCESS 198401",
+	"SPELL_PERIODIC_DAMAGE 198408",
+	"SPELL_PERIODIC_MISSED 198408",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
+--TODO, verify target scanning timing. May need debug level 3 to examine the scan time for leap
+local warnLeap					= mod:NewTargetAnnounce(196346, 2)--0.5 seconds may still be too hard to dodge even if target scanning works.
+local warnNightFall				= mod:NewSpellAnnounce(198401, 2)
 
---local specWarnCurtainOfFlame		= mod:NewSpecialWarningMoveAway(153396)
+local specWarnNightfall			= mod:NewSpecialWarningMove(198408, nil, nil, nil, 1, 2)
+--local specWarnLeap			= mod:NewSpecialWarningDodge(196346, nil, nil, nil, 1)
+local yellLeap					= mod:NewYell(196346)
+local specWarnRampage			= mod:NewSpecialWarningSpell(198379, "Tank", nil, nil, 1, 2)
 
---local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396, nil, nil, nil, 3)
+local timerLeapCD				= mod:NewCDTimer(16.5, 196346, nil, nil, nil, 3)
+local timerRampageCD			= mod:NewCDTimer(15.8, 198379, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerNightfallCD			= mod:NewCDTimer(14.5, 198379, nil, nil, nil, 3)
 
---local voiceCurtainOfFlame			= mod:NewVoice(153392)
+local voiceNightFall			= mod:NewVoice(198408)--runaway
+local voiceRampage				= mod:NewVoice(198379, "Tank")--defensive
 
 --mod:AddRangeFrameOption(5, 153396)
 
-function mod:OnCombatStart(delay)
-
+function mod:ScytheTarget(targetname, uId)
+	if not targetname then
+		warnLeap:Show(DBM_CORE_UNKNOWN)
+		return
+	end
+	if targetname == UnitName("player") then
+--		specWarnLeap:Show()
+--		voiceSwirlingScythe:Play("runaway")
+		yellLeap:Yell()
+	else
+		warnLeap:Show(targetname)
+	end
 end
 
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+function mod:OnCombatStart(delay)
+	timerLeapCD:Start(5.9-delay)
+	timerRampageCD:Start(12.2-delay)
+	timerNightfallCD:Start(19-delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 153396 then
-
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 153392 then
-
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 153392 then
-
+	if args.spellId == 198401 and self:AntiSpam(2, 1) then
+		warnNightFall:Show()
+		timerNightfallCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 153764 then
-
+	if spellId == 198379 then
+		specWarnRampage:Show()
+		voiceRampage:Play("defensive")
+		timerRampageCD:Start()
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 153616 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-
+	if spellId == 198408 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+		specWarnNightfall:Show()
+		voiceNightFall:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 153500 then
-
+	--"<13.84 02:50:50> [UNIT_SPELLCAST_SUCCEEDED] Arch-Druid Glaidalis(Omegal) [[boss1:Grievous Leap::3-2084-1466-6383-196346-000018A4DA:196346]]", -- [47]
+	if spellId == 196346 then
+		self:BossTargetScanner(96512, "LeapTarget", 0.05, 12, true, nil, nil, nil, true)
+		timerLeapCD:Start()
 	end
 end
---]]
