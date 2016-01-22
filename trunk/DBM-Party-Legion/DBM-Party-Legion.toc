@@ -15,7 +15,7 @@
 ## X-DBM-Mod-Has-Mythic : 1
 ## X-DBM-Mod-SubCategoriesID: 1501, 1466, 1456, 1477, 1458, 1516, 1571, 1492, 1544, 1493
 ## X-DBM-Mod-Name: Party (Legion)
-## X-DBM-Mod-Name-deDE: Gruppe (WoD)
+## X-DBM-Mod-Name-deDE: Gruppe (Legion)
 ## X-DBM-Mod-Name-ruRU: Групповые подземелья (Legion)
 ## X-DBM-Mod-Name-esES: Mazmorras (Legion)
 ## X-DBM-Mod-Name-esMX: Mazmorras (Legion)
