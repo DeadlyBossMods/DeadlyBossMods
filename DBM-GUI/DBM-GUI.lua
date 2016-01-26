@@ -1524,7 +1524,7 @@ local function CreateOptionsMenu()
 		end
 
 		-- RaidWarn Duration
-		local durationSlider = raidwarnoptions:CreateSlider(L.Warn_Duration, 3, 20, 1, 200)
+		local durationSlider = raidwarnoptions:CreateSlider(L.Warn_Duration, 1, 20, 1, 200)
 		durationSlider:SetPoint('TOPLEFT', FontDropDown, "TOPLEFT", 20, -170)
 		do
 			local firstshow = true
