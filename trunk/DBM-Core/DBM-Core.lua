@@ -9554,6 +9554,10 @@ do
 	function bossModPrototype:NewSpecialWarningMoveTo(text, optionDefault, ...)
 		return newSpecialWarning(self, "moveto", text, nil, optionDefault, ...)
 	end
+	
+	function bossModPrototype:NewSpecialWarningJump(text, optionDefault, ...)
+		return newSpecialWarning(self, "jump", text, nil, optionDefault, ...)
+	end
 
 	function bossModPrototype:NewSpecialWarningRun(text, optionDefault, ...)
 		return newSpecialWarning(self, "run", text, nil, optionDefault, ...)
