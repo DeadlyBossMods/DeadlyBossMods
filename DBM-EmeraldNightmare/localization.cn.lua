@@ -22,6 +22,11 @@ L:SetMiscLocalization({
 })
 
 ---------------------------
+-- Il'gynoth, Heart of Corruption --
+---------------------------
+L= DBM:GetModLocalization(1738)
+
+---------------------------
 -- Ursoc --
 ---------------------------
 L= DBM:GetModLocalization(1667)
