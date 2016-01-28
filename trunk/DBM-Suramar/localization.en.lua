@@ -1,7 +1,7 @@
 local L
 
 ---------------
--- Crystal Scorpion --
+-- Skorpyron --
 ---------------
 L= DBM:GetModLocalization(1706)
 
@@ -33,9 +33,14 @@ L= DBM:GetModLocalization(1731)
 L= DBM:GetModLocalization(1713)
 
 ------------------
--- Astromancer --
+-- Star Augur Estraeus --
 ------------------
 L= DBM:GetModLocalization(1732)
+
+------------------
+-- Gul'dan --
+------------------
+L= DBM:GetModLocalization(1737)
 
 -------------
 --  Trash  --
