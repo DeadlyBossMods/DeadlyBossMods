@@ -67,6 +67,12 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 203552 then
 		warnHeartofSwarm:Show()
+		timerBreathCD:Cancel()
+		timerRotCD:Cancel()
+		timerVolatileRotCD:Cancel()
+		timerBreathCD:Start(2)
+		timerRotCD:Start(2)
+		timerVolatileRotCD:Start(2)
 	elseif spellId == 202977 then
 		warnBreath:Show()
 		timerBreathCD:Start()
