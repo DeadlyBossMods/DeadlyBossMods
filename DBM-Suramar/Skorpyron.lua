@@ -78,7 +78,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 204275 then
+	if spellId == 204275 and self:AntiSpam(5, 1) then
 		specWarnArcanoslash:Show()
 		timerArcanoslashCD:Start()
 	elseif spellId == 204372 then
