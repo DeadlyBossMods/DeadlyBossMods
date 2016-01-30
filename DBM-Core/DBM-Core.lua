@@ -8851,7 +8851,7 @@ do
 		--TODO, maybe make this not use an entire sound object?
 		local sound5 = self:NewSound(5, true, false)
 		timer = timer or 10
-		count = count or 5
+		count = count or 4
 		spellId = spellId or 39505
 		local obj = setmetatable(
 			{
