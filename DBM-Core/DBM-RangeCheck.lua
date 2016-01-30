@@ -79,17 +79,18 @@ local max, sin, cos, pi, pi2 = math.max, math.sin, math.cos, math.pi, math.pi * 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 local BLIP_TEX_COORDS = {
-	["WARRIOR"]	= { 0,	   0.125, 0,    0.25 },
-	["PALADIN"]	= { 0.125, 0.25,  0,    0.25 },
-	["HUNTER"]	= { 0.25,  0.375, 0,    0.25 },
-	["ROGUE"]	= { 0.375, 0.5,   0,    0.25 },
-	["PRIEST"]	= { 0.5,   0.625, 0,    0.25 },
-	["DEATHKNIGHT"]	= { 0.625, 0.75,  0,    0.25 },
-	["SHAMAN"]	= { 0.75,  0.875, 0,    0.25 },
-	["MAGE"]	= { 0.875, 1,     0,    0.25 },
-	["WARLOCK"]	= { 0,     0.125, 0.25, 0.5  },
-	["DRUID"]	= { 0.25,  0.375, 0.25, 0.5  },
-	["MONK"]	= { 0.125, 0.25, 0.25, 0.5 }
+	["WARRIOR"]		 = { 0, 0.125, 0, 0.25 },
+	["PALADIN"]		 = { 0.125, 0.25, 0, 0.25 },
+	["HUNTER"]		 = { 0.25, 0.375, 0, 0.25 },
+	["ROGUE"]		 = { 0.375, 0.5, 0, 0.25 },
+	["PRIEST"]		 = { 0.5, 0.625, 0, 0.25 },
+	["DEATHKNIGHT"]	 = { 0.625, 0.75, 0, 0.25 },
+	["SHAMAN"]		 = { 0.75, 0.875, 0, 0.25 },
+	["MAGE"]		 = { 0.875, 1, 0, 0.25 },
+	["WARLOCK"]		 = { 0, 0.125, 0.25, 0.5 },
+	["DRUID"]		 = { 0.25, 0.375, 0.25, 0.5 },
+	["MONK"]		 = { 0.125, 0.25, 0.25, 0.5 },
+	["DEMONHUNTER"]	 = { 0.375, 0.5, 0.25, 0.5 },
 }
 ---------------------
 --  Dropdown Menu  --
