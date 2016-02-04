@@ -923,7 +923,7 @@ do
 			b = bool and self.alert.b or self.normal.b or 1
 			a = bool and self.alert.a or self.normal.a or 1
 			self.texture:SetVertexColor(r, g, b, a)
-			if bool then
+			if self.alertLabel then
 				self:SetLabel(self.alertLabel, nil, nil, nil, nil, nil, 0.8)
 			end
 			return self
