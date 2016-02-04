@@ -605,6 +605,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.brandedActive = self.vb.brandedActive + 1
 		local name = args.destName
 		local uId = DBM:GetRaidUnitId(name)
+		if not uId then return end
 		local _, _, _, currentStack = UnitDebuff(uId, GetSpellInfo(spellId))
 		local fortified = (self:IsMythic() and self.vb.phase >= 3) or spellId == 164005--Phase 3 uses replication ID, so need hack for mythic fortified/replication phase.
 		if not currentStack then
@@ -706,6 +707,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.markActive = true
 		self.vb.lastMarkedTank = args.destName
 		local uId = DBM:GetRaidUnitId(args.destName)
+		if not uId then return end
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(uId, args.spellName)
 		if expires then
 		timerMarkOfChaos:Start(expires-GetTime(), args.destName)
