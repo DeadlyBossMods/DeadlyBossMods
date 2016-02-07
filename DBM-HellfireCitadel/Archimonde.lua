@@ -90,6 +90,7 @@ local specWarnRainofChaos			= mod:NewSpecialWarningCount(189953, nil, nil, nil, 
 local specWarnDarkConduitSoon		= mod:NewSpecialWarningSoon(190394, "Ranged", nil, nil, 1, 2)
 local specWarnSeethingCorruption	= mod:NewSpecialWarningCount(190506, nil, nil, nil, 2, 2)
 local specWarnMarkOfLegion			= mod:NewSpecialWarningYouPos(187050, nil, nil, 2, 3, 5)
+local specWarnMarkOfLegionSoak		= mod:NewSpecialWarningSoakPos(187050, nil, nil, 2, 1, 5)
 local yellDoomFireFades				= mod:NewFadesYell(183586, nil, false)
 local yellMarkOfLegion				= mod:NewFadesYell(187050, 28836)
 local yellMarkOfLegionPoS			= mod:NewPosYell(187050, 28836)
@@ -462,8 +463,36 @@ local function showMarkOfLegion(self, spellName)
 			end
 		end
 	end
-	if self.Options.HudMapMarkofLegion2 and not playerHasMark then
-		DBMHudMap:RegisterRangeMarkerOnPartyMember(1870502, "party", playerName, 0.9, 12, nil, nil, nil, 1, nil, false):Appear()
+	if not playerHasMark then
+		if UnitIsDeadOrGhost("player") then return end
+		for i = 1, DBM:GetNumRealGroupMembers() do
+			local unitID = 'raid'..i
+			local isPlayer = false
+			local soakers = 0
+			soakers = soakers + 1
+			if UnitIsUnit("player", unitID) then
+				local soak = math.ceil(soakers/4)
+				if (soak == 1) then
+					specWarnMarkOfLegionSoak:Show(MELEE.." "..DBM_CORE_LEFT)
+					voiceMarkOfLegion:Play("mm"..1)
+				end
+				if (soak == 2) then
+					specWarnMarkOfLegionSoak:Show(MELEE.." "..DBM_CORE_RIGHT)
+					voiceMarkOfLegion:Play("mm"..2)
+				end
+				if (soak == 3) then
+					specWarnMarkOfLegionSoak:Show(RANGED.." "..DBM_CORE_LEFT)
+					voiceMarkOfLegion:Play("mm"..3)
+				end
+				if (soak == 4) then
+					specWarnMarkOfLegionSoak:Show(RANGED.." "..DBM_CORE_RIGHT)
+					voiceMarkOfLegion:Play("mm"..4)                  
+				end
+            end
+		end
+		if self.Options.HudMapMarkofLegion2 then
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(1870502, "party", playerName, 0.9, 12, nil, nil, nil, 1, nil, false):Appear()
+		end
 	end
 end
 
