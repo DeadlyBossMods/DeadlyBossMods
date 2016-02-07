@@ -136,7 +136,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRare1")
 
 L:SetGeneralLocalization({
-	name = "Brawlers: Lagacy Challenges"
+	name = "Brawlers: Legacy Challenges"
 })
 
 -------------
