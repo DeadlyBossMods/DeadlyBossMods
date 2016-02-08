@@ -3018,7 +3018,9 @@ end
 
 function DBM:PLAYER_LEVEL_UP()
 	playerLevel = UnitLevel("player")
-	self:SpecChanged()
+	if playerLevel < 15 and playerLevel > 9 then
+		self:SpecChanged()
+	end
 end
 
 function DBM:LoadAllModDefaultOption(modId)
