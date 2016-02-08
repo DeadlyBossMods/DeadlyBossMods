@@ -90,7 +90,7 @@ local specWarnRainofChaos			= mod:NewSpecialWarningCount(189953, nil, nil, nil, 
 local specWarnDarkConduitSoon		= mod:NewSpecialWarningSoon(190394, "Ranged", nil, nil, 1, 2)
 local specWarnSeethingCorruption	= mod:NewSpecialWarningCount(190506, nil, nil, nil, 2, 2)
 local specWarnMarkOfLegion			= mod:NewSpecialWarningYouPos(187050, nil, nil, 2, 3, 5)
-local specWarnMarkOfLegionSoak		= mod:NewSpecialWarningSoakPos(187050, nil, nil, 2, 1)
+local specWarnMarkOfLegionSoak		= mod:NewSpecialWarningSoakPos(187050, nil, nil, 2, 1, 6)
 local yellDoomFireFades				= mod:NewFadesYell(183586, nil, false)
 local yellMarkOfLegion				= mod:NewFadesYell(187050, 28836)
 local yellMarkOfLegionPoS			= mod:NewPosYell(187050, 28836)
@@ -474,19 +474,19 @@ local function showMarkOfLegion(self, spellName)
 				local soak = math.ceil(soakers/4)
 				if (soak == 1) then
 					specWarnMarkOfLegionSoak:Show(MELEE.." "..DBM_CORE_LEFT)
-					--voiceMarkOfLegion:Play("mm"..1)
+					voiceMarkOfLegion:Play("frontleft")
 				end
 				if (soak == 2) then
 					specWarnMarkOfLegionSoak:Show(MELEE.." "..DBM_CORE_RIGHT)
-					--voiceMarkOfLegion:Play("mm"..2)
+					voiceMarkOfLegion:Play("frontright")
 				end
 				if (soak == 3) then
 					specWarnMarkOfLegionSoak:Show(RANGED.." "..DBM_CORE_LEFT)
-					--voiceMarkOfLegion:Play("mm"..3)
+					voiceMarkOfLegion:Play("backleft")
 				end
 				if (soak == 4) then
 					specWarnMarkOfLegionSoak:Show(RANGED.." "..DBM_CORE_RIGHT)
-					--voiceMarkOfLegion:Play("mm"..4)                  
+					voiceMarkOfLegion:Play("backright")                 
 				end
             end
 		end
