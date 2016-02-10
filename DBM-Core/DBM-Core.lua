@@ -1116,6 +1116,12 @@ do
 				C_TimerAfter(10, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
 				return
 			end
+			if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
+				self:Disable(true)
+				C_TimerAfter(10, function() self:AddMsg(DBM_CORE_DPMCORE) end)
+				return
+			end
+			--http://wow.curseforge.com/addons/deadly-pvp-mods/
 			--DBM is disabled and DBM is not forced disabled
 			if not dbmIsEnabled and not blockEnable then
 				C_TimerAfter(10, function() self:AddMsg(DBM_CORE_DISABLED_REMINDER) end)
@@ -2409,6 +2415,10 @@ do
 		end
 		if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
 			self:AddMsg(DBM_CORE_3RDPROFILES)
+			return
+		end
+		if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
+			self:AddMsg(DBM_CORE_DPMCORE)
 			return
 		end
 		if blockEnable then
