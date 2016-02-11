@@ -326,7 +326,11 @@ local function showMarkOfLegion(self, spellName)
 	--MELEE, RANGED, DBM_CORE_LEFT, DBM_CORE_RIGHT (http://puu.sh/jsyr5/7014c50cb3.jpg)
 	--Melee/ranged left/right is now the default since too many users felt weak aura's were required because running to icons by icon assignments was hard.
 	warnMarkOfLegion:Show(self.vb.markOfLegionCast, table.concat(legionTargets, "<, >"))
-	if self.vb.MarkBehavior == "NoAssignment" and not self.Options.overrideMarkOfLegion then return end
+	local useIgnore = false
+	if self.Options.overrideMarkOfLegion then
+		useIgnore = self.Options.MarkBehavior
+	end
+	if self.vb.MarkBehavior == "NoAssignment" and not useIgnore then return end
 	local playerHasMark = UnitDebuff("player", spellName)
 	for i = 1, #legionTargets do
 		local name = legionTargets[i]
@@ -335,11 +339,11 @@ local function showMarkOfLegion(self, spellName)
 		if not uId then break end
 		if i == 1 then
 			local number, position = i, MELEE
-			if self.vb.MarkBehavior == "LocSmallBack" then
+			if self.vb.MarkBehavior == "LocSmallBack" or useIgnore == "LocSmallBack" then
 				number, position = 3, RANGED
 			end
 			local message = position.."-"..DBM_CORE_LEFT
-			if self.vb.MarkBehavior == "Numbered" then
+			if self.vb.MarkBehavior == "Numbered" or useIgnore == "Numbered" then
 				message = iconedAssignments[number]
 			end
 			if self.Options.SetIconOnMarkOfLegion2 then
@@ -367,11 +371,11 @@ local function showMarkOfLegion(self, spellName)
 			end
 		elseif i == 2 then
 			local number, position = i, MELEE
-			if self.vb.MarkBehavior == "LocSmallBack" then
+			if self.vb.MarkBehavior == "LocSmallBack" or useIgnore == "LocSmallBack" then
 				number, position = 4, RANGED
 			end
 			local message = position.."-"..DBM_CORE_RIGHT
-			if self.vb.MarkBehavior == "Numbered" then
+			if self.vb.MarkBehavior == "Numbered" or useIgnore == "Numbered" then
 				message = iconedAssignments[number]
 			end
 			if self.Options.SetIconOnMarkOfLegion2 then
@@ -399,11 +403,11 @@ local function showMarkOfLegion(self, spellName)
 			end
 		elseif i == 3 then
 			local number, position = i, RANGED
-			if self.vb.MarkBehavior == "LocSmallBack" then
+			if self.vb.MarkBehavior == "LocSmallBack" or useIgnore == "LocSmallBack" then
 				number, position = 1, MELEE
 			end
 			local message = position.."-"..DBM_CORE_LEFT
-			if self.vb.MarkBehavior == "Numbered" then
+			if self.vb.MarkBehavior == "Numbered" or useIgnore == "Numbered" then
 				message = iconedAssignments[number]
 			end
 			if self.Options.SetIconOnMarkOfLegion2 then
@@ -431,11 +435,11 @@ local function showMarkOfLegion(self, spellName)
 			end
 		else
 			local number, position = i, RANGED
-			if self.vb.MarkBehavior == "LocSmallBack" then
+			if self.vb.MarkBehavior == "LocSmallBack" or useIgnore == "LocSmallBack" then
 				number, position = 2, MELEE
 			end
 			local message = position.."-"..DBM_CORE_RIGHT
-			if self.vb.MarkBehavior == "Numbered" then
+			if self.vb.MarkBehavior == "Numbered" or useIgnore == "Numbered" then
 				message = iconedAssignments[number]
 			end
 			if self.Options.SetIconOnMarkOfLegion2 then
