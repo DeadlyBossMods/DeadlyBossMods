@@ -92,7 +92,7 @@ mod:AddTimerLine(L.name)
 local timerGlaiveComboCD			= mod:NewCDTimer(30, 181354, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--30 seconds unless delayed by something else
 local timerFelHellfireCD			= mod:NewCDTimer(35, 181557, nil, nil, nil, 2)--35, unless delayed by other things.
 local timerGazeCD					= mod:NewCDTimer(47.1, 181597, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--As usual, some variation do to other abilities
-local timerFelSeekerCD				= mod:NewCDTimer(50, 181735, nil, nil, nil, 2)--Small sample size, confirm it's not shorter if not delayed by things.
+local timerFelSeekerCD				= mod:NewCDTimer(49.5, 181735, nil, nil, nil, 2)--Small sample size, confirm it's not shorter if not delayed by things.
 local timerShadowForceCD			= mod:NewCDTimer(52.2, 181799, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
@@ -718,7 +718,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			countdownGlaiveCombo:Cancel()
 			timerGazeCD:Cancel()
 			timerFelSeekerCD:Cancel()
-			if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 10 then
+			if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 9 then
 				timerInfernoCD:Cancel()
 			end
 			timerFelHellfireCD:Start(16.9)
@@ -731,10 +731,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			warnPhase4:Show()
 			voicePhaseChange:Play("pfour")
 			if self:IsMythic() then
-				if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 10 then
+				if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 9 then
 					timerFelImplosionCD:Cancel()
 				end
-				if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 10 then
+				if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 9 then
 					timerCurseofLegionCD:Cancel()
 				end
 				if self.vb.wrathIcon then
@@ -774,7 +774,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			self.vb.infernalCount = 0
 			timerInfernoCD:Cancel()
 			timerInfernoCD:Start(28, 1)
-			timerFelImplosionCD:Start(22, 1)
+			--timerFelImplosionCD:Start(22, 1)--Seems incorret
 		else
 			self.vb.impCount = 0
 			timerCurseofLegionCD:Cancel()--Done for rest of fight
@@ -838,7 +838,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownGlaiveCombo:Cancel()
 		timerGazeCD:Cancel()
 		timerFelSeekerCD:Cancel()
-		if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 4.8 then
+		if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 3.8 then
 			timerInfernoCD:Cancel()
 		end
 		timerFelHellfireCD:Start(11.4)
@@ -851,10 +851,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPhase4:Show()
 		voicePhaseChange:Play("pfour")
 		if self:IsMythic() then
-			if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 4.8 then
+			if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 3.8 then
 				timerFelImplosionCD:Cancel()
 			end
-			if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 4.8 then
+			if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 3.8 then
 				timerCurseofLegionCD:Cancel()
 			end
 			if self.vb.wrathIcon then
