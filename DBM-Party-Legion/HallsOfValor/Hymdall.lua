@@ -9,7 +9,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 191284 193235",
+	"SPELL_CAST_START 191284 193235 188404",
 	"SPELL_PERIODIC_DAMAGE 193234",
 	"SPELL_PERIODIC_MISSED 193234",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -18,16 +18,15 @@ mod:RegisterEventsInCombat(
 local warnDancingBlade				= mod:NewTargetAnnounce(193235, 3)
 local warnSweep						= mod:NewSpellAnnounce(193092, 2, nil, "Tank")
 
-local specWarnHornOfValor			= mod:NewSpecialWarningSoon(188404, nil, nil, nil, 2)
-local specWarnDancingBlade			= mod:NewSpecialWarningMove(193235)
+local specWarnHornOfValor			= mod:NewSpecialWarningSoon(188404, nil, nil, nil, 2, 2)
+local specWarnDancingBlade			= mod:NewSpecialWarningMove(193235, nil, nil, nil, 1, 2)
 local yellDancingBlade				= mod:NewYell(193235)
 
 local timerDancingBladeCD			= mod:NewCDTimer(10, 193235, nil, nil, nil, 3)--10-15
 local timerHornCD					= mod:NewCDTimer(31, 191284, nil, nil, nil, 3)--31-36, possibly health based and invalid
 
-local voiceDancingBlade				= mod:NewVoice(193235)
-
---mod:AddRangeFrameOption(5, 153396)
+local voiceDancingBlade				= mod:NewVoice(193235)--runaway
+local voiceBreath					= mod:NewVoice(188404)--watchstep? or breathsoon?
 
 function mod:BladeTarget(targetname, uId)
 	if not targetname then
@@ -52,10 +51,13 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 191284 then
 		specWarnHornOfValor:Show()
+		voiceBreath:Play("breathsoon")
 		timerHornCD:Start()
 	elseif spellId == 193235 then
 		self:BossTargetScanner(94960, "BladeTarget", 0.1, 20, true, nil, nil, nil, true)
 		timerDancingBladeCD:Start()
+	elseif spellId == 188404 then
+		voiceBreath:Play("breathsoon")
 	end
 end
 
