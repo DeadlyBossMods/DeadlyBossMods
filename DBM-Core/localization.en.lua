@@ -11,7 +11,7 @@ DBM_CORE_LOAD_MOD_ERROR				= "Error while loading boss mods for %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Loaded '%s' mods. For more options such as custom alert sounds and personalized warning notes, type /dbm."
 DBM_CORE_LOAD_MOD_COMBAT			= "Loading of '%s' delayed until you leave combat"
 DBM_CORE_LOAD_GUI_ERROR				= "Could not load GUI: %s"
-DBM_CORE_LOAD_GUI_COMBAT			= "GUI cannot be initially loaded in combat. GUI will be loaded out of combat. After GUI loaded, you can load GUI in combat."
+DBM_CORE_LOAD_GUI_COMBAT			= "GUI cannot be initially loaded in combat. GUI will be loaded out of combat. After GUI loaded, you can open GUI in combat."
 DBM_CORE_BAD_LOAD					= "DBM has detected your mod for this instance failed to fully load correctly because of combat. As soon as you are out of combat, please do /console reloadui as soon as possible."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s could not be loaded because your DBM-Core does not meet requirements. An updated version is required"
 

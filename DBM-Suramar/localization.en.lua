@@ -33,9 +33,14 @@ L= DBM:GetModLocalization(1731)
 L= DBM:GetModLocalization(1713)
 
 ------------------
--- Star Augur Estraeus --
+-- Star Augur Etraeus --
 ------------------
 L= DBM:GetModLocalization(1732)
+
+------------------
+-- Grand Magistrix Elisande --
+------------------
+L= DBM:GetModLocalization(1743)
 
 ------------------
 -- Gul'dan --

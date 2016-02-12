@@ -18,5 +18,6 @@ Skorpyron.lua
 ChronoAnomaly.lua
 Trilliax.lua
 Krosus.lua
-Estraeus.lua
+Etraeus.lua
+Elisande.lua
 Guldan.lua
