@@ -27,6 +27,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1738)
 
 ---------------------------
+-- Elerethe Renferal --
+---------------------------
+L= DBM:GetModLocalization(1744)
+
+---------------------------
 -- Ursoc --
 ---------------------------
 L= DBM:GetModLocalization(1667)
