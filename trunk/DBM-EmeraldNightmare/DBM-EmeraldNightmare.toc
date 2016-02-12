@@ -17,6 +17,7 @@ localization.en.lua
 localization.cn.lua
 Nythendra.lua
 Ilgynoth.lua
+Renferal.lua
 Ursok.lua
 NightmareDragons.lua
 Xavius.lua
