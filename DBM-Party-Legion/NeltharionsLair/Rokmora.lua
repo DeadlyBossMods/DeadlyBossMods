@@ -2,77 +2,49 @@ local mod	= DBM:NewMod(1662, "DBM-Party-Legion", 5, 767)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(99200)
+mod:SetCreatureID(91003)
 mod:SetEncounterID(1790)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
-	"SPELL_SUMMON",
+	"SPELL_CAST_START 188961",
+	"SPELL_PERIODIC_DAMAGE 192800",
+	"SPELL_PERIODIC_MISSED 192800",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
+--TODO, get more logs because I lost my logs of this and can only do so much
+local specWarnRazorShards			= mod:NewSpecialWarningSpell(188961, "Tank", nil, nil, 1, 2)
+local specWarnGas					= mod:NewSpecialWarningMove(192800, "Tank", nil, nil, 1, 2)
 
---local specWarnCurtainOfFlame		= mod:NewSpecialWarningMoveAway(153396)
+local timerRazorShardsCD			= mod:NewCDTimer(25, 188961, nil, "Tank", nil, 5)
 
---local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396, nil, nil, nil, 3)
-
---local voiceCurtainOfFlame			= mod:NewVoice(153392)
-
---mod:AddRangeFrameOption(5, 153396)
+local voiceRazorShards				= mod:NewVoice(188961)--shockwave
+local voiceGas						= mod:NewVoice(192800)--runaway
 
 function mod:OnCombatStart(delay)
-
-end
-
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 153396 then
-
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 153392 then
-
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 153392 then
-
-	end
+	timerRazorShardsCD:Start(25-delay)
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 153764 then
-
+	if spellId == 188961 then
+		specWarnRazorShards:Show()
+		voiceRazorShards:Play("shockwave")
+		timerRazorShardsCD:Start()
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 153616 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-
+	if spellId == 192800 and destGUID == UnitGUID("player") and self:AntiSpam(2.5, 1) then
+		specWarnGas:Show()
+		voiceGas:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
+--[[
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 153500 then
 
