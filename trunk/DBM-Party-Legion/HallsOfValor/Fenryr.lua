@@ -28,7 +28,7 @@ local specWarnFixate					= mod:NewSpecialWarningRun(196838, nil, nil, nil, 4, 2)
 local specWarnFixateOver				= mod:NewSpecialWarningEnd(196838, nil, nil, nil, 1)
 
 local timerLeapCD						= mod:NewCDTimer(33, 197556, nil, nil, nil, 3)--Poor data
---local timerClawFrenzyCD					= mod:NewCDTimer(10, 196512, nil, "Tank", nil, 5)--All over the place
+--local timerClawFrenzyCD					= mod:NewCDTimer(10, 196512, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--All over the place
 local timerHowlCD						= mod:NewCDTimer(32, 196543, nil, "SpellCaster", nil, 2)--Poor data
 local timerFixateCD						= mod:NewCDTimer(39, 196838, nil, nil, nil, 3)--Poor data
 
