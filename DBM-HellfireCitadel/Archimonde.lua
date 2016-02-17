@@ -178,6 +178,7 @@ mod:AddBoolOption("NamesWroughtHud", true)
 mod:AddBoolOption("FilterOtherPhase", true)
 mod:AddInfoFrameOption(184964)
 mod:AddDropdownOption("MarkBehavior", {"Numbered", "LocSmallFront", "LocSmallBack", "NoAssignment"}, "Numbered", "misc")
+mod:AddBoolOption("overrideMarkOfLegion", false)
 
 mod.vb.phase = 1
 mod.vb.demonicCount = 0
@@ -202,6 +203,7 @@ mod.vb.twistedDarknessCast = 0
 mod.vb.seethingCorruptionCount = 0
 mod.vb.darkConduit = false
 mod.vb.MarkBehavior = "Numbered"
+local localMarkBehavior = "Numbered"
 --Mythic sequence timers for phase 3 (Made by video, subject to inaccuracies until logs available)
 local legionTimers = {20, 63, 60, 60, 48, 46, 47}--All verified by log
 local darkConduitTimers = {8, 123, 95, 56, 52}-- All verified by log
@@ -326,7 +328,7 @@ local function showMarkOfLegion(self, spellName)
 	--MELEE, RANGED, DBM_CORE_LEFT, DBM_CORE_RIGHT (http://puu.sh/jsyr5/7014c50cb3.jpg)
 	--Melee/ranged left/right is now the default since too many users felt weak aura's were required because running to icons by icon assignments was hard.
 	warnMarkOfLegion:Show(self.vb.markOfLegionCast, table.concat(legionTargets, "<, >"))
-	if self.vb.MarkBehavior == "NoAssignment" then return end
+	if localMarkBehavior == "NoAssignment" then return end
 	local playerHasMark = UnitDebuff("player", spellName)
 	for i = 1, #legionTargets do
 		local name = legionTargets[i]
@@ -335,11 +337,11 @@ local function showMarkOfLegion(self, spellName)
 		if not uId then break end
 		if i == 1 then
 			local number, position = i, MELEE
-			if self.vb.MarkBehavior == "LocSmallBack" then
+			if localMarkBehavior == "LocSmallBack" then
 				number, position = 3, RANGED
 			end
 			local message = position.."-"..DBM_CORE_LEFT
-			if self.vb.MarkBehavior == "Numbered" then
+			if localMarkBehavior == "Numbered" then
 				message = iconedAssignments[number]
 			end
 			if self.Options.SetIconOnMarkOfLegion2 then
@@ -367,11 +369,11 @@ local function showMarkOfLegion(self, spellName)
 			end
 		elseif i == 2 then
 			local number, position = i, MELEE
-			if self.vb.MarkBehavior == "LocSmallBack" then
+			if localMarkBehavior == "LocSmallBack" then
 				number, position = 4, RANGED
 			end
 			local message = position.."-"..DBM_CORE_RIGHT
-			if self.vb.MarkBehavior == "Numbered" then
+			if localMarkBehavior == "Numbered" then
 				message = iconedAssignments[number]
 			end
 			if self.Options.SetIconOnMarkOfLegion2 then
@@ -399,11 +401,11 @@ local function showMarkOfLegion(self, spellName)
 			end
 		elseif i == 3 then
 			local number, position = i, RANGED
-			if self.vb.MarkBehavior == "LocSmallBack" then
+			if localMarkBehavior == "LocSmallBack" then
 				number, position = 1, MELEE
 			end
 			local message = position.."-"..DBM_CORE_LEFT
-			if self.vb.MarkBehavior == "Numbered" then
+			if localMarkBehavior == "Numbered" then
 				message = iconedAssignments[number]
 			end
 			if self.Options.SetIconOnMarkOfLegion2 then
@@ -431,11 +433,11 @@ local function showMarkOfLegion(self, spellName)
 			end
 		else
 			local number, position = i, RANGED
-			if self.vb.MarkBehavior == "LocSmallBack" then
+			if localMarkBehavior == "LocSmallBack" then
 				number, position = 2, MELEE
 			end
 			local message = position.."-"..DBM_CORE_RIGHT
-			if self.vb.MarkBehavior == "Numbered" then
+			if localMarkBehavior == "Numbered" then
 				message = iconedAssignments[number]
 			end
 			if self.Options.SetIconOnMarkOfLegion2 then
@@ -469,9 +471,10 @@ local function showMarkOfLegion(self, spellName)
 			local unitID = 'raid'..i
 			local isPlayer = false
 			local soakers = 0
+			local marks = #legionTargets or 4
 			soakers = soakers + 1
 			if UnitIsUnit("player", unitID) then
-				local soak = math.ceil(soakers/4)
+				local soak = math.ceil(soakers/marks)
 				if (soak == 1) then
 					specWarnMarkOfLegionSoak:Show(MELEE.." "..DBM_CORE_LEFT)
 					voiceMarkOfLegion:Play("frontleft")
@@ -1328,12 +1331,16 @@ function mod:OnSync(msg)
 		self.vb.phase = 2.5
 	elseif msg == "Numbered" then
 		self.vb.MarkBehavior = "Numbered"
+		localMarkBehavior = self.Options.overrideMarkOfLegion and self.Options.MarkBehavior or self.vb.MarkBehavior
 	elseif msg == "LocSmallFront" then
 		self.vb.MarkBehavior = "LocSmallFront"
+		localMarkBehavior = self.Options.overrideMarkOfLegion and self.Options.MarkBehavior or self.vb.MarkBehavior
 	elseif msg == "LocSmallBack" then
 		self.vb.MarkBehavior = "LocSmallBack"
+		localMarkBehavior = self.Options.overrideMarkOfLegion and self.Options.MarkBehavior or self.vb.MarkBehavior
 	elseif msg == "NoAssignment" then
 		self.vb.MarkBehavior = "NoAssignment"
+		localMarkBehavior = self.Options.overrideMarkOfLegion and self.Options.MarkBehavior or self.vb.MarkBehavior
 	end
 end
 
