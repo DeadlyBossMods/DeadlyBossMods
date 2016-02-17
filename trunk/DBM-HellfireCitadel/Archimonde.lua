@@ -176,9 +176,9 @@ mod:AddHudMapOption("HudMapMarkofLegion2", 187050, true)
 mod:AddBoolOption("ExtendWroughtHud3", true)
 mod:AddBoolOption("NamesWroughtHud", true)
 mod:AddBoolOption("FilterOtherPhase", true)
+mod:AddBoolOption("overrideMarkOfLegion", false)
 mod:AddInfoFrameOption(184964)
 mod:AddDropdownOption("MarkBehavior", {"Numbered", "LocSmallFront", "LocSmallBack", "NoAssignment"}, "Numbered", "misc")
-mod:AddBoolOption("overrideMarkOfLegion", false)
 
 mod.vb.phase = 1
 mod.vb.demonicCount = 0
