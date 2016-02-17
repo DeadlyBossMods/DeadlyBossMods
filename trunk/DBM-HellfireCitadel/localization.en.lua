@@ -166,7 +166,8 @@ L:SetOptionLocalization({
 	Numbered				= "Star, Circle, Diamond, Triangle. Usable for any strat using flare positions.",--Default
 	LocSmallFront			= "Melee L/R(Star,Circle), Ranged L/R(Diamond,Triangle). Short debuffs in melee.",
 	LocSmallBack			= "Melee L/R(Star,Circle), Ranged L/R(Diamond,Triangle). Short debuffs at ranged.",
-	NoAssignment			= "Disable all position yells/messages, icons, and HUD for entire raid."
+	NoAssignment			= "Disable all position yells/messages, icons, and HUD for entire raid.",
+	overrideMarkOfLegion	= "Do not allow riad leader to override Mark of Legion behavior (Recommended only for experts that are confident their own settings do not conflict with raid leaders intent)",
 })
 
 L:SetMiscLocalization({
