@@ -1,6 +1,6 @@
 ﻿-- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: Jan 10 2016, 22:03 UTC@14733
+-- Last update: Feb 18 2016, 18:59 UTC@14798
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -162,7 +162,8 @@ L:SetOptionLocalization({
 	Numbered				= "星星，大饼，菱形，三角。 适合任何站位方式。",--Default
 	LocSmallFront			= "近战（左星星，右大饼），远程（左菱形，右三角）。Debuff时间短的去近战位。",
 	LocSmallBack			= "近战（左星星，右大饼），远程（左菱形，右三角）。Debuff时间短的去远程位。",
-	NoAssignment			= "关闭全部提示。如果你用了其他插件。"
+	NoAssignment			= "关闭全部提示。如果你用了其他插件。",
+	overrideMarkOfLegion	= "不允许团长覆盖军团印记的行为(只推荐给自信满满的高级玩家使用)"
 })
 
 L:SetMiscLocalization({
