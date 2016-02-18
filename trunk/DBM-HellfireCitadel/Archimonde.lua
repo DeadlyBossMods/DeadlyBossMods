@@ -1332,15 +1332,19 @@ function mod:OnSync(msg)
 	elseif msg == "Numbered" then
 		self.vb.MarkBehavior = "Numbered"
 		localMarkBehavior = self.Options.overrideMarkOfLegion and self.Options.MarkBehavior or self.vb.MarkBehavior
+		DBM:Debug("Numbered sync sent, using"..localMarkBehavior.." based on settings", 2)
 	elseif msg == "LocSmallFront" then
 		self.vb.MarkBehavior = "LocSmallFront"
 		localMarkBehavior = self.Options.overrideMarkOfLegion and self.Options.MarkBehavior or self.vb.MarkBehavior
+		DBM:Debug("LocSmallFront sync sent, using"..localMarkBehavior.." based on settings", 2)
 	elseif msg == "LocSmallBack" then
 		self.vb.MarkBehavior = "LocSmallBack"
 		localMarkBehavior = self.Options.overrideMarkOfLegion and self.Options.MarkBehavior or self.vb.MarkBehavior
+		DBM:Debug("LocSmallBack sync sent, using"..localMarkBehavior.." based on settings", 2)
 	elseif msg == "NoAssignment" then
 		self.vb.MarkBehavior = "NoAssignment"
 		localMarkBehavior = self.Options.overrideMarkOfLegion and self.Options.MarkBehavior or self.vb.MarkBehavior
+		DBM:Debug("NoAssignment sync sent, using"..localMarkBehavior.." based on settings", 2)
 	end
 end
 
