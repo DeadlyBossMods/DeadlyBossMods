@@ -284,12 +284,12 @@ local function setWrathIcons(self)
 			if melee1 then
 				melee2 = name
 				if name == playerName then
-					playerIcon = 4
+					playerIcon = 6
 				end
 			else
 				melee1 = name
 				if name == playerName then
-					playerIcon = 5
+					playerIcon = 7
 				end
 			end
 			DBM:Debug("Melee wrath found: "..name, 2)
@@ -303,12 +303,12 @@ local function setWrathIcons(self)
 			if ranged1 then
 				ranged2 = name
 				if name == playerName then
-					playerIcon = 6
+					playerIcon = 4
 				end
 			else
 				ranged1 = name
 				if name == playerName then
-					playerIcon = 7
+					playerIcon = 5
 				end
 			end
 			DBM:Debug("Ranged wrath found: "..name, 2)
