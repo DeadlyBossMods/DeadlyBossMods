@@ -20,4 +20,5 @@ Ilgynoth.lua
 Renferal.lua
 Ursok.lua
 NightmareDragons.lua
+Cenarius.lua
 Xavius.lua
