@@ -1250,14 +1250,15 @@ do
 				"CHALLENGE_MODE_RESET",
 				"CHALLENGE_MODE_END",
 				"ACTIVE_TALENT_GROUP_CHANGED",
+				--REMOVE IN LEGION
 				"UPDATE_SHAPESHIFT_FORM",
+				--REMOVE IN LEGION
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
 				"SCENARIO_CRITERIA_UPDATE"
 			)
 			RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
 			self:GROUP_ROSTER_UPDATE()
-			--self:LOADING_SCREEN_DISABLED()--Initial testing shows it isn't needed here and wastes cpu running funcion twice, because actual event always fires at login, AFTER addonloadded. Will remove this line if it works out ok
 			C_TimerAfter(1.5, function()
 				combatInitialized = true
 			end)
@@ -3011,7 +3012,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 	_G[savedVarsName][fullname] = savedOptions
 	if profileNum > 0 then
 		_G[savedVarsName][fullname]["talent"..profileNum] = profileNum == 3 and (gladStance or "Glad Stance Temp") or currentSpecName
-		self:Debug("LoadModOptions: Finished loading ".._G[savedVarsName][fullname]["talent"..profileNum])
+		self:Debug("LoadModOptions: Finished loading "..(_G[savedVarsName][fullname]["talent"..profileNum] or DBM_CORE_UNKNOWN))
 	end
 	_G[savedStatsName] = savedStats
 	if not first and DBM_GUI and DBM_GUI.currentViewing and DBM_GUI_OptionsFrame:IsShown() then
@@ -3405,11 +3406,13 @@ function DBM:ACTIVE_TALENT_GROUP_CHANGED()
 	end
 end
 
+--REMOVE IN LEGION
 function DBM:UPDATE_SHAPESHIFT_FORM()
 	if class == "WARRIOR" and self:AntiSpam(0.5, "STANCE") then--check for stance changes for prot warriors that might be specced into Gladiator Stance
 		self:ACTIVE_TALENT_GROUP_CHANGED()
 	end
 end
+--REMOVE IN LEGION
 
 do
 	local function AcceptPartyInvite()
