@@ -1,3 +1,4 @@
+if DBM:GetTOC() < 70000 then return end
 local mod	= DBM:NewMod(1749, "DBM-BrokenIsles", nil, 822)
 local L		= mod:GetLocalizedStrings()
 
