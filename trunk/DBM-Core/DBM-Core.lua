@@ -6722,6 +6722,7 @@ end
 
 --/run DBM:FindEncounterIDs(768)--Emerald Nightmare
 --/run DBM:FindEncounterIDs(786)--Suramar Raid
+--/run DBM:FindEncounterIDs(822)--Broken Isles
 function DBM:FindEncounterIDs(instanceID, diff)
 	if not instanceID then
 		self:AddMsg("Error: Function requires instanceID be provided")
