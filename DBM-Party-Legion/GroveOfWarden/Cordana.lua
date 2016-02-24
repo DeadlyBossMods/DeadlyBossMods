@@ -2,80 +2,86 @@ local mod	= DBM:NewMod(1470, "DBM-Party-Legion", 10, 707)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(99200)
+mod:SetCreatureID(95888)
 mod:SetEncounterID(1818)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
-	"SPELL_SUMMON",
+	"SPELL_AURA_REMOVED 192750",
+	"SPELL_CAST_START 213576 213583 197251",
+	"SPELL_CAST_SUCCESS 205004",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
+--TODO, new voice "bring light to shadows"
+--TODO, new voice "bring light to mob"
+local warnDeepeningShadows			= mod:NewSpellAnnounce(213583, 4)
+local warVengeance					= mod:NewSpellAnnounce(205004, 4)
 
---local specWarnCurtainOfFlame		= mod:NewSpecialWarningMoveAway(153396)
+local specWarnKick					= mod:NewSpecialWarningSpell(197251, "Tank", nil, nil, 3, 2)
+local specWarnDeepeningShadows		= mod:NewSpecialWarningMoveTo(213583, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(213583), nil, 3, 6)
+local specWarnHiddenStarted			= mod:NewSpecialWarningSpell(192750, nil, nil, nil, 2)
+local specWarnHiddenOver			= mod:NewSpecialWarningEnd(192750)
+local specWarnVengeance				= mod:NewSpecialWarningMoveTo(205004, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(205004), nil, 3, 6)
 
---local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396, nil, nil, nil, 3)
+local timerKickCD					= mod:NewCDTimer(20, 197251, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--20-34
+local timerDeepeningShadowsCD		= mod:NewNextTimer(31.5, 213576, nil, nil, nil, 3)
+local timerVengeanceCD				= mod:NewCDTimer(35, 205004, nil, nil, nil, 1)--35-40
 
---local voiceCurtainOfFlame			= mod:NewVoice(153392)
-
---mod:AddRangeFrameOption(5, 153396)
+local voiceKick						= mod:NewVoice(197251, "Tank")--carefly
+local voiceDeepeningShadows			= mod:NewVoice(213576)--"213576"--New Voice
+local voiceVengeance				= mod:NewVoice(205004)--"205004"--New Voice
 
 function mod:OnCombatStart(delay)
-
-end
-
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	timerKickCD:Start(8.3-delay)
+	timerDeepeningShadowsCD:Start(10.9-delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 153396 then
-
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 153392 then
-
+	if args.spellId == 205004 then
+		if ExtraActionBarFrame:IsShown() then--Has light
+			specWarnVengeance:Show(args.spellName)
+			voiceVengeance:Play(205004)
+		else
+			warVengeance:Show()
+		end
+		timerVengeanceCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 153392 then
-
+	if spellId == 192750 then
+		specWarnHiddenOver:Show()
+		timerVengeanceCD:Start(14)
+		timerDeepeningShadowsCD:Start(14.5)
+		timerKickCD:Start(15.5)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 153764 then
-
+	if spellId == 213576 or spellId == 213583 then
+		if ExtraActionBarFrame:IsShown() then--Has light
+			specWarnDeepeningShadows:Show(args.spellName)
+			voiceDeepeningShadows:Play("213576")
+		else
+			warnDeepeningShadows:Show()
+		end
+		timerDeepeningShadowsCD:Start()
+	elseif spellId == 197251 then
+		specWarnKick:Show()
+		voiceKick:Play("carefly")
+		timerKickCD:Start()
 	end
 end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 153616 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 153500 then
-
+	if spellId == 203416 then--Shadowstep. Faster than 192750 applied
+		timerDeepeningShadowsCD:Cancel()
+		timerKickCD:Cancel()
+		specWarnHiddenStarted:Show()
 	end
 end
---]]
