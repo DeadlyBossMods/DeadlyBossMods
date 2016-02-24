@@ -40,6 +40,12 @@ local voiceToxicPuddle				= mod:NewVoice(191855)--runaway
 local voiceBlazingNova				= mod:NewVoice(192003)--kickcast
 local voiceArcaneBlast				= mod:NewVoice(192005)--kickcast
 
+local wrathMod = DBM:GetModByName(1492)
+
+function mod:UpdateWinds()
+	timerWindsCD:Cancel()
+end
+
 function mod:OnCombatStart(delay)
 	timerToxicWoundCD:Start(6-delay)
 	timerWindsCD:Start(33-delay)
@@ -84,6 +90,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 191798 and self:AntiSpam(3, 2) then--Violent Winds
+		if wrathMod.vb.phase == 2 then return end--Phase 2 against Wrath of Azshara, which means this is happening every 10 seconds
 		warnWinds:Show()
 		if self:IsInCombat() then--Boss engaged it's 30
 			timerWindsCD:Start()
