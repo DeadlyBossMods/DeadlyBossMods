@@ -33,6 +33,11 @@ L= DBM:GetModLocalization(1731)
 L= DBM:GetModLocalization(1713)
 
 ------------------
+-- Spellblade Aluriel --
+------------------
+L= DBM:GetModLocalization(1751)
+
+------------------
 -- Star Augur Etraeus --
 ------------------
 L= DBM:GetModLocalization(1732)
