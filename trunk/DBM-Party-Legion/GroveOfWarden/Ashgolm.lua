@@ -2,80 +2,49 @@ local mod	= DBM:NewMod(1468, "DBM-Party-Legion", 10, 707)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(99200)
+mod:SetCreatureID(95886)
 mod:SetEncounterID(1816)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START",
+	"SPELL_CAST_START 192522 192631 192621",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
-	"SPELL_SUMMON",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
+local warnVolcano					= mod:NewSpellAnnounce(192621, 3)
 
---local specWarnCurtainOfFlame		= mod:NewSpecialWarningMoveAway(153396)
+local specWarnLavaWreath			= mod:NewSpecialWarningSpell(192631, nil, nil, nil, 2)
+local specWarnFissure				= mod:NewSpecialWarningSpell(192522, "Tank", nil, nil, 1, 2)--Not dogable, just so we aim it correctly
 
---local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396, nil, nil, nil, 3)
+local timerVolcanoCD				= mod:NewCDTimer(20, 192621, nil, nil, nil, 1)--20-22 unless delayed by brittle
+local timerLavaWreathCD				= mod:NewNextTimer(42.5, 192522, nil, nil, nil, 2)--42 unless delayed by brittle
+local timerFissureCD				= mod:NewNextTimer(42.5, 192522, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--42 unless delayed by brittle
 
---local voiceCurtainOfFlame			= mod:NewVoice(153392)
-
---mod:AddRangeFrameOption(5, 153396)
+local voiceVolcano					= mod:NewVoice(192621)--mobsoon
+local voiceFissure					= mod:NewVoice(192522, "Tank")--shockwave
 
 function mod:OnCombatStart(delay)
-
-end
-
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 153396 then
-
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 153392 then
-
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 153392 then
-
-	end
+	timerVolcanoCD:Start(10-delay)
+	timerLavaWreathCD:Start(25-delay)
+	timerFissureCD:Start(40-delay)
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 153764 then
-
+	if spellId == 192522 then
+		specWarnFissure:Show()
+		voiceFissure:Play("shockwave")
+		timerFissureCD:Start()
+	elseif spellId == 192631 then
+		specWarnLavaWreath:Show()
+		timerLavaWreathCD:Start()
+	elseif spellId == 192621 then
+		warnVolcano:Show()
+		voiceVolcano:Play("mobsoon")
+		timerVolcanoCD:Start()
 	end
 end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 153616 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 153500 then
-
-	end
-end
---]]
