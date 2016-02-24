@@ -467,10 +467,10 @@ local function showMarkOfLegion(self, spellName)
 	end
 	if not playerHasMark then
 		if UnitIsDeadOrGhost("player") then return end
+		local soakers = 0
 		for i = 1, DBM:GetNumRealGroupMembers() do
 			local unitID = 'raid'..i
 			local isPlayer = false
-			local soakers = 0
 			local marks = #legionTargets or 4
 			soakers = soakers + 1
 			if UnitIsUnit("player", unitID) then
