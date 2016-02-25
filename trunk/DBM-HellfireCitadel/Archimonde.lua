@@ -28,8 +28,6 @@ mod:RegisterEventsInCombat(
 
 --(ability.id = 183254 or ability.id = 182225 or ability.id = 189897 or ability.id = 183817 or ability.id = 183828 or ability.id = 185590 or ability.id = 184265 or ability.id = 190506 or ability.id = 184931 or ability.id = 187180) and type = "begincast" or (ability.id = 183865) and type = "cast" or (ability.id = 186662 or ability.id = 186961) and (type = "applydebuff" or type = "applybuff")
 --(ability.id = 190394 or ability.id = 190686 or ability.id = 190821 or ability.id = 190506 or ability.id = 187108) and type = "begincast" or (ability.id = 188514) and type = "cast" or ability.id = 187108
---TODO, failsafes are at work for transitions i still don't have enough data for. for example, something seems to always cause the 2nd or 3rd fel burst to delay by a HUGE amount (20-30 seconds sometimes) but don't know what it is. Probalby phase transitions but it's not as simple as resetting timer. probably something more zon ozz
---TODO, figure out what to do with touch of the legion (190400)
 --Phase 1: The Defiler
 local warnDoomfireFixate			= mod:NewTargetAnnounce(182879, 3)
 local warnAllureofFlames			= mod:NewCastAnnounce(183254, 2)
@@ -468,10 +466,9 @@ local function showMarkOfLegion(self, spellName)
 	if not playerHasMark then
 		if UnitIsDeadOrGhost("player") then return end
 		local soakers = 0
+		local marks = #legionTargets or 4
 		for i = 1, DBM:GetNumRealGroupMembers() do
 			local unitID = 'raid'..i
-			local isPlayer = false
-			local marks = #legionTargets or 4
 			soakers = soakers + 1
 			if UnitIsUnit("player", unitID) then
 				local soak = math.ceil(soakers/marks)
