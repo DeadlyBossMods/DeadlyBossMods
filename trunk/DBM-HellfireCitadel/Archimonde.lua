@@ -471,6 +471,7 @@ local function showMarkOfLegion(self, spellName)
 			local unitID = 'raid'..i
 			soakers = soakers + 1
 			if UnitIsUnit("player", unitID) then
+				DBM:Debug(soakers..", "..marks, 2)
 				local soak = math.ceil(soakers/marks)
 				if (soak == 1) then
 					specWarnMarkOfLegionSoak:Show(MELEE.." "..DBM_CORE_LEFT)
