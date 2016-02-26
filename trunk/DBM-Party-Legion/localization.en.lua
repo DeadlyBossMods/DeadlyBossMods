@@ -126,7 +126,7 @@ L= DBM:GetModLocalization(1673)
 L= DBM:GetModLocalization(1687)
 
 -----------------------
--- <<<Suramar Catacombs>>> --
+-- <<<The Arcway>>> --
 -----------------------
 -----------------------
 -- Ivanyr --
