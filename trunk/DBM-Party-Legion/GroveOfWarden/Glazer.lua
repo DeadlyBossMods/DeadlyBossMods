@@ -17,11 +17,12 @@ mod:RegisterEventsInCombat(
 --TODO, maybe voice for mirrors to bounce beam back into boss? But how do you say this short
 local warnGaze						= mod:NewSpellAnnounce(194942, 2)
 
-local specWarnFocused				= mod:NewSpecialWarningSpell(194289, nil, nil, nil, 2)
+local specWarnFocused				= mod:NewSpecialWarningSpell(194289, nil, nil, nil, 2, 2)
 local specWarnGazeGTFO				= mod:NewSpecialWarningMove(194289, nil, nil, nil, 1, 2)
 
 local timerGazeCD					= mod:NewCDTimer(19.4, 194289, nil, nil, nil, 3)
 
+local voiceFocused					= mod:NewVoice(194289)--specialsoon
 local voiceGazeGTFO					= mod:NewVoice(194289)--runaway
 
 function mod:OnCombatStart(delay)
@@ -32,6 +33,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 194289 then
 		specWarnFocused:Show()
+		voiceFocused:Play("specialsoon")
 	elseif spellId == 194942 then
 		warnGaze:Show()
 		timerGazeCD:Start()
