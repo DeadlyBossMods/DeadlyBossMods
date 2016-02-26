@@ -49,11 +49,11 @@ NeltharionsLair\Rokmora.lua
 NeltharionsLair\Ularogg.lua
 NeltharionsLair\Naraxas.lua
 NeltharionsLair\Dargrul.lua
-SuramarCatacombs\Ivanyr.lua
-SuramarCatacombs\NightwellSentry.lua
-SuramarCatacombs\GeneralXakal.lua
-SuramarCatacombs\Naltira.lua
-SuramarCatacombs\Vandros.lua
+TheArcway\Ivanyr.lua
+TheArcway\NightwellSentry.lua
+TheArcway\GeneralXakal.lua
+TheArcway\Naltira.lua
+TheArcway\Vandros.lua
 SuramarNobleDistrict\Volendis.lua
 SuramarNobleDistrict\Talixae.lua
 SuramarNobleDistrict\HighCouncillor.lua
