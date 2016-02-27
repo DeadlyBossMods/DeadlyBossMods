@@ -21,13 +21,13 @@ mod:RegisterEventsInCombat(
 --TODO, timers possibly. Right now it's up in hair and possibly all health based. No timer matched between multiple pulls
 --TODO, GTFO for standing in fire maybe?
 local specWarnDarkStrikes			= mod:NewSpecialWarningSpell(204151, "Tank", nil, nil, 3, 2)
-local specWarnFuriousBlast			= mod:NewSpecialWarningInterrupt(191823, "-Healer", nil, nil, 1, 2)
+local specWarnFuriousBlast			= mod:NewSpecialWarningInterrupt(191823, "HasInterrupt", nil, nil, 1, 2)
 local specWarnFelMortar				= mod:NewSpecialWarningDodge(202913, nil, nil, nil, 2, 2)
 
 local timerDarkStrikes				= mod:NewBuffActiveTimer(11, 191941, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--tooltip says 15 but every log was 10-11
 
 local voiceDarkStrikes				= mod:NewVoice(204151, "Tank")--defensive
-local voiceFuriousBlast				= mod:NewVoice(191823, "-Healer")--kickcast
+local voiceFuriousBlast				= mod:NewVoice(191823, "HasInterrupt")--kickcast
 local voiceFelMortar				= mod:NewVoice(202913)--watchstep
 
 function mod:OnCombatStart(delay)

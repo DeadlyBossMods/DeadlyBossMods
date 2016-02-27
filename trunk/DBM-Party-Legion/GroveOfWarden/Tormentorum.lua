@@ -16,12 +16,12 @@ mod:RegisterEventsInCombat(
 
 local warnTeleport				= mod:NewSpellAnnounce(200898, 2)
 
-local specWarnSapSoul			= mod:NewSpecialWarningInterrupt(200905, nil, nil, nil, 1, 2)
+local specWarnSapSoul			= mod:NewSpecialWarningInterrupt(200905, "HasInterrupt", nil, nil, 1, 2)
 local specWarnFear				= mod:NewSpecialWarningSpell(201488, nil, nil, nil, 2)
 
 local timerSapSoulCD			= mod:NewNextTimer(21.5, 200905, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
-local voiceSapSoul				= mod:NewVoice(200905)--Kickcast
+local voiceSapSoul				= mod:NewVoice(200905, "HasInterrupt")--Kickcast
 
 function mod:OnCombatStart(delay)
 	timerSapSoulCD:Start(10-delay)

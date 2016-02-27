@@ -65,7 +65,7 @@ local specWarnReinforcements		= mod:NewSpecialWarningSwitch("ej11406", false, ni
 ----Gorebound Felcaster
 local specWarnIncinerate			= mod:NewSpecialWarningInterrupt(181155, false)--Seems less important of two spells
 local specWarnMetamorphosis			= mod:NewSpecialWarningSwitch(181968, "Dps")--Switch and get dead if they transform, they do TONS of damage transformed
-local specWarnFelfireVolley			= mod:NewSpecialWarningInterrupt(183452, "-Healer")
+local specWarnFelfireVolley			= mod:NewSpecialWarningInterrupt(183452, "HasInterrupt", nil, 2, 1, 2)
 ----Contracted Engineer
 local specWarnRepair				= mod:NewSpecialWarningInterrupt(185816, "-Healer", nil, nil, 1, 2)
 ----Grute
@@ -99,7 +99,7 @@ local countdownSlam					= mod:NewCountdownFades("Alt11", 184243, false)
 local voiceHowlingAxe				= mod:NewVoice(184369)--runout
 local voiceShockwave				= mod:NewVoice(184394)--shockwave
 local voiceIncinerate				= mod:NewVoice(181155, false)--kick
-local voiceFelfireVolley			= mod:NewVoice(180417, "-Healer")--kick
+local voiceFelfireVolley			= mod:NewVoice(183452, "HasInterrupt")--kick
 local voiceRepair					= mod:NewVoice(185816)--kickcast
 local voiceFelfireSiegeVehicles		= mod:NewVoice("ej11428")--One option for all 5, because less cluttered options better in this case I think.
 

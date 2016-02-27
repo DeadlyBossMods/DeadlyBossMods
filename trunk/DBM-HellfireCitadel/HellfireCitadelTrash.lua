@@ -31,7 +31,7 @@ local specWarnSeverSoul				= mod:NewSpecialWarningYou(189533, nil, nil, nil, 1, 
 local specWarnSeverSoulOther		= mod:NewSpecialWarningTaunt(189533, nil, nil, nil, 1, 2)
 local specWarnBadBreathOther		= mod:NewSpecialWarningTaunt(188476, nil, nil, nil, 1, 2)
 local specWarnBloodthirster			= mod:NewSpecialWarningSwitch("ej11266", "Dps", nil, 2, 1, 5)
-local specWarnRendingHowl			= mod:NewSpecialWarningInterrupt(189612, "-Healer", nil, nil, 1, 2)
+local specWarnRendingHowl			= mod:NewSpecialWarningInterrupt(189612, "HasInterrupt", nil, 2, 1, 2)
 local yellDarkFate					= mod:NewFadesYell(182644)
 local specWarnPhantasmalCorruption	= mod:NewSpecialWarningYou(187990)
 local yellPhantasmalCorruption		= mod:NewYell(187990, 144421)
@@ -44,7 +44,7 @@ local specWarnMarkofKaz				= mod:NewSpecialWarningYou(189512)
 local voiceSeverSoul				= mod:NewVoice(189533, "Tank")--changemt
 local voiceCrowdControl				= mod:NewVoice(189595)--turnaway
 local voiceBloodthirster			= mod:NewVoice("ej11266", "Dps", nil, 2)
-local voiceRendingHowl				= mod:NewVoice(189612, "-Healer")--kickcast
+local voiceRendingHowl				= mod:NewVoice(189612, "HasInterrupt")--kickcast
 
 mod:RemoveOption("HealthFrame")
 mod:AddRangeFrameOption(15)

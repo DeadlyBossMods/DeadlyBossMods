@@ -53,11 +53,11 @@ local specWarnFelCharge				= mod:NewSpecialWarningTarget(182051, "Melee", nil, n
 local specWarnApocalypticFelburst	= mod:NewSpecialWarningCount(188693, nil, nil, nil, 2, 2)--Mythic
 local specWarnSoulstalker			= mod:NewSpecialWarningCount("ej11778", nil, nil, nil, 2, 2)
 --Socrethar
-local specWarnExertDominance		= mod:NewSpecialWarningInterruptCount(183331, "-Healer", nil, nil, 1, 2)
+local specWarnExertDominance		= mod:NewSpecialWarningInterruptCount(183331, "HasInterrupt", nil, 2, 1, 2)
 local specWarnApocalypse			= mod:NewSpecialWarningSpell(183329, nil, nil, nil, 2, 2)
 --Adds
 local specWarnShadowWordAgony		= mod:NewSpecialWarningInterrupt(184239, false, nil, nil, 1, 2)
-local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(182392, "-Healer", nil, nil, 1, 2)
+local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(182392, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSouls					= mod:NewSpecialWarningCount("ej11462", nil, nil, nil, 1)
 local specWarnGhastlyFixation		= mod:NewSpecialWarningYou(182769, nil, nil, nil, 1)--You don't run out or kite. you position yourself so ghosts go through fire dropped by construct
 local specWarnSargereiDominator		= mod:NewSpecialWarningSwitchCount("ej11456", "-Healer", nil, nil, 3)
@@ -96,11 +96,11 @@ local voiceFelBurst					= mod:NewVoice(188693)--watchstep
 local voiceVoraciousSoulstalker		= mod:NewVoice("ej11778")--watchstep
 --Socrethar
 local timerTransition				= mod:NewPhaseTimer(6.5)
-local voiceExertDominance			= mod:NewVoice(183331, "-Healer")--kickcast
+local voiceExertDominance			= mod:NewVoice(183331, "HasInterrupt")--kickcast
 local voiceApocalypse				= mod:NewVoice(183329)--aesoon
 --Adds
 local voiceShadowWordAgony			= mod:NewVoice(184239, false)--kickcast
-local voiceShadowBoltVolley			= mod:NewVoice(182392, "-Healer")--kickcast
+local voiceShadowBoltVolley			= mod:NewVoice(182392, "HasInterrupt")--kickcast
 --local voiceGhastlyFixation			= mod:NewVoice(182769)--runout/keepmove
 local voiceGiftoftheManari			= mod:NewVoice(184124)--scatter
 local voiceEternalHunger			= mod:NewVoice(188666)--runout/keepmove

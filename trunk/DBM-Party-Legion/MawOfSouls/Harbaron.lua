@@ -19,14 +19,14 @@ local warnFragment				= mod:NewTargetAnnounce(194327, 3)
 
 local specWarnFragment			= mod:NewSpecialWarningSwitch(194327, "Dps", nil, nil, 1, 2)
 local specWarnServitor			= mod:NewSpecialWarningSwitch(194231, "-Healer", nil, nil, 1, 2)
-local specWarnVoidSnap			= mod:NewSpecialWarningInterrupt(194266, "-Healer", nil, nil, 1, 2)
+local specWarnVoidSnap			= mod:NewSpecialWarningInterrupt(194266, "HasInterrupt", nil, nil, 1, 2)
 
 local timerFragmentCD			= mod:NewCDTimer(30.5, 194327, nil, nil, nil, 3)
 local timerServitorCD			= mod:NewCDTimer(23, 194231, nil, nil, nil, 1)--23-30
 
 local voiceFragment				= mod:NewVoice(194231, "Dps")--mobkill
 local voiceServitor				= mod:NewVoice(194231, "-Healer")--bigmob
-local voiceVoidSnap				= mod:NewVoice(194266, "-Healer")--kickcast
+local voiceVoidSnap				= mod:NewVoice(194266, "HasInterrupt")--kickcast
 
 --mod:AddRangeFrameOption(5, 153396)
 
