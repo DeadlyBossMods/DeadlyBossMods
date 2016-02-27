@@ -143,6 +143,10 @@ L= DBM:GetModLocalization(1498)
 -----------------------
 L= DBM:GetModLocalization(1499)
 
+L:SetMiscLocalization({
+	batSpawn		=	"Reinforcements to me! NOW!"
+})
+
 -----------------------
 -- Nal'tira --
 -----------------------
