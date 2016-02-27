@@ -60,7 +60,7 @@ local specWarnFontofCorruptionOver			= mod:NewSpecialWarningEnd(180526)
 local yellFontofCorruption					= mod:NewYell(180526)
 ----Ancient Harbinger
 local specWarnAncientHarbinger				= mod:NewSpecialWarningSwitch("ej11163", "-Healer", nil, nil, 1, 2)
-local specWarnHarbingersMending				= mod:NewSpecialWarningInterruptCount(180025, "-Healer", nil, nil, 1, 2)
+local specWarnHarbingersMending				= mod:NewSpecialWarningInterruptCount(180025, "HasInterrupt", nil, 2, 1, 2)
 local specWarnHarbingersMendingDispel		= mod:NewSpecialWarningDispel(180025, "MagicDispeller", nil, nil, 1, 2)--if interrupt is missed (likely at some point, cast gets faster each time). Then it MUST be dispelled
 --Stage Three: Malice
 local specWarnDespoiledGround				= mod:NewSpecialWarningMove(180604, nil, nil, nil, 1, 1)
@@ -100,7 +100,7 @@ local voiceHarbinger						= mod:NewVoice("ej11163", "-Healer")--bigmob
 local voiceSovereign						= mod:NewVoice("ej11170", "-Healer")--bigmob
 local voiceInfernalTempest					= mod:NewVoice(180300)--watchstep
 local voiceEdictofCondemnation				= mod:NewVoice(182459)--runin or gather
-local voiceHarbingersMending				= mod:NewVoice(180025)--kickcast/dispelboss
+local voiceHarbingersMending				= mod:NewVoice(180025, "HasInterrupt|MagicDispeller")--kickcast/dispelboss
 local voiceGaveloftheTyrant					= mod:NewVoice(180608)--carefly
 local voiceEnforcerOnslaught				= mod:NewVoice(180004, "Tank", nil, 2)--watchorb
 local voiceSealofDecay						= mod:NewVoice(180000)--tauntboss

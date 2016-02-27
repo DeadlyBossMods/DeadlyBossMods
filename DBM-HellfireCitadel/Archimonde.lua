@@ -70,7 +70,7 @@ local yellWroughtChaos				= mod:NewYell(186123)
 local specWarnFocusedChaos			= mod:NewSpecialWarningYou(185014, nil, nil, nil, 3, 5)
 local yellFocusedChaos				= mod:NewFadesYell(185014)
 local specWarnDreadFixate			= mod:NewSpecialWarningYou(186574, false)--In case it matters on mythic, it was spammy on heroic and unimportant
-local specWarnFlamesOfArgus			= mod:NewSpecialWarningInterrupt(186663, "-Healer", nil, nil, 1, 2)
+local specWarnFlamesOfArgus			= mod:NewSpecialWarningInterrupt(186663, "HasInterrupt", nil, 2, 1, 2)
 --Phase 3: The Twisting Nether
 local specWarnDemonicFeedbackSoon	= mod:NewSpecialWarningSoon(187180, nil, nil, nil, 1, 2)
 local specWarnDemonicFeedback		= mod:NewSpecialWarningCount(187180, nil, nil, nil, 3, 2)
@@ -151,7 +151,7 @@ local voiceDoomfire					= mod:NewVoice(189897, "Dps")--189897
 local voiceDeathCaller				= mod:NewVoice("ej11582", "Dps")--ej11582
 local voiceWroughtChaos				= mod:NewVoice(186123) --new voice
 local voiceFocusedChaos				= mod:NewVoice(185014) --new voice
-local voiceFlamesofArgus			= mod:NewVoice(186663, "-Healer") --kickcast
+local voiceFlamesofArgus			= mod:NewVoice(186663, "HasInterrupt") --kickcast
 local voiceDemonicFeedback			= mod:NewVoice(186961) --spread/scatter
 local voiceAllureofFlames			= mod:NewVoice(183254) --watch step
 local voiceDesecrate				= mod:NewVoice(185590) --watch step

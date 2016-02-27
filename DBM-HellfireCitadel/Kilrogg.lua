@@ -45,7 +45,7 @@ local specWarnBloodGlob				= mod:NewSpecialWarningSwitch(180459, "Dps", nil, nil
 local specWarnFelBloodGlob			= mod:NewSpecialWarningSwitch(180413, "Dps", nil, nil, 3, 5)
 local specWarnBloodthirster			= mod:NewSpecialWarningSwitch("ej11266", "Dps", nil, 2, 1, 5)--Very frequent, let specwarn be an option
 local specWarnHulkingTerror			= mod:NewSpecialWarningSwitch("ej11269", "Tank", nil, 2, 1, 5)
-local specWarnRendingHowl			= mod:NewSpecialWarningInterruptCount(183917, "-Healer", nil, nil, 1, 5)
+local specWarnRendingHowl			= mod:NewSpecialWarningInterruptCount(183917, "HasInterrupt", nil, 2, 1, 5)
 
 --Boss
 --Next timers that are delayed by other next timers. how annoying
@@ -58,7 +58,7 @@ local timerVisionofDeathCD			= mod:NewCDCountTimer(75, 181488, nil, nil, nil, 5,
 local timerDeathThroesCD			= mod:NewCDCountTimer(40, 180224, nil, nil, nil, 2)
 --Adds
 local timerBloodthirsterCD			= mod:NewCDCountTimer(70.3, "ej11266", nil, nil, nil, 1, 131150, DBM_CORE_DAMAGE_ICON)
-local timerRendingHowlCD			= mod:NewNextTimer(6, 183917, nil, "-Healer", 2, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerRendingHowlCD			= mod:NewNextTimer(6, 183917, nil, "HasInterrupt", 2, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -74,7 +74,7 @@ local voiceBloodGlob				= mod:NewVoice(180459)--180459
 local voiceFelBloodGlob				= mod:NewVoice(180413)--180199 (wrong spellID for voice do to my mistake)
 local voiceBloodthirster			= mod:NewVoice("ej11266", "Dps", nil, 2)--ej11266
 local voiceHulkingTerror			= mod:NewVoice("ej11269", "Tank", nil, 2)--ej11269
-local voiceRendingHowl				= mod:NewVoice(183917, "-Healer")
+local voiceRendingHowl				= mod:NewVoice(183917, "HasInterrupt")
 
 mod:AddInfoFrameOption("ej11280")
 
