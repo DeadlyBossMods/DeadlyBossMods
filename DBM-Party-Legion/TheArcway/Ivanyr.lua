@@ -27,7 +27,7 @@ local specWarnVolatileMagic			= mod:NewSpecialWarningMoveAway(196562, nil, nil, 
 local yellVolatileMagic				= mod:NewYell(196562)
 local specWarnNetherLink			= mod:NewSpecialWarningYou(196805, nil, nil, nil, 1, 2)
 local specWarnNetherLinkGTFO		= mod:NewSpecialWarningMove(196805, nil, nil, nil, 1, 2)
-local specWarnOverchargeMana		= mod:NewSpecialWarningInterrupt(196392, nil, nil, nil, 1, 2)
+local specWarnOverchargeMana		= mod:NewSpecialWarningInterrupt(196392, "HasInterrupt", nil, nil, 1, 2)
 
 local timerVolatileMagicCD			= mod:NewCDTimer(22, 196562, nil, nil, nil, 3)
 local timerNetherLinkCD				= mod:NewCDTimer(21, 196804, nil, nil, nil, 3)
@@ -36,7 +36,7 @@ local timerConsumeEssenceCD			= mod:NewNextTimer(18.2, 196877, nil, nil, nil, 2)
 
 local voiceVolatileMagic			= mod:NewVoice(196562)--runout
 local voiceNetherLink				= mod:NewVoice(196805)--linegather/runaway
-local voiceOverchargeMana			= mod:NewVoice(196392)--kickcast
+local voiceOverchargeMana			= mod:NewVoice(196392, "HasInterrupt")--kickcast
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddRangeFrameOption(15, 196562)

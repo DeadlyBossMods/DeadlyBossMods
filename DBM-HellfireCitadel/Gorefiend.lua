@@ -46,7 +46,7 @@ local specWarnEnragedSpirit				= mod:NewSpecialWarningSwitch("ej11378", "-Healer
 local specWarnGoreboundSpirit			= mod:NewSpecialWarningSwitch("ej11020", "-Healer")
 local specWarnBurning					= mod:NewSpecialWarningStack(185189, nil, 4)
 local specWarnBurningOther				= mod:NewSpecialWarningTaunt(185189, nil, nil, nil, nil, 2)
-local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "-Healer", nil, nil, 1, 2)
+local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "HasInterrupt", nil, 2, 1, 2)
 
 local timerShadowofDeathCDDps			= mod:NewTimer(30, "SoDDPS2", 179864, "Dps", nil, 5)
 local timerShadowofDeathCDTank			= mod:NewTimer(30, "SoDTank2", 179864, "Tank", nil, 5)
@@ -66,7 +66,7 @@ local countdownDigest					= mod:NewCountdown("Alt40", 181295, nil, nil, 8)
 
 local voiceTouchofDoom					= mod:NewVoice(179977)--runout
 local voiceHungerforLife				= mod:NewVoice(180148)--justrun
-local voiceBellowingShout				= mod:NewVoice(181582, "-Healer")--kickcast
+local voiceBellowingShout				= mod:NewVoice(181582, "HasInterrupt")--kickcast
 local voiceShadowofDeath				= mod:NewVoice(179864)--teleyou, new voice, teleport into a new phase phase
 local voiceSharedFate					= mod:NewVoice(179909)--linegather, new voice, like Blood-Queen Lana'thel's Pact of the Darkfallen, line gather will be better.
 local voiceBurning						= mod:NewVoice(185189) --changemt

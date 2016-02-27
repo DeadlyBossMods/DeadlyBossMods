@@ -7500,14 +7500,15 @@ do
 		["Physical"] = true,
 		["Ranged"] = true,
 		["RangedDps"] = true,
-		["ManaUser"] = true,
-		["SpellCaster"] = true,
+		["ManaUser"] = true,--Affected by things like mana drains, or mana detonation, etc
+		["SpellCaster"] = true,--Has channeled casts, can be interrupted/spell locked by roars, etc
 		["RaidCooldown"] = true,
 		["RemovePoison"] = true,
 		["RemoveDisease"] = true,
 		["RemoveEnrage"] = true,
 		["RemoveCurse"] = true,
-		["MagicDispeller"] = true
+		["MagicDispeller"] = true--Buffs on targets, not debuffs on players
+		["HasInterrupt"] = true,--Has an interrupt that is 15 seconds or less CD. Excludes long cd interrupts that aren't fitting for a 2-3 person rotation
 	}]]
 
 	local specRoleTable = {
@@ -7529,6 +7530,7 @@ do
 			["RaidCooldown"] = true,--Devotion Aura
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
+			["HasInterrupt"] = true,
 		},
 		[66] = {	--Protection Paladin
 			["Tank"] = true,
@@ -7537,6 +7539,7 @@ do
 			["Physical"] = true,
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
+			["HasInterrupt"] = true,--REMOVE IN LEGION
 		},
 		[70] = {	--Retribution Paladin
 			["Dps"] = true,
@@ -7546,6 +7549,7 @@ do
 			["Physical"] = true,
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
+			["HasInterrupt"] = true,
 		},
 		[71] = {	--Arms Warrior
 			["Dps"] = true,
@@ -7553,18 +7557,21 @@ do
 			["MeleeDps"] = true,
 			["RaidCooldown"] = true,--Rallying Cry
 			["Physical"] = true,
+			["HasInterrupt"] = true,
 		},
 		[73] = {	--Protection Warrior
 			["Tank"] = true,
 			["Melee"] = true,
 			["Physical"] = true,
-			["MagicDispeller"] = true,
+			["MagicDispeller"] = true,--REMOVE IN LEGION
+			["HasInterrupt"] = true,
 		},
 		[74] = {	--Gladiator Warrior
 			["Dps"] = true,
 			["Melee"] = true,
 			["MeleeDps"] = true,
 			["Physical"] = true,
+			["HasInterrupt"] = true,
 		},
 		[102] = {	--Balance Druid
 			["Dps"] = true,
@@ -7584,6 +7591,7 @@ do
 			["RemoveEnrage"] = true,
 			["RemoveCurse"] = true,
 			["RemovePoison"] = true,
+			["HasInterrupt"] = true,
 		},
 		[104] = {	--Guardian Druid
 			["Tank"] = true,
@@ -7591,6 +7599,7 @@ do
 			["Physical"] = true,
 			["RemoveCurse"] = true,
 			["RemovePoison"] = true,
+			["HasInterrupt"] = true,
 		},
 		[105] = {	-- Restoration Druid
 			["Healer"] = true,
@@ -7606,21 +7615,30 @@ do
 			["Tank"] = true,
 			["Melee"] = true,
 			["Physical"] = true,
+			["HasInterrupt"] = true,
 		},
 		[251] = {	--Frost DK
 			["Dps"] = true,
 			["Melee"] = true,
 			["MeleeDps"] = true,
 			["Physical"] = true,
+			["HasInterrupt"] = true,
 		},
 		[253] = {	--Beastmaster Hunter
 			["Dps"] = true,
 			["Ranged"] = true,
 			["RangedDps"] = true,
 			["Physical"] = true,
-			["RemoveEnrage"] = true,
-			["MagicDispeller"] = true,
+			["RemoveEnrage"] = true,--REMOVE IN LEGION
+			["MagicDispeller"] = true,--REMOVE IN LEGION
 		},
+--[[		[255] = {	--Survival Hunter (Legion)
+			["Dps"] = true,
+			["Melee"] = true,
+			["MeleeDps"] = true,
+			["Physical"] = true,
+			["HasInterrupt"] = true,
+		},--]]
 		[256] = {	--Discipline Priest
 			["Healer"] = true,
 			["Ranged"] = true,
@@ -7645,6 +7663,7 @@ do
 			["RaidCooldown"] = true,--Smoke Bomb
 			["Physical"] = true,
 			["RemoveEnrage"] = true,
+			["HasInterrupt"] = true,
 		},
 		[262] = {	--Elemental Shaman
 			["Dps"] = true,
@@ -7654,6 +7673,7 @@ do
 			["SpellCaster"] = true,
 			["RemoveCurse"] = true,
 			["MagicDispeller"] = true,
+			["HasInterrupt"] = true,
 		},
 		[263] = {	--Enhancement Shaman
 			["Dps"] = true,
@@ -7664,6 +7684,7 @@ do
 			["Physical"] = true,
 			["RemoveCurse"] = true,
 			["MagicDispeller"] = true,
+			["HasInterrupt"] = true,
 		},
 		[264] = {	--Restoration Shaman
 			["Healer"] = true,
@@ -7673,6 +7694,7 @@ do
 			["RaidCooldown"] = true,--Spirit Link Totem
 			["RemoveCurse"] = true,
 			["MagicDispeller"] = true,
+			["HasInterrupt"] = true,
 		},
 		[265] = {	--Affliction Warlock
 			["Dps"] = true,
@@ -7687,6 +7709,7 @@ do
 			["Physical"] = true,
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
+			["HasInterrupt"] = true,
 		},
 		[269] = {	--Windwalker Monk
 			["Dps"] = true,
@@ -7695,6 +7718,7 @@ do
 			["Physical"] = true,
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
+			["HasInterrupt"] = true,
 		},
 		[270] = {	--Mistweaver Monk
 			["Healer"] = true,
@@ -7705,17 +7729,20 @@ do
 			["RaidCooldown"] = true,--Revival
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
+			["HasInterrupt"] = true,--REMOVE IN LEGION
 		},
 		[577] = {	--Havok Demon Hunter
 			["Dps"] = true,
 			["Melee"] = true,
 			["MeleeDps"] = true,
 			["Physical"] = true,
+			["HasInterrupt"] = true,
 		},
 		[581] = {	--Vengeance Demon Hunter
 			["Tank"] = true,
 			["Melee"] = true,
 			["Physical"] = true,
+			["HasInterrupt"] = true,
 		},
 	}
 	specRoleTable[63] = specRoleTable[62]--Frost Mage
