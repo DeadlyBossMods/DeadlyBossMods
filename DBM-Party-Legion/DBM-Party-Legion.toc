@@ -50,7 +50,7 @@ NeltharionsLair\Ularogg.lua
 NeltharionsLair\Naraxas.lua
 NeltharionsLair\Dargrul.lua
 TheArcway\Ivanyr.lua
-TheArcway\NightwellSentry.lua
+TheArcway\Corstilax.lua
 TheArcway\GeneralXakal.lua
 TheArcway\Naltira.lua
 TheArcway\Vandros.lua
