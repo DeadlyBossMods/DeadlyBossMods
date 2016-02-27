@@ -5,77 +5,88 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(98205)
 mod:SetEncounterID(1825)
 mod:SetZone()
+mod:SetUsedIcons(1)
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
-	"SPELL_SUMMON",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_AURA_APPLIED 196068 195804",
+	"SPELL_AURA_REMOVED 195804",
+	"SPELL_CAST_START 196070 196115",
+	"SPELL_CAST_SUCCESS 195791"
 )
 
---local warnCurtainOfFlame			= mod:NewTargetAnnounce(153396, 4)
+local warnSupression				= mod:NewTargetAnnounce(196070, 4)
+local warnQuarantine				= mod:NewTargetAnnounce(196115, 3)
 
---local specWarnCurtainOfFlame		= mod:NewSpecialWarningMoveAway(153396)
+local specWarnSupression			= mod:NewSpecialWarningRun(196070, nil, nil, nil, 4, 2)
+local yellSupression				= mod:NewYell(196070)
+local specWarnQuarantine			= mod:NewSpecialWarningTarget(196115, false, nil, nil, 1, 2)
+local yellQuarantine				= mod:NewYell(196115)
+local specWarnCleansing				= mod:NewSpecialWarningSpell(196115, nil, nil, nil, 2, 2)
 
---local timerCurtainOfFlameCD			= mod:NewNextTimer(20, 153396, nil, nil, nil, 3)
+local timerSupressionCD				= mod:NewCDTimer(32.5, 196070, nil, nil, nil, 3)
+local timerQuarantineCD				= mod:NewCDTimer(32.5, 195791, nil, nil, nil, 3)
+local timerCleansingCD				= mod:NewCDTimer(32.5, 196115, nil, nil, nil, 2)
 
---local voiceCurtainOfFlame			= mod:NewVoice(153392)
+local voiceSupression				= mod:NewVoice(196070)--runout/keeprun
+local voiceQuarantine				= mod:NewVoice(195791)--readyrescue
+local voiceCleansing				= mod:NewVoice(196115)--aesoon
 
---mod:AddRangeFrameOption(5, 153396)
+mod:AddSetIconOption("SetIconOnQuarantine", 195791)
 
 function mod:OnCombatStart(delay)
-
-end
-
-function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 153396 then
-
-	end
+	timerSupressionCD:Start(6-delay)
+	timerQuarantineCD:Start(22.5-delay)
+	timerCleansingCD:Start(30-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 153392 then
-
+	if spellId == 196068 then
+		warnSupression:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnSupression:Show()
+			voiceSupression:Play("runout")
+			voiceSupression:Schedule(1, "keeprun")
+			yellSupression:Yell()
+		end
+	elseif spellId == 195804 then
+		if self.Options.SpecWarn196115target then
+			specWarnQuarantine:Show(args.destName)
+			voiceQuarantine:Play("readyrescue")
+		else
+			warnQuarantine:Show(args.destName)
+		end
+		if args:IsPlayer() then
+			yellQuarantine:Yell()
+		end
+		if self.Options.SetIconOnQuarantine then
+			self:SetIcon(args.destName, 1)
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 153392 then
-
+	if spellId == 195804 and self.Options.SetIconOnQuarantine then
+		self:SetIcon(args.destName, 0)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 153764 then
-
+	if spellId == 196070 then
+		timerSupressionCD:Start()
+	elseif spellId == 196115 then
+		specWarnCleansing:Show()
+		voiceCleansing:Play("aesoon")
+		timerCleansingCD:Start()
 	end
 end
 
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 153616 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 195791 then
+		timerQuarantineCD:Start()
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 153500 then
-
-	end
-end
---]]
