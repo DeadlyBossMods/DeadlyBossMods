@@ -61,7 +61,6 @@ end
 DBM_CharSavedRevision = 1
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
---http://forums.elitistjerks.com/topic/133901-bug-report-hudmap/#entry2282069
 local standardFont = STANDARD_TEXT_FONT
 if (LOCALE_koKR) then
 	standardFont = "Fonts\\2002.TTF"

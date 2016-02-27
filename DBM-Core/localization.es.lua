@@ -1,10 +1,10 @@
 ﻿if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 
-DBM_CORE_NEED_SUPPORT				= "¿Eres bueno programando o con los idiomas? Si es así, el Equipo DBM necesita tu ayuda para mantener el DBM como el mejor BossMod del WoW. Únete al equipo visitando http://forums.elitistjerks.com/topic/132449-dbm-localizers-needed/"
+DBM_CORE_NEED_SUPPORT				= "¿Eres bueno programando o con los idiomas? Si es así, el Equipo DBM necesita tu ayuda para mantener el DBM como el mejor BossMod del WoW. Únete al equipo visitando |HDBM:localizersneeded|h|cff3588ffhere|r"
 DBM_HOW_TO_USE_MOD					= "Bienvenido a DBM. Para acceder a las opciones escribe /dbm en tu chat para empezar a configurarlo. Puedes cargar las zonas manualmente para configurar las opciones específicas de cada Boss a tu gusto. DBM intenta hacer esto escaneando tu clase la primera vez que se inicia, pero quizás quieras más alertas de las que necesita tu clase."
 
 DBM_FORUMS_MESSAGE					= "¿Has encontrado un bug o un temporizador no va bien? ¿Piensas que algún jefe necesita un algún aviso adicional, un nuevo temporizador o alguna otra funcionalidad?\nVisita los nuevos foros de discusión, informe de bugs y solicitud de nuevas funcionalidades de Deadly Boss Mods en |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (puedes pulsar el enlace para copiar la URL)"
-DBM_FORUMS_COPY_URL_DIALOG			= "Visita nuestro nuevo foro de dicusión y soporte\r\n(¡hospedado por Elitist Jerks!)"
+DBM_FORUMS_COPY_URL_DIALOG			= "Visita nuestro nuevo foro de dicusión y soporte"
 
 DBM_CORE_LOAD_MOD_ERROR				= "Error al cargar modulo %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Módulo de '%s' cargado correctamente. Para más opciones escribe /dbm o /dbm help en tu chat."
