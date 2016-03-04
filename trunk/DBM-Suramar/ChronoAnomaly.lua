@@ -29,8 +29,8 @@ local warnTimeBomb					= mod:NewTargetAnnounce(206617, 3)
 local warnTimeRelease				= mod:NewTargetAnnounce(206610, 3, nil, "Healer")
 local warnChronometricPart			= mod:NewStackAnnounce(206607, 3, nil, "Tank")
 
-local specWarnPowerOverwhelming		= mod:NewSpecialWarningInterrupt(211927, "Tank", nil, nil, 3)
-local specWarnTimeBomb				= mod:NewSpecialWarningMoveAway(206617)--When close to expiring, not right away
+local specWarnPowerOverwhelming		= mod:NewSpecialWarningInterrupt(211927, "Tank", nil, nil, 3, 2)
+local specWarnTimeBomb				= mod:NewSpecialWarningMoveAway(206617, nil, nil, nil, 1, 2)--When close to expiring, not right away
 local yellTimeBomb					= mod:NewFadesYell(206617)
 
 local timerPowerOverwhelmingCD		= mod:NewAITimer(30, 211927, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--tank Only?
@@ -41,7 +41,8 @@ local timerChronoPartCD				= mod:NewAITimer(30, 206607, nil, "Tank", nil, 5, nil
 
 local countdownTimeBomb				= mod:NewCountdownFades("AltTwo30", 206617)
 
-local voiceTimeBomb					= mod:NewVoice(206617)
+local voicePowerOverwhelming		= mod:NewVoice(211927)--kickcast
+local voiceTimeBomb					= mod:NewVoice(206617)--scatter
 
 mod:AddRangeFrameOption(10, 206617)
 mod:AddSetIconOption("SetIconOnTimeRelease", 206610, true)
@@ -72,6 +73,7 @@ function mod:SPELL_CAST_START(args)
 		timerPowerOverwhelmingCD:Start()
 		if self.Options.SpecWarn211927interrupt then
 			specWarnPowerOverwhelming:Show(args.sourceName)
+			voicePowerOverwhelming:Play("kickcast")
 		else
 			warnPowerOverwhelming:Show()
 		end
@@ -96,6 +98,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if expires then
 				local debuffTime = expires - GetTime()
 				specWarnTimeBomb:Schedule(debuffTime - 5)	-- Show "move away" warning 5secs before explode
+				voiceTimeBomb:Schedule(debuffTime - 5, "scatter")
 				timerTimeBomb:Start(debuffTime)
 				countdownTimeBomb:Start(debuffTime)
 				yellTimeBomb:Schedule(debuffTime-1, 1)
@@ -123,6 +126,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 206617 then
 		if args:IsPlayer() then
 			specWarnTimeBomb:Cancel()
+			voiceTimeBomb:Cancel()
 			timerTimeBomb:Cancel()
 			countdownTimeBomb:Cancel()
 			yellTimeBomb:Cancel()
