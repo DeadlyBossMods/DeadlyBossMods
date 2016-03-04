@@ -1,6 +1,6 @@
 ﻿## Interface: 70000
 ## X-Min-Interface: 70000
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |Broken Isles|r
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Broken Isles|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
