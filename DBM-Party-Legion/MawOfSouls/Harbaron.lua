@@ -66,7 +66,7 @@ function mod:SPELL_CAST_START(args)
 		voiceServitor:Play("bigmob")
 		timerServitorCD:Start()
 	elseif spellId == 194266 and self:CheckInterruptFilter(args.sourceGUID) then
-		specWarnVoidSnap:Show()
+		specWarnVoidSnap:Show(args.sourceName)
 		voiceVoidSnap:Play("kickcast")
 	end
 end
