@@ -5641,7 +5641,7 @@ do
 		if UnitHealthMax(uId) ~= 0 then
 			health = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		end
-		if not health or health < 5 then return end -- no worthy of combat start if health is below 5%
+		if not health or health < 2 then return end -- no worthy of combat start if health is below 2%
 		if dbmIsEnabled and InCombatLockdown() then
 			if cId ~= 0 and not bossHealth[cId] and bossIds[cId] and UnitAffectingCombat(uId) and not (UnitPlayerOrPetInRaid(uId) or UnitPlayerOrPetInParty(uId)) and healthCombatInitialized then -- StartCombat by UNIT_HEALTH.
 				if combatInfo[LastInstanceMapID] then
