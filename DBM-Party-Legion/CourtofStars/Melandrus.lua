@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(99200)
-mod:SetEncounterID(1870)--Advisor Melandrus? Not Gerdo?
+mod:SetEncounterID(1870)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
