@@ -17,8 +17,10 @@ localization.en.lua
 Skorpyron.lua
 ChronoAnomaly.lua
 Trilliax.lua
-Krosus.lua
 Aluriel.lua
+Tichondrius.lua
+Krosus.lua
+Telarn.lua
 Etraeus.lua
 Elisande.lua
 Guldan.lua
