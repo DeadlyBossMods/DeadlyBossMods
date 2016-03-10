@@ -158,7 +158,7 @@ L= DBM:GetModLocalization(1500)
 L= DBM:GetModLocalization(1501)
 
 -----------------------
--- <<<Suramar Noble District>>> --
+-- <<<Court of Stars>>> --
 -----------------------
 -----------------------
 -- Patrol Captain Volendis --

@@ -407,6 +407,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-HighMail",
 	"DBM-ProvingGrounds-MoP",--Renamed to DBM-ProvingGrounds in 6.0 version since blizzard updated content for WoD
 	"DBM-VPKiwiBeta",--Renamed to DBM-VPKiwi in final version.
+	"DBM-Suramar",--Renamed to DBM-Nighthold
 }
 
 
@@ -6720,7 +6721,7 @@ function DBM:FindInstanceIDs()
 end
 
 --/run DBM:FindEncounterIDs(768)--Emerald Nightmare
---/run DBM:FindEncounterIDs(786)--Suramar Raid
+--/run DBM:FindEncounterIDs(786)--The Nighthold
 --/run DBM:FindEncounterIDs(822)--Broken Isles
 function DBM:FindEncounterIDs(instanceID, diff)
 	if not instanceID then
