@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(99200)
-mod:SetEncounterID(1868)--Patrol Captain Gerdo?
+mod:SetEncounterID(1868)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
