@@ -54,9 +54,9 @@ TheArcway\Corstilax.lua
 TheArcway\GeneralXakal.lua
 TheArcway\Naltira.lua
 TheArcway\Vandros.lua
-CourtofStars\Volendis.lua
+CourtofStars\Gerdo.lua
 CourtofStars\Talixae.lua
-CourtofStars\HighCouncillor.lua
+CourtofStars\Melandrus.lua
 MawOfSouls\Ymiron.lua
 MawOfSouls\Harbaron.lua
 MawOfSouls\Helya.lua
