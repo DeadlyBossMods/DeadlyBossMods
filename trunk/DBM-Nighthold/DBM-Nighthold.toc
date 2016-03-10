@@ -1,11 +1,11 @@
 ﻿## Interface: 70000
 ## X-Min-Interface: 70000
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Suramar|r
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0The Nighthold|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariables: DBMSuramar_AllSavedVars
-## SavedVariablesPerCharacter: DBMSuramar_SavedStats
+## SavedVariables: DBMNighthold_AllSavedVars
+## SavedVariablesPerCharacter: DBMNighthold_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: LEG
