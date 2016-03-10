@@ -9,7 +9,7 @@
 --    * Adam Williams (Omegal @ US-Whisperwind) (Primary boss mod author & DBM maintainer) Contact: Twitter @MysticalOS)
 --
 -- The localizations are written by:
---    * enGB/enUS: Omegal				http://www.deadlybossmods.com
+--    * enGB/enUS: Omegal				Twitter @MysticalOS
 --    * deDE: Ebmor						http://forums.elitistjerks.com/user/616736-ebmor/
 --    * ruRU: TOM_RUS					http://www.curseforge.com/profiles/TOM_RUS/
 --    * zhTW: Whyv						ultrashining@gmail.com
