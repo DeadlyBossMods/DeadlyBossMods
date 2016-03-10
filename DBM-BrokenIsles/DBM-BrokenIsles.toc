@@ -17,4 +17,4 @@
 ## X-DBM-Mod-MinCoreRevision: 14737
 localization.en.lua
 Soultakers.lua
-Tarlna.lua
+Nithogg.lua
