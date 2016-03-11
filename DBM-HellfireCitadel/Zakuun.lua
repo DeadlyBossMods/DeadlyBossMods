@@ -47,7 +47,7 @@ local specWarnSeedPosition				= mod:NewSpecialWarningYouPos(181508, nil, false, 
 local yellSeedsofDestruction			= mod:NewYell(181508)
 
 --Armed
-local timerRumblingFissureCD			= mod:NewNextTimer(39, 179582, nil, nil, nil, 5)
+local timerRumblingFissureCD			= mod:NewNextTimer(39, 179582, 161600, nil, nil, 5)
 local timerBefouledCD					= mod:NewNextTimer(38, 179711, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
 local timerSoulCleaveCD					= mod:NewNextTimer(40, 179406, nil, nil, nil, 3)
 local timerCavitationCD					= mod:NewNextTimer(40, 181461, nil, nil, nil, 2)
