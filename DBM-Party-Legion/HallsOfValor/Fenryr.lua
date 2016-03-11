@@ -135,7 +135,7 @@ function mod:ENCOUNTER_START(encounterID)
 	--Re-engaged, kill scans and long wipe time
 	if encounterID == 1807 then
 		self:SetWipeTime(5)
-		self:UnregisterShortTermEvents()
+--		self:UnregisterShortTermEvents()
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
 		timerHowlCD:Start(5)
@@ -146,8 +146,8 @@ function mod:ENCOUNTER_START(encounterID)
 end
 
 function mod:ZONE_CHANGED_NEW_AREA()
-	--Left zone, probably actually wiped to trash before re-enraging boss or something
-	--So make sure we wipe fight against Frenryr
+	--Left zone
+	--Normal wipes respawn you sindie
 	self:SetWipeTime(5)
 	self:UnregisterShortTermEvents()
 end
