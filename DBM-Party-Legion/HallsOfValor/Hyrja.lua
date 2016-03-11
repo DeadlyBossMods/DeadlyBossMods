@@ -31,6 +31,8 @@ local timerShieldOfLightCD			= mod:NewCDTimer(30, 192018, nil, "Tank", nil, 5, n
 local timerSpecialCD				= mod:NewNextTimer(30, 200736, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--Shared timer by eye of storm and Sanctify
 --local timerExpelLightCD			= mod:NewCDTimer(24, 192048, nil, nil, nil, 3)--More review 24-30
 
+local countdownSpecial				= mod:NewCountdown(30, 200736)
+
 --local voiceEyeofStorm				= mod:NewVoice(200901)--"move center" generic or "move into eye" or maybe "findshelter"
 local voiceShieldOfLight			= mod:NewVoice(192018, "Tank")--defensive
 local voiceSanctify					= mod:NewVoice(192158)--watchorb
@@ -65,10 +67,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnExpelLight:Show(args.destName)
 		end
-	elseif spellId == 192133 then--Mysthic Empowerment: Holy
-
-	elseif spellId == 192132 then--Mysthic Empowerment: Thunder
-		
 	end
 end
 
@@ -86,6 +84,7 @@ function mod:SPELL_CAST_START(args)
 		voiceSanctify:Play("watchorb")
 		if spellId == 192307 then
 			timerSpecialCD:Start()
+			countdownSpecial:Start()
 		end
 	elseif spellId == 192018 then
 		specWarnShieldOfLight:Show()
@@ -96,6 +95,7 @@ function mod:SPELL_CAST_START(args)
 --		voiceEyeofStorm:Play("movecenter")
 		if self.vb.phase == 2 then
 			timerSpecialCD:Start()
+			countdownSpecial:Start()
 		end
 	end
 end
@@ -107,5 +107,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voicePhaseChange:Play("ptwo")
 		timerShieldOfLightCD:Start(24)
 		timerSpecialCD:Start(39)
+		countdownSpecial:Start(39)
 	end
 end
