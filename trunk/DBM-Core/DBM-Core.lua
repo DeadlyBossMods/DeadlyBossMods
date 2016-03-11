@@ -9823,7 +9823,11 @@ do
 			if self.type and not self.text then
 				msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId), ...)
 			else
-				msg = pformat(self.text, ...)
+				if type(self.text) == "number" then
+					msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.text), ...)
+				else
+					msg = pformat(self.text, ...)
+				end
 			end
 			msg = msg:gsub(">.-<", stripServerName)
 			bar:SetText(msg, self.inlineIcon)
