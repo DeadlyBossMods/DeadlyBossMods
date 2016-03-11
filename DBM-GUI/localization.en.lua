@@ -174,6 +174,7 @@ L.BarFlash					= "Flash bar about to expire"
 L.BarSort					= "Sort by remaining time"
 L.BarColorByType			= "Color by type"
 L.BarInlineIcons			= "Show inline icons"
+L.ShortTimerText			= "Use short timer text (when available)"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Special Warnings"
