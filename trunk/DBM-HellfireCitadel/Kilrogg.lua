@@ -57,7 +57,7 @@ local timerHeartseekerCD			= mod:NewCDTimer(25, 180372, nil, nil, nil, 3)
 local timerVisionofDeathCD			= mod:NewCDCountTimer(75, 181488, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 local timerDeathThroesCD			= mod:NewCDCountTimer(40, 180224, nil, nil, nil, 2)
 --Adds
-local timerBloodthirsterCD			= mod:NewCDCountTimer(70.3, "ej11266", nil, nil, nil, 1, 131150, DBM_CORE_DAMAGE_ICON)
+local timerBloodthirsterCD			= mod:NewCDCountTimer(70.3, "ej11266", nil, nil, nil, 1, 131150, DBM_CORE_DAMAGE_ICON)--55969 is an iffy short name for bloodthirster since "bloodthirst" is all I could find that was close
 local timerRendingHowlCD			= mod:NewNextTimer(6, 183917, nil, "HasInterrupt", 2, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
 local berserkTimer					= mod:NewBerserkTimer(600)

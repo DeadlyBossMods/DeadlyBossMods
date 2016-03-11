@@ -86,12 +86,12 @@ local timerFelImplosionCD			= mod:NewNextCountTimer(46, 181255, nil, nil, nil, 1
 ----Infernals
 local timerInfernoCD				= mod:NewNextCountTimer(107, 181180, nil, nil, nil, 1)
 ----Gul'dan
-local timerWrathofGuldanCD			= mod:NewNextTimer(107, 186348, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerWrathofGuldanCD			= mod:NewNextTimer(107, 186348, 169826, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 --Mannoroth
 mod:AddTimerLine(L.name)
 local timerGlaiveComboCD			= mod:NewCDTimer(30, 181354, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--30 seconds unless delayed by something else
 local timerFelHellfireCD			= mod:NewCDTimer(35, 181557, nil, nil, nil, 2)--35, unless delayed by other things.
-local timerGazeCD					= mod:NewCDTimer(47.1, 181597, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--As usual, some variation do to other abilities
+local timerGazeCD					= mod:NewCDTimer(47.1, 181597, 134029, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--As usual, some variation do to other abilities
 local timerFelSeekerCD				= mod:NewCDTimer(49.5, 181735, nil, nil, nil, 2)--Small sample size, confirm it's not shorter if not delayed by things.
 local timerShadowForceCD			= mod:NewCDTimer(52.2, 181799, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
