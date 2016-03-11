@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 197963 197964 197965 197966 197967",
-	"SPELL_AURA_REMOVED 197963 197964 197965 197966 197967",
+--	"SPELL_AURA_REMOVED 197963 197964 197965 197966 197967",
 	"SPELL_CAST_START 198072 198263 198077",
 	"SPELL_CAST_SUCCESS 197961"
 )
@@ -53,19 +53,19 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 197963 then--Purple K (NE)
+	if spellId == 197963 and args:IsPlayer() then--Purple K (NE)
 		specWarnRunicBrand:Show("NE")
 		voiceRunicBrand:Play("frontright")
-	elseif spellId == 197964 then--Red N (SE)
+	elseif spellId == 197964 and args:IsPlayer() then--Red N (SE)
 		specWarnRunicBrand:Show("SE")
 		voiceRunicBrand:Play("backright")
-	elseif spellId == 197965 then--Yellow H (SW)
+	elseif spellId == 197965 and args:IsPlayer() then--Yellow H (SW)
 		specWarnRunicBrand:Show("SW")
 		voiceRunicBrand:Play("backleft")
-	elseif spellId == 197966 then--Blue fishies (NW)
+	elseif spellId == 197966 and args:IsPlayer() then--Blue fishies (NW)
 		specWarnRunicBrand:Show("NW")
 		voiceRunicBrand:Play("frontleft")
-	elseif spellId == 197967 then--Green box (N)
+	elseif spellId == 197967 and args:IsPlayer() then--Green box (N)
 		specWarnRunicBrand:Show("N")
 		voiceRunicBrand:Play("frontcenter")--Does not exist yet
 	end
