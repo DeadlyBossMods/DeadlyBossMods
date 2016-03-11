@@ -27,7 +27,7 @@ local specWarnEyeofStorm			= mod:NewSpecialWarningMoveTo(200901, nil, DBM_CORE_A
 local specWarnExpelLight			= mod:NewSpecialWarningMoveAway(192048, nil, nil, nil, 2, 2)
 local yellExpelLight				= mod:NewYell(192048)
 
-local timerShieldOfLightCD			= mod:NewCDimer(30, 192018, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--30-34
+local timerShieldOfLightCD			= mod:NewCDTimer(30, 192018, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--30-34
 local timerSpecialCD				= mod:NewNextTimer(30, 200736, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--Shared timer by eye of storm and Sanctify
 --local timerExpelLightCD			= mod:NewCDTimer(24, 192048, nil, nil, nil, 3)--More review 24-30
 
