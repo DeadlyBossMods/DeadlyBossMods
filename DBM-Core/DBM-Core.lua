@@ -286,6 +286,7 @@ DBM.DefaultOptions = {
 	FakeBWVersion = false,
 	AITimer = true,
 	AutoCorrectTimer = false,
+	ShortTimerText = true,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 }
 
@@ -10026,10 +10027,17 @@ do
 			end
 		end
 		spellName = spellName or tostring(spellId)
+		local timerTextValue
+		--If timertext is a number, accept it as a secondary auto translate spellid
+		if timerText and type(timerText) == "number" and DBM.Options.ShortTimerText then
+			timerTextValue = GetSpellInfo(timerText or 0)
+		else
+			timerTextValue = self.localization.timers[timerText]
+		end
 		local id = "Timer"..(spellId or 0)..timerType..(optionVersion or "")
 		local obj = setmetatable(
 			{
-				text = self.localization.timers[timerText],
+				text = timerTextValue,
 				type = timerType,
 				spellId = spellId,
 				timer = timer,
