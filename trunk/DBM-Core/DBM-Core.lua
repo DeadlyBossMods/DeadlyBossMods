@@ -10034,7 +10034,7 @@ do
 		local timerTextValue
 		--If timertext is a number, accept it as a secondary auto translate spellid
 		if timerText and type(timerText) == "number" and DBM.Options.ShortTimerText then
-			timerTextValue = GetSpellInfo(timerText or 0)
+			timerTextValue = timerText
 		else
 			timerTextValue = self.localization.timers[timerText]
 		end
