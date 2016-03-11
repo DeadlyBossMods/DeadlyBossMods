@@ -27,10 +27,10 @@ local specWarnHowl						= mod:NewSpecialWarningCast(196543, "SpellCaster", nil, 
 local specWarnFixate					= mod:NewSpecialWarningRun(196838, nil, nil, nil, 4, 2)
 local specWarnFixateOver				= mod:NewSpecialWarningEnd(196838, nil, nil, nil, 1)
 
-local timerLeapCD						= mod:NewCDTimer(33, 197556, nil, nil, nil, 3)--Poor data
+local timerLeapCD						= mod:NewCDTimer(31, 197556, nil, nil, nil, 3)--31-36
 --local timerClawFrenzyCD					= mod:NewCDTimer(10, 196512, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--All over the place
-local timerHowlCD						= mod:NewCDTimer(32, 196543, nil, "SpellCaster", nil, 2)--Poor data
-local timerFixateCD						= mod:NewCDTimer(39, 196838, nil, nil, nil, 3)--Poor data
+local timerHowlCD						= mod:NewCDTimer(31.5, 196543, nil, "SpellCaster", nil, 2)--Poor data
+local timerFixateCD						= mod:NewCDTimer(36, 196838, nil, nil, nil, 3)--Poor data
 
 local voiceLeap							= mod:NewVoice(197556)--runout
 local voiceHowl							= mod:NewVoice(196543, "SpellCaster")--stopcast
@@ -54,9 +54,9 @@ end
 
 function mod:OnCombatStart(delay)
 	self:SetWipeTime(5)
-	timerLeapCD:Start(8-delay)
 --	timerClawFrenzyCD:Start(19-delay)
-	timerHowlCD:Start(21-delay)
+	timerHowlCD:Start(8-delay)--Verify changes
+	timerLeapCD:Start(12-delay)--Verify changes
 end
 
 function mod:OnCombatEnd()
@@ -105,7 +105,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 196838 then
 		timerFixateCD:Start()
-		self:BossTargetScanner(95674, "FixateTarget", 0.2, 12, true, nil, nil, nil, true)--Target scanning grabs target 2-3 seconds faster
+		self:BossTargetScanner(95674, "FixateTarget", 0.2, 12, true, nil, nil, nil, true)--Target scanning used to grab target 2-3 seconds faster. Doesn't seem to anymore?
 	elseif spellId == 196543 then
 		specWarnHowl:Show()
 		voiceHowl:Play("stopcast")
@@ -134,14 +134,14 @@ end
 function mod:ENCOUNTER_START(encounterID)
 	--Re-engaged, kill scans and long wipe time
 	if encounterID == 1807 then
-		self:SetWipeTime(5)
+--		self:SetWipeTime(5)
 --		self:UnregisterShortTermEvents()
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
-		timerHowlCD:Start(5)
-		timerFixateCD:Start(9.8)
+--		timerHowlCD:Start(5)--2-6, useless timer
+--		timerFixateCD:Start(9.8)--7-20, useless timer
 --		timerClawFrenzyCD:Start(27)
-		timerLeapCD:Start(30)
+--		timerLeapCD:Start(30)--10-30, useless timer
 	end
 end
 
