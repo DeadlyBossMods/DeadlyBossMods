@@ -123,12 +123,12 @@ local timerRainofChaosCD			= mod:NewCDCountTimer(62, 182225, 23426, nil, nil, 2)
 ----The Nether
 --Mythic
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerDarkConduitCD			= mod:NewCDCountTimer(107, 190394, 199787, "-Melee", 2, 3)
-local timerMarkOfLegionCD			= mod:NewCDCountTimer(107, 187050, 28836, nil, nil, 3)
-local timerInfernalsCD				= mod:NewCDCountTimer(107, 187111, 23426, nil, nil, 1, 1122)
-local timerSourceofChaosCD			= mod:NewCDCountTimer(107, 190703, nil, nil, 2, 1)
-local timerTwistedDarknessCD		= mod:NewCDCountTimer(107, 190821, 189894, nil, nil, 1)
-local timerSeethingCorruptionCD		= mod:NewCDCountTimer(107, 190506, 66911, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerDarkConduitCD			= mod:NewNextCountTimer(107, 190394, 199787, "-Melee", 2, 3)
+local timerMarkOfLegionCD			= mod:NewNextCountTimer(107, 187050, 28836, nil, nil, 3)
+local timerInfernalsCD				= mod:NewNextCountTimer(107, 187111, 23426, nil, nil, 1, 1122)
+local timerSourceofChaosCD			= mod:NewNextCountTimer(107, 190703, nil, nil, 2, 1)
+local timerTwistedDarknessCD		= mod:NewNextCountTimer(107, 190821, 189894, nil, nil, 1)
+local timerSeethingCorruptionCD		= mod:NewNextCountTimer(107, 190506, 66911, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
