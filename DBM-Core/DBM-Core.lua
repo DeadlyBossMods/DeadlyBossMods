@@ -6093,7 +6093,7 @@ function DBM:GetGroupSize()
 end
 
 function DBM:PlaySoundFile(path, ignoreSFX)
-	if wowTOC == 70000 then return end--Check if this is fixed in newer build
+--	if wowTOC == 70000 then return end--Check if this is fixed in newer build
 	local soundSetting = self.Options.UseSoundChannel
 	if soundSetting == "Dialog" then
 		PlaySoundFile(path, "Dialog")
