@@ -603,14 +603,14 @@ local function updateAllTimers(self, ICD, AllureSpecial)
 			local elapsed, total = timerDoomfireCD:GetTime()
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerDoomfireCD extended by: "..extend, 2)
-			timerDoomfireCD:Cancel()
+			timerDoomfireCD:Stop()
 			timerDoomfireCD:Update(elapsed, total+extend)
 		end
 		if not AllureSpecial and timerAllureofFlamesCD:GetRemaining() < ICD then
 			local elapsed, total = timerAllureofFlamesCD:GetTime()
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerAllureofFlamesCD extended by: "..extend, 2)
-			timerAllureofFlamesCD:Cancel()
+			timerAllureofFlamesCD:Stop()
 			timerAllureofFlamesCD:Update(elapsed, total+extend)
 		end
 		if timerFelBurstCD:GetRemaining() < ICD then
@@ -618,14 +618,14 @@ local function updateAllTimers(self, ICD, AllureSpecial)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerFelBurstCD extended by: "..extend, 2)
 			warnFelBurstSoon:Cancel()
-			timerFelBurstCD:Cancel()
+			timerFelBurstCD:Stop()
 			timerFelBurstCD:Update(elapsed, total+extend)
 		end
 		if timerDeathbrandCD:GetRemaining(self.vb.deathBrandCount+1) < ICD then
 			local elapsed, total = timerDeathbrandCD:GetTime(self.vb.deathBrandCount+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerDeathbrandCD extended by: "..extend, 2)
-			timerDeathbrandCD:Cancel()
+			timerDeathbrandCD:Stop()
 			timerDeathbrandCD:Update(elapsed, total+extend, self.vb.deathBrandCount+1)
 			countdownDeathBrand:Cancel()
 			countdownDeathBrand:Start(ICD)
@@ -635,7 +635,7 @@ local function updateAllTimers(self, ICD, AllureSpecial)
 				local elapsed, total = timerDesecrateCD:GetTime()
 				local extend = ICD - (total-elapsed)
 				DBM:Debug("timerDesecrateCD extended by: "..extend, 2)
-				timerDesecrateCD:Cancel()
+				timerDesecrateCD:Stop()
 				timerDesecrateCD:Update(elapsed, total+extend)
 			end
 		end
@@ -644,14 +644,14 @@ local function updateAllTimers(self, ICD, AllureSpecial)
 			local elapsed, total = timerAllureofFlamesCD:GetTime()
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerAllureofFlamesCD extended by: "..extend, 2)
-			timerAllureofFlamesCD:Cancel()
+			timerAllureofFlamesCD:Stop()
 			timerAllureofFlamesCD:Update(elapsed, total+extend)
 		end
 		if not AllureSpecial and timerShackledTormentCD:GetRemaining(self.vb.tormentCast+1) < ICD then
 			local elapsed, total = timerShackledTormentCD:GetTime(self.vb.tormentCast+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerShackledTormentCD extended by: "..extend, 2)
-			timerShackledTormentCD:Cancel()
+			timerShackledTormentCD:Stop()
 			timerShackledTormentCD:Update(elapsed, total+extend, self.vb.tormentCast+1)
 			countdownShackledTorment:Cancel()
 			countdownShackledTorment:Start(ICD)
@@ -660,14 +660,14 @@ local function updateAllTimers(self, ICD, AllureSpecial)
 			local elapsed, total = timerWroughtChaosCD:GetTime()
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerWroughtChaosCD extended by: "..extend, 2)
-			timerWroughtChaosCD:Cancel()
+			timerWroughtChaosCD:Stop()
 			timerWroughtChaosCD:Update(elapsed, total+extend)
 		end
 		if timerDeathbrandCD:GetRemaining(self.vb.deathBrandCount+1) < ICD then
 			local elapsed, total = timerDeathbrandCD:GetTime(self.vb.deathBrandCount+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerDeathbrandCD extended by: "..extend, 2)
-			timerDeathbrandCD:Cancel()
+			timerDeathbrandCD:Stop()
 			timerDeathbrandCD:Update(elapsed, total+extend, self.vb.deathBrandCount+1)
 			countdownDeathBrand:Cancel()
 			countdownDeathBrand:Start(ICD)
@@ -677,7 +677,7 @@ local function updateAllTimers(self, ICD, AllureSpecial)
 			local elapsed, total = timerShackledTormentCD:GetTime(self.vb.tormentCast+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerShackledTormentCD extended by: "..extend, 2)
-			timerShackledTormentCD:Cancel()
+			timerShackledTormentCD:Stop()
 			timerShackledTormentCD:Update(elapsed, total+extend, self.vb.tormentCast+1)
 			countdownShackledTorment:Cancel()
 			countdownShackledTorment:Start(ICD)
@@ -686,7 +686,7 @@ local function updateAllTimers(self, ICD, AllureSpecial)
 			local elapsed, total = timerWroughtChaosCD:GetTime()
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerWroughtChaosCD extended by: "..extend, 2)
-			timerWroughtChaosCD:Cancel()
+			timerWroughtChaosCD:Stop()
 			timerWroughtChaosCD:Update(elapsed, total+extend)
 		end
 		if timerDemonicFeedbackCD:GetRemaining(self.vb.demonicCount+1) < ICD then
@@ -694,7 +694,7 @@ local function updateAllTimers(self, ICD, AllureSpecial)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerDemonicFeedbackCD extended by: "..extend, 2)
 			specWarnDemonicFeedbackSoon:Cancel()
-			timerDemonicFeedbackCD:Cancel()
+			timerDemonicFeedbackCD:Stop()
 			timerDemonicFeedbackCD:Update(elapsed, total+extend, self.vb.demonicCount+1)
 			countdownDemonicFeedback:Cancel()
 			countdownDemonicFeedback:Start(ICD)
@@ -703,7 +703,7 @@ local function updateAllTimers(self, ICD, AllureSpecial)
 			local elapsed, total = timerNetherBanishCD:GetTime(self.vb.netherBanish2+1)
 			local extend = ICD - (total-elapsed)
 			DBM:Debug("timerNetherBanishCD extended by: "..extend, 2)
-			timerNetherBanishCD:Cancel()
+			timerNetherBanishCD:Stop()
 			timerNetherBanishCD:Update(elapsed, total+extend, self.vb.netherBanish2+1)
 			countdownNetherBanish:Cancel()
 			countdownNetherBanish:Start(ICD)
@@ -780,7 +780,7 @@ function mod:SPELL_CAST_START(args)
 			self.vb.deathBrandCount = self.vb.deathBrandCount + 1
 		end
 		specWarnDeathBrand:Show(self.vb.deathBrandCount)
-		timerDeathbrandCD:Cancel()
+		timerDeathbrandCD:Stop()
 		timerDeathbrandCD:Start(nil, self.vb.deathBrandCount+1)
 		countdownDeathBrand:Cancel()
 		countdownDeathBrand:Start()
@@ -902,12 +902,12 @@ function mod:SPELL_CAST_START(args)
 --		updateAllTimers(self, 7)--Inconclusive logs. Could not find any data supporting this extention
 	elseif spellId == 190313 then--Nether Ascention
 		playerBanished = true
-		timerAllureofFlamesCD:Cancel()
-		timerDeathbrandCD:Cancel()
-		timerShackledTormentCD:Cancel()
+		timerAllureofFlamesCD:Stop()
+		timerDeathbrandCD:Stop()
+		timerShackledTormentCD:Stop()
 		countdownShackledTorment:Cancel()
 		countdownDeathBrand:Cancel()
-		timerWroughtChaosCD:Cancel()
+		timerWroughtChaosCD:Stop()
 	end
 end
 
@@ -1260,12 +1260,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		table.wipe(felburstTargets)--Just to reduce infoframe overhead
 		--Cancel stuff only used in phase 1
 		warnFelBurstSoon:Cancel()
-		timerFelBurstCD:Cancel()
-		timerDesecrateCD:Cancel()
-		timerDoomfireCD:Cancel()
+		timerFelBurstCD:Stop()
+		timerDesecrateCD:Stop()
+		timerDoomfireCD:Stop()
 		--Cancel stuff that resets in phase 2
-		timerAllureofFlamesCD:Cancel()
-		timerDeathbrandCD:Cancel()
+		timerAllureofFlamesCD:Stop()
+		timerDeathbrandCD:Stop()
 		countdownDeathBrand:Cancel()
 		--Begin phase 2
 		warnPhase2:Show()
@@ -1283,13 +1283,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 --	"<301.70 23:49:52> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Lok'tar ogar! They are pushed back! To the portal! Gul'dan is mine!#Grommash Hellscream###Grommash H
 	elseif spellId == 190118 or spellId == 190310 then--Phase 3 trigger
 		self.vb.phase = 3
-		timerFelborneOverfiendCD:Cancel()
+		timerFelborneOverfiendCD:Stop()
 		warnPhase3:Show()
 		voicePhaseChange:Play("pthree")
 		if not self:IsMythic() then
-			timerAllureofFlamesCD:Cancel()--Done for rest of fight
-			timerDeathbrandCD:Cancel()--Done for rest of fight
-			timerShackledTormentCD:Cancel()--Resets to 55 on non mythic, no longer cast on mythic
+			timerAllureofFlamesCD:Stop()--Done for rest of fight
+			timerDeathbrandCD:Stop()--Done for rest of fight
+			timerShackledTormentCD:Stop()--Resets to 55 on non mythic, no longer cast on mythic
 			countdownShackledTorment:Cancel()
 			countdownDeathBrand:Cancel()
 			timerNetherBanishCD:Start(10.9, 1)
