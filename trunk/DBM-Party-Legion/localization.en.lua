@@ -24,6 +24,15 @@ L= DBM:GetModLocalization(1664)
 L= DBM:GetModLocalization(1672)
 
 -----------------------
+--Black Rook Hold Trash
+-----------------------
+L = DBM:GetModLocalization("BRHTrash")
+
+L:SetGeneralLocalization({
+	name =	"Black Rook Hold Trash"
+})
+
+-----------------------
 -- <<<Darkheart Thicket>>> --
 -----------------------
 -----------------------
