@@ -271,12 +271,12 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 		--Clear. Sure I could just do GetTime+39 and call it a day, but this is prettier
-		timerChakramCD:Cancel()
-		timerPhantasmalWindsCD:Cancel()
+		timerChakramCD:Stop()
+		timerPhantasmalWindsCD:Stop()
 		countdownPhantasmalWinds:Cancel()
-		timerPhantasmalWoundsCD:Cancel()
-		timerDarkBindingsCD:Cancel()
-		timerShadowRiposteCD:Cancel()
+		timerPhantasmalWoundsCD:Stop()
+		timerDarkBindingsCD:Stop()
+		timerShadowRiposteCD:Stop()
 	elseif spellId == 185345 and not args:IsSrcTypePlayer() then
 		if playerHasAnzu then
 			specWarnShadowRiposte:Show()

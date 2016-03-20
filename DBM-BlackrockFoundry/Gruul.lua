@@ -249,7 +249,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.smashCount = 0
 		specWarnRampage:Show()
 		timerRampage:Start()
-		timerInfernoSliceCD:Cancel()
+		timerInfernoSliceCD:Stop()
 		countdownInfernoSlice:Cancel()
 		self:UnregisterShortTermEvents()
 	elseif spellId == 155078 then

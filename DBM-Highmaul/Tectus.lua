@@ -257,7 +257,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 162346 then
 		if args:IsPlayer() then
-			timerCrystalBarrage:Cancel()
+			timerCrystalBarrage:Stop()
 		end
 		if self.Options.SetIconOnCrystal then
 			self:SetIcon(args.destName, 0)
@@ -289,9 +289,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if cid == 78948 then
 			self.vb.healthPhase = 2
 			if not self:IsMythic() then
-				timerEarthwarperCD:Cancel()
+				timerEarthwarperCD:Stop()
 				countdownEarthwarper:Cancel()
-				timerBerserkerCD:Cancel()
+				timerBerserkerCD:Stop()
 			end
 		elseif cid == 80551 then
 			self.vb.shardDeath = self.vb.shardDeath + 1

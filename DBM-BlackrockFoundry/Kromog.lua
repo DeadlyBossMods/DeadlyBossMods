@@ -124,7 +124,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 157060 then
 		specWarnGraspingEarth:Show(RUNES)
-		timerStoneBreathCD:Cancel()
+		timerStoneBreathCD:Stop()
 		if self:IsLFR() then
 			timerThunderingBlowsCD:Start(20.5)
 			countdownThunderingBlows:Start(20.5)
@@ -134,9 +134,9 @@ function mod:SPELL_CAST_START(args)
 			countdownThunderingBlows:Start()
 			timerStoneBreathCD:Start(31, self.vb.stoneBreath+1)--Verified it happens on mythic, if rune of trembling earth doesn't come first
 		end
-		timerSlamCD:Cancel()
-		timerRipplingSmashCD:Cancel()
-		timerWarpedArmorCD:Cancel()
+		timerSlamCD:Stop()
+		timerRipplingSmashCD:Stop()
+		timerWarpedArmorCD:Stop()
 		voiceGraspingEarth:Play("157060")
 		self:RuneStart()
 		if self:IsMythic() then
@@ -144,7 +144,7 @@ function mod:SPELL_CAST_START(args)
 			local remaining = timerTremblingEarthCD:GetRemaining()
 			if remaining < 32 then
 				DBM:Debug("Trembling earth CD extended by Grasping Earth")
-				timerTremblingEarthCD:Cancel()
+				timerTremblingEarthCD:Stop()
 				timerTremblingEarthCD:Start(32)
 			end
 		else
@@ -221,15 +221,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnTremblingEarth:Show(self.vb.tremblingCast)
 		timerTremblingEarth:Start()
 		countdownTremblingEarth:Start()
-		timerSlamCD:Cancel()
-		timerRipplingSmashCD:Cancel()
-		timerWarpedArmorCD:Cancel()
-		timerStoneBreathCD:Cancel()
+		timerSlamCD:Stop()
+		timerRipplingSmashCD:Stop()
+		timerWarpedArmorCD:Stop()
+		timerStoneBreathCD:Stop()
 		timerTremblingEarthCD:Schedule(25)
 		local remaining = timerGraspingEarthCD:GetRemaining()
 		if remaining < 50 then--Will come off cd during mythic phase, update timer because mythic phase is coded to prevent this from happening and will push ability to about 12-17 seconds after mythic phase ended
 			DBM:Debug("Grasping earth CD extended by Trembling Earth")
-			timerGraspingEarthCD:Cancel()--Prevent timer debug from complaining
+			timerGraspingEarthCD:Stop()--Prevent timer debug from complaining
 			timerGraspingEarthCD:Start(62)
 		end
 	elseif spellId == 156852 then

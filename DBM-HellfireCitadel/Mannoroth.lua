@@ -599,13 +599,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 185147 or spellId == 182212 or spellId == 185175 then--Portals
 		self.vb.portalsLeft = self.vb.portalsLeft - 1
 		if spellId == 185147 and not self:IsMythic() then--Doom Lords Portal
-			timerCurseofLegionCD:Cancel()
+			timerCurseofLegionCD:Stop()
 			--I'd add a cancel for the Doom Lords here, but since everyone killed this portal first
 			--no one ever actually learned what the cooldown was, so no timer to cancel yet!
 		elseif spellId == 182212 and not self:IsMythic() then--Infernals Portal
-			timerInfernoCD:Cancel()
+			timerInfernoCD:Stop()
 		elseif spellId == 185175 and not self:IsMythic() then--Imps Portal
-			timerFelImplosionCD:Cancel()
+			timerFelImplosionCD:Stop()
 		end
 		if self.vb.portalsLeft == 0 and self:AntiSpam(10, 4) and self:IsInCombat() then
 			self.vb.phase = 2
@@ -675,13 +675,13 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 		self.vb.phase = self.vb.phase + 1
 		if self.vb.phase == 3 then
 			self.vb.ignoreAdds = true
-			timerFelHellfireCD:Cancel()
-			timerShadowForceCD:Cancel()
+			timerFelHellfireCD:Stop()
+			timerShadowForceCD:Stop()
 			countdownShadowForce:Cancel()
-			timerGlaiveComboCD:Cancel()
+			timerGlaiveComboCD:Stop()
 			countdownGlaiveCombo:Cancel()
-			timerGazeCD:Cancel()
-			timerFelSeekerCD:Cancel()
+			timerGazeCD:Stop()
+			timerFelSeekerCD:Stop()
 			timerFelHellfireCD:Start(27.8)
 			timerShadowForceCD:Start(32.6)
 			countdownShadowForce:Start(32.6)
@@ -701,25 +701,25 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			end
 			--Detect when adds timers will reset (by 181301) before they come off cd, and cancel them early
 			if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 10 then
-				timerFelImplosionCD:Cancel()
+				timerFelImplosionCD:Stop()
 			end
 			if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 10 then
-				timerInfernoCD:Cancel()
+				timerInfernoCD:Stop()
 			end
 			if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 10 then
-				timerCurseofLegionCD:Cancel()
+				timerCurseofLegionCD:Stop()
 			end
 		elseif self.vb.phase == 4 then
 			self.vb.ignoreAdds = true
-			timerFelHellfireCD:Cancel()
-			timerShadowForceCD:Cancel()
+			timerFelHellfireCD:Stop()
+			timerShadowForceCD:Stop()
 			countdownShadowForce:Cancel()
-			timerGlaiveComboCD:Cancel()
+			timerGlaiveComboCD:Stop()
 			countdownGlaiveCombo:Cancel()
-			timerGazeCD:Cancel()
-			timerFelSeekerCD:Cancel()
+			timerGazeCD:Stop()
+			timerFelSeekerCD:Stop()
 			if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 9 then
-				timerInfernoCD:Cancel()
+				timerInfernoCD:Stop()
 			end
 			timerFelHellfireCD:Start(16.9)
 			timerGlaiveComboCD:Start(27.8)
@@ -732,10 +732,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 			voicePhaseChange:Play("pfour")
 			if self:IsMythic() then
 				if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 9 then
-					timerFelImplosionCD:Cancel()
+					timerFelImplosionCD:Stop()
 				end
 				if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 9 then
-					timerCurseofLegionCD:Cancel()
+					timerCurseofLegionCD:Stop()
 				end
 				if self.vb.wrathIcon then
 					self.vb.wrathIcon = 8
@@ -755,29 +755,29 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		DBM:Debug("Summon adds 181301 fired", 2)
 		self.vb.ignoreAdds = false
 		self.vb.impCount = 0
-		timerFelImplosionCD:Cancel()
-		timerInfernoCD:Cancel()
+		timerFelImplosionCD:Stop()
+		timerInfernoCD:Stop()
 		timerFelImplosionCD:Start(22, 1)--Seems same for all difficulties on this one
 		if not self:IsMythic() then
 			self.vb.infernalCount = 0
 			timerInfernoCD:Start(47.5, 1)
 		else
 			self.vb.doomlordCount = 0
-			timerCurseofLegionCD:Cancel()
+			timerCurseofLegionCD:Stop()
 			timerCurseofLegionCD:Start(45, 1)
 		end
 	elseif spellId == 182262 then--Summon Adds (phase 3 start/Mythic Phase 4)
 		DBM:Debug("Summon adds 182262 fired", 2)
 		self.vb.ignoreAdds = false
-		timerFelImplosionCD:Cancel()
+		timerFelImplosionCD:Stop()
 		if not self:IsMythic() then
 			self.vb.infernalCount = 0
-			timerInfernoCD:Cancel()
+			timerInfernoCD:Stop()
 			timerInfernoCD:Start(28, 1)
 			--timerFelImplosionCD:Start(22, 1)--Seems incorret
 		else
 			self.vb.impCount = 0
-			timerCurseofLegionCD:Cancel()--Done for rest of fight
+			timerCurseofLegionCD:Stop()--Done for rest of fight
 			timerFelImplosionCD:Start(7, 1)
 		end
 	elseif spellId == 181156 then--Summon Adds, Phase 2 mythic (about 18 seconds into fight)
@@ -796,13 +796,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 182263 and self.vb.phase == 2 then--Phase 3
 		self.vb.phase = 3
 		self.vb.ignoreAdds = true
-		timerFelHellfireCD:Cancel()
-		timerShadowForceCD:Cancel()
+		timerFelHellfireCD:Stop()
+		timerShadowForceCD:Stop()
 		countdownShadowForce:Cancel()
-		timerGlaiveComboCD:Cancel()
+		timerGlaiveComboCD:Stop()
 		countdownGlaiveCombo:Cancel()
-		timerGazeCD:Cancel()
-		timerFelSeekerCD:Cancel()
+		timerGazeCD:Stop()
+		timerFelSeekerCD:Stop()
 		timerFelHellfireCD:Start(22.3)
 		timerShadowForceCD:Start(27.1)
 		countdownShadowForce:Start(27.1)
@@ -820,26 +820,26 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 		--Detect when adds timers will reset (by 181301) before they come off cd, and cancel them early
 		if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 4.8 then
-			timerFelImplosionCD:Cancel()
+			timerFelImplosionCD:Stop()
 		end
 		if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 4.8 then
-			timerInfernoCD:Cancel()
+			timerInfernoCD:Stop()
 		end
 		if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 4.8 then
-			timerCurseofLegionCD:Cancel()
+			timerCurseofLegionCD:Stop()
 		end
 	elseif spellId == 185690 and self.vb.phase == 3 then--Phase 4
 		self.vb.phase = 4
 		self.vb.ignoreAdds = true
-		timerFelHellfireCD:Cancel()
-		timerShadowForceCD:Cancel()
+		timerFelHellfireCD:Stop()
+		timerShadowForceCD:Stop()
 		countdownShadowForce:Cancel()
-		timerGlaiveComboCD:Cancel()
+		timerGlaiveComboCD:Stop()
 		countdownGlaiveCombo:Cancel()
-		timerGazeCD:Cancel()
-		timerFelSeekerCD:Cancel()
+		timerGazeCD:Stop()
+		timerFelSeekerCD:Stop()
 		if timerInfernoCD:GetRemaining(self.vb.infernalCount+1) > 3.8 then
-			timerInfernoCD:Cancel()
+			timerInfernoCD:Stop()
 		end
 		timerFelHellfireCD:Start(11.4)
 		timerGlaiveComboCD:Start(22.3)
@@ -852,10 +852,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		voicePhaseChange:Play("pfour")
 		if self:IsMythic() then
 			if timerFelImplosionCD:GetRemaining(self.vb.impCount+1) > 3.8 then
-				timerFelImplosionCD:Cancel()
+				timerFelImplosionCD:Stop()
 			end
 			if timerCurseofLegionCD:GetRemaining(self.vb.doomlordCount+1) > 3.8 then
-				timerCurseofLegionCD:Cancel()
+				timerCurseofLegionCD:Stop()
 			end
 			if self.vb.wrathIcon then
 				self.vb.wrathIcon = 8

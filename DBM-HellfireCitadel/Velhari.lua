@@ -231,9 +231,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.phase = 2
 		warnAuraofContempt:Show()
 		--Cancel phase 1 abilities
-		timerAnnihilatingStrikeCD:Cancel()
+		timerAnnihilatingStrikeCD:Stop()
 		countdownAnnihilatingStrike:Cancel()
-		timerInfernalTempestCD:Cancel()
+		timerInfernalTempestCD:Stop()
 		timerTaintedShadowsCD:Start()
 		timerFontofCorruptionCD:Start(22)
 		voicePhaseChange:Play("ptwo")
@@ -243,7 +243,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 179991 then--Aura of Malice (phase 3)
 		self.vb.phase = 3
 		warnAuraofMalice:Show()
-		timerFontofCorruptionCD:Cancel()
+		timerFontofCorruptionCD:Stop()
 		timerBulwarkoftheTyrantCD:Start(nil, 1)
 		countdownBulwarkofTyrant:Start()
 		voicePhaseChange:Play("pthree")
@@ -434,12 +434,12 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 91304 or cid == 90270 then--Ancient Enforcer
-		timerEnforcersOnslaughtCD:Cancel()
+		timerEnforcersOnslaughtCD:Stop()
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:RemoveBoss(cid)
 		end
 	elseif cid == 91302 or cid == 90271 then--Ancient Harbinger
-		timerHarbingersMendingCD:Cancel()
+		timerHarbingersMendingCD:Stop()
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:RemoveBoss(cid)
 		end
