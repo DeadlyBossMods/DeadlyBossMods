@@ -339,7 +339,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.shieldCharging = true
 		specWarnVulnerability:Show(args.destName)
 		timerVulnerability:Start()
-		timerTrampleCD:Cancel()
+		timerTrampleCD:Stop()
 		--Here we making a fucking mess, because his timers pause during shield phase then resume. All with different rates from one another
 		if self:IsMythic() then
 		--Fel https://www.warcraftlogs.com/reports/kDzfJ812QZgpwa9h#view=events&pins=2%24Off%24%23244F4B%24expression%24ability.id+%3D+172895+and+type+%3D%22begincast%22+or+ability.id+%3D+156803+and+(type+%3D+%22applybuff%22+or+type+%3D+%22removebuff%22)&fight=11
@@ -378,7 +378,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		--http://worldoflogs.com/reports/umazvvirdsanfg8a/xe/?s=11657&e=12290&x=spell+%3D+%22Overflowing+Energy%22+or+spellid+%3D+156803&page=1
 		if ballsRemaining > 5 then--If 5 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
-			timerBallsCD:Cancel()
+			timerBallsCD:Stop()
 			timerBallsCD:Start(ballsRemaining+23, self.vb.ballsCount+1)
 			countdownBalls:Cancel()
 			specWarnBallsSoon:Cancel()
@@ -427,7 +427,7 @@ function mod:OnSync(msg, targetname)
 		self.vb.ballsCount = self.vb.ballsCount + 1
 		self:Unschedule(ballsWarning)
 		self:Unschedule(checkBossForgot)
-		timerBallsCD:Cancel()--Sometimes balls still hit even with > 5-6 seconds, cancel timers an count
+		timerBallsCD:Stop()--Sometimes balls still hit even with > 5-6 seconds, cancel timers an count
 		countdownBalls:Cancel()--Then code below will just fix it all on it's own
 		local timer
 		if self.vb.shieldCharging then

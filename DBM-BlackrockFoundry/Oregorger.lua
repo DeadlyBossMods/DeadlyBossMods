@@ -170,11 +170,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 165127 then--Hunger Dive Phase
 		self.vb.feedingFrenzy = true
 		self.vb.rollCount = 0
-		timerBlackrockSpinesCD:Cancel()
-		timerRetchedBlackrockCD:Cancel()
-		timerAcidTorrentCD:Cancel()
+		timerBlackrockSpinesCD:Stop()
+		timerRetchedBlackrockCD:Stop()
+		timerAcidTorrentCD:Stop()
 		countdownAcidTorrent:Cancel()
-		timerExplosiveShardCD:Cancel()
+		timerExplosiveShardCD:Stop()
 		specWarnHungerDrive:Show()
 		voicePhaseChange:Play("phasechange")
 		lastOre = 0

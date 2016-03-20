@@ -304,12 +304,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.ghostSpawn = 0
 		self.vb.kickCount2 = 0
 		warnEjectSoul:Show()
-		timerReverberatingBlowCD:Cancel()
+		timerReverberatingBlowCD:Stop()
 		countdownReverberatingBlow:Cancel()
-		timerFelPrisonCD:Cancel()
-		timerVolatileFelOrbCD:Cancel()
-		timerFelChargeCD:Cancel()
-		timerApocalypticFelburstCD:Cancel()
+		timerFelPrisonCD:Stop()
+		timerVolatileFelOrbCD:Stop()
+		timerFelChargeCD:Stop()
+		timerApocalypticFelburstCD:Stop()
 		timerTransition:Start()--Time until boss is attackable
 		timerSargereiDominatorCD:Start(23, 1)
 		timerHauntingSoulCD:Start(30, 1)--30-33
@@ -437,7 +437,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.vb.interruptBehavior == "Count3Reset" or self.vb.interruptBehavior == "Count4Reset" then
 			local elapsed, total = timerExertDominanceCD:GetTime(nil, self.vb.kickCount2+1)
 			if total > 0 then--Timer exists
-				timerExertDominanceCD:Cancel()
+				timerExertDominanceCD:Stop()
 				timerExertDominanceCD:Update(elapsed, total, 1)--Update timer to show count start over
 			end
 			self.vb.kickCount2 = 0
@@ -490,11 +490,11 @@ function mod:UNIT_TARGETABLE_CHANGED(uId)
 	if (cid == 92330) and not UnitExists(uId) then--Socrethar returning inactive and construct phase beginning again.
 		self.vb.felBurstCount = 0
 		self.vb.ReverberatingBlow = 0
-		timerExertDominanceCD:Cancel()
-		timerSargereiDominatorCD:Cancel()
-		timerHauntingSoulCD:Cancel()
+		timerExertDominanceCD:Stop()
+		timerSargereiDominatorCD:Stop()
+		timerHauntingSoulCD:Stop()
 		countdownSouls:Cancel()
-		timerApocalypseCD:Cancel()
+		timerApocalypseCD:Stop()
 		self:UnregisterShortTermEvents()
 		timerVolatileFelOrbCD:Start(13)
 		timerFelChargeCD:Start(30.5)

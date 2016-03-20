@@ -108,7 +108,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.spearCooldown = 20
 		self.vb.toxicSliceCooldown = 22
 		warnCleanerMode:Show()
-		timerSpearCD:Cancel()
+		timerSpearCD:Stop()
 		timerSterilizeCD:Start()
 		timerCleansingRageCD:Start()
 		timerToxicSliceCD:Start(14.5)
@@ -118,7 +118,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 206557 then--Maniac Mode (40 seconds)
 		self.vb.spearCooldown = 7
 		warnManiacMode:Show()
-		timerSpearCD:Cancel()
+		timerSpearCD:Stop()
 		timerSpearCD:Start(6)
 		timerSearingBondsCD:Start(8)
 		timerAnnihilationCD:Start()
@@ -126,7 +126,7 @@ function mod:SPELL_CAST_START(args)
 		timerPhaseChange:Start(41)
 		countdownModes:Start(41)
 	elseif spellId == 206559 then--Caretaker Mode (15 seconds)
-		timerSpearCD:Cancel()
+		timerSpearCD:Stop()
 		warnCaretakerMode:Show()
 		timerSucculentFeastCD:Start()
 		timerTidyUpCD:Start()
@@ -190,7 +190,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 206560 then--Cleaner Mode (45 seconds)
-		timerToxicSliceCD:Cancel()
+		timerToxicSliceCD:Stop()
 	end
 end
 

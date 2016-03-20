@@ -320,13 +320,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSeedsofDestructionCD:Start(8.5, 1)--8.5-10
 		countdownSeedsofDestructionCD:Start(8.5)
 	elseif spellId == 179681 then--Enrage (has both armed and disarmed abilities)
-		timerDisarmCD:Cancel()--Assumed
+		timerDisarmCD:Stop()--Assumed
 		countdownDisarm:Cancel()
-		timerCavitationCD:Cancel()
-		timerSeedsofDestructionCD:Cancel()
+		timerCavitationCD:Stop()
+		timerSeedsofDestructionCD:Stop()
 		countdownSeedsofDestructionCD:Cancel()
-		timerRumblingFissureCD:Cancel()
-		timerSoulCleaveCD:Cancel()
+		timerRumblingFissureCD:Stop()
+		timerSoulCleaveCD:Stop()
 		self.vb.Enraged = true
 		self.vb.CavitationCount = 0
 		self.vb.SeedsCount = 0
