@@ -10,12 +10,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 194966",
-	"SPELL_CAST_START 195254 194966 194956",
+	"SPELL_CAST_START 195254 194966 194956 196078",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnSwirlingScythe			= mod:NewTargetAnnounce(195254, 2)
 local warnSoulEchoes				= mod:NewTargetAnnounce(194966, 2)
+local warnCallSouls					= mod:NewSpellAnnounce(196078, 2)--Change to important warning if it becomes more relevant.
 
 local specWarnReapSoul				= mod:NewSpecialWarningDodge(194956, "Tank", nil, nil, 3)
 local specWarnSoulEchos				= mod:NewSpecialWarningRun(194966, nil, nil, nil, 1, 2)
@@ -50,18 +51,20 @@ function mod:SoulTarget(targetname, uId)
 		warnSoulEchoes:Show(DBM_CORE_UNKNOWN)
 		return
 	end
-	if targetname == UnitName("player") then
-		specWarnSoulEchos:Show()
-		voiceSoulEchos:Play("runaway")
-		voiceSoulEchos:Schedule(1, "keepmove")
-	else
-		warnSoulEchoes:Show(targetname)
+	if self:AntiSpam(3, targetname) then
+		if targetname == UnitName("player") then
+			specWarnSoulEchos:Show()
+			voiceSoulEchos:Play("runaway")
+			voiceSoulEchos:Schedule(1, "keepmove")
+		else
+			warnSoulEchoes:Show(targetname)
+		end
 	end
 end
 
 function mod:OnCombatStart(delay)
 	timerSwirlingScytheCD:Start(8-delay)
-	timerSoulEchoesCD:Start(16-delay)
+	timerSoulEchoesCD:Start(15.5-delay)
 	timerReapSoulCD:Start(20-delay)
 end
 
@@ -73,10 +76,13 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 194966 and self:AntiSpam(3, 1) then--Secondary Soul echos warning that's 2 seconds slower than yell trickory
-		warnSoulEchoes:Show(args.destName)
+	if spellId == 194966 and self:AntiSpam(3, args.destName) then--Backup Soul echos warning that's 2 seconds slower than target scan
 		if args:IsPlayer() then
 			specWarnSoulEchos:Show()
+			voiceSoulEchos:Play("runaway")
+			voiceSoulEchos:Schedule(1, "keepmove")
+		else
+			warnSoulEchoes:Show(args.destName)
 		end
 	end
 end
@@ -92,5 +98,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 194956 then
 		specWarnReapSoul:Show()
 		timerReapSoulCD:Start()
+	elseif spellId == 196078 then
+		warnCallSouls:Show()
+		timerReapSoulCD:Stop()
+		timerSwirlingScytheCD:Stop()
+		timerSoulEchoesCD:Stop()
 	end
 end

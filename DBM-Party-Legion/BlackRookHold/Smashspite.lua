@@ -10,6 +10,7 @@ mod:SetUsedIcons(1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
+	"SPELL_CAST_SUCCESS 198079",
 	"SPELL_AURA_APPLIED 198079",
 	"SPELL_AURA_REMOVED 198079",
 	"SPELL_CAST_START 198073",
@@ -18,32 +19,34 @@ mod:RegisterEventsInCombat(
 	"UNIT_POWER_FREQUENT boss1"
 )
 
---TODO, maybe inverse info frame, show who can soak still, vs those who cannot
---TODO, actually get heroic log and see timing of gaze/charge stuff so voices/warnings can be placed properly
+--TODO, maye GTFO for fire on ground
 local warnHatefulGaze				= mod:NewTargetAnnounce(198079, 4)
 
 local specWarnStomp					= mod:NewSpecialWarningSpell(198073, nil, nil, nil, 2, 2)
-local specWarnHatefulGaze			= mod:NewSpecialWarningYou(198079, nil, nil, nil, 1)
+local specWarnHatefulGaze			= mod:NewSpecialWarningYou(198079, nil, nil, nil, 1, 2)
 local yellHatefulGaze				= mod:NewYell(198079)
 local specWarnBrutalHaymakerSoon	= mod:NewSpecialWarningSoon(198245, "Tank|Healer", nil, nil, 1)--Face fuck soon
 local specWarnBrutalHaymaker		= mod:NewSpecialWarningSpell(198245, "Tank", nil, nil, 3, 2)--Incoming face fuck
 
-local timerStompCD					= mod:NewNextTimer(17, 198073, nil, nil, nil, 2)
+local timerStompCD					= mod:NewCDTimer(17, 198073, nil, nil, nil, 2)--Next timers but delayed by other casts
+local timerHatefulGazeCD			= mod:NewCDTimer(25.5, 198079, nil, nil, nil, 3)--Next timers but delayed by other casts
 
 local voiceStomp					= mod:NewVoice(198073)--carefly
 local voiceBrutalHeymaker			= mod:NewVoice(198073, "Tank|Healer")--defensive
+local voiceHatefulGaze				= mod:NewVoice(198079)--targetyou
 
 mod:AddInfoFrameOption(198080)
 mod:AddSetIconOption("SetIconOnHatefulGaze", 198079, true)
 
 function mod:OnCombatStart(delay)
-	timerStompCD:Start(12-delay)
 	if not self:IsNormal() then
+		timerHatefulGazeCD:Start(5-delay)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(198080))
-			DBM.InfoFrame:Show(5, "playerbaddebuff", 198080)
+			DBM.InfoFrame:Show(5, "reverseplayerbaddebuff", 198080)
 		end
 	end
+	timerStompCD:Start(12-delay)
 end
 
 function mod:OnCombatEnd()
@@ -52,13 +55,22 @@ function mod:OnCombatEnd()
 	end
 end
 
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 198079 then
+		timerHatefulGazeCD:Start()
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 198079 then
-		warnHatefulGaze:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnHatefulGaze:Show()
 			yellHatefulGaze:Yell()
+			voiceHatefulGaze:Play("targetyou")
+		else
+			warnHatefulGaze:Show(args.destName)
 		end
 		if self.Options.SetIconOnHatefulGaze then
 			self:SetIcon(args.destName, 1)
