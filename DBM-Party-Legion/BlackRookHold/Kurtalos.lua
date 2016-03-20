@@ -11,22 +11,28 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 198820 199143 199193",
-	"SPELL_CAST_SUCCESS 198635",
+	"SPELL_CAST_SUCCESS 198635 201733",
+	"SPELL_AURA_APPLIED 201733",
 	"SPELL_AURA_REMOVED 199193",
 	"UNIT_DIED"
 )
 
 local warnCloud						= mod:NewSpellAnnounce(199143, 2)
+local warnSwarm						= mod:NewTargetAnnounce(201733, 2)
 
 local specWarnDarkblast				= mod:NewSpecialWarningDodge(198820, nil, nil, nil, 2)
 local specWarnGuile					= mod:NewSpecialWarningDodge(199193, nil, nil, nil, 2)
 local specWarnGuileEnded			= mod:NewSpecialWarningEnd(199193)
+local specWarnSwarm					= mod:NewSpecialWarningYou(201733)
 
-local timerDarkBlastCD				= mod:NewCDTimer(19, 198820, nil, nil, nil, 3)
-local timerUnerringShearCD			= mod:NewCDTimer(13, 198635, nil, "Tank", nil, 5)
+local timerDarkBlastCD				= mod:NewCDTimer(18, 198820, nil, nil, nil, 3)
+local timerUnerringShearCD			= mod:NewCDTimer(12, 198635, nil, "Tank", nil, 5)
 local timerGuileCD					= mod:NewCDTimer(39, 199193, nil, nil, nil, 6)
 local timerGuile					= mod:NewBuffFadesTimer(24, 199193, nil, nil, nil, 6)
---local timerCloudCD					= mod:NewCDTimer(32.8, 199143, nil, nil, nil, 3)
+local timerCloudCD					= mod:NewCDTimer(32.8, 199143, nil, nil, nil, 3)
+local timerSwarmCD					= mod:NewCDTimer(32.8, 201733, nil, nil, nil, 3)
+
+local countdownShear				= mod:NewCountdown(12, 198635, "Tank")
 
 --local voiceCurtainOfFlame			= mod:NewVoice(153392)
 
@@ -35,16 +41,28 @@ mod.vb.phase = 1
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	timerUnerringShearCD:Start(6-delay)
+	countdownShear:Start(6-delay)
 	timerDarkBlastCD:Start(10-delay)
 end
 
-function mod:OnCombatEnd()
-
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 198635 then
+		timerUnerringShearCD:Start()
+		countdownShear:Start()
+	elseif spellId == 201733 then
+		timerSwarmCD:Start()
+	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 198635 then
-		timerUnerringShearCD:Start()
+function mod:SPELL_AURA_APPLIED(args)
+	local spellId = args.spellId
+	if spellId == 201733 then
+		if args:IsPlayer() then
+			specWarnSwarm:Show()
+		else
+			warnSwarm:Show(args.destName)
+		end
 	end
 end
 
@@ -52,6 +70,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 199193 then
 		specWarnGuileEnded:Show()
+		timerCloudCD:Start(3)
+		if not self:IsNormal() then
+			timerSwarmCD:Start(10.5)
+		end
 		timerGuileCD:Start()
 	end
 end
@@ -64,8 +86,10 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 199143 then
 		warnCloud:Show()
---		timerCloudCD:Start()
+		timerCloudCD:Start()
 	elseif spellId == 199193 then
+		timerCloudCD:Stop()
+		timerSwarmCD:Stop()
 		specWarnGuile:Show()
 		timerGuile:Start()
 	end
@@ -77,7 +101,11 @@ function mod:UNIT_DIED(args)
 		self.vb.phase = 2
 		timerDarkBlastCD:Stop()
 		timerUnerringShearCD:Stop()
---		timerCloudCD:Start(12)
+		countdownShear:Cancel()
+		if not self:IsNormal() then
+			timerSwarmCD:Start(9)
+		end
+		timerCloudCD:Start(11.5)
 		timerGuileCD:Start(24)--24-28
 	end
 end

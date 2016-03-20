@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 197478 197687",
 	"SPELL_AURA_REMOVED 197478",
-	"SPELL_CAST_START 197418 197546",
+	"SPELL_CAST_START 197418 197546 200261",
 	"SPELL_CAST_SUCCESS 197478",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -29,8 +29,9 @@ local specWarnBrutalGlaive			= mod:NewSpecialWarningMoveAway(197546, nil, nil, n
 local yellBrutalGlaive				= mod:NewYell(197546)
 local specWarnVengefulGlaive		= mod:NewSpecialWarningSpell(197418, "Tank", nil, nil, 3, 2)
 local specWarnDarkRush				= mod:NewSpecialWarningYou(197478, nil, nil, nil, 1, 2)
-local specWarnEyeBeam				= mod:NewSpecialWarningYou(197687, nil, nil, nil, 1, 2)
+local specWarnEyeBeam				= mod:NewSpecialWarningRun(197687, nil, nil, nil, 4, 2)
 local yellEyeBeam					= mod:NewYell(197687)
+local specWarnBonebreakingStrike	= mod:NewSpecialWarningDodge(200261, "Tank", nil, nil, 1, 2)
 
 local timerBrutalGlaiveCD			= mod:NewCDTimer(15, 197546, nil, nil, nil, 3)
 local timerVengefulGlaiveCD			= mod:NewCDTimer(11, 197418, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--11-16, delayed by dark rush
@@ -39,7 +40,8 @@ local timerDarkRushCD				= mod:NewCDTimer(30, 197478, nil, nil, nil, 3)
 local voiceBrutalGlaive				= mod:NewVoice(197546)--runout
 local voiceVengefulGlaive			= mod:NewVoice(197418, "Tank")--defensive
 local voiceDarkRush					= mod:NewVoice(197478)--gathershare
-local voiceEyeBeam					= mod:NewVoice(197687)--runout/keepmove
+local voiceEyeBeam					= mod:NewVoice(197687)--laserrun
+local voiceBonebreakingStrike		= mod:NewVoice(200261, "Tank")--shockwave
 
 mod:AddSetIconOption("SetIconOnDarkRush", 197478, true)
 --mod:AddRangeFrameOption(5, 197546)--Range not given for Brutal Glaive
@@ -88,12 +90,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetAlphaIcon(0.5, args.destName, 1, 3)
 		end
 	elseif spellId == 197687 then
-		warnEyeBeam:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnEyeBeam:Show()
 			yellEyeBeam:Yell()
-			voiceEyeBeam:Play("runout")
-			voiceEyeBeam:Schedule(1, "keepmove")
+			voiceEyeBeam:Play("laserrun")
+		else
+			warnEyeBeam:Show(args.destName)
 		end
 	end
 end
@@ -113,7 +115,10 @@ function mod:SPELL_CAST_START(args)
 		timerVengefulGlaiveCD:Start()
 	elseif spellId == 197546 then
 		timerBrutalGlaiveCD:Start()
-		self:BossTargetScanner(98696, "BrutalGlaiveTarget", 0.1, 20, true, nil, nil, nil, true)
+		self:BossTargetScanner(98696, "BrutalGlaiveTarget", 0.1, 20, true)
+	elseif spellId == 200261 then
+		specWarnBonebreakingStrike:Show()
+		voiceBonebreakingStrike:Play("shockwave")
 	end
 end
 

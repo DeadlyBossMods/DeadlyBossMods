@@ -31,6 +31,7 @@ BlackRookHold\AmalgamSouls.lua
 BlackRookHold\Illysanna.lua
 BlackRookHold\Smashspite.lua
 BlackRookHold\Kurtalos.lua
+BlackRookHold\BRHTrash.lua
 DarkheartThicket\Glaidalis.lua
 DarkheartThicket\Oakheart.lua
 DarkheartThicket\Dresaron.lua
