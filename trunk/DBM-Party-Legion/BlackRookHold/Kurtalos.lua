@@ -13,7 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 198820 199143 199193",
 	"SPELL_CAST_SUCCESS 198635",
 	"SPELL_AURA_REMOVED 199193",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_DIED"
 )
 
 local warnCloud						= mod:NewSpellAnnounce(199143, 2)
@@ -71,12 +71,13 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 117624 then
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 98965 then--Kur'talos Ravencrest
 		self.vb.phase = 2
-		timerDarkBlastCD:Cancel()
-		timerUnerringShearCD:Cancel()
+		timerDarkBlastCD:Stop()
+		timerUnerringShearCD:Stop()
 --		timerCloudCD:Start(12)
-		timerGuileCD:Start(24)
+		timerGuileCD:Start(24)--24-28
 	end
 end
