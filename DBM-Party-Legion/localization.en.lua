@@ -194,6 +194,15 @@ L= DBM:GetModLocalization(1512)
 L= DBM:GetModLocalization(1663)
 
 -----------------------
+--Maw of Souls Trash
+-----------------------
+L = DBM:GetModLocalization("MawTrash")
+
+L:SetGeneralLocalization({
+	name =	"Maw of Souls Trash"
+})
+
+-----------------------
 -- <<<The Violet Hold>>> --
 -----------------------
 -----------------------
