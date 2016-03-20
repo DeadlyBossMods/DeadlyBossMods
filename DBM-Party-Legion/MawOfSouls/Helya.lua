@@ -22,8 +22,8 @@ local specWarnDestructorTentacle		= mod:NewSpecialWarningSwitch("ej12364", "Tank
 local specWarnSubmergedOver				= mod:NewSpecialWarningEnd(196947)
 
 local timerTaintofSeaCD					= mod:NewNextTimer(13, 197262, nil, false, nil, 3)
-local timerPiercingTentacleCD			= mod:NewNextTimer(10, 197596, nil, nil, nil, 3)
---local timerDestructorTentacleCD		= mod:NewNextTimer(35, "ej12364", nil, nil, nil, 1)
+local timerPiercingTentacleCD			= mod:NewNextTimer(9, 197596, nil, nil, nil, 3)
+--local timerDestructorTentacleCD		= mod:NewCDTimer(26, "ej12364", nil, nil, nil, 1)--More data
 local timerSubmerged					= mod:NewBuffFadesTimer(15, 196947, nil, nil, nil, 6)
 
 --local voiceCurtainOfFlame				= mod:NewVoice(153392)
@@ -32,7 +32,7 @@ mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	timerPiercingTentacleCD:Start()
+	timerPiercingTentacleCD:Start(8.5)
 --	timerDestructorTentacleCD:Start()--Too variable
 end
 
