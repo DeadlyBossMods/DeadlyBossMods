@@ -9,23 +9,26 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 193211 193364 193977 193460"
+	"SPELL_CAST_START 193211 193364 193977 193460 193566"
 )
 
-local warnBane						= mod:NewSpellAnnounce(193460, 3)--Can't think of any reason this needs to be special
+local warnBane						= mod:NewSpellAnnounce(193460, 3)
 
-local specWarnDarkSlash				= mod:NewSpecialWarningSpell(193211, "Tank")
+local specWarnDarkSlash				= mod:NewSpecialWarningSpell(193211, "Tank", nil, nil, 3, 2)
 local specWarnScreams				= mod:NewSpecialWarningRun(193364, "Melee", nil, nil, 4, 2)
 local specWarnWinds					= mod:NewSpecialWarningSpell(193977, nil, nil, nil, 2, 2)
+local specAriseFallen				= mod:NewSpecialWarningSwitch(193566, "-Healer", nil, nil, 1, 2)
 
 local timerDarkSlashCD				= mod:NewCDTimer(14.6, 193211, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerScreamsCD				= mod:NewCDTimer(23, 193364, nil, "Melee", nil, 2)
 local timerWindsCD					= mod:NewCDTimer(24, 193977, nil, nil, nil, 2)
-local timerBaneCD					= mod:NewCDTimer(49.5, 193460, nil, false, nil, 2)--Again can't hink of any reason why this matters
+local timerBaneCD					= mod:NewCDTimer(49.5, 193460, nil, nil, nil, 2)
+local timerAriseFallenCD			= mod:NewCDTimer(18, 193566, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 
 local voiceDarkSlash				= mod:NewVoice(193211, "Tank")--defensive
 local voiceScreams					= mod:NewVoice(193364, "Melee")--runout
 local voiceWinds					= mod:NewVoice(193977)--carefly
+local voiceAriseFallen				= mod:NewVoice(193566, "-Healer")--mobkill
 
 function mod:OnCombatStart(delay)
 	timerDarkSlashCD:Start(3.5-delay)
@@ -51,5 +54,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 193460 then
 		warnBane:Show()
 		timerBaneCD:Start()
+		if not self:IsNormal() then
+			timerAriseFallenCD:Start()
+		end
+	elseif spellId == 193566 then
+		specAriseFallen:Show()
+		voiceAriseFallen:Play("mobkill")
 	end
 end

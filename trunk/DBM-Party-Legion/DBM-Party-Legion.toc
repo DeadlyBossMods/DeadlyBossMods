@@ -60,6 +60,7 @@ CourtofStars\Melandrus.lua
 MawOfSouls\Ymiron.lua
 MawOfSouls\Harbaron.lua
 MawOfSouls\Helya.lua
+MawOfSouls\MawTrash.lua
 VioletHold\MindflayerKaahrj.lua
 VioletHold\MillificentManastorm.lua
 VioletHold\Festerface.lua
