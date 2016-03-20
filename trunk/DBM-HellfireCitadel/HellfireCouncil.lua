@@ -164,7 +164,7 @@ function mod:SPELL_CAST_START(args)
 			local elapsed, total = timerReapCD:GetTime()
 			local remaining = total - elapsed
 			if remaining < 16.5 then--delayed by visage
-				timerReapCD:Cancel()
+				timerReapCD:Stop()
 				warnReapDelayed:Schedule(11.5)
 				if total == 0 then--Pull reap delayed by visage
 					DBM:Debug("experimental timer extend firing for reap. Extend amount: "..16.5)
@@ -299,10 +299,10 @@ function mod:UNIT_DIED(args)
 	if cid == 92144 then--Dia Darkwhisper
 		DBM:Debug("Dia died", 2)
 		self.vb.diaDead = true
-		timerMarkofNecroCD:Cancel()
-		timerNightmareVisageCD:Cancel()
+		timerMarkofNecroCD:Stop()
+		timerNightmareVisageCD:Stop()
 		local elapsed, total = timerDarknessCD:GetTime()
-		timerDarknessCD:Cancel()
+		timerDarknessCD:Stop()
 		if elapsed > 0 then--Timer existed, which means it was next
 			DBM:Debug("updating specials timer", 2)
 			--So now we update next based on remaining bosses
@@ -316,9 +316,9 @@ function mod:UNIT_DIED(args)
 	elseif cid == 92142 and not self.vb.jubeiDead then--Blademaster Jubei'thosr
 		DBM:Debug("Jubei died (CLEU)", 2)
 		self.vb.jubeiDead = true
-		--timerFelstormCD:Cancel()
+		--timerFelstormCD:Stop()
 		local elapsed, total = timerMirrorImageCD:GetTime()
-		timerMirrorImageCD:Cancel()
+		timerMirrorImageCD:Stop()
 		if elapsed > 0 then--Timer existed, which means it was next
 			DBM:Debug("updating specials timer", 2)
 			--So now we update next based on remaining bosses
@@ -331,10 +331,10 @@ function mod:UNIT_DIED(args)
 	elseif cid == 92146 then--Gurthogg Bloodboil
 		DBM:Debug("Gurthogg died", 2)
 		self.vb.bloodboilDead = true
-		timerFelRageCD:Cancel()
-		timerTaintedBloodCD:Cancel()
+		timerFelRageCD:Stop()
+		timerTaintedBloodCD:Stop()
 		local elapsed, total = timerDemoLeapCD:GetTime()
-		timerDemoLeapCD:Cancel()
+		timerDemoLeapCD:Stop()
 		if elapsed > 0 then--Timer existed, which means it was next
 			DBM:Debug("updating specials timer", 2)
 			--So now we update next based on remaining bosses
@@ -360,14 +360,14 @@ function mod:RAID_BOSS_EMOTE(msg, npc)
 		end
 	elseif npc == Jubei and self.vb.jubeiGone then--Jubei Returning
 		self.vb.jubeiGone = false
-		timerMirrorImage:Cancel()
+		timerMirrorImage:Stop()
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 187183 then--Mark of the Necromancer (30% version that marks half of enemies, Dia)
 		self.vb.DiaPushed = true
-		timerReapCD:Cancel()
+		timerReapCD:Stop()
 	--"<116.00 21:54:41> [UNIT_SPELLCAST_SUCCEEDED] Blademaster Jubei'thos(Omegal) [[boss2:Ghostly::0:190618]]", -- [7030]
 	--"<116.05 21:54:41> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I am everburning!#Blademaster Jubei'thos#####0#0##0#196#nil#0#false#false#false", -- [7037]
 	elseif spellId == 190618 and not self.vb.jubeiDead then--Jubei Dying
@@ -376,9 +376,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:RemoveBoss(92142)
 		end
-		--timerFelstormCD:Cancel()
+		--timerFelstormCD:Stop()
 		local elapsed, total = timerMirrorImageCD:GetTime()
-		timerMirrorImageCD:Cancel()
+		timerMirrorImageCD:Stop()
 		if elapsed > 0 then--Timer existed, which means it was next
 			DBM:Debug("updating specials timer", 2)
 			--So now we update next based on remaining bosses

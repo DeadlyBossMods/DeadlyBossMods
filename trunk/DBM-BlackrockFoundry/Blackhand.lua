@@ -492,12 +492,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.HudMapOnMFD then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
-		timerImpalingThrow:Cancel()
+		timerImpalingThrow:Stop()
 		if self.Options.SetIconOnMarked then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif (spellId == 157000 or spellId == 159179) and args:IsPlayer() then
-		timerSlagBomb:Cancel()
+		timerSlagBomb:Stop()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
@@ -516,7 +516,7 @@ function mod:SPELL_ENERGIZE(_, _, _, _, destGUID, _, _, _, spellId, _, _, amount
 		local remaining = 25-bossPower
 		countdownShatteringSmash:Cancel()
 		countdownShatteringSmash:Start(remaining)
-		timerShatteringSmashCD:Cancel()--Prevent timer debug when updating timer
+		timerShatteringSmashCD:Stop()--Prevent timer debug when updating timer
 		timerShatteringSmashCD:Start(remaining, self.vb.smashCount+1)
 	end
 end
@@ -583,18 +583,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.markCount = 0
 		self.vb.markCount2 = 0
 		self.vb.slagCastCount = 0
-		timerDemolitionCD:Cancel()
+		timerDemolitionCD:Stop()
 		timerMassiveDemolitionCD:Cancel()
-		timerMassiveDemolitionCD:Unschedule()
+		timerMassiveDemolitionCD:Unschedule()--Redundant?
 		specWarnMassiveDemolition:Cancel()
 		warnMassiveDemolition:Cancel()
 		countdownSlagBombs:Cancel()
 		countdownSlagBombs:Start(11)
-		timerThrowSlagBombsCD:Cancel()
+		timerThrowSlagBombsCD:Stop()
 		timerThrowSlagBombsCD:Start(11, 1)--11-12.5
 		timerSiegemakerCD:Start(15, 1)
 		countdownShatteringSmash:Cancel()
-		timerShatteringSmashCD:Cancel()
+		timerShatteringSmashCD:Stop()
 		if self:IsMythic() then--Boss gain power faster on mythic phase 2
 			countdownShatteringSmash:Start(18)
 			timerShatteringSmashCD:Start(18, 1)--18 seen in 10 pulls worth of data.
@@ -602,7 +602,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			countdownShatteringSmash:Start(21)
 			timerShatteringSmashCD:Start(21, 1)--21-23 variation. Boss power is set to 66/100 automatically by transitions
 		end
-		timerMarkedforDeathCD:Cancel()
+		timerMarkedforDeathCD:Stop()
 		timerMarkedforDeathCD:Start(25.5, 1)
 		countdownMarkedforDeath:Cancel()
 		countdownMarkedforDeath:Start(25)
@@ -624,8 +624,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.smashCount = 0
 		self.vb.markCount = 0
 		self.vb.slagCastCount = 0
-		timerSiegemakerCD:Cancel()
-		timerThrowSlagBombsCD:Cancel()
+		timerSiegemakerCD:Stop()
+		timerThrowSlagBombsCD:Stop()
 		countdownSlagBombs:Cancel()
 		if self:IsMythic() then
 			timerFallingDebrisCD:Start(11, 1)
@@ -634,9 +634,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownSlagBombs:Start(11)
 		countdownShatteringSmash:Cancel()
 		countdownShatteringSmash:Start(26)
-		timerShatteringSmashCD:Cancel()
+		timerShatteringSmashCD:Stop()
 		timerShatteringSmashCD:Start(26, 1)--26-28 variation. Boss power is set to 33/100 automatically by transition (after short delay)
-		timerMarkedforDeathCD:Cancel()
+		timerMarkedforDeathCD:Stop()
 		if self:IsMythic() then
 			timerMarkedforDeathCD:Start(22.5, 1)
 		else

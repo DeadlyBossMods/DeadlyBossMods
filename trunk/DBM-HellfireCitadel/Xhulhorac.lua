@@ -491,8 +491,8 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 94185 then--Vanguard Akkelion
 		self.vb.bothDead = self.vb.bothDead + 1
-		timerFelBlazeFlurryCD:Cancel()
-		timerFelChainsCD:Cancel()
+		timerFelBlazeFlurryCD:Stop()
+		timerFelChainsCD:Stop()
 		if self:IsMythic() then
 			timerFelChainsCD:Start(28)
 		else
@@ -505,8 +505,8 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 94239 then--Omnus
 		self.vb.bothDead = self.vb.bothDead + 1
-		timerWitheringGazeCD:Cancel()
-		timerBlackHoleCD:Cancel()
+		timerWitheringGazeCD:Stop()
+		timerBlackHoleCD:Stop()
 		if self:IsMythic() then
 			timerBlackHoleCD:Start(18, self.vb.blackHoleCount+1)
 		else
@@ -534,8 +534,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 187006 then--Activate Void Portal
 		voicePhaseChange:Play("phasechange")
 		warnVoidPortal:Show()
-		timerFelStrikeCD:Cancel()
-		timerFelSurgeCD:Cancel()
+		timerFelStrikeCD:Stop()
+		timerFelSurgeCD:Stop()
 		countdownFelSurge:Cancel()
 		if not self:IsLFR() then
 			timerVoidsCD:Start(10.5)
@@ -553,9 +553,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.phase = 3
 		voicePhaseChange:Play("phasechange")
 		if not self:IsMythic() then
-			timerVoidStrikeCD:Cancel()--Regardless of what was left on timer, he will use it immediately after shadowfel phasing
+			timerVoidStrikeCD:Stop()--Regardless of what was left on timer, he will use it immediately after shadowfel phasing
 		end
-		timerVoidSurgeCD:Cancel()
+		timerVoidSurgeCD:Stop()
 		countdownVoidSurge:Cancel()
 		timerFelSurgeCD:Start(7)
 		countdownFelSurge:Start(7)
@@ -564,8 +564,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownVoidSurge:Start(16)
 	elseif spellId == 187209 then--Overwhelming Chaos (Activation)
 		self.vb.phase = 4
-		timerImpCD:Cancel()
-		timerVoidsCD:Cancel()
+		timerImpCD:Stop()
+		timerVoidsCD:Stop()
 		countdownImps:Cancel()
 		self:Unschedule(ImpRepeater)
 		self:Unschedule(VoidsRepeater)

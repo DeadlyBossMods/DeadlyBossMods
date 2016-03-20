@@ -101,7 +101,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 153470 then
 		warnSkullcracker:Show()
-		timerSkullcrackerCD:Cancel()--avoid false timer debug if boss cancels cast to dodge stamper then starts cast again
+		timerSkullcrackerCD:Stop()--avoid false timer debug if boss cancels cast to dodge stamper then starts cast again
 		timerSkullcrackerCD:Start()
 	end
 end
@@ -114,10 +114,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self.vb.bossUp = UnitName(uId)
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
 		if cid == 76974 then--Fran
-			timerDisruptingRoarCD:Cancel()
-			timerSkullcrackerCD:Cancel()
+			timerDisruptingRoarCD:Stop()
+			timerSkullcrackerCD:Stop()
 		elseif cid == 76973 then--Hans
-			timerJumpSlamCD:Cancel()
+			timerJumpSlamCD:Stop()
 		end
 		self:BossTargetScannerAbort(76973, "JumpTarget")--Seems to interrupt jumping if EITHER boss jumps up
 		--The triggers are these percentages for sure but there is a delay before they do it so it always appears later, but the trigger has been triggered

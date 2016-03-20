@@ -680,7 +680,7 @@ function mod:UNIT_DIED(args)
 		yellDelayedSiegeBomb:Cancel()
 		specWarnDelayedSiegeBombMove:Cancel()
 		timerDelayedSiegeBomb:Cancel()
-		timerDelayedSiegeBomb:Unschedule()
+		timerDelayedSiegeBomb:Unschedule()--Redundant?
 	end
 end
 

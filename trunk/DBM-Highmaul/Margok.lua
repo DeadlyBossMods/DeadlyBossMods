@@ -280,16 +280,16 @@ local function delayedRangeUpdate(self)
 end
 
 local function stopP3Timers()
-	timerArcaneWrathCD:Cancel()
+	timerArcaneWrathCD:Stop()
 	countdownArcaneWrath:Cancel()
-	timerDestructiveResonanceCD:Cancel()
-	timerSummonArcaneAberrationCD:Cancel()
-	timerMarkOfChaosCD:Cancel()
+	timerDestructiveResonanceCD:Stop()
+	timerSummonArcaneAberrationCD:Stop()
+	timerMarkOfChaosCD:Stop()
 	countdownMarkofChaos:Cancel()
-	timerForceNovaCD:Cancel()
+	timerForceNovaCD:Stop()
 	voiceForceNova:Cancel()
 	countdownForceNova:Cancel()
-	timerForceNovaFortification:Cancel()
+	timerForceNovaFortification:Stop()
 	countdownForceNova:Cancel()
 	specWarnForceNova:Cancel()
 end
@@ -752,7 +752,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellGaze:Cancel()
 			local amount = args.amount or 1
 			specWarnGaze:Show(amount)
-			timerGaze:Cancel()
+			timerGaze:Stop()
 			countdownGaze:Cancel()
 			timerGaze:Start()
 			countdownGaze:Start()
@@ -824,7 +824,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:SetIcon(args.destName, 0)
 	elseif spellId == 165595 then
 		if args:IsPlayer() then
-			timerGaze:Cancel()
+			timerGaze:Stop()
 			countdownGaze:Cancel()
 		end
 		updateRangeFrame(self)
@@ -842,24 +842,24 @@ mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 78549 then--Reaver
-		timerCrushArmorCD:Cancel()
-		timerKickToFaceCD:Cancel()
+		timerCrushArmorCD:Stop()
+		timerKickToFaceCD:Stop()
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 164751 or spellId == 164810 then--Teleport to Fortification/Teleport to Replication.
 		self.vb.isTransition = true
-		timerArcaneWrathCD:Cancel()
+		timerArcaneWrathCD:Stop()
 		countdownArcaneWrath:Cancel()
-		timerDestructiveResonanceCD:Cancel()
-		timerSummonArcaneAberrationCD:Cancel()
-		timerMarkOfChaosCD:Cancel()
+		timerDestructiveResonanceCD:Stop()
+		timerSummonArcaneAberrationCD:Stop()
+		timerMarkOfChaosCD:Stop()
 		countdownMarkofChaos:Cancel()
-		timerForceNovaCD:Cancel()
+		timerForceNovaCD:Stop()
 		countdownForceNova:Cancel()
 		voiceForceNova:Cancel()
-		timerForceNovaFortification:Cancel()
+		timerForceNovaFortification:Stop()
 		countdownForceNova:Cancel()
 		specWarnForceNova:Cancel()
 		timerTransition:Start()

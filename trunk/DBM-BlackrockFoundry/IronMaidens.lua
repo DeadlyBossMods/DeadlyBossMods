@@ -184,8 +184,8 @@ local function checkBoatPlayer(self, npc)
 	DBM:Debug("checkBoatPlayer finished")
 	boatMissionDone = false
 	self:Unschedule(boatReturnWarning)
-	timerBombardmentAlphaCD:Cancel()
-	timerWarmingUp:Cancel()
+	timerBombardmentAlphaCD:Stop()
+	timerWarmingUp:Stop()
 	countdownWarmingUp:Cancel()
 	if playerOnBoat then -- leave boat
 		playerOnBoat = false
@@ -196,25 +196,25 @@ local function checkBoatPlayer(self, npc)
 	self.vb.bloodRitual = 0
 	local bossPower = UnitPower("boss1")--All bosses have same power, doesn't matter which one checked
 	--These abilites resume after boat phase ends on mythic, on other difficulties, they still reset
-	timerBladeDashCD:Cancel()
+	timerBladeDashCD:Stop()
 	timerBladeDashCD:Start(5, 1)--5-6
 	countdownBladeDash:Cancel()
 	countdownBladeDash:Start(5)
-	timerBloodRitualCD:Cancel()
+	timerBloodRitualCD:Stop()
 	timerBloodRitualCD:Start(8.5, 1)--Variation on this may be same as penetrating shot variation. when it's marak returning from boat may be when it's 9.7
 	--These are altered by boar ending, even though boss continues casting it during boat phases.
-	timerRapidFireCD:Cancel()
+	timerRapidFireCD:Stop()
 	timerRapidFireCD:Start(13, self.vb.rapidfire+1)
 	if bossPower >= 30 then
 		if npc == Garan then--When garan returning, penetrating is always 27-28
 			timerPenetratingShotCD:Start(27, self.vb.penetratingShot+1)
 		else--When not garan returning, it's 24
-			timerPenetratingShotCD:Cancel()
+			timerPenetratingShotCD:Stop()
 			timerPenetratingShotCD:Start(24, self.vb.penetratingShot+1)
 		end
-		timerConvulsiveShadowsCD:Cancel()
+		timerConvulsiveShadowsCD:Stop()
 		timerConvulsiveShadowsCD:Start(36.5, self.vb.convulsiveShadows+1)--36.5-38
-		timerHeartSeekerCD:Cancel()
+		timerHeartSeekerCD:Stop()
 		timerHeartSeekerCD:Start(57, self.vb.heartseeker+1)
 	end
 end
@@ -222,14 +222,14 @@ end
 local function checkBoatOn(self, count)
 	if isPlayerOnBoat() then
 		playerOnBoat = true
-		timerBloodRitualCD:Cancel()
-		timerRapidFireCD:Cancel()
-		timerBladeDashCD:Cancel()
+		timerBloodRitualCD:Stop()
+		timerRapidFireCD:Stop()
+		timerBladeDashCD:Stop()
 		countdownBladeDash:Cancel()
-		timerHeartSeekerCD:Cancel()
-		timerConvulsiveShadowsCD:Cancel()
-		timerPenetratingShotCD:Cancel()
-		timerBombardmentAlphaCD:Cancel()
+		timerHeartSeekerCD:Stop()
+		timerConvulsiveShadowsCD:Stop()
+		timerPenetratingShotCD:Stop()
+		timerBombardmentAlphaCD:Stop()
 		DBM:Debug("Player Entering Boat")
 	elseif count < 20 then
 		self:Schedule(1, checkBoatOn, self, count + 1)
@@ -330,7 +330,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 155794 then
 		if noFilter or not isPlayerOnBoat() then
 			self:ScheduleMethod(0.1, "BossTargetScanner", 77231, "BladeDashTarget", 0.1, 16)
-			timerBladeDashCD:Cancel()
+			timerBladeDashCD:Stop()
 			timerBladeDashCD:Start(nil, self.vb.bladeDash+1)
 			if self:IsMythic() then
 				countdownBladeDash:Cancel()
@@ -516,17 +516,17 @@ mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 77477 then--Marak
-		timerBloodRitualCD:Cancel()
-		timerHeartSeekerCD:Cancel()
+		timerBloodRitualCD:Stop()
+		timerHeartSeekerCD:Stop()
 	elseif cid == 77557 then--Gar'an
-		timerRapidFireCD:Cancel()
-		timerPenetratingShotCD:Cancel()
-		timerDeployTurretCD:Cancel()
+		timerRapidFireCD:Stop()
+		timerPenetratingShotCD:Stop()
+		timerDeployTurretCD:Stop()
 	elseif cid == 77231 then--Sorka
-		timerBladeDashCD:Cancel()
+		timerBladeDashCD:Stop()
 		countdownBladeDash:Cancel()
-		timerConvulsiveShadowsCD:Cancel()
-		timerDarkHuntCD:Cancel()
+		timerConvulsiveShadowsCD:Stop()
+		timerDarkHuntCD:Stop()
 	elseif cid == 78351 or cid == 78341 or cid == 78343 then--boat bosses
 		self:Schedule(1, function()--wait 1s boat player ready to return.
 			boatMissionDone = true
@@ -556,36 +556,36 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc)
 		--Timers that always cancel on mythic, regardless of boss going up
 		if self:IsMythic() then
 			self:Schedule(3, function()
-				timerBladeDashCD:Cancel()
+				timerBladeDashCD:Stop()
 				countdownBladeDash:Cancel()
-				timerBloodRitualCD:Cancel()
-				timerHeartSeekerCD:Cancel()
+				timerBloodRitualCD:Stop()
+				timerHeartSeekerCD:Stop()
 			end)
 		else--This cancels in all modes
 			self:Schedule(3, function()
-				timerHeartSeekerCD:Cancel()
+				timerHeartSeekerCD:Stop()
 			end)
 		end
 		--Timers that always cancel on mythic, regardless of boss going up
 		timerBombardmentAlphaCD:Start(14.5)
 		if npc == Marak then
 			self:Schedule(3, function()
-				timerBloodRitualCD:Cancel()
+				timerBloodRitualCD:Stop()
 			end)
 			voiceShip:Play("1695ukurogg")
 		elseif npc == Sorka then
 			self:Schedule(3, function()
-				timerBladeDashCD:Cancel()
+				timerBladeDashCD:Stop()
 				countdownBladeDash:Cancel()
-				timerConvulsiveShadowsCD:Cancel()
-				timerDarkHuntCD:Cancel()
+				timerConvulsiveShadowsCD:Stop()
+				timerDarkHuntCD:Stop()
 			end)
 			voiceShip:Play("1695gorak")
 		elseif npc == Garan then
 			self:Schedule(3, function()
-				timerRapidFireCD:Cancel()
-				timerPenetratingShotCD:Cancel()
-				timerDeployTurretCD:Cancel()
+				timerRapidFireCD:Stop()
+				timerPenetratingShotCD:Stop()
+				timerDeployTurretCD:Stop()
 			end)
 			voiceShip:Play("1695uktar")
 		end
@@ -647,7 +647,7 @@ end
 function mod:UNIT_HEALTH_FREQUENT(uId)
 	local hp = UnitHealth(uId) / UnitHealthMax(uId)
 	if hp < 0.20 and self.vb.phase ~= 2 then
-		timerShipCD:Cancel()
+		timerShipCD:Stop()
 		countdownShip:Cancel()
 		self.vb.phase = 2
 		warnPhase2:Show()

@@ -262,7 +262,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		countdownOverheated:Cancel()
 	elseif spellId == 154952 then
 		if args:IsPlayer() then
-			timerFixate:Cancel()
+			timerFixate:Stop()
 			specWarnFixate:Cancel()
 			voiceFixate:Cancel()
 			if GetTime() - (fixateTagets[args.destName] or 0) > 1 then
@@ -330,7 +330,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 155564 then--Firestorm (2 seconds faster than spell cast start
 		self.vb.firestorm = self.vb.firestorm + 1
 		specWarnFireStorm:Show(self.vb.firestorm)
-		timerBlazingRadianceCD:Cancel()
+		timerBlazingRadianceCD:Stop()
 		timerFireStorm:Start()
 		timerMoltenTorrentCD:Start(42.5)
 		timerSummonCinderWolvesCD:Start()

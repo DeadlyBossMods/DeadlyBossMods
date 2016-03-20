@@ -94,7 +94,7 @@ function mod:SPELL_CAST_START(args)
 		local elapsed, total = timerCallofScorpidCD:GetTime()
 		local remaining = total - elapsed
 		if remaining < 11 then--delayed by shockwave
-			timerCallofScorpidCD:Cancel()
+			timerCallofScorpidCD:Stop()
 			if total == 0 then--Just in case timer expired just before cast
 				DBM:Debug("experimental timer extend firing for call of scorpid. Extend amount: "..11)
 				timerCallofScorpidCD:Start(11)
