@@ -450,6 +450,7 @@ local LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddO
 local PlaySoundFile, PlaySound = PlaySoundFile, PlaySound
 local Ambiguate = Ambiguate
 local C_TimerNewTicker, C_TimerAfter = C_Timer.NewTicker, C_Timer.After
+local BNGetGameAccountInfo = BNGetToonInfo or BNGetGameAccountInfo
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
@@ -4419,7 +4420,7 @@ do
 			if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end
 			lastBossEngage[modId..realm] = GetTime()
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				local _, toonName = BNGetToonInfo(sender)
+				local _, toonName = BNGetGameAccountInfo(sender)
 				modId = tonumber(modId)--If it fails to convert into number, this makes it nil
 				local bossName = modId and EJ_GetEncounterInfo(modId) or name or UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(bossName, floor(health), toonName))
@@ -4431,7 +4432,7 @@ do
 			if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
 			lastBossDefeat[modId..realm] = GetTime()
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-				local _, toonName = BNGetToonInfo(sender)
+				local _, toonName = BNGetGameAccountInfo(sender)
 				modId = tonumber(modId)--If it fails to convert into number, this makes it nil
 				local bossName = modId and EJ_GetEncounterInfo(modId) or name or UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(bossName, toonName))
@@ -5616,7 +5617,7 @@ do
 					local sameRealm = false
 					local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
 					if isOnline and client == BNET_CLIENT_WOW then
-						local _, _, _, userRealm = BNGetToonInfo(presenceID)
+						local _, _, _, userRealm = BNGetGameAccountInfo(presenceID)
 						if connectedServers then
 							for i = 1, #connectedServers do
 								if userRealm == connectedServers[i] then
@@ -5861,7 +5862,7 @@ do
 						local sameRealm = false
 						local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
 						if isOnline and client == BNET_CLIENT_WOW then
-							local _, _, _, userRealm = BNGetToonInfo(presenceID)
+							local _, _, _, userRealm = BNGetGameAccountInfo(presenceID)
 							if connectedServers then
 								for i = 1, #connectedServers do
 									if userRealm == connectedServers[i] then
@@ -6368,7 +6369,7 @@ do
 		if client ~= "WoW" then
 			return false
 		end
-		return GetRealmName() == select(4, BNGetToonInfo(toonID))
+		return GetRealmName() == select(4, BNGetGameAccountInfo(toonID))
 	end
 
 	-- sender is a presenceId for real id messages, a character name otherwise
