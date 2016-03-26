@@ -7514,7 +7514,7 @@ do
 		["RemoveEnrage"] = true,
 		["RemoveCurse"] = true,
 		["MagicDispeller"] = true--Buffs on targets, not debuffs on players
-		["HasInterrupt"] = true,--Has an interrupt that is 15 seconds or less CD. Excludes long cd interrupts that aren't fitting for a 2-3 person rotation
+		["HasInterrupt"] = true,--Has an interrupt that is 24 seconds or less CD.
 	}]]
 
 	local specRoleTable = {
@@ -7527,6 +7527,7 @@ do
 			["RaidCooldown"] = true,--Amplify Magic
 			["RemoveCurse"] = true,
 			["MagicDispeller"] = true,
+			["HasInterrupt"] = true,
 		},
 		[65] = {	--Holy Paladin
 			["Healer"] = true,
@@ -7536,7 +7537,7 @@ do
 			["RaidCooldown"] = true,--Devotion Aura
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
-			["HasInterrupt"] = true,
+			["HasInterrupt"] = true,--REMOVE IN LEGION?
 		},
 		[66] = {	--Protection Paladin
 			["Tank"] = true,
@@ -7545,7 +7546,7 @@ do
 			["Physical"] = true,
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
-			["HasInterrupt"] = true,--REMOVE IN LEGION
+			["HasInterrupt"] = true,--REMOVE IN LEGION?
 		},
 		[70] = {	--Retribution Paladin
 			["Dps"] = true,
@@ -7572,7 +7573,7 @@ do
 			["MagicDispeller"] = true,--REMOVE IN LEGION
 			["HasInterrupt"] = true,
 		},
-		[74] = {	--Gladiator Warrior
+		[74] = {	--Gladiator Warrior --REMOVE IN LEGION?
 			["Dps"] = true,
 			["Melee"] = true,
 			["MeleeDps"] = true,
@@ -7635,6 +7636,7 @@ do
 			["Ranged"] = true,
 			["RangedDps"] = true,
 			["Physical"] = true,
+			["HasInterrupt"] = true,
 			["RemoveEnrage"] = true,--REMOVE IN LEGION
 			["MagicDispeller"] = true,--REMOVE IN LEGION
 		},
@@ -7756,7 +7758,7 @@ do
 	specRoleTable[72] = specRoleTable[71]--Fury Warrior
 	specRoleTable[252] = specRoleTable[251]--Unholy DK
 	specRoleTable[254] = specRoleTable[253]--Markmanship Hunter
-	specRoleTable[255] = specRoleTable[253]--Survival Hunter
+	specRoleTable[255] = specRoleTable[253]--Survival Hunter (REMOVE IN LEGION)
 	specRoleTable[257] = specRoleTable[256]--Holy Priest
 	specRoleTable[260] = specRoleTable[259]--Combat Rogue
 	specRoleTable[261] = specRoleTable[259]--Subtlety Rogue
