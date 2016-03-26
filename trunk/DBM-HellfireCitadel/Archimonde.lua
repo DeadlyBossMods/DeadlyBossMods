@@ -1003,7 +1003,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if not playerBanished or not self.Options.FilterOtherPhase then
-			local time = 4.5
+			local time = 5
 			if not self:IsMythic() then
 				warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
 			else
