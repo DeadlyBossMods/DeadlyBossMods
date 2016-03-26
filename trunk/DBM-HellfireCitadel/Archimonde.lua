@@ -953,7 +953,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.HudMapOnFelBurst2 then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 5, nil, nil, nil, 0.5):Appear():SetLabel(args.destName)
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 4.5, nil, nil, nil, 0.5):Appear():SetLabel(args.destName)
 		end
 	elseif spellId == 184964 then
 		shacklesTargets[#shacklesTargets+1] = args.destName
@@ -1003,7 +1003,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if not playerBanished or not self.Options.FilterOtherPhase then
-			local time = 5
+			local time = 4.5
 			if not self:IsMythic() then
 				warnWroughtChaos:CombinedShow(0.3, self.vb.wroughtWarned, args.destName)
 			else
