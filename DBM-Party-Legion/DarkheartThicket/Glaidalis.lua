@@ -34,7 +34,7 @@ local voiceRampage				= mod:NewVoice(198379, "Tank")--defensive
 
 --mod:AddRangeFrameOption(5, 153396)
 
-function mod:ScytheTarget(targetname, uId)
+function mod:LeapTarget(targetname, uId)
 	if not targetname then
 		warnLeap:Show(DBM_CORE_UNKNOWN)
 		return
