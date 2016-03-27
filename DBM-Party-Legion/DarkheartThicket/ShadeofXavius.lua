@@ -39,11 +39,14 @@ local voiceParanoia					= mod:NewVoice(200243)--scatter
 mod:AddSetIconOption("SetIconOnNightmare", 200243)
 
 mod.vb.nightmareIcon = 1
+mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
 	self.vb.nightmareIcon = 1
+	self.vb.phase = 1
 	timerFesteringRipCD:Start(3.7-delay)
 	timerNightmareCD:Start(6-delay)
+	--Feed on weak, 15
 	timerParanoiaCD:Start(19-delay)
 end
 
@@ -52,14 +55,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 200359 then
 		timerParanoiaCD:Start()
 	elseif spellId == 199837 then--Phase 2
-		timerParanoiaCD:Cancel()
+		self.vb.phase = 2
+		timerParanoiaCD:Stop()
+		timerNightmareCD:Stop()
+		timerFesteringRipCD:Stop()
+		--Pretty much all after 40 seconds. what order cast in is variable. MIght need adjust
+		--Feed on weak, 37
 		timerParanoiaCD:Start(39)
-		timerNightmareCD:Cancel()
 		timerNightmareCD:Start(40)
-		timerFesteringRipCD:Cancel()
 		timerFesteringRipCD:Start(41)
 	elseif spellId == 200182 then
-		timerFesteringRipCD:Start(17)
+		timerFesteringRipCD:Start()
 	end
 end
 
@@ -68,11 +74,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 200182 then
 		specWarnFesteringRip:Show(args.destName)
 	elseif spellId == 200243 then
-		warnNightmare:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnNightmare:Show()
 			voiceNightmare:Play("gathershare")
 			yellNightmare:Yell()
+		else
+			warnNightmare:Show(args.destName)
 		end
 		if self.Options.SetIconOnNightmare then
 			self:SetIcon(args.destName, self.vb.nightmareIcon)
@@ -84,11 +91,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.nightmareIcon = 1
 		end
 	elseif spellId == 200289 then
-		warnParanoia:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnParanoia:Show()
 			voiceParanoia:Play("scatter")
 			yellParanoia:Yell()
+		else
+			warnParanoia:Show(args.destName)
 		end		
 	end
 end
@@ -104,7 +112,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 204808 then--Because cast is hidden from combat log, and debuff may miss (AMS)
+	if spellId == 204808 then--Because cast is hidden from combat log, and debuff may miss (AMS or the like)
 		timerNightmareCD:Start()
 	end
 end
