@@ -71,6 +71,7 @@ VioletHold\PrincessThalena.lua
 VioletHold\Anubesset.lua
 VioletHold\Saelorn.lua
 VioletHold\FelLordBetrug.lua
+VioletHold\AVHTrash.lua
 GroveOfWarden\TirathonSaltheril.lua
 GroveOfWarden\Tormentorum.lua
 GroveOfWarden\Ashgolm.lua
