@@ -11,14 +11,14 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 192750",
 	"SPELL_CAST_START 213576 213583 197251",
-	"SPELL_CAST_SUCCESS 205004",
+	"SPELL_AURA_APPLIED 205004",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, new voice "bring light to shadows"
 --TODO, new voice "bring light to mob"
 local warnDeepeningShadows			= mod:NewSpellAnnounce(213583, 4)
-local warVengeance					= mod:NewSpellAnnounce(205004, 4)
+local warnVengeance					= mod:NewSpellAnnounce(205004, 4)
 
 local specWarnKick					= mod:NewSpecialWarningSpell(197251, "Tank", nil, nil, 3, 2)
 local specWarnDeepeningShadows		= mod:NewSpecialWarningMoveTo(213583, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(213583), nil, 3, 6)
@@ -26,8 +26,8 @@ local specWarnHiddenStarted			= mod:NewSpecialWarningSpell(192750, nil, nil, nil
 local specWarnHiddenOver			= mod:NewSpecialWarningEnd(192750)
 local specWarnVengeance				= mod:NewSpecialWarningMoveTo(205004, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(205004), nil, 3, 6)
 
-local timerKickCD					= mod:NewCDTimer(20, 197251, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--20-34
-local timerDeepeningShadowsCD		= mod:NewNextTimer(31.5, 213576, nil, nil, nil, 3)
+local timerKickCD					= mod:NewCDTimer(15, 197251, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--15-42
+local timerDeepeningShadowsCD		= mod:NewCDTimer(31.5, 213576, nil, nil, nil, 3)
 local timerVengeanceCD				= mod:NewCDTimer(35, 205004, nil, nil, nil, 1)--35-40
 
 local voiceKick						= mod:NewVoice(197251, "Tank")--carefly
@@ -39,13 +39,14 @@ function mod:OnCombatStart(delay)
 	timerDeepeningShadowsCD:Start(10.9-delay)
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
+--Probably not reliable anymore but will review when I pull boss again
+function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 205004 then
 		if ExtraActionBarFrame:IsShown() then--Has light
 			specWarnVengeance:Show(args.spellName)
 			voiceVengeance:Play(205004)
 		else
-			warVengeance:Show()
+			warnVengeance:Show()
 		end
 		timerVengeanceCD:Start()
 	end
@@ -80,8 +81,8 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 203416 then--Shadowstep. Faster than 192750 applied
-		timerDeepeningShadowsCD:Cancel()
-		timerKickCD:Cancel()
+		timerDeepeningShadowsCD:Stop()
+		timerKickCD:Stop()
 		specWarnHiddenStarted:Show()
 	end
 end
