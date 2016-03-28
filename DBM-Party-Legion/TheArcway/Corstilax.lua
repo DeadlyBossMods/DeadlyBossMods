@@ -17,26 +17,26 @@ mod:RegisterEventsInCombat(
 )
 
 local warnSupression				= mod:NewTargetAnnounce(196070, 4)
-local warnQuarantine				= mod:NewTargetAnnounce(196115, 3)
+local warnQuarantine				= mod:NewTargetAnnounce(195804, 3)
 
 local specWarnSupression			= mod:NewSpecialWarningRun(196070, nil, nil, nil, 4, 2)
 local yellSupression				= mod:NewYell(196070)
-local specWarnQuarantine			= mod:NewSpecialWarningTarget(196115, false, nil, nil, 1, 2)
-local yellQuarantine				= mod:NewYell(196115)
+local specWarnQuarantine			= mod:NewSpecialWarningTarget(195804, false, nil, nil, 1, 2)
+local yellQuarantine				= mod:NewYell(195804)
 local specWarnCleansing				= mod:NewSpecialWarningSpell(196115, nil, nil, nil, 2, 2)
 
-local timerSupressionCD				= mod:NewCDTimer(32.5, 196070, nil, nil, nil, 3)
-local timerQuarantineCD				= mod:NewCDTimer(32.5, 195791, nil, nil, nil, 3)
-local timerCleansingCD				= mod:NewCDTimer(32.5, 196115, nil, nil, nil, 2)
+local timerSupressionCD				= mod:NewNextTimer(32.5, 196070, nil, nil, nil, 3)
+local timerQuarantineCD				= mod:NewNextTimer(32.5, 195804, nil, nil, nil, 3)
+local timerCleansingCD				= mod:NewNextTimer(32.5, 196115, nil, nil, nil, 2)
 
 local voiceSupression				= mod:NewVoice(196070)--runout/keeprun
-local voiceQuarantine				= mod:NewVoice(195791)--readyrescue
+local voiceQuarantine				= mod:NewVoice(195804)--readyrescue
 local voiceCleansing				= mod:NewVoice(196115)--aesoon
 
 mod:AddSetIconOption("SetIconOnQuarantine", 195791)
 
 function mod:OnCombatStart(delay)
-	timerSupressionCD:Start(6-delay)
+	timerSupressionCD:Start(5-delay)
 	timerQuarantineCD:Start(22.5-delay)
 	timerCleansingCD:Start(30-delay)
 end

@@ -167,6 +167,15 @@ L= DBM:GetModLocalization(1500)
 L= DBM:GetModLocalization(1501)
 
 -----------------------
+--The Arcway Trash
+-----------------------
+L = DBM:GetModLocalization("ArcwayTrash")
+
+L:SetGeneralLocalization({
+	name =	"The Arcway Trash"
+})
+
+-----------------------
 -- <<<Court of Stars>>> --
 -----------------------
 -----------------------
