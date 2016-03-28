@@ -13,7 +13,6 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
---TODO, more pulls, longer pulls. REALLY long pull ideal to see over time interactions on ability timings
 local specWarnBat					= mod:NewSpecialWarningSwitch("ej12489", "Tank", nil, nil, 1, 2)
 local specWarnFissure				= mod:NewSpecialWarningDodge(197776, nil, nil, nil, 2, 2)
 local specWarnSlash					= mod:NewSpecialWarningSpell(212030, nil, nil, nil, 2, 2)
@@ -22,7 +21,7 @@ local specWarnSlam					= mod:NewSpecialWarningSpell(197810, nil, nil, nil, 3, 2)
 local timerBatCD					= mod:NewNextTimer(20, "ej12489", nil, nil, nil, 1, 183219)--Independant from boss and always 20-20.5
 --Both 13 unless delayed by other interactions. Seems similar to archimondes timer code with a hard ICD mechanic.
 local timerFissureCD				= mod:NewCDTimer(13.2, 197776, nil, nil, nil, 3)
-local timerSlashCD					= mod:NewCDTimer(13.2, 212030, nil, nil, nil, 3)
+local timerSlashCD					= mod:NewCDTimer(13.2, 212030, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerSlamCD					= mod:NewCDTimer(47, 197810, nil, nil, nil, 2)--Possibly 40 but delayed by ICD triggering
 
 local voiceBat						= mod:NewVoice("ej12489", "Tank")--mobsoon
@@ -30,6 +29,7 @@ local voiceFissure					= mod:NewVoice(197776)--watchstep
 local voiceSlash					= mod:NewVoice(212030)--watchwave
 local voiceSlam						= mod:NewVoice(197810)--carefly
 
+--Boss seems to have intenal 6 second ICD and cannot cast any two spells within 6 seconds of another (minus summon bats)
 local function updateAlltimers(ICD)
 	if timerFissureCD:GetRemaining() < ICD then
 		local elapsed, total = timerFissureCD:GetTime()
@@ -55,7 +55,7 @@ local function updateAlltimers(ICD)
 end
 
 function mod:OnCombatStart(delay)
-	timerFissureCD:Start(5.5-delay)
+	timerFissureCD:Start(5-delay)
 	timerBatCD:Start(10-delay)
 	timerSlashCD:Start(13-delay)
 	timerSlamCD:Start(39.8-delay)
@@ -72,12 +72,12 @@ function mod:SPELL_CAST_START(args)
 		specWarnSlash:Show()
 		voiceSlash:Play("watchwave")
 		timerSlashCD:Start()
-		updateAlltimers(7)
+		updateAlltimers(6)
 	elseif spellId == 197810 then
 		specWarnSlam:Show()
 		voiceSlam:Play("carefly")
 		timerSlamCD:Start()
-		updateAlltimers(7)
+		updateAlltimers(7)--Verify is actually 7 and not 6 like others
 	end
 end
 

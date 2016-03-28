@@ -11,8 +11,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 196562 196805",
 	"SPELL_AURA_REMOVED 196562",
-	"SPELL_CAST_START 196549 196392",
-	"SPELL_CAST_SUCCESS 196562 196804 196877",
+	"SPELL_CAST_START 196549",
+	"SPELL_CAST_SUCCESS 196562 196804 196877 196392",
 	"SPELL_PERIODIC_DAMAGE 196824",
 	"SPELL_PERIODIC_MISSED 196824"
 )
@@ -29,9 +29,9 @@ local specWarnNetherLink			= mod:NewSpecialWarningYou(196805, nil, nil, nil, 1, 
 local specWarnNetherLinkGTFO		= mod:NewSpecialWarningMove(196805, nil, nil, nil, 1, 2)
 local specWarnOverchargeMana		= mod:NewSpecialWarningInterrupt(196392, "HasInterrupt", nil, nil, 1, 2)
 
-local timerVolatileMagicCD			= mod:NewCDTimer(22, 196562, nil, nil, nil, 3)
-local timerNetherLinkCD				= mod:NewCDTimer(21, 196804, nil, nil, nil, 3)
-local timerOverchargeManaCD			= mod:NewCDTimer(22, 196392, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerVolatileMagicCD			= mod:NewCDTimer(22, 196562, nil, nil, nil, 3)--Review, might be 27 now
+local timerNetherLinkCD				= mod:NewCDTimer(21, 196804, nil, nil, nil, 3)--Review. might be 37 now? Or maybe health based?
+local timerOverchargeManaCD			= mod:NewCDTimer(21.5, 196392, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerConsumeEssenceCD			= mod:NewNextTimer(18.2, 196877, nil, nil, nil, 2)
 
 local voiceVolatileMagic			= mod:NewVoice(196562)--runout
@@ -42,9 +42,10 @@ local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_T
 mod:AddRangeFrameOption(15, 196562)
 
 function mod:OnCombatStart(delay)
-	timerVolatileMagicCD:Start(11.7-delay)
-	timerNetherLinkCD:Start(23.5-delay)
-	timerOverchargeManaCD:Start(26-delay)
+	--Watch closely, review. He may be able to swap nether link and volatile magic?
+	timerNetherLinkCD:Start(11.7-delay)
+	timerOverchargeManaCD:Start(18.4-delay)
+	timerVolatileMagicCD:Start(23.5-delay)
 end
 
 function mod:OnCombatEnd()
@@ -86,14 +87,10 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 196549 then--Withering Consumption
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
-		timerVolatileMagicCD:Cancel()
-		timerNetherLinkCD:Cancel()
-		timerOverchargeManaCD:Cancel()
+		timerVolatileMagicCD:Stop()
+		timerNetherLinkCD:Stop()
+		timerOverchargeManaCD:Stop()
 		timerConsumeEssenceCD:Start(10.5)
-	elseif spellId == 196392 then
-		specWarnOverchargeMana:Show(args.sourceName)
-		voiceOverchargeMana:Play("kickcast")
-		timerOverchargeManaCD:Start()
 	end
 end
 
@@ -106,6 +103,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 196877 then
 		warnConsumeEssence:Show()
 		timerConsumeEssenceCD:Start()
+	elseif spellId == 196392 then
+		specWarnOverchargeMana:Show(args.sourceName)
+		voiceOverchargeMana:Play("kickcast")
+		timerOverchargeManaCD:Start()
 	end
 end
 
