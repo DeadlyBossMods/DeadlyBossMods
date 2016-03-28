@@ -29,8 +29,8 @@ local specWarnStaticNova			= mod:NewSpecialWarningMoveTo(193597, nil, DBM_CORE_A
 local specWarnFocusedLightning		= mod:NewSpecialWarningMoveTo(193611, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon:format(193611), nil, 1)
 local specWarnAdds					= mod:NewSpecialWarningSwitch(193682, "Tank")
 
-local timerAddsCD					= mod:NewCDTimer(47, 193682, nil, nil, nil, 1)
-local timerStaticNovaCD				= mod:NewCDTimer(35, 193597, nil, nil, nil, 2)
+local timerAddsCD					= mod:NewCDTimer(47, 193682, nil, nil, nil, 1)--47-51
+local timerStaticNovaCD				= mod:NewCDTimer(34, 193597, nil, nil, nil, 2)
 local timerFocusedLightningCD		= mod:NewNextTimer(15.5, 193611, nil, nil, nil, 3)
 
 --local voiceCurtainOfFlame			= mod:NewVoice(153392)
