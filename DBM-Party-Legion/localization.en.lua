@@ -221,7 +221,7 @@ L:SetGeneralLocalization({
 })
 
 -----------------------
--- <<<The Violet Hold>>> --
+-- <<<Assault Violet Hold>>> --
 -----------------------
 -----------------------
 -- Mindflayer Kaahrj --
@@ -262,6 +262,15 @@ L= DBM:GetModLocalization(1697)
 -- Fel Lord Betrug --
 -----------------------
 L= DBM:GetModLocalization(1711)
+
+-----------------------
+--Assault Violet Hold Trash
+-----------------------
+L = DBM:GetModLocalization("AVHTrash")
+
+L:SetGeneralLocalization({
+	name =	"Assault Violet Hold Trash"
+})
 
 -----------------------
 -- <<<Vault of the Wardens>>> --
