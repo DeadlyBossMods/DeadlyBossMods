@@ -40,8 +40,6 @@ local voiceToxicPuddle				= mod:NewVoice(191855)--runaway
 local voiceBlazingNova				= mod:NewVoice(192003, "HasInterrupt")--kickcast
 local voiceArcaneBlast				= mod:NewVoice(192005, "HasInterrupt")--kickcast
 
-local wrathMod = DBM:GetModByName(1492)
-
 function mod:UpdateWinds()
 	timerWindsCD:Cancel()
 end
@@ -88,7 +86,9 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
+local wrathMod
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if not wrathMod then wrathMod = DBM:GetModByName(1492) end
 	if spellId == 191798 and self:AntiSpam(3, 2) then--Violent Winds
 		if wrathMod.vb.phase == 2 then return end--Phase 2 against Wrath of Azshara, which means this is happening every 10 seconds
 		warnWinds:Show()

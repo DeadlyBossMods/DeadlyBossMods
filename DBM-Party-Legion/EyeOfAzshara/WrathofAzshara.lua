@@ -36,6 +36,10 @@ mod:AddRangeFrameOption(10, 192706)
 mod.vb.phase = 1
 local serpMod = DBM:GetModByName(1479)
 
+function mod:CheckPhase2()
+	return 
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	timerMythicTornadoCD:Start(8.5-delay)
@@ -74,6 +78,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 192985 then
 		self.vb.phase = 2
+		if not serpMod then serpMod = DBM:GetModByName(1479) end
 		serpMod:UpdateWinds()--At present it may not actually reset here. Just in case though
 	elseif spellId == 192617 then
 		specWarnMassiveDeluge:Show()
