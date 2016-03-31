@@ -1009,7 +1009,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				time = 6
 			end
-			if self.Options.HudMapOnWrought then
+			if self.Options.HudMapOnWrought and args.sourceName and args.destName then
 				local sourceUId, destUId = DBM:GetRaidUnitId(args.sourceName), DBM:GetRaidUnitId(args.destName)
 				if not sourceUId or not destUId then return end--They left raid? prevent nil error. this will probably only happen in LFR
 				if UnitIsUnit("player", sourceUId) or UnitIsUnit("player", destUId) then--Player is in connection, green line
