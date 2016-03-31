@@ -109,8 +109,8 @@ local voiceShadowBoltVolley			= mod:NewVoice(181126, "HasInterrupt")
 local voiceFelBlast					= mod:NewVoice(181132, false)
 local voiceFelSeeker				= mod:NewVoice(181735)--watchstep
 local voiceFelHellstorm				= mod:NewVoice(181557)--watchstep
-local voiceGlaiveCombo				= mod:NewVoice(181354, "Tank")--Defensive
-local voiceMassiveBlast				= mod:NewVoice(181359, "Tank")--changemt
+local voiceGlaiveCombo				= mod:NewVoice(181354, "Tank")--defensive
+local voiceMassiveBlast				= mod:NewVoice(181359, "Tank")--tauntboss
 local voiceFelPillar				= mod:NewVoice(190070)--runaway
 local voiceWrath					= mod:NewVoice(186348)--mm
 
@@ -382,7 +382,6 @@ function mod:SPELL_CAST_START(args)
 			voiceFelBlast:Play("kickcast")
 		end
 	elseif spellId == 183376 or spellId == 185830 then
-		voiceMassiveBlast:Schedule(1, "changemt")
 		local targetName, uId, bossuid = self:GetBossTarget(91349, true)
 		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
 		if tanking or (status == 3) then--Player is current target
@@ -390,6 +389,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, targetName) then return end--You are not near current tank, you're probably 3rd tank on Doom Guards that never taunts massive blast
 			specWarnMassiveBlastOther:Schedule(1, targetName)
+			voiceMassiveBlast:Schedule(1, "tauntboss")
 		end
 	elseif spellId == 181793 or spellId == 182077 then--Melee (10)
 		warnFelseeker:Show(10)
