@@ -53,11 +53,11 @@ local specWarnNetherZoneGTFO		= mod:NewSpecialWarningMove(216027, nil, nil, nil,
 local specWarnBurningSoul			= mod:NewSpecialWarningMoveAway(216040, nil, nil, nil, 1, 2)
 local yellBurningSoul				= mod:NewYell(216040)
 
-local timerCarrionPlagueCD			= mod:NewCDTimer(16, 212997, nil, nil, nil, 3)
-local timerSeekerSwarmCD			= mod:NewCDTimer(16, 213238, nil, nil, nil, 3)
-local timerBrandOfArgusCD			= mod:NewCDTimer(16, 212794, nil, nil, nil, 3)
-local timerFeastOfBloodCD			= mod:NewCDTimer(16, 208230, nil, "Tank", nil, 5)
-local timerEchoesOfVoidCD			= mod:NewCDTimer(16, 213531, nil, nil, nil, 2)
+local timerCarrionPlagueCD			= mod:NewAITimer(16, 212997, nil, nil, nil, 3)
+local timerSeekerSwarmCD			= mod:NewAITimer(16, 213238, nil, nil, nil, 3)
+local timerBrandOfArgusCD			= mod:NewAITimer(16, 212794, nil, nil, nil, 3)
+local timerFeastOfBloodCD			= mod:NewAITimer(16, 208230, nil, "Tank", nil, 5)
+local timerEchoesOfVoidCD			= mod:NewAITimer(16, 213531, nil, nil, nil, 2)
 
 --local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
 
