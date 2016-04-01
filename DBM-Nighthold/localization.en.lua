@@ -37,6 +37,12 @@ L= DBM:GetModLocalization(1751)
 ------------------
 L= DBM:GetModLocalization(1762)
 
+L:SetMiscLocalization({
+	First				= "First",
+	Second				= "Second",
+	Third				= "Third"
+})
+
 ------------------
 -- Krosus --
 ------------------

@@ -174,9 +174,7 @@ L:SetMiscLocalization({
 	phase2point5		= "Look upon the endless forces of the Burning Legion and know the folly of your resistance.",--3 seconds faster than CLEU, used as primary, slower CLEU secondary
 	First				= "First",
 	Second				= "Second",
-	Third				= "Third",
-	Fourth				= "Fourth",--Just in case, not sure how many targets in 30 man raid
-	Fifth				= "Fifth"--Just in case, not sure how many targets in 30 man raid
+	Third				= "Third"
 })
 
 -------------
