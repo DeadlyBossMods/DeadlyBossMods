@@ -6313,10 +6313,10 @@ do
 	end
 
 	function DBM:AprilFools()
-		self:Unschedule(DBM.AprilFools)
+		self:Unschedule(self.AprilFools)
 		SetMapToCurrentZone()
 		local currentMapId = GetCurrentMapAreaID()
-		self:Schedule(180 + math.random(0, 600) , self.AprilFools)
+		self:Schedule(180 + math.random(0, 600) , self.AprilFools, self)
 		if currentMapId ~= 1014 then return end--Legion Dalaran
 		playDelay(self, 1)
 		self:Schedule(5, playDelay, self, 2)
@@ -6330,7 +6330,7 @@ do
 	function DBM:PLAYER_ENTERING_WORLD()
 		local weekday, month, day, year = CalendarGetDate()--Must be called after PLAYER_ENTERING_WORLD
 		if month == 4 and day == 1 then--April 1st
-			self:Schedule(180 + math.random(0, 600) , self.AprilFools)
+			self:Schedule(180 + math.random(0, 600) , self.AprilFools, self)
 		end
 		if GetLocale() == "ptBR" or GetLocale() == "frFR" or GetLocale() == "esES" or GetLocale() == "esMX" or GetLocale() == "itIT" then
 			C_TimerAfter(10, function() if self.Options.HelpMessageVersion < 3 then self.Options.HelpMessageVersion = 3 self:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
