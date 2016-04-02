@@ -58,7 +58,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	self:BossUnitTargetScannerAbort()
 	if self.Options.HudMapOnFelSlash then
 		DBMHudMap:Disable()
 	end
