@@ -5925,6 +5925,7 @@ do
 				bossuIdFound = false
 				eeSyncSender = {}
 				eeSyncReceived = 0
+				targetMonitor = nil
 				self:CreatePizzaTimer(time, "", nil, nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
 			elseif self.BossHealth:IsShown() then
 				if mod.bossHealthInfo then

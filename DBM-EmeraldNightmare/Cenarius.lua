@@ -11,33 +11,38 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 210290 212726 212630 211073 211192 211368 214529",
-	"SPELL_CAST_SUCCESS 210280 214505 214876",
-	"SPELL_AURA_APPLIED 210346 211368",
+	"SPELL_CAST_START 210290 212726 212630 211073 211368 214529",
+	"SPELL_CAST_SUCCESS 214505 214876",
+	"SPELL_AURA_APPLIED 210346 211368 211471",
 	"SPELL_AURA_REMOVED 210346",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
+	"UNIT_AURA player"
 )
 
---TODO, see if target scanning works for nightmare brambles
---TODO, see if destructive Nightmares has a fixate of sorts to warn one being changed by bad whisps
+--TODO, see if destructive Nightmares has a fixate of sorts to warn one being chased by bad whisps
 --TODO, evaluate stomp and need of timer/etc
---TODO, GTFOs probably
---TODO, timers for adds for things that matter, probably Twisted Touch of Life
+--TODO, Further assess thorns. it doesn't need warnings at all if adds never tanked near boss in first place
+--TODO, all sub 30% stuff
 --Cenarius
+local warnNightmareBrambles			= mod:NewTargetAnnounce(210290, 2)
 local warnBeastsOfNightmare			= mod:NewSpellAnnounce(214876, 2)--Generic for now, figure out what to do with later.
 ----Forces of Nightmare
 local warnDesiccatingStomp			= mod:NewCastAnnounce(211073, 3, nil, nil, "Melee")--Basic warning for now, will change to special if needed
 local warnRottenBreath				= mod:NewTargetAnnounce(211192, 2)
+local warnScornedTouch				= mod:NewTargetAnnounce(211471, 3)
 --Malfurion Stormrage
 local warnCleansingGround			= mod:NewCastAnnounce(212630, 1)
 
 --Cenarius
-local specWarnCreepingNightmares	= mod:NewSpecialWarningSpell(210280, nil, nil, nil, 2)--No voice yet, need to see it better.
-local specWarnNightmareBrambles		= mod:NewSpecialWarningDodge(210290, nil, nil, nil, 2, 2)
-local specWarnDreadThorns			= mod:NewSpecialWarningMoveAway(210346, "Tank", nil, nil, 1, 2)--Move away warning? Have to move away from other adds
-local specWarnForcesOfNightmare		= mod:NewSpecialWarningSwitch(212726, nil, nil, nil, 1, 2)--Switch warning or just spell warning?
+local specWarnCreepingNightmares	= mod:NewSpecialWarningSpell(210280, nil, nil, nil, 2)--Stack warning subject to tuning
+local specWarnNightmareBrambles		= mod:NewSpecialWarningRun(210290, nil, nil, nil, 1, 2)
+local yellNightmareBrambles			= mod:NewYell(210290)
+local specWarnNightmareBramblesNear	= mod:NewSpecialWarningClose(210290, nil, nil, nil, 1, 2)
+--local specWarnDreadThorns			= mod:NewSpecialWarningMoveAway(210346, "Tank", nil, nil, 1, 2)--Move away warning? Have to move away from other adds
+local specWarnForcesOfNightmare		= mod:NewSpecialWarningSwitchCount(212726, nil, nil, nil, 1, 2)--Switch warning or just spell warning?
 local specWarnSpearOfNightmares		= mod:NewSpecialWarningSpell(214529, nil, nil, nil, 1, 2)
 local specWarnSpearOfNightmaresOther= mod:NewSpecialWarningTaunt(214529, nil, nil, nil, 1, 2)
 local specWarnEntangledNightmares	= mod:NewSpecialWarningSwitch(214505, "Dps", nil, nil, 1, 2)
@@ -45,34 +50,37 @@ local specWarnEntangledNightmares	= mod:NewSpecialWarningSwitch(214505, "Dps", n
 local yellRottenBreath				= mod:NewYell(211192)
 local specWarnTouchofLife			= mod:NewSpecialWarningInterrupt(211368, "HasInterrupt")
 local specWarnTouchofLifeDispel		= mod:NewSpecialWarningDispel(211368, "MagicDispeller")
+local specWarnScornedTouch			= mod:NewSpecialWarningMoveAway(211471, nil, nil, nil, 3, 2)
+local yellScornedTouch				= mod:NewYell(211471)
 
 --Cenarius
-local timerCreepingNightmaresCD		= mod:NewAITimer(16, 210280, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
-local timerNightmareBramblesCD		= mod:NewAITimer(16, 210290, nil, nil, nil, 3)--targeted?
-local timerDreadThornsCD			= mod:NewAITimer(16, 210346, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerForcesOfNightmareCD		= mod:NewAITimer(16, 212726, nil, nil, nil, 1)
+local timerNightmareBramblesCD		= mod:NewCDTimer(30.4, 210290, nil, nil, nil, 3)--On for all, for now. Doesn't target melee but melee still have to be aware. Just not AS aware.
+local timerDreadThornsCD			= mod:NewCDTimer(34, 210346, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerForcesOfNightmareCD		= mod:NewCDCountTimer(77.8, 212726, nil, nil, nil, 1)
 local timerSpearOfNightmaresCD		= mod:NewAITimer(16, 214529, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Forces of Nightmare
---Malfurion Stormrage
-local timerCleansingGroundCD		= mod:NewAITimer(16, 212630, nil, nil, nil, 3)--targeted or role?
-
+local timerTouchofLifeCD			= mod:NewCDTimer(12, 211368, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Cenarius
---local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
+local countdownForcesOfNightmare	= mod:NewCountdown(78.8, 212726)
+local countdownNightmareBrambles	= mod:NewCountdown("Alt30", 210290, "Ranged")--Never once saw this target melee
 ----Forces of Nightmare
 
 --Cenarius
-local voiceNightmareBrambles		= mod:NewVoice(210290)--watchstep
-local voiceDreadThorns				= mod:NewVoice(210346, "Tank")--bossout
+local voiceNightmareBrambles		= mod:NewVoice(210290)--runout/watchstep
+--local voiceDreadThorns				= mod:NewVoice(210346, "Tank")--bossout
 local voiceForcesOfNightmare		= mod:NewVoice(212726)--mobsoon
 local voiceSpearOfNightmares		= mod:NewVoice(214529, "Tank")--defensive/tauntboss
 ----Forces of Nightmare
 local voiceTouchOfLife				= mod:NewVoice(211368)--kickcast/dispelnow
+local voiceScornedTouch				= mod:NewVoice(211471)--runout
 
---mod:AddRangeFrameOption("5")
+mod:AddRangeFrameOption(8, 211471)
 --mod:AddSetIconOption("SetIconOnMC", 163472, false)
---mod:AddHudMapOption("HudMapOnMC", 163472)--HUD on targets of target scans maybe?
+mod:AddHudMapOption("HudMapOnBreath", 211192)
 
 mod.vb.phase = 1
+mod.vb.addsCount = 0
+local scornedWarned = false
 
 function mod:BreathTarget(targetname, uId)
 	if not targetname then return end
@@ -80,49 +88,66 @@ function mod:BreathTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		yellRottenBreath:Yell()
 	end
+	if self.Options.HudMapOnBreath then
+		--Static marker, breath doesn't move once a target is picked. it's aimed at static location player WAS
+		DBMHudMap:RegisterStaticMarkerOnPartyMember(211192, "highlight", targetname, 5, 5.5, 1, 0, 0, 0.5, nil, 1):Pulse(0.5, 0.5)
+	end
+end
+
+function mod:BrambleTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnNightmareBrambles:Show()
+		yellNightmareBrambles:Yell()
+		voiceNightmareBrambles:Play("runout")
+	elseif self:CheckNearby(8, targetname) then
+		specWarnNightmareBramblesNear:Show(targetname)
+		voiceNightmareBrambles:Play("watchstep")
+	else
+		warnNightmareBrambles:Show(targetname)
+	end
 end
 
 function mod:OnCombatStart(delay)
+	scornedWarned = false
 	self.vb.phase = 1
-	timerCreepingNightmaresCD:Start(1-delay)
-	timerNightmareBramblesCD:Start(1-delay)
-	timerDreadThornsCD:Start(1-delay)
-	timerForcesOfNightmareCD:Start(1-delay)
-	timerCleansingGroundCD:Start(1-delay)
+	self.vb.addsCount = 0
+	timerForcesOfNightmareCD:Start(8.5-delay, 1)
+	countdownForcesOfNightmare:Start(8.5-delay)
+	timerDreadThornsCD:Start(14-delay)
+	timerNightmareBramblesCD:Start(25.5-delay)
+	countdownNightmareBrambles:Start(25.5-delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
---	if self.Options.FelArrow then
---		DBM.Arrow:Hide()
---	end
---	if self.Options.HudMapOnMC then
---		DBMHudMap:Disable()
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+	if self.Options.HudMapOnBreath then
+		DBMHudMap:Disable()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 210290 then
-		specWarnNightmareBrambles:Show()
-		voiceNightmareBrambles:Play("watchstep")
+		self:BossTargetScanner(104636, "BrambleTarget", 0.2, 12, true)
 		timerNightmareBramblesCD:Start()
+		countdownNightmareBrambles:Start()
 	elseif spellId == 212726 then
-		specWarnForcesOfNightmare:Show()
+		self.vb.addsCount = self.vb.addsCount + 1
+		specWarnForcesOfNightmare:Show(self.vb.addsCount)
 		voiceForcesOfNightmare:Play("mobsoon")
-		timerForcesOfNightmareCD:Start()
+		timerForcesOfNightmareCD:Start(nil, self.vb.addsCount+1)
+		countdownForcesOfNightmare:Start()
 	elseif spellId == 212630 then
 		warnCleansingGround:Show()
-		timerCleansingGroundCD:Start()
 	elseif spellId == 211073 then
 		warnDesiccatingStomp:Show()
-	elseif spellId == 211192 then
-		self:BossTargetScanner(args.sourceGUID, "BreathTarget", 0.1, 15)
 	elseif spellId == 211368 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnTouchofLife:Show(args.sourceName)
 		voiceTouchOfLife:Play("kickcast")
+		timerTouchofLifeCD:Start(12, args.sourceGUID)
 	elseif spellId == 214529 then
 		timerSpearOfNightmaresCD:Start()
 		local targetName, uId, bossuid = self:GetBossTarget(104636, true)
@@ -140,10 +165,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 210280 then--Creeping Nightmares cast, maybe? Might use APPLIED only
-		specWarnCreepingNightmares:Show()
-		timerCreepingNightmaresCD:Start()
-	elseif spellId == 214505 then
+	if spellId == 214505 then
 		specWarnEntangledNightmares:Show()
 	elseif spellId == 214876 then
 		warnBeastsOfNightmare:Show()
@@ -153,48 +175,61 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 210346 then
-		specWarnDreadThorns:Show()
-		voiceDreadThorns:Play("bossout")
+--		specWarnDreadThorns:Show()
+--		voiceDreadThorns:Play("bossout")
 		timerDreadThornsCD:Start()--Here for now because AI timer, but move to SPELL_AURA_REMOVED with data
 	elseif spellId == 211368 then
 		specWarnTouchofLifeDispel:Show(args.destName)
 		voiceTouchOfLife:Play("dispelnow")
+	elseif spellId == 211471 then--Original casts only. Jumps can't be warned this way as of 04-01-16 Testing
+		warnScornedTouch:CombinedShow(0.5, args.destName)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 210346 then
---		timerDreadThornsCD:Start()
+		timerDreadThornsCD:Start()
 	end
 end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 105495 then--Scorned Sister
-		--Cancel Timers here
+		timerTouchofLifeCD:Cancel(args.destGUID)
+	elseif cid == 105494 then--Rotten Drake
+		--This is safer method to cancel it but if more than 1 drake is up it may in rare cases break scan for 2nd drake
+		self:BossUnitTargetScannerAbort()
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
---		specWarnMiasma:Show()
---		voiceMiasma:Play("runaway")
-	end
-end
-mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, target)
-	if msg:find(L.supressionTarget1) then
---		self:SendSync("ChargeTo", target)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 211189 then--Rotten Breath precast. Best method for fastest and most accurate target scanning
+		self:BossUnitTargetScanner(uId, "BreathTarget")
+--	elseif spellId == 211487 then--Casted scorned touches,not spreads
+	
 	end
 end
 
-function mod:OnSync(msg, targetname)
-	if not self:IsInCombat() then return end
-	if msg == "ChargeTo" then
-		
+do
+	local debuffName = GetSpellInfo(211471)
+	--Jumps didn't show in combat log during testing, only original casts. However, jumps need warnings too
+	--Check at later time if jumps are in combat log
+	function mod:UNIT_AURA(uId)
+		local hasDebuff = UnitDebuff("player", debuffName)
+		if hasDebuff and not scornedWarned then--Warn you that you have a meteor
+			specWarnScornedTouch:Show()
+			voiceScornedTouch:Play("runout")
+			yellScornedTouch:Yell()
+			scornedWarned = true
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(8)
+			end
+		elseif not hasDebuff and scornedWarned then--reset warned status if you don't have debuff
+			scornedWarned = false
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
+		end
 	end
 end
---]]

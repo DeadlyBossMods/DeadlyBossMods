@@ -73,7 +73,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	self:BossUnitTargetScannerAbort()
 --	if self.Options.HudMapOnBlink then
 --		DBMHudMap:Disable()
 --	end
