@@ -50,10 +50,6 @@ function mod:OnCombatStart(delay)
 	timerRagnarokCD:Start(11-delay)
 end
 
-function mod:OnCombatEnd()
-	self:BossUnitTargetScannerAbort()
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 202711 and args:IsDestTypePlayer() then
