@@ -14,6 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 210290 212726 212630 211073 211368 214529",
 	"SPELL_CAST_SUCCESS 214505 214876",
 	"SPELL_AURA_APPLIED 210346 211368 211471",
+	"SPELL_AURA_APPLIED_DOSE 210279",
 	"SPELL_AURA_REMOVED 210346",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
@@ -25,6 +26,7 @@ mod:RegisterEventsInCombat(
 --TODO, see if destructive Nightmares has a fixate of sorts to warn one being chased by bad whisps
 --TODO, evaluate stomp and need of timer/etc
 --TODO, Further assess thorns. it doesn't need warnings at all if adds never tanked near boss in first place
+--TODO, figure out good voice for specWarnCreepingNightmares. "clear stacks"?
 --TODO, all sub 30% stuff
 --Cenarius
 local warnNightmareBrambles			= mod:NewTargetAnnounce(210290, 2)
@@ -37,7 +39,7 @@ local warnScornedTouch				= mod:NewTargetAnnounce(211471, 3)
 local warnCleansingGround			= mod:NewCastAnnounce(212630, 1)
 
 --Cenarius
-local specWarnCreepingNightmares	= mod:NewSpecialWarningSpell(210280, nil, nil, nil, 2)--Stack warning subject to tuning
+local specWarnCreepingNightmares	= mod:NewSpecialWarningStack(210279, nil, 15, nil, 1)--Stack warning subject to tuning
 local specWarnNightmareBrambles		= mod:NewSpecialWarningRun(210290, nil, nil, nil, 1, 2)
 local yellNightmareBrambles			= mod:NewYell(210290)
 local specWarnNightmareBramblesNear	= mod:NewSpecialWarningClose(210290, nil, nil, nil, 1, 2)
@@ -183,6 +185,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceTouchOfLife:Play("dispelnow")
 	elseif spellId == 211471 then--Original casts only. Jumps can't be warned this way as of 04-01-16 Testing
 		warnScornedTouch:CombinedShow(0.5, args.destName)
+	end
+end
+
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	local spellId = args.spellId
+	if spellId == 210279 and args:IsPlayer() then
+		local amount = args.amount or 1
+		if amount % 5 == 0 then--Every 5
+			if amount >= 15 then--Starting at 15
+				specWarnCreepingNightmares:Show(amount)
+			end
+		end
 	end
 end
 
