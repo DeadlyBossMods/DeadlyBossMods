@@ -231,7 +231,7 @@ do
 	--Check at later time if jumps are in combat log
 	function mod:UNIT_AURA(uId)
 		local hasDebuff = UnitDebuff("player", debuffName)
-		if hasDebuff and not scornedWarned then--Warn you that you have a meteor
+		if hasDebuff and not scornedWarned then
 			specWarnScornedTouch:Show()
 			voiceScornedTouch:Play("runout")
 			yellScornedTouch:Yell()
@@ -239,7 +239,7 @@ do
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
-		elseif not hasDebuff and scornedWarned then--reset warned status if you don't have debuff
+		elseif not hasDebuff and scornedWarned then
 			scornedWarned = false
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
