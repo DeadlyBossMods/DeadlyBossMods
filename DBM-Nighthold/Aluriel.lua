@@ -133,17 +133,9 @@ local function hudDelay(self)
 	DBM:AddMsg("This experimental HUD is purely for code testing purposes. Right now it uses assumptions that may be false, so path it draws may not be accurate yet")
 	for i = 1, #chargeTable do
 		local name = chargeTable[i]
-		local previousName
-		if i > 1 then
-			previousName = chargeTable[i-1]
-		end
-		if not previousName then previousName = currentTank end
 		DBMHudMap:RegisterRangeMarkerOnPartyMember(213238, "party", name, 0.35, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -13, 8, nil)
-		if previousName then--Create Line from current tank to seeker targets.
-			DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, previousName, name, nil, nil, nil, nil, 135)
-		end
-		if not chargeTable[i+1] then--Last person on table
-			DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, name, currentTank, nil, nil, nil, nil, 135)--Line back to tank
+		if currentTank then--Create Line from current tank to seeker targets.
+			DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, currentTank, name, nil, nil, nil, nil, 135)
 		end
 	end
 end
