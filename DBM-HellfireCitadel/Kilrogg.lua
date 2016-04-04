@@ -192,7 +192,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellHeartSeeker:Yell()
 			voiceHeartSeeker:Play("runout")
 		elseif self:IsMelee() and self:AntiSpam(2, 4) then
-			voiceHeartSeeker:Play("158078")--farawayfromline
+			voiceHeartSeeker:Play("farfromline")
 		end
 	elseif spellId == 181488 then
 		warnVisionofDeath:CombinedShow(0.5, args.destName)

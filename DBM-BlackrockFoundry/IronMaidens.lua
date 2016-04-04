@@ -119,7 +119,7 @@ local countdownBladeDash				= mod:NewCountdown("AltTwo20", 155794, "Tank")
 local countdownDarkHunt					= mod:NewCountdownFades("AltTwo8", 158315)
 
 local voiceRapidFire					= mod:NewVoice(156631) --runout
-local voiceBloodRitual					= mod:NewVoice(158078, "MeleeDps", nil, 2) --158078, farawayfromline
+local voiceBloodRitual					= mod:NewVoice(158078, "MeleeDps", nil, 2) --farfromline
 local voiceHeartSeeker					= mod:NewVoice(158010) --spread
 local voiceShip							= mod:NewVoice("ej10019") --1695uktar, 1695gorak, 1695ukurogg
 local voiceEarthenbarrier				= mod:NewVoice(158708)  --int
@@ -446,11 +446,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if (noFilter or not isPlayerOnBoat()) then
 			countdownBloodRitual:Start()
-			if self.Options.SpecWarn158078targetcount then
-				specWarnBloodRitualOther:Show(self.vb.bloodRitual, args.destName)
-			else
-				warnBloodRitual:Show(self.vb.bloodRitual, args.destName)
-			end
 			if self.Options.HudMapOnBloodRitual then
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 7, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)
 			end
@@ -460,7 +455,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnBloodRitual:Show()
 				voiceBloodRitual:Play("targetyou")
 			else
-				voiceBloodRitual:Play("158078")--Good sound fit for everyone ELSE
+				if self.Options.SpecWarn158078targetcount then
+					specWarnBloodRitualOther:Show(self.vb.bloodRitual, args.destName)
+				else
+					warnBloodRitual:Show(self.vb.bloodRitual, args.destName)
+				end
+				voiceBloodRitual:Play("farfromline")--Good sound fit for everyone ELSE
 			end
 		end
 	elseif spellId == 156631 then

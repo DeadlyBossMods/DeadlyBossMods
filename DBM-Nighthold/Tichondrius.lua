@@ -36,7 +36,7 @@ local warnBurningSoul				= mod:NewTargetAnnounce(216040, 4)
 local warnRingOfShadow				= mod:NewSpellAnnounce(216723, 3)
 
 local specWarnCarrionPlague			= mod:NewSpecialWarningMoveAway(206480, nil, nil, nil, 1, 2)
-local specWarnSeekerSwarm			= mod:NewSpecialWarningSpell(213238, nil, nil, nil, 2, 5)
+local specWarnSeekerSwarm			= mod:NewSpecialWarningDodge(213238, nil, nil, nil, 2, 6)
 local yellSeekerSwarm				= mod:NewYell(213238)--Carrion plague targets yell when it's relevant. On seeker swarm cast
 --local specWarnBreakMark			= mod:NewSpecialWarning("specWarnBreakMark", nil, nil, nil, 1)
 local yellBrandOfArgus				= mod:NewPosYell(212794, 156225)--"Branded" short text
@@ -62,7 +62,7 @@ local countdownEchoesOfVoid			= mod:NewCountdown("Alt65", 213531)
 local countdownFeastOfBlood			= mod:NewCountdown("AltTwo25", 208230, "Tank")
 
 local voiceCarrionPlague			= mod:NewVoice(206480)--scatter
-local voiceSeekerSwarm				= mod:NewVoice(213238)--targetyou/158078(farawayfromline)
+local voiceSeekerSwarm				= mod:NewVoice(213238)--targetyou/farfromline
 local voiceFeastOfBlood				= mod:NewVoice(208230)--runout/tauntboss
 local voiceEchoesOfVoid				= mod:NewVoice(213531)--findshelter
 --Nightborne
@@ -216,7 +216,7 @@ function mod:SPELL_CAST_START(args)
 			yellSeekerSwarm:Yell()
 			voiceSeekerSwarm:Play("targetyou")
 		else
-			voiceSeekerSwarm:Play("158078")
+			voiceSeekerSwarm:Play("farfromline")
 		end
 		--begin WIP experimental HUD stuff
 		if not self.Options.HudMapOnSeeker then return end--Hud disabled, ignore rest of this code

@@ -44,7 +44,7 @@ local specWarnAnnihilateOther		= mod:NewSpecialWarningTaunt(212492, nil, nil, ni
 --Debuffs
 local specWarnMarkOfFrost			= mod:NewSpecialWarningMoveAway(212531, nil, nil, nil, 1, 2)
 local specWarnSearingBrand			= mod:NewSpecialWarningMoveAway(213148, nil, nil, nil, 1, 2)
-local specWarnSearingBrandDodge		= mod:NewSpecialWarningDodge(213148, nil, nil, nil, 2, 2)--For those who do NOT have debuff
+local specWarnSearingBrandDodge		= mod:NewSpecialWarningDodge(213148, nil, nil, nil, 2, 6)
 local specWarnArcaneOrb				= mod:NewSpecialWarningMoveAway(213519, nil, nil, nil, 1, 2)
 --Detonates
 local specWarnFrostdetonate			= mod:NewSpecialWarningMoveAway(212735, nil, nil, nil, 3, 2)
@@ -84,7 +84,7 @@ local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_T
 local voiceAnnihilate				= mod:NewVoice(212492, "Tank")--defensive/tauntboss
 --Debuffs
 local voiceMarkOfFrost				= mod:NewVoice(212531)--scatter/??? (??? not used yet, need to determine stacks for grouping up to clear then make voice maybe that says "stand near another mark of frost" maybe?)
-local voiceSearingBrand				= mod:NewVoice(213148)--scatter/158078--RENAME 158078 when updated
+local voiceSearingBrand				= mod:NewVoice(213148)--scatter/farfromline
 local voiceArcaneOrb				= mod:NewVoice(213519)--scatter
 --Detonates
 local voiceFrostDetonate			= mod:NewVoice(212735)--runout
@@ -124,7 +124,7 @@ local function hudDelay(self)
 	local currentTank = self:GetCurrentTank()
 	if not UnitDebuff("player", SearingBrandDebuff) then
 		specWarnSearingBrandDodge:Show()
-		voiceSearingBrand:Play("158078")
+		voiceSearingBrand:Play("farfromline")
 	end
 	if not currentTank then
 		DBM:Debug("Tank Detection Failure in hudDelay", 2)
