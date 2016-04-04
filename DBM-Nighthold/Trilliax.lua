@@ -37,7 +37,7 @@ local yellSterilize					= mod:NewYell(208499)
 local specWarnCleansingRage			= mod:NewSpecialWarningSpell(206820, nil, nil, nil, 2, 2)
 --Maniac
 local specWarnSearingBonds			= mod:NewSpecialWarningYou(208915, nil, nil, nil, 1, 2)--Change to Moveto warning if possible to know your link
-local specWarnAnnihilation			= mod:NewSpecialWarningDodge(201427, nil, nil, nil, 3, 2)--How does it work? Garrosh Style?
+local specWarnAnnihilation			= mod:NewSpecialWarningDodge(201427, nil, nil, nil, 3, 6)--Hallion Style
 --Caretaker
 local specWarnTidyUp				= mod:NewSpecialWarningDodge(207513, nil, nil, nil, 2, 2)--Maybe switch to mob name instead of "tidy up"
 
@@ -63,7 +63,7 @@ local voiceSterilize				= mod:NewVoice(208499)--scatter (runout better?)
 local voiceCleansingRage			= mod:NewVoice(206820)--aesoon
 --Maniac
 local voiceSearingBonds				= mod:NewVoice(208915)--linegather
-local voiceAnnihilation				= mod:NewVoice(201427)--158078 (stay away from lines) Good match for cutter laser?
+local voiceAnnihilation				= mod:NewVoice(201427)--farfromline (stay away from lines) Good match for cutter laser?
 
 --Caretaker
 local voiceTidyUp					= mod:NewVoice(207513)--mobsoon/watchstep
@@ -153,7 +153,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSpearCD:Start(self.vb.spearCooldown)
 	elseif spellId == 201427 then--Probably wrong Annihilation (Maniac Mode)
 		specWarnAnnihilation:Show()
-		voiceAnnihilation:Play("158078")
+		voiceAnnihilation:Play("farfromline")
 		if self.Options.HudMapOnAnnihilation then
 			--"<75.04 18:42:00> [CLEU] SPELL_CAST_SUCCESS#Player-970-00048598#Vivye##nil#201427#Annihilation#nil#nil", -- [4781]--sourcename or target name?
 			DBMHudMap:RegisterStaticMarkerOnPartyMember(201427, "highlight", args.sourceName, 5, 4, 1, 0, 0, 0.5, nil, 1):Pulse(0.5, 0.5)
