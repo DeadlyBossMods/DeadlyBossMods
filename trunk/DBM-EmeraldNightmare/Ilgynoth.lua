@@ -81,12 +81,11 @@ local eyeName = EJ_GetSectionInfo(13185)
 
 function mod:SpewCorruptionTarget(targetname, uId)
 	if not targetname then return end
+	warnSpewCorruption:CombinedShow(1, targetname)
 	if targetname == UnitName("player") then
 		specWarnSpewCorruption:Show()
 		voiceSpewCorruption:Play("runout")
 		yellSpewCorruption:Yell()
-	else
-		warnSpewCorruption:Show(targetname)
 	end
 end
 
@@ -143,11 +142,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		--Assumed can be used for tracking
 		timerCursedBloodCD:Stop()
 	elseif spellId == 210099 then--Ooze Fixate
+		warnFixate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show(eyeName)
 			voiceFixate:Play("targetyou")
-		else
-			warnFixate:Show(args.destName)
 		end
 	elseif spellId == 210984 then
 		local amount = args.amount or 1
