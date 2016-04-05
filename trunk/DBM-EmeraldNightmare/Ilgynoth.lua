@@ -253,7 +253,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 215128 then
 		warnCursedBlood:CombinedShow(0.5, args.destName)--Multi target assumed
-		if self:AntiSpam(2, 2) then
+		if self:AntiSpam(2, 3) then
 			timerCursedBloodCD:Start()
 		end
 		if args:IsPlayer() then
