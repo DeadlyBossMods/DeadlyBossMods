@@ -32,10 +32,10 @@ mod:RegisterEventsInCombat(
 --Stage One: The Ruined Ground
 --ability.id = 210289 or ability.id = 209915
 local warnNightmareGaze				= mod:NewSpellAnnounce(210931, 3, nil, false)--Something tells me this is just something it spam casts
-local warnFixate					= mod:NewTargetAnnounce(210099, 2)--If spammy change defaults
+local warnFixate					= mod:NewTargetAnnounce(210099, 2, nil, false)--Spammy so default off
 local warnNightmareExplosion		= mod:NewCastAnnounce(209471, 3)
 local warnDeathglare				= mod:NewStackAnnounce(210984, 2, nil, "Tank")
-local warnSpewCorruption			= mod:NewTargetAnnounce(208929, 3)
+local warnSpewCorruption			= mod:NewTargetAnnounce(208929, 3, nil, false)--Spammy so default off
 local warnGroundSlam				= mod:NewTargetAnnounce(208689, 2)--Figure this out later
 --Stage Two: The Heart of Corruption
 local warnCursedBlood				= mod:NewTargetAnnounce(215128, 3)
