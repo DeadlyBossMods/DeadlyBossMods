@@ -28,6 +28,9 @@ local GetInstanceInfo = GetInstanceInfo
 
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 
+--TAXIROUTE_LINEFACTOR_2 global is removed in legion, but TAXIROUTE_LINEFACTOR still exists, so we create our own
+local TAXIROUTE_LINEFACTOR_2 = TAXIROUTE_LINEFACTOR_2 or TAXIROUTE_LINEFACTOR / 2
+
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
 local standardFont = STANDARD_TEXT_FONT
 if (LOCALE_koKR) then
@@ -430,14 +433,14 @@ local function DrawRouteLineCustom(T, C, sx, sy, ex, ey, w, extend, relPoint)
 	-- Calculate bounding box size and texture coordinates
 	local Bwid, Bhgt, BLx, BLy, TLx, TLy, TRx, TRy, BRx, BRy;
 	if (dy >= 0) then
-		Bwid = ((l * c) - (w * s)) * (TAXIROUTE_LINEFACTOR_2 or 0.53);
-		Bhgt = ((w * c) - (l * s)) * (TAXIROUTE_LINEFACTOR_2 or 0.53);
+		Bwid = ((l * c) - (w * s)) * TAXIROUTE_LINEFACTOR_2;
+		Bhgt = ((w * c) - (l * s)) * TAXIROUTE_LINEFACTOR_2;
 		BLx, BLy, BRy = (w / l) * sc, s * s, (l / w) * sc;
 		BRx, TLx, TLy, TRx = 1 - BLy, BLy, 1 - BRy, 1 - BLx; 
 		TRy = BRx;
 	else
-		Bwid = ((l * c) + (w * s)) * (TAXIROUTE_LINEFACTOR_2 or 0.53);
-		Bhgt = ((w * c) + (l * s)) * (TAXIROUTE_LINEFACTOR_2 or 0.53);
+		Bwid = ((l * c) + (w * s)) * TAXIROUTE_LINEFACTOR_2;
+		Bhgt = ((w * c) + (l * s)) * TAXIROUTE_LINEFACTOR_2;
 		BLx, BLy, BRx = s * s, -(l / w) * sc, 1 + (w / l) * sc;
 		BRy, TLx, TLy, TRy = BLx, 1 - BRx, 1 - BLx, 1 - BLy;
 		TRx = TLy;
