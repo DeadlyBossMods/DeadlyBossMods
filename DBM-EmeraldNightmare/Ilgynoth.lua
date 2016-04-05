@@ -7,33 +7,37 @@ mod:SetEncounterID(1873)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 3, 2, 1)
 --mod:SetHotfixNoticeRev(12324)
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 210931 209471 208697 208929 208689 210781 208685",
 	"SPELL_CAST_SUCCESS 210984 215128",
-	"SPELL_AURA_APPLIED 209915 210099 210984 215234 215128",
+	"SPELL_AURA_APPLIED 209915 210099 210984 215234 215128 212886 210289",
 	"SPELL_AURA_APPLIED_DOSE 210984",
 	"SPELL_AURA_REMOVED 209915 215128",
 	"SPELL_PERIODIC_DAMAGE 212886",
 	"SPELL_PERIODIC_MISSED 212886",
+	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+	"RAID_BOSS_WHISPER",
+	"CHAT_MSG_ADDON",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
 --TODO, figure out how often deathglare is cast to determine swap count for tanks
---TODO, target scan ground slam if possible.
---TODO, figure out more add spawn triggers
 --TODO, figure out voice to use for specWarnHeartPhaseBegin
---TODO, determine if filter is needed, like archimonde to filter events from those that are in heart from those that are not.
+--TODO, more adds timers if needed
+--TODO, improve spew corruption to work like thogar bombs (continous alerts/yells)
 --Stage One: The Ruined Ground
+--ability.id = 210289 or ability.id = 209915
 local warnNightmareGaze				= mod:NewSpellAnnounce(210931, 3, nil, false)--Something tells me this is just something it spam casts
 local warnFixate					= mod:NewTargetAnnounce(210099, 2)--If spammy change defaults
 local warnNightmareExplosion		= mod:NewCastAnnounce(209471, 3)
 local warnDeathglare				= mod:NewStackAnnounce(210984, 2, nil, "Tank")
 local warnSpewCorruption			= mod:NewTargetAnnounce(208929, 3)
-local warnGroundSlam				= mod:NewSpellAnnounce(208689, 2)--Figure this out later
---
+local warnGroundSlam				= mod:NewTargetAnnounce(208689, 2)--Figure this out later
+--Stage Two: The Heart of Corruption
 local warnCursedBlood				= mod:NewTargetAnnounce(215128, 3)
 
 --Stage One: The Ruined Ground
@@ -47,19 +51,23 @@ local specWarnSpewCorruption		= mod:NewSpecialWarningRun(208929, nil, nil, nil, 
 local yellSpewCorruption			= mod:NewYell(208929)
 local specWarnNightmarishFury		= mod:NewSpecialWarningSpell(215234, "Tank", nil, nil, 3, 2)
 local specWarnDominatorTentacle		= mod:NewSpecialWarningSwitch("ej13189", "Tank")
+local specWarnGroundSlam			= mod:NewSpecialWarningYou(208689, nil, nil, nil, 1, 2)
+local yellGroundSlam				= mod:NewYell(208689)
+local specWarnGroundSlamNear		= mod:NewSpecialWarningClose(208689, nil, nil, nil, 1, 2)
 --Stage Two: The Heart of Corruption
 local specWarnHeartPhaseBegin		= mod:NewSpecialWarningFades(209915, nil, nil, nil, 1)
 local specWarnCursedBlood			= mod:NewSpecialWarningMoveAway(215128, nil, nil, nil, 1, 2)
 local yellCursedBlood				= mod:NewFadesYell(215128)
 
 --Stage One: The Ruined Ground
-local timerNightmareHorrorCD		= mod:NewAITimer(16, "ej13188", nil, nil, nil, 1, 210289)
-local timerDeathglareCD				= mod:NewAITimer(16, 210984, nil, "Tank", nil, 5)
-local timerNightmareishFuryCD		= mod:NewAITimer(16, 215234, nil, "Tank", nil, 5)
+local timerNightmareHorrorCD		= mod:NewNextTimer(220, "ej13188", nil, nil, nil, 1, 210289)
+local timerDeathglareCD				= mod:NewCDTimer(10.9, 210984, nil, "Tank", nil, 5)
+local timerNightmareishFuryCD		= mod:NewCDTimer(10.9, 215234, nil, "Tank", nil, 5)
 --Stage Two: The Heart of Corruption
 local timerDarkReconstitution		= mod:NewCastTimer(50, 210781, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)
-local timerCursedBloodCD			= mod:NewAITimer(16, 215128, nil, nil, nil, 3)
+local timerCursedBloodCD			= mod:NewNextTimer(15, 215128, nil, nil, nil, 3)
 
+local countdownNightmareHorror		= mod:NewCountdown("Alt50", 210289)
 --Stage Two: The Heart of Corruption
 local countdownDarkRecon			= mod:NewCountdown("Alt50", 210781)
 
@@ -71,13 +79,60 @@ local voiceDeathGlare				= mod:NewVoice(210984)--changemt
 local voiceMindFlay					= mod:NewVoice(208697)--kickcast
 local voiceSpewCorruption			= mod:NewVoice(208929)--runout
 local voiceNightmarishFury			= mod:NewVoice(210984)--defensive
+local voiceGroundSlam				= mod:NewVoice(208689)--targetyou/watchwave
 
 mod:AddRangeFrameOption(8, 215128)
---mod:AddSetIconOption("SetIconOnMC", 163472, false)
---mod:AddHudMapOption("HudMapOnMC", 163472)
+mod:AddInfoFrameOption("ej13187")
 
+mod.vb.DominatorCount = 0
+mod.vb.CorruptorCount = 0
+mod.vb.DeathglareCount = 0
+mod.vb.NightmareCount = 0
+mod.vb.IchorCount = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local eyeName = EJ_GetSectionInfo(13185)
+local addsTable = {}
+
+local updateInfoFrame, sortInfoFrame
+do
+	local lines = {}
+	sortInfoFrame = function(a, b)
+		local a = lines[a]
+		local b = lines[b]
+		if not tonumber(a) then a = -1 end
+		if not tonumber(b) then b = -1 end
+		if a > b then return true else return false end
+	end
+
+	local DominatorTentacle, CorruptorTentacle, DeathglareTentacle, NightmareHorror, NightmareIchor = EJ_GetSectionInfo(13189), EJ_GetSectionInfo(13191), EJ_GetSectionInfo(13190), EJ_GetSectionInfo(13188), EJ_GetSectionInfo(13186)
+	updateInfoFrame = function()
+		table.wipe(lines)
+		if mod.vb.NightmareCount > 0 then
+			if mod:IsTank() then--Add needs to be tanked
+				lines["|cff00ffff"..NightmareHorror.."|r"] = mod.vb.NightmareCount
+			else
+				lines[NightmareHorror] = mod.vb.NightmareCount
+			end
+		end
+		if mod.vb.DominatorCount > 0 then
+			if mod:IsTank() then--Add needs to be tanked
+				lines["|cff00ffff"..DominatorTentacle.."|r"] = mod.vb.DominatorCount
+			else
+				lines[DominatorTentacle] = mod.vb.DominatorCount
+			end
+		end
+		if mod.vb.CorruptorCount > 0 then
+			lines[CorruptorTentacle] = mod.vb.CorruptorCount
+		end
+		if mod.vb.DeathglareCount > 0 then
+			lines[DeathglareTentacle] = mod.vb.DeathglareCount
+		end
+		if mod.vb.IchorCount > 0 then
+			lines[NightmareIchor] = mod.vb.IchorCount
+		end
+		return lines
+	end
+end
 
 function mod:SpewCorruptionTarget(targetname, uId)
 	if not targetname then return end
@@ -90,19 +145,29 @@ function mod:SpewCorruptionTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	timerNightmareHorrorCD:Start(1)
+	table.wipe(addsTable)
+	self.vb.DominatorCount = 0
+	self.vb.CorruptorCount = 0
+	self.vb.DeathglareCount = 0
+	self.vb.NightmareCount = 0
+	self.vb.IchorCount = 0
+	timerNightmareHorrorCD:Start(65-delay)
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS)
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
+	end
+	if self:AntiSpam(10, 2) then
+		--Do nothing. Just to avoid spam on pull
+	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.FelArrow then
---		DBM.Arrow:Hide()
---	end
---	if self.Options.HudMapOnMC then
---		DBMHudMap:Disable()
---	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -111,15 +176,22 @@ function mod:SPELL_CAST_START(args)
 		warnNightmareGaze:Show()
 	elseif spellId == 209471 then
 		warnNightmareExplosion:Show()
-	elseif spellId == 208697 and self:CheckInterruptFilter(args.sourceGUID) then
-		specWarnMindFlay:Show(args.sourceName)
-		voiceMindFlay:Play("kickcast")
+	elseif spellId == 208697 then
+		if self:CheckInterruptFilter(args.sourceGUID) then
+			specWarnMindFlay:Show(args.sourceName)
+			voiceMindFlay:Play("kickcast")
+		end
+		if not addsTable[args.sourceGUID] then
+			addsTable[args.sourceGUID] = true
+			self.vb.DeathglareCount = self.vb.DeathglareCount + 1
+		end
 	elseif spellId == 208929 then
 		self:BossTargetScanner(args.sourceGUID, "SpewCorruptionTarget", 0.2, 16)
-	elseif spellId == 208689 then
-		warnGroundSlam:Show()
+		if not addsTable[args.sourceGUID] then
+			addsTable[args.sourceGUID] = true
+			self.vb.CorruptorCount = self.vb.CorruptorCount + 1
+		end
 	elseif spellId == 210781 then--Dark Reconstitution
-		timerCursedBloodCD:Start(1)
 		timerDarkReconstitution:Start()
 		countdownDarkRecon:Start()
 	elseif spellId == 208685 and self:AntiSpam(4, 2) then--Rupturing roar (Untanked tentacle)
@@ -131,37 +203,42 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 210984 then
 		timerDeathglareCD:Start(nil, args.sourceGUID)
-	elseif spellId == 215128 then
-		timerCursedBloodCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 209915 then--Stuff of Nightmares
-		--Assumed can be used for tracking
 		timerCursedBloodCD:Stop()
+		timerNightmareHorrorCD:Start(95)
 	elseif spellId == 210099 then--Ooze Fixate
 		warnFixate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show(eyeName)
 			voiceFixate:Play("targetyou")
 		end
+		if not addsTable[args.sourceGUID] then
+			addsTable[args.sourceGUID] = true
+			self.vb.IchorCount = self.vb.IchorCount + 1
+		end
 	elseif spellId == 210984 then
-		local amount = args.amount or 1
-		if amount >= 2 then
-			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
-				specWarnDeathglare:Show(amount)
-			else--Taunt as soon as stacks are clear, regardless of stack count.
-				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
-					specWarnDeathglareOther:Show(args.destName)
-					voiceDeathGlare:Play("changemt")
-				else
-					warnDeathglare:Show(args.destName, amount)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			local amount = args.amount or 1
+			if amount >= 2 then
+				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
+					specWarnDeathglare:Show(amount)
+				else--Taunt as soon as stacks are clear, regardless of stack count.
+					if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+						specWarnDeathglareOther:Show(args.destName)
+						voiceDeathGlare:Play("changemt")
+					else
+						warnDeathglare:Show(args.destName, amount)
+					end
 				end
+			else
+				warnDeathglare:Show(args.destName, amount)
 			end
-		else
-			warnDeathglare:Show(args.destName, amount)
 		end
 	elseif spellId == 215234 then
 		timerNightmareishFuryCD:Start(nil, args.sourceGUID)
@@ -176,6 +253,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 215128 then
 		warnCursedBlood:CombinedShow(0.5, args.destName)--Multi target assumed
+		if self:AntiSpam(2, 2) then
+			timerCursedBloodCD:Start()
+		end
 		if args:IsPlayer() then
 			specWarnCursedBlood:Show()
 			yellCursedBlood:Schedule(7, 1)
@@ -185,6 +265,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(8)
 			end
 		end
+	elseif spellId == 212886 and args:IsPlayer() and self:AntiSpam(2, 1) then
+		specWarnNightmareCorruption:Show()
+		voiceNightmareCorruption:Play("runaway")
+	elseif spellId == 210289 then
+		specWarnNightmareHorror:Show()
+		voiceNightmareHorror:Play("bigmob")
+		timerNightmareHorrorCD:Start()
+		self.vb.NightmareCount = self.vb.NightmareCount + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -193,6 +281,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 209915 then--Stuff of Nightmares
 		specWarnHeartPhaseBegin:Show()
+		timerNightmareHorrorCD:Stop()
+		timerCursedBloodCD:Start()
 	elseif spellId == 215128 and args:IsPlayer() then
 		yellCursedBlood:Cancel()
 		if self.Options.RangeFrame then
@@ -209,34 +299,56 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	for i = 1, 5 do
+		local bossUnitID
+		if UnitExists(bossUnitID) then--Check if new units exist we haven't detected and added yet.
+			local cid = mod:GetCIDFromGUID(UnitGUID(bossUnitID))
+			if not addsTable[UnitGUID(bossUnitID)] and cid == 105304 then--Dominator Tentacle
+				if self:AntiSpam(4, 2) then
+					specWarnDominatorTentacle:Show()
+				end
+				addsTable[UnitGUID(bossUnitID)] = true
+				self.vb.DominatorCount = self.vb.DominatorCount + 1
+			end
+		end
+	end
+end
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 105591 then--Nightmare Horror
+		self.vb.NightmareCount = self.vb.NightmareCount - 1
 		timerDeathglareCD:Stop(args.destGUID)
 	elseif cid == 105304 then--Dominator Tentacle
+		self.vb.DominatorCount = self.vb.DominatorCount - 1
 		timerNightmareishFuryCD:stop(args.destGUID)
+	elseif cid == 105383 then--Corruptor tentacle
+		self.vb.CorruptorCount = self.vb.CorruptorCount - 1
+	elseif cid == 105322 then--Deathglare Tentacle
+		self.vb.DeathglareCount = self.vb.DeathglareCount - 1
+	elseif cid == 105721 then--Nightmare Ichor
+		self.vb.IchorCount = self.vb.IchorCount - 1
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 210289 then
-		specWarnNightmareHorror:Show()
-		voiceNightmareHorror:Play("bigmob")
-		timerNightmareHorrorCD:Start()
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:208689") then
+		specWarnGroundSlam:Show()
+		yellGroundSlam:Yell()
+		voiceGroundSlam:Play("targetyou")
 	end
 end
 
---[[
-function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, target)
-	if msg:find(L.supressionTarget1) then
---		self:SendSync("ChargeTo", target)
+function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
+	if prefix ~= "Transcriptor" then return end
+	if msg:find("spell:208689") then--Ground Slam
+		targetName = Ambiguate(targetName, "none")
+		if self:CheckNearby(5, targetName) then
+			specWarnGroundSlamNear:Show(targetName)
+			voiceGroundSlam:Play("watchwave")
+		else
+			warnGroundSlam:CombinedShow(1, targetName)
+		end
 	end
 end
-
-function mod:OnSync(msg, targetname)
-	if not self:IsInCombat() then return end
-	if msg == "ChargeTo" then
-		
-	end
-end
---]]
