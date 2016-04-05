@@ -142,7 +142,7 @@ local function hudDelay(self)
 	for i = 1, #chargeTable do
 		local name = chargeTable[i]
 		DBMHudMap:RegisterRangeMarkerOnPartyMember(213166, "party", name, 0.35, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -13, 8, nil)
-		DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, currentTank, name, nil, nil, nil, nil, 135)
+		DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, currentTank, name, nil, nil, nil, nil, 125)
 	end
 end
 
