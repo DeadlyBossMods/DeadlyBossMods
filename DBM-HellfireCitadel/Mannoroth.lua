@@ -66,8 +66,7 @@ local specWarnWrathofGuldan			= mod:NewSpecialWarningYou(186362, nil, nil, nil, 
 local yellWrathofGuldan				= mod:NewPosYell(186362, 169826)
 local specWarnFelPillar				= mod:NewSpecialWarningDodge(190070, nil, nil, 3, 1, 2)
 --Mannoroth
-local specWarnGlaiveCombo			= mod:NewSpecialWarningSpell(181354, "Tank", nil, nil, 3, 2)--Active mitigation or die mechanic
-local specWarnMassiveBlast			= mod:NewSpecialWarningSpell(181359, nil, nil, nil, 1, 2)
+local specWarnGlaiveCombo			= mod:NewSpecialWarningDefensive(181354, "Tank", nil, nil, 3, 2)--Active mitigation or die mechanic
 local specWarnMassiveBlastOther		= mod:NewSpecialWarningTaunt(181359, nil, nil, nil, 1, 2)
 local specWarnFelHellStorm			= mod:NewSpecialWarningSpell(181557, nil, nil, nil, 2, 2)
 local specWarnGaze					= mod:NewSpecialWarningYou(181597)
@@ -385,7 +384,6 @@ function mod:SPELL_CAST_START(args)
 		local targetName, uId, bossuid = self:GetBossTarget(91349, true)
 		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
 		if tanking or (status == 3) then--Player is current target
-			specWarnMassiveBlast:Show()
 		else
 			if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, targetName) then return end--You are not near current tank, you're probably 3rd tank on Doom Guards that never taunts massive blast
 			specWarnMassiveBlastOther:Schedule(1, targetName)

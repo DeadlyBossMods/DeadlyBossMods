@@ -27,7 +27,7 @@ local warnEyeBeam					= mod:NewTargetAnnounce(197687, 2)
 
 local specWarnBrutalGlaive			= mod:NewSpecialWarningMoveAway(197546, nil, nil, nil, 1, 2)
 local yellBrutalGlaive				= mod:NewYell(197546)
-local specWarnVengefulGlaive		= mod:NewSpecialWarningSpell(197418, "Tank", nil, nil, 3, 2)
+local specWarnVengefulGlaive		= mod:NewSpecialWarningDefensive(197418, "Tank", nil, nil, 3, 2)
 local specWarnDarkRush				= mod:NewSpecialWarningYou(197478, nil, nil, nil, 1, 2)
 local specWarnEyeBeam				= mod:NewSpecialWarningRun(197687, nil, nil, nil, 4, 2)
 local yellEyeBeam					= mod:NewYell(197687)
