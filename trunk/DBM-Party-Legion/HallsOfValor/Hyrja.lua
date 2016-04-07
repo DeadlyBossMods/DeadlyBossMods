@@ -7,6 +7,7 @@ mod:SetEncounterID(1806)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
+self:SetWipeTime(120)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 192048 192133 192132",
