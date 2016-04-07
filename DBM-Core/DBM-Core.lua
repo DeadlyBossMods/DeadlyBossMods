@@ -3539,6 +3539,7 @@ end
 
 function DBM:CHALLENGE_MODE_START(mapID)
 	self:Debug("CHALLENGE_MODE_START fired for mapID "..mapID)
+	if wowTOC >= 70000 then return end
 	if self.Options.ChallengeBest == "None" then return end
 	if self.Options.DontShowBossTimers then return end
 	RequestChallengeModeMapInfo()
@@ -5474,7 +5475,7 @@ do
 				end
 				--When hiding objectives frame in challenge modes, start our own timer to show medal time remaining
 				local _, elapsedTime, worldTimerType = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active. if it's not, use GetWorldElapsedTimers() to find correct one
-				if worldTimerType == 2 then--Challenge mode
+				if wowTOC < 70000 and worldTimerType == 2 then--Challenge mode
 					local bronze, silver, gold = GetChallengeModeMapTimes(LastInstanceMapID)
 					local remaining
 					if elapsedTime < gold then
