@@ -19,7 +19,7 @@ local warnStrikeofMountain			= mod:NewTargetAnnounce(198443, 2)
 local warnBellowofDeeps				= mod:NewSpellAnnounce(193375, 2)--Change to special warning if they become important enough to switch to
 local warnStanceofMountain			= mod:NewSpellAnnounce(198509, 2)
 
-local specWarnSunder				= mod:NewSpecialWarningSpell(198496, "Tank", nil, nil, 1, 2)
+local specWarnSunder				= mod:NewSpecialWarningDefensive(198496, "Tank", nil, nil, 1, 2)
 local yellStrikeofMountain			= mod:NewYell(198443)
 
 local timerSunderCD					= mod:NewCDTimer(8.5, 198496, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
