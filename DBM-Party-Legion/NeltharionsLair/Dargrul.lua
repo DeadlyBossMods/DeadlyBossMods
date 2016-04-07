@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 
 local warnCrystalSpikes				= mod:NewSpellAnnounce(200551, 2)
 
-local specWarnMoltenCrash			= mod:NewSpecialWarningSpell(200732, "Tank", nil, nil, 3, 2)
+local specWarnMoltenCrash			= mod:NewSpecialWarningDefensive(200732, "Tank", nil, nil, 3, 2)
 local specWarnLandSlide				= mod:NewSpecialWarningSpell(200700, "Tank", nil, nil, 1, 2)
 local specWarnMagmaSculptor			= mod:NewSpecialWarningSwitch(200637, "Dps", nil, nil, 1, 2)
 local specWarnMagmaWave				= mod:NewSpecialWarningMoveTo(200637, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(200637), nil, 2, 2)

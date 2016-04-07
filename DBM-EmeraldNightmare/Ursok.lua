@@ -150,4 +150,4 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		voiceMiasma:Play("runaway")
 	end
 end
-mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

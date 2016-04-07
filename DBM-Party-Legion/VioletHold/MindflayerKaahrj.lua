@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 --TODO< review timers for hysteria and Doom later, right now they are all over place and unreliable
 local warnShadowCrash				= mod:NewSpellAnnounce(201920, 3)
 
-local specWarnDoom					= mod:NewSpecialWarningSpell(201148, "Tank", nil, nil, 1, 2)
+local specWarnDoom					= mod:NewSpecialWarningDefensive(201148, "Tank", nil, nil, 1, 2)
 local specWarnHysteria				= mod:NewSpecialWarningDispel(201146, "Healer", nil, nil, 1, 2)
 local specWarnEternalDarkness		= mod:NewSpecialWarningSwitch(201153, "-Healer", nil, nil, 3, 2)
 

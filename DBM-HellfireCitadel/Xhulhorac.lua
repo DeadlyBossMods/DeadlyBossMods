@@ -56,7 +56,7 @@ local specWarnFelSurge				= mod:NewSpecialWarningYou(186407, nil, nil, nil, 1, 2
 local yellFelSurge					= mod:NewYell(186407)
 local specWarnImps					= mod:NewSpecialWarningSwitchCount("ej11694", "Dps")
 ----Adds
-local specWarnFelBlazeFlurry		= mod:NewSpecialWarningSpell(186453, "Tank", nil, nil, 3, 2)
+local specWarnFelBlazeFlurry		= mod:NewSpecialWarningDefensive(186453, "Tank", nil, nil, 3, 2)
 local specWarnFelChains				= mod:NewSpecialWarningYou(186490)
 local specWarnEmpoweredFelChains	= mod:NewSpecialWarningYou(189775)
 local yellFelChains					= mod:NewYell(186490)
@@ -67,7 +67,7 @@ local specWarnVoidSurge				= mod:NewSpecialWarningYou(186333, nil, nil, nil, 1, 
 local yellVoidSurge					= mod:NewYell(186333)
 local specWarnVoids					= mod:NewSpecialWarningCount("ej11714", "Ranged")
 ----Adds
-local specWarnWitheringGaze			= mod:NewSpecialWarningSpell(186783, "Tank", nil, nil, 1, 2)
+local specWarnWitheringGaze			= mod:NewSpecialWarningDefensive(186783, "Tank", nil, nil, 1, 2)
 local specWarnBlackHole				= mod:NewSpecialWarningCount(186546, nil, nil, nil, 2)
 local specWarnEmpBlackHole			= mod:NewSpecialWarningCount(189779, nil, nil, nil, 2)--Mythic
 

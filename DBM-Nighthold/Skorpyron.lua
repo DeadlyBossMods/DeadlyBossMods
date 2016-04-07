@@ -26,7 +26,7 @@ local warnVulnerable				= mod:NewTargetAnnounce(204459, 1)
 local warnCallScorp					= mod:NewSpellAnnounce(204372, 3)
 
 local specWarnTether				= mod:NewSpecialWarningYou(204531, nil, nil, nil, 1, 2)
-local specWarnArcanoslash			= mod:NewSpecialWarningSpell(204275, "Tank", nil, nil, 1, 2)
+local specWarnArcanoslash			= mod:NewSpecialWarningDefensive(204275, "Tank", nil, nil, 1, 2)
 local specWarnCallofScorp			= mod:NewSpecialWarningSwitch(204372, "Tank", nil, nil, 1, 2)--Determine common strat for dps switching
 local specWarnNetherDischarge		= mod:NewSpecialWarningDodge(204471, nil, nil, nil, 2, 2)
 local specWarnShockwave				= mod:NewSpecialWarningMoveTo(204316, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge:format(158986), nil, 3, 2)

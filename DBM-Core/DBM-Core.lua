@@ -9598,7 +9598,11 @@ do
 	function bossModPrototype:NewSpecialWarningTargetCount(text, optionDefault, ...)
 		return newSpecialWarning(self, "targetcount", text, nil, optionDefault, ...)
 	end
-	
+
+	function bossModPrototype:NewSpecialWarningDefensive(text, optionDefault, ...)
+		return newSpecialWarning(self, "defensive", text, nil, optionDefault, ...)
+	end
+
 	function bossModPrototype:NewSpecialWarningTaunt(text, optionDefault, ...)
 		return newSpecialWarning(self, "taunt", text, nil, optionDefault, ...)
 	end

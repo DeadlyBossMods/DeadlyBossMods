@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, timers possibly. Right now it's up in hair and possibly all health based. No timer matched between multiple pulls
 --TODO, GTFO for standing in fire maybe?
-local specWarnDarkStrikes			= mod:NewSpecialWarningSpell(204151, "Tank", nil, nil, 3, 2)
+local specWarnDarkStrikes			= mod:NewSpecialWarningDefensive(204151, "Tank", nil, nil, 3, 2)
 local specWarnFuriousBlast			= mod:NewSpecialWarningInterrupt(191823, "HasInterrupt", nil, nil, 1, 2)
 local specWarnFelMortar				= mod:NewSpecialWarningDodge(202913, nil, nil, nil, 2, 2)
 

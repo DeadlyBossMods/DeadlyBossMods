@@ -311,6 +311,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	soakpos			= "%s (Soak Position: %%s)",
 	target			= "%s on >%%s<",
 	targetcount		= "%s (%%s) on >%%s< ",
+	defensive		= "%s - defensive",
 	taunt			= "%s on >%%s< - taunt now",
 	close			= "%s on >%%s< near you",
 	move			= "%s - move away",

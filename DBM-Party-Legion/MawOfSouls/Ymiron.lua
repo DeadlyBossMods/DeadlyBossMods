@@ -14,7 +14,7 @@ mod:RegisterEventsInCombat(
 
 local warnBane						= mod:NewSpellAnnounce(193460, 3)
 
-local specWarnDarkSlash				= mod:NewSpecialWarningSpell(193211, "Tank", nil, nil, 3, 2)
+local specWarnDarkSlash				= mod:NewSpecialWarningDefensive(193211, "Tank", nil, nil, 3, 2)
 local specWarnScreams				= mod:NewSpecialWarningRun(193364, "Melee", nil, nil, 4, 2)
 local specWarnWinds					= mod:NewSpecialWarningSpell(193977, nil, nil, nil, 2, 2)
 local specAriseFallen				= mod:NewSpecialWarningSwitch(193566, "-Healer", nil, nil, 1, 2)

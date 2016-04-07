@@ -23,7 +23,7 @@ local warnNightFall				= mod:NewSpellAnnounce(198401, 2)
 local specWarnNightfall			= mod:NewSpecialWarningMove(198408, nil, nil, nil, 1, 2)
 --local specWarnLeap			= mod:NewSpecialWarningDodge(196346, nil, nil, nil, 1)
 local yellLeap					= mod:NewYell(196346)
-local specWarnRampage			= mod:NewSpecialWarningSpell(198379, "Tank", nil, nil, 1, 2)
+local specWarnRampage			= mod:NewSpecialWarningDefensive(198379, "Tank", nil, nil, 1, 2)
 
 local timerLeapCD				= mod:NewCDTimer(16.5, 196346, nil, nil, nil, 3)
 local timerRampageCD			= mod:NewCDTimer(15.8, 198379, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
