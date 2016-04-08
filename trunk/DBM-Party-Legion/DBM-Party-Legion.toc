@@ -46,6 +46,7 @@ HallsOfValor\Hyrja.lua
 HallsOfValor\Fenryr.lua
 HallsOfValor\KingSkovald.lua
 HallsOfValor\Odyn.lua
+HallsOfValor\HoVTrash.lua
 NeltharionsLair\Rokmora.lua
 NeltharionsLair\Ularogg.lua
 NeltharionsLair\Naraxas.lua

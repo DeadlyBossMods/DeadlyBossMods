@@ -112,6 +112,15 @@ L= DBM:GetModLocalization(1488)
 L= DBM:GetModLocalization(1489)
 
 -----------------------
+--Halls of Valor Trash
+-----------------------
+L = DBM:GetModLocalization("HoVTrash")
+
+L:SetGeneralLocalization({
+	name =	"Halls of Valor Trash"
+})
+
+-----------------------
 -- <<<Neltharion's Lair>>> --
 -----------------------
 -----------------------
