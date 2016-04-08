@@ -53,7 +53,7 @@ local specWarnDefiledVines			= mod:NewSpecialWarningDispel(203766, "Healer", nil
 local specWarnVolatileInfection		= mod:NewSpecialWarningMoveAway(203787, nil, nil, nil, 1, 2)
 local yellVolatileInfection			= mod:NewYell(203787)
 local specWarnCorruptedBurst		= mod:NewSpecialWarningDodge(203817, "Melee", nil, nil, 1, 2)
-local specWarnCorruption			= mod:NewSpecialWarningInterrupt(205300, nil, nil, nil, 1, 2)
+local specWarnCorruption			= mod:NewSpecialWarningInterrupt(205300, "HasInterrupt", nil, nil, 1, 2)
 --Lethon
 local specWarnSiphonSpirit			= mod:NewSpecialWarningSwitch(203888, "Dps", nil, nil, 3, 2)
 local specWarnShadowBurst			= mod:NewSpecialWarningYou(204040, nil, nil, nil, 1, 2)
@@ -86,7 +86,7 @@ local timerBellowingRoarCD			= mod:NewAITimer(16, 204078, nil, nil, nil, 2)
 local voiceDefiledVines				= mod:NewVoice(203766, "Healer")--helpdispel
 --Emeriss
 local voiceVolatileInfection		= mod:NewVoice(203787)--scatter
-local voiceCorruption				= mod:NewVoice(205300)--kickcast
+local voiceCorruption				= mod:NewVoice(205300, "HasInterrupt")--kickcast
 local voiceCorruptedBurst			= mod:NewVoice(203817, "Melee")--watchstep
 --Lethon
 local voiceSiphonSpirit				= mod:NewVoice(203817, "Dps")--killspirit
