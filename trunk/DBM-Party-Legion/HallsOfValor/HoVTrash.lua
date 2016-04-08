@@ -8,7 +8,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 199805 192563"
+	"SPELL_CAST_START 199805 192563 199726"
 )
 
 local warnCrackle					= mod:NewTargetAnnounce(199805, 2)
@@ -16,9 +16,11 @@ local warnCrackle					= mod:NewTargetAnnounce(199805, 2)
 local specWarnCrackle				= mod:NewSpecialWarningDodge(199805, nil, nil, nil, 1, 2)
 local yellCrackle					= mod:NewYell(199805)
 local specWarnCleansingFlame		= mod:NewSpecialWarningInterrupt(192563, "HasInterrupt", nil, nil, 1, 2)
+local specWarnUnrulyYell			= mod:NewSpecialWarningInterrupt(199726, "HasInterrupt", nil, nil, 1, 2)
 
 local voiceCrackle					= mod:NewVoice(194966)--watchstep
 local voiceCleansingFlame			= mod:NewVoice(192563, "HasInterrupt")--kickcast
+local voiceUnrulyYell				= mod:NewVoice(199726, "HasInterrupt")--kickcast
 
 mod:RemoveOption("HealthFrame")
 
@@ -44,5 +46,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 192563 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnCleansingFlame:Show(args.sourceName)
 		voiceCleansingFlame:Play("kickcast")
+	elseif spellId == 199726 and self:CheckInterruptFilter(args.sourceGUID) then
+		specWarnUnrulyYell:Show(args.sourceName)
+		voiceUnrulyYell:Play("kickcast")
 	end
 end

@@ -12,7 +12,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 197556 196838",
 	"SPELL_AURA_REMOVED 196838",
 	"SPELL_CAST_START 196838 196543",
-	"SPELL_CAST_SUCCESS 196567 196512"
+	"SPELL_CAST_SUCCESS 196567 196512 207707"
 )
 
 --TODO, his timers could be all wrong.Hard to say with a single pull that was short.
@@ -26,11 +26,13 @@ local yellLeap							= mod:NewYell(197556)
 local specWarnHowl						= mod:NewSpecialWarningCast(196543, "SpellCaster", nil, nil, 1, 2)
 local specWarnFixate					= mod:NewSpecialWarningRun(196838, nil, nil, nil, 4, 2)
 local specWarnFixateOver				= mod:NewSpecialWarningEnd(196838, nil, nil, nil, 1)
+local specWarnWolves					= mod:NewSpecialWarningSwitch("ej12600", "Tank")
 
 local timerLeapCD						= mod:NewCDTimer(31, 197556, nil, nil, nil, 3)--31-36
 --local timerClawFrenzyCD					= mod:NewCDTimer(10, 196512, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--All over the place
 local timerHowlCD						= mod:NewCDTimer(31.5, 196543, nil, "SpellCaster", nil, 2)--Poor data
 local timerFixateCD						= mod:NewCDTimer(36, 196838, nil, nil, nil, 3)--Poor data
+local timerWolvesCD						= mod:NewCDTimer(35, "ej12600", nil, nil, nil, 1, 199184)
 
 local voiceLeap							= mod:NewVoice(197556)--runout
 local voiceHowl							= mod:NewVoice(196543, "SpellCaster")--stopcast
@@ -128,6 +130,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		)
 	elseif spellId == 196512 then
 		warnClawFrenzy:Show()
+	elseif spellId == 207707 and self:AntiSpam(2, 1) then--Wolves spawning out of stealth
+		specWarnWolves:Show()
+		timerWolvesCD:Start()
 	end
 end
 
@@ -138,6 +143,7 @@ function mod:ENCOUNTER_START(encounterID)
 --		self:UnregisterShortTermEvents()
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
+		timerWolvesCD:Start(5)
 --		timerHowlCD:Start(5)--2-6, useless timer
 --		timerFixateCD:Start(9.8)--7-20, useless timer
 --		timerClawFrenzyCD:Start(27)
