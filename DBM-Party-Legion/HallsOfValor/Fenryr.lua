@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 196567 196512 207707"
 )
 
---TODO, his timers could be all wrong.Hard to say with a single pull that was short.
+--TODO, Keep checking/fixing timers
 local warnLeap							= mod:NewTargetAnnounce(197556, 2)
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
 local warnFixate						= mod:NewTargetAnnounce(196838, 3)
@@ -145,9 +145,9 @@ function mod:ENCOUNTER_START(encounterID)
 		voicePhaseChange:Play("ptwo")
 		timerWolvesCD:Start(5)
 --		timerHowlCD:Start(5)--2-6, useless timer
---		timerFixateCD:Start(9.8)--7-20, useless timer
+		timerFixateCD:Start(9.3)--7-20, useless timer
 --		timerClawFrenzyCD:Start(27)
---		timerLeapCD:Start(30)--10-30, useless timer
+		timerLeapCD:Start(27)--10-30, useless timer
 	end
 end
 
