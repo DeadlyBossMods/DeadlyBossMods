@@ -344,6 +344,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	soakpos			= "Show special warning (with position) to help soak others affected by $spell:%s",
 	target 			= "Show special warning when someone is affected by $spell:%s",
 	targetcount 	= "Show special warning (with count) when someone is affected by $spell:%s",
+	defensive 		= "Show special warning to use defensive abilites for $spell:%s",
 	taunt 			= "Show special warning to taunt when other tank affected by $spell:%s",
 	close 			= "Show special warning when someone close to you is affected by $spell:%s",
 	move 			= "Show special warning to move out from $spell:%s",
