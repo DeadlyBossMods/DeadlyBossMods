@@ -28,12 +28,12 @@ mod:RegisterEventsInCombat(
 --TODO: See if target scanning faster for necrotic Venom
 --TODO, Target scan razor wing and add HUD to it. If it's not tank only
 --Spider Form
-local warnSpiderForm				= mod:NewTargetAnnounce("ej13259", 2, 200666)
+--local warnSpiderForm				= mod:NewTargetAnnounce("ej13259", 2, 200666)
 local warnFeedingTime				= mod:NewSpellAnnounce(212364, 3)
 local warnWebWrap					= mod:NewTargetAnnounce(212514, 4)
 local warnNecroticVenom				= mod:NewTargetAnnounce(218831, 3)
 --Roc Form
-local warnRocForm					= mod:NewTargetAnnounce("ej13263", 2, 196768)
+--local warnRocForm					= mod:NewTargetAnnounce("ej13263", 2, 196768)
 local warnTwistedShadows			= mod:NewTargetAnnounce(210864, 3)
 
 --Spider Form
