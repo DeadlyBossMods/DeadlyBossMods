@@ -22,6 +22,8 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, maybe improve timers by on fly corrections off breaths 1 and 2 to fix their accuracy a little do to variations
+--TODO, Fix yellsi if they are still 1 second off for volatile rot in later tests.
+--TODO, figure out wtf on the timers. they were completely different on mythic. But she's not health based boss it's UNIT POWER
 --consider countdowns if timers made more accurate.
 local warnVolatileRot				= mod:NewTargetAnnounce(204463, 4)
 local warnRot						= mod:NewTargetAnnounce(203096, 3)
@@ -38,7 +40,7 @@ local specWarnInfestedGround		= mod:NewSpecialWarningMove(203045, nil, nil, nil,
 local specWarnInfestedMind			= mod:NewSpecialWarningSwitch(205043, "Dps", nil, nil, 1, 2)
 local specWarnSpreadInfestation		= mod:NewSpecialWarningInterrupt(205070, "HasInterrupt", nil, nil, 1, 2)
 
-local timerBreathCD					= mod:NewCDCountTimer(40, 202977, nil, nil, nil, 3)
+local timerBreathCD					= mod:NewCDCountTimer(40, 202977, nil, nil, nil, 3)--40-47
 local timerVolatileRotCD			= mod:NewCDCountTimer(22.8, 204463, nil, "Tank", nil, 5)
 local timerRotCD					= mod:NewCDCountTimer(22.8, 203096, nil, nil, nil, 3)
 local timerSwarmCD					= mod:NewCDCountTimer(94, 203552, nil, nil, nil, 6)--94-98
@@ -66,11 +68,11 @@ function mod:OnCombatStart(delay)
 	self.vb.rotCast = 0
 	self.vb.volatileRotCast = 0
 	self.vb.swarmCast = 0
-	timerVolatileRotCD:Start(20, 1)--20-24
-	timerRotCD:Start(11, 1)--May need tweaking, too annoying to dig through logs for something not in them
+	timerRotCD:Start(10, 1)
+	timerVolatileRotCD:Start(20, 1)--20-25.8
 	timerBreathCD:Start(35-delay, 1)--35-40 variable
 	countdownBreath:Start(35-delay)
-	timerSwarmCD:Start(86-delay, 1)--86-92
+	timerSwarmCD:Start(86-delay, 1)--86-100
 	if self.Options.InfoFrame and self:IsMythic() then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(204506))
 		DBM.InfoFrame:Show(5, "playerdebuffstacks", 204506)
@@ -106,7 +108,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 204463 then
 		self.vb.volatileRotCast = self.vb.volatileRotCast + 1
-		timerVolatileRotCD:Start(nil, self.vb.volatileRotCast+1)
+		if self:IsMythic() then
+			timerVolatileRotCD:Start(43, self.vb.volatileRotCast+1)--43-48
+		else
+			timerVolatileRotCD:Start(nil, self.vb.volatileRotCast+1)
+		end
 	end
 end
 
@@ -193,8 +199,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 203095 then--CAST Doesn't show in combat log for some reason. Applied does but don't want to risk misses
 		self.vb.rotCast = self.vb.rotCast + 1
 		if self.vb.rotCast == 1 then
-			timerRotCD:Start(33, 2)--33-36
-		elseif self.vb.rotCast == 2 then
+			if self:IsMythic() then
+				timerRotCD:Start(45, 2)
+			else
+				timerRotCD:Start(33, 2)--33-36
+			end
+		elseif not self:IsMythic() and self.vb.rotCast == 2 then
 			timerRotCD:Start(18.5, 3)--18.5-22
 		end
 	end
