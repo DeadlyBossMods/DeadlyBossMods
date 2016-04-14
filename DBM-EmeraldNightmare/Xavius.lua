@@ -10,42 +10,82 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START 207830",
+	"SPELL_CAST_SUCCESS 206878 206651",
+	"SPELL_AURA_APPLIED 208431 206651 205771",
+	"SPELL_AURA_REMOVED 208431 206651",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
-	"CHAT_MSG_MONSTER_YELL"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---local warnExpelMagicFrost			= mod:NewTargetAnnounce(161411, 3)
+--TODO, figure out creatures of corruption stuff
+--TODO, see mechanics to apply appropriate voices. too many assumptions right now on some spells
+--TODO, interrupt count/helper when CD is known and rotation is confirmed to be 2 or 3 or 4 person
+--TODO, if fixate isn't multiple targets, hide target warning if on player and removed CombinedShow
+--Nightmare Corruption
+local warnUnfathomableReality			= mod:NewTargetAnnounce(206879, 3)
+local warnDescentIntoMadness			= mod:NewTargetAnnounce(208431, 4)
+--Stage One: The Decent Into Madness
+local warnDarkeningSoul					= mod:NewTargetAnnounce(206651, 3, nil, "Healer")
+local warnTormentingFixation			= mod:NewTargetAnnounce(205771, 4)
+--Stage Two: From the Shadows
 
---local specWarnTrampleNear			= mod:NewSpecialWarningClose(163101)
---local yellTrample					= mod:NewYell(163101)
+local specWarnUnfathomableReality		= mod:NewSpecialWarningYou(206879)
+local yellUnfathomableReality			= mod:NewYell(206879)
+local specWarnUnfathomableRealityNear	= mod:NewSpecialWarningClose(206879)
+local specWarnDescentIntoMadness		= mod:NewSpecialWarningYou(208431)
+local yellDescentIntoMadness			= mod:NewFadesYell(208431)
+--Stage One: The Decent Into Madness
+local specWarnNightmareBlades			= mod:NewSpecialWarningDodge(206656, nil, nil, nil, 2, 2)
+local specWarnCorruptionHorror			= mod:NewSpecialWarningSwitch("ej12973", "-Healer", nil, nil, 1, 2)
+local specWarnCorruptingNova			= mod:NewSpecialWarningInterrupt(207830, "HasInterrupt", nil, nil, 1, 2)
+local specWarnTormentingFixation		= mod:NewSpecialWarningRun(205771, nil, nil, nil, 4, 2)
+--Stage Two: From the Shadows
 
---local timerTrampleCD				= mod:NewCDTimer(16, 163101, nil, nil, nil, 3)
+--Stage One: The Decent Into Madness
+local timerDarkeningSoulCD				= mod:NewAITimer(16, 206651, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)
+local timerNightmareBladesCD			= mod:NewAITimer(16, 206656, nil, nil, nil, 3)
+local timerCorruptingNovaCD				= mod:NewAITimer(16, 207830, nil, "HasInterrupt", nil, 5)
+--Stage Two: From the Shadows
 
---local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
+--Stage One: The Decent Into Madness
+--local countdownMagicFire				= mod:NewCountdownFades(11.5, 162185)
 
---local voiceExpelMagicFire			= mod:NewVoice(162185)
+--Nightmare Corruption
+--local voiceUnfathomableReality		= mod:NewVoice(206879)
+--local voiceDescentIntoMadness			= mod:NewVoice(208431)
+--Stage One: The Decent Into Madness
+local voiceNightmareBlades				= mod:NewVoice(206656)--watchstep (or shockwave)
+local voiceCorruptionHorror				= mod:NewVoice("ej12973", "-Healer")--bigmob
+local voiceCorruptingNova				= mod:NewVoice(207830, "HasInterrupt")--kickcast
+local voiceTormentingFixation			= mod:NewVoice(205771)--targetyou (iffy, is there no voice that says fixate, run?)
+--Stage Two: From the Shadows
 
---mod:AddRangeFrameOption("5")
+mod:AddInfoFrameOption("ej12970")
+--mod:AddRangeFrameOption("8")
 --mod:AddSetIconOption("SetIconOnMC", 163472, false)
 --mod:AddHudMapOption("HudMapOnMC", 163472)
 
-function mod:OnCombatStart(delay)
+local corruptionName = EJ_GetSectionInfo(12970)
 
+function mod:OnCombatStart(delay)
+	timerDarkeningSoulCD:Start(1-delay)
+	timerNightmareBladesCD:Start(1-delay)
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(corruptionName)
+		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
+	end
 end
 
 function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
---	end
---	if self.Options.FelArrow then
---		DBM.Arrow:Hide()
 --	end
 --	if self.Options.HudMapOnMC then
 --		DBMHudMap:Disable()
@@ -54,32 +94,86 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 162185 then
-
+	if spellId == 207830 then
+		timerCorruptingNovaCD:Start(nil, args.sourceGUID)
+		if self:CheckInterruptFilter(args.sourceGUID) then
+			specWarnCorruptingNova:Show(args.sourceName)
+			voiceCorruptingNova:Play("kickcast")
+		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 161612 then
-
+	if spellId == 206878 then--Guessed trigger spell. May not be in combat log
+		for uId in DBM:GetGroupMembers() do
+			local maxPower = UnitPowerMax(uId, ALTERNATE_POWER_INDEX)
+			if maxPower ~= 0 and not UnitIsDeadOrGhost(uId) then--PTR work around mainly, div by 0 crap
+				local unitsPower = UnitPower(uId, ALTERNATE_POWER_INDEX) / maxPower * 100
+				if unitsPower >= 66 then--Valid Unfathomable Reality
+					local targetName = DBM:GetUnitFullName(uId)
+					warnUnfathomableReality:CombinedShow(0.5, targetName)
+					if targetName == UnitName("player") then
+						specWarnUnfathomableReality:Show()
+						yellUnfathomableReality:Yell()
+					elseif self:CheckNearby(8, targetName) and self:AntiSpam(3, 1) then
+						specWarnUnfathomableRealityNear:Show(targetName)
+					end
+				end
+			end
+		end
+	elseif spellId == 206651 then
+		timerDarkeningSoulCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 156803 then
-
+	if spellId == 208431 then
+		warnDescentIntoMadness:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnDescentIntoMadness:Show()
+			yellDescentIntoMadness:Schedule(19, 1)
+			yellDescentIntoMadness:Schedule(18, 2)
+			yellDescentIntoMadness:Schedule(17, 3)
+		end
+	elseif spellId == 206651 then
+		warnDarkeningSoul:CombinedShow(0.5, args.destName)
+	elseif spellId == 205771 then
+		warnTormentingFixation:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnTormentingFixation:Show()
+			voiceTormentingFixation:Play("targetyou")
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 162186 then
-
+	if spellId == 208431 and args:IsPlayer() then
+		yellDescentIntoMadness:Cancel()
 	end
 end
 
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 103695 then--Corruption Horror
+		timerCorruptingNovaCD:Stop(args.destGUID)
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 206653 then--Nightmare Blades (only version that has cast time
+		specWarnNightmareBlades:Show()
+		voiceNightmareBlades:Play("watchstep")
+		timerNightmareBladesCD:Start()
+	elseif spellId == 213345 then--Corruption Horror Birth
+		specWarnCorruptionHorror:Show()
+		voiceCorruptionHorror:Play("bigadd")
+	end
+end
+
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 --		specWarnMiasma:Show()
