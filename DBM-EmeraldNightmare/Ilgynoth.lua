@@ -20,9 +20,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 212886",
 	"SPELL_PERIODIC_MISSED 212886",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+	"UNIT_DIED",
 	"RAID_BOSS_WHISPER",
-	"CHAT_MSG_ADDON",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
+	"CHAT_MSG_ADDON"
 )
 
 --TODO, figure out how often deathglare is cast to determine swap count for tanks
