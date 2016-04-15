@@ -11,10 +11,10 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 207830",
-	"SPELL_CAST_SUCCESS 206878 206651",
-	"SPELL_AURA_APPLIED 208431 206651 205771",
-	"SPELL_AURA_REMOVED 208431 206651",
+	"SPELL_CAST_START 207830 206308 209443",
+	"SPELL_CAST_SUCCESS 206878 206651 209158",
+	"SPELL_AURA_APPLIED 208431 206651 205771 209158",
+	"SPELL_AURA_REMOVED 208431",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
 	"UNIT_DIED",
@@ -25,6 +25,7 @@ mod:RegisterEventsInCombat(
 --TODO, see mechanics to apply appropriate voices. too many assumptions right now on some spells
 --TODO, interrupt count/helper when CD is known and rotation is confirmed to be 2 or 3 or 4 person
 --TODO, if fixate isn't multiple targets, hide target warning if on player and removed CombinedShow
+--TODO, across the board detect who doesn't gain corruption and assign them to tasks like meteor soaking, taunting boss, being nearest target to adds, etc
 --Nightmare Corruption
 local warnUnfathomableReality			= mod:NewTargetAnnounce(206879, 3)
 local warnDescentIntoMadness			= mod:NewTargetAnnounce(208431, 4)
@@ -32,6 +33,8 @@ local warnDescentIntoMadness			= mod:NewTargetAnnounce(208431, 4)
 local warnDarkeningSoul					= mod:NewTargetAnnounce(206651, 3, nil, "Healer")
 local warnTormentingFixation			= mod:NewTargetAnnounce(205771, 4)
 --Stage Two: From the Shadows
+local warnBlackeningSoul				= mod:NewTargetAnnounce(209158, 3, nil, "Healer")
+local warnNightmareInfusion				= mod:NewSpellAnnounce(209443, 3, nil, "Tank")
 
 local specWarnUnfathomableReality		= mod:NewSpecialWarningYou(206879)
 local yellUnfathomableReality			= mod:NewYell(206879)
@@ -42,14 +45,21 @@ local yellDescentIntoMadness			= mod:NewFadesYell(208431)
 local specWarnNightmareBlades			= mod:NewSpecialWarningDodge(206656, nil, nil, nil, 2, 2)
 local specWarnCorruptionHorror			= mod:NewSpecialWarningSwitch("ej12973", "-Healer", nil, nil, 1, 2)
 local specWarnCorruptingNova			= mod:NewSpecialWarningInterrupt(207830, "HasInterrupt", nil, nil, 1, 2)
+local specWarnDarkeningSoul				= mod:NewSpecialWarningDispel(206651, "Healer", nil, nil, 1, 2)
 local specWarnTormentingFixation		= mod:NewSpecialWarningRun(205771, nil, nil, nil, 4, 2)
 --Stage Two: From the Shadows
+local specWarnCorruptionMeteorAway		= mod:NewSpecialWarninDodge(206308, nil, nil, nil, 2, 2)
+local specWarnCorruptionMeteorTo		= mod:NewSpecialWarningMoveTo(206308, nil, nil, nil, 1, 2)
+local specWarnBlackeningSoul			= mod:NewSpecialWarningDispel(209158, "Healer", nil, nil, 1, 2)
 
 --Stage One: The Decent Into Madness
 local timerDarkeningSoulCD				= mod:NewAITimer(16, 206651, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)
 local timerNightmareBladesCD			= mod:NewAITimer(16, 206656, nil, nil, nil, 3)
-local timerCorruptingNovaCD				= mod:NewAITimer(16, 207830, nil, "HasInterrupt", nil, 5)
+local timerCorruptingNovaCD				= mod:NewAITimer(16, 207830, nil, "HasInterrupt", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Stage Two: From the Shadows
+local timerCorruptionMeteorCD			= mod:NewAITimer(16, 206308, nil, nil, nil, 3)
+local timerBlackeningSoulCD				= mod:NewAITimer(16, 209158, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)
+local timerNightmareInfusionCD			= mod:NewAITimer(16, 209443, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --Stage One: The Decent Into Madness
 --local countdownMagicFire				= mod:NewCountdownFades(11.5, 162185)
@@ -61,8 +71,11 @@ local timerCorruptingNovaCD				= mod:NewAITimer(16, 207830, nil, "HasInterrupt",
 local voiceNightmareBlades				= mod:NewVoice(206656)--watchstep (or shockwave)
 local voiceCorruptionHorror				= mod:NewVoice("ej12973", "-Healer")--bigmob
 local voiceCorruptingNova				= mod:NewVoice(207830, "HasInterrupt")--kickcast
+local voiceDarkeningSoul				= mod:NewVoice(206651, "Healer")--helpdispel
 local voiceTormentingFixation			= mod:NewVoice(205771)--targetyou (iffy, is there no voice that says fixate, run?)
 --Stage Two: From the Shadows
+local voiceCorruptionMeteor				= mod:NewVoice(206308)--gathershare/watchstep
+local voiceBlackeningSoul				= mod:NewVoice(209158, "Healer")--helpdispel
 
 mod:AddInfoFrameOption("ej12970")
 --mod:AddRangeFrameOption("8")
@@ -70,6 +83,14 @@ mod:AddInfoFrameOption("ej12970")
 --mod:AddHudMapOption("HudMapOnMC", 163472)
 
 local corruptionName = EJ_GetSectionInfo(12970)
+local dreamSimulacrum = GetSpellInfo(206005)
+
+local function isPlayerImmune()
+	if UnitBuff("player", dreamSimulacrum) or UnitDebuff("player", dreamSimulacrum) then
+		return true
+	end
+	return false
+end
 
 function mod:OnCombatStart(delay)
 	timerDarkeningSoulCD:Start(1-delay)
@@ -100,6 +121,18 @@ function mod:SPELL_CAST_START(args)
 			specWarnCorruptingNova:Show(args.sourceName)
 			voiceCorruptingNova:Play("kickcast")
 		end
+	elseif spellId == 206308 then
+		if isPlayerImmune() then
+			specWarnCorruptionMeteorTo:Show(TARGET)
+			voiceCorruptionMeteor:Play("gathershare")
+		else
+			specWarnCorruptionMeteorAway:Show()
+			voiceCorruptionMeteor:Play("watchstep")
+		end
+		timerCorruptionMeteorCD:Start()
+	elseif spellId == 209443 then
+		warnNightmareInfusion:Show()
+		timerNightmareInfusionCD:Start()
 	end
 end
 
@@ -124,6 +157,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 206651 then
 		timerDarkeningSoulCD:Start()
+	elseif spellId == 209158 then
+		timerBlackeningSoulCD:Start()
 	end
 end
 
@@ -138,7 +173,23 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDescentIntoMadness:Schedule(17, 3)
 		end
 	elseif spellId == 206651 then
-		warnDarkeningSoul:CombinedShow(0.5, args.destName)
+		if isPlayerImmune() then
+			specWarnDarkeningSoul:CombinedShow(0.5, args.destName)
+			if self:AntiSpam(3, 2) then
+				voiceDarkeningSoul:Play("helpdispel")
+			end
+		else
+			warnDarkeningSoul:CombinedShow(0.5, args.destName)
+		end
+	elseif spellId == 209158 then
+		if isPlayerImmune() then
+			specWarnBlackeningSoul:CombinedShow(0.5, args.destName)
+			if self:AntiSpam(3, 2) then
+				voiceBlackeningSoul:Play("helpdispel")
+			end
+		else
+			warnBlackeningSoul:CombinedShow(0.5, args.destName)
+		end
 	elseif spellId == 205771 then
 		warnTormentingFixation:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
@@ -175,7 +226,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
+	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 --		specWarnMiasma:Show()
 --		voiceMiasma:Play("runaway")
 	end
