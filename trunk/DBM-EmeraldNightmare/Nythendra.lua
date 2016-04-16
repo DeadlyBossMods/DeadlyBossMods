@@ -123,11 +123,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 204463 then
 		self.vb.volatileRotCast = self.vb.volatileRotCast + 1
-		if self:IsMythic() then
+--		if self:IsMythic() then
 			timerVolatileRotCD:Start(42.5, self.vb.volatileRotCast+1)--42.5-48
-		else
-			timerVolatileRotCD:Start(nil, self.vb.volatileRotCast+1)
-		end
+--		else
+--			timerVolatileRotCD:Start(nil, self.vb.volatileRotCast+1)
+--		end
 	end
 end
 
@@ -214,11 +214,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 203095 then--CAST Doesn't show in combat log for some reason. Applied does but don't want to risk misses
 		self.vb.rotCast = self.vb.rotCast + 1
 		if self.vb.rotCast == 1 then
-			if self:IsMythic() then
+--			if self:IsMythic() then
 				timerRotCD:Start(45, 2)
-			else
-				timerRotCD:Start(33, 2)--33-36
-			end
+--			else
+--				timerRotCD:Start(33, 2)--33-36
+--			end
 		elseif not self:IsMythic() and self.vb.rotCast == 2 then
 			timerRotCD:Start(18.5, 3)--18.5-22
 		end
