@@ -80,7 +80,7 @@ do
 		DBM:Debug("Raid size: "..raidCount..". Soakers: "..soakerCount..". Soaker Half: "..soakerHalf)
 		for i = 1, raidCount do
 			local unitID = 'raid'..i
-			if not UnitDebuff(unitID, unbalancedName) and not UnitDebuff(unitID, focusedGazeName) then
+			if not UnitDebuff(unitID, unbalancedName) and not UnitDebuff(unitID, focusedGazeName) and not self:IsTanking(unitID) then
 				soakers = soakers + 1
 				soakTable[#soakTable+1] = DBM:GetUnitFullName(unitID)
 				if UnitIsUnit("player", unitID) then
