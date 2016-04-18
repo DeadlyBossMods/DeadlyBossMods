@@ -53,6 +53,19 @@ L= DBM:GetModLocalization(1713)
 ------------------
 L= DBM:GetModLocalization(1761)
 
+L:SetWarningLocalization{
+	warnStarLow				= "Plasma Sphere is low"
+}
+
+L:SetOptionLocalization{
+	warnStarLow				= "Show special warning when Collapsing Star is low (at ~15%)"
+}
+
+L:SetMiscLocalization({
+	RadarMessage		= "Use Radar to find a non debuff partner and HUD to avoid other debuffs. I hope to improve this function over time and provide more options than this."
+})
+
+
 ------------------
 -- Star Augur Etraeus --
 ------------------
