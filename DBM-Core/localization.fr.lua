@@ -304,6 +304,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.move			= "%s - écartez-vous"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodge 			= "%s - esquivez" --not sure in which case the message appears but this should work
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveaway    	= "%s - écartez-vous du raid"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto      	= "%s - dirigez-vous vers >%%s<"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.jump				= "%s - saute"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run				= "%s - fuyez"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast			= "%s - arrêtez d'incanter"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect     	= "%s sur >%%s< - arrêtez d'attaquer"
