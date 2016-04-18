@@ -52,6 +52,10 @@ if not DBM.Revision then
 	DBM.Revision = DBM.ReleaseRevision
 end
 
+if IsTestBuild() then
+	DBM.ReleaseRevision = DBM.Revision
+end
+
 -- dual profile setup
 local _, class = UnitClass("player")
 DBM_UseDualProfile = true
