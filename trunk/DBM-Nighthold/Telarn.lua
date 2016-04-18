@@ -57,7 +57,7 @@ local specWarnCoN					= mod:NewSpecialWarningYouPos(218809, nil, nil, nil, 1, 5)
 local yellCoN						= mod:NewPosYell(218809)
 
 --Stage 1: The High Botanist
-local timerControlledChaosCD		= mod:NewAITimer(16, 218809, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerControlledChaosCD		= mod:NewAITimer(16, 218438, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerParasiticFetterCD		= mod:NewAITimer(16, 218304, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)--Technically can also be made add timer instead of targetted
 local timerSolarCollapseCD			= mod:NewAITimer(16, 218148, nil, nil, nil, 3)
 --Stage 2: Nightosis
