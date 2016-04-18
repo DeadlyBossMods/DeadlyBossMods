@@ -197,6 +197,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= "%s en >%%s<"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close		= "%s en >%%s< cerca tuyo"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move		= "%s - ¡muévete!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.dodge 	= DBM_CORE_AUTO_SPEC_WARN_TEXTS.move--FIXME (this is a temp until localized properly as a dodge warning)
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.jump		= "%s - ¡salta!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run			= "%s - ¡corre!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast		= "%s - ¡para de castear!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect		= "%s en >%%s< - ¡para de atacar!"
