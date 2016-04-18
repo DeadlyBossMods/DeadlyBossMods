@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1761, "DBM-Nighthold", nil, 786)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(109042)
+mod:SetCreatureID(104528)--109042
 mod:SetEncounterID(1886)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
@@ -54,7 +54,7 @@ local specwarnStarLow				= mod:NewSpecialWarning("warnStarLow", "Tank|Healer", n
 --Stage 3: Pure Forms
 local specWarnGraceOfNature			= mod:NewSpecialWarningTarget(218927, "Tank", nil, nil, 3, 2)
 local specWarnCoN					= mod:NewSpecialWarningYouPos(218809, nil, nil, nil, 1, 5)
-local yellCoN						= mod:NewPoSYell(218809)
+local yellCoN						= mod:NewPosYell(218809)
 
 --Stage 1: The High Botanist
 local timerControlledChaosCD		= mod:NewAITimer(16, 218809, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
