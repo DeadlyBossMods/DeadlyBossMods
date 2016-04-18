@@ -32,6 +32,10 @@ L= DBM:GetModLocalization(1744)
 ---------------------------
 L= DBM:GetModLocalization(1667)
 
+L:SetMiscLocalization({
+	SoakersText		=	"Soakers Assigned: %"
+})
+
 ---------------------------
 -- Dragons of Nightmare --
 ---------------------------

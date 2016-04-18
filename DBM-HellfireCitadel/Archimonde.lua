@@ -317,7 +317,6 @@ local function setDemonicFeedback(self)
 	end
 end
 
-local iconedAssignments = {RAID_TARGET_1, RAID_TARGET_2, RAID_TARGET_3, RAID_TARGET_4}
 local function showMarkOfLegion(self, spellName)
 	--5,7,9,11 seconds. Sorted lowest to highest
 	--5, 7 on melee, 9, 11 on ranged (if enough alive anyways)
@@ -340,7 +339,7 @@ local function showMarkOfLegion(self, spellName)
 			end
 			local message = position.."-"..DBM_CORE_LEFT
 			if localMarkBehavior == "Numbered" then
-				message = iconedAssignments[number]
+				message = self:IconNumToString(number)
 			end
 			if self.Options.SetIconOnMarkOfLegion2 then
 				self:SetIcon(name, number)
@@ -372,7 +371,7 @@ local function showMarkOfLegion(self, spellName)
 			end
 			local message = position.."-"..DBM_CORE_RIGHT
 			if localMarkBehavior == "Numbered" then
-				message = iconedAssignments[number]
+				message = self:IconNumToString(number)
 			end
 			if self.Options.SetIconOnMarkOfLegion2 then
 				self:SetIcon(name, number)
@@ -404,7 +403,7 @@ local function showMarkOfLegion(self, spellName)
 			end
 			local message = position.."-"..DBM_CORE_LEFT
 			if localMarkBehavior == "Numbered" then
-				message = iconedAssignments[number]
+				message = self:IconNumToString(number)
 			end
 			if self.Options.SetIconOnMarkOfLegion2 then
 				self:SetIcon(name, number)
@@ -436,7 +435,7 @@ local function showMarkOfLegion(self, spellName)
 			end
 			local message = position.."-"..DBM_CORE_RIGHT
 			if localMarkBehavior == "Numbered" then
-				message = iconedAssignments[number]
+				message = self:IconNumToString(number)
 			end
 			if self.Options.SetIconOnMarkOfLegion2 then
 				self:SetIcon(name, number)
