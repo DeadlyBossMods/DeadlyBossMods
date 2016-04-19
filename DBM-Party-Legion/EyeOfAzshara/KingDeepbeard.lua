@@ -10,8 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 193152 193093 193018",
-	"SPELL_CAST_SUCCESS 193051",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_CAST_SUCCESS 193051"
 )
 
 --TODO: Info frame that shows all player name and sheild remaining for Gaseous Bubbles
