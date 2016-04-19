@@ -17,7 +17,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 192003 192005",
 	"SPELL_CAST_SUCCESS 191855",
 	"SPELL_DAMAGE 191858",
-	"SPELL_MISSED 191858"
+	"SPELL_MISSED 191858",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 --TODO, verify heroic+ Arcane Blast
@@ -87,8 +88,9 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 local wrathMod
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	if not wrathMod then wrathMod = DBM:GetModByName(1492) end
+	local _, _, _, _, spellId = strsplit("-", spellGUID)
 	if spellId == 191798 and self:AntiSpam(3, 2) then--Violent Winds
 		if wrathMod.vb.phase == 2 then return end--Phase 2 against Wrath of Azshara, which means this is happening every 10 seconds
 		warnWinds:Show()

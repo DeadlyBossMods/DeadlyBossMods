@@ -5090,8 +5090,15 @@ do
 		end
 	end
 
-	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
-		self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3)
+	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, spellGUID, spellId)
+		local correctSpellId = 0
+		if wowTOC >= 70000 then--in Legion spellId arg is canned as of latest build, it existed until talarn testing.
+			local _, _, _, _, legSpellId = strsplit("-", spellGUID)
+			correctSpellId = legSpellId
+		else
+			correctSpellId = spellId
+		end
+		self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..correctSpellId..")", 3)
 	end
 
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
