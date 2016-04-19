@@ -213,7 +213,8 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
+	local _, _, _, _, spellId = strsplit("-", spellGUID)
 	if spellId == 206653 then--Nightmare Blades (only version that has cast time
 		specWarnNightmareBlades:Show()
 		voiceNightmareBlades:Play("watchstep")

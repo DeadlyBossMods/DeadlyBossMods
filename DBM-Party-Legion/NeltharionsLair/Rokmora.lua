@@ -11,8 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 188961",
 	"SPELL_PERIODIC_DAMAGE 192800",
-	"SPELL_PERIODIC_MISSED 192800",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_PERIODIC_MISSED 192800"
 )
 
 --TODO, get more logs because I lost my logs of this and can only do so much
@@ -44,10 +43,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---[[
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 153500 then
-
-	end
-end
---]]

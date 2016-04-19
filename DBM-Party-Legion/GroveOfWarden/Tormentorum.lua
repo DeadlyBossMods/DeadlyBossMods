@@ -10,8 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 201488 200898",
-	"SPELL_CAST_SUCCESS 200905",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_CAST_SUCCESS 200905"
 )
 
 local warnTeleport				= mod:NewSpellAnnounce(200898, 2)

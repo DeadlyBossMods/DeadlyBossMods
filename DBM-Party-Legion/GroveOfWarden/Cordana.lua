@@ -79,7 +79,8 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
+	local _, _, _, _, spellId = strsplit("-", spellGUID)
 	if spellId == 203416 then--Shadowstep. Faster than 192750 applied
 		timerDeepeningShadowsCD:Stop()
 		timerKickCD:Stop()

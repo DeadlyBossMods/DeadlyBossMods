@@ -11,8 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 192522 192631 192621",
 	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_PERIODIC_MISSED"
 )
 
 local warnVolcano					= mod:NewSpellAnnounce(192621, 3)
