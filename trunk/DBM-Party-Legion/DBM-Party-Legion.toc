@@ -60,6 +60,7 @@ TheArcway\ArcwayTrash.lua
 CourtofStars\Gerdo.lua
 CourtofStars\Talixae.lua
 CourtofStars\Melandrus.lua
+CourtofStars\CoSTrash.lua
 MawOfSouls\Ymiron.lua
 MawOfSouls\Harbaron.lua
 MawOfSouls\Helya.lua
