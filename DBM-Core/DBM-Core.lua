@@ -7651,7 +7651,6 @@ do
 			["Tank"] = true,
 			["Melee"] = true,
 			["Physical"] = true,
-			["MagicDispeller"] = true,--REMOVE IN LEGION
 			["HasInterrupt"] = true,
 		},
 		[74] = {	--Gladiator Warrior --REMOVE IN LEGION?
