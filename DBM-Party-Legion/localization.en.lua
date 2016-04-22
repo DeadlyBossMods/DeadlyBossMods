@@ -203,6 +203,15 @@ L= DBM:GetModLocalization(1719)
 L= DBM:GetModLocalization(1720)
 
 -----------------------
+--Court of Stars Trash
+-----------------------
+L = DBM:GetModLocalization("CoSTrash")
+
+L:SetGeneralLocalization({
+	name =	"Court of Stars Trash"
+})
+
+-----------------------
 -- <<<The Maw of Souls>>> --
 -----------------------
 -----------------------
