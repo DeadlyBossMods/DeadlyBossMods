@@ -220,8 +220,7 @@ do
 	end
 	updateInfoFrame = function()
 		table.wipe(lines)
-		local total = 0
-		local total2 = 0
+		local total, total2 = 0, 0
 		for i = 1, #gazeTargets do
 			local name = gazeTargets[i]
 			local uId = DBM:GetRaidUnitId(name)
