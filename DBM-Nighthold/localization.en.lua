@@ -62,7 +62,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization({
-	RadarMessage		= "Use Radar to find a non debuff partner and HUD to avoid other debuffs. I hope to improve this function over time and provide more options than this."
+	RadarMessage			= "Use Radar to find a non debuff partner and HUD to avoid other debuffs. I hope to improve this function over time and provide more options than this."
 })
 
 
@@ -75,6 +75,10 @@ L= DBM:GetModLocalization(1732)
 -- Grand Magistrix Elisande --
 ------------------
 L= DBM:GetModLocalization(1743)
+
+L:SetOptionLocalization{
+	FilterOtherSigns		= "Filter target announces for Star Signs you are not affected by."
+}
 
 ------------------
 -- Gul'dan --
