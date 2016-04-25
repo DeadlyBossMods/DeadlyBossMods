@@ -385,7 +385,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellGravitationalPull:Schedule(remaining-1, 1)
 				yellGravitationalPull:Schedule(remaining-2, 2)
 				yellGravitationalPull:Schedule(remaining-3, 3)
-				yellGravitationalPull:Schedule(remaining-5, 5)
 			end
 		elseif self:IsTank() then
 			specWarnGravitationalPullOther:Show(args.destName)
