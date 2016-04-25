@@ -17,6 +17,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, add HUD option/arrows when I have map data collected for rune locations
+--http://legion.wowhead.com/icons/name:boss_odunrunes_
 --["198263-Radiant Tempest"] = "pull:8.0, 72.0, 40.0", huh?
 local warnSpear						= mod:NewSpellAnnounce(198072, 2)--Target not available so no target warning.
 
@@ -53,7 +54,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 197963 and args:IsPlayer() then--Purple K (NE)
 		specWarnRunicBrand:Show("NE")
 		voiceRunicBrand:Play("frontright")
-	elseif spellId == 197964 and args:IsPlayer() then--Red N (SE)
+	elseif spellId == 197964 and args:IsPlayer() then--Orange N (SE)
 		specWarnRunicBrand:Show("SE")
 		voiceRunicBrand:Play("backright")
 	elseif spellId == 197965 and args:IsPlayer() then--Yellow H (SW)
