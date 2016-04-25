@@ -123,7 +123,7 @@ local timerRainofChaosCD			= mod:NewCDCountTimer(62, 182225, 23426, nil, nil, 2)
 ----The Nether
 --Mythic
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerDarkConduitCD			= mod:NewNextCountTimer(107, 190394, 199787, "-Melee", 2, 3)
+local timerDarkConduitCD			= mod:NewNextCountTimer(107, 190394, nil, "-Melee", 2, 3)
 local timerMarkOfLegionCD			= mod:NewNextCountTimer(107, 187050, 28836, nil, nil, 3)
 local timerInfernalsCD				= mod:NewNextCountTimer(107, 187111, 23426, nil, nil, 1, 1122)
 local timerSourceofChaosCD			= mod:NewNextCountTimer(107, 190703, nil, nil, 2, 1)
