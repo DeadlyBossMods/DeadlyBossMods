@@ -363,7 +363,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target		= "%s: >%%s<",
+	target		= "%s: %%s",
 	cast		= "%s",
 	active		= "%s ends",--Buff/Debuff/event on boss
 	fades		= "%s fades",--Buff/Debuff on players
@@ -374,7 +374,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cdspecial	= "Special Ability CD",
 	next		= "Next %s",
 	nextcount	= "Next %s (%%s)",
-	nextsource	= "Next %s: >%%s<",
+	nextsource	= "Next %s: %%s",
 	nextspecial	= "Next Special Ability",
 	achievement	= "%s",
 	phase		= "Next Phase",
