@@ -25,10 +25,11 @@ mod:RegisterEventsInCombat(
 --TODO. see how many CoN go out and auto assign soakers for it. I bet it's 2 melee 2 ranged and 1 healer. Redo icons accordingly
 --TODO, flare? wtf? tooltip is either wrong or boss has one useless insigificant spell
 --TODO, adjust 15% on stars if it's too low/high. 25% was used on algalon for reference
+--TODO, see if controlled chaos 10-30 are no longer hidden in later tests. if still hidden, have to use scheduling and exact timing synced to videos
 --(ability.id = 218438 or ability.id = 218774 or ability.id = 219049 or ability.id = 218927 or ability.id = 216830 or ability.id = 216877 or ability.id = 218148) and type = "begincast" or (ability.id = 218807 or ability.id = 218424) and type = "cast"
 --Stage 1: The High Botanist
 local warnRecursiveStrikes			= mod:NewStackAnnounce(218503, 2, nil, "Tank")
-local warnControlledChaos			= mod:NewCountAnnounce(218438, 3)
+local warnControlledChaos			= mod:NewCountAnnounce(218438, 3)--Not currently functional
 local warnParasiticFetter			= mod:NewTargetAnnounce(218304, 3)
 local warnParasiticFixate			= mod:NewTargetAnnounce(218342, 4, nil, false)--Spammy if things go to shit, so off by default
 --Stage 2: Nightosis
