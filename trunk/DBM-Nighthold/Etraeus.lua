@@ -12,42 +12,36 @@ mod.respawnTime = 30--or 35 or 40
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 205408 205486 206921 206949 206517 214486 207720 207439 216909",
-	"SPELL_CAST_SUCCESS 206464 206464 206936 205649 207143",
+	"SPELL_CAST_START 205408 206949 206517 207720 207439 216909",
+	"SPELL_CAST_SUCCESS 206464 206464 206936 205649 207143 205984 214335 214167",
 	"SPELL_AURA_APPLIED 205429 216344 216345 205445 205984 214335 214167 206585 206936 205649 207143",
 	"SPELL_AURA_REMOVED 205429 216344 216345 205445 205984 214335 214167 206585 206936 207143",
 	"SPELL_SUMMON 207813",
 --	"SPELL_PERIODIC_DAMAGE 206399",
 --	"SPELL_PERIODIC_MISSED 206399",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, if everyone doesn't get the debuffs, handle cancelNotMine differently
 --TODO, change hunter/dragon icon/color to official icon when blizzard fixes oversight.
 --TODO, evalulate hud size for conjunction for range check/hud. 5 yards guessed.
---TODO, Coronal Ejection is probably a debuff
---TODO, range frame for tanks during ice phase when phase detection is done, because of Iceburst
---TODO, timers/warnings for the bolt/bursts on tanks?
 --TODO, felburst stacks/swapping?
 --TODO, add felflame GTFO
---TODO, verify spell summon event. might only fire SUCCESS or UNIT_SPELLCAST
 --TODO, does void nova even merit a special warning, or regular?
 --Base abilities
 local warnStarSignCrab				= mod:NewTargetAnnounce(205429, 2)--Yellow
 local warnStarSignDragon			= mod:NewTargetAnnounce(216344, 2)--Blue
 local warnStarSignHunter			= mod:NewTargetAnnounce(216345, 2, "Interface\\Icons\\boss_odunrunes_green")--Green (well, debuff is also blue but I am making it green)
 local warnStarSignWolf				= mod:NewTargetAnnounce(205445, 2)--Red
-local warnGravitationalPull			= mod:NewTargetAnnounce(205984, 4)
+local warnGravitationalPull			= mod:NewTargetAnnounce(205984, 3, nil, "Tank")
 --Stage One: The Dome of Observation
-local warnStarburst					= mod:NewSpellAnnounce(205486, 2, nil, false)--Probably spammy so off by default
 local warnCoronalEjection			= mod:NewTargetAnnounce(206464, 2)
 --Stage Two: Absolute Zero
-local warnIceburst					= mod:NewSpellAnnounce(206921, 2, nil, false)--Probably spammy so off by default
 local warnIcyEjection				= mod:NewTargetAnnounce(206936, 2)
 --Stage Three: A Shattered World
 local warnFelEjection				= mod:NewTargetAnnounce(205649, 2)
 --Stage Four: Inevitable Fate
-local warnVoidburst					= mod:NewSpellAnnounce(214486, 2, nil, false)
 local warnVoidEjection				= mod:NewTargetAnnounce(207143, 2)
 
 local specWarnConjunction			= mod:NewSpecialWarningMoveAway(205408, nil, nil, nil, 3, 2)
@@ -73,21 +67,21 @@ local specWarnWorldDevouringForce	= mod:NewSpecialWarningDodge(216909, nil, nil,
 
 
 --Base abilities
-local timerConjunctionCD			= mod:NewAITimer(16, 205408, nil, nil, nil, 3)
-local timerGravPullCD				= mod:NewAITimer(16, 205984, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerConjunctionCD			= mod:NewAITimer(16, 205408, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerGravPullCD				= mod:NewCDTimer(29, 205984, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Stage One: The Dome of Observation
-local timerCoronalEjectionCD		= mod:NewAITimer(16, 206464, nil, nil, nil, 3)
+local timerCoronalEjectionCD		= mod:NewCDTimer(16, 206464, nil, nil, nil, 3)--CD is not known, always push phase 2 before this is cast 2nd time
 --Stage Two: Absolute Zero
-local timerIcyEjectionCD			= mod:NewAITimer(16, 206936, nil, nil, nil, 3)
-local timerFrigidNovaCD				= mod:NewAITimer(16, 206949, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerIcyEjectionCD			= mod:NewCDCountTimer(16, 206936, nil, nil, nil, 3)
+local timerFrigidNovaCD				= mod:NewCDTimer(61.5, 206949, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage Three: A Shattered World
-local timerFelEjectionCD			= mod:NewAITimer(16, 205649, nil, nil, nil, 3)
-local timerFelNovaCD				= mod:NewAITimer(16, 206517, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerFelEjectionCD			= mod:NewCDCountTimer(16, 205649, nil, nil, nil, 3)
+local timerFelNovaCD				= mod:NewCDCountTimer(29.3, 206517, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage Four: Inevitable Fate
-local timerWitnessVoidCD			= mod:NewAITimer(16, 207720, nil, nil, nil, 2)
-local timerVoidEjectionCD			= mod:NewAITimer(16, 207143, nil, nil, nil, 3)
-local timerVoidNovaCD				= mod:NewAITimer(16, 207439, nil, nil, nil, 2)
-local timerWorldDevouringForceCD	= mod:NewAITimer(16, 216909, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerWitnessVoidCD			= mod:NewCDTimer(14.6, 207720, nil, nil, nil, 2)
+local timerVoidEjectionCD			= mod:NewCDCountTimer(16, 207143, nil, nil, nil, 3)
+local timerVoidNovaCD				= mod:NewCDTimer(65, 207439, nil, nil, nil, 2)--Only saw a single pull it was cast twice, so CD needs more verification
+local timerWorldDevouringForceCD	= mod:NewAITimer(16, 216909, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_HEROIC_ICON)
 
 --Base abilities
 local countdownConjunction			= mod:NewCountdownFades("AltTwo15", 205408)
@@ -124,14 +118,35 @@ mod:AddInfoFrameOption(205408)--really needs a "various" option
 
 mod.vb.StarSigns = 0
 mod.vb.phase = 1
+mod.vb.icyEjectionCount = 0
+mod.vb.felEjectionCount = 0
+mod.vb.felNovaCount = 0
+mod.vb.voidEjectionCount = 0
+--These timers are self corrective, which is annoying when all inclusive but better if scrubbing short timers
+--For example Icy will always be 35.2, 64.5, 24.7 if you scrub the short timers or within 0.3. However including short timers and you get more variation.
+--For time being, i'll be all inclusive, particuarlly with void since some of the shorter auto correcting ones are over 10 seconds.
+--Example of self correction. Note 3rd pull, because of the 14 being late by 3 seconds, the 3 seconds corrected from the 20.
+--"207143-Void Ejection" = "pull:338.3, 4.5, 14.2, 20.7, 1.6, 7.3, 26.5, 2.4",
+--"207143-Void Ejection" = "pull:328.7, 5.7, 14.1, 20.7, 2.8, 6.1, 25.7, 4.9",
+--"207143-Void Ejection" = "pull:326.8, 4.4, 17.5, 17.4, 4.6, 4.7, 26.3, 4.8",
+--For all inclusive, i'll simply use lowest observed time for each count, which will give close approx cd timer but imprecise to be a "next" timer.
+local icyEjectionTimers = {29, 35.2, 5.3, 4.1, 52.3, 0.8, 0.8, 21.0, 2.1, 1.2}--(Stripped: 35.2, 64.5, 24.7)
+local felEjectionTimers = {22.5, 3.2, 6.1, 9.4, 4.4, 4.0, 34.9, 2.0, 5.4, 0.3, 4.9, 18.2, 3.6, 3.6, 18.2, 8.9, 10.9, 12.3, 10.5}
+local voidEjectionTimers = {24, 3.2, 14.1, 17.4, 0.8, 4.7, 25.7, 2.3}
+--local felNovaTImers = {34.8, 31.3, 29.3}--Currently unused. for now just doing 34.8 or 29.3
 local abZeroTargets = {}
 local abZeroDebuff, chilledDebuff, gravPullDebuff = GetSpellInfo(206585), GetSpellInfo(182006), GetSpellInfo(205984)
 local icyEjectionDebuff, coronalEjectionDebuff, voidEjectionDebuff = GetSpellInfo(206936), GetSpellInfo(206464), GetSpellInfo(207143)
 local UnitDebuff = UnitDebuff
-local chilledFilter
+local chilledFilter, tankFilter
 do
 	chilledFilter = function(uId)
 		if UnitDebuff(uId, chilledDebuff) then
+			return true
+		end
+	end
+	tankFilter = function(uId)
+		if mod:IsTanking(uId, "boss1") then
 			return true
 		end
 	end
@@ -195,7 +210,7 @@ do
 			--Ths is displayed under the absolute zero name/stacks so they know there are still stacks to soak and if able.
 			lines[chilledDebuff] = UnitDebuff("player", chilledDebuff) and "|cFF1A1ACD"..YES.."|r" or "|c69CCF0CD"..NO.."|r"
 		end
-		if total1 == 0 or total2 == 0 then--Nothing left, hide infoframe
+		if total1 == 0 and total2 == 0 then--Nothing left, hide infoframe
 			DBM.InfoFrame:Hide()
 		end
 		return lines
@@ -212,6 +227,8 @@ local function updateRangeFrame(self, force)
 		DBM.RangeCheck:Show(5)
 	elseif UnitDebuff("player", abZeroDebuff) then
 		DBM.RangeCheck:Show(8, chilledFilter)
+	elseif self.vb.phase == 2 and self:IsMelee() then--Avoid tanks iceburst
+		DBM.RangeCheck:Show(6, tankFilter)
 	else
 		DBM.RangeCheck:Hide()
 	end
@@ -238,10 +255,10 @@ function mod:OnCombatStart(delay)
 	table.wipe(abZeroTargets)
 	self.vb.StarSigns = 0
 	self.vb.phase = 1
-	timerConjunctionCD:Start(1-delay)
-	timerCoronalEjectionCD:Start(1-delay)
-	timerGravPullCD:Start(1-delay)
-	DBM:AddMsg("Auto learning AI timers on this fight will not be able to adapt to phase changes to cancel/update accordingly. They should work fairly well withina each phase however.")
+	timerCoronalEjectionCD:Start(17.5-delay)
+	if self:IsMythic() then
+		timerConjunctionCD:Start(1-delay)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -260,21 +277,20 @@ function mod:SPELL_CAST_START(args)
 		voiceConjunction:Play("scatter")
 		timerConjunctionCD:Start()
 		updateRangeFrame(self, true)
-		DBM:AddMsg("Sadly, all the fancy HUD features for this won't look right if 3rd party textures aren't loaded. HUD should color code the 4 star signs nicely")
-	elseif spellId == 205486 then
-		warnStarburst:Show()
-	elseif spellId == 206921 then
-		warnIceburst:Show()
+		DBM:AddMsg("Sadly, all the HUD features for this aren't yet tested and subject to imperfections until further revision")
 	elseif spellId == 206949 then
 		specWarnFrigidNova:Show()
 		voiceFrigidNova:Play("gathershare")
 		timerFrigidNovaCD:Start()
 	elseif spellId == 206517 then
+		self.vb.felNovaCount = self.vb.felNovaCount + 1
 		specWarnFelNova:Show()
 		voiceFelnova:Play("justrun")
-		timerFelNovaCD:Start()
-	elseif spellId == 214486 then
-		warnVoidburst:Show()
+		if self.vb.felNovaCount == 1 then
+			timerFelNovaCD:Start(34.8, self.vb.felNovaCount+1)
+		else
+			timerFelNovaCD:Start(nil, self.vb.felNovaCount+1)
+		end
 	elseif spellId == 207720 then
 		specWarnWitnessVoid:Show()
 		voiceWitnessVoid:Play("turnaway")
@@ -293,13 +309,40 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 206464 then
-		timerCoronalEjectionCD:Start()
+		--timerCoronalEjectionCD:Start()
 	elseif spellId == 206936 then
-		timerIcyEjectionCD:Start()
+		self.vb.icyEjectionCount = self.vb.icyEjectionCount + 1
+		local timer = icyEjectionTimers[self.vb.icyEjectionCount+1]
+		if timer and timer >= 4 then--No sense in starting timers for the sub 4 second casts
+			timerIcyEjectionCD:Start(timer, self.vb.icyEjectionCount+1)
+		end
 	elseif spellId == 205649 then
-		timerFelEjectionCD:Start()
+		self.vb.felEjectionCount = self.vb.felEjectionCount + 1
+		local timer = felEjectionTimers[self.vb.felEjectionCount+1]
+		if timer and timer >= 4 then--No sense in starting timers for the sub 4 second casts
+			timerFelEjectionCD:Start(timer, self.vb.felEjectionCount+1)
+		end
 	elseif spellId == 207143 then
-		timerVoidEjectionCD:Start()
+		self.vb.voidEjectionCount = self.vb.voidEjectionCount + 1
+		local timer = voidEjectionTimers[self.vb.voidEjectionCount+1]
+		if timer and timer >= 4 then--No sense in starting timers for the sub 4 second casts
+			timerVoidEjectionCD:Start(timer, self.vb.voidEjectionCount+1)
+		end
+	elseif spellId == 205984 or spellId == 214335 or spellId == 214167 then--205984 Frost, 214167 Fel, 214335 Void
+		if spellId == 214335 then
+			timerGravPullCD:Start(39)
+		else--29
+			timerGravPullCD:Start()
+		end
+		if args:IsPlayer() then
+			specWarnGravitationalPull:Show()
+			voiceGravPull:Play("targetyou")
+		elseif self:IsTank() then
+			specWarnGravitationalPullOther:Show(args.destName)
+			voiceGravPull:Play("tauntboss")
+		else
+			warnGravitationalPull:Show(args.destName)
+		end
 	end
 end
 
@@ -308,6 +351,7 @@ function mod:SPELL_SUMMON(args)
 	if spellId == 207813 then
 		specWarnThing:Show()
 		voiceThing:Play("killmob")
+		timerWitnessVoidCD:Start(10, args.destGUID)
 	end
 end
 
@@ -374,11 +418,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			updateRangeFrame(self)
 		end
 	elseif spellId == 205984 or spellId == 214335 or spellId == 214167 then
-		timerGravPullCD:Start()
 		if args:IsPlayer() then
 			updateRangeFrame(self)
-			specWarnGravitationalPull:Show()
-			voiceGravPull:Play("targetyou")
 			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)
 			if expires then
 				local remaining = expires-GetTime()
@@ -387,11 +428,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellGravitationalPull:Schedule(remaining-2, 2)
 				yellGravitationalPull:Schedule(remaining-3, 3)
 			end
-		elseif self:IsTank() then
-			specWarnGravitationalPullOther:Show(args.destName)
-			voiceGravPull:Play("tauntboss")
-		else
-			warnGravitationalPull:Show(args.destName)
 		end
 	elseif spellId == 206585 then
 		if not tContains(abZeroTargets, args.destName) then
@@ -400,6 +436,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:Show(15, "function", updateInfoFrame, sortInfoFrame, true)
 		end
+		updateRangeFrame(self)
 		if args:IsPlayer() then
 			updateRangeFrame(self)
 		end
@@ -433,21 +470,27 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 205429 or spellId == 216344 or spellId == 216345 or spellId == 205445 then--Star Signs
 		self.vb.StarSigns = self.vb.StarSigns - 1
-		if self.vb.StarSigns == 0 then
-			updateRangeFrame(self)
-		end
-		if self.Options.HudMapOnConjunction then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
-		end
 		if args:IsPlayer() then
 			countdownConjunction:Cancel()
+		end
+		if self.vb.StarSigns == 0 then
+			updateRangeFrame(self)
+			if self.Options.HudMapOnConjunction then
+				--None left, clear all HUD circles
+				DBMHudMap:FreeEncounterMarkers()
+			end
+		else
+			if self.Options.HudMapOnConjunction then
+				--Change circle color to a 5th, white color for unaffected players
+				DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 17, 1, 1, 1, 0.5, nil, true):Appear():SetLabel(args.destName)
+			end
 		end
 	elseif spellId == 205984 or spellId == 214335 or spellId == 214167 then
 		if args:IsPlayer() then
 			updateRangeFrame(self)
 			yellGravitationalPull:Cancel()
 			countdownGravPull:Cancel()
-			yellIcyEjection:Cancel()
 		end
 	elseif spellId == 206585 then
 		tDeleteItem(abZeroTargets, args.destName)
@@ -460,6 +503,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 206936 then
 		if args:IsPlayer() then
+			yellIcyEjection:Cancel()
 			updateRangeFrame(self)
 		end
 	elseif spellId == 207143 then
@@ -476,6 +520,42 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--Phases can also be done with Nether Traversal (221875) with same timing.
+--However, this is more robust since unique spellids for each phase is better than same used for all 3
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
+	local _, _, _, _, spellId = strsplit("-", spellGUID)
+	if spellId == 222130 then--Phase 2 Conversation
+		self.vb.phase = 2
+		self.vb.icyEjectionCount = 0
+		timerCoronalEjectionCD:Stop()
+		timerGravPullCD:Start(29)
+		timerIcyEjectionCD:Start(29, 1)
+		timerFrigidNovaCD:Start(49)
+	elseif spellId == 222133 then--Phase 3 Conversation
+		self.vb.phase = 3
+		self.vb.felEjectionCount = 0
+		self.vb.felNovaCount = 0
+		timerIcyEjectionCD:Stop()
+		timerFrigidNovaCD:Stop()
+		timerGravPullCD:Stop()
+		timerFelEjectionCD:Start(21.5, 1)
+		timerGravPullCD:Start(28)
+		timerFelNovaCD:Start(61, 1)
+	elseif spellId == 222134 then--Phase 4 Conversation
+		self.vb.phase = 4
+		self.vb.voidEjectionCount = 0
+		timerFelEjectionCD:Stop()
+		timerFelNovaCD:Stop()
+		timerGravPullCD:Stop()
+		timerGravPullCD:Start(20.5)
+		timerVoidEjectionCD:Start(24, 1)
+		timerVoidNovaCD:Start(40)
+		if self:IsMythic() then
+			timerWorldDevouringForceCD:Start(1)
+		end
+	end
+end
+
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 206399 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
@@ -485,16 +565,4 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:CHAT_MSG_MONSTER_YELL(msg, _, _, _, target)
-	if msg:find(L.supressionTarget1) then
---		self:SendSync("ChargeTo", target)
-	end
-end
-
-function mod:OnSync(msg, targetname)
-	if not self:IsInCombat() then return end
-	if msg == "ChargeTo" then
-		
-	end
-end
 --]]
