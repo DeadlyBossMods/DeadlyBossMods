@@ -60,6 +60,7 @@ local timerNightmareBramblesCD		= mod:NewCDTimer(30.4, 210290, nil, nil, nil, 3)
 local timerDreadThornsCD			= mod:NewCDTimer(34, 210346, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerForcesOfNightmareCD		= mod:NewCDCountTimer(77.8, 212726, nil, nil, nil, 1)
 local timerSpearOfNightmaresCD		= mod:NewAITimer(16, 214529, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerBeastsOfNightmareCD		= mod:NewAITimer(16, 214876, nil, nil, nil, 1)
 ----Forces of Nightmare
 local timerTouchofLifeCD			= mod:NewCDTimer(12, 211368, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Cenarius
@@ -171,6 +172,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnEntangledNightmares:Show()
 	elseif spellId == 214876 then
 		warnBeastsOfNightmare:Show()
+		timerBeastsOfNightmareCD:Start()
 	end
 end
 
