@@ -15,6 +15,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	NoDebuff	= "No %s"
 })
 
 ---------------------------
