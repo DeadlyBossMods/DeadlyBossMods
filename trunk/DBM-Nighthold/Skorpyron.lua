@@ -14,6 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 204275 204372 204316 204471",
+	"SPELL_CAST_SUCCESS 204316",
 	"SPELL_SUMMON 204292",
 	"SPELL_AURA_APPLIED 204531 204459 204697 204744",
 	"SPELL_AURA_REMOVED 204459 204697",
@@ -60,6 +61,7 @@ local voiceFocusedBlast				= mod:NewVoice(204471)--"watchstep". "shockwave" make
 local voiceToxicChit				= mod:NewVoice(204744)--runaway
 
 mod:AddSetIconOption("SetIconOnVolatileScorpion", 204697, true, true)
+mod:AddInfoFrameOption(204284)
 
 mod.vb.volatileScorpCount = 0
 
@@ -76,6 +78,12 @@ function mod:OnCombatStart(delay)
 	countdownShockwave:Start(56.2-delay)
 	if self:IsMythic() then
 		timerVolatileFragments:Start(35-delay)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
@@ -134,11 +142,22 @@ function mod:SPELL_CAST_START(args)
 				countdownCallofScorpid:Start(scorptAdjust)
 			end
 		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(L.NoDebuff:format(GetSpellInfo(204284)))
+			DBM.InfoFrame:Show(5, "playergooddebuff", 204284)
+		end
 	elseif spellId == 204471 then
 		specWarnFocusedBlast:Show()
 		voiceFocusedBlast:Play("watchstep")
 		timerFocusedBlastCD:Start()
 		countdownFocusedBlast:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 204316 and self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
@@ -237,5 +256,8 @@ function mod:UNIT_SPELLCAST_INTERRUPTED(uId, _, _, spellGUID)
 	if spellId == 204316 then--Shockwave
 		timerShockwaveCD:Stop()
 		countdownShockwave:Cancel()
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end
 	end
 end
