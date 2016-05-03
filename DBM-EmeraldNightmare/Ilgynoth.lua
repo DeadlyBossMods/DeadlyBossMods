@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 210931 209471 208697 208929 208689 210781 208685",
+	"SPELL_CAST_START 210931 209471 208697 208929 208689 210781 208685 218415",
 	"SPELL_CAST_SUCCESS 210984 215128",
 	"SPELL_AURA_APPLIED 209915 210099 210984 215234 215128 212886 210289",
 	"SPELL_AURA_APPLIED_DOSE 210984",
@@ -29,6 +29,7 @@ mod:RegisterEventsInCombat(
 --TODO, figure out voice to use for specWarnHeartPhaseBegin
 --TODO, more adds timers if needed
 --TODO, improve spew corruption to work like thogar bombs (continous alerts/yells)
+--TODO, Death Blossom timer for first cast afer a heart phase.
 --Stage One: The Ruined Ground
 --ability.id = 210289 or ability.id = 209915
 local warnNightmareGaze				= mod:NewSpellAnnounce(210931, 3, nil, false)--Something tells me this is just something it spam casts
@@ -37,6 +38,7 @@ local warnNightmareExplosion		= mod:NewCastAnnounce(209471, 3)
 local warnDeathglare				= mod:NewStackAnnounce(210984, 2, nil, "Tank")
 local warnSpewCorruption			= mod:NewTargetAnnounce(208929, 3, nil, false)--Spammy so default off
 local warnGroundSlam				= mod:NewTargetAnnounce(208689, 2)--Figure this out later
+local warnDeathBlossom				= mod:NewCastAnnounce(218415, 4)
 --Stage Two: The Heart of Corruption
 local warnCursedBlood				= mod:NewTargetAnnounce(215128, 3)
 
@@ -63,11 +65,15 @@ local yellCursedBlood				= mod:NewFadesYell(215128)
 local timerNightmareHorrorCD		= mod:NewNextTimer(220, "ej13188", nil, nil, nil, 1, 210289)
 local timerDeathglareCD				= mod:NewCDTimer(10.9, 210984, nil, "Tank", nil, 5)
 local timerNightmareishFuryCD		= mod:NewCDTimer(10.9, 215234, nil, "Tank", nil, 5)
+local timerDeathBlossomCD			= mod:NewNextTimer(105, 218415, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON)
+local timerDeathBlossom				= mod:NewCastTimer(15, 218415, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 --Stage Two: The Heart of Corruption
 local timerDarkReconstitution		= mod:NewCastTimer(50, 210781, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)
 local timerCursedBloodCD			= mod:NewNextTimer(15, 215128, nil, nil, nil, 3)
 
+--Stage One: The Ruined Ground
 local countdownNightmareHorror		= mod:NewCountdown("Alt50", 210289)
+local countdownDeathBlossom			= mod:NewCountdown("AltTwo15", 218415)
 --Stage Two: The Heart of Corruption
 local countdownDarkRecon			= mod:NewCountdown("Alt50", 210781)
 
@@ -152,6 +158,9 @@ function mod:OnCombatStart(delay)
 	self.vb.NightmareCount = 0
 	self.vb.IchorCount = 0
 	timerNightmareHorrorCD:Start(65-delay)
+	if self:IsMythic() then
+		timerDeathBlossomCD:Start(55)
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS)
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
@@ -196,6 +205,11 @@ function mod:SPELL_CAST_START(args)
 		countdownDarkRecon:Start()
 	elseif spellId == 208685 and self:AntiSpam(4, 2) then--Rupturing roar (Untanked tentacle)
 		specWarnDominatorTentacle:Show()
+	elseif spellId == 218415 then
+		warnDeathBlossom:Show()
+		timerDeathBlossom:Start()
+		countdownDeathBlossom:Start()
+		timerDeathBlossomCD:Start()
 	end
 end
 
@@ -210,6 +224,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 209915 then--Stuff of Nightmares
 		timerCursedBloodCD:Stop()
+		--timerDeathBlossomCD:Start(55)
 		timerNightmareHorrorCD:Start(95)
 	elseif spellId == 210099 then--Ooze Fixate
 		warnFixate:CombinedShow(1, args.destName)
@@ -282,6 +297,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 209915 then--Stuff of Nightmares
 		specWarnHeartPhaseBegin:Show()
 		timerNightmareHorrorCD:Stop()
+		timerDeathBlossomCD:Stop()
 		timerCursedBloodCD:Start()
 	elseif spellId == 215128 and args:IsPlayer() then
 		yellCursedBlood:Cancel()

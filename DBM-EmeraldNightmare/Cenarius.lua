@@ -7,11 +7,12 @@ mod:SetEncounterID(1877)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 3, 2, 1)
 --mod:SetHotfixNoticeRev(12324)
+mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 210290 212726 212630 211073 211368 214529",
+	"SPELL_CAST_START 210290 212726 212630 211073 211368 214529 213162",
 	"SPELL_CAST_SUCCESS 214505 214876",
 	"SPELL_AURA_APPLIED 210346 211368 211471",
 	"SPELL_AURA_APPLIED_DOSE 210279",
@@ -44,6 +45,8 @@ local specWarnNightmareBrambles		= mod:NewSpecialWarningRun(210290, nil, nil, ni
 local yellNightmareBrambles			= mod:NewYell(210290)
 local specWarnNightmareBramblesNear	= mod:NewSpecialWarningClose(210290, nil, nil, nil, 1, 2)
 --local specWarnDreadThorns			= mod:NewSpecialWarningMoveAway(210346, "Tank", nil, nil, 1, 2)--Move away warning? Have to move away from other adds
+local specWarnNightmareBlast		= mod:NewSpecialWarningDefensive(213162, nil, nil, nil, 1, 2)
+local specWarnNightmareBlastOther	= mod:NewSpecialWarningTaunt(213162, nil, nil, nil, 1, 2)
 local specWarnForcesOfNightmare		= mod:NewSpecialWarningSwitchCount(212726, nil, nil, nil, 1, 2)--Switch warning or just spell warning?
 local specWarnSpearOfNightmares		= mod:NewSpecialWarningDefensive(214529, nil, nil, nil, 1, 2)
 local specWarnSpearOfNightmaresOther= mod:NewSpecialWarningTaunt(214529, nil, nil, nil, 1, 2)
@@ -56,8 +59,9 @@ local specWarnScornedTouch			= mod:NewSpecialWarningMoveAway(211471, nil, nil, n
 local yellScornedTouch				= mod:NewYell(211471)
 
 --Cenarius
-local timerNightmareBramblesCD		= mod:NewCDTimer(30.4, 210290, nil, nil, nil, 3)--On for all, for now. Doesn't target melee but melee still have to be aware. Just not AS aware.
+local timerNightmareBramblesCD		= mod:NewCDTimer(30, 210290, nil, nil, nil, 3)--On for all, for now. Doesn't target melee but melee still have to be aware. Just not AS aware.
 local timerDreadThornsCD			= mod:NewCDTimer(34, 210346, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerNightmareBlastCD			= mod:NewNextTimer(32.8, 213162, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerForcesOfNightmareCD		= mod:NewCDCountTimer(77.8, 212726, nil, nil, nil, 1)
 local timerSpearOfNightmaresCD		= mod:NewAITimer(16, 214529, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerBeastsOfNightmareCD		= mod:NewAITimer(16, 214876, nil, nil, nil, 1)
@@ -72,6 +76,7 @@ local countdownNightmareBrambles	= mod:NewCountdown("Alt30", 210290, "Ranged")--
 local voiceNightmareBrambles		= mod:NewVoice(210290)--runout/watchstep
 --local voiceDreadThorns				= mod:NewVoice(210346, "Tank")--bossout
 local voiceForcesOfNightmare		= mod:NewVoice(212726)--mobsoon
+local voiceNightmareBlast			= mod:NewVoice(213162, "Tank")--defensive/tauntboss
 local voiceSpearOfNightmares		= mod:NewVoice(214529, "Tank")--defensive/tauntboss
 ----Forces of Nightmare
 local voiceTouchOfLife				= mod:NewVoice(211368)--kickcast/dispelnow
@@ -115,11 +120,12 @@ function mod:OnCombatStart(delay)
 	scornedWarned = false
 	self.vb.phase = 1
 	self.vb.addsCount = 0
-	timerForcesOfNightmareCD:Start(8.5-delay, 1)
-	countdownForcesOfNightmare:Start(8.5-delay)
+	timerForcesOfNightmareCD:Start(7.2-delay, 1)
+	countdownForcesOfNightmare:Start(7.2-delay)
 	timerDreadThornsCD:Start(14-delay)
 	timerNightmareBramblesCD:Start(25.5-delay)
 	countdownNightmareBrambles:Start(25.5-delay)
+	timerNightmareBlastCD:Start(31.2-delay)
 end
 
 function mod:OnCombatEnd()
@@ -134,7 +140,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 210290 then
-		self:BossTargetScanner(104636, "BrambleTarget", 0.2, 12, true)
+		self:ScheduleMethod(0.1, "BossTargetScanner", 104636, "BrambleTarget", 0.15, 16, true)
 		timerNightmareBramblesCD:Start()
 		countdownNightmareBrambles:Start()
 	elseif spellId == 212726 then
@@ -160,8 +166,20 @@ function mod:SPELL_CAST_START(args)
 			voiceSpearOfNightmares:Play("defensive")
 		else
 			if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, targetName) then return end--You are not near current tank, you're probably 3rd tank on Doom Guards that never taunts massive blast
-			specWarnSpearOfNightmaresOther:Schedule(1, targetName)
+			specWarnSpearOfNightmaresOther:Schedule(2.5, targetName)
 			voiceSpearOfNightmares:Schedule(2.5, "tauntboss")
+		end
+	elseif spellId == 213162 then
+		timerNightmareBlastCD:Start()
+		local targetName, uId, bossuid = self:GetBossTarget(104636, true)
+		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
+		if tanking or (status == 3) then--Player is current target
+			specWarnNightmareBlast:Show()
+			voiceNightmareBlast:Play("defensive")
+		else
+			if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, targetName) then return end--You are not near current tank, you're probably 3rd tank on Doom Guards that never taunts massive blast
+			specWarnNightmareBlastOther:Schedule(2, targetName)
+			voiceNightmareBlast:Schedule(2, "tauntboss")
 		end
 	end
 end
@@ -181,7 +199,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 210346 then
 --		specWarnDreadThorns:Show()
 --		voiceDreadThorns:Play("bossout")
-		timerDreadThornsCD:Start()--Here for now because AI timer, but move to SPELL_AURA_REMOVED with data
 	elseif spellId == 211368 then
 		specWarnTouchofLifeDispel:Show(args.destName)
 		voiceTouchOfLife:Play("dispelnow")
