@@ -158,7 +158,7 @@ local function delayedTimeRelease(self, time, count)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local _, _, _, _, spellId = strsplit("-", spellGUID)
+	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 207012 then--Speed: Normal
 		timerTimeReleaseCD:Start(7, 1)
 		timerBurstofTimeCD:Start(10, 1)
