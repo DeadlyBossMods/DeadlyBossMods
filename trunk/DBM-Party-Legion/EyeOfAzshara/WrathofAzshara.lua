@@ -106,7 +106,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local _, _, _, _, spellId = strsplit("-", spellGUID)
+	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 192680 then--Mythic Tornado
 		warnMythicTornado:Show()
 		timerMythicTornadoCD:Start()

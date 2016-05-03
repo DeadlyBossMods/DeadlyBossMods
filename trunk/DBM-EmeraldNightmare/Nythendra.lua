@@ -211,7 +211,7 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local _, _, _, _, spellId = strsplit("-", spellGUID)
+	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 203095 then--CAST Doesn't show in combat log for some reason. Applied does but don't want to risk misses
 		self.vb.rotCast = self.vb.rotCast + 1
 		if self.vb.rotCast == 1 then

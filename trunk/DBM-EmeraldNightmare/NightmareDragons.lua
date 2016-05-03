@@ -262,7 +262,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local _, _, _, _, spellId = strsplit("-", spellGUID)
+	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 203147 then--Nightmare Blast
 		warnNightmareBlast:Show()
 		timerNightmareBlastCD:Start()

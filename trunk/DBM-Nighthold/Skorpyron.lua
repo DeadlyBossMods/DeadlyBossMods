@@ -252,7 +252,7 @@ end
 
 --Shockwave does NOT go on cooldown if he doesn't finish cast. This happens if he gets stunned before cast finishes
 function mod:UNIT_SPELLCAST_INTERRUPTED(uId, _, _, spellGUID)
-	local _, _, _, _, spellId = strsplit("-", spellGUID)
+	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 204316 then--Shockwave
 		timerShockwaveCD:Stop()
 		countdownShockwave:Cancel()

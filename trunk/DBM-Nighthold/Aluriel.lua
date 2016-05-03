@@ -344,7 +344,7 @@ function mod:UNIT_AURA(uId)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local _, _, _, _, spellId = strsplit("-", spellGUID)
+	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 213853 then--Animate Mark of Frost. Not currently incombat log
 		specWarnAnimateFrost:Show()
 		voiceAnimateFrost:Play("mobkill")--using this trigger, mobkill

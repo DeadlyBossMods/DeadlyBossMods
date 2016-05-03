@@ -61,7 +61,7 @@ end
 
 local spikeName = GetSpellInfo(200551)
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local _, _, _, _, spellId = strsplit("-", spellGUID)
+	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 200418 then--Magma Wave (1 second faster than combat log)
 		specWarnMagmaWave:Show(spikeName)
 		voiceMagmaWave:Play("findshelter")
