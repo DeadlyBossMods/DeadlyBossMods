@@ -341,7 +341,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local _, _, _, _, spellId = strsplit("-", spellGUID)
+	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 205843 then--The Dreaming
 		--UNUSED
 	elseif spellId == 206341 then--Corruption Meteor (not in combat log at all, targetting or even casting)

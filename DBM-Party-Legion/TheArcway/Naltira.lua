@@ -116,7 +116,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --"<54.03 00:02:07> [UNIT_SPELLCAST_CHANNEL_START] Nal'tira(Dayani) - spell_mage_arcaneorb - 2.5sec [[boss1:Blink Strikes::0-0-0-0-0-0000000000:199811]]", -- [201]
 --It's not that much slower to just use UNIT_SPELLCAST_CHANNEL_START target and ditch scanning Will leave it this way for now for the .6 second gain though
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local _, _, _, _, spellId = strsplit("-", spellGUID)
+	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 199809 then--Blink Strikes begin
 		timerBlinkCD:Start()
 		self.vb.blinkCount = 0
@@ -125,7 +125,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	end
 end
 
-function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, _, _, spellId)
+function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, _, spellGUID)
+	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 199811 then--Blink Strikes Channel ending
 		self.vb.blinkCount = self.vb.blinkCount + 1
 		if self.vb.blinkCount == 2 then
