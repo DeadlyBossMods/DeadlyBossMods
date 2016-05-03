@@ -6791,7 +6791,7 @@ function DBM:FindEncounterIDs(instanceID, diff)
 end
 
 --Taint the script that disables /run /dump, etc
-ScriptsDisallowedForBeta = function() return false end
+--ScriptsDisallowedForBeta = function() return false end
 
 -------------------
 --  Movie Filter --
