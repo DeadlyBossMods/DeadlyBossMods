@@ -7,7 +7,7 @@ L.MainFrame = "Deadly Boss Mods - Español"
 
 L.TranslationByPrefix		= "Traducido por "
 L.TranslationBy 	= "Snamor, Interplay, Sueñalobos"
-L.Website					= "Visita nuestros nuevos foros de discusión y soporte en |cFF73C2FBwww.deadlybossmods.com|r (¡hospedados por Elitist Jerks!)"
+L.Website					= "Visita nuestros nuevos foros de discusión y soporte en |cFF73C2FBwww.deadlybossmods.com|r"
 L.WebsiteButton				= "Foro"
 
 L.OTabBosses	= "Jefes"
