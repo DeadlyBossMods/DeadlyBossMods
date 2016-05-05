@@ -311,7 +311,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect     	= "%s sur >%%s< - arrêtez d'attaquer
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.count       	= "%s! (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack			= "%s (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch			= "%s - Changer de cible"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - Changer de cible (%%d)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - Changer de cible (%%s)"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 			= "Afficher une alerte spéciale pour $spell:%s"

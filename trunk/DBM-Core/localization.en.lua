@@ -325,7 +325,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	count			= "%s! (%%s)",
 	stack			= "%%d stacks of %s on you",
 	switch			= "%s - switch targets",
-	switchcount		= "%s - switch targets (%%d)"
+	switchcount		= "%s - switch targets (%%s)"
 }
 
 -- Auto-generated Special Warning Localizations
