@@ -330,7 +330,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.reflect			= ">%%s<中了%s - 快停手"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.count				= "%s! (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack				= "你叠加了%%d层%s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch			= "%s - 转换目标"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - 转换目标 (%%d)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - 转换目标 (%%s)"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell			= "特殊警报：$spell:%s"

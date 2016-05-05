@@ -128,6 +128,7 @@ do
 	end
 end
 
+--TODO, if Elisande method is superior, switch to it to speed up line drawing.
 local function hudDelay(self)
 	local currentTank = self:GetCurrentTank()
 	if not UnitDebuff("player", SearingBrandDebuff) then
@@ -266,7 +267,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			countdownMarkOfFrost:Start(5)
 		end
 	elseif spellId == 213148 then--Searing Brand (5sec Targetting Debuff)
-		warnSearingBrandChosen:CombinedShow(0.5, args.destName)
+		warnSearingBrandChosen:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnSearingBrand:Show()
 			voiceSearingBrand:Play("scatter")
@@ -277,7 +278,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not tContains(args.destName, args.destName) then
 				chargeTable[#chargeTable+1] = args.destName
 			end
-			self:Schedule(0.5, hudDelay, self)
+			self:Schedule(0.3, hudDelay, self)
 		end
 	elseif spellId == 213569 then--Armageddon Applied to mobs
 		self.vb.armageddonAdds = self.vb.armageddonAdds + 1
