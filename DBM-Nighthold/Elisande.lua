@@ -135,6 +135,7 @@ local OrbTimers = {0, 76.9, 12.0, 80.0}--I'm not sure they actually persist in p
 --Only exist in phase 3 so first timer of course isn't variable
 local BurstTimers = {27.6, 100}
 local SingularityTimers = {39.6, 60, 42}
+local currentTank, tankUnitID = nil, nil--not recoverable on purpose
 mod.vb.firstElementals = false
 mod.vb.slowElementalCount = 0
 mod.vb.fastElementalCount = 0
@@ -146,6 +147,16 @@ mod.vb.burstCastCount = 0
 mod.vb.burstDebuffCount = 0
 mod.vb.singularityCount = 0
 mod.vb.phase = 1
+--Saved Information for echos
+mod.vb.totalRingCasts = 0
+mod.vb.totalbeamCasts = 0
+mod.vb.pos1X, mod.vb.pos1Y = nil, nil
+mod.vb.pos2X, mod.vb.pos2Y = nil, nil
+mod.vb.pos3X, mod.vb.pos3Y = nil, nil
+mod.vb.pos4X, mod.vb.pos4Y = nil, nil
+mod.vb.pos5X, mod.vb.pos5Y = nil, nil
+mod.vb.pos6X, mod.vb.pos6Y = nil, nil
+mod.vb.pos7X, mod.vb.pos7Y = nil, nil
 
 local function checkPlayerDot(self, spellName)
 	if not UnitDebuff("player", spellName) then
@@ -154,6 +165,7 @@ local function checkPlayerDot(self, spellName)
 end
 
 function mod:OnCombatStart(delay)
+	currentTank, tankUnitID = nil, nil
 	self.vb.firstElementals = false
 	self.vb.slowElementalCount = 0
 	self.vb.fastElementalCount = 0
@@ -161,6 +173,15 @@ function mod:OnCombatStart(delay)
 	self.vb.ringCastCount = 0
 	self.vb.burstDebuffCount = 0
 	self.vb.phase = 1
+	self.vb.totalRingCasts = 0
+	self.vb.totalbeamCasts = 0
+	self.vb.pos1X, self.vb.pos1Y = nil, nil
+	self.vb.pos2X, self.vb.pos2Y = nil, nil
+	self.vb.pos3X, self.vb.pos3Y = nil, nil
+	self.vb.pos4X, self.vb.pos4Y = nil, nil
+	self.vb.pos5X, self.vb.pos5Y = nil, nil
+	self.vb.pos6X, self.vb.pos6Y = nil, nil
+	self.vb.pos7X, self.vb.pos7Y = nil, nil
 	timerTimeElementalsCD:Start(5-delay, STATUS_TEXT_BOTH)
 	timerAblationCD:Start(8.5-delay)--Verify/tweak
 	timerArcaneticRing:Start(39.5-delay)
@@ -218,6 +239,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnArcaneticRing:Show()
 		voiceArcaneticRing:Play("watchorb")
 		local nextCount = self.vb.ringCastCount + 1
+		if self.vb.phase == 1 then
+			self.vb.totalRingCasts = self.vb.totalRingCasts + 1
+		else
+			if nextCount > self.vb.totalRingCasts then return end--There won't be any more
+		end
 		local timer = RingTimers[nextCount]
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
@@ -264,6 +290,32 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 214278 or spellId == 214295 then--Boss: 214278, Echo: 214295
 		self.vb.beamCastCount = self.vb.beamCastCount + 1
 		local nextCount = self.vb.beamCastCount + 1
+		if self.vb.phase == 2 then
+			self.vb.totalbeamCasts = self.vb.totalbeamCasts + 1
+			currentTank, tankUnitID = self:GetCurrentTank()
+			if not currentTank then
+				DBM:Debug("Tank Detection Failure in HudMapOnDelphuricBeam", 2)
+				return
+			end
+			--Yes this could be in a table and be far prettier, but being ugly like this makes it recoverable by dbms timer recovery feature
+			if self.vb.beamCastCount == 1 then
+				self.vb.pos1X, self.vb.pos1Y = UnitPosition(tankUnitID)
+			elseif self.vb.beamCastCount == 2 then
+				self.vb.pos2X, self.vb.pos2Y = UnitPosition(tankUnitID)
+			elseif self.vb.beamCastCount == 3 then
+				self.vb.pos3X, self.vb.pos3Y = UnitPosition(tankUnitID)
+			elseif self.vb.beamCastCount == 4 then
+				self.vb.pos4X, self.vb.pos4Y = UnitPosition(tankUnitID)
+			elseif self.vb.beamCastCount == 5 then
+				self.vb.pos5X, self.vb.pos5Y = UnitPosition(tankUnitID)
+			elseif self.vb.beamCastCount == 6 then
+				self.vb.pos6X, self.vb.pos6Y = UnitPosition(tankUnitID)
+			elseif self.vb.beamCastCount == 7 then
+				self.vb.pos7X, self.vb.pos7Y = UnitPosition(tankUnitID)
+			end
+		else
+			if nextCount > self.vb.totalbeamCasts then return end
+		end
 		local timer = BeamTimers[nextCount]
 		if timer then
 			timerDelphuricBeamCD:Start(timer, nextCount)
@@ -294,19 +346,43 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDelphuricBeam:Yell()
 		end
 		--TODO, phase 3 lines need exact location of the echo ( map coords )
-		if self.Options.HudMapOnDelphuricBeam and self.vb.phase == 2 then
+		if self.Options.HudMapOnDelphuricBeam then
 			self:Unschedule(checkPlayerDot)
 			self:Schedule(0.3, checkPlayerDot, self, args.spellName)--Give player just a dot if they don't end up with debuff
-			local currentTank = self:GetCurrentTank()
-			if not currentTank then
-				DBM:Debug("Tank Detection Failure in HudMapOnDelphuricBeam", 2)
-				return
-			end
+			--Always put dots up
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(213166, "party", args.destName, 0.35, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -13, 8, nil)
-			if args:IsPlayer() then--Yellow Line
-				DBMHudMap:AddEdge(1, 1, 0, 0.5, 4, currentTank, args.destName, nil, nil, nil, nil, 125)
-			else--Red Line
-				DBMHudMap:AddEdge(1, 0, 0, 0.5, 4, currentTank, args.destName, nil, nil, nil, nil, 125)
+			--Now attempt to do lines to best of ability using tanks position as an approximation to boss position
+			if self.vb.phase == 2 then--use current tanks current position
+				if not currentTank then return end
+				if args:IsPlayer() then--Yellow Line
+					DBMHudMap:AddEdge(1, 1, 0, 0.5, 4, currentTank, args.destName, nil, nil, nil, nil, 125)
+				else--Red Line
+					DBMHudMap:AddEdge(1, 0, 0, 0.5, 4, currentTank, args.destName, nil, nil, nil, nil, 125)
+				end
+			else--Echos, pull saved coords
+				--Yes this could be in a table and be far prettier, but being ugly like this makes it recoverable by dbms timer recovery feature
+				local EchoX, EchoY
+				if self.vb.beamCastCount == 1 then
+					EchoX, EchoY = self.vb.pos1X, self.vb.pos1Y
+				elseif self.vb.beamCastCount == 2 then
+					EchoX, EchoY = self.vb.pos2X, self.vb.pos2Y
+				elseif self.vb.beamCastCount == 3 then
+					EchoX, EchoY = self.vb.pos3X, self.vb.pos3Y
+				elseif self.vb.beamCastCount == 4 then
+					EchoX, EchoY = self.vb.pos4X, self.vb.pos4Y
+				elseif self.vb.beamCastCount == 5 then
+					EchoX, EchoY = self.vb.pos5X, self.vb.pos5Y
+				elseif self.vb.beamCastCount == 6 then
+					EchoX, EchoY = self.vb.pos6X, self.vb.pos6Y
+				elseif self.vb.beamCastCount == 7 then
+					EchoX, EchoY = self.vb.pos7X, self.vb.pos7Y
+				end
+				if not EchoX or not EchoY then return end
+				if args:IsPlayer() then--Yellow Line
+					DBMHudMap:AddEdge(1, 1, 0, 0.5, 4, nil, args.destName, EchoX, EchoY, nil, nil, 125)
+				else--Red Line
+					DBMHudMap:AddEdge(1, 0, 0, 0.5, 4, nil, args.destName, EchoX, EchoY, nil, nil, 125)
+				end
 			end
 		end
 	elseif spellId == 209973 then
@@ -451,6 +527,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		specWarnArcaneticRing:Show()
 		voiceArcaneticRing:Play("watchorb")
 		local nextCount = self.vb.ringCastCount + 1
+		if self.vb.phase > 1 and nextCount > self.vb.totalRingCasts then return end--There won't be any more
 		local timer = RingTimers[nextCount]
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
