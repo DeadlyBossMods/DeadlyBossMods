@@ -1,6 +1,6 @@
 ﻿if (GetLocale() == "koKR") then
 
-DBM_CORE_NEED_SUPPORT				= "문의/건의사항은 설정 화면에서 사용자 포럼 버튼을 누른 후, DBM 사용자 포럼에 남겨 주시기 바랍니다."
+DBM_CORE_NEED_LOCALS				= "문의/건의사항은 설정 화면에서 사용자 포럼 버튼을 누른 후, DBM 사용자 포럼에 남겨 주시기 바랍니다."
 DBM_CORE_NEED_LOGS					= "DBM이 전투 경고를 원할히 하기 위해서는 Transcriptor(http://www.wowace.com/addons/transcriptor/) 기록이 필요합니다. 가능하시다면, 현재 전투를 Transcriptor로 기록하신 후에 everfinale@gmail.com 으로 메일을 보내주세요. 7.0 전투 로그가 필요합니다."
 DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력하면 설정창이 나타납니다. 각 경고는 최초 불러오기시 캐릭터 특성에 맞는 적절한 경고를 선택합니다. 선택된 경고는 설정창에서 언제든지 변경이 가능합니다."
 
