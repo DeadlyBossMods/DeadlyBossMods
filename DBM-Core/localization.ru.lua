@@ -1,6 +1,6 @@
 ﻿if GetLocale() ~= "ruRU" then return end
 
-DBM_CORE_NEED_SUPPORT				= "Вы - программист или хороший переводчик? Нам нужна ваша помощь в локализации DBM на другие языки! Если вы можете помочь, посетите наш форум |HDBM:localizersneeded|h|cff3588ffнажав здесь|r"
+DBM_CORE_NEED_LOCALS				= "Вы - программист или хороший переводчик? Нам нужна ваша помощь в локализации DBM на другие языки! Если вы можете помочь, посетите наш форум |HDBM:localizersneeded|h|cff3588ffнажав здесь|r"
 DBM_CORE_NEED_LOGS					= "DBM needs Transcriptor (http://www.wowace.com/addons/transcriptor/) logs of these test fights to make best mods possible. If you want to help, log these fights with transcriptor and post them to our forums. Only interested in 7.0 raid & dungeon logs."
 DBM_HOW_TO_USE_MOD					= "Добро пожаловать в DBM. Для доступа к настройкам наберите /dbm в чате. При желании, загрузите определенные зоны вручную для изменений специфических настроек для каждого босса. DBM пытается подстраиваться под вас на основе вашей специализации на момент первого запуска, но некоторые могут захотеть включить дополнительные опции."
 
