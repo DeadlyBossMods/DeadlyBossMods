@@ -4377,9 +4377,9 @@ do
 			end
 		end
 		
-		syncHandlers["GCE"] = function(sender, modId, ver, wipe, time, wipeHP, difficulty)
+		syncHandlers["GCE"] = function(sender, modId, ver, wipe, time, difficulty, wipeHP)
 			if not DBM.Options.ShowGuildMessages or not difficulty then return end
-			if not ver or not (ver == "2") then return end--Ignore old versions
+			if not ver or not (ver == "3") then return end--Ignore old versions
 			if DBM:AntiSpam(5, "GCE") then
 				if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 				local bossName = EJ_GetEncounterInfo(modId) or UNKNOWN
@@ -5747,7 +5747,7 @@ do
 							self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
 							if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 then
 								if InGuildParty() then--Guild Group
-									SendAddonMessage("D4", "GCE\t"..modId.."\t2\t1\t"..strFromTime(thisTime).."\t"..wipeHP.."\t"..difficultyIndex, "GUILD")
+									SendAddonMessage("D4", "GCE\t"..modId.."\t3\t1\t"..strFromTime(thisTime).."\t"..difficultyIndex.."\t"..wipeHP, "GUILD")
 								end
 							end
 						end
@@ -5817,7 +5817,7 @@ do
 							msg = DBM_CORE_BOSS_DOWN:format(difficultyText..name, strFromTime(thisTime))
 							if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 then
 								if InGuildParty() then--Guild Group
-									SendAddonMessage("D4", "GCE\t"..modId.."\t2\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex, "GUILD")
+									SendAddonMessage("D4", "GCE\t"..modId.."\t3\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex, "GUILD")
 								end
 							end
 						end
@@ -5828,7 +5828,7 @@ do
 							msg = DBM_CORE_BOSS_DOWN_NR:format(difficultyText..name, strFromTime(thisTime), strFromTime(bestTime), totalKills)
 							if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 then
 								if InGuildParty() then--Guild Group
-									SendAddonMessage("D4", "GCE\t"..modId.."\t2\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex, "GUILD")
+									SendAddonMessage("D4", "GCE\t"..modId.."\t3\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex, "GUILD")
 								end
 							end
 						end
@@ -5839,7 +5839,7 @@ do
 							msg = DBM_CORE_BOSS_DOWN_L:format(difficultyText..name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills)
 							if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 then
 								if InGuildParty() then--Guild Group
-									SendAddonMessage("D4", "GCE\t"..modId.."\t2\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex, "GUILD")
+									SendAddonMessage("D4", "GCE\t"..modId.."\t3\t0\t"..strFromTime(thisTime).."\t"..difficultyIndex, "GUILD")
 								end
 							end
 						end
