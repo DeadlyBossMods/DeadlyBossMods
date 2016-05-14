@@ -992,7 +992,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not self:IsMythic() then
 				specWarnFocusedChaos:Show()
 				voiceFocusedChaos:Play("185014")
-				yellFocusedChaos:Yell(5)
 				yellFocusedChaos:Schedule(3, 2)
 				yellFocusedChaos:Schedule(2, 3)
 				yellFocusedChaos:Schedule(1, 4)
