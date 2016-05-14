@@ -16,6 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 175827"
 )
 
+--TODO, does not have a journal entry on wowhead, poke perc later
 local specWarnColossalSlam		= mod:NewSpecialWarningDodge(175791, nil, nil, nil, 2, 2)
 local specWarnCallofEarth		= mod:NewSpecialWarningSpell(175827)
 
