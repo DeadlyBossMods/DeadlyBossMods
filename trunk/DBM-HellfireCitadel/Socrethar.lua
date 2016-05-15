@@ -169,7 +169,7 @@ function mod:ChargeTarget(targetname, uId)
 	if self.Options.HudMapOnCharge then
 		local currentTank = self:GetCurrentTank()
 		if currentTank then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(182051, "party", targetname, 0.35, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(targetname, nil, nil, nil, nil, nil, 0.8, nil, -13, 8, nil)
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(182051, "party", targetname, 0.35, 4, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(targetname, nil, nil, nil, nil, nil, 0.8, nil, -13, 8, nil)
 			if targetname == UnitName("player") then
 				DBMHudMap:AddEdge(1, 1, 0, 0.5, 4, currentTank, targetname, nil, nil, nil, nil, 125)
 			else
