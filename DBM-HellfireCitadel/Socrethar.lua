@@ -167,7 +167,7 @@ function mod:ChargeTarget(targetname, uId)
 		warnFelCharge:Show(targetname)
 	end
 	if self.Options.HudMapOnCharge then
-		local currentTank = self:GetCurrentTank()
+		local currentTank = self:GetCurrentTank(90296)
 		if currentTank then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(182051, "party", targetname, 0.35, 4, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(targetname, nil, nil, nil, nil, nil, 0.8, nil, -13, 8, nil)
 			if targetname == UnitName("player") then
