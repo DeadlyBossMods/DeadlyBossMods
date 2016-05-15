@@ -1,5 +1,5 @@
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Jan 16 2016, 20:10 UTC@14738
+-- Last update: May 12 2015, 07:49 UTC@14943
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -35,6 +35,10 @@ L= DBM:GetModLocalization(1744)
 -- Ursoc --
 ---------------------------
 L= DBM:GetModLocalization(1667)
+
+L:SetMiscLocalization({
+	SoakersText		=	"吃冲击分配: %"
+})
 
 ---------------------------
 -- Dragons of Nightmare --

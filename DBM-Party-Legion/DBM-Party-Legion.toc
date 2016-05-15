@@ -27,6 +27,7 @@
 ## X-DBM-Mod-MapID: 1501, 1466, 1456, 1477, 1458, 1516, 1571, 1492, 1544, 1493
 ## X-DBM-Mod-MinCoreRevision: 14737
 localization.en.lua
+localization.cn.lua
 BlackRookHold\AmalgamSouls.lua
 BlackRookHold\Illysanna.lua
 BlackRookHold\Smashspite.lua
