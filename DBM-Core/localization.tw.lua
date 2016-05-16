@@ -17,7 +17,7 @@ DBM_CORE_BAD_LOAD					= "DBM偵測到你的此副本的模組在戰鬥中讀取�
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s不能被讀取因為你的DBM核心未達需求，請更新版本。"
 
 --DBM_CORE_WHATS_NEW					= "此版本新功能：計時條選項加入嵌入圖示和自訂可計時條顏色選項。"
-DBM_CORE_WHATS_NEW_LINK			= "此版本新功能： 計時條選項加入嵌入圖示和自訂可計時條顏色選項。想知道此功能的詳細資訊請至|HDBM:forumsnews|h|cff3588ffclicking here|r"
+--DBM_CORE_WHATS_NEW_LINK			= "此版本新功能： 計時條選項加入嵌入圖示和自訂可計時條顏色選項。想知道此功能的詳細資訊請至|HDBM:forumsnews|h|cff3588ffclicking here|r"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM已中禁用動態距離框架，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM已中禁用小怪計數警告，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
