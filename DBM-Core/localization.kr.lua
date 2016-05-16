@@ -17,7 +17,7 @@ DBM_CORE_BAD_LOAD					= "DBM이 현재 인스턴스의 경고를 완전히 불�
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "현재 사용중인 DBM 버전은 '%s' 경보에 필요한 기능이 없습니다. 새로운 DBM을 설치하셔야 이 경보를 불러올 수 있습니다."
 
 --DBM_CORE_WHATS_NEW				= "바 내부 아이콘 표시 기능 및 사용자 설정 기능이 추가되었습니다."
-DBM_CORE_WHATS_NEW_LINK				= "바 내부 아이콘 표시 기능 및 사용자 설정 기능이 추가되었습니다. |HDBM:forumsnews|h|cff3588ff여기|r를 클릭하면 좀 더 자세한 내용을 볼 수 있습니다.(영문)"
+--DBM_CORE_WHATS_NEW_LINK				= "바 내부 아이콘 표시 기능 및 사용자 설정 기능이 추가되었습니다. |HDBM:forumsnews|h|cff3588ff여기|r를 클릭하면 좀 더 자세한 내용을 볼 수 있습니다.(영문)"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대원 숫자에 맞는 근접판정 정보를 알 수 없기 때문에 DBM이 이 전투에서 거리 창을 비활성화 했습니다."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "현재 공격대원 숫자에 맞는 쫄 소환 정보를 알 수 없기 때문에 DBM이 이 전투에서 소환 횟수 정보를 비활성화 했습니다."

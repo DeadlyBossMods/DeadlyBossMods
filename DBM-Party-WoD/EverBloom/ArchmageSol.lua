@@ -44,7 +44,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.ParasiteCount = self.vb.ParasiteCount + 1
 		warnParasiticGrowth:Show(self.vb.ParasiteCount)
 		specWarnParasiticGrowth:Show(self.vb.ParasiteCount)
-		timerParasiticGrowthCD:Cancel()
+		timerParasiticGrowthCD:Stop()
 		timerParasiticGrowthCD:Start(nil, self.vb.ParasiteCount+1)
 	end
 end
@@ -71,7 +71,7 @@ end
 
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 168885 then
-		timerParasiticGrowthCD:Cancel()
+		timerParasiticGrowthCD:Stop()
 		self.vb.ParasiteCount = 0
 		timerParasiticGrowthCD:Start(30, 1)
 	end

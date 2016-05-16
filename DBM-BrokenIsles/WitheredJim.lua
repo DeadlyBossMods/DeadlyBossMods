@@ -10,19 +10,23 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 175791",
-	"SPELL_AURA_APPLIED 175827"
+	"SPELL_CAST_START 223689",
+	"SPELL_AURA_APPLIED 223623 223614"
 )
 
-local specWarnColossalSlam		= mod:NewSpecialWarningDodge(175791, nil, nil, nil, 2, 2)
-local specWarnCallofEarth		= mod:NewSpecialWarningSpell(175827)
+--TODO, Adjust warning types as needed based on needs.
+--TODO, shield health frame for resonance probably. Some warnings and countdowns too for explotion at end.
+local warnNightstableEnergy			= mod:NewSpellAnnounce(223689, 2)
+local warnResonance					= mod:NewSpellAnnounce(223614, 3)
 
-local timerColossalSlamCD		= mod:NewCDTimer(16, 175791, nil, nil, nil, 3)
-local timerCallofEarthCD		= mod:NewCDTimer(90, 175827, nil, nil, nil, 1)
+local specWarnNightshiftBolts		= mod:NewSpecialWarningDodge(223623, nil, nil, nil, 2, 2)
 
-local voiceColossalSlam			= mod:NewVoice(175791)
+local timerNightstableEnergyCD		= mod:NewAITimer(16, 223689, nil, nil, nil, 1)
+local timerNightshiftBoltsCD		= mod:NewAITimer(16, 223623, nil, nil, nil, 3)
+local timerResonanceCD				= mod:NewAITimer(16, 223614, nil, nil, nil, 6)
+
+local voiceNightshiftBolts			= mod:NewVoice(223623)--watchstep
 
 --mod:AddReadyCheckOption(37460, false)
 
@@ -37,15 +41,20 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 175791 then
-
+	if spellId == 223689 then
+		warnNightstableEnergy:Show()
+		timerNightstableEnergyCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 175827 then
-
+	if spellId == 223623 then
+		specWarnNightshiftBolts:Show()
+		voiceNightshiftBolts:Play("watchstep")
+		timerNightshiftBoltsCD:Start()
+	elseif spellId == 223614 then
+		warnResonance:Show(args.destName)
+		timerResonanceCD:Start()
 	end
 end
---]]
