@@ -15,7 +15,7 @@ DBM_CORE_LOAD_GUI_COMBAT            = "GUI ne peut pas se charger initialement e
 DBM_CORE_BAD_LOAD                   = "DBM a détecté une erreur de chargement du mod de l'instance car vous êtes en combat. Dès que vous sortez de combat veuillez entrer /console reloadui le plus vite possible."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s n'a pas pu être chargé car votre DBM-Core ne remplit pas les conditions. Il vous faut une version plus récente."
 
-DBM_CORE_WHATS_NEW					= "Nouveau dans cette version: Amélioration de l'accès aux événements DBM par d'autres mods"
+--DBM_CORE_WHATS_NEW					= "Nouveau dans cette version: Amélioration de l'accès aux événements DBM par d'autres mods"
 --DBM_CORE_WHATS_NEW_LINK			= "Nouveau dans cette version: Les timers DBM supportent plusieurs couleurs en fonction du type de sort concerné. Pour en apprendre plus vous pouvez lire |HDBM:forumsnews|h|cff3588ffclicking here|r"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP   = "DBM a désactivé la vérification du nombre de joueurs à portée sur ce combat pour cause de manque d'information sur le nombre de joueurs requis regroupés pour votre taille de raid."

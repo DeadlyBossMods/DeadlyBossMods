@@ -10,19 +10,25 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
---[[
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 175791",
-	"SPELL_AURA_APPLIED 175827"
+	"SPELL_CAST_START 219349",
+	"SPELL_CAST_SUCCESS 219861",
+	"SPELL_AURA_APPLIED 219591 219865"
 )
 
-local specWarnColossalSlam		= mod:NewSpecialWarningDodge(175791, nil, nil, nil, 2, 2)
-local specWarnCallofEarth		= mod:NewSpecialWarningSpell(175827)
+local warnCorrodingSpray		= mod:NewCastAnnounce(219349, 2, nil, nil, "Tank")
+local warnWebWrap				= mod:NewTargetAnnounce(219865, 2)
 
-local timerColossalSlamCD		= mod:NewCDTimer(16, 175791, nil, nil, nil, 3)
-local timerCallofEarthCD		= mod:NewCDTimer(90, 175827, nil, nil, nil, 1)
+local specWarnFoundation		= mod:NewSpecialWarningSpell(219591)
+local specWarnWebWrap			= mod:NewSpecialWarningSwitch(219865, "Dps")--Overkill? maybe just melee or just ranged or off by default
 
-local voiceColossalSlam			= mod:NewVoice(175791)
+local timerCorrodingSprayCD		= mod:NewAITimer(16, 219349, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerFoundatoinCD			= mod:NewAITimer(90, 219591, nil, nil, nil, 6)
+local timerWebWrapCD			= mod:NewAITimer(90, 219865, nil, nil, nil, 3)
+
+--local voiceFoundation			= mod:NewVoice(219591)--no voice ideas at all. Maybe needs new one
+--local voiceWebWrap				= mod:NewVoice(219865, "Dps")--Maybe time for a "freeallies" or "freeplayers" voice?
+
 
 --mod:AddReadyCheckOption(37460, false)
 
@@ -37,15 +43,27 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 175791 then
+	if spellId == 219349 then
+		warnCorrodingSpray:Show()
+		timerCorrodingSprayCD:Start()
+	end
+end
 
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 219861 then
+		specWarnWebWrap:Show()
+		timerWebWrapCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 175827 then
-
+	if spellId == 219591 then
+		specWarnFoundation:Show()
+--		voiceFoundation:Play("")
+		timerFoundatoinCD:start()
+	elseif spellId == 219865 then
+		warnWebWrap:CombinedShow(0.3, args.destName)
 	end
 end
---]]
