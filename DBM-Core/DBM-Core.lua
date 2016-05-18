@@ -55,7 +55,6 @@ end
 local testBuild = false
 if IsTestBuild() then
 	testBuild = true
-	DBM.ReleaseRevision = DBM.Revision
 end
 
 -- dual profile setup
@@ -4202,7 +4201,7 @@ do
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_MAJORPATCH)
 							DBM:Disable(true)
 						--Disable if revision grossly out of date even if not major patch.
-						elseif testBuild and revDifference > 5 or revDifference > 180 then
+						elseif revDifference > 180 then
 							if updateNotificationDisplayed < 3 then
 								updateNotificationDisplayed = 3
 								DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE)
@@ -4218,8 +4217,14 @@ do
 					DBM:Debug("Newer revision detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
 				end
 				if #newerRevisionPerson == 2 then
-					updateNotificationDisplayed = 2
-					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revision - DBM.Revision))
+					if testBuild and (revision - DBM.Revision) > 5 then
+						updateNotificationDisplayed = 3
+						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE)
+						DBM:Disable(true)
+					else
+						updateNotificationDisplayed = 2
+						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revision - DBM.Revision))
+					end
 				end
 			end
 		end
