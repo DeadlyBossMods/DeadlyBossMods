@@ -4211,19 +4211,20 @@ do
 					end
 				end
 			end
-			if DBM.DisplayVersion:find("alpha") and #newerVersionPerson < 2 and #newerRevisionPerson < 2 and updateNotificationDisplayed < 2 and (revision - DBM.Revision) > 30 then--Revision 20 can be increased in 1 day, so raised it to 30. Requires 2 person.
+			if DBM.DisplayVersion:find("alpha") and #newerVersionPerson < 2 and #newerRevisionPerson < 2 and updateNotificationDisplayed < 2 and (revision - DBM.Revision) > 20 then
 				if not checkEntry(newerRevisionPerson, sender) then
 					newerRevisionPerson[#newerRevisionPerson + 1] = sender
 					DBM:Debug("Newer revision detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision))
 				end
 				if #newerRevisionPerson == 2 then
-					if testBuild and (revision - DBM.Revision) > 5 then
+					local revDifference = mmin((raid[newerRevisionPerson[1]].revision - DBM.Revision), (raid[newerRevisionPerson[2]].revision - DBM.Revision))
+					if testBuild and revDifference > 5 then
 						updateNotificationDisplayed = 3
 						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE)
 						DBM:Disable(true)
 					else
 						updateNotificationDisplayed = 2
-						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revision - DBM.Revision))
+						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
 					end
 				end
 			end
