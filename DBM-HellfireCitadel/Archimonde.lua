@@ -1262,6 +1262,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		--Cancel stuff that resets in phase 2
 		timerAllureofFlamesCD:Stop()
 		timerDeathbrandCD:Stop()
+		timerLightCD:Stop()
 		countdownDeathBrand:Cancel()
 		--Begin phase 2
 		warnPhase2:Show()
