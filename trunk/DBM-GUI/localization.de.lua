@@ -172,8 +172,9 @@ L.Bar_EnlargePercent		= "Vergrößern unterhalb Rest: %0.1f%%"
 L.BarSpark					= "Balkenfunken"
 L.BarFlash					= "Aufblinkende Balken bei baldigem Ablauf"
 L.BarSort					= "Sortiere nach verbleibender Zeit"
-L.BarColorByType			= "Einfärbung nach Typ"
+L.BarColorByType			= "Färbung nach Typ"
 L.BarInlineIcons			= "Zeichen einbetten"
+L.ShortTimerText			= "Nutze kurzen Timertext (falls verfügbar)"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Spezialwarnungen"
