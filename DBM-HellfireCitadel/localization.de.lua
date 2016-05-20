@@ -163,16 +163,15 @@ L:SetOptionLocalization({
 	Numbered				= "Stern, Kreis, Diamant, Dreieck (für Strategien mit Weltmarkierungen)",
 	LocSmallFront			= "Nah L/R (Stern, Kreis), Fern L/R (Diamant, Dreieck), kurze Debuffs Nah",
 	LocSmallBack			= "Nah L/R (Stern, Kreis), Fern L/R (Diamant, Dreieck), kurze Debuffs Fern",
-	NoAssignment			= "Deaktiviere Positionierungsschreie, -zeichen und -HUD bei allen im Schlachtzug"
+	NoAssignment			= "Deaktiviere Positionierungsschreie, -zeichen und -HUD bei allen im Schlachtzug",
+	overrideMarkOfLegion	= "Blockiere Überschreiben des Mal der Legion Verhaltens durch den Schlachtzugsleiter (nur empfohlen für Experten, die sich sicher sind, dass ihre eigenen Einstellungen den Absichten des Schlachtzugsleiters nicht widersprechen)"
 })
 
 L:SetMiscLocalization({
 	phase2point5		= "Seht die endlosen Ränge der Brennenden Legion und erkennt die Ausichtslosigkeit Eurer Widerwehr!",
 	First				= "Erster",
 	Second				= "Zweiter",
-	Third				= "Dritter",
-	Fourth				= "Vierter",
-	Fifth				= "Fünfter"
+	Third				= "Dritter"
 })
 
 -------------
