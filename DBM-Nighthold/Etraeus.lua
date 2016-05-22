@@ -30,9 +30,9 @@ mod:RegisterEventsInCombat(
 --TODO, add felflame GTFO
 --TODO, does void nova even merit a special warning, or regular?
 --Base abilities
-local warnStarSignCrab				= mod:NewTargetAnnounce(205429, 2)--Yellow
+local warnStarSignCrab				= mod:NewTargetAnnounce(205429, 2)--Yellow (looks orange but icon text is yellow)
 local warnStarSignDragon			= mod:NewTargetAnnounce(216344, 2)--Blue
-local warnStarSignHunter			= mod:NewTargetAnnounce(216345, 2, "Interface\\Icons\\boss_odunrunes_green")--Green (well, debuff is also blue but I am making it green)
+local warnStarSignHunter			= mod:NewTargetAnnounce(216345, 2)--Green
 local warnStarSignWolf				= mod:NewTargetAnnounce(205445, 2)--Red
 local warnGravitationalPull			= mod:NewTargetAnnounce(205984, 3, nil, "Tank")
 --Stage One: The Dome of Observation
