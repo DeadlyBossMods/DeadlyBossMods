@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 197963 197964 197965 197966 197967",
---	"SPELL_AURA_REMOVED 197963 197964 197965 197966 197967",
+	"SPELL_AURA_REMOVED 197963 197964 197965 197966 197967",
 	"SPELL_CAST_START 198263 198077",
 	"SPELL_CAST_SUCCESS 197961",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -34,7 +34,7 @@ local voiceTempest					= mod:NewVoice(198263)--runout
 local voiceShatterSpears			= mod:NewVoice(198077)--watchorb
 local voiceRunicBrand				= mod:NewVoice(197961)--locations.
 
---mod:AddRangeFrameOption(5, 153396)
+mod:AddHudMapOption("HudMapForRunes", 176312, false)
 
 function mod:OnCombatStart(delay)
 --	timerSpearCD:Start(-delay)
@@ -44,9 +44,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	if self.Options.HudMapForRunes then
+		DBMHudMap:Disable()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -54,33 +54,52 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 197963 and args:IsPlayer() then--Purple K (NE)
 		specWarnRunicBrand:Show("NE")
 		voiceRunicBrand:Play("frontright")
+		if self.Options.HudMapForRunes then
+			local m1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 0.1, 12, 0, 1, 0, 0.5):Appear()--tiny dot for self, to create line PoO
+			local m2 = DBMHudMap:RegisterPositionMarker(spellId, "OdunHelper", "odunpurple", 2437, 498, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			m2:EdgeTo(m1, nil, 12, 0, 1, 0, 1)--Now draw line between player and rune
+		end
 	elseif spellId == 197964 and args:IsPlayer() then--Orange N (SE)
 		specWarnRunicBrand:Show("SE")
 		voiceRunicBrand:Play("backright")
+		if self.Options.HudMapForRunes then
+			local m1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 0.1, 12, 0, 1, 0, 0.5):Appear()--tiny dot for self, to create line PoO
+			local m2 = DBMHudMap:RegisterPositionMarker(spellId, "OdunHelper", "odunorange", 2403, 509, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			m2:EdgeTo(m1, nil, 12, 0, 1, 0, 1)--Now draw line between player and rune
+		end
 	elseif spellId == 197965 and args:IsPlayer() then--Yellow H (SW)
 		specWarnRunicBrand:Show("SW")
 		voiceRunicBrand:Play("backleft")
+		if self.Options.HudMapForRunes then
+			local m1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 0.1, 12, 0, 1, 0, 0.5):Appear()--tiny dot for self, to create line PoO
+			local m2 = DBMHudMap:RegisterPositionMarker(spellId, "OdunHelper", "odunyellow", 2403, 548, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			m2:EdgeTo(m1, nil, 12, 0, 1, 0, 1)--Now draw line between player and rune
+		end
 	elseif spellId == 197966 and args:IsPlayer() then--Blue fishies (NW)
 		specWarnRunicBrand:Show("NW")
 		voiceRunicBrand:Play("frontleft")
+		if self.Options.HudMapForRunes then
+			local m1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 0.1, 12, 0, 1, 0, 0.5):Appear()--tiny dot for self, to create line PoO
+			local m2 = DBMHudMap:RegisterPositionMarker(spellId, "OdunHelper", "odunblue", 2437, 559, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			m2:EdgeTo(m1, nil, 12, 0, 1, 0, 1)--Now draw line between player and rune
+		end
 	elseif spellId == 197967 and args:IsPlayer() then--Green box (N)
 		specWarnRunicBrand:Show("N")
 		voiceRunicBrand:Play("frontcenter")--Does not exist yet
+		if self.Options.HudMapForRunes then
+			local m1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 0.1, 12, 0, 1, 0, 0.5):Appear()--tiny dot for self, to create line PoO
+			local m2 = DBMHudMap:RegisterPositionMarker(spellId, "OdunHelper", "odungreen", 2461, 528, 3.5, 12, 1, 1, 1, 0.5):Pulse(0.5, 0.5)
+			m2:EdgeTo(m1, nil, 12, 0, 1, 0, 1)--Now draw line between player and rune
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 197963 then--Purple K (NE)
-	
-	elseif spellId == 197964 then--Red N (SE)
-	
-	elseif spellId == 197965 then--Yellow H (SW)
-	
-	elseif spellId == 197966 then--Blue fishies (NW)
-	
-	elseif spellId == 197967 then--Green box (N)
-
+	if (spellId == 197963 or spellId == 197964 or spellId == 197965 or spellId == 197966 or spellId == 197967) and args:IsPlayer() and self.Options.HudMapForRunes then--Odun runes
+		DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		DBMHudMap:FreeEncounterMarkerByTarget(spellId, "OdunHelper")
+		DBMHudMap:ClearAllEdges()
 	end
 end
 
