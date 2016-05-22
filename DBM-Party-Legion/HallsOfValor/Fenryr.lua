@@ -2,8 +2,9 @@ local mod	= DBM:NewMod(1487, "DBM-Party-Legion", 4, 721)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(95674)
+mod:SetCreatureID(95674, 99868)
 mod:SetEncounterID(1807)
+mod:DisableEEKillDetection()
 mod:SetZone()
 
 mod:RegisterCombat("combat")
@@ -12,7 +13,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 197556 196838",
 	"SPELL_AURA_REMOVED 196838",
 	"SPELL_CAST_START 196838 196543",
-	"SPELL_CAST_SUCCESS 196567 196512 207707"
+	"SPELL_CAST_SUCCESS 196567 196512 207707",
+	"UNIT_DIED"
 )
 
 --TODO, Keep checking/fixing timers
@@ -29,7 +31,7 @@ local specWarnFixateOver				= mod:NewSpecialWarningEnd(196838, nil, nil, nil, 1)
 local specWarnWolves					= mod:NewSpecialWarningSwitch("ej12600", "Tank")
 
 local timerLeapCD						= mod:NewCDTimer(31, 197556, nil, nil, nil, 3)--31-36
---local timerClawFrenzyCD					= mod:NewCDTimer(10, 196512, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--All over the place
+--local timerClawFrenzyCD					= mod:NewCDTimer(9.7, 196512, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--All over the place
 local timerHowlCD						= mod:NewCDTimer(31.5, 196543, nil, "SpellCaster", nil, 2)--Poor data
 local timerFixateCD						= mod:NewCDTimer(36, 196838, nil, nil, nil, 3)--Poor data
 local timerWolvesCD						= mod:NewCDTimer(35, "ej12600", nil, nil, nil, 1, 199184)
@@ -107,7 +109,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 196838 then
 		timerFixateCD:Start()
-		self:BossTargetScanner(95674, "FixateTarget", 0.2, 12, true, nil, nil, nil, true)--Target scanning used to grab target 2-3 seconds faster. Doesn't seem to anymore?
+		self:BossTargetScanner(99868, "FixateTarget", 0.2, 12, true, nil, nil, nil, true)--Target scanning used to grab target 2-3 seconds faster. Doesn't seem to anymore?
 	elseif spellId == 196543 then
 		specWarnHowl:Show()
 		voiceHowl:Play("stopcast")
@@ -138,16 +140,22 @@ end
 
 function mod:ENCOUNTER_START(encounterID)
 	--Re-engaged, kill scans and long wipe time
-	if encounterID == 1807 then
+	if encounterID == 1807 and self:IsIncombat() then
 --		self:SetWipeTime(5)
 --		self:UnregisterShortTermEvents()
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
-		timerWolvesCD:Start(5)
---		timerHowlCD:Start(5)--2-6, useless timer
-		timerFixateCD:Start(9.3)--7-20, useless timer
---		timerClawFrenzyCD:Start(27)
-		timerLeapCD:Start(27)--10-30, useless timer
+		--timerWolvesCD:Start(5)
+		--timerHowlCD:Start(5)--2-6, useless timer
+		--timerFixateCD:Start(9.3)--7-20, useless timer
+		--timerClawFrenzyCD:Start(27)
+		--timerLeapCD:Start(9)--9-30, useless timer
+	end
+end
+
+function mod:UNIT_DIED(args)
+	if self:GetCIDFromGUID(args.destGUID) == 99868 then
+		DBM:EndCombat(self)
 	end
 end
 

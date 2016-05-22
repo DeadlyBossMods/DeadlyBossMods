@@ -15,6 +15,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--Honestly I think all his stuff is health based. timers are useless
 local warnDancingBlade				= mod:NewTargetAnnounce(193235, 3)
 local warnSweep						= mod:NewSpellAnnounce(193092, 2, nil, "Tank")
 
@@ -22,7 +23,7 @@ local specWarnHornOfValor			= mod:NewSpecialWarningSoon(188404, nil, nil, nil, 2
 local specWarnDancingBlade			= mod:NewSpecialWarningMove(193235, nil, nil, nil, 1, 2)
 local yellDancingBlade				= mod:NewYell(193235)
 
-local timerDancingBladeCD			= mod:NewCDTimer(10, 193235, nil, nil, nil, 3)--10-15
+--local timerDancingBladeCD			= mod:NewCDTimer(10, 193235, nil, nil, nil, 3)--10-15
 --local timerHornCD					= mod:NewCDTimer(31, 191284, nil, nil, nil, 3)--31-36, Very confident it's health based.
 
 local voiceDancingBlade				= mod:NewVoice(193235)--runaway
@@ -44,7 +45,7 @@ end
 
 function mod:OnCombatStart(delay)
 --	timerHornCD:Start(5.5-delay)
-	timerDancingBladeCD:Start(19-delay)
+--	timerDancingBladeCD:Start(19-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -55,7 +56,7 @@ function mod:SPELL_CAST_START(args)
 --		timerHornCD:Start()
 	elseif spellId == 193235 then
 		self:BossTargetScanner(94960, "BladeTarget", 0.1, 20, true, nil, nil, nil, true)
-		timerDancingBladeCD:Start()
+--		timerDancingBladeCD:Start()
 	elseif spellId == 188404 then
 		voiceBreath:Play("breathsoon")
 	end
