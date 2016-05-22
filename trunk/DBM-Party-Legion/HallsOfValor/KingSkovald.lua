@@ -28,7 +28,7 @@ local specWarnRagnarok				= mod:NewSpecialWarningMoveTo(193826, nil, DBM_CORE_AU
 local specWarnFlames				= mod:NewSpecialWarningMove(193702, nil, nil, nil, 1, 2)
 
 local timerRushCD					= mod:NewCDTimer(11, 193659, nil, nil, nil, 3)--11-13 unless delayed by claim aegis or ragnarok
-local timerSavageBladeCD			= mod:NewCDTimer(23, 193668, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--23 unless delayed by claim aegis or ragnarok
+local timerSavageBladeCD			= mod:NewCDTimer(19.5, 193668, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--23 unless delayed by claim aegis or ragnarok
 local timerRagnarokCD				= mod:NewCDTimer(51, 193826, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--60 now? or maybe health based?
 
 local voiceSavageBlade				= mod:NewVoice(193668, "Tank")--defensive
@@ -46,7 +46,7 @@ function mod:FelblazeRushTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	timerRushCD:Start(7.5-delay)
+	timerRushCD:Start(7.1-delay)
 	timerRagnarokCD:Start(11-delay)
 end
 
@@ -61,6 +61,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 193826 then
 		timerRagnarokCD:Start()
+		--timerRushCD:Start(25)--Verify
 	end
 end
 
@@ -76,30 +77,31 @@ function mod:SPELL_CAST_START(args)
 		--Because of boss delay (never looking at correct target immediately/before cast start
 		--there is time to use this better method for fastest and most efficient method
 		self:BossUnitTargetScanner("boss1", "FelblazeRushTarget")
-		local elapsed, total = timerRagnarokCD:GetTime()
+--[[		local elapsed, total = timerRagnarokCD:GetTime()
 		local remaining = total - elapsed
 		if remaining < 11 then
 			local extend = 11 - remaining
 			DBM:Debug("timerRushCD Extend by: "..extend)
 			timerRushCD:Start(11+extend)
-		else
+		else--]]
 			timerRushCD:Start()
-		end
+		--end
 	elseif spellId == 193668 then
 		specWarnSavageBlade:Show()
 		voiceSavageBlade:Play("defensive")
 		local elapsed, total = timerRagnarokCD:GetTime()
 		local remaining = total - elapsed
-		if remaining < 25 then
-			local extend = 25 - remaining
-			DBM:Debug("timerSavageBladeCD Extend by: "..extend)
-			timerSavageBladeCD:Start(25+extend)
+		if remaining < 20 then
+			--Do nothing, ragnaros will reset it
 		else
 			timerSavageBladeCD:Start()
 		end
 	elseif spellId == 193826 then
 		specWarnRagnarok:Show(SHIELDSLOT)
 		voiceRagnarok:Play("findshield")
+		timerRushCD:Stop()
+		timerSavageBladeCD:Stop()
+		timerSavageBladeCD:Start(12)
 	elseif spellId == 194112 then
 		warnClaimAegis:Show()
 	end
