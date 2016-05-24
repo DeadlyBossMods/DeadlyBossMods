@@ -45,6 +45,7 @@ local timerShockwaveCD				= mod:NewCDTimer(57.9, 204316, nil, nil, nil, 2, nil, 
 local timerFocusedBlastCD			= mod:NewCDTimer(30.4, 204471, nil, nil, nil, 3)--30-34
 local timerVulnerable				= mod:NewBuffFadesTimer(15, 204459, nil, nil, nil, 6)
 --These are all 46 unless delayed by shockwave or stun
+mod:AddTimerLine(PLAYER_DIFFICULTY6)
 local timerVolatileFragments		= mod:NewCDTimer(46, 214661, nil, nil, nil, 6)
 local timerAcidicFragments			= mod:NewCDTimer(46, 214652, nil, nil, nil, 6)
 local timerCrystallineFragments		= mod:NewCDTimer(46, 204292, nil, nil, nil, 6)

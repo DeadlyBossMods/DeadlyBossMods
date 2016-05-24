@@ -59,13 +59,15 @@ local yellCoN						= mod:NewPosYell(218809)
 
 --All abilities have same cd. 35 seconds in phase 1, 55 in phase 2 and 70 in phase 3
 --Stage 1: The High Botanist
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerControlledChaosCD		= mod:NewNextTimer(35, 218438, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerParasiticFetterCD		= mod:NewNextTimer(35, 218304, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)--Technically can also be made add timer instead of targetted
 local timerSolarCollapseCD			= mod:NewNextTimer(35, 218148, nil, nil, nil, 3)
 --Stage 2: Nightosis
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerPlasmaSpheresCD			= mod:NewNextTimer(55, 218774, nil, nil, nil, 1)
-
 --Stage 3: Pure Forms
+mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerToxicSporesCD			= mod:NewNextTimer(8.5, 219049, nil, nil, nil, 3)--Exception to 35, 55, 70 rule
 local timerGraceOfNatureCD			= mod:NewNextTimer(70, 218927, nil, "Tank", nil, 5)
 local timerCoNCD					= mod:NewNextTimer(70, 218809, nil, nil, nil, 3)--Probably only cast once after phase change so no AI timer
