@@ -21,6 +21,11 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
+local Ysondre = EJ_GetSectionInfo(12768)
+local Emeriss = EJ_GetSectionInfo(12770)
+local Lethon = EJ_GetSectionInfo(12772)
+local Taerar = EJ_GetSectionInfo(12774)
+
 --(type = "begincast" or type = "cast" or type = "applybuff") and (source.name = "Taerar" or source.name = "Ysondre" or source.name = "Emeriss" or source.name = "Lethon")
 --TODO, promote breath warning to special if it's impactful enough. FIgure out if timers are reasonable too
 --TODO, if only one volatile infection goes out at a time, hide general alert if player affected
@@ -64,15 +69,19 @@ local specWarnShadesOfTaerar		= mod:NewSpecialWarningSwitch(204100, "Tank", nil,
 local specWarnBellowingRoar			= mod:NewSpecialWarningSpell(204078, nil, nil, nil, 2, 6)
 
 --Ysondre
+mod:AddTimerLine(Ysondre)
 local timerNightmareBlastCD			= mod:NewCDTimer(15, 203153, nil, "-Tank", nil, 3)--15-20
 local timerDefiledSpiritCD			= mod:NewCDTimer(34, 207573, nil, nil, nil, 3)
 --Emeriss
+mod:AddTimerLine(Emeriss)
 local timerVolatileInfectionCD		= mod:NewAITimer(16, 203787, nil, nil, nil, 3)
 local timerEssenceOfCorruptionCD	= mod:NewAITimer(16, 205298, nil, nil, nil, 1)
 --Lethon
+mod:AddTimerLine(Lethon)
 local timerSiphonSpiritCD			= mod:NewAITimer(16, 203888, nil, nil, nil, 1)
 local timerShadowBurstCD			= mod:NewAITimer(16, 204040, nil, nil, nil, 3)
 --Taerar
+mod:AddTimerLine(Taerar)
 local timerShadesOfTaerarCD			= mod:NewCDTimer(48.5, 204100, nil, "-Healer", nil, 1)
 local timerSeepingFogCD				= mod:NewCDTimer(15.5, 205331, nil, nil, nil, 3)
 local timerBellowingRoarCD			= mod:NewAITimer(16, 204078, nil, nil, nil, 2)
@@ -112,6 +121,9 @@ function mod:OnCombatStart(delay)
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe vb.on pull
 	)
+	if DBM.BossHealth:IsShown() then
+		DBM.BossHealth:Clear()
+	end
 end
 
 function mod:OnCombatEnd()
@@ -250,12 +262,21 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			if cid == 102683 then -- Emeriss
 				timerVolatileInfectionCD:Start(1)
 				timerEssenceOfCorruptionCD:Start(1)
+				if DBM.BossHealth:IsShown() then
+					DBM.BossHealth:AddBoss(cid ,Emeriss)
+				end
 			elseif cid == 102682 then -- Lethon
 				timerSiphonSpiritCD:Start(1)
+				if DBM.BossHealth:IsShown() then
+					DBM.BossHealth:AddBoss(cid ,Lethon)
+				end
 			elseif cid == 102681 then -- Taerar
 				timerShadesOfTaerarCD:Start(19.5)
 				countdownShadesOfTaerar:Start(19.5)
 				timerSeepingFogCD:Start(25)
+				if DBM.BossHealth:IsShown() then
+					DBM.BossHealth:AddBoss(cid ,Taerar)
+				end
 			end
 		end
 	end
@@ -275,14 +296,23 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if cid == 102683 then--Emeriss
 			timerVolatileInfectionCD:Stop()
 			timerEssenceOfCorruptionCD:Stop()
+			if DBM.BossHealth:IsShown() then
+				DBM.BossHealth:RemoveBoss(cid)
+			end
 		elseif cid == 102682 then--Lethon
 			timerSiphonSpiritCD:Stop()
 			timerShadowBurstCD:Start(1)
+			if DBM.BossHealth:IsShown() then
+				DBM.BossHealth:RemoveBoss(cid)
+			end
 		elseif cid == 102681 then--Taerar
 			timerShadesOfTaerarCD:Stop()
 			countdownShadesOfTaerar:Cancel()
 			timerSeepingFogCD:Stop()
 			timerBellowingRoarCD:Start(1)
+			if DBM.BossHealth:IsShown() then
+				DBM.BossHealth:RemoveBoss(cid)
+			end
 		end
 	end
 end

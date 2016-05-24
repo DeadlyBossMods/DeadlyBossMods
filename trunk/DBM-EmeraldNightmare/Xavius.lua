@@ -54,18 +54,21 @@ local specWarnCorruptionMeteorTo		= mod:NewSpecialWarningMoveTo(206308, "-Tank",
 local specWarnInconHorror				= mod:NewSpecialWarningSwitch("ej13162", "-Healer", nil, nil, 1, 2)
 
 --Stage One: The Decent Into Madness
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDarkeningSoulCD				= mod:NewCDTimer(6.1, 206651, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
 local timerNightmareBladesCD			= mod:NewNextTimer(15.7, 206656, nil, nil, nil, 3)
 local timerLurkingEruptionCD			= mod:NewNextCountTimer(15.7, 208322, nil, nil, nil, 3)
 local timerCorruptionHorrorCD			= mod:NewNextTimer(61.7, 210264, nil, nil, nil, 1)
 local timerCorruptingNovaCD				= mod:NewNextTimer(20, 207830, nil, nil, nil, 2)
 --Stage Two: From the Shadows
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerBondsOfTerrorCD				= mod:NewCDTimer(14.6, 209034, nil, nil, nil, 3)
 local timerCorruptionMeteorCD			= mod:NewNextTimer(31.5, 206308, nil, nil, nil, 3)
 local timerBlackeningSoulCD				= mod:NewCDTimer(6.1, 209158, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
 local timerNightmareInfusionCD			= mod:NewCDTimer(61.5, 209443, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--61.5-62.5
 local timerCallOfNightmaresCD			= mod:NewCDTimer(83, 205588, nil, nil, nil, 1)
 --Stage Three: Darkness and stuff
+mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerNightmareTentacleCD			= mod:NewCDTimer(21, "ej12977", nil, nil, nil, 1, 93708)
 
 

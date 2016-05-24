@@ -86,6 +86,7 @@ local yellFlamesofSargeras			= mod:NewYell(221606)
 
 --Stage One: The Council of Elders
 ----Gul'dan
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerLiquidHellfireCD			= mod:NewAITimer(16, 206219, nil, nil, nil, 3)
 local timerFelEffluxCD				= mod:NewAITimer(16, 206514, nil, nil, nil, 3)
 local timerHandofGuldanCD			= mod:NewAITimer(16, 212258, nil, nil, nil, 1)
@@ -100,9 +101,11 @@ local timerShadowBlinkCD			= mod:NewAITimer(16, 207938)--Roll color maybe if bli
 local timerDrainCD					= mod:NewAITimer(16, 212568, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
 local timerSoulVortexCD				= mod:NewAITimer(16, 206883, nil, nil, nil, 3)
 --Stage Two: The Ritual of Aman'thul
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerBondsofFelCD				= mod:NewAITimer(16, 206222, nil, nil, nil, 3)
 local timerEyeofGuldanCD			= mod:NewAITimer(16, 209270, nil, nil, nil, 1)
 --Stage Three: The Master's Power
+mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerStormOfDestroyerCD		= mod:NewAITimer(16, 161121, nil, nil, nil, 3)
 local timerWellOfSoulsCD			= mod:NewAITimer(16, 206939, nil, nil, nil, 5)
 

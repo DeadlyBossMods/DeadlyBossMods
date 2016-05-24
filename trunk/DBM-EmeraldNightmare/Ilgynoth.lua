@@ -62,12 +62,14 @@ local specWarnCursedBlood			= mod:NewSpecialWarningMoveAway(215128, nil, nil, ni
 local yellCursedBlood				= mod:NewFadesYell(215128)
 
 --Stage One: The Ruined Ground
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerNightmareHorrorCD		= mod:NewNextTimer(220, "ej13188", nil, nil, nil, 1, 210289)
 local timerDeathglareCD				= mod:NewCDTimer(10.9, 210984, nil, "Tank", nil, 5)
 local timerNightmareishFuryCD		= mod:NewCDTimer(10.9, 215234, nil, "Tank", nil, 5)
 local timerDeathBlossomCD			= mod:NewNextTimer(105, 218415, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON)
 local timerDeathBlossom				= mod:NewCastTimer(15, 218415, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 --Stage Two: The Heart of Corruption
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerDarkReconstitution		= mod:NewCastTimer(50, 210781, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)
 local timerCursedBloodCD			= mod:NewNextTimer(15, 215128, nil, nil, nil, 3)
 
