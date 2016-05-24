@@ -70,14 +70,18 @@ local specWarnWorldDevouringForce	= mod:NewSpecialWarningDodge(216909, nil, nil,
 local timerConjunctionCD			= mod:NewAITimer(16, 205408, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerGravPullCD				= mod:NewCDTimer(29, 205984, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Stage One: The Dome of Observation
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerCoronalEjectionCD		= mod:NewCDTimer(16, 206464, nil, nil, nil, 3)--CD is not known, always push phase 2 before this is cast 2nd time
 --Stage Two: Absolute Zero
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerIcyEjectionCD			= mod:NewCDCountTimer(16, 206936, nil, nil, nil, 3)
 local timerFrigidNovaCD				= mod:NewCDTimer(61.5, 206949, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage Three: A Shattered World
+mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerFelEjectionCD			= mod:NewCDCountTimer(16, 205649, nil, nil, nil, 3)
 local timerFelNovaCD				= mod:NewCDCountTimer(29.3, 206517, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage Four: Inevitable Fate
+mod:AddTimerLine(SCENARIO_STAGE:format(4))
 local timerWitnessVoidCD			= mod:NewCDTimer(14.6, 207720, nil, nil, nil, 2)
 local timerVoidEjectionCD			= mod:NewCDCountTimer(16, 207143, nil, nil, nil, 3)
 local timerVoidNovaCD				= mod:NewCDTimer(65, 207439, nil, nil, nil, 2)--Only saw a single pull it was cast twice, so CD needs more verification

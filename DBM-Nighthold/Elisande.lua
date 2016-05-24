@@ -79,16 +79,18 @@ local specWarnAblativePulse			= mod:NewSpecialWarningInterrupt(209971, "HasInter
 local timerLeaveNightwell			= mod:NewCastTimer(9.8, 208863, nil, nil, nil, 6)
 local timerTimeElementalsCD			= mod:NewNextSourceTimer(16, 208887, 141872, nil, nil, 1)--"Call Elemental" short text
 --Time Layer 1
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerArcaneticRing			= mod:NewNextCountTimer(6, 208807, nil, nil, nil, 2)
 local timerPermaliativeTormentCD	= mod:NewNextCountTimer(16, 210387, nil, "Healer", nil, 5, nil, DBM_CORE_DEADLY_ICON)
 local timerAblationCD				= mod:NewCDTimer(6.1, 209615, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--6.1-9.7
-
 --Time Layer 2
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerDelphuricBeamCD			= mod:NewNextCountTimer(16, 214278, nil, nil, nil, 3)
 local timerEpochericOrbCD			= mod:NewNextCountTimer(16, 210022, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerAblatingExplosion		= mod:NewTargetTimer(6, 209973, nil, "Tank")
 local timerAblatingExplosionCD		= mod:NewCDTimer(30.4, 209973, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --Time Layer 3
+mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerSpanningSingularityCD	= mod:NewNextCountTimer(16, 209168, nil, nil, nil, 3)
 local timerConflexiveBurstCD		= mod:NewNextCountTimer(100, 209597, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerAblativePulseCD			= mod:NewCDTimer(10.9, 209971, nil, "Tank", nil, 4, nil, DBM_CORE_TANK_ICON..DBM_CORE_INTERRUPT_ICON)
