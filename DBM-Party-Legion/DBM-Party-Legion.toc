@@ -42,6 +42,7 @@ EyeOfAzshara\Hatecoil.lua
 EyeOfAzshara\KingDeepbeard.lua
 EyeOfAzshara\Serpentrix.lua
 EyeOfAzshara\WrathofAzshara.lua
+EyeOfAzshara\EoATrash.lua
 HallsOfValor\Hymdall.lua
 HallsOfValor\Hyrja.lua
 HallsOfValor\Fenryr.lua

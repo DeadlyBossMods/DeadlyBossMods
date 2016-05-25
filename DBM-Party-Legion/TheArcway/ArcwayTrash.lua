@@ -30,7 +30,7 @@ function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 211757 and self:CheckInterruptFilter(args.sourceGUID) then
-		specWarnArgusPortal:Show()
+		specWarnArgusPortal:Show(args.sourceName)
 		voiceArgusPortal:Play("kickcast")
 	end
 end

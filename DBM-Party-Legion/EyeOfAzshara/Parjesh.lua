@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 192094",
-	"SPELL_CAST_START 196563"
+	"SPELL_CAST_START 192072 192073 196563"
 )
 
 --Notes: Boss always casts 191900 (Crashing wave) few seconds before impaling spear. It doesn't really need it's own warning
@@ -47,7 +47,15 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 196563 then--Shellbreaker
+	if spellId == 192073 and self:IsNormal() then--Caster mob
+		specWarnReinforcements:Show()
+		voiceReinforcements:Play("bigmobsoon")
+		timerHatecoilCD:Start(20)
+	elseif spellId == 192072 and self:IsNormal() then--Melee mob
+		specWarnReinforcements:Show()
+		voiceReinforcements:Play("bigmobsoon")
+		timerHatecoilCD:Start(33)
+	elseif spellId == 196563 then--Both of them (heroic+)
 		specWarnReinforcements:Show()
 		voiceReinforcements:Play("bigmobsoon")
 		timerHatecoilCD:Start()

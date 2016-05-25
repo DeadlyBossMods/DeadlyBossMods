@@ -21,7 +21,7 @@ local specWarnBubbles				= mod:NewSpecialWarningSpell(193018, "-Tank", nil, nil,
 
 local timerQuakeCD					= mod:NewCDTimer(21.8, 193152, nil, nil, nil, 2)--21-25
 local timerCallSeasCD				= mod:NewNextTimer(30, 193051, nil, nil, nil, 2)
-local timerGroundSlamCD				= mod:NewCDTimer(19, 193093, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--19-30
+local timerGroundSlamCD				= mod:NewCDTimer(18.2, 193093, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--18.2-30
 local timerBubblesCD				= mod:NewNextTimer(32, 193018, nil, "-Tank", nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
 local voiceQuake					= mod:NewVoice(193152)--range5
