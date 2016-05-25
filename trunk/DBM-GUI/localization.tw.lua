@@ -174,6 +174,7 @@ L.BarFlash					= "快結束時閃爍計時條"
 L.BarSort					= "依剩餘時間排序"
 L.BarColorByType			= "根據類型上色"
 L.BarInlineIcons			= "顯示嵌入圖示"
+L.ShortTimerText			= "使用較短的計時器文字(如果可用時)"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "特別警告"
