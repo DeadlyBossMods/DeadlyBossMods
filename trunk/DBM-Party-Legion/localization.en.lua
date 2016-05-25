@@ -153,6 +153,15 @@ L= DBM:GetModLocalization(1673)
 L= DBM:GetModLocalization(1687)
 
 -----------------------
+--Neltharion's Lair Trash
+-----------------------
+L = DBM:GetModLocalization("NLTrash")
+
+L:SetGeneralLocalization({
+	name =	"Neltharion's Lair Trash"
+})
+
+-----------------------
 -- <<<The Arcway>>> --
 -----------------------
 -----------------------
