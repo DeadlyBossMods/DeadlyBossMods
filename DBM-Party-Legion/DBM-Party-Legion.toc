@@ -53,6 +53,7 @@ NeltharionsLair\Rokmora.lua
 NeltharionsLair\Ularogg.lua
 NeltharionsLair\Naraxas.lua
 NeltharionsLair\Dargrul.lua
+NeltharionsLair\NLTrash.lua
 TheArcway\Ivanyr.lua
 TheArcway\Corstilax.lua
 TheArcway\GeneralXakal.lua
