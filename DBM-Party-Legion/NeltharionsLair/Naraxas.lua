@@ -18,35 +18,27 @@ mod:RegisterEventsInCombat(
 )
 
 local warnFixate					= mod:NewTargetAnnounce(209906, 2, nil, false)--Could be spammy, optional
-local warnSpikedTongue				= mod:NewTargetAnnounce(199176, 4)
 
 local specWarnAdds					= mod:NewSpecialWarningSwitch(199817, "Dps", nil, nil, 1, 2)
 local specWarnFixate				= mod:NewSpecialWarningYou(209906)
---local specWarnSpikedTongue			= mod:NewSpecialWarningYou(199176)--Needed?
---local specWarnRancidMaw				= mod:NewSpecialWarningMove(188494)--Needs confirmation this is pool damage and not constant fight aoe damage
+local specWarnSpikedTongue			= mod:NewSpecialWarningRun(199176, nil, nil, nil, 4, 2)
+--local specWarnRancidMaw			= mod:NewSpecialWarningMove(188494)--Needs confirmation this is pool damage and not constant fight aoe damage
 
-local timerSpikedTongueCD			= mod:NewNextTimer(50, 199176, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerAddsCD					= mod:NewNextTimer(66, 199817, nil, nil, nil, 1)
+local timerSpikedTongueCD			= mod:NewNextTimer(55, 199176, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_TANK_ICON)
+local timerAddsCD					= mod:NewNextTimer(65, 199817, nil, nil, nil, 1)
 local timerRancidMawCD				= mod:NewCDTimer(18, 205549, nil, false, nil, 3)--Needed?
 local timerToxicWretchCD			= mod:NewCDTimer(14.5, 210150, nil, false, nil, 3)--Needed?
 
 local voiceAdds						= mod:NewVoice(199817, "Dps")--mobsoon
+local voiceSpikedTongue				= mod:NewVoice(199176)--runout/keepmove
 
 --mod:AddRangeFrameOption(5, 153396)
-
-function mod:SpikeTarget(targetname, uId)
-	if not targetname then return end
-	warnSpikedTongue:Show(targetname)
---	if targetname == UnitName("player") then
---		specWarnSpikedTongue:Show()
---	end
-end
 
 function mod:OnCombatStart(delay)
 	timerAddsCD:Start(5.5-delay)
 	timerRancidMawCD:Start(8-delay)
 	timerToxicWretchCD:Start(12.9-delay)
-	timerSpikedTongueCD:Start(-delay)
+	timerSpikedTongueCD:Start(50-delay)
 end
 
 function mod:OnCombatEnd()
@@ -68,8 +60,14 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 199176 then
+		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
+		--Do based on threat, because there is a good chance tank might die and backup melee needs warning too.
+		if tanking or (status == 3) then
+			specWarnSpikedTongue:Show()
+			voiceSpikedTongue:Play("runout")
+			voiceSpikedTongue:Schedule(1.5, "keepmove")
+		end
 		timerSpikedTongueCD:Start()
-		self:BossTargetScanner(91005, "SpikeTarget", 0.2, 12, true, nil, nil, nil, true)
 	elseif spellId == 205549 then
 		timerRancidMawCD:Start()
 	elseif spellId == 210150 then

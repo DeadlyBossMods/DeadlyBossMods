@@ -9,31 +9,26 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 198496 198443 193375",
+	"SPELL_CAST_START 198496 216290 193375",
+	"SPELL_CAST_SUCCESS 216290",
 --	"SPELL_DAMAGE 193273",
 --	"SPELL_MISSED 193273",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
-local warnStrikeofMountain			= mod:NewTargetAnnounce(198443, 2)
+local warnStrikeofMountain			= mod:NewTargetAnnounce(216290, 2)
 local warnBellowofDeeps				= mod:NewSpellAnnounce(193375, 2)--Change to special warning if they become important enough to switch to
 local warnStanceofMountain			= mod:NewSpellAnnounce(198509, 2)
 
 local specWarnSunder				= mod:NewSpecialWarningDefensive(198496, "Tank", nil, nil, 1, 2)
-local yellStrikeofMountain			= mod:NewYell(198443)
+local specWarnStrikeofMountain		= mod:NewSpecialWarningDodge(216290, nil, nil, nil, 1, 2)
+local yellStrikeofMountain			= mod:NewYell(216290)
 
 local timerSunderCD					= mod:NewCDTimer(8.5, 198496, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerStrikeCD					= mod:NewCDTimer(15.5, 198443, nil, nil, nil, 3)
+local timerStrikeCD					= mod:NewCDTimer(15.5, 216290, nil, nil, nil, 3)
 
 local voiceSunder					= mod:NewVoice(198496, "Tank")--defensive
-
-function mod:StrikeTarget(targetname, uId)
-	if not targetname then return end
-	warnStrikeofMountain:Show(targetname)
-	if targetname == UnitName("player") then
-		yellStrikeofMountain:Yell()
-	end
-end
+local voiceStrikeofMountain			= mod:NewVoice(216290)--targetyou
 
 function mod:OnCombatStart(delay)
 	timerSunderCD:Start(7-delay)
@@ -46,11 +41,23 @@ function mod:SPELL_CAST_START(args)
 		specWarnSunder:Show()
 		voiceSunder:Play("defensive")
 		timerSunderCD:Start()
-	elseif spellId == 198443 then
+	elseif spellId == 216290 then
 		timerStrikeCD:Start()
-		self:BossTargetScanner(91004, "StrikeTarget", 0.2, 12, true, nil, nil, nil, true)
 	elseif spellId == 193375 then
 		warnBellowofDeeps:Show()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 216290 then
+		if args:IsPlayer() then
+			specWarnStrikeofMountain:Show()
+			voiceStrikeofMountain:Play("targetyou")
+			yellStrikeofMountain:Yell()
+		else
+			warnStrikeofMountain:Show(args.destName)
+		end
 	end
 end
 
@@ -62,11 +69,15 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 198509 then--Stance of the Mountain
 		warnStanceofMountain:Show()
-		timerSunderCD:Cancel()
-		timerStrikeCD:Cancel()
+		timerSunderCD:Stop()
+		timerStrikeCD:Stop()
+	elseif spellId == 198631 then--Stance of mountain ending
+		timerSunderCD:Start(3)
+		timerStrikeCD:Start(16)
 	end
 end

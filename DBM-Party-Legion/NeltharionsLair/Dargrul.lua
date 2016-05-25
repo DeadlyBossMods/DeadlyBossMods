@@ -18,18 +18,18 @@ local warnCrystalSpikes				= mod:NewSpellAnnounce(200551, 2)
 local specWarnMoltenCrash			= mod:NewSpecialWarningDefensive(200732, "Tank", nil, nil, 3, 2)
 local specWarnLandSlide				= mod:NewSpecialWarningSpell(200700, "Tank", nil, nil, 1, 2)
 local specWarnMagmaSculptor			= mod:NewSpecialWarningSwitch(200637, "Dps", nil, nil, 1, 2)
-local specWarnMagmaWave				= mod:NewSpecialWarningMoveTo(200637, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(200637), nil, 2, 2)
+local specWarnMagmaWave				= mod:NewSpecialWarningMoveTo(200404, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(200637), nil, 2, 2)
 
 local timerMoltenCrashCD			= mod:NewCDTimer(16.5, 200732, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--16.5-23
 local timerLandSlideCD				= mod:NewCDTimer(16.5, 200700, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--16.5-27
 local timerCrystalSpikesCD			= mod:NewCDTimer(21.4, 200551, nil, nil, nil, 3)
-local timerMagmaSculptorCD			= mod:NewCDTimer(71, 200551, nil, nil, nil, 1)--Everyone?
-local timerMagmaWaveCD				= mod:NewNextTimer(60, 200637, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerMagmaSculptorCD			= mod:NewCDTimer(71, 200637, nil, nil, nil, 1)--Everyone?
+local timerMagmaWaveCD				= mod:NewNextTimer(60, 200404, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
 local voiceMoltenCrash				= mod:NewVoice(200732, "Tank")--defensive
 local voiceLandSlide				= mod:NewVoice(200700, "Tank")--shockwave
-local voiceMagmaSculptor			= mod:NewVoice(200732, "Dps")--killbigmob
-local voiceMagmaWave				= mod:NewVoice(200637)--findshelter
+local voiceMagmaSculptor			= mod:NewVoice(200637, "Dps")--killbigmob
+local voiceMagmaWave				= mod:NewVoice(200404)--findshelter
 
 function mod:OnCombatStart(delay)
 	timerMagmaSculptorCD:Start(7.5-delay)
@@ -62,7 +62,7 @@ end
 local spikeName = GetSpellInfo(200551)
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 200418 then--Magma Wave (1 second faster than combat log)
+	if spellId == 201663 then--Dargrul Ability Callout 03 (1 second faster than combat log)
 		specWarnMagmaWave:Show(spikeName)
 		voiceMagmaWave:Play("findshelter")
 		timerMagmaWaveCD:Start()
