@@ -1506,7 +1506,7 @@ local function CreateOptionsMenu()
 		RaidWarnSoundDropDown:SetPoint("TOPLEFT", FontStyleDropDown, "BOTTOMLEFT", 0, -10)
 
 		-- RaidWarn Font Size
-		local fontSizeSlider = raidwarnoptions:CreateSlider(L.Warn_FontSize, 14, 60, 1, 200)
+		local fontSizeSlider = raidwarnoptions:CreateSlider(L.Warn_FontSize, 8, 60, 1, 200)
 		fontSizeSlider:SetPoint('TOPLEFT', FontDropDown, "TOPLEFT", 20, -130)
 		do
 			local firstshow = true
@@ -2467,7 +2467,7 @@ local function CreateOptionsMenu()
 		end)
 		FontShadow:SetPoint("LEFT", FontStyleDropDown, "RIGHT", -35, 25)
 
-		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 16, 60, 1, 150)
+		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 8, 60, 1, 150)
 		fontSizeSlider:SetPoint('TOPLEFT', FontDropDown, "TOPLEFT", 20, -45)
 		do
 			local firstshow = true
