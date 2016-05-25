@@ -30,8 +30,10 @@ local specWarnFocusedLightning		= mod:NewSpecialWarningMoveTo(193611, nil, DBM_C
 local specWarnAdds					= mod:NewSpecialWarningSwitch(193682, "Tank")
 
 local timerAddsCD					= mod:NewCDTimer(47, 193682, nil, nil, nil, 1)--47-51
-local timerStaticNovaCD				= mod:NewCDTimer(34, 193597, nil, nil, nil, 2)
+local timerStaticNovaCD				= mod:NewCDTimer(34, 193597, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerFocusedLightningCD		= mod:NewNextTimer(15.5, 193611, nil, nil, nil, 3)
+
+local countdownStaticNova			= mod:NewCountdown(34, 193597)
 
 --local voiceCurtainOfFlame			= mod:NewVoice(153392)
 
@@ -40,6 +42,7 @@ local water = RELIC_SLOT_TYPE_WATER
 
 function mod:OnCombatStart(delay)
 	timerStaticNovaCD:Start(10.5-delay)
+	countdownStaticNova:Start(10.5-delay)
 	timerAddsCD:Start(19-delay)
 end
 
@@ -58,6 +61,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 193597 then
 		specWarnStaticNova:Show(land)
 		timerFocusedLightningCD:Start()
+		countdownStaticNova:Start()
 		specWarnFocusedLightning:Schedule(10, water)--5 seconds before focused lightning cast
 --	elseif spellId == 193611 then--Maybe not needed at all
 		

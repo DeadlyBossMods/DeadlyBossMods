@@ -84,6 +84,15 @@ L= DBM:GetModLocalization(1479)
 L= DBM:GetModLocalization(1492)
 
 -----------------------
+--Eye of Azshara Trash
+-----------------------
+L = DBM:GetModLocalization("EoATrash")
+
+L:SetGeneralLocalization({
+	name =	"Eye of Azshara Trash"
+})
+
+-----------------------
 -- <<<Halls of Valor>>> --
 -----------------------
 -----------------------
