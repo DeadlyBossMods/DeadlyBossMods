@@ -33,8 +33,8 @@ local voiceAriseFallen				= mod:NewVoice(193566, "-Healer")--mobkill
 function mod:OnCombatStart(delay)
 	timerDarkSlashCD:Start(3.5-delay)
 	timerScreamsCD:Start(5.9-delay)
-	timerWindsCD:Start(15.5-delay)
-	timerBaneCD:Start(21.5-delay)
+	timerWindsCD:Start(15-delay)
+	timerBaneCD:Start(21-delay)
 end
 
 function mod:SPELL_CAST_START(args)

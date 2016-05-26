@@ -32,7 +32,7 @@ local voiceVoidSnap				= mod:NewVoice(194266, "HasInterrupt")--kickcast
 
 function mod:OnCombatStart(delay)
 	timerServitorCD:Start(7-delay)
-	timerFragmentCD:Start(22-delay)
+	timerFragmentCD:Start(19-delay)
 end
 
 function mod:OnCombatEnd()

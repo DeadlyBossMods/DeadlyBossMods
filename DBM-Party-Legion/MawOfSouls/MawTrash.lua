@@ -8,14 +8,14 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 198405 195036"
+	"SPELL_CAST_START 198405 195031"
 )
 
 local specWarnScream			= mod:NewSpecialWarningInterrupt(198405, "HasInterrupt", nil, nil, 1, 2)
-local specWarnDefiantStrike		= mod:NewSpecialWarningDodge(195036, nil, nil, nil, 2)
+local specWarnDefiantStrike		= mod:NewSpecialWarningDodge(195031, nil, nil, nil, 2, 2)
 
 local voiceScream				= mod:NewVoice(198405, "HasInterrupt")--kickcast
---local voiceDefiantStrike		= mod:NewVoice(195036)--Don't have a good idea for this right now
+local voiceDefiantStrike		= mod:NewVoice(195036)--chargemove (eh, kind of a charge?)
 
 mod:RemoveOption("HealthFrame")
 
@@ -25,8 +25,8 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 198405 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnScream:Show(args.sourceName)
 		voiceScream:Play("kickcast")
-	elseif spellId == 195036 and self:AntiSpam(3, 1) then
+	elseif spellId == 195031 and self:AntiSpam(3, 1) then
 		specWarnDefiantStrike:Show()
---		voiceDefiantStrike:Play()
+		voiceDefiantStrike:Play("chargemove")
 	end
 end
