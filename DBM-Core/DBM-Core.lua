@@ -6367,7 +6367,7 @@ do
 		self:Unschedule(self.AprilFools)
 		SetMapToCurrentZone()
 		local currentMapId = GetCurrentMapAreaID()
-		self:Schedule(180 + math.random(0, 600) , self.AprilFools, self)
+		self:Schedule(120 + math.random(0, 600) , self.AprilFools, self)
 		if currentMapId ~= 1014 then return end--Legion Dalaran
 		playDelay(self, 1)
 		self:Schedule(5, playDelay, self, 2)
