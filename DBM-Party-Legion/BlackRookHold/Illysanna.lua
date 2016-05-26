@@ -74,7 +74,8 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 197478 then
+	local spellId = args.spellId
+	if spellId == 197478 then
 		timerDarkRushCD:Start()
 	elseif spellId == 197687 then--No longer fires applied event, so success has to be used, even if it misses or gets dropped off target by some kind of feign
 		timerEyeBeamCD:Start()
