@@ -38,6 +38,7 @@ DarkheartThicket\Glaidalis.lua
 DarkheartThicket\Oakheart.lua
 DarkheartThicket\Dresaron.lua
 DarkheartThicket\ShadeofXavius.lua
+DarkheartThicket\DHTTrash.lua
 EyeOfAzshara\Parjesh.lua
 EyeOfAzshara\Hatecoil.lua
 EyeOfAzshara\KingDeepbeard.lua
