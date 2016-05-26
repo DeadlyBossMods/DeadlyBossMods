@@ -10,8 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 194966",
-	"SPELL_CAST_START 195254 194966 194956 196078",
-	"CHAT_MSG_MONSTER_YELL"
+	"SPELL_CAST_START 195254 194966 194956 196078"
 )
 
 local warnSwirlingScythe			= mod:NewTargetAnnounce(195254, 2)
@@ -22,13 +21,14 @@ local specWarnReapSoul				= mod:NewSpecialWarningDodge(194956, "Tank", nil, nil,
 local specWarnSoulEchos				= mod:NewSpecialWarningRun(194966, nil, nil, nil, 1, 2)
 local specWarnSwirlingScythe		= mod:NewSpecialWarningDodge(195254, nil, nil, nil, 1, 2)
 local yellSwirlingScythe			= mod:NewYell(195254)
+local specWarnSwirlingScytheNear	= mod:NewSpecialWarningClose(195254, nil, nil, nil, 1, 2)
 
 local timerSwirlingScytheCD			= mod:NewCDTimer(20.5, 195254, nil, nil, nil, 3)--20-27
 local timerSoulEchoesCD				= mod:NewNextTimer(27.5, 194966, nil, nil, nil, 3)
-local timerReapSoulCD				= mod:NewNextTimer(13, 194956, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerReapSoulCD				= mod:NewNextTimer(13, 194956, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
 
-local voiceSwirlingScythe			= mod:NewVoice(195254)
-local voiceSoulEchos				= mod:NewVoice(194966)
+local voiceSwirlingScythe			= mod:NewVoice(195254)--runaway
+local voiceSoulEchos				= mod:NewVoice(194966)--runaway/keepmove
 
 --mod:AddRangeFrameOption(5, 194966)
 
@@ -41,6 +41,9 @@ function mod:ScytheTarget(targetname, uId)
 		specWarnSwirlingScythe:Show()
 		voiceSwirlingScythe:Play("runaway")
 		yellSwirlingScythe:Yell()
+	elseif self:CheckNearby(6, targetname) then
+		specWarnSwirlingScytheNear:Show(targetname)
+		voiceSwirlingScythe:Play("runaway")
 	else
 		warnSwirlingScythe:Show(targetname)
 	end
@@ -48,7 +51,6 @@ end
 
 function mod:SoulTarget(targetname, uId)
 	if not targetname then
-		warnSoulEchoes:Show(DBM_CORE_UNKNOWN)
 		return
 	end
 	if self:AntiSpam(3, targetname) then
@@ -91,10 +93,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 195254 then
 		timerSwirlingScytheCD:Start()
-		self:BossTargetScanner(98542, "ScytheTarget", 0.1, 20, true, nil, nil, nil, true)
+		self:BossTargetScanner(98542, "ScytheTarget", 0.05, 12, true)--Can target tank if no one else is left, but if this causes probelm add tank filter back
 	elseif spellId == 194966 then
 		timerSoulEchoesCD:Start()
-		self:BossTargetScanner(98542, "SoulTarget", 0.1, 20, true, nil, nil, nil, true)
+		self:BossTargetScanner(98542, "SoulTarget", 0.1, 20, true, nil, nil, nil, true)--Always filter tank, because if scan fails debuff will be used.
 	elseif spellId == 194956 then
 		specWarnReapSoul:Show()
 		timerReapSoulCD:Start()
