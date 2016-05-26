@@ -19,10 +19,10 @@ local specWarnRoots					= mod:NewSpecialWarningDodge(204574, nil, nil, nil, 2, 2
 local yellThrow						= mod:NewYell(204646)--yell so others can avoid splash damage. I don't think target can avoid
 local specWarnBreath				= mod:NewSpecialWarningDefensive(204667, "Tank", nil, nil, 1, 2)
 
-local timerShatteredEarthCD			= mod:NewCDTimer(40, 204666, nil, nil, nil, 2)--40-62 variation? is this health based?
-local timerThrowCD					= mod:NewCDTimer(28, 204646, nil, nil, nil, 3)--29-31
+local timerShatteredEarthCD			= mod:NewCDTimer(35, 204666, nil, nil, nil, 2)--35-62 variation? is this health based?
+local timerThrowCD					= mod:NewCDTimer(28, 204646, nil, nil, nil, 3)--29-32
 local timerRootsCD					= mod:NewCDTimer(23, 204574, nil, nil, nil, 3)--23-31
-local timerBreathCD					= mod:NewCDTimer(26.5, 204667, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerBreathCD					= mod:NewCDTimer(26.5, 204667, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--26--35
 
 local voiceRoots					= mod:NewVoice(204574)--watchstep
 local voiceBreath					= mod:NewVoice(204574, "Tank")--Defensive
@@ -44,7 +44,7 @@ end
 
 function mod:OnCombatStart(delay)
 	timerShatteredEarthCD:Start(6-delay)
-	timerRootsCD:Start(11-delay)
+	timerRootsCD:Start(15-delay)
 	timerBreathCD:Start(18-delay)
 	timerThrowCD:Start(29-delay)
 end
