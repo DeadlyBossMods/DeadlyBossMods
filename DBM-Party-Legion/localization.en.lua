@@ -56,6 +56,16 @@ L= DBM:GetModLocalization(1656)
 L= DBM:GetModLocalization(1657)
 
 -----------------------
+--Darkheart Thicket Trash
+-----------------------
+L = DBM:GetModLocalization("DHTTrash")
+
+L:SetGeneralLocalization({
+	name =	"Darkheart Thicket Trash"
+})
+
+
+-----------------------
 -- <<<Eye of Azshara>>> --
 -----------------------
 -----------------------

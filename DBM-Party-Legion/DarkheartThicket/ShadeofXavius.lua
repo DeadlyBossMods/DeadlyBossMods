@@ -22,16 +22,18 @@ mod:RegisterEventsInCombat(
 --TODO, feed on the weak have any significance?
 local warnNightmare					= mod:NewTargetAnnounce(200243, 3)
 local warnParanoia					= mod:NewTargetAnnounce(200289, 3)
+local warnApocNightmare				= mod:NewSpellAnnounce(200050, 3)
 
-local specWarnFesteringRip			= mod:NewSpecialWarningDispel(200182, "RemoveDisease")--No disease dispeller in group? have fun wiping
+local specWarnFesteringRip			= mod:NewSpecialWarningDispel(200182, "Healer")--No disease dispeller in group? have fun wiping
 local specWarnNightmare				= mod:NewSpecialWarningYou(200243)
 local yellNightmare					= mod:NewYell(200243)
 local specWarnParanoia				= mod:NewSpecialWarningMoveAway(200289)
 local yellParanoia					= mod:NewYell(200289)
 
-local timerFesteringRipCD			= mod:NewCDTimer(17, 200182, nil, "Tank|Healer|RemoveDisease", nil, 5, nil, DBM_CORE_DISEASE_ICON)--17-21
+local timerFesteringRipCD			= mod:NewCDTimer(17, 200182, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)--17-21
 local timerNightmareCD				= mod:NewCDTimer(17, 200243, nil, nil, nil, 3)--17-23
 local timerParanoiaCD				= mod:NewCDTimer(18, 200359, nil, nil, nil, 3)--18-28
+--local timerApocNightmareCD			= mod:NewCDTimer(18, 200050, nil, nil, nil, 2)
 
 local voiceNightmare				= mod:NewVoice(200243)--Gathershare
 local voiceParanoia					= mod:NewVoice(200243)--scatter
@@ -39,31 +41,20 @@ local voiceParanoia					= mod:NewVoice(200243)--scatter
 mod:AddSetIconOption("SetIconOnNightmare", 200243)
 
 mod.vb.nightmareIcon = 1
-mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
 	self.vb.nightmareIcon = 1
-	self.vb.phase = 1
-	timerFesteringRipCD:Start(3.7-delay)
+	timerFesteringRipCD:Start(3.4-delay)
 	timerNightmareCD:Start(6-delay)
 	--Feed on weak, 15
 	timerParanoiaCD:Start(19-delay)
+--	timerApocNightmareCD:Start(37)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 200359 then
 		timerParanoiaCD:Start()
-	elseif spellId == 199837 then--Phase 2
-		self.vb.phase = 2
-		timerParanoiaCD:Stop()
-		timerNightmareCD:Stop()
-		timerFesteringRipCD:Stop()
-		--Pretty much all after 40 seconds. what order cast in is variable. MIght need adjust
-		--Feed on weak, 37
-		timerParanoiaCD:Start(39)
-		timerNightmareCD:Start(40)
-		timerFesteringRipCD:Start(41)
 	elseif spellId == 200182 then
 		timerFesteringRipCD:Start()
 	end
@@ -115,5 +106,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 204808 then--Because cast is hidden from combat log, and debuff may miss (AMS or the like)
 		timerNightmareCD:Start()
+	elseif spellId == 200050 then--Apocalyptic Nightmare
+		warnApocNightmare:Show()
 	end
 end
