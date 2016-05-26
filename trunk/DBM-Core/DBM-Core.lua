@@ -1741,17 +1741,21 @@ do
 	end
 	
 	SLASH_DEADLYBOSSMODS1 = "/dbm"
+	SLASH_DEADLYBOSSMODSRPULL1 = "/rpull"
 	if not BigWigs then
 		--Register pull and break slash commands for BW converts, if BW isn't loaded
 		--This shouldn't raise an issue since BW SHOULD load before DBM in any case they are both present.
-		SLASH_DEADLYBOSSMODPULL1 = "/pull"
-		SLASH_DEADLYBOSSMODBREAK1 = "/break"
-		SlashCmdList["DEADLYBOSSMODPULL"] = function(msg)
+		SLASH_DEADLYBOSSMODSPULL1 = "/pull"
+		SLASH_DEADLYBOSSMODSBREAK1 = "/break"
+		SlashCmdList["DEADLYBOSSMODSPULL"] = function(msg)
 			Pull(tonumber(msg) or 10)
 		end
-		SlashCmdList["DEADLYBOSSMODBREAK"] = function(msg)
+		SlashCmdList["DEADLYBOSSMODSBREAK"] = function(msg)
 			Break(tonumber(msg) or 10)
 		end
+	end
+	SlashCmdList["DEADLYBOSSMODSRPULL"] = function(msg)
+		Pull(30)
 	end
 	SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		local cmd = msg:lower()
