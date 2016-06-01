@@ -148,8 +148,8 @@ end
 function mod:CannonTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") then
-		yellCannon:Yell()
 		specWarnCannon:Show()
+		yellCannon:Yell()
 	elseif self:CheckNearby(5, targetname) then
 		specWarnCannonNear:Show(targetname)
 	else
