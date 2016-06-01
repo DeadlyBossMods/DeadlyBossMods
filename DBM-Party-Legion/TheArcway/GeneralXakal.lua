@@ -13,6 +13,7 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
+--TODO, evalulate normal mode tmers more for slash and fissure, seem longer cded there.
 local specWarnBat					= mod:NewSpecialWarningSwitch("ej12489", "Tank", nil, nil, 1, 2)
 local specWarnFissure				= mod:NewSpecialWarningDodge(197776, nil, nil, nil, 2, 2)
 local specWarnSlash					= mod:NewSpecialWarningSpell(212030, nil, nil, nil, 2, 2)
@@ -58,7 +59,7 @@ function mod:OnCombatStart(delay)
 	timerFissureCD:Start(5-delay)
 	timerBatCD:Start(10-delay)
 	timerSlashCD:Start(13-delay)
-	timerSlamCD:Start(39.8-delay)
+	timerSlamCD:Start(35.8-delay)
 end
 
 function mod:SPELL_CAST_START(args)
