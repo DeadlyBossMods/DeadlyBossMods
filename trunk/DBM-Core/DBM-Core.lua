@@ -480,7 +480,7 @@ local LoadAddOn, GetAddOnInfo, GetAddOnEnableState, GetAddOnMetadata, GetNumAddO
 local PlaySoundFile, PlaySound = PlaySoundFile, PlaySound
 local Ambiguate = Ambiguate
 local C_TimerNewTicker, C_TimerAfter = C_Timer.NewTicker, C_Timer.After
-local BNGetGameAccountInfo = BNGetToonInfo or BNGetGameAccountInfo
+local BNGetGameAccountInfo = BNGetGameAccountInfo
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
@@ -3458,9 +3458,6 @@ end
 --REMOVE IN LEGION
 
 do
-	--TODO: REMOVE COMPAT CODE IN LEGION/6.2.4
-	local BNGetFriendGameAccountInfo = BNGetFriendToonInfo or BNGetFriendGameAccountInfo
-	local BNGetNumFriendGameAccounts = BNGetNumFriendToons or BNGetNumFriendGameAccounts
 	local function AcceptPartyInvite()
 		AcceptGroup()
 		for i=1, STATICPOPUP_NUMDIALOGS do
