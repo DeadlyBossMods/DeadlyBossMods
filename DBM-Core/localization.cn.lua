@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: May 12 2015, 07:35 UTC@14943
+-- Last update: June 1 2016, 03:13 UTC@14988
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -22,8 +22,8 @@ DBM_CORE_LOAD_GUI_COMBAT			= "DBM无法在战斗中初始化图形界面。请�
 DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，有些计时器可能会错误。请在离开战斗后马上重载界面。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本过旧。请升级DBM。"
 
---DBM_CORE_WHATS_NEW				= "最新更新：DBM改进了函数回调，第三方模组的数据获取变得更容易了。"
-DBM_CORE_WHATS_NEW_LINK				= "最新更新：DBM加入了新的计时条选项，包括图标，着色和新的用户自定义类型。 想要知道更多可以 |HDBM:forumsnews|h|cff3588ff点击此处|r 访问我们的论坛"
+DBM_CORE_WHATS_NEW				= "最新更新：DBM加入了守望先锋的倒计时语音，你可以在 /dbm 的语音选项中找到它。"
+--DBM_CORE_WHATS_NEW_LINK				= "最新更新：DBM加入了新的计时条选项，包括图标，着色和新的用户自定义类型。 想要知道更多可以 |HDBM:forumsnews|h|cff3588ff点击此处|r 访问我们的论坛"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "由于玩家数量不足，DBM 无法开启小怪计数。"

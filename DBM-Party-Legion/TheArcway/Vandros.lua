@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, it might be time to build an interrupt table ("hasInterrupt") for better option defaults for spammy interrupt warnings.
---Force bomb might not be a CD, it might be 75% 55% 35% and 10%
+--Force bomb might be more consistent now, need more logs, last log was 35
 local warnTimeLock					= mod:NewTargetAnnounce(203957, 4)
 
 local specWarnTimeSplit				= mod:NewSpecialWarningMove(203833, nil, nil, nil, 1, 2)
@@ -47,9 +47,13 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 203957 then
-		warnTimeLock:Show(args.destName)
-		specWarnTimeLock:Show(args.sourceName)
-		voicetimeLock:Play("kickcast")
+		--if people run different directions 2-3 of these can activate at once.
+		--So combined show and anti spam measures used.
+		warnTimeLock:CombinedShow(0.5, args.destName)
+		if self:AntiSpam(3, 2) then
+			specWarnTimeLock:Show(args.sourceName)
+			voicetimeLock:Play("kickcast")
+		end
 	end
 end
 
@@ -105,6 +109,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.interruptCount = 0
 		timerEvent:Cancel()
 		countdownEvent:Cancel()
-		timerForceBombD:Start(20)
+		timerForceBombD:Start(20)--20-23
 	end
 end

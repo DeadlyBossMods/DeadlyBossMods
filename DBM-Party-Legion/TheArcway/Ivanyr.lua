@@ -18,6 +18,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, verify some of this is actually timer based and not just mana depletion related.
+--TODO, verify first special timers some more
 local warnVolatileMagic				= mod:NewTargetAnnounce(196562, 3)
 local warnNetherLink				= mod:NewTargetAnnounce(196805, 4)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
@@ -30,12 +31,12 @@ local specWarnNetherLinkGTFO		= mod:NewSpecialWarningMove(196805, nil, nil, nil,
 local specWarnOverchargeMana		= mod:NewSpecialWarningInterrupt(196392, "HasInterrupt", nil, nil, 1, 2)
 
 local timerVolatileMagicCD			= mod:NewCDTimer(22, 196562, nil, nil, nil, 3)--Review, might be 27 now
-local timerNetherLinkCD				= mod:NewCDTimer(21, 196804, nil, nil, nil, 3)--Review. might be 37 now? Or maybe health based?
+local timerNetherLinkCD				= mod:NewCDTimer(20.5, 196804, nil, nil, nil, 3)--Review. might be 37 now? Or maybe health based?
 local timerOverchargeManaCD			= mod:NewCDTimer(21.5, 196392, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerConsumeEssenceCD			= mod:NewNextTimer(18.2, 196877, nil, nil, nil, 2)
 
 local voiceVolatileMagic			= mod:NewVoice(196562)--runout
-local voiceNetherLink				= mod:NewVoice(196805)--linegather/runaway
+local voiceNetherLink				= mod:NewVoice(196805)--targetyou/runaway
 local voiceOverchargeMana			= mod:NewVoice(196392, "HasInterrupt")--kickcast
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
@@ -43,9 +44,9 @@ mod:AddRangeFrameOption(15, 196562)
 
 function mod:OnCombatStart(delay)
 	--Watch closely, review. He may be able to swap nether link and volatile magic?
-	timerNetherLinkCD:Start(11.7-delay)
+	timerVolatileMagicCD:Start(9.5-delay)
+	timerNetherLinkCD:Start(11.7-delay)--Check, always 18.9 now (applied)
 	timerOverchargeManaCD:Start(18.4-delay)
-	timerVolatileMagicCD:Start(23.5-delay)
 end
 
 function mod:OnCombatEnd()
@@ -70,7 +71,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnNetherLink:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnNetherLink:Show()
-			voiceNetherLink:Play("linegather")
+			voiceNetherLink:Play("targetyou")
 		end
 	end
 end
