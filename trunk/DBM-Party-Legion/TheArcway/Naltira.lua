@@ -57,7 +57,6 @@ function mod:BlinkTarget(targetname, uId)
 	else
 		warnBlink:Show(targetname)--No reason to show this if you got a special warning. so reduce spam and display this only to let you know jump is far away and you're safe
 	end
-	self:BossUnitTargetScanner("boss1", "BlinkTarget", 4.5)
 	--self:BossTargetScanner(98207, "BlinkTarget", 0.1, 20, true, nil, nil, targetname)
 --	if self.Options.HudMapOnBlink then
 --		--Static marker, boss doesn't move once a target is picked. it's aimed at static location player WAS
@@ -131,7 +130,8 @@ function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, _, spellGUID)
 		self.vb.blinkCount = self.vb.blinkCount + 1
 		if self.vb.blinkCount == 2 then
 			self:BossUnitTargetScannerAbort()
-			--self:BossTargetScannerAbort(98207, "JumpTarget")
+		elseif self.vb.blinkCount == 1 then
+			self:BossUnitTargetScanner(uId, "BlinkTarget")
 		end
 	end
 end

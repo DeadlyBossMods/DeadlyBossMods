@@ -6137,6 +6137,8 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize
 	elseif difficulty == 24 then
 		return "timewalker", difficultyName.." - ", difficulty, instanceGroupSize
+--	elseif difficulty == 25 then--Used by Ashran in 7.x.
+--		return "pvpscenario", difficultyName.." - ", difficulty, instanceGroupSize
 	else--failsafe
 		return "normal5", "", difficulty, instanceGroupSize
 	end
