@@ -1,362 +1,247 @@
--- Mini Dragon(projecteurs@gmail.com)
--- Blizzard Entertainment
--- Last update: June 1 2016, 03:13 UTC@14988
--- 副本正式名称需要等待资料片正式发行，以正式发行为准
--- 夏一可还没有搞到触发字符串的翻译
+﻿--Mini Dragon(projecteurs@gmail.com)
+--Thanks to Yike Xia
+--Last update: Dec 4, 2014@11926
 
 if GetLocale() ~= "zhCN" then return end
 local L
 
 -----------------------
--- <<<Black Rook Hold>>> --
+-- <<<Auchindoun>>> --
 -----------------------
 -----------------------
--- The Amalgam of Souls --
+-- Protector of Auchindoun --
 -----------------------
-L= DBM:GetModLocalization(1518)
+L= DBM:GetModLocalization(1185)
 
 -----------------------
--- Illysanna Ravencrest --
+-- Soulbinder Nyami --
 -----------------------
-L= DBM:GetModLocalization(1653)
+L= DBM:GetModLocalization(1186)
 
 -----------------------
--- Smashspite the Hateful --
+-- Azzakel, Vanguard of the Legion --
 -----------------------
-L= DBM:GetModLocalization(1664)
+L= DBM:GetModLocalization(1216)
 
 -----------------------
--- Lord Kur'talos Ravencrest --
+-- Teron'gor --
 -----------------------
-L= DBM:GetModLocalization(1672)
+L= DBM:GetModLocalization(1225)
 
------------------------
---Black Rook Hold Trash
------------------------
-L = DBM:GetModLocalization("BRHTrash")
+-------------
+--  Auch Trash  --
+-------------
+L = DBM:GetModLocalization("AuchTrash")
 
 L:SetGeneralLocalization({
-	name =	"黑鸦堡垒小怪"
+	name =	"奥金顿小怪"
 })
 
 -----------------------
--- <<<Darkheart Thicket>>> --
+-- <<<Bloodmaul Slag Mines>>> --
 -----------------------
 -----------------------
--- Arch-Druid Glaidalis --
+-- Magmolatus --
 -----------------------
-L= DBM:GetModLocalization(1654)
+L= DBM:GetModLocalization(893)
 
 -----------------------
--- Oakheart --
+-- Slave Watcher Crushto --
 -----------------------
-L= DBM:GetModLocalization(1655)
+L= DBM:GetModLocalization(888)
 
 -----------------------
--- Dresaron --
+-- Roltall --
 -----------------------
-L= DBM:GetModLocalization(1656)
+L= DBM:GetModLocalization(887)
 
 -----------------------
--- Shade of Xavius --
+-- Gug'rokk --
 -----------------------
-L= DBM:GetModLocalization(1657)
+L= DBM:GetModLocalization(889)
 
------------------------
---Darkheart Thicket Trash
------------------------
-L = DBM:GetModLocalization("DHTTrash")
+-------------
+--  BSM Trash  --
+-------------
+L = DBM:GetModLocalization("BSMTrash")
 
 L:SetGeneralLocalization({
-	name =	"黑心林地小怪"
+	name =	"血槌炉渣矿井小怪"
 })
 
 -----------------------
--- <<<Eye of Azshara>>> --
+-- <<<Grimrail Depot>>> --
 -----------------------
 -----------------------
--- Warlord Parjesh --
+-- Railmaster Rocketspark and Borka the Brute --
 -----------------------
-L= DBM:GetModLocalization(1480)
+L= DBM:GetModLocalization(1138)
 
 -----------------------
--- Lady Hatecoil --
+-- Blackrock Assault Commander --
 -----------------------
-L= DBM:GetModLocalization(1490)
+L= DBM:GetModLocalization(1163)
 
------------------------
--- King Deepbeard --
------------------------
-L= DBM:GetModLocalization(1491)
-
------------------------
--- Serpentrix --
------------------------
-L= DBM:GetModLocalization(1479)
-
------------------------
--- Wrath of Azshara --
------------------------
-L= DBM:GetModLocalization(1492)
-
------------------------
---Eye of Azshara Trash
------------------------
-L = DBM:GetModLocalization("EoATrash")
-
-L:SetGeneralLocalization({
-	name =	"艾萨拉之眼小怪"
+L:SetWarningLocalization({
+	warnGrenadeDown			= "%s出现",
+	warnMortarDown			= "%s出现"
 })
 
 -----------------------
--- <<<Halls of Valor>>> --
+-- Thunderlord General --
 -----------------------
------------------------
--- Hymdall --
------------------------
-L= DBM:GetModLocalization(1485)
+L= DBM:GetModLocalization(1133)
 
------------------------
--- Hyrja --
------------------------
-L= DBM:GetModLocalization(1486)
-
------------------------
--- Fenryr --
------------------------
-L= DBM:GetModLocalization(1487)
-
------------------------
--- God-King Skovald --
------------------------
-L= DBM:GetModLocalization(1488)
-
------------------------
--- Odyn --
------------------------
-L= DBM:GetModLocalization(1489)
-
------------------------
---Halls of Valor Trash
------------------------
-L = DBM:GetModLocalization("HoVTrash")
+-------------
+--  GRD Trash  --
+-------------
+L = DBM:GetModLocalization("GRDTrash")
 
 L:SetGeneralLocalization({
-	name =	"英灵殿小怪"
+	name =	"恐轨车站小怪"
 })
+-----------------------
+-- <<<Iron Docks>>> --
+-----------------------
+---------------------
+-- Fleshrender Nok'gar --
+---------------------
+L= DBM:GetModLocalization(1235)
+
+-------------
+-- Grimrail Enforcers --
+-------------
+L= DBM:GetModLocalization(1236)
 
 -----------------------
--- <<<Neltharion's Lair>>> --
+-- Oshir --
 -----------------------
------------------------
--- Rokmora --
------------------------
-L= DBM:GetModLocalization(1662)
+L= DBM:GetModLocalization(1237)
+
+-----------------------------
+-- Skulloc, Son of Gruul --
+-----------------------------
+L= DBM:GetModLocalization(1238)
 
 -----------------------
--- Ularogg Cragshaper --
+-- <<<Overgrown Outpost>>> --
 -----------------------
-L= DBM:GetModLocalization(1665)
+-----------------------
+-- Witherbark --
+-----------------------
+L= DBM:GetModLocalization(1214)
 
 -----------------------
--- Naraxas --
+-- Ancient Protectors --
 -----------------------
-L= DBM:GetModLocalization(1673)
+L= DBM:GetModLocalization(1207)
 
 -----------------------
--- Dargrul the Underking --
+-- Archmage Sol --
 -----------------------
-L= DBM:GetModLocalization(1687)
+L= DBM:GetModLocalization(1208)
 
 -----------------------
---Neltharion's Lair Trash
+-- Xeri'tac --
 -----------------------
-L = DBM:GetModLocalization("NLTrash")
-
-L:SetGeneralLocalization({
-	name =	"奈萨里奥的巢穴小怪"
-})
-
------------------------
--- <<<The Arcway>>> --
------------------------
------------------------
--- Ivanyr --
------------------------
-L= DBM:GetModLocalization(1497)
-
------------------------
--- Nightwell Sentry --
------------------------
-L= DBM:GetModLocalization(1498)
-
------------------------
--- General Xakal --
------------------------
-L= DBM:GetModLocalization(1499)
+L= DBM:GetModLocalization(1209)
 
 L:SetMiscLocalization({
-	batSpawn		=	"支援我！现在！"--Reinforcements to me! NOW!
+	Pull	= "艾里塔克对你放出剧毒小蜘蛛！"
 })
 
 -----------------------
--- Nal'tira --
+-- Yalnu --
 -----------------------
-L= DBM:GetModLocalization(1500)
+L= DBM:GetModLocalization(1210)
 
 -----------------------
--- Advisor Vandros --
+-- <<<Shadowmoon Buriel Grounds>>> --
 -----------------------
-L= DBM:GetModLocalization(1501)
+-----------------------
+-- Sadana Bloodfury --
+-----------------------
+L= DBM:GetModLocalization(1139)
 
 -----------------------
---The Arcway Trash
+-- Nhallish, Feaster of Souls --
 -----------------------
-L = DBM:GetModLocalization("ArcwayTrash")
+L= DBM:GetModLocalization(1168)
+
+-----------------------
+-- Bonemaw --
+-----------------------
+L= DBM:GetModLocalization(1140)
+
+-----------------------
+-- Ner'zhul --
+-----------------------
+L= DBM:GetModLocalization(1160)
+
+-----------------------
+-- <<<Skyreach>>> --
+-----------------------
+-----------------------
+-- Ranjit, Master of the Four Winds --
+-----------------------
+L= DBM:GetModLocalization(965)
+
+-----------------------
+-- Araknath --
+-----------------------
+L= DBM:GetModLocalization(966)
+
+-----------------------
+-- Rukhran --
+-----------------------
+L= DBM:GetModLocalization(967)
+
+-----------------------
+-- High Sage Viryx --
+-----------------------
+L= DBM:GetModLocalization(968)
+
+-----------------------
+-- <<<Upper Blackrock Spire>>> --
+-----------------------
+-----------------------
+-- Orebender Gor'ashan --
+-----------------------
+L= DBM:GetModLocalization(1226)
+
+-----------------------
+-- Kyrak --
+-----------------------
+L= DBM:GetModLocalization(1227)
+
+-----------------------
+-- Commander Tharbek --
+-----------------------
+L= DBM:GetModLocalization(1228)
+
+-----------------------
+-- Ragewind the Untamed --
+-----------------------
+L= DBM:GetModLocalization(1229)
+
+-----------------------
+-- Warlord Zaela --
+-----------------------
+L= DBM:GetModLocalization(1234)
+
+L:SetTimerLocalization({
+	timerZaelaReturns	= "扎伊拉回来了！"
+})
+
+L:SetOptionLocalization({
+	timerZaelaReturns	= "显示扎伊拉返回的计时器"
+})
+
+-------------
+--  UBRS Trash  --
+-------------
+L = DBM:GetModLocalization("UBRSTrash")
 
 L:SetGeneralLocalization({
-	name =	"苏拉玛墓穴小怪"
+	name =	"黑石塔上层小怪"
 })
-
------------------------
--- <<<Court of Stars>>> --
------------------------
------------------------
--- Patrol Captain Gerdo --
------------------------
-L= DBM:GetModLocalization(1718)
-
------------------------
--- Talixae Flamewreath --
------------------------
-L= DBM:GetModLocalization(1719)
-
------------------------
--- Advisor Melandrus --
------------------------
-L= DBM:GetModLocalization(1720)
-
------------------------
---Court of Stars Trash
------------------------
-L = DBM:GetModLocalization("CoSTrash")
-
-L:SetGeneralLocalization({
-	name =	"群星议会小怪"
-})
-
------------------------
--- <<<The Maw of Souls>>> --
------------------------
------------------------
--- Ymiron, the Fallen King --
------------------------
-L= DBM:GetModLocalization(1502)
-
------------------------
--- Harbaron --
------------------------
-L= DBM:GetModLocalization(1512)
-
------------------------
--- Helya --
------------------------
-L= DBM:GetModLocalization(1663)
-
------------------------
---Maw of Souls Trash
------------------------
-L = DBM:GetModLocalization("MawTrash")
-
-L:SetGeneralLocalization({
-	name =	"冥狱深渊小怪"
-})
-
------------------------
--- <<<Assault Violet Hold>>> --
------------------------
------------------------
--- Mindflayer Kaahrj --
------------------------
-L= DBM:GetModLocalization(1686)
-
------------------------
--- Millificent Manastorm --
------------------------
-L= DBM:GetModLocalization(1688)
-
------------------------
--- Festerface --
------------------------
-L= DBM:GetModLocalization(1693)
-
------------------------
--- Shivermaw --
------------------------
-L= DBM:GetModLocalization(1694)
-
------------------------
--- Blood-Princess Thal'ena --
------------------------
-L= DBM:GetModLocalization(1702)
-
------------------------
--- Anub'esset --
------------------------
-L= DBM:GetModLocalization(1696)
-
------------------------
--- Sael'orn --
------------------------
-L= DBM:GetModLocalization(1697)
-
------------------------
--- Fel Lord Betrug --
------------------------
-L= DBM:GetModLocalization(1711)
-
------------------------
---Assault Violet Hold Trash
------------------------
-L = DBM:GetModLocalization("AVHTrash")
-
-L:SetGeneralLocalization({
-	name =	"新紫罗兰监狱小怪"
-})
-
------------------------
--- <<<Vault of the Wardens>>> --
------------------------
------------------------
--- Tirathon Saltheril --
------------------------
-L= DBM:GetModLocalization(1467)
-
------------------------
--- Inquisitor Tormentorum --
------------------------
-L= DBM:GetModLocalization(1695)
-
------------------------
--- Ash'golm --
------------------------
-L= DBM:GetModLocalization(1468)
-
------------------------
--- Glazer --
------------------------
-L= DBM:GetModLocalization(1469)
-
------------------------
--- Cordana --
------------------------
-L= DBM:GetModLocalization(1470)
-
------------------------
---Vault of the Wardens Trash
------------------------
---L = DBM:GetModLocalization("")
-
---L:SetGeneralLocalization({
---	name =	"守望者地窟小怪"
---})

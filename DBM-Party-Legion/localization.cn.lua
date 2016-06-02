@@ -1,6 +1,8 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- Blizzard Entertainment
--- Last update: May 12 2015, 08:20 UTC@14943
+-- Last update: June 1 2016, 03:13 UTC@14988
+-- 副本正式名称需要等待资料片正式发行，以正式发行为准
+-- 夏一可还没有搞到触发字符串的翻译
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -61,6 +63,15 @@ L= DBM:GetModLocalization(1656)
 L= DBM:GetModLocalization(1657)
 
 -----------------------
+--Darkheart Thicket Trash
+-----------------------
+L = DBM:GetModLocalization("DHTTrash")
+
+L:SetGeneralLocalization({
+	name =	"黑心林地小怪"
+})
+
+-----------------------
 -- <<<Eye of Azshara>>> --
 -----------------------
 -----------------------
@@ -87,6 +98,15 @@ L= DBM:GetModLocalization(1479)
 -- Wrath of Azshara --
 -----------------------
 L= DBM:GetModLocalization(1492)
+
+-----------------------
+--Eye of Azshara Trash
+-----------------------
+L = DBM:GetModLocalization("EoATrash")
+
+L:SetGeneralLocalization({
+	name =	"艾萨拉之眼小怪"
+})
 
 -----------------------
 -- <<<Halls of Valor>>> --
@@ -147,6 +167,15 @@ L= DBM:GetModLocalization(1673)
 -- Dargrul the Underking --
 -----------------------
 L= DBM:GetModLocalization(1687)
+
+-----------------------
+--Neltharion's Lair Trash
+-----------------------
+L = DBM:GetModLocalization("NLTrash")
+
+L:SetGeneralLocalization({
+	name =	"奈萨里奥的巢穴小怪"
+})
 
 -----------------------
 -- <<<The Arcway>>> --
@@ -322,3 +351,12 @@ L= DBM:GetModLocalization(1469)
 -- Cordana --
 -----------------------
 L= DBM:GetModLocalization(1470)
+
+-----------------------
+--Vault of the Wardens Trash
+-----------------------
+--L = DBM:GetModLocalization("")
+
+--L:SetGeneralLocalization({
+--	name =	"守望者地窟小怪"
+--})
