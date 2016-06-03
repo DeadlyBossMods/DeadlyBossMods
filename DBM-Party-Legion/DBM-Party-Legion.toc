@@ -79,8 +79,8 @@ VioletHold\Anubesset.lua
 VioletHold\Saelorn.lua
 VioletHold\FelLordBetrug.lua
 VioletHold\AVHTrash.lua
-GroveOfWarden\TirathonSaltheril.lua
-GroveOfWarden\Tormentorum.lua
-GroveOfWarden\Ashgolm.lua
-GroveOfWarden\Glazer.lua
-GroveOfWarden\Cordana.lua
+VaultOfWarden\TirathonSaltheril.lua
+VaultOfWarden\Tormentorum.lua
+VaultOfWarden\Ashgolm.lua
+VaultOfWarden\Glazer.lua
+VaultOfWarden\Cordana.lua

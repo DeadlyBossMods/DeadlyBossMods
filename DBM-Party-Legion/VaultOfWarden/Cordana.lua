@@ -26,7 +26,7 @@ local specWarnHiddenStarted			= mod:NewSpecialWarningSpell(192750, nil, nil, nil
 local specWarnHiddenOver			= mod:NewSpecialWarningEnd(192750)
 local specWarnVengeance				= mod:NewSpecialWarningMoveTo(205004, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(205004), nil, 3, 6)
 
-local timerKickCD					= mod:NewCDTimer(15, 197251, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--15-42
+local timerKickCD					= mod:NewCDTimer(24, 197251, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--24-42 (used to be 15, review)
 local timerDeepeningShadowsCD		= mod:NewCDTimer(31.5, 213576, nil, nil, nil, 3)
 local timerVengeanceCD				= mod:NewCDTimer(35, 205004, nil, nil, nil, 1)--35-40
 
@@ -36,7 +36,7 @@ local voiceVengeance				= mod:NewVoice(205004)--"205004"--New Voice
 
 function mod:OnCombatStart(delay)
 	timerKickCD:Start(8.3-delay)
-	timerDeepeningShadowsCD:Start(10.9-delay)
+	timerDeepeningShadowsCD:Start(10.5-delay)
 end
 
 --Probably not reliable anymore but will review when I pull boss again

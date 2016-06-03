@@ -16,14 +16,15 @@ mod:RegisterEventsInCombat(
 
 local warnVolcano					= mod:NewSpellAnnounce(192621, 3)
 
-local specWarnLavaWreath			= mod:NewSpecialWarningSpell(192631, nil, nil, nil, 2)
+local specWarnLavaWreath			= mod:NewSpecialWarningDodge(192631, nil, nil, nil, 2, 2)
 local specWarnFissure				= mod:NewSpecialWarningSpell(192522, "Tank", nil, nil, 1, 2)--Not dogable, just so we aim it correctly
 
 local timerVolcanoCD				= mod:NewCDTimer(20, 192621, nil, nil, nil, 1)--20-22 unless delayed by brittle
-local timerLavaWreathCD				= mod:NewNextTimer(42.5, 192522, nil, nil, nil, 2)--42 unless delayed by brittle
+local timerLavaWreathCD				= mod:NewNextTimer(42.5, 192631, nil, nil, nil, 3)--42 unless delayed by brittle
 local timerFissureCD				= mod:NewNextTimer(42.5, 192522, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--42 unless delayed by brittle
 
 local voiceVolcano					= mod:NewVoice(192621)--mobsoon
+local voiceWreath					= mod:NewVoice(192631)--watchstep
 local voiceFissure					= mod:NewVoice(192522, "Tank")--shockwave
 
 function mod:OnCombatStart(delay)
@@ -40,6 +41,7 @@ function mod:SPELL_CAST_START(args)
 		timerFissureCD:Start()
 	elseif spellId == 192631 then
 		specWarnLavaWreath:Show()
+		voiceWreath:Play("watchstep")
 		timerLavaWreathCD:Start()
 	elseif spellId == 192621 then
 		warnVolcano:Show()
