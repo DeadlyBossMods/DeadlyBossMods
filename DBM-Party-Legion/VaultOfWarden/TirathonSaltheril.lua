@@ -12,22 +12,31 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 191941",
 	"SPELL_AURA_REMOVED 191941",
-	"SPELL_CAST_START 204151 191823 191941 202913"
---	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED"
+	"SPELL_CAST_START 204151 191823 191941 202913",
+	"SPELL_DAMAGE 202919",
+	"SPELL_MISSED 202919"
 )
 
 --TODO, timers possibly. Right now it's up in hair and possibly all health based. No timer matched between multiple pulls
---TODO, GTFO for standing in fire maybe?
+--[[
+			["SPELL_CAST_START"] = {
+				["197250-Turn Kick"] = "pull:8.8, 35.2, 24.3, 24.3",
+				["197251-Knockdown Kick"] = "pull:8.3, 35.3, 24.1, 24.3",
+				["213583-Deepening Shadows"] = "pull:10.7, 35.2, 31.5",
+				["206459-Shadow Strike"] = "pull:21.6, 1.1, 0.7, 1.7",
+			},
+--]]
 local specWarnDarkStrikes			= mod:NewSpecialWarningDefensive(204151, "Tank", nil, nil, 3, 2)
 local specWarnFuriousBlast			= mod:NewSpecialWarningInterrupt(191823, "HasInterrupt", nil, nil, 1, 2)
 local specWarnFelMortar				= mod:NewSpecialWarningDodge(202913, nil, nil, nil, 2, 2)
+local specWarnFelMortarGTFO			= mod:NewSpecialWarningMove(202919, nil, nil, nil, 1, 2)
 
 local timerDarkStrikes				= mod:NewBuffActiveTimer(11, 191941, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--tooltip says 15 but every log was 10-11
 
 local voiceDarkStrikes				= mod:NewVoice(204151, "Tank")--defensive
 local voiceFuriousBlast				= mod:NewVoice(191823, "HasInterrupt")--kickcast
 local voiceFelMortar				= mod:NewVoice(202913)--watchstep
+local voiceFelMortarGTFO			= mod:NewVoice(202919)--runaway
 
 function mod:OnCombatStart(delay)
 
@@ -59,4 +68,15 @@ function mod:SPELL_CAST_START(args)
 		specWarnFelMortar:Show()
 		voiceFelMortar:Play("watchstep")
 	end
+end
+
+do
+	local playerGUID = UnitGUID("player")
+	function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+		if spellId == 202919 and destGUID == playerGUID and self:AntiSpam(2, 2) then
+			specWarnFelMortarGTFO:Show()
+			voiceFelMortarGTFO:Play("runaway")
+		end
+	end
+	mod.SPELL_MISSED = mod.SPELL_DAMAGE
 end
