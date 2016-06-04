@@ -634,6 +634,8 @@ do
 			self.options.Texture = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\smooth.blp"
 		elseif self.options.Texture == "Interface\\AddOns\\DBM-DefaultSkin\\textures\\glaze.tga" then
 			self.options.Texture = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\glaze.blp"
+		elseif self.options.Texture == "Interface\\AddOns\\DBM-DefaultSkin\\textures\\otravi.tga" then
+			self.options.Texture = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\otravi.blp"
 		end
 	end
 
