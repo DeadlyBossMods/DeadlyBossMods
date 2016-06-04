@@ -19,7 +19,7 @@ local specWarnOozePuddle			= mod:NewSpecialWarningMove(194006, nil, nil, nil, 1,
 local specWarnColapsingRift			= mod:NewSpecialWarningMove(210750, nil, nil, nil, 1, 2)
 local specWarnFelStrike				= mod:NewSpecialWarningMove(211745, nil, nil, nil, 1, 2)
 
-local voiceArgusPortal				= mod:NewVoice(211757)--kickcast
+local voiceArgusPortal				= mod:NewVoice(211757, "HasInterrupt")--kickcast
 local voiceOozePuddle				= mod:NewVoice(194006)--runaway
 local voiceColapsingRift			= mod:NewVoice(210750)--runaway
 local voiceFelStrike				= mod:NewVoice(211745)--runaway
