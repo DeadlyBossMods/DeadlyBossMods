@@ -627,6 +627,14 @@ do
 		if not self.options.Font then--Fix font if it's nil
 			self.options.Font = standardFont
 		end
+		--Repair options from texture conversions
+		if self.options.Texture == "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.tga" then
+			self.options.Texture = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.blp"
+		elseif self.options.Texture == "Interface\\AddOns\\DBM-DefaultSkin\\textures\\smooth.tga" then
+			self.options.Texture = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\smooth.blp"
+		elseif self.options.Texture == "Interface\\AddOns\\DBM-DefaultSkin\\textures\\glaze.tga" then
+			self.options.Texture = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\glaze.blp"
+		end
 	end
 
 	function DBT:CreateProfile(id)
