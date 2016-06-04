@@ -94,7 +94,7 @@ local yellHeartseeker					= mod:NewYell(158010, nil, false)
 --Ship
 mod:AddTimerLine(Ship)
 local timerShipCD						= mod:NewNextCountTimer(198, "ej10019", nil, nil, nil, 6, 76204)
-local timerBombardmentAlphaCD			= mod:NewNextTimer(18, 157854, nil, nil, nil, 2)
+local timerBombardmentAlphaCD			= mod:NewNextTimer(18, 157854, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerWarmingUp					= mod:NewCastTimer(90, 158849, nil, nil, nil, 6)
 --Ground
 ----Admiral Gar'an
@@ -102,14 +102,14 @@ mod:AddTimerLine(Garan)
 local timerRapidFireCD					= mod:NewCDTimer(30, 156626, nil, nil, nil, 3)
 local timerDarkHuntCD					= mod:NewCDCountTimer(13.5, 158315, nil, false, nil, 3)--Important to know you have it, not very important to know it's coming soon.
 local timerPenetratingShotCD			= mod:NewCDCountTimer(28.8, 164271, nil, nil, nil, 3)--22-30 at least. maybe larger variation.
-local timerDeployTurretCD				= mod:NewCDCountTimer(20.2, 158599, nil, nil, nil, 1)--20.2-23.5
+local timerDeployTurretCD				= mod:NewCDCountTimer(20.2, 158599, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--20.2-23.5
 ----Enforcer Sorka
 mod:AddTimerLine(Sorka)
-local timerBladeDashCD					= mod:NewCDCountTimer(20, 155794, nil, "Ranged|Tank", nil, 5)
+local timerBladeDashCD					= mod:NewCDCountTimer(20, 155794, nil, "Ranged|Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerConvulsiveShadowsCD			= mod:NewNextCountTimer(56, 156214, nil, nil, nil, 3)--Timer only enabled on mythicOn non mythic, it's just an unimportant dot. On mythic, MUCH more important because user has to run out of raid and get dispelled.
 ----Marak the Blooded
 mod:AddTimerLine(Marak)
-local timerBloodRitualCD				= mod:NewCDCountTimer(20, 158078, nil, nil, nil, 5)
+local timerBloodRitualCD				= mod:NewCDCountTimer(20, 158078, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerHeartSeekerCD				= mod:NewCDCountTimer(70, 158010, nil, "Ranged", nil, 3)
 
 local countdownShip						= mod:NewCountdown(198, "ej10019")
