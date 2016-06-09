@@ -101,7 +101,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 203641 then
 		specWarnFelSlash:Show()
 		voiceFelSlash:Play("shockwave")
-		self:BossUnitTargetScanner("boss1", "SlashTarget")
+		self:BossUnitTargetScanner("boss1", "SlashTarget", 3)
 		--timerFelSlashCD:Start()
 	elseif spellId == 202328 then
 		specWarnMightySmash:Show()
