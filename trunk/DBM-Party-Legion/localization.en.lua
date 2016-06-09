@@ -318,6 +318,23 @@ L:SetGeneralLocalization({
 	name =	"Assault Violet Hold Trash"
 })
 
+L:SetWarningLocalization({
+	WarningPortalSoon	= "New portal soon",
+	WarningPortalNow	= "Portal #%d",
+	WarningBossNow		= "Boss incoming"
+})
+
+L:SetTimerLocalization({
+	TimerPortal			= "Next Portal"
+})
+
+L:SetOptionLocalization({
+	WarningPortalNow		= "Show warning for new portal",
+	WarningPortalSoon		= "Show pre-warning for new portal",
+	WarningBossNow			= "Show warning for boss incoming",
+	TimerPortal				= "Show timer for next portal (after Boss)"
+})
+
 -----------------------
 -- <<<Vault of the Wardens>>> --
 -----------------------
