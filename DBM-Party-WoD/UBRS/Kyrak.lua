@@ -27,7 +27,7 @@ local specWarnRejuvSerum			= mod:NewSpecialWarningDispel(161203, "MagicDispeller
 local specWarnToxicFumes			= mod:NewSpecialWarningDispel(162600, "RemovePoison", nil, 2)
 local specWarnVilebloodSerum		= mod:NewSpecialWarningMove(161288)
 
-local timerDebilitatingCD			= mod:NewNextTimer(20, 161199, nil, nil, nil, 4)--Every 20 seconds exactly, at least in challenge mode.
+local timerDebilitatingCD			= mod:NewNextTimer(20, 161199, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Every 20 seconds exactly, at least in challenge mode.
 local timerEruptionCD				= mod:NewCDTimer(10, 155037, nil, false, nil, 5)--10-15 sec variation. May be distracting or spammy since two of them
 --local timerRejuvSerumCD			= mod:NewCDTimer(33, 161203, nil, "MagicDispeller", nil, 5)--33-40sec variation. Could also be health based so disabled for now.
 local timerVilebloodSerumCD			= mod:NewCDTimer(9.5, 161209, nil, nil, nil, 3)--every 9-10 seconds

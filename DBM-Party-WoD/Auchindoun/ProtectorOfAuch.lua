@@ -25,7 +25,7 @@ local specWarnFate				= mod:NewSpecialWarningSpell(157465, nil, nil, nil, 2)
 local specWarnSanctifiedGround	= mod:NewSpecialWarningMove(161457)
 
 local timerHolyShieldCD			= mod:NewNextTimer(47, 153002, nil, nil, nil, 3)
-local timerConsecratedLightCD	= mod:NewNextTimer(7, 153006, nil, nil, nil, 2)
+local timerConsecratedLightCD	= mod:NewNextTimer(7, 153006, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerConsecratedLight		= mod:NewBuffActiveTimer(8, 153006)
 local timerFateCD				= mod:NewCDTimer(37, 157465, nil, nil, nil, 3)--Need more logs to confirm
 
