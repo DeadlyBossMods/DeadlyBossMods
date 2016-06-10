@@ -24,7 +24,7 @@ local specWarnHeatWave			= mod:NewSpecialWarningSpell(152940, false, nil, nil, 2
 local specWarnBurningSlag		= mod:NewSpecialWarningSpell(152939, false, nil, nil, 2)
 local specWarnBurningSlagFire	= mod:NewSpecialWarningMove(152939)
 
-local timerFieryBoulderCD		= mod:NewNextTimer(13.3, 153247)--13.3-13.4 Observed
+local timerFieryBoulderCD		= mod:NewNextTimer(13.3, 153247, nil, nil, nil, 3)--13.3-13.4 Observed
 local timerHeatWave				= mod:NewBuffActiveTimer(9.5, 152940)
 local timerHeatWaveCD			= mod:NewNextTimer(9.5, 152940, nil, nil, nil, 2)--9.5-9.8 Observed
 local timerBurningSlagCD		= mod:NewNextTimer(10.7, 152939, nil, nil, nil, 3)--10.7-11 Observed

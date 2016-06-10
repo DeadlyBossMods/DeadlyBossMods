@@ -21,7 +21,7 @@ local specWarnDarkCommunion		= mod:NewSpecialWarningSwitch(153153, "-Healer")--O
 local specWarnWhispers			= mod:NewSpecialWarningSpell(153094, nil, nil, nil, 2)
 local specWarnDarkEclipse		= mod:NewSpecialWarningSpell(164974, nil, nil, nil, 3)
 
-local timerDarkCommunionCD		= mod:NewCDTimer(60, 153153, nil, nil, nil, 1)
+local timerDarkCommunionCD		= mod:NewCDTimer(60, 153153, nil, nil, nil, 1, DBM_CORE_DAMAGE_ICON)
 local timerDarkEclipseCD		= mod:NewNextTimer(45.5, 164974, nil, nil, nil, 6)--timer seems changed?
 
 local voiceDarkCommunion		= mod:NewVoice(153153, "Dps")

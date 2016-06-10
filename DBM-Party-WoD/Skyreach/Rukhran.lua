@@ -25,7 +25,7 @@ local specWarnQuills			= mod:NewSpecialWarningSpell(159382, nil, nil, nil, 2)
 local specWarnQuillsEnd			= mod:NewSpecialWarningEnd(159382)
 
 local timerSolarFlareCD			= mod:NewCDTimer(18, 153810)
-local timerQuills				= mod:NewBuffActiveTimer(17, 159382)
+local timerQuills				= mod:NewBuffActiveTimer(17, 159382, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 
 local voiceSolarFlare			= mod:NewVoice(153810, "-Tank")
 local voiceQuills				= mod:NewVoice(159382)

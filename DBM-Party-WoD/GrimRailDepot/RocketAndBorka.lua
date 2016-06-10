@@ -27,8 +27,8 @@ local specWarnMadDashInterrupt	= mod:NewSpecialWarningInterrupt(161090, true, fa
 local specWarnSlam				= mod:NewSpecialWarningCast(162617, "SpellCaster", nil, nil, nil, 2)
 
 local timerVX18BCD				= mod:NewCDTimer(33, 162500)
-local timerX2101AMissileCD		= mod:NewCDTimer(40, 162407, nil, nil, nil, 4)
-local timerMadDashCD			= mod:NewCDTimer(40, 161090, nil, nil, nil, 5)
+local timerX2101AMissileCD		= mod:NewCDTimer(40, 162407, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON..DBM_CORE_TANK_ICON)
+local timerMadDashCD			= mod:NewCDTimer(40, 161090, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSlamCD				= mod:NewCDTimer(15, 162617, nil, "SpellCaster")
 local timerSlam					= mod:NewCastTimer(1.5, 162617, nil, "SpellCaster")
 local timerRecovering			= mod:NewBuffActiveTimer(6, 163947)
