@@ -25,7 +25,7 @@ local specWarnParasiticGrowth	= mod:NewSpecialWarningCount(168885, "Tank")
 --local specWarnFireBloom			= mod:NewSpecialWarningSpell(166492, nil, nil, nil, 2)
 local specWarnFrozenRainMove	= mod:NewSpecialWarningMove(166726)
 
-local timerParasiticGrowthCD	= mod:NewCDCountTimer(11.5, 168885, nil, nil, nil, 4)--Every 12 seconds unless comes off cd during fireball/frostbolt, then cast immediately after.
+local timerParasiticGrowthCD	= mod:NewCDCountTimer(11.5, 168885, nil, "Tank|Healer", 2, 5, nil, DBM_CORE_TANK_ICON)--Every 12 seconds unless comes off cd during fireball/frostbolt, then cast immediately after.
 
 --local voiceFireBloom= mod:NewVoice(166492)
 local voiceFrozenRain			= mod:NewVoice(166726)
