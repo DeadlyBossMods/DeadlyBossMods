@@ -30,7 +30,7 @@ local voiceOozeGTFO					= mod:NewVoice(202266)--runaway
 --mod:AddRangeFrameOption(5, 153396)
 
 function mod:OnCombatStart(delay)
-	timerOozesCD:Start(3.7-delay)--Countdown not started here on purpose
+--	timerOozesCD:Start(3.7-delay)--Too variable on pull, 3-6, pretty much right away anyways so no need for timer
 end
 
 function mod:SPELL_CAST_START(args)

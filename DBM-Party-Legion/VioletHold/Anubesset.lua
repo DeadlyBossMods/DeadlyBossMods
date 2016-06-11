@@ -77,7 +77,7 @@ function mod:SPELL_CAST_START(args)
 		voiceMandibleStrike:Play("defensive")
 		timerMandibleStrikeCD:Start()
 	elseif spellId == 202341 then
-		self:BossUnitTargetScanner("boss1", "ImpaleTarget")
+		self:BossUnitTargetScanner("boss1", "ImpaleTarget", 3.4)
 		timerImpaleCD:Start()
 	elseif spellId == 201863 then
 		warnSwarm:Show()
