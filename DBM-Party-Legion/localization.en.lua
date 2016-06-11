@@ -325,7 +325,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPortal			= "Next Portal"
+	TimerPortal			= "Portal CD"
 })
 
 L:SetOptionLocalization({
@@ -333,6 +333,10 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= "Show pre-warning for new portal",
 	WarningBossNow			= "Show warning for boss incoming",
 	TimerPortal				= "Show timer for next portal (after Boss)"
+})
+
+L:SetMiscLocalization({
+	Malgath		=	"Lord Malgath"
 })
 
 -----------------------

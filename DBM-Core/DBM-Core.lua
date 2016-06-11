@@ -3829,10 +3829,16 @@ do
 		end
 		--Active BossUnitTargetScanner
 		if targetMonitor and UnitExists(uId.."target") then
+			self:Debug("targetMonitor exists, target exists", 2)
 			local modId, unitId, returnFunc = string.split("\t", targetMonitor)
+			self:Debug("targetMonitor: "..modId..", "..unitId..", "..returnFunc, 2)
 			local tanking, status = UnitDetailedThreatSituation(unitId, unitId.."target")--Tanking may return 0 if npc is temporarily looking at an NPC (IE fracture) but status will still be 3 on true tank
-			if tanking or (status == 3) then return end--It's a tank/highest threat, this method ignores tanks
+			if tanking or (status == 3) then
+				self:Debug("targetMonitor ending, it's a tank", 2)
+				return
+			end--It's a tank/highest threat, this method ignores tanks
 			local mod = self:GetModByName(modId)
+			self:Debug("targetMonitor success, a valid target that's not a tank", 2)
 			mod[returnFunc](mod, self:GetUnitFullName(unitId.."target"), unitId.."target", unitId)--Return results to warning function with all variables.
 			targetMonitor = nil
 		end

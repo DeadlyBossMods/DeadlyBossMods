@@ -54,7 +54,7 @@ function mod:OnCombatStart(delay)
 	if not self:IsNormal() then
 		timerSeedsCD:Start(17-delay)
 	end
-	timerMightySmashCD:Start(37-delay)
+	timerMightySmashCD:Start(30-delay)
 end
 
 function mod:OnCombatEnd()
