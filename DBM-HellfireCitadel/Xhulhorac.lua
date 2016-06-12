@@ -87,8 +87,9 @@ local timerVoidsCD					= mod:NewNextTimer(30, "ej11714", nil, "Ranged", nil, 1, 
 ----Big Add
 local timerWitheringGazeCD			= mod:NewCDTimer(22, 186783, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)
 local timerBlackHoleCD				= mod:NewCDCountTimer(29.5, 186546, nil, "-Tank", 2, 5)
+local timerEmpBlackHoleCD			= mod:NewCDCountTimer(29.5, 189779, 186546, "-Tank", 2, 5, nil, DBM_CORE_DEADLY_ICON)
 --End Phase
-local timerOverwhelmingChaosCD		= mod:NewNextCountTimer(10, 187204, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerOverwhelmingChaosCD		= mod:NewNextCountTimer(10, 187204, nil, nil, 2, 2, nil, DBM_CORE_HEALER_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
@@ -307,7 +308,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 189779 then
 		self.vb.blackHoleCount = self.vb.blackHoleCount + 1
 		specWarnEmpBlackHole:Show(self.vb.blackHoleCount)
-		timerBlackHoleCD:Start(nil, self.vb.blackHoleCount+1)
+		timerEmpBlackHoleCD:Start(nil, self.vb.blackHoleCount+1)
 	elseif spellId == 186490 then
 		if self.Options.ChainsBehavior ~= "Applied" then--Start timer and scanner if method is Both or Cast. Both prefers cast over applied, for the timer.
 			self:ScheduleMethod(0.1, "BossTargetScanner", args.sourceGUID, "FelChains", 0.1, 16)
@@ -508,7 +509,7 @@ function mod:UNIT_DIED(args)
 		timerWitheringGazeCD:Stop()
 		timerBlackHoleCD:Stop()
 		if self:IsMythic() then
-			timerBlackHoleCD:Start(18, self.vb.blackHoleCount+1)
+			timerEmpBlackHoleCD:Start(18, self.vb.blackHoleCount+1)
 		else
 			if playerTanking == 2 then
 				playerTanking = 0--Omnus died, set player tanking to 0
