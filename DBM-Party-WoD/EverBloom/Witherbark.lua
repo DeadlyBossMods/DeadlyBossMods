@@ -21,10 +21,10 @@ local warnParchedGrasp			= mod:NewSpellAnnounce(164357, 3, nil, "Tank")
 local warnBrittleBark			= mod:NewSpellAnnounce(164275, 2)
 local warnUncheckedGrowth		= mod:NewSpellAnnounce("ej10098", 3, 164294)
 
-local specWarnLivingLeaves		= mod:NewSpecialWarningMove(169495)
+local specWarnLivingLeaves		= mod:NewSpecialWarningMove(169495, nil, nil, nil, 1, 2)
 local specWarnUncheckedGrowthYou= mod:NewSpecialWarningYou(164294)
 local specWarnUncheckedGrowth	= mod:NewSpecialWarningMove(164294)
-local specWarnUncheckedGrowthAdd= mod:NewSpecialWarningSwitch("ej10098", "Tank")
+local specWarnUncheckedGrowthAdd= mod:NewSpecialWarningSwitch("ej10098", "Tank", nil, nil, 1, 2)
 local specWarnParchedGrasp		= mod:NewSpecialWarningSpell(164357, "Tank")
 local specWarnBrittleBark		= mod:NewSpecialWarningSpell(164275)
 local specWarnBrittleBarkEnd	= mod:NewSpecialWarningEnd(164275, false)--Added for sake of adding. Not important enough to be a default though.
@@ -32,7 +32,7 @@ local specWarnBrittleBarkEnd	= mod:NewSpecialWarningEnd(164275, false)--Added fo
 local timerParchedGrasp			= mod:NewCDTimer(12, 164357)
 
 local voiceLivingLeaves			= mod:NewVoice(169495)
-local voiceUncheckedGrowth		= mod:NewVoice(164294, false, nil, 2)--Almost no one kill them. tank picks up, but dps burn boss.
+local voiceUncheckedGrowth		= mod:NewVoice(164294, "Tank", nil, 3)--Almost no one kill them. tank picks up, but dps burn boss.
 
 
 function mod:OnCombatStart(delay)

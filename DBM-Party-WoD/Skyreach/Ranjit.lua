@@ -23,10 +23,10 @@ local warnPiercingRush		= mod:NewTargetAnnounce(165731, 2)--EJ shows tank warnin
 local warnLensFlare			= mod:NewSpellAnnounce(154043, 3)
 
 local specWarnSpinningBlade	= mod:NewSpecialWarningSpell(153544, false, nil, nil, 2)
-local specWarnFourWinds		= mod:NewSpecialWarningSpell(156793, nil, nil, nil, 2)
+local specWarnFourWinds		= mod:NewSpecialWarningSpell(156793, nil, nil, nil, 2, 2)
 local specWarnWindFallMove	= mod:NewSpecialWarningMove(153315)
 local specWarnLensFlare		= mod:NewSpecialWarningSpell(154043, nil, nil, nil, 2)
-local specWarnLensFlareMove	= mod:NewSpecialWarningMove(154043)
+local specWarnLensFlareMove	= mod:NewSpecialWarningMove(154043, nil, nil, nil, 1, 2)
 
 local timerFourWinds		= mod:NewBuffActiveTimer(18, 156793)
 local timerFourWindsCD		= mod:NewCDTimer(30, 156793)

@@ -21,7 +21,7 @@ local warnGenesis				= mod:NewSpellAnnounce(169613, 4)
 
 local specWarnColossalBlow		= mod:NewSpecialWarningDodge(169179, nil, nil, nil, 2, 2)
 local specWarnEntanglement		= mod:NewSpecialWarningSwitch(169251, "Dps")
-local specWarnGenesis			= mod:NewSpecialWarningSpell(169613, nil, nil, nil, nil, 2)--Everyone. "Switch" is closest generic to "run around stomping flowers"
+local specWarnGenesis			= mod:NewSpecialWarningSpell(169613, nil, nil, nil, 1, 2)--Everyone. "Switch" is closest generic to "run around stomping flowers"
 
 --Only timers that were consistent, others are all over the place.
 local timerFontOfLife			= mod:NewNextTimer(15, 169120, nil, nil, nil, 1)

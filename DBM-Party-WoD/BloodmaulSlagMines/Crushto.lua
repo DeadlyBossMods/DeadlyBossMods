@@ -17,8 +17,8 @@ local warnFerociousYell			= mod:NewCastAnnounce(150759, 2)
 local warnCrushingLeap			= mod:NewTargetAnnounce(150751, 3)
 local warnEarthCrush			= mod:NewSpellAnnounce(153679, 4)--Target scanning unavailable.
 
-local specWarnFerociousYell		= mod:NewSpecialWarningInterrupt(150759, "-Healer")
-local specWarnRaiseMiners		= mod:NewSpecialWarningSwitch(150801, "Tank")
+local specWarnFerociousYell		= mod:NewSpecialWarningInterrupt(150759, "HasInterrupt", nil, 2, 1, 2)
+local specWarnRaiseMiners		= mod:NewSpecialWarningSwitch(150801, "Tank", nil, nil, 1, 2)
 local specWarnCrushingLeap		= mod:NewSpecialWarningTarget(150751, false)--seems useless.
 local specWarnEarthCrush		= mod:NewSpecialWarningSpell(153679, nil, nil, nil, 3)--avoidable.
 local specWarnWildSlam			= mod:NewSpecialWarningSpell(150753, nil, nil, nil, 2)--not avoidable. large aoe damage and knockback
@@ -29,7 +29,7 @@ local timerCrushingLeapCD		= mod:NewCDTimer(23, 150751, nil, nil, nil, 3)--23~25
 --local timerEarthCrushCD--13~21. large variable. useless.
 local timerWildSlamCD			= mod:NewCDTimer(23, 150753, nil, nil, nil, 2)--23~24 variable.
 
-local voiceFerociousYell		= mod:NewVoice(150759, "-Healer")
+local voiceFerociousYell		= mod:NewVoice(150759, "HasInterrupt")
 local voiceRaiseMiners			= mod:NewVoice(150801)
 
 function mod:SPELL_AURA_APPLIED(args)

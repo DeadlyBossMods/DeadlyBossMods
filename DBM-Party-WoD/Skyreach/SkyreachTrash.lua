@@ -12,7 +12,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED 160303 160288"
 )
 
-local specWarnSolarDetonation		= mod:NewSpecialWarningMoveAway(160288)
+local specWarnSolarDetonation		= mod:NewSpecialWarningMoveAway(160288, nil, nil, nil, 1, 2)
 
 local voiceSolarDetonation			= mod:NewVoice(160288)
 

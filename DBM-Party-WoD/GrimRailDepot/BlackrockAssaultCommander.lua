@@ -22,10 +22,10 @@ local warnSupressiveFire		= mod:NewTargetAnnounce(160681, 2)--In a repeating loo
 --local warnMortarDown			= mod:NewAnnounce("warnMortarDown", 4, "ej9712", nil, DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format("ej9712"))--So warn when adds that drop them die
 local warnPhase3				= mod:NewPhaseAnnounce(3)
 
-local specWarnSupressiveFire	= mod:NewSpecialWarningYou(160681)
+local specWarnSupressiveFire	= mod:NewSpecialWarningYou(160681, nil, nil, nil, 1, 2)
 local yellSupressiveFire		= mod:NewYell(160681)
-local specWarnShrapnelblast		= mod:NewSpecialWarningDodge(160943, "Tank", nil, nil, 3)--160943 boss version, 166675 trash version.
-local specWarnSlagBlast			= mod:NewSpecialWarningMove(166570)
+local specWarnShrapnelblast		= mod:NewSpecialWarningDodge(160943, "Tank", nil, nil, 3, 2)--160943 boss version, 166675 trash version.
+local specWarnSlagBlast			= mod:NewSpecialWarningMove(166570, nil, nil, nil, 1, 2)
 
 local timerSupressiveFire		= mod:NewTargetTimer(10, 160681)
 

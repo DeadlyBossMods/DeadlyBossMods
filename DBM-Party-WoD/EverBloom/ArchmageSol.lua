@@ -15,7 +15,6 @@ mod:RegisterEventsInCombat(
 
 --Again, too lazy to work on CD timers, someone else can do it. raid mods are putting too much strain on me to give 5 man mods as much attention
 --Probalby should also add a close warning for Frozen Rain
-local warnParasiticGrowth		= mod:NewCountAnnounce(168885, 3, nil, "Tank")--This is tanks job, it's no one elses business to interrupt this before tank is ready to push next phase. Careless interruptions can cause a wipe to arcane phase because fire/ice were too short.
 local warnFirePhase				= mod:NewSpellAnnounce(166475 ,1)
 --local warnFireBloom				= mod:NewSpellAnnounce(166492, 4)--Very useless. only confusing
 local warnFrostPhase			= mod:NewSpellAnnounce(166476 ,1)
@@ -23,7 +22,7 @@ local warnArcanePhase			= mod:NewSpellAnnounce(166477 ,1)
 
 local specWarnParasiticGrowth	= mod:NewSpecialWarningCount(168885, "Tank")
 --local specWarnFireBloom			= mod:NewSpecialWarningSpell(166492, nil, nil, nil, 2)
-local specWarnFrozenRainMove	= mod:NewSpecialWarningMove(166726)
+local specWarnFrozenRainMove	= mod:NewSpecialWarningMove(166726, nil, nil, nil, 1, 2)
 
 local timerParasiticGrowthCD	= mod:NewCDCountTimer(11.5, 168885, nil, "Tank|Healer", 2, 5, nil, DBM_CORE_TANK_ICON)--Every 12 seconds unless comes off cd during fireball/frostbolt, then cast immediately after.
 
@@ -42,7 +41,6 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 168885 then
 		self.vb.ParasiteCount = self.vb.ParasiteCount + 1
-		warnParasiticGrowth:Show(self.vb.ParasiteCount)
 		specWarnParasiticGrowth:Show(self.vb.ParasiteCount)
 		timerParasiticGrowthCD:Stop()
 		timerParasiticGrowthCD:Start(nil, self.vb.ParasiteCount+1)

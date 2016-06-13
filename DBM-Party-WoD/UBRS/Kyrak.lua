@@ -23,9 +23,9 @@ local warnVilebloodSerum			= mod:NewSpellAnnounce(161209, 3)--Some may think thi
 
 local specWarnDebilitatingFixation	= mod:NewSpecialWarningInterrupt(161199, "-Healer", nil, 2, 3)
 local specWarnEruption				= mod:NewSpecialWarningDodge(155037, "Tank")
-local specWarnRejuvSerum			= mod:NewSpecialWarningDispel(161203, "MagicDispeller")
-local specWarnToxicFumes			= mod:NewSpecialWarningDispel(162600, "RemovePoison", nil, 2)
-local specWarnVilebloodSerum		= mod:NewSpecialWarningMove(161288)
+local specWarnRejuvSerum			= mod:NewSpecialWarningDispel(161203, "MagicDispeller", nil, nil, 1, 2)
+local specWarnToxicFumes			= mod:NewSpecialWarningDispel(162600, "RemovePoison", nil, 2, 1, 2)
+local specWarnVilebloodSerum		= mod:NewSpecialWarningMove(161288, nil, nil, nil, 1, 2)
 
 local timerDebilitatingCD			= mod:NewNextTimer(20, 161199, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--Every 20 seconds exactly, at least in challenge mode.
 local timerEruptionCD				= mod:NewCDTimer(10, 155037, nil, false, nil, 5)--10-15 sec variation. May be distracting or spammy since two of them
@@ -35,7 +35,7 @@ local timerVilebloodSerumCD			= mod:NewCDTimer(9.5, 161209, nil, nil, nil, 3)--e
 local countdownDebilitating			= mod:NewCountdown(20, 161199, "Tank")
 
 local voiceRejuvSerum				= mod:NewVoice(161203, "MagicDispeller")
-local voiceToxicFumes				= mod:NewVoice(162600, "Healer")
+local voiceToxicFumes				= mod:NewVoice(162600, "RemovePoison", nil, 2)
 local voiceDebilitating				= mod:NewVoice(161199, "-Healer")
 local voiceVilebloodSerum			= mod:NewVoice(161288)
 
