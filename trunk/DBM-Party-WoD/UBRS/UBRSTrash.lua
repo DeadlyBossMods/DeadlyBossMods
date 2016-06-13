@@ -28,8 +28,8 @@ local specWarnSmash						= mod:NewSpecialWarningDodge(155572, "Tank")
 local specWarnFranticMauling			= mod:NewSpecialWarningDodge(154039, "Tank")
 local specWarnEruption					= mod:NewSpecialWarningDodge(155037, "Tank")
 
-local timerSmashCD						= mod:NewCDTimer(13, 155572)
-local timerEruptionCD					= mod:NewCDTimer(10, 155037, nil, false)--10-15 sec variation. May be distracting or spammy since two of them
+local timerSmashCD						= mod:NewCDTimer(13, 155572, nil, nil, nil, 3)
+local timerEruptionCD					= mod:NewCDTimer(10, 155037, nil, false, nil, 3)--10-15 sec variation. May be distracting or spammy since two of them
 
 mod:RemoveOption("HealthFrame")
 

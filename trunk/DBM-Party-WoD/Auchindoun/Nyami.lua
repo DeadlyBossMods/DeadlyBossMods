@@ -18,10 +18,10 @@ mod:RegisterEventsInCombat(
 local warnSoulVessel			= mod:NewSpellAnnounce(155327, 4)
 local warnTornSpirits			= mod:NewSpellAnnounce(153991, 3)
 
-local specWarnSWP				= mod:NewSpecialWarningDispel(154477, "Healer")
-local specWarnSoulVessel		= mod:NewSpecialWarningSpell(155327, nil, nil, nil, 2)
-local specWarnSoulVesselEnd		= mod:NewSpecialWarningEnd(155327)
-local specWarnTornSpirits		= mod:NewSpecialWarningSwitch(153991, "-Healer")
+local specWarnSWP				= mod:NewSpecialWarningDispel(154477, "Healer", nil, nil, 1, 2)
+local specWarnSoulVessel		= mod:NewSpecialWarningSpell(155327, nil, nil, nil, 2, 2)
+local specWarnSoulVesselEnd		= mod:NewSpecialWarningEnd(155327, nil, nil, nil, 1, 2)
+local specWarnTornSpirits		= mod:NewSpecialWarningSwitch(153991, "-Healer", nil, nil, 1, 2)
 
 local timerSoulVessel			= mod:NewBuffActiveTimer(11.5, 155327, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerSoulVesselCD			= mod:NewCDTimer(51.5, 155327, nil, nil, nil, 6)

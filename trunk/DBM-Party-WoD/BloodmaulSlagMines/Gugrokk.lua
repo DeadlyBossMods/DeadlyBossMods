@@ -16,16 +16,15 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, Add heroic ability "Flame Buffet"? Seems to just stack up over time and not really need warnings.
-local warnMoltenBlast			= mod:NewCastAnnounce(150677, 4)
 local warnUnstableSlag			= mod:NewSpellAnnounce(150677, 3)
 local warnMagmaEruption			= mod:NewSpellAnnounce(150784, 3)
 local warnMoltenCore			= mod:NewTargetAnnounce(150678, 2)
 
-local specWarnMoltenBlast		= mod:NewSpecialWarningInterrupt(150677, "-Healer", nil, 2)
-local specWarnUnstableSlag		= mod:NewSpecialWarningSwitch(150755, "Dps", nil, 2)
+local specWarnMoltenBlast		= mod:NewSpecialWarningInterrupt(150677, "HasInterrupt", nil, 3, 1, 2)
+local specWarnUnstableSlag		= mod:NewSpecialWarningSwitch(150755, "Dps", nil, 2, 1, 2)
 local specWarnMagmaEruptionCast	= mod:NewSpecialWarningSpell(150784, nil, nil, nil, 2)
-local specWarnMagmaEruption		= mod:NewSpecialWarningMove(150784)
-local specWarnMoltenCore		= mod:NewSpecialWarningDispel(150678, "MagicDispeller")
+local specWarnMagmaEruption		= mod:NewSpecialWarningMove(150784, nil, nil, nil, 1, 2)
+local specWarnMoltenCore		= mod:NewSpecialWarningDispel(150678, "MagicDispeller", nil, nil, 1, 2)
 
 local timerMagmaEruptionCD		= mod:NewCDTimer(20, 150784)
 local timerUnstableSlagCD		= mod:NewCDTimer(20, 150755, nil, nil, nil, 1)
@@ -46,7 +45,6 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 150677 then
-		warnMoltenBlast:Show()
 		specWarnMoltenBlast:Show(args.sourceName)
 		if self:IsTank() then
 			voiceMoltenBlast:Play("kickcast")

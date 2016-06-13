@@ -33,18 +33,18 @@ local warnDoom					= mod:NewTargetAnnounce(156965, 3, nil, "Healer")
 
 --Basic Abilities
 local specWarnDrainLife			= mod:NewSpecialWarningInterrupt(156854, "-Healer")
-local specWarnCorruption		= mod:NewSpecialWarningDispel(156842, "Healer")
+local specWarnCorruption		= mod:NewSpecialWarningDispel(156842, "Healer", nil, nil, 1, 2)
 local specWarnRainOfFire		= mod:NewSpecialWarningSpell(156857, nil, nil, nil, 2)--156856 fires SUCCESS but do not use, it fires for any player walking in or out of it
 local specWarnRainOfFireMove	= mod:NewSpecialWarningMove(156857)
 --Unknown Abilities
 local specWarnFixate			= mod:NewSpecialWarningRun(157168, nil, nil, 2, 4)
 --Affliction Abilities
 --TODO : Maybe need shit warning.
-local specWarnSeedOfMelevolence	= mod:NewSpecialWarningMoveAway(156921)
-local specWarnExhaustion		= mod:NewSpecialWarningDispel(164841, "RemoveCurse")
+local specWarnSeedOfMelevolence	= mod:NewSpecialWarningMoveAway(156921, nil, nil, nil, 1, 2)
+local specWarnExhaustion		= mod:NewSpecialWarningDispel(164841, "RemoveCurse", nil, nil, 1, 2)
 --Destruction Abilities
-local specWarnChaosBolt			= mod:NewSpecialWarningInterrupt(156975, "-Healer", nil, nil, 3)
-local specWarnImmolate			= mod:NewSpecialWarningDispel(156964, "Healer")
+local specWarnChaosBolt			= mod:NewSpecialWarningInterrupt(156975, "-Healer", nil, nil, 3, 2)
+local specWarnImmolate			= mod:NewSpecialWarningDispel(156964, "Healer", nil, nil, 1, 2)
 --Demonic Abilities
 local specWarnDemonicLeap		= mod:NewSpecialWarningYou(157039)
 local yellDemonicLeap			= mod:NewYell(157039)

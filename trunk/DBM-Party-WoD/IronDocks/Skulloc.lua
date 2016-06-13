@@ -21,10 +21,10 @@ local warnGronSmash			= mod:NewSpellAnnounce(168227, 3)
 local warnCannonBarrage		= mod:NewSpellAnnounce(168929, 4)
 local warnBackdraft			= mod:NewCastAnnounce(169129, 4)
 
-local specWarnRapidFire		= mod:NewSpecialWarningMoveAway(168398)
+local specWarnRapidFire		= mod:NewSpecialWarningMoveAway(168398, nil, nil, nil, 1, 2)
 local yellRapidFire			= mod:NewYell(168398)
 local specWarnGronSmash		= mod:NewSpecialWarningSpell(168227, nil, nil, nil, 2)
-local specWarnCannonBarrage	= mod:NewSpecialWarningSpell(168929, nil, nil, nil, 3)--Use the one time cast trigger instead of drycode when relogging
+local specWarnCannonBarrage	= mod:NewSpecialWarningSpell(168929, nil, nil, nil, 3, 2)--Use the one time cast trigger instead of drycode when relogging
 local specWarnCannonBarrageE= mod:NewSpecialWarningEnd(168929)
 
 local timerRapidFireCD		= mod:NewNextTimer(12, 168398, nil, nil, nil, 3)

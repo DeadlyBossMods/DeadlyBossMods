@@ -25,11 +25,11 @@ local warnAdd				= mod:NewAnnounce("warnAdd", 1, "Interface\\Icons\\Spell_Holy_B
 local warnShielding			= mod:NewTargetAnnounce(154055, 2)
 
 local specWarnCastDownSoon	= mod:NewSpecialWarningSoon(153954)--Everyone, becaus it can grab healer too, which affects healer/tank
-local specWarnCastDown		= mod:NewSpecialWarningSwitch(153954, "Dps", nil, nil, 3)--Only dps, because it's their job to stop it.
+local specWarnCastDown		= mod:NewSpecialWarningSwitch(153954, "Dps", nil, nil, 3, 2)--Only dps, because it's their job to stop it.
 local specWarnLensFlareCast	= mod:NewSpecialWarningSpell(154032, nil, nil, nil, 2)--If there is any way to find actual target, like maybe target scanning, this will be changed.
-local specWarnLensFlare		= mod:NewSpecialWarningMove(154043)
+local specWarnLensFlare		= mod:NewSpecialWarningMove(154043, nil, nil, nil, 1, 2)
 local specWarnAdd			= mod:NewSpecialWarning("specWarnAdd", "Dps")
-local specWarnShielding		= mod:NewSpecialWarningInterrupt(154055, "Dps")
+local specWarnShielding		= mod:NewSpecialWarningInterrupt(154055, "Dps", nil, nil, 1, 2)
 
 local timerLenseFlareCD		= mod:NewCDTimer(38, 154032, nil, nil, nil, 3)
 local timerCastDownCD		= mod:NewCDTimer(28, 153954, nil, nil, nil, 1, DBM_CORE_DAMAGE_ICON)

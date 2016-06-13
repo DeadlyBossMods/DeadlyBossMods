@@ -17,9 +17,9 @@ local warnWhispers				= mod:NewSpellAnnounce(153094, 2)
 local warnDarkCommunion			= mod:NewSpellAnnounce(153153, 4)
 local warnDarkEclipse			= mod:NewSpellAnnounce(164974, 4)
 
-local specWarnDarkCommunion		= mod:NewSpecialWarningSwitch(153153, "-Healer")--On Test, even tank and healer needed to dps to kill it. I'm going to assume it's an overtuning and at least excempt healer.
+local specWarnDarkCommunion		= mod:NewSpecialWarningSwitch(153153, "-Healer", nil, nil, 1, 2)--On Test, even tank and healer needed to dps to kill it. I'm going to assume it's an overtuning and at least excempt healer.
 local specWarnWhispers			= mod:NewSpecialWarningSpell(153094, nil, nil, nil, 2)
-local specWarnDarkEclipse		= mod:NewSpecialWarningSpell(164974, nil, nil, nil, 3)
+local specWarnDarkEclipse		= mod:NewSpecialWarningSpell(164974, nil, nil, nil, 3, 2)
 
 local timerDarkCommunionCD		= mod:NewCDTimer(60, 153153, nil, nil, nil, 1, DBM_CORE_DAMAGE_ICON)
 local timerDarkEclipseCD		= mod:NewNextTimer(45.5, 164974, nil, nil, nil, 6)--timer seems changed?

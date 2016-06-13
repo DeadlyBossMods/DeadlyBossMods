@@ -19,12 +19,12 @@ local warnFreezingSnare			= mod:NewTargetAnnounce(162066, 3)
 local warnSpinningSpear			= mod:NewSpellAnnounce(162058, 3)
 local warnMark					= mod:NewTargetAnnounce(163447, 3)
 
-local specWarnFreezingSnare		= mod:NewSpecialWarningYou(162066)
-local specWarnFreezingSnareNear	= mod:NewSpecialWarningClose(162066)
+local specWarnFreezingSnare		= mod:NewSpecialWarningYou(162066, nil, nil, nil, 1, 2)
+local specWarnFreezingSnareNear	= mod:NewSpecialWarningClose(162066, nil, nil, nil, 1, 2)
 local yellFreezingSnare			= mod:NewYell(162066)
-local specWarnDiffusedEnergy	= mod:NewSpecialWarningMove(161588)
+local specWarnDiffusedEnergy	= mod:NewSpecialWarningMove(161588, nil, nil, nil, 1, 2)
 local specWarnSpinningSpear		= mod:NewSpecialWarningDodge(162058, "Tank", nil, 2)
-local specWarnMark				= mod:NewSpecialWarningMoveAway(163447)
+local specWarnMark				= mod:NewSpecialWarningMoveAway(163447, nil, nil, nil, 1, 2)
 local yellMark					= mod:NewYell(163447)
 
 local timerFreezingSnareCD		= mod:NewNextTimer(20, 162066, nil, nil, nil, 3)
@@ -56,6 +56,7 @@ function mod:FreezingSnareTarget(targetname, uId)
 		voiceFreezingSnare:Play("runaway")
 	elseif self:CheckNearby(8, targetname) then
 		specWarnFreezingSnareNear:Show(targetname)
+		voiceFreezingSnare:Play("watchstep")
 	end
 end
   
