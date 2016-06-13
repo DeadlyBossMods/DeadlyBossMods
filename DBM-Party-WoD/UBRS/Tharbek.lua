@@ -28,7 +28,7 @@ local warnImbuedIronAxe		= mod:NewTargetAnnounce(162090, 4)
 
 local specWarnImbuedIronAxe	= mod:NewSpecialWarningYou(162090)
 local yellImbuedIronAxe		= mod:NewYell(162090)
-local specWarnNoxiousSpit	= mod:NewSpecialWarningMove(161833)
+local specWarnNoxiousSpit	= mod:NewSpecialWarningMove(161833, nil, nil, nil, 1, 2)
 
 local timerIronReaverCD		= mod:NewCDTimer(20.5, 161989, nil, nil, nil, 3)--Not enough data to really verify this
 local timerImbuedIronAxeCD	= mod:NewCDTimer(29, 162090, nil, nil, nil, 3)--29-37sec variation

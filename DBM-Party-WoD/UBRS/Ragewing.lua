@@ -23,12 +23,12 @@ local warnBurningRage		= mod:NewStackAnnounce(155620, 3, nil, "RemoveEnrage|Tank
 local warnSwirlingWinds		= mod:NewSpellAnnounce(167203, 2)
 local warnMagmaSpit			= mod:NewTargetAnnounce(155051, 3)
 
-local specWarnBurningRage	= mod:NewSpecialWarningDispel(155620, "RemoveEnrage")
-local specWarnMagmaSpit		= mod:NewSpecialWarningMove(155051)
-local specWarnMagmaSpitYou	= mod:NewSpecialWarningYou(155051)
+local specWarnBurningRage	= mod:NewSpecialWarningDispel(155620, "RemoveEnrage", nil, nil, 1, 2)
+local specWarnMagmaSpit		= mod:NewSpecialWarningMove(155051, nil, nil, nil, 1, 2)
+local specWarnMagmaSpitYou	= mod:NewSpecialWarningYou(155051, nil, nil, nil, 1, 2)
 local yellMagmaSpit			= mod:NewYell(155051)
-local specWarnMagmaPool		= mod:NewSpecialWarningMove(155057)
-local specWarnEngulfingFire	= mod:NewSpecialWarningDodge(154996, nil, nil, nil, 3)
+local specWarnMagmaPool		= mod:NewSpecialWarningMove(155057, nil, nil, nil, 1, 2)
+local specWarnEngulfingFire	= mod:NewSpecialWarningDodge(154996, nil, nil, nil, 3, 2)
 
 local timerEngulfingFireCD	= mod:NewCDTimer(24, 154996, nil, nil, nil, 3)
 local timerSwirlingWinds	= mod:NewBuffActiveTimer(20, 167203, nil, nil, nil, 6)

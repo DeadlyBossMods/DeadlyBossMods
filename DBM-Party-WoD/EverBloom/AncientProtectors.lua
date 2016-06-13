@@ -29,19 +29,19 @@ local warnSlash						= mod:NewSpellAnnounce(168383, 3, nil, nil, 3)
 local warnNoxious					= mod:NewSpellAnnounce(175997, 3, nil, nil, 2)
 local warnShapersFortitude			= mod:NewTargetAnnounce(168520, 3)
 
-local specWarnRevitalizingWaters	= mod:NewSpecialWarningInterrupt(168082, "-Healer")
+local specWarnRevitalizingWaters	= mod:NewSpecialWarningInterrupt(168082, "HasInterrupt", nil, 2, 1, 2)
 local specWarnBriarskin				= mod:NewSpecialWarningInterrupt(168041, false)--if you have more than one interruptor, great. but off by default because we can't assume you can interrupt every bosses abilities. and heal takes priority
 local specWarnBriarskinDispel		= mod:NewSpecialWarningDispel(168041, false)--Not as important as rapid Tides and to assume you have at least two dispellers is big assumption
-local specWarnRapidTidesDispel		= mod:NewSpecialWarningDispel(168105, "MagicDispeller", nil, nil, 3)
+local specWarnRapidTidesDispel		= mod:NewSpecialWarningDispel(168105, "MagicDispeller", nil, nil, 3, 2)
 local specWarnSlash					= mod:NewSpecialWarningSpell(168383)
-local specWarnNoxious				= mod:NewSpecialWarningRun(175997, nil, nil, 2, 4)
+local specWarnNoxious				= mod:NewSpecialWarningRun(175997, nil, nil, 2, 4, 2)
 local specWarnBramble				= mod:NewSpecialWarningMove(167977)
 
 local timerShapersFortitude			= mod:NewTargetTimer(15, 168520, nil, false, 2)
 local timerNoxiousCD				= mod:NewCDTimer(16, 175997, nil, "Melee")
 local timerGraspingVineCD			= mod:NewNextTimer(31.5, 168375)
 
-local voiceRevitalizingWaters		= mod:NewVoice(168082, "-Healer")
+local voiceRevitalizingWaters		= mod:NewVoice(168082, "HasInterrupt")
 local voiceNoxious					= mod:NewVoice(175997, "Melee")
 local voiceRapidTides				= mod:NewVoice(168105, "MagicDispeller")
 local voiceBramble					= mod:NewVoice(167977)
