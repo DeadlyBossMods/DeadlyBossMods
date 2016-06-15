@@ -6,6 +6,8 @@ mod:SetCreatureID(104217)
 mod:SetEncounterID(1869)
 mod:SetZone()
 
+mod.onlyMythic = true
+
 mod:RegisterCombat("combat")
 
 --Out of combat register, to support the secondary bosses off to sides

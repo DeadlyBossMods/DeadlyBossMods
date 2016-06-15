@@ -6,6 +6,8 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetEncounterID(1851)
 mod:SetZone()
 
+mod.imaspecialsnowflake = true
+
 mod:RegisterCombat("combat")
 
 --[[
