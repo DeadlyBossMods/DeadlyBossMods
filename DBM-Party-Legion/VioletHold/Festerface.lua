@@ -6,6 +6,8 @@ mod:SetCreatureID(101995)
 mod:SetEncounterID(1848)
 mod:SetZone()
 
+mod.imaspecialsnowflake = true
+
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(

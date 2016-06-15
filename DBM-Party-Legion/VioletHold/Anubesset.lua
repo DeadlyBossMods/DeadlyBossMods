@@ -8,6 +8,8 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
+mod.imaspecialsnowflake = true
+
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 202480",
 	"SPELL_CAST_START 202217 202341 201863",

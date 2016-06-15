@@ -3023,6 +3023,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			stats.heroicPulls = stats.heroicPulls or 0
 			stats.challengeKills = stats.challengeKills or 0
 			stats.challengePulls = stats.challengePulls or 0
+			stats.challengeBestRank = stats.challengeBestRank or 0
 			stats.mythicKills = stats.mythicKills or 0
 			stats.mythicPulls = stats.mythicPulls or 0
 			stats.normal25Kills = stats.normal25Kills or 0
@@ -3323,6 +3324,7 @@ function DBM:ClearAllStats(modId)
 		defaultStats.heroicPulls = 0
 		defaultStats.challengeKills = 0
 		defaultStats.challengePulls = 0
+		defaultStats.challengeBestRank = 0
 		defaultStats.mythicKills = 0
 		defaultStats.mythicPulls = 0
 		defaultStats.normal25Kills = 0
@@ -5557,6 +5559,7 @@ do
 				end
 				--show speed timer
 				if self.Options.AlwaysShowSpeedKillTimer and mod.stats and not mod.ignoreBestkill then
+					--TODO, add code here to only pull best kull for CURRENT mythic+ rank
 					local bestTime = mod.stats[statVarTable[savedDifficulty].."BestTime"]
 					if bestTime and bestTime > 0 then
 						local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime", nil, false)
@@ -5790,10 +5793,8 @@ do
 							self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT_LONG:format(difficultyText..name, strFromTime(thisTime), totalPulls - totalKills))
 						else
 							self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
-							if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 then
-								if InGuildParty() then--Guild Group
-									SendAddonMessage("D4", "GCE\t"..modId.."\t3\t1\t"..strFromTime(thisTime).."\t"..difficultyIndex.."\t"..wipeHP, "GUILD")
-								end
+							if (difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() then--Maybe add mythic plus/CM?
+								SendAddonMessage("D4", "GCE\t"..modId.."\t3\t1\t"..strFromTime(thisTime).."\t"..difficultyIndex.."\t"..wipeHP, "GUILD")
 							end
 						end
 					end
@@ -5837,7 +5838,21 @@ do
 					if bestTime and bestTime > 0 and bestTime < 1.5 then
 						mod.stats[statVarTable[savedDifficulty].."BestTime"] = thisTime
 					else
-						mod.stats[statVarTable[savedDifficulty].."BestTime"] = mmin(bestTime or mhuge, thisTime)
+						if difficultyIndex == 8 then--Mythic+/Challenge Mode
+							--TODO, figure out how to get current mythic plus rank, compare to our best rank.
+							local currentMPRank = 0--0 is temp, until know api to call to get actual rank
+							local bestMPRank = mod.stats.challengeBestRank or 0
+							if mod.stats.challengeBestRank > currentMPRank then--Don't save stats at all
+								--DO nothing
+							elseif mod.stats.challengeBestRank < currentMPRank then--Update best time and best rank, even if best time is lower (for a lower rank)
+								mod.stats.challengeBestRank = currentMPRank--Update best rank
+								mod.stats[statVarTable[savedDifficulty].."BestTime"] = thisTime--Write this time no matter what.
+							else--Best rank must match current rank, so update time normally
+								mod.stats[statVarTable[savedDifficulty].."BestTime"] = mmin(bestTime or mhuge, thisTime)
+							end
+						else
+							mod.stats[statVarTable[savedDifficulty].."BestTime"] = mmin(bestTime or mhuge, thisTime)
+						end
 					end
 				end
 				local totalKills = mod.stats[statVarTable[savedDifficulty].."Kills"]
@@ -5953,12 +5968,14 @@ do
 				if self.Options.HideObjectivesFrame and watchFrameRestore and not scenario then
 					ObjectiveTrackerFrame:Show()
 					watchFrameRestore = false
+					--REFACTOR in LEGION
 					if difficultyIndex == 8 then
 						--Cancel any and all CM medal when unhiding objectives frame
 						self.Bars:CancelBar(CHALLENGE_MODE_MEDAL1)
 						self.Bars:CancelBar(CHALLENGE_MODE_MEDAL2)
 						self.Bars:CancelBar(CHALLENGE_MODE_MEDAL3)
 					end
+					--REFACTOR in LEGION
 				end
 				if tooltipsHidden then
 					--Better or cleaner way?
