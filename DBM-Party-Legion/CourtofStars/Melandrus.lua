@@ -6,6 +6,8 @@ mod:SetCreatureID(104218)
 mod:SetEncounterID(1870)
 mod:SetZone()
 
+mod.onlyMythic = true
+
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(

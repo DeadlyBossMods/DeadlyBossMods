@@ -7,6 +7,8 @@ mod:SetEncounterID(1826)
 mod:SetZone()
 mod:SetUsedIcons(2, 1)
 
+mod.onlyMythic = true
+
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
