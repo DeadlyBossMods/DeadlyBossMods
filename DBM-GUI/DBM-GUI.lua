@@ -3663,11 +3663,10 @@ do
 		return function(self)
 			local mod = DBM:GetModByName(bossid)
 			local stats = mod.stats
-			top1value1:SetText( stats.normalKills )
-			top1value2:SetText( stats.normalPulls - stats.normalKills )
-			top1value3:SetText( stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
 			if statsType == 1 then--Party: normal, heroic, challenge)
-				--Top1 already set at top
+				top1value1:SetText( stats.normalKills )
+				top1value2:SetText( stats.normalPulls - stats.normalKills )
+				top1value3:SetText( stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
 				top2value1:SetText( stats.heroicKills )
 				top2value2:SetText( stats.heroicPulls-stats.heroicKills )
 				top2value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
@@ -3696,7 +3695,9 @@ do
 				bottom2value2:SetText( stats.mythicPulls-stats.mythicKills )
 				bottom2value3:SetText( stats.mythicBestTime and ("%d:%02d"):format(mfloor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-" )
 			elseif statsType == 4 then--Party: Normal, heroic, challenge, mythic (Ie standard dungeons 6.2/7.x)
-				--Top1 already set at top
+				top1value1:SetText( stats.normalKills )
+				top1value2:SetText( stats.normalPulls - stats.normalKills )
+				top1value3:SetText( stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
 				top2value1:SetText( stats.heroicKills )
 				top2value2:SetText( stats.heroicPulls-stats.heroicKills )
 				top2value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
@@ -3711,7 +3712,9 @@ do
 					bottom2value3:SetText( stats.challengeBestTime and ("%d:%02d"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-" )
 				end
 			elseif statsType == 5 then--Party: Normal, TimeWalker (some normal only dungeons with timewalker such as classic)
-				--Top1 already set at top
+				top1value1:SetText( stats.normalKills )
+				top1value2:SetText( stats.normalPulls - stats.normalKills )
+				top1value3:SetText( stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
 				top2value1:SetText( stats.timewalkerKills )
 				top2value2:SetText( stats.timewalkerPulls-stats.timewalkerKills )
 				top2value3:SetText( stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-" )
@@ -3723,7 +3726,9 @@ do
 				top2value2:SetText( stats.timewalkerPulls-stats.timewalkerKills )
 				top2value3:SetText( stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-" )
 			elseif statsType == 7 then--Party: Normal, Heroic, TimeWalker instance (most wrath and cata dungeons)
-				--Top1 already set at top
+				top1value1:SetText( stats.normalKills )
+				top1value2:SetText( stats.normalPulls - stats.normalKills )
+				top1value3:SetText( stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
 				top2value1:SetText( stats.heroicKills )
 				top2value2:SetText( stats.heroicPulls-stats.heroicKills )
 				top2value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
@@ -3731,7 +3736,9 @@ do
 				top3value2:SetText( stats.timewalkerPulls-stats.timewalkerKills )
 				top3value3:SetText( stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-" )
 			elseif statsType == 8 then--Party: Normal, Heroic, Challenge, TimeWalker instance (Mop Dungeons. I realize CM is technically gone, but we still retain stats for users)
-				--Top1 already set at top
+				top1value1:SetText( stats.normalKills )
+				top1value2:SetText( stats.normalPulls - stats.normalKills )
+				top1value3:SetText( stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
 				top2value1:SetText( stats.heroicKills )
 				top2value2:SetText( stats.heroicPulls-stats.heroicKills )
 				top2value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
@@ -3760,7 +3767,9 @@ do
 				top3value2:SetText( stats.timewalkerPulls-stats.timewalkerKills )
 				top3value3:SetText( stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-" )
 			elseif statsType == 10 then--Party: Normal, Heroic, Challenge, Mythic, TimeWalker instance (such a dungeon doesn't exist yet, but 7.x future proofing)
-				--Top1 already set at top
+				top1value1:SetText( stats.normalKills )
+				top1value2:SetText( stats.normalPulls - stats.normalKills )
+				top1value3:SetText( stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
 				top2value1:SetText( stats.heroicKills )
 				top2value2:SetText( stats.heroicPulls-stats.heroicKills )
 				top2value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
@@ -3789,7 +3798,9 @@ do
 					top2value3:SetText( stats.challengeBestTime and ("%d:%02d"):format(mfloor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-")
 				end
 			elseif statsType == 12 then--Party: Normal, Heroic, Mythic instance (Assault Violet Hold in legion. Basically a mythic dungeon that has no challenge mode/mythic+)
-				--Top1 already set at top
+				top1value1:SetText( stats.normalKills )
+				top1value2:SetText( stats.normalPulls - stats.normalKills )
+				top1value3:SetText( stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
 				top2value1:SetText( stats.heroicKills )
 				top2value2:SetText( stats.heroicPulls-stats.heroicKills )
 				top2value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
@@ -3797,7 +3808,9 @@ do
 				top3value2:SetText( stats.mythicPulls-stats.mythicKills )
 				top3value3:SetText( stats.mythicBestTime and ("%d:%02d"):format(mfloor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-" )
 			else--Legacy 10/25 raids with heroic difficulty
-				--Top1 already set at top
+				top1value1:SetText( stats.normalKills )
+				top1value2:SetText( stats.normalPulls - stats.normalKills )
+				top1value3:SetText( stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
 				top2value1:SetText( stats.normal25Kills )
 				top2value2:SetText( stats.normal25Pulls - stats.normal25Kills )
 				top2value3:SetText( stats.normal25BestTime and ("%d:%02d"):format(mfloor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-" )
@@ -3994,7 +4007,6 @@ do
 				--Set enable or disable per mods.
 				if mod.addon.oneFormat then--Classic/BC Raids
 					statsType = 2--Fix for BC instance
-					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*5*singleline))
 					--Do not use top1 header.
 					top1text1:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 					top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
@@ -4002,14 +4014,13 @@ do
 					top1value1:SetPoint("TOPLEFT", top1text1, "TOPLEFT", 80, 0)
 					top1value2:SetPoint("TOPLEFT", top1text2, "TOPLEFT", 80, 0)
 					top1value3:SetPoint("TOPLEFT", top1text3, "TOPLEFT", 80, 0)
+					--Set Dims
+					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*5*singleline))
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*5 )
 					singleline = singleline + 1
 				elseif mod.addon.type == "PARTY" or mod.addon.type == "SCENARIO" then--If party or scenario instance have no heroic, we should use oneFormat.
 					statsType = 1
 					if mod.addon.hasChallenge then--Should never have an "Only normal" type
-						--Set header text.
-						top1header:SetText(PLAYER_DIFFICULTY1)
-						top2header:SetText(PLAYER_DIFFICULTY2)
 						if mod.onlyHeroic then
 							if mod.addon.hasTimeWalker then
 								statsType = 9
@@ -4039,7 +4050,11 @@ do
 								top1header:SetText(PLAYER_DIFFICULTY2)
 								top2header:SetText(CHALLENGE_MODE)
 								top3header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
-							else
+								--Set Dims
+								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
+								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
+								singleline = singleline + 1
+							else--No such dungeon exists. Good thing too cause this shit is broken here
 								--Use top1 and top2 area. (Heroic, Challenge)
 								top2header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 								top2text1:SetPoint("TOPLEFT", top2header, "BOTTOMLEFT", 20, -5)
@@ -4055,6 +4070,10 @@ do
 								top3value1:SetPoint("TOPLEFT", top3text1, "TOPLEFT", 80, 0)
 								top3value2:SetPoint("TOPLEFT", top3text2, "TOPLEFT", 80, 0)
 								top3value3:SetPoint("TOPLEFT", top3text3, "TOPLEFT", 80, 0)
+								--Set header text.
+								top2header:SetText(PLAYER_DIFFICULTY2)
+								top3header:SetText(CHALLENGE_MODE)
+								--Set Dims
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 								singleline = singleline + 1
@@ -4062,22 +4081,24 @@ do
 						elseif mod.onlyMythic then
 							statsType = 11
 							--Use top1 and top2 area. (Mythic, Mythic+)
-							top1header:SetText(PLAYER_DIFFICULTY6)
-							top2header:SetText(PLAYER_DIFFICULTY6.."+")
-							top2header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
-							top2text1:SetPoint("TOPLEFT", top2header, "BOTTOMLEFT", 20, -5)
-							top2text2:SetPoint("TOPLEFT", top2text1, "BOTTOMLEFT", 0, -5)
-							top2text3:SetPoint("TOPLEFT", top2text2, "BOTTOMLEFT", 0, -5)
+							top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
+							top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
+							top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
+							top1text3:SetPoint("TOPLEFT", top1text2, "BOTTOMLEFT", 0, -5)
+							top1value1:SetPoint("TOPLEFT", top1text1, "TOPLEFT", 80, 0)
+							top1value2:SetPoint("TOPLEFT", top1text2, "TOPLEFT", 80, 0)
+							top1value3:SetPoint("TOPLEFT", top1text3, "TOPLEFT", 80, 0)
+							top2header:SetPoint("LEFT", top1header, "LEFT", 220, 0)
+							top2text1:SetPoint("LEFT", top1text1, "LEFT", 220, 0)
+							top2text2:SetPoint("LEFT", top1text2, "LEFT", 220, 0)
+							top2text3:SetPoint("LEFT", top1text3, "LEFT", 220, 0)
 							top2value1:SetPoint("TOPLEFT", top2text1, "TOPLEFT", 80, 0)
 							top2value2:SetPoint("TOPLEFT", top2text2, "TOPLEFT", 80, 0)
 							top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
-							top3header:SetPoint("LEFT", top2header, "LEFT", 150, 0)
-							top3text1:SetPoint("LEFT", top2text1, "LEFT", 150, 0)
-							top3text2:SetPoint("LEFT", top2text2, "LEFT", 150, 0)
-							top3text3:SetPoint("LEFT", top2text3, "LEFT", 150, 0)
-							top3value1:SetPoint("TOPLEFT", top3text1, "TOPLEFT", 80, 0)
-							top3value2:SetPoint("TOPLEFT", top3text2, "TOPLEFT", 80, 0)
-							top3value3:SetPoint("TOPLEFT", top3text3, "TOPLEFT", 80, 0)
+							--Set header text.
+							top1header:SetText(PLAYER_DIFFICULTY6)
+							top2header:SetText(PLAYER_DIFFICULTY6.."+")
+							--Set Dims
 							Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
 							area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 							singleline = singleline + 1
@@ -4121,16 +4142,27 @@ do
 								bottom2value2:SetPoint("TOPLEFT", bottom2text2, "TOPLEFT", 80, 0)
 								bottom2value3:SetPoint("TOPLEFT", bottom2text3, "TOPLEFT", 80, 0)
 								--Set header text.
+								top1header:SetText(PLAYER_DIFFICULTY1)
+								top2header:SetText(PLAYER_DIFFICULTY2)
 								top3header:SetText(PLAYER_DIFFICULTY6)
 								bottom1header:SetText(CHALLENGE_MODE)
 								bottom1header:SetFontObject(GameFontDisableSmall)
 								bottom2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 								bottom2header:SetFontObject(GameFontDisableSmall)
+								--Set Dims
+								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 								doubleline = doubleline + 1
 							elseif mod.imaspecialsnowflake then--Normal, heroic, Mythic. rule soley for Assault Violet Hold which is only dungeon in game with this layout
 								statsType = 12
 								--Use top1, top2, top3 area.
+								top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
+								top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
+								top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
+								top1text3:SetPoint("TOPLEFT", top1text2, "BOTTOMLEFT", 0, -5)
+								top1value1:SetPoint("TOPLEFT", top1text1, "TOPLEFT", 80, 0)
+								top1value2:SetPoint("TOPLEFT", top1text2, "TOPLEFT", 80, 0)
+								top1value3:SetPoint("TOPLEFT", top1text3, "TOPLEFT", 80, 0)
 								top2header:SetPoint("LEFT", top1header, "LEFT", 150, 0)
 								top2text1:SetPoint("LEFT", top1text1, "LEFT", 150, 0)
 								top2text2:SetPoint("LEFT", top1text2, "LEFT", 150, 0)
@@ -4146,7 +4178,13 @@ do
 								top3value2:SetPoint("TOPLEFT", top3text2, "TOPLEFT", 80, 0)
 								top3value3:SetPoint("TOPLEFT", top3text3, "TOPLEFT", 80, 0)
 								--Set header text.
+								top1header:SetText(PLAYER_DIFFICULTY1)
+								top2header:SetText(PLAYER_DIFFICULTY2)
 								top3header:SetText(PLAYER_DIFFICULTY6)
+								--Set Dims
+								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
+								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
+								singleline = singleline + 1
 							else
 								statsType = 4-- (Normal, Heroic, Mythic, Challenge)
 								--Use top1, top2, bottom1, bottom2 area.
@@ -4179,10 +4217,13 @@ do
 								bottom2value2:SetPoint("TOPLEFT", bottom2text2, "TOPLEFT", 80, 0)
 								bottom2value3:SetPoint("TOPLEFT", bottom2text3, "TOPLEFT", 80, 0)
 								--Set header text.
+								top1header:SetText(PLAYER_DIFFICULTY1)
+								top2header:SetText(PLAYER_DIFFICULTY2)
 								bottom1header:SetText(PLAYER_DIFFICULTY6)
 								bottom1header:SetFontObject(GameFontDisableSmall)
 								bottom2header:SetText(CHALLENGE_MODE)
 								bottom2header:SetFontObject(GameFontDisableSmall)
+								--Set Dims
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 								doubleline = doubleline + 1
@@ -4220,10 +4261,13 @@ do
 								bottom2value2:SetPoint("TOPLEFT", bottom2text2, "TOPLEFT", 80, 0)
 								bottom2value3:SetPoint("TOPLEFT", bottom2text3, "TOPLEFT", 80, 0)
 								--Set header text.
+								top1header:SetText(PLAYER_DIFFICULTY1)
+								top2header:SetText(PLAYER_DIFFICULTY2)
 								bottom1header:SetText(CHALLENGE_MODE)
 								bottom1header:SetFontObject(GameFontDisableSmall)
 								bottom2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 								bottom2header:SetFontObject(GameFontDisableSmall)
+								--Set Dims
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 								doubleline = doubleline + 1
@@ -4251,7 +4295,10 @@ do
 								top3value2:SetPoint("TOPLEFT", top3text2, "TOPLEFT", 80, 0)
 								top3value3:SetPoint("TOPLEFT", top3text3, "TOPLEFT", 80, 0)
 								--Set header text.
+								top1header:SetText(PLAYER_DIFFICULTY1)
+								top2header:SetText(PLAYER_DIFFICULTY2)
 								top3header:SetText(CHALLENGE_MODE)
+								--Set Dims
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 								singleline = singleline + 1
@@ -4290,6 +4337,7 @@ do
 							--Set header text.
 							top1header:SetText(PLAYER_DIFFICULTY1)
 						end
+						--Set Dims
 						Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 						singleline = singleline + 1
@@ -4326,6 +4374,7 @@ do
 							--Set header text.
 							top2header:SetText(PLAYER_DIFFICULTY2)
 						end
+						--Set Dims
 						Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 						singleline = singleline + 1
@@ -4378,6 +4427,7 @@ do
 							top1header:SetText(PLAYER_DIFFICULTY1)
 							top2header:SetText(PLAYER_DIFFICULTY2)
 						end
+						--Set Dims
 						Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 						singleline = singleline + 1
@@ -4402,6 +4452,7 @@ do
 					--Set header text.
 					top1header:SetText(RAID_DIFFICULTY1)
 					top2header:SetText(RAID_DIFFICULTY2)
+					--Set Dims
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 					singleline = singleline + 1
 				elseif mod.addon.type == "RAID" and not mod.addon.hasLFR and not mod.addon.hasMythic then--Cata(except DS) and some wrath raids
@@ -4427,6 +4478,7 @@ do
 						bottom1header:SetFontObject(GameFontHighlightSmall)
 						bottom2header:SetText(RAID_DIFFICULTY4)
 						bottom2header:SetFontObject(GameFontHighlightSmall)
+						--Set Dims
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 						singleline = singleline + 1
 					elseif mod.onlyNormal then
@@ -4448,6 +4500,7 @@ do
 						--Set header text.
 						top1header:SetText(RAID_DIFFICULTY1)
 						top2header:SetText(RAID_DIFFICULTY2)
+						--Set Dims
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 						singleline = singleline + 1
 					else
@@ -4487,6 +4540,7 @@ do
 						bottom1header:SetFontObject(GameFontDisableSmall)
 						bottom2header:SetText(PLAYER_DIFFICULTY2)
 						bottom2header:SetFontObject(GameFontDisableSmall)
+						--Set Dims
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 						doubleline = doubleline + 1
 					end
@@ -4513,6 +4567,7 @@ do
 						bottom1header:SetFontObject(GameFontHighlightSmall)
 						bottom2header:SetText(RAID_DIFFICULTY4)
 						bottom2header:SetFontObject(GameFontHighlightSmall)
+						--Set Dims
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 						singleline = singleline + 1
 					else
@@ -4560,6 +4615,7 @@ do
 						bottom1header:SetFontObject(GameFontDisableSmall)
 						bottom2header:SetText(PLAYER_DIFFICULTY2)
 						bottom2header:SetFontObject(GameFontDisableSmall)
+						--Set Dims
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 						doubleline = doubleline + 1
 					end
@@ -4577,6 +4633,7 @@ do
 						--Set header text.
 						bottom2header:SetText(PLAYER_DIFFICULTY6)--Mythic
 						bottom2header:SetFontObject(GameFontHighlightSmall)
+						--Set Dims
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 						singleline = singleline + 1
 					else
@@ -4616,6 +4673,7 @@ do
 						bottom1header:SetFontObject(GameFontHighlightSmall)
 						bottom2header:SetText(PLAYER_DIFFICULTY6)--Mythic
 						bottom2header:SetFontObject(GameFontHighlightSmall)
+						--Set Dims
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 						doubleline = doubleline + 1
 					end
