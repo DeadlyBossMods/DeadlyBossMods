@@ -3982,21 +3982,21 @@ do
 				local top3value2		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 				local top3value3		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 
-				local bottom1header		= area:CreateText("", nil, nil, GameFontDisableSmall, "LEFT")--Row 2, 1st column
+				local bottom1header		= area:CreateText("", nil, nil, GameFontHighlightSmall, "LEFT")--Row 2, 1st column
 				local bottom1text1		= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom1text2		= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom1text3		= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom1value1		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom1value2		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom1value3		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
-				local bottom2header		= area:CreateText("", nil, nil, GameFontDisableSmall, "LEFT")--Row 2, 2nd column
+				local bottom2header		= area:CreateText("", nil, nil, GameFontHighlightSmall, "LEFT")--Row 2, 2nd column
 				local bottom2text1		= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom2text2		= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom2text3		= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom2value1		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom2value2		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom2value3		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
-				local bottom3header		= area:CreateText("", nil, nil, GameFontDisableSmall, "LEFT")--Row 2, 3rd column
+				local bottom3header		= area:CreateText("", nil, nil, GameFontHighlightSmall, "LEFT")--Row 2, 3rd column
 				local bottom3text1		= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom3text2		= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom3text3		= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
@@ -4051,7 +4051,8 @@ do
 								top2header:SetText(CHALLENGE_MODE)
 								top3header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 								--Set Dims
-								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
+								--Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
+								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 								singleline = singleline + 1
 							else--No such dungeon exists. Good thing too cause this shit is broken here
@@ -4074,7 +4075,8 @@ do
 								top2header:SetText(PLAYER_DIFFICULTY2)
 								top3header:SetText(CHALLENGE_MODE)
 								--Set Dims
-								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
+								--Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
+								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 								singleline = singleline + 1
 							end
@@ -4099,7 +4101,7 @@ do
 							top1header:SetText(PLAYER_DIFFICULTY6)
 							top2header:SetText(PLAYER_DIFFICULTY6.."+")
 							--Set Dims
-							Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
+							Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 							area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 							singleline = singleline + 1
 						elseif mod.addon.hasMythic then--Wod (and later) dungeons with mythic mode (6.2+)
@@ -4146,9 +4148,7 @@ do
 								top2header:SetText(PLAYER_DIFFICULTY2)
 								top3header:SetText(PLAYER_DIFFICULTY6)
 								bottom1header:SetText(CHALLENGE_MODE)
-								bottom1header:SetFontObject(GameFontDisableSmall)
 								bottom2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
-								bottom2header:SetFontObject(GameFontDisableSmall)
 								--Set Dims
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
@@ -4182,7 +4182,7 @@ do
 								top2header:SetText(PLAYER_DIFFICULTY2)
 								top3header:SetText(PLAYER_DIFFICULTY6)
 								--Set Dims
-								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
+								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 								singleline = singleline + 1
 							else
@@ -4220,9 +4220,7 @@ do
 								top1header:SetText(PLAYER_DIFFICULTY1)
 								top2header:SetText(PLAYER_DIFFICULTY2)
 								bottom1header:SetText(PLAYER_DIFFICULTY6)
-								bottom1header:SetFontObject(GameFontDisableSmall)
 								bottom2header:SetText(CHALLENGE_MODE)
-								bottom2header:SetFontObject(GameFontDisableSmall)
 								--Set Dims
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
@@ -4264,9 +4262,7 @@ do
 								top1header:SetText(PLAYER_DIFFICULTY1)
 								top2header:SetText(PLAYER_DIFFICULTY2)
 								bottom1header:SetText(CHALLENGE_MODE)
-								bottom1header:SetFontObject(GameFontDisableSmall)
 								bottom2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
-								bottom2header:SetFontObject(GameFontDisableSmall)
 								--Set Dims
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
@@ -4299,7 +4295,8 @@ do
 								top2header:SetText(PLAYER_DIFFICULTY2)
 								top3header:SetText(CHALLENGE_MODE)
 								--Set Dims
-								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
+								--Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline))
+								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 								singleline = singleline + 1
 							end
@@ -4537,9 +4534,7 @@ do
 						top1header:SetText(RAID_DIFFICULTY1)
 						top2header:SetText(RAID_DIFFICULTY2)
 						bottom1header:SetText(PLAYER_DIFFICULTY2)
-						bottom1header:SetFontObject(GameFontDisableSmall)
 						bottom2header:SetText(PLAYER_DIFFICULTY2)
-						bottom2header:SetFontObject(GameFontDisableSmall)
 						--Set Dims
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 						doubleline = doubleline + 1
@@ -4612,9 +4607,7 @@ do
 						top2header:SetText(RAID_DIFFICULTY2)
 						top3header:SetText(PLAYER_DIFFICULTY3)
 						bottom1header:SetText(PLAYER_DIFFICULTY2)
-						bottom1header:SetFontObject(GameFontDisableSmall)
 						bottom2header:SetText(PLAYER_DIFFICULTY2)
-						bottom2header:SetFontObject(GameFontDisableSmall)
 						--Set Dims
 						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 						doubleline = doubleline + 1
