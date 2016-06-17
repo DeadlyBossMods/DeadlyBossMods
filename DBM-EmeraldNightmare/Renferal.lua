@@ -5,16 +5,16 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(106087)
 mod:SetEncounterID(1876)
 mod:SetZone()
---mod:SetUsedIcons(8, 7, 6, 3, 2, 1)
+mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(12324)
 
 mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 212707 210948 210547 215288 210308 210326",
-	"SPELL_CAST_SUCCESS 210864 215443",
-	"SPELL_AURA_APPLIED 212514 210850 215449 218831",
+	"SPELL_CAST_SUCCESS 210864 215443 218630",
+	"SPELL_AURA_APPLIED 212514 210850 215449 218831 218144 218629",
 	"SPELL_AURA_APPLIED_DOSE 212512",
-	"SPELL_AURA_REMOVED 210850",
+	"SPELL_AURA_REMOVED 210850 218144 218629",
 	"SPELL_PERIODIC_DAMAGE 213124",
 	"SPELL_PERIODIC_MISSED 213124",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -29,14 +29,20 @@ mod:RegisterEventsInCombat(
 --TODO: See if debuff scan works to compensate for necrotic venom targetting not showing in combat log. When/if fixed, add range frame and SAY
 --TODO, Figure out real razorwing timer, right now it's screwed up because most people avoided boss during roc phase (boss doesn't cast it if no one near by)
 --TODO, Shimering Feather (212993) also missing from combat log. Will add tracking for this when blizzard revises fight when/if they fix it. If they don't, UNIT_AURA it is!
+--TODO, is violent winds timer.
+--TODO, tangled webs warnings/timers?
 --Spider Form
 local warnSpiderForm				= mod:NewSpellAnnounce(210326, 2)
 local warnFeedingTime				= mod:NewSpellAnnounce(212364, 3)
 local warnWebWrap					= mod:NewTargetAnnounce(212514, 4)
 local warnNecroticVenom				= mod:NewTargetAnnounce(218831, 3)
+----Mythic
+local warnNightmareSpawn			= mod:NewSpellAnnounce(218630, 3)
 --Roc Form
 local warnRocForm					= mod:NewSpellAnnounce(210308, 2)
 local warnTwistingShadows			= mod:NewTargetCountAnnounce(210864, 3)
+----Mythic
+local warnViolentWinds				= mod:NewTargetAnnounce(218144, 4)
 
 --Spider Form
 local specWarnFeedingTime			= mod:NewSpecialWarningSwitch(212364, "-Healer", nil, nil, 1, 2)
@@ -44,6 +50,7 @@ local specWarnVenomousPool			= mod:NewSpecialWarningMove(213124, nil, nil, nil, 
 local specWarnWebWrap				= mod:NewSpecialWarningStack(212512, nil, 5)
 local specWarnNecroticVenom			= mod:NewSpecialWarningMoveAway(218831, nil, nil, nil, 1, 2)
 local yellNecroticVenom				= mod:NewFadesYell(218831)
+local yellViolentWinds				= mod:NewYell(218144)
 --local specWarnWebOfPain			= mod:NewSpecialWarningDefensive(215288, nil, nil, nil, 1, 2)
 --local specWarnWebOfPainOther		= mod:NewSpecialWarningTaunt(215288, nil, nil, nil, 1, 2)
 --Roc Form
@@ -53,12 +60,16 @@ local specWarnTwistingShadows		= mod:NewSpecialWarningMoveAway(210864, nil, nil,
 local specWarnTwistingShadowsMove	= mod:NewSpecialWarningMove(210864, nil, nil, nil, 1, 2)--For expires. visual is WAY off from debuff, if you wait for visual you'll die to this
 local yellTwistingShadows			= mod:NewFadesYell(210864)
 local specWarnRazorWing				= mod:NewSpecialWarningDodge(210547, nil, nil, nil, 3, 2)
+----Mythic
+local specViolentWinds				= mod:NewSpecialWarningYou(218144, nil, nil, nil, 3, 2)
+local specWarnViolentWindsOther		= mod:NewSpecialWarningTaunt(218144, nil, nil, nil, 1, 2)
 
 --Spider Form
 mod:AddTimerLine(GetSpellInfo(210326))
 local timerSpiderFormCD				= mod:NewNextTimer(70, 210326, nil, nil, nil, 6)
-local timerFeedingTimeCD			= mod:NewNextTimer(15.5, 212364, nil, nil, nil, 1)
+local timerFeedingTimeCD			= mod:NewNextTimer(15.5, 212364, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 local timerNecroticVenomCD			= mod:NewNextTimer(26.5, 215443, nil, nil, nil, 3)--This only targets ranged, but melee/tanks need to be sure to also move away from them
+local timerNightmareSpawnCD			= mod:NewNextTimer(10, 218630, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 --Roc Form
 mod:AddTimerLine(GetSpellInfo(210308))
 local timerRocFormCD				= mod:NewNextTimer(47, 210308, nil, nil, nil, 6)
@@ -66,6 +77,7 @@ local timerGatheringCloudsCD		= mod:NewNextTimer(6, 212707, nil, nil, nil, 2)
 local timerDarkStormCD				= mod:NewNextTimer(16, 210948, nil, nil, nil, 2)
 local timerTwistingShadowsCD		= mod:NewNextCountTimer(21.5, 210864, nil, nil, nil, 3)
 local timerRazorWingCD				= mod:NewCDTimer(17, 210547, nil, nil, nil, 3)--Needs more timer data when fight done properly
+--local timerViolentWindsCD			= mod:NewAITimer(6, 218144, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON..DBM_CORE_TANK_ICON)
 
 local berserkTimer					= mod:NewBerserkTimer(540)
 
@@ -84,9 +96,10 @@ local voiceTwistingShadows			= mod:NewVoice(210864)--runout/runaway
 local voiceGatheringClouds			= mod:NewVoice(212707)--aesoon
 local voiceDarkStorm				= mod:NewVoice(212707)--findshelter
 local voiceRazorWing				= mod:NewVoice(210547)--carefly
+local voiceViolentWinds				= mod:NewVoice(218144)--justrun/keepmove/tauntboss
 
 --mod:AddRangeFrameOption("5")--Add range frame to Necrotic Debuff if detecting it actually works with FindDebuff()
---mod:AddSetIconOption("SetIconOnMC", 163472, false)
+mod:AddSetIconOption("SetIconOnWinds", 218144)
 --mod:AddHudMapOption("HudMapOnMC", 163472)
 
 mod.vb.twistedCast = 0
@@ -191,6 +204,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 215443 then
 		scanTime = 0
 		self:Schedule(0.1, findDebuff, self, args.spellName)
+	elseif spellId == 218630 then
+		warnNightmareSpawn:Show()
+		timerNightmareSpawnCD:Start()
 	end
 end
 
@@ -213,6 +229,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 215449 or spellId == 218831 then
 		DBM:AddMsg("If you see this message, it means targetting debuffs for Necrotic Venom were added to combat log. Report this to DBM authors to help improve mods")
+	elseif spellId == 218144 then
+		if args:IsPlayer() then
+			specViolentWinds:Show()
+			voiceViolentWinds:Play("justrun")
+			voiceViolentWinds:Schedule(1, "keepmove")
+			yellViolentWinds:Yell()
+		elseif self.Options.SpecWarn218144taunt then
+			specWarnViolentWindsOther:Show(args.destName)
+			voiceViolentWinds:Play("tauntboss")
+		else
+			warnViolentWinds:Show(args.destName)
+		end
+		if self.Options.SetIconOnWinds then
+			self:SetIcon(args.destName, 1)
+		end
+	elseif spellId == 218629 then--Plausable nightmare spawn enable
+		
 	end
 end
 
@@ -232,6 +265,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		specWarnTwistingShadowsMove:Show()--Not a bug, it alerts you when to move to avoid your own tornado
 		voiceTwistingShadows:Play("runaway")
 		yellTwistingShadows:Cancel()
+	elseif spellId == 218144 then
+		if self.Options.SetIconOnWinds then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 218629 then
+		timerNightmareSpawnCD:Stop()
 	end
 end
 
