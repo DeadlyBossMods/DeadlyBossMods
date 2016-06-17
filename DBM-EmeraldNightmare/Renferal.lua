@@ -131,7 +131,7 @@ local function findDebuff(self, spellName)
 		end
 	end
 	if found == 0 and scanTime < 6 then--Scan for 3 sec, not forever.
-		self:Schedule(0.5, findDebuff, spellName)--Check again if we didn't find any yet
+		self:Schedule(0.5, findDebuff, self, spellName)--Check again if we didn't find any yet
 	end
 end
 
