@@ -12,12 +12,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 203028 204767 205300 203817 203888 204100 204078",
-	"SPELL_CAST_SUCCESS 203787 205298 205329 204040",
+	"SPELL_CAST_SUCCESS 203787 205298 205329",
 	"SPELL_AURA_APPLIED 203102 203125 203124 203121 203110 203770 203787 204040",
 	"SPELL_AURA_APPLIED_DOSE 203102 203125 203124 203121",
 	"SPELL_AURA_REMOVED 203102 203125 203124 203121 203787 204040",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
@@ -31,6 +32,7 @@ local Taerar = EJ_GetSectionInfo(12774)
 --TODO, if only one volatile infection goes out at a time, hide general alert if player affected
 --TODO, remove combined show from any warnings that are only one target
 --TODO, verify phase change stuff and timers. Get all remaining data from remaining two dragons since they were never seen during test.
+--TODO, when timers are more finalized add countdowns to more things.
 --All
 local warnSlumberingNightmare		= mod:NewTargetAnnounce(203110, 4, nil, false)--An option to announce fuckups
 local warnBreath					= mod:NewSpellAnnounce(203028, 2)
@@ -55,6 +57,7 @@ local specWarnTaerarMark			= mod:NewSpecialWarningStack(203121, nil, 7)
 local specWarnDefiledSpirit			= mod:NewSpecialWarningYou(207573)
 local yellSpirit					= mod:NewYell(207573)
 local specWarnDefiledVines			= mod:NewSpecialWarningDispel(207573, "Healer", nil, nil, 1, 2)
+local specWarnLumberingMindgorger	= mod:NewSpecialWarningSwitch("ej13460", "-Healer", nil, nil, 1, 2)
 --Emeriss
 local specWarnVolatileInfection		= mod:NewSpecialWarningMoveAway(203787, nil, nil, nil, 1, 2)
 local yellVolatileInfection			= mod:NewYell(203787)
@@ -74,18 +77,17 @@ local timerNightmareBlastCD			= mod:NewCDTimer(15, 203153, nil, "-Tank", nil, 3)
 local timerDefiledSpiritCD			= mod:NewCDTimer(34, 207573, nil, nil, nil, 3)
 --Emeriss
 mod:AddTimerLine(Emeriss)
-local timerVolatileInfectionCD		= mod:NewAITimer(16, 203787, nil, nil, nil, 3)
-local timerEssenceOfCorruptionCD	= mod:NewAITimer(16, 205298, nil, nil, nil, 1)
+local timerVolatileInfectionCD		= mod:NewCDTimer(46, 203787, nil, nil, nil, 3)
+local timerEssenceOfCorruptionCD	= mod:NewNextTimer(30, 205298, nil, nil, nil, 1)
 --Lethon
 mod:AddTimerLine(Lethon)
 local timerSiphonSpiritCD			= mod:NewAITimer(16, 203888, nil, nil, nil, 1)
-local timerShadowBurstCD			= mod:NewAITimer(16, 204040, nil, nil, nil, 3)
+local timerShadowBurstCD			= mod:NewNextTimer(15, 204040, nil, nil, nil, 3)--Air
 --Taerar
 mod:AddTimerLine(Taerar)
 local timerShadesOfTaerarCD			= mod:NewCDTimer(48.5, 204100, nil, "-Healer", nil, 1)
 local timerSeepingFogCD				= mod:NewCDTimer(15.5, 205331, nil, nil, nil, 3)
-local timerBellowingRoarCD			= mod:NewAITimer(16, 204078, nil, nil, nil, 2)
-
+local timerBellowingRoarCD			= mod:NewCDTimer(44.5, 204078, nil, nil, nil, 2)--Air
 
 --Ysondre
 --local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
@@ -98,6 +100,7 @@ local countdownShadesOfTaerar		= mod:NewCountdown(48.5, 204100, "Tank")
 --local voiceNightmareBlast			= mod:NewVoice(203153)--169613 (run over theh flower?)
 --local voiceDefiledSpirit			= mod:NewVoice(207573)--watchstep
 local voiceDefiledVines				= mod:NewVoice(207573, "Healer")--helpdispel
+local voiceLumberingMindgorger		= mod:NewVoice("ej13460", "-Healer")--bigmob
 --Emeriss
 local voiceVolatileInfection		= mod:NewVoice(203787)--scatter
 local voiceCorruption				= mod:NewVoice(205300, "HasInterrupt")--kickcast
@@ -114,15 +117,49 @@ mod:AddRangeFrameOption(10, 203787)
 
 local activeBossGUIDS = {}
 
+local function whoDatUpThere(self)
+	local emerissFound = false
+	local lethonFound = false
+	local taerarFound = false
+	for i = 1, 5 do
+		local bossUID = "boss"..i
+		if UnitExists(bossUID) then--if they are in air they won't exist.
+			local cid = self:GetUnitCreatureId(bossUID)
+			if cid == 102683 then -- Emeriss
+				emerissFound = true
+			elseif cid == 102682 then -- Lethon
+				lethonFound = true
+			elseif cid == 102681 then -- Taerar
+				taerarFound = true
+			end
+		end
+	end
+	--Subtracking 2 from all timers do to delay
+	if not emerissFound then -- Emeriss
+
+	end
+	if not lethonFound then -- Lethon
+		timerShadowBurstCD:Start(18)
+	end
+	if not taerarFound then -- Taerar
+		timerBellowingRoarCD:Start(43)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
-	timerNightmareBlastCD:Start(22.5-delay)
 	timerDefiledSpiritCD:Start(30-delay)
+	timerNightmareBlastCD:Start(40-delay)--40 on mythic, it changing on heroic too is assumed. Was 22.5 before
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe vb.on pull
 	)
 	if DBM.BossHealth:IsShown() then
 		DBM.BossHealth:Clear()
+	end
+	if self:IsMythic() then
+		--Only done on mythic for now since we know for sure what dragons are up once we know what dragons are down.
+		--On non mythic one dragon is missing from encounter and we have no way of knowing what one currently :\
+		self:Schedule(2, whoDatUpThere, self)
 	end
 end
 
@@ -185,8 +222,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerEssenceOfCorruptionCD:Start()
 	elseif spellId == 205329 then
 		warnGloom:Show()
-	elseif spellId == 204040 then
-		timerShadowBurstCD:Start()
 	end
 end
 
@@ -231,6 +266,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 204040 then
 		warnShadowBurst:CombinedShow(0.5, args.destName)
+		if self:AntiSpam(2, 5) then
+			timerShadowBurstCD:Start()
+		end
 		if args:IsPlayer() then
 			specWarnShadowBurst:Show()
 			yellShadowBurst:Schedule(5, 1)
@@ -260,17 +298,19 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetUnitCreatureId(unitID)
 			--Subtracking .5 from all timers do to slight delay in IEEU vs ENCOUNTER_START
 			if cid == 102683 then -- Emeriss
-				timerVolatileInfectionCD:Start(1)
-				timerEssenceOfCorruptionCD:Start(1)
+				timerVolatileInfectionCD:Start(19.5)
+				timerEssenceOfCorruptionCD:Start(29.5)
 				if DBM.BossHealth:IsShown() then
 					DBM.BossHealth:AddBoss(cid ,Emeriss)
 				end
 			elseif cid == 102682 then -- Lethon
+				timerShadowBurstCD:Stop()
 				timerSiphonSpiritCD:Start(1)
 				if DBM.BossHealth:IsShown() then
 					DBM.BossHealth:AddBoss(cid ,Lethon)
 				end
 			elseif cid == 102681 then -- Taerar
+				timerBellowingRoarCD:Stop()
 				timerShadesOfTaerarCD:Start(19.5)
 				countdownShadesOfTaerar:Start(19.5)
 				timerSeepingFogCD:Start(25)
@@ -279,6 +319,14 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				end
 			end
 		end
+	end
+end
+
+--"<38.03 01:01:06> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\sha_ability_rogue_envelopingshadows_nightmare:20|tA Lumbering Mindgorger forms in the mists of The Hinterlands!#Ysondre#####0#0##0#1
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
+	if msg:find("sha_ability_rogue_envelopingshadows_nightmare") then
+		specWarnLumberingMindgorger:Show()
+		voiceLumberingMindgorger:Play("bigmob")
 	end
 end
 
@@ -301,7 +349,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			end
 		elseif cid == 102682 then--Lethon
 			timerSiphonSpiritCD:Stop()
-			timerShadowBurstCD:Start(1)
+			timerShadowBurstCD:Start(19.5)
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:RemoveBoss(cid)
 			end
@@ -309,7 +357,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerShadesOfTaerarCD:Stop()
 			countdownShadesOfTaerar:Cancel()
 			timerSeepingFogCD:Stop()
-			timerBellowingRoarCD:Start(1)
+			timerBellowingRoarCD:Start(44.5)
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:RemoveBoss(cid)
 			end
