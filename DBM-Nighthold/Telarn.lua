@@ -12,7 +12,7 @@ mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 218438 218463 218466 218470 218148 218774 219049 218927 216830 216877 223034",
+	"SPELL_CAST_START 218438 218463 218466 218470 218148 218774 219049 218927 216830 216877 223034 223219",
 	"SPELL_CAST_SUCCESS 218424 218807 223437",
 	"SPELL_AURA_APPLIED 218809 218503 218304 218342",
 	"SPELL_AURA_APPLIED_DOSE 218503",
@@ -44,6 +44,7 @@ local warnPhase3					= mod:NewPhaseAnnounce(3)
 local warnToxicSpores				= mod:NewSpellAnnounce(219049, 3)
 local warnCoN						= mod:NewTargetAnnounce(218809, 4)
 local warnGraceofNature				= mod:NewCastAnnounce(218927, 4, nil, nil, "Tank")
+local warnChaosSpheresOfNature		= mod:NewSpellAnnounce(223219, 4)
 
 --Stage 1: The High Botanist
 local specWarnRecursiveStrikes		= mod:NewSpecialWarningTaunt(218503, nil, nil, nil, 1, 2)
@@ -65,7 +66,7 @@ local yellCoN						= mod:NewPosYell(218809)
 --Stage 1: The High Botanist
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerControlledChaosCD		= mod:NewNextTimer(35, 218438, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerSummonChaosSpheresCD		= mod:NewAITimer(35, 223034, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerSummonChaosSpheresCD		= mod:NewAITimer(35, 223034, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 local timerParasiticFetterCD		= mod:NewNextTimer(35, 218304, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)--Technically can also be made add timer instead of targetted
 local timerSolarCollapseCD			= mod:NewNextTimer(35, 218148, nil, nil, nil, 3)
 local timerCollapseofNightCD		= mod:NewNextTimer(35, 223437, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
@@ -78,6 +79,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerToxicSporesCD			= mod:NewNextTimer(8.5, 219049, nil, nil, nil, 3)--Exception to 35, 55, 70 rule
 local timerGraceOfNatureCD			= mod:NewNextTimer(70, 218927, nil, "Tank", nil, 5)
 local timerCoNCD					= mod:NewNextTimer(70, 218809, nil, nil, nil, 3)
+local timerChaotiSpheresofNatureCD	= mod:NewAITimer(35, 223219, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 
 local countdownControlledChaos		= mod:NewCountdown(35, 218438)
 local countdownParasiticFetter		= mod:NewCountdown("Alt35", 218304, "-Tank")
@@ -192,6 +194,9 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerPlasmaSpheresCD:Start()
 		end
+	elseif spellId == 223219 then--Summon Chaotic Spheres of Nature
+		warnChaosSpheresOfNature:Show()
+		timerChaotiSpheresofNatureCD:Start()
 	elseif spellId == 219049 then
 		warnToxicSpores:Show()
 		timerToxicSporesCD:Start()
@@ -365,7 +370,20 @@ function mod:UNIT_DIED(args)
 			--Naturalist Tel'arn's Parsitic Fetter causes Controlled Chaos when removed if Arcanist Tel'arn is killed first
 		elseif self.vb.phase == 3 then--2 bosses dead
 			--These requires checking which boss is left
-			--Naturalist Tel'arn gains Summon Chaotic Spheres of Nature when he is the last form alive
+			for i = 1, 5 do
+				local bossUID = "boss"..i
+				if UnitExists(bossUID) then
+					local cid = self:GetUnitCreatureId(bossUID)
+					if cid == 109038 then--Solarist Tel'arn is what's left
+						--Nothing?
+						break
+					elseif cid == 109041 then--Naturalist Tel'arn
+						--Naturalist Tel'arn gains Summon Chaotic Spheres of Nature when he is the last form alive
+						timerChaotiSpheresofNatureCD:Start(1)
+						break
+					end
+				end
+			end
 		end
 	elseif cid == 109038 then--Solarist Tel'arn
 		self.vb.phase = self.vb.phase + 1
@@ -373,7 +391,7 @@ function mod:UNIT_DIED(args)
 		timerCollapseofNightCD:Stop()
 		timerPlasmaSpheresCD:Stop()
 		if self.vb.phase == 2 then--1 boss dead
-			--Arcanist Tel'arn's Controlled Chaos with Summon Chaos Spheres when Solarist Tel'arn is killed first
+			--Arcanist Tel'arn's replaces Controlled Chaos with Summon Chaos Spheres when Solarist Tel'arn is killed first
 			local controlledelapsed, controlledtotal = timerControlledChaosCD:GetTime()
 			timerControlledChaosCD:Stop()
 			countdownControlledChaos:Cancel()
@@ -383,7 +401,20 @@ function mod:UNIT_DIED(args)
 			--Naturalist Tel'arn's Toxic Spores cause a Solar Collapse at the target's location when Solarist Tel'arn is killed first
 		elseif self.vb.phase == 3 then--2 bosses dead
 			--These requires checking which boss is left
-			--Arcanist Tel'arn's Recursive Strikes creates Plasma Spheres when it expires if Solarist Tel'arn is killed second
+			for i = 1, 5 do
+				local bossUID = "boss"..i
+				if UnitExists(bossUID) then
+					local cid = self:GetUnitCreatureId(bossUID)
+					if cid == 109041 then--Naturalist Tel'arn is what's left
+						--Naturalist Tel'arn gains Summon Chaotic Spheres of Nature when he is the last form alive
+						timerChaotiSpheresofNatureCD:Start(1)
+						break
+					elseif cid == 109040 then--Arcanist Tel'arn
+						--Arcanist Tel'arn's Recursive Strikes creates Plasma Spheres when it expires if Solarist Tel'arn is killed second
+						break
+					end
+				end
+			end
 		end
 	elseif cid == 109041 then--Naturalist Tel'arn
 		self.vb.phase = self.vb.phase + 1
@@ -392,8 +423,20 @@ function mod:UNIT_DIED(args)
 			--Solarist Tel'arn's Plasma Spheres create Parasitic Lashers when killed if Naturalist Tel'arn is killed first.
 		elseif self.vb.phase == 3 then--2 bosses dead
 			--These requires checking which boss is left
-			--Solarist Tel'arn's lasma Spheres create Toxic Spores when killed if Naturalist Tel'arn is killed second.
-			--Naturalist Tel'arn gains Summon Chaotic Spheres of Nature when he is the last form alive
+			for i = 1, 5 do
+				local bossUID = "boss"..i
+				if UnitExists(bossUID) then
+					local cid = self:GetUnitCreatureId(bossUID)
+					if cid == 109038 then--Solarist Tel'arn is what's left
+						--Solarist Tel'arn's plasma Spheres create Toxic Spores when killed if Naturalist Tel'arn is killed second.
+						--Flare applies Parasitic Fetter to all targets hit if Naturalist Tel'arn is killed second
+						break
+					elseif cid == 109040 then--Arcanist Tel'arn
+						--Controlled Chaos causes several points of Solar Collapse to spawn around it's perimeter when Solarist Tel'arn is killed second
+						break
+					end
+				end
+			end
 		end
 	end
 end
