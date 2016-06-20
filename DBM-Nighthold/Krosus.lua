@@ -81,7 +81,7 @@ function mod:OnCombatStart(delay)
 	self.vb.rightBeamCount = 0
 	self.vb.orbCount = 0
 	self.vb.pitchCount = 0
-	timerFelBeamCD:Start(8-delay, DBM_CORE_RIGHT)
+	timerFelBeamCD:Start(6.3-delay, DBM_CORE_RIGHT)
 	timerFelBrandCD:Start(15-delay)
 	countdownFelBrand:Start(15-delay)
 	timerOrbDestroCD:Start(22-delay, 1)
