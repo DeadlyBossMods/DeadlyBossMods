@@ -342,7 +342,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnCoN then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 218304 and self:AntiSpam(5, 2) and not UnitDebuff("player") then
+	elseif spellId == 218304 and self:AntiSpam(5, 2) and not UnitDebuff("player", args.spellName) then
 		specWarnLasher:Show()
 		voiceLasher:Play("killmob")
 	end
