@@ -14,6 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 205368 205370 205420 209017 206352 205862 205361",
 	"SPELL_AURA_APPLIED 206677 205344",
+	"SPELL_AURA_APPLIED_DOSE 206677",
 	"SPELL_AURA_REMOVED 205344",
 	"UNIT_DIED"
 )
@@ -22,9 +23,8 @@ mod:RegisterEventsInCombat(
 local warnExpelOrbDestro			= mod:NewTargetCountAnnounce(205344, 4)
 local warnSlam						= mod:NewCountAnnounce(205862, 2)--Regular slams don't need special warn, only bridge smashing ones
 
-local specWarnFelBrand				= mod:NewSpecialWarningRun(206677, nil, nil, nil, 4, 2)
-local yellFelBrand					= mod:NewYell(206677)
-local specWarnFelBrandOther			= mod:NewSpecialWarningTaunt(206677, nil, nil, nil, 1, 2)
+--local specWarnSearingBrand			= mod:NewSpecialWarningStack(206677, nil, 4, nil, 1, 2)
+local specWarnSearingBrandOther		= mod:NewSpecialWarningTaunt(206677, nil, nil, nil, 1, 2)
 local specWarnFelBeam				= mod:NewSpecialWarningDodge(205368, nil, nil, nil, 2, 2)
 local specWarnOrbDestro				= mod:NewSpecialWarningMoveAway(205344, nil, nil, nil, 3, 2)
 local yellOrbDestro					= mod:NewFadesYell(205344)
@@ -33,8 +33,8 @@ local specWarnSlam					= mod:NewSpecialWarningDodge(205862, nil, nil, nil, 3, 2)
 local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(209017, "HasInterrupt", nil, nil, 1, 2)
 local specWarnFelBurst				= mod:NewSpecialWarningInterrupt(206352, "HasInterrupt", nil, nil, 1, 2)
 
-local timerFelBrand					= mod:NewTargetTimer(16, 206677, nil, "Tank", nil, 5)
-local timerFelBrandCD				= mod:NewNextTimer(30, 206677, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerSearingBrand				= mod:NewTargetTimer(16, 206677, nil, "Tank", nil, 5)
+local timerSearingBrandCD			= mod:NewNextTimer(30, 206677, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFelBeamCD				= mod:NewNextSourceTimer(16, 205368, nil, nil, nil, 3)
 local timerOrbDestroCD				= mod:NewNextCountTimer(16, 205344, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--Not that deadly on non mythic but on mythic it is
 local timerBurningPitchCD			= mod:NewNextCountTimer(16, 205420, nil, "-Tank", nil, 5)
@@ -43,10 +43,10 @@ local timerSlamCD					= mod:NewNextCountTimer(30, 205862, nil, nil, nil, 3, nil,
 local berserkTimer					= mod:NewBerserkTimer(360)--technically not a berserk, but raid instantly wipes during final bridge smash, at 6 minutes.
 
 local countdownBigSlam				= mod:NewCountdown(90, 205862)
-local countdownFelBrand				= mod:NewCountdown("Alt30", 206677, "Tank")
+local countdownSearingBrand			= mod:NewCountdown("Alt30", 206677, "Tank")
 local countdownOrbDestro			= mod:NewCountdownFades("AltTwo5", 205344)
 
-local voiceFelBrand					= mod:NewVoice(206677)--keepmove/tauntboss
+local voiceSearingBrand				= mod:NewVoice(206677)--tauntboss
 local voiceFelBeam					= mod:NewVoice(205368)--moveleft/moveright
 local voiceOrbDestro				= mod:NewVoice(205344)--runout
 local voiceBurningPitch				= mod:NewVoice(205420)--watchstep/helpsoak(new)
@@ -81,15 +81,27 @@ function mod:OnCombatStart(delay)
 	self.vb.rightBeamCount = 0
 	self.vb.orbCount = 0
 	self.vb.pitchCount = 0
-	timerFelBeamCD:Start(6.3-delay, DBM_CORE_RIGHT)
-	timerFelBrandCD:Start(15-delay)
-	countdownFelBrand:Start(15-delay)
-	timerOrbDestroCD:Start(22-delay, 1)
-	timerFelBeamCD:Start(37-delay, DBM_CORE_LEFT)
-	timerBurningPitchCD:Start(52-delay, 1)
-	timerSlamCD:Start(-delay, 1)
-	countdownBigSlam:Start(-delay)
-	berserkTimer:Start(-delay)
+	if self:IsMythic() then
+		timerSearingBrandCD:Start(3-delay)
+		countdownSearingBrand:Start(3-delay)
+		timerFelBeamCD:Start(6.3-delay, DBM_CORE_RIGHT)
+		timerOrbDestroCD:Start(13-delay, 1)
+		timerFelBeamCD:Start(37-delay, DBM_CORE_LEFT)
+		timerBurningPitchCD:Start(52-delay, 1)
+		timerSlamCD:Start(-delay, 1)
+		countdownBigSlam:Start(-delay)
+		berserkTimer:Start(-delay)
+	else
+		timerFelBeamCD:Start(8-delay, DBM_CORE_RIGHT)
+		timerSearingBrandCD:Start(15-delay)
+		countdownSearingBrand:Start(15-delay)
+		timerOrbDestroCD:Start(22-delay, 1)
+		timerFelBeamCD:Start(37-delay, DBM_CORE_LEFT)
+		timerBurningPitchCD:Start(52-delay, 1)
+		timerSlamCD:Start(-delay, 1)
+		countdownBigSlam:Start(-delay)
+		berserkTimer:Start(-delay)
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(burningPitchDebuff)
 		DBM.InfoFrame:Show(5, "reverseplayerbaddebuff", burningPitchDebuff)
@@ -182,19 +194,20 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 206677 then
-		timerFelBrandCD:Start()--Does not fire SUCCESS event of any kind, so if it misses, no timer
-		countdownFelBrand:Start()
-		timerFelBrand:Start(args.destName)
-		if args:IsPlayer() then--Still do yell and range frame here, in case DK
-			specWarnFelBrand:Show()
-			voiceFelBrand:Play("keepmove")
-			yellFelBrand:Yell()
---			if self.Options.RangeFrame then
---				DBM.RangeCheck:Show(5)
---			end
-		else
-			specWarnFelBrandOther:Show(args.destName)
-			voiceFelBrand:Play("tauntboss")
+		local amount = args.amount or 1
+--		timerSearingBrandCD:Start()--Does not fire SUCCESS event of any kind, so if it misses, no timer
+--		countdownSearingBrand:Start()
+		timerSearingBrand:Start(args.destName)
+		if amount >= 3 then
+			if args:IsPlayer() then
+				--specWarnSearingBrand:Show(amount)
+				--voiceSearingBrand:Play("changemt")
+			else
+				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+					specWarnSearingBrandOther:Show(args.destName)
+					voiceSearingBrand:Play("tauntboss")
+				end
+			end
 		end
 	elseif spellId == 205344 then
 		if args:IsPlayer() then--Still do yell and range frame here, in case DK
@@ -210,6 +223,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
