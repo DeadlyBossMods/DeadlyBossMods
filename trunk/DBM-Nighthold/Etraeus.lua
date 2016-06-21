@@ -193,6 +193,7 @@ do
 			end
 		end
 		if total1 > 0 then
+			--FIXME, figure out why colors are wrong
 			lines["|cF2F200CD"..crabDebuff.."|r"] = crabs
 			lines["|c69CCF0CD"..dragonDebuff.."|r"] = dragons
 			lines["|c00FF00CD"..hunterDebuff.."|r"] = hunters
@@ -366,7 +367,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if spellId == 205429 then--Crab
 			warnStarSignCrab:CombinedShow(2, args.destName)
 			if self.Options.HudMapOnConjunction then--Yellow
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 17, 1, 1, 0, 0.5, nil, true):Appear():SetLabel(args.destName)
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 17, 1, 1, 0, 0.5, nil, false):Appear():SetLabel(args.destName)
 			end
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
@@ -377,7 +378,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif spellId == 216344 then--Dragon
 			warnStarSignDragon:CombinedShow(2, args.destName)
 			if self.Options.HudMapOnConjunction then--Blue
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 17, 0, 0, 1, 0.5, nil, true):Appear():SetLabel(args.destName)
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 17, 0, 0, 1, 0.5, nil, false):Appear():SetLabel(args.destName)
 			end
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
@@ -388,7 +389,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif spellId == 216345 then--Hunter
 			warnStarSignHunter:CombinedShow(2, args.destName)
 			if self.Options.HudMapOnConjunction then--Green
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 17, 0, 1, 0, 0.5, nil, true):Appear():SetLabel(args.destName)
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 17, 0, 1, 0, 0.5, nil, false):Appear():SetLabel(args.destName)
 			end
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
@@ -399,7 +400,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif spellId == 205445 then--Wolf
 			warnStarSignWolf:CombinedShow(2, args.destName)
 			if self.Options.HudMapOnConjunction then--Red
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 17, 1, 0, 0, 0.5, nil, true):Appear():SetLabel(args.destName)
+				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 17, 1, 0, 0, 0.5, nil, false):Appear():SetLabel(args.destName)
 			end
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
