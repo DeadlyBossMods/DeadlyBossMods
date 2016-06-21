@@ -6,7 +6,7 @@ mod:SetCreatureID(101002)
 mod:SetEncounterID(1842)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 3, 2, 1)
---mod:SetHotfixNoticeRev(12324)
+mod:SetHotfixNoticeRev(15020)
 mod.respawnTime = 25--or 30
 
 mod:RegisterCombat("combat")
@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 local warnExpelOrbDestro			= mod:NewTargetCountAnnounce(205344, 4)
 local warnSlam						= mod:NewCountAnnounce(205862, 2)--Regular slams don't need special warn, only bridge smashing ones
 
---local specWarnSearingBrand			= mod:NewSpecialWarningStack(206677, nil, 4, nil, 1, 2)
+local specWarnSearingBrand			= mod:NewSpecialWarningStack(206677, nil, 10, nil, 1, 2)--Lets go with 10 for now
 local specWarnSearingBrandOther		= mod:NewSpecialWarningTaunt(206677, nil, nil, nil, 1, 2)
 local specWarnFelBeam				= mod:NewSpecialWarningDodge(205368, nil, nil, nil, 2, 2)
 local specWarnOrbDestro				= mod:NewSpecialWarningMoveAway(205344, nil, nil, nil, 3, 2)
@@ -33,8 +33,7 @@ local specWarnSlam					= mod:NewSpecialWarningDodge(205862, nil, nil, nil, 3, 2)
 local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(209017, "HasInterrupt", nil, nil, 1, 2)
 local specWarnFelBurst				= mod:NewSpecialWarningInterrupt(206352, "HasInterrupt", nil, nil, 1, 2)
 
-local timerSearingBrand				= mod:NewTargetTimer(16, 206677, nil, "Tank", nil, 5)
-local timerSearingBrandCD			= mod:NewNextTimer(30, 206677, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerSearingBrand				= mod:NewTargetTimer(20, 206677, nil, "Tank", nil, 5)
 local timerFelBeamCD				= mod:NewNextSourceTimer(16, 205368, nil, nil, nil, 3)
 local timerOrbDestroCD				= mod:NewNextCountTimer(16, 205344, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--Not that deadly on non mythic but on mythic it is
 local timerBurningPitchCD			= mod:NewNextCountTimer(16, 205420, nil, "-Tank", nil, 5)
@@ -43,7 +42,6 @@ local timerSlamCD					= mod:NewNextCountTimer(30, 205862, nil, nil, nil, 3, nil,
 local berserkTimer					= mod:NewBerserkTimer(360)--technically not a berserk, but raid instantly wipes during final bridge smash, at 6 minutes.
 
 local countdownBigSlam				= mod:NewCountdown(90, 205862)
-local countdownSearingBrand			= mod:NewCountdown("Alt30", 206677, "Tank")
 local countdownOrbDestro			= mod:NewCountdownFades("AltTwo5", 205344)
 
 local voiceSearingBrand				= mod:NewVoice(206677)--tauntboss
@@ -62,10 +60,16 @@ mod:AddArrowOption("ArrowOnBeam", 205368, true)
 
 local burningPitchDebuff = GetSpellInfo(215944)
 local mobGUIDs = {}
-local leftBeamTimers = {37, 75, 32, 30, 82, 31, 26, 24, 18}
-local rightBeamTimers = {8, 59, 61, 30, 43, 81, 26, 17, 17}
-local orbTimers = {22, 58, 23, 63, 26, 25, 15, 15, 15, 30, 55}
+--non mythic beams
+local leftBeamTimers = {37, 75, 32, 30, 82, 31, 26, 24, 18}--205370
+local rightBeamTimers = {8, 59, 61, 30, 43, 81, 26, 17, 17}--205368
+--Mythic beams (combined, the side it's on during mythic is random)
+local beamMythicTimers = {6, 16, 16, 16, 14, 16, 27, 55, 26, 5, 21.3, 4.7, 12.2, 12, 4.8, 13.2, 19, 4.8, 25.2, 4.8}--205370/205368 Combined (up to 5:18, missing 42 seconds)
+--Other stuff
+local orbTimers = {22, 58, 23, 63, 26, 25, 15, 15, 15, 30, 55}--
+local orbMythicTimers = {13, 62, 27, 25, 14.9, 15, 15, 30, 55.1, 38}
 local burningPitchTimers = {52, 84, 90, 93}
+local burningPitchMythicTimers = {45.0, 90, 93.9, 78}
 mod.vb.burningEmbers = 0
 mod.vb.slamCount = 0
 mod.vb.leftBeamCount = 0
@@ -82,19 +86,14 @@ function mod:OnCombatStart(delay)
 	self.vb.orbCount = 0
 	self.vb.pitchCount = 0
 	if self:IsMythic() then
-		timerSearingBrandCD:Start(3-delay)
-		countdownSearingBrand:Start(3-delay)
-		timerFelBeamCD:Start(6.3-delay, DBM_CORE_RIGHT)
+		timerFelBeamCD:Start(6-delay, 1)
 		timerOrbDestroCD:Start(13-delay, 1)
-		timerFelBeamCD:Start(37-delay, DBM_CORE_LEFT)
 		timerBurningPitchCD:Start(52-delay, 1)
 		timerSlamCD:Start(-delay, 1)
 		countdownBigSlam:Start(-delay)
 		berserkTimer:Start(-delay)
 	else
 		timerFelBeamCD:Start(8-delay, DBM_CORE_RIGHT)
-		timerSearingBrandCD:Start(15-delay)
-		countdownSearingBrand:Start(15-delay)
 		timerOrbDestroCD:Start(22-delay, 1)
 		timerFelBeamCD:Start(37-delay, DBM_CORE_LEFT)
 		timerBurningPitchCD:Start(52-delay, 1)
@@ -126,9 +125,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnFelBeam:Show()
 		if spellId == 205368 then--Coming from right
 			self.vb.rightBeamCount = self.vb.rightBeamCount + 1
-			local timers = rightBeamTimers[self.vb.rightBeamCount+1]
-			if timers then
-				timerFelBeamCD:Start(timers, DBM_CORE_RIGHT)
+			if not self:IsMythic() then
+				local timers = rightBeamTimers[self.vb.rightBeamCount+1]
+				if timers then
+					timerFelBeamCD:Start(timers, DBM_CORE_RIGHT)
+				end
 			end
 			voiceFelBeam:Play("moveleft")
 			if self.Options.ArrowOnBeam then
@@ -136,13 +137,22 @@ function mod:SPELL_CAST_START(args)
 			end
 		else--coming from left
 			self.vb.leftBeamCount = self.vb.leftBeamCount + 1
-			local timers = leftBeamTimers[self.vb.leftBeamCount+1]
-			if timers then
-				timerFelBeamCD:Start(timers, DBM_CORE_LEFT)
+			if not self:IsMythic() then
+				local timers = leftBeamTimers[self.vb.leftBeamCount+1]
+				if timers then
+					timerFelBeamCD:Start(timers, DBM_CORE_LEFT)
+				end
 			end
 			voiceFelBeam:Play("moveright")
 			if self.Options.ArrowOnBeam then
 				DBM.Arrow:ShowStatic(270, 4)
+			end
+		end
+		if self:IsMythic() then
+			local nextBeam = self.vb.leftBeamCount + self.vb.rightBeamCount + 1
+			local timers = beamMythicTimers[self.vb.leftBeamCount+self.vb.rightBeamCount+1]
+			if timers then
+				timerFelBeamCD:Start(timers, nextBeam)
 			end
 		end
 	elseif spellId == 205420 then
@@ -153,7 +163,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			voiceBurningPitch:Play("helpsoak")
 		end
-		local timers = burningPitchTimers[self.vb.pitchCount+1]
+		local timers = self:IsMythic() and burningPitchMythicTimers[self.vb.pitchCount+1] or burningPitchTimers[self.vb.pitchCount+1]
 		if timers then
 			timerBurningPitchCD:Start()
 		end
@@ -184,7 +194,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 205361 then
 		self.vb.orbCount = self.vb.orbCount + 1
-		local timers = orbTimers[self.vb.orbCount+1]
+		local timers = self:IsMythic() and orbMythicTimers[self.vb.orbCount+1] or orbTimers[self.vb.orbCount+1]
 		if timers then
 			timerOrbDestroCD:Start(timers, self.vb.orbCount+1)
 		end
@@ -195,13 +205,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 206677 then
 		local amount = args.amount or 1
---		timerSearingBrandCD:Start()--Does not fire SUCCESS event of any kind, so if it misses, no timer
---		countdownSearingBrand:Start()
 		timerSearingBrand:Start(args.destName)
-		if amount >= 3 then
+		if amount >= 10 then
 			if args:IsPlayer() then
-				--specWarnSearingBrand:Show(amount)
-				--voiceSearingBrand:Play("changemt")
+				specWarnSearingBrand:Show(amount)
+				voiceSearingBrand:Play("changemt")
 			else
 				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
 					specWarnSearingBrandOther:Show(args.destName)
