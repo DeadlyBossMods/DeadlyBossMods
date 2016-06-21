@@ -7,7 +7,7 @@ mod:SetEncounterID(1886)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 --mod:SetHotfixNoticeRev(12324)
---mod.respawnTime = 15--Definitely lower than 30, but couldn't run back fast enough to see. 10-20
+mod.respawnTime = 29.5
 
 mod:RegisterCombat("combat")
 
@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, flare? wtf? tooltip is either wrong or boss has one useless insigificant spell
 --TODO, adjust 15% on stars if it's too low/high. 25% was used on algalon for reference
 --TODO, see if controlled chaos 10-30 are no longer hidden in later tests. if still hidden, have to use scheduling and exact timing synced to videos
---(ability.id = 218438 or ability.id = 218774 or ability.id = 219049 or ability.id = 218927 or ability.id = 216830 or ability.id = 216877 or ability.id = 218148) and type = "begincast" or (ability.id = 218807 or ability.id = 218424) and type = "cast"
+--(ability.id = 218438 or ability.id = 223034 or ability.id = 218774 or ability.id = 219049 or ability.id = 218927 or ability.id = 216830 or ability.id = 216877 or ability.id = 218148 or ability.id = 223219) and type = "begincast" or (ability.id = 218807 or ability.id = 218424 or ability.id = 223437) and type = "cast"
 --or self:IsMythic() and self.vb.phase == 1--Ready to go in case my theory is correct
 --Stage 1: The High Botanist
 local warnRecursiveStrikes			= mod:NewStackAnnounce(218503, 2, nil, "Tank")
@@ -76,7 +76,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerPlasmaSpheresCD			= mod:NewNextTimer(55, 218774, nil, nil, nil, 1)
 --Stage 3: Pure Forms
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
-local timerToxicSporesCD			= mod:NewNextTimer(8.5, 219049, nil, nil, nil, 3)--Exception to 35, 55, 70 rule
+local timerToxicSporesCD			= mod:NewNextTimer(8, 219049, nil, nil, nil, 3)--Exception to 35, 55, 70 rule
 local timerGraceOfNatureCD			= mod:NewNextTimer(70, 218927, nil, "Tank", nil, 5)
 local timerCoNCD					= mod:NewNextTimer(70, 218809, nil, nil, nil, 3)
 local timerChaotiSpheresofNatureCD	= mod:NewAITimer(35, 223219, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
@@ -131,13 +131,24 @@ function mod:OnCombatStart(delay)
 	table.wipe(warnedLowHP)
 	self.vb.CoNIcon = 1
 	self.vb.phase = 1
-	timerSolarCollapseCD:Start(10-delay)
-	timerParasiticFetterCD:Start(21-delay)
-	countdownParasiticFetter:Start(21-delay)
-	timerControlledChaosCD:Start(-delay)
-	countdownControlledChaos:Start()
 	if self:IsMythic() then
-		--probably custom timer code here
+		timerSolarCollapseCD:Start(5-delay)--Confirmed
+		timerParasiticFetterCD:Start(12-delay)
+		countdownParasiticFetter:Start(12-delay)
+		timerControlledChaosCD:Start(25-delay)
+		countdownControlledChaos:Start(25-delay)
+		timerPlasmaSpheresCD:Start(40-delay)
+		timerCoNCD:Start(52-delay)
+		countdownCoN:Start(52-delay)
+		timerGraceOfNatureCD:Start(60-delay)
+		countdownGraceOfNature:Start(60-delay)
+		--Probably some other ability timers
+	else
+		timerSolarCollapseCD:Start(10-delay)
+		timerParasiticFetterCD:Start(21-delay)
+		countdownParasiticFetter:Start(21-delay)
+		timerControlledChaosCD:Start(-delay)
+		countdownControlledChaos:Start()
 	end
 end
 
@@ -157,18 +168,35 @@ function mod:SPELL_CAST_START(args)
 		voiceControlledChaos:Play("watchstep")
 		--Add filter to make sure it doesn't start timers off chaos spheres dying?
 		if self.vb.phase == 3 then
-			timerControlledChaosCD:Start(70)
-			countdownControlledChaos:Start(70)
+			if self:IsMythic() then
+			
+			else
+				timerControlledChaosCD:Start(70)
+				countdownControlledChaos:Start(70)
+			end
 		elseif self.vb.phase == 2 then
-			timerControlledChaosCD:Start(55)
-			countdownControlledChaos:Start(55)
+			if self:IsMythic() then
+			
+			else
+				timerControlledChaosCD:Start(55)
+				countdownControlledChaos:Start(55)
+			end
 		else
-			timerControlledChaosCD:Start()
-			countdownControlledChaos:Start()
+			if self:IsMythic() then
+				timerControlledChaosCD:Start(64)
+				countdownControlledChaos:Start(64)
+			else
+				timerControlledChaosCD:Start()
+				countdownControlledChaos:Start()
+			end
 		end
 	elseif spellId == 223034 then--Summon Chaos Spheres
 		warnSummonChaosSpheres:Show()
-		timerSummonChaosSpheresCD:Start()
+		if self.vb.phase == 2 then
+			timerSummonChaosSpheresCD:Start()--Unknown
+		else
+			timerSummonChaosSpheresCD:Start()--Unknown
+		end
 	elseif spellId == 218463 then--(10)
 		warnControlledChaos:Show(10)
 	elseif spellId == 218466 then--(20)
@@ -179,20 +207,39 @@ function mod:SPELL_CAST_START(args)
 		specWarnSolarCollapse:Show()
 		voiceSolarCollapse:Play("watchstep")
 		if self.vb.phase == 3 then
-			timerSolarCollapseCD:Start(70)
+			if self:IsMythic() then
+			
+			else
+				timerSolarCollapseCD:Start(70)
+			end
 		elseif self.vb.phase == 2 then
-			timerSolarCollapseCD:Start(55)
+			if self:IsMythic() then
+			
+			else
+				timerSolarCollapseCD:Start(55)
+			end
 		else
-			timerSolarCollapseCD:Start()--35
+			if self:IsMythic() then
+				timerSolarCollapseCD:Start(64)
+			else
+				timerSolarCollapseCD:Start()--35
+			end
 		end
 --	elseif spellId == 218806 then
 --		warnFlare:Show()
 	elseif spellId == 218774 then
 		warnPlasmaSpheres:Show()
-		if self.vb.phase == 3 then
+		if self.vb.phase == 2 then
+			--Mythic Only
+		elseif self.vb.phase == 3 then
+			--Doesn't need mythic rule, if this is last boss left they won't be using this version ofs pell
 			timerPlasmaSpheresCD:Start(70)
 		else
-			timerPlasmaSpheresCD:Start()
+			if self:IsMythic() then
+				timerPlasmaSpheresCD:Start(64)
+			else
+				timerPlasmaSpheresCD:Start()--35
+			end
 		end
 	elseif spellId == 223219 then--Summon Chaotic Spheres of Nature
 		warnChaosSpheresOfNature:Show()
@@ -203,8 +250,20 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 218927 then
 		specWarnGraceOfNature:Show()
 		voiceGraceOfNature:Play("bossout")
-		timerGraceOfNatureCD:Start()--Not yet known, assumed 70
-		countdownGraceOfNature:Start()
+		if self:IsMythic() then
+			if self.vb.phase == 1 then
+				timerGraceOfNatureCD:Start(64)
+				countdownGraceOfNature:Start(64)
+			elseif self.vb.phase == 2 then
+			
+			else
+			
+			end
+		else
+			--Only phase 3 for non mythic so no additional rules.
+			timerGraceOfNatureCD:Start()--Not yet known, assumed 70
+			countdownGraceOfNature:Start()
+		end
 	elseif spellId == 216830 then--Phase 2
 		self.vb.phase = 2
 		warnPhase2:Show()
@@ -248,20 +307,45 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 218424 then
 		if self.vb.phase == 3 then
-			timerParasiticFetterCD:Start(70)
-			countdownParasiticFetter:Start(70)
+			if self:IsMythic() then
+
+			else
+				timerParasiticFetterCD:Start(70)
+				countdownParasiticFetter:Start(70)
+			end
 		elseif self.vb.phase == 2 then
 			timerParasiticFetterCD:Start(55)
 			countdownParasiticFetter:Start(55)
 		else
-			timerParasiticFetterCD:Start()--35
-			countdownParasiticFetter:Start()
+			if self:IsMythic() then
+				timerParasiticFetterCD:Start(64)
+				countdownParasiticFetter:Start(64)
+			else
+				timerParasiticFetterCD:Start()--35
+				countdownParasiticFetter:Start()
+			end
 		end
 	elseif spellId == 218807 then
-		timerCoNCD:Start()
-		countdownCoN:Start()
+		if self:IsMythic() then
+			if self.vb.phase == 1 then
+				timerCoNCD:Start(64)
+				countdownCoN:Start(64)
+			elseif self.vb.phase == 2 then
+			
+			else
+			
+			end
+		else
+			--Only phase 3 on normal
+			timerCoNCD:Start()
+			countdownCoN:Start()
+		end
 	elseif spellId == 223437 then
-		
+		if self.vb.phase == 2 then
+			timerCollapseofNightCD:Start()
+		else--Phase 3
+			timerCollapseofNightCD:Start()
+		end
 	end
 end
 
@@ -360,14 +444,14 @@ function mod:UNIT_DIED(args)
 		timerSummonChaosSpheresCD:Stop()
 		if self.vb.phase == 2 then--1 boss dead
 			--Solarist Tel'arn replaces Solar Collapse with Collapse of Night when Arcanist Tel'arn is killed first
-			local solarelapsed, solartotal = timerSolarCollapseCD:GetTime()
 			timerSolarCollapseCD:Stop()
-			if solarelapsed > 0 then
-				local solarremaining = solartotal - solarelapsed
-				timerCollapseofNightCD:Update(solarelapsed, solartotal)
-				countdownCoN:Start(solarremaining)--Call of night countdown added to solar collapse
-			end
+			timerCollapseofNightCD:Start(18)
+			countdownCoN:Start(18)
 			--Naturalist Tel'arn's Parsitic Fetter causes Controlled Chaos when removed if Arcanist Tel'arn is killed first
+			timerParasiticFetterCD:Stop()
+			timerParasiticFetterCD:Start(16)
+			timerPlasmaSpheresCD:Stop()
+			timerPlasmaSpheresCD:Start(40)
 		elseif self.vb.phase == 3 then--2 bosses dead
 			--These requires checking which boss is left
 			for i = 1, 5 do
@@ -392,12 +476,9 @@ function mod:UNIT_DIED(args)
 		timerPlasmaSpheresCD:Stop()
 		if self.vb.phase == 2 then--1 boss dead
 			--Arcanist Tel'arn's replaces Controlled Chaos with Summon Chaos Spheres when Solarist Tel'arn is killed first
-			local controlledelapsed, controlledtotal = timerControlledChaosCD:GetTime()
 			timerControlledChaosCD:Stop()
 			countdownControlledChaos:Cancel()
-			if controlledelapsed > 0 then
-				timerSummonChaosSpheresCD:Update(controlledelapsed, controlledtotal)
-			end
+			timerSummonChaosSpheresCD:Start(1)
 			--Naturalist Tel'arn's Toxic Spores cause a Solar Collapse at the target's location when Solarist Tel'arn is killed first
 		elseif self.vb.phase == 3 then--2 bosses dead
 			--These requires checking which boss is left
@@ -418,6 +499,10 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 109041 then--Naturalist Tel'arn
 		self.vb.phase = self.vb.phase + 1
+		timerToxicSporesCD:Stop()
+		timerParasiticFetterCD:Stop()
+		timerGraceOfNatureCD:Stop()
+		countdownGraceOfNature:Cancel()
 		if self.vb.phase == 2 then--1 boss dead
 			--Arcanist Tel'arn's Call of Night periodically summons Toxic Spores when Naturalist Tel'arn is killed first
 			--Solarist Tel'arn's Plasma Spheres create Parasitic Lashers when killed if Naturalist Tel'arn is killed first.
