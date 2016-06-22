@@ -7,6 +7,7 @@ mod:SetEncounterID(1886)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 --mod:SetHotfixNoticeRev(12324)
+mod:SetBossHPInfoToHighest()
 mod.respawnTime = 29.5
 
 mod:RegisterCombat("combat")
@@ -132,7 +133,8 @@ function mod:OnCombatStart(delay)
 	self.vb.CoNIcon = 1
 	self.vb.phase = 1
 	if self:IsMythic() then
-		timerSolarCollapseCD:Start(5-delay)--Confirmed
+		self:SetCreatureID(109038, 109040, 109041)
+		timerSolarCollapseCD:Start(5-delay)
 		timerParasiticFetterCD:Start(16-delay)
 		countdownParasiticFetter:Start(16-delay)
 		timerControlledChaosCD:Start(30-delay)
@@ -143,6 +145,7 @@ function mod:OnCombatStart(delay)
 		timerGraceOfNatureCD:Start(65-delay)
 		countdownGraceOfNature:Start(65-delay)
 	else
+		self:SetCreatureID(104528)
 		timerSolarCollapseCD:Start(10-delay)
 		timerParasiticFetterCD:Start(21-delay)
 		countdownParasiticFetter:Start(21-delay)
