@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 218438 218463 218466 218470 218148 218774 219049 218927 216830 216877 223034 223219",
 	"SPELL_CAST_SUCCESS 218424 218807 223437",
-	"SPELL_AURA_APPLIED 218809 218503 218304 218342",
+	"SPELL_AURA_APPLIED 218809 218503 218304 218342 222021 222010 222020",
 	"SPELL_AURA_APPLIED_DOSE 218503",
 	"SPELL_AURA_REMOVED 218809 218304",
 --	"SPELL_DAMAGE",
@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, flare? wtf? tooltip is either wrong or boss has one useless insigificant spell
 --TODO, adjust 15% on stars if it's too low/high. 25% was used on algalon for reference
 --TODO, see if controlled chaos 10-30 are no longer hidden in later tests. if still hidden, have to use scheduling and exact timing synced to videos
---(ability.id = 218438 or ability.id = 223034 or ability.id = 218774 or ability.id = 219049 or ability.id = 218927 or ability.id = 216830 or ability.id = 216877 or ability.id = 218148 or ability.id = 223219) and type = "begincast" or (ability.id = 218807 or ability.id = 218424 or ability.id = 223437) and type = "cast"
+--(target.id = 109040 or target.id = 109038 or target.id = 109041) and type = "death" or (ability.id = 218438 or ability.id = 223034 or ability.id = 218774 or ability.id = 218927 or ability.id = 216830 or ability.id = 216877 or ability.id = 218148 or ability.id = 223219) and type = "begincast" or (ability.id = 218807 or ability.id = 218424 or ability.id = 223437) and type = "cast" or ability.id = 222021 or ability.id = 222010 or ability.id = 222020
 --or self:IsMythic() and self.vb.phase == 1--Ready to go in case my theory is correct
 --Stage 1: The High Botanist
 local warnRecursiveStrikes			= mod:NewStackAnnounce(218503, 2, nil, "Tank")
