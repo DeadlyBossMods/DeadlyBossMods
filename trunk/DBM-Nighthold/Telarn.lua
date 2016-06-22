@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 218809 218304",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
-	"UNIT_DIED",
+--	"UNIT_DIED",
 	"UNIT_HEALTH target focus mouseover"
 )
 
@@ -133,16 +133,15 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	if self:IsMythic() then
 		timerSolarCollapseCD:Start(5-delay)--Confirmed
-		timerParasiticFetterCD:Start(12-delay)
-		countdownParasiticFetter:Start(12-delay)
-		timerControlledChaosCD:Start(25-delay)
-		countdownControlledChaos:Start(25-delay)
-		timerPlasmaSpheresCD:Start(40-delay)
-		timerCoNCD:Start(52-delay)
-		countdownCoN:Start(52-delay)
-		timerGraceOfNatureCD:Start(60-delay)
-		countdownGraceOfNature:Start(60-delay)
-		--Probably some other ability timers
+		timerParasiticFetterCD:Start(16-delay)
+		countdownParasiticFetter:Start(16-delay)
+		timerControlledChaosCD:Start(30-delay)
+		countdownControlledChaos:Start(30-delay)
+		timerPlasmaSpheresCD:Start(45-delay)
+		timerCoNCD:Start(57-delay)--52-57
+		countdownCoN:Start(57-delay)
+		timerGraceOfNatureCD:Start(65-delay)
+		countdownGraceOfNature:Start(65-delay)
 	else
 		timerSolarCollapseCD:Start(10-delay)
 		timerParasiticFetterCD:Start(21-delay)
@@ -175,12 +174,9 @@ function mod:SPELL_CAST_START(args)
 				countdownControlledChaos:Start(70)
 			end
 		elseif self.vb.phase == 2 then
-			if self:IsMythic() then
-			
-			else
-				timerControlledChaosCD:Start(55)
-				countdownControlledChaos:Start(55)
-			end
+			--55 for all!
+			timerControlledChaosCD:Start(55)
+			countdownControlledChaos:Start(55)
 		else
 			if self:IsMythic() then
 				timerControlledChaosCD:Start(64)
@@ -213,11 +209,8 @@ function mod:SPELL_CAST_START(args)
 				timerSolarCollapseCD:Start(70)
 			end
 		elseif self.vb.phase == 2 then
-			if self:IsMythic() then
-			
-			else
-				timerSolarCollapseCD:Start(55)
-			end
+			--55 for all!
+			timerSolarCollapseCD:Start(55)
 		else
 			if self:IsMythic() then
 				timerSolarCollapseCD:Start(64)
@@ -231,6 +224,7 @@ function mod:SPELL_CAST_START(args)
 		warnPlasmaSpheres:Show()
 		if self.vb.phase == 2 then
 			--Mythic Only
+			timerPlasmaSpheresCD:Start(55)
 		elseif self.vb.phase == 3 then
 			--Doesn't need mythic rule, if this is last boss left they won't be using this version ofs pell
 			timerPlasmaSpheresCD:Start(70)
@@ -255,7 +249,8 @@ function mod:SPELL_CAST_START(args)
 				timerGraceOfNatureCD:Start(64)
 				countdownGraceOfNature:Start(64)
 			elseif self.vb.phase == 2 then
-			
+				timerGraceOfNatureCD:Start(55)
+				countdownGraceOfNature:Start(55)
 			else
 			
 			end
@@ -314,6 +309,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				countdownParasiticFetter:Start(70)
 			end
 		elseif self.vb.phase == 2 then
+			--55 for all!
 			timerParasiticFetterCD:Start(55)
 			countdownParasiticFetter:Start(55)
 		else
@@ -331,7 +327,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerCoNCD:Start(64)
 				countdownCoN:Start(64)
 			elseif self.vb.phase == 2 then
-			
+				timerCoNCD:Start(55)
+				countdownCoN:Start(55)
 			else
 			
 			end
@@ -342,9 +339,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 223437 then
 		if self.vb.phase == 2 then
-			timerCollapseofNightCD:Start()
+			timerCollapseofNightCD:Start(55)
 		else--Phase 3
-			timerCollapseofNightCD:Start()
+			timerCollapseofNightCD:Start()--unknown
 		end
 	end
 end
@@ -405,6 +402,87 @@ function mod:SPELL_AURA_APPLIED(args)
 --			specWarnGraceOfNature:Show(targetName)
 --			voiceGraceOfNature:Play("bossout")
 --		end
+	elseif spellId == 222021 or spellId == 222010 or spellId == 222020 then--Infusions
+		if not self:IsMythic() then return end--Just in case, I don't think this happens in other difficulties though.
+		if self:AntiSpam(30, spellId) then
+			--Bump phase and stop all timers since regardless of kills, phase changes reset anyone that's still up
+			self.vb.phase = self.vb.phase + 1
+			--Arcanist Timers
+			timerCoNCD:Stop()
+			countdownCoN:Cancel()
+			timerControlledChaosCD:Stop()
+			countdownControlledChaos:Cancel()
+			timerSummonChaosSpheresCD:Stop()
+			--Solar Timers
+			timerSolarCollapseCD:Stop()
+			timerCollapseofNightCD:Stop()
+			timerPlasmaSpheresCD:Stop()
+			--Nature Timers
+			timerToxicSporesCD:Stop()
+			timerParasiticFetterCD:Stop()
+			timerGraceOfNatureCD:Stop()
+			countdownGraceOfNature:Cancel()
+		end
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if spellId == 222021 then--Arcanist Died and passed on power
+			if cid == 109038 then--Solarist Lives
+				--Solarist Tel'arn replaces Solar Collapse with Collapse of Night when Arcanist Tel'arn is killed first. (or second, journal is incomplete)
+				if self.vb.phase == 2 then
+					timerCollapseofNightCD:Start(28)
+					countdownCoN:Start(28)
+					timerPlasmaSpheresCD:Start(40)
+				else
+					timerCollapseofNightCD:Start(22)
+					countdownCoN:Start(22)
+					--Needs more data, not long enough pull
+				end
+			elseif cid == 109041 then--Naturalist Lives
+				--Naturalist Tel'arn's Parsitic Fetter causes Controlled Chaos when removed if Arcanist Tel'arn is killed first. (Does this also happen if killed second?)
+				if self.vb.phase == 2 then
+					timerParasiticFetterCD:Start(16)
+				else
+					--Naturalist Tel'arn gains Summon Chaotic Spheres of Nature when he is the last form alive.
+					timerChaotiSpheresofNatureCD:Start(1)--Still using AI timer
+				end
+			end
+		elseif spellId == 222010 then--Solar Died and passed on power
+			if cid == 109040 then--Arcanist Lives
+				if self.vb.phase == 2 then
+					--Arcanist Tel'arn replaces Controlled Chaos with Summon Chaos Spheres when Solarist Tel'arn is killed first. (Does this also happen if killed second?)
+				else
+					--Arcanist Tel'arn's Controlled Chaos causes several points of Solar Collapse to spawn around it's perimeter when Solarist Tel'arn is killed second.
+					--Arcanist Tel'arn's Recursive Strikes creates Plasma Spheres when it expires if Solarist Tel'arn is killed second
+				end
+			elseif cid == 109041 then--Naturalist Lives
+				if self.vb.phase == 2 then
+					--Naturalist Tel'arn's Toxic Spores cause a Solar Collapse at the target's location when Solarist Tel'arn is killed first. (Does this also happen if killed second?)
+				else
+					--Naturalist Tel'arn gains Summon Chaotic Spheres of Nature when he is the last form alive.
+					timerChaotiSpheresofNatureCD:Start(1)--Still using AI timer
+				end
+			end
+		else--Nature died and passed on power
+			if cid == 109040 then--Arcanist Lives
+				if self.vb.phase == 2 then
+					--Arcanist Tel'arn's Call of Night periodically summons Toxic Spores when Naturalist Tel'arn is killed first. (Does this also happen if killed second?)
+					timerCoNCD:Start(42)
+					countdownCoN:Start(42)
+					timerControlledChaosCD:Start(55)
+					countdownControlledChaos:Start(55)
+				else
+					--No ability changes? Probably at least inherits Call of night toxic spores
+				end
+			elseif cid == 109038 then--Solar Lives
+				if self.vb.phase == 2 then
+					--Solarist Tel'arn's Plasma Spheres create Parasitic Lashers when killed if Naturalist Tel'arn is killed first. (Does this also happen if killed second?)
+					timerSolarCollapseCD:Start(15)
+					timerPlasmaSpheresCD:Start(25)
+				else
+					--Solarist Tel'arn's Flare applies Parasitic Fetter to all targets hit if Naturalist Tel'arn is killed second.
+					--Solarist Tel'arn's Plasma Spheres create Toxic Spores when killed if Naturalist Tel'arn is killed second.
+				end
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -432,6 +510,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:UNIT_DIED(args)
 	if not self:IsMythic() then return end
 	local cid = self:GetCIDFromGUID(args.destGUID)
@@ -444,10 +523,10 @@ function mod:UNIT_DIED(args)
 		timerSummonChaosSpheresCD:Stop()
 		if self.vb.phase == 2 then--1 boss dead
 			--Solarist Tel'arn replaces Solar Collapse with Collapse of Night when Arcanist Tel'arn is killed first
-			timerSolarCollapseCD:Stop()
-			timerCollapseofNightCD:Start(18)
-			countdownCoN:Start(18)
 			--Naturalist Tel'arn's Parsitic Fetter causes Controlled Chaos when removed if Arcanist Tel'arn is killed first
+			timerSolarCollapseCD:Stop()
+			timerCollapseofNightCD:Start(28)
+			countdownCoN:Start(28)
 			timerParasiticFetterCD:Stop()
 			timerParasiticFetterCD:Start(16)
 			timerPlasmaSpheresCD:Stop()
@@ -459,7 +538,8 @@ function mod:UNIT_DIED(args)
 				if UnitExists(bossUID) then
 					local cid = self:GetUnitCreatureId(bossUID)
 					if cid == 109038 then--Solarist Tel'arn is what's left
-						--Nothing?
+						timerSolarCollapseCD:Stop()
+						timerCollapseofNightCD:Start(22)
 						break
 					elseif cid == 109041 then--Naturalist Tel'arn
 						--Naturalist Tel'arn gains Summon Chaotic Spheres of Nature when he is the last form alive
@@ -525,6 +605,7 @@ function mod:UNIT_DIED(args)
 		end
 	end
 end
+--]]
 
 function mod:UNIT_HEALTH(uId)
 	local cid = self:GetUnitCreatureId(uId)
