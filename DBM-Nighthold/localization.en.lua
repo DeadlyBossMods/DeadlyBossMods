@@ -78,6 +78,7 @@ L= DBM:GetModLocalization(1732)
 L= DBM:GetModLocalization(1743)
 
 L:SetOptionLocalization{
+	ShowNeutralColor		= "Show white circles on HUD around players that have no star sign, until all signs are cleared.",
 	FilterOtherSigns		= "Filter target announces for Star Signs you are not affected by."
 }
 
