@@ -427,6 +427,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			countdownGraceOfNature:Cancel()
 		end
 		local cid = self:GetCIDFromGUID(args.destGUID)
+		--If phase 3 then only one is left, we can skip the rest and just start timers for a boss that has all the things!
+		--This theory is disabled right now cause order of first two MIGHT matter maybe? Hard to say with convoluted shit dungeon journal
+--[[	if self.vb.phase == 3 then
+			if cid == 109040 then--Arcanist Lives
+				
+			elseif cid == 109038 then--Solarist Lives
+				timerCollapseofNightCD:Start(22)
+				countdownCoN:Start(22)
+			elseif cid == 109041 then--Naturalist Lives
+				timerChaotiSpheresofNatureCD:Start(1)
+			end--]]
+		--Phase 2 then check things!
 		if spellId == 222021 then--Arcanist Died and passed on power
 			if cid == 109038 then--Solarist Lives
 				--Solarist Tel'arn replaces Solar Collapse with Collapse of Night when Arcanist Tel'arn is killed first. (or second, journal is incomplete)
