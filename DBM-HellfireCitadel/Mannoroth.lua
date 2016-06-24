@@ -96,9 +96,9 @@ local timerShadowForceCD			= mod:NewCDTimer(52.2, 181799, nil, nil, nil, 3, nil,
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
 
-local countdownGlaiveCombo			= mod:NewCountdown("Alt30", 181354, "Tank")
-local countdownMarkOfDoom			= mod:NewCountdownFades("AltTwo15", 181099)
-local countdownShadowForce			= mod:NewCountdown(52, 181799)
+local countdownGlaiveCombo			= mod:NewCountdown("Alt30", 181354, "Tank", nil, 3)
+local countdownMarkOfDoom			= mod:NewCountdownFades("AltTwo15", 181099, nil, nil, 3)
+local countdownShadowForce			= mod:NewCountdown(52, 181799, nil, nil, 3)
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 local voiceGaze						= mod:NewVoice(181597, false) --gather share
@@ -328,6 +328,55 @@ local function setWrathIcons(self)
 	end
 end
 
+--Felseeker delay: 6 seconds
+--Glaive Combo delay: 4 seconds
+--Fel Hellstorm delay: 1.5 seconds
+--Shadowforce delay: 8 seconds
+local function updateAllTimers(self, delay)
+	DBM:Debug("updateAllTimers running", 3)
+	if timerFelHellfireCD:GetRemaining() < delay then
+		local elapsed, total = timerFelHellfireCD:GetTime()
+		local extend = delay - (total-elapsed)
+		DBM:Debug("timerFelHellfireCD extended by: "..extend, 2)
+		timerFelHellfireCD:Stop()
+		timerFelHellfireCD:Update(elapsed, total+extend)
+	end
+	if timerGlaiveComboCD:GetRemaining() < delay then
+		local elapsed, total = timerGlaiveComboCD:GetTime()
+		local extend = delay - (total-elapsed)
+		DBM:Debug("timerGlaiveComboCD extended by: "..extend, 2)
+		timerGlaiveComboCD:Stop()
+		countdownGlaiveCombo:Cancel()
+		timerGlaiveComboCD:Update(elapsed, total+extend)
+		countdownGlaiveCombo:Start(delay)
+	end
+	if timerFelSeekerCD:GetRemaining() < delay then
+		local elapsed, total = timerFelSeekerCD:GetTime()
+		local extend = delay - (total-elapsed)
+		DBM:Debug("timerFelSeekerCD extended by: "..extend, 2)
+		timerFelSeekerCD:Stop()
+		timerFelSeekerCD:Update(elapsed, total+extend)
+	end
+	if timerGazeCD:GetRemaining() < delay then
+		local elapsed, total = timerGazeCD:GetTime()
+		local extend = delay - (total-elapsed)
+		DBM:Debug("timerGazeCD extended by: "..extend, 2)
+		timerGazeCD:Stop()
+		timerGazeCD:Update(elapsed, total+extend)
+	end
+	if self.vb.phase >= 3 then--Check shadowforce timer
+		if timerShadowForceCD:GetRemaining() < delay then
+			local elapsed, total = timerShadowForceCD:GetTime()
+			local extend = delay - (total-elapsed)
+			DBM:Debug("timerShadowForceCD extended by: "..extend, 2)
+			timerShadowForceCD:Stop()
+			countdownShadowForce:Cancel()
+			timerShadowForceCD:Update(elapsed, total+extend)
+			countdownShadowForce:Start(delay)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(doomTargets)
 	table.wipe(gazeTargets)
@@ -365,6 +414,7 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 181557 or spellId == 181948 then
+		--updateAllTimers(self, 1.5)
 		specWarnFelHellStorm:Show()
 		voiceFelHellstorm:Play("watchstep")
 		timerFelHellfireCD:Start()
@@ -395,9 +445,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 181738 or spellId == 182040 then--Ranged (30)
 		warnFelseeker:Show(30)
 	elseif spellId == 181799 or spellId == 182084 then
+		updateAllTimers(self, 8)
 		timerShadowForceCD:Start()
-		countdownShadowForce:Start(52.5)
 		if self:IsTank() and self.vb.phase == 3 then return end--Doesn't target tanks in phase 3, ever.
+		countdownShadowForce:Start(52.5)
 		specWarnShadowForce:Show()
 	elseif spellId == 181099 then
 		table.wipe(doomTargets)
@@ -745,6 +796,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 181735 then--0.1 seconds faster than combat log event for 10 yard cast.
+		updateAllTimers(self, 6)
 		specWarnFelSeeker:Show()
 		timerFelSeekerCD:Start()
 		voiceFelSeeker:Play("watchstep")
@@ -860,6 +912,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerWrathofGuldanCD:Start(11.2)
 		end
 	elseif spellId == 181354 then--183377 or 185831 also usable with SPELL_CAST_START but i like this way more, cleaner than Antispamming the other spellids
+		updateAllTimers(self, 4)
 		specWarnGlaiveCombo:Show()
 		timerGlaiveComboCD:Start()
 		countdownGlaiveCombo:Start()
