@@ -340,7 +340,7 @@ function mod:UNIT_DIED(args)
 		timerDeathglareCD:Stop(args.destGUID)
 	elseif cid == 105304 then--Dominator Tentacle
 		self.vb.DominatorCount = self.vb.DominatorCount - 1
-		timerNightmareishFuryCD:stop(args.destGUID)
+		timerNightmareishFuryCD:Stop(args.destGUID)
 	elseif cid == 105383 then--Corruptor tentacle
 		self.vb.CorruptorCount = self.vb.CorruptorCount - 1
 	elseif cid == 105322 then--Deathglare Tentacle
