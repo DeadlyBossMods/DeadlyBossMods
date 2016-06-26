@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 210931 209471 208697 208929 208689 210781 208685 218415",
 	"SPELL_CAST_SUCCESS 210984 215128",
-	"SPELL_AURA_APPLIED 209915 210099 210984 215234 215128 212886 210289",
+	"SPELL_AURA_APPLIED 209915 210099 210984 215234 215128 212886",
 	"SPELL_AURA_APPLIED_DOSE 210984",
 	"SPELL_AURA_REMOVED 209915 215128",
 	"SPELL_PERIODIC_DAMAGE 212886",
@@ -22,10 +22,11 @@ mod:RegisterEventsInCombat(
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_DIED",
 	"RAID_BOSS_WHISPER",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_ADDON"
 )
 
---TODO, figure out how often deathglare is cast to determine swap count for tanks
+--TODO, figure out how often Eye Of Fate is cast to determine swap count for tanks
 --TODO, figure out voice to use for specWarnHeartPhaseBegin
 --TODO, more adds timers if needed
 --TODO, improve spew corruption to work like thogar bombs (continous alerts/yells)
@@ -35,7 +36,7 @@ mod:RegisterEventsInCombat(
 local warnNightmareGaze				= mod:NewSpellAnnounce(210931, 3, nil, false)--Something tells me this is just something it spam casts
 local warnFixate					= mod:NewTargetAnnounce(210099, 2, nil, false)--Spammy so default off
 local warnNightmareExplosion		= mod:NewCastAnnounce(209471, 3)
-local warnDeathglare				= mod:NewStackAnnounce(210984, 2, nil, "Tank")
+local warnEyeOfFate					= mod:NewStackAnnounce(210984, 2, nil, "Tank")
 local warnSpewCorruption			= mod:NewTargetAnnounce(208929, 3, nil, false)--Spammy so default off
 local warnGroundSlam				= mod:NewTargetAnnounce(208689, 2)--Figure this out later
 local warnDeathBlossom				= mod:NewCastAnnounce(218415, 4)
@@ -46,8 +47,8 @@ local warnCursedBlood				= mod:NewTargetAnnounce(215128, 3)
 local specWarnNightmareCorruption	= mod:NewSpecialWarningMove(212886, nil, nil, nil, 1, 2)
 local specWarnFixate				= mod:NewSpecialWarningMoveTo(210099, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(210099), nil, 1, 2)
 local specWarnNightmareHorror		= mod:NewSpecialWarningSwitch("ej13188", "-Healer", nil, nil, 1, 2)--spellId for summon 210289
-local specWarnDeathglare			= mod:NewSpecialWarningStack(210984, nil, 2)
-local specWarnDeathglareOther		= mod:NewSpecialWarningTaunt(210984, nil, nil, nil, 1, 2)
+local specWarnEyeOfFate				= mod:NewSpecialWarningStack(210984, nil, 2)
+local specWarnEyeOfFateOther		= mod:NewSpecialWarningTaunt(210984, nil, nil, nil, 1, 2)
 local specWarnMindFlay				= mod:NewSpecialWarningInterrupt(208697, nil, nil, nil, 1, 2)
 local specWarnSpewCorruption		= mod:NewSpecialWarningRun(208929, nil, nil, nil, 4, 2)
 local yellSpewCorruption			= mod:NewYell(208929)
@@ -64,8 +65,8 @@ local yellCursedBlood				= mod:NewFadesYell(215128)
 --Stage One: The Ruined Ground
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerNightmareHorrorCD		= mod:NewNextTimer(220, "ej13188", nil, nil, nil, 1, 210289)
-local timerDeathglareCD				= mod:NewCDTimer(10.9, 210984, nil, "Tank", nil, 5)
-local timerNightmareishFuryCD		= mod:NewCDTimer(10.9, 215234, nil, "Tank", nil, 5)
+local timerEyeOfFateCD				= mod:NewCDTimer(10, 210984, nil, "Tank", nil, 5)
+local timerNightmareishFuryCD		= mod:NewNextTimer(10.9, 215234, nil, "Tank", nil, 5)
 local timerDeathBlossomCD			= mod:NewNextTimer(105, 218415, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON)
 local timerDeathBlossom				= mod:NewCastTimer(15, 218415, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 --Stage Two: The Heart of Corruption
@@ -83,7 +84,7 @@ local countdownDarkRecon			= mod:NewCountdown("Alt50", 210781)
 local voiceNightmareCorruption		= mod:NewVoice(212886)--runaway
 local voiceFixate					= mod:NewVoice(210099)--targetyou
 local voiceNightmareHorror			= mod:NewVoice("ej13188", "-Healer")--bigmob
-local voiceDeathGlare				= mod:NewVoice(210984)--changemt
+local voiceEyeOfFate				= mod:NewVoice(210984)--changemt
 local voiceMindFlay					= mod:NewVoice(208697)--kickcast
 local voiceSpewCorruption			= mod:NewVoice(208929)--runout
 local voiceNightmarishFury			= mod:NewVoice(210984)--defensive
@@ -218,7 +219,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 210984 then
-		timerDeathglareCD:Start(nil, args.sourceGUID)
+		timerEyeOfFateCD:Start(nil, args.sourceGUID)
 	end
 end
 
@@ -244,21 +245,23 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			if amount >= 2 then
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
-					specWarnDeathglare:Show(amount)
+					specWarnEyeOfFate:Show(amount)
 				else--Taunt as soon as stacks are clear, regardless of stack count.
 					if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
-						specWarnDeathglareOther:Show(args.destName)
-						voiceDeathGlare:Play("changemt")
+						specWarnEyeOfFateOther:Show(args.destName)
+						voiceEyeOfFate:Play("changemt")
 					else
-						warnDeathglare:Show(args.destName, amount)
+						warnEyeOfFate:Show(args.destName, amount)
 					end
 				end
 			else
-				warnDeathglare:Show(args.destName, amount)
+				warnEyeOfFate:Show(args.destName, amount)
 			end
 		end
 	elseif spellId == 215234 then
-		timerNightmareishFuryCD:Start(nil, args.sourceGUID)
+		if self:AntiSpam(3, 4) then
+			timerNightmareishFuryCD:Start()
+		end
 		--Hopefully this has a boss unitID
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
@@ -285,11 +288,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 212886 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnNightmareCorruption:Show()
 		voiceNightmareCorruption:Play("runaway")
-	elseif spellId == 210289 then
-		specWarnNightmareHorror:Show()
-		voiceNightmareHorror:Play("bigmob")
-		timerNightmareHorrorCD:Start()
-		self.vb.NightmareCount = self.vb.NightmareCount + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -337,10 +335,12 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 105591 then--Nightmare Horror
 		self.vb.NightmareCount = self.vb.NightmareCount - 1
-		timerDeathglareCD:Stop(args.destGUID)
+		timerEyeOfFateCD:Stop(args.destGUID)
 	elseif cid == 105304 then--Dominator Tentacle
 		self.vb.DominatorCount = self.vb.DominatorCount - 1
-		timerNightmareishFuryCD:Stop(args.destGUID)
+		if self.vb.DominatorCount == 0 then
+			timerNightmareishFuryCD:Stop()
+		end
 	elseif cid == 105383 then--Corruptor tentacle
 		self.vb.CorruptorCount = self.vb.CorruptorCount - 1
 	elseif cid == 105322 then--Deathglare Tentacle
@@ -358,9 +358,22 @@ function mod:RAID_BOSS_WHISPER(msg)
 	end
 end
 
+do
+	local NightmareHorror = EJ_GetSectionInfo(13188)
+	function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
+		if targetname == NightmareHorror then
+			specWarnNightmareHorror:Show()
+			voiceNightmareHorror:Play("bigmob")
+			timerNightmareHorrorCD:Start()
+			self.vb.NightmareCount = self.vb.NightmareCount + 1
+			--timerEyeOfFateCD:Start(18)--Review consistency
+		end
+	end
+end
+
 function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 	if prefix ~= "Transcriptor" then return end
-	if msg:find("spell:208689") then--Ground Slam
+	if msg:find("spell:208689") and self:AntiSpam(2, targetName) then--Ground Slam
 		targetName = Ambiguate(targetName, "none")
 		if self:CheckNearby(5, targetName) then
 			specWarnGroundSlamNear:Show(targetName)
