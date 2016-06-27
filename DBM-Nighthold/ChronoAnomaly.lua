@@ -7,6 +7,7 @@ mod:SetEncounterID(1865)
 mod:SetZone()
 --mod:SetUsedIcons(5, 4, 3, 2, 1)--sometimes it was 5 targets, sometimes it was whole raid. even post nerf. have to see
 --mod:SetHotfixNoticeRev(12324)
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
