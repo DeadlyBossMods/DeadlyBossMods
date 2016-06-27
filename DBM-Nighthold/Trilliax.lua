@@ -154,13 +154,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 206641 then--Arcane Spear
 		timerSpearCD:Start(self.vb.spearCooldown)
-	elseif spellId == 201427 then--Probably wrong Annihilation (Maniac Mode)
+--[[	elseif spellId == 201427 then--Probably wrong Annihilation (Maniac Mode)
 		specWarnAnnihilation:Show()
 		voiceAnnihilation:Play("farfromline")
 		if self.Options.HudMapOnAnnihilation then
 			--"<75.04 18:42:00> [CLEU] SPELL_CAST_SUCCESS#Player-970-00048598#Vivye##nil#201427#Annihilation#nil#nil", -- [4781]--sourcename or target name?
 			DBMHudMap:RegisterStaticMarkerOnPartyMember(201427, "highlight", args.sourceName, 5, 4, 1, 0, 0, 0.5, nil, 1):Pulse(0.5, 0.5)
-		end
+		end--]]
 	end
 end
 
