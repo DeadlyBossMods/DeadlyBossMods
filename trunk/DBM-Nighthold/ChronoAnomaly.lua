@@ -57,24 +57,30 @@ local voiceBigAdd					= mod:NewVoice(206700, "-Healer")
 local voiceSmallAdd					= mod:NewVoice(206699, "Tank")
 
 mod:AddRangeFrameOption(10, 206617)
+mod:AddInfoFrameOption(206617)
 --mod:AddSetIconOption("SetIconOnTimeRelease", 206610, true)
 
 mod.vb.OPActive = false
 mod.vb.normCount = 0
 mod.vb.fastCount = 0
 mod.vb.slowCount = 0
+mod.vb.timeBombDebuffCount = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.OPActive = false
 	self.vb.normCount = 0
 	self.vb.fastCount = 0
 	self.vb.slowCount = 0
+	self.vb.timeBombDebuffCount = 0
 	--No timers here, started by speed events
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
@@ -100,6 +106,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 206617 then
+		self.vb.timeBombDebuffCount = self.vb.timeBombDebuffCount + 1
 		warnTimeBomb:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)
@@ -116,6 +123,10 @@ function mod:SPELL_AURA_APPLIED(args)
 					DBM.RangeCheck:Show(10)
 				end
 			end
+		end
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(10, "playerdebuffremaining", args.spellName)
 		end
 	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
 		warnTimeRelease:CombinedShow(0.5, args.destName)
@@ -135,6 +146,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 206617 then
+		self.vb.timeBombDebuffCount = self.vb.timeBombDebuffCount - 1
 		if args:IsPlayer() then
 			specWarnTimeBomb:Cancel()
 			voiceTimeBomb:Cancel()
@@ -144,6 +156,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
+		end
+		if self.Options.InfoFrame and self.vb.timeBombDebuffCount == 0 then
+			DBM.InfoFrame:Hide()
 		end
 	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
 --		if self.Options.SetIconOnTimeRelease then
