@@ -140,7 +140,7 @@ end
 
 function mod:ENCOUNTER_START(encounterID)
 	--Re-engaged, kill scans and long wipe time
-	if encounterID == 1807 and self:IsIncombat() then
+	if encounterID == 1807 and self:IsInCombat() then
 --		self:SetWipeTime(5)
 --		self:UnregisterShortTermEvents()
 		warnPhase2:Show()
