@@ -194,7 +194,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			if self:IsMythic() then
 				timerTimeBombCD:Start(5, 1)
 				timerTimeReleaseCD:Start(10, 1)
-				timerChronoPartCD:Start(10)
 				timerBurstofTimeCD:Start(15, 1)
 				self:Schedule(15, delayedBurst, self, 10, 2)--25
 				self:Schedule(10, delayedTimeRelease, self, 20, 2)--30
@@ -219,7 +218,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerTemporalOrbsCD:Start(10, 1)
 				timerTimeBombCD:Start(15, 1)
 				timerPowerOverwhelmingCD:Start(25)
-				DBM:AddMsg("There is incomplete timer data beyond 25 second mark of this phase. Please submit transcriptor log to improve this mod")
+				--Notes. This phase is 48 seconds. Depending on how fast OP is interrupted you'll see another burst of time and time bomb
+				--Burst of time will be exactly 10 seconds after interrupt of OP and time bomb 5 seconds after burst.
+				--TODO, some complicated mess of code to activate special "additional ability" timers when boss is interrupted during OP
+				--For now, timers are below here with less accuracy
+				timerBurstofTimeCD:Start(35, 1)
+				self:Schedule(15, delayedTimeBomb, self, 25, 2)--40
+				timerBigAddCD:Start(45)--Could be 48, but I suspect that was just delayed by a slow interrupt of OP
+				countdownBigAdd:Start(45)
 			else
 				timerTimeBombCD:Start(5, 1)
 				timerTimeReleaseCD:Start(10, 1)
@@ -266,7 +272,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			end
 		elseif self.vb.slowCount == 2 then
 			if self:IsMythic() then
-				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
+				timerBurstofTimeCD:Start(5, 1)
+				timerTimeReleaseCD:Start(15, 1)
+				self:Schedule(5, delayedBurst, self, 20, 2)--25
+				self:Schedule(25, delayedBurst, self, 5, 3)--30
+				self:Schedule(15, delayedTimeRelease, self, 20, 2)--35
+				self:Schedule(25, delayedBurst, self, 20, 4)--45
+				timerTemporalOrbsCD:Start(50, 1)
+				timerPowerOverwhelmingCD:Start(60)
 			else
 				timerTimeReleaseCD:Start(5, 1)
 				timerTemporalOrbsCD:Start(15, 1)
@@ -279,7 +292,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				self:Schedule(35, delayedBurst, self, 10, 4)--45
 				self:Schedule(45, delayedBurst, self, 5, 5)--50
 				--This may be incomplete.
-				DBM:AddMsg("There is incomplete timer data beyond 50 second mark of this phase. Please submit transcriptor log to improve this mod")
+				DBM:AddMsg("There is incomplete timer data beyond 50 second mark of Slow-2 phase. Please submit transcriptor log to improve this mod")
 			end
 		else
 			if self:IsMythic() then
@@ -336,6 +349,20 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerTimeReleaseCD:Start(40, 1)
 				timerSmallAddCD:Start(45)
 				self:Schedule(25, delayedBurst, self, 25, 5)--50
+			end
+		elseif self.vb.fastCount == 3 then
+			if self:IsMythic() then
+				timerTimeReleaseCD:Start(5, 1)
+				timerBurstofTimeCD:Start(10, 1)
+				self:Schedule(10, delayedBurst, self, 5, 2)--15
+				self:Schedule(5, delayedTimeRelease, self, 15, 2)--20
+				self:Schedule(15, delayedBurst, self, 10, 3)--25
+				self:Schedule(20, delayedTimeRelease, self, 10, 3)--30
+				self:Schedule(30, delayedTimeRelease, self, 5, 4)--35
+				self:Schedule(35, delayedTimeRelease, self, 5, 5)--40
+				DBM:AddMsg("There is incomplete timer data beyond 40 second mark of Fast-3 phase. Please submit transcriptor log to improve this mod")
+			else
+				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			end
 		else
 			if self:IsMythic() then
