@@ -10,6 +10,7 @@ mod:SetZone()
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
+mod.syncThreshold = 30
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 210931 209471 208697 208929 208689 210781 208685 218415",
@@ -186,7 +187,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 210931 then
 		warnNightmareGaze:Show()
-	elseif spellId == 209471 then
+	elseif spellId == 209471 and self:AntiSpam(3, 5) then
 		warnNightmareExplosion:Show()
 	elseif spellId == 208697 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
@@ -319,7 +320,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	for i = 1, 5 do
 		local bossUnitID
 		if UnitExists(bossUnitID) then--Check if new units exist we haven't detected and added yet.
-			local cid = mod:GetCIDFromGUID(UnitGUID(bossUnitID))
+			local cid = self:GetCIDFromGUID(UnitGUID(bossUnitID))
 			if not addsTable[UnitGUID(bossUnitID)] and cid == 105304 then--Dominator Tentacle
 				if self:AntiSpam(4, 2) then
 					specWarnDominatorTentacle:Show()
@@ -331,30 +332,42 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	end
 end
 
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 105591 then--Nightmare Horror
-		self.vb.NightmareCount = self.vb.NightmareCount - 1
-		timerEyeOfFateCD:Stop(args.destGUID)
-	elseif cid == 105304 then--Dominator Tentacle
-		self.vb.DominatorCount = self.vb.DominatorCount - 1
-		if self.vb.DominatorCount == 0 then
-			timerNightmareishFuryCD:Stop()
-		end
-	elseif cid == 105383 then--Corruptor tentacle
-		self.vb.CorruptorCount = self.vb.CorruptorCount - 1
-	elseif cid == 105322 then--Deathglare Tentacle
-		self.vb.DeathglareCount = self.vb.DeathglareCount - 1
-	elseif cid == 105721 then--Nightmare Ichor
-		self.vb.IchorCount = self.vb.IchorCount - 1
-	end
-end
-
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:208689") then
 		specWarnGroundSlam:Show()
 		yellGroundSlam:Yell()
 		voiceGroundSlam:Play("targetyou")
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 105591 or cid == 105304 or cid == 105383 or cid == 105322 or cid == 105721 then
+		self:SendSync("EnemyDied", args.destGUID)
+	end
+end
+
+function mod:OnSync(msg, guid)
+	--Syncing used do to combat log range issues if raid is too spread out
+	--It's easy to be out of range of combat log event
+	if not self:IsInCombat() then return end
+	if msg == "EnemyDied" and guid then
+		local cid = self:GetCIDFromGUID(guid)
+		if cid == 105591 then--Nightmare Horror
+			self.vb.NightmareCount = self.vb.NightmareCount - 1
+			timerEyeOfFateCD:Stop(guid)
+		elseif cid == 105304 then--Dominator Tentacle
+			self.vb.DominatorCount = self.vb.DominatorCount - 1
+			if self.vb.DominatorCount == 0 then
+				timerNightmareishFuryCD:Stop()
+			end
+		elseif cid == 105383 then--Corruptor tentacle
+			self.vb.CorruptorCount = self.vb.CorruptorCount - 1
+		elseif cid == 105322 then--Deathglare Tentacle
+			self.vb.DeathglareCount = self.vb.DeathglareCount - 1
+		elseif cid == 105721 then--Nightmare Ichor
+			self.vb.IchorCount = self.vb.IchorCount - 1
+		end
 	end
 end
 

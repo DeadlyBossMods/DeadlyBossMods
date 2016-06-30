@@ -62,7 +62,7 @@ local specWarnViolentWindsOther		= mod:NewSpecialWarningTaunt(218144, nil, nil, 
 
 --Spider Form
 mod:AddTimerLine(GetSpellInfo(210326))
-local timerSpiderFormCD				= mod:NewNextTimer(97, 210326, nil, nil, nil, 6)
+local timerSpiderFormCD				= mod:NewNextTimer(127, 210326, nil, nil, nil, 6)
 local timerFeedingTimeCD			= mod:NewNextCountTimer(50, 212364, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 local timerNecroticVenomCD			= mod:NewNextCountTimer(21.9, 215443, nil, nil, nil, 3)--This only targets ranged, but melee/tanks need to be sure to also move away from them
 local timerNightmareSpawnCD			= mod:NewNextTimer(10, 218630, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
@@ -72,7 +72,7 @@ local timerRocFormCD				= mod:NewNextTimer(47, 210308, nil, nil, nil, 6)
 local timerGatheringCloudsCD		= mod:NewNextTimer(16, 212707, nil, nil, nil, 2)
 local timerDarkStormCD				= mod:NewNextTimer(26, 210948, nil, nil, nil, 2)
 local timerTwistingShadowsCD		= mod:NewNextCountTimer(21.5, 210864, nil, nil, nil, 3)
-local timerRazorWingCD				= mod:NewNextTimer(59, 210547, nil, nil, nil, 3)--Needs more timer data when fight done properly
+local timerRazorWingCD				= mod:NewNextTimer(32.5, 210547, nil, nil, nil, 3)--Needs more timer data when fight done properly
 local timerRakingTalonsCD			= mod:NewCDCountTimer(32, 215582, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --local timerViolentWindsCD			= mod:NewAITimer(6, 218144, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON..DBM_CORE_TANK_ICON)
 
@@ -99,10 +99,11 @@ local voiceRakingTalon				= mod:NewVoice(215582)--defensive/tauntboss
 mod:AddSetIconOption("SetIconOnWinds", 218144)
 --mod:AddHudMapOption("HudMapOnMC", 163472)
 
-mod.vb.twistedCast = 0
-mod.vb.venomCast = 0
-mod.vb.talonsCast = 0
 mod.vb.feedingTimeCast = 0
+mod.vb.venomCast = 0
+mod.vb.twistedCast = 0
+mod.vb.talonsCast = 0
+mod.vb.razorWingCast = 0
 local eyeOfStorm = GetSpellInfo(211127)
 local scanTime = 0
 
@@ -112,6 +113,7 @@ local function findDebuff(self, spellName)
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
 		if UnitDebuff(uId, spellName) then
+			found = found + 1
 			warnNecroticVenom:CombinedShow(0.2, name)
 			if name == UnitName("player") then
 				specWarnNecroticVenom:Show()
@@ -162,9 +164,12 @@ function mod:SPELL_CAST_START(args)
 		specWarnDarkStorm:Show(eyeOfStorm)
 		voiceDarkStorm:Play("findshelter")
 	elseif spellId == 210547 then
+		self.vb.razorWingCast = self.vb.razorWingCast + 1
 		specWarnRazorWing:Show()
 		voiceRazorWing:Play("carefly")
-		--timerRazorWingCD:Start()
+		if self.vb.razorWingCast < 3 then
+			timerRazorWingCD:Start(nil, self.vb.razorWingCast+1)
+		end
 	elseif spellId == 215582 then
 		self.vb.talonsCast = self.vb.talonsCast + 1
 		local targetName, uId, bossuid = self:GetBossTarget(106087, true)
@@ -173,20 +178,11 @@ function mod:SPELL_CAST_START(args)
 			specWarnRakingTalon:Show()
 			voiceRakingTalon:Play("defensive")
 		end
-		if self.vb.talonsCast < 2 then
-			timerRakingTalonsCD:Start(nil, 2)
+		if self.vb.talonsCast < 3 then
+			timerRakingTalonsCD:Start(nil, self.vb.talonsCast+1)
 		end
 	elseif spellId == 210326 then--Spider Form
 		DBM:Debug("CLEU: Spider Form Cast")
-		self.vb.venomCast = 0
-		self.vb.feedingTimeCast = 0
-		timerRazorWingCD:Stop()
-		warnSpiderForm:Show()
-		timerNecroticVenomCD:Start(12.2, 1)
-		countdownNecroticVenom:Start(12.2)
-		timerFeedingTimeCD:Start(15.5, 1)
-		timerRocFormCD:Start(92)
-		countdownPhase:Start(92)
 	elseif spellId == 210308 then--Roc Form
 		DBM:Debug("CLEU: Roc Form Cast")
 	end
@@ -196,17 +192,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 210864 then
 		self.vb.twistedCast = self.vb.twistedCast + 1
-		--Only cast 3x per roc form
+		--Only cast 4x per roc form (used to be 3, but roc form is 127 seconds now, up from like 97)
 		if self.vb.twistedCast == 1 then
 			timerTwistingShadowsCD:Start(40, 2)
 		elseif self.vb.twistedCast == 2 then
 			timerTwistingShadowsCD:Start(21.5, 3)
+		elseif self.vb.twistedCast == 3 then
+			timerTwistingShadowsCD:Start(32.5, 4)
 		end
 	elseif spellId == 215443 then
 		scanTime = 0
 		self.vb.venomCast = self.vb.venomCast + 1
-		self:Schedule(0.1, findDebuff, self, args.spellName)
-		if self.vb.venomCast < 3 then--Cast 3x per spider form
+		self:Schedule(0.5, findDebuff, self, args.spellName)
+		if self.vb.venomCast < 4 then--Cast 4x per spider form
 			timerNecroticVenomCD:Start(nil, self.vb.venomCast+1)
 		end
 	elseif spellId == 218630 then
@@ -301,25 +299,28 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self.vb.feedingTimeCast < 2 then
 			timerFeedingTimeCD:Start(nil, 2)
 		end
-	elseif spellId == 226039 then--Bird Transform (backup, in log i have darkflight form cast was no longer in combat log, per blizzards usual crap
+	elseif spellId == 226039 then--Bird Transform
 		DBM:Debug("Bird Transform Cast")
 		self.vb.twistedCast = 0
 		self.vb.talonsCast = 0
+		self.vb.razorWingCast = 0
 		warnRocForm:Show()
 		timerTwistingShadowsCD:Start(7, 1)
 		timerGatheringCloudsCD:Start()--16
 		timerDarkStormCD:Start()--26
 		timerRakingTalonsCD:Start(52, 1)
-		timerRazorWingCD:Start(59)
+		timerRazorWingCD:Start(59, 1)
 		timerSpiderFormCD:Start()--No longer known. No long enough pull. At least 90
-		countdownPhase:Start(97)
---	elseif spellId == 218073 then--Venomous Spiderling Summoned Spider Spawn
-
---	elseif spellId == 215505 then--Summon Skittering Spiderling
-		--Likely primary scrip tand best one to use for announce
---	elseif spellId == 215507 then--Summon Skittering Spiderling
-		--Spawns actual mob
---	elseif spellId == 215508 then--Summon Skittering Spiderling
-		--Trigger missle triggered by 215505
+		countdownPhase:Start(127)
+	elseif spellId == 226055 then--Spider Transform
+		self.vb.venomCast = 0
+		self.vb.feedingTimeCast = 0
+		timerRazorWingCD:Stop()
+		warnSpiderForm:Show()
+		timerNecroticVenomCD:Start(12.2, 1)
+		countdownNecroticVenom:Start(12.2)
+		timerFeedingTimeCD:Start(15.5, 1)
+		timerRocFormCD:Start(92)
+		countdownPhase:Start(92)
 	end
 end
