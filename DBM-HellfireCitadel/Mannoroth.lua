@@ -414,10 +414,10 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 181557 or spellId == 181948 then
-		--updateAllTimers(self, 1.5)
 		specWarnFelHellStorm:Show()
 		voiceFelHellstorm:Play("watchstep")
 		timerFelHellfireCD:Start()
+		--updateAllTimers(self, 1.5)
 	elseif spellId == 181126 then
 --		timerShadowBoltVolleyCD:Start(args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID) then
@@ -445,11 +445,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 181738 or spellId == 182040 then--Ranged (30)
 		warnFelseeker:Show(30)
 	elseif spellId == 181799 or spellId == 182084 then
-		updateAllTimers(self, 8)
 		timerShadowForceCD:Start()
 		if self:IsTank() and self.vb.phase == 3 then return end--Doesn't target tanks in phase 3, ever.
 		countdownShadowForce:Start(52.5)
 		specWarnShadowForce:Show()
+		updateAllTimers(self, 8)
 	elseif spellId == 181099 then
 		table.wipe(doomTargets)
 	elseif spellId == 181597 or spellId == 182006 then
@@ -796,10 +796,10 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 181735 then--0.1 seconds faster than combat log event for 10 yard cast.
-		updateAllTimers(self, 6)
 		specWarnFelSeeker:Show()
 		timerFelSeekerCD:Start()
 		voiceFelSeeker:Play("watchstep")
+		updateAllTimers(self, 6)
 	elseif spellId == 181301 then--Summon Adds (phase 2 start/Mythic Phase 3)
 		DBM:Debug("Summon adds 181301 fired", 2)
 		self.vb.ignoreAdds = false
@@ -912,11 +912,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerWrathofGuldanCD:Start(11.2)
 		end
 	elseif spellId == 181354 then--183377 or 185831 also usable with SPELL_CAST_START but i like this way more, cleaner than Antispamming the other spellids
-		updateAllTimers(self, 4)
 		specWarnGlaiveCombo:Show()
 		timerGlaiveComboCD:Start()
 		countdownGlaiveCombo:Start()
 		voiceGlaiveCombo:Play("defensive")
+		updateAllTimers(self, 4)
 	end
 end
 
