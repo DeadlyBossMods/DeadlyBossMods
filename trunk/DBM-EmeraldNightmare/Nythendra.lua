@@ -58,12 +58,23 @@ local voiceInfestedMind				= mod:NewVoice(205043, "Dps")--findmc
 local voiceSpreadInfestation		= mod:NewVoice(205070, "HasInterrupt")--kickcast
 
 mod:AddSetIconOption("SetIconOnRot", 203096)--Of course I'll probably be forced to change method when BW does their own thing, for compat.
+mod:AddRangeFrameOption(30, 204463)--Range not actually known, 30 used for now
 mod:AddInfoFrameOption(204506)
 
 mod.vb.breathCount = 0
 mod.vb.rotCast = 0
 mod.vb.volatileRotCast = 0
 mod.vb.swarmCast = 0
+
+local debuffFilter
+do
+	local debuffName = GetSpellInfo(204463)
+	debuffFilter = function(uId)
+		if UnitDebuff(uId, debuffName) then
+			return true
+		end
+	end
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.breathCount = 0
@@ -90,6 +101,9 @@ end
 function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 
@@ -148,12 +162,18 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellVolatileRot:Schedule(remaining-2, 2)
 				yellVolatileRot:Schedule(remaining-3, 3)
 			end
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(30)
+			end
 		else
 			if self:IsTank() then
 				specWarnVolatileRotSwap:Show(args.destName)
 				voiceVolatileRot:Play("tauntboss")
 			else
 				warnVolatileRot:Show(args.destName)
+			end
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(30, debuffFilter)
 			end
 		end
 	elseif spellId == 203096 then
@@ -186,6 +206,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 204463 then
 		if args:IsPlayer() then
 			yellVolatileRot:Cancel()
+		end
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
 		end
 	elseif spellId == 203096 then
 		if args:IsPlayer() then
