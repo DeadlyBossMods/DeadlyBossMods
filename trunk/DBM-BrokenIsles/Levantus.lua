@@ -22,9 +22,9 @@ local warnElectrify				= mod:NewCastAnnounce(217344, 2)
 local specWarnMassiveSpout		= mod:NewSpecialWarningDodge(217249, nil, nil, nil, 2, 2)
 local specWarnElectrifyDispel	= mod:NewSpecialWarningDispel(217352, "Healer", nil, nil, 2, 2)
 
-local timerRendingWhirlCD		= mod:NewAITimer(16, 217235, nil, nil, nil, 2)
-local timerElectrifyCD			= mod:NewAITimer(16, 217344, nil, nil, nil, 2)
-local timerMassiveSpoutCD		= mod:NewAITimer(90, 217249, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerRendingWhirlCD		= mod:NewCDTimer(48.5, 217235, nil, nil, nil, 2)
+local timerElectrifyCD			= mod:NewCDTimer(33, 217344, nil, nil, nil, 2)
+local timerMassiveSpoutCD		= mod:NewCDTimer(66, 217249, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
 local voiceMassiveSpout			= mod:NewVoice(217249)--watchwave
 local voiceElectrify			= mod:NewVoice(217352, "Healer")--helpdispel
