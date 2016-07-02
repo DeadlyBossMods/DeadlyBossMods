@@ -34,7 +34,7 @@ local specWarnRampage				= mod:NewSpecialWarningInterrupt(191848, "HasInterrupt"
 
 --Next timers always, unless rampage is not interrupted (Boss will not cast anything else during rampages)
 local timerToxicWoundCD				= mod:NewCDTimer(25, 191855, nil, nil, nil, 3)
-local timerWindsCD					= mod:NewCDTimer(30, 191798, nil, nil, nil, 2)
+local timerWindsCD					= mod:NewNextTimer(30, 191798, nil, nil, nil, 2)
 
 local voiceToxicWound				= mod:NewVoice(191855)--justrun/keepmove
 local voiceToxicPuddle				= mod:NewVoice(191855)--runaway
