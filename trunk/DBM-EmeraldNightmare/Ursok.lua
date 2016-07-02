@@ -99,7 +99,7 @@ do
 						voiceFocusedGaze:Play("shareone")
 					end
 				end
-				if #soakers == soakerHalf then break end--Got enough soakers, stop
+				if soakers == soakerHalf then break end--Got enough soakers, stop
 			end
 		end
 		if self.Options.SpecWarn198006moveto then
