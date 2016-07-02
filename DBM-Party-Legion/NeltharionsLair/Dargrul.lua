@@ -24,7 +24,7 @@ local timerMoltenCrashCD			= mod:NewCDTimer(16.5, 200732, nil, "Tank", nil, 5, n
 local timerLandSlideCD				= mod:NewCDTimer(16.5, 200700, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--16.5-27
 local timerCrystalSpikesCD			= mod:NewCDTimer(21.4, 200551, nil, nil, nil, 3)
 local timerMagmaSculptorCD			= mod:NewCDTimer(71, 200637, nil, nil, nil, 1)--Everyone?
-local timerMagmaWaveCD				= mod:NewNextTimer(60, 200404, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerMagmaWaveCD				= mod:NewCDTimer(60, 200404, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
 local voiceMoltenCrash				= mod:NewVoice(200732, "Tank")--defensive
 local voiceLandSlide				= mod:NewVoice(200700, "Tank")--shockwave
@@ -32,11 +32,11 @@ local voiceMagmaSculptor			= mod:NewVoice(200637, "Dps")--killbigmob
 local voiceMagmaWave				= mod:NewVoice(200404)--findshelter
 
 function mod:OnCombatStart(delay)
-	timerMagmaSculptorCD:Start(7.5-delay)
-	timerLandSlideCD:Start(16-delay)
-	timerMoltenCrashCD:Start(20-delay)
-	timerCrystalSpikesCD:Start(22.2-delay)
-	timerMagmaWaveCD:Start(61-delay)
+	timerMagmaSculptorCD:Start(7.3-delay)
+	timerLandSlideCD:Start(15.8-delay)
+	timerMoltenCrashCD:Start(19-delay)
+	timerCrystalSpikesCD:Start(21.5-delay)
+	timerMagmaWaveCD:Start(61-delay)--65?
 end
 
 function mod:SPELL_CAST_START(args)

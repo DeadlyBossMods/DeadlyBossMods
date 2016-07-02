@@ -24,15 +24,17 @@ local specWarnSunder				= mod:NewSpecialWarningDefensive(198496, "Tank", nil, ni
 local specWarnStrikeofMountain		= mod:NewSpecialWarningDodge(216290, nil, nil, nil, 1, 2)
 local yellStrikeofMountain			= mod:NewYell(216290)
 
-local timerSunderCD					= mod:NewCDTimer(8.5, 198496, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerStrikeCD					= mod:NewCDTimer(15.5, 216290, nil, nil, nil, 3)
+local timerSunderCD					= mod:NewCDTimer(7.5, 198496, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerStrikeCD					= mod:NewCDTimer(15, 216290, nil, nil, nil, 3)
+local timerStanceOfMountainCD		= mod:NewCDTimer(119.5, 198509, nil, nil, nil, 6)
 
 local voiceSunder					= mod:NewVoice(198496, "Tank")--defensive
 local voiceStrikeofMountain			= mod:NewVoice(216290)--targetyou
 
 function mod:OnCombatStart(delay)
 	timerSunderCD:Start(7-delay)
-	timerStrikeCD:Start(17-delay)
+	timerStrikeCD:Start(16-delay)
+	timerStanceOfMountainCD:Start(50-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -76,6 +78,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		warnStanceofMountain:Show()
 		timerSunderCD:Stop()
 		timerStrikeCD:Stop()
+		timerStanceOfMountainCD:Start()
 	elseif spellId == 198631 then--Stance of mountain ending
 		timerSunderCD:Start(3)
 		timerStrikeCD:Start(16)
