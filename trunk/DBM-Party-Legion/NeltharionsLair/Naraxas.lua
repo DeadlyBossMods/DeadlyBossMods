@@ -25,9 +25,9 @@ local specWarnSpikedTongue			= mod:NewSpecialWarningRun(199176, nil, nil, nil, 4
 --local specWarnRancidMaw			= mod:NewSpecialWarningMove(188494)--Needs confirmation this is pool damage and not constant fight aoe damage
 
 local timerSpikedTongueCD			= mod:NewNextTimer(55, 199176, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_TANK_ICON)
-local timerAddsCD					= mod:NewNextTimer(65, 199817, nil, nil, nil, 1)
+local timerAddsCD					= mod:NewCDTimer(65, 199817, nil, nil, nil, 1)
 local timerRancidMawCD				= mod:NewCDTimer(18, 205549, nil, false, nil, 3)--Needed?
-local timerToxicWretchCD			= mod:NewCDTimer(14.5, 210150, nil, false, nil, 3)--Needed?
+local timerToxicRetchCD				= mod:NewCDTimer(14.3, 210150, nil, false, nil, 3)--Needed?
 
 local voiceAdds						= mod:NewVoice(199817, "Dps")--mobsoon
 local voiceSpikedTongue				= mod:NewVoice(199176)--runout/keepmove
@@ -36,9 +36,9 @@ local voiceSpikedTongue				= mod:NewVoice(199176)--runout/keepmove
 
 function mod:OnCombatStart(delay)
 	timerAddsCD:Start(5.5-delay)
-	timerRancidMawCD:Start(8-delay)
-	timerToxicWretchCD:Start(12.9-delay)
-	timerSpikedTongueCD:Start(50-delay)
+	timerRancidMawCD:Start(7.3-delay)
+	timerToxicRetchCD:Start(12.4-delay)
+	timerSpikedTongueCD:Start(55-delay)
 end
 
 function mod:OnCombatEnd()
@@ -71,7 +71,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 205549 then
 		timerRancidMawCD:Start()
 	elseif spellId == 210150 then
-		timerToxicWretchCD:Start()
+		timerToxicRetchCD:Start()
 	end
 end
 --[[
