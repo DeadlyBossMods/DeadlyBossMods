@@ -12,7 +12,7 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 210290 212726 212630 211073 211368 214529 213162",
+	"SPELL_CAST_START 212726 212630 211073 211368 214529 213162",
 	"SPELL_CAST_SUCCESS 214505 214876",
 	"SPELL_AURA_APPLIED 210346 211368 211471",
 	"SPELL_AURA_APPLIED_DOSE 210279",
@@ -102,20 +102,6 @@ function mod:BreathTarget(targetname, uId)
 	end
 end
 
-function mod:BrambleTarget(targetname, uId)
-	if not targetname then return end
-	if targetname == UnitName("player") then
-		specWarnNightmareBrambles:Show()
-		yellNightmareBrambles:Yell()
-		voiceNightmareBrambles:Play("runout")
-	elseif self:CheckNearby(8, targetname) then
-		specWarnNightmareBramblesNear:Show(targetname)
-		voiceNightmareBrambles:Play("watchstep")
-	else
-		warnNightmareBrambles:Show(targetname)
-	end
-end
-
 function mod:OnCombatStart(delay)
 	scornedWarned = false
 	self.vb.phase = 1
@@ -139,11 +125,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 210290 then
-		self:ScheduleMethod(0.1, "BossTargetScanner", 104636, "BrambleTarget", 0.15, 16, true)
-		timerNightmareBramblesCD:Start()
-		countdownNightmareBrambles:Start()
-	elseif spellId == 212726 then
+	if spellId == 212726 then
 		self.vb.addsCount = self.vb.addsCount + 1
 		specWarnForcesOfNightmare:Show(self.vb.addsCount)
 		voiceForcesOfNightmare:Play("mobsoon")
@@ -240,8 +222,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 211189 then--Rotten Breath precast. Best method for fastest and most accurate target scanning
 		self:BossUnitTargetScanner(uId, "BreathTarget")
---	elseif spellId == 211487 then--Casted scorned touches,not spreads
-	
+	elseif spellId == 210290 then--Bramble cast finish (only thing not hidden, probably be hidden too by live, if so will STILL find a way to warn this, even if it means scanning boss 24/7)
+		if not UnitExists(uId.."target") then return end--Blizzard decided to go even further out of way to break this detection, if this happens we don't want nil errors for users.
+		local targetName = DBM:GetUnitFullName(uId)
+		if UnitIsUnit("player", uId.."target") then
+			specWarnNightmareBrambles:Show()
+			yellNightmareBrambles:Yell()
+			voiceNightmareBrambles:Play("runout")
+		elseif self:CheckNearby(8, targetName) then
+			specWarnNightmareBramblesNear:Show(targetName)
+			voiceNightmareBrambles:Play("watchstep")
+		else
+			warnNightmareBrambles:Show(targetName)
+		end
 	end
 end
 
