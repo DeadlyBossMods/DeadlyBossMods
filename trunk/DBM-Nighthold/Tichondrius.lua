@@ -7,7 +7,7 @@ mod:SetEncounterID(1862)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Unknown carrions
 --mod:SetHotfixNoticeRev(12324)
-mod.respawnTime = 29--guessed
+mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
 
