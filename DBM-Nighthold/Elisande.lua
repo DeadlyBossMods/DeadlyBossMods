@@ -107,6 +107,7 @@ local countdownDelphuricBeam		= mod:NewCountdown("Alt6", 214278)
 local countdownConflexiveBurst		= mod:NewCountdown("AltTwo6", 209597)
 
 --Base
+local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 ----Recursive Elemental
 local voiceRecursion				= mod:NewVoice(209620, "HasInterrupt")--kickcast
 local voiceBlast					= mod:NewVoice(221864, "HasInterrupt")--kickcast
@@ -468,6 +469,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerTimeElementalsCD:Start(15.5, STATUS_TEXT_BOTH)
 		if self.vb.phase == 2 then
 			warnPhase2:Show()
+			voicePhaseChange:Play("ptwo")
 			timerPermaliativeTormentCD:Stop()--Does not seem to continue
 			timerDelphuricBeamCD:Start(23.6, 1)
 			countdownDelphuricBeam:Start(23.6)
@@ -477,6 +479,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerEpochericOrbCD:Start(69.6, 1)
 		elseif self.vb.phase == 3 then
 			warnPhase3:Show()
+			voicePhaseChange:Play("pthree")
 			self.vb.burstCastCount = 0
 			self.vb.singularityCount = 0
 			timerAblatingExplosionCD:Stop()
