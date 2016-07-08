@@ -12,8 +12,8 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 212726 212630 211073 211368 214529 213162",
-	"SPELL_CAST_SUCCESS 214505 214876",
+	"SPELL_CAST_START 212726 212630 211073 211368 214529 213162 214249",
+	"SPELL_CAST_SUCCESS 214876 214529",
 	"SPELL_AURA_APPLIED 210346 211368 211471",
 	"SPELL_AURA_APPLIED_DOSE 210279",
 	"SPELL_AURA_REMOVED 210346",
@@ -28,10 +28,10 @@ mod:RegisterEventsInCombat(
 --TODO, evaluate stomp and need of timer/etc
 --TODO, Further assess thorns. it doesn't need warnings at all if adds never tanked near boss in first place
 --TODO, figure out good voice for specWarnCreepingNightmares. "clear stacks"?
---TODO, all sub 30% stuff
 --Cenarius
 local warnNightmareBrambles			= mod:NewTargetAnnounce(210290, 2)
 local warnBeastsOfNightmare			= mod:NewSpellAnnounce(214876, 2)--Generic for now, figure out what to do with later.
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 ----Forces of Nightmare
 local warnDesiccatingStomp			= mod:NewCastAnnounce(211073, 3, nil, nil, "Melee")--Basic warning for now, will change to special if needed
 local warnRottenBreath				= mod:NewTargetAnnounce(211192, 2)
@@ -40,7 +40,7 @@ local warnScornedTouch				= mod:NewTargetAnnounce(211471, 3)
 local warnCleansingGround			= mod:NewCastAnnounce(212630, 1)
 
 --Cenarius
-local specWarnCreepingNightmares	= mod:NewSpecialWarningStack(210279, nil, 15, nil, 1)--Stack warning subject to tuning
+local specWarnCreepingNightmares	= mod:NewSpecialWarningStack(210279, nil, 20, nil, 1)--Stack warning subject to tuning
 local specWarnNightmareBrambles		= mod:NewSpecialWarningRun(210290, nil, nil, nil, 1, 2)
 local yellNightmareBrambles			= mod:NewYell(210290)
 local specWarnNightmareBramblesNear	= mod:NewSpecialWarningClose(210290, nil, nil, nil, 1, 2)
@@ -60,13 +60,17 @@ local yellScornedTouch				= mod:NewYell(211471)
 
 --Cenarius
 local timerNightmareBramblesCD		= mod:NewCDTimer(30, 210290, nil, nil, nil, 3)--On for all, for now. Doesn't target melee but melee still have to be aware. Just not AS aware.
-local timerDreadThornsCD			= mod:NewCDTimer(34, 210346, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerDreadThornsCD			= mod:NewCDTimer(34, 210346, nil, false, nil, 5, nil, DBM_CORE_TANK_ICON)--Optional but off by default
 local timerNightmareBlastCD			= mod:NewNextTimer(32.8, 213162, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerForcesOfNightmareCD		= mod:NewCDCountTimer(77.8, 212726, nil, nil, nil, 1)
-local timerSpearOfNightmaresCD		= mod:NewAITimer(16, 214529, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerSpearOfNightmaresCD		= mod:NewCDTimer(18.3, 214529, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerBeastsOfNightmareCD		= mod:NewAITimer(16, 214876, nil, nil, nil, 1)
+local timerEntanglingNightmareCD	= mod:NewNextTimer(51, 214505, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+----Malfurion
+local timerCleansingGroundCD		= mod:NewNextTimer(77, 214249, nil, nil, nil, 3)--Phase 2 version only for now. Not sure if cast more than once though?
 ----Forces of Nightmare
 local timerTouchofLifeCD			= mod:NewCDTimer(12, 211368, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+
 --Cenarius
 local countdownForcesOfNightmare	= mod:NewCountdown(78.8, 212726)
 local countdownNightmareBrambles	= mod:NewCountdown("Alt30", 210290, "Ranged")--Never once saw this target melee
@@ -74,6 +78,7 @@ local countdownNightmareBrambles	= mod:NewCountdown("Alt30", 210290, "Ranged")--
 
 --Cenarius
 local voiceNightmareBrambles		= mod:NewVoice(210290)--runout/watchstep
+local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 --local voiceDreadThorns				= mod:NewVoice(210346, "Tank")--bossout
 local voiceForcesOfNightmare		= mod:NewVoice(212726)--mobsoon
 local voiceNightmareBlast			= mod:NewVoice(213162, "Tank")--defensive/tauntboss
@@ -111,7 +116,9 @@ function mod:OnCombatStart(delay)
 	timerDreadThornsCD:Start(14-delay)
 	timerNightmareBramblesCD:Start(25.5-delay)
 	countdownNightmareBrambles:Start(25.5-delay)
-	timerNightmareBlastCD:Start(31.2-delay)
+	if self:IsMythic() then
+		timerNightmareBlastCD:Start(31.2-delay)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -131,7 +138,7 @@ function mod:SPELL_CAST_START(args)
 		voiceForcesOfNightmare:Play("mobsoon")
 		timerForcesOfNightmareCD:Start(nil, self.vb.addsCount+1)
 		countdownForcesOfNightmare:Start()
-	elseif spellId == 212630 then
+	elseif spellId == 212630 or spellId == 214249 then--214249 is phase 2
 		warnCleansingGround:Show()
 	elseif spellId == 211073 then
 		warnDesiccatingStomp:Show()
@@ -146,10 +153,6 @@ function mod:SPELL_CAST_START(args)
 		if tanking or (status == 3) then--Player is current target
 			specWarnSpearOfNightmares:Show()
 			voiceSpearOfNightmares:Play("defensive")
-		else
-			if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, targetName) then return end--You are not near current tank, you're probably 3rd tank on Doom Guards that never taunts massive blast
-			specWarnSpearOfNightmaresOther:Schedule(2.5, targetName)
-			voiceSpearOfNightmares:Schedule(2.5, "tauntboss")
 		end
 	elseif spellId == 213162 then
 		timerNightmareBlastCD:Start()
@@ -168,11 +171,13 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 214505 then
-		specWarnEntangledNightmares:Show()
-	elseif spellId == 214876 then
+	if spellId == 214876 then
 		warnBeastsOfNightmare:Show()
 		timerBeastsOfNightmareCD:Start()
+	elseif spellId == 214529 then
+		if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, args.destName) then return end--You are not near current tank, you're probably 3rd tank on Doom Guards that never taunts massive blast
+		specWarnSpearOfNightmaresOther:Show(args.destName)
+		voiceSpearOfNightmares:Play("tauntboss")
 	end
 end
 
@@ -194,7 +199,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if spellId == 210279 and args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount % 5 == 0 then--Every 5
-			if amount >= 15 then--Starting at 15
+			if amount >= 20 then--Starting at 20
 				specWarnCreepingNightmares:Show(amount)
 			end
 		end
@@ -235,6 +240,26 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		else
 			warnNightmareBrambles:Show(targetName)
 		end
+	elseif spellId == 217368 then--Overwhelming Nightmare (Phase 2)
+		self.vb.phase = 2
+		warnPhase2:Show()
+		voicePhaseChange:Play("ptwo")
+		timerForcesOfNightmareCD:Stop()
+		timerNightmareBlastCD:Stop()
+		timerDreadThornsCD:Stop()
+		timerNightmareBramblesCD:Stop()
+		timerCleansingGroundCD:Stop()
+		countdownForcesOfNightmare:Cancel()
+		timerNightmareBramblesCD:Start(13)
+		timerSpearOfNightmaresCD:Start(20)
+		timerCleansingGroundCD:Start(30.5)
+		timerEntanglingNightmareCD:Start(35)
+		if self:IsMythic() then
+			timerBeastsOfNightmareCD:Start(1)
+		end
+	elseif spellId == 214454 then--Entangling Nightmares (this is just a lot faster than combat log)
+		specWarnEntangledNightmares:Show()
+		timerEntanglingNightmareCD:Start()
 	end
 end
 
