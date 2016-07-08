@@ -74,19 +74,19 @@ local specWarnBellowingRoar			= mod:NewSpecialWarningSpell(204078, nil, nil, nil
 --Ysondre
 mod:AddTimerLine(Ysondre)
 local timerNightmareBlastCD			= mod:NewCDTimer(15, 203153, nil, "-Tank", nil, 3)--15-20
-local timerDefiledSpiritCD			= mod:NewCDTimer(34, 207573, nil, nil, nil, 3)
+local timerDefiledSpiritCD			= mod:NewCDTimer(33.2, 207573, nil, nil, nil, 3)
 --Emeriss
 mod:AddTimerLine(Emeriss)
 local timerVolatileInfectionCD		= mod:NewCDTimer(46, 203787, nil, nil, nil, 3)
 local timerEssenceOfCorruptionCD	= mod:NewNextTimer(30, 205298, nil, nil, nil, 1)
 --Lethon
 mod:AddTimerLine(Lethon)
-local timerSiphonSpiritCD			= mod:NewAITimer(16, 203888, nil, nil, nil, 1)
+local timerSiphonSpiritCD			= mod:NewNextTimer(49.9, 203888, nil, nil, nil, 1)
 local timerShadowBurstCD			= mod:NewNextTimer(15, 204040, nil, nil, nil, 3)--Air
 --Taerar
 mod:AddTimerLine(Taerar)
-local timerShadesOfTaerarCD			= mod:NewCDTimer(48.5, 204100, nil, "-Healer", nil, 1)
-local timerSeepingFogCD				= mod:NewCDTimer(15.5, 205331, nil, nil, nil, 3)
+local timerShadesOfTaerarCD			= mod:NewNextTimer(48.5, 204100, nil, "-Healer", nil, 1)
+local timerSeepingFogCD				= mod:NewCDTimer(15.5, 205341, nil, nil, nil, 3, 24814)
 local timerBellowingRoarCD			= mod:NewCDTimer(44.5, 204078, nil, nil, nil, 2)--Air
 
 --Ysondre
@@ -168,9 +168,6 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.FelArrow then
---		DBM.Arrow:Hide()
---	end
 --	if self.Options.HudMapOnMC then
 --		DBMHudMap:Disable()
 --	end
@@ -301,21 +298,21 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				timerVolatileInfectionCD:Start(19.5)
 				timerEssenceOfCorruptionCD:Start(29.5)
 				if DBM.BossHealth:IsShown() then
-					DBM.BossHealth:AddBoss(cid ,Emeriss)
+					DBM.BossHealth:AddBoss(cid, Emeriss)
 				end
 			elseif cid == 102682 then -- Lethon
 				timerShadowBurstCD:Stop()
-				timerSiphonSpiritCD:Start(1)
+				timerSiphonSpiritCD:Start(20.5)
 				if DBM.BossHealth:IsShown() then
-					DBM.BossHealth:AddBoss(cid ,Lethon)
+					DBM.BossHealth:AddBoss(cid, Lethon)
 				end
 			elseif cid == 102681 then -- Taerar
 				timerBellowingRoarCD:Stop()
-				timerShadesOfTaerarCD:Start(19.5)
+				timerShadesOfTaerarCD:Start(19.5)--19.5-21
 				countdownShadesOfTaerar:Start(19.5)
 				timerSeepingFogCD:Start(25)
 				if DBM.BossHealth:IsShown() then
-					DBM.BossHealth:AddBoss(cid ,Taerar)
+					DBM.BossHealth:AddBoss(cid, Taerar)
 				end
 			end
 		end
@@ -330,6 +327,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
 	end
 end
 
+local function delayedClear(self, GUID)
+	activeBossGUIDS[GUID] = nil
+end
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 203147 then--Nightmare Blast
@@ -340,7 +341,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 204720 then--Aeriel
 		local cid = self:GetUnitCreatureId(uId)
 		local unitGUID = UnitGUID(uId)
-		activeBossGUIDS[unitGUID] = nil
+		self:Schedule(10, delayedClear, self, unitGUID)
 		if cid == 102683 then--Emeriss
 			timerVolatileInfectionCD:Stop()
 			timerEssenceOfCorruptionCD:Stop()
@@ -349,7 +350,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			end
 		elseif cid == 102682 then--Lethon
 			timerSiphonSpiritCD:Stop()
-			timerShadowBurstCD:Start(19.5)
+			if not self:IsFaceroll() then
+				timerShadowBurstCD:Start(19.5)
+			end
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:RemoveBoss(cid)
 			end
@@ -357,7 +360,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerShadesOfTaerarCD:Stop()
 			countdownShadesOfTaerar:Cancel()
 			timerSeepingFogCD:Stop()
-			timerBellowingRoarCD:Start(44.5)
+			if not self:IsFaceroll() then
+				timerBellowingRoarCD:Start(44.5)
+			end
 			if DBM.BossHealth:IsShown() then
 				DBM.BossHealth:RemoveBoss(cid)
 			end
