@@ -119,6 +119,10 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerNightmareBlastCD:Start(31.2-delay)
 	end
+	if not self.Options.AlertedBramble then
+		DBM:AddMsg("Note: DBM cannot detect who is actually fixated by Bramble (no mod can, Blizzard has assured this). It does, however, detect who the initial target is for the SPAWN. Boss picks player, throws it at that player (dbm does detect correct player for this and notifies them and those near them to move away from spawn point at least). After this, it picks someone that may or may not be the target he threw it at (likely by proximity)")
+		self.Options.AlertedBramble = true
+	end
 end
 
 function mod:OnCombatEnd()
