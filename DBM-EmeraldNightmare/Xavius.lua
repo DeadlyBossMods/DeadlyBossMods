@@ -7,6 +7,7 @@ mod:SetEncounterID(1864)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 3, 2, 1)
 --mod:SetHotfixNoticeRev(12324)
+mod.respawnTime = 15
 
 mod:RegisterCombat("combat")
 
@@ -26,7 +27,8 @@ mod:RegisterEventsInCombat(
 --TODO, across the board detect who doesn't gain corruption and assign them to tasks like meteor soaking, taunting boss, being nearest target to adds, etc
 --TODO, infoframe for remaining tainted discharge maybe? Has to be combined with alt power infoframe
 --TODO, figure out tank swaps, important spell alerts, etc.
---TODO, verify if corruption horror timer has changed.
+--TODO, figure out why arrows still flip and randomly change directions on blades, or remove arrows entirely and just use line texture.
+--TODO, reverify heroic timers, and mythic. he might have faster energy gains which would affect all timers.
 --Nightmare Corruption
 local warnDescentIntoMadness			= mod:NewTargetAnnounce(208431, 4)
 --Stage One: The Decent Into Madness
@@ -63,7 +65,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDarkeningSoulCD				= mod:NewCDTimer(6.1, 206651, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
 local timerNightmareBladesCD			= mod:NewNextTimer(15.7, 206656, nil, nil, nil, 3)
 local timerLurkingEruptionCD			= mod:NewCDCountTimer(20.5, 208322, nil, nil, nil, 3)
-local timerCorruptionHorrorCD			= mod:NewNextTimer(61.7, 210264, nil, nil, nil, 1)--This timer has likly changed
+local timerCorruptionHorrorCD			= mod:NewNextTimer(83, 210264, nil, nil, nil, 1)
 local timerCorruptingNovaCD				= mod:NewNextTimer(20, 207830, nil, nil, nil, 2)
 --Stage Two: From the Shadows
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -142,14 +144,8 @@ local function bladesHUD(self)
 			--Combat log targets correct now. they were backwards on heroic, keep an eye on things.
 			if playerName == previousTarget or playerName == name then--Player yellow lines
 				marker1:EdgeTo(marker2, nil, 10, 1, 1, 0, 0.5)
-				--DBMHudMap:AddEdge(1, 1, 0, 0.5, 5, previousTarget, name, nil, nil, nil, nil, 135)
-				specWarnBondsOfTerror:Show(name)
-				voiceBondsOfTerror:Play("linegather")
 			else--red lines
 				marker1:EdgeTo(marker2, nil, 10, 1, 0, 0, 0.5)
-				--DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, previousTarget, name, nil, nil, nil, nil, 135)
-				specWarnBondsOfTerror:Show(previousTarget)
-				voiceBondsOfTerror:Play("linegather")
 			end
 		end
 		previousTarget = name
@@ -166,12 +162,14 @@ local function bondsHUD(self)
 				local marker1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(209034, "party", previousTarget, 0.4, 25, nil, nil, nil, 0.5):Appear():SetLabel(previousTarget, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
 				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(209034, "party", name, 0.4, 25, nil, nil, nil, 0.5):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
 				marker2:EdgeTo(marker1, nil, 10, 0, 1, 0, 0.5)
-				--DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, previousTarget, name, nil, nil, nil, nil, 135)
+				specWarnBondsOfTerror:Show(name)
+				voiceBondsOfTerror:Play("linegather")
 			elseif playerName == name then
 				local marker1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(209034, "party", previousTarget, 0.4, 25, nil, nil, nil, 0.5):Appear():SetLabel(previousTarget, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
 				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(209034, "party", name, 0.4, 25, nil, nil, nil, 0.5):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
 				marker1:EdgeTo(marker2, nil, 10, 0, 1, 0, 0.5)
-				--DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, name, previousTarget, nil, nil, nil, nil, 135)
+				specWarnBondsOfTerror:Show(previousTarget)
+				voiceBondsOfTerror:Play("linegather")
 			end
 		end
 		previousTarget = name
