@@ -143,9 +143,13 @@ local function bladesHUD(self)
 			if playerName == previousTarget or playerName == name then--Player yellow lines
 				marker1:EdgeTo(marker2, nil, 10, 1, 1, 0, 0.5)
 				--DBMHudMap:AddEdge(1, 1, 0, 0.5, 5, previousTarget, name, nil, nil, nil, nil, 135)
+				specWarnBondsOfTerror:Show(name)
+				voiceBondsOfTerror:Play("linegather")
 			else--red lines
 				marker1:EdgeTo(marker2, nil, 10, 1, 0, 0, 0.5)
 				--DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, previousTarget, name, nil, nil, nil, nil, 135)
+				specWarnBondsOfTerror:Show(previousTarget)
+				voiceBondsOfTerror:Play("linegather")
 			end
 		end
 		previousTarget = name
@@ -161,12 +165,12 @@ local function bondsHUD(self)
 			if playerName == previousTarget then
 				local marker1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(209034, "party", previousTarget, 0.4, 25, nil, nil, nil, 0.5):Appear():SetLabel(previousTarget, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
 				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(209034, "party", name, 0.4, 25, nil, nil, nil, 0.5):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
-				marker1:EdgeTo(marker2, nil, 10, 0, 1, 0, 0.5)
+				marker2:EdgeTo(marker1, nil, 10, 0, 1, 0, 0.5)
 				--DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, previousTarget, name, nil, nil, nil, nil, 135)
 			elseif playerName == name then
 				local marker1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(209034, "party", previousTarget, 0.4, 25, nil, nil, nil, 0.5):Appear():SetLabel(previousTarget, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
 				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(209034, "party", name, 0.4, 25, nil, nil, nil, 0.5):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
-				marker2:EdgeTo(marker1, nil, 10, 0, 1, 0, 0.5)
+				marker1:EdgeTo(marker2, nil, 10, 0, 1, 0, 0.5)
 				--DBMHudMap:AddEdge(0, 1, 0, 0.5, 5, name, previousTarget, nil, nil, nil, nil, 135)
 			end
 		end
@@ -317,10 +321,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceCorruptionMeteor:Play("gathershare")
 			else
 				local maxPower = UnitPowerMax("player", ALTERNATE_POWER_INDEX)
-				local playerPower = UnitPower("player", ALTERNATE_POWER_INDEX) / maxPower * 100
-				if playerPower > 60 then
-					specWarnCorruptionMeteorAway:Show()
-					voiceCorruptionMeteor:Play("watchstep")
+				if maxPower > 0 then
+					local playerPower = UnitPower("player", ALTERNATE_POWER_INDEX) / maxPower * 100
+					if playerPower > 60 then
+						specWarnCorruptionMeteorAway:Show()
+						voiceCorruptionMeteor:Play("watchstep")
+					end
 				end
 			end
 		end
