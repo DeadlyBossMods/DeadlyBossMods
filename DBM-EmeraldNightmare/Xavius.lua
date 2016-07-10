@@ -47,7 +47,7 @@ local specWarnDescentIntoMadness		= mod:NewSpecialWarningYou(208431)
 local yellDescentIntoMadness			= mod:NewFadesYell(208431)
 --Stage One: The Decent Into Madness
 local specWarnNightmareBlades			= mod:NewSpecialWarningMoveAway(206656, nil, nil, nil, 1, 2)
-local specWarnCorruptionHorror			= mod:NewSpecialWarningSwitch("ej12973", "-Healer", nil, nil, 1, 2)
+local specWarnCorruptionHorror			= mod:NewSpecialWarningSwitchCount("ej12973", "-Healer", nil, nil, 1, 2)
 local specWarnCorruptingNova			= mod:NewSpecialWarningSpell(207830, nil, nil, nil, 2, 2)
 --local specWarnDarkeningSoul				= mod:NewSpecialWarningDispel(206651, "Healer", nil, nil, 1, 2)
 local specWarnTormentingFixation		= mod:NewSpecialWarningMoveAway(205771, nil, nil, nil, 1, 2)
@@ -65,12 +65,12 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDarkeningSoulCD				= mod:NewCDTimer(6.1, 206651, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
 local timerNightmareBladesCD			= mod:NewNextTimer(15.7, 206656, nil, nil, nil, 3)
 local timerLurkingEruptionCD			= mod:NewCDCountTimer(20.5, 208322, nil, nil, nil, 3)
-local timerCorruptionHorrorCD			= mod:NewNextTimer(83, 210264, nil, nil, nil, 1)
+local timerCorruptionHorrorCD			= mod:NewNextCountTimer(83, 210264, nil, nil, nil, 1)
 local timerCorruptingNovaCD				= mod:NewNextTimer(20, 207830, nil, nil, nil, 2)
 --Stage Two: From the Shadows
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerBondsOfTerrorCD				= mod:NewCDTimer(14.3, 209034, nil, nil, nil, 3)
-local timerCorruptionMeteorCD			= mod:NewCDTimer(28, 206308, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerCorruptionMeteorCD			= mod:NewCDCountTimer(28, 206308, 57467, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--Short text "meteor"
 local timerBlackeningSoulCD				= mod:NewCDTimer(6.1, 209158, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
 local timerNightmareInfusionCD			= mod:NewCDTimer(61.5, 209443, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--61.5-62.5
 local timerCallOfNightmaresCD			= mod:NewCDTimer(40, 205588, nil, nil, nil, 1)
@@ -79,7 +79,11 @@ mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerNightmareTentacleCD			= mod:NewCDTimer(20, "ej12977", nil, nil, nil, 1, 93708)--226194 is an icon consideration now
 
 --Stage One: The Decent Into Madness
---local countdownMagicFire				= mod:NewCountdownFades(11.5, 162185)
+local countdownCorruptionHorror			= mod:NewCountdown(83, 210264)
+--Stage Two: From the Shadows
+local countdownCallOfNightmares			= mod:NewCountdown(40, 205588)
+local countdownNightmareInfusion		= mod:NewCountdown("Alt61", 209443, "Tank")
+local countdownMeteor					= mod:NewCountdown("AltTwo28", 206308, "-Tank")
 
 local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 --Nightmare Corruption
@@ -112,6 +116,9 @@ local playerName = UnitName("player")
 local UnitDebuff = UnitDebuff
 mod.vb.phase = 1
 mod.vb.lurkingCount = 0
+mod.vb.corruptionHorror = 0
+mod.vb.inconHorror = 0
+mod.vb.meteorCount = 0
 mod.vb.lastBonds = nil
 
 local function isPlayerImmune()
@@ -180,13 +187,17 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.lurkingCount = 0
+	self.vb.corruptionHorror = 0
+	self.vb.inconHorror = 0
+	self.vb.meteorCount = 0
 	self.vb.lastBonds = nil
 	table.wipe(bladesTarget)
 	table.wipe(gatherTarget)
 	timerDarkeningSoulCD:Start(-delay)
-	timerLurkingEruptionCD:Start(13.6-delay)
+	timerLurkingEruptionCD:Start(13.6-delay, 1)
 	timerNightmareBladesCD:Start(18.5-delay)
-	timerCorruptionHorrorCD:Start(58.4-delay)
+	timerCorruptionHorrorCD:Start(58.4-delay, 1)
+	countdownCorruptionHorror:Start(58.4)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(corruptionName)
 		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
@@ -215,13 +226,19 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 209443 then
 		warnNightmareInfusion:Show()
 		timerNightmareInfusionCD:Start()
+		countdownNightmareInfusion:Start()
 	elseif spellId == 210264 then
-		specWarnCorruptionHorror:Show()
+		self.vb.corruptionHorror = self.vb.corruptionHorror + 1
+		specWarnCorruptionHorror:Show(self.vb.corruptionHorror)
 		voiceCorruptionHorror:Play("bigadd")
+		timerCorruptionHorrorCD:Start(nil, self.vb.corruptionHorror+1)
+		countdownCorruptionHorror:Start()
 	elseif spellId == 205588 then
-		specWarnInconHorror:Show()
+		self.vb.inconHorror = self.vb.inconHorror + 1
+		specWarnInconHorror:Show(self.vb.inconHorror)
 		voiceInconHorror:Play("killmob")
-		timerCallOfNightmaresCD:Start()
+		timerCallOfNightmaresCD:Start(nil, self.vb.inconHorror+1)
+		countdownCallOfNightmares:Start()
 	end
 end
 
@@ -369,10 +386,13 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 206341 then--Corruption Meteor (casting not in combat log, targetting is finally but I trust this more for timer in case targetting can be gamed.)
+		self.vb.meteorCount = self.vb.meteorCount + 1
 		if self.vb.phase == 3 then
-			timerCorruptionMeteorCD:Start(35)--35-38 in phase 3
+			timerCorruptionMeteorCD:Start(35, self.vb.meteorCount+1)--35-38 in phase 3
+			countdownMeteor:Start(35)
 		else
-			timerCorruptionMeteorCD:Start()--Generally always 28
+			timerCorruptionMeteorCD:Start(nil, self.vb.meteorCount+1)--Generally always 28
+			countdownMeteor:Start(28)
 		end
 	elseif spellId == 209000 then--Nightmare Blades (casting not in combat log)
 		if self.vb.phase == 3 then
@@ -397,11 +417,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerNightmareBladesCD:Stop()
 		timerLurkingEruptionCD:Stop()
 		timerCorruptionHorrorCD:Stop()
+		countdownCorruptionHorror:Cancel()
 		timerBlackeningSoulCD:Start(7)
 		timerBondsOfTerrorCD:Start(14)
-		timerCorruptionMeteorCD:Start(21)
-		timerCallOfNightmaresCD:Start(23)
+		timerCorruptionMeteorCD:Start(21, 1)
+		countdownMeteor:Start(21)
+		timerCallOfNightmaresCD:Start(23, 1)
+		countdownCallOfNightmares:Start(23)
 		timerNightmareInfusionCD:Start(30)
+		countdownNightmareInfusion:Start(30)
 		updateRangeFrame(self)
 	elseif spellId == 226185 then--Xavius Energize Phase 3
 		self.vb.phase = 3
@@ -409,11 +433,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		voicePhaseChange:Play("pthree")
 		timerBondsOfTerrorCD:Stop()
 		timerCallOfNightmaresCD:Stop()
+		countdownCallOfNightmares:Cancel()
 		timerCorruptionMeteorCD:Stop()
+		countdownMeteor:Cancel()
 		timerNightmareInfusionCD:Stop()
+		countdownNightmareInfusion:Cancel()
 		timerBlackeningSoulCD:Stop()
 		timerBlackeningSoulCD:Start(15)
-		timerCorruptionMeteorCD:Start(21)
+		timerCorruptionMeteorCD:Start(21, 1)
+		countdownMeteor:Start(21)
 		timerNightmareBladesCD:Start(31)
 		timerNightmareInfusionCD:Start(36)
 	elseif spellId == 226194 then--Writhing Deep
