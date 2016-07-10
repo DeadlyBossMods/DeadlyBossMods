@@ -32,6 +32,7 @@ mod:RegisterEventsInCombat(
 --Nightmare Corruption
 local warnDescentIntoMadness			= mod:NewTargetAnnounce(208431, 4)
 --Stage One: The Decent Into Madness
+local warnNightmareBlades				= mod:NewTargetAnnounce(206656, 2)
 local warnDarkeningSoul					= mod:NewStackAnnounce(206651, 3, nil, "Healer|Tank")
 local warnTormentingFixation			= mod:NewTargetAnnounce(205771, 4)
 --Stage Two: From the Shadows
@@ -295,6 +296,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceTormentingFixation:Play("targetyou")
 		end
 	elseif spellId == 211802 then
+		warnNightmareBlades:CombinedShow(0.5, args.destName)
 		if self.Options.HudMapOnBlades then
 			self:Unschedule(bladesHUD)
 			if not tContains(bladesTarget, args.destName) then
