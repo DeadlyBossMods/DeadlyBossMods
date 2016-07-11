@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(103769)
 mod:SetEncounterID(1864)
 mod:SetZone()
---mod:SetUsedIcons(8, 7, 6, 3, 2, 1)
+mod:SetUsedIcons(6, 2, 1)
 --mod:SetHotfixNoticeRev(12324)
 mod.respawnTime = 15
 
@@ -103,7 +103,8 @@ local voiceInconHorror					= mod:NewVoice("ej13162", "-Healer")--killmob
 
 mod:AddInfoFrameOption("ej12970")
 mod:AddRangeFrameOption(6, 208322)
---mod:AddSetIconOption("SetIconOnMC", 163472, false)
+mod:AddSetIconOption("SetIconOnBlades", 206656)
+mod:AddSetIconOption("SetIconOnMeteor", 206308)
 mod:AddHudMapOption("HudMapOnBlades", 211802)
 mod:AddHudMapOption("HudMapOnBonds", 209034)
 
@@ -312,6 +313,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnNightmareBlades:Show()
 			voiceNightmareBlades:Play("runout")
 		end
+		if self.Options.SetIconOnBlades then
+			self:SetIcon(args.destName, #bladesTarget)
+		end
 	elseif spellId == 209034 or spellId == 210451 then
 		warnBondsOfTerror:CombinedShow(0.5, args.destName)
 		if self.Options.HudMapOnBonds then
@@ -347,6 +351,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
+		if self.Options.SetIconOnMeteor then
+			self:SetIcon(args.destName, 6)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -358,6 +365,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 211802 then
 		if self.Options.HudMapOnBlades then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		end
+		if self.Options.SetIconOnBlades then
+			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 206651 then
 		if args:IsPlayer() then
@@ -374,6 +384,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 224508 then
 		if args:IsPlayer() then
 			yellMeteor:Cancel()
+		end
+		if self.Options.SetIconOnMeteor then
+			self:SetIcon(args.destName, 0)
 		end
 	end
 end
