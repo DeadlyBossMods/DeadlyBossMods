@@ -94,7 +94,6 @@ DBM.DefaultOptions = {
 	SpecialWarningSound4 = "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.ogg",
 	SpecialWarningSound5 = "Sound\\Creature\\Loathstare\\Loa_Naxx_Aggro02.ogg",
 	ModelSoundValue = "Short",
-	ChallengeBest = "Realm",
 	CountdownVoice = "Corsica",
 	CountdownVoice2 = "Kolt",
 	CountdownVoice3v2 = "HoTS_R",
@@ -1279,9 +1278,9 @@ do
 				"UPDATE_BATTLEFIELD_STATUS",
 				"CINEMATIC_START",
 				"PLAYER_LEVEL_UP",
-				"CHALLENGE_MODE_START",
-				"CHALLENGE_MODE_RESET",
-				"CHALLENGE_MODE_END",
+				--"CHALLENGE_MODE_START",
+				--"CHALLENGE_MODE_RESET",
+				--"CHALLENGE_MODE_END",
 				"ACTIVE_TALENT_GROUP_CHANGED",
 				--REMOVE IN LEGION
 				"UPDATE_SHAPESHIFT_FORM",
@@ -3577,46 +3576,19 @@ function DBM:SCENARIO_CRITERIA_UPDATE()
 	end
 end
 
+--REFACTOR IN LEGION
 function DBM:CHALLENGE_MODE_START(mapID)
 	self:Debug("CHALLENGE_MODE_START fired for mapID "..mapID)
-	if wowTOC >= 70000 then return end
-	if self.Options.ChallengeBest == "None" then return end
-	if self.Options.DontShowBossTimers then return end
-	RequestChallengeModeMapInfo()
-	local maps = GetChallengeModeMapTable()
-	for i = 1, 8 do
-		local _, mapIDVerify = GetChallengeModeMapInfo(maps[i])--Even though we get mapid from CHALLENGE_MODE_START, we still need CM index since GetChallengeModeMapPlayerStats doesn't take mapID :\
-		if mapID == mapIDVerify then
-			RequestChallengeModeLeaders(mapID)
-			local guildBest, realmBest = GetChallengeBestTime(mapID)
-			local lastTime, bestTime, medal = GetChallengeModeMapPlayerStats(maps[i])
-			if bestTime and self.Options.ChallengeBest == "Personal" then
-				self.Bars:CreateBar(ceil(bestTime / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-			elseif guildBest and self.Options.ChallengeBest == "Guild" then
-				self.Bars:CreateBar(ceil(guildBest / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-			elseif realmBest and self.Options.ChallengeBest == "Realm" then
-				self.Bars:CreateBar(ceil(realmBest / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-			end
-			break
-		end
-	end
 end
 
 function DBM:CHALLENGE_MODE_RESET()
 	self:Debug("CHALLENGE_MODE_RESET fired")
-	if self.Options.ChallengeBest == "None" then return end
-	if self.Bars:GetBar(DBM_SPEED_CLEAR_TIMER_TEXT) then
-		self.Bars:CancelBar(DBM_SPEED_CLEAR_TIMER_TEXT)
-	end
 end
 
 function DBM:CHALLENGE_MODE_END(mapID, success, medal, completionTime)
 	self:Debug("CHALLENGE_MODE_END fired for mapID "..mapID)
-	if self.Options.ChallengeBest == "None" then return end
-	if self.Bars:GetBar(DBM_SPEED_CLEAR_TIMER_TEXT) then
-		self.Bars:CancelBar(DBM_SPEED_CLEAR_TIMER_TEXT)
-	end
 end
+--REFACTOR IN LEGION
 
 --------------------------------
 --  Load Boss Mods on Demand  --
@@ -5527,27 +5499,18 @@ do
 			--process global options
 			self:HideBlizzardEvents(1)
 			self:StartLogging(0, nil)
-			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 then
+			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 and difficultyIndex ~= 8 then
 				if ObjectiveTrackerFrame:IsVisible() then
 					ObjectiveTrackerFrame:Hide()
 					watchFrameRestore = true
 				end
 				--When hiding objectives frame in challenge modes, start our own timer to show medal time remaining
-				local _, elapsedTime, worldTimerType = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active. if it's not, use GetWorldElapsedTimers() to find correct one
+				--REFACTOR IN LEGION FOR MYTHIC+ timer replacement
+				--[[local _, elapsedTime, worldTimerType = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active. if it's not, use GetWorldElapsedTimers() to find correct one
 				if wowTOC < 70000 and worldTimerType == 2 then--Challenge mode
 					local bronze, silver, gold = GetChallengeModeMapTimes(LastInstanceMapID)
 					local remaining
-					if elapsedTime < gold then
-						remaining = gold - elapsedTime
-						self.Bars:CreateBar(remaining, CHALLENGE_MODE_MEDAL3, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-					elseif elapsedTime < silver then
-						remaining = silver - elapsedTime
-						self.Bars:CreateBar(remaining, CHALLENGE_MODE_MEDAL2, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-					elseif elapsedTime < bronze then
-						remaining = bronze - elapsedTime
-						self.Bars:CreateBar(remaining, CHALLENGE_MODE_MEDAL1, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-					end
-				end
+				end--]]
 			end
 			fireEvent("pull", mod, delay, synced, startHp)
 			self:FlashClientIcon()
@@ -5970,12 +5933,9 @@ do
 					ObjectiveTrackerFrame:Show()
 					watchFrameRestore = false
 					--REFACTOR in LEGION
-					if difficultyIndex == 8 then
-						--Cancel any and all CM medal when unhiding objectives frame
+					--[[if difficultyIndex == 8 then
 						self.Bars:CancelBar(CHALLENGE_MODE_MEDAL1)
-						self.Bars:CancelBar(CHALLENGE_MODE_MEDAL2)
-						self.Bars:CancelBar(CHALLENGE_MODE_MEDAL3)
-					end
+					end--]]
 					--REFACTOR in LEGION
 				end
 				if tooltipsHidden then
@@ -7658,7 +7618,7 @@ do
 		["RaidCooldown"] = true,
 		["RemovePoison"] = true,
 		["RemoveDisease"] = true,
-		["RemoveEnrage"] = true,
+		["RemoveEnrage"] = true,--Depricated, no one can remove enrage anymore
 		["RemoveCurse"] = true,
 		["MagicDispeller"] = true--Buffs on targets, not debuffs on players
 		["HasInterrupt"] = true,--Has an interrupt that is 24 seconds or less CD.
@@ -7671,8 +7631,6 @@ do
 			["RangedDps"] = true,
 			["ManaUser"] = true,
 			["SpellCaster"] = true,
-			["RaidCooldown"] = true,--Amplify Magic
-			["RemoveCurse"] = true,
 			["MagicDispeller"] = true,
 			["HasInterrupt"] = true,
 		},
@@ -7684,7 +7642,6 @@ do
 			["RaidCooldown"] = true,--Devotion Aura
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
-			["HasInterrupt"] = true,--REMOVE IN LEGION?
 		},
 		[66] = {	--Protection Paladin
 			["Tank"] = true,
@@ -7693,7 +7650,7 @@ do
 			["Physical"] = true,
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
-			["HasInterrupt"] = true,--REMOVE IN LEGION?
+			["HasInterrupt"] = true,
 		},
 		[70] = {	--Retribution Paladin
 			["Dps"] = true,
@@ -7719,7 +7676,7 @@ do
 			["Physical"] = true,
 			["HasInterrupt"] = true,
 		},
-		[74] = {	--Gladiator Warrior --REMOVE IN LEGION?
+		[74] = {	--Gladiator Warrior --REMOVE IN LEGION
 			["Dps"] = true,
 			["Melee"] = true,
 			["MeleeDps"] = true,
@@ -7732,7 +7689,6 @@ do
 			["RangedDps"] = true,
 			["ManaUser"] = true,
 			["SpellCaster"] = true,
-			["RemoveEnrage"] = true,
 			["RemoveCurse"] = true,
 			["RemovePoison"] = true,
 		},
@@ -7741,7 +7697,6 @@ do
 			["Melee"] = true,
 			["MeleeDps"] = true,
 			["Physical"] = true,
-			["RemoveEnrage"] = true,
 			["RemoveCurse"] = true,
 			["RemovePoison"] = true,
 			["HasInterrupt"] = true,
@@ -7760,7 +7715,6 @@ do
 			["ManaUser"] = true,
 			["SpellCaster"] = true,
 			["RaidCooldown"] = true,--Tranquility
-			["RemoveEnrage"] = true,
 			["RemoveCurse"] = true,
 			["RemovePoison"] = true,
 		},
@@ -7783,16 +7737,14 @@ do
 			["RangedDps"] = true,
 			["Physical"] = true,
 			["HasInterrupt"] = true,
-			["RemoveEnrage"] = true,--REMOVE IN LEGION
-			["MagicDispeller"] = true,--REMOVE IN LEGION
 		},
---[[		[255] = {	--Survival Hunter (Legion)
+		[255] = {	--Survival Hunter (Legion)
 			["Dps"] = true,
 			["Melee"] = true,
 			["MeleeDps"] = true,
 			["Physical"] = true,
 			["HasInterrupt"] = true,
-		},--]]
+		},
 		[256] = {	--Discipline Priest
 			["Healer"] = true,
 			["Ranged"] = true,
@@ -7814,9 +7766,7 @@ do
 			["Dps"] = true,
 			["Melee"] = true,
 			["MeleeDps"] = true,
-			["RaidCooldown"] = true,--Smoke Bomb
 			["Physical"] = true,
-			["RemoveEnrage"] = true,
 			["HasInterrupt"] = true,
 		},
 		[262] = {	--Elemental Shaman
@@ -7883,7 +7833,6 @@ do
 			["RaidCooldown"] = true,--Revival
 			["RemovePoison"] = true,
 			["RemoveDisease"] = true,
-			["HasInterrupt"] = true,--REMOVE IN LEGION
 		},
 		[577] = {	--Havok Demon Hunter
 			["Dps"] = true,
@@ -7904,7 +7853,6 @@ do
 	specRoleTable[72] = specRoleTable[71]--Fury Warrior
 	specRoleTable[252] = specRoleTable[251]--Unholy DK
 	specRoleTable[254] = specRoleTable[253]--Markmanship Hunter
-	specRoleTable[255] = specRoleTable[253]--Survival Hunter (REMOVE IN LEGION)
 	specRoleTable[257] = specRoleTable[256]--Holy Priest
 	specRoleTable[260] = specRoleTable[259]--Combat Rogue
 	specRoleTable[261] = specRoleTable[259]--Subtlety Rogue
@@ -7959,8 +7907,9 @@ do
 				return true
 			end
 			--Inspect throttle exists, so have to do it this way
-			if class == "DRUID" or class == "SHAMAN" or class == "PALADIN" or class == "MONK" then
-				if UnitPowerMax(uId) < 35000 then
+			if class == "DRUID" or class == "SHAMAN" or class == "PALADIN" or class == "MONK" or class == "HUNTER" then
+				local unitMaxPower = UnitPowerMax(uId)
+				if (unitMaxPower < 101 and class == "HUNTER") or unitMaxPower < 35000 then--Mark and beast have 120 focus, survival has 100. Not sure if this is best way to do it or if it breaks with talent/artifact weapon
 					return true
 				end
 			end

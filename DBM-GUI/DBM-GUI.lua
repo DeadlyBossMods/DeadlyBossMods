@@ -3467,17 +3467,6 @@ local function CreateOptionsMenu()
 		local RespawnTimer	= generaltimeroptions:CreateCheckButton(L.ShowRespawn, true, nil, "ShowRespawn")
 		local QueueTimer	= generaltimeroptions:CreateCheckButton(L.ShowQueuePop, true, nil, "ShowQueuePop")
 
-		local challengeTimers = {
-			{	text	= L.Disable,				value	= "None" },
-			{	text	= L.ChallengeTimerPersonal,	value 	= "Personal"},
-			{	text	= L.ChallengeTimerGuild,	value 	= "Guild"},
-			{	text	= L.ChallengeTimerRealm,	value 	= "Realm"},
-		}
-		local ChallengeTimerDropDown = generaltimeroptions:CreateDropdown(L.ChallengeTimerOptions, challengeTimers, "DBM", "ChallengeBest", function(value)
-			DBM.Options.ChallengeBest = value
-		end)
-		ChallengeTimerDropDown:SetPoint("TOPLEFT", generaltimeroptions.frame, "TOPLEFT", 0, -125)
-
 		local bossLoggingArea		= extraFeaturesPanel:CreateArea(L.Area_AutoLogging, nil, 100, true)
 		local AutologBosses			= bossLoggingArea:CreateCheckButton(L.AutologBosses, true, nil, "AutologBosses")
 		local AdvancedAutologBosses

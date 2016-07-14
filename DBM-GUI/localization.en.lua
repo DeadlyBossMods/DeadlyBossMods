@@ -319,10 +319,6 @@ L.SKT_Enabled				= "Show record victory timer for current fight if available"
 L.CRT_Enabled				= "Show timer for next combat ressurection charge"
 L.ShowRespawn				= "Show boss respawn timer after a wipe"
 L.ShowQueuePop				= "Show time remaining to accept a queue pop (LFG,BG,etc)"
-L.ChallengeTimerOptions		= "Set option for challenge mode best clear timer"
-L.ChallengeTimerPersonal	= "Personal"
-L.ChallengeTimerGuild		= GUILD
-L.ChallengeTimerRealm		= "Realm"
 --
 L.Area_AutoLogging			= "Auto Logging Options"
 L.AutologBosses				= "Automatically record boss encounters using blizzard combat log (Use /dbm pull before bosses to start logging early for pre pots and other events.)"
