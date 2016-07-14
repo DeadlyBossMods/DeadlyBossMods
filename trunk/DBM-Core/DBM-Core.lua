@@ -7909,7 +7909,9 @@ do
 			--Inspect throttle exists, so have to do it this way
 			if class == "DRUID" or class == "SHAMAN" or class == "PALADIN" or class == "MONK" or class == "HUNTER" then
 				local unitMaxPower = UnitPowerMax(uId)
-				if (unitMaxPower < 101 and class == "HUNTER") or unitMaxPower < 35000 then--Mark and beast have 120 focus, survival has 100. Not sure if this is best way to do it or if it breaks with talent/artifact weapon
+				--Mark and beast have 120 base focus, survival has 100 base focus. Not sure if this is best way to do it or if it breaks with talent/artifact weapon
+				--Elemental shaman have 100 unit power base, while enhancement have 150 power base, so a shaman with > 150 but less tha 35000 is the melee one
+				if (unitMaxPower < 101 and class == "HUNTER") or (unitMaxPower >= 150 and class == "SHAMAN" and unitMaxPower < 35000) or unitMaxPower < 35000 then
 					return true
 				end
 			end
