@@ -6,13 +6,13 @@ mod:SetCreatureID(104327)
 mod:SetEncounterID(1867)
 mod:SetZone()
 mod:SetUsedIcons(1)
---mod:SetHotfixNoticeRev(12324)
+mod:SetHotfixNoticeRev(15058)
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 206559 206557 206560 206788 208924 207513 207502",
-	"SPELL_CAST_SUCCESS 206641",
+	"SPELL_CAST_START 206788 208924 207513 207502",
+	"SPELL_CAST_SUCCESS 206560 206557 206559 206641",
 	"SPELL_AURA_APPLIED 211615 208910 208915",
 	"SPELL_AURA_REMOVED 208499 206560",
 	"SPELL_PERIODIC_DAMAGE 206488",
@@ -47,11 +47,11 @@ local timerPhaseChange				= mod:NewNextTimer(45, 155005, nil, nil, nil, 6)
 --Cleaner
 mod:AddTimerLine(GetSpellInfo(206560))
 local timerToxicSliceCD				= mod:NewCDTimer(18, 206788, nil, nil, nil, 3)
-local timerSterilizeCD				= mod:NewNextTimer(3, 208499, nil, nil, nil, 3)
-local timerCleansingRageCD			= mod:NewNextTimer(10.5, 206820, nil, nil, nil, 2)
+--local timerSterilizeCD				= mod:NewNextTimer(3, 208499, nil, nil, nil, 3)
+local timerCleansingRageCD			= mod:NewNextTimer(10, 206820, nil, nil, nil, 2)
 --Maniac
 mod:AddTimerLine(GetSpellInfo(206557))
-local timerArcingBondsCD			= mod:NewCDTimer(5.7, 208924, nil, nil, nil, 3)--5.7-8
+local timerArcingBondsCD			= mod:NewCDTimer(5, 208924, nil, nil, nil, 3)--5.7-8
 local timerAnnihilationCD			= mod:NewCDTimer(20.3, 207630, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Caretaker
 mod:AddTimerLine(GetSpellInfo(206559))
@@ -76,11 +76,11 @@ mod:AddRangeFrameOption(12, 208506)
 mod:AddInfoFrameOption(214573, false)
 
 mod.vb.ArcaneSlashCooldown = 9
-mod.vb.toxicSliceCooldown = 27
+mod.vb.toxicSliceCooldown = 26.5
 
 function mod:OnCombatStart(delay)
 	self.vb.ArcaneSlashCooldown = 9
-	self.vb.toxicSliceCooldown = 27
+	self.vb.toxicSliceCooldown = 26.5
 	timerArcaneSlashCD:Start(7-delay)
 	timerToxicSliceCD:Start(11-delay)
 	timerPhaseChange:Start(45)
@@ -107,36 +107,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 206560 then--Cleaner Mode (45 seconds)
-		self.vb.ArcaneSlashCooldown = 18
-		self.vb.toxicSliceCooldown = 22--Still 22? 27 in mythic logs
-		warnCleanerMode:Show()
-		timerArcaneSlashCD:Stop()
-		timerSterilizeCD:Start()--3
-		timerCleansingRageCD:Start()--10.5
-		timerToxicSliceCD:Start(13)
-		timerArcaneSlashCD:Start(19.5)
-		timerPhaseChange:Start(46)
-		countdownModes:Start(46)
-	elseif spellId == 206557 then--Maniac Mode (40 seconds)
-		self.vb.ArcaneSlashCooldown = 7
-		warnManiacMode:Show()
-		timerToxicSliceCD:Stop()--Must be stopped here too since first cleaner mode has no buff removal
-		timerArcaneSlashCD:Stop()
-		timerArcaneSlashCD:Start(6)
-		timerArcingBondsCD:Start(8)--8-10
-		timerAnnihilationCD:Start()
-		countdownAnnihilation:Start()
-		timerPhaseChange:Start(41)
-		countdownModes:Start(41)
-	elseif spellId == 206559 then--Caretaker Mode (15 seconds)
-		timerArcaneSlashCD:Stop()
-		warnCaretakerMode:Show()
-		timerSucculentFeastCD:Start()--4.5-5
-		timerTidyUpCD:Start()--10-11
-		timerPhaseChange:Start(16)
-		countdownModes:Start(16)
-	elseif spellId == 206788 then--Toxic Slice (Cleaner Mode)
+	if spellId == 206788 then--Toxic Slice (Cleaner Mode)
 		warnToxicSlice:Show()
 		timerToxicSliceCD:Start(self.vb.toxicSliceCooldown)
 	elseif spellId == 207513 then--Tidy Up (Caretaker Mode)
@@ -150,7 +121,36 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 206641 then--Arcane ArcaneSlash
+	if spellId == 206560 then--Cleaner Mode (45 seconds)
+		self.vb.ArcaneSlashCooldown = 18
+		self.vb.toxicSliceCooldown = 22--Still 22? 27 in mythic logs
+		warnCleanerMode:Show()
+		timerArcaneSlashCD:Stop()
+		--timerSterilizeCD:Start()--Used 1-3 seconds later
+		timerCleansingRageCD:Start()--10
+		timerToxicSliceCD:Start(13)
+		timerArcaneSlashCD:Start(19.5)
+		timerPhaseChange:Start(45)
+		countdownModes:Start(45)
+	elseif spellId == 206557 then--Maniac Mode (40 seconds)
+		self.vb.ArcaneSlashCooldown = 7
+		warnManiacMode:Show()
+		timerToxicSliceCD:Stop()--Must be stopped here too since first cleaner mode has no buff removal
+		timerArcaneSlashCD:Stop()
+		timerArcingBondsCD:Start(5)--5-10 depending on if arcane slash delays it
+		timerArcaneSlashCD:Start(6)
+		timerAnnihilationCD:Start()
+		countdownAnnihilation:Start()
+		timerPhaseChange:Start(40)
+		countdownModes:Start(40)
+	elseif spellId == 206559 then--Caretaker Mode (15 seconds)
+		timerArcaneSlashCD:Stop()
+		warnCaretakerMode:Show()
+		timerSucculentFeastCD:Start()--4.5-5
+		timerTidyUpCD:Start()--10-11
+		timerPhaseChange:Start(13)
+		countdownModes:Start(13)
+	elseif spellId == 206641 then--Arcane ArcaneSlash
 		timerArcaneSlashCD:Start(self.vb.ArcaneSlashCooldown)
 	end
 end
