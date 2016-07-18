@@ -214,7 +214,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				self:Schedule(20, delayedTimeRelease, self, 25, 3)--45
 				self:Schedule(35, delayedBurst, self, 20, 3)--55
 				timerPowerOverwhelmingCD:Start(60, 1)
-			else--Normal confirmed, LFR assumed.
+			elseif self:IsNormal() then--Normal
 				timerTimeReleaseCD:Start(5, 1)
 				timerBurstofTimeCD:Start(13, 1)
 				self:Schedule(13, delayedBurst, self, 5, 2)--18
@@ -225,6 +225,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				self:Schedule(18, delayedBurst, self, 27, 3)--45
 				timerTemporalOrbsCD:Start(53, 1)
 				timerPowerOverwhelmingCD:Start(60, 1)
+			else--LFR
+				timerTimeReleaseCD:Start(10, 1)
+				timerBurstofTimeCD:Start(20, 1)
+				self:Schedule(20, delayedBurst, self, 5, 2)--25
+				timerBigAddCD:Start(35, 1)
+				countdownBigAdd:Start(35)
+				self:Schedule(10, delayedTimeRelease, self, 35, 2)--45
+				self:Schedule(25, delayedBurst, self, 25, 3)--50
+				self:Schedule(50, delayedBurst, self, 5, 4)--55
+				timerTemporalOrbsCD:Start(65, 1)
+				timerPowerOverwhelmingCD:Start(75, 1)
 			end
 		elseif self.vb.normCount == 2 then
 			if self:IsMythic() then
@@ -245,7 +256,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerPowerOverwhelmingCD:Start(60, 1)
 				--There may be some missing timers here based on duration of power overwhelming clipping some other timers
 				--self:Schedule(35, delayedTimeRelease, self, 50, 4)--85
-			else
+			elseif self:IsNormal() then--Normal confirmed
 				timerTimeBombCD:Start(5, 1)
 				timerBurstofTimeCD:Start(10, 1)
 				timerTimeReleaseCD:Start(18, 1)
@@ -256,16 +267,30 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				self:Schedule(18, delayedTimeRelease, self, 30, 2)--48
 				timerTemporalOrbsCD:Start(55, 1)
 				timerPowerOverwhelmingCD:Start(60, 1)
+			else--LFR
+				timerTemporalOrbsCD:Start(5, 1)
+				timerBurstofTimeCD:Start(10, 1)
+				self:Schedule(10, delayedBurst, self, 5, 2)--15
+				timerTimeReleaseCD:Start(25, 1)
+				timerBigAddCD:Start(35, 1)
+				countdownBigAdd:Start(35)
+				self:Schedule(25, delayedTimeRelease, self, 20, 2)--45
+				self:Schedule(15, delayedBurst, self, 35, 2)--50
+				self:Schedule(50, delayedBurst, self, 5, 3)--55
+				self:Schedule(5, delayedOrbs, self, 60, 2)--65
+				timerPowerOverwhelmingCD:Start(75, 1)
 			end
 		elseif self.vb.normCount == 3 then
 			if self:IsMythic() then
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			elseif self:IsHeroic() then--Probably changed.
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
-			else
+			elseif self:IsNormal() then--Normal confirmed
 				timerBigAddCD:Start(8, 1)
 				countdownBigAdd:Start(8)
 				timerPowerOverwhelmingCD:Start(19, 1)
+			else--LFR
+				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			end
 		else
 			DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
@@ -293,7 +318,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				countdownBigAdd:Start(45)
 				self:Schedule(30, delayedBurst, self, 20, 3)--50
 				timerPowerOverwhelmingCD:Start(60, 1)
-			else
+			elseif self:IsNormal() then--Normal confirmed
 				timerTimeReleaseCD:Start(5, 1)
 				timerBurstofTimeCD:Start(13, 1)
 				self:Schedule(13, delayedBurst, self, 5, 2)--18
@@ -304,6 +329,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				self:Schedule(5, delayedTimeRelease, self, 43, 2)--48
 				self:Schedule(18, delayedBurst, self, 32, 3)--50
 				timerPowerOverwhelmingCD:Start(60, 1)
+			else--LFR
+				timerTimeReleaseCD:Start(10, 1)
+				timerBurstofTimeCD:Start(20, 1)
+				self:Schedule(20, delayedBurst, self, 5, 2)--25
+				timerBigAddCD:Start(30, 1)
+				countdownBigAdd:Start(30)
+				timerTemporalOrbsCD:Start(40, 1)
+				self:Schedule(25, delayedBurst, self, 25, 3)--50
+				self:Schedule(10, delayedTimeRelease, self, 50, 2)--60
+				self:Schedule(50, delayedBurst, self, 20, 4)--70
+				self:Schedule(40, delayedOrbs, self, 40, 2)--80
+				timerPowerOverwhelmingCD:Start(90, 1)
 			end
 		elseif self.vb.slowCount == 2 then
 			if self:IsMythic() then
@@ -324,20 +361,24 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				self:Schedule(20, delayedBurst, self, 10, 2)--30
 				self:Schedule(30, delayedBurst, self, 5, 3)--35
 				timerPowerOverwhelmingCD:Start(40, 1)
-			else
+			elseif self:IsNormal() then--Normal confirmed
 				timerTimeReleaseCD:Start(10, 1)
 				timerTemporalOrbsCD:Start(18, 1)
 				timerBigAddCD:Start(23, 1)
 				countdownBigAdd:Start(23)
 				timerBurstofTimeCD:Start(30, 1)
 				timerPowerOverwhelmingCD:Start(38, 1)
+			else--LFR
+				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			end
 		elseif self.vb.slowCount == 3 then
 			if self:IsMythic() then
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			elseif self:IsHeroic() then--Probably changed.
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
-			else
+			elseif self:IsNormal() then--Normal confirmed
+				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
+			else--LFR
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			end
 		else
@@ -366,7 +407,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				self:Schedule(30, delayedTimeRelease, self, 10, 4)--40
 				timerTemporalOrbsCD:Start(50, 1)
 				timerPowerOverwhelmingCD:Start(60, 1)
-			else
+			elseif self:IsNormal() then--Normal confirmed
 				timerTimeReleaseCD:Start(5, 1)
 				timerTimeBombCD:Start(10, 1)
 				self:Schedule(5, delayedTimeRelease, self, 13, 2)--18
@@ -377,6 +418,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerBurstofTimeCD:Start(49, 1)
 				self:Schedule(40, delayedTimeRelease, self, 15, 4)--55
 				timerPowerOverwhelmingCD:Start(60, 1)
+			else--LFR
+				timerTimeReleaseCD:Start(10, 1)
+				timerBurstofTimeCD:Start(15, 1)
+				self:Schedule(10, delayedTimeRelease, self, 15, 2)--25
+				timerBigAddCD:Start(35, 1)
+				countdownBigAdd:Start(35)
+				timerTemporalOrbsCD:Start(45, 1)
+				self:Schedule(25, delayedTimeRelease, self, 30, 3)--55
+				self:Schedule(15, delayedBurst, self, 50, 3)--65
+				self:Schedule(55, delayedTimeRelease, self, 20, 3)--75
+				timerPowerOverwhelmingCD:Start(85, 1)
 			end
 		elseif self.vb.fastCount == 2 then
 			if self:IsMythic() then
@@ -402,13 +454,23 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerTimeBombCD:Start(30, 1)
 				timerTimeReleaseCD:Start(40, 1)
 				self:Schedule(25, delayedBurst, self, 25, 5)--50
-			else
+			elseif self:IsNormal() then--Normal confirmed
 				timerBurstofTimeCD:Start(8, 1)
 				self:Schedule(8, delayedBurst, self, 7, 2)--15
 				timerTemporalOrbsCD:Start(23, 1)
 				self:Schedule(15, delayedBurst, self, 15, 3)--30
 				timerTimeBombCD:Start(38, 1)
 				self:Schedule(30, delayedBurst, self, 15, 4)--45
+				self:Schedule(45, delayedBurst, self, 5, 5)--50
+				timerNextPhase:Start(55)
+			else--LFR
+				timerBurstofTimeCD:Start(5, 1)
+				self:Schedule(5, delayedBurst, self, 5, 2)--10
+				timerTemporalOrbsCD:Start(20, 1)
+				timerBigAddCD:Start(30, 1)
+				countdownBigAdd:Start(30)
+				self:Schedule(10, delayedBurst, self, 25, 3)--35
+				self:Schedule(35, delayedBurst, self, 10, 4)--45
 				self:Schedule(45, delayedBurst, self, 5, 5)--50
 				timerNextPhase:Start(55)
 			end
@@ -425,10 +487,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				DBM:AddMsg("There is incomplete timer data beyond 40 second mark of Fast-3 phase. Please submit transcriptor log to improve this mod")
 			elseif self:IsHeroic() then--Probably changed.
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
+			elseif self:IsNormal() then--Normal confirmed
+				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			else
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			end
-		else
+		else--LFR
 			DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 		end
 	elseif spellId == 206699 then--Summon Haste Add (Small Adds)
@@ -462,30 +526,35 @@ function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, _, spellGUID)
 					self:Schedule(5, delayedBurst, self, 5, 5)--10
 					--This may be incomplete.
 					DBM:AddMsg("There is incomplete timer data here and a spell or two might be missing. Please submit transcriptor log to improve this mod")
-				else--Normal (and maybe LFR?)
+				elseif self:IsNormal() then
 					timerBurstofTimeCD:Start(5, 2)
 					self:Schedule(5, delayedBurst, self, 5, 3)--10
 					timerTimeReleaseCD:Start(18, 2)
 					timerTimeBombCD:Start(25, 1)
 					timerNextPhase:Start(30)
+				else
+					DBM:AddMsg("There is incomplete timer data here and a spell or two might be missing. Please submit transcriptor log to improve this mod")
 				end
 			end
 		elseif self.vb.currentPhase == 2 then--normal
 			if self.vb.normCount == 2 then
 				if self:IsMythic() then
-	
+					DBM:AddMsg("There is incomplete timer data here and a spell or two might be missing. Please submit transcriptor log to improve this mod")
 				elseif self:IsHeroic() then--Probably changed.
-	
-				else--Normal (and maybe LFR?)
+					DBM:AddMsg("There is incomplete timer data here and a spell or two might be missing. Please submit transcriptor log to improve this mod")
+				elseif self:IsNormal() then
 					timerTimeReleaseCD:Start(5, 3)
 					timerNextPhase:Start(10)
+				else--LFR
+					timerTimeReleaseCD:Start(10, 3)
+					timerNextPhase:Start(15)
 				end
 			elseif self.vb.normCount == 3 then
 				if self:IsMythic() then
-	
+					--DBM:AddMsg("There is incomplete timer data here and a spell or two might be missing. Please submit transcriptor log to improve this mod")
 				elseif self:IsHeroic() then--Probably changed.
-	
-				else--Normal (and maybe LFR?)
+					--DBM:AddMsg("There is incomplete timer data here and a spell or two might be missing. Please submit transcriptor log to improve this mod")
+				elseif self:IsNormal() then
 					if self.vb.interruptCount == 1 then
 						timerBigAddCD:Start(5, 2)
 						countdownBigAdd:Start(5)
@@ -497,6 +566,8 @@ function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, _, spellGUID)
 					else
 						timerNextPhase:Start(5)
 					end
+				else
+					--DBM:AddMsg("There is incomplete timer data here and a spell or two might be missing. Please submit transcriptor log to improve this mod")
 				end
 			end
 		else--fast
