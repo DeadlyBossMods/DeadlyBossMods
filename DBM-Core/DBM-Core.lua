@@ -10306,7 +10306,7 @@ do
 
 	function bossModPrototype:NewCombatTimer(timer, text, barText, barIcon)
 		timer = timer or 10
-		local bar = self:NewTimer(timer, barText or DBM_CORE_GENERIC_TIMER_COMBAT, barIcon or 2457, nil, "timer_combat")
+		local bar = self:NewTimer(timer, barText or DBM_CORE_GENERIC_TIMER_COMBAT, barIcon or "Interface\\Icons\\ability_warrior_offensivestance", nil, "timer_combat")
 		local countdown = self:NewCountdown(0, 0, nil, false, nil, true)
 		local obj = setmetatable(
 			{
