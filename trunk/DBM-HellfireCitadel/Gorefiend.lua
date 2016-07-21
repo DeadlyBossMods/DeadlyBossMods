@@ -190,39 +190,25 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 181973 then
-		timerTouchofDoomCD:Stop()
-		specWarnFeastofSouls:Show()
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
-		end
-		--Switch to debuff tracking on mythic feast.
-		if self.Options.InfoFrame and self:IsMythic() then
-			local spellName = GetSpellInfo(179867)
-			DBM.InfoFrame:SetHeader(spellName)
-			DBM.InfoFrame:Show(10, "playerbaddebuff", spellName, nil, true)
-		end
+		self:SendSync("FeastOfSouls")
 	elseif spellId == 181582 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnBellowingShout:Show(args.sourceName)
 		voiceBellowingShout:Play("kickcast")
 	elseif spellId == 187814 then
 		warnRagingCharge:Show(args.sourceName)
 	elseif spellId == 181085 then
-		table.wipe(sharedFateTargets)
+		self:SendSync("SharedFateCast")
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 179977 then
-		timerTouchofDoomCD:Start()
+		self:SendSync("TouchofDoom")
 	elseif spellId == 182170 then--LFR version
-		timerTouchofDoomCD:Start(25)
+		self:SendSync("TouchofDoomLFR")
 	elseif spellId == 181085 then
-		self.vb.sharedFateCount = self.vb.sharedFateCount + 1
-		local cooldown = sharedFateTimers[self.vb.sharedFateCount+1]
-		if cooldown then
-			timerSharedFateCD:Start(cooldown, self.vb.sharedFateCount+1)
-		end
+		self:SendSync("SharedFateFinishCast")
 	end
 end
 
@@ -230,41 +216,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 179864 then
 		if self:AntiSpam(2, 4) then
-			self.vb.shadowOfDeathCount = self.vb.shadowOfDeathCount + 1
-			local count = self.vb.shadowOfDeathCount
-			if self:IsMythic() then
-				if count == 1 or count == 4 or count == 5 then--DPS 4x (3 timers)
-					timerShadowofDeathCDDps:Start(27, "2x"..DBM_CORE_DAMAGE_ICON)
-				elseif count == 2 then--Tank 2x (1 timer)
-					timerShadowofDeathCDTank:Start(60, "1x"..DBM_CORE_TANK_ICON)
-				elseif count == 3 then--Healer 2x (1 timer)
-					timerShadowofDeathCDHealer:Start(45, "2x"..DBM_CORE_HEALER_ICON)
-				end	
-			else
-				if count == 1 or count == 4 then--DPS 3x (2 timers)
-					local numPlayers = 1
-					--Counts for 2nd cast generated here
-					if playersCount >= 15 and playersCount < 21 then
-						numPlayers = 2
-					elseif playersCount >= 21 and playersCount < 27 then
-						numPlayers = 3
-					elseif playersCount >= 27 and playersCount < 31 then
-						numPlayers = 4
-					end
-					--Adjust count for 3rd cast off the 2nd cast above
-					if count == 4 and (playersCount == 15 or playersCount == 16 or playersCount == 21 or playersCount == 22) then--subtrack 1 from above for 2nd cast
-						numPlayers = numPlayers - 1
-					end
-					timerShadowofDeathCDDps:Start(36, numPlayers.."x"..DBM_CORE_DAMAGE_ICON)
-				elseif count == 2 then--Tank 1x (0 timers)
-					--Do nothing, only one tank is sent
-					--timerShadowofDeathCDTank:Start(60, "1x"..DBM_CORE_TANK_ICON)
-				elseif count == 3 and playersCount > 10 then--Healer 2x (1 timer). Only gets a 2nd one if > 10 players
-					local numPlayers = 1--Only one healer for 11-28 players
-					if playersCount >= 29 then numPlayers = 2 end--Only 2 healers for player count 29 and 30
-					timerShadowofDeathCDHealer:Start(36, numPlayers.."x"..DBM_CORE_HEALER_ICON)
-				end
-			end
+			self:SendSync("ShadowofDeathApplied")
 		end
 		warnShadowofDeath:CombinedShow(0.5, self.vb.shadowOfDeathCount, args.destName)
 		if args:IsPlayer() then
@@ -338,8 +290,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
-	elseif spellId == 185982 and not playerDown then--Cast when a Enraged Spirit in stomach reaches 70%
-		warnGoreboundSpiritSoon:Show()
+	elseif spellId == 185982 then--Cast when a Enraged Spirit in stomach reaches 70%
+		self:SendSync("GoreboundSoon")
 	elseif spellId == 185189 then
 		local amount = args.amount or 1
 		if (amount >= 4) and self:AntiSpam(3, 5) then
@@ -387,6 +339,100 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 181973 and self:IsInCombat() then--Phase restart
+		self:SendSync("FeastEnded")
+	elseif spellId == 185982 then
+		--When it fades, it means it's casting Expel Soul and returning to surface as a Gorebound Spirit
+		self:SendSync("GoreboundNow")
+	elseif spellId == 179977 or spellId == 189434 then
+		if self.Options.SetIconOnDoom then
+			self:SetIcon(args.destName, 0)
+		end
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 180016 and self:AntiSpam(2, 1) then--Crushing Darkness
+		warnCrushingDarkness:Show()
+		timerCrushingDarkness:Start()
+		timerCrushingDarknessCD:Schedule(6)--Delay timer by 6 seconds, so it doesn't start until after cast timer ends, reduce timer spam
+	elseif spellId == 185753 and playerDown then--Tank Add Exploit Protection (Enraged Spirit Spawn)
+		specWarnEnragedSpirit:Show()
+	end
+end
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 179995 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+		specWarnDoomWell:Show()
+	end
+end
+mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:OnSync(msg)
+	if msg == "GoreboundSoon" and not playerDown then
+		warnGoreboundSpiritSoon:Show()
+	elseif msg == "GoreboundNow" and not playerDown then
+		specWarnGoreboundSpirit:Show()
+	elseif msg == "FeastOfSouls" then
+		timerTouchofDoomCD:Stop()
+		specWarnFeastofSouls:Show()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
+		--Switch to debuff tracking on mythic feast.
+		if self.Options.InfoFrame and self:IsMythic() then
+			local spellName = GetSpellInfo(179867)
+			DBM.InfoFrame:SetHeader(spellName)
+			DBM.InfoFrame:Show(10, "playerbaddebuff", spellName, nil, true)
+		end
+	elseif msg == "SharedFateCast" then
+		table.wipe(sharedFateTargets)
+	elseif msg == "TouchofDoom" then
+		timerTouchofDoomCD:Start()
+	elseif msg == "TouchofDoomLFR" then
+		timerTouchofDoomCD:Start(25)
+	elseif msg == "SharedFateFinishCast" then
+		self.vb.sharedFateCount = self.vb.sharedFateCount + 1
+		local cooldown = sharedFateTimers[self.vb.sharedFateCount+1]
+		if cooldown then
+			timerSharedFateCD:Start(cooldown, self.vb.sharedFateCount+1)
+		end
+	elseif msg == "ShadowofDeathApplied" then
+		self.vb.shadowOfDeathCount = self.vb.shadowOfDeathCount + 1
+		local count = self.vb.shadowOfDeathCount
+		if self:IsMythic() then
+			if count == 1 or count == 4 or count == 5 then--DPS 4x (3 timers)
+				timerShadowofDeathCDDps:Start(27, "2x"..DBM_CORE_DAMAGE_ICON)
+			elseif count == 2 then--Tank 2x (1 timer)
+				timerShadowofDeathCDTank:Start(60, "1x"..DBM_CORE_TANK_ICON)
+			elseif count == 3 then--Healer 2x (1 timer)
+				timerShadowofDeathCDHealer:Start(45, "2x"..DBM_CORE_HEALER_ICON)
+			end	
+		else
+			if count == 1 or count == 4 then--DPS 3x (2 timers)
+				local numPlayers = 1
+				--Counts for 2nd cast generated here
+				if playersCount >= 15 and playersCount < 21 then
+					numPlayers = 2
+				elseif playersCount >= 21 and playersCount < 27 then
+					numPlayers = 3
+				elseif playersCount >= 27 and playersCount < 31 then
+					numPlayers = 4
+				end
+				--Adjust count for 3rd cast off the 2nd cast above
+				if count == 4 and (playersCount == 15 or playersCount == 16 or playersCount == 21 or playersCount == 22) then--subtrack 1 from above for 2nd cast
+					numPlayers = numPlayers - 1
+				end
+				timerShadowofDeathCDDps:Start(36, numPlayers.."x"..DBM_CORE_DAMAGE_ICON)
+			elseif count == 2 then--Tank 1x (0 timers)
+				--Do nothing, only one tank is sent
+				--timerShadowofDeathCDTank:Start(60, "1x"..DBM_CORE_TANK_ICON)
+			elseif count == 3 and playersCount > 10 then--Healer 2x (1 timer). Only gets a 2nd one if > 10 players
+				local numPlayers = 1--Only one healer for 11-28 players
+				if playersCount >= 29 then numPlayers = 2 end--Only 2 healers for player count 29 and 30
+				timerShadowofDeathCDHealer:Start(36, numPlayers.."x"..DBM_CORE_HEALER_ICON)
+			end
+		end
+	elseif msg == "FeastEnded" and self:IsInCombat() then
 		self.vb.shadowOfDeathCount = 0
 		specWarnFeastofSoulsEnded:Show()
 		--Timers exactly same as pull
@@ -422,33 +468,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerSharedFateCD:Start(19, 1)
 		end
 		timerFeastofSouls:Start()
-		if self.Options.RangeFrame and self:IsInCombat() then
+		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)
 		end
-	elseif spellId == 185982 and not playerDown then
-		--When it fades, it means it's casting Expel Soul and returning to surface as a Gorebound Spirit
-		specWarnGoreboundSpirit:Show()
-	elseif spellId == 179977 or spellId == 189434 then
-		if self.Options.SetIconOnDoom then
-			self:SetIcon(args.destName, 0)
-		end
 	end
 end
-
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 180016 and self:AntiSpam(2, 1) then--Crushing Darkness
-		warnCrushingDarkness:Show()
-		timerCrushingDarkness:Start()
-		timerCrushingDarknessCD:Schedule(6)--Delay timer by 6 seconds, so it doesn't start until after cast timer ends, reduce timer spam
-	elseif spellId == 185753 and playerDown then--Tank Add Exploit Protection (Enraged Spirit Spawn)
-		specWarnEnragedSpirit:Show()
-	end
-end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 179995 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
-		specWarnDoomWell:Show()
-	end
-end
-mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
