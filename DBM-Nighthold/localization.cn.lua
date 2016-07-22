@@ -1,6 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
+-- 夏一可
 -- Blizzard Entertainment
--- Last update: May 12 2015, 08:10 UTC@14943
+-- Last update: Jul 21 2015, 10:10 UTC@15067
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -60,11 +61,11 @@ L= DBM:GetModLocalization(1713)
 L= DBM:GetModLocalization(1761)
 
 L:SetWarningLocalization{
-	warnStarLow				= "等离子球" --is low
+	warnStarLow				= "离子球" --is low, offical
 }
 
 L:SetOptionLocalization{
-	warnStarLow				= "特殊警报：当堕落之星血量低时(~15%)"
+	warnStarLow				= "特殊警报：当坍缩之星血量低时(~15%)" --offical
 }
 
 L:SetMiscLocalization({
@@ -83,7 +84,8 @@ L= DBM:GetModLocalization(1732)
 L= DBM:GetModLocalization(1743)
 
 L:SetOptionLocalization{
-	FilterOtherSigns		= "过滤掉与你无关的星座点名喊叫"
+	ShowNeutralColor		= "在HUD中为没有星座点名的玩家标记为白圈，直到所有星座消失。",
+	FilterOtherSigns		= "过滤掉与你无关的星座点名喊叫。"
 }
 
 ------------------

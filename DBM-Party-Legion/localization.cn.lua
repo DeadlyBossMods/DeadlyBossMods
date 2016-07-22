@@ -1,8 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
+-- 夏一可
 -- Blizzard Entertainment
--- Last update: June 1 2016, 03:13 UTC@14988
--- 副本正式名称需要等待资料片正式发行，以正式发行为准
--- 夏一可还没有搞到触发字符串的翻译
+-- Last update: Jul 21 2015, 10:10 UTC@15067
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -174,7 +173,7 @@ L= DBM:GetModLocalization(1687)
 L = DBM:GetModLocalization("NLTrash")
 
 L:SetGeneralLocalization({
-	name =	"奈萨里奥的巢穴小怪"
+	name =	"耐萨里奥的巢穴小怪"
 })
 
 -----------------------
@@ -196,7 +195,7 @@ L= DBM:GetModLocalization(1498)
 L= DBM:GetModLocalization(1499)
 
 L:SetMiscLocalization({
-	batSpawn		=	"支援我！现在！"--Reinforcements to me! NOW!
+	batSpawn		=	"援助我！快！" --offical
 })
 
 -----------------------
@@ -321,7 +320,28 @@ L= DBM:GetModLocalization(1711)
 L = DBM:GetModLocalization("AVHTrash")
 
 L:SetGeneralLocalization({
-	name =	"新紫罗兰监狱小怪"
+	name =	"突袭紫罗兰监狱小怪"
+})
+
+L:SetWarningLocalization({
+	WarningPortalSoon	= "准备开门",
+	WarningPortalNow	= "第%d个传送门",
+	WarningBossNow		= "Boss来了"
+})
+
+L:SetTimerLocalization({
+	TimerPortal			= "传送门CD"
+})
+
+L:SetOptionLocalization({
+	WarningPortalNow		= "警报：新的传送门",
+	WarningPortalSoon		= "警报：准备开门",
+	WarningBossNow			= "警报：Boss来了",
+	TimerPortal				= "计时条：Boss后的下一个门"
+})
+
+L:SetMiscLocalization({
+	Malgath		=	"督军马尔加斯" --offical
 })
 
 -----------------------
