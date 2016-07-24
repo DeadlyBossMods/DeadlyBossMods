@@ -588,7 +588,7 @@ local function stripServerName(cap)
 end
 
 local function countDownTextDelay(timer)
-	TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+	TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer+1, timer+1)
 end
 
 --------------
@@ -1280,7 +1280,7 @@ do
 				"CHALLENGE_MODE_START",
 				"CHALLENGE_MODE_RESET",
 				"CHALLENGE_MODE_END",
-				"ACTIVE_TALENT_GROUP_CHANGED",
+				"PLAYER_SPECIALIZATION_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
 				"SCENARIO_CRITERIA_UPDATE"
@@ -3436,7 +3436,7 @@ do
 	end
 end
 
-function DBM:ACTIVE_TALENT_GROUP_CHANGED()
+function DBM:PLAYER_SPECIALIZATION_CHANGED()
 	local lastSpecID = currentSpecID
 	self:SetCurrentSpecInfo()
 	if currentSpecID ~= lastSpecID then--Don't fire specchanged unless spec actually has changed.
@@ -4001,12 +4001,7 @@ do
 			dummyMod.countdown:Start(timer)
 		end
 		if not DBM.Options.DontShowPTCountdownText then
-			local threshold = DBM.Options.PTCountThreshold
-			if timer > threshold then
-				DBM:Schedule(timer-threshold, countDownTextDelay, threshold)
-			else
-				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
-			end
+			TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
 		end
 		if not DBM.Options.DontShowPTText then
 			if target then
