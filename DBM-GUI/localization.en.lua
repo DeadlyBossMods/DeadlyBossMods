@@ -282,7 +282,7 @@ L.DontShowPT				= "Do not show Pull/Break Timer bar"
 L.DontShowPTText			= "Do not show announce text for Pull/Break Timer"
 L.DontPlayPTCountdown		= "Do not play Pull/Break/Combat/Custom Timer countdown audio"
 L.DontShowPTCountdownText	= "Do not show Pull/Break/Combat/Custom Timer countdown text"
-L.PT_Threshold				= "Do not show Pull/Break/Combat/Custom Timer countdown text above: %d"
+L.PT_Threshold				= "Do not show Break/Combat/Custom Timer countdown text above: %d"
 
 L.Panel_HideBlizzard		= "Blizzard Disable & Hide"
 L.Area_HideBlizzard			= "Blizzard Disable & Hide Options"
