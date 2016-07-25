@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(104528)--109042
 mod:SetEncounterID(1886)
 mod:SetZone()
-mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
+mod:SetUsedIcons(6, 5, 4, 3, 2, 1)--Unknown max night debuffs out so icon table may not be accurate yet
 --mod:SetHotfixNoticeRev(12324)
 mod:SetBossHPInfoToHighest()
 mod.respawnTime = 29.5
@@ -13,7 +13,7 @@ mod.respawnTime = 29.5
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 218438 218463 218466 218470 218148 218774 219049 218927 216830 216877 223034 223219",
+	"SPELL_CAST_START 218438 218463 218466 218470 218148 218774 219049 218927 216830 216877 223034 223219 223437",
 	"SPELL_CAST_SUCCESS 218424 218807 223437",
 	"SPELL_AURA_APPLIED 218809 218503 218304 218342 222021 222010 222020",
 	"SPELL_AURA_APPLIED_DOSE 218503",
@@ -74,7 +74,7 @@ local timerCollapseofNightCD		= mod:NewNextTimer(35, 223437, nil, nil, nil, 3, n
 
 --Stage 2: Nightosis
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerPlasmaSpheresCD			= mod:NewNextTimer(55, 218774, nil, nil, nil, 1)
+local timerPlasmaSpheresCD			= mod:NewNextTimer(55, 218774, 104923, nil, nil, 1)--"Summon Balls" short text
 --Stage 3: Pure Forms
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerToxicSporesCD			= mod:NewNextTimer(8, 219049, nil, nil, nil, 3)--Exception to 35, 55, 70 rule
@@ -102,6 +102,7 @@ local voiceGraceOfNature			= mod:NewVoice(218927, "Tank")--bossout
 local voiceCoN						= mod:NewVoice(218809)--mmX
 
 mod:AddRangeFrameOption(8, 218807)
+mod:AddSetIconOption("SetIconOnFetter", 218304, true)
 mod:AddSetIconOption("SetIconOnCoN", 218807, true)
 mod:AddHudMapOption("HudMapOnCoN", 218807)
 
@@ -288,7 +289,7 @@ function mod:SPELL_CAST_START(args)
 		timerSolarCollapseCD:Stop()
 		timerPlasmaSpheresCD:Stop()
 		timerToxicSporesCD:Start(8.5)
-		timerSolarCollapseCD:Start(27)
+		timerSolarCollapseCD:Start(17)
 		timerParasiticFetterCD:Start(28)
 		countdownParasiticFetter:Start(28)
 		timerControlledChaosCD:Start(37)
@@ -298,6 +299,8 @@ function mod:SPELL_CAST_START(args)
 		countdownCoN:Start(64)
 		timerGraceOfNatureCD:Start(72)--Might change
 		countdownGraceOfNature:Start(72)
+	elseif spellId == 223437 then
+		self.vb.CoNIcon = 1
 	end
 end
 
@@ -371,7 +374,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM:AddMsg(L.RadarMessage)
 			end
 		end
-		if self.Options.SetIconOnCoN and number < 9 then
+		if self.Options.SetIconOnCoN then
 			self:SetIcon(args.destName, number)
 		end
 	elseif spellId == 218503 then
@@ -392,6 +395,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceParasiticFetter:Play("runaway")
 		else
 			warnParasiticFetter:Show(args.destName)
+		end
+		if self.Options.SetIconOnFetter and not self:IsLFR() then
+			--This assumes no fuckups. Because honestly coding this around fuckups is not worth the effort
+			self:SetIcon(args.destName, 6)
 		end
 	elseif spellId == 218342 then
 		warnParasiticFixate:CombinedShow(0.5, args.destName)
@@ -519,9 +526,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnCoN then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 218304 and self:AntiSpam(5, 2) and not UnitDebuff("player", args.spellName) then
-		specWarnLasher:Show()
-		voiceLasher:Play("killmob")
+	elseif spellId == 218304 then
+		if self:AntiSpam(5, 2) and not UnitDebuff("player", args.spellName) then
+			specWarnLasher:Show()
+			voiceLasher:Play("killmob")
+		end
+		if self.Options.SetIconOnFetter then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
