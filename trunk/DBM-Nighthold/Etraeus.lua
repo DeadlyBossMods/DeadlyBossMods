@@ -14,20 +14,17 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 205408 206949 206517 207720 207439 216909",
 	"SPELL_CAST_SUCCESS 206464 206464 206936 205649 207143 205984 214335 214167",
-	"SPELL_AURA_APPLIED 205429 216344 216345 205445 205984 214335 214167 206585 206936 205649 207143",
+	"SPELL_AURA_APPLIED 205429 216344 216345 205445 205984 214335 214167 206585 206936 205649 207143 206398",
 	"SPELL_AURA_REMOVED 205429 216344 216345 205445 205984 214335 214167 206585 206936 207143",
 	"SPELL_SUMMON 207813",
---	"SPELL_PERIODIC_DAMAGE 206399",
---	"SPELL_PERIODIC_MISSED 206399",
+	"SPELL_PERIODIC_DAMAGE 206398",
+	"SPELL_PERIODIC_MISSED 206398",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, if everyone doesn't get the debuffs, handle cancelNotMine differently
---TODO, change hunter/dragon icon/color to official icon when blizzard fixes oversight.
 --TODO, evalulate hud size for conjunction for range check/hud. 5 yards guessed.
 --TODO, felburst stacks/swapping?
---TODO, add felflame GTFO
 --TODO, does void nova even merit a special warning, or regular?
 --Base abilities
 local warnStarSignCrab				= mod:NewTargetAnnounce(205429, 2)--Yellow (looks orange but icon text is yellow)
@@ -58,8 +55,9 @@ local specWarnFrigidNova			= mod:NewSpecialWarningSpell(206949, nil, nil, nil, 2
 --Stage Three: A Shattered World
 local specWarnFelEjection			= mod:NewSpecialWarningMoveAway(205649, nil, nil, nil, 1, 2)
 local specWarnFelNova				= mod:NewSpecialWarningRun(206517, nil, nil, nil, 4, 2)
+local specWarnFelFlame				= mod:NewSpecialWarningMove(206398, nil, nil, nil, 1, 2)
 --Stage Four: Inevitable Fate
-local specWarnThing					= mod:NewSpecialWarningSwitch("ej13057", "-Healer", nil, nil, 1, 2)
+local specWarnThing					= mod:NewSpecialWarningSwitch("ej13057", "Tank", nil, 2, 1, 2)
 local specWarnWitnessVoid			= mod:NewSpecialWarningSpell(207720, nil, nil, nil, 1, 2)
 local specWarnVoidEjection			= mod:NewSpecialWarningMoveAway(207143, nil, nil, nil, 1, 2)--Should this be a move away, does void burst do any damage?
 local specWarnVoidNova				= mod:NewSpecialWarningSpell(207439, nil, nil, nil, 2, 2)
@@ -82,10 +80,11 @@ local timerFelEjectionCD			= mod:NewCDCountTimer(16, 205649, nil, nil, nil, 3)
 local timerFelNovaCD				= mod:NewCDCountTimer(29.3, 206517, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage Four: Inevitable Fate
 mod:AddTimerLine(SCENARIO_STAGE:format(4))
-local timerWitnessVoidCD			= mod:NewCDTimer(13.4, 207720, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerWitnessVoidCD			= mod:NewCDTimer(13.4, 207720, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)--14.5 on normal
 local timerVoidEjectionCD			= mod:NewCDCountTimer(16, 207143, nil, nil, nil, 3)
 local timerVoidNovaCD				= mod:NewCDTimer(65, 207439, nil, nil, nil, 2)--Only saw a single pull it was cast twice, so CD needs more verification
 local timerWorldDevouringForceCD	= mod:NewCDTimer(16, 216909, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_HEROIC_ICON)
+local timerThingCD					= mod:NewCDTimer(63, "ej13057", 207813, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
 --Base abilities
 local countdownConjunction			= mod:NewCountdownFades("AltTwo15", 205408)
@@ -106,6 +105,7 @@ local voiceFrigidNova				= mod:NewVoice(206949)--gathershare
 --Stage Three: A Shattered World
 local voiceFelEjection				= mod:NewVoice(205649)--runout/keepmove
 local voiceFelnova					= mod:NewVoice(206517)--justrun
+local voiceFelFlame					= mod:NewVoice(206398)--runaway
 --Stage Four: Inevitable Fate
 local voiceThing					= mod:NewVoice("ej13057", "-Healer")--killmob
 local voiceWitnessVoid				= mod:NewVoice(207720)--turnaway
@@ -118,7 +118,6 @@ mod:AddRangeFrameOption("5/8")
 --mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddHudMapOption("HudMapOnConjunction", 205408)
 mod:AddBoolOption("ShowNeutralColor", false)
-mod:AddBoolOption("FilterOtherSigns", true)
 mod:AddInfoFrameOption(205408)--really needs a "various" option
 
 mod.vb.StarSigns = 0
@@ -135,8 +134,8 @@ mod.vb.voidEjectionCount = 0
 --"207143-Void Ejection" = "pull:328.7, 5.7, 14.1, 20.7, 2.8, 6.1, 25.7, 4.9",
 --"207143-Void Ejection" = "pull:326.8, 4.4, 17.5, 17.4, 4.6, 4.7, 26.3, 4.8",
 --For all inclusive, i'll simply use lowest observed time for each count, which will give close approx cd timer but imprecise to be a "next" timer.
-local icyEjectionTimers = {29, 35.2, 5.3, 4.1, 52.3, 0.8, 0.8, 21.0, 2.1, 1.2}--(Stripped: 35.2, 64.5, 24.7)
-local felEjectionTimers = {22.5, 3.2, 6.1, 9.4, 4.4, 4.0, 34.9, 2.0, 5.4, 0.3, 4.9, 18.2, 3.6, 3.6, 18.2, 8.9, 10.9, 12.3, 10.5}
+local icyEjectionTimers = {24.5, 35.2, 6.9, 5.3, 50.7}--35.2, 5.3, 4.1, 52.3, 0.8, 0.8, 21.0, 2.1, 1.2 (Old)
+local felEjectionTimers = {22.5, 4.8, 3.7, 0.4, 10.9, 3.6, 3.7, 33.6, 2.5, 2.8, 4.5, 2.8, 24.0}--3.2, 6.1, 9.4, 4.4, 4.0, 34.9, 2.0, 5.4, 0.3, 4.9, 18.2, 3.6, 3.6, 18.2, 8.9, 10.9, 12.3, 10.5 (Old)
 local voidEjectionTimers = {24, 3.2, 14.1, 17.4, 0.8, 4.7, 25.7, 2.3}
 --local felNovaTImers = {34.8, 31.3, 29.3}--Currently unused. for now just doing 34.8 or 29.3
 local abZeroTargets = {}
@@ -240,23 +239,18 @@ local function updateRangeFrame(self, force)
 	end
 end
 
-local function cancelNotMine(self, spellId)
+local function cancelNotMine(self)
 	--Idea behind this is you should only see all targets same sign as you
-	if not self.Options.FilterOtherSigns then return end--Don't cancel anything.
-	local playerHasNone = false
-	if not UnitDebuff("player", crabDebuff) and not UnitDebuff("player", dragonDebuff) and not UnitDebuff("player", hunterDebuff) and not UnitDebuff("player", wolfDebuff) then
-		playerHasNone = true
-	end
-	if playerHasNone or spellId ~= 205429 then
+	if not UnitDebuff("player", crabDebuff) then
 		warnStarSignCrab:Cancel()
 	end
-	if playerHasNone or spellId ~= 216344 then
+	if not UnitDebuff("player", dragonDebuff) then
+		warnStarSignDragon:Cancel()
+	end
+	if not UnitDebuff("player", hunterDebuff) then
 		warnStarSignHunter:Cancel()
 	end
-	if playerHasNone or spellId ~= 216345 then
-		warnStarSignHunter:Cancel()
-	end
-	if playerHasNone or spellId ~= 205445 then
+	if not UnitDebuff("player", wolfDebuff) then
 		warnStarSignWolf:Cancel()
 	end
 end
@@ -289,7 +283,8 @@ function mod:SPELL_CAST_START(args)
 		voiceConjunction:Play("scatter")
 		--timerConjunctionCD:Start()
 		updateRangeFrame(self, true)
-		DBM:AddMsg("Sadly, all the HUD features for this aren't yet tested and subject to imperfections until further revision")
+		DBM:AddMsg("HUD ranges for this are still approximatinos until further testing.")
+		self:Schedule(5, cancelNotMine, self)
 	elseif spellId == 206949 then
 		specWarnFrigidNova:Show()
 		voiceFrigidNova:Play("gathershare")
@@ -306,7 +301,11 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 207720 then
 		specWarnWitnessVoid:Show()
 		voiceWitnessVoid:Play("turnaway")
-		timerWitnessVoidCD:Start(nil, args.sourceGUID)
+		if self:IsFaceroll() then
+			timerWitnessVoidCD:Start(14.5, args.sourceGUID)
+		else
+			timerWitnessVoidCD:Start(nil, args.sourceGUID)
+		end
 	elseif spellId == 207439 then
 		specWarnVoidNova:Show()
 		voiceVoidNova:Play("aesoon")
@@ -364,6 +363,7 @@ function mod:SPELL_SUMMON(args)
 		specWarnThing:Show()
 		voiceThing:Play("killmob")
 		timerWitnessVoidCD:Start(10, args.destGUID)
+		timerThingCD:Start()
 	end
 end
 
@@ -379,7 +379,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
 				voiceConjunction:Play("205408c")
-				self:Schedule(1, cancelNotMine, self, spellId)
 				countdownConjunction:Start()
 			end
 		elseif spellId == 216344 then--Dragon
@@ -390,7 +389,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
 				voiceConjunction:Play("205408d")
-				self:Schedule(1, cancelNotMine, self, spellId)
 				countdownConjunction:Start()
 			end
 		elseif spellId == 216345 then--Hunter
@@ -401,7 +399,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
 				voiceConjunction:Play("205408h")
-				self:Schedule(1, cancelNotMine, self, spellId)
 				countdownConjunction:Start()
 			end
 		elseif spellId == 205445 then--Wolf
@@ -412,7 +409,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
 				voiceConjunction:Play("205408w")
-				self:Schedule(1, cancelNotMine, self, spellId)
 				countdownConjunction:Start()
 			end
 		end
@@ -475,6 +471,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVoidEjection:Show()
 			voiceVoidEjection:Play("runout")
 		end
+	elseif spellId == 206398 and not self:IsTank() and self:AntiSpam(2, 1) then
+		specWarnFelFlame:Show()
 	end
 end
 
@@ -541,9 +539,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.icyEjectionCount = 0
 		timerCoronalEjectionCD:Stop()
 		timerConjunctionCD:Stop()
+		timerIcyEjectionCD:Start(24.5, 1)
 		timerGravPullCD:Start(29)
-		timerIcyEjectionCD:Start(29, 1)
-		timerFrigidNovaCD:Start(49)
+		if not self:IsFaceroll() then
+			timerFrigidNovaCD:Start(49)
+		end
 		if self:IsMythic() then
 			timerConjunctionCD:Start(48)
 		end
@@ -557,7 +557,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerConjunctionCD:Stop()
 		timerFelEjectionCD:Start(19, 1)
 		timerGravPullCD:Start(28)
-		timerFelNovaCD:Start(61, 1)
+		if not self:IsFaceroll() then
+			timerFelNovaCD:Start(61, 1)
+		end
 		if self:IsMythic() then
 			timerConjunctionCD:Start(48)
 		end
@@ -569,8 +571,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerGravPullCD:Stop()
 		timerConjunctionCD:Stop()
 		timerGravPullCD:Start(20.5)
-		timerVoidEjectionCD:Start(24, 1)
-		timerVoidNovaCD:Start(40)
+		timerThingCD:Start(31.5)
+		if not self:IsFaceroll() then--Was never used on normal, probably not LFR either then
+			timerVoidEjectionCD:Start(24, 1)
+			timerVoidNovaCD:Start(40)
+		end
 		if self:IsMythic() then
 			timerWorldDevouringForceCD:Start(22)
 			timerConjunctionCD:Start(48)
@@ -578,13 +583,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 206399 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
---		specWarnMiasma:Show()
---		voiceMiasma:Play("runaway")
+	if spellId == 206398 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
+		specWarnFelFlame:Show()
+		voiceFelFlame:Play("runaway")
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---]]
