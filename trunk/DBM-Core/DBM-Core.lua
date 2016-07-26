@@ -3072,7 +3072,7 @@ end
 function DBM:PLAYER_LEVEL_UP()
 	playerLevel = UnitLevel("player")
 	if playerLevel < 15 and playerLevel > 9 then
-		self:ACTIVE_TALENT_GROUP_CHANGED()
+		self:PLAYER_SPECIALIZATION_CHANGED()
 	end
 end
 
