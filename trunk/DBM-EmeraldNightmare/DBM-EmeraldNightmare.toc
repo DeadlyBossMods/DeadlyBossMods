@@ -1,7 +1,7 @@
 ﻿## Interface: 70000
 ## X-Min-Interface: 70000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Emerald Nightmare|r
-## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Smaragdgrüner Alptraum|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Der Smaragdgrüne Alptraum|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -16,6 +16,7 @@
 ## X-DBM-Mod-MinCoreRevision: 14737
 localization.en.lua
 localization.cn.lua
+localization.de.lua
 Nythendra.lua
 Ilgynoth.lua
 Renferal.lua

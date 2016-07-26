@@ -1,9 +1,4 @@
--- Mini Dragon(projecteurs@gmail.com)
--- 夏一可
--- Blizzard Entertainment
--- Last update: Jul 21 2015, 10:10 UTC@15067
-
-if GetLocale() ~= "zhCN" then return end
+﻿if GetLocale() ~= "deDE" then return end
 local L
 
 ---------------
@@ -21,7 +16,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	NoDebuff	= "无%s"
+	NoDebuff	= "Kein %s"
 })
 
 ---------------------------
@@ -45,9 +40,9 @@ L= DBM:GetModLocalization(1751)
 L= DBM:GetModLocalization(1762)
 
 L:SetMiscLocalization({
-	First				= "第一",
-	Second				= "第二",
-	Third				= "第三"
+	First				= "Erster",
+	Second				= "Zweiter",
+	Third				= "Dritter"
 })
 
 ------------------
@@ -61,15 +56,15 @@ L= DBM:GetModLocalization(1713)
 L= DBM:GetModLocalization(1761)
 
 L:SetWarningLocalization({
-	warnStarLow				= "离子球" --is low, offical
+	warnStarLow				= "Plasmasphäre stirbt bald"
 })
 
 L:SetOptionLocalization({
-	warnStarLow				= "特殊警报：当坍缩之星血量低时(~15%)" --offical
+	warnStarLow				= "Spezialwarnung, wenn eine Plasmasphäre bald stirbt (bei ~15%)"
 })
 
 L:SetMiscLocalization({
-	RadarMessage			= "目前请使用雷达来找一个没有debuff的队友，并用HUD来防止碰到debuffs。我们会拿出更多的黑科技。"
+	RadarMessage			= "Use Radar to find a non debuff partner and HUD to avoid other debuffs. I hope to improve this function over time and provide more options than this."--translate later
 })
 
 ------------------
@@ -78,8 +73,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1732)
 
 L:SetOptionLocalization({
-	ShowNeutralColor		= "在HUD中为没有星座点名的玩家标记为白圈，直到所有星座消失。",
-	FilterOtherSigns		= "过滤掉与你无关的星座点名喊叫。"
+	ShowNeutralColor		= "Zeige auf HudMap weiße Kreise um Spieler ohne Sternzeichen, bis alle Zeichen entfernt wurden",
+	FilterOtherSigns		= "Filter target announces for Star Signs you are not affected by."--translate (unused)
 })
 
 ------------------
@@ -98,5 +93,5 @@ L= DBM:GetModLocalization(1737)
 L = DBM:GetModLocalization("NightholdTrash")
 
 L:SetGeneralLocalization({
-	name =	"暗夜要塞小怪"
+	name =	"Trash der Nachtfestung"
 })

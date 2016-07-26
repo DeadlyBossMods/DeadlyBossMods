@@ -54,33 +54,32 @@ L= DBM:GetModLocalization(1713)
 ------------------
 L= DBM:GetModLocalization(1761)
 
-L:SetWarningLocalization{
+L:SetWarningLocalization({
 	warnStarLow				= "Plasma Sphere is low"
-}
+})
 
-L:SetOptionLocalization{
-	warnStarLow				= "Show special warning when Collapsing Star is low (at ~15%)"
-}
+L:SetOptionLocalization({
+	warnStarLow				= "Show special warning when Plasma Sphere is low (at ~15%)"
+})
 
 L:SetMiscLocalization({
 	RadarMessage			= "Use Radar to find a non debuff partner and HUD to avoid other debuffs. I hope to improve this function over time and provide more options than this."
 })
-
 
 ------------------
 -- Star Augur Etraeus --
 ------------------
 L= DBM:GetModLocalization(1732)
 
+L:SetOptionLocalization({
+	ShowNeutralColor		= "Show white circles on HUD around players that have no star sign, until all signs are cleared.",
+	FilterOtherSigns		= "Filter target announces for Star Signs you are not affected by."
+})
+
 ------------------
 -- Grand Magistrix Elisande --
 ------------------
 L= DBM:GetModLocalization(1743)
-
-L:SetOptionLocalization{
-	ShowNeutralColor		= "Show white circles on HUD around players that have no star sign, until all signs are cleared.",
-	FilterOtherSigns		= "Filter target announces for Star Signs you are not affected by."
-}
 
 ------------------
 -- Gul'dan --
@@ -90,8 +89,8 @@ L= DBM:GetModLocalization(1737)
 -------------
 --  Trash  --
 -------------
-L = DBM:GetModLocalization("SuramarTrash")
+L = DBM:GetModLocalization("NightholdTrash")
 
 L:SetGeneralLocalization({
-	name =	"Suramar Trash"
+	name =	"Nighthold Trash"
 })

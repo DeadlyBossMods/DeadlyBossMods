@@ -52,6 +52,7 @@ L.Statistic_Kills			= "Siege:"
 L.Statistic_Wipes			= "Niederlagen:"
 L.Statistic_Incompletes		= "Abgebrochen:"
 L.Statistic_BestKill		= "Rekordzeit:"
+L.Statistic_BestRank		= "Höchste Stufe:"
 
 -- Tab: General Core Options
 L.General 					= "Allgemeine Grundeinstellungen"
@@ -281,7 +282,7 @@ L.DontShowPT				= "Zeige keinen Timerbalken für Pull-/Pausen-Timer"
 L.DontShowPTText			= "Zeige keine Mitteilungen für Pull-/Pausen-Timer im Chatfenster"
 L.DontPlayPTCountdown		= "Spiele keinen akustischen Countdown für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
 L.DontShowPTCountdownText	= "Zeige keinen optischen Countdown für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
-L.PT_Threshold				= "Zeige keinen opt. Countd. f. Pull-/Pausen-/Kampf-/Nutzer-Timer über: %d"
+L.PT_Threshold				= "Zeige keinen opt. Countd. für Pausen-/Kampf-/Nutzer-Timer über: %d"
 
 L.Panel_HideBlizzard		= "Deaktivierung von Spielelementen"
 L.Area_HideBlizzard			= "Einstellungen zum Deaktivieren und Verbergen von Spielelementen"
@@ -318,10 +319,6 @@ L.SKT_Enabled				= "Zeige Timer für Rekordzeit für aktuellen Kampf (falls verf
 L.CRT_Enabled				= "Zeige Zeit bis zur nächsten Wiederbelebungsaufladung im Kampf"
 L.ShowRespawn				= "Zeige Zeit bis zum Wiedererscheinen des Bosses nach einer Niederlage"
 L.ShowQueuePop				= "Zeige verbleibende Zeit zur Annahme einer Warteschlangeneinladung (Gruppensuche, Schlachtfelder, etc.)"
-L.ChallengeTimerOptions		= "Timer für den schnellsten Abschluss im Herausforderungsmodus"
-L.ChallengeTimerPersonal	= "Persönliche Bestzeit"
-L.ChallengeTimerGuild		= "Bestzeit der Gilde"
-L.ChallengeTimerRealm		= "Bestzeit des Realms"
 --
 L.Area_AutoLogging			= "Automatische Aufzeichnungen"
 L.AutologBosses				= "Automatische Aufzeichnung von Bosskämpfen im spieleigenen Kampflog (/dbm pull vor Bossen wird benötigt um die Aufzeichnung rechtzeitig für \"Pre-Pots\" und andere Ereignisse zu starten)"
