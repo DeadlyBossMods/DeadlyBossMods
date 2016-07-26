@@ -117,7 +117,7 @@ local MarkOfFrostDebuff = GetSpellInfo(212587)
 local SearingBrandDebuff = GetSpellInfo(213166)
 local rangeShowAll = false
 local chargeTable = {}
-local annihilateTimers = {8, 45, 40, 44, 20, 18, 47, 20, 13}--Need longer pulls/more data. However this pattern did prove to always be same
+local annihilateTimers = {8, 45.0, 40.0, 44.0, 38.0, 37.0, 33.0}--Need longer pulls/more data. However this pattern did prove to always be same
 
 local debuffFilter
 local UnitDebuff = UnitDebuff
@@ -250,15 +250,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnArcanePhase:Show()
 		voicePhaseChange:Play("phasechange")
 		--Arcane orb not started here, started somewhere else so timer is actually useful
-		timerArcaneOrbRepCD:Start(25)
-		timerArcaneOrbDetonateCD:Start(47.9)
-		timerAnimateArcaneCD:Start(61.9)
+		timerArcaneOrbRepCD:Start(15)
+		timerArcaneOrbDetonateCD:Start(35)
+		specWarnArcanedetonate:Schedule(35)
+		voiceArcaneDetonate:Schedule(35, "watchorb")
+		timerAnimateArcaneCD:Start(51.9)
 		if self.Options.RangeFrame and self:IsRanged() then
 			DBM.RangeCheck:Show(8)--Show everyone for better arcane orb spread
 		else--Melee, kill range frame this phase
 			DBM.RangeCheck:Hide()
 		end
-		timerFrostPhaseCD:Start(80)
+		timerFrostPhaseCD:Start(70)
 	elseif spellId == 212531 then--Mark of Frost (5sec Targetting Debuff)
 		warnMarkOfFrostChosen:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
@@ -325,6 +327,7 @@ do
 		end
 	end
 	mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+	
 	function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		if spellId == 213520 and destGUID == playerGUID and self:AntiSpam(2, 1) then
 			specWarnArcaneFog:Show()
@@ -352,15 +355,15 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 213853 then--Animate Mark of Frost. Not currently incombat log
+	if spellId == 213853 then--Animate Mark of Frost. (wasn't in combat log but is now, but here just in case they break again)
 --		specWarnAnimateFrost:Show()
 --		voiceAnimateFrost:Play("mobkill")--using this trigger, mobkill
 --		timerAnimateFrostCD:Start()
 	elseif spellId == 215455 then--Arcane Orb
 		specWarnArcaneOrb:Show()
 		voiceArcaneOrb:Play("watchorb")
-	elseif spellId == 213390 then--Detonate: Arcane Orb
-		specWarnArcanedetonate:Show()
-		voiceArcaneDetonate:Play("watchorb")
+	elseif spellId == 213390 then--Detonate: Arcane Orb (still missing from combat log, although this event is 3 seconds slower than scheduling or using yell)
+--		specWarnArcanedetonate:Show()
+--		voiceArcaneDetonate:Play("watchorb")
 	end
 end
