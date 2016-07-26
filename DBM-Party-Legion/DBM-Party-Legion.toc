@@ -29,6 +29,7 @@
 ## X-DBM-Mod-MinCoreRevision: 14737
 localization.en.lua
 localization.cn.lua
+localization.de.lua
 BlackRookHold\AmalgamSouls.lua
 BlackRookHold\Illysanna.lua
 BlackRookHold\Smashspite.lua
