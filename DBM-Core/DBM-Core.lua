@@ -61,10 +61,10 @@ end
 -- dual profile setup
 local _, class = UnitClass("player")
 DBM_UseDualProfile = true
-if class == "MAGE" or class == "WARLOCK" and class == "HUNTER" and class == "ROGUE" then
+if class == "MAGE" or class == "WARLOCK" and class == "ROGUE" then
 	DBM_UseDualProfile = false
 end
-DBM_CharSavedRevision = 1
+DBM_CharSavedRevision = 2
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
 local standardFont = STANDARD_TEXT_FONT
@@ -3363,7 +3363,7 @@ do
 
 		-- force enable dual profile (change default)
 		if DBM_CharSavedRevision < 12976 then
-			if class ~= "MAGE" and class ~= "WARLOCK" and class ~= "HUNTER" and class ~= "ROGUE" then
+			if class ~= "MAGE" and class ~= "WARLOCK" and class ~= "ROGUE" then
 				DBM_UseDualProfile = true
 			end
 		end
