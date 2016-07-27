@@ -352,8 +352,12 @@ local function updatePlayerDebuffRemaining()
 	for uId in DBM:GetGroupMembers() do
 		local _, _, _, _, _, _, expires = UnitDebuff(uId, spellName)
 		if expires then
-			local debuffTime = expires - GetTime()
-			lines[UnitName(uId)] = mfloor(debuffTime)
+			if expires == 0 then
+				lines[UnitName(uId)] = SPELL_FAILED_OUT_OF_RANGE
+			else
+				local debuffTime = expires - GetTime()
+				lines[UnitName(uId)] = mfloor(debuffTime)
+			end
 		end
 	end
 	updateLines()
@@ -543,9 +547,10 @@ function onUpdate(frame)
 					end
 				else--It's not player, do nothing special with it. Ordinary class colored text.
 					if currentEvent == "playerdebuffremaining" then
-						if tonumber(rightText) < 6 then
+						local numberValue = tonumber(rightText)
+						if numberValue and numberValue < 6 then
 							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 0, 0)--Red
-						elseif tonumber(rightText) < 11 then
+						elseif numberValue and numberValue < 11 then
 							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 127.5, 0)--Orange
 						else
 							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)--White
