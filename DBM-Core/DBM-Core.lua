@@ -407,7 +407,7 @@ local updateNotificationDisplayed = 0
 local showConstantReminder = 0
 local tooltipsHidden = false
 local SWFilterDisabed = 3
-local currentSpecGroup = GetActiveSpecGroup()
+local currentSpecGroup = GetSpecialization() or 1
 local currentSpecID, currentSpecName
 local cSyncSender = {}
 local cSyncReceived = 0
@@ -6047,8 +6047,8 @@ do
 end
 
 function DBM:SetCurrentSpecInfo()
-	currentSpecGroup = GetActiveSpecGroup()
-	currentSpecID, currentSpecName = GetSpecializationInfo(GetSpecialization() or 1)--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
+	currentSpecGroup = GetSpecialization() or 1
+	currentSpecID, currentSpecName = GetSpecializationInfo(currentSpecGroup)--give temp first spec id for non-specialization char. no one should use dbm with no specialization, below level 10, should not need dbm.
 	currentSpecID = tonumber(currentSpecID)
 end
 
