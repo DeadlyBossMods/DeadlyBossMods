@@ -353,7 +353,7 @@ local function updatePlayerDebuffRemaining()
 		local _, _, _, _, _, _, expires = UnitDebuff(uId, spellName)
 		if expires then
 			if expires == 0 then
-				lines[UnitName(uId)] = SPELL_FAILED_OUT_OF_RANGE
+				lines[UnitName(uId)] = 9000--Force sorting the unknowns under the ones we do know.
 			else
 				local debuffTime = expires - GetTime()
 				lines[UnitName(uId)] = mfloor(debuffTime)
@@ -548,12 +548,16 @@ function onUpdate(frame)
 				else--It's not player, do nothing special with it. Ordinary class colored text.
 					if currentEvent == "playerdebuffremaining" then
 						local numberValue = tonumber(rightText)
-						if numberValue and numberValue < 6 then
+						if numberValue < 6 then
 							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 0, 0)--Red
-						elseif numberValue and numberValue < 11 then
+						elseif numberValue < 11 then
 							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 127.5, 0)--Orange
 						else
-							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)--White
+							if numberValue == 9000 then--the out of range players
+								frame:AddDoubleLine(icon or leftText, SPELL_FAILED_OUT_OF_RANGE, color.r, color.g, color.b, 255, 0, 0)--Red
+							else
+								frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)--White
+							end
 						end
 					else
 						frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 255, 255)
