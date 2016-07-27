@@ -368,6 +368,7 @@ end
 mod.SPELL_ABSORBED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:OnSync(msg)
+	if not self:IsInCombat() then return end
 	if msg == "GoreboundSoon" and not playerDown then
 		warnGoreboundSpiritSoon:Show()
 	elseif msg == "GoreboundNow" and not playerDown then
@@ -432,7 +433,7 @@ function mod:OnSync(msg)
 				timerShadowofDeathCDHealer:Start(36, numPlayers.."x"..DBM_CORE_HEALER_ICON)
 			end
 		end
-	elseif msg == "FeastEnded" and self:IsInCombat() then
+	elseif msg == "FeastEnded" then
 		self.vb.shadowOfDeathCount = 0
 		specWarnFeastofSoulsEnded:Show()
 		--Timers exactly same as pull
