@@ -423,7 +423,7 @@ local statusWhisperDisabled = false
 local wowTOC = select(4, GetBuildInfo())
 local dbmToc = 0
 
-local fakeBWRevision = 13784
+local fakeBWRevision = 13799
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -6002,10 +6002,18 @@ end
 do
 	local autoLog = false
 	local autoTLog = false
+	
+	local function isCurrentContent()
+		if LastInstanceMapID == 1205 or LastInstanceMapID == 1228 or LastInstanceMapID == 1448 or --Draenor (Remove August 30th)
+		LastInstanceMapID == 1520 or LastInstanceMapID == 1530 or LastInstanceMapID == 1220 then--Legion
+			return true
+		end
+		return false
+	end
 
 	function DBM:StartLogging(timer, checkFunc)
 		self:Unschedule(DBM.StopLogging)
-		if self.Options.LogOnlyRaidBosses and ((LastInstanceType ~= "raid") or IsPartyLFG()) then return end
+		if self.Options.LogOnlyRaidBosses and ((LastInstanceType ~= "raid") or IsPartyLFG() or not isCurrentContent()) then return end
 		if self.Options.AutologBosses then--Start logging here to catch pre pots.
 			if not LoggingCombat() then
 				autoLog = true
@@ -6330,8 +6338,7 @@ do
 
 	function DBM:AprilFools()
 		self:Unschedule(self.AprilFools)
-		SetMapToCurrentZone()
-		local currentMapId = GetCurrentMapAreaID()
+		local currentMapId = GetPlayerMapAreaID("player")
 		self:Schedule(120 + math.random(0, 600) , self.AprilFools, self)
 		if currentMapId ~= 1014 then return end--Legion Dalaran
 		playDelay(self, 1)
@@ -6394,8 +6401,7 @@ do
 
 	local function getNumRealAlivePlayers()
 		local alive = 0
-		SetMapToCurrentZone()
-		local currentMapId = GetCurrentMapAreaID()
+		local currentMapId = GetPlayerMapAreaID("player")
 		local currentMapName = GetMapNameByID(currentMapId)
 		if IsInRaid() then
 			for i = 1, GetNumGroupMembers() do

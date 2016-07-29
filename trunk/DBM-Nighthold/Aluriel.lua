@@ -82,6 +82,8 @@ local timerAnimateArcaneCD			= mod:NewNextTimer(16, 213564, 124338, nil, nil, 1,
 --Animate Specials
 local timerArmageddon				= mod:NewCastTimer(33, 213568, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
+local berserkTimer					= mod:NewBerserkTimer(600)
+
 local countdownMarkOfFrost			= mod:NewCountdown("Alt30", 212531, nil, nil, 3)
 local countdownSearingBrand			= mod:NewCountdown("Alt30", 213148, nil, nil, 3)
 local countdownAnnihilate			= mod:NewCountdown("Alt30", 212492, "Tank")
@@ -117,7 +119,7 @@ local MarkOfFrostDebuff = GetSpellInfo(212587)
 local SearingBrandDebuff = GetSpellInfo(213166)
 local rangeShowAll = false
 local chargeTable = {}
-local annihilateTimers = {8, 45.0, 40.0, 44.0, 38.0, 37.0, 33.0}--Need longer pulls/more data. However this pattern did prove to always be same
+local annihilateTimers = {8.0, 45.0, 40.2, 43.8, 38.2, 36.8, 33.2, 46.8, 41.1, 43.9, 38.1}--Need longer pulls/more data. However this pattern did prove to always be same
 
 local debuffFilter
 local UnitDebuff = UnitDebuff
@@ -156,6 +158,7 @@ function mod:OnCombatStart(delay)
 	--Rest of timers are triggered by frost buff 0.1 seconds into pull
 	table.wipe(chargeTable)
 	local rangeShowAll = false
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
