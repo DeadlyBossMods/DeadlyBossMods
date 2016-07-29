@@ -86,6 +86,8 @@ local timerVoidNovaCD				= mod:NewCDTimer(65, 207439, nil, nil, nil, 2)--Only sa
 local timerWorldDevouringForceCD	= mod:NewCDTimer(16, 216909, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_HEROIC_ICON)
 local timerThingCD					= mod:NewCDTimer(63, "ej13057", 207813, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 
+local berserkTimer					= mod:NewBerserkTimer(463)
+
 --Base abilities
 local countdownConjunction			= mod:NewCountdownFades("AltTwo15", 205408)
 local countdownGravPull				= mod:NewCountdownFades("Alt10", 205984)--Maybe change to everyone if it works like I think
@@ -134,8 +136,8 @@ mod.vb.voidEjectionCount = 0
 --"207143-Void Ejection" = "pull:328.7, 5.7, 14.1, 20.7, 2.8, 6.1, 25.7, 4.9",
 --"207143-Void Ejection" = "pull:326.8, 4.4, 17.5, 17.4, 4.6, 4.7, 26.3, 4.8",
 --For all inclusive, i'll simply use lowest observed time for each count, which will give close approx cd timer but imprecise to be a "next" timer.
-local icyEjectionTimers = {24.5, 35.2, 6.9, 5.3, 50.7}--35.2, 5.3, 4.1, 52.3, 0.8, 0.8, 21.0, 2.1, 1.2 (Old)
-local felEjectionTimers = {22.5, 4.8, 3.7, 0.4, 10.9, 3.6, 3.7, 33.6, 2.5, 2.8, 4.5, 2.8, 24.0}--3.2, 6.1, 9.4, 4.4, 4.0, 34.9, 2.0, 5.4, 0.3, 4.9, 18.2, 3.6, 3.6, 18.2, 8.9, 10.9, 12.3, 10.5 (Old)
+local icyEjectionTimers = {24.5, 34.4, 6.5, 5.3, 50.7}
+local felEjectionTimers = {22.5, 4.8, 3.7, 0.4, 10.9, 3.6, 3.7, 33.6, 2.5, 2.8, 4.5, 2.8, 24.0}--10 after 4,  32 after 7, 24 after 12
 local voidEjectionTimers = {24, 3.2, 14.1, 17.4, 0.8, 4.7, 25.7, 2.3}
 --local felNovaTImers = {34.8, 31.3, 29.3}--Currently unused. for now just doing 34.8 or 29.3
 local abZeroTargets = {}
@@ -265,6 +267,7 @@ function mod:OnCombatStart(delay)
 	else
 		timerCoronalEjectionCD:Start(17.5-delay)--Still could be health based
 	end
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
@@ -329,9 +332,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 205649 and not self:IsMythic() then--Disabled on mythic, shits basically spammed there and doesn't match timers table.
 		self.vb.felEjectionCount = self.vb.felEjectionCount + 1
-		local timer = felEjectionTimers[self.vb.felEjectionCount+1]
-		if timer and timer >= 4 then--No sense in starting timers for the sub 4 second casts
-			timerFelEjectionCD:Start(timer, self.vb.felEjectionCount+1)
+		--10 after 4,  32 after 7, 24 after 12
+		--The rest are like sub 5 second timers with variations to boot so not worth timers
+		if self.vb.felEjectionCount == 4 then
+			timerFelEjectionCD:Start(10, self.vb.felEjectionCount+1)
+		elseif self.vb.felEjectionCount == 7 then
+			timerFelEjectionCD:Start(32, self.vb.felEjectionCount+1)
+		elseif self.vb.felEjectionCount == 12 then
+			timerFelEjectionCD:Start(24, self.vb.felEjectionCount+1)
 		end
 	elseif spellId == 207143 then
 		self.vb.voidEjectionCount = self.vb.voidEjectionCount + 1
