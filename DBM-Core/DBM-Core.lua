@@ -6339,6 +6339,10 @@ do
 	function DBM:AprilFools()
 		self:Unschedule(self.AprilFools)
 		local currentMapId = GetPlayerMapAreaID("player")
+		if not currentMapId then
+			SetMapToCurrentZone()
+			currentMapId = GetCurrentMapAreaID()
+		end
 		self:Schedule(120 + math.random(0, 600) , self.AprilFools, self)
 		if currentMapId ~= 1014 then return end--Legion Dalaran
 		playDelay(self, 1)
@@ -6402,6 +6406,10 @@ do
 	local function getNumRealAlivePlayers()
 		local alive = 0
 		local currentMapId = GetPlayerMapAreaID("player")
+		if not currentMapId then
+			SetMapToCurrentZone()
+			currentMapId = GetCurrentMapAreaID()
+		end
 		local currentMapName = GetMapNameByID(currentMapId)
 		if IsInRaid() then
 			for i = 1, GetNumGroupMembers() do
