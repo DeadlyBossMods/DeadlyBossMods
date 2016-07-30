@@ -364,6 +364,25 @@ local function updatePlayerDebuffRemaining()
 	updateIcons()
 end
 
+--Buffs with important durations that we track
+local function updatePlayerBuffRemaining()
+	twipe(lines)
+	local spellName = value[1]
+	for uId in DBM:GetGroupMembers() do
+		local _, _, _, _, _, _, expires = UnitBuff(uId, spellName)
+		if expires then
+			if expires == 0 then
+				lines[UnitName(uId)] = 9000--Force sorting the unknowns under the ones we do know.
+			else
+				local debuffTime = expires - GetTime()
+				lines[UnitName(uId)] = mfloor(debuffTime)
+			end
+		end
+	end
+	updateLines()
+	updateIcons()
+end
+
 --Duplicate of updateBadPlayerDebuffs
 --needed when specific spellid must be checked because spellname for more than 1 spell
 local function updateBadPlayerDebuffsBySpellID()
@@ -481,6 +500,7 @@ local events = {
 	["playergooddebuff"] = updateGoodPlayerDebuffs,
 	["playerbaddebuff"] = updateBadPlayerDebuffs,
 	["playerdebuffremaining"] = updatePlayerDebuffRemaining,
+	["playerbuffremaining"] = updatePlayerBuffRemaining,
 	["playerbaddebuffbyspellid"] = updateBadPlayerDebuffsBySpellID,
 	["reverseplayerbaddebuff"] = updateReverseBadPlayerDebuffs,
 	["playeraggro"] = updatePlayerAggro,
@@ -501,6 +521,7 @@ local friendlyEvents = {
 	["playergooddebuff"] = true,
 	["playerbaddebuff"] = true,
 	["playerdebuffremaining"] = true,
+	["playerbuffremaining"] = true,
 	["playerbaddebuffbyspellid"] = true,
 	["reverseplayerbaddebuff"] = true,
 	["playeraggro"] = true,
@@ -540,13 +561,13 @@ function onUpdate(frame)
 				linesShown = linesShown + 1
 				if leftText == playerName then--It's player.
 					addedSelf = true
-					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerbaddebuffbyspellid" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
+					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerbuffremaining" or currentEvent == "playerbaddebuffbyspellid" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
 						frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 255, 255)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
 					else--Green
 						frame:AddDoubleLine(icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
 					end
 				else--It's not player, do nothing special with it. Ordinary class colored text.
-					if currentEvent == "playerdebuffremaining" then
+					if currentEvent == "playerdebuffremaining" or currentEvent == "playerbuffremaining" then
 						local numberValue = tonumber(rightText)
 						if numberValue < 6 then
 							frame:AddDoubleLine(icon or leftText, rightText, color.r, color.g, color.b, 255, 0, 0)--Red
