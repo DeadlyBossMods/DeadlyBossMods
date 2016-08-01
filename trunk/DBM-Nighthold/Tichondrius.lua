@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 --TODO, determine how often tanks swap for 216024 (Volatile Wound), if at all
 --TODO, figure out ring of shadow
 --TODO, test HUD for Seeker. Improve boss location approximation if possible.
+ --(ability.id = 212997 or ability.id = 213238 or ability.id = 208230 or ability.id = 213531 or ability.id = 206365) and type = "begincast"
 local warnCarrionPlague				= mod:NewTargetAnnounce(206480, 3)
 local warnBrandOfArgus				= mod:NewTargetAnnounce(212794, 4)
 --Nightborne
@@ -56,10 +57,12 @@ local timerBrandOfArgusCD			= mod:NewNextCountTimer(25, 212794, nil, nil, nil, 3
 local timerFeastOfBloodCD			= mod:NewNextCountTimer(25, 208230, nil, "Tank", nil, 5)
 local timerEchoesOfVoidCD			= mod:NewNextCountTimer(65, 213531, nil, nil, nil, 2)
 local timerIllusionaryNightCD		= mod:NewNextCountTimer(125, 206365, nil, nil, nil, 6)
+local timerIllusionaryNight			= mod:NewBuffActiveTimer(32, 206365, nil, nil, nil, 6)
 
 local countdownSeekerSwarm			= mod:NewCountdown(25, 162185)
 local countdownEchoesOfVoid			= mod:NewCountdown("Alt65", 213531)
 local countdownFeastOfBlood			= mod:NewCountdown("AltTwo25", 208230, "Tank")
+local countdownNightPhase			= mod:NewCountdown(32, 206365)
 
 local voiceCarrionPlague			= mod:NewVoice(206480)--scatter
 local voiceSeekerSwarm				= mod:NewVoice(213238)--targetyou/farfromline
@@ -78,6 +81,7 @@ mod:AddHudMapOption("HudMapOnSeeker", 213238)
 mod:AddBoolOption("HUDSeekerLines", true)--On by default for beta testing. Actual defaults for live subject to accuracy review.
 
 local sharedCastTimers = {0, 25, 35, 25}--Carrion Plague, feast of blood, Seeker Swarm, brand of argus
+local sharedCastTimersFaster = {0, 15, 25, 14.5}--Carrion Plague, feast of blood, Seeker Swarm, brand of argus (faster on normal/LFR since no brand of argus)
 local carrionTargets = {}
 local argusTargets = {}
 local carrionDebuff = GetSpellInfo(206480)
@@ -157,12 +161,20 @@ function mod:OnCombatStart(delay)
 	table.wipe(carrionTargets)
 	table.wipe(argusTargets)
 	timerCarrionPlagueCD:Start(7-delay, 1)--Cast end
-	timerBrandOfArgusCD:Start(17-delay, 1)--Cast end
-	timerFeastOfBloodCD:Start(20-delay, 1)
-	timerSeekerSwarmCD:Start(25-delay, 1)
-	countdownSeekerSwarm:Start(25-delay)
-	timerEchoesOfVoidCD:Start(55-delay, 1)
-	timerIllusionaryNightCD:Start(130-delay, 1)
+	if not self:IsFaceroll() then
+		timerBrandOfArgusCD:Start(17-delay, 1)--Cast end
+		timerFeastOfBloodCD:Start(20-delay, 1)
+		timerSeekerSwarmCD:Start(25-delay, 1)
+		countdownSeekerSwarm:Start(25-delay)
+		timerEchoesOfVoidCD:Start(55-delay, 1)
+		timerIllusionaryNightCD:Start(130-delay, 1)
+	else
+		timerFeastOfBloodCD:Start(10-delay, 1)
+		timerSeekerSwarmCD:Start(15-delay, 1)
+		countdownSeekerSwarm:Start(15-delay)
+		timerEchoesOfVoidCD:Start(35-delay, 1)
+		timerIllusionaryNightCD:Start(90-delay, 1)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -191,23 +203,36 @@ function mod:SPELL_CAST_START(args)
 			self.vb.echoesOfVoidCast = 0
 			DBM:Debug("First carrion Swarm after dark phase, Tichondrius returning", 2)
 			--Timers same as combat start - 5
-			timerBrandOfArgusCD:Start(12, 1)--Cast end
-			timerFeastOfBloodCD:Start(25, 1)
-			timerSeekerSwarmCD:Start(20, 1)
-			countdownSeekerSwarm:Start(20)
-			timerEchoesOfVoidCD:Start(50, 1)
-			timerIllusionaryNightCD:Start(125, 1)
+			if not self:IsFaceroll() then
+				timerBrandOfArgusCD:Start(12, 1)--Cast end
+				timerFeastOfBloodCD:Start(25, 1)
+				timerSeekerSwarmCD:Start(20, 1)
+				countdownSeekerSwarm:Start(20)
+				timerEchoesOfVoidCD:Start(50, 1)
+				timerIllusionaryNightCD:Start(125, 1)
+			else
+				timerFeastOfBloodCD:Start(5, 1)
+				timerSeekerSwarmCD:Start(10, 1)
+				countdownSeekerSwarm:Start(10)
+				timerEchoesOfVoidCD:Start(30, 1)
+				timerIllusionaryNightCD:Start(85, 1)
+			end
 			self.vb.phase = self.vb.phase + 1
 			if self.vb.phase == 2 then--The Nightborne
 		
 			elseif self.vb.phase == 3 then--The Legion
 		
 			end
+			--Restore argus tracker if for some reason you let people have it this long
+			if self.Options.InfoFrame and self:IsMythic() then
+				DBM.InfoFrame:SetHeader(GetSpellInfo(212794))
+				DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame, true)
+			end
 		end
 	elseif spellId == 213238 then
 		self.vb.seekerSwarmCast = self.vb.seekerSwarmCast + 1
 		specWarnSeekerSwarm:Show(self.vb.seekerSwarmCast)
-		local timer = sharedCastTimers[self.vb.seekerSwarmCast+1]
+		local timer = self:IsFaceroll() and sharedCastTimersFaster[self.vb.seekerSwarmCast+1] or sharedCastTimers[self.vb.seekerSwarmCast+1]
 		if timer then
 			timerSeekerSwarmCD:Start(timer, self.vb.seekerSwarmCast+1)
 			countdownSeekerSwarm:Start(timer)
@@ -245,7 +270,7 @@ function mod:SPELL_CAST_START(args)
 --		table.wipe(argusTargets)
 	elseif spellId == 208230 then
 		self.vb.feastOfBloodCast = self.vb.feastOfBloodCast + 1
-		local timer = sharedCastTimers[self.vb.feastOfBloodCast+1]
+		local timer = self:IsFaceroll() and sharedCastTimersFaster[self.vb.feastOfBloodCast+1] or sharedCastTimers[self.vb.feastOfBloodCast+1]
 		if timer then
 			timerFeastOfBloodCD:Start(nil, self.vb.feastOfBloodCast+1)
 		end
@@ -266,6 +291,14 @@ function mod:SPELL_CAST_START(args)
 		timerFeastOfBloodCD:Stop()
 		timerEchoesOfVoidCD:Stop()
 		self.vb.darkPhase = true
+		timerIllusionaryNight:Start()
+		countdownNightPhase:Start()
+		--Switch to debuff tracking on mythic.
+		if self.Options.InfoFrame and self:IsMythic() then
+			local essenceOfNightDebuff = GetSpellInfo(206466)
+			DBM.InfoFrame:SetHeader(essenceOfNightDebuff)
+			DBM.InfoFrame:Show(10, "playerbaddebuff", essenceOfNightDebuff, nil, true)
+		end
 	elseif spellId == 216034 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnBlastNova:Show(args.sourceName)
 		voiceBlastNova:Play("kickcast")
@@ -278,7 +311,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 212997 then
 		self.vb.carrionPlagueCast = self.vb.carrionPlagueCast + 1
-		local timer = sharedCastTimers[self.vb.carrionPlagueCast+1]
+		local timer = self:IsFaceroll() and sharedCastTimersFaster[self.vb.carrionPlagueCast+1] or sharedCastTimers[self.vb.carrionPlagueCast+1]
 		if timer then
 			timerCarrionPlagueCD:Start(timer, self.vb.carrionPlagueCast+1)
 		end
