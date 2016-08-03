@@ -52,7 +52,6 @@ L.Statistic_BestKill		= "Meilleur temps:"
 
 -- Tab: General Core Options
 L.General 					= "Options générales de DBM"
-L.EnableDBM 				= "Activer DBM"
 L.EnableMiniMapIcon			= "Afficher l'icône de la minicarte"
 L.UseSoundChannel			= "Configurer le canal audio utilisé par DBM pour jouer les sons d'alerte"
 L.UseMasterChannel			= "Canal audio principal"

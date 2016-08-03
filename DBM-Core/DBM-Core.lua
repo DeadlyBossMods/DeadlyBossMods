@@ -352,7 +352,6 @@ DBM_OPTION_SPACER = newproxy(false)
 local bossModPrototype = {}
 local usedProfile = "Default"
 local dbmIsEnabled = true
-local blockEnable = false
 local lastCombatStarted = GetTime()
 local loadcIds = {}
 local inCombat = {}
@@ -1152,11 +1151,6 @@ do
 				self:Disable(true)
 				C_TimerAfter(10, function() self:AddMsg(DBM_CORE_DPMCORE) end)
 				return
-			end
-			--http://wow.curseforge.com/addons/deadly-pvp-mods/
-			--DBM is disabled and DBM is not forced disabled
-			if not dbmIsEnabled and not blockEnable then
-				C_TimerAfter(10, function() self:AddMsg(DBM_CORE_DISABLED_REMINDER) end)
 			end
 			self.Bars:LoadOptions("DBM")
 			self.Arrow:LoadPosition()
@@ -2457,7 +2451,7 @@ do
 			self:AddMsg(DBM_CORE_DPMCORE)
 			return
 		end
-		if blockEnable then
+		if not dbmIsEnabled then
 			DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE)
 			return
 		end
@@ -2483,9 +2477,6 @@ do
 			tsort(callOnLoad, function(v1, v2) return v1[2] < v2[2] end)
 			for i, v in ipairs(callOnLoad) do v[1]() end
 			collectgarbage("collect")
-		end
-		if not dbmIsEnabled and not blockEnable then
-			self:AddMsg(DBM_CORE_DISABLED_REMINDER)
 		end
 		return DBM_GUI:ShowHide()
 	end
@@ -3357,7 +3348,7 @@ do
 			DBM_AllSavedOptions[usedProfile] = DBM_SavedOptions
 		end
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
-		dbmIsEnabled = self.Options.Enabled or true
+		dbmIsEnabled = true
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
 		DBM_AllSavedOptions[usedProfile] = self.Options
 
@@ -6596,21 +6587,14 @@ end
 function DBM:Disable(forced)
 	unscheduleAll()
 	dbmIsEnabled = false
-	self.Options.Enabled = false
-	if forced then
-		blockEnable = true
-	end
 end
 
 function DBM:Enable()
-	if not blockEnable then
-		dbmIsEnabled = true
-		self.Options.Enabled = true
-	end
+	dbmIsEnabled = true
 end
 
 function DBM:IsEnabled()
-	return self.Options.Enabled
+	return dbmIsEnabled
 end
 
 -----------------------

@@ -62,7 +62,6 @@ L.Statistic_BestKill		= "最好成绩:"
 
 -- Tab: General Options
 L.General 					= "DBM核心综合设置"
-L.EnableDBM 				= "启用DBM"
 L.EnableMiniMapIcon			= "显示小地图按钮"
 L.UseSoundChannel			= "设置DBM使用的声道"
 L.UseMasterChannel			= "主声道"

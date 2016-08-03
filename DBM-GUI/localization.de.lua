@@ -56,7 +56,6 @@ L.Statistic_BestRank		= "Höchste Stufe:"
 
 -- Tab: General Core Options
 L.General 					= "Allgemeine Grundeinstellungen"
-L.EnableDBM 				= "Aktiviere DBM"
 L.EnableMiniMapIcon			= "Aktiviere Minimap-Symbol"
 L.UseSoundChannel			= "Audiokanal um DBM-Sounddateien abzuspielen"
 L.UseMasterChannel			= "Master Audiokanal"

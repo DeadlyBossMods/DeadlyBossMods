@@ -161,7 +161,6 @@ DBM_CORE_VEM							= "ATTENTION: Vous utilisez et DBM et Voice Encounter Mods. D
 DBM_CORE_3RDPROFILES					= "ATTENTION: DBM-Profiles n'est pas compatible avec cette version de DBM. Il faut qu'il soit désactivé pour que DBM puisse tourner sans soucis."
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "ATTENTION: Cette mise à jour de DBM ne fonctionnera pas correctement si vous ne relancez pas totalement le client de jeu. Cette mise à jour contient de nouveaux fichiers ou des modifications de fichers .toc qui ne peuvent pas être chargés par un reloadUI. Vous pouvez rencontrer des erreurs tant que vous ne relancez pas le client."
 DBM_CORE_OUT_OF_DATE_NAG				= "Votre version de DBM est périmée. Il est recommandé que vous mettiez à jour pour ne pas manquer une alerte, un timer ou un cri important que votre raid prévoit que vous ayez."
-DBM_CORE_DISABLED_REMINDER				= "RAPPEL: DBM est chargé mais désactivé dans les options. Pour l'activer, faites /dbm dans votre chat et vérifiez la case 'Activer' dans 'Options/Options Générales'."
 
 DBM_CORE_MOVABLE_BAR				= "Bougez-moi !"
 

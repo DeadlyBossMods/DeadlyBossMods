@@ -47,7 +47,6 @@ L.Statistic_BestKill		= "Miglior Kill:"
 
 -- Tab: General Options
 L.General 					= "DBM - Opzioni Generali"
-L.EnableDBM 				= "Abilita DBM"
 L.EnableMiniMapIcon			= "Visualizza il bottone della minimappa"
 L.UseMasterVolume			= "Usa il canale audio Principale per eseguire i suoni."
 L.DisableCinematics			= "Disabilita tutti i video e le cinematiche"

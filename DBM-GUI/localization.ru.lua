@@ -56,7 +56,6 @@ L.Statistic_BestKill		= "Лучший бой:"
 
 -- Tab: General Core Options
 L.General 					= "Общие параметры DBM"
-L.EnableDBM 				= "Включить DBM"
 L.EnableMiniMapIcon			= "Отображать кнопку на мини-карте"
 L.UseSoundChannel			= "Выбор аудио канала для предупреждений DBM"
 L.UseMasterChannel			= "Основной аудио канал"
