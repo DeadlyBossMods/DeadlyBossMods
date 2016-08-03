@@ -162,7 +162,6 @@ DBM_CORE_3RDPROFILES					= "WARNING: DBM-Profiles not compatible with this versi
 DBM_CORE_DPMCORE						= "WARNING: Deadly PvP mods is discontinued and not compatible with this version of DBM. It must be removed before DBM can proceed, to avoid conflict."
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "WARNING: This DBM update will not work correctly if you don't fully restart your game client. This update contains new files or .toc file changes that cannot be loaded via ReloadUI. You may encounter broken functionality or errors if you continue without a client restart."
 DBM_CORE_OUT_OF_DATE_NAG				= "Your version of Deadly Boss Mods is out-of-date. It is recommended you update for this fight so you are not missing an important alert or timer or a yell rest of raid is expecting to see from you."
-DBM_CORE_DISABLED_REMINDER				= "REMINDER: Deadly Boss Mods is loaded but it is currently disabled in options. To enable, do /dbm in your chat and check the 'Enable' box in 'Options/General Options'"
 
 DBM_CORE_MOVABLE_BAR				= "Drag me!"
 
