@@ -56,7 +56,6 @@ L.Statistic_BestKill	= "Mejor victoria:"
 
 -- Tab: General Core Options
 L.General 					= "Opciones generales de DBM"
-L.EnableDBM 				= "Habilitar DBM"
 L.EnableMiniMapIcon			= "Mostrar botón junto al minimapa"
 L.UseSoundChannel			= "Canal de audio para alertas"
 L.UseMasterChannel			= "Canal de audio principal"

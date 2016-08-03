@@ -161,7 +161,6 @@ DBM_CORE_3RDPROFILES					= "警告:DBM-Profiles不相容此版本DBM。請移除
 DBM_CORE_DPMCORE						= "警告:Deadly PvP 模組已經停止更新而且不相容此版本的DBM。請移除避免衝突。"
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "警告:如果你沒有重啟你的遊戲，這次DBM更新可能無法正確運作。這次更新包含了新的檔案或是.toc檔更新而不能使用ReloadUI載入。如果沒有將遊戲完全重啟可能會導致錯誤或功能不完整。"
 DBM_CORE_OUT_OF_DATE_NAG				= "你的DBM版本已經過期你設定忽略彈出更新提示。還是建議你更新避免缺少一些重要的警告或是計時器，而其他人也看不到從你發出的大喊警告。"
-DBM_CORE_DISABLED_REMINDER				= "提醒：Deadly Boss Mods已載入但選項功能被停用。在頻道上輸入/dbm 然後至'選項/綜合設置'中選取啟用DBM去啟用DBM"
 
 DBM_CORE_MOVABLE_BAR				= "拖動我!"
 

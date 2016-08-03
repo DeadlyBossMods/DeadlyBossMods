@@ -163,7 +163,6 @@ DBM_CORE_3RDPROFILES					= "WARNUNG: DBM-Profiles ist mit dieser Version von DBM
 DBM_CORE_DPMCORE						= "WARNUNG: Deadly Pvp Mods (DPM) wird nicht mehr gepflegt und ist mit dieser Version von DBM nicht kompatibel. Es muss entfernt werden bevor DBM genutzt werden kann um Konflikte zu vermeiden."
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "WARNUNG: Dieses Update von DBM arbeitet erst nach einem vollständigem Neustart des Spielclients korrekt. Das Update enthält neue Dateien oder Änderungen an .toc-Dateien, die nicht mit \"/reload\" geladen werden können. Die Funktionsfähigkeit von DBM kann beeinträchtigt sein und es können Fehler auftreten, bis du den Spielclient neu startest."
 DBM_CORE_OUT_OF_DATE_NAG				= "Deine Version von Deadly Boss Mods ist veraltet. Du solltest eine Aktualisierung für diesen Kampf durchführen, da du sonst wichtige Warnungen oder Timer verpassen könntest oder automatische \"Schreie\" fehlen, die der Rest deines Schlachtzuges von dir erwartet."
-DBM_CORE_DISABLED_REMINDER				= "ERINNERUNG: Deadly Boss Mods ist geladen aber derzeit in den Einstellungen deaktiviert. Gebe /dbm im Chatfenster ein und kreuze das Feld für 'Aktiviere DBM' unter 'Optionen/Allgemeine Einstellungen' an."
 
 DBM_CORE_MOVABLE_BAR				= "Zieh mich!"
 

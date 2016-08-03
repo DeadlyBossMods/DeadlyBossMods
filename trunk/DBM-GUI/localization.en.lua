@@ -56,7 +56,6 @@ L.Statistic_BestRank		= "Best Rank:"--Maybe not get used, not sure yet, localize
 
 -- Tab: General Core Options
 L.General 					= "General DBM Core Options"
-L.EnableDBM 				= "Enable DBM"
 L.EnableMiniMapIcon			= "Show minimap button"
 L.UseSoundChannel			= "Set audio channel used by DBM to play alert sounds"
 L.UseMasterChannel			= "Master audio channel."

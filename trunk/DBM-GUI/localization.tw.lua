@@ -56,7 +56,6 @@ L.Statistic_BestRank		= "最佳等級："
 
 -- Tab: General Core Options
 L.General 					= "DBM綜合設置"
-L.EnableDBM 				= "啟用DBM"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
 L.UseSoundChannel			= "設置DBM警告的音效頻道"
 L.UseMasterChannel			= "主聲道"

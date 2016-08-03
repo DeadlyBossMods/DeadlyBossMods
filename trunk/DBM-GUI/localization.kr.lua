@@ -50,7 +50,6 @@ L.Statistic_BestKill		= "최고 기록:"
 
 -- Tab: General Core Options
 L.General 					= "기본 DBM 설정"
-L.EnableDBM 				= "DBM 사용"
 L.EnableMiniMapIcon			= "미니맵 버튼 사용"
 L.UseSoundChannel			= "DBM 소리 출력 채널 선택"
 L.UseMasterChannel			= "주 음량"

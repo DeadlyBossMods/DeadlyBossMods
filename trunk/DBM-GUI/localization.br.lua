@@ -53,7 +53,6 @@ L.Statistic_BestKill		= "Melhor tempo:"
 
 -- Tab: General Core Options
 L.General 					= "Opções gerais do DBM"
-L.EnableDBM 				= "Habilitar DBM"
 L.EnableMiniMapIcon			= "Exibir botão no mini-mapa"
 L.UseMasterVolume			= "Utilizar canal principal de áudio para reproduzir arquivos de som."
 L.Latency_Text				= "Definir latência máxima de sincronização: %d"
