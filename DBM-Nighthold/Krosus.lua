@@ -19,6 +19,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
+--(ability.id = 205368 or ability.id = 205370 or ability.id = 205420 or ability.id = 205361) and type = "begincast"
 --TODO, improve info frame to show active mob count on top of burning pitch on player true/false? instead of just being burning pitch list for entire raid?
 local warnExpelOrbDestro			= mod:NewTargetCountAnnounce(205344, 4)
 local warnSlam						= mod:NewCountAnnounce(205862, 2)--Regular slams don't need special warn, only bridge smashing ones
@@ -60,16 +61,18 @@ mod:AddArrowOption("ArrowOnBeam", 205368, true)
 
 local burningPitchDebuff = GetSpellInfo(215944)
 local mobGUIDs = {}
-local lolBeamTimers = {5, 15, 30, 30, 23, 27, 30, 44, 14, 16, 14, 16, 22, 60}--about 14 seconds missing, maybe?
---TODO, does heroic have diff beam timers from normal?
-local beamMythicTimers = {6, 16, 16, 16, 14, 16, 27, 55, 26, 5, 21.3, 4.7, 12.2, 12, 4.8, 13.2, 19, 4.8, 25.2, 4.8}--205370/205368 Combined (up to 5:18, missing 42 seconds)
---Other stuff
-local lolOrbTimers = {70.0, 40.0, 60.0, 25.0, 60.0, 37.0, 15.0, 15.0, 30.0}
-local orbTimers = {22, 58, 23, 63, 26, 25, 15, 15, 15, 30, 55}--
-local orbMythicTimers = {13, 62, 27, 25, 14.9, 15, 15, 30, 55.1, 38}
-local lolBurningPitchTimers = {38.0, 102.0, 85.0, 90.0}
-local burningPitchTimers = {52, 84, 90, 93}
-local burningPitchMythicTimers = {45.0, 90, 93.9, 78}--38.0, 102.0, 85.0, 90.0
+--Beams (205370/205368 Combined)
+local lolBeamTimers = {5, 15, 30, 30, 23, 27, 30, 44, 14, 16, 14, 16, 22, 60}--LFR & Normal
+local heroicBeamTimers = {7, 29, 30, 42, 16, 16, 14, 16, 28, 54, 26, 5, 5, 16, 5, 12, 12, 5, 13}--Complete up to berserk
+local mythicBeamTimers = {6, 16, 16, 16, 14, 16, 27, 55, 26, 5, 21.3, 4.7, 12.2, 12, 4.8, 13.2, 19, 4.8, 25.2, 4.8}--(up to 5:18, missing 42 seconds)
+--Orbs
+local lolOrbTimers = {70.0, 40.0, 60.0, 25.0, 60.0, 37.0, 15.0, 15.0, 30.0}--LFR and Normal
+local heroicOrbTimers = {19.9, 60.0, 23.0, 62.0, 27.0, 25.0, 15.0, 15.4, 14.6, 30, 55}--Complete up to berserk
+local mythicOrbTimers = {13, 62, 27, 25, 14.9, 15, 15, 30, 55.1, 38}--(up to 5:18, missing 42 seconds)
+--Pitch
+local lolBurningPitchTimers = {38.0, 102.0, 85.0, 90.0}--LFR and Normal
+local heroicBurningPitchTimers = {49.8, 85.0, 90.0, 94}
+local mythicBurningPitchTimers = {45.0, 90, 93.9, 78}--38.0, 102.0, 85.0, 90.0 (OLD)
 mod.vb.burningEmbers = 0
 mod.vb.slamCount = 0
 mod.vb.beamCount = 0
@@ -123,14 +126,13 @@ function mod:OnCombatEnd()
 	end
 end
 
---(ability.id = 205368 or ability.id = 205370) and type = "begincast"
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 205368 or spellId == 205370 then--205370 left, 205368 right
 		self.vb.beamCount = self.vb.beamCount + 1
 		specWarnFelBeam:Show(self.vb.beamCount)
 		local nextCount = self.vb.beamCount + 1
-		local timers = self:IsMythic() and beamMythicTimers[nextCount] or lolBeamTimers[nextCount]
+		local timers = self:IsMythic() and mythicBeamTimers[nextCount] or self:IsHeroic() and heroicBeamTimers[nextCount] or lolBeamTimers[nextCount]
 		if timers then
 			timerFelBeamCD:Start(timers, nextCount)
 		end
@@ -154,7 +156,7 @@ function mod:SPELL_CAST_START(args)
 			voiceBurningPitch:Play("helpsoak")
 		end
 		local nextCount = self.vb.pitchCount + 1
-		local timers = self:IsMythic() and burningPitchMythicTimers[nextCount] or self:IsHeroic() and burningPitchTimers[nextCount] or lolBurningPitchTimers[nextCount]
+		local timers = self:IsMythic() and mythicBurningPitchTimers[nextCount] or self:IsHeroic() and heroicBurningPitchTimers[nextCount] or lolBurningPitchTimers[nextCount]
 		if timers then
 			timerBurningPitchCD:Start(nil, nextCount)
 		end
@@ -186,7 +188,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 205361 then
 		self.vb.orbCount = self.vb.orbCount + 1
 		local nextCount = self.vb.orbCount+1
-		local timers = self:IsMythic() and orbMythicTimers[nextCount] or self:IsHeroic() and orbTimers[nextCount] or lolOrbTimers[nextCount]
+		local timers = self:IsMythic() and mythicOrbTimers[nextCount] or self:IsHeroic() and heroicOrbTimers[nextCount] or lolOrbTimers[nextCount]
 		if timers then
 			timerOrbDestroCD:Start(timers, nextCount)
 		end
