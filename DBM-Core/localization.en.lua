@@ -51,6 +51,8 @@ DBM_CORE_COMBAT_STATE_RECOVERED		= "%s was engaged %s ago, recovering timers..."
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor logging started."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor logging ended."
 
+DBM_CORE_MOVIE_SKIPPED				= "A cut scene has automatically been skipped."
+
 DBM_CORE_COMBAT_STARTED_AI_TIMER	= "My CPU is a neural net processor; a learning computer. (This fight will use the new timer AI feature to generate timer approximations)"
 
 DBM_CORE_PROFILE_NOT_FOUND			= "<DBM> Your current profile is corrupted. DBM will load 'Default' profile."
