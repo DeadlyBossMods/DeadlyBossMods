@@ -6777,6 +6777,8 @@ do
 		[486] = true, -- Tomb of Sarg Intro
 		[487] = true, -- Alliance Broken Shore cut-scene
 		[488] = true, -- Horde Broken Shore cut-scene
+		[489] = true, -- Unknown, currently encrypted
+		[490] = true, -- Unknown, currently encrypted
 	}
 	MovieFrame:HookScript("OnEvent", function(self, event, id)
 		if event == "PLAY_MOVIE" and id and not neverFilter[id] then
