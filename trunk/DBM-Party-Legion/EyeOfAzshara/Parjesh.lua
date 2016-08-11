@@ -15,17 +15,17 @@ mod:RegisterEventsInCombat(
 
 --Notes: Boss always casts 191900 (Crashing wave) few seconds before impaling spear. It doesn't really need it's own warning
 --TODO, interrupt warnings for adds maybe.
---TODO, concider voice option for "run behind add" or "take cover behind add" or something?
 local warnImpalingSpear				= mod:NewTargetAnnounce(192094, 4)
 
 local specWarnReinforcements		= mod:NewSpecialWarningSwitch(196563, "Tank", nil, nil, 1, 2)
-local specWarnImpalingSpear			= mod:NewSpecialWarningMoveTo(192094, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(192094), nil, 3)
+local specWarnImpalingSpear			= mod:NewSpecialWarningMoveTo(192094, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(192094), nil, 3, 6)
 local yellImpalingSpear				= mod:NewYell(192094)
 
 local timerHatecoilCD				= mod:NewCDTimer(28, 192072, nil, nil, nil, 1)
 local timerSpearCD					= mod:NewCDTimer(28, 192094, nil, nil, nil, 3)
 
 local voiceReinforcements			= mod:NewVoice(196563)--bigmobsoon
+local voiceImpalingSpear			= mod:NewVoice(192094)--192094 (run behind add)
 
 function mod:OnCombatStart(delay)
 	timerHatecoilCD:Start(3-delay)
@@ -39,6 +39,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnImpalingSpear:Show(ADD)
 			yellImpalingSpear:Yell()
+			voiceImpalingSpear:Play("192094")
 		else
 			warnImpalingSpear:Show(args.destName)
 		end
