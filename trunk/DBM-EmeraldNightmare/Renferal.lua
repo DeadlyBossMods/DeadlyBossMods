@@ -310,7 +310,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerDarkStormCD:Start()--26
 		timerRakingTalonsCD:Start(52, 1)
 		timerRazorWingCD:Start(59, 1)
-		timerSpiderFormCD:Start()--No longer known. No long enough pull. At least 90
+		timerSpiderFormCD:Start()
 		countdownPhase:Start(127)
 	elseif spellId == 226055 then--Spider Transform
 		self.vb.venomCast = 0
