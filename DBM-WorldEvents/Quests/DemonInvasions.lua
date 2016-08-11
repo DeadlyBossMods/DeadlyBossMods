@@ -6,7 +6,7 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 223420 219469 219441 219112 219110 224067",
-	"SPELL_CAST_SUCCESS 218639",
+	"SPELL_CAST_SUCCESS 218639 218659",
 	"SPELL_AURA_APPLIED 218625 218657 224044",
 	"SPELL_AURA_REMOVED 218657 224044",
 	"SPELL_PERIODIC_DAMAGE 219367 207576",
@@ -35,8 +35,9 @@ local specWarnShadowNova			= mod:NewSpecialWarningRun(219110, nil, nil, nil, 4, 
 local timerDestructiveFlamesCD		= mod:NewCDTimer(45, 218639, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerEyeofDarknessCD			= mod:NewCDTimer(34, 219112, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerShadowNovaCD				= mod:NewCDTimer(34, 219110, nil, nil, nil, 2)
+local timerCharredFlesh				= mod:NewFadesTimer(17, 218657, nil, nil, nil, 3)
 
-local countdownCharredFlesh			= mod:NewCountdownFades(15, 218657)
+local countdownCharredFlesh			= mod:NewCountdownFades(17, 218657)
 
 local voiceMarkofBlood				= mod:NewVoice(224044)--scatter
 local voiceRainofFire				= mod:NewVoice(219367)--runaway
@@ -78,6 +79,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnDestructiveFlames:Show()
 		voiceDestructiveFlames:Play("watchstep")
 		timerDestructiveFlamesCD:Start()
+	elseif spellId == 218659 then
+		timerCharredFlesh:Start()
+		countdownCharredFlesh:Start()
 	end
 end
 
@@ -94,7 +98,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 218657 and args:IsPlayer() then
 		specWarnCharredFlesh:Schedule(10)
-		countdownCharredFlesh:Start()
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)
 		if expires then
 			local remaining = expires-GetTime()
@@ -110,7 +113,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 218657 and args:IsPlayer() then
 		specWarnCharredFlesh:Cancel()
-		countdownCharredFlesh:Cancel()
 		yellCharredFlesh:Cancel()
 	elseif spellId == 224044 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
