@@ -5,23 +5,25 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 223420 219469 219441 219112 219110",
+	"SPELL_CAST_START 223420 219469 219441 219112 219110 224067",
 	"SPELL_CAST_SUCCESS 218639",
-	"SPELL_AURA_APPLIED 218625 218657",
-	"SPELL_AURA_REMOVED 218657",
+	"SPELL_AURA_APPLIED 218625 218657 224044",
+	"SPELL_AURA_REMOVED 218657 224044",
 	"SPELL_PERIODIC_DAMAGE 219367 207576",
 	"SPELL_PERIODIC_MISSED 219367 207576",
 	"SCENARIO_UPDATE"
 )
 mod.noStatistics = true
 
---EVERYTHING is antispammed for good measure, in case two of same type of mob are up together.
+--Many are antispammed for good measure, in case two of same type of mob are up together.
 --IMPORTANT: When legion launches, re-add ## X-DBM-Mod-World-Boss: 1
 local warnRumblingSlam				= mod:NewSpellAnnounce(223420, 2)
 local warnBlazingHellfire			= mod:NewSpellAnnounce(218625, 3)
 local warnExplosiveOrbs				= mod:NewSpellAnnounce(219469, 2)
 local warnFlameBreath				= mod:NewSpellAnnounce(219441, 3)
+local warnWakeofBlood				= mod:NewSpellAnnounce(224067, 4)--See if target scanning works? Might always be on person tanking that mob which means even if it doesn't can assume it's "tank"
 
+local specWarnMarkofBlood			= mod:NewSpecialWarningMoveAway(224044)
 local specWarnRainofFire			= mod:NewSpecialWarningMove(219367, nil, nil, nil, 1, 2)
 local specWarnFelFire				= mod:NewSpecialWarningMove(207576, nil, nil, nil, 1, 2)
 local specWarnDestructiveFlames		= mod:NewSpecialWarningDodge(218639, nil, nil, nil, 2, 2)--Is this a reflect?
@@ -32,17 +34,20 @@ local specWarnShadowNova			= mod:NewSpecialWarningRun(219110, nil, nil, nil, 4, 
 
 local timerDestructiveFlamesCD		= mod:NewCDTimer(45, 218639, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerEyeofDarknessCD			= mod:NewCDTimer(34, 219112, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
-local timerShadowNovaCD				= mod:NewCDTimer(35.5, 219110, nil, nil, nil, 2)
+local timerShadowNovaCD				= mod:NewCDTimer(34, 219110, nil, nil, nil, 2)
 
 local countdownCharredFlesh			= mod:NewCountdownFades(15, 218657)
 
+local voiceMarkofBlood				= mod:NewVoice(224044)--scatter
 local voiceRainofFire				= mod:NewVoice(219367)--runaway
 local voiceFelFire					= mod:NewVoice(207576)--runaway
 local voiceDestructiveFlames		= mod:NewVoice(218639)--watchstep
 local voiceEyeOfDarkness			= mod:NewVoice(219112)--runin
 local voiceShadowNova				= mod:NewVoice(219110)--runout
+--local voiceWakeofBlood			= mod:NewVoice(224067)--keepmove
 
 mod:RemoveOption("HealthFrame")
+mod:AddRangeFrameOption(6, 224044)
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
@@ -61,6 +66,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnShadowNova:Show()
 		voiceShadowNova:Play("runout")
 		timerShadowNovaCD:Start()
+	elseif spellId == 224067 then
+		warnWakeofBlood:Show()
 	end
 end
 
@@ -79,6 +86,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 218625 and self:AntiSpam(3, 3) then
 		warnBlazingHellfire:Show()
+	elseif spellId == 224044 and args:IsPlayer() then
+		specWarnMarkofBlood:Show()
+		voiceMarkofBlood:Play("scatter")
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(6)
+		end
 	elseif spellId == 218657 and args:IsPlayer() then
 		specWarnCharredFlesh:Schedule(10)
 		countdownCharredFlesh:Start()
@@ -99,6 +112,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		specWarnCharredFlesh:Cancel()
 		countdownCharredFlesh:Cancel()
 		yellCharredFlesh:Cancel()
+	elseif spellId == 224044 and args:IsPlayer() and self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 
