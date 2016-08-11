@@ -10,7 +10,7 @@
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Évènements Mondiaux|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0世界事件|r
 ## Author: MysticalOS
-## LoadOnDemand: 0
+## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariables: DBMWorldEvents_AllSavedVars
 ## SavedVariablesPerCharacter: DBMWorldEvents_SavedStats
