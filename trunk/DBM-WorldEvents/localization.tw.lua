@@ -146,3 +146,12 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	MassiveWave		= "大群的殭屍要來啦!"
 })
+
+--------------------------
+--  Demonic Invasions  --
+--------------------------
+L = DBM:GetModLocalization("DemonInvasions")
+
+L:SetGeneralLocalization({
+	name = "惡魔入侵"
+})
