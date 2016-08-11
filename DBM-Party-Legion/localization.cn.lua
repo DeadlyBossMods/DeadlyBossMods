@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: Jul 21 2015, 10:10 UTC@15067
+-- Last update: Aug 11 2016, 02:04 UTC@15097
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -173,7 +173,7 @@ L= DBM:GetModLocalization(1687)
 L = DBM:GetModLocalization("NLTrash")
 
 L:SetGeneralLocalization({
-	name =	"耐萨里奥的巢穴小怪"
+	name =	"奈萨里奥的巢穴小怪"
 })
 
 -----------------------
@@ -214,7 +214,7 @@ L= DBM:GetModLocalization(1501)
 L = DBM:GetModLocalization("ArcwayTrash")
 
 L:SetGeneralLocalization({
-	name =	"苏拉玛墓穴小怪"
+	name =	"魔法回廊小怪"
 })
 
 -----------------------
@@ -241,7 +241,7 @@ L= DBM:GetModLocalization(1720)
 L = DBM:GetModLocalization("CoSTrash")
 
 L:SetGeneralLocalization({
-	name =	"群星议会小怪"
+	name =	"群星庭院小怪"
 })
 
 -----------------------
@@ -268,7 +268,7 @@ L= DBM:GetModLocalization(1663)
 L = DBM:GetModLocalization("MawTrash")
 
 L:SetGeneralLocalization({
-	name =	"冥狱深渊小怪"
+	name =	"噬魂之喉小怪"
 })
 
 -----------------------
