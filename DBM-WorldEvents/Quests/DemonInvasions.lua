@@ -14,7 +14,7 @@ mod:RegisterEvents(
 mod.noStatistics = true
 
 --EVERYTHING is antispammed for good measure, in case two of same type of mob are up together.
---IMPORTANT: When legion launches, kill ## X-DBM-Mod-MapID: 1, 2 from TOC file
+--IMPORTANT: When legion launches, re-add ## X-DBM-Mod-World-Boss: 1
 local warnRumblingSlam				= mod:NewSpellAnnounce(223420, 2)
 local warnBlazingHellfire			= mod:NewSpellAnnounce(218625, 3)
 local warnExplosiveOrbs				= mod:NewSpellAnnounce(219469, 2)
