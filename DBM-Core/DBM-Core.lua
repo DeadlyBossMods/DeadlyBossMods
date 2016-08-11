@@ -422,7 +422,8 @@ local statusWhisperDisabled = false
 local wowTOC = select(4, GetBuildInfo())
 local dbmToc = 0
 
-local fakeBWRevision = 13799
+local fakeBWVersion, fakeBWHash = 7, "14c850d"
+local versionQueryString, versionResponseString = "Q:%d-%s", "V:%d-%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -2124,7 +2125,7 @@ do
 		elseif v1.revision and v2.revision then
 			return v1.revision > v2.revision
 		else
-			return (v1.bwarevision or v1.bwrevision or 0) > (v2.bwarevision or v2.bwrevision or 0)
+			return (v1.bwversion or 0) > (v2.bwversion or 0)
 		end
 	end
 
@@ -2141,17 +2142,17 @@ do
 			if playerColor then
 				name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
 			end
-			if v.displayVersion and not (v.bwrevision or v.bwarevision) then--DBM, no BigWigs
+			if v.displayVersion and not v.bwversion then--DBM, no BigWigs
 				if self.Options.ShowAllVersions then
 					self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(name, "DBM "..v.displayVersion, v.revision, v.VPVersion or ""), false)--Only display VP version if not running two mods
 				end
 				if notify and v.revision < self.ReleaseRevision then
 					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
-			elseif self.Options.ShowAllVersions and (v.displayVersion and (v.bwrevision or v.bwarevision)) then--DBM & BigWigs
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_TWO:format(name, "DBM "..v.displayVersion, v.revision, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision), false)
-			elseif self.Options.ShowAllVersions and (not v.displayVersion and (v.bwrevision or v.bwarevision)) then--BigWigs, No DBM
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(name, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision, ""), false)
+			elseif self.Options.ShowAllVersions and v.displayVersion and v.bwversion then--DBM & BigWigs
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_TWO:format(name, "DBM "..v.displayVersion, v.revision, DBM_BIG_WIGS, versionResponseString:format(v.bwversion, v.bwhash)), false)
+			elseif self.Options.ShowAllVersions and not v.displayVersion and v.bwversion then--BigWigs, No DBM
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(name, DBM_BIG_WIGS, versionResponseString:format(v.bwversion, v.bwhash), ""), false)
 			else
 				if self.Options.ShowAllVersions then
 					self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(name), false)
@@ -2166,12 +2167,12 @@ do
 			if not sortMe[i].revision then
 				NoDBM = NoDBM + 1
 			end
-			if not (sortMe[i].bwarevision or sortMe[i].bwrevision) then
+			if not (sortMe[i].bwversion) then
 				NoBigwigs = NoBigwigs + 1
 			end
 			--Table sorting sorts dbm to top, bigwigs underneath. Highest version dbm always at top. so sortMe[1]
 			--This check compares all dbm version to highest RELEASE version in raid.
-			if sortMe[i].revision and (sortMe[i].revision < sortMe[1].version) or sortMe[i].bwrevision and (sortMe[i].bwrevision < fakeBWRevision) then
+			if sortMe[i].revision and (sortMe[i].revision < sortMe[1].version) or sortMe[i].bwversion and (sortMe[i].bwversion < fakeBWVersion) then
 				OldMod = OldMod + 1
 				local name = sortMe[i].name
 				local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)]
@@ -2605,7 +2606,7 @@ do
 			if not inRaid then
 				inRaid = true
 				sendSync("H")
-				SendAddonMessage("BigWigs", "VQ:0", IsPartyLFG() and "INSTANCE_CHAT" or "RAID")--Basically "H" to bigwigs. Tell Bigwigs users we joined raid. Send revision of 0 so bigwigs ignores revision but still replies with their version information
+				SendAddonMessage("BigWigs", versionQueryString:format(0, fakeBWHash), IsPartyLFG() and "INSTANCE_CHAT" or "RAID")
 				self:Schedule(2, self.RoleCheck, false, self)
 				fireEvent("raidJoin", playerName)
 				if BigWigs and BigWigs.db.profile.raidicon and not self.Options.DontSetIcons then--Both DBM and bigwigs have raid icon marking turned on.
@@ -2662,7 +2663,7 @@ do
 				-- joined a new party
 				inRaid = true
 				sendSync("H")
-				SendAddonMessage("BigWigs", "VQ:0", IsPartyLFG() and "INSTANCE_CHAT" or "PARTY")
+				SendAddonMessage("BigWigs", versionQueryString:format(0, fakeBWHash), IsPartyLFG() and "INSTANCE_CHAT" or "RAID")
 				self:Schedule(2, self.RoleCheck, false, self)
 				fireEvent("partyJoin", playerName)
 			end
@@ -4098,7 +4099,7 @@ do
 
 	local function SendVersion()
 		if DBM.Options.FakeBWVersion then
-			SendAddonMessage("BigWigs", ("VR:%d"):format(fakeBWRevision), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")--Pretending to be bigwigs, don't send dbm version information
+			SendAddonMessage("BigWigs", versionResponseString:format(fakeBWVersion, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 			return
 		end
 		--(Note, faker isn't to screw with bigwigs nor is theirs to screw with dbm, but rathor raid leaders who don't let people run WTF they want to run)
@@ -4120,15 +4121,10 @@ do
 		DBM:Schedule(3, SendVersion)--Send version if 3 seconds have past since last "Hi" sync
 	end
 
-	syncHandlers["VR"] = function(sender, bwrevision)--Sent by bigwigs releases
-		if bwrevision and raid[sender] then
-			raid[sender].bwrevision = tonumber(bwrevision)
-		end
-	end
-
-	syncHandlers["VRA"] = function(sender, bwarevision)--Sent by bigwigs Alphas
-		if bwarevision and raid[sender] then
-			raid[sender].bwarevision = tonumber(bwarevision)
+	syncHandlers["BV"] = function(sender, version, hash)--Parsed from bigwigs V7+
+		if version and raid[sender] then
+			raid[sender].bwversion = version
+			raid[sender].bwhash = hash or ""
 		end
 	end
 
@@ -4689,14 +4685,17 @@ do
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
 			local bwPrefix, bwMsg = msg:match("^(%u-):(.+)")
 			if bwPrefix then
-				if bwPrefix == "VR" or bwPrefix == "VRA" then--Version information prefixes
+				if bwPrefix == "V" then--Version information prefixes
+					local verString, hash = bwMsg:match("^(%d+)%-(.+)$")
+					local version = tonumber(verString) or 0
+					if version == 0 then return end--Just a query
 					sender = Ambiguate(sender, "none")
-					handleSync(channel, sender, bwPrefix, bwMsg)
-					bwMsg = tonumber(bwMsg) or 0
-					if bwPrefix == "VR" then--Only upgrade to latest release version found
-						if bwMsg > fakeBWRevision then fakeBWRevision = bwMsg end--Newer revision found, upgrade!
+					handleSync(channel, sender, "BV", version, hash)--Prefix changed, so it's not handled by DBMs "V" handler
+					if version > fakeBWVersion then--Newer revision found, upgrade!
+						fakeBWVersion = verString
+						fakeBWHash = hash
 					end
-				elseif prefix == "VQ" then--Version request prefix
+				elseif prefix == "Q" then--Version request prefix
 					self:Unschedule(SendVersion)
 					self:Schedule(3, SendVersion)
 				end
@@ -6145,7 +6144,7 @@ do
 		elseif v1.revision and v2.revision then
 			return v1.revision > v2.revision
 		else
-			return (v1.bwarevision or v1.bwrevision or 0) > (v2.bwarevision or v2.bwrevision or 0)
+			return (v1.bwversion or 0) > (v2.bwversion or 0)
 		end
 	end
 
@@ -7101,10 +7100,8 @@ function bossModPrototype:LatencyCheck()
 end
 
 function bossModPrototype:CheckBigWigs(name)
-	if raid[name] and raid[name].bwrevision then
-		return raid[name].bwrevision
-	elseif raid[name] and raid[name].bwarevision then
-		return raid[name].bwarevision
+	if raid[name] and raid[name].bwversion then
+		return raid[name].bwversion
 	else
 		return false
 	end

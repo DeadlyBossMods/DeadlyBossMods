@@ -146,8 +146,6 @@ DBM_CORE_YOUR_VERSION_OUTDATED      = "사용중인 DBM 버전이 오래되었�
 DBM_CORE_VOICE_PACK_OUTDATED		= "현재 설치되어 있는 음성안내는 이 버전의 DBM에서 지원하는 음성 중 일부가 빠져 있습니다. 특수 경고 소리 끄기 기능이 비활성화 됩니다. 음성안내의 새 버전을 설치하시거나 음성안내 제작자에게 문의하여 업데이트가 가능한지 확인바랍니다."
 DBM_CORE_VOICE_MISSING				= "설정되어 있는 음성안내를 찾을 수 없습니다. 음성안내 설정이 'None' 으로 초기화 됩니다. 이 메세지가 오류라고 생각되면, 음성안내가 제대로 설치되어 있고 애드온 목록에서 활성화 되어 있는지 확인해 보시기 바랍니다."
 DBM_CORE_VOICE_COUNT_MISSING		= "%d번째 초세기 소리를 음성안내 또는 초세기 애드온에서 찾을 수 없습니다. 기본 설정으로 초기화 됩니다."
---DBM_BIG_WIGS (Same as English locales)
---DBM_BIG_WIGS_ALPHA (Same as English locales)
 
 DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 DBM 버전이 오래되었습니다.\n%s(r%d) 이상으로 업데이트 가능합니다. 아래 사이트 또는 curse, wowinterface 에서 다운로드 가능합니다."
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 DBM alpha 버전이 오래되었습니다. r%d 이상 업데이트 가능합니다. 가능한 빠른 시일내로 최신 알파 또는 정식 버전으로 업데이트 하시기 바랍니다. 계속 사용하실 경우 잘못된 경고를 표시할 수도 있습니다."
