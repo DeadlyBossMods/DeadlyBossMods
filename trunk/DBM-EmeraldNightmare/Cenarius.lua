@@ -6,7 +6,7 @@ mod:SetCreatureID(104636)
 mod:SetEncounterID(1877)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 3, 2, 1)
---mod:SetHotfixNoticeRev(12324)
+mod:SetHotfixNoticeRev(15125)
 mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
@@ -62,14 +62,15 @@ local yellScornedTouch				= mod:NewYell(211471)
 local timerNightmareBramblesCD		= mod:NewCDTimer(30, 210290, nil, nil, nil, 3)--On for all, for now. Doesn't target melee but melee still have to be aware. Just not AS aware.
 local timerDreadThornsCD			= mod:NewCDTimer(34, 210346, nil, false, nil, 5, nil, DBM_CORE_TANK_ICON)--Optional but off by default
 local timerNightmareBlastCD			= mod:NewNextTimer(32.8, 213162, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerForcesOfNightmareCD		= mod:NewCDCountTimer(77.8, 212726, nil, nil, nil, 1)
-local timerSpearOfNightmaresCD		= mod:NewCDTimer(18.3, 214529, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerForcesOfNightmareCD		= mod:NewCDCountTimer(77.8, 212726, nil, nil, nil, 1)--77.8-80
+local timerSpearOfNightmaresCD		= mod:NewCDTimer(18.2, 214529, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerBeastsOfNightmareCD		= mod:NewAITimer(16, 214876, nil, nil, nil, 1)
 local timerEntanglingNightmareCD	= mod:NewNextTimer(51, 214505, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 ----Malfurion
 local timerCleansingGroundCD		= mod:NewNextTimer(77, 214249, nil, nil, nil, 3)--Phase 2 version only for now. Not sure if cast more than once though?
 ----Forces of Nightmare
-local timerTouchofLifeCD			= mod:NewCDTimer(12, 211368, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerTouchofLifeCD			= mod:NewCDTimer(12, 211368, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--increased to 15?
+local timerRottenBreathCD			= mod:NewCDTimer(25, 211192, nil, nil, nil, 3)
 
 --Cenarius
 local countdownForcesOfNightmare	= mod:NewCountdown(78.8, 212726)
@@ -111,11 +112,11 @@ function mod:OnCombatStart(delay)
 	scornedWarned = false
 	self.vb.phase = 1
 	self.vb.addsCount = 0
-	timerForcesOfNightmareCD:Start(7.2-delay, 1)
+	timerForcesOfNightmareCD:Start(7.2-delay, 1)--7.2-8.6
 	countdownForcesOfNightmare:Start(7.2-delay)
 	timerDreadThornsCD:Start(14-delay)
-	timerNightmareBramblesCD:Start(25.5-delay)
-	countdownNightmareBrambles:Start(25.5-delay)
+	timerNightmareBramblesCD:Start(27.5-delay)--Cast finish. Cast start is actually a yell and not worth using anyways since DBM doesn't warn spawn point until cast finish
+	countdownNightmareBrambles:Start(27.5-delay)
 	if self:IsMythic() then
 		timerNightmareBlastCD:Start(31.2-delay)
 	end
@@ -146,10 +147,16 @@ function mod:SPELL_CAST_START(args)
 		warnCleansingGround:Show()
 	elseif spellId == 211073 then
 		warnDesiccatingStomp:Show()
-	elseif spellId == 211368 and self:CheckInterruptFilter(args.sourceGUID) then
-		specWarnTouchofLife:Show(args.sourceName)
-		voiceTouchOfLife:Play("kickcast")
-		timerTouchofLifeCD:Start(12, args.sourceGUID)
+	elseif spellId == 211368 then
+		if self:CheckInterruptFilter(args.sourceGUID) then
+			specWarnTouchofLife:Show(args.sourceName)
+			voiceTouchOfLife:Play("kickcast")
+		end
+		if self:IsFaceroll() then
+			timerTouchofLifeCD:Start(15, args.sourceGUID)
+		else
+			timerTouchofLifeCD:Start(12, args.sourceGUID)
+		end
 	elseif spellId == 214529 then
 		timerSpearOfNightmaresCD:Start()
 		local targetName, uId, bossuid = self:GetBossTarget(104636, true)
@@ -220,10 +227,11 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 105495 then--Scorned Sister
-		timerTouchofLifeCD:Cancel(args.destGUID)
+		timerTouchofLifeCD:Stop(args.destGUID)
 	elseif cid == 105494 then--Rotten Drake
 		--This is safer method to cancel it but if more than 1 drake is up it may in rare cases break scan for 2nd drake
 		self:BossUnitTargetScannerAbort()
+		timerRottenBreathCD:Stop(args.destGUID)
 	end
 end
 
@@ -231,6 +239,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 211189 then--Rotten Breath precast. Best method for fastest and most accurate target scanning
 		self:BossUnitTargetScanner(uId, "BreathTarget")
+		timerRottenBreathCD:Start(nil, UnitGUID(uId))
 	elseif spellId == 210290 then--Bramble cast finish (only thing not hidden, probably be hidden too by live, if so will STILL find a way to warn this, even if it means scanning boss 24/7)
 		if not UnitExists(uId.."target") then return end--Blizzard decided to go even further out of way to break this detection, if this happens we don't want nil errors for users.
 		local targetName = DBM:GetUnitFullName(uId)
@@ -244,6 +253,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		else
 			warnNightmareBrambles:Show(targetName)
 		end
+		timerNightmareBramblesCD:Start()
 	elseif spellId == 217368 then--Overwhelming Nightmare (Phase 2)
 		self.vb.phase = 2
 		warnPhase2:Show()
