@@ -13,8 +13,8 @@ mod:RegisterCombat("combat")
 mod.syncThreshold = 30
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 210931 209471 208697 208929 208689 210781 208685 218415",
-	"SPELL_CAST_SUCCESS 210984 215128",
+	"SPELL_CAST_START 210931 209471 208697 208929 208689 210781 208685 218415 223121",
+	"SPELL_CAST_SUCCESS 210984 215128 209387",
 	"SPELL_AURA_APPLIED 209915 210099 210984 215234 215128 212886",
 	"SPELL_AURA_APPLIED_DOSE 210984",
 	"SPELL_AURA_REMOVED 209915 215128",
@@ -68,11 +68,13 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerNightmareHorrorCD		= mod:NewNextTimer(220, "ej13188", nil, nil, nil, 1, 210289)
 local timerEyeOfFateCD				= mod:NewCDTimer(10, 210984, nil, "Tank", nil, 5)
 local timerNightmareishFuryCD		= mod:NewNextTimer(10.9, 215234, nil, "Tank", nil, 5)
+local timerGroundSlamCD				= mod:NewNextTimer(21.9, 208689, nil, nil, nil, 3)
 local timerDeathBlossomCD			= mod:NewNextTimer(105, 218415, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON)
 local timerDeathBlossom				= mod:NewCastTimer(15, 218415, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 --Stage Two: The Heart of Corruption
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerDarkReconstitution		= mod:NewCastTimer(50, 210781, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)
+local timerFinalTorpor				= mod:NewCastTimer(50, 223121, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)
 local timerCursedBloodCD			= mod:NewNextTimer(15, 215128, nil, nil, nil, 3)
 
 --Stage One: The Ruined Ground
@@ -161,6 +163,8 @@ function mod:OnCombatStart(delay)
 	self.vb.DeathglareCount = 0
 	self.vb.NightmareCount = 0
 	self.vb.IchorCount = 0
+	timerNightmareishFuryCD:Start(6-delay)
+	timerGroundSlamCD:Start(12-delay)
 	timerNightmareHorrorCD:Start(65-delay)
 	if self:IsMythic() then
 		timerDeathBlossomCD:Start(55)
@@ -214,6 +218,11 @@ function mod:SPELL_CAST_START(args)
 		timerDeathBlossom:Start()
 		countdownDeathBlossom:Start()
 		timerDeathBlossomCD:Start()
+	elseif spellId == 223121 then
+		timerFinalTorpor:Start()
+		countdownDarkRecon:Start()
+	elseif spellId == 208689 and self:AntiSpam(2, 6) then
+		timerGroundSlamCD:Start()
 	end
 end
 
@@ -221,6 +230,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 210984 then
 		timerEyeOfFateCD:Start(nil, args.sourceGUID)
+	elseif spellId == 209387 then--First thing Nightmare Horror casts that can give us GUID
+		timerEyeOfFateCD:Start(14, args.sourceGUID)
 	end
 end
 
@@ -228,6 +239,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 209915 then--Stuff of Nightmares
 		timerCursedBloodCD:Stop()
+		timerNightmareishFuryCD:Start(7)
+		timerGroundSlamCD:Start(13)
 		--timerDeathBlossomCD:Start(55)
 		timerNightmareHorrorCD:Start(95)
 	elseif spellId == 210099 then--Ooze Fixate
@@ -360,6 +373,7 @@ function mod:OnSync(msg, guid)
 			self.vb.DominatorCount = self.vb.DominatorCount - 1
 			if self.vb.DominatorCount == 0 then
 				timerNightmareishFuryCD:Stop()
+				timerGroundSlamCD:Stop()
 			end
 		elseif cid == 105383 then--Corruptor tentacle
 			self.vb.CorruptorCount = self.vb.CorruptorCount - 1
@@ -372,6 +386,7 @@ function mod:OnSync(msg, guid)
 end
 
 do
+	--This method is still 4 seconds faster than using Seeping Corruption
 	local NightmareHorror = EJ_GetSectionInfo(13188)
 	function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, targetname)
 		if targetname == NightmareHorror then
@@ -379,7 +394,7 @@ do
 			voiceNightmareHorror:Play("bigmob")
 			timerNightmareHorrorCD:Start()
 			self.vb.NightmareCount = self.vb.NightmareCount + 1
-			--timerEyeOfFateCD:Start(18)--Review consistency
+			--timerEyeOfFateCD:Start(18)--Started at seeping corruption for mob GUID
 		end
 	end
 end
