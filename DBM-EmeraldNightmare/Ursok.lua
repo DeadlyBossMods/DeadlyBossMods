@@ -119,6 +119,7 @@ function mod:OnCombatStart(delay)
 	countdownRendFlesh:Start(13-delay)
 	timerFocusedGazeCD:Start(19-delay, 1)
 	countdownFocusedGazeCD:Start(19-delay)
+	timerRoaringCacophonyCD:Start(37-delay)
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(198108))
