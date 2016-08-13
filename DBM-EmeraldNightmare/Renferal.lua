@@ -20,13 +20,8 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO: Does raking talons need anything?
---TODO: See if debuff scan works to compensate for necrotic venom targetting not showing in combat log. When/if fixed, add range frame and SAY
---TODO, Figure out real razorwing timer, right now it's screwed up because most people avoided boss during roc phase (boss doesn't cast it if no one near by)
 --TODO, Shimering Feather (212993) also missing from combat log. Will add tracking for this when blizzard revises fight when/if they fix it. If they don't, UNIT_AURA it is!
---TODO, is violent winds timer if I get any roc logs
 --TODO, tangled webs warnings/timers if I can find any way to detect it, right now i can't.
---TODO, see if spider form is still detectable
 --Spider Form
 local warnSpiderForm				= mod:NewSpellAnnounce(210326, 2)
 local warnFeedingTime				= mod:NewSpellAnnounce(212364, 3)
@@ -62,14 +57,14 @@ local specWarnViolentWindsOther		= mod:NewSpecialWarningTaunt(218144, nil, nil, 
 
 --Spider Form
 mod:AddTimerLine(GetSpellInfo(210326))
-local timerSpiderFormCD				= mod:NewNextTimer(127, 210326, nil, nil, nil, 6)
+local timerSpiderFormCD				= mod:NewNextTimer(132, 210326, nil, nil, nil, 6)
 local timerFeedingTimeCD			= mod:NewNextCountTimer(50, 212364, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
-local timerNecroticVenomCD			= mod:NewNextCountTimer(21.9, 215443, nil, nil, nil, 3)--This only targets ranged, but melee/tanks need to be sure to also move away from them
+local timerNecroticVenomCD			= mod:NewNextCountTimer(21.8, 215443, nil, nil, nil, 3)--This only targets ranged, but melee/tanks need to be sure to also move away from them
 local timerNightmareSpawnCD			= mod:NewNextTimer(10, 218630, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 --Roc Form
 mod:AddTimerLine(GetSpellInfo(210308))
 local timerRocFormCD				= mod:NewNextTimer(47, 210308, nil, nil, nil, 6)
-local timerGatheringCloudsCD		= mod:NewNextTimer(16, 212707, nil, nil, nil, 2)
+local timerGatheringCloudsCD		= mod:NewNextTimer(15.8, 212707, nil, nil, nil, 2)
 local timerDarkStormCD				= mod:NewNextTimer(26, 210948, nil, nil, nil, 2)
 local timerTwistingShadowsCD		= mod:NewNextCountTimer(21.5, 210864, nil, nil, nil, 3)
 local timerRazorWingCD				= mod:NewNextTimer(32.5, 210547, nil, nil, nil, 3)--Needs more timer data when fight done properly
@@ -114,7 +109,7 @@ local function findDebuff(self, spellName)
 		local name = DBM:GetUnitFullName(uId)
 		if UnitDebuff(uId, spellName) then
 			found = found + 1
-			warnNecroticVenom:CombinedShow(0.2, name)
+			warnNecroticVenom:CombinedShow(0.1, name)
 			if name == UnitName("player") then
 				specWarnNecroticVenom:Show()
 				voiceNecroticVenom:Play("runout")
@@ -141,7 +136,7 @@ function mod:OnCombatStart(delay)
 	timerNecroticVenomCD:Start(12.2-delay, 1)
 	countdownNecroticVenom:Start(12.2)
 	timerFeedingTimeCD:Start(15.5-delay, 1)
-	timerRocFormCD:Start(90-delay)
+	timerRocFormCD:Start(90-delay)--Some variation expected. I've seen 90-92. Always happens with energy based bosses
 	countdownPhase:Start(90-delay)
 	berserkTimer:Start(-delay)--540 heroic, other difficulties not confirmed
 end
@@ -306,13 +301,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.razorWingCast = 0
 		warnRocForm:Show()
 		timerTwistingShadowsCD:Start(7, 1)
-		timerGatheringCloudsCD:Start()--16
+		timerGatheringCloudsCD:Start()--15.8-16
 		timerDarkStormCD:Start()--26
 		timerRakingTalonsCD:Start(52, 1)
 		timerRazorWingCD:Start(59, 1)
 		timerSpiderFormCD:Start()
-		countdownPhase:Start(127)
+		countdownPhase:Start(132)--132-135 (used to be 127, so keep an eye on it)
 	elseif spellId == 226055 then--Spider Transform
+		DBM:Debug("Spider Transform Cast")
 		self.vb.venomCast = 0
 		self.vb.feedingTimeCast = 0
 		timerRazorWingCD:Stop()
