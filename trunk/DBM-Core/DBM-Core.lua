@@ -9714,7 +9714,7 @@ do
 		frame:SetFrameStrata("HIGH")
 	end
 
-	function DBM:ShowTestSpecialWarning(text, number)
+	function DBM:ShowTestSpecialWarning(text, number, noSound)
 		if moving then
 			return
 		end
@@ -9722,8 +9722,10 @@ do
 		frame:SetFrameStrata("TOOLTIP")
 		self:Unschedule(testWarningEnd)
 		self:Schedule(self.Options.SpecialWarningDuration * 1.3, testWarningEnd)
-		self:PlaySpecialWarningSound(number)
-		if self.Options.ShowFlashFrame then
+		if number and not noSound then
+			self:PlaySpecialWarningSound(number)
+		end
+		if self.Options.ShowFlashFrame and number then
 			if number == 1 then
 				local repeatCount = self.Options.SpecialWarningFlashRepeat1 and self.Options.SpecialWarningFlashRepeatAmount or 0
 				self.Flash:Show(self.Options.SpecialWarningFlashCol1[1],self.Options.SpecialWarningFlashCol1[2], self.Options.SpecialWarningFlashCol1[3], self.Options.SpecialWarningFlashDura1, self.Options.SpecialWarningFlashAlph1, repeatCount)
