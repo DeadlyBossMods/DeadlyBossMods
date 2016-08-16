@@ -40,7 +40,7 @@ local timerDestructiveFlamesCD		= mod:NewCDTimer(45, 218639, nil, nil, nil, 2, n
 local timerEyeofDarknessCD			= mod:NewCDTimer(34, 219112, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerShadowNovaCD				= mod:NewCDTimer(34, 219110, nil, nil, nil, 2)
 local timerCarrionSwarmCD			= mod:NewCDTimer(32.5, 213890, nil, nil, nil, 2)
-local timerLegionInfernalsCD		= mod:NewCDTimer(30, 213861, nil, nil, nil, 1)
+local timerLegionInfernalsCD		= mod:NewCDTimer(28.5, 213861, nil, nil, nil, 1)
 local timerCharredFlesh				= mod:NewBuffFadesTimer(17, 218657, nil, nil, nil, 3)
 
 local countdownCharredFlesh			= mod:NewCountdownFades(17, 218657)
