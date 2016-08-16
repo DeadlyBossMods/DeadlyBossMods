@@ -6,7 +6,7 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Übersetzt von "
 L.TranslationBy 			= "Ebmor@EU-Malorne"
-L.Website					= "Besuche die Diskussions- und Support-Foren: |cFF73C2FBwww.deadlybossmods.com|r. Folge dem Hauptentwickler auf Twitter: @MysticalOS"
+L.Website					= "Besuche die Diskussions-/Support-Foren: |cFF73C2FBwww.deadlybossmods.com|r. Folge auf Twitter: @deadlybossmods oder @MysticalOS"
 L.WebsiteButton				= "Foren"
 
 L.OTabBosses	= "Bosse"
@@ -322,7 +322,7 @@ L.ShowQueuePop				= "Zeige verbleibende Zeit zur Annahme einer Warteschlangenein
 L.Area_AutoLogging			= "Automatische Aufzeichnungen"
 L.AutologBosses				= "Automatische Aufzeichnung von Bosskämpfen im spieleigenen Kampflog (/dbm pull vor Bossen wird benötigt um die Aufzeichnung rechtzeitig für \"Pre-Pots\" und andere Ereignisse zu starten)"
 L.AdvancedAutologBosses		= "Automatische Aufzeichnung von Bosskämpfen mit Addon \"Transcriptor\""
-L.LogOnlyRaidBosses			= "Nur Schlachtzugbosskämpfe aufzeichnen\n(ohne Schlachtzugsbrowser-/Dungeon-/Szenarienbosskämpfe)"
+L.LogOnlyRaidBosses			= "Nur Schlachtzugbosskämpfe der aktuellen Erweiterung aufzeichnen\n(ohne Schlachtzugsbrowser-/Dungeon-/Szenarienbosskämpfe/alte Spielinhalte)"
 --
 L.Area_3rdParty				= "Einstellungen für Addons von Drittanbietern"
 L.ShowBBOnCombatStart		= "Führe bei Kampfbeginn eine \"BigBrother\"-Buffprüfung durch"
