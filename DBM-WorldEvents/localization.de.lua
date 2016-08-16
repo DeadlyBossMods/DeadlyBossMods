@@ -146,3 +146,12 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	MassiveWave		= "Eine riesige Zombiewelle nähert sich!" --needs to be verified (video-captured translation)
 })
+
+--------------------------
+--  Demonic Invasions  --
+--------------------------
+L = DBM:GetModLocalization("DemonInvasions")
+
+L:SetGeneralLocalization({
+	name = "Dämoneninvasionen"
+})

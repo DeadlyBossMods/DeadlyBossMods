@@ -82,6 +82,10 @@ L:SetOptionLocalization({
 ------------------
 L= DBM:GetModLocalization(1743)
 
+L:SetMiscLocalization({
+	noCLEU4EchoRings		= "Let the waves of time crash over you!"--translate (trigger)
+})
+
 ------------------
 -- Gul'dan --
 ------------------
