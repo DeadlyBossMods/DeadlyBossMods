@@ -36,7 +36,7 @@ local specWarnCarrionSwarm			= mod:NewSpecialWarningRun(213890, nil, nil, nil, 4
 local specWarnLegionInfernals		= mod:NewSpecialWarningSwitch(213861, "RangedDps", nil, nil, 1, 2)
 local specWarnWavesofDread			= mod:NewSpecialWarningDodge(216916, nil, nil, nil, 2, 2)
 
-local timerDestructiveFlamesCD		= mod:NewCDTimer(45, 218639, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerDestructiveFlamesCD		= mod:NewCDTimer(30, 218639, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerEyeofDarknessCD			= mod:NewCDTimer(34, 219112, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerShadowNovaCD				= mod:NewCDTimer(34, 219110, nil, nil, nil, 2)
 local timerCarrionSwarmCD			= mod:NewCDTimer(32.5, 213890, nil, nil, nil, 2)
