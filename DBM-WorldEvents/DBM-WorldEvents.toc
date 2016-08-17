@@ -1,7 +1,7 @@
 ﻿## Interface: 70000
 ## X-Min-Interface: 70000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0World Events|r
-## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eventos del Mundo|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eventos del mundo|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0이벤트|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Игровые события|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0世界事件|r
@@ -24,12 +24,12 @@
 ## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,퀘스트
 ## X-DBM-Mod-SubCategories-zhTW: 節慶,任務
 ## X-DBM-Mod-SubCategories-zhCN: 节日,任务
-## X-DBM-Mod-SubCategories-esES: Fiestas,Quests
+## X-DBM-Mod-SubCategories-esES: Fiestas,Misiones
 ## X-DBM-Mod-SubCategories-esMX: Holidays,Quests
 ## X-DBM-Mod-SubCategories-ptBR: Holidays,Quests
 ## X-DBM-Mod-SubCategories-frFR: Vacances,Quêtes
 ## X-DBM-Mod-Name: World Events
-## X-DBM-Mod-Name-esES: Eventos del Mundo
+## X-DBM-Mod-Name-esES: Eventos del mundo
 ## X-DBM-Mod-Name-ruRU: Игровые события
 ## X-DBM-Mod-Name-zhTW: 世界事件
 ## X-DBM-Mod-Name-zhCN: 世界事件
