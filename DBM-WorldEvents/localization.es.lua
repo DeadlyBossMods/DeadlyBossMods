@@ -1,137 +1,157 @@
-﻿if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
+if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 local L
 
-------------
---  Omen  --
-------------
+-------------
+-- Augurio --
+-------------
 L = DBM:GetModLocalization("Omen")
 
 L:SetGeneralLocalization({
-	name = "Omen"
+	name = "Augurio"
 })
 
 ------------------------------
---  The Crown Chemical Co.  --
+-- Químicos La Corona, S.L. --
 ------------------------------
 L = DBM:GetModLocalization("d288")
 
 L:SetTimerLocalization{
-	HummelActive	= "Hummel se activa",
-	BaxterActive	= "Baxter se activa",
-	FryeActive		= "Frye se activa"
+	HummelActive		= "Hummel entra en combate",
+	BaxterActive		= "Baxter entra en combate",
+	FryeActive			= "Frye entra en combate"
 }
 
 L:SetOptionLocalization({
-	TrioActiveTimer		= "Mostrar tiempo para que los Boticarios se activen"
+	TrioActiveTimer		= "Mostrar temporizadores para cuando los apotecarios entren en combate"
 })
 
 L:SetMiscLocalization({
 	SayCombatStart		= "¿Se han molestado en decirte quién soy y por qué estoy haciendo esto?"
 })
 
-----------------------------
---  The Frost Lord Ahune  --
-----------------------------
+-----------
+-- Ahune --
+-----------
 L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
-	Emerged			= "Ahune emerge",
-	specWarnAttack	= "Ahune es vulnerable ¡Ataca ahora!"
+	Emerged			= "Ahune vuelve a la superficie",
+	specWarnAttack	= "Ahune es vulnerable - ¡Ataca ahora!"
 })
 
 L:SetTimerLocalization{
-	SubmergTimer	= "Se sumerge",
-	EmergeTimer		= "Emerge"
+	SubmergTimer	= "Sumergir",
+	EmergeTimer		= "Volver a la superficie"
 }
 
 L:SetOptionLocalization({
-	Emerged			= "Mostrar aviso cuando Ahune emerge",
-	specWarnAttack	= "Mostrar aviso especial cuando Ahune es vulnerable",
-	SubmergTimer	= "Mostrar tiempo para sumersión",
-	EmergeTimer		= "Mostrar tiempo para emersión"
+	Emerged			= "Mostrar aviso cuando Ahune vuelva a la superficie",
+	specWarnAttack	= "Mostrar aviso especial cuando Ahune se vuelva vulnerable",
+	SubmergTimer	= "Mostrar temporizador para cuando Ahune se sumerja",
+	EmergeTimer		= "Mostrar temporizador para cuando Ahune vuelva a la superficie"
 })
 
 L:SetMiscLocalization({
 	Pull			= "¡La piedra de hielo se ha derretido!"
 })
 
-
-----------------------
---  Coren Direbrew  --
-----------------------
+---------------------------
+-- Coren Cerveza Temible --
+---------------------------
 L = DBM:GetModLocalization("d287")
 
 L:SetWarningLocalization({
-	specWarnBrew		= "¡Bebete la cerveza antes de que lanze otra!",
-	specWarnBrewStun		= "SUGERENCIA: ¡Te han dado! ¡Acuerdate de beber la cerveza si te han lanzado!"
+	specWarnBrew		= "¡Bebe la cerveza antes de que te lance otra!",
+	specWarnBrewStun	= "SUGERENCIA: ¡Te han dado! ¡No te olvides de beber la cerveza!"
 })
 
 L:SetOptionLocalization({
 	specWarnBrew		= "Mostrar aviso especial para $spell:47376",
-	specWarnBrewStun		= "Mostrar aviso especial para $spell:47340",
-	YellOnBarrel	= "Avisar si $spell:51413"
+	specWarnBrewStun	= "Mostrar aviso especial para $spell:47340",
+	YellOnBarrel		= "Gritar para $spell:51413"
 })
 
 L:SetMiscLocalization({
-	YellBarrel		= "¡Tengo el Barril!"
+	YellBarrel			= "¡Tengo el barril!"
 })
 
------------------------------
---  The Headless Horseman  --
------------------------------
+--------------------------
+-- Fiesta de la Cerveza --
+--------------------------
+L = DBM:GetModLocalization("Brew")
+
+L:SetGeneralLocalization({
+	name = "Fiesta de la Cerveza"
+})
+
+L:SetOptionLocalization({
+	NormalizeVolume			= "Normalizar automáticamente el volumen del canal de sonido de diálogo con el de música cuando estés en una zona de la Fiesta de la Cerveza para que el sonido no sea demasiado molesto"
+})
+
+--------------------------
+-- El Jinete decapitado --
+--------------------------
 L = DBM:GetModLocalization("d285")
 
 L:SetWarningLocalization({
 	WarnPhase				= "Fase %d",
-	warnHorsemanSoldiers	= "Salen las Calabazas con pulso",
-	warnHorsemanHead		= "¡Torbellino! ¡Mata a la cabeza!"
+	warnHorsemanSoldiers	= "Calabazas con pulso",
+	warnHorsemanHead		= "Cabeza de El jinete decapitado"
 })
 
 L:SetOptionLocalization({
-	WarnPhase				= "Mostrar un aviso para cada cambio de fase",
-	warnHorsemanSoldiers	= "Mostrar aviso a la llegada de Calabazas con pulso",
-	warnHorsemanHead		= "Mostrar un aviso para torbellino (2ª i posteriores apariciones de cabeza)"
+	WarnPhase				= "Mostrar aviso para cambios de fase",
+	warnHorsemanSoldiers	= "Mostrar aviso cuando aparezcan Cabalazas con pulso",
+	warnHorsemanHead		= "Mostrar aviso cuando aparezca la Cabeza de El jinete decapitado"
 })
 
 L:SetMiscLocalization({
-	HorsemanSummon				= "Jinete álzate...",
-	HorsemanSoldiers			= "Soldados, alzaos y luchad, tomad vuestro acero. Dad la victoria a este deshonrado caballero."
+	HorsemanSummon			= "Jinete álzate...",
+	HorsemanSoldiers		= "Soldados, alzaos y luchad, tomad vuestro acero. Dad la victoria a este deshonrado caballero."
 })
 
-
-------------------------------
---  The Abominable Greench  --
-------------------------------
+--------------------------
+-- Grinch el Abominable --
+--------------------------
 L = DBM:GetModLocalization("Greench")
 
 L:SetGeneralLocalization({
-	name = "The Abominable Greench" --TODO, needs translation
+	name = "Grinch el Abominable"
 })
 
---------------------------
---  Plants Vs. Zombies  --
---------------------------
+-------------------------------------
+-- Flores de paz contra necrófagos --
+-------------------------------------
 L = DBM:GetModLocalization("PlantsVsZombies")
 
 L:SetGeneralLocalization({
-	name = "Flores de paz vs Necrófagos"
+	name = "Flores de paz contra necrófagos"
 })
 
 L:SetWarningLocalization({
-	warnTotalAdds	= "Total de zombies que han salido des de la ultima oleada masiva: %d",
-	specWarnWave	= "¡Oleada masiva!"
+	warnTotalAdds	= "Total de zombis desde la última oleada gigantesca: %d",
+	specWarnWave	= "¡Oleada gigantesca!"
 })
 
 L:SetTimerLocalization{
-	timerWave		= "Siguiente oleada masiva"
+	timerWave		= "Siguiente oleada gigantesca"
 }
 
 L:SetOptionLocalization({
-	warnTotalAdds	= "Anunciar total de zombies que han salido entre cada oleada masiva",
-	specWarnWave	= "Mostrar aviso especial cuando una empieza una Oleada Masiva",
-	timerWave		= "Mostrar tiempo para la siguiente Oleada Masiva"
+	warnTotalAdds	= "Anunciar total de zombis entre oleadas gigantescas",
+	specWarnWave	= "Mostrar aviso especial cuando comience una oleada gigantesca",
+	timerWave		= "Mostrar temporizador para las siguientes oleadas gigantescas"
 })
 
 L:SetMiscLocalization({
-	MassiveWave		= "A Massive Wave of Zombies is Approaching!" --TODO, needs translation
+	MassiveWave		= "¡Se acerca una gigantesca oleada de zombis!"
+})
+
+---------------------------
+-- Invasiones demoníacas --
+---------------------------
+L = DBM:GetModLocalization("DemonInvasions")
+
+L:SetGeneralLocalization({
+	name = "Invasiones demoníacas"
 })
