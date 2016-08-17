@@ -275,7 +275,7 @@ DBM.DefaultOptions = {
 	CRT_Enabled = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
-	HelpMessageVersion = 2,
+	HelpMessageVersion = 3,
 	NewsMessageShown = 4,
 	MoviesSeen = {},
 	MovieFilter = "AfterFirst",
@@ -6331,8 +6331,8 @@ do
 		if month == 4 and day == 1 then--April 1st
 			self:Schedule(180 + math.random(0, 600) , self.AprilFools, self)
 		end
-		if GetLocale() == "ptBR" or GetLocale() == "frFR" or GetLocale() == "esES" or GetLocale() == "esMX" or GetLocale() == "itIT" then
-			C_TimerAfter(10, function() if self.Options.HelpMessageVersion < 3 then self.Options.HelpMessageVersion = 3 self:AddMsg(DBM_CORE_NEED_LOCALS) end end)
+		if GetLocale() == "ptBR" or GetLocale() == "frFR" or GetLocale() == "itIT" then
+			C_TimerAfter(10, function() if self.Options.HelpMessageVersion < 4 then self.Options.HelpMessageVersion = 4 self:AddMsg(DBM_CORE_NEED_LOCALS) end end)
 		end
 		C_TimerAfter(20, function() if not self.Options.ForumsMessageShown then self.Options.ForumsMessageShown = self.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
 		C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
