@@ -72,8 +72,8 @@ DBM_CORE_WHISPER_SCENARIO_END_WIPE			= "%s no ha completado %s"
 DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s no ha completado %s. Lo han intentado %d veces en esta dificultad."
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Version"
-DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"--One Boss mod
-DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) y %s (r%d)"--Two Boss mods
+DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (%s)"
+DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (%s) & %s (%s)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM no instalado"
 DBM_CORE_VERSIONCHECK_FOOTER		= "Encontrados %d jugadores con Deadly Boss Mods"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "¡Tu versión de Deadly Boss Mods es antigua! Por favor, visita www.deadlybossmods.com para bajarte la última versión."

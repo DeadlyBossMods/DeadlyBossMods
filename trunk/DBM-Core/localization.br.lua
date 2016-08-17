@@ -122,8 +122,8 @@ DBM_CORE_WHISPER_SCENARIO_END_WIPE			= "%s não foi completado %s"
 DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s não foi completado %s. Eles tem um total de %d vitórias parciais nesta dificuldade."
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Versões"
-DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
-DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"--Two Boss mods
+DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (%s)"
+DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (%s) & %s (%s)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM não instalado"
 DBM_CORE_VERSIONCHECK_FOOTER		= "Encontrados %d jogadores com DBM & %d jogadores com Bigwigs"
 DBM_CORE_VERSIONCHECK_OUTDATED		= "Os seguintes %d jogadores estão com versões desatualizadas de boss mods: %s"

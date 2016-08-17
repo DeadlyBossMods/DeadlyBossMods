@@ -137,8 +137,8 @@ DBM_CORE_WHISPER_SCENARIO_END_WIPE			= "%s не завершил %s"
 DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s не завершил %s. Общее количество незавершенных у них - %d."
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Boss Mod - Версии"
-DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"--One Boss mod
-DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) и %s (r%d)"--Two Boss mods
+DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (%s)"
+DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (%s) & %s (%s)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: Boss Mod не установлен"
 DBM_CORE_VERSIONCHECK_FOOTER		= "Найдено %d |4игрок:игрока:игроков; с DBM и %d |4игрок:игрока:игроков; с Bigwigs"
 DBM_CORE_VERSIONCHECK_OUTDATED		= "Следующие %d игрок(и) имеют устаревшую версию: %s"
