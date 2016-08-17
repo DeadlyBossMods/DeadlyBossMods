@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 223420 219469 219441 219112 219110 224067 213890 216916",
+	"SPELL_CAST_START 223420 219469 219441 219112 219110 224067 213890 216916 217958",
 	"SPELL_CAST_SUCCESS 218639 218659",
 	"SPELL_SUMMON 213861",
 	"SPELL_AURA_APPLIED 218625 218657 224044",
@@ -35,6 +35,7 @@ local specWarnShadowNova			= mod:NewSpecialWarningRun(219110, nil, nil, nil, 4, 
 local specWarnCarrionSwarm			= mod:NewSpecialWarningRun(213890, nil, nil, nil, 4, 2)
 local specWarnLegionInfernals		= mod:NewSpecialWarningSwitch(213861, "RangedDps", nil, nil, 1, 2)
 local specWarnWavesofDread			= mod:NewSpecialWarningDodge(216916, nil, nil, nil, 2, 2)
+local specWarnChaosWave				= mod:NewSpecialWarningDodge(217958, nil, nil, nil, 2, 2)
 
 local timerDestructiveFlamesCD		= mod:NewCDTimer(30, 218639, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerEyeofDarknessCD			= mod:NewCDTimer(34, 219112, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
@@ -54,6 +55,7 @@ local voiceShadowNova				= mod:NewVoice(219110)--runout
 local voiceCarrionSwarm				= mod:NewVoice(213890)--runout
 local voiceLegionInfernals			= mod:NewVoice(213861, "RangedDps")--killmob
 local voiceWavesofDread				= mod:NewVoice(216916)--watchwave
+local voiceChaosWave				= mod:NewVoice(217958)--watchwave
 --local voiceWakeofBlood			= mod:NewVoice(224067)--keepmove
 
 mod:RemoveOption("HealthFrame")
@@ -85,6 +87,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 216916 and self:AntiSpam(8, 6) then
 		specWarnWavesofDread:Show()
 		voiceWavesofDread:Play("watchwave")
+	elseif spellId == 217958 then
+		specWarnChaosWave:Show()
+		voiceChaosWave:Play("watchwave")
 	end
 end
 
