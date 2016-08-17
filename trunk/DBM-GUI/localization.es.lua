@@ -6,7 +6,7 @@ local L = DBM_GUI_Translations
 L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Traducido por "
-L.TranslationBy 	= "Orden"
+L.TranslationBy 	= "Orden (ordentradus@gmail.com)"
 L.Website					= "Visita nuestros foros de debate y asistencia técnica en |cFF73C2FBwww.deadlybossmods.com|r."
 L.WebsiteButton				= "Foro"
 
@@ -53,6 +53,7 @@ L.Statistic_Kills	= "Victorias:"
 L.Statistic_Wipes	= "Derrotas:"
 L.Statistic_Incompletes		= "Inacabados:"--For scenarios, TODO, figure out a clean way to replace any Statistic_Wipes with Statistic_Incompletes for scenario mods
 L.Statistic_BestKill	= "Mejor victoria:"
+L.Statistic_BestRank		= "Mejor rango:"--Maybe not get used, not sure yet, localize anyways
 
 -- Tab: General Core Options
 L.General 					= "Opciones generales de DBM"
@@ -83,7 +84,7 @@ L.RaidWarnColor_2 			= "Color 2"
 L.RaidWarnColor_3		 	= "Color 3"
 L.RaidWarnColor_4 			= "Color 4"
 L.InfoRaidWarning			= [[Puedes especificar la posición y colores del marco de avisos de banda. 
-Este marco se usa para mensajes como "Jugador X está afectado por Y".]]
+Este marco se usa para mensajes como "Jugador X afectado por Y".]]
 L.ColorResetted 			= "Se ha reiniciado la configuración de colores de este campo."
 L.ShowWarningsInChat 		= "Mostrar avisos en el chat"
 L.ShowFakedRaidWarnings 	= "Mostrar avisos como avisos de banda"
@@ -318,19 +319,15 @@ L.AFKHealthWarning			= "Reproducir sonido de alerta e iluminar el icono del jueg
 L.AutoReplySound			= "Reproducir sonido de alerta e iluminar el icono del juego al recibir respuestas automáticas de DBM por susurro"
 --
 L.TimerGeneral 				= "Opciones de temporizadores"
-L.SKT_Enabled				= "Mostrar temporizador de récord de victoria del encuentro actual si está disponible"
-L.CRT_Enabled				= "Mostrar temporizador de siguiente resurrección en combate"
-L.ShowRespawn				= "Mostrar temporizador de reaparición de jefe tras cada derrota"
-L.ShowQueuePop				= "Mostrar tiempo restante para aceptar avisos del buscador"
-L.ChallengeTimerOptions		= "Temporizador de récord de modo desafío"
-L.ChallengeTimerPersonal	= "Personal"
-L.ChallengeTimerGuild		= GUILD
-L.ChallengeTimerRealm		= "Reino"
+L.SKT_Enabled				= "Mostrar temporizador para batir el récord de victoria del encuentro actual"
+L.CRT_Enabled				= "Mostrar temporizador para la siguiente resurrección en combate"
+L.ShowRespawn				= "Mostrar temporizador para la reaparición de jefe tras cada derrota"
+L.ShowQueuePop				= "Mostrar temporizador para eltiempo restante para aceptar avisos del buscador"
 --
 L.Area_AutoLogging			= "Opciones del registro automático"
 L.AutologBosses				= "Grabar encuentros automáticamente con el registro de combate de Blizzard (usa '/dbm pull' antes de iniciar un encuentro para comenzar a grabar antes, de forma que tenga en cuenta la toma de pociones y otras acciones)"
 L.AdvancedAutologBosses		= "Grabar encuentros automáticamente con Transcriptor"
-L.LogOnlyRaidBosses			= "Grabar solo encuentros de jefe de banda (excluye el buscador de bandas)"
+L.LogOnlyRaidBosses			= "Grabar solo encuentros de jefe de banda de la expansión actual (excluye el buscador de bandas)"
 --
 L.Area_3rdParty				= "Opciones de addons de terceros"
 L.ShowBBOnCombatStart		= "Realizar comprobación de beneficios de Big Brother al iniciar un encuentro"

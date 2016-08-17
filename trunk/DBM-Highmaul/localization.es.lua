@@ -1,94 +1,107 @@
 if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 local L
 
----------------
--- Kargath Bladefist --
----------------
+-------------------------
+-- Kargath Garrafilada --
+-------------------------
 L= DBM:GetModLocalization(1128)
 
----------------------------
--- The Butcher --
----------------------------
+L:SetTimerLocalization({
+	timerSweeperCD			= DBM_CORE_AUTO_TIMER_TEXTS.next:format((GetSpellInfo(177776)))
+})
+
+L:SetOptionLocalization({
+	timerSweeperCD			= DBM_CORE_AUTO_TIMER_OPTIONS.next:format(177776),
+	countdownSweeper		= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(177776)
+})
+
+------------------
+-- El Carnicero --
+------------------
 L= DBM:GetModLocalization(971)
 
----------------------------
--- Tectus, the Living Mountain --
----------------------------
+------------
+-- Tectus --
+------------
 L= DBM:GetModLocalization(1195)
 
 L:SetMiscLocalization({
-	pillarSpawn	= "MONTAÑAS, ELVATE !"
+	pillarSpawn	= "¡ALZAOS, MONTAÑAS!"
 })
 
-
 ------------------
--- Brackenspore, Walker of the Deep --
+-- Frondaespora --
 ------------------
 L= DBM:GetModLocalization(1196)
 
 L:SetOptionLocalization({
-	InterruptCounter	= "Reinicializar el número de Descomposiciones después de",
-	Two					= "Después de dos lanzamientos",
-	Three				= "Después de tres lanzamientos",
-	Four				= "Después de cuatro lanzamientos"
+	InterruptCounter	= "Patrón de reinicio del contador de Descomposición",
+	Two					= "Cada dos lanzamientos",
+	Three				= "Cada tres lanzamientos",
+	Four				= "Cada cuatro lanzamientos"
 })
 
---------------
--- Twin Ogron --
---------------
+---------------------
+-- Gemelos ogrones --
+---------------------
 L= DBM:GetModLocalization(1148)
 
 L:SetOptionLocalization({
-	PhemosSpecial		= "Reproduce un sonido de cuenta regresiva para los cooldowns de Phemos",
-	PolSpecial			= " Reproduce un sonido de cuenta regresiva para los cooldowns de Pol",
-	PhemosSpecialVoice	= "Reproduce alertas de voz para las habilidades de Phemos utilizando el pack de voz seleccionado",
-	PolSpecialVoice		= " Reproduce alertas de voz para las habilidades de Pol utilizando el pack de voz seleccionado "
+	PhemosSpecial	= "Reproducir sonido de cuenta atrás para los tiempos de reutilización de Femos",
+	PolSpecial		= "Reproducir sonido de cuenta atrás para los tiempos de reutilización de Pol",
+	PhemosSpecialVoice	= "Reproducir alertas de voz del paquete de voces seleccionado para las facultades de Femos",
+	PolSpecialVoice		= "Reproducir alertas de voz del paquete de voces seleccionado para las facultades de Pol"
 })
 
---------------------
---Koragh --
---------------------
+-------------
+-- Ko'ragh --
+-------------
 L= DBM:GetModLocalization(1153)
 
 
 L:SetWarningLocalization({
-	specWarnExpelMagicFelFades	= "Gangrena disipada en 5s ? vuelve a tu punto de partida"
+	specWarnExpelMagicFelFades	= "Expulsar magia: Vil expirando en 5 s - ¡vuelve a tu posición inicial!"
 })
 
 L:SetOptionLocalization({
-	specWarnExpelMagicFelFades	= "Fijar una alerta especial para volver a su punto de partida cuando $spell:172895 se disipe"
+	specWarnExpelMagicFelFades	= "Mostrar aviso especial para volver al punto de inicio cuando $spell:172895 esté a punto de expirar"
 })
 
 L:SetMiscLocalization({
-	supressionTarget1	= "Te borraré !",
-	supressionTarget2	= "Silencio !",
-	supressionTarget3	= "Cállate !", 
-	supressionTarget4	= "Te reduciré a pedazos !"
+	supressionTarget1	= "¡Os aplastaré!",
+	supressionTarget2	= "¡Silencio!",
+	supressionTarget3	= "¡Callad!",
+	supressionTarget4	= "¡Os partiré en dos!"
 })
 
---------------------------
--- Imperator Mar'gok --
---------------------------
+-----------------------
+-- Imperador Mar'gok --
+-----------------------
 L= DBM:GetModLocalization(1197)
 
+L:SetTimerLocalization({
+	timerNightTwistedCD		= "Siguientes fieles"
+})
+
 L:SetOptionLocalization({
-	GazeYellType		= "Elegir el tipo de grito para Mirada del Abismo",
-	Countdown			= "Cuenta regresiva hasta su desaparición",
-	Stacks				= "Número de marcas en cada aplicación"
+	GazeYellType		= "Gritos para Mirada del abismo",
+	Countdown			= "Cuenta atrás hasta que expire",
+	Stacks				= "Con cada acumulación",
+	timerNightTwistedCD	= "Mostrar temporizador para los siguientes Fieles alterados por las sombras",
 })
 
 L:SetMiscLocalization({
-	BrandedYell			= "Marca (%s) sobre %s",
-	GazeYell			= "Mirada desaparece en %d",
-	GazeYell2			= "Mirada (%d) sobre %s",
-	PlayerDebuffs		= "Más cerca de la vista general"
+	BrandedYell			= "Marca (%d) %d m",
+	GazeYell			= "Mirada expirando en %d",
+	GazeYell2			= "Mirada (%d) en %s",
+	PlayerDebuffs		= "Más cercano para Visión"
 })
 
--------------
---  Trash  --
--------------
+------------------------
+--  Enemigos menores  --
+------------------------
 L = DBM:GetModLocalization("HighmaulTrash")
 
 L:SetGeneralLocalization({
-	name =	"Trash de Cognefort"
+	name =	"Enemigos menores"
 })

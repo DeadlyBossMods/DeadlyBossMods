@@ -4,6 +4,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0검은바위 용광로|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Литейная клана Черной горы|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Schwarzfelsgießerei|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Fundición Roca Negra|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑石鑄造場|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑石铸造厂|r
 ## Author: MysticalOS
@@ -22,6 +23,7 @@ localization.en.lua
 localization.kr.lua
 localization.ru.lua
 localization.de.lua
+localization.es.lua
 localization.tw.lua
 localization.cn.lua
 localization.br.lua
