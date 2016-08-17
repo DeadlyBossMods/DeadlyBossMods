@@ -43,7 +43,8 @@ DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s e' stato ucciso da %s a %s"
 DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s e' stato ucciso da %s a %s. Ha %d sconfitte in questa difficolta'."
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Versione"
-DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
+DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (%s)"
+DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (%s) & %s (%s)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM non installato"
 DBM_CORE_VERSIONCHECK_FOOTER		= "%d giocatori hanno Deadly Boss Mods"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "La tua versione di Deadly Boss Mods e' obsoleta. Visita www.deadlybossmods.com per scaricare l'ultima versione."
