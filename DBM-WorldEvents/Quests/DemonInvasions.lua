@@ -12,7 +12,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED 218657 224044",
 	"SPELL_PERIODIC_DAMAGE 219367 207576",
 	"SPELL_PERIODIC_MISSED 219367 207576",
-	"SCENARIO_UPDATE"
+	"SCENARIO_COMPLETED"
 )
 mod.noStatistics = true
 
@@ -164,14 +164,10 @@ do
 	mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 end
 
---"<480.50 21:31:36> [SCENARIO_UPDATE] #newStep#true#Info#Invasion: Tanaris#0#0#0#false#false#true#0#0#4#Tanaris#StepInfo#nil#nil#0#false#false#false#0#nil#nil#nil", -- [14820]
-function mod:SCENARIO_UPDATE()
-	local stageName, stageDescription, numCriteria, completed = C_Scenario.GetStepInfo()
-	if completed then
-		timerShadowNovaCD:Stop()
-		timerEyeofDarknessCD:Stop()
-		timerDestructiveFlamesCD:Stop()
-		timerCarrionSwarmCD:Stop()
-		timerLegionInfernalsCD:Stop()
-	end
+function mod:SCENARIO_COMPLETED()
+	timerShadowNovaCD:Stop()
+	timerEyeofDarknessCD:Stop()
+	timerDestructiveFlamesCD:Stop()
+	timerCarrionSwarmCD:Stop()
+	timerLegionInfernalsCD:Stop()
 end
