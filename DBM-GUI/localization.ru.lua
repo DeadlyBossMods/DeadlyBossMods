@@ -14,13 +14,6 @@ L.OTabBosses				= "Боссы"
 L.OTabOptions				= "Настройки"
 
 L.TabCategory_Options	 	= "Общие параметры"
-L.TabCategory_LEG	 		= "Legion"
-L.TabCategory_WOD	 		= "Warlords of Draenor"
-L.TabCategory_MOP	 		= "Туманы Пандарии"
-L.TabCategory_CATA	 		= "Катаклизм"
-L.TabCategory_WOTLK 		= "Wrath of the Lich King"
-L.TabCategory_BC 			= "The Burning Crusade"
-L.TabCategory_CLASSIC		= "Классическая игра"
 L.TabCategory_PVP 			= "PvP"
 L.TabCategory_OTHER 		= "Другие боссы"
 
