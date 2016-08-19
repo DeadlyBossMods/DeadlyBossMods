@@ -20,14 +20,6 @@ L.OTabBosses				= "模块"
 L.OTabOptions				= "选项"
 
 L.TabCategory_Options 		= "综合设置"
-L.TabCategory_LEG	 		= "军团再临"
-L.TabCategory_WOD	 		= "德拉诺之王"
-L.TabCategory_MOP	 		= "熊猫人之谜"
-L.TabCategory_CATA	 		= "大地的裂变"
-L.TabCategory_WOTLK 		= "巫妖王之怒"
-L.TabCategory_BC 			= "燃烧的远征"
-L.TabCategory_CLASSIC 		= "经典旧世"
---L.TabCategory_PVP 			Same as English
 L.TabCategory_OTHER    		= "其它"
 
 L.BossModLoaded 			= "%s状态"

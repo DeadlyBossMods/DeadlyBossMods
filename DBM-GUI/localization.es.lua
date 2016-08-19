@@ -14,14 +14,6 @@ L.OTabBosses	= "Jefes"
 L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options	 	= "Opciones generales"
-L.TabCategory_LEG	 		= "Legion"
-L.TabCategory_WOD	 		= EXPANSION_NAME5
-L.TabCategory_MOP	 		= EXPANSION_NAME4
-L.TabCategory_CATA	 		= EXPANSION_NAME3
-L.TabCategory_WOTLK 		= EXPANSION_NAME2
-L.TabCategory_BC 			= EXPANSION_NAME1
-L.TabCategory_CLASSIC		= EXPANSION_NAME0
-L.TabCategory_PVP 			= PVP
 L.TabCategory_OTHER    		= "Otros módulos"
 
 L.BossModLoaded 	= "Estadísticas de %s"

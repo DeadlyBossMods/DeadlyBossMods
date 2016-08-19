@@ -13,7 +13,7 @@ L.OTabBosses	= "Bosses"
 L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options	 	= "General Options"
-L.TabCategory_LEG	 		= "Legion"
+L.TabCategory_LEG	 		= EXPANSION_NAME6
 L.TabCategory_WOD	 		= EXPANSION_NAME5
 L.TabCategory_MOP	 		= EXPANSION_NAME4
 L.TabCategory_CATA	 		= EXPANSION_NAME3
