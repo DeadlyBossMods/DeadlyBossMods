@@ -100,9 +100,6 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.HudMapOnAnnihilation then
-		DBMHudMap:Disable()
-	end
 end
 
 function mod:SPELL_CAST_START(args)
