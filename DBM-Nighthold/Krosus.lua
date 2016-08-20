@@ -55,7 +55,6 @@ local voiceFelBurst					= mod:NewVoice(206352, "HasInterrupt")--kickcast
 
 mod:AddRangeFrameOption(5, 206352)
 --mod:AddSetIconOption("SetIconOnMC", 163472, false)
---mod:AddHudMapOption("HudMapOnMC", 163472)
 mod:AddInfoFrameOption(215944, false)
 mod:AddArrowOption("ArrowOnBeam", 205368, true)
 

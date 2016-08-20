@@ -110,8 +110,7 @@ local voiceAnimateArcane			= mod:NewVoice(213564)--mobsoon
 --Animate Specials
 
 mod:AddRangeFrameOption("8")
---mod:AddSetIconOption("SetIconOnMC", 163472, false)
-mod:AddHudMapOption("HudMapOnBrandCharge", 213166)
+--mod:AddHudMapOption("HudMapOnBrandCharge", 213166)
 
 mod.vb.annihilateCount = 0
 mod.vb.armageddonAdds = 0
@@ -132,7 +131,7 @@ do
 end
 
 --TODO, if Elisande method is superior, switch to it to speed up line drawing.
-local function hudDelay(self)
+--[[local function hudDelay(self)
 	local currentTank = self:GetCurrentTank()
 	if not UnitDebuff("player", SearingBrandDebuff) then
 		specWarnSearingBrandDodge:Show()
@@ -148,7 +147,7 @@ local function hudDelay(self)
 		DBMHudMap:RegisterRangeMarkerOnPartyMember(213166, "party", name, 0.35, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -13, 8, nil)
 		DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, currentTank, name, nil, nil, nil, nil, 125)
 	end
-end
+end--]]
 
 function mod:OnCombatStart(delay)
 	self.vb.annihilateCount = 0
@@ -157,7 +156,7 @@ function mod:OnCombatStart(delay)
 	countdownAnnihilate:Start(8-delay)
 	--Rest of timers are triggered by frost buff 0.1 seconds into pull
 	table.wipe(chargeTable)
-	local rangeShowAll = false
+	rangeShowAll = false
 	berserkTimer:Start(-delay)
 end
 
@@ -165,9 +164,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.HudMapOnBrandCharge then
-		DBMHudMap:Disable()
-	end
+--	if self.Options.HudMapOnBrandCharge then
+--		DBMHudMap:Disable()
+--	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -284,13 +283,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceSearingBrand:Play("scatter")
 			countdownSearingBrand:Start()
 		end
-		if self.Options.HudMapOnBrandCharge then
-			self:Unschedule(hudDelay)
-			if not tContains(args.destName, args.destName) then
-				chargeTable[#chargeTable+1] = args.destName
-			end
-			self:Schedule(0.3, hudDelay, self)
-		end
+--		if self.Options.HudMapOnBrandCharge then
+--			self:Unschedule(hudDelay)
+--			if not tContains(args.destName, args.destName) then
+--				chargeTable[#chargeTable+1] = args.destName
+--			end
+--			self:Schedule(0.3, hudDelay, self)
+--		end
 	elseif spellId == 213569 then--Armageddon Applied to mobs
 		self.vb.armageddonAdds = self.vb.armageddonAdds + 1
 	end

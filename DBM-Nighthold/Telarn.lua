@@ -104,7 +104,7 @@ local voiceCoN						= mod:NewVoice(218809)--mmX
 mod:AddRangeFrameOption(8, 218807)
 mod:AddSetIconOption("SetIconOnFetter", 218304, true)
 mod:AddSetIconOption("SetIconOnCoN", 218807, true)
-mod:AddHudMapOption("HudMapOnCoN", 218807)
+--mod:AddHudMapOption("HudMapOnCoN", 218807)
 
 mod.vb.CoNIcon = 1
 mod.vb.phase = 1
@@ -159,9 +159,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.HudMapOnCoN then
-		DBMHudMap:Disable()
-	end
+--	if self.Options.HudMapOnCoN then
+--		DBMHudMap:Disable()
+--	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -358,13 +358,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCoN:CombinedShow(0.5, args.destName)
 		self.vb.CoNIcon = self.vb.CoNIcon + 1
 		local number = self.vb.CoNIcon
-		if self.Options.HudMapOnCoN then
-			if args:IsPlayer() then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(2188092, "party", UnitName("player"), 0.9, 1200, nil, nil, nil, 1, nil, false):Appear()
-			else
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 1200, nil, nil, nil, 0.5):Appear():RegisterForAlerts(nil, args.destName)
-			end
-		end
+--		if self.Options.HudMapOnCoN then
+--			if args:IsPlayer() then
+--				DBMHudMap:RegisterRangeMarkerOnPartyMember(2188092, "party", UnitName("player"), 0.9, 1200, nil, nil, nil, 1, nil, false):Appear()
+--			else
+--				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 1200, nil, nil, nil, 0.5):Appear():RegisterForAlerts(nil, args.destName)
+--			end
+--		end
 		if args:IsPlayer() then
 			specWarnCoN:Show(self:IconNumToString(number))
 			yellCoN:Yell(self:IconNumToString(number), number, number)
@@ -512,16 +512,16 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 218809 then
-		if self.Options.HudMapOnCoN then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
-		end
+--		if self.Options.HudMapOnCoN then
+--			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+--		end
 		if args:IsPlayer() then
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
-			if self.Options.HudMapOnCoN then
-				DBMHudMap:FreeEncounterMarkerByTarget(2188092, args.destName)
-			end
+--			if self.Options.HudMapOnCoN then
+--				DBMHudMap:FreeEncounterMarkerByTarget(2188092, args.destName)
+--			end
 		end
 		if self.Options.SetIconOnCoN then
 			self:SetIcon(args.destName, 0)

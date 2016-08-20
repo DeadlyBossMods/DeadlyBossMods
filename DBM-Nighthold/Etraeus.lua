@@ -118,7 +118,7 @@ local voiceWorldDevouringForce		= mod:NewVoice(216909)--farfromline
 
 mod:AddRangeFrameOption("5/8")
 --mod:AddSetIconOption("SetIconOnMC", 163472, false)
-mod:AddHudMapOption("HudMapOnConjunction", 205408)
+--mod:AddHudMapOption("HudMapOnConjunction", 205408)
 mod:AddBoolOption("ShowNeutralColor", false)
 mod:AddInfoFrameOption(205408)--really needs a "various" option
 
@@ -274,9 +274,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.HudMapOnConjunction then
-		DBMHudMap:Disable()
-	end
+--	if self.Options.HudMapOnConjunction then
+--		DBMHudMap:Disable()
+--	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -381,9 +381,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.StarSigns = self.vb.StarSigns + 1
 		if spellId == 205429 then--Crab
 			warnStarSignCrab:CombinedShow(2, args.destName)
-			if self.Options.HudMapOnConjunction then--Yellow
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 17, 1, 1, 0, 0.5, nil, false):Appear():SetLabel(args.destName)
-			end
+--			if self.Options.HudMapOnConjunction then--Yellow
+--				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 17, 1, 1, 0, 0.5, nil, false):Appear():SetLabel(args.destName)
+--			end
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
 				voiceConjunction:Play("205408c")
@@ -391,9 +391,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		elseif spellId == 216344 then--Dragon
 			warnStarSignDragon:CombinedShow(2, args.destName)
-			if self.Options.HudMapOnConjunction then--Blue
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 17, 0.28, 0.48, 0.9, 0.5, nil, false):Appear():SetLabel(args.destName)
-			end
+--			if self.Options.HudMapOnConjunction then--Blue
+--				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 17, 0.28, 0.48, 0.9, 0.5, nil, false):Appear():SetLabel(args.destName)
+--			end
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
 				voiceConjunction:Play("205408d")
@@ -401,9 +401,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		elseif spellId == 216345 then--Hunter
 			warnStarSignHunter:CombinedShow(2, args.destName)
-			if self.Options.HudMapOnConjunction then--Green
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 17, 0, 1, 0, 0.5, nil, false):Appear():SetLabel(args.destName)
-			end
+--			if self.Options.HudMapOnConjunction then--Green
+--				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 17, 0, 1, 0, 0.5, nil, false):Appear():SetLabel(args.destName)
+--			end
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
 				voiceConjunction:Play("205408h")
@@ -411,9 +411,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		elseif spellId == 205445 then--Wolf
 			warnStarSignWolf:CombinedShow(2, args.destName)
-			if self.Options.HudMapOnConjunction then--Red
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 17, 1, 0, 0, 0.5, nil, false):Appear():SetLabel(args.destName)
-			end
+--			if self.Options.HudMapOnConjunction then--Red
+--				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 17, 1, 0, 0, 0.5, nil, false):Appear():SetLabel(args.destName)
+--			end
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
 				voiceConjunction:Play("205408w")
@@ -493,16 +493,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.vb.StarSigns == 0 then
 			updateRangeFrame(self)
-			if self.Options.HudMapOnConjunction then
-				--None left, clear all HUD circles
-				DBMHudMap:FreeEncounterMarkers()
-			end
+--			if self.Options.HudMapOnConjunction then
+--				--None left, clear all HUD circles
+--				DBMHudMap:FreeEncounterMarkers()
+--			end
 		else
-			if self.Options.HudMapOnConjunction and self.Options.ShowNeutralColor then
-				--Change circle color to a 5th, white color for unaffected players
-				DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 4, 17, 1, 1, 1, 0.5, nil, true):Appear():SetLabel(args.destName)
-			end
+--			if self.Options.HudMapOnConjunction and self.Options.ShowNeutralColor then
+--				--Change circle color to a 5th, white color for unaffected players
+--				DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+--				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 4, 17, 1, 1, 1, 0.5, nil, true):Appear():SetLabel(args.destName)
+--			end
 		end
 	elseif spellId == 205984 or spellId == 214335 or spellId == 214167 then
 		if args:IsPlayer() then
