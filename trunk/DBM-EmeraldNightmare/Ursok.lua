@@ -150,8 +150,8 @@ function mod:SPELL_CAST_START(args)
 		self.vb.roarCount = self.vb.roarCount + 1
 		specWarnRoaringCacophony:Show(self.vb.roarCount)
 		voiceRoaringCacophony:Play("aesoon")
-		if self:IsFaceroll() then
-			--No echos, just every 40 seconds from boss only
+		if self:IsLFR() then
+			--No echos, just every 40 seconds
 			timerRoaringCacophonyCD:Start(40, self.vb.roarCount + 1)
 		else
 			if self.vb.roarCount % 2 == 0 then
