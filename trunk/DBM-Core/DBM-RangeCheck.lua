@@ -571,7 +571,7 @@ do
 			radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(activeRange, mainFrame.redCircleNumPlayers))
 		end
 
-		local playerX, playerY, _, playerMapId = UnitPosition("player")
+		local playerMapId = GetPlayerMapAreaID("player") or 0
 
 		rotation = pi2 - GetPlayerFacing()
 		local sinTheta = sin(rotation)
@@ -585,12 +585,10 @@ do
 		for i = 1, numPlayers do
 			local uId = unitList[i]
 			local dot = dots[i]
-			local x, y, _, mapId = UnitPosition(uId)
+			local mapId = GetPlayerMapAreaID(uId) or 0
 			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitInPhase(uId) and (not filter or filter(uId)) then
-				local cy = x - playerX
-				local cx = y - playerY
-				local range = (cx * cx + cy * cy) ^ 0.5
-				--local range = UnitDistanceSquared(uId) ^ 0.5
+				--local range = (cx * cx + cy * cy) ^ 0.5
+				local range = UnitDistanceSquared(uId) ^ 0.5
 				local inRange = false
 				if range < (activeRange+0.5) then
 					closePlayer = closePlayer + 1
@@ -610,6 +608,10 @@ do
 					textFrame:AddLine(text, color.r, color.g, color.b)
 				end
 				if rEnabled then
+					local playerX, playerY = UnitPosition("player")
+					local x, y = UnitPosition(uId)
+					local cy = x - playerX
+					local cx = y - playerY
 					dot.x = -cx
 					dot.y = -cy
 					dot.range = range
@@ -683,14 +685,8 @@ end)
 local getDistanceBetween
 do
 	function getDistanceBetween(uId, x, y)
-		-- alternative arguments: uId, uId2
-		if type(x) == "string" then
-			local uId2 = x
-			x, y = UnitPosition(uId2)
-			if not x then
-				print("getDistanceBetween failed for: " .. uId .. " (" .. tostring(UnitExists(uId)) .. ") and " .. uId2 .. " (" .. tostring(UnitExists(uId2)) .. ")")
-				return
-			end
+		if type(x) == "string" and UnitExists(x) then -- alternative arguments: uId, uId2
+			return UnitDistanceSquared(x) ^ 0.5
 		end
 		local startX, startY = UnitPosition(uId)
 		local dX = startX - x
