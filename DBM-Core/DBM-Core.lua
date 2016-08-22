@@ -2087,6 +2087,7 @@ do
 		if DBM.RangeCheck:IsShown() then
 			DBM.RangeCheck:Hide(true)
 		else
+			DBM:AddMsg(DBM_CORE_NO_RANGE_SOON)
 			if r and (r < 201) then
 				DBM.RangeCheck:Show(r, nil, true, nil, reverse)
 			else
