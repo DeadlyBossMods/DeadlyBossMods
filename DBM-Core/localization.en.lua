@@ -18,6 +18,13 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s could not be loaded because your DBM-Core 
 DBM_CORE_WHATS_NEW					= "New in this version: Fixed a bug that caused 'Major Patch' force update/disable to trigger wrongfully for non major patch updates. DBM will no longer filter Broken Shore cut scenes regardless of user settings. Added Demonic Invasions mod. Minor Text Fixes"
 DBM_CORE_WHATS_NEW_LINK				= "In upcoming version of DBM, many features that relied on unit positions will be pruned. You can read more about why by |HDBM:forumsnews|h|cff3588ffclicking here|r"
 
+--Pre Patch 7.1 Notice
+DBM_CORE_NO_RANGE_SOON				= "Note: range frame will no longer be available in patch 7.1"
+--Post Patch 7.1
+DBM_CORE_NO_RANGE					= "Range Checker/Radar can not be used in instances"
+DBM_CORE_NO_ARROW					= "Arrow can not be used in instances"
+DBM_CORE_NO_HUD						= "HUDMap can not be used in instances"
+
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM has disabled dynamic range frame on this fight do to insufficient information about number of players needed to affect clump check for a group of your size."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM has disabled add count warnings on this fight do to insufficient information about number of adds that spawn for a group of your size."
 DBM_CORE_DYNAMIC_MULTIPLE			= "DBM has disabled multiple features on this fight do to insufficient information about certain mechanics for a group of your size."
