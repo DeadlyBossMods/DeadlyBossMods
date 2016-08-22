@@ -684,9 +684,25 @@ end)
 -----------------------
 local getDistanceBetween
 do
+	--TODO, add some check in 7.1 to return before calling UnitPosition, if in restricted area.
 	function getDistanceBetween(uId, x, y)
-		if type(x) == "string" and UnitExists(x) then -- alternative arguments: uId, uId2
-			return UnitDistanceSquared(x) ^ 0.5
+		if not x then--If only one arg then 2nd arg is always assumed to be player
+			return UnitDistanceSquared(uId) ^ 0.5
+		end
+		if type(x) == "string" and UnitExists(x) then -- arguments: uId, uId2
+			--First attempt to avoid UnitPosition if any of args is player UnitDistanceSquared should work
+			if UnitIsUnit("player", uId) then
+				return UnitDistanceSquared(x) ^ 0.5
+			elseif UnitIsUnit("player", x) then
+				return UnitDistanceSquared(uId) ^ 0.5
+			else--Neither unit is player, no way to avoid UnitPosition
+				local uId2 = x
+				x, y = UnitPosition(uId2)
+				if not x then
+					print("getDistanceBetween failed for: " .. uId .. " (" .. tostring(UnitExists(uId)) .. ") and " .. uId2 .. " (" .. tostring(UnitExists(uId2)) .. ")")
+					return
+				end
+			end
 		end
 		local startX, startY = UnitPosition(uId)
 		local dX = startX - x
@@ -713,6 +729,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 		textFrame:Show()
 		textFrame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 	end
+	--TODO, add check for restricted area here so we can prevent radar frame loading.
 	if (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and not radarFrame.isShown then
 		radarFrame.isShown = true
 		radarFrame:Show()
