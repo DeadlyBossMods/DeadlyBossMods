@@ -15,7 +15,7 @@
 ## SavedVariablesPerCharacter: DBMWorldDMF_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
-## X-DBM-Mod-Category: WOD
+## X-DBM-Mod-Category: LEG
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-MapID: 974
 ## X-DBM-Mod-Sort: 155

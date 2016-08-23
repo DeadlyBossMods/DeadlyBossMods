@@ -14,7 +14,7 @@
 ## SavedVariables: DBMBrawlers_AllSavedVars
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
-## X-DBM-Mod-Category: WOD
+## X-DBM-Mod-Category: LEG
 ## X-DBM-Mod-No-Statistics: 1
 ## X-DBM-Mod-Name: Brawlers
 ## X-DBM-Mod-Name-koKR: 싸움꾼 조합
