@@ -19,7 +19,7 @@ DBM_CORE_WHATS_NEW					= "New in this version: Fixed a bug that caused 'Major Pa
 DBM_CORE_WHATS_NEW_LINK				= "In upcoming version of DBM, many features that relied on unit positions will be pruned. You can read more about why by |HDBM:forumsnews|h|cff3588ffclicking here|r"
 
 --Pre Patch 7.1 Notice
-DBM_CORE_NO_RANGE_SOON				= "Note: range frame will no longer be available in patch 7.1"
+DBM_CORE_NO_RANGE_SOON				= "Note: range frame will no longer be available within instances in patch 7.1"
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "Range Checker/Radar can not be used in instances"
 DBM_CORE_NO_ARROW					= "Arrow can not be used in instances"

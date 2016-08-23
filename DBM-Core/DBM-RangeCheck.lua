@@ -585,7 +585,7 @@ do
 		for i = 1, numPlayers do
 			local uId = unitList[i]
 			local dot = dots[i]
-			local mapId = GetPlayerMapAreaID(uId) or 0
+			local mapId = GetPlayerMapAreaID(uId) or playerMapId
 			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitInPhase(uId) and (not filter or filter(uId)) then
 				--local range = (cx * cx + cy * cy) ^ 0.5
 				local range = UnitDistanceSquared(uId) ^ 0.5
