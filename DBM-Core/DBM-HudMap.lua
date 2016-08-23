@@ -289,7 +289,7 @@ function mod:OnInitialize()
 end
 
 function mod:Enable()
-	if DBM.Options.DontShowHudMap2 or self.HUDEnabled then return end
+	if DBM.Options.DontShowHudMap2 or self.HUDEnabled or (DBM.Options.EnablePatchRestrictions and IsInInstance()) then return end
 	DBM:Debug("HudMap Activating", 2)
 	self.currentMap = select(8, GetInstanceInfo())
 	mainFrame:Show()

@@ -292,6 +292,7 @@ DBM.DefaultOptions = {
 	AITimer = true,
 	AutoCorrectTimer = false,
 	ShortTimerText = true,
+	EnablePatchRestrictions = false,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 }
 
@@ -2087,7 +2088,9 @@ do
 		if DBM.RangeCheck:IsShown() then
 			DBM.RangeCheck:Hide(true)
 		else
-			DBM:AddMsg(DBM_CORE_NO_RANGE_SOON)
+			if IsInInstance() then
+				DBM:AddMsg(DBM_CORE_NO_RANGE_SOON)
+			end
 			if r and (r < 201) then
 				DBM.RangeCheck:Show(r, nil, true, nil, reverse)
 			else
@@ -2755,14 +2758,14 @@ do
 		local currentMapId = GetPlayerMapAreaID("player") or 0
 		if IsInRaid() then
 			for i = 1, GetNumGroupMembers() do
-				if (GetPlayerMapAreaID("raid"..i) or 0) == currentMapId then
+				if (GetPlayerMapAreaID("raid"..i) or currentMapId) == currentMapId then
 					total = total + 1
 				end
 			end
 		else
 			total = 1--add player/self for "party" count
 			for i = 1, GetNumSubgroupMembers() do
-				if (GetPlayerMapAreaID("party"..i) or 0) == currentMapId then
+				if (GetPlayerMapAreaID("party"..i) or currentMapId) == currentMapId then
 					total = total + 1
 				end
 			end
@@ -2870,7 +2873,7 @@ function DBM:GetNumRealGroupMembers()
 	local realGroupMembers = 0
 	if IsInGroup() then
 		for uId in self:GetGroupMembers() do
-			if (GetPlayerMapAreaID(uId) or 0) == currentMapId then
+			if (GetPlayerMapAreaID(uId) or currentMapId) == currentMapId then
 				realGroupMembers = realGroupMembers + 1
 			end
 		end
@@ -3862,7 +3865,7 @@ do
 		if LastInstanceType == "none" and (not UnitAffectingCombat("player") or #inCombat > 0) then--world boss
 			local senderuId = DBM:GetRaidUnitId(sender)
 			if not senderuId then return end--Should never happen, but just in case. If happens, MANY "C" syncs are sent. losing 1 no big deal.
-			local playerZone, senderZone = GetPlayerMapAreaID("player") or 0, GetPlayerMapAreaID(senderuId) or 0
+			local playerZone, senderZone = GetPlayerMapAreaID("player") or 0, GetPlayerMapAreaID(senderuId) or GetPlayerMapAreaID("player")
 			if playerZone ~= senderZone then return end--not same zone
 			local range = DBM.RangeCheck:GetDistance("player", senderuId)--Same zone, so check range
 			if not range or range > 120 then return end
@@ -7393,14 +7396,6 @@ do
 			end
 			if uId then--Now we have a valid uId
 				if UnitIsUnit(uId, "player") then return true end--If "player" is target, avoid doing any complicated stuff
-				if not UnitIsPlayer(uId) then--probably a pet or NPC
-					local inRange2, checkedRange = UnitInRange(uId)--Use an API that works on pets and some NPCS (npcs that get a party/raid/pet ID)
-					if checkedRange then--checkedRange only returns true if api worked, so if we get false, true then we are not near npc
-						return inRange2 and true or false
-					else--Its probably a totem or just something we can't assess. Fall back to no filtering
-						return true
-					end
-				end
 				local inRange = DBM.RangeCheck:GetDistance("player", uId)--We check how far we are from the tank who has that boss
 				rangeCache[cidOrGuid] = inRange
 				rangeUpdated[cidOrGuid] = GetTime()
