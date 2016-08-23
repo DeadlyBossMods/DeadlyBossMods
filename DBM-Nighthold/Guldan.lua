@@ -132,7 +132,7 @@ local voiceFlamesOfSargeras			= mod:NewVoice(221606)--runout
 
 mod:AddRangeFrameOption(8, 221606)
 --mod:AddSetIconOption("SetIconOnMC", 163472, false)
---mod:AddHudMapOption("HudMapOnBondsofFel", 206222, "-Tank")
+mod:AddHudMapOption("HudMapOnBondsofFel", 206222, "-Tank")
 
 function mod:OnCombatStart(delay)
 	timerLiquidHellfireCD:Start(1-delay)
@@ -144,9 +144,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.HudMapOnBondsofFel then
---		DBMHudMap:Disable()
---	end
+	if self.Options.HudMapOnBondsofFel then
+		DBMHudMap:Disable()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -263,17 +263,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBondsofFel:Show()
 			yellBondsofFel:Yell()
 		end
---		if self.Options.HudMapOnBondsofFel then
---			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 600, nil, nil, nil, 0.5):Appear():SetLabel(args.destName)
---		end
+		if self.Options.HudMapOnBondsofFel then
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 600, nil, nil, nil, 0.5):Appear():SetLabel(args.destName)
+		end
 	elseif spellId == 206384 or spellId == 209086 then--(206366: stunned version mythic?)
 		if args:IsPlayer() then
 			specWarnEmpBondsofFel:Show()
 			yellBondsofFel:Yell()
 		end
---		if self.Options.HudMapOnBondsofFel then
---			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 600, nil, nil, nil, 0.5):Appear():SetLabel(args.destName)
---		end
+		if self.Options.HudMapOnBondsofFel then
+			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 600, nil, nil, nil, 0.5):Appear():SetLabel(args.destName)
+		end
 	elseif spellId == 208903 then
 		warnBurningClaws:Show(args.destName)
 	elseif spellId == 211162 then
@@ -321,13 +321,13 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 209011 or spellId == 206354 then
---		if self.Options.HudMapOnBondsofFel then
---			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
---		end
+		if self.Options.HudMapOnBondsofFel then
+			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		end
 	elseif spellId == 206384 or spellId == 209086 then--(206366: stunned version mythic?)
---		if self.Options.HudMapOnBondsofFel then
---			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
---		end
+		if self.Options.HudMapOnBondsofFel then
+			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		end
 	elseif spellId == 221603 or spellId == 221785 or spellId == 221784 or spellId == 212686 then--4 different duration versions of Flames of sargeras?
 		if args:IsPlayer() then
 			if self.Options.RangeFrame then

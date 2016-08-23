@@ -77,8 +77,8 @@ local voiceBurningSoul				= mod:NewVoice(216040)--runout
 mod:AddRangeFrameOption(8, 216040)
 mod:AddSetIconOption("SetIconOnBrandOfArgus", 212794, true)
 mod:AddInfoFrameOption(212794)
---mod:AddHudMapOption("HudMapOnSeeker", 213238)
---mod:AddBoolOption("HUDSeekerLines", true)--On by default for beta testing. Actual defaults for live subject to accuracy review.
+mod:AddHudMapOption("HudMapOnSeeker", 213238)
+mod:AddBoolOption("HUDSeekerLines", true)--On by default for beta testing. Actual defaults for live subject to accuracy review.
 
 local sharedCastTimers = {0, 25, 35, 25}--Carrion Plague, feast of blood, Seeker Swarm, brand of argus
 local sharedCastTimersFaster = {0, 15, 25, 14.5}--Carrion Plague, feast of blood, Seeker Swarm, brand of argus (faster on normal/LFR since no brand of argus)
@@ -185,9 +185,9 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
---	if self.Options.HudMapOnSeeker then
---		DBMHudMap:Disable()
---	end
+	if self.Options.HudMapOnSeeker then
+		DBMHudMap:Disable()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -244,7 +244,7 @@ function mod:SPELL_CAST_START(args)
 			voiceSeekerSwarm:Play("farfromline")
 		end
 		--begin WIP experimental HUD stuff
---[[		if not self.Options.HudMapOnSeeker then return end--Hud disabled, ignore rest of this code
+		if DBM.Options.EnablePatchRestrictions or not self.Options.HudMapOnSeeker then return end--Hud disabled, ignore rest of this code
 		DBMHudMap:RegisterRangeMarkerOnPartyMember(213238, "party", UnitName("player"), 0.7, 3, nil, nil, nil, 1, nil, false):Appear()--Create Player Dot
 		--Find boss tank if seeker lines enabled to determine approx boss location
 		--TODO, add drop down in options to let user select direction boss facing, then offset this dot
@@ -265,7 +265,7 @@ function mod:SPELL_CAST_START(args)
 					end
 				end
 			end
-		end--]]
+		end
 	elseif spellId == 212794 then
 --		table.wipe(argusTargets)
 	elseif spellId == 208230 then

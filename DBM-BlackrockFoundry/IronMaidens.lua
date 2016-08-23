@@ -35,6 +35,8 @@ local Marak = EJ_GetSectionInfo(10033)
 local Sorka = EJ_GetSectionInfo(10030)
 local Garan = EJ_GetSectionInfo(10025)
 
+
+--TODO, refactor or scrap most of this mod in 7.1, including timers since pretty much EVERYTHING relied on location checks do to no ACTUAL events for boat phase ending
 --Ship
 local warnPhase2						= mod:NewPhaseAnnounce(2)
 local warnShip							= mod:NewTargetAnnounce("ej10019", 3, 76204)
@@ -202,7 +204,7 @@ local function checkBoatPlayer(self, npc)
 	countdownBladeDash:Start(5)
 	timerBloodRitualCD:Stop()
 	timerBloodRitualCD:Start(8.5, 1)--Variation on this may be same as penetrating shot variation. when it's marak returning from boat may be when it's 9.7
-	--These are altered by boar ending, even though boss continues casting it during boat phases.
+	--These are altered by boat ending, even though boss continues casting it during boat phases.
 	timerRapidFireCD:Stop()
 	timerRapidFireCD:Start(13, self.vb.rapidfire+1)
 	if bossPower >= 30 then
