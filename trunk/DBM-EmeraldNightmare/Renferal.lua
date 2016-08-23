@@ -92,7 +92,6 @@ local voiceRakingTalon				= mod:NewVoice(215582)--defensive/tauntboss
 
 --mod:AddRangeFrameOption("5")--Add range frame to Necrotic Debuff if detecting it actually works with FindDebuff()
 mod:AddSetIconOption("SetIconOnWinds", 218144)
---mod:AddHudMapOption("HudMapOnMC", 163472)
 
 mod.vb.feedingTimeCast = 0
 mod.vb.venomCast = 0
@@ -144,9 +143,6 @@ end
 function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
---	end
---	if self.Options.HudMapOnMC then
---		DBMHudMap:Disable()
 --	end
 end
 

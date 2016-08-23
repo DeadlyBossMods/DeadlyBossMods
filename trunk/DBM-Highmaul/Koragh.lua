@@ -296,10 +296,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerExpelMagicFel:Start()
 			countdownFel:Start()
 			yellExpelMagicFel:Schedule(11)--Yell right before expire, not apply
-			lastX, LastY = UnitPosition("player")
-			self:Schedule(7, returnPosition, self)
-			if self.Options.HudMapForFel then
-				DBMHudMap:RegisterStaticMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 12, 0, 1, 0, 0.5, nil, nil, 4):Pulse(0.5, 0.5)
+			if not DBM.Options.EnablePatchRestrictions then
+				lastX, LastY = UnitPosition("player")
+				self:Schedule(7, returnPosition, self)
+				if self.Options.HudMapForFel then
+					DBMHudMap:RegisterStaticMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 12, 0, 1, 0, 0.5, nil, nil, 4):Pulse(0.5, 0.5)
+				end
 			end
 		end
 		if self.Options.SetIconOnFel then

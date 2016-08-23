@@ -25,20 +25,12 @@ mod:RegisterEventsInCombat(
 --TODO, figure out interrupt order/count assistant for stuff
 --TODO, determine which interrupts are off by default, if any
 --TODO, 209615/ablation is probably a swap mechanic that stacks. Coded as such for now until proven otherwise
---TODO, Adjust beam lines/warnings as needed. Figure out if there is ANY way possible to map echo locations for HUD
+--TODO, Adjust beam lines/warnings as needed.
 --TODO, Balls special warning on or off by default and for who?
---TODO, figure out if Ablating Explotion is from where tank WAS when they got debuff, or where tank is when it falls off.
 --TODO, figure out how to do yell countdowns on Conflexive Burst. It'll probably require UNIT_AURA player scanning with constant checking of time remaining.
 --TODO, are tanks enough to keep Ablative Pulse Interrupted? Dps have enough stuff to interrupt so hopefully tanks can worry about boss on their own
 --TODO, auto assign conflexive burst. if always 3 targets have one stand out, 1 go to fast and one go to slow. this will perfectly stagger 3 explosions. assign by mark
 --TODO, maybe hide specWarnTimeElementals from tank if SLOW add, if blizzard leaves the fight the poorly designed way it is now (where it's untankable and melee stand around with thumbs up ass)
---[[
---Data collected so far for Beam Echos
-Echo 1: X: -3139.01, Y: 265.56 (Boss: -3118, 257) / X: -3164.99, Y: 267.16  (Boss: -3121.13, 266.74)
-Echo 2: X: -3129.94, Y: 265.51 (Boss: -3151, 270) / X: -3166.81, Y: 272.54 (Boss: -3120, 285)
-Echo 3: X: -3176.98, Y: 281.77 (Boss: -3148, 263)
-Echo 4: X: -3155.47, Y: 257.20 (Boss: -3135, 257)
---]]
 --(ability.id = 209595 or ability.id = 208807 or ability.id = 228877 or ability.id = 210022 or ability.id = 209168) and type = "begincast" or (ability.id = 209597 or ability.id = 210387 or ability.id = 214278 or ability.id = 214295 or ability.id = 208863) and type = "cast"
 --Base
 local warnTemporalisis				= mod:NewSpellAnnounce(209595, 3)
@@ -129,7 +121,7 @@ local voiceAblativePulse			= mod:NewVoice(209971, "HasInterrupt")--kickcast
 mod:AddRangeFrameOption(8, 209973)
 mod:AddInfoFrameOption(209598)
 mod:AddSetIconOption("SetIconOnConflexiveBurst", 209598)
---mod:AddHudMapOption("HudMapOnDelphuricBeam", 214278)
+mod:AddHudMapOption("HudMapOnDelphuricBeam", 214278)
 
 --Exists in phase 2 and phase 3
 local slowElementalTimers = {19.5, 70}--15.5, 79, 84 (OLD)
@@ -158,21 +150,19 @@ mod.vb.phase = 1
 mod.vb.totalRingCasts = 0
 mod.vb.totalbeamCasts = 0
 mod.vb.totalsingularityCasts = 0
---mod.vb.pos1X, mod.vb.pos1Y = nil, nil
---mod.vb.pos2X, mod.vb.pos2Y = nil, nil
---mod.vb.pos3X, mod.vb.pos3Y = nil, nil
---mod.vb.pos4X, mod.vb.pos4Y = nil, nil
---mod.vb.pos5X, mod.vb.pos5Y = nil, nil
---mod.vb.pos6X, mod.vb.pos6Y = nil, nil
---mod.vb.pos7X, mod.vb.pos7Y = nil, nil
+mod.vb.pos1X, mod.vb.pos1Y = nil, nil
+mod.vb.pos2X, mod.vb.pos2Y = nil, nil
+mod.vb.pos3X, mod.vb.pos3Y = nil, nil
+mod.vb.pos4X, mod.vb.pos4Y = nil, nil
+mod.vb.pos5X, mod.vb.pos5Y = nil, nil
+mod.vb.pos6X, mod.vb.pos6Y = nil, nil
+mod.vb.pos7X, mod.vb.pos7Y = nil, nil
 
---[[
 local function checkPlayerDot(self, spellName)
 	if not UnitDebuff("player", spellName) then
  		DBMHudMap:RegisterRangeMarkerOnPartyMember(209244, "party", UnitName("player"), 0.7, 3, nil, nil, nil, 1, nil, false):Appear()--Create Player Dot
 	end
 end
---]]
 
 function mod:OnCombatStart(delay)
 	currentTank, tankUnitID = nil, nil
@@ -186,13 +176,13 @@ function mod:OnCombatStart(delay)
 	self.vb.totalRingCasts = 0
 	self.vb.totalbeamCasts = 0
 	self.vb.totalsingularityCasts = 0
-	--self.vb.pos1X, self.vb.pos1Y = nil, nil
-	--self.vb.pos2X, self.vb.pos2Y = nil, nil
-	--self.vb.pos3X, self.vb.pos3Y = nil, nil
-	--self.vb.pos4X, self.vb.pos4Y = nil, nil
-	--self.vb.pos5X, self.vb.pos5Y = nil, nil
-	--self.vb.pos6X, self.vb.pos6Y = nil, nil
-	--self.vb.pos7X, self.vb.pos7Y = nil, nil
+	self.vb.pos1X, self.vb.pos1Y = nil, nil
+	self.vb.pos2X, self.vb.pos2Y = nil, nil
+	self.vb.pos3X, self.vb.pos3Y = nil, nil
+	self.vb.pos4X, self.vb.pos4Y = nil, nil
+	self.vb.pos5X, self.vb.pos5Y = nil, nil
+	self.vb.pos6X, self.vb.pos6Y = nil, nil
+	self.vb.pos7X, self.vb.pos7Y = nil, nil
 	timerTimeElementalsCD:Start(10-delay, SLOW)
 	timerTimeElementalsCD:Start(15-delay, FAST)
 	timerAblationCD:Start(8.5-delay)--Verify/tweak
@@ -205,9 +195,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.HudMapOnDelphuricBeam then
---		DBMHudMap:Disable()
---	end
+	if self.Options.HudMapOnDelphuricBeam then
+		DBMHudMap:Disable()
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -308,27 +298,29 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local nextCount = self.vb.beamCastCount + 1
 		if self.vb.phase == 2 then
 			self.vb.totalbeamCasts = self.vb.totalbeamCasts + 1
-		--[[	currentTank, tankUnitID = self:GetCurrentTank()
-			if not currentTank then
-				DBM:Debug("Tank Detection Failure in HudMapOnDelphuricBeam", 2)
-				return
+			if not DBM.Options.EnablePatchRestrictions then
+				currentTank, tankUnitID = self:GetCurrentTank()
+				if not currentTank then
+					DBM:Debug("Tank Detection Failure in HudMapOnDelphuricBeam", 2)
+					return
+				end
+				--Yes this could be in a table and be far prettier, but being ugly like this makes it recoverable by dbms timer recovery feature
+				if self.vb.beamCastCount == 1 then
+					self.vb.pos1X, self.vb.pos1Y = UnitPosition(tankUnitID)
+				elseif self.vb.beamCastCount == 2 then
+					self.vb.pos2X, self.vb.pos2Y = UnitPosition(tankUnitID)
+				elseif self.vb.beamCastCount == 3 then
+					self.vb.pos3X, self.vb.pos3Y = UnitPosition(tankUnitID)
+				elseif self.vb.beamCastCount == 4 then
+					self.vb.pos4X, self.vb.pos4Y = UnitPosition(tankUnitID)
+				elseif self.vb.beamCastCount == 5 then
+					self.vb.pos5X, self.vb.pos5Y = UnitPosition(tankUnitID)
+				elseif self.vb.beamCastCount == 6 then
+					self.vb.pos6X, self.vb.pos6Y = UnitPosition(tankUnitID)
+				elseif self.vb.beamCastCount == 7 then
+					self.vb.pos7X, self.vb.pos7Y = UnitPosition(tankUnitID)
+				end
 			end
-			--Yes this could be in a table and be far prettier, but being ugly like this makes it recoverable by dbms timer recovery feature
-			if self.vb.beamCastCount == 1 then
-				self.vb.pos1X, self.vb.pos1Y = UnitPosition(tankUnitID)
-			elseif self.vb.beamCastCount == 2 then
-				self.vb.pos2X, self.vb.pos2Y = UnitPosition(tankUnitID)
-			elseif self.vb.beamCastCount == 3 then
-				self.vb.pos3X, self.vb.pos3Y = UnitPosition(tankUnitID)
-			elseif self.vb.beamCastCount == 4 then
-				self.vb.pos4X, self.vb.pos4Y = UnitPosition(tankUnitID)
-			elseif self.vb.beamCastCount == 5 then
-				self.vb.pos5X, self.vb.pos5Y = UnitPosition(tankUnitID)
-			elseif self.vb.beamCastCount == 6 then
-				self.vb.pos6X, self.vb.pos6Y = UnitPosition(tankUnitID)
-			elseif self.vb.beamCastCount == 7 then
-				self.vb.pos7X, self.vb.pos7Y = UnitPosition(tankUnitID)
-			end--]]
 		else
 			if nextCount > self.vb.totalbeamCasts then return end
 		end
@@ -362,7 +354,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDelphuricBeam:Yell()
 		end
 		--TODO, phase 3 lines need exact location of the echo ( map coords )
-		--[[if self.Options.HudMapOnDelphuricBeam then
+		if self.Options.HudMapOnDelphuricBeam and not DBM.Options.EnablePatchRestrictions then
 			self:Unschedule(checkPlayerDot)
 			self:Schedule(0.3, checkPlayerDot, self, args.spellName)--Give player just a dot if they don't end up with debuff
 			--Always put dots up
@@ -400,7 +392,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					DBMHudMap:AddEdge(1, 0, 0, 0.5, 4, nil, args.destName, EchoX, EchoY, nil, nil, 125)
 				end
 			end
-		end--]]
+		end
 	elseif spellId == 209973 then
 		warnAblatingExplosion:Show(args.destName)
 		timerAblatingExplosion:Start(args.destName)

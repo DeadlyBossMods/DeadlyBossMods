@@ -113,7 +113,6 @@ local voiceBellowingRoar			= mod:NewVoice(204078)--fearsoon
 
 mod:AddRangeFrameOption(10, 203787)
 --mod:AddSetIconOption("SetIconOnMC", 163472, false)
---mod:AddHudMapOption("HudMapOnMC", 163472)
 
 local activeBossGUIDS = {}
 
@@ -168,9 +167,6 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	if self.Options.HudMapOnMC then
---		DBMHudMap:Disable()
---	end
 end
 
 function mod:SPELL_CAST_START(args)
