@@ -751,17 +751,17 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	local restrictionsActive = DBM.Options.EnablePatchRestrictions and IsInInstance()
 	if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive) and not textFrame.isShown then
 		if restrictionsActive then
-			if range < 5 then
+			if range <= 5 then
 				range = 5
-			elseif range < 10 then
+			elseif range <= 10 then
 				range = 10
-			elseif range < 11 then
+			elseif range <= 11 then
 				range = 11
-			elseif range < 18 then
+			elseif range <= 18 then
 				range = 18
-			elseif range < 30 then
+			elseif range <= 30 then
 				range = 30
-			elseif range < 43 then
+			elseif range <= 43 then
 				range = 43
 			end
 		end
