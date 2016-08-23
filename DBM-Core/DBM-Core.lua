@@ -7403,7 +7403,17 @@ do
 			end
 			if uId then--Now we have a valid uId
 				if UnitIsUnit(uId, "player") then return true end--If "player" is target, avoid doing any complicated stuff
-				local inRange = DBM.RangeCheck:GetDistance("player", uId)--We check how far we are from the tank who has that boss
+				local inRange = 0
+				if not UnitIsPlayer(uId) then
+					local inRange2, checkedRange = UnitInRange(uId)
+					if checkedRange then--checkedRange only returns true if api worked, so if we get false, true then we are not near npc
+						return inRange2 and true or false
+					else--Its probably a totem or just something we can't assess. Fall back to no filtering
+						return true
+					end
+				else
+					inRange = DBM.RangeCheck:GetDistance("player", uId)--We check how far we are from the tank who has that boss
+				end
 				rangeCache[cidOrGuid] = inRange
 				rangeUpdated[cidOrGuid] = GetTime()
 				if inRange and (inRange > distance) then--You are not near the person tanking boss
