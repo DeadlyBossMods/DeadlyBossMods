@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Aug 11 2016, 01:50 UTC@15097
+-- Last update: Aug 23 2016, 00:58 UTC@15149
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -23,7 +23,14 @@ DBM_CORE_BAD_LOAD					= "DBM检测到由于你在战斗过程中载入模块，�
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s 模块无法被载入。 DBM核心版本过旧。请升级DBM。"
 
 DBM_CORE_WHATS_NEW					= "最新更新：DBM修复了一些配置选项的错误。轻微的版本过期不会提示了。"
---DBM_CORE_WHATS_NEW_LINK				= "最新更新：DBM加入了新的计时条选项，包括图标，着色和新的用户自定义类型。 想要知道更多可以 |HDBM:forumsnews|h|cff3588ff点击此处|r 访问我们的论坛"
+DBM_CORE_WHATS_NEW_LINK				= "在接下来的DBM版本中，很多依赖于单位位置的功能，如箭头，距离雷达和HUD会因为暴雪爸爸对API的取缔而精简。想要知道更多可以 |HDBM:forumsnews|h|cff3588ff点击此处|r 访问我们的论坛。"
+
+--Pre Patch 7.1 Notice
+DBM_CORE_NO_RANGE_SOON				= "注意：雷达窗口在7.1版本以后不可用"
+--Post Patch 7.1
+DBM_CORE_NO_RANGE					= "距离雷达在副本中无法使用"
+DBM_CORE_NO_ARROW					= "箭头无法在副本中无法使用"
+DBM_CORE_NO_HUD						= "HUDMap 在副本中无法使用"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "由于玩家数量不足，DBM 无法开启小怪计数。"
