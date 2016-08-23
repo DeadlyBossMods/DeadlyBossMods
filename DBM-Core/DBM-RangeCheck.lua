@@ -74,6 +74,7 @@ local UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitI
 local IsInRaid, GetNumGroupMembers, GetNumSubgroupMembers = IsInRaid, GetNumGroupMembers, GetNumSubgroupMembers
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetTime = GetTime
+local CheckInteractDistance, IsItemInRange, UnitInRange = CheckInteractDistance, IsItemInRange, UnitInRange
 local max, sin, cos, pi, pi2 = math.max, math.sin, math.cos, math.pi, math.pi * 2
 
 -- for Phanx' Class Colors
@@ -181,17 +182,10 @@ do
 		elseif level == 2 then
 			if menu == "range" then
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(6)
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(5)
 				info.func = setRange
-				info.arg1 = 6
-				info.checked = (mainFrame.range == 6)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(8)
-				info.func = setRange
-				info.arg1 = 8
-				info.checked = (mainFrame.range == 8)
+				info.arg1 = 5
+				info.checked = (mainFrame.range == 5)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
@@ -209,31 +203,24 @@ do
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(12)
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(18)
 				info.func = setRange
-				info.arg1 = 12
-				info.checked = (mainFrame.range == 12)
+				info.arg1 = 18
+				info.checked = (mainFrame.range == 18)
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(15)
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(30)
 				info.func = setRange
-				info.arg1 = 15
-				info.checked = (mainFrame.range == 15)
+				info.arg1 = 30
+				info.checked = (mainFrame.range == 30)
 				UIDropDownMenu_AddButton(info, 2)
-
+				
 				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(20)
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(43)
 				info.func = setRange
-				info.arg1 = 20
-				info.checked = (mainFrame.range == 20)
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(28)
-				info.func = setRange
-				info.arg1 = 28
-				info.checked = (mainFrame.range == 28)
+				info.arg1 = 43
+				info.checked = (mainFrame.range == 43)
 				UIDropDownMenu_AddButton(info, 2)
 			elseif menu == "threshold" then
 				info = UIDropDownMenu_CreateInfo()
@@ -581,14 +568,27 @@ do
 		local closetName = nil
 		local reverse = mainFrame.reverse
 		local filter = mainFrame.filter
+		local restricted = mainFrame.restrictions
 		local type = reverse and 2 or filter and 1 or 0
 		for i = 1, numPlayers do
 			local uId = unitList[i]
 			local dot = dots[i]
 			local mapId = GetPlayerMapAreaID(uId) or playerMapId
 			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitInPhase(uId) and (not filter or filter(uId)) then
-				--local range = (cx * cx + cy * cy) ^ 0.5
-				local range = UnitDistanceSquared(uId) ^ 0.5
+				local range--Juset set to a number in case any api fails and returns nil
+				if restricted then--API restrictions are in play, so pretend we're back in BC
+					--Start at bottom and work way up.
+					--Definitely not most efficient way of doing it. Refactor later when 7.1 hits PTR
+					if IsItemInRange(37727, uId) then range = 5
+					elseif CheckInteractDistance(uId, 3) then range = 10
+					elseif CheckInteractDistance(uId, 2) then range = 11
+					elseif IsItemInRange(6450, uId) then range = 18
+					elseif CheckInteractDistance(uId, 1) then range = 30
+					elseif UnitInRange(uId) then range = 43
+					else range = 1000 end--Just so it has a numeric value, even if it's unknown to protect from nil errors
+				else
+					range = UnitDistanceSquared(uId) ^ 0.5
+				end
 				local inRange = false
 				if range < (activeRange+0.5) then
 					closePlayer = closePlayer + 1
@@ -684,18 +684,41 @@ end)
 -----------------------
 local getDistanceBetween
 do
+	local function itsBCAgain(uId)
+		if IsItemInRange(37727, uId) then return 5
+		elseif CheckInteractDistance(uId, 3) then return 10
+		elseif CheckInteractDistance(uId, 2) then return 11
+		elseif IsItemInRange(6450, uId) then return 18
+		elseif CheckInteractDistance(uId, 1) then return 30
+		elseif UnitInRange(uId) then return 43
+		else return 1000 end--Just so it has a numeric value, even if it's unknown to protect from nil errors
+	end
 	--TODO, add some check in 7.1 to return before calling UnitPosition, if in restricted area.
 	function getDistanceBetween(uId, x, y)
+		local restrictionsActive = DBM.Options.EnablePatchRestrictions and IsInInstance()
 		if not x then--If only one arg then 2nd arg is always assumed to be player
-			return UnitDistanceSquared(uId) ^ 0.5
+			if restrictionsActive then
+				return itsBCAgain(uId)
+			else
+				return UnitDistanceSquared(uId) ^ 0.5
+			end
 		end
 		if type(x) == "string" and UnitExists(x) then -- arguments: uId, uId2
 			--First attempt to avoid UnitPosition if any of args is player UnitDistanceSquared should work
 			if UnitIsUnit("player", uId) then
-				return UnitDistanceSquared(x) ^ 0.5
+				if restrictionsActive then
+					return itsBCAgain(x)
+				else
+					return UnitDistanceSquared(x) ^ 0.5
+				end
 			elseif UnitIsUnit("player", x) then
-				return UnitDistanceSquared(uId) ^ 0.5
+				if restrictionsActive then
+					return itsBCAgain(uId)
+				else
+					return UnitDistanceSquared(uId) ^ 0.5
+				end
 			else--Neither unit is player, no way to avoid UnitPosition
+				if restrictionsActive then return 1000 end--Cannot compare two units that don't involve player with restrictions, just fail quietly
 				local uId2 = x
 				x, y = UnitPosition(uId2)
 				if not x then
@@ -704,6 +727,7 @@ do
 				end
 			end
 		end
+		if restrictionsActive then return 1000 end--Cannot check distance between player and a location (not another unit, again, fail quietly)
 		local startX, startY = UnitPosition(uId)
 		local dX = startX - x
 		local dY = startY - y
@@ -724,13 +748,29 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	redCircleNumPlayers = redCircleNumPlayers or 1
 	textFrame = textFrame or createTextFrame()
 	radarFrame = radarFrame or createRadarFrame()
-	if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both") and not textFrame.isShown then
+	local restrictionsActive = DBM.Options.EnablePatchRestrictions and IsInInstance()
+	if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive) and not textFrame.isShown then
+		if restrictionsActive then
+			if range < 5 then
+				range = 5
+			elseif range < 10 then
+				range = 10
+			elseif range < 11 then
+				range = 11
+			elseif range < 18 then
+				range = 18
+			elseif range < 30 then
+				range = 30
+			elseif range < 43 then
+				range = 43
+			end
+		end
 		textFrame.isShown = true
 		textFrame:Show()
 		textFrame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 	end
 	--TODO, add check for restricted area here so we can prevent radar frame loading.
-	if (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and not radarFrame.isShown then
+	if not restrictionsActive and (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and not radarFrame.isShown then
 		radarFrame.isShown = true
 		radarFrame:Show()
 	end
@@ -739,6 +779,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	mainFrame.redCircleNumPlayers = redCircleNumPlayers
 	mainFrame.reverse = reverse
 	mainFrame.hideTime = hideTime and (GetTime() + hideTime) or 0
+	mainFrame.restrictions = restrictionsActive
 	if not mainFrame.eventRegistered then
 		mainFrame.eventRegistered = true
 		updateIcon()

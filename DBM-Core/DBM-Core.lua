@@ -2067,6 +2067,10 @@ do
 			DBM.Options.DebugMode = DBM.Options.DebugMode == false and true or false
 			DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
 		elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
+			if DBM.Options.EnablePatchRestrictions and IsInInstance() then
+				DBM:AddMsg("Location debug not available do to instance restrictions")
+				return
+			end
 			local x, y, _, map = UnitPosition("player")
 			SetMapToCurrentZone()
 			local mapID = GetCurrentMapAreaID()
@@ -2077,6 +2081,9 @@ do
 			DBM:RequestTimers(1)
 			DBM:RequestTimers(2)
 			DBM:RequestTimers(3)
+		elseif cmd:sub(1, 12) == "restrictions" then
+			DBM.Options.EnablePatchRestrictions = DBM.Options.EnablePatchRestrictions == false and true or false
+			DBM:AddMsg("EnablePatchRestrictions is " .. (DBM.Options.EnablePatchRestrictions and "ON" or "OFF"))
 		else
 			DBM:LoadGUI()
 		end
