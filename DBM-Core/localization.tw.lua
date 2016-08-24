@@ -16,8 +16,15 @@ DBM_CORE_LOAD_GUI_COMBAT			= "圖形介面不能在戰鬥中初始化。圖形�
 DBM_CORE_BAD_LOAD					= "DBM偵測到你的此副本的模組在戰鬥中讀取失敗。一旦脫離戰鬥，請立即輸入/consoel reloadui重新載入。"
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s不能被讀取因為你的DBM核心未達需求，請更新版本。"
 
---DBM_CORE_WHATS_NEW					= "此版本新功能：計時條選項加入嵌入圖示和自訂可計時條顏色選項。"
---DBM_CORE_WHATS_NEW_LINK			= "此版本新功能： 計時條選項加入嵌入圖示和自訂可計時條顏色選項。想知道此功能的詳細資訊請至|HDBM:forumsnews|h|cff3588ffclicking here|r"
+DBM_CORE_WHATS_NEW					= "版本更新：修正一個DBM版本更新的問題。DBM不再會不顧使用者的設定去過濾破碎群島的片段動畫。加入惡魔入侵模組。"
+DBM_CORE_WHATS_NEW_LINK				= "在接下來的DBM版本，因為暴雪將在7.1版本將移除副本中的單位位置的API，許多與單位位置的功能如：距離雷達將被刪除。想了解為什麼：|HDBM:forumsnews|h|cff3588ff點擊這裡|r"
+
+--Pre Patch 7.1 Notice
+DBM_CORE_NO_RANGE_SOON				= "注意：在7.1版後，距離雷達將不能在副本中使用。"
+--Post Patch 7.1
+DBM_CORE_NO_RANGE					= "距離雷達不能在副本中使用"
+DBM_CORE_NO_ARROW					= "箭頭不能在副本中使用"
+DBM_CORE_NO_HUD						= "HUDMap 不能在副本中使用"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM已中禁用動態距離框架，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM已中禁用小怪計數警告，你目前的團隊人數在這場戰鬥中的機制資訊不足。"
