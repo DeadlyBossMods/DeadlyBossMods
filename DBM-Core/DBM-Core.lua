@@ -3645,8 +3645,8 @@ do
 	function DBM:LOADING_SCREEN_DISABLED()
 		timerRequestInProgress = false
 		self:Debug("LOADING_SCREEN_DISABLED fired")
-		SecondaryLoadCheck(self)
 		self:Unschedule(SecondaryLoadCheck)
+		self:Schedule(1, SecondaryLoadCheck, self)
 		self:Schedule(5, SecondaryLoadCheck, self)
 	end
 
