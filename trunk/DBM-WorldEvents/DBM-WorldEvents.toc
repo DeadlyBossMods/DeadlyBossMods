@@ -18,6 +18,7 @@
 ## X-DBM-Mod-Type: OTHER
 ## X-DBM-Mod-Category: LEG
 ## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-Mod-World-Boss: 1
 ## X-DBM-Mod-SubCategories: Holidays,Quests
 ## X-DBM-Mod-SubCategories-deDE: Feiertage,Quests
 ## X-DBM-Mod-SubCategories-ruRU: Праздники,Задания
@@ -58,4 +59,3 @@ Holidays\Brew.lua
 Holidays\HeadlessHorseman.lua
 Holidays\Greench.lua
 Quests\Plants.lua
-Quests\DemonInvasions.lua
