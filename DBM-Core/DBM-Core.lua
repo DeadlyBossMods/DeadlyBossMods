@@ -5360,16 +5360,6 @@ do
 	}
 
 	function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
-		if not mod.inCombat then
-			if event then
-				self:Debug("StartCombat called by : "..event..". LastInstanceMapID is "..LastInstanceMapID)
-				if event ~= "ENCOUNTER_START" then
-					self:Debug("This event is started by"..event..". Review ENCOUNTER_START event to ensure if this is still needed", 2)
-				end
-			else
-				self:Debug("StartCombat called by individual mod or unknown reason. LastInstanceMapID is "..LastInstanceMapID)
-			end
-		end
 		cSyncSender = {}
 		cSyncReceived = 0
 		if not checkEntry(inCombat, mod) then
@@ -5381,6 +5371,14 @@ do
 			--HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
 			if mod.lastKillTime and GetTime() - mod.lastKillTime < (mod.reCombatTime or 120) and event ~= "LOADING_SCREEN_DISABLED" then return end
 			if mod.lastWipeTime and GetTime() - mod.lastWipeTime < (event == "ENCOUNTER_START" and 3 or mod.reCombatTime2 or 20) and event ~= "LOADING_SCREEN_DISABLED" then return end
+			if event then
+				self:Debug("StartCombat called by : "..event..". LastInstanceMapID is "..LastInstanceMapID)
+				if event ~= "ENCOUNTER_START" then
+					self:Debug("This event is started by"..event..". Review ENCOUNTER_START event to ensure if this is still needed", 2)
+				end
+			else
+				self:Debug("StartCombat called by individual mod or unknown reason. LastInstanceMapID is "..LastInstanceMapID)
+			end
 			--check completed. starting combat
 			tinsert(inCombat, mod)
 			if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
