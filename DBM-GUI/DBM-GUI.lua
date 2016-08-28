@@ -3434,7 +3434,7 @@ local function CreateOptionsMenu()
 			{	text	= L.RaidCombat,	value 	= "BossCombatOnly"},
 			{	text	= L.Always,		value 	= "Always"},
 		}
-		local talkingHeadDropDown = hideBlizzArea:CreateDropdown(L.DisableCinematics, talkingHeadOptions, "DBM", "TalkingHeadFilter", function(value)
+		local talkingHeadDropDown = hideBlizzArea:CreateDropdown(L.DisableTalkingHead, talkingHeadOptions, "DBM", "TalkingHeadFilter", function(value)
 			DBM.Options.TalkingHeadFilter = value
 			local talkingHeadStatus = DBM:TalkingHeadDisabled()
 			if value == "Always" and not talkingHeadStatus then

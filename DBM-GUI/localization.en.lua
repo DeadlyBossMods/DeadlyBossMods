@@ -295,6 +295,7 @@ L.SpamBlockSayYell			= "Hide chat bubbles announces from the chat frame"
 L.DisableCinematics			= "Hide in-game cinematics"
 L.AfterFirst				= "After each movie has played once"
 L.Always					= ALWAYS
+L.DisableTalkingHead		= "Block Talking Head"
 L.CombatOnly				= "Disable in combat (any)"
 L.RaidCombat				= "Disable in combat (bosses only)"
 
