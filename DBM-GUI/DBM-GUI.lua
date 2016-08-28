@@ -3429,7 +3429,7 @@ local function CreateOptionsMenu()
 		blockMovieDropDown:SetPoint("TOPLEFT", filterYell, "TOPLEFT", 0, -40)
 
 		local talkingHeadOptions = {
-			{	text	= L.Disable,	value 	= "Never"},
+			{	text	= L.SWFNever,	value 	= "Never"},
 			{	text	= L.CombatOnly,	value 	= "CombatOnly"},
 			{	text	= L.RaidCombat,	value 	= "BossCombatOnly"},
 			{	text	= L.Always,		value 	= "Always"},
