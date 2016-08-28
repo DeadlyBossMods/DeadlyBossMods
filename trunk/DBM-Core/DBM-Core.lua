@@ -422,6 +422,7 @@ local targetMonitor = nil
 local statusWhisperDisabled = false
 local wowTOC = select(4, GetBuildInfo())
 local dbmToc = 0
+local isTalkingHeadLoaded = false
 local talkingHeadUnregistered = false
 
 local fakeBWVersion, fakeBWHash = 7, "7ddc3ac"
@@ -1120,7 +1121,7 @@ do
 				self.Options.tempBreak2 = nil
 			end
 		end
-		if self.Options.TalkingHeadFilter == "Always" and not talkingHeadUnregistered then
+		if self.Options.TalkingHeadFilter == "Always" and not talkingHeadUnregistered and isTalkingHeadLoaded then
 			TalkingHeadFrame:UnregisterAllEvents()
 			talkingHeadUnregistered = true
 		end
@@ -1297,6 +1298,9 @@ do
 				healthCombatInitialized = true
 			end)
 			self:Schedule(10, runDelayedFunctions, self)
+		end
+		if modname == "Blizzard_TalkingHeadUI" and not isTalkingHeadLoaded then
+			isTalkingHeadLoaded = true
 		end
 	end
 end
@@ -5058,7 +5062,7 @@ do
 			end
 			self:PlaySoundFile(path)
 		end
-		if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered then
+		if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered and isTalkingHeadLoaded then
 			TalkingHeadFrame:UnregisterAllEvents()
 			talkingHeadUnregistered = true
 		end
@@ -6562,7 +6566,7 @@ do
 			if self.Options.HideGuildChallengeUpdates or custom then
 				AlertFrame:UnregisterEvent("GUILD_CHALLENGE_COMPLETED")
 			end
-			if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered then
+			if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered and isTalkingHeadLoaded then
 				TalkingHeadFrame:UnregisterAllEvents()
 				talkingHeadUnregistered = true
 			end
