@@ -150,7 +150,6 @@ DBM.DefaultOptions = {
 	HideObjectivesFrame = true,
 	HideGarrisonToasts = true,
 	HideGuildChallengeUpdates = true,
-	HideApplicantAlerts = 0,
 	HideTooltips = false,
 	DisableSFX = false,
 	EnableModels = true,
@@ -279,6 +278,7 @@ DBM.DefaultOptions = {
 	NewsMessageShown = 4,
 	MoviesSeen = {},
 	MovieFilter = "AfterFirst",
+	TalkingHeadFilter = "Never",
 	LastRevision = 0,
 	FilterSayAndYell = false,
 	DebugMode = false,
@@ -422,6 +422,7 @@ local targetMonitor = nil
 local statusWhisperDisabled = false
 local wowTOC = select(4, GetBuildInfo())
 local dbmToc = 0
+local talkingHeadUnregistered = false
 
 local fakeBWVersion, fakeBWHash = 7, "7ddc3ac"
 local versionQueryString, versionResponseString = "Q:%d-%s", "V:%d-%s"
@@ -1119,6 +1120,10 @@ do
 				self.Options.tempBreak2 = nil
 			end
 		end
+		if self.Options.TalkingHeadFilter == "Always" and not talkingHeadUnregistered then
+			TalkingHeadFrame:UnregisterAllEvents()
+			talkingHeadUnregistered = true
+		end
 	end
 
 	-- register a callback that will be executed once the addon is fully loaded (ADDON_LOADED fired, saved vars are available)
@@ -1272,7 +1277,6 @@ do
 				"LFG_PROPOSAL_FAILED",
 				"LFG_PROPOSAL_SUCCEEDED",
 				"READY_CHECK",
-				"LFG_LIST_APPLICANT_LIST_UPDATED",
 				"UPDATE_BATTLEFIELD_STATUS",
 				"CINEMATIC_START",
 				"PLAYER_LEVEL_UP",
@@ -3436,20 +3440,6 @@ function DBM:READY_CHECK()
 	end
 end
 
-do
-	local function stopQueueButtonDelay()
-		QueueStatusMinimapButton.EyeHighlightAnim:Stop()
-	end
-	function DBM:LFG_LIST_APPLICANT_LIST_UPDATED(hasNewPending, hasNewPendingWithData)
-		if QueueStatusMinimapButton:IsShown() and (self.Options.HideApplicantAlerts == 2 and not UnitIsGroupLeader("player", LE_PARTY_CATEGORY_HOME)) or (self.Options.HideApplicantAlerts >= 1 and GetNumGroupMembers() == 40) then
-			QueueStatusMinimapButton.EyeHighlightAnim:Stop()
-			self:Unschedule(stopQueueButtonDelay)
-			self:Schedule(1, stopQueueButtonDelay, self)
-			QueueStatusMinimapButton.EyeHighlightAnim:Stop()--Force stop the animation loop
-		end
-	end
-end
-
 function DBM:PLAYER_SPECIALIZATION_CHANGED()
 	local lastSpecID = currentSpecID
 	self:SetCurrentSpecInfo()
@@ -3535,6 +3525,13 @@ function DBM:PLAYER_REGEN_ENABLED()
 	if guiRequested and not IsAddOnLoaded("DBM-GUI") then
 		guiRequested = false
 		self:LoadGUI()
+	end
+	if self.Options.TalkingHeadFilter == "CombatOnly" and talkingHeadUnregistered then
+		TalkingHeadFrame:RegisterEvent("TALKINGHEAD_REQUESTED")
+		TalkingHeadFrame:RegisterEvent("TALKINGHEAD_CLOSE")
+		TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
+		TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
+		talkingHeadUnregistered = false
 	end
 end
 
@@ -5061,6 +5058,10 @@ do
 			end
 			self:PlaySoundFile(path)
 		end
+		if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered then
+			TalkingHeadFrame:UnregisterAllEvents()
+			talkingHeadUnregistered = true
+		end
 	end
 
 	local function isBossEngaged(cId)
@@ -6561,6 +6562,10 @@ do
 			if self.Options.HideGuildChallengeUpdates or custom then
 				AlertFrame:UnregisterEvent("GUILD_CHALLENGE_COMPLETED")
 			end
+			if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered then
+				TalkingHeadFrame:UnregisterAllEvents()
+				talkingHeadUnregistered = true
+			end
 		elseif toggle == 0 and blizzEventsUnregistered then
 			blizzEventsUnregistered = false
 			if self.Options.HideBossEmoteFrame or custom then
@@ -6574,6 +6579,13 @@ do
 			end
 			if self.Options.HideGuildChallengeUpdates then
 				AlertFrame:RegisterEvent("GUILD_CHALLENGE_COMPLETED")
+			end
+			if self.Options.TalkingHeadFilter == "BossCombatOnly" and talkingHeadUnregistered then
+				TalkingHeadFrame:RegisterEvent("TALKINGHEAD_REQUESTED")
+				TalkingHeadFrame:RegisterEvent("TALKINGHEAD_CLOSE")
+				TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
+				TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
+				talkingHeadUnregistered = false
 			end
 		end
 	end
@@ -6737,6 +6749,10 @@ end
 
 function DBM:GetTOC()
 	return wowTOC
+end
+
+function DBM:TalkingHeadDisabled()
+	return talkingHeadUnregistered
 end
 
 function DBM:FlashClientIcon()
@@ -8879,7 +8895,7 @@ do
 	end
 
 	local function showCountdown(timer)
-		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer+1, timer+1)
 	end
 
 	local function stopCountdown()
