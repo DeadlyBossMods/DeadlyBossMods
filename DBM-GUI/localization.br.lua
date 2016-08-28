@@ -256,9 +256,6 @@ L.HideGuildChallengeUpdates	= "Esconde o quadro de desafio de guilda durante a l
 L.HideTooltips				= "Esconder as dicas durante as lutas contra os chefes"
 
 L.DisableSFX				= "Desativa o canal de efeitos sonoros durante lutas contra chefes"
-L.HideApplicantAlerts		= "Suprime alerta de candidatos em grupo pré-definidos"
-L.HideApplicantAlertsFull	= "se o grupo estiver cheio"
-L.HideApplicantAlertsNotL	= "se não for o líder do grupo (aplica filtro de grupo cheio caso seja o líder)"
 L.SpamBlockSayYell			= "Esconder os anúncios de balões de chat do quadro de chat"
 L.DisableCinematics			= "Esconder as cinematics in-game"
 L.AfterFirst				= "Depois que o vídeo for assistido uma vez"

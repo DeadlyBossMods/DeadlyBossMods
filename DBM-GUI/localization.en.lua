@@ -291,13 +291,12 @@ L.HideGarrisonUpdates		= "Hide garrison toasts during boss fights"
 L.HideGuildChallengeUpdates	= "Hide guild challenge toasts during boss fights"
 L.HideTooltips				= "Hide tooltips during boss fights"
 L.DisableSFX				= "Disable sound effects channel during boss fights"
-L.HideApplicantAlerts		= "Supress applicant alerts in premade groups"
-L.HideApplicantAlertsFull	= "If group is full"
-L.HideApplicantAlertsNotL	= "if not the group leader (applies group is full filter if you are the leader)"
 L.SpamBlockSayYell			= "Hide chat bubbles announces from the chat frame"
 L.DisableCinematics			= "Hide in-game cinematics"
 L.AfterFirst				= "After each movie has played once"
 L.Always					= ALWAYS
+L.CombatOnly				= "Disable in combat (any)"
+L.RaidCombat				= "Disable in combat (bosses only)"
 
 L.Panel_ExtraFeatures		= "Extra Features"
 --
