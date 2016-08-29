@@ -3436,32 +3436,34 @@ local function CreateOptionsMenu()
 		}
 		local talkingHeadDropDown = hideBlizzArea:CreateDropdown(L.DisableTalkingHead, talkingHeadOptions, "DBM", "TalkingHeadFilter", function(value)
 			DBM.Options.TalkingHeadFilter = value
-			local talkingHeadStatus = DBM:TalkingHeadDisabled()
-			if value == "Always" and not talkingHeadStatus then
-				TalkingHeadFrame:UnregisterAllEvents()
-			else
-				if value == "Never" and talkingHeadStatus then
-					TalkingHeadFrame:RegisterEvent("TALKINGHEAD_REQUESTED")
-					TalkingHeadFrame:RegisterEvent("TALKINGHEAD_CLOSE")
-					TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
-					TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
-				elseif value == "CombatOnly" then
-					if InCombatLockdown() and not talkingHeadStatus then
-						TalkingHeadFrame:UnregisterAllEvents()
-					else
+			local disabled, loaded = DBM:TalkingHeadStatus()
+			if loaded then
+				if value == "Always" and not disabled then
+					TalkingHeadFrame:UnregisterAllEvents()
+				else
+					if value == "Never" and disabled then
 						TalkingHeadFrame:RegisterEvent("TALKINGHEAD_REQUESTED")
 						TalkingHeadFrame:RegisterEvent("TALKINGHEAD_CLOSE")
 						TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
 						TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
-					end
-				elseif value == "BossCombatOnly" then
-					if IsEncounterInProgress() and not talkingHeadStatus then
-						TalkingHeadFrame:UnregisterAllEvents()
-					else
-						TalkingHeadFrame:RegisterEvent("TALKINGHEAD_REQUESTED")
-						TalkingHeadFrame:RegisterEvent("TALKINGHEAD_CLOSE")
-						TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
-						TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
+					elseif value == "CombatOnly" then
+						if InCombatLockdown() and not disabled then
+							TalkingHeadFrame:UnregisterAllEvents()
+						else
+							TalkingHeadFrame:RegisterEvent("TALKINGHEAD_REQUESTED")
+							TalkingHeadFrame:RegisterEvent("TALKINGHEAD_CLOSE")
+							TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
+							TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
+						end
+					elseif value == "BossCombatOnly" then
+						if IsEncounterInProgress() and not disabled then
+							TalkingHeadFrame:UnregisterAllEvents()
+						else
+							TalkingHeadFrame:RegisterEvent("TALKINGHEAD_REQUESTED")
+							TalkingHeadFrame:RegisterEvent("TALKINGHEAD_CLOSE")
+							TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
+							TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
+						end
 					end
 				end
 			end
