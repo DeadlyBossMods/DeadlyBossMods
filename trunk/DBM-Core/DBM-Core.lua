@@ -1123,7 +1123,7 @@ do
 		end
 		if TalkingHeadFrame and not talkingHeadUnregistered and (self.Options.TalkingHeadFilter == "Always" or self.Options.TalkingHeadFilter == "CombatOnly" and InCombatLockdown() or self.Options.TalkingHeadFilter == "BossCombatOnly" and IsEncounterInProgress()) then
 			TalkingHeadFrame:UnregisterAllEvents()
-			TalkingHeadFrame_CloseImmediately()
+			--TalkingHeadFrame_CloseImmediately()--Calling this crashes wow apparently
 			isTalkingHeadLoaded = true--it laoded before DBM, so this secondary check just checks if frame exists and sets loaded = true
 			talkingHeadUnregistered = true
 			self:Debug("TalkingHead has been unregistered", 2)
@@ -1308,7 +1308,7 @@ do
 			self:Debug("Blizzard_TalkingHeadUI has been loaded", 2)
 			if self.Options.TalkingHeadFilter == "Always" or self.Options.TalkingHeadFilter == "CombatOnly" and InCombatLockdown() or self.Options.TalkingHeadFilter == "BossCombatOnly" and IsEncounterInProgress() then
 				TalkingHeadFrame:UnregisterAllEvents()
-				TalkingHeadFrame_CloseImmediately()
+				--TalkingHeadFrame_CloseImmediately()--Calling this crashes wow apparently
 				talkingHeadUnregistered = true
 				self:Debug("TalkingHead has been unregistered", 2)
 			end
@@ -5076,7 +5076,7 @@ do
 		end
 		if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered and isTalkingHeadLoaded then
 			TalkingHeadFrame:UnregisterAllEvents()
-			TalkingHeadFrame_CloseImmediately()
+			--TalkingHeadFrame_CloseImmediately()--Calling this crashes wow apparently
 			talkingHeadUnregistered = true
 			self:Debug("TalkingHead has been unregistered", 2)
 		end
@@ -6582,7 +6582,7 @@ do
 			end
 			if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered and isTalkingHeadLoaded then
 				TalkingHeadFrame:UnregisterAllEvents()
-				TalkingHeadFrame_CloseImmediately()
+				--TalkingHeadFrame_CloseImmediately()--Calling this crashes wow apparently
 				talkingHeadUnregistered = true
 				self:Debug("TalkingHead has been unregistered", 2)
 			end
