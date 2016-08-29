@@ -1121,7 +1121,7 @@ do
 				self.Options.tempBreak2 = nil
 			end
 		end
-		if self.Options.TalkingHeadFilter == "Always" and not talkingHeadUnregistered and isTalkingHeadLoaded then
+		if isTalkingHeadLoaded and not talkingHeadUnregistered and (self.Options.TalkingHeadFilter == "Always" or self.Options.TalkingHeadFilter == "CombatOnly" and InCombatLockdown() or self.Options.TalkingHeadFilter == "BossCombatOnly" and IsEncounterInProgress()) then
 			TalkingHeadFrame:UnregisterAllEvents()
 			talkingHeadUnregistered = true
 		end
