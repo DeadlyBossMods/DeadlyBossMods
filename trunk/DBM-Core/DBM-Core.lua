@@ -1124,7 +1124,7 @@ do
 		if isTalkingHeadLoaded and not talkingHeadUnregistered and (self.Options.TalkingHeadFilter == "Always" or self.Options.TalkingHeadFilter == "CombatOnly" and InCombatLockdown() or self.Options.TalkingHeadFilter == "BossCombatOnly" and IsEncounterInProgress()) then
 			TalkingHeadFrame:UnregisterAllEvents()
 			talkingHeadUnregistered = true
-			self:Debug("TalkingHead has been unregistered")
+			self:Debug("TalkingHead has been unregistered", 2)
 		end
 	end
 
@@ -1303,10 +1303,11 @@ do
 		if modname == "Blizzard_TalkingHeadUI" and not isTalkingHeadLoaded then
 			isTalkingHeadLoaded = true
 			if not isLoaded then return end--DBM isn't loaded yet, options won't exist yet
+			self:Debug("Blizzard_TalkingHeadUI has been loaded", 2)
 			if self.Options.TalkingHeadFilter == "Always" or self.Options.TalkingHeadFilter == "CombatOnly" and InCombatLockdown() or self.Options.TalkingHeadFilter == "BossCombatOnly" and IsEncounterInProgress() then
 				TalkingHeadFrame:UnregisterAllEvents()
 				talkingHeadUnregistered = true
-				self:Debug("TalkingHead has been unregistered")
+				self:Debug("TalkingHead has been unregistered", 2)
 			end
 		end
 	end
@@ -5073,7 +5074,7 @@ do
 		if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered and isTalkingHeadLoaded then
 			TalkingHeadFrame:UnregisterAllEvents()
 			talkingHeadUnregistered = true
-			self:Debug("TalkingHead has been unregistered")
+			self:Debug("TalkingHead has been unregistered", 2)
 		end
 	end
 
@@ -6578,7 +6579,7 @@ do
 			if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered and isTalkingHeadLoaded then
 				TalkingHeadFrame:UnregisterAllEvents()
 				talkingHeadUnregistered = true
-				self:Debug("TalkingHead has been unregistered")
+				self:Debug("TalkingHead has been unregistered", 2)
 			end
 		elseif toggle == 0 and blizzEventsUnregistered then
 			blizzEventsUnregistered = false
