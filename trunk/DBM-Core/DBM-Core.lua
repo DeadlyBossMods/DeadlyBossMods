@@ -1124,6 +1124,7 @@ do
 		if isTalkingHeadLoaded and not talkingHeadUnregistered and (self.Options.TalkingHeadFilter == "Always" or self.Options.TalkingHeadFilter == "CombatOnly" and InCombatLockdown() or self.Options.TalkingHeadFilter == "BossCombatOnly" and IsEncounterInProgress()) then
 			TalkingHeadFrame:UnregisterAllEvents()
 			talkingHeadUnregistered = true
+			self:Debug("TalkingHead has been unregistered")
 		end
 	end
 
@@ -1305,6 +1306,7 @@ do
 			if self.Options.TalkingHeadFilter == "Always" or self.Options.TalkingHeadFilter == "CombatOnly" and InCombatLockdown() or self.Options.TalkingHeadFilter == "BossCombatOnly" and IsEncounterInProgress() then
 				TalkingHeadFrame:UnregisterAllEvents()
 				talkingHeadUnregistered = true
+				self:Debug("TalkingHead has been unregistered")
 			end
 		end
 	end
@@ -3541,6 +3543,7 @@ function DBM:PLAYER_REGEN_ENABLED()
 		TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
 		TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
 		talkingHeadUnregistered = false
+		self:Debug("TalkingHead has been restored")
 	end
 end
 
@@ -5070,6 +5073,7 @@ do
 		if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered and isTalkingHeadLoaded then
 			TalkingHeadFrame:UnregisterAllEvents()
 			talkingHeadUnregistered = true
+			self:Debug("TalkingHead has been unregistered")
 		end
 	end
 
@@ -6574,6 +6578,7 @@ do
 			if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered and isTalkingHeadLoaded then
 				TalkingHeadFrame:UnregisterAllEvents()
 				talkingHeadUnregistered = true
+				self:Debug("TalkingHead has been unregistered")
 			end
 		elseif toggle == 0 and blizzEventsUnregistered then
 			blizzEventsUnregistered = false
@@ -6595,6 +6600,7 @@ do
 				TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
 				TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
 				talkingHeadUnregistered = false
+				self:Debug("TalkingHead has been restored")
 			end
 		end
 	end
@@ -6836,7 +6842,7 @@ do
 	end)
 
 	function DBM:CINEMATIC_START()
-		DBM:Debug("CINEMATIC_START fired", 2)
+		self:Debug("CINEMATIC_START fired", 2)
 		if not IsInInstance() or C_Garrison:IsOnGarrisonMap() or self.Options.MovieFilter == "Never" then return end
 		SetMapToCurrentZone()
 		local currentFloor = GetCurrentMapDungeonLevel() or 0
