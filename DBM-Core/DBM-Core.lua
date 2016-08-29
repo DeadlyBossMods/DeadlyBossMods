@@ -6760,8 +6760,8 @@ function DBM:GetTOC()
 	return wowTOC
 end
 
-function DBM:TalkingHeadDisabled()
-	return talkingHeadUnregistered
+function DBM:TalkingHeadStatus()
+	return talkingHeadUnregistered, isTalkingHeadLoaded
 end
 
 function DBM:FlashClientIcon()
