@@ -1301,6 +1301,7 @@ do
 		end
 		if modname == "Blizzard_TalkingHeadUI" and not isTalkingHeadLoaded then
 			isTalkingHeadLoaded = true
+			if not isLoaded then return end--DBM isn't loaded yet, options won't exist yet
 			if self.Options.TalkingHeadFilter == "Always" or self.Options.TalkingHeadFilter == "CombatOnly" and InCombatLockdown() or self.Options.TalkingHeadFilter == "BossCombatOnly" and IsEncounterInProgress() then
 				TalkingHeadFrame:UnregisterAllEvents()
 				talkingHeadUnregistered = true
