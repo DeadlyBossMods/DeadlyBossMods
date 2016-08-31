@@ -9749,11 +9749,11 @@ do
 		local activeVP = self.Options.ChosenVoicePack
 		--Check if voice pack out of date
 		if activeVP ~= "None" and activeVP == value then
-			if self.VoiceVersions[value] < 5 then--Version will be bumped when new voice packs released that contain new voices.
+			if self.VoiceVersions[value] < 6 then--Version will be bumped when new voice packs released that contain new voices.
 				self:AddMsg(DBM_CORE_VOICE_PACK_OUTDATED)
 				SWFilterDisabed = self.VoiceVersions[value]--Set disable to version on current voice pack
 			else
-				SWFilterDisabed = 5
+				SWFilterDisabed = 6
 			end
 		end
 	end

@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Jul 21 2015, 10:10 UTC@15067
+-- Last update: Aug 30 2016, 03:25 UTC@15178
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -13,7 +13,7 @@ L.MainFrame 				= "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "翻译:"
 L.TranslationBy 			= "Mini_Dragon(Brilla@金色平原) 原翻译：Diablohu & yleaf & sunlcy"
-L.Website					= "拜访我们的论坛|cFF73C2FBwww.deadlybossmods.com|r.在Twitter上关注首席程序员 @MysticalOS"
+L.Website					= "拜访我们的论坛|cFF73C2FBwww.deadlybossmods.com|r. 在Twitter上关注 @deadlybossmods 或 @MysticalOS"
 L.WebsiteButton				= "论坛"
 
 L.OTabBosses				= "模块"
@@ -293,6 +293,9 @@ L.SpamBlockSayYell			= "隐藏聊天窗口中的使用聊天泡泡的警报信�
 L.DisableCinematics			= "自动跳过游戏内过场动画"
 L.AfterFirst				= "仅第一次播放"
 L.Always					= "总是跳过"
+L.DisableTalkingHead		= "隐藏抬头对话窗"
+L.CombatOnly				= "在任何战斗中隐藏"
+L.RaidCombat				= "只在Boss战斗中隐藏"
 
 L.Panel_ExtraFeatures		= "其他功能"
 --

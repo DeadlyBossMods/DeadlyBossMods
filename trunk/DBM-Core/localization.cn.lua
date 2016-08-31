@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Aug 23 2016, 00:58 UTC@15149
+-- Last update: Aug 30 2016, 03:21 UTC@15178
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -26,10 +26,10 @@ DBM_CORE_WHATS_NEW					= "最新更新：DBM修复了一些配置选项的错误
 DBM_CORE_WHATS_NEW_LINK				= "在接下来的DBM版本中，很多依赖于单位位置的功能，如箭头，距离雷达和HUD会因为暴雪爸爸对API的取缔而精简。想要知道更多可以 |HDBM:forumsnews|h|cff3588ff点击此处|r 访问我们的论坛。"
 
 --Pre Patch 7.1 Notice
-DBM_CORE_NO_RANGE_SOON				= "注意：雷达窗口在7.1版本以后不可用"
+DBM_CORE_NO_RANGE_SOON				= "注意：7.1版本后雷达窗口在副本中不可用"
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距离雷达在副本中无法使用"
-DBM_CORE_NO_ARROW					= "箭头无法在副本中无法使用"
+DBM_CORE_NO_ARROW					= "箭头在副本中无法使用"
 DBM_CORE_NO_HUD						= "HUDMap 在副本中无法使用"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "由于玩家数量不足，DBM 无法开启动态距离检测。"
