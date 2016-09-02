@@ -34,7 +34,7 @@ local voiceTempest					= mod:NewVoice(198263)--runout
 local voiceShatterSpears			= mod:NewVoice(198077)--watchorb
 local voiceRunicBrand				= mod:NewVoice(197961)--locations.
 
-mod:AddHudMapOption("HudMapForRunes", 176312, false)
+mod:AddHudMapOption("HudMapForRunes", 197961, true)
 
 function mod:OnCombatStart(delay)
 --	timerSpearCD:Start(-delay)
