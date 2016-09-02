@@ -115,8 +115,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.phase = 2
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
-		timerSpecialCD:Start(10.5)
-		countdownSpecial:Start(10.5)
+		timerSpecialCD:Start(8.5)
+		countdownSpecial:Start(8.5)
 		timerShieldOfLightCD:Start(24)
 	end
 end
