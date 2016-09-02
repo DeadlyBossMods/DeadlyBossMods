@@ -57,8 +57,8 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 193235 then
 		self:BossTargetScanner(94960, "BladeTarget", 0.1, 20, true, nil, nil, nil, true)
 --		timerDancingBladeCD:Start()
-	elseif spellId == 188404 then
-		voiceBreath:Play("breathsoon")
+	elseif spellId == 188404 and self:AntiSpam(5, 2) then
+		voiceBreath:Play("watchstep")
 	end
 end
 
