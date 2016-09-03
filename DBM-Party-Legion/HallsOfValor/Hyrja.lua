@@ -28,13 +28,14 @@ local specWarnSanctify				= mod:NewSpecialWarningDodge(192158, nil, nil, nil, 2,
 local specWarnEyeofStorm			= mod:NewSpecialWarningMoveTo(200901, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(200901), nil, 2, 2)
 local specWarnExpelLight			= mod:NewSpecialWarningMoveAway(192048, nil, nil, nil, 2, 2)
 local yellExpelLight				= mod:NewYell(192048)
-local specWarnSearingLight			= mod:NewSpecialWarningInterrupt(192288, "HasInterrupt")
+local specWarnSearingLight			= mod:NewSpecialWarningInterrupt(192288, "HasInterrupt", nil, nil, 1, 2)
 
 local timerShieldOfLightCD			= mod:NewCDTimer(28, 192018, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--28-34
-local timerSpecialCD				= mod:NewNextTimer(30, 200736, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--Shared timer by eye of storm and Sanctify
+local timerSpecialCD				= mod:NewNextTimer(30, 200736, nil, nil, nil, 2, 200901, DBM_CORE_DEADLY_ICON)--Shared timer by eye of storm and Sanctify
 --local timerExpelLightCD			= mod:NewCDTimer(24, 192048, nil, nil, nil, 3)--More review 24-30
 
 local countdownSpecial				= mod:NewCountdown(30, 200736)
+local countdownShieldOfLight		= mod:NewCountdown("Alt28", 192018, "Tank")
 
 local voiceEyeofStorm				= mod:NewVoice(200901)--findshelter
 local voiceShieldOfLight			= mod:NewVoice(192018, "Tank")--defensive
@@ -95,6 +96,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnShieldOfLight:Show()
 		voiceShieldOfLight:Play("defensive")
 		timerShieldOfLightCD:Start()
+		countdownShieldOfLight:Start()
 	elseif spellId == 200901 then
 		specWarnEyeofStorm:Show(eyeShortName)
 		voiceEyeofStorm:Play("findshelter")
@@ -118,5 +120,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerSpecialCD:Start(8.5)
 		countdownSpecial:Start(8.5)
 		timerShieldOfLightCD:Start(24)
+		countdownShieldOfLight:Start(24)
 	end
 end

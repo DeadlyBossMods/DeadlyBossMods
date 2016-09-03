@@ -9,8 +9,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 200732 200551 200637 200700",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"SPELL_CAST_START 200732 200551 200637 200700 200404",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnCrystalSpikes				= mod:NewSpellAnnounce(200551, 2)
@@ -26,6 +26,9 @@ local timerCrystalSpikesCD			= mod:NewCDTimer(21.4, 200551, nil, nil, nil, 3)
 local timerMagmaSculptorCD			= mod:NewCDTimer(71, 200637, nil, nil, nil, 1)--Everyone?
 local timerMagmaWaveCD				= mod:NewCDTimer(60, 200404, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 
+local countdownMagmaWave			= mod:NewCountdown(60, 200404)
+--local countdownMoltenCrash		= mod:NewCountdown("Alt28", 200732, "Tank")
+
 local voiceMoltenCrash				= mod:NewVoice(200732, "Tank")--defensive
 local voiceLandSlide				= mod:NewVoice(200700, "Tank")--shockwave
 local voiceMagmaSculptor			= mod:NewVoice(200637, "Dps")--killbigmob
@@ -36,7 +39,8 @@ function mod:OnCombatStart(delay)
 	timerLandSlideCD:Start(15.8-delay)
 	timerMoltenCrashCD:Start(19-delay)
 	timerCrystalSpikesCD:Start(21.5-delay)
-	timerMagmaWaveCD:Start(61-delay)--65?
+	timerMagmaWaveCD:Start(65-delay)
+	countdownMagmaWave:Start(65-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -56,15 +60,20 @@ function mod:SPELL_CAST_START(args)
 		specWarnLandSlide:Show()
 		voiceLandSlide:Play("shockwave")
 		timerLandSlideCD:Start()
+	elseif spellId == 200404 and self:AntiSpam(3, 1) then
+		specWarnMagmaWave:Show(GetSpellInfo(200551))
+		voiceMagmaWave:Play("findshelter")
+		timerMagmaWaveCD:Start()
+		countdownMagmaWave:Start()
 	end
 end
 
-local spikeName = GetSpellInfo(200551)
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 201663 then--Dargrul Ability Callout 03 (1 second faster than combat log)
-		specWarnMagmaWave:Show(spikeName)
+--1 second faster than combat log. 1 second slower than Unit event callout but that's no longer reliable.
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg:find("spell:200404") and self:AntiSpam(3, 1) then
+		specWarnMagmaWave:Show(GetSpellInfo(200551))
 		voiceMagmaWave:Play("findshelter")
 		timerMagmaWaveCD:Start()
+		countdownMagmaWave:Start()
 	end
 end

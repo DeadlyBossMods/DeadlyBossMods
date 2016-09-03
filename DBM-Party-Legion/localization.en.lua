@@ -130,6 +130,10 @@ L= DBM:GetModLocalization(1488)
 -----------------------
 L= DBM:GetModLocalization(1489)
 
+L:SetMiscLocalization({
+	tempestModeMessage		=	"Not tempest sequence: %s. Rechecking in 8 seconds."
+})
+
 -----------------------
 --Halls of Valor Trash
 -----------------------

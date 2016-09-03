@@ -42,8 +42,8 @@ mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	timerUnerringShearCD:Start(5.7-delay)
-	countdownShear:Start(5.7-delay)
+	timerUnerringShearCD:Start(5.5-delay)
+	countdownShear:Start(5.5-delay)
 	timerDarkBlastCD:Start(10-delay)
 end
 

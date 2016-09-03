@@ -13,6 +13,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS 200343 200345"
 )
 
+--TODO, add Etch? http://www.wowhead.com/spell=198959/etch
+--TODO, add Brutal Assault
 local warnSoulEchoes				= mod:NewTargetAnnounce(194966, 2)
 
 local specWarnBonebreakingStrike	= mod:NewSpecialWarningDodge(200261, "Tank", nil, nil, 1, 2)
