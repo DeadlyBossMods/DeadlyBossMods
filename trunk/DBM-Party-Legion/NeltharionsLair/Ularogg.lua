@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(91004)
 mod:SetEncounterID(1791)
 mod:SetZone()
+mod:SetHotfixNoticeRev(15186)
 
 mod:RegisterCombat("combat")
 
@@ -18,7 +19,7 @@ mod:RegisterEventsInCombat(
 
 local warnStrikeofMountain			= mod:NewTargetAnnounce(216290, 2)
 local warnBellowofDeeps				= mod:NewSpellAnnounce(193375, 2)--Change to special warning if they become important enough to switch to
-local warnStanceofMountain			= mod:NewSpellAnnounce(198509, 2)
+local warnStanceofMountain			= mod:NewSpellAnnounce(216249, 2)
 
 local specWarnSunder				= mod:NewSpecialWarningDefensive(198496, "Tank", nil, nil, 1, 2)
 local specWarnStrikeofMountain		= mod:NewSpecialWarningDodge(216290, nil, nil, nil, 1, 2)
@@ -26,15 +27,15 @@ local yellStrikeofMountain			= mod:NewYell(216290)
 
 local timerSunderCD					= mod:NewCDTimer(7.5, 198496, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerStrikeCD					= mod:NewCDTimer(15, 216290, nil, nil, nil, 3)
-local timerStanceOfMountainCD		= mod:NewCDTimer(119.5, 198509, nil, nil, nil, 6)
+local timerStanceOfMountainCD		= mod:NewCDTimer(119.5, 216249, nil, nil, nil, 6)
 
 local voiceSunder					= mod:NewVoice(198496, "Tank")--defensive
 local voiceStrikeofMountain			= mod:NewVoice(216290)--targetyou
 
 function mod:OnCombatStart(delay)
 	timerSunderCD:Start(7-delay)
-	timerStrikeCD:Start(16-delay)
-	timerStanceOfMountainCD:Start(50-delay)
+	timerStrikeCD:Start(15.8-delay)
+	timerStanceOfMountainCD:Start(26.7-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -78,7 +79,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		warnStanceofMountain:Show()
 		timerSunderCD:Stop()
 		timerStrikeCD:Stop()
-		timerStanceOfMountainCD:Start()
+		--timerStanceOfMountainCD:Start()--Only seems to do it once now
 	elseif spellId == 198631 then--Stance of mountain ending
 		timerSunderCD:Start(3)
 		timerStrikeCD:Start(16)

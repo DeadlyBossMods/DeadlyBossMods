@@ -19,6 +19,12 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--[[
+"<3.42 23:50:12> [ENCOUNTER_START] ENCOUNTER_START#1833#Ilysanna Ravencrest#23#5", -- [7]
+"<50.59 23:50:59> [UNIT_SPELLCAST_SUCCEEDED] Illysanna Ravencrest(??) boss1:Phase 2 Jump::3-3020-1501-31352-197622-00004A48A3:197622",
+"<119.67 23:52:08> [UNIT_SPELLCAST_SUCCEEDED] Illysanna Ravencrest(??) boss1:Periodic Energize::3-3020-1501-31352-197394-0000CA48E8:197394",
+"<213.28 23:53:41> [UNIT_SPELLCAST_SUCCEEDED] Illysanna Ravencrest(??) boss1:Phase 2 Jump::3-3020-1501-31352-197622-0003CA4945:197622",
+--]]
 --TODO, maybe GTFO for standing in fire left by dark rush and eye beams?
 --TODO, Interrupt warning for heroic/mythic/challenge mode arcane spell?
 local warnBrutalGlaive				= mod:NewTargetAnnounce(197546, 2)
