@@ -20,15 +20,15 @@ local warnShatter					= mod:NewSpellAnnounce(188114, 2)
 local specWarnRazorShards			= mod:NewSpecialWarningSpell(188169, "Tank", nil, nil, 1, 2)
 local specWarnGas					= mod:NewSpecialWarningMove(192800, nil, nil, nil, 1, 2)
 
-local timerShatterCD				= mod:NewCDTimer(24.3, 188169, nil, nil, nil, 2)
-local timerRazorShardsCD			= mod:NewCDTimer(25, 188169, nil, "Tank", nil, 5)
+local timerShatterCD				= mod:NewCDTimer(24.2, 188114, nil, nil, nil, 2)
+local timerRazorShardsCD			= mod:NewCDTimer(25, 188169, nil, "Tank", nil, 5)--29?
 
 local voiceRazorShards				= mod:NewVoice(188169, "Tank")--shockwave
 local voiceGas						= mod:NewVoice(192800)--runaway
 
 function mod:OnCombatStart(delay)
 	timerShatterCD:Start(20-delay)
-	timerRazorShardsCD:Start(25-delay)
+	timerRazorShardsCD:Start(25-delay)--27?
 end
 
 function mod:SPELL_CAST_START(args)
