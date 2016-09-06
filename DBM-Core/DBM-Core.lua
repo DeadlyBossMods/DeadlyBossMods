@@ -1731,7 +1731,8 @@ end
 ----------------------
 do
 	local function Pull(timer)
-		if (DBM:GetRaidRank(playerName) == 0 and IsInGroup()) or IsEncounterInProgress() then
+		local LFGTankException = IsPartyLFG() and UnitGroupRolesAssigned("player") == "TANK"--Tanks in LFG need to be able to send pull timer even if someone refuses to pass lead. LFG locks roles so no one can abuse this.
+		if (DBM:GetRaidRank(playerName) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
 		local targetName = (UnitExists("target") and UnitIsEnemy("player", "target")) and UnitName("target") or nil--Filter non enemies in case player isn't targetting bos but another player/pet
@@ -1742,7 +1743,7 @@ do
 		end
 	end
 	local function Break(timer)
-		if IsInGroup() and (DBM:GetRaidRank(playerName) == 0 or IsPartyLFG()) or IsEncounterInProgress() then--No break timers if not assistant or if it's dungeon/raid finder
+		if IsInGroup() and (DBM:GetRaidRank(playerName) == 0 or IsPartyLFG()) or IsEncounterInProgress() or select(2, IsInInstance()) == "pvp" then--No break timers if not assistant or if it's dungeon/raid finder/BG
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 			return
 		end
@@ -3973,7 +3974,8 @@ do
 	local dummyMod2 -- dummy mod for the break timer
 	syncHandlers["PT"] = function(sender, timer, lastMapID, target)
 		if DBM.Options.DontShowUserTimers then return end
-		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
+		local LFGTankException = IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
+		if (DBM:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 			return
 		end
 		if (lastMapID and tonumber(lastMapID) ~= LastInstanceMapID) or (not lastMapID and DBM.Options.DontShowPTNoID) then return end
