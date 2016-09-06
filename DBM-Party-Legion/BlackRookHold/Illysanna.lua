@@ -70,7 +70,7 @@ end
 function mod:OnCombatStart(delay)
 	timerBrutalGlaiveCD:Start(5.5-delay)
 	timerVengefulShearCD:Start(8-delay)
-	timerDarkRushCD:Start(12.3-delay)
+	timerDarkRushCD:Start(12.1-delay)
 end
 
 function mod:OnCombatEnd()

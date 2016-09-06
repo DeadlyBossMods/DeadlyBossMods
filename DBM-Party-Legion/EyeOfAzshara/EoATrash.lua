@@ -24,7 +24,7 @@ local yellArcaneBomb			= mod:NewYell(192706)
 local voiceStorm				= mod:NewVoice(196870, "HasInterrupt")--kickcast
 local voiceRejuvWaters			= mod:NewVoice(195046, "HasInterrupt")--kickcast
 local voiceSpraySand			= mod:NewVoice(196127, "Tank")--shockwave
-local voiceArcaneBomb				= mod:NewVoice(192706)--runout
+local voiceArcaneBomb			= mod:NewVoice(192706)--runout
 
 mod:RemoveOption("HealthFrame")
 

@@ -8,7 +8,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 200261 221634 221688",
+	"SPELL_CAST_START 200261 221634 221688 225573",
 	"SPELL_AURA_APPLIED 194966",
 	"SPELL_CAST_SUCCESS 200343 200345"
 )
@@ -24,12 +24,14 @@ local yellArrowBarrage				= mod:NewYell(200343)
 --Braxas the Fleshcarver
 local specWarnWhirlOfFlame			= mod:NewSpecialWarningDodge(221634, nil, nil, nil, 2, 2)
 local specWarnOverDetonation		= mod:NewSpecialWarningRun(221688, nil, nil, nil, 4, 2)
+local specWarnDarkMending			= mod:NewSpecialWarningInterrupt(225573, "HasInterrupt", nil, nil, 1, 2)
 
 local voiceBonebreakingStrike		= mod:NewVoice(200261, "Tank")--shockwave
 local voiceSoulEchos				= mod:NewVoice(194966)--runaway/keepmove
 local voiceArrowBarrage				= mod:NewVoice(200343)--stilldanger (best one i could come up with)
 local voiceWhirlOfFlame				= mod:NewVoice(221634)--watchstep
 local voiceOverDetonation			= mod:NewVoice(221688)--runout
+local voiceDarkMending				= mod:NewVoice(225573, "HasInterrupt")--kickcast
 
 mod:RemoveOption("HealthFrame")
 
@@ -45,6 +47,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 221688 then
 		specWarnOverDetonation:Show()
 		voiceOverDetonation:Play("runout")
+	elseif spellId == 225573 and self:CheckInterruptFilter(args.sourceGUID) then
+		specWarnDarkMending:Show(args.sourceName)
+		voiceDarkMending:Play("kickcast")
 	end
 end
 
