@@ -13,7 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 193682 193597 193611"
 )
 
---TODO, maybe add a "get back in arena warning" if you take Crackling THunder damage
+--TODO, maybe add a "get back in boss area warning" if you take Crackling THunder damage
 --TODO, more curse notes perhaps? Add special warning for player maybe?
 --[[
 1. Healer--193712+18
