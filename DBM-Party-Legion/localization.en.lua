@@ -370,3 +370,12 @@ L= DBM:GetModLocalization(1469)
 -- Cordana --
 -----------------------
 L= DBM:GetModLocalization(1470)
+
+-----------------------
+--Vault of Wardens Trash
+-----------------------
+L = DBM:GetModLocalization("VoWTrash")
+
+L:SetGeneralLocalization({
+	name =	"Vault of Wardens Trash"
+})
