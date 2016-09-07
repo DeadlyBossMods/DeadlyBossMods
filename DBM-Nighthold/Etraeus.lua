@@ -304,7 +304,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 207720 then
 		specWarnWitnessVoid:Show()
 		voiceWitnessVoid:Play("turnaway")
-		if self:IsFaceroll() then
+		if self:IsEasy() then
 			timerWitnessVoidCD:Start(14.5, args.sourceGUID)
 		else
 			timerWitnessVoidCD:Start(nil, args.sourceGUID)
@@ -549,7 +549,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerConjunctionCD:Stop()
 		timerIcyEjectionCD:Start(24.5, 1)
 		timerGravPullCD:Start(29)
-		if not self:IsFaceroll() then
+		if not self:IsEasy() then
 			timerFrigidNovaCD:Start(49)
 		end
 		if self:IsMythic() then
@@ -565,7 +565,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerConjunctionCD:Stop()
 		timerFelEjectionCD:Start(19, 1)
 		timerGravPullCD:Start(28)
-		if not self:IsFaceroll() then
+		if not self:IsEasy() then
 			timerFelNovaCD:Start(61, 1)
 		end
 		if self:IsMythic() then
@@ -580,7 +580,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerConjunctionCD:Stop()
 		timerGravPullCD:Start(20.5)
 		timerThingCD:Start(31.5)
-		if not self:IsFaceroll() then--Was never used on normal, probably not LFR either then
+		if not self:IsEasy() then--Was never used on normal, probably not LFR either then
 			timerVoidEjectionCD:Start(24, 1)
 			timerVoidNovaCD:Start(40)
 		end

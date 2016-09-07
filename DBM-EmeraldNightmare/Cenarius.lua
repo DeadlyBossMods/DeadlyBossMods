@@ -152,7 +152,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnTouchofLife:Show(args.sourceName)
 			voiceTouchOfLife:Play("kickcast")
 		end
-		if self:IsFaceroll() then
+		if self:IsEasy() then
 			timerTouchofLifeCD:Start(15, args.sourceGUID)
 		else
 			timerTouchofLifeCD:Start(12, args.sourceGUID)

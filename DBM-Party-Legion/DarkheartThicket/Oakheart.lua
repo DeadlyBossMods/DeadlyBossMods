@@ -24,8 +24,10 @@ local timerThrowCD					= mod:NewCDTimer(28, 204646, nil, nil, nil, 3)--29-32
 local timerRootsCD					= mod:NewCDTimer(23, 204574, nil, nil, nil, 3)--23-31
 local timerBreathCD					= mod:NewCDTimer(26.5, 204667, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--26--35
 
+local countdownThrow				= mod:NewCountdown("Alt28", 204646, "Tank")
+
 local voiceRoots					= mod:NewVoice(204574)--watchstep
-local voiceBreath					= mod:NewVoice(204574, "Tank")--Defensive
+local voiceBreath					= mod:NewVoice(204667, "Tank")--Defensive
 
 --mod:AddRangeFrameOption(5, 153396)
 
@@ -44,9 +46,10 @@ end
 
 function mod:OnCombatStart(delay)
 	timerShatteredEarthCD:Start(6-delay)
-	timerRootsCD:Start(15-delay)
+	timerRootsCD:Start(12-delay)
 	timerBreathCD:Start(18-delay)
 	timerThrowCD:Start(29-delay)
+	countdownThrow:Start(29-delay)
 end
 
 function mod:OnCombatEnd()
@@ -59,6 +62,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 204646 then
 		timerThrowCD:Start()
+		countdownThrow:Start()
 		self:BossTargetScanner(103344, "ThrowTarget", 0.1, 12, true, nil, nil, nil, true)
 	elseif spellId == 204666 then
 		warnShatteredEarth:Show()

@@ -495,7 +495,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerEpochericOrbCD:Stop()
 			timerAblativePulseCD:Start(22)
 			timerPermaliativeTormentCD:Start(140)--really likely cast more often in not faceroll mode. need more data
-			if not self:IsFaceroll() then
+			if not self:IsEasy() then
 				--Wasn't used in LFR, assume normal is same way since that's generally how it is
 				--Timer itself may need updating but been so long since seen heroic or mythic of this fight.
 				timerConflexiveBurstCD:Start(31.6, 1)
