@@ -161,7 +161,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(carrionTargets)
 	table.wipe(argusTargets)
 	timerCarrionPlagueCD:Start(7-delay, 1)--Cast end
-	if not self:IsFaceroll() then
+	if not self:IsEasy() then
 		timerBrandOfArgusCD:Start(17-delay, 1)--Cast end
 		timerFeastOfBloodCD:Start(20-delay, 1)
 		timerSeekerSwarmCD:Start(25-delay, 1)
@@ -203,7 +203,7 @@ function mod:SPELL_CAST_START(args)
 			self.vb.echoesOfVoidCast = 0
 			DBM:Debug("First carrion Swarm after dark phase, Tichondrius returning", 2)
 			--Timers same as combat start - 5
-			if not self:IsFaceroll() then
+			if not self:IsEasy() then
 				timerBrandOfArgusCD:Start(12, 1)--Cast end
 				timerFeastOfBloodCD:Start(25, 1)
 				timerSeekerSwarmCD:Start(20, 1)
@@ -232,7 +232,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 213238 then
 		self.vb.seekerSwarmCast = self.vb.seekerSwarmCast + 1
 		specWarnSeekerSwarm:Show(self.vb.seekerSwarmCast)
-		local timer = self:IsFaceroll() and sharedCastTimersFaster[self.vb.seekerSwarmCast+1] or sharedCastTimers[self.vb.seekerSwarmCast+1]
+		local timer = self:IsEasy() and sharedCastTimersFaster[self.vb.seekerSwarmCast+1] or sharedCastTimers[self.vb.seekerSwarmCast+1]
 		if timer then
 			timerSeekerSwarmCD:Start(timer, self.vb.seekerSwarmCast+1)
 			countdownSeekerSwarm:Start(timer)
@@ -270,7 +270,7 @@ function mod:SPELL_CAST_START(args)
 --		table.wipe(argusTargets)
 	elseif spellId == 208230 then
 		self.vb.feastOfBloodCast = self.vb.feastOfBloodCast + 1
-		local timer = self:IsFaceroll() and sharedCastTimersFaster[self.vb.feastOfBloodCast+1] or sharedCastTimers[self.vb.feastOfBloodCast+1]
+		local timer = self:IsEasy() and sharedCastTimersFaster[self.vb.feastOfBloodCast+1] or sharedCastTimers[self.vb.feastOfBloodCast+1]
 		if timer then
 			timerFeastOfBloodCD:Start(nil, self.vb.feastOfBloodCast+1)
 		end
@@ -311,7 +311,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 212997 then
 		self.vb.carrionPlagueCast = self.vb.carrionPlagueCast + 1
-		local timer = self:IsFaceroll() and sharedCastTimersFaster[self.vb.carrionPlagueCast+1] or sharedCastTimers[self.vb.carrionPlagueCast+1]
+		local timer = self:IsEasy() and sharedCastTimersFaster[self.vb.carrionPlagueCast+1] or sharedCastTimers[self.vb.carrionPlagueCast+1]
 		if timer then
 			timerCarrionPlagueCD:Start(timer, self.vb.carrionPlagueCast+1)
 		end

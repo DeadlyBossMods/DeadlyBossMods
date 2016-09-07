@@ -8,21 +8,23 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 196870 195046",
+	"SPELL_CAST_START 196870 195046 195284",
 	"SPELL_AURA_APPLIED 196127 192706"
 )
 
 --TODO, still missing some GTFOs for this. Possibly other important spells.
-local warnArcaneBomb				= mod:NewTargetAnnounce(192706, 4)
+local warnArcaneBomb			= mod:NewTargetAnnounce(192706, 4)
 
 local specWarnStorm				= mod:NewSpecialWarningInterrupt(196870, "HasInterrupt", nil, nil, 1, 2)
 local specWarnRejuvWaters		= mod:NewSpecialWarningInterrupt(195046, "HasInterrupt", nil, nil, 1, 2)
+local specWarnUndertow			= mod:NewSpecialWarningInterrupt(195284, "HasInterrupt", nil, nil, 1, 2)--Might only be interruptable by stuns, if so change option default?
 local specWarnSpraySand			= mod:NewSpecialWarningDodge(196127, "Tank", nil, nil, 1, 2)
 local specWarnArcaneBomb		= mod:NewSpecialWarningMoveAway(192706, nil, nil, nil, 3, 2)
 local yellArcaneBomb			= mod:NewYell(192706)
 
 local voiceStorm				= mod:NewVoice(196870, "HasInterrupt")--kickcast
 local voiceRejuvWaters			= mod:NewVoice(195046, "HasInterrupt")--kickcast
+local voiceUndertow				= mod:NewVoice(195284, "HasInterrupt")--kickcast
 local voiceSpraySand			= mod:NewVoice(196127, "Tank")--shockwave
 local voiceArcaneBomb			= mod:NewVoice(192706)--runout
 
@@ -37,6 +39,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 195046 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnRejuvWaters:Show(args.sourceName)
 		voiceRejuvWaters:Play("kickcast")
+	elseif spellId == 195284 and self:CheckInterruptFilter(args.sourceGUID) then
+		specWarnUndertow:Show(args.sourceName)
+		voiceUndertow:Play("kickcast")
 	end
 end
 

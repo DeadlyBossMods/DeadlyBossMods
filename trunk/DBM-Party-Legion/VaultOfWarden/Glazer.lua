@@ -9,7 +9,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 194289 194942",
+	"SPELL_CAST_START 193443 194942",
 	"SPELL_PERIODIC_DAMAGE 194945",
 	"SPELL_PERIODIC_MISSED 194945"
 )

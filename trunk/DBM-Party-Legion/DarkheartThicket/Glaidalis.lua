@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 198379",
-	"SPELL_CAST_SUCCESS 198401",
+	"SPELL_CAST_SUCCESS 198401 212464",
 	"SPELL_PERIODIC_DAMAGE 198408",
 	"SPELL_PERIODIC_MISSED 198408",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -24,9 +24,9 @@ local specWarnNightfall			= mod:NewSpecialWarningMove(198408, nil, nil, nil, 1, 
 local yellLeap					= mod:NewYell(196346)
 local specWarnRampage			= mod:NewSpecialWarningDefensive(198379, "Tank", nil, nil, 1, 2)
 
-local timerLeapCD				= mod:NewCDTimer(16.5, 196346, nil, nil, nil, 3)
+local timerLeapCD				= mod:NewCDTimer(14, 196346, nil, nil, nil, 3)
 local timerRampageCD			= mod:NewCDTimer(15.8, 198379, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerNightfallCD			= mod:NewCDTimer(14.5, 198379, nil, nil, nil, 3)
+local timerNightfallCD			= mod:NewCDTimer(14.5, 198401, nil, nil, nil, 3)
 
 local voiceNightFall			= mod:NewVoice(198408)--runaway
 local voiceRampage				= mod:NewVoice(198379, "Tank")--defensive
@@ -39,8 +39,6 @@ function mod:LeapTarget(targetname, uId)
 		return
 	end
 	if targetname == UnitName("player") then
---		specWarnLeap:Show()
---		voiceSwirlingScythe:Play("runaway")
 		yellLeap:Yell()
 	else
 		warnLeap:Show(targetname)
@@ -54,9 +52,14 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 198401 and self:AntiSpam(2, 1) then
+	local spellId = args.spellId
+	if (spellId == 198401 or spellId == 212464) and self:AntiSpam(2, 1) then
 		warnNightFall:Show()
-		timerNightfallCD:Start()
+		if spellId == 212464 then
+			timerNightfallCD:Start(28)--Needs more support data. could be health based too
+		else
+			timerNightfallCD:Start()
+		end
 	end
 end
 
