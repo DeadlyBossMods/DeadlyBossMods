@@ -4,7 +4,9 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(99200)
 mod:SetEncounterID(1838)
+mod:DisableESCombatDetection()--Remove if blizz fixes trash firing ENCOUNTER_START
 mod:SetZone()
+mod:SetMinSyncRevision(15190)
 
 mod:RegisterCombat("combat")
 
@@ -15,8 +17,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO: Breath  tweaks.
---local warnBreath					= mod:NewTargetAnnounce(199332, 3)
 local warnRoar						= mod:NewSpellAnnounce(199389, 2)
 
 local specWarnDownDraft				= mod:NewSpecialWarningSpell(199345, nil, nil, nil, 2, 2)
@@ -31,20 +31,6 @@ local timerDownDraftCD				= mod:NewCDTimer(29, 199345, nil, nil, nil, 2)--38-42 
 local voiceDownDraft				= mod:NewVoice(199345)--keepmove
 local voiceBreath					= mod:NewVoice(199332, "Tank")--breathsoon
 local voiceFallingRocks				= mod:NewVoice(199460)--runaway
-
---mod:AddRangeFrameOption(5, 153396)
-
---[[
-function mod:BreathTarget(targetname, uId)
-	if not targetname then
-		DBM:Debug("Probably on the tank")
-		return
-	end
-	warnBreath:Show(targetname)
-	if targetname == UnitName("player") then
-		yellBreath:Yell()
-	end
-end--]]
 
 function mod:OnCombatStart(delay)
 	timerBreathCD:Start(8-delay)
@@ -75,7 +61,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	if spellId == 199332 then--Even with this scanner, it's abougt 50/50 hit or miss you can grab a target at all
 		specWarnBreath:Show()
 		voiceBreath:Play("breathsoon")
-		--self:BossUnitTargetScanner(uId, "BreathTarget", 2)
 		timerBreathCD:Start()
 	end
 end

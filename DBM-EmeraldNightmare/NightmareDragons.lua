@@ -346,7 +346,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			end
 		elseif cid == 102682 then--Lethon
 			timerSiphonSpiritCD:Stop()
-			if not self:IsFaceroll() then
+			if not self:IsEasy() then
 				timerShadowBurstCD:Start(19.5)
 			end
 			if DBM.BossHealth:IsShown() then
@@ -356,7 +356,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerShadesOfTaerarCD:Stop()
 			countdownShadesOfTaerar:Cancel()
 			timerSeepingFogCD:Stop()
-			if not self:IsFaceroll() then
+			if not self:IsEasy() then
 				timerBellowingRoarCD:Start(44.5)
 			end
 			if DBM.BossHealth:IsShown() then

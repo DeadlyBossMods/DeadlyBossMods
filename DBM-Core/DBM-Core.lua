@@ -7069,9 +7069,17 @@ function bossModPrototype:IsLFR()
 	return false
 end
 
-function bossModPrototype:IsFaceroll()
+function bossModPrototype:IsEasy()
 	local diff = DBM:GetCurrentInstanceDifficulty()
 	if diff == "normal" or diff == "lfr" then
+		return true
+	end
+	return false
+end
+
+function bossModPrototype:IsHard()
+	local diff = DBM:GetCurrentInstanceDifficulty()
+	if diff == "mythic" or diff == "challenge5" then
 		return true
 	end
 	return false
