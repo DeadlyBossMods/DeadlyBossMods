@@ -10899,7 +10899,7 @@ do
 			tsort(iconSortTable)--Sorted alphabetically
 			for i = 1, #iconSortTable do
 				local target = iconSortTable[i]
-				if not target or i > 8 then 
+				if i > 8 then 
 					DBM:Debug("Too many players to set icons, reconsider where using icons", 2)
 					return
 				end

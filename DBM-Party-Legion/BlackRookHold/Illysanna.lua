@@ -104,7 +104,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceDarkRush:Play("targetyou")
 		end
 		if self.Options.SetIconOnDarkRush then
-			self:SetAlphaIcon(0.5, args.destName, 1, 3)
+			self:SetAlphaIcon(0.5, args.destName, 3)
 		end
 	end
 end

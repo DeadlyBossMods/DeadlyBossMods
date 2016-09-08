@@ -75,7 +75,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceSeedsofDestruction:Play("runout")
 		end
 		if self.Options.SetIconOnSeeds then
-			self:SetAlphaIcon(0.5, args.destName, 2)
+			self:SetAlphaIcon(0.5, args.destName)
 		end
 	elseif spellId == 205233 then
 		warnExecute:Show(args.destName)
