@@ -185,7 +185,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.SetIconOnRot then
-			self:SetAlphaIcon(0.8, args.destName, 1)--Number of icons variable by raid size and duration of fight
+			self:SetAlphaIcon(0.8, args.destName)--Number of icons variable by raid size and duration of fight
 		end
 	elseif spellId == 205043 then
 		warnInfestedMind:CombinedShow(0.5, args.destName)
