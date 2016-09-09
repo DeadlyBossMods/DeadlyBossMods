@@ -89,4 +89,4 @@ VaultOfWarden\Tormentorum.lua
 VaultOfWarden\Ashgolm.lua
 VaultOfWarden\Glazer.lua
 VaultOfWarden\Cordana.lua
-BlackRookHold\VoWTrash.lua
+VaultOfWarden\VoWTrash.lua

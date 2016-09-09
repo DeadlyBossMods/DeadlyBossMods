@@ -131,6 +131,10 @@ L= DBM:GetModLocalization(1488)
 -----------------------
 L= DBM:GetModLocalization(1489)
 
+L:SetMiscLocalization({
+	tempestModeMessage		=	"Nicht Orkanabfolge: %s. Prüfe erneut in 8 Sekunden."
+})
+
 -----------------------
 --Halls of Valor Trash
 -----------------------
@@ -367,3 +371,12 @@ L= DBM:GetModLocalization(1469)
 -- Cordana --
 -----------------------
 L= DBM:GetModLocalization(1470)
+
+-----------------------
+--Vault of Wardens Trash
+-----------------------
+L = DBM:GetModLocalization("VoWTrash")
+
+L:SetGeneralLocalization({
+	name =	"Trash des Verlieses der Wächterinnen"
+})
