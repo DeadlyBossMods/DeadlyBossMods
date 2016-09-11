@@ -337,7 +337,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Malgath		=	"Lord Malgath"
+	Malgath		=	"馬爾加斯領主"
 })
 
 -----------------------
@@ -367,3 +367,12 @@ L= DBM:GetModLocalization(1469)
 -- Cordana --
 -----------------------
 L= DBM:GetModLocalization(1470)
+
+-----------------------
+--Vault of Wardens Trash
+-----------------------
+L = DBM:GetModLocalization("VoWTrash")
+
+L:SetGeneralLocalization({
+	name =	"看守者鐵獄小怪"
+})
