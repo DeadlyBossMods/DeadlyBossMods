@@ -87,7 +87,6 @@ L.InfoRaidWarning			= [[Você pode especificar a cor e posição do quadro de av
 Esse quadro é utilizado para mensagens como "Jogador X está sob efeito de Y".]]
 L.ColorResetted 			= "As opções de cor desse campo foram resetadas."
 L.ShowWarningsInChat 		= "Exibir avisos na janela de chat."
-L.ShowFakedRaidWarnings 	= "Exibir avisos como mensagens falsas de aviso de raid."
 L.WarningIconLeft 			= "Mostrar ícone do lado esquerdo."
 L.WarningIconRight 			= "Mostrar ícone do lado direito."
 L.WarningIconChat 			= "Mostrar ícones no chat"
