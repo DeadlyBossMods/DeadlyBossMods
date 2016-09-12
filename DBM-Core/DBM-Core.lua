@@ -101,11 +101,6 @@ DBM.DefaultOptions = {
 	VoiceOverSpecW2 = "DefaultOnly",
 	AlwaysPlayVoice = false,
 	ShowCountdownText = false,
-	RaidWarningPosition = {
-		Point = "TOP",
-		X = 0,
-		Y = -185,
-	},
 	Enabled = true,
 	ShowWarningsInChat = true,
 	ShowSWarningsInChat = true,
@@ -1703,7 +1698,6 @@ end
 
 function DBM:RepositionFrames()
 	-- rearrange position
-	--self:SetRaidWarningPositon()
 	self:UpdateWarningOptions()
 	self:UpdateSpecialWarningOptions()
 	self.Arrow:LoadPosition()
@@ -2970,11 +2964,6 @@ function DBM:AddDefaultOptions(t1, t2)
 	end
 end
 
-function DBM:SetRaidWarningPositon()
-	RaidWarningFrame:ClearAllPoints()
-	RaidWarningFrame:SetPoint(self.Options.RaidWarningPosition.Point, UIParent, self.Options.RaidWarningPosition.Point, self.Options.RaidWarningPosition.X, self.Options.RaidWarningPosition.Y)
-end
-
 function DBM:LoadModOptions(modId, inCombat, first)
 	local oldSavedVarsName = modId:gsub("-", "").."_SavedVars"
 	local savedVarsName = modId:gsub("-", "").."_AllSavedVars"
@@ -3405,9 +3394,6 @@ do
 		-- load special warning options
 		self:UpdateWarningOptions()
 		self:UpdateSpecialWarningOptions()
-		-- set this with a short delay to prevent issues with other addons also trying to do the same thing with another position ;)
-		--self:Schedule(5, self.SetRaidWarningPositon, self)
-		--self:Schedule(20, self.SetRaidWarningPositon, self)--A second attempt after we are sure all other mods are loaded, so we can work around issues with movemanything or other mods.
 		--Fix old options that use .wav instead of .ogg, to prevent no sounds bug as of 6.1+
 		if self.Options.RaidWarningSound:find(".wav") then self.Options.RaidWarningSound = self.DefaultOptions.RaidWarningSound end
 		if self.Options.SpecialWarningSound:find(".wav") then self.Options.SpecialWarningSound = self.DefaultOptions.SpecialWarningSound end
