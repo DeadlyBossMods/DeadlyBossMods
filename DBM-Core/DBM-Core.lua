@@ -1704,7 +1704,7 @@ end
 
 function DBM:RepositionFrames()
 	-- rearrange position
-	self:SetRaidWarningPositon()
+	--self:SetRaidWarningPositon()
 	self:UpdateWarningOptions()
 	self:UpdateSpecialWarningOptions()
 	self.Arrow:LoadPosition()
@@ -3407,8 +3407,8 @@ do
 		self:UpdateWarningOptions()
 		self:UpdateSpecialWarningOptions()
 		-- set this with a short delay to prevent issues with other addons also trying to do the same thing with another position ;)
-		self:Schedule(5, self.SetRaidWarningPositon, self)
-		self:Schedule(20, self.SetRaidWarningPositon, self)--A second attempt after we are sure all other mods are loaded, so we can work around issues with movemanything or other mods.
+		--self:Schedule(5, self.SetRaidWarningPositon, self)
+		--self:Schedule(20, self.SetRaidWarningPositon, self)--A second attempt after we are sure all other mods are loaded, so we can work around issues with movemanything or other mods.
 		--Fix old options that use .wav instead of .ogg, to prevent no sounds bug as of 6.1+
 		if self.Options.RaidWarningSound:find(".wav") then self.Options.RaidWarningSound = self.DefaultOptions.RaidWarningSound end
 		if self.Options.SpecialWarningSound:find(".wav") then self.Options.SpecialWarningSound = self.DefaultOptions.SpecialWarningSound end
@@ -8562,16 +8562,16 @@ do
 				if not DBM.Options.WarningIconChat then
 					text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size TODO: is this still true as of cataclysm?
 				end
-				if DBM.Options.ShowFakedRaidWarnings then
+				--[[if DBM.Options.ShowFakedRaidWarnings then
 					for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
 						local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))
 						if frame ~= RaidWarningFrame and frame:GetScript("OnEvent") then
 							frame:GetScript("OnEvent")(frame, "CHAT_MSG_RAID_WARNING", text, playerName, GetDefaultLanguage("player"), "", playerName, "", 0, 0, "", 0, 99, UnitGUID("player"))
 						end
 					end
-				else
+				else--]]
 					self.mod:AddMsg(text, nil)
-				end
+				--end
 			end
 			if self.sound then
 				DBM:PlaySoundFile(DBM.Options.RaidWarningSound)
