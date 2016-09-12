@@ -84,7 +84,6 @@ L.InfoRaidWarning			= [[Puoi specificare la posizione e i colori degli Avvisi di
 Questi messaggi sono usati ad esempio per "Giocatore X e' afflitto da Y".]]
 L.ColorResetted 			= "L'opzione dei colori di questo frame e' stato resettato."
 L.ShowWarningsInChat 		= "Visualizza gli Avvisi anche in Chat"
-L.ShowFakedRaidWarnings 	= "VIsualizza gli Avvisi come finti Avvisi di Incursione"
 L.WarningIconLeft 			= "Visualizza Icona a Sinistra"
 L.WarningIconRight 			= "Visualizza Icona a Destra"
 L.RaidWarnMessage 			= "Grazie per usare Deadly Boss Mods"

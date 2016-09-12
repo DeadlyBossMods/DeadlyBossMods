@@ -74,7 +74,6 @@ L.InfoRaidWarning			= [[Vous pouvez préciser la position et les couleurs de la 
 Cette fenêtre est utilisée pour les messages de type "Le joueur X est affecté par Y".]]
 L.ColorResetted 			= "Les paramètres de couleur de ce champ ont été réinitialisés"
 L.ShowWarningsInChat 		= "Afficher les alertes raid dans la fenêtre de chat"
-L.ShowFakedRaidWarnings 	= "Afficher les alertes comme de fausses alertes raid"
 L.WarningIconLeft 			= "Afficher l'icône du côté gauche"
 L.WarningIconRight 			= "Afficher l'icône du côté droit"
 L.WarningIconChat 			= "Afficher les icônes dans la fenêtre de chat"

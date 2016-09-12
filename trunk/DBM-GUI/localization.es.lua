@@ -79,7 +79,6 @@ L.InfoRaidWarning			= [[Puedes especificar la posición y colores del marco de a
 Este marco se usa para mensajes como "Jugador X afectado por Y".]]
 L.ColorResetted 			= "Se ha reiniciado la configuración de colores de este campo."
 L.ShowWarningsInChat 		= "Mostrar avisos en el chat"
-L.ShowFakedRaidWarnings 	= "Mostrar avisos como avisos de banda"
 L.WarningIconLeft 			= "Mostrar iconos a la izquierda"
 L.WarningIconRight 			= "Mostrar iconos a la derecha"
 L.WarningIconChat 			= "Mostrar iconos en el chat"
