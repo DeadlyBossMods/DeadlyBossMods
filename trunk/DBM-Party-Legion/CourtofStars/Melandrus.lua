@@ -44,7 +44,7 @@ function mod:SurgeTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	timerGaleCD:start(5.7-delay)
+	timerGaleCD:Start(5.7-delay)
 	timerMaelstromCD:Start(11.8-delay)
 	timerSurgeCD:Start(19-delay)
 end
