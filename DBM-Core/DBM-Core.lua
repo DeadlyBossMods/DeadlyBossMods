@@ -6533,10 +6533,7 @@ do
 	end
 
 	--This is the source of the taints. As well as function DBM:AddMsg(text, prefix) function
-	--It's also required and impossible to avoid since we need this stuff
-	--This taint LOOKS like a StaticPopupDialog taint but it is not. That taint was actaully fixed in 5.3
-	--Install http://www.wowace.com/addons/notaint/ which embeds libchatanims to fix problem.
-	--Additional information at http://www.wowace.com/addons/libchatanims/
+	--Which is why we embed libchatanims to fix those taints.
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", filterOutgoing)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", filterOutgoing)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", filterIncoming)
