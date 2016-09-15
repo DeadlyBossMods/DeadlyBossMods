@@ -414,7 +414,7 @@ local addsGUIDs = {}
 local targetEventsRegistered = false
 local targetMonitor = nil
 local statusWhisperDisabled = false
-local wowTOC = select(4, GetBuildInfo())
+local wowVersionString, _, _, wowTOC = GetBuildInfo()
 local dbmToc = 0
 local isTalkingHeadLoaded = false
 local talkingHeadUnregistered = false
@@ -5104,12 +5104,7 @@ do
 	end
 
 	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, spellGUID, spellId)
-		local correctSpellId = 0
-		if wowTOC >= 70000 then--in Legion spellId arg is canned as of latest build, it existed until talarn testing.
-			correctSpellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-		else
-			correctSpellId = spellId
-		end
+		local correctSpellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 		self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..correctSpellId..")", 3)
 	end
 
@@ -6116,7 +6111,7 @@ end
 
 function DBM:HasMapRestrictions()
 	--Restrictions active in all party, raid, pvp, arena maps. No restrictions in "none" or "scenario"
-	if (wowTOC >= 70100 or self.Options.EnablePatchRestrictions) and IsInInstance() and not C_Scenario.IsInScenario() then
+	if (wowVersionString == "7.1.0" or self.Options.EnablePatchRestrictions) and IsInInstance() and not C_Scenario.IsInScenario() then
 		return true
 	end
 	return false
