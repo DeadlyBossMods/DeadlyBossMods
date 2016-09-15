@@ -17,14 +17,14 @@ mod:RegisterEvents(
 
 --local specWarnWitheringSoul		= mod:NewSpecialWarningInterrupt(208165, "HasInterrupt")
 local specWarnInfernalEruption		= mod:NewSpecialWarningDodge(207881, nil, nil, nil, 2, 2)
-local specWarnDisintegrationBeam	= mod:NewSpecialWarningInterrupt(207980, "HasInterrupt", nil, nil, 1, 2)
+--local specWarnDisintegrationBeam	= mod:NewSpecialWarningSpell(207980, false, nil, 2, 1, 2)
 local specWarnWhirlingBlades		= mod:NewSpecialWarningRun(209378, "Melee", nil, nil, 4, 2)
 
 local timerWitheringSoulCD			= mod:NewCDTimer(14.5, 208165, nil, nil, nil, 3)
 local timerInfernalEruptionCD		= mod:NewCDTimer(32, 207881, nil, nil, nil, 2)
 
 local voiceInfernalEruption			= mod:NewVoice(207881)--watchstep
-local voiceDisintegrationBeam		= mod:NewVoice(207980, "HasInterrupt")--kickcast
+--local voiceDisintegrationBeam		= mod:NewVoice(207980, "HasInterrupt")--kickcast
 local voiceWhirlingBlades			= mod:NewVoice(209378, "Melee")--runout
 
 function mod:OnCombatStart(delay)
@@ -43,9 +43,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnInfernalEruption:Show()
 		voiceInfernalEruption:Play("watchstep")
 		timerInfernalEruptionCD:Start()
-	elseif spellId == 207980 and self:CheckInterruptFilter(args.sourceGUID) then
-		specWarnDisintegrationBeam:Show(args.sourceName)
-		voiceDisintegrationBeam:Play("kickcast")
+--	elseif spellId == 207980 and self:CheckInterruptFilter(args.sourceGUID) then
+		--specWarnDisintegrationBeam:Show(args.sourceName)
+		--voiceDisintegrationBeam:Play("kickcast")
 	elseif spellId == 209378 then
 		specWarnWhirlingBlades:Show()
 		voiceWhirlingBlades:Play("runout")
