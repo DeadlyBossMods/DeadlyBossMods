@@ -21,7 +21,7 @@ DBM_CORE_WHATS_NEW_LINK				= "In upcoming version of DBM, many features that rel
 --Pre Patch 7.1 Notice
 DBM_CORE_NO_RANGE_SOON				= "Note: range radar will no longer be available within instances in patch 7.1"
 --Post Patch 7.1
-DBM_CORE_NO_RANGE					= "Range Checker/Radar can not be used in instances"
+DBM_CORE_NO_RANGE					= "Range Radar can not be used in instances. Legacy text range frame used instead"
 DBM_CORE_NO_ARROW					= "Arrow can not be used in instances"
 DBM_CORE_NO_HUD						= "HUDMap can not be used in instances"
 
