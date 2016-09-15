@@ -695,7 +695,7 @@ do
 	end
 	--TODO, add some check in 7.1 to return before calling UnitPosition, if in restricted area.
 	function getDistanceBetween(uId, x, y)
-		local restrictionsActive = DBM.Options.EnablePatchRestrictions and IsInInstance()
+		local restrictionsActive = DBM:HasMapRestrictions()
 		if not x then--If only one arg then 2nd arg is always assumed to be player
 			if restrictionsActive then
 				return itsBCAgain(uId)
@@ -748,7 +748,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 	redCircleNumPlayers = redCircleNumPlayers or 1
 	textFrame = textFrame or createTextFrame()
 	radarFrame = radarFrame or createRadarFrame()
-	local restrictionsActive = DBM.Options.EnablePatchRestrictions and IsInInstance()
+	local restrictionsActive = DBM:HasMapRestrictions()
 	if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive) and not textFrame.isShown then
 		if restrictionsActive then
 			if range <= 5 then

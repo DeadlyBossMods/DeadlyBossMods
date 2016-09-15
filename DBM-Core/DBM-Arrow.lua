@@ -199,7 +199,7 @@ local function MapToWorldCoords(x, y)
 end
 
 local function show(runAway, x, y, distance, time, legacy)
-	if DBM.Options.EnablePatchRestrictions and IsInInstance() then return end
+	if DBM:HasMapRestrictions() then return end
 	local player
 	if type(x) == "string" then
 		player, hideDistance, hideTime = x, y, hideDistance

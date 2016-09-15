@@ -283,7 +283,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceSearingBrand:Play("scatter")
 			countdownSearingBrand:Start()
 		end
-		if self.Options.HudMapOnBrandCharge and not DBM.Options.EnablePatchRestrictions then
+		if self.Options.HudMapOnBrandCharge and not self:HasMapRestrictions() then
 			self:Unschedule(hudDelay)
 			if not tContains(args.destName, args.destName) then
 				chargeTable[#chargeTable+1] = args.destName
