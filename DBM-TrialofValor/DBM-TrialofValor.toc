@@ -1,5 +1,5 @@
-﻿## Interface: 70000
-## X-Min-Interface: 70000
+﻿## Interface: 70100
+## X-Min-Interface: 70100
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Trial of Valor|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
