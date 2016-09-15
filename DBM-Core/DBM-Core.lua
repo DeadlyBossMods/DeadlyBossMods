@@ -2116,7 +2116,9 @@ do
 		if DBM.RangeCheck:IsShown() then
 			DBM.RangeCheck:Hide(true)
 		else
-			if IsInInstance() then
+			if DBM:HasMapRestrictions() then
+				DBM:AddMsg(DBM_CORE_NO_RANGE)
+			elseif IsInInstance() then
 				DBM:AddMsg(DBM_CORE_NO_RANGE_SOON)
 			end
 			if r and (r < 201) then
@@ -6110,8 +6112,9 @@ function DBM:GetGroupSize()
 end
 
 function DBM:HasMapRestrictions()
+	local isInstance, instanceType = IsInInstance()
 	--Restrictions active in all party, raid, pvp, arena maps. No restrictions in "none" or "scenario"
-	if (wowVersionString == "7.1.0" or self.Options.EnablePatchRestrictions) and IsInInstance() and not C_Scenario.IsInScenario() then
+	if (wowVersionString == "7.1.0" or self.Options.EnablePatchRestrictions) and isInstance and instanceType ~= "scenario" then
 		return true
 	end
 	return false
@@ -6822,7 +6825,8 @@ do
 	MovieFrame:HookScript("OnEvent", function(self, event, id)
 		if event == "PLAY_MOVIE" and id and not neverFilter[id] then
 			DBM:Debug("PLAY_MOVIE fired for ID: "..id, 2)
-			if not IsInInstance() or C_Garrison:IsOnGarrisonMap() or C_Scenario.IsInScenario() or DBM.Options.MovieFilter == "Never" then return end
+			local isInstance, instanceType = IsInInstance()
+			if not isInstance or C_Garrison:IsOnGarrisonMap() or instanceType == "scenario" or DBM.Options.MovieFilter == "Never" then return end
 			if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[id] then
 				MovieFrame_OnMovieFinished(self)
 				DBM:AddMsg(DBM_CORE_MOVIE_SKIPPED)
@@ -6834,7 +6838,8 @@ do
 
 	function DBM:CINEMATIC_START()
 		self:Debug("CINEMATIC_START fired", 2)
-		if not IsInInstance() or C_Garrison:IsOnGarrisonMap() or C_Scenario.IsInScenario() or self.Options.MovieFilter == "Never" then return end
+		local isInstance, instanceType = IsInInstance()
+		if not isInstance or C_Garrison:IsOnGarrisonMap() or instanceType == "scenario" or self.Options.MovieFilter == "Never" then return end
 		SetMapToCurrentZone()
 		local currentFloor = GetCurrentMapDungeonLevel() or 0
 		if self.Options.MovieFilter == "Block" or self.Options.MovieFilter == "AfterFirst" and self.Options.MoviesSeen[LastInstanceMapID..currentFloor] then
