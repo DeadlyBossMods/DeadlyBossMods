@@ -6792,13 +6792,13 @@ end
 --/run DBM:FindEncounterIDs(768)--Emerald Nightmare
 --/run DBM:FindEncounterIDs(786)--The Nighthold
 --/run DBM:FindEncounterIDs(822)--Broken Isles
+--/run DBM:FindEncounterIDs(861)--Trial of Valor
+--/run DBM:FindEncounterIDs(860, 23)--Return to Karazhan
 function DBM:FindEncounterIDs(instanceID, diff)
 	if not instanceID then
 		self:AddMsg("Error: Function requires instanceID be provided")
 	end
-	local _, instanceType, difficultyID = GetInstanceInfo()
-	if not diff then diff = 14 end--Default to "normal" in 6.0 if diff arg not given.
-	if difficultyID == 0 then difficultyID = 6 end--EJ in 5.4 considers world bosses as 25man normal
+	if not diff then diff = 14 end--Default to "normal" in 6.0+ if diff arg not given.
 	EJ_SetDifficulty(diff or difficultyID)--Make sure it's set to right difficulty or it'll ignore mobs (ie ra-den if it's not set to heroic). Use user specified one as primary, with curernt zone difficulty as fallback
 	for i=1, 25 do
 		local name, _, encounterID = EJ_GetEncounterInfoByIndex(i, instanceID)
