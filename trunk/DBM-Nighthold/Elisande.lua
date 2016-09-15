@@ -298,7 +298,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local nextCount = self.vb.beamCastCount + 1
 		if self.vb.phase == 2 then
 			self.vb.totalbeamCasts = self.vb.totalbeamCasts + 1
-			if not DBM.Options.EnablePatchRestrictions then
+			if not self:HasMapRestrictions() then
 				currentTank, tankUnitID = self:GetCurrentTank()
 				if not currentTank then
 					DBM:Debug("Tank Detection Failure in HudMapOnDelphuricBeam", 2)
@@ -354,7 +354,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDelphuricBeam:Yell()
 		end
 		--TODO, phase 3 lines need exact location of the echo ( map coords )
-		if self.Options.HudMapOnDelphuricBeam and not DBM.Options.EnablePatchRestrictions then
+		if self.Options.HudMapOnDelphuricBeam and not self:HasMapRestrictions() then
 			self:Unschedule(checkPlayerDot)
 			self:Schedule(0.3, checkPlayerDot, self, args.spellName)--Give player just a dot if they don't end up with debuff
 			--Always put dots up
