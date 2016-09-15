@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 204962 205088",
 	"SPELL_DAMAGE 204762",
 	"SPELL_MISSED 204762",
-	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL"
+	"UNIT_DIED"
+--	"CHAT_MSG_MONSTER_YELL"
 )
 
 --TODO, change fel slam to dodge if tank can actually dodge it.
@@ -21,7 +21,7 @@ local warnSummonBeasts				= mod:NewSpellAnnounce(204966, 2)
 local warnShadowBomb				= mod:NewTargetAnnounce(204962, 3)
 --local warningPortalNow				= mod:NewAnnounce("WarningPortalNow", 2, 57687)
 local warningPortalSoon				= mod:NewAnnounce("WarningPortalSoon", 1, 57687)
-local warningBossNow				= mod:NewAnnounce("WarningBossNow", 4, 33341)
+--local warningBossNow				= mod:NewAnnounce("WarningBossNow", 4, 33341)
 
 local specWarnShadowBomb			= mod:NewSpecialWarningMoveAway(204962, nil, nil, nil, 1, 2)--Malgath bomb debuff.
 local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(204963, "HasInterrupt", nil, nil, 1, 2)--Malgath interruptable aoe
@@ -30,7 +30,7 @@ local specWarnFelSlam				= mod:NewSpecialWarningSpell(205090, "Tank", nil, nil, 
 local specWarnFelEnergy				= mod:NewSpecialWarningMove(204762, nil, nil, nil, 2, 2)--Felguard Axe damage
 
 local timerPortal					= mod:NewTimer(122, "TimerPortal", 57687, nil, nil, 6)
-local timerShieldDestruction		= mod:NewNextTimer(12.5, 202312, nil, nil, nil, 1)--Time between boss yell and shield coming down.
+--local timerShieldDestruction		= mod:NewNextTimer(12.5, 202312, nil, nil, nil, 1)--Time between boss yell and shield coming down.
 
 local voiceShadowBomb				= mod:NewVoice(204962)--runout
 local voiceShadowBoltVolley			= mod:NewVoice(204963, "HasInterrupt")--kickcast
@@ -91,6 +91,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--[[
 function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
 	--Boss only yells when he's spawning a boss (including himself), otherwise he's quiet
 	if mob == L.Malgath then--Fact this has to be localized because blizzard didn't put him anywhere in journal, is stupid
@@ -98,3 +99,4 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
 		timerShieldDestruction:Start()
 	end
 end
+--]]

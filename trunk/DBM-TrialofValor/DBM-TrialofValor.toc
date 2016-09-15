@@ -1,0 +1,19 @@
+﻿## Interface: 70000
+## X-Min-Interface: 70000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Trial of Valor|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMTrialofValor_AllSavedVars
+## SavedVariablesPerCharacter: DBMTrialofValor_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: LEG
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 054
+## X-DBM-Mod-MapID: 1648
+## X-DBM-Mod-MinCoreRevision: 14737
+localization.en.lua
+Odyn.lua
+Guarm.lua
+Helya.lua
