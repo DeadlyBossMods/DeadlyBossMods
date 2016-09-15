@@ -1937,7 +1937,7 @@ do
 			DBM:AddMsg(DBM_CORE_LAG_CHECKING)
 			C_TimerAfter(5, function() DBM:ShowLag() end)
 		elseif cmd:sub(1, 3) == "hud" then
-			if DBM.Options.EnablePatchRestrictions and IsInInstance() then
+			if DBM:HasMapRestrictions() then
 				DBM:AddMsg(DBM_CORE_NO_HUD)
 				return
 			end
@@ -2031,7 +2031,7 @@ do
 				DBM:AddMsg(DBM_CORE_HUD_SUCCESS:format(strFromTime(hudDuration)))
 			end
 		elseif cmd:sub(1, 5) == "arrow" then
-			if DBM.Options.EnablePatchRestrictions and IsInInstance() then
+			if DBM:HasMapRestrictions() then
 				DBM:AddMsg(DBM_CORE_NO_ARROW)
 				return
 			end
@@ -2088,7 +2088,7 @@ do
 			DBM.Options.DebugMode = DBM.Options.DebugMode == false and true or false
 			DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
 		elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
-			if DBM.Options.EnablePatchRestrictions and IsInInstance() then
+			if DBM:HasMapRestrictions() then
 				DBM:AddMsg("Location debug not available do to instance restrictions")
 				return
 			end
@@ -6000,8 +6000,7 @@ do
 	local autoTLog = false
 	
 	local function isCurrentContent()
-		if LastInstanceMapID == 1205 or LastInstanceMapID == 1228 or LastInstanceMapID == 1448 or --Draenor (Remove August 30th)
-		LastInstanceMapID == 1520 or LastInstanceMapID == 1530 or LastInstanceMapID == 1220 then--Legion
+		if LastInstanceMapID == 1520 or LastInstanceMapID == 1530 or LastInstanceMapID == 1220 then--Legion
 			return true
 		end
 		return false
@@ -6115,8 +6114,15 @@ function DBM:GetGroupSize()
 	return LastGroupSize
 end
 
+function DBM:HasMapRestrictions()
+	--Restrictions active in all party, raid, pvp, arena maps. No restrictions in "none" or "scenario"
+	if (wowTOC >= 70100 or self.Options.EnablePatchRestrictions) and IsInInstance() and not C_Scenario.IsInScenario() then
+		return true
+	end
+	return false
+end
+
 function DBM:PlaySoundFile(path, ignoreSFX)
---	if wowTOC == 70000 then return end--Check if this is fixed in newer build
 	local soundSetting = self.Options.UseSoundChannel
 	if soundSetting == "Dialog" then
 		PlaySoundFile(path, "Dialog")
@@ -6128,7 +6134,6 @@ function DBM:PlaySoundFile(path, ignoreSFX)
 end
 
 function DBM:PlaySound(path)
-	if wowTOC == 70000 then return end--Check if this is fixed in newer build
 	local soundSetting = self.Options.UseSoundChannel
 	if soundSetting == "Master" then
 		PlaySound(path, "Master")
@@ -7162,6 +7167,7 @@ do
 end
 
 bossModPrototype.AntiSpam = DBM.AntiSpam
+bossModPrototype.HasMapRestrictions = DBM.HasMapRestrictions
 bossModPrototype.GetUnitCreatureId = DBM.GetUnitCreatureId
 bossModPrototype.GetCIDFromGUID = DBM.GetCIDFromGUID
 bossModPrototype.IsCreatureGUID = DBM.IsCreatureGUID
