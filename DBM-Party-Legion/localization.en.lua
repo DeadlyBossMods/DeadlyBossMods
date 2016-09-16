@@ -379,3 +379,65 @@ L = DBM:GetModLocalization("VoWTrash")
 L:SetGeneralLocalization({
 	name =	"Vault of Wardens Trash"
 })
+
+-----------------------
+-- <<<Return To Karazhan>>> --
+-----------------------
+-----------------------
+-- Maiden of Virtue --
+-----------------------
+L= DBM:GetModLocalization(1825)
+
+-----------------------
+-- Opera Hall: Wikket  --
+-----------------------
+L= DBM:GetModLocalization(1820)
+
+-----------------------
+-- Opera Hall: Westfall Story --
+-----------------------
+L= DBM:GetModLocalization(1826)
+
+-----------------------
+-- Opera Hall: Beautiful Beast  --
+-----------------------
+L= DBM:GetModLocalization(1827)
+
+-----------------------
+-- Attumen the Huntsman --
+-----------------------
+L= DBM:GetModLocalization(1835)
+
+-----------------------
+-- Moroes --
+-----------------------
+L= DBM:GetModLocalization(1837)
+
+-----------------------
+-- The Curator --
+-----------------------
+L= DBM:GetModLocalization(1836)
+
+-----------------------
+-- Shade of Medivh --
+-----------------------
+L= DBM:GetModLocalization(1817)
+
+-----------------------
+-- Mana Devourer --
+-----------------------
+L= DBM:GetModLocalization(1818)
+
+-----------------------
+-- Viz'aduum the Watcher --
+-----------------------
+L= DBM:GetModLocalization(1838)
+
+-----------------------
+--Return To Karazhan Trash
+-----------------------
+L = DBM:GetModLocalization("RTKTrash")
+
+L:SetGeneralLocalization({
+	name =	"Return To Karazhan Trash"
+})

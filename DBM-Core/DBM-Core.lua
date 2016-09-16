@@ -1185,7 +1185,7 @@ do
 							sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or mhuge) or mhuge,
 							type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 							category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
-							name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or "Unknown",
+							name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or DBM_CORE_UNKNOWN,
 							mapId			= mapIdTable,
 							subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 							oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
@@ -4368,8 +4368,8 @@ do
 			if not ver or not (ver == "2") then return end--Ignore old versions
 			if DBM:AntiSpam(5, "GCB") then
 				if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
-				local bossName = EJ_GetEncounterInfo(modId) or UNKNOWN
-				local difficultyName = UNKNOWN
+				local bossName = EJ_GetEncounterInfo(modId) or DBM_CORE_UNKNOWN
+				local difficultyName = DBM_CORE_UNKNOWN
 				difficulty = tonumber(difficulty)
 				if difficulty == 16 then
 					difficultyName = PLAYER_DIFFICULTY6
@@ -4387,8 +4387,8 @@ do
 			if not ver or not (ver == "3") then return end--Ignore old versions
 			if DBM:AntiSpam(5, "GCE") then
 				if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
-				local bossName = EJ_GetEncounterInfo(modId) or UNKNOWN
-				local difficultyName = UNKNOWN
+				local bossName = EJ_GetEncounterInfo(modId) or DBM_CORE_UNKNOWN
+				local difficultyName = DBM_CORE_UNKNOWN
 				difficulty = tonumber(difficulty)
 				if difficulty == 16 then
 					difficultyName = PLAYER_DIFFICULTY6
@@ -4411,7 +4411,7 @@ do
 			lastBossEngage[modId..realm] = GetTime()
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 				modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-				local bossName = modId and EJ_GetEncounterInfo(modId) or name or UNKNOWN
+				local bossName = modId and EJ_GetEncounterInfo(modId) or name or DBM_CORE_UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(bossName, floor(health), sender))
 			end
 		end
@@ -4422,7 +4422,7 @@ do
 			lastBossDefeat[modId..realm] = GetTime()
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 				modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-				local bossName = modId and EJ_GetEncounterInfo(modId) or name or UNKNOWN
+				local bossName = modId and EJ_GetEncounterInfo(modId) or name or DBM_CORE_UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(bossName, sender))
 			end
 		end
@@ -4434,7 +4434,7 @@ do
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 				local _, toonName = BNGetGameAccountInfo(sender)
 				modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-				local bossName = modId and EJ_GetEncounterInfo(modId) or name or UNKNOWN
+				local bossName = modId and EJ_GetEncounterInfo(modId) or name or DBM_CORE_UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_ENGAGED:format(bossName, floor(health), toonName))
 			end
 		end
@@ -4446,7 +4446,7 @@ do
 			if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 				local _, toonName = BNGetGameAccountInfo(sender)
 				modId = tonumber(modId)--If it fails to convert into number, this makes it nil
-				local bossName = modId and EJ_GetEncounterInfo(modId) or name or UNKNOWN
+				local bossName = modId and EJ_GetEncounterInfo(modId) or name or DBM_CORE_UNKNOWN
 				DBM:AddMsg(DBM_CORE_WORLDBOSS_DEFEATED:format(bossName, toonName))
 			end
 		end
@@ -4724,8 +4724,8 @@ do
 			end
 		elseif prefix == "Transcriptor" and msg then
 			if msg:find("spell:") and (DBM.Options.DebugLevel > 2 or (Transcriptor and Transcriptor:IsLogging())) then
-				local spellId = string.match(msg, "spell:(%d+)") or UNKNOWN
-				local spellName = string.match(msg, "h%[(.-)%]|h") or UNKNOWN
+				local spellId = string.match(msg, "spell:(%d+)") or DBM_CORE_UNKNOWN
+				local spellName = string.match(msg, "h%[(.-)%]|h") or DBM_CORE_UNKNOWN
 				local message = "RAID_BOSS_WHISPER on "..sender.." with spell of "..spellName.." ("..spellId..")"
 				self:Debug(message)
 			end
