@@ -1211,7 +1211,7 @@ do
 							for k, v in ipairs(self.AddOns[#self.AddOns].subTabs) do
 								local id = tonumber(self.AddOns[#self.AddOns].subTabs[k])
 								if id then
-									self.AddOns[#self.AddOns].subTabs[k] = GetRealZoneText(id):trim()
+									self.AddOns[#self.AddOns].subTabs[k] = GetRealZoneText(id):trim() or id
 								else
 									self.AddOns[#self.AddOns].subTabs[k] = (self.AddOns[#self.AddOns].subTabs[k]):trim()
 								end
