@@ -187,13 +187,6 @@ do
 				info.arg1 = 5
 				info.checked = (mainFrame.range == 5)
 				UIDropDownMenu_AddButton(info, 2)
-
-				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(6)
-				info.func = setRange
-				info.arg1 = 6
-				info.checked = (mainFrame.range == 6)
-				UIDropDownMenu_AddButton(info, 2)
 				
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(8)
@@ -593,9 +586,10 @@ do
 				if restricted then--API restrictions are in play, so pretend we're back in BC
 					--Start at bottom and work way up.
 					--Definitely not most efficient way of doing it. Refactor later when 7.1 hits PTR
+					--All ranges aer tested and compared against UnitDistanceSquared.
+					--Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8. bandages 18 even though spell range is 15, etc. Acorn actually is 5 in both though
 					if IsItemInRange(37727, uId) then range = 5--Ruby Acorn
-					elseif IsItemInRange(63427, uId) then range = 6--Worgsaw
-					elseif IsItemInRange(34368, uId) then range = 8--Attuned Crystal Cores
+					elseif IsItemInRange(63427, uId) then range = 8--Worgsaw
 					elseif CheckInteractDistance(uId, 3) then range = 10
 					elseif CheckInteractDistance(uId, 2) then range = 11
 					elseif IsItemInRange(6450, uId) then range = 18--Bandages. (despite popular sites saying it's 15 yards, it's actually 18 yards erified even by UnitDistanceSquared
@@ -702,8 +696,7 @@ local getDistanceBetween
 do
 	local function itsBCAgain(uId)
 		if IsItemInRange(37727, uId) then return 5
-		elseif IsItemInRange(63427, uId) then return 6
-		elseif IsItemInRange(34368, uId) then return 8
+		elseif IsItemInRange(63427, uId) then return 8
 		elseif CheckInteractDistance(uId, 3) then return 10
 		elseif CheckInteractDistance(uId, 2) then return 11
 		elseif IsItemInRange(6450, uId) then return 18
