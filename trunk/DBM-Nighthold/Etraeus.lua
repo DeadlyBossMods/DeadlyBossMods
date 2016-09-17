@@ -117,7 +117,6 @@ local voiceWorldDevouringForce		= mod:NewVoice(216909)--farfromline
 
 
 mod:AddRangeFrameOption("5/8")
---mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddHudMapOption("HudMapOnConjunction", 205408)
 mod:AddBoolOption("ShowNeutralColor", false)
 mod:AddInfoFrameOption(205408)--really needs a "various" option
