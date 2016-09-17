@@ -81,7 +81,7 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_DIED(args)
-	local z = mod:GetCIDFromGUID(args.destGUID)
+	local z = self:GetCIDFromGUID(args.destGUID)
 	if z == 102246 or z == 101995 or z == 101976 or z == 101950 or z == 102431 or z == 101951 then  -- bosses (at least one is missing, Saelorn)
 		timerPortal:Start(30)--30-35
 		warningPortalSoon:Schedule(25)
