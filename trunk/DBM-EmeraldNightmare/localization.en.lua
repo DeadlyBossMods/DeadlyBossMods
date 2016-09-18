@@ -22,6 +22,12 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1738)
 
+L:SetOptionLocalization({
+	InfoFrameBehavior	= "Set information InfoFrame shows during encounter",
+	Fixates				= "Show players affected by Fixate",
+	Adds				= "Show add counts for all add types"
+})
+
 ---------------------------
 -- Elerethe Renferal --
 ---------------------------
