@@ -94,7 +94,8 @@ local voiceNightmarishFury			= mod:NewVoice(210984)--defensive
 local voiceGroundSlam				= mod:NewVoice(208689)--targetyou/watchwave
 
 mod:AddRangeFrameOption(8, 215128)
-mod:AddInfoFrameOption("ej13187")
+mod:AddInfoFrameOption(210099)
+mod:AddDropdownOption("InfoFrameBehavior", {"Fixates", "Adds"}, "Fixates", "misc")
 
 mod.vb.DominatorCount = 0
 mod.vb.CorruptorCount = 0
@@ -170,8 +171,13 @@ function mod:OnCombatStart(delay)
 		timerDeathBlossomCD:Start(55)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS)
-		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
+		if self.Options.InfoFrameSpeed == "Fixates" then
+			DBM.InfoFrame:SetHeader(GetSpellInfo(210099))
+			DBM.InfoFrame:Show(5, "playerbaddebuff", 210099)
+		else
+			DBM.InfoFrame:SetHeader(UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
+		end
 	end
 	if self:AntiSpam(10, 2) then
 		--Do nothing. Just to avoid spam on pull
