@@ -11,7 +11,6 @@ L.Website					= "Visita nuestros foros de debate y asistencia técnica en |cFF73
 L.WebsiteButton				= "Foro"
 
 L.OTabBosses	= "Jefes"
-L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options	 	= "Opciones generales"
 L.TabCategory_OTHER    		= "Otros módulos"
@@ -32,9 +31,6 @@ L.Mod_Enabled		= "Habilitar módulo"
 L.Mod_Reset		= "Cargar opciones por defecto"
 L.Reset 		= "Restaurar"
 
-L.Enable  		= ENABLE
-L.Disable		= DISABLE
-
 L.NoSound		= "Sin sonido"
 
 L.IconsInUse	= "Iconos usados por este módulo"
@@ -45,7 +41,7 @@ L.Statistic_Kills	= "Victorias:"
 L.Statistic_Wipes	= "Derrotas:"
 L.Statistic_Incompletes		= "Inacabados:"--For scenarios, TODO, figure out a clean way to replace any Statistic_Wipes with Statistic_Incompletes for scenario mods
 L.Statistic_BestKill	= "Mejor victoria:"
-L.Statistic_BestRank		= "Mejor rango:"--Maybe not get used, not sure yet, localize anyways
+L.Statistic_BestRank		= "Mejor nivel:"--Maybe not get used, not sure yet, localize anyways
 
 -- Tab: General Core Options
 L.General 					= "Opciones generales de DBM"
@@ -59,8 +55,6 @@ L.Latency_Text				= "Latencia máxima para sincronización: %d"
 L.ModelOptions				= "Opciones del visualizador de modelos 3D"
 L.EnableModels				= "Mostrar modelos 3D en opciones de jefe"
 L.ModelSoundOptions			= "Sonido"
-L.ModelSoundShort			= SHORT
-L.ModelSoundLong			= TOAST_DURATION_LONG
 
 L.Button_RangeFrame			= "Mostrar/ocultar\nmarco de distancia"
 L.Button_InfoFrame			= "Mostrar/ocultar\nmarco de información"
@@ -286,13 +280,13 @@ L.HideGarrisonUpdates		= "Deshabilitar botón de ciudadela en encuentros"
 L.HideGuildChallengeUpdates	= "Deshabilitar botón de desafíos de hermandad en encuentros"
 L.HideTooltips				= "Deshabilitar descripciones en encuentros"
 L.DisableSFX				= "Deshabilitar el canal de efectos de sonido en encuentros"
-L.HideApplicantAlerts		= "Deshabilitar alertas de candidatos en grupos ya formados"
-L.HideApplicantAlertsFull	= "Si el grupo está completo"
-L.HideApplicantAlertsNotL	= "Si no eres el líder del grupo (aplica el filtro de grupo completo si eres el líder)"
 L.SpamBlockSayYell			= "Deshabilitar bocadillos de chat"
 L.DisableCinematics			= "Deshabilitar cinemáticas"
 L.AfterFirst				= "Tras ver la cinemática por primera vez"
 L.Always					= ALWAYS
+L.DisableTalkingHead		= "Desactivar cabeza parlante"
+L.CombatOnly				= "En combate"
+L.RaidCombat				= "En combate (solo en jefes)"
 
 -- Tab: Extra Features
 L.Panel_ExtraFeatures		= "Funciones adicionales"
@@ -316,9 +310,9 @@ L.ShowRespawn				= "Mostrar temporizador para la reaparición de jefe tras cada 
 L.ShowQueuePop				= "Mostrar temporizador para eltiempo restante para aceptar avisos del buscador"
 --
 L.Area_AutoLogging			= "Opciones del registro automático"
-L.AutologBosses				= "Grabar encuentros automáticamente con el registro de combate de Blizzard (usa '/dbm pull' antes de iniciar un encuentro para comenzar a grabar antes, de forma que tenga en cuenta la toma de pociones y otras acciones)"
-L.AdvancedAutologBosses		= "Grabar encuentros automáticamente con Transcriptor"
-L.LogOnlyRaidBosses			= "Grabar solo encuentros de jefe de banda de la expansión actual (excluye el buscador de bandas)"
+L.AutologBosses				= "Registrar encuentros automáticamente con el registro de combate de Blizzard (usa '/dbm pull' antes de iniciar un encuentro para comenzar a grabar antes, de forma que tenga en cuenta la toma de pociones y otras acciones)"
+L.AdvancedAutologBosses		= "Registrar encuentros automáticamente con Transcriptor"
+L.LogOnlyRaidBosses			= "Registrar solo encuentros de jefe de banda de la expansión actual (excluye el buscador de bandas)"
 --
 L.Area_3rdParty				= "Opciones de addons de terceros"
 L.ShowBBOnCombatStart		= "Realizar comprobación de beneficios de Big Brother al iniciar un encuentro"
