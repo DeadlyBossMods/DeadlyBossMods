@@ -27,9 +27,9 @@ local specWarnQuarantine			= mod:NewSpecialWarningTarget(195804, false, nil, nil
 local yellQuarantine				= mod:NewYell(195804)
 local specWarnCleansing				= mod:NewSpecialWarningSpell(196115, nil, nil, nil, 2, 2)
 
-local timerSupressionCD				= mod:NewNextTimer(32.5, 196070, nil, nil, nil, 3)
-local timerQuarantineCD				= mod:NewNextTimer(32.5, 195804, nil, nil, nil, 3)
-local timerCleansingCD				= mod:NewNextTimer(32.5, 196115, nil, nil, nil, 2)
+local timerSupressionCD				= mod:NewNextTimer(46, 196070, nil, nil, nil, 3)
+local timerQuarantineCD				= mod:NewNextTimer(46, 195804, nil, nil, nil, 3)
+local timerCleansingCD				= mod:NewNextTimer(46, 196115, nil, nil, nil, 2)
 
 local voiceSupression				= mod:NewVoice(196070)--runout/keeprun
 local voiceQuarantine				= mod:NewVoice(195804)--readyrescue
