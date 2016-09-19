@@ -25,8 +25,8 @@ mod:RegisterEventsInCombat(
 --]]
 local warnCurseofWitch				= mod:NewTargetAnnounce(193698, 3)
 
-local specWarnStaticNova			= mod:NewSpecialWarningMoveTo(193597, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge:format(193597), nil, 3)
-local specWarnFocusedLightning		= mod:NewSpecialWarningMoveTo(193611, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon:format(193611), nil, 1)
+local specWarnStaticNova			= mod:NewSpecialWarning("specWarnStaticNova", nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge:format(193597), nil, 3)
+local specWarnFocusedLightning		= mod:NewSpecialWarning("specWarnFocusedLightning", nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon:format(193611), nil, 1)
 local specWarnAdds					= mod:NewSpecialWarningSwitch(193682, "Tank")
 
 local timerAddsCD					= mod:NewCDTimer(47, 193682, nil, nil, nil, 1)--47-51
@@ -36,9 +36,6 @@ local timerFocusedLightningCD		= mod:NewNextTimer(15.5, 193611, nil, nil, nil, 3
 local countdownStaticNova			= mod:NewCountdown(34, 193597)
 
 --local voiceCurtainOfFlame			= mod:NewVoice(153392)
-
-local land = GetSpellInfo(166716)
-local water = RELIC_SLOT_TYPE_WATER
 
 function mod:OnCombatStart(delay)
 	timerStaticNovaCD:Start(10.5-delay)
@@ -59,10 +56,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnAdds:Show()
 		timerAddsCD:Start()
 	elseif spellId == 193597 then
-		specWarnStaticNova:Show(land)
+		specWarnStaticNova:Show()
 		timerFocusedLightningCD:Start()
 		countdownStaticNova:Start()
-		specWarnFocusedLightning:Schedule(10, water)--5 seconds before focused lightning cast
+		specWarnFocusedLightning:Schedule(10)--5 seconds before focused lightning cast
 --	elseif spellId == 193611 then--Maybe not needed at all
 		
 	end
