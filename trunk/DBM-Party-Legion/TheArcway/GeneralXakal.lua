@@ -11,8 +11,7 @@ mod.onlyMythic = true
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 197776 212030 197810",
-	"CHAT_MSG_MONSTER_YELL"
+	"SPELL_CAST_START 197776 212030 197810"
 )
 
 --TODO, evalulate normal mode tmers more for slash and fissure, seem longer cded there.
@@ -21,10 +20,10 @@ local specWarnFissure				= mod:NewSpecialWarningDodge(197776, nil, nil, nil, 2, 
 local specWarnSlash					= mod:NewSpecialWarningSpell(212030, nil, nil, nil, 2, 2)
 local specWarnSlam					= mod:NewSpecialWarningSpell(197810, nil, nil, nil, 3, 2)
 
-local timerBatCD					= mod:NewNextTimer(20, "ej12489", nil, nil, nil, 1, 183219)--Independant from boss and always 20-20.5
+local timerBatCD					= mod:NewNextTimer(31, "ej12489", nil, nil, nil, 1, 183219)--31.1 i saw for lowest time but might be some variation
 --Both 13 unless delayed by other interactions. Seems similar to archimondes timer code with a hard ICD mechanic.
-local timerFissureCD				= mod:NewCDTimer(13.2, 197776, nil, nil, nil, 3)
-local timerSlashCD					= mod:NewCDTimer(13.2, 212030, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerFissureCD				= mod:NewCDTimer(23, 197776, nil, nil, nil, 3)--Maybe 23 now?
+local timerSlashCD					= mod:NewCDTimer(25, 212030, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--25-30
 local timerSlamCD					= mod:NewCDTimer(47, 197810, nil, nil, nil, 2)--Possibly 40 but delayed by ICD triggering
 
 local voiceBat						= mod:NewVoice("ej12489", "Tank")--mobsoon
@@ -33,6 +32,7 @@ local voiceSlash					= mod:NewVoice(212030)--watchwave
 local voiceSlam						= mod:NewVoice(197810)--carefly
 
 --Boss seems to have intenal 6 second ICD and cannot cast any two spells within 6 seconds of another (minus summon bats)
+--[[
 local function updateAlltimers(ICD)
 	if timerFissureCD:GetRemaining() < ICD then
 		local elapsed, total = timerFissureCD:GetTime()
@@ -56,11 +56,22 @@ local function updateAlltimers(ICD)
 		timerSlamCD:Update(elapsed, total+extend)
 	end
 end
+--]]
+
+--"<4.91 00:06:09> [ENCOUNTER_START] ENCOUNTER_START#1828#General Xakal#23#5", -- [7]
+--"<25.11 00:06:30> [CLEU] SPELL_DAMAGE#Creature-0-3887-1516-9671-100393-00005B6FAC#Dread Felbat#Player-1169-07BF1788#Orlene-CenarionCircle#197788#Bombardment#389587#-1", --
+local function blizzardHatesBossMods(self)
+	specWarnBat:Show()
+	voiceBat:Play("mobsoon")
+	timerBatCD:Start()
+	self:Schedule(31, blizzardHatesBossMods, self)
+end
 
 function mod:OnCombatStart(delay)
 	timerFissureCD:Start(5-delay)
-	timerBatCD:Start(10-delay)
 	timerSlashCD:Start(13-delay)
+	timerBatCD:Start(20-delay)
+	self:Schedule(20, blizzardHatesBossMods, self)
 	timerSlamCD:Start(35.8-delay)
 end
 
@@ -70,30 +81,16 @@ function mod:SPELL_CAST_START(args)
 		specWarnFissure:Show()
 		voiceFissure:Play("watchstep")
 		timerFissureCD:Start()
-		updateAlltimers(6)
+		--updateAlltimers(6)
 	elseif spellId == 212030 then
 		specWarnSlash:Show()
 		voiceSlash:Play("watchwave")
 		timerSlashCD:Start()
-		updateAlltimers(6)
+		--updateAlltimers(6)
 	elseif spellId == 197810 then
 		specWarnSlam:Show()
 		voiceSlam:Play("carefly")
 		timerSlamCD:Start()
-		updateAlltimers(7)--Verify is actually 7 and not 6 like others
-	end
-end
-
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.batSpawn then
-		self:SendSync("summonBat")
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "summonBat" then
-		specWarnBat:Show()
-		voiceBat:Play("mobsoon")
-		timerBatCD:Start()
+		--updateAlltimers(7)--Verify is actually 7 and not 6 like others
 	end
 end

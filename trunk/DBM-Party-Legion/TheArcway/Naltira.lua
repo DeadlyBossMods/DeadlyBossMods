@@ -18,11 +18,12 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE 200040",
 	"SPELL_PERIODIC_MISSED 200040",
 	"UNIT_SPELLCAST_SUCCEEDED boss1",
-	"UNIT_SPELLCAST_CHANNEL_STOP boss1"
+	"UNIT_SPELLCAST_CHANNEL_START boss1"
 )
 
 --TODO timers are iffy.
 --TODO, blink scanning should work but may not if logic errors. May be spammy in certain situations such as pets/etc taunting boss
+--["200227-Tangled Web"] = "pull:35.2, 26.6, 21.8",
 local warnBlink					= mod:NewTargetAnnounce(199811, 4)
 local warnWeb					= mod:NewTargetAnnounce(200284, 3)
 
@@ -38,45 +39,15 @@ local timerVenomCD				= mod:NewCDTimer(30, 200024, nil, nil, nil, 3)--30-33
 local voiceBlink				= mod:NewVoice(199811)--runaway
 local voiceVenomGTFO			= mod:NewVoice(199809)--runaway
 
---mod:AddHudMapOption("HudMapOnBlink", 199811)
 mod:AddSetIconOption("SetIconOnWeb", 200284)
 
 mod.vb.blinkCount = 0
 
-function mod:BlinkTarget(targetname, uId)
---	self:BossUnitTargetScannerAbort()
-	if not targetname then 
-		self:BossUnitTargetScanner("boss1", "BlinkTarget")
-		return
-	end
-	if targetname == UnitName("player") then
-		specWarnBlink:Show()
-		voiceBlink:Play("runaway")
-		yellBlink:Yell()
-	elseif self:CheckNearby(5, targetname) and self:AntiSpam(2.5, 2) then--Near warning disabled on mythic, mythic mechanic requires being near it on purpose. Plus raid always stacked
-		specWarnBlinkNear:Show(targetname)
-		voiceBlink:Play("runaway")
-	else
-		warnBlink:Show(targetname)--No reason to show this if you got a special warning. so reduce spam and display this only to let you know jump is far away and you're safe
-	end
-	--self:BossTargetScanner(98207, "BlinkTarget", 0.1, 20, true, nil, nil, targetname)
---	if self.Options.HudMapOnBlink then
---		--Static marker, boss doesn't move once a target is picked. it's aimed at static location player WAS
---		DBMHudMap:RegisterStaticMarkerOnPartyMember(154989, "highlight", targetname, 5, 2.5, 1, 0, 0, 0.5, nil, 1):Pulse(0.5, 0.5)
---	end
-end
-
 function mod:OnCombatStart(delay)
 	self.vb.blinkCount = 0
 	timerBlinkCD:Start(15-delay)
-	timerVenomCD:Start(21-delay)
-	timerWebCD:Start(30-delay)
-end
-
-function mod:OnCombatEnd()
---	if self.Options.HudMapOnBlink then
---		DBMHudMap:Disable()
---	end
+	timerVenomCD:Start(25-delay)
+	timerWebCD:Start(35-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -113,27 +84,33 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---"<53.44 00:02:07> [UNIT_SPELLCAST_SUCCEEDED] Nal'tira(Omegal) [[boss1:Blink Strikes::3-2084-1516-4913-199809-00064E8ACE:199809]]", -- [197]
---"<54.03 00:02:07> [UNIT_SPELLCAST_CHANNEL_START] Nal'tira(Dayani) - spell_mage_arcaneorb - 2.5sec [[boss1:Blink Strikes::0-0-0-0-0-0000000000:199811]]", -- [201]
---It's not that much slower to just use UNIT_SPELLCAST_CHANNEL_START target and ditch scanning Will leave it this way for now for the .6 second gain though
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 199809 then--Blink Strikes begin
 		timerBlinkCD:Start()
 		self.vb.blinkCount = 0
-		self:BossUnitTargetScanner(uId, "BlinkTarget")
---		self:BossTargetScanner(98207, "BlinkTarget", 0.1, 20, true)--Filter tank on first jump
 	end
 end
 
-function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, _, spellGUID)
+--UNIT_SPELLCAST_CHANNEL_STOP method dropped, not because it wasn't returning a valid target, but because DBMs target scanner methods don't work well with pets and fail to announce all strikes because of it
+--This method doesn't require target scanning but is 0.6 seconds slower, but won't have a chance to fail if boss targets stupid things like army or spirit beast.
+function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 199811 then--Blink Strikes Channel ending
 		self.vb.blinkCount = self.vb.blinkCount + 1
-		if self.vb.blinkCount == 2 then
-			self:BossUnitTargetScannerAbort()
-		elseif self.vb.blinkCount == 1 then
-			self:BossUnitTargetScanner(uId, "BlinkTarget")
+		local targetname = UnitExists("boss1target") and UnitName("boss1target")
+		if not targetname then 
+			return
+		end
+		if UnitIsUnit("boss1target", "player") then
+			specWarnBlink:Show()
+			voiceBlink:Play("runaway")
+			yellBlink:Yell()
+		elseif self:CheckNearby(5, targetname) and self:AntiSpam(2.5, 2) then
+			specWarnBlinkNear:Show(targetname)
+			voiceBlink:Play("runaway")
+		else
+			warnBlink:Show(targetname)
 		end
 	end
 end
