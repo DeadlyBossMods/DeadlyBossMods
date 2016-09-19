@@ -79,6 +79,11 @@ L= DBM:GetModLocalization(1480)
 --------------------------
 L= DBM:GetModLocalization(1490)
 
+L:SetWarningLocalization({
+	specWarnStaticNova			= "Nova estática - ¡ve a tierra!",
+	specWarnFocusedLightning	= "Relámpago enfocado - ¡ve al agua!"
+})
+
 -----------------------
 -- Rey Barbaprofunda --
 -----------------------
@@ -130,6 +135,10 @@ L= DBM:GetModLocalization(1488)
 -- Odyn --
 ----------
 L= DBM:GetModLocalization(1489)
+
+L:SetMiscLocalization({
+	tempestModeMessage		=	"Secuencia sin Tempestad radiante: %s. Volviendo a comprobar en 8 segundos."
+})
 
 ----------------------
 -- Enemigos menores --
@@ -367,3 +376,74 @@ L= DBM:GetModLocalization(1469)
 -- Cordana Cantovil --
 ----------------------
 L= DBM:GetModLocalization(1470)
+
+----------------------
+-- Enemigos menores --
+----------------------
+L = DBM:GetModLocalization("VoWTrash")
+
+L:SetGeneralLocalization({
+	name =	"Enemigos menores"
+})
+
+------------------------
+-- Regreso a Karazhan --
+------------------------
+------------------------
+-- Doncella de Virtud --
+------------------------
+L= DBM:GetModLocalization(1825)
+
+-----------------------
+-- Opera Hall: Wikket  --
+-----------------------
+L= DBM:GetModLocalization(1820)
+
+-----------------------
+-- Opera Hall: Westfall Story --
+-----------------------
+L= DBM:GetModLocalization(1826)
+
+-----------------------
+-- Opera Hall: Beautiful Beast  --
+-----------------------
+L= DBM:GetModLocalization(1827)
+
+------------------------
+-- Attumen el Montero --
+------------------------
+L= DBM:GetModLocalization(1835)
+
+------------
+-- Moroes --
+------------
+L= DBM:GetModLocalization(1837)
+
+-------------
+-- Curator --
+-------------
+L= DBM:GetModLocalization(1836)
+
+----------------------
+-- Sombra de Medivh --
+----------------------
+L= DBM:GetModLocalization(1817)
+
+-----------------------
+-- Devorador de maná --
+-----------------------
+L= DBM:GetModLocalization(1818)
+
+-----------------------
+-- Viz'aduum the Watcher --
+-----------------------
+L= DBM:GetModLocalization(1838)
+
+----------------------
+-- Enemigos menores --
+----------------------
+L = DBM:GetModLocalization("RTKTrash")
+
+L:SetGeneralLocalization({
+	name =	"Enemigos menores"
+})

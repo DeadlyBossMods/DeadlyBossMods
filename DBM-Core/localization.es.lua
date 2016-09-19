@@ -18,6 +18,15 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "No se ha podido cargar el módulo de %s porqu
 
 DBM_CORE_WHATS_NEW					= "Novedades de esta versión: Se ha arreglado un error que mostraba avisos erróneos de versión desfasada. Ahora DBM nunca saltará las cinemáticas de la Costa Abrupta, sin importar la configuración de usuario. Se ha añadido el módulo de Invasiones demoníacas."
 
+DBM_CORE_WHATS_NEW_LINK				= "Próximamente, muchas funciones de DBM que dependían de posiciones de unidades dejarán de funcionar. Para más información, haz clic |HDBM:forumsnews|h|cff3588ffaquí|r."
+
+--Pre Patch 7.1 Notice
+DBM_CORE_NO_RANGE_SOON				= "Nota: el radar de distancia dejará de funcionar en estancias en el parche 7.1."
+--Post Patch 7.1
+DBM_CORE_NO_RANGE					= "No se puede usar el radar de distancia en estancias. Se procederá a usar el marco de distancia por texto."
+DBM_CORE_NO_ARROW					= "No se puede usar la flecha en estancias."
+DBM_CORE_NO_HUD						= "No se puede usar el indicador en pantalla en estancias."
+
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "DBM ha desactivado el marco de distancia dinámico para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "DBM ha desactivado los avisos de esbirros para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
 DBM_CORE_DYNAMIC_MULTIPLE			= "DBM ha desactivado varias funciones para este combate debido a la falta de información sobre las diferencias según el número de jugadores."
@@ -438,6 +447,8 @@ DBM_CORE_HUD_USAGE	= {
 }
 
 DBM_ARROW_MOVABLE					= "Flecha desplazable"
+DBM_ARROW_WAY_USAGE					= "/way <x> <y>: Crea una flecha que apunta a una ubicación designada mediante coordenadas locales."
+DBM_ARROW_WAY_SUCCESS				= "Para ocultar la flecha, escribe '/dbm arrow hide' o alcanza la ubicación designada."
 DBM_ARROW_ERROR_USAGE	= {
 	"Uso de DBM-Arrow:",
 	"-----------------",

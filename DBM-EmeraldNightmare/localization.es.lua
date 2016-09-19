@@ -23,6 +23,12 @@ L:SetMiscLocalization({
 -----------------------------------------
 L= DBM:GetModLocalization(1738)
 
+L:SetOptionLocalization({
+	InfoFrameBehavior	= "Información mostrada por el marco de información",
+	Fixates				= "Jugadores afectados por Fijar",
+	Adds				= "Cantidad de esbirros de cada tipo"
+})
+
 -----------------------
 -- Elerethe Renferal --
 -----------------------
@@ -34,7 +40,7 @@ L= DBM:GetModLocalization(1744)
 L= DBM:GetModLocalization(1667)
 
 L:SetMiscLocalization({
-	SoakersText		=	"Interceptadores asignados: %"
+	SoakersText		=	"Interceptores asignados: %"
 })
 
 ------------------------------
