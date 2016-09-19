@@ -79,11 +79,8 @@ L= DBM:GetModLocalization(1480)
 L= DBM:GetModLocalization(1490)
 
 L:SetWarningLocalization({
-	--Auto localized text is used for english but use CORRECT text for your local if it's wrong
-	--Localized these to say "move to land" and "move to water" as appropriate
-	--If they localize fine in your language, then don't add at all and these auto localisations will be used
-	specWarnStaticNova			= DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto:format(GetSpellInfo(193597), GetSpellInfo(166716)),
-	specWarnFocusedLightning	= DBM_CORE_AUTO_SPEC_WARN_TEXTS.moveto:format(GetSpellInfo(193611), RELIC_SLOT_TYPE_WATER)
+	specWarnStaticNova			= "Static Nova - move to land",
+	specWarnFocusedLightning	= "Focused Lightning - move to water"
 })
 
 -----------------------
