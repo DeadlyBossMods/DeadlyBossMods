@@ -12,8 +12,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 213853 213567 213564 213852 212735 213275 213390 213083 212492",
-	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587",
-	"SPELL_AURA_REMOVED 213569 212531 213148",
+	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587 230951",
+	"SPELL_AURA_REMOVED 213569 212531 213148 230951",
 	"SPELL_PERIODIC_DAMAGE 212736 213278 213504",
 	"SPELL_PERIODIC_MISSED 212736 213278 213504",
 	"SPELL_DAMAGE 213520",
@@ -24,6 +24,8 @@ mod:RegisterEventsInCombat(
 
 --TODO, possibly dump UNIT_AURA unless that proves to actualy be better way to manage range frame
 --TODO, Tank strategies varied a bit and blizz will probably adjust behavior on annihilate so review this again later date
+--TODO, add fixate on mythic. No debuff. Player sees eyes but no debuff. Might have to do nameplate/accro target scanning to warn who has it
+--TODO, probably fix more timers. Especially mythic fire and arcane.
 --Phases
 local warnFrostPhase				= mod:NewSpellAnnounce(213864, 2)
 local warnFirePhase					= mod:NewSpellAnnounce(213867, 2)
@@ -34,6 +36,8 @@ local warnSearingBrandChosen		= mod:NewTargetAnnounce(213148, 3)
 --Animate Specials Temp, to avoid spam
 local warnFrozenTempest				= mod:NewCastAnnounce(213083, 4)
 local warnArmageddon				= mod:NewAddsLeftAnnounce(213568, 2)
+--Mythic
+local warnFelSoul					= mod:NewSpellAnnounce(230951, 3)
 
 local specWarnAnnihilate			= mod:NewSpecialWarningCount(212492, "Tank", nil, nil, 3, 2)
 local specWarnAnnihilateOther		= mod:NewSpecialWarningTaunt(212492, nil, nil, nil, 1, 2)
@@ -81,6 +85,8 @@ local timerAnimateFireCD			= mod:NewNextTimer(16, 213567, 124338, nil, nil, 1, n
 local timerAnimateArcaneCD			= mod:NewNextTimer(16, 213564, 124338, nil, nil, 1, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_DAMAGE_ICON..DBM_CORE_TANK_ICON)--"Animated" short name. Wrong tense but only short spell I can use
 --Animate Specials
 local timerArmageddon				= mod:NewCastTimer(33, 213568, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+--Mythic
+local timerFelSoul					= mod:NewBuffActiveTimer(60, 230951, nil, nil, nil, 6)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -224,6 +230,8 @@ function mod:SPELL_CAST_START(args)
 			--Better place to start arcane orb timer since it's cast 1.5 seconds after arcane phase begins and this is last annihilate in fire phase
 			timerArcaneOrbCD:Start()
 		end
+	elseif spellId == 230951 then
+		warnFelSoul:Show()
 	end
 end
 
@@ -232,14 +240,22 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 213864 or spellId == 216389 then--Icy enchantment (Two versions for some reason, probably normal/lfr version and heroic/mythic)
 		warnFrostPhase:Show()
 		voicePhaseChange:Play("phasechange")
-		timerMarkOfFrostCD:Start(18)
-		timerMarkOfFrostRepCD:Start(38)
-		timerMarkOfFrostDetonateCD:Start(68)
-		timerAnimateFrostCD:Start(75)--Timer is for cast start, which is hidden at moment, so DBM will trigger warning 3 seconds after timer ends (cast finish) right now
+		if self:IsMythic() then
+			timerMarkOfFrostCD:Start(18)
+			timerMarkOfFrostRepCD:Start(28)
+			timerMarkOfFrostDetonateCD:Start(48)
+			timerAnimateFrostCD:Start(65)--Timer is for cast start, which is hidden at moment, so DBM will trigger warning 3 seconds after timer ends (cast finish) right now
+			timerFirePhaseCD:Start(75)
+		else
+			timerMarkOfFrostCD:Start(18)
+			timerMarkOfFrostRepCD:Start(38)
+			timerMarkOfFrostDetonateCD:Start(68)
+			timerAnimateFrostCD:Start(75)--Timer is for cast start, which is hidden at moment, so DBM will trigger warning 3 seconds after timer ends (cast finish) right now
+			timerFirePhaseCD:Start(85)
+		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8, debuffFilter)
 		end
-		timerFirePhaseCD:Start(85)
 	elseif spellId == 213867 then--Fiery Enchantment
 		warnFirePhase:Show()
 		voicePhaseChange:Play("phasechange")
@@ -292,6 +308,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 213569 then--Armageddon Applied to mobs
 		self.vb.armageddonAdds = self.vb.armageddonAdds + 1
+	elseif spellId == 230951 then
+		timerFelSoul:Start()
 	end
 end
 
@@ -311,6 +329,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		countdownMarkOfFrost:Cancel()
 	elseif spellId == 213148 and args:IsPlayer() then--Searing Brand (5sec Targetting Debuff)
 		countdownSearingBrand:Cancel()
+	elseif spellId == 230951 then
+		timerFelSoul:Stop()
 	end
 end
 	
