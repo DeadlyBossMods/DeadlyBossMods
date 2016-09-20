@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: Aug 11 2016, 02:04 UTC@15097
+-- Last update: Sep 20 2016, 00:55 UTC@15226
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -83,6 +83,11 @@ L= DBM:GetModLocalization(1480)
 -----------------------
 L= DBM:GetModLocalization(1490)
 
+L:SetWarningLocalization({
+	specWarnStaticNova			= "静电新星 - 快站沙丘",
+	specWarnFocusedLightning	= "凝聚闪电 - 快进水域"
+})
+
 -----------------------
 -- King Deepbeard --
 -----------------------
@@ -134,6 +139,10 @@ L= DBM:GetModLocalization(1488)
 -- Odyn --
 -----------------------
 L= DBM:GetModLocalization(1489)
+
+L:SetMiscLocalization({
+	tempestModeMessage		=	"非明光风暴序列: %s. 8秒后再检查."
+})
 
 -----------------------
 --Halls of Valor Trash
@@ -375,8 +384,70 @@ L= DBM:GetModLocalization(1470)
 -----------------------
 --Vault of the Wardens Trash
 -----------------------
---L = DBM:GetModLocalization("")
+L = DBM:GetModLocalization("")
 
---L:SetGeneralLocalization({
---	name =	"守望者地窟小怪"
---})
+L:SetGeneralLocalization({
+	name =	"守望者地窟小怪"
+})
+
+-----------------------
+-- <<<Return To Karazhan>>> --
+-----------------------
+-----------------------
+-- Maiden of Virtue --
+-----------------------
+L= DBM:GetModLocalization(1825)
+
+-----------------------
+-- Opera Hall: Wikket  --
+-----------------------
+L= DBM:GetModLocalization(1820)
+
+-----------------------
+-- Opera Hall: Westfall Story --
+-----------------------
+L= DBM:GetModLocalization(1826)
+
+-----------------------
+-- Opera Hall: Beautiful Beast  --
+-----------------------
+L= DBM:GetModLocalization(1827)
+
+-----------------------
+-- Attumen the Huntsman --
+-----------------------
+L= DBM:GetModLocalization(1835)
+
+-----------------------
+-- Moroes --
+-----------------------
+L= DBM:GetModLocalization(1837)
+
+-----------------------
+-- The Curator --
+-----------------------
+L= DBM:GetModLocalization(1836)
+
+-----------------------
+-- Shade of Medivh --
+-----------------------
+L= DBM:GetModLocalization(1817)
+
+-----------------------
+-- Mana Devourer --
+-----------------------
+L= DBM:GetModLocalization(1818)
+
+-----------------------
+-- Viz'aduum the Watcher --
+-----------------------
+L= DBM:GetModLocalization(1838)
+
+-----------------------
+--Return To Karazhan Trash
+-----------------------
+L = DBM:GetModLocalization("RTKTrash")
+
+L:SetGeneralLocalization({
+	name =	"重返卡拉赞小怪"
+})
