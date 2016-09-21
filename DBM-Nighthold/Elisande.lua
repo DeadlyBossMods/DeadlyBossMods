@@ -133,7 +133,7 @@ local SingularityTimers = {25, 60.0, 35.0}
 local OrbTimers = {70, 30}--76.9, 12.0, 80.0 (OLD)
 --Only exist in phase 3 so first timer of course isn't variable
 local BurstTimers = {27.6, 100}
-local TormentTimers = {140, 30}-- 45.0, 79.0 (OLD)
+local TormentTimers = {140}-- 45.0, 79.0 (OLD)
 local currentTank, tankUnitID = nil, nil--not recoverable on purpose
 mod.vb.firstElementals = false
 mod.vb.slowElementalCount = 0

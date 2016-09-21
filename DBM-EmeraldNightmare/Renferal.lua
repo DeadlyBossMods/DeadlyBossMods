@@ -115,8 +115,6 @@ local function findDebuff(self, spellName)
 				local _, _, _, _, _, _, expires = UnitDebuff("Player", spellName)
 				local debuffTime = expires - GetTime()
 				if debuffTime then
-					local roundedTime = math.floor(debuffTime+0.5)
-					yellNecroticVenom:Yell(roundedTime)
 					yellNecroticVenom:Schedule(debuffTime - 1, 1)
 					yellNecroticVenom:Schedule(debuffTime - 2, 2)
 					yellNecroticVenom:Schedule(debuffTime - 3, 3)
@@ -124,8 +122,8 @@ local function findDebuff(self, spellName)
 			end
 		end
 	end
-	if found == 0 and scanTime < 6 then--Scan for 3 sec, not forever.
-		self:Schedule(0.5, findDebuff, self, spellName)--Check again if we didn't find any yet
+	if found == 0 and scanTime < 6 then--Scan for 1.2 sec, not forever.
+		self:Schedule(0.2, findDebuff, self, spellName)--Check again if we didn't find any yet
 	end
 end
 
@@ -194,7 +192,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 215443 then
 		scanTime = 0
 		self.vb.venomCast = self.vb.venomCast + 1
-		self:Schedule(0.5, findDebuff, self, args.spellName)
+		self:Schedule(0.3, findDebuff, self, args.spellName)
 		if self.vb.venomCast < 4 then--Cast 4x per spider form
 			timerNecroticVenomCD:Start(nil, self.vb.venomCast+1)
 		end
@@ -213,7 +211,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnTwistingShadows:Show()
 			voiceTwistingShadows:Play("runout")
-			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)
+			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
 			if expires then
 				local remaining = expires-GetTime()
 				yellTwistingShadows:Schedule(remaining-1, 1)
