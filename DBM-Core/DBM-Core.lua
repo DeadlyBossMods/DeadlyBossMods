@@ -7392,7 +7392,7 @@ end
 
 function bossModPrototype:CheckNearby(range, targetname)
 	local uId = DBM:GetRaidUnitId(targetname)
-	if uId then
+	if uId and not UnitIsUnit("player", uId) then
 		local inRange = DBM.RangeCheck:GetDistance(uId)
 		if inRange and inRange < range then
 			return true
