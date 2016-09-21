@@ -28,6 +28,7 @@ mod:RegisterEventsInCombat(
 local warnVolatileRot				= mod:NewTargetAnnounce(204463, 4)
 local warnRot						= mod:NewTargetAnnounce(203096, 3)
 local warnHeartofSwarm				= mod:NewSpellAnnounce(203552, 2)
+local warnHeartofSwarmEnd			= mod:NewEndAnnounce(203552, 2)
 local warnInfestedMind				= mod:NewTargetAnnounce(205043, 4)
 
 local specWarnBreath				= mod:NewSpecialWarningDodge(202977, nil, nil, nil, 2, 2)
@@ -213,11 +214,12 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 203552 then--Heart of swarm ending
+		warnHeartofSwarmEnd:Show()
 		self.vb.breathCount = 0
 		self.vb.rotCast = 0
 		self.vb.volatileRotCast = 0
 		timerRotCD:Start(12, 1)
-		timerVolatileRotCD:Start(30, 1)--30-31
+		timerVolatileRotCD:Start(28, 1)--28-31
 		timerBreathCD:Start(43, 1)
 		countdownBreath:Start(43)
 		timerSwarmCD:Start(nil, self.vb.swarmCast+1)
