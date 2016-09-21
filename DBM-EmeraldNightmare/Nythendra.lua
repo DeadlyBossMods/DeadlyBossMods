@@ -16,6 +16,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 204463",
 	"SPELL_AURA_APPLIED 204463 203096 205043",
 	"SPELL_AURA_REMOVED 204463 203096 203552",
+	"SPELL_DAMAGE 203646",
+	"SPELL_MISSED 203646",
 	"SPELL_PERIODIC_DAMAGE 203045",
 	"SPELL_PERIODIC_MISSED 203045",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -38,6 +40,7 @@ local yellVolatileRot				= mod:NewFadesYell(204463)
 local specWarnRot					= mod:NewSpecialWarningRun(203096, nil, nil, nil, 1, 2)
 local yellRot						= mod:NewFadesYell(203096)
 local specWarnInfestedGround		= mod:NewSpecialWarningMove(203045, nil, nil, nil, 1, 2)
+local specWarnBurst					= mod:NewSpecialWarningMove(203646, nil, nil, nil, 1, 2)
 local specWarnInfestedMind			= mod:NewSpecialWarningSwitch(205043, "Dps", nil, nil, 1, 2)
 local specWarnSpreadInfestation		= mod:NewSpecialWarningInterrupt(205070, "HasInterrupt", nil, nil, 1, 2)
 
@@ -54,6 +57,7 @@ local voiceBreath					= mod:NewVoice(202977)--breathsoon
 local voiceRot						= mod:NewVoice(203096)--runout
 local voiceVolatileRot				= mod:NewVoice(204463)--runout/TauntBoss
 local voiceInfestedGround			= mod:NewVoice(203045)--runaway
+local voiceBurst					= mod:NewVoice(203646)--runaway
 local voiceInfestedMind				= mod:NewVoice(205043, "Dps")--findmc
 local voiceSpreadInfestation		= mod:NewVoice(205070, "HasInterrupt")--kickcast
 
@@ -226,6 +230,14 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 203646 and destGUID == UnitGUID("player") and self:AntiSpam(2, 3) then
+		specWarnBurst:Show()
+		voiceBurst:Play("runaway")
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 203045 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnInfestedGround:Show()
@@ -241,16 +253,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self.vb.rotCast < 5 then
 			timerRotCD:Start(nil, self.vb.rotCast+1)
 		end
-		--Assumed obsolete
---[[		if self.vb.rotCast == 1 then
---			if self:IsMythic() then
-				timerRotCD:Start(45, 2)
---			else
---				timerRotCD:Start(33, 2)--33-36
---			end
-		elseif not self:IsMythic() and self.vb.rotCast == 2 then
-			timerRotCD:Start(18.5, 3)--18.5-22
-		end--]]
 	elseif spellId == 202968 then--Infested Breath (CAST_SUCCESS and CAST_START pruned from combat log)
 		self.vb.breathCount = self.vb.breathCount + 1
 		specWarnBreath:Show(self.vb.breathCount)
