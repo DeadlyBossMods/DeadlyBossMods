@@ -43,7 +43,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SoakersText		=	"Soakers Assigned: %"
+	SoakersText		=	"Soakers Assigned: %s"
 })
 
 ---------------------------
