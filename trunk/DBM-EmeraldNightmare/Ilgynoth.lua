@@ -81,7 +81,7 @@ local timerCursedBloodCD			= mod:NewNextTimer(15, 215128, nil, nil, nil, 3)
 local countdownNightmareHorror		= mod:NewCountdown("Alt50", 210289)
 local countdownDeathBlossom			= mod:NewCountdown("AltTwo15", 218415)
 --Stage Two: The Heart of Corruption
-local countdownDarkRecon			= mod:NewCountdown("Alt50", 210781)
+local countdownDarkRecon			= mod:NewCountdown("Alt50", 210781, nil, nil, 10)
 
 --Stage One: The Ruined Ground
 local voiceNightmareCorruption		= mod:NewVoice(212886)--runaway
@@ -171,7 +171,7 @@ function mod:OnCombatStart(delay)
 		timerDeathBlossomCD:Start(55)
 	end
 	if self.Options.InfoFrame then
-		if self.Options.InfoFrameSpeed == "Fixates" then
+		if self.Options.InfoFrameBehavior == "Fixates" then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(210099))
 			DBM.InfoFrame:Show(10, "playerbaddebuff", 210099)
 		else
@@ -179,7 +179,7 @@ function mod:OnCombatStart(delay)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 		end
 	end
-	if self:AntiSpam(10, 2) then
+	if self:AntiSpam(15, 2) then
 		--Do nothing. Just to avoid spam on pull
 	end
 end
@@ -225,8 +225,8 @@ function mod:SPELL_CAST_START(args)
 		countdownDeathBlossom:Start()
 		timerDeathBlossomCD:Start()
 	elseif spellId == 223121 then
-		timerFinalTorpor:Start()
-		countdownDarkRecon:Start()
+		timerFinalTorpor:Start(90)
+		countdownDarkRecon:Start(90)
 	elseif spellId == 208689 and self:AntiSpam(2, 6) then
 		timerGroundSlamCD:Start()
 	end
