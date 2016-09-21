@@ -55,7 +55,7 @@ local voiceRoaringCacophony			= mod:NewVoice(197969)--aesoon
 mod:AddSetIconOption("SetIconOnCharge", 198006, true)
 mod:AddHudMapOption("HudMapOnCharge", 198006)
 mod:AddInfoFrameOption(198108, false)
-mod:AddBoolOption("NoAutoSoaking", false)
+mod:AddBoolOption("NoAutoSoaking2", true)
 
 mod.vb.roarCount = 0
 mod.vb.chargeCount = 0
@@ -214,7 +214,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 8, nil, nil, nil, 0.5):Appear():RegisterForAlerts(nil, args.destName)
 			end
 		end
-		if not self.Options.NoAutoSoaking then
+		if not self.Options.NoAutoSoaking2 then
 			GenerateSoakAssignment(self, secondCount, args.destName)
 		end
 	elseif spellId == 197943 then
