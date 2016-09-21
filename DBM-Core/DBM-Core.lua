@@ -42,8 +42,8 @@
 -------------------------------
 DBM = {
 	Revision = tonumber(("$Revision$"):sub(12, -3)),
-	DisplayVersion = "7.0.6 alpha", -- the string that is shown as version
-	ReleaseRevision = 15226 -- the revision of the latest stable version that is available
+	DisplayVersion = "7.0.7 alpha", -- the string that is shown as version
+	ReleaseRevision = 15244 -- the revision of the latest stable version that is available
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
