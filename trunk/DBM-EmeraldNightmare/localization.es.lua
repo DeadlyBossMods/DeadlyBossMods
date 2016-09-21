@@ -40,7 +40,7 @@ L= DBM:GetModLocalization(1744)
 L= DBM:GetModLocalization(1667)
 
 L:SetMiscLocalization({
-	SoakersText		=	"Interceptores asignados: %"
+	SoakersText		=	"Interceptores asignados: %s"
 })
 
 ------------------------------

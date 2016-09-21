@@ -37,7 +37,7 @@ L= DBM:GetModLocalization(1744)
 L= DBM:GetModLocalization(1667)
 
 L:SetMiscLocalization({
-	SoakersText		=	"吃冲击分配: %"
+	SoakersText		=	"吃冲击分配: %s"
 })
 
 ---------------------------

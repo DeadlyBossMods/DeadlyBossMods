@@ -107,10 +107,7 @@ do
 		end
 		if self.Options.SpecWarn198006moveto then
 			--if soaker special warning is disabled, this too is disabled.
-			local text = table.concat(soakTable, "<, >")
-			if text then
-				DBM:AddMsg(L.SoakersText:format(text))
-			end
+			DBM:AddMsg(L.SoakersText:format(table.concat(soakTable, "<, >")))
 		end
 	end
 end
