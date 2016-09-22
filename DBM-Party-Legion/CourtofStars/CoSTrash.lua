@@ -76,7 +76,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 209033 then
+	if spellId == 209033 and not args:IsDestTypePlayer() then
 		specWarnFortification:Show(args.destName)
 		voiceFortification:Play("dispelnow")
 	elseif spellId == 209512 and args:IsPlayer() then
