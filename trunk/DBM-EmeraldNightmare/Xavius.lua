@@ -66,7 +66,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDarkeningSoulCD				= mod:NewCDTimer(6.1, 206651, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
 local timerNightmareBladesCD			= mod:NewNextTimer(15.7, 206656, nil, nil, nil, 3)
 local timerLurkingEruptionCD			= mod:NewCDCountTimer(20.5, 208322, nil, nil, nil, 3)
-local timerCorruptionHorrorCD			= mod:NewNextCountTimer(83, 210264, nil, nil, nil, 1)
+local timerCorruptionHorrorCD			= mod:NewNextCountTimer(82.6, 210264, nil, nil, nil, 1)
 local timerCorruptingNovaCD				= mod:NewNextTimer(20, 207830, nil, nil, nil, 2)
 --Stage Two: From the Shadows
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -80,7 +80,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerNightmareTentacleCD			= mod:NewCDTimer(20, "ej12977", nil, nil, nil, 1, 93708)--226194 is an icon consideration now
 
 --Stage One: The Decent Into Madness
-local countdownCorruptionHorror			= mod:NewCountdown(83, 210264)
+local countdownCorruptionHorror			= mod:NewCountdown(82.6, 210264)
 --Stage Two: From the Shadows
 local countdownCallOfNightmares			= mod:NewCountdown(40, 205588)
 local countdownNightmareInfusion		= mod:NewCountdown("Alt61", 209443, "Tank")
