@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(1750, "DBM-EmeraldNightmare", nil, 768)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 14741 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(104636)
 mod:SetEncounterID(1877)
 mod:SetZone()
