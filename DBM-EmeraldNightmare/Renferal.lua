@@ -12,9 +12,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 212707 210948 210547 215288 210308 210326 215582",
 	"SPELL_CAST_SUCCESS 210864 215443 218630",
-	"SPELL_AURA_APPLIED 212514 210850 215449 218831 218144 218629 215582",
+	"SPELL_AURA_APPLIED 212514 215449 218831 218144 218629 215582 215307 215300",
 	"SPELL_AURA_APPLIED_DOSE 212512 215582",
-	"SPELL_AURA_REMOVED 210850 218144 218629",
+	"SPELL_AURA_REMOVED 218144 218629",
 	"SPELL_PERIODIC_DAMAGE 213124",
 	"SPELL_PERIODIC_MISSED 213124",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -27,6 +27,7 @@ local warnSpiderForm				= mod:NewSpellAnnounce(210326, 2)
 local warnFeedingTime				= mod:NewSpellAnnounce(212364, 3)
 local warnWebWrap					= mod:NewTargetAnnounce(212514, 4)
 local warnNecroticVenom				= mod:NewTargetAnnounce(218831, 3)
+local warnWebOfPain					= mod:NewTargetAnnounce(215307, 2)
 ----Mythic
 local warnNightmareSpawn			= mod:NewSpellAnnounce(218630, 3)
 --Roc Form
@@ -42,6 +43,7 @@ local specWarnWebWrap				= mod:NewSpecialWarningStack(212512, nil, 5)
 local specWarnNecroticVenom			= mod:NewSpecialWarningMoveAway(218831, nil, nil, nil, 1, 2)
 local yellNecroticVenom				= mod:NewFadesYell(218831)
 local yellViolentWinds				= mod:NewYell(218144)
+local specWarnWebofPain				= mod:NewSpecialWarningYou(215307)
 --Roc Form
 local specWarnGatheringClouds		= mod:NewSpecialWarningSpell(212707, nil, nil, nil, 1, 2)
 local specWarnDarkStorm				= mod:NewSpecialWarningMoveTo(210948, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(210948), nil, 1, 2)
@@ -101,29 +103,44 @@ mod.vb.razorWingCast = 0
 local eyeOfStorm = GetSpellInfo(211127)
 local scanTime = 0
 
-local function findDebuff(self, spellName)
+local function findDebuff(self, spellName, spellId)
 	scanTime = scanTime + 1
 	local found = 0
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
 		if UnitDebuff(uId, spellName) then
 			found = found + 1
-			warnNecroticVenom:CombinedShow(0.1, name)
-			if name == UnitName("player") then
-				specWarnNecroticVenom:Show()
-				voiceNecroticVenom:Play("runout")
-				local _, _, _, _, _, _, expires = UnitDebuff("Player", spellName)
-				local debuffTime = expires - GetTime()
-				if debuffTime then
-					yellNecroticVenom:Schedule(debuffTime - 1, 1)
-					yellNecroticVenom:Schedule(debuffTime - 2, 2)
-					yellNecroticVenom:Schedule(debuffTime - 3, 3)
+			if spellId == 210864 then
+				warnTwistingShadows:CombinedShow(0.1, self.vb.twistedCast, name)
+				if name == UnitName("player") then
+					specWarnTwistingShadows:Show()
+					voiceTwistingShadows:Play("runout")
+					local _, _, _, _, _, _, expires = UnitDebuff("Player", spellName)
+					local debuffTime = expires - GetTime()
+					if debuffTime then
+						yellTwistingShadows:Schedule(debuffTime-1, 1)
+						yellTwistingShadows:Schedule(debuffTime-2, 2)
+						yellTwistingShadows:Schedule(debuffTime-3, 3)
+					end
+				end
+			else
+				warnNecroticVenom:CombinedShow(0.1, name)
+				if name == UnitName("player") then
+					specWarnNecroticVenom:Show()
+					voiceNecroticVenom:Play("runout")
+					local _, _, _, _, _, _, expires = UnitDebuff("Player", spellName)
+					local debuffTime = expires - GetTime()
+					if debuffTime then
+						yellNecroticVenom:Schedule(debuffTime - 1, 1)
+						yellNecroticVenom:Schedule(debuffTime - 2, 2)
+						yellNecroticVenom:Schedule(debuffTime - 3, 3)
+					end
 				end
 			end
 		end
 	end
-	if found == 0 and scanTime < 6 then--Scan for 1.2 sec, not forever.
-		self:Schedule(0.2, findDebuff, self, spellName)--Check again if we didn't find any yet
+	if found == 0 and scanTime < 6 then--Scan for 1.8 sec, not forever.
+		self:Schedule(0.3, findDebuff, self, spellName, spellId)
 	end
 end
 
@@ -189,10 +206,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		elseif self.vb.twistedCast == 3 then
 			timerTwistingShadowsCD:Start(32.5, 4)
 		end
+		self:Schedule(0.5, findDebuff, self, args.spellName, spellId)
 	elseif spellId == 215443 then
 		scanTime = 0
 		self.vb.venomCast = self.vb.venomCast + 1
-		self:Schedule(0.3, findDebuff, self, args.spellName)
+		self:Schedule(0.5, findDebuff, self, args.spellName, spellId)
 		if self.vb.venomCast < 4 then--Cast 4x per spider form
 			timerNecroticVenomCD:Start(nil, self.vb.venomCast+1)
 		end
@@ -206,19 +224,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 212514 then
 		warnWebWrap:Show(args.destName)
-	elseif spellId == 210850 and args:IsDestTypePlayer() then
-		warnTwistingShadows:CombinedShow(0.5, self.vb.twistedCast, args.destName)
-		if args:IsPlayer() then
-			specWarnTwistingShadows:Show()
-			voiceTwistingShadows:Play("runout")
-			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
-			if expires then
-				local remaining = expires-GetTime()
-				yellTwistingShadows:Schedule(remaining-1, 1)
-				yellTwistingShadows:Schedule(remaining-2, 2)
-				yellTwistingShadows:Schedule(remaining-3, 3)
-			end
-		end
 	elseif spellId == 215449 or spellId == 218831 then
 		DBM:AddMsg("If you see this message, it means targetting debuffs for Necrotic Venom were added to combat log. Report this to DBM authors to help improve mods")
 	elseif spellId == 218144 then
@@ -241,6 +246,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnRakingTalonOther:Show(args.destName)
 			voiceRakingTalon:Play("tauntboss")
 		end
+	elseif spellId == 215307 or spellId == 215300 then
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if not self:IsTanking(uId) then
+			warnWebOfPain:CombinedShow(0.3, args.destName)
+			if args:IsPlayer() then
+				specWarnWebofPain:Show()
+			end
+		end
 	elseif spellId == 218629 then--Plausable nightmare spawn enable
 		
 	end
@@ -258,11 +271,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 210850 and args:IsPlayer() then
-		specWarnTwistingShadowsMove:Show()--Not a bug, it alerts you when to move to avoid your own tornado
-		voiceTwistingShadows:Play("runaway")
-		yellTwistingShadows:Cancel()
-	elseif spellId == 218144 then
+	if spellId == 218144 then
 		if self.Options.SetIconOnWinds then
 			self:SetIcon(args.destName, 0)
 		end
