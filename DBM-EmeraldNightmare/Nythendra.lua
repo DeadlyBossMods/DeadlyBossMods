@@ -100,7 +100,11 @@ function mod:OnCombatStart(delay)
 	else--Boss started at 0 energy and will go right into swarm phase after about 5 seconds
 		timerSwarmCD:Start(5-delay, 1)
 	end
-	berserkTimer:Start(-delay)
+	if self:IsEasy() then
+		berserkTimer:Start(-delay)
+	else
+		berserkTimer:Start(480-delay)
+	end
 	if self.Options.InfoFrame and self:IsMythic() then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(204506))
 		DBM.InfoFrame:Show(5, "playerdebuffstacks", 204506)
