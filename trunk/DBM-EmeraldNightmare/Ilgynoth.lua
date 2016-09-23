@@ -37,9 +37,11 @@ local warnNightmareGaze				= mod:NewSpellAnnounce(210931, 3, nil, false)--Someth
 local warnFixate					= mod:NewTargetAnnounce(210099, 2, nil, false)--Spammy so default off
 local warnNightmareExplosion		= mod:NewCastAnnounce(209471, 3)
 local warnEyeOfFate					= mod:NewStackAnnounce(210984, 2, nil, "Tank")
+local warnCorruptorTentacle			= mod:NewSpellAnnounce("ej13191", 2, 208929)
 local warnSpewCorruption			= mod:NewTargetAnnounce(208929, 3, nil, true, 2)
 local warnSpewCorruptionSoon		= mod:NewSoonAnnounce(208929, 3)
 local warnGroundSlam				= mod:NewTargetAnnounce(208689, 2)--Figure this out later
+local warnDeathglareTentacle		= mod:NewSpellAnnounce("ej13190", 2, 208697)
 local warnDeathBlossom				= mod:NewCastAnnounce(218415, 4)
 --Stage Two: The Heart of Corruption
 local warnCursedBlood				= mod:NewTargetAnnounce(215128, 3)
@@ -51,10 +53,11 @@ local specWarnNightmareHorror		= mod:NewSpecialWarningSwitch("ej13188", "-Healer
 local specWarnEyeOfFate				= mod:NewSpecialWarningStack(210984, nil, 2)
 local specWarnEyeOfFateOther		= mod:NewSpecialWarningTaunt(210984, nil, nil, nil, 1, 2)
 local specWarnMindFlay				= mod:NewSpecialWarningInterrupt(208697, "HasInterrupt", nil, 2, 1, 2)
+--local specWarnCorruptorTentacle		= mod:NewSpecialWarningSwitch("ej13191", false, nil, nil, 1)
 local specWarnSpewCorruption		= mod:NewSpecialWarningRun(208929, nil, nil, nil, 4, 2)
 local yellSpewCorruption			= mod:NewYell(208929)
 local specWarnNightmarishFury		= mod:NewSpecialWarningDefensive(215234, "Tank", nil, nil, 3, 2)
-local specWarnDominatorTentacle		= mod:NewSpecialWarningSwitch("ej13189", "Tank")
+local specWarnDominatorTentacle		= mod:NewSpecialWarningSwitch("ej13189", "-Healer", nil, 2, 1)
 local specWarnGroundSlam			= mod:NewSpecialWarningYou(208689, nil, nil, nil, 1, 2)
 local yellGroundSlam				= mod:NewYell(208689)
 local specWarnGroundSlamNear		= mod:NewSpecialWarningClose(208689, nil, nil, nil, 1, 2)
@@ -65,6 +68,8 @@ local yellCursedBlood				= mod:NewFadesYell(215128)
 
 --Stage One: The Ruined Ground
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
+local timerDeathGlareCD				= mod:NewNextTimer(220, "ej13190", nil, nil, nil, 1, 208697)
+local timerCorruptorTentacleCD		= mod:NewNextTimer(220, "ej13191", nil, nil, nil, 1, 208929)
 local timerNightmareHorrorCD		= mod:NewNextTimer(220, "ej13188", nil, nil, nil, 1, 210289)
 local timerEyeOfFateCD				= mod:NewCDTimer(10, 210984, nil, "Tank", nil, 5)
 local timerNightmareishFuryCD		= mod:NewNextTimer(10.9, 215234, nil, "Tank", nil, 5)
@@ -74,7 +79,7 @@ local timerDeathBlossom				= mod:NewCastTimer(15, 218415, nil, nil, nil, 5, nil,
 --Stage Two: The Heart of Corruption
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerDarkReconstitution		= mod:NewCastTimer(50, 210781, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)
-local timerFinalTorpor				= mod:NewCastTimer(50, 223121, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)
+local timerFinalTorpor				= mod:NewCastTimer(90, 223121, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)
 local timerCursedBloodCD			= mod:NewNextTimer(15, 215128, nil, nil, nil, 3)
 
 --Stage One: The Ruined Ground
@@ -98,14 +103,23 @@ mod:AddRangeFrameOption(8, 215128)
 mod:AddInfoFrameOption(210099)
 mod:AddDropdownOption("InfoFrameBehavior", {"Fixates", "Adds"}, "Fixates", "misc")
 
+mod.vb.phase = 1
 mod.vb.DominatorCount = 0
 mod.vb.CorruptorCount = 0
 mod.vb.DeathglareCount = 0
 mod.vb.NightmareCount = 0
 mod.vb.IchorCount = 0
+--Not to be confused with counts above, this is SPANW count not add total count like above
+mod.vb.DeathglareSpawn = 0
+mod.vb.CorruptorSpawn = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local eyeName = EJ_GetSectionInfo(13185)
 local addsTable = {}
+local phase1Deathglares = {26, 69}--Probably 25, 70 but numbers actually detectable by combat log are used.
+local phase1Corruptors = {90}
+
+local phase2Deathglares = {21.5, 95, 130}
+local phase2Corruptors = {45, 95, 35}
 
 local updateInfoFrame, sortInfoFrame
 do
@@ -157,14 +171,19 @@ end
 
 function mod:OnCombatStart(delay)
 	table.wipe(addsTable)
+	self.vb.phase = 1
 	self.vb.DominatorCount = 0
 	self.vb.CorruptorCount = 0
 	self.vb.DeathglareCount = 0
 	self.vb.NightmareCount = 0
 	self.vb.IchorCount = 0
+	self.vb.DeathglareSpawn = 0
+	self.vb.CorruptorSpawn = 0
 	timerNightmareishFuryCD:Start(6-delay)
 	timerGroundSlamCD:Start(12-delay)
+	timerDeathGlareCD:Start(26-delay)
 	timerNightmareHorrorCD:Start(65-delay)
+	timerCorruptorTentacleCD:Start(90-delay)
 	if self:IsMythic() then
 		timerDeathBlossomCD:Start(55)
 	end
@@ -205,12 +224,30 @@ function mod:SPELL_CAST_START(args)
 		if not addsTable[args.sourceGUID] then
 			addsTable[args.sourceGUID] = true
 			self.vb.DeathglareCount = self.vb.DeathglareCount + 1
+			if self:AntiSpam(10, 6) then
+				self.vb.DeathglareSpawn = self.vb.DeathglareSpawn + 1
+				warnDeathglareTentacle:Show()
+				local nextCount = self.vb.DeathglareSpawn + 1
+				local timer = self.vb.phase == 2 and phase2Deathglares[nextCount] or phase1Deathglares[nextCount]
+				if timer then
+					timerDeathGlareCD:Start(timer)
+				end
+			end
 		end
 	elseif spellId == 208929 then
 		self:BossTargetScanner(args.sourceGUID, "SpewCorruptionTarget", 0.2, 16)
 		if not addsTable[args.sourceGUID] then
 			addsTable[args.sourceGUID] = true
 			self.vb.CorruptorCount = self.vb.CorruptorCount + 1
+			if self:AntiSpam(10, 7) then
+				self.vb.CorruptorSpawn = self.vb.CorruptorSpawn + 1
+				warnCorruptorTentacle:Show()
+				local nextCount = self.vb.CorruptorSpawn + 1
+				local timer = self.vb.phase == 2 and phase2Corruptors[nextCount] or phase1Corruptors[nextCount]
+				if timer then
+					timerCorruptorTentacleCD:Start(timer)
+				end
+			end
 		end
 	elseif spellId == 210781 then--Dark Reconstitution
 		timerDarkReconstitution:Start()
@@ -223,8 +260,8 @@ function mod:SPELL_CAST_START(args)
 		countdownDeathBlossom:Start()
 		timerDeathBlossomCD:Start()
 	elseif spellId == 223121 then
-		timerFinalTorpor:Start(90)
-		countdownDarkRecon:Start(90)
+		timerFinalTorpor:Start()
+		countdownDarkRecon:Start()
 	elseif spellId == 208689 and self:AntiSpam(2, 6) then
 		timerGroundSlamCD:Start()
 	end
@@ -257,6 +294,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGroundSlamCD:Start(13)
 		--timerDeathBlossomCD:Start(55)
 		timerNightmareHorrorCD:Start(95)
+		self.vb.phase = self.vb.phase + 1
+		self.vb.DeathglareSpawn = 0
+		self.vb.CorruptorSpawn = 0
 	elseif spellId == 210099 then--Ooze Fixate
 		warnFixate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then

@@ -461,7 +461,7 @@ DBM_CORE_HUD_USAGE	= {
 }
 
 DBM_ARROW_MOVABLE					= "Arrow movable"
-DBM_ARROW_WAY_USAGE					= "/way <x> <y>: Creates an arrow that points to a specific location (using local zone map coordinates)"
+DBM_ARROW_WAY_USAGE					= "/dway <x> <y>: Creates an arrow that points to a specific location (using local zone map coordinates)"
 DBM_ARROW_WAY_SUCCESS				= "To hide arrow, do '/dbm arrow hide' or reach arrow"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow usage:",

@@ -1750,32 +1750,30 @@ do
 	
 	SLASH_DEADLYBOSSMODS1 = "/dbm"
 	SLASH_DEADLYBOSSMODSRPULL1 = "/rpull"
-	if GetAddOnEnableState(playerName, "TomTom") == 0 then
-		SLASH_DEADLYBOSSMODSWAY1 = "/way"--/way not used because DBM would load before TomTom and can't check 
-		SlashCmdList["DEADLYBOSSMODSWAY"] = function(msg)
-			if DBM:HasMapRestrictions() then
-				DBM:AddMsg(DBM_CORE_NO_ARROW)
-				return
-			end
-			local x, y = string.split(" ", msg:sub(1):trim())
-			local xNum, yNum = tonumber(x or ""), tonumber(y or "")
-			local success
+	SLASH_DEADLYBOSSMODSDWAY1 = "/dway"--/way not used because DBM would load before TomTom and can't check 
+	SlashCmdList["DEADLYBOSSMODSDWAY"] = function(msg)
+		if DBM:HasMapRestrictions() then
+			DBM:AddMsg(DBM_CORE_NO_ARROW)
+			return
+		end
+		local x, y = string.split(" ", msg:sub(1):trim())
+		local xNum, yNum = tonumber(x or ""), tonumber(y or "")
+		local success
+		if xNum and yNum then
+			DBM.Arrow:ShowRunTo(xNum, yNum, 0.5, nil, true)
+			success = true
+		else--Check if they used , instead of space.
+			x, y = string.split(",", msg:sub(1):trim())
+			xNum, yNum = tonumber(x or ""), tonumber(y or "")
 			if xNum and yNum then
 				DBM.Arrow:ShowRunTo(xNum, yNum, 0.5, nil, true)
 				success = true
-			else--Check if they used , instead of space.
-				x, y = string.split(",", msg:sub(1):trim())
-				xNum, yNum = tonumber(x or ""), tonumber(y or "")
-				if xNum and yNum then
-					DBM.Arrow:ShowRunTo(xNum, yNum, 0.5, nil, true)
-					success = true
-				end
 			end
-			if not success then
-				DBM:AddMsg(DBM_ARROW_WAY_USAGE)
-			else
-				DBM:AddMsg(DBM_ARROW_WAY_SUCCESS)
-			end
+		end
+		if not success then
+			DBM:AddMsg(DBM_ARROW_WAY_USAGE)
+		else
+			DBM:AddMsg(DBM_ARROW_WAY_SUCCESS)
 		end
 	end
 	if not BigWigs then
