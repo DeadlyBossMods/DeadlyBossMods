@@ -13,17 +13,16 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 207830 209443 210264 205588",
-	"SPELL_CAST_SUCCESS 206651 209158",
+	"SPELL_CAST_SUCCESS 206651 209158 224649",
 	"SPELL_SUMMON 210264",
 	"SPELL_AURA_APPLIED 208431 206651 205771 209158 211802 209034 210451 224508 206005",
 	"SPELL_AURA_APPLIED_DOSE 206651 209158",
 	"SPELL_AURA_REMOVED 208431 211802 206651 209158 209034 210451 224508 206005",
---	"SPELL_DAMAGE",
---	"SPELL_MISSED",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
+--"<271.21 22:57:25> [CLEU] SPELL_PERIODIC_ENERGIZE##nil#Player-3693-07CA07EE#Jaybee#208385#Tainted Discharge#3#10", -- [5739]
 --TODO, infoframe for remaining tainted discharge maybe? Has to be combined with alt power infoframe
 --TODO, figure out why arrows still flip and randomly change directions on blades, or remove arrows entirely and just use line texture.
 --TODO, reverify mythic/LFR timers
@@ -31,6 +30,7 @@ mod:RegisterEventsInCombat(
 local warnDescentIntoMadness			= mod:NewTargetAnnounce(208431, 4)
 local warnDream							= mod:NewYouAnnounce(206005, 1)
 local warnDreamOthers					= mod:NewTargetAnnounce(206005, 1)
+local warnTormentingSwipe				= mod:NewTargetAnnounce(224649, 2, nil, "Tank")
 --Stage One: The Decent Into Madness
 local warnNightmareBlades				= mod:NewTargetAnnounce(206656, 2)
 local warnDarkeningSoul					= mod:NewStackAnnounce(206651, 3, nil, "Healer|Tank")
@@ -71,6 +71,7 @@ local timerNightmareBladesCD			= mod:NewNextTimer(15.7, 206656, nil, nil, nil, 3
 local timerLurkingEruptionCD			= mod:NewCDCountTimer(20.5, 208322, nil, nil, nil, 3)
 local timerCorruptionHorrorCD			= mod:NewNextCountTimer(82.6, 210264, nil, nil, nil, 1)
 local timerCorruptingNovaCD				= mod:NewNextTimer(20, 207830, nil, nil, nil, 2)
+local timerTormentingSwipeCD			= mod:NewCDTimer(10, 224649, nil, "Tank", nil, 5)
 --Stage Two: From the Shadows
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerBondsOfTerrorCD				= mod:NewCDTimer(14.1, 209034, nil, nil, nil, 3)
@@ -215,6 +216,7 @@ function mod:OnCombatEnd()
 	if self.Options.HudMapOnBlades or self.Options.HudMapOnBonds then
 		DBMHudMap:Disable()
 	end
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -259,12 +261,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDarkeningSoulCD:Start()
 	elseif spellId == 209158 then
 		timerBlackeningSoulCD:Start()
+	elseif spellId == 224649 then
+		warnTormentingSwipe:Show(args.destName)
+		timerTormentingSwipeCD:Start(nil, args.sourceGUID)
 	end
 end
 
 function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 210264 then
+		timerTormentingSwipeCD:Start(10, args.destGUID)
 		timerCorruptingNovaCD:Start(16.5, args.destGUID)
 	end
 end
@@ -465,6 +471,13 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 103695 then--Corruption Horror
 		timerCorruptingNovaCD:Stop(args.destGUID)
+		timerTormentingSwipeCD:Stop(args.destGUID)
+	end
+end
+
+function mod:SPELL_PERIODIC_ENERGIZE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 208385 then
+		DBM:Debug("SPELL_PERIODIC_ENERGIZE fired for Tainted Discharge", 3)
 	end
 end
 
@@ -512,6 +525,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerNightmareInfusionCD:Start(30)
 		countdownNightmareInfusion:Start(30)
 		updateRangeFrame(self)
+		self:RegisterShortTermEvents(
+			"SPELL_PERIODIC_ENERGIZE 208385"
+		)
 	elseif spellId == 226185 then--Xavius Energize Phase 3
 		self.vb.phase = 3
 		warnPhase3:Show()
@@ -529,6 +545,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		countdownMeteor:Start(21)
 		timerNightmareBladesCD:Start(31)
 		timerNightmareInfusionCD:Start(36)
+		self:UnregisterShortTermEvents()
 	elseif spellId == 226194 then--Writhing Deep
 		warnNightmareTentacles:Show()
 		timerNightmareTentacleCD:Start()
