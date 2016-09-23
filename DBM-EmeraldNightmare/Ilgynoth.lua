@@ -293,6 +293,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerNightmareishFuryCD:Start(7)
 		timerGroundSlamCD:Start(13)
 		--timerDeathBlossomCD:Start(55)
+		timerDeathGlareCD:Start(21.5)
+		timerCorruptorTentacleCD:Start(45)
 		timerNightmareHorrorCD:Start(95)
 		self.vb.phase = self.vb.phase + 1
 		self.vb.DeathglareSpawn = 0
@@ -364,6 +366,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 209915 then--Stuff of Nightmares
 		specWarnHeartPhaseBegin:Show()
+		timerDeathGlareCD:Stop()
+		timerCorruptorTentacleCD:Stop()
 		timerNightmareHorrorCD:Stop()
 		timerDeathBlossomCD:Stop()
 		timerCursedBloodCD:Start()
