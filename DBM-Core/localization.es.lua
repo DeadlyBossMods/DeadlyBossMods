@@ -447,7 +447,7 @@ DBM_CORE_HUD_USAGE	= {
 }
 
 DBM_ARROW_MOVABLE					= "Flecha desplazable"
-DBM_ARROW_WAY_USAGE					= "/way <x> <y>: Crea una flecha que apunta a una ubicación designada mediante coordenadas locales."
+DBM_ARROW_WAY_USAGE					= "/dway <x> <y>: Crea una flecha que apunta a una ubicación designada mediante coordenadas locales."
 DBM_ARROW_WAY_SUCCESS				= "Para ocultar la flecha, escribe '/dbm arrow hide' o alcanza la ubicación designada."
 DBM_ARROW_ERROR_USAGE	= {
 	"Uso de DBM-Arrow:",
