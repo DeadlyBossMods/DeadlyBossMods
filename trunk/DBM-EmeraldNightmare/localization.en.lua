@@ -43,7 +43,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SoakersText		=	"Soakers Assigned: %s"
+	SoakersText			= "Soakers Assigned: %s"
 })
 
 ---------------------------
@@ -55,6 +55,10 @@ L= DBM:GetModLocalization(1704)
 -- Cenarius --
 ------------------
 L= DBM:GetModLocalization(1750)
+
+L:SetMiscLocalization({
+	BrambleMessage		= "Note: DBM can't detect who is actually FIXATED by Bramble. It does, however, warn who the initial target is for the SPAWN. Boss picks player, throws it them. After this, bramble picks ANOTHER target mods can't detect"
+})
 
 ------------------
 -- Xavius --

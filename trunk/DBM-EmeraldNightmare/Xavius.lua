@@ -15,22 +15,22 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 207830 209443 210264 205588",
 	"SPELL_CAST_SUCCESS 206651 209158",
 	"SPELL_SUMMON 210264",
-	"SPELL_AURA_APPLIED 208431 206651 205771 209158 211802 209034 210451 224508",
+	"SPELL_AURA_APPLIED 208431 206651 205771 209158 211802 209034 210451 224508 206005",
 	"SPELL_AURA_APPLIED_DOSE 206651 209158",
-	"SPELL_AURA_REMOVED 208431 211802 206651 209158 209034 210451 224508",
+	"SPELL_AURA_REMOVED 208431 211802 206651 209158 209034 210451 224508 206005",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, across the board detect who doesn't gain corruption and assign them to tasks like meteor soaking, taunting boss, being nearest target to adds, etc
 --TODO, infoframe for remaining tainted discharge maybe? Has to be combined with alt power infoframe
---TODO, figure out tank swaps, important spell alerts, etc.
 --TODO, figure out why arrows still flip and randomly change directions on blades, or remove arrows entirely and just use line texture.
---TODO, reverify heroic timers, and mythic. he might have faster energy gains which would affect all timers.
+--TODO, reverify mythic/LFR timers
 --Nightmare Corruption
 local warnDescentIntoMadness			= mod:NewTargetAnnounce(208431, 4)
+local warnDream							= mod:NewYouAnnounce(206005, 1)
+local warnDreamOthers					= mod:NewTargetAnnounce(206005, 1)
 --Stage One: The Decent Into Madness
 local warnNightmareBlades				= mod:NewTargetAnnounce(206656, 2)
 local warnDarkeningSoul					= mod:NewStackAnnounce(206651, 3, nil, "Healer|Tank")
@@ -38,7 +38,7 @@ local warnTormentingFixation			= mod:NewTargetAnnounce(205771, 4)
 --Stage Two: From the Shadows
 local warnPhase2						= mod:NewPhaseAnnounce(2, 2)
 local warnBlackeningSoul				= mod:NewStackAnnounce(209158, 3, nil, "Healer|Tank")
-local warnNightmareInfusion				= mod:NewSpellAnnounce(209443, 3, nil, "Tank")
+local warnNightmareInfusion				= mod:NewSpellAnnounce(209443, 4, nil, "Tank")
 local warnBondsOfTerror					= mod:NewTargetAnnounce(209034, 2)
 --Stage Three: Darkness and stuff
 local warnPhase3						= mod:NewPhaseAnnounce(3, 2)
@@ -50,8 +50,11 @@ local yellDescentIntoMadness			= mod:NewFadesYell(208431)
 local specWarnNightmareBlades			= mod:NewSpecialWarningMoveAway(206656, nil, nil, nil, 1, 2)
 local specWarnCorruptionHorror			= mod:NewSpecialWarningSwitchCount("ej12973", "-Healer", nil, nil, 1, 2)
 local specWarnCorruptingNova			= mod:NewSpecialWarningSpell(207830, nil, nil, nil, 2, 2)
+local specWarnDarkeningSoulOther		= mod:NewSpecialWarningTaunt(206651, nil, nil, nil, 1, 2)
+local specWarnBlackeningSoulOther		= mod:NewSpecialWarningTaunt(209158, nil, nil, nil, 1, 2)
 --local specWarnDarkeningSoul				= mod:NewSpecialWarningDispel(206651, "Healer", nil, nil, 1, 2)
 local specWarnTormentingFixation		= mod:NewSpecialWarningMoveAway(205771, nil, nil, nil, 1, 2)
+local specWarnNightmareInfusionOther	= mod:NewSpecialWarningTaunt(209443, nil, nil, nil, 1, 2)
 --Stage Two: From the Shadows
 local specWarnBondsOfTerror				= mod:NewSpecialWarningMoveTo(209034, nil, nil, nil, 1, 2)
 local specWarnCorruptionMeteorYou		= mod:NewSpecialWarningYou(206308, nil, nil, nil, 1, 2)
@@ -63,16 +66,16 @@ local specWarnInconHorror				= mod:NewSpecialWarningSwitch("ej13162", "-Healer",
 
 --Stage One: The Decent Into Madness
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerDarkeningSoulCD				= mod:NewCDTimer(6.1, 206651, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
+local timerDarkeningSoulCD				= mod:NewCDTimer(7.2, 206651, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
 local timerNightmareBladesCD			= mod:NewNextTimer(15.7, 206656, nil, nil, nil, 3)
 local timerLurkingEruptionCD			= mod:NewCDCountTimer(20.5, 208322, nil, nil, nil, 3)
 local timerCorruptionHorrorCD			= mod:NewNextCountTimer(82.6, 210264, nil, nil, nil, 1)
 local timerCorruptingNovaCD				= mod:NewNextTimer(20, 207830, nil, nil, nil, 2)
 --Stage Two: From the Shadows
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerBondsOfTerrorCD				= mod:NewCDTimer(14.3, 209034, nil, nil, nil, 3)
+local timerBondsOfTerrorCD				= mod:NewCDTimer(14.1, 209034, nil, nil, nil, 3)
 local timerCorruptionMeteorCD			= mod:NewCDCountTimer(28, 206308, 57467, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--Short text "meteor"
-local timerBlackeningSoulCD				= mod:NewCDTimer(6.1, 209158, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
+local timerBlackeningSoulCD				= mod:NewCDTimer(7.2, 209158, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
 local timerNightmareInfusionCD			= mod:NewCDTimer(61.5, 209443, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--61.5-62.5
 local timerCallOfNightmaresCD			= mod:NewCDTimer(40, 205588, nil, nil, nil, 1)
 --Stage Three: Darkness and stuff
@@ -93,13 +96,14 @@ local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_
 local voiceNightmareBlades				= mod:NewVoice(206656)--runout
 local voiceCorruptionHorror				= mod:NewVoice("ej12973", "-Healer")--bigmob
 local voiceCorruptingNova				= mod:NewVoice(207830, "HasInterrupt")--kickcast
---local voiceDarkeningSoul				= mod:NewVoice(206651, "Healer")--helpdispel
+local voiceDarkeningSoul				= mod:NewVoice(206651, "Tank")--tauntboss
 local voiceTormentingFixation			= mod:NewVoice(205771)--targetyou (iffy, is there no voice that says fixate, run?)
 --Stage Two: From the Shadows
 local voiceBondsOfTerror				= mod:NewVoice(209034)--linegather
 local voiceCorruptionMeteor				= mod:NewVoice(206308)--gathershare/watchstep
---local voiceBlackeningSoul				= mod:NewVoice(209158, "Healer")--helpdispel
+local voiceBlackeningSoul				= mod:NewVoice(209158, "Tank")--tauntboss
 local voiceInconHorror					= mod:NewVoice("ej13162", "-Healer")--killmob
+local voiceNightmareInfusion			= mod:NewVoice(209443, "Tank")--tauntboss
 
 mod:AddInfoFrameOption("ej12970")
 mod:AddRangeFrameOption(6, 208322)
@@ -111,24 +115,18 @@ mod:AddHudMapOption("HudMapOnBonds", 209034)
 local lurkingTimers = {17, 20.5, 41, 20.5, 20.5}--{13.6, 26.3, 47.4, 20.7, 25.9} old. TODO, get more data, if all but one are 20.5, just code smarter without table
 local corruptionName = EJ_GetSectionInfo(12970)
 local darkSoul, blackSoul = GetSpellInfo(206651), GetSpellInfo(209158)
-local dreamSimulacrum = GetSpellInfo(206005)
 local bladesTarget = {}
 local gatherTarget = {}
 local playerName = UnitName("player")
 local UnitDebuff = UnitDebuff
+local playerHasDream = false
+local dreamDebuff = GetSpellInfo(206005)
 mod.vb.phase = 1
 mod.vb.lurkingCount = 0
 mod.vb.corruptionHorror = 0
 mod.vb.inconHorror = 0
 mod.vb.meteorCount = 0
 mod.vb.lastBonds = nil
-
-local function isPlayerImmune()
-	if UnitBuff("player", dreamSimulacrum) or UnitDebuff("player", dreamSimulacrum) then
-		return true
-	end
-	return false
-end
 
 local function updateRangeFrame(self)
 	if not self.Options.RangeFrame then return end
@@ -137,7 +135,7 @@ local function updateRangeFrame(self)
 	elseif UnitDebuff("player", blackSoul) then
 		DBM.RangeCheck:Show(10)--10 for tainted discharge?
 	elseif self.vb.phase == 1 then--Maybe only show for ranged?
-		DBM.RangeCheck:Show(6)
+		DBM.RangeCheck:Show(6)--Will be rounded up by 7.1 restrictions in 
 	else
 		DBM.RangeCheck:Hide()
 	end
@@ -226,9 +224,20 @@ function mod:SPELL_CAST_START(args)
 		specWarnCorruptingNova:Show(args.sourceName)
 		voiceCorruptingNova:Play("aesoon")
 	elseif spellId == 209443 then
-		warnNightmareInfusion:Show()
 		timerNightmareInfusionCD:Start()
 		countdownNightmareInfusion:Start()
+		local _, uId = self:GetBossTarget(args.sourceGUID, true)
+		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
+		if tanking or (status == 3) then
+			--Player is current target, just give a generic warning, since if player has dream it doesn't matter, if player doesn't, it's OTHER tanks job to fix this
+			warnNightmareInfusion:Show()
+		else
+			--Player has dream buff and current tank does NOT so TAUNT warning.
+			if playerHasDream and not UnitDebuff(uId, dreamDebuff) then
+				specWarnNightmareInfusionOther:Show(args.destName)
+				voiceNightmareInfusion:Play("tauntboss")
+			end
+		end
 	elseif spellId == 210264 then
 		self.vb.corruptionHorror = self.vb.corruptionHorror + 1
 		specWarnCorruptionHorror:Show(self.vb.corruptionHorror)
@@ -273,22 +282,60 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 206651 then
 		local amount = args.amount or 1
 		warnDarkeningSoul:Show(args.destName, amount)
-		--[[if isPlayerImmune() then
+		--[[if playerHasDream then
 			specWarnDarkeningSoul:Show(args.destName)
 			voiceDarkeningSoul:Play("helpdispel")
 		end--]]
 		if args:IsPlayer() then
 			updateRangeFrame(self)
+		else
+			if amount >= 3 then
+				local filterWarning = false
+				if self:GetNumAliveTanks() >= 3 then
+					--Three (or more) Tank Strat AND at least 3 alive
+					for i = 1, 5 do
+						--Check if tanking a big add
+						local bossUnitID = "boss"..i
+						if UnitExists(bossUnitID) and UnitDetailedThreatSituation("player", bossUnitID) and self:GetCIDFromGUID(UnitGUID(bossUnitID)) == 103695 then
+							filterWarning = true--Tanking big add, in 3 tank strat means this tank has nothing to do with boss swapping.
+							break
+						end
+					end
+				end
+				if not filterWarning then
+					specWarnDarkeningSoulOther:Show(args.destName)
+					voiceDarkeningSoul:Play("tauntboss")
+				end
+			end
 		end
 	elseif spellId == 209158 then
 		local amount = args.amount or 1
 		warnBlackeningSoul:Show(args.destName, amount)
-		--[[if isPlayerImmune() then
+		--[[if playerHasDream then
 			specWarnBlackeningSoul:Show(args.destName)
 			voiceBlackeningSoul:Play("helpdispel")
 		end--]]
 		if args:IsPlayer() then
 			updateRangeFrame(self)
+		else
+			if amount >= 3 then
+				local filterWarning = false
+				if self:GetNumAliveTanks() >= 3 then
+					--Three (or more) Tank Strat AND at least 3 alive
+					for i = 1, 5 do
+						--Check if tanking a big add
+						local bossUnitID = "boss"..i
+						if UnitExists(bossUnitID) and UnitDetailedThreatSituation("player", bossUnitID) and self:GetCIDFromGUID(UnitGUID(bossUnitID)) == 103695 then
+							filterWarning = true--Tanking big add, in 3 tank strat means this tank has nothing to do with boss swapping.
+							break
+						end
+					end
+				end
+				if not filterWarning then
+					specWarnBlackeningSoulOther:Show(args.destName)
+					voiceBlackeningSoul:Play("tauntboss")
+				end
+			end
 		end
 	elseif spellId == 205771 then
 		warnTormentingFixation:CombinedShow(1, args.destName)
@@ -337,14 +384,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellMeteor:Schedule(3, 2)
 			yellMeteor:Schedule(2, 3)
 		else
-			if isPlayerImmune() then
+			if playerHasDream then
 				specWarnCorruptionMeteorTo:Show(args.destName)
 				voiceCorruptionMeteor:Play("gathershare")
 			else
 				local maxPower = UnitPowerMax("player", ALTERNATE_POWER_INDEX)
 				if maxPower > 0 then
 					local playerPower = UnitPower("player", ALTERNATE_POWER_INDEX) / maxPower * 100
-					if playerPower > 60 then
+					if self.vb.phase == 3 and playerPower > 75 or playerPower > 55 then--Avoid it if corruption too high for it
 						specWarnCorruptionMeteorAway:Show()
 						voiceCorruptionMeteor:Play("watchstep")
 					end
@@ -353,6 +400,25 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnMeteor then
 			self:SetIcon(args.destName, 6)
+		end
+	elseif spellId == 206005 then
+		if args:IsPlayer() then
+			playerHasDream = true
+		end
+		if self:IsTank() then
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if uId and self:IsTanking(uId) then
+				warnDreamOthers:CombinedShow(0.3, args.destName)
+			end
+		elseif self:IsHealer() then
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if uId and self:IsHealer(uId) then
+				warnDreamOthers:CombinedShow(0.3, args.destName)
+			end
+		else--Just an unspecial dps
+			if args:IsPlayer() then
+				warnDream:Show()
+			end
 		end
 	end
 end
@@ -387,6 +453,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.SetIconOnMeteor then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 206005 then
+		if args:IsPlayer() then
+			playerHasDream = true
 		end
 	end
 end
