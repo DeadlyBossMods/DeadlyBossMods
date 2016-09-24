@@ -33,7 +33,7 @@ local warnNightmareBrambles			= mod:NewTargetAnnounce(210290, 2)
 local warnBeastsOfNightmare			= mod:NewSpellAnnounce(214876, 2)--Generic for now, figure out what to do with later.
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 ----Forces of Nightmare
-local warnDesiccatingStomp			= mod:NewCastAnnounce(211073, 3, nil, nil, "Melee")--Basic warning for now, will change to special if needed
+local warnDesiccatingStomp			= mod:NewCastAnnounce(211073, 3, nil, nil, true, 2)--Basic warning for now, will change to special if needed
 local warnRottenBreath				= mod:NewTargetAnnounce(211192, 2)
 local warnScornedTouch				= mod:NewTargetAnnounce(211471, 3)
 --Malfurion Stormrage
@@ -69,7 +69,7 @@ local timerEntanglingNightmareCD	= mod:NewNextTimer(51, 214505, nil, nil, nil, 1
 ----Malfurion
 local timerCleansingGroundCD		= mod:NewNextTimer(77, 214249, nil, nil, nil, 3)--Phase 2 version only for now. Not sure if cast more than once though?
 ----Forces of Nightmare
-local timerTouchofLifeCD			= mod:NewCDTimer(12, 211368, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--increased to 15?
+local timerTouchofLifeCD			= mod:NewCDTimer(15, 211368, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerRottenBreathCD			= mod:NewCDTimer(25, 211192, nil, nil, nil, 3)
 
 --Cenarius
