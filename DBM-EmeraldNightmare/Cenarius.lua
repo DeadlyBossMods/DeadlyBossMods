@@ -190,8 +190,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBeastsOfNightmareCD:Start()
 	elseif spellId == 214529 then
 		if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, args.destName) then return end--You are not near current tank, you're probably 3rd tank on Doom Guards that never taunts massive blast
-		specWarnSpearOfNightmaresOther:Show(args.destName)
-		voiceSpearOfNightmares:Play("tauntboss")
+		if not args:IsPlayer() then
+			specWarnSpearOfNightmaresOther:Show(args.destName)
+			voiceSpearOfNightmares:Play("tauntboss")
+		end
 	end
 end
 

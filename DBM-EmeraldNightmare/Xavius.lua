@@ -228,7 +228,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 209443 then
 		timerNightmareInfusionCD:Start()
 		countdownNightmareInfusion:Start()
-		local _, uId = self:GetBossTarget(args.sourceGUID, true)
+		local targetName, uId = self:GetBossTarget(args.sourceGUID, true)
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then
 			--Player is current target, just give a generic warning, since if player has dream it doesn't matter, if player doesn't, it's OTHER tanks job to fix this
@@ -236,7 +236,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			--Player has dream buff and current tank does NOT so TAUNT warning.
 			if playerHasDream and not UnitDebuff(uId, dreamDebuff) then
-				specWarnNightmareInfusionOther:Show(args.destName)
+				specWarnNightmareInfusionOther:Show(targetName)
 				voiceNightmareInfusion:Play("tauntboss")
 			end
 		end
@@ -462,7 +462,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 206005 then
 		if args:IsPlayer() then
-			playerHasDream = true
+			playerHasDream = false
 		end
 	end
 end
