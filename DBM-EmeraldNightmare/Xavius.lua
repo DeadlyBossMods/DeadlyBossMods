@@ -132,7 +132,11 @@ mod.vb.lastBonds = nil
 local function updateRangeFrame(self)
 	if not self.Options.RangeFrame then return end
 	if UnitDebuff("player", darkSoul) then
-		DBM.RangeCheck:Show(32)
+		if self:IsEasy() then
+			DBM.RangeCheck:Show(15)
+		else
+			DBM.RangeCheck:Show(25)
+		end
 	elseif UnitDebuff("player", blackSoul) then
 		DBM.RangeCheck:Show(10)--10 for tainted discharge?
 	elseif self.vb.phase == 1 then--Maybe only show for ranged?
@@ -201,7 +205,7 @@ function mod:OnCombatStart(delay)
 	countdownCorruptionHorror:Start(58.4)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(corruptionName)
-		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
+		DBM.InfoFrame:Show(8, "playerpower", 5, ALTERNATE_POWER_INDEX)
 	end
 	updateRangeFrame(self)
 end
