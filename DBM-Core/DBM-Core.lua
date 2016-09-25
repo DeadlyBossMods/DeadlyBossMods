@@ -1280,7 +1280,7 @@ do
 				"PLAYER_LEVEL_UP",
 				"CHALLENGE_MODE_START",
 				"CHALLENGE_MODE_RESET",
-				"CHALLENGE_MODE_END",
+				"CHALLENGE_MODE_COMPLETED",
 				"PLAYER_SPECIALIZATION_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
@@ -3603,8 +3603,8 @@ function DBM:CHALLENGE_MODE_RESET()
 	self:Debug("CHALLENGE_MODE_RESET fired")
 end
 
-function DBM:CHALLENGE_MODE_END(mapID, success, medal, completionTime)
-	self:Debug("CHALLENGE_MODE_END fired for mapID "..mapID)
+function DBM:CHALLENGE_MODE_COMPLETED(mapID, success, medal, completionTime)
+	self:Debug("CHALLENGE_MODE_COMPLETED fired for mapID "..mapID)
 end
 --REFACTOR IN LEGION
 
@@ -5501,18 +5501,23 @@ do
 			--process global options
 			self:HideBlizzardEvents(1)
 			self:StartLogging(0, nil)
-			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 and difficultyIndex ~= 8 then
+			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 then
 				if ObjectiveTrackerFrame:IsVisible() then
 					ObjectiveTrackerFrame:Hide()
 					watchFrameRestore = true
 				end
-				--When hiding objectives frame in challenge modes, start our own timer to show medal time remaining
-				--REFACTOR IN LEGION FOR MYTHIC+ timer replacement
-				--[[local _, elapsedTime, worldTimerType = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active. if it's not, use GetWorldElapsedTimers() to find correct one
-				if wowTOC < 70000 and worldTimerType == 2 then--Challenge mode
-					local bronze, silver, gold = GetChallengeModeMapTimes(LastInstanceMapID)
-					local remaining
-				end--]]
+				--When hiding objectives frame in Mythic+, start our own timer to show time remaining during boss fight
+				if difficultyIndex == 8 then
+					local _, elapsedTime = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active.
+					local _, _, maxTime = C_ChallengeMode.GetMapInfo(LastInstanceMapID);
+					local remaining = (maxTime or 0) - (elapsedTime or 0)
+					if remaining and remaining > 0 then--No remaining, already failed timer, do nothing
+						self.Bars:CreateBar(remaining, PLAYER_DIFFICULTY6.."+")
+					end
+					--Maybe do more with this later
+					--local threeChests = maxTime * 0.6
+					--local twoChests = maxTime * 0.8;
+				end
 			end
 			fireEvent("pull", mod, delay, synced, startHp)
 			self:FlashClientIcon()
@@ -5934,11 +5939,9 @@ do
 				if self.Options.HideObjectivesFrame and watchFrameRestore and not scenario then
 					ObjectiveTrackerFrame:Show()
 					watchFrameRestore = false
-					--REFACTOR in LEGION
-					--[[if difficultyIndex == 8 then
-						self.Bars:CancelBar(CHALLENGE_MODE_MEDAL1)
-					end--]]
-					--REFACTOR in LEGION
+					if difficultyIndex == 8 then
+						self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
+					end
 				end
 				if tooltipsHidden then
 					--Better or cleaner way?
