@@ -22,7 +22,7 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s kann nicht geladen werden, da dein DBM-Cor
 --Pre Patch 7.1 Notice
 DBM_CORE_NO_RANGE_SOON				= "Hinweis: Das Abstandsradar wird in Instanzen in Patch 7.1 nicht mehr zur Verfügung stehen."
 --Post Patch 7.1
-DBM_CORE_NO_RANGE					= "Abstandsprüfung/-radar kann in Instanzen nicht genutzt werden."
+DBM_CORE_NO_RANGE					= "Das Abstandsradar kann in Instanzen nicht genutzt werden. Es wird stattdessen die alte textbasierte Abstandsanzeige verwendet."
 DBM_CORE_NO_ARROW					= "Der Pfeil kann in Instanzen nicht genutzt werden."
 DBM_CORE_NO_HUD						= "Die HudMap kann in Instanzen nicht genutzt werden."
 
@@ -449,6 +449,8 @@ DBM_CORE_HUD_USAGE	= {
 }
 
 DBM_ARROW_MOVABLE					= "Pfeil (bewegbar)"
+DBM_ARROW_WAY_USAGE					= "/dway <x> <y>: Erzeugt einen Pfeil, der auf einen bestimmten Ort zeigt (benutzt lokale Kartenkoordinaten der Zone)"
+DBM_ARROW_WAY_SUCCESS				= "Um den Pfeil zu verstecken '/dbm arrow hide' eingeben oder das Pfeilziel erreichen"
 DBM_ARROW_ERROR_USAGE	= {
 	"Benutzung des DBM-Pfeils:",
 	"-----------------",
