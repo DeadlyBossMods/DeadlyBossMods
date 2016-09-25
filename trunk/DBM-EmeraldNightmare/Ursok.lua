@@ -15,6 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 197942 197969",
 	"SPELL_CAST_SUCCESS 197943",
 	"SPELL_AURA_APPLIED 198006 197943 205611",
+	"SPELL_AURA_APPLIED_DOSE 197943",
 	"SPELL_AURA_REMOVED 198006",
 	"SPELL_DAMAGE 205611",
 	"SPELL_MISSED 205611"
@@ -149,9 +150,12 @@ function mod:SPELL_CAST_START(args)
 			voiceRendFlesh:Play("defensive")
 		else
 			--Other tank has overwhelm stacks and is about to die to rend flesh, TAUNT NOW!
-			if UnitExists("boss1target") and UnitDebuff("boss1target", GetSpellInfo(197943)) then
-				specWarnRendFleshOther:Show(args.destName)
-				voiceRendFlesh:Play("tauntboss")
+			if UnitExists("boss1target") then
+				local _, _, _, _, _, _, expireTimeTarget = UnitDebuff("boss1target", GetSpellInfo(197943)) -- Overwhelm
+				if expireTimeTarget and expireTimeTarget-GetTime() >= 2 then
+					specWarnRendFleshOther:Show(UnitName("boss1target"))
+					voiceRendFlesh:Play("tauntboss")
+				end
 			end
 		end
 	elseif spellId == 197969 then
@@ -215,11 +219,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			GenerateSoakAssignment(self, secondCount, args.destName)
 		end
 	elseif spellId == 197943 then
-		--Overwhelm just applied to someone else and you still have rend flesh
-		--Taunting is safe now because rend flesh will vanish before next overwhelm
-		if not args:IsPlayer() and UnitDebuff("player", GetSpellInfo(204859)) then
-			specWarnOverwhelmOther:Show(args.destName)
-			voiceOverwhelm:Play("tauntboss")
+		if not args:IsPlayer() then--Overwhelm Applied to someone that isn't you
+			--Taunting is safe now because your rend flesh will vanish (or is already gone), and not be cast again, before next overwhelm
+			local rendCooldown = timerRendFleshCD:GetRemaining() or 0
+			local _, _, _, _, _, _, expireTime = UnitDebuff("player", GetSpellInfo(204859))
+			if rendCooldown > 10 and (not expireTime or expireTime and expireTime-GetTime() < 10) then
+				specWarnOverwhelmOther:Show(args.destName)
+				voiceOverwhelm:Play("tauntboss")
+			end
 		end
 	elseif spellId == 198388 then
 		warnBloodFrenzy:Show()
@@ -229,6 +236,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		voiceMiasma:Play("runaway")
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
