@@ -182,6 +182,7 @@ DBM.DefaultOptions = {
 	SpecialWarningFontSize = 50,
 	SpecialWarningFontStyle = "THICKOUTLINE",
 	SpecialWarningFontShadow = false,
+	SpecialWarningIcon = true,
 	SpecialWarningFontCol = {1.0, 0.7, 0.0},--Yellow, with a tint of orange
 	SpecialWarningFlashCol1 = {1.0, 1.0, 0.0},--Yellow
 	SpecialWarningFlashCol2 = {1.0, 0.5, 0.0},--Orange
@@ -9348,6 +9349,8 @@ do
 		end
 		return cap
 	end
+	
+	local textureCode = " |T%s:12:12|t "
 
 	function specialWarningPrototype:Show(...)
 		if not DBM.Options.DontShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
@@ -9371,7 +9374,12 @@ do
 					end
 				end
 			end
-			local text = pformat(self.text, unpack(argTable))
+			local message = pformat(self.text, unpack(argTable))
+			local text = ("%s%s%s"):format(
+				(DBM.Options.SpecialWarningIcon and self.icon and textureCode:format(self.icon)) or "",
+				message,
+				(DBM.Options.SpecialWarningIcon and self.icon and textureCode:format(self.icon)) or ""
+			)
 			local noteHasName = false
 			if self.option then
 				local noteText = self.mod.Options[self.option .. "SWNote"]
@@ -9577,6 +9585,7 @@ do
 				hasVoice = hasVoice,
 				type = announceType,
 				spellId = unparsedId,
+				icon = (type(spellId) == "string" and spellId:match("ej%d+") and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3)))) or (type(spellId) == "number" and GetSpellTexture(spellId)) or nil
 			},
 			mt
 		)
