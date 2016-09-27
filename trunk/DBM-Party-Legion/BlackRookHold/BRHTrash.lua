@@ -8,7 +8,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 200261 221634 221688 225573",
+	"SPELL_CAST_START 200261 221634 221688 225573 214003",
 	"SPELL_AURA_APPLIED 194966",
 	"SPELL_CAST_SUCCESS 200343 200345"
 )
@@ -17,6 +17,7 @@ mod:RegisterEvents(
 --TODO, add Brutal Assault
 local warnSoulEchoes				= mod:NewTargetAnnounce(194966, 2)
 
+local specWarnCoupdeGrace			= mod:NewSpecialWarningDefensive(214003, "Tank", nil, nil, 1, 2)
 local specWarnBonebreakingStrike	= mod:NewSpecialWarningDodge(200261, "Tank", nil, nil, 1, 2)
 local specWarnSoulEchos				= mod:NewSpecialWarningRun(194966, nil, nil, nil, 1, 2)
 local specWarnArrowBarrage			= mod:NewSpecialWarningDodge(200343, nil, nil, nil, 2, 2)
@@ -26,6 +27,7 @@ local specWarnWhirlOfFlame			= mod:NewSpecialWarningDodge(221634, nil, nil, nil,
 local specWarnOverDetonation		= mod:NewSpecialWarningRun(221688, nil, nil, nil, 4, 2)
 local specWarnDarkMending			= mod:NewSpecialWarningInterrupt(225573, "HasInterrupt", nil, nil, 1, 2)
 
+local voiceCoupdeGrace				= mod:NewVoice(214003, "Tank")--shockwave
 local voiceBonebreakingStrike		= mod:NewVoice(200261, "Tank")--shockwave
 local voiceSoulEchos				= mod:NewVoice(194966)--runaway/keepmove
 local voiceArrowBarrage				= mod:NewVoice(200343)--stilldanger (best one i could come up with)
@@ -50,6 +52,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 225573 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnDarkMending:Show(args.sourceName)
 		voiceDarkMending:Play("kickcast")
+	elseif spellId == 214003 and self:AntiSpam(3, 4) then
+		specWarnCoupdeGrace:Show()
+		voiceCoupdeGrace:Play("defensive")
 	end
 end
 
