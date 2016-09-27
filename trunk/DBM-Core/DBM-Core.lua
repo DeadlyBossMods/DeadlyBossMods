@@ -3604,8 +3604,8 @@ function DBM:CHALLENGE_MODE_RESET()
 	self:Debug("CHALLENGE_MODE_RESET fired")
 end
 
-function DBM:CHALLENGE_MODE_COMPLETED(mapID, success, medal, completionTime)
-	self:Debug("CHALLENGE_MODE_COMPLETED fired for mapID "..mapID)
+function DBM:CHALLENGE_MODE_COMPLETED()
+	self:Debug("CHALLENGE_MODE_COMPLETED fired for mapID "..LastInstanceMapID)
 end
 --REFACTOR IN LEGION
 
