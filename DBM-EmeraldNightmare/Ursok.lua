@@ -250,8 +250,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
+	if spellId == 205611 and destGUID == UnitGUID("player") and destName == UnitName("player") and self:AntiSpam(2, 1) then
 		specWarnMiasma:Show()
 		voiceMiasma:Play("runaway")
 	end
