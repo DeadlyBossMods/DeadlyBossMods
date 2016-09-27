@@ -50,9 +50,8 @@ local yellDescentIntoMadness			= mod:NewFadesYell(208431)
 local specWarnNightmareBlades			= mod:NewSpecialWarningMoveAway(206656, nil, nil, nil, 1, 2)
 local specWarnCorruptionHorror			= mod:NewSpecialWarningSwitchCount("ej12973", "-Healer", nil, nil, 1, 2)
 local specWarnCorruptingNova			= mod:NewSpecialWarningSpell(207830, nil, nil, nil, 2, 2)
+local specWarnDarkeningSoulYou			= mod:NewSpecialWarningStack(206651, nil, 3, nil, 1, 6)
 local specWarnDarkeningSoulOther		= mod:NewSpecialWarningTaunt(206651, nil, nil, nil, 1, 2)
-local specWarnBlackeningSoulOther		= mod:NewSpecialWarningTaunt(209158, nil, nil, nil, 1, 2)
---local specWarnDarkeningSoul				= mod:NewSpecialWarningDispel(206651, "Healer", nil, nil, 1, 2)
 local specWarnTormentingFixation		= mod:NewSpecialWarningMoveAway(205771, nil, nil, nil, 1, 2)
 local specWarnNightmareInfusionOther	= mod:NewSpecialWarningTaunt(209443, nil, nil, nil, 1, 2)
 --Stage Two: From the Shadows
@@ -61,7 +60,8 @@ local specWarnCorruptionMeteorYou		= mod:NewSpecialWarningYou(206308, nil, nil, 
 local yellMeteor						= mod:NewFadesYell(206308)
 local specWarnCorruptionMeteorAway		= mod:NewSpecialWarningDodge(206308, "-Tank", nil, nil, 2, 2)--No dream, high corruption, dodge it. Subjective and defaults may be altered to off.
 local specWarnCorruptionMeteorTo		= mod:NewSpecialWarningMoveTo(206308, "-Tank", nil, nil, 1, 2)--Has dream, definitely should help
---local specWarnBlackeningSoul			= mod:NewSpecialWarningDispel(209158, "Healer", nil, nil, 1, 2)
+local specWarnBlackeningSoulYou			= mod:NewSpecialWarningStack(209158, nil, 3, nil, 1, 6)
+local specWarnBlackeningSoulOther		= mod:NewSpecialWarningTaunt(209158, nil, nil, nil, 1, 2)
 local specWarnInconHorror				= mod:NewSpecialWarningSwitch("ej13162", "-Healer", nil, nil, 1, 2)
 
 --Stage One: The Decent Into Madness
@@ -292,11 +292,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 206651 then
 		local amount = args.amount or 1
 		warnDarkeningSoul:Show(args.destName, amount)
-		--[[if playerHasDream then
-			specWarnDarkeningSoul:Show(args.destName)
-			voiceDarkeningSoul:Play("helpdispel")
-		end--]]
 		if args:IsPlayer() then
+			if amount >= 3 then
+				specWarnDarkeningSoulYou:Show(amount)
+				voiceDarkeningSoul:Play("stackhigh")
+			end
 			updateRangeFrame(self)
 		else
 			if amount >= 3 then
@@ -321,11 +321,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 209158 then
 		local amount = args.amount or 1
 		warnBlackeningSoul:Show(args.destName, amount)
-		--[[if playerHasDream then
-			specWarnBlackeningSoul:Show(args.destName)
-			voiceBlackeningSoul:Play("helpdispel")
-		end--]]
 		if args:IsPlayer() then
+			if amount >= 3 then
+				specWarnBlackeningSoulYou:Show(amount)
+				voiceBlackeningSoul:Play("stackhigh")
+			end
 			updateRangeFrame(self)
 		else
 			if amount >= 3 then
