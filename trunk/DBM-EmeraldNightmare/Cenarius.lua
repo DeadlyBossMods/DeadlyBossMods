@@ -27,7 +27,6 @@ mod:RegisterEventsInCombat(
 --TODO, see if destructive Nightmares has a fixate of sorts to warn one being chased by bad whisps
 --TODO, evaluate stomp and need of timer/etc
 --TODO, Further assess thorns. it doesn't need warnings at all if adds never tanked near boss in first place
---TODO, figure out good voice for specWarnCreepingNightmares. "clear stacks"?
 --Cenarius
 local warnNightmareBrambles			= mod:NewTargetAnnounce(210290, 2)
 local warnBeastsOfNightmare			= mod:NewSpellAnnounce(214876, 2)--Generic for now, figure out what to do with later.
@@ -40,7 +39,7 @@ local warnScornedTouch				= mod:NewTargetAnnounce(211471, 3)
 local warnCleansingGround			= mod:NewCastAnnounce(212630, 1)
 
 --Cenarius
-local specWarnCreepingNightmares	= mod:NewSpecialWarningStack(210279, nil, 20, nil, 1)--Stack warning subject to tuning
+local specWarnCreepingNightmares	= mod:NewSpecialWarningStack(210279, nil, 20, nil, 1, 6)--Stack warning subject to tuning
 local specWarnNightmareBrambles		= mod:NewSpecialWarningRun(210290, nil, nil, nil, 1, 2)
 local yellNightmareBrambles			= mod:NewYell(210290)
 local specWarnNightmareBramblesNear	= mod:NewSpecialWarningClose(210290, nil, nil, nil, 1, 2)
@@ -78,6 +77,7 @@ local countdownNightmareBrambles	= mod:NewCountdown("Alt30", 210290, "Ranged")--
 ----Forces of Nightmare
 
 --Cenarius
+local voiceCreepingNightmares		= mod:NewVoice(210279)--stackhigh
 local voiceNightmareBrambles		= mod:NewVoice(210290)--runout/watchstep
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 --local voiceDreadThorns				= mod:NewVoice(210346, "Tank")--bossout
@@ -217,6 +217,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		if amount % 5 == 0 then--Every 5
 			if amount >= 20 then--Starting at 20
 				specWarnCreepingNightmares:Show(amount)
+				voiceCreepingNightmares:Play("stackhigh")
 			end
 		end
 	end
