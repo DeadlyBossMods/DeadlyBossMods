@@ -268,10 +268,15 @@ local function updatePlayerPower()
 	twipe(lines)
 	local threshold = value[1]
 	local powerType = value[2]
+	local spellFilter = value[3]--Passed as spell name already
 	for uId in DBM:GetGroupMembers() do
-		local maxPower = UnitPowerMax(uId, powerType)
-		if maxPower ~= 0 and not UnitIsDeadOrGhost(uId) and UnitPower(uId, powerType) / UnitPowerMax(uId, powerType) * 100 >= threshold then
-			lines[UnitName(uId)] = UnitPower(uId, powerType)
+		if spellFilter and UnitDebuff(uId, spellFilter) then
+			--Do nothing
+		else
+			local maxPower = UnitPowerMax(uId, powerType)
+			if maxPower ~= 0 and not UnitIsDeadOrGhost(uId) and UnitPower(uId, powerType) / UnitPowerMax(uId, powerType) * 100 >= threshold then
+				lines[UnitName(uId)] = UnitPower(uId, powerType)
+			end
 		end
 	end
 	if DBM.Options.InfoFrameShowSelf and not lines[playerName] and UnitPower("player", powerType) > 0 then

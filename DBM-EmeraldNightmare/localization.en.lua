@@ -65,6 +65,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1726)
 
+L:SetOptionLocalization({
+	InfoFrameFilterDream	= "Filter players who are affected by $spell:206005 from the InfoFrame"
+})
+
 -------------
 --  Trash  --
 -------------
