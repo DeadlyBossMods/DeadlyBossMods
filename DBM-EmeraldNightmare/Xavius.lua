@@ -12,8 +12,8 @@ mod.respawnTime = 15
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 207830 209443 210264 205588",
-	"SPELL_CAST_SUCCESS 206651 209158 224649",
+	"SPELL_CAST_START 207830 209443 205588",
+	"SPELL_CAST_SUCCESS 206651 209158 224649 210264",
 	"SPELL_SUMMON 210264",
 	"SPELL_AURA_APPLIED 208431 206651 205771 209158 211802 209034 210451 224508 206005",
 	"SPELL_AURA_APPLIED_DOSE 206651 209158",
@@ -69,7 +69,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDarkeningSoulCD				= mod:NewCDTimer(7.2, 206651, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
 local timerNightmareBladesCD			= mod:NewNextTimer(15.7, 206656, nil, nil, nil, 3)
 local timerLurkingEruptionCD			= mod:NewCDCountTimer(20.5, 208322, nil, nil, nil, 3)
-local timerCorruptionHorrorCD			= mod:NewNextCountTimer(82.6, 210264, nil, nil, nil, 1)
+local timerCorruptionHorrorCD			= mod:NewNextCountTimer(82.5, 210264, nil, nil, nil, 1)
 local timerCorruptingNovaCD				= mod:NewNextTimer(20, 207830, nil, nil, nil, 2)
 local timerTormentingSwipeCD			= mod:NewCDTimer(10, 224649, nil, "Tank", nil, 5)
 --Stage Two: From the Shadows
@@ -84,7 +84,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerNightmareTentacleCD			= mod:NewCDTimer(20, "ej12977", nil, nil, nil, 1, 93708)--226194 is an icon consideration now
 
 --Stage One: The Decent Into Madness
-local countdownCorruptionHorror			= mod:NewCountdown(82.6, 210264)
+local countdownCorruptionHorror			= mod:NewCountdown(82.5, 210264)
 --Stage Two: From the Shadows
 local countdownCallOfNightmares			= mod:NewCountdown(40, 205588)
 local countdownNightmareInfusion		= mod:NewCountdown("Alt61", 209443, "Tank")
@@ -244,12 +244,6 @@ function mod:SPELL_CAST_START(args)
 				voiceNightmareInfusion:Play("tauntboss")
 			end
 		end
-	elseif spellId == 210264 then
-		self.vb.corruptionHorror = self.vb.corruptionHorror + 1
-		specWarnCorruptionHorror:Show(self.vb.corruptionHorror)
-		voiceCorruptionHorror:Play("bigadd")
-		timerCorruptionHorrorCD:Start(nil, self.vb.corruptionHorror+1)
-		countdownCorruptionHorror:Start()
 	elseif spellId == 205588 then
 		self.vb.inconHorror = self.vb.inconHorror + 1
 		specWarnInconHorror:Show(self.vb.inconHorror)
@@ -268,6 +262,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 224649 then
 		warnTormentingSwipe:Show(args.destName)
 		timerTormentingSwipeCD:Start(nil, args.sourceGUID)
+	elseif spellId == 210264 then
+		self.vb.corruptionHorror = self.vb.corruptionHorror + 1
+		specWarnCorruptionHorror:Show(self.vb.corruptionHorror)
+		voiceCorruptionHorror:Play("bigadd")
+		timerCorruptionHorrorCD:Start(nil, self.vb.corruptionHorror+1)
+		countdownCorruptionHorror:Start()
 	end
 end
 
@@ -275,7 +275,7 @@ function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 210264 then
 		timerTormentingSwipeCD:Start(10, args.destGUID)
-		timerCorruptingNovaCD:Start(16.5, args.destGUID)
+		timerCorruptingNovaCD:Start(14.5, args.destGUID)
 	end
 end
 
