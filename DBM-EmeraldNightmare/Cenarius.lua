@@ -40,7 +40,6 @@ local warnCleansingGround			= mod:NewCastAnnounce(212630, 1)
 
 --Cenarius
 local specWarnCreepingNightmares	= mod:NewSpecialWarningStack(210279, nil, 20, nil, 1, 6)--Stack warning subject to tuning
-local specWarnNightmareBrambles		= mod:NewSpecialWarningRun(210290, nil, nil, nil, 1, 2)
 local yellNightmareBrambles			= mod:NewYell(210290)
 local specWarnNightmareBramblesNear	= mod:NewSpecialWarningClose(210290, nil, nil, nil, 1, 2)
 --local specWarnDreadThorns			= mod:NewSpecialWarningMoveAway(210346, "Tank", nil, nil, 1, 2)--Move away warning? Have to move away from other adds
@@ -250,7 +249,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if not UnitExists(uId.."target") then return end--Blizzard decided to go even further out of way to break this detection, if this happens we don't want nil errors for users.
 		local targetName = DBM:GetUnitFullName(uId.."target")
 		if UnitIsUnit("player", uId.."target") then
-			specWarnNightmareBrambles:Show()
+			specWarnNightmareBramblesNear:Show(YOU)
 			yellNightmareBrambles:Yell()
 			voiceNightmareBrambles:Play("runout")
 		elseif self:CheckNearby(8, targetName) then
