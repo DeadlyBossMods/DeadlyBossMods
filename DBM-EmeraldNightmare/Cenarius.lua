@@ -40,7 +40,7 @@ local warnCleansingGround			= mod:NewCastAnnounce(212630, 1)
 
 --Cenarius
 local specWarnCreepingNightmares	= mod:NewSpecialWarningStack(210279, nil, 20, nil, 1, 6)--Stack warning subject to tuning
-local yellNightmareBrambles			= mod:NewYell(210290)
+local yellNightmareBrambles			= mod:NewYell(210290, L.BrambleYell)
 local specWarnNightmareBramblesNear	= mod:NewSpecialWarningClose(210290, nil, nil, nil, 1, 2)
 --local specWarnDreadThorns			= mod:NewSpecialWarningMoveAway(210346, "Tank", nil, nil, 1, 2)--Move away warning? Have to move away from other adds
 local specWarnNightmareBlast		= mod:NewSpecialWarningDefensive(213162, nil, nil, nil, 1, 2)
