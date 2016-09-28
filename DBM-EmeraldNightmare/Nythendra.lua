@@ -15,7 +15,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 203552 202977 205070",
 	"SPELL_CAST_SUCCESS 204463",
 	"SPELL_AURA_APPLIED 204463 203096 205043",
-	"SPELL_AURA_APPLIED_DOSE 204504",
 	"SPELL_AURA_REMOVED 204463 203096 203552",
 	"SPELL_DAMAGE 203646",
 	"SPELL_MISSED 203646",
@@ -105,9 +104,15 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(GetSpellInfo(204506))
 		DBM.InfoFrame:Show(5, "playerdebuffstacks", 204506)
 	end
+	if self:IsMythic() then
+		self:RegisterShortTermEvents(
+			"SPELL_AURA_APPLIED_DOSE 204504"
+		)
+	end
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -143,12 +148,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.volatileRotCast < 3 then
 			timerVolatileRotCD:Start(nil, self.vb.volatileRotCast+1)
 		end
-		--Assumed Obsolete
---		if self:IsMythic() then
---			timerVolatileRotCD:Start(42.5, self.vb.volatileRotCast+1)--42.5-48
---		else
---			timerVolatileRotCD:Start(nil, self.vb.volatileRotCast+1)
---		end
 	end
 end
 
