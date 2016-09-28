@@ -206,11 +206,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		elseif self.vb.twistedCast == 3 then
 			timerTwistingShadowsCD:Start(32.5, 4)
 		end
-		self:Schedule(0.5, findDebuff, self, args.spellName, spellId)
+		self:Schedule(0.75, findDebuff, self, args.spellName, spellId)
 	elseif spellId == 215443 then
 		scanTime = 0
 		self.vb.venomCast = self.vb.venomCast + 1
-		self:Schedule(0.5, findDebuff, self, args.spellName, spellId)
+		self:Schedule(0.75, findDebuff, self, args.spellName, spellId)
 		if self.vb.venomCast < 4 then--Cast 4x per spider form
 			timerNecroticVenomCD:Start(nil, self.vb.venomCast+1)
 		end
