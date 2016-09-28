@@ -209,7 +209,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if spellId == 204504 and args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount >= 7 and amount < 11 then
-			specWarnInfestedStack:Unschedule()
+			specWarnInfestedStack:Cancel()
 			specWarnInfestedStack:Schedule(0.5, amount)
 			if self:AntiSpam(2, 4) then
 				voiceInfestedStack:Play("stackhigh")
