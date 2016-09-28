@@ -22,7 +22,7 @@ DBM_CORE_WHATS_NEW_LINK				= "在接下來的DBM版本，因為暴雪將在7.1�
 --Pre Patch 7.1 Notice
 DBM_CORE_NO_RANGE_SOON				= "注意：在7.1版後，距離雷達將不能在副本中使用。"
 --Post Patch 7.1
-DBM_CORE_NO_RANGE					= "距離雷達不能在副本中使用"
+DBM_CORE_NO_RANGE					= "距離雷達不能在副本中使用，使用傳統文字距離框架取代"
 DBM_CORE_NO_ARROW					= "箭頭不能在副本中使用"
 DBM_CORE_NO_HUD						= "HUDMap 不能在副本中使用"
 
@@ -437,6 +437,8 @@ DBM_CORE_HUD_USAGE	= {
 }
 
 DBM_ARROW_MOVABLE					= "可移動箭頭"
+DBM_ARROW_WAY_USAGE					= "/dway <x> <y>: 建立一個箭頭來指向特定位置(使用區域地圖坐標)"
+DBM_ARROW_WAY_SUCCESS				= "要隱藏箭頭, 輸入 '/dbm arrow hide' 或是抵達箭頭"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 用法:",
 	"/dbm arrow <x> <y>  建立一個箭頭在特定的位置(使用世界地圖座標)",
