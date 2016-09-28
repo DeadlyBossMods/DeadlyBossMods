@@ -15,6 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 203552 202977 205070",
 	"SPELL_CAST_SUCCESS 204463",
 	"SPELL_AURA_APPLIED 204463 203096 205043",
+	"SPELL_AURA_APPLIED_DOSE 204504",
 	"SPELL_AURA_REMOVED 204463 203096 203552",
 	"SPELL_DAMAGE 203646",
 	"SPELL_MISSED 203646",
@@ -43,6 +44,7 @@ local specWarnInfestedGround		= mod:NewSpecialWarningMove(203045, nil, nil, nil,
 local specWarnBurst					= mod:NewSpecialWarningMove(203646, nil, nil, nil, 1, 2)
 local specWarnInfestedMind			= mod:NewSpecialWarningSwitch(205043, "Dps", nil, nil, 1, 2)
 local specWarnSpreadInfestation		= mod:NewSpecialWarningInterrupt(205070, "HasInterrupt", nil, nil, 1, 2)
+local specWarnInfestedStack			= mod:NewSpecialWarningStack(204504, nil, 7, nil, 1, 6)
 
 local timerBreathCD					= mod:NewCDCountTimer(36, 202977, nil, nil, nil, 3)--36-42
 local timerVolatileRotCD			= mod:NewCDCountTimer(20.5, 204463, nil, "Tank", nil, 5)--20.5-24 variation
@@ -62,6 +64,7 @@ local voiceInfestedGround			= mod:NewVoice(203045)--runaway
 local voiceBurst					= mod:NewVoice(203646)--runaway
 local voiceInfestedMind				= mod:NewVoice(205043, "Dps")--findmc
 local voiceSpreadInfestation		= mod:NewVoice(205070, "HasInterrupt")--kickcast
+local voiceInfestedStack			= mod:NewVoice(204504)--stackhigh
 
 mod:AddSetIconOption("SetIconOnRot", 203096)--Of course I'll probably be forced to change method when BW does their own thing, for compat.
 mod:AddRangeFrameOption(30, 204463)--Range not actually known, 30 used for now
@@ -197,6 +200,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(5, 2) then
 			specWarnInfestedMind:Show()
 			voiceInfestedMind:Play("findmc")
+		end
+	end
+end
+
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	local spellId = args.spellId
+	if spellId == 204504 and args:IsPlayer() then
+		local amount = args.amount or 1
+		if amount >= 7 and amount < 11 then
+			specWarnInfestedStack:Unschedule()
+			specWarnInfestedStack:Schedule(0.5, amount)
+			if self:AntiSpam(2, 4) then
+				voiceInfestedStack:Play("stackhigh")
+			end
 		end
 	end
 end
