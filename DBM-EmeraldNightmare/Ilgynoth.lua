@@ -68,8 +68,8 @@ local yellCursedBlood				= mod:NewFadesYell(215128)
 
 --Stage One: The Ruined Ground
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerDeathGlareCD				= mod:NewNextTimer(220, "ej13190", nil, nil, nil, 1, 208697)
-local timerCorruptorTentacleCD		= mod:NewNextTimer(220, "ej13191", nil, nil, nil, 1, 208929)
+local timerDeathGlareCD				= mod:NewCDTimer(220, "ej13190", nil, nil, nil, 1, 208697)
+local timerCorruptorTentacleCD		= mod:NewCDTimer(220, "ej13191", nil, nil, nil, 1, 208929)
 local timerNightmareHorrorCD		= mod:NewCDTimer(220, "ej13188", nil, nil, nil, 1, 210289)
 local timerEyeOfFateCD				= mod:NewCDTimer(10, 210984, nil, "Tank", nil, 5)
 local timerNightmareishFuryCD		= mod:NewNextTimer(10.9, 215234, nil, "Tank", nil, 5)
@@ -118,7 +118,7 @@ local addsTable = {}
 local phase1Deathglares = {26, 69, 85, 55}
 local phase1Corruptors = {90, 95, 35}
 
-local phase2Deathglares = {21.5, 95, 130}
+local phase2Deathglares = {21.5, 90, 130}--it's usually 21, 95, 130 but sometimes it can be 26 90, 130. As such timers have to use 21, 90, 130 to avoid a "slow timer". Scheduling may reduce impact of this problem a little
 local phase2Corruptors = {45, 95, 35, 85, 40}
 
 local updateInfoFrame, sortInfoFrame
