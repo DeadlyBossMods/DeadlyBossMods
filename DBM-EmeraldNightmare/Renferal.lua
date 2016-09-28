@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 212707 210948 210547 215288 210308 210326 215582",
 	"SPELL_CAST_SUCCESS 210864 215443 218630 218124",
-	"SPELL_AURA_APPLIED 212514 215449 218831 218124 218629 215582 215307 215300",
+	"SPELL_AURA_APPLIED 212514 218124 218629 215582 215307 215300",
 	"SPELL_AURA_APPLIED_DOSE 212512 215582",
 	"SPELL_AURA_REMOVED 218124 218629",
 	"SPELL_PERIODIC_DAMAGE 213124",
@@ -244,8 +244,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 212514 then
 		warnWebWrap:Show(args.destName)
-	elseif spellId == 215449 or spellId == 218831 then
-		DBM:AddMsg("If you see this message, it means targetting debuffs for Necrotic Venom were added to combat log. Report this to DBM authors to help improve mods")
 	elseif spellId == 218124 then
 		if args:IsPlayer() then
 			specViolentWinds:Show()
@@ -274,8 +272,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnWebofPain:Show()
 			end
 		end
-	elseif spellId == 218629 then--Plausable nightmare spawn enable
-		
 	end
 end
 
