@@ -71,6 +71,8 @@ local yellShadowBurst				= mod:NewFadesYell(204040)
 local specWarnShadesOfTaerar		= mod:NewSpecialWarningSwitch(204100, "Tank", nil, nil, 1, 2)
 local specWarnBellowingRoar			= mod:NewSpecialWarningSpell(204078, nil, nil, nil, 2, 6)
 
+--All
+local timerBreathCD					= mod:NewCDSourceTimer(27, 203028, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--27-34 for Ysondre, Cohorts 27-29.
 --Ysondre
 mod:AddTimerLine(Ysondre)
 local timerNightmareBlastCD			= mod:NewCDTimer(15, 203153, nil, "-Tank", nil, 3)--15-20
@@ -147,11 +149,12 @@ end
 
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
-	timerDefiledSpiritCD:Start(30-delay)
-	timerNightmareBlastCD:Start(40-delay)--40 on mythic, it changing on heroic too is assumed. Was 22.5 before
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe vb.on pull
 	)
+	timerBreathCD:Start(16.5, Ysondre)
+	timerDefiledSpiritCD:Start(30-delay)
+	timerNightmareBlastCD:Start(40-delay)--40 on mythic, it changing on heroic too is assumed. Was 22.5 before
 	if DBM.BossHealth:IsShown() then
 		DBM.BossHealth:Clear()
 	end
@@ -181,6 +184,7 @@ function mod:SPELL_CAST_START(args)
 		if tanking or (status == 3) then--Player is current target
 			warnBreath:Show()
 		end
+		timerBreathCD:Start(27, args.sourceName)
 	elseif spellId == 207573 then
 		warnCallDefiledSpirit:Show()
 		timerDefiledSpiritCD:Start()
@@ -289,8 +293,10 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if UnitExists(unitID) and not activeBossGUIDS[unitGUID] then
 			activeBossGUIDS[unitGUID] = true
 			local cid = self:GetUnitCreatureId(unitID)
+			local bossName = UnitName(unitID)
 			--Subtracking .5 from all timers do to slight delay in IEEU vs ENCOUNTER_START
 			if cid == 102683 then -- Emeriss
+				--timerBreathCD:Start(17, bossName)
 				timerVolatileInfectionCD:Start(19.5)
 				timerEssenceOfCorruptionCD:Start(29.5)
 				if DBM.BossHealth:IsShown() then
@@ -298,12 +304,14 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				end
 			elseif cid == 102682 then -- Lethon
 				timerShadowBurstCD:Stop()
+				timerBreathCD:Start(13, bossName)
 				timerSiphonSpiritCD:Start(20.5)
 				if DBM.BossHealth:IsShown() then
 					DBM.BossHealth:AddBoss(cid, Lethon)
 				end
 			elseif cid == 102681 then -- Taerar
 				timerBellowingRoarCD:Stop()
+				timerBreathCD:Start(17, bossName)
 				timerShadesOfTaerarCD:Start(19.5)--19.5-21
 				countdownShadesOfTaerar:Start(19.5)
 				timerSeepingFogCD:Start(25)
@@ -337,7 +345,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 204720 then--Aeriel
 		local cid = self:GetUnitCreatureId(uId)
 		local unitGUID = UnitGUID(uId)
+		local bossName = UnitName(uId)
 		self:Schedule(10, delayedClear, self, unitGUID)
+		timerBreathCD:Stop(bossName)
 		if cid == 102683 then--Emeriss
 			timerVolatileInfectionCD:Stop()
 			timerEssenceOfCorruptionCD:Stop()
