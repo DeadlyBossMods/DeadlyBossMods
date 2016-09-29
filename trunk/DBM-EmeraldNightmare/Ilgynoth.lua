@@ -254,8 +254,13 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif spellId == 210781 then--Dark Reconstitution
-		timerDarkReconstitution:Start()
-		countdownDarkRecon:Start()
+		if self:IsMythic() then
+			timerDarkReconstitution:Start(55)
+			countdownDarkRecon:Start(55)
+		else
+			timerDarkReconstitution:Start()
+			countdownDarkRecon:Start()
+		end
 	elseif spellId == 208685 and self:AntiSpam(4, 2) then--Rupturing roar (Untanked tentacle)
 		specWarnDominatorTentacle:Show()
 	elseif spellId == 218415 then
@@ -270,7 +275,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 223121 then
 		timerFinalTorpor:Start()
-		countdownDarkRecon:Start()
+		countdownDarkRecon:Start(90)
 	elseif spellId == 208689 and self:AntiSpam(2, 6) then
 		timerGroundSlamCD:Start()
 	end
