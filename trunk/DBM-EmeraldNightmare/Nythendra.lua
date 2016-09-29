@@ -23,12 +23,10 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, maybe improve timers with on fly correcting by checking boss energy since blizzards code can't count properly and it's inconsistent and variable.
---TODO, Fix yells if they are still 1 second off for volatile rot in later tests.
---TODO, figure out wtf on the timers. they were completely different on mythic and again on LFR. Assume LFR are most current but recheck all others
 --consider countdowns if timers made more accurate.
 local warnVolatileRot				= mod:NewTargetAnnounce(204463, 4)
 local warnRot						= mod:NewTargetAnnounce(203096, 3)
+local warnRotFades					= mod:NewFadesAnnounce(203096, 1)
 local warnHeartofSwarm				= mod:NewSpellAnnounce(203552, 2)
 local warnHeartofSwarmEnd			= mod:NewEndAnnounce(203552, 2)
 local warnInfestedMind				= mod:NewTargetAnnounce(205043, 4)
@@ -54,7 +52,8 @@ local timerSwarmCD					= mod:NewCDCountTimer(98, 203552, nil, nil, nil, 6)--Need
 local berserkTimer					= mod:NewBerserkTimer(600)
 
 local countdownBreath				= mod:NewCountdown(36, 202977, false)--Can't in good concious have a countdown on by default for something with a 6 second variation
-local countdownVolatileRot			= mod:NewCountdown("Alt20.5", 204463, "Tank")
+local countdownVolatileRot			= mod:NewCountdown("Alt20.5", 204463, false)--Same deal as above
+local countdownRot					= mod:NewCountdownFades("Alt5", 203096)
 
 local voiceBreath					= mod:NewVoice(202977)--breathsoon
 local voiceRot						= mod:NewVoice(203096)--runout
@@ -102,8 +101,9 @@ function mod:OnCombatStart(delay)
 	self.vb.volatileRotCast = 0
 	self.vb.swarmCast = 0
 	--Only start timers if boss isn't starting at 0 energy
-	timerRotCD:Start(5.2, 1)
-	timerVolatileRotCD:Start(20, 1)--20-25.8
+	timerRotCD:Start(5.2-delay, 1)
+	timerVolatileRotCD:Start(20-delay, 1)--20-25.8
+	countdownVolatileRot:Start(20-delay)
 	timerBreathCD:Start(35-delay, 1)--35-40
 	countdownBreath:Start(35-delay)
 	timerSwarmCD:Start(86-delay, 1)--86-91
@@ -139,6 +139,7 @@ function mod:SPELL_CAST_START(args)
 		--Cancel for good measure since blizzard is still tweaking fight
 		timerRotCD:Stop()
 		timerVolatileRotCD:Stop()
+		countdownVolatileRot:Cancel()
 		timerBreathCD:Stop()
 		countdownBreath:Cancel()
 		--Cancel for good measure since blizzard is still tweaking fight
@@ -159,6 +160,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.volatileRotCast = self.vb.volatileRotCast + 1
 		if self.vb.volatileRotCast < 3 then
 			timerVolatileRotCD:Start(nil, self.vb.volatileRotCast+1)
+			countdownVolatileRot:Start()
 		end
 	end
 end
@@ -201,6 +203,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellRot:Schedule(remaining-1, 1)
 				yellRot:Schedule(remaining-2, 2)
 				yellRot:Schedule(remaining-3, 3)
+				countdownRot:Start(remaining)
 			end
 		end
 		if self.Options.SetIconOnRot then
@@ -233,7 +236,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 204463 then
 		if args:IsPlayer() then
+			warnRotFades:Show()
 			yellVolatileRot:Cancel()
+			countdownRot:Cancel()
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
@@ -252,6 +257,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.volatileRotCast = 0
 		timerRotCD:Start(12, 1)
 		timerVolatileRotCD:Start(28, 1)--28-31
+		countdownVolatileRot:Start(28)
 		timerBreathCD:Start(43, 1)
 		countdownBreath:Start(43)
 		timerSwarmCD:Start(nil, self.vb.swarmCast+1)
