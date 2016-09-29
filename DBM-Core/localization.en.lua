@@ -199,7 +199,7 @@ DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d in range (%dyd)"--Multi
 DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fyd)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "Always show your power"		-- Always show your own power value even if you are below the threshold
-DBM_CORE_INFOFRAME_SETLINES			= "Set Lines"
+DBM_CORE_INFOFRAME_SETLINES			= "Set max lines"
 DBM_CORE_INFOFRAME_LINESDEFAULT		= "Set by mod"
 DBM_CORE_INFOFRAME_LINES_TO			= "%d lines"
 
