@@ -169,7 +169,12 @@ function mod:SPELL_CAST_START(args)
 			if self.vb.roarCount % 2 == 0 then
 				timerRoaringCacophonyCD:Start(30, self.vb.roarCount + 1)
 			else
-				timerRoaringCacophonyCD:Start(10, self.vb.roarCount + 1)
+				if self:IsMythic() and self.vb.roarCount == 1 then
+					--17, 20, 10, 30, 10, 30, 10, 30, 10, 30, 10
+					timerRoaringCacophonyCD:Start(20, self.vb.roarCount + 1)
+				else
+					timerRoaringCacophonyCD:Start(10, self.vb.roarCount + 1)
+				end
 			end
 		end
 	end

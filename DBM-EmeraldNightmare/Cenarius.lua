@@ -94,6 +94,24 @@ mod:AddHudMapOption("HudMapOnBreath", 211192)
 mod.vb.phase = 1
 mod.vb.addsCount = 0
 local scornedWarned = false
+local scanForAWhile = 0
+
+local function findTheGodDamnBrambles(self)
+	scanForAWhile = scanForAWhile + 1
+	for uId in DBM:GetGroupMembers() do
+		-- Has aggro on something, but not a tank
+		if uId and not self:IsTanking(uId) and UnitThreatSituation(uId) == 3 then
+			found = true
+			local targetName = UnitName(uId)
+			if targetName then
+				DBM:Debug(targetName.." has aggro and is not tanking", 2)
+			end
+		end
+	end
+	if scanForAWhile < 20 then
+		self:Schedule(1, findTheGodDamnBrambles, self)
+	end
+end
 
 function mod:BreathTarget(targetname, uId)
 	if not targetname then return end
@@ -259,6 +277,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			warnNightmareBrambles:Show(targetName)
 		end
 		timerNightmareBramblesCD:Start()
+		scanForAWhile = 0
+		if DBM.Options.DebugMode then
+			self:Schedule(1, findTheGodDamnBrambles, self)
+		end
 	elseif spellId == 217368 then--Overwhelming Nightmare (Phase 2)
 		self.vb.phase = 2
 		warnPhase2:Show()
