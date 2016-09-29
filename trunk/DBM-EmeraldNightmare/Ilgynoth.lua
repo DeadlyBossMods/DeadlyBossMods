@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
 --TODO, improve spew corruption to work like thogar bombs (continous alerts/yells)
 --TODO, Death Blossom timer for first cast afer a heart phase.
 --Stage One: The Ruined Ground
---ability.id = 210289 or ability.id = 209915
+--(ability.id = 208697 or ability.id = 208929 or ability.id = 218415) and type = "begincast" or ability.id = 209915
 local warnNightmareGaze				= mod:NewSpellAnnounce(210931, 3, nil, false)--Something tells me this is just something it spam casts
 local warnFixate					= mod:NewTargetAnnounce(210099, 2, nil, false)--Spammy so default off
 local warnNightmareExplosion		= mod:NewCastAnnounce(209471, 3)
@@ -115,11 +115,14 @@ mod.vb.CorruptorSpawn = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local eyeName = EJ_GetSectionInfo(13185)
 local addsTable = {}
-local phase1Deathglares = {26, 69, 85, 55}
-local phase1Corruptors = {90, 95, 35}
+local phase1Deathglares = {26, 69, 85, 55}--Variation 26, 75, 85, 60
+local phase1Corruptors = {90, 95, 35}--Variation 90, 95, 40
+local phase1DeathBlossom = {60, 100, 35}
 
-local phase2Deathglares = {21.5, 90, 130}--it's usually 21, 95, 130 but sometimes it can be 26 90, 130. As such timers have to use 21, 90, 130 to avoid a "slow timer". Scheduling may reduce impact of this problem a little
-local phase2Corruptors = {45, 95, 35, 85, 40}
+local phase2Deathglares = {21.5, 90, 130}--21.5, 95
+local phase2Corruptors = {45, 95, 35, 85, 40}--45, 75 (need more data)
+local phase2MythicCorruptors = {45, 75}--(need more data)
+local phase2DeathBlossom = {80}--Unknown beyond first cast
 
 local updateInfoFrame, sortInfoFrame
 do
@@ -185,7 +188,8 @@ function mod:OnCombatStart(delay)
 	timerNightmareHorrorCD:Start(65-delay)
 	timerCorruptorTentacleCD:Start(90-delay)
 	if self:IsMythic() then
-		timerDeathBlossomCD:Start(55)
+		self.vb.deathBlossomCount = 0
+		timerDeathBlossomCD:Start(60)
 	end
 	if self.Options.InfoFrame then
 		if self.Options.InfoFrameBehavior == "Fixates" then
@@ -243,7 +247,7 @@ function mod:SPELL_CAST_START(args)
 				self.vb.CorruptorSpawn = self.vb.CorruptorSpawn + 1
 				warnCorruptorTentacle:Show()
 				local nextCount = self.vb.CorruptorSpawn + 1
-				local timer = self.vb.phase == 2 and phase2Corruptors[nextCount] or phase1Corruptors[nextCount]
+				local timer = self.vb.phase == 2 and (self:IsMythic() and phase2MythicCorruptors[nextCount] or phase2Corruptors[nextCount]) or phase1Corruptors[nextCount]
 				if timer then
 					timerCorruptorTentacleCD:Start(timer)
 				end
@@ -255,10 +259,15 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 208685 and self:AntiSpam(4, 2) then--Rupturing roar (Untanked tentacle)
 		specWarnDominatorTentacle:Show()
 	elseif spellId == 218415 then
+		self.vb.deathBlossomCount = self.vb.deathBlossomCount + 1
 		warnDeathBlossom:Show()
 		timerDeathBlossom:Start()
 		countdownDeathBlossom:Start()
-		timerDeathBlossomCD:Start()
+		local nextCount = self.vb.deathBlossomCount + 1
+		local timer = self.vb.phase == 2 and phase2DeathBlossom[nextCount] or phase1DeathBlossom[nextCount]
+		if timer then
+			timerDeathBlossomCD:Start(timer, self.vb.deathBlossomCount+1)
+		end
 	elseif spellId == 223121 then
 		timerFinalTorpor:Start()
 		countdownDarkRecon:Start()
@@ -292,7 +301,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCursedBloodCD:Stop()
 		timerNightmareishFuryCD:Start(7)
 		timerGroundSlamCD:Start(13)
-		--timerDeathBlossomCD:Start(55)
+		if self:IsMythic() then
+			self.vb.deathBlossomCount = 0
+			timerDeathBlossomCD:Start(80)
+		end
 		timerDeathGlareCD:Start(21.5)
 		timerCorruptorTentacleCD:Start(45)
 		timerNightmareHorrorCD:Start(95)
