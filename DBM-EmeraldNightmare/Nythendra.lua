@@ -12,10 +12,10 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 203552 202977 205070",
+	"SPELL_CAST_START 203552 202977 205070 225943",
 	"SPELL_CAST_SUCCESS 204463",
 	"SPELL_AURA_APPLIED 204463 203096 205043",
-	"SPELL_AURA_REMOVED 204463 203096 203552",
+	"SPELL_AURA_REMOVED 204463 203096 203552 204504",
 	"SPELL_DAMAGE 203646",
 	"SPELL_MISSED 203646",
 	"SPELL_PERIODIC_DAMAGE 203045",
@@ -39,12 +39,14 @@ local specWarnRot					= mod:NewSpecialWarningRun(203096, nil, nil, nil, 1, 2)
 local yellRot						= mod:NewFadesYell(203096)
 local specWarnInfestedGround		= mod:NewSpecialWarningMove(203045, nil, nil, nil, 1, 2)
 local specWarnBurst					= mod:NewSpecialWarningMove(203646, nil, nil, nil, 1, 2)
+local specWarnInfestedMindYou		= mod:NewSpecialWarningYou(205043, nil, nil, nil, 1, 2)
 local specWarnInfestedMind			= mod:NewSpecialWarningSwitch(205043, "Dps", nil, nil, 1, 2)
 local specWarnSpreadInfestation		= mod:NewSpecialWarningInterrupt(205070, "HasInterrupt", nil, nil, 1, 2)
 local specWarnInfestedStack			= mod:NewSpecialWarningStack(204504, nil, 7, nil, 1, 6)
 
 local timerBreathCD					= mod:NewCDCountTimer(36, 202977, nil, nil, nil, 3)--36-42
-local timerVolatileRotCD			= mod:NewCDCountTimer(20.5, 204463, nil, "Tank", nil, 5)--20.5-24 variation
+local timerInfestingMindCD			= mod:NewNextTimer(10, 205043, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)--36-42
+local timerVolatileRotCD			= mod:NewCDCountTimer(20.5, 204463, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--20.5-24 variation
 local timerRotCD					= mod:NewCDCountTimer(15, 203096, nil, nil, nil, 3)
 local timerSwarm					= mod:NewBuffActiveTimer(23, 203552, nil, nil, nil, 6)
 local timerSwarmCD					= mod:NewCDCountTimer(98, 203552, nil, nil, nil, 6)--Needs new sample size
@@ -72,6 +74,7 @@ mod.vb.breathCount = 0
 mod.vb.rotCast = 0
 mod.vb.volatileRotCast = 0
 mod.vb.swarmCast = 0
+local playerHasTen = false
 
 local debuffFilter
 do
@@ -117,6 +120,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:Show(8, "playerdebuffstacks", 204506)
 	end
 	if self:IsMythic() then
+		playerHasTen = false
 		self:RegisterShortTermEvents(
 			"SPELL_AURA_APPLIED_DOSE 204504"
 		)
@@ -151,6 +155,14 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 205070 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnSpreadInfestation:Show(args.sourceName)
 		voiceSpreadInfestation:Play("kickcast")
+	elseif spellId == 225943 then
+		if playerHasTen then
+			specWarnInfestedMindYou:Show()
+			voiceInfestedMind:Play("targetyou")
+		else
+			specWarnInfestedMind:Show()
+			voiceInfestedMind:Play("findmc")
+		end
 	end
 end
 
@@ -211,10 +223,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 205043 then
 		warnInfestedMind:CombinedShow(0.5, args.destName)
-		if self:AntiSpam(5, 2) then
-			specWarnInfestedMind:Show()
-			voiceInfestedMind:Play("findmc")
-		end
 	end
 end
 
@@ -228,6 +236,9 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 			if self:AntiSpam(2, 4) then
 				voiceInfestedStack:Play("stackhigh")
 			end
+		end
+		if amount >= 10 then
+			playerHasTen = true
 		end
 	end
 end
@@ -261,6 +272,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerBreathCD:Start(43, 1)
 		countdownBreath:Start(43)
 		timerSwarmCD:Start(nil, self.vb.swarmCast+1)
+	elseif spellId == 204504 and args:IsPlayer() then
+		playerHasTen = false
 	end
 end
 
@@ -294,6 +307,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self.vb.breathCount < 2 then
 			timerBreathCD:Start(nil, self.vb.breathCount+1)
 			countdownBreath:Start()
+		end
+		if self:IsMythic() then
+			timerInfestingMindCD:Start()
 		end
 		if DBM.Options.DebugMode then
 			self:Schedule(1, findBreath, self)
