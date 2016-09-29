@@ -102,7 +102,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.InfoFrame and self:IsMythic() then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(204506))
-		DBM.InfoFrame:Show(5, "playerdebuffstacks", 204506)
+		DBM.InfoFrame:Show(8, "playerdebuffstacks", 204506)
 	end
 	if self:IsMythic() then
 		self:RegisterShortTermEvents(
