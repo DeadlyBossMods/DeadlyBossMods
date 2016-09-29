@@ -23,6 +23,8 @@ mod:RegisterEventsInCombat(
 
 --TODO, find a good voice for roaring. Maybe watch step? move away?
 --TODO, multiple auto assignments. Assign by group regardless of debuff status. Assign by smart mode (current default). Maybe other options?
+--(ability.id = 197942 or ability.id = 197969) and type = "begincast" or ability.id = 197943 and type = "cast" or ability.id = 198006 and type = "applydebuff"
+--(ability.id = 197969) and type = "begincast"
 local warnFocusedGaze				= mod:NewTargetCountAnnounce(198006, 3)
 local warnBloodFrenzy				= mod:NewSpellAnnounce(198388, 4)
 
@@ -166,12 +168,19 @@ function mod:SPELL_CAST_START(args)
 			--No echos, just every 40 seconds
 			timerRoaringCacophonyCD:Start(40, self.vb.roarCount + 1)
 		else
-			if self.vb.roarCount % 2 == 0 then
-				timerRoaringCacophonyCD:Start(30, self.vb.roarCount + 1)
-			else
-				if self:IsMythic() and self.vb.roarCount == 1 then
-					--17, 20, 10, 30, 10, 30, 10, 30, 10, 30, 10
+			if self:IsMythic() then
+				--17, 20, 10, 30, 10, 30, 10, 30, 10, 30, 10
+				if self.vb.roarCount == 1 then--Second one is 20
 					timerRoaringCacophonyCD:Start(20, self.vb.roarCount + 1)
+				--Because of odd 2nd one, these rules are reversed
+				elseif self.vb.roarCount % 2 == 0 then
+					timerRoaringCacophonyCD:Start(10, self.vb.roarCount + 1)
+				else
+					timerRoaringCacophonyCD:Start(30, self.vb.roarCount + 1)
+				end
+			else
+				if self.vb.roarCount % 2 == 0 then
+					timerRoaringCacophonyCD:Start(30, self.vb.roarCount + 1)
 				else
 					timerRoaringCacophonyCD:Start(10, self.vb.roarCount + 1)
 				end
