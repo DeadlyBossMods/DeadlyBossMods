@@ -346,7 +346,7 @@ function mod:SPELL_AURA_APPLIED(args)
 						end
 					end
 				end
-				if not filterWarning then
+				if not filterWarning and not UnitDebuff("player", GetSpellInfo(205612)) then
 					specWarnBlackeningSoulOther:Show(args.destName)
 					voiceBlackeningSoul:Play("tauntboss")
 				end
