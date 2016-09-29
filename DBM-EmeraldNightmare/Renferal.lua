@@ -244,20 +244,23 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 212514 then
 		warnWebWrap:Show(args.destName)
-	elseif spellId == 218124 then
-		if args:IsPlayer() then
-			specViolentWinds:Show()
-			voiceViolentWinds:Play("justrun")
-			voiceViolentWinds:Schedule(1, "keepmove")
-			yellViolentWinds:Yell()
-		elseif self.Options.SpecWarn218124taunt then
-			specWarnViolentWindsOther:Show(args.destName)
-			voiceViolentWinds:Play("tauntboss")
-		else
-			warnViolentWinds:Show(args.destName)
-		end
-		if self.Options.SetIconOnWinds then
-			self:SetIcon(args.destName, 1)
+	elseif spellId == 218124 then--218144 is ID people helping to soak get, 218124 is only applied to current tank
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then--Why I need a tank filter is beyond me but for some reason 218124 is MAGICALLY triggering on 218144
+			if args:IsPlayer() then
+				specViolentWinds:Show()
+				voiceViolentWinds:Play("justrun")
+				voiceViolentWinds:Schedule(1, "keepmove")
+				yellViolentWinds:Yell()
+			elseif self.Options.SpecWarn218124taunt then
+				specWarnViolentWindsOther:Show(args.destName)
+				voiceViolentWinds:Play("tauntboss")
+			else
+				warnViolentWinds:Show(args.destName)
+			end
+			if self.Options.SetIconOnWinds then
+				self:SetIcon(args.destName, 1)
+			end
 		end
 	elseif spellId == 215582 then
 		if not args:IsPlayer() then--Player is not current target
