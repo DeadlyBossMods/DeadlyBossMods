@@ -84,6 +84,18 @@ do
 	end
 end
 
+local function findBreath(self)
+	for uId in DBM:GetGroupMembers() do
+		-- Has aggro on something, but not a tank
+		if uId and not self:IsTanking(uId) and UnitThreatSituation(uId) == 3 then
+			local targetName = UnitName(uId)
+			if targetName then
+				DBM:Debug(targetName.." has aggro and is not tanking", 2)
+			end
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.breathCount = 0
 	self.vb.rotCast = 0
@@ -276,6 +288,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self.vb.breathCount < 2 then
 			timerBreathCD:Start(nil, self.vb.breathCount+1)
 			countdownBreath:Start()
+		end
+		if DBM.Options.DebugMode then
+			self:Schedule(1, findBreath, self)
 		end
 	end
 end
