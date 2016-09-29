@@ -97,6 +97,13 @@ do
 	local function toggleShowSelf()
 		DBM.Options.InfoFrameShowSelf = not DBM.Options.InfoFrameShowSelf
 	end
+	
+	local function setLines(self, line)
+		if line ~= 0 then
+			DBM.Options.InfoFrameLines = line
+			maxlines = line
+		end
+	end
 
 	function initializeDropdown(dropdownFrame, level, menu)
 		local info
@@ -117,6 +124,14 @@ do
 			end
 			info.func = toggleShowSelf
 			UIDropDownMenu_AddButton(info, 1)
+			
+			info = UIDropDownMenu_CreateInfo()
+			info.text = DBM_CORE_INFOFRAME_SETLINES
+			info.notCheckable = true
+			info.hasArrow = true
+			info.keepShownOnClick = true
+			info.menuList = "lines"
+			UIDropDownMenu_AddButton(info, 1)
 
 			info = UIDropDownMenu_CreateInfo()
 			info.text = HIDE
@@ -124,6 +139,57 @@ do
 			info.func = infoFrame.Hide
 			info.arg1 = infoFrame
 			UIDropDownMenu_AddButton(info, 1)
+		elseif level == 2 then
+			if menu == "lines" then
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_INFOFRAME_LINESDEFAULT
+				info.func = setLines
+				info.arg1 = 0
+				info.checked = (DBM.Options.InfoFrameLines == 0)
+				UIDropDownMenu_AddButton(info, 2)
+
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(3)
+				info.func = setLines
+				info.arg1 = 3
+				info.checked = (DBM.Options.InfoFrameLines == 3)
+				UIDropDownMenu_AddButton(info, 2)
+
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(5)
+				info.func = setLines
+				info.arg1 = 5
+				info.checked = (DBM.Options.InfoFrameLines == 5)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(8)
+				info.func = setLines
+				info.arg1 = 8
+				info.checked = (DBM.Options.InfoFrameLines == 8)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(10)
+				info.func = setLines
+				info.arg1 = 10
+				info.checked = (DBM.Options.InfoFrameLines == 10)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(15)
+				info.func = setLines
+				info.arg1 = 15
+				info.checked = (DBM.Options.InfoFrameLines == 15)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_INFOFRAME_LINES_TO:format(20)
+				info.func = setLines
+				info.arg1 = 20
+				info.checked = (DBM.Options.InfoFrameLines == 20)
+				UIDropDownMenu_AddButton(info, 2)
+			end
 		end
 	end
 end
@@ -616,7 +682,11 @@ function infoFrame:Show(maxLines, event, ...)
 	currentMapId = select(4, UnitPosition("player"))
 	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
 
-	maxlines = maxLines or 5
+	if DBM.Options.InfoFrameLines and DBM.Options.InfoFrameLines ~= 0 then
+		maxlines = DBM.Options.InfoFrameLines
+	else
+		maxlines = maxLines or 5
+	end
 	currentEvent = event
 	for i = 1, select("#", ...) do
 		value[i] = select(i, ...)
