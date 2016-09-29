@@ -101,7 +101,6 @@ local function findTheGodDamnBrambles(self)
 	for uId in DBM:GetGroupMembers() do
 		-- Has aggro on something, but not a tank
 		if uId and not self:IsTanking(uId) and UnitThreatSituation(uId) == 3 then
-			found = true
 			local targetName = UnitName(uId)
 			if targetName then
 				DBM:Debug(targetName.." has aggro and is not tanking", 2)
