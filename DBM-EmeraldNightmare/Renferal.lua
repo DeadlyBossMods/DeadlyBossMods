@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(106087)
 mod:SetEncounterID(1876)
 mod:SetZone()
-mod:SetUsedIcons(1)
+mod:SetUsedIcons(1, 2, 3, 4, 5)
 mod:SetHotfixNoticeRev(15278)
 
 mod:RegisterCombat("combat")
@@ -14,7 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 210864 215443 218630 218124",
 	"SPELL_AURA_APPLIED 212514 218124 218629 215582 215307 215300",
 	"SPELL_AURA_APPLIED_DOSE 212512 215582",
-	"SPELL_AURA_REMOVED 218124 218629",
+	"SPELL_AURA_REMOVED 218124 218629 215300 215307",
 	"SPELL_PERIODIC_DAMAGE 213124",
 	"SPELL_PERIODIC_MISSED 213124",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -28,7 +28,7 @@ local warnSpiderForm				= mod:NewSpellAnnounce(210326, 2)
 local warnFeedingTime				= mod:NewSpellAnnounce(212364, 3)
 local warnWebWrap					= mod:NewTargetAnnounce(212514, 4)
 local warnNecroticVenom				= mod:NewTargetAnnounce(218831, 3)
-local warnWebOfPain					= mod:NewTargetAnnounce(215307, 2)
+local warnWebOfPain					= mod:NewAnnounce("warnWebOfPain", 2, 215307)
 ----Mythic
 local warnNightmareSpawn			= mod:NewSpellAnnounce(218630, 3)
 --Roc Form
@@ -43,8 +43,7 @@ local specWarnVenomousPool			= mod:NewSpecialWarningMove(213124, nil, nil, nil, 
 local specWarnWebWrap				= mod:NewSpecialWarningStack(212512, nil, 5)
 local specWarnNecroticVenom			= mod:NewSpecialWarningMoveAway(218831, nil, nil, nil, 1, 2)
 local yellNecroticVenom				= mod:NewFadesYell(218831)
-local yellViolentWinds				= mod:NewYell(218124)
-local specWarnWebofPain				= mod:NewSpecialWarningYou(215307)
+local specWarnWebofPain				= mod:NewSpecialWarning("specWarnWebofPain")--No voice. Tech doesn't really exist yet to filter special warning sounds on generics. Plus how you handle this may differ between groups
 --Roc Form
 local specWarnGatheringClouds		= mod:NewSpecialWarningSpell(212707, nil, nil, nil, 1, 2)
 local specWarnDarkStorm				= mod:NewSpecialWarningMoveTo(210948, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(210948), nil, 1, 2)
@@ -56,6 +55,7 @@ local specWarnRakingTalon			= mod:NewSpecialWarningDefensive(215582, nil, nil, n
 local specWarnRakingTalonOther		= mod:NewSpecialWarningTaunt(215582, nil, nil, nil, 1, 2)
 ----Mythic
 local specViolentWinds				= mod:NewSpecialWarningYou(218124, nil, nil, nil, 3, 2)
+local yellViolentWinds				= mod:NewYell(218124)
 local specWarnViolentWindsOther		= mod:NewSpecialWarningTaunt(218124, nil, nil, nil, 1, 2)
 
 --Spider Form
@@ -94,7 +94,9 @@ local voiceViolentWinds				= mod:NewVoice(218124)--justrun/keepmove/tauntboss
 local voiceRakingTalon				= mod:NewVoice(215582)--defensive/tauntboss
 
 --mod:AddRangeFrameOption("5")--Add range frame to Necrotic Debuff if detecting it actually works with FindDebuff()
+mod:AddSetIconOption("SetIconOnWeb", 215307)
 mod:AddSetIconOption("SetIconOnWinds", 218124)
+mod:AddDropdownOption("WebConfiguration", {"Disabled", "Arrow", "HudSelf", "HudAll"}, "HudSelf", "misc")
 
 mod.vb.feedingTimeCast = 0
 mod.vb.venomCast = 0
@@ -106,6 +108,7 @@ mod.vb.platformCount = 1
 mod.vb.ViolentWindsPlat = false
 local eyeOfStorm = GetSpellInfo(211127)
 local scanTime = 0
+local playerGUID = UnitGUID("player")
 
 --TODO, need exact number of target affected by it for each scale to refactor it to just not stop until it finds all targets, then make it faster again
 local function findDebuff(self, spellName, spellId)
@@ -160,12 +163,16 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)--540 heroic, other difficulties not confirmed
 	self.vb.platformCount = 1
 	self.vb.ViolentWindsPlat = false
+	DBM:AddMsg(L.MapMessage)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	if self.Options.WebConfiguration == "HudAll" or self.Options.WebConfiguration == "HudSelf" then
+		DBMHudMap:Disable()
+	end
+	if self.Options.WebConfiguration == "Arrow" then
+		DBM.Arrow:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -259,7 +266,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				warnViolentWinds:Show(args.destName)
 			end
 			if self.Options.SetIconOnWinds then
-				self:SetIcon(args.destName, 1)
+				self:SetIcon(args.destName, 5)
 			end
 		end
 	elseif spellId == 215582 then
@@ -267,12 +274,41 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnRakingTalonOther:Show(args.destName)
 			voiceRakingTalon:Play("tauntboss")
 		end
-	elseif spellId == 215307 or spellId == 215300 then
-		local uId = DBM:GetRaidUnitId(args.destName)
-		if not self:IsTanking(uId) then
-			warnWebOfPain:CombinedShow(0.3, args.destName)
-			if args:IsPlayer() then
-				specWarnWebofPain:Show()
+	elseif spellId == 215300 then--215307 can also be used and technically is actually faster since it's first event in combat log, However 215300 is what BW uses and I want to make sure DMM repots it in same Order. Especially if they add icon options
+		if args.sourceGUID == playerGUID then
+			specWarnWebofPain:Show(args.destName)
+			if self.Options.WebConfiguration == "HudAll" or self.Options.WebConfiguration == "HudSelf" then
+				local marker1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.1, 6, nil, nil, nil, 0.5):Appear()
+				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.35, 6, nil, nil, nil, 0.5):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -9, 9, nil)
+				marker1:EdgeTo(marker2, nil, 10, 1, 1, 0, 0.5)--Yellow Line
+			elseif self.Options.WebConfiguration == "Arrow" then
+				DBM.Arrow:ShowRunTo(args.destName, 0, 0)
+			end
+		elseif args.destGUID == playerGUID then
+			specWarnWebofPain:Show(args.sourceName)
+			if self.Options.WebConfiguration == "HudAll" or self.Options.WebConfiguration == "HudSelf" then
+				local marker1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.1, 6, nil, nil, nil, 0.5):Appear()
+				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.35, 6, nil, nil, nil, 0.5):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -9, 9, nil)
+				marker1:EdgeTo(marker2, nil, 10, 1, 1, 0, 0.5)--Yellow Line
+			elseif self.Options.WebConfiguration == "Arrow" then
+				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
+			end
+		else
+			warnWebOfPain:Show(args.sourceName, args.destName)
+			if self.Options.WebConfiguration == "HudAll" then
+				local marker1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.sourceName, 0.35, 6, nil, nil, nil, 0.5):Appear():SetLabel(args.sourceName, nil, nil, nil, nil, nil, 0.8, nil, -9, 9, nil)
+				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "party", args.destName, 0.35, 6, nil, nil, nil, 0.5):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -9, 9, nil)
+				marker1:EdgeTo(marker2, nil, 10, 1, 0, 0, 0.5)--Red Line
+			end
+		end
+		if self.Options.SetIconOnWeb then
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId) then--Tank Group
+				self:SetIcon(args.sourceName, 1)
+				self:SetIcon(args.destName, 2)
+			else--Non Tank Group
+				self:SetIcon(args.sourceName, 3)
+				self:SetIcon(args.destName, 4)
 			end
 		end
 	end
@@ -296,11 +332,19 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 218629 then
 		timerNightmareSpawnCD:Stop()
+	elseif (spellId == 215300 or spellId == 215307) then--Remove calls need both
+		if self.Options.SetIconOnWeb then
+			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() and self.Options.WebConfiguration == "Arrow" then
+			DBM.Arrow:Hide()
+		end
+		DBMHudMap:FreeEncounterMarkerByTarget(215300, args.destName)
 	end
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 213124 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
+	if spellId == 213124 and destGUID == playerGUID and self:AntiSpam(2, 1) then
 		specWarnVenomousPool:Show()
 		voiceVenomousPool:Play("runaway")
 	end
