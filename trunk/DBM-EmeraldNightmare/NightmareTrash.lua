@@ -42,6 +42,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 221028 then
+		warnUnstableDecay:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then--TODO, maybe give it a delay, it does take a while
 			specWarnUnstableDecay:Show()
 			voiceUnstableDecay:Play("runout")
@@ -49,8 +50,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
-		else
-			warnUnstableDecay:Show(args.destName)
 		end
 	--"<40.43 21:42:49> [CLEU] SPELL_AURA_APPLIED#Creature-0-3779-1520-17549-111354-000061CEF4#Taintheart Befouler#Player-3693-08EE23F3#Chiivesdh#222719#Befoulment#DEBUFF#nil", -- [914]
 	elseif spellId == 222719 then
