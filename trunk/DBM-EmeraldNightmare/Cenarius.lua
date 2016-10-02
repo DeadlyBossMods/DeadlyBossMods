@@ -73,6 +73,7 @@ local timerRottenBreathCD			= mod:NewCDTimer(25, 211192, nil, nil, nil, 3)
 --Cenarius
 local countdownForcesOfNightmare	= mod:NewCountdown(78.8, 212726)
 local countdownNightmareBrambles	= mod:NewCountdown("Alt30", 210290, "Ranged")--Never once saw this target melee
+local countdownNightmareBlast		= mod:NewCountdown("Alt32", 213162, "Tank")
 ----Forces of Nightmare
 
 --Cenarius
@@ -135,6 +136,7 @@ function mod:OnCombatStart(delay)
 	countdownNightmareBrambles:Start(27.5-delay)
 	if self:IsMythic() then
 		timerNightmareBlastCD:Start(30.5-delay)
+		countdownNightmareBlast:Start(30.5-delay)
 	end
 	if not self.Options.AlertedBramble then
 		DBM:AddMsg(L.BrambleMessage)
@@ -186,6 +188,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 213162 then
 		timerNightmareBlastCD:Start()
+		countdownNightmareBlast:Start(32.8)
 		local targetName, uId, bossuid = self:GetBossTarget(104636, true)
 		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
 		if tanking or (status == 3) then--Player is current target
@@ -286,6 +289,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		voicePhaseChange:Play("ptwo")
 		timerForcesOfNightmareCD:Stop()
 		timerNightmareBlastCD:Stop()
+		countdownNightmareBlast:Cancel()
 		timerDreadThornsCD:Stop()
 		timerNightmareBramblesCD:Stop()
 		timerCleansingGroundCD:Stop()
