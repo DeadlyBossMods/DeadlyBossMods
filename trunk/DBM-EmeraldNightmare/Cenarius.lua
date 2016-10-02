@@ -134,7 +134,7 @@ function mod:OnCombatStart(delay)
 	timerNightmareBramblesCD:Start(27.5-delay)--Cast finish. Cast start is actually a yell and not worth using anyways since DBM doesn't warn spawn point until cast finish
 	countdownNightmareBrambles:Start(27.5-delay)
 	if self:IsMythic() then
-		timerNightmareBlastCD:Start(31.2-delay)
+		timerNightmareBlastCD:Start(30.5-delay)
 	end
 	if not self.Options.AlertedBramble then
 		DBM:AddMsg(L.BrambleMessage)
@@ -192,7 +192,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnNightmareBlast:Show()
 			voiceNightmareBlast:Play("defensive")
 		else
-			if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, targetName) then return end--You are not near current tank, you're probably 3rd tank on Doom Guards that never taunts massive blast
+			if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, targetName) then return end--You are not near current tank, you're probably 3rd tank on Adds that never taunts nightmare blast
 			specWarnNightmareBlastOther:Schedule(2, targetName)
 			voiceNightmareBlast:Schedule(2, "tauntboss")
 		end
@@ -205,7 +205,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBeastsOfNightmare:Show()
 		timerBeastsOfNightmareCD:Start()
 	elseif spellId == 214529 and not args:IsPlayer() then
-		if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, args.destName) then return end--You are not near current tank, you're probably 3rd tank on Doom Guards that never taunts massive blast
+		if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, args.destName) then return end--You are not near current tank, you're probably 3rd tank on Adds that never taunts nightmare blast
 		specWarnSpearOfNightmaresOther:Show(args.destName)
 		voiceSpearOfNightmares:Play("tauntboss")
 	end
