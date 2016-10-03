@@ -6796,6 +6796,14 @@ function DBM:TalkingHeadStatus()
 	return talkingHeadUnregistered, isTalkingHeadLoaded
 end
 
+function DBM:SetTalkingHeadState(disabled)
+	if disabled then
+		talkingHeadUnregistered = true
+	else
+		talkingHeadUnregistered = false
+	end
+end
+
 function DBM:FlashClientIcon()
 	if self:AntiSpam(5, "FLASH") then
 		FlashClientIcon()
