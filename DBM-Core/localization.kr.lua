@@ -16,8 +16,15 @@ DBM_CORE_LOAD_GUI_COMBAT			= "전투 중에는 설정창을 불러올 수 없습
 DBM_CORE_BAD_LOAD					= "DBM이 현재 인스턴스의 경고를 완전히 불러오지 못한 것을 발견했습니다. 전투가 종료된 후에, /console reloadui 명령어를 입력하여 경고를 다시 불러오시기 바랍니다."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "현재 사용중인 DBM 버전은 '%s' 경보에 필요한 기능이 없습니다. 새로운 DBM을 설치하셔야 이 경보를 불러올 수 있습니다."
 
---DBM_CORE_WHATS_NEW				= "바 내부 아이콘 표시 기능 및 사용자 설정 기능이 추가되었습니다."
---DBM_CORE_WHATS_NEW_LINK				= "바 내부 아이콘 표시 기능 및 사용자 설정 기능이 추가되었습니다. |HDBM:forumsnews|h|cff3588ff여기|r를 클릭하면 좀 더 자세한 내용을 볼 수 있습니다.(영문)"
+DBM_CORE_WHATS_NEW					= "새로 추가된 사항: '대규모 패치'시 옵션 설정을 강제 업데이트 또는 사용 안함 상태로 만드는 기능이 대규모 패치가 아닌 버전에도 잘못 발동되던 버그를 수정했습니다. DBM은 더이상 사용자 설정과 관계없이 부서진 해안 동영상을 중단시키지 않을 것입니다. 악마 침공 모드가 추가됐습니다. 자잘한 텍스트 오류 수정"
+DBM_CORE_WHATS_NEW_LINK				= "향후 DBM 버전에선 유닛 위치와 관련된 많은 기능들이 정리될 것입니다. 자세한 이유에 대해선 |HDBM:forumsnews|h|cff3588ff이곳을 클릭|r하세요"
+
+--Pre Patch 7.1 Notice
+DBM_CORE_NO_RANGE_SOON				= "알림: 거리 레이더는 7.1 패치에선 더는 사용할 수 없습니다"
+--Post Patch 7.1
+DBM_CORE_NO_RANGE					= "거리 레이더는 인스턴스 던전에서 사용할 수 없습니다. 대신 구식의 텍스트 거리 프레임이 사용됩니다"
+DBM_CORE_NO_ARROW					= "화살표 기능은 인스턴스 던전에서 사용할 수 없습니다"
+DBM_CORE_NO_HUD						= "범위 정보 화면 표시기는 인스턴스 던전에서 사용할 수 없습니다"
 
 DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대원 숫자에 맞는 근접판정 정보를 알 수 없기 때문에 DBM이 이 전투에서 거리 창을 비활성화 했습니다."
 DBM_CORE_DYNAMIC_ADD_COUNT			= "현재 공격대원 숫자에 맞는 쫄 소환 정보를 알 수 없기 때문에 DBM이 이 전투에서 소환 횟수 정보를 비활성화 했습니다."
@@ -51,6 +58,8 @@ DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s|1이;가; 종료되었습니다. 소요�
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s 전투가 %s 전에 시작되었습니다. 바를 복구 합니다."
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor 기록을 시작합니다."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor 기록을 중단합니다."
+
+DBM_CORE_MOVIE_SKIPPED				= "동영상이 자동으로 생략되었습니다."
 
 DBM_CORE_COMBAT_STARTED_AI_TIMER	= "DBM 인공지능 바가 작동합니다. (이 전투에서 사용될 주문들의 대기시간들을 추정해서 보여줍니다.)"
 
@@ -129,7 +138,7 @@ DBM_CORE_WHISPER_COMBAT_END_KILL			= "%s 님의 %s 전투가 끝났습니다!"
 DBM_CORE_WHISPER_COMBAT_END_KILL_STATS		= "%s 님의 %s 전투가 끝났습니다! 이 난이도에서 %d회 승리하였습니다!"
 DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s 님이 %s 전투에서 전멸하였습니다. 전투 종료시 우두머리의 체력은 %s 입니다."
 DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s 님이 %s 전투에서 전멸하였습니다. 전투 종료시 우두머리의 체력은 %s 입니다. 이 난이도에서 %d회 전멸하였습니다."
---Scenarios
+--Scenarios (no percents. words like "fighting" or "wipe" changed to better fit scenarios)
 DBM_CORE_AUTO_RESPOND_WHISPER_SCENARIO		= "%s 님은 현재 바쁩니다. %s 시나리오를 진행중입니다. %d/%d명이 진행 중입니다."
 DBM_CORE_WHISPER_SCENARIO_END_KILL			= "%s 님이 %s 시나리오를 완료했습니다!"
 DBM_CORE_WHISPER_SCENARIO_END_KILL_STATS	= "%s 님이 %s 시나리오를 완료했습니다! 이 난이도를 %d회 완료하였습니다!"
@@ -159,6 +168,7 @@ DBM_CORE_UPDATEREMINDER_MAJORPATCH		= "경고: DBM 버전이 오래되어 현재
 DBM_CORE_UPDATEREMINDER_TESTVERSION		= "경고: 현재 게임 버전과 맞지 않는 DBM을 사용중입니다. 현재 게임 버전에 맞는 DBM을 다운로드 받아 다시 설치하시기 바랍니다."
 DBM_CORE_VEM							= "경고: 당신은 DBM과 VEM을 동시에 사용중입니다. 현재 설정에서는 DBM이 작동하지 않으므로 DBM을 불러오지 않습니다."
 DBM_CORE_3RDPROFILES					= "경고: DBM-Profiles는 이 버전의 DBM과 호환되지 않습니다. 충돌을 방지하기 위해 해당 애드온을 제거하셔야 DBM을 불러올 수 있습니다."
+DBM_CORE_DPMCORE						= "경고: Deadly PvP는 더이상 개발되지 않으며 본 DBM 버전과 호환되지 않습니다. DBM이 불러오기 전에 삭제해야 충돌을 방지할 수 있습니다."
 DBM_CORE_UPDATE_REQUIRES_RELAUNCH		= "경고: 지금 업데이트하신 DBM은 게임 클라이언트를 완전히 재시작하지 전까지 정상작동하지 않습니다. 이 업데이트는 새 파일이 추가되었거나 UI 재시작으로는 불러올 수 없는 TOC 변경이 포함되어 있습니다. 재시작 없이 사용하실 경우 오류가 발생하거나 작동하지 않을 수 있습니다."
 DBM_CORE_OUT_OF_DATE_NAG				= "경고: 현재 사용중인 DBM 버전이 오래되었습니다. 이 전투를 위한 중요한 알림, 바 그리고 공격대원 모두가 볼 수 있는 대화 알림을 놓치지 않기 위해 업데이트 하시는 것을 강력하게 권장 드립니다."
 
@@ -185,14 +195,17 @@ DBM_CORE_RANGECHECK_OPTION_FRAMES	= "창 보기 방법"
 DBM_CORE_RANGECHECK_OPTION_RADAR	= "아이콘으로 보기"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "글자로 보기"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "모두 보기"
-DBM_CORE_RANGERADAR_HEADER			= "거리: %dm, 경고: %d명+"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d명(가장 근접: %dm)"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s(%0.1fm)"--One target
-
+DBM_CORE_RANGERADAR_HEADER			= "거리:%d, 플레이어:%d"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d명 (반경 %dm)"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "내 정보 항상 보기"
+DBM_CORE_INFOFRAME_SHOW_SELF		= "내 자원 항상 보기"		-- Always show your own power value even if you are below the threshold
+DBM_CORE_INFOFRAME_SETLINES			= "최대 줄 갯수 지정"
+DBM_CORE_INFOFRAME_LINESDEFAULT		= "애드온 기본값"
+DBM_CORE_INFOFRAME_LINES_TO			= "줄 %d개"
 
-DBM_LFG_INVITE						= "던전 입장"
+DBM_LFG_INVITE						= "파티찾기 초대"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"사용가능 명령어:",
@@ -254,7 +267,7 @@ DBM_CORE_GEAR_WARNING				= "경고: 장비를 확인하세요. 착용 장비가 
 DBM_CORE_GEAR_WARNING_WEAPON		= "경고: 주 장비가 제대로 장착되어 있는지 확인하세요."
 DBM_CORE_GEAR_FISHING_POLE			= "낚싯대"
 
-DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적)"--BATTLE_PET_SOURCE_6
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "업적"--BATTLE_PET_SOURCE_6
 
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.you			= "당신에게 %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target			= "%s: >%%s<"
@@ -299,9 +312,11 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt		= "%s: >%%s< - 차단!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interruptcount= "%s: >%%s< - 차단! (%%d)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you			= "당신에게 %s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.youcount		= "당신에게 %s (%%s)"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.youcount		= "당신에게 %s (위치: %%s)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.youpos		= "당신에게 %s (위치: %%s)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.soakpos			= "%s (뭉칠 위치: %%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= ">%%s<에게 %1$s!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.targetcount	= ">%%2$s<에게 %1$s! (%%1$s)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.defensive		= "%s - 방어 기술 사용"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.taunt			= ">%%s<에게 %1$s - 도발!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close			= "가까운 곳에 %s (>%%s<)!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move			= "%s - 바닥 피하세요!"
@@ -327,10 +342,12 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt		= "$spell:%s 차단 특수 경고 보
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interruptcount	= "$spell:%s 차단 특수 경고 보기(횟수 포함)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you				= "당신이 $spell:%s 대상이 된 경우 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.youcount		= "당신이 $spell:%s 대상이 된 경우 특수 경고 보기(횟수 포함)"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.youcount		= "당신이 $spell:%s 대상이 된 경우 특수 경고 보기(위치 포함)"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.youpos			= "당신이 $spell:%s 대상이 된 경우 특수 경고 보기(위치 포함)"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soakpos			= "$spell:%s에 걸린 사람으로 인해 뭉칠때 특수 경고 보기(위치 포함)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target			= "$spell:%s 대상 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetcount		= "$spell:%s 대상 특수 경고 보기(횟수 포함)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt			= "다른 방어 전담이 $spell:%s 대상이 된 경우 도발 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.defensive		= "$spell:%s에 방어 기술 사용 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close			= "$spell:%s 대상이 당신 가까이 있을 경우 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move			= "$spell:%s 바닥 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge			= "$spell:%s 피하기 특수 경고 보기"
@@ -359,7 +376,6 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextsource		= "다음 %s: >%%s<"
 DBM_CORE_AUTO_TIMER_TEXTS.nextspecial		= "다음 특수 능력"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement		= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.phase				= "다음 단계"
-DBM_CORE_AUTO_TIMER_TEXTS.roleplay			= "이벤트 진행"
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target			= "$spell:%s 약화효과 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast			= "$spell:%s 시전 바 보기"
@@ -376,7 +392,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.nextsource		= "다음 $spell:%s 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextspecial		= "다음 특수 능력 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement		= "%s 업적까지 남은시간 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.phase			= "다음 단계 바 보기"
-DBM_CORE_AUTO_TIMER_OPTIONS.roleplay		= "이벤트 진행 바 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.roleplay		= "길드 역할 수행 유지시간 보기"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에게 전술 목표 아이콘 설정"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "$spell:%s 에게 전술 목표 아이콘 설정"
@@ -396,45 +412,45 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= UnitName("player").."에게 %s!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= UnitName("player").."에게 %s! (%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s %%d초 후 사라짐!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").."{rt%%3$d}에게 %1$s! (%%1$s - {rt%%2$d})"
-DBM_CORE_AUTO_HUD_OPTION_TEXT			= "$spell:%s 범위 정보를 화면에서 보기"
-DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "다양한 범위 정보를 화면에서 보기"
+DBM_CORE_AUTO_HUD_OPTION_TEXT			= "$spell:%s 관련 HUD 보기"
+DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "다양한 범위 정보를 HUD로 봅니다"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 관련 거리 창 보기(%1$sm)"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "거리 창 보기(%sm)"
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT		= "$spell:%2$s 관련 반전 거리 창 보기(%1$sm)"
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT_SHORT	= "반전 거리 창 보기(%sm)"
-DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "$spell:%s 정보를 정보 창으로 보기"
+DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "$spell:%s 관련 정보를 정보 창으로 보기"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "우두머리 전투 시작시 전투 준비 소리 듣기(대상 선택 유무 무관)"
 
 -- New special warnings
 DBM_CORE_MOVE_WARNING_BAR				= "알림 이동 가능"
-DBM_CORE_MOVE_WARNING_MESSAGE			= "<Deadly Boss Mods>를 사용해 주셔셔 감사합니다."
+DBM_CORE_MOVE_WARNING_MESSAGE			= "Deadly Boss Mods를 사용해 주셔셔 감사합니다."
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "특수 경고 이동 가능"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "특수 경고"
 
-DBM_CORE_HUD_INVALID_TYPE			= "범위정보 형식이 잘못 되었습니다."
-DBM_CORE_HUD_INVALID_TARGET			= "범위정보 대상이 잘못 되었습니다."
-DBM_CORE_HUD_INVALID_SELF			= "자신을 범위 정보 대상으로 설정할 수 없습니다."
-DBM_CORE_HUD_INVALID_ICON			= "대상에게 전술 목표 아이콘이 설정되어 있지 않으면 아이콘 범위정보 기능을 사용할 수 없습니다."
-DBM_CORE_HUD_SUCCESS				= "범위정보를 %s동안 표시합니다. '/dbm hud hide'를 입력하시면 즉시 숨길 수 있습니다."
+DBM_CORE_HUD_INVALID_TYPE			= "올바르지 않은 HUD 형식이 정의되었습니다"
+DBM_CORE_HUD_INVALID_TARGET			= "HUD에 올바른 대상이 주어지지 않았습니다"
+DBM_CORE_HUD_INVALID_SELF			= "자신을 HUD 대상으로 설정할 수 없습니다"
+DBM_CORE_HUD_INVALID_ICON			= "대상에게 전술 목표 아이콘이 설정되어 있지 않으면 HUD에 아이콘 기능을 사용할 수 없습니다"
+DBM_CORE_HUD_SUCCESS				= "HUD가 입력한 정보를 표시하기 시작합니다. %s 후 자동으로 사라지며 '/dbm hud hide'를 입력하면 즉시 숨길 수 있습니다."
 DBM_CORE_HUD_USAGE	= {
-	"DBM 범위정보 사용법:",
+	"DBM-HudMap 사용법:",
 	"--------------------",
-	"/dbm hud <형식> <대상> <지속시간>: 지정된 형식으로 지정된 대상을 가리키는 범위정보를 만듬. <지속시간>초 동안 지속됨.",
-	"유효한 형식: arrow, red, blue, green, yellow, icon(대상에게 전술 목표 아이콘이 설정되어 있어야 함)",
+	"/dbm hud <형식> <대상> <지속시간>: 지정한 시간 동안 대상을 가리키는 HUD를 생성",
+	"유효한 형식: arrow, red, blue, green, yellow, icon (대상에게 전술 목표 아이콘이 설정되어 있어야 함)",
 	"유효한 대상: target, focus, <대상이름>",
-	"유효한 시간: 아무 숫자(초단위). 빈칸일 경우, 20분간 적용됨",
-	"/dbm hud hide: 범위정보를 숨기고 비활성화함"
+	"유효한 시간: 아무 숫자(초단위). 지정하지 않으면 20분간 적용됩니다.",
+	"/dbm hud hide: HUD를 숨기고 비활성화"
 }
 
 DBM_ARROW_MOVABLE						= "화살표 움직이기"
+DBM_ARROW_WAY_USAGE					= "/dway <x> <y>: 특정 지점을 가리키는 화살표를 생성합니다 (로컬 지역 지도 좌표 사용)"
+DBM_ARROW_WAY_SUCCESS				= "화살표를 숨기려면 '/dbm arrow hide' 또는 화살표 지점까지 도달하세요"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM 화살표 사용법:",
 	"------------------",
 	"/dbm arrow <x> <y>: 지정된 좌표(X/Y) 방향으로 화살표를 만듬. 세계지도 좌표 사용",
 	"/dbm arrow map <x> <y>: 지정된 좌표(X/Y) 방향으로 화살표를 만듬. 지역지도 좌표를 사용",
 	"/dbm arrow <대상>: 현재 파티 또는 공격대의 <대상> 방향으로 화살표를 만듬. 대소문자를 구분함",
-	"/dbm arrow target: 현재 대상 방향으로 화살표를 만듬",
-	"/dbm arrow focus: 현재 주시대상 방향으로 화살표를 만듬",
 	"/dbm arrow move: 화살표가 25초 동안 이동가능 상태가 됨",
 	"/dbm arrow hide: 화살표를 화면에서 숨김"
 }
@@ -450,14 +466,14 @@ DBM_ERROR_NO_RAID					= "이 기능을 사용하기 위해서는 공격대에 �
 DBM_INSTANCE_INFO_REQUESTED			= "귀속 정보를 요청합니다.\n요청 메세지에 응답한 공격대원의 귀속정보만 확인할 수 있습니다."
 DBM_INSTANCE_INFO_STATUS_UPDATE		= "[진행상황] DBM 사용자 수: %2$d명, 응답: %1$d명(수락 %3$d명, 거부 %4$d명, 남은시간: %5$d초)"
 DBM_INSTANCE_INFO_ALL_RESPONSES		= "귀속 정보 확인 결과"
-DBM_INSTANCE_INFO_DETAIL_DEBUG		= "공격대원: %s, 응답타입: %s, 공격대명: %s, 공격대ID: %s, 난이도: %d, 인원: %d, 처치수: %s"
-DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s - %s"
-DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "- ID %s(처치 %d): %s"
-DBM_INSTANCE_INFO_DETAIL_INSTANCE2	= "- 처치 %d: %s"
-DBM_INSTANCE_INFO_NOLOCKOUT			= "공격대 인스턴스에 귀속 중인 공격대원이 없습니다."
-DBM_INSTANCE_INFO_STATS_DENIED		= "응답거부: %s"
+DBM_INSTANCE_INFO_DETAIL_DEBUG		= "전송자: %s, 결과형식: %s, 인스턴스명: %s, 인스턴스ID: %s, 난이도: %d, 인원: %d, 처치수: %s"
+DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s, 난이도 %s:"
+DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, 처치 %d: %s"
+DBM_INSTANCE_INFO_DETAIL_INSTANCE2	= "    처치 %d: %s"
+DBM_INSTANCE_INFO_NOLOCKOUT			= "공격대 인스턴스에 귀속된 공격대원이 없습니다."
+DBM_INSTANCE_INFO_STATS_DENIED		= "확인 요청 거부: %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "자리비움: %s"
-DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "DBM 미사용: %s"
+DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "최근 버전 DBM 미설치: %s"
 DBM_INSTANCE_INFO_RESULTS			= "다른 언어의 WoW 클라이언트를 사용 중인 공격대원이 있다면 같은 난이도가 중복해서 보일 수 있습니다."
 DBM_INSTANCE_INFO_SHOW_RESULTS		= "응답없음: %s\n|HDBM:showRaidIdResults|h|cff3588ff[지금 결과 보기]|r|h"
 

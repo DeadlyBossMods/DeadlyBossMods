@@ -3,6 +3,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Trial of Valor|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Die Prüfung des Mutes|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0勇氣試煉|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0용맹의 시험|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -14,6 +15,7 @@
 ## X-DBM-Mod-Has-Mythic : 1
 ## X-DBM-Mod-Name: Trial of Valor
 ## X-DBM-Mod-Name-deDE: Die Prüfung des Mutes
+## X-DBM-Mod-Name-koKR: 용맹의 시험
 ## X-DBM-Mod-Sort: 054
 ## X-DBM-Mod-MapID: 1648
 ## X-DBM-Mod-MinCoreRevision: 14737
