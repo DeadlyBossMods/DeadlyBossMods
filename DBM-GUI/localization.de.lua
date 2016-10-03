@@ -173,6 +173,7 @@ L.Area_SpecWarn				= "Einstellungen für Spezialwarnungen"
 L.SpecWarn_ClassColor		= "Benutze Klassenfarben für Spezialwarnungen"
 L.ShowSWarningsInChat 		= "Zeige Spezialwarnungen im Chatfenster"
 L.SWarnNameInNote			= "Nutze SW 5 falls eine Notiz deinen Namen enthält"
+L.SpecialWarningIcon		= "Zeige Symbole an Spezialwarnungen"
 L.SpecWarn_FlashFrame		= "Aufblinkender Bildschirm bei Spezialwarnungen"
 L.SpecWarn_FlashFrameRepeat	= "Wiederhole %d-mal (falls aktiviert)"
 L.SpecWarn_Font				= "Schriftart für Spezialwarnungen" --unused
