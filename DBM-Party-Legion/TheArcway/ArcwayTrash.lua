@@ -8,18 +8,20 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 211757",
+	"SPELL_CAST_START 211757 226206",
 	"SPELL_AURA_APPLIED 194006 210750 211745"
 )
 
 --TODO, for time being, not registering high cpu spell damage events for GTFOs. One warning should be enough. Will re-evalulate if it is a problem
 local specWarnArgusPortal			= mod:NewSpecialWarningInterrupt(211757, "HasInterrupt", nil, nil, 1, 2)
+local specWarnArcaneReconstitution	= mod:NewSpecialWarningInterrupt(226206, "HasInterrupt", nil, nil, 1, 2)
 
 local specWarnOozePuddle			= mod:NewSpecialWarningMove(194006, nil, nil, nil, 1, 2)
 local specWarnColapsingRift			= mod:NewSpecialWarningMove(210750, nil, nil, nil, 1, 2)
 local specWarnFelStrike				= mod:NewSpecialWarningMove(211745, nil, nil, nil, 1, 2)
 
 local voiceArgusPortal				= mod:NewVoice(211757, "HasInterrupt")--kickcast
+local voiceArcaneReconstitution		= mod:NewVoice(226206, "HasInterrupt")--kickcast
 local voiceOozePuddle				= mod:NewVoice(194006)--runaway
 local voiceColapsingRift			= mod:NewVoice(210750)--runaway
 local voiceFelStrike				= mod:NewVoice(211745)--runaway
@@ -32,6 +34,9 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 211757 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnArgusPortal:Show(args.sourceName)
 		voiceArgusPortal:Play("kickcast")
+	elseif spellId == 226206 and self:CheckInterruptFilter(args.sourceGUID) then
+		specWarnArcaneReconstitution:Show(args.sourceName)
+		voiceArcaneReconstitution:Play("kickcast")
 	end
 end
 
