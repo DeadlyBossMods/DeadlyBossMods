@@ -3441,31 +3441,37 @@ local function CreateOptionsMenu()
 				if value == "Always" and not disabled then
 					TalkingHeadFrame:UnregisterAllEvents()
 					--TalkingHeadFrame_CloseImmediately()
+					DBM:SetTalkingHeadState(true)
 				else
 					if value == "Never" and disabled then
 						TalkingHeadFrame:RegisterEvent("TALKINGHEAD_REQUESTED")
 						TalkingHeadFrame:RegisterEvent("TALKINGHEAD_CLOSE")
 						TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
 						TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
+						DBM:SetTalkingHeadState(false)
 					elseif value == "CombatOnly" then
 						if InCombatLockdown() and not disabled then
 							TalkingHeadFrame:UnregisterAllEvents()
 							--TalkingHeadFrame_CloseImmediately()
+							DBM:SetTalkingHeadState(true)
 						else
 							TalkingHeadFrame:RegisterEvent("TALKINGHEAD_REQUESTED")
 							TalkingHeadFrame:RegisterEvent("TALKINGHEAD_CLOSE")
 							TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
 							TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
+							DBM:SetTalkingHeadState(false)
 						end
 					elseif value == "BossCombatOnly" then
 						if IsEncounterInProgress() and not disabled then
 							TalkingHeadFrame:UnregisterAllEvents()
 							--TalkingHeadFrame_CloseImmediately()
+							DBM:SetTalkingHeadState(true)
 						else
 							TalkingHeadFrame:RegisterEvent("TALKINGHEAD_REQUESTED")
 							TalkingHeadFrame:RegisterEvent("TALKINGHEAD_CLOSE")
 							TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
 							TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
+							DBM:SetTalkingHeadState(false)
 						end
 					end
 				end
