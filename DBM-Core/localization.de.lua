@@ -200,6 +200,9 @@ DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d in Reichweite (%dm)"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "Eigene Stärke immer anzeigen" -- Always show your own power value even if you are below the threshold
+DBM_CORE_INFOFRAME_SETLINES			= "Setze maximale Zeilenanzahl"
+DBM_CORE_INFOFRAME_LINESDEFAULT		= "gesetzt vom Mod"
+DBM_CORE_INFOFRAME_LINES_TO			= "%d Zeilen"
 
 DBM_LFG_INVITE						= "Einladung der Gruppensuche"
 

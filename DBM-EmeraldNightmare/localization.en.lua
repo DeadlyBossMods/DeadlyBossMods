@@ -92,7 +92,7 @@ L:SetOptionLocalization({
 -------------
 --  Trash  --
 -------------
-L = DBM:GetModLocalization("f")
+L = DBM:GetModLocalization("EmeraldNightmareTrash")
 
 L:SetGeneralLocalization({
 	name =	"Emerald Nightmare Trash"
