@@ -7,6 +7,7 @@
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0隊伍首領-軍臨天下|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0队伍首领(军团再临)|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mazmorras (Legion)|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05인던전-군단|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariables: DBMPartyLegion_AllSavedVars
@@ -26,6 +27,7 @@
 ## X-DBM-Mod-Name-frFR: Groupe (Legion)
 ## X-DBM-Mod-Name-zhTW: 隊伍首領 (軍臨天下)
 ## X-DBM-Mod-Name-zhCN: 队伍首领(军团再临)
+## X-DBM-Mod-Name-koKR: 5인 던전 (군단)
 ## X-DBM-Mod-Sort: 060
 ## X-DBM-Mod-MapID: 1501, 1466, 1456, 1477, 1458, 1516, 1571, 1492, 1544, 1493, 1651
 ## X-DBM-Mod-MinCoreRevision: 14737
@@ -34,6 +36,7 @@ localization.cn.lua
 localization.de.lua
 localization.tw.lua
 localization.es.lua
+localization.kr.lua
 BlackRookHold\AmalgamSouls.lua
 BlackRookHold\Illysanna.lua
 BlackRookHold\Smashspite.lua

@@ -3,7 +3,7 @@ if GetLocale() ~= "koKR" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
 local L = DBM_GUI_Translations
 
-L.MainFrame = "죽이는 보스 모드"
+--L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "제작지원 및 번역: "
 L.TranslationBy 			= "법사세린(everfinale@gmail.com)"
@@ -46,6 +46,7 @@ L.Statistic_Kills			= "승리:"
 L.Statistic_Wipes			= "전멸:"
 L.Statistic_Incompletes		= "미완료:"
 L.Statistic_BestKill		= "최고 기록:"
+L.Statistic_BestRank		= "최고 등급:"--Maybe not get used, not sure yet, localize anyways
 
 -- Tab: General Core Options
 L.General 					= "기본 DBM 설정"
@@ -75,8 +76,8 @@ L.RaidWarnColor_1 			= "색상 1"
 L.RaidWarnColor_2 			= "색상 2"
 L.RaidWarnColor_3 			= "색상 3"
 L.RaidWarnColor_4 			= "색상 4"
-L.InfoRaidWarning			= [[알림 창 위치와 알림 색상을 수정할 수 있습니다.
-DBM은 별도 알림 창에 알림을 표시합니다.]]
+L.InfoRaidWarning			= [[공격대 경보 창 위치와 색상을 설정할 수 있습니다. 
+본 프레임은 "플레이어 X가 Y에 걸렸습니다"와 같은 메시지를 출력하는데 사용됩니다.]]
 L.ColorResetted 			= "현재 색상 설정을 초기화 합니다."
 L.ShowWarningsInChat 		= "알림을 대화창에서도 보기"
 L.WarningIconLeft 			= "알림 왼쪽에 주문 아이콘 보기"
@@ -166,6 +167,7 @@ L.BarFlash					= "만료되기 직전의 바를 깜빡이기"
 L.BarSort					= "남은 시간을 기준으로 정렬"
 L.BarColorByType			= "종류에 따라 바 색상 구분하기"
 L.BarInlineIcons			= "내부 아이콘 사용"
+L.ShortTimerText			= "축약된 타이머 문자 사용 (사용 가능할 때만)"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "특수 경고"
@@ -173,6 +175,7 @@ L.Area_SpecWarn				= "특수 경고 설정"
 L.SpecWarn_ClassColor		= "특수 경고에 직업 색상 사용"
 L.ShowSWarningsInChat 		= "특수 경고를 대화창에서도 보기"
 L.SWarnNameInNote			= "메모 내용에 당신이 포함될 경우 별도 소리 사용"
+L.SpecialWarningIcon		= "특수 경고에 아이콘 사용"
 L.SpecWarn_FlashFrame		= "특수 경고 화면 반짝임 효과 사용"
 L.SpecWarn_FlashFrameRepeat	= "반짝임 %d회 추가"
 L.SpecWarn_Font				= "특수 경고에 사용되는 글꼴"
@@ -183,7 +186,6 @@ L.SpecWarn_FlashRepeat		= "반짝임 추가"
 L.SpecWarn_FlashColor		= "반짝임 색상 %d"
 L.SpecWarn_FlashDur			= "반짝임 지속시간: %0.1f"
 L.SpecWarn_FlashAlpha		= "반짝임 투명도: %0.1f"
-L.Area_SpecWarnFont			= "특수 경고 글꼴 설정"
 L.SpecWarn_DemoButton		= "예제 보기"
 L.SpecWarn_MoveMe			= "위치 설정"
 L.SpecWarn_ResetMe			= "초기화"
@@ -193,21 +195,20 @@ L.SpecialWarnSound3			= "치명적인 피해를 입히는 경고의 소리 설�
 L.SpecialWarnSound4			= "도망쳐야 하는 경고의 소리 설정"
 L.SpecialWarnSound5			= "메모 내용에 당신이 포함된 경고의 소리 설정"
 
-
 -- Tab: Heads Up Display Frame
-L.Panel_HUD					= "범위정보"
-L.Area_HUDOptions			= "범위정보 설정"
+L.Panel_HUD					= "HUD (범위정보)"
+L.Area_HUDOptions			= "HUD 설정"
 L.HUDColorOverride			= "각 경고별로 지정된 색상을 무시하고 정해진 색상으로 보기"
 L.HUDSizeOverride			= "각 경고별로 지정된 크기를 무시하고 정해진 크기로 보기"
 L.HUDAlphaOverride			= "각 경고별로 지정된 투명도를 무시하고 정해진 투명도로 보기"
 L.HUDTextureOverride		= "각 경고별로 지정된 무늬를 무시(전술목표 아이콘 무늬 제외)"
-L.HUDColorSelect			= "색상 %d"
-L.HUDTextureSelect1			= "첫번째 범위정보의 무늬"
-L.HUDTextureSelect2			= "두번째 범위정보의 무늬"
-L.HUDTextureSelect3			= "세번째 범위정보의 무늬"
-L.HUDTextureSelect4			= "특정위치를 가리키는 범위 정보의 무늬"
-L.HUDSizeSlider				= "범위정보 크기: %0.1f"
-L.HUDAlphaSlider			= "범위정보 투명도: %0.1f"
+L.HUDColorSelect			= "HUD 색상 %d"
+L.HUDTextureSelect1			= "1순위 HUD 무늬"
+L.HUDTextureSelect2			= "2순위 HUD 무늬"
+L.HUDTextureSelect3			= "3순위 HUD 무늬"
+L.HUDTextureSelect4			= "'여기로 이동'을 가리키는 HUD 무늬"
+L.HUDSizeSlider				= "반경: %0.1f"
+L.HUDAlphaSlider			= "투명도: %0.1f"
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "음성안내"
@@ -244,7 +245,7 @@ L.SpamBlockNoShowUTimers	= "다른 사용자가 보낸 바 보이지 않기(전�
 L.SpamBlockNoSetIcon		= "전술 목표 아이콘 설정하지 않기"
 L.SpamBlockNoRangeFrame		= "거리 창 보이지 않기"
 L.SpamBlockNoInfoFrame		= "정보 창 보이지 않기"
-L.SpamBlockNoHudMap			= "범위 정보 보이지 않기"
+L.SpamBlockNoHudMap			= "HUD 보이지 않기"
 L.SpamBlockNoHealthFrame	= "우두머리 체력 바 보이지 않기"
 L.SpamBlockNoCountdowns		= "초세기 소리 재생 안함"
 L.SpamBlockNoYells			= "대화 알림 끄기"
@@ -266,7 +267,7 @@ L.FilterTankSpec			= "방어 전담이 아닐 경우 방어 전담용 경고 보
 L.FilterInterrupts			= "자신의 대상이나 주시 대상이 아닌 대상의 차단 경고 보지 않기(참고: 차단 실패시 공격대 전체에 치명적인 영향을 주는 주문에는 적용되지 않습니다.)"
 L.FilterInterruptNoteName	= "차단 경고 메모에 자신이 포함되지 않은 경우 경고 보지 않기"
 L.FilterDispels				= "해제 주문이 재사용 대기시간 중일 경우 해제 경고 보지 않기"
-L.FilterSelfHud				= "자기 자신의 범위 정보를 보이지 않기(거리 비례 범위 정보는 제외)"
+L.FilterSelfHud				= "HUD에서 자기 정보는 보지 않기 (거리 기반 HUD 기능은 제외)"
 
 L.Area_PullTimer			= "특수 바(전투 예정/시작, 휴식, 사용자 바, 재생성) 기능 끄기"
 L.DontShowPTNoID			= "같은 인스턴스에 있지 않은 사용자가 보낸 전투 예정 바 차단"
@@ -288,6 +289,9 @@ L.SpamBlockSayYell			= "전투 중 대화 말풍선 숨기기"
 L.DisableCinematics			= "게임 내 동영상 끄기"
 L.AfterFirst				= "1회 이상 본 동영상"
 L.Always					= "모든 동영상"
+L.DisableTalkingHead		= "NPC 대화창 차단"
+L.CombatOnly				= "전투중 차단 (모든 전투)"
+L.RaidCombat				= "전투중 차단 (우두머리만)"
 
 L.Panel_ExtraFeatures		= "기타 기능"
 --
@@ -306,17 +310,14 @@ L.AutoReplySound			= "자동 응답 귓속말을 보낼 때 경고음 듣기"
 L.TimerGeneral 				= "DBM 바 설정"
 L.SKT_Enabled				= "최고 기록 바 보기"
 L.CRT_Enabled				= "다음 전투 부활 충전 바 보기"
-L.DontShowRespawn			= "전멸 후 재생성 바 보이기"
+L.ShowRespawn				= "전멸 후 우두머리 재생성 바 보이기"
 L.ShowQueuePop				= "팝업창 남은 시간 바 보기(공격대 찾기/전장/기타)"
-L.ChallengeTimerOptions		= "도전 모드 최고 기록 바 설정"
-L.ChallengeTimerPersonal	= "개인 기록으로 보기"
-L.ChallengeTimerGuild		= "길드 기록으로 보기"
-L.ChallengeTimerRealm		= "서버 기록으로 보기"
-
+--
 L.Area_AutoLogging			= "자동 전투 기록 설정"
 L.AutologBosses				= "우두머리 전투시 블리자드 전투 기록 자동 활성화(전투 시작전 주요 정보를 기록하려면, /dbm pull 명령어를 사용하세요)"
 L.AdvancedAutologBosses		= "우두머리 전투시 Transcriptor 기록 자동 활성화"
 L.LogOnlyRaidBosses			= "공격대 우두머리 전투만 기록하기(공격대 찾기 제외)"
+--
 L.Area_3rdParty				= "외부 애드온 연동 기능"
 L.ShowBBOnCombatStart		= "전투 시작시 BigBrother 버프 체크 실행하기"
 L.BigBrotherAnnounceToRaid	= "BigBrother 버프 체크 결과를 공격대에 알리기"
