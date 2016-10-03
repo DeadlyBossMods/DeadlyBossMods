@@ -5,6 +5,7 @@
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0暗夜要塞|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0暗夜堡|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastión Nocturno|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0밤의 요새|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -22,6 +23,7 @@ localization.cn.lua
 localization.de.lua
 localization.tw.lua
 localization.es.lua
+localization.kr.lua
 Skorpyron.lua
 ChronoAnomaly.lua
 Trilliax.lua

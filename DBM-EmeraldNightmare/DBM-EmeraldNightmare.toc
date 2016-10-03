@@ -5,6 +5,7 @@
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0翡翠梦魇|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0翡翠夢魘|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Pesadilla Esmeralda|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0에메랄드의 악몽|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -22,6 +23,7 @@ localization.cn.lua
 localization.de.lua
 localization.tw.lua
 localization.es.lua
+localization.kr.lua
 Nythendra.lua
 Ilgynoth.lua
 Renferal.lua
