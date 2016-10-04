@@ -348,7 +348,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not addsTable[args.sourceGUID] then
 			addsTable[args.sourceGUID] = true
 			self.vb.IchorCount = self.vb.IchorCount + 1
-			if self.Options.SetIconOnOoze and self.vb.InchorCount == 1 then
+			if self.Options.SetIconOnOoze and not self:IsLFR() and self.vb.InchorCount == 1 then
 				self:Schedule(1, autoMarkOozesUntil71, self)
 			end
 		end
