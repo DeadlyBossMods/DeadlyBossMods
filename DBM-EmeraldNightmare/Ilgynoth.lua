@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(105393)
 mod:SetEncounterID(1873)
 mod:SetZone()
-mod:SetUsedIcons(4, 3, 2, 1)
+mod:SetUsedIcons(8, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(15299)
 mod.respawnTime = 29
 
@@ -99,6 +99,7 @@ local voiceNightmarishFury			= mod:NewVoice(210984)--defensive
 local voiceGroundSlam				= mod:NewVoice(208689)--targetyou/watchwave
 
 mod:AddSetIconOption("SetIconOnSpew", 208929, false)
+mod:AddSetIconOption("SetIconOnOoze", "ej13186", false)
 mod:AddRangeFrameOption(8, 215128)
 mod:AddInfoFrameOption(210099)
 mod:AddDropdownOption("InfoFrameBehavior", {"Fixates", "Adds"}, "Fixates", "misc")
@@ -163,6 +164,28 @@ do
 		end
 		return lines
 	end
+end
+
+--This clean method will only work until 7.1. After which it'll have to be replaced with something FAR uglier
+local function autoMarkOozesUntil71(self)
+	self:Unschedule(autoMarkOozesUntil71)--Shouldn't be needed but for good measure
+	if self.vb.IchorCount == 0 then return end--None left, abort scans
+	local lowestUnitID = nil
+	local lowestHealth = 100
+	for i = 1, 20 do
+		local UnitID = "nameplate"..i
+		if UnitExists(UnitID) then
+			local unitHealth = UnitHealth(UnitID) / UnitHealthMax(UnitID)
+			if unitHealth < lowestHealth then
+				lowestHealth = unitHealth
+				lowestUnitID = UnitID
+			end
+		end
+	end
+	if lowestUnitID then
+		self:SetIcon(lowestUnitID, 8)
+	end
+	self:Schedule(1, autoMarkOozesUntil71, self)
 end
 
 function mod:SpewCorruptionTarget(targetname, uId)
@@ -325,6 +348,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not addsTable[args.sourceGUID] then
 			addsTable[args.sourceGUID] = true
 			self.vb.IchorCount = self.vb.IchorCount + 1
+			if self.Options.SetIconOnOoze and self.vb.InchorCount == 1 then
+				self:Schedule(1, autoMarkOozesUntil71, self)
+			end
 		end
 	elseif spellId == 210984 then
 		local uId = DBM:GetRaidUnitId(args.destName)
