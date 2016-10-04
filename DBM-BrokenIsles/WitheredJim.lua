@@ -10,6 +10,7 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
+--[[
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 223689",
 	"SPELL_AURA_APPLIED 223623 223614"
@@ -39,11 +40,12 @@ end
 function mod:OnCombatEnd()
 end
 
+--[[
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 223689 then
-		warnNightstableEnergy:Show()
-		timerNightstableEnergyCD:Start()
+		--warnNightstableEnergy:Show()
+		--timerNightstableEnergyCD:Start()
 	end
 end
 
@@ -58,3 +60,4 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerResonanceCD:Start()
 	end
 end
+--]]
