@@ -7248,6 +7248,17 @@ do
 			end
 		end
 		if name or scanOnlyBoss then return name, uid, bossuid end
+		-- Now lets check nameplates
+		for i = 1, 40 do
+			if UnitGUID("nameplate"..i) == guid then
+				bossuid = "nameplate"..i
+				name = DBM:GetUnitFullName("nameplate"..i.."target")
+				uid = "nameplate"..i.."target"
+				bossuIdCache[guid] = bossuid
+				break
+			end
+		end
+		if name then return name, uid, bossuid end
 		-- failed to detect from default uIds, scan all group members's target.
 		if IsInRaid() then
 			for i = 1, GetNumGroupMembers() do
@@ -11065,8 +11076,7 @@ do
 		return false
 	end
 
-	--Could add nameplate1-etc but they are being removed in 7.1 anyways.
-	local mobUids = {"mouseover", "boss1", "boss2", "boss3", "boss4", "boss5"}
+	local mobUids = {"mouseover", "boss1", "boss2", "boss3", "boss4", "boss5", "nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10", "nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20"}
 	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName)
 		if not optionName then optionName = self.findFastestComputer[1] end
 		if canSetIcons[optionName] then
