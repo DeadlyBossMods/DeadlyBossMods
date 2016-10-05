@@ -34,6 +34,23 @@ L:SetOptionLocalization({
 ---------------------------
 L= DBM:GetModLocalization(1744)
 
+L:SetWarningLocalization({
+	warnWebOfPain		= ">%s<與>%s<連接",--Only this needs localizing
+	specWarnWebofPain	= "你與>%s<連接了",--Only this needs localizing
+})
+
+L:SetOptionLocalization({
+	WebConfiguration	= "為痛苦蛛網設定HUD/箭頭選項",
+	Disabled			= "禁用",
+	Arrow				= "當你中招時只顯示傳統箭頭",
+	HudSelf				= "只有你中招時顯示HUD連線",
+	HudAll				= "為所有中招的目標顯示HUD連線"
+})
+
+L:SetMiscLocalization({
+	MapMessage			= "註：此模組的箭頭/HUD選項能夠在介面中設定。而這些選項在7.1失效。"
+})
+
 ---------------------------
 -- Ursoc --
 ---------------------------
