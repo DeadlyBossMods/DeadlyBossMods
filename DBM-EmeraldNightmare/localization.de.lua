@@ -75,8 +75,8 @@ L= DBM:GetModLocalization(1704)
 L= DBM:GetModLocalization(1750)
 
 L:SetMiscLocalization({
-	BrambleYell			= "Stachelschwarm NAHE " .. UnitName("player") .. "!",
-	BrambleMessage		= "Hinweis: DBM kann nicht erkennen, wer tatsächlich von Stachelschwarm FIXIERT wird. Es wird stattdessen angezeigt, bei welchem Ziel er anfänglich ERSCHEINT. Der Boss wählt einen Spieler und wirft den Schwarm auf ihn. Danach wählt der Schwarm ein ANDERES Ziel, welches Mods nicht erkennen können."
+	BrambleYell			= "Gestrüpp NAHE " .. UnitName("player") .. "!",
+	BrambleMessage		= "Hinweis: DBM kann nicht erkennen, wer tatsächlich von Alptraumgestrüpp FIXIERT wird. Es wird stattdessen angezeigt, bei welchem Ziel es anfänglich ERSCHEINT. Der Boss wählt einen Spieler und wirft das Gestrüpp auf ihn. Danach wählt das Gestrüpp ein ANDERES Ziel, welches Mods nicht erkennen können."
 })
 
 ------------------
