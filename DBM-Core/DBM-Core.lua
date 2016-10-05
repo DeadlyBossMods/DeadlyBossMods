@@ -11061,6 +11061,7 @@ do
 		return false
 	end
 
+	--Could add nameplate1-etc but they are being removed in 7.1 anyways.
 	local mobUids = {"mouseover", "boss1", "boss2", "boss3", "boss4", "boss5"}
 	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName)
 		if not optionName then optionName = self.findFastestComputer[1] end
