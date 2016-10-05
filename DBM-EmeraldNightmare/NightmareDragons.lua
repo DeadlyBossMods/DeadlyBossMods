@@ -52,6 +52,7 @@ local specWarnYsondreMark			= mod:NewSpecialWarningStack(203102, nil, 7)
 local specWarnEmerissMark			= mod:NewSpecialWarningStack(203125, nil, 7)
 local specWarnLethonMark			= mod:NewSpecialWarningStack(203124, nil, 7)
 local specWarnTaerarMark			= mod:NewSpecialWarningStack(203121, nil, 7)
+local specWarnDragon				= mod:NewSpecialWarningTarget(204720, "Tank", nil, nil, 1, 2)
 --Ysondre
 --local specWarnNightmareBlast		= mod:NewSpecialWarningSpell(203153, nil, nil, nil, 2)
 local specWarnDefiledSpirit			= mod:NewSpecialWarningYou(207573)
@@ -191,7 +192,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 205300 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnCorruption:Show(args.sourceName)
 		voiceCorruption:Play("kickcast")
-	elseif spellId == 203817 then
+	elseif spellId == 203817 and self:AntiSpam(5, 6) then
 		specWarnCorruptedBurst:Show()
 		voiceCorruptedBurst:Play("watchstep")
 	elseif spellId == 203888 then
@@ -346,6 +347,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		local cid = self:GetUnitCreatureId(uId)
 		local unitGUID = UnitGUID(uId)
 		local bossName = UnitName(uId)
+		specWarnDragon:Show(bossName)
 		self:Schedule(10, delayedClear, self, unitGUID)
 		timerBreathCD:Stop(bossName)
 		if cid == 102683 then--Emeriss
