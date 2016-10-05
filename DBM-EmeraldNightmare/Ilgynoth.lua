@@ -124,6 +124,7 @@ local phase2Deathglares = {21.5, 90, 130}--21.5, 95
 local phase2Corruptors = {45, 95, 35, 85, 40}--45, 75 (need more data)
 local phase2MythicCorruptors = {45, 75}--(need more data)
 local phase2DeathBlossom = {80}--Unknown beyond first cast
+local autoMarkScannerActive = false
 
 local updateInfoFrame, sortInfoFrame
 do
@@ -169,16 +170,22 @@ end
 --This clean method will only work until 7.1. After which it'll have to be replaced with something FAR uglier
 local function autoMarkOozesUntil71(self)
 	self:Unschedule(autoMarkOozesUntil71)--Shouldn't be needed but for good measure
-	if self.vb.IchorCount == 0 then return end--None left, abort scans
+	if self.vb.IchorCount == 0 then
+		autoMarkScannerActive = false
+		return
+	end--None left, abort scans
 	local lowestUnitID = nil
 	local lowestHealth = 100
 	for i = 1, 20 do
 		local UnitID = "nameplate"..i
 		if UnitExists(UnitID) then
-			local unitHealth = UnitHealth(UnitID) / UnitHealthMax(UnitID)
-			if unitHealth < lowestHealth then
-				lowestHealth = unitHealth
-				lowestUnitID = UnitID
+			local cid = self:GetCIDFromGUID(UnitGUID(UnitID))
+			if cid == 105721 then
+				local unitHealth = UnitHealth(UnitID) / UnitHealthMax(UnitID)
+				if unitHealth < lowestHealth then
+					lowestHealth = unitHealth
+					lowestUnitID = UnitID
+				end
 			end
 		end
 	end
@@ -205,6 +212,7 @@ function mod:OnCombatStart(delay)
 	self.vb.IchorCount = 0
 	self.vb.DeathglareSpawn = 0
 	self.vb.CorruptorSpawn = 0
+	autoMarkScannerActive = false
 	timerNightmareishFuryCD:Start(6-delay)
 	timerGroundSlamCD:Start(12-delay)
 	timerDeathGlareCD:Start(26-delay)
@@ -348,8 +356,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not addsTable[args.sourceGUID] then
 			addsTable[args.sourceGUID] = true
 			self.vb.IchorCount = self.vb.IchorCount + 1
-			if self.Options.SetIconOnOoze and not self:IsLFR() and self.vb.InchorCount == 1 then
-				self:Schedule(1, autoMarkOozesUntil71, self)
+			if self.Options.SetIconOnOoze and not self:IsLFR() and not autoMarkScannerActive then
+				autoMarkScannerActive = true
+				self:Schedule(2.5, autoMarkOozesUntil71, self)
 			end
 		end
 	elseif spellId == 210984 then
