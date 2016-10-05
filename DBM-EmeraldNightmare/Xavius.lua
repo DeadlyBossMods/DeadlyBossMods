@@ -290,9 +290,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDescentIntoMadness:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnDescentIntoMadness:Show()
-			yellDescentIntoMadness:Schedule(19, 1)
-			yellDescentIntoMadness:Schedule(18, 2)
-			yellDescentIntoMadness:Schedule(17, 3)
+			if not playerHasDream then
+				yellDescentIntoMadness:Schedule(19, 1)
+				yellDescentIntoMadness:Schedule(18, 2)
+				yellDescentIntoMadness:Schedule(17, 3)
+			end
 		end
 	elseif spellId == 206651 then
 		local amount = args.amount or 1
