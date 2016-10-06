@@ -176,10 +176,11 @@ local function autoMarkOozesUntil71(self)
 	end--None left, abort scans
 	local lowestUnitID = nil
 	local lowestHealth = 100
-	for i = 1, 20 do
+	for i = 1, 25 do
 		local UnitID = "nameplate"..i
-		if UnitExists(UnitID) then
-			local cid = self:GetCIDFromGUID(UnitGUID(UnitID))
+		local GUID = UnitGUID(UnitID)
+		if GUID then
+			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 105721 then
 				local unitHealth = UnitHealth(UnitID) / UnitHealthMax(UnitID)
 				if unitHealth < lowestHealth then
