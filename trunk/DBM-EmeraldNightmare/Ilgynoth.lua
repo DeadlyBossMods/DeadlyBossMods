@@ -254,7 +254,9 @@ function mod:SPELL_CAST_START(args)
 		if self:AntiSpam(3, 5) then
 			warnNightmareExplosion:Show()
 		end
-		autoMarkOozesUntil71(self)
+		if self.Options.SetIconOnOoze then
+			autoMarkOozesUntil71(self)
+		end
 	elseif spellId == 208697 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnMindFlay:Show(args.sourceName)
