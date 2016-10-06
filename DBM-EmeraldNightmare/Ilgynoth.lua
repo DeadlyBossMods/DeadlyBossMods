@@ -254,7 +254,7 @@ function mod:SPELL_CAST_START(args)
 		if self:AntiSpam(3, 5) then
 			warnNightmareExplosion:Show()
 		end
-		if self.Options.SetIconOnOoze then
+		if self.Options.SetIconOnOoze and not self:IsLFR() then
 			autoMarkOozesUntil71(self)
 		end
 	elseif spellId == 208697 then
