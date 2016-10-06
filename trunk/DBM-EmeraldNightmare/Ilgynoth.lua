@@ -168,32 +168,38 @@ do
 end
 
 --This clean method will only work until 7.1. After which it'll have to be replaced with something FAR uglier
-local function autoMarkOozesUntil71(self)
-	self:Unschedule(autoMarkOozesUntil71)
-	if self.vb.IchorCount == 0 then
-		autoMarkScannerActive = false
-		return
-	end--None left, abort scans
-	local lowestUnitID = nil
-	local lowestHealth = 100
-	for i = 1, 25 do
-		local UnitID = "nameplate"..i
-		local GUID = UnitGUID(UnitID)
-		if GUID then
-			local cid = self:GetCIDFromGUID(GUID)
-			if cid == 105721 then
-				local unitHealth = UnitHealth(UnitID) / UnitHealthMax(UnitID)
-				if unitHealth < lowestHealth then
-					lowestHealth = unitHealth
-					lowestUnitID = UnitID
+local autoMarkOozesUntil71
+do
+	local UnitHealth, UnitHealthMax, UnitGUID, UnitCastingInfo = UnitHealth, UnitHealthMax, UnitGUID, UnitCastingInfo
+	autoMarkOozesUntil71 = function(self)
+		self:Unschedule(autoMarkOozesUntil71)
+		if self.vb.IchorCount == 0 then
+			autoMarkScannerActive = false
+			return
+		end--None left, abort scans
+		local lowestUnitID = nil
+		local lowestHealth = 100
+		for i = 1, 25 do
+			local UnitID = "nameplate"..i
+			local GUID = UnitGUID(UnitID)
+			if GUID then
+				local cid = self:GetCIDFromGUID(GUID)
+				if cid == 105721 then
+					local unitHealth = UnitHealth(UnitID) / UnitHealthMax(UnitID)
+					local _, _, _, _, _, _, _, castID = UnitCastingInfo(UnitID)
+					if castID and castID == 209471 then break end--Ignore oozes casting explosion
+					if unitHealth < lowestHealth then
+						lowestHealth = unitHealth
+						lowestUnitID = UnitID
+					end
 				end
 			end
 		end
+		if lowestUnitID then
+			self:SetIcon(lowestUnitID, 8)
+		end
+		self:Schedule(1, autoMarkOozesUntil71, self)
 	end
-	if lowestUnitID then
-		self:SetIcon(lowestUnitID, 8)
-	end
-	self:Schedule(1, autoMarkOozesUntil71, self)
 end
 
 function mod:SpewCorruptionTarget(targetname, uId)
