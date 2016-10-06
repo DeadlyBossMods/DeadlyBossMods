@@ -169,7 +169,7 @@ end
 
 --This clean method will only work until 7.1. After which it'll have to be replaced with something FAR uglier
 local function autoMarkOozesUntil71(self)
-	self:Unschedule(autoMarkOozesUntil71)--Shouldn't be needed but for good measure
+	self:Unschedule(autoMarkOozesUntil71)
 	if self.vb.IchorCount == 0 then
 		autoMarkScannerActive = false
 		return
@@ -249,8 +249,11 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 210931 then
 		warnNightmareGaze:Show()
-	elseif spellId == 209471 and self:AntiSpam(3, 5) then
-		warnNightmareExplosion:Show()
+	elseif spellId == 209471 then
+		if self:AntiSpam(3, 5) then
+			warnNightmareExplosion:Show()
+		end
+		autoMarkOozesUntil71(self)
 	elseif spellId == 208697 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnMindFlay:Show(args.sourceName)
