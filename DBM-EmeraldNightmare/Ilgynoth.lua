@@ -125,6 +125,7 @@ local phase2Corruptors = {45, 95, 35, 85, 40}--45, 75 (need more data)
 local phase2MythicCorruptors = {45, 75}--(need more data)
 local phase2DeathBlossom = {80}--Unknown beyond first cast
 local autoMarkScannerActive = false
+local autoMarkFilter = {}
 
 local updateInfoFrame, sortInfoFrame
 do
@@ -182,12 +183,10 @@ do
 		for i = 1, 25 do
 			local UnitID = "nameplate"..i
 			local GUID = UnitGUID(UnitID)
-			if GUID then
+			if GUID and not autoMarkFilter[GUID] then
 				local cid = self:GetCIDFromGUID(GUID)
 				if cid == 105721 then
 					local unitHealth = UnitHealth(UnitID) / UnitHealthMax(UnitID)
-					local _, _, _, _, _, _, _, castID = UnitCastingInfo(UnitID)
-					if castID and castID == 209471 then break end--Ignore oozes casting explosion
 					if unitHealth < lowestHealth then
 						lowestHealth = unitHealth
 						lowestUnitID = UnitID
@@ -220,6 +219,7 @@ function mod:OnCombatStart(delay)
 	self.vb.DeathglareSpawn = 0
 	self.vb.CorruptorSpawn = 0
 	autoMarkScannerActive = false
+	table.wipe(autoMarkFilter)
 	timerNightmareishFuryCD:Start(6-delay)
 	timerGroundSlamCD:Start(12-delay)
 	timerDeathGlareCD:Start(26-delay)
@@ -262,6 +262,9 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self.Options.SetIconOnOoze and not self:IsLFR() then
 			autoMarkOozesUntil71(self)
+		end
+		if not autoMarkFilter[args.sourceGUID] then
+			 autoMarkFilter[args.sourceGUID] = true
 		end
 	elseif spellId == 208697 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
