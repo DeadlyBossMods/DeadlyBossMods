@@ -422,7 +422,7 @@ local dbmToc = 0
 local isTalkingHeadLoaded = false
 local talkingHeadUnregistered = false
 
-local fakeBWVersion, fakeBWHash = 16, "f3f29d6"
+local fakeBWVersion, fakeBWHash = 18, "e37df75"
 local versionQueryString, versionResponseString = "Q:%d-%s", "V:%d-%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
@@ -4135,7 +4135,7 @@ do
 	end
 	
 	whisperSyncHandlers["BTR3"] = function(sender, timer)
-		if DBM.Options.DontShowUserTimers then return end
+		if DBM.Options.DontShowUserTimers or not DBM:GetRaidUnitId(sender) then return end
 		timer = tonumber(timer or 0)
 		if timer > 3600 then return end
 		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR3 sync, then we know immediately RequestTimers was successful, so abort others
@@ -11077,7 +11077,7 @@ do
 	end
 
 	local mobUids = {"mouseover", "boss1", "boss2", "boss3", "boss4", "boss5", "nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10", "nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20"}
-	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName)
+	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, isFriendly)
 		if not optionName then optionName = self.findFastestComputer[1] end
 		if canSetIcons[optionName] then
 			--Declare variables.
@@ -11111,6 +11111,9 @@ do
 				local unitid = uId.."target"
 				local guid = UnitGUID(unitid)
 				local cid = self:GetCIDFromGUID(guid)
+				local isEnemy = UnitIsEnemy("player", unitid)
+				local isFiltered = not isFriendly and not isEnemy or false
+				if isFiltered then break end
 				if guid and type(creatureID) == "table" and creatureID[cid] and not addsGUIDs[guid] then
 					if type(creatureID[cid]) == "number" then
 						SetRaidTarget(unitid, creatureID[cid])
@@ -11156,6 +11159,9 @@ do
 			for _, unitid2 in ipairs(mobUids) do
 				local guid2 = UnitGUID(unitid2)
 				local cid2 = self:GetCIDFromGUID(guid2)
+				local isEnemy = UnitIsEnemy("player", unitid2)
+				local isFiltered = not isFriendly and not isEnemy or false
+				if isFiltered then break end
 				if guid2 and type(creatureID) == "table" and creatureID[cid2] and not addsGUIDs[guid2] then
 					if type(creatureID[cid2]) == "number" then
 						SetRaidTarget(unitid2, creatureID[cid2])
