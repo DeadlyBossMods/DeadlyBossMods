@@ -2,7 +2,7 @@
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Aug 30 2016, 03:25 UTC@15178
+-- Last update: Oct 08 2016, 03:05 UTC@15334
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -180,6 +180,7 @@ L.Area_SpecWarn				= "特殊警报设置"
 L.SpecWarn_ClassColor		= "为特殊警报启用分职业着色"
 L.ShowSWarningsInChat 		= "在聊天窗口中显示特殊警报"
 L.SWarnNameInNote			= "使用自定义注记的特殊警报请选择SW5"
+L.SpecialWarningIcon		= "特殊警报使用技能图标"
 L.SpecWarn_FlashFrame		= "特殊警报时屏幕边缘泛光"
 L.SpecWarn_FlashFrameRepeat	= "重复 %d 次 (如果开启的话)"
 L.SpecWarn_Font				= "特殊警报字体"
@@ -286,7 +287,8 @@ L.HideBossEmoteFrame		= "Boss战斗中隐藏Boss表情框体"
 L.HideWatchFrame			= "在没有成就追踪的情况下，Boss战斗中隐藏任务追踪框体"
 L.HideGarrisonUpdates		= "Boss战斗中隐藏要塞队列完成提示"
 L.HideGuildChallengeUpdates	= "Boss战斗中隐藏工会挑战成功信息"
-L.HideTooltips				= "Boss战斗中隐藏鼠标提示窗体 （tooltips）"
+L.HideQuestTooltips			= "Boss战斗中隐藏鼠标提示窗体(tooltips)中的任务进度"
+L.HideTooltips				= "Boss战斗中完全隐藏鼠标提示窗体(tooltips)"
 L.DisableSFX				= "Boss战斗中关闭音效"
 L.SpamBlockSayYell			= "隐藏聊天窗口中的使用聊天泡泡的警报信息"
 L.DisableCinematics			= "自动跳过游戏内过场动画"
