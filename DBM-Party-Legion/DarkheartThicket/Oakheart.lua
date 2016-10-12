@@ -13,18 +13,18 @@ mod:RegisterEventsInCombat(
 )
 
 local warnShatteredEarth			= mod:NewSpellAnnounce(204666, 2)
-local warnThrowTarget				= mod:NewTargetAnnounce(204646, 2)--This is target the tank is THROWN at.
+local warnThrowTarget				= mod:NewTargetAnnounce(204658, 2)--This is target the tank is THROWN at.
 
 local specWarnRoots					= mod:NewSpecialWarningDodge(204574, nil, nil, nil, 2, 2)
-local yellThrow						= mod:NewYell(204646)--yell so others can avoid splash damage. I don't think target can avoid
+local yellThrow						= mod:NewYell(204658, 2764)--yell so others can avoid splash damage. I don't think target can avoid
 local specWarnBreath				= mod:NewSpecialWarningDefensive(204667, "Tank", nil, nil, 1, 2)
 
 local timerShatteredEarthCD			= mod:NewCDTimer(35, 204666, nil, nil, nil, 2)--35-62 variation? is this health based?
-local timerThrowCD					= mod:NewCDTimer(28, 204646, nil, nil, nil, 3)--29-32
+local timerThrowCD					= mod:NewCDTimer(28, 204658, nil, nil, nil, 3)--29-32
 local timerRootsCD					= mod:NewCDTimer(23, 204574, nil, nil, nil, 3)--23-31
 local timerBreathCD					= mod:NewCDTimer(26.5, 204667, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--26--35
 
-local countdownThrow				= mod:NewCountdown("Alt28", 204646, "Tank")
+local countdownThrow				= mod:NewCountdown("Alt28", 204658, "Tank")
 
 local voiceRoots					= mod:NewVoice(204574)--watchstep
 local voiceBreath					= mod:NewVoice(204667, "Tank")--Defensive
