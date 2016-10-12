@@ -6,7 +6,7 @@ mod:SetCreatureID(105393)
 mod:SetEncounterID(1873)
 mod:SetZone()
 mod:SetUsedIcons(8, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(15299)
+mod:SetHotfixNoticeRev(15338)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -117,7 +117,9 @@ local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, 
 local eyeName = EJ_GetSectionInfo(13185)
 local addsTable = {}
 local phase1Deathglares = {26, 69, 85, 55}--Variation 26, 75, 85, 60
+local phase1MythicDeathglares = {26, 69, 85, 65}--Variation 26, 75, 85, 60
 local phase1Corruptors = {90, 95, 35}--Variation 90, 95, 40
+local phase1MythicCorruptors = {90, 95, 45}--Variation 90, 95, 40
 local phase1DeathBlossom = {60, 100, 35}
 
 local phase2Deathglares = {21.5, 90, 130}--21.5, 95
@@ -278,7 +280,7 @@ function mod:SPELL_CAST_START(args)
 				self.vb.DeathglareSpawn = self.vb.DeathglareSpawn + 1
 				warnDeathglareTentacle:Show()
 				local nextCount = self.vb.DeathglareSpawn + 1
-				local timer = self.vb.phase == 2 and phase2Deathglares[nextCount] or phase1Deathglares[nextCount]
+				local timer = self.vb.phase == 2 and phase2Deathglares[nextCount] or self:IsMythic() and phase1MythicDeathglares[nextCount] or phase1Deathglares[nextCount]
 				if timer then
 					timerDeathGlareCD:Start(timer)
 				end
@@ -293,7 +295,12 @@ function mod:SPELL_CAST_START(args)
 				self.vb.CorruptorSpawn = self.vb.CorruptorSpawn + 1
 				warnCorruptorTentacle:Show()
 				local nextCount = self.vb.CorruptorSpawn + 1
-				local timer = self.vb.phase == 2 and (self:IsMythic() and phase2MythicCorruptors[nextCount] or phase2Corruptors[nextCount]) or phase1Corruptors[nextCount]
+				local timer
+				if self.vb.phase == 2 then
+					timer = self:IsMythic() and phase2MythicCorruptors[nextCount] or phase2Corruptors[nextCount]
+				else
+					timer = self:IsMythic() and phase1MythicCorruptors[nextCount] or phase1Corruptors[nextCount]
+				end
 				if timer then
 					timerCorruptorTentacleCD:Start(timer)
 				end
