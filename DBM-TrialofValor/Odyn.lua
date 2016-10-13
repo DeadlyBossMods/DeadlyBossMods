@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 --TODO, spear of light stuff, too many spellids and I'm not playing guess work with it
 --TODO, Cleansing flame timers/target announces?
 --Stage 1: Halls of Valor was merely a set back
-local warnDancingBlade				= mod:NewSpellAnnounce(228003, 3)--Change if target scanning works, but considering it doesn't in 5 man version of this spell, omitting for now
+local warnDancingBlade				= mod:NewCountAnnounce(228003, 3)--Change if target scanning works, but considering it doesn't in 5 man version of this spell, omitting for now
 local warnRevivify					= mod:NewCastAnnounce(228171, 4)
 local warnExpelLight				= mod:NewTargetAnnounce(228028, 3)
 local warnShieldofLight				= mod:NewTargetAnnounce(228270, 3)
@@ -57,10 +57,10 @@ local specWarnStormforgedSpearOther	= mod:NewSpecialWarningTaunt(228918, nil, ni
 local specWarnCleansingFlame		= mod:NewSpecialWarningMove(228683, nil, nil, nil, 1, 2)
 
 --Stage 1: Halls of Valor was merely a set back
-local timerDancingBladeCD			= mod:NewCDTimer(31, 228003, nil, nil, nil, 3)
-local timerHornOfValorCD			= mod:NewCDTimer(32, 228012, nil, nil, nil, 2)
-local timerExpelLightCD				= mod:NewCDTimer(32, 228028, nil, nil, nil, 3)
-local timerShieldofLightCD			= mod:NewCDTimer(32, 228270, nil, nil, nil, 3)
+local timerDancingBladeCD			= mod:NewCDTimer(31, 228003, nil, nil, nil, 3)--Alternating two times
+local timerHornOfValorCD			= mod:NewCDTimer(32, 228012, nil, nil, nil, 2)--Alternating two times
+local timerExpelLightCD				= mod:NewCDTimer(32, 228028, nil, nil, nil, 3)--Alternating two times
+local timerShieldofLightCD			= mod:NewCDTimer(32, 228270, nil, nil, nil, 3)--Alternating two times
 local timerDrawPowerCD				= mod:NewNextTimer(70, 227503, nil, nil, nil, 6)
 local timerDrawPower				= mod:NewCastTimer(30, 227503, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage 2: Odyn immitates margok
@@ -93,6 +93,10 @@ mod:AddRangeFrameOption("5/8")
 
 mod.vb.phase = 1
 mod.vb.hornCasting = false
+mod.vb.hornCast = 0
+mod.vb.shieldCast = 0
+mod.vb.expelLightCast = 0
+mod.vb.dancingBladeCast = 0
 
 local expelLight, stormOfJustice = GetSpellInfo(228028), GetSpellInfo(227807)
 local function updateRangeFrame(self)
@@ -109,9 +113,13 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.hornCasting = false
+	self.vb.hornCast = 0
+	self.vb.shieldCast = 0
+	self.vb.expelLightCast = 0
+	self.vb.dancingBladeCast = 0
 	timerHornOfValorCD:Start(8-delay)
 	timerDancingBladeCD:Start(16-delay)
-	timerShieldofLightCD:Start(24-delay)
+	timerShieldofLightCD:Start(23-delay)
 	timerExpelLightCD:Start(32-delay)
 	timerDrawPowerCD:Start(40-delay)
 end
@@ -125,13 +133,27 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 228003 then
-		warnDancingBlade:Show()
-		timerDancingBladeCD:Start()
+		self.vb.dancingBladeCast = self.vb.dancingBladeCast + 1
+		warnDancingBlade:Show(self.vb.dancingBladeCast)
+		if self.vb.dancingBladeCast % 2 == 0 then
+			timerDancingBladeCD:Start(39)
+		else
+			timerDancingBladeCD:Start(31)
+		end
 	elseif spellId == 228012 then
 		self.vb.hornCasting = true
+		self.vb.hornCast = self.vb.hornCast + 1
 		specWarnHornOfValor:Show()
 		voiceHornOfValor:Play("scatter")
-		timerHornOfValorCD:Start()
+		if self.vb.phase == 1 then
+			if self.vb.hornCast % 2 == 0 then
+				timerHornOfValorCD:Start(43)
+			else
+				timerHornOfValorCD:Start(27)
+			end
+		else
+			timerHornOfValorCD:Start(21)--Unknown but def shorter than 27
+		end
 		updateRangeFrame(self)
 	elseif spellId == 228171 and self:AntiSpam(2, 2) then
 		warnRevivify:Show()
@@ -148,7 +170,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.hornCasting = false
 		updateRangeFrame(self)
 	elseif spellId == 228028 then
-		timerExpelLightCD:Start()
+		self.vb.expelLightCast = self.vb.expelLightCast + 1
+		if self.vb.expelLightCast % 2 == 0 then
+			timerExpelLightCD:Start(38)
+		else
+			timerExpelLightCD:Start(32)
+		end
 	elseif spellId == 228162 then--Cast finished, cleanup icons
 		if self.Options.SetIconOnShield then
 			self:SetIcon(args.destName, 0)
@@ -256,15 +283,26 @@ end
 --"<35.57 16:56:12> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\ABILITY_PRIEST_FLASHOFLIGHT.BLP:20|t Hyrja targets |cFFFF0000Wakmagic|r with |cFFFF0404|Hspell:228162|h[Shield of Light]|h|r!#Hyrja###Wakmagic##0#0##0#476#nil#0#false#false#false#false", -- [241]
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:228162") then
-		timerShieldofLightCD:Start()
+		self.vb.shieldCast = self.vb.shieldCast + 1
+		if self.vb.phase == 1 then
+			if self.vb.shieldCast % 2 == 0 then
+				timerShieldofLightCD:Start(38)
+			else
+				timerShieldofLightCD:Start(32)
+			end
+		else
+			timerShieldofLightCD:Start(26)
+		end
 		local targetname = DBM:GetUnitFullName(target)
-		if target then
-			if target == UnitName("player") then
+		if targetname then
+			if targetname == UnitName("player") then
 				specWarnShieldofLight:Show()
 				voiceShieldofLight:Play("targetyou")
 				yellShieldofLightFades:Schedule(2.8, 1)
 				yellShieldofLightFades:Schedule(1.8, 2)
 				yellShieldofLightFades:Schedule(0.8, 3)
+			else
+				warnShieldofLight:Show(targetname)
 			end
 			if self.Options.SetIconOnShield then
 				self:SetIcon(targetname, 1)
@@ -279,11 +317,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	if spellId == 227503 then--Draw Power
 		timerDrawPower:Start()
 		countdownDrawPower:Start()
+		timerDrawPowerCD:Start()
 	--"<150.12 16:58:07> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Test for Players::3-3198-1648-10280-229168-000660515F:229168]]", -- [1347]
 	--"<156.10 16:58:13> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Leap into Battle::3-3198-1648-10280-227882-0001605165:227882]]", -- [1382]
 	--"<159.34 16:58:16> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Spear Transition - Holy::3-3198-1648-10280-228734-0004E05168:228734]]", -- [1395]
 	elseif spellId == 229168 then--Test for Players (Phase 2 begin)
 		self.vb.phase = 2
+		self.vb.hornCast = 0--Verify
+		self.vb.shieldCast = 0--Verify
+		self.vb.expelLightCast = 0--Verify
+		self.vb.dancingBladeCast = 0--Verify
 		timerDancingBladeCD:Stop()
 		timerHornOfValorCD:Stop()
 		timerExpelLightCD:Stop()
@@ -292,9 +335,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		--time = timer + 8 for the 8 seconds during transition he stops gaining power
 		local elapsed, total = timerDrawPower:GetTime()
 		timerDrawPowerCD:Stop()
-		countdownDrawPower:Cancel()
 		timerDrawPowerCD:Update(elapsed, total+8)
 		local remaining = total-elapsed+8
-		countdownDrawPower:Start(remaining)
 	end
 end
