@@ -248,7 +248,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 198388 then
 		warnBloodFrenzy:Show()
 		voiceBloodFrenzy:Play("frenzy")
-	elseif spellId == 205611 and self:AntiSpam(2, 1) then
+	elseif spellId == 205611 and args:IsPlayer() and self:AntiSpam(2, 1) then
 		specWarnMiasma:Show()
 		voiceMiasma:Play("runaway")
 	elseif spellId == 204859 and not args:IsPlayer() then
@@ -271,7 +271,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
-	if spellId == 205611 and destGUID == UnitGUID("player") and destName == UnitName("player") and self:AntiSpam(2, 1) then
+	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnMiasma:Show()
 		voiceMiasma:Play("runaway")
 	end
