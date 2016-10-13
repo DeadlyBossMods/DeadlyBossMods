@@ -4491,6 +4491,7 @@ do
 		local updateInstanceInfo, showResults
 
 		whisperSyncHandlers["II"] = function(sender, result, name, id, diff, maxPlayers, progress, textDiff)
+			if not DBM:GetRaidUnitId(sender) then return end
 			if GetTime() - lastRequest > 62 or not results then
 				return
 			end
@@ -4693,6 +4694,7 @@ do
 	end
 
 	whisperSyncHandlers["CI"] = function(sender, mod, time)
+		if not DBM:GetRaidUnitId(sender) then return end
 		mod = DBM:GetModByName(mod or "")
 		time = tonumber(time or 0)
 		if mod and time then
@@ -4701,6 +4703,7 @@ do
 	end
 
 	whisperSyncHandlers["TI"] = function(sender, mod, timeLeft, totalTime, id, ...)
+		if not DBM:GetRaidUnitId(sender) then return end
 		mod = DBM:GetModByName(mod or "")
 		timeLeft = tonumber(timeLeft or 0)
 		totalTime = tonumber(totalTime or 0)
@@ -4710,6 +4713,7 @@ do
 	end
 
 	whisperSyncHandlers["VI"] = function(sender, mod, name, value)
+		if not DBM:GetRaidUnitId(sender) then return end
 		mod = DBM:GetModByName(mod or "")
 		value = tonumber(value) or value
 		if mod and name and value then
@@ -4722,7 +4726,7 @@ do
 			return
 		end
 		local handler
-		if channel == "WHISPER" and (sender ~= playerName or prefix == "BTR3") then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
+		if channel == "WHISPER" and sender ~= playerName then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
 			handler = whisperSyncHandlers[prefix]
 		else
 			handler = syncHandlers[prefix]
