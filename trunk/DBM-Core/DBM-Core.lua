@@ -4688,6 +4688,7 @@ do
 	end
 
 	whisperSyncHandlers["RT"] = function(sender)
+		if not DBM:GetRaidUnitId(sender) then return end
 		DBM:SendTimers(sender)
 	end
 
