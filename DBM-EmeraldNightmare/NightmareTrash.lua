@@ -8,7 +8,7 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 --	"SPELL_CAST_START 222719",
-	"SPELL_AURA_APPLIED 221028 222719",
+	"SPELL_AURA_APPLIED 221028 222719 223946",
 	"SPELL_AURA_REMOVED 221028 222719"
 )
 
@@ -18,9 +18,11 @@ local specWarnUnstableDecay			= mod:NewSpecialWarningMoveAway(221028, nil, nil, 
 local yellUnstableDecay				= mod:NewYell(221028)
 local specWarnBefoulment			= mod:NewSpecialWarningMoveTo(222719, nil, nil, nil, 1, 2)
 local yellBefoulment				= mod:NewFadesYell(221028)
+local specWarnDarkLightning			= mod:NewSpecialWarningMove(223946, nil, nil, nil, 1, 2)
 
 local voiceUnstableDecay			= mod:NewVoice(221028)--runout
 local voiceBefoulment				= mod:NewVoice(222719)--gathershare
+local voiceDarkLightning			= mod:NewVoice(223946)--runaway
 
 mod:RemoveOption("HealthFrame")
 mod:AddRangeFrameOption(10, 221028)
@@ -61,6 +63,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellBefoulment:Schedule(13, 2)
 			yellBefoulment:Schedule(12, 3)
 		end
+	elseif spellId == 223946 and args:IsPlayer() then--No damage events for trash mod, this should be enough
+		specWarnDarkLightning:Show()
+		voiceDarkLightning:Play("runaway")
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
