@@ -218,7 +218,7 @@ function createFrame()
 	frame:SetToplevel(true)
 	frame:SetMovable(1)
 	GameTooltip_OnLoad(frame)
-	frame:SetPadding(16)
+	frame:SetPadding(16, 0)
 	frame:RegisterForDrag("LeftButton")
 	frame:SetScript("OnDragStart", function(self)
 		if not DBM.Options.InfoFrameLocked then
