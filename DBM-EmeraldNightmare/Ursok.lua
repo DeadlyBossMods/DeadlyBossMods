@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 197942 197969",
 	"SPELL_CAST_SUCCESS 197943",
-	"SPELL_AURA_APPLIED 198006 197943 205611",
+	"SPELL_AURA_APPLIED 198006 197943 205611 204859",
 	"SPELL_AURA_APPLIED_DOSE 197943",
 	"SPELL_AURA_REMOVED 198006",
 	"SPELL_DAMAGE 205611",
@@ -46,6 +46,7 @@ local berserkTimer					= mod:NewBerserkTimer(300)
 
 local countdownFocusedGazeCD		= mod:NewCountdown(40, 198006)
 local countdownRendFlesh			= mod:NewCountdown("Alt20", 198006, "Tank")
+local countdownOverwhelm			= mod:NewCountdown("AltTwo10", 197943, "Tank", nil, 3)
 local countdownFocusedGaze			= mod:NewCountdownFades("AltTwo6", 198006)
 
 local voiceFocusedGaze				= mod:NewVoice(198006, "-Tank")--targetyou/share
@@ -120,6 +121,7 @@ function mod:OnCombatStart(delay)
 	self.vb.chargeCount = 0
 	self.vb.tankCount = self:GetNumAliveTanks() or 2
 	timerOverwhelmCD:Start(-delay)
+	countdownOverwhelm:Start(-delay)
 	timerRendFleshCD:Start(13-delay)
 	countdownRendFlesh:Start(13-delay)
 	timerFocusedGazeCD:Start(19-delay, 1)
@@ -152,7 +154,7 @@ function mod:SPELL_CAST_START(args)
 			voiceRendFlesh:Play("defensive")
 		else
 			--Other tank has overwhelm stacks and is about to die to rend flesh, TAUNT NOW!
-			if UnitExists("boss1target") then
+			if UnitExists("boss1target") and not UnitIsUnit("player", "boss1target") then
 				local _, _, _, _, _, _, expireTimeTarget = UnitDebuff("boss1target", GetSpellInfo(197943)) -- Overwhelm
 				if expireTimeTarget and expireTimeTarget-GetTime() >= 2 then
 					specWarnRendFleshOther:Show(UnitName("boss1target"))
@@ -193,6 +195,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 197943 then
 		timerOverwhelmCD:Start()
+		countdownOverwhelm:Start()
 	end
 end
 
@@ -248,6 +251,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 205611 and self:AntiSpam(2, 1) then
 		specWarnMiasma:Show()
 		voiceMiasma:Play("runaway")
+	elseif spellId == 204859 and not args:IsPlayer() then
+		specWarnRendFleshOther:Show(args.destName)
+		voiceRendFlesh:Play("tauntboss")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
