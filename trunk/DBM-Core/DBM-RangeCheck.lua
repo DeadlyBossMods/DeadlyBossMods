@@ -384,7 +384,7 @@ function createTextFrame()
 	textFrame:SetToplevel(true)
 	textFrame:SetMovable(1)
 	GameTooltip_OnLoad(textFrame)
-	textFrame:SetPadding(16)
+	textFrame:SetPadding(16, 0)
 	textFrame:RegisterForDrag("LeftButton")
 	textFrame:SetScript("OnDragStart", function(self)
 		if not DBM.Options.RangeFrameLocked then
@@ -566,8 +566,10 @@ do
 		end
 
 		local playerMapId = GetPlayerMapAreaID("player") or 0
-
-		rotation = pi2 - GetPlayerFacing()
+		local restricted = mainFrame.restrictions
+		if not restricted then
+			rotation = pi2 - GetPlayerFacing()
+		end
 		local sinTheta = sin(rotation)
 		local cosTheta = cos(rotation)
 		local closePlayer = 0
@@ -575,7 +577,6 @@ do
 		local closetName = nil
 		local reverse = mainFrame.reverse
 		local filter = mainFrame.filter
-		local restricted = mainFrame.restrictions
 		local type = reverse and 2 or filter and 1 or 0
 		for i = 1, numPlayers do
 			local uId = unitList[i]
