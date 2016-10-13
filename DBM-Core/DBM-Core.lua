@@ -5949,9 +5949,7 @@ do
 				if self.Options.HideObjectivesFrame and watchFrameRestore and not scenario then
 					ObjectiveTrackerFrame:Show()
 					watchFrameRestore = false
-					if difficultyIndex == 8 then
-						self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
-					end
+					self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
 				end
 				if tooltipsHidden then
 					--Better or cleaner way?
