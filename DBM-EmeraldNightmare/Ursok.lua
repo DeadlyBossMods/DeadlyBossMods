@@ -47,7 +47,7 @@ local berserkTimer					= mod:NewBerserkTimer(300)
 local countdownFocusedGazeCD		= mod:NewCountdown(40, 198006)
 local countdownRendFlesh			= mod:NewCountdown("Alt20", 198006, "Tank")
 local countdownOverwhelm			= mod:NewCountdown("AltTwo10", 197943, "Tank", nil, 3)
-local countdownFocusedGaze			= mod:NewCountdownFades("AltTwo6", 198006)
+local countdownFocusedGaze			= mod:NewCountdownFades(6, 198006)
 
 local voiceFocusedGaze				= mod:NewVoice(198006, "-Tank")--targetyou/share
 local voiceRendFlesh				= mod:NewVoice(197942)--defensive/tauntboss
@@ -126,7 +126,11 @@ function mod:OnCombatStart(delay)
 	countdownRendFlesh:Start(13-delay)
 	timerFocusedGazeCD:Start(19-delay, 1)
 	countdownFocusedGazeCD:Start(19-delay)
-	timerRoaringCacophonyCD:Start(37-delay)
+	if self:IsMythic() then
+		timerRoaringCacophonyCD:Start(18-delay, 1)
+	else
+		timerRoaringCacophonyCD:Start(37-delay, 1)
+	end
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(198108))
