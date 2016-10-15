@@ -248,6 +248,10 @@ L:SetGeneralLocalization({
 	name =	"Court of Stars Trash"
 })
 
+L:SetOptionLocalization({
+	SpyHelper	= "Help identify the spy"
+})
+
 -----------------------
 -- <<<The Maw of Souls>>> --
 -----------------------
