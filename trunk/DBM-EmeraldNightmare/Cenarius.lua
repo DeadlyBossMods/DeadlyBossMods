@@ -96,6 +96,7 @@ mod:AddHudMapOption("HudMapOnBreath", 211192)
 
 mod.vb.phase = 1
 mod.vb.addsCount = 0
+mod.vb.sisterCount = 0
 local scornedWarned = false
 local seenMobs = {}
 
@@ -116,6 +117,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(seenMobs)
 	self.vb.phase = 1
 	self.vb.addsCount = 0
+	self.vb.sisterCount = 0
 	timerForcesOfNightmareCD:Start(7.2-delay, 1)--7.2-8.6
 	countdownForcesOfNightmare:Start(7.2-delay)
 	timerDreadThornsCD:Start(14-delay)
@@ -256,8 +258,12 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			seenMobs[GUID] = true
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 105495 then--Scorned Sister
+				self.vb.sisterCount = self.vb.sisterCount + 1
 				timerScornedTouchCD:Start(5.5, GUID)
 				timerTouchofLifeCD:Start(7, GUID)
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(8)
+				end
 			elseif cid == 105494 then--Rotten Drake
 				timerRottenBreathCD:Start(19, GUID)
 			elseif cid == 105468 then--Nightmare Ancient
@@ -270,8 +276,12 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 105495 then--Scorned Sister
+		self.vb.sisterCount = self.vb.sisterCount - 1
 		timerTouchofLifeCD:Stop(args.destGUID)
 		timerScornedTouchCD:Stop(args.destGUID)
+		if self.Options.RangeFrame and self.vb.sisterCount == 0 and not UnitDebuff("player", GetSpellInfo(211471)) then
+			DBM.RangeCheck:Hide()
+		end
 	elseif cid == 105494 then--Rotten Drake
 		--This is safer method to cancel it but if more than 1 drake is up it may in rare cases break scan for 2nd drake
 		self:BossUnitTargetScannerAbort()
@@ -340,7 +350,7 @@ do
 			end
 		elseif not hasDebuff and scornedWarned then
 			scornedWarned = false
-			if self.Options.RangeFrame then
+			if self.Options.RangeFrame and self.vb.sisterCount == 0 then
 				DBM.RangeCheck:Hide()
 			end
 		end

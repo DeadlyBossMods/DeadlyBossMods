@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 --(ability.id = 197969) and type = "begincast"
 local warnFocusedGaze				= mod:NewTargetCountAnnounce(198006, 3)
 local warnBloodFrenzy				= mod:NewSpellAnnounce(198388, 4)
+local warnOverwhelm					= mod:NewStackAnnounce(197943, 2, nil, "Tank|Healer")
 
 local specWarnFocusedGaze			= mod:NewSpecialWarningYou(198006, nil, nil, nil, 1, 2)
 local specWarnFocusedGazeOther		= mod:NewSpecialWarningMoveTo(198006, nil, nil, nil, 1, 6)
@@ -240,6 +241,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			GenerateSoakAssignment(self, secondCount, args.destName)
 		end
 	elseif spellId == 197943 then
+		warnOverwhelm:Show(args.destName, args.amount or 1)
 		if not args:IsPlayer() then--Overwhelm Applied to someone that isn't you
 			--Taunting is safe now because your rend flesh will vanish (or is already gone), and not be cast again, before next overwhelm
 			local rendCooldown = timerRendFleshCD:GetRemaining() or 0
