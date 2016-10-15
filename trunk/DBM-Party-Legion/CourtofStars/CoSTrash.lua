@@ -154,6 +154,11 @@ do
 		
 		return lines
 	end
+	
+	function mod:ResetGossipState()
+		table.wipe(hints)
+		DBM.InfoFrame:Hide()
+	end
 
 	function mod:GOSSIP_SHOW()
 		if not self.Options.SpyHelper then return end
