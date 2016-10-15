@@ -5440,7 +5440,11 @@ do
 			end
 			--set mod default info
 			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize = self:GetCurrentInstanceDifficulty()
-			local name = mod.combatInfo.name or DBM_CORE_UNKNOWN
+			local name = mod.combatInfo.name
+			if type(name) == "table" then
+				for i, v in pairs(name) do print(i, v) end
+				name = tostring(name)--Silence error for now
+			end
 			local modId = mod.id
 			if C_Scenario.IsInScenario() and (mod.addon.type == "SCENARIO") then
 				mod.inScenario = true
@@ -5746,7 +5750,11 @@ do
 				self:AddMsg(DBM_CORE_BAD_LOAD)--Warn user that they should reload ui soon as they leave combat to get their mod to load correctly as soon as possible
 				return--Don't run any further, stats are nil on a bad load so rest of this code will also error out.
 			end
-			local name = mod.combatInfo.name or DBM_CORE_UNKNOWN
+			local name = mod.combatInfo.name
+			if type(name) == "table" then
+				for i, v in pairs(name) do print(i, v) end
+				name = tostring(name)--Silence error for now
+			end
 			local modId = mod.id
 			if wipe then
 				mod.lastWipeTime = GetTime()
