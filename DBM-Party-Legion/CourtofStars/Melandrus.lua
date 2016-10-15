@@ -29,6 +29,8 @@ local voiceSurge					= mod:NewVoice(209602)--targetyou
 local voiceMaelstrom				= mod:NewVoice(209676)--aesoon
 local voiceGale						= mod:NewVoice(209676)--watchstep
 
+local trashmod = DBM:GetModByName("CoSTrash")
+
 function mod:SurgeTarget(targetname, uId)
 	if not targetname then
 		warnSurge:Show(DBM_CORE_UNKNOWN)
@@ -47,6 +49,9 @@ function mod:OnCombatStart(delay)
 	timerGaleCD:Start(5.7-delay)
 	timerMaelstromCD:Start(11.8-delay)
 	timerSurgeCD:Start(19-delay)
+	if trashmod.Options.SpyHelper then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
