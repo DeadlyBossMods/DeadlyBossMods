@@ -49,8 +49,9 @@ function mod:OnCombatStart(delay)
 	timerGaleCD:Start(5.7-delay)
 	timerMaelstromCD:Start(11.8-delay)
 	timerSurgeCD:Start(19-delay)
+	--Not ideal to do every pull, but cleanest way to ensure it's done
 	if trashmod.Options.SpyHelper then
-		DBM.InfoFrame:Hide()
+		trashmod:ResetGossipState()
 	end
 end
 
