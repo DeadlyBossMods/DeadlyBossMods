@@ -161,8 +161,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnOrbOfCorruption:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnOrbOfCorruption:Show()
-			yellOrbOfCorruption:Yell()
 			voiceOrbofCorruption:Play("orbrun")
+			if self:IsTank() then
+				yellOrbOfCorruption:Yell(2, 2, 2)
+			elseif self:IsHealer() then
+				yellOrbOfCorruption:Yell(1, 1, 1)
+			else
+				yellOrbOfCorruption:Yell(3, 3, 3)
+			end
 		end
 		if self.Options.SetIconOnOrbs then
 			local uId = DBM:GetRaidUnitId(args.destName)
