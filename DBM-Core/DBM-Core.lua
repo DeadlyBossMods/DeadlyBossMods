@@ -4689,12 +4689,18 @@ do
 	end
 
 	whisperSyncHandlers["RT"] = function(sender)
-		if not DBM:GetRaidUnitId(sender) then return end
+		if not DBM:GetRaidUnitId(sender) then
+			DBM:Debug(sender.." attempted to request timers but isn't in your group")
+			return
+		end
 		DBM:SendTimers(sender)
 	end
 
 	whisperSyncHandlers["CI"] = function(sender, mod, time)
-		if not DBM:GetRaidUnitId(sender) then return end
+		if not DBM:GetRaidUnitId(sender) then
+			DBM:Debug(sender.." attempted to send you combat info but isn't in your group")
+			return
+		end
 		mod = DBM:GetModByName(mod or "")
 		time = tonumber(time or 0)
 		if mod and time then
@@ -5434,7 +5440,7 @@ do
 			end
 			--set mod default info
 			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize = self:GetCurrentInstanceDifficulty()
-			local name = mod.combatInfo.name
+			local name = mod.combatInfo.name or DBM_CORE_UNKNOWN
 			local modId = mod.id
 			if C_Scenario.IsInScenario() and (mod.addon.type == "SCENARIO") then
 				mod.inScenario = true
@@ -5740,7 +5746,7 @@ do
 				self:AddMsg(DBM_CORE_BAD_LOAD)--Warn user that they should reload ui soon as they leave combat to get their mod to load correctly as soon as possible
 				return--Don't run any further, stats are nil on a bad load so rest of this code will also error out.
 			end
-			local name = mod.combatInfo.name
+			local name = mod.combatInfo.name or DBM_CORE_UNKNOWN
 			local modId = mod.id
 			if wipe then
 				mod.lastWipeTime = GetTime()
@@ -10762,30 +10768,34 @@ end
 
 function bossModPrototype:DisableESCombatDetection()
 	self.noESDetection = true
-	if self.combatInfo then
-		self.combatInfo.noESDetection = true
+	if not self.combatInfo then
+		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
 	end
+	self.combatInfo.noESDetection = true
 end
 
 function bossModPrototype:DisableEEKillDetection()
 	self.noEEDetection = true
-	if self.combatInfo then
-		self.combatInfo.noEEDetection = true
+	if not self.combatInfo then
+		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
 	end
+	self.combatInfo.noEEDetection = true
 end
 
 function bossModPrototype:DisableRegenDetection()
 	self.noRegenDetection = true
-	if self.combatInfo then
-		self.combatInfo.noRegenDetection = true
+	if not self.combatInfo then
+		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
 	end
+	self.combatInfo.noRegenDetection = true
 end
 
 function bossModPrototype:DisableWBEngageSync()
 	self.noWBEsync = true
-	if self.combatInfo then
-		self.combatInfo.noWBEsync = true
+	if not self.combatInfo then
+		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
 	end
+	self.combatInfo.noWBEsync = true
 end
 
 function bossModPrototype:IsInCombat()
