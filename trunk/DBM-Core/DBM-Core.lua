@@ -10768,34 +10768,30 @@ end
 
 function bossModPrototype:DisableESCombatDetection()
 	self.noESDetection = true
-	if not self.combatInfo then
-		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
+	if self.combatInfo then
+		self.combatInfo.noESDetection = true
 	end
-	self.combatInfo.noESDetection = true
 end
 
 function bossModPrototype:DisableEEKillDetection()
 	self.noEEDetection = true
-	if not self.combatInfo then
-		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
+	if self.combatInfo then
+		self.combatInfo.noEEDetection = true
 	end
-	self.combatInfo.noEEDetection = true
 end
 
 function bossModPrototype:DisableRegenDetection()
 	self.noRegenDetection = true
-	if not self.combatInfo then
-		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
+	if self.combatInfo then
+		self.combatInfo.noRegenDetection = true
 	end
-	self.combatInfo.noRegenDetection = true
 end
 
 function bossModPrototype:DisableWBEngageSync()
 	self.noWBEsync = true
-	if not self.combatInfo then
-		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
+	if self.combatInfo then
+		self.combatInfo.noWBEsync = true
 	end
-	self.combatInfo.noWBEsync = true
 end
 
 function bossModPrototype:IsInCombat()
