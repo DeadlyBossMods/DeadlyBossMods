@@ -1587,7 +1587,7 @@ do
 	end
 
 	function mod:GetFacing()
-		return GetPlayerFacing()
+		return UnitFacing("player") or GetPlayerFacing() or 0
 	end
 
 	function mod:LocationToMinimapOffset(x, y, alwaysShow, radiusOffset, pixelOffset)
