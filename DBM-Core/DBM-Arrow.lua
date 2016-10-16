@@ -60,7 +60,14 @@ end
 
 -- GetPlayerFacing seems to return values between -pi and pi instead of 0 - 2pi sometimes since 3.3.3
 local GetPlayerFacing = function(...)
-	local result = GetPlayerFacing(...)
+	local result
+	if UnitFacing then
+		result = UnitFacing("player")
+	elseif GetPlayerFacing then
+		result = GetPlayerFacing(...)
+	else
+		result = 0
+	end
 	if result < 0 then
 		result = result + pi2
 	end
