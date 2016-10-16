@@ -11117,6 +11117,7 @@ do
 			if not addsIconSet[scanID] then addsIconSet[scanID] = 0 end
 			if not scanExpires[scanID] then scanExpires[scanID] = timeNow + scanningTime end
 			local maxIcon = maxIcon or 8 --We only have 8 icons.
+			local isFriendly = isFriendly or false
 			local scanInterval = scanInterval or 0.2
 			local scanningTime = scanningTime or 8
 			--DO SCAN NOW
@@ -11129,8 +11130,8 @@ do
 				local guid = UnitGUID(unitid)
 				local cid = self:GetCIDFromGUID(guid)
 				local isEnemy = UnitIsEnemy("player", unitid)
-				local isFiltered = not isFriendly and not isEnemy or false
-				if isFiltered then break end
+				local isFiltered = not isFriendly and not isEnemy
+				if isFiltered then return end
 				if guid and type(creatureID) == "table" and creatureID[cid] and not addsGUIDs[guid] then
 					if type(creatureID[cid]) == "number" then
 						SetRaidTarget(unitid, creatureID[cid])
@@ -11177,8 +11178,8 @@ do
 				local guid2 = UnitGUID(unitid2)
 				local cid2 = self:GetCIDFromGUID(guid2)
 				local isEnemy = UnitIsEnemy("player", unitid2)
-				local isFiltered = not isFriendly and not isEnemy or false
-				if isFiltered then break end
+				local isFiltered = not isFriendly and not isEnemy
+				if isFiltered then return end
 				if guid2 and type(creatureID) == "table" and creatureID[cid2] and not addsGUIDs[guid2] then
 					if type(creatureID[cid2]) == "number" then
 						SetRaidTarget(unitid2, creatureID[cid2])

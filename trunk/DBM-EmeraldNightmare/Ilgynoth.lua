@@ -37,11 +37,11 @@ local warnNightmareGaze				= mod:NewSpellAnnounce(210931, 3, nil, false)--Someth
 local warnFixate					= mod:NewTargetAnnounce(210099, 2, nil, false)--Spammy so default off
 local warnNightmareExplosion		= mod:NewCastAnnounce(209471, 3)
 local warnEyeOfFate					= mod:NewStackAnnounce(210984, 2, nil, "Tank")
-local warnCorruptorTentacle			= mod:NewSpellAnnounce("ej13191", 2, 208929)
+local warnCorruptorTentacle			= mod:NewCountAnnounce("ej13191", 2, 208929)
 local warnSpewCorruption			= mod:NewTargetAnnounce(208929, 3, nil, true, 2)
 local warnSpewCorruptionSoon		= mod:NewSoonAnnounce(208929, 3)
 local warnGroundSlam				= mod:NewTargetAnnounce(208689, 2)--Figure this out later
-local warnDeathglareTentacle		= mod:NewSpellAnnounce("ej13190", 2, 208697)
+local warnDeathglareTentacle		= mod:NewCountAnnounce("ej13190", 2, 208697)
 local warnDeathBlossom				= mod:NewCastAnnounce(218415, 4)
 --Stage Two: The Heart of Corruption
 local warnCursedBlood				= mod:NewTargetAnnounce(215128, 3)
@@ -116,14 +116,18 @@ mod.vb.CorruptorSpawn = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local eyeName = EJ_GetSectionInfo(13185)
 local addsTable = {}
-local phase1Deathglares = {26, 69, 85, 55}--Variation 26, 75, 85, 60
-local phase1MythicDeathglares = {26, 69, 85, 65}--Variation 26, 75, 85, 60
-local phase1Corruptors = {90, 95, 35}--Variation 90, 95, 40
-local phase1MythicCorruptors = {90, 95, 45}--Variation 90, 95, 40
+local phase1EasyDeathglares = {26, 69, 85, 55}--Normal/LFR (LFR assumed-verify)
+local phase1HeroicDeathglares = {26, 59, 60}--VERIFIED Oct 16
+local phase1MythicDeathglares = {26, 69, 85, 65}--REDO ME
+local phase1EasyCorruptors = {90, 95, 35}--Verify 95 and 35. Only verifyed 90 on Oct 16
+local phase1HeroicCorruptors = {79, 71}--VERIFIED Oct 16
+local phase1MythicCorruptors = {90, 95, 45}--REDO ME
 local phase1DeathBlossom = {60, 100, 35}
 
-local phase2Deathglares = {21.5, 90, 130}--21.5, 95
-local phase2Corruptors = {45, 95, 35, 85, 40}--45, 75 (need more data)
+local phase2EasyDeathglares = {21.5, 90, 130}--21.5, 95
+local phase2HeroicDeathglares = {26.5, 90, 130}--26, 90 verified Oct 16
+local phase2MythicDeathglares = {26.5, 90, 130}--UNKNOWN, VERIFY
+local phase2Corruptors = {45, 95, 35, 85, 40}--verified Oct 16 45, 95, 30 on heroic
 local phase2MythicCorruptors = {45, 75}--(need more data)
 local phase2DeathBlossom = {80}--Unknown beyond first cast
 local autoMarkScannerActive = false
@@ -225,11 +229,17 @@ function mod:OnCombatStart(delay)
 	timerNightmareishFuryCD:Start(6-delay)
 	timerGroundSlamCD:Start(12-delay)
 	timerDeathGlareCD:Start(26-delay)
-	timerNightmareHorrorCD:Start(65-delay)
-	timerCorruptorTentacleCD:Start(90-delay)
 	if self:IsMythic() then
 		self.vb.deathBlossomCount = 0
-		timerDeathBlossomCD:Start(60)
+		timerNightmareHorrorCD:Start(60-delay)--Verify
+		timerDeathBlossomCD:Start(60-delay)
+		timerCorruptorTentacleCD:Start(90-delay)--Verify
+	elseif self:IsHeroic() then
+		timerNightmareHorrorCD:Start(60-delay)
+		timerCorruptorTentacleCD:Start(79-delay)
+	else
+		timerNightmareHorrorCD:Start(65-delay)
+		timerCorruptorTentacleCD:Start(90-delay)--Verify
 	end
 	if self.Options.InfoFrame then
 		if self.Options.InfoFrameBehavior == "Fixates" then
@@ -262,7 +272,7 @@ function mod:SPELL_CAST_START(args)
 		if self:AntiSpam(3, 5) then
 			warnNightmareExplosion:Show()
 		end
-		if self.Options.SetIconOnOoze and not self:IsLFR() then
+		if self.Options.SetIconOnOoze and self:IsMythic() then
 			autoMarkOozesUntil71(self)
 		end
 		if not autoMarkFilter[args.sourceGUID] then
@@ -278,9 +288,14 @@ function mod:SPELL_CAST_START(args)
 			self.vb.DeathglareCount = self.vb.DeathglareCount + 1
 			if self:AntiSpam(10, 6) then
 				self.vb.DeathglareSpawn = self.vb.DeathglareSpawn + 1
-				warnDeathglareTentacle:Show()
+				warnDeathglareTentacle:Show(self.vb.DeathglareSpawn)
 				local nextCount = self.vb.DeathglareSpawn + 1
-				local timer = self.vb.phase == 2 and phase2Deathglares[nextCount] or self:IsMythic() and phase1MythicDeathglares[nextCount] or phase1Deathglares[nextCount]
+				local timer
+				if self.vb.phase == 2 then
+					timer = self:IsMythic() and phase2MythicDeathglares[nextCount] or self:IsHeroic() and phase2HeroicDeathglares[nextCount] or phase2EasyDeathglares[nextCount]
+				else
+					timer = self:IsMythic() and phase1MythicDeathglares[nextCount] or self:IsHeroic() and phase1HeroicDeathglares[nextCount] or phase1EasyDeathglares[nextCount]
+				end
 				if timer then
 					timerDeathGlareCD:Start(timer)
 				end
@@ -293,13 +308,13 @@ function mod:SPELL_CAST_START(args)
 			self.vb.CorruptorCount = self.vb.CorruptorCount + 1
 			if self:AntiSpam(10, 7) then
 				self.vb.CorruptorSpawn = self.vb.CorruptorSpawn + 1
-				warnCorruptorTentacle:Show()
+				warnCorruptorTentacle:Show(self.vb.CorruptorCount)
 				local nextCount = self.vb.CorruptorSpawn + 1
 				local timer
 				if self.vb.phase == 2 then
 					timer = self:IsMythic() and phase2MythicCorruptors[nextCount] or phase2Corruptors[nextCount]
 				else
-					timer = self:IsMythic() and phase1MythicCorruptors[nextCount] or phase1Corruptors[nextCount]
+					timer = self:IsMythic() and phase1MythicCorruptors[nextCount] or self:IsHeroic() and phase1HeroicCorruptors[nextCount] or phase1EasyCorruptors[nextCount]
 				end
 				if timer then
 					timerCorruptorTentacleCD:Start(timer)
@@ -378,7 +393,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not addsTable[args.sourceGUID] then
 			addsTable[args.sourceGUID] = true
 			self.vb.IchorCount = self.vb.IchorCount + 1
-			if self.Options.SetIconOnOoze and not self:IsLFR() and not autoMarkScannerActive then
+			if self.Options.SetIconOnOoze and self:IsMythic() and not autoMarkScannerActive then
 				autoMarkScannerActive = true
 				self:Schedule(2.5, autoMarkOozesUntil71, self)
 			end
