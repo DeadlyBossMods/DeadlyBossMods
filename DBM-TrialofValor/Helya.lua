@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1829, "DBM-TrialofValor", nil, 861)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(100497)
+mod:SetCreatureID(114537)
 mod:SetEncounterID(2008)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3)
@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 227967 228730 228032 228514 228390 228565",
 	"SPELL_CAST_SUCCESS 229119 227967",
-	"SPELL_AURA_APPLIED 229119 227982 193367 228519 232488 228054",
-	"SPELL_AURA_REMOVED 193367 229119",
+	"SPELL_AURA_APPLIED 229119 227982 193367 228519 232488 228054 230267",
+	"SPELL_AURA_REMOVED 193367 229119 230267",
 	"SPELL_PERIODIC_DAMAGE 227998",
 	"SPELL_PERIODIC_MISSED 227998",
 	"UNIT_DIED",
@@ -45,6 +45,7 @@ local warnFetidRot					= mod:NewSpellAnnounce(193367, 3)
 ----Night Watch Mariner
 --Stage Three: Helheim's Last Stand (unkonwn %)
 local warnDarkHatred				= mod:NewTargetAnnounce(232488, 3)
+local warnOrbOfCorrosion			= mod:NewTargetAnnounce(230267, 3)
 
 --Stage One: Low Tide
 local specWarnOrbOfCorruption		= mod:NewSpecialWarningYou(229119, nil, nil, nil, 1, 5)
@@ -64,6 +65,8 @@ local specWarnAnchorSlam			= mod:NewSpecialWarningTaunt(228519, nil, nil, nil, 1
 ----Night Watch Mariner
 --Stage Three: Helheim's Last Stand (unkonwn %)
 local specWarnCorruptedBreath		= mod:NewSpecialWarningSpell(228565, nil, nil, nil, 2)
+local specWarnOrbOfCorrosion		= mod:NewSpecialWarningYou(230267, nil, nil, nil, 1, 5)
+local yellOrbOfCorrosion			= mod:NewPosYell(230267)
 
 --Stage One: Low Tide
 local timerOrbOfCorruptionCD		= mod:NewNextTimer(25, 229119, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
@@ -80,6 +83,7 @@ local timerSludgeNovaCD				= mod:NewAITimer(40, 228390, nil, "Melee", nil, 2)
 ----Night Watch Mariner
 --Stage Three: Helheim's Last Stand (unkonwn %)
 local timerCorruptedBreathCD		= mod:NewAITimer(40, 228565, nil, nil, nil, 2)
+local timerOrbOfCorrosionCD			= mod:NewAITimer(25, 230267, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(300)
 
@@ -100,10 +104,10 @@ local voiceBilewaterCorrosion		= mod:NewVoice(227998)--runaway
 local voiceSludgeNova				= mod:NewVoice(228390, "Melee")--runout
 local voiceAnchorSlam				= mod:NewVoice(228519)--tauntboss (maybe change to "changemt" if this add can be up with boss)
 --Stage Three: Helheim's Last Stand (unkonwn %)
+local voiceOrbofCorrosion			= mod:NewVoice(230267)--orbrun
 
 mod:AddRangeFrameOption(5, 193367)
-mod:AddSetIconOption("SetIconOnOrbs", 229119, true)
---Healer (Star), Tank (Circle), Deeps (Diamond)
+mod:AddSetIconOption("SetIconOnOrbs", 229119, true)--Healer (Star), Tank (Circle), Deeps (Diamond)
 
 function mod:OnCombatStart(delay)
 	timerOrbOfCorruptionCD:Start(15-delay)--SUCCESS
@@ -148,6 +152,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 229119 then
 		timerOrbOfCorruptionCD:Start()
 		countdownOrbs:Start()
+	elseif spellId == 230267 then
+		timerOrbOfCorrosionCD:Start()
+		--countdownOrbs:Start()
 	elseif spellId == 227967 then
 		--Start ooze stuff here since all their stuff is hidden from combat log
 		timerExplodingOozes:Start()
@@ -168,6 +175,29 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellOrbOfCorruption:Yell(1, 1, 1)
 			else
 				yellOrbOfCorruption:Yell(3, 3, 3)
+			end
+		end
+		if self.Options.SetIconOnOrbs then
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if self:IsTanking(uId) then
+				self:SetIcon(args.destName, 2)--Circle
+			elseif self:IsHealer(uId) then
+				self:SetIcon(args.destName, 1)--Star
+			else
+				self:SetIcon(args.destName, 3)--Diamond
+			end
+		end
+	elseif spellId == 230267 then
+		warnOrbOfCorrosion:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnOrbOfCorrosion:Show()
+			voiceOrbofCorrosion:Play("orbrun")
+			if self:IsTank() then
+				yellOrbOfCorrosion:Yell(2, 2, 2)
+			elseif self:IsHealer() then
+				yellOrbOfCorrosion:Yell(1, 1, 1)
+			else
+				yellOrbOfCorrosion:Yell(3, 3, 3)
 			end
 		end
 		if self.Options.SetIconOnOrbs then

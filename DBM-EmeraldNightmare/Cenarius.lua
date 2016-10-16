@@ -210,7 +210,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 212726 then
 		--Wisps don't fire IEEU so done here inste3ad
 		if self.Options.SetIconOnWisps then
-			self:ScanForMobs(106304, 0, 8, 5, 0.1, 12, "SetIconOnWisps")
+			self:ScanForMobs(106304, 0, 8, 5, 0.1, 20, "SetIconOnWisps")
 		end
 	end
 end
@@ -265,9 +265,9 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					DBM.RangeCheck:Show(8)
 				end
 			elseif cid == 105494 then--Rotten Drake
-				timerRottenBreathCD:Start(19, GUID)
+				timerRottenBreathCD:Start(18.1, GUID)
 			elseif cid == 105468 then--Nightmare Ancient
-				timerDisiccatingStompCD:Start(19, GUID)
+				timerDisiccatingStompCD:Start(18.1, GUID)
 			end
 		end
 	end
