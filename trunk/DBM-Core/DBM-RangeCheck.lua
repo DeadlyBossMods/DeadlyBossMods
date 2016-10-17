@@ -69,7 +69,7 @@ local dims
 --  Cache frequently used global variables in locals  --
 --------------------------------------------------------
 local UnitPosition = UnitPosition
-local GetPlayerFacing, UnitFacing = GetPlayerFacing, UnitFacing
+local GetPlayerFacing = GetPlayerFacing
 local UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, UnitAffectingCombat, UnitExists = UnitName, UnitClass, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected, UnitInPhase, UnitAffectingCombat, UnitExists
 local IsInRaid, GetNumGroupMembers, GetNumSubgroupMembers = IsInRaid, GetNumGroupMembers, GetNumSubgroupMembers
 local GetRaidTargetIndex = GetRaidTargetIndex
@@ -568,14 +568,7 @@ do
 		local playerMapId = GetPlayerMapAreaID("player") or 0
 		local restricted = mainFrame.restrictions
 		if not restricted then
-			if UnitFacing then
-				rotation = pi2 - UnitFacing("player")
-			elseif GetPlayerFacing then
-				rotation = pi2 - GetPlayerFacing()
-			else--player facing is gone for good
-				restricted = true
-				rotation = 0
-			end
+			rotation = pi2 - (GetPlayerFacing() or 0)
 		end
 		local sinTheta = sin(rotation)
 		local cosTheta = cos(rotation)
