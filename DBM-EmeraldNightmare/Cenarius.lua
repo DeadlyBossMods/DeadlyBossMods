@@ -210,7 +210,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 212726 then
 		--Wisps don't fire IEEU so done here inste3ad
 		if self.Options.SetIconOnWisps then
-			self:ScanForMobs(106304, 0, 8, 5, 0.1, 20, "SetIconOnWisps")
+			self:ScanForMobs(106304, 0, 8, 5, 0.1, 20, "SetIconOnWisps", false, 106659)
 		end
 	end
 end
