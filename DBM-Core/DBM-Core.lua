@@ -11094,7 +11094,7 @@ do
 	end
 
 	local mobUids = {"mouseover", "boss1", "boss2", "boss3", "boss4", "boss5", "nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10", "nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20"}
-	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, isFriendly)
+	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, isFriendly, secondCreatureID)
 		if not optionName then optionName = self.findFastestComputer[1] end
 		if canSetIcons[optionName] then
 			--Declare variables.
@@ -11118,6 +11118,7 @@ do
 			if not scanExpires[scanID] then scanExpires[scanID] = timeNow + scanningTime end
 			local maxIcon = maxIcon or 8 --We only have 8 icons.
 			local isFriendly = isFriendly or false
+			local secondCreatureID = secondCreatureID or 0
 			local scanInterval = scanInterval or 0.2
 			local scanningTime = scanningTime or 8
 			--DO SCAN NOW
@@ -11155,7 +11156,7 @@ do
 							addsIconSet[scanID] = nil
 							return
 						end
-					elseif guid and ((guid == creatureID) or (cid == creatureID)) and not addsGUIDs[guid] then
+					elseif guid and ((guid == creatureID) or (cid == creatureID or cid == secondCreatureID)) and not addsGUIDs[guid] then
 						if iconSetMethod == 2 then
 							SetRaidTarget(unitid, mobIcon)
 						else
@@ -11207,7 +11208,7 @@ do
 							addsIconSet[scanID] = nil
 							return
 						end
-					elseif guid2 and ((guid2 == creatureID) or (cid2 == creatureID)) and not addsGUIDs[guid2] then
+					elseif guid2 and ((guid2 == creatureID) or (cid2 == creatureID or cid == secondCreatureID)) and not addsGUIDs[guid2] then
 						if iconSetMethod == 2 then
 							SetRaidTarget(unitid2, mobIcon)
 						else
@@ -11231,7 +11232,7 @@ do
 				end
 			end
 			if timeNow < scanExpires[scanID] then--scan for limited times.
-				self:ScheduleMethod(scanInterval, "ScanForMobs", creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName)
+				self:ScheduleMethod(scanInterval, "ScanForMobs", creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, isFriendly, secondCreatureID)
 			else
 				DBM:Debug("Stopping ScanForMobs for: "..(optionName or "nil"), 2)
 				--clear variables
