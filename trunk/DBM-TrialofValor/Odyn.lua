@@ -2,13 +2,13 @@ local mod	= DBM:NewMod(1819, "DBM-TrialofValor", nil, 861)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(116760, 116761, 116830)--116760 Odyn, 116761 Hymdall, 116830 Hyrja
+mod:SetCreatureID(116760, 116761, 116830)--116760 (114263) Odyn, 116761 Hymdall, 116830 Hyrja
 mod:SetEncounterID(1958)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(14922)
---mod.respawnTime = 30
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
