@@ -30,7 +30,6 @@ mod:RegisterEventsInCombat(
 --TODO, figure out voice to use for specWarnHeartPhaseBegin
 --TODO, more adds timers (especially corruptors/deathglarers)
 --TODO, improve spew corruption to work like thogar bombs (continous alerts/yells)
---TODO, Death Blossom timer for first cast afer a heart phase.
 --Stage One: The Ruined Ground
 --(ability.id = 208697 or ability.id = 208929 or ability.id = 218415) and type = "begincast" or ability.id = 209915
 local warnNightmareGaze				= mod:NewSpellAnnounce(210931, 3, nil, false)--Something tells me this is just something it spam casts
@@ -352,8 +351,13 @@ function mod:SPELL_CAST_START(args)
 			timerDeathBlossomCD:Start(timer, self.vb.deathBlossomCount+1)
 		end
 	elseif spellId == 223121 then
-		timerFinalTorpor:Start()
-		countdownDarkRecon:Start(90)
+		if self:IsMythic() then
+			timerFinalTorpor:Start(55)
+			countdownDarkRecon:Start(55)
+		else
+			timerFinalTorpor:Start()
+			countdownDarkRecon:Start(90)
+		end
 	elseif spellId == 208689 and self:AntiSpam(2, 6) then
 		timerGroundSlamCD:Start()
 	end
