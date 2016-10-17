@@ -422,7 +422,7 @@ local dbmToc = 0
 local isTalkingHeadLoaded = false
 local talkingHeadUnregistered = false
 
-local fakeBWVersion, fakeBWHash = 18, "e37df75"
+local fakeBWVersion, fakeBWHash = 19, "1a21137"
 local versionQueryString, versionResponseString = "Q:%d-%s", "V:%d-%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
