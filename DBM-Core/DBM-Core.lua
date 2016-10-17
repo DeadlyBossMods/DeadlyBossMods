@@ -11130,47 +11130,51 @@ do
 				local guid = UnitGUID(unitid)
 				local cid = self:GetCIDFromGUID(guid)
 				local isEnemy = UnitIsEnemy("player", unitid)
-				local isFiltered = not isFriendly and not isEnemy
-				if isFiltered then return end
-				if guid and type(creatureID) == "table" and creatureID[cid] and not addsGUIDs[guid] then
-					if type(creatureID[cid]) == "number" then
-						SetRaidTarget(unitid, creatureID[cid])
-					else
-						SetRaidTarget(unitid, addsIcon[scanID])
-						if iconSetMethod == 1 then
-							addsIcon[scanID] = addsIcon[scanID] + 1
+				local isFiltered = false
+				if not isFriendly and not isEnemy then
+					isFiltered = true
+				end
+				if not isFiltered then
+					if guid and type(creatureID) == "table" and creatureID[cid] and not addsGUIDs[guid] then
+						if type(creatureID[cid]) == "number" then
+							SetRaidTarget(unitid, creatureID[cid])
 						else
-							addsIcon[scanID] = addsIcon[scanID] - 1
+							SetRaidTarget(unitid, addsIcon[scanID])
+							if iconSetMethod == 1 then
+								addsIcon[scanID] = addsIcon[scanID] + 1
+							else
+								addsIcon[scanID] = addsIcon[scanID] - 1
+							end
 						end
-					end
-					addsGUIDs[guid] = true
-					addsIconSet[scanID] = addsIconSet[scanID] + 1
-					if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
-						--clear variables
-						scanExpires[scanID] = nil
-						addsIcon[scanID] = nil
-						addsIconSet[scanID] = nil
-						return
-					end
-				elseif guid and ((guid == creatureID) or (cid == creatureID)) and not addsGUIDs[guid] then
-					if iconSetMethod == 2 then
-						SetRaidTarget(unitid, mobIcon)
-					else
-						SetRaidTarget(unitid, addsIcon[scanID])
-						if iconSetMethod == 1 then
-							addsIcon[scanID] = addsIcon[scanID] + 1
+						addsGUIDs[guid] = true
+						addsIconSet[scanID] = addsIconSet[scanID] + 1
+						if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
+							--clear variables
+							scanExpires[scanID] = nil
+							addsIcon[scanID] = nil
+							addsIconSet[scanID] = nil
+							return
+						end
+					elseif guid and ((guid == creatureID) or (cid == creatureID)) and not addsGUIDs[guid] then
+						if iconSetMethod == 2 then
+							SetRaidTarget(unitid, mobIcon)
 						else
-							addsIcon[scanID] = addsIcon[scanID] - 1
+							SetRaidTarget(unitid, addsIcon[scanID])
+							if iconSetMethod == 1 then
+								addsIcon[scanID] = addsIcon[scanID] + 1
+							else
+								addsIcon[scanID] = addsIcon[scanID] - 1
+							end
 						end
-					end
-					addsGUIDs[guid] = true
-					addsIconSet[scanID] = addsIconSet[scanID] + 1
-					if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
-						--clear variables
-						scanExpires[scanID] = nil
-						addsIcon[scanID] = nil
-						addsIconSet[scanID] = nil
-						return
+						addsGUIDs[guid] = true
+						addsIconSet[scanID] = addsIconSet[scanID] + 1
+						if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
+							--clear variables
+							scanExpires[scanID] = nil
+							addsIcon[scanID] = nil
+							addsIconSet[scanID] = nil
+							return
+						end
 					end
 				end
 			end
@@ -11178,47 +11182,51 @@ do
 				local guid2 = UnitGUID(unitid2)
 				local cid2 = self:GetCIDFromGUID(guid2)
 				local isEnemy = UnitIsEnemy("player", unitid2)
-				local isFiltered = not isFriendly and not isEnemy
-				if isFiltered then return end
-				if guid2 and type(creatureID) == "table" and creatureID[cid2] and not addsGUIDs[guid2] then
-					if type(creatureID[cid2]) == "number" then
-						SetRaidTarget(unitid2, creatureID[cid2])
-					else
-						SetRaidTarget(unitid2, addsIcon[scanID])
-						if iconSetMethod == 1 then
-							addsIcon[scanID] = addsIcon[scanID] + 1
+				local isFiltered = false
+				if not isFriendly and not isEnemy then
+					isFiltered = true
+				end
+				if not isFiltered then
+					if guid2 and type(creatureID) == "table" and creatureID[cid2] and not addsGUIDs[guid2] then
+						if type(creatureID[cid2]) == "number" then
+							SetRaidTarget(unitid2, creatureID[cid2])
 						else
-							addsIcon[scanID] = addsIcon[scanID] - 1
+							SetRaidTarget(unitid2, addsIcon[scanID])
+							if iconSetMethod == 1 then
+								addsIcon[scanID] = addsIcon[scanID] + 1
+							else
+								addsIcon[scanID] = addsIcon[scanID] - 1
+							end
 						end
-					end
-					addsGUIDs[guid2] = true
-					addsIconSet[scanID] = addsIconSet[scanID] + 1
-					if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
-						--clear variables
-						scanExpires[scanID] = nil
-						addsIcon[scanID] = nil
-						addsIconSet[scanID] = nil
-						return
-					end
-				elseif guid2 and ((guid2 == creatureID) or (cid2 == creatureID)) and not addsGUIDs[guid2] then
-					if iconSetMethod == 2 then
-						SetRaidTarget(unitid2, mobIcon)
-					else
-						SetRaidTarget(unitid2, addsIcon[scanID])
-						if iconSetMethod == 1 then
-							addsIcon[scanID] = addsIcon[scanID] + 1
+						addsGUIDs[guid2] = true
+						addsIconSet[scanID] = addsIconSet[scanID] + 1
+						if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
+							--clear variables
+							scanExpires[scanID] = nil
+							addsIcon[scanID] = nil
+							addsIconSet[scanID] = nil
+							return
+						end
+					elseif guid2 and ((guid2 == creatureID) or (cid2 == creatureID)) and not addsGUIDs[guid2] then
+						if iconSetMethod == 2 then
+							SetRaidTarget(unitid2, mobIcon)
 						else
-							addsIcon[scanID] = addsIcon[scanID] - 1
+							SetRaidTarget(unitid2, addsIcon[scanID])
+							if iconSetMethod == 1 then
+								addsIcon[scanID] = addsIcon[scanID] + 1
+							else
+								addsIcon[scanID] = addsIcon[scanID] - 1
+							end
 						end
-					end
-					addsGUIDs[guid2] = true
-					addsIconSet[scanID] = addsIconSet[scanID] + 1
-					if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
-						--clear variables
-						scanExpires[scanID] = nil
-						addsIcon[scanID] = nil
-						addsIconSet[scanID] = nil
-						return
+						addsGUIDs[guid2] = true
+						addsIconSet[scanID] = addsIconSet[scanID] + 1
+						if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
+							--clear variables
+							scanExpires[scanID] = nil
+							addsIcon[scanID] = nil
+							addsIconSet[scanID] = nil
+							return
+						end
 					end
 				end
 			end
