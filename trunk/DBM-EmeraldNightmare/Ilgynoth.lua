@@ -116,20 +116,29 @@ mod.vb.CorruptorSpawn = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local eyeName = EJ_GetSectionInfo(13185)
 local addsTable = {}
-local phase1EasyDeathglares = {26, 69, 85, 55}--Normal/LFR (LFR assumed-verify)
+local phase1EasyDeathglares = {26, 65, 85, 55}--Normal/LFR OCT 16
 local phase1HeroicDeathglares = {26, 59, 60}--VERIFIED Oct 16
-local phase1MythicDeathglares = {26, 69, 85, 65}--REDO ME
-local phase1EasyCorruptors = {90, 95, 35}--Verify 95 and 35. Only verifyed 90 on Oct 16
+--This might be same problem as below. Need to review and see if this is another stupid 21/26 variation that makes 2nd one also variable
+local phase1MythicDeathglares = {21, 69, 85, 70}--VERIFIED Oct 16
+local phase1EasyCorruptors = {86, 95, 35}--Only verifyed 90 on Oct 16 (TODO, verify 95, 35)
 local phase1HeroicCorruptors = {79, 71}--VERIFIED Oct 16
-local phase1MythicCorruptors = {90, 95, 45}--REDO ME
-local phase1DeathBlossom = {60, 100, 35}
+local phase1MythicCorruptors = {88, 95, 50}--VERIFIED Oct 16
+local phase1DeathBlossom = {58.6, 100, 35}--VERIFIED Oct 16
 
-local phase2EasyDeathglares = {21.5, 90, 130}--21.5, 95
-local phase2HeroicDeathglares = {26.5, 90, 130}--26, 90 verified Oct 16
-local phase2MythicDeathglares = {26.5, 90, 130}--UNKNOWN, VERIFY
-local phase2Corruptors = {45, 95, 35, 85, 40}--verified Oct 16 45, 95, 30 on heroic
-local phase2MythicCorruptors = {45, 75}--(need more data)
-local phase2DeathBlossom = {80}--Unknown beyond first cast
+--Based on data, first one is either 21 or 26, if it's 26 then second one changes from 95 to 90
+--Might have to switch to scheduling to fix accuracy of timers 2 and 3 because of the 5 second variation on timer 1
+local phase2ComboDeathglares = {21.5, 90, 130}--Fuck it. i'm not scheduling to fix a 5 second variation, the two lowest times combined
+--local phase2AllDeathglares = {21.5, 95, 130}--True timers
+--local phase2AltDeathglares = {26.5, 90, 130}--Fucked up timers when first one is late
+--Old shit, when i thought variations were cause of difficulty. They aren't. These tentacles same in all modes apparently
+--local phase2LFRDeathglares = {21.5, 95, 130}--VERIFIED Oct 16 (except for 130)
+--local phase2EasyDeathglares = {21.5, 95, 130}--VERIFIED Oct 16 (except for 130)
+--local phase2HeroicDeathglares = {26.5, 90, 130}--26, 90 verified Oct 16 (130 not verified)
+--local phase2MythicDeathglares = {21.5, 95, 130}--26, 90 VERIFIED Oct 16 (130 not verified)
+--These also same in all modes except mythic
+local phase2Corruptors = {45, 95, 35, 85, 40}--verified Oct 16 45, 95, 30 on heroic/LFR/Normal
+local phase2MythicCorruptors = {45, 75}--VERIFIED Oct 16 (need more data)
+local phase2DeathBlossom = {80, 75}--VERIFIED Oct 16
 local autoMarkScannerActive = false
 local autoMarkFilter = {}
 
@@ -232,7 +241,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		self.vb.deathBlossomCount = 0
 		timerNightmareHorrorCD:Start(60-delay)--Verify
-		timerDeathBlossomCD:Start(60-delay)
+		timerDeathBlossomCD:Start(58.6-delay)
 		timerCorruptorTentacleCD:Start(90-delay)--Verify
 	elseif self:IsHeroic() then
 		timerNightmareHorrorCD:Start(60-delay)
@@ -292,7 +301,8 @@ function mod:SPELL_CAST_START(args)
 				local nextCount = self.vb.DeathglareSpawn + 1
 				local timer
 				if self.vb.phase == 2 then
-					timer = self:IsMythic() and phase2MythicDeathglares[nextCount] or self:IsHeroic() and phase2HeroicDeathglares[nextCount] or phase2EasyDeathglares[nextCount]
+					timer = phase2ComboDeathglares[nextCount]
+					--timer = self:IsMythic() and phase2MythicDeathglares[nextCount] or self:IsHeroic() and phase2HeroicDeathglares[nextCount] or phase2EasyDeathglares[nextCount]
 				else
 					timer = self:IsMythic() and phase1MythicDeathglares[nextCount] or self:IsHeroic() and phase1HeroicDeathglares[nextCount] or phase1EasyDeathglares[nextCount]
 				end
