@@ -235,8 +235,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnCorruptingNova:Show(args.sourceName)
 		voiceCorruptingNova:Play("aesoon")
 	elseif spellId == 209443 then
-		timerNightmareInfusionCD:Start()
-		countdownNightmareInfusion:Start()
+		if self.vb.phase == 3 then
+			timerNightmareInfusionCD:Start(31.5)
+			countdownNightmareInfusion:Start(31.5)
+		else
+			timerNightmareInfusionCD:Start()
+			countdownNightmareInfusion:Start()
+		end
 		local targetName, uId = self:GetBossTarget(args.sourceGUID, true)
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then
@@ -270,7 +275,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 210264 then
 		self.vb.corruptionHorror = self.vb.corruptionHorror + 1
 		specWarnCorruptionHorror:Show(self.vb.corruptionHorror)
-		voiceCorruptionHorror:Play("bigadd")
+		voiceCorruptionHorror:Play("bigmob")
 		timerCorruptionHorrorCD:Start(nil, self.vb.corruptionHorror+1)
 		countdownCorruptionHorror:Start()
 	end
@@ -551,11 +556,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerNightmareInfusionCD:Stop()
 		countdownNightmareInfusion:Cancel()
 		timerBlackeningSoulCD:Stop()
+		timerNightmareInfusionCD:Start(11)
+		countdownNightmareInfusion:Start(11)
 		timerBlackeningSoulCD:Start(15)
-		timerCorruptionMeteorCD:Start(21, 1)
-		countdownMeteor:Start(21)
-		timerNightmareBladesCD:Start(31)
-		timerNightmareInfusionCD:Start(36)
+		timerCorruptionMeteorCD:Start(20.5, 1)
+		countdownMeteor:Start(20.5)
+		timerNightmareBladesCD:Start(30)
 		self:UnregisterShortTermEvents()
 	elseif spellId == 226194 then--Writhing Deep
 		warnNightmareTentacles:Show()
