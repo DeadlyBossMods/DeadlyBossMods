@@ -11208,7 +11208,7 @@ do
 							addsIconSet[scanID] = nil
 							return
 						end
-					elseif guid2 and ((guid2 == creatureID) or (cid2 == creatureID or cid == secondCreatureID)) and not addsGUIDs[guid2] then
+					elseif guid2 and ((guid2 == creatureID) or (cid2 == creatureID or cid2 == secondCreatureID)) and not addsGUIDs[guid2] then
 						if iconSetMethod == 2 then
 							SetRaidTarget(unitid2, mobIcon)
 						else
