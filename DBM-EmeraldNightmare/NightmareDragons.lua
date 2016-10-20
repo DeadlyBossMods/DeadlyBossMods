@@ -282,7 +282,7 @@ function mod:OnCombatStart(delay)
 		--On non mythic one dragon is missing from encounter and we have no way of knowing what one currently :\
 		self:Schedule(2, whoDatUpThere, self)
 	end
-	if self.Options.InfoFrame and not self:LFR() then
+	if self.Options.InfoFrame and not self:IsLFR() then
 		DBM.InfoFrame:SetHeader("DISABLEMEIFBROKEN")
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
 	end
