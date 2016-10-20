@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(102679)--Ysondre, 102683 (Emeriss), 102682 (Lethon), 102681 (Taerar)
 mod:SetEncounterID(1854)
 mod:SetZone()
---mod:SetUsedIcons(8, 7, 6, 3, 2, 1)
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 --mod:SetHotfixNoticeRev(12324)
 mod.respawnTime = 40
 
@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 203787 205298 205329",
 	"SPELL_AURA_APPLIED 203102 203125 203124 203121 203110 203770 203787 204040",
 	"SPELL_AURA_APPLIED_DOSE 203102 203125 203124 203121",
-	"SPELL_AURA_REMOVED 203102 203125 203124 203121 203787 204040",
+	"SPELL_AURA_REMOVED 203787 204040 203787",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -116,8 +116,11 @@ local voiceShadesOfTaerar			= mod:NewVoice(203817, "Tank")--mobsoon
 local voiceBellowingRoar			= mod:NewVoice(204078)--fearsoon
 
 mod:AddRangeFrameOption(10, 203787)
---mod:AddSetIconOption("SetIconOnMC", 163472, false)
+mod:AddSetIconOption("SetIconOnInfection", 203787, false)
+mod:AddSetIconOption("SetIconOnOozes", 205298, false, true)
 
+mod.vb.volatileInfectionIcon = 1
+mod.vb.alternateOozes = false
 local activeBossGUIDS = {}
 
 local function whoDatUpThere(self)
@@ -142,7 +145,7 @@ local function whoDatUpThere(self)
 
 	end
 	if not lethonFound then -- Lethon
-		timerShadowBurstCD:Start(16)
+		timerShadowBurstCD:Start(15)
 	end
 	if not taerarFound then -- Taerar
 		timerBellowingRoarCD:Start(43)
@@ -150,11 +153,13 @@ local function whoDatUpThere(self)
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.volatileInfectionIcon = 1
+	self.vb.alternateOozes = false
 	table.wipe(activeBossGUIDS)
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe vb.on pull
 	)
-	timerBreathCD:Start(16.5, Ysondre)
+	timerBreathCD:Start(15.5, Ysondre)
 	timerDefiledSpiritCD:Start(30-delay)
 	timerNightmareBlastCD:Start(40-delay)--40 on mythic, it changing on heroic too is assumed. Was 22.5 before
 	if DBM.BossHealth:IsShown() then
@@ -223,6 +228,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 205298 then
 		warnEssenceOfCorruption:Show()
 		timerEssenceOfCorruptionCD:Start()
+		if self.Options.SetIconOnOozes then
+			if self.vb.alternateOozes then
+				--6 and 5 used
+				self:ScanForMobs(103691, 0, 6, 2, 0.1, 10, "SetIconOnOozes")
+			else
+				--8 and 7 used
+				self:ScanForMobs(103691, 0, 8, 2, 0.1, 10, "SetIconOnOozes")
+			end
+		end
+		self.vb.alternateOozes = not self.vb.alternateOozes
 	elseif spellId == 205329 then
 		warnGloom:Show()
 	end
@@ -267,6 +282,13 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(10)
 			end
 		end
+		if self.Options.SetIconOnInfection then
+			self:SetIcon(args.destName, self.vb.volatileInfectionIcon)
+		end
+		self.vb.volatileInfectionIcon = self.vb.volatileInfectionIcon + 1
+		if self.vb.volatileInfectionIcon > 4 then
+			self.vb.volatileInfectionIcon = 1
+		end
 	elseif spellId == 204040 then
 		warnShadowBurst:CombinedShow(0.5, args.destName)
 		if self:AntiSpam(2, 5) then
@@ -288,6 +310,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		DBM.RangeCheck:Hide()
 	elseif spellId == 204040 and args:IsPlayer() then
 		yellShadowBurst:Cancel()
+	elseif spellId == 203787 and self.Options.SetIconOnInfection then
+		self:SetIcon(args.destName, 0)
 	end
 end
 
@@ -297,13 +321,12 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		local unitID = "boss"..i
 		local unitGUID = UnitGUID(unitID)
 		if UnitExists(unitID) and not activeBossGUIDS[unitGUID] then
-			local bossName = UnitName(unitID)
-			self:SendSync("IEEU", bossName, unitGUID)
 			activeBossGUIDS[unitGUID] = true
+			local bossName = UnitName(unitID)
 			local cid = self:GetUnitCreatureId(unitID)
 			--Subtracking .5 from all timers do to slight delay in IEEU vs ENCOUNTER_START
 			if cid == 102683 then -- Emeriss
-				timerBreathCD:Start(17, bossName)
+				timerBreathCD:Start(16, bossName)
 				timerVolatileInfectionCD:Start(19.5)
 				timerEssenceOfCorruptionCD:Start(29.5)
 				if DBM.BossHealth:IsShown() then
@@ -326,6 +349,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					DBM.BossHealth:AddBoss(cid, Taerar)
 				end
 			end
+			self:SendSync("IEEU", bossName, unitGUID)
 		end
 	end
 end
