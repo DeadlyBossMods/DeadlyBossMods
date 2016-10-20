@@ -50,7 +50,10 @@ function mod:OnCombatStart(delay)
 	timerMaelstromCD:Start(10.9-delay)
 	timerSurgeCD:Start(17-delay)
 	--Not ideal to do every pull, but cleanest way to ensure it's done
-	if trashmod.Options.SpyHelper then
+	if not trashmod then
+		trashmod = DBM:GetModByName("CoSTrash")
+	end
+	if trashmod and trashmod.Options.SpyHelper then
 		trashmod:ResetGossipState()
 	end
 end
