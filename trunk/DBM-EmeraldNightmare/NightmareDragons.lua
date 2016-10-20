@@ -47,10 +47,7 @@ local warnShadowBurst				= mod:NewTargetAnnounce(204040, 3)
 --Taerar
 
 --All
-local specWarnYsondreMark			= mod:NewSpecialWarningStack(203102, nil, 7)
-local specWarnEmerissMark			= mod:NewSpecialWarningStack(203125, nil, 7)
-local specWarnLethonMark			= mod:NewSpecialWarningStack(203124, nil, 7)
-local specWarnTaerarMark			= mod:NewSpecialWarningStack(203121, nil, 7)
+local specWarnMark					= mod:NewSpecialWarningStack("ej12809", nil, 7, nil, 1, 6)
 local specWarnDragon				= mod:NewSpecialWarningTarget(204720, "Tank", nil, nil, 1, 2)
 --Ysondre
 --local specWarnNightmareBlast		= mod:NewSpecialWarningSpell(203153, nil, nil, nil, 2)
@@ -99,6 +96,8 @@ local timerBellowingRoarCD			= mod:NewCDTimer(44.5, 204078, nil, nil, nil, 2)--A
 --Taerar
 local countdownShadesOfTaerar		= mod:NewCountdown(48.5, 204100, "Tank")
 
+--All
+local voiceMark						= mod:NewVoice("ej12809")--stackhigh
 --Ysondre
 --local voiceNightmareBlast			= mod:NewVoice(203153)--169613 (run over theh flower?)
 --local voiceDefiledSpirit			= mod:NewVoice(207573)--watchstep
@@ -118,6 +117,7 @@ local voiceBellowingRoar			= mod:NewVoice(204078)--fearsoon
 mod:AddRangeFrameOption(10, 203787)
 mod:AddSetIconOption("SetIconOnInfection", 203787, false)
 mod:AddSetIconOption("SetIconOnOozes", 205298, false, true)
+mod:AddInfoFrameOption("ej13460")
 
 mod.vb.volatileInfectionIcon = 1
 mod.vb.alternateOozes = false
@@ -152,6 +152,118 @@ local function whoDatUpThere(self)
 	end
 end
 
+local updateInfoFrame, sortInfoFrame
+do
+--	local playerName = UnitName("player")
+	local lines = {}
+	local spellName1, spellName2, spellName3, spellName4 = GetSpellInfo(203102), GetSpellInfo(203125), GetSpellInfo(203124), GetSpellInfo(203121)
+	local UnitDebuff = UnitDebuff
+	sortInfoFrame = function(a, b)
+		--local a = lines[a]
+		--local b = lines[b]
+		--if not tonumber(a) then a = -1 end
+		--if not tonumber(b) then b = -1 end
+		--if a < b then return true else return false end
+		return false--No sorting
+	end
+	updateInfoFrame = function()
+		table.wipe(lines)
+		local highestDebuff, lowestDebuff = 0, 1000
+		local highestSpellName, lowestSpellName = nil, nil
+		local highestPlayer, lowestPlayer = nil, nil
+		local playersWithTwo = false
+		for uId in DBM:GetGroupMembers() do
+			local debuffCount = 0
+			if UnitDebuff(uId, spellName1) then
+				debuffCount = debuffCount + 1
+				local stackCount = select(4, UnitDebuff(uId, spellName1))
+				if stackCount > highestDebuff then
+					highestDebuff = stackCount
+					highestSpellName = spellName1
+					highestPlayer = uId
+				end
+				if stackCount < lowestDebuff then
+					lowestDebuff = stackCount
+					lowestSpellName = spellName1
+					lowestPlayer = uId
+				end
+			end
+			if UnitDebuff(uId, spellName2) then
+				debuffCount = debuffCount + 1
+				local stackCount = select(4, UnitDebuff(uId, spellName2))
+				if stackCount > highestDebuff then
+					highestDebuff = stackCount
+					highestSpellName = spellName2
+					highestPlayer = uId
+				end
+				if stackCount < lowestDebuff then
+					lowestDebuff = stackCount
+					lowestSpellName = spellName2
+					lowestPlayer = uId
+				end
+			end
+			if UnitDebuff(uId, spellName3) then
+				debuffCount = debuffCount + 1
+				local stackCount = select(4, UnitDebuff(uId, spellName3))
+				if stackCount > highestDebuff then
+					highestDebuff = stackCount
+					highestSpellName = spellName3
+					highestPlayer = uId
+				end
+				if stackCount < lowestDebuff then
+					lowestDebuff = stackCount
+					lowestSpellName = spellName3
+					lowestPlayer = uId
+				end
+			end
+			if UnitDebuff(uId, spellName4) then
+				debuffCount = debuffCount + 1
+				local stackCount = select(4, UnitDebuff(uId, spellName4))
+				if stackCount > highestDebuff then
+					highestDebuff = stackCount.." "..highestSpellName
+					highestSpellName = spellName4
+					highestPlayer = uId
+				end
+				if stackCount < lowestDebuff then
+					lowestDebuff = stackCount.." "..lowestSpellName
+					lowestSpellName = spellName4
+					lowestPlayer = UnitName(uId)
+				end
+			end
+			if debuffCount > 1 then
+				playersWithTwo = true
+				--Redundant checks but less complicated than even more ugly caching
+				local text = ""
+				if UnitDebuff(uId, spellName1) then
+					text = select(7, UnitDebuff(uId, spellName1))
+				end
+				if UnitDebuff(uId, spellName2) then
+					text = text.."|"..select(7, UnitDebuff(uId, spellName2))
+				end
+				if UnitDebuff(uId, spellName3) then
+					text = text.."|"..select(7, UnitDebuff(uId, spellName3))
+				end
+				if UnitDebuff(uId, spellName4) then
+					text = text.."|"..select(7, UnitDebuff(uId, spellName4))
+				end
+				lines[UnitName(uId)] = text
+			end
+		end
+		if not playersWithTwo then
+			--No players with two, show generic stats
+			if highestPlayer then
+				lines[HIGH] = highestDebuff
+				lines[UnitName(highestPlayer)] = select(7, UnitDebuff(highestPlayer, highestSpellName))
+			end
+			if lowestPlayer then
+				lines[LOW] = lowestDebuff
+				lines[UnitName(lowestPlayer)] = select(7, UnitDebuff(lowestPlayer, lowestSpellName))
+			end
+		end
+		return lines
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.volatileInfectionIcon = 1
 	self.vb.alternateOozes = false
@@ -170,12 +282,19 @@ function mod:OnCombatStart(delay)
 		--On non mythic one dragon is missing from encounter and we have no way of knowing what one currently :\
 		self:Schedule(2, whoDatUpThere, self)
 	end
+	if self.Options.InfoFrame and not self:LFR() then
+		DBM.InfoFrame:SetHeader("DISABLEMEIFBROKEN")
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
+	end
 end
 
 function mod:OnCombatEnd()
 	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
@@ -245,25 +364,11 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 203102 and args:IsPlayer() then
+	if (spellId == 203102 or spellId == 203125 or spellId == 203124 or spellId == 203121) and args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount >= 7 then
-			specWarnYsondreMark:Show(amount)
-		end
-	elseif spellId == 203125 and args:IsPlayer() then
-		local amount = args.amount or 1
-		if amount >= 7 then
-			specWarnEmerissMark:Show(amount)
-		end
-	elseif spellId == 203124 and args:IsPlayer() then
-		local amount = args.amount or 1
-		if amount >= 7 then
-			specWarnLethonMark:Show(amount)
-		end
-	elseif spellId == 203121 and args:IsPlayer() then
-		local amount = args.amount or 1
-		if amount >= 7 then
-			specWarnTaerarMark:Show(amount)
+			specWarnMark:Show(amount)
+			voiceMark:Play("stackhigh")
 		end
 	elseif spellId == 203110 then
 		warnSlumberingNightmare:CombinedShow(0.5, args.destName)
