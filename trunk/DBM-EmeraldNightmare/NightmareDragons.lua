@@ -174,8 +174,10 @@ do
 		local playersWithTwo = false
 		for uId in DBM:GetGroupMembers() do
 			local debuffCount = 0
+			local text = ""
 			if UnitDebuff(uId, spellName1) then
 				debuffCount = debuffCount + 1
+				text = select(7, UnitDebuff(uId, spellName1))
 				local stackCount = select(4, UnitDebuff(uId, spellName1))
 				if stackCount > highestDebuff then
 					highestDebuff = stackCount
@@ -190,6 +192,7 @@ do
 			end
 			if UnitDebuff(uId, spellName2) then
 				debuffCount = debuffCount + 1
+				text = text.."|"..select(7, UnitDebuff(uId, spellName2))
 				local stackCount = select(4, UnitDebuff(uId, spellName2))
 				if stackCount > highestDebuff then
 					highestDebuff = stackCount
@@ -204,6 +207,7 @@ do
 			end
 			if UnitDebuff(uId, spellName3) then
 				debuffCount = debuffCount + 1
+				text = text.."|"..select(7, UnitDebuff(uId, spellName3))
 				local stackCount = select(4, UnitDebuff(uId, spellName3))
 				if stackCount > highestDebuff then
 					highestDebuff = stackCount
@@ -218,6 +222,7 @@ do
 			end
 			if UnitDebuff(uId, spellName4) then
 				debuffCount = debuffCount + 1
+				text = text.."|"..select(7, UnitDebuff(uId, spellName4))
 				local stackCount = select(4, UnitDebuff(uId, spellName4))
 				if stackCount > highestDebuff then
 					highestDebuff = stackCount.." "..highestSpellName
@@ -232,20 +237,6 @@ do
 			end
 			if debuffCount > 1 then
 				playersWithTwo = true
-				--Redundant checks but less complicated than even more ugly caching
-				local text = ""
-				if UnitDebuff(uId, spellName1) then
-					text = select(7, UnitDebuff(uId, spellName1))
-				end
-				if UnitDebuff(uId, spellName2) then
-					text = text.."|"..select(7, UnitDebuff(uId, spellName2))
-				end
-				if UnitDebuff(uId, spellName3) then
-					text = text.."|"..select(7, UnitDebuff(uId, spellName3))
-				end
-				if UnitDebuff(uId, spellName4) then
-					text = text.."|"..select(7, UnitDebuff(uId, spellName4))
-				end
 				lines[UnitName(uId)] = text
 			end
 		end
