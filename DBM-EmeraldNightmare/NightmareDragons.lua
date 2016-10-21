@@ -7,7 +7,7 @@ mod:SetEncounterID(1854)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 --mod:SetHotfixNoticeRev(12324)
-mod.respawnTime = 40
+mod.respawnTime = 39
 
 mod:RegisterCombat("combat")
 
@@ -77,7 +77,7 @@ local timerNightmareBlastCD			= mod:NewCDTimer(15, 203153, nil, "-Tank", nil, 3)
 local timerDefiledSpiritCD			= mod:NewCDTimer(33.2, 207573, nil, nil, nil, 3)
 --Emeriss
 mod:AddTimerLine(Emeriss)
-local timerVolatileInfectionCD		= mod:NewCDTimer(46, 203787, nil, nil, nil, 3)
+local timerVolatileInfectionCD		= mod:NewCDTimer(45.4, 203787, nil, nil, nil, 3)
 local timerEssenceOfCorruptionCD	= mod:NewNextTimer(30, 205298, nil, nil, nil, 1)
 --Lethon
 mod:AddTimerLine(Lethon)
@@ -284,7 +284,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.InfoFrame and not self:IsLFR() then
 		DBM.InfoFrame:SetHeader(EJ_GetSectionInfo(12809))
-		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame, true)
 	end
 end
 
@@ -395,8 +395,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			self.vb.volatileInfectionIcon = 1
 		end
 	elseif spellId == 204040 then
-		warnShadowBurst:CombinedShow(0.5, args.destName)
-		if self:AntiSpam(2, 5) then
+		warnShadowBurst:CombinedShow(1, args.destName)
+		if self:AntiSpam(5, 5) then
 			timerShadowBurstCD:Start()
 		end
 		if args:IsPlayer() then
