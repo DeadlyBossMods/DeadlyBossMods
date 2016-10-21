@@ -134,7 +134,7 @@ function mod:OnCombatStart(delay)
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 	)
-	if self.Options.InfoFrame and self:IsMythic() then
+	if self.Options.InfoFrame and not self:IsEasy() then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(210279))
 		DBM.InfoFrame:Show(8, "playerdebuffstacks", 210279)
 	end
