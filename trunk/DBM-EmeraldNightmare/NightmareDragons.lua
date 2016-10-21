@@ -283,7 +283,8 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.InfoFrame and not self:IsLFR() then
 		DBM.InfoFrame:SetHeader(EJ_GetSectionInfo(12809))
-		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame, true)
+		--DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame, true)
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame)
 	end
 end
 
