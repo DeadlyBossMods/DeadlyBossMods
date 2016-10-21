@@ -180,7 +180,6 @@ do
 				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName1)
 				local debuffTime = expires - GetTime()
 				text = floor(debuffTime)
-				local stackCount = select(4, UnitDebuff(uId, spellName1))
 				if stackCount > highestDebuff then
 					highestDebuff = stackCount
 					highestSpellName = spellName1
@@ -196,7 +195,7 @@ do
 				debuffCount = debuffCount + 1
 				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName2)
 				local debuffTime = expires - GetTime()
-				text = text.."|"..floor(debuffTime)
+				text = text..", "..floor(debuffTime)
 				if stackCount > highestDebuff then
 					highestDebuff = stackCount
 					highestSpellName = spellName2
@@ -212,7 +211,7 @@ do
 				debuffCount = debuffCount + 1
 				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName3)
 				local debuffTime = expires - GetTime()
-				text = text.."|"..floor(debuffTime)
+				text = text..", "..floor(debuffTime)
 				if stackCount > highestDebuff then
 					highestDebuff = stackCount
 					highestSpellName = spellName3
@@ -228,7 +227,7 @@ do
 				debuffCount = debuffCount + 1
 				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName4)
 				local debuffTime = expires - GetTime()
-				text = text.."|"..floor(debuffTime)
+				text = text..", "..floor(debuffTime)
 				if stackCount > highestDebuff then
 					highestDebuff = stackCount.." "..highestSpellName
 					highestSpellName = spellName4
