@@ -117,7 +117,7 @@ local voiceBellowingRoar			= mod:NewVoice(204078)--fearsoon
 mod:AddRangeFrameOption(10, 203787)
 mod:AddSetIconOption("SetIconOnInfection", 203787, false)
 mod:AddSetIconOption("SetIconOnOozes", 205298, false, true)
-mod:AddInfoFrameOption("ej13460")
+mod:AddInfoFrameOption("ej12809")
 
 mod.vb.volatileInfectionIcon = 1
 mod.vb.alternateOozes = false
