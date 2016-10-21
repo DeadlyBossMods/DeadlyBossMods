@@ -157,7 +157,7 @@ do
 --	local playerName = UnitName("player")
 	local lines = {}
 	local spellName1, spellName2, spellName3, spellName4 = GetSpellInfo(203102), GetSpellInfo(203125), GetSpellInfo(203124), GetSpellInfo(203121)
-	local UnitDebuff = UnitDebuff
+	local UnitDebuff, floor = UnitDebuff, math.floor
 	sortInfoFrame = function(a, b)
 		--local a = lines[a]
 		--local b = lines[b]
@@ -177,7 +177,9 @@ do
 			local text = ""
 			if UnitDebuff(uId, spellName1) then
 				debuffCount = debuffCount + 1
-				text = select(7, UnitDebuff(uId, spellName1))
+				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName1)
+				local debuffTime = expires - GetTime()
+				text = floor(debuffTime)
 				local stackCount = select(4, UnitDebuff(uId, spellName1))
 				if stackCount > highestDebuff then
 					highestDebuff = stackCount
@@ -192,8 +194,9 @@ do
 			end
 			if UnitDebuff(uId, spellName2) then
 				debuffCount = debuffCount + 1
-				text = text.."|"..select(7, UnitDebuff(uId, spellName2))
-				local stackCount = select(4, UnitDebuff(uId, spellName2))
+				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName2)
+				local debuffTime = expires - GetTime()
+				text = text.."|"..floor(debuffTime)
 				if stackCount > highestDebuff then
 					highestDebuff = stackCount
 					highestSpellName = spellName2
@@ -207,8 +210,9 @@ do
 			end
 			if UnitDebuff(uId, spellName3) then
 				debuffCount = debuffCount + 1
-				text = text.."|"..select(7, UnitDebuff(uId, spellName3))
-				local stackCount = select(4, UnitDebuff(uId, spellName3))
+				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName3)
+				local debuffTime = expires - GetTime()
+				text = text.."|"..floor(debuffTime)
 				if stackCount > highestDebuff then
 					highestDebuff = stackCount
 					highestSpellName = spellName3
@@ -222,8 +226,9 @@ do
 			end
 			if UnitDebuff(uId, spellName4) then
 				debuffCount = debuffCount + 1
-				text = text.."|"..select(7, UnitDebuff(uId, spellName4))
-				local stackCount = select(4, UnitDebuff(uId, spellName4))
+				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName4)
+				local debuffTime = expires - GetTime()
+				text = text.."|"..floor(debuffTime)
 				if stackCount > highestDebuff then
 					highestDebuff = stackCount.." "..highestSpellName
 					highestSpellName = spellName4
@@ -244,11 +249,15 @@ do
 			--No players with two, show generic stats
 			if highestPlayer then
 				lines[HIGH] = highestDebuff
-				lines[UnitName(highestPlayer)] = select(7, UnitDebuff(highestPlayer, highestSpellName))
+				local expires = select(7, UnitDebuff(highestPlayer, highestSpellName))
+				local debuffTime = expires - GetTime()
+				lines[UnitName(highestPlayer)] = floor(debuffTime)
 			end
 			if lowestPlayer then
 				lines[LOW] = lowestDebuff
-				lines[UnitName(lowestPlayer)] = select(7, UnitDebuff(lowestPlayer, lowestSpellName))
+				local expires = select(7, UnitDebuff(lowestPlayer, lowestSpellName))
+				local debuffTime = expires - GetTime()
+				lines[UnitName(lowestPlayer)] = floor(debuffTime)
 			end
 		end
 		return lines
@@ -273,10 +282,10 @@ function mod:OnCombatStart(delay)
 		--On non mythic one dragon is missing from encounter and we have no way of knowing what one currently :\
 		self:Schedule(2, whoDatUpThere, self)
 	end
---	if self.Options.InfoFrame and not self:IsLFR() then
---		DBM.InfoFrame:SetHeader("DISABLEMEIFBROKEN")
---		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
---	end
+	if self.Options.InfoFrame and not self:IsLFR() then
+		DBM.InfoFrame:SetHeader(EJ_GetSectionInfo(12809))
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
+	end
 end
 
 function mod:OnCombatEnd()
