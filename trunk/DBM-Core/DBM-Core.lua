@@ -5441,10 +5441,6 @@ do
 			--set mod default info
 			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize = self:GetCurrentInstanceDifficulty()
 			local name = mod.combatInfo.name
-			if type(name) == "table" then
-				for i, v in pairs(name) do print(i, v) end
-				name = tostring(name)--Silence error for now
-			end
 			local modId = mod.id
 			if C_Scenario.IsInScenario() and (mod.addon.type == "SCENARIO") then
 				mod.inScenario = true
@@ -5751,10 +5747,6 @@ do
 				return--Don't run any further, stats are nil on a bad load so rest of this code will also error out.
 			end
 			local name = mod.combatInfo.name
-			if type(name) == "table" then
-				for i, v in pairs(name) do print(i, v) end
-				name = tostring(name)--Silence error for now
-			end
 			local modId = mod.id
 			if wipe then
 				mod.lastWipeTime = GetTime()
@@ -6963,7 +6955,7 @@ do
 		end
 
 		if tonumber(name) then
-			local t = EJ_GetEncounterInfo(tonumber(name))
+			local t = tostring(EJ_GetEncounterInfo(tonumber(name)))
 			if type(nameModifier) == "number" then--Get name form EJ_GetCreatureInfo
 				t = select(2, EJ_GetCreatureInfo(nameModifier, tonumber(name)))
 			elseif type(nameModifier) == "function" then--custom name modify function
