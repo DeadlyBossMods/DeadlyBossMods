@@ -24,14 +24,15 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
---TODO: Phase changes, until done timers and warnings wont' cancel appropriately
---TODO, spear of light stuff, too many spellids and I'm not playing guess work with it
+--TODO, phase 3 storms (area of affect). not in combat log or even transcriptor. appears every 30 seconds give or take. verify in more attempts and add scheduler for it
 --TODO, Cleansing flame timers/target announces?
 --Stage 1: Halls of Valor was merely a set back
 local warnDancingBlade				= mod:NewCountAnnounce(228003, 3)--Change if target scanning works, but considering it doesn't in 5 man version of this spell, omitting for now
 local warnRevivify					= mod:NewCastAnnounce(228171, 4)
 local warnExpelLight				= mod:NewTargetAnnounce(228028, 3)
 local warnShieldofLight				= mod:NewTargetAnnounce(228270, 3)
+--Stage 2: Stuff
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 --Stage 3: Odyn immitates lei shen
 local warnStormofJustice			= mod:NewTargetAnnounce(227807, 3)
 
@@ -62,16 +63,18 @@ local timerHornOfValorCD			= mod:NewCDTimer(32, 228012, nil, nil, nil, 2)--Alter
 local timerExpelLightCD				= mod:NewCDTimer(32, 228028, nil, nil, nil, 3)--Alternating two times
 local timerShieldofLightCD			= mod:NewCDTimer(32, 228270, nil, nil, nil, 3)--Alternating two times
 local timerDrawPowerCD				= mod:NewNextTimer(70, 227503, nil, nil, nil, 6)
-local timerDrawPower				= mod:NewCastTimer(30, 227503, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerDrawPower				= mod:NewCastTimer(30, 227629, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage 2: Odyn immitates margok
+local timerSpearCD					= mod:NewNextTimer(10, 227697, nil, nil, nil, 3)
 local timerShatterSpearsCD			= mod:NewCDTimer(40, 231013, nil, nil, nil, 2)
 --Stage 3: Odyn immitates lei shen
-local timerStormforgedSpearCD		= mod:NewAITimer(40, 228918, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
+local timerStormOfJusticeCD			= mod:NewNextTimer(10.9, 227807, nil, nil, nil, 3)
+local timerStormforgedSpearCD		= mod:NewNextTimer(10.9, 228918, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
 --Stage 1: Halls of Valor was merely a set back
-local countdownDrawPower			= mod:NewCountdown(30, 227503)
+local countdownDrawPower			= mod:NewCountdown(30, 227629)
 
 --Stage 1: Halls of Valor was merely a set back
 local voiceDancingBlade				= mod:NewVoice(228003)--runaway
@@ -118,10 +121,16 @@ function mod:OnCombatStart(delay)
 	self.vb.expelLightCast = 0
 	self.vb.dancingBladeCast = 0
 	timerHornOfValorCD:Start(8-delay)
-	timerDancingBladeCD:Start(16-delay)
-	timerShieldofLightCD:Start(23-delay)
-	timerExpelLightCD:Start(32-delay)
-	timerDrawPowerCD:Start(40-delay)
+	if not self:IsLFR() then
+		timerDancingBladeCD:Start(16-delay)
+		timerShieldofLightCD:Start(23-delay)
+		timerExpelLightCD:Start(32-delay)
+		timerDrawPowerCD:Start(40-delay)
+	else
+		timerDancingBladeCD:Start(20-delay)
+		timerShieldofLightCD:Start(30-delay)
+		timerExpelLightCD:Start(40-delay)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -135,10 +144,18 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 228003 then
 		self.vb.dancingBladeCast = self.vb.dancingBladeCast + 1
 		warnDancingBlade:Show(self.vb.dancingBladeCast)
-		if self.vb.dancingBladeCast % 2 == 0 then
-			timerDancingBladeCD:Start(39)
+		if self:IsLFR() then
+			if self.vb.dancingBladeCast == 1 or self.vb.dancingBladeCast == 5 or self.vb.dancingBladeCast == 9 then
+				timerDancingBladeCD:Start(30)
+			else
+				timerDancingBladeCD:Start(20)
+			end
 		else
-			timerDancingBladeCD:Start(31)
+			if self.vb.dancingBladeCast % 2 == 0 then
+				timerDancingBladeCD:Start(39)
+			else
+				timerDancingBladeCD:Start(31)
+			end
 		end
 	elseif spellId == 228012 then
 		self.vb.hornCasting = true
@@ -146,10 +163,18 @@ function mod:SPELL_CAST_START(args)
 		specWarnHornOfValor:Show()
 		voiceHornOfValor:Play("scatter")
 		if self.vb.phase == 1 then
-			if self.vb.hornCast % 2 == 0 then
-				timerHornOfValorCD:Start(43)
+			if self:IsLFR() then
+				if self.vb.hornCast % 2 == 0 then
+					--timerHornOfValorCD:Start(43)--More data needed. Probably has an alternation
+				else
+					timerHornOfValorCD:Start(70)
+				end
 			else
-				timerHornOfValorCD:Start(27)
+				if self.vb.hornCast % 2 == 0 then
+					timerHornOfValorCD:Start(43)
+				else
+					timerHornOfValorCD:Start(27)
+				end
 			end
 		else
 			timerHornOfValorCD:Start(21)--Unknown but def shorter than 27
@@ -171,10 +196,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 		updateRangeFrame(self)
 	elseif spellId == 228028 then
 		self.vb.expelLightCast = self.vb.expelLightCast + 1
-		if self.vb.expelLightCast % 2 == 0 then
-			timerExpelLightCD:Start(38)
+		if self:IsLFR() then
+			if self.vb.expelLightCast % 2 == 0 then
+				timerExpelLightCD:Start(50)
+			else
+				timerExpelLightCD:Start(20)
+			end
 		else
-			timerExpelLightCD:Start(32)
+			if self.vb.expelLightCast % 2 == 0 then
+				timerExpelLightCD:Start(38)
+			else
+				timerExpelLightCD:Start(32)
+			end
 		end
 	elseif spellId == 228162 then--Cast finished, cleanup icons
 		if self.Options.SetIconOnShield then
@@ -194,7 +227,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			updateRangeFrame(self)
 		end
 	elseif spellId == 227807 or spellId == 227959 then--Add and non add version
-		warnStormofJustice:CombinedShow(0.3, args.destName)--TODO: Confirm can be more than one target
+		warnStormofJustice:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnStormofJustice:Show()
 			voiceStormofJustice:Play("runout")
@@ -317,12 +350,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	if spellId == 227503 then--Draw Power
 		timerDrawPower:Start()
 		countdownDrawPower:Start()
-		timerDrawPowerCD:Start()
+		if self:IsLFR() then
+			timerDrawPowerCD:Start(75)--LFR phase 2 verified. Might still be 70 in heroic though. no logs long enough for phase 2
+		else
+			timerDrawPowerCD:Start()
+		end
+		if self.vb.phase == 2 then
+			timerSpearCD:Stop()
+			timerSpearCD:Start(35)
+		end
 	--"<150.12 16:58:07> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Test for Players::3-3198-1648-10280-229168-000660515F:229168]]", -- [1347]
 	--"<156.10 16:58:13> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Leap into Battle::3-3198-1648-10280-227882-0001605165:227882]]", -- [1382]
 	--"<159.34 16:58:16> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Spear Transition - Holy::3-3198-1648-10280-228734-0004E05168:228734]]", -- [1395]
 	elseif spellId == 229168 then--Test for Players (Phase 2 begin)
 		self.vb.phase = 2
+		warnPhase2:Show()
 		self.vb.hornCast = 0--Verify
 		self.vb.shieldCast = 0--Verify
 		self.vb.expelLightCast = 0--Verify
@@ -331,11 +373,34 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerHornOfValorCD:Stop()
 		timerExpelLightCD:Stop()
 		timerShieldofLightCD:Stop()
-		timerShatterSpearsCD:Start(72)--Only a single log, needs more data to verify. Might have been delayed by draw power timings
+		timerSpearCD:Start(13)
 		--time = timer + 8 for the 8 seconds during transition he stops gaining power
-		local elapsed, total = timerDrawPower:GetTime()
+		if self:IsLFR() then
+			timerDrawPowerCD:Start(53)
+		else
+			timerDrawPower:Stop()
+			countdownDrawPower:Stop()
+			--TODO, verify this still happens or if it hard resetes CD now
+			local elapsed, total = timerDrawPowerCD:GetTime()
+			timerDrawPowerCD:Stop()
+			timerDrawPowerCD:Update(elapsed, total+8)
+			timerShatterSpearsCD:Start(72)--Only a single log, needs more data to verify. Might have been delayed by draw power timings
+		end
+	elseif spellId == 227697 then--Spear of Light
+		timerSpearCD:Start()
+		if self:IsLFR() then
+			--In LFR, there is no shatter spears, instead they all shatter on spear cast
+			--specWarnShatterSpears:Show()
+			voiceShatterSpears:Play("watchorb")
+		end
+	--"<487.37 21:38:02> [CHAT_MSG_MONSTER_YELL] It seems I have been too gentle. Have at thee!#Odyn#####0#0##0#191#nil#0#false#false#false#false", -- [2839]
+	--"<489.60 21:38:04> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Spear Transition - Thunder::3-2012-1648-3815-228740-00058AC2FC:228740]]", -- [2940]
+	--"<489.60 21:38:04> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Arcing Storm::3-2012-1648-3815-229254-00060AC2FC:229254]]", -- [2941]
+	elseif spellId == 228740 then--Spear Transition - Thunder (Phase 3 begin)
+		timerDrawPower:Stop()
+		countdownDrawPower:Stop()
 		timerDrawPowerCD:Stop()
-		timerDrawPowerCD:Update(elapsed, total+8)
-		local remaining = total-elapsed+8
+		timerStormOfJusticeCD:Start(4)
+		timerStormforgedSpearCD:Start(9)
 	end
 end
