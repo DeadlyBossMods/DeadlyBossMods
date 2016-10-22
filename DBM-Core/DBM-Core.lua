@@ -423,7 +423,7 @@ local isTalkingHeadLoaded = false
 local talkingHeadUnregistered = false
 
 local fakeBWVersion, fakeBWHash = 19, "1a21137"
-local versionQueryString, versionResponseString = "Q:%d-%s", "V:%d-%s"
+local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -2669,7 +2669,7 @@ do
 			if not inRaid then
 				inRaid = true
 				sendSync("H")
-				SendAddonMessage("BigWigs", versionQueryString:format(0, fakeBWHash), IsPartyLFG() and "INSTANCE_CHAT" or "RAID")
+				--SendAddonMessage("BigWigs", versionQueryString:format(0, fakeBWHash), IsPartyLFG() and "INSTANCE_CHAT" or "RAID")--UNCOMMENT WHEN BW PUSHES NEW SYNC SYSTEM
 				self:Schedule(2, self.RoleCheck, false, self)
 				fireEvent("raidJoin", playerName)
 				if BigWigs and BigWigs.db.profile.raidicon and not self.Options.DontSetIcons then--Both DBM and bigwigs have raid icon marking turned on.
@@ -2726,7 +2726,7 @@ do
 				-- joined a new party
 				inRaid = true
 				sendSync("H")
-				SendAddonMessage("BigWigs", versionQueryString:format(0, fakeBWHash), IsPartyLFG() and "INSTANCE_CHAT" or "RAID")
+				--SendAddonMessage("BigWigs", versionQueryString:format(0, fakeBWHash), IsPartyLFG() and "INSTANCE_CHAT" or "RAID")--UNCOMMENT WHEN BW PUSHES NEW SYNC SYSTEM
 				self:Schedule(2, self.RoleCheck, false, self)
 				fireEvent("partyJoin", playerName)
 			end
@@ -4152,7 +4152,7 @@ do
 
 	local function SendVersion()
 		if DBM.Options.FakeBWVersion then
-			SendAddonMessage("BigWigs", versionResponseString:format(fakeBWVersion, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
+			--SendAddonMessage("BigWigs", versionResponseString:format(fakeBWVersion, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")--UNCOMMENT WHEN BW PUSHES NEW SYNC SYSTEM
 			return
 		end
 		--(Note, faker isn't to screw with bigwigs nor is theirs to screw with dbm, but rathor raid leaders who don't let people run WTF they want to run)
@@ -4747,10 +4747,10 @@ do
 			sender = Ambiguate(sender, "none")
 			handleSync(channel, sender, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
-			local bwPrefix, bwMsg = msg:match("^(%u-):(.+)")
-			if bwPrefix then
+			local bwPrefix, bwMsg, extra = strsplit("^", msg)
+			if bwPrefix and bwMsg and extra then--Nil check all 3 to avoid errors form older versions
 				if bwPrefix == "V" then--Version information prefixes
-					local verString, hash = bwMsg:match("^(%d+)%-(.+)$")
+					local verString, hash = bwMsg, extra
 					local version = tonumber(verString) or 0
 					if version == 0 then return end--Just a query
 					sender = Ambiguate(sender, "none")
@@ -4759,7 +4759,7 @@ do
 						fakeBWVersion = version
 						fakeBWHash = hash
 					end
-				elseif prefix == "Q" then--Version request prefix
+				elseif bwPrefix == "Q" then--Version request prefix
 					self:Unschedule(SendVersion)
 					self:Schedule(3, SendVersion)
 				end
@@ -6955,12 +6955,13 @@ do
 		end
 
 		if tonumber(name) then
-			local t = tostring(EJ_GetEncounterInfo(tonumber(name)))
+			local t = EJ_GetEncounterInfo(tonumber(name))
 			if type(nameModifier) == "number" then--Get name form EJ_GetCreatureInfo
 				t = select(2, EJ_GetCreatureInfo(nameModifier, tonumber(name)))
 			elseif type(nameModifier) == "function" then--custom name modify function
 				t = nameModifier(t or name)
 			else--default name modify
+				t = tostring(t)
 				t = string.split(",", t or name)
 			end
 			obj.localization.general.name = t or name
