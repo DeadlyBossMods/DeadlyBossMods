@@ -26,3 +26,12 @@ L= DBM:GetModLocalization(1830)
 -- Helya --
 ---------------------------
 L= DBM:GetModLocalization(1829)
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("TrialofValorTrash")
+
+L:SetGeneralLocalization({
+	name =	"Trial of Valor Trash"
+})

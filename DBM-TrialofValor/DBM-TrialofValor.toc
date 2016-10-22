@@ -25,3 +25,4 @@ localization.tw.lua
 Odyn.lua
 Guarm.lua
 Helya.lua
+TrialofValorTrash.lua
