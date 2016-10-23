@@ -289,7 +289,6 @@ DBM.DefaultOptions = {
 	AITimer = true,
 	AutoCorrectTimer = false,
 	ShortTimerText = true,
-	EnablePatchRestrictions = false,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 }
 
@@ -2131,9 +2130,6 @@ do
 			DBM:RequestTimers(1)
 			DBM:RequestTimers(2)
 			DBM:RequestTimers(3)
-		elseif cmd:sub(1, 12) == "restrictions" then
-			DBM.Options.EnablePatchRestrictions = DBM.Options.EnablePatchRestrictions == false and true or false
-			DBM:AddMsg("EnablePatchRestrictions is " .. (DBM.Options.EnablePatchRestrictions and "ON" or "OFF"))
 		else
 			DBM:LoadGUI()
 		end
@@ -2814,17 +2810,19 @@ do
 	function DBM:GetNumRealPlayersInZone()
 		if not IsInGroup() then return 1 end
 		local total = 0
-		local currentMapId = GetPlayerMapAreaID("player") or 0
+		local _, _, _, currentMapId = UnitPosition("player")
 		if IsInRaid() then
 			for i = 1, GetNumGroupMembers() do
-				if (GetPlayerMapAreaID("raid"..i) or currentMapId) == currentMapId then
+				local _, _, _, targetMapId = UnitPosition("raid"..i)
+				if targetMapId == currentMapId then
 					total = total + 1
 				end
 			end
 		else
 			total = 1--add player/self for "party" count
 			for i = 1, GetNumSubgroupMembers() do
-				if (GetPlayerMapAreaID("party"..i) or currentMapId) == currentMapId then
+				local _, _, _, targetMapId = UnitPosition("party"..i)
+				if targetMapId == currentMapId then
 					total = total + 1
 				end
 			end
@@ -2928,11 +2926,12 @@ function DBM:GetNumRealGroupMembers()
 	if not IsInInstance() then--Not accurate outside of instances (such as world bosses)
 		return IsInGroup() and GetNumGroupMembers() or 1--So just return regular group members.
 	end
-	local currentMapId = GetPlayerMapAreaID("player") or 0
+	local _, _, _, currentMapId = UnitPosition("player")
 	local realGroupMembers = 0
 	if IsInGroup() then
 		for uId in self:GetGroupMembers() do
-			if (GetPlayerMapAreaID(uId) or currentMapId) == currentMapId then
+			local _, _, _, targetMapId = UnitPosition(uId)
+			if targetMapId == currentMapId then
 				realGroupMembers = realGroupMembers + 1
 			end
 		end
@@ -3913,7 +3912,8 @@ do
 		if LastInstanceType == "none" and (not UnitAffectingCombat("player") or #inCombat > 0) then--world boss
 			local senderuId = DBM:GetRaidUnitId(sender)
 			if not senderuId then return end--Should never happen, but just in case. If happens, MANY "C" syncs are sent. losing 1 no big deal.
-			local playerZone, senderZone = GetPlayerMapAreaID("player") or 0, GetPlayerMapAreaID(senderuId) or GetPlayerMapAreaID("player")
+			local _, _, _, playerZone = UnitPosition("player")
+			local _, _, _, senderZone = UnitPosition(senderuId)
 			if playerZone ~= senderZone then return end--not same zone
 			local range = DBM.RangeCheck:GetDistance("player", senderuId)--Same zone, so check range
 			if not range or range > 120 then return end
@@ -6158,7 +6158,7 @@ function DBM:HasMapRestrictions()
 	--Check playerX and playerY. if they are nil restrictions are active
 	--Restrictions active in all party, raid, pvp, arena maps. No restrictions in "none" or "scenario"
 	local playerX, playerY = UnitPosition("player")
-	if self.Options.EnablePatchRestrictions or not playerX or not playerY then
+	if not playerX or not playerY then
 		return true
 	end
 	return false
