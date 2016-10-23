@@ -70,6 +70,7 @@ local specWarnShadesOfTaerar		= mod:NewSpecialWarningSwitch(204100, "Tank", nil,
 local specWarnBellowingRoar			= mod:NewSpecialWarningSpell(204078, nil, nil, nil, 2, 6)
 
 --All
+local timerMarkCD					= mod:NewNextTimer(7, "ej12809", 28836, nil, nil, 3, 203102)
 local timerBreathCD					= mod:NewCDSourceTimer(27, 203028, 21131, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--27-34 for Ysondre, Cohorts 27-29.
 --Ysondre
 mod:AddTimerLine(Ysondre)
@@ -368,6 +369,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount >= 7 then
 			specWarnMark:Show(amount)
 			voiceMark:Play("stackhigh")
+		end
+		if self:AntiSpam(4, 2) then
+			if self:IsMythic() then
+				timerMarkCD:Start()
+			elseif self:IsHeroic() then
+				timerMarkCD:Start(8)
+			elseif self:IsNormal() then
+				timerMarkCD:Start(10)
+			else
+				timerMarkCD:Start(12)
+			end
 		end
 	elseif spellId == 203110 then
 		warnSlumberingNightmare:CombinedShow(0.5, args.destName)
