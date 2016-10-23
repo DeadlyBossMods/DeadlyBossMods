@@ -208,6 +208,13 @@ do
 				info.arg1 = 11
 				info.checked = (mainFrame.range == 11)
 				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(13)
+				info.func = setRange
+				info.arg1 = 13
+				info.checked = (mainFrame.range == 13)
+				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(18)
@@ -593,9 +600,14 @@ do
 					elseif IsItemInRange(63427, uId) then range = 8--Worgsaw
 					elseif CheckInteractDistance(uId, 3) then range = 10
 					elseif CheckInteractDistance(uId, 2) then range = 11
+					elseif IsItemInRange(32321, uId) then range = 13--reports 12 but actual range tested is 13
 					elseif IsItemInRange(6450, uId) then range = 18--Bandages. (despite popular sites saying it's 15 yards, it's actually 18 yards erified even by UnitDistanceSquared
+					elseif IsItemInRange(21519, uId) then range = 22--Item says 20, returns true until 22.
 					elseif CheckInteractDistance(uId, 1) then range = 30
 					elseif UnitInRange(uId) then range = 43
+					elseif IsItemInRange(116139, uId)  then range = 50
+					elseif IsItemInRange(32825, uId) then range = 60
+					elseif IsItemInRange(35278, uId) then range = 80
 					else range = 1000 end--Just so it has a numeric value, even if it's unknown to protect from nil errors
 				else
 					range = UnitDistanceSquared(uId) ^ 0.5
@@ -700,9 +712,14 @@ do
 		elseif IsItemInRange(63427, uId) then return 8
 		elseif CheckInteractDistance(uId, 3) then return 10
 		elseif CheckInteractDistance(uId, 2) then return 11
+		elseif IsItemInRange(32321, uId) then return 13
 		elseif IsItemInRange(6450, uId) then return 18
+		elseif IsItemInRange(21519, uId) then return 22
 		elseif CheckInteractDistance(uId, 1) then return 30
 		elseif UnitInRange(uId) then return 43
+		elseif IsItemInRange(116139, uId) then return 50
+		elseif IsItemInRange(32825, uId) then return 60
+		elseif IsItemInRange(35278, uId) then return 80
 		else return 1000 end--Just so it has a numeric value, even if it's unknown to protect from nil errors
 	end
 	--TODO, add some check in 7.1 to return before calling UnitPosition, if in restricted area.
@@ -773,12 +790,22 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 				range = 10
 			elseif range <= 11 then
 				range = 11
+			elseif range <= 13 then
+				range = 13
 			elseif range <= 18 then
 				range = 18
+			elseif range <= 22 then
+				range = 22
 			elseif range <= 30 then
 				range = 30
 			elseif range <= 43 then
 				range = 43
+			elseif range <= 50 then
+				range = 50
+			elseif range <= 60 then
+				range = 60
+			elseif range <= 80 then
+				range = 80
 			end
 		end
 		textFrame.isShown = true
