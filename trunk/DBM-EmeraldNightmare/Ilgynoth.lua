@@ -115,7 +115,7 @@ mod.vb.CorruptorSpawn = 0
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local eyeName = EJ_GetSectionInfo(13185)
 local addsTable = {}
-local phase1EasyDeathglares = {26, 65, 85, 55}--Normal/LFR OCT 16
+local phase1EasyDeathglares = {26, 62, 85, 55}--Normal/LFR OCT 16
 local phase1HeroicDeathglares = {26, 59, 60}--VERIFIED Oct 16
 --This might be same problem as below. Need to review and see if this is another stupid 21/26 variation that makes 2nd one also variable
 local phase1MythicDeathglares = {21, 69, 85, 70}--VERIFIED Oct 16
@@ -237,17 +237,13 @@ function mod:OnCombatStart(delay)
 	timerNightmareishFuryCD:Start(6-delay)
 	timerGroundSlamCD:Start(12-delay)
 	timerDeathGlareCD:Start(26-delay)
+	timerNightmareHorrorCD:Start(60-delay)--60-65 variable, but it is same in allmodes
 	if self:IsMythic() then
 		self.vb.deathBlossomCount = 0
-		timerNightmareHorrorCD:Start(60-delay)--Verify
 		timerDeathBlossomCD:Start(58.6-delay)
 		timerCorruptorTentacleCD:Start(90-delay)--Verify
-	elseif self:IsHeroic() then
-		timerNightmareHorrorCD:Start(60-delay)
-		timerCorruptorTentacleCD:Start(79-delay)
 	else
-		timerNightmareHorrorCD:Start(65-delay)
-		timerCorruptorTentacleCD:Start(90-delay)--Verify
+		timerCorruptorTentacleCD:Start(79-delay)--79-85 but is same in all non mythic modes
 	end
 	if self.Options.InfoFrame then
 		if self.Options.InfoFrameBehavior == "Fixates" then
