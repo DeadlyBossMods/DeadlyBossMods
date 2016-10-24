@@ -153,20 +153,12 @@ local function whoDatUpThere(self)
 	end
 end
 
-local updateInfoFrame, sortInfoFrame
+local updateInfoFrame
 do
 --	local playerName = UnitName("player")
 	local lines = {}
 	local spellName1, spellName2, spellName3, spellName4 = GetSpellInfo(203102), GetSpellInfo(203125), GetSpellInfo(203124), GetSpellInfo(203121)
 	local UnitDebuff, floor = UnitDebuff, math.floor
-	sortInfoFrame = function(a, b)
-		--local a = lines[a]
-		--local b = lines[b]
-		--if not tonumber(a) then a = -1 end
-		--if not tonumber(b) then b = -1 end
-		--if a < b then return true else return false end
-		return false--No sorting
-	end
 	updateInfoFrame = function()
 		table.wipe(lines)
 		local highestDebuff, lowestDebuff = 0, 1000
