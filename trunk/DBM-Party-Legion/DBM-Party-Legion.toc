@@ -103,4 +103,5 @@ ReturnToKarazhan\Curator.lua
 ReturnToKarazhan\Medivh.lua
 ReturnToKarazhan\ManaDevourer.lua
 ReturnToKarazhan\Vizaduum.lua
+ReturnToKarazhan\Nightbane.lua
 ReturnToKarazhan\RTKTrash.lua
