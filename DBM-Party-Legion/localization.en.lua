@@ -443,6 +443,15 @@ L= DBM:GetModLocalization(1818)
 L= DBM:GetModLocalization(1838)
 
 -----------------------
+--Nightbane
+-----------------------
+L = DBM:GetModLocalization("Nightbane")
+
+L:SetGeneralLocalization({
+	name =	"Nightbane"
+})
+
+-----------------------
 --Return To Karazhan Trash
 -----------------------
 L = DBM:GetModLocalization("RTKTrash")
