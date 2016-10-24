@@ -197,7 +197,7 @@ do
 	end
 	
 	function mod:OnSync(msg, clue)
-		if msg == "CoS" and self.Options.SpyHelper then
+		if msg == "CoS" and clue and self.Options.SpyHelper then
 			hints[clue] = true
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
 		end
