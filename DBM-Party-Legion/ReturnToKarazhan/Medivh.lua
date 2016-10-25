@@ -99,14 +99,14 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 227779 then
 		specWarnCeaselessWinter:Show()
 		voiceCeaselessWinter:Play("keepmove")
-		--timerSpecialCD:Start()
+		timerSpecialCD:Start()
 	elseif spellId == 228269 then
 		warnFlameWreath:Show()
-		--timerSpecialCD:Start()
+		timerSpecialCD:Start()
 	elseif spellId == 228334 then
 		specWarnGuardiansImage:Show()
 		voiceGuardiansImage:Play("killmob")
-		--timerSpecialCD:Start()
+		timerSpecialCD:Start()
 	end
 end
 
