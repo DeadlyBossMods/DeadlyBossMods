@@ -14,15 +14,16 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 229151 229083",
 	"SPELL_CAST_SUCCESS 229610 229242 229284",
-	"SPELL_AURA_APPLIED 229159 229246",
-	"SPELL_AURA_REMOVED 229159"
+	"SPELL_AURA_APPLIED 229159 229241",
+	"SPELL_AURA_REMOVED 229159",
 --	"SPELL_PERIODIC_DAMAGE",
---	"SPELL_PERIODIC_MISSED"
+--	"SPELL_PERIODIC_MISSED",
+	"UNIT_AURA player"
 )
 
 --TODO: Burning Blast INterrupt helper. Figure out CD, then what to do with it
 --TODO: Phases
---TODO: FIgure out what to do with soul harvest
+--TODO: Figure out what to do with soul harvest
 --TODO: figure out what to do with Felguard Sentry (115730)
 --ALL
 local warnChaoticShadows			= mod:NewTargetAnnounce(229159, 3)
@@ -31,6 +32,9 @@ local warnDisintegrate				= mod:NewSpellAnnounce(229159, 4)--Switch to special w
 --ALL
 local specWarnChaoticShadows		= mod:NewSpecialWarningYou(229159, nil, nil, nil, 1, 2)
 local yellChaoticShadows			= mod:NewPosYell(229159)
+--Phase 1
+local specWarnFelBeam				= mod:NewSpecialWarningRun(229242, nil, nil, nil, 1, 2)
+local yellFelBeam					= mod:NewYell(229242)
 
 --ALL
 local timerChaoticShadowsCD			= mod:NewAITimer(40, 229159, nil, nil, nil, 3)
@@ -46,6 +50,8 @@ local timerBombardmentCD			= mod:NewAITimer(40, 229284, 229287, nil, nil, 3)
 
 --ALL
 local voiceChaoticShadows			= mod:NewVoice(229159)--runout
+--Phase 1
+local voiceFelBeam					= mod:NewVoice(229242)--justrun/keepmove
 
 mod:AddSetIconOption("SetIconOnShadows", 229159, true)
 mod:AddRangeFrameOption(6, 230066)
@@ -53,6 +59,7 @@ mod:AddRangeFrameOption(6, 230066)
 
 mod.vb.phase = 1
 local chaoticShadowsTargets = {}
+local laserWarned = false
 
 local function breakShadows(self)
 	warnChaoticShadows:Show(table.concat(chaoticShadowsTargets, "<, >"))
@@ -60,6 +67,7 @@ local function breakShadows(self)
 end
 
 function mod:OnCombatStart(delay)
+	laserWarned = false
 	table.wipe(chaoticShadowsTargets)
 	self.vb.phase = 1
 	timerFelBeamCD:Start(1-delay)
@@ -139,7 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnShadows then
 			self:SetIcon(name, count)
 		end
-	elseif spellId == 229246 then--Odds of this being in combat log are next to none, but worth a try
+	elseif spellId == 229241 then--Odds of this being in combat log are next to none, but worth a try
 		DBM:Debug("Holy shit, something useful in combat log, say it isn't so!")
 	end
 end
@@ -153,6 +161,23 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+do
+	local debuffName = GetSpellInfo(229241)
+	function mod:UNIT_AURA(uId)
+		local hasDebuff = UnitDebuff("player", debuffName)
+		if hasDebuff and not laserWarned then
+			specWarnFelBeam:Show()
+			voiceFelBeam:Play("justrun")
+			voiceFelBeam:Schedule(1, "keepmove")
+			yellFelBeam:Yell()
+			laserWarned = true
+		elseif not hasDebuff and laserWarned then
+			laserWarned = false
+		end
+	end
+end
+
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 205611 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 --		specWarnMiasma:Show()
