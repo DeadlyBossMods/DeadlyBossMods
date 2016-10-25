@@ -1,5 +1,5 @@
-## Interface: 70000
-## X-Min-Interface: 70000
+## Interface: 70100
+## X-Min-Interface: 70100
 ## Title:|cffffd200Deadly Boss Mods|r |cff69ccf0Core|r
 ## Title-zhCN:|cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
 ## Title-ruRU:|cffffd200Deadly Boss Mods|r |cff69ccf0Ядро|r

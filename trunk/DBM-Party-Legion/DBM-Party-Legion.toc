@@ -1,5 +1,5 @@
-﻿## Interface: 70000
-## X-Min-Interface: 70000
+﻿## Interface: 70100
+## X-Min-Interface: 70100
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Party-Legion|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Gruppe-Legion|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Groupe-Legion|r

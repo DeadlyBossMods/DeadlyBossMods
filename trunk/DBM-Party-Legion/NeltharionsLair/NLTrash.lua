@@ -43,7 +43,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnBurningHatred:Show(args.destName)
 		end
-	elseif spellId == 183407 and args:IsPlayer() then
+	elseif spellId == 183407 and args:IsPlayer() and self:AntiSpam(3, 1) then
 		specWarnAcidSplatter:Show()
 		voiceAcidSplatter:Play("runaway")
 	end
