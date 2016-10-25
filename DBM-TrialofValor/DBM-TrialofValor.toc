@@ -16,11 +16,13 @@
 ## X-DBM-Mod-Name: Trial of Valor
 ## X-DBM-Mod-Name-deDE: Die Prüfung des Mutes
 ## X-DBM-Mod-Name-koKR: 용맹의 시험
+## X-DBM-Mod-Name-zhTW: 勇氣試煉
 ## X-DBM-Mod-Sort: 054
 ## X-DBM-Mod-MapID: 1648
 ## X-DBM-Mod-MinCoreRevision: 14737
 localization.en.lua
 localization.de.lua
+localization.kr.lua
 localization.tw.lua
 Odyn.lua
 Guarm.lua
