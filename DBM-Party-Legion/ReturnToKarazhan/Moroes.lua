@@ -12,8 +12,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 227672 227578 227545",
-	"SPELL_CAST_SUCCESS 227872 227737",
+	"SPELL_CAST_START 227672 227578 227545 227736",
+	"SPELL_CAST_SUCCESS 227872",
 	"SPELL_AURA_APPLIED 227832 227616",
 --	"SPELL_AURA_REMOVED",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -39,7 +39,8 @@ local specWarnCoatCheckHealer		= mod:NewSpecialWarningDispel(227832, "Healer", n
 local specWarnWillBreaker			= mod:NewSpecialWarningSpell(227832, "Tank", nil, nil, 1, 2)
 
 --Moroes
-local timerCoatCheckCD				= mod:NewAITimer(40, 227832, nil, "Tank|Healer", nil, 5)
+local timerCoatCheckCD				= mod:NewNextTimer(33.8, 227832, nil, "Tank|Healer", nil, 5)
+local timerVanishCD					= mod:NewNextTimer(20.5, 227737, nil, nil, nil, 3)
 --Lady Lady Catriona Von'Indi
 local timerHealingStreamCD			= mod:NewAITimer(40, 227578, nil, nil, nil, 0)--Interruptable via stun?
 --Lord Crispin Ference
@@ -98,7 +99,8 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	timerCoatCheckCD:Start(1-delay)
+	timerVanishCD:Start(8.2-delay)
+	timerCoatCheckCD:Start(33-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(227909))
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame, true)
@@ -122,6 +124,9 @@ function mod:SPELL_CAST_START(args)
 		timerHealingStreamCD:Start()
 	elseif spellId == 227545 then
 		warnManaDrain:Show()
+	elseif spellId == 227736 then
+		warnVanish:Show()
+		timerVanishCD:Start()
 	end
 end
 
@@ -132,8 +137,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
-	elseif spellId == 227737 then
-		warnVanish:Show()
 	end
 end
 
