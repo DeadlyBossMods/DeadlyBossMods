@@ -9,7 +9,7 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 228255 228239 227917 227925 228625 228606 229714 227966",
-	"SPELL_AURA_APPLIED 228331 229706 229716",
+	"SPELL_AURA_APPLIED 228331 229706 229716 228610",
 	"SPELL_AURA_REMOVED 229489"
 --	"SPELL_DAMAGE 204762",
 --	"SPELL_MISSED 204762",
@@ -26,8 +26,10 @@ local specWarnBansheeWail			= mod:NewSpecialWarningInterrupt(228625, "HasInterru
 local specWarnHealingTouch			= mod:NewSpecialWarningInterrupt(228606, "HasInterrupt", nil, nil, 1, 2)
 local specWarnConsumeMagic			= mod:NewSpecialWarningInterrupt(229714, "HasInterrupt", nil, nil, 1, 2)
 local specWarnFinalCurtain			= mod:NewSpecialWarningDodge(227925, "Melee", nil, nil, 1, 2)
-local specWarnVolatileCharge		= mod:NewSpecialWarningMoveAway(227925, nil, nil, nil, 1, 2)
-local yellVolatileCharge			= mod:NewYell(227925)
+local specWarnVolatileCharge		= mod:NewSpecialWarningMoveAway(228331, nil, nil, nil, 1, 2)
+local yellVolatileCharge			= mod:NewYell(228331)
+local specWarnBurningBrand			= mod:NewSpecialWarningMoveAway(228610, nil, nil, nil, 1, 2)
+local yellBurningBrand				= mod:NewYell(228610)
 local specWarnLeechLife				= mod:NewSpecialWarningDispel(228606, "Healer", nil, nil, 1, 2)
 local specWarnCurseofDoom			= mod:NewSpecialWarningDispel(229716, "Healer", nil, nil, 1, 2)
 local specWarnRoyalty				= mod:NewSpecialWarningSwitch(229489, nil, nil, nil, 1, 2)
@@ -39,6 +41,8 @@ local voicePoetrySlam				= mod:NewVoice(227917, "HasInterrupt")--kickcast
 local voiceBansheeWail				= mod:NewVoice(228625, "HasInterrupt")--kickcast
 local voiceHealingTouch				= mod:NewVoice(228606, "HasInterrupt")--kickcast
 local voiceConsumeMagic				= mod:NewVoice(229714, "HasInterrupt")--kickcast
+local voiceVolatileCharge			= mod:NewVoice(228331)--runout
+local voiceBurningBrand				= mod:NewVoice(228610)--runout
 local voiceFinalCurtain				= mod:NewVoice(227925, "Melee")--runout
 local voiceLeechLife				= mod:NewVoice(228606, "Healer")--dispelnow
 local voiceCurseofDoom				= mod:NewVoice(229716, "Healer")--dispelnow
@@ -83,7 +87,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnVolatileCharge:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnVolatileCharge:Show()
+			voiceVolatileCharge:Play("runout")
 			yellVolatileCharge:Yell()
+		end
+	elseif spellId == 228610 then
+		if args:IsPlayer() then
+			specWarnBurningBrand:Show()
+			voiceBurningBrand:Play("runout")
+			yellBurningBrand:Yell()
 		end
 	elseif spellId == 229706 then
 		specWarnLeechLife:Show(args.destName)

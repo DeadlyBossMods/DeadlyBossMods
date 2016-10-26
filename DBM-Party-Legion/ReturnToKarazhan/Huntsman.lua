@@ -13,30 +13,23 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 227363 227365 227339 227493 228852",
-	"SPELL_CAST_SUCCESS 228852"
---	"SPELL_AURA_APPLIED",
---	"SPELL_AURA_REMOVED"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
---TODO: add support for Intangible Presence once it's determined what spellIDs do what
---TODO, phase change detection for timer updates
---local warnBloodFrenzy				= mod:NewSpellAnnounce(198388, 4)
-
+--TODO: Intangible Presence doesn't seem possible to support. How to tell right from wrong dispel is obfuscated
+--Most of midnights timers are too short to really be worth including. he either spams charge or spams spectral chargers.
 local specWarnMightyStomp			= mod:NewSpecialWarningCast(227363, "SpellCaster", nil, nil, 1, 2)
 local specWarnSpectralCharge		= mod:NewSpecialWarningDodge(227365, nil, nil, nil, 2, 2)
 --On Foot
 local specWarnMezair				= mod:NewSpecialWarningDodge(227339, nil, nil, nil, 1, 2)
 local specWarnMortalStrike			= mod:NewSpecialWarningDefensive(227493, "Tank", nil, nil, 2, 2)
 local specWarnSharedSuffering		= mod:NewSpecialWarningMoveTo(228852, nil, nil, nil, 3, 2)
-local specWarnSharedSufferingOver	= mod:NewSpecialWarningMoveAway(228852, nil, nil, nil, 1, 2)
 local yellSharedSuffering			= mod:NewYell(228852)
 
-local timerMightyStompCD			= mod:NewAITimer(40, 227363, nil, nil, nil, 2)
-local timerSpectralChargeCD			= mod:NewAITimer(40, 227365, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerMortalStrikeCD			= mod:NewNextTimer(11, 227493, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerSharedSufferingCD		= mod:NewNextTimer(19, 228852, nil, nil, nil, 3)
 
---local berserkTimer					= mod:NewBerserkTimer(300)
-
---local countdownFocusedGazeCD		= mod:NewCountdown(40, 198006)
+local countdownSharedSuffering		= mod:NewCountdown(19, 228852)
 
 local voiceMightyStomp				= mod:NewVoice(227363, "SpellCaster")--stopcast
 local voiceSpectralcharge			= mod:NewVoice(227365)--watchstep
@@ -47,25 +40,14 @@ local voiceSharedSuffering			= mod:NewVoice(228852)--defensive
 
 mod:AddSetIconOption("SetIconOnSharedSuffering", 228852, true)
 
-function mod:OnCombatStart(delay)
-	timerMightyStompCD:Start(1-delay)
-	timerSpectralChargeCD:Start(1-delay)
-end
-
-function mod:OnCombatEnd()
-
-end
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 227363 then
 		specWarnMightyStomp:Show()
 		voiceMightyStomp:Play("stopcast")
-		timerMightyStompCD:Start()
 	elseif spellId == 227365 then
 		specWarnSpectralCharge:Show()
 		voiceSpectralcharge:Play("watchstep")
-		timerSpectralChargeCD:Start()
 	elseif spellId == 227339 then
 		specWarnMezair:Show()
 		voiceMezair:Play("chargemove")
@@ -93,14 +75,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnSharedSuffering:Show(targetName)
 			voiceSharedSuffering:Play("gathershare")
 		end
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 228852 then
-		specWarnSharedSufferingOver:Show()
-		voiceSharedSuffering:Play("scatter")
 	end
 end
 --[[
@@ -133,11 +107,18 @@ function mod:UNIT_DIED(args)
 
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 206341 then
-	
+	if spellId == 227338 then--Riderless
+		timerMortalStrikeCD:Start()
+		timerSharedSufferingCD:Start()
+		countdownSharedSuffering:Start()
+	elseif spellId == 227584 or spellId == 227601 then--Mounted or Intermission
+		timerMortalStrikeCD:Stop()
+		timerSharedSufferingCD:Stop()
+		countdownSharedSuffering:Cancel()
 	end
 end
---]]
+
