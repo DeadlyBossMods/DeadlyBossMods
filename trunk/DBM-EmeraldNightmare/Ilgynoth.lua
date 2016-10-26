@@ -185,7 +185,7 @@ end
 --This clean method will only work until 7.1. After which it'll have to be replaced with something FAR uglier
 local autoMarkOozesUntil71
 do
-	local UnitHealth, UnitHealthMax, UnitGUID, UnitCastingInfo = UnitHealth, UnitHealthMax, UnitGUID, UnitCastingInfo
+	local UnitHealth, UnitHealthMax, UnitGUID, UnitCastingInfo, UnitIsUnit = UnitHealth, UnitHealthMax, UnitGUID, UnitCastingInfo, UnitIsUnit
 	autoMarkOozesUntil71 = function(self)
 		self:Unschedule(autoMarkOozesUntil71)
 		if self.vb.IchorCount == 0 then
@@ -209,14 +209,20 @@ do
 			end
 		end
 		if lowestUnitID then
+			--Can't set Icon on nameplate..i so try to find a target unit ID that supports set icon
 			local found = false
-			for uId in DBM:GetGroupMembers() do
-				--Can't set Icon on nameplate..i so try to find a target unit ID that supports set icon
-				local unitid = uId.."target"
-				if UnitIsUnit(lowestUnitID, unitid) then
-					self:SetIcon(unitid, 8)
-					found = true
-					break
+			if UnitIsUnit(lowestUnitID, "mouseover") then
+				self:SetIcon("mouseover", 8)
+				found = true
+			end
+			if not found then
+				for uId in DBM:GetGroupMembers() do
+					local unitid = uId.."target"
+					if UnitIsUnit(lowestUnitID, unitid) then
+						self:SetIcon(unitid, 8)
+						found = true
+						break
+					end
 				end
 			end
 			if not found then
