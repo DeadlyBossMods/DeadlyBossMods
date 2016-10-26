@@ -39,7 +39,7 @@ local specWarnRendFleshOther		= mod:NewSpecialWarningTaunt(197942, nil, nil, nil
 local specWarnOverwhelmOther		= mod:NewSpecialWarningTaunt(197943, nil, nil, nil, 1, 2)
 
 local timerFocusedGazeCD			= mod:NewNextCountTimer(40, 198006, nil, nil, nil, 3)
-local timerRendFleshCD				= mod:NewNextTimer(20, 197942, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerRendFleshCD				= mod:NewNextCountTimer(20, 197942, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerOverwhelmCD				= mod:NewNextTimer(10, 197943, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerRoaringCacophonyCD		= mod:NewNextCountTimer(30, 197969, nil, nil, nil, 2)
 
@@ -65,6 +65,7 @@ mod:AddBoolOption("NoAutoSoaking2", true)
 mod.vb.roarCount = 0
 mod.vb.chargeCount = 0
 mod.vb.tankCount = 2
+mod.vb.rendCount = 0
 
 --Doesn't assign a soaker who'll die from it.
 --Doesn't assign tanks or the targeted player themselves.
@@ -120,10 +121,11 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.roarCount = 0
 	self.vb.chargeCount = 0
+	self.vb.rendCount = 0
 	self.vb.tankCount = self:GetNumAliveTanks() or 2
 	timerOverwhelmCD:Start(-delay)
 	countdownOverwhelm:Start(-delay)
-	timerRendFleshCD:Start(13-delay)
+	timerRendFleshCD:Start(13-delay, 1)
 	countdownRendFlesh:Start(13-delay)
 	timerFocusedGazeCD:Start(19-delay, 1)
 	countdownFocusedGazeCD:Start(19-delay)
@@ -151,7 +153,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 197942 then
-		timerRendFleshCD:Start()
+		self.vb.rendCount = self.vb.rendCount + 1
+		timerRendFleshCD:Start(nil, self.vb.rendCount+1)
 		countdownRendFlesh:Start()
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then
