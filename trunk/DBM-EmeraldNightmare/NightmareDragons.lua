@@ -161,9 +161,6 @@ do
 	local UnitDebuff, floor = UnitDebuff, math.floor
 	updateInfoFrame = function()
 		table.wipe(lines)
-		local highestDebuff, lowestDebuff = 0, 1000
-		local highestSpellName, lowestSpellName = nil, nil
-		local highestPlayer, lowestPlayer = nil, nil
 		local playersWithTwo = false
 		for uId in DBM:GetGroupMembers() do
 			local debuffCount = 0
@@ -173,64 +170,24 @@ do
 				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName1)
 				local debuffTime = expires - GetTime()
 				text = floor(debuffTime)
-				if stackCount > highestDebuff then
-					highestDebuff = stackCount
-					highestSpellName = spellName1
-					highestPlayer = uId
-				end
-				if stackCount < lowestDebuff then
-					lowestDebuff = stackCount
-					lowestSpellName = spellName1
-					lowestPlayer = uId
-				end
 			end
 			if UnitDebuff(uId, spellName2) then
 				debuffCount = debuffCount + 1
 				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName2)
 				local debuffTime = expires - GetTime()
 				text = text..", "..floor(debuffTime)
-				if stackCount > highestDebuff then
-					highestDebuff = stackCount
-					highestSpellName = spellName2
-					highestPlayer = uId
-				end
-				if stackCount < lowestDebuff then
-					lowestDebuff = stackCount
-					lowestSpellName = spellName2
-					lowestPlayer = uId
-				end
 			end
 			if UnitDebuff(uId, spellName3) then
 				debuffCount = debuffCount + 1
 				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName3)
 				local debuffTime = expires - GetTime()
 				text = text..", "..floor(debuffTime)
-				if stackCount > highestDebuff then
-					highestDebuff = stackCount
-					highestSpellName = spellName3
-					highestPlayer = uId
-				end
-				if stackCount < lowestDebuff then
-					lowestDebuff = stackCount
-					lowestSpellName = spellName3
-					lowestPlayer = uId
-				end
 			end
 			if UnitDebuff(uId, spellName4) then
 				debuffCount = debuffCount + 1
 				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName4)
 				local debuffTime = expires - GetTime()
 				text = text..", "..floor(debuffTime)
-				if stackCount > highestDebuff then
-					highestDebuff = stackCount.." "..highestSpellName
-					highestSpellName = spellName4
-					highestPlayer = uId
-				end
-				if stackCount < lowestDebuff then
-					lowestDebuff = stackCount.." "..lowestSpellName
-					lowestSpellName = spellName4
-					lowestPlayer = UnitName(uId)
-				end
 			end
 			if debuffCount > 1 then
 				playersWithTwo = true
@@ -239,18 +196,8 @@ do
 		end
 		if not playersWithTwo then
 			--No players with two, show generic stats
-			if highestPlayer then
-				lines[HIGH] = highestDebuff
-				local expires = select(7, UnitDebuff(highestPlayer, highestSpellName))
-				local debuffTime = expires - GetTime()
-				lines[UnitName(highestPlayer)] = floor(debuffTime)
-			end
-			if lowestPlayer then
-				lines[LOW] = lowestDebuff
-				local expires = select(7, UnitDebuff(lowestPlayer, lowestSpellName))
-				local debuffTime = expires - GetTime()
-				lines[UnitName(lowestPlayer)] = floor(debuffTime)
-			end
+			--Do stuff
+			lines[ALL] = OKAY
 		end
 		return lines
 	end
