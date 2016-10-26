@@ -3680,6 +3680,10 @@ do
 		self:Unschedule(SecondaryLoadCheck)
 		self:Schedule(1, SecondaryLoadCheck, self)
 		self:Schedule(5, SecondaryLoadCheck, self)
+		if DBM:HasMapRestrictions() then
+			DBM.Arrow:Hide()
+			DBMHudMap:Disable()
+		end
 	end
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
