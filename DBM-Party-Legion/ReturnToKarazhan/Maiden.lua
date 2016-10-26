@@ -30,9 +30,9 @@ local specWarnHolyShock				= mod:NewSpecialWarningInterrupt(227800, "HasInterrup
 local specWarnRepentance			= mod:NewSpecialWarningMoveTo(227508, nil, nil, nil, 1, 2)
 local specWarnHolyWrath				= mod:NewSpecialWarningInterrupt(227823, "HasInterrupt", nil, nil, 1, 2)
 
-local timerSacredGroundCD			= mod:NewCDTimer(24.3, 227789, nil, nil, nil, 3)
+local timerSacredGroundCD			= mod:NewCDTimer(19, 227789, nil, nil, nil, 3)--19-35 (delayed by bulwarks and what nots)
 local timerHolyShockCD				= mod:NewCDTimer(13.3, 227800, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerRepentanceCD				= mod:NewCDTimer(40, 227508, nil, nil, nil, 2)
+local timerRepentanceCD				= mod:NewCDTimer(51, 227508, nil, nil, nil, 2)
 local timerHolyWrath				= mod:NewCastTimer(10, 227823, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
@@ -68,7 +68,7 @@ function mod:SPELL_CAST_START(args)
 		voiceHolyShock:Play("kickcast")
 	elseif spellId == 227508 then
 		specWarnRepentance:Show(GetSpellInfo(227789))
-		--timerRepentanceCD:Start()
+		timerRepentanceCD:Start()
 	elseif spellId == 227823 then
 		warnHolyWrath:Show()
 		timerHolyWrath:Start()
