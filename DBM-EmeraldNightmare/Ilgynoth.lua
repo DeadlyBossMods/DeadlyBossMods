@@ -209,7 +209,19 @@ do
 			end
 		end
 		if lowestUnitID then
-			self:SetIcon(lowestUnitID, 8)
+			local found = false
+			for uId in DBM:GetGroupMembers() do
+				--Can't set Icon on nameplate..i so try to find a target unit ID that supports set icon
+				local unitid = uId.."target"
+				if UnitIsUnit(lowestUnitID, unitid) then
+					self:SetIcon(unitid, 8)
+					found = true
+					break
+				end
+			end
+			if not found then
+				DBM:Debug("Set icon failed, no one is targetting lowest health ooze", 3)
+			end
 		end
 		self:Schedule(1, autoMarkOozesUntil71, self)
 	end

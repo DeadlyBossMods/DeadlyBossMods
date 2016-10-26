@@ -15,10 +15,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 229151 229083",
 	"SPELL_CAST_SUCCESS 229610 229242 229284",
 	"SPELL_AURA_APPLIED 229159 229241",
-	"SPELL_AURA_REMOVED 229159",
+	"SPELL_AURA_REMOVED 229159"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
-	"UNIT_AURA player"
 )
 
 --TODO: Burning Blast INterrupt helper. Figure out CD, then what to do with it
@@ -27,7 +26,8 @@ mod:RegisterEventsInCombat(
 --TODO: figure out what to do with Felguard Sentry (115730)
 --ALL
 local warnChaoticShadows			= mod:NewTargetAnnounce(229159, 3)
-local warnDisintegrate				= mod:NewSpellAnnounce(229159, 4)--Switch to special warning if target scanning works
+local warnFelBeam					= mod:NewTargetAnnounce(229242, 4)
+local warnDisintegrate				= mod:NewSpellAnnounce(229151, 4)--Switch to special warning if target scanning works
 
 --ALL
 local specWarnChaoticShadows		= mod:NewSpecialWarningYou(229159, nil, nil, nil, 1, 2)
@@ -147,8 +147,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnShadows then
 			self:SetIcon(name, count)
 		end
-	elseif spellId == 229241 then--Odds of this being in combat log are next to none, but worth a try
-		DBM:Debug("Holy shit, something useful in combat log, say it isn't so!")
+	elseif spellId == 229241 then
+		if args:IsPlayer() then
+			specWarnFelBeam:Show()
+			voiceFelBeam:Play("justrun")
+			voiceFelBeam:Schedule(1, "keepmove")
+		else
+			warnFelBeam:Show(args.destName)
+		end
 	end
 end
 
@@ -157,22 +163,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 229159 then
 		if self.Options.SetIconOnShadows then
 			self:SetIcon(args.destName, 0)
-		end
-	end
-end
-
-do
-	local debuffName = GetSpellInfo(229241)
-	function mod:UNIT_AURA(uId)
-		local hasDebuff = UnitDebuff("player", debuffName)
-		if hasDebuff and not laserWarned then
-			specWarnFelBeam:Show()
-			voiceFelBeam:Play("justrun")
-			voiceFelBeam:Schedule(1, "keepmove")
-			yellFelBeam:Yell()
-			laserWarned = true
-		elseif not hasDebuff and laserWarned then
-			laserWarned = false
 		end
 	end
 end
