@@ -15,44 +15,30 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 227776 227477",
 	"SPELL_CAST_SUCCESS 227410",
---	"SPELL_AURA_APPLIED",
---	"SPELL_AURA_REMOVED",
 	"SPELL_PERIODIC_DAMAGE 227416",
 	"SPELL_PERIODIC_MISSED 227416"
 )
 
 --TODO, info frame tracking players who do not have gravity when aoe cast starts?
---TODO, target scanning any of the bolts and things?
 local warnSummonAdds				= mod:NewSpellAnnounce(227477, 2)
 
 local specWarnMagicMagnificent		= mod:NewSpecialWarningMoveTo(227776, nil, nil, nil, 3, 2)
---local yellFocusedGaze				= mod:NewPosYell(198006)
 local specWarnWondrousRadiance		= mod:NewSpecialWarningMove(227416, nil, nil, nil, 1, 2)
 
-local timerSummonAddsCD				= mod:NewAITimer(40, 227477, nil, nil, nil, 1)
-local timerMagicMagnificentCD		= mod:NewAITimer(40, 198006, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
-local timerWondrousRadianceCD		= mod:NewAITimer(40, 227410, nil, "Tank", nil, 5, nil, DBM_CORE_DEADLY_ICON)
+local timerSummonAddsCD				= mod:NewCDTimer(32.7, 227477, nil, nil, nil, 1)
+local timerMagicMagnificentCD		= mod:NewCDTimer(46.1, 198006, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerWondrousRadianceCD		= mod:NewCDTimer(8.5, 227410, nil, "Tank", nil, 5, nil, DBM_CORE_DEADLY_ICON)
 
---local berserkTimer				= mod:NewBerserkTimer(300)
-
---local countdownFocusedGazeCD		= mod:NewCountdown(40, 198006)
+local countdownMagicMagnificent		= mod:NewCountdown(46.1, 198006)
 
 local voiceMagicMagnificent			= mod:NewVoice(227776)--findshelter
 local voiceWondrousRadiance			= mod:NewVoice(227416)--runaway
 
---mod:AddSetIconOption("SetIconOnCharge", 198006, true)
---mod:AddInfoFrameOption(198108, false)
-
 function mod:OnCombatStart(delay)
-	timerMagicMagnificentCD:Start(1-delay)
-	timerWondrousRadianceCD:Start(1-delay)
-	timerSummonAddsCD:Start(1-delay)
-end
-
-function mod:OnCombatEnd()
---	if self.Options.InfoFrame then
---		DBM.InfoFrame:Hide()
---	end
+	timerWondrousRadianceCD:Start(8.3-delay)
+	timerSummonAddsCD:Start(30-delay)
+	timerMagicMagnificentCD:Start(47-delay)
+	countdownMagicMagnificent:Start(47-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -61,6 +47,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnMagicMagnificent:Show(GetSpellInfo(227405))
 		voiceMagicMagnificent:Play("findshelter")
 		timerMagicMagnificentCD:Start()
+		countdownMagicMagnificent:Start()
 	elseif spellId == 227477 then
 		warnSummonAdds:Show()
 		timerSummonAddsCD:Start()
@@ -74,22 +61,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
---[[
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 198006 then
-
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	local spellId = args.spellId
-	if spellId == 198006 then
-
-	end
-end
---]]
-
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 227416 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnWondrousRadiance:Show()
@@ -97,19 +68,3 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
---[[
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 103695 then
-
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 206341 then
-	
-	end
-end
---]]
