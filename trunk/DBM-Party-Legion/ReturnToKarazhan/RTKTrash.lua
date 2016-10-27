@@ -9,12 +9,14 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 228255 228239 227917 227925 228625 228606 229714 227966",
-	"SPELL_AURA_APPLIED 228331 229706 229716 228610",
-	"SPELL_AURA_REMOVED 229489"
+	"SPELL_AURA_APPLIED 228331 229706 229716 228610 229074",
+	"SPELL_AURA_APPLIED_DOSE 229074",
+	"SPELL_AURA_REFRESH 229074",
+	"SPELL_AURA_REMOVED 229489",
 --	"SPELL_DAMAGE 204762",
 --	"SPELL_MISSED 204762",
 --	"UNIT_DIED"
---	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_EMOTE"
 )
 
 local warnVolatileCharge			= mod:NewSpellAnnounce(227925, 2)
@@ -47,6 +49,8 @@ local voiceFinalCurtain				= mod:NewVoice(227925, "Melee")--runout
 local voiceLeechLife				= mod:NewVoice(228606, "Healer")--dispelnow
 local voiceCurseofDoom				= mod:NewVoice(229716, "Healer")--dispelnow
 local voiceFlashLight				= mod:NewVoice(227966)--turnaway
+
+local timerAchieve					= mod:NewBuffActiveTimer(480, 229074)
 
 mod:RemoveOption("HealthFrame")
 
@@ -102,14 +106,36 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 229716 then
 		specWarnCurseofDoom:Show(args.destName)
 		voiceCurseofDoom:Play("dispelnow")
+	elseif spellId == 229074 and self:AntiSpam(3, 3) then
+		local uId = DBM:GetRaidUnitId(args.destName)
+		local _, _, _, _, _, _, expires = UnitDebuff(uId, args.spellName)
+		if expires then
+			local debuffTime = expires - GetTime()
+			timerAchieve:Stop()
+			timerAchieve:Start(debuffTime)
+		end
 	end
 end
+mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 229489 then
 		specWarnRoyalty:Show(args.destName)
+	end
+end
+
+--Assumed event. don't know if it's actually CHAT_MSG_MONSTER_EMOTE
+function mod:CHAT_MSG_MONSTER_EMOTE(msg)
+	if msg == L.speedRun then
+		self:SendSync("KaraSpeed")
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "KaraSpeed" then
+		timerAchieve:Start()
 	end
 end
 
