@@ -459,3 +459,8 @@ L = DBM:GetModLocalization("RTKTrash")
 L:SetGeneralLocalization({
 	name =	"Return To Karazhan Trash"
 })
+
+L:SetMiscLocalization({
+	speedRun		=	"The strange chill of a dark presence winds through the air."
+})
+
