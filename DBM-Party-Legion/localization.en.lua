@@ -461,6 +461,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	speedRun		=	"The strange chill of a dark presence winds through the air."
+	speedRun		=	"The strange chill of a dark presence winds through the air..."
 })
 
