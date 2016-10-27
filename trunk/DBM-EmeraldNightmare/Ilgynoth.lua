@@ -69,7 +69,7 @@ local yellCursedBlood				= mod:NewFadesYell(215128)
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDeathGlareCD				= mod:NewCDTimer(220, "ej13190", nil, nil, nil, 1, 208697)
 local timerCorruptorTentacleCD		= mod:NewCDTimer(220, "ej13191", nil, nil, nil, 1, 208929)
-local timerNightmareHorrorCD		= mod:NewCDTimer(220, "ej13188", nil, nil, nil, 1, 210289)
+local timerNightmareHorrorCD		= mod:NewCDTimer(280, "ej13188", nil, nil, nil, 1, 210289)
 local timerEyeOfFateCD				= mod:NewCDTimer(10, 210984, nil, "Tank", nil, 5)
 local timerNightmareishFuryCD		= mod:NewNextTimer(10.9, 215234, nil, "Tank", nil, 5)
 local timerGroundSlamCD				= mod:NewNextTimer(20.5, 208689, nil, nil, nil, 3)
@@ -100,6 +100,7 @@ local voiceGroundSlam				= mod:NewVoice(208689)--targetyou/watchwave
 
 mod:AddSetIconOption("SetIconOnSpew", 208929, false)
 mod:AddSetIconOption("SetIconOnOoze", "ej13186", false)
+mod:AddBoolOption("SetIconOnlyOnce", false)
 mod:AddRangeFrameOption(8, 215128)
 mod:AddInfoFrameOption(210099)
 mod:AddDropdownOption("InfoFrameBehavior", {"Fixates", "Adds"}, "Fixates", "misc")
@@ -119,11 +120,11 @@ local addsTable = {}
 local phase1EasyDeathglares = {26, 62, 85, 55}--Normal/LFR OCT 16
 local phase1HeroicDeathglares = {26, 59, 60}--VERIFIED Oct 16
 --This might be same problem as below. Need to review and see if this is another stupid 21/26 variation that makes 2nd one also variable
-local phase1MythicDeathglares = {21, 69, 85, 70}--VERIFIED Oct 16
+local phase1MythicDeathglares = {21, 69, 85, 70}--VERIFIED Oct 27
 local phase1EasyCorruptors = {86, 95, 35}--Only verifyed 90 on Oct 16 (TODO, verify 95, 35)
 local phase1HeroicCorruptors = {79, 71}--VERIFIED Oct 16
-local phase1MythicCorruptors = {88, 95, 50}--VERIFIED Oct 16
-local phase1DeathBlossom = {58.6, 100, 35}--VERIFIED Oct 16
+local phase1MythicCorruptors = {88, 95, 50, 45, 20}--VERIFIED Oct 27
+local phase1DeathBlossom = {58.6, 100, 35}--VERIFIED Oct 27
 
 --Based on data, first one is either 21 or 26, if it's 26 then second one changes from 95 to 90
 --Might have to switch to scheduling to fix accuracy of timers 2 and 3 because of the 5 second variation on timer 1
@@ -137,9 +138,10 @@ local phase2ComboDeathglares = {21.5, 90, 130}--Fuck it. i'm not scheduling to f
 --local phase2MythicDeathglares = {21.5, 95, 130}--26, 90 VERIFIED Oct 16 (130 not verified)
 --These also same in all modes except mythic
 local phase2Corruptors = {45, 95, 35, 85, 40}--verified Oct 16 45, 95, 30 on heroic/LFR/Normal
-local phase2MythicCorruptors = {45, 75}--VERIFIED Oct 16 (need more data)
+local phase2MythicCorruptors = {45, 75, 115, 65}--VERIFIED Oct 27
 local phase2DeathBlossom = {80, 75}--VERIFIED Oct 16
 local autoMarkScannerActive = false
+local autoMarkBlocked = false
 local autoMarkFilter = {}
 
 local updateInfoFrame, sortInfoFrame
@@ -183,18 +185,18 @@ do
 	end
 end
 
---This clean method will only work until 7.1. After which it'll have to be replaced with something FAR uglier
-local autoMarkOozesUntil71
+local autoMarkOozes
 do
 	local UnitHealth, UnitHealthMax, UnitGUID, UnitCastingInfo, UnitIsUnit = UnitHealth, UnitHealthMax, UnitGUID, UnitCastingInfo, UnitIsUnit
-	autoMarkOozesUntil71 = function(self)
-		self:Unschedule(autoMarkOozesUntil71)
+	autoMarkOozes = function(self)
+		self:Unschedule(autoMarkOozes)
 		if self.vb.IchorCount == 0 then
 			autoMarkScannerActive = false
 			return
 		end--None left, abort scans
 		local lowestUnitID = nil
 		local lowestHealth = 100
+		local found = false
 		for i = 1, 25 do
 			local UnitID = "nameplate"..i
 			local GUID = UnitGUID(UnitID)
@@ -210,8 +212,7 @@ do
 			end
 		end
 		if lowestUnitID then
-			--Can't set Icon on nameplate..i so try to find a target unit ID that supports set icon
-			local found = false
+			--Can't set Icon on "nameplate..i" so try to find a target unit ID that supports set icon
 			if UnitIsUnit(lowestUnitID, "mouseover") then
 				self:SetIcon("mouseover", 8)
 				found = true
@@ -226,11 +227,14 @@ do
 					end
 				end
 			end
-			if not found then
-				DBM:Debug("Set icon failed, no one is targetting lowest health ooze", 3)
-			end
 		end
-		self:Schedule(1, autoMarkOozesUntil71, self)
+		if found and self.Options.SetIconOnlyOnce then
+			--Abort until invoked again
+			autoMarkScannerActive = false
+			autoMarkBlocked = true
+			return
+		end
+		self:Schedule(1, autoMarkOozes, self)
 	end
 end
 
@@ -252,11 +256,12 @@ function mod:OnCombatStart(delay)
 	self.vb.DeathglareSpawn = 0
 	self.vb.CorruptorSpawn = 0
 	autoMarkScannerActive = false
+	autoMarkBlocked = false
 	table.wipe(autoMarkFilter)
 	timerNightmareishFuryCD:Start(6-delay)
 	timerGroundSlamCD:Start(12-delay)
 	timerDeathGlareCD:Start(26-delay)
-	timerNightmareHorrorCD:Start(60-delay)--60-65 variable, but it is same in allmodes
+	timerNightmareHorrorCD:Start(60-delay)--60-75 variable, but it is same in allmodes
 	if self:IsMythic() then
 		self.vb.deathBlossomCount = 0
 		timerDeathBlossomCD:Start(58.6-delay)
@@ -296,10 +301,11 @@ function mod:SPELL_CAST_START(args)
 			warnNightmareExplosion:Show()
 		end
 		if self.Options.SetIconOnOoze and self:IsMythic() then
-			autoMarkOozesUntil71(self)
-		end
-		if not autoMarkFilter[args.sourceGUID] then
-			 autoMarkFilter[args.sourceGUID] = true
+			if not autoMarkFilter[args.sourceGUID] then
+				 autoMarkFilter[args.sourceGUID] = true
+				 autoMarkBlocked = false
+			end
+			autoMarkOozes(self)
 		end
 	elseif spellId == 208697 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
@@ -309,7 +315,7 @@ function mod:SPELL_CAST_START(args)
 		if not addsTable[args.sourceGUID] then
 			addsTable[args.sourceGUID] = true
 			self.vb.DeathglareCount = self.vb.DeathglareCount + 1
-			if self:AntiSpam(10, 6) then
+			if self:AntiSpam(10, 16) then
 				self.vb.DeathglareSpawn = self.vb.DeathglareSpawn + 1
 				warnDeathglareTentacle:Show(self.vb.DeathglareSpawn)
 				local nextCount = self.vb.DeathglareSpawn + 1
@@ -332,7 +338,7 @@ function mod:SPELL_CAST_START(args)
 			self.vb.CorruptorCount = self.vb.CorruptorCount + 1
 			if self:AntiSpam(10, 7) then
 				self.vb.CorruptorSpawn = self.vb.CorruptorSpawn + 1
-				warnCorruptorTentacle:Show(self.vb.CorruptorCount)
+				warnCorruptorTentacle:Show(self.vb.CorruptorSpawn)
 				local nextCount = self.vb.CorruptorSpawn + 1
 				local timer
 				if self.vb.phase == 2 then
@@ -424,9 +430,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not addsTable[args.sourceGUID] then
 			addsTable[args.sourceGUID] = true
 			self.vb.IchorCount = self.vb.IchorCount + 1
-			if self.Options.SetIconOnOoze and self:IsMythic() and not autoMarkScannerActive then
+			if self.Options.SetIconOnOoze and self:IsMythic() and not autoMarkScannerActive and not autoMarkBlocked then
 				autoMarkScannerActive = true
-				self:Schedule(2.5, autoMarkOozesUntil71, self)
+				self:Schedule(2.5, autoMarkOozes, self)
 			end
 		end
 	elseif spellId == 210984 then
@@ -573,7 +579,11 @@ do
 		if targetname == NightmareHorror then
 			specWarnNightmareHorror:Show()
 			voiceNightmareHorror:Play("bigmob")
-			timerNightmareHorrorCD:Start()
+			if self:IsMythic() then
+				timerNightmareHorrorCD:Start(250)
+			else
+				timerNightmareHorrorCD:Start()--280
+			end
 			self.vb.NightmareCount = self.vb.NightmareCount + 1
 			--timerEyeOfFateCD:Start(18)--Started at seeping corruption for mob GUID
 		end
