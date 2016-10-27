@@ -72,7 +72,7 @@ local timerCorruptorTentacleCD		= mod:NewCDTimer(220, "ej13191", nil, nil, nil, 
 local timerNightmareHorrorCD		= mod:NewCDTimer(220, "ej13188", nil, nil, nil, 1, 210289)
 local timerEyeOfFateCD				= mod:NewCDTimer(10, 210984, nil, "Tank", nil, 5)
 local timerNightmareishFuryCD		= mod:NewNextTimer(10.9, 215234, nil, "Tank", nil, 5)
-local timerGroundSlamCD				= mod:NewNextTimer(21.9, 208689, nil, nil, nil, 3)
+local timerGroundSlamCD				= mod:NewNextTimer(20.5, 208689, nil, nil, nil, 3)
 local timerDeathBlossomCD			= mod:NewNextTimer(105, 218415, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON)
 local timerDeathBlossom				= mod:NewCastTimer(15, 218415, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 --Stage Two: The Heart of Corruption
@@ -82,7 +82,8 @@ local timerFinalTorpor				= mod:NewCastTimer(90, 223121, nil, nil, nil, 6, nil, 
 local timerCursedBloodCD			= mod:NewNextTimer(15, 215128, nil, nil, nil, 3)
 
 --Stage One: The Ruined Ground
-local countdownNightmareHorror		= mod:NewCountdown("Alt50", 210289)
+local countdownNightmareHorror		= mod:NewCountdown(50, 210289)
+local countdownEyeofFate			= mod:NewCountdown("Alt10", 210984, "Tank")
 local countdownDeathBlossom			= mod:NewCountdown("AltTwo15", 218415)
 --Stage Two: The Heart of Corruption
 local countdownDarkRecon			= mod:NewCountdown("Alt50", 210781, nil, nil, 10)
@@ -381,8 +382,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 210984 then
 		timerEyeOfFateCD:Start(nil, args.sourceGUID)
+		countdownEyeofFate:Start()
 	elseif spellId == 209387 then--First thing Nightmare Horror casts that can give us GUID
 		timerEyeOfFateCD:Start(14, args.sourceGUID)
+		countdownEyeofFate:Start(14)
 	elseif spellId == 208929 then
 		warnSpewCorruption:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
@@ -546,6 +549,7 @@ function mod:OnSync(msg, guid)
 		if cid == 105591 then--Nightmare Horror
 			self.vb.NightmareCount = self.vb.NightmareCount - 1
 			timerEyeOfFateCD:Stop(guid)
+			countdownEyeofFate:Cancel()
 		elseif cid == 105304 then--Dominator Tentacle
 			self.vb.DominatorCount = self.vb.DominatorCount - 1
 			if self.vb.DominatorCount == 0 then
