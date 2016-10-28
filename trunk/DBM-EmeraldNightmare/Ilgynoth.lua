@@ -100,7 +100,7 @@ local voiceGroundSlam				= mod:NewVoice(208689)--targetyou/watchwave
 
 mod:AddSetIconOption("SetIconOnSpew", 208929, false)
 mod:AddSetIconOption("SetIconOnOoze", "ej13186", false)
-mod:AddBoolOption("SetIconOnlyOnce", false)
+mod:AddBoolOption("SetIconOnlyOnce2", true)
 mod:AddRangeFrameOption(8, 215128)
 mod:AddInfoFrameOption(210099)
 mod:AddDropdownOption("InfoFrameBehavior", {"Fixates", "Adds"}, "Fixates", "misc")
@@ -228,7 +228,7 @@ do
 				end
 			end
 		end
-		if found and self.Options.SetIconOnlyOnce then
+		if found and self.Options.SetIconOnlyOnce2 then
 			--Abort until invoked again
 			autoMarkScannerActive = false
 			autoMarkBlocked = true
