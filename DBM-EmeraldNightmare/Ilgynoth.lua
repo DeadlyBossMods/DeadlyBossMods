@@ -261,7 +261,7 @@ function mod:OnCombatStart(delay)
 	timerNightmareishFuryCD:Start(6-delay)
 	timerGroundSlamCD:Start(12-delay)
 	timerDeathGlareCD:Start(26-delay)
-	timerNightmareHorrorCD:Start(60-delay)--60-75 variable, but it is same in allmodes
+	timerNightmareHorrorCD:Start(60-delay)--60 unless delayed (on mythic 95% of time it's delayed by death blossom which is also 60 seconds.but SUPER rarely horror CAN come out first
 	if self:IsMythic() then
 		self.vb.deathBlossomCount = 0
 		timerDeathBlossomCD:Start(58.6-delay)
@@ -371,6 +371,13 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerDeathBlossomCD:Start(timer, self.vb.deathBlossomCount+1)
 		end
+		local elapsed, total = timerNightmareHorrorCD:GetTime()
+		local remaining = total - elapsed
+		if remaining < 15 then--delayed
+			local extend = 15-remaining
+			DBM:Debug("Delay detected, updating horror timer now. Extend: "..extend)
+			timerNightmareHorrorCD:Update(elapsed, total+extend)
+		end
 	elseif spellId == 223121 then
 		if self:IsMythic() then
 			timerFinalTorpor:Start(55)
@@ -443,7 +450,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 					specWarnEyeOfFate:Show(amount)
 				else--Taunt as soon as stacks are clear, regardless of stack count.
-					if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+					local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+					if not UnitIsDeadOrGhost("player") and (not expireTime or expireTime and expireTime-GetTime() < 10) then
 						specWarnEyeOfFateOther:Show(args.destName)
 						voiceEyeOfFate:Play("changemt")
 					else

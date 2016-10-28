@@ -5956,7 +5956,7 @@ do
 				self:Unschedule(loopCRTimer)
 				self.BossHealth:Hide()
 				self.Arrow:Hide(true)
-				if self.Options.HideObjectivesFrame and watchFrameRestore and not scenario then
+				if watchFrameRestore then
 					ObjectiveTrackerFrame:Show()
 					watchFrameRestore = false
 					self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
