@@ -288,7 +288,6 @@ L.SpamBlockSayYell			= "從聊天頻道隱藏聊天泡泡提示"
 L.DisableCinematics			= "禁用遊戲中的過場動畫"
 L.AfterFirst				= "在每次動畫播放一次之後"
 L.Always					= ALWAYS
-L.DisableTalkingHead		= "禁用用NPC講話視窗"
 L.CombatOnly				= "在任何戰鬥中禁用"
 L.RaidCombat				= "只在首領戰鬥中禁用"
 

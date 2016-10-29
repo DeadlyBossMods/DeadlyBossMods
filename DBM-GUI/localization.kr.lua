@@ -289,7 +289,6 @@ L.SpamBlockSayYell			= "말풍선 알림 숨기기"
 L.DisableCinematics			= "게임 내 영상 끄기"
 L.AfterFirst				= "1회 이상 본 영상만"
 L.Always					= "항상 끄기"
-L.DisableTalkingHead		= "팝업 대화창 차단"
 L.CombatOnly				= "전투중 차단 (모든 전투)"
 L.RaidCombat				= "전투중 차단 (보스만)"
 

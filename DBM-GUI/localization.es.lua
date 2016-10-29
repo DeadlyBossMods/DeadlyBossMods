@@ -284,7 +284,6 @@ L.SpamBlockSayYell			= "Deshabilitar bocadillos de chat"
 L.DisableCinematics			= "Deshabilitar cinemáticas"
 L.AfterFirst				= "Tras ver la cinemática por primera vez"
 L.Always					= ALWAYS
-L.DisableTalkingHead		= "Desactivar cabeza parlante"
 L.CombatOnly				= "En combate"
 L.RaidCombat				= "En combate (solo en jefes)"
 

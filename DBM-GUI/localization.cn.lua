@@ -294,7 +294,6 @@ L.SpamBlockSayYell			= "隐藏聊天窗口中的使用聊天泡泡的警报信�
 L.DisableCinematics			= "自动跳过游戏内过场动画"
 L.AfterFirst				= "仅第一次播放"
 L.Always					= "总是跳过"
-L.DisableTalkingHead		= "隐藏抬头对话窗"
 L.CombatOnly				= "在任何战斗中隐藏"
 L.RaidCombat				= "只在Boss战斗中隐藏"
 
