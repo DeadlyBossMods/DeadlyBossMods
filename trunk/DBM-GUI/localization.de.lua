@@ -288,7 +288,6 @@ L.SpamBlockSayYell			= "Sprechblasen-Ansagen im Chatfenster ausblenden"
 L.DisableCinematics			= "Verberge Videosequenzen"
 L.AfterFirst				= "Nach jeweils einmaligem Abspielen"
 L.Always					= ALWAYS
-L.DisableTalkingHead		= "Blockiere \"Sprechenden Kopf\""
 L.CombatOnly				= "im Kampf deaktivieren (alle)"
 L.RaidCombat				= "im Kampf deaktivieren (nur Bosse)"
 
