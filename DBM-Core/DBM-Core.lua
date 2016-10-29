@@ -275,7 +275,6 @@ DBM.DefaultOptions = {
 	NewsMessageShown = 4,
 	MoviesSeen = {},
 	MovieFilter = "AfterFirst",
-	TalkingHeadFilter = "Never",
 	LastRevision = 0,
 	FilterSayAndYell = false,
 	DebugMode = false,
@@ -418,8 +417,6 @@ local targetMonitor = nil
 local statusWhisperDisabled = false
 local wowVersionString, _, _, wowTOC = GetBuildInfo()
 local dbmToc = 0
-local isTalkingHeadLoaded = false
-local talkingHeadUnregistered = false
 
 local fakeBWVersion, fakeBWHash = 21, "93b8dd3"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
@@ -1117,13 +1114,6 @@ do
 				self.Options.tempBreak2 = nil
 			end
 		end
-		if TalkingHeadFrame and not talkingHeadUnregistered and (self.Options.TalkingHeadFilter == "Always" or self.Options.TalkingHeadFilter == "CombatOnly" and InCombatLockdown() or self.Options.TalkingHeadFilter == "BossCombatOnly" and IsEncounterInProgress()) then
-			TalkingHeadFrame:UnregisterAllEvents()
-			--TalkingHeadFrame_CloseImmediately()--Calling this crashes wow apparently
-			isTalkingHeadLoaded = true--it laoded before DBM, so this secondary check just checks if frame exists and sets loaded = true
-			talkingHeadUnregistered = true
-			self:Debug("TalkingHead has been unregistered", 2)
-		end
 	end
 
 	-- register a callback that will be executed once the addon is fully loaded (ADDON_LOADED fired, saved vars are available)
@@ -1297,17 +1287,6 @@ do
 				healthCombatInitialized = true
 			end)
 			self:Schedule(10, runDelayedFunctions, self)
-		end
-		if modname == "Blizzard_TalkingHeadUI" and not isTalkingHeadLoaded then
-			isTalkingHeadLoaded = true
-			if not isLoaded then return end--DBM isn't loaded yet, options won't exist yet
-			self:Debug("Blizzard_TalkingHeadUI has been loaded", 2)
-			if self.Options.TalkingHeadFilter == "Always" or self.Options.TalkingHeadFilter == "CombatOnly" and InCombatLockdown() or self.Options.TalkingHeadFilter == "BossCombatOnly" and IsEncounterInProgress() then
-				TalkingHeadFrame:UnregisterAllEvents()
-				--TalkingHeadFrame_CloseImmediately()--Calling this crashes wow apparently
-				talkingHeadUnregistered = true
-				self:Debug("TalkingHead has been unregistered", 2)
-			end
 		end
 	end
 end
@@ -3557,14 +3536,6 @@ function DBM:PLAYER_REGEN_ENABLED()
 		guiRequested = false
 		self:LoadGUI()
 	end
-	if self.Options.TalkingHeadFilter == "CombatOnly" and talkingHeadUnregistered then
-		TalkingHeadFrame:RegisterEvent("TALKINGHEAD_REQUESTED")
-		TalkingHeadFrame:RegisterEvent("TALKINGHEAD_CLOSE")
-		TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
-		TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
-		talkingHeadUnregistered = false
-		self:Debug("TalkingHead has been restored")
-	end
 end
 
 function DBM:UPDATE_BATTLEFIELD_STATUS()
@@ -5110,12 +5081,6 @@ do
 			end
 			self:PlaySoundFile(path)
 		end
-		if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered and isTalkingHeadLoaded then
-			TalkingHeadFrame:UnregisterAllEvents()
-			--TalkingHeadFrame_CloseImmediately()--Calling this crashes wow apparently
-			talkingHeadUnregistered = true
-			self:Debug("TalkingHead has been unregistered", 2)
-		end
 	end
 
 	local function isBossEngaged(cId)
@@ -6619,12 +6584,6 @@ do
 			if self.Options.HideGuildChallengeUpdates or custom then
 				AlertFrame:UnregisterEvent("GUILD_CHALLENGE_COMPLETED")
 			end
-			if self.Options.TalkingHeadFilter == "CombatOnly" and not talkingHeadUnregistered and isTalkingHeadLoaded then
-				TalkingHeadFrame:UnregisterAllEvents()
-				--TalkingHeadFrame_CloseImmediately()--Calling this crashes wow apparently
-				talkingHeadUnregistered = true
-				self:Debug("TalkingHead has been unregistered", 2)
-			end
 		elseif toggle == 0 and blizzEventsUnregistered then
 			blizzEventsUnregistered = false
 			if self.Options.HideQuestTooltips then
@@ -6641,14 +6600,6 @@ do
 			end
 			if self.Options.HideGuildChallengeUpdates then
 				AlertFrame:RegisterEvent("GUILD_CHALLENGE_COMPLETED")
-			end
-			if self.Options.TalkingHeadFilter == "BossCombatOnly" and talkingHeadUnregistered then
-				TalkingHeadFrame:RegisterEvent("TALKINGHEAD_REQUESTED")
-				TalkingHeadFrame:RegisterEvent("TALKINGHEAD_CLOSE")
-				TalkingHeadFrame:RegisterEvent("SOUNDKIT_FINISHED")
-				TalkingHeadFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
-				talkingHeadUnregistered = false
-				self:Debug("TalkingHead has been restored")
 			end
 		end
 	end
@@ -6812,18 +6763,6 @@ end
 
 function DBM:GetTOC()
 	return wowTOC
-end
-
-function DBM:TalkingHeadStatus()
-	return talkingHeadUnregistered, isTalkingHeadLoaded
-end
-
-function DBM:SetTalkingHeadState(disabled)
-	if disabled then
-		talkingHeadUnregistered = true
-	else
-		talkingHeadUnregistered = false
-	end
 end
 
 function DBM:FlashClientIcon()
