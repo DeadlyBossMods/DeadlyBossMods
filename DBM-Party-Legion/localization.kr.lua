@@ -200,7 +200,7 @@ L= DBM:GetModLocalization(1498)
 L= DBM:GetModLocalization(1499)
 
 L:SetMiscLocalization({
-	batSpawn		=	"Reinforcements to me! NOW!"
+	batSpawn		=	"나에게 박쥐 붙음!"
 })
 
 -----------------------
@@ -440,6 +440,15 @@ L= DBM:GetModLocalization(1818)
 L= DBM:GetModLocalization(1838)
 
 -----------------------
+--Nightbane
+-----------------------
+L = DBM:GetModLocalization("Nightbane")
+
+L:SetGeneralLocalization({
+	name =	"파멸의 어둠"
+})
+
+-----------------------
 --Return To Karazhan Trash
 -----------------------
 L = DBM:GetModLocalization("RTKTrash")
@@ -447,3 +456,8 @@ L = DBM:GetModLocalization("RTKTrash")
 L:SetGeneralLocalization({
 	name =	"다시 찾은 카라잔 일반몹"
 })
+
+L:SetMiscLocalization({
+	speedRun		=	"어둠의 존재를 알리는 기묘한 한기가 주위에 퍼져나갑니다..."
+})
+

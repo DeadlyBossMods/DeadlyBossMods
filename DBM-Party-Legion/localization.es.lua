@@ -249,6 +249,10 @@ L:SetGeneralLocalization({
 	name =	"Enemigos menores"
 })
 
+L:SetOptionLocalization({
+	SpyHelper	= "Ayudar a encontrar al espía"
+})
+
 --------------------
 -- Fauce de Almas --
 --------------------
@@ -394,19 +398,19 @@ L:SetGeneralLocalization({
 ------------------------
 L= DBM:GetModLocalization(1825)
 
------------------------
--- Opera Hall: Wikket  --
------------------------
+------------------------------
+-- Sala de la Ópera: Makaku --
+------------------------------
 L= DBM:GetModLocalization(1820)
 
------------------------
--- Opera Hall: Westfall Story --
------------------------
+--------------------------------------------
+-- Sala de la Ópera: Historia de Poniente --
+--------------------------------------------
 L= DBM:GetModLocalization(1826)
 
------------------------
--- Opera Hall: Beautiful Beast  --
------------------------
+------------------------------------
+-- Sala de la Ópera: Bella Bestia --
+------------------------------------
 L= DBM:GetModLocalization(1827)
 
 ------------------------
@@ -434,10 +438,19 @@ L= DBM:GetModLocalization(1817)
 -----------------------
 L= DBM:GetModLocalization(1818)
 
------------------------
--- Viz'aduum the Watcher --
------------------------
+-----------------------------
+-- Viz'aduum el Observador --
+-----------------------------
 L= DBM:GetModLocalization(1838)
+
+--------------
+-- Nocturno --
+--------------
+L = DBM:GetModLocalization("Nightbane")
+
+L:SetGeneralLocalization({
+	name =	"Nocturno"
+})
 
 ----------------------
 -- Enemigos menores --

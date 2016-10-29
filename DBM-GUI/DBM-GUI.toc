@@ -15,7 +15,7 @@
 ## Notes-zhCN: Deadly Boss Mods的设置界面
 ## Notes-ruRU: Графический интерфейс пользователя DBM
 ## Notes-zhTW: Deadly Boss Mods的使用者介面
-## Notes-koKR: 죽이는 보스 모드를 위한 GUI
+## Notes-koKR: Deadly Boss Mods의 GUI
 ## Notes-esES: Interfaz gráfica de Deadly Boss Mods.
 ## Notes-esMX: Interfaz gráfica de Deadly Boss Mods.
 ## Notes-frFR: IUG pour Deadly Boss Mods
