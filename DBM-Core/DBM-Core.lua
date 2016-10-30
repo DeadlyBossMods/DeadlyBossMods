@@ -5924,8 +5924,8 @@ do
 				if watchFrameRestore then
 					ObjectiveTrackerFrame:Show()
 					watchFrameRestore = false
-					self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
 				end
+				self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
 				if tooltipsHidden then
 					--Better or cleaner way?
 					tooltipsHidden = false
