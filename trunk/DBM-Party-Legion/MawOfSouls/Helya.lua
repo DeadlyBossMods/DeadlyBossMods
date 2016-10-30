@@ -9,7 +9,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 227233 198495",
+	"SPELL_CAST_START 227233 202088 198495",
 	"SPELL_AURA_APPLIED 196947 197262",
 	"SPELL_AURA_REMOVED 196947",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -20,8 +20,9 @@ local warnTaintofSea					= mod:NewTargetAnnounce(197262, 2, nil, false)
 local warnSubmerged						= mod:NewTargetAnnounce(196947, 2)
 
 local specWarnDestructorTentacle		= mod:NewSpecialWarningSwitch("ej12364", "Tank")
+local specWarnBrackwaterBarrage			= mod:NewSpecialWarningDodge(202088, "-Tank", nil, nil, 2, 2)--Tank stays with destructor tentacle no matter what
 local specWarnSubmergedOver				= mod:NewSpecialWarningEnd(196947)
-local specWarnBreath					= mod:NewSpecialWarningDodge(227233, nil, nil, nil, 1, 2)
+local specWarnBreath					= mod:NewSpecialWarningDodge(227233, nil, nil, nil, 2, 2)
 local specWarnTorrent					= mod:NewSpecialWarningInterrupt(198495, "HasInterrupt", nil, nil, 1, 2)
 
 local timerTaintofSeaCD					= mod:NewCDTimer(12, 197262, nil, false, nil, 3)
@@ -33,6 +34,7 @@ local timerTorrentCD					= mod:NewCDTimer(9.7, 198495, nil, nil, nil, 4, nil, DB
 
 local countdownBreath					= mod:NewCountdown(22, 227233)
 
+local voiceBrackwaterBarrage			= mod:NewVoice(202088)--breathsoon
 local voiceBreath						= mod:NewVoice(227233)--breathsoon
 local voiceTorrent						= mod:NewVoice(198495, "HasInterrupt")--kickcast
 
@@ -50,6 +52,11 @@ function mod:SPELL_CAST_START(args)
 		voiceBreath:Play("breathsoon")
 		timerBreathCD:Start()
 		countdownBreath:Start()
+	elseif spellId == 202088 then
+		specWarnBrackwaterBarrage:Schedule(5)
+		voiceBrackwaterBarrage:Schedule(5, "breathsoon")
+		--timerBreathCD:Start()
+		--countdownBreath:Start()
 	elseif spellId == 198495 then
 		timerTorrentCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID) then
