@@ -7,7 +7,7 @@ mod:SetEncounterID(1958)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1)
-mod:SetHotfixNoticeRev(15439)
+mod:SetHotfixNoticeRev(15441)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -122,24 +122,30 @@ local updateInfoFrame
 do
 	local lines = {}
 	updateInfoFrame = function()
-		if #drawTable == 0 then
-			DBM.InfoFrame:Hide()
-		end
+		local total = 0
 		table.wipe(lines)
 		if drawTable[227490] then--Purple K (NE)
+			total = total + 1
 			lines[drawTable[227490]] = "|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE"
 		end
 		if drawTable[227491] then--Orange N (SE)
+			total = total + 1
 			lines[drawTable[227491]] = "|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|tSE"
 		end
 		if drawTable[227498] then--Yellow H (SW)
+			total = total + 1
 			lines[drawTable[227498]] = "|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|tSW"
 		end
 		if drawTable[227499] then--Blue fishies (NW)
+			total = total + 1
 			lines[drawTable[227499]] = "|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|tNW"
 		end
 		if drawTable[227500] then--Green box (N)
+			total = total + 1
 			lines[drawTable[227500]] = "|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tN"
+		end
+		if total == 0 then
+			DBM.InfoFrame:Hide()
 		end
 		return lines
 	end
@@ -153,9 +159,9 @@ function mod:OnCombatStart(delay)
 	self.vb.expelLightCast = 0
 	self.vb.dancingBladeCast = 0
 	table.wipe(drawTable)
-	timerHornOfValorCD:Start(8-delay)
-	countdownHorn:Start(8-delay)
-	if not self:IsLFR() then
+	if not self:IsEasy() then
+		timerHornOfValorCD:Start(8-delay)
+		countdownHorn:Start(8-delay)
 		timerDancingBladeCD:Start(16-delay)
 		timerShieldofLightCD:Start(23-delay)
 		countdownShield:Start(23-delay)
@@ -163,10 +169,16 @@ function mod:OnCombatStart(delay)
 		timerDrawPowerCD:Start(40-delay)
 		countdownDrawPower:Start(40-delay)
 	else
+		timerHornOfValorCD:Start(10-delay)
+		countdownHorn:Start(10-delay)
 		timerDancingBladeCD:Start(20-delay)
 		timerShieldofLightCD:Start(30-delay)
 		countdownShield:Start(30-delay)
 		timerExpelLightCD:Start(40-delay)
+		if self:IsNormal() then
+			timerDrawPowerCD:Start(45-delay)
+			countdownDrawPower:Start(45-delay)
+		end
 	end
 end
 
@@ -185,7 +197,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.dancingBladeCast = self.vb.dancingBladeCast + 1
 		warnDancingBlade:Show(self.vb.dancingBladeCast)
 		if self.vb.phase == 1 then
-			if self:IsLFR() then
+			if self:IsEasy() then
 				if self.vb.dancingBladeCast == 1 or self.vb.dancingBladeCast == 5 or self.vb.dancingBladeCast == 9 then
 					timerDancingBladeCD:Start(30)
 				else
@@ -207,7 +219,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnHornOfValor:Show()
 		voiceHornOfValor:Play("scatter")
 		if self.vb.phase == 1 then
-			if self:IsLFR() then
+			if self:IsEasy() then
 				if self.vb.hornCast % 2 == 0 then
 					--timerHornOfValorCD:Start(43)--More data needed. Probably has an alternation
 				else
@@ -244,7 +256,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 228028 then
 		self.vb.expelLightCast = self.vb.expelLightCast + 1
 		if self.vb.phase == 1 then
-			if self:IsLFR() then
+			if self:IsEasy() then
 				if self.vb.expelLightCast % 2 == 0 then
 					timerExpelLightCD:Start(50)
 				else
@@ -410,7 +422,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	if spellId == 227503 then--Draw Power
 		timerDrawPower:Start()
 		countdownDrawPower:Start()
-		if self:IsLFR() then
+		if self:IsEasy() then
 			timerDrawPowerCD:Start(75)--LFR phase 2 verified. Might still be 70 in heroic though. no logs long enough for phase 2
 			countdownDrawPower:Start(75)
 		else
@@ -424,8 +436,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	--"<150.12 16:58:07> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Test for Players::3-3198-1648-10280-229168-000660515F:229168]]", -- [1347]
 	--"<156.10 16:58:13> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Leap into Battle::3-3198-1648-10280-227882-0001605165:227882]]", -- [1382]
 	--"<159.34 16:58:16> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Spear Transition - Holy::3-3198-1648-10280-228734-0004E05168:228734]]", -- [1395]
-	elseif spellId == 229168 then--Test for Players (Phase 2 begin)
-		self.vb.phase = 2
+	elseif spellId == 229168 then--Test for Players (Phase 1 end)
 		warnPhase2:Show()
 		self.vb.hornCast = 0--Verify
 		self.vb.shieldCast = 0--Verify
@@ -441,15 +452,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerDrawPower:Stop()
 		countdownDrawPower:Cancel()
 		timerSpearCD:Start(13)
-		if self:IsLFR() then--Possibly normal too
+		if self:IsEasy() then
 			timerDrawPowerCD:Start(53)
 			countdownDrawPower:Start(53)
 		else
 			timerDrawPowerCD:Start(48)
 			countdownDrawPower:Start(48)
 		end
+		--Timers above started in earliest possible place
+		--Timer started at jump though has to be delayed to avoid phase 1 ClearAllDebuffs events
+	elseif spellId == 227882 then--Jump into Battle (phase 2 begin)
+		self.vb.phase = 2
 		if self:IsHard() then
-			timerAddsCD:Start(24)
+			timerAddsCD:Start(17.6)
 		end
 	elseif spellId == 229469 and self.vb.phase == 2 then--Valarjar's Bond (any of 3 bosses jumping down)
 		local cid = self:GetUnitCreatureId(uId)
