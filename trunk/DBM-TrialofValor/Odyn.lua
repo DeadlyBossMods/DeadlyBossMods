@@ -7,7 +7,7 @@ mod:SetEncounterID(1958)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1)
-mod:SetHotfixNoticeRev(15438)
+mod:SetHotfixNoticeRev(15439)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -66,6 +66,7 @@ local timerDrawPowerCD				= mod:NewNextTimer(70, 227503, nil, nil, nil, 6)
 local timerDrawPower				= mod:NewCastTimer(30, 227629, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage 2: Odyn immitates margok
 local timerSpearCD					= mod:NewNextTimer(8, 227697, nil, nil, nil, 3)
+local timerAddsCD					= mod:NewNextTimer(70, "ej14404", nil, nil, nil, 1)
 --Stage 3: Odyn immitates lei shen
 local timerStormOfJusticeCD			= mod:NewNextTimer(10.9, 227807, nil, nil, nil, 3)
 local timerStormforgedSpearCD		= mod:NewNextTimer(10.9, 228918, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
@@ -440,12 +441,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerDrawPower:Stop()
 		countdownDrawPower:Cancel()
 		timerSpearCD:Start(13)
-		if self:IsLFR() then
+		if self:IsLFR() then--Possibly normal too
 			timerDrawPowerCD:Start(53)
 			countdownDrawPower:Start(53)
 		else
 			timerDrawPowerCD:Start(48)
 			countdownDrawPower:Start(48)
+		end
+		if self:IsHard() then
+			timerAddsCD:Start(24)
 		end
 	elseif spellId == 229469 and self.vb.phase == 2 then--Valarjar's Bond (any of 3 bosses jumping down)
 		local cid = self:GetUnitCreatureId(uId)
@@ -464,10 +468,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerDancingBladeCD:Stop()
 			timerHornOfValorCD:Stop()
 			countdownHorn:Cancel()
+			timerAddsCD:Start(72)
 		elseif cid == 114360 then--Hyrja
 			timerExpelLightCD:Stop()
 			timerShieldofLightCD:Stop()
 			countdownShield:Cancel()
+			timerAddsCD:Start(67.8)
 		end
 	elseif spellId == 227697 then--Spear of Light
 		timerSpearCD:Start()
@@ -477,6 +483,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	--"<489.60 21:38:04> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Spear Transition - Thunder::3-2012-1648-3815-228740-00058AC2FC:228740]]", -- [2940]
 	--"<489.60 21:38:04> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Arcing Storm::3-2012-1648-3815-229254-00060AC2FC:229254]]", -- [2941]
 	elseif spellId == 228740 then--Spear Transition - Thunder (Phase 3 begin)
+		self.vb.phase = 3
+		timerAddsCD:Stop()
 		timerDrawPower:Stop()
 		countdownDrawPower:Cancel()
 		timerDrawPowerCD:Stop()
