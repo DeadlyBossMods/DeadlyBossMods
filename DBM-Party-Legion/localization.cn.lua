@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: Sep 20 2016, 00:55 UTC@15226
+-- Last update: Nov 1 2016, 5:55 UTC@15435
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -450,4 +450,8 @@ L = DBM:GetModLocalization("RTKTrash")
 
 L:SetGeneralLocalization({
 	name =	"重返卡拉赞小怪"
+})
+
+L:SetMiscLocalization({
+	speedRun		=	"空气中弥漫着某种诡异的黑暗寒风……"
 })

@@ -168,26 +168,42 @@ do
 			if UnitDebuff(uId, spellName1) then
 				debuffCount = debuffCount + 1
 				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName1)
-				local debuffTime = expires - GetTime()
-				text = floor(debuffTime)
+				if expires == 0 then
+					text = SPELL_FAILED_OUT_OF_RANGE
+				else
+					local debuffTime = expires - GetTime()
+					text = floor(debuffTime)
+				end
 			end
 			if UnitDebuff(uId, spellName2) then
 				debuffCount = debuffCount + 1
 				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName2)
-				local debuffTime = expires - GetTime()
-				text = text..", "..floor(debuffTime)
+				if expires == 0 then
+					text = SPELL_FAILED_OUT_OF_RANGE
+				else
+					local debuffTime = expires - GetTime()
+					text = text..", "..floor(debuffTime)
+				end
 			end
 			if UnitDebuff(uId, spellName3) then
 				debuffCount = debuffCount + 1
 				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName3)
-				local debuffTime = expires - GetTime()
-				text = text..", "..floor(debuffTime)
+				if expires == 0 then
+					text = SPELL_FAILED_OUT_OF_RANGE
+				else
+					local debuffTime = expires - GetTime()
+					text = text..", "..floor(debuffTime)
+				end
 			end
 			if UnitDebuff(uId, spellName4) then
 				debuffCount = debuffCount + 1
 				local _, _, _, stackCount, _, _, expires = UnitDebuff(uId, spellName4)
-				local debuffTime = expires - GetTime()
-				text = text..", "..floor(debuffTime)
+				if expires == 0 then
+					text = SPELL_FAILED_OUT_OF_RANGE
+				else
+					local debuffTime = expires - GetTime()
+					text = text..", "..floor(debuffTime)
+				end
 			end
 			if debuffCount > 1 then
 				playersWithTwo = true
