@@ -6,7 +6,7 @@ mod:SetCreatureID(114537)
 mod:SetEncounterID(2008)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3)
---mod:SetHotfixNoticeRev(14922)
+mod:SetHotfixNoticeRev(15445)
 --mod.respawnTime = 30--None, she doesn't despawn. Remains after a wipe period
 
 mod:RegisterCombat("combat")
@@ -194,7 +194,11 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 228032 then--Phase 3 Fury of the Maw
 		specWarnFuryofMaw:Show()
-		timerFuryofMawCD:Start(92)
+		if self:IsLFR() then
+			timerFuryofMawCD:Start(92)
+		else
+			timerFuryofMawCD:Start(76.4)
+		end
 	end
 end
 

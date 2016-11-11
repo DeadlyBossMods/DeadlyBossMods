@@ -5,7 +5,7 @@
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF设置界面|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFПараметры GUI|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF使用者介面|r
-## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF설정창|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF설정 GUI|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFInterfaz gráfica|r
 ## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFInterfaz gráfica|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFIUG des options|r
