@@ -137,7 +137,7 @@ L= DBM:GetModLocalization(1488)
 L= DBM:GetModLocalization(1489)
 
 L:SetMiscLocalization({
-	tempestModeMessage		=	"폭풍우 시퀀스 아님: %s. 8초 후 다시 체크합니다."
+	tempestModeMessage		=	"폭풍우 시퀀스 아님: %s. 8초 후 다시 검사합니다."
 })
 
 -----------------------
@@ -331,7 +331,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningPortalSoon	= "곧 새 차원문 열림",
 	WarningPortalNow	= "차원문 #%d",
-	WarningBossNow		= "우두머리 등장"
+	WarningBossNow		= "보스 등장"
 })
 
 L:SetTimerLocalization({
@@ -341,8 +341,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningPortalNow		= "새 차원문 등장시 경고 표시",
 	WarningPortalSoon		= "새 차원문 사전 경고 표시",
-	WarningBossNow			= "우두머리 등장 경고 표시",
-	TimerPortal				= "다음 차원문 타이머 표시 (우두머리 처치 이후)"
+	WarningBossNow			= "보스 등장 경고 표시",
+	TimerPortal				= "다음 차원문 타이머 표시 (보스 처치 이후)"
 })
 
 L:SetMiscLocalization({

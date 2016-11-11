@@ -9,7 +9,7 @@ DBM_FORUMS_COPY_URL_DIALOG			= "토론장과 사용자 지원 포럼을 방문�
 DBM_FORUMS_COPY_URL_DIALOG_NEWS		= "새로운 기능과 작동 방식을 알고 싶으시다면 저희 포럼을 방문해 주세요"
 
 DBM_CORE_LOAD_MOD_ERROR				= "%s 보스 모드를 불러오는 중 오류 발생: %s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 보스 모드를 불러왔습니다. 사용자 정의 경고 효과음을 설정하거나 개인적으로 메모를 적어놓고 싶다면 /dbm 을 입력하세요."
+DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 보스 모드를 불러왔습니다. 사용자 지정 경고 효과음을 설정하거나 개인적으로 메모를 적어놓고 싶다면 /dbm을 입력하세요."
 DBM_CORE_LOAD_MOD_COMBAT			= "전투가 종료될 때까지 %s|1을;를; 불러오지 않습니다."
 DBM_CORE_LOAD_GUI_ERROR				= "GUI를 불러오지 못함: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "전투중에는 GUI의 최초 실행을 할 수 없습니다. 전투가 종료되면 GUI를 불러올 것입니다. GUI를 불러온 이후 부터는 전투중에 GUI를 열 수 있습니다."
@@ -17,12 +17,12 @@ DBM_CORE_BAD_LOAD					= "DBM이 전투로 인해 현재 인스턴스의 모드�
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "DBM-Core가 요구 사항을 충족시키지 못해 %s 경보를 불러오지 못했습니다. 새 버전이 필요합니다"
 
 DBM_CORE_WHATS_NEW					= "새로 추가된 사항: '대규모 패치'시 옵션 설정을 강제 업데이트 또는 사용 안함 상태로 만드는 기능이 대규모 패치가 아닌 버전에도 잘못 발동되던 버그를 수정했습니다. DBM은 더이상 사용자 설정과 관계없이 부서진 해안 동영상을 중단시키지 않을 것입니다. 악마 침공 모드가 추가됐습니다. 자잘한 텍스트 오류 수정"
-DBM_CORE_WHATS_NEW_LINK				= "향후 DBM 버전에선 유닛 위치와 관련된 많은 기능들이 정리될 것입니다. 자세한 이유에 대해선 |HDBM:forumsnews|h|cff3588ff이곳을 클릭|r하세요"
+DBM_CORE_WHATS_NEW_LINK				= "안내: 유닛 위치에 의존하는 다수의 기능들이 제한되었습니다. 이유가 궁금하다면 |HDBM:forumsnews|h|cff3588ff이곳을 클릭|r해서 알아보세요"
 
 --Pre Patch 7.1 Notice
 DBM_CORE_NO_RANGE_SOON				= "알림: 거리 레이더는 7.1 패치에선 더는 사용할 수 없습니다"
 --Post Patch 7.1
-DBM_CORE_NO_RANGE					= "거리 레이더를 인스턴스 던전에서 사용할 수 없습니다. 대신 구식의 텍스트 거리 프레임이 사용됩니다"
+DBM_CORE_NO_RANGE					= "거리 레이더를 인스턴스 던전에서 사용할 수 없습니다. 구식 텍스트 거리창으로 대체됩니다."
 DBM_CORE_NO_ARROW					= "화살표 기능을 인스턴스 던전에서 사용할 수 없습니다"
 DBM_CORE_NO_HUD						= "HUD 기능을 인스턴스 던전에서 사용할 수 없습니다"
 
@@ -30,7 +30,7 @@ DBM_CORE_DYNAMIC_DIFFICULTY_CLUMP	= "현재 공격대 규모에 맞는 필요한
 DBM_CORE_DYNAMIC_ADD_COUNT			= "현재 공격대 규모에 맞는 쫄 등장 정보가 부족하여 DBM이 이 전투에서 쫄 마릿수 정보를 비활성화 했습니다."
 DBM_CORE_DYNAMIC_MULTIPLE			= "현재 공격대 규모에 맞는 보스 기술 작동 원리 정보가 부족하여 DBM이 이 전투에서 다수의 기능을 비활성화 했습니다."
 
-DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s 입니다. 현재 지정한 전리품 획득 전문화는 %s 입니다."
+DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s입니다. 현재 지정한 전리품 획득 전문화는 %s입니다."
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM가 모두 전술 목표 아이콘 기능을 사용하고 있음을 감지했습니다. 충돌을 방지하기 위해 공대장이 두 애드온중 하나의 아이콘 설정을 비활성화해야 합니다."
 
@@ -79,7 +79,7 @@ DBM_CORE_MPROFILE_COPY_SUCCESS		= "%s의 (%d 전문화) 모드 설정이 복사�
 DBM_CORE_MPROFILE_COPY_SELF_ERROR	= "캐릭터 설정은 자기 자신에게 복사할 수 없습니다."
 DBM_CORE_MPROFILE_COPY_S_ERROR		= "원본이 손상되었습니다. 설정이 복사되지 않거나 일부만 복사됐습니다. 복사에 실패했습니다."
 DBM_CORE_MPROFILE_COPYS_SUCCESS		= "%s의 (%d 전문화) 모드의 효과음 또는 메모가 복사됐습니다."
-DBM_CORE_MPROFILE_COPYS_SELF_ERROR	= "캐릭터의 사용자 정의 효과음 또는 메모는 자기 자신에게 복사할 수 없습니다."
+DBM_CORE_MPROFILE_COPYS_SELF_ERROR	= "캐릭터의 사용자 지정 효과음 또는 메모는 자기 자신에게 복사할 수 없습니다."
 DBM_CORE_MPROFILE_COPYS_S_ERROR		= "원본이 손상되었습니다. 효과음과 메모가 복사되지 않거나 일부만 복사됐습니다. 복사에 실패했습니다."
 DBM_CORE_MPROFILE_DELETE_SUCCESS	= "%s의 (%d 전문화) 모드를 삭제했습니다."
 DBM_CORE_MPROFILE_DELETE_SELF_ERROR	= "현재 사용중인 모드는 삭제할 수 없습니다."
@@ -105,9 +105,9 @@ DBM_CORE_MOD_DEFAULT_LOADED			= "현재 전투의 기본 설정을 불러왔습�
 DBM_CORE_WORLDBOSS_ENGAGED			= "당신이 속한 서버에서 %s 전투가 %s 퍼센트의 체력으로 시작된 것 같습니다. (%s|1이;가; 전송)"
 DBM_CORE_WORLDBOSS_DEFEATED			= "당신이 속한 서버에서 %s|1이;가; 잡힌 것 같습니다. (%s|1이;가; 전송)"
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%.2f|4초:초;"
-DBM_CORE_TIMER_FORMAT_MINS			= "%d|4분:분;"
-DBM_CORE_TIMER_FORMAT				= "%d|4분:분; %.2f|4초:초;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%.2f초"
+DBM_CORE_TIMER_FORMAT_MINS			= "%d분"
+DBM_CORE_TIMER_FORMAT				= "%d분 %.2f초"
 
 DBM_CORE_MIN						= "분"
 DBM_CORE_MIN_FMT					= "%d분"
@@ -160,7 +160,7 @@ DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 Deadly Boss Mods 버전이 사�
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 Deadly Boss Mods ALPHA 버전이 사용 기한을 지났습니다.\n 적어도 %d 테스트 버전 이상은 사용해야 합니다. ALPHA 버전을 선택한 DBM 이용자는 최신 ALPHA 버전을 실행하는걸 권장합니다. 아니면 최신 RELEASE 버전을 사용해야 합니다. 오래된 ALPHA 버전은 개발용인 관계로 버전 검사 기능이 제한되어 있기 때문입니다."
 DBM_CORE_UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 주소를 복사할 수 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 주소를 복사할 수 있습니다."
---DBM_CORE_UPDATEREMINDER_URL				= "http://www.inven.co.kr/board/powerbbs.php?come_idx=3716" -- No more updates by the website
+--DBM_CORE_UPDATEREMINDER_URL				= "http://www.inven.co.kr/board/powerbbs.php?come_idx=3716" -- No longer updated by the website
 DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 현재 사용중인 Deadly Boss Mods가 지나치게 오래되어 강제로 비활성화 되며 업데이트 전까진 사용할 수 없습니다. 이는 오래되고 호환되지 않는 코드로 인해 당신과 공격대원이 조악한 플레이 경험을 겪지 않게 하기 위함입니다."
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "지금 사용하는 DBM 버전은 이 보스 전투에서 알려진 오류를 가지고 있습니다. 이 오류는 최신 버전으로 업데이트하면 수정됩니다."
 DBM_CORE_UPDATEREMINDER_HOTFIX_ALPHA	= "지금 사용하는 DBM 버전은 이 보스 전투에서 알려진 오류를 가지고 있습니다. 이 오류는 향후 출시될 버전 (또는 최신 ALPHA 버전)에서 수정되어 있습니다."
@@ -181,12 +181,12 @@ DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <텍스�
 --DBM_CORE_MINIMAP_TOOLTIP_HEADER (Same as English locales)
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+클릭 또는 우클릭한 상태로 움직이세요.\nAlt+Shift+클릭으로 움직이면 자유롭게 드래그해서 배치할 수 있습니다."
 
-DBM_CORE_RANGECHECK_HEADER			= "거리 검사 (%dm)"
-DBM_CORE_RANGECHECK_SETRANGE		= "반경 설정"
-DBM_CORE_RANGECHECK_SETTHRESHOLD	= "검사할 최소 플레이어 수 설정"
+DBM_CORE_RANGECHECK_HEADER			= "탐지 거리 (%dm)"
+DBM_CORE_RANGECHECK_SETRANGE		= "거리 설정"
+DBM_CORE_RANGECHECK_SETTHRESHOLD	= "탐지할 최소 플레이어 수 설정"
 DBM_CORE_RANGECHECK_SOUNDS			= "효과음"
-DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "반경 내에 플레이어가 1명 있을 경우 재생"
-DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "반경 내에 플레이어가 2명 이상 있을 경우 재생"
+DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "거리 내에 플레이어가 1명 있을 경우 재생"
+DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "거리 내에 플레이어가 2명 이상 있을 경우 재생"
 DBM_CORE_RANGECHECK_SOUND_0			= "효과음 없음"
 DBM_CORE_RANGECHECK_SOUND_1			= "기본 효과음"
 DBM_CORE_RANGECHECK_SOUND_2			= "짜증나는 효과음"
@@ -196,7 +196,7 @@ DBM_CORE_RANGECHECK_OPTION_RADAR	= "레이더 창 표시"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "텍스트 창 표시"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "모두 표시"
 DBM_CORE_RANGERADAR_HEADER			= "거리:%d, 플레이어:%d"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d명 (반경 %dm)"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d명 (거리 %dm)"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "내 자원 항상 보기"		-- Always show your own power value even if you are below the threshold
@@ -204,15 +204,15 @@ DBM_CORE_INFOFRAME_SETLINES			= "최대 줄 갯수 지정"
 DBM_CORE_INFOFRAME_LINESDEFAULT		= "모드 기본값"
 DBM_CORE_INFOFRAME_LINES_TO			= "줄 %d개"
 
-DBM_LFG_INVITE						= "파티찾기 초대"
+DBM_LFG_INVITE						= "파티찾기 입장"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"사용 가능 슬래시 명령어:",
 	"----------------",
 	"/dbm unlock(move): 움직일 수 있는 상태 바 타이머를 표시합니다.",
-	"/range <숫자> 또는 /distance <숫자>: 거리창을 표시합니다. /rrange, /rdistance는 색상을 반대로 표시합니다.",
-	"/hudar <number>: HUD 기반 거리 검색기를 표시합니다.",
-	"/dbm timer: 사용자 정의 DBM 타이머 시작, 자세한 내용은 '/dbm timer'를 참고하세요.",
+	"/range <숫자> 또는 /distance <숫자>: 거리 창을 표시합니다. /rrange, /rdistance는 색상을 반대로 표시합니다.",
+	"/hudar <number>: HUD 기반 거리 탐지기를 표시합니다.",
+	"/dbm timer: 사용자 지정 DBM 타이머 시작, 자세한 내용은 '/dbm timer'를 참고하세요.",
 	"/dbm arrow: DBM 화살표 표시, 자세한 내용은 '/dbm arrow help'를 참고하세요.",
 	"/dbm hud: DBM HUD 표시, 자세한 내용은 '/dbm hud'를 참고하세요.",
 	"/dbm help2: 공격대 관리에 관련된 슬래시 명령어를 표시합니다."
@@ -250,12 +250,12 @@ DBM_CORE_MIDDLE						= "가운데"
 DBM_CORE_FRONT						= "앞쪽"
 DBM_CORE_INTERMISSION				= "사잇 단계"
 
-DBM_CORE_BREAK_USAGE				= "휴식 시간은 60분을 초과할 수 없습니다. 휴식 시간은 초단위가 아니라 분단위로 입력해야 합니다."
-DBM_CORE_BREAK_START				= "휴식 시간 시작 -- %s 받았습니다! (%s|1이;가; 전송)"
-DBM_CORE_BREAK_MIN					= "%s분 후 휴식 시간이 끝납니다!"
-DBM_CORE_BREAK_SEC					= "%s초 후 휴식 시간이 끝납니다!"
-DBM_CORE_TIMER_BREAK				= "휴식 시간!"
-DBM_CORE_ANNOUNCE_BREAK_OVER		= "휴식 시간 끝"
+DBM_CORE_BREAK_USAGE				= "쉬는 시간은 60분을 초과할 수 없습니다. 쉬는 시간은 초단위가 아니라 분단위로 입력해야 합니다."
+DBM_CORE_BREAK_START				= "쉬는 시간 시작 -- %s 받았습니다! (%s|1이;가; 전송)"
+DBM_CORE_BREAK_MIN					= "%s분 후 쉬는 시간이 끝납니다!"
+DBM_CORE_BREAK_SEC					= "%s초 후 쉬는 시간이 끝납니다!"
+DBM_CORE_TIMER_BREAK				= "쉬는 시간!"
+DBM_CORE_ANNOUNCE_BREAK_OVER		= "쉬는 시간 끝"
 
 DBM_CORE_TIMER_PULL					= "풀링"
 DBM_CORE_ANNOUNCE_PULL				= "%d초 뒤 풀링하세요. (%s|1이;가; 전송)"
