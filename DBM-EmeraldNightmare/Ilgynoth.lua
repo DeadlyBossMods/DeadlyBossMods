@@ -260,7 +260,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(autoMarkFilter)
 	timerNightmareishFuryCD:Start(6-delay)
 	timerGroundSlamCD:Start(12-delay)
-	timerDeathGlareCD:Start(26-delay)
+	timerDeathGlareCD:Start(21.5-delay)
 	timerNightmareHorrorCD:Start(60-delay)--60 unless delayed (on mythic 95% of time it's delayed by death blossom which is also 60 seconds.but SUPER rarely horror CAN come out first
 	if self:IsMythic() then
 		self.vb.deathBlossomCount = 0
