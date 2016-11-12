@@ -6,7 +6,7 @@ mod:SetCreatureID(114323)
 mod:SetEncounterID(1962)
 mod:SetZone()
 --mod:SetUsedIcons(1)
-mod:SetHotfixNoticeRev(15442)
+mod:SetHotfixNoticeRev(15448)
 --mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
@@ -21,7 +21,6 @@ mod:RegisterEventsInCombat(
 --TODO, licks timers stillnot possible? they were still random/chaotic even in LFR
 --TODO, info frame with fancy info like what your current debuff is as well as debuff count totals for entire raid? Maybe some other stuff
 --TODO, More Volatile Foam stuff
---TODO, timers/randomness may have been refactored. LFR had static ability orders and timers. Heroic had random order specials with variable timers. See if heroic/normal etc changed
 local warnOffLeash					= mod:NewSpellAnnounce(228201, 2, 129417)
 local warnFangs						= mod:NewCountAnnounce(227514, 2)
 local warnShadowLick				= mod:NewTargetAnnounce(228253, 2, nil, "Healer")
@@ -29,7 +28,7 @@ local warnFrostLick					= mod:NewTargetAnnounce(228248, 3)
 
 local specWarnBreath				= mod:NewSpecialWarningCount(228187, nil, nil, nil, 1, 2)
 local specWarnLeap					= mod:NewSpecialWarningCount(227883, nil, nil, nil, 2)
-local specWarnCharge				= mod:NewSpecialWarningCount(227816, nil, nil, nil, 2, 2)
+local specWarnCharge				= mod:NewSpecialWarningDodge(227816, nil, nil, nil, 2, 2)
 local specWarnBerserk				= mod:NewSpecialWarningSpell(227883, nil, nil, nil, 3)
 local specWarnFlameLick				= mod:NewSpecialWarningMoveAway(228228, nil, nil, nil, 1, 2)
 local yellFlameLick					= mod:NewYell(228228)
@@ -41,12 +40,12 @@ local specWarnFlamingFoam			= mod:NewSpecialWarningYou(228744, nil, nil, nil, 1)
 local specWarnBrineyFoam			= mod:NewSpecialWarningYou(228810, nil, nil, nil, 1)
 local specWarnShadowyFoam			= mod:NewSpecialWarningYou(228818, nil, nil, nil, 1)
 
-local timerLeashCD					= mod:NewNextTimer(30, 228201, nil, nil, nil, 6, 129417)
+local timerLeashCD					= mod:NewNextTimer(45, 228201, nil, nil, nil, 6, 129417)
 local timerLeash					= mod:NewBuffActiveTimer(30, 228201, nil, nil, nil, 6)
-local timerFangsCD					= mod:NewCDCountTimer(20.5, 227514, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerFangsCD					= mod:NewCDCountTimer(20.5, 227514, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--20.5-23
 local timerBreathCD					= mod:NewCDCountTimer(20.5, 228187, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
-local timerLeapCD					= mod:NewCDCountTimer(23, 227883, nil, nil, nil, 3)
-local timerChargeCD					= mod:NewCDCountTimer(11, 227816, nil, nil, nil, 3)
+local timerLeapCD					= mod:NewCDCountTimer(22, 227883, nil, nil, nil, 3)
+local timerChargeCD					= mod:NewCDCountTimer(10.9, 227816, nil, nil, nil, 3)
 
 local berserkTimer					= mod:NewBerserkTimer(300)
 
@@ -61,31 +60,20 @@ local voiceFrostLick				= mod:NewVoice(228248)--helpdispel
 --mod:AddInfoFrameOption(198108, true)
 mod:AddRangeFrameOption(5, "ej14463")
 
-mod.vb.offLeash = false
-mod.vb.specialsCast = 0
-
---[[
-local function cancelLeash(self)
-	self.vb.offLeash = false
-	self.vb.specialsCast = 0
-	if self:IsEasy() then
-		timerLeashCD:Start(45)
-	else
-		timerLeashCD:Start()
-	end
-	--Either breath or fangs will be cast very soon, timing on first a little too variable for timer.
-end
---]]
+mod.vb.fangCast = 0
+mod.vb.breathCast = 0
+mod.vb.leapCast = 0
 
 function mod:OnCombatStart(delay)
-	self.vb.offLeash = false
-	self.vb.specialsCast = 0
+	self.vb.fangCast = 0
+	self.vb.breathCast = 0
+	self.vb.leapCast = 0
 	--All other combat start timers started by Helyatosis
 	if not self:IsLFR() then
 		berserkTimer:Start(-delay)
-	end
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(5)
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(5)
+		end
 	end
 end
 
@@ -98,18 +86,10 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 227514 then
-		self.vb.specialsCast = self.vb.specialsCast + 1
-		warnFangs:Show(self.vb.specialsCast)
-		local phaseRemaining = timerLeashCD:GetRemaining()
-		if self:IsEasy() then
-			if self.vb.specialsCast == 1 then
-				timerFangsCD:Start(nil, self.vb.specialsCast+1)
-			end
-		else
-			--MAY BE OBSOLETE
-			if phaseRemaining > 6.8 then
-				timerBreathCD:Start(6.8, self.vb.specialsCast+1)
-			end
+		self.vb.fangCast = self.vb.fangCast + 1
+		warnFangs:Show(self.vb.fangCast)
+		if self.vb.fangCast == 1 then
+			timerFangsCD:Start(nil, 2)
 		end
 	end
 end
@@ -117,28 +97,14 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 227883 then
-		self.vb.specialsCast = self.vb.specialsCast + 1
-		specWarnLeap:Show(self.vb.specialsCast)
-		if not self:IsEasy() then
-			local phaseRemaining = timerLeash:GetRemaining()
-			if phaseRemaining > 8 then
-				timerChargeCD:Start(8, self.vb.specialsCast+1)
-			end
-		else
-			if self.vb.specialsCast == 1 then
-				timerLeapCD:Start(nil, 3)
-			end
+		self.vb.leapCast = self.vb.leapCast + 1
+		specWarnLeap:Show(self.vb.leapCast)
+		if self.vb.leapCast == 1 then
+			timerLeapCD:Start(nil, 2)
 		end
 	elseif spellId == 227816 then
-		self.vb.specialsCast = self.vb.specialsCast + 1
-		specWarnCharge:Show(self.vb.specialsCast)
+		specWarnCharge:Show()
 		voiceCharge:Play("chargemove")
-		if not self:IsEasy() then
-			local phaseRemaining = timerLeash:GetRemaining()
-			if phaseRemaining > 18 then
-				timerLeapCD:Start(18, self.vb.specialsCast+1)--18-19.4
-			end
-		end
 	end
 end
 
@@ -200,37 +166,28 @@ Might be inversed depending on perspective.
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 227573 then--Guardian's Breath (pre cast used for all 6 versions of breath. Not a bad guess for my drycode huh? :) )
-		self.vb.specialsCast = self.vb.specialsCast + 1
-		specWarnBreath:Show(self.vb.specialsCast)
+		self.vb.breathCast = self.vb.breathCast + 1
+		specWarnBreath:Show(self.vb.breathCast)
 		voiceBreath:Play("breathsoon")
-		if self:IsEasy() then
-			if self.vb.specialsCast == 2 then
-				timerBreathCD:Start(nil, self.vb.specialsCast+1)
-			end
-		else
-			local phaseRemaining = timerLeashCD:GetRemaining()
-			if phaseRemaining > 12.4 then
-				timerFangsCD:Start(12.4, self.vb.specialsCast+1)--12.4-13.4
-			end
+		if self.vb.breathCast == 1 then
+			timerBreathCD:Start(nil, 2)
 		end
 	elseif spellId == 228201 then--Off the Leash
-		self.vb.offLeash = true
-		self.vb.specialsCast = 0
+		self.vb.leapCast = 0
 		warnOffLeash:Show()
 		timerLeash:Start()
 		--self:Schedule(30, cancelLeash, self)
-		if self:IsEasy() then
-			timerChargeCD:Start(nil, 2)
-		end
+		timerChargeCD:Start(nil, 2)
 	elseif spellId == 231561 then--Helyatosis (off the leash ending)
-		self.vb.offLeash = false
-		self.vb.specialsCast = 0
+		self.vb.fangCast = 0
+		self.vb.breathCast = 0
+		timerFangsCD:Start(4, 1)
+		timerBreathCD:Start(11, 1)
+		timerLeashCD:Start()--45
 		if self:IsEasy() then
-			timerFangsCD:Start(4, 1)
 			timerBreathCD:Start(11, 1)
-			timerLeashCD:Start(45)
 		else
-			timerLeashCD:Start()
+			timerBreathCD:Start(14, 1)
 		end
 	end
 end
