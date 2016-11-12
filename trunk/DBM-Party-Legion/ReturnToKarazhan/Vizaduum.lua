@@ -33,6 +33,7 @@ local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 --ALL
 local specWarnChaoticShadows		= mod:NewSpecialWarningYou(229159, nil, nil, nil, 1, 2)
 local yellChaoticShadows			= mod:NewPosYell(229159)
+local specWarnBurningBlast			= mod:NewSpecialWarningInterruptCount(229083, "HasInterrupt", nil, nil, 1, 2)
 --Phase 1
 local specWarnFelBeam				= mod:NewSpecialWarningRun(229242, nil, nil, nil, 1, 2)
 local yellFelBeam					= mod:NewYell(229242)
@@ -50,6 +51,7 @@ local timerBombardmentCD			= mod:NewCDTimer(25, 229284, 229287, nil, nil, 3)
 
 --ALL
 local voiceChaoticShadows			= mod:NewVoice(229159)--runout
+local voiceBurningBlast				= mod:NewVoice(229083)--kick1r/kick2r
 --Phase 1
 local voiceFelBeam					= mod:NewVoice(229242)--justrun/keepmove
 
@@ -58,6 +60,7 @@ mod:AddRangeFrameOption(6, 230066)
 --mod:AddInfoFrameOption(198108, false)
 
 mod.vb.phase = 1
+mod.vb.kickCount = 0
 local chaoticShadowsTargets = {}
 local laserWarned = false
 
@@ -67,9 +70,10 @@ local function breakShadows(self)
 end
 
 function mod:OnCombatStart(delay)
+	self.vb.phase = 1
+	self.vb.kickCount = 0
 	laserWarned = false
 	table.wipe(chaoticShadowsTargets)
-	self.vb.phase = 1
 	--These timers seem to vary about 1-2 sec
 	timerFelBeamCD:Start(5.2-delay)
 	timerDisintegrateCD:Start(10.8-delay)
@@ -89,7 +93,15 @@ function mod:SPELL_CAST_START(args)
 		warnDisintegrate:Show()
 		timerDisintegrateCD:Show()
 	elseif spellId == 229083 then--Burning Blast
-		
+		if self.vb.kickCount == 2 then self.vb.kickCount = 0 end
+		self.vb.kickCount = self.vb.kickCount + 1
+		local kickCount = self.vb.kickCount
+		specWarnBurningBlast:Show(args.sourceName, kickCount)
+		if kickCount == 1 then
+			voiceBurningBlast:Play("kick1r")
+		elseif kickCount == 2 then
+			voiceBurningBlast:Play("kick2r")
+		end
 	end
 end
 
@@ -97,6 +109,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 229610 then--Demonic Portal (both times or just once?)
 		self.vb.phase = self.vb.phase + 1
+		self.vb.kickCount = 0
 		--Cancel stuff
 		timerDisintegrateCD:Stop()
 		timerChaoticShadowsCD:Stop()
