@@ -12,7 +12,7 @@ mod:SetHotfixNoticeRev(15445)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 227967 228730 228514 228390 228565 228032",
+	"SPELL_CAST_START 227967 228730 228514 228390 228565 228032 228854",
 	"SPELL_CAST_SUCCESS 227903 228056 227967 228300 228519",
 	"SPELL_AURA_APPLIED 229119 227982 193367 228519 232488 228054 230267",
 	"SPELL_AURA_REMOVED 193367 229119 230267 228300 167910",
@@ -30,11 +30,11 @@ ability.id = 228300 and type = "removebuff" or ability.id = 167910
 --]]
 --TODO, Add range finder for Taint of the sea?
 --TODO, figure out what to do with Torrent
---TOOD, figure out what to do with Gripping Tentacle
 --TODO, figure out what to do with Lantern of Darkness (Night Watch Mariner)
 --TODO, figure out what to do with Ghostly Rage (Night Watch Mariner)
 --TODO, figure out what to do with Give no Quarter (Night Watch Mariner)
 --TODO, add Helarjer Mistcaller stuff for mythic
+--TODO, timer update code for fury of maw, when mistcaller gets off a cast
 --TODO, more work with Corrupted Axion and Dark Hatred
 --Stage One: Low Tide
 local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
@@ -45,6 +45,8 @@ local warnTaintOfSea				= mod:NewTargetAnnounce(228054, 2)
 local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnFetidRot					= mod:NewTargetAnnounce(193367, 3)
 ----Night Watch Mariner
+----MistCaller
+local warnMistInfusion				= mod:NewTargetAnnounce(228854, 4)
 --Stage Three: Helheim's Last Stand
 local warnDarkHatred				= mod:NewTargetAnnounce(232488, 3)
 local warnOrbOfCorrosion			= mod:NewTargetAnnounce(230267, 3)
@@ -199,6 +201,8 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerFuryofMawCD:Start(76.4)
 		end
+	elseif spellId == 228854 then
+		warnMistInfusion:Show()
 	end
 end
 
