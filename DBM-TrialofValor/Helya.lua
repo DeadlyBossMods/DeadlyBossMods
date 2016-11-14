@@ -83,17 +83,17 @@ local timerExplodingOozes			= mod:NewCastTimer(22.5, 227992, nil, nil, nil, 2, n
 --Stage Two: From the Mists (65%)
 local timerFuryofMaw				= mod:NewBuffActiveTimer(32, 228032, nil, nil, nil, 2)
 ----Helya
-local timerFuryofMawCD				= mod:NewNextTimer(45, 228032, nil, nil, nil, 2)
+local timerFuryofMawCD				= mod:NewNextTimer(44.5, 228032, nil, nil, nil, 2)
 ----Grimelord
 --local timerGrimeLordCD				= mod:NewCDTimer(52.7, "ej14263", nil, nil, nil, 1, 228519)
 --local timerNightWatchCD				= mod:NewCDTimer(52.7, "ej14278", nil, "Tank", nil, 1, 228632)
-local timerAddsCD					= mod:NewCDTimer(76, 167910, nil, nil, nil, 1)
-local timerSludgeNovaCD				= mod:NewCDTimer(26, 228390, nil, "Melee", nil, 2)
+local timerAddsCD					= mod:NewCDTimer(75.5, 167910, nil, nil, nil, 1)
+local timerSludgeNovaCD				= mod:NewCDTimer(24.5, 228390, nil, "Melee", nil, 2)
 local timerAnchorSlamCD				= mod:NewCDTimer(13.6, 228519, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Night Watch Mariner
 --Stage Three: Helheim's Last Stand
-local timerCorruptedBreathCD		= mod:NewNextTimer(40, 228565, nil, nil, nil, 2)
-local timerOrbOfCorrosionCD			= mod:NewNextTimer(18.2, 230267, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerCorruptedBreathCD		= mod:NewCDTimer(40, 228565, nil, nil, nil, 2)
+local timerOrbOfCorrosionCD			= mod:NewCDTimer(17, 230267, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(300)
 
@@ -141,10 +141,10 @@ function mod:OnCombatStart(delay)
 		countdownOrbs:Start(19-delay)
 		timerTentacleStrikeCD:Start(53-delay)
 	else--TODO, reverify heroic. maybe they changed after tested to match LFR/normal
-		timerOrbOfCorruptionCD:Start(15-delay)--SUCCESS
-		countdownOrbs:Start(15-delay)
-		timerBilewaterBreathCD:Start(32-delay)
-		timerTentacleStrikeCD:Start(41-delay)
+		timerBilewaterBreathCD:Start(12-delay)
+		timerOrbOfCorruptionCD:Start(30-delay)--SUCCESS
+		countdownOrbs:Start(30-delay)
+		timerTentacleStrikeCD:Start(36-delay)
 	end
 end
 
@@ -162,21 +162,17 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 227967 then
 		specWarnBilewaterBreath:Show()
 		voiceBilewaterBreath:Play("breathsoon")
-		if self:IsLFR() then
+		if self:IsNormal() then
+			timerBilewaterBreathCD:Start(57)
+		else--Verified heroic and LFR. TODO, verify mythic and reverify LFR
 			timerBilewaterBreathCD:Start(52)
-		else
-			if self:IsNormal() then
-				timerBilewaterBreathCD:Start(57)
-			else
-				timerBilewaterBreathCD:Start()
-			end
 		end
 	elseif spellId == 228730 then
 		specWarnTentacleStrike:Show()
 		if self:IsEasy() then
 			timerTentacleStrikeCD:Start(40)
 		else
-			timerTentacleStrikeCD:Start()
+			timerTentacleStrikeCD:Start(42)
 		end
 --	elseif spellId == 228514 then
 --		warnTorrent:Show()
@@ -192,14 +188,14 @@ function mod:SPELL_CAST_START(args)
 		if self:IsEasy() then
 			timerCorruptedBreathCD:Start(51)
 		else
-			timerCorruptedBreathCD:Start()
+			timerCorruptedBreathCD:Start(47.5)
 		end
 	elseif spellId == 228032 then--Phase 3 Fury of the Maw
 		specWarnFuryofMaw:Show()
 		if self:IsLFR() then
 			timerFuryofMawCD:Start(92)
 		else
-			timerFuryofMawCD:Start(76.4)
+			timerFuryofMawCD:Start(74.6)
 		end
 	elseif spellId == 228854 then
 		warnMistInfusion:Show()
@@ -213,16 +209,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerOrbOfCorruptionCD:Start(31.2)
 			countdownOrbs:Start(31.2)
 		else
-			timerOrbOfCorruptionCD:Start()
-			countdownOrbs:Start(25)
+			timerOrbOfCorruptionCD:Start(28)
+			countdownOrbs:Start(28)
 		end
 	elseif spellId == 228056 then
 		if self:IsLFR() then
 			timerOrbOfCorrosionCD:Start(32.7)
 			countdownOrbs:Start(32.7)
-		else
-			timerOrbOfCorrosionCD:Start()
-			countdownOrbs:Start(18.2)
+		else--Reverify normal
+			timerOrbOfCorrosionCD:Start(17)
+			countdownOrbs:Start(17)
 		end
 	elseif spellId == 227967 then
 		--Start ooze stuff here since all their stuff is hidden from combat log
