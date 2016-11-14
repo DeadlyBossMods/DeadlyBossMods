@@ -297,7 +297,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				marker1:EdgeTo(marker2, nil, 10, 1, 0, 0, 0.5)--Red Line
 			end
 		end
-		if self.Options.SetIconOnWeb then
+		if self.Options.SetIconOnWeb and self:IsInCombat() then
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then--Tank Group
 				self:SetIcon(args.sourceName, 1)
