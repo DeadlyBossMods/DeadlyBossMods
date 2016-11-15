@@ -93,13 +93,13 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 216428 then
 		timerFireBoomCD:Start()
-		self:BossTargetScanner(args.sourceGUID, "BoomTarget", 0.1, 14)
+		self:BossTargetScanner(args.sourceGUID, "BoomTarget", 0.1, 14, nil, nil, nil, nil, true)
 	elseif spellId == 216430 then
 		specWarnStomp:Show()
 		voiceStomp:Play("carefly")
 		timerStompCD:Start()
 	elseif spellId == 216432 then
-		self:BossTargetScanner(args.sourceGUID, "IceFists", 0.1, 9)
+		self:BossTargetScanner(args.sourceGUID, "IceFists", 0.1, 9, nil, nil, nil, nil, true)
 		timerIceFistCD:Start()
 	end
 end
