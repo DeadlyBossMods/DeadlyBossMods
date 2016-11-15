@@ -6,7 +6,7 @@ mod:SetCreatureID(114537)
 mod:SetEncounterID(2008)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(15445)
+mod:SetHotfixNoticeRev(15453)
 --mod.respawnTime = 30--None, she doesn't despawn. Remains after a wipe period
 
 mod:RegisterCombat("combat")
