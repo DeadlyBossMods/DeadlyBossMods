@@ -12,14 +12,16 @@ mod:SetHotfixNoticeRev(15445)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 227967 228730 228514 228390 228565 228032 228854",
-	"SPELL_CAST_SUCCESS 227903 228056 227967 228300 228519",
+	"SPELL_CAST_START 227967 228730 228514 228390 228565 228032 228854 227903 228056",
+	"SPELL_CAST_SUCCESS 227967 228300 228519",
 	"SPELL_AURA_APPLIED 229119 227982 193367 228519 232488 228054 230267",
 	"SPELL_AURA_REMOVED 193367 229119 230267 228300 167910",
 	"SPELL_PERIODIC_DAMAGE 227998",
 	"SPELL_PERIODIC_MISSED 227998",
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+	"CHAT_MSG_MONSTER_YELL",
+	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -76,7 +78,7 @@ local yellOrbOfCorrosion			= mod:NewPosYell(230267)
 
 --Stage One: Low Tide
 local timerOrbOfCorruptionCD		= mod:NewNextTimer(25, 229119, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerTaintOfSeaCD				= mod:NewCDTimer(16.2, 228088, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
+local timerTaintOfSeaCD				= mod:NewCDTimer(14.5, 228088, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
 local timerBilewaterBreathCD		= mod:NewNextTimer(40, 227967, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--On for everyone though so others avoid it too
 local timerTentacleStrikeCD			= mod:NewNextTimer(30, 228730, nil, nil, nil, 2)
 local timerExplodingOozes			= mod:NewCastTimer(22.5, 227992, nil, nil, nil, 2, nil, DBM_CORE_DAMAGE_ICON)
@@ -131,19 +133,19 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.rottedPlayers = 0
 	if self:IsLFR() then--was ONLY LFR that had diff timers, normal testing had same as heroic
-		timerOrbOfCorruptionCD:Start(19-delay)--SUCCESS
-		countdownOrbs:Start(19-delay)
+		timerOrbOfCorruptionCD:Start(18-delay)--START
+		countdownOrbs:Start(18-delay)
 		timerBilewaterBreathCD:Start(42-delay)--Check if changed, because normals timers all match LFR except this
 		timerTentacleStrikeCD:Start(53-delay)
 	elseif self:IsNormal() then
 		timerBilewaterBreathCD:Start(13.3-delay)
-		timerOrbOfCorruptionCD:Start(19-delay)--SUCCESS
-		countdownOrbs:Start(19-delay)
+		timerOrbOfCorruptionCD:Start(18-delay)--START
+		countdownOrbs:Start(18-delay)
 		timerTentacleStrikeCD:Start(53-delay)
 	else--TODO, reverify heroic. maybe they changed after tested to match LFR/normal
 		timerBilewaterBreathCD:Start(12-delay)
-		timerOrbOfCorruptionCD:Start(30-delay)--SUCCESS
-		countdownOrbs:Start(30-delay)
+		timerOrbOfCorruptionCD:Start(29-delay)--START
+		countdownOrbs:Start(29-delay)
 		timerTentacleStrikeCD:Start(36-delay)
 	end
 end
@@ -172,7 +174,7 @@ function mod:SPELL_CAST_START(args)
 		if self:IsEasy() then
 			timerTentacleStrikeCD:Start(40)
 		else
-			timerTentacleStrikeCD:Start(42)
+			timerTentacleStrikeCD:Start(42.5)
 		end
 --	elseif spellId == 228514 then
 --		warnTorrent:Show()
@@ -199,12 +201,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 228854 then
 		warnMistInfusion:Show()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 227903 then
+	elseif spellId == 227903 then
 		if self:IsEasy() then
 			timerOrbOfCorruptionCD:Start(31.2)
 			countdownOrbs:Start(31.2)
@@ -220,7 +217,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerOrbOfCorrosionCD:Start(17)
 			countdownOrbs:Start(17)
 		end
-	elseif spellId == 227967 then
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 227967 then
 		--Start ooze stuff here since all their stuff is hidden from combat log
 		timerExplodingOozes:Start()
 		countdownOozeExplosions:Start()
@@ -236,17 +238,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 229119 then
 		warnOrbOfCorruption:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnOrbOfCorruption:Show()
-			voiceOrbofCorruption:Play("orbrun")
-			if self:IsTank() then
-				yellOrbOfCorruption:Yell(2, 2, 2)
-			elseif self:IsHealer() then
-				yellOrbOfCorruption:Yell(1, 1, 1)
-			else
-				yellOrbOfCorruption:Yell(3, 3, 3)
-			end
-		end
 		if self.Options.SetIconOnOrbs then
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then
@@ -259,17 +250,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 230267 then
 		warnOrbOfCorrosion:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnOrbOfCorrosion:Show()
-			voiceOrbofCorrosion:Play("orbrun")
-			if self:IsTank() then
-				yellOrbOfCorrosion:Yell(2, 2, 2)
-			elseif self:IsHealer() then--LFR/Normal doesn't choose a healer, just tank/damage
-				yellOrbOfCorrosion:Yell(1, 1, 1)
-			else
-				yellOrbOfCorrosion:Yell(3, 3, 3)
-			end
-		end
 		if self.Options.SetIconOnOrbs then
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId) then
@@ -401,6 +381,30 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	end
 end
 
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:227920") then
+		specWarnOrbOfCorruption:Show()
+		voiceOrbofCorruption:Play("orbrun")
+		if self:IsTank() then
+			yellOrbOfCorruption:Yell(2, 2, 2)
+		elseif self:IsHealer() then--LFR/Normal doesn't choose a healer, just tank/damage
+			yellOrbOfCorruption:Yell(1, 1, 1)
+		else
+			yellOrbOfCorruption:Yell(3, 3, 3)
+		end
+	elseif msg:find("spell:228058") then
+		specWarnOrbOfCorrosion:Show()
+		voiceOrbofCorrosion:Play("orbrun")
+		if self:IsTank() then
+			yellOrbOfCorrosion:Yell(2, 2, 2)
+		elseif self:IsHealer() then--LFR/Normal doesn't choose a healer, just tank/damage
+			yellOrbOfCorrosion:Yell(1, 1, 1)
+		else
+			yellOrbOfCorrosion:Yell(3, 3, 3)
+		end
+	end
+end
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 228088 then--Taint of Sea
@@ -431,13 +435,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerFuryofMawCD:Stop()
 		--timerGrimeLordCD:Stop()
 		--timerNightWatchCD:Stop()
-		timerOrbOfCorrosionCD:Start(14.5)
-		countdownOrbs:Start(14.5)
-		timerCorruptedBreathCD:Start(40)
-		timerFuryofMawCD:Start(90)
-		timerAddsCD:Start(97)
-		--timerGrimeLordCD:Start(97)
-		--timerNightWatchCD:Start(99)
+		timerOrbOfCorrosionCD:Start(11)
+		countdownOrbs:Start(11)
+		if self:IsEasy() then
+			timerCorruptedBreathCD:Start(40)
+			timerFuryofMawCD:Start(90)
+			timerAddsCD:Start(97)
+		else
+			timerCorruptedBreathCD:Start(19.4)
+			timerFuryofMawCD:Start(30)
+			timerAddsCD:Start(38)
+		end
 	end
 end
 
@@ -448,16 +456,20 @@ function mod:OnSync(msg)
 		timerFuryofMawCD:Stop()
 		--timerGrimeLordCD:Stop()
 		--timerNightWatchCD:Stop()
-		timerOrbOfCorrosionCD:Start(20.5)
-		countdownOrbs:Start(20.5)
-		timerCorruptedBreathCD:Start(46)
-		timerFuryofMawCD:Start(96)
-		timerAddsCD:Start(103)
-		--timerGrimeLordCD:Start(103)
-		--timerNightWatchCD:Start(105)
+		timerOrbOfCorrosionCD:Start(17)
+		countdownOrbs:Start(17)
+		if self:IsEasy() then--Still long?
+			timerCorruptedBreathCD:Start(46)
+			timerFuryofMawCD:Start(96)
+			timerAddsCD:Start(103)
+		else
+			timerCorruptedBreathCD:Start(25.4)
+			timerFuryofMawCD:Start(36)
+			timerAddsCD:Start(44)
+		end
 	elseif msg == "Adds" then
 		if self.vb.phase == 2 then
-			timerAddsCD:Start(76)
+			timerAddsCD:Start(75.5)
 		else
 			timerAddsCD:Start(92)
 		end
