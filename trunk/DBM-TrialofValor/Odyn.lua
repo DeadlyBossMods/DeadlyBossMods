@@ -126,23 +126,23 @@ do
 		table.wipe(lines)
 		if drawTable[227490] then--Purple K (NE)
 			total = total + 1
-			lines[drawTable[227490]] = "|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE"
+			lines[drawTable[227490]] = "|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t"
 		end
 		if drawTable[227491] then--Orange N (SE)
 			total = total + 1
-			lines[drawTable[227491]] = "|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|tSE"
+			lines[drawTable[227491]] = "|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|tSE|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|t"
 		end
 		if drawTable[227498] then--Yellow H (SW)
 			total = total + 1
-			lines[drawTable[227498]] = "|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|tSW"
+			lines[drawTable[227498]] = "|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|tSW|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|t"
 		end
 		if drawTable[227499] then--Blue fishies (NW)
 			total = total + 1
-			lines[drawTable[227499]] = "|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|tNW"
+			lines[drawTable[227499]] = "|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|tNW|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|t"
 		end
 		if drawTable[227500] then--Green box (N)
 			total = total + 1
-			lines[drawTable[227500]] = "|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tN"
+			lines[drawTable[227500]] = "|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tN|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t"
 		end
 		if total == 0 then
 			DBM.InfoFrame:Hide()
