@@ -142,6 +142,11 @@ function mod:OnCombatStart(delay)
 		timerOrbOfCorruptionCD:Start(18-delay)--START
 		countdownOrbs:Start(18-delay)
 		timerTentacleStrikeCD:Start(53-delay)
+	elseif self:IsMythic() then
+		timerBilewaterBreathCD:Start(11-delay)
+		timerOrbOfCorruptionCD:Start(14-delay)--START
+		countdownOrbs:Start(14-delay)
+		timerTentacleStrikeCD:Start(35-delay)
 	else--TODO, reverify heroic. maybe they changed after tested to match LFR/normal
 		timerBilewaterBreathCD:Start(12-delay)
 		timerOrbOfCorruptionCD:Start(29-delay)--START
@@ -166,13 +171,17 @@ function mod:SPELL_CAST_START(args)
 		voiceBilewaterBreath:Play("breathsoon")
 		if self:IsNormal() then
 			timerBilewaterBreathCD:Start(57)
+		elseif self:IsMythic() then
+			timerBilewaterBreathCD:Start(43)
 		else--Verified heroic and LFR. TODO, verify mythic and reverify LFR
 			timerBilewaterBreathCD:Start(52)
 		end
-	elseif spellId == 228730 then
+	elseif spellId == 228730 and self:AntiSpam(8, 3) then
 		specWarnTentacleStrike:Show()
 		if self:IsEasy() then
 			timerTentacleStrikeCD:Start(40)
+		elseif self:IsMythic() then
+			timerTentacleStrikeCD:Start(35)
 		else
 			timerTentacleStrikeCD:Start(42.5)
 		end
@@ -205,6 +214,9 @@ function mod:SPELL_CAST_START(args)
 		if self:IsEasy() then
 			timerOrbOfCorruptionCD:Start(31.2)
 			countdownOrbs:Start(31.2)
+		elseif self:IsMythic() then
+			timerOrbOfCorruptionCD:Start(24)
+			countdownOrbs:Start(24)
 		else
 			timerOrbOfCorruptionCD:Start(28)
 			countdownOrbs:Start(28)
