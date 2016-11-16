@@ -146,7 +146,7 @@ local function whoDatUpThere(self)
 
 	end
 	if not lethonFound then -- Lethon
-		timerShadowBurstCD:Start(15)
+		timerShadowBurstCD:Start(13.8)
 	end
 	if not taerarFound then -- Taerar
 		timerBellowingRoarCD:Start(43)
@@ -397,7 +397,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetUnitCreatureId(unitID)
 			--Subtracking .5 from all timers do to slight delay in IEEU vs ENCOUNTER_START
 			if cid == 102683 then -- Emeriss
-				timerBreathCD:Start(16, bossName)
+				timerBreathCD:Start(15.5, bossName)
 				timerVolatileInfectionCD:Start(19.5)
 				timerEssenceOfCorruptionCD:Start(29.5)
 				if DBM.BossHealth:IsShown() then
