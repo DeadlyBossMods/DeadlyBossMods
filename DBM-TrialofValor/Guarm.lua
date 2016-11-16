@@ -45,7 +45,7 @@ local timerLeash					= mod:NewBuffActiveTimer(30, 228201, nil, nil, nil, 6)
 local timerFangsCD					= mod:NewCDCountTimer(20.5, 227514, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--20.5-23
 local timerBreathCD					= mod:NewCDCountTimer(20.5, 228187, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 local timerLeapCD					= mod:NewCDCountTimer(22, 227883, nil, nil, nil, 3)
-local timerChargeCD					= mod:NewCDCountTimer(10.9, 227816, nil, nil, nil, 3)
+local timerChargeCD					= mod:NewCDTimer(10.9, 227816, nil, nil, nil, 3)
 
 local berserkTimer					= mod:NewBerserkTimer(300)
 
@@ -177,12 +177,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		warnOffLeash:Show()
 		timerLeash:Start()
 		--self:Schedule(30, cancelLeash, self)
-		timerChargeCD:Start(nil, 2)
+		timerChargeCD:Start()
 	elseif spellId == 231561 then--Helyatosis (off the leash ending)
 		self.vb.fangCast = 0
 		self.vb.breathCast = 0
 		timerFangsCD:Start(4, 1)
-		timerBreathCD:Start(11, 1)
 		timerLeashCD:Start()--45
 		if self:IsEasy() then
 			timerBreathCD:Start(11, 1)
