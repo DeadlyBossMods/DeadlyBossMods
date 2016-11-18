@@ -19,6 +19,7 @@
 localization.en.lua
 localization.de.lua
 localization.kr.lua
+localization.ru.lua
 localization.tw.lua
 localization.cn.lua
 Odyn.lua
