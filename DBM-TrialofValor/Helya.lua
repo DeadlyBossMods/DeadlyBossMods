@@ -21,6 +21,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"CHAT_MSG_MONSTER_YELL",
+	"RAID_BOSS_EMOTE",
 	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -42,6 +43,7 @@ ability.id = 228300 and type = "removebuff" or ability.id = 167910
 --Stage One: Low Tide
 local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnTaintOfSea				= mod:NewTargetAnnounce(228054, 2)
+local warnTentacleStrike			= mod:NewCountAnnounce(228730, 4)
 --Stage Two: From the Mists (65%)
 --local warnTorrent					= mod:NewSpellAnnounce(228514, 3)
 ----Grimelord
@@ -82,7 +84,7 @@ local timerOrbOfCorruptionCD		= mod:NewNextTimer(25, 229119, nil, nil, nil, 3, n
 local timerTaintOfSeaCD				= mod:NewCDTimer(14.5, 228088, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
 local timerBilewaterBreathCD		= mod:NewNextTimer(40, 227967, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--On for everyone though so others avoid it too
 local timerTentacleStrikeCD			= mod:NewNextTimer(30, 228730, nil, nil, nil, 2)
-local timerTentacleStrike			= mod:NewCastTimer(6, 228730, nil, nil, nil, 5)
+local timerTentacleStrike			= mod:NewCastSourceTimer(6, 228730, nil, nil, nil, 5)
 local timerExplodingOozes			= mod:NewCastTimer(22.5, 227992, nil, nil, nil, 2, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Two: From the Mists (65%)
 local timerFuryofMaw				= mod:NewBuffActiveTimer(32, 228032, nil, nil, nil, 2)
@@ -180,7 +182,6 @@ function mod:SPELL_CAST_START(args)
 			timerBilewaterBreathCD:Start(52)
 		end
 	elseif spellId == 228730 then
-		timerTentacleStrike:Start()
 		if self:AntiSpam(10, 3) then
 			specWarnTentacleStrike:Show()
 			if self:IsEasy() then
@@ -403,6 +404,16 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	if (msg == L.phaseThree or msg:find(L.phaseThree)) then
 		self:SendSync("Phase3")--Syncing to help unlocalized clients
+	end
+end
+
+function mod:RAID_BOSS_EMOTE(msg)
+	if msg:find(L.near) then
+		warnTentacleStrike:Show(DBM_CORE_FRONT)
+		timerTentacleStrike:Start(DBM_CORE_FRONT)
+	elseif msg:find(L.far) then
+		warnTentacleStrike:Show(DBM_CORE_BACK)
+		timerTentacleStrike:Start(DBM_CORE_BACK)
 	end
 end
 
