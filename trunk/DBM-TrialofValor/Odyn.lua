@@ -70,7 +70,6 @@ local timerDrawPowerCD				= mod:NewNextTimer(70, 227503, nil, nil, nil, 6)
 local timerDrawPower				= mod:NewCastTimer(30, 227629, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage 2: Odyn immitates margok
 local timerSpearCD					= mod:NewNextTimer(8, 227697, nil, nil, nil, 3)
-local timerAddsCD					= mod:NewNextTimer(70, "ej14404", nil, nil, nil, 1)
 --Stage 3: Odyn immitates lei shen
 local timerStormOfJusticeCD			= mod:NewNextTimer(10.9, 227807, nil, nil, nil, 3)
 local timerStormforgedSpearCD		= mod:NewNextTimer(10.9, 228918, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
@@ -497,10 +496,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerDrawPowerCD:Start()
 			countdownDrawPower:Start(70)
 		end
-		if self.vb.phase == 2 then
-			timerSpearCD:Stop()
-			timerSpearCD:Start(35)
-		end
+		--if self.vb.phase == 2 then
+		--	timerSpearCD:Stop()
+		--	timerSpearCD:Start(35)
+		--end
 	--"<150.12 16:58:07> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Test for Players::3-3198-1648-10280-229168-000660515F:229168]]", -- [1347]
 	--"<156.10 16:58:13> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Leap into Battle::3-3198-1648-10280-227882-0001605165:227882]]", -- [1382]
 	--"<159.34 16:58:16> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Spear Transition - Holy::3-3198-1648-10280-228734-0004E05168:228734]]", -- [1395]
@@ -538,9 +537,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		--Timer started at jump though has to be delayed to avoid phase 1 ClearAllDebuffs events
 	elseif spellId == 227882 then--Jump into Battle (phase 2 begin)
 		self.vb.phase = 2
-		if self:IsHard() then
-			timerAddsCD:Start(17.6)
-		end
 	--"<143.76 09:43:49> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#boss1#true#true#true#Odyn#Creature-0-1461-1648-2
 	--"<145.25 09:43:50> [UNIT_SPELLCAST_SUCCEEDED] Hyrja(??) [[boss2:Valarjar's Bond::3-1461-1648-2401-229469-00062C1C49:229469]]", -- [1792]
 	elseif spellId == 229469 and self.vb.phase == 2 then--Valarjar's Bond (any of 3 bosses jumping down)
@@ -560,21 +556,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerDancingBladeCD:Stop()
 			timerHornOfValorCD:Stop()
 			countdownHorn:Cancel()
-			timerAddsCD:Start(72)
-			if self:IsMythic() then
-				timerAddsCD:Start(68)
-			else
-				timerAddsCD:Start(72)
-			end
 		elseif cid == 114360 then--Hyrja
 			timerExpelLightCD:Stop()
 			timerShieldofLightCD:Stop()
 			countdownShield:Cancel()
-			if self:IsMythic() then
-				timerAddsCD:Start(64)
-			else
-				timerAddsCD:Start(67.8)
-			end
 		end
 	elseif spellId == 227697 then--Spear of Light
 		timerSpearCD:Start()
@@ -585,7 +570,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	--"<489.60 21:38:04> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Arcing Storm::3-2012-1648-3815-229254-00060AC2FC:229254]]", -- [2941]
 	elseif spellId == 228740 then--Spear Transition - Thunder (Phase 3 begin)
 		self.vb.phase = 3
-		timerAddsCD:Stop()
 		timerDrawPower:Stop()
 		countdownDrawPower:Cancel()
 		timerDrawPowerCD:Stop()
