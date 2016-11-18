@@ -63,7 +63,7 @@ local specWarnTaintofSea			= mod:NewSpecialWarningMoveAway(228088, nil, nil, nil
 local specWarnBilewaterBreath		= mod:NewSpecialWarningSpell(227967, nil, nil, nil, 2, 2)
 local specWarnBilewaterRedox		= mod:NewSpecialWarningTaunt(227982, nil, nil, nil, 1, 2)
 local specWarnBilewaterCorrosion	= mod:NewSpecialWarningMove(227998, nil, nil, nil, 1, 2)
-local specWarnTentacleStrike		= mod:NewSpecialWarningSpell(228730, nil, nil, nil, 2)
+local specWarnTentacleStrike		= mod:NewSpecialWarningSoakPos(228730, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(228730), nil, 2)
 --Stage Two: From the Mists (65%)
 ----Helya
 local specWarnFuryofMaw				= mod:NewSpecialWarningSpell(228032, nil, nil, nil, 2)
@@ -183,7 +183,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 228730 then
 		if self:AntiSpam(10, 3) then
-			specWarnTentacleStrike:Show()
 			if self:IsEasy() then
 				timerTentacleStrikeCD:Start(40)
 			elseif self:IsMythic() then
@@ -409,11 +408,36 @@ end
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg:find(L.near) then
-		warnTentacleStrike:Show(DBM_CORE_FRONT)
+		if self:IsMythic() then
+			warnTentacleStrike:Show(DBM_CORE_FRONT)
+			if self:AntiSpam(12, 4) then
+				specWarnTentacleStrike:Show(L.multiple)
+			end
+		else
+			specWarnTentacleStrike:Show(DBM_CORE_FRONT)
+		end
 		timerTentacleStrike:Start(DBM_CORE_FRONT)
 	elseif msg:find(L.far) then
-		warnTentacleStrike:Show(DBM_CORE_BACK)
+		if self:IsMythic() then
+			warnTentacleStrike:Show(DBM_CORE_BACK)
+			if self:AntiSpam(12, 4) then
+				specWarnTentacleStrike:Show(L.multiple)
+			end
+		else
+			specWarnTentacleStrike:Show(DBM_CORE_BACK)
+		end
 		timerTentacleStrike:Start(DBM_CORE_BACK)
+	--Backup for the like 8 languages dbm doesn't have translators for
+	elseif msg:find("inv_misc_monsterhorn_03") then
+		if self:IsMythic() then
+			warnTentacleStrike:Show(DBM_CORE_UNKNOWN)
+			if self:AntiSpam(12, 4) then
+				specWarnTentacleStrike:Show(L.multiple)
+			end
+		else
+			specWarnTentacleStrike:Show(DBM_CORE_UNKNOWN)
+		end
+		timerTentacleStrike:Start(DBM_CORE_UNKNOWN)
 	end
 end
 
