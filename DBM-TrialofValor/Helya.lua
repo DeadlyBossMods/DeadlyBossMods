@@ -94,7 +94,7 @@ local timerFuryofMawCD				= mod:NewNextTimer(44.5, 228032, nil, nil, nil, 2)
 --local timerGrimeLordCD				= mod:NewCDTimer(52.7, "ej14263", nil, nil, nil, 1, 228519)
 --local timerNightWatchCD				= mod:NewCDTimer(52.7, "ej14278", nil, "Tank", nil, 1, 228632)
 local timerAddsCD					= mod:NewCDTimer(75.5, 167910, nil, nil, nil, 1)
-local timerSludgeNovaCD				= mod:NewCDTimer(24.5, 228390, nil, "Melee", nil, 2)
+local timerSludgeNovaCD				= mod:NewCDTimer(24.2, 228390, nil, "Melee", nil, 2)
 local timerAnchorSlamCD				= mod:NewCDTimer(12, 228519, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Night Watch Mariner
 --Stage Three: Helheim's Last Stand

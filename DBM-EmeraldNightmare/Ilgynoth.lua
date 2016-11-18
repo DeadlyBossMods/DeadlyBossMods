@@ -118,11 +118,11 @@ local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, 
 local eyeName = EJ_GetSectionInfo(13185)
 local addsTable = {}
 local phase1EasyDeathglares = {26, 62, 85, 55}--Normal/LFR OCT 16
-local phase1HeroicDeathglares = {26, 59, 60}--VERIFIED Oct 16
+local phase1HeroicDeathglares = {21, 51.5, 51}--VERIFIED Nov 18
 --This might be same problem as below. Need to review and see if this is another stupid 21/26 variation that makes 2nd one also variable
 local phase1MythicDeathglares = {21, 69, 85, 70}--VERIFIED Oct 27
 local phase1EasyCorruptors = {86, 95, 35}--Only verifyed 90 on Oct 16 (TODO, verify 95, 35)
-local phase1HeroicCorruptors = {79, 71}--VERIFIED Oct 16
+local phase1HeroicCorruptors = {71.5, 60}--VERIFIED Nov 18
 local phase1MythicCorruptors = {88, 95, 50, 45, 20}--VERIFIED Oct 27
 local phase1DeathBlossom = {58.6, 100, 35}--VERIFIED Oct 27
 
@@ -261,12 +261,16 @@ function mod:OnCombatStart(delay)
 	timerNightmareishFuryCD:Start(6-delay)
 	timerGroundSlamCD:Start(12-delay)
 	timerDeathGlareCD:Start(21.5-delay)
-	timerNightmareHorrorCD:Start(60-delay)--60 unless delayed (on mythic 95% of time it's delayed by death blossom which is also 60 seconds.but SUPER rarely horror CAN come out first
 	if self:IsMythic() then
 		self.vb.deathBlossomCount = 0
 		timerDeathBlossomCD:Start(58.6-delay)
+		timerNightmareHorrorCD:Start(60-delay)
 		timerCorruptorTentacleCD:Start(90-delay)--Verify
+	elseif self:IsHeroic() then
+		timerNightmareHorrorCD:Start(52.5-delay)
+		timerCorruptorTentacleCD:Start(71.5-delay)
 	else
+		timerNightmareHorrorCD:Start(60-delay)
 		timerCorruptorTentacleCD:Start(79-delay)--79-85 but is same in all non mythic modes
 	end
 	if self.Options.InfoFrame then
