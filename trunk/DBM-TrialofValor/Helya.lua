@@ -82,6 +82,7 @@ local timerOrbOfCorruptionCD		= mod:NewNextTimer(25, 229119, nil, nil, nil, 3, n
 local timerTaintOfSeaCD				= mod:NewCDTimer(14.5, 228088, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
 local timerBilewaterBreathCD		= mod:NewNextTimer(40, 227967, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--On for everyone though so others avoid it too
 local timerTentacleStrikeCD			= mod:NewNextTimer(30, 228730, nil, nil, nil, 2)
+local timerTentacleStrike			= mod:NewCastTimer(6, 228730, nil, nil, nil, 5)
 local timerExplodingOozes			= mod:NewCastTimer(22.5, 227992, nil, nil, nil, 2, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Two: From the Mists (65%)
 local timerFuryofMaw				= mod:NewBuffActiveTimer(32, 228032, nil, nil, nil, 2)
@@ -178,14 +179,17 @@ function mod:SPELL_CAST_START(args)
 		else--Verified heroic and LFR. TODO, verify mythic and reverify LFR
 			timerBilewaterBreathCD:Start(52)
 		end
-	elseif spellId == 228730 and self:AntiSpam(10, 3) then
-		specWarnTentacleStrike:Show()
-		if self:IsEasy() then
-			timerTentacleStrikeCD:Start(40)
-		elseif self:IsMythic() then
-			timerTentacleStrikeCD:Start(35)
-		else
-			timerTentacleStrikeCD:Start(42.5)
+	elseif spellId == 228730 then
+		timerTentacleStrike:Start()
+		if self:AntiSpam(10, 3) then
+			specWarnTentacleStrike:Show()
+			if self:IsEasy() then
+				timerTentacleStrikeCD:Start(40)
+			elseif self:IsMythic() then
+				timerTentacleStrikeCD:Start(35)
+			else
+				timerTentacleStrikeCD:Start(42.5)
+			end
 		end
 --	elseif spellId == 228514 then
 --		warnTorrent:Show()
