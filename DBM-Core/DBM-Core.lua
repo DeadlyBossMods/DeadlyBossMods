@@ -418,7 +418,7 @@ local statusWhisperDisabled = false
 local wowVersionString, _, _, wowTOC = GetBuildInfo()
 local dbmToc = 0
 
-local fakeBWVersion, fakeBWHash = 23, "0e967a2"
+local fakeBWVersion, fakeBWHash = 24, "dee6293"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
