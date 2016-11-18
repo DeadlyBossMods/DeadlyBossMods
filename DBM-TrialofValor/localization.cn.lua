@@ -31,7 +31,10 @@ L= DBM:GetModLocalization(1830)
 L= DBM:GetModLocalization(1829)
 
 L:SetMiscLocalization({
-	phaseThree =	"Your efforts are for naught, mortals! Odyn will NEVER be free!" --pending
+	phaseThree =	"Your efforts are for naught, mortals! Odyn will NEVER be free!", --pending
+	near =			"近",
+	far =			"远",
+	multiple =		"多"
 })
 
 -------------

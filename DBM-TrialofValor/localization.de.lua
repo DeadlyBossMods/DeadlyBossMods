@@ -27,3 +27,10 @@ L= DBM:GetModLocalization(1830)
 -- Helya --
 ---------------------------
 L= DBM:GetModLocalization(1829)
+
+L:SetMiscLocalization({
+	phaseThree =	"Your efforts are for naught, mortals! Odyn will NEVER be free!",
+	near =			"in der Nähe von",
+	far =			"weit",
+	multiple =		"Mehrere"
+})
