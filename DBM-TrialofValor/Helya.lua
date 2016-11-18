@@ -5,9 +5,9 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(114537)
 mod:SetEncounterID(2008)
 mod:SetZone()
-mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 mod:SetHotfixNoticeRev(15453)
---mod.respawnTime = 30--None, she doesn't despawn. Remains after a wipe period
+mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
 
@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 227967 228730 228514 228390 228565 228032 228854 227903 228056",
 	"SPELL_CAST_SUCCESS 227967 228300 228519",
 	"SPELL_AURA_APPLIED 229119 227982 193367 228519 232488 228054 230267",
-	"SPELL_AURA_REMOVED 193367 229119 230267 228300 167910",
+	"SPELL_AURA_REMOVED 193367 229119 230267 228300 167910 228054",
 	"SPELL_PERIODIC_DAMAGE 227998",
 	"SPELL_PERIODIC_MISSED 227998",
 	"UNIT_DIED",
@@ -38,6 +38,7 @@ ability.id = 228300 and type = "removebuff" or ability.id = 167910
 --TODO, add Helarjer Mistcaller stuff for mythic
 --TODO, timer update code for fury of maw, when mistcaller gets off a cast
 --TODO, more work with Corrupted Axion and Dark Hatred
+--TODO, better way to handle  tentacle strikes than just antispamming 2nd and 3rd in mythic sets?
 --Stage One: Low Tide
 local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnTaintOfSea				= mod:NewTargetAnnounce(228054, 2)
@@ -91,7 +92,7 @@ local timerFuryofMawCD				= mod:NewNextTimer(44.5, 228032, nil, nil, nil, 2)
 --local timerNightWatchCD				= mod:NewCDTimer(52.7, "ej14278", nil, "Tank", nil, 1, 228632)
 local timerAddsCD					= mod:NewCDTimer(75.5, 167910, nil, nil, nil, 1)
 local timerSludgeNovaCD				= mod:NewCDTimer(24.5, 228390, nil, "Melee", nil, 2)
-local timerAnchorSlamCD				= mod:NewCDTimer(13.6, 228519, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerAnchorSlamCD				= mod:NewCDTimer(12, 228519, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Night Watch Mariner
 --Stage Three: Helheim's Last Stand
 local timerCorruptedBreathCD		= mod:NewCDTimer(40, 228565, nil, nil, nil, 2)
@@ -121,6 +122,7 @@ local voiceAnchorSlam				= mod:NewVoice(228519)--tauntboss (maybe change to "cha
 local voiceOrbofCorrosion			= mod:NewVoice(230267)--orbrun
 
 mod:AddRangeFrameOption(5, 193367)
+mod:AddSetIconOption("SetIconOnTaint", 228088, false)
 mod:AddSetIconOption("SetIconOnOrbs", 229119, true)--Healer (Star), Tank (Circle), Deeps (Diamond)
 mod:AddInfoFrameOption(193367)
 
@@ -176,7 +178,7 @@ function mod:SPELL_CAST_START(args)
 		else--Verified heroic and LFR. TODO, verify mythic and reverify LFR
 			timerBilewaterBreathCD:Start(52)
 		end
-	elseif spellId == 228730 and self:AntiSpam(8, 3) then
+	elseif spellId == 228730 and self:AntiSpam(10, 3) then
 		specWarnTentacleStrike:Show()
 		if self:IsEasy() then
 			timerTentacleStrikeCD:Start(40)
@@ -320,6 +322,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnTaintofSea:Show()
 			voiceTaintOfSea:Play("scatter")
 		end
+		if self.Options.SetIconOnTaint then
+			self:SetSortedIcon(0.5, args.destName, 4)
+		end
 	end
 end
 
@@ -347,6 +352,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 167910 and self:AntiSpam(10, 2) then
 		self:SendSync("Adds")--I've outrnaged the combat log event for this being on one of the side platforms, since this event is already coming from further away (in water)
+	elseif spellId == 228054 then
+		if self.Options.SetIconOnTaint then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 

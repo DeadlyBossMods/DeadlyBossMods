@@ -15,6 +15,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	BrandYell = "{rt%d} %s {rt%d}"
 })
 
 ---------------------------

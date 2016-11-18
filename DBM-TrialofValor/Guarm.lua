@@ -258,12 +258,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerFangsCD:Start(4, 1)
 		countdownFangs:Start(4)
 		timerLeashCD:Start()--45
-		if self:IsEasy() then
-			timerBreathCD:Start(11, 1)
-			countdownBreath:Start(11)
-		else
-			timerBreathCD:Start(14, 1)
-			countdownBreath:Start(14)
-		end
+		timerBreathCD:Start(11, 1)--11-14
+		countdownBreath:Start(11)--11-14
 	end
 end

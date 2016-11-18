@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 228003 228012 228171 231013",
-	"SPELL_CAST_SUCCESS 228012 228028 228162",
+	"SPELL_CAST_SUCCESS 228012 228028 228162 231350",
 	"SPELL_AURA_APPLIED 228029 227807 227959 227626 228918 227490 227491 227498 227499 227500 231311 231342 231344 231345 231346",
 	"SPELL_AURA_APPLIED_DOSE 227626",
 	"SPELL_AURA_REMOVED 228029 227807 227959 227490 227491 227498 227499 227500 231311 231342 231344 231345 231346",
@@ -47,6 +47,7 @@ local yellExpelLight				= mod:NewYell(228028)
 local specWarnShieldofLight			= mod:NewSpecialWarningYou(228270, nil, nil, nil, 1, 2)
 local yellShieldofLightFades		= mod:NewFadesYell(228270)
 local specWarnDrawPower				= mod:NewSpecialWarningMoveTo(227503, nil, nil, nil, 2, 6)
+local yellDrawPower					= mod:NewPosYell(227503, L.BrandYell)
 --Stage 2: Odyn immitates margok
 local specWarnOdynsTest				= mod:NewSpecialWarningCount(227626, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(5, 159515))
 local specWarnOdynsTestOther		= mod:NewSpecialWarningTaunt(227626, nil, nil, nil, 1, 2)
@@ -59,7 +60,8 @@ local specWarnStormforgedSpear		= mod:NewSpecialWarningRun(228918, nil, nil, nil
 local specWarnStormforgedSpearOther	= mod:NewSpecialWarningTaunt(228918, nil, nil, nil, 1, 2)
 local specWarnCleansingFlame		= mod:NewSpecialWarningMove(228683, nil, nil, nil, 1, 2)
 --Mythic
-local specWarnRunicBrand			= mod:NewSpecialWarningMoveTo(231297, nil, nil, nil, 1)
+local specWarnRunicBrand			= mod:NewSpecialWarningYouPos(231297, nil, nil, nil, 1)
+local yellRunicBrand				= mod:NewPosYell(231297, L.BrandYell)
 
 --Stage 1: Halls of Valor was merely a set back
 local timerDancingBladeCD			= mod:NewCDTimer(31, 228003, nil, nil, nil, 3)--Alternating two times
@@ -104,7 +106,7 @@ local voiceCleansingFlame			= mod:NewVoice(228683)--runaway
 
 mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(227629, true)
-mod:AddRangeFrameOption("5/8")
+mod:AddRangeFrameOption("5/8/15")
 
 mod.vb.phase = 1
 mod.vb.hornCasting = false
@@ -112,18 +114,33 @@ mod.vb.hornCast = 0
 mod.vb.shieldCast = 0
 mod.vb.expelLightCast = 0
 mod.vb.dancingBladeCast = 0
+mod.vb.brandActive = false
 local drawTable = {}
 --Mythic Timers
 local dancingBladeTimers = {15.0, 20.1, 19.9, 25.0, 20.0}
 local hornTimers = {8.1, 22.0, 20.0, 35.0}
 local shieldTimers = {20.0, 20.0, 33.0, 22.0, 20.0}
 local expelLightTimers = {25.0, 20.0, 15.0, 30.0, 20.0}
---local phase1DrawPowerTimers = {35.1, 65.0}--Need more data, might just be static 65, assumed as such for now
+
+local debuffFilter
+local UnitDebuff = UnitDebuff
+local playerDebuff = nil
+do
+	local spellName = GetSpellInfo(231311)
+	debuffFilter = function(uId)
+		if not playerDebuff then return true end
+		if not select(11, UnitDebuff(uId, spellName)) == playerDebuff then
+			return true
+		end
+	end
+end
 
 local expelLight, stormOfJustice = GetSpellInfo(228028), GetSpellInfo(227807)
 local function updateRangeFrame(self)
 	if not self.Options.RangeFrame then return end
-	if UnitDebuff("player", expelLight) or UnitDebuff("player", stormOfJustice) then
+	if self.vb.brandActive then
+		DBM.RangeCheck:Show(15, debuffFilter)--There are no 15 yard items that are actually 15 yard, this will round to 18 :\
+	elseif UnitDebuff("player", expelLight) or UnitDebuff("player", stormOfJustice) then
 		DBM.RangeCheck:Show(8)
 	elseif self.vb.hornCasting then--Spread for Horn of Valor
 		DBM.RangeCheck:Show(5)
@@ -172,7 +189,9 @@ function mod:OnCombatStart(delay)
 	self.vb.shieldCast = 0
 	self.vb.expelLightCast = 0
 	self.vb.dancingBladeCast = 0
+	self.vb.brandActive = false
 	table.wipe(drawTable)
+	playerDebuff = nil
 	if self:IsMythic() then
 		timerHornOfValorCD:Start(8-delay)
 		countdownHorn:Start(8-delay)
@@ -314,6 +333,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.SetIconOnShield then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif spellId == 231350 then
+		self.vb.brandActive = false
+		updateRangeFrame(self)
 	end
 end
 
@@ -361,40 +383,53 @@ function mod:SPELL_AURA_APPLIED(args)
 		if spellId == 227490 and args:IsPlayer() then--Purple K (NE)
 			specWarnDrawPower:Show("|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t")
 			voiceDrawPower:Play("frontright")
+			yellDrawPower:Yell(3, args.spellName, 3)
 		elseif spellId == 227491 and args:IsPlayer() then--Orange N (SE)
 			specWarnDrawPower:Show("|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|tSE|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|t")
 			voiceDrawPower:Play("backright")
+			yellDrawPower:Yell(2, args.spellName, 2)
 		elseif spellId == 227498 and args:IsPlayer() then--Yellow H (SW)
 			specWarnDrawPower:Show("|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|tSW|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|t")
 			voiceDrawPower:Play("backleft")
+			yellDrawPower:Yell(1, args.spellName, 1)
 		elseif spellId == 227499 and args:IsPlayer() then--Blue fishies (NW)
 			specWarnDrawPower:Show("|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|tNW|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|t")
 			voiceDrawPower:Play("frontleft")
+			yellDrawPower:Yell(6, args.spellName, 6)
 		elseif spellId == 227500 and args:IsPlayer() then--Green box (N)
 			specWarnDrawPower:Show("|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tN|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t")
 			voiceDrawPower:Play("frontcenter")
+			yellDrawPower:Yell(4, args.spellName, 4)
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
 		end
 	elseif spellId == 231311 or spellId == 231342 or spellId == 231344 or spellId == 231345 or spellId == 231346 then--Branded (Draw Power Runes)
---		drawTable[spellId] = args.destName
-		if spellId == 231311 and args:IsPlayer() then--Purple K (NE)
-			specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t")
---			voiceDrawPower:Play("frontright")
-		elseif spellId == 231342 and args:IsPlayer() then--Orange N (SE)
-			specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|tSE|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|t")
---			voiceDrawPower:Play("backright")
-		elseif spellId == 231344 and args:IsPlayer() then--Yellow H (SW)
-			specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|tSW|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|t")
---			voiceDrawPower:Play("backleft")
-		elseif spellId == 231345 and args:IsPlayer() then--Blue fishies (NW)
-			specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|tNW|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|t")
---			voiceDrawPower:Play("frontleft")
-		elseif spellId == 231346 and args:IsPlayer() then--Green box (N)
-			specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tN|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t")
---			voiceDrawPower:Play("frontcenter")
+		if args:IsPlayer() then
+			playerDebuff = spellId
+			if spellId == 231311 then--Purple K (NE)
+				specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t")
+--				voiceDrawPower:Play("frontright")
+				yellRunicBrand:Yell(3, args.spellName, 3)
+			elseif spellId == 231342 then--Orange N (SE)
+				specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|t")
+--				voiceDrawPower:Play("backright")
+				yellRunicBrand:Yell(2, args.spellName, 2)
+			elseif spellId == 231344 then--Yellow H (SW)
+				specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|t")
+--				voiceDrawPower:Play("backleft")
+				yellRunicBrand:Yell(1, args.spellName, 1)
+			elseif spellId == 231345 then--Blue fishies (NW)
+				specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|t")
+--				voiceDrawPower:Play("frontleft")
+				yellRunicBrand:Yell(6, args.spellName, 6)
+			elseif spellId == 231346 then--Green box (N)
+				specWarnRunicBrand:Show("|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t")
+--				voiceDrawPower:Play("frontcenter")
+				yellRunicBrand:Yell(4, args.spellName, 4)
+			end
+			updateRangeFrame(self)
 		end
 	end
 end
@@ -415,6 +450,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		countdownDrawPower:Cancel()
 	elseif spellId == 227490 or spellId == 227491 or spellId == 227498 or spellId == 227499 or spellId == 227500 then--Branded (Draw Power Runes)
 		drawTable[spellId] = nil
+	elseif spellId == 231311 or spellId == 231342 or spellId == 231344 or spellId == 231345 or spellId == 231346 then--Branded (Draw Power Runes)
+		if args:IsPlayer() then
+			playerDebuff = nil
+		end
 	end
 end
 
@@ -504,6 +543,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	--"<156.10 16:58:13> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Leap into Battle::3-3198-1648-10280-227882-0001605165:227882]]", -- [1382]
 	--"<159.34 16:58:16> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Spear Transition - Holy::3-3198-1648-10280-228734-0004E05168:228734]]", -- [1395]
 	elseif spellId == 231297 then--Phase 3 mythic runic Brand
+		self.vb.brandActive = true
 		timerRadiantSmite:Start()
 		timerRunicBrandCD:Start()
 		countdownRunicBrand:Start()
