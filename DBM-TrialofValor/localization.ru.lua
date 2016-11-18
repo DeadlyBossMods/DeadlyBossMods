@@ -18,8 +18,8 @@ L= DBM:GetModLocalization(1829)
 
 L:SetMiscLocalization({
 	phaseThree =	"Your efforts are for naught, mortals! Odyn will NEVER be free!",
-	near =			"возле",
-	far =			"далеко",
+	near =			"Возле",
+	far =			"Вдалеке",
 	multiple =		"множественный"
 })
 
