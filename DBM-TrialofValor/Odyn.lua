@@ -27,6 +27,9 @@ mod:RegisterEventsInCombat(
 --TODO, phase 3 storms (area of affect). not in combat log or even transcriptor. appears every 30 seconds give or take. verify in more attempts and add scheduler for it
 --TODO, Cleansing flame timers/target announces?
 --Stage 1: Halls of Valor was merely a set back
+local hymdall = EJ_GetSectionInfo(14005)
+local hyrja = EJ_GetSectionInfo(14006)
+
 local warnDancingBlade				= mod:NewCountAnnounce(228003, 3)--Change if target scanning works, but considering it doesn't in 5 man version of this spell, omitting for now
 local warnRevivify					= mod:NewCastAnnounce(228171, 4)
 local warnExpelLight				= mod:NewTargetAnnounce(228028, 3)
@@ -63,16 +66,22 @@ local specWarnCleansingFlame		= mod:NewSpecialWarningMove(228683, nil, nil, nil,
 local specWarnRunicBrand			= mod:NewSpecialWarningYouPos(231297, nil, nil, nil, 1)
 local yellRunicBrand				= mod:NewPosYell(231297, L.BrandYell)
 
---Stage 1: Halls of Valor was merely a set back
+--Adds (stage 1 and 2)
+mod:AddTimerLine(hymdall)
 local timerDancingBladeCD			= mod:NewCDTimer(31, 228003, nil, nil, nil, 3)--Alternating two times
 local timerHornOfValorCD			= mod:NewCDTimer(32, 228012, nil, nil, nil, 2)--Alternating two times
+mod:AddTimerLine(hyrja)
 local timerExpelLightCD				= mod:NewCDTimer(32, 228028, nil, nil, nil, 3)--Alternating two times
 local timerShieldofLightCD			= mod:NewCDTimer(32, 228270, nil, nil, nil, 3)--Alternating two times
+--Stage 1: Halls of Valor was merely a set back
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDrawPowerCD				= mod:NewNextTimer(70, 227503, nil, nil, nil, 6)
 local timerDrawPower				= mod:NewCastTimer(30, 227629, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage 2: Odyn immitates margok
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerSpearCD					= mod:NewNextTimer(8, 227697, nil, nil, nil, 3)
 --Stage 3: Odyn immitates lei shen
+mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerStormOfJusticeCD			= mod:NewNextTimer(10.9, 227807, nil, nil, nil, 3)
 local timerStormforgedSpearCD		= mod:NewNextTimer(10.9, 228918, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON..DBM_CORE_DEADLY_ICON)
 --Mythic
@@ -496,63 +505,59 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 end
 --]]
 
-do
-	--"<35.57 16:56:12> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\ABILITY_PRIEST_FLASHOFLIGHT.BLP:20|t Hyrja targets |cFFFF0000Wakmagic|r with |cFFFF0404|Hspell:228162|h[Shield of Light]|h|r!#Hyrja###Wakmagic##0#0##0#476#nil#0#false#false#false#false", -- [241]
-	local hymdall = EJ_GetSectionInfo(14005)
-	local hyrja = EJ_GetSectionInfo(14006)
-	function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
-		if msg:find("spell:228162") then
-			self.vb.shieldCast = self.vb.shieldCast + 1
-			if self.vb.phase == 1 then
-				if self:IsMythic() then
-					local timer = shieldTimers[self.vb.shieldCast+1]
-					if timer then
-						timerShieldofLightCD:Start(timer)
-						countdownShield:Start(timer)
-					end
-				else
-					if self.vb.shieldCast % 2 == 0 then
-						timerShieldofLightCD:Start(38)
-						countdownShield:Start(38)
-					else
-						timerShieldofLightCD:Start(32)
-						countdownShield:Start(32)
-					end
+--"<35.57 16:56:12> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\ABILITY_PRIEST_FLASHOFLIGHT.BLP:20|t Hyrja targets |cFFFF0000Wakmagic|r with |cFFFF0404|Hspell:228162|h[Shield of Light]|h|r!#Hyrja###Wakmagic##0#0##0#476#nil#0#false#false#false#false", -- [241]
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
+	if msg:find("spell:228162") then
+		self.vb.shieldCast = self.vb.shieldCast + 1
+		if self.vb.phase == 1 then
+			if self:IsMythic() then
+				local timer = shieldTimers[self.vb.shieldCast+1]
+				if timer then
+					timerShieldofLightCD:Start(timer)
+					countdownShield:Start(timer)
 				end
 			else
-				timerShieldofLightCD:Start(25)
-				countdownShield:Start(25)
-			end
-			local targetname = DBM:GetUnitFullName(target)
-			if targetname then
-				if targetname == UnitName("player") then
-					specWarnShieldofLight:Show()
-					voiceShieldofLight:Play("targetyou")
-					yellShieldofLightFades:Schedule(2.8, 1)
-					yellShieldofLightFades:Schedule(1.8, 2)
-					yellShieldofLightFades:Schedule(0.8, 3)
+				if self.vb.shieldCast % 2 == 0 then
+					timerShieldofLightCD:Start(38)
+					countdownShield:Start(38)
 				else
-					warnShieldofLight:Show(targetname)
-				end
-				if self.Options.SetIconOnShield then
-					self:SetIcon(targetname, 1)
+					timerShieldofLightCD:Start(32)
+					countdownShield:Start(32)
 				end
 			end
-		--"<269.72 17:21:06> [CHAT_MSG_RAID_BOSS_EMOTE] |cFFFF0000Hyrja|r leaps back into battle!#Hyrja###Odyn##0#0##0#344#nil#0#false#false#false#false", -- [1538]
-		elseif npc and target and target == L.name then--Odyn only target when it's a leap into battle.
-			if npc == hyrja then
-				specWarnHyrja:Show()
-				voiceHyrja:Play("bigmob")
-				timerExpelLightCD:Start(4.7)
-				timerShieldofLightCD:Start(9.7)
-				countdownShield:Start(9.7)
-			elseif npc == hymdall then
-				specWarnHymall:Show()
-				voiceHymdall:Play("bigmob")
-				timerDancingBladeCD:Start(6)
-				timerHornOfValorCD:Start(12)
-				countdownHorn:Start(12)
+		else
+			timerShieldofLightCD:Start(25)
+			countdownShield:Start(25)
+		end
+		local targetname = DBM:GetUnitFullName(target)
+		if targetname then
+			if targetname == UnitName("player") then
+				specWarnShieldofLight:Show()
+				voiceShieldofLight:Play("targetyou")
+				yellShieldofLightFades:Schedule(2.8, 1)
+				yellShieldofLightFades:Schedule(1.8, 2)
+				yellShieldofLightFades:Schedule(0.8, 3)
+			else
+				warnShieldofLight:Show(targetname)
 			end
+			if self.Options.SetIconOnShield then
+				self:SetIcon(targetname, 1)
+			end
+		end
+	--"<269.72 17:21:06> [CHAT_MSG_RAID_BOSS_EMOTE] |cFFFF0000Hyrja|r leaps back into battle!#Hyrja###Odyn##0#0##0#344#nil#0#false#false#false#false", -- [1538]
+	elseif npc and target and target == L.name then--Odyn only target when it's a leap into battle.
+		if npc == hyrja then
+			specWarnHyrja:Show()
+			voiceHyrja:Play("bigmob")
+			timerExpelLightCD:Start(4.7)
+			timerShieldofLightCD:Start(9.7)
+			countdownShield:Start(9.7)
+		elseif npc == hymdall then
+			specWarnHymall:Show()
+			voiceHymdall:Play("bigmob")
+			timerDancingBladeCD:Start(6)
+			timerHornOfValorCD:Start(12)
+			countdownHorn:Start(12)
 		end
 	end
 end
