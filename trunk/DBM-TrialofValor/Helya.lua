@@ -12,10 +12,10 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 227967 228730 228514 228390 228565 228032 228854 227903 228056 228619",
+	"SPELL_CAST_START 227967 228730 228514 228390 228565 228032 228854 227903 228056 228619 228633",
 	"SPELL_CAST_SUCCESS 227967 228300 228519",
 	"SPELL_AURA_APPLIED 229119 227982 193367 228519 232488 228054 230267",
-	"SPELL_AURA_REMOVED 193367 229119 230267 228300 167910 228054",
+	"SPELL_AURA_REMOVED 193367 229119 230267 228300 228054",
 	"SPELL_PERIODIC_DAMAGE 227998",
 	"SPELL_PERIODIC_MISSED 227998",
 	"UNIT_DIED",
@@ -27,18 +27,15 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 228730 or ability.id = 228032 or ability.id = 228565 or ability.id = 227967 or ability.id = 228619) and type = "begincast" or
-(ability.id = 228390 or ability.id = 228300 or ability.id = 227903 or ability.id = 228056) and type = "cast" or
-ability.id = 228300 and type = "removebuff" or ability.id = 167910
+(ability.id = 228730 or ability.id = 228032 or ability.id = 228565 or ability.id = 227967 or ability.id = 228619 or ability.id = 228633) and type = "begincast" or
+(ability.id = 228390 or ability.id = 228300 or ability.id = 227903 or ability.id = 228056 or ability.id = 228519) and type = "cast" or
+ability.id = 228300 and type = "removebuff" or ability.id = 167910 or ability.name = "Fetid Rot" and (type = "cast" or type = "applydebuff")
 --]]
 --TODO, Add range finder for Taint of the sea?
---TODO, figure out what to do with Torrent
---TODO, figure out what to do with Ghostly Rage (Night Watch Mariner)
---TODO, figure out what to do with Give no Quarter (Night Watch Mariner)
+--TODO, figure out what to do with Ghostly Rage (Night Watch Mariner). Most say it's not needed and fight already has too much information, so still holding off on this
 --TODO, add Helarjer Mistcaller stuff for mythic
 --TODO, timer update code for fury of maw, when mistcaller gets off a cast
 --TODO, more work with Corrupted Axion and Dark Hatred
---TODO, better way to handle tentacle strikes than just antispamming 2nd and 3rd in mythic sets?
 --Stage One: Low Tide
 local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnTaintOfSea				= mod:NewTargetAnnounce(228054, 2)
@@ -50,7 +47,7 @@ local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnFetidRot					= mod:NewTargetAnnounce(193367, 3)
 ----Night Watch Mariner
 ----MistCaller
-local warnMistInfusion				= mod:NewTargetAnnounce(228854, 4)
+local warnMistInfusion				= mod:NewCastAnnounce(228854, 4, nil, nil, false)
 --Stage Three: Helheim's Last Stand
 local warnDarkHatred				= mod:NewTargetAnnounce(232488, 3)
 local warnOrbOfCorrosion			= mod:NewTargetAnnounce(230267, 3)
@@ -74,6 +71,7 @@ local yellFetidRot					= mod:NewFadesYell(193367)
 local specWarnAnchorSlam			= mod:NewSpecialWarningTaunt(228519, nil, nil, nil, 1, 2)
 ----Night Watch Mariner
 local specWarnLanternofDarkness		= mod:NewSpecialWarningSpell(228619, nil, nil, nil, 2, 2)
+local specWarnGiveNoQuarter			= mod:NewSpecialWarningDodge(228633, nil, nil, nil, 1, 2)
 --Stage Three: Helheim's Last Stand
 local specWarnCorruptedBreath		= mod:NewSpecialWarningSpell(228565, nil, nil, nil, 2)
 local specWarnOrbOfCorrosion		= mod:NewSpecialWarningYou(230267, nil, nil, nil, 1, 5)
@@ -81,7 +79,7 @@ local yellOrbOfCorrosion			= mod:NewPosYell(230267)
 
 --Stage One: Low Tide
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerOrbOfCorruptionCD		= mod:NewNextTimer(25, 229119, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerOrbOfCorruptionCD		= mod:NewNextTimer(25, 229119, "OrbsTimerText", nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerTaintOfSeaCD				= mod:NewCDTimer(14.5, 228088, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
 local timerBilewaterBreathCD		= mod:NewNextTimer(40, 227967, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--On for everyone though so others avoid it too
 local timerTentacleStrikeCD			= mod:NewNextTimer(30, 228730, nil, nil, nil, 2)
@@ -91,19 +89,23 @@ local timerExplodingOozes			= mod:NewCastTimer(22.5, 227992, nil, nil, nil, 2, n
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerFuryofMaw				= mod:NewBuffActiveTimer(32, 228032, nil, nil, nil, 2)
 ----Helya
-local timerFuryofMawCD				= mod:NewNextTimer(44.5, 228032, nil, nil, nil, 2)
-local timerAddsCD					= mod:NewCDTimer(75.5, 167910, nil, nil, nil, 1)
+local timerFuryofMawCD				= mod:NewNextCountTimer(44.5, 228032, nil, nil, nil, 2)
+local timerAddsCD					= mod:NewNextTimer(75.5, 167910, nil, nil, nil, 1)
 ----Grimelord
 local timerSludgeNovaCD				= mod:NewCDTimer(24.2, 228390, nil, "Melee", nil, 2)
 local timerAnchorSlamCD				= mod:NewCDTimer(12, 228519, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerFetidRotCD				= mod:NewCDTimer(13, 193367, nil, nil, nil, 3)
 ----Night Watch Mariner
-local timerLanternofDarknessCD		= mod:NewCDTimer(25, 228619, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerLanternofDarknessCD		= mod:NewNextTimer(25, 228619, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerGiveNoQuarterCD			= mod:NewNextTimer(6, 228633, nil, nil, nil, 3)
+----Mythic Add
+local timerMistInfusion				= mod:NewCastTimer(7, 228854, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Stage Three: Helheim's Last Stand
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerCorruptedBreathCD		= mod:NewCDTimer(40, 228565, nil, nil, nil, 2)
-local timerOrbOfCorrosionCD			= mod:NewCDTimer(17, 230267, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerOrbOfCorrosionCD			= mod:NewNextTimer(17, 230267, "OrbsTimerText", nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
---local berserkTimer					= mod:NewBerserkTimer(300)
+local berserkTimer					= mod:NewBerserkTimer(660)
 
 --Stage One: Low Tide
 local countdownOrbs					= mod:NewCountdown("AltTwo18", 229119)
@@ -125,7 +127,8 @@ local voiceSludgeNova				= mod:NewVoice(228390, "Melee")--runout
 local voiceAnchorSlam				= mod:NewVoice(228519)--tauntboss (maybe change to "changemt" if this add can be up with boss)
 ----Night Watch Mariner
 local voiceLanternofDarkness		= mod:NewVoice(228619)--range5
---Stage Three: Helheim's Last Stand
+local voiceGiveNoQuarter			= mod:NewVoice(228633)--watchstep
+--Stage Three: Helheim's Last Stand (45%)
 local voiceOrbofCorrosion			= mod:NewVoice(230267)--orbrun
 
 mod:AddRangeFrameOption(5, 193367)
@@ -136,31 +139,32 @@ mod:AddInfoFrameOption(193367)
 local seenMobs = {}
 mod.vb.phase = 1
 mod.vb.rottedPlayers = 0
+mod.vb.orbCount = 0
+mod.vb.furyOfMawCount = 0
 
 function mod:OnCombatStart(delay)
 	table.wipe(seenMobs)
 	self.vb.phase = 1
 	self.vb.rottedPlayers = 0
-	if self:IsLFR() then--was ONLY LFR that had diff timers, normal testing had same as heroic
-		timerOrbOfCorruptionCD:Start(18-delay)--START
-		countdownOrbs:Start(18-delay)
-		timerBilewaterBreathCD:Start(42-delay)--Check if changed, because normals timers all match LFR except this
-		timerTentacleStrikeCD:Start(53-delay)
-	elseif self:IsNormal() then
+	self.vb.orbCount = 0
+	self.vb.furyOfMawCount = 0
+	if self:IsEasy() then
 		timerBilewaterBreathCD:Start(13.3-delay)
-		timerOrbOfCorruptionCD:Start(18-delay)--START
+		timerOrbOfCorruptionCD:Start(18-delay, 1, RANGED)--START
 		countdownOrbs:Start(18-delay)
 		timerTentacleStrikeCD:Start(53-delay)
 	elseif self:IsMythic() then
 		timerBilewaterBreathCD:Start(11-delay)
-		timerOrbOfCorruptionCD:Start(14-delay)--START
+		timerOrbOfCorruptionCD:Start(14-delay, 1, RANGED)--START
 		countdownOrbs:Start(14-delay)
 		timerTentacleStrikeCD:Start(35-delay)
+		berserkTimer:Start(-delay)--11 Min confirmed
 	else--TODO, reverify heroic. maybe they changed after tested to match LFR/normal
 		timerBilewaterBreathCD:Start(12-delay)
-		timerOrbOfCorruptionCD:Start(29-delay)--START
+		timerOrbOfCorruptionCD:Start(29-delay, 1, RANGED)--START
 		countdownOrbs:Start(29-delay)
 		timerTentacleStrikeCD:Start(36-delay)
+		berserkTimer:Start(-delay)--11 Min assumed
 	end
 end
 
@@ -208,41 +212,67 @@ function mod:SPELL_CAST_START(args)
 		specWarnCorruptedBreath:Show()
 		if self:IsEasy() then
 			timerCorruptedBreathCD:Start(51)
+		elseif self:IsMythic() then
+			timerCorruptedBreathCD:Start(43)
 		else
 			timerCorruptedBreathCD:Start(47.5)
 		end
 	elseif spellId == 228032 then--Phase 3 Fury of the Maw
-		specWarnFuryofMaw:Show()
+		self.vb.furyOfMawCount = self.vb.furyOfMawCount + 1
+		specWarnFuryofMaw:Show(self.vb.furyOfMawCount)
 		if self:IsLFR() then
-			timerFuryofMawCD:Start(92)
+			timerFuryofMawCD:Start(92, self.vb.furyOfMawCount+1)
 		elseif self:IsNormal() then
-			timerFuryofMawCD:Start(77)
+			timerFuryofMawCD:Start(77, self.vb.furyOfMawCount+1)
+		elseif self:IsMythic() then
+			timerFuryofMawCD:Start(69.3, self.vb.furyOfMawCount+1)
 		else
-			timerFuryofMawCD:Start(74.6)
+			timerFuryofMawCD:Start(74.6, self.vb.furyOfMawCount+1)
 		end
+		timerAddsCD:Start(7)
 	elseif spellId == 228854 then
-		warnMistInfusion:Show()
+		if self:AntiSpam(0.5, 5) then--Combine two cast at same time, but if at least a second apart separate them
+			warnMistInfusion:Show()
+		end
+		timerMistInfusion:Start(nil, args.sourceGUID)
 	elseif spellId == 227903 then
+		self.vb.orbCount = self.vb.orbCount + 1
+		--Odd orbs are ranged and evens are melee
+		local text = self.vb.orbCount+1 % 2 == 0 and MELEE or RANGED
 		if self:IsEasy() then
-			timerOrbOfCorruptionCD:Start(31.2)
+			timerOrbOfCorruptionCD:Start(31.2, self.vb.orbCount+1, text)
 			countdownOrbs:Start(31.2)
 		elseif self:IsMythic() then
-			timerOrbOfCorruptionCD:Start(24)
+			timerOrbOfCorruptionCD:Start(24, self.vb.orbCount+1, text)
 			countdownOrbs:Start(24)
 		else
-			timerOrbOfCorruptionCD:Start(28)
+			timerOrbOfCorruptionCD:Start(28, self.vb.orbCount+1, text)
 			countdownOrbs:Start(28)
 		end
 	elseif spellId == 228056 then
+		self.vb.orbCount = self.vb.orbCount + 1
+		--Odd orbs are ranged and evens are melee
+		local text = self.vb.orbCount+1 % 2 == 0 and MELEE or RANGED
 		if self:IsLFR() then
-			timerOrbOfCorrosionCD:Start(32.7)
+			timerOrbOfCorrosionCD:Start(32.7, self.vb.orbCount+1, text)
 			countdownOrbs:Start(32.7)
+		elseif self:IsMythic() then
+			timerOrbOfCorrosionCD:Start(13, self.vb.orbCount+1, text)
+			countdownOrbs:Start(13)
 		else--Reverify normal
-			timerOrbOfCorrosionCD:Start(17)
+			timerOrbOfCorrosionCD:Start(17, self.vb.orbCount+1, text)
 			countdownOrbs:Start(17)
 		end
 	elseif spellId == 228619 then
 		specWarnLanternofDarkness:Show()
+	elseif spellId == 228633 then
+		specWarnGiveNoQuarter:Show()
+		voiceGiveNoQuarter:Play("watchstep")
+		if self:IsEasy() then
+			timerGiveNoQuarterCD:Start(9.7)
+		else
+			timerGiveNoQuarterCD:Start(6)
+		end
 	end
 end
 
@@ -253,10 +283,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerExplodingOozes:Start()
 		countdownOozeExplosions:Start()
 	elseif spellId == 228300 then--Phase 2 Fury of the Maw
-		specWarnFuryofMaw:Show()
+		self.vb.furyOfMawCount = self.vb.furyOfMawCount + 1
+		specWarnFuryofMaw:Show(self.vb.furyOfMawCount)
 		timerFuryofMaw:Start()
+		if self:IsMythic() then
+			timerAddsCD:Start(7)
+		end
 	elseif spellId == 228519 then
-		timerAnchorSlamCD:Start(nil, args.sourceGUID)
+		if self:IsEasy() then
+			timerAnchorSlamCD:Start(14, args.sourceGUID)
+		else
+			timerAnchorSlamCD:Start(12, args.sourceGUID)
+		end
 	end
 end
 
@@ -278,12 +316,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnOrbOfCorrosion:CombinedShow(0.3, args.destName)
 		if self.Options.SetIconOnOrbs then
 			local uId = DBM:GetRaidUnitId(args.destName)
-			if self:IsTanking(uId) then
-				self:SetIcon(args.destName, 2)--Circle
-			elseif self:IsHealer(uId) then--LFR/Normal doesn't choose a healer, just tank/damage
-				self:SetIcon(args.destName, 1)--Star
+			if self:IsMythic() then
+				if self:IsHealer(uId) then--On mythic, a tank isn't chosen, just 1 healer and 2 dps
+					self:SetIcon(args.destName, 1)--Star
+				else
+					self:SetSortedIcon(1, args.destName, 2, 2)--Circle and Diamond
+				end
 			else
-				self:SetIcon(args.destName, 3)--Diamond
+				if self:IsTanking(uId) then
+					self:SetIcon(args.destName, 2)--Circle
+				elseif self:IsHealer(uId) then--LFR/Normal doesn't choose a healer, just tank/damage
+					self:SetIcon(args.destName, 1)--Star
+				else
+					self:SetIcon(args.destName, 3)--Diamond
+				end
 			end
 		end
 	elseif spellId == 227982 then
@@ -297,7 +343,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 228519 then
 		if not args:IsPlayer() then
 			local uId = DBM:GetRaidUnitId(args.destName)
-			if self:IsTanking(uId) then--Filter numties standing in front of boss that shouldn't be
+			--Filter numties standing in front of boss that shouldn't be
+			--Also filter tanks that are too far away to taunt from (mythic split)
+			if self:IsTanking(uId) and self:CheckNearby(18, args.destName) then
 				specWarnAnchorSlam:Show(args.destName)
 				voiceAnchorSlam:Play("tauntboss")
 			end
@@ -360,10 +408,18 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 228300 then
 		timerFuryofMaw:Stop()
 		if self.vb.phase == 2 then
-			timerFuryofMawCD:Start()
+			if self:IsEasy() then
+				timerAddsCD:Start(7)
+				timerFuryofMawCD:Start(45, self.vb.furyOfMawCount+1)
+			elseif self:IsMythic() then
+				timerFuryofMawCD:Start(37.3, self.vb.furyOfMawCount+1)
+			else
+				timerAddsCD:Start(7)
+				timerFuryofMawCD:Start(42.6, self.vb.furyOfMawCount+1)
+			end
 		end
-	elseif spellId == 167910 and self:AntiSpam(10, 2) then
-		self:SendSync("Adds")--I've outrnaged the combat log event for this being on one of the side platforms, since this event is already coming from further away (in water)
+--	elseif spellId == 167910 and self:AntiSpam(10, 2) then
+--		self:SendSync("Adds")--I've outrnaged the combat log event for this being on one of the side platforms, since this event is already coming from further away (in water)
 	elseif spellId == 228054 then
 		if self.Options.SetIconOnTaint then
 			self:SetIcon(args.destName, 0)
@@ -384,6 +440,11 @@ function mod:UNIT_DIED(args)
 	if cid == 114709 then--GrimeLord
 		timerSludgeNovaCD:Stop(args.destGUID)
 		timerAnchorSlamCD:Stop(args.destGUID)
+	elseif cid == 114809 then--Night Watch Mariner
+		timerLanternofDarknessCD:Stop(args.destGUID)
+		timerGiveNoQuarterCD:Stop(args.destGUID)
+	elseif cid == 116335 then--Helarjar Mistwatcher
+		timerMistInfusion:Stop(args.destGUID)
 	end
 end
 
@@ -398,21 +459,27 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			if cid == 114709 then--GrimeLord
 				specWarnGrimeLord:Show()
 				voiceGrimeLord:Play("bigmob")
-				timerAnchorSlamCD:Start(14, GUID)
+				timerFetidRotCD:Start(7, GUID)
+				if not self:IsLFR() then
+					timerAnchorSlamCD:Start(13.7, GUID)
+				end
 				timerSludgeNovaCD:Start(17.5, GUID)
-				--timerGrimeLordCD:Start()
 			elseif cid == 114809 then--Night Watch Mariner
 				if self.vb.phase == 2 then
 					if self:IsMythic() then
-						timerLanternofDarknessCD:Start(26)
+						timerGiveNoQuarterCD:Start(7, GUID)
+						timerLanternofDarknessCD:Start(26, GUID)
 					else
-						timerLanternofDarknessCD:Start(30)
+						timerGiveNoQuarterCD:Start(7, GUID)
+						timerLanternofDarknessCD:Start(30, GUID)
 					end
 				else
 					if self:IsMythic() then
-						--timerLanternofDarknessCD:Start(26)--Unknown at this time
+						timerGiveNoQuarterCD:Start(10, GUID)--Poor data. Oddity?
+						timerLanternofDarknessCD:Start(30, GUID)
 					else
-						timerLanternofDarknessCD:Start(35)
+						timerGiveNoQuarterCD:Start(7, GUID)
+						timerLanternofDarknessCD:Start(35, GUID)
 					end
 				end
 			end
@@ -507,24 +574,35 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerBilewaterBreathCD:Stop()
 		timerOrbOfCorruptionCD:Stop()
 		countdownOrbs:Cancel()
-		--timerGrimeLordCD:Start(14)
-		--timerNightWatchCD:Start(14)
-		timerAddsCD:Start(14)
+		if not self:IsMythic() then
+			--On mythic first fury of maw is instantly on phase change, adds timer is handled by that
+			timerAddsCD:Start(14)
+			timerFuryofMawCD:Start(36.5, 1)
+		end
 	elseif spellId == 228546 and not self.vb.phase == 3 then--Helya (Phase 3, 6 seconds slower than yell)
 		self.vb.phase = 3
+		self.vb.orbCount = 0
+		self.vb.furyOfMawCount = 0
 		timerFuryofMawCD:Stop()
-		--timerGrimeLordCD:Stop()
-		--timerNightWatchCD:Stop()
-		timerOrbOfCorrosionCD:Start(11)
+		timerOrbOfCorrosionCD:Start(11, 1, RANGED)--TODO, review if same in all modes. I somehow doubt it
 		countdownOrbs:Start(11)
 		if self:IsEasy() then
 			timerCorruptedBreathCD:Start(40)
-			timerFuryofMawCD:Start(90)
-			timerAddsCD:Start(97)
+			timerFuryofMawCD:Start(90, 1)
+		elseif self:IsMythic() then
+			timerCorruptedBreathCD:Start(17.3)--Guessed based on energy gain rates seen in phase 3 (can't perfect without Helya event)
+			timerFuryofMawCD:Start(27, 1)
 		else
 			timerCorruptedBreathCD:Start(19.4)
-			timerFuryofMawCD:Start(30)
-			timerAddsCD:Start(38)
+			timerFuryofMawCD:Start(30, 1)
+		end
+	elseif spellId == 228838 then
+		if self:IsEasy() then
+			timerFetidRotCD:Start(15, UnitGUID(uId))
+		elseif self:IsMythic() then
+			timerFetidRotCD:Start(13, UnitGUID(uId))
+		else
+			timerFetidRotCD:Start(12, UnitGUID(uId))
 		end
 	end
 end
@@ -533,25 +611,22 @@ function mod:OnSync(msg)
 	if not self:IsInCombat() then return end
 	if msg == "Phase3" and not self.vb.phase == 3 then
 		self.vb.phase = 3
+		self.vb.orbCount = 0
+		self.vb.furyOfMawCount = 0
 		timerFuryofMawCD:Stop()
 		--timerGrimeLordCD:Stop()
 		--timerNightWatchCD:Stop()
-		timerOrbOfCorrosionCD:Start(17)
+		timerOrbOfCorrosionCD:Start(17, 1, RANGED)
 		countdownOrbs:Start(17)
-		if self:IsEasy() then--Still long?
+		if self:IsLFR() then--Still long?
 			timerCorruptedBreathCD:Start(46)
-			timerFuryofMawCD:Start(96)
-			timerAddsCD:Start(103)
+			timerFuryofMawCD:Start(96, 1)
+		elseif self:IsMythic() then
+			timerCorruptedBreathCD:Start(23.3)--Guessed based on energy gain rates seen in phase 3 (can't perfect without Helya event)
+			timerFuryofMawCD:Start(33, 1)--Guessed
 		else
 			timerCorruptedBreathCD:Start(25.4)
-			timerFuryofMawCD:Start(36)
-			timerAddsCD:Start(44)
-		end
-	elseif msg == "Adds" then
-		if self.vb.phase == 3 and self:IsLFR() then
-			timerAddsCD:Start(92)
-		else
-			timerAddsCD:Start(75.5)
+			timerFuryofMawCD:Start(36, 1)
 		end
 	end
 end

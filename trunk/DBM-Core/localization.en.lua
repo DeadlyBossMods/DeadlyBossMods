@@ -241,6 +241,7 @@ DBM_ERROR_NO_PERMISSION				= "You don't have the required permission to do this.
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Close health frame"
 
+--Common Locals
 DBM_CORE_UNKNOWN					= "unknown"--UNKNOWN which is "Unknown" (does u vs U matter?)
 DBM_CORE_LEFT						= "Left"
 DBM_CORE_RIGHT						= "Right"
@@ -248,6 +249,8 @@ DBM_CORE_BACK						= "Back"--BACK
 DBM_CORE_MIDDLE						= "Middle"
 DBM_CORE_FRONT						= "Front"
 DBM_CORE_INTERMISSION				= "Intermission"--No blizz global for this, and will probably be used in most end tier fights with intermission phases
+DBM_CORE_ORB						= "Orb"
+--Common Locals end
 
 DBM_CORE_BREAK_USAGE				= "Break timer cannot be longer than 60 minutes. Make sure you're inputting time in minutes and not seconds."
 DBM_CORE_BREAK_START				= "Break starting now -- you have %s! (Sent by %s)"
