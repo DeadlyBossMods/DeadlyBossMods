@@ -16,6 +16,10 @@ L= DBM:GetModLocalization(1830)
 ---------------------------
 L= DBM:GetModLocalization(1829)
 
+L:SetTimerLocalization({
+	OrbsTimerText		= "След. Сфера (%d-%s)"
+})
+
 L:SetMiscLocalization({
 	phaseThree =	"Your efforts are for naught, mortals! Odyn will NEVER be free!",
 	near =			"Возле",
