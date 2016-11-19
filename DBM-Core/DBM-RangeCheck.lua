@@ -601,7 +601,7 @@ do
 					elseif CheckInteractDistance(uId, 3) then range = 10
 					elseif CheckInteractDistance(uId, 2) then range = 11
 					elseif IsItemInRange(32321, uId) then range = 13--reports 12 but actual range tested is 13
-					elseif IsItemInRange(6450, uId) then range = 18--Bandages. (despite popular sites saying it's 15 yards, it's actually 18 yards erified even by UnitDistanceSquared
+					elseif IsItemInRange(6450, uId) then range = 18--Bandages. (despite popular sites saying it's 15 yards, it's actually 18 yards verified by UnitDistanceSquared
 					elseif IsItemInRange(21519, uId) then range = 22--Item says 20, returns true until 22.
 					elseif CheckInteractDistance(uId, 1) then range = 30
 					elseif UnitInRange(uId) then range = 43
