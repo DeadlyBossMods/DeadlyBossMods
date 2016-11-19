@@ -12,7 +12,7 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 227967 228730 228514 228390 228565 228032 228854 227903 228056",
+	"SPELL_CAST_START 227967 228730 228514 228390 228565 228032 228854 227903 228056 228619",
 	"SPELL_CAST_SUCCESS 227967 228300 228519",
 	"SPELL_AURA_APPLIED 229119 227982 193367 228519 232488 228054 230267",
 	"SPELL_AURA_REMOVED 193367 229119 230267 228300 167910 228054",
@@ -27,19 +27,18 @@ mod:RegisterEventsInCombat(
 )
 
 --[[
-(ability.id = 228730 or ability.id = 228032 or ability.id = 228565 or ability.id = 227967) and type = "begincast" or
+(ability.id = 228730 or ability.id = 228032 or ability.id = 228565 or ability.id = 227967 or ability.id = 228619) and type = "begincast" or
 (ability.id = 228390 or ability.id = 228300 or ability.id = 227903 or ability.id = 228056) and type = "cast" or
 ability.id = 228300 and type = "removebuff" or ability.id = 167910
 --]]
 --TODO, Add range finder for Taint of the sea?
 --TODO, figure out what to do with Torrent
---TODO, figure out what to do with Lantern of Darkness (Night Watch Mariner)
 --TODO, figure out what to do with Ghostly Rage (Night Watch Mariner)
 --TODO, figure out what to do with Give no Quarter (Night Watch Mariner)
 --TODO, add Helarjer Mistcaller stuff for mythic
 --TODO, timer update code for fury of maw, when mistcaller gets off a cast
 --TODO, more work with Corrupted Axion and Dark Hatred
---TODO, better way to handle  tentacle strikes than just antispamming 2nd and 3rd in mythic sets?
+--TODO, better way to handle tentacle strikes than just antispamming 2nd and 3rd in mythic sets?
 --Stage One: Low Tide
 local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnTaintOfSea				= mod:NewTargetAnnounce(228054, 2)
@@ -74,12 +73,14 @@ local specWarnFetidRot				= mod:NewSpecialWarningMoveAway(193367, nil, nil, nil,
 local yellFetidRot					= mod:NewFadesYell(193367)
 local specWarnAnchorSlam			= mod:NewSpecialWarningTaunt(228519, nil, nil, nil, 1, 2)
 ----Night Watch Mariner
+local specWarnLanternofDarkness		= mod:NewSpecialWarningSpell(228619, nil, nil, nil, 2, 2)
 --Stage Three: Helheim's Last Stand
 local specWarnCorruptedBreath		= mod:NewSpecialWarningSpell(228565, nil, nil, nil, 2)
 local specWarnOrbOfCorrosion		= mod:NewSpecialWarningYou(230267, nil, nil, nil, 1, 5)
 local yellOrbOfCorrosion			= mod:NewPosYell(230267)
 
 --Stage One: Low Tide
+mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerOrbOfCorruptionCD		= mod:NewNextTimer(25, 229119, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerTaintOfSeaCD				= mod:NewCDTimer(14.5, 228088, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
 local timerBilewaterBreathCD		= mod:NewNextTimer(40, 227967, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--On for everyone though so others avoid it too
@@ -87,17 +88,18 @@ local timerTentacleStrikeCD			= mod:NewNextTimer(30, 228730, nil, nil, nil, 2)
 local timerTentacleStrike			= mod:NewCastSourceTimer(6, 228730, nil, nil, nil, 5)
 local timerExplodingOozes			= mod:NewCastTimer(22.5, 227992, nil, nil, nil, 2, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Two: From the Mists (65%)
+mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerFuryofMaw				= mod:NewBuffActiveTimer(32, 228032, nil, nil, nil, 2)
 ----Helya
 local timerFuryofMawCD				= mod:NewNextTimer(44.5, 228032, nil, nil, nil, 2)
-----Grimelord
---local timerGrimeLordCD				= mod:NewCDTimer(52.7, "ej14263", nil, nil, nil, 1, 228519)
---local timerNightWatchCD				= mod:NewCDTimer(52.7, "ej14278", nil, "Tank", nil, 1, 228632)
 local timerAddsCD					= mod:NewCDTimer(75.5, 167910, nil, nil, nil, 1)
+----Grimelord
 local timerSludgeNovaCD				= mod:NewCDTimer(24.2, 228390, nil, "Melee", nil, 2)
 local timerAnchorSlamCD				= mod:NewCDTimer(12, 228519, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Night Watch Mariner
+local timerLanternofDarknessCD		= mod:NewCDTimer(25, 228619, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage Three: Helheim's Last Stand
+mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerCorruptedBreathCD		= mod:NewCDTimer(40, 228565, nil, nil, nil, 2)
 local timerOrbOfCorrosionCD			= mod:NewCDTimer(17, 230267, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
@@ -121,6 +123,8 @@ local voiceGrimeLord				= mod:NewVoice("ej14263", "Tank")--bigmob
 local voiceFetidRot					= mod:NewVoice(193367)--range5
 local voiceSludgeNova				= mod:NewVoice(228390, "Melee")--runout
 local voiceAnchorSlam				= mod:NewVoice(228519)--tauntboss (maybe change to "changemt" if this add can be up with boss)
+----Night Watch Mariner
+local voiceLanternofDarkness		= mod:NewVoice(228619)--range5
 --Stage Three: Helheim's Last Stand
 local voiceOrbofCorrosion			= mod:NewVoice(230267)--orbrun
 
@@ -211,6 +215,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnFuryofMaw:Show()
 		if self:IsLFR() then
 			timerFuryofMawCD:Start(92)
+		elseif self:IsNormal() then
+			timerFuryofMawCD:Start(77)
 		else
 			timerFuryofMawCD:Start(74.6)
 		end
@@ -235,6 +241,8 @@ function mod:SPELL_CAST_START(args)
 			timerOrbOfCorrosionCD:Start(17)
 			countdownOrbs:Start(17)
 		end
+	elseif spellId == 228619 then
+		specWarnLanternofDarkness:Show()
 	end
 end
 
@@ -394,7 +402,19 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				timerSludgeNovaCD:Start(17.5, GUID)
 				--timerGrimeLordCD:Start()
 			elseif cid == 114809 then--Night Watch Mariner
-				--timerNightWatchCD:Start()
+				if self.vb.phase == 2 then
+					if self:IsMythic() then
+						timerLanternofDarknessCD:Start(26)
+					else
+						timerLanternofDarknessCD:Start(30)
+					end
+				else
+					if self:IsMythic() then
+						--timerLanternofDarknessCD:Start(26)--Unknown at this time
+					else
+						timerLanternofDarknessCD:Start(35)
+					end
+				end
 			end
 		end
 	end
@@ -528,10 +548,10 @@ function mod:OnSync(msg)
 			timerAddsCD:Start(44)
 		end
 	elseif msg == "Adds" then
-		if self.vb.phase == 2 then
-			timerAddsCD:Start(75.5)
-		else
+		if self.vb.phase == 3 and self:IsLFR() then
 			timerAddsCD:Start(92)
+		else
+			timerAddsCD:Start(75.5)
 		end
 	end
 end
