@@ -3567,21 +3567,50 @@ function DBM:SCENARIO_CRITERIA_UPDATE()
 	end
 end
 
---REFACTOR IN LEGION
-function DBM:CHALLENGE_MODE_START(mapID)
-	self:Debug("CHALLENGE_MODE_START fired for mapID "..mapID)
-end
+do
+	local function UpdateChestTimer(self)
+		local _, elapsedTime = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active.
+		local _, _, maxTime = C_ChallengeMode.GetMapInfo(LastInstanceMapID);
+		maxTime = maxTime * 0.8--Two chests
+		local remaining = (maxTime or 0) - (elapsedTime or 0)
+		if remaining and remaining > 0 then--Safey check in case it fails
+			self.Bars:CreateBar(remaining, "2 "..CHESTSLOT)
+			self:Schedule(remaining+1, UpdateChestTimer, self)
+		end
+	end
 
-function DBM:CHALLENGE_MODE_RESET()
-	self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
-	self:Debug("CHALLENGE_MODE_RESET fired")
-end
+	function DBM:CHALLENGE_MODE_START(mapID)
+		self:Debug("CHALLENGE_MODE_START fired for mapID "..mapID)
+		if not self.Options.MythicPlusChestTimer then return end
+		self:Unschedule(UpdateChestTimer)
+		local _, elapsedTime = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active.
+		local _, _, maxTime = C_ChallengeMode.GetMapInfo(LastInstanceMapID);
+		maxTime = maxTime * 0.6--Three Chests
+		local remaining = (maxTime or 0) - (elapsedTime or 0)
+		if remaining and remaining > 0 then--Safey check in case it fails
+			self.Bars:CreateBar(remaining, "3 "..CHESTSLOT)
+			self:Schedule(remaining+1, UpdateChestTimer, self)
+		end
+	end
 
-function DBM:CHALLENGE_MODE_COMPLETED()
-	self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
-	self:Debug("CHALLENGE_MODE_COMPLETED fired for mapID "..LastInstanceMapID)
+	function DBM:CHALLENGE_MODE_RESET()
+		self:Debug("CHALLENGE_MODE_RESET fired")
+		self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
+		if not self.Options.MythicPlusChestTimer then return end
+		self:Unschedule(UpdateChestTimer)
+		self.Bars:CancelBar("3 "..CHESTSLOT)
+		self.Bars:CancelBar("2 "..CHESTSLOT)
+	end
+
+	function DBM:CHALLENGE_MODE_COMPLETED()
+		self:Debug("CHALLENGE_MODE_COMPLETED fired for mapID "..LastInstanceMapID)
+		self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
+		if not self.Options.MythicPlusChestTimer then return end
+		self:Unschedule(UpdateChestTimer)
+		self.Bars:CancelBar("3 "..CHESTSLOT)
+		self.Bars:CancelBar("2 "..CHESTSLOT)
+	end
 end
---REFACTOR IN LEGION
 
 --------------------------------
 --  Load Boss Mods on Demand  --
