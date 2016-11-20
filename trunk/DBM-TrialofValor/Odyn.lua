@@ -7,7 +7,7 @@ mod:SetEncounterID(1958)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1)
-mod:SetHotfixNoticeRev(15441)
+mod:SetHotfixNoticeRev(15481)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -565,7 +565,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	--"<51.36 16:56:28> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Draw Power::3-3198-1648-10280-227503-000A6050FC:227503]]", -- [376]
-	if spellId == 227503 then--Draw Power
+	if spellId == 227503 or spellId == 229576 then--Draw Power
 		timerDrawPower:Start()
 		countdownDrawPower:Start()
 		if self:IsEasy() then
