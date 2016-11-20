@@ -318,7 +318,7 @@ L.SKT_Enabled				= "Show record victory timer for current fight if available"
 L.CRT_Enabled				= "Show timer for next combat ressurection charge"
 L.ShowRespawn				= "Show boss respawn timer after a wipe"
 L.ShowQueuePop				= "Show time remaining to accept a queue pop (LFG,BG,etc)"
-L.ShowMythicPlusChests		= "Show time remaining to complete 2/3 chests in Mythic+ dungoens"
+L.ShowMythicPlusChests		= "Show time remaining to complete 2/3 chests in Mythic+ dungeons"
 --
 L.Area_AutoLogging			= "Auto Logging Options"
 L.AutologBosses				= "Automatically record boss encounters using blizzard combat log (Use /dbm pull before bosses to start logging early for pre pots and other events.)"
