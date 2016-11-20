@@ -271,6 +271,7 @@ DBM.DefaultOptions = {
 	CRT_Enabled = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
+	MythicPlusChestTimer = true,
 	HelpMessageVersion = 3,
 	NewsMessageShown = 4,
 	MoviesSeen = {},
