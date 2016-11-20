@@ -59,7 +59,7 @@ local specWarnTaintofSea			= mod:NewSpecialWarningMoveAway(228088, nil, nil, nil
 local specWarnBilewaterBreath		= mod:NewSpecialWarningSpell(227967, nil, nil, nil, 2, 2)
 local specWarnBilewaterRedox		= mod:NewSpecialWarningTaunt(227982, nil, nil, nil, 1, 2)
 local specWarnBilewaterCorrosion	= mod:NewSpecialWarningMove(227998, nil, nil, nil, 1, 2)
-local specWarnTentacleStrike		= mod:NewSpecialWarningSoakPos(228730, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(228730), nil, 2)
+local specWarnTentacleStrike		= mod:NewSpecialWarningCount(228730, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(228730), nil, 2)
 --Stage Two: From the Mists (65%)
 ----Helya
 local specWarnFuryofMaw				= mod:NewSpecialWarningSpell(228032, nil, nil, nil, 2)
@@ -280,8 +280,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 227967 then
 		--Start ooze stuff here since all their stuff is hidden from combat log
-		timerExplodingOozes:Start()
-		countdownOozeExplosions:Start()
+		if self:IsMythic() then
+			timerExplodingOozes:Start(12)
+			countdownOozeExplosions:Start(12)
+		else
+			timerExplodingOozes:Start()
+			countdownOozeExplosions:Start()
+		end
 	elseif spellId == 228300 then--Phase 2 Fury of the Maw
 		self.vb.furyOfMawCount = self.vb.furyOfMawCount + 1
 		specWarnFuryofMaw:Show(self.vb.furyOfMawCount)
