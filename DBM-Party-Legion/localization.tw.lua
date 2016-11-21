@@ -451,3 +451,7 @@ L = DBM:GetModLocalization("RTKTrash")
 L:SetGeneralLocalization({
 	name =	"重返卡拉贊小怪"
 })
+
+L:SetMiscLocalization({
+	speedRun		="一陣詭異的冷風吹了過來..."
+})

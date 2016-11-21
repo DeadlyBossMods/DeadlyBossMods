@@ -19,8 +19,6 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s不能被讀取因為你的DBM核心未達�
 DBM_CORE_WHATS_NEW					= "版本更新：修正一個DBM版本更新的問題。DBM不再會不顧使用者的設定去過濾破碎群島的片段動畫。加入惡魔入侵模組。"
 DBM_CORE_WHATS_NEW_LINK				= "提醒：因為暴雪將在7.1版本將移除副本中的單位位置的API，許多與單位位置的功能如：距離雷達將有許多限制。想了解為什麼：|HDBM:forumsnews|h|cff3588ff點擊這裡|r"
 
---Pre Patch 7.1 Notice
-DBM_CORE_NO_RANGE_SOON				= "注意：在7.1版後，距離雷達將不能在副本中使用。"
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "距離雷達不能在副本中使用，使用傳統文字距離框架取代"
 DBM_CORE_NO_ARROW					= "箭頭不能在副本中使用"
@@ -58,6 +56,10 @@ DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s結束!本次用了%s，你已有共%d次�
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥在%s前開始，恢復計時器中..."
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor開始記錄。"
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor結束紀錄。"
+
+DBM_CORE_MOVIE_SKIPPED				= "一個過場動畫已被自動地略過。"
+
+DBM_CORE_AFK_WARNING				= "你正在AFK和戰鬥中(血量還剩餘%d百分比)所以發出警告。如果你沒在AFK，請清除AFK的標籤或是在額外功能禁用此選項。"
 
 DBM_CORE_COMBAT_STARTED_AI_TIMER	= "我的CPU是類神經網路處理器，一種學習型電腦。(此戰鬥會使用新的AI計時器功能去產生計時器的近似值)"
 
@@ -246,6 +248,7 @@ DBM_CORE_BACK						= "後"
 DBM_CORE_MIDDLE						= "中"
 DBM_CORE_FRONT						= "前"
 DBM_CORE_INTERMISSION				= "中場時間"
+DBM_CORE_ORB						= "球"
 
 DBM_CORE_BREAK_USAGE				= "休息時間不能長於60分鐘。請確定你輸入的時間是分鐘不是秒。"
 DBM_CORE_BREAK_START				= "現在開始休息-你有%s分鐘!"
@@ -360,6 +363,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount = "需對$spell:%s更換目標時(�
 
 DBM_CORE_AUTO_TIMER_TEXTS.target			= "%s:%%s"
 DBM_CORE_AUTO_TIMER_TEXTS.cast				= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.castsource		= "%s:%%s"
 DBM_CORE_AUTO_TIMER_TEXTS.active			= "%s結束"
 DBM_CORE_AUTO_TIMER_TEXTS.fades				= "%s消退"
 DBM_CORE_AUTO_TIMER_TEXTS.ai				= "%sAI"
@@ -377,6 +381,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.roleplay			= GUILD_INTEREST_RP
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target			= "為$spell:%s顯示減益計時器"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast			= "為$spell:%s顯示施法計時器"
+DBM_CORE_AUTO_TIMER_OPTIONS.castsource		= "為$spell:%s的施法來源顯示計時器"
 DBM_CORE_AUTO_TIMER_OPTIONS.active			= "為$spell:%s顯示持續時間計時器"
 DBM_CORE_AUTO_TIMER_OPTIONS.fades			= "當$spell:%s將從玩家消退顯示計時器"
 DBM_CORE_AUTO_TIMER_OPTIONS.ai				= "為$spell:%s顯示AI計時器"
