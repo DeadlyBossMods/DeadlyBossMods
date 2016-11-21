@@ -6,18 +6,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1819)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 ---------------------------
 -- Guarm --
 ---------------------------
@@ -28,8 +16,12 @@ L= DBM:GetModLocalization(1830)
 ---------------------------
 L= DBM:GetModLocalization(1829)
 
+L:SetTimerLocalization({
+	OrbsTimerText		= "下一個球(%d-%s)"
+})
+
 L:SetMiscLocalization({
-	phaseThree =	"Your efforts are for naught, mortals! Odyn will NEVER be free!",
+	phaseThree =	"凡人，你們根本白費工夫！歐丁永遠別想自由！",
 	near =			"近",
 	far =			"遠",
 	multiple =		"多"
