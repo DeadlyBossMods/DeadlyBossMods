@@ -20,7 +20,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 227998",
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_EMOTE",
 	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -29,7 +28,7 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 228730 or ability.id = 228032 or ability.id = 228565 or ability.id = 227967 or ability.id = 228619 or ability.id = 228633) and type = "begincast" or
 (ability.id = 228390 or ability.id = 228300 or ability.id = 227903 or ability.id = 228056 or ability.id = 228519) and type = "cast" or
-ability.id = 228300 and type = "removebuff" or ability.id = 167910 or ability.name = "Fetid Rot" and (type = "cast" or type = "applydebuff")
+ability.id = 228300 and type = "removebuff" or ability.id = 167910 or (ability.name = "Fetid Rot" or ability.id = 228054) and (type = "cast" or type = "applydebuff")
 --]]
 --TODO, Add range finder for Taint of the sea?
 --TODO, figure out what to do with Ghostly Rage (Night Watch Mariner). Most say it's not needed and fight already has too much information, so still holding off on this
@@ -154,11 +153,14 @@ local seenMobs = {}
 181.444	Striking Tentacle 11 begins casting Tentacle Strike (melee)
 --]]
 local mythicTentacleSpawns = {"2x"..DBM_CORE_FRONT, "1x"..DBM_CORE_FRONT.."/1x"..DBM_CORE_BACK, "2x"..DBM_CORE_BACK, "2x"..DBM_CORE_BACK.."/1x"..DBM_CORE_FRONT, "2x"..DBM_CORE_FRONT}
+local phase3MythicOrbs = {6, 13, 13, 27.3, 10.7, 13, 25, 13, 13, 25, 13, 18.5, 19.5, 13, 13, 12, 12, 16.8, 8.2}
+local phase3MythicTaint = {0, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 17, 14, 11}--Needs two-four more casts til berserk
 mod.vb.phase = 1
 mod.vb.rottedPlayers = 0
 mod.vb.orbCount = 0
 mod.vb.furyOfMawCount = 0
 mod.vb.tentacleCount = 0
+mod.vb.taintCount = 0
 
 function mod:OnCombatStart(delay)
 	table.wipe(seenMobs)
@@ -167,15 +169,18 @@ function mod:OnCombatStart(delay)
 	self.vb.orbCount = 0
 	self.vb.furyOfMawCount = 0
 	self.vb.tentacleCount = 0
+	self.vb.taintCount = 0
 	if self:IsEasy() then
 		timerBilewaterBreathCD:Start(13.3-delay)
 		timerOrbOfCorruptionCD:Start(18-delay, 1, RANGED)--START
 		countdownOrbs:Start(18-delay)
 		timerTentacleStrikeCD:Start(53-delay, 1)
+		--timerTaintOfSeaCD:Start(-delay)--FIXME
 	elseif self:IsMythic() then
 		timerBilewaterBreathCD:Start(11-delay)
 		timerOrbOfCorruptionCD:Start(14-delay, 1, RANGED)--START
 		countdownOrbs:Start(14-delay)
+		timerTaintOfSeaCD:Start(15-delay)
 		timerTentacleStrikeCD:Start(35-delay, 1)
 		berserkTimer:Start(-delay)--11 Min confirmed
 	else--TODO, reverify heroic. maybe they changed after tested to match LFR/normal
@@ -183,6 +188,7 @@ function mod:OnCombatStart(delay)
 		timerOrbOfCorruptionCD:Start(29-delay, 1, RANGED)--START
 		countdownOrbs:Start(29-delay)
 		timerTentacleStrikeCD:Start(36-delay, 1)
+		--timerTaintOfSeaCD:Start(-delay)--FIXME
 		berserkTimer:Start(-delay)--11 Min assumed
 	end
 end
@@ -283,8 +289,14 @@ function mod:SPELL_CAST_START(args)
 			timerOrbOfCorrosionCD:Start(32.7, self.vb.orbCount+1, text)
 			countdownOrbs:Start(32.7)
 		elseif self:IsMythic() then
-			timerOrbOfCorrosionCD:Start(13, self.vb.orbCount+1, text)
-			countdownOrbs:Start(13)
+			local timer = phase3MythicOrbs[self.vb.orbCount+1]
+			if timer then
+				timerOrbOfCorrosionCD:Start(timer, self.vb.orbCount+1, text)
+				countdownOrbs:Start(timer)
+			else
+				timerOrbOfCorrosionCD:Start(12, self.vb.orbCount+1, text)
+				countdownOrbs:Start(12)
+			end
 		else--Reverify normal
 			timerOrbOfCorrosionCD:Start(17, self.vb.orbCount+1, text)
 			countdownOrbs:Start(17)
@@ -518,12 +530,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if (msg == L.phaseThree or msg:find(L.phaseThree)) then
-		self:SendSync("Phase3")--Syncing to help unlocalized clients
-	end
-end
-
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg:find(L.near) then
 		if not self:IsMythic() then
@@ -571,9 +577,21 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 228088 then--Taint of Sea
-		if self:IsEasy() then--Cast MORE OFTEN in LFR
+		self.vb.taintCount = self.vb.taintCount + 1
+		if self:IsEasy() then--Cast MORE OFTEN in LFR/normal?
 			if self.vb.phase == 3 then
 				timerTaintOfSeaCD:Start(27)
+			else
+				timerTaintOfSeaCD:Start(12.1)
+			end
+		elseif self:IsMythic() then
+			if self.vb.phase == 3 then
+				local timer = phase3MythicTaint[self.vb.taintCount+1]
+				if timer then
+					timerTaintOfSeaCD:Start(timer)
+				else
+					timerTaintOfSeaCD:Start(11)--Assume rest are 11 until more data
+				end
 			else
 				timerTaintOfSeaCD:Start(12.1)
 			end
@@ -581,7 +599,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			if self.vb.phase == 3 then
 				timerTaintOfSeaCD:Start(22)
 			else
-				timerTaintOfSeaCD:Start()
+				timerTaintOfSeaCD:Start()--Recheck, why would LFR/normal have 12 but heroic be 14?
 			end
 		end
 	elseif spellId == 228372 then--Mists of Helheim (Phase 2)
@@ -597,20 +615,26 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		end
 	elseif spellId == 228546 and not self.vb.phase == 3 then--Helya (Phase 3, 6 seconds slower than yell)
 		self.vb.phase = 3
+		self.vb.taintCount = 0--TODO, make sure helya happens before first taint goes out
 		self.vb.orbCount = 0
 		self.vb.furyOfMawCount = 0
 		timerFuryofMawCD:Stop()
-		timerOrbOfCorrosionCD:Start(11, 1, RANGED)--TODO, review if same in all modes. I somehow doubt it
-		countdownOrbs:Start(11)
-		if self:IsEasy() then
-			timerCorruptedBreathCD:Start(40)
-			timerFuryofMawCD:Start(90, 1)
+		if self:IsLFR() then
+			timerOrbOfCorrosionCD:Start(11, 1, RANGED)--Needs recheck
+			countdownOrbs:Start(11)--Needs recheck
+			timerCorruptedBreathCD:Start(40)--Needs recheck
+			timerFuryofMawCD:Start(90, 1)--Needs recheck
 		elseif self:IsMythic() then
-			timerCorruptedBreathCD:Start(17.3)--Guessed based on energy gain rates seen in phase 3 (can't perfect without Helya event)
-			timerFuryofMawCD:Start(27, 1)
+			timerOrbOfCorrosionCD:Start(6, 1, RANGED)
+			countdownOrbs:Start(6)
+			timerCorruptedBreathCD:Start(10)
+			timerFuryofMawCD:Start(35, 1)
 		else
-			timerCorruptedBreathCD:Start(19.4)
-			timerFuryofMawCD:Start(30, 1)
+			--TODO, recheck and fix normal
+			timerOrbOfCorrosionCD:Start(11, 1, RANGED)--Needs recheck
+			countdownOrbs:Start(11)--Needs recheck
+			timerCorruptedBreathCD:Start(19.4)--Needs recheck
+			timerFuryofMawCD:Start(30, 1)--Needs recheck
 		end
 	elseif spellId == 228838 then
 		if self:IsEasy() then
@@ -619,30 +643,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerFetidRotCD:Start(13, UnitGUID(uId))
 		else
 			timerFetidRotCD:Start(12, UnitGUID(uId))
-		end
-	end
-end
-
-function mod:OnSync(msg)
-	if not self:IsInCombat() then return end
-	if msg == "Phase3" and not self.vb.phase == 3 then
-		self.vb.phase = 3
-		self.vb.orbCount = 0
-		self.vb.furyOfMawCount = 0
-		timerFuryofMawCD:Stop()
-		--timerGrimeLordCD:Stop()
-		--timerNightWatchCD:Stop()
-		timerOrbOfCorrosionCD:Start(17, 1, RANGED)
-		countdownOrbs:Start(17)
-		if self:IsLFR() then--Still long?
-			timerCorruptedBreathCD:Start(46)
-			timerFuryofMawCD:Start(96, 1)
-		elseif self:IsMythic() then
-			timerCorruptedBreathCD:Start(23.3)--Guessed based on energy gain rates seen in phase 3 (can't perfect without Helya event)
-			timerFuryofMawCD:Start(33, 1)--Guessed
-		else
-			timerCorruptedBreathCD:Start(25.4)
-			timerFuryofMawCD:Start(36, 1)
 		end
 	end
 end
