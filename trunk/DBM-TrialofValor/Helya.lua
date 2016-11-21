@@ -39,7 +39,6 @@ ability.id = 228300 and type = "removebuff" or ability.id = 167910 or ability.na
 --Stage One: Low Tide
 local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnTaintOfSea				= mod:NewTargetAnnounce(228054, 2)
-local warnTentacleStrike			= mod:NewCountAnnounce(228730, 4)
 --Stage Two: From the Mists (65%)
 --local warnTorrent					= mod:NewSpellAnnounce(228514, 3)
 ----Grimelord
@@ -82,7 +81,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerOrbOfCorruptionCD		= mod:NewNextTimer(25, 229119, "OrbsTimerText", nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerTaintOfSeaCD				= mod:NewCDTimer(14.5, 228088, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
 local timerBilewaterBreathCD		= mod:NewNextTimer(40, 227967, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--On for everyone though so others avoid it too
-local timerTentacleStrikeCD			= mod:NewNextTimer(30, 228730, nil, nil, nil, 2)
+local timerTentacleStrikeCD			= mod:NewNextCountTimer(30, 228730, nil, nil, nil, 2)
 local timerTentacleStrike			= mod:NewCastSourceTimer(6, 228730, nil, nil, nil, 5)
 local timerExplodingOozes			= mod:NewCastTimer(22.5, 227992, nil, nil, nil, 2, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Two: From the Mists (65%)
@@ -137,10 +136,29 @@ mod:AddSetIconOption("SetIconOnOrbs", 229119, true)--Healer (Star), Tank (Circle
 mod:AddInfoFrameOption(193367)
 
 local seenMobs = {}
+--[[
+35.405 Striking Tentacle 1 begins casting Tentacle Strike (melee)
+39.384 Striking Tentacle 2 begins casting Tentacle Strike (melee)
+
+71.364 Striking Tentacle 3 begins casting Tentacle Strike (melee)
+71.364 Striking Tentacle 4 begins casting Tentacle Strike (ranged)
+
+106.591	Striking Tentacle 5 begins casting Tentacle Strike (ranged)
+110.597	Striking Tentacle 6 begins casting Tentacle Strike (range)
+
+142.234	Striking Tentacle 7 begins casting Tentacle Strike (ranged)
+146.222	Striking Tentacle 8 begins casting Tentacle Strike (melee)
+150.230	Striking Tentacle 9 begins casting Tentacle Strike (ranged)
+
+177.493	Striking Tentacle 10 begins casting Tentacle Strike (melee)
+181.444	Striking Tentacle 11 begins casting Tentacle Strike (melee)
+--]]
+local mythicTentacleSpawns = {"2x"..DBM_CORE_FRONT, "1x"..DBM_CORE_FRONT.."/1x"..DBM_CORE_BACK, "2x"..DBM_CORE_BACK, "2x"..DBM_CORE_BACK.."/1x"..DBM_CORE_FRONT, "2x"..DBM_CORE_FRONT}
 mod.vb.phase = 1
 mod.vb.rottedPlayers = 0
 mod.vb.orbCount = 0
 mod.vb.furyOfMawCount = 0
+mod.vb.tentacleCount = 0
 
 function mod:OnCombatStart(delay)
 	table.wipe(seenMobs)
@@ -148,22 +166,23 @@ function mod:OnCombatStart(delay)
 	self.vb.rottedPlayers = 0
 	self.vb.orbCount = 0
 	self.vb.furyOfMawCount = 0
+	self.vb.tentacleCount = 0
 	if self:IsEasy() then
 		timerBilewaterBreathCD:Start(13.3-delay)
 		timerOrbOfCorruptionCD:Start(18-delay, 1, RANGED)--START
 		countdownOrbs:Start(18-delay)
-		timerTentacleStrikeCD:Start(53-delay)
+		timerTentacleStrikeCD:Start(53-delay, 1)
 	elseif self:IsMythic() then
 		timerBilewaterBreathCD:Start(11-delay)
 		timerOrbOfCorruptionCD:Start(14-delay, 1, RANGED)--START
 		countdownOrbs:Start(14-delay)
-		timerTentacleStrikeCD:Start(35-delay)
+		timerTentacleStrikeCD:Start(35-delay, 1)
 		berserkTimer:Start(-delay)--11 Min confirmed
 	else--TODO, reverify heroic. maybe they changed after tested to match LFR/normal
 		timerBilewaterBreathCD:Start(12-delay)
 		timerOrbOfCorruptionCD:Start(29-delay, 1, RANGED)--START
 		countdownOrbs:Start(29-delay)
-		timerTentacleStrikeCD:Start(36-delay)
+		timerTentacleStrikeCD:Start(36-delay, 1)
 		berserkTimer:Start(-delay)--11 Min assumed
 	end
 end
@@ -190,13 +209,20 @@ function mod:SPELL_CAST_START(args)
 			timerBilewaterBreathCD:Start(52)
 		end
 	elseif spellId == 228730 then
-		if self:AntiSpam(10, 3) then
+		if self:AntiSpam(15, 3) then
+			self.vb.tentacleCount = self.vb.tentacleCount + 1
 			if self:IsEasy() then
-				timerTentacleStrikeCD:Start(40)
+				timerTentacleStrikeCD:Start(40, self.vb.tentacleCount+1)
 			elseif self:IsMythic() then
-				timerTentacleStrikeCD:Start(35)
+				timerTentacleStrikeCD:Start(35, self.vb.tentacleCount+1)
+				local text = mythicTentacleSpawns[self.vb.tentacleCount]
+				if text then
+					specWarnTentacleStrike:Show(text)
+				else
+					specWarnTentacleStrike:Show(DBM_CORE_UNKNOWN)
+				end
 			else
-				timerTentacleStrikeCD:Start(42.5)
+				timerTentacleStrikeCD:Start(42.5, self.vb.tentacleCount+1)
 			end
 		end
 --	elseif spellId == 228514 then
@@ -500,33 +526,18 @@ end
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg:find(L.near) then
-		if self:IsMythic() then
-			warnTentacleStrike:Show(DBM_CORE_FRONT)
-			if self:AntiSpam(12, 4) then
-				specWarnTentacleStrike:Show(L.multiple)
-			end
-		else
+		if not self:IsMythic() then
 			specWarnTentacleStrike:Show(DBM_CORE_FRONT)
 		end
 		timerTentacleStrike:Start(DBM_CORE_FRONT)
 	elseif msg:find(L.far) then
-		if self:IsMythic() then
-			warnTentacleStrike:Show(DBM_CORE_BACK)
-			if self:AntiSpam(12, 4) then
-				specWarnTentacleStrike:Show(L.multiple)
-			end
-		else
+		if not self:IsMythic() then
 			specWarnTentacleStrike:Show(DBM_CORE_BACK)
 		end
 		timerTentacleStrike:Start(DBM_CORE_BACK)
 	--Backup for the like 8 languages dbm doesn't have translators for
 	elseif msg:find("inv_misc_monsterhorn_03") then
-		if self:IsMythic() then
-			warnTentacleStrike:Show(DBM_CORE_UNKNOWN)
-			if self:AntiSpam(12, 4) then
-				specWarnTentacleStrike:Show(L.multiple)
-			end
-		else
+		if not self:IsMythic() then
 			specWarnTentacleStrike:Show(DBM_CORE_UNKNOWN)
 		end
 		timerTentacleStrike:Start(DBM_CORE_UNKNOWN)
