@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(114537)
 mod:SetEncounterID(2008)
 mod:SetZone()
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetHotfixNoticeRev(15476)
 mod.respawnTime = 30
 
@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 227967 228730 228514 228390 228565 228032 228854 227903 228056 228619 228633",
-	"SPELL_CAST_SUCCESS 227967 228300 228519",
+	"SPELL_CAST_SUCCESS 228300 228519",
 	"SPELL_AURA_APPLIED 229119 227982 193367 228519 232488 228054 230267",
 	"SPELL_AURA_REMOVED 193367 229119 230267 228300 228054",
 	"SPELL_PERIODIC_DAMAGE 227998",
@@ -29,6 +29,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 228730 or ability.id = 228032 or ability.id = 228565 or ability.id = 227967 or ability.id = 228619 or ability.id = 228633) and type = "begincast" or
 (ability.id = 228390 or ability.id = 228300 or ability.id = 227903 or ability.id = 228056 or ability.id = 228519) and type = "cast" or
 ability.id = 228300 and type = "removebuff" or ability.id = 167910 or (ability.name = "Fetid Rot" or ability.id = 228054) and (type = "cast" or type = "applydebuff")
+or ability.id = 227992
 --]]
 --TODO, Add range finder for Taint of the sea?
 --TODO, figure out what to do with Ghostly Rage (Night Watch Mariner). Most say it's not needed and fight already has too much information, so still holding off on this
@@ -82,7 +83,7 @@ local timerTaintOfSeaCD				= mod:NewCDTimer(14.5, 228088, nil, nil, nil, 3, nil,
 local timerBilewaterBreathCD		= mod:NewNextTimer(40, 227967, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--On for everyone though so others avoid it too
 local timerTentacleStrikeCD			= mod:NewNextCountTimer(30, 228730, nil, nil, nil, 2)
 local timerTentacleStrike			= mod:NewCastSourceTimer(6, 228730, nil, nil, nil, 5)
-local timerExplodingOozes			= mod:NewCastTimer(22.5, 227992, nil, nil, nil, 2, nil, DBM_CORE_DAMAGE_ICON)
+local timerExplodingOozes			= mod:NewCastTimer(20.5, 227992, nil, nil, nil, 2, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Two: From the Mists (65%)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerFuryofMaw				= mod:NewBuffActiveTimer(32, 228032, nil, nil, nil, 2)
@@ -107,7 +108,7 @@ local berserkTimer					= mod:NewBerserkTimer(660)
 
 --Stage One: Low Tide
 local countdownOrbs					= mod:NewCountdown("AltTwo18", 229119)
-local countdownOozeExplosions		= mod:NewCountdown(22.5, 227992)
+local countdownOozeExplosions		= mod:NewCountdown(20.5, 227992)
 --Stage Two: From the Mists (65%)
 --Stage Three: Helheim's Last Stand
 
@@ -171,11 +172,11 @@ function mod:OnCombatStart(delay)
 	self.vb.tentacleCount = 0
 	self.vb.taintCount = 0
 	if self:IsEasy() then
+		timerTaintOfSeaCD:Start(12.4-delay)
 		timerBilewaterBreathCD:Start(13.3-delay)
 		timerOrbOfCorruptionCD:Start(18-delay, 1, RANGED)--START
 		countdownOrbs:Start(18-delay)
 		timerTentacleStrikeCD:Start(53-delay, 1)
-		--timerTaintOfSeaCD:Start(-delay)--FIXME
 	elseif self:IsMythic() then
 		timerBilewaterBreathCD:Start(11-delay)
 		timerOrbOfCorruptionCD:Start(14-delay, 1, RANGED)--START
@@ -183,12 +184,12 @@ function mod:OnCombatStart(delay)
 		timerTaintOfSeaCD:Start(15-delay)
 		timerTentacleStrikeCD:Start(35-delay, 1)
 		berserkTimer:Start(-delay)--11 Min confirmed
-	else--TODO, reverify heroic. maybe they changed after tested to match LFR/normal
+	else
 		timerBilewaterBreathCD:Start(12-delay)
+		timerTaintOfSeaCD:Start(19-delay)
 		timerOrbOfCorruptionCD:Start(29-delay, 1, RANGED)--START
 		countdownOrbs:Start(29-delay)
 		timerTentacleStrikeCD:Start(36-delay, 1)
-		--timerTaintOfSeaCD:Start(-delay)--FIXME
 		berserkTimer:Start(-delay)--11 Min assumed
 	end
 end
@@ -214,6 +215,9 @@ function mod:SPELL_CAST_START(args)
 		else--Verified heroic and LFR. TODO, verify mythic and reverify LFR
 			timerBilewaterBreathCD:Start(52)
 		end
+		--Start ooze stuff here since all their stuff is hidden from combat log
+		timerExplodingOozes:Start()
+		countdownOozeExplosions:Start()
 	elseif spellId == 228730 then
 		if self:AntiSpam(15, 3) then
 			self.vb.tentacleCount = self.vb.tentacleCount + 1
@@ -316,16 +320,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 227967 then
-		--Start ooze stuff here since all their stuff is hidden from combat log
-		if self:IsMythic() then
-			timerExplodingOozes:Start(12)
-			countdownOozeExplosions:Start(12)
-		else
-			timerExplodingOozes:Start()
-			countdownOozeExplosions:Start()
-		end
-	elseif spellId == 228300 then--Phase 2 Fury of the Maw
+	if spellId == 228300 then--Phase 2 Fury of the Maw
 		self.vb.furyOfMawCount = self.vb.furyOfMawCount + 1
 		specWarnFuryofMaw:Show(self.vb.furyOfMawCount)
 		timerFuryofMaw:Start()
@@ -426,7 +421,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceTaintOfSea:Play("scatter")
 		end
 		if self.Options.SetIconOnTaint then
-			self:SetSortedIcon(0.5, args.destName, 4)
+			self:SetSortedIcon(0.5, args.destName, 4, 5)
 		end
 	end
 end
@@ -595,11 +590,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			else
 				timerTaintOfSeaCD:Start(12.1)
 			end
-		else
+		else--Special snowflake for some reason (heroic)
 			if self.vb.phase == 3 then
-				timerTaintOfSeaCD:Start(22)
+				timerTaintOfSeaCD:Start(25.5)--TODO, see what happens to it on heroic soft enrage mechanic
 			else
-				timerTaintOfSeaCD:Start()--Recheck, why would LFR/normal have 12 but heroic be 14?
+				timerTaintOfSeaCD:Start()--14.5, only mode that's not 12.1
 			end
 		end
 	elseif spellId == 228372 then--Mists of Helheim (Phase 2)
@@ -629,12 +624,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			countdownOrbs:Start(6)
 			timerCorruptedBreathCD:Start(10)
 			timerFuryofMawCD:Start(35, 1)
-		else
-			--TODO, recheck and fix normal
-			timerOrbOfCorrosionCD:Start(11, 1, RANGED)--Needs recheck
-			countdownOrbs:Start(11)--Needs recheck
-			timerCorruptedBreathCD:Start(19.4)--Needs recheck
-			timerFuryofMawCD:Start(30, 1)--Needs recheck
+		elseif self:IsNormal() then--May still be same as heroic with variation
+			timerOrbOfCorrosionCD:Start(12, 1, RANGED)--Needs recheck
+			countdownOrbs:Start(12)--Needs more verification
+			timerCorruptedBreathCD:Start(20.5)
+			timerFuryofMawCD:Start(33, 1)--Needs more verification
+		else--Heroic
+			timerOrbOfCorrosionCD:Start(14, 1, RANGED)--Needs more verification
+			countdownOrbs:Start(14)--Needs verification
+			timerCorruptedBreathCD:Start(19.4)
+			timerFuryofMawCD:Start(30, 1)
 		end
 	elseif spellId == 228838 then
 		if self:IsEasy() then
