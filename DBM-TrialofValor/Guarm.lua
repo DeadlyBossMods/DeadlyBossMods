@@ -6,14 +6,14 @@ mod:SetCreatureID(114323)
 mod:SetEncounterID(1962)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3)
-mod:SetHotfixNoticeRev(15462)
+mod:SetHotfixNoticeRev(15488)
 --mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 227514",
-	"SPELL_CAST_SUCCESS 227883 227816",
+	"SPELL_CAST_SUCCESS 227883 227816 228824",
 	"SPELL_AURA_APPLIED 228744 228810 228818 232173 228228 228253 228248",
 	"SPELL_AURA_REMOVED 228744 228810 228818",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -47,6 +47,7 @@ local timerFangsCD					= mod:NewCDCountTimer(20.5, 227514, nil, "Tank", nil, 5, 
 local timerBreathCD					= mod:NewCDCountTimer(20.5, 228187, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 local timerLeapCD					= mod:NewCDCountTimer(22, 227883, nil, nil, nil, 3)
 local timerChargeCD					= mod:NewCDTimer(10.9, 227816, nil, nil, nil, 3)
+local timerVolatileFoamCD			= mod:NewCDCountTimer(15.7, 228824, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 
 local berserkTimer					= mod:NewBerserkTimer(300)
 
@@ -59,12 +60,13 @@ local voiceFlameLick				= mod:NewVoice(228228)--runout
 local voiceFrostLick				= mod:NewVoice(228248)--helpdispel
 
 mod:AddSetIconOption("SetIconOnFoam", "ej14535", true)
-mod:AddInfoFrameOption("ej14535", true)
-mod:AddRangeFrameOption(5, "ej14463")
+mod:AddInfoFrameOption(228824, true)
+mod:AddRangeFrameOption(5, 228824)
 
 mod.vb.fangCast = 0
 mod.vb.breathCast = 0
 mod.vb.leapCast = 0
+mod.vb.foamCast = 0
 --Ugly way to do it, vs a local table, but this ensures that if icon setter disconnects, it doesn't get messed up
 mod.vb.one = false
 mod.vb.two = false
@@ -100,9 +102,10 @@ function mod:OnCombatStart(delay)
 			self.vb.one = false
 			self.vb.two = false
 			self.vb.three = false
+			self.vb.foamCast = 0
 			berserkTimer:Start(240-delay)
 			if self.Options.InfoFrame then
-				DBM.InfoFrame:SetHeader(EJ_GetSectionInfo(14535))
+				DBM.InfoFrame:SetHeader(GetSpellInfo(228824))
 				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
 			end
 		else
@@ -146,6 +149,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 227816 then
 		specWarnCharge:Show()
 		voiceCharge:Play("chargemove")
+	elseif spellId == 228824 then
+		self.vb.foamCast = self.vb.foamCast + 1
+		if self.vb.foamCast < 3 then
+			timerVolatileFoamCD:Start(nil, self.vb.foamCast+1)
+		end
 	end
 end
 
@@ -260,5 +268,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerLeashCD:Start()--45
 		timerBreathCD:Start(11, 1)--11-14
 		countdownBreath:Start(11)--11-14
+		if self:IsMythic() then
+			self.vb.foamCast = 0
+			timerVolatileFoamCD:Start(10, 1)
+		end
 	end
 end
