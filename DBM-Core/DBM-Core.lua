@@ -418,6 +418,7 @@ local targetMonitor = nil
 local statusWhisperDisabled = false
 local wowVersionString, _, _, wowTOC = GetBuildInfo()
 local dbmToc = 0
+local UpdateChestTimer
 
 local fakeBWVersion, fakeBWHash = 24, "dee6293"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
@@ -3569,7 +3570,7 @@ function DBM:SCENARIO_CRITERIA_UPDATE()
 end
 
 do
-	local function UpdateChestTimer(self)
+	function UpdateChestTimer(self)
 		local _, elapsedTime = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active.
 		local _, _, maxTime = C_ChallengeMode.GetMapInfo(LastInstanceMapID);
 		maxTime = maxTime * 0.8--Two chests
@@ -6199,6 +6200,27 @@ function DBM:UNIT_DIED(args)
 		self:FlashClientIcon()
 		self:PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.ogg")--So fire an alert sound to save yourself from this person's behavior.
 		self:AddMsg(DBM_CORE_AFK_WARNING:format(0))
+	end
+	--UGLY INEFFICIENT PLACE to have this. TODO see if CHALLENGE_MODE event exists for timer changing to do this more properly
+	if difficultyIndex == 8 and self.Options.MythicPlusChestTimer and bband(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
+		self:Unschedule(UpdateChestTimer)
+		self.Bars:CancelBar("3 "..CHESTSLOT)
+		self.Bars:CancelBar("2 "..CHESTSLOT)
+		local _, elapsedTime = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active.
+		local _, _, maxTime = C_ChallengeMode.GetMapInfo(LastInstanceMapID);
+		local threeChest = maxTime * 0.6
+		local twoChest = maxTime * 0.8
+		local remaining = (threeChest or 0) - (elapsedTime or 0)
+		if remaining and remaining > 0 then--Safey check in case it fails
+			self.Bars:CreateBar(remaining, "3 "..CHESTSLOT)
+			self:Schedule(remaining+1, UpdateChestTimer, self)
+		else
+			remaining = (twoChest or 0) - (elapsedTime or 0)
+			if remaining and remaining > 0 then--Safey check in case it fails
+				self.Bars:CreateBar(remaining, "2 "..CHESTSLOT)
+				self:Schedule(remaining+1, UpdateChestTimer, self)
+			end
+		end
 	end
 end
 DBM.UNIT_DESTROYED = DBM.UNIT_DIED
