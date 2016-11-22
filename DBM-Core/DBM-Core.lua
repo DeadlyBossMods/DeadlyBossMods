@@ -420,7 +420,7 @@ local wowVersionString, _, _, wowTOC = GetBuildInfo()
 local dbmToc = 0
 local UpdateChestTimer
 
-local fakeBWVersion, fakeBWHash = 24, "dee6293"
+local fakeBWVersion, fakeBWHash = 24, "55aa1a7"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
