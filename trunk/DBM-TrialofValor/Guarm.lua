@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 227514",
 	"SPELL_CAST_SUCCESS 227883 227816 228824",
-	"SPELL_AURA_APPLIED 228744 228810 228818 232173 228228 228253 228248",
-	"SPELL_AURA_REMOVED 228744 228810 228818",
+	"SPELL_AURA_APPLIED 228744 228794 228810 228811 228818 228819 232173 228228 228253 228248",
+	"SPELL_AURA_REMOVED 228744 228794 228810 228811 228818 228819",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -37,8 +37,8 @@ local specWarnShadowLick			= mod:NewSpecialWarningYou(228253, false, nil, nil, 1
 local specWarnFrostLick				= mod:NewSpecialWarningYou(228248, false, nil, nil, 1)--Warning player they are stunned probably somewhat useful. Still can't do much about it.
 local specWarnFrostLickDispel		= mod:NewSpecialWarningDispel(228248, "Healer", nil, nil, 1, 2)
 --Mythic
-local specWarnFlamingFoam			= mod:NewSpecialWarningYou(228744, nil, nil, nil, 1)
-local specWarnBrineyFoam			= mod:NewSpecialWarningYou(228810, nil, nil, nil, 1)
+local specWarnFlamingFoam			= mod:NewSpecialWarningYou(228744, nil, nil, nil, 1)--228794 jump id
+local specWarnBrineyFoam			= mod:NewSpecialWarningYou(228810, nil, nil, nil, 1)--228811 jump id
 local specWarnShadowyFoam			= mod:NewSpecialWarningYou(228818, nil, nil, nil, 1)
 
 local timerLeashCD					= mod:NewNextTimer(45, 228201, nil, nil, nil, 6, 129417)
@@ -75,7 +75,7 @@ mod.vb.three = false
 local updateInfoFrame
 do
 	local lines = {}
-	local fireDebuff, frostDebuff, shadowDebuff = GetSpellInfo(228744), GetSpellInfo(228818), GetSpellInfo(228818)
+	local fireDebuff, frostDebuff, shadowDebuff = GetSpellInfo(228744), GetSpellInfo(228810), GetSpellInfo(228818)
 	local UnitDebuff = UnitDebuff
 	updateInfoFrame = function()
 		table.wipe(lines)
@@ -159,16 +159,16 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 228744 or spellId == 228810 or spellId == 228818 then
-		if spellId == 228744 then
+	if spellId == 228744 or spellId == 228794 or spellId == 228810 or spellId == 228811 or spellId == 228818 or spellId == 228819 then
+		if spellId == 228744 or spellId == 228794 then
 			if args:IsPlayer() then
 				specWarnFlamingFoam:Show()
 			end
-		elseif spellId == 228810 then
+		elseif spellId == 228810 or spellId == 228811 then
 			if args:IsPlayer() then
 				specWarnBrineyFoam:Show()
 			end
-		elseif spellId == 228818 then
+		elseif spellId == 228818 or spellId == 228819 then
 			if args:IsPlayer() then
 				specWarnShadowyFoam:Show()
 			end
@@ -217,7 +217,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 228744 or spellId == 228810 or spellId == 228818 then
+	if spellId == 228744 or spellId == 228794 or spellId == 228810 or spellId == 228811 or spellId == 228818 or spellId == 228819 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local currentIcon = GetRaidTargetIndex(uId)
 		if self.Options.SetIconOnFoam then
