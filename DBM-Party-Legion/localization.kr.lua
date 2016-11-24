@@ -249,6 +249,10 @@ L:SetGeneralLocalization({
 	name =	"별의 궁정 일반몹"
 })
 
+L:SetOptionLocalization({
+	SpyHelper	= "첩자 색출 도우미"
+})
+
 -----------------------
 -- <<<The Maw of Souls>>> --
 -----------------------
