@@ -12,12 +12,13 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 227967 228730 228514 228390 228565 228032 228854 227903 228056 228619 228633",
-	"SPELL_CAST_SUCCESS 228300 228519",
+	"SPELL_CAST_START 227967 228390 228565 228032 228854 227903 228056 228619 228633",
+	"SPELL_CAST_SUCCESS 228300 228519 228854",
 	"SPELL_AURA_APPLIED 229119 227982 193367 228519 232488 228054 230267",
 	"SPELL_AURA_REMOVED 193367 229119 230267 228300 228054",
 	"SPELL_PERIODIC_DAMAGE 227998",
 	"SPELL_PERIODIC_MISSED 227998",
+	"SPELL_INTERRUPT",
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"RAID_BOSS_EMOTE",
@@ -33,14 +34,12 @@ or ability.id = 227992
 --]]
 --TODO, Add range finder for Taint of the sea?
 --TODO, figure out what to do with Ghostly Rage (Night Watch Mariner). Most say it's not needed and fight already has too much information, so still holding off on this
---TODO, add Helarjer Mistcaller stuff for mythic
---TODO, timer update code for fury of maw, when mistcaller gets off a cast
---TODO, more work with Corrupted Axion and Dark Hatred
+--TODO, VERIFY timer update code for fury of maw, when mistcaller gets off a cast
+--TODO, more work with Corrupted Axion and Dark Hatred?
 --Stage One: Low Tide
 local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnTaintOfSea				= mod:NewTargetAnnounce(228054, 2)
 --Stage Two: From the Mists (65%)
---local warnTorrent					= mod:NewSpellAnnounce(228514, 3)
 ----Grimelord
 local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnFetidRot					= mod:NewTargetAnnounce(193367, 3)
@@ -154,8 +153,9 @@ local seenMobs = {}
 181.444	Striking Tentacle 11 begins casting Tentacle Strike (melee)
 --]]
 local mythicTentacleSpawns = {"2x"..DBM_CORE_FRONT, "1x"..DBM_CORE_FRONT.."/1x"..DBM_CORE_BACK, "2x"..DBM_CORE_BACK, "2x"..DBM_CORE_BACK.."/1x"..DBM_CORE_FRONT, "2x"..DBM_CORE_FRONT}
-local phase3MythicOrbs = {6, 13, 13, 27.3, 10.7, 13, 25, 13, 13, 25, 13, 18.5, 19.5, 13, 13, 12, 12, 16.8, 8.2}
+local phase3MythicOrbs = {6, 13, 13, 27.1, 10.7, 13, 25, 13, 13, 25, 13, 17.6, 19.5, 13, 13, 12, 12, 16.8, 8.2}--Needs more casts before berserk
 local phase3MythicTaint = {0, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 17, 14, 11}--Needs two-four more casts til berserk
+
 mod.vb.phase = 1
 mod.vb.rottedPlayers = 0
 mod.vb.orbCount = 0
@@ -218,25 +218,6 @@ function mod:SPELL_CAST_START(args)
 		--Start ooze stuff here since all their stuff is hidden from combat log
 		timerExplodingOozes:Start()
 		countdownOozeExplosions:Start()
-	elseif spellId == 228730 then
-		if self:AntiSpam(15, 3) then
-			self.vb.tentacleCount = self.vb.tentacleCount + 1
-			if self:IsEasy() then
-				timerTentacleStrikeCD:Start(40, self.vb.tentacleCount+1)
-			elseif self:IsMythic() then
-				timerTentacleStrikeCD:Start(35, self.vb.tentacleCount+1)
-				local text = mythicTentacleSpawns[self.vb.tentacleCount]
-				if text then
-					specWarnTentacleStrike:Show(text)
-				else
-					specWarnTentacleStrike:Show(DBM_CORE_UNKNOWN)
-				end
-			else
-				timerTentacleStrikeCD:Start(42.5, self.vb.tentacleCount+1)
-			end
-		end
---	elseif spellId == 228514 then
---		warnTorrent:Show()
 	elseif spellId == 228390 then
 		if self:CheckTankDistance(args.sourceGUID, 18) then--18 has to be used because of limitations in 7.1 distance APIs
 			--Only warn if you are near the person tanking this
@@ -261,7 +242,7 @@ function mod:SPELL_CAST_START(args)
 		elseif self:IsNormal() then
 			timerFuryofMawCD:Start(77, self.vb.furyOfMawCount+1)
 		elseif self:IsMythic() then
-			timerFuryofMawCD:Start(69.3, self.vb.furyOfMawCount+1)
+			timerFuryofMawCD:Start(56, self.vb.furyOfMawCount+1)
 		else
 			timerFuryofMawCD:Start(74.6, self.vb.furyOfMawCount+1)
 		end
@@ -332,6 +313,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerAnchorSlamCD:Start(14, args.sourceGUID)
 		else
 			timerAnchorSlamCD:Start(12, args.sourceGUID)
+		end
+	elseif spellId == 228854 then--Mist infusion got off, update timers
+		local elapsed, total = timerFuryofMawCD:GetTime(self.vb.furyOfMawCount+1)
+		local remaining = total - elapsed
+		if remaining and remaining > 11 then
+			timerFuryofMawCD:Update(elapsed+11, total, self.vb.furyOfMawCount+1)
 		end
 	end
 end
@@ -423,6 +410,33 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnTaint then
 			self:SetSortedIcon(0.5, args.destName, 4, 5)
 		end
+		if self:AntiSpam(5, 6) then
+			self.vb.taintCount = self.vb.taintCount + 1
+			if self:IsEasy() then--Cast MORE OFTEN in LFR/normal?
+				if self.vb.phase == 3 then
+					timerTaintOfSeaCD:Start(27)
+				else
+					timerTaintOfSeaCD:Start(12.1)
+				end
+			elseif self:IsMythic() then
+				if self.vb.phase == 3 then
+					local timer = phase3MythicTaint[self.vb.taintCount+1]
+					if timer then
+						timerTaintOfSeaCD:Start(timer)
+					else
+						timerTaintOfSeaCD:Start(11)--Assume rest are 11 until more data
+					end
+				else
+					timerTaintOfSeaCD:Start(12.1)
+				end
+			else--Special snowflake for some reason (heroic)
+				if self.vb.phase == 3 then
+					timerTaintOfSeaCD:Start(25.5)--TODO, see what happens to it on heroic soft enrage mechanic
+				else
+					timerTaintOfSeaCD:Start()--14.5, only mode that's not 12.1
+				end
+			end
+		end
 	end
 end
 
@@ -456,8 +470,6 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerFuryofMawCD:Start(42.6, self.vb.furyOfMawCount+1)
 			end
 		end
---	elseif spellId == 167910 and self:AntiSpam(10, 2) then
---		self:SendSync("Adds")--I've outrnaged the combat log event for this being on one of the side platforms, since this event is already coming from further away (in water)
 	elseif spellId == 228054 then
 		if self.Options.SetIconOnTaint then
 			self:SetIcon(args.destName, 0)
@@ -472,6 +484,12 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and args.extraSpellId == 228854 then
+		timerMistInfusion:Stop(args.dest.GUID)
+	end
+end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
@@ -571,33 +589,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 228088 then--Taint of Sea
-		self.vb.taintCount = self.vb.taintCount + 1
-		if self:IsEasy() then--Cast MORE OFTEN in LFR/normal?
-			if self.vb.phase == 3 then
-				timerTaintOfSeaCD:Start(27)
-			else
-				timerTaintOfSeaCD:Start(12.1)
-			end
-		elseif self:IsMythic() then
-			if self.vb.phase == 3 then
-				local timer = phase3MythicTaint[self.vb.taintCount+1]
-				if timer then
-					timerTaintOfSeaCD:Start(timer)
-				else
-					timerTaintOfSeaCD:Start(11)--Assume rest are 11 until more data
-				end
-			else
-				timerTaintOfSeaCD:Start(12.1)
-			end
-		else--Special snowflake for some reason (heroic)
-			if self.vb.phase == 3 then
-				timerTaintOfSeaCD:Start(25.5)--TODO, see what happens to it on heroic soft enrage mechanic
-			else
-				timerTaintOfSeaCD:Start()--14.5, only mode that's not 12.1
-			end
-		end
-	elseif spellId == 228372 then--Mists of Helheim (Phase 2)
+	if spellId == 228372 then--Mists of Helheim (Phase 2)
 		self.vb.phase = 2
 		timerTentacleStrikeCD:Stop()
 		timerBilewaterBreathCD:Stop()
@@ -642,6 +634,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerFetidRotCD:Start(13, UnitGUID(uId))
 		else
 			timerFetidRotCD:Start(12, UnitGUID(uId))
+		end
+	elseif spellId == 228728 then--Tentacle strike activating
+		self.vb.tentacleCount = self.vb.tentacleCount + 1
+		if self:IsEasy() then
+			timerTentacleStrikeCD:Start(40, self.vb.tentacleCount+1)
+		elseif self:IsMythic() then
+			timerTentacleStrikeCD:Start(35, self.vb.tentacleCount+1)
+			local text = mythicTentacleSpawns[self.vb.tentacleCount]
+			if text then
+				specWarnTentacleStrike:Show(text)
+			else
+				specWarnTentacleStrike:Show(DBM_CORE_UNKNOWN)
+			end
+		else
+			timerTentacleStrikeCD:Start(42.5, self.vb.tentacleCount+1)
 		end
 	end
 end
