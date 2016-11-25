@@ -29,8 +29,8 @@ mod:RegisterEventsInCombat(
 --[[
 (ability.id = 228730 or ability.id = 228032 or ability.id = 228565 or ability.id = 227967 or ability.id = 228619 or ability.id = 228633) and type = "begincast" or
 (ability.id = 228390 or ability.id = 228300 or ability.id = 227903 or ability.id = 228056 or ability.id = 228519) and type = "cast" or
-ability.id = 228300 and type = "removebuff" or ability.id = 167910 or (ability.name = "Fetid Rot" or ability.id = 228054) and (type = "cast" or type = "applydebuff")
-or ability.id = 227992
+(ability.id = 228300 or ability.id = 228300) and type = "removebuff" or ability.id = 167910
+ or (ability.name = "Fetid Rot" or ability.id = 228054) and (type = "cast" or type = "applydebuff") or ability.id = 227992
 --]]
 --TODO, Add range finder for Taint of the sea?
 --TODO, figure out what to do with Ghostly Rage (Night Watch Mariner). Most say it's not needed and fight already has too much information, so still holding off on this
@@ -464,7 +464,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerAddsCD:Start(7)
 				timerFuryofMawCD:Start(45, self.vb.furyOfMawCount+1)
 			elseif self:IsMythic() then
-				timerFuryofMawCD:Start(37.3, self.vb.furyOfMawCount+1)
+				timerFuryofMawCD:Start(44.6, self.vb.furyOfMawCount+1)
 			else
 				timerAddsCD:Start(7)
 				timerFuryofMawCD:Start(42.6, self.vb.furyOfMawCount+1)
