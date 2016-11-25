@@ -249,6 +249,7 @@ DBM_CORE_MIDDLE						= "中"
 DBM_CORE_FRONT						= "前"
 DBM_CORE_INTERMISSION				= "中場時間"
 DBM_CORE_ORB						= "球"
+DBM_CHEST							= "獎勵箱"
 
 DBM_CORE_BREAK_USAGE				= "休息時間不能長於60分鐘。請確定你輸入的時間是分鐘不是秒。"
 DBM_CORE_BREAK_START				= "現在開始休息-你有%s分鐘!"
