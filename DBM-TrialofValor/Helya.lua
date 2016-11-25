@@ -255,7 +255,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 227903 then
 		self.vb.orbCount = self.vb.orbCount + 1
 		--Odd orbs are ranged and evens are melee
-		local text = self.vb.orbCount+1 % 2 == 0 and MELEE or RANGED
+		local text = (self.vb.orbCount+1) % 2 == 0 and MELEE or RANGED
 		if self:IsEasy() then
 			timerOrbOfCorruptionCD:Start(31.2, self.vb.orbCount+1, text)
 			countdownOrbs:Start(31.2)
@@ -269,7 +269,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 228056 then
 		self.vb.orbCount = self.vb.orbCount + 1
 		--Odd orbs are ranged and evens are melee
-		local text = self.vb.orbCount+1 % 2 == 0 and MELEE or RANGED
+		local text = (self.vb.orbCount+1) % 2 == 0 and MELEE or RANGED
 		if self:IsLFR() then
 			timerOrbOfCorrosionCD:Start(32.7, self.vb.orbCount+1, text)
 			countdownOrbs:Start(32.7)
