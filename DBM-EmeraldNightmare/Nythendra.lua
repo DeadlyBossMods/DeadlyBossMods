@@ -48,7 +48,7 @@ local specWarnInfestedStack			= mod:NewSpecialWarningStack(204504, nil, 7, nil, 
 local timerBreathCD					= mod:NewCDCountTimer(36, 202977, nil, nil, nil, 3)--36-42
 local timerInfestingMindCD			= mod:NewNextTimer(10, 205043, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)--36-42
 local timerVolatileRotCD			= mod:NewCDCountTimer(20.5, 204463, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--20.5-24 variation non mythic. 22-30 mythic
-local timerRotCD					= mod:NewCDCountTimer(15.8, 203096, nil, nil, nil, 3)
+local timerRotCD					= mod:NewCDCountTimer(15.3, 203096, nil, nil, nil, 3)
 local timerSwarm					= mod:NewBuffActiveTimer(23, 203552, nil, nil, nil, 6)
 local timerSwarmCD					= mod:NewCDCountTimer(98, 203552, nil, nil, nil, 6)--Needs new sample size
 
