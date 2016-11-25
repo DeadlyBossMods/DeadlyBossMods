@@ -3592,8 +3592,8 @@ do
 		maxTime = maxTime * 0.6--Three Chests
 		local remaining = (maxTime or 0) - (elapsedTime or 0)
 		if remaining and remaining > 0 then--Safey check in case it fails
-			self.Bars:CreateBar(remaining, "3 "..DBM_CHEST)
-			self:Schedule(remaining+1, UpdateChestTimer, self)
+			self.Bars:CreateBar(remaining+10, "3 "..DBM_CHEST)
+			self:Schedule(remaining+11, UpdateChestTimer, self)
 		end
 	end
 
