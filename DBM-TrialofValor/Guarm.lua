@@ -13,15 +13,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 227514",
-	"SPELL_CAST_SUCCESS 227883 227816 228824",
+	"SPELL_CAST_SUCCESS 227883 227816 228824 228247 228251 228227",
 	"SPELL_AURA_APPLIED 228744 228794 228810 228811 228818 228819 232173 228228 228253 228248",
 	"SPELL_AURA_REMOVED 228744 228794 228810 228811 228818 228819",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, licks timers stillnot possible? they were still random/chaotic even in LFR
---TODO, info frame with fancy info like what your current debuff is as well as debuff count totals for entire raid? Maybe some other stuff
---TODO, More Volatile Foam stuff
+--TODO, licks timers stillnot possible? Review them more closely with new debug code.
 local warnOffLeash					= mod:NewSpellAnnounce(228201, 2, 129417)
 local warnFangs						= mod:NewCountAnnounce(227514, 2)
 local warnShadowLick				= mod:NewTargetAnnounce(228253, 2, nil, "Healer")
@@ -34,7 +32,9 @@ local specWarnBerserk				= mod:NewSpecialWarningSpell(227883, nil, nil, nil, 3)
 local specWarnFlameLick				= mod:NewSpecialWarningMoveAway(228228, nil, nil, nil, 1, 2)
 local yellFlameLick					= mod:NewYell(228228)
 local specWarnShadowLick			= mod:NewSpecialWarningYou(228253, false, nil, nil, 1)--Not sure warning player is helpful
+local yellShadowLick				= mod:NewYell(228253, nil, false)
 local specWarnFrostLick				= mod:NewSpecialWarningYou(228248, false, nil, nil, 1)--Warning player they are stunned probably somewhat useful. Still can't do much about it.
+local yellFrostLick					= mod:NewYell(228248, nil, false)
 local specWarnFrostLickDispel		= mod:NewSpecialWarningDispel(228248, "Healer", nil, nil, 1, 2)
 --Mythic
 local specWarnFlamingFoam			= mod:NewSpecialWarningYou(228744, nil, nil, nil, 1)--228794 jump id
@@ -47,7 +47,7 @@ local timerFangsCD					= mod:NewCDCountTimer(20.5, 227514, nil, "Tank", nil, 5, 
 local timerBreathCD					= mod:NewCDCountTimer(20.5, 228187, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 local timerLeapCD					= mod:NewCDCountTimer(22, 227883, nil, nil, nil, 3)
 local timerChargeCD					= mod:NewCDTimer(10.9, 227816, nil, nil, nil, 3)
-local timerVolatileFoamCD			= mod:NewCDCountTimer(15.7, 228824, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerVolatileFoamCD			= mod:NewCDCountTimer(15.4, 228824, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 
 local berserkTimer					= mod:NewBerserkTimer(300)
 
@@ -71,6 +71,8 @@ mod.vb.foamCast = 0
 mod.vb.one = false
 mod.vb.two = false
 mod.vb.three = false
+local debugLicks = {}
+local lastTime = 0
 
 local updateInfoFrame
 do
@@ -96,6 +98,8 @@ function mod:OnCombatStart(delay)
 	self.vb.fangCast = 0
 	self.vb.breathCast = 0
 	self.vb.leapCast = 0
+	table.wipe(debugLicks)
+	lastTime = GetTime()
 	--All other combat start timers started by Helyatosis
 	if not self:IsLFR() then
 		if self:IsMythic() then
@@ -123,6 +127,11 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if DBM.Options.DebugMode then
+		for i, v in ipairs(debugLicks) do
+			DBM:AddMsg(v)
+		end
 	end
 end
 
@@ -154,6 +163,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.foamCast < 3 then
 			timerVolatileFoamCD:Start(nil, self.vb.foamCast+1)
 		end
+	elseif spellId == 228247 or spellId == 228251 or spellId == 228227 then--Licks
+		debugLicks[#debugLicks+1] = GetTime() - lastTime
+		lastTime = GetTime()
 	end
 end
 
@@ -199,6 +211,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnShadowLick:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnShadowLick:Show()
+			yellShadowLick:Yell()
 		end
 	elseif spellId == 228248 then
 		if self.Options.specwarn228248dispel then
@@ -211,6 +224,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnFrostLick:Show()
+			yellFrostLick:Yell()
 		end
 	end
 end
