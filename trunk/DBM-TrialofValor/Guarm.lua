@@ -118,6 +118,8 @@ function mod:OnCombatStart(delay)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)
 		end
+	else
+		berserkTimer:Start(420-delay)
 	end
 end
 
