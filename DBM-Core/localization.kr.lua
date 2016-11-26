@@ -466,7 +466,7 @@ DBM_ARROW_ERROR_USAGE	= {
 DBM_SPEED_KILL_TIMER_TEXT	= "최고 승리 기록"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "최고 완료 기록"
 DBM_COMBAT_RES_TIMER_TEXT	= "다음 전투 부활 충전"
-DBM_CORE_TIMER_RESPAWN		= "재생성"
+DBM_CORE_TIMER_RESPAWN		= "%s 재생성"
 
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s|1이;가; 당신의 현재 인스턴스 ID와 진행 상태 열람을 요청했습니다.\n해당 정보를 %s에게 전송할까요? 현재 접속한 세션 동안에는 해당 정보의 요청은 항상 받아들여집니다. (예: 재접속 전까지)"

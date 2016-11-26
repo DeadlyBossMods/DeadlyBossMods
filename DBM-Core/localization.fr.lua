@@ -436,7 +436,7 @@ DBM_ARROW_ERROR_USAGE	= {
 DBM_SPEED_KILL_TIMER_TEXT	= "Record à battre"
 DBM_SPEED_CLEAR_TIMER_TEXT  = "Meilleur clean"
 DBM_COMBAT_RES_TIMER_TEXT	= "Prochaine charge de rez en combat"
-DBM_CORE_TIMER_RESPAWN		= "Réapparition"
+DBM_CORE_TIMER_RESPAWN		= "%s Réapparition"
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s a demandé à voir vos IDs d'instance actuels ainsi que leurs progressions.\nSouhaitez-vous envoyer cette information à %s ? Il ou elle pourra demander cette information pendant toute votre session actuelle (c'est-à-dire jusqu'à ce que vous vous reconnectez)."
 DBM_ERROR_NO_RAID					= "Vous devez être dans un groupe de raid pour utiliser cette fonctionnalité."
