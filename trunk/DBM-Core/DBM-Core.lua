@@ -271,7 +271,6 @@ DBM.DefaultOptions = {
 	CRT_Enabled = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
-	MythicPlusChestTimer = true,
 	HelpMessageVersion = 3,
 	NewsMessageShown = 4,
 	MoviesSeen = {},
@@ -1272,9 +1271,6 @@ do
 				"UPDATE_BATTLEFIELD_STATUS",
 				"CINEMATIC_START",
 				"PLAYER_LEVEL_UP",
-				"CHALLENGE_MODE_START",
-				"CHALLENGE_MODE_RESET",
-				"CHALLENGE_MODE_COMPLETED",
 				"PLAYER_SPECIALIZATION_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
@@ -3569,51 +3565,6 @@ function DBM:SCENARIO_CRITERIA_UPDATE()
 	end
 end
 
-do
-	function UpdateChestTimer(self)
-		local _, elapsedTime = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active.
-		local _, _, maxTime = C_ChallengeMode.GetMapInfo(LastInstanceMapID);
-		if not elapsedTime or not maxTime then return end
-		maxTime = maxTime * 0.8--Two chests
-		local remaining = (maxTime or 0) - (elapsedTime or 0)
-		if remaining and remaining > 0 then--Safey check in case it fails
-			self.Bars:CreateBar(remaining, "2 "..DBM_CHEST)
-			self:Schedule(remaining+1, UpdateChestTimer, self)
-		end
-	end
-
-	function DBM:CHALLENGE_MODE_START(mapID)
-		self:Debug("CHALLENGE_MODE_START fired for mapID "..mapID)
-		if not self.Options.MythicPlusChestTimer then return end
-		self:Unschedule(UpdateChestTimer)
-		local _, elapsedTime = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active.
-		local _, _, maxTime = C_ChallengeMode.GetMapInfo(LastInstanceMapID);
-		if not elapsedTime or not maxTime then return end
-		maxTime = maxTime * 0.6--Three Chests
-		local remaining = (maxTime or 0) - (elapsedTime or 0)
-		if remaining and remaining > 0 then--Safey check in case it fails
-			self.Bars:CreateBar(remaining+10, "3 "..DBM_CHEST)
-			self:Schedule(remaining+11, UpdateChestTimer, self)
-		end
-	end
-
-	function DBM:CHALLENGE_MODE_RESET()
-		self:Debug("CHALLENGE_MODE_RESET fired")
-		self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
-		self:Unschedule(UpdateChestTimer)
-		self.Bars:CancelBar("3 "..DBM_CHEST)
-		self.Bars:CancelBar("2 "..DBM_CHEST)
-	end
-
-	function DBM:CHALLENGE_MODE_COMPLETED()
-		self:Debug("CHALLENGE_MODE_COMPLETED fired for mapID "..LastInstanceMapID)
-		self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
-		self:Unschedule(UpdateChestTimer)
-		self.Bars:CancelBar("3 "..DBM_CHEST)
-		self.Bars:CancelBar("2 "..DBM_CHEST)
-	end
-end
-
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
@@ -5521,22 +5472,10 @@ do
 			--process global options
 			self:HideBlizzardEvents(1)
 			self:StartLogging(0, nil)
-			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 then
+			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 and difficultyIndex ~= 8 then
 				if ObjectiveTrackerFrame:IsVisible() then
 					ObjectiveTrackerFrame:Hide()
 					watchFrameRestore = true
-				end
-				--When hiding objectives frame in Mythic+, start our own timer to show time remaining during boss fight
-				if difficultyIndex == 8 then
-					local _, elapsedTime = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active.
-					local _, _, maxTime = C_ChallengeMode.GetMapInfo(LastInstanceMapID);
-					local remaining = (maxTime or 0) - (elapsedTime or 0)
-					if remaining and remaining > 0 then--No remaining, already failed timer, do nothing
-						self.Bars:CreateBar(remaining, PLAYER_DIFFICULTY6.."+")
-					end
-					--Maybe do more with this later
-					--local threeChests = maxTime * 0.6
-					--local twoChests = maxTime * 0.8;
 				end
 			end
 			fireEvent("pull", mod, delay, synced, startHp)
@@ -5961,7 +5900,6 @@ do
 					ObjectiveTrackerFrame:Show()
 					watchFrameRestore = false
 				end
-				self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
 				if tooltipsHidden then
 					--Better or cleaner way?
 					tooltipsHidden = false
@@ -6200,28 +6138,6 @@ function DBM:UNIT_DIED(args)
 		self:FlashClientIcon()
 		self:PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.ogg")--So fire an alert sound to save yourself from this person's behavior.
 		self:AddMsg(DBM_CORE_AFK_WARNING:format(0))
-	end
-	--UGLY INEFFICIENT PLACE to have this. TODO see if CHALLENGE_MODE event exists for timer changing to do this more properly
-	if difficultyIndex == 8 and self.Options.MythicPlusChestTimer and bband(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
-		self:Unschedule(UpdateChestTimer)
-		self.Bars:CancelBar("3 "..DBM_CHEST)
-		self.Bars:CancelBar("2 "..DBM_CHEST)
-		local _, elapsedTime = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active.
-		local _, _, maxTime = C_ChallengeMode.GetMapInfo(LastInstanceMapID);
-		if not elapsedTime or not maxTime then return end
-		local threeChest = maxTime * 0.6
-		local twoChest = maxTime * 0.8
-		local remaining = (threeChest or 0) - (elapsedTime or 0)
-		if remaining and remaining > 0 then--Safey check in case it fails
-			self.Bars:CreateBar(remaining, "3 "..DBM_CHEST)
-			self:Schedule(remaining+1, UpdateChestTimer, self)
-		else
-			remaining = (twoChest or 0) - (elapsedTime or 0)
-			if remaining and remaining > 0 then--Safey check in case it fails
-				self.Bars:CreateBar(remaining, "2 "..DBM_CHEST)
-				self:Schedule(remaining+1, UpdateChestTimer, self)
-			end
-		end
 	end
 end
 DBM.UNIT_DESTROYED = DBM.UNIT_DIED

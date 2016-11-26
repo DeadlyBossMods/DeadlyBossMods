@@ -311,7 +311,6 @@ L.SKT_Enabled				= "가능할 경우 현재 전투의 최고 승리 기록 타�
 L.CRT_Enabled				= "다음 전투 부활 충전 타이머 표시"
 L.ShowRespawn				= "전멸 후 보스 재생성 타이머 표시"
 L.ShowQueuePop				= "입장 수락 남은 시간 타이머 표시 (공격대 찾기,전장 등)"
-L.ShowMythicPlusChests		= "신화+ 던전에서 2/3 상자 완료까지 남은 시간 표시"
 --
 L.Area_AutoLogging			= "자동 전투 기록 설정"
 L.AutologBosses				= "보스 전투시 블리자드 전투 기록 자동 활성화 (전투 시작전 물약이나 여러 이벤트를 기록하려면 /dbm pull 명령어 사용)"
