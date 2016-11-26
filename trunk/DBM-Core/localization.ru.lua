@@ -246,6 +246,8 @@ DBM_CORE_BACK						= "Назад"
 DBM_CORE_MIDDLE						= "Середина"
 DBM_CORE_FRONT						= "Вперед"
 DBM_CORE_INTERMISSION				= "Переходная фаза"--No blizz global for this, and will probably be used in most end tier fights with intermission phases
+DBM_CORE_ORB						= "Orb"--FIXME
+DBM_CHEST							= "сундука"--As in Treasure 'Chest'. Not Chest as in body part.
 
 DBM_CORE_BREAK_USAGE				= "Перерыв не может быть дольше 60 минут. Убедитесь что вы вводите время в минутах, а не секундах."
 DBM_CORE_BREAK_START				= "Перерыв начинается -- у вас есть %s! (отправил %s)"
