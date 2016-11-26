@@ -310,7 +310,6 @@ L.SKT_Enabled				= "顯示目前戰鬥的最佳紀錄勝利計時器"
 L.CRT_Enabled				= "為下一次戰復充能顯示計時器"
 L.ShowRespawn				= "在一個滅團之後顯示首領重生計時器"
 L.ShowQueuePop				= "為佇列(隨機,戰場,其他)接受時間顯示計時器"
-L.ShowMythicPlusChests		= "在傳奇+地城顯示2/3寶箱的剩餘時間"
 --
 L.Area_AutoLogging			= "自動記錄選項"
 L.AutologBosses				= "自動使用暴雪戰鬥日誌記錄首領戰鬥(為了紀錄藥水事件等其他事件請於開打前使用/dbm pull)"
