@@ -37,6 +37,7 @@ local warnShieldofLight				= mod:NewTargetAnnounce(228270, 3)
 --Stage 2: Stuff
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 --Stage 3: Odyn immitates lei shen
+local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 local warnStormofJustice			= mod:NewTargetAnnounce(227807, 3)
 
 --Stage 1: Halls of Valor was merely a set back
@@ -664,6 +665,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerDrawPower:Stop()
 		countdownDrawPower:Cancel()
 		timerDrawPowerCD:Stop()
+		warnPhase3:Show()
 		timerStormOfJusticeCD:Start(4)
 		timerStormforgedSpearCD:Start(9)
 		countdownStormforgedSpear:Start(9)
