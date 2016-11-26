@@ -3600,7 +3600,6 @@ do
 	function DBM:CHALLENGE_MODE_RESET()
 		self:Debug("CHALLENGE_MODE_RESET fired")
 		self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
-		if not self.Options.MythicPlusChestTimer then return end
 		self:Unschedule(UpdateChestTimer)
 		self.Bars:CancelBar("3 "..DBM_CHEST)
 		self.Bars:CancelBar("2 "..DBM_CHEST)
@@ -3609,7 +3608,6 @@ do
 	function DBM:CHALLENGE_MODE_COMPLETED()
 		self:Debug("CHALLENGE_MODE_COMPLETED fired for mapID "..LastInstanceMapID)
 		self.Bars:CancelBar(PLAYER_DIFFICULTY6.."+")
-		if not self.Options.MythicPlusChestTimer then return end
 		self:Unschedule(UpdateChestTimer)
 		self.Bars:CancelBar("3 "..DBM_CHEST)
 		self.Bars:CancelBar("2 "..DBM_CHEST)
@@ -6210,6 +6208,7 @@ function DBM:UNIT_DIED(args)
 		self.Bars:CancelBar("2 "..DBM_CHEST)
 		local _, elapsedTime = GetWorldElapsedTime(1)--Should always be 1, with only one world state timer active.
 		local _, _, maxTime = C_ChallengeMode.GetMapInfo(LastInstanceMapID);
+		if not elapsedTime or not maxTime then return end
 		local threeChest = maxTime * 0.6
 		local twoChest = maxTime * 0.8
 		local remaining = (threeChest or 0) - (elapsedTime or 0)
