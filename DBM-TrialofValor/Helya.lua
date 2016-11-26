@@ -254,36 +254,38 @@ function mod:SPELL_CAST_START(args)
 		timerMistInfusion:Start(nil, args.sourceGUID)
 	elseif spellId == 227903 then
 		self.vb.orbCount = self.vb.orbCount + 1
+		local nextCount = self.vb.orbCount+1
 		--Odd orbs are ranged and evens are melee
-		local text = (self.vb.orbCount+1) % 2 == 0 and MELEE or RANGED
+		local text = nextCount % 2 == 0 and MELEE or RANGED
 		if self:IsEasy() then
-			timerOrbOfCorruptionCD:Start(31.2, self.vb.orbCount+1, text)
+			timerOrbOfCorruptionCD:Start(31.2, nextCount, text)
 			countdownOrbs:Start(31.2)
 		elseif self:IsMythic() then
-			timerOrbOfCorruptionCD:Start(24, self.vb.orbCount+1, text)
+			timerOrbOfCorruptionCD:Start(24, nextCount, text)
 			countdownOrbs:Start(24)
 		else
-			timerOrbOfCorruptionCD:Start(28, self.vb.orbCount+1, text)
+			timerOrbOfCorruptionCD:Start(28, nextCount, text)
 			countdownOrbs:Start(28)
 		end
 	elseif spellId == 228056 then
 		self.vb.orbCount = self.vb.orbCount + 1
 		--Odd orbs are ranged and evens are melee
-		local text = (self.vb.orbCount+1) % 2 == 0 and MELEE or RANGED
+		local nextCount = self.vb.orbCount+1
+		local text = nextCount % 2 == 0 and MELEE or RANGED
 		if self:IsLFR() then
-			timerOrbOfCorrosionCD:Start(32.7, self.vb.orbCount+1, text)
+			timerOrbOfCorrosionCD:Start(32.7, nextCount, text)
 			countdownOrbs:Start(32.7)
 		elseif self:IsMythic() then
-			local timer = phase3MythicOrbs[self.vb.orbCount+1]
+			local timer = phase3MythicOrbs[nextCount]
 			if timer then
-				timerOrbOfCorrosionCD:Start(timer, self.vb.orbCount+1, text)
+				timerOrbOfCorrosionCD:Start(timer, nextCount, text)
 				countdownOrbs:Start(timer)
 			else
-				timerOrbOfCorrosionCD:Start(12, self.vb.orbCount+1, text)
+				timerOrbOfCorrosionCD:Start(12, nextCount, text)
 				countdownOrbs:Start(12)
 			end
 		else--Reverify normal
-			timerOrbOfCorrosionCD:Start(17, self.vb.orbCount+1, text)
+			timerOrbOfCorrosionCD:Start(17, nextCount, text)
 			countdownOrbs:Start(17)
 		end
 	elseif spellId == 228619 then
