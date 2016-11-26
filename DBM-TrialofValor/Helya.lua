@@ -155,8 +155,8 @@ local seenMobs = {}
 181.444	Striking Tentacle 11 begins casting Tentacle Strike (melee)
 --]]
 local mythicTentacleSpawns = {"2x"..DBM_CORE_FRONT, "1x"..DBM_CORE_FRONT.."/1x"..DBM_CORE_BACK, "2x"..DBM_CORE_BACK, "2x"..DBM_CORE_BACK.."/1x"..DBM_CORE_FRONT, "2x"..DBM_CORE_FRONT}
-local phase3MythicOrbs = {6, 13.0, 13.0, 27.1, 10.7, 13.0, 25.0, 13.0, 13.0, 25.0, 13.0, 17.6, 19.5, 13.0, 13.0, 12.0, 12.0, 16.8, 8.2}--Needs more casts before berserk
-local phase3MythicTaint = {0, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 17, 14, 11}--Needs two-four more casts til berserk
+local phase3MythicOrbs = {6, 13.0, 13.0, 27.1, 10.7, 13.0, 25.0, 13.0, 13.0, 25.0, 13.0, 17.6, 19.5, 13.0, 13.0, 12.0, 12.0, 15, 8.2}--last being 8.2 in one log, but 13 in another. leaving 8.2 for now
+local phase3MythicTaint = {0, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 17, 14, 11, 11}--Assumed that rest are 11 (if you someone survive past berserk)
 
 mod.vb.phase = 1
 mod.vb.rottedPlayers = 0
