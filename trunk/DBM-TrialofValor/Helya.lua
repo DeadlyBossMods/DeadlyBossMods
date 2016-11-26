@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"RAID_BOSS_EMOTE",
 	"RAID_BOSS_WHISPER",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
 --[[
@@ -600,22 +600,22 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerAddsCD:Start(14)
 			timerFuryofMawCD:Start(36.5, 1)
 		end
-	elseif spellId == 228546 and not self.vb.phase == 3 then--Helya (Phase 3, 6 seconds slower than yell)
+	elseif spellId == 228546 then--Helya (Phase 3, 6 seconds slower than yell)
 		self.vb.phase = 3
 		self.vb.taintCount = 0--TODO, make sure helya happens before first taint goes out
 		self.vb.orbCount = 1
 		self.vb.furyOfMawCount = 0
 		timerFuryofMawCD:Stop()
-		if self:IsLFR() then
-			timerOrbOfCorrosionCD:Start(11, 1, RANGED)--Needs recheck
-			countdownOrbs:Start(11)--Needs recheck
-			timerCorruptedBreathCD:Start(40)--Needs recheck
-			timerFuryofMawCD:Start(90, 1)--Needs recheck
-		elseif self:IsMythic() then
+		if self:IsMythic() then
 			timerOrbOfCorrosionCD:Start(6, 1, RANGED)
 			countdownOrbs:Start(6)
 			timerCorruptedBreathCD:Start(10)
 			timerFuryofMawCD:Start(35, 1)
+		elseif self:IsLFR() then
+			timerOrbOfCorrosionCD:Start(11, 1, RANGED)--Needs recheck
+			countdownOrbs:Start(11)--Needs recheck
+			timerCorruptedBreathCD:Start(40)--Needs recheck
+			timerFuryofMawCD:Start(90, 1)--Needs recheck
 		elseif self:IsNormal() then--May still be same as heroic with variation
 			timerOrbOfCorrosionCD:Start(12, 1, RANGED)--Needs recheck
 			countdownOrbs:Start(12)--Needs more verification
