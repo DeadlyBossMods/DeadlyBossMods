@@ -460,7 +460,7 @@ DBM_ARROW_ERROR_USAGE	= {
 DBM_SPEED_KILL_TIMER_TEXT	= "Рекордная победа"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "Лучшее прохождение"
 DBM_COMBAT_RES_TIMER_TEXT	= "След. заряд БР"
-DBM_CORE_TIMER_RESPAWN		= "Появление босса"
+DBM_CORE_TIMER_RESPAWN		= "%s босса"
 
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s запрашивает разрешение на просмотр ваших текущих сохранений подземелий.\nВы хотите предоставить %s такое право? Этот игрок получит возможность запрашивать эту информацию без уведомления в течение вашей текущей игровой сессии."

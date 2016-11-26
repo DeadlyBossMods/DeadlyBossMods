@@ -462,7 +462,7 @@ DBM_ARROW_ERROR_USAGE	= {
 DBM_SPEED_KILL_TIMER_TEXT	= "Superar récord"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "Récord actual"
 DBM_COMBAT_RES_TIMER_TEXT	= "Siguiente resurrección"
-DBM_CORE_TIMER_RESPAWN		= "Jefe reaparece"
+DBM_CORE_TIMER_RESPAWN		= "%s reaparece"
 
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s ha solicitado ver tu registro de estancias actual.\n¿Quieres compartir esta información con %s?."
