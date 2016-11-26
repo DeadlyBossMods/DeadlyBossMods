@@ -40,6 +40,7 @@ or (ability.id = 228300 or ability.id = 228300) and type = "removebuff" or abili
 local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnTaintOfSea				= mod:NewTargetAnnounce(228054, 2)
 --Stage Two: From the Mists (65%)
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 ----Grimelord
 local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnFetidRot					= mod:NewTargetAnnounce(193367, 3)
@@ -47,6 +48,7 @@ local warnFetidRot					= mod:NewTargetAnnounce(193367, 3)
 ----MistCaller
 local warnMistInfusion				= mod:NewCastAnnounce(228854, 4, nil, nil, false)
 --Stage Three: Helheim's Last Stand
+local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 local warnDarkHatred				= mod:NewTargetAnnounce(232488, 3)
 local warnOrbOfCorrosion			= mod:NewTargetAnnounce(230267, 3)
 
@@ -595,6 +597,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerBilewaterBreathCD:Stop()
 		timerOrbOfCorruptionCD:Stop()
 		countdownOrbs:Cancel()
+		warnPhase2:Show()
 		if not self:IsMythic() then
 			--On mythic first fury of maw is instantly on phase change, adds timer is handled by that
 			timerAddsCD:Start(14)
@@ -606,6 +609,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.orbCount = 1
 		self.vb.furyOfMawCount = 0
 		timerFuryofMawCD:Stop()
+		warnPhase3:Show()
 		if self:IsMythic() then
 			timerOrbOfCorrosionCD:Start(6, 1, RANGED)
 			countdownOrbs:Start(6)
