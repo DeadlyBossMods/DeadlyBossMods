@@ -489,7 +489,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and args.extraSpellId == 228854 then
-		timerMistInfusion:Stop(args.dest.GUID)
+		timerMistInfusion:Stop(args.destGUID)
 	end
 end
 
