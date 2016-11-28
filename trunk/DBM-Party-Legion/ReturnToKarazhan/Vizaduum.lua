@@ -32,7 +32,7 @@ local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 
 --ALL
 local specWarnChaoticShadows		= mod:NewSpecialWarningYou(229159, nil, nil, nil, 1, 2)
-local yellChaoticShadows			= mod:NewPosYell(229159)
+local yellChaoticShadows			= mod:NewPosShortYell(229159)
 local specWarnBurningBlast			= mod:NewSpecialWarningInterruptCount(229083, "HasInterrupt", nil, nil, 1, 2)
 --Phase 1
 local specWarnFelBeam				= mod:NewSpecialWarningRun(229242, nil, nil, nil, 1, 2)
@@ -152,7 +152,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnChaoticShadows:Show()
 			voiceChaoticShadows:Play("runout")
-			yellChaoticShadows:Yell(count, count, count)
+			yellChaoticShadows:Yell(count, args.spellName, count)
 		end
 		if self.Options.SetIconOnShadows then
 			self:SetIcon(name, count)
