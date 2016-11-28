@@ -6,11 +6,6 @@ local L
 L= DBM:GetModLocalization(1819)
 
 ---------------------------
--- Guarm --
----------------------------
-L= DBM:GetModLocalization(1830)
-
----------------------------
 -- Helya --
 ---------------------------
 L= DBM:GetModLocalization(1829)

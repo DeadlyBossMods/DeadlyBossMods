@@ -38,11 +38,11 @@ local yellFrostLick					= mod:NewYell(228248, nil, false)
 local specWarnFrostLickDispel		= mod:NewSpecialWarningDispel(228248, "Healer", nil, nil, 1, 2)
 --Mythic
 local specWarnFlamingFoam			= mod:NewSpecialWarningYou(228744, nil, nil, nil, 1)--228794 jump id
-local yellFlameFoam					= mod:NewPosShortYell(228744)
+local yellFlameFoam					= mod:NewPosYell(228744, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnBrineyFoam			= mod:NewSpecialWarningYou(228810, nil, nil, nil, 1)--228811 jump id
-local yellBrineyFoam				= mod:NewPosShortYell(228810)
+local yellBrineyFoam				= mod:NewPosYell(228810, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 local specWarnShadowyFoam			= mod:NewSpecialWarningYou(228818, nil, nil, nil, 1)
-local yellShadowyFoam				= mod:NewPosShortYell(228818)
+local yellShadowyFoam				= mod:NewPosYell(228818, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 
 local timerLickCD					= mod:NewCDCountTimer(45, "ej14463", nil, nil, nil, 3, 228228)
 local timerLeashCD					= mod:NewNextTimer(45, 228201, nil, nil, nil, 6, 129417)
@@ -192,17 +192,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		if spellId == 228744 or spellId == 228794 then
 			if args:IsPlayer() then
 				specWarnFlamingFoam:Show()
-				yellFlameFoam:Yell(7, 7)
+				yellFlameFoam:Yell(7, args.spellName, 7)
 			end
 		elseif spellId == 228810 or spellId == 228811 then
 			if args:IsPlayer() then
 				specWarnBrineyFoam:Show()
-				yellBrineyFoam:Yell(6, 6)
+				yellBrineyFoam:Yell(6, args.spellName, 6)
 			end
 		elseif spellId == 228818 or spellId == 228819 then
 			if args:IsPlayer() then
 				specWarnShadowyFoam:Show()
-				yellShadowyFoam:Yell(3, 3)
+				yellShadowyFoam:Yell(3, args.spellName, 3)
 			end
 		end
 		if self.Options.SetIconOnFoam then
