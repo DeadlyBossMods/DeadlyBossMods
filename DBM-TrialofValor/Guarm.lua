@@ -192,17 +192,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		if spellId == 228744 or spellId == 228794 then
 			if args:IsPlayer() then
 				specWarnFlamingFoam:Show()
-				yellFlameFoam:Yell(7, args.spellName, 7)
+				yellFlameFoam:Yell(7, 7)
 			end
 		elseif spellId == 228810 or spellId == 228811 then
 			if args:IsPlayer() then
 				specWarnBrineyFoam:Show()
-				yellBrineyFoam:Yell(6, args.spellName, 6)
+				yellBrineyFoam:Yell(6, 6)
 			end
 		elseif spellId == 228818 or spellId == 228819 then
 			if args:IsPlayer() then
 				specWarnShadowyFoam:Show()
-				yellShadowyFoam:Yell(3, args.spellName, 3)
+				yellShadowyFoam:Yell(3, 3)
 			end
 		end
 		if self.Options.SetIconOnFoam then
