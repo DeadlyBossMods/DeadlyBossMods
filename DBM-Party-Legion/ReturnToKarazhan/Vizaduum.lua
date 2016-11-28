@@ -152,7 +152,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnChaoticShadows:Show()
 			voiceChaoticShadows:Play("runout")
-			yellChaoticShadows:Yell(count, args.spellName, count)
+			yellChaoticShadows:Yell(count, count)
 		end
 		if self.Options.SetIconOnShadows then
 			self:SetIcon(name, count)
