@@ -44,6 +44,7 @@ local yellBrineyFoam				= mod:NewPosShortYell(228810)
 local specWarnShadowyFoam			= mod:NewSpecialWarningYou(228818, nil, nil, nil, 1)
 local yellShadowyFoam				= mod:NewPosShortYell(228818)
 
+local timerLickCD					= mod:NewCDCountTimer(45, "ej14463", nil, nil, nil, 3, 228228)
 local timerLeashCD					= mod:NewNextTimer(45, 228201, nil, nil, nil, 6, 129417)
 local timerLeash					= mod:NewBuffActiveTimer(30, 228201, nil, nil, nil, 6)
 local timerFangsCD					= mod:NewCDCountTimer(20.5, 227514, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--20.5-23
@@ -70,12 +71,14 @@ mod.vb.fangCast = 0
 mod.vb.breathCast = 0
 mod.vb.leapCast = 0
 mod.vb.foamCast = 0
+mod.vb.lickCount = 0
 --Ugly way to do it, vs a local table, but this ensures that if icon setter disconnects, it doesn't get messed up
 mod.vb.one = false
 mod.vb.two = false
 mod.vb.three = false
 local debugLicks = {}
 local lastTime = 0
+local mythicLickTimers = {12.4, 9.6, 8.5, 3.6, 60, 3.6, 7.2, 9.7, 54.5, 3.6, 7.3, 9.7, 57.1, 6}--Licks are scripted, ish
 
 local updateInfoFrame
 do
@@ -101,6 +104,7 @@ function mod:OnCombatStart(delay)
 	self.vb.fangCast = 0
 	self.vb.breathCast = 0
 	self.vb.leapCast = 0
+	self.vb.lickCount = 0
 	table.wipe(debugLicks)
 	lastTime = GetTime()
 	--All other combat start timers started by Helyatosis
@@ -110,6 +114,7 @@ function mod:OnCombatStart(delay)
 			self.vb.two = false
 			self.vb.three = false
 			self.vb.foamCast = 0
+			timerLickCD:Start(12.4, 1)
 			berserkTimer:Start(240-delay)
 			if self.Options.InfoFrame then
 				DBM.InfoFrame:SetHeader(GetSpellInfo(228824))
@@ -169,6 +174,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerVolatileFoamCD:Start(nil, self.vb.foamCast+1)
 		end
 	elseif spellId == 228247 or spellId == 228251 or spellId == 228227 then--Licks
+		self.vb.lickCount = self.vb.lickCount + 1
+		if self:IsMythic() then
+			local timer = mythicLickTimers[self.vb.lickCount+1]
+			if timer then
+				timerLickCD:Start(timer, self.vb.lickCount+1)
+			end
+		end
 		debugLicks[#debugLicks+1] = GetTime() - lastTime
 		lastTime = GetTime()
 	end
@@ -180,12 +192,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if spellId == 228744 or spellId == 228794 then
 			if args:IsPlayer() then
 				specWarnFlamingFoam:Show()
-				yellFlameFoam:Yell(3, args.spellName, 7)
+				yellFlameFoam:Yell(7, args.spellName, 7)
 			end
 		elseif spellId == 228810 or spellId == 228811 then
 			if args:IsPlayer() then
 				specWarnBrineyFoam:Show()
-				yellBrineyFoam:Yell(3, args.spellName, 6)
+				yellBrineyFoam:Yell(6, args.spellName, 6)
 			end
 		elseif spellId == 228818 or spellId == 228819 then
 			if args:IsPlayer() then
