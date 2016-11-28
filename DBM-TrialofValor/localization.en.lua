@@ -5,10 +5,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1819)
 
-L:SetMiscLocalization({
-	BrandYell = "{rt%d} %s {rt%d}"--Shouldn't need translating
-})
-
 ---------------------------
 -- Guarm --
 ---------------------------

@@ -428,16 +428,18 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Play countdown sound for $spell:%s coold
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Play countdown sound for when $spell:%s fades"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Play countout sound for $spell:%s duration"
 DBM_CORE_AUTO_YELL_OPTION_TEXT = {
-	yell		= "Yell when you are affected by $spell:%s",
-	count		= "Yell (with count) when you are affected by $spell:%s",
-	fade		= "Yell (with countdown) when $spell:%s is fading",
-	position	= "Yell (with position) when you are affected by $spell:%s"
+	yell			= "Yell when you are affected by $spell:%s",
+	count			= "Yell (with count) when you are affected by $spell:%s",
+	fade			= "Yell (with countdown) when $spell:%s is fading",
+	position		= "Yell (with position) when you are affected by $spell:%s"
 }
+DBM_CORE_AUTO_YELL_OPTION_TEXT.positionshort = DBM_CORE_AUTO_YELL_OPTION_TEXT.position
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
-	yell		= "%s on " .. UnitName("player") .. "!",
-	count		= "%s on " .. UnitName("player") .. "! (%%d)",
-	fade		= "%s fading in %%d",
-	position 	= "%s %%s on {rt%%d}"..UnitName("player").."{rt%%d}"
+	yell			= "%s on " .. UnitName("player") .. "!",
+	count			= "%s on " .. UnitName("player") .. "! (%%d)",
+	fade			= "%s fading in %%d",
+	position 		= "%s %%s on {rt%%d}"..UnitName("player").."{rt%%d}",
+	positionshort 	= "{rt%d} %%s {rt%%d}"--Likely won't even need translating. Won't hurt to omit
 }
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Show HudMap for $spell:%s"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Show HudMap for various mechanics"
