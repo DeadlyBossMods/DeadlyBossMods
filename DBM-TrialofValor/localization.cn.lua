@@ -1,5 +1,5 @@
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Nov 1 2016, 6:03 UTC@15435
+-- Last update: Nov 30 2016, 3:32 UTC@15461
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -31,10 +31,7 @@ L= DBM:GetModLocalization(1830)
 L= DBM:GetModLocalization(1829)
 
 L:SetMiscLocalization({
-	phaseThree =	"Your efforts are for naught, mortals! Odyn will NEVER be free!", --pending
-	near =			"近",
-	far =			"远",
-	multiple =		"多"
+	phaseThree =	"你们的努力毫无意义，凡人!奥丁休想脱身!"
 })
 
 -------------
