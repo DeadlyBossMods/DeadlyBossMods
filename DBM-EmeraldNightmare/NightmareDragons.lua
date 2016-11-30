@@ -83,7 +83,7 @@ local timerEssenceOfCorruptionCD	= mod:NewNextTimer(30, 205298, nil, nil, nil, 1
 --Lethon
 mod:AddTimerLine(Lethon)
 local timerSiphonSpiritCD			= mod:NewNextTimer(49.9, 203888, nil, nil, nil, 1)
-local timerShadowBurstCD			= mod:NewNextTimer(14.7, 204040, nil, nil, nil, 3)--Air
+local timerShadowBurstCD			= mod:NewNextTimer(14.5, 204040, nil, nil, nil, 3)--Air
 --Taerar
 mod:AddTimerLine(Taerar)
 local timerShadesOfTaerarCD			= mod:NewNextTimer(48.5, 204100, nil, "-Healer", nil, 1)
@@ -146,7 +146,7 @@ local function whoDatUpThere(self)
 
 	end
 	if not lethonFound then -- Lethon
-		timerShadowBurstCD:Start(13.8)
+		timerShadowBurstCD:Start(12.6)
 	end
 	if not taerarFound then -- Taerar
 		timerBellowingRoarCD:Start(43)
