@@ -481,31 +481,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---[[
---Only if better chat message way doesn't work. This way is still bleh and needs a little filtering
-function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-	for i = 1, 5 do
-		local uId = "boss"..i
-		if UnitExists(uId) then
-			local cid = self:GetUnitCreatureId(uId)
-			if cid == 114361 then--Hymdall
-				specWarnHymall:Show()
-				voiceHymdall:Play("bigmob")
-				timerDancingBladeCD:Start(6)
-				timerHornOfValorCD:Start(12)
-				countdownHorn:Start(12)
-			elseif cid == 114360 then--Hyrja
-				specWarnHyrja:Show()
-				voiceHyrja:Play("bigmob")
-				timerExpelLightCD:Start(4.7)
-				timerShieldofLightCD:Start(9.7)
-				countdownShield:Start(9.7)
-			end
-		end
-	end
-end
---]]
-
 --"<35.57 16:56:12> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\ABILITY_PRIEST_FLASHOFLIGHT.BLP:20|t Hyrja targets |cFFFF0000Wakmagic|r with |cFFFF0404|Hspell:228162|h[Shield of Light]|h|r!#Hyrja###Wakmagic##0#0##0#476#nil#0#false#false#false#false", -- [241]
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:228162") then
@@ -556,9 +531,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		elseif npc == hymdall then
 			specWarnHymall:Show()
 			voiceHymdall:Play("bigmob")
-			timerDancingBladeCD:Start(6)
-			timerHornOfValorCD:Start(12)
-			countdownHorn:Start(12)
+			timerDancingBladeCD:Start(5)
+			timerHornOfValorCD:Start(9.5)
+			countdownHorn:Start(9.5)
 		end
 	end
 end
@@ -621,26 +596,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		--Timer started at jump though has to be delayed to avoid phase 1 ClearAllDebuffs events
 	elseif spellId == 227882 then--Jump into Battle (phase 2 begin)
 		self.vb.phase = 2
-	--"<143.76 09:43:49> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#boss1#true#true#true#Odyn#Creature-0-1461-1648-2
-	--"<145.25 09:43:50> [UNIT_SPELLCAST_SUCCEEDED] Hyrja(??) [[boss2:Valarjar's Bond::3-1461-1648-2401-229469-00062C1C49:229469]]", -- [1792]
---		self:RegisterShortTermEvents(
---			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
---		)
---[[	elseif spellId == 229469 and self.vb.phase == 2 then--Valarjar's Bond (any of 3 bosses jumping down)
-		local cid = self:GetUnitCreatureId(uId)
-		if cid == 114361 then--Hymdall
-			specWarnHymall:Show()
-			voiceHymdall:Play("bigmob")
-			timerDancingBladeCD:Start(4.6)
-			timerHornOfValorCD:Start(10.6)
-			countdownHorn:Start(10.6)
-		elseif cid == 114360 then--Hyrja
-			specWarnHyrja:Show()
-			voiceHyrja:Play("bigmob")
-			timerExpelLightCD:Start(3.3)
-			timerShieldofLightCD:Start(8.3)
-			countdownShield:Start(8.3)
-		end--]]
 	elseif spellId == 34098 and self.vb.phase == 2 then--ClearAllDebuffs (any of bosses leaving)
 		local cid = self:GetUnitCreatureId(uId)
 		if cid == 114361 then--Hymdall
