@@ -12,7 +12,7 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 212726 212630 211073 211368 214529 213162 214249",
+	"SPELL_CAST_START 212726 212630 211073 211368 214529 213162 214249 226821",
 	"SPELL_CAST_SUCCESS 214876 214529 211471 212726",
 	"SPELL_AURA_APPLIED 210346 211368 211471",
 	"SPELL_AURA_APPLIED_DOSE 210279",
@@ -167,7 +167,7 @@ function mod:SPELL_CAST_START(args)
 		countdownForcesOfNightmare:Start()
 	elseif spellId == 212630 or spellId == 214249 then--214249 is phase 2
 		warnCleansingGround:Show()
-	elseif spellId == 211073 then
+	elseif (spellId == 211073 or spellId == 226821) and self:AntiSpam(10, args.sourceGUID) then
 		warnDesiccatingStomp:Show()
 		timerDisiccatingStompCD:Start(nil, args.SourceGUID)
 	elseif spellId == 211368 then
@@ -178,7 +178,7 @@ function mod:SPELL_CAST_START(args)
 		if self:IsEasy() then
 			timerTouchofLifeCD:Start(15, args.sourceGUID)
 		else
-			timerTouchofLifeCD:Start(12, args.sourceGUID)
+			timerTouchofLifeCD:Start(11, args.sourceGUID)
 		end
 	elseif spellId == 214529 then
 		timerSpearOfNightmaresCD:Start()
@@ -198,7 +198,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnNightmareBlast:Show()
 			voiceNightmareBlast:Play("defensive")
 		else
-			if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, targetName) then return end--You are not near current tank, you're probably 3rd tank on Adds that never taunts nightmare blast
+			if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(30, targetName) then return end--You are not near current tank, you're probably 3rd tank on Adds that never taunts nightmare blast
 			specWarnNightmareBlastOther:Schedule(2, targetName)
 			voiceNightmareBlast:Schedule(2, "tauntboss")
 		end
@@ -268,7 +268,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 105495 then--Scorned Sister
 				self.vb.sisterCount = self.vb.sisterCount + 1
-				timerScornedTouchCD:Start(5.5, GUID)
+				timerScornedTouchCD:Start(5, GUID)
 				timerTouchofLifeCD:Start(7, GUID)
 				if self.Options.RangeFrame then
 					DBM.RangeCheck:Show(8)
