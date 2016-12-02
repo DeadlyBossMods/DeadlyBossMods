@@ -272,8 +272,8 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 105495 then--Scorned Sister
 				self.vb.sisterCount = self.vb.sisterCount + 1
-				timerScornedTouchCD:Start(5, GUID)
-				timerTouchofLifeCD:Start(7, GUID)
+				timerScornedTouchCD:Start(4.5, GUID)
+				timerTouchofLifeCD:Start(6, GUID)
 				if self.Options.RangeFrame then
 					DBM.RangeCheck:Show(8)
 				end
