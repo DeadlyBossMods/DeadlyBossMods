@@ -75,15 +75,15 @@ local voiceTidyUp					= mod:NewVoice(207513)--mobsoon/watchstep
 mod:AddRangeFrameOption(12, 208506)
 mod:AddInfoFrameOption(214573, false)
 
-mod.vb.ArcaneSlashCooldown = 9
-mod.vb.toxicSliceCooldown = 26.5
+mod.vb.ArcaneSlashCooldown = 10.5--10.5 now?, Verify it can never be 9 anymore
+mod.vb.toxicSliceCooldown = 26.5--Confirmed still true
 
 function mod:OnCombatStart(delay)
-	self.vb.ArcaneSlashCooldown = 9
+	self.vb.ArcaneSlashCooldown = 10.5
 	self.vb.toxicSliceCooldown = 26.5
 	timerArcaneSlashCD:Start(7-delay)
-	timerToxicSliceCD:Start(11-delay)
-	timerPhaseChange:Start(45)
+	timerToxicSliceCD:Start(10.5-delay)
+	timerPhaseChange:Start(45)--Maniac
 	countdownModes:Start(45)
 	--On combat start he starts in a custom cleaner mode (206570) that doesn't have sterilize or cleansing rage abilities but casts cake and ArcaneSlashs more often
 	if self.Options.InfoFrame then
@@ -127,25 +127,25 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCleansingRageCD:Start()--10
 		timerToxicSliceCD:Start(13)
 		timerArcaneSlashCD:Start(19.5)
-		timerPhaseChange:Start(45)
+		timerPhaseChange:Start(45)--Maniac
 		countdownModes:Start(45)
 	elseif spellId == 206557 then--Maniac Mode (40 seconds)
 		self.vb.ArcaneSlashCooldown = 7
 		warnManiacMode:Show()
 		timerToxicSliceCD:Stop()--Must be stopped here too since first cleaner mode has no buff removal
 		timerArcaneSlashCD:Stop()
-		timerArcingBondsCD:Start(5)--5-10 depending on if arcane slash delays it
-		timerArcaneSlashCD:Start(6)
+		timerArcingBondsCD:Start(3.4)--Confirm if it's always this now that blizz pushed it up some to no longer be delayed by arcing slash
+		timerArcaneSlashCD:Start(6)--Maybe 7 now, confirm
 		timerAnnihilationCD:Start()
 		countdownAnnihilation:Start()
-		timerPhaseChange:Start(40)
+		timerPhaseChange:Start(40)--Caretaker
 		countdownModes:Start(40)
 	elseif spellId == 206559 then--Caretaker Mode (15 seconds)
 		timerArcaneSlashCD:Stop()
 		warnCaretakerMode:Show()
 		timerSucculentFeastCD:Start()--4.5-5
 		timerTidyUpCD:Start()--10-11
-		timerPhaseChange:Start(13)
+		timerPhaseChange:Start(13)--Cleaner
 		countdownModes:Start(13)
 	elseif spellId == 206641 then--Arcane ArcaneSlash
 		timerArcaneSlashCD:Start(self.vb.ArcaneSlashCooldown)
