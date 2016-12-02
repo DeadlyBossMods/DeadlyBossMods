@@ -66,9 +66,9 @@ local timerEntanglingNightmareCD	= mod:NewNextTimer(51, 214505, nil, nil, nil, 1
 ----Malfurion
 local timerCleansingGroundCD		= mod:NewNextTimer(77, 214249, nil, nil, nil, 3)--Phase 2 version only for now. Not sure if cast more than once though?
 ----Forces of Nightmare
-local timerScornedTouchCD			= mod:NewCDTimer(21.5, 211471, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerScornedTouchCD			= mod:NewCDTimer(20.7, 211471, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerTouchofLifeCD			= mod:NewCDTimer(15, 211368, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerRottenBreathCD			= mod:NewCDTimer(25, 211192, nil, nil, nil, 3)
+local timerRottenBreathCD			= mod:NewCDTimer(24.3, 211192, nil, nil, nil, 3)
 local timerDisiccatingStompCD		= mod:NewCDTimer(32, 211073, nil, nil, nil, 2)
 
 --Cenarius
@@ -169,7 +169,11 @@ function mod:SPELL_CAST_START(args)
 		warnCleansingGround:Show()
 	elseif (spellId == 211073 or spellId == 226821) and self:AntiSpam(10, args.sourceGUID) then
 		warnDesiccatingStomp:Show()
-		timerDisiccatingStompCD:Start(nil, args.SourceGUID)
+		if self:IsMythic() then
+			timerDisiccatingStompCD:Start(29, args.SourceGUID)
+		else
+			timerDisiccatingStompCD:Start(nil, args.SourceGUID)
+		end
 	elseif spellId == 211368 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnTouchofLife:Show(args.sourceName)
