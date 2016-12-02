@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, licks timers stillnot possible? Review them more closely with new debug code.
+--(ability.id = 228247 or ability.id = 228251 or ability.id = 228227) and type = "cast"
 local warnOffLeash					= mod:NewSpellAnnounce(228201, 2, 129417)
 local warnFangs						= mod:NewCountAnnounce(227514, 2)
 local warnShadowLick				= mod:NewTargetAnnounce(228253, 2, nil, "Healer")
@@ -78,7 +78,9 @@ mod.vb.two = false
 mod.vb.three = false
 local debugLicks = {}
 local lastTime = 0
-local mythicLickTimers = {12.4, 9.6, 8.5, 3.6, 60, 3.6, 7.2, 9.7, 54.5, 3.6, 7.3, 9.7, 57.1, 6}--Licks are scripted, ish
+local mythicLickTimers	= {12.4, 9.6, 8.5, 3.6, 60, 3.6, 7.2, 9.7, 54.5, 3.6, 7.3, 9.7, 57.1, 6}--Licks are scripted, ish
+local heroicLickTimers	= {11.0, 9.7, 3.6, 4.8, 3.6, 8.5, 51.0, 3.6, 4.8, 3.6, 8.4, 3.6, 51, 3.6, 4.8, 3.6, 8.5, 3.6, 43.6, 8.5, 3.6, 4.8, 3.6, 8.5, 3.6}
+local normalLickTimers	= {11.0, 9.7, 3.6, 4.8, 3.6, 8.5, 44.0, 8.5, 3.6, 4.8, 3.6, 8.5, 3.6, 42.6, 8.5, 3.6, 4.8, 3.6, 8.5, 3.6, 42.5, 8.5, 3.6, 4.8, 3.6, 8.5, 3.6}--Normal needs better vetting since this is kind of hard to do using WCL
 
 local updateInfoFrame
 do
@@ -121,6 +123,7 @@ function mod:OnCombatStart(delay)
 				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
 			end
 		else
+			timerLickCD:Start(11, 1)
 			berserkTimer:Start(-delay)
 		end
 		if self.Options.RangeFrame then
@@ -177,6 +180,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.lickCount = self.vb.lickCount + 1
 		if self:IsMythic() then
 			local timer = mythicLickTimers[self.vb.lickCount+1]
+			if timer then
+				timerLickCD:Start(timer, self.vb.lickCount+1)
+			end
+		elseif self:IsHeroic() then
+			local timer = heroicLickTimers[self.vb.lickCount+1]
+			if timer then
+				timerLickCD:Start(timer, self.vb.lickCount+1)
+			end
+		elseif self:IsNormal() then
+			local timer = normalLickTimers[self.vb.lickCount+1]
 			if timer then
 				timerLickCD:Start(timer, self.vb.lickCount+1)
 			end
