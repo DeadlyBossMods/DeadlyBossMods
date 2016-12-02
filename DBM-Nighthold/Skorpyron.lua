@@ -42,7 +42,7 @@ local specWarnToxicChit				= mod:NewSpecialWarningMove(204744, nil, nil, nil, 1,
 local timerArcanoslashCD			= mod:NewCDTimer(10, 204275, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerCallofScorpidCD			= mod:NewCDTimer(20.3, 204372, nil, nil, nil, 1)--20-22 Unless delayed by shockwave/stun then as high as 40
 local timerShockwaveCD				= mod:NewCDTimer(57.9, 204316, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--58-60
-local timerFocusedBlastCD			= mod:NewCDTimer(30.4, 204471, nil, nil, nil, 3)--30-34
+local timerFocusedBlastCD			= mod:NewCDTimer(30.4, 204471, nil, nil, nil, 3)--30-34 (32.8 NEW data)
 local timerVulnerable				= mod:NewBuffFadesTimer(15, 204459, nil, nil, nil, 6)
 --These are all 46 unless delayed by shockwave or stun
 mod:AddTimerLine(PLAYER_DIFFICULTY6)
@@ -73,9 +73,9 @@ function mod:OnCombatStart(delay)
 	timerArcanoslashCD:Start(5-delay)
 	timerFocusedBlastCD:Start(13-delay)
 	countdownFocusedBlast:Start(13-delay)
-	timerCallofScorpidCD:Start(-delay)
+	timerCallofScorpidCD:Start(-delay)--21.7
 	countdownCallofScorpid:Start()
-	timerShockwaveCD:Start(56.2-delay)
+	timerShockwaveCD:Start(56.2-delay)--56.9
 	countdownShockwave:Start(56.2-delay)
 	if self:IsMythic() then
 		timerVolatileFragments:Start(35-delay)
