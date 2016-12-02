@@ -58,7 +58,7 @@ local yellScornedTouch				= mod:NewYell(211471)
 --Cenarius
 local timerNightmareBramblesCD		= mod:NewCDTimer(30, 210290, nil, nil, nil, 3)--On for all, for now. Doesn't target melee but melee still have to be aware. Just not AS aware.
 local timerDreadThornsCD			= mod:NewCDTimer(34, 210346, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)--Optional but off by default
-local timerNightmareBlastCD			= mod:NewNextTimer(32.8, 213162, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerNightmareBlastCD			= mod:NewNextTimer(32.5, 213162, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerForcesOfNightmareCD		= mod:NewCDCountTimer(77.8, 212726, nil, nil, nil, 1)--77.8-80
 local timerSpearOfNightmaresCD		= mod:NewCDTimer(18.2, 214529, nil, "Tank|Healer", 2, 5, nil, DBM_CORE_TANK_ICON)
 local timerBeastsOfNightmareCD		= mod:NewAITimer(16, 214876, nil, nil, nil, 1)
