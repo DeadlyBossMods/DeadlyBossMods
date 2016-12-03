@@ -418,6 +418,7 @@ local statusWhisperDisabled = false
 local wowVersionString, _, _, wowTOC = GetBuildInfo()
 local dbmToc = 0
 local UpdateChestTimer
+local breakTimerStart
 
 local fakeBWVersion, fakeBWHash = 26, "aa2a487"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
@@ -1110,7 +1111,7 @@ do
 			local elapsed = time() - tonumber(startTime)
 			local remaining = timer - elapsed
 			if remaining > 0 then
-				SendAddonMessage("D4", "BTR3\t"..remaining, "WHISPER", playerName)
+				breakTimerStart(DBM, remaining, playerName)
 			else--It must have ended while we were offline, kill variable.
 				self.Options.tempBreak2 = nil
 			end
@@ -4026,11 +4027,24 @@ do
 		end
 	end
 
-	local function breakTimerStart(self, timer, sender)
+	function breakTimerStart(self, timer, sender)
 		self.Options.tempBreak2 = timer.."/"..time()
 		if not self.Options.DontShowPT2 then
 			self.Bars:CreateBar(timer, DBM_CORE_TIMER_BREAK, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 			fireEvent("DBM_TimerStart", "break", DBM_CORE_TIMER_BREAK, timer, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+		end
+		if not dummyMod2 then
+			local threshold = DBM.Options.PTCountThreshold
+			local adjustedThreshold = 5
+			if threshold > 10 then
+				adjustedThreshold = 10
+			else
+				adjustedThreshold = floor(threshold)
+			end
+			dummyMod2 = DBM:NewMod("BreakTimerCountdownDummy")
+			DBM:GetModLocalization("BreakTimerCountdownDummy"):SetGeneralLocalization{ name = DBM_CORE_MINIMAP_TOOLTIP_HEADER }
+			dummyMod2.countdown = dummyMod2:NewCountdown(0, 0, nil, nil, adjustedThreshold, true)
+			dummyMod2.text = dummyMod2:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
 		if not self.Options.DontPlayPTCountdown then
 			dummyMod2.countdown:Start(timer)
@@ -4044,12 +4058,18 @@ do
 			end
 		end
 		if not self.Options.DontShowPTText then
-			dummyMod2.text:Show(DBM_CORE_BREAK_START:format(strFromTime(timer), sender))
+			local hour, minute = GetGameTime()
+			minute = minute+(timer/60)
+			if minute >= 60 then
+				hour = hour + 1
+				minute = minute - 60
+			end
+			dummyMod2.text:Show(DBM_CORE_BREAK_START:format(strFromTime(timer).." ("..hour..":"..floor(minute)..")", sender))
 			if timer/60 > 10 then dummyMod2.text:Schedule(timer - 10*60, DBM_CORE_BREAK_MIN:format(10)) end
 			if timer/60 > 5 then dummyMod2.text:Schedule(timer - 5*60, DBM_CORE_BREAK_MIN:format(5)) end
 			if timer/60 > 2 then dummyMod2.text:Schedule(timer - 2*60, DBM_CORE_BREAK_MIN:format(2)) end
 			if timer/60 > 1 then dummyMod2.text:Schedule(timer - 1*60, DBM_CORE_BREAK_MIN:format(1)) end
-			dummyMod2.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER)
+			dummyMod2.text:Schedule(timer, DBM_CORE_ANNOUNCE_BREAK_OVER:format(hour..":"..floor(minute)))
 		end
 		C_TimerAfter(timer, function() self.Options.tempBreak2 = nil end)
 	end
