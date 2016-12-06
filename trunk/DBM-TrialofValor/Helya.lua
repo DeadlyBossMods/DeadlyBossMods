@@ -343,20 +343,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnOrbOfCorrosion:CombinedShow(0.3, args.destName)
 		if self.Options.SetIconOnOrbs then
 			local uId = DBM:GetRaidUnitId(args.destName)
-			if self:IsMythic() then
-				if self:IsHealer(uId) then--On mythic, a tank isn't chosen, just 1 healer and 2 dps
-					self:SetIcon(args.destName, 1)--Star
-				else
-					self:SetSortedIcon(1, args.destName, 2, 2)--Circle and Diamond
-				end
+			if self:IsHealer(uId) then--On All difficulties as of Dec 6th, a tank isn't chosen, just 1 healer and 2 dps
+				self:SetIcon(args.destName, 1)--Star
 			else
-				if self:IsTanking(uId) then
-					self:SetIcon(args.destName, 2)--Circle
-				elseif self:IsHealer(uId) then--LFR/Normal doesn't choose a healer, just tank/damage
-					self:SetIcon(args.destName, 1)--Star
-				else
-					self:SetIcon(args.destName, 3)--Diamond
-				end
+				self:SetSortedIcon(1, args.destName, 2, 2)--Circle and Diamond
 			end
 		end
 	elseif spellId == 227982 then
