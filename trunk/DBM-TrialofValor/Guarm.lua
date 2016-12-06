@@ -83,10 +83,10 @@ local heroicLickTimers	= {11.0, 9.7, 3.6, 4.8, 3.6, 8.5, 51.0, 3.6, 4.8, 3.6, 8.
 local normalLickTimers	= {11.0, 9.7, 3.6, 4.8, 3.6, 8.5, 44.0, 8.5, 3.6, 4.8, 3.6, 8.5, 3.6, 42.6, 8.5, 3.6, 4.8, 3.6, 8.5, 3.6, 42.5, 8.5, 3.6, 4.8, 3.6, 8.5, 3.6}--Normal needs better vetting since this is kind of hard to do using WCL
 
 local updateInfoFrame
+local fireDebuff, frostDebuff, shadowDebuff = GetSpellInfo(228744), GetSpellInfo(228810), GetSpellInfo(228818)
+local UnitDebuff = UnitDebuff
 do
 	local lines = {}
-	local fireDebuff, frostDebuff, shadowDebuff = GetSpellInfo(228744), GetSpellInfo(228810), GetSpellInfo(228818)
-	local UnitDebuff = UnitDebuff
 	updateInfoFrame = function()
 		table.wipe(lines)
 		for uId in DBM:GetGroupMembers() do
@@ -219,6 +219,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.SetIconOnFoam then
+			local uId = DBM:GetRaidUnitId(args.destName)
+			local currentIcon = GetRaidTargetIndex(uId)
+			if currentIcon ~= 0 then return end--Do nothing, player is already marked
 			if not self.vb.one then
 				self.vb.one = true
 				self:SetIcon(args.destName, 1)
@@ -267,7 +270,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if (spellId == 228744 or spellId == 228794 or spellId == 228810 or spellId == 228811 or spellId == 228818 or spellId == 228819) and args:IsDestTypePlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local currentIcon = GetRaidTargetIndex(uId)
-		if self.Options.SetIconOnFoam then
+		if self.Options.SetIconOnFoam and not (UnitDebuff(uId, fireDebuff) or UnitDebuff(uId, frostDebuff) or UnitDebuff(uId, shadowDebuff)) then
 			if currentIcon == 1 then
 				self.vb.one = false
 			elseif currentIcon == 2 then
