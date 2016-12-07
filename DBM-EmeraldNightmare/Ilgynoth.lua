@@ -106,6 +106,7 @@ mod:AddInfoFrameOption(210099)
 mod:AddDropdownOption("InfoFrameBehavior", {"Fixates", "Adds"}, "Fixates", "misc")
 
 mod.vb.phase = 1
+mod.vb.insideActive = false
 mod.vb.DominatorCount = 0
 mod.vb.CorruptorCount = 0
 mod.vb.DeathglareCount = 0
@@ -248,6 +249,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(addsTable)
 	self.vb.phase = 1
+	self.vb.insideActive = false
 	self.vb.DominatorCount = 0
 	self.vb.CorruptorCount = 0
 	self.vb.DeathglareCount = 0
@@ -316,7 +318,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnMindFlay:Show(args.sourceName)
 			voiceMindFlay:Play("kickcast")
 		end
-		if not addsTable[args.sourceGUID] then
+		if not addsTable[args.sourceGUID] and not self.vb.insideActive then
 			addsTable[args.sourceGUID] = true
 			self.vb.DeathglareCount = self.vb.DeathglareCount + 1
 			if self:AntiSpam(10, 16) then
@@ -419,6 +421,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 209915 then--Stuff of Nightmares
+		self.vb.insideActive = false
 		timerCursedBloodCD:Stop()
 		timerNightmareishFuryCD:Start(7)
 		timerGroundSlamCD:Start(13)
@@ -503,6 +506,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 209915 then--Stuff of Nightmares
+		self.vb.insideActive = true
 		specWarnHeartPhaseBegin:Show()
 		timerDeathGlareCD:Stop()
 		timerCorruptorTentacleCD:Stop()
