@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 212726 212630 211073 211368 214529 213162 214249 226821",
-	"SPELL_CAST_SUCCESS 214876 214529 211471 212726",
+	"SPELL_CAST_SUCCESS 214529 211471 212726",
 	"SPELL_AURA_APPLIED 210346 211368 211471",
 	"SPELL_AURA_APPLIED_DOSE 210279",
 	"SPELL_AURA_REMOVED 210346",
@@ -29,7 +29,6 @@ mod:RegisterEventsInCombat(
 --TODO, an actual beasts of nightmare timer and not an AI timer (transcriptor log needed, i don't think these are in combat log or I would have seen by now)
 --Cenarius
 local warnNightmareBrambles			= mod:NewTargetAnnounce(210290, 2)
-local warnBeastsOfNightmare			= mod:NewSpellAnnounce(214876, 2)--Generic for now, figure out what to do with later.
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 ----Forces of Nightmare
 local warnDesiccatingStomp			= mod:NewCastAnnounce(211073, 3, nil, nil, true, 2)--Basic warning for now, will change to special if needed
@@ -48,6 +47,7 @@ local specWarnForcesOfNightmare		= mod:NewSpecialWarningSwitchCount(212726, nil,
 local specWarnSpearOfNightmares		= mod:NewSpecialWarningDefensive(214529, nil, nil, nil, 1, 2)
 local specWarnSpearOfNightmaresOther= mod:NewSpecialWarningTaunt(214529, nil, nil, nil, 1, 2)
 local specWarnEntangledNightmares	= mod:NewSpecialWarningSwitch(214505, "Dps", nil, nil, 1, 2)
+local specWarnBeastsOfNightmare		= mod:NewSpecialWarningDodge(214876, nil, nil, nil, 2, 2)
 ----Forces of Nightmare
 local yellRottenBreath				= mod:NewYell(211192)
 local specWarnTouchofLife			= mod:NewSpecialWarningInterrupt(211368, "HasInterrupt")
@@ -62,7 +62,7 @@ local timerDreadThornsCD			= mod:NewCDTimer(34, 210346, nil, false, 3, 5, nil, D
 local timerNightmareBlastCD			= mod:NewNextTimer(32.5, 213162, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerForcesOfNightmareCD		= mod:NewCDCountTimer(77.6, 212726, nil, nil, nil, 1)--77.8-80
 local timerSpearOfNightmaresCD		= mod:NewCDTimer(18.2, 214529, nil, "Tank|Healer", 2, 5, nil, DBM_CORE_TANK_ICON)
-local timerBeastsOfNightmareCD		= mod:NewAITimer(16, 214876, nil, nil, 2, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerBeastsOfNightmareCD		= mod:NewCDTimer(30, 214876, nil, nil, 2, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerEntanglingNightmareCD	= mod:NewNextTimer(51, 214505, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 ----Malfurion
 local timerCleansingGroundCD		= mod:NewNextTimer(77, 214249, nil, nil, nil, 3)--Phase 2 version only for now. Not sure if cast more than once though?
@@ -88,6 +88,7 @@ local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_T
 local voiceForcesOfNightmare		= mod:NewVoice(212726)--mobsoon
 local voiceNightmareBlast			= mod:NewVoice(213162, "Tank")--defensive/tauntboss
 local voiceSpearOfNightmares		= mod:NewVoice(214529, "Tank")--defensive/tauntboss
+local voiceBeasts					= mod:NewVoice(214876)--watchstep
 ----Forces of Nightmare
 local voiceTouchOfLife				= mod:NewVoice(211368)--kickcast/dispelnow
 local voiceScornedTouch				= mod:NewVoice(211471)--runout
@@ -207,10 +208,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 214876 then
-		warnBeastsOfNightmare:Show()
-		timerBeastsOfNightmareCD:Start()
-	elseif spellId == 214529 and not args:IsPlayer() then
+	if spellId == 214529 and not args:IsPlayer() then
 		if self:GetNumAliveTanks() >= 3 and not self:CheckNearby(21, args.destName) then return end--You are not near current tank, you're probably 3rd tank on Adds that never taunts nightmare blast
 		specWarnSpearOfNightmaresOther:Show(args.destName)
 		voiceSpearOfNightmares:Play("tauntboss")
@@ -335,12 +333,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		countdownSpearOfNightmares:Start(20)
 		timerCleansingGroundCD:Start(30.5)
 		timerEntanglingNightmareCD:Start(35)
-		if self:IsMythic() then
-			timerBeastsOfNightmareCD:Start(1)
-		end
+--		if self:IsMythic() then
+--			timerBeastsOfNightmareCD:Start(1)--First one is near right away
+--		end
 	elseif spellId == 214454 then--Entangling Nightmares (this is just a lot faster than combat log)
 		specWarnEntangledNightmares:Show()
 		timerEntanglingNightmareCD:Start()
+	elseif spellId == 214876 then
+		specWarnBeastsOfNightmare:Show()
+		voiceBeasts:Play("watchstep")
+		timerBeastsOfNightmareCD:Start()
 	end
 end
 
