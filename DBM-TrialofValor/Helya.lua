@@ -41,6 +41,7 @@ local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnTaintOfSea				= mod:NewTargetAnnounce(228054, 2)
 --Stage Two: From the Mists (65%)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
+local warnTentaclesRemaining		= mod:NewAddsLeftAnnounce("ej14309", 2, 228797)
 ----Grimelord
 local warnOrbOfCorruption			= mod:NewTargetAnnounce(229119, 3)
 local warnFetidRot					= mod:NewTargetAnnounce(193367, 3)
@@ -164,6 +165,7 @@ mod.vb.orbCount = 0
 mod.vb.furyOfMawCount = 0
 mod.vb.tentacleCount = 0
 mod.vb.taintCount = 0
+mod.vb.lastTentacles = 9
 
 function mod:OnCombatStart(delay)
 	table.wipe(seenMobs)
@@ -174,12 +176,14 @@ function mod:OnCombatStart(delay)
 	self.vb.tentacleCount = 0
 	self.vb.taintCount = 0
 	if self:IsEasy() then
+		self.vb.lastTentacles = 9
 		timerTaintOfSeaCD:Start(12.4-delay)
 		timerBilewaterBreathCD:Start(13.3-delay)
 		timerOrbOfCorruptionCD:Start(18-delay, 1, RANGED)--START
 		countdownOrbs:Start(18-delay)
 		timerTentacleStrikeCD:Start(53-delay, 1)
 	elseif self:IsMythic() then
+		self.vb.lastTentacles = 8
 		timerBilewaterBreathCD:Start(11-delay)
 		timerOrbOfCorruptionCD:Start(14-delay, 1, RANGED)--START
 		countdownOrbs:Start(14-delay)
@@ -187,6 +191,7 @@ function mod:OnCombatStart(delay)
 		timerTentacleStrikeCD:Start(35-delay, 1)
 		berserkTimer:Start(-delay)--11 Min confirmed
 	else
+		self.vb.lastTentacles = 9
 		timerBilewaterBreathCD:Start(12-delay)
 		timerTaintOfSeaCD:Start(19-delay)
 		timerOrbOfCorruptionCD:Start(29-delay, 1, RANGED)--START
@@ -579,6 +584,23 @@ function mod:RAID_BOSS_WHISPER(msg)
 	end
 end
 
+function mod:UNIT_HEALTH_FREQUENT(uId)
+	if not self.vb.phase == 2 then
+		self:UnregisterShortTermEvents()
+		return
+	end
+	local cid = self:GetUnitCreatureId(uId)
+	if cid ~= 114537 then return end--Helya
+	local health = UnitHealth(uId) / UnitHealthMax(uId) * 100
+	local tentaclesRemaining = self:IsMythic() and floor((health-45)/2.5) or floor((health-40)/2.77)
+	if tentaclesRemaining < self.vb.lastTentacles then
+		self.vb.lastTentacles = tentaclesRemaining
+		if self.vb.lastTentacles >= 0 then
+			warnTentaclesRemaining:Show(self.vb.lastTentacles)
+		end
+	end
+end
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 228372 then--Mists of Helheim (Phase 2)
@@ -593,7 +615,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerAddsCD:Start(14)
 			timerFuryofMawCD:Start(36.5, 1)
 		end
+		self:RegisterShortTermEvents(
+			"UNIT_HEALTH_FREQUENT boss1 boss2 boss3 boss4 boss5"
+		)
 	elseif spellId == 228546 then--Helya (Phase 3, 6 seconds slower than yell)
+		self:UnregisterShortTermEvents()
 		self.vb.phase = 3
 		self.vb.taintCount = 0--TODO, make sure helya happens before first taint goes out
 		self.vb.orbCount = 1
