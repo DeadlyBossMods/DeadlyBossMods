@@ -57,12 +57,12 @@ local yellScornedTouch				= mod:NewYell(211471)
 
 --Cenarius
 mod:AddTimerLine(L.name)
-local timerNightmareBramblesCD		= mod:NewCDTimer(30, 210290, nil, nil, nil, 3)--On for all, for now. Doesn't target melee but melee still have to be aware. Just not AS aware.
-local timerDreadThornsCD			= mod:NewCDTimer(34, 210346, nil, "Tank", 2, 5, nil, DBM_CORE_TANK_ICON)--Optional but off by default
+local timerNightmareBramblesCD		= mod:NewCDTimer(30, 210290, nil, "-Tank", 2, 3)--On for all, for now. Doesn't target melee but melee still have to be aware. Just not AS aware.
+local timerDreadThornsCD			= mod:NewCDTimer(34, 210346, nil, false, 3, 5, nil, DBM_CORE_TANK_ICON)--Optional but off by default
 local timerNightmareBlastCD			= mod:NewNextTimer(32.5, 213162, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerForcesOfNightmareCD		= mod:NewCDCountTimer(77.6, 212726, nil, nil, nil, 1)--77.8-80
 local timerSpearOfNightmaresCD		= mod:NewCDTimer(18.2, 214529, nil, "Tank|Healer", 2, 5, nil, DBM_CORE_TANK_ICON)
-local timerBeastsOfNightmareCD		= mod:NewAITimer(16, 214876, nil, nil, nil, 1)
+local timerBeastsOfNightmareCD		= mod:NewAITimer(16, 214876, nil, nil, 2, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerEntanglingNightmareCD	= mod:NewNextTimer(51, 214505, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 ----Malfurion
 local timerCleansingGroundCD		= mod:NewNextTimer(77, 214249, nil, nil, nil, 3)--Phase 2 version only for now. Not sure if cast more than once though?
@@ -71,7 +71,7 @@ mod:AddTimerLine(GetSpellInfo(212726))
 local timerScornedTouchCD			= mod:NewCDTimer(20.7, 211471, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerTouchofLifeCD			= mod:NewCDTimer(15, 211368, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 local timerRottenBreathCD			= mod:NewCDTimer(24.3, 211192, nil, nil, nil, 3)
-local timerDisiccatingStompCD		= mod:NewCDTimer(32, 211073, nil, nil, nil, 2)
+local timerDisiccatingStompCD		= mod:NewCDTimer(32, 211073, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 
 --Cenarius
 local countdownForcesOfNightmare	= mod:NewCountdown(78.8, 212726)
@@ -130,9 +130,6 @@ function mod:OnCombatStart(delay)
 		timerNightmareBlastCD:Start(30.5-delay)
 		countdownNightmareBlast:Start(30.5-delay)
 	end
-	if not self.Options.AlertedBramble then
-		DBM:AddMsg(L.BrambleMessage)
-	end
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 	)
@@ -150,10 +147,7 @@ function mod:OnCombatEnd()
 	if self.Options.HudMapOnBreath then
 		DBMHudMap:Disable()
 	end
-	if not self.Options.AlertedBramble then
-		DBM:AddMsg(L.BrambleMessage)
-		self.Options.AlertedBramble = true
-	end
+	--DBM:AddMsg(L.BrambleMessage)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
