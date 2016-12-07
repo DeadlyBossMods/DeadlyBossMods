@@ -86,6 +86,7 @@ local timerAnimateArcaneCD			= mod:NewNextTimer(16, 213564, 124338, nil, nil, 1,
 --Animate Specials
 local timerArmageddon				= mod:NewCastTimer(33, 213568, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Mythic
+mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerFelSoul					= mod:NewBuffActiveTimer(60, 230951, nil, nil, nil, 6)
 
 local berserkTimer					= mod:NewBerserkTimer(600)

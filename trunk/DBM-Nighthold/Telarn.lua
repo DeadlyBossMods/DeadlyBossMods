@@ -80,6 +80,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerToxicSporesCD			= mod:NewNextTimer(8, 219049, nil, nil, nil, 3)--Exception to 35, 55, 70 rule
 local timerGraceOfNatureCD			= mod:NewNextTimer(70, 218927, nil, "Tank", nil, 5)
 local timerCoNCD					= mod:NewNextTimer(70, 218809, nil, nil, nil, 3)
+mod:AddTimerLine(PLAYER_DIFFICULTY6)
 local timerChaotiSpheresofNatureCD	= mod:NewAITimer(35, 223219, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 
 local countdownControlledChaos		= mod:NewCountdown(35, 218438)
