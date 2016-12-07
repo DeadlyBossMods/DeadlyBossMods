@@ -423,8 +423,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 209915 then--Stuff of Nightmares
 		self.vb.insideActive = false
 		timerCursedBloodCD:Stop()
-		timerNightmareishFuryCD:Start(7)
-		timerGroundSlamCD:Start(13)
+		timerNightmareishFuryCD:Start(6.1)
+		timerGroundSlamCD:Start(12.1)
 		if self:IsMythic() then
 			self.vb.deathBlossomCount = 0
 			timerDeathBlossomCD:Start(80)
