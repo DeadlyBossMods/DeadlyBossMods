@@ -70,7 +70,7 @@ local timerRocFormCD				= mod:NewNextTimer(47, 210308, nil, nil, nil, 6)
 local timerGatheringCloudsCD		= mod:NewNextTimer(15.8, 212707, nil, nil, nil, 2)
 local timerDarkStormCD				= mod:NewNextTimer(26, 210948, nil, nil, nil, 2)
 local timerTwistingShadowsCD		= mod:NewNextCountTimer(21.5, 210864, nil, nil, nil, 3)
-local timerRazorWingCD				= mod:NewNextTimer(32.5, 210547, nil, nil, nil, 3)--Needs more timer data when fight done properly
+local timerRazorWingCD				= mod:NewNextTimer(32.5, 210547, nil, nil, nil, 3)
 local timerRakingTalonsCD			= mod:NewCDCountTimer(32, 215582, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerViolentWindsCD			= mod:NewNextTimer(40.5, 218124, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON..DBM_CORE_TANK_ICON)
