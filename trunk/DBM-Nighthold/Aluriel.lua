@@ -89,7 +89,7 @@ local timerArmageddon				= mod:NewCastTimer(33, 213568, nil, nil, nil, 2, nil, D
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerFelSoul					= mod:NewBuffActiveTimer(60, 230951, nil, nil, nil, 6)
 
-local berserkTimer					= mod:NewBerserkTimer(600)
+local berserkTimer					= mod:NewBerserkTimer(600)--480
 
 local countdownMarkOfFrost			= mod:NewCountdown("Alt30", 212531, nil, nil, 3)
 local countdownSearingBrand			= mod:NewCountdown("Alt30", 213148, nil, nil, 3)
@@ -164,7 +164,11 @@ function mod:OnCombatStart(delay)
 	--Rest of timers are triggered by frost buff 0.1 seconds into pull
 	table.wipe(chargeTable)
 	rangeShowAll = false
-	berserkTimer:Start(-delay)
+	if self:IsEasy() then
+		berserkTimer:Start(-delay)--600 confirmed on normal
+	else
+		berserkTimer:Start(480-delay)--480 confirmed on heroic
+	end
 end
 
 function mod:OnCombatEnd()

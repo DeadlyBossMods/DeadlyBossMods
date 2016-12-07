@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 228003 228012 228171 231013",
-	"SPELL_CAST_SUCCESS 228012 228028 228162 231350",
-	"SPELL_AURA_APPLIED 228029 227807 227959 227626 228918 227490 227491 227498 227499 227500 231311 231342 231344 231345 231346",
+	"SPELL_CAST_SUCCESS 228012 228028 228162 231350 227629",
+	"SPELL_AURA_APPLIED 228029 227807 227959 227626 228918 227490 227491 227498 227499 227500 231311 231342 231344 231345 231346 229579 229580 229580 229582 229583",
 	"SPELL_AURA_APPLIED_DOSE 227626",
 	"SPELL_AURA_REMOVED 228029 227807 227959 227490 227491 227498 227499 227500 231311 231342 231344 231345 231346",
 	"SPELL_PERIODIC_DAMAGE 228007 228683",
@@ -118,7 +118,7 @@ local voiceStormforgedSpear			= mod:NewVoice(228918)--justrun
 local voiceCleansingFlame			= mod:NewVoice(228683)--runaway
 
 mod:AddSetIconOption("SetIconOnShield", 228270, true)
-mod:AddInfoFrameOption(227629, true)
+mod:AddInfoFrameOption(227503, true)
 mod:AddRangeFrameOption("5/8/15")
 
 mod.vb.phase = 1
@@ -164,6 +164,7 @@ end
 
 local updateInfoFrame
 do
+	local protected = GetSpellInfo(229584)
 	local lines = {}
 	updateInfoFrame = function()
 		local total = 0
@@ -188,8 +189,16 @@ do
 			total = total + 1
 			lines[drawTable[227500]] = "|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tN|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t"
 		end
-		if total == 0 then
-			DBM.InfoFrame:Hide()
+		if mod:IsMythic() then
+			if UnitDebuff("player", protected) then
+				lines[protected] = "|cFF088A08"..YES.."|r"
+			else
+				lines[protected] = "|cffff0000"..NO.."|r"
+			end
+		else
+			if total == 0 then
+				DBM.InfoFrame:Hide()
+			end
 		end
 		return lines
 	end
@@ -350,6 +359,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 231350 then
 		self.vb.brandActive = false
 		updateRangeFrame(self)
+	elseif spellId == 227629 and self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
@@ -419,7 +430,24 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
 		end
-	elseif spellId == 231311 or spellId == 231342 or spellId == 231344 or spellId == 231345 or spellId == 231346 then--Branded (Draw Power Runes)
+	elseif spellId == 229579 or spellId == 229580 or spellId == 229581 or spellId == 229582 or spellId == 229583 then--Branded (Mythic Phase 1/2 non fixate rune debuffs)
+		if spellId == 229579 and args:IsPlayer() then--Purple K (NE)
+			specWarnDrawPower:Show("|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t")
+			voiceDrawPower:Play("frontright")
+		elseif spellId == 229580 and args:IsPlayer() then--Orange N (SE)
+			specWarnDrawPower:Show("|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|tSE|TInterface\\Icons\\Boss_OdunRunes_Orange.blp:12:12|t")
+			voiceDrawPower:Play("backright")
+		elseif spellId == 229581 and args:IsPlayer() then--Yellow H (SW)
+			specWarnDrawPower:Show("|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|tSW|TInterface\\Icons\\Boss_OdunRunes_Yellow.blp:12:12|t")
+			voiceDrawPower:Play("backleft")
+		elseif spellId == 229582 and args:IsPlayer() then--Blue fishies (NW)
+			specWarnDrawPower:Show("|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|tNW|TInterface\\Icons\\Boss_OdunRunes_Blue.blp:12:12|t")
+			voiceDrawPower:Play("frontleft")
+		elseif spellId == 229583 and args:IsPlayer() then--Green box (N)
+			specWarnDrawPower:Show("|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tN|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t")
+			voiceDrawPower:Play("frontcenter")
+		end
+	elseif spellId == 231311 or spellId == 231342 or spellId == 231344 or spellId == 231345 or spellId == 231346 then--Runic Brand (Phase 3 Mythic)
 		if args:IsPlayer() then
 			playerDebuff = spellId
 			if spellId == 231311 then--Purple K (NE)
