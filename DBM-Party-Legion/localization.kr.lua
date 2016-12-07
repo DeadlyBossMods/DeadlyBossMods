@@ -253,6 +253,56 @@ L:SetOptionLocalization({
 	SpyHelper	= "첩자 색출 도우미"
 })
 
+L:SetMiscLocalization({
+	Gloves1		= "There's a rumor that the spy always wears gloves.",
+	Gloves2		= "제가 듣기로는, 그 첩자는 항상 신경 써서 손을 가린다고 합니다.",
+	Gloves3		= "그 첩자는 항상 장갑을 낀다고 들었습니다.",
+	Gloves4		= "그 첩자는 손에 있는 선명한 흉터를 가리려고 장갑을 낀다고 합니다.",
+	NoGloves1	= "There's a rumor that the spy never has gloves on.",
+	NoGloves2	= "안쪽 방에서 장갑 한 켤레를 발견했습니다. 첩자는 분명히 이 주변에 장갑을 끼지 않은 사람중 하나일 거에요.",
+	NoGloves3	= "그 첩자는 장갑을 끼는 걸 싫어한다고 들었습니다.",
+	NoGloves4	= "I heard the spy avoids having gloves on, in case some quick actions are needed",
+	Cape1		= "그 첩자가 망토를 걸친 모습을 봤다는 사람이 있었습니다.",
+	Cape2		= "그 첩자는 망토를 즐겨 입는다고 들었습니다.",
+	NoCape1		= "I heard the spy dislikes capes and refuses to wear one.",
+	NoCape2		= "제가 듣기로는 그 첩자가 궁전에 망토를 벗어두고 여기 왔다고 합니다.",
+	LightVest1	= "그자는 첩자인데도 밝은색 조끼를 즐겨 입는다고 합니다.",
+	LightVest2	= "오늘 밤 파티에 그 첩자는 밝은색 조끼를 입고 올 거라는 말을 들었습니다.",
+	LightVest3	= "사람들이 그러는데, 오늘 밤 그 첩자는 어두운 색 조끼를 입지 않았다고 합니다.",
+	DarkVest1	= "그 첩자는 분명 어두운 옷을 선호합니다.",
+	DarkVest2	= "I heard the spy's vest is a dark, rich shade this very night.",
+	DarkVest3	= "그 첩자는 어두운 색 조끼를 즐겨 입어요... 밤과 같은 색이죠.",
+	DarkVest4	= "소문에 그 첩자는 눈에 띄지 않으려고 밝은색 옷은 피한다더군요.",
+	Female1		= "They say that the spy is here and she's quite the sight to behold.",
+	Female2		= "I hear some woman has been constantly asking about the district...",
+	Female3		= "그 불청객은 남자가 아니라는 말을 들었습니다.",
+	Female4		= "They say that the spy is here and she's quite the sight to behold.",
+	Male1		= "I heard somewhere that the spy isn't female.",
+	Male2		= "I heard the spy is here and he's very good looking.",
+	Male3		= "한 남자가 대마법학자와 나란히 저택에 들어오는 걸 봤다는 얘기가 있더군요.",
+	Male4		= "한 연주자가 말하길, 그 남자가 끊임없이 그 지구에 관한 질문을 늘어놨다고 합니다.",
+	ShortSleave1= "그 첩자는 팔을 빠르게 움직이려고 짧은 소매 옷만 고집한다고 합니다.",
+	ShortSleave2= "그 첩자는 소매가 긴 옷을 입는 걸 정말 싫어한다고 합니다.",
+	ShortSleave3= "제 친구가 그 첩자가 입은 옷을 봤는데, 긴 소매는 아니었다는군요!",
+	ShortSleave4= "그 첩자는 시원한 걸 좋아해서 오늘 밤 짧은 소매를 입고 왔다고 들었습니다.",
+	LongSleave1 = "오늘 밤 그 첩자는 소매가 긴 옷을 입었다고 들었어요.",
+	LongSleave2 = "Someone said the spy is covering up their arms with long sleeves tonight.",
+	LongSleave3 = "I just barely caught a glimpse of the spy's long sleeves earlier in the evening.",
+	LongSleave4 = "A friend of mine mentioned the spy has long sleeves on.",
+	Potions1	= "그 첩자는 만약을 대비해... 물약 몇 개를 가져왔다고 합니다.",
+	Potions2	= "I didn't tell you this... but the spy is masquerading as an alchemist and carrying potions at the belt.",
+	Potions3	= "그 첩자는 허리띠에 물약을 메달고 있을 게 분명합니다. 있는 게 분명해요.",
+	NoPotions1	= "그 첩자는 물약을 가지고 다니지 않는다고 합니다.",
+	NoPotions2	= "한 연주자가 그 첩자가 마지막 물약을 버리는 걸 봤다고 합니다. 그러니 더는 물약이 없겠죠.",
+	Book1		= "I heard the spy always has a book of written secrets at the belt.",
+	Book2		= "소문을 들어 보니, 그 첩자는 독서를 좋아해서 항상 책을 가지고 다닌다고 합니다.",
+	Pouch1		= "그 첩자는 마법의 주머니를 항상 가지고 다닌다고 들었습니다.",
+	Pouch2		= "제 친구가 말하길, 그 첩자는 금을 너무 좋아해서 허리띠 주머니에도 금이 가득 들어 있다고 합니다.",
+	Pouch3		= "그 첩자는 어찌나 사치스러운지 허리띠에 달린 주머니에 금화를 잔뜩 넣어서 다닌다고 합니다.",
+	Pouch4		= "그 첩자는 허리띠 주머니도 휘황찬란한 자수로 꾸며져 있다고 합니다."
+})
+
+
 -----------------------
 -- <<<The Maw of Souls>>> --
 -----------------------

@@ -50,7 +50,7 @@ local timerLeash					= mod:NewBuffActiveTimer(30, 228201, nil, nil, nil, 6)
 local timerFangsCD					= mod:NewCDCountTimer(20.5, 227514, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--20.5-23
 local timerBreathCD					= mod:NewCDCountTimer(20.5, 228187, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 local timerLeapCD					= mod:NewCDCountTimer(22, 227883, nil, nil, nil, 3)
-local timerChargeCD					= mod:NewCDTimer(10.9, 227816, nil, nil, nil, 3)
+local timerChargeCD					= mod:NewCDTimer(10.9, 227816, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerVolatileFoamCD			= mod:NewCDCountTimer(15.4, 228824, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 
