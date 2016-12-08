@@ -4049,20 +4049,15 @@ do
 		if not self.Options.DontPlayPTCountdown then
 			dummyMod2.countdown:Start(timer)
 		end
-		if not self.Options.DontShowPTCountdownText then
-			local threshold = DBM.Options.PTCountThreshold
-			if timer > threshold then
-				self:Schedule(timer-threshold, countDownTextDelay, threshold)
-			else
-				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
-			end
-		end
 		if not self.Options.DontShowPTText then
 			local hour, minute = GetGameTime()
 			minute = minute+(timer/60)
 			if minute >= 60 then
 				hour = hour + 1
 				minute = minute - 60
+				if minute < 10 then
+					minute = 0 .. minute
+				end
 			end
 			dummyMod2.text:Show(DBM_CORE_BREAK_START:format(strFromTime(timer).." ("..hour..":"..floor(minute)..")", sender))
 			if timer/60 > 10 then dummyMod2.text:Schedule(timer - 10*60, DBM_CORE_BREAK_MIN:format(10)) end
@@ -4100,10 +4095,6 @@ do
 		end
 		if not DBM.Options.DontPlayPTCountdown then
 			dummyMod2.countdown:Cancel()
-		end
-		if not DBM.Options.DontShowPTCountdownText then
-			DBM:Unschedule(countDownTextDelay)
-			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")--easiest way to nil out timers on TimerTracker frame. This frame just has no actual star/stop functions
 		end
 		dummyMod2.text:Cancel()
 		DBM.Options.tempBreak2 = nil
