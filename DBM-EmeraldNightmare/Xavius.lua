@@ -311,7 +311,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			updateRangeFrame(self)
 		else
-			if amount >= 3 then
+			if amount >= 4 then
 				local filterWarning = false
 				if self:GetNumAliveTanks() >= 3 then
 					--Three (or more) Tank Strat AND at least 3 alive
@@ -340,7 +340,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			updateRangeFrame(self)
 		else
-			if amount >= 3 then
+			if amount >= 4 then
 				local filterWarning = false
 				if self:GetNumAliveTanks() >= 3 then
 					--Three (or more) Tank Strat AND at least 3 alive
