@@ -659,6 +659,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	--"<489.60 21:38:04> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Arcing Storm::3-2012-1648-3815-229254-00060AC2FC:229254]]", -- [2941]
 	elseif spellId == 228740 then--Spear Transition - Thunder (Phase 3 begin)
 		self.vb.phase = 3
+		timerAddsCD:Stop()
 		--self:UnregisterShortTermEvents()
 		timerDrawPower:Stop()
 		countdownDrawPower:Cancel()
