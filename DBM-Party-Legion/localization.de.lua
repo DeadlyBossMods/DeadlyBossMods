@@ -249,6 +249,55 @@ L:SetGeneralLocalization({
 	name =	"Trash des Hofs der Sterne"
 })
 
+L:SetMiscLocalization({
+    Gloves1        = "",
+    Gloves2        = "Wie ich hörte, verbirgt der Spion sorgfältig die Hände.",
+    Gloves3        = "Ich hörte, dass der Spion immer Handschuhe anlegt.",
+    Gloves4        = "Jemand behauptete, dass der Spion Handschuhe trägt, um sichtbare Narben zu verbergen.",
+    NoGloves1    = "Es gibt Gerüchte, dass der Spion niemals Handschuhe trägt.",
+    NoGloves2    = "Wisst Ihr... Ich habe ein zusätzliches Paar Handschuhe im Hinterzimmer gefunden. Wahrscheinlich ist der Spion hier irgendwo mit bloßen Händen unterwegs.",
+    NoGloves3    = "Mir ist zu Ohren gekommen, dass der Spion ungern Handschuhe trägt.",
+    NoGloves4    = "Ich hörte, dass der Spion es vermeidet, Handschuhe zu tragen, falls er schnell handeln muss.",
+    Cape1        = "Jemand erwähnte, dass der Spion vorhin hier hereinkam und einen Umhang trug.",
+    Cape2        = "",
+    NoCape1        = "Ich hörte, dass der Spion keine Umhänge mag und sich weigert, einen zu tragen.",
+    NoCape2        = "Ich hörte, dass der Spion seinen Umhang im Palast gelassen hat, bevor er hierhergekommen ist.",
+    LightVest1    = "",
+    LightVest2    = "",
+    LightVest3    = "Die Leute sagen, dass der Spion heute Abend keine dunkle Weste trägt.",
+    DarkVest1    = "Der Spion bevorzugt auf alle Fälle dunkle Kleidung.",
+    DarkVest2    = "",
+    DarkVest3    = "Dem Spion gefallen Westen mit dunklen Farben... dunkel wie die Nacht.",
+    DarkVest4    = "",
+    Female1        = "",
+    Female2        = "",
+    Female3        = "Jemand hat behauptet, dass unser neuester Gast nicht männlich ist.",
+    Female4        = "Man sagt, die Spionin wäre hier und sie wäre eine wahre Augenweide.",
+    Male1        = "Irgendwo habe ich gehört, dass der Spion nicht weiblich ist.",
+    Male2        = "",
+    Male3        = "Ein Gast sagte, sie sah, wie ein Herr an der Seite der Großmagistrix das Anwesen betreten hat.",
+    Male4        = "",
+    ShortSleave1= "Mir ist zu Ohren gekommen, dass der Spion kurze Ärmel trägt, damit er seine Arme ungehindert bewegen kann.",
+    ShortSleave2= "",
+    ShortSleave3= "Einer meiner Freundinnen sagte, dass sie die Kleidung des Spions gesehen hat. Er trägt keine langen Ärmel.",
+    ShortSleave4= "",
+    LongSleave1 = "Wie ich höre, trägt der Spion heute Abend Kleidung mit langen Ärmeln.",
+    LongSleave2 = "Jemand sagte, dass der Spion heute Abend seine Arme mit langen Ärmeln bedeckt.",
+    LongSleave3 = "",
+    LongSleave4 = "Einer meiner Freunde erwähnte, dass der Spion lange Ärmel trägt.",
+    Potions1    = "Ich hörte, dass der Spion Tränke mitgebracht hat... Ich frage mich wieso?",
+    Potions2    = "Von mir habt Ihr das nicht... aber der Spion verkleidet sich als Alchemist und trägt Tränke an seinem Gürtel.",
+    Potions3    = "Wie ich hörte, hat der Spion einige Tränke mitgebracht... für alle Fälle.",
+    NoPotions1    = "Wie ich hörte, hat der Spion keine Tränke bei sich.",
+    NoPotions2    = "",
+    Book1        = "",
+    Book2        = "Gerüchte zufolge liest der Spion gerne und trägt immer mindestens ein Buch bei sich.",
+    Pouch1        = "Ich hörte, dass der Spion immer einen magischen Beutel mit sich herumträgt.",
+    Pouch2        = "",
+    Pouch3        = "",
+    Pouch4        = ""
+})
+
 -----------------------
 -- <<<The Maw of Souls>>> --
 -----------------------
