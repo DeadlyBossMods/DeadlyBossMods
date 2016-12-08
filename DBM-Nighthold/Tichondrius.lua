@@ -6,7 +6,7 @@ mod:SetCreatureID(103685)
 mod:SetEncounterID(1862)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Unknown carrions
---mod:SetHotfixNoticeRev(12324)
+mod:SetHotfixNoticeRev(15553)
 mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
@@ -21,12 +21,11 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED 216027"
 )
 
---TODO, possible hud options for brand of argus?
 --TODO, more review on Feast of Blood
 --TODO, voices similar to 184964a/b/c but for Brand of argus instead of torment. Or better. Maybe generic with no spell name just "break first" "break second" that works for similar spell in future
 --TODO, determine how often tanks swap for 216024 (Volatile Wound), if at all
 --TODO, figure out ring of shadow
---TODO, test HUD for Seeker. Improve boss location approximation if possible.
+--TODO, redo/update LFR/Normal timers since they probably also have phase 2 and phase 3 variations
  --(ability.id = 212997 or ability.id = 213238 or ability.id = 208230 or ability.id = 213531 or ability.id = 206365) and type = "begincast"
 local warnCarrionPlague				= mod:NewTargetAnnounce(206480, 3)
 local warnBrandOfArgus				= mod:NewTargetAnnounce(212794, 4)
@@ -80,8 +79,23 @@ mod:AddInfoFrameOption(212794)
 mod:AddHudMapOption("HudMapOnSeeker", 213238)
 mod:AddBoolOption("HUDSeekerLines", true)--On by default for beta testing. Actual defaults for live subject to accuracy review.
 
-local sharedCastTimers = {0, 25, 35, 25}--Carrion Plague, feast of blood, Seeker Swarm, brand of argus
-local sharedCastTimersFaster = {0, 15, 25, 14.5}--Carrion Plague, feast of blood, Seeker Swarm, brand of argus (faster on normal/LFR since no brand of argus)
+--With more data, the pattern gets distrupted later, but it's ALWAYS disrupted so multiple sequences needed to do it by phase (or just hard code ENTIRE sequence and not do it by phase?
+--Carrion Plague: pull:5.0, 25.0, 35.6, 24.4, 75.0, 25.5, 35.6, 26.9, 75.0, 25.6, 40.6, 20.5, 53.6, 25.6
+--Seeker Swarm:	  pull:25.0, 25.0, 35.0, 25.0, 75.0, 25.5, 37.5, 25.0, 75.0, 25.6, 36.1, 22.5, 56.1
+--Brand of Argus: pull:15.0, 25.0, 35.0, 25.0, 75.0, 25.5, 32.5, 30.0, 75.0, 25.6, 36.1, 22.5, 56.1, 25.6",
+--Feast of Blood: pull:20.0, 25.0, 35.0, 25.0, 75.0, 25.5, 37.5, 25.0, 75.1, 25.6, 36.2, 22.5, 56.1, 25.6"
+--Carrion Plague, feast of blood, Seeker Swarm, brand of argus All Same in Phase 1
+local P1SharedCastTimers = {0, 25, 35, 25}
+--Phase 2 they start to fragment
+local P2CarrionTimers = {0, 25.5, 35.6, 26.9}
+local P2SeekerBloodTimers = {0, 25.5, 37.5, 25.0}--Seeker and Feast of Blood
+local P2BrandTimers = {0, 25.5, 32.5, 30.0}
+--less fragmented in phase 3
+local P3CarrionTimers = {0, 25.6, 40.6, 20.5}
+local P3SharedCastTimers = {0, 25.6, 36.1, 22.5}--Seeker, Brand, Feast
+
+--Normal/LFR have different timers
+local sharedCastTimersFaster = {0, 15, 25, 14.5}--Carrion Plague, feast of blood, Seeker Swarm (faster on normal/LFR since no brand of argus)
 local carrionTargets = {}
 local argusTargets = {}
 local carrionDebuff = GetSpellInfo(206480)
@@ -162,17 +176,21 @@ function mod:OnCombatStart(delay)
 	table.wipe(argusTargets)
 	timerCarrionPlagueCD:Start(7-delay, 1)--Cast end
 	if not self:IsEasy() then
-		timerBrandOfArgusCD:Start(17-delay, 1)--Cast end
+		timerBrandOfArgusCD:Start(15-delay, 1)
 		timerFeastOfBloodCD:Start(20-delay, 1)
+		countdownFeastOfBlood:Start(20-delay)
 		timerSeekerSwarmCD:Start(25-delay, 1)
 		countdownSeekerSwarm:Start(25-delay)
 		timerEchoesOfVoidCD:Start(55-delay, 1)
+		countdownEchoesOfVoid:Start(55-delay)
 		timerIllusionaryNightCD:Start(130-delay, 1)
 	else
 		timerFeastOfBloodCD:Start(10-delay, 1)
+		countdownFeastOfBlood:Start(10-delay)
 		timerSeekerSwarmCD:Start(15-delay, 1)
 		countdownSeekerSwarm:Start(15-delay)
 		timerEchoesOfVoidCD:Start(35-delay, 1)
+		countdownEchoesOfVoid:Start(35-delay)
 		timerIllusionaryNightCD:Start(90-delay, 1)
 	end
 end
@@ -196,6 +214,7 @@ function mod:SPELL_CAST_START(args)
 		table.wipe(carrionTargets)
 		if self.vb.darkPhase then--He casts it immediately after a Night phase ends
 			self.vb.darkPhase = false
+			self.vb.phase = self.vb.phase + 1
 			self.vb.carrionPlagueCast = 0
 			self.vb.feastOfBloodCast = 0
 			self.vb.seekerSwarmCast = 0
@@ -204,23 +223,31 @@ function mod:SPELL_CAST_START(args)
 			DBM:Debug("First carrion Swarm after dark phase, Tichondrius returning", 2)
 			--Timers same as combat start - 5
 			if not self:IsEasy() then
-				timerBrandOfArgusCD:Start(12, 1)--Cast end
-				timerFeastOfBloodCD:Start(25, 1)
+				timerBrandOfArgusCD:Start(10, 1)
+				timerFeastOfBloodCD:Start(14.5, 1)
+				countdownFeastOfBlood:Start(14.5)
 				timerSeekerSwarmCD:Start(20, 1)
 				countdownSeekerSwarm:Start(20)
-				timerEchoesOfVoidCD:Start(50, 1)
-				timerIllusionaryNightCD:Start(125, 1)
+				timerIllusionaryNightCD:Start(123, 1)
+				if self.vb.phase == 2 then
+					timerEchoesOfVoidCD:Start(50, 1)
+					countdownEchoesOfVoid:Start(50)
+				else
+					timerEchoesOfVoidCD:Start(55, 1)
+					countdownEchoesOfVoid:Start(55)
+				end
 			else
 				timerFeastOfBloodCD:Start(5, 1)
+				countdownFeastOfBlood:Start(5)
 				timerSeekerSwarmCD:Start(10, 1)
 				countdownSeekerSwarm:Start(10)
 				timerEchoesOfVoidCD:Start(30, 1)
-				timerIllusionaryNightCD:Start(85, 1)
+				countdownEchoesOfVoid:Start(30)
+				timerIllusionaryNightCD:Start(83, 1)
 			end
-			self.vb.phase = self.vb.phase + 1
 			if self.vb.phase == 2 then--The Nightborne
 		
-			elseif self.vb.phase == 3 then--The Legion
+			else--The Legion
 		
 			end
 			--Restore argus tracker if for some reason you let people have it this long
@@ -232,7 +259,14 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 213238 then
 		self.vb.seekerSwarmCast = self.vb.seekerSwarmCast + 1
 		specWarnSeekerSwarm:Show(self.vb.seekerSwarmCast)
-		local timer = self:IsEasy() and sharedCastTimersFaster[self.vb.seekerSwarmCast+1] or sharedCastTimers[self.vb.seekerSwarmCast+1]
+		local timer
+		if self.vb.phase == 1 then
+			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.seekerSwarmCast+1] or P1SharedCastTimers[self.vb.seekerSwarmCast+1]
+		elseif self.vb.phase == 2 then
+			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.seekerSwarmCast+1] or P2SeekerBloodTimers[self.vb.seekerSwarmCast+1]
+		else--Assume phase 3+ are same, for now since no further mechancis introduced
+			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.seekerSwarmCast+1] or P3SharedCastTimers[self.vb.seekerSwarmCast+1]
+		end
 		if timer then
 			timerSeekerSwarmCD:Start(timer, self.vb.seekerSwarmCast+1)
 			countdownSeekerSwarm:Start(timer)
@@ -270,9 +304,17 @@ function mod:SPELL_CAST_START(args)
 --		table.wipe(argusTargets)
 	elseif spellId == 208230 then
 		self.vb.feastOfBloodCast = self.vb.feastOfBloodCast + 1
-		local timer = self:IsEasy() and sharedCastTimersFaster[self.vb.feastOfBloodCast+1] or sharedCastTimers[self.vb.feastOfBloodCast+1]
+		local timer
+		if self.vb.phase == 1 then
+			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.feastOfBloodCast+1] or P1SharedCastTimers[self.vb.feastOfBloodCast+1]
+		elseif self.vb.phase == 2 then
+			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.feastOfBloodCast+1] or P2SeekerBloodTimers[self.vb.feastOfBloodCast+1]
+		else
+			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.feastOfBloodCast+1] or P3SharedCastTimers[self.vb.feastOfBloodCast+1]
+		end
 		if timer then
-			timerFeastOfBloodCD:Start(nil, self.vb.feastOfBloodCast+1)
+			timerFeastOfBloodCD:Start(timer, self.vb.feastOfBloodCast+1)
+			countdownFeastOfBlood:Start(timer)
 		end
 	elseif spellId == 213531 then
 		self.vb.echoesOfVoidCast = self.vb.echoesOfVoidCast + 1
@@ -280,7 +322,16 @@ function mod:SPELL_CAST_START(args)
 		voiceEchoesOfVoid:Play("findshelter")
 		if self.vb.echoesOfVoidCast == 1 then
 			--Only cast twice per cycle
-			timerEchoesOfVoidCD:Start(nil, 2)
+			if self.vb.phase == 1 then
+				timerEchoesOfVoidCD:Start(65, 2)
+				countdownEchoesOfVoid:Start(65)
+			elseif self.vb.phase == 2 then
+				timerEchoesOfVoidCD:Start(67.5, 2)
+				countdownEchoesOfVoid:Start(67.5)
+			else
+				timerEchoesOfVoidCD:Start(59.7, 2)
+				countdownEchoesOfVoid:Start(59.7)
+			end
 		end
 	elseif spellId == 206365 then--Phase Change
 		--stops may not be needed if sharedTimer Table works
@@ -289,7 +340,9 @@ function mod:SPELL_CAST_START(args)
 		countdownSeekerSwarm:Cancel()
 		timerBrandOfArgusCD:Stop()
 		timerFeastOfBloodCD:Stop()
+		countdownFeastOfBlood:Cancel()
 		timerEchoesOfVoidCD:Stop()
+		countdownEchoesOfVoid:Cancel()
 		self.vb.darkPhase = true
 		timerIllusionaryNight:Start()
 		countdownNightPhase:Start()
@@ -311,13 +364,27 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 212997 then
 		self.vb.carrionPlagueCast = self.vb.carrionPlagueCast + 1
-		local timer = self:IsEasy() and sharedCastTimersFaster[self.vb.carrionPlagueCast+1] or sharedCastTimers[self.vb.carrionPlagueCast+1]
+		local timer
+		if self.vb.phase == 1 then
+			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.carrionPlagueCast+1] or P1SharedCastTimers[self.vb.carrionPlagueCast+1]
+		elseif self.vb.phase == 2 then
+			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.carrionPlagueCast+1] or P2CarrionTimers[self.vb.carrionPlagueCast+1]
+		else
+			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.carrionPlagueCast+1] or P3CarrionTimers[self.vb.carrionPlagueCast+1]
+		end
 		if timer then
 			timerCarrionPlagueCD:Start(timer, self.vb.carrionPlagueCast+1)
 		end
 	elseif spellId == 212794 then
 		self.vb.brandOfArgusCast = self.vb.brandOfArgusCast + 1
-		local timer = sharedCastTimers[self.vb.brandOfArgusCast+1]
+		local timer
+		if self.vb.phase == 1 then
+			timer = P1SharedCastTimers[self.vb.brandOfArgusCast+1]
+		elseif self.vb.phase == 2 then
+			timer = P2BrandTimers[self.vb.brandOfArgusCast+1]
+		else
+			timer = P3SharedCastTimers[self.vb.brandOfArgusCast+1]
+		end
 		if timer then 
 			timerBrandOfArgusCD:Start(timer, self.vb.brandOfArgusCast+1)
 		end
@@ -388,27 +455,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		DBM.RangeCheck:Hide()
 	end
 end
-
---[[
-Unused for now, maybe need to do this way on mythic/LFR/etc if carrion method isn't reliable
-function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-	if UnitExists("boss1") then--Tichondrius Returning
-		DBM:Debug("INSTANCE_ENCOUNTER_ENGAGE_UNIT, Tichondrius returning", 2)
-		timerBrandOfArgusCD:Start(9.5, 1)--Cast end
-		timerFeastOfBloodCD:Start(22.5, 1)
-		timerSeekerSwarmCD:Start(17.5, 1)
-		countdownSeekerSwarm:Start(17.5)
-		timerEchoesOfVoidCD:Start(47.5, 1)
-		timerIllusionaryNightCD:Start(122.5, 1)
-		self:UnregisterShortTermEvents()
-		self.vb.phase = self.vb.phase + 1
-		if self.vb.phase == 2 then--The Nightborne
-		
-		elseif self.vb.phase == 3 then--The Legion
-		
-		end
-	end
-end--]]
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 216027 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
