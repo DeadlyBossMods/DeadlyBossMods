@@ -81,6 +81,7 @@ local timerDrawPower				= mod:NewCastTimer(30, 227629, nil, nil, nil, 2, nil, DB
 --Stage 2: Odyn immitates margok
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerSpearCD					= mod:NewNextTimer(8, 227697, nil, nil, nil, 3)
+local timerAddsCD					= mod:NewNextTimer(70, "ej14404", nil, nil, nil, 1)
 --Stage 3: Odyn immitates lei shen
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerStormOfJusticeCD			= mod:NewNextTimer(10.9, 227807, nil, nil, nil, 3)
@@ -557,12 +558,22 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			timerExpelLightCD:Start(4.7)
 			timerShieldofLightCD:Start(9.7)
 			countdownShield:Start(9.7)
+			if self:IsMythic() then
+				timerAddsCD:Start(64)
+			elseif self:IsHeroic() then
+				timerAddsCD:Start(67)
+			end
 		elseif npc == hymdall then
 			specWarnHymall:Show()
 			voiceHymdall:Play("bigmob")
 			timerDancingBladeCD:Start(5)
 			timerHornOfValorCD:Start(9.5)
 			countdownHorn:Start(9.5)
+			if self:IsMythic() then
+				timerAddsCD:Start(67)
+			elseif self:IsHeroic() then
+				timerAddsCD:Start(70)
+			end
 		end
 	end
 end
@@ -625,6 +636,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		--Timer started at jump though has to be delayed to avoid phase 1 ClearAllDebuffs events
 	elseif spellId == 227882 then--Jump into Battle (phase 2 begin)
 		self.vb.phase = 2
+		if not self:IsEasy() then
+			timerAddsCD:Start(16)
+		end
 	elseif spellId == 34098 and self.vb.phase == 2 then--ClearAllDebuffs (any of bosses leaving)
 		local cid = self:GetUnitCreatureId(uId)
 		if cid == 114361 then--Hymdall
