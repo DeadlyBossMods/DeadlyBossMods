@@ -17,16 +17,11 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 210346 211368 211471",
 	"SPELL_AURA_APPLIED_DOSE 210279",
 	"SPELL_AURA_REMOVED 210346",
---	"SPELL_DAMAGE",
---	"SPELL_MISSED",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
 	"UNIT_AURA player"
 )
 
---TODO, verify wisp icons. ScanForMobs may need timing adjusts or tweaks to ensure it doesn't mark friendly wisps or miss some
---TODO, Further assess thorns. it doesn't need warnings at all if adds never tanked near boss in first place
---TODO, an actual beasts of nightmare timer and not an AI timer (transcriptor log needed, i don't think these are in combat log or I would have seen by now)
 --Cenarius
 local warnNightmareBrambles			= mod:NewTargetAnnounce(210290, 2)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
@@ -46,6 +41,7 @@ local specWarnNightmareBlastOther	= mod:NewSpecialWarningTaunt(213162, nil, nil,
 local specWarnForcesOfNightmare		= mod:NewSpecialWarningSwitchCount(212726, nil, nil, nil, 1, 2)--Switch warning or just spell warning?
 local specWarnSpearOfNightmares		= mod:NewSpecialWarningDefensive(214529, nil, nil, nil, 1, 2)
 local specWarnSpearOfNightmaresOther= mod:NewSpecialWarningTaunt(214529, nil, nil, nil, 1, 2)
+local specWarnSpearOfNightmaresMelee= mod:NewSpecialWarningRun(214529, nil, nil, nil, 4, 2)
 local specWarnEntangledNightmares	= mod:NewSpecialWarningSwitch(214505, "Dps", nil, nil, 1, 2)
 local specWarnBeastsOfNightmare		= mod:NewSpecialWarningDodge(214876, nil, nil, nil, 2, 2)
 ----Forces of Nightmare
@@ -61,7 +57,7 @@ local timerNightmareBramblesCD		= mod:NewCDTimer(30, 210290, nil, "-Tank", 2, 3)
 local timerDreadThornsCD			= mod:NewCDTimer(34, 210346, nil, false, 3, 5, nil, DBM_CORE_TANK_ICON)--Optional but off by default
 local timerNightmareBlastCD			= mod:NewNextTimer(32.5, 213162, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerForcesOfNightmareCD		= mod:NewCDCountTimer(77.6, 212726, nil, nil, nil, 1)--77.8-80
-local timerSpearOfNightmaresCD		= mod:NewCDTimer(18.2, 214529, nil, "Tank|Healer", 2, 5, nil, DBM_CORE_TANK_ICON)
+local timerSpearOfNightmaresCD		= mod:NewCDTimer(18.2, 214529, nil, "Melee|Healer", 3, 5, nil, DBM_CORE_TANK_ICON)
 local timerBeastsOfNightmareCD		= mod:NewCDTimer(30, 214876, nil, nil, 2, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerEntanglingNightmareCD	= mod:NewNextTimer(51, 214505, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 ----Malfurion
@@ -75,19 +71,18 @@ local timerDisiccatingStompCD		= mod:NewCDTimer(32, 211073, nil, nil, nil, 2, ni
 
 --Cenarius
 local countdownForcesOfNightmare	= mod:NewCountdown(78.8, 212726)
-local countdownNightmareBrambles	= mod:NewCountdown("Alt30", 210290, "Ranged")--Never once saw this target melee
+local countdownNightmareBrambles	= mod:NewCountdown("AltTwo30", 210290, "Ranged")--Never once saw this target melee
 local countdownNightmareBlast		= mod:NewCountdown("Alt32", 213162, "Tank")
-local countdownSpearOfNightmares	= mod:NewCountdown("Alt18", 214529, "Tank")
+local countdownSpearOfNightmares	= mod:NewCountdown("Alt18", 214529, "Melee", 2)
 ----Forces of Nightmare
 
 --Cenarius
 local voiceCreepingNightmares		= mod:NewVoice(210279)--stackhigh
 local voiceNightmareBrambles		= mod:NewVoice(210290)--runout/watchstep
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
---local voiceDreadThorns				= mod:NewVoice(210346, "Tank")--bossout
 local voiceForcesOfNightmare		= mod:NewVoice(212726)--mobsoon
 local voiceNightmareBlast			= mod:NewVoice(213162, "Tank")--defensive/tauntboss
-local voiceSpearOfNightmares		= mod:NewVoice(214529, "Tank")--defensive/tauntboss
+local voiceSpearOfNightmares		= mod:NewVoice(214529, "Melee", nil, 2)--defensive/tauntboss
 local voiceBeasts					= mod:NewVoice(214876)--watchstep
 ----Forces of Nightmare
 local voiceTouchOfLife				= mod:NewVoice(211368)--kickcast/dispelnow
@@ -189,6 +184,10 @@ function mod:SPELL_CAST_START(args)
 		if tanking or (status == 3) then--Player is current target
 			specWarnSpearOfNightmares:Show()
 			voiceSpearOfNightmares:Play("defensive")
+		end
+		if self:IsMeleeDps() and self:IsMythic() then
+			specWarnSpearOfNightmaresMelee:Show()
+			voiceSpearOfNightmares:Play("runout")
 		end
 	elseif spellId == 213162 then
 		timerNightmareBlastCD:Start()
