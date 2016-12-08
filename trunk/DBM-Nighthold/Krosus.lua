@@ -16,7 +16,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 206677 205344",
 	"SPELL_AURA_APPLIED_DOSE 206677",
 	"SPELL_AURA_REMOVED 205344",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --(ability.id = 205368 or ability.id = 205370 or ability.id = 205420 or ability.id = 205361) and type = "begincast"
@@ -62,15 +63,16 @@ local burningPitchDebuff = GetSpellInfo(215944)
 local mobGUIDs = {}
 --Beams (205370/205368 Combined)
 local lolBeamTimers = {5, 15, 30, 30, 23, 27, 30, 44, 14, 16, 14, 16, 22, 60}--LFR & Normal
-local heroicBeamTimers = {7, 29, 30, 42, 16, 16, 14, 16, 28, 54, 26, 5, 5, 16, 5, 12, 12, 5, 13}--Complete up to berserk
+local heroicBeamTimers = {7.0, 29.0, 30.0, 42.0, 16.0, 16.0, 14.0, 16.0, 27.0, 54.0, 26.0, 5, 5, 16, 5, 12, 12, 5, 13}--Complete up to berserk (not yet verified in 7.1.5)
+						--8.0, 29.0, 30.0, 45.0, 16.0, 16.0, 14.0, 16.0, 27.0, 55.0, 26.0, 43.0--Dec 7th. However Double beams aren't combined in these so can't really merge cleanly
 local mythicBeamTimers = {6, 16, 16, 16, 14, 16, 27, 55, 26, 5, 21.3, 4.7, 12.2, 12, 4.8, 13.2, 19, 4.8, 25.2, 4.8}--(up to 5:18, missing 42 seconds)
 --Orbs
 local lolOrbTimers = {70.0, 40.0, 60.0, 25.0, 60.0, 37.0, 15.0, 15.0, 30.0}--LFR and Normal
-local heroicOrbTimers = {19.9, 60.0, 23.0, 62.0, 27.0, 25.0, 15.0, 15.4, 14.6, 30, 55}--Complete up to berserk
+local heroicOrbTimers = {19.9, 60.0, 23.0, 62.0, 27.0, 25.0, 15.0, 15.4, 14.6, 30, 55}--Verified Dec 7
 local mythicOrbTimers = {13, 62, 27, 25, 14.9, 15, 15, 30, 55.1, 38}--(up to 5:18, missing 42 seconds)
 --Pitch
 local lolBurningPitchTimers = {38.0, 102.0, 85.0, 90.0}--LFR and Normal
-local heroicBurningPitchTimers = {49.8, 85.0, 90.0, 94}
+local heroicBurningPitchTimers = {49.8, 85.0, 90.0, 94}--Verified Dec 7
 local mythicBurningPitchTimers = {45.0, 90, 93.9, 78}--38.0, 102.0, 85.0, 90.0 (OLD)
 mod.vb.burningEmbers = 0
 mod.vb.slamCount = 0
@@ -244,5 +246,14 @@ function mod:UNIT_DIED(args)
 		if self.Options.RangeFrame and self.vb.burningEmbers == 0 then
 			DBM.RangeCheck:Hide()
 		end
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
+	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
+	if spellId == 205383 then--Fel Beam (fires for left and right) Does not fire for double beams
+		DBM:Debug("Single Beam", 2)
+	elseif spellId == 215961 then--Double Beam (fires for the double beam sequence where you get both beams back to back. Only fires at start of it not each beam*)
+		DBM:Debug("Double Beam", 2)
 	end
 end
