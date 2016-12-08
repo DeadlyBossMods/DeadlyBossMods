@@ -125,7 +125,7 @@ local MarkOfFrostDebuff = GetSpellInfo(212587)
 local SearingBrandDebuff = GetSpellInfo(213166)
 local rangeShowAll = false
 local chargeTable = {}
-local annihilateTimers = {8.0, 45.0, 40.0, 44.0, 38.0, 37.0, 33.0, 47.0, 41.0, 44.0, 38.0, 37.0}--Need longer pulls/more data. However this pattern did prove to always be same
+local annihilateTimers = {8.0, 45.0, 40.0, 44.0, 38.0, 37.0, 33.0, 47.0, 41.0, 44.0, 38.0, 37.0, 33.0}--Need longer pulls/more data. However this pattern did prove to always be same
 
 local debuffFilter
 local UnitDebuff = UnitDebuff
