@@ -47,7 +47,7 @@ local warnShadowBurst				= mod:NewTargetAnnounce(204040, 3)
 --Taerar
 
 --All
-local specWarnMark					= mod:NewSpecialWarningStack("ej12809", nil, 7, nil, 1, 6)
+local specWarnMark					= mod:NewSpecialWarningStack("ej12809", nil, 7, nil, 2, 1, 6)
 local specWarnDragon				= mod:NewSpecialWarningTarget(204720, "Tank", nil, nil, 1, 2)
 --Ysondre
 --local specWarnNightmareBlast		= mod:NewSpecialWarningSpell(203153, nil, nil, nil, 2)

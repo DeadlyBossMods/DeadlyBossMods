@@ -43,7 +43,7 @@ local specWarnInfestedMindYou		= mod:NewSpecialWarningYou(205043, nil, nil, nil,
 local yellInfestedMind				= mod:NewYell(205043)
 local specWarnInfestedMind			= mod:NewSpecialWarningSwitch(205043, "Dps", nil, nil, 1, 2)
 local specWarnSpreadInfestation		= mod:NewSpecialWarningInterrupt(205070, "HasInterrupt", nil, nil, 1, 2)
-local specWarnInfestedStack			= mod:NewSpecialWarningStack(204504, nil, 7, nil, 1, 6)
+local specWarnInfestedStack			= mod:NewSpecialWarningStack(204504, nil, 7, nil, 2, 1, 6)
 
 local timerBreathCD					= mod:NewCDCountTimer(36, 202977, nil, nil, nil, 3)--36-42
 local timerVolatileRotCD			= mod:NewCDCountTimer(20.5, 204463, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--20.5-24 variation non mythic. 22-30 mythic

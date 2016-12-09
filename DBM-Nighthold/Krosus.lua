@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 local warnExpelOrbDestro			= mod:NewTargetCountAnnounce(205344, 4)
 local warnSlam						= mod:NewCountAnnounce(205862, 2)--Regular slams don't need special warn, only bridge smashing ones
 
-local specWarnSearingBrand			= mod:NewSpecialWarningStack(206677, nil, 10, nil, 1, 2)--Lets go with 10 for now
+local specWarnSearingBrand			= mod:NewSpecialWarningStack(206677, nil, 10, nil, 2, 1, 2)--Lets go with 10 for now
 local specWarnSearingBrandOther		= mod:NewSpecialWarningTaunt(206677, nil, nil, nil, 1, 2)
 local specWarnFelBeam				= mod:NewSpecialWarningDodge(205368, nil, nil, nil, 2, 2)
 local specWarnOrbDestro				= mod:NewSpecialWarningMoveAway(205344, nil, nil, nil, 3, 2)
