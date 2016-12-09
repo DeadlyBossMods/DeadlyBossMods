@@ -46,6 +46,7 @@ local warnNightmareTentacles			= mod:NewSpellAnnounce("ej12977", 3, 93708)
 
 local specWarnDescentIntoMadness		= mod:NewSpecialWarningYou(208431)
 local yellDescentIntoMadness			= mod:NewFadesYell(208431)
+local specWarnDreaming					= mod:NewSpecialWarningCount(205843, nil, nil, nil, 1, 2)--Mythic
 --Stage One: The Decent Into Madness
 local specWarnNightmareBlades			= mod:NewSpecialWarningMoveAway(206656, nil, nil, nil, 1, 2)
 local specWarnCorruptionHorror			= mod:NewSpecialWarningSwitchCount("ej12973", "-Healer", nil, nil, 1, 2)
@@ -93,6 +94,7 @@ local countdownMeteor					= mod:NewCountdown("AltTwo28", 206308, "-Tank")
 local voicePhaseChange					= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 --Nightmare Corruption
 --local voiceDescentIntoMadness			= mod:NewVoice(208431)
+local voiceDreaming						= mod:NewVoice(205843)--stepring
 --Stage One: The Decent Into Madness
 local voiceNightmareBlades				= mod:NewVoice(206656)--runout
 local voiceCorruptionHorror				= mod:NewVoice("ej12973", "-Healer")--bigmob
@@ -129,6 +131,7 @@ mod.vb.corruptionHorror = 0
 mod.vb.inconHorror = 0
 mod.vb.meteorCount = 0
 mod.vb.lastBonds = nil
+mod.vb.dreamCount = 0
 
 local function updateRangeFrame(self)
 	if not self.Options.RangeFrame then return end
@@ -196,6 +199,7 @@ function mod:OnCombatStart(delay)
 	self.vb.corruptionHorror = 0
 	self.vb.inconHorror = 0
 	self.vb.meteorCount = 0
+	self.vb.dreamCount = 0
 	self.vb.lastBonds = nil
 	table.wipe(bladesTarget)
 	table.wipe(gatherTarget)
@@ -566,5 +570,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 226194 then--Writhing Deep
 		warnNightmareTentacles:Show()
 		timerNightmareTentacleCD:Start()
+	elseif spellId == 205843 then
+		self.vb.dreamCount = self.vb.dreamCount + 1
+		local count = self.vb.dreamCount
+		specWarnDreaming:Show(count)
+		voiceDreaming:Play("stepring")
+		voiceDreaming:Schedule(1.5, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 	end
 end
