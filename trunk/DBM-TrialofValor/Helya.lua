@@ -493,6 +493,7 @@ function mod:UNIT_DIED(args)
 	if cid == 114709 then--GrimeLord
 		timerSludgeNovaCD:Stop(args.destGUID)
 		timerAnchorSlamCD:Stop(args.destGUID)
+		timerFetidRotCD:Stop(args.destGUID)
 	elseif cid == 114809 then--Night Watch Mariner
 		timerLanternofDarknessCD:Stop(args.destGUID)
 		timerGiveNoQuarterCD:Stop(args.destGUID)

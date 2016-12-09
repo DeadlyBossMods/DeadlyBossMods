@@ -33,7 +33,7 @@ local warnScornedTouch				= mod:NewTargetAnnounce(211471, 3)
 local warnCleansingGround			= mod:NewCastAnnounce(212630, 1)
 
 --Cenarius
-local specWarnCreepingNightmares	= mod:NewSpecialWarningStack(210279, nil, 16, nil, 1, 6)--Stack warning subject to tuning
+local specWarnCreepingNightmares	= mod:NewSpecialWarningStack(210279, nil, 16, nil, 2, 1, 6)--Stack warning subject to tuning
 local yellNightmareBrambles			= mod:NewYell(210290, L.BrambleYell)
 local specWarnNightmareBramblesNear	= mod:NewSpecialWarningClose(210290, nil, nil, nil, 1, 2)
 local specWarnNightmareBlast		= mod:NewSpecialWarningDefensive(213162, nil, nil, nil, 1, 2)
