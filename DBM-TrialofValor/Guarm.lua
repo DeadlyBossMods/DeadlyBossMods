@@ -177,7 +177,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.vb.foamCast < 3 then
 			timerVolatileFoamCD:Start(nil, self.vb.foamCast+1)
 		end
-	elseif spellId == 228247 or spellId == 228251 or spellId == 228227 then--Licks
+	elseif (spellId == 228247 or spellId == 228251 or spellId == 228227) and self:AntiSpam(2, 2) then--Licks
 		self.vb.lickCount = self.vb.lickCount + 1
 		if self:IsMythic() then
 			local timer = mythicLickTimers[self.vb.lickCount+1]
