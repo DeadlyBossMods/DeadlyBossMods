@@ -250,7 +250,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-    Gloves1        = "",
+    Gloves1        = "Einem Gerücht zufolge trägt der Spion immer Handschuhe.",
     Gloves2        = "Wie ich hörte, verbirgt der Spion sorgfältig die Hände.",
     Gloves3        = "Ich hörte, dass der Spion immer Handschuhe anlegt.",
     Gloves4        = "Jemand behauptete, dass der Spion Handschuhe trägt, um sichtbare Narben zu verbergen.",
@@ -274,16 +274,16 @@ L:SetMiscLocalization({
     Female3        = "Jemand hat behauptet, dass unser neuester Gast nicht männlich ist.",
     Female4        = "Man sagt, die Spionin wäre hier und sie wäre eine wahre Augenweide.",
     Male1        = "Irgendwo habe ich gehört, dass der Spion nicht weiblich ist.",
-    Male2        = "",
+    Male2        = "Ich hörte, dass der Spion ein äußerst gutaussehender Herr ist.",
     Male3        = "Ein Gast sagte, sie sah, wie ein Herr an der Seite der Großmagistrix das Anwesen betreten hat.",
-    Male4        = "",
+    Male4        = "Einer der Musiker sagte, er stellte unablässig Fragen über den Bezirk.",
     ShortSleave1= "Mir ist zu Ohren gekommen, dass der Spion kurze Ärmel trägt, damit er seine Arme ungehindert bewegen kann.",
     ShortSleave2= "",
     ShortSleave3= "Einer meiner Freundinnen sagte, dass sie die Kleidung des Spions gesehen hat. Er trägt keine langen Ärmel.",
     ShortSleave4= "",
     LongSleave1 = "Wie ich höre, trägt der Spion heute Abend Kleidung mit langen Ärmeln.",
     LongSleave2 = "Jemand sagte, dass der Spion heute Abend seine Arme mit langen Ärmeln bedeckt.",
-    LongSleave3 = "",
+    LongSleave3 = "Ich habe am frühen Abend einen kurzen Blick auf die langen Ärmel des Spions erhascht.",
     LongSleave4 = "Einer meiner Freunde erwähnte, dass der Spion lange Ärmel trägt.",
     Potions1    = "Ich hörte, dass der Spion Tränke mitgebracht hat... Ich frage mich wieso?",
     Potions2    = "Von mir habt Ihr das nicht... aber der Spion verkleidet sich als Alchemist und trägt Tränke an seinem Gürtel.",
