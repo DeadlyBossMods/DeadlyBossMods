@@ -222,7 +222,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnFoam then
 			local uId = DBM:GetRaidUnitId(args.destName)
 			local currentIcon = GetRaidTargetIndex(uId)
-			if currentIcon ~= 0 then return end--Do nothing, player is already marked
+			if not currentIcon or currentIcon == 0 then return end--Do nothing, player is already marked
 			if not self.vb.one then
 				self.vb.one = true
 				self:SetIcon(args.destName, 1)
@@ -271,6 +271,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if (spellId == 228744 or spellId == 228794 or spellId == 228810 or spellId == 228811 or spellId == 228818 or spellId == 228819) and args:IsDestTypePlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local currentIcon = GetRaidTargetIndex(uId)
+		if not currentIcon then return end
 		if self.Options.SetIconOnFoam and not (UnitDebuff(uId, fireDebuff) or UnitDebuff(uId, frostDebuff) or UnitDebuff(uId, shadowDebuff)) then
 			if currentIcon == 1 then
 				self.vb.one = false
