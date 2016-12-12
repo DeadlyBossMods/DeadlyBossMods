@@ -222,8 +222,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnFoam then
 			local uId = DBM:GetRaidUnitId(args.destName)
 			local currentIcon = GetRaidTargetIndex(uId)
-			if not currentIcon then return end--Do nothing, player is already marked
-			if currentIcon == 0 then return end
+			if currentIcon and currentIcon ~= 0 then return end--Do nothing, player is already marked
 			if not self.vb.one then
 				self.vb.one = true
 				self:SetIcon(args.destName, 1)
