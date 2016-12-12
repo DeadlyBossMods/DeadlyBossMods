@@ -542,22 +542,40 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 end
 
 function mod:RAID_BOSS_EMOTE(msg)
-	if msg:find(L.near) then
-		if not self:IsMythic() then
-			specWarnTentacleStrike:Show(DBM_CORE_FRONT)
+	if msg:find("inv_misc_monsterhorn_03") then
+		if self:AntiSpam(20, 2) then
+			self.vb.tentacleCount = self.vb.tentacleCount + 1
+			if self:IsEasy() then
+				timerTentacleStrikeCD:Start(40, self.vb.tentacleCount+1)
+			elseif self:IsMythic() then
+				timerTentacleStrikeCD:Start(35, self.vb.tentacleCount+1)
+				local text = mythicTentacleSpawns[self.vb.tentacleCount]
+				if text then
+					specWarnTentacleStrike:Show(text)
+				else
+					specWarnTentacleStrike:Show(DBM_CORE_UNKNOWN)
+				end
+			else
+				timerTentacleStrikeCD:Start(42.5, self.vb.tentacleCount+1)
+			end
 		end
-		timerTentacleStrike:Start(DBM_CORE_FRONT)
-	elseif msg:find(L.far) then
-		if not self:IsMythic() then
-			specWarnTentacleStrike:Show(DBM_CORE_BACK)
-		end
+		if msg:find(L.near) then
+			if not self:IsMythic() then
+				specWarnTentacleStrike:Show(DBM_CORE_FRONT)
+			end
+			timerTentacleStrike:Start(DBM_CORE_FRONT)
+		elseif msg:find(L.far) then
+			if not self:IsMythic() then
+				specWarnTentacleStrike:Show(DBM_CORE_BACK)
+			end
 		timerTentacleStrike:Start(DBM_CORE_BACK)
-	--Backup for the like 8 languages dbm doesn't have translators for
-	elseif msg:find("inv_misc_monsterhorn_03") then
-		if not self:IsMythic() then
-			specWarnTentacleStrike:Show(DBM_CORE_UNKNOWN)
+		--Backup for the like 8 languages dbm doesn't have translators for
+		else
+			if not self:IsMythic() then
+				specWarnTentacleStrike:Show(DBM_CORE_UNKNOWN)
+			end
+			timerTentacleStrike:Start(DBM_CORE_UNKNOWN)
 		end
-		timerTentacleStrike:Start(DBM_CORE_UNKNOWN)
 	end
 end
 
@@ -657,19 +675,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerFetidRotCD:Start(12, UnitGUID(uId))
 		end
 	elseif spellId == 228728 then--Tentacle strike activating
-		self.vb.tentacleCount = self.vb.tentacleCount + 1
-		if self:IsEasy() then
-			timerTentacleStrikeCD:Start(40, self.vb.tentacleCount+1)
-		elseif self:IsMythic() then
-			timerTentacleStrikeCD:Start(35, self.vb.tentacleCount+1)
-			local text = mythicTentacleSpawns[self.vb.tentacleCount]
-			if text then
-				specWarnTentacleStrike:Show(text)
-			else
-				specWarnTentacleStrike:Show(DBM_CORE_UNKNOWN)
-			end
-		else
-			timerTentacleStrikeCD:Start(42.5, self.vb.tentacleCount+1)
-		end
+		DBM:Debug("Tentacle Strike Activating", 2)
 	end
 end
