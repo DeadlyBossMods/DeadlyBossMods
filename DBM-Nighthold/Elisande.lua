@@ -12,7 +12,7 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 209590 209620 221864 209568 209617 209595 208807 228877 210022 209168 209971",
-	"SPELL_CAST_SUCCESS 209597 210387 214295 214278 209615",
+	"SPELL_CAST_SUCCESS 209597 210387 214295 214278 209615 229107 229109",
 	"SPELL_AURA_APPLIED 209615 209244 209973 209598 211261",
 	"SPELL_AURA_REFRESH 209973",
 	"SPELL_AURA_APPLIED_DOSE 209615 209973",
@@ -75,7 +75,7 @@ local timerLeaveNightwell			= mod:NewCastTimer(9.8, 208863, nil, nil, nil, 6)
 local timerTimeElementalsCD			= mod:NewNextSourceTimer(16, 208887, 141872, nil, nil, 1)--"Call Elemental" short text
 --Time Layer 1
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerArcaneticRing			= mod:NewNextCountTimer(6, 208807, nil, nil, nil, 2)
+--local timerArcaneticRing			= mod:NewNextCountTimer(6, 208807, nil, nil, nil, 2)
 local timerAblationCD				= mod:NewCDTimer(6.1, 209615, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--6.1-9.7
 local timerSpanningSingularityCD	= mod:NewNextCountTimer(16, 209168, nil, nil, nil, 3)
 --Time Layer 2
@@ -94,7 +94,7 @@ local berserkTimer					= mod:NewBerserkTimer(240)--4 minute berserk that resets 
 
 --Base
 --Time Layer 1
-local countdownArcaneticRing		= mod:NewCountdown(30, 208807)
+--local countdownArcaneticRing		= mod:NewCountdown(30, 208807)
 --Time Layer 2
 local countdownDelphuricBeam		= mod:NewCountdown("Alt6", 214278)
 --Time Layer 3
@@ -123,14 +123,27 @@ mod:AddInfoFrameOption(209598)
 mod:AddSetIconOption("SetIconOnConflexiveBurst", 209598)
 mod:AddHudMapOption("HudMapOnDelphuricBeam", 214278)
 
+--[[
+"<1.96 22:45:10> [ENCOUNTER_START] ENCOUNTER_START#1872#Grand Magistrix Elisande#15#24", -- [32]
+"<35.96 22:45:44> [CLEU] SPELL_CAST_START#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#228877#Arcanetic Ring#nil#nil", -- [752]
+"<65.99 22:46:14> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#229107#Arcanetic Ring#nil#nil", -- [1324]
+"<67.01 22:46:15> [CLEU] SPELL_CAST_START#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#208808#Arcanetic Ring#nil#nil", -- [1373]
+"<76.00 22:46:24> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#229109#Arcanetic Ring#nil#nil", -- [1578]
+"<76.98 22:46:25> [CLEU] SPELL_CAST_START#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#208809#Arcanetic Ring#nil#nil", -- [1597]
+"<137.01 22:47:25> [CLEU] SPELL_CAST_START#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#228877#Arcanetic Ring#nil#nil", -- [2604]
+"<145.97 22:47:34> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#229107#Arcanetic Ring#nil#nil", -- [2723]
+"<146.98 22:47:35> [CLEU] SPELL_CAST_START#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#208808#Arcanetic Ring#nil#nil", -- [2734]
+--]]
+
 --Exists in phase 2 and phase 3
-local slowElementalTimers = {19.5, 70}--15.5, 79, 84 (OLD)
-local fastElementalTimers = {24.7, 95}--15.5, 102, 91 (OLD)
-local RingTimers = {51.8, 40, 30.0}--34.7, 30.0, 54.0, 25.0, 30.0 (OLD)
-local BeamTimers = {34, 35.0, 70.0, 25.0}--45.0, 70.0, 19.0, 50.0, 30.0, 20.0 (OLD)
-local SingularityTimers = {25, 60.0, 35.0}
+local slowElementalTimers = {5.0, 49.0, 47.0}--Heroic Dec 13
+local fastElementalTimers = {8.0, 81.0, 90.0}--Heroic Dec 13
+local phase1HeroicRingTimers = {34, 30, 10, 61, 9}--I don't even know. I don't understand what's going on
+local RingTimers = {51.8, 40, 30.0}--Obsolete
+local BeamTimers = {17, 36}--Heroic Dec 13
+local SingularityTimers = {23.0, 36.0, 46.0, 64.0}--Heroic Dec 13
 --Only exist in phase 2
-local OrbTimers = {70, 30}--76.9, 12.0, 80.0 (OLD)
+local OrbTimers = {28, 66.0, 35.0}--Heroic Dec 13
 --Only exist in phase 3 so first timer of course isn't variable
 local BurstTimers = {27.6, 100}
 local TormentTimers = {140}-- 45.0, 79.0 (OLD)
@@ -183,12 +196,12 @@ function mod:OnCombatStart(delay)
 	self.vb.pos5X, self.vb.pos5Y = nil, nil
 	self.vb.pos6X, self.vb.pos6Y = nil, nil
 	self.vb.pos7X, self.vb.pos7Y = nil, nil
-	timerTimeElementalsCD:Start(10-delay, SLOW)
-	timerTimeElementalsCD:Start(15-delay, FAST)
+	timerTimeElementalsCD:Start(5-delay, SLOW)
+	timerTimeElementalsCD:Start(8-delay, FAST)
 	timerAblationCD:Start(8.5-delay)--Verify/tweak
-	timerSpanningSingularityCD:Start(25-delay, 1)
-	timerArcaneticRing:Start(30-delay)
-	countdownArcaneticRing:Start(30-delay)
+	timerSpanningSingularityCD:Start(23-delay, 1)
+--	timerArcaneticRing:Start(34-delay)
+--	countdownArcaneticRing:Start(34-delay)
 end
 
 function mod:OnCombatEnd()
@@ -241,15 +254,16 @@ function mod:SPELL_CAST_START(args)
 		voiceArcaneticRing:Play("watchorb")
 		local nextCount = self.vb.ringCastCount + 1
 		if self.vb.phase == 1 then
+			--I suspect this only incriments on 228877, not what the echos in phase 1 do
 			self.vb.totalRingCasts = self.vb.totalRingCasts + 1
 		else
 			if nextCount > self.vb.totalRingCasts then return end--There won't be any more
 		end
-		local timer = RingTimers[nextCount]
+--[[		local timer = RingTimers[nextCount]
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
 			countdownArcaneticRing:Start(timer)
-		end
+		end--]]
 	elseif spellId == 210022 then
 		self.vb.orbCastCount = self.vb.orbCastCount + 1
 		specWarnEpochericOrb:Show()
@@ -331,6 +345,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 209615 then
 		timerAblationCD:Start()
+	elseif (spellId == 229107 or spellId == 229109) and self:AntiSpam(5, 1) then--More Rings casts (earliest ones, there are some CAST_STARTS that fire after this
+		self.vb.ringCastCount = self.vb.ringCastCount + 1
+		specWarnArcaneticRing:Show()
+		voiceArcaneticRing:Play("watchorb")
+		local nextCount = self.vb.ringCastCount + 1
+		if self.vb.phase == 1 then
+			self.vb.totalRingCasts = self.vb.totalRingCasts + 1
+		else
+			if nextCount > self.vb.totalRingCasts then return end--There won't be any more
+		end
+--[[		local timer = RingTimers[nextCount]
+		if timer then
+			timerArcaneticRing:Start(timer, nextCount)
+			countdownArcaneticRing:Start(timer)
+		end--]]
 	end
 end
 
@@ -468,25 +497,25 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.ringCastCount = 0
 		self.vb.beamCastCount = 0
 		self.vb.singularityCount = 0
-		timerArcaneticRing:Stop()
-		countdownArcaneticRing:Cancel()
+--		timerArcaneticRing:Stop()
+--		countdownArcaneticRing:Cancel()
 		timerTimeElementalsCD:Stop()
 		timerDelphuricBeamCD:Stop()
 		countdownDelphuricBeam:Cancel()
 		timerLeaveNightwell:Start()
-		timerTimeElementalsCD:Start(19.5, SLOW)
-		timerTimeElementalsCD:Start(24.7, FAST)
-		timerDelphuricBeamCD:Start(34, 1)--30 for cast start
+		timerSpanningSingularityCD:Start(10, 1)--Updated Dec 13 heroic
+		timerTimeElementalsCD:Start(15, SLOW)--Updated Dec 13 heroic
+		timerDelphuricBeamCD:Start(17, 1)--13 for cast start
+		timerTimeElementalsCD:Start(18, FAST)--Dec 13, now summoned instantly
 		countdownDelphuricBeam:Start(34)
-		timerSpanningSingularityCD:Start(37, 1)
-		timerArcaneticRing:Start(51.8, 1)
-		countdownArcaneticRing:Start(51.8)
+--		timerArcaneticRing:Start(46, 1)
+--		countdownArcaneticRing:Start(46)
 		if self.vb.phase == 2 then
 			self.vb.orbCastCount = 0
 			warnPhase2:Show()
 			voicePhaseChange:Play("ptwo")
-			timerAblatingExplosionCD:Start(22)
-			timerEpochericOrbCD:Start(69.6, 1)
+			timerAblatingExplosionCD:Start(22)--Verfied unchanged Dec 13 Heroic
+			timerEpochericOrbCD:Start(28, 1)--Updated Dec 13 Heroic
 		elseif self.vb.phase == 3 then
 			warnPhase3:Show()
 			voicePhaseChange:Play("pthree")
@@ -513,7 +542,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if timer then
 			timerTimeElementalsCD:Start(timer, SLOW)
 		end
-	elseif spellId == 209007 then--Summon Time Elemental - Fast
+	elseif spellId == 209007 or spellId == 211616 then--Summon Time Elemental - Fast
 		self.vb.fastElementalCount = self.vb.fastElementalCount + 1
 		--if self.vb.firstElementals then
 			specWarnTimeElementals:Show(FAST)
@@ -534,24 +563,42 @@ end
 --Phase 2 and 3 do not have event for cast.
 --Antispam protection added to both cast and yell in event they do fix cast, don't want to double warn/mess up timers
 ---"<441.20 14:04:16> [CHAT_MSG_MONSTER_YELL] Let the waves of time crash over you!#Echo of Elisande#####0#0##0#962#nil#0#false#false#false#false", -- [7359]
+--It's now possible to do this with secondary event but it's 2 seconds slower so it should only be used as a backup with this as ideal primary still
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
-	if (msg == L.noCLEU4EchoRings or msg:find(L.noCLEU4EchoRings)) and self:AntiSpam(5, 1) then
+	if (msg == L.noCLEU4EchoRings or msg:find(L.noCLEU4EchoRings)) then
 		self:SendSync("ArcaneticRing")--Syncing to help unlocalized clients
 	end
 end
 
-function mod:OnSync(msg, targetname)
-	if not self:IsInCombat() then return end
-	if msg == "ArcaneticRing" then
+--Backup to above yell, it's 2 seconds slower but works without localizing
+--"<228.48 22:48:56> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\Spell_Mage_ArcaneOrb.blp:20|t |cFFFF0000|Hspell:228877|h[Arcanetic Rings]|h|
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
+	if msg:find("spell:228877") and self:AntiSpam(5, 1) then
 		self.vb.ringCastCount = self.vb.ringCastCount + 1
 		specWarnArcaneticRing:Show()
 		voiceArcaneticRing:Play("watchorb")
 		local nextCount = self.vb.ringCastCount + 1
 		if self.vb.phase > 1 and nextCount > self.vb.totalRingCasts then return end--There won't be any more
-		local timer = RingTimers[nextCount]
+--[[		local timer = RingTimers[nextCount]
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
 			countdownArcaneticRing:Start(timer)
-		end
+		end--]]
+	end
+end
+
+function mod:OnSync(msg, targetname)
+	if not self:IsInCombat() then return end
+	if msg == "ArcaneticRing" and self:AntiSpam(5, 1) then
+		self.vb.ringCastCount = self.vb.ringCastCount + 1
+		specWarnArcaneticRing:Show()
+		voiceArcaneticRing:Play("watchorb")
+		local nextCount = self.vb.ringCastCount + 1
+		if self.vb.phase > 1 and nextCount > self.vb.totalRingCasts then return end--There won't be any more
+--[[		local timer = RingTimers[nextCount]
+		if timer then
+			timerArcaneticRing:Start(timer, nextCount)
+			countdownArcaneticRing:Start(timer)
+		end--]]
 	end
 end
