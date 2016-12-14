@@ -202,6 +202,7 @@ function mod:OnCombatStart(delay)
 	timerSpanningSingularityCD:Start(23-delay, 1)
 --	timerArcaneticRing:Start(34-delay)
 --	countdownArcaneticRing:Start(34-delay)
+	DBM:AddMsg("This fight was practically rewritten since this mod was made, so this mod is near useless right now. I was unable to find a group for retest so this mod sucks, sorry. It'll be fixed when it hits live after first week or so")
 end
 
 function mod:OnCombatEnd()
