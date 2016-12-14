@@ -38,7 +38,7 @@ function mod:OnCombatStart(delay)
 	timerAddsCD:Start(5.5-delay)
 	timerRancidMawCD:Start(7.3-delay)
 	timerToxicRetchCD:Start(12.4-delay)
-	timerSpikedTongueCD:Start(54.7-delay)
+	timerSpikedTongueCD:Start(50.5-delay)
 end
 
 function mod:OnCombatEnd()
