@@ -553,7 +553,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		else
 			if nextCount > self.vb.totalRingCasts then return end--There won't be any more
 		end
-		local timer = RingTimers[nextCount]
+		local timer = self:IsHeroic() and phase1HeroicRingTimers[nextCount] or RingTimers[nextCount]
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
 			countdownArcaneticRing:Start(timer)
@@ -573,7 +573,7 @@ function mod:OnSync(msg, targetname)
 		else
 			if nextCount > self.vb.totalRingCasts then return end--There won't be any more
 		end
-		local timer = RingTimers[nextCount]
+		local timer = self:IsHeroic() and phase1HeroicRingTimers[nextCount] or RingTimers[nextCount]
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
 			countdownArcaneticRing:Start(timer)
