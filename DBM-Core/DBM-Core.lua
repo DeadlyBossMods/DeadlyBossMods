@@ -420,7 +420,7 @@ local dbmToc = 0
 local UpdateChestTimer
 local breakTimerStart
 
-local fakeBWVersion, fakeBWHash = 29, "d5c4347"
+local fakeBWVersion, fakeBWHash = 30, "3fd1ebb"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
