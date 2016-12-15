@@ -138,8 +138,7 @@ mod:AddHudMapOption("HudMapOnDelphuricBeam", 214278)
 --Exists in phase 2 and phase 3
 local slowElementalTimers = {5.0, 49.0, 47.0}--Heroic Dec 13
 local fastElementalTimers = {8.0, 81.0, 90.0}--Heroic Dec 13
-local phase1HeroicRingTimers = {34, 30, 10, 61, 9}--I don't even know. I don't understand what's going on
-local RingTimers = {51.8, 40, 30.0}--Obsolete
+local RingTimers = {34, 30, 10, 61, 9}
 local BeamTimers = {17, 36}--Heroic Dec 13
 local SingularityTimers = {23.0, 36.0, 46.0, 64.0}--Heroic Dec 13
 --Only exist in phase 2
@@ -553,7 +552,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		else
 			if nextCount > self.vb.totalRingCasts then return end--There won't be any more
 		end
-		local timer = self:IsHeroic() and phase1HeroicRingTimers[nextCount] or RingTimers[nextCount]
+		local timer = RingTimers[nextCount]
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
 			countdownArcaneticRing:Start(timer)
@@ -573,7 +572,7 @@ function mod:OnSync(msg, targetname)
 		else
 			if nextCount > self.vb.totalRingCasts then return end--There won't be any more
 		end
-		local timer = self:IsHeroic() and phase1HeroicRingTimers[nextCount] or RingTimers[nextCount]
+		local timer = RingTimers[nextCount]
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
 			countdownArcaneticRing:Start(timer)
