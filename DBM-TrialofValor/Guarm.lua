@@ -77,11 +77,7 @@ mod.vb.lickCount = 0
 mod.vb.one = false
 mod.vb.two = false
 mod.vb.three = false
-local debugLicks = {}
-local lastTime = 0
 local mythicLickTimers	= {12.4, 9.6, 8.5, 3.6, 60, 3.6, 7.2, 9.7, 54.5, 3.6, 7.3, 9.7, 57.1, 6}--Licks are scripted, ish
-local heroicLickTimers	= {11.0, 9.7, 3.6, 4.8, 3.6, 8.5, 51.0, 3.6, 4.8, 3.6, 8.4, 3.6, 51, 3.6, 4.8, 3.6, 8.5, 3.6, 43.6, 8.5, 3.6, 4.8, 3.6, 8.5, 3.6}
-local normalLickTimers	= {11.0, 9.7, 3.6, 4.8, 3.6, 8.5, 44.0, 8.5, 3.6, 4.8, 3.6, 8.5, 3.6, 42.6, 8.5, 3.6, 4.8, 3.6, 8.5, 3.6, 42.5, 8.5, 3.6, 4.8, 3.6, 8.5, 3.6}--Normal needs better vetting since this is kind of hard to do using WCL
 
 local updateInfoFrame
 local fireDebuff, frostDebuff, shadowDebuff = GetSpellInfo(228744), GetSpellInfo(228810), GetSpellInfo(228818)
@@ -108,8 +104,6 @@ function mod:OnCombatStart(delay)
 	self.vb.breathCast = 0
 	self.vb.leapCast = 0
 	self.vb.lickCount = 0
-	table.wipe(debugLicks)
-	lastTime = GetTime()
 	--All other combat start timers started by Helyatosis
 	if not self:IsLFR() then
 		if self:IsMythic() then
@@ -124,7 +118,6 @@ function mod:OnCombatStart(delay)
 				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
 			end
 		else
-			timerLickCD:Start(11, 1)
 			berserkTimer:Start(-delay)
 		end
 		if self.Options.RangeFrame then
@@ -141,11 +134,6 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
-	end
-	if DBM.Options.DebugMode then
-		for i, v in ipairs(debugLicks) do
-			DBM:AddMsg(v)
-		end
 	end
 end
 
@@ -184,19 +172,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			if timer then
 				timerLickCD:Start(timer, self.vb.lickCount+1)
 			end
-		elseif self:IsHeroic() then
-			local timer = heroicLickTimers[self.vb.lickCount+1]
-			if timer then
-				timerLickCD:Start(timer, self.vb.lickCount+1)
-			end
-		elseif self:IsNormal() then
-			local timer = normalLickTimers[self.vb.lickCount+1]
-			if timer then
-				timerLickCD:Start(timer, self.vb.lickCount+1)
-			end
 		end
-		debugLicks[#debugLicks+1] = GetTime() - lastTime
-		lastTime = GetTime()
 	end
 end
 
