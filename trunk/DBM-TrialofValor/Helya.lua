@@ -32,7 +32,6 @@ mod:RegisterEventsInCombat(
 or (ability.id = 228300 or ability.id = 228300) and type = "removebuff" or ability.id = 167910
  or (ability.name = "Fetid Rot" or ability.id = 228054) and (type = "cast" or type = "applydebuff") or ability.id = 227992
 --]]
---TODO, Add range finder for Taint of the sea?
 --TODO, figure out what to do with Ghostly Rage (Night Watch Mariner). Most say it's not needed and fight already has too much information, so still holding off on this
 --TODO, VERIFY timer update code for fury of maw, when mistcaller gets off a cast
 --TODO, more work with Corrupted Axion and Dark Hatred?
@@ -60,6 +59,7 @@ local specWarnTaintofSea			= mod:NewSpecialWarningMoveAway(228088, nil, nil, nil
 local specWarnBilewaterBreath		= mod:NewSpecialWarningSpell(227967, nil, nil, nil, 2, 2)
 local specWarnBilewaterRedox		= mod:NewSpecialWarningTaunt(227982, nil, nil, nil, 1, 2)
 local specWarnBilewaterCorrosion	= mod:NewSpecialWarningMove(227998, nil, nil, nil, 1, 2)
+local specWarnBilewaterSlimes		= mod:NewSpecialWarningSwitch("ej14217", "Dps", nil, nil, 1, 2)
 local specWarnTentacleStrike		= mod:NewSpecialWarningCount(228730, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(228730), nil, 2)
 --Stage Two: From the Mists (65%)
 ----Helya
@@ -120,6 +120,7 @@ local voiceTaintOfSea				= mod:NewVoice(228088)--scatter?runout?
 local voiceBilewaterBreath			= mod:NewVoice(227967)--breathsoon
 local voiceBilewaterRedox			= mod:NewVoice(227982)--tauntboss
 local voiceBilewaterCorrosion		= mod:NewVoice(227998)--runaway
+local voiceBilewaterSlimes			= mod:NewVoice("ej14217", "Dps")--killmob
 --Stage Two: From the Mists (65%)
 ----Grimelord
 local voiceGrimeLord				= mod:NewVoice("ej14263", "Tank")--bigmob
@@ -225,6 +226,8 @@ function mod:SPELL_CAST_START(args)
 		--Start ooze stuff here since all their stuff is hidden from combat log
 		timerExplodingOozes:Start()
 		countdownOozeExplosions:Start()
+		specWarnBilewaterSlimes:Schedule(3)
+		voiceBilewaterSlimes:Schedule(3, "killmob")
 	elseif spellId == 228390 then
 		if self:CheckTankDistance(args.sourceGUID, 18) then--18 has to be used because of limitations in 7.1 distance APIs
 			--Only warn if you are near the person tanking this
