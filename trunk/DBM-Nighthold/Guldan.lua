@@ -11,9 +11,9 @@ mod:SetUsedIcons(1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 206219 206220 206514 212258 206675 206840 207938 104534 208545 209270 211152 208672 167819 167935 177380 152987 206939 206744",
-	"SPELL_CAST_SUCCESS 212568 206222 206221",
-	"SPELL_AURA_APPLIED 206219 206220 206841 212568 209011 206354 206384 209086 208903 211162 221891 208802 221606 221603 221785 221784 212686",
+	"SPELL_CAST_START 206219 206220 206514 206675 206840 207938 104534 208545 209270 211152 208672 167819 167935 177380 152987 206939 206744 206883",
+	"SPELL_CAST_SUCCESS 206222 206221",
+	"SPELL_AURA_APPLIED 206219 206220 209011 206354 206384 209086 208903 211162 221891 208802 221606 221603 221785 221784 212686",
 	"SPELL_AURA_APPLIED_DOSE 211162 208802",
 	"SPELL_AURA_REMOVED 209011 206354 206384 209086 221603 221785 221784 212686",
 --	"SPELL_DAMAGE",
@@ -22,7 +22,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, pretty sure 106986 (Gaze of Vethriz) has to be killed
 --TODO, if anquished sperits is important, add a timer. if not, remove warning.
 --TODO, a LOT more work on bonds of fel. Once I understand how it breaks. if it's like shackled torment. how many targets, etc.
 --TODO, more work on eye of guldan. if pulsing aoe, maybe only ranged switch?. Timer for duplicate when energy gain rate known
@@ -31,11 +30,13 @@ mod:RegisterEventsInCombat(
 --TODO, fine tune black harvest into special warning if viable. Add timer if it's not cast often.
 --TODO, Do a bunch of stuff with well of souls? infoframe to track stacks/who should soak next?
 --TODO, figure out flames of sargeras and improve upon it. add timer and keepmove voice if needed.
+local Kurazmal = EJ_GetSectionInfo(13121)
+local Vethriz = EJ_GetSectionInfo(13124)
+local Dzorykx = EJ_GetSectionInfo(13129)
+
 --Stage One: The Council of Elders
 ----Gul'dan
-local warnLiquidHellfire			= mod:NewTargetAnnounce(206219, 3)
-local warnFelEfflux					= mod:NewSpellAnnounce(206514, 3)
-local warnHandofGuldan				= mod:NewSpellAnnounce(212258, 3)
+local warnLiquidHellfire			= mod:NewCastAnnounce(206219, 3)
 ----Inquisitor Vethriz
 local warnGazeofVethriz				= mod:NewSpellAnnounce(206840, 3)
 local warnShadowblink				= mod:NewSpellAnnounce(207938, 2)
@@ -55,20 +56,21 @@ local warnFlamesofSargeras			= mod:NewTargetAnnounce(206220, 4)
 
 --Stage One: The Council of Elders
 ----Gul'dan
-local specWarnLiquidHellfire		= mod:NewSpecialWarningYou(206219)
-local specWarnLiquidHellfireNear	= mod:NewSpecialWarningClose(206219)
-local yellLiquidHellfire			= mod:NewYell(206219)
+local specWarnLiquidHellfire		= mod:NewSpecialWarningDodge(206219, nil, nil, nil, 1, 2)
+--local specWarnLiquidHellfireNear	= mod:NewSpecialWarningClose(206219)
+--local yellLiquidHellfire			= mod:NewYell(206219)
+local specWarnFelEfflux				= mod:NewSpecialWarningDodge(206514, nil, nil, nil, 1, 2)
 ----Fel Lord Kuraz'mal
 local specWarnShatterEssence		= mod:NewSpecialWarningDefensive(206675, nil, nil, nil, 3, 2)
-local specWarnFelObelisk			= mod:NewSpecialWarningTaunt(206841, nil, nil, nil, 1, 2)
+--local specWarnFelObelisk			= mod:NewSpecialWarningTaunt(206841, nil, nil, nil, 1, 2)
 ----Inquisitor Vethriz
-local specWarnDrain					= mod:NewSpecialWarningDispel(212568, "Healer", nil, nil, 1, 2)
+--local specWarnDrain				= mod:NewSpecialWarningDispel(212568, "Healer", nil, nil, 1, 2)
 ----D'zorykx the Trapper
-local specWarnSoulVortex			= mod:NewSpecialWarningYou(206883)
+local specWarnSoulVortex			= mod:NewSpecialWarningMoveAway(206883, nil, nil, nil, 1, 2)
 local yellSoulVortex				= mod:NewYell(206883)
 --Stage Two: The Ritual of Aman'thul
-local specWarnEmpLiquidHellfire		= mod:NewSpecialWarningYou(206220)
-local specWarnEmpLiquidHellfireNear	= mod:NewSpecialWarningClose(206220)
+local specWarnEmpLiquidHellfire		= mod:NewSpecialWarningDodge(206220)
+--local specWarnEmpLiquidHellfireNear	= mod:NewSpecialWarningClose(206220)
 local specWarnBondsofFel			= mod:NewSpecialWarningYou(206222)
 local specWarnEmpBondsofFel			= mod:NewSpecialWarningYou(206384)
 local yellBondsofFel				= mod:NewYell(206222)
@@ -87,19 +89,22 @@ local yellFlamesofSargeras			= mod:NewYell(221606)
 --Stage One: The Council of Elders
 ----Gul'dan
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerLiquidHellfireCD			= mod:NewAITimer(16, 206219, nil, nil, nil, 3)
-local timerFelEffluxCD				= mod:NewAITimer(16, 206514, nil, nil, nil, 3)
-local timerHandofGuldanCD			= mod:NewAITimer(16, 212258, nil, nil, nil, 1)
+local timerLiquidHellfireCD			= mod:NewNextTimer(25, 206219, nil, nil, nil, 3)
+local timerFelEffluxCD				= mod:NewCDTimer(12, 206514, nil, nil, nil, 3)--12-13.5
 ----Fel Lord Kuraz'mal
-local timerShatterEssenceCD			= mod:NewAITimer(16, 206675, nil, "Tank", nil, 5, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_TANK_ICON)
-local timerFelObeliskCD				= mod:NewAITimer(16, 206841, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+mod:AddTimerLine(Kurazmal)
+local timerFelLordKurazCD			= mod:NewNextTimer(16, "ej13121", nil, nil, nil, 1, 212258)
+local timerShatterEssenceCD			= mod:NewCDTimer(54, 206675, nil, "Tank", nil, 5, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_TANK_ICON)
+--local timerFelObeliskCD				= mod:NewAITimer(16, 206841, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Inquisitor Vethriz
-local timerGazeofVethrizCD			= mod:NewAITimer(16, 206840, nil, nil, nil, 3)--Add timer maybe
-local timerDrainCD					= mod:NewAITimer(16, 212568, nil, "Healer", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerShadowBlinkCD			= mod:NewAITimer(16, 207938)--Roll color maybe if blink applies to tank
+mod:AddTimerLine(Vethriz)
+local timerVethrizCD				= mod:NewNextTimer(25, "ej13124", nil, nil, nil, 1, 212258)
+local timerGazeofVethrizCD			= mod:NewCDTimer(4.5, 206840, nil, nil, nil, 3)
+local timerShadowBlinkCD			= mod:NewCDTimer(36, 207938)--Role color maybe if blink applies to tank
 ----D'zorykx the Trapper
-local timerDrainCD					= mod:NewAITimer(16, 212568, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)
-local timerSoulVortexCD				= mod:NewAITimer(16, 206883, nil, nil, nil, 3)
+mod:AddTimerLine(Dzorykx)
+local timerDzorykxCD				= mod:NewNextTimer(35, "ej13129", nil, nil, nil, 1, 212258)
+local timerSoulVortexCD				= mod:NewCDTimer(34, 206883, nil, nil, nil, 3)--34-36
 --Stage Two: The Ritual of Aman'thul
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerBondsofFelCD				= mod:NewAITimer(16, 206222, nil, nil, nil, 3)
@@ -113,16 +118,19 @@ local timerWellOfSoulsCD			= mod:NewAITimer(16, 206939, nil, nil, nil, 5)
 
 --Stage One: The Council of Elders
 ----Gul'dan
---local voiceLiquidHellfire			= mod:NewVoice(206219)--TODO, figure out what voices once seen
+local voiceLiquidHellfire			= mod:NewVoice(206219)--watchstep
+local voiceFelEfflux				= mod:NewVoice(206514)--watchwave
 ----Fel Lord Kuraz'mal
 local voiceShatterEssence			= mod:NewVoice(206675)--defensive (maybe custom one that's more specific and says to use Resonant Barrier)
-local voiceFelObelisk				= mod:NewVoice(206841)--tauntboss
+--local voiceFelObelisk				= mod:NewVoice(206841)--tauntboss
 ----Inquisitor Vethriz
-local voiceDrain					= mod:NewVoice(212568, "Healer")--helpdispel
+--local voiceDrain					= mod:NewVoice(212568, "Healer")--helpdispel
 --local voiceSoulVortex				= mod:NewVoice(206883)--TODO, figure out what voices once seen
 ----D'zorykx the Trapper
+local voiceSoulVortex				= mod:NewVoice(206883)--runout
 --Stage Two: The Ritual of Aman'thul
 --local voiceBondsofFel				= mod:NewVoice(206222)--TODO, figure out what voices once seen
+local voiceEmpLiquidHellfire		= mod:NewVoice(206220)--watchstep
 local voiceEyeofGuldan				= mod:NewVoice(209270, "Dps")--killmob
 local voiceCarrionWave				= mod:NewVoice(208672, "HasInterrupt")--kickcast
 local voiceCharredLacerations		= mod:NewVoice(211162)--tauntboss
@@ -134,10 +142,20 @@ mod:AddRangeFrameOption(8, 221606)
 --mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddHudMapOption("HudMapOnBondsofFel", 206222, "-Tank")
 
+mod.vb.phase = 1
+mod.vb.liquidHellfireCast = 0
+mod.vb.felEffluxCast = 0
+
 function mod:OnCombatStart(delay)
-	timerLiquidHellfireCD:Start(1-delay)
-	timerFelEffluxCD:Start(1-delay)
-	timerHandofGuldanCD:Start(1-delay)
+	self.vb.phase = 1
+	self.vb.liquidHellfireCast = 0
+	self.vb.felEffluxCast = 0
+	timerLiquidHellfireCD:Start(2-delay)
+	timerFelEffluxCD:Start(11-delay)
+	timerFelLordKurazCD:Start(11-delay)
+	timerVethrizCD:Start(25-delay)
+	timerDzorykxCD:Start(35-delay)
+	DBM:AddMsg("This mod was created using phase 1 data only. 2 and 3 are still drycodes and need updating.")
 end
 
 function mod:OnCombatEnd()
@@ -152,15 +170,26 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 206219 then
-		timerLiquidHellfireCD:Start()
+		self.vb.liquidHellfireCast = self.vb.liquidHellfireCast + 1
+		specWarnLiquidHellfire:Show()
+		voiceLiquidHellfire:Play("watchstep")
+		if self.vb.liquidHellfireCast == 1 then
+			timerLiquidHellfireCD:Start(15)
+		elseif self.vb.liquidHellfireCast == 2 then
+			timerLiquidHellfireCD:Start(24)
+		else
+			timerLiquidHellfireCD:Start()
+		end
 	elseif spellId == 206220 then
+		self.vb.liquidHellfireCast = self.vb.liquidHellfireCast + 1
+		specWarnEmpLiquidHellfire:Show()
+		voiceEmpLiquidHellfire:Play("watchstep")
 		timerLiquidHellfireCD:Start()--use same timer (for now)
 	elseif spellId == 206514 then
-		warnFelEfflux:Show()
+		self.vb.felEffluxCast = self.vb.felEffluxCast + 1
+		specWarnFelEfflux:Show()
+		voiceFelEfflux:Play("watchwave")
 		timerFelEffluxCD:Start()
-	elseif spellId == 212258 then
-		warnHandofGuldan:Show()
-		timerHandofGuldanCD:Start()
 	elseif spellId == 206675 then
 		timerShatterEssenceCD:Start()
 		local targetName, uId, bossuid = self:GetBossTarget(104537)--Add true if it has a boss unitID
@@ -175,9 +204,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 207938 then
 		warnShadowblink:Show()
 		timerShadowBlinkCD:Start()
-	elseif spellId == 104534 then
+	elseif spellId == 206883 then
 		timerSoulVortexCD:Start()
-		local targetName, uId, bossuid = self:GetBossTarget(104534)--Add true if it has a boss unitID
+		local targetName, uId, bossuid = self:GetBossTarget(104534, true)
 		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
 		if tanking or (status == 3) then--Player is current target
 			specWarnSoulVortex:Show()
@@ -218,25 +247,14 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 212568 then
-		timerDrainCD:Start()
-	elseif spellId == 206222 or spellId == 206221 then
+	if spellId == 206222 or spellId == 206221 then
 		timerBondsofFelCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 206219 then--Might be wrong spell id. blizz fails at tooltips
-		if args:IsPlayer() then
-			specWarnLiquidHellfire:Show()
-			yellLiquidHellfire:Yell()
-		elseif self:CheckNearby(10, args.destName) then
-			specWarnLiquidHellfireNear:Show(args.destName)
-		else
-			warnLiquidHellfire:Show(args.destName)
-		end
-	elseif spellId == 206220 then
+--[[	if spellId == 206220 then
 		if args:IsPlayer() then
 			specWarnEmpLiquidHellfire:Show()
 			yellLiquidHellfire:Yell()--use same yell, no reason to make yell text bigger
@@ -244,21 +262,30 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnEmpLiquidHellfireNear:Show(args.destName)
 		else
 			warnEmpLiquidHellfire:Show(args.destName)
-		end
-	elseif spellId == 206841 then
+		end-]]
+--[[	elseif spellId == 206219 then--Might be wrong spell id. blizz fails at tooltips
+		if args:IsPlayer() then
+			specWarnLiquidHellfire:Show()
+			yellLiquidHellfire:Yell()
+		elseif self:CheckNearby(10, args.destName) then
+			specWarnLiquidHellfireNear:Show(args.destName)
+		else
+			warnLiquidHellfire:Show(args.destName)
+		end--]]
+--[[	elseif spellId == 206841 then
 		timerFelObeliskCD:Start()
 		if args:IsPlayer() then
 			--DO something here?
 		else
 			specWarnFelObelisk:Show(args.destName)
 			voiceFelObelisk:Play("tauntboss")
-		end
-	elseif spellId == 212568 then
+		end--]]
+--[[	elseif spellId == 212568 then
 		specWarnDrain:CombinedShow(0.3, args.destName)--Remove combinedshow if not more than 1 target
 		if self:AntiSpam(2, 1) then--remove if only one target
 			voiceDrain:Play("helpdispel")
-		end
-	elseif spellId == 209011 or spellId == 206354 then--206354 may be LFR version, it has no snare
+		end--]]
+	if spellId == 209011 or spellId == 206354 then--206354 may be LFR version, it has no snare
 		if args:IsPlayer() then
 			specWarnBondsofFel:Show()
 			yellBondsofFel:Yell()
@@ -351,10 +378,9 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 104537 then--Fel Lord Kuraz'mal
 		timerShatterEssenceCD:Stop()
-		timerFelObeliskCD:Stop()
+		--timerFelObeliskCD:Stop()
 	elseif cid == 104536 then--Inquisitor Vethriz
 		timerGazeofVethrizCD:Stop()
-		timerDrainCD:Stop()
 		timerShadowBlinkCD:Stop()
 	elseif cid == 104534 then--D'zorykx the Trapper
 		timerSoulVortexCD:Stop()
@@ -367,6 +393,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		specWarnStormOfDestroyer:Show()
 		voiceStormOfDestroyer:Play("watchstep")
 		timerStormOfDestroyerCD:Start()
+	elseif spellId == 215736 then--Hand of Guldan (Fel Lord Kuraz'mal)
+		timerShatterEssenceCD:Start(5)
+	elseif spellId == 215738 then--Hand of Guldan (Inquisitor Vethriz)
+		timerShadowBlinkCD:Start(2.5)
+		timerGazeofVethrizCD:Start(5)
+	elseif spellId == 215739 then--Hand of Guldan (D'zorykx the Trapper)
+		timerSoulVortexCD:Start(19)--This was hotfixed couple times so reverify on live
+	elseif spellId == 227401 then--Phase 2?
+		DBM:Debug("227401: phase 2 trigger?")
+	elseif spellId == 227682 then--Phase 2?
+		DBM:Debug("227682: phase 2 trigger?")
+	elseif spellId == 207728 then--Phase 2?
+		DBM:Debug("207728: phase 2 trigger?")
+	elseif spellId == 227639 then
+		DBM:Debug("227639: phase 3 trigger? Mythic Only?")
 	end
 end
 
