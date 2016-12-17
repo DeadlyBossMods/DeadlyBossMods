@@ -287,7 +287,8 @@ L:SetMiscLocalization({
     LongSleave4 = "Einer meiner Freunde erwähnte, dass der Spion lange Ärmel trägt.",
     Potions1    = "Ich hörte, dass der Spion Tränke mitgebracht hat... Ich frage mich wieso?",
     Potions2    = "Von mir habt Ihr das nicht... aber der Spion verkleidet sich als Alchemist und trägt Tränke an seinem Gürtel.",
-    Potions3    = "Wie ich hörte, hat der Spion einige Tränke mitgebracht... für alle Fälle.",
+    Potions3    = "Ich bin mir ziemlich sicher, dass der Spion Tränke am Gürtel trägt.",
+    Potions4    = "Wie ich hörte, hat der Spion einige Tränke mitgebracht... für alle Fälle.",
     NoPotions1    = "Wie ich hörte, hat der Spion keine Tränke bei sich.",
     NoPotions2    = "Eine Musikerin erzählte mir, dass sie gesehen hat, wie der Spion seinen letzten Trank wegwarf und jetzt keinen mehr übrig hat.",
     Book1        = "",
@@ -297,6 +298,7 @@ L:SetMiscLocalization({
     Pouch3        = "",
     Pouch4        = ""
 })
+
 
 -----------------------
 -- <<<The Maw of Souls>>> --
