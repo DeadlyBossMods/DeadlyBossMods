@@ -291,6 +291,7 @@ L:SetMiscLocalization({
 	Potions1	= "I heard the spy brought along potions, I wonder why?",
 	Potions2	= "I didn't tell you this... but the spy is masquerading as an alchemist and carrying potions at the belt.",
 	Potions3	= "I'm pretty sure the spy has potions at the belt.",
+	Potions4	= "I heard the spy brought along some potions... just in case.",
 	NoPotions1	= "I heared the spy is not carrying any potions around.",
 	NoPotions2	= "A musician told me she saw the spy throw away their last potion and no longer has any left.",
 	Book1		= "I heard the spy always has a book of written secrets at the belt.",
