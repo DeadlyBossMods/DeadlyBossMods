@@ -148,6 +148,7 @@ do
 		[L.Potions1] = "potions",
 		[L.Potions2] = "potions",
 		[L.Potions3] = "potions",
+		[L.Potions4] = "potions",
 		
 		[L.NoPotions1] = "no potion",
 		[L.NoPotions2] = "no potion",
