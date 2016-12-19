@@ -98,6 +98,22 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 do
+	local hintTranslations = {
+		["gloves"] = L.Gloves,
+		["no gloves"] = L.NoGloves,
+		["cape"] = L.Cape,
+		["no cape"] = L.Nocape,
+		["light vest"] = L.LightVest,
+		["dark vest"] = L.DarkVest,
+		["female"] = L.Female,
+		["male"] = L.Male,
+		["short sleeves"] = L.ShortSleeve,
+		["long sleeves"] = L.LongSleeve,
+		["potions"] = L.Potions,
+		["no potion"] = L.NoPotions,
+		["book"] = L.Book,
+		["pouch"] = L.Pouch
+	}
 	local hints = {}
 	local clues = {
 		[L.Gloves1] = "gloves",
@@ -135,15 +151,15 @@ do
 		[L.Male3] = "male",
 		[L.Male4] = "male",
 		
-		[L.ShortSleave1] = "short sleeves",
-		[L.ShortSleave2] = "short sleeves",
-		[L.ShortSleave3] = "short sleeves",
-		[L.ShortSleave4] = "short sleeves",
+		[L.ShortSleeve1] = "short sleeves",
+		[L.ShortSleeve2] = "short sleeves",
+		[L.ShortSleeve3] = "short sleeves",
+		[L.ShortSleeve4] = "short sleeves",
 		
-		[L.LongSleave1] = "long sleeves",
-		[L.LongSleave2] = "long sleeves",
-		[L.LongSleave3] = "long sleeves",
-		[L.LongSleave4] = "long sleeves",
+		[L.LongSleeve1] = "long sleeves",
+		[L.LongSleeve2] = "long sleeves",
+		[L.LongSleeve3] = "long sleeves",
+		[L.LongSleeve4] = "long sleeves",
 		
 		[L.Potions1] = "potions",
 		[L.Potions2] = "potions",
@@ -166,7 +182,7 @@ do
 		local lines = {}
 
 		for hint, j in pairs(hints) do
-			lines[hint] = ""
+			lines[hintTranslations[hint]] = ""
 		end
 		
 		return lines
@@ -199,7 +215,7 @@ do
 				local clue = clues[GetGossipText()]
 				if clue and not hints[clue] then
 					CloseGossip()
-					SendChatMessage(clue, "PARTY")
+					SendChatMessage(hintTranslations[clue], "PARTY")
 					hints[clue] = true
 					self:SendSync("CoS", clue)
 					DBM.InfoFrame:Show(5, "function", updateInfoFrame)
