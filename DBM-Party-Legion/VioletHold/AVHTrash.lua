@@ -9,7 +9,7 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 204966 204963 205090",
-	"SPELL_AURA_APPLIED 204962 205088",
+	"SPELL_AURA_APPLIED 204962 205088 204608",
 	"SPELL_DAMAGE 204762",
 	"SPELL_MISSED 204762",
 	"UNIT_DIED"
@@ -28,6 +28,8 @@ local specWarnShadowBoltVolley		= mod:NewSpecialWarningInterrupt(204963, "HasInt
 local specWarnHellfire				= mod:NewSpecialWarningInterrupt(205088, "HasInterrupt", nil, nil, 1, 2)--Infernal AOE
 local specWarnFelSlam				= mod:NewSpecialWarningSpell(205090, "Tank", nil, nil, 2, 2)--Infernal frontal fel line/shockwave thingy
 local specWarnFelEnergy				= mod:NewSpecialWarningMove(204762, nil, nil, nil, 2, 2)--Felguard Axe damage
+local specWarnFelPrison				= mod:NewSpecialWarningSwitch(204608, "Dps", nil, nil, 1, 2)
+local yellFelPrison					= mod:NewYell(204608)
 
 local timerPortal					= mod:NewTimer(122, "TimerPortal", 57687, nil, nil, 6)
 --local timerShieldDestruction		= mod:NewNextTimer(12.5, 202312, nil, nil, nil, 1)--Time between boss yell and shield coming down.
@@ -37,6 +39,7 @@ local voiceShadowBoltVolley			= mod:NewVoice(204963, "HasInterrupt")--kickcast
 local voiceHellfire					= mod:NewVoice(205088, "HasInterrupt")--kickcast
 local voiceFelSlam					= mod:NewVoice(205090, "Tank")--shockwave
 local voiceFelEnergy				= mod:NewVoice(204762)--runaway
+local voiceFelPrison				= mod:NewVoice(204608, "Dps")--helpme
 
 mod:RemoveOption("HealthFrame")
 
@@ -67,6 +70,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 205088 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnHellfire:Show(args.sourceName)
 		voiceHellfire:Play("kickcast")
+	elseif spellId == 204608 then
+		if args:IsPlayer() then
+			yellFelPrison:Yell()
+		else
+			specWarnFelPrison:Show()
+			voiceFelPrison:Play("helpme")
+		end
 	end
 end
 
