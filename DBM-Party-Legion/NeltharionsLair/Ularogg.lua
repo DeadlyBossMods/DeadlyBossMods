@@ -6,14 +6,14 @@ mod:SetCreatureID(91004)
 mod:SetEncounterID(1791)
 mod:SetZone()
 mod:SetHotfixNoticeRev(15186)
+mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 198496 216290 193375",
-	"SPELL_CAST_SUCCESS 216290",
---	"SPELL_DAMAGE 193273",
---	"SPELL_MISSED 193273",
+	"SPELL_CAST_SUCCESS 216290 198717",
+	"SPELL_SUMMON",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -32,7 +32,12 @@ local timerStanceOfMountainCD		= mod:NewCDTimer(119.5, 216249, nil, nil, nil, 6)
 local voiceSunder					= mod:NewVoice(198496, "Tank")--defensive
 local voiceStrikeofMountain			= mod:NewVoice(216290)--targetyou
 
+mod:AddSetIconOption("SetIconOnIdol", 216249, true, true)
+
+local stanceMobs = {}
+
 function mod:OnCombatStart(delay)
+	table.wipe(stanceMobs)
 	timerSunderCD:Start(7-delay)
 	timerStrikeCD:Start(15.8-delay)
 	timerStanceOfMountainCD:Start(26.7-delay)
@@ -61,21 +66,25 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			warnStrikeofMountain:Show(args.destName)
 		end
+	elseif spellId == 198717 then--Fallen Debris (and args:GetSrcCreatureID() == 100818)
+		if not stanceMobs[args.sourceGUID] and self.Options.SetIconOnIdol then
+			self:ScanForMobs(args.sourceGUID, 2, 8, 1, 0.2, 10, "SetIconOnIdol")
+		end
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 193273 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-
+function mod:SPELL_SUMMON(args)
+	local spellId = args.spellId
+	--Spellname also added in case of any missing spellids, but goal is to find all spell ids so it works for all languages
+	if (spellId == 216249 or spellId == 198564 or spellId == 216250 or spellId == 198565) or args.spellName == "Stance of the Mountain" then
+		stanceMobs[args.destGUID] = true
 	end
 end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 198509 then--Stance of the Mountain
+		table.wipe(stanceMobs)
 		warnStanceofMountain:Show()
 		timerSunderCD:Stop()
 		timerStrikeCD:Stop()
