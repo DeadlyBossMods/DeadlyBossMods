@@ -429,7 +429,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
+			DBM.InfoFrame:Show(6, "function", updateInfoFrame)
 		end
 	elseif spellId == 229579 or spellId == 229580 or spellId == 229581 or spellId == 229582 or spellId == 229583 then--Branded (Mythic Phase 1/2 non fixate rune debuffs)
 		if spellId == 229579 and args:IsPlayer() then--Purple K (NE)
