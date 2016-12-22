@@ -81,7 +81,8 @@ local timerDrawPower				= mod:NewCastTimer(30, 227629, nil, nil, nil, 2, nil, DB
 --Stage 2: Odyn immitates margok
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerSpearCD					= mod:NewNextTimer(8, 227697, nil, nil, nil, 3)
-local timerAddsCD					= mod:NewNextTimer(70, "ej14404", nil, nil, nil, 1)
+local timerHymdallCD				= mod:NewNextTimer(70, "ej14005", nil, nil, nil, 1, 228012, DBM_CORE_DAMAGE_ICON)
+local timerHyrjaCD					= mod:NewNextTimer(70, "ej14006", nil, nil, nil, 1, 228270, DBM_CORE_DAMAGE_ICON)
 --Stage 3: Odyn immitates lei shen
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerStormOfJusticeCD			= mod:NewNextTimer(10.9, 227807, nil, nil, nil, 3)
@@ -247,7 +248,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -559,9 +559,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			timerShieldofLightCD:Start(9.7)
 			countdownShield:Start(9.7)
 			if self:IsMythic() then
-				timerAddsCD:Start(64)
+				timerHymdallCD:Start(64)
 			elseif self:IsHeroic() then
-				timerAddsCD:Start(67)
+				timerHymdallCD:Start(67)
 			end
 		elseif npc == hymdall then
 			specWarnHymall:Show()
@@ -570,9 +570,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			timerHornOfValorCD:Start(9.5)
 			countdownHorn:Start(9.5)
 			if self:IsMythic() then
-				timerAddsCD:Start(67)
+				timerHyrjaCD:Start(67)
 			elseif self:IsHeroic() then
-				timerAddsCD:Start(70)
+				timerHyrjaCD:Start(70)
 			end
 		end
 	end
@@ -637,7 +637,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 227882 then--Jump into Battle (phase 2 begin)
 		self.vb.phase = 2
 		if not self:IsEasy() then
-			timerAddsCD:Start(16)
+			timerHyrjaCD:Start(16)
 		end
 	elseif spellId == 34098 and self.vb.phase == 2 then--ClearAllDebuffs (any of bosses leaving)
 		local cid = self:GetUnitCreatureId(uId)
@@ -663,8 +663,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	--"<489.60 21:38:04> [UNIT_SPELLCAST_SUCCEEDED] Odyn(??) [[boss1:Arcing Storm::3-2012-1648-3815-229254-00060AC2FC:229254]]", -- [2941]
 	elseif spellId == 228740 then--Spear Transition - Thunder (Phase 3 begin)
 		self.vb.phase = 3
-		timerAddsCD:Stop()
-		--self:UnregisterShortTermEvents()
+		timerHymdallCD:Stop()
+		timerHyrjaCD:Stop()
 		timerDrawPower:Stop()
 		countdownDrawPower:Cancel()
 		timerDrawPowerCD:Stop()
