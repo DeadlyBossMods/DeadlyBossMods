@@ -57,6 +57,7 @@ local dropdownFrame
 local initializeDropdown
 local currentMapId
 local maxlines = 5
+local modLines = 5
 local currentEvent
 local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
 local lines = {}
@@ -99,9 +100,11 @@ do
 	end
 	
 	local function setLines(self, line)
+		DBM.Options.InfoFrameLines = line
 		if line ~= 0 then
-			DBM.Options.InfoFrameLines = line
 			maxlines = line
+		else
+			maxlines = modLines or 5
 		end
 	end
 
@@ -681,7 +684,7 @@ end
 function infoFrame:Show(maxLines, event, ...)
 	currentMapId = select(4, UnitPosition("player"))
 	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
-
+	modLines = maxLines
 	if DBM.Options.InfoFrameLines and DBM.Options.InfoFrameLines ~= 0 then
 		maxlines = DBM.Options.InfoFrameLines
 	else
