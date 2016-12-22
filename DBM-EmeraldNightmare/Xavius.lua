@@ -68,14 +68,14 @@ local specWarnInconHorror				= mod:NewSpecialWarningSwitch("ej13162", "-Healer",
 --Stage One: The Decent Into Madness
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerDarkeningSoulCD				= mod:NewCDTimer(7, 206651, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
-local timerNightmareBladesCD			= mod:NewNextTimer(15.7, 206656, nil, nil, nil, 3)
-local timerLurkingEruptionCD			= mod:NewCDCountTimer(20.5, 208322, nil, nil, nil, 3)
+local timerNightmareBladesCD			= mod:NewNextTimer(15.7, 206656, nil, "-Tank", 2, 3)
+local timerLurkingEruptionCD			= mod:NewCDCountTimer(20.5, 208322, nil, "-Tank", 2, 3)
 local timerCorruptionHorrorCD			= mod:NewNextCountTimer(82.5, 210264, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
 local timerCorruptingNovaCD				= mod:NewNextTimer(20, 207830, nil, nil, nil, 2)
 local timerTormentingSwipeCD			= mod:NewCDTimer(10, 224649, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --Stage Two: From the Shadows
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerBondsOfTerrorCD				= mod:NewCDTimer(14.1, 209034, nil, nil, nil, 3)
+local timerBondsOfTerrorCD				= mod:NewCDTimer(14.1, 209034, nil, "-Tank", 2, 3)
 local timerCorruptionMeteorCD			= mod:NewCDCountTimer(28, 206308, 57467, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--Short text "meteor"
 local timerBlackeningSoulCD				= mod:NewCDTimer(7.2, 209158, nil, "Healer|Tank", nil, 5, nil, DBM_CORE_MAGIC_ICON..DBM_CORE_TANK_ICON)
 local timerNightmareInfusionCD			= mod:NewCDTimer(61.5, 209443, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--61.5-62.5
