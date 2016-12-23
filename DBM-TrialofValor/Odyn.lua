@@ -33,7 +33,7 @@ local hyrja = EJ_GetSectionInfo(14006)
 local warnDancingBlade				= mod:NewCountAnnounce(228003, 3)--Change if target scanning works, but considering it doesn't in 5 man version of this spell, omitting for now
 local warnRevivify					= mod:NewCastAnnounce(228171, 4)
 local warnExpelLight				= mod:NewTargetAnnounce(228028, 3)
-local warnShieldofLight				= mod:NewTargetAnnounce(228270, 3)
+local warnShieldofLight				= mod:NewTargetCountAnnounce(228270, 3)
 --Stage 2: Stuff
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 --Stage 3: Odyn immitates lei shen
@@ -545,7 +545,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 				yellShieldofLightFades:Schedule(1.8, 2)
 				yellShieldofLightFades:Schedule(0.8, 3)
 			else
-				warnShieldofLight:Show(targetname)
+				warnShieldofLight:Show(self.vb.shieldCast, targetname)
 			end
 			if self.Options.SetIconOnShield then
 				self:SetIcon(targetname, 1)
