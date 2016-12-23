@@ -1059,9 +1059,15 @@ do
 		noDelay = false
 		--Check if voice pack missing
 		local activeVP = self.Options.ChosenVoicePack
-		if (activeVP ~= "None" and not self.VoiceVersions[activeVP]) or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0) then--A voice pack is selected that does not belong
-			self.Options.ChosenVoicePack = "None"--Set ChosenVoicePack back to None
-			self:AddMsg(DBM_CORE_VOICE_MISSING)
+		if activeVP ~= "None" then
+			if not self.VoiceVersions[activeVP] or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0) then--A voice pack is selected that does not belong
+				self.Options.ChosenVoicePack = "None"--Set ChosenVoicePack back to None
+				self:AddMsg(DBM_CORE_VOICE_MISSING)
+			end
+		else
+			if #self.VoiceVersions > 0 then
+				self:AddMsg(DBM_CORE_VOICE_DISABLED)
+			end
 		end
 		--Check if any of countdown sounds are using missing voice pack
 		local voice1 = self.Options.CountdownVoice
@@ -1070,13 +1076,6 @@ do
 		if voice1 == "None" then--Migrate to new setting
 			self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice
 			self.Options.DontPlayCountdowns = true
-		end
-		if voice1 == "Yike" then--Migration for CN Users
-			if self.VoiceVersions["Yike"] then
-				self.Options.CountdownVoice = "VP:Yike"
-			else
-				self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice--Defaults
-			end
 		end
 		local found1, found2, found3 = false, false, false
 		for i = 1, #self.Counts do
