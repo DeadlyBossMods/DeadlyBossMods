@@ -1065,7 +1065,8 @@ do
 				self:AddMsg(DBM_CORE_VOICE_MISSING)
 			end
 		else
-			if #self.Voices < 2 then
+			if #self.Voices > 1 then
+				--At least one voice pack installed but activeVP set to "None"
 				self:AddMsg(DBM_CORE_VOICE_DISABLED)
 			end
 		end
