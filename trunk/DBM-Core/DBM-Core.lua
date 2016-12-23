@@ -1065,7 +1065,7 @@ do
 				self:AddMsg(DBM_CORE_VOICE_MISSING)
 			end
 		else
-			if #self.VoiceVersions > 0 then
+			if #self.Voices < 2 then
 				self:AddMsg(DBM_CORE_VOICE_DISABLED)
 			end
 		end
