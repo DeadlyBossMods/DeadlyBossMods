@@ -56,7 +56,7 @@ local warnOrbOfCorrosion			= mod:NewTargetAnnounce(230267, 3)
 local specWarnOrbOfCorruption		= mod:NewSpecialWarningYou(229119, nil, nil, nil, 1, 5)
 local yellOrbOfCorruption			= mod:NewPosYell(229119)
 local specWarnTaintofSea			= mod:NewSpecialWarningMoveAway(228088, nil, nil, nil, 1, 2)
-local specWarnBilewaterBreath		= mod:NewSpecialWarningSpell(227967, nil, nil, nil, 2, 2)
+local specWarnBilewaterBreath		= mod:NewSpecialWarningCount(227967, nil, nil, nil, 2, 2)
 local specWarnBilewaterRedox		= mod:NewSpecialWarningTaunt(227982, nil, nil, nil, 1, 2)
 local specWarnBilewaterCorrosion	= mod:NewSpecialWarningMove(227998, nil, nil, nil, 1, 2)
 local specWarnBilewaterSlimes		= mod:NewSpecialWarningSwitch("ej14217", "Dps", nil, nil, 1, 2)
@@ -74,7 +74,7 @@ local specWarnAnchorSlam			= mod:NewSpecialWarningTaunt(228519, nil, nil, nil, 1
 local specWarnLanternofDarkness		= mod:NewSpecialWarningSpell(228619, nil, nil, nil, 2, 2)
 local specWarnGiveNoQuarter			= mod:NewSpecialWarningDodge(228633, nil, nil, nil, 1, 2)
 --Stage Three: Helheim's Last Stand
-local specWarnCorruptedBreath		= mod:NewSpecialWarningSpell(228565, nil, nil, nil, 2)
+local specWarnCorruptedBreath		= mod:NewSpecialWarningCount(228565, nil, nil, nil, 2)
 local specWarnOrbOfCorrosion		= mod:NewSpecialWarningYou(230267, nil, nil, nil, 1, 5)
 local yellOrbOfCorrosion			= mod:NewPosYell(230267)
 
@@ -82,7 +82,7 @@ local yellOrbOfCorrosion			= mod:NewPosYell(230267)
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerOrbOfCorruptionCD		= mod:NewNextTimer(25, 229119, "OrbsTimerText", nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerTaintOfSeaCD				= mod:NewCDTimer(14.5, 228088, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
-local timerBilewaterBreathCD		= mod:NewNextTimer(40, 227967, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--On for everyone though so others avoid it too
+local timerBilewaterBreathCD		= mod:NewNextCountTimer(40, 227967, 21131, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--On for everyone though so others avoid it too
 local timerTentacleStrikeCD			= mod:NewNextCountTimer(30, 228730, nil, nil, nil, 5)
 local timerTentacleStrike			= mod:NewCastSourceTimer(6, 228730, nil, nil, nil, 5)
 local timerExplodingOozes			= mod:NewCastTimer(20.5, 227992, nil, nil, nil, 2, nil, DBM_CORE_DAMAGE_ICON)
@@ -103,7 +103,7 @@ local timerGiveNoQuarterCD			= mod:NewNextTimer(6, 228633, nil, nil, nil, 3)
 local timerMistInfusion				= mod:NewCastTimer(7, 228854, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Stage Three: Helheim's Last Stand
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
-local timerCorruptedBreathCD		= mod:NewCDTimer(40, 228565, nil, nil, nil, 2)
+local timerCorruptedBreathCD		= mod:NewCDCountTimer(40, 228565, 21131, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerOrbOfCorrosionCD			= mod:NewNextTimer(17, 230267, "OrbsTimerText", nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
 local berserkTimer					= mod:NewBerserkTimer(660)
@@ -167,6 +167,7 @@ mod.vb.furyOfMawCount = 0
 mod.vb.tentacleCount = 0
 mod.vb.taintCount = 0
 mod.vb.lastTentacles = 9
+mod.vb.breathCount = 0
 
 function mod:OnCombatStart(delay)
 	table.wipe(seenMobs)
@@ -176,16 +177,17 @@ function mod:OnCombatStart(delay)
 	self.vb.furyOfMawCount = 0
 	self.vb.tentacleCount = 0
 	self.vb.taintCount = 0
+	self.vb.breathCount = 0
 	if self:IsEasy() then
 		self.vb.lastTentacles = 9
 		timerTaintOfSeaCD:Start(12.4-delay)
-		timerBilewaterBreathCD:Start(13.3-delay)
+		timerBilewaterBreathCD:Start(13.3-delay, 1)
 		timerOrbOfCorruptionCD:Start(18-delay, 1, RANGED)--START
 		countdownOrbs:Start(18-delay)
 		timerTentacleStrikeCD:Start(53-delay, 1)
 	elseif self:IsMythic() then
 		self.vb.lastTentacles = 8
-		timerBilewaterBreathCD:Start(11-delay)
+		timerBilewaterBreathCD:Start(11-delay, 1)
 		timerOrbOfCorruptionCD:Start(14-delay, 1, RANGED)--START
 		countdownOrbs:Start(14-delay)
 		timerTaintOfSeaCD:Start(15-delay)
@@ -193,7 +195,7 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(-delay)--11 Min confirmed
 	else
 		self.vb.lastTentacles = 9
-		timerBilewaterBreathCD:Start(12-delay)
+		timerBilewaterBreathCD:Start(12-delay, 1)
 		timerTaintOfSeaCD:Start(19-delay)
 		timerOrbOfCorruptionCD:Start(29-delay, 1, RANGED)--START
 		countdownOrbs:Start(29-delay)
@@ -214,14 +216,15 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 227967 then
-		specWarnBilewaterBreath:Show()
+		self.vb.breathCount = self.vb.breathCount + 1
+		specWarnBilewaterBreath:Show(self.vb.breathCount)
 		voiceBilewaterBreath:Play("breathsoon")
 		if self:IsNormal() then
-			timerBilewaterBreathCD:Start(57)
+			timerBilewaterBreathCD:Start(57, self.vb.breathCount+1)
 		elseif self:IsMythic() then
-			timerBilewaterBreathCD:Start(43)
+			timerBilewaterBreathCD:Start(43, self.vb.breathCount+1)
 		else--Verified heroic and LFR. TODO, verify mythic and reverify LFR
-			timerBilewaterBreathCD:Start(52)
+			timerBilewaterBreathCD:Start(52, self.vb.breathCount+1)
 		end
 		--Start ooze stuff here since all their stuff is hidden from combat log
 		timerExplodingOozes:Start()
@@ -236,13 +239,14 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerSludgeNovaCD:Start()
 	elseif spellId == 228565 then
-		specWarnCorruptedBreath:Show()
+		self.vb.breathCount = self.vb.breathCount + 1
+		specWarnCorruptedBreath:Show(self.vb.breathCount)
 		if self:IsEasy() then
-			timerCorruptedBreathCD:Start(51)
+			timerCorruptedBreathCD:Start(51, self.vb.breathCount+1)
 		elseif self:IsMythic() then
-			timerCorruptedBreathCD:Start(43)
+			timerCorruptedBreathCD:Start(43, self.vb.breathCount+1)
 		else
-			timerCorruptedBreathCD:Start(47.5)
+			timerCorruptedBreathCD:Start(47.5, self.vb.breathCount+1)
 		end
 	elseif spellId == 228032 then--Phase 3 Fury of the Maw
 		self.vb.furyOfMawCount = self.vb.furyOfMawCount + 1
@@ -646,27 +650,28 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.taintCount = 0--TODO, make sure helya happens before first taint goes out
 		self.vb.orbCount = 1
 		self.vb.furyOfMawCount = 0
+		self.vb.breathCount = 0
 		timerFuryofMawCD:Stop()
 		warnPhase3:Show()
 		if self:IsMythic() then
 			timerOrbOfCorrosionCD:Start(6, 1, RANGED)
 			countdownOrbs:Start(6)
-			timerCorruptedBreathCD:Start(10)
+			timerCorruptedBreathCD:Start(10, 1)
 			timerFuryofMawCD:Start(35, 1)
 		elseif self:IsLFR() then
 			timerOrbOfCorrosionCD:Start(11, 1, RANGED)--Needs recheck
 			countdownOrbs:Start(11)--Needs recheck
-			timerCorruptedBreathCD:Start(40)--Needs recheck
+			timerCorruptedBreathCD:Start(40, 1)--Needs recheck
 			timerFuryofMawCD:Start(90, 1)--Needs recheck
 		elseif self:IsNormal() then--May still be same as heroic with variation
 			timerOrbOfCorrosionCD:Start(12, 1, RANGED)--Needs recheck
 			countdownOrbs:Start(12)--Needs more verification
-			timerCorruptedBreathCD:Start(20.5)
+			timerCorruptedBreathCD:Start(20.5, 1)
 			timerFuryofMawCD:Start(33, 1)--Needs more verification
 		else--Heroic
 			timerOrbOfCorrosionCD:Start(14, 1, RANGED)--Needs more verification
 			countdownOrbs:Start(14)--Needs verification
-			timerCorruptedBreathCD:Start(19.4)
+			timerCorruptedBreathCD:Start(19.4, 1)
 			timerFuryofMawCD:Start(30, 1)
 		end
 	elseif spellId == 228838 then
