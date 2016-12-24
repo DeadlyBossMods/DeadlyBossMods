@@ -14,7 +14,7 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 228193 228025 228019 227987 232153",
+	"SPELL_CAST_START 228025 228019 227987 232153",
 	"SPELL_AURA_APPLIED 228013 228221 228225 227985",
 	"SPELL_AURA_REMOVED 232156 228221",
 	"SPELL_PERIODIC_DAMAGE 228200",
@@ -22,10 +22,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
---TODO: Verify Burning Blaze Target
 --TODO: Timers
---Luminore
-local warnBurningBlaze				= mod:NewTargetAnnounce(228193, 2)
 --Babblet
 local warnSevereDusting				= mod:NewTargetAnnounce(228221, 3)
 --Cogglestone
@@ -33,8 +30,6 @@ local warnKaraKazham				= mod:NewSpellAnnounce(232153, 2)
 
 --Luminore
 local specWarnBurningBlaze			= mod:NewSpecialWarningMove(228193, nil, nil, nil, 1, 2)
-local specWarnBurningBlazeNear		= mod:NewSpecialWarningClose(228193, nil, nil, nil, 1, 2)
-local yellBurningBlaze				= mod:NewYell(228193)
 local specWarnHeatWave				= mod:NewSpecialWarningInterrupt(228025, "HasInterrupt", nil, nil, 1, 2)
 --Mrs.Cauldrons
 local specWarnDrenched				= mod:NewSpecialWarningMoveTo(228013, nil, nil, nil, 1)--Voice?
@@ -79,23 +74,6 @@ mod:AddSetIconOption("SetIconOnDusting", 228221, true)
 
 mod.vb.phase = 1
 
-function mod:BlazeTarget(targetname, uId)
-	if not targetname then
-		warnBurningBlaze:Show(DBM_CORE_UNKNOWN)
-		return
-	end
-	if targetname == UnitName("player") then
-		specWarnBurningBlaze:Show()
-		voiceBurningBlaze:Play("runaway")
-		yellBurningBlaze:Yell()
-	elseif self:CheckNearby(5, targetname) then
-		specWarnBurningBlazeNear:Show(targetname)
-		voiceBurningBlaze:Play("runaway")
-	else
-		warnBurningBlaze:Show(targetname)
-	end
-end
-
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 end
@@ -106,9 +84,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 228193 then
-		self:BossTargetScanner(args.sourceGUID, "BlazeTarget", 0.1, 12)
-	elseif spellId == 228025 then
+	if spellId == 228025 then
 		timerHeatWaveCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnHeatWave:Show(args.sourceName)
