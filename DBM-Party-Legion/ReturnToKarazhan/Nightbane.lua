@@ -5,9 +5,9 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(114895)
 mod:SetEncounterID(2031)
 mod:SetZone()
---mod:SetUsedIcons(1)
+mod:SetUsedIcons(1)
 mod:SetHotfixNoticeRev(15430)
---mod.respawnTime = 30
+mod.respawnTime = 25
 
 mod:RegisterCombat("combat")
 
@@ -39,7 +39,7 @@ local specWarnFear					= mod:NewSpecialWarningSpell(228837, nil, nil, nil, 2, 2)
 local timerReverbShadowsCD			= mod:NewCDTimer(12, 229307, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--12-16
 local timerBreathCD					= mod:NewCDTimer(23, 228785, nil, "Tank", nil, 5)--23-35
 local timerCharredEarthCD			= mod:NewCDTimer(20, 228806, nil, nil, nil, 3)--20-25
-local timerBurningBonesCD			= mod:NewCDTimer(18.3, 228806, nil, nil, nil, 3)--20-25
+local timerBurningBonesCD			= mod:NewCDTimer(18.3, 228829, nil, nil, nil, 3)--20-25
 local timerIgniteSoulCD				= mod:NewCDTimer(25, 228796, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
 local timerFearCD					= mod:NewCDTimer(43, 228837, nil, nil, nil, 2)--43-46
@@ -54,7 +54,7 @@ local voiceIgniteSoul				= mod:NewVoice(228796)--targetyou (maybe something bett
 
 local voiceFear						= mod:NewVoice(228837)--fearsoon
 
---mod:AddSetIconOption("SetIconOnCharge", 198006, true)
+mod:AddSetIconOption("SetIconOnIgnite", 228796, true)
 mod:AddInfoFrameOption(228829, true)
 
 mod.vb.phase = 1
@@ -137,6 +137,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnIgniteSoul:Show(args.destName)
 		end
+		if self.Options.SetIconOnIgnite then
+			self:SetIcon(args.destName, 1)
+		end
 	end
 end
 
@@ -147,6 +150,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			yellIgniteSoul:Cancel()
 		end
 		countdownIngiteSoul:Cancel()
+		if self.Options.SetIconOnIgnite then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
