@@ -42,14 +42,14 @@ local specWarnDentArmor				= mod:NewSpecialWarningDefensive(227985, nil, nil, ni
 local specWarnDinnerBell			= mod:NewSpecialWarningInterrupt(227987, "HasInterrupt", nil, nil, 1, 2)
 
 --Luminore
-local timerHeatWaveCD				= mod:NewAITimer(40, 228025, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerHeatWaveCD				= mod:NewCDTimer(26, 228025, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Mrs.Cauldrons
-local timerLeftoversCD				= mod:NewAITimer(40, 228019, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerLeftoversCD				= mod:NewCDTimer(17, 228019, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Babblet
-local timerSevereDustingCD			= mod:NewAITimer(40, 228221, nil, nil, nil, 3)
+local timerSevereDustingCD			= mod:NewCDTimer(12, 228221, nil, nil, nil, 3)
 --Coggleston
-local timerDentArmorCD				= mod:NewAITimer(40, 227985, nil, "Tank|Healer", nil, 5)
-local timerDinnerBellCD				= mod:NewAITimer(40, 227987, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerDentArmorCD				= mod:NewCDTimer(20, 227985, nil, "Tank|Healer", nil, 5)
+local timerDinnerBellCD				= mod:NewCDTimer(10.9, 227987, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
@@ -76,6 +76,8 @@ mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
+	timerLeftoversCD:Start(7.3-delay)
+	timerHeatWaveCD:Start(31.6-delay)
 end
 
 function mod:OnCombatEnd()
@@ -141,6 +143,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 232156 then--Spectral Service
 		self.vb.phase = 2
+		timerDinnerBellCD:Start(8)
+		timerDentArmorCD:Start(15.5)
 	elseif spellId == 228221 and self.Options.SetIconOnDusting then
 		self:SetIcon(args.destName, 0)
 	end
