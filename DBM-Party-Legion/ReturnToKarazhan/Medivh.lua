@@ -9,6 +9,8 @@ mod:SetUsedIcons(1, 2)
 --mod:SetHotfixNoticeRev(14922)
 --mod.respawnTime = 30
 
+mod.noNormal = true
+
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(

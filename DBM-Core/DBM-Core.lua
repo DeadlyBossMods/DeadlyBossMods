@@ -5765,9 +5765,9 @@ do
 					else
 						if difficultyIndex == 8 then--Mythic+/Challenge Mode
 							--TODO, figure out how to get current mythic plus rank, compare to our best rank.
-							local currentMPRank = 0--0 is temp, until know api to call to get actual rank
+							local currentMPRank = C_ChallengeMode.GetActiveKeystoneInfo() or 0
 							local bestMPRank = mod.stats.challengeBestRank or 0
-							if mod.stats.challengeBestRank > currentMPRank then--Don't save stats at all
+							if mod.stats.challengeBestRank > currentMPRank then--Don't save time stats at all
 								--DO nothing
 							elseif mod.stats.challengeBestRank < currentMPRank then--Update best time and best rank, even if best time is lower (for a lower rank)
 								mod.stats.challengeBestRank = currentMPRank--Update best rank
