@@ -3670,7 +3670,7 @@ do
 				bottom2value1:SetText( stats.mythicKills )
 				bottom2value2:SetText( stats.mythicPulls-stats.mythicKills )
 				bottom2value3:SetText( stats.mythicBestTime and ("%d:%02d"):format(mfloor(stats.mythicBestTime / 60), stats.mythicBestTime % 60) or "-" )
-			elseif statsType == 4 then--Party: Normal, heroic, challenge, mythic (Ie standard dungeons 6.2/7.x)
+			elseif statsType == 4 then--Party: Normal, heroic, mythic, mythic+ (Ie standard dungeons 6.2/7.x)
 				top1value1:SetText( stats.normalKills )
 				top1value2:SetText( stats.normalPulls - stats.normalKills )
 				top1value3:SetText( stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
@@ -3742,7 +3742,7 @@ do
 				top3value1:SetText( stats.timewalkerKills )
 				top3value2:SetText( stats.timewalkerPulls-stats.timewalkerKills )
 				top3value3:SetText( stats.timewalkerBestTime and ("%d:%02d"):format(mfloor(stats.timewalkerBestTime / 60), stats.timewalkerBestTime % 60) or "-" )
-			elseif statsType == 10 then--Party: Normal, Heroic, Challenge, Mythic, TimeWalker instance (such a dungeon doesn't exist yet, but 7.x future proofing)
+			elseif statsType == 10 then--Party: Normal, Heroic, Mythic, Mythic+, TimeWalker instance (such a dungeon doesn't exist yet, but 7.x future proofing)
 				top1value1:SetText( stats.normalKills )
 				top1value2:SetText( stats.normalPulls - stats.normalKills )
 				top1value3:SetText( stats.normalBestTime and ("%d:%02d"):format(mfloor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
@@ -4096,7 +4096,7 @@ do
 							singleline = singleline + 1
 						elseif mod.addon.hasMythic then--Wod (and later) dungeons with mythic mode (6.2+)
 							if mod.addon.hasTimeWalker then
-								statsType = 10--(Normal, Heroic, Mythic, Challenge, Timewalker) (if timewalker is added to them)
+								statsType = 10--(Normal, Heroic, Mythic, Mythic+, Timewalker)
 								--Use top1, top2, top3, bottom1 and bottom2 area.
 								top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 								top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -4137,7 +4137,7 @@ do
 								top1header:SetText(PLAYER_DIFFICULTY1)
 								top2header:SetText(PLAYER_DIFFICULTY2)
 								top3header:SetText(PLAYER_DIFFICULTY6)
-								bottom1header:SetText(CHALLENGE_MODE)
+								bottom1header:SetText(PLAYER_DIFFICULTY6.."+")
 								bottom2header:SetText(PLAYER_DIFFICULTY_TIMEWALKER)
 								--Set Dims
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
@@ -4208,7 +4208,7 @@ do
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
 								singleline = singleline + 1
 							else
-								statsType = 4-- (Normal, Heroic, Mythic, Challenge)
+								statsType = 4-- (Normal, Heroic, Mythic, Mythic+)
 								--Use top1, top2, bottom1, bottom2 area.
 								top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 								top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
@@ -4242,7 +4242,7 @@ do
 								top1header:SetText(PLAYER_DIFFICULTY1)
 								top2header:SetText(PLAYER_DIFFICULTY2)
 								bottom1header:SetText(PLAYER_DIFFICULTY6)
-								bottom2header:SetText(CHALLENGE_MODE)
+								bottom2header:SetText(PLAYER_DIFFICULTY6.."+")
 								--Set Dims
 								Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*singleline)-(L.FontHeight*10*doubleline))
 								area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
