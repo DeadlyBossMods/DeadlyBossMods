@@ -11,6 +11,8 @@ mod:SetUsedIcons(1)
 mod:SetBossHPInfoToHighest()
 --mod.respawnTime = 30
 
+mod.noNormal = true
+
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
