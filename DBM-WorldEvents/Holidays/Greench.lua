@@ -4,12 +4,12 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(54499)
 mod:SetModelID(39021)
-mod:SetWipeTime(20)
 mod:SetReCombatTime(10, 5)
 mod:SetZone(0)--Eastern Kingdoms
 mod:DisableWBEngageSync()
 
 mod:RegisterCombat("combat")
+mod:SetWipeTime(20)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 101907",
