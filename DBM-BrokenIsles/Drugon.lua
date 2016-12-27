@@ -12,6 +12,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 219542 219493",
+	"SPELL_CAST_SUCCESS 219601",
 	"SPELL_AURA_APPLIED 219602",
 	"SPELL_AURA_REMOVED 219602"
 )
@@ -23,19 +24,19 @@ local warnSnowPlow				= mod:NewTargetAnnounce(219602, 4)
 
 local specWarnAvalanche			= mod:NewSpecialWarningYou(219542, nil, nil, nil, 1, 2)
 local yellAvalanche				= mod:NewYell(219542)
-local specWarnSnowCrash			= mod:NewSpecialWarningRun(219493, "Melee", nil, nil, 4, 2)
+local specWarnSnowCrash			= mod:NewSpecialWarningDodge(219493, "Melee", nil, nil, 4, 2)
 local specWarnSnowPlow			= mod:NewSpecialWarningRun(219602, nil, nil, nil, 4, 2)
 local specWarnSnowPlowOver		= mod:NewSpecialWarningFades(219602, nil, nil, nil, 1, 2)
 
-local timerAvalancheCD			= mod:NewAITimer(16, 219542, nil, nil, nil, 3)
-local timerSnowCrashCD			= mod:NewAITimer(16, 219493, nil, "Melee", nil, 2)
-local timerSnowPlowCD			= mod:NewAITimer(16, 219602, nil, nil, nil, 3)
+local timerAvalancheCD			= mod:NewCDTimer(42.6, 219542, nil, nil, nil, 3)--May need larger sample, was quite variable
+local timerSnowCrashCD			= mod:NewCDTimer(19.4, 219493, nil, "Melee", nil, 2)--Seems to alternate 19.4 and 23.2 but world bosses can't be this complicated since they are often engaged in progress
+local timerSnowPlowCD			= mod:NewCDTimer(47.4, 219602, nil, nil, nil, 3)
 
 local voiceAvalanche			= mod:NewVoice(219542)--runaway
-local voiceSnowCrash			= mod:NewVoice(219493)--runout
+local voiceSnowCrash			= mod:NewVoice(219493)--shockwave
 local voiceSnowPlow				= mod:NewVoice(219602)--runaway/keepmove/safenow
 
---mod:AddReadyCheckOption(37460, false)
+mod:AddReadyCheckOption(43448, false)
 
 function mod:AvaTarget(targetname, uId)
 	if not targetname then
@@ -64,15 +65,21 @@ function mod:SPELL_CAST_START(args)
 		self:BossTargetScanner(args.sourceGUID, "AvaTarget", 0.2, 9)
 	elseif spellId == 219493 then
 		specWarnSnowCrash:Show()
-		voiceSnowCrash:Play("runout")
+		voiceSnowCrash:Play("shockwave")
 		timerSnowCrashCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 219601 then
+		timerSnowPlowCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 219602 then
-		timerSnowPlowCD:Start()
+	if spellId == 219602 and args:IsDestTypePlayer() then
 		if args:IsPlayer() then
 			specWarnSnowPlow:Show()
 			voiceSnowPlow:Play("runaway")
