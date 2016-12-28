@@ -24,7 +24,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1738)
 
 L:SetOptionLocalization({
-	SetIconOnlyOnce		= "為每個軟泥設置團隊圖示直到有一個軟泥爆炸時停用(實驗中)",
+	SetIconOnlyOnce2	= "為每個軟泥設置團隊圖示直到有一個軟泥爆炸時停用(實驗中)",
 	InfoFrameBehavior	= "在戰鬥中顯示訊息框架",
 	Fixates				= "顯示中了鎖定的玩家",
 	Adds				= "顯示小怪數量和類型"
