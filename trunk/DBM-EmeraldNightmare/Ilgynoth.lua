@@ -140,7 +140,7 @@ local phase2ComboDeathglares = {21.5, 90, 130}--Fuck it. i'm not scheduling to f
 --local phase2MythicDeathglares = {21.5, 95, 130}--26, 90 VERIFIED Oct 16 (130 not verified)
 --These also same in all modes except mythic
 local phase2Corruptors = {45, 95, 35, 85, 40}--verified Oct 16 45, 95, 30 on heroic/LFR/Normal
-local phase2MythicCorruptors = {45, 75, 115, 65}--VERIFIED Oct 27
+local phase2MythicCorruptors = {45, 75, 115, 65}--VERIFIED Oct 27 (fix missing set needed)
 local phase2DeathBlossom = {80, 75}--VERIFIED Oct 16
 local autoMarkScannerActive = false
 local autoMarkBlocked = false
