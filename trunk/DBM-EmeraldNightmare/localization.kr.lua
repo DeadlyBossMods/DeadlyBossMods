@@ -24,7 +24,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1738)
 
 L:SetOptionLocalization({
-	SetIconOnlyOnce		= "수액을 감지해 한마리씩 전술 목표 아이콘을 지정 후 끄기 (실험중)",
+	SetIconOnlyOnce2	= "수액을 감지해 한마리씩 전술 목표 아이콘을 지정 후 끄기 (실험중)",
 	InfoFrameBehavior	= "전투시 정보 창에 표시할 정보 설정",
 	Fixates				= "시선 집중에 걸린 플레이어 표시",
 	Adds				= "쫄 종류별로 마릿수 표시"

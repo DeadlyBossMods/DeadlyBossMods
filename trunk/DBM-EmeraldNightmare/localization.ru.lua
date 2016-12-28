@@ -24,7 +24,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1738)
 
 L:SetOptionLocalization({
-	SetIconOnlyOnce		= "Set icon only once per ooze scan then disable until at least one blows up (experimental)",
+	SetIconOnlyOnce2	= "Set icon only once per ooze scan then disable until at least one blows up (experimental)",
 	InfoFrameBehavior	= "Информация, отображаемая в информационном окне во время боя",
 	Fixates				= "Показывать игроков с Сосредоточением внимания",
 	Adds				= "Показывать количество для всех типов аддов"
