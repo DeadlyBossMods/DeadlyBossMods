@@ -27,7 +27,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1738)
 
 L:SetOptionLocalization({
-	SetIconOnlyOnce		= "当一个软泥爆炸以后, 关闭软泥图标提示",
+	SetIconOnlyOnce2	= "当一个软泥爆炸以后, 关闭软泥图标提示",
 	InfoFrameBehavior	= "设置在战斗过程中信息窗的内容",
 	Fixates				= "显示被锁定的玩家",
 	Adds				= "显示所有小怪计数"

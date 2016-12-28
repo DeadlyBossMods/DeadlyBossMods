@@ -23,7 +23,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1738)
 
 L:SetOptionLocalization({
-	SetIconOnlyOnce		= "Set icon only once per ooze scan then disable until at least one blows up (experimental)",
+	SetIconOnlyOnce2	= "Set icon only once per ooze scan then disable until at least one blows up (experimental)",
 	InfoFrameBehavior	= "Set information InfoFrame shows during encounter",
 	Fixates				= "Show players affected by Fixate",
 	Adds				= "Show add counts for all add types"
