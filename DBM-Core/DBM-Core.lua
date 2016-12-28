@@ -3596,9 +3596,9 @@ do
 	end
 	local function SecondaryLoadCheck(self)
 		local _, instanceType, difficulty, _, _, _, _, mapID, instanceGroupSize = GetInstanceInfo()
-		self:Debug("Instance Check fired with mapID "..mapID.." and difficulty "..difficulty)
+		self:Debug("Instance Check fired with mapID "..mapID.." and difficulty "..difficulty, 2)
 		if LastInstanceMapID == mapID then
-			self:Debug("No action taken because mapID hasn't changed since last check")
+			self:Debug("No action taken because mapID hasn't changed since last check", 2)
 			return
 		end--ID hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh phase 4 is a loading screen)
 		LastInstanceMapID = mapID
@@ -3704,7 +3704,7 @@ function DBM:LoadMod(mod, force)
 		self:SetCurrentSpecInfo()
 	end
 	EJ_SetDifficulty(difficultyIndex)--Work around blizzard crash bug where other mods (like Boss) screw with Ej difficulty value, which makes EJ_GetSectionInfo crash the game when called with invalid difficulty index set.
-	self:Debug("LoadAddOn should have fired for "..mod.name)
+	self:Debug("LoadAddOn should have fired for "..mod.name, 2)
 	local loaded, reason = LoadAddOn(mod.modId)
 	if not loaded then
 		if reason then
@@ -5519,15 +5519,10 @@ do
 				--elect icon person
 				if mod.findFastestComputer and not self.Options.DontSetIcons then
 					if self:GetRaidRank() > 0 then
-						local optionName = mod.findFastestComputer[1]
-						if #mod.findFastestComputer == 1 and mod.Options[optionName] then
-							sendSync("IS", UnitGUID("player").."\t"..DBM.Revision.."\t"..optionName)
-						else
-							for i = 1, #mod.findFastestComputer do
-								local option = mod.findFastestComputer[i]
-								if mod.Options[option] then
-									sendSync("IS", UnitGUID("player").."\t"..DBM.Revision.."\t"..option)
-								end
+						for i = 1, #mod.findFastestComputer do
+							local option = mod.findFastestComputer[i]
+							if mod.Options[option] then
+								sendSync("IS", UnitGUID("player").."\t"..DBM.Revision.."\t"..option)
 							end
 						end
 					elseif not IsInGroup() then
