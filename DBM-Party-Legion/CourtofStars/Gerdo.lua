@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 207261 207815 207806",
-	"SPELL_CAST_SUCCCESS 207278"
+	"SPELL_CAST_SUCCESS 207278"
 )
 
 local warnFlask						= mod:NewSpellAnnounce(207815, 2)
@@ -57,7 +57,7 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_CAST_SUCCCESS(args)
+function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 207278 then--Success since jumping on cast start too early
 		specWarnArcaneLockdown:Show()
