@@ -249,54 +249,73 @@ L:SetGeneralLocalization({
 	name =	"Trash des Hofs der Sterne"
 })
 
+L:SetOptionLocalization({
+	SpyHelper	= "Hilf bei der Erkennung des Spions"
+})
+
 L:SetMiscLocalization({
-    Gloves1        = "Einem Gerücht zufolge trägt der Spion immer Handschuhe.",
-    Gloves2        = "Wie ich hörte, verbirgt der Spion sorgfältig die Hände.",
-    Gloves3        = "Ich hörte, dass der Spion immer Handschuhe anlegt.",
-    Gloves4        = "Jemand behauptete, dass der Spion Handschuhe trägt, um sichtbare Narben zu verbergen.",
-    NoGloves1    = "Es gibt Gerüchte, dass der Spion niemals Handschuhe trägt.",
-    NoGloves2    = "Wisst Ihr... Ich habe ein zusätzliches Paar Handschuhe im Hinterzimmer gefunden. Wahrscheinlich ist der Spion hier irgendwo mit bloßen Händen unterwegs.",
-    NoGloves3    = "Mir ist zu Ohren gekommen, dass der Spion ungern Handschuhe trägt.",
-    NoGloves4    = "Ich hörte, dass der Spion es vermeidet, Handschuhe zu tragen, falls er schnell handeln muss.",
-    Cape1        = "Jemand erwähnte, dass der Spion vorhin hier hereinkam und einen Umhang trug.",
-    Cape2        = "",
-    NoCape1        = "Ich hörte, dass der Spion keine Umhänge mag und sich weigert, einen zu tragen.",
-    NoCape2        = "Ich hörte, dass der Spion seinen Umhang im Palast gelassen hat, bevor er hierhergekommen ist.",
-    LightVest1    = "Der Spion bevorzugt auf jeden Fall Westen mit hellen Farben.",
-    LightVest2    = "",
-    LightVest3    = "Die Leute sagen, dass der Spion heute Abend keine dunkle Weste trägt.",
-    DarkVest1    = "Der Spion bevorzugt auf alle Fälle dunkle Kleidung.",
-    DarkVest2    = "Ich hörte, dass die Weste des Spions heute Abend von dunkler, kräftiger Farbe ist.",
-    DarkVest3    = "Dem Spion gefallen Westen mit dunklen Farben... dunkel wie die Nacht.",
-    DarkVest4    = "Gerüchte zufolge vermeidet der Spion es, helle Kleidung zu tragen, damit er nicht so auffällt.",
-    Female1        = "Ein Gast hat beobachtet, wie sie und Elisande vorhin gemeinsam eingetroffen sind.",
-    Female2        = "Wie ich höre, hat eine Frau sich ständig nach diesem Bezirk erkundigt...",
-    Female3        = "Jemand hat behauptet, dass unser neuester Gast nicht männlich ist.",
-    Female4        = "Man sagt, die Spionin wäre hier und sie wäre eine wahre Augenweide.",
-    Male1        = "Irgendwo habe ich gehört, dass der Spion nicht weiblich ist.",
-    Male2        = "Ich hörte, dass der Spion ein äußerst gutaussehender Herr ist.",
-    Male3        = "Ein Gast sagte, sie sah, wie ein Herr an der Seite der Großmagistrix das Anwesen betreten hat.",
-    Male4        = "Einer der Musiker sagte, er stellte unablässig Fragen über den Bezirk.",
-    ShortSleeve1= "Mir ist zu Ohren gekommen, dass der Spion kurze Ärmel trägt, damit er seine Arme ungehindert bewegen kann.",
-    ShortSleeve2= "Jemand sagte mir, dass der Spion lange Ärmel hasst.",
-    ShortSleeve3= "Einer meiner Freundinnen sagte, dass sie die Kleidung des Spions gesehen hat. Er trägt keine langen Ärmel.",
-    ShortSleeve4= "Mir ist zu Ohren gekommen, dass der Spion die kühle Luft mag und deshalb heute Abend keine langen Ärmel trägt.",
-    LongSleeve1 = "Wie ich höre, trägt der Spion heute Abend Kleidung mit langen Ärmeln.",
-    LongSleeve2 = "Jemand sagte, dass der Spion heute Abend seine Arme mit langen Ärmeln bedeckt.",
-    LongSleeve3 = "Ich habe am frühen Abend einen kurzen Blick auf die langen Ärmel des Spions erhascht.",
-    LongSleeve4 = "Einer meiner Freunde erwähnte, dass der Spion lange Ärmel trägt.",
-    Potions1    = "Ich hörte, dass der Spion Tränke mitgebracht hat... Ich frage mich wieso?",
-    Potions2    = "Von mir habt Ihr das nicht... aber der Spion verkleidet sich als Alchemist und trägt Tränke an seinem Gürtel.",
-    Potions3    = "Ich bin mir ziemlich sicher, dass der Spion Tränke am Gürtel trägt.",
-    Potions4    = "Wie ich hörte, hat der Spion einige Tränke mitgebracht... für alle Fälle.",
-    NoPotions1    = "Wie ich hörte, hat der Spion keine Tränke bei sich.",
-    NoPotions2    = "Eine Musikerin erzählte mir, dass sie gesehen hat, wie der Spion seinen letzten Trank wegwarf und jetzt keinen mehr übrig hat.",
-    Book1        = "Ich hörte, dass der Spion immer ein Buch mit niedergeschriebenen Geheimnissen am Gürtel trägt.",
-    Book2        = "Gerüchte zufolge liest der Spion gerne und trägt immer mindestens ein Buch bei sich.",
-    Pouch1        = "Ich hörte, dass der Spion immer einen magischen Beutel mit sich herumträgt.",
-    Pouch2        = "",
-    Pouch3        = "",
-    Pouch4        = ""
+	Gloves1		= "Einem Gerücht zufolge trägt der Spion immer Handschuhe.",
+	Gloves2		= "Wie ich hörte, verbirgt der Spion sorgfältig die Hände.",
+	Gloves3		= "Ich hörte, dass der Spion immer Handschuhe anlegt.",
+	Gloves4		= "Jemand behauptete, dass der Spion Handschuhe trägt, um sichtbare Narben zu verbergen.",
+	NoGloves1	= "Es gibt Gerüchte, dass der Spion niemals Handschuhe trägt.",
+	NoGloves2	= "Wisst Ihr... Ich habe ein zusätzliches Paar Handschuhe im Hinterzimmer gefunden. Wahrscheinlich ist der Spion hier irgendwo mit bloßen Händen unterwegs.",
+	NoGloves3	= "Mir ist zu Ohren gekommen, dass der Spion ungern Handschuhe trägt.",
+	NoGloves4	= "Ich hörte, dass der Spion es vermeidet, Handschuhe zu tragen, falls er schnell handeln muss.",
+	Cape1		= "Jemand erwähnte, dass der Spion vorhin hier hereinkam und einen Umhang trug.",
+	Cape2		= "",
+	NoCape1		= "Ich hörte, dass der Spion keine Umhänge mag und sich weigert, einen zu tragen.",
+	NoCape2		= "Ich hörte, dass der Spion seinen Umhang im Palast gelassen hat, bevor er hierhergekommen ist.",
+	LightVest1	= "Der Spion bevorzugt auf jeden Fall Westen mit hellen Farben.",
+	LightVest2	= "",
+	LightVest3	= "Die Leute sagen, dass der Spion heute Abend keine dunkle Weste trägt.",
+	DarkVest1	= "Der Spion bevorzugt auf alle Fälle dunkle Kleidung.",
+	DarkVest2	= "Ich hörte, dass die Weste des Spions heute Abend von dunkler, kräftiger Farbe ist.",
+	DarkVest3	= "Dem Spion gefallen Westen mit dunklen Farben... dunkel wie die Nacht.",
+	DarkVest4	= "Gerüchte zufolge vermeidet der Spion es, helle Kleidung zu tragen, damit er nicht so auffällt.",
+	Female1		= "Ein Gast hat beobachtet, wie sie und Elisande vorhin gemeinsam eingetroffen sind.",
+	Female2		= "Wie ich höre, hat eine Frau sich ständig nach diesem Bezirk erkundigt...",
+	Female3		= "Jemand hat behauptet, dass unser neuester Gast nicht männlich ist.",
+	Female4		= "Man sagt, die Spionin wäre hier und sie wäre eine wahre Augenweide.",
+	Male1		= "Irgendwo habe ich gehört, dass der Spion nicht weiblich ist.",
+	Male2		= "Ich hörte, dass der Spion ein äußerst gutaussehender Herr ist.",
+	Male3		= "Ein Gast sagte, sie sah, wie ein Herr an der Seite der Großmagistrix das Anwesen betreten hat.",
+	Male4		= "Einer der Musiker sagte, er stellte unablässig Fragen über den Bezirk.",
+	ShortSleeve1= "Mir ist zu Ohren gekommen, dass der Spion kurze Ärmel trägt, damit er seine Arme ungehindert bewegen kann.",
+	ShortSleeve2= "Jemand sagte mir, dass der Spion lange Ärmel hasst.",
+	ShortSleeve3= "Einer meiner Freundinnen sagte, dass sie die Kleidung des Spions gesehen hat. Er trägt keine langen Ärmel.",
+	ShortSleeve4= "Mir ist zu Ohren gekommen, dass der Spion die kühle Luft mag und deshalb heute Abend keine langen Ärmel trägt.",
+	LongSleeve1 = "Wie ich höre, trägt der Spion heute Abend Kleidung mit langen Ärmeln.",
+	LongSleeve2 = "Jemand sagte, dass der Spion heute Abend seine Arme mit langen Ärmeln bedeckt.",
+	LongSleeve3 = "Ich habe am frühen Abend einen kurzen Blick auf die langen Ärmel des Spions erhascht.",
+	LongSleeve4 = "Einer meiner Freunde erwähnte, dass der Spion lange Ärmel trägt.",
+	Potions1	= "Ich hörte, dass der Spion Tränke mitgebracht hat... Ich frage mich wieso?",
+	Potions2	= "Von mir habt Ihr das nicht... aber der Spion verkleidet sich als Alchemist und trägt Tränke an seinem Gürtel.",
+	Potions3	= "Ich bin mir ziemlich sicher, dass der Spion Tränke am Gürtel trägt.",
+	Potions4	= "Wie ich hörte, hat der Spion einige Tränke mitgebracht... für alle Fälle.",
+	NoPotions1	= "Wie ich hörte, hat der Spion keine Tränke bei sich.",
+	NoPotions2	= "Eine Musikerin erzählte mir, dass sie gesehen hat, wie der Spion seinen letzten Trank wegwarf und jetzt keinen mehr übrig hat.",
+	Book1		= "Ich hörte, dass der Spion immer ein Buch mit niedergeschriebenen Geheimnissen am Gürtel trägt.",
+	Book2		= "Gerüchte zufolge liest der Spion gerne und trägt immer mindestens ein Buch bei sich.",
+	Pouch1		= "Ich hörte, dass der Spion immer einen magischen Beutel mit sich herumträgt.",
+	Pouch2		= "",
+	Pouch3		= "",
+	Pouch4		= "",
+	--
+	Gloves		= "Handschuhe",
+	NoGloves	= "keine Handschuhe",
+	Cape		= "Umhang",
+	Nocape		= "kein Umhang",
+	LightVest	= "helle Weste",
+	DarkVest	= "dunkle Weste",
+	Female		= "weiblich",
+	Male		= "männlich",
+	ShortSleeve = "kurze Ärmel",
+	LongSleeve	= "lange Ärmel",
+	Potions		= "Tränke",
+	NoPotions	= "keine Tränke",
+	Book		= "Buch",
+	Pouch		= "Beutel"
 })
 
 
@@ -491,6 +510,15 @@ L= DBM:GetModLocalization(1818)
 L= DBM:GetModLocalization(1838)
 
 -----------------------
+--Nightbane
+-----------------------
+L = DBM:GetModLocalization("Nightbane")
+
+L:SetGeneralLocalization({
+	name =	"Schrecken der Nacht"
+})
+
+-----------------------
 --Return To Karazhan Trash
 -----------------------
 L = DBM:GetModLocalization("RTKTrash")
@@ -498,3 +526,8 @@ L = DBM:GetModLocalization("RTKTrash")
 L:SetGeneralLocalization({
 	name =	"Trash der Rückkehr nach Karazhan"
 })
+
+L:SetMiscLocalization({
+	speedRun		=	"The strange chill of a dark presence winds through the air..."--translate (trigger)
+})
+
