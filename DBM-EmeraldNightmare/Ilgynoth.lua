@@ -131,13 +131,13 @@ local phase1DeathBlossom = {58.6, 100, 35}--VERIFIED Oct 27
 --Based on data, first one is either 21 or 26, if it's 26 then second one changes from 95 to 90
 --Might have to switch to scheduling to fix accuracy of timers 2 and 3 because of the 5 second variation on timer 1
 local phase2ComboDeathglares = {21.5, 90, 130}--Fuck it. i'm not scheduling to fix a 5 second variation, the two lowest times combined
+local phase2MythicDeathglares = {21.5, 90, 115, 20}
 --local phase2AllDeathglares = {21.5, 95, 130}--True timers
 --local phase2AltDeathglares = {26.5, 90, 130}--Fucked up timers when first one is late
 --Old shit, when i thought variations were cause of difficulty. They aren't. These tentacles same in all modes apparently
 --local phase2LFRDeathglares = {21.5, 95, 130}--VERIFIED Oct 16 (except for 130)
 --local phase2EasyDeathglares = {21.5, 95, 130}--VERIFIED Oct 16 (except for 130)
 --local phase2HeroicDeathglares = {26.5, 90, 130}--26, 90 verified Oct 16 (130 not verified)
---local phase2MythicDeathglares = {21.5, 95, 130}--26, 90 VERIFIED Oct 16 (130 not verified)
 --These also same in all modes except mythic
 local phase2Corruptors = {45, 95, 35, 85, 40}--verified Oct 16 45, 95, 30 on heroic/LFR/Normal
 local phase2MythicCorruptors = {45, 75, 115, 65}--VERIFIED Oct 27 (fix missing set needed)
@@ -328,8 +328,7 @@ function mod:SPELL_CAST_START(args)
 				local nextCount = self.vb.DeathglareSpawn + 1
 				local timer
 				if self.vb.phase == 2 then
-					timer = phase2ComboDeathglares[nextCount]
-					--timer = self:IsMythic() and phase2MythicDeathglares[nextCount] or self:IsHeroic() and phase2HeroicDeathglares[nextCount] or phase2EasyDeathglares[nextCount]
+					timer = self:IsMythic() and phase2MythicDeathglares[nextCount] or phase2ComboDeathglares[nextCount]
 				else
 					timer = self:IsMythic() and phase1MythicDeathglares[nextCount] or self:IsHeroic() and phase1HeroicDeathglares[nextCount] or phase1EasyDeathglares[nextCount]
 				end
