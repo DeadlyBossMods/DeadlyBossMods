@@ -24,7 +24,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1738)
 
 L:SetOptionLocalization({
-	SetIconOnlyOnce2	= "Set icon only once per ooze scan then disable until at least one blows up (experimental)",--translate
+	SetIconOnlyOnce2	= "Setze Zeichen nur einmal pro Alptraumsekretscan, deaktiviere danach den Scanner bis mindestens ein Sekret explodiert (experimentell)",
 	InfoFrameBehavior	= "Auswahl der Information im Infofenster während des Kampfes",
 	Fixates				= "Zeige Spieler, die von Fixieren betroffen sind",
 	Adds				= "Zeige Zähler für alle Add-Arten"
