@@ -66,6 +66,7 @@ local voiceFrostLick				= mod:NewVoice(228248)--helpdispel
 
 mod:AddSetIconOption("SetIconOnFoam", "ej14535", true)
 mod:AddBoolOption("YellActualRaidIcon", false)
+mod:AddBoolOption("FilterSameColor", true)
 mod:AddInfoFrameOption(228824, true)
 mod:AddRangeFrameOption(5, 228824)
 
@@ -80,19 +81,32 @@ mod.vb.two = false
 mod.vb.three = false
 
 local updateInfoFrame
-local fireDebuff, frostDebuff, shadowDebuff = GetSpellInfo(228744), GetSpellInfo(228810), GetSpellInfo(228818)
+local fireFoam, frostFoam, shadowFoam = GetSpellInfo(228744), GetSpellInfo(228810), GetSpellInfo(228818)
+local fireDebuff, frostDebuff, shadowDebuff = GetSpellInfo(227539), GetSpellInfo(227566), GetSpellInfo(227570)
 local UnitDebuff = UnitDebuff
 do
 	local lines = {}
 	updateInfoFrame = function()
 		table.wipe(lines)
 		for uId in DBM:GetGroupMembers() do
-			if UnitDebuff(uId, fireDebuff) then
-				lines[UnitName(uId)] = fireDebuff
-			elseif UnitDebuff(uId, frostDebuff) then
-				lines[UnitName(uId)] = frostDebuff
-			elseif UnitDebuff(uId, shadowDebuff) then
-				lines[UnitName(uId)] = shadowDebuff
+			if UnitDebuff(uId, fireFoam) then
+				if mod.options.FilterSameColor and UnitDebuff(uId, fireDebuff) then
+					--Do nothing
+				else
+					lines[UnitName(uId)] = "|cffff0000"..STRING_SCHOOL_FIRE.."|r"
+				end
+			elseif UnitDebuff(uId, frostFoam) then
+				if mod.options.FilterSameColor and UnitDebuff(uId, frostDebuff) then
+					--Do nothing
+				else
+					lines[UnitName(uId)] = "|cff0000ff"..STRING_SCHOOL_FROST.."|r"
+				end
+			elseif UnitDebuff(uId, shadowFoam) then
+				if mod.options.FilterSameColor and UnitDebuff(uId, shadowDebuff) then
+					--Do nothing
+				else
+					lines[UnitName(uId)] = "|cFF9932CD"..STRING_SCHOOL_SHADOW.."|r"
+				end
 			end
 		end
 		return lines
@@ -180,7 +194,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if (spellId == 228744 or spellId == 228794 or spellId == 228810 or spellId == 228811 or spellId == 228818 or spellId == 228819) and args:IsDestTypePlayer() then
-		local icon
+		local icon = 0
 		local uId = DBM:GetRaidUnitId(args.destName)
 		local currentIcon = GetRaidTargetIndex(uId) or 0
 		if currentIcon == 0 then--Only if player doesn't already have an icon
@@ -195,28 +209,61 @@ function mod:SPELL_AURA_APPLIED(args)
 				icon = 3
 			end
 		end
-		if self.Options.SetIconOnFoam and icon then
-			self:SetIcon(args.destName, icon)
-		end
 		if spellId == 228744 or spellId == 228794 then
+			if self.options.FilterSameColor and UnitDebuff(uId, fireDebuff) then
+				if icon == 1 then
+					self.vb.one = false
+				elseif icon == 2 then
+					self.vb.two = false
+				elseif icon == 3 then
+					self.vb.three = false
+				end
+				return
+			end
 			if args:IsPlayer() then
 				specWarnFlamingFoam:Show()
-				if self.vb.YellRealIcons and icon then
+				if self.vb.YellRealIcons and icon ~= 0 then
 					yellFlameFoam:Yell(icon, args.spellName, icon)
 				else
 					yellFlameFoam:Yell(7, args.spellName, 7)
 				end
 			end
+			if self.Options.SetIconOnFoam and icon ~= 0 then
+				self:SetIcon(args.destName, icon)
+			end
 		elseif spellId == 228810 or spellId == 228811 then
+			if self.options.FilterSameColor and UnitDebuff(uId, frostDebuff) then
+				if icon == 1 then
+					self.vb.one = false
+				elseif icon == 2 then
+					self.vb.two = false
+				elseif icon == 3 then
+					self.vb.three = false
+				end
+				return
+			end
 			if args:IsPlayer() then
 				specWarnBrineyFoam:Show()
-				if self.vb.YellRealIcons and icon then
+				if self.vb.YellRealIcons and icon ~= 0 then
 					yellBrineyFoam:Yell(icon, args.spellName, icon)
 				else
 					yellBrineyFoam:Yell(6, args.spellName, 6)
 				end
 			end
+			if self.Options.SetIconOnFoam and icon then
+				self:SetIcon(args.destName, icon)
+			end
 		elseif spellId == 228818 or spellId == 228819 then
+			if self.options.FilterSameColor and UnitDebuff(uId, shadowDebuff) then
+				if icon == 1 then
+					self.vb.one = false
+				elseif icon == 2 then
+					self.vb.two = false
+				elseif icon == 3 then
+					self.vb.three = false
+				end
+				return
+			end
 			if args:IsPlayer() then
 				specWarnShadowyFoam:Show()
 				if self.vb.YellRealIcons and icon then
@@ -224,6 +271,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				else
 					yellShadowyFoam:Yell(3, args.spellName, 3)
 				end
+			end
+			if self.Options.SetIconOnFoam and icon then
+				self:SetIcon(args.destName, icon)
 			end
 		end
 	elseif spellId == 232173 then--Berserk
@@ -262,9 +312,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if (spellId == 228744 or spellId == 228794 or spellId == 228810 or spellId == 228811 or spellId == 228818 or spellId == 228819) and args:IsDestTypePlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		local currentIcon = GetRaidTargetIndex(uId)
-		if not currentIcon then return end
-		if self.Options.SetIconOnFoam and not (UnitDebuff(uId, fireDebuff) or UnitDebuff(uId, frostDebuff) or UnitDebuff(uId, shadowDebuff)) then
+		local currentIcon = GetRaidTargetIndex(uId) or 0
+		if currentIcon == 0 then return end
+		if self.Options.SetIconOnFoam and not (UnitDebuff(uId, fireFoam) or UnitDebuff(uId, frostFoam) or UnitDebuff(uId, shadowFoam)) then
 			if currentIcon == 1 then
 				self.vb.one = false
 			elseif currentIcon == 2 then
