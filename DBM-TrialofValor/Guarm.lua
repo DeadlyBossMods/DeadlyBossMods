@@ -211,7 +211,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnBrineyFoam:Show()
 				if self.vb.YellRealIcons and icon then
-					yellFlameFoam:Yell(icon, args.spellName, icon)
+					yellBrineyFoam:Yell(icon, args.spellName, icon)
 				else
 					yellBrineyFoam:Yell(6, args.spellName, 6)
 				end
@@ -220,7 +220,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnShadowyFoam:Show()
 				if self.vb.YellRealIcons and icon then
-					yellFlameFoam:Yell(icon, args.spellName, icon)
+					yellShadowyFoam:Yell(icon, args.spellName, icon)
 				else
 					yellShadowyFoam:Yell(3, args.spellName, 3)
 				end
