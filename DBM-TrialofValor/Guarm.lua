@@ -8,7 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons(1, 2, 3)
 mod:SetHotfixNoticeRev(15619)
 mod.respawnTime = 15
-mod:SetMinSyncRevision(15634)
+mod:SetMinSyncRevision(15635)
 
 mod:RegisterCombat("combat")
 
@@ -197,15 +197,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	if (spellId == 228744 or spellId == 228794 or spellId == 228810 or spellId == 228811 or spellId == 228818 or spellId == 228819) and args:IsDestTypePlayer() then
 		local icon = 0
 		local uId = DBM:GetRaidUnitId(args.destName)
-		local currentIcon = GetRaidTargetIndex(uId) or 0
-		if currentIcon == 0 then--Only if player doesn't already have an icon
-			if not self.vb.one then
+		if not (UnitDebuff(uId, fireFoam) or UnitDebuff(uId, frostFoam) or UnitDebuff(uId, shadowFoam)) then--Only if player doesn't already have a debuff
+			if self.vb.one == "None" then
 				self.vb.one = args.destName
 				icon = 1
-			elseif not self.vb.two then
+			elseif self.vb.two == "None" then
 				self.vb.two = args.destName
 				icon = 2
-			elseif not self.vb.three then
+			elseif self.vb.three == "None" then
 				self.vb.three = args.destName
 				icon = 3
 			end
@@ -223,12 +222,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			if args:IsPlayer() then
 				specWarnFlamingFoam:Show()
-				if icon ~= 0 then
-					if self.vb.YellRealIcons then
+				if self.vb.YellRealIcons then
+					if icon ~= 0 then
 						yellFlameFoam:Yell(icon, args.spellName, icon)
-					else
-						yellFlameFoam:Yell(7, args.spellName, 7)
 					end
+				else
+					yellFlameFoam:Yell(7, args.spellName, 7)
 				end
 			end
 			if self.Options.SetIconOnFoam and icon ~= 0 then
@@ -247,12 +246,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			if args:IsPlayer() then
 				specWarnBrineyFoam:Show()
-				if icon ~= 0 then
-					if self.vb.YellRealIcons then
+				if self.vb.YellRealIcons then
+					if icon ~= 0 then
 						yellBrineyFoam:Yell(icon, args.spellName, icon)
-					else
-						yellBrineyFoam:Yell(6, args.spellName, 6)
 					end
+				else
+					yellBrineyFoam:Yell(6, args.spellName, 6)
 				end
 			end
 			if self.Options.SetIconOnFoam and icon ~= 0 then
@@ -271,15 +270,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			if args:IsPlayer() then
 				specWarnShadowyFoam:Show()
-				if icon ~= 0 then
-					if self.vb.YellRealIcons then
+				if self.vb.YellRealIcons then
+					if icon ~= 0 then
 						yellShadowyFoam:Yell(icon, args.spellName, icon)
-					else
-						yellShadowyFoam:Yell(3, args.spellName, 3)
 					end
+				else
+					yellShadowyFoam:Yell(3, args.spellName, 3)
 				end
 			end
-			if self.Options.SetIconOnFoam and icon then
+			if self.Options.SetIconOnFoam and icon ~= 0 then
 				self:SetIcon(args.destName, icon)
 			end
 		end
