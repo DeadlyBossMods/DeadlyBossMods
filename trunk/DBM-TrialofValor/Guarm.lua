@@ -8,6 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons(1, 2, 3)
 mod:SetHotfixNoticeRev(15619)
 mod.respawnTime = 15
+mod:SetMinSyncRevision(15634)
 
 mod:RegisterCombat("combat")
 
@@ -76,9 +77,9 @@ mod.vb.leapCast = 0
 mod.vb.foamCast = 0
 mod.vb.YellRealIcons = false
 --Ugly way to do it, vs a local table, but this ensures that if icon setter disconnects, it doesn't get messed up
-mod.vb.one = false
-mod.vb.two = false
-mod.vb.three = false
+mod.vb.one = "None"
+mod.vb.two = "None"
+mod.vb.three = "None"
 
 local updateInfoFrame
 local fireFoam, frostFoam, shadowFoam = GetSpellInfo(228744), GetSpellInfo(228810), GetSpellInfo(228818)
@@ -124,9 +125,9 @@ function mod:OnCombatStart(delay)
 	--All other combat start timers started by Helyatosis
 	if not self:IsLFR() then
 		if self:IsMythic() then
-			self.vb.one = false
-			self.vb.two = false
-			self.vb.three = false
+			self.vb.one = "None"
+			self.vb.two = "None"
+			self.vb.three = "None"
 			self.vb.foamCast = 0
 			self.vb.YellRealIcons = false
 			--timerLickCD:Start(12.4, 1)
@@ -199,24 +200,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		local currentIcon = GetRaidTargetIndex(uId) or 0
 		if currentIcon == 0 then--Only if player doesn't already have an icon
 			if not self.vb.one then
-				self.vb.one = true
+				self.vb.one = args.destName
 				icon = 1
 			elseif not self.vb.two then
-				self.vb.two = true
+				self.vb.two = args.destName
 				icon = 2
 			elseif not self.vb.three then
-				self.vb.three = true
+				self.vb.three = args.destName
 				icon = 3
 			end
 		end
 		if spellId == 228744 or spellId == 228794 then
 			if self.Options.FilterSameColor and UnitDebuff(uId, fireDebuff) then
 				if icon == 1 then
-					self.vb.one = false
+					self.vb.one = "None"
 				elseif icon == 2 then
-					self.vb.two = false
+					self.vb.two = "None"
 				elseif icon == 3 then
-					self.vb.three = false
+					self.vb.three = "None"
 				end
 				return
 			end
@@ -236,11 +237,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif spellId == 228810 or spellId == 228811 then
 			if self.Options.FilterSameColor and UnitDebuff(uId, frostDebuff) then
 				if icon == 1 then
-					self.vb.one = false
+					self.vb.one = "None"
 				elseif icon == 2 then
-					self.vb.two = false
+					self.vb.two = "None"
 				elseif icon == 3 then
-					self.vb.three = false
+					self.vb.three = "None"
 				end
 				return
 			end
@@ -260,11 +261,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif spellId == 228818 or spellId == 228819 then
 			if self.Options.FilterSameColor and UnitDebuff(uId, shadowDebuff) then
 				if icon == 1 then
-					self.vb.one = false
+					self.vb.one = "None"
 				elseif icon == 2 then
-					self.vb.two = false
+					self.vb.two = "None"
 				elseif icon == 3 then
-					self.vb.three = false
+					self.vb.three = "None"
 				end
 				return
 			end
@@ -318,15 +319,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if (spellId == 228744 or spellId == 228794 or spellId == 228810 or spellId == 228811 or spellId == 228818 or spellId == 228819) and args:IsDestTypePlayer() then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		local currentIcon = GetRaidTargetIndex(uId) or 0
-		if currentIcon == 0 then return end
 		if self.Options.SetIconOnFoam and not (UnitDebuff(uId, fireFoam) or UnitDebuff(uId, frostFoam) or UnitDebuff(uId, shadowFoam)) then
-			if currentIcon == 1 then
-				self.vb.one = false
-			elseif currentIcon == 2 then
-				self.vb.two = false
-			elseif currentIcon == 3 then
-				self.vb.three = false
+			if args.destName == self.vb.one then
+				self.vb.one = "None"
+			elseif args.destName == self.vb.two then
+				self.vb.two = "None"
+			elseif args.destName == self.vb.three then
+				self.vb.three = "None"
 			end
 			self:SetIcon(args.destName, 0)
 		end
