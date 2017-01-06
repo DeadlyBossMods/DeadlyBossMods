@@ -30,11 +30,11 @@ local specWarnLeap					= mod:NewSpecialWarningCount(227883, nil, nil, nil, 2)
 local specWarnCharge				= mod:NewSpecialWarningDodge(227816, nil, nil, nil, 2, 2)
 local specWarnBerserk				= mod:NewSpecialWarningSpell(227883, nil, nil, nil, 3)
 local specWarnFlameLick				= mod:NewSpecialWarningMoveAway(228228, nil, nil, nil, 1, 2)
-local yellFlameLick					= mod:NewYell(228228)
+local yellFlameLick					= mod:NewYell(228228, nil, false, 2)
 local specWarnShadowLick			= mod:NewSpecialWarningYou(228253, false, nil, nil, 1)--Not sure warning player is helpful
-local yellShadowLick				= mod:NewYell(228253, nil, false)
+local yellShadowLick				= mod:NewYell(228253, nil, false, 2)
 local specWarnFrostLick				= mod:NewSpecialWarningYou(228248, false, nil, nil, 1)--Warning player they are stunned probably somewhat useful. Still can't do much about it.
-local yellFrostLick					= mod:NewYell(228248, nil, false)
+local yellFrostLick					= mod:NewYell(228248, nil, false, 2)
 local specWarnFrostLickDispel		= mod:NewSpecialWarningDispel(228248, "Healer", nil, nil, 1, 2)
 --Mythic
 local specWarnFlamingFoam			= mod:NewSpecialWarningYou(228744, nil, nil, nil, 1)--228794 jump id
@@ -222,10 +222,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			if args:IsPlayer() then
 				specWarnFlamingFoam:Show()
-				if self.vb.YellRealIcons and icon ~= 0 then
-					yellFlameFoam:Yell(icon, args.spellName, icon)
-				else
-					yellFlameFoam:Yell(7, args.spellName, 7)
+				if icon ~= 0 then
+					if self.vb.YellRealIcons then
+						yellFlameFoam:Yell(icon, args.spellName, icon)
+					else
+						yellFlameFoam:Yell(7, args.spellName, 7)
+					end
 				end
 			end
 			if self.Options.SetIconOnFoam and icon ~= 0 then
@@ -244,13 +246,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			if args:IsPlayer() then
 				specWarnBrineyFoam:Show()
-				if self.vb.YellRealIcons and icon ~= 0 then
-					yellBrineyFoam:Yell(icon, args.spellName, icon)
-				else
-					yellBrineyFoam:Yell(6, args.spellName, 6)
+				if icon ~= 0 then
+					if self.vb.YellRealIcons then
+						yellBrineyFoam:Yell(icon, args.spellName, icon)
+					else
+						yellBrineyFoam:Yell(6, args.spellName, 6)
+					end
 				end
 			end
-			if self.Options.SetIconOnFoam and icon then
+			if self.Options.SetIconOnFoam and icon ~= 0 then
 				self:SetIcon(args.destName, icon)
 			end
 		elseif spellId == 228818 or spellId == 228819 then
@@ -266,10 +270,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			if args:IsPlayer() then
 				specWarnShadowyFoam:Show()
-				if self.vb.YellRealIcons and icon then
-					yellShadowyFoam:Yell(icon, args.spellName, icon)
-				else
-					yellShadowyFoam:Yell(3, args.spellName, 3)
+				if icon ~= 0 then
+					if self.vb.YellRealIcons then
+						yellShadowyFoam:Yell(icon, args.spellName, icon)
+					else
+						yellShadowyFoam:Yell(3, args.spellName, 3)
+					end
 				end
 			end
 			if self.Options.SetIconOnFoam and icon then
