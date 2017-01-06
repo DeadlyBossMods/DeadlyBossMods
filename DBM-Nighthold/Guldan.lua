@@ -155,7 +155,7 @@ function mod:OnCombatStart(delay)
 	timerFelLordKurazCD:Start(11-delay)
 	timerVethrizCD:Start(25-delay)
 	timerDzorykxCD:Start(35-delay)
-	DBM:AddMsg("This mod was created using phase 1 data only. 2 and 3 are still drycodes and need updating.")
+	DBM:AddMsg("This mod was created using phase 1 data only. 2 and 3 are still drycodes and need updating as soon as live data starts coming in.")
 end
 
 function mod:OnCombatEnd()
