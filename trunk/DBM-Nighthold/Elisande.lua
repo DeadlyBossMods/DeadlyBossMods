@@ -523,14 +523,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 208887 then--Summon Time Elementals (summons both of them, used at beginning of each phase)
 		--self.vb.firstElementals = true
 		--specWarnTimeElementals:Show(STATUS_TEXT_BOTH)
-		DBM:Debug("Both elementals summoned, this event still exists, probably need custom code for certain difficulties")
---	elseif spellId == 208807 then--Arcanetic Ring (boss, echo only does yells). 1 second faster than combat log. Might switch to if it helps
-		
+		DBM:Debug("Both elementals summoned, this event still exists, probably need custom code for certain difficulties")		
 	end
 end
 
---Phase 2 and 3 do not have event for cast.
---Antispam protection added to both cast and yell in event they do fix cast, don't want to double warn/mess up timers
+--Phase 2 and 3 do not have event for cast. CLEU is unreliable.
+--CHAT_MSG_MONSTER_YELL is faster than CHAT_MSG_RAID_BOSS_EMOTE but emote doesn't require localizing, so emote exists purely as backup.
 ---"<441.20 14:04:16> [CHAT_MSG_MONSTER_YELL] Let the waves of time crash over you!#Echo of Elisande#####0#0##0#962#nil#0#false#false#false#false", -- [7359]
 --It's now possible to do this with secondary event but it's 2 seconds slower so it should only be used as a backup with this as ideal primary still
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
