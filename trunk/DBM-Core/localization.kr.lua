@@ -156,6 +156,7 @@ DBM_CORE_VERSIONCHECK_OUTDATED		= "다음 %d명의 플레이어가 구버전 보
 DBM_CORE_YOUR_VERSION_OUTDATED      = "사용중인 Deadly Boss Mods 버전이 사용 기한을 지났습니다. http://www.deadlybossmods.com에서 최신 버전을 받으세요."
 DBM_CORE_VOICE_PACK_OUTDATED		= "사용중인 DBM 음성팩에 본 DBM 버전에서 지원하는 음성 지원이 없을 수 있습니다. 일부 특수 경고 효과음이 현재 음성팩 버전이 지원하지 않는 음성인 경우 작동하지 않습니다. 새 버전의 음성팩을 다운로드 받거나 제작자에게 누락된 음성 파일 업데이트를 문의하시기 바랍니다"
 DBM_CORE_VOICE_MISSING				= "선택한 DBM 음성팩을 찾을 수 없습니다. 설정 내역이 'None' 으로 초기화 됩니다. 만약 이것이 오류라면 음성팩이 제대로 설치되어 있고 애드온 목록에서 활성화되어 있는지 확인해 보시기 바랍니다."
+DBM_CORE_VOICE_DISABLED				= "현재 DBM 음성팩이 한 개 이상 설치되어 있지만 사용하고 있는게 없습니다. 음성팩을 사용하려면 '음성 경보' 항목에서 음성팩이 지정되어 있는지 확인하세요. 음성팩을 사용할 의사가 없으면 음성팩을 삭제하시면 이 메시지는 더이상 출력되지 않습니다"
 DBM_CORE_VOICE_COUNT_MISSING		= "찾을 수 없는 음성/초읽기 팩에 초읽기 음성 %d번이 설정되어 있습니다. 기본 설정으로 초기화되었습니다."
 
 DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 Deadly Boss Mods 버전이 사용 기한을 지났습니다.\n Curse, WoWI나 이곳에서 %s (r%d) 버전을 다운로드 할 수 있습니다:"
@@ -211,23 +212,23 @@ DBM_LFG_INVITE						= "파티찾기 입장"
 DBM_CORE_SLASHCMD_HELP				= {
 	"사용 가능 슬래시 명령어:",
 	"----------------",
-	"/dbm unlock(move): 움직일 수 있는 상태 바 타이머를 표시합니다.",
-	"/range <숫자> 또는 /distance <숫자>: 거리 창을 표시합니다. /rrange, /rdistance는 색상을 반대로 표시합니다.",
+	"/dbm unlock: 움직일 수 있는 상태 바 타이머를 표시합니다. (단축 명령어: move)",
+	"/range <숫자> 또는 /distance <숫자>: 거리 창을 표시합니다. /rrange 또는 /rdistance는 색상을 반대로 표시합니다.",
 	"/hudar <number>: HUD 기반 거리 탐지기를 표시합니다.",
-	"/dbm timer: 사용자 지정 DBM 타이머 시작, 자세한 내용은 '/dbm timer'를 참고하세요.",
-	"/dbm arrow: DBM 화살표 표시, 자세한 내용은 '/dbm arrow help'를 참고하세요.",
-	"/dbm hud: DBM HUD 표시, 자세한 내용은 '/dbm hud'를 참고하세요.",
+	"/dbm timer: 사용자 지정 DBM 타이머를 시작합니다. 자세한 내용은 '/dbm timer'를 참고하세요.",
+	"/dbm arrow: DBM 화살표를 표시합니다. 자세한 내용은 '/dbm arrow help'를 참고하세요.",
+	"/dbm hud: DBM HUD를 표시합니다. 자세한 내용은 '/dbm hud'를 참고하세요.",
 	"/dbm help2: 공격대 관리와 관련된 슬래시 명령어를 표시합니다."
 }
 DBM_CORE_SLASHCMD_HELP2				= {
 	"사용 가능 슬래시 명령어:",
 	"----------------",
-	"/dbm pull <초>: 공격대에 <초> 만큼 풀링 타이머를 전송합니다. (승급 권한 필요)",
-	"/dbm break <분>: 공격대에 <분> 만큼 지속되는 휴식 타이머를 전송합니다. (승급 권한 필요)",
-	"/dbm version(ver): 공격대원의 보스 모드 버전을 검사합니다.",
-	"/dbm version2(ver2): 공격대원의 보스 모드 버전 확인 후 구버전 사용자에게 귓속말 알림을 전송합니다.",
-	"/dbm lockout(lockouts, ids): 현재 공격대원에게 공격대 귀속 정보를 요청합니다. (승급 권한 필요)",
-	"/dbm lag: 공격대 전체의 지연시간을 확인합니다."
+	"/dbm pull <초>: 공격대에 <초> 만큼 풀링 타이머를 전송합니다. (승급 권한이 필요합니다. 단축 명령어: pull)",
+	"/dbm break <분>: 공격대에 <분> 만큼 지속되는 휴식 타이머를 전송합니다. (승급 권한이 필요합니다. 단축 명령어: break)",
+	"/dbm version: 공대원의 보스 모드 버전 검사를 실시합니다. (단축 명령어: ver)",
+	"/dbm version2: 공대원 보스 모드 버전 검사 및 구버전 사용자에게 귓속말을 보냅니다. (단축 명령어: ver2)",
+	"/dbm lockout: 공대원에게 공격대 귀속 정보를 수집합니다. (단축 명령어: lockouts, ids) (승급 권한 필요)",
+	"/dbm lag: 공격대 지연시간 검사 작업을 실행합니다."
 }
 DBM_CORE_TIMER_USAGE	= {
 	"DBM 타이머 명령어:",
@@ -236,7 +237,7 @@ DBM_CORE_TIMER_USAGE	= {
 	"/dbm ctimer <초> <텍스트>: 초읽기를 포함한 타이머가 시작됩니다.",
 	"/dbm ltimer <초> <텍스트>: 취소하기 전까진 자동 반복되는 타이머가 시작됩니다.",
 	"/dbm cltimer <초> <텍스트>: 취소하기 전까진 자동 반복되는 타이머가 시작되며 초읽기를 포함하고 있습니다.",
-	"(공격대장이나 승급자일 경우 타이머 텍스트 앞에 'Broadcast'를 입력하면 공격대에 공유)",
+	"(공대장이나 승급자일 경우 타이머 텍스트 앞에 'Broadcast'를 입력하면 공격대에 공유)",
 	"/dbm timer endloop: ltimer와 cltimer의 반복 작동을 멈춥니다."
 }
 
