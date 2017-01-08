@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "koKR" then return end
+if GetLocale() ~= "koKR" then return end
 local L
 
 ---------------
@@ -83,7 +83,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1743)
 
 L:SetMiscLocalization({
-	noCLEU4EchoRings		= "Let the waves of time crash over you!"
+	noCLEU4EchoRings		= "시간의 파도가 널 덮치기를!"
 })
 
 ------------------

@@ -108,7 +108,7 @@ L.WhisperMessages			= "귓속말 메시지 설정"
 L.AutoRespond 				= "전투중 귓속말 자동 응답"
 L.EnableStatus 				= "'status' 라는 귓속말을 받으면 자동 응답"
 L.WhisperStats 				= "귓속말 응답에 처치/전멸 통계 포함"
-L.DisableStatusWhisper 		= "전체 파티/공격대의 귓속말 응답을 끕니다. (승급 권한 필요) 일반/영웅/신화 공격대 및 도전/신화 5인 던전에만 적용됩니다."
+L.DisableStatusWhisper 		= "전체 파티/공격대의 귓속말 응답을 끕니다. (파티/공대장 권한 필요) 일반/영웅/신화 공격대 및 도전/신화 5인 던전에만 적용됩니다."
 
 -- Tab: Barsetup
 L.BarSetup  				= "타이머 바 설정"
@@ -223,7 +223,7 @@ L.SpecWarn_NoSoundsWVoice	= "음성 경보가 있는 특수 경고의 효과음 
 L.SWFNever					= "하지 않음"
 L.SWFDefaultOnly			= "특수 경고가 기본 효과음만 재생할 때 (사용자 지정 효과음은 계속 재생 허용)"
 L.SWFAll					= "특수 경고가 모든 효과음을 사용할 때"
-L.SpecWarn_AlwaysVoice		= "모든 음성 경보 재생 (보스마다 지정된 설정을 무시합니다. 공격대장에게 유용합니다.)"
+L.SpecWarn_AlwaysVoice		= "모든 음성 경보 재생 (보스마다 지정된 설정을 무시합니다. 공대장에게 유용합니다.)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 
 -- Tab: HealthFrame
