@@ -6698,7 +6698,7 @@ function DBM:RoleCheck(ignoreLoot)
 	local role = GetSpecializationRole(spec)
 	if not role then return end
 	local specID = GetLootSpecialization()
-	local _, _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
+	local _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
 	if not InCombatLockdown() and ((IsPartyLFG() and (difficultyIndex == 14 or difficultyIndex == 15)) or not IsPartyLFG()) then
 		if UnitGroupRolesAssigned("player") ~= role then
 			UnitSetRole("player", role)
@@ -7985,7 +7985,7 @@ function bossModPrototype:IsTank()
 	if not currentSpecID then
 		DBM:SetCurrentSpecInfo()
 	end
-	local _, _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
+	local _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
 	if role == "TANK" then
 		return true
 	else
@@ -8003,7 +8003,7 @@ function bossModPrototype:IsDps(uId)
 	if not currentSpecID then
 		DBM:SetCurrentSpecInfo()
 	end
-	local _, _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
+	local _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
 	if role == "DAMAGER" then
 		return true
 	else
@@ -8021,7 +8021,7 @@ function bossModPrototype:IsHealer(uId)
 	if not currentSpecID then
 		DBM:SetCurrentSpecInfo()
 	end
-	local _, _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
+	local _, _, _, _, role = GetSpecializationInfoByID(currentSpecID)
 	if role == "HEALER" then
 		return true
 	else
