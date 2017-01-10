@@ -6696,6 +6696,7 @@ function DBM:RoleCheck(ignoreLoot)
 	local spec = GetSpecialization()
 	if not spec then return end
 	local role = GetSpecializationRole(spec)
+	if not role then return end
 	local specID = GetLootSpecialization()
 	local _, _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
 	if not InCombatLockdown() and ((IsPartyLFG() and (difficultyIndex == 14 or difficultyIndex == 15)) or not IsPartyLFG()) then
