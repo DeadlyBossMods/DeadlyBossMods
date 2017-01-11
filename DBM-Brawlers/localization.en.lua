@@ -141,6 +141,10 @@ L:SetGeneralLocalization({
 	name = "Brawlers: Legacy"
 })
 
+L:SetOptionLocalization({
+	SpeakOutStrikes		= "Count out number of $spell:141190 attacks"
+})
+
 -------------
 -- Brawlers: Challenges --
 -------------
@@ -156,8 +160,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	ArrowOnBoxing		= "Show DBM Arrow during $spell:140868 and $spell:140862 and $spell:140886",
-	specWarnRPS			= "Show special warning on what to use for $spell:141206",
-	SpeakOutStrikes		= "Count out number of $spell:141190 attacks"
+	specWarnRPS			= "Show special warning on what to use for $spell:141206"
 })
 
 L:SetMiscLocalization({

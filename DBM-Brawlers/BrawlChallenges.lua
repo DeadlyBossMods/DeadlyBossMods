@@ -61,7 +61,6 @@ local timerRockpaperScissorsCD		= mod:NewCDTimer(42, 141206, nil, nil, nil, 6)--
 local timerPowerCrystalCD			= mod:NewCDTimer(13, 133398)--Millhouse Manastorm
 
 mod:RemoveOption("HealthFrame")
-mod:AddBoolOption("SpeakOutStrikes", true)--Blind Hero
 mod:AddBoolOption("ArrowOnBoxing")--Ro-Shambo
 
 local brawlersMod = DBM:GetModByName("Brawlers")

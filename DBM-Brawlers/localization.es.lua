@@ -140,6 +140,10 @@ L:SetGeneralLocalization({
 	name = "Desafíos de legado"
 })
 
+L:SetOptionLocalization({
+	SpeakOutStrikes		= "Anunciar número de $spell:141190"
+})
+
 ----------------
 -- Especiales --
 ----------------
@@ -155,8 +159,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	ArrowOnBoxing		= "Mostrar flecha para $spell:140868, $spell:140862 y $spell:140886",
-	specWarnRPS			= "Mostrar aviso especial con qué usar para $spell:141206",
-	SpeakOutStrikes		= "Anunciar número de $spell:141190"
+	specWarnRPS			= "Mostrar aviso especial con qué usar para $spell:141206"
 })
 
 L:SetMiscLocalization({

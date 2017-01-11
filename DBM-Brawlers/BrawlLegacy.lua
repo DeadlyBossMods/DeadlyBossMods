@@ -96,6 +96,7 @@ local timerHeatedPokers				= mod:NewBuffActiveTimer(8, 133286)--Dungeon Master V
 local timerHeatedPokersCD			= mod:NewCDTimer(29, 133286)--Dungeon Master Vishas
 
 mod:RemoveOption("HealthFrame")
+mod:AddBoolOption("SpeakOutStrikes", true)--Blind Hero
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 local remainingMines = 8
