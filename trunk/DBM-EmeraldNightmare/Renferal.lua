@@ -218,7 +218,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerTwistingShadowsCD:Start(40, 2)
 		elseif self.vb.twistedCast == 2 then
 			if self.vb.ViolentWindsPlat then
-				timerTwistingShadowsCD:Start(35, 3)
+				timerTwistingShadowsCD:Start(34, 3)
 			else
 				timerTwistingShadowsCD:Start(21.5, 3)
 			end

@@ -140,6 +140,10 @@ L:SetGeneralLocalization({
 	name = "Kampfgilde: Klassische Herausford."
 })
 
+L:SetOptionLocalization({
+	SpeakOutStrikes		= "Verkünde akustisch die Anzahl der $spell:141190 Angriffe"
+})
+
 -------------
 -- Rares 2 --
 -------------
@@ -155,8 +159,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	ArrowOnBoxing		= "Zeige DBM-Pfeil während $spell:140868, $spell:140862 und $spell:140886",
-	specWarnRPS			= "Spezialwarnung für die richtige Auswahl bei $spell:141206",
-	SpeakOutStrikes		= "Verkünde akustisch die Anzahl der $spell:141190 Angriffe"
+	specWarnRPS			= "Spezialwarnung für die richtige Auswahl bei $spell:141206"
 })
 
 L:SetMiscLocalization({
