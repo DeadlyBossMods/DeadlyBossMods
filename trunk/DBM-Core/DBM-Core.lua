@@ -3637,6 +3637,9 @@ do
 		if DBM:HasMapRestrictions() then
 			DBM.Arrow:Hide()
 			DBMHudMap:Disable()
+			if DBM.RangeCheck:IsRadarShown() then
+				DBM.RangeCheck:Hide()
+			end
 		end
 	end
 
