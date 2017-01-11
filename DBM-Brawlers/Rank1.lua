@@ -28,7 +28,7 @@ local specWarnChainLightning	= mod:NewSpecialWarningInterrupt(39945)--Akama
 
 local timerLumberingChargeCD	= mod:NewCDTimer(7, 134527, nil, nil, nil, 3)--Goredome
 local timerShieldWaller			= mod:NewBuffActiveTimer(10, 134650)
-local timerFirewallCD			= mod:NewCDTimer(18, 132666)--Sanoriak
+local timerFirewallCD			= mod:NewCDTimer(17, 132666)--Sanoriak
 local timerShadowStrikes		= mod:NewBuffActiveTimer(15, 126209)--Akama
 local timerChainLightningCD		= mod:NewCDTimer(17, 39945, nil, nil, nil, 4)--Akama
 

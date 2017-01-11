@@ -8,15 +8,20 @@ mod:SetUsedIcons(8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS 141013",
-	"SPELL_AURA_APPLIED 133129",
+	"SPELL_AURA_APPLIED 133129 228981",
+	"SPELL_AURA_REMOVED 228981",
 	"PLAYER_TARGET_CHANGED"
 )
 
 local warnSpitAcid				= mod:NewSpellAnnounce(141013, 4)--Nibbleh
+local warnWaterShield			= mod:NewTargetAnnounce(228981, 1)--Burnstachio
 
 local specWarnSpitAcid			= mod:NewSpecialWarningSpell(141013)--Nibbleh
 
 local timerSpitAcidCD			= mod:NewNextTimer(20, 141013)--Nibbleh
+local timerWaterShield			= mod:NewTargetTimer(15, 228981)--Burnstachio
+
+local countdownWaterShield		= mod:NewCountdownFades(15, 228981)
 
 mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("SetIconOnDominika", true)--Dominika the Illusionist 
@@ -40,6 +45,23 @@ function mod:SPELL_AURA_APPLIED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if args.spellId == 133129 then
 		DominikaGUID = args.destGUID
+	elseif args.spellId == 228981 then
+		timerWaterShield:Start(args.destName)
+		if brawlersMod:PlayerFighting() then
+			countdownWaterShield:Start()
+		else
+			warnWaterShield:Show(args.destName)
+		end
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
+	if args.spellId == 228981 then
+		timerWaterShield:Stop(args.destName)
+		if brawlersMod:PlayerFighting() then
+			countdownWaterShield:Cancel()
+		end
 	end
 end
 
