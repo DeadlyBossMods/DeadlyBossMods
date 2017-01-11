@@ -147,7 +147,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlChallenges")
 
 L:SetGeneralLocalization({
-	name = "Brawlers: Challenges"
+	name = "Brawlers: Challenge"
 })
 
 L:SetWarningLocalization({
@@ -164,4 +164,13 @@ L:SetMiscLocalization({
 	rock			= "Rock",
 	paper			= "Paper",
 	scissors		= "Scissors"
+})
+
+-------------
+-- Brawlers: Brumble --
+-------------
+L= DBM:GetModLocalization("BrawlRumble")
+
+L:SetGeneralLocalization({
+	name = "Brawlers: Rumble"
 })

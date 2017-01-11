@@ -8,49 +8,63 @@ mod:SetZone()
 
 mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"SPELL_AURA_APPLIED 141206 142400 141371 141388",
-	"SPELL_CAST_START 142795 142788 142769 141189 141190 141192 140868 140862 140886",
-	"SPELL_CAST_SUCCESS 140894 140912"
+	"SPELL_AURA_APPLIED 141206 134650 142400 141371 141388 134624",
+	"SPELL_AURA_APPLIED_DOSE 134624 138901",
+	"SPELL_AURA_REMOVED 134650 138901",
+	"SPELL_AURA_REMOVED_DOSE 138901",
+	"SPELL_CAST_START 140868 140862 140886 135234 133308 135342 133650 133398",
+	"SPELL_CAST_SUCCESS 132670 133227",
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_CHANNEL_START target focus"
 )
 
---Boss Key
---http://mysticalos.com/images/MoP/new_brawlers/rares2.jpeg
-local warnEightChomps				= mod:NewSpellAnnounce(142788, 4)--Mecha-Bruce
-local warnBetterStrongerFaster		= mod:NewSpellAnnounce(142795, 2)--Mecha-Bruce
-local warnStasisBeam				= mod:NewSpellAnnounce(142769, 3)--Mecha-Bruce
-local warnRockPaperScissors			= mod:NewSpellAnnounce(141206, 3)--Ro-Shambo
-local warnBlindStrike				= mod:NewSpellAnnounce(141189, 3)--Blind Hero
-local warnSwiftStrike				= mod:NewCountAnnounce(141190, 3)--Blind Hero
-local warnBlindCleave				= mod:NewSpellAnnounce(141192, 4)--Blind Hero
-local warnBoomingBoogaloo			= mod:NewSpellAnnounce(140894, 3)--Master Boom Boom
-local warnDeployBoom				= mod:NewSpellAnnounce(140912, 4)--Master Boom Boom
+local warnLumberingCharge		= mod:NewSpellAnnounce(134527, 4)--Goredome
+local warnToughLuck				= mod:NewStackAnnounce(134624, 1)--Smash Hoofstomp
+local warnShieldWaller			= mod:NewSpellAnnounce(134650, 2)--Smash Hoofstomp
+local warnSummonTwister			= mod:NewSpellAnnounce(132670, 3)--Kirrawk
+local warnStormCloud			= mod:NewSpellAnnounce(135234, 3)--Kirrawk
+local warnThrowNet				= mod:NewSpellAnnounce(133308, 3)--Fran and Riddoh
+local warnGoblinDevice			= mod:NewSpellAnnounce(133227, 4)--Fran and Riddoh
+local warnChomp				= mod:NewSpellAnnounce(135342, 4)--Bruce
+local warnBulwark				= mod:NewAddsLeftAnnounce(138901, 2)--Ahoo'ru
+local warnCharge				= mod:NewCastAnnounce(138845, 1)--Ahoo'ru
+local warnCompleteHeal			= mod:NewCastAnnounce(142621, 4)--Ahoo'ru
+local warnDivineCircle			= mod:NewSpellAnnounce(142585, 3)--Ahoo'ru
 local warnSmolderingHeat			= mod:NewTargetAnnounce(142400, 4)--Anthracite
 local warnCooled					= mod:NewTargetAnnounce(141371, 1)--Anthracite
 local warnOnFire					= mod:NewTargetAnnounce(141388, 4)--Anthracite
+local warnRockPaperScissors			= mod:NewSpellAnnounce(141206, 3)--Ro-Shambo
+local warnPowerCrystal				= mod:NewSpellAnnounce(133398, 3)--Millhouse Manastorm
+local warnDoom						= mod:NewSpellAnnounce(133650, 4)--Millhouse Manastorm
 
-local specWarnRPS					= mod:NewSpecialWarning("specWarnRPS")--Ro-Shambo
-local specWarnEightChomps			= mod:NewSpecialWarningDodge(142788)--Mecha-Bruce
-local specWarnBlindCleave			= mod:NewSpecialWarningRun(141192, nil, nil, 2, 4)--Blind Hero
-local specWarnBoomingBoogaloo		= mod:NewSpecialWarningSpell(140894, nil, nil, nil, 2)--Master Boom Boom
-local specWarnDeployBoom			= mod:NewSpecialWarningSpell(140912, nil, nil, nil, 3)--Master Boom Boom
+local specWarnLumberingCharge	= mod:NewSpecialWarningDodge(134527)--Goredome
+local specWarnStormCloud		= mod:NewSpecialWarningInterrupt(135234)--Kirrawk
+local specWarnGoblinDevice		= mod:NewSpecialWarningSpell(133227)--Fran and Riddoh
+local specWarnChomp			= mod:NewSpecialWarningDodge(135342)--Bruce
+local specWarnCharge			= mod:NewSpecialWarningSpell(138845)--Ahoo'ru
+local specWarnCompleteHeal		= mod:NewSpecialWarningInterrupt(142621, nil, nil, nil, 3)--Ahoo'ru
+local specWarnDivineCircle		= mod:NewSpecialWarningDodge(142585)--Ahoo'ru
 local specWarnSmolderingHeat		= mod:NewSpecialWarningYou(142400)--Anthracite
+local specWarnRPS					= mod:NewSpecialWarning("specWarnRPS")--Ro-Shambo
+local specWarnDoom					= mod:NewSpecialWarningSpell(133650, nil, nil, nil, true)--Millhouse Manastorm
 
-local timerEightChompsCD			= mod:NewCDTimer(9.5, 142788, nil, nil, nil, 3)--Mecha-Bruce
-local timerBetterStrongerFasterCD	= mod:NewCDTimer(20, 142795)--Mecha-Bruce
-local timerStasisBeamCD				= mod:NewCDTimer(20, 142769, nil, nil, nil, 3)--Mecha-Bruce
-local timerRockpaperScissorsCD		= mod:NewCDTimer(42, 141206, nil, nil, nil, 6)--Ro-Shambo
-local timerBlindStrikeCD			= mod:NewNextTimer(2.5, 141189)--Blind Hero
-local timerSwiftStrikeCD			= mod:NewNextTimer(2.4, 141190, nil, false)--May help some but off by default so it doesn't detour focus from the most important one, blind cleave(Blind Hero)
-local timerBlindCleaveD				= mod:NewNextTimer(13, 141192)--Blind Hero
+local timerLumberingChargeCD	= mod:NewCDTimer(7, 134527, nil, nil, nil, 3)--Goredome
+local timerShieldWaller			= mod:NewBuffActiveTimer(10, 134650)--Smash Hoofstomp
+local timerSummonTwisterCD		= mod:NewCDTimer(15, 132670, nil, nil, nil, 3)--Kirrawk
+local timerThrowNetCD			= mod:NewCDTimer(20, 133308, nil, nil, nil, 3)--Fran and Riddoh
+local timerGoblinDeviceCD		= mod:NewCDTimer(22, 133227, nil, nil, nil, 3)--Fran and Riddoh
+local timerChompCD				= mod:NewCDTimer(8, 135342)--Bruce
+local timerDivineCircleCD		= mod:NewCDTimer(35, 142585)--Insufficent data to say if accurate with certainty --Ahoo'ru
 local timerSmolderingHeatCD			= mod:NewCDTimer(20, 142400)--Anthracite
 local timerCooled					= mod:NewTargetTimer(20, 141371, nil, nil, nil, 6)--Anthracite
+local timerRockpaperScissorsCD		= mod:NewCDTimer(42, 141206, nil, nil, nil, 6)--Ro-Shambo
+local timerPowerCrystalCD			= mod:NewCDTimer(13, 133398)--Millhouse Manastorm
 
 mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("SpeakOutStrikes", true)--Blind Hero
 mod:AddBoolOption("ArrowOnBoxing")--Ro-Shambo
 
 local brawlersMod = DBM:GetModByName("Brawlers")
-local swiftStrike = 0
 local lastRPS = DBM_CORE_UNKNOWN
 
 --"<39.8 01:37:33> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#|TInterface\\Icons\\inv_inscription_scroll.blp:20|t %s Chooses |cFFFF0000Paper|r! You |cFF00FF00Win|r!#Ro-Shambo
@@ -69,15 +83,17 @@ brawlersMod:OnMatchStart(function()
 end)
 
 function mod:SPELL_AURA_APPLIED(args)
+	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if args.spellId == 142400 then
-		warnSmolderingHeat:CombinedShow(0.5, args.destName)
+		warnSmolderingHeat:Show(args.destName)
 		timerSmolderingHeatCD:Start()
 		if args:IsPlayer() then
 			specWarnSmolderingHeat:Show()
 		end
-	end
-	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args.spellId == 141206 then
+	elseif args.spellId == 134650 then
+		warnShieldWaller:Show()
+		timerShieldWaller:Start()
+	elseif args.spellId == 141206 then
 		warnRockPaperScissors:Show()
 		timerRockpaperScissorsCD:Start()
 		if brawlersMod:PlayerFighting() then
@@ -94,67 +110,113 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCooled:Start(args.destName)
 	elseif args.spellId == 141388 then
 		warnOnFire:Show(args.destName)
+	elseif args.spellId == 138901 then
+		warnBulwark:Show(args.amount or 0)
+	end
+end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_REMOVED = mod.SPELL_AURA_APPLIED_DOSE
+mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_APPLIED_DOSE
+
+function mod:SPELL_AURA_REMOVED(args)
+	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
+	if args.spellId == 134650 then
+		timerShieldWaller:Cancel()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args.spellId == 142795 then
-		warnBetterStrongerFaster:Show()
-		timerBetterStrongerFasterCD:Start()
-	elseif args.spellId == 142788 then
-		timerEightChompsCD:Start()
-		if brawlersMod:PlayerFighting() then
-			specWarnEightChomps:Show()
-		else
-			warnEightChomps:Show()
-		end
-	elseif args.spellId == 142769 then
-		warnStasisBeam:Show()
-		timerStasisBeamCD:Start()
-	elseif args.spellId == 141189 then
-		swiftStrike = 0--Start of a combo. A combo is Blind strike, swift strike x 4, blind cleave. This repeats over and over
-		warnBlindStrike:Show()
-		timerSwiftStrikeCD:Start()
-		timerBlindCleaveD:Start()
-	elseif args.spellId == 141190 then
-		swiftStrike = swiftStrike + 1
-		warnSwiftStrike:Show(swiftStrike)
-		if swiftStrike < 4 then
-			timerSwiftStrikeCD:Start()
-		else
-			if brawlersMod:PlayerFighting() then
-				specWarnBlindCleave:Show()
-			end
-		end
-		if brawlersMod:PlayerFighting() and self.Options.SpeakOutStrikes then
-			DBM:PlayCountSound(swiftStrike)
-		end
-	elseif args.spellId == 141192 then
-		warnBlindCleave:Show()
-		timerBlindStrikeCD:Start()
-	elseif args.spellId == 140868 and self.Options.ArrowOnBoxing and brawlersMod:PlayerFighting() then--Left Hook
+	if args.spellId == 140868 and self.Options.ArrowOnBoxing and brawlersMod:PlayerFighting() then--Left Hook
 		DBM.Arrow:ShowStatic(270, 3)
 	elseif args.spellId == 140862 and self.Options.ArrowOnBoxing and brawlersMod:PlayerFighting() then--Right Hook
 		DBM.Arrow:ShowStatic(90, 3)
 	elseif args.spellId == 140886 and self.Options.ArrowOnBoxing and brawlersMod:PlayerFighting() then--Right Hook
 		DBM.Arrow:ShowStatic(180, 3)
+	elseif args.spellId == 134624 then
+		warnToughLuck:Show(args.destName, args.amount or 1)
+	elseif args.spellId == 135234 then
+		--CD seems to be 32 seconds usually but sometimes only 16? no timer for now
+		if brawlersMod:PlayerFighting() then
+			specWarnStormCloud:Show(args.sourceName)
+		else
+			warnStormCloud:Show()
+		end
+	elseif args.spellId == 133308 then
+		warnThrowNet:Show()
+		timerThrowNetCD:Start()
+	elseif args.spellId == 135342 then
+		timerChompCD:Start()--And timers (first one is after 6 seconds)
+		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
+			specWarnChomp:Show()
+		else
+			warnChomp:Show()--Give reg warnings for spectators
+		end
+	elseif args.spellId == 138845 then
+		if brawlersMod:PlayerFighting() then
+			specWarnCharge:Show()
+		else
+			warnCharge:Show()
+		end
+	elseif args.spellId == 142621 then
+		if brawlersMod:PlayerFighting() then
+			specWarnCompleteHeal:Show(args.sourceName)
+		else
+			warnCompleteHeal:Show()
+		end
+	elseif args.spellId == 142583 then
+		timerDivineCircleCD:Start()
+		if args:IsPlayer() then
+			specWarnDivineCircle:Show()
+		else
+			warnDivineCircle:Show()
+		end
+	elseif args.spellId == 133650 then
+		if brawlersMod:PlayerFighting() then
+			specWarnDoom:Show()
+		else
+			warnDoom:Show()
+		end
+	elseif args.spellId == 133398 then
+		warnPowerCrystal:Show()
+		timerPowerCrystalCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args.spellId == 140894 then
-		if brawlersMod:PlayerFighting() then
-			specWarnBoomingBoogaloo:Show()
+	if args.spellId == 132670 then
+		warnSummonTwister:Show()
+		timerSummonTwisterCD:Start()--22 seconds after combat start?
+	elseif args.spellId == 133227 then
+		timerGoblinDeviceCD:Start()--6 seconds after combat start, if i do that kind of detection later
+		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
+			specWarnGoblinDevice:Show()
 		else
-			warnBoomingBoogaloo:Show()
+			warnGoblinDevice:Show()
 		end
-	elseif args.spellId == 140912 then
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 67524 then--These 2 have a 1 min 50 second berserk
+		timerThrowNetCD:Cancel()
+	elseif cid == 67525 then--These 2 have a 1 min 50 second berserk
+		timerGoblinDeviceCD:Cancel()
+	end
+end
+
+--This event won't really work well for spectators if they target the player instead of boss. This event only fires if boss is on target/focus
+--It is however the ONLY event you can detect this spell using.
+function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, _, _, spellId)
+	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
+	if spellId == 134527 and self:AntiSpam() then
+		timerLumberingChargeCD:Start()
 		if brawlersMod:PlayerFighting() then
-			specWarnDeployBoom:Show()
+			specWarnLumberingCharge:Show()
 		else
-			warnDeployBoom:Show()
+			warnLumberingCharge:Show()
 		end
 	end
 end
