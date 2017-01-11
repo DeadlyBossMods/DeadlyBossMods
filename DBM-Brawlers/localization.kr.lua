@@ -139,6 +139,10 @@ L:SetGeneralLocalization({
 	name = "싸움꾼: 도전(유산)"
 })
 
+L:SetOptionLocalization({
+	SpeakOutStrikes		= "$spell:141190 공격 횟수를 소리로 듣기"
+})
+
 -------------
 -- Rares 2 --
 -------------
@@ -154,8 +158,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	ArrowOnBoxing		= "$spell:140868, $spell:140862, $spell:140886 활성화 중일때 DBM 화살표 보기",
-	specWarnRPS			= "$spell:141206 진행 중일때 무엇을 내야할지 특수 경고 보기",
-	SpeakOutStrikes		= "$spell:141190 공격 횟수를 소리로 듣기"
+	specWarnRPS			= "$spell:141206 진행 중일때 무엇을 내야할지 특수 경고 보기"
 })
 
 L:SetMiscLocalization({

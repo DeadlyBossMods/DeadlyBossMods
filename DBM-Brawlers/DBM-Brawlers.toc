@@ -1,5 +1,5 @@
 ﻿## Interface: 70100
-## X-Min-Interface: 60000
+## X-Min-Interface: 70100
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Brawlers|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Бойцовская гильдия|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0싸움꾼 조합|r
@@ -46,4 +46,5 @@ Rank5.lua
 Rank6.lua
 Rank7.lua
 BrawlChallenges.lua
+BrawlRumble.lua
 BrawlLegacy.lua

@@ -142,6 +142,10 @@ L:SetGeneralLocalization({
 	name = "Brigões: Desafios passados"
 })
 
+L:SetOptionLocalization({
+	SpeakOutStrikes		= "Contar em voz alta o numero de ataques $spell:141190"
+})
+
 -------------
 -- Rares 2 --
 -------------
@@ -157,8 +161,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	ArrowOnBoxing		= "Exibir flecha DBM durante $spell:140868 e $spell:140862 e $spell:140886",
-	specWarnRPS			= "Exibir aviso especial sobre o que usar para $spell:141206",
-	SpeakOutStrikes		= "Contar em voz alta o numero de ataques $spell:141190"
+	specWarnRPS			= "Exibir aviso especial sobre o que usar para $spell:141206"
 })
 
 L:SetMiscLocalization({

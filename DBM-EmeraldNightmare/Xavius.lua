@@ -236,8 +236,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 207830 then
 		timerCorruptingNovaCD:Start(nil, args.sourceGUID)
-		specWarnCorruptingNova:Show(args.sourceName)
-		voiceCorruptingNova:Play("aesoon")
+		if self:AntiSpam(2, 1) then
+			specWarnCorruptingNova:Show(args.sourceName)
+			voiceCorruptingNova:Play("aesoon")
+		end
 	elseif spellId == 209443 then
 		if self.vb.phase == 3 then
 			timerNightmareInfusionCD:Start(31.5)
