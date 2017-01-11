@@ -112,6 +112,7 @@ L:SetGeneralLocalization({
 	name = "Brawlers: Rank 7"
 })
 
+--[[
 ------------
 -- Rank 8 --
 ------------
@@ -129,23 +130,24 @@ L= DBM:GetModLocalization("BrawlRank9")
 L:SetGeneralLocalization({
 	name = "Brawlers: Rank 9"
 })
+--]]
 
 -------------
--- Rares 1 --
+-- Brawlers: Legacy --
 -------------
-L= DBM:GetModLocalization("BrawlRare1")
+L= DBM:GetModLocalization("BrawlLegacy")
 
 L:SetGeneralLocalization({
-	name = "Brawlers: Legacy Challenges"
+	name = "Brawlers: Legacy"
 })
 
 -------------
--- Rares 2 --
+-- Brawlers: Challenges --
 -------------
-L= DBM:GetModLocalization("BrawlRare2")
+L= DBM:GetModLocalization("BrawlChallenges")
 
 L:SetGeneralLocalization({
-	name = "Brawlers: Special Challenges"
+	name = "Brawlers: Challenges"
 })
 
 L:SetWarningLocalization({

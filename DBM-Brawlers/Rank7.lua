@@ -6,7 +6,8 @@ mod:SetModelID(46798)
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 133212 125212 133465 133017 138845 142621 142583",
+	"SPELL_CAST_START 133212 125212 133465 133017 138845 142621 142583 133262",
+	"SPELL_CAST_SUCCESS 133250",
 	"SPELL_AURA_APPLIED 133015 133018",
 	"SPELL_AURA_APPLIED_DOSE 138901",
 	"SPELL_AURA_REMOVED_DOSE 138901",
@@ -22,6 +23,8 @@ local warnBulwark				= mod:NewAddsLeftAnnounce(138901, 2)--Ahoo'ru
 local warnCharge				= mod:NewCastAnnounce(138845, 1)--Ahoo'ru
 local warnCompleteHeal			= mod:NewCastAnnounce(142621, 4)--Ahoo'ru
 local warnDivineCircle			= mod:NewSpellAnnounce(142585, 3)--Ahoo'ru
+local warnBlueCrush				= mod:NewSpellAnnounce(133262, 4)--Epicus Maximus
+local warnDestructolaser		= mod:NewSpellAnnounce(133250, 4)--Epicus Maximus
 
 local specWarnShadowbolt		= mod:NewSpecialWarningSpell(125212, false)--Let you choose which one is important to warn for(Dark Summoner)
 local specWarnGhost				= mod:NewSpecialWarningSpell(133465, false)--Dark Summoner
@@ -29,11 +32,15 @@ local specWarnMinesSpawning		= mod:NewSpecialWarningSpell(133015)--Battletron
 local specWarnCharge			= mod:NewSpecialWarningSpell(138845)--Ahoo'ru
 local specWarnCompleteHeal		= mod:NewSpecialWarningInterrupt(142621, nil, nil, nil, 3)--Ahoo'ru
 local specWarnDivineCircle		= mod:NewSpecialWarningDodge(142585)--Ahoo'ru
+local specWarnBlueCrush			= mod:NewSpecialWarningInterrupt(133262)--Epicus Maximus
+local specWarnDestructolaser	= mod:NewSpecialWarningMove(133250)--Epicus Maximus
 
 local timerRockets				= mod:NewBuffActiveTimer(9, 133212)--Max Megablast
 local timerShadowboltCD			= mod:NewCDTimer(12, 125212, nil, nil, nil, 4)--Dark Summoner
 local timerGhostCD				= mod:NewNextTimer(13, 133465, nil, nil, nil, 1)--Dark Summoner
 local timerDivineCircleCD		= mod:NewCDTimer(35, 142585)--Insufficent data to say if accurate with certainty
+local timerBlueCrushCD			= mod:NewNextTimer(29.1, 133262, nil, nil, nil, 4)--Epicus Maximus
+local timerDestructolaserCD		= mod:NewNextTimer(30, 133250, nil, nil, nil, 3)--Epicus Maximus
 
 mod:RemoveOption("HealthFrame")
 
@@ -80,6 +87,25 @@ function mod:SPELL_CAST_START(args)
 			specWarnDivineCircle:Show()
 		else
 			warnDivineCircle:Show()
+		end
+	elseif args.spellId == 133262 then
+		timerBlueCrushCD:Start()
+		if brawlersMod:PlayerFighting() then
+			specWarnBlueCrush:Show(args.sourceName)
+		else
+			warnBlueCrush:Show()
+		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
+	if args.spellId == 133250 then
+		timerDestructolaserCD:Start()
+		if brawlersMod:PlayerFighting() then
+			specWarnDestructolaser:Show()
+		else
+			warnDestructolaser:Show()
 		end
 	end
 end
