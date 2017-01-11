@@ -7,20 +7,20 @@ mod:SetZone()
 mod:SetUsedIcons(8)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 134740 133607 134777 133302",
+	"SPELL_CAST_START 133302 229124",
+	"SPELL_CAST_SUCCESS 232504",
 	"PLAYER_TARGET_CHANGED"
 )
 
-local warnVolatileFlames		= mod:NewSpellAnnounce(134740, 3)--Vian the Volatile
-local warnFireLine				= mod:NewCastAnnounce(133607, 4, 2)--Vian the Volatile
-local warnDevastatingThrust		= mod:NewSpellAnnounce(134777, 4)--Ixx
+--TODO, powershot spellid/event is drycoded, it may be a SUCCESS or APPLIED channel event.
+local warnShadowTorch			= mod:NewCastAnnounce(232504, 3)--Shadowmaster Aameen
+local warnPowershot				= mod:NewCastAnnounce(229124, 4)--Johnny Awesome
 
-local specWarnFireLine			= mod:NewSpecialWarningDodge(133607)--Vian the Volatile
-local specWarnDevastatingThrust	= mod:NewSpecialWarningDodge(134777)--Ixx
+local specWarnShadowTorch		= mod:NewSpecialWarningDodge(232504)--Shadowmaster Aameen
+local specWarnPowerShot			= mod:NewSpecialWarningMoveTo(229124)--Johnny Awesome
 
-local timerVolatileFlamesCD		= mod:NewCDTimer(11, 134740)--Vian the Volatile
-local timerFireLineCD			= mod:NewCDTimer(15, 133607, nil, nil, nil, 3)--Vian the Volatile
-local timerDevastatingThrustCD	= mod:NewCDTimer(12, 134777, nil, nil, nil, 3)--Ixx
+local timerShadowTorchCD		= mod:NewCDTimer(5.3, 232504, nil, nil, nil, 3)-- 5.3, 6.2, 5.9, 6.1, 6.0 Shadowmaster Aameen
+local timerPowerShotCD			= mod:NewAITimer(5.3, 229124, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--Johnny Awesome
 
 mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("SetIconOnBlat", true)--Blat
@@ -31,25 +31,27 @@ local GetRaidTargetIndex = GetRaidTargetIndex
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args.spellId == 134740 then
-		warnVolatileFlames:Show()
-		timerVolatileFlamesCD:Start()
-	elseif args.spellId == 133607 then
-		timerFireLineCD:Start()--First one is 9-10 seconds after combat start
-		if brawlersMod:PlayerFighting() then
-			specWarnFireLine:Show()
-		else
-			warnFireLine:Show()
-		end
-	elseif args.spellId == 134777 then
-		timerDevastatingThrustCD:Start()--First one is 7-8 seconds after combat start
-		if brawlersMod:PlayerFighting() then
-			specWarnDevastatingThrust:Show()
-		else
-			warnDevastatingThrust:Show()
-		end
-	elseif args.spellId == 133302 then--Blat splitting
+	if args.spellId == 133302 then--Blat splitting
 		blatGUID = args.sourceGUID
+	elseif args.spellId == 229124 then
+		timerPowerShotCD:Start()
+		if brawlersMod:PlayerFighting() then
+			specWarnPowerShot:Show(PET)
+		else
+			warnPowershot:Show()
+		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
+	if args.spellId == 232504 then
+		timerShadowTorchCD:Start()
+		if brawlersMod:PlayerFighting() then
+			specWarnShadowTorch:Show()
+		else
+			warnShadowTorch:Show()
+		end
 	end
 end
 
