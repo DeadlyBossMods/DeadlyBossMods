@@ -134,7 +134,7 @@ L:SetGeneralLocalization({
 -------------
 -- Rares 1 --
 -------------
-L= DBM:GetModLocalization("BrawlRare1")
+L= DBM:GetModLocalization("BrawlLegacy")
 
 L:SetGeneralLocalization({
 	name = "Kampfgilde: Klassische Herausford."
@@ -143,7 +143,7 @@ L:SetGeneralLocalization({
 -------------
 -- Rares 2 --
 -------------
-L= DBM:GetModLocalization("BrawlRare2")
+L= DBM:GetModLocalization("BrawlChallenges")
 
 L:SetGeneralLocalization({
 	name = "Kampfgilde: Spezielle Herausford."

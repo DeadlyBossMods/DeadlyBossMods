@@ -134,7 +134,7 @@ L:SetGeneralLocalization({
 ------------
 -- Legado --
 ------------
-L= DBM:GetModLocalization("BrawlRare1")
+L= DBM:GetModLocalization("BrawlLegacy")
 
 L:SetGeneralLocalization({
 	name = "Desafíos de legado"
@@ -143,7 +143,7 @@ L:SetGeneralLocalization({
 ----------------
 -- Especiales --
 ----------------
-L= DBM:GetModLocalization("BrawlRare2")
+L= DBM:GetModLocalization("BrawlChallenges")
 
 L:SetGeneralLocalization({
 	name = "Desafíos especiales"

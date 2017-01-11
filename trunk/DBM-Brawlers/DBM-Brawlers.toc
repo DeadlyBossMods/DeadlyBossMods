@@ -45,5 +45,5 @@ Rank4.lua
 Rank5.lua
 Rank6.lua
 Rank7.lua
-Rares1.lua
-Rares2.lua
+BrawlChallenges.lua
+BrawlLegacy.lua
