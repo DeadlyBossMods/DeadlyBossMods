@@ -2,14 +2,14 @@ local mod	= DBM:NewMod("BrawlRare1", "DBM-Brawlers")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetModelID(46265)
+--mod:SetModelID(46265)
 mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 129888 133286 141396 141401",
 	"SPELL_AURA_APPLIED_DOSE 141396 141401",
-	"SPELL_CAST_START 133398 133650 133262 135621 133346 134743 133286",
-	"SPELL_CAST_SUCCESS 133208 133250 140894 140912",
+	"SPELL_CAST_START 133398 133650 135621 133346 134743 133286",
+	"SPELL_CAST_SUCCESS 133208 140894 140912",
 	"UNIT_SPELLCAST_INTERRUPTED target focus",
 	"UNIT_SPELLCAST_SUCCEEDED target focus"
 )
@@ -19,8 +19,6 @@ mod:RegisterEvents(
 local warnEvilGlare					= mod:NewSpellAnnounce(133208, 4)--Zen'shar
 local warnPowerCrystal				= mod:NewSpellAnnounce(133398, 3)--Millhouse Manastorm
 local warnDoom						= mod:NewSpellAnnounce(133650, 4)--Millhouse Manastorm
-local warnBlueCrush					= mod:NewSpellAnnounce(133262, 4)--Epicus Maximus
-local warnDestructolaser			= mod:NewSpellAnnounce(133250, 4)--Epicus Maximus
 local warnStaticCharge				= mod:NewCastAnnounce(135621, 4)--Disruptron Mk. 3R-Alpha
 local warnDarkZone					= mod:NewSpellAnnounce(133346, 4)--Fjoll
 local warnCharging					= mod:NewSpellAnnounce(133253, 3)--Crush
@@ -34,8 +32,6 @@ local warnDeployBoom				= mod:NewSpellAnnounce(140912, 4)--Master Boom Boom
 
 local specWarnEvilGlare				= mod:NewSpecialWarningMove(133208)--Zen'shar
 local specWarnDoom					= mod:NewSpecialWarningSpell(133650, nil, nil, nil, true)--Nothing you can do about this, it means you let him get to 100 stacks and will most likely wipe if you don't have super strong CDs to blow(Millhouse Manastorm)
-local specWarnBlueCrush				= mod:NewSpecialWarningInterrupt(133262)--Epicus Maximus
-local specWarnDestructolaser		= mod:NewSpecialWarningMove(133250)--Epicus Maximus
 local specWarnStaticCharge			= mod:NewSpecialWarningInterrupt(135621)--Disruptron Mk. 3R-Alpha
 local specWarnDarkZone				= mod:NewSpecialWarningSpell(133346)--Fjoll
 local specWarnHeatedPokers			= mod:NewSpecialWarningSpell(133286)--Dungeon Master Vishas
@@ -45,8 +41,6 @@ local specWarnBoomingBoogaloo		= mod:NewSpecialWarningSpell(140894, nil, nil, ni
 local specWarnDeployBoom			= mod:NewSpecialWarningSpell(140912, nil, nil, nil, 3)--Master Boom Boom 
 
 local timerPowerCrystalCD			= mod:NewCDTimer(13, 133398)--Millhouse Manastorm
-local timerBlueCrushCD				= mod:NewNextTimer(30, 133262, nil, nil, nil, 4)--Epicus Maximus
-local timerDestructolaserCD			= mod:NewNextTimer(30, 133250, nil, nil, nil, 3)--Epicus Maximus
 --local timerStaticChargeCD			= mod:NewCDTimer(24, 135621, nil, nil, nil, 4)--Master Boom Boom
 local timerDarkZoneCD				= mod:NewNextTimer(29, 133346)--Fjoll
 local timerChargingCD				= mod:NewCDTimer(20, 133253)--Crush
@@ -97,13 +91,6 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnDoom:Show()
 		end
-	elseif args.spellId == 133262 then
-		timerBlueCrushCD:Start()
-		if brawlersMod:PlayerFighting() then
-			specWarnBlueCrush:Show(args.sourceName)
-		else
-			warnBlueCrush:Show()
-		end
 	elseif args.spellId == 135621 then
 --		timerStaticChargeCD:Start()
 		if brawlersMod:PlayerFighting() then
@@ -139,13 +126,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnEvilGlare:Show()
 		else
 			warnEvilGlare:Show()
-		end
-	elseif args.spellId == 133250 then
-		timerDestructolaserCD:Start()
-		if brawlersMod:PlayerFighting() then
-			specWarnDestructolaser:Show()
-		else
-			warnDestructolaser:Show()
 		end
 	elseif args.spellId == 140894 then
 		if brawlersMod:PlayerFighting() then
