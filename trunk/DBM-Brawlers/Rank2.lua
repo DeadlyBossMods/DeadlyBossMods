@@ -6,26 +6,26 @@ mod:SetModelID(46712)
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 133308 135234",
-	"SPELL_CAST_SUCCESS 133227 132670",
-	"SPELL_SUMMON 236458",
-	"UNIT_DIED"
+	"SPELL_CAST_START 132666 33975 136334",
+	"SPELL_AURA_APPLIED 229884",
+	"SPELL_AURA_REMOVED 229884",
+	"SPELL_SUMMON 236458"
 )
 
 --TODO, boom broom timer
-local warnSummonTwister			= mod:NewSpellAnnounce(132670, 3)--Kirrawk
-local warnStormCloud			= mod:NewSpellAnnounce(135234, 3)--Kirrawk
-local warnThrowNet				= mod:NewSpellAnnounce(133308, 3)--Fran and Riddoh
-local warnGoblinDevice			= mod:NewSpellAnnounce(133227, 4)--Fran and Riddoh
+local warnPyroblast				= mod:NewCastAnnounce(33975, 3)--Sanoriak
+local warnFireWall				= mod:NewSpellAnnounce(132666, 4)--Sanoriak
 local warnBoomBroom				= mod:NewSpellAnnounce(236458, 4)--Bill the Janitor
+local warnZenOrb				= mod:NewTargetAnnounce(229884, 1)--Master Paku
 
-local specWarnStormCloud		= mod:NewSpecialWarningInterrupt(135234)--Kirrawk
-local specWarnGoblinDevice		= mod:NewSpecialWarningSpell(133227)--Fran and Riddoh
+local specWarnFireWall			= mod:NewSpecialWarningSpell(132666)--Sanoriak
 local specWarnBoomBroom			= mod:NewSpecialWarningRun(236458, nil, nil, nil, 4)--Bill the Janitor
 
-local timerSummonTwisterCD		= mod:NewCDTimer(15, 132670, nil, nil, nil, 3)--Kirrawk
-local timerThrowNetCD			= mod:NewCDTimer(20, 133308, nil, nil, nil, 3)--Fran and Riddoh
-local timerGoblinDeviceCD		= mod:NewCDTimer(22, 133227, nil, nil, nil, 3)--Fran and Riddoh
+local timerFirewallCD			= mod:NewCDTimer(17, 132666)--Sanoriak
+local timerBoomBoomCD			= mod:NewAITimer(17, 236458)--Bill the Janitor
+local timerZenOrb				= mod:NewTargetTimer(15, 229884)--Master Paku
+
+local countdownZenOrb			= mod:NewCountdown(15, 229884)
 
 mod:RemoveOption("HealthFrame")
 
@@ -33,51 +33,48 @@ local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args.spellId == 133308 then
-		warnThrowNet:Show()
-		timerThrowNetCD:Start()
-	elseif args.spellId == 135234 then
-		--CD seems to be 32 seconds usually but sometimes only 16? no timer for now
+	if args:IsSpellID(33975, 136334) then--Spellid is used by 5 diff mobs in game, but SetZone sould filter the other 4 mobs.
+		warnPyroblast:Show()
+	elseif args.spellId == 132666 then
+		timerFirewallCD:Start()--First one is 5 seconds after combat start
 		if brawlersMod:PlayerFighting() then
-			specWarnStormCloud:Show(args.sourceName)
+			specWarnFireWall:Show()
 		else
-			warnStormCloud:Show()
+			warnFireWall:Show()
 		end
 	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
+function mod:SPELL_AURA_APPLIED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
-	if args.spellId == 133227 then
-		timerGoblinDeviceCD:Start()--6 seconds after combat start, if i do that kind of detection later
-		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
-			specWarnGoblinDevice:Show()
+	if args.spellId == 229884 then
+		timerZenOrb:Start(args.destName)
+		if brawlersMod:PlayerFighting() then
+			countdownZenOrb:Start()
 		else
-			warnGoblinDevice:Show()
+			warnZenOrb:Show(args.destName)
 		end
-	elseif args.spellId == 132670 then
-		warnSummonTwister:Show()
-		timerSummonTwisterCD:Start()--22 seconds after combat start?
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
+	if args.spellId == 229884 then
+		timerZenOrb:Stop(args.destName)
+		if brawlersMod:PlayerFighting() then
+			countdownZenOrb:Cancel()
+		end
 	end
 end
 
 function mod:SPELL_SUMMON(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
 	if args.spellId == 236458 then
-		--timerGoblinDeviceCD:Start()
+		timerBoomBoomCD:Start()
 		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
 			specWarnBoomBroom:Show()
 		else
 			warnBoomBroom:Show()
 		end
-	end
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 67524 then--These 2 have a 1 min 50 second berserk
-		timerThrowNetCD:Cancel()
-	elseif cid == 67525 then--These 2 have a 1 min 50 second berserk
-		timerGoblinDeviceCD:Cancel()
 	end
 end

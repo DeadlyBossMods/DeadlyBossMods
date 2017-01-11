@@ -6,89 +6,32 @@ mod:SetModelID(46798)
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 133212 125212 133465 133017 138845 142621 142583 133262",
-	"SPELL_CAST_SUCCESS 133250",
-	"SPELL_AURA_APPLIED 133015 133018",
+	"SPELL_CAST_START 133262",
+	"SPELL_CAST_SUCCESS 133250 141013",
 	"SPELL_AURA_APPLIED_DOSE 138901",
 	"SPELL_AURA_REMOVED_DOSE 138901",
 	"SPELL_AURA_REMOVED 138901"
 )
 
-local warnRockets				= mod:NewCastAnnounce(133212, 4)--Max Megablast (GG Engineering)
-local warnShadowbolt			= mod:NewSpellAnnounce(125212, 3)--Dark Summoner
-local warnGhost					= mod:NewSpellAnnounce(133465, 4)--Dark Summoner
-local warnMines					= mod:NewCountAnnounce(133018, 3)--Battletron
-local warnMinesSpawning			= mod:NewSpellAnnounce(133015, 4)--Battletron
-local warnBulwark				= mod:NewAddsLeftAnnounce(138901, 2)--Ahoo'ru
-local warnCharge				= mod:NewCastAnnounce(138845, 1)--Ahoo'ru
-local warnCompleteHeal			= mod:NewCastAnnounce(142621, 4)--Ahoo'ru
-local warnDivineCircle			= mod:NewSpellAnnounce(142585, 3)--Ahoo'ru
+local warnSpitAcid				= mod:NewSpellAnnounce(141013, 4)--Nibbleh
 local warnBlueCrush				= mod:NewSpellAnnounce(133262, 4)--Epicus Maximus
 local warnDestructolaser		= mod:NewSpellAnnounce(133250, 4)--Epicus Maximus
 
-local specWarnShadowbolt		= mod:NewSpecialWarningSpell(125212, false)--Let you choose which one is important to warn for(Dark Summoner)
-local specWarnGhost				= mod:NewSpecialWarningSpell(133465, false)--Dark Summoner
-local specWarnMinesSpawning		= mod:NewSpecialWarningSpell(133015)--Battletron
-local specWarnCharge			= mod:NewSpecialWarningSpell(138845)--Ahoo'ru
-local specWarnCompleteHeal		= mod:NewSpecialWarningInterrupt(142621, nil, nil, nil, 3)--Ahoo'ru
-local specWarnDivineCircle		= mod:NewSpecialWarningDodge(142585)--Ahoo'ru
+local specWarnSpitAcid			= mod:NewSpecialWarningSpell(141013)--Nibbleh
 local specWarnBlueCrush			= mod:NewSpecialWarningInterrupt(133262)--Epicus Maximus
 local specWarnDestructolaser	= mod:NewSpecialWarningMove(133250)--Epicus Maximus
 
-local timerRockets				= mod:NewBuffActiveTimer(9, 133212)--Max Megablast
-local timerShadowboltCD			= mod:NewCDTimer(12, 125212, nil, nil, nil, 4)--Dark Summoner
-local timerGhostCD				= mod:NewNextTimer(13, 133465, nil, nil, nil, 1)--Dark Summoner
-local timerDivineCircleCD		= mod:NewCDTimer(35, 142585)--Insufficent data to say if accurate with certainty
+local timerSpitAcidCD			= mod:NewNextTimer(20, 141013)--Nibbleh
 local timerBlueCrushCD			= mod:NewNextTimer(29.1, 133262, nil, nil, nil, 4)--Epicus Maximus
 local timerDestructolaserCD		= mod:NewNextTimer(30, 133250, nil, nil, nil, 3)--Epicus Maximus
 
 mod:RemoveOption("HealthFrame")
 
 local brawlersMod = DBM:GetModByName("Brawlers")
-local remainingMines = 8
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args.spellId == 133212 then
-		warnRockets:Show()
-		timerRockets:Schedule(4)
-	elseif args.spellId == 125212 then
-		timerShadowboltCD:Start()
-		if brawlersMod:PlayerFighting() then
-			specWarnShadowbolt:Show()
-		else
-			warnShadowbolt:Show()
-		end
-	elseif args.spellId == 133465 then
-		timerGhostCD:Start()
-		if brawlersMod:PlayerFighting() then
-			specWarnGhost:Show()
-		else
-			warnGhost:Show()
-		end
-	elseif args.spellId == 133017 then
-		remainingMines = remainingMines - 1
-		warnMines:Show(remainingMines)
-	elseif args.spellId == 138845 then
-		if brawlersMod:PlayerFighting() then
-			specWarnCharge:Show()
-		else
-			warnCharge:Show()
-		end
-	elseif args.spellId == 142621 then
-		if brawlersMod:PlayerFighting() then
-			specWarnCompleteHeal:Show(args.sourceName)
-		else
-			warnCompleteHeal:Show()
-		end
-	elseif args.spellId == 142583 then
-		timerDivineCircleCD:Start()
-		if args:IsPlayer() then
-			specWarnDivineCircle:Show()
-		else
-			warnDivineCircle:Show()
-		end
-	elseif args.spellId == 133262 then
+	if args.spellId == 133262 then
 		timerBlueCrushCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnBlueCrush:Show(args.sourceName)
@@ -107,28 +50,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			warnDestructolaser:Show()
 		end
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
-	if args.spellId == 133015 then
---		remainingMines = 8
+	elseif args.spellId == 141013 then
+		timerSpitAcidCD:Start()
 		if brawlersMod:PlayerFighting() then
-			specWarnMinesSpawning:Show()
+			specWarnSpitAcid:Show()
 		else
-			warnMinesSpawning:Show()
+			warnSpitAcid:Show()
 		end
-	elseif args.spellId == 133018 then
-		remainingMines = 8
 	end
 end
-
-function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
-	if args.spellId == 138901 then
-		warnBulwark:Show(args.amount or 0)
-	end
-end
-mod.SPELL_AURA_REMOVED = mod.SPELL_AURA_APPLIED_DOSE
-mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_APPLIED_DOSE
