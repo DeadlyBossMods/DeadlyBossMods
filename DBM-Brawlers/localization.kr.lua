@@ -133,7 +133,7 @@ L:SetGeneralLocalization({
 -------------
 -- Rares 1 --
 -------------
-L= DBM:GetModLocalization("BrawlRare1")
+L= DBM:GetModLocalization("BrawlLegacy")
 
 L:SetGeneralLocalization({
 	name = "싸움꾼: 도전(유산)"
@@ -142,7 +142,7 @@ L:SetGeneralLocalization({
 -------------
 -- Rares 2 --
 -------------
-L= DBM:GetModLocalization("BrawlRare2")
+L= DBM:GetModLocalization("BrawlChallenges")
 
 L:SetGeneralLocalization({
 	name = "싸움꾼: 도전(특수)"
