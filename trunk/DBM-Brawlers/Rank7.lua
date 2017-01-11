@@ -13,7 +13,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED 138901"
 )
 
-local warnRockets				= mod:NewCastAnnounce(133212, 4)--Max Megablast
+local warnRockets				= mod:NewCastAnnounce(133212, 4)--Max Megablast (GG Engineering)
 local warnShadowbolt			= mod:NewSpellAnnounce(125212, 3)--Dark Summoner
 local warnGhost					= mod:NewSpellAnnounce(133465, 4)--Dark Summoner
 local warnMines					= mod:NewCountAnnounce(133018, 3)--Battletron

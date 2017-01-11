@@ -64,6 +64,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
+	if npc ~= L.Bizmo and npc ~= L.Bazzelflange then return end
 	local isMatchBegin = true
 	if msg:find(L.Rank1, 1, true) then -- fix for ruRU clients.
 		currentFighter = target
