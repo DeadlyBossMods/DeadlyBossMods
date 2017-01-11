@@ -559,6 +559,7 @@ do
 			return
 		end
 		activeRange = mainFrame.range
+		local restricted = mainFrame.restrictions
 		local tEnabled = textFrame.isShown
 		local rEnabled = radarFrame.isShown
 		if tEnabled then
@@ -573,7 +574,6 @@ do
 		end
 
 		local playerMapId = GetPlayerMapAreaID("player") or 0
-		local restricted = mainFrame.restrictions
 		if not restricted then
 			rotation = pi2 - (GetPlayerFacing() or 0)
 		end
@@ -861,6 +861,14 @@ end
 
 function rangeCheck:IsShown()
 	return textFrame and textFrame.isShown or radarFrame and radarFrame.isShown
+end
+
+function rangeCheck:IsRadarShown()
+	return radarFrame and radarFrame.isShown
+end
+
+function rangeCheck:UpdateRestrictions(force)
+	mainFrame.restrictions = force or DBM:HasMapRestrictions()
 end
 
 function rangeCheck:SetHideTime(hideTime)
