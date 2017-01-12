@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(15467)
 --mod:SetModelID(15879)
-mod:SetReCombatTime(10)
+--mod:SetReCombatTime(10)
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterCombat("combat")
@@ -47,7 +47,7 @@ local function setDialog(self, set)
 	if set then
 		local musicEnabled = GetCVarBool("Sound_EnableMusic") or true
 		local musicVolume = tonumber(GetCVar("Sound_MusicVolume"))
-		self.Options.SoundOption = tonumber(GetCVarBool("Sound_DialogVolume")) or 1
+		self.Options.SoundOption = tonumber(GetCVar("Sound_DialogVolume")) or 1
 		if musicEnabled and musicVolume then--Normalize volume to music volume level
 			DBM:Debug("Setting normalized volume to music volume of: "..musicVolume)
 			SetCVar("Sound_DialogVolume", musicVolume)
