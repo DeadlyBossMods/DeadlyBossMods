@@ -22,7 +22,7 @@ local specWarnBlueCrush			= mod:NewSpecialWarningInterrupt(133262)--Epicus Maxim
 local specWarnDestructolaser	= mod:NewSpecialWarningMove(133250)--Epicus Maximus
 
 local timerSpitAcidCD			= mod:NewNextTimer(20, 141013)--Nibbleh
-local timerBlueCrushCD			= mod:NewNextTimer(29.1, 133262, nil, nil, nil, 4)--Epicus Maximus
+local timerBlueCrushCD			= mod:NewNextTimer(28.2, 133262, nil, nil, nil, 4)--Epicus Maximus
 local timerDestructolaserCD		= mod:NewNextTimer(30, 133250, nil, nil, nil, 3)--Epicus Maximus
 
 mod:RemoveOption("HealthFrame")
