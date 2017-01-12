@@ -33,7 +33,6 @@ local currentZoneID = select(8, GetInstanceInfo())
 local modsStopped = false
 local eventsRegistered = false
 local lastRank = 0
-local QueuedBuff = GetSpellInfo(132639)
 --Fix for not registering events on reloadui or login while already inside brawlers guild.
 if currentZoneID == 369 or currentZoneID == 1043 then
 	eventsRegistered = true
@@ -237,17 +236,19 @@ function mod:OnSync(msg)
 	end
 end
 
-function mod:UNIT_AURA(uId)
-	local currentQueueRank = select(15, UnitBuff("player", QueuedBuff))
-	if currentQueueRank and currentQueueRank ~= lastRank then
-		lastRank = currentQueueRank
-		warnQueuePosition:Show(currentQueueRank)
-		if currentQueueRank == 1 then
-			specWarnYourNext:Show()
-		end
-		if self.Options.SpeakOutQueue then
-			DBM:PlayCountSound(currentQueueRank)
+do
+	local QueuedBuff = GetSpellInfo(132639)
+	function mod:UNIT_AURA(uId)
+		local currentQueueRank = select(17, UnitBuff("player", QueuedBuff))
+		if currentQueueRank and currentQueueRank ~= lastRank then
+			lastRank = currentQueueRank
+			warnQueuePosition:Show(currentQueueRank)
+			if currentQueueRank == 1 then
+				specWarnYourNext:Show()
+			end
+			if self.Options.SpeakOutQueue then
+				DBM:PlayCountSound(currentQueueRank)
+			end
 		end
 	end
 end
-
