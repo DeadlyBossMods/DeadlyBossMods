@@ -17,7 +17,6 @@ local specWarnPolymorph		= mod:NewSpecialWarningSpell(133362)--Millie Watt
 local specWarnDinoDash		= mod:NewSpecialWarningDodge(232252)--Millie Watt
 
 local timerPolymorphCD		= mod:NewCDTimer(35, 133362, nil, nil, nil, 3)--Millie Watt
-local timerDinoDashCD		= mod:NewAITimer(35, 232252, nil, nil, nil, 3)--Topps
 
 mod:RemoveOption("HealthFrame")
 
@@ -33,7 +32,6 @@ function mod:SPELL_CAST_START(args)
 			warnPolymorph:Show()
 		end
 	elseif args.spellId == 232252 then
-		timerDinoDashCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnDinoDash:Show()
 		else

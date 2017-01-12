@@ -34,6 +34,25 @@ local currentZoneID = select(8, GetInstanceInfo())
 local modsStopped = false
 local eventsRegistered = false
 local lastRank = 0
+
+local function setDialog(self, set)
+	if not self.Options.NormalizeVolume then return end
+	if set then
+		local soundVolume = tonumber(GetCVar("Sound_SFXVolume"))
+		self.Options.SoundOption = tonumber(GetCVar("Sound_DialogVolume")) or 1
+		DBM:Debug("Setting normalized volume to SFX volume of: "..soundVolume)
+		SetCVar("Sound_DialogVolume", soundVolume)
+	else
+		DBM:Debug("Exiting Brawlers Area, checking Sound")
+		print(self.Options.SoundOption)
+		if self.Options.SoundOption then
+			DBM:Debug("Restoring Dialog volume to saved value of: "..self.Options.SoundOption)
+			SetCVar("Sound_DialogVolume", self.Options.SoundOption)
+			self.Options.SoundOption = nil
+		end
+	end
+end
+
 --Fix for not registering events on reloadui or login while already inside brawlers guild.
 if currentZoneID == 369 or currentZoneID == 1043 then
 	eventsRegistered = true
@@ -43,12 +62,8 @@ if currentZoneID == 369 or currentZoneID == 1043 then
 		"UNIT_DIED",
 		"UNIT_AURA player"
 	)
-	if mod.Options.NormalizeVolume then
-		local soundVolume = tonumber(GetCVar("Sound_SFXVolume"))
-		mod.Options.SoundOption = tonumber(GetCVar("Sound_DialogVolume")) or 1
-		DBM:Debug("Setting normalized volume to SFX volume of: "..soundVolume)
-		SetCVar("Sound_DialogVolume", soundVolume)
-	end
+	mod:Unschedule(setDialog)
+	mod:Schedule(1, setDialog, mod, true)
 end
 
 function mod:PlayerFighting() -- for external mods
@@ -161,12 +176,8 @@ function mod:ZONE_CHANGED_NEW_AREA()
 			"UNIT_DIED",
 			"UNIT_AURA player"
 		)
-		if self.Options.NormalizeVolume then
-			local soundVolume = tonumber(GetCVar("Sound_SFXVolume"))
-			self.Options.SoundOption = tonumber(GetCVar("Sound_DialogVolume")) or 1
-			DBM:Debug("Setting normalized volume to SFX volume of: "..soundVolume)
-			SetCVar("Sound_DialogVolume", soundVolume)
-		end
+		self:Unschedule(setDialog)
+		self:Schedule(1, setDialog, mod, true)
 		return
 	end--We returned to arena, reset variable
 	if modsStopped then return end--Don't need this to fire every time you change zones after the first.
@@ -191,13 +202,7 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	if mod2 then
 		mod2:Stop()--Stop all timers and warnings
 	end
-	if self.Options.NormalizeVolume then
-		if self.Options.SoundOption then
-			DBM:Debug("Restoring Dialog volume to saved value of: "..self.Options.SoundOption)
-			SetCVar("Sound_DialogVolume", self.Options.SoundOption)
-			self.Options.SoundOption = nil
-		end
-	end
+	setDialog(self)
 	modsStopped = true
 end
 
