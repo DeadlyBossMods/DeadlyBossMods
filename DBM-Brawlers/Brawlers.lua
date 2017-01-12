@@ -44,11 +44,10 @@ if currentZoneID == 369 or currentZoneID == 1043 then
 		"UNIT_AURA player"
 	)
 	if mod.Options.NormalizeVolume then
-		if mod.Options.SoundOption then
-			DBM:Debug("Restoring Dialog volume to saved value of: "..mod.Options.SoundOption)
-			SetCVar("Sound_DialogVolume", mod.Options.SoundOption)
-			mod.Options.SoundOption = nil
-		end
+		local soundVolume = tonumber(GetCVar("Sound_SFXVolume"))
+		mod.Options.SoundOption = tonumber(GetCVar("Sound_DialogVolume")) or 1
+		DBM:Debug("Setting normalized volume to SFX volume of: "..soundVolume)
+		SetCVar("Sound_DialogVolume", soundVolume)
 	end
 end
 
