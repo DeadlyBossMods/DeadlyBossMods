@@ -57,14 +57,16 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 135385 then
-		warnOrgPortal:Show()
 		if not playerIsFighting then--Do not distract player in arena with special warning
 			specWarnOrgPortal:Show()
+		else
+			warnOrgPortal:Show()
 		end
 	elseif args.spellId == 135386 then
-		warnStormPortal:Show()
 		if not playerIsFighting then--Do not distract player in arena with special warning
 			specWarnStormPortal:Show()
+		else
+			warnStormPortal:Show()
 		end
 	end
 end
