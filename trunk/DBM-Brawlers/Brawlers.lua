@@ -24,6 +24,7 @@ local berserkTimer			= mod:NewBerserkTimer(120)--all fights have a 2 min enrage 
 
 mod:AddBoolOption("SpectatorMode", true)
 mod:AddBoolOption("SpeakOutQueue", true)
+mod:AddBoolOption("NormalizeVolume", true, "misc")
 mod:RemoveOption("HealthFrame")
 
 local playerIsFighting = false
@@ -42,6 +43,13 @@ if currentZoneID == 369 or currentZoneID == 1043 then
 		"UNIT_DIED",
 		"UNIT_AURA player"
 	)
+	if mod.Options.NormalizeVolume then
+		if mod.Options.SoundOption then
+			DBM:Debug("Restoring Dialog volume to saved value of: "..mod.Options.SoundOption)
+			SetCVar("Sound_DialogVolume", mod.Options.SoundOption)
+			mod.Options.SoundOption = nil
+		end
+	end
 end
 
 function mod:PlayerFighting() -- for external mods
@@ -152,6 +160,12 @@ function mod:ZONE_CHANGED_NEW_AREA()
 			"UNIT_DIED",
 			"UNIT_AURA player"
 		)
+		if self.Options.NormalizeVolume then
+			local soundVolume = tonumber(GetCVar("Sound_SFXVolume"))
+			self.Options.SoundOption = tonumber(GetCVar("Sound_DialogVolume")) or 1
+			DBM:Debug("Setting normalized volume to SFX volume of: "..soundVolume)
+			SetCVar("Sound_DialogVolume", soundVolume)
+		end
 		return
 	end--We returned to arena, reset variable
 	if modsStopped then return end--Don't need this to fire every time you change zones after the first.
@@ -175,6 +189,13 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	local mod2 = DBM:GetModByName("BrawlRumble")
 	if mod2 then
 		mod2:Stop()--Stop all timers and warnings
+	end
+	if self.Options.NormalizeVolume then
+		if self.Options.SoundOption then
+			DBM:Debug("Restoring Dialog volume to saved value of: "..self.Options.SoundOption)
+			SetCVar("Sound_DialogVolume", self.Options.SoundOption)
+			self.Options.SoundOption = nil
+		end
 	end
 	modsStopped = true
 end
