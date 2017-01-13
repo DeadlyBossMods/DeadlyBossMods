@@ -55,7 +55,7 @@ local warnOrbOfCorrosion			= mod:NewTargetAnnounce(230267, 3)
 --Stage One: Low Tide
 local specWarnOrbOfCorruption		= mod:NewSpecialWarningYou(229119, nil, nil, nil, 1, 5)
 local yellOrbOfCorruption			= mod:NewPosYell(229119)
-local specWarnTaintofSea			= mod:NewSpecialWarningMoveAway(228088, nil, nil, nil, 1, 2)
+local specWarnTaintofSea			= mod:NewSpecialWarningDodge(228088, nil, nil, nil, 1, 2)
 local specWarnBilewaterBreath		= mod:NewSpecialWarningCount(227967, nil, nil, nil, 2, 2)
 local specWarnBilewaterRedox		= mod:NewSpecialWarningTaunt(227982, nil, nil, nil, 1, 2)
 local specWarnBilewaterCorrosion	= mod:NewSpecialWarningMove(227998, nil, nil, nil, 1, 2)
@@ -116,7 +116,7 @@ local countdownOozeExplosions		= mod:NewCountdown(20.5, 227992)
 
 --Stage One: Low Tide
 local voiceOrbofCorruption			= mod:NewVoice(229119)--orbrun
-local voiceTaintOfSea				= mod:NewVoice(228088)--scatter?runout?
+local voiceTaintOfSea				= mod:NewVoice(228088)--watchstep
 local voiceBilewaterBreath			= mod:NewVoice(227967)--breathsoon
 local voiceBilewaterRedox			= mod:NewVoice(227982)--tauntboss
 local voiceBilewaterCorrosion		= mod:NewVoice(227998)--runaway
@@ -407,10 +407,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDarkHatred:CombinedShow(0.3, args.destName)
 	elseif spellId == 228054 then
 		warnTaintOfSea:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then
-			specWarnTaintofSea:Show()
-			voiceTaintOfSea:Play("scatter")
-		end
 		if self.Options.SetIconOnTaint then
 			self:SetSortedIcon(0.5, args.destName, 4, 5)
 		end
@@ -475,6 +471,10 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 228054 then
+		if args:IsPlayer() then
+			specWarnTaintofSea:Show()
+			voiceTaintOfSea:Play("watchstep")
+		end
 		if self.Options.SetIconOnTaint then
 			self:SetIcon(args.destName, 0)
 		end
