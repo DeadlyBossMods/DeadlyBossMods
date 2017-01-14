@@ -44,7 +44,6 @@ local function setDialog(self, set)
 		SetCVar("Sound_DialogVolume", soundVolume)
 	else
 		DBM:Debug("Exiting Brawlers Area, checking Sound")
-		print(self.Options.SoundOption)
 		if self.Options.SoundOption then
 			DBM:Debug("Restoring Dialog volume to saved value of: "..self.Options.SoundOption)
 			SetCVar("Sound_DialogVolume", self.Options.SoundOption)
