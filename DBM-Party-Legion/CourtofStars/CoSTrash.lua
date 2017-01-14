@@ -25,7 +25,7 @@ local specWarnBewitch				= mod:NewSpecialWarningInterrupt(211470, "HasInterrupt"
 local specWarnChargingStation		= mod:NewSpecialWarningInterrupt(225100, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSearingGlare			= mod:NewSpecialWarningInterrupt(211299, "HasInterrupt", nil, nil, 1, 2)
 local specWarnFelDetonation			= mod:NewSpecialWarningSpell(211464, false, nil, 2, 2, 2)
-local specWarnSealMagic				= mod:NewSpecialWarningRun(209404, "Melee", nil, nil, 4, 2)
+local specWarnSealMagic				= mod:NewSpecialWarningRun(209404, false, nil, 2, 4, 2)
 local specWarnDisruptingEnergy		= mod:NewSpecialWarningMove(209512, nil, nil, nil, 1, 2)
 
 local voiceFortification			= mod:NewVoice(209033, "MagicDispeller")--dispelnow
@@ -39,7 +39,7 @@ local voiceBewitch					= mod:NewVoice(211470, "HasInterrupt")--kickcast
 local voiceChargingStation			= mod:NewVoice(225100, "HasInterrupt")--kickcast
 local voiceSearingGlare				= mod:NewVoice(211299, "HasInterrupt")--kickcast
 local voiceFelDetonation			= mod:NewVoice(211464, false, nil, 2)--aesoon
-local voiceSealMagic				= mod:NewVoice(209404, "Melee")--runout
+local voiceSealMagic				= mod:NewVoice(209404, false, nil, 2)--runout
 local voiceDisruptingEnergy			= mod:NewVoice(209512)--runaway
 
 mod:RemoveOption("HealthFrame")
