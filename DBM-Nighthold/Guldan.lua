@@ -6,7 +6,7 @@ mod:SetCreatureID(105503)--104537 (Fel Lord Kuraz'mal)
 mod:SetEncounterID(1866)
 mod:SetZone()
 mod:SetUsedIcons(1)
---mod:SetHotfixNoticeRev(12324)
+mod:SetHotfixNoticeRev(15664)
 
 mod:RegisterCombat("combat")
 
