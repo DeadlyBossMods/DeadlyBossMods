@@ -12,17 +12,17 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 206219 206220 206514 206675 206840 207938 104534 208545 209270 211152 208672 167819 167935 177380 152987 206939 206744 206883",
-	"SPELL_CAST_SUCCESS 206222 206221",
-	"SPELL_AURA_APPLIED 206219 206220 209011 206354 206384 209086 208903 211162 221891 208802 221606 221603 221785 221784 212686",
+	"SPELL_CAST_SUCCESS 206222 206221 221783",
+	"SPELL_AURA_APPLIED 206219 206220 209011 206354 206384 209086 208903 211162 221891 208802 221606 221603 221785 221784 212686 227427 206516",
 	"SPELL_AURA_APPLIED_DOSE 211162 208802",
-	"SPELL_AURA_REMOVED 209011 206354 206384 209086 221603 221785 221784 212686",
+	"SPELL_AURA_REMOVED 209011 206354 206384 209086 221603 221785 221784 212686 206516",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, if anquished sperits is important, add a timer. if not, remove warning.
+--TODO, if anquished spirits is important, add a timer. if not, remove warning.
 --TODO, a LOT more work on bonds of fel. Once I understand how it breaks. if it's like shackled torment. how many targets, etc.
 --TODO, more work on eye of guldan. if pulsing aoe, maybe only ranged switch?. Timer for duplicate when energy gain rate known
 --TODO, hand of guldan in phase 2 probably diff spellid than phase 1, since it calls a different add.
@@ -30,6 +30,13 @@ mod:RegisterEventsInCombat(
 --TODO, fine tune black harvest into special warning if viable. Add timer if it's not cast often.
 --TODO, Do a bunch of stuff with well of souls? infoframe to track stacks/who should soak next?
 --TODO, figure out flames of sargeras and improve upon it. add timer and keepmove voice if needed.
+--[[
+(ability.id = 206219 or ability.id = 206220 or ability.id = 206514 or ability.id = 206675 or ability.id = 206840 or ability.id = 207938 or ability.id = 206883 or ability.id = 208545 or ability.id = 209270 or ability.id = 211152 or ability.id = 208672 or ability.id = 167819 or ability.id = 167935 or ability.id = 177380 or ability.id = 152987 or ability.id = 206939 or ability.id = 206744) and type = "begincast"
+or (ability.id = 206222 or ability.id = 206221 or ability.id = 221783) and type = "cast"
+or (ability.id = 227427 or ability.id = 206516) and type = "applybuff"
+or (ability.id = 227427 or ability.id = 206516) and type = "removebuff"
+--]]
+
 local Kurazmal = EJ_GetSectionInfo(13121)
 local Vethriz = EJ_GetSectionInfo(13124)
 local Dzorykx = EJ_GetSectionInfo(13129)
@@ -44,10 +51,12 @@ local warnShadowblink				= mod:NewSpellAnnounce(207938, 2)
 local warnSoulVortex				= mod:NewTargetAnnounce(206883, 3)
 local warnAnguishedSpirits			= mod:NewSpellAnnounce(208545, 2)
 --Stage Two: The Ritual of Aman'thul
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 local warnEmpLiquidHellfire			= mod:NewTargetAnnounce(206220, 3)
 local warnBurningClaws				= mod:NewTargetAnnounce(208903, 3, nil, "Tank")
 local warnCharredLacerations		= mod:NewStackAnnounce(211162, 2, nil, "Tank")
 --Stage Three: The Master's Power
+local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 local warnStormOfDestroyer			= mod:NewCountAnnounce(161121, 3)
 local warnWellofSouls				= mod:NewSpellAnnounce(206939, 4)
 local warnSoulSiphon				= mod:NewTargetAnnounce(221891, 3, nil, "Healer")
@@ -89,8 +98,8 @@ local yellFlamesofSargeras			= mod:NewYell(221606)
 --Stage One: The Council of Elders
 ----Gul'dan
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerLiquidHellfireCD			= mod:NewNextTimer(25, 206219, nil, nil, nil, 3)
-local timerFelEffluxCD				= mod:NewCDTimer(12, 206514, nil, nil, nil, 3)--12-13.5
+local timerLiquidHellfireCD			= mod:NewNextCountTimer(25, 206219, nil, nil, nil, 3)
+local timerFelEffluxCD				= mod:NewCDCountTimer(12, 206514, nil, nil, nil, 3)--12-13.5 (14-15 on normal)
 ----Fel Lord Kuraz'mal
 mod:AddTimerLine(Kurazmal)
 local timerFelLordKurazCD			= mod:NewNextTimer(16, "ej13121", nil, nil, nil, 1, 212258)
@@ -104,15 +113,17 @@ local timerShadowBlinkCD			= mod:NewCDTimer(36, 207938)--Role color maybe if bli
 ----D'zorykx the Trapper
 mod:AddTimerLine(Dzorykx)
 local timerDzorykxCD				= mod:NewNextTimer(35, "ej13129", nil, nil, nil, 1, 212258)
-local timerSoulVortexCD				= mod:NewCDTimer(34, 206883, nil, nil, nil, 3)--34-36
+local timerSoulVortexCD				= mod:NewCDTimer(32.5, 206883, nil, nil, nil, 3)--34-36
 --Stage Two: The Ritual of Aman'thul
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
-local timerBondsofFelCD				= mod:NewAITimer(16, 206222, nil, nil, nil, 3)
-local timerEyeofGuldanCD			= mod:NewAITimer(16, 209270, nil, nil, nil, 1)
+local timerBondsofFelCD				= mod:NewNextTimer(50, 206222, nil, nil, nil, 3)
+local timerEyeofGuldanCD			= mod:NewNextTimer(60, 209270, nil, nil, nil, 1)
 --Stage Three: The Master's Power
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
-local timerStormOfDestroyerCD		= mod:NewAITimer(16, 161121, nil, nil, nil, 3)
-local timerWellOfSoulsCD			= mod:NewAITimer(16, 206939, nil, nil, nil, 5)
+local timerFlamesofSargerasCD		= mod:NewCDTimer(58.5, 221783, nil, nil, nil, 3)
+local timerStormOfDestroyerCD		= mod:NewCDTimer(16, 161121, nil, nil, nil, 3)
+local timerWellOfSoulsCD			= mod:NewCDTimer(16, 206939, nil, nil, nil, 5)
+local timerBlackHarvestCD			= mod:NewCDTimer(83, 206744, nil, nil, nil, 2)
 
 --local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
 
@@ -150,8 +161,8 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.liquidHellfireCast = 0
 	self.vb.felEffluxCast = 0
-	timerLiquidHellfireCD:Start(2-delay)
-	timerFelEffluxCD:Start(11-delay)
+	timerLiquidHellfireCD:Start(2-delay, 1)
+	timerFelEffluxCD:Start(11-delay, 1)
 	timerFelLordKurazCD:Start(11-delay)
 	timerVethrizCD:Start(25-delay)
 	timerDzorykxCD:Start(35-delay)
@@ -173,23 +184,29 @@ function mod:SPELL_CAST_START(args)
 		self.vb.liquidHellfireCast = self.vb.liquidHellfireCast + 1
 		specWarnLiquidHellfire:Show()
 		voiceLiquidHellfire:Play("watchstep")
-		if self.vb.liquidHellfireCast == 1 then
-			timerLiquidHellfireCD:Start(15)
-		elseif self.vb.liquidHellfireCast == 2 then
-			timerLiquidHellfireCD:Start(24)
-		else
-			timerLiquidHellfireCD:Start()
+		if self.vb.phase == 1 then
+			timerLiquidHellfireCD:Start(15, self.vb.liquidHellfireCast+1)
+		elseif self.vb.phase == 1.5 then
+			timerLiquidHellfireCD:Start(24, self.vb.liquidHellfireCast+1)
+		else--Phase 2
+			timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
 		end
 	elseif spellId == 206220 then
 		self.vb.liquidHellfireCast = self.vb.liquidHellfireCast + 1
 		specWarnEmpLiquidHellfire:Show()
 		voiceEmpLiquidHellfire:Play("watchstep")
-		timerLiquidHellfireCD:Start()--use same timer (for now)
+		if self.vb.phase == 1 then
+			timerLiquidHellfireCD:Start(15, self.vb.liquidHellfireCast+1)
+		elseif self.vb.phase == 1.5 then
+			timerLiquidHellfireCD:Start(24, self.vb.liquidHellfireCast+1)
+		else--Phase 2
+			timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
+		end
 	elseif spellId == 206514 then
 		self.vb.felEffluxCast = self.vb.felEffluxCast + 1
 		specWarnFelEfflux:Show()
 		voiceFelEfflux:Play("watchwave")
-		timerFelEffluxCD:Start()
+		timerFelEffluxCD:Start(nil, self.vb.felEffluxCast+1)
 	elseif spellId == 206675 then
 		timerShatterEssenceCD:Start()
 		local targetName, uId, bossuid = self:GetBossTarget(104537)--Add true if it has a boss unitID
@@ -242,6 +259,8 @@ function mod:SPELL_CAST_START(args)
 		timerWellOfSoulsCD:Start()
 	elseif spellId == 206744 then
 		warnBlackHarvest:Show()
+		--63, 83 (time based?)
+		timerBlackHarvestCD:Start()
 	end
 end
 
@@ -249,6 +268,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 206222 or spellId == 206221 then
 		timerBondsofFelCD:Start()
+	elseif spellId == 221783 then
+		timerFlamesofSargerasCD:Start()
 	end
 end
 
@@ -341,6 +362,23 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(8)
 			end
 		end
+	elseif spellId == 206516 then--The Eye of Aman'Thul (phase 1 buff)
+		self.vb.phase = 1.5
+		timerLiquidHellfireCD:Stop()
+		timerFelEffluxCD:Stop()
+		timerLiquidHellfireCD:Start(5, self.vb.liquidHellfireCast+1)
+		timerFelEffluxCD:Start(10, self.vb.felEffluxCast+1)
+	elseif spellId == 227427 then--The Eye of Aman'Thul (phase 3 transition buff)
+		self.vb.phase = 3
+		warnPhase3:Show()
+		timerBondsofFelCD:Stop()
+		timerLiquidHellfireCD:Stop()
+		timerEyeofGuldanCD:Stop()
+		timerWellOfSoulsCD:Start(15)
+		timerFlamesofSargerasCD:Start(21)
+		timerEyeofGuldanCD:Start(42.5)--VERIFY THIS
+		timerBlackHarvestCD:Start(63)--VERIFY THIS
+		timerStormOfDestroyerCD:Start(94)--Health based or timer? VERIFY THIS
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -361,6 +399,14 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
+	elseif spellId == 206516 then--The Eye of Aman'Thul (phase 1 buff)
+		self.vb.phase = 2
+		warnPhase2:Show()
+		timerLiquidHellfireCD:Stop()
+		timerFelEffluxCD:Stop()--This probably needs refactoring for mythic since phase 1 and 2 happen at same time
+		timerBondsofFelCD:Start(10)
+		timerEyeofGuldanCD:Start(32.5)
+		timerLiquidHellfireCD:Start(45, self.vb.liquidHellfireCast+1)
 	end
 end
 
@@ -392,7 +438,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	if spellId == 161121 then--Assumed this is a script like felseeker
 		specWarnStormOfDestroyer:Show()
 		voiceStormOfDestroyer:Play("watchstep")
-		timerStormOfDestroyerCD:Start()
+		--timerStormOfDestroyerCD:Start()
 	elseif spellId == 215736 then--Hand of Guldan (Fel Lord Kuraz'mal)
 		timerShatterEssenceCD:Start(5)
 	elseif spellId == 215738 then--Hand of Guldan (Inquisitor Vethriz)
