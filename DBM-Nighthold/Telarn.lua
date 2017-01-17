@@ -391,11 +391,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			yellParasiticFetter:Yell()
 		end
-		if self:CheckNearby(20, args.destName) then
+		if self:CheckNearby(20, args.destName) and self:AntiSpam(2, 3) then
 			specWarnParasiticFetter:Show(args.destName)
 			voiceParasiticFetter:Play("runaway")
 		else
-			warnParasiticFetter:Show(args.destName)
+			warnParasiticFetter:CombinedShow(0.5, args.destName)
 		end
 		if self.Options.SetIconOnFetter and not self:IsLFR() then
 			--This assumes no fuckups. Because honestly coding this around fuckups is not worth the effort
