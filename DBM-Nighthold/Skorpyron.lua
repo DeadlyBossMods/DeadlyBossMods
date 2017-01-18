@@ -39,7 +39,7 @@ local specWarnVulnerableStarted		= mod:NewSpecialWarningSwitch(204459, false, ni
 local specWarnVulnerableOver		= mod:NewSpecialWarningEnd(204459, false, nil, nil, 1)--Special warning because anything that came off cd during stun, is being cast immediately
 local specWarnToxicChit				= mod:NewSpecialWarningMove(204744, nil, nil, nil, 1, 2)
 
-local timerArcanoslashCD			= mod:NewCDTimer(10, 204275, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerArcanoslashCD			= mod:NewCDTimer(9.6, 204275, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerCallofScorpidCD			= mod:NewCDTimer(20.3, 204372, nil, nil, nil, 1)--20-22 Unless delayed by shockwave/stun then as high as 40
 local timerShockwaveCD				= mod:NewCDTimer(57.9, 204316, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--58-60
 local timerFocusedBlastCD			= mod:NewCDTimer(30.4, 204471, nil, nil, nil, 3)--30-34 (32.8 NEW data)

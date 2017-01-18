@@ -71,7 +71,7 @@ local specWarnConjunctionSign		= mod:NewSpecialWarningYouPos(205408, nil, nil, n
 local timerGravPullCD				= mod:NewCDTimer(29, 205984, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Stage One: The Dome of Observation
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
-local timerCoronalEjectionCD		= mod:NewCDTimer(16, 206464, nil, nil, nil, 3)--CD is not known, always push phase 2 before this is cast 2nd time
+--local timerCoronalEjectionCD		= mod:NewCDTimer(16, 206464, nil, nil, nil, 3)--CD is not known, always push phase 2 before this is cast 2nd time
 --Stage Two: Absolute Zero
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerIcyEjectionCD			= mod:NewCDCountTimer(16, 206936, nil, nil, nil, 3)
@@ -267,10 +267,10 @@ function mod:OnCombatStart(delay)
 	self.vb.StarSigns = 0
 	self.vb.phase = 1
 	if self:IsMythic() then
-		timerCoronalEjectionCD:Start(12-delay)--Still could be health based
+--		timerCoronalEjectionCD:Start(12-delay)--Still could be health based
 		timerConjunctionCD:Start(15-delay)
 	else
-		timerCoronalEjectionCD:Start(12.9-delay)--Still could be health based
+--		timerCoronalEjectionCD:Start(12.9-delay)--Still could be health based
 	end
 	--berserkTimer:Start(-delay)
 end
@@ -489,7 +489,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVoidEjection:Show()
 			voiceVoidEjection:Play("runout")
 		end
-	elseif spellId == 206398 and not self:IsTank() and args:IsPlayar() and self:AntiSpam(2, 1) then
+	elseif spellId == 206398 and args:IsPlayar() and self:AntiSpam(2, 1) and not UnitDebuff("Player", gravPullDebuff) then
 		specWarnFelFlame:Show()
 	end
 end
@@ -549,7 +549,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 206398 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
+	if spellId == 206398 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) and not UnitDebuff("Player", gravPullDebuff) then
 		specWarnFelFlame:Show()
 		voiceFelFlame:Play("runaway")
 	end
@@ -563,7 +563,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	if spellId == 222130 then--Phase 2 Conversation
 		self.vb.phase = 2
 		self.vb.icyEjectionCount = 0
-		timerCoronalEjectionCD:Stop()
+--		timerCoronalEjectionCD:Stop()
 		timerConjunctionCD:Stop()
 		timerIcyEjectionCD:Start(23.3, 1)
 		timerGravPullCD:Start(30)

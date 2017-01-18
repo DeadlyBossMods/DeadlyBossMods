@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(104528)--109042
 mod:SetEncounterID(1886)
 mod:SetZone()
-mod:SetUsedIcons(6, 5, 4, 3, 2, 1)--Unknown max night debuffs out so icon table may not be accurate yet
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Unknown max night debuffs out so icon table may not be accurate yet
 --mod:SetHotfixNoticeRev(12324)
 mod:SetBossHPInfoToHighest()
 mod.respawnTime = 29.5
@@ -24,10 +24,10 @@ mod:RegisterEventsInCombat(
 	"UNIT_HEALTH target focus mouseover"
 )
 
---TODO. see how many CoN go out and auto assign soakers for it. I bet it's 2 melee 2 ranged and 1 healer. Redo icons accordingly
+--TODO. see how many CoN go out and auto assign soakers for it. Redo icons accordingly, maybe some auto assigning helper stuff
 --TODO, flare? wtf? tooltip is either wrong or boss has one useless insigificant spell
 --TODO, adjust 15% on stars if it's too low/high. 25% was used on algalon for reference
---TODO, see if controlled chaos 10-30 are no longer hidden in later tests. if still hidden, have to use scheduling and exact timing synced to videos
+--TODO, auto marking spheres?
 --(target.id = 109040 or target.id = 109038 or target.id = 109041) and type = "death" or (ability.id = 218438 or ability.id = 223034 or ability.id = 218774 or ability.id = 218927 or ability.id = 216830 or ability.id = 216877 or ability.id = 218148 or ability.id = 223219) and type = "begincast" or (ability.id = 218807 or ability.id = 218424 or ability.id = 223437) and type = "cast" or ability.id = 222021 or ability.id = 222010 or ability.id = 222020
 --or self:IsMythic() and self.vb.phase == 1--Ready to go in case my theory is correct
 --Stage 1: The High Botanist
@@ -380,7 +380,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 218503 then
 		local amount = args.amount or 1
-		if amount % 3 == 0 or amount > 7 then
+		if amount % 3 == 0 or amount > 9 then
 			warnRecursiveStrikes:Show(args.destName, amount)
 			if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") and self:AntiSpam(3, 1) then
 				specWarnRecursiveStrikes:Show(args.destName)
@@ -532,8 +532,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			specWarnLasher:Show()
 			voiceLasher:Play("killmob")
 		end
-		if self.Options.SetIconOnFetter then
+		if self.Options.SetIconOnFetter and not self:IsLFR() then
 			self:SetIcon(args.destName, 0)
+			self:ScanForMobs(109075, 0, 8, 2, 0.1, 10, "SetIconOnFetter")
 		end
 	end
 end

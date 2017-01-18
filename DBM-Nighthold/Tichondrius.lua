@@ -12,8 +12,8 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 212997 213238 212794 208230 213531 206365 216034 216723",
-	"SPELL_CAST_SUCCESS 212997 212794",
+	"SPELL_CAST_START 212997 213238 212794 213531 206365 216034 216723",
+	"SPELL_CAST_SUCCESS 212997 212794 208230",
 	"SPELL_AURA_APPLIED 206480 212794 208230 216040",
 	"SPELL_AURA_APPLIED_DOSE 216024",
 	"SPELL_AURA_REMOVED 212794 216040",
@@ -94,8 +94,8 @@ local P2BrandTimers = {0, 25.5, 32.5, 30.0}
 local P3CarrionTimers = {0, 25.6, 40.6, 20.5}
 local P3SharedCastTimers = {0, 25.6, 36.1, 22.5}--Seeker, Brand, Feast
 
---Normal/LFR have different timers
-local sharedCastTimersFaster = {0, 15, 25, 14.5}--Carrion Plague, feast of blood, Seeker Swarm (faster on normal/LFR since no brand of argus)
+--Normal/LFR HAD different timers. Normal now matches heroic so assume LFR also does for now
+--local sharedCastTimersFaster = {0, 15, 25, 14.5}--Carrion Plague, feast of blood, Seeker Swarm (faster on normal/LFR since no brand of argus)
 local carrionTargets = {}
 local argusTargets = {}
 local carrionDebuff = GetSpellInfo(206480)
@@ -261,11 +261,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnSeekerSwarm:Show(self.vb.seekerSwarmCast)
 		local timer
 		if self.vb.phase == 1 then
-			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.seekerSwarmCast+1] or P1SharedCastTimers[self.vb.seekerSwarmCast+1]
+			timer = P1SharedCastTimers[self.vb.seekerSwarmCast+1]
 		elseif self.vb.phase == 2 then
-			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.seekerSwarmCast+1] or P2SeekerBloodTimers[self.vb.seekerSwarmCast+1]
+			timer = P2SeekerBloodTimers[self.vb.seekerSwarmCast+1]
 		else--Assume phase 3+ are same, for now since no further mechancis introduced
-			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.seekerSwarmCast+1] or P3SharedCastTimers[self.vb.seekerSwarmCast+1]
+			timer = P3SharedCastTimers[self.vb.seekerSwarmCast+1]
 		end
 		if timer then
 			timerSeekerSwarmCD:Start(timer, self.vb.seekerSwarmCast+1)
@@ -302,20 +302,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 212794 then
 --		table.wipe(argusTargets)
-	elseif spellId == 208230 then
-		self.vb.feastOfBloodCast = self.vb.feastOfBloodCast + 1
-		local timer
-		if self.vb.phase == 1 then
-			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.feastOfBloodCast+1] or P1SharedCastTimers[self.vb.feastOfBloodCast+1]
-		elseif self.vb.phase == 2 then
-			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.feastOfBloodCast+1] or P2SeekerBloodTimers[self.vb.feastOfBloodCast+1]
-		else
-			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.feastOfBloodCast+1] or P3SharedCastTimers[self.vb.feastOfBloodCast+1]
-		end
-		if timer then
-			timerFeastOfBloodCD:Start(timer, self.vb.feastOfBloodCast+1)
-			countdownFeastOfBlood:Start(timer)
-		end
 	elseif spellId == 213531 then
 		self.vb.echoesOfVoidCast = self.vb.echoesOfVoidCast + 1
 		specWarnEchoesOfVoid:Show(self.vb.echoesOfVoidCast)
@@ -366,11 +352,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.carrionPlagueCast = self.vb.carrionPlagueCast + 1
 		local timer
 		if self.vb.phase == 1 then
-			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.carrionPlagueCast+1] or P1SharedCastTimers[self.vb.carrionPlagueCast+1]
+			timer = P1SharedCastTimers[self.vb.carrionPlagueCast+1]
 		elseif self.vb.phase == 2 then
-			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.carrionPlagueCast+1] or P2CarrionTimers[self.vb.carrionPlagueCast+1]
+			timer = P2CarrionTimers[self.vb.carrionPlagueCast+1]
 		else
-			timer = self:IsEasy() and sharedCastTimersFaster[self.vb.carrionPlagueCast+1] or P3CarrionTimers[self.vb.carrionPlagueCast+1]
+			timer = P3CarrionTimers[self.vb.carrionPlagueCast+1]
 		end
 		if timer then
 			timerCarrionPlagueCD:Start(timer, self.vb.carrionPlagueCast+1)
@@ -387,6 +373,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		if timer then 
 			timerBrandOfArgusCD:Start(timer, self.vb.brandOfArgusCast+1)
+		end
+	elseif spellId == 208230 then
+		self.vb.feastOfBloodCast = self.vb.feastOfBloodCast + 1
+		local timer
+		if self.vb.phase == 1 then
+			timer = P1SharedCastTimers[self.vb.feastOfBloodCast+1]
+		elseif self.vb.phase == 2 then
+			timer = P2SeekerBloodTimers[self.vb.feastOfBloodCast+1]
+		else
+			timer = P3SharedCastTimers[self.vb.feastOfBloodCast+1]
+		end
+		if timer then
+			timerFeastOfBloodCD:Start(timer, self.vb.feastOfBloodCast+1)
+			countdownFeastOfBlood:Start(timer)
 		end
 	end
 end
