@@ -489,7 +489,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVoidEjection:Show()
 			voiceVoidEjection:Play("runout")
 		end
-	elseif spellId == 206398 and not self:IsTank() and self:AntiSpam(2, 1) then
+	elseif spellId == 206398 and not self:IsTank() and args:IsPlayar() and self:AntiSpam(2, 1) then
 		specWarnFelFlame:Show()
 	end
 end
