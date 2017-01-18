@@ -12,7 +12,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 206219 206220 206514 206675 206840 207938 104534 208545 209270 211152 208672 206939 206744 206883 206221 206222",
-	"SPELL_CAST_SUCCESS 206222 206221 221783",
+	"SPELL_CAST_SUCCESS 206222 206221 221783 212258",
 	"SPELL_AURA_APPLIED 206219 206220 209011 206354 206384 209086 208903 211162 221891 208802 221606 221603 221785 221784 212686 227427 206516",
 	"SPELL_AURA_APPLIED_DOSE 211162 208802",
 	"SPELL_AURA_REMOVED 209011 206354 206384 209086 221603 221785 221784 212686 206516",
@@ -32,7 +32,7 @@ mod:RegisterEventsInCombat(
 --TODO, figure out flames of sargeras and improve upon it. add timer and keepmove voice if needed.
 --[[
 (ability.id = 206219 or ability.id = 206220 or ability.id = 206514 or ability.id = 206675 or ability.id = 206840 or ability.id = 207938 or ability.id = 206883 or ability.id = 208545 or ability.id = 209270 or ability.id = 211152 or ability.id = 208672 or ability.id = 167819 or ability.id = 206939 or ability.id = 206744) and type = "begincast"
-or (ability.id = 206222 or ability.id = 206221 or ability.id = 221783) and type = "cast"
+or (ability.id = 206222 or ability.id = 206221 or ability.id = 221783 or ability.id = 212258) and type = "cast"
 or (ability.id = 227427 or ability.id = 206516) and type = "applybuff"
 or (ability.id = 227427 or ability.id = 206516) and type = "removebuff"
 --]]
@@ -114,6 +114,7 @@ local timerSoulVortexCD				= mod:NewCDTimer(32.5, 206883, nil, nil, nil, 3)--34-
 --Stage Two: The Ritual of Aman'thul
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerTransition				= mod:NewPhaseTimer(19)
+local timerHandofGuldanCD			= mod:NewCDCountTimer(58.5, 212258, nil, nil, nil, 1)
 local timerBondsofFelCD				= mod:NewNextTimer(50, 206222, nil, nil, nil, 3)
 local timerEyeofGuldanCD			= mod:NewNextTimer(60, 209270, nil, nil, nil, 1)
 --Stage Three: The Master's Power
@@ -155,13 +156,19 @@ mod.vb.phase = 1
 mod.vb.addsDied = 0
 mod.vb.liquidHellfireCast = 0
 mod.vb.felEffluxCast = 0
+mod.vb.handofGuldanCast = 0
 mod.vb.stormCast = 0
 mod.vb.blackHarvestCast = 0
 mod.vb.empoweredEyeCast = 0
-local felEffluxTimers = {11.0, 14.0, 19.9, 15.6, 16.8, 15.9, 15.8}
-local stormTimers = {0, 78.6, 70.0}--Might not be timer based,mibht be 25 and 10 %
-local blackHarvestTimers = {0, 82.9, 100.0}--Might not be timer based.
-local p3EmpoweredEyeTimers = {0, 71.5, 71.4, 28.6}--The 28 one could be a special one he summons at 10%
+local felEffluxTimers = {11.0, 14.0, 19.6, 12.0, 12.2, 12.0}
+local felEffluxTimersEasy = {11.0, 14.0, 19.9, 15.6, 16.8, 15.9, 15.8}
+local handofGuldanTimers = {14.5, 48.9, 138.8}
+local stormTimersEasy = {94, 78.6, 70.0}
+local stormTimers = {84.1, 68.7, 61.3}
+local blackHarvestTimersEasy = {63, 82.9, 100.0}
+local blackHarvestTimers = {64.1, 72.5, 87.5}
+local p3EmpoweredEyeTimersEasy = {42.5, 71.5, 71.4, 28.6}
+local p3EmpoweredEyeTimers = {39.1, 62.5, 62.5, 25}
 local bondsIcons = {}
 
 function mod:OnCombatStart(delay)
@@ -169,6 +176,7 @@ function mod:OnCombatStart(delay)
 	self.vb.addsDied = 0
 	self.vb.liquidHellfireCast = 0
 	self.vb.felEffluxCast = 0
+	self.vb.handofGuldanCast = 0
 	self.vb.stormCast = 0
 	self.vb.blackHarvestCast = 0
 	self.vb.empoweredEyeCast = 0
@@ -205,7 +213,11 @@ function mod:SPELL_CAST_START(args)
 				timerLiquidHellfireCD:Start(32.5, self.vb.liquidHellfireCast+1)
 			end
 		else--Phase 2
-			timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
+			if self:IsEasy() then
+				timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
+			else
+				timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
+			end
 		end
 	elseif spellId == 206220 then
 		self.vb.liquidHellfireCast = self.vb.liquidHellfireCast + 1
@@ -216,7 +228,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.felEffluxCast = self.vb.felEffluxCast + 1
 		specWarnFelEfflux:Show()
 		voiceFelEfflux:Play("watchwave")
-		local timer = felEffluxTimers[self.vb.felEffluxCast+1] or 15.5
+		local timer = self:IsEasy() and felEffluxTimersEasy[self.vb.felEffluxCast+1] or felEffluxTimers[self.vb.felEffluxCast+1] or 12
 		timerFelEffluxCD:Start(timer, self.vb.felEffluxCast+1)
 	elseif spellId == 206675 then
 		timerShatterEssenceCD:Start()
@@ -253,12 +265,16 @@ function mod:SPELL_CAST_START(args)
 		voiceEyeofGuldan:Play("killmob")
 		if self.vb.phase == 3 then
 			self.vb.empoweredEyeCast = self.vb.empoweredEyeCast + 1
-			local timer = p3EmpoweredEyeTimers[self.vb.empoweredEyeCast+1]
+			local timer = self:IsEasy() and p3EmpoweredEyeTimersEasy[self.vb.empoweredEyeCast+1] or p3EmpoweredEyeTimers[self.vb.empoweredEyeCast+1]
 			if timer then
 				timerEyeofGuldanCD:Start(timer)
 			end
 		else
-			timerEyeofGuldanCD:Start()
+			if self:IsEasy() then
+				timerEyeofGuldanCD:Start(60)
+			else
+				timerEyeofGuldanCD:Start(53.3)
+			end
 		end
 	elseif spellId == 208672 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
@@ -272,7 +288,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.blackHarvestCast = self.vb.blackHarvestCast + 1
 		specWarnBlackHarvest:Show(self.vb.blackHarvestCast)
 		voiceBlackHarvest:Play("aesoon")
-		local timer = blackHarvestTimers[self.vb.blackHarvestCast+1]
+		local timer = self:IsEasy() and blackHarvestTimersEasy[self.vb.blackHarvestCast+1] or blackHarvestTimers[self.vb.blackHarvestCast+1]
 		if timer then
 			timerBlackHarvestCD:Start(timer, self.vb.blackHarvestCast+1)
 		end
@@ -284,9 +300,23 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 206222 or spellId == 206221 then
-		timerBondsofFelCD:Start()
+		if self:IsEasy() then
+			timerBondsofFelCD:Start()
+		else
+			timerBondsofFelCD:Start(44.4)
+		end
 	elseif spellId == 221783 then
-		timerFlamesofSargerasCD:Start()
+		if self:IsEasy() then
+			timerFlamesofSargerasCD:Start()
+		else
+			timerFlamesofSargerasCD:Start(51)
+		end
+	elseif spellId == 212258 and self.vb.phase > 1.5 then--Ignore phase 1 adds with this cast
+		self.vb.handofGuldanCast = self.vb.handofGuldanCast + 1
+		local timer = handofGuldanTimers[self.vb.handofGuldanCast+1]
+		if timer then
+			timerHandofGuldanCD:Start(timer, self.vb.handofGuldanCast+1)
+		end
 	end
 end
 
@@ -379,11 +409,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBondsofFelCD:Stop()
 		timerLiquidHellfireCD:Stop()
 		timerEyeofGuldanCD:Stop()
+		timerHandofGuldanCD:Stop()
 		timerWellOfSoulsCD:Start(15)
-		timerFlamesofSargerasCD:Start(21)
-		timerEyeofGuldanCD:Start(42.5)
 		timerBlackHarvestCD:Start(63, 1)
-		timerStormOfDestroyerCD:Start(94, 1)--Health based or timer? VERIFY THIS
+		if self:IsEasy() then
+			timerFlamesofSargerasCD:Start(29)
+			timerEyeofGuldanCD:Start(42.5)
+			timerStormOfDestroyerCD:Start(94, 1)--Health based or timer? VERIFY THIS
+		else
+			timerFlamesofSargerasCD:Start(27.5)
+			timerEyeofGuldanCD:Start(39)
+			timerStormOfDestroyerCD:Start(84, 1)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -417,8 +454,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerLiquidHellfireCD:Stop()
 		timerFelEffluxCD:Stop()--This probably needs refactoring for mythic since phase 1 and 2 happen at same time
 		timerBondsofFelCD:Start(9)
-		timerEyeofGuldanCD:Start(32.5)
-		timerLiquidHellfireCD:Start(45, self.vb.liquidHellfireCast+1)
+		if self:IsEasy() then
+			timerEyeofGuldanCD:Start(32.5)
+			timerLiquidHellfireCD:Start(45, self.vb.liquidHellfireCast+1)
+		else
+			timerHandofGuldanCD:Start(14, 1)
+			timerEyeofGuldanCD:Start(29)
+			timerLiquidHellfireCD:Start(40, self.vb.liquidHellfireCast+1)
+		end
 	end
 end
 
@@ -445,15 +488,21 @@ function mod:UNIT_DIED(args)
 		elseif cid == 104534 then--D'zorykx the Trapper
 			timerSoulVortexCD:Stop()
 		end
-		if self.vb.addsDied == 3 then
+		if self.vb.addsDied == 3 and not self:IsMythic() then
 			self.vb.phase = 2
 			warnPhase2:Show()
 			timerLiquidHellfireCD:Stop()
 			timerFelEffluxCD:Stop()--This probably needs refactoring for mythic since phase 1 and 2 happen at same time
 			timerTransition:Start(19)
 			timerBondsofFelCD:Start(28)
-			timerEyeofGuldanCD:Start(51.5)
-			timerLiquidHellfireCD:Start(64, self.vb.liquidHellfireCast+1)
+			if self:IsEasy() then
+				timerEyeofGuldanCD:Start(51.5)
+				timerLiquidHellfireCD:Start(64, self.vb.liquidHellfireCast+1)
+			else
+				timerHandofGuldanCD:Start(33, 1)
+				timerEyeofGuldanCD:Start(48)
+				timerLiquidHellfireCD:Start(59, self.vb.liquidHellfireCast+1)
+			end
 		end
 	end
 end
@@ -464,7 +513,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.stormCast = self.vb.stormCast + 1
 		specWarnStormOfDestroyer:Show()
 		voiceStormOfDestroyer:Play("watchstep")
-		local timer = stormTimers[self.vb.stormCast+1]
+		local timer = self:IsEasy() and stormTimersEasy[self.vb.stormCast+1] or stormTimers[self.vb.stormCast+1]
 		if timer then
 			timerStormOfDestroyerCD:Start(timer, self.vb.stormCast+1)
 		end
@@ -472,7 +521,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self:IsEasy() then
 			timerShatterEssenceCD:Start(20)
 		else
-			timerShatterEssenceCD:Start(5)--Verify if still 5 on heroic
+			timerShatterEssenceCD:Start(5)
 		end
 	elseif spellId == 215738 then--Hand of Guldan (Inquisitor Vethriz)
 		if self:IsEasy() then
