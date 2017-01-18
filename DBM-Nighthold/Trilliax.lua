@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 206788 208924 207513 207502",
 	"SPELL_CAST_SUCCESS 206560 206557 206559 206641",
-	"SPELL_AURA_APPLIED 211615 208910 208915",
+	"SPELL_AURA_APPLIED 211615 208910 208915 206641",
 	"SPELL_AURA_REMOVED 208499 206560",
 	"SPELL_PERIODIC_DAMAGE 206488",
 	"SPELL_PERIODIC_MISSED 206488",
@@ -32,6 +32,7 @@ local warnCaretakerMode				= mod:NewSpellAnnounce(206559, 2)
 local warnSucculentFeast			= mod:NewSpellAnnounce(207502, 1)
 
 local specWarnArcaneSeepage			= mod:NewSpecialWarningMove(206488, nil, nil, nil, 1, 2)
+local specWarnArcanoSlash			= mod:NewSpecialWarningTaunt(206641, nil, nil, nil, 1, 2)
 --Cleaner
 local specWarnSterilize				= mod:NewSpecialWarningMoveAway(208499, nil, nil, nil, 1, 2)
 local yellSterilize					= mod:NewYell(208499)
@@ -62,6 +63,7 @@ local countdownModes				= mod:NewCountdown(40, 206560)--All modes
 local countdownAnnihilation			= mod:NewCountdown("Alt20", 207630)
 
 local voiceArcaneSeepage			= mod:NewVoice(206488)--runaway
+local voiceArcaneSlash				= mod:NewVoice(206641)--tauntboss
 --Cleaner
 local voiceSterilize				= mod:NewVoice(208499)--scatter (runout better?)
 local voiceCleansingRage			= mod:NewVoice(206820)--aesoon
@@ -168,6 +170,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnArcingBonds:Show()
 			voiceArcingBonds:Play("linegather")
+		end
+	elseif spellId == 206641 then
+		if not args:IsPlayer() and not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+			specWarnArcanoSlash:Show(args.destName)
+			voiceArcaneSlash:Play("tauntboss")
 		end
 	end
 end
