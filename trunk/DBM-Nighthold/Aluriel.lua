@@ -123,6 +123,7 @@ mod.vb.annihilateCount = 0
 mod.vb.armageddonAdds = 0
 local MarkOfFrostDebuff = GetSpellInfo(212587)
 local SearingBrandDebuff = GetSpellInfo(213166)
+local annihilatedDebuff = GetSpellInfo(215458)
 local rangeShowAll = false
 local chargeTable = {}
 local annihilateTimers = {8.0, 45.0, 40.0, 44.0, 38.0, 37.0, 33.0, 47.0, 41.0, 44.0, 38.0, 37.0, 33.0}--Need longer pulls/more data. However this pattern did prove to always be same
@@ -222,8 +223,10 @@ function mod:SPELL_CAST_START(args)
 			specWarnAnnihilate:Show(self.vb.annihilateCount)
 			voiceAnnihilate:Play("defensive")
 		else
-			specWarnAnnihilateOther:Schedule(4, targetName)
-			voiceAnnihilate:Schedule(4, "changemt")
+			if not UnitDebuff("player", annihilatedDebuff) then
+				specWarnAnnihilateOther:Schedule(4, targetName)
+				voiceAnnihilate:Schedule(4, "tauntboss")
+			end
 		end
 		local nextCount = self.vb.annihilateCount+1
 		local timer = annihilateTimers[nextCount]
