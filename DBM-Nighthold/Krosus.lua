@@ -131,18 +131,18 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 205368 or spellId == 205370 then--205370 left, 205368 right
 		self.vb.beamCount = self.vb.beamCount + 1
-		specWarnFelBeam:Show(self.vb.beamCount)
+		specWarnFelBeam:Show()
 		local nextCount = self.vb.beamCount + 1
 		local timers = self:IsMythic() and mythicBeamTimers[nextCount] or self:IsHeroic() and heroicBeamTimers[nextCount] or lolBeamTimers[nextCount]
 		if timers then
 			timerFelBeamCD:Start(timers, nextCount)
 		end
-		if spellId == 205368 then--Coming from right
+		if spellId == 205368 then--Coming from right (facing boss)
 			voiceFelBeam:Play("moveleft")
 			if self.Options.ArrowOnBeam then
 				DBM.Arrow:ShowStatic(90, 4)
 			end
-		else--coming from left
+		else--coming from left (facing boss)
 			voiceFelBeam:Play("moveright")
 			if self.Options.ArrowOnBeam then
 				DBM.Arrow:ShowStatic(270, 4)
