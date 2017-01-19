@@ -91,8 +91,11 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 204275 and self:AntiSpam(5, 1) then
-		specWarnArcanoslash:Show()
-		voiceArcanoslash:Play("defensive")
+		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
+		if tanking or (status == 3) then--Player is current target
+			specWarnArcanoslash:Show()
+			voiceArcanoslash:Play("defensive")
+		end
 		timerArcanoslashCD:Start()
 	elseif spellId == 204372 then
 		timerCallofScorpidCD:Start()

@@ -97,7 +97,7 @@ function mod:OnCombatStart(delay)
 	elseif self:IsHeroic() then
 		timerFelBeamCD:Start(5-delay, 1)
 		timerOrbDestroCD:Start(22-delay, 1)
-		timerBurningPitchCD:Start(52-delay, 1)
+		timerBurningPitchCD:Start(50-delay, 1)
 		timerSlamCD:Start(-delay, 1)
 		countdownBigSlam:Start(-delay)
 		berserkTimer:Start(-delay)
@@ -159,7 +159,7 @@ function mod:SPELL_CAST_START(args)
 		local nextCount = self.vb.pitchCount + 1
 		local timers = self:IsMythic() and mythicBurningPitchTimers[nextCount] or self:IsHeroic() and heroicBurningPitchTimers[nextCount] or lolBurningPitchTimers[nextCount]
 		if timers then
-			timerBurningPitchCD:Start(nil, nextCount)
+			timerBurningPitchCD:Start(timers, nextCount)
 		end
 	elseif spellId == 209017 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnFelBlast:Show(args.sourceName)
