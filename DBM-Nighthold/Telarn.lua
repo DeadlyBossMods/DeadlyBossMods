@@ -6,7 +6,7 @@ mod:SetCreatureID(104528)--109042
 mod:SetEncounterID(1886)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Unknown max night debuffs out so icon table may not be accurate yet
-mod:SetHotfixNoticeRev(15682)
+mod:SetHotfixNoticeRev(15683)
 mod:SetBossHPInfoToHighest()
 mod.respawnTime = 29.5
 
@@ -85,8 +85,8 @@ local timerChaotiSpheresofNatureCD	= mod:NewAITimer(35, 223219, nil, nil, nil, 1
 
 local countdownControlledChaos		= mod:NewCountdown(35, 218438)
 local countdownParasiticFetter		= mod:NewCountdown("Alt35", 218304, "-Tank")
-local countdownGraceOfNature		= mod:NewCountdown("Alt70", 218927, "Tank")
-local countdownCoN					= mod:NewCountdown("AltTwo70", 218809, "-Tank")
+local countdownGraceOfNature		= mod:NewCountdown("Alt48", 218927, "Tank")
+local countdownCoN					= mod:NewCountdown("AltTwo50", 218809, "-Tank")
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 --Stage 1: The High Botanist
