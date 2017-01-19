@@ -49,6 +49,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1713)
 
+L:SetWarningLocalization({
+	warnSlamSoon		= "Bridge break in %ds"
+})
+
 ------------------
 -- High Botanist Tel'arn --
 ------------------
