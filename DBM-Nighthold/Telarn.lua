@@ -6,7 +6,7 @@ mod:SetCreatureID(104528)--109042
 mod:SetEncounterID(1886)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Unknown max night debuffs out so icon table may not be accurate yet
---mod:SetHotfixNoticeRev(12324)
+mod:SetHotfixNoticeRev(15682)
 mod:SetBossHPInfoToHighest()
 mod.respawnTime = 29.5
 
@@ -62,8 +62,8 @@ local specWarnGraceOfNature			= mod:NewSpecialWarningMove(218927, "Tank", nil, n
 local specWarnCoN					= mod:NewSpecialWarningYouPos(218809, nil, nil, nil, 1, 5)
 local yellCoN						= mod:NewPosYell(218809)
 
---All abilities have same cd. 35 seconds in phase 1, 55 in phase 2 and 70 in phase 3
---Mythic is unknown but I suspect it's inversed. 70 when all alive, 55 when one dead 35 if only one left
+--All abilities have same cd. 35 seconds in phase 1, 40 in phase 2 and 50 in phase 3
+--Mythic is unknown but I suspect it's inversed. Needs to be revetted with new changes
 --Stage 1: The High Botanist
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerControlledChaosCD		= mod:NewNextTimer(35, 218438, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
@@ -77,9 +77,9 @@ mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerPlasmaSpheresCD			= mod:NewNextTimer(55, 218774, 104923, nil, nil, 1)--"Summon Balls" short text
 --Stage 3: Pure Forms
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
-local timerToxicSporesCD			= mod:NewNextTimer(8.5, 219049, nil, nil, nil, 3)--Exception to 35, 55, 70 rule
-local timerGraceOfNatureCD			= mod:NewNextTimer(70, 218927, nil, "Tank", nil, 5)
-local timerCoNCD					= mod:NewNextTimer(70, 218809, nil, nil, nil, 3)
+local timerToxicSporesCD			= mod:NewNextTimer(8.5, 219049, nil, nil, nil, 3)--Exception to 35, 40, 50 rule
+local timerGraceOfNatureCD			= mod:NewNextTimer(48, 218927, nil, "Tank", nil, 5)--48-51
+local timerCoNCD					= mod:NewNextTimer(50, 218809, nil, nil, nil, 3)
 mod:AddTimerLine(PLAYER_DIFFICULTY6)
 local timerChaotiSpheresofNatureCD	= mod:NewAITimer(35, 223219, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 
@@ -146,6 +146,7 @@ function mod:OnCombatStart(delay)
 		countdownCoN:Start(57-delay)
 		timerGraceOfNatureCD:Start(65-delay)
 		countdownGraceOfNature:Start(65-delay)
+		DBM:AddMsg("Non mythic timers saw significant changes since beta, so it's likely mythic timers also drastically change. If so, expect there to be massive inaccuracies on this difficulty until revetted from new data")
 	else
 		self:SetCreatureID(104528)
 		timerSolarCollapseCD:Start(10-delay)
@@ -175,13 +176,19 @@ function mod:SPELL_CAST_START(args)
 			if self:IsMythic() then
 			
 			else
-				timerControlledChaosCD:Start(70)
-				countdownControlledChaos:Start(70)
+				timerControlledChaosCD:Start(50)
+				countdownControlledChaos:Start(50)
 			end
 		elseif self.vb.phase == 2 then
 			--55 for all!
-			timerControlledChaosCD:Start(55)
-			countdownControlledChaos:Start(55)
+			if self:IsMythic() then
+				--Probably also changed but leaving until vetted
+				timerControlledChaosCD:Start(55)
+				countdownControlledChaos:Start(55)
+			else
+				timerControlledChaosCD:Start(40)
+				countdownControlledChaos:Start(40)
+			end
 		else
 			if self:IsMythic() then
 				timerControlledChaosCD:Start(64)
@@ -211,11 +218,16 @@ function mod:SPELL_CAST_START(args)
 			if self:IsMythic() then
 			
 			else
-				timerSolarCollapseCD:Start(70)
+				timerSolarCollapseCD:Start(50)
 			end
 		elseif self.vb.phase == 2 then
 			--55 for all!
-			timerSolarCollapseCD:Start(55)
+			if self:IsMythic() then
+				--Probably also changed but leaving until vetted
+				timerSolarCollapseCD:Start(55)
+			else
+				timerSolarCollapseCD:Start(40)
+			end
 		else
 			if self:IsMythic() then
 				timerSolarCollapseCD:Start(64)
@@ -228,11 +240,16 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 218774 then
 		warnPlasmaSpheres:Show()
 		if self.vb.phase == 2 then
-			--Mythic Only
-			timerPlasmaSpheresCD:Start(55)
+			--55 for all!
+			if self:IsMythic() then
+				--Probably also changed but leaving until vetted
+				timerPlasmaSpheresCD:Start(55)
+			else
+				timerPlasmaSpheresCD:Start(40)
+			end
 		elseif self.vb.phase == 3 then
-			--Doesn't need mythic rule, if this is last boss left they won't be using this version ofs pell
-			timerPlasmaSpheresCD:Start(70)
+			--Doesn't need mythic rule, if this is last boss left they won't be using this version of spell
+			timerPlasmaSpheresCD:Start(50)
 		else
 			if self:IsMythic() then
 				timerPlasmaSpheresCD:Start(64)
@@ -273,12 +290,12 @@ function mod:SPELL_CAST_START(args)
 		timerParasiticFetterCD:Stop()
 		countdownParasiticFetter:Cancel()
 		timerSolarCollapseCD:Stop()
-		timerSolarCollapseCD:Start(12)
+		timerPlasmaSpheresCD:Start(12)
 		timerParasiticFetterCD:Start(23.5)--SUCCESS
 		countdownParasiticFetter:Start(23.5)--SUCCESS
-		timerPlasmaSpheresCD:Start(37)
-		timerControlledChaosCD:Start(57)
-		countdownControlledChaos:Start(57)
+		timerSolarCollapseCD:Start(32)
+		timerControlledChaosCD:Start(42)
+		countdownControlledChaos:Start(42)
 	elseif spellId == 216877 then--Phase 3
 		self.vb.phase = 3
 		warnPhase3:Show()
@@ -290,16 +307,16 @@ function mod:SPELL_CAST_START(args)
 		timerSolarCollapseCD:Stop()
 		timerPlasmaSpheresCD:Stop()
 		timerToxicSporesCD:Start(8)
-		timerSolarCollapseCD:Start(17)
-		timerParasiticFetterCD:Start(27.5)
-		countdownParasiticFetter:Start(27.5)
-		timerControlledChaosCD:Start(37)
-		countdownControlledChaos:Start(37)
-		timerPlasmaSpheresCD:Start(52)
-		timerCoNCD:Start(62)
-		countdownCoN:Start(62)
-		timerGraceOfNatureCD:Start(72)--Might change
-		countdownGraceOfNature:Start(72)
+		timerGraceOfNatureCD:Start(10.5)
+		countdownGraceOfNature:Start(10.5)
+		timerCoNCD:Start(20)
+		countdownCoN:Start(20)
+		timerPlasmaSpheresCD:Start(26)
+		timerParasiticFetterCD:Start(35.5)
+		countdownParasiticFetter:Start(35.5)
+		timerSolarCollapseCD:Start(42)
+		timerControlledChaosCD:Start(52)
+		countdownControlledChaos:Start(52)
 	elseif spellId == 223437 then
 		self.vb.CoNIcon = 1
 	end
@@ -312,13 +329,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 			if self:IsMythic() then
 
 			else
-				timerParasiticFetterCD:Start(70)
-				countdownParasiticFetter:Start(70)
+				timerParasiticFetterCD:Start(50)
+				countdownParasiticFetter:Start(50)
 			end
 		elseif self.vb.phase == 2 then
 			--55 for all!
-			timerParasiticFetterCD:Start(55)
-			countdownParasiticFetter:Start(55)
+			if self:IsMythic() then
+				--To be revetted
+				timerParasiticFetterCD:Start(55)
+				countdownParasiticFetter:Start(55)
+			else
+				timerParasiticFetterCD:Start(40)
+				countdownParasiticFetter:Start(40)
+			end
 		else
 			if self:IsMythic() then
 				timerParasiticFetterCD:Start(64)
