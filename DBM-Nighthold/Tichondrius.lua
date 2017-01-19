@@ -58,6 +58,8 @@ local timerEchoesOfVoidCD			= mod:NewNextCountTimer(65, 213531, nil, nil, nil, 2
 local timerIllusionaryNightCD		= mod:NewNextCountTimer(125, 206365, nil, nil, nil, 6)
 local timerIllusionaryNight			= mod:NewBuffActiveTimer(32, 206365, nil, nil, nil, 6)
 
+local berserkTimer					= mod:NewBerserkTimer(480)
+
 local countdownSeekerSwarm			= mod:NewCountdown(25, 213238)
 local countdownEchoesOfVoid			= mod:NewCountdown("Alt65", 213531)
 local countdownFeastOfBlood			= mod:NewCountdown("AltTwo25", 208230, "Tank")
@@ -184,6 +186,7 @@ function mod:OnCombatStart(delay)
 		timerEchoesOfVoidCD:Start(55-delay, 1)
 		countdownEchoesOfVoid:Start(55-delay)
 		timerIllusionaryNightCD:Start(130-delay, 1)
+		berserkTimer:Start(-delay)
 	else
 		timerFeastOfBloodCD:Start(10-delay, 1)
 		countdownFeastOfBlood:Start(10-delay)
