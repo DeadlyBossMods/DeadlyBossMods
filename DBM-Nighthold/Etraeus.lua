@@ -489,7 +489,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVoidEjection:Show()
 			voiceVoidEjection:Play("runout")
 		end
-	elseif spellId == 206398 and args:IsPlayar() and self:AntiSpam(2, 1) and not UnitDebuff("Player", gravPullDebuff) then
+	elseif spellId == 206398 and args:IsPlayer() and self:AntiSpam(2, 1) and not UnitDebuff("Player", gravPullDebuff) then
 		specWarnFelFlame:Show()
 	end
 end
