@@ -46,7 +46,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 225389 and self:AntiSpam(3, 1) then
+	if spellId == 225389 and self:AntiSpam(3, 3) then
 		specWarnProtectiveShield:Show()
 		voiceProtectiveShield:Play("runout")
 	end
@@ -56,7 +56,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 221344 then
-		if args:IsPlayer() then--TODO, maybe give it a delay, it does take a while
+		if args:IsPlayer() then
 			specWarnAnnihilatingOrb:Show()
 			voiceAnnihilatingOrb:Play("runout")
 			yellAnnihilatingOrb:Yell()
