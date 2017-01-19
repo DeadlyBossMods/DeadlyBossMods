@@ -85,7 +85,7 @@ mod:AddBoolOption("HUDSeekerLines", true)--On by default for beta testing. Actua
 --Brand of Argus: pull:15.0, 25.0, 35.0, 25.0, 75.0, 25.5, 32.5, 30.0, 75.0, 25.6, 36.1, 22.5, 56.1, 25.6",
 --Feast of Blood: pull:20.0, 25.0, 35.0, 25.0, 75.0, 25.5, 37.5, 25.0, 75.1, 25.6, 36.2, 22.5, 56.1, 25.6"
 --Carrion Plague, feast of blood, Seeker Swarm, brand of argus All Same in Phase 1
-local P1SharedCastTimers = {0, 25, 35, 25}
+local P1SharedCastTimers = {0, 25, 35, 24.5}
 --Phase 2 they start to fragment
 local P2CarrionTimers = {0, 25.5, 35.6, 26.9}
 local P2SeekerBloodTimers = {0, 25.5, 37.5, 25.0}--Seeker and Feast of Blood
@@ -159,7 +159,7 @@ do
 			end
 			if self.Options.InfoFrame then
 				DBM.InfoFrame:SetHeader(argusDebuff)
-				DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame, true)
+				DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame, true)
 			end
 		end
 	end
