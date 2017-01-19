@@ -120,6 +120,7 @@ mod:AddHudMapOption("HudMapOnBrandCharge", 213166)
 mod:AddSetIconOption("SetIconOnFrozenTempest", 213083, true, true)
 mod:AddSetIconOption("SetIconOnBurstOfFlame", 213760, true, true)
 mod:AddSetIconOption("SetIconOnBurstOfMagic", 213808, true, true)
+mod:AddInfoFrameOption(212647)
 
 mod.vb.annihilateCount = 0
 mod.vb.armageddonAdds = 0
@@ -180,6 +181,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.HudMapOnBrandCharge then
 		DBMHudMap:Disable()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
@@ -269,6 +273,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8, debuffFilter)
 		end
+		if self.Options.InfoFrame and not self:IsLFR() then
+			DBM.InfoFrame:SetHeader(GetSpellInfo(212647))
+			DBM.InfoFrame:Show(6, "playerdebuffstacks", 212647)
+		end
 	elseif spellId == 213867 then--Fiery Enchantment
 		warnFirePhase:Show()
 		voicePhaseChange:Play("phasechange")
@@ -277,6 +285,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSearingBrandDetonateCD:Start(45)
 		timerAnimateFireCD:Start(62)
 		timerArcanePhaseCD:Start(85)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end
 	elseif spellId == 213869 then--Magic Enchantment
 		warnArcanePhase:Show()
 		voicePhaseChange:Play("phasechange")
