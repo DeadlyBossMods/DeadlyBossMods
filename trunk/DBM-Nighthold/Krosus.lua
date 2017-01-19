@@ -126,18 +126,14 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 205368 or spellId == 205370 then--205370 left, 205368 right
+	if spellId == 205368 or spellId == 205370 then--205370 left, 205368 right (right no longer is used)
 		self.vb.beamCount = self.vb.beamCount + 1
 		specWarnFelBeam:Show()
+		voiceFelBeam:Play("shockwave")
 		local nextCount = self.vb.beamCount + 1
 		local timers = self:IsMythic() and mythicBeamTimers[nextCount] or self:IsHeroic() and heroicBeamTimers[nextCount] or lolBeamTimers[nextCount]
 		if timers then
 			timerFelBeamCD:Start(timers, nextCount)
-		end
-		if spellId == 205368 then--Coming from right (facing boss)
-			voiceFelBeam:Play("shockwave")
-		else--coming from left (facing boss)
-			voiceFelBeam:Play("shockwave")
 		end
 	elseif spellId == 205420 then
 		self.vb.pitchCount = self.vb.pitchCount+ 1
