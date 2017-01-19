@@ -11,9 +11,9 @@ mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 209590 209620 221864 209568 209617 209595 210022 209168 209971",
-	"SPELL_CAST_SUCCESS 209597 210387 214295 214278 209615",
-	"SPELL_AURA_APPLIED 209615 209244 209973 209598 211261",
+	"SPELL_CAST_START 209590 209620 221864 209568 209617 209595 210022 209971",
+	"SPELL_CAST_SUCCESS 209597 210387 214295 214278 209615 210024",
+	"SPELL_AURA_APPLIED 209615 209244 209973 209598 211261 232974",
 	"SPELL_AURA_REFRESH 209973",
 	"SPELL_AURA_APPLIED_DOSE 209615 209973",
 	"SPELL_AURA_REMOVED 209973 209598",
@@ -123,29 +123,18 @@ mod:AddInfoFrameOption(209598)
 mod:AddSetIconOption("SetIconOnConflexiveBurst", 209598)
 mod:AddHudMapOption("HudMapOnDelphuricBeam", 214278)
 
---[[
-"<1.96 22:45:10> [ENCOUNTER_START] ENCOUNTER_START#1872#Grand Magistrix Elisande#15#24", -- [32]
-"<35.96 22:45:44> [CLEU] SPELL_CAST_START#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#228877#Arcanetic Ring#nil#nil", -- [752]
-"<65.99 22:46:14> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#229107#Arcanetic Ring#nil#nil", -- [1324]
-"<67.01 22:46:15> [CLEU] SPELL_CAST_START#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#208808#Arcanetic Ring#nil#nil", -- [1373]
-"<76.00 22:46:24> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#229109#Arcanetic Ring#nil#nil", -- [1578]
-"<76.98 22:46:25> [CLEU] SPELL_CAST_START#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#208809#Arcanetic Ring#nil#nil", -- [1597]
-"<137.01 22:47:25> [CLEU] SPELL_CAST_START#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#228877#Arcanetic Ring#nil#nil", -- [2604]
-"<145.97 22:47:34> [CLEU] SPELL_CAST_SUCCESS#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#229107#Arcanetic Ring#nil#nil", -- [2723]
-"<146.98 22:47:35> [CLEU] SPELL_CAST_START#Vehicle-0-3198-1530-3512-106643-0000506815#Elisande##nil#208808#Arcanetic Ring#nil#nil", -- [2734]
---]]
-
---Exists in phase 2 and phase 3
-local slowElementalTimers = {5.0, 49.0, 47.0}--Heroic Dec 13
-local fastElementalTimers = {8.0, 81.0, 90.0}--Heroic Dec 13
-local RingTimers = {34, 30, 10, 61, 9}
-local BeamTimers = {17, 36}--Heroic Dec 13
-local SingularityTimers = {23.0, 36.0, 46.0, 64.0}--Heroic Dec 13
+--Exists in phases 1-3
+local slowElementalTimers = {5, 49, 52, 60}--Heroic Jan 18
+local fastElementalTimers = {8, 88, 95}--Heroic Jan 18
+local RingTimers = {34, 40, 10, 62, 9}--Heroic Jan 18
+local SingularityTimers = {10, 22, 36.0, 57, 65}--Heroic Jan 18
 --Only exist in phase 2
-local OrbTimers = {28, 66.0, 35.0}--Heroic Dec 13
+local BeamTimers = {72, 57, 60}--Heroic Jan 18
+--Exists in Phase 2 and Phase 3 (but cast start event missing in phase 3)
+local OrbTimers = {27, 76, 37, 70}--Heroic Jan 18
 --Only exist in phase 3 so first timer of course isn't variable
-local BurstTimers = {27.6, 100}
-local TormentTimers = {140}-- 45.0, 79.0 (OLD)
+local BurstTimers = {58, 52, 56}--Heroic Jan 18
+local TormentTimers = {33, 61, 37, 60}--Heroic Jan 18
 local currentTank, tankUnitID = nil, nil--not recoverable on purpose
 mod.vb.firstElementals = false
 mod.vb.slowElementalCount = 0
@@ -156,7 +145,7 @@ mod.vb.beamCastCount = 0
 mod.vb.orbCastCount = 0
 mod.vb.burstCastCount = 0
 mod.vb.burstDebuffCount = 0
-mod.vb.singularityCount = 0
+mod.vb.singularityCount = 1
 mod.vb.phase = 1
 --Saved Information for echos
 mod.vb.totalRingCasts = 0
@@ -184,6 +173,7 @@ function mod:OnCombatStart(delay)
 	self.vb.tormentCastCount = 0
 	self.vb.ringCastCount = 0
 	self.vb.burstDebuffCount = 0
+	self.vb.singularityCount = 1--First one on pull doesn't have an event so have to skip it in count
 	self.vb.phase = 1
 	self.vb.totalRingCasts = 0
 	self.vb.totalbeamCasts = 0
@@ -198,7 +188,7 @@ function mod:OnCombatStart(delay)
 	timerTimeElementalsCD:Start(5-delay, SLOW)
 	timerTimeElementalsCD:Start(8-delay, FAST)
 	timerAblationCD:Start(8.5-delay)--Verify/tweak
-	timerSpanningSingularityCD:Start(23-delay, 1)
+	timerSpanningSingularityCD:Start(23-delay, 2)
 	timerArcaneticRing:Start(34-delay)
 	countdownArcaneticRing:Start(34-delay)
 	DBM:AddMsg("This fight was practically rewritten since this mod was made. Unfortunately during re-test, phase 2 and 3 were poorly captured so mod that was finished now needs a lot of work again. This will be fixed on live as quickly as possible.")
@@ -256,20 +246,6 @@ function mod:SPELL_CAST_START(args)
 		local timer = OrbTimers[nextCount]
 		if timer then
 			timerEpochericOrbCD:Start(timer, nextCount)
-		end
-	elseif spellId == 209168 then
-		self.vb.singularityCount = self.vb.singularityCount + 1
-		specWarnSpanningSingularity:Show()
-		voiceSpanningSingularity:Play("watchstep")
-		local nextCount = self.vb.singularityCount + 1
-		if self.vb.phase == 1 then
-			self.vb.totalsingularityCasts = self.vb.totalsingularityCasts + 1
-		else
-			if nextCount > self.vb.totalsingularityCasts then return end--There won't be any more
-		end
-		local timer = SingularityTimers[nextCount]
-		if timer then
-			timerSpanningSingularityCD:Start(timer, nextCount)
 		end
 	end
 end
@@ -329,6 +305,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 209615 then
 		timerAblationCD:Start()
+	elseif spellId == 210024 and self:AntiSpam(10, 4) then
+		self.vb.orbCastCount = self.vb.orbCastCount + 1
+		local nextCount = self.vb.orbCastCount + 1
+		local timer = OrbTimers[nextCount]
+		if timer then
+			specWarnEpochericOrb:Schedule(timer-10)
+			voiceEpochericOrb:Schedule(timer-10, "161612")
+			timerEpochericOrbCD:Start(timer-10, nextCount)
+		end
 	end
 end
 
@@ -466,38 +451,40 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.ringCastCount = 0
 		self.vb.beamCastCount = 0
 		self.vb.singularityCount = 0
+		self.vb.orbCastCount = 0
 		timerArcaneticRing:Stop()
 		countdownArcaneticRing:Cancel()
 		timerTimeElementalsCD:Stop()
+		timerEpochericOrbCD:Stop()
 		timerDelphuricBeamCD:Stop()
 		countdownDelphuricBeam:Cancel()
 		timerLeaveNightwell:Start()
-		timerSpanningSingularityCD:Start(10, 1)--Updated Dec 13 heroic
-		timerTimeElementalsCD:Start(15, SLOW)--Updated Dec 13 heroic
-		timerDelphuricBeamCD:Start(17, 1)--13 for cast start
-		timerTimeElementalsCD:Start(18, FAST)--Dec 13, now summoned instantly
-		countdownDelphuricBeam:Start(34)
-		timerArcaneticRing:Start(46, 1)
+		timerSpanningSingularityCD:Start(10, 1)--Updated Jan 18 heroic
+		timerTimeElementalsCD:Start(14.7, SLOW)--Updated Jan 18 heroic
+		timerTimeElementalsCD:Start(17, FAST)--Updated Jan 18 (17-18)
+		timerEpochericOrbCD:Start(27, 1)--Updated Jan 18 Heroic
+		timerArcaneticRing:Start(46, 1)--Verified Jan 18
 		countdownArcaneticRing:Start(46)
 		if self.vb.phase == 2 then
-			self.vb.orbCastCount = 0
 			warnPhase2:Show()
 			voicePhaseChange:Play("ptwo")
 			timerAblatingExplosionCD:Start(22)--Verfied unchanged Dec 13 Heroic
-			timerEpochericOrbCD:Start(28, 1)--Updated Dec 13 Heroic
+			timerDelphuricBeamCD:Start(72, 1)--Cast SUCCESS
+			countdownDelphuricBeam:Start(72)
 		elseif self.vb.phase == 3 then
 			warnPhase3:Show()
 			voicePhaseChange:Play("pthree")
 			self.vb.burstCastCount = 0
 			timerAblatingExplosionCD:Stop()
-			timerEpochericOrbCD:Stop()
 			timerAblativePulseCD:Start(22)
-			timerPermaliativeTormentCD:Start(140)--really likely cast more often in not faceroll mode. need more data
-			if not self:IsEasy() then
-				--Wasn't used in LFR, assume normal is same way since that's generally how it is
+			specWarnEpochericOrb:Schedule(27)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
+			voiceEpochericOrb:Schedule(27, "161612")
+			timerPermaliativeTormentCD:Start(33)--Updated Jan 18 Heroic
+			if not self:IsLFR() then
+				--Wasn't used in LFR
 				--Timer itself may need updating but been so long since seen heroic or mythic of this fight.
-				timerConflexiveBurstCD:Start(31.6, 1)
-				countdownConflexiveBurst:Start(31.6)
+				timerConflexiveBurstCD:Start(58, 1)
+				countdownConflexiveBurst:Start(58)
 			end
 		end
 		berserkTimer:Cancel()
@@ -523,7 +510,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 208887 then--Summon Time Elementals (summons both of them, used at beginning of each phase)
 		--self.vb.firstElementals = true
 		--specWarnTimeElementals:Show(STATUS_TEXT_BOTH)
-		DBM:Debug("Both elementals summoned, this event still exists, probably need custom code for certain difficulties")		
+		DBM:Debug("Both elementals summoned, this event still exists, probably need custom code for certain difficulties")
+	elseif (spellId == 209168 or spellId == 233012 or spellId == 233011) and self:AntiSpam(3, 3) then
+		self.vb.singularityCount = self.vb.singularityCount + 1
+		specWarnSpanningSingularity:Show()
+		voiceSpanningSingularity:Play("watchstep")
+		local nextCount = self.vb.singularityCount + 1
+		if self.vb.phase == 1 then
+			self.vb.totalsingularityCasts = self.vb.totalsingularityCasts + 1
+		else
+			if nextCount > self.vb.totalsingularityCasts then return end--There won't be any more
+		end
+		local timer = SingularityTimers[nextCount]
+		if timer then
+			timerSpanningSingularityCD:Start(timer, nextCount)
+		end
 	end
 end
 
