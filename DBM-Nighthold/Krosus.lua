@@ -48,7 +48,7 @@ local countdownBigSlam				= mod:NewCountdown(90, 205862)
 local countdownOrbDestro			= mod:NewCountdownFades("AltTwo5", 205344)
 
 local voiceSearingBrand				= mod:NewVoice(206677)--tauntboss
-local voiceFelBeam					= mod:NewVoice(205368)--moveleft/moveright
+local voiceFelBeam					= mod:NewVoice(205368)--shockwave
 local voiceOrbDestro				= mod:NewVoice(205344)--runout
 local voiceBurningPitch				= mod:NewVoice(205420)--watchstep/helpsoak(new)
 local voiceSlam						= mod:NewVoice(205862)--justrun
@@ -58,7 +58,6 @@ local voiceFelBurst					= mod:NewVoice(206352, "HasInterrupt")--kickcast
 mod:AddRangeFrameOption(5, 206352)
 --mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddInfoFrameOption(215944, false)
-mod:AddArrowOption("ArrowOnBeam2", 205368, false)
 
 local burningPitchDebuff = GetSpellInfo(215944)
 local mobGUIDs = {}
@@ -123,9 +122,6 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.ArrowOnBeam2 then
-		DBM.Arrow:Hide()
-	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -139,15 +135,9 @@ function mod:SPELL_CAST_START(args)
 			timerFelBeamCD:Start(timers, nextCount)
 		end
 		if spellId == 205368 then--Coming from right (facing boss)
-			voiceFelBeam:Play("moveleft")
-			if self.Options.ArrowOnBeam2 then
-				DBM.Arrow:ShowStatic(90, 4)
-			end
+			voiceFelBeam:Play("shockwave")
 		else--coming from left (facing boss)
-			voiceFelBeam:Play("moveright")
-			if self.Options.ArrowOnBeam2 then
-				DBM.Arrow:ShowStatic(270, 4)
-			end
+			voiceFelBeam:Play("shockwave")
 		end
 	elseif spellId == 205420 then
 		self.vb.pitchCount = self.vb.pitchCount+ 1
