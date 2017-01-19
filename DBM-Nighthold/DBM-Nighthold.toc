@@ -34,3 +34,4 @@ Telarn.lua
 Etraeus.lua
 Elisande.lua
 Guldan.lua
+NightholdTrash.lua
