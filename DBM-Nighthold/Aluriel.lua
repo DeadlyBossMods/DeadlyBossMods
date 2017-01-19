@@ -5,14 +5,14 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(104881)
 mod:SetEncounterID(1871)
 mod:SetZone()
---mod:SetUsedIcons(8, 7, 6, 3, 2, 1)
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 --mod:SetHotfixNoticeRev(12324)
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 213853 213567 213564 213852 212735 213275 213390 213083 212492",
-	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587 230951",
+	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587 230951 213760 213808",
 	"SPELL_AURA_REMOVED 213569 212531 213148 230951",
 	"SPELL_PERIODIC_DAMAGE 212736 213278 213504",
 	"SPELL_PERIODIC_MISSED 212736 213278 213504",
@@ -23,7 +23,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, possibly dump UNIT_AURA unless that proves to actualy be better way to manage range frame
---TODO, Tank strategies varied a bit and blizz will probably adjust behavior on annihilate so review this again later date
 --TODO, add fixate on mythic. No debuff. Player sees eyes but no debuff. Might have to do nameplate/accro target scanning to warn who has it
 --TODO, probably fix more timers. Especially mythic fire and arcane.
 --Phases
@@ -118,6 +117,9 @@ local voiceAnimateArcane			= mod:NewVoice(213564)--mobsoon
 
 mod:AddRangeFrameOption("8")
 mod:AddHudMapOption("HudMapOnBrandCharge", 213166)
+mod:AddSetIconOption("SetIconOnFrozenTempest", 213083, true, true)
+mod:AddSetIconOption("SetIconOnBurstOfFlame", 213760, true, true)
+mod:AddSetIconOption("SetIconOnBurstOfMagic", 213808, true, true)
 
 mod.vb.annihilateCount = 0
 mod.vb.armageddonAdds = 0
@@ -215,6 +217,9 @@ function mod:SPELL_CAST_START(args)
 		DBM:AddMsg("If you see this message it means blizzard fixed Detonate: Arcane Orb combat log trigger. Report this to DBM authors to improve mod. You may recieve double warnings on this spell until mod is updated.")
 	elseif spellId == 213083 then--Frozen Tempest
 		warnFrozenTempest:Show()
+		if self.Options.SetIconOnFrozenTempest then
+			self:ScanForMobs(args.sourceGUID, 2, 8, 1, 0.2, 10, "SetIconOnFrozenTempest")
+		end
 	elseif spellId == 212492 then--Annihilate
 		self.vb.annihilateCount = self.vb.annihilateCount + 1
 		local targetName, uId, bossuid = self:GetBossTarget(104881, true)
@@ -318,6 +323,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.armageddonAdds = self.vb.armageddonAdds + 1
 	elseif spellId == 230951 then
 		timerFelSoul:Start()
+	elseif spellId == 213760 and self.Options.SetIconOnBurstOfFlame then--Burst of Flame
+		self:ScanForMobs(args.destGUID, 0, 8, 6, 0.1, 10, "SetIconOnBurstOfFlame")
+	elseif spellId == 213808 and self.Options.SetIconOnBurstOfMagic then--Burst of Magic
+		self:ScanForMobs(args.destGUID, 0, 8, 8, 0.1, 12, "SetIconOnBurstOfMagic")
 	end
 end
 
