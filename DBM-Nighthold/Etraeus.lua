@@ -82,6 +82,7 @@ local timerFelEjectionCD			= mod:NewCDCountTimer(16, 205649, nil, nil, nil, 3)
 local timerFelNovaCD				= mod:NewCDCountTimer(25, 206517, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--47.1, 45.0, 25.1
 --Stage Four: Inevitable Fate
 mod:AddTimerLine(SCENARIO_STAGE:format(4))
+local timerWitnessVoid				= mod:NewCastTimer(4, 207720, nil, nil, nil, 2)
 local timerWitnessVoidCD			= mod:NewCDTimer(14.2, 207720, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 --local timerVoidEjectionCD			= mod:NewCDCountTimer(16, 207143, nil, nil, nil, 3)--Where did it go? wasn't on normal test and wasn't on heroic retest
 local timerVoidNovaCD				= mod:NewCDTimer(74, 207439, nil, nil, nil, 2)--Only saw a single pull it was cast twice, so CD needs more verification
@@ -309,6 +310,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 207720 then
 		specWarnWitnessVoid:Show()
 		voiceWitnessVoid:Play("turnaway")
+		timerWitnessVoid:Start(nil, args.sourceGUID)
 		if self:IsEasy() then
 			timerWitnessVoidCD:Start(14.5, args.sourceGUID)
 		else
@@ -545,6 +547,7 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 104880 then--Thing That Should Not Be
 		timerWitnessVoidCD:Cancel(args.destGUID)
+		timerWitnessVoid:Cancel(args.destGUID)
 	end
 end
 
