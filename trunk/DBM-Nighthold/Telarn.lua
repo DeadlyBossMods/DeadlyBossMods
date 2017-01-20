@@ -403,11 +403,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 218503 then
 		local amount = args.amount or 1
-		if amount % 3 == 0 or amount > 9 then
-			warnRecursiveStrikes:Show(args.destName, amount)
+		if amount >= 5 then
 			if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") and self:AntiSpam(3, 1) then
 				specWarnRecursiveStrikes:Show(args.destName)
 				voiceRecursiveStrikes:Play("tauntboss")
+			else
+				if amount % 3 == 0 then
+					warnRecursiveStrikes:Show(args.destName, amount)
+				end
 			end
 		end
 	elseif spellId == 218304 then

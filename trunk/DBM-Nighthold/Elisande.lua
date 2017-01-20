@@ -17,14 +17,13 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REFRESH 209973",
 	"SPELL_AURA_APPLIED_DOSE 209615 209973",
 	"SPELL_AURA_REMOVED 209973 209598",
-	"SPELL_PERIODIC_DAMAGE 209433",
-	"SPELL_PERIODIC_MISSED 209433",
+--	"SPELL_PERIODIC_DAMAGE 209433",
+--	"SPELL_PERIODIC_MISSED 209433",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --TODO, figure out interrupt order/count assistant for stuff
 --TODO, determine which interrupts are off by default, if any
---TODO, 209615/ablation is probably a swap mechanic that stacks. Coded as such for now until proven otherwise
 --TODO, Adjust beam lines/warnings as needed.
 --TODO, Balls special warning on or off by default and for who?
 --TODO, figure out how to do yell countdowns on Conflexive Burst. It'll probably require UNIT_AURA player scanning with constant checking of time remaining.
@@ -59,8 +58,9 @@ local specWarnExoRelease			= mod:NewSpecialWarningInterrupt(209568, "HasInterrup
 local specWarnExpedite				= mod:NewSpecialWarningInterrupt(209617, "HasInterrupt", nil, nil, 1, 2)
 --Time Layer 1
 local specWarnArcaneticRing			= mod:NewSpecialWarningDodge(208807, nil, nil, nil, 2, 5)
+local specWarnAblation				= mod:NewSpecialWarningTaunt(209615, nil, nil, nil, 1, 2)
 local specWarnSpanningSingularity	= mod:NewSpecialWarningDodge(209168, nil, nil, nil, 2, 2)
-local specWarnSingularityGTFO		= mod:NewSpecialWarningMove(209168, nil, nil, nil, 1, 2)
+--local specWarnSingularityGTFO		= mod:NewSpecialWarningMove(209168, nil, nil, nil, 1, 2)
 --Time Layer 2
 local specWarnDelphuricBeam			= mod:NewSpecialWarningYou(214278, nil, nil, nil, 1, 2)
 local yellDelphuricBeam				= mod:NewYell(214278, nil, false)--off by default, because yells last longer than 3-4 seconds so yells from PERVIOUS beam are not yet gone when new beam is cast.
@@ -76,7 +76,7 @@ local timerTimeElementalsCD			= mod:NewNextSourceTimer(16, 208887, 141872, nil, 
 --Time Layer 1
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerArcaneticRing			= mod:NewNextCountTimer(6, 208807, nil, nil, nil, 2)
-local timerAblationCD				= mod:NewCDTimer(6.1, 209615, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--6.1-9.7
+local timerAblationCD				= mod:NewCDTimer(4.8, 209615, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSpanningSingularityCD	= mod:NewNextCountTimer(16, 209168, nil, nil, nil, 3)
 --Time Layer 2
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -110,6 +110,7 @@ local voiceExoRelease				= mod:NewVoice(209568, "HasInterrupt")--kickcast
 local voiceExpedite					= mod:NewVoice(209617, "HasInterrupt")--kickcast
 --Time Layer 1
 local voiceArcaneticRing			= mod:NewVoice(208807)--watchorb
+local voiceAblation					= mod:NewVoice(209615)--tauntboss
 local voiceSpanningSingularity		= mod:NewVoice(209168)--watchstep/runaway
 --Time Layer 2
 local voiceDelphuricBeam			= mod:NewVoice(214278)--targetyou
@@ -125,8 +126,8 @@ mod:AddHudMapOption("HudMapOnDelphuricBeam", 214278)
 
 --Exists in phases 1-3
 local slowElementalTimers = {5, 49, 52, 60}--Heroic Jan 18
-local fastElementalTimers = {8, 88, 95}--Heroic Jan 18
-local RingTimers = {34, 40, 10, 62, 9}--Heroic Jan 18
+local fastElementalTimers = {8, 88, 95, 20}--Heroic Jan 19
+local RingTimers = {34, 40, 10, 62, 9, 45}--Heroic Jan 19
 local SingularityTimers = {10, 22, 36.0, 57, 65}--Heroic Jan 18
 --Only exist in phase 2
 local BeamTimers = {72, 57, 60}--Heroic Jan 18
@@ -323,8 +324,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount % 3 then--Every 3 stacks for now
-				warnAblation:Show(args.destName, amount)
+			if amount >= 2 then
+				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+					specWarnAblation:Show(args.destName)
+					voiceAblation:Play("tauntboss")
+				else
+					warnAblation:Show(args.destName, amount)
+				end
 			end
 		end
 	elseif spellId == 211261 then
@@ -433,6 +439,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 209433 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnSingularityGTFO:Show()
@@ -440,6 +447,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)

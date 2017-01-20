@@ -50,21 +50,25 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1713)
 
+L:SetWarningLocalization({
+	warnSlamSoon		= "%d초 후 다리 파괴"
+})
+
 ------------------
 -- High Botanist Tel'arn --
 ------------------
 L= DBM:GetModLocalization(1761)
 
 L:SetWarningLocalization({
-	warnStarLow				= "플라즈마 구체가 거의 내려옴"
+	warnStarLow				= "플라스마 구체 체력 낮음"
 })
 
 L:SetOptionLocalization({
-	warnStarLow				= "플라즈마 구체가 거의 내려왔을 때 특수 경고 보기 (15% 이하)"
+	warnStarLow				= "플라스마 구체 체력이 낮으면 특수 경고 보기 (15% 이하)"
 })
 
 L:SetMiscLocalization({
-	RadarMessage			= "레이더는 디버프가 없는 짝을 찾을 때 사용하고 HUD는 다른 디버프를 피할 때 사용하새요. 본 기능이 앞으로 발전되어 더 많은 기능을 제공했으면 좋겠습니다."
+	RadarMessage			= "레이더는 디버프가 없는 짝을 찾을 때 사용하고 HUD는 다른 디버프를 피할 때 사용하세요. 본 기능이 앞으로 발전되어 더 많은 기능을 제공했으면 좋겠습니다."
 })
 
 ------------------
