@@ -9,10 +9,11 @@ mod.isTrashMod = true
 mod:RegisterEvents(
 	"SPELL_CAST_START 221164 224510 224246",
 	"SPELL_CAST_SUCCESS 225389",
-	"SPELL_AURA_APPLIED 221344 222111 224572 225390"
+	"SPELL_AURA_APPLIED 221344 222111 224572 225390 222719 224560"
 )
 
 local warnAnnihilatingOrb			= mod:NewTargetAnnounce(221344, 3)
+local warnCelestialBrand			= mod:NewTargetAnnounce(224560, 2)
 
 local specWarnAnnihilatingOrb		= mod:NewSpecialWarningMoveAway(221344, nil, nil, nil, 1, 2)
 local yellAnnihilatingOrb			= mod:NewYell(221344)
@@ -23,6 +24,10 @@ local specWarnRoilingFlame			= mod:NewSpecialWarningMove(222111, nil, nil, nil, 
 local specWarnDisruptingEnergy		= mod:NewSpecialWarningMove(224572, nil, nil, nil, 1, 2)
 local specWarnStellarDust			= mod:NewSpecialWarningMove(225390, nil, nil, nil, 1, 2)
 local specWarnArcWell				= mod:NewSpecialWarningSwitch(224246, "Dps", nil, nil, 1, 6)
+local specWarnCelestialBrand		= mod:NewSpecialWarningMoveAway(224560, nil, nil, nil, 1, 2)
+local yellCelestialBrand			= mod:NewYell(224560)
+local specWarnHeavenlyCrash			= mod:NewSpecialWarningMoveTo(224632, nil, nil, nil, 1, 2)
+local yellHeavenlyCrash				= mod:NewFadesYell(224632)--VERIFY duration
 
 local voiceAnnihilatingOrb			= mod:NewVoice(221344)--runout
 local voiceFulminate				= mod:NewVoice(221164)--runout
@@ -32,6 +37,8 @@ local voiceRoilingFlame				= mod:NewVoice(222111)--runaway
 local voiceDisruptingEnergy			= mod:NewVoice(224572)--runaway
 local voiceStellarDust				= mod:NewVoice(225390)--runaway
 local voiceArcWell					= mod:NewVoice(224246)--killtotem (NYI)
+local voiceCelestialBrand			= mod:NewVoice(224560)--runout
+local voiceHeavenlyCrash			= mod:NewVoice(224632)--gathershare
 
 mod:RemoveOption("HealthFrame")
 
@@ -79,6 +86,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 225390 and args:IsPlayer() then
 		specWarnStellarDust:Show()
 		voiceStellarDust:Play("runaway")
+	elseif spellId == 222719 then
+		specWarnHeavenlyCrash:Show(args.destName)
+		voiceHeavenlyCrash:Play("gathershare")
+		if args:IsPlayer() then
+			yellHeavenlyCrash:Schedule(4, 1)
+			yellHeavenlyCrash:Schedule(3, 2)
+			yellHeavenlyCrash:Schedule(2, 3)
+		end
+	elseif spellId == 224560 then
+		warnCelestialBrand:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnCelestialBrand:Show()
+			voiceCelestialBrand:Play("runout")
+			yellCelestialBrand:Yell()
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
