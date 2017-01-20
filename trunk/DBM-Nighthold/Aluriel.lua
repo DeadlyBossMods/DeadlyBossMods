@@ -198,8 +198,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 213564 then--Animate: Arcane Orb
 		specWarnAnimateArcane:Show()
 		voiceAnimateArcane:Play("mobsoon")
-		timerArmageddon:Start()
-		countdownArmageddon:Start()
+		if not self:IsEasy() then
+			timerArmageddon:Start()
+			countdownArmageddon:Start()
+		end
 	elseif spellId == 213852 then--Replicate: Arcane Orb
 		specWarnArcaneOrb:Show()
 		voiceArcaneOrb:Play("watchorb")
