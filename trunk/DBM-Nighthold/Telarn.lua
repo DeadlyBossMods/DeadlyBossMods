@@ -557,7 +557,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.SetIconOnFetter and not self:IsLFR() then
 			self:SetIcon(args.destName, 0)
-			self:ScanForMobs(109075, 0, 8, 2, 0.1, 10, "SetIconOnFetter")
+			self:ScanForMobs(109075, 0, 8, 2, 0.1, 15, "SetIconOnFetter")
 		end
 	end
 end
