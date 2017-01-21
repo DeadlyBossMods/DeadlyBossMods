@@ -463,7 +463,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 211647 then--Stop Time
 		self.vb.phase = self.vb.phase + 1
-		self:AntiSpam(3, 3)--Dirty fix for now
 		--self.vb.firstElementals = false
 		self.vb.slowElementalCount = 0
 		self.vb.fastElementalCount = 0
@@ -477,6 +476,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerEpochericOrbCD:Stop()
 		timerDelphuricBeamCD:Stop()
 		countdownDelphuricBeam:Cancel()
+		timerSpanningSingularityCD:Stop()
 		timerLeaveNightwell:Start()
 		timerSpanningSingularityCD:Start(10, 1)--Updated Jan 18 heroic
 		timerTimeElementalsCD:Start(14.7, SLOW)--Updated Jan 18 heroic
