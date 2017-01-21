@@ -42,7 +42,6 @@ local voiceDancingBlade				= mod:NewVoice(228003)--runaway
 --mod:AddInfoFrameOption(227503, true)
 --mod:AddRangeFrameOption("5/8/15")
 
---[[
 local debuffFilter
 local UnitDebuff = UnitDebuff
 local playerDebuff = nil
