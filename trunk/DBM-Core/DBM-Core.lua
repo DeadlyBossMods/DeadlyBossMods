@@ -6758,11 +6758,8 @@ function DBM:FindInstanceIDs()
 	end
 end
 
---/run DBM:FindEncounterIDs(768)--Emerald Nightmare
---/run DBM:FindEncounterIDs(786)--The Nighthold
---/run DBM:FindEncounterIDs(822)--Broken Isles
---/run DBM:FindEncounterIDs(861)--Trial of Valor
---/run DBM:FindEncounterIDs(860, 23)--Return to Karazhan
+--/run DBM:FindEncounterIDs(875)--Tomb of Sargeras
+--/run DBM:FindEncounterIDs(900, 23)--Cathedral of Eternal Night
 function DBM:FindEncounterIDs(instanceID, diff)
 	if not instanceID then
 		self:AddMsg("Error: Function requires instanceID be provided")
