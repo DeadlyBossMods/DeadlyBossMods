@@ -6,7 +6,7 @@ mod:SetCreatureID(104415)--104731 (Depleted Time Particle). 104676 (Waning Time 
 mod:SetEncounterID(1865)
 mod:SetZone()
 --mod:SetUsedIcons(5, 4, 3, 2, 1)--sometimes it was 5 targets, sometimes it was whole raid. even post nerf. have to see
-mod:SetHotfixNoticeRev(15669)
+mod:SetHotfixNoticeRev(15705)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -208,20 +208,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				self:Schedule(15, delayedBurst, self, 10, 2)--25
 				self:Schedule(10, delayedTimeRelease, self, 20, 2)--30
 				self:Schedule(25, delayedBurst, self, 10, 3)--35
-			elseif self:IsHeroic() then--UPDATED Dec 2
-				--[[timerTimeReleaseCD:Start(5, 1)
-				timerBurstofTimeCD:Start(8, 1)--NEW
-				timerBurstofTimeCD:Start(10, 2)
-				self:Schedule(5, delayedTimeRelease, self, 15, 2)--20
-				timerBigAddCD:Start(25, 1)
-				countdownBigAdd:Start(25)
-				timerTimeBombCD:Start(30, 1)
-				self:Schedule(10, delayedBurst, self, 25, 3)--35
-				timerTemporalOrbsCD:Start(40, 1)
-				self:Schedule(20, delayedTimeRelease, self, 25, 3)--45
-				self:Schedule(35, delayedBurst, self, 15, 4)--50
-				timerPowerOverwhelmingCD:Start(55, 1)--]]
-				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
+			elseif self:IsHeroic() then--UPDATED Jan 18
+				timerTimeReleaseCD:Start(5, 1)
+				self:Schedule(5, delayedTimeRelease, self, 13, 2)--18
+				timerBigAddCD:Start(23, 1)
+				countdownBigAdd:Start(23)
+				timerTimeBombCD:Start(28, 1)
+				self:Schedule(28, delayedTimeBomb, self, 5, 2)--33
+				timerTemporalOrbsCD:Start(38, 1)
+				self:Schedule(30, delayedTimeRelease, self, 13, 3)--43
+				timerPowerOverwhelmingCD:Start(53, 1)
 			elseif self:IsNormal() then--Updated Jan 17
 				timerTimeReleaseCD:Start(5, 1)
 				self:Schedule(5, delayedTimeRelease, self, 15, 2)--20
@@ -313,24 +309,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerTimeBombCD:Start(18, 1)--Odd, the only non 5s timer in like all of this bosses tables.
 				timerTimeReleaseCD:Start(20, 1)
 				timerPowerOverwhelmingCD:Start(25, 1)
-			elseif self:IsHeroic() then--Updated Dec 2
-			--[[	timerTimeReleaseCD:Start(5, 1)
-				timerTimeBombCD:Start(10, 1)
-				timerTemporalOrbsCD:Start(15, 1)
-				timerBurstofTimeCD:Start(17, 1)
-				timerBurstofTimeCD:Start(20, 2)
+			elseif self:IsHeroic() then--Updated Jan 18
+				timerTimeReleaseCD:Start(10, 1)
+				timerTimeBombCD:Start(15, 1)
+				timerTemporalOrbsCD:Start(20, 1)
 				self:Schedule(10, delayedTimeBomb, self, 15, 2)--25
-				self:Schedule(20, delayedBurst, self, 8, 3)--28
 				self:Schedule(5, delayedTimeRelease, self, 25, 2)--30
-				self:Schedule(28, delayedBurst, self, 5, 4)--33
-				self:Schedule(28, delayedBurst, self, 7, 5)--35
-				self:Schedule(15, delayedOrbs, self, 25, 2)--40
-				self:Schedule(25, delayedTimeBomb, self, 20, 3)--45
-				timerBigAddCD:Start(50, 1)
-				countdownBigAdd:Start(50)
-				self:Schedule(40, delayedOrbs, self, 15, 3)--55
-				timerPowerOverwhelmingCD:Start(60, 1)--]]
-				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
+				self:Schedule(25, delayedTimeBomb, self, 10, 3)--35
+				self:Schedule(20, delayedOrbs, self, 18, 2)--38
+				self:Schedule(25, delayedTimeBomb, self, 15, 3)--40
+				timerBigAddCD:Start(43, 1)
+				countdownBigAdd:Start(43)
+				self:Schedule(38, delayedOrbs, self, 7, 3)--45
+				timerPowerOverwhelmingCD:Start(55, 1)
 			elseif self:IsNormal() then--Updated Jan 17
 				timerTimeReleaseCD:Start(5, 1)
 				timerTimeBombCD:Start(20, 1)
