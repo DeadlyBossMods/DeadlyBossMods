@@ -19,6 +19,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 209973 209598",
 --	"SPELL_PERIODIC_DAMAGE 209433",
 --	"SPELL_PERIODIC_MISSED 209433",
+	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -78,7 +80,7 @@ local timerTimeElementalsCD			= mod:NewNextSourceTimer(16, 208887, 141872, nil, 
 --Time Layer 1
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerArcaneticRing			= mod:NewNextCountTimer(6, 208807, nil, nil, nil, 2)
-local timerAblationCD				= mod:NewCDTimer(4.8, 209615, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+--local timerAblationCD				= mod:NewCDTimer(4.8, 209615, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSpanningSingularityCD	= mod:NewNextCountTimer(16, 209168, nil, nil, nil, 3)
 --Time Layer 2
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -191,7 +193,7 @@ function mod:OnCombatStart(delay)
 	self.vb.pos7X, self.vb.pos7Y = nil, nil
 	timerTimeElementalsCD:Start(5-delay, SLOW)
 	timerTimeElementalsCD:Start(8-delay, FAST)
-	timerAblationCD:Start(8.5-delay)--Verify/tweak
+	--timerAblationCD:Start(8.5-delay)--Verify/tweak
 	timerSpanningSingularityCD:Start(23-delay, 2)
 	timerArcaneticRing:Start(34-delay)
 	countdownArcaneticRing:Start(34-delay)
@@ -308,7 +310,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			countdownDelphuricBeam:Start(timer)
 		end
 	elseif spellId == 209615 then
-		timerAblationCD:Start()
+		--timerAblationCD:Start()
 	elseif spellId == 210024 and self:AntiSpam(10, 4) then
 		self.vb.orbCastCount = self.vb.orbCastCount + 1
 		local nextCount = self.vb.orbCastCount + 1
