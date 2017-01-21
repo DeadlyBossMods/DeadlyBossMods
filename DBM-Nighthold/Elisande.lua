@@ -11,7 +11,7 @@ mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 209590 209620 221864 209568 209617 209595 210022 209971",
+	"SPELL_CAST_START 209590 209620 221864 209617 209595 210022 209971",
 	"SPELL_CAST_SUCCESS 209597 210387 214295 214278 209615 210024",
 	"SPELL_AURA_APPLIED 209615 209244 209973 209598 211261 232974",
 	"SPELL_AURA_REFRESH 209973",
@@ -31,7 +31,6 @@ mod:RegisterEventsInCombat(
 --TODO, figure out how to do yell countdowns on Conflexive Burst. It'll probably require UNIT_AURA player scanning with constant checking of time remaining.
 --TODO, are tanks enough to keep Ablative Pulse Interrupted? Dps have enough stuff to interrupt so hopefully tanks can worry about boss on their own
 --TODO, auto assign conflexive burst. if always 3 targets have one stand out, 1 go to fast and one go to slow. this will perfectly stagger 3 explosions. assign by mark
---TODO, maybe hide specWarnTimeElementals from tank if SLOW add, if blizzard leaves the fight the poorly designed way it is now (where it's untankable and melee stand around with thumbs up ass)
 --(ability.id = 209595 or ability.id = 208807 or ability.id = 228877 or ability.id = 210022 or ability.id = 209168) and type = "begincast" or (ability.id = 209597 or ability.id = 210387 or ability.id = 214278 or ability.id = 214295 or ability.id = 208863) and type = "cast"
 --Base
 local warnTemporalisis				= mod:NewSpellAnnounce(209595, 3)
@@ -50,13 +49,13 @@ local warnPermaliativeTorment		= mod:NewTargetAnnounce(210387, 3, nil, "Healer")
 local warnConflexiveBurst			= mod:NewTargetAnnounce(209598, 4)
 
 --Base
-local specWarnTimeElementals		= mod:NewSpecialWarningSwitchCount(208887, "-Healer", DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(208887))
+local specWarnTimeElementals		= mod:NewSpecialWarningSwitchCount(208887, "-Healer", DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(208887), nil, 1, 2)
 ----Recursive Elemental
 local specWarnCompressedTime		= mod:NewSpecialWarningDodge(209590)
 local specWarnRecursion				= mod:NewSpecialWarningInterrupt(209620, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBlast					= mod:NewSpecialWarningInterrupt(221864, "HasInterrupt", nil, nil, 1, 2)
 ----Expedient Elemental
-local specWarnExoRelease			= mod:NewSpecialWarningInterrupt(209568, "HasInterrupt", nil, nil, 1, 2)
+--local specWarnExoRelease			= mod:NewSpecialWarningInterrupt(209568, "HasInterrupt", nil, nil, 1, 2)
 local specWarnExpedite				= mod:NewSpecialWarningInterrupt(209617, "HasInterrupt", nil, nil, 1, 2)
 --Time Layer 1
 local specWarnArcaneticRing			= mod:NewSpecialWarningDodge(208807, nil, nil, nil, 2, 5)
@@ -66,7 +65,7 @@ local specWarnSpanningSingularity	= mod:NewSpecialWarningDodge(209168, nil, nil,
 --Time Layer 2
 local specWarnDelphuricBeam			= mod:NewSpecialWarningYou(214278, nil, nil, nil, 1, 2)
 local yellDelphuricBeam				= mod:NewYell(214278, nil, false)--off by default, because yells last longer than 3-4 seconds so yells from PERVIOUS beam are not yet gone when new beam is cast.
-local specWarnEpochericOrb			= mod:NewSpecialWarningSpell(214278, "Dps", nil, nil, 1, 2)
+local specWarnEpochericOrb			= mod:NewSpecialWarningSpell(210022, "Dps", nil, nil, 1, 2)
 local specWarnAblationExplosion		= mod:NewSpecialWarningTaunt(209615, nil, nil, nil, 1, 2)
 local specWarnAblationExplosionOut	= mod:NewSpecialWarningMoveAway(209615, nil, nil, nil, 1, 2)
 local yellAblatingExplosion			= mod:NewFadesYell(209973)
@@ -85,7 +84,7 @@ local timerSpanningSingularityCD	= mod:NewNextCountTimer(16, 209168, nil, nil, n
 --Time Layer 2
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerDelphuricBeamCD			= mod:NewNextCountTimer(16, 214278, nil, nil, nil, 3)
-local timerEpochericOrbCD			= mod:NewNextCountTimer(16, 210022, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerEpochericOrbCD			= mod:NewNextCountTimer(16, 210022, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerAblatingExplosion		= mod:NewTargetTimer(6, 209973, nil, "Tank")
 local timerAblatingExplosionCD		= mod:NewCDTimer(20, 209973, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --Time Layer 3
@@ -94,7 +93,7 @@ local timerConflexiveBurstCD		= mod:NewNextCountTimer(100, 209597, nil, nil, nil
 local timerAblativePulseCD			= mod:NewCDTimer(10.9, 209971, nil, "Tank", nil, 4, nil, DBM_CORE_TANK_ICON..DBM_CORE_INTERRUPT_ICON)--12 now?
 local timerPermaliativeTormentCD	= mod:NewNextCountTimer(16, 210387, nil, "Healer", nil, 5, nil, DBM_CORE_DEADLY_ICON)
 
-local berserkTimer					= mod:NewBerserkTimer(240)--4 minute berserk that resets when she changes layers.
+--local berserkTimer					= mod:NewBerserkTimer(240)--4 minute berserk that resets when she changes layers.
 
 --Base
 --Time Layer 1
@@ -106,11 +105,12 @@ local countdownConflexiveBurst		= mod:NewCountdown("AltTwo6", 209597)
 
 --Base
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
+local voiceElemental				= mod:NewVoice(208887)--bigmob
 ----Recursive Elemental
 local voiceRecursion				= mod:NewVoice(209620, "HasInterrupt")--kickcast
 local voiceBlast					= mod:NewVoice(221864, "HasInterrupt")--kickcast
 ----Expedient Elemental
-local voiceExoRelease				= mod:NewVoice(209568, "HasInterrupt")--kickcast
+--local voiceExoRelease				= mod:NewVoice(209568, "HasInterrupt")--kickcast
 local voiceExpedite					= mod:NewVoice(209617, "HasInterrupt")--kickcast
 --Time Layer 1
 local voiceArcaneticRing			= mod:NewVoice(208807)--watchorb
@@ -139,8 +139,8 @@ local BeamTimers = {72, 57, 60}--Heroic Jan 18
 --Exists in Phase 2 and Phase 3 (but cast start event missing in phase 3)
 local OrbTimers = {27, 76, 37, 70}--Heroic Jan 18
 --Only exist in phase 3 so first timer of course isn't variable
-local BurstTimers = {58, 52, 56}--Heroic Jan 18
-local TormentTimers = {33, 61, 37, 60}--Heroic Jan 18
+local BurstTimers = {58, 52.0, 56.0, 65.0, 10.0, 10.0, 10.0, 10.0}--Heroic Jan 21
+local TormentTimers = {33, 61, 37, 60}--Heroic Jan 21
 local currentTank, tankUnitID = nil, nil--not recoverable on purpose
 mod.vb.firstElementals = false
 mod.vb.slowElementalCount = 0
@@ -226,11 +226,11 @@ function mod:SPELL_CAST_START(args)
 			specWarnBlast:Show(args.sourceName)
 			voiceBlast:Play("kickcast")
 		end
-	elseif spellId == 209568 then
+--[[	elseif spellId == 209568 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnExoRelease:Show(args.sourceName)
 			voiceExoRelease:Play("kickcast")
-		end
+		end--]]
 	elseif spellId == 209617 then
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnExpedite:Show(args.sourceName)
@@ -244,7 +244,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 209595 then
 		warnTemporalisis:Show()
-	elseif spellId == 210022 then
+	elseif spellId == 210022 and self:AntiSpam(15, 4) then
 		self.vb.orbCastCount = self.vb.orbCastCount + 1
 		specWarnEpochericOrb:Show()
 		voiceEpochericOrb:Play("161612")
@@ -261,7 +261,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 209597 then
 		self.vb.burstCastCount = self.vb.burstCastCount + 1
 		local nextCount = self.vb.burstCastCount + 1
-		local timer = BurstTimers[nextCount]
+		local timer = BurstTimers[nextCount] or 10
 		if timer then
 			timerConflexiveBurstCD:Start(timer, nextCount)
 			countdownConflexiveBurst:Start(timer)
@@ -311,7 +311,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 209615 then
 		--timerAblationCD:Start()
-	elseif spellId == 210024 and self:AntiSpam(10, 4) then
+	elseif spellId == 210024 and self:AntiSpam(15, 4) then
 		self.vb.orbCastCount = self.vb.orbCastCount + 1
 		local nextCount = self.vb.orbCastCount + 1
 		local timer = OrbTimers[nextCount]
@@ -461,7 +461,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 211647 then--Stop Time
+	if spellId == 211647 then--Time Stop
 		self.vb.phase = self.vb.phase + 1
 		--self.vb.firstElementals = false
 		self.vb.slowElementalCount = 0
@@ -474,9 +474,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		countdownArcaneticRing:Cancel()
 		timerTimeElementalsCD:Stop()
 		timerEpochericOrbCD:Stop()
+		timerSpanningSingularityCD:Stop()
 		timerDelphuricBeamCD:Stop()
 		countdownDelphuricBeam:Cancel()
-		timerSpanningSingularityCD:Stop()
 		timerLeaveNightwell:Start()
 		timerSpanningSingularityCD:Start(10, 1)--Updated Jan 18 heroic
 		timerTimeElementalsCD:Start(14.7, SLOW)--Updated Jan 18 heroic
@@ -506,12 +506,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				countdownConflexiveBurst:Start(58)
 			end
 		end
-		berserkTimer:Cancel()
-		berserkTimer:Start(258)
+		--berserkTimer:Cancel()
+		--berserkTimer:Start(258)
 	elseif spellId == 209005 then--Summon Time Elemental - Slow
 		self.vb.slowElementalCount = self.vb.slowElementalCount + 1
 		--if self.vb.firstElementals then
 			specWarnTimeElementals:Show(SLOW)
+			voiceElemental:Play("bigmob")
 		--end
 		local timer = slowElementalTimers[self.vb.slowElementalCount+1]
 		if timer then
@@ -521,6 +522,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.fastElementalCount = self.vb.fastElementalCount + 1
 		--if self.vb.firstElementals then
 			specWarnTimeElementals:Show(FAST)
+			voiceElemental:Play("bigmob")
 		--end
 		local timer = fastElementalTimers[self.vb.fastElementalCount+1]
 		if timer then
@@ -529,6 +531,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 208887 then--Summon Time Elementals (summons both of them, used at beginning of each phase)
 		--self.vb.firstElementals = true
 		--specWarnTimeElementals:Show(STATUS_TEXT_BOTH)
+		--voiceElemental:Play("bigmob")
 		DBM:Debug("Both elementals summoned, this event still exists, probably need custom code for certain difficulties")
 	elseif (spellId == 209168 or spellId == 233012 or spellId == 233011) and self:AntiSpam(3, 3) then
 		self.vb.singularityCount = self.vb.singularityCount + 1
