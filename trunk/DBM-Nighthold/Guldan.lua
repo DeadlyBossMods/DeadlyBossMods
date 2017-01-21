@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 209011 206354 206384 209086 221603 221785 221784 212686 206516",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
-	"UNIT_DIED",
+--	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -79,6 +79,7 @@ local specWarnEmpLiquidHellfire		= mod:NewSpecialWarningDodge(206220, nil, nil, 
 local specWarnBondsofFel			= mod:NewSpecialWarningYou(206222, nil, nil, nil, 1, 2)
 local specWarnBondsofFelTank		= mod:NewSpecialWarningTaunt(206222, nil, nil, nil, 1, 2)
 local yellBondsofFel				= mod:NewYell(206222)
+local specWarnHandofGuldan			= mod:NewSpecialWarningSwitch(212258, "-Healer", nil, nil, 1, 2)
 local specWarnEyeofGuldan			= mod:NewSpecialWarningSwitch(209270, "Dps", nil, nil, 1, 2)
 local specWarnEmpEyeofGuldan		= mod:NewSpecialWarningSwitch(211152, "Dps", nil, nil, 1, 2)
 local specWarnCarrionWave			= mod:NewSpecialWarningInterrupt(208672, "HasInterrupt", nil, nil, 1, 2)
@@ -105,7 +106,7 @@ local timerShatterEssenceCD			= mod:NewCDTimer(54, 206675, nil, "Tank", nil, 5, 
 ----Inquisitor Vethriz
 mod:AddTimerLine(Vethriz)
 local timerVethrizCD				= mod:NewCastTimer(25, "ej13124", nil, nil, nil, 1, 212258)
-local timerGazeofVethrizCD			= mod:NewCDTimer(4.5, 206840, nil, nil, nil, 3)
+local timerGazeofVethrizCD			= mod:NewCDTimer(5, 206840, nil, nil, nil, 3)
 local timerShadowBlinkCD			= mod:NewCDTimer(36, 207938)--Role color maybe if blink applies to tank
 ----D'zorykx the Trapper
 mod:AddTimerLine(Dzorykx)
@@ -140,6 +141,7 @@ local voiceSoulVortex				= mod:NewVoice(206883)--runout
 --Stage Two: The Ritual of Aman'thul
 local voiceBondsofFel				= mod:NewVoice(206222)--targetyou/helpsoak/tauntboss
 local voiceEmpLiquidHellfire		= mod:NewVoice(206220)--watchstep
+local voiceHandofGuldan				= mod:NewVoice(212258)--bigmob
 local voiceEyeofGuldan				= mod:NewVoice(209270, "Dps")--killmob
 local voiceCarrionWave				= mod:NewVoice(208672, "HasInterrupt")--kickcast
 --local voiceCharredLacerations		= mod:NewVoice(211162)--tauntboss
@@ -154,6 +156,7 @@ mod:AddHudMapOption("HudMapOnBondsofFel", 206222, "-Tank")
 
 mod.vb.phase = 1
 mod.vb.addsDied = 0
+--mod.vb.inquisitorDead = false
 mod.vb.liquidHellfireCast = 0
 mod.vb.felEffluxCast = 0
 mod.vb.handofGuldanCast = 0
@@ -174,6 +177,7 @@ local bondsIcons = {}
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.addsDied = 0
+--	self.vb.inquisitorDead = false
 	self.vb.liquidHellfireCast = 0
 	self.vb.felEffluxCast = 0
 	self.vb.handofGuldanCast = 0
@@ -207,9 +211,9 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.phase == 1 then
 			timerLiquidHellfireCD:Start(15, self.vb.liquidHellfireCast+1)
 		elseif self.vb.phase == 1.5 then
-			if self.vb.liquidHellfireCast == 2 then
+			if self.vb.liquidHellfireCast == 2 or self:IsHeroic() then
 				timerLiquidHellfireCD:Start(23.8, self.vb.liquidHellfireCast+1)
-			else
+			else--On LFR/Normal the rest are 32 in phase 1.5
 				timerLiquidHellfireCD:Start(32.5, self.vb.liquidHellfireCast+1)
 			end
 		else--Phase 2
@@ -250,6 +254,7 @@ function mod:SPELL_CAST_START(args)
 		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
 		if tanking or (status == 3) then--Player is current target
 			specWarnSoulVortex:Show()
+			voiceSoulVortex:Play("runout")
 			yellSoulVortex:Yell()
 		elseif targetName then
 			warnSoulVortex:Show(targetName)
@@ -313,6 +318,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 212258 and self.vb.phase > 1.5 then--Ignore phase 1 adds with this cast
 		self.vb.handofGuldanCast = self.vb.handofGuldanCast + 1
+		specWarnHandofGuldan:Show()
+		voiceHandofGuldan:Play("bigmob")
 		local timer = handofGuldanTimers[self.vb.handofGuldanCast+1]
 		if timer then
 			timerHandofGuldanCD:Start(timer, self.vb.handofGuldanCast+1)
@@ -453,7 +460,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnPhase2:Show()
 		timerLiquidHellfireCD:Stop()
 		timerFelEffluxCD:Stop()--This probably needs refactoring for mythic since phase 1 and 2 happen at same time
-		timerBondsofFelCD:Start(9)
+		timerBondsofFelCD:Start(8.8)
 		if self:IsEasy() then
 			timerEyeofGuldanCD:Start(32.5)
 			timerLiquidHellfireCD:Start(45, self.vb.liquidHellfireCast+1)
@@ -473,19 +480,23 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 104537 or cid == 104536 or cid == 104534 then
-		self.vb.addsDied = self.vb.addsDied + 1
 		if cid == 104537 then--Fel Lord Kuraz'mal
+			self.vb.addsDied = self.vb.addsDied + 1
 			timerShatterEssenceCD:Stop()
 			--timerFelObeliskCD:Stop()
 		elseif cid == 104536 then--Inquisitor Vethriz
 			timerGazeofVethrizCD:Stop()
 			timerShadowBlinkCD:Stop()
+			if not self.vb.inquisitorDead then
+				self.vb.addsDied = self.vb.addsDied + 1
+				self.vb.inquisitorDead = true
+			end
 		elseif cid == 104534 then--D'zorykx the Trapper
+			self.vb.addsDied = self.vb.addsDied + 1
 			timerSoulVortexCD:Stop()
 		end
 		if self.vb.addsDied == 3 and not self:IsMythic() then
@@ -506,6 +517,7 @@ function mod:UNIT_DIED(args)
 		end
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
@@ -518,23 +530,50 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerStormOfDestroyerCD:Start(timer, self.vb.stormCast+1)
 		end
 	elseif spellId == 215736 then--Hand of Guldan (Fel Lord Kuraz'mal)
-		if self:IsEasy() then
-			timerShatterEssenceCD:Start(20)
-		else
-			timerShatterEssenceCD:Start(5)
-		end
+		timerShatterEssenceCD:Start(19)--Same on normal and heroic. mythic/LFR need vetting.
 	elseif spellId == 215738 then--Hand of Guldan (Inquisitor Vethriz)
 		if self:IsEasy() then
 			--Unknown, died before casting either one
 		else
-			timerShadowBlinkCD:Start(2.5)
-			timerGazeofVethrizCD:Start(5)
+			timerShadowBlinkCD:Start(28.5)
+			timerGazeofVethrizCD:Start(28.5)--Basically starts casting it right after blink, then every 5 seconds
 		end
 	elseif spellId == 215739 then--Hand of Guldan (D'zorykx the Trapper)
 		if self:IsEasy() then
-			timerSoulVortexCD:Start(52)
+			timerSoulVortexCD:Start(52)--Normal verified, LFR assumed
 		else
-			timerSoulVortexCD:Start(19)--This was hotfixed couple times so reverify on live
+			timerSoulVortexCD:Start(35)--Heroic Jan 21
+		end
+	elseif spellId == 209601 or spellId == 209637 or spellId == 208831 then--Fel Lord, Inquisitor, Jailer (they cast these on death, more reliable than UNIT_DIED which often doesn't fire for inquisitor)
+		local cid = self:GetUnitCreatureId(uId)
+		if cid == 104537 or cid == 104536 or cid == 104534 then
+			self.vb.addsDied = self.vb.addsDied + 1
+			if cid == 104537 then--Fel Lord Kuraz'mal
+				timerShatterEssenceCD:Stop()
+				--timerFelObeliskCD:Stop()
+			elseif cid == 104536 then--Inquisitor Vethriz
+				timerGazeofVethrizCD:Stop()
+				timerShadowBlinkCD:Stop()
+			elseif cid == 104534 then--D'zorykx the Trapper
+				timerSoulVortexCD:Stop()
+			end
+			if self.vb.addsDied == 3 and not self:IsMythic() then
+				--This probably needs refactoring for mythic since phase 1 and 2 happen at same time
+				self.vb.phase = 2
+				warnPhase2:Show()
+				timerLiquidHellfireCD:Stop()
+				timerFelEffluxCD:Stop()
+				timerTransition:Start(19)
+				timerBondsofFelCD:Start(27.8)
+				if self:IsEasy() then
+					timerEyeofGuldanCD:Start(51.5)
+					timerLiquidHellfireCD:Start(64, self.vb.liquidHellfireCast+1)
+				else
+					timerHandofGuldanCD:Start(33, 1)
+					timerEyeofGuldanCD:Start(48)
+					timerLiquidHellfireCD:Start(59, self.vb.liquidHellfireCast+1)
+				end
+			end
 		end
 	elseif spellId == 227401 then--Phase 2?
 		DBM:Debug("227401: phase 2 trigger?")
