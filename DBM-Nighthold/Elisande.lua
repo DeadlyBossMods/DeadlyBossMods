@@ -65,6 +65,8 @@ local specWarnSpanningSingularity	= mod:NewSpecialWarningDodge(209168, nil, nil,
 local specWarnDelphuricBeam			= mod:NewSpecialWarningYou(214278, nil, nil, nil, 1, 2)
 local yellDelphuricBeam				= mod:NewYell(214278, nil, false)--off by default, because yells last longer than 3-4 seconds so yells from PERVIOUS beam are not yet gone when new beam is cast.
 local specWarnEpochericOrb			= mod:NewSpecialWarningSpell(214278, "Dps", nil, nil, 1, 2)
+local specWarnAblationExplosion		= mod:NewSpecialWarningTaunt(209615, nil, nil, nil, 1, 2)
+local specWarnAblationExplosionOut	= mod:NewSpecialWarningMoveAway(209615, nil, nil, nil, 1, 2)
 local yellAblatingExplosion			= mod:NewFadesYell(209973)
 --Time Layer 3
 local specWarnConflexiveBurst		= mod:NewSpecialWarningYou(209598, nil, nil, nil, 1, 2)
@@ -83,7 +85,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerDelphuricBeamCD			= mod:NewNextCountTimer(16, 214278, nil, nil, nil, 3)
 local timerEpochericOrbCD			= mod:NewNextCountTimer(16, 210022, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerAblatingExplosion		= mod:NewTargetTimer(6, 209973, nil, "Tank")
-local timerAblatingExplosionCD		= mod:NewCDTimer(30.4, 209973, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerAblatingExplosionCD		= mod:NewCDTimer(20, 209973, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --Time Layer 3
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerConflexiveBurstCD		= mod:NewNextCountTimer(100, 209597, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
@@ -115,6 +117,7 @@ local voiceSpanningSingularity		= mod:NewVoice(209168)--watchstep/runaway
 --Time Layer 2
 local voiceDelphuricBeam			= mod:NewVoice(214278)--targetyou
 local voiceEpochericOrb				= mod:NewVoice(210022, "Dps")--161612(catch balls)
+local voiceAblatingExplosion		= mod:NewVoice(209973)--runout/tauntboss
 --Time Layer 3
 local voiceConflexiveBurst			= mod:NewVoice(209598)--targetyou (review for better voice)
 local voiceAblativePulse			= mod:NewVoice(209971, "HasInterrupt")--kickcast
@@ -387,6 +390,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerAblatingExplosion:Start(args.destName)
 		timerAblatingExplosionCD:Start()
 		if args:IsPlayer() then
+			specWarnAblationExplosionOut:Show()
+			voiceAblatingExplosion:Play("runout")
 			yellAblatingExplosion:Cancel()
 			yellAblatingExplosion:Schedule(3, 3)
 			yellAblatingExplosion:Schedule(4, 2)
@@ -394,6 +399,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
+		else
+			specWarnAblationExplosion:Show(args.destName)
+			voiceAblatingExplosion:Play("tauntboss")
 		end
 	elseif spellId == 209598 then
 		self.vb.burstDebuffCount = self.vb.burstDebuffCount + 1
