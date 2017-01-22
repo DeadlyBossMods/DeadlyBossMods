@@ -65,7 +65,7 @@ local specWarnSpanningSingularity	= mod:NewSpecialWarningDodge(209168, nil, nil,
 --Time Layer 2
 local specWarnDelphuricBeam			= mod:NewSpecialWarningYou(214278, nil, nil, nil, 1, 2)
 local yellDelphuricBeam				= mod:NewYell(214278, nil, false)--off by default, because yells last longer than 3-4 seconds so yells from PERVIOUS beam are not yet gone when new beam is cast.
-local specWarnEpochericOrb			= mod:NewSpecialWarningSpell(210022, "Dps", nil, nil, 1, 2)
+local specWarnEpochericOrb			= mod:NewSpecialWarningSpell(210022, "-Tank", nil, 2, 1, 2)
 local specWarnAblationExplosion		= mod:NewSpecialWarningTaunt(209615, nil, nil, nil, 1, 2)
 local specWarnAblationExplosionOut	= mod:NewSpecialWarningMoveAway(209615, nil, nil, nil, 1, 2)
 local yellAblatingExplosion			= mod:NewFadesYell(209973)
@@ -118,7 +118,7 @@ local voiceAblation					= mod:NewVoice(209615)--tauntboss
 local voiceSpanningSingularity		= mod:NewVoice(209168)--watchstep/runaway
 --Time Layer 2
 local voiceDelphuricBeam			= mod:NewVoice(214278)--targetyou
-local voiceEpochericOrb				= mod:NewVoice(210022, "Dps")--161612(catch balls)
+local voiceEpochericOrb				= mod:NewVoice(210022, "-Tank", nil, 2)--161612(catch balls)
 local voiceAblatingExplosion		= mod:NewVoice(209973)--runout/tauntboss
 --Time Layer 3
 local voiceConflexiveBurst			= mod:NewVoice(209598)--targetyou (review for better voice)
