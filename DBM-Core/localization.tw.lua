@@ -154,6 +154,7 @@ DBM_CORE_VERSIONCHECK_OUTDATED		= "下列有%d玩家正在使用過期的首領�
 DBM_CORE_YOUR_VERSION_OUTDATED		= "你的 Deadly Boss Mod 已經過期。請到http://dev.deadlybossmods.com下載最新版本。"
 DBM_CORE_VOICE_PACK_OUTDATED		= "你的DBM語音包可能缺少在這個版本的DBM需要的語音。部分警告音效已經被停用。請下載新版本的語音包或是聯絡語音包作者更新並加入缺少的語音。"
 DBM_CORE_VOICE_MISSING				= "DBM找不到你所選取的語音包。你的語音包選項已經被重置為'None'。請確定你的語音包已正確的安裝與啟用。"
+DBM_CORE_VOICE_DISABLED				= "你的語音包已安裝但是尚未啟用。如果你想使用語音包，請確定語言包已在語音警告中被選取，或是刪除不使用的語音包去隱藏此訊息。"
 DBM_CORE_VOICE_COUNT_MISSING		= "所選取的語音/倒數語音包%d找不到倒數語音。設定已被重置回預設值。"
 
 DBM_CORE_UPDATEREMINDER_HEADER			= "你的Deadly Boss Mod已經過期。\n你可以在Curse網站或是wowinterface網站以及此網址下載到新版本%s(r%d)："
@@ -256,7 +257,7 @@ DBM_CORE_BREAK_START				= "現在開始休息-你有%s分鐘!"
 DBM_CORE_BREAK_MIN					= "%s分鐘後休息時間結束!"
 DBM_CORE_BREAK_SEC					= "%s秒後休息時間結束!"
 DBM_CORE_TIMER_BREAK				= "休息時間!"
-DBM_CORE_ANNOUNCE_BREAK_OVER		= "休息時間已經結束"
+DBM_CORE_ANNOUNCE_BREAK_OVER		= "休息時間結束於%s"
 
 DBM_CORE_TIMER_PULL					= "戰鬥準備"
 DBM_CORE_ANNOUNCE_PULL				= "%d秒後拉怪 (%s發起)"
@@ -460,7 +461,7 @@ DBM_ARROW_ERROR_USAGE	= {
 DBM_SPEED_KILL_TIMER_TEXT	= "勝利紀錄"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "最佳紀錄"
 DBM_COMBAT_RES_TIMER_TEXT	= "下一個戰復充能"
-DBM_CORE_TIMER_RESPAWN		= "%s 重生"
+DBM_CORE_TIMER_RESPAWN		= "%s重生"
 
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s想要查看你的副本ID和進度鎖定情況。\n你想發送該訊息給%s嗎? 在你的當前進程（除非你下線）他可以一直查閱該訊息。"

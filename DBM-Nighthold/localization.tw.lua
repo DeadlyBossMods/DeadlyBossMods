@@ -50,6 +50,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1713)
 
+L:SetWarningLocalization({
+	warnSlamSoon		= "橋將砸毀在%d秒"
+})
+
 ------------------
 -- High Botanist Tel'arn --
 ------------------
@@ -83,7 +87,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1743)
 
 L:SetMiscLocalization({
-	noCLEU4EchoRings		= "Let the waves of time crash over you!"
+	noCLEU4EchoRings		= "時間的浪潮會粉碎你！"
 })
 
 ------------------
