@@ -173,7 +173,7 @@ L:SetMiscLocalization({
 })
 
 -------------
--- Brawlers: Brumble --
+-- Brawlers: Rumble --
 -------------
 L= DBM:GetModLocalization("BrawlRumble")
 
