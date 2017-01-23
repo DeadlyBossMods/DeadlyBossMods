@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1737, "DBM-Nighthold", nil, 786)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(105503)--104537 (Fel Lord Kuraz'mal)
+mod:SetCreatureID(104154)--104537 (Fel Lord Kuraz'mal)
 mod:SetEncounterID(1866)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3)
