@@ -7,9 +7,14 @@ local L
 L= DBM:GetModLocalization(1819)
 
 ---------------------------
--- Guarm --
+-- 	--
 ---------------------------
 L= DBM:GetModLocalization(1830)
+
+L:SetOptionLocalization({
+	YellActualRaidIcon		= "改變易變沫液的所有DBM大喊至說團隊圖示至玩家而非符合同顏色(需要團隊隊長)",
+	FilterSameColor			= "如果易變沫液和玩家減益同顏色則不要為設置團隊圖示，大喊或是特別警告。"
+})
 
 ---------------------------
 -- Helya --

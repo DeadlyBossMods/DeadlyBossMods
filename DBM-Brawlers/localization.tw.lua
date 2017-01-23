@@ -21,7 +21,8 @@ L:SetOptionLocalization({
 	specWarnYourNext	= "當你下一個上場時顯示特別警告",
 	specWarnYourTurn	= "輪到你上時顯示特別警告",
 	SpectatorMode		= "當旁觀戰鬥時顯示警告/計時器<br/>(旁觀者不會顯示個人的特別警告訊息)",
-	SpeakOutQueue		= "當順位更新數出你的順位"
+	SpeakOutQueue		= "當順位更新數出你的順位",
+	NormalizeVolume		= "在鬥陣俱樂部時自動地標準化對話聲道音量去符合主要聲道音量讓歡呼聲不會太大聲。"
 })
 
 L:SetMiscLocalization({
@@ -114,6 +115,7 @@ L:SetGeneralLocalization({
 	name = "鬥陣俱樂部:第7階"
 })
 
+--[[
 ------------
 -- Rank 8 --
 ------------
@@ -131,14 +133,15 @@ L= DBM:GetModLocalization("BrawlRank9")
 L:SetGeneralLocalization({
 	name = "鬥陣俱樂部:第9階"
 })
+--]]
 
 -------------
--- Rares 1 --
+-- Brawlers: Legacy --
 -------------
 L= DBM:GetModLocalization("BrawlLegacy")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部:挑戰1"
+	name = "鬥陣俱樂部:傳統"
 })
 
 L:SetOptionLocalization({
@@ -146,12 +149,12 @@ L:SetOptionLocalization({
 })
 
 -------------
--- Rares 2 --
+-- Brawlers: Challenges --
 -------------
 L= DBM:GetModLocalization("BrawlChallenges")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部:挑戰2"
+	name = "鬥陣俱樂部:挑戰"
 })
 
 L:SetWarningLocalization({
@@ -159,7 +162,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	ArrowOnBoxing	= "為$spell:140868和$spell:140862和$spell:140886顯示DBM箭頭",
+	ArrowOnBoxing		= "為$spell:140868和$spell:140862和$spell:140886顯示DBM箭頭",
 	specWarnRPS			= "為$spell:141206該出什麼的時候顯示特別警告"
 })
 
@@ -167,4 +170,13 @@ L:SetMiscLocalization({
 	rock			= "石頭",
 	paper			= "布",
 	scissors		= "剪刀"
+})
+
+-------------
+-- Brawlers: Brumble --
+-------------
+L= DBM:GetModLocalization("BrawlRumble")
+
+L:SetGeneralLocalization({
+	name = "鬥陣俱樂部: Rumble"
 })
