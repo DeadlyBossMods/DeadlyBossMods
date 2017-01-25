@@ -169,6 +169,24 @@ local function hudDelay(self)
 	end
 end
 
+local function findSearingMark(self)
+	if UnitDebuff("player", SearingBrandDebuff) then
+		specWarnFireDetonate:Show()
+		voiceFireDetonate:Play("runout")
+		yellFireDetonate:Yell()
+	end
+	table.wipe(searingDetonateIcons)
+	if self.Options.SetIconOnSearingDetonate then
+		for uId in DBM:GetGroupMembers() do
+			if UnitDebuff(uId, SearingBrandDebuff) then
+				local name = DBM:GetUnitFullName(uId)
+				searingDetonateIcons[#searingDetonateIcons+1] = name
+				self:SetIcon(name, #searingDetonateIcons, 3)
+			end
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	self.vb.annihilateCount = 0
 	self.vb.armageddonAdds = 0
@@ -222,21 +240,7 @@ function mod:SPELL_CAST_START(args)
 			yellFrostDetonate:Yell()
 		end
 	elseif spellId == 213275 then--Detonate: Searing Brand
-		if UnitDebuff("player", SearingBrandDebuff) then
-			specWarnFireDetonate:Show()
-			voiceFireDetonate:Play("runout")
-			yellFireDetonate:Yell()
-		end
-		table.wipe(searingDetonateIcons)
-		if self.Options.SetIconOnSearingDetonate then
-			for uId in DBM:GetGroupMembers() do
-				if UnitDebuff(uId, SearingBrandDebuff) then
-					local name = DBM:GetUnitFullName(uId)
-					searingDetonateIcons[#searingDetonateIcons+1] = name
-					self:SetIcon(name, #searingDetonateIcons, 3)
-				end
-			end
-		end
+		--Do nothing
 	elseif spellId == 213390 then--Detonate: Arcane Orb
 		--specWarnArcaneDetonate:Show()
 		--voiceArcaneDetonate:Play("watchorb")
@@ -307,12 +311,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerFelSoulCD:Start(15)
 			timerSearingBrandCD:Start(17.8)
 			timerSearingBrandRepCD:Start(27)
+			self:Schedule(38, findSearingMark, self)--Schedule markers to go out 2 seconds before detonate cast, making a 5 total seconds to position instead of 3
 			timerSearingBrandDetonateCD:Start(40)
 			timerAnimateFireCD:Start(55)
 			timerArcanePhaseCD:Start(75)
 		else
 			timerSearingBrandCD:Start(17.8)
 			timerSearingBrandRepCD:Start(27)
+			self:Schedule(43, findSearingMark, self)--Schedule markers to go out 2 seconds before detonate cast, making a 5 total seconds to position instead of 3
 			timerSearingBrandDetonateCD:Start(45)
 			timerAnimateFireCD:Start(62)
 			timerArcanePhaseCD:Start(85)
