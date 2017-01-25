@@ -17,7 +17,7 @@ local warnCelestialBrand			= mod:NewTargetAnnounce(224560, 2)
 
 local specWarnAnnihilatingOrb		= mod:NewSpecialWarningMoveAway(221344, nil, nil, nil, 1, 2)
 local yellAnnihilatingOrb			= mod:NewYell(221344)
-local specWarnFulminate				= mod:NewSpecialWarningMoveTo(221164, "Melee", nil, nil, 4, 2)
+local specWarnFulminate				= mod:NewSpecialWarningRun(221164, "Melee", nil, nil, 4, 2)
 local specWarnCracklingSlice		= mod:NewSpecialWarningDodge(224510, "Tank", nil, nil, 1, 2)
 local specWarnProtectiveShield		= mod:NewSpecialWarningMove(224510, "Tank", nil, nil, 1, 2)
 local specWarnRoilingFlame			= mod:NewSpecialWarningMove(222111, nil, nil, nil, 1, 2)
@@ -45,7 +45,7 @@ mod:RemoveOption("HealthFrame")
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 221164 and self:AntiSpam(3, 1) then
+	if spellId == 221164 and self:AntiSpam(5, 1) then
 		specWarnFulminate:Show()
 		voiceFulminate:Play("runout")
 	elseif spellId == 224510 and self:AntiSpam(3, 2) then
