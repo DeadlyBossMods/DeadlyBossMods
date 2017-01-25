@@ -125,6 +125,7 @@ local voiceAnimateArcane			= mod:NewVoice(213564)--mobsoon
 mod:AddRangeFrameOption("8")
 mod:AddHudMapOption("HudMapOnBrandCharge", 213166)
 mod:AddSetIconOption("SetIconOnFrozenTempest", 213083, true, true)
+mod:AddSetIconOption("SetIconOnSearingDetonate", 213275, true)
 mod:AddSetIconOption("SetIconOnBurstOfFlame", 213760, true, true)
 mod:AddSetIconOption("SetIconOnBurstOfMagic", 213808, true, true)
 mod:AddInfoFrameOption(212647)
@@ -137,6 +138,7 @@ local annihilatedDebuff = GetSpellInfo(215458)
 local rangeShowAll = false
 local chargeTable = {}
 local annihilateTimers = {8.0, 45.0, 40.0, 44.0, 38.0, 37.0, 33.0, 47.0, 41.0, 44.0, 38.0, 37.0, 33.0}--Need longer pulls/more data. However this pattern did prove to always be same
+local searingDetonateIcons = {}
 
 local debuffFilter
 local UnitDebuff = UnitDebuff
@@ -174,6 +176,7 @@ function mod:OnCombatStart(delay)
 	countdownAnnihilate:Start(8-delay)
 	--Rest of timers are triggered by frost buff 0.1 seconds into pull
 	table.wipe(chargeTable)
+	table.wipe(searingDetonateIcons)
 	rangeShowAll = false
 	if self:IsEasy() then
 		berserkTimer:Start(-delay)--600 confirmed on normal
@@ -223,6 +226,16 @@ function mod:SPELL_CAST_START(args)
 			specWarnFireDetonate:Show()
 			voiceFireDetonate:Play("runout")
 			yellFireDetonate:Yell()
+		end
+		table.wipe(searingDetonateIcons)
+		if self.Options.SetIconOnSearingDetonate then
+			for uId in DBM:GetGroupMembers() do
+				if UnitDebuff(uId, SearingBrandDebuff) then
+					local name = DBM:GetUnitFullName(uId)
+					searingDetonateIcons[#searingDetonateIcons+1] = name
+					self:SetIcon(name, #searingDetonateIcons, 3)
+				end
+			end
 		end
 	elseif spellId == 213390 then--Detonate: Arcane Orb
 		--specWarnArcaneDetonate:Show()
