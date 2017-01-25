@@ -114,7 +114,7 @@ local voiceFelEjection				= mod:NewVoice(205649)--runout/keepmove
 local voiceFelnova					= mod:NewVoice(206517)--justrun
 local voiceFelFlame					= mod:NewVoice(206398)--runaway
 --Stage Four: Inevitable Fate
-local voiceThing					= mod:NewVoice("ej13057", "-Healer")--killmob
+local voiceThing					= mod:NewVoice("ej13057", "-Healer")--bigadd
 local voiceWitnessVoid				= mod:NewVoice(207720)--turnaway
 local voiceVoidEjection				= mod:NewVoice(207143)--runout
 local voiceVoidNova					= mod:NewVoice(207439)--aesoon
@@ -381,7 +381,7 @@ function mod:SPELL_SUMMON(args)
 	local spellId = args.spellId
 	if spellId == 207813 then
 		specWarnThing:Show()
-		voiceThing:Play("killmob")
+		voiceThing:Play("bigadd")
 		timerWitnessVoidCD:Start(10, args.destGUID)
 		timerThingCD:Start()
 	end

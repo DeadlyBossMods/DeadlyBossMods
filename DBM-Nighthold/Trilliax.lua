@@ -21,6 +21,11 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, do more videos with debug to determine if combat log order is valid for link partners
+--[[
+(ability.id = 207513 or ability.id = 206788 or ability.id = 207502) and type = "begincast" or
+(ability.id = 206560 or ability.id = 206557 or ability.id = 206559 or ability.id = 206641 or ability.id = 207630) and type = "cast" or 
+(ability.id = 211615 or ability.id = 208910) and type = "applydebuff"
+--]]
 --Cleaner
 local warnCleanerMode				= mod:NewSpellAnnounce(206560, 2)
 local warnToxicSlice				= mod:NewSpellAnnounce(206788, 2)
@@ -136,10 +141,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnManiacMode:Show()
 		timerToxicSliceCD:Stop()--Must be stopped here too since first cleaner mode has no buff removal
 		timerArcaneSlashCD:Stop()
-		timerArcingBondsCD:Start(3.4)--Confirm if it's always this now that blizz pushed it up some to no longer be delayed by arcing slash
-		timerArcaneSlashCD:Start(6)--Maybe 7 now, confirm
-		timerAnnihilationCD:Start()
-		countdownAnnihilation:Start()
+		timerArcingBondsCD:Start(5)--Updated Jan 24, make sure it's ok consistently
+		timerArcaneSlashCD:Start(9)--Updated Jan 24, make sure it's ok consistently
+		timerAnnihilationCD:Start()--20
+		countdownAnnihilation:Start()--20
 		timerPhaseChange:Start(40)--Caretaker
 		countdownModes:Start(40)
 	elseif spellId == 206559 then--Caretaker Mode (15 seconds)
