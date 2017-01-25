@@ -142,7 +142,7 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	if self:IsMythic() then
 		self:SetCreatureID(109038, 109040, 109041)		
-		self.vb.globalTimer = 64--Needs updating
+		self.vb.globalTimer = 50--Needs updating
 		timerSolarCollapseCD:Start(5-delay)
 		timerParasiticFetterCD:Start(16-delay)
 		countdownParasiticFetter:Start(16-delay)
@@ -364,7 +364,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Bump phase and stop all timers since regardless of kills, phase changes reset anyone that's still up
 			self.vb.phase = self.vb.phase + 1
 			if self.vb.phase == 2 then
-				self.vb.globalTimer = 55--Needs updating
+				self.vb.globalTimer = 40--Needs updating
 			else
 				self.vb.globalTimer = 35--Needs updating
 			end
