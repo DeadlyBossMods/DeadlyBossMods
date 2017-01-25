@@ -26,6 +26,11 @@ mod:RegisterEventsInCombat(
 
 --TODO, Mythic Transform casts still push timers back by 3-6 seconds. timer correction gets even more tedius with that so feeling lazy about that for now.
 --I believe he'll just use whatever abilities he's ready to use after his stun is gone. So maybe just extend timers that expire during stun, or just leave be.
+--[[
+(ability.id = 204372 or ability.id = 204316 or ability.id = 204471) and type = "begincast" or
+ability.id = 204292 and type = "summon" or
+ability.id = 204459
+--]]
 local warnBrokenShard				= mod:NewSpellAnnounce(204292, 2, nil, false)
 local warnVulnerable				= mod:NewTargetAnnounce(204459, 1)
 local warnCallScorp					= mod:NewSpellAnnounce(204372, 3)

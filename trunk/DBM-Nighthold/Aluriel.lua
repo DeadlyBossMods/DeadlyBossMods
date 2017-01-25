@@ -25,6 +25,12 @@ mod:RegisterEventsInCombat(
 --TODO, possibly dump UNIT_AURA unless that proves to actualy be better way to manage range frame
 --TODO, add fixate on mythic. No debuff. Player sees eyes but no debuff. Might have to do nameplate/accro target scanning to warn who has it
 --TODO, probably fix more timers. Especially mythic fire and arcane.
+--[[
+(ability.id = 213853 or ability.id = 213567 or ability.id = 213564 or ability.id = 213852 or ability.id = 212735 or ability.id = 213275 or ability.id = 213390 or ability.id = 213083 or ability.id = 212492 or ability.id = 230951) and type = "begincast" or
+(ability.id = 213864 or ability.id = 216389 or ability.id = 213867 or ability.id = 213869) and type = "applybuff" or
+(ability.id = 212531 or ability.id = 213148) and type = "applydebuff" or
+ability.id = 230951 and type = "removebuff"
+--]]
 --Phases
 local warnFrostPhase				= mod:NewSpellAnnounce(213864, 2)
 local warnFirePhase					= mod:NewSpellAnnounce(213867, 2)
@@ -86,7 +92,8 @@ local timerAnimateArcaneCD			= mod:NewNextTimer(16, 213564, 124338, nil, nil, 1,
 local timerArmageddon				= mod:NewCastTimer(33, 213568, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Mythic
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerFelSoul					= mod:NewBuffActiveTimer(60, 230951, nil, nil, nil, 6)
+local timerFelSoulCD				= mod:NewNextTimer(15, 230951, nil, nil, nil, 1)
+local timerFelSoul					= mod:NewBuffActiveTimer(45, 230951, nil, nil, nil, 6)
 
 local berserkTimer					= mod:NewBerserkTimer(600)--480
 
@@ -260,6 +267,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFrostPhase:Show()
 		voicePhaseChange:Play("phasechange")
 		if self:IsMythic() then
+			timerFelSoulCD:Start(15)
 			timerMarkOfFrostCD:Start(18)
 			timerMarkOfFrostRepCD:Start(28)
 			timerMarkOfFrostDetonateCD:Start(48)
@@ -282,29 +290,49 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 213867 then--Fiery Enchantment
 		warnFirePhase:Show()
 		voicePhaseChange:Play("phasechange")
-		timerSearingBrandCD:Start(17.8)
-		timerSearingBrandRepCD:Start(27)--was 25, but 27 makes more sense
-		timerSearingBrandDetonateCD:Start(45)
-		timerAnimateFireCD:Start(62)
-		timerArcanePhaseCD:Start(85)
+		if self:IsMythic() then
+			timerFelSoulCD:Start(15)
+			timerSearingBrandCD:Start(17.8)
+			timerSearingBrandRepCD:Start(27)
+			timerSearingBrandDetonateCD:Start(40)
+			timerAnimateFireCD:Start(55)
+			timerArcanePhaseCD:Start(75)
+		else
+			timerSearingBrandCD:Start(17.8)
+			timerSearingBrandRepCD:Start(27)
+			timerSearingBrandDetonateCD:Start(45)
+			timerAnimateFireCD:Start(62)
+			timerArcanePhaseCD:Start(85)
+		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
 	elseif spellId == 213869 then--Magic Enchantment
 		warnArcanePhase:Show()
 		voicePhaseChange:Play("phasechange")
-		--Arcane orb not started here, started somewhere else so timer is actually useful
-		timerArcaneOrbRepCD:Start(15)
-		timerArcaneOrbDetonateCD:Start(35)--Not in combat log, but this is when yell occurs
-		specWarnArcaneDetonate:Schedule(35)
-		voiceArcaneDetonate:Schedule(35, "watchorb")
-		timerAnimateArcaneCD:Start(51.9)
+		if self:IsMythic() then
+			timerFelSoulCD:Start(12)
+			--Arcane orb not started here, started somewhere else so timer is actually useful
+			timerArcaneOrbRepCD:Start(15)
+			timerArcaneOrbDetonateCD:Start(35)--Not in combat log, So difficult to fix until transcriptor. Needs verification
+			specWarnArcaneDetonate:Schedule(35)--^^
+			voiceArcaneDetonate:Schedule(35, "watchorb")--^^
+			timerAnimateArcaneCD:Start(55)--Oddly slightly longer on mythic than others
+			timerFrostPhaseCD:Start(70)--Needs verification
+		else
+			--Arcane orb not started here, started somewhere else so timer is actually useful
+			timerArcaneOrbRepCD:Start(15)
+			timerArcaneOrbDetonateCD:Start(35)--Not in combat log, but this is when yell occurs
+			specWarnArcaneDetonate:Schedule(35)
+			voiceArcaneDetonate:Schedule(35, "watchorb")
+			timerAnimateArcaneCD:Start(51.9)
+			timerFrostPhaseCD:Start(70)
+		end
 		if self.Options.RangeFrame and self:IsRanged() then
 			DBM.RangeCheck:Show(8)--Show everyone for better arcane orb spread
 		else--Melee, kill range frame this phase
 			DBM.RangeCheck:Hide()
 		end
-		timerFrostPhaseCD:Start(70)
 	elseif spellId == 212531 then--Mark of Frost (5sec Targetting Debuff)
 		warnMarkOfFrostChosen:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
