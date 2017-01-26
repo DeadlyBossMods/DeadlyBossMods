@@ -90,7 +90,7 @@ local timerAblatingExplosionCD		= mod:NewCDTimer(20, 209973, nil, "Tank", nil, 5
 --Time Layer 3
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerConflexiveBurstCD		= mod:NewNextCountTimer(100, 209597, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerAblativePulseCD			= mod:NewCDTimer(10.9, 209971, nil, "Tank", nil, 4, nil, DBM_CORE_TANK_ICON..DBM_CORE_INTERRUPT_ICON)--12 now?
+--local timerAblativePulseCD			= mod:NewCDTimer(9.6, 209971, nil, "Tank", nil, 4, nil, DBM_CORE_TANK_ICON..DBM_CORE_INTERRUPT_ICON)--12 now?
 local timerPermaliativeTormentCD	= mod:NewNextCountTimer(16, 210387, nil, "Healer", nil, 5, nil, DBM_CORE_DEADLY_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(240)--4 minute berserk that resets when she changes layers.
@@ -131,15 +131,18 @@ mod:AddHudMapOption("HudMapOnDelphuricBeam", 214278)
 
 --Exists in phases 1-3
 local slowElementalTimers = {5, 49, 52, 60}--Heroic Jan 18
+local easyslowElementalTimers = {5, 49, 41}--Heroic Jan 26
 local fastElementalTimers = {8, 88, 95, 20}--Heroic Jan 19
+local easyfastElementalTimers = {8, 71}--Norma Jan 26
 local RingTimers = {34, 40, 10, 62, 9, 45}--Heroic Jan 19
+local easyRingTimers = {34, 30}--Normal Jan 26
 local SingularityTimers = {10, 22, 36.0, 57, 65}--Heroic Jan 18
 --Only exist in phase 2
 local BeamTimers = {72, 57, 60}--Heroic Jan 18
 --Exists in Phase 2 and Phase 3 (but cast start event missing in phase 3)
 local OrbTimers = {27, 76, 37, 70}--Heroic Jan 18
 --Only exist in phase 3 so first timer of course isn't variable
-local BurstTimers = {58, 52.0, 56.0, 65.0, 10.0, 10.0, 10.0, 10.0}--Heroic Jan 21
+local BurstTimers = {58, 52.0, 56.0, 65.0, 10.0, 10.0, 10.0, 10.0}--Heroic Jan 21 (normal ones are different i'm sure, just no data to fix yet)
 local TormentTimers = {33, 61, 37, 60}--Heroic Jan 21
 local currentTank, tankUnitID = nil, nil--not recoverable on purpose
 mod.vb.firstElementals = false
@@ -195,9 +198,8 @@ function mod:OnCombatStart(delay)
 	timerTimeElementalsCD:Start(8-delay, FAST)
 	--timerAblationCD:Start(8.5-delay)--Verify/tweak
 	timerSpanningSingularityCD:Start(23-delay, 2)
-	timerArcaneticRing:Start(34-delay)
+	timerArcaneticRing:Start(34-delay, 1)
 	countdownArcaneticRing:Start(34-delay)
-	DBM:AddMsg("This fight was practically rewritten since this mod was made. Unfortunately during re-test, phase 2 and 3 were poorly captured so mod that was finished now needs a lot of work again. This will be fixed on live as quickly as possible.")
 end
 
 function mod:OnCombatEnd()
@@ -237,7 +239,7 @@ function mod:SPELL_CAST_START(args)
 			voiceExpedite:Play("kickcast")
 		end
 	elseif spellId == 209971 then
-		timerAblativePulseCD:Start()
+		--timerAblativePulseCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnAblativePulse:Show(args.sourceName)
 			voiceAblativePulse:Play("kickcast")
@@ -479,11 +481,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		countdownDelphuricBeam:Cancel()
 		timerLeaveNightwell:Start()
 		timerSpanningSingularityCD:Start(10, 1)--Updated Jan 18 heroic
-		timerTimeElementalsCD:Start(14.7, SLOW)--Updated Jan 18 heroic
-		timerTimeElementalsCD:Start(17, FAST)--Updated Jan 18 (17-18)
-		timerEpochericOrbCD:Start(27, 1)--Updated Jan 18 Heroic
-		timerArcaneticRing:Start(46, 1)--Verified Jan 18
-		countdownArcaneticRing:Start(46)
+		if self:IsEasy() then
+			timerTimeElementalsCD:Start(15.7, SLOW)--Updated Jan 26
+			timerTimeElementalsCD:Start(18, FAST)--Updated Jan 26
+			timerEpochericOrbCD:Start(28, 1)--Updated Jan 26
+		else
+			timerTimeElementalsCD:Start(14.7, SLOW)--Updated Jan 18 heroic
+			timerTimeElementalsCD:Start(17, FAST)--Updated Jan 18 (17-18)
+			timerEpochericOrbCD:Start(27, 1)--Updated Jan 18 Heroic
+			timerArcaneticRing:Start(46, 1)--Verified Jan 18
+			countdownArcaneticRing:Start(46)
+		end
 		if self.vb.phase == 2 then
 			warnPhase2:Show()
 			voicePhaseChange:Play("ptwo")
@@ -495,9 +503,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			voicePhaseChange:Play("pthree")
 			self.vb.burstCastCount = 0
 			timerAblatingExplosionCD:Stop()
-			timerAblativePulseCD:Start(22)
-			specWarnEpochericOrb:Schedule(27)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
-			voiceEpochericOrb:Schedule(27, "161612")
+			--timerAblativePulseCD:Start(20.5)
+			if not self:IsEasy() then
+				specWarnEpochericOrb:Schedule(27)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
+				voiceEpochericOrb:Schedule(27, "161612")
+			end
 			timerPermaliativeTormentCD:Start(33)--Updated Jan 18 Heroic
 			if not self:IsLFR() then
 				--Wasn't used in LFR
@@ -514,7 +524,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			specWarnTimeElementals:Show(SLOW)
 			voiceElemental:Play("bigmob")
 		--end
-		local timer = slowElementalTimers[self.vb.slowElementalCount+1]
+		local timer = self:IsEasy() and easyslowElementalTimers[self.vb.slowElementalCount+1] or slowElementalTimers[self.vb.slowElementalCount+1]
 		if timer then
 			timerTimeElementalsCD:Start(timer, SLOW)
 		end
@@ -524,7 +534,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			specWarnTimeElementals:Show(FAST)
 			voiceElemental:Play("bigmob")
 		--end
-		local timer = fastElementalTimers[self.vb.fastElementalCount+1]
+		local timer = self:IsEasy() and easyfastElementalTimers[self.vb.fastElementalCount+1] or fastElementalTimers[self.vb.fastElementalCount+1]
 		if timer then
 			timerTimeElementalsCD:Start(timer, FAST)
 		end
@@ -573,7 +583,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		else
 			if nextCount > self.vb.totalRingCasts then return end--There won't be any more
 		end
-		local timer = RingTimers[nextCount]
+		local timer = self:IsEasy() and easyRingTimers[nextCount] or RingTimers[nextCount]
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
 			countdownArcaneticRing:Start(timer)
