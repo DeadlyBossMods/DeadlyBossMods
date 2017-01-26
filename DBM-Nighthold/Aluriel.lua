@@ -337,7 +337,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnArcaneDetonate:Schedule(35)--^^
 			voiceArcaneDetonate:Schedule(35, "watchorb")--^^
 			timerAnimateArcaneCD:Start(55)--Oddly slightly longer on mythic than others
-			timerFrostPhaseCD:Start(70)--Needs verification
+			timerFrostPhaseCD:Start(70)
 		else
 			--Arcane orb not started here, started somewhere else so timer is actually useful
 			timerArcaneOrbRepCD:Start(15)
