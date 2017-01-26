@@ -11,7 +11,7 @@ mod:SetHotfixNoticeRev(15058)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 206788 208924 207513 207502",
+	"SPELL_CAST_START 206788 208924 207513 207502 215062",
 	"SPELL_CAST_SUCCESS 206560 206557 206559 206641",
 	"SPELL_AURA_APPLIED 211615 208910 208915 206641",
 	"SPELL_AURA_REMOVED 208499 206560",
@@ -47,6 +47,8 @@ local specWarnArcingBonds			= mod:NewSpecialWarningYou(208915, nil, nil, nil, 1,
 local specWarnAnnihilation			= mod:NewSpecialWarningDodge(207630, nil, nil, nil, 3, 6)--Hallion Style
 --Caretaker
 local specWarnTidyUp				= mod:NewSpecialWarningDodge(207513, nil, nil, nil, 2, 2)--Maybe switch to mob name instead of "tidy up"
+--Mythic
+local specWarnEchoDuder				= mod:NewSpecialWarningSwitchCount(214880, nil, nil, nil, 1, 2)
 
 local timerArcaneSlashCD			= mod:NewCDTimer(9, 206641, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerPhaseChange				= mod:NewNextTimer(45, 155005, nil, nil, nil, 6)
@@ -85,7 +87,10 @@ mod:AddInfoFrameOption(214573, false)
 mod.vb.ArcaneSlashCooldown = 10.5--10.5 now?, Verify it can never be 9 anymore
 mod.vb.toxicSliceCooldown = 26.5--Confirmed still true
 
+local seenMobs = {}
+
 function mod:OnCombatStart(delay)
+	table.wipe(seenMobs)
 	self.vb.ArcaneSlashCooldown = 10.5
 	self.vb.toxicSliceCooldown = 26.5
 	timerArcaneSlashCD:Start(7-delay)
@@ -98,9 +103,15 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(spellName)
 		DBM.InfoFrame:Show(10, "playerbaddebuff", spellName, true)
 	end
+	if self:IsMythic() then
+		self:RegisterShortTermEvents(
+			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
+		)
+	end
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -114,6 +125,8 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 206788 then--Toxic Slice (Cleaner Mode)
 		warnToxicSlice:Show()
 		timerToxicSliceCD:Start(self.vb.toxicSliceCooldown)
+	elseif spellId == 215062 then--Toxic Slice (Imprint)
+		warnToxicSlice:Show()
 	elseif spellId == 207513 then--Tidy Up (Caretaker Mode)
 		specWarnTidyUp:Show()
 		voiceTidyUp:Play("mobsoon")
@@ -204,6 +217,24 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	for i = 1, 5 do
+		local unitID = "boss"..i
+		local GUID = UnitGUID(unitID)
+		if GUID and not seenMobs[GUID] then
+			seenMobs[GUID] = true
+			local cid = self:GetCIDFromGUID(GUID)
+			if cid == 108144 then--Maniac Imprint
+				local name = GetSpellInfo(206557)
+				specWarnEchoDuder:Show(name)
+			elseif cid == 108303 then--Caretaker Imprint
+				local name = GetSpellInfo(206560)
+				specWarnEchoDuder:Show(name)
+			end
+		end
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
