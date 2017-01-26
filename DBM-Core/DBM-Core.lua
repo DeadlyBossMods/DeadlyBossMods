@@ -420,7 +420,7 @@ local dbmToc = 0
 local UpdateChestTimer
 local breakTimerStart
 
-local fakeBWVersion, fakeBWHash = 39, "7aa089f"
+local fakeBWVersion, fakeBWHash = 40, "c4f6cf6"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
@@ -9775,6 +9775,10 @@ do
 	end
 	
 	function DBM:ShowTestHUD()
+		if self:HasMapRestrictions() then
+			self:AddMsg(DBM_CORE_NO_HUD)
+			return
+		end
 		local x, y = UnitPosition("player")
 		DBMHudMap:RegisterPositionMarker(10000, "Test1", "highlight", x, y-20, 5, 10, 1, 1, 0, 0.5, nil, 1):Pulse(0.5, 0.5)
 		DBMHudMap:RegisterPositionMarker(20000, "Test2", "highlight", x-20, y, 5, 10, 1, 0, 0, 0.5, nil, 2):Pulse(0.5, 0.5)
