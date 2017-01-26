@@ -129,18 +129,26 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 205368 or spellId == 205370 then--205370 left, 205368 right (right no longer is used)
 		self.vb.beamCount = self.vb.beamCount + 1
+		specWarnFelBeam:Show()
 		if self:IsMythic() then
-			specWarnFelBeam:Show()
-			voiceFelBeam:Play("shockwave")
+			if self.vb.beamCount % 2 == 0 then--Coming from left (facing boss)
+				voiceFelBeam:Play("moveright")
+				if self.Options.ArrowOnBeam3 then
+					DBM.Arrow:ShowStatic(270, 4)
+				end
+			else--coming from right (facing boss)
+				voiceFelBeam:Play("moveleft")
+				if self.Options.ArrowOnBeam3 then
+					DBM.Arrow:ShowStatic(90, 4)
+				end
+			end
 		else
 			if self.vb.beamCount % 2 == 0 then--Coming from right (facing boss)
-				specWarnFelBeam:Show(DBM_CORE_LEFT)
 				voiceFelBeam:Play("moveleft")
 				if self.Options.ArrowOnBeam3 then
 					DBM.Arrow:ShowStatic(90, 4)
 				end
 			else--coming from left (facing boss)
-				specWarnFelBeam:Show(DBM_CORE_RIGHT)
 				voiceFelBeam:Play("moveright")
 				if self.Options.ArrowOnBeam3 then
 					DBM.Arrow:ShowStatic(270, 4)
@@ -150,17 +158,7 @@ function mod:SPELL_CAST_START(args)
 		local nextCount = self.vb.beamCount + 1
 		local timers = self:IsMythic() and mythicBeamTimers[nextCount] or self:IsHeroic() and heroicBeamTimers[nextCount] or lolBeamTimers[nextCount]
 		if timers then
-			if not self:IsMythic() then
-				local text
-				if self.vb.beamCount % 2 == 0 then
-					text = DBM_CORE_LEFT
-				else
-					text = DBM_CORE_RIGHT
-				end
-				timerFelBeamCD:Start(timers, text)
-			else
-				timerFelBeamCD:Start(timers, nextCount)
-			end
+			timerFelBeamCD:Start(timers, nextCount)
 		end
 	elseif spellId == 205420 then
 		self.vb.pitchCount = self.vb.pitchCount+ 1
