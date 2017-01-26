@@ -34,6 +34,9 @@ ability.id = 204459
 local warnBrokenShard				= mod:NewSpellAnnounce(204292, 2, nil, false)
 local warnVulnerable				= mod:NewTargetAnnounce(204459, 1)
 local warnCallScorp					= mod:NewSpellAnnounce(204372, 3)
+local warnRed						= mod:NewSpellAnnounce(214661, 2)
+local warnGreen						= mod:NewSpellAnnounce(214652, 2)
+local warnBlue						= mod:NewSpellAnnounce(204292, 2)
 
 local specWarnTether				= mod:NewSpecialWarningYou(204531, nil, nil, nil, 1, 2)
 local specWarnArcanoslash			= mod:NewSpecialWarningDefensive(204275, "Tank", nil, nil, 1, 2)
@@ -51,9 +54,9 @@ local timerFocusedBlastCD			= mod:NewCDTimer(30.4, 204471, nil, nil, nil, 3)--30
 local timerVulnerable				= mod:NewBuffFadesTimer(15, 204459, nil, nil, nil, 6)
 --These are all 46 unless delayed by shockwave or stun
 mod:AddTimerLine(PLAYER_DIFFICULTY6)
-local timerVolatileFragments		= mod:NewCDTimer(46, 214661, nil, nil, nil, 6)
-local timerAcidicFragments			= mod:NewCDTimer(46, 214652, nil, nil, nil, 6)
-local timerCrystallineFragments		= mod:NewCDTimer(46, 204292, nil, nil, nil, 6)
+--local timerVolatileFragments		= mod:NewCDTimer(46, 214661, nil, nil, nil, 6)--8-46, something tells me it's not Cd based anymore
+--local timerAcidicFragments			= mod:NewCDTimer(46, 214652, nil, nil, nil, 6)
+--local timerCrystallineFragments		= mod:NewCDTimer(46, 204292, nil, nil, nil, 6)
 
 local countdownShockwave			= mod:NewCountdown(58.3, 204316)
 local countdownCallofScorpid		= mod:NewCountdown("Alt20", 204372)
@@ -82,9 +85,9 @@ function mod:OnCombatStart(delay)
 	countdownCallofScorpid:Start()
 	timerShockwaveCD:Start(56.2-delay)--56.9
 	countdownShockwave:Start(56.2-delay)
-	if self:IsMythic() then
-		timerVolatileFragments:Start(35-delay)
-	end
+--	if self:IsMythic() then
+--		timerVolatileFragments:Start(28-delay)
+--	end
 end
 
 function mod:OnCombatEnd()
@@ -251,11 +254,14 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local _, _, _, _, spellId = strsplit("-", spellGUID)
 	if spellId == 214800 then--Transform(Red)
-		timerAcidicFragments:Start()
+		warnRed:Show()
+--		timerAcidicFragments:Start()
 	elseif spellId == 215042 then--Transform(Green)
-		timerCrystallineFragments:Start()
+		warnGreen:Show()
+--		timerCrystallineFragments:Start()
 	elseif spellId == 215055 then--Transform(Blue)
-		timerVolatileFragments:Start()
+		warnBlue:Show()
+--		timerVolatileFragments:Start()
 	end
 end
 
