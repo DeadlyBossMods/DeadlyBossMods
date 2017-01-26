@@ -429,12 +429,12 @@ local function updatePlayerDebuffRemaining()
 			if expires == 0 then
 				lines[UnitName(uId)] = 9000--Force sorting the unknowns under the ones we do know.
 			else
-				local debuffTime
-				if timeMod then
-					debuffTime = expires - GetTime() / timeMod
-				else
-					debuffTime = expires - GetTime()
-				end
+				local debuffTime = expires - GetTime()
+				--if timeMod then
+					--debuffTime = expires - GetTime() / timeMod
+				--else
+					--debuffTime = expires - GetTime()
+				--end
 				lines[UnitName(uId)] = mfloor(debuffTime)
 			end
 		end
