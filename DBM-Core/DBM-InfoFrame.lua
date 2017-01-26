@@ -424,12 +424,17 @@ local function updatePlayerDebuffRemaining()
 	twipe(lines)
 	local spellName = value[1]
 	for uId in DBM:GetGroupMembers() do
-		local _, _, _, _, _, _, expires = UnitDebuff(uId, spellName)
+		local _, _, _, _, _, _, expires, _, _, _, _, _, _, _, _, timeMod = UnitDebuff(uId, spellName)
 		if expires then
 			if expires == 0 then
 				lines[UnitName(uId)] = 9000--Force sorting the unknowns under the ones we do know.
 			else
-				local debuffTime = expires - GetTime()
+				local debuffTime
+				if timeMod then
+					debuffTime = expires - GetTime() / timeMod
+				else
+					debuffTime = expires - GetTime()
+				end
 				lines[UnitName(uId)] = mfloor(debuffTime)
 			end
 		end
