@@ -48,7 +48,7 @@ local countdownBigSlam				= mod:NewCountdown(90, 205862)
 local countdownOrbDestro			= mod:NewCountdownFades("AltTwo5", 205344)
 
 local voiceSearingBrand				= mod:NewVoice(206677)--tauntboss
-local voiceFelBeam					= mod:NewVoice(205368)--shockwave
+local voiceFelBeam					= mod:NewVoice(205368)--shockwave/moveleft/moveright
 local voiceOrbDestro				= mod:NewVoice(205344)--runout
 local voiceBurningPitch				= mod:NewVoice(205420)--watchstep/helpsoak(new)
 local voiceSlam						= mod:NewVoice(205862)--justrun
@@ -58,6 +58,7 @@ local voiceFelBurst					= mod:NewVoice(206352, "HasInterrupt")--kickcast
 mod:AddRangeFrameOption(5, 206352)
 --mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddInfoFrameOption(215944, false)
+mod:AddArrowOption("ArrowOnBeam3", 205368, true)
 
 local burningPitchDebuff = GetSpellInfo(215944)
 local mobGUIDs = {}
@@ -65,11 +66,11 @@ local mobGUIDs = {}
 local lolBeamTimers = {5, 15, 30, 30, 23, 27, 30, 44, 14, 16, 14, 16, 22, 60}--LFR & Normal
 local heroicBeamTimers = {7.0, 29.0, 30.0, 42.0, 16.0, 16.0, 14.0, 16.0, 27.0, 54.0, 26.0, 5, 5, 16, 5, 12, 12, 5, 13}--Complete up to berserk (not yet verified in 7.1.5)
 						--8.0, 29.0, 30.0, 45.0, 16.0, 16.0, 14.0, 16.0, 27.0, 55.0, 26.0, 43.0--Dec 7th. However Double beams aren't combined in these so can't really merge cleanly
-local mythicBeamTimers = {6, 16, 16, 16, 14, 16, 27, 55, 26, 5, 21.3, 4.7, 12.2, 12, 4.8, 13.2, 19, 4.8, 25.2, 4.8}--(up to 5:18, missing 42 seconds)
+local mythicBeamTimers = {6, 16, 16, 16, 14, 16, 27, 55, 26, 4.7, 21.3, 4.7, 12.2, 12, 4.7, 13.2, 19, 4.7, 25.2, 4.7, 25.2, 4.7}--(up to 5:55, missing 5 seconds?)
 --Orbs
 local lolOrbTimers = {70.0, 40.0, 60.0, 25.0, 60.0, 37.0, 15.0, 15.0, 30.0}--LFR and Normal
 local heroicOrbTimers = {19.9, 60.0, 23.0, 62.0, 27.0, 25.0, 15.0, 15.4, 14.6, 30, 55}--Verified Dec 7
-local mythicOrbTimers = {13, 62, 27, 25, 14.9, 15, 15, 30, 55.1, 38}--(up to 5:18, missing 42 seconds)
+local mythicOrbTimers = {13, 62, 27, 25, 14.9, 15, 15, 30, 55.1, 38, 30, 12, 18}--(up to 5:55, missing 5 seconds?)
 --Pitch
 local lolBurningPitchTimers = {38.0, 102.0, 85.0, 90.0}--LFR and Normal
 local heroicBurningPitchTimers = {49.8, 85.0, 90.0, 94}--Verified Dec 7
@@ -128,12 +129,38 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 205368 or spellId == 205370 then--205370 left, 205368 right (right no longer is used)
 		self.vb.beamCount = self.vb.beamCount + 1
-		specWarnFelBeam:Show()
-		voiceFelBeam:Play("shockwave")
+		if self:IsMythic() then
+			specWarnFelBeam:Show()
+			voiceFelBeam:Play("shockwave")
+		else
+			if self.vb.beamCount % 2 == 0 then--Coming from right (facing boss)
+				specWarnFelBeam:Show(DBM_CORE_LEFT)
+				voiceFelBeam:Play("moveleft")
+				if self.Options.ArrowOnBeam3 then
+					DBM.Arrow:ShowStatic(90, 4)
+				end
+			else--coming from left (facing boss)
+				specWarnFelBeam:Show(DBM_CORE_RIGHT)
+				voiceFelBeam:Play("moveright")
+				if self.Options.ArrowOnBeam3 then
+					DBM.Arrow:ShowStatic(270, 4)
+				end
+			end
+		end
 		local nextCount = self.vb.beamCount + 1
 		local timers = self:IsMythic() and mythicBeamTimers[nextCount] or self:IsHeroic() and heroicBeamTimers[nextCount] or lolBeamTimers[nextCount]
 		if timers then
-			timerFelBeamCD:Start(timers, nextCount)
+			if not self:IsMythic() then
+				local text
+				if self.vb.beamCount % 2 == 0 then
+					text = DBM_CORE_LEFT
+				else
+					text = DBM_CORE_RIGHT
+				end
+				timerFelBeamCD:Start(timers, text)
+			else
+				timerFelBeamCD:Start(timers, nextCount)
+			end
 		end
 	elseif spellId == 205420 then
 		self.vb.pitchCount = self.vb.pitchCount+ 1
