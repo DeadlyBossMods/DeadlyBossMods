@@ -177,24 +177,16 @@ function mod:OnCombatStart(delay)
 	table.wipe(carrionTargets)
 	table.wipe(argusTargets)
 	timerCarrionPlagueCD:Start(7-delay, 1)--Cast end
+	timerFeastOfBloodCD:Start(20-delay, 1)
+	countdownFeastOfBlood:Start(20-delay)
+	timerSeekerSwarmCD:Start(25-delay, 1)
+	countdownSeekerSwarm:Start(25-delay)
+	timerEchoesOfVoidCD:Start(55-delay, 1)
+	countdownEchoesOfVoid:Start(55-delay)
+	timerIllusionaryNightCD:Start(130-delay, 1)
 	if not self:IsEasy() then
 		timerBrandOfArgusCD:Start(15-delay, 1)
-		timerFeastOfBloodCD:Start(20-delay, 1)
-		countdownFeastOfBlood:Start(20-delay)
-		timerSeekerSwarmCD:Start(25-delay, 1)
-		countdownSeekerSwarm:Start(25-delay)
-		timerEchoesOfVoidCD:Start(55-delay, 1)
-		countdownEchoesOfVoid:Start(55-delay)
-		timerIllusionaryNightCD:Start(130-delay, 1)
 		berserkTimer:Start(-delay)
-	else
-		timerFeastOfBloodCD:Start(10-delay, 1)
-		countdownFeastOfBlood:Start(10-delay)
-		timerSeekerSwarmCD:Start(15-delay, 1)
-		countdownSeekerSwarm:Start(15-delay)
-		timerEchoesOfVoidCD:Start(35-delay, 1)
-		countdownEchoesOfVoid:Start(35-delay)
-		timerIllusionaryNightCD:Start(90-delay, 1)
 	end
 end
 
@@ -227,31 +219,18 @@ function mod:SPELL_CAST_START(args)
 			--Timers same as combat start - 5
 			if not self:IsEasy() then
 				timerBrandOfArgusCD:Start(10, 1)
-				timerFeastOfBloodCD:Start(14.5, 1)
-				countdownFeastOfBlood:Start(14.5)
-				timerSeekerSwarmCD:Start(20, 1)
-				countdownSeekerSwarm:Start(20)
-				timerIllusionaryNightCD:Start(123, 1)
-				if self.vb.phase == 2 then
-					timerEchoesOfVoidCD:Start(50, 1)
-					countdownEchoesOfVoid:Start(50)
-				else
-					timerEchoesOfVoidCD:Start(55, 1)
-					countdownEchoesOfVoid:Start(55)
-				end
-			else
-				timerFeastOfBloodCD:Start(5, 1)
-				countdownFeastOfBlood:Start(5)
-				timerSeekerSwarmCD:Start(10, 1)
-				countdownSeekerSwarm:Start(10)
-				timerEchoesOfVoidCD:Start(30, 1)
-				countdownEchoesOfVoid:Start(30)
-				timerIllusionaryNightCD:Start(83, 1)
 			end
+			timerFeastOfBloodCD:Start(14.5, 1)
+			countdownFeastOfBlood:Start(14.5)
+			timerSeekerSwarmCD:Start(20, 1)
+			countdownSeekerSwarm:Start(20)
+			timerIllusionaryNightCD:Start(123, 1)
 			if self.vb.phase == 2 then--The Nightborne
-		
+				timerEchoesOfVoidCD:Start(50, 1)
+				countdownEchoesOfVoid:Start(50)
 			else--The Legion
-		
+				timerEchoesOfVoidCD:Start(55, 1)
+				countdownEchoesOfVoid:Start(55)
 			end
 			--Restore argus tracker if for some reason you let people have it this long
 			if self.Options.InfoFrame and self:IsMythic() then
