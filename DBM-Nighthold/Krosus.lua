@@ -58,7 +58,7 @@ local voiceFelBurst					= mod:NewVoice(206352, "HasInterrupt")--kickcast
 mod:AddRangeFrameOption(5, 206352)
 --mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddInfoFrameOption(215944, false)
-mod:AddArrowOption("ArrowOnBeam3", 205368, true)
+--mod:AddArrowOption("ArrowOnBeam3", 205368, true)
 
 local burningPitchDebuff = GetSpellInfo(215944)
 local mobGUIDs = {}
@@ -130,7 +130,8 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 205368 or spellId == 205370 then--205370 left, 205368 right (right no longer is used)
 		self.vb.beamCount = self.vb.beamCount + 1
 		specWarnFelBeam:Show()
-		if self:IsMythic() then
+		voiceFelBeam:Play("shockwave")
+--[[		if self:IsMythic() then
 			if self.vb.beamCount % 2 == 0 then--Coming from left (facing boss)
 				voiceFelBeam:Play("moveright")
 				if self.Options.ArrowOnBeam3 then
@@ -154,7 +155,7 @@ function mod:SPELL_CAST_START(args)
 					DBM.Arrow:ShowStatic(270, 4)
 				end
 			end
-		end
+		end--]]
 		local nextCount = self.vb.beamCount + 1
 		local timers = self:IsMythic() and mythicBeamTimers[nextCount] or self:IsHeroic() and heroicBeamTimers[nextCount] or lolBeamTimers[nextCount]
 		if timers then
