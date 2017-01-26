@@ -98,8 +98,8 @@ function mod:OnCombatStart(delay)
 	self.vb.slowCount = 0
 	self.vb.timeBombDebuffCount = 0
 	--No timers here, started by speed events
-	if self:IsHeroic() then
-		DBM:AddMsg("There is strong chance all timers for Heroic difficulty were changed. If they are all wrong, I'll fix them as soon as I can. ")
+	if not self:IsMythic() then
+		DBM:AddMsg("Mythic timers in great shape, other difficulties still need more work (for longer pulls)")
 	end
 end
 
