@@ -445,7 +445,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 local LL
 if LibStub("LibLatency", true) then
 	LL = LibStub("LibLatency")
-end
+end 
 
 
 --------------------------------------------------------
