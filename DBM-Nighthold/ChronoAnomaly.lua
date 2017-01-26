@@ -77,15 +77,15 @@ local function updateTimeBomb(self)
 		timerTimeBomb:Stop()
 		countdownTimeBomb:Cancel()
 		yellTimeBomb:Cancel()
-		local debuffTime = expires - GetTime() / timeMod--TODO, see if this is enough or if timeMod is needed like http://wowprogramming.com/docs/api/UnitDebuff suggests
+		local debuffTime = expires - GetTime() / timeMod--TODO, see if this is needed like http://wowprogramming.com/docs/api/UnitDebuff suggests
 		local debuffTimeOld = expires - GetTime()
-		specWarnTimeBomb:Schedule(debuffTime - 5)	-- Show "move away" warning 5secs before explode
-		voiceTimeBomb:Schedule(debuffTime - 5, "scatter")
-		timerTimeBomb:Start(debuffTime)
-		countdownTimeBomb:Start(debuffTime)
-		yellTimeBomb:Schedule(debuffTime-1, 1)
-		yellTimeBomb:Schedule(debuffTime-2, 2)
-		yellTimeBomb:Schedule(debuffTime-3, 3)
+		specWarnTimeBomb:Schedule(debuffTimeOld - 5)	-- Show "move away" warning 5secs before explode
+		voiceTimeBomb:Schedule(debuffTimeOld - 5, "scatter")
+		timerTimeBomb:Start(debuffTimeOld)
+		countdownTimeBomb:Start(debuffTimeOld)
+		yellTimeBomb:Schedule(debuffTimeOld-1, 1)
+		yellTimeBomb:Schedule(debuffTimeOld-2, 2)
+		yellTimeBomb:Schedule(debuffTimeOld-3, 3)
 		DBM:AddMsg("If you see this message, please share the numbers with DBM author to improve time bomb code: "..(debuffTime or 0).."/"..debuffTimeOld)
 	end
 end
@@ -271,6 +271,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 		end
 		updateTimeBomb(self)
+		self:Schedule(2, updateTimeBomb, self)
+		self:Schedule(5, updateTimeBomb, self)
 	elseif spellId == 207011 then--Speed: Slow
 		self.vb.currentPhase = 1
 		self.vb.interruptCount = 0
@@ -361,6 +363,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			end
 		end
 		updateTimeBomb(self)
+		self:Schedule(2, updateTimeBomb, self)
+		self:Schedule(5, updateTimeBomb, self)
 	elseif spellId == 207013 then--Speed: Fast
 		self.vb.currentPhase = 3
 		self.vb.interruptCount = 0
@@ -413,6 +417,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 		end
 		updateTimeBomb(self)
+		self:Schedule(2, updateTimeBomb, self)
+		self:Schedule(5, updateTimeBomb, self)
 	elseif spellId == 206699 then--Summon Haste Add (Small Adds)
 		specWarnSmallAdd:Show()
 		voiceSmallAdd:Play("mobsoon")
