@@ -311,14 +311,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerFelSoulCD:Start(15)
 			timerSearingBrandCD:Start(17.8)
 			timerSearingBrandRepCD:Start(27)
-			self:Schedule(38, findSearingMark, self)--Schedule markers to go out 2 seconds before detonate cast, making a 5 total seconds to position instead of 3
+			self:Schedule(37, findSearingMark, self)--Schedule markers to go out 2 seconds before detonate cast, making a 5 total seconds to position instead of 3
 			timerSearingBrandDetonateCD:Start(40)
 			timerAnimateFireCD:Start(55)
 			timerArcanePhaseCD:Start(75)
 		else
 			timerSearingBrandCD:Start(17.8)
 			timerSearingBrandRepCD:Start(27)
-			self:Schedule(43, findSearingMark, self)--Schedule markers to go out 2 seconds before detonate cast, making a 5 total seconds to position instead of 3
+			self:Schedule(42, findSearingMark, self)--Schedule markers to go out 2 seconds before detonate cast, making a 5 total seconds to position instead of 3
 			timerSearingBrandDetonateCD:Start(45)
 			timerAnimateFireCD:Start(62)
 			timerArcanePhaseCD:Start(85)
