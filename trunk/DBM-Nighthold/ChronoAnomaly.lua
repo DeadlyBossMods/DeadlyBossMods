@@ -31,7 +31,7 @@ local warnTimeRelease				= mod:NewTargetAnnounce(206610, 3, nil, false)--Too man
 local warnChronometricPart			= mod:NewStackAnnounce(206607, 3, nil, "Tank")
 
 local specWarnTemporalOrbs			= mod:NewSpecialWarningDodge(219815, nil, nil, nil, 2, 2)
-local specWarnPowerOverwhelmingKick	= mod:NewSpecialWarningInterrupt(211927, "Tank", nil, nil, 3, 2)
+local specWarnPowerOverwhelming		= mod:NewSpecialWarningSpell(211927, nil, nil, 2, 2, 2)
 local specWarnTimeBomb				= mod:NewSpecialWarningMoveAway(206617, nil, nil, nil, 1, 2)--When close to expiring, not right away
 local yellTimeBomb					= mod:NewFadesYell(206617)
 local specWarnWarp					= mod:NewSpecialWarningInterrupt(207228, "HasInterrupt", nil, nil, 1, 2)
@@ -52,7 +52,7 @@ local countdownBigAdd				= mod:NewCountdown(30, 206700)--Switch to waning time p
 local countdownTimeBomb				= mod:NewCountdownFades("AltTwo30", 206617)
 
 local voiceTemporalOrbs				= mod:NewVoice(219815)--watchstep
-local voicePowerOverwhelming		= mod:NewVoice(211927)--kickcast
+local voicePowerOverwhelming		= mod:NewVoice(211927)--aesoon
 local voiceTimeBomb					= mod:NewVoice(206617)--scatter
 local voiceWarp						= mod:NewVoice(207228, "HasInterrupt")--kickcast
 local voiceBigAdd					= mod:NewVoice(206700, "-Healer")
@@ -62,8 +62,6 @@ mod:AddRangeFrameOption(10, 206617)
 mod:AddInfoFrameOption(206617)
 --mod:AddSetIconOption("SetIconOnTimeRelease", 206610, true)
 
-mod.vb.OPActive = false
-mod.vb.riftActive = 0
 mod.vb.normCount = 0
 mod.vb.fastCount = 0
 mod.vb.slowCount = 0
@@ -91,8 +89,6 @@ local function updateTimeBomb(self)
 end
 
 function mod:OnCombatStart(delay)
-	self.vb.OPActive = false
-	self.vb.riftActive = 0
 	self.vb.currentPhase = 2
 	self.vb.interruptCount = 0
 	self.vb.normCount = 0
@@ -157,11 +153,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnChronometricPart:Show(args.destName, amount)
 		timerChronoPartCD:Start()--Move timer to success if this can be avoided
 	elseif spellId == 211927 then
-		self.vb.OPActive = true
-		if self.vb.riftActive > 0 then
-			specWarnPowerOverwhelmingKick:Show(UnitName("boss1"))
-			voicePowerOverwhelming:Play("kickcast")
-		end
+		specWarnPowerOverwhelmingKick:Show()
+		voicePowerOverwhelming:Play("aesoon")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -234,17 +227,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerPowerOverwhelmingCD:Start(84, 1)
 			else--LFR
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
-				--[[
-				timerTimeReleaseCD:Start(10, 1)
-				timerBurstofTimeCD:Start(20, 1)
-				self:Schedule(20, delayedBurst, self, 5, 2)--25
-				timerBigAddCD:Start(35, 1)
-				countdownBigAdd:Start(35)
-				self:Schedule(10, delayedTimeRelease, self, 35, 2)--45
-				self:Schedule(25, delayedBurst, self, 25, 3)--50
-				self:Schedule(50, delayedBurst, self, 5, 4)--55
-				timerTemporalOrbsCD:Start(65, 1)
-				timerPowerOverwhelmingCD:Start(75, 1)--]]
 			end
 		elseif self.vb.normCount == 2 then
 			if self:IsMythic() then--Updated Jan 25
@@ -253,43 +235,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerTimeBombCD:Start(12, 1)
 				timerPowerOverwhelmingCD:Start(17, 1)
 			elseif self:IsHeroic() then--Updated Dec 2
-			--[[	timerTimeBombCD:Start(2, 1)--Yep, two seconds.
-				timerBurstofTimeCD:Start(4, 1)
-				timerBurstofTimeCD:Start(6, 2)
-				timerTemporalOrbsCD:Start(8, 1)
-				self:Schedule(4, delayedBurst, self, 6, 3)--10
-				self:Schedule(2, delayedTimeBomb, self, 10, 2)--12
-				self:Schedule(6, delayedBurst, self, 8, 4)--14
-				timerBigAddCD:Start(16, 1)
-				countdownBigAdd:Start(16)
-				--Only show up to 2 burst timers at a time for this utter chaos
-				self:Schedule(14, delayedBurst, self, 4, 5)--18
-				self:Schedule(14, delayedBurst, self, 6, 6)--20
-				self:Schedule(18, delayedBurst, self, 4, 7)--22
-				self:Schedule(18, delayedBurst, self, 6, 8)--24
-				self:Schedule(22, delayedBurst, self, 4, 9)--26
-				self:Schedule(22, delayedBurst, self, 6, 10)--28
-				self:Schedule(22, delayedBurst, self, 8, 11)--30
-				timerTemporalOrbsCD:Start(35, 1)
-				timerPowerOverwhelmingCD:Start(40, 1)--]]
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 				--Triggers special extention phase after interrupt
 			elseif self:IsNormal() then
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			else--LFR
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
-				--[[
-				timerTemporalOrbsCD:Start(5, 1)
-				timerBurstofTimeCD:Start(10, 1)
-				self:Schedule(10, delayedBurst, self, 5, 2)--15
-				timerTimeReleaseCD:Start(25, 1)
-				timerBigAddCD:Start(35, 1)
-				countdownBigAdd:Start(35)
-				self:Schedule(25, delayedTimeRelease, self, 20, 2)--45
-				self:Schedule(15, delayedBurst, self, 35, 2)--50
-				self:Schedule(50, delayedBurst, self, 5, 3)--55
-				self:Schedule(5, delayedOrbs, self, 60, 2)--65
-				timerPowerOverwhelmingCD:Start(75, 1)--]]
 			end
 		elseif self.vb.normCount == 3 then
 			if self:IsMythic() then--Updated Jan 25
@@ -352,18 +303,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerPowerOverwhelmingCD:Start(90, 1)
 			else--LFR
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
-				--[[
-				timerTimeReleaseCD:Start(10, 1)
-				timerBurstofTimeCD:Start(20, 1)
-				self:Schedule(20, delayedBurst, self, 5, 2)--25
-				timerBigAddCD:Start(30, 1)
-				countdownBigAdd:Start(30)
-				timerTemporalOrbsCD:Start(40, 1)
-				self:Schedule(25, delayedBurst, self, 25, 3)--50
-				self:Schedule(10, delayedTimeRelease, self, 50, 2)--60
-				self:Schedule(50, delayedBurst, self, 20, 4)--70
-				self:Schedule(40, delayedOrbs, self, 40, 2)--80
-				timerPowerOverwhelmingCD:Start(90, 1)--]]
 			end
 		elseif self.vb.slowCount == 2 then
 			if self:IsMythic() then--Updated Jan 25
@@ -374,14 +313,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerTemporalOrbsCD:Start(14, 1)
 				timerPowerOverwhelmingCD:Start(19, 1)
 			elseif self:IsHeroic() then--changed
-				--[[timerTimeReleaseCD:Start(5, 1)
-				timerTemporalOrbsCD:Start(15, 1)
-				timerBurstofTimeCD:Start(20, 1)
-				timerBigAddCD:Start(25, 1)
-				countdownBigAdd:Start(25)
-				self:Schedule(20, delayedBurst, self, 10, 2)--30
-				self:Schedule(30, delayedBurst, self, 5, 3)--35
-				timerPowerOverwhelmingCD:Start(40, 1)--]]
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			elseif self:IsNormal() then--Normal confirmed
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
@@ -440,19 +371,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerTemporalOrbsCD:Start(12, 1)
 				timerPowerOverwhelmingCD:Start(22, 1)
 			elseif self:IsHeroic() then--Updated Dec 2
-				--[[timerTimeReleaseCD:Start(5, 1)
-				timerBurstofTimeCD:Start(8, 1)
-				timerBurstofTimeCD:Start(10, 2)
-				self:Schedule(5, delayedTimeRelease, self, 10, 2)--15
-				timerTimeBombCD:Start(20, 1)
-				self:Schedule(15, delayedTimeRelease, self, 20, 3)--25
-				self:Schedule(25, delayedTimeRelease, self, 5, 4)--30
-				self:Schedule(30, delayedTimeRelease, self, 5, 5)--35
-				timerBigAddCD:Start(38, 1)
-				countdownBigAdd:Start(38)
-				self:Schedule(35, delayedTimeRelease, self, 8, 6)--43
-				self:Schedule(10, delayedBurst, self, 35, 3)--45
-				timerPowerOverwhelmingCD:Start(50, 1)--]]
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			elseif self:IsNormal() then--Normal confirmed
 				timerTimeReleaseCD:Start(10, 1)
@@ -460,47 +378,23 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			else--LFR
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
-				--[[
-				timerTimeReleaseCD:Start(10, 1)
-				timerBurstofTimeCD:Start(15, 1)
-				self:Schedule(10, delayedTimeRelease, self, 15, 2)--25
-				timerBigAddCD:Start(35, 1)
-				countdownBigAdd:Start(35)
-				timerTemporalOrbsCD:Start(45, 1)
-				self:Schedule(25, delayedTimeRelease, self, 30, 3)--55
-				self:Schedule(15, delayedBurst, self, 50, 3)--65
-				self:Schedule(55, delayedTimeRelease, self, 20, 3)--75
-				timerPowerOverwhelmingCD:Start(85, 1)--]]
 			end
 		elseif self.vb.fastCount == 2 then
 			if self:IsMythic() then--Updated Jan 25
 				timerTimeReleaseCD:Start(5, 1)
-				timerTimeReleaseCD:Start(10, 2)
-				self:Schedule(5, delayedTimeRelease, self, 10, 3)--15
-				self:Schedule(10, delayedTimeRelease, self, 10, 4)--20
+				self:Schedule(5, delayedTimeRelease, self, 5, 2)--10
+				self:Schedule(10, delayedTimeRelease, self, 5, 3)--15
+				self:Schedule(15, delayedTimeRelease, self, 5, 4)--20
 				timerTemporalOrbsCD:Start(23, 1)
 				timerBigAddCD:Start(25, 1)
 				countdownBigAdd:Start(25)
 				timerPowerOverwhelmingCD:Start(36, 1)
 			elseif self:IsHeroic() then--Updated Dec 2
-				--[[timerTemporalOrbsCD:Start(5, 1)
-				timerBurstofTimeCD:Start(10, 1)
-				self:Schedule(10, delayedBurst, self, 5, 2)--15--]]
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			elseif self:IsNormal() then--Normal confirmed
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			else--LFR
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
-				--[[
-				timerBurstofTimeCD:Start(5, 1)
-				self:Schedule(5, delayedBurst, self, 5, 2)--10
-				timerTemporalOrbsCD:Start(20, 1)
-				timerBigAddCD:Start(30, 1)
-				countdownBigAdd:Start(30)
-				self:Schedule(10, delayedBurst, self, 25, 3)--35
-				self:Schedule(35, delayedBurst, self, 10, 4)--45
-				self:Schedule(45, delayedBurst, self, 5, 5)--50
-				timerNextPhase:Start(55)--]]
 			end
 		elseif self.vb.fastCount == 3 then
 			if self:IsMythic() then--Updated Jan 25
@@ -523,20 +417,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 206700 then--Summon Slow Add (Big Adds)
 		specWarnBigAdd:Show()
 		voiceBigAdd:Play("bigmobsoon")
-	elseif spellId == 212072 and self:AntiSpam(5, 1) then--Temporal Rift (Slightly faster than combat log)
-		self.vb.riftActive = self.vb.riftActive + 1
-		if self.vb.OPActive then--Rift available and boss is already casting Overwhelming Power, warn to interrupt now
-			specWarnPowerOverwhelmingKick:Show(UnitName("boss1"))
-			voicePowerOverwhelming:Play("kickcast")
-		end
 	end
 end
 
 function mod:UNIT_SPELLCAST_CHANNEL_STOP(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 211927 then--Power Overwhelming
-		self.vb.OPActive = false
-		self.vb.riftActive = self.vb.riftActive - 1
 		self.vb.interruptCount = self.vb.interruptCount + 1
 		if self.vb.currentPhase == 1 then--slow
 			if self.vb.normCount == 2 then
