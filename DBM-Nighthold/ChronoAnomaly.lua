@@ -78,6 +78,7 @@ local function updateTimeBomb(self)
 		countdownTimeBomb:Cancel()
 		yellTimeBomb:Cancel()
 		local debuffTime = expires - GetTime() / timeMod--TODO, see if this is enough or if timeMod is needed like http://wowprogramming.com/docs/api/UnitDebuff suggests
+		local debuffTimeOld = expires - GetTime()
 		specWarnTimeBomb:Schedule(debuffTime - 5)	-- Show "move away" warning 5secs before explode
 		voiceTimeBomb:Schedule(debuffTime - 5, "scatter")
 		timerTimeBomb:Start(debuffTime)
@@ -85,6 +86,7 @@ local function updateTimeBomb(self)
 		yellTimeBomb:Schedule(debuffTime-1, 1)
 		yellTimeBomb:Schedule(debuffTime-2, 2)
 		yellTimeBomb:Schedule(debuffTime-3, 3)
+		DBM:AddMsg("If you see this message, please share the numbers with DBM author to improve time bomb code: "..(debuffTime or 0).."/"..debuffTimeOld)
 	end
 end
 
