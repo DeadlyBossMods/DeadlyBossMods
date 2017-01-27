@@ -17,6 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 208499 206560",
 	"SPELL_PERIODIC_DAMAGE 206488",
 	"SPELL_PERIODIC_MISSED 206488",
+	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -94,7 +95,7 @@ function mod:OnCombatStart(delay)
 	self.vb.ArcaneSlashCooldown = 10.5
 	self.vb.toxicSliceCooldown = 26.5
 	timerArcaneSlashCD:Start(7-delay)
-	timerToxicSliceCD:Start(10.5-delay)
+	timerToxicSliceCD:Start(10.5-delay, "boss")
 	timerPhaseChange:Start(45)--Maniac
 	countdownModes:Start(45)
 	--On combat start he starts in a custom cleaner mode (206570) that doesn't have sterilize or cleansing rage abilities but casts cake and ArcaneSlashs more often
@@ -105,6 +106,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self:IsMythic() then
 		self:RegisterShortTermEvents(
+			"UNIT_DIED",
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 		)
 	end
@@ -124,7 +126,7 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 206788 then--Toxic Slice (Cleaner Mode)
 		warnToxicSlice:Show()
-		timerToxicSliceCD:Start(self.vb.toxicSliceCooldown)
+		timerToxicSliceCD:Start(self.vb.toxicSliceCooldown, "boss")
 	elseif spellId == 215062 then--Toxic Slice (Imprint)
 		warnToxicSlice:Show()
 	elseif spellId == 207513 then--Tidy Up (Caretaker Mode)
@@ -145,14 +147,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerArcaneSlashCD:Stop()
 		--timerSterilizeCD:Start()--Used 1-3 seconds later
 		timerCleansingRageCD:Start()--10
-		timerToxicSliceCD:Start(13)
+		timerToxicSliceCD:Start(13, "boss")
 		timerArcaneSlashCD:Start(19.5)
 		timerPhaseChange:Start(45)--Maniac
 		countdownModes:Start(45)
 	elseif spellId == 206557 then--Maniac Mode (40 seconds)
 		self.vb.ArcaneSlashCooldown = 7
 		warnManiacMode:Show()
-		timerToxicSliceCD:Stop()--Must be stopped here too since first cleaner mode has no buff removal
+		timerToxicSliceCD:Stop("boss")--Must be stopped here too since first cleaner mode has no buff removal
 		timerArcaneSlashCD:Stop()
 		timerArcingBondsCD:Start(5)--Updated Jan 24, make sure it's ok consistently
 		timerArcaneSlashCD:Start(9)--Updated Jan 24, make sure it's ok consistently
@@ -206,7 +208,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif spellId == 206560 then--Cleaner Mode (45 seconds)
-		timerToxicSliceCD:Stop()
+		timerToxicSliceCD:Stop("boss")
 	end
 end
 
@@ -231,8 +233,16 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			elseif cid == 108303 then--Caretaker Imprint
 				local name = GetSpellInfo(206560)
 				specWarnEchoDuder:Show(name)
+				timerToxicSliceCD:Start(16, "Echo")
 			end
 		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 108303 then--Arcanist Tel'arn
+		timerToxicSliceCD:Stop("Echo")
 	end
 end
 
