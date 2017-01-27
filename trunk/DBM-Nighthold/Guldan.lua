@@ -308,7 +308,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 206222 or spellId == 206221 then
 		table.wipe(bondsIcons)
-		if UnitDetailedThreatSituation("player", "boss1") then
+		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
+		if tanking or (status == 3) then
 			--Not a thing!
 		else
 			local targetName = UnitName("boss1target") or DBM_CORE_UNKNOWN
