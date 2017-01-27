@@ -106,7 +106,7 @@ local timerShatterEssenceCD			= mod:NewCDTimer(54, 206675, nil, "Tank", nil, 5, 
 ----Inquisitor Vethriz
 mod:AddTimerLine(Vethriz)
 local timerVethrizCD				= mod:NewCastTimer(25, "ej13124", nil, nil, nil, 1, 212258)
-local timerGazeofVethrizCD			= mod:NewCDTimer(5, 206840, nil, nil, nil, 3)
+local timerGazeofVethrizCD			= mod:NewCDTimer(4.7, 206840, nil, nil, nil, 3)
 local timerShadowBlinkCD			= mod:NewCDTimer(36, 207938)--Role color maybe if blink applies to tank
 ----D'zorykx the Trapper
 mod:AddTimerLine(Dzorykx)
@@ -219,9 +219,21 @@ function mod:SPELL_CAST_START(args)
 			end
 		else--Phase 2
 			if self:IsEasy() then
-				timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
+				if self.vb.liquidHellfireCast == 6 then
+					timerLiquidHellfireCD:Start(84, self.vb.liquidHellfireCast+1)
+				elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
+					timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
+				else
+					timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
+				end
 			else
-				timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
+				if self.vb.liquidHellfireCast == 6 then
+					timerLiquidHellfireCD:Start(74, self.vb.liquidHellfireCast+1)
+				elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
+					timerLiquidHellfireCD:Start(31.6, self.vb.liquidHellfireCast+1)
+				else
+					timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
+				end
 			end
 		end
 	elseif spellId == 206220 then
@@ -313,8 +325,10 @@ function mod:SPELL_CAST_START(args)
 			--Not a thing!
 		else
 			local targetName = UnitName("boss1target") or DBM_CORE_UNKNOWN
-			specWarnBondsofFelTank:Show(targetName)
-			voiceBondsofFel:Play("tauntboss")
+			if not UnitIsUnit("player", "boss1target") then--the very first bonds of fel, threat reads funny and we need an additional filter
+				specWarnBondsofFelTank:Show(targetName)
+				voiceBondsofFel:Play("tauntboss")
+			end
 		end
 	end
 end
@@ -483,17 +497,18 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 206516 and self.vb.phase < 2 then--The Eye of Aman'Thul (phase 1 buff)
 		--Backup trigger since sometimes unit_died not fire for all 3 adds
 		self.vb.phase = 2
+		self.vb.liquidHellfireCast = 0
 		warnPhase2:Show()
 		timerLiquidHellfireCD:Stop()
 		timerFelEffluxCD:Stop()--This probably needs refactoring for mythic since phase 1 and 2 happen at same time
 		timerBondsofFelCD:Start(8.8)
 		if self:IsEasy() then
 			timerEyeofGuldanCD:Start(32.5, 1)
-			timerLiquidHellfireCD:Start(45, self.vb.liquidHellfireCast+1)
+			timerLiquidHellfireCD:Start(45, 1)
 		else
 			timerHandofGuldanCD:Start(14, 1)
 			timerEyeofGuldanCD:Start(29, 1)
-			timerLiquidHellfireCD:Start(40, self.vb.liquidHellfireCast+1)
+			timerLiquidHellfireCD:Start(40, 1)
 		end
 	end
 end
@@ -586,6 +601,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			if self.vb.addsDied == 3 and not self:IsMythic() then
 				--This probably needs refactoring for mythic since phase 1 and 2 happen at same time
 				self.vb.phase = 2
+				self.vb.liquidHellfireCast = 0
 				warnPhase2:Show()
 				timerLiquidHellfireCD:Stop()
 				timerFelEffluxCD:Stop()
@@ -593,11 +609,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerBondsofFelCD:Start(27.8)
 				if self:IsEasy() then
 					timerEyeofGuldanCD:Start(51.5, 1)
-					timerLiquidHellfireCD:Start(64, self.vb.liquidHellfireCast+1)
+					timerLiquidHellfireCD:Start(64, 1)
 				else
 					timerHandofGuldanCD:Start(33, 1)
 					timerEyeofGuldanCD:Start(48, 1)
-					timerLiquidHellfireCD:Start(59, self.vb.liquidHellfireCast+1)
+					timerLiquidHellfireCD:Start(59, 1)
 				end
 			end
 		end

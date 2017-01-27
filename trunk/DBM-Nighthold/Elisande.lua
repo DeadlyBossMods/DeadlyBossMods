@@ -503,6 +503,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			voicePhaseChange:Play("pthree")
 			self.vb.burstCastCount = 0
 			timerAblatingExplosionCD:Stop()
+			yellAblatingExplosion:Cancel()
 			--timerAblativePulseCD:Start(20.5)
 			if not self:IsEasy() then
 				specWarnEpochericOrb:Schedule(27)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
@@ -567,6 +568,8 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	if (msg == L.noCLEU4EchoRings or msg:find(L.noCLEU4EchoRings)) then
 		self:SendSync("ArcaneticRing")--Syncing to help unlocalized clients
+	elseif (msg == L.noCLEU4EchoOrbs or msg:find(L.noCLEU4EchoOrbs)) then
+		self:SendSync("Orbs")--Syncing to help unlocalized clients
 	end
 end
 
@@ -607,6 +610,17 @@ function mod:OnSync(msg, targetname)
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
 			countdownArcaneticRing:Start(timer)
+		end
+	elseif msg == "Orbs" and self:AntiSpam(15, 4) then
+		specWarnEpochericOrb:Cancel()
+		voiceEpochericOrb:Cancel()
+		self.vb.orbCastCount = self.vb.orbCastCount + 1
+		specWarnEpochericOrb:Show()
+		voiceEpochericOrb:Play("161612")
+		local nextCount = self.vb.orbCastCount + 1
+		local timer = OrbTimers[nextCount]
+		if timer then
+			timerEpochericOrbCD:Start(timer, nextCount)
 		end
 	end
 end
