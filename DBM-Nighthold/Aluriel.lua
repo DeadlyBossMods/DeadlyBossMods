@@ -196,10 +196,12 @@ function mod:OnCombatStart(delay)
 	table.wipe(chargeTable)
 	table.wipe(searingDetonateIcons)
 	rangeShowAll = false
-	if self:IsEasy() then
-		berserkTimer:Start(-delay)--600 confirmed on normal
+	if self:IsMythic() then
+		berserkTimer:Start(450)
+	elseif self:IsEasy() then
+		berserkTimer:Start(-delay)--600 confirmed on normal (needs reconfirm on live)
 	else
-		berserkTimer:Start(480-delay)--480 confirmed on heroic
+		berserkTimer:Start(480-delay)--480 confirmed on heroic (needs reconfirm on live)
 	end
 end
 
