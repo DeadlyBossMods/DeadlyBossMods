@@ -72,7 +72,7 @@ local yellCoN						= mod:NewPosYell(218809)
 --Stage 1: The High Botanist
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerControlledChaosCD		= mod:NewNextTimer(35, 218438, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
-local timerSummonChaosSpheresCD		= mod:NewAITimer(35, 223034, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
+local timerSummonChaosSpheresCD		= mod:NewNextTimer(35, 223034, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 local timerParasiticFetterCD		= mod:NewNextTimer(35, 218304, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)--Technically can also be made add timer instead of targetted
 local timerSolarCollapseCD			= mod:NewNextTimer(35, 218148, nil, nil, nil, 3)
 local timerCollapseofNightCD		= mod:NewNextTimer(35, 223437, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
@@ -86,7 +86,9 @@ local timerToxicSporesCD			= mod:NewNextTimer(8.5, 219049, nil, nil, nil, 3)--Ex
 local timerGraceOfNatureCD			= mod:NewNextTimer(48, 218927, nil, "Tank", nil, 5)--48-51
 local timerCoNCD					= mod:NewNextTimer(50, 218809, nil, nil, nil, 3)
 mod:AddTimerLine(PLAYER_DIFFICULTY6)
-local timerChaotiSpheresofNatureCD	= mod:NewAITimer(35, 223219, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
+local timerChaotiSpheresofNatureCD	= mod:NewNextTimer(35, 223219, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
+
+local berserkTimer					= mod:NewBerserkTimer(480)
 
 local countdownControlledChaos		= mod:NewCountdown(35, 218438)
 local countdownParasiticFetter		= mod:NewCountdown("Alt35", 218304, "-Tank")
@@ -153,7 +155,8 @@ function mod:OnCombatStart(delay)
 		countdownCoN:Start(57-delay)
 		timerGraceOfNatureCD:Start(65-delay)
 		countdownGraceOfNature:Start(65-delay)
-		DBM:AddMsg("Non mythic timers saw significant changes since beta, so it's likely mythic timers also drastically change. If so, expect there to be massive inaccuracies on this difficulty until revetted from new data")
+		berserkTimer:Start(540-delay)
+		DBM:AddMsg("Most mythic timers same as beta, so for most part mythic timers look good, but some more updates needed and will be coming soon")
 	else
 		if self:IsHeroic() then
 			self.vb.globalTimer = 35
@@ -415,13 +418,14 @@ function mod:SPELL_AURA_APPLIED(args)
 					timerParasiticFetterCD:Start(16)
 				else
 					--Naturalist Tel'arn gains Summon Chaotic Spheres of Nature when he is the last form alive.
-					timerChaotiSpheresofNatureCD:Start(1)--Still using AI timer
+					--timerChaotiSpheresofNatureCD:Start(1)--FIX ME
 				end
 			end
 		elseif spellId == 222010 then--Solar Died and passed on power
 			if cid == 109040 then--Arcanist Lives
 				if self.vb.phase == 2 then
 					--Arcanist Tel'arn replaces Controlled Chaos with Summon Chaos Spheres when Solarist Tel'arn is killed first. (Does this also happen if killed second?)
+					--timerSummonChaosSpheresCD:Start(1)--FIXME
 				else
 					--Arcanist Tel'arn's Controlled Chaos causes several points of Solar Collapse to spawn around it's perimeter when Solarist Tel'arn is killed second.
 					--Arcanist Tel'arn's Recursive Strikes creates Plasma Spheres when it expires if Solarist Tel'arn is killed second
@@ -431,7 +435,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					--Naturalist Tel'arn's Toxic Spores cause a Solar Collapse at the target's location when Solarist Tel'arn is killed first. (Does this also happen if killed second?)
 				else
 					--Naturalist Tel'arn gains Summon Chaotic Spheres of Nature when he is the last form alive.
-					timerChaotiSpheresofNatureCD:Start(1)--Still using AI timer
+					--timerChaotiSpheresofNatureCD:Start(1)--FIX ME
 				end
 			end
 		else--Nature died and passed on power
