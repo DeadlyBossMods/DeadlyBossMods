@@ -6,7 +6,7 @@ mod:SetCreatureID(103758)
 mod:SetEncounterID(1863)
 mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 3, 2, 1)
-mod:SetHotfixNoticeRev(15673)
+mod:SetHotfixNoticeRev(15752)
 mod.respawnTime = 30--or 35 or 40
 
 mod:RegisterCombat("combat")
@@ -74,7 +74,7 @@ local specWarnConjunctionSign		= mod:NewSpecialWarningYouPos(205408, nil, nil, n
 
 
 --Base abilities
-local timerGravPullCD				= mod:NewCDTimer(29, 205984, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerGravPullCD				= mod:NewCDTimer(28, 205984, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Stage One: The Dome of Observation
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 --local timerCoronalEjectionCD		= mod:NewCDTimer(16, 206464, nil, nil, nil, 3)--CD is not known, always push phase 2 before this is cast 2nd time
@@ -156,10 +156,14 @@ local ps1Grand = {15, 12.2}
 local ps2Grand = {27, 44.9, 58.3}
 local ps3Grand = {58.7, 43.6, 41.4}
 local ps4Grand = {48}--No data yet
-local abZeroTargets = {}
+--local abZeroTargets = {}
 local abZeroDebuff, chilledDebuff, gravPullDebuff = GetSpellInfo(206585), GetSpellInfo(206589), GetSpellInfo(205984)
 local icyEjectionDebuff, coronalEjectionDebuff, voidEjectionDebuff = GetSpellInfo(206936), GetSpellInfo(206464), GetSpellInfo(207143)
 local crabDebuff, dragonDebuff, hunterDebuff, wolfDebuff = GetSpellInfo(205429), GetSpellInfo(216344), GetSpellInfo(216345), GetSpellInfo(205445)
+local crabs = {}
+local dragons = {}
+local hunters = {}
+local wolves = {}
 local UnitDebuff = UnitDebuff
 local voidWarned = false
 local chilledFilter, tankFilter
@@ -189,52 +193,40 @@ do
 	end
 	updateInfoFrame = function()
 		table.wipe(lines)
-		local total1, total2 = 0, 0
-		local crabs, dragons, hunters, wolves = 0, 0, 0, 0
+--		local totalZero = 0
+		local infoNeeded = false
 		--Star Signs Helper
-		for i = 1, DBM:GetNumRealGroupMembers() do
-			local unitID = 'raid'..i
-			if UnitDebuff(unitID, crabDebuff) then
-				crabs = crabs + 1
-				total1 = total1 + 1
-			end
-			if UnitDebuff(unitID, dragonDebuff) then
-				dragons = dragons + 1
-				total1 = total1 + 1
-			end
-			if UnitDebuff(unitID, hunterDebuff) then
-				hunters = hunters + 1
-				total1 = total1 + 1
-			end
-			if UnitDebuff(unitID, wolfDebuff) then
-				wolves = wolves + 1
-				total1 = total1 + 1
-			end
+		local crabsigns, dragonsigns, huntersigns, wolfsigns = #crabs, #dragons, #hunters, #wolves
+		--FIXME, figure out why colors are wrong
+		if crabsigns > 0 then
+			lines["|cff7d0aCD"..crabDebuff.."|r"] = crabsigns
+			infoNeeded = true
 		end
-		if total1 > 0 then
-			--FIXME, figure out why colors are wrong
-			lines["|cff7d0aCD"..crabDebuff.."|r"] = crabs
-			lines["|c69ccf0CD"..dragonDebuff.."|r"] = dragons
-			lines["|cabd473CD"..hunterDebuff.."|r"] = hunters
-			lines["|cff0000CD"..wolfDebuff.."|r"] = wolves
+		if dragonsigns > 0 then
+			lines["|c69ccf0CD"..dragonDebuff.."|r"] = dragonsigns
+			infoNeeded = true
 		end
-		--Absolute Zero Helper
+		if huntersigns > 0 then
+			lines["|cabd473CD"..hunterDebuff.."|r"] = huntersigns
+			infoNeeded = true
+		end
+		if wolfsigns > 0 then
+			lines["|cff0000CD"..wolfDebuff.."|r"] = wolfsigns
+			infoNeeded = true
+		end
+--[[		--Absolute Zero Helper
 		for i = 1, #abZeroTargets do
 			local name = abZeroTargets[i]
-			local uId = DBM:GetRaidUnitId(name)
-			if not uId then break end
-			local _, _, _, currentStack = UnitDebuff(uId, abZeroDebuff)
-			if currentStack then
-				total2 = total2 + 1
-				lines[name] = currentStack
-			end
+			totalZero = totalZero + 1
+			lines[name] = abZeroDebuff
 		end
-		if total2 > 0 then
+		if totalZero > 0 then
 			--Displays whether or not player has chilled. if YES in red or NO in green
 			--Ths is displayed under the absolute zero name/stacks so they know there are still stacks to soak and if able.
 			lines[chilledDebuff] = UnitDebuff("player", chilledDebuff) and "|cFF1A1ACD"..YES.."|r" or "|c69CCF0CD"..NO.."|r"
-		end
-		if total1 == 0 and total2 == 0 then--Nothing left, hide infoframe
+			infoNeeded = true
+		end--]]
+		if not infoNeeded then--Nothing left, hide infoframe
 			DBM.InfoFrame:Hide()
 		end
 		return lines
@@ -258,25 +250,24 @@ local function updateRangeFrame(self, force)
 	end
 end
 
-local function cancelNotMine(self)
-	--Idea behind this is you should only see all targets same sign as you
-	if not UnitDebuff("player", crabDebuff) then
-		warnStarSignCrab:Cancel()
+local function showConjunction(self)
+	if UnitDebuff("player", crabDebuff) then
+		warnStarSignCrab:Show(table.concat(crabs, "<, >"))
 	end
-	if not UnitDebuff("player", dragonDebuff) then
-		warnStarSignDragon:Cancel()
+	if UnitDebuff("player", dragonDebuff) then
+		warnStarSignDragon:Show(table.concat(dragons, "<, >"))
 	end
 	if not UnitDebuff("player", hunterDebuff) then
-		warnStarSignHunter:Cancel()
+		warnStarSignHunter:Show(table.concat(hunters, "<, >"))
 	end
 	if not UnitDebuff("player", wolfDebuff) then
-		warnStarSignWolf:Cancel()
+		warnStarSignWolf:Show(table.concat(wolves, "<, >"))
 	end
 end
 
 function mod:OnCombatStart(delay)
 	voidWarned = false
-	table.wipe(abZeroTargets)
+--	table.wipe(abZeroTargets)
 	self.vb.StarSigns = 0
 	self.vb.phase = 1
 	if self:IsMythic() then
@@ -318,8 +309,11 @@ function mod:SPELL_CAST_START(args)
 			timerConjunctionCD:Start(timers, self.vb.grandConCount+1)
 		end
 		updateRangeFrame(self, true)
-		--DBM:AddMsg("HUD ranges for this are still approximatinos until further testing.")
-		self:Schedule(5, cancelNotMine, self)
+		self:Schedule(5, showConjunction, self)
+		table.wipe(crabs)
+		table.wipe(dragons)
+		table.wipe(hunters)
+		table.wipe(wolves)
 	elseif spellId == 206949 then
 		specWarnFrigidNova:Show()
 		voiceFrigidNova:Play("gathershare")
@@ -418,7 +412,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 205429 or spellId == 216344 or spellId == 216345 or spellId == 205445 then--Star Signs
 		self.vb.StarSigns = self.vb.StarSigns + 1
 		if spellId == 205429 then--Crab
-			warnStarSignCrab:CombinedShow(2, args.destName)
+			crabs[#crabs + 1] = args.destName
 			if self.Options.HudMapOnConjunction then--Yellow
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 17, 1, 1, 0, 0.5, nil, false):Appear():SetLabel(args.destName)
 			end
@@ -428,7 +422,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				countdownConjunction:Start()
 			end
 		elseif spellId == 216344 then--Dragon
-			warnStarSignDragon:CombinedShow(2, args.destName)
+			dragons[#dragons + 1] = args.destName
 			if self.Options.HudMapOnConjunction then--Blue
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 17, 0.28, 0.48, 0.9, 0.5, nil, false):Appear():SetLabel(args.destName)
 			end
@@ -438,7 +432,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				countdownConjunction:Start()
 			end
 		elseif spellId == 216345 then--Hunter
-			warnStarSignHunter:CombinedShow(2, args.destName)
+			hunters[#hunters + 1] = args.destName
 			if self.Options.HudMapOnConjunction then--Green
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 17, 0, 1, 0, 0.5, nil, false):Appear():SetLabel(args.destName)
 			end
@@ -448,7 +442,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				countdownConjunction:Start()
 			end
 		elseif spellId == 205445 then--Wolf
-			warnStarSignWolf:CombinedShow(2, args.destName)
+			wolves[#wolves + 1] = args.destName
 			if self.Options.HudMapOnConjunction then--Red
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 17, 1, 0, 0, 0.5, nil, false):Appear():SetLabel(args.destName)
 			end
@@ -484,16 +478,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 206585 then
-		if not tContains(abZeroTargets, args.destName) then
+--[[		if not tContains(abZeroTargets, args.destName) then
 			table.insert(abZeroTargets, args.destName)
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:Show(15, "function", updateInfoFrame, sortInfoFrame, true)
-		end
+		end--]]
 		updateRangeFrame(self)
-		if args:IsPlayer() then
-			updateRangeFrame(self)
-		end
 	elseif spellId == 206936 then
 		warnIcyEjection:CombinedShow(0.5, args.destName)--If only one, move this to else rule to filter from player
 		if args:IsPlayer() then
@@ -545,6 +536,15 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 4, 17, 1, 1, 1, 0.5, nil, true):Appear():SetLabel(args.destName)
 			end
 		end
+		if spellId == 205429 then--Crab
+			tDeleteItem(crabs, args.destName)
+		elseif spellId == 216344 then--Dragon
+			tDeleteItem(dragons, args.destName)
+		elseif spellId == 216345 then--Hunter
+			tDeleteItem(hunters, args.destName)
+		elseif spellId == 205445 then--Wolf
+			tDeleteItem(wolves, args.destName)
+		end
 	elseif spellId == 205984 or spellId == 214335 or spellId == 214167 then
 		if args:IsPlayer() then
 			updateRangeFrame(self)
@@ -552,10 +552,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			countdownGravPull:Cancel()
 		end
 	elseif spellId == 206585 then
-		tDeleteItem(abZeroTargets, args.destName)
-		if args:IsPlayer() then
-			updateRangeFrame(self)
-		end
+--		tDeleteItem(abZeroTargets, args.destName)
+		updateRangeFrame(self)
 	elseif spellId == 206464 and args:IsPlayer() then
 		updateRangeFrame(self)
 	elseif spellId == 206936 and args:IsPlayer() then
