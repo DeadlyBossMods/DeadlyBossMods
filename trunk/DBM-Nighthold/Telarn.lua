@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(104528)--109042
 mod:SetEncounterID(1886)
 mod:SetZone()
-mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Unknown max night debuffs out so icon table may not be accurate yet
+mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(15721)
 mod:SetBossHPInfoToHighest()
 mod.respawnTime = 29.5
@@ -489,8 +489,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.SetIconOnFetter and not self:IsLFR() then
 			self:SetIcon(args.destName, 0)
-			DBM:Debug("SetIconOnFetter should be firing")
-			self:ScanForMobs(109075, 0, 8, 2, 0.1, 15, "SetIconOnFetter")
 		end
 	end
 end
