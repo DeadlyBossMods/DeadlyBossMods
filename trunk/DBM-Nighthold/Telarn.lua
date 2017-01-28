@@ -146,12 +146,12 @@ function mod:OnCombatStart(delay)
 		self:SetCreatureID(109038, 109040, 109041)		
 		self.vb.globalTimer = 64--Needs updating
 		timerSolarCollapseCD:Start(5-delay)
-		timerParasiticFetterCD:Start(16-delay)
+		timerParasiticFetterCD:Start(16-delay)--16-18
 		countdownParasiticFetter:Start(16-delay)
 		timerControlledChaosCD:Start(30-delay)
 		countdownControlledChaos:Start(30-delay)
 		timerPlasmaSpheresCD:Start(45-delay)
-		timerCoNCD:Start(57-delay)--52-57
+		timerCoNCD:Start(57-delay)
 		countdownCoN:Start(57-delay)
 		timerGraceOfNatureCD:Start(65-delay)
 		countdownGraceOfNature:Start(65-delay)
@@ -410,6 +410,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				else
 					timerCollapseofNightCD:Start(22)
 					countdownCoN:Start(22)
+					timerPlasmaSpheresCD:Start(35)
 					--Needs more data, not long enough pull
 				end
 			elseif cid == 109041 then--Naturalist Lives
