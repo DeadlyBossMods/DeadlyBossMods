@@ -155,7 +155,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnChronometricPart:Show(args.destName, amount)
 		timerChronoPartCD:Start()--Move timer to success if this can be avoided
 	elseif spellId == 211927 then
-		specWarnPowerOverwhelmingKick:Show()
+		specWarnPowerOverwhelming:Show()
 		voicePowerOverwhelming:Play("aesoon")
 	end
 end
