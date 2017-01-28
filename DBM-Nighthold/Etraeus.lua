@@ -147,8 +147,9 @@ mod.vb.grandConCount = 0
 --"207143-Void Ejection" = "pull:328.7, 5.7, 14.1, 20.7, 2.8, 6.1, 25.7, 4.9",
 --"207143-Void Ejection" = "pull:326.8, 4.4, 17.5, 17.4, 4.6, 4.7, 26.3, 4.8",
 --For all inclusive, i'll simply use lowest observed time for each count, which will give close approx cd timer but imprecise to be a "next" timer.
-local icyEjectionTimers = {24.5, 34.4, 6.5, 5.3, 50.7, 1.2, 2.4}--43.3, 35.6, 8.1, 4.1, 52.2, 1.2, 2.4
-local felEjectionTimers = {22.5, 3.6, 3.2, 2.4, 10.2, 4.4, 2.8, 32.8, 4.0, 1.6, 4.0, 4.5, 22.3, 6.9, 17.0, 1.6, 1.2, 2.0, 18.3, 0.4}--10 after 4, 32 after 7, 22 after 12, 17 after 14, 18 after 18
+local icyEjectionTimers = {24.5, 34.4, 6.5, 4.8, 50.2, 1.2, 2.4, 25.6, 2.8}--43.3, 35.6, 8.1, 4.1, 52.2, 1.2, 2.4
+local felEjectionTimers = {18.2, 3.6, 3.2, 2.4, 10.2, 4.4, 2.8, 32.8, 4.0, 1.6, 4.0, 4.5, 22.3, 6.9, 17.0, 1.6, 1.2, 2.0, 18.3, 0.4}--10 after 4, 32 after 7, 22 after 12, 17 after 14, 18 after 18
+local mythicfelEjectionTimers = {17.5, 4, 2.8, 2.4, 9.4, 2.4, 3.2, 31.2, 2, 1.2, 14, 2.8, 1.2}--9.4 after 4, 31.2 after 7, 14 after 10
 local voidEjectionTimers = {24, 3.2, 14.1, 17.4, 0.8, 4.7, 25.7, 2.3}
 --local felNovaTImers = {34.8, 31.3, 29.3}--Latest is 47.1, 45.0, 25.1. Currently unused. for now just doing 45 or 25
 --grandconjunction timers have some variation, so it's a cooldown timer within margin
@@ -360,17 +361,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 205649 and not self:IsMythic() then--Disabled on mythic, shits basically spammed there and doesn't match timers table.
 		self.vb.felEjectionCount = self.vb.felEjectionCount + 1
 		--10 after 4, 32 after 7, 22 after 12, 17 after 14, 18 after 18
+		--9.4 after 4, 31.2 after 7, 14 after 10 (Mythic)
 		--The rest are like sub 5 second timers with variations to boot so not worth timers
-		if self.vb.felEjectionCount == 4 then
-			timerFelEjectionCD:Start(10, self.vb.felEjectionCount+1)
-		elseif self.vb.felEjectionCount == 7 then
-			timerFelEjectionCD:Start(32, self.vb.felEjectionCount+1)
-		elseif self.vb.felEjectionCount == 12 then
-			timerFelEjectionCD:Start(22, self.vb.felEjectionCount+1)
-		elseif self.vb.felEjectionCount == 14 then
-			timerFelEjectionCD:Start(17, self.vb.felEjectionCount+1)
-		elseif self.vb.felEjectionCount == 18 then
-			timerFelEjectionCD:Start(18, self.vb.felEjectionCount+1)
+		local timer = self:IsMythic() and mythicfelEjectionTimers[self.vb.felEjectionCount+1] or felEjectionTimers[self.vb.felEjectionCount+1]
+		if timer and timer >= 4 then--No sense in starting timers for the sub 5 second casts
+			timerFelEjectionCD:Start(timer, self.vb.felEjectionCount+1)
 		end
 	elseif spellId == 207143 then
 		DBM:Debug("Void Ejection is back", 2)
@@ -592,14 +587,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.icyEjectionCount = 0
 --		timerCoronalEjectionCD:Stop()
 		timerConjunctionCD:Stop()
-		timerIcyEjectionCD:Start(23.3, 1)
 		timerGravPullCD:Start(30)
 		if not self:IsEasy() then
 			timerFrigidNovaCD:Start(49)
 		end
 		if self:IsMythic() then
 			self.vb.grandConCount = 0
+			timerIcyEjectionCD:Start(15, 1)
 			timerConjunctionCD:Start(27, 1)
+		else
+			timerIcyEjectionCD:Start(23.3, 1)
 		end
 	elseif spellId == 222133 then--Phase 3 Conversation
 		self.vb.phase = 3
@@ -609,13 +606,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerFrigidNovaCD:Stop()
 		timerGravPullCD:Stop()
 		timerConjunctionCD:Stop()
-		timerFelEjectionCD:Start(18.2, 1)
 		timerGravPullCD:Start(29)
 		if self:IsMythic() then
 			self.vb.grandConCount = 0
+			timerFelEjectionCD:Start(17.5, 1)
 			timerFelNovaCD:Start(52, 1)
 			timerConjunctionCD:Start(58)
 		else
+			timerFelEjectionCD:Start(18.2, 1)
 			if not self:IsEasy() then
 				timerFelNovaCD:Start(57.7, 1)
 			end
