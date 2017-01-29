@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 205408 206949 206517 207720 207439 216909",
-	"SPELL_CAST_SUCCESS 206464 206464 206936 205649 207143 205984 214335 214167",
+	"SPELL_CAST_SUCCESS 206464 206464 206936 205649 207143 205984 214335 214167 221875",
 	"SPELL_AURA_APPLIED 205429 216344 216345 205445 205984 214335 214167 206585 206936 205649 207143 206398",
 	"SPELL_AURA_REMOVED 205429 216344 216345 205445 205984 214335 214167 206585 206936 205649 207143",
 	"SPELL_SUMMON 207813",
@@ -30,7 +30,7 @@ mod:RegisterEventsInCombat(
 --TODO, void ejection gone?
 --[[
 (ability.id = 205408 or ability.id = 206949 or ability.id = 206517 or ability.id = 207720 or ability.id = 207439 or ability.id = 216909 or ability.id = 221875) and type = "begincast" or
-(ability.id = 205984 or ability.id = 214335 or ability.id = 214167) and type = "cast" or
+(ability.id = 205984 or ability.id = 214335 or ability.id = 214167 or ability.id = 221875) and type = "cast" or
 (ability.id = 206464 or ability.id = 206936 or ability.id = 205649 or ability.id = 207143) and type = "cast"
 --]]
 --Base abilities
@@ -139,6 +139,7 @@ mod.vb.icyEjectionCount = 0
 mod.vb.felEjectionCount = 0
 mod.vb.felNovaCount = 0
 mod.vb.grandConCount = 0
+mod.vb.isPhaseChanging = false
 --mod.vb.voidEjectionCount = 0
 --These timers are self corrective, which is annoying when all inclusive but better if scrubbing short timers
 --For example Icy will always be 35.2, 64.5, 24.7 if you scrub the short timers or within 0.3. However including short timers and you get more variation.
@@ -150,13 +151,13 @@ mod.vb.grandConCount = 0
 --For all inclusive, i'll simply use lowest observed time for each count, which will give close approx cd timer but imprecise to be a "next" timer.
 local icyEjectionTimers = {24.5, 34.4, 6.5, 4.8, 50.2, 1.2, 2.4, 25.6, 2.8}--43.3, 35.6, 8.1, 4.1, 52.2, 1.2, 2.4
 local felEjectionTimers = {18.2, 3.6, 3.2, 2.4, 10.2, 4.4, 2.8, 32.8, 4.0, 1.6, 4.0, 4.5, 22.3, 6.9, 17.0, 1.6, 1.2, 2.0, 18.3, 0.4}--10 after 4, 32 after 7, 22 after 12, 17 after 14, 18 after 18
-local mythicfelEjectionTimers = {17.5, 4, 2.8, 2.4, 9.4, 2.4, 3.2, 31.2, 2, 1.2, 14, 2.8, 1.2}--9.4 after 4, 31.2 after 7, 14 after 10
+local mythicfelEjectionTimers = {17.4, 3.2, 2.8, 2.4, 9.3, 2.4, 3.2, 31.2, 2, 1.2, 13.4, 1.2, 1.7, 23, 8.5, 9.3, 2.5, 1.5, 24.3, 3.2}
 local voidEjectionTimers = {24, 3.2, 14.1, 17.4, 0.8, 4.7, 25.7, 2.3}
 --local felNovaTImers = {34.8, 31.3, 29.3}--Latest is 47.1, 45.0, 25.1. Currently unused. for now just doing 45 or 25
 --grandconjunction timers have some variation, so it's a cooldown timer within margin
 local ps1Grand = {15, 12.2}
 local ps2Grand = {27, 44.9, 58.3}
-local ps3Grand = {58.7, 43.6, 41.4}
+local ps3Grand = {58.7, 43, 41.4}
 local ps4Grand = {48}--No data yet
 --local abZeroTargets = {}
 local abZeroDebuff, chilledDebuff, gravPullDebuff = GetSpellInfo(206585), GetSpellInfo(206589), GetSpellInfo(205984)
@@ -272,6 +273,7 @@ function mod:OnCombatStart(delay)
 --	table.wipe(abZeroTargets)
 	self.vb.StarSigns = 0
 	self.vb.phase = 1
+	self.vb.isPhaseChanging = false
 	if self:IsMythic() then
 		self.vb.grandConCount = 0
 --		timerCoronalEjectionCD:Start(12-delay)--Still could be health based
@@ -353,13 +355,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 206464 then
 		--timerCoronalEjectionCD:Start()
-	elseif spellId == 206936 then
+	elseif spellId == 206936 and not self.vb.isPhaseChanging then
 		self.vb.icyEjectionCount = self.vb.icyEjectionCount + 1
 		local timer = icyEjectionTimers[self.vb.icyEjectionCount+1]
 		if timer and timer >= 4 then--No sense in starting timers for the sub 4 second casts
 			timerIcyEjectionCD:Start(timer, self.vb.icyEjectionCount+1)
 		end
-	elseif spellId == 205649 and not self:IsMythic() then--Disabled on mythic, shits basically spammed there and doesn't match timers table.
+	elseif spellId == 205649 and not self.vb.isPhaseChanging then
 		self.vb.felEjectionCount = self.vb.felEjectionCount + 1
 		--10 after 4, 32 after 7, 22 after 12, 17 after 14, 18 after 18
 		--9.4 after 4, 31.2 after 7, 14 after 10 (Mythic)
@@ -368,7 +370,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer and timer >= 4 then--No sense in starting timers for the sub 5 second casts
 			timerFelEjectionCD:Start(timer, self.vb.felEjectionCount+1)
 		end
-	elseif spellId == 207143 then
+	elseif spellId == 207143 and not self.vb.isPhaseChanging then
 		DBM:Debug("Void Ejection is back", 2)
 --[[		self.vb.voidEjectionCount = self.vb.voidEjectionCount + 1
 		local timer = voidEjectionTimers[self.vb.voidEjectionCount+1]
@@ -390,6 +392,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			warnGravitationalPull:Show(args.destName)
 		end
+	elseif spellId == 221875 then
+		self.vb.isPhaseChanging = false
 	end
 end
 
@@ -586,6 +590,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 222130 then--Phase 2 Conversation
 		self.vb.phase = 2
+		self.vb.isPhaseChanging = true
 		self.vb.icyEjectionCount = 0
 --		timerCoronalEjectionCD:Stop()
 		timerConjunctionCD:Stop()
@@ -602,6 +607,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		end
 	elseif spellId == 222133 then--Phase 3 Conversation
 		self.vb.phase = 3
+		self.vb.isPhaseChanging = true
 		self.vb.felEjectionCount = 0
 		self.vb.felNovaCount = 0
 		timerIcyEjectionCD:Stop()
@@ -622,6 +628,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		end
 	elseif spellId == 222134 then--Phase 4 Conversation
 		self.vb.phase = 4
+		self.vb.isPhaseChanging = true
 		--self.vb.voidEjectionCount = 0
 		timerFelEjectionCD:Stop()
 		timerFelNovaCD:Stop()
