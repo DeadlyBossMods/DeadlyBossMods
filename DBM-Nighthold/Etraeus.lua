@@ -96,7 +96,7 @@ local timerVoidNovaCD				= mod:NewCDTimer(74, 207439, nil, nil, nil, 2)--Only sa
 local timerWorldDevouringForceCD	= mod:NewCDTimer(16, 216909, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_HEROIC_ICON)
 local timerThingCD					= mod:NewCDTimer(63, "ej13057", 207813, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerConjunctionCD			= mod:NewCDTimer(16, 205408, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerConjunctionCD			= mod:NewCDCountTimer(16, 205408, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(463)
 
@@ -619,7 +619,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			self.vb.grandConCount = 0
 			timerFelEjectionCD:Start(17.5, 1)
 			timerFelNovaCD:Start(52, 1)
-			timerConjunctionCD:Start(58)
+			timerConjunctionCD:Start(58, 1)
 		else
 			timerFelEjectionCD:Start(18.2, 1)
 			if not self:IsEasy() then
@@ -643,7 +643,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self:IsMythic() then
 			self.vb.grandConCount = 0
 			timerWorldDevouringForceCD:Start(22)
-			--timerConjunctionCD:Start(48)--Not yet verified
+			timerConjunctionCD:Start(46.5, 1)
 		end
 	end
 end
