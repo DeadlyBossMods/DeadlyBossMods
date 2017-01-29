@@ -11,7 +11,7 @@ mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 213853 213567 213564 213852 212735 213275 213390 213083 212492",
+	"SPELL_CAST_START 213853 213567 213564 213852 212735 213275 213390 213083 212492 230504",
 	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587 230951 213760 213808",
 	"SPELL_AURA_REMOVED 213569 212531 213148 230951",
 	"SPELL_PERIODIC_DAMAGE 212736 213278 213504",
@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 --TODO, add fixate on mythic. No debuff. Player sees eyes but no debuff. Might have to do nameplate/accro target scanning to warn who has it
 --TODO, probably fix more timers. Especially mythic fire and arcane.
 --[[
-(ability.id = 213853 or ability.id = 213567 or ability.id = 213564 or ability.id = 213852 or ability.id = 212735 or ability.id = 213275 or ability.id = 213390 or ability.id = 213083 or ability.id = 212492 or ability.id = 230951) and type = "begincast" or
+(ability.id = 213853 or ability.id = 213567 or ability.id = 213564 or ability.id = 213852 or ability.id = 212735 or ability.id = 213275 or ability.id = 213390 or ability.id = 213083 or ability.id = 212492 or ability.id = 230951 or ability.id = 230504) and type = "begincast" or
 (ability.id = 213864 or ability.id = 216389 or ability.id = 213867 or ability.id = 213869) and type = "applybuff" or
 (ability.id = 212531 or ability.id = 213148) and type = "applydebuff" or
 ability.id = 230951 and type = "removebuff"
@@ -66,7 +66,8 @@ local specWarnArcaneFog				= mod:NewSpecialWarningMove(213504, nil, nil, nil, 1,
 local specWarnAnimateFrost			= mod:NewSpecialWarningSwitch(213853, "-Healer", nil, nil, 1, 2)--Currently spell ID does not contain "animate" in name, which makes warning confusing. Hopefully blizzard fixes
 local specWarnAnimateFire			= mod:NewSpecialWarningSwitch(213567, "-Healer", nil, nil, 1, 2)
 local specWarnAnimateArcane			= mod:NewSpecialWarningSwitch(213564, "-Healer", nil, nil, 1, 2)
---Animate Specials
+--Mythic
+local specWarnDecimate				= mod:NewSpecialWarningSpell(230504, nil, nil, nil, 1, 2)
 
 local timerFrostPhaseCD				= mod:NewNextTimer(80, 213864, nil, nil, nil, 6)
 local timerFirePhaseCD				= mod:NewNextTimer(85, 213867, nil, nil, nil, 6)
@@ -94,6 +95,7 @@ local timerArmageddon				= mod:NewCastTimer(33, 213568, nil, nil, nil, 2, nil, D
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerFelSoulCD				= mod:NewNextTimer(15, 230951, nil, nil, nil, 1)
 local timerFelSoul					= mod:NewBuffActiveTimer(45, 230951, nil, nil, nil, 6)
+local timerDecimateCD				= mod:NewCDTimer(17, 230504, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--17-20 (Tank timer by default, holy/ret/etc that's doing taunting will have to enable by default)
 
 local berserkTimer					= mod:NewBerserkTimer(600)--480
 
@@ -120,7 +122,8 @@ local voiceArcaneFog				= mod:NewVoice(213504)--runaway
 local voiceAnimateFrost				= mod:NewVoice(213853)--mobsoon
 local voiceAnimateFire				= mod:NewVoice(213567)--mobsoon
 local voiceAnimateArcane			= mod:NewVoice(213564)--mobsoon
---Animate Specials
+--Mythic
+local voiceDecimate					= mod:NewVoice(230504)--carefly
 
 mod:AddRangeFrameOption("8")
 mod:AddHudMapOption("HudMapOnBrandCharge", 213166)
@@ -138,6 +141,7 @@ local annihilatedDebuff = GetSpellInfo(215458)
 local rangeShowAll = false
 local chargeTable = {}
 local annihilateTimers = {8.0, 45.0, 40.0, 44.0, 38.0, 37.0, 33.0, 47.0, 41.0, 44.0, 38.0, 37.0, 33.0}--Need longer pulls/more data. However this pattern did prove to always be same
+local mythicAnnihilateTimers = {8, 46, 30, 37, 35, 43, 27, 37, 41, 37, 35, 43, 27}
 local searingDetonateIcons = {}
 
 local debuffFilter
@@ -266,7 +270,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 		local nextCount = self.vb.annihilateCount+1
-		local timer = annihilateTimers[nextCount]
+		local timer = self:IsMythic() and mythicAnnihilateTimers[nextCount] or annihilateTimers[nextCount]
 		if timer then	
 			timerAnnihilateCD:Start(timer, nextCount)
 			countdownAnnihilate:Start(timer)
@@ -277,6 +281,15 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 230951 then
 		warnFelSoul:Show()
+		timerDecimateCD:Start(12.4)
+	elseif spellId == 230504 then
+		local targetName, uId, bossuid = self:GetBossTarget(115905, true)
+		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
+		if tanking or (status == 3) then--Player is current target
+			specWarnDecimate:Show()
+			voiceDecimate:Play("carefly")
+		end
+		timerDecimateCD:Start()
 	end
 end
 
@@ -313,7 +326,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerFelSoulCD:Start(15)
 			timerSearingBrandCD:Start(17.8)
 			timerSearingBrandRepCD:Start(27)
-			self:Schedule(37, findSearingMark, self)--Schedule markers to go out 2 seconds before detonate cast, making a 5 total seconds to position instead of 3
+			self:Schedule(37, findSearingMark, self)--Schedule markers to go out 3 seconds before detonate cast, making a 6 total seconds to position instead of 3
 			timerSearingBrandDetonateCD:Start(40)
 			timerAnimateFireCD:Start(55)
 			timerArcanePhaseCD:Start(75)
