@@ -283,11 +283,13 @@ function mod:SPELL_CAST_START(args)
 		warnFelSoul:Show()
 		timerDecimateCD:Start(12.4)
 	elseif spellId == 230504 then
-		local targetName, uId, bossuid = self:GetBossTarget(115905, true)
-		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
-		if tanking or (status == 3) then--Player is current target
-			specWarnDecimate:Show()
-			voiceDecimate:Play("carefly")
+		local targetName, uId, bossuid = self:GetBossTarget(115905)
+		if bossuid then
+			local tanking, status = UnitDetailedThreatSituation("player", bossuid)
+			if tanking or (status == 3) then--Player is current target
+				specWarnDecimate:Show()
+				voiceDecimate:Play("carefly")
+			end
 		end
 		timerDecimateCD:Start()
 	end
