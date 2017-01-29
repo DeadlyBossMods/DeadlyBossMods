@@ -59,7 +59,8 @@ local yellIcyEjection				= mod:NewFadesYell(206936)
 local specWarnFrigidNova			= mod:NewSpecialWarningSpell(206949, nil, nil, nil, 2, 2)--maybe change to MoveTo warning
 --Stage Three: A Shattered World
 local specWarnFelEjection			= mod:NewSpecialWarningMoveAway(205649, nil, nil, nil, 1, 2)
-local yellFelEjection				= mod:NewFadesYell(205649)
+local yellFelEjection				= mod:NewYell(205649)
+local yellFelEjectionFade			= mod:NewFadesYell(205649)
 local specWarnFelNova				= mod:NewSpecialWarningRun(206517, nil, nil, nil, 4, 2)
 local specWarnFelFlame				= mod:NewSpecialWarningMove(206398, nil, nil, nil, 1, 2)
 --Stage Four: Inevitable Fate
@@ -496,9 +497,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFelEjection:Show()
 			voiceFelEjection:Play("runout")
 			voiceFelEjection:Schedule(1, "keepmove")
-			yellFelEjection:Schedule(7, 1)
-			yellFelEjection:Schedule(6, 2)
-			yellFelEjection:Schedule(5, 3)
+			yellFelEjection:Yell()
+			yellFelEjectionFade:Schedule(7, 1)
+			yellFelEjectionFade:Schedule(6, 2)
+			yellFelEjectionFade:Schedule(5, 3)
 		end
 	elseif spellId == 207143 then
 		--warnVoidEjection:CombinedShow(0.5, args.destName)
