@@ -11,7 +11,7 @@ mod.noNormal = true
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 203957",
+	"SPELL_AURA_APPLIED 203957 220871",
 	"SPELL_AURA_APPLIED_DOSE 203176",
 	"SPELL_CAST_START 202974 203882 203176",
 	"SPELL_DAMAGE 203833",
@@ -22,12 +22,14 @@ mod:RegisterEventsInCombat(
 --TODO, it might be time to build an interrupt table ("hasInterrupt") for better option defaults for spammy interrupt warnings.
 --Force bomb might be more consistent now, need more logs, last log was 35
 local warnTimeLock					= mod:NewTargetAnnounce(203957, 4)
+local warnUnstableMana				= mod:NewTargetAnnounce(203176, 2)
 
 local specWarnTimeSplit				= mod:NewSpecialWarningMove(203833, nil, nil, nil, 1, 2)
 local specWarnForceBomb				= mod:NewSpecialWarningSpell(202974, nil, nil, nil, 2, 2)
 local specWarnBlast					= mod:NewSpecialWarningInterruptCount(203176, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBlastStacks			= mod:NewSpecialWarningDispel(203176, "MagicDispeller")
 local specWarnTimeLock				= mod:NewSpecialWarningInterrupt(203957, "HasInterrupt", nil, nil, 1, 2)
+local specWarnUnstableMana			= mod:NewSpecialWarningMove(203176, nil, nil, nil, 1, 2)
 
 local timerForceBombD				= mod:NewCDTimer(31.8, 202974, nil, nil, nil, 2)
 local timerEvent					= mod:NewBuffFadesTimer(124, 203914, nil, nil, nil, 6)
@@ -36,6 +38,7 @@ local voicetimeSplit				= mod:NewVoice(203833)--runaway
 local voiceForceBomb				= mod:NewVoice(202974)--157349 (force nova)
 local voiceBlast					= mod:NewVoice(203176, "HasInterrupt")--kickNr/dispelboss
 local voicetimeLock					= mod:NewVoice(203957, "HasInterrupt")--kickcast
+local voiceUnstableMana				= mod:NewVoice(203176)--runout/keepmove
 
 local countdownEvent				= mod:NewCountdownFades(124, 203914, nil, nil, 10)
 
@@ -55,6 +58,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(3, 2) then
 			specWarnTimeLock:Show(args.sourceName)
 			voicetimeLock:Play("kickcast")
+		end
+	elseif spellId == 220871 then
+		if args:IsPlayer() then
+			specWarnUnstableMana:Show()
+			voiceUnstableMana:Play("runout")
+			voiceUnstableMana:schedule(1, "keepmove")
+		else
+			warnUnstableMana:Show(args.destName)
 		end
 	end
 end
