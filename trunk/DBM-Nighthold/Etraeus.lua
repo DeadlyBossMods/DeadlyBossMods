@@ -159,7 +159,6 @@ local ps1Grand = {15, 12.2}
 local ps2Grand = {27, 44.9, 58.3}
 local ps3Grand = {58.7, 43, 41.4}
 local ps4Grand = {48}--No data yet
---local abZeroTargets = {}
 local abZeroDebuff, chilledDebuff, gravPullDebuff = GetSpellInfo(206585), GetSpellInfo(206589), GetSpellInfo(205984)
 local icyEjectionDebuff, coronalEjectionDebuff, voidEjectionDebuff = GetSpellInfo(206936), GetSpellInfo(206464), GetSpellInfo(207143)
 local crabDebuff, dragonDebuff, hunterDebuff, wolfDebuff = GetSpellInfo(205429), GetSpellInfo(216344), GetSpellInfo(216345), GetSpellInfo(205445)
@@ -185,7 +184,6 @@ end
 
 local updateInfoFrame, sortInfoFrame
 do
---	local playerName = UnitName("player")
 	local lines = {}
 	sortInfoFrame = function(a, b)
 		local a = lines[a]
@@ -196,39 +194,53 @@ do
 	end
 	updateInfoFrame = function()
 		table.wipe(lines)
---		local totalZero = 0
 		local infoNeeded = false
 		--Star Signs Helper
-		local crabsigns, dragonsigns, huntersigns, wolfsigns = #crabs, #dragons, #hunters, #wolves
-		--FIXME, figure out why colors are wrong
-		if crabsigns > 0 then
-			lines["|cff7d0aCD"..crabDebuff.."|r"] = crabsigns
+		--If player has debuff, find and show other players with same debuff as player
+		if UnitDebuff("player", crabDebuff) then
 			infoNeeded = true
-		end
-		if dragonsigns > 0 then
-			lines["|c69ccf0CD"..dragonDebuff.."|r"] = dragonsigns
+			for i = 1, #crabs do
+				local name = crabs[i]
+				lines[name] = ""
+			end
+		elseif UnitDebuff("player", dragonDebuff) then
 			infoNeeded = true
-		end
-		if huntersigns > 0 then
-			lines["|cabd473CD"..hunterDebuff.."|r"] = huntersigns
+			for i = 1, #dragons do
+				local name = dragons[i]
+				lines[name] = ""
+			end
+		elseif UnitDebuff("player", hunterDebuff) then
 			infoNeeded = true
-		end
-		if wolfsigns > 0 then
-			lines["|cff0000CD"..wolfDebuff.."|r"] = wolfsigns
+			for i = 1, #hunters do
+				local name = hunters[i]
+				lines[name] = ""
+			end
+		elseif UnitDebuff("player", wolfDebuff) then
 			infoNeeded = true
+			for i = 1, #wolves do
+				local name = wolves[i]
+				lines[name] = ""
+			end
+		else--Player has no debuff, show overview frame with total debuff counts remaining
+			local crabsigns, dragonsigns, huntersigns, wolfsigns = #crabs, #dragons, #hunters, #wolves
+			--FIXME, figure out why colors are wrong
+			if crabsigns > 0 then
+				lines["|cff7d0aCD"..crabDebuff.."|r"] = crabsigns
+				infoNeeded = true
+			end
+			if dragonsigns > 0 then
+				lines["|c69ccf0CD"..dragonDebuff.."|r"] = dragonsigns
+				infoNeeded = true
+			end
+			if huntersigns > 0 then
+				lines["|cabd473CD"..hunterDebuff.."|r"] = huntersigns
+				infoNeeded = true
+			end
+			if wolfsigns > 0 then
+				lines["|cff0000CD"..wolfDebuff.."|r"] = wolfsigns
+				infoNeeded = true
+			end
 		end
---[[		--Absolute Zero Helper
-		for i = 1, #abZeroTargets do
-			local name = abZeroTargets[i]
-			totalZero = totalZero + 1
-			lines[name] = abZeroDebuff
-		end
-		if totalZero > 0 then
-			--Displays whether or not player has chilled. if YES in red or NO in green
-			--Ths is displayed under the absolute zero name/stacks so they know there are still stacks to soak and if able.
-			lines[chilledDebuff] = UnitDebuff("player", chilledDebuff) and "|cFF1A1ACD"..YES.."|r" or "|c69CCF0CD"..NO.."|r"
-			infoNeeded = true
-		end--]]
 		if not infoNeeded then--Nothing left, hide infoframe
 			DBM.InfoFrame:Hide()
 		end
@@ -270,7 +282,6 @@ end
 
 function mod:OnCombatStart(delay)
 	voidWarned = false
---	table.wipe(abZeroTargets)
 	self.vb.StarSigns = 0
 	self.vb.phase = 1
 	self.vb.isPhaseChanging = false
@@ -478,12 +489,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 206585 then
---[[		if not tContains(abZeroTargets, args.destName) then
-			table.insert(abZeroTargets, args.destName)
-		end
-		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-			DBM.InfoFrame:Show(15, "function", updateInfoFrame, sortInfoFrame, true)
-		end--]]
 		updateRangeFrame(self)
 	elseif spellId == 206936 then
 		warnIcyEjection:CombinedShow(0.5, args.destName)--If only one, move this to else rule to filter from player
@@ -553,7 +558,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			countdownGravPull:Cancel()
 		end
 	elseif spellId == 206585 then
---		tDeleteItem(abZeroTargets, args.destName)
 		updateRangeFrame(self)
 	elseif spellId == 206464 and args:IsPlayer() then
 		updateRangeFrame(self)
