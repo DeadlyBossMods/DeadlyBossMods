@@ -77,7 +77,7 @@ local yellSoulVortex				= mod:NewYell(206883)
 local specWarnEmpLiquidHellfire		= mod:NewSpecialWarningDodge(206220, nil, nil, nil, 1, 2)
 local specWarnBondsofFel			= mod:NewSpecialWarningYou(206222, nil, nil, nil, 1, 2)
 local specWarnBondsofFelTank		= mod:NewSpecialWarningTaunt(206222, nil, nil, nil, 1, 2)
-local yellBondsofFel				= mod:NewYell(206222)
+local yellBondsofFel				= mod:NewPosYell(206222)
 local specWarnHandofGuldan			= mod:NewSpecialWarningSwitch(212258, "-Healer", nil, nil, 1, 2)
 local specWarnEyeofGuldan			= mod:NewSpecialWarningSwitchCount(209270, "Dps", nil, nil, 1, 2)
 local specWarnEmpEyeofGuldan		= mod:NewSpecialWarningSwitchCount(211152, "Dps", nil, nil, 1, 2)
@@ -89,7 +89,7 @@ local specWarnStormOfDestroyer		= mod:NewSpecialWarningDodge(161121, nil, nil, n
 local specWarnSoulCorrosion			= mod:NewSpecialWarningStack(208802, nil, 3)--stack guessed
 local specWarnBlackHarvest			= mod:NewSpecialWarningCount(206744, nil, nil, nil, 2, 2)
 local specWarnFlamesOfSargeras		= mod:NewSpecialWarningMoveAway(221606, nil, nil, nil, 3, 2)
-local yellFlamesofSargeras			= mod:NewYell(221606)
+local yellFlamesofSargeras			= mod:NewPosYell(221606)
 local specWarnFlamesOfSargerasTank	= mod:NewSpecialWarningTaunt(221606, nil, nil, nil, 1, 2)
 
 
@@ -384,11 +384,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 209011 or spellId == 206354 or spellId == 206384 or spellId == 209086 then--206354/206366 unconfirmed on normal/heroic. LFR/Mythic?
 		local isPlayer = args:IsPlayer()
 		local name = args.destName
+		if not tContains(bondsIcons, name) then
+			bondsIcons[#bondsIcons+1] = name
+		end
+		local count = #bondsIcons
 		warnBondsofFel:CombinedShow(0.5, name)
 		if isPlayer then
 			specWarnBondsofFel:Show()
 			voiceBondsofFel:Play("targetyou")
-			yellBondsofFel:Yell()
+			yellBondsofFel:Yell(count, count, count)
 		else
 			local uId = DBM:GetRaidUnitId(name)
 			if self:IsTanking(uId, "boss1") and not UnitDetailedThreatSituation("player", "boss1") then
@@ -400,9 +404,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.HudMapOnBondsofFel then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", name, 5, 600, nil, nil, nil, 0.5):Appear():SetLabel(name)
 		end
-		if self.Options.SetIconOnBondsOfFel and not tContains(7, name) then
-			bondsIcons[#bondsIcons+1] = name
-			self:SetIcon(name, #bondsIcons)
+		if self.Options.SetIconOnBondsOfFel then
+			self:SetIcon(name, count)
 		end
 --[[	elseif spellId == 208903 then
 		warnBurningClaws:Show(args.destName)
@@ -433,11 +436,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 221606 then--Looks like the 3 second pre targeting debuff for flames of sargeras
 		local name = args.destName
+		if not tContains(flamesIcons, name) then
+			flamesIcons[#flamesIcons+1] = name
+		end
+		local count = #flamesIcons+3
 		warnFlamesofSargeras:CombinedShow(0.3, name)
 		if args:IsPlayer() then
 			specWarnFlamesOfSargeras:Show()
 			voiceFlamesOfSargeras:Play("runout")
-			yellFlamesofSargeras:Yell()
+			yellFlamesofSargeras:Yell(count, count, count)
 		else
 			local uId = DBM:GetRaidUnitId(name)
 			if self:IsTanking(uId, "boss1") then
@@ -445,9 +452,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceFlamesOfSargeras:Play("tauntboss")
 			end
 		end
-		if self.Options.SetIconOnBondsOfFlames and not tContains(flamesIcons, name) then
-			flamesIcons[#flamesIcons+1] = name
-			self:SetIcon(name, #flamesIcons+3)--Should start at icon 4 and go up from there (because icons 1-3 are used by bonds of fel)
+		if self.Options.SetIconOnBondsOfFlames then
+			self:SetIcon(name, count)--Should start at icon 4 and go up from there (because icons 1-3 are used by bonds of fel)
 		end
 	elseif spellId == 221603 or spellId == 221785 or spellId == 221784 or spellId == 212686 then--4 different duration versions of Flames of sargeras?
 		if args:IsPlayer() then
