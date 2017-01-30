@@ -86,7 +86,7 @@ local function updateTimeBomb(self)
 		yellTimeBomb:Schedule(debuffTimeOld-1, 1)
 		yellTimeBomb:Schedule(debuffTimeOld-2, 2)
 		yellTimeBomb:Schedule(debuffTimeOld-3, 3)
-		--DBM:AddMsg("If you see this message, please share the numbers with DBM author to improve time bomb code: "..(debuffTime or 0).."/"..debuffTimeOld)
+		DBM:Debug("Time Bomb Debug: "..(debuffTime or 0).."/"..debuffTimeOld.."/"..timeMod)
 	end
 end
 
