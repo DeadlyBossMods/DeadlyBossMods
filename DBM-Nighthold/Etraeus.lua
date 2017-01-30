@@ -82,7 +82,7 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 --Stage Two: Absolute Zero
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerIcyEjectionCD			= mod:NewCDCountTimer(16, 206936, nil, nil, nil, 3)
-local timerFrigidNovaCD				= mod:NewCDTimer(61.5, 206949, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerFrigidNovaCD				= mod:NewCDCountTimer(61.5, 206949, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 --Stage Three: A Shattered World
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerFelEjectionCD			= mod:NewCDCountTimer(16, 205649, nil, nil, nil, 3)
@@ -92,8 +92,8 @@ mod:AddTimerLine(SCENARIO_STAGE:format(4))
 local timerWitnessVoid				= mod:NewCastTimer(4, 207720, nil, nil, nil, 2)
 local timerWitnessVoidCD			= mod:NewCDTimer(13, 207720, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 --local timerVoidEjectionCD			= mod:NewCDCountTimer(16, 207143, nil, nil, nil, 3)--Where did it go? wasn't on normal test and wasn't on heroic retest
-local timerVoidNovaCD				= mod:NewCDTimer(74, 207439, nil, nil, nil, 2)--Only saw a single pull it was cast twice, so CD needs more verification
-local timerWorldDevouringForceCD	= mod:NewCDTimer(42, 216909, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_HEROIC_ICON)
+local timerVoidNovaCD				= mod:NewCDCountTimer(74, 207439, nil, nil, nil, 2)--Only saw a single pull it was cast twice, so CD needs more verification
+local timerWorldDevouringForceCD	= mod:NewCDCountTimer(42, 216909, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_HEROIC_ICON)
 local timerThingCD					= mod:NewCDTimer(63, "ej13057", 207813, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerConjunctionCD			= mod:NewCDCountTimer(16, 205408, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
@@ -137,8 +137,11 @@ mod.vb.StarSigns = 0
 mod.vb.phase = 1
 mod.vb.icyEjectionCount = 0
 mod.vb.felEjectionCount = 0
+mod.vb.frostNovaCount = 0
 mod.vb.felNovaCount = 0
+mod.vb.voidNovaCount = 0
 mod.vb.grandConCount = 0
+mod.vb.worldDestroyingCount = 0
 mod.vb.isPhaseChanging = false
 --mod.vb.voidEjectionCount = 0
 --These timers are self corrective, which is annoying when all inclusive but better if scrubbing short timers
@@ -154,11 +157,11 @@ local felEjectionTimers = {18.2, 3.6, 3.2, 2.4, 10.2, 4.4, 2.8, 32.8, 4.0, 1.6, 
 local mythicfelEjectionTimers = {17.4, 3.2, 2.8, 2.4, 9.3, 2.4, 3.2, 31.2, 2, 1.2, 13.4, 1.2, 1.7, 23, 8.5, 9.3, 2.5, 1.5, 24.3, 3.2}
 local voidEjectionTimers = {24, 3.2, 14.1, 17.4, 0.8, 4.7, 25.7, 2.3}
 --local felNovaTImers = {34.8, 31.3, 29.3}--Latest is 47.1, 45.0, 25.1. Currently unused. for now just doing 45 or 25
---grandconjunction timers have some variation, so it's a cooldown timer within margin
+local worldDestroyingTimers = {22, 42, 57}
 local ps1Grand = {15, 12.2}
 local ps2Grand = {27, 44.9, 58.3}
 local ps3Grand = {58.7, 43, 41.4}
-local ps4Grand = {48}--No data yet
+local ps4Grand = {48, 61.7, 50}
 local abZeroDebuff, chilledDebuff, gravPullDebuff = GetSpellInfo(206585), GetSpellInfo(206589), GetSpellInfo(205984)
 local icyEjectionDebuff, coronalEjectionDebuff, voidEjectionDebuff = GetSpellInfo(206936), GetSpellInfo(206464), GetSpellInfo(207143)
 local crabDebuff, dragonDebuff, hunterDebuff, wolfDebuff = GetSpellInfo(205429), GetSpellInfo(216344), GetSpellInfo(216345), GetSpellInfo(205445)
@@ -287,6 +290,7 @@ function mod:OnCombatStart(delay)
 	self.vb.isPhaseChanging = false
 	if self:IsMythic() then
 		self.vb.grandConCount = 0
+		self.vb.worldDestroyingCount = 0
 --		timerCoronalEjectionCD:Start(12-delay)--Still could be health based
 		timerConjunctionCD:Start(15-delay, 1)
 	else
@@ -330,9 +334,10 @@ function mod:SPELL_CAST_START(args)
 		table.wipe(hunters)
 		table.wipe(wolves)
 	elseif spellId == 206949 then
+		self.vb.frostNovaCount = self.vb.frostNovaCount + 1
 		specWarnFrigidNova:Show()
 		voiceFrigidNova:Play("gathershare")
-		timerFrigidNovaCD:Start()
+		timerFrigidNovaCD:Start(nil, self.vb.frostNovaCount+1)
 	elseif spellId == 206517 then
 		self.vb.felNovaCount = self.vb.felNovaCount + 1
 		specWarnFelNova:Show()
@@ -352,13 +357,18 @@ function mod:SPELL_CAST_START(args)
 			timerWitnessVoidCD:Start(14.5, args.sourceGUID)
 		end
 	elseif spellId == 207439 then
+		self.vb.voidNovaCount = self.vb.voidNovaCount + 1
 		specWarnVoidNova:Show()
 		voiceVoidNova:Play("aesoon")
-		timerVoidNovaCD:Start()
+		timerVoidNovaCD:Start(nil, self.vb.voidNovaCount+1)
 	elseif spellId == 216909 then
+		self.vb.worldDestroyingCount = self.vb.worldDestroyingCount + 1
 		specWarnWorldDevouringForce:Show()
 		voiceWorldDevouringForce:Play("farfromline")
-		timerWorldDevouringForceCD:Start()
+		local timer = worldDestroyingTimers[self.vb.worldDestroyingCount+1]
+		if timer then
+			timerWorldDevouringForceCD:Start(timer, self.vb.worldDestroyingCount+1)
+		end
 	end
 end
 
@@ -595,12 +605,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	if spellId == 222130 then--Phase 2 Conversation
 		self.vb.phase = 2
 		self.vb.isPhaseChanging = true
+		self.vb.frostNovaCount = 0
 		self.vb.icyEjectionCount = 0
 --		timerCoronalEjectionCD:Stop()
 		timerConjunctionCD:Stop()
 		timerGravPullCD:Start(30)
 		if not self:IsEasy() then
-			timerFrigidNovaCD:Start(49)
+			timerFrigidNovaCD:Start(49, 1)
 		end
 		if self:IsMythic() then
 			self.vb.grandConCount = 0
@@ -633,6 +644,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 222134 then--Phase 4 Conversation
 		self.vb.phase = 4
 		self.vb.isPhaseChanging = true
+		self.vb.voidNovaCount = 0
 		--self.vb.voidEjectionCount = 0
 		timerFelEjectionCD:Stop()
 		timerFelNovaCD:Stop()
@@ -642,11 +654,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerThingCD:Start(31)
 		if not self:IsEasy() then--Was never used on normal, probably not LFR either then
 			--timerVoidEjectionCD:Start(24, 1)
-			timerVoidNovaCD:Start(41)
+			timerVoidNovaCD:Start(41, 1)
 		end
 		if self:IsMythic() then
 			self.vb.grandConCount = 0
-			timerWorldDevouringForceCD:Start(22)
+			self.vb.worldDestroyingCount = 0
+			timerWorldDevouringForceCD:Start(22, 1)
 			timerConjunctionCD:Start(46.5, 1)
 		end
 	end
