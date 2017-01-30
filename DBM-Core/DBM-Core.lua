@@ -1168,55 +1168,59 @@ do
 				local addonName = GetAddOnInfo(i)
 				local enabled = GetAddOnEnableState(playerName, i)
 				local minToc = tonumber(GetAddOnMetadata(i, "X-Min-Interface"))
-				if GetAddOnMetadata(i, "X-DBM-Mod") and enabled ~= 0 then
-					if checkEntry(bannedMods, addonName) then
-						self:AddMsg("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
-					elseif not testBuild and minToc and minToc > wowTOC then
-						self:Debug(i.." not loaded because mod requires minimum toc of "..minToc)
-					else
-						local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
-						tinsert(self.AddOns, {
-							sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or mhuge) or mhuge,
-							type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
-							category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
-							name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or DBM_CORE_UNKNOWN,
-							mapId			= mapIdTable,
-							subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
-							oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
-							hasLFR			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-LFR") or 0) == 1,
-							hasChallenge	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Challenge") or 0) == 1,
-							noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1,
-							noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
-							hasMythic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Mythic") or 0) == 1,
-							hasTimeWalker	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-TimeWalker") or 0) == 1,
-							isWorldBoss		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-World-Boss") or 0) == 1,
-							minRevision		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinCoreRevision") or 0),
-							modId			= addonName,
-						})
-						for i = #self.AddOns[#self.AddOns].mapId, 1, -1 do
-							local id = tonumber(self.AddOns[#self.AddOns].mapId[i])
-							if id then
-								self.AddOns[#self.AddOns].mapId[i] = id
-							else
-								tremove(self.AddOns[#self.AddOns].mapId, i)
-							end
-						end
-						if self.AddOns[#self.AddOns].subTabs then
-							for k, v in ipairs(self.AddOns[#self.AddOns].subTabs) do
-								local id = tonumber(self.AddOns[#self.AddOns].subTabs[k])
+				if GetAddOnMetadata(i, "X-DBM-Mod") then
+					if enabled ~= 0 then
+						if checkEntry(bannedMods, addonName) then
+							self:AddMsg("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
+						elseif not testBuild and minToc and minToc > wowTOC then
+							self:Debug(i.." not loaded because mod requires minimum toc of "..minToc)
+						else
+							local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
+							tinsert(self.AddOns, {
+								sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or mhuge) or mhuge,
+								type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
+								category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
+								name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or DBM_CORE_UNKNOWN,
+								mapId			= mapIdTable,
+								subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
+								oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
+								hasLFR			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-LFR") or 0) == 1,
+								hasChallenge	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Challenge") or 0) == 1,
+								noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1,
+								noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
+								hasMythic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Mythic") or 0) == 1,
+								hasTimeWalker	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-TimeWalker") or 0) == 1,
+								isWorldBoss		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-World-Boss") or 0) == 1,
+								minRevision		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinCoreRevision") or 0),
+								modId			= addonName,
+							})
+							for i = #self.AddOns[#self.AddOns].mapId, 1, -1 do
+								local id = tonumber(self.AddOns[#self.AddOns].mapId[i])
 								if id then
-									self.AddOns[#self.AddOns].subTabs[k] = GetRealZoneText(id):trim() or id
+									self.AddOns[#self.AddOns].mapId[i] = id
 								else
-									self.AddOns[#self.AddOns].subTabs[k] = (self.AddOns[#self.AddOns].subTabs[k]):trim()
+									tremove(self.AddOns[#self.AddOns].mapId, i)
+								end
+							end
+							if self.AddOns[#self.AddOns].subTabs then
+								for k, v in ipairs(self.AddOns[#self.AddOns].subTabs) do
+									local id = tonumber(self.AddOns[#self.AddOns].subTabs[k])
+									if id then
+										self.AddOns[#self.AddOns].subTabs[k] = GetRealZoneText(id):trim() or id
+									else
+										self.AddOns[#self.AddOns].subTabs[k] = (self.AddOns[#self.AddOns].subTabs[k]):trim()
+									end
+								end
+							end
+							if GetAddOnMetadata(i, "X-DBM-Mod-LoadCID") then
+								local idTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadCID"))}
+								for i = 1, #idTable do
+									loadcIds[tonumber(idTable[i]) or ""] = addonName
 								end
 							end
 						end
-						if GetAddOnMetadata(i, "X-DBM-Mod-LoadCID") then
-							local idTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadCID"))}
-							for i = 1, #idTable do
-								loadcIds[tonumber(idTable[i]) or ""] = addonName
-							end
-						end
+					else
+						C_TimerAfter(10, function() self:AddMsg(DBM_CORE_LOAD_MOD_DISABLED:format(addonName)) end)
 					end
 				end
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
@@ -3653,7 +3657,7 @@ do
 				if enabled ~= 0 then
 					self:LoadMod(v)
 				else
-					self:Debug("Not loading "..v.name.." because it is not enabled")
+					self:AddMsg(DBM_CORE_LOAD_MOD_DISABLED:format(v.name))
 				end
 			end
 		end
