@@ -40,9 +40,9 @@ L= DBM:GetModLocalization(1751)
 L= DBM:GetModLocalization(1762)
 
 L:SetMiscLocalization({
-	First				= "1번",
-	Second				= "2번",
-	Third				= "3번"
+	First				= "1번 낙인",
+	Second				= "2번 낙인",
+	Third				= "3번 낙인"
 })
 
 ------------------
@@ -87,7 +87,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1743)
 
 L:SetMiscLocalization({
-	noCLEU4EchoRings		= "시간의 파도가 널 덮치기를!"
+	noCLEU4EchoRings		= "시간의 파도가 널 덮치기를!",
+	noCLEU4EchoOrbs			= "시간은 제멋대로 사라져 버리지."
 })
 
 ------------------
