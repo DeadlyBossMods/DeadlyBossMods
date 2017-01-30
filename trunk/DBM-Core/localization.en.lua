@@ -14,6 +14,7 @@ DBM_CORE_LOAD_GUI_ERROR				= "Could not load GUI: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "GUI cannot be initially loaded in combat. GUI will be loaded out of combat. After GUI loaded, you can open GUI in combat."
 DBM_CORE_BAD_LOAD					= "DBM has detected your mod for this instance failed to fully load correctly because of combat. As soon as you are out of combat, please do /console reloadui as soon as possible."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s could not be loaded because your DBM-Core does not meet requirements. An updated version is required"
+DBM_CORE_LOAD_MOD_DISABLED			= "%s is installed but currently disabled. This mod will not be loaded unless you enable it."
 
 DBM_CORE_WHATS_NEW					= "New in this version: Fixed a bug that caused 'Major Patch' force update/disable to trigger wrongfully for non major patch updates. DBM will no longer filter Broken Shore cut scenes regardless of user settings. Added Demonic Invasions mod. Minor Text Fixes"
 DBM_CORE_WHATS_NEW_LINK				= "Reminder: Many features that relied on unit positions have been limited. You can read more about why by |HDBM:forumsnews|h|cff3588ffclicking here|r"
