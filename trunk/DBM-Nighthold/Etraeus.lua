@@ -90,10 +90,10 @@ local timerFelNovaCD				= mod:NewCDCountTimer(25, 206517, nil, nil, nil, 2, nil,
 --Stage Four: Inevitable Fate
 mod:AddTimerLine(SCENARIO_STAGE:format(4))
 local timerWitnessVoid				= mod:NewCastTimer(4, 207720, nil, nil, nil, 2)
-local timerWitnessVoidCD			= mod:NewCDTimer(14.2, 207720, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+local timerWitnessVoidCD			= mod:NewCDTimer(13, 207720, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
 --local timerVoidEjectionCD			= mod:NewCDCountTimer(16, 207143, nil, nil, nil, 3)--Where did it go? wasn't on normal test and wasn't on heroic retest
 local timerVoidNovaCD				= mod:NewCDTimer(74, 207439, nil, nil, nil, 2)--Only saw a single pull it was cast twice, so CD needs more verification
-local timerWorldDevouringForceCD	= mod:NewCDTimer(16, 216909, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_HEROIC_ICON)
+local timerWorldDevouringForceCD	= mod:NewCDTimer(42, 216909, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON..DBM_CORE_HEROIC_ICON)
 local timerThingCD					= mod:NewCDTimer(63, "ej13057", 207813, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerConjunctionCD			= mod:NewCDCountTimer(16, 205408, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
@@ -346,10 +346,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnWitnessVoid:Show()
 		voiceWitnessVoid:Play("turnaway")
 		timerWitnessVoid:Start(nil, args.sourceGUID)
-		if self:IsEasy() then
-			timerWitnessVoidCD:Start(14.5, args.sourceGUID)
+		if self:IsMythic() then
+			timerWitnessVoidCD:Start(13, args.sourceGUID)
 		else
-			timerWitnessVoidCD:Start(nil, args.sourceGUID)
+			timerWitnessVoidCD:Start(14.5, args.sourceGUID)
 		end
 	elseif spellId == 207439 then
 		specWarnVoidNova:Show()
