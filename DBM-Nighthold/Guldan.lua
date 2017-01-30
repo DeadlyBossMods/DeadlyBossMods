@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(104154)--104537 (Fel Lord Kuraz'mal)
 mod:SetEncounterID(1866)
 mod:SetZone()
-mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 mod:SetHotfixNoticeRev(15720)
 
 mod:RegisterCombat("combat")
