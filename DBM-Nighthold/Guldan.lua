@@ -11,7 +11,7 @@ mod:SetHotfixNoticeRev(15720)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 206219 206220 206514 206675 206840 207938 104534 208545 209270 211152 208672 206939 206744 206883 206221 206222",
+	"SPELL_CAST_START 206219 206220 206514 206675 206840 207938 104534 208545 209270 211152 208672 206939 206744 206883 206221 206222 221783",
 	"SPELL_CAST_SUCCESS 206222 206221 221783 212258",
 	"SPELL_AURA_APPLIED 206219 206220 209011 206354 206384 209086 208903 211162 221891 208802 221606 221603 221785 221784 212686 227427 206516",
 	"SPELL_AURA_APPLIED_DOSE 211162 208802",
@@ -151,8 +151,9 @@ local voiceBlackHarvest				= mod:NewVoice(206744)--aesoon
 local voiceFlamesOfSargeras			= mod:NewVoice(221606)--runout
 
 mod:AddRangeFrameOption(8, 221606)
+mod:AddSetIconOption("SetIconOnBondsOfFlames", 221783, true)
 mod:AddSetIconOption("SetIconOnBondsOfFel", 206222, true)
-mod:AddHudMapOption("HudMapOnBondsofFel", 206222, "-Tank")
+mod:AddHudMapOption("HudMapOnBondsofFel", 206222)
 
 mod.vb.phase = 1
 mod.vb.addsDied = 0
@@ -174,6 +175,7 @@ local blackHarvestTimers = {64.1, 72.5, 87.5}
 local p3EmpoweredEyeTimersEasy = {42.5, 71.5, 71.4, 28.6, 114}--114 is guessed on the 1/8th formula
 local p3EmpoweredEyeTimers = {39.1, 62.5, 62.5, 25, 100}--100 is confirmed
 local bondsIcons = {}
+local flamesIcons = {}
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
@@ -186,12 +188,15 @@ function mod:OnCombatStart(delay)
 	self.vb.eyeCast = 0
 	self.vb.flamesSargCast = 0
 	table.wipe(bondsIcons)
+	table.wipe(flamesIcons)
 	timerLiquidHellfireCD:Start(2-delay, 1)
 	timerFelEffluxCD:Start(11-delay, 1)
 	timerFelLordKurazCD:Start(11-delay)
 	timerVethrizCD:Start(25-delay)
 	timerDzorykxCD:Start(35-delay)
-	DBM:AddMsg("This mod was created using phase 1 data only. 2 and 3 are still drycodes and need updating as soon as live data starts coming in.")
+	if self:IsMythic() then
+		DBM:AddMsg("This mod still needs mythic refactoring to properly support the combined phase1/2 stuff and the new phase 3")
+	end
 end
 
 function mod:OnCombatEnd()
@@ -330,6 +335,8 @@ function mod:SPELL_CAST_START(args)
 				voiceBondsofFel:Play("tauntboss")
 			end
 		end
+	elseif spellId == 221783 then
+		table.wipe(flamesIcons)
 	end
 end
 
@@ -393,7 +400,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.HudMapOnBondsofFel then
 			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", name, 5, 600, nil, nil, nil, 0.5):Appear():SetLabel(name)
 		end
-		if self.Options.HudMapOnBondsofFel and not tContains(bondsIcons, name) then
+		if self.Options.SetIconOnBondsOfFel and not tContains(7, name) then
 			bondsIcons[#bondsIcons+1] = name
 			self:SetIcon(name, #bondsIcons)
 		end
@@ -425,17 +432,22 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSoulCorrosion:Show(amount)
 		end
 	elseif spellId == 221606 then--Looks like the 3 second pre targeting debuff for flames of sargeras
-		warnFlamesofSargeras:CombinedShow(0.3, args.destName)
+		local name = args.destName
+		warnFlamesofSargeras:CombinedShow(0.3, name)
 		if args:IsPlayer() then
 			specWarnFlamesOfSargeras:Show()
 			voiceFlamesOfSargeras:Play("runout")
 			yellFlamesofSargeras:Yell()
 		else
-			local uId = DBM:GetRaidUnitId(args.destName)
+			local uId = DBM:GetRaidUnitId(name)
 			if self:IsTanking(uId, "boss1") then
-				specWarnFlamesOfSargerasTank:Show(args.destName)
+				specWarnFlamesOfSargerasTank:Show(name)
 				voiceFlamesOfSargeras:Play("tauntboss")
 			end
+		end
+		if self.Options.SetIconOnBondsOfFlames and not tContains(flamesIcons, name) then
+			flamesIcons[#flamesIcons+1] = name
+			self:SetIcon(name, #flamesIcons+3)--Should start at icon 4 and go up from there (because icons 1-3 are used by bonds of fel)
 		end
 	elseif spellId == 221603 or spellId == 221785 or spellId == 221784 or spellId == 212686 then--4 different duration versions of Flames of sargeras?
 		if args:IsPlayer() then
@@ -478,14 +490,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.HudMapOnBondsofFel then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
-		if self.Options.HudMapOnBondsofFel then
+		if self.Options.SetIconOnBondsOfFel then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 206384 or spellId == 209086 then--(206366: stunned version mythic?)
 		if self.Options.HudMapOnBondsofFel then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
-		if self.Options.HudMapOnBondsofFel then
+		if self.Options.SetIconOnBondsOfFel then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 221603 or spellId == 221785 or spellId == 221784 or spellId == 212686 then--4 different duration versions of Flames of sargeras?
@@ -494,6 +506,10 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
+		if self.Options.SetIconOnBondsOfFlames then
+			self:SetIcon(args.destName, 0)
+		end
+	--TO BE DEPRICATED, UNLESS NEEDED BY MYTHIC
 	elseif spellId == 206516 and self.vb.phase < 2 then--The Eye of Aman'Thul (phase 1 buff)
 		--Backup trigger since sometimes unit_died not fire for all 3 adds
 		self.vb.phase = 2
@@ -510,6 +526,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerEyeofGuldanCD:Start(29, 1)
 			timerLiquidHellfireCD:Start(40, 1)
 		end
+	--TO BE DEPRICATED, UNLESS NEEDED BY MYTHIC
 	end
 end
 
