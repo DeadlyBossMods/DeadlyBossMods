@@ -61,7 +61,7 @@ DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor 기록이 종료됐습니다."
 
 DBM_CORE_MOVIE_SKIPPED				= "동영상이 자동으로 생략되었습니다."
 
-DBM_CORE_AFK_WARNING				= "자리 비움 상태에서 전투에 돌입하여 (남은 생명력 %d 퍼센트) 경고음을 재생중입니다. 자리를 비우고 있는게 아니라면 자리 비움 상태를 해제하거나 '기타 기능' 항목에서 해당 설정을 비활성화 해주세요."
+DBM_CORE_AFK_WARNING				= "자리 비움 상태에서 전투에 돌입하여 (남은 생명력 %d퍼센트) 경고음을 재생중입니다. 자리를 비우고 있는게 아니라면 자리 비움 상태를 해제하거나 '기타 기능' 항목에서 해당 설정을 비활성화 해주세요."
 
 DBM_CORE_COMBAT_STARTED_AI_TIMER	= "내 CPU는 신경망 프로세서를 탑재한 자동학습 컴퓨터. (이 전투에선 새로운 타이머 인공지능 기능을 사용해서 예상 타이머 바를 생성합니다)"
 
@@ -118,7 +118,7 @@ DBM_CORE_SEC_FMT					= "%s초"
 
 DBM_CORE_GENERIC_WARNING_OTHERS		= "외 1명"
 DBM_CORE_GENERIC_WARNING_OTHERS2	= "외 %d명"
-DBM_CORE_GENERIC_WARNING_BERSERK	= "%s%s 후에 광폭화"
+DBM_CORE_GENERIC_WARNING_BERSERK	= "%s%s 후 광폭화"
 DBM_CORE_GENERIC_TIMER_BERSERK		= "광폭화"
 DBM_CORE_OPTION_TIMER_BERSERK		= "$spell:26662 타이머 바 보기"
 DBM_CORE_GENERIC_TIMER_COMBAT		= "전투 시작"
@@ -132,7 +132,7 @@ DBM_CORE_OPTION_CATEGORY_WARNINGS_OTHER	= "대상별 알림"
 DBM_CORE_OPTION_CATEGORY_WARNINGS_ROLE	= "역할별 알림"
 DBM_CORE_OPTION_CATEGORY_SOUNDS		= "음성"
 
-DBM_CORE_AUTO_RESPONDED						= "자동 응답입니다."
+DBM_CORE_AUTO_RESPONDED						= "귓속말에 자동응답 메시지를 보냈습니다."
 DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d 생존"
 --Bosses
 DBM_CORE_AUTO_RESPOND_WHISPER				= "%s님은 %s 전투 때문에 바쁩니다. (%s, %d/%d 생존)"
