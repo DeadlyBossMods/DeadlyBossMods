@@ -53,7 +53,7 @@ local countdownTimeBomb				= mod:NewCountdownFades("AltTwo30", 206617)
 
 local voiceTemporalOrbs				= mod:NewVoice(219815)--watchstep
 local voicePowerOverwhelming		= mod:NewVoice(211927)--aesoon
-local voiceTimeBomb					= mod:NewVoice(206617)--scatter
+local voiceTimeBomb					= mod:NewVoice(206617)--runout
 local voiceWarp						= mod:NewVoice(207228, "HasInterrupt")--kickcast
 local voiceBigAdd					= mod:NewVoice(206700, "-Healer")
 local voiceSmallAdd					= mod:NewVoice(206699, "Tank")
@@ -79,13 +79,13 @@ local function updateTimeBomb(self)
 		yellTimeBomb:Cancel()
 		local debuffTime = expires - GetTime() / timeMod--TODO, see if this is needed like http://wowprogramming.com/docs/api/UnitDebuff suggests
 		local debuffTimeOld = expires - GetTime()
-		specWarnTimeBomb:Schedule(debuffTimeOld - 5)	-- Show "move away" warning 5secs before explode
-		voiceTimeBomb:Schedule(debuffTimeOld - 5, "scatter")
-		timerTimeBomb:Start(debuffTimeOld)
-		countdownTimeBomb:Start(debuffTimeOld)
-		yellTimeBomb:Schedule(debuffTimeOld-1, 1)
-		yellTimeBomb:Schedule(debuffTimeOld-2, 2)
-		yellTimeBomb:Schedule(debuffTimeOld-3, 3)
+		specWarnTimeBomb:Schedule(debuffTime - 5)	-- Show "move away" warning 5secs before explode
+		voiceTimeBomb:Schedule(debuffTime - 5, "runout")
+		timerTimeBomb:Start(debuffTime)
+		countdownTimeBomb:Start(debuffTime)
+		yellTimeBomb:Schedule(debuffTime-1, 1)
+		yellTimeBomb:Schedule(debuffTime-2, 2)
+		yellTimeBomb:Schedule(debuffTime-3, 3)
 		DBM:Debug("Time Bomb Debug: "..(debuffTime or 0).."/"..debuffTimeOld.."/"..timeMod)
 	end
 end
