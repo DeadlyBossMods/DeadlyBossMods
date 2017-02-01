@@ -48,10 +48,6 @@ L:SetOptionLocalization({
 	HudAll				= "걸려있는 모든 대상에게 HUD 연결 경로 표시"
 })
 
-L:SetMiscLocalization({
-	MapMessage			= "알림: 본 모드는 GUI에서 설정하는 화살표/HUD 기능을 사용하고 있습니다. 이 옵션들 역시 7.1에서 사용할 수 없게됩니다"
-})
-
 ---------------------------
 -- Ursoc --
 ---------------------------

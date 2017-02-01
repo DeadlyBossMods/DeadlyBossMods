@@ -47,10 +47,6 @@ L:SetOptionLocalization({
 	HudAll				= "Mostrar líneas indicadoras de todos los objetivos afectados"
 })
 
-L:SetMiscLocalization({
-	MapMessage			= "Atención: este módulo hace uso de flechas e indicadores en pantalla, características que desaparecerán en el parche 7.1."
-})
-
 -----------
 -- Ursoc --
 -----------

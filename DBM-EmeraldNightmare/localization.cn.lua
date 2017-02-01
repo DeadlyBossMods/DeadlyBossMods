@@ -51,10 +51,6 @@ L:SetOptionLocalization({
 	HudAll				= "对所有相连目标使用HUD连线"
 })
 
-L:SetMiscLocalization({
-	MapMessage			= "注意: 本mod使用的箭头及HUD能在 /DBM 配置. 7.1后该功能被取缔."
-})
-
 ---------------------------
 -- Ursoc --
 ---------------------------
