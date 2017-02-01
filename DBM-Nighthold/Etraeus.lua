@@ -45,6 +45,7 @@ local warnCoronalEjection			= mod:NewTargetAnnounce(206464, 2)
 local warnIcyEjection				= mod:NewTargetAnnounce(206936, 2)
 --Stage Three: A Shattered World
 local warnFelEjection				= mod:NewTargetAnnounce(205649, 2)
+local warnFelEjectionPuddle			= mod:NewCountAnnounce(205649, 2)
 --Stage Four: Inevitable Fate
 --local warnVoidEjection				= mod:NewTargetAnnounce(207143, 2)
 
@@ -520,6 +521,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFelEjectionFade:Schedule(7, 1)
 			yellFelEjectionFade:Schedule(6, 2)
 			yellFelEjectionFade:Schedule(5, 3)
+			warnFelEjectionPuddle:Schedule(2, 3)
+			warnFelEjectionPuddle:Schedule(4, 2)
+			warnFelEjectionPuddle:Schedule(6, 1)
+			warnFelEjectionPuddle:Schedule(8, 0)
 		end
 	elseif spellId == 207143 then
 		--warnVoidEjection:CombinedShow(0.5, args.destName)
@@ -575,7 +580,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		yellIcyEjection:Cancel()
 		updateRangeFrame(self)
 	elseif spellId == 205649 and args:IsPlayer() then
-		yellFelEjection:Cancel()
+		yellFelEjectionFade:Cancel()
+		warnFelEjectionPuddle:Cancel()
 		updateRangeFrame(self)
 	elseif spellId == 207143 and args:IsPlayer() then
 		updateRangeFrame(self)
