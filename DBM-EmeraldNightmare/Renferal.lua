@@ -164,7 +164,6 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)--540 heroic, other difficulties not confirmed
 	self.vb.platformCount = 1
 	self.vb.ViolentWindsPlat = false
-	DBM:AddMsg(L.MapMessage)
 end
 
 function mod:OnCombatEnd()

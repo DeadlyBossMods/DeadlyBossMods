@@ -49,10 +49,6 @@ L:SetOptionLocalization({
 	HudAll				= "Show HUD line for all affected targets"
 })
 
-L:SetMiscLocalization({
-	MapMessage			= "Note: This mod uses arrow/HUD options that can be configured in GUI. These options will also break in 7.1"
-})
-
 ---------------------------
 -- Ursoc --
 ---------------------------
