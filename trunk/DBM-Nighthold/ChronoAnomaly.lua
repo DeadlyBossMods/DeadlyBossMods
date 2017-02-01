@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 211927 207228",
 	"SPELL_CAST_SUCCESS 219815",
-	"SPELL_AURA_APPLIED 206617 206609 207052 207051 206607 211927",
-	"SPELL_AURA_APPLIED_DOSE 206607",
+	"SPELL_AURA_APPLIED 206617 206609 207052 207051 206607",
+	"SPELL_AURA_APPLIED_DOSE 206607 219823",
 	"SPELL_AURA_REMOVED 206617 206609 207052 207051",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
 	"UNIT_SPELLCAST_CHANNEL_STOP boss1",
@@ -29,6 +29,7 @@ mod:RegisterEventsInCombat(
 local warnTimeBomb					= mod:NewTargetAnnounce(206617, 3)
 local warnTimeRelease				= mod:NewTargetAnnounce(206610, 3, nil, false)--Too many targets
 local warnChronometricPart			= mod:NewStackAnnounce(206607, 3, nil, "Tank")
+local warnPowerOverwhelmingStack	= mod:NewStackAnnounce(219823, 2)
 
 local specWarnTemporalOrbs			= mod:NewSpecialWarningDodge(219815, nil, nil, nil, 2, 2)
 local specWarnPowerOverwhelming		= mod:NewSpecialWarningSpell(211927, nil, nil, 2, 2, 2)
@@ -116,6 +117,8 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 211927 then
 		timerChronoPartCD:Stop()--Will be used immediately when this ends.
+		specWarnPowerOverwhelming:Show()
+		voicePowerOverwhelming:Play("aesoon")
 	elseif spellId == 207228 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnWarp:Show(args.sourceName)
 		voiceWarp:Play("kickcast")
@@ -154,9 +157,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		warnChronometricPart:Show(args.destName, amount)
 		timerChronoPartCD:Start()--Move timer to success if this can be avoided
-	elseif spellId == 211927 then
-		specWarnPowerOverwhelming:Show()
-		voicePowerOverwhelming:Play("aesoon")
+	elseif spellId == 219823 then
+		local amount = args.amount or 1
+		warnPowerOverwhelmingStack:Show(args.destName, amount)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

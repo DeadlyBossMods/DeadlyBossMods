@@ -11,9 +11,10 @@ mod:SetHotfixNoticeRev(15058)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 206788 208924 207513 207502 215062",
+	"SPELL_CAST_START 206788 208924 207513 207502 215062 206641",
 	"SPELL_CAST_SUCCESS 206560 206557 206559 206641",
 	"SPELL_AURA_APPLIED 211615 208910 208915 206641",
+	"SPELL_AURA_APPLIED_DOSE 206641",
 	"SPELL_AURA_REMOVED 208499 206560",
 	"SPELL_PERIODIC_DAMAGE 206488",
 	"SPELL_PERIODIC_MISSED 206488",
@@ -27,6 +28,8 @@ mod:RegisterEventsInCombat(
 (ability.id = 206560 or ability.id = 206557 or ability.id = 206559 or ability.id = 206641 or ability.id = 207630) and type = "cast" or 
 (ability.id = 211615 or ability.id = 208910) and type = "applydebuff"
 --]]
+--General
+local warnArcanoSlash				= mod:NewStackAnnounce(206641, 3, nil, "Tank")
 --Cleaner
 local warnCleanerMode				= mod:NewSpellAnnounce(206560, 2)
 local warnToxicSlice				= mod:NewSpellAnnounce(206788, 2)
@@ -37,8 +40,10 @@ local warnManiacMode				= mod:NewSpellAnnounce(206557, 2)
 local warnCaretakerMode				= mod:NewSpellAnnounce(206559, 2)
 local warnSucculentFeast			= mod:NewSpellAnnounce(207502, 1)
 
+--General
 local specWarnArcaneSeepage			= mod:NewSpecialWarningMove(206488, nil, nil, nil, 1, 2)
-local specWarnArcanoSlash			= mod:NewSpecialWarningTaunt(206641, nil, nil, nil, 1, 2)
+local specWarnArcanoSlash			= mod:NewSpecialWarningDefensive(206641, nil, nil, nil, 1, 2)
+local specWarnArcanoSlashTaunt		= mod:NewSpecialWarningTaunt(206641, nil, nil, nil, 1, 2)
 --Cleaner
 local specWarnSterilize				= mod:NewSpecialWarningMoveAway(208499, nil, nil, nil, 1, 2)
 local yellSterilize					= mod:NewYell(208499)
@@ -51,6 +56,7 @@ local specWarnTidyUp				= mod:NewSpecialWarningDodge(207513, nil, nil, nil, 2, 2
 --Mythic
 local specWarnEchoDuder				= mod:NewSpecialWarningSwitchCount(214880, nil, nil, nil, 1, 2)
 
+--General
 local timerArcaneSlashCD			= mod:NewCDTimer(9, 206641, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerPhaseChange				= mod:NewNextTimer(45, 155005, nil, nil, nil, 6)
 --Cleaner
@@ -68,7 +74,8 @@ local timerTidyUpCD					= mod:NewNextTimer(10, 207513, nil, nil, nil, 1)
 local timerSucculentFeastCD			= mod:NewNextTimer(4.5, 207502, nil, nil, nil, 3)
 
 local countdownModes				= mod:NewCountdown(40, 206560)--All modes
-local countdownAnnihilation			= mod:NewCountdown("Alt20", 207630)
+local countdownAnnihilation			= mod:NewCountdown("AltTwo20", 207630)
+local countdownArcaneSlash			= mod:NewCountdown("Alt20", 206641, "Tank")
 
 local voiceArcaneSeepage			= mod:NewVoice(206488)--runaway
 local voiceArcaneSlash				= mod:NewVoice(206641)--tauntboss
@@ -95,6 +102,7 @@ function mod:OnCombatStart(delay)
 	self.vb.ArcaneSlashCooldown = 10.5
 	self.vb.toxicSliceCooldown = 26.5
 	timerArcaneSlashCD:Start(7-delay)
+	countdownArcaneSlash:Start(7-delay)
 	timerToxicSliceCD:Start(10.5-delay, "boss")
 	timerPhaseChange:Start(45)--Maniac
 	countdownModes:Start(45)
@@ -135,6 +143,9 @@ function mod:SPELL_CAST_START(args)
 		voiceTidyUp:Schedule(1.5, "watchstep")
 	elseif spellId == 207502 then--Succulent Feast (Caretaker Mode)
 		warnSucculentFeast:Show()
+	elseif spellId == 206641 then
+		specWarnArcanoSlash:Show()
+		voiceArcaneSlash:Play("defensive")
 	end
 end
 
@@ -145,10 +156,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.toxicSliceCooldown = 22--Still 22? 27 in mythic logs
 		warnCleanerMode:Show()
 		timerArcaneSlashCD:Stop()
+		countdownArcaneSlash:Cancel()
 		--timerSterilizeCD:Start()--Used 1-3 seconds later
 		timerCleansingRageCD:Start()--10
 		timerToxicSliceCD:Start(13, "boss")
 		timerArcaneSlashCD:Start(19.5)
+		countdownArcaneSlash:Start(19.5)
 		timerPhaseChange:Start(45)--Maniac
 		countdownModes:Start(45)
 	elseif spellId == 206557 then--Maniac Mode (40 seconds)
@@ -156,14 +169,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnManiacMode:Show()
 		timerToxicSliceCD:Stop("boss")--Must be stopped here too since first cleaner mode has no buff removal
 		timerArcaneSlashCD:Stop()
+		countdownArcaneSlash:Stop()
 		timerArcingBondsCD:Start(5)--Updated Jan 24, make sure it's ok consistently
 		timerArcaneSlashCD:Start(9)--Updated Jan 24, make sure it's ok consistently
+		countdownArcaneSlash:Start(9)
 		timerAnnihilationCD:Start()--20
 		countdownAnnihilation:Start()--20
 		timerPhaseChange:Start(40)--Caretaker
 		countdownModes:Start(40)
 	elseif spellId == 206559 then--Caretaker Mode (15 seconds)
 		timerArcaneSlashCD:Stop()
+		countdownArcaneSlash:Cancel()
 		warnCaretakerMode:Show()
 		timerSucculentFeastCD:Start()--4.5-5
 		timerTidyUpCD:Start()--10-11
@@ -171,6 +187,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownModes:Start(13)
 	elseif spellId == 206641 then--Arcane ArcaneSlash
 		timerArcaneSlashCD:Start(self.vb.ArcaneSlashCooldown)
+		countdownArcaneSlash:Start(self.vb.ArcaneSlashCooldown)
 	end
 end
 
@@ -192,12 +209,31 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceArcingBonds:Play("linegather")
 		end
 	elseif spellId == 206641 then
-		if not args:IsPlayer() and not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
-			specWarnArcanoSlash:Show(args.destName)
-			voiceArcaneSlash:Play("tauntboss")
+		local amount = args.amount or 1
+		if amount >= 2 then
+			if not args:IsPlayer() and not UnitIsDeadOrGhost("player") then
+				local warnPlayer = false
+				local _, _, _, _, _, _, expireTime = UnitDebuff("player", args.spellName)
+				if expireTime then--Debuff, make sure it'll be gone before next slash
+					local remainingDebuff = expireTime-GetTime()
+					local arcaneSlashRemaining = timerArcaneSlashCD:GetRemaining() or 0
+					if remainingDebuff < arcaneSlashRemaining then
+						warnPlayer = true
+					end
+				else--No debuff, just warn
+					warnPlayer = true
+				end
+				if warnPlayer then
+					specWarnArcanoSlashTaunt:Show(args.destName)
+					voiceArcaneSlash:Play("tauntboss")
+				end
+			end
+		else
+			warnArcanoSlash:Show(args.destName, amount)
 		end
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
