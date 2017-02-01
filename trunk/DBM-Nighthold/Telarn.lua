@@ -156,7 +156,6 @@ function mod:OnCombatStart(delay)
 		timerGraceOfNatureCD:Start(65-delay)
 		countdownGraceOfNature:Start(65-delay)
 		berserkTimer:Start(540-delay)
-		DBM:AddMsg("Most mythic timers same as beta, so for most part mythic timers look good, but some more updates needed and will be coming soon")
 	else
 		if self:IsHeroic() then
 			self.vb.globalTimer = 35

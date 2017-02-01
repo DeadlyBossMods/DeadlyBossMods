@@ -48,10 +48,6 @@ L:SetOptionLocalization({
 	HudAll				= "為所有中招的目標顯示HUD連線"
 })
 
-L:SetMiscLocalization({
-	MapMessage			= "註：此模組的箭頭/HUD選項能夠在介面中設定。而這些選項在7.1失效。"
-})
-
 ---------------------------
 -- Ursoc --
 ---------------------------

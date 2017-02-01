@@ -48,10 +48,6 @@ L:SetOptionLocalization({
 	HudAll				= "Zeige Linie in HudMap für alle betroffenen Ziele"
 })
 
-L:SetMiscLocalization({
-	MapMessage			= "Hinweis: Dieses Mod nutzt HudMap-/Pfeileinstellungen, die in der grafischen Benutzeroberfläche konfiguriert werden können. Diese Einstellungen werden ab Patch 7.1 nicht mehr funktionieren."
-})
-
 ---------------------------
 -- Ursoc --
 ---------------------------
