@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 206222 206221 221783 212258",
 	"SPELL_AURA_APPLIED 206219 206220 209011 206354 206384 209086 208903 211162 221891 208802 221606 221603 221785 221784 212686 227427 206516",
 	"SPELL_AURA_APPLIED_DOSE 211162 208802",
-	"SPELL_AURA_REMOVED 209011 206354 206384 209086 221603 221785 221784 212686 206516",
+	"SPELL_AURA_REMOVED 209011 206354 206384 209086 221603 221785 221784 212686 206516 221606",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
 --	"UNIT_DIED",
@@ -90,6 +90,7 @@ local specWarnSoulCorrosion			= mod:NewSpecialWarningStack(208802, nil, 3)--stac
 local specWarnBlackHarvest			= mod:NewSpecialWarningCount(206744, nil, nil, nil, 2, 2)
 local specWarnFlamesOfSargeras		= mod:NewSpecialWarningMoveAway(221606, nil, nil, nil, 3, 2)
 local yellFlamesofSargeras			= mod:NewPosYell(221606)
+--local yellFlamesofSargerasSpread	= mod:NewYell(221606)
 local specWarnFlamesOfSargerasTank	= mod:NewSpecialWarningTaunt(221606, nil, nil, nil, 1, 2)
 
 
@@ -164,6 +165,7 @@ mod.vb.stormCast = 0
 mod.vb.blackHarvestCast = 0
 mod.vb.eyeCast = 0
 mod.vb.flamesSargCast = 0
+mod.vb.flamesTargets = 0
 local felEffluxTimers = {11.0, 14.0, 19.6, 12.0, 12.2, 12.0}
 local felEffluxTimersEasy = {11.0, 14.0, 19.9, 15.6, 16.8, 15.9, 15.8}
 local handofGuldanTimers = {14.5, 48.9, 138.8}
@@ -187,6 +189,7 @@ function mod:OnCombatStart(delay)
 	self.vb.blackHarvestCast = 0
 	self.vb.eyeCast = 0
 	self.vb.flamesSargCast = 0
+	self.vb.flamesTargets = 0
 	table.wipe(bondsIcons)
 	table.wipe(flamesIcons)
 	timerLiquidHellfireCD:Start(2-delay, 1)
@@ -337,6 +340,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 221783 then
 		table.wipe(flamesIcons)
+		self.vb.flamesTargets = 0
 	end
 end
 
@@ -436,6 +440,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 221606 then--Looks like the 3 second pre targeting debuff for flames of sargeras
 		local name = args.destName
+		self.vb.flamesTargets = self.vb.flamesTargets + 1
 		if not tContains(flamesIcons, name) then
 			flamesIcons[#flamesIcons+1] = name
 		end
@@ -444,7 +449,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFlamesOfSargeras:Show()
 			voiceFlamesOfSargeras:Play("runout")
-			yellFlamesofSargeras:Yell(count, count, count)
+		--	if count < 9 then
+				yellFlamesofSargeras:Yell(count, count, count)
+		--	else
+		--		yellFlamesofSargerasSpread:Yell()
+		--	end
 		else
 			local uId = DBM:GetRaidUnitId(name)
 			if self:IsTanking(uId, "boss1") then
@@ -452,7 +461,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceFlamesOfSargeras:Play("tauntboss")
 			end
 		end
-		if self.Options.SetIconOnBondsOfFlames then
+		if self.Options.SetIconOnBondsOfFlames and count < 9 then
 			self:SetIcon(name, count)--Should start at icon 4 and go up from there (because icons 1-3 are used by bonds of fel)
 		end
 	elseif spellId == 221603 or spellId == 221785 or spellId == 221784 or spellId == 212686 then--4 different duration versions of Flames of sargeras?
@@ -505,6 +514,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.SetIconOnBondsOfFel then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 221606 then
+		self.vb.flamesTargets = self.vb.flamesTargets - 1
+		if self.vb.flamesTargets == 0 then
+			table.wipe(flamesIcons)
 		end
 	elseif spellId == 221603 or spellId == 221785 or spellId == 221784 or spellId == 212686 then--4 different duration versions of Flames of sargeras?
 		if args:IsPlayer() then
