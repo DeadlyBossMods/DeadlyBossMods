@@ -42,7 +42,7 @@ local warnSucculentFeast			= mod:NewSpellAnnounce(207502, 1)
 
 --General
 local specWarnArcaneSeepage			= mod:NewSpecialWarningMove(206488, nil, nil, nil, 1, 2)
-local specWarnArcanoSlash			= mod:NewSpecialWarningDefensive(206641, nil, nil, nil, 1, 2)
+local specWarnArcanoSlash			= mod:NewSpecialWarningDefensive(206641, "Tank", nil, 2, 1, 2)
 local specWarnArcanoSlashTaunt		= mod:NewSpecialWarningTaunt(206641, nil, nil, nil, 1, 2)
 --Cleaner
 local specWarnSterilize				= mod:NewSpecialWarningMoveAway(208499, nil, nil, nil, 1, 2)
