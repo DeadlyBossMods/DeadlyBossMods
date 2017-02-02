@@ -110,7 +110,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame then
 		local spellName = GetSpellInfo(214573)
 		DBM.InfoFrame:SetHeader(spellName)
-		DBM.InfoFrame:Show(10, "playerbaddebuff", spellName, true)
+		DBM.InfoFrame:Show(10, "playergooddebuff", spellName, true)
 	end
 	if self:IsMythic() then
 		self:RegisterShortTermEvents(
