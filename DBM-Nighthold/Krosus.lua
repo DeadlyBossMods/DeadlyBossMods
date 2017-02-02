@@ -91,7 +91,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerFelBeamCD:Start(6-delay, 1)
 		timerOrbDestroCD:Start(13-delay, 1)
-		timerBurningPitchCD:Start(52-delay, 1)
+		timerBurningPitchCD:Start(45-delay, 1)
 		timerSlamCD:Start(-delay, 1)
 		countdownBigSlam:Start(-delay)
 		berserkTimer:Start(-delay)
