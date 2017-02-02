@@ -335,7 +335,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			timerSearingBrandCD:Start(17.8)
 			timerSearingBrandRepCD:Start(27)
-			self:Schedule(42, findSearingMark, self)--Schedule markers to go out 2 seconds before detonate cast, making a 5 total seconds to position instead of 3
+			self:Schedule(42, findSearingMark, self)--Schedule markers to go out 3 seconds before detonate cast, making a 6 total seconds to position instead of 3
 			timerSearingBrandDetonateCD:Start(45)
 			timerAnimateFireCD:Start(62)
 			timerArcanePhaseCD:Start(85)
