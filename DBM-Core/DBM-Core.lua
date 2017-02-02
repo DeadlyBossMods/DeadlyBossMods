@@ -1054,6 +1054,7 @@ end
 do
 	local isLoaded = false
 	local onLoadCallbacks = {}
+	local disabledMods = {}
 	
 	local function runDelayedFunctions(self)
 		noDelay = false
@@ -1115,6 +1116,9 @@ do
 			else--It must have ended while we were offline, kill variable.
 				self.Options.tempBreak2 = nil
 			end
+		end
+		if #disabledMods > 0 then
+			self:AddMsg(DBM_CORE_LOAD_MOD_DISABLED:format(tconcat(disabledMods, ", ")))
 		end
 	end
 
@@ -1220,7 +1224,7 @@ do
 							end
 						end
 					else
-						C_TimerAfter(10, function() self:AddMsg(DBM_CORE_LOAD_MOD_DISABLED:format(addonName)) end)
+						disabledMods[#disabledMods+1] = addonName
 					end
 				end
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
