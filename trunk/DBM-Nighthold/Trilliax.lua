@@ -287,6 +287,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	if spellId == 207620 then--Annihilation pre cast, faster than combat log
 		specWarnAnnihilation:Show()
 		voiceAnnihilation:Play("farfromline")
+		timerArcaneSlashCD:Stop()
+		countdownArcaneSlash:Cancel()
 	elseif spellId == 206834 then--Cleansing Rage
 		specWarnCleansingRage:Show()
 		voiceCleansingRage:Play("aesoon")
