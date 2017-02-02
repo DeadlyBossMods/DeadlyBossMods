@@ -11,7 +11,7 @@ mod:SetHotfixNoticeRev(15058)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 206788 208924 207513 207502 215062 206641",
+	"SPELL_CAST_START 206788 208924 207513 207502 215062 206641 214672",
 	"SPELL_CAST_SUCCESS 206560 206557 206559 206641",
 	"SPELL_AURA_APPLIED 211615 208910 208915 206641",
 	"SPELL_AURA_APPLIED_DOSE 206641",
@@ -23,21 +23,23 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, do more videos with debug to determine if combat log order is valid for link partners
+--TODO, annihilate timer for second Imprint
 --[[
-(ability.id = 207513 or ability.id = 206788 or ability.id = 207502) and type = "begincast" or
+(ability.id = 207513 or ability.id = 206788 or ability.id = 207502 or ability.id = 214672) and type = "begincast" or
 (ability.id = 206560 or ability.id = 206557 or ability.id = 206559 or ability.id = 206641 or ability.id = 207630) and type = "cast" or 
 (ability.id = 211615 or ability.id = 208910) and type = "applydebuff"
 --]]
 --General
 local warnArcanoSlash				= mod:NewStackAnnounce(206641, 3, nil, "Tank")
 --Cleaner
-local warnCleanerMode				= mod:NewSpellAnnounce(206560, 2)
+local warnCleanerMode				= mod:NewCountAnnounce(206560, 2)
 local warnToxicSlice				= mod:NewSpellAnnounce(206788, 2)
 local warnSterilize					= mod:NewTargetAnnounce(208499, 3)
 --Maniac
-local warnManiacMode				= mod:NewSpellAnnounce(206557, 2)
+local warnManiacMode				= mod:NewCountAnnounce(206557, 2)
+local warnArcingBonds				= mod:NewTargetAnnounce(208915, 3)
 --Caretaker
-local warnCaretakerMode				= mod:NewSpellAnnounce(206559, 2)
+local warnCaretakerMode				= mod:NewCountAnnounce(206559, 2)
 local warnSucculentFeast			= mod:NewSpellAnnounce(207502, 1)
 
 --General
@@ -72,6 +74,8 @@ local timerAnnihilationCD			= mod:NewCDTimer(20.3, 207630, nil, nil, nil, 2, nil
 mod:AddTimerLine(GetSpellInfo(206559))
 local timerTidyUpCD					= mod:NewNextTimer(10, 207513, nil, nil, nil, 1)
 local timerSucculentFeastCD			= mod:NewNextTimer(4.5, 207502, nil, nil, nil, 3)
+mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
+local timerEchoDuder				= mod:NewNextTimer(10, 214880, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 
 local countdownModes				= mod:NewCountdown(40, 206560)--All modes
 local countdownAnnihilation			= mod:NewCountdown("AltTwo20", 207630)
@@ -94,6 +98,9 @@ mod:AddInfoFrameOption(214573, false)
 
 mod.vb.ArcaneSlashCooldown = 10.5--10.5 now?, Verify it can never be 9 anymore
 mod.vb.toxicSliceCooldown = 26.5--Confirmed still true
+mod.vb.cleanerCount = 0
+mod.vb.maniacCount = 0
+mod.vb.caretakerCount = 0
 
 local seenMobs = {}
 
@@ -101,6 +108,9 @@ function mod:OnCombatStart(delay)
 	table.wipe(seenMobs)
 	self.vb.ArcaneSlashCooldown = 10.5
 	self.vb.toxicSliceCooldown = 26.5
+	self.vb.cleanerCount = 0
+	self.vb.maniacCount = 0
+	self.vb.caretakerCount = 0
 	timerArcaneSlashCD:Start(7-delay)
 	countdownArcaneSlash:Start(7-delay)
 	timerToxicSliceCD:Start(10.5-delay, "boss")
@@ -109,7 +119,7 @@ function mod:OnCombatStart(delay)
 	--On combat start he starts in a custom cleaner mode (206570) that doesn't have sterilize or cleansing rage abilities but casts cake and ArcaneSlashs more often
 	if self.Options.InfoFrame then
 		local spellName = GetSpellInfo(214573)
-		DBM.InfoFrame:SetHeader(spellName)
+		DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(spellName))
 		DBM.InfoFrame:Show(10, "playergooddebuff", spellName, true)
 	end
 	if self:IsMythic() then
@@ -137,6 +147,7 @@ function mod:SPELL_CAST_START(args)
 		timerToxicSliceCD:Start(self.vb.toxicSliceCooldown, "boss")
 	elseif spellId == 215062 then--Toxic Slice (Imprint)
 		warnToxicSlice:Show()
+		timerToxicSliceCD:Start(17, "echo")
 	elseif spellId == 207513 then--Tidy Up (Caretaker Mode)
 		specWarnTidyUp:Show()
 		voiceTidyUp:Play("mobsoon")
@@ -146,15 +157,19 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 206641 then
 		specWarnArcanoSlash:Show()
 		voiceArcaneSlash:Play("defensive")
+	elseif spellId == 214672 then--Imprint Annihilation
+		specWarnAnnihilation:Show()
+		voiceAnnihilation:Play("farfromline")
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 206560 then--Cleaner Mode (45 seconds)
+		self.vb.cleanerCount = self.vb.cleanerCount + 1
 		self.vb.ArcaneSlashCooldown = 18
 		self.vb.toxicSliceCooldown = 22--Still 22? 27 in mythic logs
-		warnCleanerMode:Show()
+		warnCleanerMode:Show(self.vb.cleanerCount)
 		timerArcaneSlashCD:Stop()
 		countdownArcaneSlash:Cancel()
 		--timerSterilizeCD:Start()--Used 1-3 seconds later
@@ -165,26 +180,35 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerPhaseChange:Start(45)--Maniac
 		countdownModes:Start(45)
 	elseif spellId == 206557 then--Maniac Mode (40 seconds)
+		self.vb.maniacCount = self.vb.maniacCount + 1
 		self.vb.ArcaneSlashCooldown = 7
-		warnManiacMode:Show()
+		warnManiacMode:Show(self.vb.maniacCount)
 		timerToxicSliceCD:Stop("boss")--Must be stopped here too since first cleaner mode has no buff removal
 		timerArcaneSlashCD:Stop()
 		countdownArcaneSlash:Stop()
 		timerArcingBondsCD:Start(5)--Updated Jan 24, make sure it's ok consistently
 		timerArcaneSlashCD:Start(9)--Updated Jan 24, make sure it's ok consistently
 		countdownArcaneSlash:Start(9)
-		timerAnnihilationCD:Start()--20
+		timerAnnihilationCD:Start(nil, "boss")--20
 		countdownAnnihilation:Start()--20
 		timerPhaseChange:Start(40)--Caretaker
 		countdownModes:Start(40)
+		if self:IsMythic() and self.vb.maniacCount == 2 then
+			timerEchoDuder:Start(10)
+		end
 	elseif spellId == 206559 then--Caretaker Mode (15 seconds)
+		self.vb.caretakerCount = self.vb.caretakerCount + 1
 		timerArcaneSlashCD:Stop()
 		countdownArcaneSlash:Cancel()
-		warnCaretakerMode:Show()
+		warnCaretakerMode:Show(self.vb.caretakerCount)
 		timerSucculentFeastCD:Start()--4.5-5
 		timerTidyUpCD:Start()--10-11
 		timerPhaseChange:Start(13)--Cleaner
 		countdownModes:Start(13)
+		if self:IsMythic() and self.vb.caretakerCount == 3 then
+			timerEchoDuder:Start(8)--VERIFY, it's more extrapolated than first echo
+			timerAnnihilationCD:Start(38, "echo")
+		end
 	elseif spellId == 206641 then--Arcane ArcaneSlash
 		timerArcaneSlashCD:Start(self.vb.ArcaneSlashCooldown)
 		countdownArcaneSlash:Start(self.vb.ArcaneSlashCooldown)
@@ -204,6 +228,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 208910 or spellId == 208915 then--Searing Bonds (two IDs for paired off links)
+		warnArcingBonds:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnArcingBonds:Show()
 			voiceArcingBonds:Play("linegather")
@@ -269,7 +294,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			elseif cid == 108303 then--Caretaker Imprint
 				local name = GetSpellInfo(206560)
 				specWarnEchoDuder:Show(name)
-				timerToxicSliceCD:Start(16, "Echo")
+				timerToxicSliceCD:Start(16, "echo")
 			end
 		end
 	end
@@ -277,8 +302,10 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 108303 then--Arcanist Tel'arn
-		timerToxicSliceCD:Stop("Echo")
+	if cid == 108303 then
+		timerToxicSliceCD:Stop("echo")
+	elseif cid == 108144 then
+		timerAnnihilationCD:Stop("echo")
 	end
 end
 
