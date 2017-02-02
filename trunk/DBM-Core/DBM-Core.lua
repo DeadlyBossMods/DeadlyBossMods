@@ -1118,7 +1118,11 @@ do
 			end
 		end
 		if #disabledMods > 0 then
-			self:AddMsg(DBM_CORE_LOAD_MOD_DISABLED:format(tconcat(disabledMods, ", ")))
+			if #disabledMods == 1 then
+				self:AddMsg(DBM_CORE_LOAD_MOD_DISABLED:format(disabledMods[1]))
+			else
+				self:AddMsg(DBM_CORE_LOAD_MOD_DISABLED_PLURAL:format(tconcat(disabledMods, ", ")))
+			end
 		end
 	end
 
