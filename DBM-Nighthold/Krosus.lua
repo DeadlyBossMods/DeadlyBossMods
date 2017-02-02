@@ -74,7 +74,7 @@ local mythicOrbTimers = {13, 62, 27, 25, 14.9, 15, 15, 30, 55.1, 38, 30, 12, 18}
 --Pitch
 local lolBurningPitchTimers = {38.0, 102.0, 85.0, 90.0}--LFR and Normal
 local heroicBurningPitchTimers = {49.8, 85.0, 90.0, 94}--Verified Dec 7
-local mythicBurningPitchTimers = {45.0, 90, 93.9, 78}--38.0, 102.0, 85.0, 90.0 (OLD)
+local mythicBurningPitchTimers = {45.0, 90, 93.9, 78}
 mod.vb.burningEmbers = 0
 mod.vb.slamCount = 0
 mod.vb.beamCount = 0

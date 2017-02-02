@@ -7,7 +7,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 221164 224510 224246",
+	"SPELL_CAST_START 221164 224510 224246 231005",
 	"SPELL_CAST_SUCCESS 225389",
 	"SPELL_AURA_APPLIED 221344 222111 224572 225390 222719 224560 204744 224978 225856 223655 224982"
 )
@@ -21,6 +21,7 @@ local specWarnAnnihilatingOrb		= mod:NewSpecialWarningMoveAway(221344, nil, nil,
 local yellAnnihilatingOrb			= mod:NewYell(221344)
 local specWarnFulminate				= mod:NewSpecialWarningRun(221164, "Melee", nil, nil, 4, 2)
 local specWarnCracklingSlice		= mod:NewSpecialWarningDodge(224510, "Tank", nil, nil, 1, 2)
+local specWarnArcaneEmanations		= mod:NewSpecialWarningDodge(231005, "Tank", nil, nil, 1, 2)
 local specWarnProtectiveShield		= mod:NewSpecialWarningMove(224510, "Tank", nil, nil, 1, 2)
 local specWarnRoilingFlame			= mod:NewSpecialWarningMove(222111, nil, nil, nil, 1, 2)
 local specWarnDisruptingEnergy		= mod:NewSpecialWarningMove(224572, nil, nil, nil, 1, 2)
@@ -39,8 +40,9 @@ local specWarnFelGlare				= mod:NewSpecialWarningMoveAway(224982, nil, nil, nil,
 local yellFelGlareh					= mod:NewYell(224982)
 
 local voiceAnnihilatingOrb			= mod:NewVoice(221344)--runout
-local voiceFulminate				= mod:NewVoice(221164)--runout
-local voiceCracklingSlice			= mod:NewVoice(224510)--shockwave
+local voiceFulminate				= mod:NewVoice(221164, "Melee")--runout
+local voiceCracklingSlice			= mod:NewVoice(224510, "Tank")--shockwave
+local voiceArcaneEmanations			= mod:NewVoice(231005, "Tank")--shockwave
 local voiceProtectiveShield			= mod:NewVoice(225389)--bossout
 local voiceRoilingFlame				= mod:NewVoice(222111)--runaway
 local voiceDisruptingEnergy			= mod:NewVoice(224572)--runaway
@@ -65,6 +67,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 224510 and self:AntiSpam(3, 2) then
 		specWarnCracklingSlice:Show()
 		voiceCracklingSlice:Play("shockwave")
+	elseif spellId == 231005 then
+		specWarnArcaneEmanations:Show()
+		voiceArcaneEmanations:Play("shockwave")
 	end
 end
 
