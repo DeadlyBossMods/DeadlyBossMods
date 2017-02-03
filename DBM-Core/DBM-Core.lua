@@ -9693,6 +9693,10 @@ do
 	function bossModPrototype:NewSpecialWarningSwitchCount(text, optionDefault, ...)
 		return newSpecialWarning(self, "switchcount", text, nil, optionDefault, ...)
 	end
+	
+	function bossModPrototype:NewSpecialWarningAdds(text, optionDefault, ...)
+		return newSpecialWarning(self, "Adds", text, nil, optionDefault, ...)
+	end
 
 	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, ...)
 		if type(text) == "string" and text:match("OptionVersion") then
@@ -10132,8 +10136,11 @@ do
 				colorType = 6
 			end
 		elseif timerType == "roleplay" then
-			icon = "Interface\\Icons\\Spell_Holy_BorrowedTime"
+			icon = type(texture) == "number" and GetSpellTexture(texture) or texture or type(spellId) == "string" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) or (type(spellId) == "number" and GetSpellTexture(spellId)) or "Interface\\Icons\\Spell_Nature_WispSplode"
 			colorType = 6
+		elseif timerType == "adds" then
+			icon = type(texture) == "number" and GetSpellTexture(texture) or texture or type(spellId) == "string" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) or (type(spellId) == "number" and GetSpellTexture(spellId)) or "Interface\\Icons\\Spell_Nature_WispSplode"
+			colorType = 1
 		else
 			if type(spellId) == "string" and spellId:match("ej%d+") then
 				spellName = EJ_GetSectionInfo(string.sub(spellId, 3)) or ""
@@ -10263,6 +10270,10 @@ do
 	
 	function bossModPrototype:NewRPTimer(...)
 		return newTimer(self, "roleplay", ...)
+	end
+	
+	function bossModPrototype:NewAddsTimer(...)
+		return newTimer(self, "adds", ...)
 	end
 	
 	function bossModPrototype:NewAITimer(...)
