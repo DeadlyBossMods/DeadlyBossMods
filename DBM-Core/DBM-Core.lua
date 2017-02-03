@@ -10770,6 +10770,21 @@ end
 -----------------------
 --  Synchronization  --
 -----------------------
+function DBM:SendModSync(event, modId, ...)
+	event = event or ""
+	local mod = DBM:GetModByName(modId or "")--ModId as STRING such as "1713" for Krosus
+	local arg = select("#", ...) > 0 and strjoin("\t", tostringall(...)) or ""
+	local str = ("%s\t%s\t%s\t%s"):format(mod.id, mod.revision or 0, event, arg)
+	local spamId = mod.id .. event .. arg -- *not* the same as the sync string, as it doesn't use the revision information
+	local time = GetTime()
+	--Mod syncs are more strict and enforce latency threshold always.
+	--Do not put latency check in main sendSync local function (line 313) though as we still want to get version information, etc from these users.
+	if not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 8 then
+		mod:ReceiveSync(event, nil, self.revision or 0, tostringall(...))
+		sendSync("M", str)
+	end
+end
+
 function bossModPrototype:SendSync(event, ...)
 	event = event or ""
 	local arg = select("#", ...) > 0 and strjoin("\t", tostringall(...)) or ""
