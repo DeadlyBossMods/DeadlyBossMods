@@ -7019,7 +7019,7 @@ end
 -----------------------
 
 function bossModPrototype:IsDifficulty(...)
-	local diff = DBM:GetCurrentInstanceDifficulty()
+	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	for i = 1, select("#", ...) do
 		if diff == select(i, ...) then
 			return true
@@ -7029,7 +7029,7 @@ function bossModPrototype:IsDifficulty(...)
 end
 
 function bossModPrototype:IsLFR()
-	local diff = DBM:GetCurrentInstanceDifficulty()
+	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	if diff == "lfr" or diff == "lfr25" then
 		return true
 	end
@@ -7037,7 +7037,7 @@ function bossModPrototype:IsLFR()
 end
 
 function bossModPrototype:IsEasy()
-	local diff = DBM:GetCurrentInstanceDifficulty()
+	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	if diff == "normal" or diff == "lfr" then
 		return true
 	end
@@ -7045,7 +7045,7 @@ function bossModPrototype:IsEasy()
 end
 
 function bossModPrototype:IsHard()
-	local diff = DBM:GetCurrentInstanceDifficulty()
+	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	if diff == "mythic" or diff == "challenge5" then
 		return true
 	end
@@ -7053,7 +7053,7 @@ function bossModPrototype:IsHard()
 end
 
 function bossModPrototype:IsNormal()
-	local diff = DBM:GetCurrentInstanceDifficulty()
+	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	if diff == "normal" or diff == "normal5" or diff == "normal10" or diff == "normal25" then
 		return true
 	end
@@ -7061,7 +7061,7 @@ function bossModPrototype:IsNormal()
 end
 
 function bossModPrototype:IsHeroic()
-	local diff = DBM:GetCurrentInstanceDifficulty()
+	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	if diff == "heroic" or diff == "heroic5" or diff == "heroic10" or diff == "heroic25" then
 		return true
 	end
@@ -7069,7 +7069,7 @@ function bossModPrototype:IsHeroic()
 end
 
 function bossModPrototype:IsMythic()
-	local diff = DBM:GetCurrentInstanceDifficulty()
+	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	if diff == "mythic" then
 		return true
 	end
@@ -7077,7 +7077,7 @@ function bossModPrototype:IsMythic()
 end
 
 function bossModPrototype:IsEvent()
-	local diff = DBM:GetCurrentInstanceDifficulty()
+	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	if diff == "event5" or diff == "event20" or diff == "event40" then
 		return true
 	end
