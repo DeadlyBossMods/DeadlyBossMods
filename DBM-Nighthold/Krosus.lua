@@ -17,8 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 206677",
 	"SPELL_AURA_REMOVED 205344",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1",
-	"CHAT_MSG_ADDON"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --(ability.id = 205368 or ability.id = 205370 or ability.id = 205420 or ability.id = 205361) and type = "begincast"
@@ -83,6 +82,16 @@ mod.vb.orbCount = 0
 mod.vb.pitchCount = 0
 mod.vb.firstBeam = 0--0 Not sent, 1 Left, 2 Right
 
+--/run DBMUpdateKrosusBeam(wasLeft)
+--Global on purpose for external mod support
+function DBMUpdateKrosusBeam(wasLeft)
+	if wasLeft then
+		mod:SendSync("firstBeamWasLeft")
+	else
+		mod:SendSync("firstBeamWasRight")
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(mobGUIDs)
 	self.vb.burningEmbers = 0
@@ -133,7 +142,6 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 205368 or spellId == 205370 then--205370 left, 205368 right (right no longer is used)
 		self.vb.beamCount = self.vb.beamCount + 1
 		specWarnFelBeam:Show()
-		--/run DBM:GetModByName("1713").vb.firstBeam = 2
 		if self.vb.firstBeam == 2 then--First Beam Right
 			if self.vb.beamCount % 2 == 0 then--Coming from left (facing boss)
 				voiceFelBeam:Play("moveright")
@@ -146,7 +154,6 @@ function mod:SPELL_CAST_START(args)
 					DBM.Arrow:ShowStatic(90, 4)
 				end
 			end
-		--/run DBM:GetModByName("1713").vb.firstBeam = 1
 		elseif self.vb.firstBeam == 1 then--First Beam Left
 			if self.vb.beamCount % 2 == 0 then--Coming from right (facing boss)
 				voiceFelBeam:Play("moveleft")
@@ -287,26 +294,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	end
 end
 
---Listen for BigWigs_KrosusAssist (Depricate if BigWigs_KrosusAssist adds native DBM support)
-function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
-	if prefix ~= "BigWigs" then return end
-	local bwPrefix, bwMsg, extra = strsplit("^", msg)
-	if bwPrefix == "B" then
-		if bwMsg == "firstBeamWasLeft" then
-			self.vb.firstBeam = 1
-		elseif bwMsg == "firstBeamWasRight" then
-			self.vb.firstBeam = 2
-		end
-	end
-end
-
 --Native DBM syncs
 function mod:OnSync(msg)
 	if not self:IsInCombat() then return end
 	if msg == "firstBeamWasLeft" then
 		self.vb.firstBeam = 1
+		DBM:Debug("Recieved Left Beam Sync")
 	elseif msg == "firstBeamWasRight" then
 		self.vb.firstBeam = 2
+		DBM:Debug("Recieved Right Beam Sync")
 	end
 end
 	
