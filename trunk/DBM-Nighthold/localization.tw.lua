@@ -42,7 +42,9 @@ L= DBM:GetModLocalization(1762)
 L:SetMiscLocalization({
 	First				= "第一",
 	Second				= "第二",
-	Third				= "第三"
+	Third				= "第三",
+	Adds1				= "手下們！都進來！",
+	Adds2				= "讓這些笨蛋見識真正的戰鬥！"
 })
 
 ------------------
@@ -51,7 +53,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1713)
 
 L:SetWarningLocalization({
-	warnSlamSoon		= "橋將砸毀在%d秒"
+	warnSlamSoon		= "橋梁將在%d秒後砸毀"
 })
 
 ------------------
@@ -87,7 +89,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1743)
 
 L:SetMiscLocalization({
-	noCLEU4EchoRings		= "時間的浪潮會粉碎你！"
+	noCLEU4EchoRings		= "時間的浪潮會粉碎你！",
+	noCLEU4EchoOrbs			= "You'll find time can be quite volatile."
 })
 
 ------------------
