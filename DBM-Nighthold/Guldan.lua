@@ -108,7 +108,7 @@ local timerShatterEssenceCD			= mod:NewCDTimer(54, 206675, nil, "Tank", nil, 5, 
 mod:AddTimerLine(Vethriz)
 local timerVethrizCD				= mod:NewCastTimer(25, "ej13124", nil, nil, nil, 1, 212258)
 local timerGazeofVethrizCD			= mod:NewCDTimer(4.7, 206840, nil, nil, nil, 3)
-local timerShadowBlinkCD			= mod:NewCDTimer(36, 207938)--Role color maybe if blink applies to tank
+--local timerShadowBlinkCD			= mod:NewCDTimer(36, 207938)--Role color maybe if blink applies to tank
 ----D'zorykx the Trapper
 mod:AddTimerLine(Dzorykx)
 local timerDzorykxCD				= mod:NewCastTimer(35, "ej13129", nil, nil, nil, 1, 212258)
@@ -166,7 +166,7 @@ mod.vb.blackHarvestCast = 0
 mod.vb.eyeCast = 0
 mod.vb.flamesSargCast = 0
 mod.vb.flamesTargets = 0
-local felEffluxTimers = {11.0, 14.0, 19.6, 12.0, 12.2, 12.0}
+local felEffluxTimers = {11.0, 14.0, 18.5, 12.0, 12.2, 12.0}
 local felEffluxTimersEasy = {11.0, 14.0, 19.9, 15.6, 16.8, 15.9, 15.8}
 local handofGuldanTimers = {14.5, 48.9, 138.8}
 local stormTimersEasy = {94, 78.6, 70.0, 87}
@@ -227,7 +227,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		else--Phase 2
 			if self:IsEasy() then
-				if self.vb.liquidHellfireCast == 6 then
+				if self.vb.liquidHellfireCast == 4 or self.vb.liquidHellfireCast == 6 then
 					timerLiquidHellfireCD:Start(84, self.vb.liquidHellfireCast+1)
 				elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
 					timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
@@ -235,7 +235,7 @@ function mod:SPELL_CAST_START(args)
 					timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
 				end
 			else
-				if self.vb.liquidHellfireCast == 6 then
+				if self.vb.liquidHellfireCast == 4 or self.vb.liquidHellfireCast == 6 then
 					timerLiquidHellfireCD:Start(74, self.vb.liquidHellfireCast+1)
 				elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
 					timerLiquidHellfireCD:Start(31.6, self.vb.liquidHellfireCast+1)
@@ -268,7 +268,7 @@ function mod:SPELL_CAST_START(args)
 		timerGazeofVethrizCD:Start()
 	elseif spellId == 207938 then
 		warnShadowblink:Show()
-		timerShadowBlinkCD:Start()
+		--timerShadowBlinkCD:Start()
 	elseif spellId == 206883 then
 		--timerSoulVortexCD:Start()
 		local targetName, uId, bossuid = self:GetBossTarget(104534, true)
@@ -529,24 +529,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnBondsOfFlames then
 			self:SetIcon(args.destName, 0)
 		end
-	--TO BE DEPRICATED, UNLESS NEEDED BY MYTHIC
 	elseif spellId == 206516 and self.vb.phase < 2 then--The Eye of Aman'Thul (phase 1 buff)
-		--Backup trigger since sometimes unit_died not fire for all 3 adds
-		self.vb.phase = 2
-		self.vb.liquidHellfireCast = 0
-		warnPhase2:Show()
-		timerLiquidHellfireCD:Stop()
-		timerFelEffluxCD:Stop()--This probably needs refactoring for mythic since phase 1 and 2 happen at same time
-		timerBondsofFelCD:Start(8.8)
-		if self:IsEasy() then
-			timerEyeofGuldanCD:Start(32.5, 1)
-			timerLiquidHellfireCD:Start(45, 1)
-		else
-			timerHandofGuldanCD:Start(14, 1)
-			timerEyeofGuldanCD:Start(29, 1)
-			timerLiquidHellfireCD:Start(40, 1)
-		end
-	--TO BE DEPRICATED, UNLESS NEEDED BY MYTHIC
+		--TO BE DEPRICATED, UNLESS NEEDED BY MYTHIC
 	end
 end
 
@@ -613,8 +597,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self:IsEasy() then
 			--Unknown, died before casting either one
 		else
-			timerShadowBlinkCD:Start(28.5)
-			timerGazeofVethrizCD:Start(28.5)--Basically starts casting it right after blink, then every 5 seconds
+			--timerShadowBlinkCD:Start(27.8)
+			timerGazeofVethrizCD:Start(27.8)--Basically starts casting it right after blink, then every 5 seconds
 		end
 	elseif spellId == 215739 then--Hand of Guldan (D'zorykx the Trapper)
 		--[[if self:IsEasy() then
@@ -631,7 +615,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				--timerFelObeliskCD:Stop()
 			elseif cid == 104536 then--Inquisitor Vethriz
 				timerGazeofVethrizCD:Stop()
-				timerShadowBlinkCD:Stop()
+				--timerShadowBlinkCD:Stop()
 			elseif cid == 104534 then--D'zorykx the Trapper
 				--timerSoulVortexCD:Stop()
 			end
@@ -643,10 +627,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerLiquidHellfireCD:Stop()
 				timerFelEffluxCD:Stop()
 				timerTransition:Start(19)
-				timerBondsofFelCD:Start(27.8)
+				timerBondsofFelCD:Start(27.6)
 				if self:IsEasy() then
-					timerEyeofGuldanCD:Start(51.5, 1)
-					timerLiquidHellfireCD:Start(64, 1)
+					timerEyeofGuldanCD:Start(50.6, 1)
+					timerLiquidHellfireCD:Start(63.1, 1)
 				else
 					timerHandofGuldanCD:Start(33, 1)
 					timerEyeofGuldanCD:Start(48, 1)
