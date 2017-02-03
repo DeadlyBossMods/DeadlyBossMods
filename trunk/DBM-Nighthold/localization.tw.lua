@@ -90,7 +90,7 @@ L= DBM:GetModLocalization(1743)
 
 L:SetMiscLocalization({
 	noCLEU4EchoRings		= "時間的浪潮會粉碎你！",
-	noCLEU4EchoOrbs			= "You'll find time can be quite volatile."
+	noCLEU4EchoOrbs			= "你會發現時光有時很不穩定。"
 })
 
 ------------------
