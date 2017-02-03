@@ -287,7 +287,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	end
 end
 
---Listen for BigWigs_KrosusAssist
+--Listen for BigWigs_KrosusAssist (Depricate if BigWigs_KrosusAssist adds native DBM support)
 function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 	if prefix ~= "BigWigs" then return end
 	local bwPrefix, bwMsg, extra = strsplit("^", msg)
@@ -299,3 +299,14 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 		end
 	end
 end
+
+--Native DBM syncs
+function mod:OnSync(msg)
+	if not self:IsInCombat() then return end
+	if msg == "firstBeamWasLeft" then
+		self.vb.firstBeam = 1
+	elseif msg == "firstBeamWasRight" then
+		self.vb.firstBeam = 2
+	end
+end
+	
