@@ -137,13 +137,18 @@ local easyfastElementalTimers = {8, 71}--Norma Jan 26
 local RingTimers = {34, 40, 10, 62, 9, 45}--Heroic Jan 19
 local easyRingTimers = {34, 30}--Normal Jan 26
 local SingularityTimers = {10, 22, 36.0, 57, 65}--Heroic Jan 18
+local easySingularityTimers = {10, 22, 36.0, 46}--Normal Feb 2
 --Only exist in phase 2
 local BeamTimers = {72, 57, 60}--Heroic Jan 18
+local easyBeamTimers = {72, 26, 40}--Normal Feb 2
 --Exists in Phase 2 and Phase 3 (but cast start event missing in phase 3)
 local OrbTimers = {27, 76, 37, 70}--Heroic Jan 18
+local easyOrbTimers = {27, 56, 31}--Normal Feb 2
 --Only exist in phase 3 so first timer of course isn't variable
 local BurstTimers = {58, 52.0, 56.0, 65.0, 10.0, 10.0, 10.0, 10.0}--Heroic Jan 21 (normal ones are different i'm sure, just no data to fix yet)
+local easyBurstTimers = {58, 67}--Normal Feb 2
 local TormentTimers = {33, 61, 37, 60}--Heroic Jan 21
+local easyTormentTimers = {33, 41}--Normal Feb 2
 local currentTank, tankUnitID = nil, nil--not recoverable on purpose
 mod.vb.firstElementals = false
 mod.vb.slowElementalCount = 0
@@ -156,6 +161,7 @@ mod.vb.burstCastCount = 0
 mod.vb.burstDebuffCount = 0
 mod.vb.singularityCount = 1
 mod.vb.phase = 1
+mod.vb.transitionActive = false
 --Saved Information for echos
 mod.vb.totalRingCasts = 0
 mod.vb.totalbeamCasts = 0
@@ -184,6 +190,7 @@ function mod:OnCombatStart(delay)
 	self.vb.burstDebuffCount = 0
 	self.vb.singularityCount = 1--First one on pull doesn't have an event so have to skip it in count
 	self.vb.phase = 1
+	self.vb.transitionActive = false
 	self.vb.totalRingCasts = 0
 	self.vb.totalbeamCasts = 0
 	self.vb.totalsingularityCasts = 0
@@ -251,7 +258,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnEpochericOrb:Show()
 		voiceEpochericOrb:Play("161612")
 		local nextCount = self.vb.orbCastCount + 1
-		local timer = OrbTimers[nextCount]
+		local timer = self:IsEasy() and easyOrbTimers[nextCount] or OrbTimers[nextCount]
 		if timer then
 			timerEpochericOrbCD:Start(timer, nextCount)
 		end
@@ -263,7 +270,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 209597 then
 		self.vb.burstCastCount = self.vb.burstCastCount + 1
 		local nextCount = self.vb.burstCastCount + 1
-		local timer = BurstTimers[nextCount] or 10
+		local timer = self:IsEasy() and easyBurstTimers[nextCount] or (BurstTimers[nextCount] or 10)
 		if timer then
 			timerConflexiveBurstCD:Start(timer, nextCount)
 			countdownConflexiveBurst:Start(timer)
@@ -271,7 +278,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 210387 then
 		self.vb.tormentCastCount = self.vb.tormentCastCount + 1
 		local nextCount = self.vb.tormentCastCount + 1
-		local timer = TormentTimers[nextCount]
+		local timer = self:IsEasy() and easyTormentTimers[nextCount] or TormentTimers[nextCount]
 		if timer then
 			timerPermaliativeTormentCD:Start(timer, nextCount)
 		end
@@ -306,7 +313,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			if nextCount > self.vb.totalbeamCasts then return end
 		end
-		local timer = BeamTimers[nextCount]
+		local timer = self:IsEasy() and easyBeamTimers[nextCount] or BeamTimers[nextCount]
 		if timer then
 			timerDelphuricBeamCD:Start(timer, nextCount)
 			countdownDelphuricBeam:Start(timer)
@@ -316,7 +323,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 210024 and self:AntiSpam(15, 4) then
 		self.vb.orbCastCount = self.vb.orbCastCount + 1
 		local nextCount = self.vb.orbCastCount + 1
-		local timer = OrbTimers[nextCount]
+		local timer = self:IsEasy() and easyOrbTimers[nextCount] or OrbTimers[nextCount]
 		if timer then
 			specWarnEpochericOrb:Schedule(timer-10)
 			voiceEpochericOrb:Schedule(timer-10, "161612")
@@ -464,6 +471,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 211647 then--Time Stop
+		self.vb.transitionActive = true
 		self.vb.phase = self.vb.phase + 1
 		--self.vb.firstElementals = false
 		self.vb.slowElementalCount = 0
@@ -481,21 +489,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		countdownDelphuricBeam:Cancel()
 		timerLeaveNightwell:Start()
 		timerSpanningSingularityCD:Start(10, 1)--Updated Jan 18 heroic
-		if self:IsEasy() then
-			timerTimeElementalsCD:Start(15.7, SLOW)--Updated Jan 26
-			timerTimeElementalsCD:Start(18, FAST)--Updated Jan 26
-			timerEpochericOrbCD:Start(28, 1)--Updated Jan 26
-		else
-			timerTimeElementalsCD:Start(14.7, SLOW)--Updated Jan 18 heroic
-			timerTimeElementalsCD:Start(17, FAST)--Updated Jan 18 (17-18)
-			timerEpochericOrbCD:Start(27, 1)--Updated Jan 18 Heroic
-			timerArcaneticRing:Start(46, 1)--Verified Jan 18
-			countdownArcaneticRing:Start(46)
-		end
+		timerTimeElementalsCD:Start(14.7, SLOW)--Updated Jan 18 heroic
+		timerTimeElementalsCD:Start(17, FAST)--Updated Jan 18 (17-18)
 		if self.vb.phase == 2 then
 			warnPhase2:Show()
 			voicePhaseChange:Play("ptwo")
 			timerAblatingExplosionCD:Start(22)--Verfied unchanged Dec 13 Heroic
+			timerEpochericOrbCD:Start(28, 1)
+			if not self:IsEasy() then
+				timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
+				countdownArcaneticRing:Start(45.7)
+			end
 			timerDelphuricBeamCD:Start(72, 1)--Cast SUCCESS
 			countdownDelphuricBeam:Start(72)
 		elseif self.vb.phase == 3 then
@@ -506,20 +510,23 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			yellAblatingExplosion:Cancel()
 			--timerAblativePulseCD:Start(20.5)
 			if not self:IsEasy() then
+				timerEpochericOrbCD:Start(27, 1)
 				specWarnEpochericOrb:Schedule(27)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
 				voiceEpochericOrb:Schedule(27, "161612")
+				timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
+				countdownArcaneticRing:Start(45.7)
 			end
 			timerPermaliativeTormentCD:Start(33)--Updated Jan 18 Heroic
 			if not self:IsLFR() then
-				--Wasn't used in LFR
-				--Timer itself may need updating but been so long since seen heroic or mythic of this fight.
-				timerConflexiveBurstCD:Start(58, 1)
-				countdownConflexiveBurst:Start(58)
+				timerConflexiveBurstCD:Start(57.7, 1)
+				countdownConflexiveBurst:Start(57.7)
 			end
 		end
 		--berserkTimer:Cancel()
 		--berserkTimer:Start(258)
-	elseif spellId == 209005 then--Summon Time Elemental - Slow
+	elseif spellId == 208863 then
+		self.vb.transitionActive = false
+	elseif spellId == 209005 and not self.vb.transitionActive then--Summon Time Elemental - Slow
 		self.vb.slowElementalCount = self.vb.slowElementalCount + 1
 		--if self.vb.firstElementals then
 			specWarnTimeElementals:Show(SLOW)
@@ -529,7 +536,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if timer then
 			timerTimeElementalsCD:Start(timer, SLOW)
 		end
-	elseif spellId == 209007 or spellId == 211616 then--Summon Time Elemental - Fast
+	elseif (spellId == 209007 or spellId == 211616) and not self.vb.transitionActive then--Summon Time Elemental - Fast
 		self.vb.fastElementalCount = self.vb.fastElementalCount + 1
 		--if self.vb.firstElementals then
 			specWarnTimeElementals:Show(FAST)
@@ -544,7 +551,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		--specWarnTimeElementals:Show(STATUS_TEXT_BOTH)
 		--voiceElemental:Play("bigmob")
 		DBM:Debug("Both elementals summoned, this event still exists, probably need custom code for certain difficulties")
-	elseif (spellId == 209168 or spellId == 233012 or spellId == 233011) and self:AntiSpam(3, 3) then
+	elseif (spellId == 209168 or spellId == 233012 or spellId == 233011) and self:AntiSpam(3, 3) and not self.vb.transitionActive then
 		self.vb.singularityCount = self.vb.singularityCount + 1
 		specWarnSpanningSingularity:Show()
 		voiceSpanningSingularity:Play("watchstep")
@@ -554,7 +561,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		else
 			if nextCount > self.vb.totalsingularityCasts then return end--There won't be any more
 		end
-		local timer = SingularityTimers[nextCount]
+		local timer = self:IsEasy() and easySingularityTimers[nextCount] or SingularityTimers[nextCount]
 		if timer then
 			timerSpanningSingularityCD:Start(timer, nextCount)
 		end
@@ -606,7 +613,7 @@ function mod:OnSync(msg, targetname)
 		else
 			if nextCount > self.vb.totalRingCasts then return end--There won't be any more
 		end
-		local timer = RingTimers[nextCount]
+		local timer = self:IsEasy() and easyRingTimers[nextCount] or RingTimers[nextCount]
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
 			countdownArcaneticRing:Start(timer)
@@ -618,7 +625,7 @@ function mod:OnSync(msg, targetname)
 		specWarnEpochericOrb:Show()
 		voiceEpochericOrb:Play("161612")
 		local nextCount = self.vb.orbCastCount + 1
-		local timer = OrbTimers[nextCount]
+		local timer = self:IsEasy() and easyOrbTimers[nextCount] or OrbTimers[nextCount]
 		if timer then
 			timerEpochericOrbCD:Start(timer, nextCount)
 		end
