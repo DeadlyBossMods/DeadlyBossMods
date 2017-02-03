@@ -37,8 +37,8 @@ local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(209017, false, nil, 2
 local specWarnFelBurst				= mod:NewSpecialWarningInterrupt(206352, "HasInterrupt", nil, nil, 1, 2)
 
 local timerSearingBrand				= mod:NewTargetTimer(20, 206677, nil, "Tank", nil, 5)
-local timerFelBeamCD				= mod:NewNextCountTimer(16, 205368, nil, nil, nil, 3)
-local timerOrbDestroCD				= mod:NewNextCountTimer(16, 205344, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--Not that deadly on non mythic but on mythic it is
+local timerFelBeamCD				= mod:NewNextCountTimer(16, 205368, 173303, nil, nil, 3)--Short text "Beam"
+local timerOrbDestroCD				= mod:NewNextCountTimer(16, 205344, DBM_CORE_ORB, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--Shor timer text "Orb"
 local timerBurningPitchCD			= mod:NewNextCountTimer(16, 205420, nil, nil, 2, 5)
 local timerSlamCD					= mod:NewNextCountTimer(30, 205862, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
@@ -86,9 +86,15 @@ mod.vb.firstBeam = 0--0 Not sent, 1 Left, 2 Right
 --Global on purpose for external mod support
 function DBMUpdateKrosusBeam(wasLeft)
 	if wasLeft then
-		mod:SendSync("firstBeamWasLeft")
+		mod.vb.firstBeam = 1
+		if not mod:IsLFR() then
+			mod:SendSync("firstBeamWasLeft")
+		end
 	else
-		mod:SendSync("firstBeamWasRight")
+		mod.vb.firstBeam = 2
+		if not mod:IsLFR() then
+			mod:SendSync("firstBeamWasRight")
+		end
 	end
 end
 
@@ -142,14 +148,18 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 205368 or spellId == 205370 then--205370 left, 205368 right (right no longer is used)
 		self.vb.beamCount = self.vb.beamCount + 1
 		specWarnFelBeam:Show()
+		local nextCount = self.vb.beamCount + 1
+		local timerText = nextCount
 		if self.vb.firstBeam == 2 then--First Beam Right
 			if self.vb.beamCount % 2 == 0 then--Coming from left (facing boss)
 				voiceFelBeam:Play("moveright")
+				timerText = L.MoveRight
 				if self.Options.ArrowOnBeam3 then
 					DBM.Arrow:ShowStatic(270, 4)
 				end
 			else--coming from right (facing boss)
 				voiceFelBeam:Play("moveleft")
+				timerText = L.MoveLeft
 				if self.Options.ArrowOnBeam3 then
 					DBM.Arrow:ShowStatic(90, 4)
 				end
@@ -157,11 +167,13 @@ function mod:SPELL_CAST_START(args)
 		elseif self.vb.firstBeam == 1 then--First Beam Left
 			if self.vb.beamCount % 2 == 0 then--Coming from right (facing boss)
 				voiceFelBeam:Play("moveleft")
+				timerText = L.MoveLeft
 				if self.Options.ArrowOnBeam3 then
 					DBM.Arrow:ShowStatic(90, 4)
 				end
 			else--coming from left (facing boss)
 				voiceFelBeam:Play("moveright")
+				timerText = L.MoveRight
 				if self.Options.ArrowOnBeam3 then
 					DBM.Arrow:ShowStatic(270, 4)
 				end
@@ -169,10 +181,9 @@ function mod:SPELL_CAST_START(args)
 		else
 			voiceFelBeam:Play("shockwave")
 		end
-		local nextCount = self.vb.beamCount + 1
 		local timers = self:IsMythic() and mythicBeamTimers[nextCount] or self:IsHeroic() and heroicBeamTimers[nextCount] or lolBeamTimers[nextCount]
 		if timers then
-			timerFelBeamCD:Start(timers, nextCount)
+			timerFelBeamCD:Start(timers, timerText)
 		end
 	elseif spellId == 205420 then
 		self.vb.pitchCount = self.vb.pitchCount+ 1

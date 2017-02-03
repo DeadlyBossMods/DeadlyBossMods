@@ -42,7 +42,9 @@ L= DBM:GetModLocalization(1762)
 L:SetMiscLocalization({
 	First				= "1번 낙인",
 	Second				= "2번 낙인",
-	Third				= "3번 낙인"
+	Third				= "3번 낙인",
+	Adds1				= "부하들아! 이리 와라!",
+	Adds2				= "이 멍청이들에게 싸우는 법을 알려 줘라!"
 })
 
 ------------------

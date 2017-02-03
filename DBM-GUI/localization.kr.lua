@@ -17,9 +17,9 @@ L.TabCategory_Options		= "일반 설정"
 L.TabCategory_OTHER			= "기타 보스 모드"
 
 L.BossModLoaded 			= "%s 통계"
-L.BossModLoad_now 			= [[보스 모드를 불러오지 않았습니다. 
-해당 인스턴스에 진입하면 불러옵니다.
-버튼을 직접 클릭해서 모드를 불러올 수도 있습니다.]]
+L.BossModLoad_now 			= [[보스 모드가 로딩되지 않았습니다. 
+해당 인스턴스에 진입하면 로딩됩니다.
+아래 버튼을 클릭해서 모드를 직접 로딩할 수도 있습니다.]]
 
 L.PosX						= '위치 X'
 L.PosY						= '위치 Y'
@@ -27,9 +27,9 @@ L.PosY						= '위치 Y'
 L.MoveMe 					= '위치 이동'
 L.Button_OK					= '확인'
 L.Button_Cancel				= '취소'
-L.Button_LoadMod			= '애드온 불러오기'
+L.Button_LoadMod			= '애드온 로드'
 L.Mod_Enabled				= "보스 모드 활성화"
-L.Mod_Reset					= "설정 기본값 불러오기"
+L.Mod_Reset					= "설정 기본값 로드"
 L.Reset						= "초기화"
 
 L.Enable					= "활성화"
@@ -347,7 +347,7 @@ L.SelectProfileToCopy		= "복사할 프로필 선택"
 L.Area_DeleteProfile		= "DBM Core 설정 프로필 삭제"
 L.SelectProfileToDelete		= "삭제할 프로필 선택"
 L.Area_DualProfile			= "보스 모드 프로필 설정"
-L.DualProfile				= "전문화마다 다른 보스 모드 설정을 사용합니다. (보스 모드 프로필 관리는 불러낸 보스 모드의 통계 화면에서 이루어집니다)"
+L.DualProfile				= "전문화마다 다른 보스 모드 설정을 사용합니다. (보스 모드 프로필 관리는 로딩된 보스 모드의 통계 화면에서 이루어집니다)"
 
 L.Area_ModProfile			= "다른 캐릭터/전문화의 설정 복사/삭제"
 L.ModAllReset				= "이 모드의 모든 설정 초기화"
