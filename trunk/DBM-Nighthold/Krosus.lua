@@ -17,7 +17,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 206677",
 	"SPELL_AURA_REMOVED 205344",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"CHAT_MSG_ADDON"
 )
 
 --(ability.id = 205368 or ability.id = 205370 or ability.id = 205420 or ability.id = 205361) and type = "begincast"
@@ -58,7 +59,7 @@ local voiceFelBurst					= mod:NewVoice(206352, "HasInterrupt")--kickcast
 mod:AddRangeFrameOption(5, 206352)
 --mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddInfoFrameOption(215944, false)
---mod:AddArrowOption("ArrowOnBeam3", 205368, true)
+mod:AddArrowOption("ArrowOnBeam3", 205368, true)
 
 local burningPitchDebuff = GetSpellInfo(215944)
 local mobGUIDs = {}
@@ -80,6 +81,7 @@ mod.vb.slamCount = 0
 mod.vb.beamCount = 0
 mod.vb.orbCount = 0
 mod.vb.pitchCount = 0
+mod.vb.firstBeam = 0--0 Not sent, 1 Left, 2 Right
 
 function mod:OnCombatStart(delay)
 	table.wipe(mobGUIDs)
@@ -88,6 +90,7 @@ function mod:OnCombatStart(delay)
 	self.vb.beamCount = 0
 	self.vb.orbCount = 0
 	self.vb.pitchCount = 0
+	self.vb.firstBeam = 0
 	if self:IsMythic() then
 		timerFelBeamCD:Start(6-delay, 1)
 		timerOrbDestroCD:Start(13-delay, 1)
@@ -130,8 +133,8 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 205368 or spellId == 205370 then--205370 left, 205368 right (right no longer is used)
 		self.vb.beamCount = self.vb.beamCount + 1
 		specWarnFelBeam:Show()
-		voiceFelBeam:Play("shockwave")
---[[		if self:IsMythic() then
+		--/run DBM:GetModByName("1713").vb.firstBeam = 2
+		if self.vb.firstBeam == 2 then--First Beam Right
 			if self.vb.beamCount % 2 == 0 then--Coming from left (facing boss)
 				voiceFelBeam:Play("moveright")
 				if self.Options.ArrowOnBeam3 then
@@ -143,7 +146,8 @@ function mod:SPELL_CAST_START(args)
 					DBM.Arrow:ShowStatic(90, 4)
 				end
 			end
-		else
+		--/run DBM:GetModByName("1713").vb.firstBeam = 1
+		elseif self.vb.firstBeam == 1 then--First Beam Left
 			if self.vb.beamCount % 2 == 0 then--Coming from right (facing boss)
 				voiceFelBeam:Play("moveleft")
 				if self.Options.ArrowOnBeam3 then
@@ -155,7 +159,9 @@ function mod:SPELL_CAST_START(args)
 					DBM.Arrow:ShowStatic(270, 4)
 				end
 			end
-		end--]]
+		else
+			voiceFelBeam:Play("shockwave")
+		end
 		local nextCount = self.vb.beamCount + 1
 		local timers = self:IsMythic() and mythicBeamTimers[nextCount] or self:IsHeroic() and heroicBeamTimers[nextCount] or lolBeamTimers[nextCount]
 		if timers then
@@ -278,5 +284,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		DBM:Debug("Single Beam", 2)
 	elseif spellId == 215961 then--Double Beam (fires for the double beam sequence where you get both beams back to back. Only fires at start of it not each beam*)
 		DBM:Debug("Double Beam", 2)
+	end
+end
+
+--Listen for BigWigs_KrosusAssist
+function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
+	if prefix ~= "BigWigs" then return end
+	local bwPrefix, bwMsg, extra = strsplit("^", msg)
+	if bwPrefix == "B" then
+		if bwMsg == "firstBeamWasLeft" then
+			self.vb.firstBeam = 1
+		elseif bwMsg == "firstBeamWasRight" then
+			self.vb.firstBeam = 2
+		end
 	end
 end
