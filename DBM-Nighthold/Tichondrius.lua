@@ -44,7 +44,7 @@ local yellBrandOfArgus				= mod:NewPosYell(212794, 156225)--"Branded" short text
 local specWarnFeastOfBlood			= mod:NewSpecialWarningRun(208230, nil, nil, nil, 1, 2)--Move away, or run? neither one really says "get 30 yards from boss"
 local specWarnFeastOfBloodOther		= mod:NewSpecialWarningTaunt(208230, nil, nil, nil, 1, 2)
 local specWarnEchoesOfVoid			= mod:NewSpecialWarningDodge(213531, nil, nil, nil, 3, 2)
-local specWarnAdds					= mod:NewSpecialWarningAdds(216726, nil, nil, nil, 1, 2)
+local specWarnAdds					= mod:NewSpecialWarningAdds(216726, "-Healer", nil, nil, 1, 2)
 --Nightborne
 local specWarnBlastNova				= mod:NewSpecialWarningInterrupt(216034, "HasInterrupt", nil, nil, 2, 2)
 local specWarnNetherZoneGTFO		= mod:NewSpecialWarningMove(216027, nil, nil, nil, 2, 2)
@@ -59,7 +59,7 @@ local timerFeastOfBloodCD			= mod:NewNextCountTimer(25, 208230, nil, nil, 2, 1)
 local timerEchoesOfVoidCD			= mod:NewNextCountTimer(65, 213531, nil, nil, nil, 2)
 local timerIllusionaryNightCD		= mod:NewNextCountTimer(125, 206365, nil, nil, nil, 6)
 local timerIllusionaryNight			= mod:NewBuffActiveTimer(32, 206365, nil, nil, nil, 6)
-local timerAddsCD					= mod:NewAddsTimer(25, 216726)
+local timerAddsCD					= mod:NewAddsTimer(25, 216726, nil, "-Healer")
 
 local berserkTimer					= mod:NewBerserkTimer(480)
 
@@ -72,7 +72,7 @@ local voiceCarrionPlague			= mod:NewVoice(206480)--scatter
 local voiceSeekerSwarm				= mod:NewVoice(213238)--targetyou/farfromline
 local voiceFeastOfBlood				= mod:NewVoice(208230)--runout/tauntboss
 local voiceEchoesOfVoid				= mod:NewVoice(213531)--findshelter
-local voiceAdds						= mod:NewVoice(216726, nil, DBM_CORE_AUTO_VOICE3_OPTION_TEXT)--killmob
+local voiceAdds						= mod:NewVoice(216726, "-Healer", DBM_CORE_AUTO_VOICE3_OPTION_TEXT)--killmob
 --Nightborne
 local voiceBlastNova				= mod:NewVoice(216034)--kickcast
 local voiceNetherZone				= mod:NewVoice(216027)--runaway
