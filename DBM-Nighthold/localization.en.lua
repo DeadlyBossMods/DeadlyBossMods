@@ -55,6 +55,11 @@ L:SetWarningLocalization({
 	warnSlamSoon		= "Bridge break in %ds"
 })
 
+L:SetMiscLocalization({
+	MoveLeft			= "Move Left",
+	MoveRight			= "Move Right"
+})
+
 ------------------
 -- High Botanist Tel'arn --
 ------------------
