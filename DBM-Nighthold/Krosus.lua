@@ -153,13 +153,13 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.firstBeam == 2 then--First Beam Right
 			if self.vb.beamCount % 2 == 0 then--Coming from left (facing boss)
 				voiceFelBeam:Play("moveright")
-				timerText = L.MoveRight
+				timerText = L.MoveLeft--Timer text is backwards cause it's for NEXT beam
 				if self.Options.ArrowOnBeam3 then
 					DBM.Arrow:ShowStatic(270, 4)
 				end
 			else--coming from right (facing boss)
 				voiceFelBeam:Play("moveleft")
-				timerText = L.MoveLeft
+				timerText = L.MoveRight--Timer text is backwards cause it's for NEXT beam
 				if self.Options.ArrowOnBeam3 then
 					DBM.Arrow:ShowStatic(90, 4)
 				end
@@ -167,13 +167,13 @@ function mod:SPELL_CAST_START(args)
 		elseif self.vb.firstBeam == 1 then--First Beam Left
 			if self.vb.beamCount % 2 == 0 then--Coming from right (facing boss)
 				voiceFelBeam:Play("moveleft")
-				timerText = L.MoveLeft
+				timerText = L.MoveRight--Timer text is backwards cause it's for NEXT beam
 				if self.Options.ArrowOnBeam3 then
 					DBM.Arrow:ShowStatic(90, 4)
 				end
 			else--coming from left (facing boss)
 				voiceFelBeam:Play("moveright")
-				timerText = L.MoveRight
+				timerText = L.MoveLeft--Timer text is backwards cause it's for NEXT beam
 				if self.Options.ArrowOnBeam3 then
 					DBM.Arrow:ShowStatic(270, 4)
 				end
