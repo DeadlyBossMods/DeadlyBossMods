@@ -41,7 +41,9 @@ L= DBM:GetModLocalization(1762)
 L:SetMiscLocalization({
 	First				= "First",
 	Second				= "Second",
-	Third				= "Third"
+	Third				= "Third",
+	Adds1				= "Underlings! Get in here!",
+	Adds2				= "Show these pretenders how to fight!"
 })
 
 ------------------

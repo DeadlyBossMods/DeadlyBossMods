@@ -343,7 +343,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	count			= "%s! (%%s)",
 	stack			= "%%d stacks of %s on you",
 	switch			= "%s - switch targets",
-	switchcount		= "%s - switch targets (%%s)"
+	switchcount		= "%s - switch targets (%%s)",
+	Adds			= "Incoming Adds - switch targets"
 }
 
 -- Auto-generated Special Warning Localizations
@@ -376,7 +377,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	count 			= "Show special warning (with count) for $spell:%s",
 	stack 			= "Show special warning when you are affected by >=%d stacks of $spell:%s",
 	switch			= "Show special warning to switch targets for $spell:%s",
-	switchcount		= "Show special warning (with count) to switch targets for $spell:%s"
+	switchcount		= "Show special warning (with count) to switch targets for $spell:%s",
+	Adds			= "Show special warning to switch targets for incoming adds"
 }
 
 -- Auto-generated Timer Localizations
@@ -397,7 +399,8 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	nextspecial	= "Next Special Ability",
 	achievement	= "%s",
 	phase		= "Next Phase",
-	roleplay	= GUILD_INTEREST_RP--Does not require DBM_CORE_AUTO_TIMER_TEXTS.roleplay in other languages, skip this one unless you want to word better.
+	adds		= "Next Incoming Adds",
+	roleplay	= GUILD_INTEREST_RP
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -417,6 +420,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	nextspecial	= "Show timer for next special ability",
 	achievement	= "Show timer for %s",
 	phase		= "Show timer for next phase",
+	adds		= "Show timer for incoming adds",
 	roleplay	= "Show timer for roleplay duration"--This does need localizing though.
 }
 
@@ -428,6 +432,7 @@ DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "Show DBM Arrow to move away from target aff
 DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "Show DBM Arrow to move toward specific location for $spell:%s"
 DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "Play spoken alerts for $spell:%s"
 DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "Play spoken alerts for phase changes"
+DBM_CORE_AUTO_VOICE3_OPTION_TEXT		= "Play spoken alerts for incoming adds"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Play countdown sound for $spell:%s cooldown"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Play countdown sound for when $spell:%s fades"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Play countout sound for $spell:%s duration"
