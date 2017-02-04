@@ -123,6 +123,7 @@ local voiceRunicBrand				= mod:NewVoice(231297)--mmX (will be changed to mmc whe
 mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(227503, true)
 mod:AddRangeFrameOption("5/8/15")
+mod:AddNamePlateOption("NPAuraOnRunicBrand", 231297)
 
 mod.vb.phase = 1
 mod.vb.hornCasting = false
@@ -254,6 +255,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if self.Options.NPAuraOnRunicBrand then
+		DBM.Nameplate:Hide(nil, true)
 	end
 end
 
@@ -475,6 +479,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			updateRangeFrame(self)
 		end
+		if self.Options.NPAuraOnRunicBrand then
+			DBM.Nameplate:Show(args.destGUID, spellId)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -497,6 +504,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 231311 or spellId == 231342 or spellId == 231344 or spellId == 231345 or spellId == 231346 then--Branded (Draw Power Runes)
 		if args:IsPlayer() then
 			playerDebuff = nil
+		end
+		if self.Options.NPAuraOnRunicBrand then
+			DBM.Nameplate:Hide(args.destGUID)
 		end
 	end
 end
