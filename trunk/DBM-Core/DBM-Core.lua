@@ -246,6 +246,7 @@ DBM.DefaultOptions = {
 	DontRestoreRange = false,
 	DontShowInfoFrame = false,
 	DontShowHudMap2 = false,
+	DontShowNameplateIcons = false,
 	DontShowHealthFrame = false,
 	DontPlayCountdowns = false,
 	DontSendYells = false,
@@ -10484,6 +10485,19 @@ function bossModPrototype:AddHudMapOption(name, spellId, default)
 	else
 		self.localization.options[name] = DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI
 	end
+end
+
+function bossModPrototype:AddNamePlateOption(name, spellId, default)
+	if not spellId then
+		error("AddNamePlateOption must provide valid spellId", 2)
+	end
+	self.DefaultOptions[name] = (default == nil) or default
+	if default and type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
+	self.Options[name] = (default == nil) or default
+	self:SetOptionCategory(name, "misc")
+	self.localization.options[name] = DBM_CORE_AUTO_NAMEPLATE_OPTION_TEXT:format(spellId)
 end
 
 function bossModPrototype:AddInfoFrameOption(spellId, default)

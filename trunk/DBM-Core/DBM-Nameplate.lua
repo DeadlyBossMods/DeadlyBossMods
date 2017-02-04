@@ -1,6 +1,6 @@
 --Known issues (because blizzards nameplate code is such utter shite)
---Icon will bounce to invalid targets if nameplates go in and out of range. I haven't been able to fix even with GUID validation
---This probably leaks memory/cpu like no tomorrow.
+--This probably leaks memory and/or cpu without any wiping of created icons/garbage collection
+--It obviously won't work if nameplates aren't enabled. So it can be a clusterfuck in raids unless you run custom nameplate mod that can shrink/invisible player nameplates (without hiding them)
 
 -- globals
 DBM.Nameplate = {}
@@ -32,9 +32,9 @@ DBMNameplateFrame:SetScript("OnEvent", function(self, event, ...)
 		--nameplateFrame:UpdateUnit(frame, unit)
 	elseif event == "NAME_PLATE_CREATED" then
 		local frame = select(1, ...)
-		if not frame then return end--Shouldn't be needed but blizzards code is shit and sometimes NAME_PLATE_CREATED fires for frames that don't exist
+		if not frame then return end--Shouldn't be needed but it is
 		local unit = frame.namePlateUnitToken
-		if not unit then return end--Shoudln't happen either, but fuck blizzard
+		if not unit then return end--Shoudln't happen either, but it does
 		nameplateFrame:UpdateUnit(frame, unit)
 	end
 end)
@@ -43,6 +43,7 @@ end)
 --  Functions  --
 -----------------
 function nameplateFrame:Show(unitGUID, spellId, texture)
+	if DBM.Options.DontShowNameplateIcons then return end
 	if UnitGUID("player") == unitGUID then return end--player has no nameplate
 	if not DBMNameplateFrame:IsShown() then
 		DBMNameplateFrame:Show()
@@ -52,20 +53,33 @@ function nameplateFrame:Show(unitGUID, spellId, texture)
 		DBM:Debug("DBM.Nameplate Enabling", 2)
 	end
 	--Support custom texture, or just pull it from spellid
+	local forceTextureUpdate = false
+	local currentTexture = texture or GetSpellTexture(spellId)
+	if units[unitGUID] and units[unitGUID] ~= currentTexture then
+		forceTextureUpdate = true
+	end
 	units[unitGUID] = texture or GetSpellTexture(spellId)
 	unitspells[unitGUID] = GetSpellInfo(spellId)
 	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
 		local foundUnit = frame.namePlateUnitToken
 		local foundGUID = UnitGUID(foundUnit)
 		if foundGUID == unitGUID then
-			nameplateFrame:UpdateUnit(frame, foundUnit)
+			nameplateFrame:UpdateUnit(frame, foundUnit, forceTextureUpdate)
 		end
 	end
 end
 
-function nameplateFrame:Hide(GUID, force)
+function nameplateFrame:Hide(unitGUID, force)
+	local GUID = unitGUID or UnitGUID("player")--If guid isn't passed (such as on a force) shove player GUID in there to prevent errors
 	units[GUID] = nil
 	unitspells[GUID] = nil
+	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+		local foundUnit = frame.namePlateUnitToken
+		local foundGUID = UnitGUID(foundUnit)
+		if frame.DBMTexture and (force or foundGUID == GUID) then
+			frame.DBMTexture:Hide()
+		end
+	end
 	if force or #units == 0 then
 		table.wipe(units)
 		table.wipe(unitspells)
@@ -100,12 +114,15 @@ function nameplateFrame:UpdateAll()
 	end
 end
 
-function nameplateFrame:UpdateUnit(frame, unit)
+function nameplateFrame:UpdateUnit(frame, unit, forceTextureUpdate)
 	local GUID = UnitGUID(unit)
 	if units[GUID] then
 		DBM:Debug("DBM.Nameplate updating for unit: "..unit, 3)
 		if not frame.DBMTexture then
 			nameplateFrame:CreateTexture(frame, unit)
+		end
+		if forceTextureUpdate then
+			frame.DBMTexture:SetTexture(units[GUID])
 		end
 		if UnitDebuff(unit, unitspells[GUID]) or UnitBuff(unit, unitspells[GUID]) then--Debuff/Buff still present
 			frame.DBMTexture:Show()
