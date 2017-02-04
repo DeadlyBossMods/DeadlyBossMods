@@ -42,6 +42,9 @@ end)
 -----------------
 --  Functions  --
 -----------------
+--/run DBM.Nameplate:Show(UnitGUID("target"), 227723)--Mana tracking, easy to find in Dalaran
+--/run DBM.Nameplate:Hide(nil, true)
+--/run DBM.Nameplate:Hide(UnitGUID("target"))
 function nameplateFrame:Show(unitGUID, spellId, texture)
 	if DBM.Options.DontShowNameplateIcons then return end
 	if UnitGUID("player") == unitGUID then return end--player has no nameplate
@@ -69,8 +72,8 @@ function nameplateFrame:Show(unitGUID, spellId, texture)
 	end
 end
 
-function nameplateFrame:Hide(unitGUID, force)
-	local GUID = unitGUID or UnitGUID("player")--If guid isn't passed (such as on a force) shove player GUID in there to prevent errors
+function nameplateFrame:Hide(GUID, force)
+	GUID = GUID or UnitGUID("player")--If guid isn't passed (such as on a force) shove player GUID in there to prevent errors
 	units[GUID] = nil
 	unitspells[GUID] = nil
 	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
