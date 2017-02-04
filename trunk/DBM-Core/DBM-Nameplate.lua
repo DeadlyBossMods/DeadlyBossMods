@@ -90,7 +90,9 @@ function nameplateFrame:Hide(GUID, force)
 	if force or #units == 0 then
 		table.wipe(units)
 		table.wipe(unitspells)
-		DBMNameplateFrame:UnregisterAllEvents()
+		DBMNameplateFrame:UnregisterEvent("NAME_PLATE_CREATED")
+		DBMNameplateFrame:UnregisterEvent("NAME_PLATE_UNIT_ADDED")
+		DBMNameplateFrame:UnregisterEvent("NAME_PLATE_UNIT_REMOVED")
 		DBMNameplateFrame:Hide()
 		DBM:Debug("DBM.Nameplate Disabling", 2)
 	end
@@ -115,10 +117,21 @@ function nameplateFrame:CreateTexture(frame, unit)
 end
 
 function nameplateFrame:UpdateAll()
-	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
-		local unit = frame.namePlateUnitToken
-		if unit then
-			nameplateFrame:UpdateUnit(frame, unit)
+	if not DBMNameplateFrame:IsShown() then
+		DBMNameplateFrame:Show()
+		DBMNameplateFrame:RegisterEvent("NAME_PLATE_CREATED")
+		DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+		DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+		DBM:Debug("DBM.Nameplate Enabling", 2)
+	end
+	if #units == 0 then--This is a cleanup request, redo hide
+		nameplateFrame:Hide(nil, force)
+	else--User might have togglednameplates mid fight, so lets get their textures working
+		for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+			local unit = frame.namePlateUnitToken
+			if unit then
+				nameplateFrame:UpdateUnit(frame, unit)
+			end
 		end
 	end
 end
@@ -136,6 +149,11 @@ function nameplateFrame:UpdateUnit(frame, unit)
 		else
 			frame.DBMTexture:Hide()
 			nameplateFrame:Hide(GUID)
+		end
+	else
+		--Fix any left over textures in an UpdateAll call
+		if frame.DBMTexture then
+			frame.DBMTexture:Hide()
 		end
 	end	
 end
