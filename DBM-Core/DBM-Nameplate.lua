@@ -1,6 +1,7 @@
 --Known issues (because blizzards nameplate code is such utter shite)
 --This probably leaks memory and/or cpu without any wiping of created icons/garbage collection
 --It obviously won't work if nameplates aren't enabled. So it can be a clusterfuck in raids unless you run custom nameplate mod that can shrink/invisible player nameplates (without hiding them)
+--Hiding on combat end breaks if nameplatemods like tidyplates/kui disable nameplates before dbm can do it's cleanup, resulting in textures getting stuck in place
 
 -- globals
 DBM.Nameplate = {}
