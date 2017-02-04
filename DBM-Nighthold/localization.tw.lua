@@ -56,6 +56,11 @@ L:SetWarningLocalization({
 	warnSlamSoon		= "橋梁將在%d秒後砸毀"
 })
 
+L:SetMiscLocalization({
+	MoveLeft			= "向左移動",
+	MoveRight			= "向右移動"
+})
+
 ------------------
 -- High Botanist Tel'arn --
 ------------------
