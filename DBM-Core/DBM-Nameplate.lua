@@ -65,6 +65,7 @@ function nameplateFrame:Show(unitGUID, spellId, texture)
 		local foundGUID = UnitGUID(foundUnit)
 		if foundGUID == unitGUID then
 			nameplateFrame:UpdateUnit(frame, foundUnit)
+			break
 		end
 	end
 end
@@ -110,7 +111,9 @@ end
 function nameplateFrame:UpdateAll()
 	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
 		local unit = frame.namePlateUnitToken
-		nameplateFrame:UpdateUnit(frame, unit)
+		if unit then
+			nameplateFrame:UpdateUnit(frame, unit)
+		end
 	end
 end
 
