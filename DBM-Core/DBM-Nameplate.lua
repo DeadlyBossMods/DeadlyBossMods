@@ -37,6 +37,11 @@ DBMNameplateFrame:SetScript("OnEvent", function(self, event, ...)
 		local unit = frame.namePlateUnitToken
 		if not unit then return end--Shoudln't happen either, but it does
 		nameplateFrame:UpdateUnit(frame, unit)
+	elseif event == "CVAR_UPDATE" then
+		local name = ...
+		if name == "UNIT_NAMEPLATES_SHOW_ENEMIES" or name == "UNIT_NAMEPLATES_SHOW_FRIENDS" or name == "UNIT_NAMEPLATES" then
+			nameplateFrame:UpdateAll()--Update all nameplates on show/hide to see if it resolves getting stuck graphics
+		end
 	end
 end)
 
@@ -54,6 +59,7 @@ function nameplateFrame:Show(unitGUID, spellId, texture)
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_CREATED")
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+		DBMNameplateFrame:RegisterEvent("CVAR_UPDATE")
 		DBM:Debug("DBM.Nameplate Enabling", 2)
 	end
 	--Support custom texture, or just pull it from spellid
