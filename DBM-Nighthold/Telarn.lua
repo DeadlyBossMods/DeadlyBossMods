@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 218424 218807 223437",
 	"SPELL_AURA_APPLIED 218809 218503 218304 218342 222021 222010 222020",
 	"SPELL_AURA_APPLIED_DOSE 218503",
-	"SPELL_AURA_REMOVED 218809 218304",
+	"SPELL_AURA_REMOVED 218809 218304 218342",
 --	"SPELL_DAMAGE",
 --	"SPELL_MISSED",
 --	"UNIT_DIED",
@@ -113,6 +113,7 @@ mod:AddRangeFrameOption(8, 218807)
 mod:AddSetIconOption("SetIconOnFetter", 218304, true)
 mod:AddSetIconOption("SetIconOnCoN", 218807, true)
 mod:AddHudMapOption("HudMapOnCoN", 218807)
+mod:AddNamePlateOption("NPAuraOnFixate", 218342, false)
 
 mod.vb.CoNIcon = 1
 mod.vb.phase = 1
@@ -177,6 +178,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.HudMapOnCoN then
 		DBMHudMap:Disable()
+	end
+	if self.Options.NPAuraOnFixate then
+		DBM.Nameplate:Hide(nil, true)
 	end
 end
 
@@ -354,6 +358,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnParasiticFixate:Show()
 			voiceParasiticFixate:Play("targetyou")
 		end
+		if self.Options.NPAuraOnFixate then
+			DBM.Nameplate:Show(args.destGUID, spellId)
+		end
 --	elseif spellId == 219009 then
 --		local targetName = args.destName
 --		if targetName == UnitName("target") or targetName == UnitName("focus") then
@@ -488,6 +495,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.SetIconOnFetter and not self:IsLFR() then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif spellId == 218342 then
+		if self.Options.NPAuraOnFixate then
+			DBM.Nameplate:Hide(args.destGUID)
 		end
 	end
 end

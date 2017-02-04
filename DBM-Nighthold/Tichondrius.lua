@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 212997 212794 208230",
 	"SPELL_AURA_APPLIED 206480 212794 208230 216040",
 	"SPELL_AURA_APPLIED_DOSE 216024",
-	"SPELL_AURA_REMOVED 212794 216040",
+	"SPELL_AURA_REMOVED 212794 216040 206480",
 	"SPELL_PERIODIC_DAMAGE 216027",
 	"SPELL_PERIODIC_MISSED 216027",
 	"CHAT_MSG_MONSTER_YELL"
@@ -81,6 +81,7 @@ local voiceBurningSoul				= mod:NewVoice(216040)--runout
 
 mod:AddRangeFrameOption(8, 216040)
 mod:AddSetIconOption("SetIconOnBrandOfArgus", 212794, true)
+mod:AddNamePlateOption("NPAuraOnCarrionPlague", 206480, false)
 mod:AddInfoFrameOption(212794)
 mod:AddHudMapOption("HudMapOnSeeker", 213238)
 mod:AddBoolOption("HUDSeekerLines", true)--On by default for beta testing. Actual defaults for live subject to accuracy review.
@@ -206,6 +207,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.HudMapOnSeeker then
 		DBMHudMap:Disable()
+	end
+	if self.Options.NPAuraOnCarrionPlague then
+		DBM.Nameplate:Hide(nil, true)
 	end
 end
 
@@ -394,6 +398,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCarrionPlague:Show()
 			voiceCarrionPlague:Play("scatter")
 		end
+		if self.Options.NPAuraOnCarrionPlague then
+			DBM.Nameplate:Show(args.destGUID, spellId)
+		end
 	elseif spellId == 212794 then
 		argusTargets[#argusTargets+1] = args.destName
 		self:Unschedule(breakMarks)
@@ -443,6 +450,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 216040 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	elseif spellId == 206480 then
+		if self.Options.NPAuraOnCarrionPlague then
+			DBM.Nameplate:Hide(args.destGUID)
+		end
 	end
 end
 
