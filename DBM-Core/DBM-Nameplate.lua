@@ -56,18 +56,14 @@ function nameplateFrame:Show(unitGUID, spellId, texture)
 		DBM:Debug("DBM.Nameplate Enabling", 2)
 	end
 	--Support custom texture, or just pull it from spellid
-	local forceTextureUpdate = false
 	local currentTexture = texture or GetSpellTexture(spellId)
-	if units[unitGUID] and units[unitGUID] ~= currentTexture then
-		forceTextureUpdate = true
-	end
-	units[unitGUID] = texture or GetSpellTexture(spellId)
+	units[unitGUID] = currentTexture
 	unitspells[unitGUID] = GetSpellInfo(spellId)
 	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
 		local foundUnit = frame.namePlateUnitToken
 		local foundGUID = UnitGUID(foundUnit)
 		if foundGUID == unitGUID then
-			nameplateFrame:UpdateUnit(frame, foundUnit, forceTextureUpdate)
+			nameplateFrame:UpdateUnit(frame, foundUnit)
 		end
 	end
 end
@@ -117,16 +113,14 @@ function nameplateFrame:UpdateAll()
 	end
 end
 
-function nameplateFrame:UpdateUnit(frame, unit, forceTextureUpdate)
+function nameplateFrame:UpdateUnit(frame, unit)
 	local GUID = UnitGUID(unit)
 	if units[GUID] then
 		DBM:Debug("DBM.Nameplate updating for unit: "..unit, 3)
 		if not frame.DBMTexture then
 			nameplateFrame:CreateTexture(frame, unit)
 		end
-		if forceTextureUpdate then
-			frame.DBMTexture:SetTexture(units[GUID])
-		end
+		frame.DBMTexture:SetTexture(units[GUID])--Always force reset it, more cpu but avoids invalid texture apparently
 		if UnitDebuff(unit, unitspells[GUID]) or UnitBuff(unit, unitspells[GUID]) then--Debuff/Buff still present
 			frame.DBMTexture:Show()
 		else
