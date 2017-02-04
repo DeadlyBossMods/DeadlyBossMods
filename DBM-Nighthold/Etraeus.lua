@@ -131,6 +131,7 @@ local voiceWorldDevouringForce		= mod:NewVoice(216909)--farfromline
 
 mod:AddRangeFrameOption("5/8")
 mod:AddHudMapOption("HudMapOnConjunction", 205408)
+mod:AddNamePlateOption("NPAuraOnConjunction", 205408)
 mod:AddBoolOption("ShowNeutralColor", false)
 mod:AddInfoFrameOption(205408)--really needs a "various" option
 
@@ -307,6 +308,9 @@ function mod:OnCombatEnd()
 	if self.Options.HudMapOnConjunction then
 		DBMHudMap:Disable()
 	end
+	if self.Options.NPAuraOnConjunction then
+		DBM.Nameplate:Hide(nil, true)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -480,6 +484,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.InfoFrame:Show(15, "function", updateInfoFrame, sortInfoFrame, true)
 			end
 		end
+		if self.Options.NPAuraOnConjunction then
+			DBM.Nameplate:Show(args.destGUID, spellId)
+		end
 	elseif spellId == 206464 then
 		warnCoronalEjection:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
@@ -565,6 +572,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			tDeleteItem(hunters, args.destName)
 		elseif spellId == 205445 then--Wolf
 			tDeleteItem(wolves, args.destName)
+		end
+		if self.Options.NPAuraOnConjunction then
+			DBM.Nameplate:Hide(args.destGUID)
 		end
 	elseif spellId == 205984 or spellId == 214335 or spellId == 214167 then
 		if args:IsPlayer() then
