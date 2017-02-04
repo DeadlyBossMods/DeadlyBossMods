@@ -125,7 +125,7 @@ function nameplateFrame:UpdateUnit(frame, unit)
 			frame.DBMTexture:Show()
 		else
 			frame.DBMTexture:Hide()
-			nameplateFrame:Hide(unit)
+			nameplateFrame:Hide(GUID)
 		end
 	end	
 end
