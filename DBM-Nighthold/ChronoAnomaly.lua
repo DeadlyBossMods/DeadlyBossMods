@@ -62,6 +62,7 @@ local voiceSmallAdd					= mod:NewVoice(206699, "Tank")
 mod:AddRangeFrameOption(10, 206617)
 mod:AddInfoFrameOption(206617)
 --mod:AddSetIconOption("SetIconOnTimeRelease", 206610, true)
+mod:AddNamePlateOption("NPAuraOnTimeBomb", 206617, false)
 
 mod.vb.normCount = 0
 mod.vb.fastCount = 0
@@ -109,6 +110,9 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
+	if self.Options.NPAuraOnTimeBomb then
+		DBM.Nameplate:Hide(nil, true)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -146,6 +150,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(10, "playerdebuffremaining", args.spellName)
 		end
+		if self.Options.NPAuraOnTimeBomb then
+			DBM.Nameplate:Show(args.destGUID, spellId)
+		end
 	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
 		warnTimeRelease:CombinedShow(0.5, args.destName)
 --		if self.Options.SetIconOnTimeRelease then
@@ -178,6 +185,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.InfoFrame and self.vb.timeBombDebuffCount == 0 then
 			DBM.InfoFrame:Hide()
+		end
+		if self.Options.NPAuraOnTimeBomb then
+			DBM.Nameplate:Hide(args.destGUID)
 		end
 	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
 --		if self.Options.SetIconOnTimeRelease then
