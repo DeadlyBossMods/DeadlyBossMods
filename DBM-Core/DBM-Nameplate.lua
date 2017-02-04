@@ -29,6 +29,12 @@ function nameplateFrame:Show(unit, spellId, texture)
 	--Support custom texture, or just pull it from spellid
 	units[unit] = texture or GetSpellTexture(spellId)
 	unitspells[unit] = GetSpellInfo(spellId)
+	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+		local foundUnit = frame.namePlateUnitToken
+		if UnitIsUnit(foundUnit, Unit) then
+			nameplateFrame:UpdateUnit(frame, unit)
+		end
+	end
 end
 
 function nameplateFrame:Hide(unit, force)
