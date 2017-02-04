@@ -24,6 +24,7 @@ function nameplateFrame:Show(unit, spellId, texture)
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_CREATED")
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+		DBM:Debug("DBM.Nameplate Enabling", 2)
 	end
 	--Support custom texture, or just pull it from spellid
 	units[unit] = texture or GetSpellTexture(spellId)
@@ -38,6 +39,7 @@ function nameplateFrame:Hide(unit, force)
 		table.wipe(unitspells)
 		DBMNameplateFrame:UnregisterAllEvents()
 		DBMNameplateFrame:Hide()
+		DBM:Debug("DBM.Nameplate Disabling", 2)
 	end
 end
 
@@ -55,6 +57,7 @@ function nameplateFrame:CreateTexture(frame, unit)
 	dbmtexture:SetParent(UIParent)
 	dbmtexture:Hide()
 	frame.DBM.texture = dbmtexture
+	DBM:Debug("DBM.Nameplate making textures great again", 2)
 end
 
 function nameplateFrame:UpdateAll()
@@ -66,6 +69,7 @@ end
 
 function nameplateFrame:UpdateUnit(frame, unit)
 	if units[unit] then
+		DBM:Debug("DBM.Nameplate updating for unit: "..unit, 3)
 		if not frame.DBM.texture then
 			nameplateFrame:CreateTexture(frame, unit)
 		end
