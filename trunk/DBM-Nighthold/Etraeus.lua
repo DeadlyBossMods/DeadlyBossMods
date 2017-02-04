@@ -108,6 +108,7 @@ local countdownGravPull				= mod:NewCountdownFades("Alt10", 205984)--Maybe chang
 --Stage Two: Absolute Zero
 --Stage Three: A Shattered World
 --Stage Four: Inevitable Fate
+local countWorldDevouringForce		= mod:NewCountdown(15, 216909)
 
 --Base abilities
 local voiceConjunction				= mod:NewVoice(205408)--scatter/find <type>
@@ -373,6 +374,7 @@ function mod:SPELL_CAST_START(args)
 		local timer = worldDestroyingTimers[self.vb.worldDestroyingCount+1]
 		if timer then
 			timerWorldDevouringForceCD:Start(timer, self.vb.worldDestroyingCount+1)
+			countWorldDevouringForce:Start(timer)
 		end
 	end
 end
@@ -676,6 +678,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			self.vb.grandConCount = 0
 			self.vb.worldDestroyingCount = 0
 			timerWorldDevouringForceCD:Start(22, 1)
+			countWorldDevouringForce:Start(22)
 			timerConjunctionCD:Start(46.5, 1)
 		end
 	end
