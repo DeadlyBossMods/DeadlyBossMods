@@ -98,11 +98,12 @@ local timerWorldDevouringForceCD	= mod:NewCDCountTimer(42, 216909, nil, nil, nil
 local timerThingCD					= mod:NewCDTimer(63, "ej13057", 207813, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerConjunctionCD			= mod:NewCDCountTimer(16, 205408, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerConjunction				= mod:NewBuffFadesTimer(15, 207720, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(463)
 
 --Base abilities
-local countdownConjunction			= mod:NewCountdownFades("AltTwo15", 205408)
+local countdownConjunction			= mod:NewCountdownFades("AltTwo15", 205408, nil, nil, 10)
 local countdownGravPull				= mod:NewCountdownFades("Alt10", 205984)--Maybe change to everyone if it works like I think
 --Stage One: The Dome of Observation
 --Stage Two: Absolute Zero
@@ -448,6 +449,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnConjunctionSign:Show(args.spellName)
 				voiceConjunction:Play("205408c")
 				countdownConjunction:Start()
+				timerConjunction:Start()
 			end
 		elseif spellId == 216344 then--Dragon
 			dragons[#dragons + 1] = args.destName
@@ -458,6 +460,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnConjunctionSign:Show(args.spellName)
 				voiceConjunction:Play("205408d")
 				countdownConjunction:Start()
+				timerConjunction:Start()
 			end
 		elseif spellId == 216345 then--Hunter
 			hunters[#hunters + 1] = args.destName
@@ -468,6 +471,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnConjunctionSign:Show(args.spellName)
 				voiceConjunction:Play("205408h")
 				countdownConjunction:Start()
+				timerConjunction:Start()
 			end
 		elseif spellId == 205445 then--Wolf
 			wolves[#wolves + 1] = args.destName
@@ -478,6 +482,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnConjunctionSign:Show(args.spellName)
 				voiceConjunction:Play("205408w")
 				countdownConjunction:Start()
+				timerConjunction:Start()
 			end
 		end
 		if self.vb.StarSigns == 1 then
@@ -552,6 +557,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.StarSigns = self.vb.StarSigns - 1
 		if args:IsPlayer() then
 			countdownConjunction:Cancel()
+			timerConjunction:Stop()
 		end
 		if self.vb.StarSigns == 0 then
 			updateRangeFrame(self)
