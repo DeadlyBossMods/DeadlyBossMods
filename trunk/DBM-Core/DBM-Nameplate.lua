@@ -94,8 +94,8 @@ function nameplateFrame:Show(unitGUID, spellId, texture, duration)
 end
 
 function nameplateFrame:Hide(GUID, force)
-	if self:SupportedNPMod() then--Add more nameplate mods as they gain support
-		DBM:FireEvent("BossMod_HideNameplateAura", unitGUID, texture)
+	if self:SupportedNPMod() then
+		DBM:FireEvent("BossMod_HideNameplateAura", unitGUID)
 		DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Hide callbacks", 2)
 		if force then
 			DBM:FireEvent("BossMod_DisableFriendlyNameplates")
