@@ -226,6 +226,9 @@ function mod:OnCombatStart(delay)
 		timerExpelLightCD:Start(25-delay)
 		timerDrawPowerCD:Start(35-delay)
 		countdownDrawPower:Start(35-delay)
+		if self.Options.NPAuraOnRunicBrand then
+			DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+		end
 	elseif not self:IsEasy() then
 		timerHornOfValorCD:Start(8-delay, 1)
 		countdownHorn:Start(8-delay)
@@ -256,7 +259,7 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnRunicBrand then
+	if self.Options.NPAuraOnRunicBrand and self:IsMythic() then
 		DBM.Nameplate:Hide(nil, true)
 	end
 end
@@ -480,7 +483,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			updateRangeFrame(self)
 		end
 		if self.Options.NPAuraOnRunicBrand then
-			DBM.Nameplate:Show(args.destGUID, spellId)
+			DBM.Nameplate:Show(args.destGUID, spellId, nil, 10)
 		end
 	end
 end
