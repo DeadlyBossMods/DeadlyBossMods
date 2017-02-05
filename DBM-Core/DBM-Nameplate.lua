@@ -55,9 +55,23 @@ end)
 --/run DBM.Nameplate:Show(UnitGUID("target"), 227723)--Mana tracking, easy to find in Dalaran
 --/run DBM.Nameplate:Hide(nil, true)
 --/run DBM.Nameplate:Hide(UnitGUID("target"))
-function nameplateFrame:Show(unitGUID, spellId, texture)
+
+--Add more nameplate mods as they gain support
+function nameplateFrame:SupportedNPMod()
+	if KuiNameplates then return true end
+	return false
+end
+
+function nameplateFrame:Show(unitGUID, spellId, texture, duration)
 	if DBM.Options.DontShowNameplateIcons then return end
 	if UnitGUID("player") == unitGUID then return end--player has no nameplate
+	local currentTexture = texture or GetSpellTexture(spellId)
+	if self:SupportedNPMod() then--Supported by nameplate mod, passing to their handler
+		DBM:FireEvent("BossMod_ShowNameplateAura", unitGUID, texture, duration)
+		DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Show callbacks", 2)
+		return
+	end
+	--Not running supported NP Mod, internal handling
 	if not DBMNameplateFrame:IsShown() then
 		DBMNameplateFrame:Show()
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_CREATED")
@@ -67,7 +81,6 @@ function nameplateFrame:Show(unitGUID, spellId, texture)
 		DBM:Debug("DBM.Nameplate Enabling", 2)
 	end
 	--Support custom texture, or just pull it from spellid
-	local currentTexture = texture or GetSpellTexture(spellId)
 	units[unitGUID] = currentTexture
 	unitspells[unitGUID] = GetSpellInfo(spellId)
 	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
@@ -81,6 +94,15 @@ function nameplateFrame:Show(unitGUID, spellId, texture)
 end
 
 function nameplateFrame:Hide(GUID, force)
+	if self:SupportedNPMod() then--Add more nameplate mods as they gain support
+		DBM:FireEvent("BossMod_HideNameplateAura", unitGUID, texture)
+		DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Hide callbacks", 2)
+		if force then
+			DBM:FireEvent("BossMod_DisableFriendlyNameplates")
+		end
+		return
+	end
+	--Not running supported NP Mod, internal handling
 	GUID = GUID or UnitGUID("player")--If guid isn't passed (such as on a force) shove player GUID in there to prevent errors
 	units[GUID] = nil
 	unitspells[GUID] = nil
@@ -106,6 +128,10 @@ function nameplateFrame:IsShown()
 	return DBMNameplateFrame and DBMNameplateFrame:IsShown()
 end
 
+-----------------------------------
+--  Internal Handling Functions  --
+-----------------------------------
+
 function nameplateFrame:CreateTexture(frame, unit)
 	local dbmtexture = frame:CreateTexture()
 	local GUID = UnitGUID(unit)
@@ -129,12 +155,12 @@ function nameplateFrame:UpdateAll()
 		DBM:Debug("DBM.Nameplate Enabling", 2)
 	end
 	if #units == 0 then--This is a cleanup request, redo hide
-		nameplateFrame:Hide(nil, force)
+		self:Hide(nil, force)
 	else--User might have togglednameplates mid fight, so lets get their textures working
 		for _, frame in pairs(C_NamePlate.GetNamePlates()) do
 			local unit = frame.namePlateUnitToken
 			if unit then
-				nameplateFrame:UpdateUnit(frame, unit)
+				self:UpdateUnit(frame, unit)
 			end
 		end
 	end
@@ -145,14 +171,14 @@ function nameplateFrame:UpdateUnit(frame, unit)
 	if units[GUID] then
 		DBM:Debug("DBM.Nameplate updating for unit: "..unit, 3)
 		if not frame.DBMTexture then
-			nameplateFrame:CreateTexture(frame, unit)
+			self:CreateTexture(frame, unit)
 		end
 		frame.DBMTexture:SetTexture(units[GUID])--Always force reset it, more cpu but avoids invalid texture apparently
 		if UnitDebuff(unit, unitspells[GUID]) or UnitBuff(unit, unitspells[GUID]) then--Debuff/Buff still present
 			frame.DBMTexture:Show()
 		else
 			frame.DBMTexture:Hide()
-			nameplateFrame:Hide(GUID)
+			self:Hide(GUID)
 		end
 	else
 		--Fix any left over textures in an UpdateAll call

@@ -98,12 +98,12 @@ local timerWorldDevouringForceCD	= mod:NewCDCountTimer(42, 216909, nil, nil, nil
 local timerThingCD					= mod:NewCDTimer(63, "ej13057", 207813, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerConjunctionCD			= mod:NewCDCountTimer(16, 205408, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
-local timerConjunction				= mod:NewBuffFadesTimer(15, 207720, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
+local timerConjunction				= mod:NewBuffFadesTimer(10, 207720, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(463)
 
 --Base abilities
-local countdownConjunction			= mod:NewCountdownFades("AltTwo15", 205408, nil, nil, 10)
+local countdownConjunction			= mod:NewCountdownFades("AltTwo10", 205408, nil, nil, 10)
 local countdownGravPull				= mod:NewCountdownFades("Alt10", 205984)--Maybe change to everyone if it works like I think
 --Stage One: The Dome of Observation
 --Stage Two: Absolute Zero
@@ -297,6 +297,9 @@ function mod:OnCombatStart(delay)
 		self.vb.worldDestroyingCount = 0
 --		timerCoronalEjectionCD:Start(12-delay)--Still could be health based
 		timerConjunctionCD:Start(15-delay, 1)
+		if self.Options.NPAuraOnConjunction then
+			DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+		end
 	else
 --		timerCoronalEjectionCD:Start(12.9-delay)--Still could be health based
 	end
@@ -310,7 +313,7 @@ function mod:OnCombatEnd()
 	if self.Options.HudMapOnConjunction then
 		DBMHudMap:Disable()
 	end
-	if self.Options.NPAuraOnConjunction then
+	if self.Options.NPAuraOnConjunction and self:IsMythic() then
 		DBM.Nameplate:Hide(nil, true)
 	end
 end
@@ -492,7 +495,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.NPAuraOnConjunction then
-			DBM.Nameplate:Show(args.destGUID, spellId)
+			DBM.Nameplate:Show(args.destGUID, spellId, nil, 10)
 		end
 	elseif spellId == 206464 then
 		warnCoronalEjection:CombinedShow(0.5, args.destName)
