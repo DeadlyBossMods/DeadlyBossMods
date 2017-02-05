@@ -62,7 +62,7 @@ local voiceSmallAdd					= mod:NewVoice(206699, "Tank")
 mod:AddRangeFrameOption(10, 206617)
 mod:AddInfoFrameOption(206617)
 --mod:AddSetIconOption("SetIconOnTimeRelease", 206610, true)
-mod:AddNamePlateOption("NPAuraOnTimeBomb", 206617, false)
+mod:AddNamePlateOption("NPAuraOnTimeBomb", 206617)
 
 mod.vb.normCount = 0
 mod.vb.fastCount = 0
