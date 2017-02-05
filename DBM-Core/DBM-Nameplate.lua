@@ -81,10 +81,12 @@ function nameplateFrame:Show(unitGUID, spellId, texture, duration)
 	unitspells[unitGUID] = GetSpellInfo(spellId)
 	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
 		local foundUnit = frame.namePlateUnitToken
-		local foundGUID = UnitGUID(foundUnit)
-		if foundGUID == unitGUID then
-			nameplateFrame:UpdateUnit(frame, foundUnit)
-			break
+		if foundUnit then
+			local foundGUID = UnitGUID(foundUnit)
+			if foundGUID == unitGUID then
+				nameplateFrame:UpdateUnit(frame, foundUnit)
+				break
+			end
 		end
 	end
 end
@@ -106,9 +108,11 @@ function nameplateFrame:Hide(GUID, force)
 	unitspells[GUID] = nil
 	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
 		local foundUnit = frame.namePlateUnitToken
-		local foundGUID = UnitGUID(foundUnit)
-		if frame.DBMTexture and (force or foundGUID == GUID) then
-			frame.DBMTexture:Hide()
+		if foundUnit then
+			local foundGUID = UnitGUID(foundUnit)
+			if frame.DBMTexture and (force or foundGUID == GUID) then
+				frame.DBMTexture:Hide()
+			end
 		end
 	end
 	if force or #units == 0 then
