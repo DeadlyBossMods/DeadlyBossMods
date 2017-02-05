@@ -21,8 +21,6 @@ DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s|1이;가; 설치는 돼있지만 켜져�
 DBM_CORE_WHATS_NEW					= "새로 추가된 사항: '대규모 패치'시 옵션 설정을 강제 업데이트 또는 사용 안함 상태로 만드는 기능이 대규모 패치가 아닌 버전에도 잘못 발동되던 버그를 수정했습니다. DBM은 더이상 사용자 설정과 관계없이 부서진 해안 동영상을 중단시키지 않을 것입니다. 악마 침공 모드가 추가됐습니다. 자잘한 텍스트 오류 수정"
 DBM_CORE_WHATS_NEW_LINK				= "안내: 유닛 위치에 의존하는 다수의 기능들이 제한되었습니다. 이유가 궁금하다면 |HDBM:forumsnews|h|cff3588ff이곳을 클릭|r해서 알아보세요"
 
---Pre Patch 7.1 Notice
-DBM_CORE_NO_RANGE_SOON				= "알림: 거리 레이더는 7.1 패치에선 더는 사용할 수 없습니다"
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "거리 레이더를 인스턴스 던전에서 사용할 수 없습니다. 예전의 텍스트 방식 거리창으로 대체됩니다."
 DBM_CORE_NO_ARROW					= "화살표 기능을 인스턴스 던전에서 사용할 수 없습니다"
@@ -268,16 +266,17 @@ DBM_CORE_TIMER_BREAK				= "쉬는 시간!"
 DBM_CORE_ANNOUNCE_BREAK_OVER		= "쉬는 시간이 %s에 끝났습니다"
 
 DBM_CORE_TIMER_PULL					= "풀링"
-DBM_CORE_ANNOUNCE_PULL				= "%d초 후 풀링하세요. (%s|1이;가; 전송)"
-DBM_CORE_ANNOUNCE_PULL_NOW			= "지금 풀링!"
-DBM_CORE_ANNOUNCE_PULL_TARGET		= "%s|1을;를; %d초 후 풀링하세요. (%s|1이;가; 전송)"
-DBM_CORE_ANNOUNCE_PULL_NOW_TARGET	= "%s 풀링!"
+DBM_CORE_ANNOUNCE_PULL				= "%d초 후 풀링합니다. (%s|1이;가; 전송)"
+DBM_CORE_ANNOUNCE_PULL_NOW			= "풀링 시작!"
+DBM_CORE_ANNOUNCE_PULL_TARGET		= "%s|1을;를; %d초 후 풀링합니다. (%s|1이;가; 전송)"
+DBM_CORE_ANNOUNCE_PULL_NOW_TARGET	= "%s 풀링 시작!"
 DBM_CORE_GEAR_WARNING				= "경고: 장비를 확인하세요. 착용 아이템 레벨이 보유 아이템 레벨보다 %d 낮습니다."
 DBM_CORE_GEAR_WARNING_WEAPON		= "경고: 주 장비가 제대로 장착되어 있는지 확인하세요."
 DBM_CORE_GEAR_FISHING_POLE			= "낚싯대"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "업적"--BATTLE_PET_SOURCE_6
 
+-- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.you			= "당신에게 %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target			= "%s: >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%s): >%%s<"
@@ -343,6 +342,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= "%s - 대상 바꾸세요"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - 대상 바꾸세요 (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds		= "쫄 등장 - 대상 바꾸세요"
 
+-- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell			= "$spell:%s 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.ends			= "$spell:%s 종료시 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.fades			= "$spell:%s|1이;가; 사라졌을 때 특수 경고 보기"
@@ -374,6 +374,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch			= "$spell:%s에 대상 변경 특수 �
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount 		= "$spell:%s에 대상 변경 특수 경고 보기 (횟수 포함)"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds 			= "쫄 등장시 대상 변경 특수 경고 보기"
 
+-- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: %%s"
 DBM_CORE_AUTO_TIMER_TEXTS.cast			= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.castsource		= "%s: %%s"
@@ -432,6 +433,7 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s %%d초 후 사라짐!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= "{rt%%3$d}"..UnitName("player").."{rt%%3$d}에게 %1$s %%2$s"
 DBM_CORE_AUTO_HUD_OPTION_TEXT			= "$spell:%s에 HUD 표시"
 DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "여러 보스 기술에 HUD 표시"
+DBM_CORE_AUTO_NAMEPLATE_OPTION_TEXT		= "$spell:%s 오라를 이름표에 표시"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 시전시 거리 창 보기 (%1$sm)"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "거리 창 보기 (%sm)"
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT		= "$spell:%2$s 시전시 반전 거리 창 보기 (%1$sm)"
