@@ -81,7 +81,7 @@ local voiceBurningSoul				= mod:NewVoice(216040)--runout
 
 mod:AddRangeFrameOption(8, 216040)
 mod:AddSetIconOption("SetIconOnBrandOfArgus", 212794, true)
-mod:AddNamePlateOption("NPAuraOnCarrionPlague", 206480, false)
+mod:AddNamePlateOption("NPAuraOnCarrionPlague", 206480)
 mod:AddInfoFrameOption(212794)
 mod:AddHudMapOption("HudMapOnSeeker", 213238)
 mod:AddBoolOption("HUDSeekerLines", true)--On by default for beta testing. Actual defaults for live subject to accuracy review.

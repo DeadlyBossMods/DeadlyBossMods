@@ -113,7 +113,7 @@ mod:AddRangeFrameOption(8, 218807)
 mod:AddSetIconOption("SetIconOnFetter", 218304, true)
 mod:AddSetIconOption("SetIconOnCoN", 218807, true)
 mod:AddHudMapOption("HudMapOnCoN", 218807)
-mod:AddNamePlateOption("NPAuraOnFixate", 218342, false)
+mod:AddNamePlateOption("NPAuraOnFixate", 218342)
 
 mod.vb.CoNIcon = 1
 mod.vb.phase = 1
