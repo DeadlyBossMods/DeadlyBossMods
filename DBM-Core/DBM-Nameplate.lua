@@ -63,7 +63,7 @@ function nameplateFrame:Show(unitGUID, spellId, texture, duration)
 	if UnitGUID("player") == unitGUID then return end--player has no nameplate
 	local currentTexture = texture or GetSpellTexture(spellId)
 	if self:SupportedNPMod() then--Supported by nameplate mod, passing to their handler
-		DBM:FireEvent("BossMod_ShowNameplateAura", unitGUID, texture, duration)
+		DBM:FireEvent("BossMod_ShowNameplateAura", unitGUID, currentTexture, duration)
 		DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Show callbacks", 2)
 		return
 	end
