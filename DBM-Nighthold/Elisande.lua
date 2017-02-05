@@ -137,15 +137,15 @@ local mythicP2SlowElementalTimers = {5, 39, 45, 30, 30, 30}--Mythic Feb 5
 local mythicP3SlowElementalTimers = {5, 54, 55, 30}--Mythic Feb 5
 local fastElementalTimers = {8, 88, 95, 20}--Heroic Jan 19
 local easyfastElementalTimers = {8, 71}--Norma Jan 26
-local mythicP1FastElementalTimers = {8, 60}--Mythic Feb 5
+local mythicP1FastElementalTimers = {8, 81.0}--Mythic Feb 5
 local mythicP2FastElementalTimers = {8, 51}--Mythic Feb 5
 local mythicP3FastElementalTimers = {8, 37, 44}--Mythic Feb 5
 local RingTimers = {34, 40, 10, 62, 9, 45}--Heroic Jan 19
 local easyRingTimers = {34, 30}--Normal Jan 26
-local mythicRingTimers = {28, 40, 15, 30, 20, 10, 10, 25}--Mythic Feb 5
+local mythicRingTimers = {30, 39, 15, 30, 19, 10, 25, 9, 10, 10}--Mythic Feb 5 (figure out that 25 in middle of 10s)
 local SingularityTimers = {10, 22, 36.0, 57, 65}--Heroic Jan 18
 local easySingularityTimers = {10, 22, 36.0, 46}--Normal Feb 2
-local mythicSingularityTimers = {10, 56, 50, 45}--Mythic Feb 5th (TODO, verify, 3rd party timers shared by Openness)
+local mythicSingularityTimers = {10, 55, 50, 45}--Mythic Feb 5th
 --Only exist in phase 2
 local BeamTimers = {72, 57, 60}--Heroic Jan 18
 local easyBeamTimers = {72, 26, 40}--Normal Feb 2
@@ -216,9 +216,15 @@ function mod:OnCombatStart(delay)
 	timerTimeElementalsCD:Start(5-delay, SLOW)
 	timerTimeElementalsCD:Start(8-delay, FAST)
 	--timerAblationCD:Start(8.5-delay)--Verify/tweak
-	timerSpanningSingularityCD:Start(23-delay, 2)
-	timerArcaneticRing:Start(34-delay, 1)
-	countdownArcaneticRing:Start(34-delay)
+	if self:IsMythic() then
+		timerSpanningSingularityCD:Start(56-delay, 2)
+		timerArcaneticRing:Start(30-delay, 1)
+		countdownArcaneticRing:Start(30-delay)
+	else
+		timerSpanningSingularityCD:Start(22-delay, 2)
+		timerArcaneticRing:Start(34-delay, 1)
+		countdownArcaneticRing:Start(34-delay)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -507,13 +513,24 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			warnPhase2:Show()
 			voicePhaseChange:Play("ptwo")
 			timerAblatingExplosionCD:Start(22)--Verfied unchanged Dec 13 Heroic
-			timerEpochericOrbCD:Start(28, 1)
 			if not self:IsEasy() then
-				timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
-				countdownArcaneticRing:Start(45.7)
+				if self:IsMythic() then--TODO: Fine tune these as they may be hit or miss by some seconds Hard to measure precise phase changes from WCL
+					timerEpochericOrbCD:Start(24, 1)
+					timerArcaneticRing:Start(39.7, 1)--Verified Jan 18
+					countdownArcaneticRing:Start(39.7)
+				else
+					timerEpochericOrbCD:Start(27, 1)
+					timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
+					countdownArcaneticRing:Start(45.7)
+				end
 			end
-			timerDelphuricBeamCD:Start(72, 1)--Cast SUCCESS
-			countdownDelphuricBeam:Start(72)
+			if self:IsMythic() then--TODO: Fine tune these as they may be hit or miss by some seconds Hard to measure precise phase changes from WCL
+				timerDelphuricBeamCD:Start(67, 1)--Cast SUCCESS
+				countdownDelphuricBeam:Start(67)
+			else
+				timerDelphuricBeamCD:Start(72, 1)--Cast SUCCESS
+				countdownDelphuricBeam:Start(72)
+			end
 		elseif self.vb.phase == 3 then
 			warnPhase3:Show()
 			voicePhaseChange:Play("pthree")
@@ -522,16 +539,30 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			yellAblatingExplosion:Cancel()
 			--timerAblativePulseCD:Start(20.5)
 			if not self:IsEasy() then
-				timerEpochericOrbCD:Start(27, 1)
-				specWarnEpochericOrb:Schedule(27)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
-				voiceEpochericOrb:Schedule(27, "161612")
-				timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
-				countdownArcaneticRing:Start(45.7)
+				if self:IsMythic() then
+					timerEpochericOrbCD:Start(24, 1)
+					specWarnEpochericOrb:Schedule(24)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
+					voiceEpochericOrb:Schedule(24, "161612")
+					timerArcaneticRing:Start(39.7, 1)--Verified Jan 18
+					countdownArcaneticRing:Start(39.7)
+				else
+					timerEpochericOrbCD:Start(27, 1)
+					specWarnEpochericOrb:Schedule(27)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
+					voiceEpochericOrb:Schedule(27, "161612")
+					timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
+					countdownArcaneticRing:Start(45.7)
+				end
 			end
-			timerPermaliativeTormentCD:Start(33)--Updated Jan 18 Heroic
-			if not self:IsLFR() then
-				timerConflexiveBurstCD:Start(57.7, 1)
-				countdownConflexiveBurst:Start(57.7)
+			if self:IsMythic() then
+				timerConflexiveBurstCD:Start(48, 1)
+				countdownConflexiveBurst:Start(48)
+				timerPermaliativeTormentCD:Start(74)--Updated Jan 18 Heroic
+			else
+				timerPermaliativeTormentCD:Start(33)--Updated Jan 18 Heroic
+				if not self:IsLFR() then
+					timerConflexiveBurstCD:Start(57.7, 1)
+					countdownConflexiveBurst:Start(57.7)
+				end
 			end
 		end
 		--berserkTimer:Cancel()
