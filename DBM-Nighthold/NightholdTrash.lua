@@ -9,11 +9,12 @@ mod.isTrashMod = true
 mod:RegisterEvents(
 	"SPELL_CAST_START 221164 224510 224246 231005",
 	"SPELL_CAST_SUCCESS 225389",
-	"SPELL_AURA_APPLIED 221344 222111 224572 225390 222719 224560 204744 224978 225856 223655 224982"
+	"SPELL_AURA_APPLIED 221344 222111 224572 225390 222719 224560 204744 224978 225856 223655 224982 225105"
 )
 
 local warnAnnihilatingOrb			= mod:NewTargetAnnounce(221344, 3)
 local warnCelestialBrand			= mod:NewTargetAnnounce(224560, 2)
+local warnArcaneRelease				= mod:NewTargetAnnounce(225105, 2)
 local warnOozingRush				= mod:NewTargetAnnounce(223655, 2)
 local warnFelGlare					= mod:NewTargetAnnounce(224982, 2)
 
@@ -32,6 +33,8 @@ local specWarnPoisonBrambles		= mod:NewSpecialWarningMove(225856, nil, nil, nil,
 local specWarnArcWell				= mod:NewSpecialWarningSwitch(224246, "Dps", nil, nil, 1, 6)
 local specWarnCelestialBrand		= mod:NewSpecialWarningMoveAway(224560, nil, nil, nil, 1, 2)
 local yellCelestialBrand			= mod:NewYell(224560)
+local specWarnArcaneRelease			= mod:NewSpecialWarningMoveAway(225105, nil, nil, nil, 1, 2)
+local yellArcaneRelease				= mod:NewYell(225105)
 local specWarnHeavenlyCrash			= mod:NewSpecialWarningMoveTo(224632, nil, nil, nil, 1, 2)
 local yellHeavenlyCrash				= mod:NewFadesYell(224632)--VERIFY duration
 local specWarnOozingRush			= mod:NewSpecialWarningRun(223655, nil, nil, nil, 4, 2)
@@ -52,6 +55,7 @@ local voiceInfiniteAbyss			= mod:NewVoice(224978)--runaway
 local voicePoisonBrambles			= mod:NewVoice(225856)--runaway
 local voiceArcWell					= mod:NewVoice(224246)--killtotem
 local voiceCelestialBrand			= mod:NewVoice(224560)--runout
+local voiceArcaneRelease			= mod:NewVoice(225105)--runout
 local voiceHeavenlyCrash			= mod:NewVoice(224632)--gathershare
 local voiceOozingRush				= mod:NewVoice(223655)--runaway/keepmove
 local voiceFelGlare					= mod:NewVoice(224982)--runout/keepmove
@@ -128,6 +132,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCelestialBrand:Show()
 			voiceCelestialBrand:Play("runout")
 			yellCelestialBrand:Yell()
+		end
+	elseif spellId == 225105 then
+		warnArcaneRelease:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnArcaneRelease:Show()
+			voiceArcaneRelease:Play("runout")
+			yellArcaneRelease:Yell()
 		end
 	elseif spellId == 223655 then
 		if args:IsPlayer() then
