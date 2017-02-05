@@ -61,6 +61,7 @@ mod:AddSetIconOption("SetIconOnCharge", 198006, true)
 mod:AddHudMapOption("HudMapOnCharge", 198006)
 mod:AddInfoFrameOption(198108, false)
 mod:AddBoolOption("NoAutoSoaking2", true)
+mod:AddNamePlateOption("NPAuraOnCharge", 198006)
 
 mod.vb.roarCount = 0
 mod.vb.chargeCount = 0
@@ -139,6 +140,9 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(GetSpellInfo(198108))
 		DBM.InfoFrame:Show(15, "reverseplayerbaddebuff", 198108)
 	end
+	if self.Options.NPAuraOnCharge then
+		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+	end
 end
 
 function mod:OnCombatEnd()
@@ -147,6 +151,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if self.Options.NPAuraOnCharge then
+		DBM.Nameplate:Hide(nil, true)
 	end
 end
 
@@ -243,6 +250,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not self.Options.NoAutoSoaking2 then
 			GenerateSoakAssignment(self, secondCount, args.destName)
 		end
+		if self.Options.NPAuraOnCharge then
+			DBM.Nameplate:Show(args.destGUID, spellId)
+		end
 	elseif spellId == 197943 then
 		warnOverwhelm:Show(args.destName, args.amount or 1)
 		if not args:IsPlayer() then--Overwhelm Applied to someone that isn't you
@@ -275,6 +285,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.HudMapOnCharge then
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		end
+		if self.Options.NPAuraOnCharge then
+			DBM.Nameplate:Hide(args.destGUID)
 		end
 	end
 end
