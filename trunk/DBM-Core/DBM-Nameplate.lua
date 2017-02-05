@@ -91,7 +91,7 @@ end
 
 function nameplateFrame:Hide(GUID, force)
 	if self:SupportedNPMod() then
-		DBM:FireEvent("BossMod_HideNameplateAura", unitGUID)
+		DBM:FireEvent("BossMod_HideNameplateAura", GUID)
 		DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Hide callbacks", 2)
 		if force then
 			DBM:FireEvent("BossMod_DisableFriendlyNameplates")
@@ -150,7 +150,7 @@ function nameplateFrame:UpdateAll()
 		DBM:Debug("DBM.Nameplate Enabling", 2)
 	end
 	if #units == 0 then--This is a cleanup request, redo hide
-		self:Hide(nil, force)
+		self:Hide(nil, true)
 	else--User might have togglednameplates mid fight, so lets get their textures working
 		for _, frame in pairs(C_NamePlate.GetNamePlates()) do
 			local unit = frame.namePlateUnitToken
