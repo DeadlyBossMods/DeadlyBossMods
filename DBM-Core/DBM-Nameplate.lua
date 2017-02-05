@@ -91,7 +91,9 @@ end
 
 function nameplateFrame:Hide(GUID, force)
 	if self:SupportedNPMod() then
-		DBM:FireEvent("BossMod_HideNameplateAura", GUID)
+		if GUID then 
+			DBM:FireEvent("BossMod_HideNameplateAura", GUID)
+		end
 		DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Hide callbacks", 2)
 		if force then
 			DBM:FireEvent("BossMod_DisableFriendlyNameplates")
