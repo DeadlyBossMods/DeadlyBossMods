@@ -170,6 +170,9 @@ function mod:OnCombatStart(delay)
 		timerControlledChaosCD:Start(-delay)
 		countdownControlledChaos:Start()
 	end
+	if self.Options.NPAuraOnFixate then
+		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+	end
 end
 
 function mod:OnCombatEnd()

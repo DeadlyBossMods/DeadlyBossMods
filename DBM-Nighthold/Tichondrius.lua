@@ -195,6 +195,9 @@ function mod:OnCombatStart(delay)
 		timerBrandOfArgusCD:Start(15-delay, 1)
 		berserkTimer:Start(-delay)
 	end
+	if self.Options.NPAuraOnCarrionPlague then
+		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+	end
 end
 
 function mod:OnCombatEnd()

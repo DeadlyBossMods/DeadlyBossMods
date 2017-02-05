@@ -1317,6 +1317,10 @@ do
 			if not ok then DBM:AddMsg(("Error while executing callback %s for event %s: %s"):format(tostring(v), tostring(event), err)) end
 		end
 	end
+	
+	function DBM:FireEvent(event, ...)
+		fireEvent(event, ...)
+	end
 
 	function DBM:IsCallbackRegistered(event, f)
 		if not event or type(f) ~= "function" then

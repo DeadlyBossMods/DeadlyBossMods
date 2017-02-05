@@ -101,6 +101,9 @@ function mod:OnCombatStart(delay)
 	if not self:IsMythic() then
 		DBM:AddMsg("Mythic timers in great shape, other difficulties still need more work (for longer pulls)")
 	end
+	if self.Options.NPAuraOnTimeBomb then
+		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+	end
 end
 
 function mod:OnCombatEnd()
