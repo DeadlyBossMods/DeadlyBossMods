@@ -1,11 +1,7 @@
 --Known issues (because blizzards nameplate code is such utter shite)
 --*This probably leaks memory and/or cpu without any wiping of created icons/garbage collection
 --*It obviously won't work if nameplates aren't enabled. So it can be a clusterfuck in raids unless you run custom nameplate mod that can shrink/invisible player nameplates (without hiding them)
---*Hiding on combat end breaks if nameplatemods like tidyplates/kui disable nameplates before dbm can do it's cleanup, resulting in textures getting stuck in place. This should hopefully be resolved in later update that supports nameplate requests
-
---TODO
---*Support sending request to nameplate mod instead. DBMs handling should only be done on stuck ui nameplates or unupdated nameplate mods.
---Otherwise DBM should just request users nameplate mod to add the icon via it's natural aura widget
+--*Users Report Hiding on combat end breaks if nameplatemods like tidyplates/kui disable nameplates before dbm can do it's cleanup, resulting in textures getting stuck in place.
 
 -- globals
 DBM.Nameplate = {}
@@ -143,7 +139,6 @@ function nameplateFrame:CreateTexture(frame, unit)
 	dbmtexture:SetParent(UIParent)
 	dbmtexture:Hide()
 	frame.DBMTexture = dbmtexture
-	DBM:Debug("DBM.Nameplate making textures great again", 2)
 end
 
 function nameplateFrame:UpdateAll()
