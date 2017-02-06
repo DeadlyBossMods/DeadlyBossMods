@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: Dec 22 2016, 3:44 UTC@15569
+-- Last update: Feb 06 2017, 02:50 UTC@15833
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -296,7 +296,7 @@ L:SetMiscLocalization({ --神坑
 	Potions1	= "我听说那个密探随身带着药水，这是为什么呢？",
 	Potions2	= "可别说是我告诉你的……那个密探伪装成了炼金师，腰带上挂着药水。",
 	Potions3	= "我敢肯定，那个密探的腰带上挂着药水。",
-	Potions4	= "PH",
+	Potions4	= "我听说那个密探买了一些药水……以防万一。",
 	NoPotions1	= "我听说那个密探根本没带任何药水。",
 	NoPotions2	= "有个乐师告诉我，她看到那个密探扔掉了身上的最后一瓶药水，已经没有药水了。",
 	Book1		= "我听说那个密探的腰带上，总是挂着一本写满机密的书。",
@@ -523,4 +523,36 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization({
 	speedRun		=	"空气中弥漫着某种诡异的黑暗寒风……"
+})
+
+-----------------------
+-- <<<Cathedral of Eternal Night >>> --
+-----------------------
+-----------------------
+-- Agronox --
+-----------------------
+L= DBM:GetModLocalization(1905)
+
+-----------------------
+-- Trashbite the Scornful  --
+-----------------------
+L= DBM:GetModLocalization(1906)
+
+-----------------------
+-- Domatrax --
+-----------------------
+L= DBM:GetModLocalization(1904)
+
+-----------------------
+-- Mephistroth  --
+-----------------------
+L= DBM:GetModLocalization(1878)
+
+-----------------------
+--Cathedral of Eternal Night Trash
+-----------------------
+L = DBM:GetModLocalization("CoENTrash")
+
+L:SetGeneralLocalization({
+	name =	"永夜大教堂小怪"
 })

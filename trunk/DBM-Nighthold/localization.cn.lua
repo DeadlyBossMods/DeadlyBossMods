@@ -1,7 +1,7 @@
 -- Mini Dragon(projecteurs@gmail.com)
 -- 夏一可
 -- Blizzard Entertainment
--- Last update: Jul 21 2015, 10:10 UTC@15067
+-- Last update: Feb 06 2017, 02:56 UTC@15833
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -47,7 +47,9 @@ L= DBM:GetModLocalization(1762)
 L:SetMiscLocalization({
 	First				= "第一",
 	Second				= "第二",
-	Third				= "第三"
+	Third				= "第三",
+	Adds1				= "我的部下们！进来！", 
+	Adds2				= "让这些僭越者看看应该怎么战斗！"
 })
 
 ------------------
@@ -55,13 +57,22 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1713)
 
+L:SetWarningLocalization({
+	warnSlamSoon		= "桥将在%ds秒后断裂"
+})
+
+L:SetMiscLocalization({
+	MoveLeft			= "向左走",
+	MoveRight			= "向右走"
+})
+
 ------------------
 -- High Botanist Tel'arn --
 ------------------
 L= DBM:GetModLocalization(1761)
 
 L:SetWarningLocalization({
-	warnStarLow				= "离子球" --is low, offical
+	warnStarLow				= "离子球生命值低"
 })
 
 L:SetOptionLocalization({
@@ -86,6 +97,11 @@ L:SetOptionLocalization({
 -- Grand Magistrix Elisande --
 ------------------
 L= DBM:GetModLocalization(1743)
+
+L:SetMiscLocalization({
+	noCLEU4EchoRings		= "让时间的浪潮碾碎你们！",
+	noCLEU4EchoOrbs			= "你们会发现，时间极不稳定。"
+})
 
 ------------------
 -- Gul'dan --
