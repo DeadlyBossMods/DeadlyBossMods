@@ -114,6 +114,7 @@ mod:AddSetIconOption("SetIconOnFetter", 218304, true)
 mod:AddSetIconOption("SetIconOnCoN", 218807, true)
 mod:AddHudMapOption("HudMapOnCoN", 218807)
 mod:AddNamePlateOption("NPAuraOnFixate", 218342)
+mod:AddNamePlateOption("NPAuraOnCoN", 218809)
 
 mod.vb.CoNIcon = 1
 mod.vb.phase = 1
@@ -170,7 +171,7 @@ function mod:OnCombatStart(delay)
 		timerControlledChaosCD:Start(-delay)
 		countdownControlledChaos:Start()
 	end
-	if self.Options.NPAuraOnFixate then
+	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnCoN then
 		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
 	end
 end
@@ -182,7 +183,7 @@ function mod:OnCombatEnd()
 	if self.Options.HudMapOnCoN then
 		DBMHudMap:Disable()
 	end
-	if self.Options.NPAuraOnFixate then
+	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnCoN then
 		DBM.Nameplate:Hide(nil, true)
 	end
 end
@@ -328,6 +329,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnCoN then
 			self:SetIcon(args.destName, number)
+		end
+		if self.Options.NPAuraOnCoN then
+			DBM.Nameplate:Show(args.destGUID, spellId)
 		end
 	elseif spellId == 218503 then
 		local amount = args.amount or 1
@@ -490,6 +494,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.SetIconOnCoN then
 			self:SetIcon(args.destName, 0)
+		end
+		if self.Options.NPAuraOnCoN then
+			DBM.Nameplate:Hide(args.destGUID)
 		end
 	elseif spellId == 218304 then
 		if self:AntiSpam(5, 2) and not UnitDebuff("player", args.spellName) then

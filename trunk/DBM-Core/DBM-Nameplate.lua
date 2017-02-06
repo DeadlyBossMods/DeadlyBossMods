@@ -121,6 +121,7 @@ function nameplateFrame:Hide(GUID, force)
 		DBMNameplateFrame:UnregisterEvent("NAME_PLATE_CREATED")
 		DBMNameplateFrame:UnregisterEvent("NAME_PLATE_UNIT_ADDED")
 		DBMNameplateFrame:UnregisterEvent("NAME_PLATE_UNIT_REMOVED")
+		DBMNameplateFrame:UnregisterEvent("CVAR_UPDATE")
 		DBMNameplateFrame:Hide()
 		DBM:Debug("DBM.Nameplate Disabling", 2)
 	end
@@ -153,6 +154,7 @@ function nameplateFrame:UpdateAll()
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_CREATED")
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+		DBMNameplateFrame:RegisterEvent("CVAR_UPDATE")
 		DBM:Debug("DBM.Nameplate Enabling", 2)
 	end
 	if #units == 0 then--This is a cleanup request, redo hide
