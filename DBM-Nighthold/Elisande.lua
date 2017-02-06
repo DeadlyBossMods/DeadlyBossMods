@@ -16,9 +16,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 209615 209244 209973 209598 211261 232974",
 	"SPELL_AURA_REFRESH 209973",
 	"SPELL_AURA_APPLIED_DOSE 209615 209973",
-	"SPELL_AURA_REMOVED 209973 209598",
+	"SPELL_AURA_REMOVED 209973 209598 209244",
 --	"SPELL_PERIODIC_DAMAGE 209433",
 --	"SPELL_PERIODIC_MISSED 209433",
+	"PARTY_KILL",
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -76,6 +77,9 @@ local specWarnAblativePulse			= mod:NewSpecialWarningInterrupt(209971, "HasInter
 --Base
 local timerLeaveNightwell			= mod:NewCastTimer(9.8, 208863, nil, nil, nil, 6)
 local timerTimeElementalsCD			= mod:NewNextSourceTimer(16, 208887, 141872, nil, nil, 1)--"Call Elemental" short text
+local timerFastTimeBubble			= mod:NewTimer(30, "timerFastTimeBubble", 209166, nil, nil, 5)
+local timerSlowTimeBubble			= mod:NewTimer(30, "timerSlowTimeBubble", 209165, nil, nil, 5)
+--209166
 --Time Layer 1
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerArcaneticRing			= mod:NewNextCountTimer(6, 208807, nil, nil, nil, 2)
@@ -98,6 +102,7 @@ local timerPermaliativeTormentCD	= mod:NewNextCountTimer(16, 210387, nil, "Heale
 --Base
 --Time Layer 1
 local countdownArcaneticRing		= mod:NewCountdown(30, 208807)
+local countdownSpanningSingularity	= mod:NewCountdown(30, 209168, "Ranged")--Mythic Only
 --Time Layer 2
 local countdownOrbs					= mod:NewCountdown("Alt6", 210022, "Ranged")
 --Time Layer 3
@@ -128,6 +133,7 @@ mod:AddRangeFrameOption(8, 209973)
 mod:AddInfoFrameOption(209598)
 mod:AddSetIconOption("SetIconOnConflexiveBurst", 209598)
 mod:AddHudMapOption("HudMapOnDelphuricBeam", 214278)
+mod:AddNamePlateOption("NPAuraOnBeam", 214278, false)
 
 --Exists in phases 1-3
 local slowElementalTimers = {5, 49, 52, 60}--Heroic Jan 18
@@ -165,6 +171,8 @@ local currentTank, tankUnitID = nil, nil--not recoverable on purpose
 mod.vb.firstElementals = false
 mod.vb.slowElementalCount = 0
 mod.vb.fastElementalCount = 0
+mod.vb.slowBubbleCount = 0
+mod.vb.fastBubbleCount = 0
 mod.vb.tormentCastCount = 0
 mod.vb.ringCastCount = 0
 mod.vb.beamCastCount = 0
@@ -197,6 +205,8 @@ function mod:OnCombatStart(delay)
 	--self.vb.firstElementals = false
 	self.vb.slowElementalCount = 0
 	self.vb.fastElementalCount = 0
+	self.vb.slowBubbleCount = 0
+	self.vb.fastBubbleCount = 0
 	self.vb.tormentCastCount = 0
 	self.vb.ringCastCount = 0
 	self.vb.burstDebuffCount = 0
@@ -218,12 +228,16 @@ function mod:OnCombatStart(delay)
 	--timerAblationCD:Start(8.5-delay)--Verify/tweak
 	if self:IsMythic() then
 		timerSpanningSingularityCD:Start(56-delay, 2)
+		countdownSpanningSingularity:Start(56)
 		timerArcaneticRing:Start(30-delay, 1)
 		countdownArcaneticRing:Start(30-delay)
 	else
 		timerSpanningSingularityCD:Start(22-delay, 2)
 		timerArcaneticRing:Start(34-delay, 1)
 		countdownArcaneticRing:Start(34-delay)
+	end
+	if self.Options.NPAuraOnBeam then
+		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
 	end
 end
 
@@ -236,6 +250,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if self.Options.NPAuraOnBeam then
+		DBM.Nameplate:Hide(nil, true)
 	end
 end
 
@@ -415,6 +432,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
+		if self.Options.NPAuraOnBeam then
+			DBM.Nameplate:Show(args.destGUID, spellId)
+		end
 	elseif spellId == 209973 then
 		warnAblatingExplosion:Show(args.destName)
 		timerAblatingExplosion:Start(args.destName)
@@ -474,6 +494,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.InfoFrame and self.vb.burstDebuffCount == 0 then
 			DBM.InfoFrame:Hide()
 		end
+	elseif spellId == 209244 then
+		if self.Options.NPAuraOnBeam then
+			DBM.Nameplate:Hide(args.destGUID)
+		end
 	end
 end
 
@@ -487,6 +511,16 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --]]
 
+--Done this way because it's less ugly for 1, but 2, the other way will fail if there is ever more than 1 of SAME TYPE up at once and one of them dies.
+function mod:PARTY_KILL(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 105299 then -- Recursive
+		self:SendSync("SlowAddDied")
+	elseif cid == 105301 then -- Expedient
+		self:SendSync("FastAddDied")
+	end
+end
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 211647 then--Time Stop
@@ -495,6 +529,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		--self.vb.firstElementals = false
 		self.vb.slowElementalCount = 0
 		self.vb.fastElementalCount = 0
+		self.vb.slowBubbleCount = 0
+		self.vb.fastBubbleCount = 0
 		self.vb.ringCastCount = 0
 		self.vb.beamCastCount = 0
 		self.vb.singularityCount = 0
@@ -505,6 +541,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerEpochericOrbCD:Stop()
 		countdownOrbs:Cancel()
 		timerSpanningSingularityCD:Stop()
+		countdownSpanningSingularity:Cancel()
 		timerDelphuricBeamCD:Stop()
 		timerLeaveNightwell:Start()
 		timerSpanningSingularityCD:Start(10, 1)--Updated Jan 18 heroic
@@ -520,6 +557,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 					countdownOrbs:Start(24)
 					timerArcaneticRing:Start(43, 1)--Verified Jan 18
 					countdownArcaneticRing:Start(43.7)
+					countdownSpanningSingularity:Start(10)
 				else
 					timerEpochericOrbCD:Start(27, 1)
 					countdownOrbs:Start(27)
@@ -547,6 +585,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 					voiceEpochericOrb:Schedule(24, "161612")
 					timerArcaneticRing:Start(43, 1)--Verified Jan 18
 					countdownArcaneticRing:Start(43)
+					countdownSpanningSingularity:Start(10)
 				else
 					timerEpochericOrbCD:Start(27, 1)
 					countdownOrbs:Start(27)
@@ -620,6 +659,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		local timer = self:IsMythic() and mythicSingularityTimers[nextCount] or self:IsEasy() and easySingularityTimers[nextCount] or SingularityTimers[nextCount]
 		if timer then
 			timerSpanningSingularityCD:Start(timer, nextCount)
+			if self:IsMythic() then
+				countdownSpanningSingularity:Start(timer)
+			end
 		end
 	end
 end
@@ -687,5 +729,11 @@ function mod:OnSync(msg, targetname)
 			timerEpochericOrbCD:Start(timer, nextCount)
 			countdownOrbs:Start(timer)
 		end
+	elseif msg == "SlowAddDied" then
+		self.vb.slowBubbleCount = self.vb.slowBubbleCount + 1
+		timerSlowTimeBubble:Start(30, self.vb.slowBubbleCount)
+	elseif msg == "FastAddDied" then
+		self.vb.fastBubbleCount = self.vb.fastBubbleCount + 1
+		timerFastTimeBubble:Start(30, self.vb.fastBubbleCount)
 	end
 end
