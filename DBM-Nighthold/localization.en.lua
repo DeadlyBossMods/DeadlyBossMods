@@ -55,6 +55,10 @@ L:SetWarningLocalization({
 	warnSlamSoon		= "Bridge break in %ds"
 })
 
+L:SetOptionLocalization({
+	warnSlamSoon		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon:format(205862)
+})
+
 L:SetMiscLocalization({
 	MoveLeft			= "Move Left",
 	MoveRight			= "Move Right"
