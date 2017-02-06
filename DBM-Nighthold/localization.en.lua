@@ -5,15 +5,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1706)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
 L:SetMiscLocalization({
 	NoDebuff	= "No %s"
 })
@@ -95,6 +86,16 @@ L:SetOptionLocalization({
 -- Grand Magistrix Elisande --
 ------------------
 L= DBM:GetModLocalization(1743)
+
+L:SetTimerLocalization({
+	timerFastTimeBubble		= "Fast Bubble (%d)",
+	timerSlowTimeBubble		= "Slow Bubble (%d)"
+})
+
+L:SetOptionLocalization({
+	timerFastTimeBubble		= "Show timer for $spell:209166 bubbles",
+	timerSlowTimeBubble		= "Show timer for $spell:209165 bubbles"
+})
 
 L:SetMiscLocalization({
 	noCLEU4EchoRings		= "Let the waves of time crash over you!",
