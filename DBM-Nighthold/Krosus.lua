@@ -306,7 +306,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	end
 end
 
---Listen for Krosus Assist
+--Listen for Krosus Assist on Bigwigs Comms to make compat with mod much easier for elvador
 function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 	if prefix ~= "BigWigs" then return end
 	local bwPrefix, bwMsg, extra = strsplit("^", msg)
@@ -320,4 +320,17 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 		end
 	end
 end
+
+--[[
+function mod:OnBWSync(msg)
+	if not self:IsInCombat() then return end
+	if msg == "firstBeamWasLeft" then
+		self.vb.firstBeam = 1
+		DBM:Debug("Recieved Left Beam Sync")
+	elseif msg == "firstBeamWasRight" then
+		self.vb.firstBeam = 2
+		DBM:Debug("Recieved Right Beam Sync")
+	end
+end
+--]]
 	
