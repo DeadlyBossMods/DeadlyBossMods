@@ -17,8 +17,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REFRESH 209973",
 	"SPELL_AURA_APPLIED_DOSE 209615 209973",
 	"SPELL_AURA_REMOVED 209973 209598 209244",
---	"SPELL_PERIODIC_DAMAGE 209433",
---	"SPELL_PERIODIC_MISSED 209433",
+	"SPELL_PERIODIC_DAMAGE 209433",
+	"SPELL_PERIODIC_MISSED 209433",
 	"PARTY_KILL",
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -62,7 +62,7 @@ local specWarnExpedite				= mod:NewSpecialWarningInterrupt(209617, "HasInterrupt
 local specWarnArcaneticRing			= mod:NewSpecialWarningDodge(208807, nil, nil, nil, 2, 5)
 local specWarnAblation				= mod:NewSpecialWarningTaunt(209615, nil, nil, nil, 1, 2)
 local specWarnSpanningSingularity	= mod:NewSpecialWarningDodge(209168, nil, nil, nil, 2, 2)
---local specWarnSingularityGTFO		= mod:NewSpecialWarningMove(209168, nil, nil, nil, 1, 2)
+local specWarnSingularityGTFO		= mod:NewSpecialWarningMove(209168, "-Tank", nil, 2, 1, 2)
 --Time Layer 2
 local specWarnDelphuricBeam			= mod:NewSpecialWarningYou(214278, nil, nil, nil, 1, 2)
 local yellDelphuricBeam				= mod:NewYell(214278, nil, false)--off by default, because yells last longer than 3-4 seconds so yells from PERVIOUS beam are not yet gone when new beam is cast.
@@ -97,7 +97,7 @@ local timerConflexiveBurstCD		= mod:NewNextCountTimer(100, 209597, nil, nil, nil
 --local timerAblativePulseCD			= mod:NewCDTimer(9.6, 209971, nil, "Tank", nil, 4, nil, DBM_CORE_TANK_ICON..DBM_CORE_INTERRUPT_ICON)--12 now?
 local timerPermaliativeTormentCD	= mod:NewNextCountTimer(16, 210387, nil, "Healer", nil, 5, nil, DBM_CORE_DEADLY_ICON)
 
---local berserkTimer					= mod:NewBerserkTimer(240)--4 minute berserk that resets when she changes layers.
+local berserkTimer					= mod:NewBerserkTimer(240)
 
 --Base
 --Time Layer 1
@@ -145,7 +145,7 @@ local fastElementalTimers = {8, 88, 95, 20}--Heroic Jan 19
 local easyfastElementalTimers = {8, 71}--Norma Jan 26
 local mythicP1FastElementalTimers = {8, 81.0}--Mythic Feb 5
 local mythicP2FastElementalTimers = {8, 51}--Mythic Feb 5
-local mythicP3FastElementalTimers = {8, 37, 44}--Mythic Feb 5
+local mythicP3FastElementalTimers = {8, 36, 44}--Mythic Feb 5
 local RingTimers = {34, 40, 10, 62, 9, 45}--Heroic Jan 19
 local easyRingTimers = {34, 30}--Normal Jan 26
 local mythicRingTimers = {30, 39, 15, 30, 19, 10, 25, 9, 10, 10}--Mythic Feb 5 (figure out that 25 in middle of 10s)
@@ -159,14 +159,14 @@ local mythicBeamTimers = {67, 50, 65}--Mythic Feb 5
 --Exists in Phase 2 and Phase 3 (but cast start event missing in phase 3)
 local OrbTimers = {27, 76, 37, 70, 15, 15, 15}--Heroic Jan 18
 local easyOrbTimers = {27, 56, 31}--Normal Feb 2
-local mythicOrbTimers = {24, 85, 60, 20}--Mythic Feb 5
+local mythicOrbTimers = {24, 85, 60, 20, 10}--Mythic Feb 5
 --Only exist in phase 3 so first timer of course isn't variable
 local BurstTimers = {58, 52.0, 56.0, 65.0, 10.0, 10.0, 10.0, 10.0}--Heroic Jan 21 (normal ones are different i'm sure, just no data to fix yet)
 local easyBurstTimers = {58, 67}--Normal Feb 2
-local mythicBurstTimers = {48, 90, 45}--Mythic Feb 5
-local TormentTimers = {33, 61, 37, 60}--Heroic Jan 21--REVERIFY FIRST ON ALL DIFFICULTIES
-local easyTormentTimers = {33, 41}--Normal Feb 2--REVERIFY FIRST ON ALL DIFFICULTIES
-local mythicTormentTimers = {74, 75, 25}--Mythic Feb 5--REVERIFY FIRST ON ALL DIFFICULTIES
+local mythicBurstTimers = {48, 90, 45, 30}--Mythic Feb 5
+local TormentTimers = {33, 61, 37, 60}--Heroic Jan 21
+local easyTormentTimers = {33, 41}--Normal Feb 2
+local mythicTormentTimers = {74, 75, 25, 20}--Mythic Feb 5
 local currentTank, tankUnitID = nil, nil--not recoverable on purpose
 mod.vb.firstElementals = false
 mod.vb.slowElementalCount = 0
@@ -501,15 +501,15 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 209433 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
 		specWarnSingularityGTFO:Show()
-		voiceSpanningSingularity:Play("runaway")
+		if not self:IsTank() then
+			voiceSpanningSingularity:Play("runaway")
+		end
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
---]]
 
 --Done this way because it's less ugly for 1, but 2, the other way will fail if there is ever more than 1 of SAME TYPE up at once and one of them dies.
 function mod:PARTY_KILL(args)
@@ -543,6 +543,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerSpanningSingularityCD:Stop()
 		countdownSpanningSingularity:Cancel()
 		timerDelphuricBeamCD:Stop()
+		berserkTimer:Cancel()
 		timerLeaveNightwell:Start()
 		timerSpanningSingularityCD:Start(10, 1)--Updated Jan 18 heroic
 		timerTimeElementalsCD:Start(14.7, SLOW)--Updated Jan 18 heroic
@@ -607,10 +608,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				end
 			end
 		end
-		--berserkTimer:Cancel()
-		--berserkTimer:Start(258)
 	elseif spellId == 208863 then
 		self.vb.transitionActive = false
+		if self:Mythic() then 
+			if self.vb.phase == 3 then
+				berserkTimer:Start(194)
+			else
+				berserkTimer:Start(199)
+			end
+		end
 	elseif spellId == 209005 and not self.vb.transitionActive then--Summon Time Elemental - Slow
 		self.vb.slowElementalCount = self.vb.slowElementalCount + 1
 		--if self.vb.firstElementals then
