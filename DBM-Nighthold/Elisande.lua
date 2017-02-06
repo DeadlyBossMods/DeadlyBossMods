@@ -99,7 +99,7 @@ local timerPermaliativeTormentCD	= mod:NewNextCountTimer(16, 210387, nil, "Heale
 --Time Layer 1
 local countdownArcaneticRing		= mod:NewCountdown(30, 208807)
 --Time Layer 2
-local countdownDelphuricBeam		= mod:NewCountdown("Alt6", 214278)
+local countdownOrbs					= mod:NewCountdown("Alt6", 210022, "Ranged")
 --Time Layer 3
 local countdownConflexiveBurst		= mod:NewCountdown("AltTwo6", 209597)
 
@@ -279,6 +279,7 @@ function mod:SPELL_CAST_START(args)
 		local timer = self:IsMythic() and mythicOrbTimers[nextCount] or self:IsEasy() and easyOrbTimers[nextCount] or OrbTimers[nextCount]
 		if timer then
 			timerEpochericOrbCD:Start(timer, nextCount)
+			countdownOrbs:Start(timer)
 		end
 	end
 end
@@ -300,7 +301,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer then
 			timerPermaliativeTormentCD:Start(timer, nextCount)
 		end
-	elseif spellId == 214278 or spellId == 214295 then--Boss: 214278, Echo: 214295
+	elseif (spellId == 214278 or spellId == 214295) and self:AntiSpam(10, 2) then--Boss: 214278, Echo: 214295
 		self.vb.beamCastCount = self.vb.beamCastCount + 1
 		local nextCount = self.vb.beamCastCount + 1
 		if self.vb.phase == 2 then
@@ -334,7 +335,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local timer = self:IsMythic() and mythicBeamTimers[nextCount] or self:IsEasy() and easyBeamTimers[nextCount] or BeamTimers[nextCount]
 		if timer then
 			timerDelphuricBeamCD:Start(timer, nextCount)
-			countdownDelphuricBeam:Start(timer)
 		end
 	elseif spellId == 209615 then
 		--timerAblationCD:Start()
@@ -346,6 +346,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnEpochericOrb:Schedule(timer-10)
 			voiceEpochericOrb:Schedule(timer-10, "161612")
 			timerEpochericOrbCD:Start(timer-10, nextCount)
+			countdownOrbs:Start(timer-10)
 		end
 	end
 end
@@ -478,7 +479,7 @@ end
 
 --[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 209433 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if spellId == 209433 and destGUID == UnitGUID("player") and self:AntiSpam(2, 5) then
 		specWarnSingularityGTFO:Show()
 		voiceSpanningSingularity:Play("runaway")
 	end
@@ -502,9 +503,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		countdownArcaneticRing:Cancel()
 		timerTimeElementalsCD:Stop()
 		timerEpochericOrbCD:Stop()
+		countdownOrbs:Cancel()
 		timerSpanningSingularityCD:Stop()
 		timerDelphuricBeamCD:Stop()
-		countdownDelphuricBeam:Cancel()
 		timerLeaveNightwell:Start()
 		timerSpanningSingularityCD:Start(10, 1)--Updated Jan 18 heroic
 		timerTimeElementalsCD:Start(14.7, SLOW)--Updated Jan 18 heroic
@@ -516,20 +517,20 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			if not self:IsEasy() then
 				if self:IsMythic() then--TODO: Fine tune these as they may be hit or miss by some seconds Hard to measure precise phase changes from WCL
 					timerEpochericOrbCD:Start(24, 1)
-					timerArcaneticRing:Start(39.7, 1)--Verified Jan 18
-					countdownArcaneticRing:Start(39.7)
+					countdownOrbs:Start(24)
+					timerArcaneticRing:Start(43, 1)--Verified Jan 18
+					countdownArcaneticRing:Start(43.7)
 				else
 					timerEpochericOrbCD:Start(27, 1)
+					countdownOrbs:Start(27)
 					timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
 					countdownArcaneticRing:Start(45.7)
 				end
 			end
 			if self:IsMythic() then--TODO: Fine tune these as they may be hit or miss by some seconds Hard to measure precise phase changes from WCL
 				timerDelphuricBeamCD:Start(67, 1)--Cast SUCCESS
-				countdownDelphuricBeam:Start(67)
 			else
 				timerDelphuricBeamCD:Start(72, 1)--Cast SUCCESS
-				countdownDelphuricBeam:Start(72)
 			end
 		elseif self.vb.phase == 3 then
 			warnPhase3:Show()
@@ -541,12 +542,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			if not self:IsEasy() then
 				if self:IsMythic() then
 					timerEpochericOrbCD:Start(24, 1)
+					countdownOrbs:Start(24)
 					specWarnEpochericOrb:Schedule(24)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
 					voiceEpochericOrb:Schedule(24, "161612")
-					timerArcaneticRing:Start(39.7, 1)--Verified Jan 18
-					countdownArcaneticRing:Start(39.7)
+					timerArcaneticRing:Start(43, 1)--Verified Jan 18
+					countdownArcaneticRing:Start(43)
 				else
 					timerEpochericOrbCD:Start(27, 1)
+					countdownOrbs:Start(27)
 					specWarnEpochericOrb:Schedule(27)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
 					voiceEpochericOrb:Schedule(27, "161612")
 					timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
@@ -674,6 +677,7 @@ function mod:OnSync(msg, targetname)
 	elseif msg == "Orbs" and self:AntiSpam(15, 4) then
 		specWarnEpochericOrb:Cancel()
 		voiceEpochericOrb:Cancel()
+		countdownOrbs:Cancel()
 		self.vb.orbCastCount = self.vb.orbCastCount + 1
 		specWarnEpochericOrb:Show()
 		voiceEpochericOrb:Play("161612")
@@ -681,6 +685,7 @@ function mod:OnSync(msg, targetname)
 		local timer = self:IsMythic() and mythicOrbTimers[nextCount] or self:IsEasy() and easyOrbTimers[nextCount] or OrbTimers[nextCount]
 		if timer then
 			timerEpochericOrbCD:Start(timer, nextCount)
+			countdownOrbs:Start(timer)
 		end
 	end
 end
