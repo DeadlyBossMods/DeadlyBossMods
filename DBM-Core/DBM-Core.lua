@@ -4732,6 +4732,8 @@ do
 				elseif bwPrefix == "Q" then--Version request prefix
 					self:Unschedule(SendVersion)
 					self:Schedule(3, SendVersion)
+				--elseif bwPrefix == "B" then--Boss Mod Sync
+					--Find out how to see if any mods are in combat to fire a new Bigwigs sync handler, so I don't have to register CHAT_MSG_ADDON in mods snooping bigwigs comms
 				end
 			end
 		elseif prefix == "Transcriptor" and msg then
@@ -10799,6 +10801,16 @@ function bossModPrototype:SendSync(event, ...)
 	if not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 8 then
 		self:ReceiveSync(event, nil, self.revision or 0, tostringall(...))
 		sendSync("M", str)
+	end
+end
+
+function bossModPrototype:SendBigWigsSync(event, msg, extra)
+	msg = "B^".. msg
+	if extra then
+		msg = msg .."^".. extra
+	end
+	if IsInGroup() then
+		SendAddonMessage("BigWigs", msg, IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 	end
 end
 

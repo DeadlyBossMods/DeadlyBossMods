@@ -17,6 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 206677",
 	"SPELL_AURA_REMOVED 205344",
 	"UNIT_DIED",
+	"CHAT_MSG_ADDON",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -88,12 +89,12 @@ function DBMUpdateKrosusBeam(wasLeft)
 	if wasLeft then
 		mod.vb.firstBeam = 1
 		if not mod:IsLFR() then
-			mod:SendSync("firstBeamWasLeft")
+			mod:SendBigWigsSync("firstBeamWasLeft")
 		end
 	else
 		mod.vb.firstBeam = 2
 		if not mod:IsLFR() then
-			mod:SendSync("firstBeamWasRight")
+			mod:SendBigWigsSync("firstBeamWasRight")
 		end
 	end
 end
@@ -305,15 +306,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	end
 end
 
---Native DBM syncs
-function mod:OnSync(msg)
-	if not self:IsInCombat() then return end
-	if msg == "firstBeamWasLeft" then
-		self.vb.firstBeam = 1
-		DBM:Debug("Recieved Left Beam Sync")
-	elseif msg == "firstBeamWasRight" then
-		self.vb.firstBeam = 2
-		DBM:Debug("Recieved Right Beam Sync")
+--Listen for Krosus Assist
+function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
+	if prefix ~= "BigWigs" then return end
+	local bwPrefix, bwMsg, extra = strsplit("^", msg)
+	if bwPrefix == "B" then
+		if bwMsg == "firstBeamWasLeft" then
+			self.vb.firstBeam = 1
+			DBM:Debug("Recieved Left Beam Sync")
+		elseif bwMsg == "firstBeamWasRight" then
+			self.vb.firstBeam = 2
+			DBM:Debug("Recieved Right Beam Sync")
+		end
 	end
 end
 	
