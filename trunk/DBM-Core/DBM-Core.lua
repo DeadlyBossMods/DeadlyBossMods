@@ -4732,8 +4732,13 @@ do
 				elseif bwPrefix == "Q" then--Version request prefix
 					self:Unschedule(SendVersion)
 					self:Schedule(3, SendVersion)
-				--elseif bwPrefix == "B" then--Boss Mod Sync
-					--Find out how to see if any mods are in combat to fire a new Bigwigs sync handler, so I don't have to register CHAT_MSG_ADDON in mods snooping bigwigs comms
+--[[				elseif bwPrefix == "B" then--Boss Mod Sync
+					for i = 1, #inCombat do
+						local mod = inCombat[i]
+						if mod.HasBWComms then
+							mod:OnBWSync(bwMsg, extra)
+						end
+					end--]]
 				end
 			end
 		elseif prefix == "Transcriptor" and msg then
