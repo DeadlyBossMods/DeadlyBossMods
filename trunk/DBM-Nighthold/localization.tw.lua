@@ -6,15 +6,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1706)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
 L:SetMiscLocalization({
 	NoDebuff	= "無%s"
 })
@@ -38,6 +29,10 @@ L= DBM:GetModLocalization(1751)
 -- Tichondrius --
 ------------------
 L= DBM:GetModLocalization(1762)
+
+L:SetOptionLocalization({
+	HUDSeekerLines		= "為覓腐蟲群顯示HUD線條"
+})
 
 L:SetMiscLocalization({
 	First				= "第一",
@@ -83,8 +78,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1732)
 
+
+
 L:SetOptionLocalization({
-	ShowNeutralColor		= "為沒有星之記號的玩家顯示HUB的白圈，直到所有記號被清除。",
+	ShowCustomNPAuraTexture	= "如果你中了星之記號則在名條上顯示自訂的綠/紅圖示材質而不是星之記號減益",
 	FilterOtherSigns		= "過濾與你無關的星之記號點名。"
 })
 
@@ -92,6 +89,16 @@ L:SetOptionLocalization({
 -- Grand Magistrix Elisande --
 ------------------
 L= DBM:GetModLocalization(1743)
+
+L:SetTimerLocalization({
+	timerFastTimeBubble		= "加快區域(%d)",
+	timerSlowTimeBubble		= "遲緩區域(%d)"
+})
+
+L:SetOptionLocalization({
+	timerFastTimeBubble		= "為$spell:209166區域顯示計時器",
+	timerSlowTimeBubble		= "為$spell:209165區域顯示計時器"
+})
 
 L:SetMiscLocalization({
 	noCLEU4EchoRings		= "時間的浪潮會粉碎你！",
