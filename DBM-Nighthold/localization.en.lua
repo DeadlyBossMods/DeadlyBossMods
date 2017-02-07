@@ -29,6 +29,10 @@ L= DBM:GetModLocalization(1751)
 ------------------
 L= DBM:GetModLocalization(1762)
 
+L:SetOptionLocalization({
+	HUDSeekerLines		= "Show HUD lines with Seeker Swarm"
+})
+
 L:SetMiscLocalization({
 	First				= "First",
 	Second				= "Second",

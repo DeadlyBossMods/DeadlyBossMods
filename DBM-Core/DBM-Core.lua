@@ -1290,7 +1290,9 @@ do
 				"LOADING_SCREEN_DISABLED",
 				"SCENARIO_CRITERIA_UPDATE"
 			)
-			RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
+			if RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") then
+				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
+			end
 			self:GROUP_ROSTER_UPDATE()
 			C_TimerAfter(1.5, function()
 				combatInitialized = true
@@ -4735,7 +4737,7 @@ do
 --[[				elseif bwPrefix == "B" then--Boss Mod Sync
 					for i = 1, #inCombat do
 						local mod = inCombat[i]
-						if mod.HasBWComms then
+						if mod:OnBWSync then
 							mod:OnBWSync(bwMsg, extra)
 						end
 					end--]]
@@ -6549,48 +6551,55 @@ do
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", filterSayYell)
 end
 
---Raid Boss Emote frame handler for core and BG mods.
---This completely unregisteres or registers event so frame simply does or doesn't show events
---No dirty hooking. Least invasive way to do it. Uses lowest CPU
+--This completely unregisteres or registers distruptive events so they don't obstruct combat
 --Toggle is for if we are turning off or on.
---Custom is for pvp mods to call function without needing global option turned on (such as BG mods option)
---All also handled by core so both core AND pvp mods aren't trying to hook/hide it. Should all be done HERE
+--Custom is for pvp mods to call function without duplication and allowing pvp mods custom toggle.
 do
-	local blizzEventsUnregistered = false
+	local unregisteredEvents = {}
+	local function DisableEvent(frameName, eventName)
+		if frameName:IsEventRegistered(eventName) then
+			frameName:UnregisterEvent(eventName)
+			unregisteredEvents[eventName] = true
+		end
+	end
+	local function EnableEvent(frameName, eventName)
+		if unregisteredEvents[eventName] then
+			frameName:RegisterEvent(eventName)
+			unregisteredEvents[eventName] = nil
+		end
+	end
 	function DBM:HideBlizzardEvents(toggle, custom)
-		if toggle == 1 and not blizzEventsUnregistered then
-			blizzEventsUnregistered = true
+		if toggle == 1 then
 			if self.Options.HideQuestTooltips then
 				SetCVar("showQuestTrackingTooltips", 0)
 			end
 			if self.Options.HideBossEmoteFrame or custom then
-				RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_EMOTE")
-				RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_WHISPER")
-				RaidBossEmoteFrame:UnregisterEvent("CLEAR_BOSS_EMOTES")
+				DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
+				DisableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
+				DisableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
 			end
 			if self.Options.HideGarrisonToasts or custom then
-				AlertFrame:UnregisterEvent("GARRISON_MISSION_FINISHED")
-				AlertFrame:UnregisterEvent("GARRISON_BUILDING_ACTIVATABLE")
+				DisableEvent(AlertFrame, "GARRISON_MISSION_FINISHED")
+				DisableEvent(AlertFrame, "GARRISON_BUILDING_ACTIVATABLE")
 			end
 			if self.Options.HideGuildChallengeUpdates or custom then
-				AlertFrame:UnregisterEvent("GUILD_CHALLENGE_COMPLETED")
+				DisableEvent(AlertFrame, "GUILD_CHALLENGE_COMPLETED")
 			end
-		elseif toggle == 0 and blizzEventsUnregistered then
-			blizzEventsUnregistered = false
+		elseif toggle == 0 then
 			if self.Options.HideQuestTooltips then
 				SetCVar("showQuestTrackingTooltips", 1)
 			end
 			if self.Options.HideBossEmoteFrame or custom then
-				RaidBossEmoteFrame:RegisterEvent("RAID_BOSS_EMOTE")
-				RaidBossEmoteFrame:RegisterEvent("RAID_BOSS_WHISPER")
-				RaidBossEmoteFrame:RegisterEvent("CLEAR_BOSS_EMOTES")
+				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
+				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
+				EnableEvent(RaidBossEmoteFrame, "CLEAR_BOSS_EMOTES")
 			end
 			if self.Options.HideGarrisonToasts then
-				AlertFrame:RegisterEvent("GARRISON_MISSION_FINISHED")
-				AlertFrame:RegisterEvent("GARRISON_BUILDING_ACTIVATABLE")
+				EnableEvent(AlertFrame, "GARRISON_MISSION_FINISHED")
+				EnableEvent(AlertFrame, "GARRISON_BUILDING_ACTIVATABLE")
 			end
 			if self.Options.HideGuildChallengeUpdates then
-				AlertFrame:RegisterEvent("GUILD_CHALLENGE_COMPLETED")
+				EnableEvent(AlertFrame, "GUILD_CHALLENGE_COMPLETED")
 			end
 		end
 	end

@@ -322,6 +322,7 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, targetName)
 end
 
 --[[
+--Not funcitonal yet. Might not even be worth effort to hack a handler together for something used so rarely
 function mod:OnBWSync(msg)
 	if not self:IsInCombat() then return end
 	if msg == "firstBeamWasLeft" then
