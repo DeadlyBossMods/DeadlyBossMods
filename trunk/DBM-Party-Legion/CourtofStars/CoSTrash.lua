@@ -188,6 +188,7 @@ do
 		return lines
 	end
 	
+	--/run DBM:GetModByName("CoSTrash"):ResetGossipState()
 	function mod:ResetGossipState()
 		table.wipe(hints)
 		DBM.InfoFrame:Hide()

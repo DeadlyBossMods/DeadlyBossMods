@@ -78,7 +78,7 @@ local specWarnAblativePulse			= mod:NewSpecialWarningInterrupt(209971, "HasInter
 local timerLeaveNightwell			= mod:NewCastTimer(9.8, 208863, nil, nil, nil, 6)
 local timerTimeElementalsCD			= mod:NewNextSourceTimer(16, 208887, 141872, nil, nil, 1)--"Call Elemental" short text
 local timerFastTimeBubble			= mod:NewTimer(30, "timerFastTimeBubble", 209166, nil, nil, 5)
-local timerSlowTimeBubble			= mod:NewTimer(30, "timerSlowTimeBubble", 209165, nil, nil, 5)
+--local timerSlowTimeBubble			= mod:NewTimer(60, "timerSlowTimeBubble", 209165, nil, nil, 5)
 --209166
 --Time Layer 1
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
@@ -737,7 +737,7 @@ function mod:OnSync(msg, targetname)
 		end
 	elseif msg == "SlowAddDied" then
 		self.vb.slowBubbleCount = self.vb.slowBubbleCount + 1
-		timerSlowTimeBubble:Start(30, self.vb.slowBubbleCount)
+		--timerSlowTimeBubble:Start(30, self.vb.slowBubbleCount)
 	elseif msg == "FastAddDied" then
 		self.vb.fastBubbleCount = self.vb.fastBubbleCount + 1
 		timerFastTimeBubble:Start(30, self.vb.fastBubbleCount)
