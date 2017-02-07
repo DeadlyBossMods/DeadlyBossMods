@@ -6,15 +6,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1706)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
 L:SetMiscLocalization({
 	NoDebuff	= "%s 없음"
 })
@@ -39,6 +30,10 @@ L= DBM:GetModLocalization(1751)
 ------------------
 L= DBM:GetModLocalization(1762)
 
+L:SetOptionLocalization({
+	HUDSeekerLines		= "추적 박쥐떼 경로에 HUD 표시"
+})
+
 L:SetMiscLocalization({
 	First				= "1번 낙인",
 	Second				= "2번 낙인",
@@ -54,6 +49,15 @@ L= DBM:GetModLocalization(1713)
 
 L:SetWarningLocalization({
 	warnSlamSoon		= "%d초 후 다리 파괴"
+})
+
+L:SetOptionLocalization({
+	warnSlamSoon		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon:format(205862)
+})
+
+L:SetMiscLocalization({
+	MoveLeft			= "왼쪽으로 이동",
+	MoveRight			= "오른쪽으로 이동"
 })
 
 ------------------
@@ -79,14 +83,24 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1732)
 
 L:SetOptionLocalization({
-	ShowNeutralColor		= "별자리의 징표가 없는 주변 플레이어를 징표가 사라지기 전까지 HUD에 하얀색 원으로 표시",
-	FilterOtherSigns		= "별자리의 징표에 걸리지 않으면 대상 알림을 하지 않습니다."
+	ShowCustomNPAuraTextures	= "별자리의 징표에 걸리면 징표 디버프 대신 사용자 지정 녹색/빨간색 아이콘 표시",
+	FilterOtherSigns		= "당신이 걸리지 않은 징표는 대상 알림에서 제외합니다."
 })
 
 ------------------
 -- Grand Magistrix Elisande --
 ------------------
 L= DBM:GetModLocalization(1743)
+
+L:SetTimerLocalization({
+	timerFastTimeBubble		= "시간 빠름 바닥 (%d)",
+	timerSlowTimeBubble		= "시간 느림 바닥 (%d)"
+})
+
+L:SetOptionLocalization({
+	timerFastTimeBubble		= "$spell:209166 바닥 타이머 바 보기",
+	timerSlowTimeBubble		= "$spell:209165 바닥 타이머 바 보기"
+})
 
 L:SetMiscLocalization({
 	noCLEU4EchoRings		= "시간의 파도가 널 덮치기를!",
