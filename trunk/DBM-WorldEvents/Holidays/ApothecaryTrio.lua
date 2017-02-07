@@ -26,9 +26,9 @@ local warnChainReaction			= mod:NewCastAnnounce(68821, 3, nil, "Melee")
 local specWarnPerfumeSpill		= mod:NewSpecialWarningMove(68927)
 local specWarnCologneSpill		= mod:NewSpecialWarningMove(68934)
 
-local timerHummel				= mod:NewTimer(10.5, "HummelActive", 2457, nil, false)
-local timerBaxter				= mod:NewTimer(18.5, "BaxterActive", 2457, nil, false)
-local timerFrye					= mod:NewTimer(26.5, "FryeActive", 2457, nil, false)
+local timerHummel				= mod:NewTimer(10.5, "HummelActive", "Interface\\Icons\\ability_warrior_offensivestance", nil, false)
+local timerBaxter				= mod:NewTimer(18.5, "BaxterActive", "Interface\\Icons\\ability_warrior_offensivestance", nil, false)
+local timerFrye					= mod:NewTimer(26.5, "FryeActive", "Interface\\Icons\\ability_warrior_offensivestance", nil, false)
 mod:AddBoolOption("TrioActiveTimer", true, "timer")
 local timerChainReaction		= mod:NewCastTimer(3, 68821, nil, "Melee")
 
