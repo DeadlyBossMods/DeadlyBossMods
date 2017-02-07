@@ -2847,6 +2847,10 @@ do
 	function DBM:GetRaidUnitId(name)
 		return raid[name] and raid[name].id
 	end
+	
+	function DBM:GetPlayerGUIDByName(name)
+		return raid[name] and raid[name].guid
+	end
 
 	function DBM:GetUnitFullName(uId)
 		return GetUnitName(uId, true)

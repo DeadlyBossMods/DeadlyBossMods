@@ -134,7 +134,7 @@ local voiceWorldDevouringForce		= mod:NewVoice(216909)--farfromline
 mod:AddRangeFrameOption("5/8")
 mod:AddHudMapOption("HudMapOnConjunction", 205408)
 mod:AddNamePlateOption("NPAuraOnConjunction", 205408)
-mod:AddBoolOption("ShowNeutralColor", false)
+mod:AddBoolOption("ShowCustomNPAuraTextures", true)--http://puu.sh/tNJV7/c2ba118d2f.jpg
 mod:AddInfoFrameOption(205408)--really needs a "various" option
 
 mod.vb.StarSigns = 0
@@ -173,6 +173,7 @@ local crabs = {}
 local dragons = {}
 local hunters = {}
 local wolves = {}
+local playerAffected = false
 local UnitDebuff = UnitDebuff
 local voidWarned = false
 local chilledFilter, tankFilter
@@ -272,23 +273,101 @@ local function updateRangeFrame(self, force)
 	end
 end
 
-local function showConjunction(self)
+--This function went from pretty to ugly but it should work
+local function showConjunction(self, delayedAuras)
 	if UnitDebuff("player", crabDebuff) then
 		warnStarSignCrab:Show(table.concat(crabs, "<, >"))
+		if delayedAuras then
+			for i = 1, #crabs do
+				local name = crabs[i]
+				local guid = DBM:GetPlayerGUIDByName(name)
+				if guid then
+					DBM.Nameplate:Show(guid, 205429, playerAffected and 236595 or nil, 10)
+				end
+			end
+		end
+	else
+		if delayedAuras then
+			for i = 1, #crabs do
+				local name = crabs[i]
+				local guid = DBM:GetPlayerGUIDByName(name)
+				if guid then
+					DBM.Nameplate:Show(guid, 205429, playerAffected and 236612 or nil, 10)
+				end
+			end
+		end
 	end
 	if UnitDebuff("player", dragonDebuff) then
 		warnStarSignDragon:Show(table.concat(dragons, "<, >"))
+		if delayedAuras then
+			for i = 1, #dragons do
+				local name = dragons[i]
+				local guid = DBM:GetPlayerGUIDByName(name)
+				if guid then
+					DBM.Nameplate:Show(guid, 216344, playerAffected and 236595 or nil, 10)
+				end
+			end
+		end
+	else
+		if delayedAuras then
+			for i = 1, #dragons do
+				local name = dragons[i]
+				local guid = DBM:GetPlayerGUIDByName(name)
+				if guid then
+					DBM.Nameplate:Show(guid, 216344, playerAffected and 236612 or nil, 10)
+				end
+			end
+		end
 	end
 	if not UnitDebuff("player", hunterDebuff) then
 		warnStarSignHunter:Show(table.concat(hunters, "<, >"))
+		if delayedAuras then
+			for i = 1, #hunters do
+				local name = hunters[i]
+				local guid = DBM:GetPlayerGUIDByName(name)
+				if guid then
+					DBM.Nameplate:Show(guid, 216345, playerAffected and 236595 or nil, 10)
+				end
+			end
+		end
+	else
+		if delayedAuras then
+			for i = 1, #hunters do
+				local name = hunters[i]
+				local guid = DBM:GetPlayerGUIDByName(name)
+				if guid then
+					DBM.Nameplate:Show(guid, 216345, playerAffected and 236612 or nil, 10)
+				end
+			end
+		end
 	end
 	if not UnitDebuff("player", wolfDebuff) then
 		warnStarSignWolf:Show(table.concat(wolves, "<, >"))
+		if delayedAuras then
+			for i = 1, #wolves do
+				local name = wolves[i]
+				local guid = DBM:GetPlayerGUIDByName(name)
+				if guid then
+					DBM.Nameplate:Show(guid, 205445, playerAffected and 236595 or nil, 10)
+				end
+			end
+		end
+	else
+		if delayedAuras then
+			for i = 1, #wolves do
+				local name = wolves[i]
+				local guid = DBM:GetPlayerGUIDByName(name)
+				if guid then
+					DBM.Nameplate:Show(guid, 205445, playerAffected and 236612 or nil, 10)
+				end
+			end
+		end
 	end
 end
 
 function mod:OnCombatStart(delay)
 	voidWarned = false
+	playerAffected = false
 	self.vb.StarSigns = 0
 	self.vb.phase = 1
 	self.vb.isPhaseChanging = false
@@ -338,7 +417,7 @@ function mod:SPELL_CAST_START(args)
 			timerConjunctionCD:Start(timers, self.vb.grandConCount+1)
 		end
 		updateRangeFrame(self, true)
-		self:Schedule(5, showConjunction, self)
+		self:Schedule(5, showConjunction, self, self.Options.NPAuraOnConjunction and self.Options.ShowCustomNPAuraTextures)
 		table.wipe(crabs)
 		table.wipe(dragons)
 		table.wipe(hunters)
@@ -453,6 +532,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceConjunction:Play("205408c")
 				countdownConjunction:Start()
 				timerConjunction:Start()
+				playerAffected = true
 			end
 		elseif spellId == 216344 then--Dragon
 			dragons[#dragons + 1] = args.destName
@@ -464,6 +544,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceConjunction:Play("205408d")
 				countdownConjunction:Start()
 				timerConjunction:Start()
+				playerAffected = true
 			end
 		elseif spellId == 216345 then--Hunter
 			hunters[#hunters + 1] = args.destName
@@ -475,6 +556,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceConjunction:Play("205408h")
 				countdownConjunction:Start()
 				timerConjunction:Start()
+				playerAffected = true
 			end
 		elseif spellId == 205445 then--Wolf
 			wolves[#wolves + 1] = args.destName
@@ -486,6 +568,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceConjunction:Play("205408w")
 				countdownConjunction:Start()
 				timerConjunction:Start()
+				playerAffected = true
 			end
 		end
 		if self.vb.StarSigns == 1 then
@@ -494,7 +577,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.InfoFrame:Show(15, "function", updateInfoFrame, sortInfoFrame, true)
 			end
 		end
-		if self.Options.NPAuraOnConjunction then
+		if self.Options.NPAuraOnConjunction and not self.Options.ShowCustomNPAuraTextures then
 			DBM.Nameplate:Show(args.destGUID, spellId, nil, 10)
 		end
 	elseif spellId == 206464 then
@@ -561,6 +644,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			countdownConjunction:Cancel()
 			timerConjunction:Stop()
+			playerAffected = false
 		end
 		if self.vb.StarSigns == 0 then
 			updateRangeFrame(self)
@@ -569,10 +653,8 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBMHudMap:FreeEncounterMarkers()
 			end
 		else
-			if self.Options.HudMapOnConjunction and self.Options.ShowNeutralColor then
-				--Change circle color to a 5th, white color for unaffected players
+			if self.Options.HudMapOnConjunction then
 				DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 4, 17, 1, 1, 1, 0.5, nil, true):Appear():SetLabel(args.destName)
 			end
 		end
 		if spellId == 205429 then--Crab
