@@ -32,7 +32,7 @@ DBM_CORE_DYNAMIC_MULTIPLE			= "현재 공격대 규모에 맞는 보스 기술 �
 
 DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s입니다. 현재 지정한 전리품 획득 전문화는 %s입니다."
 
-DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM 모두 전술 목표 아이콘 기능을 사용하고 있음을 감지했습니다. 충돌을 방지하기 위해 공대장이 두 애드온중 하나의 아이콘 설정을 비활성화해야 합니다."
+DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM 모두 공격대 징표 기능을 사용하고 있음을 감지했습니다. 충돌을 방지하기 위해 공대장이 두 애드온중 하나의 징표 설정을 비활성화해야 합니다."
 
 DBM_CORE_MOD_AVAILABLE				= "본 콘텐트에서 %s|1을;를; 사용할 수 있습니다. |HDBM:forums|h|cff3588ffdeadlybossmods.com|r 또는 Curse에서 다운로드 받으실 수 있습니다. 이 메시지는 한 번만 표시됩니다."
 
@@ -412,8 +412,8 @@ DBM_CORE_AUTO_TIMER_OPTIONS.phase		= "다음 단계 타이머 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.adds		= "쫄 등장 타이머 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.roleplay		= "역할 연기(롤플레이) 시간 타이머 바 보기"
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에게 전술 목표 아이콘 설정"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "$spell:%s에게 전술 목표 아이콘 설정"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에 공격대 징표 설정"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "$spell:%s에 공격대 징표 설정"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT			= "$spell:%s 대상을 향하는 DBM 화살표 표시"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "$spell:%s 대상과 반대 방향의 DBM 화살표 표시"
 DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "$spell:%s 특정 지점을 가리키는 DBM 화살표 표시"
@@ -431,14 +431,14 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell	= UnitName("player") .. "에게 %s!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count	= UnitName("player") .. "에게 %s! (%%d)"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s %%d초 후 사라짐!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position	= "{rt%%3$d}"..UnitName("player").."{rt%%3$d}에게 %1$s %%2$s"
-DBM_CORE_AUTO_HUD_OPTION_TEXT			= "$spell:%s에 HUD 표시"
-DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "여러 보스 기술에 HUD 표시"
+DBM_CORE_AUTO_HUD_OPTION_TEXT			= "$spell:%s에 HUD 표시 (중단됨)"
+DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "여러 보스 기술에 HUD 표시 (중단됨)"
 DBM_CORE_AUTO_NAMEPLATE_OPTION_TEXT		= "$spell:%s 오라를 이름표에 표시"
-DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 시전시 거리 창 보기 (%1$sm)"
+DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 거리 창 보기 (%1$sm)"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "거리 창 보기 (%sm)"
-DBM_CORE_AUTO_RRANGE_OPTION_TEXT		= "$spell:%2$s 시전시 반전 거리 창 보기 (%1$sm)"
+DBM_CORE_AUTO_RRANGE_OPTION_TEXT		= "$spell:%2$s 반전 거리 창 보기 (%1$sm)"
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT_SHORT	= "반전 거리 창 보기 (%sm)"
-DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "$spell:%s 시전시 정보 창 보기"
+DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "$spell:%s 정보 창 보기"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "보스가 풀링되면 전투 준비 효과음 듣기 (보스를 대상으로 잡지 않아도 재생)"
 
 -- New special warnings
@@ -450,13 +450,13 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "특수 경고"
 DBM_CORE_HUD_INVALID_TYPE			= "올바르지 않은 HUD 형식이 정의되었습니다"
 DBM_CORE_HUD_INVALID_TARGET			= "HUD에 올바른 대상이 주어지지 않았습니다"
 DBM_CORE_HUD_INVALID_SELF			= "자신을 HUD 대상으로 설정할 수 없습니다"
-DBM_CORE_HUD_INVALID_ICON			= "대상에게 전술 목표 아이콘이 설정되어 있지 않으면 HUD에 아이콘 기능을 사용할 수 없습니다"
+DBM_CORE_HUD_INVALID_ICON			= "공격대 징표가 없는 대상엔 징표 기반 HUD 기능을 사용할 수 없습니다"
 DBM_CORE_HUD_SUCCESS				= "HUD가 입력한 정보를 표시하기 시작합니다. %s 후 자동으로 사라지며 '/dbm hud hide'를 입력하면 즉시 숨길 수 있습니다."
 DBM_CORE_HUD_USAGE	= {
 	"DBM-HudMap 사용법:",
 	"--------------------",
 	"/dbm hud <형식> <대상> <지속시간>: 지정한 시간 동안 대상을 가리키는 HUD를 생성",
-	"유효한 형식: arrow, red, blue, green, yellow, icon (대상에게 전술 목표 아이콘이 설정되어 있어야 함)",
+	"유효한 형식: arrow, red, blue, green, yellow, icon (대상에게 공격대 징표가 설정되어 있어야 함)",
 	"유효한 대상: target, focus, <대상이름>",
 	"유효한 시간: 아무 숫자(초단위). 지정하지 않으면 20분간 적용됩니다.",
 	"/dbm hud hide: HUD를 숨기고 비활성화"
