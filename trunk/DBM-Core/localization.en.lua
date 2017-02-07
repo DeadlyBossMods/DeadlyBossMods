@@ -449,8 +449,8 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT = {
 	position 	= "%s %%s on {rt%%d}"..UnitName("player").."{rt%%d}"
 }
 DBM_CORE_AUTO_YELL_CUSTOM_POSITION		= "{rt%d} %s {rt%d}"--Doesn't need translating. Has no strings
-DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Show HudMap for $spell:%s"
-DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Show HudMap for various mechanics"
+DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Show HudMap for $spell:%s (Retired)"
+DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Show HudMap for various mechanics (Retired)"
 DBM_CORE_AUTO_NAMEPLATE_OPTION_TEXT		= "Show Nameplate Auras for $spell:%s"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "Show range frame (%s) for $spell:%s"--string used for range so we can use things like "5/2" as a value for that field
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "Show range frame (%s)"--For when a range frame is just used for more than one thing

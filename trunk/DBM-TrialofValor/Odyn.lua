@@ -124,7 +124,7 @@ local voiceRunicBrand				= mod:NewVoice(231297)--mmX (will be changed to mmc whe
 mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(227503, true)
 mod:AddRangeFrameOption("5/8/15")
-mod:AddNamePlateOption("NPAuraOnRunicBrand", 231297, false)
+mod:AddNamePlateOption("NPAuraOnRunicBrand", 231297, true)
 
 mod.vb.phase = 1
 mod.vb.hornCasting = false

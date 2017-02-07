@@ -70,6 +70,7 @@ mod:AddBoolOption("YellActualRaidIcon", false)
 mod:AddBoolOption("FilterSameColor", true)
 mod:AddInfoFrameOption(228824, true)
 mod:AddRangeFrameOption(5, 228824)
+mod:AddNamePlateOption("NPAuraOnFoam", 228824, true)
 
 mod.vb.fangCast = 0
 mod.vb.breathCast = 0
@@ -141,6 +142,9 @@ function mod:OnCombatStart(delay)
 					self:Schedule(5, delayedSync, self)--Delayed to ensure it's not sent at same time as someone elses OnCombatStart firing and setting YellRealIcons back to false
 				end
 			end
+			if self.Options.NPAuraOnFoam then
+				DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+			end
 		else
 			berserkTimer:Start(-delay)
 		end
@@ -158,6 +162,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if self.Options.NPAuraOnFoam and self:IsMythic() then
+		DBM.Nameplate:Hide(nil, true)
 	end
 end
 
@@ -283,6 +290,15 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetIcon(args.destName, icon)
 			end
 		end
+		if self.Options.NPAuraOnFoam then
+			local uId = DBM:GetRaidUnitId(args.destName)
+			local remaining
+			if uId then
+				local _, _, _, _, _, _, expires, _, _ = UnitDebuff(uId, args.spellName)
+				remaining = expires-GetTime()
+			end
+			DBM.Nameplate:Show(args.destGUID, spellId, nil, remaining)
+		end
 	elseif spellId == 232173 then--Berserk
 		timerLeapCD:Stop()
 		timerChargeCD:Stop()
@@ -328,6 +344,9 @@ function mod:SPELL_AURA_REMOVED(args)
 				self.vb.three = "None"
 			end
 			self:SetIcon(args.destName, 0)
+		end
+		if self.Options.NPAuraOnFoam then
+			DBM.Nameplate:Hide(args.destGUID)
 		end
 	end
 end
