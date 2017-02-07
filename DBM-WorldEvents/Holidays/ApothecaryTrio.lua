@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 
 mod:SetBossHealthInfo(36296, 36565, 36272)
 
-local warnChainReaction			= mod:NewCastAnnounce(68821, 3, nil, "Melee")
+local warnChainReaction			= mod:NewCastAnnounce(68821, 3, nil, nil, "Melee", 2)
 
 local specWarnPerfumeSpill		= mod:NewSpecialWarningMove(68927)
 local specWarnCologneSpill		= mod:NewSpecialWarningMove(68934)
