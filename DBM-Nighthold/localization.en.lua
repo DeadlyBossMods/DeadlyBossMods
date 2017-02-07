@@ -82,7 +82,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1732)
 
 L:SetOptionLocalization({
-	ShowNeutralColor		= "Show white circles on HUD around players that have no star sign, until all signs are cleared.",
+	ShowCustomNPAuraTexture	= "Show custom green/red icon textures in nameplates instead of debuff signs if you are affected by star signs",
 	FilterOtherSigns		= "Filter target announces for Star Signs you are not affected by."
 })
 
