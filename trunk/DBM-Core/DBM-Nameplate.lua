@@ -68,7 +68,7 @@ function nameplateFrame:Show(unitGUID, spellId, texture, duration)
 		return
 	end
 	--Not running supported NP Mod, internal handling
-	if not DBMNameplateFrame:IsShown() then
+	if not self:IsShown() then
 		DBMNameplateFrame:Show()
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_CREATED")
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
@@ -149,7 +149,8 @@ function nameplateFrame:CreateTexture(frame, unit)
 end
 
 function nameplateFrame:UpdateAll()
-	if not DBMNameplateFrame:IsShown() then
+	if self:SupportedNPMod() then return end--This shouldn't happen, but in case someone calls this directly
+	if not self:IsShown() then
 		DBMNameplateFrame:Show()
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_CREATED")
 		DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
