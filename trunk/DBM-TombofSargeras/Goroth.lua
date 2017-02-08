@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1862, "DBM-TombofSargeras", nil, 875)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(114263)
+mod:SetCreatureID(115844)
 mod:SetEncounterID(2032)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
@@ -13,71 +13,74 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCES",
---	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_START 233062",
+	"SPELL_CAST_SUCCES 232249 231363 238587",
+	"SPELL_AURA_APPLIED 233272 232249 231363",
 --	"SPELL_AURA_APPLIED_DOSE",
---	"SPELL_AURA_REMOVED",
+	"SPELL_AURA_REMOVED 233272 232249 231363",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---[[
-local warnDancingBlade				= mod:NewCountAnnounce(228003, 3)
+--TODO: Possibly SPELL_SUMMON event for 233266 in case you screw up brimstone to deal with adds
+--TODO, better option defaults, especially brimstone
+--TODO, NP Auras for comments or stars?
+--TODO, generic Inferal Spike warnings/timers?
+--TODO, Fel Eruption stuff (GTFO? etc?)
+local warnShatteringStar				= mod:NewTargetAnnounce(233272, 3)
+local warnCrashingComet					= mod:NewTargetAnnounce(232249, 4)
 
-local specWarnDancingBlade			= mod:NewSpecialWarningMove(228003, nil, nil, nil, 1, 2)
---local yellDancingBlade			= mod:NewYell(228003)
+local specWarnInfernalBurning			= mod:NewSpecialWarningMoveTo(233062, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge:format(233062), nil, 3, 2)
+local specWarnShatteringStar			= mod:NewSpecialWarningMoveAway(233272, nil, nil, nil, 3, 2)
+local yellShatteringStar				= mod:NewFadesYell(233272)
+local specWarnCrashingComet				= mod:NewSpecialWarningMoveAway(232249, nil, nil, nil, 3, 2)
+local yellCrashingComet					= mod:NewFadesYell(232249)
+local specWarnBurningArmor				= mod:NewSpecialWarningMoveAway(231363, nil, nil, nil, 1, 2)
+local specWarnBurningArmorTaunt			= mod:NewSpecialWarningTaunt(231363, nil, nil, nil, 1, 2)
+local specWarnRainofBrimstone			= mod:NewSpecialWarningMoveTo(238587, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(238587), nil, 1, 6)
 
-local timerDancingBladeCD			= mod:NewNextTimer(31, 228003, nil, nil, nil, 3)
+local timerInfernalBurningCD			= mod:NewAITimer(31, 233062, nil, nil, nil, 2)
+local timerShatteringStarCD				= mod:NewAITimer(31, 233272, nil, nil, nil, 3)
+local timerShatteringStar				= mod:NewBuffFadesTimer(6, 233272, nil, nil, nil, 5)
+local timerCrashingCometCD				= mod:NewAITimer(31, 232249, nil, nil, nil, 3)
+local timerCrashingComet				= mod:NewBuffFadesTimer(5, 232249, nil, nil, nil, 5)
+local timerBurningArmorCD				= mod:NewAITimer(31, 231363, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerBurningArmor					= mod:NewBuffFadesTimer(3, 231363, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
+local timerRainofBrimstoneCD			= mod:NewAITimer(31, 238587, nil, nil, nil, 1)
 
---local berserkTimer				= mod:NewBerserkTimer(300)
+--local berserkTimer					= mod:NewBerserkTimer(300)
 
-local countdownDrawPower			= mod:NewCountdown(33, 227629)
+local countdownInfernalBurning			= mod:NewCountdown(30, 233062)
+local countdownShatteringStar			= mod:NewCountdownFades("AltTwo6", 233272)
+local countdownCrashingComet			= mod:NewCountdownFades("Alt5", 232249)--Assume for now tank will never get comets and dps will never get burning armor
+local countdownBurningArmor				= mod:NewCountdownFades("Alt6", 231363)--^^
 
-local voiceDancingBlade				= mod:NewVoice(228003)--runaway
+local voiceInfernalBurning				= mod:NewVoice(233062)--findshelter
+local voiceShatteringStar				= mod:NewVoice(233272)--runout (maybe custom voice that says "kite through spikes"?)
+local voiceCrashingComet				= mod:NewVoice(232249)--runout
+local voiceBurningArmor					= mod:NewVoice(231363)--runout/tauntboss
+local voiceRainofBrimstone				= mod:NewVoice(238587)--helpsoak
 
 --mod:AddSetIconOption("SetIconOnShield", 228270, true)
 --mod:AddInfoFrameOption(227503, true)
---mod:AddRangeFrameOption("5/8/15")
+mod:AddRangeFrameOption("10/25")
 
-local debuffFilter
-local UnitDebuff = UnitDebuff
-local playerDebuff = nil
-do
-	local spellName = GetSpellInfo(231311)
-	debuffFilter = function(uId)
-		if not playerDebuff then return true end
-		if not select(11, UnitDebuff(uId, spellName)) == playerDebuff then
-			return true
-		end
-	end
-end
-
-local expelLight, stormOfJustice = GetSpellInfo(228028), GetSpellInfo(227807)
-local function updateRangeFrame(self)
-	if not self.Options.RangeFrame then return end
-	if self.vb.brandActive then
-		DBM.RangeCheck:Show(15, debuffFilter)--There are no 15 yard items that are actually 15 yard, this will round to 18 :\
-	elseif UnitDebuff("player", expelLight) or UnitDebuff("player", stormOfJustice) then
-		DBM.RangeCheck:Show(8)
-	elseif self.vb.hornCasting then--Spread for Horn of Valor
-		DBM.RangeCheck:Show(5)
-	else
-		DBM.RangeCheck:Hide()
-	end
-end
---]]
+local infernalSpike = GetSpellInfo(233021)
 
 function mod:OnCombatStart(delay)
-
+	timerInfernalBurningCD:Start(1-delay)
+	timerShatteringStarCD:Start(1-delay)
+	timerCrashingCometCD:Start(1-delay)
+	timerBurningArmorCD:Start(1-delay)
+	timerRainofBrimstoneCD:Start(1-delay)
 end
 
 function mod:OnCombatEnd()
---	if self.Options.RangeFrame then
---		DBM.RangeCheck:Hide()
---	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
@@ -85,34 +88,105 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 228003 then
-
+	if spellId == 233062 then
+		specWarnInfernalBurning:Show(infernalSpike)
+		voiceInfernalBurning:Play("findshelter")
+		--voiceShockwave:Schedule(3.5, "safenow")
+		timerInfernalBurningCD:Start()
+		--countdownInfernalBurning:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 228012 then
-
+	if spellId == 232249 then
+		timerCrashingCometCD:Start()
+	elseif spellId == 231363 then
+		timerBurningArmorCD:Start()
+	elseif spellId == 238587 and self:AntiSpam(5, 1) then
+		specWarnRainofBrimstone:Show(args.spellName)
+		voiceRainofBrimstone:Play("helpsoak")
+		timerRainofBrimstoneCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 228029 then
-
+	if spellId == 233272 then
+		timerShatteringStarCD:Start()
+		if args:IsPlayer() then--Still do yell and range frame here, in case DK
+			specWarnShatteringStar:Show()
+			voiceShatteringStar:Play("runout")
+			yellShatteringStar:Yell(6)
+			yellShatteringStar:Schedule(5, 1)
+			yellShatteringStar:Schedule(4, 2)
+			yellShatteringStar:Schedule(3, 3)
+			countdownShatteringStar:Start()
+			timerShatteringStar:Start()
+		else
+			warnShatteringStar:Show(args.destName)
+		end
+	elseif spellId == 232249 then
+		warnCrashingComet:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then--Still do yell and range frame here, in case DK
+			specWarnCrashingComet:Show()
+			voiceCrashingComet:Play("runout")
+			yellCrashingComet:Yell(5)
+			yellCrashingComet:Schedule(4, 1)
+			yellCrashingComet:Schedule(3, 2)
+			yellCrashingComet:Schedule(2, 3)
+			timerCrashingComet:Start()
+			countdownCrashingComet:Start()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
+		end
+	elseif spellId == 231363 then
+		if args:IsPlayer() then
+			specWarnBurningArmor:Show()
+			voiceBurningArmor:Play("runout")
+			countdownBurningArmor:Start()
+			timerBurningArmor:Start()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(25)--Will round up to 28
+			end
+		else
+			specWarnBurningArmorTaunt:Show(args.destName)
+			voiceBurningArmor:Play("tauntboss")
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
-	if spellId == 228029 then
-
+	if spellId == 233272 then
+		if args:IsPlayer() then
+			yellShatteringStar:Cancel()
+			countdownShatteringStar:Cancel()
+			timerShatteringStar:Stop()
+		end
+	elseif spellId == 232249 then
+		if args:IsPlayer() then
+			yellCrashingComet:Cancel()
+			timerCrashingComet:Stop()
+			countdownCrashingComet:Cancel()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
+		end
+	elseif spellId == 231363 then
+		if args:IsPlayer() then
+			countdownBurningArmor:Cancel()
+			timerBurningArmor:Stop()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
+		end
 	end
 end
---[[
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 228007 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 --		specWarnDancingBlade:Show()
