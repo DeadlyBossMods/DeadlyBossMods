@@ -331,7 +331,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, number)
 		end
 		if self.Options.NPAuraOnCoN then
-			DBM.Nameplate:Show(args.destGUID, spellId)
+			DBM.Nameplate:Show(args.destGUID, spellId, nil, 45)
 		end
 	elseif spellId == 218503 then
 		local amount = args.amount or 1
