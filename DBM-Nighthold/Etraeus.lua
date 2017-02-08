@@ -420,7 +420,7 @@ function mod:SPELL_CAST_START(args)
 			timerConjunctionCD:Start(timers, self.vb.grandConCount+1)
 		end
 		updateRangeFrame(self, true)
-		self:Schedule(5, showConjunction, self, self.Options.NPAuraOnConjunction and self.Options.ShowCustomNPAuraTextures)
+		self:Schedule(4.5, showConjunction, self, self.Options.NPAuraOnConjunction and self.Options.ShowCustomNPAuraTextures)
 		table.wipe(crabs)
 		table.wipe(dragons)
 		table.wipe(hunters)
