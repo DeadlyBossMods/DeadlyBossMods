@@ -160,7 +160,7 @@ function nameplateFrame:Hide(GUID, force)
     end
 
     -- disable nameplate hooking;
-    if force or #units == 0 then
+    if force then
         table.wipe(units)
         table.wipe(unitspells)
         DBMNameplateFrame:UnregisterEvent("NAME_PLATE_UNIT_ADDED")
