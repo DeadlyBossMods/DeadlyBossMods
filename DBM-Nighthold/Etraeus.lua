@@ -319,7 +319,7 @@ local function showConjunction(self, delayedAuras)
 			end
 		end
 	end
-	if not UnitDebuff("player", hunterDebuff) then
+	if UnitDebuff("player", hunterDebuff) then
 		warnStarSignHunter:Show(table.concat(hunters, "<, >"))
 		if delayedAuras then
 			for i = 1, #hunters do
@@ -341,7 +341,7 @@ local function showConjunction(self, delayedAuras)
 			end
 		end
 	end
-	if not UnitDebuff("player", wolfDebuff) then
+	if UnitDebuff("player", wolfDebuff) then
 		warnStarSignWolf:Show(table.concat(wolves, "<, >"))
 		if delayedAuras then
 			for i = 1, #wolves do
@@ -394,6 +394,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.NPAuraOnConjunction and self:IsMythic() then
 		DBM.Nameplate:Hide(nil, true)
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
