@@ -82,7 +82,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1732)
 
 L:SetOptionLocalization({
-	ShowCustomNPAuraTexture	= "Show custom green/red icon textures in nameplates instead of debuff signs if you are affected by star signs",
+	ShowCustomNPAuraTextures= "Show custom green/red icon textures in nameplates instead of debuff signs if you are affected by star signs",
 	FilterOtherSigns		= "Filter target announces for Star Signs you are not affected by."
 })
 
