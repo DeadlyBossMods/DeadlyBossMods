@@ -17,8 +17,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 205429 216344 216345 205445 205984 214335 214167 206585 206936 205649 207143 206398",
 	"SPELL_AURA_REMOVED 205429 216344 216345 205445 205984 214335 214167 206585 206936 205649 207143",
 	"SPELL_SUMMON 207813",
-	"SPELL_PERIODIC_DAMAGE 206398",
-	"SPELL_PERIODIC_MISSED 206398",
+--	"SPELL_PERIODIC_DAMAGE 206398",
+--	"SPELL_PERIODIC_MISSED 206398",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1",
 	"UNIT_AURA player"
@@ -702,6 +702,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--[[
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 206398 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) and not UnitDebuff("Player", gravPullDebuff) then
 		specWarnFelFlame:Show()
@@ -709,6 +710,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
 --Phases can also be done with Nether Traversal (221875) with same timing.
 --However, this is more robust since unique spellids for each phase is better than same used for all 3
