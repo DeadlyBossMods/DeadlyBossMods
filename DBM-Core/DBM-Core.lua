@@ -10822,7 +10822,7 @@ function bossModPrototype:SendSync(event, ...)
 	end
 end
 
-function bossModPrototype:SendBigWigsSync(event, msg, extra)
+function bossModPrototype:SendBigWigsSync(msg, extra)
 	msg = "B^".. msg
 	if extra then
 		msg = msg .."^".. extra

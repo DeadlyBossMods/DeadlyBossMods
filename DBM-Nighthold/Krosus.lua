@@ -85,6 +85,7 @@ mod.vb.firstBeam = 0--0 Not sent, 1 Left, 2 Right
 
 --/run DBMUpdateKrosusBeam(wasLeft)
 --Global on purpose for external mod support
+--DBM:GetModByName("1713"):SendBigWigsSync("firstBeamWasLeft")
 function DBMUpdateKrosusBeam(wasLeft)
 	if wasLeft then
 		mod.vb.firstBeam = 1
