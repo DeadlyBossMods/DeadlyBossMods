@@ -6,7 +6,6 @@ DBM.Nameplate = {}
 -- locals
 local nameplateFrame = DBM.Nameplate
 local units = {}
-local unitspells = {}
 
 --------------------
 --  Create Frame  --
@@ -49,8 +48,8 @@ local function Nameplate_UnitAdded(frame,unit)
     end
 
     local guid = UnitGUID(unit)
-    if guid and (units[guid] or unitspells[guid]) then
-        frame.DBMTexture:SetTexture(units[guid] or unitspells[guid])
+    if guid and units[guid] then
+        frame.DBMTexture:SetTexture(units[guid])
         frame.DBMTexture:Show()
     end
 end
@@ -105,9 +104,7 @@ function nameplateFrame:Show(unitGUID, spellId, texture, duration)
         DBM:Debug("DBM.Nameplate Enabling", 2)
     end
 
-    --Support custom texture, or just pull it from spellid
     units[unitGUID] = currentTexture
-    unitspells[unitGUID] = GetSpellInfo(spellId)
 
     -- find frame for this GUID;
     for _, frame in pairs(C_NamePlate.GetNamePlates()) do
@@ -140,7 +137,6 @@ function nameplateFrame:Hide(GUID, force)
     --Not running supported NP Mod, internal handling
     if GUID then
         units[GUID] = nil
-        unitspells[GUID] = nil
     end
 
     -- find frame for this GUID
@@ -160,9 +156,8 @@ function nameplateFrame:Hide(GUID, force)
     end
 
     -- disable nameplate hooking;
-    if force then
+    if force or #units == 0 then
         table.wipe(units)
-        table.wipe(unitspells)
         DBMNameplateFrame:UnregisterEvent("NAME_PLATE_UNIT_ADDED")
         DBMNameplateFrame:Hide()
         DBM:Debug("DBM.Nameplate Disabling", 2)
