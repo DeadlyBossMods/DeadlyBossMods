@@ -282,7 +282,7 @@ local function showConjunction(self, delayedAuras)
 				local name = crabs[i]
 				local guid = DBM:GetPlayerGUIDByName(name)
 				if guid then
-					DBM.Nameplate:Show(guid, 205429, playerAffected and 236595 or nil, 10)
+					DBM.Nameplate:Show(guid, 205429, playerAffected and 236595 or nil, 9.5)
 				end
 			end
 		end
@@ -292,7 +292,7 @@ local function showConjunction(self, delayedAuras)
 				local name = crabs[i]
 				local guid = DBM:GetPlayerGUIDByName(name)
 				if guid then
-					DBM.Nameplate:Show(guid, 205429, playerAffected and 236612 or nil, 10)
+					DBM.Nameplate:Show(guid, 205429, playerAffected and 236612 or nil, 9.5)
 				end
 			end
 		end
@@ -304,7 +304,7 @@ local function showConjunction(self, delayedAuras)
 				local name = dragons[i]
 				local guid = DBM:GetPlayerGUIDByName(name)
 				if guid then
-					DBM.Nameplate:Show(guid, 216344, playerAffected and 236595 or nil, 10)
+					DBM.Nameplate:Show(guid, 216344, playerAffected and 236595 or nil, 9.5)
 				end
 			end
 		end
@@ -314,7 +314,7 @@ local function showConjunction(self, delayedAuras)
 				local name = dragons[i]
 				local guid = DBM:GetPlayerGUIDByName(name)
 				if guid then
-					DBM.Nameplate:Show(guid, 216344, playerAffected and 236612 or nil, 10)
+					DBM.Nameplate:Show(guid, 216344, playerAffected and 236612 or nil, 9.5)
 				end
 			end
 		end
@@ -326,7 +326,7 @@ local function showConjunction(self, delayedAuras)
 				local name = hunters[i]
 				local guid = DBM:GetPlayerGUIDByName(name)
 				if guid then
-					DBM.Nameplate:Show(guid, 216345, playerAffected and 236595 or nil, 10)
+					DBM.Nameplate:Show(guid, 216345, playerAffected and 236595 or nil, 9.5)
 				end
 			end
 		end
@@ -336,7 +336,7 @@ local function showConjunction(self, delayedAuras)
 				local name = hunters[i]
 				local guid = DBM:GetPlayerGUIDByName(name)
 				if guid then
-					DBM.Nameplate:Show(guid, 216345, playerAffected and 236612 or nil, 10)
+					DBM.Nameplate:Show(guid, 216345, playerAffected and 236612 or nil, 9.5)
 				end
 			end
 		end
@@ -348,7 +348,7 @@ local function showConjunction(self, delayedAuras)
 				local name = wolves[i]
 				local guid = DBM:GetPlayerGUIDByName(name)
 				if guid then
-					DBM.Nameplate:Show(guid, 205445, playerAffected and 236595 or nil, 10)
+					DBM.Nameplate:Show(guid, 205445, playerAffected and 236595 or nil, 9.5)
 				end
 			end
 		end
@@ -358,7 +358,7 @@ local function showConjunction(self, delayedAuras)
 				local name = wolves[i]
 				local guid = DBM:GetPlayerGUIDByName(name)
 				if guid then
-					DBM.Nameplate:Show(guid, 205445, playerAffected and 236612 or nil, 10)
+					DBM.Nameplate:Show(guid, 205445, playerAffected and 236612 or nil, 9.5)
 				end
 			end
 		end
