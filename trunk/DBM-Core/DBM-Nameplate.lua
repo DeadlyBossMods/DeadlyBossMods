@@ -76,9 +76,11 @@ end)
 -----------------
 --  Functions  --
 -----------------
---/run DBM.Nameplate:Show(UnitGUID("target"), 227723)--Mana tracking, easy to find in Dalaran
---/run DBM.Nameplate:Hide(nil, true)
---/run DBM.Nameplate:Hide(UnitGUID("target"))
+--/run DBM.Nameplate:Show("guid", UnitGUID("target"), 227723)--Mana tracking, easy to find in Dalaran
+--/run DBM.Nameplate:Show("name", GetUnitName("target", true), 227723)--Mana tracking, easy to find in Dalaran
+--/run DBM.Nameplate:Hide("guid", nil, true)
+--/run DBM.Nameplate:Hide("guid", UnitGUID("target"))
+--/run DBM.Nameplate:Hide("name", GetUnitName("target", true))
 
 --Add more nameplate mods as they gain support
 function nameplateFrame:SupportedNPMod()
