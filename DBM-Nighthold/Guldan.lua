@@ -6,7 +6,7 @@ mod:SetCreatureID(104154)--104537 (Fel Lord Kuraz'mal)
 mod:SetEncounterID(1866)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
-mod:SetHotfixNoticeRev(15720)
+mod:SetHotfixNoticeRev(15865)
 
 mod:RegisterCombat("combat")
 
@@ -98,7 +98,7 @@ local specWarnFlamesOfSargerasTank	= mod:NewSpecialWarningTaunt(221606, nil, nil
 ----Gul'dan
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerLiquidHellfireCD			= mod:NewNextCountTimer(25, 206219, nil, nil, nil, 3)
-local timerFelEffluxCD				= mod:NewCDCountTimer(12, 206514, nil, nil, nil, 3)--12-13.5 (14-15 on normal)
+local timerFelEffluxCD				= mod:NewCDCountTimer(10.7, 206514, nil, nil, nil, 3)--10.7-13.5 (14-15 on normal)
 ----Fel Lord Kuraz'mal
 mod:AddTimerLine(Kurazmal)
 local timerFelLordKurazCD			= mod:NewCastTimer(16, "ej13121", nil, nil, nil, 1, 212258)
@@ -192,13 +192,14 @@ function mod:OnCombatStart(delay)
 	self.vb.flamesTargets = 0
 	table.wipe(bondsIcons)
 	table.wipe(flamesIcons)
-	timerLiquidHellfireCD:Start(2-delay, 1)
-	timerFelEffluxCD:Start(11-delay, 1)
-	timerFelLordKurazCD:Start(11-delay)
-	timerVethrizCD:Start(25-delay)
-	timerDzorykxCD:Start(35-delay)
 	if self:IsMythic() then
 		DBM:AddMsg("This mod still needs mythic refactoring to properly support the combined phase1/2 stuff and the new phase 3")
+	else
+		timerLiquidHellfireCD:Start(2-delay, 1)
+		timerFelEffluxCD:Start(11-delay, 1)
+		timerFelLordKurazCD:Start(11-delay)
+		timerVethrizCD:Start(25-delay)
+		timerDzorykxCD:Start(35-delay)
 	end
 end
 
