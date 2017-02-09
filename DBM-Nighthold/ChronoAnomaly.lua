@@ -114,7 +114,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnTimeBomb then
-		DBM.Nameplate:Hide(nil, true)
+		DBM.Nameplate:Hide("name", nil, true)
 	end
 end
 
@@ -154,7 +154,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:Show(10, "playerdebuffremaining", args.spellName)
 		end
 		if self.Options.NPAuraOnTimeBomb then
-			DBM.Nameplate:Show(args.destGUID, spellId)
+			DBM.Nameplate:Show("name", args.destName, spellId)
 		end
 	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
 		warnTimeRelease:CombinedShow(0.5, args.destName)
@@ -190,7 +190,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.InfoFrame:Hide()
 		end
 		if self.Options.NPAuraOnTimeBomb then
-			DBM.Nameplate:Hide(args.destGUID)
+			DBM.Nameplate:Hide("name", args.destName)
 		end
 	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
 --		if self.Options.SetIconOnTimeRelease then

@@ -164,7 +164,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnFoam and self:IsMythic() then
-		DBM.Nameplate:Hide(nil, true)
+		DBM.Nameplate:Hide("name", nil, true)
 	end
 end
 
@@ -297,7 +297,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				local _, _, _, _, _, _, expires, _, _ = UnitDebuff(uId, args.spellName)
 				remaining = expires-GetTime()
 			end
-			DBM.Nameplate:Show(args.destGUID, spellId, nil, remaining)
+			DBM.Nameplate:Show("name", args.destName, spellId, nil, remaining)
 		end
 	elseif spellId == 232173 then--Berserk
 		timerLeapCD:Stop()
@@ -346,7 +346,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if self.Options.NPAuraOnFoam then
-			DBM.Nameplate:Hide(args.destGUID)
+			DBM.Nameplate:Hide("name", args.destName)
 		end
 	end
 end

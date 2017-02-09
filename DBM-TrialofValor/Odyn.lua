@@ -261,7 +261,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnRunicBrand and self:IsMythic() then
-		DBM.Nameplate:Hide(nil, true)
+		DBM.Nameplate:Hide("name", nil, true)
 	end
 end
 
@@ -484,7 +484,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			updateRangeFrame(self)
 		end
 		if self.Options.NPAuraOnRunicBrand then
-			DBM.Nameplate:Show(args.destGUID, spellId, nil, 10)
+			DBM.Nameplate:Show("name", args.destName, spellId, nil, 10)
 		end
 	end
 end
@@ -510,7 +510,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			playerDebuff = nil
 		end
 		if self.Options.NPAuraOnRunicBrand then
-			DBM.Nameplate:Hide(args.destGUID)
+			DBM.Nameplate:Hide("name", args.destName)
 		end
 	end
 end

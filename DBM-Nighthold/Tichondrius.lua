@@ -212,7 +212,7 @@ function mod:OnCombatEnd()
 		DBMHudMap:Disable()
 	end
 	if self.Options.NPAuraOnCarrionPlague then
-		DBM.Nameplate:Hide(nil, true)
+		DBM.Nameplate:Hide("name", nil, true)
 	end
 end
 
@@ -255,9 +255,9 @@ function mod:SPELL_CAST_START(args)
 			if self.Options.NPAuraOnCarrionPlague then
 				--Force kill them all going into this phase, even before debuffs are gone
 				for uId in DBM:GetGroupMembers() do
-					local GUID = UnitGUID(uId)
-					if GUID then
-						DBM.Nameplate:Hide(GUID)
+					local Name = DBM:GetUnitFullName(uId)
+					if Name then
+						DBM.Nameplate:Hide("name", Name)
 					end
 				end
 			end
@@ -411,7 +411,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceCarrionPlague:Play("scatter")
 		end
 		if self.Options.NPAuraOnCarrionPlague then
-			DBM.Nameplate:Show(args.destGUID, spellId)
+			DBM.Nameplate:Show("name", args.destName, spellId)
 		end
 	elseif spellId == 212794 then
 		argusTargets[#argusTargets+1] = args.destName
@@ -464,7 +464,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		DBM.RangeCheck:Hide()
 	elseif spellId == 206480 then
 		if self.Options.NPAuraOnCarrionPlague then
-			DBM.Nameplate:Hide(args.destGUID)
+			DBM.Nameplate:Hide("name", args.destName)
 		end
 	end
 end

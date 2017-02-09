@@ -252,7 +252,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnBeam then
-		DBM.Nameplate:Hide(nil, true)
+		DBM.Nameplate:Hide("name", nil, true)
 	end
 end
 
@@ -433,7 +433,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.NPAuraOnBeam then
-			DBM.Nameplate:Show(args.destGUID, spellId)
+			DBM.Nameplate:Show("name", args.destName, spellId)
 		end
 	elseif spellId == 209973 then
 		warnAblatingExplosion:Show(args.destName)
@@ -496,7 +496,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 209244 then
 		if self.Options.NPAuraOnBeam then
-			DBM.Nameplate:Hide(args.destGUID)
+			DBM.Nameplate:Hide("name", args.destName)
 		end
 	end
 end

@@ -153,7 +153,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnCharge then
-		DBM.Nameplate:Hide(nil, true)
+		DBM.Nameplate:Hide("name", nil, true)
 	end
 end
 
@@ -251,7 +251,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			GenerateSoakAssignment(self, secondCount, args.destName)
 		end
 		if self.Options.NPAuraOnCharge then
-			DBM.Nameplate:Show(args.destGUID, spellId)
+			DBM.Nameplate:Show("name", args.destName, spellId)
 		end
 	elseif spellId == 197943 then
 		warnOverwhelm:Show(args.destName, args.amount or 1)
@@ -287,7 +287,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 		if self.Options.NPAuraOnCharge then
-			DBM.Nameplate:Hide(args.destGUID)
+			DBM.Nameplate:Hide("name", args.destName)
 		end
 	end
 end
