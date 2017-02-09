@@ -125,7 +125,7 @@ function mod:OnCombatEnd()
 --		DBM.InfoFrame:Hide()
 --	end
 	if self.Options.NPAuraOnSicklyFixate and self:IsMythic() then
-		DBM.Nameplate:Hide(nil, true)
+		DBM.Nameplate:Hide("name", nil, true)
 	end
 end
 
@@ -213,7 +213,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnSicklyFixate:Show(args.destName)
 		end
 		if self.Options.NPAuraOnSicklyFixate then
-			DBM.Nameplate:Show(args.destGUID, spellId)
+			DBM.Nameplate:Show("name", args.destName, spellId)
 		end
 	end
 end
@@ -229,7 +229,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 241600 then
 		if self.Options.NPAuraOnSicklyFixate then
-			DBM.Nameplate:Hide(args.destGUID)
+			DBM.Nameplate:Hide("name", args.destName)
 		end
 	end
 end

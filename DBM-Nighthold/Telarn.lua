@@ -184,7 +184,7 @@ function mod:OnCombatEnd()
 		DBMHudMap:Disable()
 	end
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnCoN then
-		DBM.Nameplate:Hide(nil, true)
+		DBM.Nameplate:Hide("name", nil, true)
 	end
 end
 
@@ -331,7 +331,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, number)
 		end
 		if self.Options.NPAuraOnCoN then
-			DBM.Nameplate:Show(args.destGUID, spellId, nil, 45)
+			DBM.Nameplate:Show("name", args.destName, spellId, nil, 45)
 		end
 	elseif spellId == 218503 then
 		local amount = args.amount or 1
@@ -366,7 +366,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceParasiticFixate:Play("targetyou")
 		end
 		if self.Options.NPAuraOnFixate then
-			DBM.Nameplate:Show(args.destGUID, spellId)
+			DBM.Nameplate:Show("name", args.destName, spellId)
 		end
 --	elseif spellId == 219009 then
 --		local targetName = args.destName
@@ -496,7 +496,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if self.Options.NPAuraOnCoN then
-			DBM.Nameplate:Hide(args.destGUID)
+			DBM.Nameplate:Hide("name", args.destName)
 		end
 	elseif spellId == 218304 then
 		if self:AntiSpam(5, 2) and not UnitDebuff("player", args.spellName) then
@@ -508,7 +508,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 218342 then
 		if self.Options.NPAuraOnFixate then
-			DBM.Nameplate:Hide(args.destGUID)
+			DBM.Nameplate:Hide("name", args.destName)
 		end
 	end
 end
