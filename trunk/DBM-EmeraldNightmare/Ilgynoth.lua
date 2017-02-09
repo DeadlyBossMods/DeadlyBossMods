@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, figure out voice to use for specWarnHeartPhaseBegin
---TODO, more adds timers (especially corruptors/deathglarers)
+--TODO, fix more adds timers (especially corruptors/deathglarers)
 --TODO, improve spew corruption to work like thogar bombs (continous alerts/yells)
 --Stage One: The Ruined Ground
 --(ability.id = 208697 or ability.id = 208929 or ability.id = 218415) and type = "begincast" or ability.id = 209915

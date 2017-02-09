@@ -228,7 +228,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --		voiceDreadThorns:Play("bossout")
 	elseif spellId == 211368 then
 		specWarnTouchofLifeDispel:Show(args.destName)
-		if self.Options.specwarn211368dispel then
+		if self.Options.SpecWarn211368dispel then
 			voiceTouchOfLife:Play("dispelnow")
 		end
 	elseif spellId == 211471 then--Original casts only. Jumps can't be warned this way as of 04-01-16 Testing
