@@ -101,7 +101,7 @@ function nameplateFrame:Show(unitGUID, spellId, texture, duration)
     if not self:IsShown() then
         DBMNameplateFrame:Show()
         DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-        DBM:Debug("DBM.Nameplate Enabling", 2)
+        DBM:Debug("DBM.Nameplate Enabling", 3)
     end
 
     units[unitGUID] = currentTexture
@@ -160,7 +160,7 @@ function nameplateFrame:Hide(GUID, force)
         table.wipe(units)
         DBMNameplateFrame:UnregisterEvent("NAME_PLATE_UNIT_ADDED")
         DBMNameplateFrame:Hide()
-        DBM:Debug("DBM.Nameplate Disabling", 2)
+        DBM:Debug("DBM.Nameplate Disabling", 3)
     end
 end
 
