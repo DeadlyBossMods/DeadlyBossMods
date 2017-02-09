@@ -213,10 +213,15 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 206219 then
+	if spellId == 206219 or spellId == 206220 then
 		self.vb.liquidHellfireCast = self.vb.liquidHellfireCast + 1
-		specWarnLiquidHellfire:Show()
-		voiceLiquidHellfire:Play("watchstep")
+		if spellId == 206219 then
+			specWarnLiquidHellfire:Show()
+			voiceLiquidHellfire:Play("watchstep")
+		else
+			specWarnEmpLiquidHellfire:Show()
+			voiceEmpLiquidHellfire:Play("watchstep")
+		end
 		if self.vb.phase == 1 then
 			timerLiquidHellfireCD:Start(15, self.vb.liquidHellfireCast+1)
 		elseif self.vb.phase == 1.5 then
@@ -242,27 +247,6 @@ function mod:SPELL_CAST_START(args)
 				else
 					timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
 				end
-			end
-		end
-	elseif spellId == 206220 then
-		self.vb.liquidHellfireCast = self.vb.liquidHellfireCast + 1
-		specWarnEmpLiquidHellfire:Show()
-		voiceEmpLiquidHellfire:Play("watchstep")
-		if self:IsEasy() then
-			if self.vb.liquidHellfireCast == 4 or self.vb.liquidHellfireCast == 6 then
-				timerLiquidHellfireCD:Start(84, self.vb.liquidHellfireCast+1)
-			elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
-				timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
-			else
-				timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
-			end
-		else
-			if self.vb.liquidHellfireCast == 4 or self.vb.liquidHellfireCast == 6 then
-				timerLiquidHellfireCD:Start(74, self.vb.liquidHellfireCast+1)
-			elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
-				timerLiquidHellfireCD:Start(31.6, self.vb.liquidHellfireCast+1)
-			else
-				timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
 			end
 		end
 	elseif spellId == 206514 then
