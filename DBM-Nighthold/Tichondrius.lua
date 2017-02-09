@@ -252,6 +252,15 @@ function mod:SPELL_CAST_START(args)
 				DBM.InfoFrame:SetHeader(GetSpellInfo(212794))
 				DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame, true)
 			end
+			if self.Options.NPAuraOnCarrionPlague then
+				--Force kill them all going into this phase, even before debuffs are gone
+				for uId in DBM:GetGroupMembers() do
+					local GUID = UnitGUID(uId)
+					if GUID then
+						DBM.Nameplate:Hide(GUID)
+					end
+				end
+			end
 		end
 	elseif spellId == 213238 then
 		self.vb.seekerSwarmCast = self.vb.seekerSwarmCast + 1
