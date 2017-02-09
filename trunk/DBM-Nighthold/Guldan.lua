@@ -248,7 +248,23 @@ function mod:SPELL_CAST_START(args)
 		self.vb.liquidHellfireCast = self.vb.liquidHellfireCast + 1
 		specWarnEmpLiquidHellfire:Show()
 		voiceEmpLiquidHellfire:Play("watchstep")
-		timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
+		if self:IsEasy() then
+			if self.vb.liquidHellfireCast == 4 or self.vb.liquidHellfireCast == 6 then
+				timerLiquidHellfireCD:Start(84, self.vb.liquidHellfireCast+1)
+			elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
+				timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
+			else
+				timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
+			end
+		else
+			if self.vb.liquidHellfireCast == 4 or self.vb.liquidHellfireCast == 6 then
+				timerLiquidHellfireCD:Start(74, self.vb.liquidHellfireCast+1)
+			elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
+				timerLiquidHellfireCD:Start(31.6, self.vb.liquidHellfireCast+1)
+			else
+				timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
+			end
+		end
 	elseif spellId == 206514 then
 		self.vb.felEffluxCast = self.vb.felEffluxCast + 1
 		specWarnFelEfflux:Show()
