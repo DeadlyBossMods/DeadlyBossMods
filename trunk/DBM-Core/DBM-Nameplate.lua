@@ -6,6 +6,8 @@ DBM.Nameplate = {}
 -- locals
 local nameplateFrame = DBM.Nameplate
 local units = {}
+local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
+local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 
 --------------------
 --  Create Frame  --
@@ -46,10 +48,14 @@ local function Nameplate_UnitAdded(frame,unit)
         -- hook as required;
         HookNameplate(frame)
     end
-
+	
+	local unitName = DBM:GetUnitFullName(unit)
     local guid = UnitGUID(unit)
     if guid and units[guid] then
         frame.DBMTexture:SetTexture(units[guid])
+        frame.DBMTexture:Show()
+    elseif unitName and units[unitName] then
+        frame.DBMTexture:SetTexture(units[unitName])
         frame.DBMTexture:Show()
     end
 end
@@ -60,7 +66,7 @@ DBMNameplateFrame:SetScript("OnEvent", function(self, event, ...)
     if event == 'NAME_PLATE_UNIT_ADDED' then
         local unit = ...
         if not unit then return end
-        local f = C_NamePlate.GetNamePlateForUnit(unit)
+        local f = GetNamePlateForUnit(unit)
         if not f then return end
 
         Nameplate_UnitAdded(f,unit)
@@ -80,20 +86,20 @@ function nameplateFrame:SupportedNPMod()
     return false
 end
 
-function nameplateFrame:Show(unitGUID, spellId, texture, duration)
+--unitType: guid or name
+function nameplateFrame:Show(unitType, unit, spellId, texture, duration, desaturate)
     -- nameplate icons are disabled;
     if DBM.Options.DontShowNameplateIcons then return end
 
     -- ignore player nameplate;
-    if UnitGUID("player") == unitGUID then return end
+    if playerGUID == unit or playerName == unit then return end
 
     local currentTexture = texture or GetSpellTexture(spellId)
 
     -- Supported by nameplate mod, passing to their handler;
     if self:SupportedNPMod() then
-        DBM:FireEvent("BossMod_ShowNameplateAura", unitGUID, currentTexture, duration)
+        DBM:FireEvent("BossMod_ShowNameplateAura", unitType, unit, currentTexture, duration, desaturate)
         DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Show callbacks", 2)
-
         return
     end
 
@@ -104,25 +110,35 @@ function nameplateFrame:Show(unitGUID, spellId, texture, duration)
         DBM:Debug("DBM.Nameplate Enabling", 3)
     end
 
-    units[unitGUID] = currentTexture
+    units[unit] = currentTexture
 
-    -- find frame for this GUID;
-    for _, frame in pairs(C_NamePlate.GetNamePlates()) do
-        local foundUnit = frame.namePlateUnitToken
-        if foundUnit then
-            local foundGUID = UnitGUID(foundUnit)
-            if foundGUID == unitGUID then
-                Nameplate_UnitAdded(frame, foundUnit)
-                break
-            end
-        end
+    -- find frame for this unit;
+    if unitType == "name" then
+    	local frame = GetNamePlateForUnit(unit)
+    	if frame then
+    		local foundUnit = frame.namePlateUnitToken
+    		if foundUnit then
+    			Nameplate_UnitAdded(frame, foundUnit)
+    		end
+    	end
+    else--GUID, less efficient because it must scan all plates to find, but supports npcs/enemies
+    	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+        	local foundUnit = frame.namePlateUnitToken
+        	if foundUnit then
+            	local foundGUID = UnitGUID(foundUnit)
+            	if foundGUID == unit then
+                	Nameplate_UnitAdded(frame, foundUnit)
+                	break
+            	end
+        	end
+    	end
     end
 end
 
-function nameplateFrame:Hide(GUID, force)
+function nameplateFrame:Hide(unitType, unit, force)
     if self:SupportedNPMod() then
-        if GUID then
-            DBM:FireEvent("BossMod_HideNameplateAura", GUID)
+        if unit then
+            DBM:FireEvent("BossMod_HideNameplateAura", unitType, unit)
         end
 
         DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Hide callbacks", 2)
@@ -135,24 +151,30 @@ function nameplateFrame:Hide(GUID, force)
     end
 
     --Not running supported NP Mod, internal handling
-    if GUID then
-        units[GUID] = nil
+    if unit then
+        units[unit] = nil
     end
 
-    -- find frame for this GUID
+    -- find frame for this unit
     -- (or hide all visible textures if force ~= nil)
-    for _, frame in pairs(C_NamePlate.GetNamePlates()) do
-        if frame.DBMTexture and force then
+    if unitType == "name" and not force then--Only need to find one unit
+    	local frame = GetNamePlateForUnit(unit)
+    	if frame and frame.DBMTexture then
             frame.DBMTexture:Hide()
-        elseif GUID then
-            local foundUnit = frame.namePlateUnitToken
-            if foundUnit then
-                local foundGUID = UnitGUID(foundUnit)
-                if frame.DBMTexture and foundGUID == GUID then
-                    frame.DBMTexture:Hide()
-                end
-            end
-        end
+    	end
+    else--We either passed force, or GUID, either way requires scanning all nameplates
+    	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+        	if frame.DBMTexture and force then
+            	frame.DBMTexture:Hide()
+        	elseif unitType == "guid" then
+            	local foundUnit = frame.namePlateUnitToken
+            	if foundUnit then
+                	if frame.DBMTexture then
+                    	frame.DBMTexture:Hide()
+                	end
+            	end
+        	end
+    	end
     end
 
     -- disable nameplate hooking;
