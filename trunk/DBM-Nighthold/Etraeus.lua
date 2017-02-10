@@ -280,14 +280,14 @@ local function showConjunction(self, delayedAuras)
 		if delayedAuras then
 			for i = 1, #crabs do
 				local name = crabs[i]
-				DBM.Nameplate:Show("name", name, 205429, playerAffected and 236595 or nil, 9.5)
+				DBM.Nameplate:Show(false, name, 205429, playerAffected and 236595 or nil, 9.5)
 			end
 		end
 	else
 		if delayedAuras then
 			for i = 1, #crabs do
 				local name = crabs[i]
-				DBM.Nameplate:Show("name", name, 205429, playerAffected and 236612 or nil, 9.5)
+				DBM.Nameplate:Show(false, name, 205429, playerAffected and 236612 or nil, 9.5)
 			end
 		end
 	end
@@ -296,14 +296,14 @@ local function showConjunction(self, delayedAuras)
 		if delayedAuras then
 			for i = 1, #dragons do
 				local name = dragons[i]
-				DBM.Nameplate:Show("name", name, 216344, playerAffected and 236595 or nil, 9.5)
+				DBM.Nameplate:Show(false, name, 216344, playerAffected and 236595 or nil, 9.5)
 			end
 		end
 	else
 		if delayedAuras then
 			for i = 1, #dragons do
 				local name = dragons[i]
-				DBM.Nameplate:Show("name", name, 216344, playerAffected and 236612 or nil, 9.5)
+				DBM.Nameplate:Show(false, name, 216344, playerAffected and 236612 or nil, 9.5)
 			end
 		end
 	end
@@ -312,14 +312,14 @@ local function showConjunction(self, delayedAuras)
 		if delayedAuras then
 			for i = 1, #hunters do
 				local name = hunters[i]
-				DBM.Nameplate:Show("name", name, 216345, playerAffected and 236595 or nil, 9.5)
+				DBM.Nameplate:Show(false, name, 216345, playerAffected and 236595 or nil, 9.5)
 			end
 		end
 	else
 		if delayedAuras then
 			for i = 1, #hunters do
 				local name = hunters[i]
-				DBM.Nameplate:Show("name", name, 216345, playerAffected and 236612 or nil, 9.5)
+				DBM.Nameplate:Show(false, name, 216345, playerAffected and 236612 or nil, 9.5)
 			end
 		end
 	end
@@ -328,14 +328,14 @@ local function showConjunction(self, delayedAuras)
 		if delayedAuras then
 			for i = 1, #wolves do
 				local name = wolves[i]
-				DBM.Nameplate:Show("name", name, 205445, playerAffected and 236595 or nil, 9.5)
+				DBM.Nameplate:Show(false, name, 205445, playerAffected and 236595 or nil, 9.5)
 			end
 		end
 	else
 		if delayedAuras then
 			for i = 1, #wolves do
 				local name = wolves[i]
-				DBM.Nameplate:Show("name", name, 205445, playerAffected and 236612 or nil, 9.5)
+				DBM.Nameplate:Show(false, name, 205445, playerAffected and 236612 or nil, 9.5)
 			end
 		end
 	end
@@ -369,7 +369,7 @@ function mod:OnCombatEnd()
 		DBMHudMap:Disable()
 	end
 	if self.Options.NPAuraOnConjunction and self:IsMythic() then
-		DBM.Nameplate:Hide("name", nil, true)
+		DBM.Nameplate:Hide(false, nil, true)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
@@ -557,7 +557,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.NPAuraOnConjunction and not self.Options.ShowCustomNPAuraTextures then
-			DBM.Nameplate:Show("name", args.destName, spellId, nil, 10)
+			DBM.Nameplate:Show(false, args.destName, spellId, nil, 10)
 		end
 	elseif spellId == 206464 then
 		warnCoronalEjection:CombinedShow(0.5, args.destName)
@@ -646,7 +646,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			tDeleteItem(wolves, args.destName)
 		end
 		if self.Options.NPAuraOnConjunction then
-			DBM.Nameplate:Hide("name", args.destName)
+			DBM.Nameplate:Hide(false, args.destName)
 		end
 	elseif spellId == 205984 or spellId == 214335 or spellId == 214167 then
 		if args:IsPlayer() then
