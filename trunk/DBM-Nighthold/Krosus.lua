@@ -58,7 +58,6 @@ local voiceFelBurst					= mod:NewVoice(206351, "HasInterrupt")--kickcast
 
 mod:AddRangeFrameOption(5, 206351)
 mod:AddSetIconOption("SetIconOnAdds", "ej12914", true, true)
-mod:AddInfoFrameOption(215944, false)
 mod:AddArrowOption("ArrowOnBeam3", 205368, true)
 
 local burningPitchDebuff = GetSpellInfo(215944)
@@ -130,16 +129,9 @@ function mod:OnCombatStart(delay)
 		countdownBigSlam:Start(-delay)
 		berserkTimer:Start(-delay)
 	end
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(burningPitchDebuff)
-		DBM.InfoFrame:Show(5, "reverseplayerbaddebuff", burningPitchDebuff)
-	end
 end
 
 function mod:OnCombatEnd()
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
-	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
