@@ -61,7 +61,7 @@ local timerIllusionaryNightCD		= mod:NewNextCountTimer(125, 206365, nil, nil, ni
 local timerIllusionaryNight			= mod:NewBuffActiveTimer(32, 206365, nil, nil, nil, 6)
 local timerAddsCD					= mod:NewAddsTimer(25, 216726, nil, "-Healer")
 
-local berserkTimer					= mod:NewBerserkTimer(480)
+local berserkTimer					= mod:NewBerserkTimer(470)
 
 local countdownSeekerSwarm			= mod:NewCountdown(25, 213238)
 local countdownEchoesOfVoid			= mod:NewCountdown("Alt65", 213531)
