@@ -215,7 +215,6 @@ function mod:SPELL_CAST_START(args)
 			if self.Options.SetIconOnAdds then
 				self:ScanForMobs(args.sourceGUID, 0, 8, 8, 0.1, 15, "SetIconOnAdds")
 			end
-			DBM:Debug(self.vb.burningEmbers.." adds spawned", 2)
 		end
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnFelBurst:Show(args.sourceName)
