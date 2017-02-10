@@ -8,13 +8,13 @@ mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(15581)
---mod.respawnTime = 29
+mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 231854 232174 232192 231904 234194 240319 241590",
-	"SPELL_CAST_SUCCES 231729",
+	"SPELL_CAST_START 232174 231904 234194 240319 241590",
+	"SPELL_CAST_SUCCES 231854 231729",
 	"SPELL_AURA_APPLIED 231998 231729 231904 234016 241600",
 	"SPELL_AURA_APPLIED_DOSE 231998",
 	"SPELL_AURA_REMOVED 233429 241600",
@@ -27,7 +27,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---Todo, figure out timing for swapping/tank stacks
 --TODO, improve power handling for Unchecked Rage to improve warnings/timers
 --TODO frigid blows persistant whole fight or a phase?
 --TODO, can draw in be timer based or will there be inconsistency in landed melee swings?
@@ -51,7 +50,7 @@ local warnHatching					= mod:NewCastAnnounce(240319, 4)
 local warnSicklyFixate				= mod:NewTargetAnnounce(241600, 4)
 
 --Harjatan
---local specWarnJaggedAbrasion		= mod:NewSpecialWarningStack(231998, nil, 5)
+local specWarnJaggedAbrasion		= mod:NewSpecialWarningStack(231998, nil, 6)
 local specWarnJaggedAbrasionOther	= mod:NewSpecialWarningTaunt(231998, nil, nil, nil, 1, 2)
 local specWarnUncheckedRage			= mod:NewSpecialWarningCount(231854, nil, nil, nil, 2, 2)
 local specWarnDrenchingWaters		= mod:NewSpecialWarningMove(231768, nil, nil, nil, 1, 2)
@@ -69,12 +68,12 @@ local specWarnSicklyFixate			= mod:NewSpecialWarningRun(241600, nil, nil, nil, 4
 local specWarnTantrum				= mod:NewSpecialWarningSpell(241590, nil, nil, nil, 2, 2)
 
 --Harjatan
-local timerUncheckedrageCD			= mod:NewAITimer(31, 231998, nil, nil, nil, 2)
+local timerUncheckedrageCD			= mod:NewNextTimer(20, 231998, nil, nil, nil, 2)--5 power per second heroic, 20 seconds for 100 energy
 --Razorjaw Wavemender
 local timerAqueousBurstCD			= mod:NewAITimer(15, 231729, nil, nil, nil, 3)
 local timerTendWoundsCD				= mod:NewAITimer(15, 231904, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Razorjaw Gladiator
-local timerDrivenAssaultCD			= mod:NewAITimer(31, 234016, nil, nil, nil, 3)
+local timerDrivenAssaultCD			= mod:NewAITimer(31, 234016, nil, "false", nil, 3)--Too many spawn, this would be spammy so off by default
 --Darkscale Taskmaster
 local timerFrostySpittleCD			= mod:NewAITimer(31, 234194, nil, nil, nil, 3)
 
@@ -111,7 +110,7 @@ function mod:OnCombatStart(delay)
 	self.vb.rageWarned = false
 	self.vb.rageCount = 0
 	table.wipe(seenMobs)
-	timerUncheckedrageCD:Start(1-delay)
+	timerUncheckedrageCD:Start(-delay)
 	if self.Options.NPAuraOnSicklyFixate and self:IsMythic() then
 		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
 	end
@@ -131,13 +130,8 @@ end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
-	if spellId == 231854 then
-		timerUncheckedrageCD:Start()--Might need moving to unit power handler if boss ever pauses power gains (such as during draw in/232061)
-	elseif spellId == 232174 then
+	if spellId == 232174 then
 		warnFrostyDischarge:Show()
-	elseif spellId == 232192 then
-		specWarnCommandingroar:Show()
-		voiceCommandingroar:Play("killmob")
 	elseif spellId == 231904 then
 		timerTendWoundsCD:Start(nil, args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID) then
@@ -159,6 +153,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 231729 then
 		timerAqueousBurstCD:Start(nil, args.sourceGUID)
+	elseif spellId == 231854 then
+		timerUncheckedrageCD:Start()
 	end
 end
 
@@ -168,9 +164,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount >= 5 then--Fine Tune Ammount
+			if amount >= 6 then--Lasts 30 seconds, cast every 5 seconds, swapping will be at 6
 				if args:IsPlayer() then--At this point the other tank SHOULD be clear.
-					--specWarnJaggedAbrasion:Show(amount)
+					specWarnJaggedAbrasion:Show(amount)
+					voiceJaggedAbrasion:Play("stackhigh")
 				else--Taunt as soon as stacks are clear, regardless of stack count.
 					if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", args.spellName) then
 						specWarnJaggedAbrasionOther:Show(args.destName)
@@ -180,7 +177,9 @@ function mod:SPELL_AURA_APPLIED(args)
 					end
 				end
 			else
-				warnJaggedAbrasion:Show(args.destName, amount)
+				if amount % 2 == 0 then
+					warnJaggedAbrasion:Show(args.destName, amount)
+				end
 			end
 		end
 	elseif spellId == 231729 then
@@ -257,6 +256,10 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--"<26.92 17:09:49> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#boss1#false#false#false#??#nil#normal#0#boss2#false#false#false#??#nil#normal#0#boss3#false#false#false#??#nil#normal#0#boss4#false#false#false#??#nil#normal#0#boss5#false#false#false#??#nil#normal#0#Real Args:", -- [74]
+--"<26.93 17:09:49> [UNIT_TARGETABLE_CHANGED] nameplate3#false#false#true#Razorjaw Gladiator#Creature-0-2083-1676-7590-117596-00011E36EB#elite#10751230", -- [75]
+--"<26.93 17:09:49> [UNIT_TARGETABLE_CHANGED] nameplate4#false#false#true#Razorjaw Gladiator#Creature-0-2083-1676-7590-117596-00009E36EB#elite#10751230", -- [76]
+--Didn't live long enough to see if IEEU would work for these, based on above it wouldn't or it wouldn't be as fast as UNIT_TARGETABLE_CHANGED. However UNIT_TARGETABLE_CHANGED might rely on nameplate unitIDs
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	for i = 1, 5 do
 		local unitID = "boss"..i
@@ -268,7 +271,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				timerAqueousBurstCD:Start(1, GUID)
 				timerTendWoundsCD:Start(1, GUID)
 			elseif cid == 117596 then--Razorjaw Gladiator
-				timerDrivenAssaultCD:Start(1, GUID)
+				timerDrivenAssaultCD:Start(1, GUID)--too many spawn, this would be spammy
 			elseif cid == 117522 then--Darkscale Taskmaster
 				timerFrostySpittleCD:Start(1, GUID)
 			end
@@ -276,26 +279,15 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	end
 end
 
-function mod:UNIT_POWER_FREQUENT(uId, type)
-	if type == "ALTERNATE" then
-		--Just in Case
-		--[[local altPower = UnitPower(uId, 10) --Get Boss Power
-		if altPower >= 92 and not self.vb.rageWarned then--Fine tune numbers
-			self.vb.rageWarned = true
-			specWarnBlast:Show()
-		elseif altPower < 5 and self.vb.rageWarned then--Should catch 0, if not, at least 1-4 will fire it but then timer may be a second or so off
-			self.vb.rageWarned = false
-		end--]]
-	else
-		local bossPower = UnitPower("boss1") --Get Boss Power
-		if bossPower >= 92 and not self.vb.rageWarned then--Fine tune numbers
-			self.vb.rageWarned = true
-			self.vb.rageCount = self.vb.rageCount + 1
-			specWarnUncheckedRage:Show(self.vb.rageCount)
-			voiceUncheckedRage:Play("gathershare")
-		elseif bossPower < 5 and self.vb.rageWarned then--Should catch 0, if not, at least 1-4 will fire it but then timer may be a second or so off
-			self.vb.rageWarned = false
-		end
+function mod:UNIT_POWER_FREQUENT(uId)
+	local bossPower = UnitPower("boss1") --Get Boss Power
+	if bossPower >= 80 and not self.vb.rageWarned then--Fine tune numbers? Right now it gives 4 second warning
+		self.vb.rageWarned = true
+		self.vb.rageCount = self.vb.rageCount + 1
+		specWarnUncheckedRage:Show(self.vb.rageCount)
+		voiceUncheckedRage:Play("gathershare")
+	elseif bossPower < 10 and self.vb.rageWarned then--Should catch 0, if not, at least 1-4 will fire it but then timer may be a second or so off
+		self.vb.rageWarned = false
 	end
 end
 
@@ -311,6 +303,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 232061 then--Draw In
 		warnDrawIn:Show()
+	elseif spellId == 232192 then--Commanding Roar
+		specWarnCommandingroar:Show()
+		voiceCommandingroar:Play("killmob")
 	end
 end
 
