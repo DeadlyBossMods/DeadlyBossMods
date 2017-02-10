@@ -369,7 +369,7 @@ function mod:OnCombatEnd()
 		DBMHudMap:Disable()
 	end
 	if self.Options.NPAuraOnConjunction and self:IsMythic() then
-		DBM.Nameplate:Hide(false, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, true)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
@@ -646,7 +646,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			tDeleteItem(wolves, args.destName)
 		end
 		if self.Options.NPAuraOnConjunction then
-			DBM.Nameplate:Hide(false, args.destName)
+			DBM.Nameplate:Hide(false, args.destName)--Doesn't send spell texture, because it one of 3 for any given sign, so wipe all for good measure
 		end
 	elseif spellId == 205984 or spellId == 214335 or spellId == 214167 then
 		if args:IsPlayer() then

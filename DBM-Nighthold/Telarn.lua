@@ -184,7 +184,7 @@ function mod:OnCombatEnd()
 		DBMHudMap:Disable()
 	end
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnCoN then
-		DBM.Nameplate:Hide(false, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, true)
 	end
 end
 
@@ -496,7 +496,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if self.Options.NPAuraOnCoN then
-			DBM.Nameplate:Hide(false, args.destName)
+			DBM.Nameplate:Hide(false, args.destName, GetSpellTexture(spellId))
 		end
 	elseif spellId == 218304 then
 		if self:AntiSpam(5, 2) and not UnitDebuff("player", args.spellName) then
@@ -508,7 +508,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 218342 then
 		if self.Options.NPAuraOnFixate then
-			DBM.Nameplate:Hide(false, args.destName)
+			DBM.Nameplate:Hide(false, args.destName, GetSpellTexture(spellId))
 		end
 	end
 end
