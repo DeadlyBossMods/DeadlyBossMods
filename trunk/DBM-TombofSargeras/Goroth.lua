@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_AURA player",
+	"UNIT_AURA_UNFILTERED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -69,10 +69,11 @@ local voiceRainofBrimstone				= mod:NewVoice(238587)--helpsoak
 mod:AddRangeFrameOption("10/25")
 
 local infernalSpike = GetSpellInfo(233021)
-local playerHasCommet = false
+local crashingComet = GetSpellInfo(232249)
+local cometTable = {}
 
 function mod:OnCombatStart(delay)
-	playerHasCommet = false
+	table.wipe(cometTable)
 	timerInfernalBurningCD:Start(1-delay)
 	timerShatteringStarCD:Start(1-delay)
 	timerCrashingCometCD:Start(1-delay)
@@ -130,7 +131,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnShatteringStar:Show(args.destName)
 		end
 	elseif spellId == 232249 then
-		warnCrashingComet:CombinedShow(0.3, args.destName)
+		--warnCrashingComet:CombinedShow(0.3, args.destName)
 		--[[if args:IsPlayer() then--Still do yell and range frame here, in case DK
 			specWarnCrashingComet:Show()
 			voiceCrashingComet:Play("runout")
@@ -205,12 +206,22 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 end
 --]]
 
-do
-	local crashingComet = GetSpellInfo(232249)
-	function mod:UNIT_AURA(uId)
-		local hasDebuff = UnitDebuff("player", crashingComet)
-		if hasDebuff and not playerHasCommet then--Has 1 or more debuff, show all players on range frame
-			playerHasCommet = true
+function mod:UNIT_AURA_UNFILTERED(uId)
+	local hasDebuff = UnitDebuff(uId, crashingComet)
+	local name = DBM:GetUnitFullName(uId)
+	if not hasDebuff and cometTable[name] then
+		cometTable[name] = nil
+		if UnitIsUnit(uId, "player") then
+			yellCrashingComet:Cancel()
+			timerCrashingComet:Stop()
+			countdownCrashingComet:Cancel()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
+		end
+	elseif hasDebuff and not cometTable[name] then
+		cometTable[name] = true
+		if UnitIsUnit(uId, "player") then
 			specWarnCrashingComet:Show()
 			voiceCrashingComet:Play("runout")
 			yellCrashingComet:Yell(5)
@@ -222,14 +233,8 @@ do
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
-		elseif not hasDebuff and playerHasCommet then--No debuffs, only show those that have debuffs
-			playerHasCommet = false
-			yellCrashingComet:Cancel()
-			timerCrashingComet:Stop()
-			countdownCrashingComet:Cancel()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Hide()
-			end
+		else
+			warnCrashingComet:Show(name)
 		end
 	end
 end
