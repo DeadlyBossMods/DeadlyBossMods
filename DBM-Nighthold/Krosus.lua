@@ -205,15 +205,15 @@ function mod:SPELL_CAST_START(args)
 			specWarnFelBlast:Show(args.sourceName)
 			voiceFelBlast:Play("kickcast")
 		end
-		if self.Options.SetIconOnAdds then
-			self:ScanForMobs(args.sourceGUID, 0, 8, 8, 0.1, 10, "SetIconOnAdds")
-		end
 	elseif spellId == 206352 then
 		if not mobGUIDs[args.sourceGUID] then
 			mobGUIDs[args.sourceGUID] = true
 			self.vb.burningEmbers = self.vb.burningEmbers + 1
 			if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Show(5)
+			end
+			if self.Options.SetIconOnAdds then
+				self:ScanForMobs(args.sourceGUID, 0, 8, 8, 0.1, 15, "SetIconOnAdds")
 			end
 		end
 		if self:CheckInterruptFilter(args.sourceGUID) then
