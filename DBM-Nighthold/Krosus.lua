@@ -12,7 +12,7 @@ mod.respawnTime = 25--or 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 205368 205370 205420 209017 206352 205862 205361",
+	"SPELL_CAST_START 205368 205370 205420 209017 206351 205862 205361",
 	"SPELL_AURA_APPLIED 206677 205344",
 	"SPELL_AURA_APPLIED_DOSE 206677",
 	"SPELL_AURA_REMOVED 205344",
@@ -35,7 +35,7 @@ local yellOrbDestro					= mod:NewFadesYell(205344)
 local specWarnBurningPitch			= mod:NewSpecialWarningCount(205420, nil, nil, nil, 2, 6)
 local specWarnSlam					= mod:NewSpecialWarningRun(205862, nil, nil, nil, 4, 2)
 local specWarnFelBlast				= mod:NewSpecialWarningInterrupt(209017, false, nil, 2, 1, 2)
-local specWarnFelBurst				= mod:NewSpecialWarningInterrupt(206352, "HasInterrupt", nil, nil, 1, 2)
+local specWarnFelBurst				= mod:NewSpecialWarningInterrupt(206351, "HasInterrupt", nil, nil, 1, 2)
 
 local timerSearingBrand				= mod:NewTargetTimer(20, 206677, nil, "Tank", nil, 5)
 local timerFelBeamCD				= mod:NewNextCountTimer(16, 205368, 173303, nil, nil, 3)--Short text "Beam"
@@ -54,9 +54,9 @@ local voiceOrbDestro				= mod:NewVoice(205344)--runout
 local voiceBurningPitch				= mod:NewVoice(205420)--watchstep/helpsoak(new)
 local voiceSlam						= mod:NewVoice(205862)--justrun
 local voiceFelBlast					= mod:NewVoice(209017, false, nil, 2)--kickcast
-local voiceFelBurst					= mod:NewVoice(206352, "HasInterrupt")--kickcast
+local voiceFelBurst					= mod:NewVoice(206351, "HasInterrupt")--kickcast
 
-mod:AddRangeFrameOption(5, 206352)
+mod:AddRangeFrameOption(5, 206351)
 mod:AddSetIconOption("SetIconOnAdds", "ej12914", true, true)
 mod:AddInfoFrameOption(215944, false)
 mod:AddArrowOption("ArrowOnBeam3", 205368, true)
@@ -205,7 +205,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnFelBlast:Show(args.sourceName)
 			voiceFelBlast:Play("kickcast")
 		end
-	elseif spellId == 206352 then
+	elseif spellId == 206351 then
 		if not mobGUIDs[args.sourceGUID] then
 			mobGUIDs[args.sourceGUID] = true
 			self.vb.burningEmbers = self.vb.burningEmbers + 1
