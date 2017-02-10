@@ -212,7 +212,7 @@ function mod:OnCombatEnd()
 		DBMHudMap:Disable()
 	end
 	if self.Options.NPAuraOnCarrionPlague then
-		DBM.Nameplate:Hide(false, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, true)
 	end
 end
 
@@ -257,7 +257,7 @@ function mod:SPELL_CAST_START(args)
 				for uId in DBM:GetGroupMembers() do
 					local Name = DBM:GetUnitFullName(uId)
 					if Name then
-						DBM.Nameplate:Hide(false, Name)
+						DBM.Nameplate:Hide(false, Name, 1029009)
 					end
 				end
 			end
@@ -464,7 +464,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		DBM.RangeCheck:Hide()
 	elseif spellId == 206480 then
 		if self.Options.NPAuraOnCarrionPlague then
-			DBM.Nameplate:Hide(false, args.destName)
+			DBM.Nameplate:Hide(false, args.destName, 1029009)
 		end
 	end
 end

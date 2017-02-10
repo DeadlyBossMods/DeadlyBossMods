@@ -114,7 +114,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnTimeBomb then
-		DBM.Nameplate:Hide(false, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, true)
 	end
 end
 
@@ -190,7 +190,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.InfoFrame:Hide()
 		end
 		if self.Options.NPAuraOnTimeBomb then
-			DBM.Nameplate:Hide(false, args.destName)
+			DBM.Nameplate:Hide(false, args.destName, GetSpellTexture(spellId))
 		end
 	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
 --		if self.Options.SetIconOnTimeRelease then

@@ -125,7 +125,7 @@ function mod:OnCombatEnd()
 --		DBM.InfoFrame:Hide()
 --	end
 	if self.Options.NPAuraOnSicklyFixate and self:IsMythic() then
-		DBM.Nameplate:Hide(false, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, true)
 	end
 end
 
@@ -229,7 +229,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 241600 then
 		if self.Options.NPAuraOnSicklyFixate then
-			DBM.Nameplate:Hide(false, args.destName)
+			DBM.Nameplate:Hide(false, args.destName, GetSpellTexture(spellId))
 		end
 	end
 end

@@ -164,7 +164,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnFoam and self:IsMythic() then
-		DBM.Nameplate:Hide(false, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, true)
 	end
 end
 
@@ -346,7 +346,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if self.Options.NPAuraOnFoam then
-			DBM.Nameplate:Hide(false, args.destName)
+			DBM.Nameplate:Hide(false, args.destName, GetSpellTexture(spellId))
 		end
 	end
 end
