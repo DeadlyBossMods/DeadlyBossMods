@@ -1,5 +1,6 @@
 --Known issues (because blizzards nameplate code is such utter shite)
 --*It obviously won't work if nameplates aren't enabled. So it can be a clusterfuck in raids unless you run custom nameplate mod that can shrink/invisible player nameplates (without hiding them)
+--DBMs internal code needs to handle multiple textures, which will require a bit more work. Will probably put off for now, but at very least when using KUI multiple will be supported via callback
 
 -- globals
 DBM.Nameplate = {}
@@ -137,10 +138,10 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
     end
 end
 
-function nameplateFrame:Hide(isGUID, unit, force)
+function nameplateFrame:Hide(isGUID, unit, texture, force)
     if self:SupportedNPMod() then
         if unit then
-            DBM:FireEvent("BossMod_HideNameplateAura", isGUID, unit)
+            DBM:FireEvent("BossMod_HideNameplateAura", isGUID, unit, texture)
         end
 
         DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Hide callbacks", 2)
