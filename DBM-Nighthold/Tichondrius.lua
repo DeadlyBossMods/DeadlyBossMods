@@ -212,7 +212,7 @@ function mod:OnCombatEnd()
 		DBMHudMap:Disable()
 	end
 	if self.Options.NPAuraOnCarrionPlague then
-		DBM.Nameplate:Hide("name", nil, true)
+		DBM.Nameplate:Hide(false, nil, true)
 	end
 end
 
@@ -257,7 +257,7 @@ function mod:SPELL_CAST_START(args)
 				for uId in DBM:GetGroupMembers() do
 					local Name = DBM:GetUnitFullName(uId)
 					if Name then
-						DBM.Nameplate:Hide("name", Name)
+						DBM.Nameplate:Hide(false, Name)
 					end
 				end
 			end
@@ -411,7 +411,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceCarrionPlague:Play("scatter")
 		end
 		if self.Options.NPAuraOnCarrionPlague then
-			DBM.Nameplate:Show("name", args.destName, spellId)
+			DBM.Nameplate:Show(false, args.destName, spellId)
 		end
 	elseif spellId == 212794 then
 		argusTargets[#argusTargets+1] = args.destName
@@ -464,7 +464,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		DBM.RangeCheck:Hide()
 	elseif spellId == 206480 then
 		if self.Options.NPAuraOnCarrionPlague then
-			DBM.Nameplate:Hide("name", args.destName)
+			DBM.Nameplate:Hide(false, args.destName)
 		end
 	end
 end
