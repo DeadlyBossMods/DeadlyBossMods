@@ -8,7 +8,7 @@ mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(15581)
---mod.respawnTime = 29
+mod.respawnTime = 15
 
 mod:RegisterCombat("combat")
 
@@ -21,6 +21,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_AURA player",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -68,8 +69,10 @@ local voiceRainofBrimstone				= mod:NewVoice(238587)--helpsoak
 mod:AddRangeFrameOption("10/25")
 
 local infernalSpike = GetSpellInfo(233021)
+local playerHasCommet = false
 
 function mod:OnCombatStart(delay)
+	playerHasCommet = false
 	timerInfernalBurningCD:Start(1-delay)
 	timerShatteringStarCD:Start(1-delay)
 	timerCrashingCometCD:Start(1-delay)
@@ -100,7 +103,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 232249 then
-		timerCrashingCometCD:Start()
+		--timerCrashingCometCD:Start()
 	elseif spellId == 231363 then
 		timerBurningArmorCD:Start()
 	elseif spellId == 238587 and self:AntiSpam(5, 1) then
@@ -128,7 +131,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 232249 then
 		warnCrashingComet:CombinedShow(0.3, args.destName)
-		if args:IsPlayer() then--Still do yell and range frame here, in case DK
+		--[[if args:IsPlayer() then--Still do yell and range frame here, in case DK
 			specWarnCrashingComet:Show()
 			voiceCrashingComet:Play("runout")
 			yellCrashingComet:Yell(5)
@@ -140,7 +143,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
-		end
+		end--]]
 	elseif spellId == 231363 then
 		if args:IsPlayer() then
 			specWarnBurningArmor:Show()
@@ -167,14 +170,14 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerShatteringStar:Stop()
 		end
 	elseif spellId == 232249 then
-		if args:IsPlayer() then
+		--[[if args:IsPlayer() then
 			yellCrashingComet:Cancel()
 			timerCrashingComet:Stop()
 			countdownCrashingComet:Cancel()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
-		end
+		end--]]
 	elseif spellId == 231363 then
 		if args:IsPlayer() then
 			countdownBurningArmor:Cancel()
@@ -200,11 +203,41 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 
 	end
 end
+--]]
+
+do
+	local crashingComet = GetSpellInfo(232249)
+	function mod:UNIT_AURA(uId)
+		local hasDebuff = UnitDebuff("player", crashingComet)
+		if hasDebuff and not playerHasCommet then--Has 1 or more debuff, show all players on range frame
+			playerHasCommet = true
+			specWarnCrashingComet:Show()
+			voiceCrashingComet:Play("runout")
+			yellCrashingComet:Yell(5)
+			yellCrashingComet:Schedule(4, 1)
+			yellCrashingComet:Schedule(3, 2)
+			yellCrashingComet:Schedule(2, 3)
+			timerCrashingComet:Start()
+			countdownCrashingComet:Start()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
+		elseif not hasDebuff and playerHasCommet then--No debuffs, only show those that have debuffs
+			playerHasCommet = false
+			yellCrashingComet:Cancel()
+			timerCrashingComet:Stop()
+			countdownCrashingComet:Cancel()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
+		end
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 227503 then
-
+	if spellId == 232249 then--Crashing Comet
+		timerCrashingCometCD:Start()
 	end
 end
---]]
+
