@@ -252,7 +252,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnBeam then
-		DBM.Nameplate:Hide(false, nil, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, nil, true)
 	end
 end
 
@@ -496,7 +496,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 209244 then
 		if self.Options.NPAuraOnBeam then
-			DBM.Nameplate:Hide(false, args.destName, GetSpellTexture(spellId))
+			DBM.Nameplate:Hide(false, args.destName, spellId)
 		end
 	end
 end
