@@ -224,7 +224,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnMarkOfFrost then
-		DBM.Nameplate:Hide(false, nil, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, nil, true)
 	end
 end
 
@@ -439,7 +439,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			countdownMarkOfFrost:Cancel()
 		end
 		if self.Options.NPAuraOnMarkOfFrost then
-			DBM.Nameplate:Hide(false, args.destName, GetSpellTexture(spellId))
+			DBM.Nameplate:Hide(false, args.destName, spellId)
 		end
 	elseif spellId == 213148 and args:IsPlayer() then--Searing Brand (5sec Targetting Debuff)
 		countdownSearingBrand:Cancel()
@@ -447,7 +447,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerFelSoul:Stop()
 	elseif spellId == 212587 then
 		if self.Options.NPAuraOnMarkOfFrost then
-			DBM.Nameplate:Hide(false, args.destName, GetSpellTexture(spellId))
+			DBM.Nameplate:Hide(false, args.destName, spellId)
 		end
 	end
 end
