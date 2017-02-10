@@ -57,7 +57,7 @@ local voiceFelBlast					= mod:NewVoice(209017, false, nil, 2)--kickcast
 local voiceFelBurst					= mod:NewVoice(206352, "HasInterrupt")--kickcast
 
 mod:AddRangeFrameOption(5, 206352)
---mod:AddSetIconOption("SetIconOnMC", 163472, false)
+mod:AddSetIconOption("SetIconOnAdds", "ej12914", true, true)
 mod:AddInfoFrameOption(215944, false)
 mod:AddArrowOption("ArrowOnBeam3", 205368, true)
 
@@ -200,9 +200,14 @@ function mod:SPELL_CAST_START(args)
 		if timers then
 			timerBurningPitchCD:Start(timers, nextCount)
 		end
-	elseif spellId == 209017 and self:CheckInterruptFilter(args.sourceGUID) then
-		specWarnFelBlast:Show(args.sourceName)
-		voiceFelBlast:Play("kickcast")
+	elseif spellId == 209017 then
+		if self:CheckInterruptFilter(args.sourceGUID) then
+			specWarnFelBlast:Show(args.sourceName)
+			voiceFelBlast:Play("kickcast")
+		end
+		if self.Options.SetIconOnAdds then
+			self:ScanForMobs(args.sourceGUID, 0, 8, 8, 0.1, 10, "SetIconOnAdds")
+		end
 	elseif spellId == 206352 then
 		if not mobGUIDs[args.sourceGUID] then
 			mobGUIDs[args.sourceGUID] = true
