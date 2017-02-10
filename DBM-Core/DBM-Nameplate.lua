@@ -194,10 +194,11 @@ end)
 --  Functions  --
 -----------------
 --/run DBM.Nameplate:Show(true, UnitGUID("target"), 227723)--Mana tracking, easy to find in Dalaran
+--/run DBM.Nameplate:Show(true, UnitGUID("target"), 186406)--Sign of the Critter
 --/run DBM.Nameplate:Show(false, GetUnitName("target", true), 227723)--Mana tracking, easy to find in Dalaran
 --/run DBM.Nameplate:Hide(true, nil, nil, nil, true)
---/run DBM.Nameplate:Hide(true, UnitGUID("target"))
---/run DBM.Nameplate:Hide(false, GetUnitName("target", true))
+--/run DBM.Nameplate:Hide(true, UnitGUID("target"), 227723)
+--/run DBM.Nameplate:Hide(false, GetUnitName("target", true), 227723)
 
 --Add more nameplate mods as they gain support
 function nameplateFrame:SupportedNPMod()
@@ -226,7 +227,7 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
     if not self:IsShown() then
         DBMNameplateFrame:Show()
         DBMNameplateFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-        DBM:Debug("DBM.Nameplate Enabling", 3)
+        DBM:Debug("DBM.Nameplate Enabling", 2)
     end
 
     if not units[unit] then
@@ -319,7 +320,7 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force)
 
         DBMNameplateFrame:UnregisterEvent("NAME_PLATE_UNIT_ADDED")
         DBMNameplateFrame:Hide()
-        DBM:Debug("DBM.Nameplate Disabling", 3)
+        DBM:Debug("DBM.Nameplate Disabling", 2)
     end
 end
 
