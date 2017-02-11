@@ -252,15 +252,6 @@ function mod:SPELL_CAST_START(args)
 				DBM.InfoFrame:SetHeader(GetSpellInfo(212794))
 				DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame, true)
 			end
-			if self.Options.NPAuraOnCarrionPlague then
-				--Force kill them all going into this phase, even before debuffs are gone
-				for uId in DBM:GetGroupMembers() do
-					local Name = DBM:GetUnitFullName(uId)
-					if Name then
-						DBM.Nameplate:Hide(false, Name, 206480, 1029009)
-					end
-				end
-			end
 		end
 	elseif spellId == 213238 then
 		self.vb.seekerSwarmCast = self.vb.seekerSwarmCast + 1
@@ -343,6 +334,15 @@ function mod:SPELL_CAST_START(args)
 			local essenceOfNightDebuff = GetSpellInfo(206466)
 			DBM.InfoFrame:SetHeader(essenceOfNightDebuff)
 			DBM.InfoFrame:Show(10, "playerbaddebuff", essenceOfNightDebuff, nil, true)
+		end
+		if self.Options.NPAuraOnCarrionPlague then
+			--Force kill them all going into this phase, even before debuffs are gone
+			for uId in DBM:GetGroupMembers() do
+				local Name = DBM:GetUnitFullName(uId)
+				if Name then
+					DBM.Nameplate:Hide(false, Name, 206480, 1029009)
+				end
+			end
 		end
 	elseif spellId == 216034 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnBlastNova:Show(args.sourceName)
