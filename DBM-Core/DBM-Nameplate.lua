@@ -9,7 +9,8 @@ local nameplateFrame = DBM.Nameplate
 local units = {}
 local num_units = 0
 local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
-local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_NamePlate.GetNamePlates
+local twipe, floor = table.wipe, table.floor
 
 --------------------
 --  Create Frame  --
@@ -114,7 +115,7 @@ do
         end
 
         if type(frame.texture_index) == 'table' then
-            wipe(frame.texture_index)
+            twipe(frame.texture_index)
         end
     end
 
@@ -249,7 +250,7 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
     else
         --GUID, less efficient because it must scan all plates to find
         --but supports npcs/enemies
-        for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+        for _, frame in pairs(GetNamePlates()) do
             local foundUnit = frame.namePlateUnitToken
             if foundUnit and UnitGUID(foundUnit) == unit then
                 Nameplate_UnitAdded(frame, foundUnit)
@@ -299,7 +300,7 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force)
     else
         --We either passed force, or GUID,
         --either way requires scanning all nameplates
-        for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+        for _, frame in pairs(GetNamePlates()) do
             if frame.DBMAuraFrame then
                 if force then
                     frame.DBMAuraFrame:RemoveAll()
@@ -315,7 +316,7 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force)
 
     -- disable nameplate hooking;
     if force or num_units <= 0 then
-        table.wipe(units)
+        twipe(units)
         num_units = 0
 
         DBMNameplateFrame:UnregisterEvent("NAME_PLATE_UNIT_ADDED")
