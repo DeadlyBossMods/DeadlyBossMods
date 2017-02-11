@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 233062",
-	"SPELL_CAST_SUCCES 232249 231363 238587",
+	"SPELL_CAST_SUCCES 232249 231363 238587 233272",
 	"SPELL_AURA_APPLIED 233272 232249 231363",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 233272 232249 231363",
@@ -30,6 +30,11 @@ mod:RegisterEventsInCombat(
 --TODO, NP Auras for comments or stars?
 --TODO, generic Inferal Spike warnings/timers?
 --TODO, Fel Eruption stuff (GTFO? etc?)
+--[[
+(ability.id = 233062) and type = "begincast" or
+(ability.id = 232249 or ability.id = 231363 or ability.id = 238587 or ability.id = 233272) and type = "cast"
+--]]
+local warnInfernalSpike					= mod:NewSpellAnnounce(233055, 1)
 local warnShatteringStar				= mod:NewTargetAnnounce(233272, 3)
 local warnCrashingComet					= mod:NewTargetAnnounce(232249, 4)
 
@@ -42,19 +47,21 @@ local specWarnBurningArmor				= mod:NewSpecialWarningMoveAway(231363, nil, nil, 
 local specWarnBurningArmorTaunt			= mod:NewSpecialWarningTaunt(231363, nil, nil, nil, 1, 2)
 local specWarnRainofBrimstone			= mod:NewSpecialWarningMoveTo(238587, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(238587), nil, 1, 6)
 
-local timerInfernalBurningCD			= mod:NewAITimer(31, 233062, nil, nil, nil, 2)
-local timerShatteringStarCD				= mod:NewAITimer(31, 233272, nil, nil, nil, 3)
+local timerInfernalSpikeCD				= mod:NewCDTimer(30, 233055, nil, nil, nil, 3)
+local timerInfernalBurningCD			= mod:NewNextTimer(60, 233062, nil, nil, nil, 2)
+local timerShatteringStarCD				= mod:NewNextCountTimer(31, 233272, nil, nil, nil, 3)
 local timerShatteringStar				= mod:NewBuffFadesTimer(6, 233272, nil, nil, nil, 5)
-local timerCrashingCometCD				= mod:NewAITimer(31, 232249, nil, nil, nil, 3)
+local timerCrashingCometCD				= mod:NewCDTimer(14, 232249, nil, nil, nil, 3)--Needs more work, i think a sequence more accurate
 local timerCrashingComet				= mod:NewBuffFadesTimer(5, 232249, nil, nil, nil, 5)
-local timerBurningArmorCD				= mod:NewAITimer(31, 231363, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerBurningArmor					= mod:NewBuffFadesTimer(3, 231363, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
-local timerRainofBrimstoneCD			= mod:NewAITimer(31, 238587, nil, nil, nil, 1)
+local timerBurningArmorCD				= mod:NewCDTimer(24.3, 231363, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerBurningArmor					= mod:NewBuffFadesTimer(6, 231363, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
+local timerRainofBrimstoneCD			= mod:NewAITimer(31, 238587, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(300)
 
-local countdownInfernalBurning			= mod:NewCountdown(30, 233062)
-local countdownShatteringStar			= mod:NewCountdownFades("AltTwo6", 233272)
+local countdownInfernalBurning			= mod:NewCountdown(60, 233062)
+local countdownShatteringStar			= mod:NewCountdown("AltTwo6", 233272)
+local countdownShatteringStarFades		= mod:NewCountdownFades("AltTwo6", 233272)
 local countdownCrashingComet			= mod:NewCountdownFades("Alt5", 232249)--Assume for now tank will never get comets and dps will never get burning armor
 local countdownBurningArmor				= mod:NewCountdownFades("Alt6", 231363)--^^
 
@@ -71,14 +78,21 @@ mod:AddRangeFrameOption("10/25")
 local infernalSpike = GetSpellInfo(233021)
 local crashingComet = GetSpellInfo(232249)
 local cometTable = {}
+local shatteringStarTimers = {24, 60, 60, 50, 20, 40, 20, 40, 20, 40}
+mod.vb.shatteringStarCount = 0
 
 function mod:OnCombatStart(delay)
 	table.wipe(cometTable)
-	timerInfernalBurningCD:Start(1-delay)
-	timerShatteringStarCD:Start(1-delay)
-	timerCrashingCometCD:Start(1-delay)
-	timerBurningArmorCD:Start(1-delay)
-	timerRainofBrimstoneCD:Start(1-delay)
+	self.vb.shatteringStarCount = 0
+	timerCrashingCometCD:Start(4-delay)
+	timerBurningArmorCD:Start(10.5-delay)
+	timerInfernalSpikeCD:Start(13.9-delay)
+	timerShatteringStarCD:Start(24-delay)
+	countdownShatteringStar:Start(24-delay)
+	timerInfernalBurningCD:Start(54-delay)
+	if self:IsMythic() then
+		timerRainofBrimstoneCD:Start(1-delay)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -97,7 +111,7 @@ function mod:SPELL_CAST_START(args)
 		voiceInfernalBurning:Play("findshelter")
 		--voiceShockwave:Schedule(3.5, "safenow")
 		timerInfernalBurningCD:Start()
-		--countdownInfernalBurning:Start()
+		countdownInfernalBurning:Start()
 	end
 end
 
@@ -111,13 +125,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnRainofBrimstone:Show(args.spellName)
 		voiceRainofBrimstone:Play("helpsoak")
 		timerRainofBrimstoneCD:Start()
+	elseif spellId == 233272 then
+		self.vb.shatteringStarCount = self.vb.shatteringStarCount + 1
+		local nextCount = self.vb.shatteringStarCount+1
+		local timer = shatteringStarTimers[nextCount]
+		if timer then
+			timerShatteringStarCD:Start(timer, nextCount)
+			countdownShatteringStar:Start(timer)
+		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 233272 then
-		timerShatteringStarCD:Start()
 		if args:IsPlayer() then--Still do yell and range frame here, in case DK
 			specWarnShatteringStar:Show()
 			voiceShatteringStar:Play("runout")
@@ -125,7 +146,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellShatteringStar:Schedule(5, 1)
 			yellShatteringStar:Schedule(4, 2)
 			yellShatteringStar:Schedule(3, 3)
-			countdownShatteringStar:Start()
+			countdownShatteringStarFades:Start()
 			timerShatteringStar:Start()
 		else
 			warnShatteringStar:Show(args.destName)
@@ -167,7 +188,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 233272 then
 		if args:IsPlayer() then
 			yellShatteringStar:Cancel()
-			countdownShatteringStar:Cancel()
+			countdownShatteringStarFades:Cancel()
 			timerShatteringStar:Stop()
 		end
 	elseif spellId == 232249 then
@@ -242,7 +263,11 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 232249 then--Crashing Comet
+		--["232249-Crashing Comet"] = "pull:4.0, 16.0, 14.0",
 		timerCrashingCometCD:Start()
+	elseif spellId == 233055 then--Infernal Spike
+		warnInfernalSpike:Show()
+		--timerInfernalSpikeCD:Start()
 	end
 end
 
