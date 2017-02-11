@@ -2114,14 +2114,16 @@ do
 			DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
 		elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 			if DBM:HasMapRestrictions() then
-				DBM:AddMsg("Location debug not available do to instance restrictions")
-				return
+				local _, _, _, map = UnitPosition("player")
+				local mapID = GetCurrentMapAreaID()
+				DBM:AddMsg(("Location Information\nYou are at zone %u (%s).\nLocal Map ID %u (%s)"):format(map, GetRealZoneText(map), mapID, GetZoneText()))
+			else
+				local x, y, _, map = UnitPosition("player")
+				SetMapToCurrentZone()
+				local mapID = GetCurrentMapAreaID()
+				local mapx, mapy = GetPlayerMapPosition("player")
+				DBM:AddMsg(("Location Information\nYou are at zone %u (%s): x=%f, y=%f.\nLocal Map ID %u (%s): x=%f, y=%f"):format(map, GetRealZoneText(map), x, y, mapID, GetZoneText(), mapx, mapy))
 			end
-			local x, y, _, map = UnitPosition("player")
-			SetMapToCurrentZone()
-			local mapID = GetCurrentMapAreaID()
-			local mapx, mapy = GetPlayerMapPosition("player")
-			DBM:AddMsg(("Location Information\nYou are at zone %u (%s): x=%f, y=%f.\nLocal Map ID %u (%s): x=%f, y=%f"):format(map, GetRealZoneText(map), x, y, mapID, GetZoneText(), mapx, mapy))
 		elseif cmd:sub(1, 7) == "request" then
 			DBM:Unschedule(DBM.RequestTimers)
 			DBM:RequestTimers(1)
