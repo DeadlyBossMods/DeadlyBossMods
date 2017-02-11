@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 232174 231904 234194 240319 241590",
-	"SPELL_CAST_SUCCES 231854 231729",
+	"SPELL_CAST_SUCCES 231854 231729 232061 234129",
 	"SPELL_AURA_APPLIED 231998 231729 231904 234016 241600",
 	"SPELL_AURA_APPLIED_DOSE 231998",
 	"SPELL_AURA_REMOVED 233429 241600",
@@ -27,17 +27,21 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, improve power handling for Unchecked Rage to improve warnings/timers
---TODO frigid blows persistant whole fight or a phase?
---TODO, can draw in be timer based or will there be inconsistency in landed melee swings?
 --TODO, never done AI timers with optional args like GUID before, see if they explode!
 --TODO, splashy cleave for Gladiator?
 --TODO, escalate Frosty Spittle warning to special warning from taskmaster?
 --TODO, Improve mythic stuff
+--TODO, where is Tend Wounds & Driven Assault? Not in heroic logs at all but in journal for normal+
+--[[
+(ability.id = 232174 or ability.id = 231904) and type = "begincast" or
+(ability.id = 231854 or ability.id = 232061) and type = "cast" or
+(target.id = 116569 or target.id = 117596 or target.id = 117522 or target.id = 120545) and type = "death" or
+(ability.id = 241590 or ability.id = 240319 or ability.id = 234194) and type = "begincast" or (abilty.id = 231729 or ability.id = 234129) and type = "cast"
+--]]
 --Harjatan
 local warnJaggedAbrasion			= mod:NewStackAnnounce(231998, 2, nil, "Tank")
 local warnDrawIn					= mod:NewSpellAnnounce(232061, 2)
-local warnFrigidBlows				= mod:NewStackAnnounce(233429, 2)
+local warnFrigidBlows				= mod:NewStackAnnounce(233429, 2, nil, false)
 local warnFrostyDischarge			= mod:NewSpellAnnounce(232174, 2)
 --Razorjaw Wavemender
 local warnAqueousBurst				= mod:NewTargetAnnounce(231729, 2)
@@ -68,19 +72,22 @@ local specWarnSicklyFixate			= mod:NewSpecialWarningRun(241600, nil, nil, nil, 4
 local specWarnTantrum				= mod:NewSpecialWarningSpell(241590, nil, nil, nil, 2, 2)
 
 --Harjatan
-local timerUncheckedrageCD			= mod:NewNextTimer(20, 231998, nil, nil, nil, 2)--5 power per second heroic, 20 seconds for 100 energy
+local timerUncheckedRageCD			= mod:NewNextCountTimer(20, 231998, nil, nil, nil, 2)--5 power per second heroic, 20 seconds for 100 energy
+local timerDrawInCD					= mod:NewNextTimer(17.5, 232061, nil, nil, nil, 6)
+local timerCommandingRoarCD			= mod:NewNextTimer(17.5, 232192, nil, nil, nil, 1)
 --Razorjaw Wavemender
-local timerAqueousBurstCD			= mod:NewAITimer(15, 231729, nil, nil, nil, 3)
+local timerAqueousBurstCD			= mod:NewCDTimer(6, 231729, nil, false, nil, 3)--6-8
 local timerTendWoundsCD				= mod:NewAITimer(15, 231904, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Razorjaw Gladiator
-local timerDrivenAssaultCD			= mod:NewAITimer(31, 234016, nil, "false", nil, 3)--Too many spawn, this would be spammy so off by default
+local timerDrivenAssaultCD			= mod:NewAITimer(31, 234016, nil, false, nil, 3)--Too many spawn, this would be spammy so off by default
+local timerSplashCleaveCD			= mod:NewCDTimer(12, 234129, nil, false, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Darkscale Taskmaster
-local timerFrostySpittleCD			= mod:NewAITimer(31, 234194, nil, nil, nil, 3)
+local timerFrostySpittleCD			= mod:NewCDTimer(12, 234194, nil, nil, nil, 3)
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
 --Harjatan
---local countdownDrawPower			= mod:NewCountdown(33, 227629)
+local countdownUncheckedRage		= mod:NewCountdown(20, 231998)
 
 --Harjatan
 local voiceJaggedAbrasion			= mod:NewVoice(231998)--tauntboss/stackhigh
@@ -110,7 +117,9 @@ function mod:OnCombatStart(delay)
 	self.vb.rageWarned = false
 	self.vb.rageCount = 0
 	table.wipe(seenMobs)
-	timerUncheckedrageCD:Start(-delay)
+	timerCommandingRoarCD:Start(17.8-delay)
+	timerUncheckedRageCD:Start(-delay)
+	countdownUncheckedRage:Start()
 	if self.Options.NPAuraOnSicklyFixate and self:IsMythic() then
 		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
 	end
@@ -132,6 +141,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 232174 then
 		warnFrostyDischarge:Show()
+		self.vb.rageCount = 0
+		timerCommandingRoarCD:Start(19.8)--Assumed, but likely
+		timerUncheckedRageCD:Start(22, 1)
+		countdownUncheckedRage:Start(22)
 	elseif spellId == 231904 then
 		timerTendWoundsCD:Start(nil, args.sourceGUID)
 		if self:CheckInterruptFilter(args.sourceGUID) then
@@ -154,7 +167,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 231729 then
 		timerAqueousBurstCD:Start(nil, args.sourceGUID)
 	elseif spellId == 231854 then
-		timerUncheckedrageCD:Start()
+		if self.vb.rageCount == 1 then
+			timerUncheckedRageCD:Start(nil, 2)
+			countdownUncheckedRage:Start()
+		else
+			timerDrawInCD:Start()
+		end
+	elseif spellId == 232061 then
+		warnDrawIn:Show()
+	elseif spellId == 234129 then
+		timerSplashCleaveCD:Start(nil, args.sourceGUID)
 	end
 end
 
@@ -222,8 +244,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 233429 then
 		local amount = args.amount or 0
-		if amount < 3 or self:AntiSpam(5, 1) then
-		--Every 5 seconds or every stack under 3
+		if amount < 5 or self:AntiSpam(5, 1) then
+		--Every 5 seconds or every stack under 5
 			warnFrigidBlows:Show(amount)
 		end
 	elseif spellId == 241600 then
@@ -249,6 +271,7 @@ function mod:UNIT_DIED(args)
 		timerTendWoundsCD:Stop(args.destGUID)
 	elseif cid == 117596 then--Razorjaw Gladiator
 		timerDrivenAssaultCD:Stop(args.destGUID)
+		timerSplashCleaveCD:Stop(args.destGUID)
 	elseif cid == 117522 then--Darkscale Taskmaster
 		timerFrostySpittleCD:Stop(args.destGUID)
 	elseif cid == 120545 then--Incubated Egg
@@ -268,12 +291,12 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			seenMobs[GUID] = true
 			local cid = self:GetCIDFromGUID(GUID)
 			if cid == 116569 then--Razorjaw Wavemender
-				timerAqueousBurstCD:Start(1, GUID)
+				--timerAqueousBurstCD:Start(1, GUID)
 				timerTendWoundsCD:Start(1, GUID)
 			elseif cid == 117596 then--Razorjaw Gladiator
 				timerDrivenAssaultCD:Start(1, GUID)--too many spawn, this would be spammy
 			elseif cid == 117522 then--Darkscale Taskmaster
-				timerFrostySpittleCD:Start(1, GUID)
+				--timerFrostySpittleCD:Start(1, GUID)
 			end
 		end
 	end
@@ -301,11 +324,10 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 232061 then--Draw In
-		warnDrawIn:Show()
-	elseif spellId == 232192 then--Commanding Roar
+	if spellId == 232192 then--Commanding Roar
 		specWarnCommandingroar:Show()
 		voiceCommandingroar:Play("killmob")
+		--timerCommandingRoarCD:Start()--NOT likely
 	end
 end
 
