@@ -223,6 +223,7 @@ function mod:OnCombatStart(delay)
 	self.vb.pos5X, self.vb.pos5Y = nil, nil
 	self.vb.pos6X, self.vb.pos6Y = nil, nil
 	self.vb.pos7X, self.vb.pos7Y = nil, nil
+	timerLeaveNightwell:Start(4)
 	timerTimeElementalsCD:Start(5-delay, SLOW)
 	timerTimeElementalsCD:Start(8-delay, FAST)
 	--timerAblationCD:Start(8.5-delay)--Verify/tweak

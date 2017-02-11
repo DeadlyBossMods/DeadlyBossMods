@@ -63,7 +63,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnUnstableMana:Show()
 			voiceUnstableMana:Play("runout")
-			voiceUnstableMana:schedule(1, "keepmove")
+			voiceUnstableMana:Schedule(1, "keepmove")
 		else
 			warnUnstableMana:Show(args.destName)
 		end
