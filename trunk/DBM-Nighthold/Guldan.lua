@@ -637,7 +637,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerStormOfDestroyerCD:Start(timer, self.vb.stormCast+1)
 		end
 	elseif spellId == 215736 then--Hand of Guldan (Fel Lord Kuraz'mal)
-		timerShatterEssenceCD:Start(19)--Same on normal and heroic. mythic/LFR need vetting.
+		if self:IsMythic() then
+			timerShatterEssenceCD:Start(21)
+		else
+			timerShatterEssenceCD:Start(19)--Same on normal and heroic. mythic/LFR need vetting.
+		end
 	elseif spellId == 215738 then--Hand of Guldan (Inquisitor Vethriz)
 		if self:IsEasy() then
 			--Unknown, died before casting either one
@@ -646,6 +650,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerGazeofVethrizCD:Start(27.8)--Basically starts casting it right after blink, then every 5 seconds
 		end
 	elseif spellId == 215739 then--Hand of Guldan (D'zorykx the Trapper)
+		if self:IsMythic() then
+			timerSoulVortexCD:Start(3)
+		end
 		--[[if self:IsEasy() then
 			timerSoulVortexCD:Start(52)--Normal verified, LFR assumed
 		else
