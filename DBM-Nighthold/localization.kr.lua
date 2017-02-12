@@ -70,7 +70,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnStarLow				= "플라스마 구체 체력이 낮으면 특수 경고 보기 (15% 이하)"
+	warnStarLow				= "플라스마 구체 체력이 낮으면 특수 경고 보기 (25% 이하)"
 })
 
 L:SetMiscLocalization({

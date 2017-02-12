@@ -69,7 +69,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnStarLow				= "Show special warning when Plasma Sphere is low (at ~15%)"
+	warnStarLow				= "Show special warning when Plasma Sphere is low (at ~25%)"
 })
 
 L:SetMiscLocalization({
