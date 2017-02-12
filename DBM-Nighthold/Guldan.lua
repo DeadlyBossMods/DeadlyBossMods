@@ -169,13 +169,16 @@ mod.vb.flamesTargets = 0
 local felEffluxTimers = {11.0, 14.0, 18.5, 12.0, 12.2, 12.0}
 local felEffluxTimersEasy = {11.0, 14.0, 19.9, 15.6, 16.8, 15.9, 15.8}
 local handofGuldanTimers = {14.5, 48.9, 138.8}
+local mythicHandofGuldanTimers = {17, 165, 0, 0, 0}
 local stormTimersEasy = {94, 78.6, 70.0, 87}
 local stormTimers = {84.1, 68.7, 61.3, 76.5}
 local blackHarvestTimersEasy = {63, 82.9, 100.0}
 local blackHarvestTimers = {64.1, 72.5, 87.5}
 --local phase2Eyes = {29, 53.3, 53.4, 53.3, 53.3, 53.3, 66}--Not used, not needed if only 1 is different. need longer pulls to see what happens after 66
+--local p1EyesMythic = {26, 48, 48}
 local p3EmpoweredEyeTimersEasy = {42.5, 71.5, 71.4, 28.6, 114}--114 is guessed on the 1/8th formula
 local p3EmpoweredEyeTimers = {39.1, 62.5, 62.5, 25, 100}--100 is confirmed
+local p3EmpoweredEyeTimersMythic = {35.1, 56.2, 56.2, 22.5, 90}--Assumed by 0.9 conversion
 local bondsIcons = {}
 local flamesIcons = {}
 
@@ -193,7 +196,11 @@ function mod:OnCombatStart(delay)
 	table.wipe(bondsIcons)
 	table.wipe(flamesIcons)
 	if self:IsMythic() then
-		DBM:AddMsg("This mod still needs mythic refactoring to properly support the combined phase1/2 stuff and the new phase 3")
+		DBM:AddMsg("This mod still needs mythic refactoring to properly support new phase 3")
+		timerBondsofFelCD:Start(8.4-delay)
+		timerHandofGuldanCD:Start(17-delay)--Trapper first always? if so change to trapper timer
+		timerEyeofGuldanCD:Start(26.4-delay, 1)
+		timerLiquidHellfireCD:Start(36-delay, 1)
 	else
 		timerLiquidHellfireCD:Start(2-delay, 1)
 		timerFelEffluxCD:Start(11-delay, 1)
@@ -223,24 +230,16 @@ function mod:SPELL_CAST_START(args)
 			specWarnEmpLiquidHellfire:Show()
 			voiceEmpLiquidHellfire:Play("watchstep")
 		end
-		if self.vb.phase == 1 then
-			timerLiquidHellfireCD:Start(15, self.vb.liquidHellfireCast+1)
-		elseif self.vb.phase == 1.5 then
-			if self.vb.liquidHellfireCast == 2 or self:IsHeroic() then
-				timerLiquidHellfireCD:Start(23.8, self.vb.liquidHellfireCast+1)
-			else--On LFR/Normal the rest are 32 in phase 1.5
-				timerLiquidHellfireCD:Start(32.5, self.vb.liquidHellfireCast+1)
-			end
-		else--Phase 2
-			if self:IsEasy() then
+		if self:IsMythic() or self.vb.phase >= 2 then
+			if self:IsMythic() then
 				if self.vb.liquidHellfireCast == 4 or self.vb.liquidHellfireCast == 6 then
-					timerLiquidHellfireCD:Start(84, self.vb.liquidHellfireCast+1)
+					timerLiquidHellfireCD:Start(67, self.vb.liquidHellfireCast+1)
 				elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
-					timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
+					timerLiquidHellfireCD:Start(28.9, self.vb.liquidHellfireCast+1)
 				else
-					timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
+					timerLiquidHellfireCD:Start(33, self.vb.liquidHellfireCast+1)
 				end
-			else
+			elseif self:IsHeroic() then
 				if self.vb.liquidHellfireCast == 4 or self.vb.liquidHellfireCast == 6 then
 					timerLiquidHellfireCD:Start(74, self.vb.liquidHellfireCast+1)
 				elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
@@ -248,7 +247,23 @@ function mod:SPELL_CAST_START(args)
 				else
 					timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
 				end
+			else--Easy (normal/LFR?)
+				if self.vb.liquidHellfireCast == 4 or self.vb.liquidHellfireCast == 6 then
+					timerLiquidHellfireCD:Start(84, self.vb.liquidHellfireCast+1)
+				elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
+					timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
+				else
+					timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
+				end
 			end
+		elseif self.vb.phase == 1.5 then
+			if self.vb.liquidHellfireCast == 2 or self:IsHeroic() then
+				timerLiquidHellfireCD:Start(23.8, self.vb.liquidHellfireCast+1)
+			else--On LFR/Normal the rest are 32 in phase 1.5
+				timerLiquidHellfireCD:Start(32.5, self.vb.liquidHellfireCast+1)
+			end
+		else--Phase 1
+			timerLiquidHellfireCD:Start(15, self.vb.liquidHellfireCast+1)
 		end
 	elseif spellId == 206514 then
 		self.vb.felEffluxCast = self.vb.felEffluxCast + 1
@@ -272,14 +287,19 @@ function mod:SPELL_CAST_START(args)
 		--timerShadowBlinkCD:Start()
 	elseif spellId == 206883 then
 		--timerSoulVortexCD:Start()
-		local targetName, uId, bossuid = self:GetBossTarget(104534, true)
-		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
-		if tanking or (status == 3) then--Player is current target
+		if self:IsMythic() then--On mythic it's just tossed into center of room, not at tank
 			specWarnSoulVortex:Show()
-			voiceSoulVortex:Play("runout")
-			yellSoulVortex:Yell()
-		elseif targetName then
-			warnSoulVortex:Show(targetName)
+			voiceSoulVortex:Play("watchstep")
+		else
+			local targetName, uId, bossuid = self:GetBossTarget(104534, true)
+			local tanking, status = UnitDetailedThreatSituation("player", bossuid)
+			if tanking or (status == 3) then--Player is current target
+				specWarnSoulVortex:Show()
+				voiceSoulVortex:Play("runout")
+				yellSoulVortex:Yell()
+			elseif targetName then
+				warnSoulVortex:Show(targetName)
+			end
 		end
 	elseif spellId == 208545 then
 		warnAnguishedSpirits:Show()
@@ -291,23 +311,29 @@ function mod:SPELL_CAST_START(args)
 			specWarnEyeofGuldan:Show(self.vb.eyeCast)
 		end
 		voiceEyeofGuldan:Play("killmob")
-		if self.vb.phase == 3 then
-			local timer = self:IsEasy() and p3EmpoweredEyeTimersEasy[self.vb.eyeCast+1] or p3EmpoweredEyeTimers[self.vb.eyeCast+1]
+		if self:IsMythic() and self.vb.phase == 2 or self.vb.phase == 3 then
+			local timer = self:IsMythic() and p3EmpoweredEyeTimersMythic[self.vb.eyeCast+1] or self:IsEasy() and p3EmpoweredEyeTimersEasy[self.vb.eyeCast+1] or p3EmpoweredEyeTimers[self.vb.eyeCast+1]
 			if timer then
 				timerEyeofGuldanCD:Start(timer, self.vb.eyeCast+1)
 			end
 		else
-			if self:IsEasy() then
-				if self.vb.eyeCast == 6 then--Assumed easy does this too. unknown for sure.
-					timerEyeofGuldanCD:Start(75, self.vb.eyeCast+1)
+			if self:IsMythic() then
+				if self.vb.eyeCast == 6 then
+					timerEyeofGuldanCD:Start(59, self.vb.eyeCast+1)--An oddball cast
 				else
-					timerEyeofGuldanCD:Start(60, self.vb.eyeCast+1)
+					timerEyeofGuldanCD:Start(48, self.vb.eyeCast+1)
 				end
-			else
+			elseif self:IsHeroic() then
 				if self.vb.eyeCast == 6 then
 					timerEyeofGuldanCD:Start(66, self.vb.eyeCast+1)--An oddball cast
 				else
 					timerEyeofGuldanCD:Start(53.3, self.vb.eyeCast+1)
+				end
+			else--Easy (normal, LFR?)
+				if self.vb.eyeCast == 6 then--Assumed easy does this too. unknown for sure.
+					timerEyeofGuldanCD:Start(75, self.vb.eyeCast+1)
+				else
+					timerEyeofGuldanCD:Start(60, self.vb.eyeCast+1)
 				end
 			end
 		end
@@ -348,10 +374,12 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 206222 or spellId == 206221 then
-		if self:IsEasy() then
-			timerBondsofFelCD:Start()
-		else
+		if self:IsMythic() then
+			timerBondsofFelCD:Start(40)
+		elseif self:IsHeroic() then
 			timerBondsofFelCD:Start(44.4)
+		else
+			timerBondsofFelCD:Start(50)
 		end
 	elseif spellId == 221783 then
 		self.vb.flamesSargCast = self.vb.flamesSargCast + 1
@@ -364,7 +392,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.handofGuldanCast = self.vb.handofGuldanCast + 1
 		specWarnHandofGuldan:Show()
 		voiceHandofGuldan:Play("bigmob")
-		local timer = handofGuldanTimers[self.vb.handofGuldanCast+1]
+		local timer = self:IsMythic() and mythicHandofGuldanTimers[self.vb.handofGuldanCast+1] or handofGuldanTimers[self.vb.handofGuldanCast+1]
 		if timer then
 			timerHandofGuldanCD:Start(timer, self.vb.handofGuldanCast+1)
 		end
