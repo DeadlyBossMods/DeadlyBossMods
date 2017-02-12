@@ -112,7 +112,7 @@ local timerGazeofVethrizCD			= mod:NewCDTimer(4.7, 206840, nil, nil, nil, 3)
 ----D'zorykx the Trapper
 mod:AddTimerLine(Dzorykx)
 local timerDzorykxCD				= mod:NewCastTimer(35, "ej13129", nil, nil, nil, 1, 212258)
---local timerSoulVortexCD				= mod:NewCDTimer(32.5, 206883, nil, nil, nil, 3)--34-36
+local timerSoulVortexCD				= mod:NewCDTimer(21, 206883, nil, nil, nil, 3)--34-36
 --Stage Two: The Ritual of Aman'thul
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerTransition				= mod:NewPhaseTimer(19)
@@ -292,10 +292,10 @@ function mod:SPELL_CAST_START(args)
 		warnShadowblink:Show()
 		--timerShadowBlinkCD:Start()
 	elseif spellId == 206883 then
-		--timerSoulVortexCD:Start()
 		if self:IsMythic() then--On mythic it's just tossed into center of room, not at tank
 			specWarnSoulVortex:Show()
 			voiceSoulVortex:Play("watchstep")
+			timerSoulVortexCD:Start(21)
 		else
 			local targetName, uId, bossuid = self:GetBossTarget(104534, true)
 			local tanking, status = UnitDetailedThreatSituation("player", bossuid)
@@ -662,7 +662,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerGazeofVethrizCD:Stop()
 				--timerShadowBlinkCD:Stop()
 			elseif cid == 104534 then--D'zorykx the Trapper
-				--timerSoulVortexCD:Stop()
+				timerSoulVortexCD:Stop()
 			end
 			if self.vb.addsDied == 3 and not self:IsMythic() then
 				--This probably needs refactoring for mythic since phase 1 and 2 happen at same time
