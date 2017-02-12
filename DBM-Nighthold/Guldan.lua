@@ -172,13 +172,15 @@ local handofGuldanTimers = {14.5, 48.9, 138.8}
 local mythicHandofGuldanTimers = {17, 165, 0, 0, 0}
 local stormTimersEasy = {94, 78.6, 70.0, 87}
 local stormTimers = {84.1, 68.7, 61.3, 76.5}
+local stormTimersMythic = {75.6, 61.8, 55.1, 68.8}--VERIFY, Assumed by 0.9 conversion
 local blackHarvestTimersEasy = {63, 82.9, 100.0}
 local blackHarvestTimers = {64.1, 72.5, 87.5}
+local blackHarvestTimersMythic = {57.6, 65.2, 78.7}--VERIFY, Assumed by 0.9 conversion
 --local phase2Eyes = {29, 53.3, 53.4, 53.3, 53.3, 53.3, 66}--Not used, not needed if only 1 is different. need longer pulls to see what happens after 66
 --local p1EyesMythic = {26, 48, 48}
 local p3EmpoweredEyeTimersEasy = {42.5, 71.5, 71.4, 28.6, 114}--114 is guessed on the 1/8th formula
 local p3EmpoweredEyeTimers = {39.1, 62.5, 62.5, 25, 100}--100 is confirmed
-local p3EmpoweredEyeTimersMythic = {35.1, 56.2, 56.2, 22.5, 90}--Assumed by 0.9 conversion
+local p3EmpoweredEyeTimersMythic = {35.1, 56.2, 56.2, 22.5, 90}--VERIFY, Assumed by 0.9 conversion
 local bondsIcons = {}
 local flamesIcons = {}
 
@@ -349,7 +351,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.blackHarvestCast = self.vb.blackHarvestCast + 1
 		specWarnBlackHarvest:Show(self.vb.blackHarvestCast)
 		voiceBlackHarvest:Play("aesoon")
-		local timer = self:IsEasy() and blackHarvestTimersEasy[self.vb.blackHarvestCast+1] or blackHarvestTimers[self.vb.blackHarvestCast+1]
+		local timer = self:IsMythic() and blackHarvestTimersMythic[self.vb.blackHarvestCast+1] or self:IsEasy() and blackHarvestTimersEasy[self.vb.blackHarvestCast+1] or blackHarvestTimers[self.vb.blackHarvestCast+1]
 		if timer then
 			timerBlackHarvestCD:Start(timer, self.vb.blackHarvestCast+1)
 		end
@@ -383,10 +385,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 221783 then
 		self.vb.flamesSargCast = self.vb.flamesSargCast + 1
-		if self:IsEasy() then
-			timerFlamesofSargerasCD:Start(nil, self.vb.flamesSargCast+1)
-		else
+		if self:IsMythic() then
+			timerFlamesofSargerasCD:Start(45, self.vb.flamesSargCast+1)
+		elseif self:IsHeroic() then
 			timerFlamesofSargerasCD:Start(50, self.vb.flamesSargCast+1)--5-6 is 50, 1-5 is 51. For time being using a simple 50 timer
+		else--Normal, LFR?
+			timerFlamesofSargerasCD:Start(58.5, self.vb.flamesSargCast+1)
 		end
 	elseif spellId == 212258 and self.vb.phase > 1.5 then--Ignore phase 1 adds with this cast
 		self.vb.handofGuldanCast = self.vb.handofGuldanCast + 1
@@ -506,23 +510,31 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerLiquidHellfireCD:Start(5, self.vb.liquidHellfireCast+1)
 		timerFelEffluxCD:Start(10, self.vb.felEffluxCast+1)
 	elseif spellId == 227427 then--The Eye of Aman'Thul (phase 3 transition buff)
-		self.vb.phase = 3
-		self.vb.eyeCast = 0
-		warnPhase3:Show()
 		timerBondsofFelCD:Stop()
 		timerLiquidHellfireCD:Stop()
 		timerEyeofGuldanCD:Stop()
 		timerHandofGuldanCD:Stop()
 		timerWellOfSoulsCD:Start(15)
-		timerBlackHarvestCD:Start(63, 1)
-		if self:IsEasy() then
-			timerFlamesofSargerasCD:Start(29, 1)
-			timerEyeofGuldanCD:Start(42.5, 1)
-			timerStormOfDestroyerCD:Start(94, 1)--Health based or timer? VERIFY THIS
+		timerBlackHarvestCD:Start(63, 1)--Same on all, including mythic?
+		self.vb.eyeCast = 0
+		if self:IsMythic() then
+			self.vb.phase = 2
+			warnPhase2:Show()
+			timerFlamesofSargerasCD:Start(24.7, 1)--VERIFY
+			timerEyeofGuldanCD:Start(35.1, 1)--VERIFY
+			timerStormOfDestroyerCD:Start(75.6, 1)--VERIFY
 		else
-			timerFlamesofSargerasCD:Start(27.5, 1)
-			timerEyeofGuldanCD:Start(39, 1)
-			timerStormOfDestroyerCD:Start(84, 1)
+			self.vb.phase = 3
+			warnPhase3:Show()
+			if self:IsEasy() then
+				timerFlamesofSargerasCD:Start(29, 1)
+				timerEyeofGuldanCD:Start(42.5, 1)
+				timerStormOfDestroyerCD:Start(94, 1)--Health based or timer? VERIFY THIS
+			else
+				timerFlamesofSargerasCD:Start(27.5, 1)
+				timerEyeofGuldanCD:Start(39, 1)
+				timerStormOfDestroyerCD:Start(84, 1)
+			end
 		end
 	end
 end
@@ -616,7 +628,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.stormCast = self.vb.stormCast + 1
 		specWarnStormOfDestroyer:Show()
 		voiceStormOfDestroyer:Play("watchstep")
-		local timer = self:IsEasy() and stormTimersEasy[self.vb.stormCast+1] or stormTimers[self.vb.stormCast+1]
+		local timer = self:IsMythic() and stormTimersMythic[self.vb.stormCast+1] or self:IsEasy() and stormTimersEasy[self.vb.stormCast+1] or stormTimers[self.vb.stormCast+1]
 		if timer then
 			timerStormOfDestroyerCD:Start(timer, self.vb.stormCast+1)
 		end
