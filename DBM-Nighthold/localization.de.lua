@@ -60,7 +60,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnStarLow				= "Spezialwarnung, wenn eine Plasmasphäre bald stirbt (bei ~15%)"
+	warnStarLow				= "Spezialwarnung, wenn eine Plasmasphäre bald stirbt (bei ~25%)"
 })
 
 L:SetMiscLocalization({

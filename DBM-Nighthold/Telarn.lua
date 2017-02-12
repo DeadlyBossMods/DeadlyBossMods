@@ -612,7 +612,7 @@ end
 
 function mod:UNIT_HEALTH(uId)
 	local cid = self:GetUnitCreatureId(uId)
-	if cid == 109804 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.15 then
+	if cid == 109804 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.25 then
 		local guid = UnitGUID(uId)
 		if not sentLowHP[guid] then
 			sentLowHP[guid] = true
