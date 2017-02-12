@@ -66,7 +66,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnStarLow				= "為電漿球血量變低時(15%)顯示特別警告"
+	warnStarLow				= "為電漿球血量變低時(25%)顯示特別警告"
 })
 
 L:SetMiscLocalization({

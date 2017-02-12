@@ -76,7 +76,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnStarLow				= "特殊警报：当坍缩之星血量低时(~15%)" --offical
+	warnStarLow				= "特殊警报：当坍缩之星血量低时(~25%)" --offical
 })
 
 L:SetMiscLocalization({

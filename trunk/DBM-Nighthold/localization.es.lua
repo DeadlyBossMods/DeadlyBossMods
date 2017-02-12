@@ -60,7 +60,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	warnStarLow				= "Mostrar aviso especial cuando una esfera de plasma tenga la salud baja (15%)"
+	warnStarLow				= "Mostrar aviso especial cuando una esfera de plasma tenga la salud baja (25%)"
 }
 
 L:SetMiscLocalization({
