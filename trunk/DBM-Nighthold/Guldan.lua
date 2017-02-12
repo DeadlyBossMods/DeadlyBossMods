@@ -274,7 +274,11 @@ function mod:SPELL_CAST_START(args)
 		local timer = self:IsEasy() and felEffluxTimersEasy[self.vb.felEffluxCast+1] or felEffluxTimers[self.vb.felEffluxCast+1] or 12
 		timerFelEffluxCD:Start(timer, self.vb.felEffluxCast+1)
 	elseif spellId == 206675 then
-		timerShatterEssenceCD:Start()
+		if self:IsMythic() then
+			timerShatterEssenceCD:Start(21)
+		else
+			timerShatterEssenceCD:Start()
+		end
 		local targetName, uId, bossuid = self:GetBossTarget(104537)--Add true if it has a boss unitID
 		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
 		if tanking or (status == 3) then--Player is current target
