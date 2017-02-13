@@ -274,14 +274,16 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force)
 
     --Not running supported NP Mod, internal handling
     if unit and units[unit] then
-        for i,this_texture in ipairs(units[unit]) do
-            if not currentTexture or this_texture == currentTexture then
-                tremove(units[unit],i)
-                break
+        if currentTexture then
+            for i,this_texture in ipairs(units[unit]) do
+                if this_texture == currentTexture then
+                    tremove(units[unit],i)
+                    break
+                end
             end
         end
 
-        if #units[unit] == 0 then
+        if not currentTexture or #units[unit] == 0 then
             units[unit] = nil
             num_units = num_units - 1
         end
