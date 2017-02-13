@@ -169,7 +169,7 @@ mod.vb.flamesTargets = 0
 local felEffluxTimers = {11.0, 14.0, 18.5, 12.0, 12.2, 12.0}
 local felEffluxTimersEasy = {11.0, 14.0, 19.9, 15.6, 16.8, 15.9, 15.8}
 local handofGuldanTimers = {14.5, 48.9, 138.8}
-local mythicHandofGuldanTimers = {17, 165, 0, 0, 0}
+--local mythicHandofGuldanTimers = {17, 165, 0, 0, 0}
 local stormTimersEasy = {94, 78.6, 70.0, 87}
 local stormTimers = {84.1, 68.7, 61.3, 76.5}
 local stormTimersMythic = {75.6, 61.8, 55.1, 68.8}--VERIFY, Assumed by 0.9 conversion
@@ -200,7 +200,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		DBM:AddMsg("This mod still needs mythic refactoring to properly support new phase 3")
 		timerBondsofFelCD:Start(8.4-delay)
-		timerHandofGuldanCD:Start(17-delay)--Trapper first always? if so change to trapper timer
+		timerDzorykxCD:Start(17-delay)
 		timerEyeofGuldanCD:Start(26.4-delay, 1)
 		timerLiquidHellfireCD:Start(36-delay, 1)
 	else
@@ -235,7 +235,7 @@ function mod:SPELL_CAST_START(args)
 		if self:IsMythic() or self.vb.phase >= 2 then
 			if self:IsMythic() then
 				if self.vb.liquidHellfireCast == 4 or self.vb.liquidHellfireCast == 6 then
-					timerLiquidHellfireCD:Start(67, self.vb.liquidHellfireCast+1)
+					timerLiquidHellfireCD:Start(66, self.vb.liquidHellfireCast+1)
 				elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
 					timerLiquidHellfireCD:Start(28.9, self.vb.liquidHellfireCast+1)
 				else
@@ -325,7 +325,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			if self:IsMythic() then
 				if self.vb.eyeCast == 6 then
-					timerEyeofGuldanCD:Start(59, self.vb.eyeCast+1)--An oddball cast
+					timerEyeofGuldanCD:Start(80, self.vb.eyeCast+1)--An oddball cast
 				else
 					timerEyeofGuldanCD:Start(48, self.vb.eyeCast+1)
 				end
@@ -400,9 +400,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.handofGuldanCast = self.vb.handofGuldanCast + 1
 		specWarnHandofGuldan:Show()
 		voiceHandofGuldan:Play("bigmob")
-		local timer = self:IsMythic() and mythicHandofGuldanTimers[self.vb.handofGuldanCast+1] or handofGuldanTimers[self.vb.handofGuldanCast+1]
-		if timer then
-			timerHandofGuldanCD:Start(timer, self.vb.handofGuldanCast+1)
+		if self:IsMythic() then
+			if self.vb.handofGuldanCast == 1 then
+				timerFelLordKurazCD:Start(165)
+			end
+		else
+			local timer = handofGuldanTimers[self.vb.handofGuldanCast+1]
+			if timer then
+				timerHandofGuldanCD:Start(timer, self.vb.handofGuldanCast+1)
+			end
 		end
 	end
 end
