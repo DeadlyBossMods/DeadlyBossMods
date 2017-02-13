@@ -278,7 +278,7 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force)
     --Not running supported NP Mod, internal handling
     if unit and units[unit] then
         for i,this_texture in ipairs(units[unit]) do
-            if this_texture == currentTexture then
+            if not currentTexture or (this_texture == currentTexture) then
                 tremove(units[unit],i)
                 break
             end
@@ -295,7 +295,11 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force)
     if not isGUID and not force then--Only need to find one unit
         local frame = GetNamePlateForUnit(unit)
         if frame and frame.DBMAuraFrame then
-            frame.DBMAuraFrame:RemoveAura(currentTexture)
+        	if not currentTexture then
+        		frame.DBMAuraFrame:RemoveAll()
+        	else
+            	frame.DBMAuraFrame:RemoveAura(currentTexture)
+            end
         end
     else
         --We either passed force, or GUID,
@@ -307,7 +311,11 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force)
                 elseif isGUID then
                     local foundUnit = frame.namePlateUnitToken
                     if foundUnit and UnitGUID(foundUnit) == unit then
-                        frame.DBMAuraFrame:RemoveAura(currentTexture)
+        				if not currentTexture then
+        					frame.DBMAuraFrame:RemoveAll()
+        				else
+            				frame.DBMAuraFrame:RemoveAura(currentTexture)
+            			end
                     end
                 end
             end
