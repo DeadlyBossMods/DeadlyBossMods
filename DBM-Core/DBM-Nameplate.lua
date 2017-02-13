@@ -10,7 +10,7 @@ local units = {}
 local num_units = 0
 local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
 local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_NamePlate.GetNamePlates
-local twipe, floor = table.wipe, table.floor
+local twipe, floor = table.wipe, math.floor
 
 --------------------
 --  Create Frame  --
