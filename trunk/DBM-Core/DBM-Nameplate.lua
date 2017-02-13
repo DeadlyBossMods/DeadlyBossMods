@@ -242,16 +242,13 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
     if not isGUID then
         local frame = GetNamePlateForUnit(unit)
         if frame then
-            local foundUnit = frame.namePlateUnitToken
-            if foundUnit then
-                Nameplate_UnitAdded(frame, foundUnit)
-            end
+            Nameplate_UnitAdded(frame, unit)
         end
     else
         --GUID, less efficient because it must scan all plates to find
         --but supports npcs/enemies
         for _, frame in pairs(GetNamePlates()) do
-            local foundUnit = frame.namePlateUnitToken
+            local foundUnit = frame.namePlateUnitToken or (frame.UnitFrame and frame.UnitFrame.unit)
             if foundUnit and UnitGUID(foundUnit) == unit then
                 Nameplate_UnitAdded(frame, foundUnit)
                 break
@@ -278,7 +275,7 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force)
     --Not running supported NP Mod, internal handling
     if unit and units[unit] then
         for i,this_texture in ipairs(units[unit]) do
-            if not currentTexture or (this_texture == currentTexture) then
+            if not currentTexture or this_texture == currentTexture then
                 tremove(units[unit],i)
                 break
             end
@@ -295,10 +292,10 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force)
     if not isGUID and not force then--Only need to find one unit
         local frame = GetNamePlateForUnit(unit)
         if frame and frame.DBMAuraFrame then
-        	if not currentTexture then
-        		frame.DBMAuraFrame:RemoveAll()
-        	else
-            	frame.DBMAuraFrame:RemoveAura(currentTexture)
+            if not currentTexture then
+                frame.DBMAuraFrame:RemoveAll()
+            else
+                frame.DBMAuraFrame:RemoveAura(currentTexture)
             end
         end
     else
@@ -309,13 +306,13 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force)
                 if force then
                     frame.DBMAuraFrame:RemoveAll()
                 elseif isGUID then
-                    local foundUnit = frame.namePlateUnitToken
+                    local foundUnit = frame.namePlateUnitToken or (frame.UnitFrame and frame.UnitFrame.unit)
                     if foundUnit and UnitGUID(foundUnit) == unit then
-        				if not currentTexture then
-        					frame.DBMAuraFrame:RemoveAll()
-        				else
-            				frame.DBMAuraFrame:RemoveAura(currentTexture)
-            			end
+                        if not currentTexture then
+                            frame.DBMAuraFrame:RemoveAll()
+                        else
+                            frame.DBMAuraFrame:RemoveAura(currentTexture)
+                        end
                     end
                 end
             end
