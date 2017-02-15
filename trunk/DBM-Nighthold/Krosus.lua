@@ -226,6 +226,11 @@ function mod:SPELL_CAST_START(args)
 			warnSlamSoon:Schedule(89, 1)
 		else
 			warnSlam:Show(self.vb.slamCount)
+			if self:IsTank() then
+				voiceSlam:Play("helpsoak")
+			else
+				voiceSlam:Play("watchstep")
+			end
 		end
 	elseif spellId == 205361 then
 		self.vb.orbCount = self.vb.orbCount + 1
