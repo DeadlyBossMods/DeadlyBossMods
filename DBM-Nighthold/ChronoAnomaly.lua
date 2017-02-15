@@ -26,6 +26,9 @@ mod:RegisterEventsInCombat(
 --TODO, More data to complete sequences of timers
 --TODO, info frame with debuff shield (health) remaining sorted highest to lowest.
 --(ability.id = 206618 or ability.id = 206610 or ability.id = 206614) and type = "cast" or ability.id = 211927
+local warnNormal					= mod:NewCountAnnounce(207012, 2)
+local warnFast						= mod:NewCountAnnounce(207013, 2)
+local warnSlow						= mod:NewCountAnnounce(207011, 2)
 local warnTimeBomb					= mod:NewTargetAnnounce(206617, 3)
 local warnTimeRelease				= mod:NewTargetAnnounce(206610, 3, nil, false)--Too many targets
 local warnChronometricPart			= mod:NewStackAnnounce(206607, 3, nil, "Tank")
@@ -218,6 +221,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.currentPhase = 2
 		self.vb.interruptCount = 0
 		self.vb.normCount = self.vb.normCount + 1
+		warnNormal:Show(self.vb.normCount)
 		if self.vb.normCount == 1 then
 			if self:IsMythic() then--Updated Jan 25
 				timerTimeBombCD:Start(5, 1)
@@ -291,6 +295,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.currentPhase = 1
 		self.vb.interruptCount = 0
 		self.vb.slowCount = self.vb.slowCount + 1
+		warnSlow:Show(self.vb.slowCount)
 		if self.vb.slowCount == 1 then
 			if self:IsMythic() then--Updated Jan 25
 				timerTemporalOrbsCD:Start(8, 1)
@@ -383,6 +388,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.currentPhase = 3
 		self.vb.interruptCount = 0
 		self.vb.fastCount = self.vb.fastCount + 1
+		warnFast:Show(self.vb.fastCount)
 		if self.vb.fastCount == 1 then
 			if self:IsMythic() then--Updated Jan 25
 				timerTimeReleaseCD:Start(5, 1)
@@ -400,15 +406,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			end
 		elseif self.vb.fastCount == 2 then
-			if self:IsMythic() then--Updated Jan 25
+			if self:IsMythic() then--Updated Feb 15
 				timerTimeReleaseCD:Start(5, 1)
 				self:Schedule(5, delayedTimeRelease, self, 5, 2)--10
 				self:Schedule(10, delayedTimeRelease, self, 5, 3)--15
 				self:Schedule(15, delayedTimeRelease, self, 5, 4)--20
-				timerTemporalOrbsCD:Start(23, 1)
-				timerBigAddCD:Start(25, 1)
-				countdownBigAdd:Start(25)
-				timerPowerOverwhelmingCD:Start(36, 1)
+				timerBigAddCD:Start(23, 1)
+				countdownBigAdd:Start(23)
+				timerTemporalOrbsCD:Start(25, 1)
+				timerPowerOverwhelmingCD:Start(30, 1)
 			elseif self:IsHeroic() then--Updated Dec 2
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			elseif self:IsNormal() then--Normal confirmed
@@ -417,6 +423,23 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
 			end
 		elseif self.vb.fastCount == 3 then
+			if self:IsMythic() then--Updated Feb 15
+				timerTimeReleaseCD:Start(5, 1)
+				self:Schedule(5, delayedTimeRelease, self, 5, 2)--10
+				self:Schedule(10, delayedTimeRelease, self, 5, 3)--15
+				self:Schedule(15, delayedTimeRelease, self, 5, 4)--20
+				timerTemporalOrbsCD:Start(23, 1)
+				timerBigAddCD:Start(25, 1)
+				countdownBigAdd:Start(25)
+				timerPowerOverwhelmingCD:Start(30, 1)
+			elseif self:IsHeroic() then--Updated Dec 2
+				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
+			elseif self:IsNormal() then--Normal confirmed
+				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
+			else--LFR
+				DBM:AddMsg("There is no timer data going this far into the fight. Please submit transcriptor log to improve this mod")
+			end
+		elseif self.vb.fastCount == 4 then
 			if self:IsMythic() then--Updated Jan 25
 				timerTimeReleaseCD:Start(5, 1)
 				timerNextPhase:Start(8)
