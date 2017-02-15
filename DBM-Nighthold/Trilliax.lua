@@ -13,9 +13,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 206788 208924 207513 207502 215062 206641 214672",
 	"SPELL_CAST_SUCCESS 206560 206557 206559 206641",
-	"SPELL_AURA_APPLIED 211615 208910 208915 206641",
+	"SPELL_AURA_APPLIED 211615 208910 208915 206641 207327",
 	"SPELL_AURA_APPLIED_DOSE 206641",
-	"SPELL_AURA_REMOVED 208499 206560",
+	"SPELL_AURA_REMOVED 208499 206560 207327",
 	"SPELL_PERIODIC_DAMAGE 206488",
 	"SPELL_PERIODIC_MISSED 206488",
 	"UNIT_DIED",
@@ -95,6 +95,7 @@ local voiceTidyUp					= mod:NewVoice(207513)--mobsoon/watchstep
 
 mod:AddRangeFrameOption(12, 208506)
 mod:AddInfoFrameOption(214573, false)
+mod:AddNamePlateOption("NPAuraOnCleansing", 207327)
 
 mod.vb.ArcaneSlashCooldown = 10.5--10.5 now?, Verify it can never be 9 anymore
 mod.vb.toxicSliceCooldown = 26.5--Confirmed still true
@@ -128,6 +129,9 @@ function mod:OnCombatStart(delay)
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 		)
 	end
+	if self.Options.NPAuraOnCleansing then
+		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+	end
 end
 
 function mod:OnCombatEnd()
@@ -137,6 +141,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if self.Options.NPAuraOnCleansing then
+		DBM.Nameplate:Hide(true, nil, nil, nil, true)
 	end
 end
 
@@ -256,6 +263,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnArcanoSlash:Show(args.destName, amount)
 		end
+	elseif spellId == 207327 then
+		if self.Options.NPAuraOnCleansing and not _BombTexture then
+			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 7)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -270,6 +281,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 206560 then--Cleaner Mode (45 seconds)
 		timerToxicSliceCD:Stop("boss")
+	elseif spellId == 207327 then
+		if self.Options.NPAuraOnCleansing and not _BombTexture then
+			DBM.Nameplate:Hide(true, args.destGUID, spellId)
+		end
 	end
 end
 
