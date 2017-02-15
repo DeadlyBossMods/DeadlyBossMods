@@ -226,11 +226,6 @@ function mod:SPELL_CAST_START(args)
 			warnSlamSoon:Schedule(89, 1)
 		else
 			warnSlam:Show(self.vb.slamCount)
-			if self:IsMeleeDps() then
-				--Warn melee to run out of all of them
-				specWarnSlam:Show()
-				voiceSlam:Play("justrun")
-			end
 		end
 	elseif spellId == 205361 then
 		self.vb.orbCount = self.vb.orbCount + 1
