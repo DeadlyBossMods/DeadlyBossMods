@@ -72,7 +72,7 @@ local specWarnAblationExplosionOut	= mod:NewSpecialWarningMoveAway(209615, nil, 
 local yellAblatingExplosion			= mod:NewFadesYell(209973)
 --Time Layer 3
 local specWarnConflexiveBurst		= mod:NewSpecialWarningYou(209598, nil, nil, nil, 1, 2)
-local specWarnAblativePulse			= mod:NewSpecialWarningInterrupt(209971, "HasInterrupt", nil, nil, 1, 2)
+local specWarnAblativePulse			= mod:NewSpecialWarningInterrupt(209971, "Tank", nil, 2, 1, 2)
 
 --Base
 local timerLeaveNightwell			= mod:NewCastTimer(9.8, 208863, nil, nil, nil, 6)
@@ -127,7 +127,7 @@ local voiceEpochericOrb				= mod:NewVoice(210022, "-Tank", nil, 2)--161612(catch
 local voiceAblatingExplosion		= mod:NewVoice(209973)--runout/tauntboss
 --Time Layer 3
 local voiceConflexiveBurst			= mod:NewVoice(209598)--targetyou (review for better voice)
-local voiceAblativePulse			= mod:NewVoice(209971, "HasInterrupt")--kickcast
+local voiceAblativePulse			= mod:NewVoice(209971, "Tank", nil, 2)--kickcast
 
 mod:AddRangeFrameOption(8, 209973)
 mod:AddInfoFrameOption(209598)
