@@ -116,15 +116,15 @@ local timerSoulVortexCD				= mod:NewCDTimer(21, 206883, nil, nil, nil, 3)--34-36
 --Stage Two: The Ritual of Aman'thul
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerTransition				= mod:NewPhaseTimer(19)
-local timerHandofGuldanCD			= mod:NewCDCountTimer(58.5, 212258, nil, nil, nil, 1)
-local timerBondsofFelCD				= mod:NewNextTimer(50, 206222, nil, nil, nil, 3)
+local timerHandofGuldanCD			= mod:NewNextCountTimer(58.5, 212258, nil, nil, nil, 1)
+local timerBondsofFelCD				= mod:NewNextCountTimer(50, 206222, nil, nil, nil, 3)
 local timerEyeofGuldanCD			= mod:NewNextCountTimer(60, 209270, nil, nil, nil, 1)
 --Stage Three: The Master's Power
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
-local timerFlamesofSargerasCD		= mod:NewCDCountTimer(58.5, 221783, nil, nil, nil, 3)
-local timerStormOfDestroyerCD		= mod:NewCDCountTimer(16, 161121, nil, nil, nil, 3)
+local timerFlamesofSargerasCD		= mod:NewNextCountTimer(58.5, 221783, nil, nil, nil, 3)
+local timerStormOfDestroyerCD		= mod:NewNextCountTimer(16, 161121, nil, nil, nil, 3)
 local timerWellOfSoulsCD			= mod:NewCDTimer(16, 206939, nil, nil, nil, 5)
-local timerBlackHarvestCD			= mod:NewCDCountTimer(83, 206744, nil, nil, nil, 2)
+local timerBlackHarvestCD			= mod:NewNextCountTimer(83, 206744, nil, nil, nil, 2)
 
 --local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
 
@@ -166,6 +166,7 @@ mod.vb.blackHarvestCast = 0
 mod.vb.eyeCast = 0
 mod.vb.flamesSargCast = 0
 mod.vb.flamesTargets = 0
+mod.vb.bondsofFelCast = 0
 local felEffluxTimers = {11.0, 14.0, 18.5, 12.0, 12.2, 12.0}
 local felEffluxTimersEasy = {11.0, 14.0, 19.9, 15.6, 16.8, 15.9, 15.8}
 local handofGuldanTimers = {14.5, 48.9, 138.8}
@@ -195,11 +196,12 @@ function mod:OnCombatStart(delay)
 	self.vb.eyeCast = 0
 	self.vb.flamesSargCast = 0
 	self.vb.flamesTargets = 0
+	self.vb.bondsofFelCast = 0
 	table.wipe(bondsIcons)
 	table.wipe(flamesIcons)
 	if self:IsMythic() then
 		DBM:AddMsg("This mod still needs mythic refactoring to properly support new phase 3")
-		timerBondsofFelCD:Start(8.4-delay)
+		timerBondsofFelCD:Start(8.4-delay, 1)
 		timerDzorykxCD:Start(17-delay)
 		timerEyeofGuldanCD:Start(26.4-delay, 1)
 		timerLiquidHellfireCD:Start(36-delay, 1)
@@ -380,12 +382,13 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 206222 or spellId == 206221 then
+		self.vb.bondsofFelCast = self.vb.bondsofFelCast + 1
 		if self:IsMythic() then
-			timerBondsofFelCD:Start(40)
+			timerBondsofFelCD:Start(40, self.vb.bondsofFelCast+1)
 		elseif self:IsHeroic() then
-			timerBondsofFelCD:Start(44.4)
+			timerBondsofFelCD:Start(44.4, self.vb.bondsofFelCast+1)
 		else
-			timerBondsofFelCD:Start(50)
+			timerBondsofFelCD:Start(50, self.vb.bondsofFelCast+1)
 		end
 	elseif spellId == 221783 then
 		self.vb.flamesSargCast = self.vb.flamesSargCast + 1
@@ -685,7 +688,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerLiquidHellfireCD:Stop()
 				timerFelEffluxCD:Stop()
 				timerTransition:Start(19)
-				timerBondsofFelCD:Start(27.6)
+				timerBondsofFelCD:Start(27.6, 1)
 				if self:IsEasy() then
 					timerEyeofGuldanCD:Start(50.6, 1)
 					timerLiquidHellfireCD:Start(63.1, 1)
