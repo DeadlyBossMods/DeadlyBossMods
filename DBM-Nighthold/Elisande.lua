@@ -393,6 +393,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceDelphuricBeam:Play("targetyou")
 			yellDelphuricBeam:Yell()
 		end
+		if self.Options.NPAuraOnBeam then
+			DBM.Nameplate:Show(false, args.destName, spellId)
+		end
 		--TODO, phase 3 lines need exact location of the echo ( map coords )
 		if self.Options.HudMapOnDelphuricBeam and not self:HasMapRestrictions() then
 			self:Unschedule(checkPlayerDot)
@@ -432,9 +435,6 @@ function mod:SPELL_AURA_APPLIED(args)
 					DBMHudMap:AddEdge(1, 0, 0, 0.5, 4, nil, args.destName, EchoX, EchoY, nil, nil, 125)
 				end
 			end
-		end
-		if self.Options.NPAuraOnBeam then
-			DBM.Nameplate:Show(false, args.destName, spellId)
 		end
 	elseif spellId == 209973 then
 		warnAblatingExplosion:Show(args.destName)
