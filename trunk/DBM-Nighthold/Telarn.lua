@@ -146,7 +146,7 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	if self:IsMythic() then
 		self:SetCreatureID(109038, 109040, 109041)		
-		self.vb.globalTimer = 64--Needs updating
+		self.vb.globalTimer = 64
 		timerSolarCollapseCD:Start(5-delay)
 		timerParasiticFetterCD:Start(16-delay)--16-18
 		countdownParasiticFetter:Start(16-delay)
