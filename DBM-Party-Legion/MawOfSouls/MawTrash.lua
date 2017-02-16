@@ -12,10 +12,10 @@ mod:RegisterEvents(
 )
 
 local specWarnScream			= mod:NewSpecialWarningInterrupt(198405, "HasInterrupt", nil, nil, 1, 2)
-local specWarnDefiantStrike		= mod:NewSpecialWarningDodge(195031, nil, nil, nil, 2, 2)
+local specWarnDefiantStrike		= mod:NewSpecialWarningDodge(195031, nil, nil, nil, 1, 2)
 
 local voiceScream				= mod:NewVoice(198405, "HasInterrupt")--kickcast
-local voiceDefiantStrike		= mod:NewVoice(195036)--chargemove (eh, kind of a charge?)
+local voiceDefiantStrike		= mod:NewVoice(195031)--chargemove (eh, kind of a charge?)
 
 mod:RemoveOption("HealthFrame")
 
