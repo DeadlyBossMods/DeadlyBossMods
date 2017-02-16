@@ -6,7 +6,7 @@ mod:SetCreatureID(104415)--104731 (Depleted Time Particle). 104676 (Waning Time 
 mod:SetEncounterID(1865)
 mod:SetZone()
 --mod:SetUsedIcons(5, 4, 3, 2, 1)--sometimes it was 5 targets, sometimes it was whole raid. even post nerf. have to see
-mod:SetHotfixNoticeRev(15723)
+mod:SetHotfixNoticeRev(15910)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
