@@ -3591,22 +3591,22 @@ do
 			--Surely a less shitty way of checking "this is a BC dungeon"?
 			if (LastInstanceMapID == 540 or LastInstanceMapID == 558 or LastInstanceMapID == 556 or LastInstanceMapID == 555 or LastInstanceMapID == 542 or LastInstanceMapID == 546 or LastInstanceMapID == 545 or LastInstanceMapID == 547 or LastInstanceMapID == 553 or LastInstanceMapID == 554 or LastInstanceMapID == 552 or LastInstanceMapID == 557 or LastInstanceMapID == 269 or LastInstanceMapID == 560 or LastInstanceMapID == 543 or LastInstanceMapID == 585) and not self.Options.BCTWMessageShown and not GetAddOnInfo("DBM-Party-BC") then
 				self.Options.BCTWMessageShown = true
-				self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-Party-BC"))
+				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Party-BC"))
 			--Surely a less shitty way of checking "this is a wrath dungeon"?
 			elseif (LastInstanceMapID == 619 or LastInstanceMapID == 601 or LastInstanceMapID == 595 or LastInstanceMapID == 600 or LastInstanceMapID == 604 or LastInstanceMapID == 602 or LastInstanceMapID == 599 or LastInstanceMapID == 576 or LastInstanceMapID == 578 or LastInstanceMapID == 574 or LastInstanceMapID == 575 or LastInstanceMapID == 608 or LastInstanceMapID == 658 or LastInstanceMapID == 632 or LastInstanceMapID == 668 or LastInstanceMapID == 650) and not self.Options.WOTLKTWMessageShown and not GetAddOnInfo("DBM-Party-WotLK") then
 				self.Options.WOTLKTWMessageShown = true
-				self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-Party-WotLK"))
+				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Party-WotLK"))
 			elseif (LastInstanceMapID == 755 or LastInstanceMapID == 645 or LastInstanceMapID == 36 or LastInstanceMapID == 670 or LastInstanceMapID == 644 or LastInstanceMapID == 33 or LastInstanceMapID == 643 or LastInstanceMapID == 725 or LastInstanceMapID == 657 or LastInstanceMapID == 309 or LastInstanceMapID == 859 or LastInstanceMapID == 568 or LastInstanceMapID == 938 or LastInstanceMapID == 940 or LastInstanceMapID == 939) and not self.Options.CATATWMessageShown and not GetAddOnInfo("DBM-Party-Cataclysm") then
 				self.Options.CATATWMessageShown = true-- 
-				self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-Party-Cataclysm"))
+				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Party-Cataclysm"))
 			end
 		else
 			if LastInstanceMapID == 1148 and not self.Options.PGMessageShown and not GetAddOnInfo("DBM-ProvingGrounds") then
 				self.Options.PGMessageShown = true
-				self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-ProvingGrounds"))
+				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-ProvingGrounds"))
 			elseif LastInstanceMapID == 409 and not self.Options.MCMessageShown and not GetAddOnInfo("DBM-MC") then
 				self.Options.MCMessageShown = true
-				self:AddMsg(DBM_CORE_MOD_AVAILABLE:format("DBM-MC"))
+				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-MC"))
 			end
 		end
 	end
