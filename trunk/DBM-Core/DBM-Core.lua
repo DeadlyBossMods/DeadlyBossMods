@@ -420,6 +420,7 @@ local wowVersionString, _, _, wowTOC = GetBuildInfo()
 local dbmToc = 0
 local UpdateChestTimer
 local breakTimerStart
+local AddMsg = DBM.AddMsg
 
 local fakeBWVersion, fakeBWHash = 44, "b4e0149"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
@@ -1120,9 +1121,9 @@ do
 		end
 		if #disabledMods > 0 then
 			if #disabledMods == 1 then
-				self:AddMsg(DBM_CORE_LOAD_MOD_DISABLED:format(disabledMods[1]))
+				AddMsg(DBM_CORE_LOAD_MOD_DISABLED:format(disabledMods[1]))
 			else
-				self:AddMsg(DBM_CORE_LOAD_MOD_DISABLED_PLURAL:format(tconcat(disabledMods, ", ")))
+				AddMsg(DBM_CORE_LOAD_MOD_DISABLED_PLURAL:format(tconcat(disabledMods, ", ")))
 			end
 		end
 	end

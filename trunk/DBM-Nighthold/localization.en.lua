@@ -119,3 +119,8 @@ L = DBM:GetModLocalization("NightholdTrash")
 L:SetGeneralLocalization({
 	name =	"Nighthold Trash"
 })
+
+L:SetMiscLocalization({
+	mythicPhase3		= "Time to return the demon hunter's soul to his body... and deny the Legion's master a host!"
+})
+
