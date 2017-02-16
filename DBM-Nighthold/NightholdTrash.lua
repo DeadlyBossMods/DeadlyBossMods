@@ -9,9 +9,10 @@ mod.isTrashMod = true
 mod:RegisterEvents(
 	"SPELL_CAST_START 221164 224510 224246 231005",
 	"SPELL_CAST_SUCCESS 225389",
-	"SPELL_AURA_APPLIED 221344 222111 224572 225390 222719 224560 204744 224978 225856 223655 224982 225105"
+	"SPELL_AURA_APPLIED 221344 222111 224572 225390 224632 224560 204744 224978 225856 223655 224982 225105"
 )
 
+--TODO, add arcane blast when i remember to log/get spellID
 local warnAnnihilatingOrb			= mod:NewTargetAnnounce(221344, 3)
 local warnCelestialBrand			= mod:NewTargetAnnounce(224560, 2)
 local warnArcaneRelease				= mod:NewTargetAnnounce(225105, 2)
@@ -118,7 +119,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 225856 and args:IsPlayer() then
 		specWarnPoisonBrambles:Show()
 		voicePoisonBrambles:Play("runaway")
-	elseif spellId == 222719 then
+	elseif spellId == 224632 then
 		specWarnHeavenlyCrash:Show(args.destName)
 		voiceHeavenlyCrash:Play("gathershare")
 		if args:IsPlayer() then
