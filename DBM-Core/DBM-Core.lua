@@ -420,7 +420,7 @@ local wowVersionString, _, _, wowTOC = GetBuildInfo()
 local dbmToc = 0
 local UpdateChestTimer
 local breakTimerStart
-local AddMsg = DBM.AddMsg
+local AddMsg
 
 local fakeBWVersion, fakeBWHash = 45, "2fb6605"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
@@ -6631,6 +6631,7 @@ function DBM:AddMsg(text, prefix)
 		frame:AddMessage(text, 0.41, 0.8, 0.94)
 	end
 end
+AddMsg = DBM.AddMsg
 
 function DBM:Debug(text, level)
 	if not self.Options or not self.Options.DebugMode then return end
