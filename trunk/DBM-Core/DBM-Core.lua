@@ -1065,12 +1065,12 @@ do
 		if activeVP ~= "None" then
 			if not self.VoiceVersions[activeVP] or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0) then--A voice pack is selected that does not belong
 				self.Options.ChosenVoicePack = "None"--Set ChosenVoicePack back to None
-				self:AddMsg(DBM_CORE_VOICE_MISSING)
+				AddMsg(DBM_CORE_VOICE_MISSING)
 			end
 		else
 			if #self.Voices > 1 then
 				--At least one voice pack installed but activeVP set to "None"
-				self:AddMsg(DBM_CORE_VOICE_DISABLED)
+				AddMsg(DBM_CORE_VOICE_DISABLED)
 			end
 		end
 		--Check if any of countdown sounds are using missing voice pack
@@ -1095,15 +1095,15 @@ do
 			end
 		end
 		if not found1 then
-			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(1))
+			AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(1))
 			self.Options.CountdownVoice = self.DefaultOptions.CountdownVoice
 		end
 		if not found2 then
-			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(2))
+			AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(2))
 			self.Options.CountdownVoice2 = self.DefaultOptions.CountdownVoice2
 		end
 		if not found3 then
-			self:AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(3))
+			AddMsg(DBM_CORE_VOICE_COUNT_MISSING:format(3))
 			self.Options.CountdownVoice3v2 = self.DefaultOptions.CountdownVoice3v2
 		end
 		self:BuildVoiceCountdownCache()
@@ -1148,17 +1148,17 @@ do
 			loadOptions(self)
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 				self:Disable(true)
-				C_TimerAfter(15, function() self:AddMsg(DBM_CORE_VEM) end)
+				C_TimerAfter(15, function() AddMsg(DBM_CORE_VEM) end)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
 				self:Disable(true)
-				C_TimerAfter(15, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
+				C_TimerAfter(15, function() AddMsg(DBM_CORE_3RDPROFILES) end)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
 				self:Disable(true)
-				C_TimerAfter(15, function() self:AddMsg(DBM_CORE_DPMCORE) end)
+				C_TimerAfter(15, function() AddMsg(DBM_CORE_DPMCORE) end)
 				return
 			end
 			self.Bars:LoadOptions("DBM")
@@ -1178,7 +1178,7 @@ do
 				if GetAddOnMetadata(i, "X-DBM-Mod") then
 					if enabled ~= 0 then
 						if checkEntry(bannedMods, addonName) then
-							self:AddMsg("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
+							AddMsg("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 						elseif not testBuild and minToc and minToc > wowTOC then
 							self:Debug(i.." not loaded because mod requires minimum toc of "..minToc)
 						else
@@ -1232,7 +1232,7 @@ do
 				end
 				if GetAddOnMetadata(i, "X-DBM-Voice") and enabled ~= 0 then
 					if checkEntry(bannedMods, addonName) then
-						self:AddMsg("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
+						AddMsg("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 					else
 						local voiceValue = GetAddOnMetadata(i, "X-DBM-Voice-ShortName")
 						local voiceVersion = tonumber(GetAddOnMetadata(i, "X-DBM-Voice-Version") or 0)
