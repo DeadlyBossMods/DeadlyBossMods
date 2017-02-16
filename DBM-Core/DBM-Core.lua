@@ -422,7 +422,7 @@ local UpdateChestTimer
 local breakTimerStart
 local AddMsg = DBM.AddMsg
 
-local fakeBWVersion, fakeBWHash = 44, "b4e0149"
+local fakeBWVersion, fakeBWHash = 45, "2fb6605"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
@@ -1148,20 +1148,17 @@ do
 			loadOptions(self)
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 				self:Disable(true)
-				C_TimerAfter(10, function() self:AddMsg(DBM_CORE_VEM) end)
-				C_TimerAfter(20, function() self:AddMsg(DBM_CORE_VEM) end)
+				C_TimerAfter(15, function() self:AddMsg(DBM_CORE_VEM) end)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DBM-Profiles") >= 1 then
 				self:Disable(true)
-				C_TimerAfter(10, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
-				C_TimerAfter(20, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
+				C_TimerAfter(15, function() self:AddMsg(DBM_CORE_3RDPROFILES) end)
 				return
 			end
 			if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
 				self:Disable(true)
-				C_TimerAfter(10, function() self:AddMsg(DBM_CORE_DPMCORE) end)
-				C_TimerAfter(20, function() self:AddMsg(DBM_CORE_DPMCORE) end)
+				C_TimerAfter(15, function() self:AddMsg(DBM_CORE_DPMCORE) end)
 				return
 			end
 			self.Bars:LoadOptions("DBM")
