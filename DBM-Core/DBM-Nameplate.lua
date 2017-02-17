@@ -26,7 +26,7 @@ do
     local function AuraFrame_CreateIcon(frame)
         local icon = frame.parent:CreateTexture()
         icon:SetParent(UIParent)
-        icon:SetSize(48,48)
+        icon:SetSize(40,40)
         icon:Hide()
 
         tinsert(frame.icons,icon)
