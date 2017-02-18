@@ -130,7 +130,7 @@ function mod:OnCombatStart(delay)
 		)
 	end
 	if self.Options.NPAuraOnCleansing then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+		DBM:FireEvent("BossMod_EnableFriendlyNameplates", true)--hostileOnly
 	end
 end
 
