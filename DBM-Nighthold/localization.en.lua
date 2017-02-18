@@ -5,10 +5,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1706)
 
-L:SetMiscLocalization({
-	NoDebuff	= "No %s"
-})
-
 ---------------------------
 -- Chronomatic Anomaly --
 ---------------------------
@@ -111,6 +107,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1737)
 
+L:SetMiscLocalization({
+	mythicPhase3		= "Time to return the demon hunter's soul to his body... and deny the Legion's master a host!"
+})
+
 -------------
 --  Trash  --
 -------------
@@ -119,8 +119,3 @@ L = DBM:GetModLocalization("NightholdTrash")
 L:SetGeneralLocalization({
 	name =	"Nighthold Trash"
 })
-
-L:SetMiscLocalization({
-	mythicPhase3		= "Time to return the demon hunter's soul to his body... and deny the Legion's master a host!"
-})
-

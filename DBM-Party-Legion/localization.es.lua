@@ -301,7 +301,22 @@ L:SetMiscLocalization({
 	Pouch1			= "Dicen que la faltriquera del espía está rematada con hilos de lujo.",
 	Pouch2			= "He oído que el espía siempre lleva una faltriquera mágica.",
 	Pouch3			= "Un amigo me ha dicho que al espía le encanta el oro y que lleva una faltriquera llena.",
-	Pouch4			= "Dicen que la faltriquera del espía está llena de oro para demostrar extravagancia."
+	Pouch4			= "Dicen que la faltriquera del espía está llena de oro para demostrar extravagancia.",
+	--
+	Gloves		= "guantes",
+	NoGloves	= "sin guantes",
+	Cape		= "capa",
+	Nocape		= "sin capa",
+	LightVest	= "jubón claro",
+	DarkVest	= "jubón oscuro",
+	Female		= "mujer",
+	Male		= "hombre",
+	ShortSleeve = "manga corta",
+	LongSleeve	= "manga larga",
+	Potions		= "pociones",
+	NoPotions	= "sin pociones",
+	Book		= "libro",
+	Pouch		= "faltriquera"
 })
 else--esMX
 L:SetMiscLocalization({
@@ -351,7 +366,22 @@ L:SetMiscLocalization({
 	Pouch1			= "Escuché que la bolsa del cinturón del espía tiene un bordado de lujo.",
 	Pouch2			= "Oí que la bolsa del cinturón del espía está llena de oro para demostrar su extravagancia.",
 	Pouch3			= "Oí que el espía siempre lleva consigo una bolsa mágica.",
-	Pouch4			= "Un amigo dijo que al espía le encanta el oro y un bolso lleno de él."
+	Pouch4			= "Un amigo dijo que al espía le encanta el oro y un bolso lleno de él.",
+		--
+	Gloves		= "guantes",
+	NoGloves	= "sin guantes",
+	Cape		= "capa",
+	Nocape		= "sin capa",
+	LightVest	= "jubón claro",
+	DarkVest	= "jubón oscuro",
+	Female		= "mujer",
+	Male		= "hombre",
+	ShortSleeve = "manga corta",
+	LongSleeve	= "manga larga",
+	Potions		= "pociones",
+	NoPotions	= "sin pociones",
+	Book		= "libro",
+	Pouch		= "bolsa"
 })
 end
 
@@ -562,3 +592,40 @@ L = DBM:GetModLocalization("RTKTrash")
 L:SetGeneralLocalization({
 	name =	"Enemigos menores"
 })
+
+L:SetMiscLocalization({
+	speedRun		=	"La brisa fría de una presencia oscura colma el aire..."
+})
+
+---------------------------------
+-- Catedral de la Noche Eterna --
+---------------------------------
+-------------
+-- Agronox --
+-------------
+L= DBM:GetModLocalization(1905)
+
+-------------------------------
+-- Dientizador el Desdeñoso  --
+-------------------------------
+L= DBM:GetModLocalization(1906)
+
+--------------
+-- Domatrax --
+--------------
+L= DBM:GetModLocalization(1904)
+
+------------------
+-- Mephistroth  --
+------------------
+L= DBM:GetModLocalization(1878)
+
+----------------------
+-- Enemigos menores --
+----------------------
+L = DBM:GetModLocalization("CoENTrash")
+
+L:SetGeneralLocalization({
+	name =	"Enemigos menores"
+})
+
