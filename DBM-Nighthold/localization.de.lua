@@ -6,19 +6,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1706)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-	NoDebuff	= "Kein %s"
-})
-
 ---------------------------
 -- Chronomatic Anomaly --
 ---------------------------
