@@ -14,8 +14,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 213853 213567 213564 213852 212735 213275 213390 213083 212492 230504",
 	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587 230951 213760 213808",
 	"SPELL_AURA_REMOVED 213569 212531 213148 230951 212587",
-	"SPELL_PERIODIC_DAMAGE 212736 213278 213504",
-	"SPELL_PERIODIC_MISSED 212736 213278 213504",
+	"SPELL_PERIODIC_DAMAGE 212736 213278 213504 230414",
+	"SPELL_PERIODIC_MISSED 212736 213278 213504 230414",
 	"SPELL_DAMAGE 213520",
 	"SPELL_MISSED 213520",
 	"UNIT_AURA player",
@@ -29,7 +29,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 213853 or ability.id = 213567 or ability.id = 213564 or ability.id = 213852 or ability.id = 212735 or ability.id = 213275 or ability.id = 213390 or ability.id = 213083 or ability.id = 212492 or ability.id = 230951 or ability.id = 230504) and type = "begincast" or
 (ability.id = 213864 or ability.id = 216389 or ability.id = 213867 or ability.id = 213869) and type = "applybuff" or
 (ability.id = 212531 or ability.id = 213148) and type = "applydebuff" or
-ability.id = 230951 and type = "removebuff"
+ability.id = 230951 and type = "removebuff" or ability.id = 230414
 --]]
 --Phases
 local warnFrostPhase				= mod:NewSpellAnnounce(213864, 2)
@@ -62,6 +62,7 @@ local specWarnArcaneDetonate		= mod:NewSpecialWarningDodge(213390, nil, nil, nil
 local specWarnPoolOfFrost			= mod:NewSpecialWarningMove(212736, nil, nil, nil, 1, 2)
 local specWarnBurningGround			= mod:NewSpecialWarningMove(213278, nil, nil, nil, 1, 2)
 local specWarnArcaneFog				= mod:NewSpecialWarningMove(213504, nil, nil, nil, 1, 2)--Fog and orbs combined for simplicity
+local specWarnFelStomp				= mod:NewSpecialWarningMove(230414, nil, nil, nil, 1, 2)--Mythic
 --Animates
 local specWarnAnimateFrost			= mod:NewSpecialWarningSwitch(213853, "-Healer", nil, nil, 1, 2)--Currently spell ID does not contain "animate" in name, which makes warning confusing. Hopefully blizzard fixes
 local specWarnAnimateFire			= mod:NewSpecialWarningSwitch(213567, "-Healer", nil, nil, 1, 2)
@@ -96,6 +97,7 @@ mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerFelSoulCD				= mod:NewNextTimer(15, 230951, nil, nil, nil, 1)
 local timerFelSoul					= mod:NewBuffActiveTimer(45, 230951, nil, nil, nil, 6)
 local timerDecimateCD				= mod:NewCDTimer(17, 230504, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--17-20 (Tank timer by default, holy/ret/etc that's doing taunting will have to enable by default)
+local timerFelStompCD				= mod:NewNextTimer(25, 230414, nil, nil, nil, 3)
 
 local berserkTimer					= mod:NewBerserkTimer(600)--480
 
@@ -118,6 +120,7 @@ local voiceArcaneDetonate			= mod:NewVoice(213390)--watchorb
 local voicePoolOfFrost				= mod:NewVoice(212736)--runaway
 local voiceBurningGround			= mod:NewVoice(213278)--runaway
 local voiceArcaneFog				= mod:NewVoice(213504)--runaway
+local voiceFelStomp					= mod:NewVoice(230414)--runaway
 --Animates
 local voiceAnimateFrost				= mod:NewVoice(213853)--mobsoon
 local voiceAnimateFire				= mod:NewVoice(213567)--mobsoon
@@ -334,6 +337,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsMythic() then
 			timerFelSoulCD:Start(15)
 			timerSearingBrandCD:Start(17.8)
+			timerFelStompCD:Start(25)
 			timerSearingBrandRepCD:Start(27)
 			self:Schedule(37, findSearingMark, self)--Schedule markers to go out 3 seconds before detonate cast, making a 6 total seconds to position instead of 3
 			timerSearingBrandDetonateCD:Start(40)
@@ -464,6 +468,9 @@ do
 		elseif spellId == 213504 and destGUID == playerGUID and self:AntiSpam(2, 3) then
 			specWarnArcaneFog:Show()
 			voiceArcaneFog:Play("runaway")
+		elseif spellId == 230414 and destGUID == playerGUID and self:AntiSpam(2, 4) then
+			specWarnFelStomp:Show()
+			voiceFelStomp:Play("runaway")
 		end
 	end
 	mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
