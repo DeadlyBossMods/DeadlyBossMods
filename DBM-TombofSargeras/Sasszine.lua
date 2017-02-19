@@ -5,7 +5,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(115767)--116328 Vellius, 115795 Abyss Stalker, 116329/116843 Sarukel
 mod:SetEncounterID(2037)
 mod:SetZone()
---mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(15581)
 --mod.respawnTime = 29
@@ -13,8 +12,8 @@ mod:SetUsedIcons(1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 230273 232722 230384 232746 232757 232827",
-	"SPELL_CAST_SUCCES 230139 230227",
+	"SPELL_CAST_START 230273 232722 230384 232746 232757 232827 232756 230358",
+	"SPELL_CAST_SUCCES 230201 232745",
 	"SPELL_AURA_APPLIED 239375 239362 230139 230201 230362 234459 230920 234621 232916",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 239375 239362 230139",
@@ -39,6 +38,13 @@ mod:RegisterEventsInCombat(
 --TODO, timer for Devouring Maw, and other first casts when adds spawn.
 --TODO, call Vellius priority? kill target? avoid target?
 --TODO, phase detections
+--TODO, Summon Ossunet timers (actually all add timers) will need a lot of work once the phasing is figured out. Ossunet timers extra needed because they seem sequenced (and all over the place)
+--[[
+(ability.id = 230273 or ability.id = 232722 or ability.id = 230384 or ability.id = 232746 or ability.id = 232757 or ability.id = 232827 or ability.id = 232756 or ability.id = 230358) and type = "begincast" or
+(ability.id = 230201 or ability.id = 232745) and type = "cast" or
+(target.id = 116329 or target.id = 116843 or target.id = 116328) and type = "death" or
+(ability.id = 239375 or ability.id = 239362 or ability.id = 230139) and type = "applydebuff"
+--]]
 --NOTE: 3 stage fight but all stage 3 stuff is from stage 1 and 2 (combined) so there are no new abilities to list for stage 3 HERE
 --General Stuff
 local warnHydraShot					= mod:NewTargetAnnounce(230139, 4)
@@ -48,6 +54,7 @@ local warnSlicingTornado			= mod:NewSpellAnnounce(232722, 2)
 local warnThunderingShock			= mod:NewTargetAnnounce(230362, 2, nil, false)
 local warnConsumingHunger			= mod:NewTargetAnnounce(230920, 2)
 --Stage Two: Terrors of the Deep
+local warnSummonOssunet				= mod:NewSpellAnnounce(232756, 2)
 local warnBefoulingInk				= mod:NewTargetAnnounce(232916, 2, nil, false)--Optional warning if you want to know who's carrying ink
 
 --General Stuff
@@ -66,16 +73,17 @@ local specWarnCallVellius			= mod:NewSpecialWarningSpell(232757, "-Healer", nil,
 local specWarnCrashingWave			= mod:NewSpecialWarningDodge(232827, nil, nil, nil, 3, 2)
 
 --General Stuff
-local timerHydraShotCD				= mod:NewAITimer(31, 230139, nil, nil, nil, 3)
-local timerBurdenofPainCD			= mod:NewAITimer(31, 230201, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerHydraShotCD				= mod:NewCDTimer(40, 230139, nil, nil, nil, 3)
+local timerBurdenofPainCD			= mod:NewCDTimer(28, 230201, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--28-32
 local timerFromtheAbyssCD			= mod:NewAITimer(31, 230227, nil, nil, nil, 1)
 --Stage One: Ten Thousand Fangs
-local timerSlicngTornadoCD			= mod:NewAITimer(31, 232722, nil, nil, nil, 3)
-local timerConsumingHungerCD		= mod:NewAITimer(31, 230920, nil, nil, nil, 1)
+local timerSlicingTornadoCD			= mod:NewCDTimer(45, 232722, nil, nil, nil, 3)--45-54 (needs correcting)
+local timerConsumingHungerCD		= mod:NewCDTimer(32, 230920, nil, nil, nil, 1)
+local timerThunderingShockCD		= mod:NewCDTimer(33, 230358, nil, nil, nil, 1)
 --Stage Two: Terrors of the Deep
-local timerBeckonSarukelCD			= mod:NewAITimer(31, 232746, nil, nil, nil, 1)
-local timerCallVelliusCD			= mod:NewAITimer(31, 232757, nil, nil, nil, 1)
-local timerCrashingWaveCD			= mod:NewAITimer(31, 232827, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerBeckonSarukelCD			= mod:NewCDTimer(42, 232746, nil, nil, nil, 1)
+local timerCallVelliusCD			= mod:NewCDTimer(42, 232757, nil, nil, nil, 1)
+--local timerCrashingWaveCD			= mod:NewAITimer(31, 232827, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
@@ -101,11 +109,16 @@ mod:AddSetIconOption("SetIconOnHydraShot", 230139, true)
 
 local thunderingShock = GetSpellInfo(230358)
 mod.vb.phase = 1
+mod.vb.tempIgnore = false
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	timerHydraShotCD:Start(1-delay)
-	timerBurdenofPainCD:Start(1-delay)
+	self.vb.tempIgnore = false
+	timerThunderingShockCD:Start(10-delay)
+	timerBurdenofPainCD:Start(18-delay)
+	timerConsumingHungerCD:Start(20-delay)
+	timerHydraShotCD:Start(25.5-delay)
+	timerSlicingTornadoCD:Start(30-delay)
 	timerFromtheAbyssCD:Start(1-delay)
 end
 
@@ -124,33 +137,45 @@ function mod:SPELL_CAST_START(args)
 		warnDarkDepths:Show()
 	elseif spellId == 232722 then
 		warnSlicingTornado:Show()
-		timerSlicngTornadoCD:Start()
+		timerSlicingTornadoCD:Start()
 	elseif spellId == 230384 then--Consuming Hunter Cast?
 		timerConsumingHungerCD:Start()
 	elseif spellId == 232746 then
 		specWarnBeckonSarukel:Show()
-		timerBeckonSarukelCD:Start()
+		--timerBeckonSarukelCD:Start()
 	elseif spellId == 232757 then
+		self.vb.tempIgnore = false
 		specWarnCallVellius:Show()
 		voiceCallVellius:Play("bigmob")
-		timerCallVelliusCD:Start()
 	elseif spellId == 232827 then
 		specWarnCrashingWave:Show()
 		voiceCrashingWave:Play("chargemove")
-		timerCrashingWaveCD:Start(nil, args.sourceGUID)
+		--timerCrashingWaveCD:Start(nil, args.sourceGUID)
+	elseif spellId == 232756 then
+		warnSummonOssunet:Show()
+		--Temp, move this shit to real phase trigger later
+		timerThunderingShockCD:Stop()
+		timerSlicingTornadoCD:Stop()
+		timerConsumingHungerCD:Stop()
+		--TODO, this makes sense except for one pull, which hopefully was a fluke?
+		--https://www.warcraftlogs.com/reports/W7kpN3DaLAgjXPK4#fight=28&view=events&pins=2%24Off%24%23244F4B%24expression%24(ability.id%20%3D%20230273%20or%20ability.id%20%3D%20232722%20or%20ability.id%20%3D%20230384%20or%20ability.id%20%3D%20232746%20or%20ability.id%20%3D%20232757%20or%20ability.id%20%3D%20232827%20or%20ability.id%20%3D%20232756%20or%20ability.id%20%3D%20230358)%20and%20type%20%3D%20%22begincast%22%20or%0A(ability.id%20%3D%20230201%20or%20ability.id%20%3D%20232745)%20and%20type%20%3D%20%22cast%22%20or%0A(target.id%20%3D%20116329%20or%20target.id%20%3D%20116843%20or%20target.id%20%3D%20116328)%20and%20type%20%3D%20%22death%22%20or%0A(ability.id%20%3D%20239375%20or%20ability.id%20%3D%20239362%20or%20ability.id%20%3D%20230139)%20and%20type%20%3D%20%22applydebuff%22
+		if not self.vb.tempIgnore then--For time being, don't start these timers if boss summons two Ossunets before Vellius
+			timerCallVelliusCD:Start(19.4)
+			timerBeckonSarukelCD:Start(29.1)
+		end
+		self.vb.tempIgnore = true
+	elseif spellId == 230358 then
+		timerThunderingShockCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 230139 then
-		timerHydraShotCD:Start()
-	elseif spellId == 230201 then
+	if spellId == 230201 then
 		timerBurdenofPainCD:Start()
-	elseif spellId == 230227 and self:AntiSpam(3, 1) then--Or SPELL_SUMMON
-		specWarnFromtheAbyss:Show()
-		voiceFromtheAbyss:Play("killmob")
-		timerFromtheAbyssCD:Start()
+	elseif spellId == 232745 then
+		specWarnDevouringMaw:Show()
+		voiceDevouringMaw:Play("inktosarukel")
 	end
 end
 
@@ -159,6 +184,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 239375 or spellId == 239362 then--Carring Bufferfish
 
 	elseif spellId == 230139 then
+		timerHydraShotCD:Start()
 		if args:IsPlayer() then
 			specWarnHydraShot:Show()
 			voiceHydraShot:Play("targetyou")
@@ -192,9 +218,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnConsumingHunger:Show(thunderingShock)
 			voiceConsumingHunger:Play("movetojelly")
 		end
-	elseif spellId == 234621 then
-		specWarnDevouringMaw:Show()
-		voiceDevouringMaw:Play("inktosarukel")
 	elseif spellId == 232916 then--Person is carrying ink
 		warnBefoulingInk:CombinedShow(1, args.destName)
 	end
@@ -219,7 +242,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 116329 or cid == 116843 then--Sarukel (probably 2 Ids for phase 2 and phase 3 versions?)
 
 	elseif cid == 116328 then--Vellius
-		timerCrashingWaveCD:Stop(args.destGUID)
+		--timerCrashingWaveCD:Stop(args.destGUID)
 	end
 end
 --[[
@@ -237,11 +260,14 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 227503 then
-
+	if spellId == 230227 then
+		specWarnFromtheAbyss:Show()
+		voiceFromtheAbyss:Play("killmob")
+		timerFromtheAbyssCD:Start()
 	end
 end
---]]
+
