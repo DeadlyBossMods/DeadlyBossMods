@@ -5,7 +5,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(115844)
 mod:SetEncounterID(2032)
 mod:SetZone()
---mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(15581)
 mod.respawnTime = 14
@@ -48,7 +47,7 @@ local specWarnBurningArmorTaunt			= mod:NewSpecialWarningTaunt(231363, nil, nil,
 local specWarnRainofBrimstone			= mod:NewSpecialWarningMoveTo(238587, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(238587), nil, 1, 6)
 
 local timerInfernalSpikeCD				= mod:NewCDTimer(30, 233055, nil, nil, nil, 3)
-local timerInfernalBurningCD			= mod:NewNextTimer(60, 233062, nil, nil, nil, 2)
+local timerInfernalBurningCD			= mod:NewNextTimer(59.9, 233062, nil, nil, nil, 2)
 local timerShatteringStarCD				= mod:NewNextCountTimer(31, 233272, nil, nil, nil, 3)
 local timerShatteringStar				= mod:NewBuffFadesTimer(6, 233272, nil, nil, nil, 5)
 local timerCrashingCometCD				= mod:NewCDTimer(14, 232249, nil, nil, nil, 3)--Needs more work, i think a sequence more accurate

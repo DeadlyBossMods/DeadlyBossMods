@@ -143,7 +143,7 @@ function mod:SPELL_CAST_START(args)
 		warnFrostyDischarge:Show()
 		self.vb.rageCount = 0
 		timerCommandingRoarCD:Start(19.8)--Assumed, but likely
-		timerUncheckedRageCD:Start(22, 1)
+		timerUncheckedRageCD:Start(22, 1)--22-23.5
 		countdownUncheckedRage:Start(22)
 	elseif spellId == 231904 then
 		timerTendWoundsCD:Start(nil, args.sourceGUID)
