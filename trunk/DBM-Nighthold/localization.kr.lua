@@ -108,6 +108,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1737)
 
+L:SetMiscLocalization({
+	mythicPhase3		= "악마사냥꾼의 영혼을 육신으로 돌려보내야 할 때요... 군단의 주인을 거부해야 하오!"
+})
+
 -------------
 --  Trash  --
 -------------
