@@ -50,7 +50,8 @@ local warnAnguishedSpirits			= mod:NewSpellAnnounce(208545, 2)
 --Stage Two: The Ritual of Aman'thul
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 --local warnEmpLiquidHellfire			= mod:NewTargetAnnounce(206220, 3)
-local warnBondsofFel				= mod:NewTargetAnnounce(206222, 4)
+local warnBondsofFel				= mod:NewTargetAnnounce(206222, 3)
+local warnEmpBondsofFel				= mod:NewTargetAnnounce(209086, 4)
 --local warnBurningClaws				= mod:NewTargetAnnounce(208903, 3, nil, "Tank")
 --local warnCharredLacerations		= mod:NewStackAnnounce(211162, 2, nil, "Tank")
 --Stage Three: The Master's Power
@@ -139,6 +140,7 @@ local timerStormOfDestroyerCD		= mod:NewNextCountTimer(16, 161121, nil, nil, nil
 local timerWellOfSoulsCD			= mod:NewCDTimer(16, 206939, nil, nil, nil, 5)
 local timerBlackHarvestCD			= mod:NewNextCountTimer(83, 206744, nil, nil, nil, 2)
 --Mythic Only
+mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerWilloftheDemonWithinCD	= mod:NewCDTimer(39, 211439, nil, nil, nil, 2)
 local timerWilloftheDemonWithin		= mod:NewCastTimer(4, 211439, nil, nil, nil, 2)
 local timerParasiticWoundCD			= mod:NewCDTimer(36, 206847, nil, nil, nil, 3)
@@ -149,6 +151,7 @@ local timerVisionsofDarkTitanCD		= mod:NewCDCountTimer(9, 227008, nil, nil, nil,
 local timerFlameCrashCD				= mod:NewCDCountTimer(20, 227071, nil, nil, nil, 3)
 local timerSummonNightorbCD			= mod:NewCDCountTimer(10.9, 227283, nil, nil, nil, 1, 225133)
 --Shard
+mod:AddTimerLine(GetSpellInfo(221149))
 local timerManifestAzzinothCD		= mod:NewCDTimer(10.9, 221149, nil, nil, nil, 1, 236237)
 local timerChaosSeedCD				= mod:NewCDTimer(10.9, 221336, nil, nil, nil, 3)
 local timerBulwarkofAzzinothCD		= mod:NewCDTimer(10.9, 221408, nil, nil, nil, 6)
@@ -539,7 +542,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			bondsIcons[#bondsIcons+1] = name
 		end
 		local count = #bondsIcons
-		warnBondsofFel:CombinedShow(0.5, name)
+		if spellId == 206384 or spellId == 209086 then
+			warnEmpBondsofFel:CombinedShow(0.5, name)
+		else
+			warnBondsofFel:CombinedShow(0.5, name)
+		end
 		if isPlayer then
 			specWarnBondsofFel:Show()
 			voiceBondsofFel:Play("targetyou")
