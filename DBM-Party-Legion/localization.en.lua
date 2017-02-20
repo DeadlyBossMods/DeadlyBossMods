@@ -275,7 +275,7 @@ L:SetMiscLocalization({
 	Female1		= "They say that the spy is here and she's quite the sight to behold.",
 	Female2		= "I hear some woman has been constantly asking about the district...",
 	Female3		= "Someone's been saying that our new guest isn't male.",
-	Female4		= "They say that the spy is here and she's quite the sight to behold.",
+	Female4		= "A guest saw both her and Elisande arrive together earlier.",
 	Male1		= "I heard somewhere that the spy isn't female.",
 	Male2		= "I heard the spy is here and he's very good looking.",
 	Male3		= "A guest said she saw him entering the manor alongside the Grand Magistrix.",
