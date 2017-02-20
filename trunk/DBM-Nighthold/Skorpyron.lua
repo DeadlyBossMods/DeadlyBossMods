@@ -52,11 +52,6 @@ local timerCallofScorpidCD			= mod:NewCDTimer(20.3, 204372, nil, nil, nil, 1)--2
 local timerShockwaveCD				= mod:NewCDTimer(57.9, 204316, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)--58-60
 local timerFocusedBlastCD			= mod:NewCDTimer(30.4, 204471, nil, nil, nil, 3)--30-34 (32.8 NEW data)
 local timerVulnerable				= mod:NewBuffFadesTimer(15, 204459, nil, nil, nil, 6)
---These are all 46 unless delayed by shockwave or stun
-mod:AddTimerLine(PLAYER_DIFFICULTY6)
---local timerVolatileFragments		= mod:NewCDTimer(46, 214661, nil, nil, nil, 6)--8-46, something tells me it's not Cd based anymore
---local timerAcidicFragments			= mod:NewCDTimer(46, 214652, nil, nil, nil, 6)
---local timerCrystallineFragments		= mod:NewCDTimer(46, 204292, nil, nil, nil, 6)
 
 local countdownShockwave			= mod:NewCountdown(58.3, 204316)
 local countdownCallofScorpid		= mod:NewCountdown("Alt20", 204372)
