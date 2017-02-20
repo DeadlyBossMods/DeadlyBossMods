@@ -141,6 +141,7 @@ local timerWellOfSoulsCD			= mod:NewCDTimer(16, 206939, nil, nil, nil, 5)
 local timerBlackHarvestCD			= mod:NewNextCountTimer(83, 206744, nil, nil, nil, 2)
 --Mythic Only
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
+local timerWindsCD					= mod:NewCDCountTimer(39, 199446, nil, nil, nil, 2)
 local timerWilloftheDemonWithinCD	= mod:NewCDTimer(39, 211439, nil, nil, nil, 2)
 local timerWilloftheDemonWithin		= mod:NewCastTimer(4, 211439, nil, nil, nil, 2)
 local timerParasiticWoundCD			= mod:NewCDTimer(36, 206847, nil, nil, nil, 3)
@@ -383,6 +384,9 @@ function mod:SPELL_CAST_START(args)
 					timerEyeofGuldanCD:Start(80, self.vb.eyeCast+1)--An oddball cast
 				else
 					timerEyeofGuldanCD:Start(48, self.vb.eyeCast+1)
+					if self.vb.eyeCast == 4 then
+						timerWindsCD:Start(97, 3)
+					end
 				end
 			elseif self:IsHeroic() then
 				if self.vb.eyeCast == 6 then
@@ -411,6 +415,9 @@ function mod:SPELL_CAST_START(args)
 		if timer then
 			timerBlackHarvestCD:Start(timer, self.vb.blackHarvestCast+1)
 		end
+		if self.vb.blackHarvestCast == 4 then
+			timerWindsCD:Start(75, 4)
+		end
 	elseif spellId == 206222 or spellId == 206221 then
 		table.wipe(bondsIcons)
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
@@ -430,7 +437,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 211439 then--Will of the Demon Within
 		if self.vb.phase ~= 3 then -- For unlocalized clients
 			self.vb.phase = 3
-			warnPhase3:Show()
 		end
 		specWarnWilloftheDemonWithin:Show()
 		voiceWilloftheDemonWithin:Play("carefly")
@@ -501,6 +507,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.flamesSargCast = self.vb.flamesSargCast + 1
 		if self:IsMythic() then
 			timerFlamesofSargerasCD:Start(45, self.vb.flamesSargCast+1)
+			if self.vb.flamesSargCast == 2 then
+				timerWindsCD:Start(91, 2)
+			end
 		elseif self:IsHeroic() then
 			timerFlamesofSargerasCD:Start(50, self.vb.flamesSargCast+1)--5-6 is 50, 1-5 is 51. For time being using a simple 50 timer
 		else--Normal, LFR?
@@ -623,6 +632,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerFlamesofSargerasCD:Start(24.5, 1)
 			timerEyeofGuldanCD:Start(35.1, 1)
 			timerBlackHarvestCD:Start(55.7, 1)
+			timerWindsCD:Start(68, 1)
 			timerStormOfDestroyerCD:Start(72.6, 1)
 		else
 			self.vb.phase = 3
