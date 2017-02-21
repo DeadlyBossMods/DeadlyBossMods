@@ -7,6 +7,7 @@ mod:SetEncounterID(1867)
 mod:SetZone()
 mod:SetUsedIcons(1)
 mod:SetHotfixNoticeRev(15058)
+mod:SetModelSound("Sound\\Creature\\Trilliax\\VO_701_Trilliax_19.ogg", "Sound\\Creature\\Trilliax\\VO_701_Trilliax_19.ogg")
 
 mod:RegisterCombat("combat")
 
@@ -130,7 +131,7 @@ function mod:OnCombatStart(delay)
 		)
 	end
 	if self.Options.NPAuraOnCleansing then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates", true)--hostileOnly
+		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
 
@@ -143,7 +144,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnCleansing then
-		DBM.Nameplate:Hide(true, nil, nil, nil, true)
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, false, true)
 	end
 end
 

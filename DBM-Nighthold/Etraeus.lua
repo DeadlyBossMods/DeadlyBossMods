@@ -369,7 +369,7 @@ function mod:OnCombatEnd()
 		DBMHudMap:Disable()
 	end
 	if self.Options.NPAuraOnConjunction and self:IsMythic() then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()

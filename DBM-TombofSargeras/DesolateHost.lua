@@ -108,8 +108,11 @@ function mod:OnCombatStart(delay)
 	timerTormentedCriesCD:Start(1-delay)
 	timerCollapsingFissureCD:Start(1-delay)
 	timerWitherCD:Start(1-delay)
-	if self.Options.NPAuraOnSoulbind or self.Options.NPAuraOnSpearofAnguish or self.Options.NPAuraOnBonecageArmor or self.Options.NPAuraOnShatteringScream then
+	if self.Options.NPAuraOnSoulbind or self.Options.NPAuraOnSpearofAnguish then
 		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+	end
+	if self.Options.NPAuraOnBonecageArmor or self.Options.NPAuraOnShatteringScream then
+		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
 
@@ -121,7 +124,7 @@ function mod:OnCombatEnd()
 --		DBM.InfoFrame:Hide()
 --	end
 	if self.Options.NPAuraOnSoulbind or self.Options.NPAuraOnSpearofAnguish or self.Options.NPAuraOnBonecageArmor or self.Options.NPAuraOnShatteringScream then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, nil, true, true, true)--Uses both hostile and friendly
 	end
 end
 
