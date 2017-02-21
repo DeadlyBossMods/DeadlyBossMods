@@ -253,7 +253,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnBeam then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 

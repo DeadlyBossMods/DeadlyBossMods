@@ -212,7 +212,7 @@ function mod:OnCombatEnd()
 		DBMHudMap:Disable()
 	end
 	if self.Options.NPAuraOnCarrionPlague then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 
