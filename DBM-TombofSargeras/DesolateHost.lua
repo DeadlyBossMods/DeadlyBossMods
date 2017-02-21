@@ -124,7 +124,7 @@ function mod:OnCombatEnd()
 --		DBM.InfoFrame:Hide()
 --	end
 	if self.Options.NPAuraOnSoulbind or self.Options.NPAuraOnSpearofAnguish or self.Options.NPAuraOnBonecageArmor or self.Options.NPAuraOnShatteringScream then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true, true)--Uses both hostile and friendly
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, true, true)--Uses both hostile and friendly
 	end
 end
 
@@ -258,11 +258,11 @@ function mod:OnSync(msg, stringSpellId, targetGUID)
 		if spellId == 236459 then--Soulbind
 			warnSoulbind:CombinedShow(0.5, target)
 			if self.Options.NPAuraOnSoulbind then
-				DBM.Nameplate:Show(false, target, spellId, nil, 60)
+				DBM.Nameplate:Show(true, targetGUID, spellId, nil, 60)
 			end
 		elseif spellId == 235924 then--Spear of Anguish
 			if self.Options.NPAuraOnSpearofAnguish then
-				DBM.Nameplate:Show(false, target, spellId, nil, 6)
+				DBM.Nameplate:Show(true, targetGUID, spellId, nil, 6)
 			end
 		elseif spellId == 236513 then--Bonecage Armor
 			if self.Options.NPAuraOnBonecageArmor then
@@ -271,17 +271,17 @@ function mod:OnSync(msg, stringSpellId, targetGUID)
 		elseif spellId == 235969 then--Shattering Scream
 			warnShatteringScream:CombinedShow(0.5, target)
 			if self.Options.NPAuraOnShatteringScream then
-				DBM.Nameplate:Show(true, target, spellId, nil, 7.5)
+				DBM.Nameplate:Show(true, targetGUID, spellId, nil, 7.5)
 			end
 		end
 	elseif msg == "SpellAuraRemoved" and targetGUID then
 		if spellId == 236459 then
 			if self.Options.NPAuraOnSoulbind then
-				DBM.Nameplate:Hide(false, target, spellId)
+				DBM.Nameplate:Hide(true, targetGUID, spellId)
 			end
 		elseif spellId == 235924 then--Spear of Anguish
 			if self.Options.NPAuraOnSpearofAnguish then
-				DBM.Nameplate:Hide(false, target, spellId)
+				DBM.Nameplate:Hide(true, targetGUID, spellId)
 			end
 		elseif spellId == 236513 then--Bonecage Armor
 			if self.Options.NPAuraOnBonecageArmor then
@@ -289,7 +289,7 @@ function mod:OnSync(msg, stringSpellId, targetGUID)
 			end
 		elseif spellId == 235969 then--Shattering Scream
 			if self.Options.NPAuraOnShatteringScream then
-				DBM.Nameplate:Hide(false, target, spellId)
+				DBM.Nameplate:Hide(true, targetGUID, spellId)
 			end
 		end
 	elseif msg == "SpellCastStart" then
