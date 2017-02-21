@@ -159,7 +159,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnTouchofSargeras or self.Options.NPAuraOnDarkMark then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true)
+		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 
