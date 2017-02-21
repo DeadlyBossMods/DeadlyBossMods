@@ -108,10 +108,10 @@ function mod:OnCombatStart(delay)
 	timerTormentedCriesCD:Start(1-delay)
 	timerCollapsingFissureCD:Start(1-delay)
 	timerWitherCD:Start(1-delay)
-	if self.Options.NPAuraOnSoulbind or self.Options.NPAuraOnSpearofAnguish then
+	if self.Options.NPAuraOnSoulbind or self.Options.NPAuraOnSpearofAnguish or self.Options.NPAuraOnShatteringScream then
 		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
 	end
-	if self.Options.NPAuraOnBonecageArmor or self.Options.NPAuraOnShatteringScream then
+	if self.Options.NPAuraOnBonecageArmor then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
