@@ -384,7 +384,7 @@ function mod:SPELL_CAST_START(args)
 					timerEyeofGuldanCD:Start(80, self.vb.eyeCast+1)--An oddball cast
 				else
 					timerEyeofGuldanCD:Start(48, self.vb.eyeCast+1)
-					if self.vb.eyeCast == 4 then
+					if self.vb.eyeCast == 4 and self.vb.phase == 2 then
 						timerWindsCD:Start(97, 3)
 					end
 				end
