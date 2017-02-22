@@ -719,6 +719,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 end
 
 function mod:OnSync(msg, targetname)
+	if msg == "ElisandeRP" then
+		timerRP:Start()
+	end
 	if not self:IsInCombat() then return end
 	if msg == "ArcaneticRing" and self:AntiSpam(5, 1) then
 		self.vb.ringCastCount = self.vb.ringCastCount + 1
@@ -754,7 +757,5 @@ function mod:OnSync(msg, targetname)
 	elseif msg == "FastAddDied" then
 		self.vb.fastBubbleCount = self.vb.fastBubbleCount + 1
 		timerFastTimeBubble:Start(30, self.vb.fastBubbleCount)
-	elseif msg == "ElisandeRP" then
-		timerRP:Start()
 	end
 end
