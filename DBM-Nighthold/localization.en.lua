@@ -99,7 +99,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	noCLEU4EchoRings		= "Let the waves of time crash over you!",
-	noCLEU4EchoOrbs			= "You'll find time can be quite volatile."
+	noCLEU4EchoOrbs			= "You'll find time can be quite volatile.",
+	prePullRP				= "I foresaw your coming, of course. The threads of fate that led you to this place. Your desperate attempt to stop the Legion."
 })
 
 ------------------
