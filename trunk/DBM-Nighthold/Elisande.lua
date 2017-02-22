@@ -24,6 +24,9 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_SAY"
+)
 
 --TODO, figure out interrupt order/count assistant for stuff
 --TODO, determine which interrupts are off by default, if any
@@ -75,6 +78,7 @@ local specWarnConflexiveBurst		= mod:NewSpecialWarningYou(209598, nil, nil, nil,
 local specWarnAblativePulse			= mod:NewSpecialWarningInterrupt(209971, "Tank", nil, 2, 1, 2)
 
 --Base
+local timerRP						= mod:NewRPTimer(67)
 local timerLeaveNightwell			= mod:NewCastTimer(9.8, 208863, nil, nil, nil, 6)
 local timerTimeElementalsCD			= mod:NewNextSourceTimer(16, 208887, 141872, nil, nil, 1)--"Call Elemental" short text
 local timerFastTimeBubble			= mod:NewTimer(30, "timerFastTimeBubble", 209166, nil, nil, 5)
@@ -687,6 +691,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	end
 end
 
+function mod:CHAT_MSG_MONSTER_SAY(msg, npc, _, _, target)
+	if (msg == L.prePullRP or msg:find(L.prePullRP)) then
+		self:SendSync("ElisandeRP")
+	end
+end
+
 --Backup to above yell, it's 2 seconds slower but works without localizing
 --"<228.48 22:48:56> [CHAT_MSG_RAID_BOSS_EMOTE] |TInterface\\Icons\\Spell_Mage_ArcaneOrb.blp:20|t |cFFFF0000|Hspell:228877|h[Arcanetic Rings]|h|
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
@@ -744,5 +754,7 @@ function mod:OnSync(msg, targetname)
 	elseif msg == "FastAddDied" then
 		self.vb.fastBubbleCount = self.vb.fastBubbleCount + 1
 		timerFastTimeBubble:Start(30, self.vb.fastBubbleCount)
+	elseif msg == "ElisandeRP" then
+		timerRP:Start()
 	end
 end
