@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 211927 207228",
 	"SPELL_CAST_SUCCESS 219815",
-	"SPELL_AURA_APPLIED 206617 206609 207052 207051 206607",
+	"SPELL_AURA_APPLIED 206617 206609 207052 207051 206607 212099",
 	"SPELL_AURA_APPLIED_DOSE 206607 219823",
 	"SPELL_AURA_REMOVED 206617 206609 207052 207051",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
@@ -33,6 +33,7 @@ local warnTimeBomb					= mod:NewTargetAnnounce(206617, 3)
 local warnTimeRelease				= mod:NewTargetAnnounce(206610, 3, nil, false)--Too many targets
 local warnChronometricPart			= mod:NewStackAnnounce(206607, 3, nil, "Tank")
 local warnPowerOverwhelmingStack	= mod:NewStackAnnounce(219823, 2)
+local warnTemporalCharge			= mod:NewTargetAnnounce(212099, 1)
 
 local specWarnTemporalOrbs			= mod:NewSpecialWarningDodge(219815, nil, nil, nil, 2, 2)
 local specWarnPowerOverwhelming		= mod:NewSpecialWarningSpell(211927, nil, nil, 2, 2, 2)
@@ -171,6 +172,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 219823 then
 		local amount = args.amount or 1
 		warnPowerOverwhelmingStack:Show(args.destName, amount)
+	elseif spellId == 212099 then
+		warnTemporalCharge:Show(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
