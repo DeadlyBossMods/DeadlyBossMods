@@ -76,7 +76,7 @@ mod.vb.interruptCount = 0
 mod.vb.timeBombDebuffCount = 0
 local timeBombDebuff = GetSpellInfo(206617)
 local function updateTimeBomb(self)
-	local _, _, _, _, _, _, expires, _, _, _, _, _, _, _, _, timeMod = UnitDebuff("player", timeBombDebuff)
+	local _, _, _, _, _, _, expires = UnitDebuff("player", timeBombDebuff)
 	if expires then
 		specWarnTimeBomb:Cancel()
 		voiceTimeBomb:Cancel()
