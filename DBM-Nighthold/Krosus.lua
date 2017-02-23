@@ -245,18 +245,21 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 206677 then
-		local amount = args.amount or 1
-		timerSearingBrand:Start(args.destName)
-		if amount >= 2 and self:AntiSpam(2, 1) then
-			if args:IsPlayer() then
-				if amount >= 4 then
-					specWarnSearingBrand:Show(amount)
-					voiceSearingBrand:Play("changemt")
-				end
-			else
-				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
-					specWarnSearingBrandOther:Show(args.destName)
-					voiceSearingBrand:Play("tauntboss")
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			local amount = args.amount or 1
+			timerSearingBrand:Start(args.destName)
+			if amount >= 2 and self:AntiSpam(2, 1) then
+				if args:IsPlayer() then
+					if amount >= 4 then
+						specWarnSearingBrand:Show(amount)
+						voiceSearingBrand:Play("changemt")
+					end
+				else
+					if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+						specWarnSearingBrandOther:Show(args.destName)
+						voiceSearingBrand:Play("tauntboss")
+					end
 				end
 			end
 		end
