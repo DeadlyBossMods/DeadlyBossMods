@@ -8,14 +8,14 @@ mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(15581)
---mod.respawnTime = 29
+mod.respawnTime = 15
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 236694 236442",
-	"SPELL_CAST_SUCCES 236480 236541 236547 237633 236304 236712",
-	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264",
+	"SPELL_CAST_SUCCES 236480 236541 236547 237633 236304 236712 236518",
+	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264 236519",
 	"SPELL_AURA_APPLIED_DOSE 234995 234996 239264",
 	"SPELL_AURA_REMOVED 233264 236712",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -33,10 +33,11 @@ mod:RegisterEventsInCombat(
 --TODO, NP auras on Rapid Shot and Incorporeal Shot once I can actually find events for them
 --TODO, infoframe showing absorbs remaining on boss/players if possible to get remaining shield from UnitBuff/UnitDebuff in an onupdate call?
 --TODO, fine tune all option defaults once what targets or doesn't target x and y is known. Fight can't have too much timer/warning spam
---TODO, announce moon burn, lunar strike? more redundancy in encounter that isn't needed IMO
+--TODO, announce lunar strike? more redundancy in encounter that isn't needed IMO
 --Captain Yathae Moonstrike
 local warnIncorporealShot			= mod:NewTargetAnnounce(236304, 3)
 local warnRapidShot					= mod:NewTargetAnnounce(236596, 3)
+local warnMoonBurn					= mod:NewTargetAnnounce(236519, 3)
 --Priestess Lunaspyre
 local warnLunarBeacon				= mod:NewTargetAnnounce(236712, 3)
 local warnLunarFire					= mod:NewStackAnnounce(239264, 2, nil, "Tank")
@@ -64,10 +65,11 @@ local timerGlaiveStormCD			= mod:NewAITimer(31, 236480, nil, nil, nil, 3)
 local timerTwilightGlaiveCD			= mod:NewAITimer(31, 236541, nil, nil, nil, 3)
 local timerMoonGlaiveCD				= mod:NewAITimer(31, 236547, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSpectralGlaiveCD			= mod:NewAITimer(31, 237633, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerMoonBurnCD				= mod:NewAITimer(31, 236518, nil, nil, nil, 3)
 --Captain Yathae Moonstrike
 local timerIncorporealShotCD		= mod:NewAITimer(31, 236304, nil, nil, nil, 3)
 local timerCallMoontalonCD			= mod:NewAITimer(31, 236694, nil, nil, nil, 1)
-local timerTwilightVolleyCD			= mod:NewAITimer(31, 236442, nil, nil, nil, 2)
+local timerTwilightVolleyCD			= mod:NewAITimer(31, 236442, nil, nil, nil, 2)--Cast while inactive. active too?
 local timerRapidShotCD				= mod:NewAITimer(31, 236596, nil, nil, nil, 3)
 --Priestess Lunaspyre
 local timerEmbraceofEclipseCD		= mod:NewAITimer(31, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)
@@ -104,6 +106,8 @@ function mod:OnCombatStart(delay)
 	timerTwilightGlaiveCD:Start(1-delay)
 	timerMoonGlaiveCD:Start(1-delay)
 	timerSpectralGlaiveCD:Start(1-delay)
+	timerMoonBurnCD:Start(1-delay)--11
+	timerTwilightVolleyCD:Start(1-delay)--15.5
 end
 
 function mod:OnCombatEnd()
@@ -148,6 +152,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerIncorporealShotCD:Start()
 	elseif spellId == 236712 then
 		timerLunarBeaconCD:Start()
+	elseif spellId == 236518 then
+		timerMoonBurnCD:Start()
 	end
 end
 
@@ -220,6 +226,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellLunarBeacon:Schedule(4, 2)
 			yellLunarBeacon:Schedule(3, 3)
 		end
+	elseif spellId == 236519 then
+		warnMoonBurn:CombinedShow(0.3, args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
