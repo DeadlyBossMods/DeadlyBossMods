@@ -247,10 +247,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 206677 then
 		local amount = args.amount or 1
 		timerSearingBrand:Start(args.destName)
-		if amount >= 4 and self:AntiSpam(3, 1) then
+		if amount >= 2 and self:AntiSpam(2, 1) then
 			if args:IsPlayer() then
-				specWarnSearingBrand:Show(amount)
-				voiceSearingBrand:Play("changemt")
+				if amount >= 4 then
+					specWarnSearingBrand:Show(amount)
+					voiceSearingBrand:Play("changemt")
+				end
 			else
 				if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
 					specWarnSearingBrandOther:Show(args.destName)
