@@ -249,7 +249,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			timerSearingBrand:Start(args.destName)
-			if amount >= 2 and self:AntiSpam(2, 1) then
+			if amount >= 2 then
 				if args:IsPlayer() then
 					if amount >= 4 then
 						specWarnSearingBrand:Show(amount)
