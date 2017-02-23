@@ -41,7 +41,7 @@ local warnCollapsingFissure			= mod:NewSpellAnnounce(235907, 3)--Upgrade to spec
 local warnTormentingCries			= mod:NewTargetAnnounce(238018, 3)
 ----Adds
 local warnRupturingSlam				= mod:NewSpellAnnounce(235927, 3)
-local warnGraspingDarkness			= mod:NewSpellAnnounce(235968, 3)
+--local warnGraspingDarkness			= mod:NewSpellAnnounce(235968, 3)
 local warnBonecageArmor				= mod:NewTargetAnnounce(236513, 3)
 --Spirit Realm
 local warnSoulbind					= mod:NewTargetAnnounce(228003, 4)
@@ -136,7 +136,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 235927 or spellId == 238627 then
 		warnRupturingSlam:Show()
 	elseif spellId == 235968 then
-		warnGraspingDarkness:Show()
+--		warnGraspingDarkness:Show()
 	elseif (spellId == 236340 or spellId == 241566) then
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnCrushMind:Show(args.sourceName)
