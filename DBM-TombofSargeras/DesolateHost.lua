@@ -8,7 +8,7 @@ mod:SetZone()
 mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(15581)
---mod.respawnTime = 29
+mod.respawnTime = 40
 
 mod:RegisterCombat("combat")
 
@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
 --TODO, see if syncing is needed. for time being it's assumed the two phases don't share information
@@ -56,7 +56,7 @@ local specWarnSpearofAnguish		= mod:NewSpecialWarningYou(235924, nil, nil, nil, 
 local yellSpearofAnguish			= mod:NewFadesYell(235924)
 local specWarnTormentingCries		= mod:NewSpecialWarningYou(238018, nil, nil, nil, 1, 2)
 --Spirit Realm
-local specWarnCrushMind				= mod:NewSpecialWarningInterrupt(236340, "HasInterrupt", nil, nil, 1, 2)
+--local specWarnCrushMind				= mod:NewSpecialWarningInterrupt(236340, "HasInterrupt", nil, nil, 1, 2)
 local specWarnSoulbind				= mod:NewSpecialWarningYou(236459, nil, nil, nil, 3, 2)
 local yellSoulbind					= mod:NewYell(236459)
 local specWarnWither				= mod:NewSpecialWarningYou(236138, nil, nil, nil, 1, 7)
@@ -84,7 +84,7 @@ local timerShatteringScreamCD		= mod:NewAITimer(31, 235969, nil, nil, nil, 3)
 local voiceSpearofAnguish			= mod:NewVoice(235924)--runout
 local voiceTormentingCries			= mod:NewVoice(238018)--targetyou (another generic until I know what to do with these). Might be a "keepmove" event
 --Spirit Realm
-local voiceCrushMind				= mod:NewVoice(236340, "HasInterrupt")--kickcast
+--local voiceCrushMind				= mod:NewVoice(236340, "HasInterrupt")--kickcast
 local voiceSoulbind					= mod:NewVoice(236459)--targetyou (should give at least one of the players "switchphase" but not both of them)
 local voiceWither					= mod:NewVoice(236138)--switchphase
 local voiceShatteringScream			= mod:NewVoice(235969)--getboned (kinda close enough? maybe custom new one later)
@@ -137,11 +137,11 @@ function mod:SPELL_CAST_START(args)
 		warnRupturingSlam:Show()
 	elseif spellId == 235968 then
 --		warnGraspingDarkness:Show()
-	elseif (spellId == 236340 or spellId == 241566) then
+--[[	elseif (spellId == 236340 or spellId == 241566) then
 		if self:CheckInterruptFilter(args.sourceGUID) then
 			specWarnCrushMind:Show(args.sourceName)
 			voiceCrushMind:Play("kickcast")
-		end
+		end--]]
 	elseif spellId == 236542 then
 		if UnitBuff("player", spiritRealm) or UnitDebuff("player", spiritRealm) then--Figure out which it is
 			specWarnSunderingDoomRun:Show()
