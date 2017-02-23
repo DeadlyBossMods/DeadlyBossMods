@@ -101,6 +101,7 @@ mod:AddNamePlateOption("NPAuraOnBonecageArmor", 236513)
 mod:AddNamePlateOption("NPAuraOnShatteringScream", 235969)
 
 local spiritRealm = GetSpellInfo(235621)
+local boneArmor = GetSpellInfo(236513)
 
 function mod:OnCombatStart(delay)
 	timerSoulbindCD:Start(1-delay)
@@ -210,7 +211,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceWither:Play("switchphase")
 		end
 	elseif spellId == 235969 and args:IsPlayer() then
-		specWarnShatteringScream:Show()
+		specWarnShatteringScream:Show(boneArmor)
 		voiceShatteringScream:Play("getboned")
 	elseif spellId == 236361 or spellId == 239923 then
 		warnSpiritChains:CombinedShow(0.3, args.destName)
