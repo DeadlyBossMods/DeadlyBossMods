@@ -37,10 +37,10 @@ mod:RegisterEventsInCombat(
 --Captain Yathae Moonstrike
 local warnIncorporealShot			= mod:NewTargetAnnounce(236304, 3)
 local warnRapidShot					= mod:NewTargetAnnounce(236596, 3)
-local warnMoonBurn					= mod:NewTargetAnnounce(236519, 3)
 --Priestess Lunaspyre
 local warnLunarBeacon				= mod:NewTargetAnnounce(236712, 3)
 local warnLunarFire					= mod:NewStackAnnounce(239264, 2, nil, "Tank")
+local warnMoonBurn					= mod:NewTargetAnnounce(236519, 3)
 
 --All
 local specWarnFontofElune			= mod:NewSpecialWarningStack(236357, nil, 7, nil, 2, 1, 6)--Stack unknown
@@ -59,13 +59,13 @@ local specWarnLunarBeacon			= mod:NewSpecialWarningMoveAway(236712, nil, nil, ni
 local yellLunarBeacon				= mod:NewFadesYell(236712)
 local specWarnLunarFire				= mod:NewSpecialWarningStack(239264, nil, 4, nil, nil, 1, 2)
 local specWarnLunarFireOther		= mod:NewSpecialWarningTaunt(239264, nil, nil, nil, 1, 2)
+local specWarnMoonBurn				= mod:NewSpecialWarningYou(236519, nil, nil, nil, 1)--Add voice filter when it has a voice
 
 --Huntress Kasparian
 local timerGlaiveStormCD			= mod:NewAITimer(31, 236480, nil, nil, nil, 3)
 local timerTwilightGlaiveCD			= mod:NewAITimer(31, 236541, nil, nil, nil, 3)
 local timerMoonGlaiveCD				= mod:NewAITimer(31, 236547, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSpectralGlaiveCD			= mod:NewAITimer(31, 237633, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerMoonBurnCD				= mod:NewAITimer(31, 236518, nil, nil, nil, 3)
 --Captain Yathae Moonstrike
 local timerIncorporealShotCD		= mod:NewAITimer(31, 236304, nil, nil, nil, 3)
 local timerCallMoontalonCD			= mod:NewAITimer(31, 236694, nil, nil, nil, 1)
@@ -74,6 +74,7 @@ local timerRapidShotCD				= mod:NewAITimer(31, 236596, nil, nil, nil, 3)
 --Priestess Lunaspyre
 local timerEmbraceofEclipseCD		= mod:NewAITimer(31, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)
 local timerLunarBeaconCD			= mod:NewAITimer(31, 236712, nil, nil, nil, 3)
+local timerMoonBurnCD				= mod:NewAITimer(31, 236519, nil, nil, nil, 3)--Used while inactive.
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
@@ -94,6 +95,7 @@ local voiceRapidShot				= mod:NewVoice(236596)--runout
 local voiceEmbraceofEclipse			= mod:NewVoice(233264, "Dps|Healer")--targetchange/healall
 local voiceLunarBeacon				= mod:NewVoice(236712)--runout
 local voiceLunarFire				= mod:NewVoice(239264)--tauntboss/stackhigh
+--local voiceMoonBurn					= mod:NewVoice(236519)--??? findastral? need to know how astral works first.
 
 --mod:AddSetIconOption("SetIconOnShield", 228270, true)
 --mod:AddInfoFrameOption(227503, true)
@@ -228,6 +230,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 236519 then
 		warnMoonBurn:CombinedShow(0.3, args.destName)
+		if args:IsPlayer() then
+			specWarnMoonBurn:Show()
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
