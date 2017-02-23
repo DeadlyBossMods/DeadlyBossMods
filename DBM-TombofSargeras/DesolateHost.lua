@@ -14,10 +14,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 235989 235927 238627 235968 236340 241566 236542 236544",
-	"SPELL_CAST_SUCCES 236449 235933 235907 236138 236131 235969",
-	"SPELL_AURA_APPLIED 236459 235924 238018 236513 236138 236131 235969 236361 239923 236548",
+	"SPELL_CAST_SUCCES 236449 235933 235907 236138 236131 235969 236515",
+	"SPELL_AURA_APPLIED 236459 235924 238018 236513 236138 236131 235969 236515 236361 239923 236548",
 	"SPELL_AURA_APPLIED_DOSE 236548",
-	"SPELL_AURA_REMOVED 236459 235924 236513 235969",
+	"SPELL_AURA_REMOVED 236459 235924 236513 235969 236515",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
@@ -209,7 +209,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnWither:Show()
 			voiceWither:Play("switchphase")
 		end
-	elseif spellId == 235969 and args:IsPlayer() then
+	elseif (spellId == 235969 or spellId == 236515) and args:IsPlayer() then
 		specWarnShatteringScream:Show()
 		voiceShatteringScream:Play("getboned")
 	elseif spellId == 236361 or spellId == 239923 then
@@ -268,7 +268,7 @@ function mod:OnSync(msg, stringSpellId, targetGUID)
 			if self.Options.NPAuraOnBonecageArmor then
 				DBM.Nameplate:Show(true, targetGUID, spellId, nil, 60)
 			end
-		elseif spellId == 235969 then--Shattering Scream
+		elseif spellId == 235969 or spellId == 236515 then--Shattering Scream
 			warnShatteringScream:CombinedShow(0.5, target)
 			if self.Options.NPAuraOnShatteringScream then
 				DBM.Nameplate:Show(true, targetGUID, spellId, nil, 7.5)
@@ -287,7 +287,7 @@ function mod:OnSync(msg, stringSpellId, targetGUID)
 			if self.Options.NPAuraOnBonecageArmor then
 				DBM.Nameplate:Hide(true, targetGUID, spellId)
 			end
-		elseif spellId == 235969 then--Shattering Scream
+		elseif spellId == 235969 or spellId == 236515 then--Shattering Scream
 			if self.Options.NPAuraOnShatteringScream then
 				DBM.Nameplate:Hide(true, targetGUID, spellId)
 			end
@@ -305,7 +305,7 @@ function mod:OnSync(msg, stringSpellId, targetGUID)
 			timerCollapsingFissureCD:Start()
 		elseif spellId ==  236138 or spellId == 236131 then
 			timerWitherCD:Start()
-		elseif spellId == 235969 then--Shattering Scream
+		elseif spellId == 235969 or spellId == 236515 then--Shattering Scream
 			timerShatteringScreamCD:Start(nil, targetGUID)
 		end
 	elseif msg == "UnitDied" then
