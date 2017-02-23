@@ -100,7 +100,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	noCLEU4EchoRings		= "시간의 파도가 널 덮치기를!",
-	noCLEU4EchoOrbs			= "시간은 제멋대로 사라져 버리지."
+	noCLEU4EchoOrbs				= "시간은 제멋대로 사라져 버리지.",
+	prePullRP				= "모두 예견했다. 너희를 여기로 이끈 운명의 실마리를. 군단을 막으려는 너희의 필사적인 몸부림을."
 })
 
 ------------------
