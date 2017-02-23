@@ -256,6 +256,7 @@ DBM_CORE_INTERMISSION				= "사잇 단계"
 DBM_CORE_ORB						= "구슬"
 DBM_CHEST							= "상자"--As in Treasure 'Chest'. Not Chest as in body part.
 DBM_NO_DEBUFF						= "%s 없음"--For use in places like info frame where you put "Not Spellname"
+DBM_ALLY							= "공대원"--Such as "Move to Ally"
 --Common Locals end
 
 DBM_CORE_BREAK_USAGE				= "쉬는 시간은 60분을 초과할 수 없습니다. 쉬는 시간은 초단위가 아니라 분단위로 입력해야 합니다."
