@@ -50,6 +50,10 @@ L= DBM:GetModLocalization(1897)
 ---------------------------
 L= DBM:GetModLocalization(1873)
 
+L:SetOptionLocalization({
+	InfoFrame =	"보스 기력을 정보 창에 표시"
+})
+
 ---------------------------
 -- Kil'jaeden --
 ---------------------------
