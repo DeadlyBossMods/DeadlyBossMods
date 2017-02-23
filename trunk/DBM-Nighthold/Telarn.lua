@@ -55,7 +55,7 @@ local warnChaosSpheresOfNature		= mod:NewSpellAnnounce(223219, 4)
 --Stage 1: The High Botanist
 local specWarnRecursiveStrikes		= mod:NewSpecialWarningTaunt(218503, nil, nil, nil, 1, 2)
 local specWarnControlledChaos		= mod:NewSpecialWarningDodge(218438, nil, nil, nil, 2, 2)
-local specWarnLasher				= mod:NewSpecialWarningSwitch("ej13699", "Dps", nil, nil, 1, 2)
+local specWarnLasher				= mod:NewSpecialWarningSwitch("ej13699", "RangedDps", nil, 2, 1, 2)
 local yellParasiticFetter			= mod:NewYell(218304)
 local specWarnParasiticFetter		= mod:NewSpecialWarningClose(218304, nil, nil, nil, 1, 2)
 local specWarnParasiticFixate		= mod:NewSpecialWarningRun(218342, nil, nil, nil, 4, 2)
