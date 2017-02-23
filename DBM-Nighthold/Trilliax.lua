@@ -12,7 +12,7 @@ mod:SetModelSound("Sound\\Creature\\Trilliax\\VO_701_Trilliax_19.ogg", "Sound\\C
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 206788 208924 207513 207502 215062 206641 214672",
+	"SPELL_CAST_START 206788 208924 207513 207502 215062 206641 214672 206820",
 	"SPELL_CAST_SUCCESS 206560 206557 206559 206641",
 	"SPELL_AURA_APPLIED 211615 208910 208915 206641 207327",
 	"SPELL_AURA_APPLIED_DOSE 206641",
@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 --TODO, do more videos with debug to determine if combat log order is valid for link partners
 --TODO, annihilate timer for second Imprint
 --[[
-(ability.id = 207513 or ability.id = 206788 or ability.id = 207502 or ability.id = 214672) and type = "begincast" or
+(ability.id = 207513 or ability.id = 206788 or ability.id = 207502 or ability.id = 214672 or ability.id = 206820) and type = "begincast" or
 (ability.id = 206560 or ability.id = 206557 or ability.id = 206559 or ability.id = 206641 or ability.id = 207630) and type = "cast" or 
 (ability.id = 211615 or ability.id = 208910) and type = "applydebuff"
 --]]
@@ -168,6 +168,9 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 214672 then--Imprint Annihilation
 		specWarnAnnihilation:Show()
 		voiceAnnihilation:Play("farfromline")
+	elseif spellId == 206820 then
+		specWarnCleansingRage:Show()
+		voiceCleansingRage:Play("aesoon")
 	end
 end
 
@@ -332,8 +335,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		voiceAnnihilation:Play("farfromline")
 		timerArcaneSlashCD:Stop()
 		countdownArcaneSlash:Cancel()
-	elseif spellId == 206834 then--Cleansing Rage
-		specWarnCleansingRage:Show()
-		voiceCleansingRage:Play("aesoon")
 	end
 end
