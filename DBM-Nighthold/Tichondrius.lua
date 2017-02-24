@@ -19,6 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 212794 216040 206480",
 	"SPELL_PERIODIC_DAMAGE 216027",
 	"SPELL_PERIODIC_MISSED 216027",
+	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -30,6 +31,7 @@ mod:RegisterEventsInCombat(
  --(ability.id = 212997 or ability.id = 213238 or ability.id = 208230 or ability.id = 213531 or ability.id = 206365) and type = "begincast"
 local warnCarrionPlague				= mod:NewTargetAnnounce(206480, 3)
 local warnBrandOfArgus				= mod:NewTargetAnnounce(212794, 4)
+local warnBloodFang					= mod:NewCountAnnounce("ej13528", 1)
 --Nightborne
 local warnVolatileWound				= mod:NewStackAnnounce(216024, 3, nil, false, 2)
 --The Legion
@@ -118,6 +120,7 @@ mod.vb.brandOfArgusCast = 0
 mod.vb.echoesOfVoidCast = 0
 mod.vb.addsCount = 0
 mod.vb.carrionNightmare = 0
+mod.vb.batsKilled = 0
 
 local updateInfoFrame, sortInfoFrame, breakMarks
 do
@@ -187,6 +190,7 @@ function mod:OnCombatStart(delay)
 	self.vb.echoesOfVoidCast = 0
 	self.vb.addsCount = 0
 	self.vb.carrionNightmare = 0
+	self.vb.batsKilled = 0
 	table.wipe(carrionTargets)
 	table.wipe(argusTargets)
 	timerCarrionPlagueCD:Start(7-delay, 1)--Cast end
@@ -342,6 +346,7 @@ function mod:SPELL_CAST_START(args)
 		countdownEchoesOfVoid:Cancel()
 		self.vb.darkPhase = true
 		self.vb.carrionNightmare = 0
+		self.vb.batsKilled = 0
 		timerIllusionaryNight:Start()
 		countdownNightPhase:Start()
 		timerCarrionNightmare:Start(6, 1)
@@ -493,6 +498,16 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 104326 then--Dark Phase bats
+		self.vb.batsKilled = self.vb.batsKilled + 1
+		if self.vb.batsKilled % 5 == 0 then
+			warnBloodFang:Show(self.vb.batsKilled)
+		end
+	end
+end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	if msg == L.Adds1 or msg:find(L.Adds1) or msg == L.Adds2 or msg:find(L.Adds2) then
