@@ -25,7 +25,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO: range frame? seems impractical at moment, if someone shows up range frame it's already too late.
---TODO, new voices, "Fel infusion" and "Light Infusion" and "Move to Pit"
+--TODO, new voices, "Fel infusion" and "Light Infusion" and "Jump In Pit"
 --TODO, figure out hammers to better impliment a taunting system. I suspect a two camp strat with tank in appropriate camp taunting during hammer cast
 --TODO, some kind of shield health tracker
 --TODO, wrath of the creators stack counter. Can't find right spellID for a drycode
@@ -61,7 +61,7 @@ local timerSpontFragmentationCD		= mod:NewAITimer(31, 239114, nil, nil, nil, 5, 
 local voiceInfusion					= mod:NewVoice(235271)--scatter
 local voiceFelInfusion				= mod:NewVoice(235240)--felinfusion
 local voiceLightInfusion			= mod:NewVoice(235213)--lightinfusion
-local voiceUnsableSoul				= mod:NewVoice(235117)--movetopit
+local voiceUnsableSoul				= mod:NewVoice(235117)--jumpinpit
 --Stage Two
 local voiceWrathofCreators			= mod:NewVoice(234891, "HasInterrupt")--kickcast
 
@@ -155,7 +155,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellUnstableSoul:Schedule(7, 1)
 				yellUnstableSoul:Schedule(6, 2)
 				yellUnstableSoul:Schedule(5, 3)
-				voiceUnsableSoul:Play("movetopit")
+				voiceUnsableSoul:Play("jumpinpit")
 			else
 				voiceUnsableSoul:Play("defensive")--Whatever, doens't matter in LFR. LFR doesn't need Aegwynn's Ward/pit
 			end
