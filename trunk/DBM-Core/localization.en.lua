@@ -245,6 +245,8 @@ DBM_ERROR_NO_PERMISSION				= "You don't have the required permission to do this.
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Close health frame"
 
 --Common Locals
+DBM_NEXT							= "Next %s"
+DBM_COOLDOWN						= "%s CD"
 DBM_CORE_UNKNOWN					= "unknown"--UNKNOWN which is "Unknown" (does u vs U matter?)
 DBM_CORE_LEFT						= "Left"
 DBM_CORE_RIGHT						= "Right"
@@ -256,6 +258,7 @@ DBM_CORE_ORB						= "Orb"
 DBM_CHEST							= "Chest"--As in Treasure 'Chest'. Not Chest as in body part.
 DBM_NO_DEBUFF						= "Not %s"--For use in places like info frame where you put "Not Spellname"
 DBM_ALLY							= "Ally"--Such as "Move to Ally"
+DBM_ADDs							= "Adds"--Such as "Move to Ally"
 --Common Locals end
 
 DBM_CORE_BREAK_USAGE				= "Break timer cannot be longer than 60 minutes. Make sure you're inputting time in minutes and not seconds."
