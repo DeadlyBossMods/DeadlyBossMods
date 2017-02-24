@@ -18,7 +18,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED 193367 229119 230267 228300 228054",
 	"SPELL_PERIODIC_DAMAGE 227998",
 	"SPELL_PERIODIC_MISSED 227998",
-	"SPELL_INTERRUPT",
 	"UNIT_DIED",
 	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"RAID_BOSS_EMOTE",
@@ -99,8 +98,6 @@ local timerFetidRotCD				= mod:NewCDTimer(13, 193367, nil, nil, nil, 3)
 ----Night Watch Mariner
 local timerLanternofDarknessCD		= mod:NewNextTimer(25, 228619, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
 local timerGiveNoQuarterCD			= mod:NewNextTimer(6, 228633, nil, nil, nil, 3)
-----Mythic Add
-local timerMistInfusion				= mod:NewCastTimer(7, 228854, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
 --Stage Three: Helheim's Last Stand
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerCorruptedBreathCD		= mod:NewCDCountTimer(40, 228565, 21131, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -265,7 +262,6 @@ function mod:SPELL_CAST_START(args)
 		if self:AntiSpam(0.5, 5) then--Combine two cast at same time, but if at least a second apart separate them
 			warnMistInfusion:Show()
 		end
-		timerMistInfusion:Start(nil, args.sourceGUID)
 	elseif spellId == 227903 then
 		self.vb.orbCount = self.vb.orbCount + 1
 		--Odd orbs are ranged and evens are melee
@@ -489,12 +485,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 228854 then
-		timerMistInfusion:Stop(args.destGUID)
-	end
-end
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 114709 then--GrimeLord
@@ -504,8 +494,6 @@ function mod:UNIT_DIED(args)
 	elseif cid == 114809 then--Night Watch Mariner
 		timerLanternofDarknessCD:Stop(args.destGUID)
 		timerGiveNoQuarterCD:Stop(args.destGUID)
-	elseif cid == 116335 then--Helarjar Mistwatcher
-		timerMistInfusion:Stop(args.destGUID)
 	end
 end
 
