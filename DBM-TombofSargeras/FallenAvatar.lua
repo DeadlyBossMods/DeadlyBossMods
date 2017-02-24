@@ -2,19 +2,19 @@ local mod	= DBM:NewMod(1873, "DBM-TombofSargeras", nil, 875)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(120436)--Oath-Keeper Sacraya 120437
+mod:SetCreatureID(116939)--Maiden of Valor 120437
 mod:SetEncounterID(2038)
 mod:SetZone()
 --mod:SetBossHPInfoToHighest()
 --mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(15581)
---mod.respawnTime = 29
+mod.respawnTime = 25
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 239207 239132 235572 236571 233856 233556 240623 239418",
-	"SPELL_CAST_SUCCES 234059 239132 236494 240594 239739",
+	"SPELL_CAST_SUCCES 239132 236494 240594 239739",
 	"SPELL_AURA_APPLIED 234009 234059 236494 240728 239739",
 	"SPELL_AURA_APPLIED_DOSE 236494 240728",
 	"SPELL_AURA_REMOVED 234009 234059 239739",
@@ -39,7 +39,8 @@ local warnDarkmark					= mod:NewTargetAnnounce(239739, 3)
 local warnBlackWinds				= mod:NewSpellAnnounce(239418, 2)
 
 --Stage One: A Slumber Disturbed
-local specWarnTouchofSargeras		= mod:NewSpecialWarningYou(234009, nil, nil, nil, 1, 2)
+local specWarnTouchofSargerasGround	= mod:NewSpecialWarningSpell(239207, nil, nil, nil, 1, 2)
+local specWarnTouchofSargeras		= mod:NewSpecialWarningYou(234009, nil, nil, nil, 1, 2)--Where is this used?
 local specWarnTouchofSargerasOther	= mod:NewSpecialWarningMoveTo(234009, nil, nil, nil, 1, 2)--Exclude tank?
 local yellTouchofSargeras			= mod:NewPosYell(234009)
 local yellTouchofSargerasFades		= mod:NewFadesYell(234009)
@@ -50,7 +51,7 @@ local specWarnShadowyBlades			= mod:NewSpecialWarningMoveAway(236571, nil, nil, 
 local specWarnLingeringDarkness		= mod:NewSpecialWarningMove(239212, nil, nil, nil, 1, 2)
 local specWarnDesolateYou			= mod:NewSpecialWarningStack(236494, nil, 2, nil, nil, 1, 6)
 local specWarnDesolateOther			= mod:NewSpecialWarningTaunt(236494, nil, nil, nil, 1, 2)
-----Oath-Keeper Sacraya
+----Maiden of Valor
 local specWarnCleansingProtocol		= mod:NewSpecialWarningSwitch(233856, "-Healer", nil, nil, 3, 2)
 local specWarnTaintedEssence		= mod:NewSpecialWarningStack(240728, nil, 3, nil, nil, 1, 6)
 --Stage Two: An Avatar Awakened
@@ -66,7 +67,7 @@ local timerRuptureRealitiesCD		= mod:NewAITimer(31, 239132, nil, nil, nil, 2)
 local timerUnboundChaosCD			= mod:NewAITimer(31, 234059, nil, nil, nil, 3)
 local timerShadowyBladesCD			= mod:NewAITimer(31, 236571, nil, nil, nil, 3)
 local timerDesolateCD				= mod:NewAITimer(31, 236494, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-----Oath-Keeper Sacraya
+----Maiden of Valor
 local timerCorruptedMatrixCD		= mod:NewCastTimer(10, 233556, nil, nil, nil, 6)
 local timerTaintedMatrixCD			= mod:NewCastTimer(10, 240623, nil, nil, nil, 6)--Mythic
 --Stage Two: An Avatar Awakened
@@ -80,13 +81,14 @@ local timerRainoftheDestroyerCD		= mod:NewAITimer(31, 240396, nil, nil, nil, 3)
 --local countdownDrawPower			= mod:NewCountdown(33, 227629)
 
 --Stage One: A Slumber Disturbed
+local voiceTouchofSargerasGround	= mod:NewVoice(239207)--helpsoak
 local voiceTouchofSargeras			= mod:NewVoice(234009)--gathershare/targetyou
 local voiceRuptureRealities			= mod:NewVoice(239132)--justrun
 local voiceUnboundChaos				= mod:NewVoice(234059)--runout/keepmove
 local voiceShadowyBlades			= mod:NewVoice(236571)--scatter
 local voiceLingeringDarkness		= mod:NewVoice(239212)--runaway
 local voiceDesolate					= mod:NewVoice(236494, "Tank")--stackhigh/tauntboss
-----Oath-Keeper Sacraya
+----Maiden of Valor
 local voiceCleansingProtocol		= mod:NewVoice(233856, "-Healer")--targetchange
 local voiceTaintedEssence			= mod:NewVoice(240728)--stackhigh
 --Stage Two: An Avatar Awakened
@@ -137,11 +139,11 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	table.wipe(TouchofSargerasTargets)
-	timerTouchofSargerasCD:Start(1-delay)
+	timerUnboundChaosCD:Start(1-delay)--7
+	timerDesolateCD:Start(1-delay)--13
+	timerTouchofSargerasCD:Start(1-delay)--15.5
 	timerRuptureRealitiesCD:Start(1-delay)
-	timerUnboundChaosCD:Start(1-delay)
 	timerShadowyBladesCD:Start(1-delay)
-	timerDesolateCD:Start(1-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(POWER_TYPE_POWER)
 		DBM.InfoFrame:Show(2, "enemypower", 2, ALTERNATE_POWER_INDEX)
@@ -166,6 +168,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 239207 then
+		specWarnTouchofSargerasGround:Show()
+		voiceTouchofSargerasGround:play("helpsoak")
 		table.wipe(TouchofSargerasTargets)
 		timerTouchofSargerasCD:Start()
 	elseif spellId == 239132 or spellId == 235572 then
@@ -194,9 +198,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 234059 then
-		timerUnboundChaosCD:Start()
-	elseif spellId == 236571 then
+	if spellId == 236571 then
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
@@ -337,6 +339,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		specWarnRainoftheDestroyer:Show()
 		voiceRainoftheDestroyer:Play("watchstep")
 		timerRainoftheDestroyerCD:Start()
+	elseif spellId == 234057 then
+		timerUnboundChaosCD:Start()
 	end
 end
 
