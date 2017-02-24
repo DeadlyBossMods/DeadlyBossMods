@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 --TODO, evaluate severity of some warnings and promote/demote between warn/specwarn as needed
 local warnIceFist				= mod:NewTargetAnnounce(216432, 3)
 local warnSnow					= mod:NewSpellAnnounce(216467, 3)
-local warnFireBoom				= mod:NewTargetAnnounce(216467, 2)
+local warnFireBoom				= mod:NewTargetAnnounce(216428, 2)
 
 local specWarnFireBoom			= mod:NewSpecialWarningMoveAway(216428, nil, nil, nil, 1, 2)
 local yellFireBoom				= mod:NewYell(216428)

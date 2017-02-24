@@ -6761,7 +6761,7 @@ function DBM:AntiSpam(time, id)
 end
 
 function DBM:GetTOC()
-	return wowTOC
+	return wowTOC, testBuild
 end
 
 function DBM:FlashClientIcon()
@@ -6789,6 +6789,7 @@ function DBM:FindInstanceIDs()
 	end
 end
 
+--/run DBM:FindEncounterIDs(822)--Broken Isles
 --/run DBM:FindEncounterIDs(875)--Tomb of Sargeras
 --/run DBM:FindEncounterIDs(900, 23)--Cathedral of Eternal Night
 function DBM:FindEncounterIDs(instanceID, diff)
