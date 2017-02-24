@@ -7,7 +7,7 @@ mod:SetEncounterID(2052)
 mod:SetZone()
 --mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(15581)
---mod.respawnTime = 29
+mod.respawnTime = 30
 
 mod:RegisterCombat("combat")
 
@@ -78,8 +78,8 @@ local felDebuff, lightDebuff = GetSpellInfo(235240), GetSpellInfo(235213)
 function mod:OnCombatStart(delay)
 	self.vb.unstableSoulCount = 0
 	self.vb.hammerCount = 0
-	timerInfusionCD:Start(1-delay)
-	timerHammersCD:Start(1-delay)
+	timerInfusionCD:Start(1-delay)--2
+	timerHammersCD:Start(1-delay)--13.8
 	timerMassInstabilityCD:Start(1-delay)
 	if self:IsMythic() then
 		timerSpontFragmentationCD:Start(1-delay)
