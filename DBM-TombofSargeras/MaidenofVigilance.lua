@@ -16,8 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCES 235267 239114 237722",
 	"SPELL_AURA_APPLIED 235240 235213 235117 240209 235028 236061",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 235240 235213 235117 240209 235028",
-	"SPELL_INTERRUPT",
+	"SPELL_AURA_REMOVED 235240 235213 235117 240209 235028 234891",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -28,12 +27,12 @@ mod:RegisterEventsInCombat(
 --TODO, new voices, "Fel infusion" and "Light Infusion" and "Jump In Pit"
 --TODO, figure out hammers to better impliment a taunting system. I suspect a two camp strat with tank in appropriate camp taunting during hammer cast
 --TODO, some kind of shield health tracker
---TODO, wrath of the creators stack counter. Can't find right spellID for a drycode
+--TODO, wrath of the creators stack counter for when stacks too high and about to wipe
 --TODO, mass instability not in combat log (SHOCKER). Fix it with transcriptor
 --[[
 (ability.id = 235271 or ability.id = 241635 or ability.id = 241636) and type = "begincast" or
 (ability.id = 235267 or ability.id = 239114 or ability.id = 237722) and type = "cast" or
-ability.id = 235028 and (type = "applybuff" or type = "removebuff")
+(ability.id = 235028 or ability.id = 234891) and (type = "applybuff" or type = "removebuff")
 --]]
 --Stage One
 local warnUnstableSoul				= mod:NewTargetAnnounce(235117, 4, nil, false)--Might be spammy so off by default. Infoframe will do better job with this one
@@ -56,7 +55,7 @@ local timerInfusionCD				= mod:NewNextCountTimer(38, 235271, nil, nil, nil, 3, n
 local timerLightHammerCD			= mod:NewNextCountTimer(18, 241635, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFelHammerCD				= mod:NewNextCountTimer(18, 241636, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 --local timerMassInstabilityCD		= mod:NewAITimer(31, 235267, nil, nil, nil, 3)
-local timerBlowbackCD				= mod:NewNextTimer(87, 237722, nil, nil, nil, 6)
+local timerBlowbackCD				= mod:NewNextTimer(82, 237722, nil, nil, nil, 6)
 --Mythic
 local timerSpontFragmentationCD		= mod:NewAITimer(31, 239114, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
 
@@ -212,24 +211,18 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.InfoFrame:Hide()
 		end
 	elseif spellId == 235028 then--Bulwark Removed
-		--Move phase stuff to interrupt probably
+		specWarnWrathofCreators:Show(args.destName)
+	elseif spellId == 234891 then--Wrath Interrupted
 		self.vb.hammerCount = 0
 		self.vb.infusionCount = 0
-		specWarnWrathofCreators:Show(args.destName)
 		voiceWrathofCreators:Play("kickcast")
-		timerInfusionCD:Start(4.3, 1)
-		timerLightHammerCD:Start(16.4, 1)
+		timerInfusionCD:Start(2, 1)
+		timerLightHammerCD:Start(14, 1)
 		--timerMassInstabilityCD:Start(2)
 		timerBlowbackCD:Start()
 		if self:IsMythic() then
 			timerSpontFragmentationCD:Start(2)
 		end
-	end
-end
-
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 234891 then
-		--TODO, move phase shit here, or to UNIT_SPELLCAST_STOP
 	end
 end
 

@@ -13,8 +13,8 @@ mod.respawnTime = 15
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 236694 236442",
-	"SPELL_CAST_SUCCES 236480 236541 236547 237633 236304 236712 236518",
+	"SPELL_CAST_START 236694 236442 236712",
+	"SPELL_CAST_SUCCES 236480 236541 236547 237633 236518 233263",
 	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264 236519",
 	"SPELL_AURA_APPLIED_DOSE 234995 234996 239264",
 	"SPELL_AURA_REMOVED 233264 236712",
@@ -30,12 +30,17 @@ mod:RegisterEventsInCombat(
 --TODO, figure out how to actually pre warn moon glaive and give it a warning.
 --TODO, figure out what to do Spectral Glaive. Why does iti even exist, totally redundant waste of space, already have Moon Glaive
 --TODO, is there even a point to Shadow shot?
---TODO, NP auras on Rapid Shot and Incorporeal Shot once I can actually find events for them
+--TODO, NP auras on Rapid Shot and Incorporeal Shot?
 --TODO, infoframe showing absorbs remaining on boss/players if possible to get remaining shield from UnitBuff/UnitDebuff in an onupdate call?
 --TODO, fine tune all option defaults once what targets or doesn't target x and y is known. Fight can't have too much timer/warning spam
 --TODO, announce lunar strike? more redundancy in encounter that isn't needed IMO
+--[[
+(ability.id = 236694 or ability.id = 236442 or ability.id = 239379 or ability.id = 236712) and type = "begincast" or
+(ability.id = 236480 or ability.id = 236541 or ability.id = 236547 or ability.id = 237633 or ability.id = 236518 or ability.id = 236596 or ability.id = 233263 or ability.id = 239264) and type = "cast" or
+(ability.id = 236305 or ability.id = 236596) and type = "applydebuff"
+--]]
 --Captain Yathae Moonstrike
-local warnIncorporealShot			= mod:NewTargetAnnounce(236304, 3)
+local warnIncorporealShot			= mod:NewTargetAnnounce(236305, 3)
 local warnRapidShot					= mod:NewTargetAnnounce(236596, 3)
 --Priestess Lunaspyre
 local warnLunarBeacon				= mod:NewTargetAnnounce(236712, 3)
@@ -51,6 +56,8 @@ local specWarnDiscorporate			= mod:NewSpecialWarningTaunt(236550, nil, nil, nil,
 --Captain Yathae Moonstrike
 local specWarnCallMoontalon			= mod:NewSpecialWarningSwitch(236694, "-Healer", nil, nil, 1, 2)
 local specWarnTwilightVolley		= mod:NewSpecialWarningSpell(236442, nil, nil, nil, 2, 2)
+local specWarnIncorpShot			= mod:NewSpecialWarningMoveAway(236305, nil, nil, nil, 1, 2)
+local yellIncorpShot				= mod:NewYell(236305)
 local specWarnRapidShot				= mod:NewSpecialWarningMoveAway(236596, nil, nil, nil, 1, 2)
 local yellRapidShot					= mod:NewYell(236596)
 --Priestess Lunaspyre
@@ -67,14 +74,14 @@ local timerTwilightGlaiveCD			= mod:NewAITimer(31, 236541, nil, nil, nil, 3)
 local timerMoonGlaiveCD				= mod:NewAITimer(31, 236547, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerSpectralGlaiveCD			= mod:NewAITimer(31, 237633, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --Captain Yathae Moonstrike
-local timerIncorporealShotCD		= mod:NewAITimer(31, 236304, nil, nil, nil, 3)
+local timerIncorporealShotCD		= mod:NewCDTimer(54.7, 236305, nil, nil, nil, 3)
 local timerCallMoontalonCD			= mod:NewAITimer(31, 236694, nil, nil, nil, 1)
-local timerTwilightVolleyCD			= mod:NewAITimer(31, 236442, nil, nil, nil, 2)--Cast while inactive. active too?
+local timerTwilightVolleyCD			= mod:NewCDTimer(19.4, 236442, nil, nil, nil, 2)--Cast while inactive. active too?
 local timerRapidShotCD				= mod:NewAITimer(31, 236596, nil, nil, nil, 3)
 --Priestess Lunaspyre
-local timerEmbraceofEclipseCD		= mod:NewAITimer(31, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)
+local timerEmbraceofEclipseCD		= mod:NewCDTimer(54.3, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)
 local timerLunarBeaconCD			= mod:NewAITimer(31, 236712, nil, nil, nil, 3)
-local timerMoonBurnCD				= mod:NewAITimer(31, 236519, nil, nil, nil, 3)--Used while inactive.
+local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used while inactive.
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
@@ -90,6 +97,7 @@ local voiceDiscorporate				= mod:NewVoice(236550)--tauntboss
 --Captain Yathae Moonstrike
 local voiceCallMoontalon			= mod:NewVoice(236694, "-Healer")--killbigmob
 local voiceTwilightVolley			= mod:NewVoice(236442)--aesoon
+local voiceIncorpShot				= mod:NewVoice(236305)--targetyou
 local voiceRapidShot				= mod:NewVoice(236596)--runout
 --Priestess Lunaspyre
 local voiceEmbraceofEclipse			= mod:NewVoice(233264, "Dps|Healer")--targetchange/healall
@@ -106,10 +114,11 @@ mod.vb.phase = 1
 function mod:OnCombatStart(delay)
 	timerGlaiveStormCD:Start(1-delay)
 	timerTwilightGlaiveCD:Start(1-delay)
-	timerMoonGlaiveCD:Start(1-delay)
-	timerSpectralGlaiveCD:Start(1-delay)
-	timerMoonBurnCD:Start(1-delay)--11
-	timerTwilightVolleyCD:Start(1-delay)--15.5
+--	timerMoonGlaiveCD:Start(1-delay)--Not in combat log, figure out later, if needed
+--	timerSpectralGlaiveCD:Start(1-delay)--not in combat log, figure out later, if needed
+	timerMoonBurnCD:Start(10-delay)
+	timerTwilightVolleyCD:Start(15.5-delay)--15.5-17
+	timerIncorporealShotCD:Start(48-delay)
 end
 
 function mod:OnCombatEnd()
@@ -132,6 +141,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnTwilightVolley:Show()
 		voiceTwilightVolley:Play("aesoon")
 		timerTwilightVolleyCD:Start()
+	elseif spellId == 236712 then
+		timerLunarBeaconCD:Start()
 	end
 end
 
@@ -149,13 +160,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMoonGlaiveCD:Start()
 	elseif spellId == 237633 then
 		timerSpectralGlaiveCD:Start()
-	elseif spellId == 236304 then--Most definitely wrong.this fight is missing a ton of debuffs/cast Ids, having only scripts/damage events currently
-		warnIncorporealShot:Show(args.destName)
-		timerIncorporealShotCD:Start()
-	elseif spellId == 236712 then
-		timerLunarBeaconCD:Start()
 	elseif spellId == 236518 then
 		timerMoonBurnCD:Start()
+	elseif spellId == 233263 then
+		timerEmbraceofEclipseCD:Start()
 	end
 end
 
@@ -206,12 +214,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnRapidShot:Show(args.destName)
 		end
+	elseif spellId == 236305 then
+		timerIncorporealShotCD:Start()
+		if args:IsPlayer() then
+			specWarnIncorpShot:Show()
+			voiceIncorpShot:Play("targetyou")
+			yellIncorpShot:Yell()
+		else
+			warnIncorporealShot:Show(args.destName)
+		end
 	elseif spellId == 233264 then--Dpser Embrace of the Eclipse
 		if not self:IsHealer() then
 			specWarnEmbraceofEclipse:Show(args.destName)
 			voiceEmbraceofEclipse:Play("targetchange")
 		end
-		timerEmbraceofEclipseCD:Start()
 	elseif spellId == 233263 then--Healer Embrace of the Eclipse
 		if self:IsHealer() then
 			specWarnEmbraceofEclipse:CombinedShow(0.5, args.destName)
