@@ -163,7 +163,7 @@ local timerPurifiedEssence			= mod:NewCastTimer(4, 221486, nil, nil, nil, 2)
 --Stage One: The Council of Elders
 ----Gul'dan
 local voiceLiquidHellfire			= mod:NewVoice(206219)--watchstep
-local voiceFelEfflux				= mod:NewVoice(206514)--watchwave
+local voiceFelEfflux				= mod:NewVoice(206514)--159202 (flame jet)
 ----Fel Lord Kuraz'mal
 local voiceShatterEssence			= mod:NewVoice(206675)--defensive (maybe custom one that's more specific and says to use Resonant Barrier)
 local voiceFelObelisk				= mod:NewVoice(229945)--watchstep
@@ -326,7 +326,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 206514 then
 		self.vb.felEffluxCast = self.vb.felEffluxCast + 1
 		specWarnFelEfflux:Show()
-		voiceFelEfflux:Play("watchwave")
+		voiceFelEfflux:Play("159202")
 		local timer = self:IsEasy() and felEffluxTimersEasy[self.vb.felEffluxCast+1] or felEffluxTimers[self.vb.felEffluxCast+1] or 12
 		timerFelEffluxCD:Start(timer, self.vb.felEffluxCast+1)
 	elseif spellId == 206675 then
