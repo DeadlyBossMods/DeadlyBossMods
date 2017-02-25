@@ -89,7 +89,7 @@ local voiceSterilize				= mod:NewVoice(208499)--scatter (runout better?)
 local voiceCleansingRage			= mod:NewVoice(206820)--aesoon
 --Maniac
 local voiceArcingBonds				= mod:NewVoice(208915)--linegather
-local voiceAnnihilation				= mod:NewVoice(207630)--farfromline (stay away from lines) Good match for cutter laser?
+local voiceAnnihilation				= mod:NewVoice(207630)--stilldanger
 
 --Caretaker
 local voiceTidyUp					= mod:NewVoice(207513)--mobsoon/watchstep
@@ -167,7 +167,7 @@ function mod:SPELL_CAST_START(args)
 		voiceArcaneSlash:Play("defensive")
 	elseif spellId == 214672 then--Imprint Annihilation
 		specWarnAnnihilation:Show()
-		voiceAnnihilation:Play("farfromline")
+		voiceAnnihilation:Play("stilldanger")
 	elseif spellId == 206820 then
 		specWarnCleansingRage:Show()
 		voiceCleansingRage:Play("aesoon")
