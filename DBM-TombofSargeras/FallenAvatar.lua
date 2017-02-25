@@ -13,15 +13,15 @@ mod.respawnTime = 25
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 239207 239132 235572 236571 233856 233556 240623 239418",
-	"SPELL_CAST_SUCCES 239132 236494 240594 239739",
+	"SPELL_CAST_START 239207 239132 235572 233856 233556 240623",
+	"SPELL_CAST_SUCCES 239132 236494 240594",
 	"SPELL_AURA_APPLIED 234009 234059 236494 240728 239739",
 	"SPELL_AURA_APPLIED_DOSE 236494 240728",
 	"SPELL_AURA_REMOVED 234009 234059 239739",
 	"SPELL_PERIODIC_DAMAGE 239212",
 	"SPELL_PERIODIC_MISSED 239212",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
 --TODO, two entirely different version sof Touch of Sargeras. Figure out which one is actually used where
@@ -29,6 +29,16 @@ mod:RegisterEventsInCombat(
 --TODO, Matrix stuff to be improved when I see how they activate/deactivate (cooldown? power based? health based?)
 --TODO, figure out mythic stack count to start warning. Right now it's 4
 --TODO, improve Dark Mark to match Touch of Sargeras if multiple targets, else, clean it up for 1 target
+--TODO, unbound chaos seems affected by something, possibly energy getting to boss.
+--TODO, shadow blades cast not in combat log, see if way to fix it
+--TOOD, dark mark cast not in combat log, see if need to use APPIED or UNIT event
+--TODO, and again, black winds not in combat log, find way to do it besides spell damage
+--[[
+(ability.id = 239207 or ability.id = 239132 or ability.id = 236571 or ability.id = 233856 or ability.id = 233556 or ability.id = 240623 or ability.id = 239418) and type = "begincast" or
+(ability.id = 236571 or ability.id = 236494 or ability.id = 240594 or ability.id = 239739) and type = "cast" or
+(ability.id = 234009 or ability.id = 234059) and type = "applydebuff"
+ or ability.name = "Shadowy Blades" or ability.name = "Black Winds"
+--]]
 --Stage One: A Slumber Disturbed
 local warnTouchofSargeras			= mod:NewTargetAnnounce(234009, 3)
 local warnUnboundChaos				= mod:NewTargetAnnounce(234059, 3)
@@ -62,17 +72,17 @@ local yellDarkMarkFades				= mod:NewFadesYell(239739)
 local specWarnRainoftheDestroyer	= mod:NewSpecialWarningDodge(240396, nil, nil, nil, 2, 2)
 
 --Stage One: A Slumber Disturbed
-local timerTouchofSargerasCD		= mod:NewAITimer(31, 239207, nil, nil, nil, 3)
-local timerRuptureRealitiesCD		= mod:NewAITimer(31, 239132, nil, nil, nil, 2)
-local timerUnboundChaosCD			= mod:NewAITimer(31, 234059, nil, nil, nil, 3)
-local timerShadowyBladesCD			= mod:NewAITimer(31, 236571, nil, nil, nil, 3)
-local timerDesolateCD				= mod:NewAITimer(31, 236494, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerTouchofSargerasCD		= mod:NewCDTimer(42.5, 239207, nil, nil, nil, 3)--42.5-50ish
+local timerRuptureRealitiesCD		= mod:NewCDTimer(60, 239132, nil, nil, nil, 2)
+local timerUnboundChaosCD			= mod:NewCDTimer(35, 234059, nil, nil, nil, 3)--35-43
+local timerShadowyBladesCD			= mod:NewCDTimer(42.6, 236571, nil, nil, nil, 3)--42.6-50ish
+local timerDesolateCD				= mod:NewCDTimer(12, 236494, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 ----Maiden of Valor
 local timerCorruptedMatrixCD		= mod:NewCastTimer(10, 233556, nil, nil, nil, 6)
 local timerTaintedMatrixCD			= mod:NewCastTimer(10, 240623, nil, nil, nil, 6)--Mythic
 --Stage Two: An Avatar Awakened
-local timerDarkMarkCD				= mod:NewAITimer(31, 239739, nil, nil, nil, 3)
-local timerBlackWindsCD				= mod:NewAITimer(31, 239418, nil, nil, nil, 3)
+local timerDarkMarkCD				= mod:NewCDTimer(20.5, 239739, nil, nil, nil, 3)
+local timerBlackWindsCD				= mod:NewCDTimer(31, 239418, nil, nil, nil, 3)
 local timerRainoftheDestroyerCD		= mod:NewAITimer(31, 240396, nil, nil, nil, 3)
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
@@ -104,6 +114,7 @@ mod:AddNamePlateOption("NPAuraOnDarkMark", 239739)
 mod.vb.phase = 1
 local TouchofSargerasTargets = {}
 local playerName = UnitName("player")
+--local unboundChaos = {7, 43.7(40), 37.7(35.7), 40.1, 36.5}
 
 --Change to be more complex like touch of sargeras if more than one target
 local function checkDarkMark(self, spellName)
@@ -139,11 +150,11 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	table.wipe(TouchofSargerasTargets)
-	timerUnboundChaosCD:Start(1-delay)--7
-	timerDesolateCD:Start(1-delay)--13
-	timerTouchofSargerasCD:Start(1-delay)--15.5
-	timerRuptureRealitiesCD:Start(1-delay)
-	timerShadowyBladesCD:Start(1-delay)
+	timerUnboundChaosCD:Start(7-delay)--7
+	timerDesolateCD:Start(13-delay)--13
+	timerTouchofSargerasCD:Start(15.4-delay)--15.5
+	timerShadowyBladesCD:Start(33.9-delay)
+	timerRuptureRealitiesCD:Start(34-delay)--34-37
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(POWER_TYPE_POWER)
 		DBM.InfoFrame:Show(2, "enemypower", 2, ALTERNATE_POWER_INDEX)
@@ -176,13 +187,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnRuptureRealities:Show()
 		voiceRuptureRealities:Play("justrun")
 		timerRuptureRealitiesCD:Start()
-	elseif spellId == 236571 then
-		specWarnShadowyBlades:Show()
-		voiceShadowyBlades:Play("scatter")
-		timerShadowyBladesCD:Start()
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(10)
-		end
 	elseif spellId == 233856 then
 		specWarnCleansingProtocol:Show()
 		voiceCleansingProtocol:Play("targetchange")
@@ -190,19 +194,12 @@ function mod:SPELL_CAST_START(args)
 		timerCorruptedMatrixCD:Start(50)
 	elseif spellId == 240623 then
 		timerTaintedMatrixCD:Start(60)
-	elseif spellId == 239418 then
-		warnBlackWinds:Show()
-		timerBlackWindsCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 236571 then
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
-		end
-	elseif spellId == 236494 then
+	if spellId == 236494 then
 		timerDesolateCD:Start()
 	elseif spellId == 240594 then
 		self.vb.phase = 2
@@ -215,13 +212,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerTaintedMatrixCD:Stop()
 		
 		warnPhase2:Show()
-		timerRuptureRealitiesCD:Start(2)
-		timerDesolateCD:Start(2)
-		timerDarkMarkCD:Start(2)
-		timerBlackWindsCD:Start(2)
-		timerRainoftheDestroyerCD:Start(2)
-	elseif spellId == 239739 then
-		timerDarkMarkCD:Start()
+		--timerRuptureRealitiesCD:Start(2)
+		timerDesolateCD:Start(21)
+		timerDarkMarkCD:Start(23)
+		timerBlackWindsCD:Start(35)
+		--timerRainoftheDestroyerCD:Start(2)
 	end
 end
 
@@ -341,6 +336,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerRainoftheDestroyerCD:Start()
 	elseif spellId == 234057 then
 		timerUnboundChaosCD:Start()
+	elseif spellId == 239739 then
+		timerDarkMarkCD:Start()
+	elseif spellId == 239418 then
+		warnBlackWinds:Show()
+		--timerBlackWindsCD:Start()
+	elseif spellId == 236571 then--Shadow Blades (guessed)
+		specWarnShadowyBlades:Show()
+		voiceShadowyBlades:Play("scatter")
+		timerShadowyBladesCD:Start()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(10, nil, nil, nil, nil, 5)
+		end
 	end
 end
 

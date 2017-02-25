@@ -144,8 +144,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 237722 then--Blowback
 		timerSpontFragmentationCD:Stop()
 		--timerMassInstabilityCD:Stop()
-		timerHammersCD:Stop()
 		timerInfusionCD:Stop()
+		timerLightHammerCD:Stop()
+		timerFelHammerCD:Stop()
 	end
 end
 
