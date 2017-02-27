@@ -518,7 +518,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	speedRun		="一陣詭異的冷風吹了過來..."
+	speedRun		="一陣詭異的冷風吹了過來…"
 })
 
 -----------------------
