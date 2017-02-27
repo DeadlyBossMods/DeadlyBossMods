@@ -3946,7 +3946,7 @@ do
 	end
 
 	syncHandlers["K"] = function(sender, cId)
-		if select(2, IsInInstance()) == "pvp" then return end
+		if select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "none" then return end
 		cId = tonumber(cId or "")
 		if cId then DBM:OnMobKill(cId, true) end
 	end
