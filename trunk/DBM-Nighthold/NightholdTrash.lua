@@ -9,7 +9,8 @@ mod.isTrashMod = true
 mod:RegisterEvents(
 	"SPELL_CAST_START 221164 224510 224246 231005 143807 231737",
 	"SPELL_CAST_SUCCESS 225389",
-	"SPELL_AURA_APPLIED 221344 222111 224572 225390 224632 224560 204744 224978 225856 223655 224982 225105"
+	"SPELL_AURA_APPLIED 221344 222111 224572 225390 224632 224560 204744 224978 225856 223655 224982 225105 222079",
+	"SPELL_AURA_APPLIED_DOSE 222079"
 )
 
 --TODO, add arcane blast when i remember to log/get spellID
@@ -43,7 +44,11 @@ local specWarnOozingRush			= mod:NewSpecialWarningRun(223655, nil, nil, nil, 4, 
 local yellOozingRush				= mod:NewYell(223655)
 local specWarnFelGlare				= mod:NewSpecialWarningMoveAway(224982, nil, nil, nil, 1, 2)
 local yellFelGlareh					= mod:NewYell(224982)
+local specWarnSearingWounds			= mod:NewSpecialWarningStack(222079, nil, 4, nil, 2, 1, 2)--Lets go with 4 for now
+local specWarnSearingWoundsOther	= mod:NewSpecialWarningTaunt(222079, nil, nil, nil, 1, 2)
 local specWarnNightwellDischarge	= mod:NewSpecialWarningDodge(231737, nil, nil, nil, 1, 2)
+
+local timerSearingWounds				= mod:NewTargetTimer(20, 222079, nil, "Tank", nil, 5)
 
 local voiceAnnihilatingOrb			= mod:NewVoice(221344)--runout
 local voiceFulminate				= mod:NewVoice(221164, "Melee")--runout
@@ -63,6 +68,7 @@ local voiceArcaneBlast				= mod:NewVoice(143807, "HasInterrupt")--kickcast
 local voiceHeavenlyCrash			= mod:NewVoice(224632)--gathershare
 local voiceOozingRush				= mod:NewVoice(223655)--runaway/keepmove
 local voiceFelGlare					= mod:NewVoice(224982)--runout/keepmove
+local voiceSearingWounds				= mod:NewVoice(222079)--changemt
 local voiceNightwellDischarge		= mod:NewVoice(231737)--watchorb
 
 mod:RemoveOption("HealthFrame")
@@ -169,6 +175,25 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnFelGlare:Show(args.destName)
 		end
+	elseif spellId == 222079 then
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId) then
+			local amount = args.amount or 1
+			timerSearingWounds:Start(args.destName)
+			if amount >= 2 then
+				if args:IsPlayer() then
+					if amount >= 4 then
+						specWarnSearingWounds:Show(amount)
+						voiceSearingWounds:Play("stackhigh")
+					end
+				else
+					if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
+						specWarnSearingWoundsOther:Show(args.destName)
+						voiceSearingWounds:Play("changemt")
+					end
+				end
+			end
+		end
 	end
 end
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
