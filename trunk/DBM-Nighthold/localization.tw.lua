@@ -74,10 +74,8 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1732)
 
-
-
 L:SetOptionLocalization({
-	ShowCustomNPAuraTexture	= "如果你中了星之記號則在名條上顯示自訂的綠/紅圖示材質而不是星之記號減益",
+	ShowCustomNPAuraTextures= "如果你中了星之記號則在名條上顯示自訂的綠/紅圖示材質而不是星之記號減益",
 	FilterOtherSigns		= "過濾與你無關的星之記號點名。"
 })
 
@@ -98,13 +96,18 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	noCLEU4EchoRings		= "時間的浪潮會粉碎你！",
-	noCLEU4EchoOrbs			= "你會發現時光有時很不穩定。"
+	noCLEU4EchoOrbs			= "你會發現時光有時很不穩定。",
+	prePullRP				= "我預見了你的到來。命運的絲線帶你來到這裡。你竭盡全力，想阻止燃燒軍團。"
 })
 
 ------------------
 -- Gul'dan --
 ------------------
 L= DBM:GetModLocalization(1737)
+
+L:SetMiscLocalization({
+	mythicPhase3		= "Time to return the demon hunter's soul to his body... and deny the Legion's master a host!"
+})
 
 -------------
 --  Trash  --
