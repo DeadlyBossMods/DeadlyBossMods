@@ -27,7 +27,7 @@ local warnExpelOrbDestro			= mod:NewTargetCountAnnounce(205344, 4)
 local warnSlamSoon					= mod:NewAnnounce("warnSlamSoon", 4, 205862, nil, nil, true)
 local warnSlam						= mod:NewCountAnnounce(205862, 2)--Regular slams don't need special warn, only bridge smashing ones
 
-local specWarnSearingBrand			= mod:NewSpecialWarningStack(206677, nil, 4, nil, 2, 1, 2)--Lets go with 5 for now
+local specWarnSearingBrand			= mod:NewSpecialWarningStack(206677, nil, 4, nil, 2, 1, 2)--Lets go with 4 for now
 local specWarnSearingBrandOther		= mod:NewSpecialWarningTaunt(206677, nil, nil, nil, 1, 2)
 local specWarnFelBeam				= mod:NewSpecialWarningDodge(205368, nil, nil, nil, 2, 2)
 local specWarnOrbDestro				= mod:NewSpecialWarningMoveAway(205344, nil, nil, nil, 3, 2)
@@ -253,7 +253,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				if args:IsPlayer() then
 					if amount >= 4 then
 						specWarnSearingBrand:Show(amount)
-						voiceSearingBrand:Play("changemt")
+						voiceSearingBrand:Play("stackhigh")
 					end
 				else
 					if not UnitDebuff("player", args.spellName) and not UnitIsDeadOrGhost("player") then
