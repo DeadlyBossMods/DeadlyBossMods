@@ -71,7 +71,7 @@ local countdownSeekerSwarm			= mod:NewCountdown(25, 213238)
 local countdownEchoesOfVoid			= mod:NewCountdown("Alt65", 213531)
 local countdownFeastOfBlood			= mod:NewCountdown("AltTwo25", 208230, "Tank")
 local countdownNightPhase			= mod:NewCountdown(32, 206365)
-local countdownCarrionNightmare 	= mod:NewCountdown("Alt4", 215988)
+local countdownCarrionNightmare 	= mod:NewCountdown("Alt4", 215988, false, 2, 3)
 
 local voiceCarrionPlague			= mod:NewVoice(206480)--scatter
 local voiceSeekerSwarm				= mod:NewVoice(213238)--targetyou/farfromline
