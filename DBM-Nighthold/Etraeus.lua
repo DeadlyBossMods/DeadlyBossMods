@@ -704,6 +704,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerFrigidNovaCD:Start(49, 1)
 		end
 		if self:IsMythic() then
+			self:Unschedule(showConjunction)
 			self.vb.grandConCount = 0
 			timerIcyEjectionCD:Start(15, 1)
 			timerConjunctionCD:Start(27, 1)
@@ -711,6 +712,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerIcyEjectionCD:Start(23.3, 1)
 		end
 	elseif spellId == 222133 then--Phase 3 Conversation
+		
 		self.vb.phase = 3
 		self.vb.isPhaseChanging = true
 		self.vb.felEjectionCount = 0
@@ -721,6 +723,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerConjunctionCD:Stop()
 		timerGravPullCD:Start(29)
 		if self:IsMythic() then
+			self:Unschedule(showConjunction)
 			self.vb.grandConCount = 0
 			timerFelEjectionCD:Start(17.5, 1)
 			timerFelNovaCD:Start(52, 1)
@@ -747,6 +750,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerVoidNovaCD:Start(41, 1)
 		end
 		if self:IsMythic() then
+			self:Unschedule(showConjunction)
 			self.vb.grandConCount = 0
 			self.vb.worldDestroyingCount = 0
 			timerWorldDevouringForceCD:Start(22, 1)
