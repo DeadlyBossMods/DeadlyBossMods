@@ -258,7 +258,7 @@ DBM_CORE_ORB						= "球"
 DBM_CHEST							= "獎勵箱"
 DBM_NO_DEBUFF						= "沒有%s"
 DBM_ALLY							= "隊友"
-DBM_ADDs							= "小怪"
+DBM_ADDS							= "小怪"
 --Common Locals end
 
 DBM_CORE_BREAK_USAGE				= "休息時間不能長於60分鐘。請確定你輸入的時間是分鐘不是秒。"
