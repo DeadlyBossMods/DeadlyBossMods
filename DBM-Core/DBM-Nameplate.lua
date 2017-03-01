@@ -16,6 +16,7 @@ local twipe, floor = table.wipe, math.floor
 --  Create Frame  --
 --------------------
 local DBMNameplateFrame = CreateFrame("Frame", "DBMNameplate", UIParent)
+DBMNameplateFrame:SetFrameStrata('BACKGROUND')
 DBMNameplateFrame:Hide()
 
 --------------------------
@@ -24,8 +25,7 @@ DBMNameplateFrame:Hide()
 local CreateAuraFrame
 do
     local function AuraFrame_CreateIcon(frame)
-        local icon = frame.parent:CreateTexture()
-        icon:SetParent(UIParent)
+        local icon = DBMNameplateFrame:CreateTexture(nil,'BACKGROUND',nil,0)
         icon:SetSize(40,40)
         icon:Hide()
 
