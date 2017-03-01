@@ -141,35 +141,35 @@ mod:AddNamePlateOption("NPAuraOnBeam", 214278, false)
 
 --Exists in phases 1-3
 local slowElementalTimers = {5, 49, 52, 60}--Heroic Jan 18
-local easyslowElementalTimers = {5, 49, 41}--Normal Jan 26
+local normalslowElementalTimers = {5, 49, 41}--Normal Jan 26
 local mythicP1SlowElementalTimers = {5, 39, 75}--Mythic Feb 5
 local mythicP2SlowElementalTimers = {5, 39, 45, 30, 30, 30}--Mythic Feb 5
 local mythicP3SlowElementalTimers = {5, 54, 55, 30}--Mythic Feb 5
 local fastElementalTimers = {8, 88, 95, 20}--Heroic Jan 19
-local easyfastElementalTimers = {8, 71}--Norma Jan 26
+local normalfastElementalTimers = {8, 71}--Norma Jan 26
 local mythicP1FastElementalTimers = {8, 81.0}--Mythic Feb 5
 local mythicP2FastElementalTimers = {8, 51}--Mythic Feb 5
 local mythicP3FastElementalTimers = {8, 36, 44}--Mythic Feb 5
 local RingTimers = {34, 40, 10, 62, 9, 45}--Heroic Jan 19
-local easyRingTimers = {34, 30, 75, 50}--Normal Feb 8
+local normalRingTimers = {34, 30, 75, 50}--Normal Feb 8
 local mythicRingTimers = {30, 39, 15, 30, 19, 10, 25, 9, 10, 10}--Mythic Feb 5 (figure out that 25 in middle of 10s)
 local SingularityTimers = {10, 22, 36.0, 57, 65}--Heroic Jan 18
-local easySingularityTimers = {10, 22, 36.0, 46}--Normal Feb 2
+local normalSingularityTimers = {10, 22, 36.0, 46}--Normal Feb 2
 local mythicSingularityTimers = {10, 55, 50, 45}--Mythic Feb 5th
 --Only exist in phase 2
 local BeamTimers = {72, 57, 60}--Heroic Jan 18
-local easyBeamTimers = {72, 26, 40}--Normal Feb 2
+local normalBeamTimers = {72, 26, 40}--Normal Feb 2
 local mythicBeamTimers = {67, 50, 65}--Mythic Feb 5
 --Exists in Phase 2 and Phase 3 (but cast start event missing in phase 3)
 local OrbTimers = {27, 76, 37, 70, 15, 15, 15}--Heroic Jan 18
-local easyOrbTimers = {27, 56, 31}--Normal Feb 2
+local normalOrbTimers = {27, 56, 31}--Normal Feb 2
 local mythicOrbTimers = {24, 85, 60, 20, 10}--Mythic Feb 5
 --Only exist in phase 3 so first timer of course isn't variable
 local BurstTimers = {58, 52.0, 56.0, 65.0, 10.0, 10.0, 10.0, 10.0}--Heroic Jan 21 (normal ones are different i'm sure, just no data to fix yet)
-local easyBurstTimers = {58, 67}--Normal Feb 2
+local normalBurstTimers = {58, 67}--Normal Feb 2
 local mythicBurstTimers = {48, 90, 45, 30}--Mythic Feb 5
 local TormentTimers = {33, 61, 37, 60}--Heroic Jan 21
-local easyTormentTimers = {33, 41}--Normal Feb 2
+local normalTormentTimers = {33, 41}--Normal Feb 2
 local mythicTormentTimers = {74, 75, 25, 20}--Mythic Feb 5
 local currentTank, tankUnitID = nil, nil--not recoverable on purpose
 mod.vb.firstElementals = false
@@ -298,7 +298,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnEpochericOrb:Show()
 		voiceEpochericOrb:Play("161612")
 		local nextCount = self.vb.orbCastCount + 1
-		local timer = self:IsMythic() and mythicOrbTimers[nextCount] or self:IsEasy() and easyOrbTimers[nextCount] or OrbTimers[nextCount]
+		local timer = self:IsMythic() and mythicOrbTimers[nextCount] or self:IsNormal() and normalOrbTimers[nextCount] or self:IsHeroic() and OrbTimers[nextCount]
 		if timer then
 			timerEpochericOrbCD:Start(timer, nextCount)
 			countdownOrbs:Start(timer)
@@ -311,7 +311,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 209597 then
 		self.vb.burstCastCount = self.vb.burstCastCount + 1
 		local nextCount = self.vb.burstCastCount + 1
-		local timer = self:IsMythic() and mythicBurstTimers[nextCount] or self:IsEasy() and easyBurstTimers[nextCount] or BurstTimers[nextCount]
+		local timer = self:IsMythic() and mythicBurstTimers[nextCount] or self:IsNormal() and normalBurstTimers[nextCount] or self:IsHeroic() and BurstTimers[nextCount]
 		if timer then
 			timerConflexiveBurstCD:Start(timer, nextCount)
 			countdownConflexiveBurst:Start(timer)
@@ -319,7 +319,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 210387 then
 		self.vb.tormentCastCount = self.vb.tormentCastCount + 1
 		local nextCount = self.vb.tormentCastCount + 1
-		local timer = self:IsMythic() and mythicTormentTimers[nextCount] or self:IsEasy() and easyTormentTimers[nextCount] or TormentTimers[nextCount]
+		local timer = self:IsMythic() and mythicTormentTimers[nextCount] or self:IsNormal() and normalTormentTimers[nextCount] or self:IsHeroic() and TormentTimers[nextCount]
 		if timer then
 			timerPermaliativeTormentCD:Start(timer, nextCount)
 		end
@@ -354,7 +354,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			if nextCount > self.vb.totalbeamCasts then return end
 		end
-		local timer = self:IsMythic() and mythicBeamTimers[nextCount] or self:IsEasy() and easyBeamTimers[nextCount] or BeamTimers[nextCount]
+		local timer = self:IsMythic() and mythicBeamTimers[nextCount] or self:IsNormal() and normalBeamTimers[nextCount] or self:IsHeroic() and BeamTimers[nextCount]
 		if timer then
 			timerDelphuricBeamCD:Start(timer, nextCount)
 		end
@@ -363,7 +363,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 210024 and self:AntiSpam(15, 4) then
 		self.vb.orbCastCount = self.vb.orbCastCount + 1
 		local nextCount = self.vb.orbCastCount + 1
-		local timer = self:IsMythic() and mythicOrbTimers[nextCount] or self:IsEasy() and easyOrbTimers[nextCount] or OrbTimers[nextCount]
+		local timer = self:IsMythic() and mythicOrbTimers[nextCount] or self:IsNormal() and normalOrbTimers[nextCount] or self:IsHeroic() and OrbTimers[nextCount]
 		if timer then
 			specWarnEpochericOrb:Schedule(timer-10)
 			voiceEpochericOrb:Schedule(timer-10, "161612")
@@ -634,7 +634,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self:IsMythic() then
 			timer = self.vb.phase == 1 and mythicP1SlowElementalTimers[self.vb.slowElementalCount+1] or self.vb.phase == 2 and mythicP2SlowElementalTimers[self.vb.slowElementalCount+1] or mythicP3SlowElementalTimers[self.vb.slowElementalCount+1]
 		else
-			timer = self:IsEasy() and easyslowElementalTimers[self.vb.slowElementalCount+1] or slowElementalTimers[self.vb.slowElementalCount+1]
+			timer = self:IsNormal() and normalslowElementalTimers[self.vb.slowElementalCount+1] or self:IsHeroic() and slowElementalTimers[self.vb.slowElementalCount+1]
 		end
 		if timer then
 			timerTimeElementalsCD:Start(timer, SLOW)
@@ -649,7 +649,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		if self:IsMythic() then
 			timer = self.vb.phase == 1 and mythicP1FastElementalTimers[self.vb.slowElementalCount+1] or self.vb.phase == 2 and mythicP2FastElementalTimers[self.vb.slowElementalCount+1] or mythicP3FastElementalTimers[self.vb.slowElementalCount+1]
 		else
-			timer = self:IsEasy() and easyfastElementalTimers[self.vb.fastElementalCount+1] or fastElementalTimers[self.vb.fastElementalCount+1]
+			timer = self:IsNormal() and normalfastElementalTimers[self.vb.fastElementalCount+1] or self:IsHeroic() and fastElementalTimers[self.vb.fastElementalCount+1]
 		end
 		if timer then
 			timerTimeElementalsCD:Start(timer, FAST)
@@ -669,7 +669,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		else
 			if nextCount > self.vb.totalsingularityCasts then return end--There won't be any more
 		end
-		local timer = self:IsMythic() and mythicSingularityTimers[nextCount] or self:IsEasy() and easySingularityTimers[nextCount] or SingularityTimers[nextCount]
+		local timer = self:IsMythic() and mythicSingularityTimers[nextCount] or self:IsNormal() and normalSingularityTimers[nextCount] or self:IsHeroic() and SingularityTimers[nextCount]
 		if timer then
 			timerSpanningSingularityCD:Start(timer, nextCount)
 			if self:IsMythic() then
@@ -710,7 +710,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		else
 			if nextCount > self.vb.totalRingCasts then return end--There won't be any more
 		end
-		local timer = self:IsMythic() and mythicRingTimers[nextCount] or self:IsEasy() and easyRingTimers[nextCount] or RingTimers[nextCount]
+		local timer = self:IsMythic() and mythicRingTimers[nextCount] or self:IsNormal() and normalRingTimers[nextCount] or self:IsHeroic() and RingTimers[nextCount]
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
 			countdownArcaneticRing:Start(timer)
@@ -733,7 +733,7 @@ function mod:OnSync(msg, targetname)
 		else
 			if nextCount > self.vb.totalRingCasts then return end--There won't be any more
 		end
-		local timer = self:IsMythic() and mythicRingTimers[nextCount] or self:IsEasy() and easyRingTimers[nextCount] or RingTimers[nextCount]
+		local timer = self:IsMythic() and mythicRingTimers[nextCount] or self:IsNormal() and normalRingTimers[nextCount] or self:IsHeroic() and RingTimers[nextCount]
 		if timer then
 			timerArcaneticRing:Start(timer, nextCount)
 			countdownArcaneticRing:Start(timer)
@@ -746,7 +746,7 @@ function mod:OnSync(msg, targetname)
 		specWarnEpochericOrb:Show()
 		voiceEpochericOrb:Play("161612")
 		local nextCount = self.vb.orbCastCount + 1
-		local timer = self:IsMythic() and mythicOrbTimers[nextCount] or self:IsEasy() and easyOrbTimers[nextCount] or OrbTimers[nextCount]
+		local timer = self:IsMythic() and mythicOrbTimers[nextCount] or self:IsNormal() and normalOrbTimers[nextCount] or self:IsHeroic() and OrbTimers[nextCount]
 		if timer then
 			timerEpochericOrbCD:Start(timer, nextCount)
 			countdownOrbs:Start(timer)
