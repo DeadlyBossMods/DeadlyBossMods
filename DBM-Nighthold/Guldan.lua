@@ -22,6 +22,10 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
 
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_YELL"
+)
+
 --TODO, if anquished spirits is important, add a timer. if not, remove warning.
 --TODO, Do a bunch of stuff with well of souls? infoframe to track stacks/who should soak next?
 --TODO, infoframe for TimeStop (206310) used correctly/well?
@@ -110,6 +114,7 @@ local specWarnPurifiedEssence		= mod:NewSpecialWarningMoveTo(221486, nil, DBM_CO
 
 --Stage One: The Council of Elders
 ----Gul'dan
+local timerRP						= mod:NewRPTimer(78)
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerLiquidHellfireCD			= mod:NewNextCountTimer(25, 206219, nil, nil, nil, 3)
 local timerFelEffluxCD				= mod:NewCDCountTimer(10.7, 206514, nil, nil, nil, 3)--10.7-13.5 (14-15 on normal)
@@ -736,7 +741,9 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if ( msg == L.mythicPhase3 or msg:find(L.mythicPhase3)) and self:IsMythic() then	
+	if (msg == L.prePullRP or msg:find(L.prePullRP)) then
+		self:SendSync("GuldanRP")
+	elseif ( msg == L.mythicPhase3 or msg:find(L.mythicPhase3)) and self:IsMythic() then	
 		self:SendSync("mythicPhase3")
 	end
 end
@@ -849,6 +856,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 end
 
 function mod:OnSync(msg)
+	if msg == "GuldanRP" then
+		timerRP:Start()
+	end
 	if not self:IsInCombat() then return end
 	if msg == "mythicPhase3" and self:IsMythic() then
 		self.vb.phase = 3

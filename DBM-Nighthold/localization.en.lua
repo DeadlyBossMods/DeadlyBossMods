@@ -109,7 +109,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1737)
 
 L:SetMiscLocalization({
-	mythicPhase3		= "Time to return the demon hunter's soul to his body... and deny the Legion's master a host!"
+	mythicPhase3		= "Time to return the demon hunter's soul to his body... and deny the Legion's master a host!",
+	prePullRP			= "Ah yes, the heroes have arrived. So persistent. So confident. But your arrogance will be your undoing!"
 })
 
 -------------
