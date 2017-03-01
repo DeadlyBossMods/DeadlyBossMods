@@ -78,7 +78,7 @@ local specWarnConflexiveBurst		= mod:NewSpecialWarningYou(209598, nil, nil, nil,
 local specWarnAblativePulse			= mod:NewSpecialWarningInterrupt(209971, "Tank", nil, 2, 1, 2)
 
 --Base
-local timerRP						= mod:NewRPTimer(67)
+local timerRP						= mod:NewRPTimer(68)
 local timerLeaveNightwell			= mod:NewCastTimer(9.8, 208863, nil, nil, nil, 6)
 local timerTimeElementalsCD			= mod:NewNextSourceTimer(16, 208887, 141872, nil, nil, 1)--"Call Elemental" short text
 local timerFastTimeBubble			= mod:NewTimer(30, "timerFastTimeBubble", 209166, nil, nil, 5)
