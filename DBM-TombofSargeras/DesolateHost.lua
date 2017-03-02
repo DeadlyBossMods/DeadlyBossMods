@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
 --TODO, infoframe add tracker? or infoframe debuff tracker (adds with bone armor count and players with screach count, etc)
 --TODO, 235907 (Collapsing Fissure) missing from combat log
 --TODO, adds timers (not incombat log, robably need videos/scheduling
---TODO, why is there a huge break in soulbind? is Soul queen taking a fap break?
+--TODO, range frame probably won't work cross phase since it relies on item checks which would return false cross realms. 
 --[[
 (ability.id = 238570 or ability.id = 235927 or ability.id = 236542 or ability.id = 236544) and type = "begincast" or
 (ability.id = 235907 or ability.id = 236072 or ability.id = 236507 or ability.id = 235969 or ability.id = 236449 or ability.id =  236138 or ability.id = 236131) and type = "cast" or
