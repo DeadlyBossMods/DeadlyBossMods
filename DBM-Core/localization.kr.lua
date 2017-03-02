@@ -127,9 +127,9 @@ DBM_CORE_OPTION_HEALTH_FRAME		= "보스 체력 창 보기"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "바"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "일반 알림"
-DBM_CORE_OPTION_CATEGORY_WARNINGS_YOU	= "개인별 알림"
-DBM_CORE_OPTION_CATEGORY_WARNINGS_OTHER	= "대상별 알림"
-DBM_CORE_OPTION_CATEGORY_WARNINGS_ROLE	= "역할별 알림"
+DBM_CORE_OPTION_CATEGORY_WARNINGS_YOU	= "개인 알림"
+DBM_CORE_OPTION_CATEGORY_WARNINGS_OTHER	= "대상 관련 알림"
+DBM_CORE_OPTION_CATEGORY_WARNINGS_ROLE	= "역할 관련 알림"
 DBM_CORE_OPTION_CATEGORY_SOUNDS		= "음성"
 
 DBM_CORE_AUTO_RESPONDED						= "귓속말에 자동응답 메시지를 보냈습니다."
@@ -246,6 +246,8 @@ DBM_ERROR_NO_PERMISSION				= "이 명령어를 실행하기 위한 권한을 가
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "보스 체력 창 닫기"
 
 --Common Locals
+DBM_NEXT							= "다음 %s"
+DBM_COOLDOWN						= "%s 쿨타임"
 DBM_CORE_UNKNOWN					= "알 수 없음"--UNKNOWN
 DBM_CORE_LEFT						= "왼쪽"
 DBM_CORE_RIGHT						= "오른쪽"
@@ -257,6 +259,7 @@ DBM_CORE_ORB						= "구슬"
 DBM_CHEST							= "상자"--As in Treasure 'Chest'. Not Chest as in body part.
 DBM_NO_DEBUFF						= "%s 없음"--For use in places like info frame where you put "Not Spellname"
 DBM_ALLY							= "공대원"--Such as "Move to Ally"
+DBM_ADDs							= "쫄"--Such as "Move to Ally"
 --Common Locals end
 
 DBM_CORE_BREAK_USAGE				= "쉬는 시간은 60분을 초과할 수 없습니다. 쉬는 시간은 초단위가 아니라 분단위로 입력해야 합니다."
@@ -411,7 +414,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.nextspecial		= "다음 특수 능력 타이머 바 �
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement		= "%s 업적의 타이머 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.phase		= "다음 단계 타이머 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.adds		= "쫄 등장 타이머 바 보기"
-DBM_CORE_AUTO_TIMER_OPTIONS.roleplay		= "역할 연기(롤플레이) 시간 타이머 바 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.roleplay		= "역할 수행(롤플레이) 지속 시간 타이머 바 보기"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에 공격대 징표 설정"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "$spell:%s에 공격대 징표 설정"
