@@ -75,7 +75,6 @@ local voiceWrathofCreators			= mod:NewVoice(234891, "HasInterrupt")--kickcast
 --mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(235117, true)
 --mod:AddRangeFrameOption("5/8/15")
-mod:AddNamePlateOption("NPAuraOnInfusion", 235271)
 
 mod.vb.unstableSoulCount = 0
 mod.vb.hammerCount = 0
@@ -94,9 +93,6 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		timerSpontFragmentationCD:Start(1-delay)
 	end
-	if self.Options.NPAuraOnInfusion then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
-	end
 end
 
 function mod:OnCombatEnd()
@@ -105,9 +101,6 @@ function mod:OnCombatEnd()
 --	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
-	end
-	if self.Options.NPAuraOnInfusion then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 
@@ -156,16 +149,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFelInfusion:Show()
 			voiceFelInfusion:Play("felinfusion")
 		end
-		if self.Options.NPAuraOnInfusion then
-			DBM.Nameplate:Show(false, args.destName, spellId)
-		end
 	elseif spellId == 235213 then--Light Infusion
 		if args:IsPlayer() then
 			specWarnLightInfusion:Show()
 			voiceLightInfusion:Play("lightinfusion")
-		end
-		if self.Options.NPAuraOnInfusion then
-			DBM.Nameplate:Show(false, args.destName, spellId)
 		end
 	elseif spellId == 235117 or spellId == 240209 then
 		self.vb.unstableSoulCount = self.vb.unstableSoulCount + 1
@@ -195,13 +182,8 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 228029 then
-		if self.Options.NPAuraOnInfusion then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
-		end
 	elseif spellId == 235213 then--Light Infusion
-		if self.Options.NPAuraOnInfusion then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
-		end
+		
 	elseif spellId == 235117 or spellId == 240209 then
 		self.vb.unstableSoulCount = self.vb.unstableSoulCount - 1
 		if args:IsPlayer() then

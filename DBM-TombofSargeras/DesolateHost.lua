@@ -103,10 +103,7 @@ local voiceDoomedSunderin			= mod:NewVoice(236544)--gathershare/justrun
 --mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(235621, true)
 mod:AddRangeFrameOption(5, 235621)--5 Yards for now. melee range is generally acceptable range for these things, but maybe change to 8 if trying to sort of pre warn it instead of "too late" warn it
-mod:AddNamePlateOption("NPAuraOnSpearofAnguish", 235924)
-mod:AddNamePlateOption("NPAuraOnSoulbind", 236459)
 mod:AddNamePlateOption("NPAuraOnBonecageArmor", 236513)
-mod:AddNamePlateOption("NPAuraOnShatteringScream", 235969)
 
 mod.vb.soulboundCast = 0
 mod.vb.wailingSoulsCast = 0
@@ -163,9 +160,6 @@ function mod:OnCombatStart(delay)
 	timerWitherCD:Start(23-delay)
 	timerWailingSoulsCD:Start(59.4-delay, 1)
 	timerTormentedCriesCD:Start(119-delay)
-	if self.Options.NPAuraOnSoulbind or self.Options.NPAuraOnSpearofAnguish or self.Options.NPAuraOnShatteringScream then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
-	end
 	if self.Options.NPAuraOnBonecageArmor then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -190,8 +184,8 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnSoulbind or self.Options.NPAuraOnSpearofAnguish or self.Options.NPAuraOnBonecageArmor or self.Options.NPAuraOnShatteringScream then
-		DBM.Nameplate:Hide(true, nil, nil, nil, true, true, true)--Uses both hostile and friendly
+	if self.Options.NPAuraOnBonecageArmor then
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, false, true)--Uses both hostile and friendly
 	end
 end
 
@@ -253,9 +247,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 236459 then
 		warnSoulbind:CombinedShow(0.5, args.destName)
-		if self.Options.NPAuraOnSoulbind then
-			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 60)
-		end
 		if args:IsPlayer() then
 			specWarnSoulbind:Show()
 			voiceSoulbind:Play("targetyou")
@@ -265,9 +256,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			--end
 		end
 	elseif spellId == 235924 then
-		if self.Options.NPAuraOnSpearofAnguish then
-			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 6)
-		end
 		if args:IsPlayer() then
 			specWarnSpearofAnguish:Show()
 			voiceSpearofAnguish:Play("runout")
@@ -305,9 +293,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceShatteringScream:Play("getboned")
 		end
 		warnShatteringScream:CombinedShow(0.5, args.destName)
-		if self.Options.NPAuraOnShatteringScream then
-			DBM.Nameplate:Show(true, args.destGUID, spellId, nil, 7.5)
-		end
 	elseif spellId == 236361 or spellId == 239923 then
 		warnSpiritChains:CombinedShow(0.3, args.destName)
 	elseif spellId == 236548 then
@@ -324,9 +309,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		--if self.Options.RangeFrame and args:IsPlayer() then
 		--	DBM.RangeCheck:Hide()
 		--end
-		if self.Options.NPAuraOnSoulbind then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
-		end
 	elseif spellId == 235924 then
 		if args:IsPlayer() then
 			yellSpearofAnguish:Cancel()
@@ -334,18 +316,13 @@ function mod:SPELL_AURA_REMOVED(args)
 			--	DBM.RangeCheck:Hide()
 			--end
 		end
-		if self.Options.NPAuraOnSpearofAnguish then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
-		end
 	elseif spellId == 236513 then--Bonecage Armor
 		self.vb.boneArmorCount = self.vb.boneArmorCount - 1
 		if self.Options.NPAuraOnBonecageArmor then
 			DBM.Nameplate:Hide(true, args.destGUID, spellId)
 		end
 	elseif spellId == 235969 then--Shattering Scream
-		if self.Options.NPAuraOnShatteringScream then
-			DBM.Nameplate:Hide(true, args.destGUID, spellId)
-		end
+		
 	elseif spellId == 236072 then
 		self.vb.soulboundCast = 0
 		timerSoulbindCD:Start(12, 1)
