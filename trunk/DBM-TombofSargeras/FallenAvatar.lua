@@ -108,8 +108,6 @@ local voiceRainoftheDestroyer		= mod:NewVoice(240396)--watchstep
 mod:AddSetIconOption("SetIconOnTouchofSargeras", 234009, true)
 mod:AddBoolOption("InfoFrame", true)
 mod:AddRangeFrameOption(10, 236571)
-mod:AddNamePlateOption("NPAuraOnTouchofSargeras", 234009)
-mod:AddNamePlateOption("NPAuraOnDarkMark", 239739)
 
 mod.vb.phase = 1
 local TouchofSargerasTargets = {}
@@ -159,9 +157,6 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(POWER_TYPE_POWER)
 		DBM.InfoFrame:Show(2, "enemypower", 2, ALTERNATE_POWER_INDEX)
 	end
-	if self.Options.NPAuraOnTouchofSargeras or self.Options.NPAuraOnDarkMark then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
-	end
 end
 
 function mod:OnCombatEnd()
@@ -170,9 +165,6 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
-	end
-	if self.Options.NPAuraOnTouchofSargeras or self.Options.NPAuraOnDarkMark then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 
@@ -233,9 +225,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellTouchofSargerasFades:Schedule(8, 2)
 			yellTouchofSargerasFades:Schedule(7, 3)
 		end
-		if self.Options.NPAuraOnTouchofSargeras then
-			DBM.Nameplate:Show(false, args.destName, spellId, nil, 10)
-		end
 	elseif spellId == 239739 then
 		warnDarkmark:CombinedShow(0.3, args.destName)
 		self:Unschedule(checkDarkMark)
@@ -247,9 +236,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellDarkMarkFades:Schedule(9, 1)
 			yellDarkMarkFades:Schedule(8, 2)
 			yellDarkMarkFades:Schedule(7, 3)
-		end
-		if self.Options.NPAuraOnDarkMark then
-			DBM.Nameplate:Show(false, args.destName, spellId, nil, 6)
 		end
 	elseif spellId == 234059 then
 		warnUnboundChaos:CombinedShow(0.3, args.destName)
@@ -294,18 +280,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellTouchofSargerasFades:Cancel()
 		end
-		if self.Options.NPAuraOnTouchofSargeras then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
-		end
 		if self.Options.SetIconOnTouchofSargeras then
 			self:SetIcon(args.destName, 0)
 		end
 	elseif spellId == 239739 then
 		if args:IsPlayer() then
 			yellDarkMarkFades:Cancel()
-		end
-		if self.Options.NPAuraOnDarkMark then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
 		end
 	elseif spellId == 234059 then
 		--Do Stuff?

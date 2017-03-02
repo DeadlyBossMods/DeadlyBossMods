@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCES 231854 231729 232061 234129",
 	"SPELL_AURA_APPLIED 231998 231729 231904 234016 241600",
 	"SPELL_AURA_APPLIED_DOSE 231998",
-	"SPELL_AURA_REMOVED 233429 241600",
+	"SPELL_AURA_REMOVED 233429 234016 241600",
 	"SPELL_AURA_REMOVED_DOSE 233429",
 	"SPELL_PERIODIC_DAMAGE 231768",
 	"SPELL_PERIODIC_MISSED 231768",
@@ -108,6 +108,7 @@ local voiceTantrum					= mod:NewVoice(241590)--aesoon
 --mod:AddInfoFrameOption(227503, true)
 --mod:AddRangeFrameOption("5/8/15")
 mod:AddNamePlateOption("NPAuraOnSicklyFixate", 241600)
+mod:AddNamePlateOption("NPAuraOnDrivenAssault", 234016)
 
 mod.vb.rageWarned = false
 mod.vb.rageCount = 0
@@ -120,8 +121,8 @@ function mod:OnCombatStart(delay)
 	timerCommandingRoarCD:Start(17.8-delay)
 	timerUncheckedRageCD:Start(-delay)
 	countdownUncheckedRage:Start()
-	if self.Options.NPAuraOnSicklyFixate and self:IsMythic() then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+	if self.Options.NPAuraOnSicklyFixate and self:IsMythic() or self.Options.NPAuraOnDrivenAssault then
+		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
 
@@ -132,8 +133,8 @@ function mod:OnCombatEnd()
 --	if self.Options.InfoFrame then
 --		DBM.InfoFrame:Hide()
 --	end
-	if self.Options.NPAuraOnSicklyFixate and self:IsMythic() then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
+	if self.Options.NPAuraOnSicklyFixate and self:IsMythic() or self.Options.NPAuraOnDrivenAssault then
+		DBM.Nameplate:Hide(true, nil, nil, nil, false, true)
 	end
 end
 
@@ -225,6 +226,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnDrivenAssault:Show(args.destName)
 		end
+		if self.Options.NPAuraOnDrivenAssault then
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
+		end
 	elseif spellId == 241600 then
 		if args:IsPlayer() then
 			specWarnSicklyFixate:Show()
@@ -234,7 +238,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnSicklyFixate:Show(args.destName)
 		end
 		if self.Options.NPAuraOnSicklyFixate then
-			DBM.Nameplate:Show(false, args.destName, spellId)
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 		end
 	end
 end
@@ -248,9 +252,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		--Every 5 seconds or every stack under 5
 			warnFrigidBlows:Show(amount)
 		end
+	elseif spellId == 234016 then
+		if self.Options.NPAuraOnDrivenAssault then
+			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
+		end
 	elseif spellId == 241600 then
 		if self.Options.NPAuraOnSicklyFixate then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
+			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 	end
 end
