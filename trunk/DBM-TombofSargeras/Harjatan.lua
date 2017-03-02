@@ -134,7 +134,7 @@ function mod:OnCombatEnd()
 --		DBM.InfoFrame:Hide()
 --	end
 	if self.Options.NPAuraOnSicklyFixate and self:IsMythic() or self.Options.NPAuraOnDrivenAssault then
-		DBM.Nameplate:Hide(true, nil, nil, nil, false, true)
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, false, true)
 	end
 end
 
