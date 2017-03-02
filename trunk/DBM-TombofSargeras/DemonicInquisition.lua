@@ -56,7 +56,7 @@ local specWarnTormentingBurst		= mod:NewSpecialWarningCount(234015, nil, nil, ni
 
 --Atrigan
 local timerScytheSweepCD			= mod:NewCDTimer(23, 233426, nil, nil, nil, 3)
-local timerCalcifiedQuillsCD		= mod:NewCDTimer(20.5, 233431, nil, nil, nil, 3)--20.5 unless delayed by scythe, or bone saw
+local timerCalcifiedQuillsCD		= mod:NewCDTimer(20.2, 233431, nil, nil, nil, 3)--20.2-20.5 unless delayed by scythe, or bone saw
 local timerBoneSawCD				= mod:NewCDTimer(45.4, 233441, nil, nil, nil, 2)
 local timerBoneSaw					= mod:NewBuffActiveTimer(15, 233441, nil, nil, nil, 2)
 --Belac
@@ -91,7 +91,7 @@ function mod:OnCombatStart(delay)
 	self.vb.burstCount = 0
 	self.vb.scytheCount = 0
 	timerScytheSweepCD:Start(5.5-delay)
-	timerCalcifiedQuillsCD:Start(10.5-delay)
+	timerCalcifiedQuillsCD:Start(8.5-delay)--8.5-11
 	timerBoneSawCD:Start(60.5-delay)
 --	timerEchoingAnguishCD:Start(1-delay)
 --	timerSuffocatingDarkCD:Start(1-delay)
