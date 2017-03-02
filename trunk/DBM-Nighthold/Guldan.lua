@@ -442,6 +442,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 211439 then--Will of the Demon Within
 		if self.vb.phase ~= 3 then -- For unlocalized clients
 			self.vb.phase = 3
+			timerWindsCD:Stop()
 		end
 		specWarnWilloftheDemonWithin:Show()
 		voiceWilloftheDemonWithin:Play("carefly")
@@ -737,6 +738,7 @@ function mod:UNIT_DIED(args)
 		timerEyeofGuldanCD:Stop()
  		timerBlackHarvestCD:Stop()
  		timerStormOfDestroyerCD:Stop()
+ 		timerWindsCD:Stop()
 	end
 end
 
