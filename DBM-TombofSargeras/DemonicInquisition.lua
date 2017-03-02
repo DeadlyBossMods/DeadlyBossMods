@@ -15,9 +15,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 233426",
 	"SPELL_CAST_SUCCES 233431 233983 233894 234015",
-	"SPELL_AURA_APPLIED 233430 233441 235230 233983 233894",
+	"SPELL_AURA_APPLIED 233430 233441 235230 233983 233894 233431",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 233441 235230 233983",
+	"SPELL_AURA_REMOVED 233441 235230 233983 233431",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -35,23 +35,25 @@ ability.id = 233426 and type = "begincast"or
 (ability.id = 233441) and type = "applydebuff" or
 (ability.id = 235230 or ability.id = 233441) and (type = "removebuff" or type = "applybuff")
 --]]
+--Atrigan
+local warnQuills					= mod:NewTargetAnnounce(233431, 2)
 --Belac
 local warnEchoingAnguish			= mod:NewTargetAnnounce(233983, 3)
 local warnSuffocatingDark			= mod:NewTargetAnnounce(233894, 3, nil, false)--Affects a LOT of targets
 local warnTormentingBurst			= mod:NewCountAnnounce(234015, 2)
 
---Osseus/Atrigan
+--Atrigan
 local specWarnUnbearableTorment		= mod:NewSpecialWarningYou(233430, nil, nil, nil, 1, 2)
 local specWarnUnbearableTormentTank	= mod:NewSpecialWarningTaunt(233430, nil, nil, nil, 1, 2)
 local specWarnScytheSweep			= mod:NewSpecialWarningDodge(233426, nil, nil, nil, 1, 2)
-local specWarnCalcifiedQuills		= mod:NewSpecialWarningDodge(233431, nil, nil, nil, 2, 2)
+local specWarnCalcifiedQuills		= mod:NewSpecialWarningRun(233431, nil, nil, nil, 1, 2)
 local specWarnBoneSaw				= mod:NewSpecialWarningRun(233441, nil, nil, nil, 4, 2)
 --Belac
 local specWarnEchoingAnguish		= mod:NewSpecialWarningMoveAway(233983, nil, nil, nil, 1, 2)
 local yellEchoingAnguish			= mod:NewYell(233983)
 local specWarnFelSquall				= mod:NewSpecialWarningRun(235230, nil, nil, nil, 4, 2)
 
---Osseus/Atrigan
+--Atrigan
 local timerScytheSweepCD			= mod:NewCDTimer(23, 233426, nil, nil, nil, 3)
 local timerCalcifiedQuillsCD		= mod:NewCDTimer(20.5, 233431, nil, nil, nil, 3)--20.5 unless delayed by scythe, or bone saw
 local timerBoneSawCD				= mod:NewCDTimer(45.4, 233441, nil, nil, nil, 2)
@@ -70,7 +72,7 @@ local timerFelSquall				= mod:NewBuffActiveTimer(15, 235230, nil, nil, nil, 2)
 
 --Osseus/Atrigan
 local voiceScytheSweep				= mod:NewVoice(233426)--shockwave
-local voiceCalcifiedQuills			= mod:NewVoice(233431)--watchstep
+local voiceCalcifiedQuills			= mod:NewVoice(233431)--runout/keepmove
 local voiceBoneSaw					= mod:NewVoice(233441)--runout/keepmove
 --Belac
 local voiceEchoingAnguish			= mod:NewVoice(233983)--runout
@@ -128,10 +130,6 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 233431 then
-		--Useless to warn here, this fires on cast finish. there is no cast start event
-		--Needs replacing with a UNIT event or something earlier such as chat message/emote
-		specWarnCalcifiedQuills:Show()
-		voiceScytheSweep:Play("watchstep")
 		timerCalcifiedQuillsCD:Start()
 	elseif spellId == 233983 then
 		--timerEchoingAnguishCD:Start()
@@ -190,6 +188,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 233894 then
 		warnSuffocatingDark:CombinedShow(1, args.destName)
+	elseif spellId == 233431 then
+		if args:IsPlayer() then
+			specWarnCalcifiedQuills:Show()
+			voiceScytheSweep:Play("runout")
+			voiceScytheSweep:Schedule(1, "keepmove")
+		else
+			warnQuills:Show(args.destName)
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
