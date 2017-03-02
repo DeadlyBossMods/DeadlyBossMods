@@ -13,8 +13,8 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 233426",
-	"SPELL_CAST_SUCCES 233431 233983 233894 234015",
+	"SPELL_CAST_START 233426 234015",
+	"SPELL_CAST_SUCCES 233431 233983 233894",
 	"SPELL_AURA_APPLIED 233430 233441 235230 233983 233894 233431",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 233441 235230 233983 233431",
@@ -30,8 +30,8 @@ mod:RegisterEventsInCombat(
 --TODO, timer option default improvements to reduce timer clutter.
 --TODO, countdown options for relevant timers.
 --[[
-ability.id = 233426 and type = "begincast"or
-(ability.id = 233431 or ability.id = 233983 or ability.id = 233894 or ability.id = 234015) and type = "cast" or
+(ability.id = 233426 or ability.id = 234015) and type = "begincast"or
+(ability.id = 233431 or ability.id = 233983 or ability.id = 233894) and type = "cast" or
 (ability.id = 233441) and type = "applydebuff" or
 (ability.id = 235230 or ability.id = 233441) and (type = "removebuff" or type = "applybuff")
 --]]
@@ -40,7 +40,7 @@ local warnQuills					= mod:NewTargetAnnounce(233431, 2)
 --Belac
 local warnEchoingAnguish			= mod:NewTargetAnnounce(233983, 3)
 local warnSuffocatingDark			= mod:NewTargetAnnounce(233894, 3, nil, false)--Affects a LOT of targets
-local warnTormentingBurst			= mod:NewCountAnnounce(234015, 2)
+--local warnTormentingBurst			= mod:NewCountAnnounce(234015, 2)
 
 --Atrigan
 local specWarnUnbearableTorment		= mod:NewSpecialWarningYou(233430, nil, nil, nil, 1, 2)
@@ -52,6 +52,7 @@ local specWarnBoneSaw				= mod:NewSpecialWarningRun(233441, nil, nil, nil, 4, 2)
 local specWarnEchoingAnguish		= mod:NewSpecialWarningMoveAway(233983, nil, nil, nil, 1, 2)
 local yellEchoingAnguish			= mod:NewYell(233983)
 local specWarnFelSquall				= mod:NewSpecialWarningRun(235230, nil, nil, nil, 4, 2)
+local specWarnTormentingBurst		= mod:NewSpecialWarningCount(234015, nil, nil, nil, 2, 2)
 
 --Atrigan
 local timerScytheSweepCD			= mod:NewCDTimer(23, 233426, nil, nil, nil, 3)
@@ -59,7 +60,7 @@ local timerCalcifiedQuillsCD		= mod:NewCDTimer(20.5, 233431, nil, nil, nil, 3)--
 local timerBoneSawCD				= mod:NewCDTimer(45.4, 233441, nil, nil, nil, 2)
 local timerBoneSaw					= mod:NewBuffActiveTimer(15, 233441, nil, nil, nil, 2)
 --Belac
---local timerEchoingAnguishCD			= mod:NewAITimer(31, 233983, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+--local timerEchoingAnguishCD		= mod:NewAITimer(31, 233983, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
 --local timerSuffocatingDarkCD		= mod:NewAITimer(31, 233894, nil, nil, nil, 3)
 --local timerTormentingBurstCD		= mod:NewAITimer(31, 234015, nil, nil, nil, 2)
 --local timerFelSquallCD				= mod:NewAITimer(31, 235230, nil, nil, nil, 2)
@@ -77,6 +78,7 @@ local voiceBoneSaw					= mod:NewVoice(233441)--runout/keepmove
 --Belac
 local voiceEchoingAnguish			= mod:NewVoice(233983)--runout
 local voiceFelSquall				= mod:NewVoice(235230)--runout/keepmove
+local voiceTormentingBurst			= mod:NewVoice(234015)--aesoon
 
 --mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(233104, true)
@@ -124,6 +126,11 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerScytheSweepCD:Start(23)--always 23
 		end
+	elseif spellId == 234015 then
+		self.vb.burstCount = self.vb.burstCount + 1
+		specWarnTormentingBurst:Show(self.vb.burstCount)
+		voiceTormentingBurst:Play("aesoon")
+		--timerTormentingBurstCD:Start()
 	end
 end
 
@@ -135,10 +142,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--timerEchoingAnguishCD:Start()
 	elseif spellId == 233894 and self:AntiSpam(2, 2) then
 		--timerSuffocatingDarkCD:Start()
-	elseif spellId == 234015 then
-		self.vb.burstCount = self.vb.burstCount + 1
-		warnTormentingBurst:Show(self.vb.burstCount)
-		--timerTormentingBurstCD:Start()
 	end
 end
 
