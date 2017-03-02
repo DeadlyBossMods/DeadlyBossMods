@@ -110,7 +110,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1737)
 
 L:SetMiscLocalization({
-	mythicPhase3		= "악마사냥꾼의 영혼을 육신으로 돌려보내야 할 때요... 군단의 주인을 거부해야 하오!"
+	mythicPhase3		= "악마사냥꾼의 영혼을 육신으로 돌려보내야 할 때요... 군단의 주인을 거부해야 하오!",
+	prePullRP			= "아, 그래, 영웅들이 납셨군. 아주 끈질겨... 자신감이 넘치고. 그 오만 때문에 파멸할 것이다!"
 })
 
 -------------
