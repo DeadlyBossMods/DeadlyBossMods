@@ -13,10 +13,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 233062",
-	"SPELL_CAST_SUCCES 232249 231363 238587 233272",
-	"SPELL_AURA_APPLIED 233272 232249 231363",
+	"SPELL_CAST_SUCCES 231363 233272",
+	"SPELL_AURA_APPLIED 233272 231363",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 233272 232249 231363",
+	"SPELL_AURA_REMOVED 233272 231363",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -24,14 +24,12 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO: Possibly SPELL_SUMMON event for 233266 in case you screw up brimstone to deal with adds
---TODO, better option defaults, especially brimstone
---TODO, NP Auras for comments or stars?
---TODO, generic Inferal Spike warnings/timers?
+--TODO: Possibly warnings if mess up soaking brimstone?
 --TODO, Fel Eruption stuff (GTFO? etc?)
+--TODO, More timer data for longer pulls (both mythic and non mythic)
 --[[
 (ability.id = 233062) and type = "begincast" or
-(ability.id = 232249 or ability.id = 231363 or ability.id = 238587 or ability.id = 233272) and type = "cast"
+(ability.id = 232249 or ability.id = 231363 or ability.id = 233272) and type = "cast"
 --]]
 local warnInfernalSpike					= mod:NewSpellAnnounce(233055, 1)
 local warnShatteringStar				= mod:NewTargetAnnounce(233272, 3)
@@ -46,15 +44,14 @@ local specWarnBurningArmor				= mod:NewSpecialWarningMoveAway(231363, nil, nil, 
 local specWarnBurningArmorTaunt			= mod:NewSpecialWarningTaunt(231363, nil, nil, nil, 1, 2)
 local specWarnRainofBrimstone			= mod:NewSpecialWarningMoveTo(238587, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(238587), nil, 1, 6)
 
-local timerInfernalSpikeCD				= mod:NewCDTimer(30, 233055, nil, nil, nil, 3)
+local timerComboWamboCD					= mod:NewTimer(14, "timerComboWamboCD", 232249, nil, nil, 3)--Comet/Spike combined timer.
 local timerInfernalBurningCD			= mod:NewNextTimer(59.9, 233062, nil, nil, nil, 2)
 local timerShatteringStarCD				= mod:NewNextCountTimer(31, 233272, nil, nil, nil, 3)
 local timerShatteringStar				= mod:NewBuffFadesTimer(6, 233272, nil, nil, nil, 5)
-local timerCrashingCometCD				= mod:NewCDTimer(14, 232249, nil, nil, nil, 3)--Needs more work, i think a sequence more accurate
 local timerCrashingComet				= mod:NewBuffFadesTimer(5, 232249, nil, nil, nil, 5)
 local timerBurningArmorCD				= mod:NewCDTimer(24.3, 231363, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerBurningArmor					= mod:NewBuffFadesTimer(6, 231363, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
-local timerRainofBrimstoneCD			= mod:NewAITimer(31, 238587, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
+local timerRainofBrimstoneCD			= mod:NewCDCountTimer(31, 238587, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 
 --local berserkTimer					= mod:NewBerserkTimer(300)
 
@@ -77,20 +74,24 @@ mod:AddRangeFrameOption("10/25")
 local infernalSpike = GetSpellInfo(233021)
 local crashingComet = GetSpellInfo(232249)
 local cometTable = {}
-local shatteringStarTimers = {24, 60, 60, 50, 20, 40, 20, 40, 20, 40}
+local shatteringStarTimers = {24, 60, 60, 50}--24, 60, 60, 50, 20, 40, 20, 40, 20, 40
+local comboWamboTimers = {4, 6, 12, 12, 12, 6, 12, 6, 12, 12, 12, 6, 12, 6}--Needs more data, hopefully LFR can fill it in if disasterously bad
 mod.vb.shatteringStarCount = 0
+mod.vb.brimstoneCount = 0
+mod.vb.comboWamboCount = 0
 
 function mod:OnCombatStart(delay)
 	table.wipe(cometTable)
 	self.vb.shatteringStarCount = 0
-	timerCrashingCometCD:Start(4-delay)
+	self.vb.comboWamboCount = 0
+	timerComboWamboCD:Start(4-delay, 1)
 	timerBurningArmorCD:Start(10.5-delay)
-	timerInfernalSpikeCD:Start(13.9-delay)
 	timerShatteringStarCD:Start(24-delay)
 	countdownShatteringStar:Start(24-delay)
 	timerInfernalBurningCD:Start(54-delay)
 	if self:IsMythic() then
-		timerRainofBrimstoneCD:Start(1-delay)
+		self.vb.brimstoneCount = 0
+		timerRainofBrimstoneCD:Start(14-delay, 1)
 	end
 end
 
@@ -116,14 +117,8 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 232249 then
-		--timerCrashingCometCD:Start()
-	elseif spellId == 231363 then
+	if spellId == 231363 then
 		timerBurningArmorCD:Start()
-	elseif spellId == 238587 and self:AntiSpam(5, 1) then
-		specWarnRainofBrimstone:Show(args.spellName)
-		voiceRainofBrimstone:Play("helpsoak")
-		timerRainofBrimstoneCD:Start()
 	elseif spellId == 233272 then
 		self.vb.shatteringStarCount = self.vb.shatteringStarCount + 1
 		local nextCount = self.vb.shatteringStarCount+1
@@ -131,6 +126,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if timer then
 			timerShatteringStarCD:Start(timer, nextCount)
 			countdownShatteringStar:Start(timer)
+		else
+			if self.vb.shatteringStarCount % 2 == 0 then
+				timerShatteringStarCD:Start(20, nextCount)
+				countdownShatteringStar:Start(20)
+			else
+				timerShatteringStarCD:Start(40, nextCount)
+				countdownShatteringStar:Start(40)
+			end
 		end
 	end
 end
@@ -150,21 +153,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnShatteringStar:Show(args.destName)
 		end
-	elseif spellId == 232249 then
-		--warnCrashingComet:CombinedShow(0.3, args.destName)
-		--[[if args:IsPlayer() then--Still do yell and range frame here, in case DK
-			specWarnCrashingComet:Show()
-			voiceCrashingComet:Play("runout")
-			yellCrashingComet:Yell(5)
-			yellCrashingComet:Schedule(4, 1)
-			yellCrashingComet:Schedule(3, 2)
-			yellCrashingComet:Schedule(2, 3)
-			timerCrashingComet:Start()
-			countdownCrashingComet:Start()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10)
-			end
-		end--]]
 	elseif spellId == 231363 then
 		if args:IsPlayer() then
 			specWarnBurningArmor:Show()
@@ -190,15 +178,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			countdownShatteringStarFades:Cancel()
 			timerShatteringStar:Stop()
 		end
-	elseif spellId == 232249 then
-		--[[if args:IsPlayer() then
-			yellCrashingComet:Cancel()
-			timerCrashingComet:Stop()
-			countdownCrashingComet:Cancel()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Hide()
-			end
-		end--]]
 	elseif spellId == 231363 then
 		if args:IsPlayer() then
 			countdownBurningArmor:Cancel()
@@ -241,6 +220,7 @@ function mod:UNIT_AURA_UNFILTERED(uId)
 		end
 	elseif hasDebuff and not cometTable[name] then
 		cometTable[name] = true
+		warnCrashingComet:CombinedShow(0.3, name)--Multiple targets in mythic
 		if UnitIsUnit(uId, "player") then
 			specWarnCrashingComet:Show()
 			voiceCrashingComet:Play("runout")
@@ -253,20 +233,35 @@ function mod:UNIT_AURA_UNFILTERED(uId)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
-		else
-			warnCrashingComet:Show(name)
 		end
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 232249 then--Crashing Comet
-		--["232249-Crashing Comet"] = "pull:4.0, 16.0, 14.0",
-		timerCrashingCometCD:Start()
-	elseif spellId == 233055 then--Infernal Spike
+		self.vb.comboWamboCount = self.vb.comboWamboCount + 1
+		local timer = comboWamboTimers[self.vb.comboWamboCount+1]
+		if timer then
+			timerComboWamboCD:Start(timer, self.vb.comboWamboCount+1)
+		end
+	elseif spellId == 233050 then--Infernal Spike
+		self.vb.comboWamboCount = self.vb.comboWamboCount + 1
 		warnInfernalSpike:Show()
-		--timerInfernalSpikeCD:Start()
+		local timer = comboWamboTimers[self.vb.comboWamboCount+1]
+		if timer then
+			timerComboWamboCD:Start(timer, self.vb.comboWamboCount+1)
+		end
+	--["233285-Rain of Brimstone"] = "pull:14.0, 24.0, 36.0, 24.0, 36.0, 24.0",
+	elseif spellId == 233285 then--Rain of Brimston
+		self.vb.brimstoneCount = self.vb.brimstoneCount + 1
+		specWarnRainofBrimstone:Show(spellName)
+		voiceRainofBrimstone:Play("helpsoak")
+		if self.vb.brimstoneCount % 2 == 0 then
+			timerRainofBrimstoneCD:Start(36, self.vb.brimstoneCount+1)
+		else
+			timerRainofBrimstoneCD:Start(24, self.vb.brimstoneCount+1)
+		end
 	end
 end
 

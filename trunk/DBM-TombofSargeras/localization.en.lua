@@ -6,9 +6,11 @@ local L
 L= DBM:GetModLocalization(1862)
 
 L:SetTimerLocalization({
+	timerComboWamboCD =	"Next Comet/Spike (%d)"
 })
 
 L:SetOptionLocalization({
+	timerComboWamboCD =	"Show timer for next Crashing Comet/Infernal Spike"
 })
 
 L:SetMiscLocalization({
