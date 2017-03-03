@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_AURA_UNFILTERED",
+--	"UNIT_AURA_UNFILTERED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
@@ -102,7 +102,7 @@ local voiceDoomedSunderin			= mod:NewVoice(236544)--gathershare/justrun
 
 --mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(235621, true)
-mod:AddRangeFrameOption(5, 235621)--5 Yards for now. melee range is generally acceptable range for these things, but maybe change to 8 if trying to sort of pre warn it instead of "too late" warn it
+mod:AddRangeFrameOption(5, 236459)
 mod:AddNamePlateOption("NPAuraOnBonecageArmor", 236513)
 
 mod.vb.soulboundCast = 0
@@ -163,21 +163,25 @@ function mod:OnCombatStart(delay)
 	if self.Options.NPAuraOnBonecageArmor then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
-	for uId in DBM:GetGroupMembers() do
-		local name = DBM:GetUnitFullName(uId)
-		if UnitDebuff(uId, spiritRealm) then
-			playersInSpirit[#playersInSpirit+1] = name
-		else
-			playersNotInSpirit[#playersNotInSpirit+1] = name
-		end
-	end
 	if self.Options.InfoFrame then
+		self:RegisterShortTermEvents(
+			"UNIT_AURA_UNFILTERED"
+		)
+		for uId in DBM:GetGroupMembers() do
+			local name = DBM:GetUnitFullName(uId)
+			if UnitDebuff(uId, spiritRealm) then
+				playersInSpirit[#playersInSpirit+1] = name
+			else
+				playersNotInSpirit[#playersNotInSpirit+1] = name
+			end
+		end
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false)
 	end
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -251,9 +255,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSoulbind:Show()
 			voiceSoulbind:Play("targetyou")
 			yellSoulbind:Yell()
-			--if self.Options.RangeFrame then
-			--	DBM.RangeCheck:Show(5)
-			--end
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(5)
+			end
 		end
 	elseif spellId == 235924 then
 		if args:IsPlayer() then
@@ -262,9 +266,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellSpearofAnguish:Schedule(5, 1)
 			yellSpearofAnguish:Schedule(4, 2)
 			yellSpearofAnguish:Schedule(3, 3)
-			--if self.Options.RangeFrame then
-			--	DBM.RangeCheck:Show(5)
-			--end
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(5)
+			end
 		else
 			warnSpearofAnguish:Show(args.destName)
 		end
@@ -306,15 +310,15 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 236459 then
-		--if self.Options.RangeFrame and args:IsPlayer() then
-		--	DBM.RangeCheck:Hide()
-		--end
+		if self.Options.RangeFrame and args:IsPlayer() then
+			DBM.RangeCheck:Hide()
+		end
 	elseif spellId == 235924 then
 		if args:IsPlayer() then
 			yellSpearofAnguish:Cancel()
-			--if self.Options.RangeFrame then
-			--	DBM.RangeCheck:Hide()
-			--end
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
 		end
 	elseif spellId == 236513 then--Bonecage Armor
 		self.vb.boneArmorCount = self.vb.boneArmorCount - 1
@@ -349,15 +353,15 @@ function mod:UNIT_AURA_UNFILTERED(uId)
 	if not tContains(playersNotInSpirit, name) and not inSpiritRealm then--Not Spirit Realm
 		playersNotInSpirit[#playersNotInSpirit+1] = name
 		tDeleteItem(playersInSpirit, name)
-		if UnitIsUnit("player", uId) then
+		--[[if UnitIsUnit("player", uId) then
 			DBM.RangeCheck:Show(5, regularFilter)
-		end
+		end--]]
 	elseif not tContains(playersInSpirit, name) and inSpiritRealm then--Spirit Realm
 		playersInSpirit[#playersInSpirit+1] = name
 		tDeleteItem(playersNotInSpirit, name)
-		if UnitIsUnit("player", uId) then
+		--[[if UnitIsUnit("player", uId) then
 			DBM.RangeCheck:Show(5, spiritFilter)
-		end
+		end--]]
 	end
 end
 
