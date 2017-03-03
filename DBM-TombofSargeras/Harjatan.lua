@@ -370,6 +370,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	
 	elseif spellId == 241562 then--Blue Murloc Tadpole
 	
+	elseif spellId == 241563 then--Green Murloc Tadpole
+	
 	end
 end
 
