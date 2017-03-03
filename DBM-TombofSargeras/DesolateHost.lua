@@ -346,13 +346,13 @@ end
 function mod:UNIT_AURA_UNFILTERED(uId)
 	local inSpiritRealm = UnitDebuff(uId, spiritRealm)
 	local name = DBM:GetUnitFullName(uId)
-	if not playersNotInSpirit[name] and not inSpiritRealm then--Not Spirit Realm
+	if not tContains(playersNotInSpirit, name) and not inSpiritRealm then--Not Spirit Realm
 		playersNotInSpirit[#playersNotInSpirit+1] = name
 		tDeleteItem(playersInSpirit, name)
 		if UnitIsUnit("player", uId) then
 			DBM.RangeCheck:Show(5, regularFilter)
 		end
-	elseif not playersInSpirit[name] and inSpiritRealm then--Spirit Realm
+	elseif not tContains(playersInSpirit, name) and inSpiritRealm then--Spirit Realm
 		playersInSpirit[#playersInSpirit+1] = name
 		tDeleteItem(playersNotInSpirit, name)
 		if UnitIsUnit("player", uId) then
