@@ -125,6 +125,7 @@ mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(227503, true)
 mod:AddRangeFrameOption("5/8/15")
 mod:AddNamePlateOption("NPAuraOnRunicBrand", 231297, true)
+mod:AddNamePlateOption("NPAuraOnBranded", 227503, true)
 
 mod.vb.phase = 1
 mod.vb.hornCasting = false
@@ -251,6 +252,9 @@ function mod:OnCombatStart(delay)
 			countdownDrawPower:Start(45-delay)
 		end
 	end
+	if self.Options.NPAuraOnBranded then
+		DBM:FireEvent("BossMod_EnableHostileNameplates")
+	end
 end
 
 function mod:OnCombatEnd()
@@ -260,8 +264,8 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnRunicBrand and self:IsMythic() then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
+	if self.Options.NPAuraOnRunicBrand and self:IsMythic() or self.Options.NPAuraOnBranded then
+		DBM.Nameplate:Hide(false, nil, nil, nil, true, true, true)
 	end
 end
 
@@ -440,6 +444,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(6, "function", updateInfoFrame)
 		end
+		if self.Options.NPAuraOnBranded then
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
+		end
 	elseif spellId == 229579 or spellId == 229580 or spellId == 229581 or spellId == 229582 or spellId == 229583 then--Branded (Mythic Phase 1/2 non fixate rune debuffs)
 		if spellId == 229579 and args:IsPlayer() then--Purple K (NE)
 			specWarnBranded:Show("|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t")
@@ -505,6 +512,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		countdownDrawPower:Cancel()
 	elseif spellId == 227490 or spellId == 227491 or spellId == 227498 or spellId == 227499 or spellId == 227500 then--Branded (Draw Power Runes)
 		drawTable[spellId] = nil
+		if self.Options.NPAuraOnBranded then
+			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
+		end
 	elseif spellId == 231311 or spellId == 231342 or spellId == 231344 or spellId == 231345 or spellId == 231346 then--Branded (Draw Power Runes)
 		if args:IsPlayer() then
 			playerDebuff = nil
