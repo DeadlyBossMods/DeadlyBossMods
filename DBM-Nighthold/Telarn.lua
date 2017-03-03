@@ -7,7 +7,6 @@ mod:SetEncounterID(1886)
 mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(15751)
-mod:SetBossHPInfoToHighest()
 mod.respawnTime = 29.5
 
 mod:RegisterCombat("combat")
@@ -49,7 +48,7 @@ local warnPlasmaSpheres				= mod:NewSpellAnnounce(218774, 2)
 local warnPhase3					= mod:NewPhaseAnnounce(3)
 local warnToxicSpores				= mod:NewSpellAnnounce(219049, 3)
 local warnCoN						= mod:NewTargetAnnounce(218809, 4)
-local warnGraceofNature				= mod:NewCastAnnounce(218927, 4, nil, nil, "Tank")
+local warnGraceofNature				= mod:NewSoonAnnounce(218927, 4, nil, "Tank")
 local warnChaosSpheresOfNature		= mod:NewSpellAnnounce(223219, 4)
 
 --Stage 1: The High Botanist
@@ -92,7 +91,7 @@ local berserkTimer					= mod:NewBerserkTimer(480)
 
 local countdownControlledChaos		= mod:NewCountdown(35, 218438)
 local countdownParasiticFetter		= mod:NewCountdown("Alt35", 218304, "-Tank")
-local countdownGraceOfNature		= mod:NewCountdown("Alt48", 218927, "Tank")
+local countdownGraceOfNature		= mod:NewCountdown("Alt48", 218927, "Tank", nil, 6)
 local countdownCoN					= mod:NewCountdown("AltTwo50", 218809, "-Tank")
 
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
@@ -112,6 +111,7 @@ local voiceCoN						= mod:NewVoice(218809)--mmX
 mod:AddRangeFrameOption(8, 218807)
 mod:AddSetIconOption("SetIconOnFetter", 218304, true)
 mod:AddSetIconOption("SetIconOnCoN", 218807, true)
+mod:AddSetIconOption("SetIconOnNaturalist", "ej13684", true, true)
 mod:AddHudMapOption("HudMapOnCoN", 218807)
 mod:AddNamePlateOption("NPAuraOnFixate", 218342)
 mod:AddNamePlateOption("NPAuraOnCoN", 218809)
@@ -139,6 +139,19 @@ do
 	end
 end
 
+local function findNaturalistOnPull(self)
+	for i = 1, 3 do
+		local bossUnitID = "boss"..i
+		if UnitExists(bossUnitID) then
+			local cid = self:GetCIDFromGUID(UnitGUID(bossUnitID))
+			if cid == 109041 then
+				SetRaidTarget(bossUnitID, 8)
+				break
+			end
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(sentLowHP)
 	table.wipe(warnedLowHP)
@@ -157,7 +170,11 @@ function mod:OnCombatStart(delay)
 		countdownCoN:Start(57-delay)
 		timerGraceOfNatureCD:Start(65-delay)
 		countdownGraceOfNature:Start(65-delay)
+		warnGraceofNature:Schedule(60-delay)
 		berserkTimer:Start(540-delay)
+		if self.Options.SetIconOnNaturalist then
+			self:Schedule(1, findNaturalistOnPull, self)
+		end
 	else
 		if self:IsHeroic() then
 			self.vb.globalTimer = 35
@@ -225,6 +242,7 @@ function mod:SPELL_CAST_START(args)
 		voiceGraceOfNature:Play("bossout")
 		timerGraceOfNatureCD:Start(self.vb.globalTimer)
 		countdownGraceOfNature:Start(self.vb.globalTimer)
+		warnGraceofNature:Schedule(self.vb.globalTimer-5)
 	elseif spellId == 216830 then--Phase 2
 		self.vb.phase = 2
 		warnPhase2:Show()
@@ -252,6 +270,7 @@ function mod:SPELL_CAST_START(args)
 			countdownControlledChaos:Start(59)
 		end
 	elseif spellId == 216877 then--Phase 3
+		self:SetBossHPInfoToHighest()
 		self.vb.phase = 3
 		warnPhase3:Show()
 		voicePhaseChange:Play("pthree")
@@ -266,6 +285,7 @@ function mod:SPELL_CAST_START(args)
 			self.vb.globalTimer = 50
 			timerGraceOfNatureCD:Start(10.5)
 			countdownGraceOfNature:Start(10.5)
+			warnGraceofNature:Schedule(5.5)
 			timerCoNCD:Start(20)
 			countdownCoN:Start(20)
 			timerPlasmaSpheresCD:Start(26)
@@ -278,6 +298,7 @@ function mod:SPELL_CAST_START(args)
 			self.vb.globalTimer = 70
 			timerGraceOfNatureCD:Start(13)
 			countdownGraceOfNature:Start(13)
+			warnGraceofNature:Schedule(8)
 			timerCoNCD:Start(26.5)
 			countdownCoN:Start(26.5)
 			timerPlasmaSpheresCD:Start(36)
@@ -382,6 +403,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.vb.phase == 2 then
 				self.vb.globalTimer = 55
 			else
+				self:SetBossHPInfoToHighest()
 				self.vb.globalTimer = 35
 			end
 			--Arcanist Timers
@@ -399,6 +421,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerParasiticFetterCD:Stop()
 			timerGraceOfNatureCD:Stop()
 			countdownGraceOfNature:Cancel()
+			warnGraceofNature:Cancel()
 		end
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		--If phase 3 then only one is left, we can skip the rest and just start timers for a boss that has all the things!
@@ -512,103 +535,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
---[[
-function mod:UNIT_DIED(args)
-	if not self:IsMythic() then return end
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 109040 then--Arcanist Tel'arn
-		self.vb.phase = self.vb.phase + 1
-		timerCoNCD:Stop()
-		countdownCoN:Cancel()
-		timerControlledChaosCD:Stop()
-		countdownControlledChaos:Cancel()
-		timerSummonChaosSpheresCD:Stop()
-		if self.vb.phase == 2 then--1 boss dead
-			--Solarist Tel'arn replaces Solar Collapse with Collapse of Night when Arcanist Tel'arn is killed first
-			--Naturalist Tel'arn's Parsitic Fetter causes Controlled Chaos when removed if Arcanist Tel'arn is killed first
-			timerSolarCollapseCD:Stop()
-			timerCollapseofNightCD:Start(28)
-			countdownCoN:Start(28)
-			timerParasiticFetterCD:Stop()
-			timerParasiticFetterCD:Start(16)
-			timerPlasmaSpheresCD:Stop()
-			timerPlasmaSpheresCD:Start(40)
-		elseif self.vb.phase == 3 then--2 bosses dead
-			--These requires checking which boss is left
-			for i = 1, 5 do
-				local bossUID = "boss"..i
-				if UnitExists(bossUID) then
-					local cid = self:GetUnitCreatureId(bossUID)
-					if cid == 109038 then--Solarist Tel'arn is what's left
-						timerSolarCollapseCD:Stop()
-						timerCollapseofNightCD:Start(22)
-						break
-					elseif cid == 109041 then--Naturalist Tel'arn
-						--Naturalist Tel'arn gains Summon Chaotic Spheres of Nature when he is the last form alive
-						timerChaotiSpheresofNatureCD:Start(1)
-						break
-					end
-				end
-			end
-		end
-	elseif cid == 109038 then--Solarist Tel'arn
-		self.vb.phase = self.vb.phase + 1
-		timerSolarCollapseCD:Stop()
-		timerCollapseofNightCD:Stop()
-		timerPlasmaSpheresCD:Stop()
-		if self.vb.phase == 2 then--1 boss dead
-			--Arcanist Tel'arn's replaces Controlled Chaos with Summon Chaos Spheres when Solarist Tel'arn is killed first
-			timerControlledChaosCD:Stop()
-			countdownControlledChaos:Cancel()
-			timerSummonChaosSpheresCD:Start(1)
-			--Naturalist Tel'arn's Toxic Spores cause a Solar Collapse at the target's location when Solarist Tel'arn is killed first
-		elseif self.vb.phase == 3 then--2 bosses dead
-			--These requires checking which boss is left
-			for i = 1, 5 do
-				local bossUID = "boss"..i
-				if UnitExists(bossUID) then
-					local cid = self:GetUnitCreatureId(bossUID)
-					if cid == 109041 then--Naturalist Tel'arn is what's left
-						--Naturalist Tel'arn gains Summon Chaotic Spheres of Nature when he is the last form alive
-						timerChaotiSpheresofNatureCD:Start(1)
-						break
-					elseif cid == 109040 then--Arcanist Tel'arn
-						--Arcanist Tel'arn's Recursive Strikes creates Plasma Spheres when it expires if Solarist Tel'arn is killed second
-						break
-					end
-				end
-			end
-		end
-	elseif cid == 109041 then--Naturalist Tel'arn
-		self.vb.phase = self.vb.phase + 1
-		timerToxicSporesCD:Stop()
-		timerParasiticFetterCD:Stop()
-		timerGraceOfNatureCD:Stop()
-		countdownGraceOfNature:Cancel()
-		if self.vb.phase == 2 then--1 boss dead
-			--Arcanist Tel'arn's Call of Night periodically summons Toxic Spores when Naturalist Tel'arn is killed first
-			--Solarist Tel'arn's Plasma Spheres create Parasitic Lashers when killed if Naturalist Tel'arn is killed first.
-		elseif self.vb.phase == 3 then--2 bosses dead
-			--These requires checking which boss is left
-			for i = 1, 5 do
-				local bossUID = "boss"..i
-				if UnitExists(bossUID) then
-					local cid = self:GetUnitCreatureId(bossUID)
-					if cid == 109038 then--Solarist Tel'arn is what's left
-						--Solarist Tel'arn's plasma Spheres create Toxic Spores when killed if Naturalist Tel'arn is killed second.
-						--Flare applies Parasitic Fetter to all targets hit if Naturalist Tel'arn is killed second
-						break
-					elseif cid == 109040 then--Arcanist Tel'arn
-						--Controlled Chaos causes several points of Solar Collapse to spawn around it's perimeter when Solarist Tel'arn is killed second
-						break
-					end
-				end
-			end
-		end
-	end
-end
---]]
 
 function mod:UNIT_HEALTH(uId)
 	local cid = self:GetUnitCreatureId(uId)
