@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 238570 235927 236542 236544",
-	"SPELL_CAST_SUCCES 236449 235933 235907 236138 236131 235969",
+	"SPELL_CAST_SUCCES 236449 235933 236138 236131 235969",
 	"SPELL_AURA_APPLIED 236459 235924 238018 236513 236138 236131 235969 236361 239923 236548",
 	"SPELL_AURA_APPLIED_DOSE 236548",
 	"SPELL_AURA_REMOVED 236459 235924 236513 235969",
@@ -31,21 +31,21 @@ mod:RegisterEventsInCombat(
 --TODO, new voice "switchphase" (Switch Phase). I suspect it'l be used on a lot of warnings here like wither, tank swaps, etc.
 --TODO, figure out when withered souls casts. right now based on interaction and both having 1 minute duration I highly suspect it always follows withered
 --TODO, what to do with spirit chains?
---TODO, infoframe add tracker? or infoframe debuff tracker (adds with bone armor count and players with screach count, etc)
---TODO, 235907 (Collapsing Fissure) missing from combat log
+--TODO, 235907 (Collapsing Fissure) has all over the place timers, fixiable?
 --TODO, adds timers (not incombat log, robably need videos/scheduling
 --TODO, range frame probably won't work cross phase since it relies on item checks which would return false cross realms. 
+--TODO more work on tormenting cries and resuming/restarting timers when it's over. have no pull logs where it ended. maybe LFR can fix
 --[[
 (ability.id = 238570 or ability.id = 235927 or ability.id = 236542 or ability.id = 236544) and type = "begincast" or
 (ability.id = 235907 or ability.id = 236072 or ability.id = 236507 or ability.id = 235969 or ability.id = 236449 or ability.id =  236138 or ability.id = 236131) and type = "cast" or
 (ability.id = 235924) and type = "applydebuff" or
-ability.id = 236072 and (type = "applybuff" or type = "removebuff")
+ability.id = 236072 and (type = "applybuff" or type = "removebuff") or
 (ability.id = 236459 or ability.id = 235969 or ability.id = 236513) and (type = "applydebuff" or type = "removedebuff" or type = "applybuff" or type = "removebuff")
 --]]
 --Corporeal Realm
 local warnSpearofAnguish			= mod:NewTargetAnnounce(235924, 3)
 local warnCollapsingFissure			= mod:NewSpellAnnounce(235907, 3)--Upgrade to special, if needed
-local warnTormentingCries			= mod:NewTargetAnnounce(238018, 3)
+local warnTormentingCries			= mod:NewTargetAnnounce(238018, 3)--Spammy? off by default?
 ----Adds
 local warnRupturingSlam				= mod:NewSpellAnnounce(235927, 3)
 local warnBonecageArmor				= mod:NewTargetAnnounce(236513, 3)
@@ -154,9 +154,9 @@ function mod:OnCombatStart(delay)
 	self.vb.soulboundCast = 0
 	self.vb.wailingSoulsCast = 0
 	self.vb.boneArmorCount = 0
+	--timerCollapsingFissureCD:Start(9.7-delay)
 	timerSoulbindCD:Start(14.2-delay, 1)
 	timerSpearofAnquishCD:Start(22-delay)
-	--timerCollapsingFissureCD:Start(1-delay)
 	timerWitherCD:Start(23-delay)
 	timerWailingSoulsCD:Start(59.4-delay, 1)
 	timerTormentedCriesCD:Start(119-delay)
@@ -196,7 +196,8 @@ end
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 238570 then--Tormented Cries
-		timerTormentedCriesCD:Start()
+		timerSpearofAnquishCD:Stop()
+		--timerTormentedCriesCD:Start()
 	elseif spellId == 235927 then
 		warnRupturingSlam:Show()
 		timerRupturingSlamCD:Start(nil, args.sourceGUID)
@@ -238,8 +239,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--end
 	elseif spellId == 235933 then--Spear of Anquish
 		timerSpearofAnquishCD:Start()
-	elseif spellId == 235907 then
-		--timerCollapsingFissureCD:Start()
 	elseif spellId ==  236138 or spellId == 236131 then
 		timerWitherCD:Start()
 	elseif spellId == 235969 then--Shattering Scream
@@ -260,6 +259,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 235924 then
+		warnSpearofAnguish:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnSpearofAnguish:Show()
 			voiceSpearofAnguish:Play("runout")
@@ -269,15 +269,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(5)
 			end
-		else
-			warnSpearofAnguish:Show(args.destName)
 		end
 	elseif spellId == 238018 then
 		if args:IsPlayer() then
 			specWarnTormentingCries:Show()
 			voiceTormentingCries:Play("targetyou")
 		else
-			warnTormentingCries:CombinedShow(0.3, args.destName)--Uncombine if only 1 target
+			warnTormentingCries:Show(args.destName)
 		end
 	elseif spellId == 236513 then
 		self.vb.boneArmorCount = self.vb.boneArmorCount + 1
@@ -379,11 +377,13 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 227503 then
-
+	--["235907-Collapsing Fissure"] = "pull:9.7, 31.5, 10.4, 2.4, 4.7, 22.2, 1.8, 9.8, 2.3, 0.9, 41.4"
+	if spellId == 235907 then--Collapsing Fissure
+		--timerCollapsingFissureCD:Start()
 	end
 end
---]]
+
