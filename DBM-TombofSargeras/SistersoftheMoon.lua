@@ -14,31 +14,32 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 236694 236442 236712",
-	"SPELL_CAST_SUCCES 236480 236541 236547 237633 236518 233263",
-	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264 236519",
+	"SPELL_CAST_SUCCES 236480 236547 237633 236518 233263 237561",
+	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264 236519 237561",
 	"SPELL_AURA_APPLIED_DOSE 234995 234996 239264",
 	"SPELL_AURA_REMOVED 233264 236712",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
 --TODO, phase detection to remove/add timers etc.
 --TODO, figure out which of the MANY scripts are for glaive storm
---TODO, figure out same for Twilight Glaive
 --TODO, figure out how to actually pre warn moon glaive and give it a warning.
 --TODO, figure out what to do Spectral Glaive. Why does iti even exist, totally redundant waste of space, already have Moon Glaive
 --TODO, is there even a point to Shadow shot?
---TODO, NP auras on Rapid Shot and Incorporeal Shot?
 --TODO, infoframe showing absorbs remaining on boss/players if possible to get remaining shield from UnitBuff/UnitDebuff in an onupdate call?
 --TODO, fine tune all option defaults once what targets or doesn't target x and y is known. Fight can't have too much timer/warning spam
 --TODO, announce lunar strike? more redundancy in encounter that isn't needed IMO
+--TODO, video fight and improve timer interactions to better deal with huge variation in stuff like moon glaive timer.
 --[[
 (ability.id = 236694 or ability.id = 236442 or ability.id = 239379 or ability.id = 236712) and type = "begincast" or
-(ability.id = 236480 or ability.id = 236541 or ability.id = 236547 or ability.id = 237633 or ability.id = 236518 or ability.id = 236596 or ability.id = 233263 or ability.id = 239264) and type = "cast" or
+(ability.id = 236480 or ability.id = 237561 or ability.id = 236547 or ability.id = 237633 or ability.id = 236518 or ability.id = 236596 or ability.id = 233263 or ability.id = 239264) and type = "cast" or
 (ability.id = 236305 or ability.id = 236596) and type = "applydebuff"
 --]]
+--Huntress Kasparian
+local warnTwilightGlaive			= mod:NewTargetAnnounce(237561, 3)
 --Captain Yathae Moonstrike
 local warnIncorporealShot			= mod:NewTargetAnnounce(236305, 3)
 local warnRapidShot					= mod:NewTargetAnnounce(236596, 3)
@@ -51,7 +52,8 @@ local warnMoonBurn					= mod:NewTargetAnnounce(236519, 3)
 local specWarnFontofElune			= mod:NewSpecialWarningStack(236357, nil, 7, nil, 2, 1, 6)--Stack unknown
 --Huntress Kasparian
 local specWarnGlaiveStorm			= mod:NewSpecialWarningDodge(236480, nil, nil, nil, 2, 2)
-local specWarnTwilightGlaive		= mod:NewSpecialWarningDodge(236541, nil, nil, nil, 2, 2)
+local specWarnTwilightGlaive		= mod:NewSpecialWarningMoveAway(237561, nil, nil, nil, 2, 2)
+local yellTwilightGlaive			= mod:NewYell(237561)
 local specWarnDiscorporate			= mod:NewSpecialWarningTaunt(236550, nil, nil, nil, 1, 2)
 --Captain Yathae Moonstrike
 local specWarnCallMoontalon			= mod:NewSpecialWarningSwitch(236694, "-Healer", nil, nil, 1, 2)
@@ -70,18 +72,18 @@ local specWarnMoonBurn				= mod:NewSpecialWarningYou(236519, nil, nil, nil, 1)--
 
 --Huntress Kasparian
 local timerGlaiveStormCD			= mod:NewAITimer(31, 236480, nil, nil, nil, 3)
-local timerTwilightGlaiveCD			= mod:NewAITimer(31, 236541, nil, nil, nil, 3)
-local timerMoonGlaiveCD				= mod:NewAITimer(31, 236547, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerTwilightGlaiveCD			= mod:NewCDTimer(31, 237561, nil, nil, nil, 3)
+local timerMoonGlaiveCD				= mod:NewCDTimer(13.4, 236547, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--13.4-30 second variation, have fun with that
 local timerSpectralGlaiveCD			= mod:NewAITimer(31, 237633, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --Captain Yathae Moonstrike
 local timerIncorporealShotCD		= mod:NewCDTimer(54.7, 236305, nil, nil, nil, 3)
 local timerCallMoontalonCD			= mod:NewAITimer(31, 236694, nil, nil, nil, 1)
-local timerTwilightVolleyCD			= mod:NewCDTimer(19.4, 236442, nil, nil, nil, 2)--Cast while inactive. active too?
+local timerTwilightVolleyCD			= mod:NewCDTimer(19.4, 236442, nil, nil, nil, 2)--Cast while inactive.
 local timerRapidShotCD				= mod:NewAITimer(31, 236596, nil, nil, nil, 3)
 --Priestess Lunaspyre
-local timerEmbraceofEclipseCD		= mod:NewCDTimer(54.3, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)
+local timerEmbraceofEclipseCD		= mod:NewCDTimer(54.3, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)--Used while inactive
 local timerLunarBeaconCD			= mod:NewAITimer(31, 236712, nil, nil, nil, 3)
-local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used while inactive.
+local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used while inactive
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
@@ -92,7 +94,7 @@ local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used wh
 local voiceFontofElune				= mod:NewVoice(228003)--stackhigh
 --Huntress Kasparian
 local voiceGlaiveStorm				= mod:NewVoice(236480)--watchstep
-local voiceTwilightGlaive			= mod:NewVoice(236541)--watchstep?
+local voiceTwilightGlaive			= mod:NewVoice(237561)--runout
 local voiceDiscorporate				= mod:NewVoice(236550)--tauntboss
 --Captain Yathae Moonstrike
 local voiceCallMoontalon			= mod:NewVoice(236694, "-Healer")--killbigmob
@@ -110,15 +112,16 @@ local voiceLunarFire				= mod:NewVoice(239264)--tauntboss/stackhigh
 --mod:AddRangeFrameOption("5/8/15")
 
 mod.vb.phase = 1
+mod.vb.twilightGlaiveCount = 0
 
 function mod:OnCombatStart(delay)
-	timerGlaiveStormCD:Start(1-delay)
-	timerTwilightGlaiveCD:Start(1-delay)
---	timerMoonGlaiveCD:Start(1-delay)--Not in combat log, figure out later, if needed
---	timerSpectralGlaiveCD:Start(1-delay)--not in combat log, figure out later, if needed
+	self.vb.twilightGlaiveCount = 0
 	timerMoonBurnCD:Start(10-delay)
+	timerMoonGlaiveCD:Start(14.4-delay)
 	timerTwilightVolleyCD:Start(15.5-delay)--15.5-17
+	timerTwilightGlaiveCD:Start(18.3-delay)
 	timerIncorporealShotCD:Start(48-delay)
+	timerEmbraceofEclipseCD:Start(48-delay)
 end
 
 function mod:OnCombatEnd()
@@ -152,10 +155,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnGlaiveStorm:Show()
 		voiceGlaiveStorm:Play("watchstep")
 		timerGlaiveStormCD:Start()
-	elseif spellId == 236541 then--^^
-		specWarnTwilightGlaive:Show()
-		voiceTwilightGlaive:Play("watchstep")
-		timerTwilightGlaiveCD:Start()
+	elseif spellId == 237561 then--^^
+		self.vb.twilightGlaiveCount = self.vb.twilightGlaiveCount + 1
+		if self.vb.twilightGlaiveCount % 2 == 0 then
+			timerTwilightGlaiveCD:Start(30)
+		else
+			timerTwilightGlaiveCD:Start(18.2)
+		end
 	elseif spellId == 236547 then
 		timerMoonGlaiveCD:Start()
 	elseif spellId == 237633 then
@@ -249,6 +255,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnMoonBurn:Show()
 		end
+	elseif spellId == 237561 then
+		if args:IsPlayer() then
+			specWarnTwilightGlaive:Show()
+			voiceTwilightGlaive:Play("runout")
+			yellTwilightGlaive:Yell()
+		else
+			warnTwilightGlaive:Show(args.destName)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -274,11 +288,14 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 
 	end
 end
+--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 227503 then
-
+	--["236547-Moon Glaive"] = "pull:14.6, 15.8, 15.8, 25.5, 16.9"
+	--["236547-Moon Glaive"] = "pull:14.4, 14.6, 17.0, 29.2, 15.7, 27.9, 20.6, 30.3, 18.2, 18.2, 30.3, 13.4",
+	if spellId == 236547 then--Moon Glaive
+		timerMoonGlaiveCD:Start()
 	end
 end
---]]
+
