@@ -29,8 +29,7 @@ mod:RegisterEventsInCombat(
 --TODO, automate Hydra Shot and assigning of soakers?
 --TODO, target scan dark depths?
 --TODO, spec warn slicing tornado, maybe with moveto warning for Consealing Murk?
---TODO, figure out all right spellIds for Thundering Shock for timers/etc. give it voice once known
---TODO, where are nampelate auras most useful so they are just right and not under/over done
+--TODO, Give thundering shock a voice
 --TODO, New voice movetojelly (move to jellyfish).
 --TODO, Beckon Sarukel is dodge warning for now, but change if it actually needs tanking in between devours
 --TODO, voice warning when figure out how to handle Beckon Sarukel WHEN THEY SPAWN
@@ -71,15 +70,18 @@ local specWarnBeckonSarukel			= mod:NewSpecialWarningDodge(232746, nil, nil, nil
 local specWarnDevouringMaw			= mod:NewSpecialWarningSpell(234621, nil, nil, nil, 2, 7)
 local specWarnCallVellius			= mod:NewSpecialWarningSpell(232757, "-Healer", nil, nil, 1, 2)--Change to switch if appropriate
 local specWarnCrashingWave			= mod:NewSpecialWarningDodge(232827, nil, nil, nil, 3, 2)
+--Mythic
+local specWarnDeliciousBufferfish	= mod:NewSpecialWarningYou(239375, nil, nil, nil, 1, 2)
+local specWarnDreadShark			= mod:NewSpecialWarningSpell(239436, nil, nil, nil, 1, 2)
 
 --General Stuff
 local timerHydraShotCD				= mod:NewCDTimer(40, 230139, nil, nil, nil, 3)
 local timerBurdenofPainCD			= mod:NewCDTimer(28, 230201, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--28-32
-local timerFromtheAbyssCD			= mod:NewAITimer(31, 230227, nil, nil, nil, 1)
+local timerFromtheAbyssCD			= mod:NewCDTimer(27, 230227, nil, nil, nil, 1)--27-31
 --Stage One: Ten Thousand Fangs
 local timerSlicingTornadoCD			= mod:NewCDTimer(45, 232722, nil, nil, nil, 3)--45-54 (needs correcting)
 local timerConsumingHungerCD		= mod:NewCDTimer(32, 230920, nil, nil, nil, 1)
-local timerThunderingShockCD		= mod:NewCDTimer(33, 230358, nil, nil, nil, 1)
+local timerThunderingShockCD		= mod:NewCDTimer(32.2, 230358, nil, nil, nil, 1)
 --Stage Two: Terrors of the Deep
 local timerBeckonSarukelCD			= mod:NewCDTimer(42, 232746, nil, nil, nil, 1)
 local timerCallVelliusCD			= mod:NewCDTimer(42, 232757, nil, nil, nil, 1)
@@ -116,10 +118,10 @@ function mod:OnCombatStart(delay)
 	self.vb.tempIgnore = false
 	timerThunderingShockCD:Start(10-delay)
 	timerBurdenofPainCD:Start(18-delay)
-	timerConsumingHungerCD:Start(20-delay)
-	timerHydraShotCD:Start(25.5-delay)
+	timerFromtheAbyssCD:Start(18-delay)
+	timerConsumingHungerCD:Start(20-delay)--20-23
+	timerHydraShotCD:Start(25.4-delay)
 	timerSlicingTornadoCD:Start(30-delay)
-	timerFromtheAbyssCD:Start(1-delay)
 end
 
 function mod:OnCombatEnd()
@@ -137,7 +139,11 @@ function mod:SPELL_CAST_START(args)
 		warnDarkDepths:Show()
 	elseif spellId == 232722 then
 		warnSlicingTornado:Show()
-		timerSlicingTornadoCD:Start()
+		if self:IsMythic() then
+			timerSlicingTornadoCD:Start(34)
+		else
+			timerSlicingTornadoCD:Start()
+		end
 	elseif spellId == 230384 then--Consuming Hunter Cast?
 		timerConsumingHungerCD:Start()
 	elseif spellId == 232746 then
@@ -181,8 +187,10 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 239375 or spellId == 239362 then--Carring Bufferfish
-
+	if spellId == 239375 or spellId == 239362 then--Carring Bufferfish (239375 confirmed on mythic)
+		if args:IsPlayer() then
+			specWarnDeliciousBufferfish:Show()
+		end
 	elseif spellId == 230139 then
 		timerHydraShotCD:Start()
 		if args:IsPlayer() then
@@ -264,10 +272,12 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	if spellId == 230227 then
+	if spellId == 230227 and self:AntiSpam(3, 3) then
 		specWarnFromtheAbyss:Show()
 		voiceFromtheAbyss:Play("killmob")
 		timerFromtheAbyssCD:Start()
+	elseif spellId == 239423 then--Dread Shark
+		specWarnDreadShark:Show()
 	end
 end
 
