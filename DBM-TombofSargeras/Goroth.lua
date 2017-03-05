@@ -15,11 +15,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 233062",
 	"SPELL_CAST_SUCCES 231363 233272",
 	"SPELL_AURA_APPLIED 233272 231363",
---	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 233272 231363",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
---	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_AURA_UNFILTERED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -27,6 +25,7 @@ mod:RegisterEventsInCombat(
 --TODO: Possibly warnings if mess up soaking brimstone?
 --TODO, Fel Eruption stuff (GTFO? etc?)
 --TODO, More timer data for longer pulls (both mythic and non mythic)
+--TODO, more timer data for combowambo for more difficulties and of course longer pulls for existing ones.
 --[[
 (ability.id = 233062) and type = "begincast" or
 (ability.id = 232249 or ability.id = 231363 or ability.id = 233272) and type = "cast"
@@ -36,11 +35,11 @@ local warnShatteringStar				= mod:NewTargetAnnounce(233272, 3)
 local warnCrashingComet					= mod:NewTargetAnnounce(232249, 4)
 
 local specWarnInfernalBurning			= mod:NewSpecialWarningMoveTo(233062, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge:format(233062), nil, 3, 2)
-local specWarnShatteringStar			= mod:NewSpecialWarningMoveAway(233272, nil, nil, nil, 3, 2)
+local specWarnShatteringStar			= mod:NewSpecialWarningMoveTo(233272, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway:format(233272), nil, 3, 2)
 local yellShatteringStar				= mod:NewFadesYell(233272)
 local specWarnCrashingComet				= mod:NewSpecialWarningMoveAway(232249, nil, nil, nil, 3, 2)
 local yellCrashingComet					= mod:NewFadesYell(232249)
-local specWarnBurningArmor				= mod:NewSpecialWarningMoveAway(231363, nil, nil, nil, 1, 2)
+local specWarnBurningArmor				= mod:NewSpecialWarningMoveAway(231363, nil, nil, nil, 3, 2)
 local specWarnBurningArmorTaunt			= mod:NewSpecialWarningTaunt(231363, nil, nil, nil, 1, 2)
 local specWarnRainofBrimstone			= mod:NewSpecialWarningMoveTo(238587, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(238587), nil, 1, 6)
 
@@ -75,7 +74,8 @@ local infernalSpike = GetSpellInfo(233021)
 local crashingComet = GetSpellInfo(232249)
 local cometTable = {}
 local shatteringStarTimers = {24, 60, 60, 50}--24, 60, 60, 50, 20, 40, 20, 40, 20, 40
-local comboWamboTimers = {4, 6, 12, 12, 12, 6, 12, 6, 12, 12, 12, 6, 12, 6}--Needs more data, hopefully LFR can fill it in if disasterously bad
+local comboWamboTimersMythic = {4, 6, 12, 12, 12, 6, 12, 6, 12, 12, 12, 6, 12, 6}--Needs more data, hopefully LFR can fill it in if disasterously bad
+local comboWamboTimersLFR = {4, 10, 6, 14, 8, 8, 14, 10, 6, 14, 8, 8, 14, 10, 6, 14, 8, 8, 14, 8, 8, 8, 10, 8, 8, 10, 8, 8, 8, 10, 8, 8, 10}
 mod.vb.shatteringStarCount = 0
 mod.vb.brimstoneCount = 0
 mod.vb.comboWamboCount = 0
@@ -86,7 +86,7 @@ function mod:OnCombatStart(delay)
 	self.vb.comboWamboCount = 0
 	timerComboWamboCD:Start(4-delay, 1)
 	timerBurningArmorCD:Start(10.5-delay)
-	timerShatteringStarCD:Start(24-delay)
+	timerShatteringStarCD:Start(24-delay, 1)
 	countdownShatteringStar:Start(24-delay)
 	timerInfernalBurningCD:Start(54-delay)
 	if self:IsMythic() then
@@ -142,7 +142,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 233272 then
 		if args:IsPlayer() then--Still do yell and range frame here, in case DK
-			specWarnShatteringStar:Show()
+			specWarnShatteringStar:Show(infernalSpike)
 			voiceShatteringStar:Play("runout")
 			yellShatteringStar:Yell(6)
 			yellShatteringStar:Schedule(5, 1)
@@ -241,14 +241,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 232249 then--Crashing Comet
 		self.vb.comboWamboCount = self.vb.comboWamboCount + 1
-		local timer = comboWamboTimers[self.vb.comboWamboCount+1]
+		local timer = self:IsLFR() and comboWamboTimersLFR[self.vb.comboWamboCount+1] or comboWamboTimersMythic[self.vb.comboWamboCount+1]
 		if timer then
 			timerComboWamboCD:Start(timer, self.vb.comboWamboCount+1)
 		end
 	elseif spellId == 233050 then--Infernal Spike
 		self.vb.comboWamboCount = self.vb.comboWamboCount + 1
 		warnInfernalSpike:Show()
-		local timer = comboWamboTimers[self.vb.comboWamboCount+1]
+		local timer = self:IsLFR() and comboWamboTimersLFR[self.vb.comboWamboCount+1] or comboWamboTimersMythic[self.vb.comboWamboCount+1]
 		if timer then
 			timerComboWamboCD:Start(timer, self.vb.comboWamboCount+1)
 		end

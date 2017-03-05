@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 232174 231904 234194 240319 241590",
-	"SPELL_CAST_SUCCES 231854 231729 232061 234129",
+	"SPELL_CAST_SUCCESS 231854 231729 232061 234129",
 	"SPELL_AURA_APPLIED 231998 231729 231904 234016 241600 233429",
 	"SPELL_AURA_APPLIED_DOSE 231998",
 	"SPELL_AURA_REMOVED 233429 234016 241600",
@@ -42,12 +42,12 @@ ability.id = 233429 and (type = "applybuff" or type = "removebuff") or
 --Harjatan
 local warnJaggedAbrasion			= mod:NewStackAnnounce(231998, 2, nil, "Tank")
 local warnDrawIn					= mod:NewSpellAnnounce(232061, 2)
-local warnFrigidBlows				= mod:NewStackAnnounce(233429, 2, nil, false)
+local warnFrigidBlows				= mod:NewStackAnnounce(233429, 2)
 local warnFrostyDischarge			= mod:NewSpellAnnounce(232174, 2)
 --Razorjaw Wavemender
-local warnAqueousBurst				= mod:NewTargetAnnounce(231729, 2)
+local warnAqueousBurst				= mod:NewTargetAnnounce(231729, 2, nil, false)--Spammy
 --Razorjaw Gladiator
-local warnDrivenAssault				= mod:NewTargetAnnounce(234016, 3)
+local warnDrivenAssault				= mod:NewTargetAnnounce(234016, 3, nil, false)--Spammy
 --Darkscale Taskmaster
 local warnFrostySpittle				= mod:NewSpellAnnounce(234194, 2)
 --Mythic (Eggs and tadpoles)
@@ -74,7 +74,7 @@ local specWarnSicklyFixate			= mod:NewSpecialWarningRun(241600, nil, nil, nil, 4
 local specWarnTantrum				= mod:NewSpecialWarningSpell(241590, nil, nil, nil, 2, 2)
 
 --Harjatan
-local timerUncheckedRageCD			= mod:NewNextCountTimer(20, 231998, nil, nil, nil, 2)--5 power per second heroic, 20 seconds for 100 energy
+local timerUncheckedRageCD			= mod:NewNextCountTimer(20, 231854, nil, nil, nil, 2)--5 power per second heroic, 20 seconds for 100 energy
 local timerDrawInCD					= mod:NewNextTimer(60.8, 232061, nil, nil, nil, 6)
 local timerCommandingRoarCD			= mod:NewNextTimer(31.8, 232192, nil, nil, nil, 1)
 local timerTaskMasterCD				= mod:NewNextTimer(40.6, "ej14725", nil, nil, nil, 1, 233951)
@@ -91,7 +91,7 @@ local timerHatchingCD				= mod:NewCDTimer(40.6, 240319, nil, nil, nil, 1)--40.6-
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
 --Harjatan
-local countdownUncheckedRage		= mod:NewCountdown(20, 231998)
+local countdownUncheckedRage		= mod:NewCountdown(20, 231854)
 
 --Harjatan
 local voiceJaggedAbrasion			= mod:NewVoice(231998)--tauntboss/stackhigh
@@ -124,8 +124,7 @@ function mod:OnCombatStart(delay)
 	--self.vb.rageWarned = false
 	self.vb.rageCount = 0
 	table.wipe(seenMobs)
-	timerCommandingRoarCD:Start(6.3-delay)
-	timerUncheckedRageCD:Start(-delay)
+	timerUncheckedRageCD:Start(-delay, 1)
 	countdownUncheckedRage:Start()
 	specWarnUncheckedRage:Schedule(16-delay, 1)
 	voiceUncheckedRage:Schedule(16-delay, "gathershare")
@@ -134,10 +133,13 @@ function mod:OnCombatStart(delay)
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 	if not self:IsEasy() then
+		timerCommandingRoarCD:Start(6.3-delay)
 		timerTaskMasterCD:Start(30.5)--30-41
 		if self:IsMythic() then
 			timerHatchingCD:Start(30.5-delay)
 		end
+	else
+		timerCommandingRoarCD:Start(17.3-delay)
 	end
 end
 
@@ -198,6 +200,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			voiceUncheckedRage:Schedule(17, "gathershare")
 		else
 			--It'll be cast immediately after 10 second cast of draw in + 1, unless draw in successfully absorbs pools
+			DBM:Debug("Draw In is Delaying unchecked Rage", 2)
 			timerUncheckedRageCD:Start(remaining+11, self.vb.rageCount+1)
 			countdownUncheckedRage:Start(remaining+11)
 			specWarnUncheckedRage:Schedule(remaining+7, self.vb.rageCount+1)
@@ -236,7 +239,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 231729 then
-		warnAqueousBurst:CombinedShow(0.3, args.destName)
+		warnAqueousBurst:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnAqueousBurst:Show()
 			voiceAqueousBurst:Play("runout")
@@ -249,12 +252,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 234016 then
 		timerDrivenAssault:Start(10, args.destName)
+		warnDrivenAssault:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnDrivenAssault:Show()
 			voiceDrivenAssault:Play("justrun")
 			voiceDrivenAssault:Schedule(1, "keepmove")
-		else
-			warnDrivenAssault:Show(args.destName)
 		end
 		if self.Options.NPAuraOnDrivenAssault then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
@@ -285,8 +287,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 233429 then
 		local amount = args.amount or 0
-		if amount < 5 or self:AntiSpam(5, 1) then
-		--Every 5 seconds or every stack under 5
+		if amount < 4 or self:AntiSpam(5, 1) then
+		--Every 5 seconds or every stack under 4
 			warnFrigidBlows:Show(amount)
 		end
 	elseif spellId == 234016 then
@@ -378,6 +380,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		else
 			--He'll be casting draw in when this is cast, so adjust timer around draw in cast finish
 			timerCommandingRoarCD:Start(remaining+11)
+			DBM:Debug("Draw In is Delaying Commaning Roar", 2)
 		end
 	elseif spellId == 241736 then--Heroic Trigger Mistress Speaking to Naga
 		specWarnTaskMaster:Show()
