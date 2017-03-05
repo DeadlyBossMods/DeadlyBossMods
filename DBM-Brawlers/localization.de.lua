@@ -21,7 +21,8 @@ L:SetOptionLocalization({
 	specWarnYourNext	= "Spezialwarnung, wenn du als nächstes dran bist",
 	specWarnYourTurn	= "Spezialwarnung, wenn es dein Kampf ist",
 	SpectatorMode		= "Zeige Warnungen/Timer auch beim Zuschauen fremder Kämpfe<br/>(persönliche Spezialwarnungsmeldungen werden nicht angezeigt)",
-	SpeakOutQueue		= "Verkünde akustisch deine aktuelle Position in der Warteschlange<br/>(bei jeder Änderung)"
+	SpeakOutQueue		= "Verkünde akustisch deine aktuelle Position in der Warteschlange<br/>(bei jeder Änderung)",
+	NormalizeVolume		= "Setze im Kampfgildengebiet die Lautstärke des DIALOG-Audiokanals automatisch auf die Lautstärke des SFX-Audiokanals, damit der Jubel nicht so laut ist."
 })
 
 L:SetMiscLocalization({
@@ -113,6 +114,7 @@ L:SetGeneralLocalization({
 	name = "Kampfgilde: Rang 7"
 })
 
+--[[
 ------------
 -- Rank 8 --
 ------------
@@ -130,14 +132,15 @@ L= DBM:GetModLocalization("BrawlRank9")
 L:SetGeneralLocalization({
 	name = "Kampfgilde: Rang 9"
 })
+--]]
 
 -------------
--- Rares 1 --
+-- Brawlers: Legacy --
 -------------
 L= DBM:GetModLocalization("BrawlLegacy")
 
 L:SetGeneralLocalization({
-	name = "Kampfgilde: Klassische Herausford."
+	name = "Kampfgilde: alte Gegner"
 })
 
 L:SetOptionLocalization({
@@ -145,12 +148,12 @@ L:SetOptionLocalization({
 })
 
 -------------
--- Rares 2 --
+-- Brawlers: Challenges --
 -------------
 L= DBM:GetModLocalization("BrawlChallenges")
 
 L:SetGeneralLocalization({
-	name = "Kampfgilde: Spezielle Herausford."
+	name = "Kampfgilde: Herausforderungen"
 })
 
 L:SetWarningLocalization({
@@ -166,4 +169,13 @@ L:SetMiscLocalization({
 	rock			= "Stein",
 	paper			= "Papier",
 	scissors		= "Schere"
+})
+
+-------------
+-- Brawlers: Rumble --
+-------------
+L= DBM:GetModLocalization("BrawlRumble")
+
+L:SetGeneralLocalization({
+	name = "Kampfgilde: Prügeleien"
 })

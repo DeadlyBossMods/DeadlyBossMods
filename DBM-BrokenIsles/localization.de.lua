@@ -7,6 +7,16 @@ local L
 L= DBM:GetModLocalization(1790)
 
 -----------------------
+-- Apocron --
+-----------------------
+L= DBM:GetModLocalization(1956)
+
+-----------------------
+-- Brutallus --
+-----------------------
+L= DBM:GetModLocalization(1883)
+
+-----------------------
 -- Calamir --
 -----------------------
 L= DBM:GetModLocalization(1774)
@@ -32,6 +42,11 @@ L= DBM:GetModLocalization(1770)
 L= DBM:GetModLocalization(1769)
 
 -----------------------
+-- Malificus --
+-----------------------
+L= DBM:GetModLocalization(1884)
+
+-----------------------
 -- Na'zak the Fiend --
 -----------------------
 L= DBM:GetModLocalization(1783)
@@ -45,6 +60,11 @@ L= DBM:GetModLocalization(1749)
 -- Shar'thos --
 -----------------------
 L= DBM:GetModLocalization(1763)
+
+-----------------------
+-- Si'vash --
+-----------------------
+L= DBM:GetModLocalization(1885)
 
 -----------------------
 -- The Soultakers --

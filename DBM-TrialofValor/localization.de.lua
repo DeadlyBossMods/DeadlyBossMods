@@ -12,7 +12,8 @@ L= DBM:GetModLocalization(1819)
 L= DBM:GetModLocalization(1830)
 
 L:SetOptionLocalization({
-	YellActualRaidIcon		= "Ändere alle DBM Schreie für instabiler Schaum derart, dass statt der entsprechenden Farbe das tatsächlich auf das Ziel gesetzte Zeichen angesagt wird (nur als Schlachtzugsleiter)"
+	YellActualRaidIcon		= "Ändere alle DBM Schreie für instabiler Schaum derart, dass statt der entsprechenden Farbe das tatsächlich auf das Ziel gesetzte Zeichen angesagt wird (nur als Schlachtzugsleiter)",
+	FilterSameColor			= "Unterdrücke Zeichensetzung, Schreie und Spezialwarnungen für instabile Schäume, falls diese den bestehenden Farben der Spieler entsprechen"
 })
 
 ---------------------------
