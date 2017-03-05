@@ -7,12 +7,12 @@ mod:SetEncounterID(2037)
 mod:SetZone()
 mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(15581)
---mod.respawnTime = 29
+mod.respawnTime = 40
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 230273 232722 230384 232746 232757 232827 232756 230358",
+	"SPELL_CAST_START 230273 232722 230384 232746 232757 232756 230358",
 	"SPELL_CAST_SUCCES 230201 232745",
 	"SPELL_AURA_APPLIED 239375 239362 230139 230201 230362 234459 230920 234621 232916",
 --	"SPELL_AURA_APPLIED_DOSE",
@@ -68,7 +68,6 @@ local specWarnConsumingHunger		= mod:NewSpecialWarningMoveTo(230920, nil, DBM_CO
 --Stage Two: Terrors of the Deep
 local specWarnBeckonSarukel			= mod:NewSpecialWarningDodge(232746, nil, nil, nil, 1)
 local specWarnDevouringMaw			= mod:NewSpecialWarningSpell(234621, nil, nil, nil, 2, 7)
-local specWarnCallVellius			= mod:NewSpecialWarningSpell(232757, "-Healer", nil, nil, 1, 2)--Change to switch if appropriate
 local specWarnCrashingWave			= mod:NewSpecialWarningDodge(232827, nil, nil, nil, 3, 2)
 --Mythic
 local specWarnDeliciousBufferfish	= mod:NewSpecialWarningYou(239375, nil, nil, nil, 1, 2)
@@ -85,7 +84,6 @@ local timerThunderingShockCD		= mod:NewCDTimer(32.2, 230358, nil, nil, nil, 1)
 --Stage Two: Terrors of the Deep
 local timerBeckonSarukelCD			= mod:NewCDTimer(42, 232746, nil, nil, nil, 1)
 local timerCallVelliusCD			= mod:NewCDTimer(42, 232757, nil, nil, nil, 1)
---local timerCrashingWaveCD			= mod:NewAITimer(31, 232827, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
@@ -102,7 +100,6 @@ local voiceThunderingShock			= mod:NewVoice(230362, "Healer")--helpdispel
 local voiceConsumingHunger			= mod:NewVoice(230920)--movetojelly (move to jellyfish)
 --Stage Two: Terrors of the Deep
 local voiceDevouringMaw				= mod:NewVoice(234621)-- inktosarukel (bring ink to Sarukel) too long?
-local voiceCallVellius				= mod:NewVoice(232757, "-Healer")--bigmob
 local voiceCrashingWave				= mod:NewVoice(232827)--chargemove or watchwave
 
 mod:AddSetIconOption("SetIconOnHydraShot", 230139, true)
@@ -150,13 +147,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnBeckonSarukel:Show()
 		--timerBeckonSarukelCD:Start()
 	elseif spellId == 232757 then
-		self.vb.tempIgnore = false
-		specWarnCallVellius:Show()
-		voiceCallVellius:Play("bigmob")
-	elseif spellId == 232827 then
 		specWarnCrashingWave:Show()
 		voiceCrashingWave:Play("chargemove")
-		--timerCrashingWaveCD:Start(nil, args.sourceGUID)
 	elseif spellId == 232756 then
 		warnSummonOssunet:Show()
 		--Temp, move this shit to real phase trigger later
@@ -248,9 +240,7 @@ function mod:UNIT_DIED(args)
 	if cid == 115795 then--Abyss Stalker
 
 	elseif cid == 116329 or cid == 116843 then--Sarukel (probably 2 Ids for phase 2 and phase 3 versions?)
-
-	elseif cid == 116328 then--Vellius
-		--timerCrashingWaveCD:Stop(args.destGUID)
+	
 	end
 end
 --[[
