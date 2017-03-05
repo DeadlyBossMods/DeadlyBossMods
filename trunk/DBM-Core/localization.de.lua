@@ -15,6 +15,8 @@ DBM_CORE_LOAD_GUI_ERROR				= "Konnte die grafische Benutzeroberfläche nicht lad
 DBM_CORE_LOAD_GUI_COMBAT			= "Die grafische Benutzeroberfläche kann nicht im Kampf geladen werden. Zur Vornahme von Einstellungen bitte diese zunächst außerhalb des Kampfes laden. Danach steht sie auch im Kampf zur Verfügung."
 DBM_CORE_BAD_LOAD					= "Dein Boss Mod für diese Instanz konnte nicht vollständig korrekt im Kampf geladen werden. Bitte führe baldmöglichst nach Kampfende /reload aus."
 DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s kann nicht geladen werden, da dein DBM-Core die Voraussetzungen nicht erfüllt. Es wird eine aktualisierte Version benötigt."
+DBM_CORE_LOAD_MOD_DISABLED			= "%s ist installiert, aber derzeit nicht aktiviert. Dieses Mod wird nicht geladen, falls du es nicht aktivierst."
+DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s sind installiert, aber derzeit nicht aktiviert. Diese Mods werden nicht geladen, falls du sie nicht aktivierst."
 
 --DBM_CORE_WHATS_NEW--translate
 --DBM_CORE_WHATS_NEW_LINK
@@ -243,6 +245,8 @@ DBM_ERROR_NO_PERMISSION				= "Du hast nicht die benötigte Berechtigung für die
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Verstecken"
 
 --Common Locals
+DBM_NEXT							= "Nächste %s"
+DBM_COOLDOWN						= "%s CD"
 DBM_CORE_UNKNOWN					= "unbekannt"
 DBM_CORE_LEFT						= "Links"
 DBM_CORE_RIGHT						= "Rechts"
@@ -252,6 +256,9 @@ DBM_CORE_FRONT						= "Vorne"
 DBM_CORE_INTERMISSION				= "Übergang"
 DBM_CORE_ORB						= "Kugel"
 DBM_CHEST							= "Kiste"
+DBM_NO_DEBUFF						= "Kein %s"
+DBM_ALLY							= "Verbündeten"
+DBM_ADDS							= "Adds"
 --Common Locals end
 
 DBM_CORE_BREAK_USAGE				= "Ein Pause-Timer kann nicht länger als 60 Minuten sein. Beachte bitte, dass für Pausen-Timer die Zeit in Minuten (und nicht in Sekunden) anzugeben ist."
@@ -336,6 +343,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.count				= "%s! (%%s)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack				= "%%d Stapel von %s auf dir"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch			= "%s - Ziel wechseln"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switchcount		= "%s - Ziel wechseln (%%s)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.Adds				= "Adds kommen - Ziel wechseln"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 			= "Spezialwarnung für $spell:%s"
@@ -367,6 +375,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 			= "Spezialwarnung für $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 			= "Spezialwarnung bei >=%d Stapel von $spell:%s auf dir"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch			= "Spezialwarnung für Zielwechsel auf $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switchcount		= "Spezialwarnung (mit Zählung) für Zielwechsel auf $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.Adds			= "Spezialwarnung für Zielwechsel auf ankommende Adds"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: %%s"
@@ -385,6 +394,7 @@ DBM_CORE_AUTO_TIMER_TEXTS.nextsource	= "Nächster %s: %%s"
 DBM_CORE_AUTO_TIMER_TEXTS.nextspecial	= "Nächste Spezialfähigkeit"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.phase		= "Nächste Phase"
+DBM_CORE_AUTO_TIMER_TEXTS.adds		= "Nächste Adds"
 --DBM_CORE_AUTO_TIMER_TEXTS.roleplay
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target		= "Dauer des Debuffs $spell:%s anzeigen"
@@ -403,6 +413,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.nextsource	= "Zeit bis nächstes $spell:%s anzeigen 
 DBM_CORE_AUTO_TIMER_OPTIONS.nextspecial	= "Zeige Zeit bis nächste Spezialfähigkeit"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement	= "Zeit für %s anzeigen"
 DBM_CORE_AUTO_TIMER_OPTIONS.phase		= "Zeige Zeit bis nächste Phase"
+DBM_CORE_AUTO_TIMER_OPTIONS.adds		= "Zeige Zeit bis Adds erscheinen"
 DBM_CORE_AUTO_TIMER_OPTIONS.roleplay	= "Dauer des Rollenspiels anzeigen"
 
 
@@ -413,6 +424,7 @@ DBM_CORE_AUTO_ARROW_OPTION_TEXT2		= "Zeige DBM-Pfeil zum Weggehen vom von $spell
 DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "Zeige DBM-Pfeil zum Hingehen zum richtigen Ort für $spell:%s"
 DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "Spiele gesprochene Warnungen für $spell:%s"
 DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "Spiele gesprochene Warnungen für Phasenwechsel"
+DBM_CORE_AUTO_VOICE3_OPTION_TEXT		= "Spiele gesprochene Warnungen für ankommende Adds"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Spiele akustischen Countdown bis $spell:%s gewirkt wird"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Spiele akustischen Countdown bis $spell:%s schwindet"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Zähle akustisch die Dauer von $spell:%s"
@@ -429,8 +441,9 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.fade	= "%s endet in %%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.position = "%s %%s auf {rt%%d}"..UnitName("player").."{rt%%d}"
 
 --DBM_CORE_AUTO_YELL_CUSTOM_POSITION
-DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Zeige HudMap für $spell:%s"
-DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Zeige HudMap für diverse Mechaniken"
+DBM_CORE_AUTO_HUD_OPTION_TEXT			= "Zeige HudMap für $spell:%s (außer Betrieb)"
+DBM_CORE_AUTO_HUD_OPTION_TEXT_MULTI		= "Zeige HudMap für diverse Mechaniken (außer Betrieb)"
+DBM_CORE_AUTO_NAMEPLATE_OPTION_TEXT		= "Zeige Namensplakettenaura für $spell:%s"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "Zeige Abstandsfenster (%sm) für $spell:%s"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "Zeige Abstandsfenster (%sm)"
 DBM_CORE_AUTO_RRANGE_OPTION_TEXT		= "Zeige inverses Abstandsfenster (%sm) für $spell:%s"

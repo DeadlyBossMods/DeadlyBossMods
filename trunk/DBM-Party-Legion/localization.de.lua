@@ -301,21 +301,21 @@ L:SetMiscLocalization({
 	Pouch2			= "Ein Freund behauptet, dass der Spion Gold liebt und einen Gürtelbeutel voll davon hat.",
 	Pouch3			= "Ich hörte, dass der Gürtelbeutel des Spions mit ausgefallenem Garn gesäumt wurde.",
 	Pouch4			= "Mir ist zu Ohren gekommen, dass der Gürtelbeutel des Spions mit Gold gefüllt ist, um besonders extravagant zu erscheinen.",
-    --
-    Gloves        = "Handschuhe",
-    NoGloves    = "keine Handschuhe",
-    Cape        = "Umhang",
-    Nocape        = "kein Umhang",
-    LightVest    = "helle Weste",
-    DarkVest    = "dunkle Weste",
-    Female        = "weiblich",
-    Male        = "männlich",
-    ShortSleeve = "kurze Ärmel",
-    LongSleeve    = "lange Ärmel",
-    Potions        = "Tränke",
-    NoPotions    = "keine Tränke",
-    Book        = "Buch",
-    Pouch        = "Beutel"
+	--
+	Gloves			= "Handschuhe",
+	NoGloves		= "keine Handschuhe",
+	Cape			= "Umhang",
+	Nocape			= "kein Umhang",
+	LightVest		= "helle Weste",
+	DarkVest		= "dunkle Weste",
+	Female			= "weiblich",
+	Male			= "männlich",
+	ShortSleeve		= "kurze Ärmel",
+	LongSleeve		= "lange Ärmel",
+	Potions			= "Tränke",
+	NoPotions		= "keine Tränke",
+	Book			= "Buch",
+	Pouch			= "Beutel"
 })
 
 
@@ -529,5 +529,37 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization({
 	speedRun		=	"Die seltsame Kühle einer dunklen Präsenz durchweht die Luft..."
+})
+
+-----------------------
+-- <<<Cathedral of Eternal Night >>> --
+-----------------------
+-----------------------
+-- Agronox --
+-----------------------
+L= DBM:GetModLocalization(1905)
+
+-----------------------
+-- Trashbite the Scornful  --
+-----------------------
+L= DBM:GetModLocalization(1906)
+
+-----------------------
+-- Domatrax --
+-----------------------
+L= DBM:GetModLocalization(1904)
+
+-----------------------
+-- Mephistroth  --
+-----------------------
+L= DBM:GetModLocalization(1878)
+
+-----------------------
+--Cathedral of Eternal Night Trash
+-----------------------
+L = DBM:GetModLocalization("CoENTrash")
+
+L:SetGeneralLocalization({
+	name =	"Trash der Kathedr. d. ew. Nacht"
 })
 
