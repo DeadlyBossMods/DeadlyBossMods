@@ -34,8 +34,8 @@ L:SetMiscLocalization({
 	First				= "Erster",
 	Second				= "Zweiter",
 	Third				= "Dritter",
-	Adds1				= "Underlings! Get in here!",--translate (trigger)
-	Adds2				= "Show these pretenders how to fight!"--translate (trigger)
+	Adds1				= "Untertanen! Her zu mir!",
+	Adds2				= "Zeigt diesen Amateuren, wie man kämpft!"
 })
 
 ------------------
@@ -95,9 +95,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	noCLEU4EchoRings		= "Let the waves of time crash over you!",--translate (trigger)
-	noCLEU4EchoOrbs			= "You'll find time can be quite volatile.",--translate (trigger)
-	prePullRP				= "I foresaw your coming, of course. The threads of fate that led you to this place. Your desperate attempt to stop the Legion."--translate (trigger)
+	noCLEU4EchoRings		= "Die Wellen der Zeit spülen Euch fort!",
+	noCLEU4EchoOrbs			= "Ihr seht, die Zeit kann recht flüchtig sein.",
+	prePullRP				= "Natürlich habe ich Eure Ankunft vorausgesehen. Das Schicksal, das Euch hierherführt. Euren verzweifelten Kampf gegen die Legion."
 })
 
 ------------------
