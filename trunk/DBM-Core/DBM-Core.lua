@@ -8480,7 +8480,7 @@ do
 				end)
 			end
 			if anchorFrame:IsShown() then
-				moveEnd()
+				moveEnd(self)
 			else
 				moving = true
 				anchorFrame:Show()
