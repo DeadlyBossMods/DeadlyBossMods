@@ -65,7 +65,6 @@ local voiceSmallAdd					= mod:NewVoice(206699, "Tank")
 
 mod:AddRangeFrameOption(10, 206617)
 mod:AddInfoFrameOption(206617)
---mod:AddSetIconOption("SetIconOnTimeRelease", 206610, true)
 mod:AddNamePlateOption("NPAuraOnTimeBomb", 206617)
 
 mod.vb.normCount = 0
@@ -162,9 +161,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
 		warnTimeRelease:CombinedShow(0.5, args.destName)
---		if self.Options.SetIconOnTimeRelease then
---			self:SetSortedIcon(0.5, args.destName, 1)--Add expected max count when known?
---		end
 	elseif spellId == 206607 then
 		local amount = args.amount or 1
 		warnChronometricPart:Show(args.destName, amount)
@@ -199,9 +195,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.Nameplate:Hide(false, args.destName, spellId)
 		end
 	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
---		if self.Options.SetIconOnTimeRelease then
---			self:SetIcon(args.destName, 0)
---		end
+
 	end
 end
 
