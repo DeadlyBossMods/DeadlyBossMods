@@ -89,6 +89,7 @@ local voiceHydraShot				= mod:NewVoice(230139)--targetyou
 local voiceBurdenofPain				= mod:NewVoice(230201)--defensive/tauntboss
 local voiceFromtheAbyss				= mod:NewVoice(230227, "-Healer")--killmob
 --Stage One: Ten Thousand Fangs
+local voiceSlicingTornado			= mod:NewVoice(232722)--watchwave?
 local voiceThunderingShock			= mod:NewVoice(230362, "Healer")--helpdispel 
 local voiceConsumingHunger			= mod:NewVoice(230384)--movetojelly (move to jellyfish)
 --Stage Two: Terrors of the Deep
@@ -136,6 +137,7 @@ function mod:SPELL_CAST_START(args)
 		warnDarkDepths:Show()
 	elseif spellId == 232722 then
 		specWarnSlicingTornado:Show()
+		voiceSlicingTornado:Play("watchwave")
 		if self:IsMythic() then
 			timerSlicingTornadoCD:Start(34)
 		else
