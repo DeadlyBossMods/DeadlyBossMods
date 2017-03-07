@@ -10727,6 +10727,11 @@ function bossModPrototype:SetCreatureID(...)
 		self.multiMobPullDetection = {...}
 		if self.combatInfo then
 			self.combatInfo.multiMobPullDetection = self.multiMobPullDetection
+			if self.inCombat then
+				--Called mid combat, fix some variables
+				self.numBoss = #self.multiMobPullDetection
+				self.vb.bossLeft = self.numBoss
+			end
 		end
 		for i = 1, select("#", ...) do
 			local cId = select(i, ...)
