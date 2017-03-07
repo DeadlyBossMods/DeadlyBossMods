@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 235271 241635 241636",
-	"SPELL_CAST_SUCCESS 235267 239114 237722",
+	"SPELL_CAST_SUCCESS 235267 239153 237722",
 	"SPELL_AURA_APPLIED 235240 235213 235117 240209 235028 236061",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 235240 235213 235117 240209 235028 234891",
@@ -25,13 +25,14 @@ mod:RegisterEventsInCombat(
 
 --TODO: range frame? seems impractical at moment, if someone shows up range frame it's already too late.
 --TODO, new voices, "Fel infusion" and "Light Infusion" and "Jump In Pit"
---TODO, figure out hammers to better impliment a taunting system. I suspect a two camp strat with tank in appropriate camp taunting during hammer cast
+--TODO, Better taunting system for hammers. I suspect a two camp strat with tank in appropriate camp taunting during hammer cast
 --TODO, some kind of shield health tracker
 --TODO, wrath of the creators stack counter for when stacks too high and about to wipe
---TODO, mass instability not in combat log (SHOCKER). Fix it with transcriptor
+--TODO, Mass instability is in combat log now, but not enough data to fix timers for it yet (except for first on pull)
+--TODO, some kind of relevant warning for Spont Fragmentation
 --[[
 (ability.id = 235271 or ability.id = 241635 or ability.id = 241636) and type = "begincast" or
-(ability.id = 235267 or ability.id = 239114 or ability.id = 237722) and type = "cast" or
+(ability.id = 235267 or ability.id = 239153 or ability.id = 237722) and type = "cast" or
 (ability.id = 235028 or ability.id = 234891) and (type = "applybuff" or type = "removebuff")
 --]]
 --Stage One
@@ -54,10 +55,10 @@ local specWarnWrathofCreators		= mod:NewSpecialWarningInterrupt(234891, "HasInte
 local timerInfusionCD				= mod:NewNextCountTimer(38, 235271, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerLightHammerCD			= mod:NewNextCountTimer(18, 241635, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFelHammerCD				= mod:NewNextCountTimer(18, 241636, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
---local timerMassInstabilityCD		= mod:NewAITimer(31, 235267, nil, nil, nil, 3)
+local timerMassInstabilityCD		= mod:NewNextTimer(31, 235267, nil, nil, nil, 3)
 local timerBlowbackCD				= mod:NewNextTimer(82, 237722, nil, nil, nil, 6)
 --Mythic
-local timerSpontFragmentationCD		= mod:NewAITimer(31, 239114, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
+local timerSpontFragmentationCD		= mod:NewNextTimer(8, 239153, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
 
@@ -79,6 +80,7 @@ mod:AddInfoFrameOption(235117, true)
 mod.vb.unstableSoulCount = 0
 mod.vb.hammerCount = 0
 mod.vb.infusionCount = 0
+mod.vb.spontFragmentationCount = 0
 local AegynnsWard = GetSpellInfo(236420)
 local felDebuff, lightDebuff = GetSpellInfo(235240), GetSpellInfo(235213)
 
@@ -87,11 +89,12 @@ function mod:OnCombatStart(delay)
 	self.vb.hammerCount = 2
 	self.vb.infusionCount = 1
 	timerInfusionCD:Start(2-delay, 1)
-	timerLightHammerCD:Start(13.8-delay, 1)
-	--timerMassInstabilityCD:Start(1-delay)
+	timerLightHammerCD:Start(12-delay, 1)
+	timerMassInstabilityCD:Start(24-delay)
 	timerBlowbackCD:Start(41-delay)
 	if self:IsMythic() then
-		timerSpontFragmentationCD:Start(1-delay)
+		self.vb.spontFragmentationCount = 0
+		timerSpontFragmentationCD:Start(10-delay, 1)
 	end
 end
 
@@ -116,7 +119,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.hammerCount = self.vb.hammerCount + 1
 		specWarnLightHammer:Show(self.vb.hammerCount)
 		if self.vb.hammerCount < 4 then
-			timerFelHammerCD:Start(18, self.vb.hammerCount+1)
+			timerFelHammerCD:Start(20, self.vb.hammerCount+1)--20 on Mythic, review again later
 		end
 	elseif spellId == 241636 then--Fel Hammer
 		self.vb.hammerCount = self.vb.hammerCount + 1
@@ -131,11 +134,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 235267 then
 		--timerMassInstabilityCD:Start()
-	elseif spellId == 239114 then
-		timerSpontFragmentationCD:Start()
+	elseif spellId == 239153 then
+		self.vb.spontFragmentationCount = self.vb.spontFragmentationCount + 1
+		if self.vb.spontFragmentationCount < 4 then
+			timerSpontFragmentationCD:Start(nil, self.vb.spontFragmentationCount+1)
+		end
 	elseif spellId == 237722 then--Blowback
 		timerSpontFragmentationCD:Stop()
-		--timerMassInstabilityCD:Stop()
+		timerMassInstabilityCD:Stop()
 		timerInfusionCD:Stop()
 		timerLightHammerCD:Stop()
 		timerFelHammerCD:Stop()
@@ -203,7 +209,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		--timerMassInstabilityCD:Start(2)
 		timerBlowbackCD:Start()
 		if self:IsMythic() then
-			timerSpontFragmentationCD:Start(2)
+			self.vb.spontFragmentationCount = 0
+			--timerSpontFragmentationCD:Start(nil, 1)
 		end
 	end
 end
