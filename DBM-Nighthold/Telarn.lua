@@ -176,12 +176,12 @@ function mod:OnCombatStart(delay)
 			self:Schedule(1, findNaturalistOnPull, self)
 		end
 	else
+		self:SetCreatureID(104528)
 		if self:IsHeroic() then
 			self.vb.globalTimer = 35
 		else--Normal/LFR assumed same.
 			self.vb.globalTimer = 50
 		end
-		self:SetCreatureID(104528)
 		timerSolarCollapseCD:Start(10-delay)
 		timerParasiticFetterCD:Start(21-delay)
 		countdownParasiticFetter:Start(21-delay)
