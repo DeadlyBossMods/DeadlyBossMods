@@ -218,7 +218,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownModes:Start(13)
 		if self:IsMythic() and self.vb.caretakerCount == 3 then
 			timerEchoDuder:Start(8)--VERIFY, it's more extrapolated than first echo
-			timerAnnihilationCD:Start(38, "echo")
+			--timerAnnihilationCD:Start(38, "echo")--Not a very accurate place/way to do it
 		end
 	elseif spellId == 206641 then--Arcane ArcaneSlash
 		timerArcaneSlashCD:Start(self.vb.ArcaneSlashCooldown)
@@ -324,7 +324,7 @@ function mod:UNIT_DIED(args)
 	if cid == 108303 then
 		timerToxicSliceCD:Stop("echo")
 	elseif cid == 108144 then
-		timerAnnihilationCD:Stop("echo")
+		--timerAnnihilationCD:Stop("echo")
 	end
 end
 
