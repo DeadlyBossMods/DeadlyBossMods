@@ -140,7 +140,7 @@ local timerBondsofFelCD				= mod:NewNextCountTimer(50, 206222, nil, nil, nil, 3)
 local timerEyeofGuldanCD			= mod:NewNextCountTimer(60, 209270, nil, nil, nil, 1)
 --Stage Three: The Master's Power
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
-local timerFlamesofSargerasCD		= mod:NewNextCountTimer(58.5, 221783, nil, nil, nil, 3)
+local timerFlamesofSargerasCD		= mod:NewNextCountTimer("d58.5", 221783, nil, nil, nil, 3)
 local timerStormOfDestroyerCD		= mod:NewNextCountTimer(16, 161121, nil, nil, nil, 3)
 local timerWellOfSoulsCD			= mod:NewCDTimer(16, 206939, nil, nil, nil, 5)
 local timerBlackHarvestCD			= mod:NewNextCountTimer(83, 206744, nil, nil, nil, 2)
@@ -512,12 +512,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 221783 then
 		self.vb.flamesSargCast = self.vb.flamesSargCast + 1
 		if self:IsMythic() then
-			timerFlamesofSargerasCD:Start(45, self.vb.flamesSargCast+1)
+			timerFlamesofSargerasCD:Start(6.3, (self.vb.flamesSargCast).."-"..2)
+			timerFlamesofSargerasCD:Start(7.3, (self.vb.flamesSargCast).."-"..3)
+			timerFlamesofSargerasCD:Start(45, (self.vb.flamesSargCast+1).."-"..1)
 			if self.vb.flamesSargCast == 2 then
 				timerWindsCD:Start(91, 2)
 			end
 		elseif self:IsHeroic() then
-			timerFlamesofSargerasCD:Start(50, self.vb.flamesSargCast+1)--5-6 is 50, 1-5 is 51. For time being using a simple 50 timer
+			timerFlamesofSargerasCD:Start(7.7, (self.vb.flamesSargCast).."-"..2)
+			timerFlamesofSargerasCD:Start(8.7, (self.vb.flamesSargCast).."-"..3)
+			timerFlamesofSargerasCD:Start(50, (self.vb.flamesSargCast+1).."-"..1)--5-6 is 50, 1-5 is 51. For time being using a simple 50 timer
 		else--Normal, LFR?
 			timerFlamesofSargerasCD:Start(58.5, self.vb.flamesSargCast+1)
 		end
@@ -635,7 +639,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsMythic() then
 			self.vb.phase = 2
 			warnPhase2:Show()
-			timerFlamesofSargerasCD:Start(24.5, 1)
+			timerFlamesofSargerasCD:Start(24.5, "1-1")
 			timerEyeofGuldanCD:Start(35.1, 1)
 			timerBlackHarvestCD:Start(55.7, 1)
 			timerWindsCD:Start(68, 1)
@@ -649,7 +653,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerEyeofGuldanCD:Start(42.5, 1)
 				timerStormOfDestroyerCD:Start(94, 1)
 			else
-				timerFlamesofSargerasCD:Start(27.5, 1)
+				timerFlamesofSargerasCD:Start(27.5, "1-1")
 				timerEyeofGuldanCD:Start(39, 1)
 				timerStormOfDestroyerCD:Start(84, 1)
 			end
