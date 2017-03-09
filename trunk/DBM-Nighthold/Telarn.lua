@@ -400,6 +400,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(30, spellId) then
 			--Bump phase and stop all timers since regardless of kills, phase changes reset anyone that's still up
 			self.vb.phase = self.vb.phase + 1
+			self.vb.bossLeft = self.vb.bossLeft - 1--Fix bosses defeated statistic on wipes in phase 2 and phase 3
 			if self.vb.phase == 2 then
 				self.vb.globalTimer = 55
 			else
