@@ -119,6 +119,7 @@ mod:AddNamePlateOption("NPAuraOnCoN", 218809)
 mod.vb.CoNIcon = 1
 mod.vb.phase = 1
 mod.vb.globalTimer = 35
+mod.vb.firstBalls = false
 
 local sentLowHP = {}
 local warnedLowHP = {}
@@ -149,6 +150,14 @@ local function findNaturalistOnPull(self)
 				break
 			end
 		end
+	end
+end
+
+local function checkForBuggedBalls(self)
+	if not self.vb.firstBalls then--It means boss skipped it
+		DBM:AddMsg("Solarist couldn't find his balls (boss bugged and skipped a cast, starting timer for next cast)")
+		self.vb.firstBalls = true
+		timerPlasmaSpheresCD:Start(self.vb.globalTimer-5)--So fix timer for second cast
 	end
 end
 
@@ -232,6 +241,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 218774 then
 		warnPlasmaSpheres:Show()
 		timerPlasmaSpheresCD:Start(self.vb.globalTimer)
+		if not self.vb.firstBalls then self.vb.firstBalls = true end
 	elseif spellId == 223219 then--Summon Chaotic Spheres of Nature
 		warnChaosSpheresOfNature:Show()
 		timerChaotiSpheresofNatureCD:Start(self.vb.globalTimer)
@@ -401,6 +411,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(30, spellId) then
 			--Bump phase and stop all timers since regardless of kills, phase changes reset anyone that's still up
 			self.vb.phase = self.vb.phase + 1
+			self.vb.firstBalls = false
 			self.vb.bossLeft = self.vb.bossLeft - 1--Fix bosses defeated statistic on wipes in phase 2 and phase 3
 			if self.vb.phase == 2 then
 				self.vb.globalTimer = 55
@@ -445,12 +456,13 @@ function mod:SPELL_AURA_APPLIED(args)
 					timerCollapseofNightCD:Start(28)
 					countdownCoN:Start(28)
 					timerPlasmaSpheresCD:Start(40)
+					self:Schedule(45, checkForBuggedBalls, self)
 				else
 					timerFlareCD:Start(8.2)
 					timerCollapseofNightCD:Start(22)
 					countdownCoN:Start(22)
 					timerPlasmaSpheresCD:Start(35)
-					--Needs more data, not long enough pull
+					self:Schedule(40, checkForBuggedBalls, self)
 				end
 			elseif cid == 109041 then--Naturalist Lives
 				--Naturalist Tel'arn's Parsitic Fetter causes Controlled Chaos when removed if Arcanist Tel'arn is killed first. (Does this also happen if killed second?)
