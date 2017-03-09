@@ -12,7 +12,7 @@ mod.respawnTime = 29.5
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 218438 218463 218466 218470 218148 218774 219049 218927 216830 216877 223034 223219 223437 218807",
+	"SPELL_CAST_START 218438 218463 218466 218470 218148 218774 219049 218927 216830 216877 223034 223219 223437 218807 218806",
 	"SPELL_CAST_SUCCESS 218424 218807 223437",
 	"SPELL_AURA_APPLIED 218809 218503 218304 218342 222021 222010 222020",
 	"SPELL_AURA_APPLIED_DOSE 218503",
@@ -24,7 +24,6 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO. see how many CoN go out and auto assign soakers for it. Redo icons accordingly, maybe some auto assigning helper stuff
---TODO, flare? wtf? tooltip is either wrong or boss has one useless insigificant spell
 --TODO, adjust 15% on stars if it's too low/high. 25% was used on algalon for reference
 --TODO, auto marking spheres?
 --[[
@@ -42,7 +41,7 @@ local warnParasiticFetter			= mod:NewTargetAnnounce(218304, 3)
 local warnParasiticFixate			= mod:NewTargetAnnounce(218342, 4, nil, false)--Spammy if things go to shit, so off by default
 --Stage 2: Nightosis
 local warnPhase2					= mod:NewPhaseAnnounce(2)
---local warnFlare						= mod:NewSpellAnnounce(218806, 2, nil, "Tank")
+local warnFlare						= mod:NewSpellAnnounce(218806, 2, nil, "Tank")
 local warnPlasmaSpheres				= mod:NewSpellAnnounce(218774, 2)
 --Stage 3: Pure Forms
 local warnPhase3					= mod:NewPhaseAnnounce(3)
@@ -77,10 +76,11 @@ local timerSolarCollapseCD			= mod:NewNextTimer(35, 218148, nil, nil, nil, 3)
 --Stage 2: Nightosis
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerPlasmaSpheresCD			= mod:NewNextTimer(55, 218774, 104923, nil, nil, 1)--"Summon Balls" short text
+local timerFlareCD					= mod:NewNextTimer(8.5, 218806, nil, "Melee", nil, 5, nil, DBM_CORE_TANK_ICON)--Exception to 35, 40, 50 rule
 --Stage 3: Pure Forms
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerToxicSporesCD			= mod:NewNextTimer(8.5, 219049, nil, nil, nil, 3)--Exception to 35, 40, 50 rule
-local timerGraceOfNatureCD			= mod:NewNextTimer(48, 218927, nil, "Tank", nil, 5)--48-51
+local timerGraceOfNatureCD			= mod:NewNextTimer(48, 218927, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--48-51
 local timerCoNCD					= mod:NewNextTimer(50, 218809, nil, nil, nil, 3)
 mod:AddTimerLine(PLAYER_DIFFICULTY6)
 local timerSummonChaosSpheresCD		= mod:NewNextTimer(35, 223034, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
@@ -226,8 +226,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnSolarCollapse:Show()
 		voiceSolarCollapse:Play("watchstep")
 		timerSolarCollapseCD:Start(self.vb.globalTimer)
---	elseif spellId == 218806 then
---		warnFlare:Show()
+	elseif spellId == 218806 and self:IsMythic() and self.vb.phase == 3 then
+		warnFlare:Show()
+		timerFlareCD:Start()
 	elseif spellId == 218774 then
 		warnPlasmaSpheres:Show()
 		timerPlasmaSpheresCD:Start(self.vb.globalTimer)
@@ -445,6 +446,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					countdownCoN:Start(28)
 					timerPlasmaSpheresCD:Start(40)
 				else
+					timerFlareCD:Start(8.2)
 					timerCollapseofNightCD:Start(22)
 					countdownCoN:Start(22)
 					timerPlasmaSpheresCD:Start(35)
