@@ -142,7 +142,7 @@ local timerEyeofGuldanCD			= mod:NewNextCountTimer(60, 209270, nil, nil, nil, 1)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
 local timerFlamesofSargerasCD		= mod:NewNextCountTimer("d58.5", 221783, nil, nil, nil, 3)
 local timerStormOfDestroyerCD		= mod:NewNextCountTimer(16, 161121, nil, nil, nil, 3)
-local timerWellOfSoulsCD			= mod:NewCDTimer(16, 206939, nil, nil, nil, 5)
+local timerWellOfSouls				= mod:NewCastTimer(16, 206939, nil, nil, nil, 5)
 local timerBlackHarvestCD			= mod:NewNextCountTimer(83, 206744, nil, nil, nil, 2)
 --Mythic Only
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
@@ -310,13 +310,21 @@ function mod:SPELL_CAST_START(args)
 				else
 					timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
 				end
-			else--Easy (normal/LFR?)
+			elseif self:IsNormal() then--Normal
 				if self.vb.liquidHellfireCast == 4 or self.vb.liquidHellfireCast == 6 then
 					timerLiquidHellfireCD:Start(84, self.vb.liquidHellfireCast+1)
 				elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
 					timerLiquidHellfireCD:Start(36, self.vb.liquidHellfireCast+1)
 				else
 					timerLiquidHellfireCD:Start(41, self.vb.liquidHellfireCast+1)
+				end
+			else
+				if self.vb.liquidHellfireCast == 4 or self.vb.liquidHellfireCast == 6 then
+					timerLiquidHellfireCD:Start(88, self.vb.liquidHellfireCast+1)
+				elseif self.vb.liquidHellfireCast == 7 then--TODO, if a longer phase 2 than 7 casts, and continue to see diff timers than 36, build a table
+					timerLiquidHellfireCD:Start(38.6, self.vb.liquidHellfireCast+1)
+				else
+					timerLiquidHellfireCD:Start(44, self.vb.liquidHellfireCast+1)
 				end
 			end
 		elseif self.vb.phase == 1.5 then
@@ -399,11 +407,17 @@ function mod:SPELL_CAST_START(args)
 				else
 					timerEyeofGuldanCD:Start(53.3, self.vb.eyeCast+1)
 				end
-			else--Easy (normal, LFR?)
-				if self.vb.eyeCast == 6 then--Assumed easy does this too. unknown for sure.
-					timerEyeofGuldanCD:Start(75, self.vb.eyeCast+1)
+			elseif self:IsNormal() then--Normal
+				if self.vb.eyeCast == 6 then--Assumed Normal does this too. unknown for sure.
+					timerEyeofGuldanCD:Start(75, self.vb.eyeCast+1)--is 75 verified?
 				else
 					timerEyeofGuldanCD:Start(60, self.vb.eyeCast+1)
+				end
+			else--LFR
+				if self.vb.eyeCast == 6 then--Assumed LFR does this too. unknown for sure.
+					timerEyeofGuldanCD:Start(80, self.vb.eyeCast+1)--80 is unknown, just a guess
+				else
+					timerEyeofGuldanCD:Start(64, self.vb.eyeCast+1)
 				end
 			end
 		end
@@ -506,8 +520,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerBondsofFelCD:Start(40, self.vb.bondsofFelCast+1)
 		elseif self:IsHeroic() then
 			timerBondsofFelCD:Start(44.4, self.vb.bondsofFelCast+1)
-		else
+		elseif self:IsNormal() then
 			timerBondsofFelCD:Start(50, self.vb.bondsofFelCast+1)
+		else
+			timerBondsofFelCD:Start(53, self.vb.bondsofFelCast+1)
 		end
 	elseif spellId == 221783 and self:AntiSpam(35, 1) then
 		self.vb.flamesSargCast = self.vb.flamesSargCast + 1
@@ -523,7 +539,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerFlamesofSargerasCD:Start(8.7, (self.vb.flamesSargCast).."-"..3)
 			timerFlamesofSargerasCD:Start(50, (self.vb.flamesSargCast+1).."-"..1)--5-6 is 50, 1-5 is 51. For time being using a simple 50 timer
 		else--Normal, LFR?
-			timerFlamesofSargerasCD:Start(58.5, self.vb.flamesSargCast+1)
+			timerFlamesofSargerasCD:Start(18.9, (self.vb.flamesSargCast).."-"..2)
+			timerFlamesofSargerasCD:Start(58.5, (self.vb.flamesSargCast+1).."-"..1)
 		end
 	elseif spellId == 212258 and self.vb.phase > 1.5 then--Ignore phase 1 adds with this cast
 		self.vb.handofGuldanCast = self.vb.handofGuldanCast + 1
@@ -605,8 +622,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerFlamesofSargerasCD:Start(7.7, (self.vb.flamesSargCast).."-"..2)
 				timerFlamesofSargerasCD:Start(8.7, (self.vb.flamesSargCast).."-"..3)
 				timerFlamesofSargerasCD:Start(50, (self.vb.flamesSargCast+1).."-"..1)--5-6 is 50, 1-5 is 51. For time being using a simple 50 timer
-			else--Normal, LFR?
-				timerFlamesofSargerasCD:Start(58.5, self.vb.flamesSargCast+1)
+			else--Normal, LFR
+				timerFlamesofSargerasCD:Start(18.9, (self.vb.flamesSargCast).."-"..2)
+				timerFlamesofSargerasCD:Start(58.5, (self.vb.flamesSargCast+1).."-"..1)
 			end
 		end
 		local name = args.destName
@@ -619,11 +637,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFlamesOfSargeras:Show()
 			voiceFlamesOfSargeras:Play("runout")
-		--	if count < 9 then
-				yellFlamesofSargeras:Yell(count, count, count)
-		--	else
-		--		yellFlamesofSargerasSpread:Yell()
-		--	end
+			yellFlamesofSargeras:Yell(count, count, count)
 		else
 			local uId = DBM:GetRaidUnitId(name)
 			if self:IsTanking(uId, "boss1") then
@@ -651,7 +665,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerLiquidHellfireCD:Stop()
 		timerEyeofGuldanCD:Stop()
 		timerHandofGuldanCD:Stop()
-		timerWellOfSoulsCD:Start(15)
+		timerWellOfSouls:Start(15)
 		self.vb.eyeCast = 0
 		if self:IsMythic() then
 			self.vb.phase = 2
@@ -664,7 +678,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self.vb.phase = 3
 			warnPhase3:Show()
-			timerBlackHarvestCD:Start(63, 1)--VERIFY on normal/heroic
+			timerBlackHarvestCD:Start(self:IsLFR() and 73 or 63, 1)
 			if self:IsEasy() then
 				timerFlamesofSargerasCD:Start(29, 1)
 				timerEyeofGuldanCD:Start(42.5, 1)
@@ -690,7 +704,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 206983 and self:AntiSpam(2, args.destName) then
 		warnShadowyGaze:CombinedShow(0.3, args.destName)
 	elseif spellId == 206458 then
-		
 		if args:IsPlayer() then
 			specWarnShearedSoul:Show()
 			voiceShearedSoul:Play("targetyou")
@@ -838,10 +851,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerFelEffluxCD:Stop()
 				timerTransition:Start(19)
 				timerBondsofFelCD:Start(27.6, 1)
-				if self:IsEasy() then
+				if self:IsLFR() then
+					timerEyeofGuldanCD:Start(54, 1)
+					timerLiquidHellfireCD:Start(67, 1)
+				elseif self:IsNormal() then
 					timerEyeofGuldanCD:Start(50.6, 1)
 					timerLiquidHellfireCD:Start(63.1, 1)
-				else
+				else--Heroic
 					timerHandofGuldanCD:Start(33, 1)
 					timerEyeofGuldanCD:Start(48, 1)
 					timerLiquidHellfireCD:Start(59, 1)
