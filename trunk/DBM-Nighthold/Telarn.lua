@@ -458,7 +458,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					timerPlasmaSpheresCD:Start(40)
 					self:Schedule(45, checkForBuggedBalls, self)
 				else
-					timerFlareCD:Start(8.2)
+					--timerFlareCD:Start(8.2)
 					timerCollapseofNightCD:Start(22)
 					countdownCoN:Start(22)
 					timerPlasmaSpheresCD:Start(35)
