@@ -119,7 +119,6 @@ mod:AddNamePlateOption("NPAuraOnCoN", 218809)
 mod.vb.CoNIcon = 1
 mod.vb.phase = 1
 mod.vb.globalTimer = 35
-mod.vb.firstBalls = false
 
 local sentLowHP = {}
 local warnedLowHP = {}
@@ -154,11 +153,8 @@ local function findNaturalistOnPull(self)
 end
 
 local function checkForBuggedBalls(self)
-	if not self.vb.firstBalls then--It means boss skipped it
-		DBM:AddMsg("Solarist couldn't find his balls (boss bugged and skipped a cast, starting timer for next cast)")
-		self.vb.firstBalls = true
-		timerPlasmaSpheresCD:Start(self.vb.globalTimer-5)--So fix timer for second cast
-	end
+	DBM:AddMsg("Solarist couldn't find his balls (boss bugged and skipped a cast, starting timer for next cast)")
+	timerPlasmaSpheresCD:Start(self.vb.globalTimer-5)--So fix timer for second cast
 end
 
 function mod:OnCombatStart(delay)
@@ -239,9 +235,12 @@ function mod:SPELL_CAST_START(args)
 		warnFlare:Show()
 		timerFlareCD:Start()
 	elseif spellId == 218774 then
+		if self:IsMythic() then--I've never seen bug on non mythic so no point in running scheduler off mythic
+			self:Unschedule(checkForBuggedBalls)
+			self:Schedule(self.vb.globalTimer+5, checkForBuggedBalls, self)
+		end
 		warnPlasmaSpheres:Show()
 		timerPlasmaSpheresCD:Start(self.vb.globalTimer)
-		if not self.vb.firstBalls then self.vb.firstBalls = true end
 	elseif spellId == 223219 then--Summon Chaotic Spheres of Nature
 		warnChaosSpheresOfNature:Show()
 		timerChaotiSpheresofNatureCD:Start(self.vb.globalTimer)
@@ -255,6 +254,7 @@ function mod:SPELL_CAST_START(args)
 		countdownGraceOfNature:Start(self.vb.globalTimer)
 		warnGraceofNature:Schedule(self.vb.globalTimer-5)
 	elseif spellId == 216830 then--Phase 2
+		self:Unschedule(checkForBuggedBalls)
 		self.vb.phase = 2
 		warnPhase2:Show()
 		voicePhaseChange:Play("ptwo")
@@ -281,6 +281,7 @@ function mod:SPELL_CAST_START(args)
 			countdownControlledChaos:Start(59)
 		end
 	elseif spellId == 216877 then--Phase 3
+		self:Unschedule(checkForBuggedBalls)
 		self:SetBossHPInfoToHighest()
 		self.vb.phase = 3
 		warnPhase3:Show()
@@ -411,7 +412,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(30, spellId) then
 			--Bump phase and stop all timers since regardless of kills, phase changes reset anyone that's still up
 			self.vb.phase = self.vb.phase + 1
-			self.vb.firstBalls = false
 			self.vb.bossLeft = self.vb.bossLeft - 1--Fix bosses defeated statistic on wipes in phase 2 and phase 3
 			if self.vb.phase == 2 then
 				self.vb.globalTimer = 55
@@ -429,6 +429,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerSolarCollapseCD:Stop()
 			timerCollapseofNightCD:Stop()
 			timerPlasmaSpheresCD:Stop()
+			self:Unschedule(checkForBuggedBalls)
 			--Nature Timers
 			timerToxicSporesCD:Stop()
 			timerParasiticFetterCD:Stop()
