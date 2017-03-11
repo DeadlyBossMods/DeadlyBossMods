@@ -49,7 +49,7 @@ local warnLunarFire					= mod:NewStackAnnounce(239264, 2, nil, "Tank")
 local warnMoonBurn					= mod:NewTargetAnnounce(236519, 3)
 
 --All
-local specWarnFontofElune			= mod:NewSpecialWarningStack(236357, nil, 7, nil, 2, 1, 6)--Stack unknown
+local specWarnFontofElune			= mod:NewSpecialWarningStack(236357, nil, 12, nil, 2, 1, 6)--Stack unknown
 --Huntress Kasparian
 local specWarnGlaiveStorm			= mod:NewSpecialWarningDodge(236480, nil, nil, nil, 2, 2)
 local specWarnTwilightGlaive		= mod:NewSpecialWarningMoveAway(237561, nil, nil, nil, 2, 2)
@@ -91,7 +91,7 @@ local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used wh
 --local countdownDrawPower			= mod:NewCountdown(33, 227629)
 
 --All
-local voiceFontofElune				= mod:NewVoice(228003)--stackhigh
+local voiceFontofElune				= mod:NewVoice(236357)--stackhigh
 --Huntress Kasparian
 local voiceGlaiveStorm				= mod:NewVoice(236480)--watchstep
 local voiceTwilightGlaive			= mod:NewVoice(237561)--runout
@@ -177,7 +177,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if (spellId == 234995 or spellId == 234996) and args:IsPlayer() then
 		local amount = args.amount or 1
-		if amount >= 7 then
+		if amount >= 12 then
 			specWarnFontofElune:Show(amount)
 			voiceFontofElune:Play("stackhigh")
 		end
