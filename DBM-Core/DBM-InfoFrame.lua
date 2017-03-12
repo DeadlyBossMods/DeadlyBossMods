@@ -558,7 +558,9 @@ local function updateByFunction()
 	if sortFunc then
 		updateLinesCustomSort(sortFunc)
 	else
-		updateLines()
+		--updateLines()--Don't run any sort function.
+		--Just make sortedLines into the sorting given by mod
+		sortedLines = lines
 	end
 	if useIcon then
 		updateIcons()
