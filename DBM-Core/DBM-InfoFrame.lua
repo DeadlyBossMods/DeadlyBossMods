@@ -377,7 +377,7 @@ local function updateEnemyAbsorb()
 	local spellName = value[1]
 	for i = 1, 5 do
 		if UnitExists("boss"..i) then
-			local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
+			local absorbAmount = select(17, UnitBuff("boss"..i, spellName)) or select(17, UnitDebuff("boss"..i, spellName))
 			if absorbAmount then
 				lines[UnitName("boss"..i)] = absorbAmount
 			end
@@ -392,19 +392,16 @@ local function updateAllAbsorb()
 	local spellName = value[1]
 	for i = 1, 5 do
 		if UnitExists("boss"..i) then
-			local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
+			local absorbAmount = select(17, UnitBuff("boss"..i, spellName)) or select(17, UnitDebuff("boss"..i, spellName))
 			if absorbAmount then
 				lines[UnitName("boss"..i)] = absorbAmount
 			end
 		end
 	end
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
-		else
-			local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
-			if absorbAmount then
-				lines[UnitName(uId)] = absorbAmount
-			end
+		local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
+		if absorbAmount then
+			lines[UnitName(uId)] = absorbAmount
 		end
 	end
 	updateLines()
@@ -415,12 +412,9 @@ local function updatePlayerAbsorb()
 	twipe(lines)
 	local spellName = value[1]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
-		else
-			local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
-			if absorbAmount then
-				lines[UnitName(uId)] = absorbAmount
-			end
+		local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
+		if absorbAmount then
+			lines[UnitName(uId)] = absorbAmount
 		end
 	end
 	updateLines()
