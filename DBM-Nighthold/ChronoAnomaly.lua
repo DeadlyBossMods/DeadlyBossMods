@@ -23,8 +23,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, figure out how often tanks need to swap, adjust warnings accordingly
---TODO, More data to complete sequences of timers
---TODO, info frame with debuff shield (health) remaining sorted highest to lowest.
+--TODO, More data to complete sequences of timers on LFR/Heroic/Normal
 --(ability.id = 206618 or ability.id = 206610 or ability.id = 206614) and type = "cast" or ability.id = 211927
 local warnNormal					= mod:NewCountAnnounce(207012, 2)
 local warnFast						= mod:NewCountAnnounce(207013, 2)
@@ -64,8 +63,9 @@ local voiceBigAdd					= mod:NewVoice(206700, "-Healer")
 local voiceSmallAdd					= mod:NewVoice(206699, "Tank")
 
 mod:AddRangeFrameOption(10, 206617)
-mod:AddInfoFrameOption(206617)
+mod:AddInfoFrameOption(206610)
 mod:AddNamePlateOption("NPAuraOnTimeBomb", 206617)
+mod:AddDropdownOption("InfoFrameBehavior", {"TimeRelease", "TimeBomb"}, "TimeRelease", "misc")
 
 mod.vb.normCount = 0
 mod.vb.fastCount = 0
@@ -73,6 +73,7 @@ mod.vb.slowCount = 0
 mod.vb.currentPhase = 2
 mod.vb.interruptCount = 0
 mod.vb.timeBombDebuffCount = 0
+mod.vb.timeReleaseCount = 0
 local timeBombDebuff = GetSpellInfo(206617)
 local function updateTimeBomb(self)
 	local _, _, _, _, _, _, expires = UnitDebuff("player", timeBombDebuff)
@@ -100,6 +101,7 @@ function mod:OnCombatStart(delay)
 	self.vb.fastCount = 0
 	self.vb.slowCount = 0
 	self.vb.timeBombDebuffCount = 0
+	self.vb.timeReleaseCount = 0
 	--No timers here, started by speed events
 	if not self:IsMythic() then
 		DBM:AddMsg("Mythic timers in great shape, other difficulties still need more work (for longer pulls)")
@@ -152,7 +154,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(10)
 			end
 		end
-		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() and self.Options.InfoFrameBehavior == "TimeBomb" then
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(10, "playerdebuffremaining", args.spellName)
 		end
@@ -160,7 +162,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(false, args.destName, spellId)
 		end
 	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
+		self.vb.timeReleaseCount = self.vb.timeReleaseCount + 1
 		warnTimeRelease:CombinedShow(0.5, args.destName)
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() and self.Options.InfoFrameBehavior == "TimeRelease" then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(10, "playerabsorb", args.spellName)
+		end
 	elseif spellId == 206607 then
 		local amount = args.amount or 1
 		warnChronometricPart:Show(args.destName, amount)
@@ -188,14 +195,17 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
-		if self.Options.InfoFrame and self.vb.timeBombDebuffCount == 0 then
+		if self.Options.InfoFrame and self.vb.timeBombDebuffCount == 0 and self.Options.InfoFrameBehavior == "TimeBomb" then
 			DBM.InfoFrame:Hide()
 		end
 		if self.Options.NPAuraOnTimeBomb then
 			DBM.Nameplate:Hide(false, args.destName, spellId)
 		end
 	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
-
+		self.vb.timeReleaseCount = self.vb.timeReleaseCount - 1
+		if self.Options.InfoFrame and self.vb.timeReleaseCount == 0 and self.Options.InfoFrameBehavior == "TimeRelease" then
+			DBM.InfoFrame:Hide()
+		end
 	end
 end
 

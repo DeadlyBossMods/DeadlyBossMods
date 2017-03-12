@@ -146,16 +146,9 @@ local autoMarkScannerActive = false
 local autoMarkBlocked = false
 local autoMarkFilter = {}
 
-local updateInfoFrame, sortInfoFrame
+local updateInfoFrame
 do
 	local lines = {}
-	sortInfoFrame = function(a, b)
-		local a = lines[a]
-		local b = lines[b]
-		if not tonumber(a) then a = -1 end
-		if not tonumber(b) then b = -1 end
-		if a > b then return true else return false end
-	end
 
 	local DominatorTentacle, CorruptorTentacle, DeathglareTentacle, NightmareHorror, NightmareIchor = EJ_GetSectionInfo(13189), EJ_GetSectionInfo(13191), EJ_GetSectionInfo(13190), EJ_GetSectionInfo(13188), EJ_GetSectionInfo(13186)
 	updateInfoFrame = function()
@@ -282,7 +275,7 @@ function mod:OnCombatStart(delay)
 			DBM.InfoFrame:Show(10, "playerbaddebuff", 210099)
 		else
 			DBM.InfoFrame:SetHeader(UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS)
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false)
 		end
 	end
 	if self:AntiSpam(15, 2) then
