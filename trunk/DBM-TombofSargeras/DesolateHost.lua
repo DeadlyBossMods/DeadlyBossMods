@@ -128,17 +128,9 @@ do
 	end
 end
 
-local updateInfoFrame, sortInfoFrame
+local updateInfoFrame
 do
 	local lines = {}
-	--[[sortInfoFrame = function(a, b)
-		local a = lines[a]
-		local b = lines[b]
-		if not tonumber(a) then a = -1 end
-		if not tonumber(b) then b = -1 end
-		if a > b then return true else return false end
-	end--]]
-
 	updateInfoFrame = function()
 		table.wipe(lines)
 		lines[spiritRealm] = #playersInSpirit
@@ -176,7 +168,7 @@ function mod:OnCombatStart(delay)
 			end
 		end
 		DBM.InfoFrame:SetHeader(OVERVIEW)
-		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false)
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
 	end
 end
 
