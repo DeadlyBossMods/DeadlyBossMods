@@ -275,7 +275,7 @@ function mod:OnCombatStart(delay)
 			DBM.InfoFrame:Show(10, "playerbaddebuff", 210099)
 		else
 			DBM.InfoFrame:SetHeader(UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS)
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
 		end
 	end
 	if self:AntiSpam(15, 2) then

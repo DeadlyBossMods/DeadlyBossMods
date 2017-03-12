@@ -62,7 +62,7 @@ local currentEvent
 local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
 local lines = {}
 local sortingAsc
-local noSort
+local groupIDSort
 local sortedLines = {}
 local icons = {}
 local value = {}
@@ -259,18 +259,19 @@ local function sortFuncDesc(a, b) return lines[a] > lines[b] end
 local function sortFuncAsc(a, b) return lines[a] < lines[b] end
 local function namesortFuncAsc(a, b) return a < b end
 local function sortGroupId(a, b) return getGroupId(DBM, a) < getGroupId(DBM, b) end
-local function updateLines()
+local function updateLines(noSort)
 	twipe(sortedLines)
 	for i in pairs(lines) do
 		sortedLines[#sortedLines + 1] = i
 	end
-	if noSort then
-		-- noSort actually means: sort by group id
-		table.sort(sortedLines, sortGroupId)
-	elseif sortingAsc then
-		table.sort(sortedLines, sortFuncAsc)
-	else
-		table.sort(sortedLines, sortFuncDesc)
+	if not noSort then
+		if groupIDSort then
+			table.sort(sortedLines, sortGroupId)
+		elseif sortingAsc then
+			table.sort(sortedLines, sortFuncAsc)
+		else
+			table.sort(sortedLines, sortFuncDesc)
+		end
 	end
 	for i, v in ipairs(updateCallbacks) do
 		v(sortedLines)
@@ -293,9 +294,7 @@ local function updateLinesCustomSort(sortFunc)
 	for i in pairs(lines) do
 		sortedLines[#sortedLines + 1] = i
 	end
-	if type(sortFunc) == "function" then
-		table.sort(sortedLines, sortFunc)
-	end
+	table.sort(sortedLines, sortFunc)
 	for i, v in ipairs(updateCallbacks) do
 		v(sortedLines)
 	end
@@ -605,11 +604,13 @@ local function updateByFunction()
 	local useIcon = value[3]
 	lines = func()
 	if sortFunc then
-		updateLinesCustomSort(sortFunc)
-	else
-		--updateLines()--Don't run any sort function.
-		--Just make sortedLines into the sorting given by mod
-		sortedLines = lines
+		if type(sortFunc) == "function" then
+			updateLinesCustomSort(sortFunc)
+		else--Sort function is a bool/true
+			updateLines()--regular update lines with regular sort code
+		end
+	else--Nil, or bool/false
+		updateLines(true)--Update lines with forced no sorting
 	end
 	if useIcon then
 		updateIcons()
@@ -762,9 +763,9 @@ function infoFrame:Show(maxLines, event, ...)
 	end
 	
 	if event == "playerbuff" or event == "playerbaddebuff" or event == "playergooddebuff" then
-		noSort = value[3]
+		groupIDSort = value[3]
 	else
-		noSort = nil
+		groupIDSort = nil
 	end
 	
 	--If spellId is given as value one, convert to spell name on show instead of in every onupdate
@@ -814,7 +815,7 @@ function infoFrame:Hide()
 		frame:Hide()
 	end
 	currentEvent = nil
-	noSort = nil
+	groupIDSort = nil
 	sortingAsc = nil
 end
 

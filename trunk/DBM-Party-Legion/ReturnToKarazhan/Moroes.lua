@@ -60,7 +60,7 @@ local voiceWillBreaker				= mod:NewVoice(227832, "Tank")--shockwave
 --mod:AddSetIconOption("SetIconOnCharge", 198006, true)
 mod:AddInfoFrameOption(227909, true)
 
-local updateInfoFrame, sortInfoFrame
+local updateInfoFrame
 do
 	local ccList = {
 		[1] = GetSpellInfo(227909),--Trap included with fight
@@ -73,13 +73,6 @@ do
 	}
 	local lines = {}
 	local UnitDebuff, floor = UnitDebuff, math.floor
-	sortInfoFrame = function(a, b)
-		local a = lines[a]
-		local b = lines[b]
-		if not tonumber(a) then a = -1 end
-		if not tonumber(b) then b = -1 end
-		if a < b then return true else return false end
-	end
 	updateInfoFrame = function()
 		table.wipe(lines)
 		for i = 1, 5 do
@@ -105,7 +98,7 @@ function mod:OnCombatStart(delay)
 	timerCoatCheckCD:Start(33-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(227909))
-		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame, true)
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
 	end
 end
 
