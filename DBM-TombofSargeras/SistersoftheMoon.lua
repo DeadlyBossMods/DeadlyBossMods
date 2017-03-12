@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 236480 236547 236518 233263 237561 236672 239264",
 	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264 236519 237561 236305",
 	"SPELL_AURA_APPLIED_DOSE 234995 234996 239264",
-	"SPELL_AURA_REMOVED 233264 236712",
+	"SPELL_AURA_REMOVED 236712 233263",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -112,16 +112,18 @@ local voiceLunarFire				= mod:NewVoice(239264)--tauntboss/stackhigh
 local voiceMoonBurn					= mod:NewVoice(236519)--changemoon
 
 --mod:AddSetIconOption("SetIconOnShield", 228270, true)
---mod:AddInfoFrameOption(227503, true)
+mod:AddInfoFrameOption(233263, true)
 --mod:AddRangeFrameOption("5/8/15")
 
 mod.vb.phase = 1
 mod.vb.twilightGlaiveCount = 0
+mod.vb.eclipseCount = 0
 local astralPurge = GetSpellInfo(234998)
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	self.vb.twilightGlaiveCount = 0
+	self.vb.eclipseCount = 0
 	timerMoonBurnCD:Start(9.6-delay)
 	timerMoonGlaiveCD:Start(14.4-delay)
 	timerTwilightVolleyCD:Start(15.5-delay)--15.5-17
@@ -239,16 +241,26 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnIncorporealShot:Show(args.destName)
 		end
 	elseif spellId == 233264 then--Dpser Embrace of the Eclipse
+		self.vb.eclipseCount = self.vb.eclipseCount + 1
 		if not self:IsHealer() then
 			specWarnEmbraceofEclipse:Show(args.destName)
 			voiceEmbraceofEclipse:Play("targetchange")
 		end
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(10, "allabsorb", args.spellName)
+		end
 	elseif spellId == 233263 then--Healer Embrace of the Eclipse
+		self.vb.eclipseCount = self.vb.eclipseCount + 1
 		if self:IsHealer() then
 			specWarnEmbraceofEclipse:CombinedShow(0.5, args.destName)
 			if self:AntiSpam(3, 1) then
 				voiceEmbraceofEclipse:Play("healall")
 			end
+		end
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(10, "allabsorb", args.spellName)
 		end
 	elseif spellId == 236712 then
 		warnLunarBeacon:CombinedShow(0.3, args.destName)
@@ -282,6 +294,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 236712 and args:IsPlayer() then
 		yellLunarBeacon:Cancel()
+	elseif spellId == 233263 or spellId == 233264 then--Healer & boss Embrace of the Eclipse
+		self.vb.eclipseCount = self.vb.eclipseCount - 1
+		if self.Options.InfoFrame and self.vb.eclipseCount == 0 then
+			DBM.InfoFrame:Hide()
+		end
 	end
 end
 

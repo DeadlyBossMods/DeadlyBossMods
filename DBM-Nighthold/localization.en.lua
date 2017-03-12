@@ -10,6 +10,12 @@ L= DBM:GetModLocalization(1706)
 ---------------------------
 L= DBM:GetModLocalization(1725)
 
+L:SetOptionLocalization({
+	InfoFrameBehavior	= "Set information InfoFrame shows during encounter",
+	TimeRelease			= "Show players affected by Time Release",
+	TimeBomb			= "Show players affected by Time Bomb"
+})
+
 ---------------------------
 -- Trilliax --
 ---------------------------

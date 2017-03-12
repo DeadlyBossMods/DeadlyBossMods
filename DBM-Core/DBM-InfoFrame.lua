@@ -372,6 +372,61 @@ local function updateEnemyPower()
 	updateIcons()
 end
 
+local function updateEnemyAbsorb()
+	twipe(lines)
+	local spellName = value[1]
+	for i = 1, 5 do
+		if UnitExists("boss"..i) then
+			local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
+			if absorbAmount then
+				lines[UnitName("boss"..i)] = absorbAmount
+			end
+		end
+	end
+	updateLines()
+	updateIcons()
+end
+
+local function updateAllAbsorb()
+	twipe(lines)
+	local spellName = value[1]
+	for i = 1, 5 do
+		if UnitExists("boss"..i) then
+			local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
+			if absorbAmount then
+				lines[UnitName("boss"..i)] = absorbAmount
+			end
+		end
+	end
+	for uId in DBM:GetGroupMembers() do
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		else
+			local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
+			if absorbAmount then
+				lines[UnitName(uId)] = absorbAmount
+			end
+		end
+	end
+	updateLines()
+	updateIcons()
+end
+
+local function updatePlayerAbsorb()
+	twipe(lines)
+	local spellName = value[1]
+	for uId in DBM:GetGroupMembers() do
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		else
+			local absorbAmount = select(17, UnitBuff(uId, spellName)) or select(17, UnitDebuff(uId, spellName))
+			if absorbAmount then
+				lines[UnitName(uId)] = absorbAmount
+			end
+		end
+	end
+	updateLines()
+	updateIcons()
+end
+
 --Buffs that are good to have, therefor bad not to have them.
 local function updatePlayerBuffs()
 	twipe(lines)
@@ -581,6 +636,9 @@ local events = {
 	["health"] = updateHealth,
 	["playerpower"] = updatePlayerPower,
 	["enemypower"] = updateEnemyPower,
+	["enemyabsorb"] = updateEnemyAbsorb,
+	["allabsorb"] = updateAllAbsorb,
+	["playerabsorb"] = updatePlayerAbsorb,
 	["playerbuff"] = updatePlayerBuffs,
 	["playergooddebuff"] = updateGoodPlayerDebuffs,
 	["playerbaddebuff"] = updateBadPlayerDebuffs,
@@ -602,6 +660,7 @@ local events = {
 local friendlyEvents = {
 	["health"] = true,
 	["playerpower"] = true,
+	["playerabsorb"] = true,
 	["playerbuff"] = true,
 	["playergooddebuff"] = true,
 	["playerbaddebuff"] = true,
@@ -637,7 +696,6 @@ function onUpdate(frame)
 		local icon = icons[leftText] and icons[leftText]..leftText
 		if friendlyEvents[currentEvent] then
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(leftText)) or "player"--Prevent nil logical error
-			--local addedSelf
 			if unitId and select(4, UnitPosition(unitId)) == currentMapId then
 				local _, class = UnitClass(unitId)
 				if class then
@@ -645,8 +703,7 @@ function onUpdate(frame)
 				end
 				linesShown = linesShown + 1
 				if leftText == playerName then--It's player.
-					--addedSelf = true
-					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerbuffremaining" or currentEvent == "playerbaddebuffbyspellid" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
+					if currentEvent == "health" or currentEvent == "playerpower" or currentEvent == "playerabsorb" or currentEvent == "playerbuff" or currentEvent == "playergooddebuff" or currentEvent == "playerbaddebuff" or currentEvent == "playerdebuffremaining" or currentEvent == "playerbuffremaining" or currentEvent == "playerbaddebuffbyspellid" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and value[1] == 3) then--Red
 						frame:AddDoubleLine(icon or leftText, rightText, 255, 0, 0, 255, 255, 255)-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
 					else--Green
 						frame:AddDoubleLine(icon or leftText, rightText, 0, 255, 0, 255, 255, 255)
@@ -670,9 +727,6 @@ function onUpdate(frame)
 					end
 				end
 			end
-			--if not addedSelf and DBM.Options.InfoFrameShowSelf and currentEvent == "playerpower" then-- Only Shows on playerpower event.
-			--	frame:AddDoubleLine(playerName, lines[playerName], color.r, color.g, color.b, 255, 255, 255)
-			--end
 		else
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(leftText))
 			if unitId then
