@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 236694 236442 236712",
-	"SPELL_CAST_SUCCESS 236480 236547 237633 236518 233263 237561",
-	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264 236519 237561",
+	"SPELL_CAST_SUCCESS 236480 236547 236518 233263 237561 236672 239264",
+	"SPELL_AURA_APPLIED 234995 234996 236550 236596 233264 233263 236712 239264 236519 237561 236305",
 	"SPELL_AURA_APPLIED_DOSE 234995 234996 239264",
 	"SPELL_AURA_REMOVED 233264 236712",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -27,23 +27,25 @@ mod:RegisterEventsInCombat(
 --TODO, phase detection to remove/add timers etc.
 --TODO, figure out which of the MANY scripts are for glaive storm
 --TODO, figure out how to actually pre warn moon glaive and give it a warning.
---TODO, figure out what to do Spectral Glaive. Why does iti even exist, totally redundant waste of space, already have Moon Glaive
 --TODO, is there even a point to Shadow shot?
 --TODO, infoframe showing absorbs remaining on boss/players if possible to get remaining shield from UnitBuff/UnitDebuff in an onupdate call?
 --TODO, fine tune all option defaults once what targets or doesn't target x and y is known. Fight can't have too much timer/warning spam
 --TODO, announce lunar strike? more redundancy in encounter that isn't needed IMO
 --TODO, video fight and improve timer interactions to better deal with huge variation in stuff like moon glaive timer.
+--TODO, new voice, changemoon (Change Moon)
 --[[
 (ability.id = 236694 or ability.id = 236442 or ability.id = 239379 or ability.id = 236712) and type = "begincast" or
-(ability.id = 236480 or ability.id = 237561 or ability.id = 236547 or ability.id = 237633 or ability.id = 236518 or ability.id = 236596 or ability.id = 233263 or ability.id = 239264) and type = "cast" or
-(ability.id = 236305 or ability.id = 236596) and type = "applydebuff"
+(ability.id = 236480 or ability.id = 237561 or ability.id = 236547 or ability.id = 236518 or ability.id = 233263 or ability.id = 239264 or ability.id = 236672) and type = "cast" or
+(ability.id = 236305) and type = "applydebuff"
 --]]
 --Huntress Kasparian
-local warnTwilightGlaive			= mod:NewTargetAnnounce(237561, 3)
+--local warnTwilightGlaive			= mod:NewTargetAnnounce(237561, 3)
 --Captain Yathae Moonstrike
+local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 local warnIncorporealShot			= mod:NewTargetAnnounce(236305, 3)
 local warnRapidShot					= mod:NewTargetAnnounce(236596, 3)
 --Priestess Lunaspyre
+local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 local warnLunarBeacon				= mod:NewTargetAnnounce(236712, 3)
 local warnLunarFire					= mod:NewStackAnnounce(239264, 2, nil, "Tank")
 local warnMoonBurn					= mod:NewTargetAnnounce(236519, 3)
@@ -52,9 +54,11 @@ local warnMoonBurn					= mod:NewTargetAnnounce(236519, 3)
 local specWarnFontofElune			= mod:NewSpecialWarningStack(236357, nil, 12, nil, 2, 1, 6)--Stack unknown
 --Huntress Kasparian
 local specWarnGlaiveStorm			= mod:NewSpecialWarningDodge(236480, nil, nil, nil, 2, 2)
+local specWarnTwilightGlaiveOther	= mod:NewSpecialWarningTarget(237561, nil, nil, nil, 2, 2)
 local specWarnTwilightGlaive		= mod:NewSpecialWarningMoveAway(237561, nil, nil, nil, 2, 2)
 local yellTwilightGlaive			= mod:NewYell(237561)
-local specWarnDiscorporate			= mod:NewSpecialWarningTaunt(236550, nil, nil, nil, 1, 2)
+local specWarnDiscorporate			= mod:NewSpecialWarningMoveTo(236550, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(236550), nil, 1, 7)
+local specWarnDiscorporateSwap		= mod:NewSpecialWarningTaunt(236550, nil, nil, nil, 1, 2)
 --Captain Yathae Moonstrike
 local specWarnCallMoontalon			= mod:NewSpecialWarningSwitch(236694, "-Healer", nil, nil, 1, 2)
 local specWarnTwilightVolley		= mod:NewSpecialWarningSpell(236442, nil, nil, nil, 2, 2)
@@ -68,21 +72,21 @@ local specWarnLunarBeacon			= mod:NewSpecialWarningMoveAway(236712, nil, nil, ni
 local yellLunarBeacon				= mod:NewFadesYell(236712)
 local specWarnLunarFire				= mod:NewSpecialWarningStack(239264, nil, 4, nil, nil, 1, 2)
 local specWarnLunarFireOther		= mod:NewSpecialWarningTaunt(239264, nil, nil, nil, 1, 2)
-local specWarnMoonBurn				= mod:NewSpecialWarningYou(236519, nil, nil, nil, 1)--Add voice filter when it has a voice
+local specWarnMoonBurn				= mod:NewSpecialWarningMoveTo(236519, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(236519), nil, 1, 7)--Add voice filter when it has a voice
 
 --Huntress Kasparian
 local timerGlaiveStormCD			= mod:NewAITimer(31, 236480, nil, nil, nil, 3)
 local timerTwilightGlaiveCD			= mod:NewCDTimer(31, 237561, nil, nil, nil, 3)
 local timerMoonGlaiveCD				= mod:NewCDTimer(13.4, 236547, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--13.4-30 second variation, have fun with that
-local timerSpectralGlaiveCD			= mod:NewAITimer(31, 237633, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 --Captain Yathae Moonstrike
 local timerIncorporealShotCD		= mod:NewCDTimer(54.7, 236305, nil, nil, nil, 3)
-local timerCallMoontalonCD			= mod:NewAITimer(31, 236694, nil, nil, nil, 1)
+local timerCallMoontalonCD			= mod:NewCDTimer(31, 236694, nil, nil, nil, 1)
 local timerTwilightVolleyCD			= mod:NewCDTimer(19.4, 236442, nil, nil, nil, 2)--Cast while inactive.
-local timerRapidShotCD				= mod:NewAITimer(31, 236596, nil, nil, nil, 3)
+local timerRapidShotCD				= mod:NewCDTimer(18.2, 236596, nil, nil, nil, 3)--18.2 but sometimes 30
 --Priestess Lunaspyre
 local timerEmbraceofEclipseCD		= mod:NewCDTimer(54.3, 233264, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_DAMAGE_ICON)--Used while inactive
 local timerLunarBeaconCD			= mod:NewAITimer(31, 236712, nil, nil, nil, 3)
+local timerLunarFireCD				= mod:NewAITimer(31, 239264, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used while inactive
 
 --local berserkTimer				= mod:NewBerserkTimer(300)
@@ -91,11 +95,11 @@ local timerMoonBurnCD				= mod:NewCDTimer(23, 236519, nil, nil, nil, 3)--Used wh
 --local countdownDrawPower			= mod:NewCountdown(33, 227629)
 
 --All
-local voiceFontofElune				= mod:NewVoice(236357)--stackhigh
+local voiceFontofElune				= mod:NewVoice(236357)--changemoon
 --Huntress Kasparian
 local voiceGlaiveStorm				= mod:NewVoice(236480)--watchstep
 local voiceTwilightGlaive			= mod:NewVoice(237561)--runout
-local voiceDiscorporate				= mod:NewVoice(236550)--tauntboss
+local voiceDiscorporate				= mod:NewVoice(236550)--changemoon/tauntboss
 --Captain Yathae Moonstrike
 local voiceCallMoontalon			= mod:NewVoice(236694, "-Healer")--killbigmob
 local voiceTwilightVolley			= mod:NewVoice(236442)--aesoon
@@ -105,7 +109,7 @@ local voiceRapidShot				= mod:NewVoice(236596)--runout
 local voiceEmbraceofEclipse			= mod:NewVoice(233264, "Dps|Healer")--targetchange/healall
 local voiceLunarBeacon				= mod:NewVoice(236712)--runout
 local voiceLunarFire				= mod:NewVoice(239264)--tauntboss/stackhigh
---local voiceMoonBurn					= mod:NewVoice(236519)--??? findastral? need to know how astral works first.
+local voiceMoonBurn					= mod:NewVoice(236519)--changemoon
 
 --mod:AddSetIconOption("SetIconOnShield", 228270, true)
 --mod:AddInfoFrameOption(227503, true)
@@ -113,10 +117,12 @@ local voiceLunarFire				= mod:NewVoice(239264)--tauntboss/stackhigh
 
 mod.vb.phase = 1
 mod.vb.twilightGlaiveCount = 0
+local astralPurge = GetSpellInfo(234998)
 
 function mod:OnCombatStart(delay)
+	self.vb.phase = 1
 	self.vb.twilightGlaiveCount = 0
-	timerMoonBurnCD:Start(10-delay)
+	timerMoonBurnCD:Start(9.6-delay)
 	timerMoonGlaiveCD:Start(14.4-delay)
 	timerTwilightVolleyCD:Start(15.5-delay)--15.5-17
 	timerTwilightGlaiveCD:Start(18.3-delay)
@@ -125,7 +131,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	self.vb.phase = 1
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
@@ -139,7 +144,7 @@ function mod:SPELL_CAST_START(args)
 	if spellId == 236694 then
 		specWarnCallMoontalon:Show()
 		voiceCallMoontalon:Play("killbigmob")
-		timerCallMoontalonCD:Start()
+		--timerCallMoontalonCD:Start()
 	elseif spellId == 236442 then
 		specWarnTwilightVolley:Show()
 		voiceTwilightVolley:Play("aesoon")
@@ -164,12 +169,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif spellId == 236547 then
 		timerMoonGlaiveCD:Start()
-	elseif spellId == 237633 then
-		timerSpectralGlaiveCD:Start()
 	elseif spellId == 236518 then
 		timerMoonBurnCD:Start()
 	elseif spellId == 233263 then
 		timerEmbraceofEclipseCD:Start()
+	elseif spellId == 236672 then
+		timerRapidShotCD:Start()
+	elseif spellId == 239264 then
+		timerLunarFireCD:Start()
 	end
 end
 
@@ -179,7 +186,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		if amount >= 12 then
 			specWarnFontofElune:Show(amount)
-			voiceFontofElune:Play("stackhigh")
+			voiceFontofElune:Play("changemoon")
 		end
 	elseif spellId == 239264 then
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -206,13 +213,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 236550 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
-			if not args:IsPlayer() then
-				specWarnDiscorporate:Show(args.destName)
+			if args:IsPlayer() then
+				specWarnDiscorporate:Show(astralPurge)
+				voiceDiscorporate:Play("changemoon")
+			else
+				specWarnDiscorporateSwap:Show(args.destName)
 				voiceDiscorporate:Play("tauntboss")
 			end
 		end
 	elseif spellId == 236596 then
-		timerRapidShotCD:Start()--Maybe move to SUCCESS event if there is one
 		if args:IsPlayer() then
 			specWarnRapidShot:Show()
 			voiceRapidShot:Play("runout")
@@ -253,7 +262,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 236519 then
 		warnMoonBurn:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			specWarnMoonBurn:Show()
+			specWarnMoonBurn:Show(astralPurge)
+			voiceMoonBurn:Play("changemoon")
 		end
 	elseif spellId == 237561 then
 		if args:IsPlayer() then
@@ -261,7 +271,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceTwilightGlaive:Play("runout")
 			yellTwilightGlaive:Yell()
 		else
-			warnTwilightGlaive:Show(args.destName)
+			specWarnTwilightGlaiveOther:Show(args.destName)
+			voiceTwilightGlaive:Play("farfromline")
 		end
 	end
 end
@@ -292,10 +303,36 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
-	--["236547-Moon Glaive"] = "pull:14.6, 15.8, 15.8, 25.5, 16.9"
-	--["236547-Moon Glaive"] = "pull:14.4, 14.6, 17.0, 29.2, 15.7, 27.9, 20.6, 30.3, 18.2, 18.2, 30.3, 13.4",
-	if spellId == 236547 then--Moon Glaive
-		timerMoonGlaiveCD:Start()
+	--"<177.28 17:55:28> [UNIT_SPELLCAST_SUCCEEDED] Huntress Kasparian(Omegal) [[boss1:Captain Yathae Becomes Active Conversation::3-2083-1676-9420-243044-0023448060:243044]]", -- [3688]
+	--"<177.62 17:55:28> [CHAT_MSG_MONSTER_SAY] No more dawdling, Kasparian! Victory shall be mine!#Captain Yathae Moonstrike###Omegal##0#0##0#451#nil#0#false#false#false#false", -- [3698]
+	if spellId == 243044 then--Captain Yathae Becomes Active Conversation (Phase 2)
+		self.vb.phase = 2
+		warnPhase2:Show()
+		timerMoonGlaiveCD:Stop()
+		timerTwilightVolleyCD:Stop()
+		timerTwilightGlaiveCD:Stop()
+		timerIncorporealShotCD:Stop()
+		timerCallMoontalonCD:Start(3.3)
+		timerTwilightGlaiveCD:Start(6)
+		timerTwilightVolleyCD:Start(10.9)
+		timerRapidShotCD:Start(15.8)
+		timerGlaiveStormCD:Start(2)--Unknown, didn't get this far
+	elseif spellId == 243047 then--Lunaspyre Becomes Active Conversation (Phase 3)
+		self.vb.phase = 3
+		warnPhase3:Show()
+		timerRapidShotCD:Stop()
+		timerTwilightVolleyCD:Stop()
+		timerEmbraceofEclipseCD:Stop()
+		timerMoonBurnCD:Stop()
+		timerCallMoontalonCD:Stop()
+		
+		--AI timers for now
+		timerLunarFireCD:Start(3)
+		timerLunarBeaconCD:Start(3)
+		--Can't use AI code, because it's hardcoded for phase 1-2
+		--timerMoonBurnCD:Start()
+		--timerTwilightVolleyCD:Start()
+		--timerIncorporealShotCD:Start()
 	end
 end
 
