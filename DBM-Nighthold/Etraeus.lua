@@ -190,16 +190,9 @@ do
 	end
 end
 
-local updateInfoFrame, sortInfoFrame
+local updateInfoFrame
 do
 	local lines = {}
-	sortInfoFrame = function(a, b)
-		local a = lines[a]
-		local b = lines[b]
-		if not tonumber(a) then a = -1 end
-		if not tonumber(b) then b = -1 end
-		if a < b then return true else return false end
-	end
 	updateInfoFrame = function()
 		table.wipe(lines)
 		local infoNeeded = false
@@ -553,7 +546,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.vb.StarSigns == 1 then
 			updateRangeFrame(self)
 			if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-				DBM.InfoFrame:Show(15, "function", updateInfoFrame, sortInfoFrame, true)
+				DBM.InfoFrame:Show(15, "function", updateInfoFrame, false, true)
 			end
 		end
 		if self.Options.NPAuraOnConjunction and not self.Options.ShowCustomNPAuraTextures then

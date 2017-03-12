@@ -122,18 +122,11 @@ mod.vb.addsCount = 0
 mod.vb.carrionNightmare = 0
 mod.vb.batsKilled = 0
 
-local updateInfoFrame, sortInfoFrame, breakMarks
+local updateInfoFrame, breakMarks
 do
 	local argusDebuff = GetSpellInfo(212794)
 	local playerName = UnitName("player")
 	local lines = {}
-	sortInfoFrame = function(a, b)
-		local a = lines[a]
-		local b = lines[b]
-		if not tonumber(a) then a = -1 end
-		if not tonumber(b) then b = -1 end
-		if a < b then return true else return false end
-	end
 	updateInfoFrame = function()
 		table.wipe(lines)
 		local total = 0
@@ -175,7 +168,7 @@ do
 			end
 			if self.Options.InfoFrame then
 				DBM.InfoFrame:SetHeader(argusDebuff)
-				DBM.InfoFrame:Show(8, "function", updateInfoFrame, sortInfoFrame, true)
+				DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, true)
 			end
 		end
 	end
@@ -268,7 +261,7 @@ function mod:SPELL_CAST_START(args)
 			--Restore argus tracker if for some reason you let people have it this long
 			if self.Options.InfoFrame and self:IsMythic() then
 				DBM.InfoFrame:SetHeader(GetSpellInfo(212794))
-				DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame, true)
+				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
 			end
 		end
 	elseif spellId == 213238 then
