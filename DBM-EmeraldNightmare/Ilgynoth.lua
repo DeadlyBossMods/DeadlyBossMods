@@ -149,7 +149,6 @@ local autoMarkFilter = {}
 local updateInfoFrame
 do
 	local lines = {}
-
 	local DominatorTentacle, CorruptorTentacle, DeathglareTentacle, NightmareHorror, NightmareIchor = EJ_GetSectionInfo(13189), EJ_GetSectionInfo(13191), EJ_GetSectionInfo(13190), EJ_GetSectionInfo(13188), EJ_GetSectionInfo(13186)
 	updateInfoFrame = function()
 		table.wipe(lines)
@@ -275,7 +274,7 @@ function mod:OnCombatStart(delay)
 			DBM.InfoFrame:Show(10, "playerbaddebuff", 210099)
 		else
 			DBM.InfoFrame:SetHeader(UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS)
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, false, true)
 		end
 	end
 	if self:AntiSpam(15, 2) then
@@ -329,6 +328,9 @@ function mod:SPELL_CAST_START(args)
 					timerDeathGlareCD:Start(timer)
 				end
 			end
+			if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "Adds" then
+				DBM.InfoFrame:Update()
+			end
 		end
 	elseif spellId == 208929 then
 		self:BossTargetScanner(args.sourceGUID, "SpewCorruptionTarget", 0.2, 16)
@@ -348,6 +350,9 @@ function mod:SPELL_CAST_START(args)
 				if timer then
 					timerCorruptorTentacleCD:Start(timer)
 				end
+			end
+			if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "Adds" then
+				DBM.InfoFrame:Update()
 			end
 		end
 	elseif spellId == 210781 then--Dark Reconstitution
@@ -440,6 +445,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.SetIconOnOoze and self:IsMythic() and not autoMarkScannerActive and not autoMarkBlocked then
 				autoMarkScannerActive = true
 				self:Schedule(2.5, autoMarkOozes, self)
+			end
+			if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "Adds" then
+				DBM.InfoFrame:Update()
 			end
 		end
 	elseif spellId == 210984 then
@@ -535,6 +543,9 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				end
 				addsTable[UnitGUID(bossUnitID)] = true
 				self.vb.DominatorCount = self.vb.DominatorCount + 1
+				if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "Adds" then
+					DBM.InfoFrame:Update()
+				end
 			end
 		end
 	end
@@ -565,18 +576,33 @@ function mod:OnSync(msg, guid)
 			self.vb.NightmareCount = self.vb.NightmareCount - 1
 			timerEyeOfFateCD:Stop(guid)
 			countdownEyeofFate:Cancel()
+			if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "Adds" then
+				DBM.InfoFrame:Update()
+			end
 		elseif cid == 105304 then--Dominator Tentacle
 			self.vb.DominatorCount = self.vb.DominatorCount - 1
 			if self.vb.DominatorCount == 0 then
 				timerNightmareishFuryCD:Stop()
 				timerGroundSlamCD:Stop()
 			end
+			if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "Adds" then
+				DBM.InfoFrame:Update()
+			end
 		elseif cid == 105383 then--Corruptor tentacle
 			self.vb.CorruptorCount = self.vb.CorruptorCount - 1
+			if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "Adds" then
+				DBM.InfoFrame:Update()
+			end
 		elseif cid == 105322 then--Deathglare Tentacle
 			self.vb.DeathglareCount = self.vb.DeathglareCount - 1
+			if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "Adds" then
+				DBM.InfoFrame:Update()
+			end
 		elseif cid == 105721 then--Nightmare Ichor
 			self.vb.IchorCount = self.vb.IchorCount - 1
+			if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "Adds" then
+				DBM.InfoFrame:Update()
+			end
 		end
 	end
 end
@@ -595,6 +621,9 @@ do
 			end
 			self.vb.NightmareCount = self.vb.NightmareCount + 1
 			--timerEyeOfFateCD:Start(18)--Started at seeping corruption for mob GUID
+			if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "Adds" then
+				DBM.InfoFrame:Update()
+			end
 		end
 	end
 end
