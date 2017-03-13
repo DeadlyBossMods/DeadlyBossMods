@@ -61,8 +61,7 @@ local modLines = 5
 local currentEvent
 local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
 local lines = {}
-local sortingAsc
-local groupIDSort
+local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
 local sortedLines = {}
 local icons = {}
 local value = {}
@@ -265,9 +264,9 @@ local function updateLines(noSort)
 		sortedLines[#sortedLines + 1] = i
 	end
 	if not noSort then
-		if groupIDSort then
+		if sortMethod == 3 then
 			table.sort(sortedLines, sortGroupId)
-		elseif sortingAsc then
+		elseif sortMethod == 2 then
 			table.sort(sortedLines, sortFuncAsc)
 		else
 			table.sort(sortedLines, sortFuncDesc)
@@ -741,6 +740,7 @@ end
 ---------------
 --  Methods  --
 ---------------
+--Arg 1: spellID, health/powervalue, customfunction. Arg 2: TankIgnore, Powertype, SortFunction. Arg 3: SpellFilter, UseIcon. Arg 4: disable onUpdate
 function infoFrame:Show(maxLines, event, ...)
 	currentMapId = select(4, UnitPosition("player"))
 	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
@@ -756,16 +756,12 @@ function infoFrame:Show(maxLines, event, ...)
 	end
 	frame = frame or createFrame()
 
-	if event == "health" or event == "playerdebuffremaining" then
-		sortingAsc = true	-- Sort lowest first
-	else
-		sortingAsc = nil
-	end
-	
 	if event == "playerbuff" or event == "playerbaddebuff" or event == "playergooddebuff" then
-		groupIDSort = value[3]
+		sortMethod = 3
+	elseif event == "health" or event == "playerdebuffremaining" then
+		sortMethod = 2	-- Sort lowest first
 	else
-		groupIDSort = nil
+		sortMethod = 1
 	end
 	
 	--If spellId is given as value one, convert to spell name on show instead of in every onupdate
@@ -787,7 +783,7 @@ function infoFrame:Show(maxLines, event, ...)
 	frame:Show()
 	frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 	onUpdate(frame)
-	if not frame.ticker then
+	if not frame.ticker and not value[4] then
 		frame.ticker = C_Timer.NewTicker(0.5, function() onUpdate(frame) end)
 	end
 end
@@ -815,8 +811,7 @@ function infoFrame:Hide()
 		frame:Hide()
 	end
 	currentEvent = nil
-	groupIDSort = nil
-	sortingAsc = nil
+	sortMethod = 1
 end
 
 function infoFrame:IsShown()
@@ -828,6 +823,10 @@ function infoFrame:SetHeader(text)
 	headerText = text
 end
 
-function infoFrame:SetSortingAsc(ascending)
-	sortingAsc = ascending
+function infoFrame:SetSortingAsc()
+	sortMethod = 2
+end
+
+function infoFrame:SetSortingGroupId()
+	sortMethod = 3
 end

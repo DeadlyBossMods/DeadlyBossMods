@@ -16,9 +16,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 228003 228012 228171 231013",
 	"SPELL_CAST_SUCCESS 228012 228028 228162 231350 227629",
-	"SPELL_AURA_APPLIED 228029 227807 227959 227626 228918 227490 227491 227498 227499 227500 231311 231342 231344 231345 231346 229579 229580 229581 229582 229583",
+	"SPELL_AURA_APPLIED 228029 227807 227959 227626 228918 227490 227491 227498 227499 227500 231311 231342 231344 231345 231346 229579 229580 229581 229582 229583 229584",
 	"SPELL_AURA_APPLIED_DOSE 227626",
-	"SPELL_AURA_REMOVED 228029 227807 227959 227490 227491 227498 227499 227500 231311 231342 231344 231345 231346",
+	"SPELL_AURA_REMOVED 228029 227807 227959 227490 227491 227498 227499 227500 231311 231342 231344 231345 231346 229584",
 	"SPELL_PERIODIC_DAMAGE 228007 228683",
 	"SPELL_PERIODIC_MISSED 228007 228683",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -135,6 +135,7 @@ mod.vb.expelLightCast = 0
 mod.vb.dancingBladeCast = 0
 mod.vb.brandActive = false
 local drawTable = {}
+local playerProtected = false
 --Mythic Timers
 local dancingBladeTimers = {15.0, 20.1, 19.9, 25.0, 20.0}
 local hornTimers = {8.1, 22.0, 20.0, 35.0}
@@ -196,7 +197,7 @@ do
 			lines[drawTable[227500]] = "|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|tN|TInterface\\Icons\\Boss_OdunRunes_Green.blp:12:12|t"
 		end
 		if mod:IsMythic() then
-			if UnitDebuff("player", protected) then
+			if playerProtected then
 				lines[protected] = "|cFF088A08"..YES.."|r"
 			else
 				lines[protected] = "|cffff0000"..NO.."|r"
@@ -419,6 +420,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 227490 or spellId == 227491 or spellId == 227498 or spellId == 227499 or spellId == 227500 then--Branded (Draw Power Runes)
 		drawTable[spellId] = args.destName
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
+		end
 		if spellId == 227490 and args:IsPlayer() then--Purple K (NE)
 			specWarnBranded:Show("|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|tNE|TInterface\\Icons\\Boss_OdunRunes_Purple.blp:12:12|t")
 			voiceBranded:Play("mm3")
@@ -442,7 +446,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(6, "function", updateInfoFrame)
+			DBM.InfoFrame:Show(6, "function", updateInfoFrame, false, false, true)
 		end
 		if self.Options.NPAuraOnBranded then
 			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
@@ -493,6 +497,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnRunicBrand then
 			DBM.Nameplate:Show(false, args.destName, spellId, nil, 10)
 		end
+	elseif spellId == 229584 and args:IsPlayer() then
+		playerProtected = true
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -512,6 +521,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		countdownDrawPower:Cancel()
 	elseif spellId == 227490 or spellId == 227491 or spellId == 227498 or spellId == 227499 or spellId == 227500 then--Branded (Draw Power Runes)
 		drawTable[spellId] = nil
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
+		end
 		if self.Options.NPAuraOnBranded then
 			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
@@ -521,6 +533,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.NPAuraOnRunicBrand then
 			DBM.Nameplate:Hide(false, args.destName, spellId)
+		end
+	elseif spellId == 229584 and args:IsPlayer() then
+		playerProtected = false
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
 		end
 	end
 end
