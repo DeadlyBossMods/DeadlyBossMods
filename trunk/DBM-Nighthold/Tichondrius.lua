@@ -168,7 +168,7 @@ do
 			end
 			if self.Options.InfoFrame then
 				DBM.InfoFrame:SetHeader(argusDebuff)
-				DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, true)
+				DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, true, true)
 			end
 		end
 	end
@@ -261,7 +261,7 @@ function mod:SPELL_CAST_START(args)
 			--Restore argus tracker if for some reason you let people have it this long
 			if self.Options.InfoFrame and self:IsMythic() then
 				DBM.InfoFrame:SetHeader(GetSpellInfo(212794))
-				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true)
+				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)
 			end
 		end
 	elseif spellId == 213238 then
@@ -436,6 +436,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.5, breakMarks, self, args.spellName)
 		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
+		end
 	elseif spellId == 208230 then
 		if args:IsPlayer() then
 			specWarnFeastOfBlood:Show()
@@ -474,6 +477,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		tDeleteItem(argusTargets, args.destName)
 		if self.Options.SetIconOnBrandOfArgus then
 			self:SetIcon(args.destName, 0)
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
 		end
 	elseif spellId == 216040 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
