@@ -11,6 +11,12 @@ L= DBM:GetModLocalization(1706)
 ---------------------------
 L= DBM:GetModLocalization(1725)
 
+L:SetOptionLocalization({
+	InfoFrameBehavior	= "設置此戰鬥訊息框架的顯示方式",
+	TimeRelease			= "顯示中了定時釋放的玩家",
+	TimeBomb			= "顯示中了定時炸彈的玩家"
+})
+
 ---------------------------
 -- Trilliax --
 ---------------------------
@@ -106,7 +112,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(1737)
 
 L:SetMiscLocalization({
-	mythicPhase3		= "Time to return the demon hunter's soul to his body... and deny the Legion's master a host!"
+	mythicPhase3		= "把靈魂送回惡魔獵人的體內...別讓燃燒軍團的主宰占用!",
+	prePullRP			= "啊，很好，英雄們來了。真有毅力，真有自信。不過你們的傲慢會害死你們！"
 })
 
 -------------
