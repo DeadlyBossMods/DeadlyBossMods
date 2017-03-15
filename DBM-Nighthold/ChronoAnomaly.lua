@@ -35,7 +35,7 @@ local warnTemporalCharge			= mod:NewTargetAnnounce(212099, 1)
 
 local specWarnTemporalOrbs			= mod:NewSpecialWarningDodge(219815, nil, nil, nil, 2, 2)
 local specWarnPowerOverwhelming		= mod:NewSpecialWarningSpell(211927, nil, nil, 2, 2, 2)
-local specWarnTimeBomb				= mod:NewSpecialWarningMoveAway(206617, nil, nil, nil, 1, 2)--When close to expiring, not right away
+local specWarnTimeBomb				= mod:NewSpecialWarningMoveAway(206617, nil, nil, 2, 3, 2)--When close to expiring, not right away
 local yellTimeBomb					= mod:NewFadesYell(206617)
 local specWarnWarp					= mod:NewSpecialWarningInterrupt(207228, "HasInterrupt", nil, nil, 1, 2)
 local specWarnBigAdd				= mod:NewSpecialWarningSwitch(206700, "-Healer", nil, nil, 1, 2)--Switch to waning time particle when section info known
@@ -98,10 +98,6 @@ function mod:OnCombatStart(delay)
 	self.vb.fastCount = 0
 	self.vb.slowCount = 0
 	self.vb.timeBombDebuffCount = 0
-	--No timers here, started by speed events
-	if not self:IsMythic() then
-		DBM:AddMsg("Mythic timers in great shape, other difficulties still need more work (for longer pulls)")
-	end
 	if self.Options.NPAuraOnTimeBomb then
 		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
 	end
@@ -169,7 +165,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 219823 then
 		local amount = args.amount or 1
 		warnPowerOverwhelmingStack:Show(args.destName, amount)
-	elseif spellId == 212099 then
+	elseif spellId == 212099 and args:IsDestTypePlayer() then
 		warnTemporalCharge:Show(args.destName)
 	end
 end
