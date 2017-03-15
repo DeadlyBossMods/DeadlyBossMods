@@ -604,11 +604,14 @@ local function updateByFunction()
 	lines = func()
 	if sortFunc then
 		if type(sortFunc) == "function" then
+			DBM:Debug("updateByFunction custom sorting", 3)
 			updateLinesCustomSort(sortFunc)
 		else--Sort function is a bool/true
+			DBM:Debug("updateByFunction regular sorting", 3)
 			updateLines()--regular update lines with regular sort code
 		end
 	else--Nil, or bool/false
+		DBM:Debug("updateByFunction no sorting", 3)
 		updateLines(true)--Update lines with forced no sorting
 	end
 	if useIcon then
