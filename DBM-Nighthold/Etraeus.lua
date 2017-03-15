@@ -100,7 +100,7 @@ mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerConjunctionCD			= mod:NewCDCountTimer(16, 205408, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerConjunction				= mod:NewBuffFadesTimer(10, 207720, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 
---local berserkTimer					= mod:NewBerserkTimer(463)
+local berserkTimer					= mod:NewBerserkTimer(463)
 
 --Base abilities
 local countdownConjunction			= mod:NewCountdownFades("AltTwo10", 205408, nil, nil, 10)
@@ -351,7 +351,6 @@ function mod:OnCombatStart(delay)
 	else
 --		timerCoronalEjectionCD:Start(12.9-delay)--Still could be health based
 	end
-	--berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
@@ -749,14 +748,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerWorldDevouringForceCD:Start(22, 1)
 			countWorldDevouringForce:Start(22)
 			timerConjunctionCD:Start(46.5, 1)
+			berserkTimer:Start(201-delay)
+		else
+			berserkTimer:Start(231-delay)
 		end
 	end
 end
 
 do
 	local debuffName = GetSpellInfo(207143)
-	--Jumps didn't show in combat log during testing, only original casts. However, jumps need warnings too
-	--Check at later time if jumps are in combat log
 	function mod:UNIT_AURA(uId)
 		local hasDebuff = UnitDebuff("player", debuffName)
 		if hasDebuff and not voidWarned then
