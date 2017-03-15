@@ -14,9 +14,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 211927 207228",
 	"SPELL_CAST_SUCCESS 219815",
-	"SPELL_AURA_APPLIED 206617 206609 207052 207051 206607 212099",
+	"SPELL_AURA_APPLIED 206617 206607 212099",
 	"SPELL_AURA_APPLIED_DOSE 206607 219823",
-	"SPELL_AURA_REMOVED 206617 206609 207052 207051",
+	"SPELL_AURA_REMOVED 206617",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
 	"UNIT_SPELLCAST_CHANNEL_STOP boss1",
 	"UNIT_SPELLCAST_STOP boss1"
@@ -60,7 +60,6 @@ local voiceTimeBomb					= mod:NewVoice(206617)--runout
 local voiceWarp						= mod:NewVoice(207228, "HasInterrupt")--kickcast
 local voiceBigAdd					= mod:NewVoice(206700, "-Healer")
 local voiceSmallAdd					= mod:NewVoice(206699, "Tank")
-
 mod:AddRangeFrameOption(10, 206617)
 mod:AddInfoFrameOption(206610)
 mod:AddNamePlateOption("NPAuraOnTimeBomb", 206617)
