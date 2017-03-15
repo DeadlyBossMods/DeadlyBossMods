@@ -161,11 +161,11 @@ local felEjectionTimers = {18.2, 3.6, 3.2, 2.4, 10.2, 4.4, 2.8, 32.8, 4.0, 1.6, 
 local mythicfelEjectionTimers = {17.4, 3.2, 2.8, 2.4, 9.3, 2.4, 3.2, 31.2, 2, 1.2, 13.4, 1.2, 1.7, 23, 8.5, 9.3, 2.5, 1.5, 24.3, 3.2}
 local voidEjectionTimers = {24, 3.2, 14.1, 17.4, 0.8, 4.7, 25.7, 2.3}
 --local felNovaTImers = {34.8, 31.3, 29.3}--Latest is 47.1, 45.0, 25.1. Currently unused. for now just doing 45 or 25
-local worldDestroyingTimers = {22, 42, 57}
+local worldDestroyingTimers = {22, 42, 57, 51.8}
 local ps1Grand = {15, 12.2}
 local ps2Grand = {27, 44.9, 58.3}
 local ps3Grand = {58.7, 43, 41.4}
-local ps4Grand = {48, 61.7, 50}
+local ps4Grand = {46.5, 61.6, 51.2}
 local abZeroDebuff, chilledDebuff, gravPullDebuff = GetSpellInfo(206585), GetSpellInfo(206589), GetSpellInfo(205984)
 local icyEjectionDebuff, coronalEjectionDebuff, voidEjectionDebuff = GetSpellInfo(206936), GetSpellInfo(206464), GetSpellInfo(207143)
 local crabDebuff, dragonDebuff, hunterDebuff, wolfDebuff = GetSpellInfo(205429), GetSpellInfo(216344), GetSpellInfo(216345), GetSpellInfo(205445)
@@ -748,9 +748,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerWorldDevouringForceCD:Start(22, 1)
 			countWorldDevouringForce:Start(22)
 			timerConjunctionCD:Start(46.5, 1)
-			berserkTimer:Start(201-delay)
+			berserkTimer:Start(201)
 		else
-			berserkTimer:Start(231-delay)
+			berserkTimer:Start(231)
 		end
 	end
 end
