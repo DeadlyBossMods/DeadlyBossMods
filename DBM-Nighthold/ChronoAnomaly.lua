@@ -29,7 +29,6 @@ local warnNormal					= mod:NewCountAnnounce(207012, 2)
 local warnFast						= mod:NewCountAnnounce(207013, 2)
 local warnSlow						= mod:NewCountAnnounce(207011, 2)
 local warnTimeBomb					= mod:NewTargetAnnounce(206617, 3)
-local warnTimeRelease				= mod:NewTargetAnnounce(206610, 3, nil, false)--Too many targets
 local warnChronometricPart			= mod:NewStackAnnounce(206607, 3, nil, "Tank")
 local warnPowerOverwhelmingStack	= mod:NewStackAnnounce(219823, 2)
 local warnTemporalCharge			= mod:NewTargetAnnounce(212099, 1)
@@ -73,7 +72,6 @@ mod.vb.slowCount = 0
 mod.vb.currentPhase = 2
 mod.vb.interruptCount = 0
 mod.vb.timeBombDebuffCount = 0
-mod.vb.timeReleaseCount = 0
 local timeBombDebuff = GetSpellInfo(206617)
 local function updateTimeBomb(self)
 	local _, _, _, _, _, _, expires = UnitDebuff("player", timeBombDebuff)
@@ -101,13 +99,17 @@ function mod:OnCombatStart(delay)
 	self.vb.fastCount = 0
 	self.vb.slowCount = 0
 	self.vb.timeBombDebuffCount = 0
-	self.vb.timeReleaseCount = 0
 	--No timers here, started by speed events
 	if not self:IsMythic() then
 		DBM:AddMsg("Mythic timers in great shape, other difficulties still need more work (for longer pulls)")
 	end
 	if self.Options.NPAuraOnTimeBomb then
 		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+	end
+	if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "TimeRelease" then
+		local timeRelease = GetSpellInfo(206610)
+		DBM.InfoFrame:SetHeader(timeRelease)
+		DBM.InfoFrame:Show(10, "playerabsorb", timeRelease)
 	end
 end
 
@@ -161,13 +163,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.NPAuraOnTimeBomb then
 			DBM.Nameplate:Show(false, args.destName, spellId)
 		end
-	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
-		self.vb.timeReleaseCount = self.vb.timeReleaseCount + 1
-		warnTimeRelease:CombinedShow(0.5, args.destName)
-		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() and self.Options.InfoFrameBehavior == "TimeRelease" then
-			DBM.InfoFrame:SetHeader(args.spellName)
-			DBM.InfoFrame:Show(10, "playerabsorb", args.spellName)
-		end
 	elseif spellId == 206607 then
 		local amount = args.amount or 1
 		warnChronometricPart:Show(args.destName, amount)
@@ -200,11 +195,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.NPAuraOnTimeBomb then
 			DBM.Nameplate:Hide(false, args.destName, spellId)
-		end
-	elseif spellId == 206609 or spellId == 207052 or spellId == 207051 then--207051 and 207052 didn't appear on heroic
-		self.vb.timeReleaseCount = self.vb.timeReleaseCount - 1
-		if self.Options.InfoFrame and self.vb.timeReleaseCount == 0 and self.Options.InfoFrameBehavior == "TimeRelease" then
-			DBM.InfoFrame:Hide()
 		end
 	end
 end
