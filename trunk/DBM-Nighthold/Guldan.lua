@@ -776,7 +776,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if (msg == L.prePullRP or msg:find(L.prePullRP)) then
+	if (msg == L.prePullRP or msg:find(L.prePullRP)) and self:LatencyCheck() then
 		self:SendSync("GuldanRP")
 	elseif ( msg == L.mythicPhase3 or msg:find(L.mythicPhase3)) and self:IsMythic() then	
 		self:SendSync("mythicPhase3")
@@ -903,7 +903,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 end
 
 function mod:OnSync(msg)
-	if msg == "GuldanRP" then
+	if msg == "GuldanRP" and self:AntiSpam(10, 3) then
 		timerRP:Start()
 	end
 	if not self:IsInCombat() then return end
