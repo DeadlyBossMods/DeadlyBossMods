@@ -280,7 +280,7 @@ function mod:SPELL_CAST_START(args)
 		local targetName, uId, bossuid = self:GetBossTarget(104881, true)
 		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
 		if tanking or (status == 3) then--Player is current target
-			specWarnAnnihilate:Show(self.vb.annihilateCount)
+			specWarnAnnihilate:Show(self.vb.annihilateCount+1)
 			voiceAnnihilate:Play("defensive")
 		else
 			if not UnitDebuff("player", annihilatedDebuff) then
