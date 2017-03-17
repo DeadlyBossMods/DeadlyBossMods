@@ -83,7 +83,7 @@ local specWarnEyeofGuldan			= mod:NewSpecialWarningSwitchCount(209270, "Dps", ni
 local specWarnCarrionWave			= mod:NewSpecialWarningInterrupt(208672, "HasInterrupt", nil, nil, 1, 2)
 --Stage Three: The Master's Power
 local specWarnStormOfDestroyer		= mod:NewSpecialWarningDodge(161121, nil, nil, nil, 2, 2)
-local specWarnSoulCorrosion			= mod:NewSpecialWarningStack(208802, nil, 3)--stack guessed
+local specWarnSoulCorrosion			= mod:NewSpecialWarningStack(208802, nil, 3, nil, nil, 1, 6)--stack guessed
 local specWarnBlackHarvest			= mod:NewSpecialWarningCount(206744, nil, nil, nil, 2, 2)
 local specWarnFlamesOfSargeras		= mod:NewSpecialWarningMoveAway(221606, nil, nil, nil, 3, 2)
 local yellFlamesofSargeras			= mod:NewPosYell(221606)
@@ -177,6 +177,7 @@ local voiceEyeofGuldan				= mod:NewVoice(209270, "Dps")--killmob
 local voiceCarrionWave				= mod:NewVoice(208672, "HasInterrupt")--kickcast
 --Stage Three: The Master's Power
 local voiceStormOfDestroyer			= mod:NewVoice(161121)--watchstep
+local voiceSoulCorrosion			= mod:NewVoice(208802)--stackhigh
 local voiceBlackHarvest				= mod:NewVoice(206744)--aesoon
 local voiceFlamesOfSargeras			= mod:NewVoice(221606)--runout
 --Mythic Only
@@ -593,6 +594,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		if args:IsPlayer() and amount >= 3 then
 			specWarnSoulCorrosion:Show(amount)
+			voiceSoulCorrosion:Play("stackhigh")
 		end
 	elseif spellId == 221606 then--Looks like the 3 second pre targeting debuff for flames of sargeras
 		if self:AntiSpam(35, 1) then
