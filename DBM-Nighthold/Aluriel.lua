@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 213853 213567 213564 213852 212735 213275 213390 213083 212492 230504",
-	"SPELL_CAST_SUCCESS 230403",
+	"SPELL_CAST_SUCCESS 230403 212492",
 	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587 230951 213760 213808",
 	"SPELL_AURA_REMOVED 213569 212531 213148 230951 212587",
 	"SPELL_PERIODIC_DAMAGE 212736 213278 213504 230414",
@@ -81,7 +81,7 @@ local timerAnnihilateCD				= mod:NewNextCountTimer(40, 212492, nil, "Tank", nil,
 --Debuffs
 local timerMarkOfFrostCD			= mod:NewNextTimer(16, 212531, nil, nil, nil, 3)
 local timerSearingBrandCD			= mod:NewNextTimer(16, 213148, nil, nil, nil, 3)
-local timerArcaneOrbCD				= mod:NewNextTimer(14.5, 213519, nil, nil, nil, 3)
+local timerArcaneOrbCD				= mod:NewNextTimer(11.5, 213519, nil, nil, nil, 3)
 --Replicates
 local timerMarkOfFrostRepCD			= mod:NewNextTimer(16, 212530, 160324, nil, nil, 3)--Short name "Replicate"
 local timerSearingBrandRepCD		= mod:NewNextTimer(16, 213182, 160324, nil, nil, 3)--Short name "Replicate"
@@ -277,7 +277,6 @@ function mod:SPELL_CAST_START(args)
 			self:ScanForMobs(args.sourceGUID, 2, 8, 1, 0.2, 10, "SetIconOnFrozenTempest")
 		end
 	elseif spellId == 212492 then--Annihilate
-		self.vb.annihilateCount = self.vb.annihilateCount + 1
 		local targetName, uId, bossuid = self:GetBossTarget(104881, true)
 		local tanking, status = UnitDetailedThreatSituation("player", bossuid)
 		if tanking or (status == 3) then--Player is current target
@@ -288,16 +287,6 @@ function mod:SPELL_CAST_START(args)
 				specWarnAnnihilateOther:Schedule(4, targetName)
 				voiceAnnihilate:Schedule(4, "tauntboss")
 			end
-		end
-		local nextCount = self.vb.annihilateCount+1
-		local timer = self:IsMythic() and mythicAnnihilateTimers[nextCount] or annihilateTimers[nextCount]
-		if timer then	
-			timerAnnihilateCD:Start(timer, nextCount)
-			countdownAnnihilate:Start(timer)
-		end
-		if nextCount == 6 then
-			--Better place to start arcane orb timer since it's cast 1.5 seconds after arcane phase begins and this is last annihilate in fire phase
-			timerArcaneOrbCD:Start()
 		end
 	elseif spellId == 230951 then
 		warnFelSoul:Show()
@@ -325,6 +314,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 			voiceFelLash:Schedule(timer-3, "gathershare")
 			timerFelLashCD:Start(timer, self.vb.felLashCount+1)
 			countdownFelLash:Start(timer)
+		end
+	elseif spellId == 212492 then--Annihilate
+		self.vb.annihilateCount = self.vb.annihilateCount + 1
+		local nextCount = self.vb.annihilateCount+1
+		local timer = self:IsMythic() and mythicAnnihilateTimers[nextCount] or annihilateTimers[nextCount]
+		if timer then	
+			timerAnnihilateCD:Start(timer-3, nextCount)
+			countdownAnnihilate:Start(timer-3)
+		end
+		if nextCount == 6 and not self:IsMythic() then
+			--Better place to start arcane orb timer since it's cast 1.5 seconds after arcane phase begins and this is last annihilate in fire phase
+			timerArcaneOrbCD:Start()
 		end
 	end
 end
