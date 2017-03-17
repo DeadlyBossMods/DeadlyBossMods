@@ -11,6 +11,12 @@ L= DBM:GetModLocalization(1706)
 ---------------------------
 L= DBM:GetModLocalization(1725)
 
+L:SetOptionLocalization({
+	InfoFrameBehavior	= "전투 도중 정보 창에 표시할 정보 설정",
+	TimeRelease			= "시간 방출 대상자 표시",
+	TimeBomb			= "시한 폭탄 대상자 표시"
+})
+
 ---------------------------
 -- Trilliax --
 ---------------------------

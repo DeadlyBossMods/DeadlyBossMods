@@ -7,9 +7,11 @@ local L
 L= DBM:GetModLocalization(1862)
 
 L:SetTimerLocalization({
+	timerComboWamboCD =	"다음 유성/가시 (%d)"
 })
 
 L:SetOptionLocalization({
+	timerComboWamboCD =	"다음 몰아치는 유성/지옥불 가시 타이머 바 보기"
 })
 
 L:SetMiscLocalization({
