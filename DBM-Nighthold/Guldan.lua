@@ -517,7 +517,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerFlamesofSargerasCD:Start(7.3, (self.vb.flamesSargCast).."-"..3)
 			timerFlamesofSargerasCD:Start(45, (self.vb.flamesSargCast+1).."-"..1)
 			if self.vb.flamesSargCast == 2 then
-				timerWindsCD:Start(91, 2)
+				timerWindsCD:Start(31, 2)
 			end
 		elseif self:IsHeroic() then
 			timerFlamesofSargerasCD:Start(7.7, (self.vb.flamesSargCast).."-"..2)
@@ -604,7 +604,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerFlamesofSargerasCD:Start(7.3, (self.vb.flamesSargCast).."-"..3)
 				timerFlamesofSargerasCD:Start(45, (self.vb.flamesSargCast+1).."-"..1)
 				if self.vb.flamesSargCast == 2 then
-					timerWindsCD:Start(91, 2)
+					timerWindsCD:Start(31, 2)--FIXME later and start at correct flames cast
 				end
 			elseif self:IsHeroic() then
 				timerFlamesofSargerasCD:Start(7.7, (self.vb.flamesSargCast).."-"..2)
