@@ -12,9 +12,9 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 235271 241635 241636",
-	"SPELL_CAST_SUCCESS 235267 239153 237722",
-	"SPELL_AURA_APPLIED 235240 235213 235117 240209 235028 236061",
+	"SPELL_CAST_START 235271 241635 241636 235267",
+	"SPELL_CAST_SUCCESS 239153 237722",
+	"SPELL_AURA_APPLIED 235240 235213 235117 240209 235028 236061 234891",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED 235240 235213 235117 240209 235028 234891",
 --	"SPELL_PERIODIC_DAMAGE",
@@ -31,12 +31,13 @@ mod:RegisterEventsInCombat(
 --TODO, Mass instability is in combat log now, but not enough data to fix timers for it yet (except for first on pull)
 --TODO, some kind of relevant warning for Spont Fragmentation
 --[[
-(ability.id = 235271 or ability.id = 241635 or ability.id = 241636) and type = "begincast" or
-(ability.id = 235267 or ability.id = 239153 or ability.id = 237722) and type = "cast" or
+(ability.id = 235267 or ability.id = 235271 or ability.id = 241635 or ability.id = 241636) and type = "begincast" or
+(ability.id = 239153 or ability.id = 237722) and type = "cast" or
 (ability.id = 235028 or ability.id = 234891) and (type = "applybuff" or type = "removebuff")
 --]]
 --Stage One
 local warnUnstableSoul				= mod:NewTargetAnnounce(235117, 4, nil, false)--Might be spammy so off by default. Infoframe will do better job with this one
+local warnMassShit					= mod:NewCountAnnounce(235267, 2)
 --Stage Two
 local warnEssenceFragments			= mod:NewSpellAnnounce(236061, 2)
 
@@ -55,7 +56,7 @@ local specWarnWrathofCreators		= mod:NewSpecialWarningInterrupt(234891, "HasInte
 local timerInfusionCD				= mod:NewNextCountTimer(38, 235271, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerLightHammerCD			= mod:NewNextCountTimer(18, 241635, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFelHammerCD				= mod:NewNextCountTimer(18, 241636, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerMassInstabilityCD		= mod:NewNextTimer(31, 235267, nil, nil, nil, 3)
+local timerMassInstabilityCD		= mod:NewNextCountTimer(31, 235267, nil, nil, nil, 3)
 local timerBlowbackCD				= mod:NewNextTimer(82, 237722, nil, nil, nil, 6)
 --Mythic
 local timerSpontFragmentationCD		= mod:NewNextTimer(8, 239153, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
@@ -81,20 +82,24 @@ mod.vb.unstableSoulCount = 0
 mod.vb.hammerCount = 0
 mod.vb.infusionCount = 0
 mod.vb.spontFragmentationCount = 0
+mod.vb.massShitCount = 0
+mod.vb.shieldActive = false
 local AegynnsWard = GetSpellInfo(236420)
 local felDebuff, lightDebuff = GetSpellInfo(235240), GetSpellInfo(235213)
 
 function mod:OnCombatStart(delay)
+	self.vb.shieldActive = false
 	self.vb.unstableSoulCount = 0
 	self.vb.hammerCount = 2
 	self.vb.infusionCount = 1
-	timerInfusionCD:Start(2-delay, 1)
-	timerLightHammerCD:Start(12-delay, 1)
-	timerMassInstabilityCD:Start(24-delay)
+	self.vb.massShitCount = 1
+	timerInfusionCD:Start(2-delay, 2)
+	timerLightHammerCD:Start(12-delay, 3)--12-14
+	timerMassInstabilityCD:Start(22-delay, 2)
 	timerBlowbackCD:Start(41-delay)
 	if self:IsMythic() then
 		self.vb.spontFragmentationCount = 0
-		timerSpontFragmentationCD:Start(10-delay, 1)
+		timerSpontFragmentationCD:Start(10-delay)
 	end
 end
 
@@ -119,7 +124,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.hammerCount = self.vb.hammerCount + 1
 		specWarnLightHammer:Show(self.vb.hammerCount)
 		if self.vb.hammerCount < 4 then
-			timerFelHammerCD:Start(20, self.vb.hammerCount+1)--20 on Mythic, review again later
+			timerFelHammerCD:Start(18, self.vb.hammerCount+1)--20 on Mythic, 18 on LFR?
 		end
 	elseif spellId == 241636 then--Fel Hammer
 		self.vb.hammerCount = self.vb.hammerCount + 1
@@ -127,14 +132,18 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.hammerCount == 2 then
 			timerLightHammerCD:Start(18, 3)
 		end
+	elseif spellId == 235267 then
+		self.vb.massShitCount = self.vb.massShitCount + 1
+		warnMassShit:Show(self.vb.massShitCount)
+		if self.vb.massShitCount == 1 then
+			timerMassInstabilityCD:Start(36, 2)
+		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 235267 then
-		--timerMassInstabilityCD:Start()
-	elseif spellId == 239153 then
+	if spellId == 239153 then
 		self.vb.spontFragmentationCount = self.vb.spontFragmentationCount + 1
 		if self.vb.spontFragmentationCount < 4 then
 			timerSpontFragmentationCD:Start(nil, self.vb.spontFragmentationCount+1)
@@ -175,12 +184,18 @@ function mod:SPELL_AURA_APPLIED(args)
 				voiceUnsableSoul:Play("defensive")--Whatever, doens't matter in LFR. LFR doesn't need Aegwynn's Ward/pit
 			end
 		end
-		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() and not self.vb.shieldActive then
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(10, "playerdebuffremaining", args.spellName)
 		end
 	elseif spellId == 236061 then
 		warnEssenceFragments:Show()
+	elseif spellId == 234891 then
+		self.vb.shieldActive = true
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(args.spellName)
+			DBM.InfoFrame:Show(2, "enemyabsorb", args.spellName)
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -195,22 +210,29 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellUnstableSoul:Cancel()
 		end
-		if self.Options.InfoFrame and self.vb.burstDebuffCount == 0 then
+		if self.Options.InfoFrame and self.vb.burstDebuffCount == 0 and not self.vb.shieldActive then
 			DBM.InfoFrame:Hide()
 		end
 	elseif spellId == 235028 then--Bulwark Removed
 		specWarnWrathofCreators:Show(args.destName)
 	elseif spellId == 234891 then--Wrath Interrupted
+		self.vb.shieldActive = false
 		self.vb.hammerCount = 0
 		self.vb.infusionCount = 0
+		self.vb.massShitCount = 0
 		voiceWrathofCreators:Play("kickcast")
 		timerInfusionCD:Start(2, 1)
 		timerLightHammerCD:Start(14, 1)
-		--timerMassInstabilityCD:Start(2)
+		timerMassInstabilityCD:Start(22, 1)
 		timerBlowbackCD:Start()
 		if self:IsMythic() then
 			self.vb.spontFragmentationCount = 0
 			--timerSpontFragmentationCD:Start(nil, 1)
+		end
+		if self.Options.InfoFrame and self.vb.burstDebuffCount > 0 then
+			local spellName = GetSpellInfo(235117)
+			DBM.InfoFrame:SetHeader(spellName)
+			DBM.InfoFrame:Show(10, "playerdebuffremaining", spellName)
 		end
 	end
 end
