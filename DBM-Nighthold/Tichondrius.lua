@@ -65,7 +65,7 @@ local timerIllusionaryNight			= mod:NewBuffActiveTimer(32, 206365, nil, nil, nil
 local timerAddsCD					= mod:NewAddsTimer(25, 216726, nil, "-Healer")
 local timerCarrionNightmare			= mod:NewNextCountTimer(4, 215988, nil, nil, nil, 2)
 
-local berserkTimer					= mod:NewBerserkTimer(470)
+local berserkTimer					= mod:NewBerserkTimer(463)
 
 local countdownSeekerSwarm			= mod:NewCountdown(25, 213238)
 local countdownEchoesOfVoid			= mod:NewCountdown("Alt65", 213531)
@@ -197,6 +197,8 @@ function mod:OnCombatStart(delay)
 	if not self:IsEasy() then
 		timerBrandOfArgusCD:Start(15-delay, 1)
 		berserkTimer:Start(-delay)
+	else
+		berserkTimer:Start(523-delay)
 	end
 	if self.Options.NPAuraOnCarrionPlague then
 		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
