@@ -2,7 +2,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com)
--- Last update: Feb 05 2017, 02:41 UTC@15820
+-- Last update: 2017/03/18
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -44,21 +44,21 @@ DBM_CORE_MOD_AVAILABLE				= "DBM已经为%s制作了相关模块。你可以在 
 
 DBM_CORE_COMBAT_STARTED				= "%s作战开始，祝你走运 :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "已进行的战斗-%s正在作战。祝你走运 :)"
-DBM_CORE_GUILD_COMBAT_STARTED		= "工会版%s作战开始"
+DBM_CORE_GUILD_COMBAT_STARTED		= "公会版%s作战开始"
 DBM_CORE_SCENARIO_STARTED			= "场景战役-%s作战开始。祝你走运 :)"
 DBM_CORE_SCENARIO_STARTED_IN_PROGRESS	= "已进行的场景战役-%s正在作战。祝你走运 :)"
 DBM_CORE_BOSS_DOWN					= "%s战斗胜利！用时%s！"
 DBM_CORE_BOSS_DOWN_I				= "%s战斗胜利！总计%d次胜利。"
 DBM_CORE_BOSS_DOWN_L				= "%s战斗胜利！用时%s！上次用时%s，最快用时%s。总计%d次胜利。"
 DBM_CORE_BOSS_DOWN_NR				= "%s战斗胜利！用时%s！新的纪录诞生了！原纪录为%s。总计%d次胜利。"
-DBM_CORE_GUILD_BOSS_DOWN			= "工会版%s战斗胜利！用时%s！"
+DBM_CORE_GUILD_BOSS_DOWN			= "公会版%s战斗胜利！用时%s！"
 DBM_CORE_SCENARIO_COMPLETE			= "场景战役-%s战斗胜利！用时%s!"
 DBM_CORE_SCENARIO_COMPLETE_I		= "场景战役-%s战斗胜利！总计%d次胜利。"
 DBM_CORE_SCENARIO_COMPLETE_L		= "场景战役-%s战斗胜利！用时%s！上次用时%s，最快用时%s。总计%d次胜利。"
 DBM_CORE_SCENARIO_COMPLETE_NR		= "场景战役-%s战斗胜利！用时%s！新的纪录诞生了！原纪录为%s。总计%d次胜利。"
 DBM_CORE_COMBAT_ENDED_AT			= "%s （%s）作战结束，用时%s。"
 DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s （%s）作战结束，用时%s。该难度下总计失败%d次。"
-DBM_CORE_GUILD_COMBAT_ENDED_AT		= "工会版%s （%s）作战结束，用时%s。"
+DBM_CORE_GUILD_COMBAT_ENDED_AT		= "公会版%s （%s）作战结束，用时%s。"
 DBM_CORE_SCENARIO_ENDED_AT			= "场景战役-%s作战结束，用时%s。"
 DBM_CORE_SCENARIO_ENDED_AT_LONG		= "场景战役-%s作战结束，用时%s。该难度下总计失败%d次。"
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s作战%s前开始，正在恢复计时条……"
@@ -253,6 +253,8 @@ DBM_ERROR_NO_PERMISSION				= "权限不足。需要队长或助理权限。"
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "隐藏生命值框体"
 
+DBM_NEXT							= "下一个 %s"
+DBM_COOLDOWN						= "%s 冷却"
 DBM_CORE_UNKNOWN					= "未知"
 DBM_CORE_LEFT						= "左"
 DBM_CORE_RIGHT						= "右"
@@ -263,6 +265,8 @@ DBM_CORE_INTERMISSION				= "中场时间"
 DBM_CORE_ORB						= "球"
 DBM_CHEST							= "奖励宝箱"
 DBM_NO_DEBUFF						= "没有%s"
+DBM_ALLY							= "队友"--Such as "Move to Ally"
+DBM_ADDS							= "小怪"--Such as "Move to Ally"
 
 DBM_CORE_BREAK_USAGE				= "休息时间不能超过60分钟。请确保你输入的是分钟而不是秒。"
 DBM_CORE_BREAK_START				= "开始休息 - %s分钟！（由 %s 发送）"
@@ -279,8 +283,6 @@ DBM_CORE_ANNOUNCE_PULL_NOW_TARGET	= "开搞 %s！"
 DBM_CORE_GEAR_WARNING				= "警告：请检查你的装备。你当前的装备装等比背包装等低了 %d 点"
 DBM_CORE_GEAR_WARNING_WEAPON		= "警告：请检查你的武器并确保已被正确装备"
 DBM_CORE_GEAR_FISHING_POLE			= "钓鱼竿"
-
-
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "成就：限时击杀"
 
