@@ -3,6 +3,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Tomb of Sargeras|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0살게라스의 무덤|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Grabmal des Sargeras|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0薩格拉斯之墓|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -19,6 +20,7 @@ localization.en.lua
 localization.kr.lua
 localization.de.lua
 localization.cn.lua
+localization.tw.lua
 Goroth.lua
 DemonicInquisition.lua
 Harjatan.lua
