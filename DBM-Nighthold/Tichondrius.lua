@@ -31,7 +31,7 @@ mod:RegisterEventsInCombat(
  --(ability.id = 212997 or ability.id = 213238 or ability.id = 208230 or ability.id = 213531 or ability.id = 206365) and type = "begincast"
 local warnCarrionPlague				= mod:NewTargetAnnounce(206480, 3)
 local warnBrandOfArgus				= mod:NewTargetAnnounce(212794, 4)
-local warnBloodFang					= mod:NewCountAnnounce("ej13528", 1)
+local warnBloodFang					= mod:NewCountAnnounce("ej13528", 1, 24733)
 --Nightborne
 local warnVolatileWound				= mod:NewStackAnnounce(216024, 3, nil, false, 2)
 --The Legion
@@ -504,7 +504,7 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 104326 then--Dark Phase bats
 		self.vb.batsKilled = self.vb.batsKilled + 1
-		if self.vb.batsKilled % 5 == 0 then
+		if self.vb.batsKilled % 4 == 0 then
 			warnBloodFang:Show(self.vb.batsKilled)
 		end
 	end
