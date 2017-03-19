@@ -18,6 +18,7 @@
 localization.en.lua
 localization.kr.lua
 localization.de.lua
+localization.cn.lua
 Goroth.lua
 DemonicInquisition.lua
 Harjatan.lua
