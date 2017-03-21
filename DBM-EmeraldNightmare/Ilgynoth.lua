@@ -149,33 +149,40 @@ local autoMarkFilter = {}
 local updateInfoFrame
 do
 	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
 	local DominatorTentacle, CorruptorTentacle, DeathglareTentacle, NightmareHorror, NightmareIchor = EJ_GetSectionInfo(13189), EJ_GetSectionInfo(13191), EJ_GetSectionInfo(13190), EJ_GetSectionInfo(13188), EJ_GetSectionInfo(13186)
 	updateInfoFrame = function()
 		table.wipe(lines)
+		table.wipe(sortedLines)
 		if mod.vb.NightmareCount > 0 then
 			if mod:IsTank() then--Add needs to be tanked
-				lines["|cff00ffff"..NightmareHorror.."|r"] = mod.vb.NightmareCount
+				addLine("|cff00ffff"..NightmareHorror.."|r", mod.vb.NightmareCount)
 			else
-				lines[NightmareHorror] = mod.vb.NightmareCount
+				addLine(NightmareHorror, mod.vb.NightmareCount)
 			end
 		end
 		if mod.vb.DominatorCount > 0 then
 			if mod:IsTank() then--Add needs to be tanked
-				lines["|cff00ffff"..DominatorTentacle.."|r"] = mod.vb.DominatorCount
+				addLine("|cff00ffff"..DominatorTentacle.."|r", mod.vb.DominatorCount)
 			else
-				lines[DominatorTentacle] = mod.vb.DominatorCount
+				addLine(DominatorTentacle, mod.vb.DominatorCount)
 			end
 		end
 		if mod.vb.CorruptorCount > 0 then
-			lines[CorruptorTentacle] = mod.vb.CorruptorCount
+			addLine(CorruptorTentacle, mod.vb.CorruptorCount)
 		end
 		if mod.vb.DeathglareCount > 0 then
-			lines[DeathglareTentacle] = mod.vb.DeathglareCount
+			addLine(DeathglareTentacle, mod.vb.DeathglareCount)
 		end
 		if mod.vb.IchorCount > 0 then
-			lines[NightmareIchor] = mod.vb.IchorCount
+			addLine(NightmareIchor, mod.vb.IchorCount)
 		end
-		return lines
+		return lines, sortedLines
 	end
 end
 
