@@ -258,12 +258,14 @@ local function sortFuncDesc(a, b) return lines[a] > lines[b] end
 local function sortFuncAsc(a, b) return lines[a] < lines[b] end
 local function namesortFuncAsc(a, b) return a < b end
 local function sortGroupId(a, b) return getGroupId(DBM, a) < getGroupId(DBM, b) end
-local function updateLines(noSort)
+local function updateLines(preSorted)
 	twipe(sortedLines)
-	for i in pairs(lines) do
-		sortedLines[#sortedLines + 1] = i
-	end
-	if not noSort then
+	if preSorted then
+		sortedLines = preSorted
+	else
+		for i in pairs(lines) do
+			sortedLines[#sortedLines + 1] = i
+		end
 		if sortMethod == 3 then
 			table.sort(sortedLines, sortGroupId)
 		elseif sortMethod == 2 then
@@ -597,11 +599,11 @@ local function updatePlayerTargets()
 end
 
 local function updateByFunction()
-	twipe(lines)
 	local func = value[1]
 	local sortFunc = value[2]
 	local useIcon = value[3]
-	lines = func()
+	local presortedLines
+	lines, presortedLines = func()
 	if sortFunc then
 		if type(sortFunc) == "function" then
 			DBM:Debug("updateByFunction custom sorting", 3)
@@ -612,7 +614,7 @@ local function updateByFunction()
 		end
 	else--Nil, or bool/false
 		DBM:Debug("updateByFunction no sorting", 3)
-		updateLines(true)--Update lines with forced no sorting
+		updateLines(presortedLines)--Update lines with sorting if provided by the custom function
 	end
 	if useIcon then
 		updateIcons()
