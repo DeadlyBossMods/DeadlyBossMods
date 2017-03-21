@@ -131,12 +131,19 @@ end
 local updateInfoFrame
 do
 	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
 	updateInfoFrame = function()
 		table.wipe(lines)
-		lines[spiritRealm] = #playersInSpirit
-		lines[corpRealm] = #playersNotInSpirit
-		lines[boneArmor] = mod.vb.boneArmorCount
-		return lines
+		table.wipe(sortedLines)
+		addLine(spiritRealm, #playersInSpirit)
+		addLine(corpRealm, #playersNotInSpirit)
+		addLine(boneArmor, mod.vb.boneArmorCount)
+		return lines, sortedLines
 	end
 end
 
