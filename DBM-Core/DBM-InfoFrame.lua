@@ -613,7 +613,7 @@ local function updateByFunction()
 			updateLines()--regular update lines with regular sort code
 		end
 	else--Nil, or bool/false
-		DBM:Debug("updateByFunction no sorting", 3)
+		DBM:Debug("updateByFunction no sorting or presorting", 3)
 		updateLines(presortedLines)--Update lines with sorting if provided by the custom function
 	end
 	if useIcon then
