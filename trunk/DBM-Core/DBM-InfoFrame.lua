@@ -261,7 +261,10 @@ local function sortGroupId(a, b) return getGroupId(DBM, a) < getGroupId(DBM, b) 
 local function updateLines(preSorted)
 	twipe(sortedLines)
 	if preSorted then
-		sortedLines = preSorted
+		-- copy table as code from mod keeps around references this this and the "normal" table is wiped regularly
+		for i, v in ipairs(preSorted) do
+			sortedLines[i] = v
+		end
 	else
 		for i in pairs(lines) do
 			sortedLines[#sortedLines + 1] = i
