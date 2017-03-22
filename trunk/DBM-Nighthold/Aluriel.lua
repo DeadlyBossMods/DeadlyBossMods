@@ -329,7 +329,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerArcaneOrbCD:Start()
 		end
 	elseif spellId == 213275 and self.Options.SetIconOnBurstOfFlame then--Detonate: Searing Brand
-		self:ScanForMobs(107285, 0, 8, 6, 0.2, 12, "SetIconOnBurstOfFlame")
+		self:ScanForMobs(107285, 0, 8, 6, 0.1, 20, "SetIconOnBurstOfFlame", false, 107285)--Second CID isn't actually second ID, just more redundancy to try and get god damn thing to work AT ALL
 	end
 end
 
@@ -546,7 +546,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		specWarnArcaneOrb:Show()
 		voiceArcaneOrb:Play("watchorb")
 	elseif spellId == 213390 then--Detonate: Arcane Orb (still missing from combat log, although this event is 3 seconds slower than scheduling or using yell)
-		self:ScanForMobs(107287, 0, 8, 8, 0.2, 12, "SetIconOnBurstOfMagic")
+		self:ScanForMobs(107287, 0, 8, 8, 0.1, 20, "SetIconOnBurstOfMagic", false, 107287)--Second CID isn't actually second ID, just more redundancy to try and get god damn thing to work AT ALL
 --		specWarnArcaneDetonate:Show()
 --		voiceArcaneDetonate:Play("watchorb")
 	end
