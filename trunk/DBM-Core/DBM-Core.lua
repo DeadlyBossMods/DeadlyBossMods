@@ -11231,6 +11231,8 @@ do
 				addsIconSet[scanID] = nil
 				--Do not wipe adds GUID table here, it's wiped by :Stop() which is called by EndCombat
 			end
+		else
+			DBM:Debug("Not elected to set icons for "..(optionName or "nil"), 2)
 		end
 	end
 end
