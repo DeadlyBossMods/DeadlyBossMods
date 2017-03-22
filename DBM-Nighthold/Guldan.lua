@@ -379,13 +379,13 @@ function mod:SPELL_CAST_START(args)
 				timerEyeofGuldanCD:Start(timer, self.vb.eyeCast+1)
 				countdownEyeofGuldan:Start(timer)
 			end
+			if self.vb.eyeCast == 4 and self:IsMythic() then
+				timerWindsCD:Start(97, 3)
+			end
 		else
 			local longTimer, shortTimer
 			if self:IsMythic() then
 				longTimer, shortTimer = 80, 48
-				if self.vb.eyeCast == 4 and self.vb.phase == 2 then
-					timerWindsCD:Start(97, 3)
-				end
 			elseif self:IsHeroic() then
 				longTimer, shortTimer = 66, 53
 			elseif self:IsNormal() then--Normal
@@ -415,7 +415,7 @@ function mod:SPELL_CAST_START(args)
 			timerBlackHarvestCD:Start(timer, self.vb.blackHarvestCast+1)
 			countdownBlackHarvest:Start(timer)
 		end
-		if self.vb.blackHarvestCast == 4 then
+		if self:IsMythic() and self.vb.blackHarvestCast == 4 then
 			timerWindsCD:Start(75, 4)
 		end
 	elseif spellId == 206222 or spellId == 206221 then
