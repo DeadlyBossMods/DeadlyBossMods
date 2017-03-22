@@ -489,7 +489,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 209598 then
 		self.vb.burstDebuffCount = self.vb.burstDebuffCount - 1
-		warnConflexiveBurst:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			--Cancel yells when they are added
 		end
