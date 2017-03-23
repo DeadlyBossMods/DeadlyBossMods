@@ -110,7 +110,7 @@ ReturnToKarazhan\Vizaduum.lua
 ReturnToKarazhan\Nightbane.lua
 ReturnToKarazhan\RTKTrash.lua
 CathedralofEternalNight\Agronox.lua
-CathedralofEternalNight\Trashbite.lua
+CathedralofEternalNight\Thrashbite.lua
 CathedralofEternalNight\Domatrax.lua
 CathedralofEternalNight\Mephistroth.lua
 CathedralofEternalNight\CoENTrash.lua
