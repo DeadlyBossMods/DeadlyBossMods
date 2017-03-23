@@ -12,7 +12,7 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 213853 213567 213564 213852 212735 213390 213083 212492 230504",
+	"SPELL_CAST_START 213853 213567 213564 213852 212735 213083 212492 230504",
 	"SPELL_CAST_SUCCESS 230403 212492 213275",
 	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587 230951 213760 213808 212647 215458",
 	"SPELL_AURA_APPLIED_DOSE 212647 215458",
@@ -271,10 +271,6 @@ function mod:SPELL_CAST_START(args)
 			voiceFrostDetonate:Play("runout")
 			yellFrostDetonate:Yell()
 		end
-	elseif spellId == 213390 then--Detonate: Arcane Orb
-		--specWarnArcaneDetonate:Show()
-		--voiceArcaneDetonate:Play("watchorb")
-		DBM:AddMsg("If you see this message it means blizzard fixed Detonate: Arcane Orb combat log trigger. Report this to DBM authors to improve mod. You may recieve double warnings on this spell until mod is updated.")
 	elseif spellId == 213083 then--Frozen Tempest
 		warnFrozenTempest:Show()
 		if self.Options.SetIconOnFrozenTempest then
@@ -328,7 +324,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerArcaneOrbCD:Start()
 		end
 	elseif spellId == 213275 and self.Options.SetIconOnBurstOfFlame then--Detonate: Searing Brand
-		self:ScanForMobs(107285, 0, 8, 6, 0.1, 20, "SetIconOnBurstOfFlame", false, 107285)--Second CID isn't actually second ID, just more redundancy to try and get god damn thing to work AT ALL
+		--self:ScanForMobs(107285, 0, 8, 6, 0.1, 20, "SetIconOnBurstOfFlame", false, 107285)--Second CID isn't actually second ID, just more redundancy to try and get god damn thing to work AT ALL
+		self:ScheduleMethod(15, "ScanForMobs", 107285, 0, 8, 8, 0.1, 12, "SetIconOnBurstOfFlame")
 	end
 end
 
@@ -580,7 +577,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		specWarnArcaneOrb:Show()
 		voiceArcaneOrb:Play("watchorb")
 	elseif spellId == 213390 then--Detonate: Arcane Orb (still missing from combat log, although this event is 3 seconds slower than scheduling or using yell)
-		self:ScanForMobs(107287, 0, 8, 8, 0.1, 20, "SetIconOnBurstOfMagic", false, 107287)--Second CID isn't actually second ID, just more redundancy to try and get god damn thing to work AT ALL
+		self:ScheduleMethod(15, "ScanForMobs", 107287, 0, 8, 8, 0.1, 12, "SetIconOnBurstOfMagic")
 --		specWarnArcaneDetonate:Show()
 --		voiceArcaneDetonate:Play("watchorb")
 	end
