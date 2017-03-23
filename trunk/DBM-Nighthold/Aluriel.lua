@@ -6,7 +6,7 @@ mod:SetCreatureID(104881)
 mod:SetEncounterID(1871)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
-mod:SetHotfixNoticeRev(15984)
+mod:SetHotfixNoticeRev(16075)
 mod.respawnTime = 29
 
 mod:RegisterCombat("combat")
@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 213853 213567 213564 213852 212735 213083 212492 230504",
 	"SPELL_CAST_SUCCESS 230403 212492 213275",
-	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587 230951 213760 213808 212647 215458",
+	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587 230951 212647 215458",
 	"SPELL_AURA_APPLIED_DOSE 212647 215458",
 	"SPELL_AURA_REMOVED 213569 212531 213148 230951 212587",
 	"SPELL_PERIODIC_DAMAGE 212736 213278 213504 230414",
@@ -473,10 +473,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			timerDecimateCD:Start(9.4)
 		end
---	elseif spellId == 213760 and self.Options.SetIconOnBurstOfFlame then--Burst of Flame
-		--self:ScanForMobs(args.destGUID, 0, 8, 6, 0.1, 10, "SetIconOnBurstOfFlame")
---	elseif spellId == 213808 and self.Options.SetIconOnBurstOfMagic then--Burst of Magic
-		--self:ScanForMobs(args.destGUID, 0, 8, 8, 0.1, 12, "SetIconOnBurstOfMagic")
 	elseif spellId == 212647 then
 		local amount = args.amount or 1
 		if args:IsPlayer() and amount % 2 == 0 and amount >= 6 then
