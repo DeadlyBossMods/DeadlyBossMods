@@ -29,6 +29,10 @@ L:SetOptionLocalization({
 	Adds				= "Show add counts for all add types"
 })
 
+L:SetMiscLocalization({
+	AddSpawnNotice		= "As players overgear encounter, add spawns grow increasingly faster as encounter was designd by blizzard with auto pacing code. As such, if you overgear/overkill fight, take the add spawn timers witha grain of salt."
+})
+
 ---------------------------
 -- Elerethe Renferal --
 ---------------------------

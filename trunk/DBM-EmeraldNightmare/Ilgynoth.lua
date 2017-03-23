@@ -284,6 +284,7 @@ function mod:OnCombatStart(delay)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, false, true)
 		end
 	end
+	DBM:AddMsg(L.AddSpawnNotice)
 	if self:AntiSpam(15, 2) then
 		--Do nothing. Just to avoid spam on pull
 	end
