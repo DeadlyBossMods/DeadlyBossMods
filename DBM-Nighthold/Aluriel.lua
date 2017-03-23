@@ -150,6 +150,7 @@ mod:AddInfoFrameOption(212647)
 mod.vb.annihilateCount = 0
 mod.vb.armageddonAdds = 0
 mod.vb.felLashCount = 0
+mod.vb.lastPhase = 1
 local MarkOfFrostDebuff = GetSpellInfo(212587)
 local SearingBrandDebuff = GetSpellInfo(213166)
 local annihilatedDebuff = GetSpellInfo(215458)
@@ -210,6 +211,7 @@ end
 function mod:OnCombatStart(delay)
 	self.vb.annihilateCount = 0
 	self.vb.armageddonAdds = 0
+	self.vb.lastPhase = 1
 	timerAnnihilateCD:Start(8-delay, 1)
 	countdownAnnihilate:Start(8-delay)
 	--Rest of timers are triggered by frost buff 0.1 seconds into pull
@@ -289,9 +291,6 @@ function mod:SPELL_CAST_START(args)
 				voiceAnnihilate:Schedule(4, "tauntboss")
 			end
 		end
-	elseif spellId == 230951 then
-		warnFelSoul:Show()
-		timerDecimateCD:Start(12.4)
 	elseif spellId == 230504 then
 		local targetName, uId, bossuid = self:GetBossTarget(115905)
 		if bossuid then
@@ -301,7 +300,11 @@ function mod:SPELL_CAST_START(args)
 				voiceDecimate:Play("carefly")
 			end
 		end
-		timerDecimateCD:Start()
+		if self.vb.lastPhase == 3 then
+			timerDecimateCD:Start(17)
+		else
+			timerDecimateCD:Start(20)
+		end
 	end
 end
 
@@ -335,22 +338,37 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 213864 or spellId == 216389 then--Icy enchantment (Two versions for some reason, probably normal/lfr version and heroic/mythic)
+	if spellId == 213864 or spellId == 216389 then--Icy enchantment
+		self.vb.lastPhase = 1
 		warnFrostPhase:Show()
 		voicePhaseChange:Play("phasechange")
-		if self:IsMythic() then
-			timerFelSoulCD:Start(15)
+		if spellId == 216389 then--First icy
 			timerMarkOfFrostCD:Start(18)
-			timerMarkOfFrostRepCD:Start(28)
-			timerMarkOfFrostDetonateCD:Start(48)
-			timerAnimateFrostCD:Start(65)
-			timerFirePhaseCD:Start(75)
-		else
-			timerMarkOfFrostCD:Start(18)
-			timerMarkOfFrostRepCD:Start(38)
-			timerMarkOfFrostDetonateCD:Start(68)
-			timerAnimateFrostCD:Start(75)
-			timerFirePhaseCD:Start(85)
+			if self:IsMythic() then
+				timerFelSoulCD:Start(15)
+				timerMarkOfFrostRepCD:Start(28)
+				timerMarkOfFrostDetonateCD:Start(48)
+				timerAnimateFrostCD:Start(65)
+				timerFirePhaseCD:Start(75)
+			else
+				timerMarkOfFrostRepCD:Start(38)
+				timerMarkOfFrostDetonateCD:Start(68)
+				timerAnimateFrostCD:Start(75)
+				timerFirePhaseCD:Start(85)
+			end
+		else--Rest of them
+			--timerMarkOfFrostCD:Start(1.5)--No real reason to show a 1.5 second timer
+			timerMarkOfFrostRepCD:Start(15)
+			if self:IsMythic() then
+				timerFelSoulCD:Start(18)
+				timerMarkOfFrostDetonateCD:Start(35)
+				timerAnimateFrostCD:Start(52)
+				timerFirePhaseCD:Start(75)
+			else
+				timerMarkOfFrostDetonateCD:Start(45)
+				timerAnimateFrostCD:Start(62)
+				timerFirePhaseCD:Start(85)
+			end
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8, debuffFilter)
@@ -360,6 +378,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:Show(6, "playerdebuffstacks", 212647)
 		end
 	elseif spellId == 213867 then--Fiery Enchantment
+		self.vb.lastPhase = 2
 		warnFirePhase:Show()
 		voicePhaseChange:Play("phasechange")
 		if self:IsMythic() then
@@ -383,6 +402,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:Hide()
 		end
 	elseif spellId == 213869 then--Magic Enchantment
+		self.vb.lastPhase = 3
 		warnArcanePhase:Show()
 		voicePhaseChange:Play("phasechange")
 		if self:IsMythic() then
@@ -451,7 +471,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 213569 then--Armageddon Applied to mobs
 		self.vb.armageddonAdds = self.vb.armageddonAdds + 1
 	elseif spellId == 230951 then
+		warnFelSoul:Show()
 		timerFelSoul:Start()
+		if self.vb.lastPhase == 1 then
+			timerDecimateCD:Start(18.5)
+		elseif self.vb.lastPhase == 2 then
+			timerDecimateCD:Start(11.2)
+		else
+			timerDecimateCD:Start(9.4)
+		end
 --	elseif spellId == 213760 and self.Options.SetIconOnBurstOfFlame then--Burst of Flame
 		--self:ScanForMobs(args.destGUID, 0, 8, 6, 0.1, 10, "SetIconOnBurstOfFlame")
 --	elseif spellId == 213808 and self.Options.SetIconOnBurstOfMagic then--Burst of Magic
