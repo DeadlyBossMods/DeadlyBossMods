@@ -14,8 +14,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 213853 213567 213564 213852 212735 213390 213083 212492 230504",
 	"SPELL_CAST_SUCCESS 230403 212492 213275",
-	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587 230951 213760 213808 212647",
-	"SPELL_AURA_APPLIED_DOSE 212647",
+	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587 230951 213760 213808 212647 215458",
+	"SPELL_AURA_APPLIED_DOSE 212647 215458",
 	"SPELL_AURA_REMOVED 213569 212531 213148 230951 212587",
 	"SPELL_PERIODIC_DAMAGE 212736 213278 213504 230414",
 	"SPELL_PERIODIC_MISSED 212736 213278 213504 230414",
@@ -35,10 +35,11 @@ ability.id = 230403 and type = "cast" or
 (ability.id = 212531 or ability.id = 213148) and type = "applydebuff" or
 ability.id = 230951 and type = "removebuff" or ability.id = 230414
 --]]
---Phases
+--Phases/General
 local warnFrostPhase				= mod:NewSpellAnnounce(213864, 2)
 local warnFirePhase					= mod:NewSpellAnnounce(213867, 2)
 local warnArcanePhase				= mod:NewSpellAnnounce(213869, 2)
+local warnAnnihilate				= mod:NewStackAnnounce(212492, 2, nil, "Tank")
 --Debuffs
 local warnMarkOfFrostChosen			= mod:NewTargetAnnounce(212531, 3)
 local warnSearingBrandChosen		= mod:NewTargetAnnounce(213148, 3)
@@ -285,11 +286,6 @@ function mod:SPELL_CAST_START(args)
 		if tanking or (status == 3) then--Player is current target
 			specWarnAnnihilate:Show(self.vb.annihilateCount+1)
 			voiceAnnihilate:Play("defensive")
-		else
-			if not UnitDebuff("player", annihilatedDebuff) then
-				specWarnAnnihilateOther:Schedule(4, targetName)
-				voiceAnnihilate:Schedule(4, "tauntboss")
-			end
 		end
 	elseif spellId == 230504 then
 		local targetName, uId, bossuid = self:GetBossTarget(115905)
@@ -489,6 +485,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() and amount % 2 == 0 and amount >= 6 then
 			specWarnFrostbitten:Show(amount)
 			voiceFrostbitten:Play("stackhigh")
+		end
+	elseif spellId == 215458 then
+		local amount = args.amount or 1
+		if amount >= 2 then
+			if not UnitDebuff("player", args.spellName) and not args:IsPlayer() then
+				specWarnAnnihilateOther:Show(args.destName)
+				voiceAnnihilate:Play("tauntboss")
+			else
+				warnAnnihilate:Show(args.destName, amount)
+			end
 		end
 	end
 end
