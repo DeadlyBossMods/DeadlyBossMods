@@ -193,8 +193,11 @@ function mod:OnCombatStart(delay)
 		timerControlledChaosCD:Start(-delay)
 		countdownControlledChaos:Start()
 	end
-	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnCoN then
+	if self.Options.NPAuraOnCoN then
 		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+	end
+	if self.Options.NPAuraOnFixate then
+		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
 
@@ -206,7 +209,7 @@ function mod:OnCombatEnd()
 		DBMHudMap:Disable()
 	end
 	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnCoN then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
+		DBM.Nameplate:Hide(false, nil, nil, nil, true, true, true)
 	end
 end
 
@@ -399,7 +402,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			voiceParasiticFixate:Play("targetyou")
 		end
 		if self.Options.NPAuraOnFixate then
-			DBM.Nameplate:Show(false, args.destName, spellId)
+			DBM.Nameplate:Show(true, args.sourceGUID, spellId)
 		end
 --	elseif spellId == 219009 then
 --		local targetName = args.destName
@@ -547,7 +550,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 218342 then
 		if self.Options.NPAuraOnFixate then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
+			DBM.Nameplate:Hide(true, args.sourceGUID, spellId)
 		end
 	end
 end
