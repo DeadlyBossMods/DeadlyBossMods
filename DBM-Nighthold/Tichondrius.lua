@@ -350,7 +350,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.InfoFrame and self:IsMythic() then
 			local essenceOfNightDebuff = GetSpellInfo(206466)
 			DBM.InfoFrame:SetHeader(essenceOfNightDebuff)
-			DBM.InfoFrame:Show(10, "playerbaddebuff", essenceOfNightDebuff, nil, true)
+			DBM.InfoFrame:Show(10, "playergooddebuff", essenceOfNightDebuff, nil, true)
 		end
 		if self.Options.NPAuraOnCarrionPlague then
 			--Force kill them all going into this phase, even before debuffs are gone
