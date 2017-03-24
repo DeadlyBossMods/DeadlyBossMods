@@ -349,7 +349,7 @@ function mod:SPELL_CAST_START(args)
 		--Switch to debuff tracking on mythic.
 		if self.Options.InfoFrame and self:IsMythic() then
 			local essenceOfNightDebuff = GetSpellInfo(206466)
-			DBM.InfoFrame:SetHeader(essenceOfNightDebuff)
+			DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(essenceOfNightDebuff))
 			DBM.InfoFrame:Show(10, "playergooddebuff", essenceOfNightDebuff, nil, true)
 		end
 		if self.Options.NPAuraOnCarrionPlague then
