@@ -12,7 +12,7 @@ mod.respawnTime = 30
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 212997 213238 212794 213531 206365 216034 216723 215988",
+	"SPELL_CAST_START 212997 213238 213531 206365 216034 216723 215988",
 	"SPELL_CAST_SUCCESS 212997 212794 208230",
 	"SPELL_AURA_APPLIED 206480 212794 208230 216040",
 	"SPELL_AURA_APPLIED_DOSE 216024",
@@ -310,8 +310,6 @@ function mod:SPELL_CAST_START(args)
 				end
 			end
 		end
-	elseif spellId == 212794 then
---		table.wipe(argusTargets)
 	elseif spellId == 213531 then
 		self.vb.echoesOfVoidCast = self.vb.echoesOfVoidCast + 1
 		specWarnEchoesOfVoid:Show(self.vb.echoesOfVoidCast)
@@ -433,11 +431,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 212794 then
 		argusTargets[#argusTargets+1] = args.destName
 		self:Unschedule(breakMarks)
-		if #argusTargets == 3 then
-			breakMarks(self, args.spellName)
-		else
-			self:Schedule(0.5, breakMarks, self, args.spellName)
-		end
+		self:Schedule(0.5, breakMarks, self, args.spellName)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Update()
 		end
