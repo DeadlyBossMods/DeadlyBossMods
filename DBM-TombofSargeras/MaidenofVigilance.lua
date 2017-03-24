@@ -53,11 +53,11 @@ local specWarnFelhammer				= mod:NewSpecialWarningCount(241636, nil, nil, nil, 2
 local specWarnWrathofCreators		= mod:NewSpecialWarningInterrupt(234891, "HasInterrupt", nil, nil, 1, 2)
 
 --Stage One: Divide and Conquer
-local timerInfusionCD				= mod:NewNextCountTimer(38, 235271, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerInfusionCD				= mod:NewNextCountTimer(37.9, 235271, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerLightHammerCD			= mod:NewNextCountTimer(18, 241635, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFelHammerCD				= mod:NewNextCountTimer(18, 241636, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerMassInstabilityCD		= mod:NewNextCountTimer(31, 235267, nil, nil, nil, 3)
-local timerBlowbackCD				= mod:NewNextTimer(82, 237722, nil, nil, nil, 6)
+local timerBlowbackCD				= mod:NewNextTimer(81.1, 237722, nil, nil, nil, 6)--81-82
 --Mythic
 local timerSpontFragmentationCD		= mod:NewNextTimer(8, 239153, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
 
@@ -96,7 +96,7 @@ function mod:OnCombatStart(delay)
 	timerInfusionCD:Start(2-delay, 2)
 	timerLightHammerCD:Start(12-delay, 3)--12-14
 	timerMassInstabilityCD:Start(22-delay, 2)
-	timerBlowbackCD:Start(41-delay)
+	timerBlowbackCD:Start(40.9-delay)
 	if self:IsMythic() then
 		self.vb.spontFragmentationCount = 0
 		timerSpontFragmentationCD:Start(10-delay)
