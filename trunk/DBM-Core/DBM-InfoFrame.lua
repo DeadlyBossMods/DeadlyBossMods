@@ -680,8 +680,10 @@ function onUpdate(frame)
 	if events[currentEvent] then
 		events[currentEvent]()
 	else
-		frame:Hide()
-		--error("DBM-InfoFrame: Unsupported event", 2)
+		if frame then
+			frame:Hide()
+			--error("DBM-InfoFrame: Unsupported event", 2)
+		end
 	end
 	local color = NORMAL_FONT_COLOR
 	frame:ClearLines()
@@ -801,6 +803,7 @@ function infoFrame:RegisterCallback(cb)
 end
 
 function infoFrame:Update()
+	frame = frame or createFrame()
 	onUpdate(frame)
 end
 
