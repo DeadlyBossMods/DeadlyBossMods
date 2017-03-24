@@ -14,7 +14,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 212997 213238 213531 206365 216034 216723 215988",
 	"SPELL_CAST_SUCCESS 212997 212794 208230",
-	"SPELL_AURA_APPLIED 206480 212794 208230 216040",
+	"SPELL_AURA_APPLIED 206480 212794 208230 216040 206466",
 	"SPELL_AURA_APPLIED_DOSE 216024",
 	"SPELL_AURA_REMOVED 212794 216040 206480",
 	"SPELL_PERIODIC_DAMAGE 216027",
@@ -41,7 +41,6 @@ local warnRingOfShadow				= mod:NewSpellAnnounce(216723, 3)
 local specWarnCarrionPlague			= mod:NewSpecialWarningMoveAway(206480, nil, nil, nil, 1, 2)
 local specWarnSeekerSwarm			= mod:NewSpecialWarningDodge(213238, nil, nil, nil, 2, 6)
 local yellSeekerSwarm				= mod:NewYell(213238)--Carrion plague targets yell when it's relevant. On seeker swarm cast
---local specWarnBreakMark			= mod:NewSpecialWarning("specWarnBreakMark", nil, nil, nil, 1)
 local yellBrandOfArgus				= mod:NewPosYell(212794, 156225)--"Branded" short text
 local specWarnFeastOfBlood			= mod:NewSpecialWarningRun(208230, nil, nil, nil, 1, 2)--Move away, or run? neither one really says "get 30 yards from boss"
 local specWarnFeastOfBloodOther		= mod:NewSpecialWarningTaunt(208230, nil, nil, nil, 1, 2)
@@ -109,10 +108,10 @@ local P3SharedCastTimers = {0, 25.6, 36.1, 22.5}--Seeker, Brand, Feast
 
 --Normal/LFR HAD different timers. Normal now matches heroic so assume LFR also does for now
 --local sharedCastTimersFaster = {0, 15, 25, 14.5}--Carrion Plague, feast of blood, Seeker Swarm (faster on normal/LFR since no brand of argus)
-local carrionTargets = {}
 local argusTargets = {}
 local carrionDebuff = GetSpellInfo(206480)
 mod.vb.phase = 1
+mod.vb.darkPhase = false
 mod.vb.carrionPlagueCast = 0
 mod.vb.feastOfBloodCast = 0
 mod.vb.seekerSwarmCast = 0
@@ -121,28 +120,40 @@ mod.vb.echoesOfVoidCast = 0
 mod.vb.addsCount = 0
 mod.vb.carrionNightmare = 0
 mod.vb.batsKilled = 0
+mod.vb.essenceCount = 0
+mod.vb.CarrionPlagueCount = 0
 
 local updateInfoFrame, breakMarks
 do
-	local argusDebuff = GetSpellInfo(212794)
-	local playerName = UnitName("player")
+	local argusDebuff, batsName, essenceOfNightDebuff = GetSpellInfo(212794), EJ_GetSectionInfo, GetSpellInfo(206466)
 	local lines = {}
+	local sortedLines = {}
+	local function addLine(key, value)
+		-- sort by insertion order
+		lines[key] = value
+		sortedLines[#sortedLines + 1] = key
+	end
 	updateInfoFrame = function()
 		table.wipe(lines)
-		local total = 0
+		table.wipe(sortedLines)
+		--Counts first, depending on phase
+		if mod.vb.darkPhase then
+			addLine(batsName, mod.vb.batsKilled)
+			addLine(essenceOfNightDebuff, mod.vb.essenceCount)
+		else
+			addLine(carrionDebuff, mod.vb.CarrionPlagueCount)
+		end
+		--Argust playername list last
 		for i = 1, #argusTargets do
 			local name = argusTargets[i]
 			local uId = DBM:GetRaidUnitId(name)
 			if uId and UnitDebuff(uId, argusDebuff) then
-				total = total + 1
-				lines[name] = i
+				addLine(name, i)
 			end
 		end
-		if total == 0 then--None found, hide infoframe because all broke
-			DBM.InfoFrame:Hide()
-		end
-		return lines
+		return lines, sortedLines
 	end
+	local playerName = UnitName("player")
 	breakMarks = function (self, spellName)
 		table.sort(argusTargets)
 		warnBrandOfArgus:Show(table.concat(argusTargets, "<, >"))
@@ -152,23 +163,9 @@ do
 			if not DBM:GetRaidUnitId(name) then break end
 			if name == playerName then
 				yellBrandOfArgus:Yell(i, i, i)
-				if i == 1 then
---					specWarnBreakMark:Show(L.First)
---					voiceBrandOfArgus:Play("184964a")
-				elseif i == 2 then
---					specWarnBreakMark:Show(L.Second)
---					voiceBrandOfArgus:Play("184964b")
-				elseif i == 3 then
---					specWarnBreakMark:Show(L.Third)
---					voiceBrandOfArgus:Play("184964c")
-				end
 			end
 			if self.Options.SetIconOnBrandOfArgus then
 				self:SetIcon(name, i)
-			end
-			if self.Options.InfoFrame then
-				DBM.InfoFrame:SetHeader(argusDebuff)
-				DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, true, true)
 			end
 		end
 	end
@@ -176,6 +173,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
+	self.vb.darkPhase = false
 	self.vb.carrionPlagueCast = 0
 	self.vb.feastOfBloodCast = 0
 	self.vb.seekerSwarmCast = 0
@@ -184,7 +182,8 @@ function mod:OnCombatStart(delay)
 	self.vb.addsCount = 0
 	self.vb.carrionNightmare = 0
 	self.vb.batsKilled = 0
-	table.wipe(carrionTargets)
+	self.vb.essenceCount = 0
+	self.vb.CarrionPlagueCount = 0
 	table.wipe(argusTargets)
 	timerCarrionPlagueCD:Start(7-delay, 1)--Cast end
 	timerFeastOfBloodCD:Start(20-delay, 1)
@@ -202,6 +201,10 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.NPAuraOnCarrionPlague then
 		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(OVERVIEW)
+		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false, true)
 	end
 end
 
@@ -232,7 +235,6 @@ function mod:SPELL_CAST_START(args)
 			countdownCarrionNightmare:Start()
 		end
 	elseif spellId == 212997 then
-		table.wipe(carrionTargets)
 		if self.vb.darkPhase then--He casts it immediately after a Night phase ends
 			self.vb.darkPhase = false
 			self.vb.phase = self.vb.phase + 1
@@ -259,11 +261,6 @@ function mod:SPELL_CAST_START(args)
 			else--The Legion
 				timerEchoesOfVoidCD:Start(55, 1)
 				countdownEchoesOfVoid:Start(55)
-			end
-			--Restore argus tracker if for some reason you let people have it this long
-			if self.Options.InfoFrame and self:IsMythic() then
-				DBM.InfoFrame:SetHeader(GetSpellInfo(212794))
-				DBM.InfoFrame:Show(5, "function", updateInfoFrame, false, true, true)
 			end
 		end
 	elseif spellId == 213238 then
@@ -340,16 +337,11 @@ function mod:SPELL_CAST_START(args)
 		self.vb.darkPhase = true
 		self.vb.carrionNightmare = 0
 		self.vb.batsKilled = 0
+		self.vb.essenceCount = 0
 		timerIllusionaryNight:Start()
 		countdownNightPhase:Start()
 		timerCarrionNightmare:Start(6, 1)
 		countdownCarrionNightmare:Start(6)
-		--Switch to debuff tracking on mythic.
-		if self.Options.InfoFrame and self:IsMythic() then
-			local essenceOfNightDebuff = GetSpellInfo(206466)
-			DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(essenceOfNightDebuff))
-			DBM.InfoFrame:Show(10, "playergooddebuff", essenceOfNightDebuff, nil, true)
-		end
 		if self.Options.NPAuraOnCarrionPlague then
 			--Force kill them all going into this phase, even before debuffs are gone
 			for uId in DBM:GetGroupMembers() do
@@ -415,11 +407,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 206480 then
-		local name = args.destName
-		if not tContains(carrionTargets, name) then
-			carrionTargets[#carrionTargets+1] = name
-		end
-		local count = #carrionTargets
+		self.vb.CarrionPlagueCount = self.vb.CarrionPlagueCount + 1
 		warnCarrionPlague:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnCarrionPlague:Show()
@@ -454,6 +442,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			warnBurningSoul:Show(args.destName)
 		end
+	elseif spellId == 206466 then
+		self.vb.essenceCount = self.vb.essenceCount + 1
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
+		end
 	end
 end
 
@@ -480,6 +473,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 216040 and args:IsPlayer() and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	elseif spellId == 206480 then
+		self.vb.CarrionPlagueCount = self.vb.CarrionPlagueCount - 1
 		if self.Options.NPAuraOnCarrionPlague then
 			DBM.Nameplate:Hide(false, args.destName, spellId, 1029009)
 		end
@@ -500,6 +494,9 @@ function mod:UNIT_DIED(args)
 		self.vb.batsKilled = self.vb.batsKilled + 1
 		if self.vb.batsKilled % 4 == 0 then
 			warnBloodFang:Show(self.vb.batsKilled)
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update()
 		end
 	end
 end
