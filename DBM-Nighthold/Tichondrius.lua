@@ -125,7 +125,7 @@ mod.vb.CarrionPlagueCount = 0
 
 local updateInfoFrame, breakMarks
 do
-	local argusDebuff, batsName, essenceOfNightDebuff = GetSpellInfo(212794), EJ_GetSectionInfo, GetSpellInfo(206466)
+	local argusDebuff, batsName, essenceOfNightDebuff = GetSpellInfo(212794), EJ_GetSectionInfo(13528), GetSpellInfo(206466)
 	local lines = {}
 	local sortedLines = {}
 	local function addLine(key, value)
