@@ -124,7 +124,6 @@ local voiceRunicBrand				= mod:NewVoice(231297)--mmX (will be changed to mmc whe
 mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(227503, true)
 mod:AddRangeFrameOption("5/8/15")
-mod:AddNamePlateOption("NPAuraOnRunicBrand", 231297, true)
 mod:AddNamePlateOption("NPAuraOnBranded", 227503, true)
 
 mod.vb.phase = 1
@@ -231,9 +230,6 @@ function mod:OnCombatStart(delay)
 		timerExpelLightCD:Start(25-delay)
 		timerDrawPowerCD:Start(35-delay)
 		countdownDrawPower:Start(35-delay)
-		if self.Options.NPAuraOnRunicBrand then
-			DBM:FireEvent("BossMod_EnableFriendlyNameplates")
-		end
 	elseif not self:IsEasy() then
 		timerHornOfValorCD:Start(8-delay, 1)
 		countdownHorn:Start(8-delay)
@@ -267,8 +263,8 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if self.Options.NPAuraOnRunicBrand and self:IsMythic() or self.Options.NPAuraOnBranded then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true, true)
+	if self.Options.NPAuraOnBranded then
+		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 
@@ -496,9 +492,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			updateRangeFrame(self)
 		end
-		if self.Options.NPAuraOnRunicBrand then
-			DBM.Nameplate:Show(false, args.destName, spellId, nil, 10)
-		end
 	elseif spellId == 229584 and args:IsPlayer() then
 		playerProtected = true
 		if self.Options.InfoFrame then
@@ -532,9 +525,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 231311 or spellId == 231342 or spellId == 231344 or spellId == 231345 or spellId == 231346 then--Branded (Draw Power Runes)
 		if args:IsPlayer() then
 			playerDebuff = nil
-		end
-		if self.Options.NPAuraOnRunicBrand then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
 		end
 	elseif spellId == 229584 and args:IsPlayer() then
 		playerProtected = false

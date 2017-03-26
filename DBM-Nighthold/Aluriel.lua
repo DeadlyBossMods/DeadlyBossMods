@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 230403 212492 213275",
 	"SPELL_AURA_APPLIED 213864 216389 213867 213869 212531 213148 213569 212587 230951 212647 215458",
 	"SPELL_AURA_APPLIED_DOSE 212647 215458",
-	"SPELL_AURA_REMOVED 213569 212531 213148 230951 212587",
+	"SPELL_AURA_REMOVED 213569 212531 213148 230951",
 	"SPELL_PERIODIC_DAMAGE 212736 213278 213504 230414",
 	"SPELL_PERIODIC_MISSED 212736 213278 213504 230414",
 	"SPELL_DAMAGE 213520",
@@ -140,12 +140,10 @@ local voiceDecimate					= mod:NewVoice(230504)--carefly
 local voiceFelLash					= mod:NewVoice(230403)--gathershare
 
 mod:AddRangeFrameOption("8")
-mod:AddHudMapOption("HudMapOnBrandCharge", 213166)
 mod:AddSetIconOption("SetIconOnFrozenTempest", 213083, true, true)
 mod:AddSetIconOption("SetIconOnSearingDetonate", 213275, true)
 mod:AddSetIconOption("SetIconOnBurstOfFlame", 213760, true, true)
 mod:AddSetIconOption("SetIconOnBurstOfMagic", 213808, true, true)
-mod:AddNamePlateOption("NPAuraOnMarkOfFrost", 212531)
 mod:AddInfoFrameOption(212647)
 
 mod.vb.annihilateCount = 0
@@ -169,25 +167,6 @@ do
 		if UnitDebuff(uId, MarkOfFrostDebuff) or UnitDebuff(uId, SearingBrandDebuff) then
 			return true
 		end
-	end
-end
-
---TODO, if Elisande method is superior, switch to it to speed up line drawing.
-local function hudDelay(self)
-	local currentTank = self:GetCurrentTank()
-	if not UnitDebuff("player", SearingBrandDebuff) then
-		specWarnSearingBrandDodge:Show()
-		voiceSearingBrand:Play("farfromline")
-	end
-	if not currentTank then
-		DBM:Debug("Tank Detection Failure in hudDelay", 2)
-		return
-	end
-	DBMHudMap:RegisterRangeMarkerOnPartyMember(213166, "party", UnitName("player"), 0.7, 5, nil, nil, nil, 1, nil, false):Appear()--Create Player Dot
-	for i = 1, #chargeTable do
-		local name = chargeTable[i]
-		DBMHudMap:RegisterRangeMarkerOnPartyMember(213166, "party", name, 0.35, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -13, 8, nil)
-		DBMHudMap:AddEdge(1, 0, 0, 0.5, 5, currentTank, name, nil, nil, nil, nil, 125)
 	end
 end
 
@@ -227,23 +206,14 @@ function mod:OnCombatStart(delay)
 	else
 		berserkTimer:Start(480-delay)--480 confirmed on heroic (needs reconfirm on live)
 	end
-	if self.Options.NPAuraOnMarkOfFrost then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
-	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.HudMapOnBrandCharge then
-		DBMHudMap:Disable()
-	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
-	end
-	if self.Options.NPAuraOnMarkOfFrost then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 
@@ -435,17 +405,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:AntiSpam(7, args.destName)
 			yellMarkofFrost:Yell()
 		end
-		if self.Options.NPAuraOnMarkOfFrost then
-			DBM.Nameplate:Show(false, args.destName, spellId, nil, 5)
-		end
 	elseif spellId == 212587 then
 		if args:IsPlayer() and self:AntiSpam(7, args.destName) then
 			specWarnMarkOfFrost:Show()
 			voiceMarkOfFrost:Play("targetyou")
 			yellMarkofFrost:Yell()
-		end
-		if self.Options.NPAuraOnMarkOfFrost then
-			DBM.Nameplate:Show(false, args.destName, spellId)
 		end
 	elseif spellId == 213148 then--Searing Brand (5sec Targetting Debuff)
 		warnSearingBrandChosen:CombinedShow(0.3, args.destName)
@@ -453,13 +417,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSearingBrand:Show()
 			voiceSearingBrand:Play("scatter")
 			countdownSearingBrand:Start()
-		end
-		if self.Options.HudMapOnBrandCharge and not self:HasMapRestrictions() then
-			self:Unschedule(hudDelay)
-			if not tContains(args.destName, args.destName) then
-				chargeTable[#chargeTable+1] = args.destName
-			end
-			self:Schedule(0.3, hudDelay, self)
 		end
 	elseif spellId == 213569 then--Armageddon Applied to mobs
 		self.vb.armageddonAdds = self.vb.armageddonAdds + 1
@@ -509,17 +466,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			countdownMarkOfFrost:Cancel()
 		end
-		if self.Options.NPAuraOnMarkOfFrost then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
-		end
 	elseif spellId == 213148 and args:IsPlayer() then--Searing Brand (5sec Targetting Debuff)
 		countdownSearingBrand:Cancel()
 	elseif spellId == 230951 then
 		timerFelSoul:Stop()
-	elseif spellId == 212587 then
-		if self.Options.NPAuraOnMarkOfFrost then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
-		end
 	end
 end
 	

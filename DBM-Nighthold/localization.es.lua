@@ -26,10 +26,6 @@ L= DBM:GetModLocalization(1751)
 -----------------
 L= DBM:GetModLocalization(1762)
 
-L:SetOptionLocalization({
-	HUDSeekerLines		= "Mostrar indicador en pantalla con líneas para $spell:213238"
-})
-
 L:SetMiscLocalization({
 	First				= "Primero",
 	Second				= "Segundo",
@@ -73,12 +69,6 @@ L:SetMiscLocalization({
 -- Augur estelar Etraeus --
 ---------------------------
 L= DBM:GetModLocalization(1732)
-
-
-L:SetOptionLocalization({
-	ShowCustomNPAuraTextures	= "Mostrar texturas de iconos verdes y rojas personalizadas en las placas de nombres en lugar de los iconos de perjuicio si estás afectado por un signo estelar",
-	FilterOtherSigns			= "Ocultar anuncios de signos estelares por los que no estés afectado"
-})
 
 -----------------------------
 -- Gran magistrix Elisande --

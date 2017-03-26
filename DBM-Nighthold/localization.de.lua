@@ -26,10 +26,6 @@ L= DBM:GetModLocalization(1751)
 ------------------
 L= DBM:GetModLocalization(1762)
 
-L:SetOptionLocalization({
-	HUDSeekerLines		= "Show HUD lines with Seeker Swarm"--translate later
-})
-
 L:SetMiscLocalization({
 	First				= "Erster",
 	Second				= "Zweiter",
@@ -73,11 +69,6 @@ L:SetMiscLocalization({
 -- Star Augur Etraeus --
 ------------------
 L= DBM:GetModLocalization(1732)
-
-L:SetOptionLocalization({
-	ShowCustomNPAuraTextures= "Zeige spezielle grün/rote Zeichentexturen in Namensplaketten (statt Debuffzeichen), falls du von Sternzeichen betroffen bist",
-	FilterOtherSigns		= "Filter target announces for Star Signs you are not affected by."--translate (unused)
-})
 
 ------------------
 -- Grand Magistrix Elisande --
