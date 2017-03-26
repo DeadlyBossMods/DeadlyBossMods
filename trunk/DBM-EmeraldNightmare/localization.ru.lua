@@ -40,14 +40,6 @@ L:SetWarningLocalization({
 	specWarnWebofPain	= "Вы связаны с >%s<"--Only this needs localizing
 })
 
-L:SetOptionLocalization({
-	WebConfiguration	= "Set HUD/Arrow options for Web of Pain",
-	Disabled			= "Отключено",
-	Arrow				= "Show only traditional Arrow if you're affected",
-	HudSelf				= "Show HUD line only if you're affected",
-	HudAll				= "Show HUD line for all affected targets"
-})
-
 ---------------------------
 -- Ursoc --
 ---------------------------

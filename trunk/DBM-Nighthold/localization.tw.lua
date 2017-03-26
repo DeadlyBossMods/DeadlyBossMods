@@ -32,10 +32,6 @@ L= DBM:GetModLocalization(1751)
 ------------------
 L= DBM:GetModLocalization(1762)
 
-L:SetOptionLocalization({
-	HUDSeekerLines		= "為覓腐蟲群顯示HUD線條"
-})
-
 L:SetMiscLocalization({
 	First				= "第一",
 	Second				= "第二",
@@ -79,11 +75,6 @@ L:SetMiscLocalization({
 -- Star Augur Etraeus --
 ------------------
 L= DBM:GetModLocalization(1732)
-
-L:SetOptionLocalization({
-	ShowCustomNPAuraTextures= "如果你中了星之記號則在名條上顯示自訂的綠/紅圖示材質而不是星之記號減益",
-	FilterOtherSigns		= "過濾與你無關的星之記號點名。"
-})
 
 ------------------
 -- Grand Magistrix Elisande --

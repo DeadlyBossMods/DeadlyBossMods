@@ -40,14 +40,6 @@ L:SetWarningLocalization({
 	specWarnWebofPain	= "Du bist verbunden mit >%s<"
 })
 
-L:SetOptionLocalization({
-	WebConfiguration	= "HudMap-/Pfeileinstellungen für Schmerzensnetz",
-	Disabled			= "Deaktiviert",
-	Arrow				= "Zeige nur herkömmlichen Pfeil, wenn du betroffen bist",
-	HudSelf				= "Zeige Linie in HudMap nur wenn du betroffen bist",
-	HudAll				= "Zeige Linie in HudMap für alle betroffenen Ziele"
-})
-
 ---------------------------
 -- Ursoc --
 ---------------------------

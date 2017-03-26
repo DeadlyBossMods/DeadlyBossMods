@@ -37,10 +37,6 @@ L= DBM:GetModLocalization(1751)
 ------------------
 L= DBM:GetModLocalization(1762)
 
-L:SetOptionLocalization({
-	HUDSeekerLines		= "为寻踪虫群显示HUD连线"
-})
-
 L:SetMiscLocalization({
 	First				= "第一",
 	Second				= "第二",
@@ -84,11 +80,6 @@ L:SetMiscLocalization({
 -- Star Augur Etraeus --
 ------------------
 L= DBM:GetModLocalization(1732)
-
-L:SetOptionLocalization({
-	ShowNeutralColor		= "在HUD中为没有星座点名的玩家标记为白圈，直到所有星座消失。",
-	FilterOtherSigns		= "过滤掉与你无关的星座点名喊叫。"
-})
 
 ------------------
 -- Grand Magistrix Elisande --

@@ -113,8 +113,6 @@ mod:AddBoolOption("InfoFrameFilterDream", true)
 mod:AddRangeFrameOption(6, 208322)
 mod:AddSetIconOption("SetIconOnBlades", 206656)
 mod:AddSetIconOption("SetIconOnMeteor", 206308)
-mod:AddHudMapOption("HudMapOnBlades", 211802)
-mod:AddHudMapOption("HudMapOnBonds", 209034)
 
 local lurkingTimers = {17, 20.5, 41, 20.5, 20.5}--{13.6, 26.3, 47.4, 20.7, 25.9} old. TODO, get more data, if all but one are 20.5, just code smarter without table
 local corruptionName = EJ_GetSectionInfo(12970)
@@ -150,40 +148,15 @@ local function updateRangeFrame(self)
 	end
 end
 
-local function bladesHUD(self)
-	local previousTarget = nil
-	for i = 1, #bladesTarget do
-		local name = bladesTarget[i]
-		if previousTarget then
-			local marker1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(211802, "party", previousTarget, 0.4, 6, nil, nil, nil, 0.5):Appear():SetLabel(previousTarget, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
-			local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(211802, "party", name, 0.4, 6, nil, nil, nil, 0.5):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
-			--Combat log targets correct now. they were backwards on heroic, keep an eye on things.
-			if playerName == previousTarget or playerName == name then--Player yellow lines
-				marker1:EdgeTo(marker2, nil, 10, 1, 1, 0, 0.5)
-			else--red lines
-				marker1:EdgeTo(marker2, nil, 10, 1, 0, 0, 0.5)
-			end
-		end
-		previousTarget = name
-	end
-	table.wipe(bladesTarget)--TODO, if this doesn't work well, move it to a new event
-end
-
-local function bondsHUD(self)
+local function bondsWarning(self)
 	local previousTarget = nil
 	for i = 1, #gatherTarget do
 		local name = gatherTarget[i]
 		if previousTarget then
 			if playerName == previousTarget then
-				local marker1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(209034, "party", previousTarget, 0.4, 25, nil, nil, nil, 0.5):Appear():SetLabel(previousTarget, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
-				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(209034, "party", name, 0.4, 25, nil, nil, nil, 0.5):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
-				marker2:EdgeTo(marker1, nil, 10, 0, 1, 0, 0.5)
 				specWarnBondsOfTerror:Show(name)
 				voiceBondsOfTerror:Play("linegather")
 			elseif playerName == name then
-				local marker1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(209034, "party", previousTarget, 0.4, 25, nil, nil, nil, 0.5):Appear():SetLabel(previousTarget, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
-				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(209034, "party", name, 0.4, 25, nil, nil, nil, 0.5):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
-				marker1:EdgeTo(marker2, nil, 10, 0, 1, 0, 0.5)
 				specWarnBondsOfTerror:Show(previousTarget)
 				voiceBondsOfTerror:Play("linegather")
 			end
@@ -225,9 +198,6 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	end
-	if self.Options.HudMapOnBlades or self.Options.HudMapOnBonds then
-		DBMHudMap:Disable()
 	end
 	self:UnregisterShortTermEvents()
 end
@@ -373,16 +343,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 211802 then
 		warnNightmareBlades:CombinedShow(0.5, args.destName)
-		if self.Options.HudMapOnBlades then
-			self:Unschedule(bladesHUD)
-			if not tContains(bladesTarget, args.destName) then
-				bladesTarget[#bladesTarget+1] = args.destName
-			end
-			if #bladesTarget == 2 then--Know it's 2 on heroic, mythic is unknown to fallback scheduling below
-				bladesHUD(self)
-			else
-				self:Schedule(1, bladesHUD, self)
-			end
+		if not tContains(bladesTarget, args.destName) then
+			bladesTarget[#bladesTarget+1] = args.destName
 		end
 		if args:IsPlayer() then
 			specWarnNightmareBlades:Show()
@@ -393,16 +355,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 209034 or spellId == 210451 then
 		warnBondsOfTerror:CombinedShow(0.5, args.destName)
-		if self.Options.HudMapOnBonds then
-			self:Unschedule(bondsHUD)
-			if not tContains(gatherTarget, args.destName) then
-				gatherTarget[#gatherTarget+1] = args.destName
-			end
-			if #gatherTarget == 2 then--Know it's 2 on heroic and normal, mythic unknown LFR assumed can't be more than normal/heroic.
-				bondsHUD(self)
-			else
-				self:Schedule(1, bondsHUD, self)
-			end
+		self:Unschedule(bondsWarning)
+		if not tContains(gatherTarget, args.destName) then
+			gatherTarget[#gatherTarget+1] = args.destName
+		end
+		if #gatherTarget == 2 then--Know it's 2 on heroic and normal, mythic unknown LFR assumed can't be more than normal/heroic.
+			bondsWarning(self)
+		else
+			self:Schedule(1, bondsWarning, self)
 		end
 	elseif spellId == 224508 then
 		if args:IsPlayer() then
@@ -457,9 +417,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 208431 and args:IsPlayer() then
 		yellDescentIntoMadness:Cancel()
 	elseif spellId == 211802 then
-		if self.Options.HudMapOnBlades then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
-		end
 		if self.Options.SetIconOnBlades then
 			self:SetIcon(args.destName, 0)
 		end
@@ -472,9 +429,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			updateRangeFrame(self)
 		end
 	elseif spellId == 209034 or spellId == 210451 then
-		if self.Options.HudMapOnBonds then
-			DBMHudMap:FreeEncounterMarkerByTarget(209034, args.destName)
-		end
 	elseif spellId == 224508 then
 		if args:IsPlayer() then
 			yellMeteor:Cancel()

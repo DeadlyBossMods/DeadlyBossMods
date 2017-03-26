@@ -188,7 +188,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnBonecageArmor then
-		DBM.Nameplate:Hide(true, nil, nil, nil, true, false, true)--Uses both hostile and friendly
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
 

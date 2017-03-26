@@ -40,14 +40,6 @@ L:SetWarningLocalization({
 	specWarnWebofPain	= "당신은 >%s<하고 연결됐습니다"--Only this needs localizing
 })
 
-L:SetOptionLocalization({
-	WebConfiguration	= "고통의 거미줄 HUD/화살표 설정",
-	Disabled			= "사용 안함",
-	Arrow				= "걸렸을 때 기존 방식의 화살표만 표시",
-	HudSelf				= "자신이 걸렸을 때만 HUD 연결 경로 표시",
-	HudAll				= "걸려있는 모든 대상에게 HUD 연결 경로 표시"
-})
-
 ---------------------------
 -- Ursoc --
 ---------------------------

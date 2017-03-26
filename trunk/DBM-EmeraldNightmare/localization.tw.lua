@@ -40,14 +40,6 @@ L:SetWarningLocalization({
 	specWarnWebofPain	= "你與>%s<連接了",--Only this needs localizing
 })
 
-L:SetOptionLocalization({
-	WebConfiguration	= "為痛苦蛛網設定HUD/箭頭選項",
-	Disabled			= "禁用",
-	Arrow				= "當你中招時只顯示傳統箭頭",
-	HudSelf				= "只有你中招時顯示HUD連線",
-	HudAll				= "為所有中招的目標顯示HUD連線"
-})
-
 ---------------------------
 -- Ursoc --
 ---------------------------

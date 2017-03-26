@@ -62,7 +62,6 @@ local voiceBigAdd					= mod:NewVoice(206700, "-Healer")
 local voiceSmallAdd					= mod:NewVoice(206699, "Tank")
 mod:AddRangeFrameOption(10, 206617)
 mod:AddInfoFrameOption(206610)
-mod:AddNamePlateOption("NPAuraOnTimeBomb", 206617)
 mod:AddDropdownOption("InfoFrameBehavior", {"TimeRelease", "TimeBomb"}, "TimeRelease", "misc")
 
 mod.vb.normCount = 0
@@ -98,9 +97,6 @@ function mod:OnCombatStart(delay)
 	self.vb.fastCount = 0
 	self.vb.slowCount = 0
 	self.vb.timeBombDebuffCount = 0
-	if self.Options.NPAuraOnTimeBomb then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
-	end
 	if self.Options.InfoFrame and self.Options.InfoFrameBehavior == "TimeRelease" then
 		local timeRelease = GetSpellInfo(206610)
 		DBM.InfoFrame:SetHeader(timeRelease)
@@ -114,9 +110,6 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
-	end
-	if self.Options.NPAuraOnTimeBomb then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 
@@ -155,9 +148,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.InfoFrame:SetHeader(args.spellName)
 			DBM.InfoFrame:Show(10, "playerdebuffremaining", args.spellName)
 		end
-		if self.Options.NPAuraOnTimeBomb then
-			DBM.Nameplate:Show(false, args.destName, spellId)
-		end
 	elseif spellId == 206607 then
 		local amount = args.amount or 1
 		warnChronometricPart:Show(args.destName, amount)
@@ -187,9 +177,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.InfoFrame and self.vb.timeBombDebuffCount == 0 and self.Options.InfoFrameBehavior == "TimeBomb" then
 			DBM.InfoFrame:Hide()
-		end
-		if self.Options.NPAuraOnTimeBomb then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
 		end
 	end
 end

@@ -112,9 +112,7 @@ mod:AddRangeFrameOption(8, 218807)
 mod:AddSetIconOption("SetIconOnFetter", 218304, true)
 mod:AddSetIconOption("SetIconOnCoN", 218807, true)
 mod:AddSetIconOption("SetIconOnNaturalist", "ej13684", true, true)
-mod:AddHudMapOption("HudMapOnCoN", 218807)
 mod:AddNamePlateOption("NPAuraOnFixate", 218342)
-mod:AddNamePlateOption("NPAuraOnCoN", 218809)
 
 mod.vb.CoNIcon = 1
 mod.vb.phase = 1
@@ -193,9 +191,6 @@ function mod:OnCombatStart(delay)
 		timerControlledChaosCD:Start(-delay)
 		countdownControlledChaos:Start()
 	end
-	if self.Options.NPAuraOnCoN then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
-	end
 	if self.Options.NPAuraOnFixate then
 		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
@@ -205,11 +200,8 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.HudMapOnCoN then
-		DBMHudMap:Disable()
-	end
-	if self.Options.NPAuraOnFixate or self.Options.NPAuraOnCoN then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true, true)
+	if self.Options.NPAuraOnFixate then
+		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 
@@ -347,13 +339,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCoN:CombinedShow(0.5, args.destName)
 		self.vb.CoNIcon = self.vb.CoNIcon + 1
 		local number = self.vb.CoNIcon
-		if self.Options.HudMapOnCoN then
-			if args:IsPlayer() then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(2188092, "party", UnitName("player"), 0.9, 1200, nil, nil, nil, 1, nil, false):Appear()
-			else
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 1200, nil, nil, nil, 0.5):Appear():RegisterForAlerts(nil, args.destName)
-			end
-		end
 		if args:IsPlayer() then
 			specWarnCoN:Show(self:IconNumToString(number))
 			yellCoN:Yell(self:IconNumToString(number), number, number)
@@ -365,9 +350,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnCoN then
 			self:SetIcon(args.destName, number)
-		end
-		if self.Options.NPAuraOnCoN then
-			DBM.Nameplate:Show(false, args.destName, spellId, nil, 45)
 		end
 	elseif spellId == 218503 then
 		local amount = args.amount or 1
@@ -523,22 +505,13 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 218809 then
-		if self.Options.HudMapOnCoN then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
-		end
 		if args:IsPlayer() then
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
-			if self.Options.HudMapOnCoN then
-				DBMHudMap:FreeEncounterMarkerByTarget(2188092, args.destName)
-			end
 		end
 		if self.Options.SetIconOnCoN then
 			self:SetIcon(args.destName, 0)
-		end
-		if self.Options.NPAuraOnCoN then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
 		end
 	elseif spellId == 218304 then
 		if self:AntiSpam(5, 2) and not UnitDebuff("player", args.spellName) then

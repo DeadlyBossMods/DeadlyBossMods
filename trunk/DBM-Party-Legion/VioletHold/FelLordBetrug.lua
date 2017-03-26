@@ -36,7 +36,6 @@ local voiceFelSlash				= mod:NewVoice(203641)--shockwave
 local voiceMightySmash			= mod:NewVoice(202328)--carefly
 local voiceSeedsofDestruction	= mod:NewVoice(210879)--Runout
 
-mod:AddHudMapOption("HudMapOnFelSlash", 203641)
 mod:AddSetIconOption("SetIconOnSeeds", 210879, true)
 
 function mod:SlashTarget(targetname, uId)
@@ -44,10 +43,6 @@ function mod:SlashTarget(targetname, uId)
 	warnFelSlash:Show(targetname)
 	if targetname == UnitName("player") then
 		yellFelSlash:Yell()
-	end
-	if self.Options.HudMapOnFelSlash then
-		--Static marker, boss doesn't move once a target is picked. it's aimed at static location player WAS
-		DBMHudMap:RegisterStaticMarkerOnPartyMember(203641, "highlight", targetname, 5, 2, 1, 0, 0, 0.5, nil, 1):Pulse(0.5, 0.5)
 	end
 end
 
@@ -57,12 +52,6 @@ function mod:OnCombatStart(delay)
 		timerSeedsCD:Start(17-delay)
 	end
 	timerMightySmashCD:Start(30-delay)
-end
-
-function mod:OnCombatEnd()
-	if self.Options.HudMapOnFelSlash then
-		DBMHudMap:Disable()
-	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)

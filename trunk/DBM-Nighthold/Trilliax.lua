@@ -144,7 +144,7 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 	if self.Options.NPAuraOnCleansing then
-		DBM.Nameplate:Hide(true, nil, nil, nil, true, false, true)
+		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
 
