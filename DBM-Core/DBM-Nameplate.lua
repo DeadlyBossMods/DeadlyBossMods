@@ -257,7 +257,8 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
     end
 end
 
-function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isFriendly, isHostile)
+--Friendly is still being kept around for world bosses, for now anyways, but args being swapped.
+function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, isFriendly)
     local currentTexture = texture or GetSpellTexture(spellId)
 
     if self:SupportedNPMod() then

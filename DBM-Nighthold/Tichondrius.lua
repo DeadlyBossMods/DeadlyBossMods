@@ -86,10 +86,7 @@ local voiceBurningSoul				= mod:NewVoice(216040)--runout
 
 mod:AddRangeFrameOption(8, 216040)
 mod:AddSetIconOption("SetIconOnBrandOfArgus", 212794, true)
-mod:AddNamePlateOption("NPAuraOnCarrionPlague", 206480)
 mod:AddInfoFrameOption(212794)
-mod:AddHudMapOption("HudMapOnSeeker", 213238)
-mod:AddBoolOption("HUDSeekerLines", true)--On by default for beta testing. Actual defaults for live subject to accuracy review.
 
 --With more data, the pattern gets distrupted later, but it's ALWAYS disrupted so multiple sequences needed to do it by phase (or just hard code ENTIRE sequence and not do it by phase?
 --Carrion Plague: pull:5.0, 25.0, 35.6, 24.4, 75.0, 25.5, 35.6, 26.9, 75.0, 25.6, 40.6, 20.5, 53.6, 25.6
@@ -199,9 +196,6 @@ function mod:OnCombatStart(delay)
 	else
 		berserkTimer:Start(523-delay)
 	end
-	if self.Options.NPAuraOnCarrionPlague then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
-	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false, true)
@@ -215,12 +209,6 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
-	end
-	if self.Options.HudMapOnSeeker then
-		DBMHudMap:Disable()
-	end
-	if self.Options.NPAuraOnCarrionPlague then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 
@@ -284,29 +272,6 @@ function mod:SPELL_CAST_START(args)
 		else
 			voiceSeekerSwarm:Play("farfromline")
 		end
-		--begin WIP experimental HUD stuff
-		if self:HasMapRestrictions() or not self.Options.HudMapOnSeeker then return end--Hud disabled, ignore rest of this code
-		DBMHudMap:RegisterRangeMarkerOnPartyMember(213238, "party", UnitName("player"), 0.7, 3, nil, nil, nil, 1, nil, false):Appear()--Create Player Dot
-		--Find boss tank if seeker lines enabled to determine approx boss location
-		--TODO, add drop down in options to let user select direction boss facing, then offset this dot
-		--TODO: Alternative, scan position of all melee in raid and find intersect point and assume that's boss location
-		local currentTank = self.Options.HUDSeekerLines and self:GetCurrentTank() or false
-		for uId in DBM:GetGroupMembers() do
-			if UnitDebuff(uId, carrionDebuff) then
-				local name = DBM:GetUnitFullName(uId)
-				if UnitIsUnit(uId, "player") then
-					--Player dot already created
-					if currentTank then--Create Line from current tank to seeker targets.
-						DBMHudMap:AddEdge(0, 1, 0, 0.5, 3, currentTank, name, nil, nil, nil, nil, 125)
-					end
-				else
-					DBMHudMap:RegisterRangeMarkerOnPartyMember(213238, "party", name, 0.35, 3, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -13, 8, nil)
-					if currentTank then--Create Line from current tank to seeker targets.
-						DBMHudMap:AddEdge(1, 0, 0, 0.5, 3, currentTank, name, nil, nil, nil, nil, 125)
-					end
-				end
-			end
-		end
 	elseif spellId == 213531 then
 		self.vb.echoesOfVoidCast = self.vb.echoesOfVoidCast + 1
 		specWarnEchoesOfVoid:Show(self.vb.echoesOfVoidCast)
@@ -342,15 +307,6 @@ function mod:SPELL_CAST_START(args)
 		countdownNightPhase:Start()
 		timerCarrionNightmare:Start(6, 1)
 		countdownCarrionNightmare:Start(6)
-		if self.Options.NPAuraOnCarrionPlague then
-			--Force kill them all going into this phase, even before debuffs are gone
-			for uId in DBM:GetGroupMembers() do
-				local Name = DBM:GetUnitFullName(uId)
-				if Name then
-					DBM.Nameplate:Hide(false, Name, 206480, 1029009)
-				end
-			end
-		end
 	elseif spellId == 216034 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnBlastNova:Show(args.sourceName)
 		voiceBlastNova:Play("kickcast")
@@ -413,9 +369,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCarrionPlague:Show()
 			voiceCarrionPlague:Play("scatter")
 		end
-		if self.Options.NPAuraOnCarrionPlague then
-			DBM.Nameplate:Show(false, args.destName, spellId)
-		end
 	elseif spellId == 212794 then
 		argusTargets[#argusTargets+1] = args.destName
 		self:Unschedule(breakMarks)
@@ -474,9 +427,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		DBM.RangeCheck:Hide()
 	elseif spellId == 206480 then
 		self.vb.CarrionPlagueCount = self.vb.CarrionPlagueCount - 1
-		if self.Options.NPAuraOnCarrionPlague then
-			DBM.Nameplate:Hide(false, args.destName, spellId, 1029009)
-		end
 	end
 end
 

@@ -58,10 +58,8 @@ local voiceBloodFrenzy				= mod:NewVoice(198388)
 local voiceRoaringCacophony			= mod:NewVoice(197969)--aesoon
 
 mod:AddSetIconOption("SetIconOnCharge", 198006, true)
-mod:AddHudMapOption("HudMapOnCharge", 198006)
 mod:AddInfoFrameOption(198108, false)
 mod:AddBoolOption("NoAutoSoaking2", true)
-mod:AddNamePlateOption("NPAuraOnCharge", 198006)
 
 mod.vb.roarCount = 0
 mod.vb.chargeCount = 0
@@ -97,15 +95,7 @@ do
 					specWarnFocusedGazeOther:Show(targetName)
 					if count == 2 then
 						voiceFocusedGaze:Play("sharetwo")
-						if self.Options.HudMapOnCharge then
-							--Blue line
-							DBMHudMap:AddEdge(0, 0, 1, 0.5, 6, playerName, targetName, nil, nil, nil, nil, 135)
-						end
 					else
-						if self.Options.HudMapOnCharge then
-							--Green line
-							DBMHudMap:AddEdge(0, 1, 0, 0.5, 6, playerName, targetName, nil, nil, nil, nil, 135)
-						end
 						voiceFocusedGaze:Play("shareone")
 					end
 				end
@@ -140,20 +130,11 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(GetSpellInfo(198108))
 		DBM.InfoFrame:Show(15, "reverseplayerbaddebuff", 198108)
 	end
-	if self.Options.NPAuraOnCharge then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
-	end
 end
 
 function mod:OnCombatEnd()
-	if self.Options.HudMapOnCharge then
-		DBMHudMap:Disable()
-	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
-	end
-	if self.Options.NPAuraOnCharge then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 
@@ -240,18 +221,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnCharge then
 			self:SetIcon(args.destName, icon)
 		end
-		if self.Options.HudMapOnCharge then
-			if args:IsPlayer() then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 8, nil, nil, nil, 0.5):Appear():SetLabel(args.destName)
-			else
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 8, 8, nil, nil, nil, 0.5):Appear():RegisterForAlerts(nil, args.destName)
-			end
-		end
 		if not self.Options.NoAutoSoaking2 then
 			GenerateSoakAssignment(self, secondCount, args.destName)
-		end
-		if self.Options.NPAuraOnCharge then
-			DBM.Nameplate:Show(false, args.destName, spellId)
 		end
 	elseif spellId == 197943 then
 		warnOverwhelm:Show(args.destName, args.amount or 1)
@@ -282,12 +253,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 198006 then
 		if self.Options.SetIconOnCharge then
 			self:SetIcon(args.destName, 0)
-		end
-		if self.Options.HudMapOnCharge then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
-		end
-		if self.Options.NPAuraOnCharge then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
 		end
 	end
 end

@@ -37,7 +37,6 @@ local voiceMandibleStrike			= mod:NewVoice(202217, "Tank")--defensive
 local voiceImpale					= mod:NewVoice(202341)--runout
 local voiceOozeGTFO					= mod:NewVoice(202485)--runaway
 
-mod:AddHudMapOption("HudMapOnImpale", 202341)
 --mod:AddRangeFrameOption(5, 153396)
 
 local bugsSeen = {}
@@ -51,9 +50,6 @@ function mod:ImpaleTarget(targetname, uId)
 	else
 		warnImpale:Show(targetname)
 	end
-	if self.Options.HudMapOnImpale then
-		DBMHudMap:RegisterRangeMarkerOnPartyMember(154989, "highlight", targetname, 5, 4, 1, 0, 0, 0.5, nil, 1):Pulse(0.5, 0.5)
-	end
 end
 
 function mod:OnCombatStart(delay)
@@ -63,12 +59,6 @@ function mod:OnCombatStart(delay)
 	timerSwarmCD:Start(30-delay)
 	if not self:IsNormal() then
 		timerFixateCD:Start(35.5-delay)
-	end
-end
-
-function mod:OnCombatEnd()
-	if self.Options.HudMapOnImpale then
-		DBMHudMap:Disable()
 	end
 end
 

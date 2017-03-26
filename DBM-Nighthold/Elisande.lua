@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 209615 209244 209973 209598 211261 232974",
 	"SPELL_AURA_REFRESH 209973",
 	"SPELL_AURA_APPLIED_DOSE 209615 209973",
-	"SPELL_AURA_REMOVED 209973 209598 209244",
+	"SPELL_AURA_REMOVED 209973 209598",
 	"SPELL_PERIODIC_DAMAGE 209433",
 	"SPELL_PERIODIC_MISSED 209433",
 	"PARTY_KILL",
@@ -136,8 +136,6 @@ local voiceAblativePulse			= mod:NewVoice(209971, "Tank", nil, 2)--kickcast
 mod:AddRangeFrameOption(8, 209973)
 mod:AddInfoFrameOption(209598)
 mod:AddSetIconOption("SetIconOnConflexiveBurst", 209598)
-mod:AddHudMapOption("HudMapOnDelphuricBeam", 214278)
-mod:AddNamePlateOption("NPAuraOnBeam", 214278, false)
 
 --Exists in phases 1-3
 local slowElementalTimers = {5, 49, 52, 60}--Heroic Jan 18
@@ -171,7 +169,6 @@ local mythicBurstTimers = {48, 90, 45, 30}--Mythic Feb 5
 local TormentTimers = {33, 61, 37, 60}--Heroic Jan 21
 local normalTormentTimers = {33, 41}--Normal Feb 2
 local mythicTormentTimers = {74, 75, 25, 20}--Mythic Feb 5
-local currentTank, tankUnitID = nil, nil--not recoverable on purpose
 mod.vb.firstElementals = false
 mod.vb.slowElementalCount = 0
 mod.vb.fastElementalCount = 0
@@ -190,22 +187,8 @@ mod.vb.transitionActive = false
 mod.vb.totalRingCasts = 0
 mod.vb.totalbeamCasts = 0
 mod.vb.totalsingularityCasts = 0
-mod.vb.pos1X, mod.vb.pos1Y = nil, nil
-mod.vb.pos2X, mod.vb.pos2Y = nil, nil
-mod.vb.pos3X, mod.vb.pos3Y = nil, nil
-mod.vb.pos4X, mod.vb.pos4Y = nil, nil
-mod.vb.pos5X, mod.vb.pos5Y = nil, nil
-mod.vb.pos6X, mod.vb.pos6Y = nil, nil
-mod.vb.pos7X, mod.vb.pos7Y = nil, nil
-
-local function checkPlayerDot(self, spellName)
-	if not UnitDebuff("player", spellName) then
- 		DBMHudMap:RegisterRangeMarkerOnPartyMember(209244, "party", UnitName("player"), 0.7, 3, nil, nil, nil, 1, nil, false):Appear()--Create Player Dot
-	end
-end
 
 function mod:OnCombatStart(delay)
-	currentTank, tankUnitID = nil, nil
 	--self.vb.firstElementals = false
 	self.vb.slowElementalCount = 0
 	self.vb.fastElementalCount = 0
@@ -220,13 +203,6 @@ function mod:OnCombatStart(delay)
 	self.vb.totalRingCasts = 0
 	self.vb.totalbeamCasts = 0
 	self.vb.totalsingularityCasts = 0
-	self.vb.pos1X, self.vb.pos1Y = nil, nil
-	self.vb.pos2X, self.vb.pos2Y = nil, nil
-	self.vb.pos3X, self.vb.pos3Y = nil, nil
-	self.vb.pos4X, self.vb.pos4Y = nil, nil
-	self.vb.pos5X, self.vb.pos5Y = nil, nil
-	self.vb.pos6X, self.vb.pos6Y = nil, nil
-	self.vb.pos7X, self.vb.pos7Y = nil, nil
 	timerLeaveNightwell:Start(4-delay)
 	timerTimeElementalsCD:Start(5-delay, SLOW)
 	timerTimeElementalsCD:Start(8-delay, FAST)
@@ -241,23 +217,14 @@ function mod:OnCombatStart(delay)
 		timerArcaneticRing:Start(34-delay, 1)
 		countdownArcaneticRing:Start(34-delay)
 	end
-	if self.Options.NPAuraOnBeam then
-		DBM:FireEvent("BossMod_EnableFriendlyNameplates")
-	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.HudMapOnDelphuricBeam then
-		DBMHudMap:Disable()
-	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
-	end
-	if self.Options.NPAuraOnBeam then
-		DBM.Nameplate:Hide(false, nil, nil, nil, true, true)
 	end
 end
 
@@ -328,29 +295,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local nextCount = self.vb.beamCastCount + 1
 		if self.vb.phase == 2 then
 			self.vb.totalbeamCasts = self.vb.totalbeamCasts + 1
-			if not self:HasMapRestrictions() then
-				currentTank, tankUnitID = self:GetCurrentTank()
-				if not currentTank then
-					DBM:Debug("Tank Detection Failure in HudMapOnDelphuricBeam", 2)
-					return
-				end
-				--Yes this could be in a table and be far prettier, but being ugly like this makes it recoverable by dbms timer recovery feature
-				if self.vb.beamCastCount == 1 then
-					self.vb.pos1X, self.vb.pos1Y = UnitPosition(tankUnitID)
-				elseif self.vb.beamCastCount == 2 then
-					self.vb.pos2X, self.vb.pos2Y = UnitPosition(tankUnitID)
-				elseif self.vb.beamCastCount == 3 then
-					self.vb.pos3X, self.vb.pos3Y = UnitPosition(tankUnitID)
-				elseif self.vb.beamCastCount == 4 then
-					self.vb.pos4X, self.vb.pos4Y = UnitPosition(tankUnitID)
-				elseif self.vb.beamCastCount == 5 then
-					self.vb.pos5X, self.vb.pos5Y = UnitPosition(tankUnitID)
-				elseif self.vb.beamCastCount == 6 then
-					self.vb.pos6X, self.vb.pos6Y = UnitPosition(tankUnitID)
-				elseif self.vb.beamCastCount == 7 then
-					self.vb.pos7X, self.vb.pos7Y = UnitPosition(tankUnitID)
-				end
-			end
 		else
 			if nextCount > self.vb.totalbeamCasts then return end
 		end
@@ -396,49 +340,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDelphuricBeam:Show()
 			voiceDelphuricBeam:Play("targetyou")
 			yellDelphuricBeam:Yell()
-		end
-		if self.Options.NPAuraOnBeam then
-			DBM.Nameplate:Show(false, args.destName, spellId)
-		end
-		--TODO, phase 3 lines need exact location of the echo ( map coords )
-		if self.Options.HudMapOnDelphuricBeam and not self:HasMapRestrictions() then
-			self:Unschedule(checkPlayerDot)
-			self:Schedule(0.3, checkPlayerDot, self, args.spellName)--Give player just a dot if they don't end up with debuff
-			--Always put dots up
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(213166, "party", args.destName, 0.35, 5, nil, nil, nil, 0.5, nil, false):Appear():SetLabel(args.destName, nil, nil, nil, nil, nil, 0.8, nil, -13, 8, nil)
-			--Now attempt to do lines to best of ability using tanks position as an approximation to boss position
-			if self.vb.phase == 2 then--use current tanks current position
-				if not currentTank then return end
-				if args:IsPlayer() then--Yellow Line
-					DBMHudMap:AddEdge(1, 1, 0, 0.5, 4, currentTank, args.destName, nil, nil, nil, nil, 125)
-				else--Red Line
-					DBMHudMap:AddEdge(1, 0, 0, 0.5, 4, currentTank, args.destName, nil, nil, nil, nil, 125)
-				end
-			else--Echos, pull saved coords
-				--Yes this could be in a table and be far prettier, but being ugly like this makes it recoverable by dbms timer recovery feature
-				local EchoX, EchoY
-				if self.vb.beamCastCount == 1 then
-					EchoX, EchoY = self.vb.pos1X, self.vb.pos1Y
-				elseif self.vb.beamCastCount == 2 then
-					EchoX, EchoY = self.vb.pos2X, self.vb.pos2Y
-				elseif self.vb.beamCastCount == 3 then
-					EchoX, EchoY = self.vb.pos3X, self.vb.pos3Y
-				elseif self.vb.beamCastCount == 4 then
-					EchoX, EchoY = self.vb.pos4X, self.vb.pos4Y
-				elseif self.vb.beamCastCount == 5 then
-					EchoX, EchoY = self.vb.pos5X, self.vb.pos5Y
-				elseif self.vb.beamCastCount == 6 then
-					EchoX, EchoY = self.vb.pos6X, self.vb.pos6Y
-				elseif self.vb.beamCastCount == 7 then
-					EchoX, EchoY = self.vb.pos7X, self.vb.pos7Y
-				end
-				if not EchoX or not EchoY then return end
-				if args:IsPlayer() then--Yellow Line
-					DBMHudMap:AddEdge(1, 1, 0, 0.5, 4, nil, args.destName, EchoX, EchoY, nil, nil, 125)
-				else--Red Line
-					DBMHudMap:AddEdge(1, 0, 0, 0.5, 4, nil, args.destName, EchoX, EchoY, nil, nil, 125)
-				end
-			end
 		end
 	elseif spellId == 209973 then
 		warnAblatingExplosion:Show(args.destName)
@@ -497,10 +398,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.InfoFrame and self.vb.burstDebuffCount == 0 then
 			DBM.InfoFrame:Hide()
-		end
-	elseif spellId == 209244 then
-		if self.Options.NPAuraOnBeam then
-			DBM.Nameplate:Hide(false, args.destName, spellId)
 		end
 	end
 end

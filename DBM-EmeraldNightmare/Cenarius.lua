@@ -90,7 +90,6 @@ local voiceScornedTouch				= mod:NewVoice(211471)--runout
 
 mod:AddRangeFrameOption(8, 211471)
 mod:AddSetIconOption("SetIconOnWisps", "ej13348", false, true)
-mod:AddHudMapOption("HudMapOnBreath", 211192)
 mod:AddInfoFrameOption(210279)
 
 mod.vb.phase = 1
@@ -104,10 +103,6 @@ function mod:BreathTarget(targetname, uId)
 	warnRottenBreath:Show(targetname)
 	if targetname == UnitName("player") then
 		yellRottenBreath:Yell()
-	end
-	if self.Options.HudMapOnBreath then
-		--Static marker, breath doesn't move once a target is picked. it's aimed at static location player WAS
-		DBMHudMap:RegisterStaticMarkerOnPartyMember(211192, "highlight", targetname, 5, 5.5, 1, 0, 0, 0.5, nil, 1):Pulse(0.5, 0.5)
 	end
 end
 
@@ -139,9 +134,6 @@ function mod:OnCombatEnd()
 	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	end
-	if self.Options.HudMapOnBreath then
-		DBMHudMap:Disable()
 	end
 	--DBM:AddMsg(L.BrambleMessage)
 	if self.Options.InfoFrame then
