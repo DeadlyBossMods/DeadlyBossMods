@@ -2845,6 +2845,7 @@ do
 	end
 
 	function DBM:GetUnitFullName(uId)
+		if not uId then return nil end
 		return GetUnitName(uId, true)
 	end
 
