@@ -28,8 +28,6 @@ local voiceFragment				= mod:NewVoice(194327, "Dps")--mobkill
 local voiceServitor				= mod:NewVoice(194231, "-Healer")--bigmob
 local voiceVoidSnap				= mod:NewVoice(194266, "HasInterrupt")--kickcast
 
---mod:AddRangeFrameOption(5, 153396)
-
 function mod:OnCombatStart(delay)
 	timerServitorCD:Start(7-delay)
 	timerFragmentCD:Start(19-delay)

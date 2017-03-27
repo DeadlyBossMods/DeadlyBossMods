@@ -31,8 +31,6 @@ local timerNightfallCD			= mod:NewCDTimer(14.5, 198401, nil, nil, nil, 3)
 local voiceNightFall			= mod:NewVoice(198408)--runaway
 local voiceRampage				= mod:NewVoice(198379, "Tank")--defensive
 
---mod:AddRangeFrameOption(5, 153396)
-
 function mod:LeapTarget(targetname, uId)
 	if not targetname then
 		warnLeap:Show(DBM_CORE_UNKNOWN)

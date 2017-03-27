@@ -37,8 +37,6 @@ local voiceMandibleStrike			= mod:NewVoice(202217, "Tank")--defensive
 local voiceImpale					= mod:NewVoice(202341)--runout
 local voiceOozeGTFO					= mod:NewVoice(202485)--runaway
 
---mod:AddRangeFrameOption(5, 153396)
-
 local bugsSeen = {}
 
 function mod:ImpaleTarget(targetname, uId)

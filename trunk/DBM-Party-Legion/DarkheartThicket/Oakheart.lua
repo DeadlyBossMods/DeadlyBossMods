@@ -29,8 +29,6 @@ local countdownThrow				= mod:NewCountdown("Alt28", 204658, "Tank")
 local voiceRoots					= mod:NewVoice(204574)--watchstep
 local voiceBreath					= mod:NewVoice(204667, "Tank")--Defensive
 
---mod:AddRangeFrameOption(5, 153396)
-
 --AKA Crushing Grip
 function mod:ThrowTarget(targetname, uId)
 	if not targetname then
