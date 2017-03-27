@@ -32,8 +32,6 @@ local timerToxicRetchCD				= mod:NewCDTimer(14.3, 210150, nil, false, nil, 3)--N
 local voiceAdds						= mod:NewVoice(199817, "Dps")--mobsoon
 local voiceSpikedTongue				= mod:NewVoice(199176)--runout/keepmove
 
---mod:AddRangeFrameOption(5, 153396)
-
 function mod:OnCombatStart(delay)
 	timerAddsCD:Start(5.5-delay)
 	timerRancidMawCD:Start(7.3-delay)

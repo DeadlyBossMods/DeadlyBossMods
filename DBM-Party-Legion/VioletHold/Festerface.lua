@@ -29,8 +29,6 @@ local voiceOozes					= mod:NewVoice("ej12646")--mobsoon
 local voiceBlackBile				= mod:NewVoice("ej12651")--mobsoon (maybe use a diff one?)
 local voiceOozeGTFO					= mod:NewVoice(202266)--runaway
 
---mod:AddRangeFrameOption(5, 153396)
-
 function mod:OnCombatStart(delay)
 --	timerOozesCD:Start(3.7-delay)--Too variable on pull, 3-6, pretty much right away anyways so no need for timer
 end
