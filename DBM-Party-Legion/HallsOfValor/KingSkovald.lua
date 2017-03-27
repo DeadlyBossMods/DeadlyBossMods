@@ -35,8 +35,6 @@ local voiceSavageBlade				= mod:NewVoice(193668, "Tank")--defensive
 local voiceRagnarok					= mod:NewVoice(193826)--findshield
 local voiceFlames					= mod:NewVoice(193702)--runaway
 
---mod:AddRangeFrameOption(5, 153396)
-
 function mod:FelblazeRushTarget(targetname, uId)
 	if not targetname then return end
 	warnFelblazeRush:Show(targetname)

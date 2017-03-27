@@ -30,8 +30,6 @@ local voiceMindControl				= mod:NewVoice(238484)--findmc
 local voicePulvCrudgel				= mod:NewVoice(237276)--runout
 local voiceScornfulGaze				= mod:NewVoice(237726)--findshelter
 
---mod:AddRangeFrameOption(5, 153396)
-
 local book = GetSpellInfo(230940)
 
 function mod:OnCombatStart(delay)

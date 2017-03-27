@@ -44,7 +44,7 @@ local voiceExpelLight				= mod:NewVoice(192048)--runout
 local voiceSearingLight				= mod:NewVoice(192288, "HasInterrupt")--kickcast
 local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
-mod:AddRangeFrameOption(8, 153396)
+mod:AddRangeFrameOption(8, 192048)
 
 local eyeShortName = GetSpellInfo(91320)--Inner Eye
 mod.vb.phase = 1
