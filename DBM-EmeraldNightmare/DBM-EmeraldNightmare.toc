@@ -1,4 +1,4 @@
-﻿## Interface: 70100
+﻿## Interface: 70200
 ## X-Min-Interface: 70000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Emerald Nightmare|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Der Smaragdgrüne Alptraum|r
