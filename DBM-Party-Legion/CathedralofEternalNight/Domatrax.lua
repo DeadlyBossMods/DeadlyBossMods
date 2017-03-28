@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(1904, "DBM-Party-Legion", 12, 900)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(119542)
+mod:SetCreatureID(119542)--119883 Fel Portal Guardian
 mod:SetEncounterID(2053)
 mod:SetZone()
 --mod:SetHotfixNoticeRev(15186)
@@ -11,17 +11,19 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 236543 234107",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_START 236543 234107 241622"
 )
 
---local warnStrikeofMountain			= mod:NewTargetAnnounce(216290, 2)
+--TODO< approaching doom, once know who casting source is and whether it can be canceled properly
+--TODO, other warnings? portal spawns/phases?
+local warnApproachingDoom			= mod:NewCastAnnounce(241622, 2)
 
 local specWarnFelsoulCleave			= mod:NewSpecialWarningSpell(236543, "Tank", nil, nil, 1, 2)
 local specWarnChaoticEnergy			= mod:NewSpecialWarningMoveTo(234107, nil, nil, nil, 2, 2)
 
 local timerFelsoulCleaveCD			= mod:NewAITimer(7.5, 236543, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerChaoticEnergyCD			= mod:NewAITimer(7.5, 234107, nil, nil, nil, 2)
+--local timerApproachingDoom			= mod:NewCastTimer(20, 241622, nil, nil, nil, 1)
 
 local voiceFelsoulCleave			= mod:NewVoice(236543)--shockwave (review)
 local voiceChaoticEnergy			= mod:NewVoice(234107)--findshield
@@ -45,13 +47,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnChaoticEnergy:Show(shield)
 		voiceChaoticEnergy:Play("findshield")
 		timerChaoticEnergyCD:Start()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	local spellId = args.spellId
-	if spellId == 216290 then
-
+	elseif spellId == 241622 then
+		warnApproachingDoom:Show()
+		--timerApproachingDoom
 	end
 end
 
