@@ -34,7 +34,7 @@ local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 
 local specWarnReverbShadows			= mod:NewSpecialWarningInterruptCount(229307, "HasInterrupt", nil, nil, 1, 3)
 local specWarnCharredEarth			= mod:NewSpecialWarningMove(228808, nil, nil, nil, 1, 2)
-local specWarnIgniteSoul			= mod:NewSpecialWarningMoveTo(228796, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(228796), nil, 3, 2)
+local specWarnIgniteSoul			= mod:NewSpecialWarningMoveTo(228796, nil, nil, nil, 3, 2)
 local yellIgniteSoul				= mod:NewFadesYell(228796)
 local specWarnFear					= mod:NewSpecialWarningSpell(228837, nil, nil, nil, 2, 2)
 

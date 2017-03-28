@@ -95,12 +95,12 @@ local yellParasiticWound			= mod:NewYell(206847)
 local yellParasiticWoundFades		= mod:NewFadesYell(206847)
 local specWarnShearedSoul			= mod:NewSpecialWarningYou(206458, nil, nil, nil, 1, 2)
 local specWarnSoulsever				= mod:NewSpecialWarningCount(220957, nil, nil, nil, 3)--Needs voice, but what?
-local specWarnVisionsofDarkTitan	= mod:NewSpecialWarningMoveTo(227008, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(227008), nil, 3, 7)
+local specWarnVisionsofDarkTitan	= mod:NewSpecialWarningMoveTo(227008, nil, nil, nil, 3, 7)
 local specWarnSummonNightorb		= mod:NewSpecialWarningSwitchCount(227283, "-Healer", nil, nil, 1, 2)
 --Shard
 local specWarnManifestAzzinoth		= mod:NewSpecialWarningSwitch(221149, "-Healer", nil, nil, 1, 2)
 local specWarnBulwarkofAzzinoth		= mod:NewSpecialWarningSpell(221408, nil, nil, nil, 1)--Needs voice, but what?
-local specWarnPurifiedEssence		= mod:NewSpecialWarningMoveTo(221486, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(221486), nil, 3, 7)
+local specWarnPurifiedEssence		= mod:NewSpecialWarningMoveTo(221486, nil, nil, nil, 3, 7)
 
 --Stage One: The Council of Elders
 ----Gul'dan

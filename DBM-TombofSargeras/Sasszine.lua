@@ -57,7 +57,7 @@ local specWarnFromtheAbyss			= mod:NewSpecialWarningSwitch(230227, "-Healer", ni
 local specWarnSlicingTornado		= mod:NewSpecialWarningDodge(232722, nil, nil, nil, 2, 2)
 local specWarnThunderingShock		= mod:NewSpecialWarningDodge(230362, nil, nil, nil, 2, 7)
 local specWarnThunderingShockDispel	= mod:NewSpecialWarningDispel(230362, "Healer", nil, nil, 1, 2)
-local specWarnConsumingHunger		= mod:NewSpecialWarningMoveTo(230384, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(230920), nil, 1, 7)
+local specWarnConsumingHunger		= mod:NewSpecialWarningMoveTo(230384, nil, nil, nil, 1, 7)
 --Stage Two: Terrors of the Deep
 local specWarnDevouringMaw			= mod:NewSpecialWarningSpell(232745, nil, nil, nil, 2, 7)
 local specWarnCrashingWave			= mod:NewSpecialWarningDodge(232827, nil, nil, nil, 3, 2)

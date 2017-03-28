@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 local warnImpalingSpear				= mod:NewTargetAnnounce(192094, 4)
 
 local specWarnReinforcements		= mod:NewSpecialWarningSwitch(196563, "Tank", nil, nil, 1, 2)
-local specWarnImpalingSpear			= mod:NewSpecialWarningMoveTo(192094, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(192094), nil, 3, 6)
+local specWarnImpalingSpear			= mod:NewSpecialWarningMoveTo(192094, nil, nil, nil, 3, 6)
 local yellImpalingSpear				= mod:NewYell(192094)
 local specWarnRestoration			= mod:NewSpecialWarningInterrupt(197502, "HasInterrupt", nil, nil, 1, 2)
 
