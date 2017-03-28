@@ -20,7 +20,7 @@ local warnScornfulGaze				= mod:NewTargetAnnounce(237726, 4, nil, false)
 
 local specWarnPulvCrudgel			= mod:NewSpecialWarningRun(237276, "Melee", nil, nil, 4, 2)
 local specWarnMindControl			= mod:NewSpecialWarningSwitchCount(238484, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(238484), nil, 1, 2)
-local specWarnScornfulGaze			= mod:NewSpecialWarningMoveTo(237726, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(237726), nil, 3, 2)
+local specWarnScornfulGaze			= mod:NewSpecialWarningMoveTo(237726, nil, nil, nil, 3, 2)
 local yellScornfulGaze				= mod:NewYell(237726)
 
 local timerPulvCrudgelCD			= mod:NewAITimer(55, 237276, nil, nil, nil, 2, nil, DBM_CORE_TANK_ICON)

@@ -98,12 +98,12 @@ local timerWorldDevouringForceCD	= mod:NewCDCountTimer(42, 216909, nil, nil, nil
 local timerThingCD					= mod:NewCDTimer(63, "ej13057", 207813, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerConjunctionCD			= mod:NewCDCountTimer(16, 205408, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
-local timerConjunction				= mod:NewBuffFadesTimer(10, 207720, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
+local timerConjunction				= mod:NewBuffFadesTimer(15, 207720, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 
 local berserkTimer					= mod:NewBerserkTimer(463)
 
 --Base abilities
-local countdownConjunction			= mod:NewCountdownFades("AltTwo10", 205408, nil, nil, 10)
+local countdownConjunction			= mod:NewCountdownFades("AltTwo15", 205408, nil, nil, 10)
 local countdownGravPull				= mod:NewCountdownFades("Alt10", 205984)--Maybe change to everyone if it works like I think
 --Stage One: The Dome of Observation
 --Stage Two: Absolute Zero
