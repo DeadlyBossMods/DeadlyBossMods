@@ -8,7 +8,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START 209027 212031 209485 209410 209413 211470 211464 209404 209495 225100 211299",
+	"SPELL_CAST_START 209027 212031 209485 209410 209413 211470 211464 209404 209495 225100 211299 209378",
 	"SPELL_AURA_APPLIED 209033 209512",
 	"GOSSIP_SHOW"
 )
@@ -27,6 +27,7 @@ local specWarnSearingGlare			= mod:NewSpecialWarningInterrupt(211299, "HasInterr
 local specWarnFelDetonation			= mod:NewSpecialWarningSpell(211464, false, nil, 2, 2, 2)
 local specWarnSealMagic				= mod:NewSpecialWarningRun(209404, false, nil, 2, 4, 2)
 local specWarnDisruptingEnergy		= mod:NewSpecialWarningMove(209512, nil, nil, nil, 1, 2)
+local specWarnWhirlingBlades		= mod:NewSpecialWarningRun(209378, "Melee", nil, nil, 4, 2)
 
 local voiceFortification			= mod:NewVoice(209033, "MagicDispeller")--dispelnow
 local voiceQuellingStrike			= mod:NewVoice(209027, "Tank")--shockwave
@@ -41,6 +42,7 @@ local voiceSearingGlare				= mod:NewVoice(211299, "HasInterrupt")--kickcast
 local voiceFelDetonation			= mod:NewVoice(211464, false, nil, 2)--aesoon
 local voiceSealMagic				= mod:NewVoice(209404, false, nil, 2)--runout
 local voiceDisruptingEnergy			= mod:NewVoice(209512)--runaway
+local voiceWhirlingBlades			= mod:NewVoice(209378, "Melee")--runout
 
 mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("SpyHelper", true)
@@ -82,6 +84,9 @@ function mod:SPELL_CAST_START(args)
 		--Don't want to move too early, just be moving already as cast is finishing
 		specWarnChargedSmash:Schedule(1.2)
 		voiceChargedSmash:Schedule(1.2, "chargemove")
+	elseif spellId == 209378 then
+		specWarnWhirlingBlades:Show()
+		voiceWhirlingBlades:Play("runout")
 	end
 end
 
