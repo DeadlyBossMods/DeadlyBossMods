@@ -73,6 +73,7 @@ local specWarnWorldDevouringForce	= mod:NewSpecialWarningDodge(216909, nil, nil,
 --Mythic
 local specWarnConjunction			= mod:NewSpecialWarningMoveAway(205408, nil, nil, nil, 3, 2)
 local specWarnConjunctionSign		= mod:NewSpecialWarningYouPos(205408, nil, nil, nil, 1, 6)
+local yellConjunctionSign			= mod:NewPosYell(205408, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 
 
 --Base abilities
@@ -430,6 +431,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			crabs[#crabs + 1] = args.destName
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
+				yellConjunctionSign:Yell(2, "", 2)--Orange Circle
 				voiceConjunction:Play("205408c")
 				countdownConjunction:Start()
 				timerConjunction:Start()
@@ -439,6 +441,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			dragons[#dragons + 1] = args.destName
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
+				yellConjunctionSign:Yell(6, "", 6)--Blue Square
 				voiceConjunction:Play("205408d")
 				countdownConjunction:Start()
 				timerConjunction:Start()
@@ -448,6 +451,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			hunters[#hunters + 1] = args.destName
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
+				yellConjunctionSign:Yell(4, "", 4)--Green Triangle
 				voiceConjunction:Play("205408h")
 				countdownConjunction:Start()
 				timerConjunction:Start()
@@ -457,6 +461,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			wolves[#wolves + 1] = args.destName
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
+				yellConjunctionSign:Yell(7, "", 7)--Red Cross
 				voiceConjunction:Play("205408w")
 				countdownConjunction:Start()
 				timerConjunction:Start()
