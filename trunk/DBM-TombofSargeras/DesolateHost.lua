@@ -65,7 +65,7 @@ local specWarnTormentingCries		= mod:NewSpecialWarningYou(238018, nil, nil, nil,
 local specWarnSoulbind				= mod:NewSpecialWarningYou(236459, nil, nil, nil, 3, 2)
 local yellSoulbind					= mod:NewYell(236459)
 local specWarnWither				= mod:NewSpecialWarningYou(236138, nil, nil, nil, 1, 7)
-local specWarnShatteringScream		= mod:NewSpecialWarningMoveTo(235969, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(235969), nil, 3, 2)
+local specWarnShatteringScream		= mod:NewSpecialWarningMoveTo(235969, nil, nil, nil, 3, 2)
 local specWarnWailingSouls			= mod:NewSpecialWarningCount(236072, nil, nil, nil, 2, 2)
 --The Desolate Host
 local specWarnSunderingDoomGather	= mod:NewSpecialWarningMoveTo(236542, nil, nil, nil, 1, 2)

@@ -66,7 +66,7 @@ local specWarnMalignantAnguish		= mod:NewSpecialWarningInterrupt(236597, "HasInt
 --Intermission: Deceiver's Veil
 
 --Stage Three: Darkness of A Thousand Souls
-local specWarnDarknessofSouls		= mod:NewSpecialWarningMoveTo(238999, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(238999), nil, 3, 2)
+local specWarnDarknessofSouls		= mod:NewSpecialWarningMoveTo(238999, nil, nil, nil, 3, 2)
 local specWarnFlamingOrbSpawn		= mod:NewSpecialWarningSpell(239253, nil, nil, nil, 1, 2)--Spawn warning (todo, another warning for fixate target if possible)
 
 --Stage One: The Betrayer

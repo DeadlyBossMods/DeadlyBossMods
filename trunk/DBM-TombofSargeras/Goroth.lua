@@ -34,14 +34,14 @@ local warnInfernalSpike					= mod:NewSpellAnnounce(233055, 1)
 local warnShatteringStar				= mod:NewTargetAnnounce(233272, 3)
 local warnCrashingComet					= mod:NewTargetAnnounce(232249, 4)
 
-local specWarnInfernalBurning			= mod:NewSpecialWarningMoveTo(233062, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge:format(233062), nil, 3, 2)
-local specWarnShatteringStar			= mod:NewSpecialWarningMoveTo(233272, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway:format(233272), nil, 3, 2)
+local specWarnInfernalBurning			= mod:NewSpecialWarningMoveTo(233062, nil, nil, nil, 3, 2)
+local specWarnShatteringStar			= mod:NewSpecialWarningMoveTo(233272, nil, nil, nil, 3, 2)
 local yellShatteringStar				= mod:NewFadesYell(233272)
 local specWarnCrashingComet				= mod:NewSpecialWarningMoveAway(232249, nil, nil, nil, 3, 2)
 local yellCrashingComet					= mod:NewFadesYell(232249)
 local specWarnBurningArmor				= mod:NewSpecialWarningMoveAway(231363, nil, nil, nil, 3, 2)
 local specWarnBurningArmorTaunt			= mod:NewSpecialWarningTaunt(231363, nil, nil, nil, 1, 2)
-local specWarnRainofBrimstone			= mod:NewSpecialWarningMoveTo(238587, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(238587), nil, 1, 6)
+local specWarnRainofBrimstone			= mod:NewSpecialWarningMoveTo(238587, nil, nil, nil, 1, 6)
 
 local timerComboWamboCD					= mod:NewTimer(14, "timerComboWamboCD", 232249, nil, nil, 3)--Comet/Spike combined timer.
 local timerInfernalBurningCD			= mod:NewNextTimer(59.9, 233062, nil, nil, nil, 2)
