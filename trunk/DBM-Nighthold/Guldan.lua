@@ -510,14 +510,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.flamesSargCast = self.vb.flamesSargCast + 1
 		if self:IsMythic() then
 			timerFlamesofSargerasCD:Start(6.3, (self.vb.flamesSargCast).."-"..2)
-			timerFlamesofSargerasCD:Start(7.3, (self.vb.flamesSargCast).."-"..3)
+			timerFlamesofSargerasCD:Start(13.6, (self.vb.flamesSargCast).."-"..3)
 			timerFlamesofSargerasCD:Start(45, (self.vb.flamesSargCast+1).."-"..1)
 			if self.vb.flamesSargCast == 2 then
 				timerWindsCD:Start(31, 2)
 			end
 		elseif self:IsHeroic() then
 			timerFlamesofSargerasCD:Start(7.7, (self.vb.flamesSargCast).."-"..2)
-			timerFlamesofSargerasCD:Start(8.7, (self.vb.flamesSargCast).."-"..3)
+			timerFlamesofSargerasCD:Start(16.4, (self.vb.flamesSargCast).."-"..3)
 			timerFlamesofSargerasCD:Start(50, (self.vb.flamesSargCast+1).."-"..1)--5-6 is 50, 1-5 is 51. For time being using a simple 50 timer
 		else--Normal, LFR?
 			timerFlamesofSargerasCD:Start(18.9, (self.vb.flamesSargCast).."-"..2)
