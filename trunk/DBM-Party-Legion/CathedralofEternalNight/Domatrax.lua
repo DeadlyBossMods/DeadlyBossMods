@@ -16,13 +16,14 @@ mod:RegisterEventsInCombat(
 
 --TODO< approaching doom, once know who casting source is and whether it can be canceled properly
 --TODO, other warnings? portal spawns/phases?
+--TODO, announce portal guardians, they fire UNIT_TARGETABLE_CHANGED (maybe other things?)
 local warnApproachingDoom			= mod:NewCastAnnounce(241622, 2)
 
-local specWarnFelsoulCleave			= mod:NewSpecialWarningSpell(236543, "Tank", nil, nil, 1, 2)
+local specWarnFelsoulCleave			= mod:NewSpecialWarningDodge(236543, "Tank", nil, nil, 1, 2)
 local specWarnChaoticEnergy			= mod:NewSpecialWarningMoveTo(234107, nil, nil, nil, 2, 2)
 
-local timerFelsoulCleaveCD			= mod:NewAITimer(7.5, 236543, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerChaoticEnergyCD			= mod:NewAITimer(7.5, 234107, nil, nil, nil, 2)
+local timerFelsoulCleaveCD			= mod:NewCDTimer(20, 236543, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerChaoticEnergyCD			= mod:NewCDTimer(35, 234107, nil, nil, nil, 2)
 --local timerApproachingDoom			= mod:NewCastTimer(20, 241622, nil, nil, nil, 1)
 
 local voiceFelsoulCleave			= mod:NewVoice(236543)--shockwave (review)
@@ -33,8 +34,8 @@ local voiceChaoticEnergy			= mod:NewVoice(234107)--findshield
 local shield = GetSpellInfo(238410)
 
 function mod:OnCombatStart(delay)
-	timerFelsoulCleaveCD:Start(1-delay)
-	timerChaoticEnergyCD:Start(1-delay)
+	timerFelsoulCleaveCD:Start(8.2-delay)
+	timerChaoticEnergyCD:Start(32.5-delay)
 end
 
 function mod:SPELL_CAST_START(args)
