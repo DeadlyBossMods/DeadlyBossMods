@@ -16,15 +16,15 @@ mod:RegisterEventsInCombat(
 
 --TODO, see if book local is ok in non english
 --TODO, add http://ptr.wowhead.com/spell=238678/stifling-satire?
-local warnScornfulGaze				= mod:NewTargetAnnounce(237726, 4, nil, false)
+local warnScornfulGaze				= mod:NewTargetAnnounce(237726, 4, nil, nil, 2)
 
 local specWarnPulvCrudgel			= mod:NewSpecialWarningRun(237276, "Melee", nil, nil, 4, 2)
 local specWarnMindControl			= mod:NewSpecialWarningSwitchCount(238484, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(238484), nil, 1, 2)
 local specWarnScornfulGaze			= mod:NewSpecialWarningMoveTo(237726, nil, nil, nil, 3, 2)
 local yellScornfulGaze				= mod:NewYell(237726)
 
-local timerPulvCrudgelCD			= mod:NewAITimer(55, 237276, nil, nil, nil, 2, nil, DBM_CORE_TANK_ICON)
-local timerScornfulGazeCD			= mod:NewAITimer(55, 237726, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerPulvCrudgelCD			= mod:NewCDTimer(34.2, 237276, nil, nil, nil, 2, nil, DBM_CORE_TANK_ICON)--Might be shorter if not stunned by gaze/books
+local timerScornfulGazeCD			= mod:NewCDTimer(36.5, 237726, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 
 local voiceMindControl				= mod:NewVoice(238484)--findmc
 local voicePulvCrudgel				= mod:NewVoice(237276)--runout
@@ -33,8 +33,8 @@ local voiceScornfulGaze				= mod:NewVoice(237726)--findshelter
 local book = GetSpellInfo(230940)
 
 function mod:OnCombatStart(delay)
-	timerPulvCrudgelCD:Start(1-delay)
-	timerScornfulGazeCD:Start(1-delay)
+	timerPulvCrudgelCD:Start(6-delay)
+	timerScornfulGazeCD:Start(26.7-delay)
 end
 
 function mod:OnCombatEnd()
