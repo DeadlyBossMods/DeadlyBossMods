@@ -71,11 +71,11 @@ function mod:UNIT_AURA_UNFILTERED(uId)
 		demonicUpheavalTable[name] = nil
 	elseif hasDebuff and not demonicUpheavalTable[name] then
 		demonicUpheavalTable[name] = true
-		warndemonicUpheaval:CombinedShow(0.5, name)--Multiple targets in mythic
+		warnDemonicUpheaval:CombinedShow(0.5, name)--Multiple targets in mythic
 		if UnitIsUnit(uId, "player") then
-			specWarndemonicUpheaval:Show()
-			voicedemonicUpheaval:Play("runout")
-			yelldemonicUpheaval:Yell()
+			specWarnDemonicUpheaval:Show()
+			voiceDemonicUpheaval:Play("runout")
+			yellDemonicUpheaval:Yell()
 		end
 	end
 end
