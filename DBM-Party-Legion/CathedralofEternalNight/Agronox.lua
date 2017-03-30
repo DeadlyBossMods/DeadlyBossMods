@@ -13,16 +13,17 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, check how spores applies and add GTFO for it. Not drycoded because it persists when you leave area and have to make sure I get it right and don't spam wrong debuff
 --TODO, figure out how to warn choking Vines
 --TODO, other GTFOs?
+--lasher fixate for tree boss
+--SucculentLashers 
 local warnFulminatingLashers		= mod:NewSpellAnnounce(236527, 2)
 local warnSucculentLashers			= mod:NewSpellAnnounce(236639, 2)
 
 local specWarnTimberSmash			= mod:NewSpecialWarningDefensive(235751, "Tank", nil, nil, 1, 2)
 
-local timerTimberSmashCD			= mod:NewAITimer(16.5, 235751, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerFulminatingLashersCD		= mod:NewAITimer(16.5, 236527, nil, nil, nil, 1)
+local timerTimberSmashCD			= mod:NewCDTimer(21.7, 235751, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerFulminatingLashersCD		= mod:NewCDTimer(40, 236527, nil, nil, nil, 1)
 local timerSucculentLashersCD		= mod:NewAITimer(16.5, 236639, nil, nil, nil, 1)
 
 --local countdownMagmaWave			= mod:NewCountdown(60, 200404)
@@ -30,9 +31,11 @@ local timerSucculentLashersCD		= mod:NewAITimer(16.5, 236639, nil, nil, nil, 1)
 local voiceTimberSmash				= mod:NewVoice(235751, "Tank")--carefly
 
 function mod:OnCombatStart(delay)
-	timerTimberSmashCD:Start(1-delay)
-	timerFulminatingLashersCD:Start(1-delay)
-	timerSucculentLashersCD:Start(1-delay)
+	timerTimberSmashCD:Start(6-delay)
+	timerFulminatingLashersCD:Start(17.5-delay)
+	if self:IsHard() then
+		timerSucculentLashersCD:Start(1-delay)
+	end
 end
 
 function mod:SPELL_CAST_START(args)

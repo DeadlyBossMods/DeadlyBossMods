@@ -7,29 +7,58 @@ mod:SetZone()
 
 mod.isTrashMod = true
 
---[[
 mod:RegisterEvents(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED"
+	"SPELL_CAST_START 239232 237391 238543 236737"
 )
 
-local warnBurningHatred			= mod:NewTargetAnnounce(182879, 3)
+--TODO, Interrupt warning for Shadow Wall 241937?
+local warnFelStrike				= mod:NewTargetAnnounce(236737, 3)
 
-local specWarnBurningHatred		= mod:NewSpecialWarningYou(200154, nil, nil, nil, 1, 2)
+local specWarnFelStrike			= mod:NewSpecialWarningDodge(236737, nil, nil, nil, 1, 2)
+local yellFelStrike				= mod:NewYell(236737)
+local specWarnAlluringAroma		= mod:NewSpecialWarningInterrupt(237391, "HasInterrupt", nil, nil, 1, 2)
+local specWarnDemonicMending	= mod:NewSpecialWarningInterrupt(238543, "HasInterrupt", nil, nil, 1, 2)
+local specWarnBlindingGlare		= mod:NewSpecialWarningSpell(239232, nil, nil, nil, 1, 2)
 
-local voiceBurningHatred		= mod:NewVoice(200154)--targetyou
+local voiceFelStrike			= mod:NewVoice(236737)--watchstep
+local voiceAlluringAroma		= mod:NewVoice(237391, "HasInterrupt")--kickcast
+local voiceDemonicMending		= mod:NewVoice(238543, "HasInterrupt")--kickcast
+local voiceBlindingGlare		= mod:NewVoice(239232)--turnaway
 
 mod:RemoveOption("HealthFrame")
+
+function mod:FelStrikeTarget(targetname, uId)
+	if not targetname then
+		warnFelStrike:Show(DBM_CORE_UNKNOWN)
+		return
+	end
+	if targetname == UnitName("player") then
+		specWarnFelStrike:Show()
+		voiceFelStrike:Play("watchstep")
+		yellFelStrike:Yell()
+	else
+		warnFelStrike:Show(targetname)
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 183088 then
-		specWarnAvalanche:Show()
-		voiceAvalanche:Play("shockwave")
+	if spellId == 236737 then
+		self:BossTargetScanner(args.sourceGUID, "FelStrikeTarget", 0.1, 9)
+	elseif spellId == 239232 then
+		specWarnBlindingGlare:Show()
+		voiceBlindingGlare:Play("turnaway")
+	elseif spellId == 237391 and self:CheckInterruptFilter(args.sourceGUID) then
+		specWarnAlluringAroma:Show(args.sourceName)
+		voiceAlluringAroma:Play("kickcast")
+	elseif spellId == 238543 and self:CheckInterruptFilter(args.sourceGUID) then
+		specWarnDemonicMending:Show(args.sourceName)
+		voiceDemonicMending:Play("kickcast")
 	end
 end
 
+--[[
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId

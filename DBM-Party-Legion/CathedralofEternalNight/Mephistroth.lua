@@ -17,6 +17,13 @@ mod:RegisterEventsInCombat(
 --TODO, shadowfade ending and initial timers post shadow phase
 --TODO, verify if more debuff spellids for Demonic Upheavel than one. determine if best place to do timer
 --TODO< shadow of mephistro spawn warnings, probably 234034
+--[[
+phases for mephisto
+announce who grabs shield on mephisto
+announce circles spawning on ground (watch step) on mephisto
+Fix demonic Upheavel
+basic range frame for dark solitude?
+--]]
 local warnShadowFade				= mod:NewSpellAnnounce(233206, 2)
 local warnDemonicUpheaval			= mod:NewTargetAnnounce(233963, 3)
 
@@ -24,14 +31,14 @@ local specWarnCarrionSwarm			= mod:NewSpecialWarningSpell(233155, "Tank", nil, n
 local specWarnDemonicUpheaval		= mod:NewSpecialWarningMoveAway(233963, nil, nil, nil, 1, 2)
 local yellDemonicUpheaval			= mod:NewYell(233963)
 
-local timerCarrionSwarmCD			= mod:NewAITimer(24.2, 233155, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerCarrionSwarmCD			= mod:NewCDTimer(18, 233155, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerDemonicUpheavalCD		= mod:NewAITimer(24.2, 233963, nil, nil, nil, 3)
 
 local voiceCarrionSwarm				= mod:NewVoice(233155, "Tank")--shockwave
 local voiceDemonicUpheaval			= mod:NewVoice(233963)--runout
 
 function mod:OnCombatStart(delay)
-	timerCarrionSwarmCD:Start(1-delay)
+	timerCarrionSwarmCD:Start(15-delay)
 	timerDemonicUpheavalCD:Start(1-delay)
 end
 
