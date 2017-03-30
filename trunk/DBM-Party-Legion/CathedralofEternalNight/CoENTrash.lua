@@ -32,12 +32,14 @@ function mod:FelStrikeTarget(targetname, uId)
 		warnFelStrike:Show(DBM_CORE_UNKNOWN)
 		return
 	end
-	if targetname == UnitName("player") then
-		specWarnFelStrike:Show()
-		voiceFelStrike:Play("watchstep")
-		yellFelStrike:Yell()
-	else
-		warnFelStrike:Show(targetname)
+	if self:AntiSpam(2, targetName) then--In case two enemies target same target
+		if targetname == UnitName("player") then
+			specWarnFelStrike:Show()
+			voiceFelStrike:Play("watchstep")
+			yellFelStrike:Yell()
+		else
+			warnFelStrike:CombinedShow(0.5, targetname)
+		end
 	end
 end
 

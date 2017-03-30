@@ -11,7 +11,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 236543 234107 241622"
+	"SPELL_CAST_START 236543 234107 241622",
+	"SPELL_CAST_SUCCESS 234107"
 )
 
 --TODO< approaching doom, once know who casting source is and whether it can be canceled properly
@@ -23,7 +24,7 @@ local specWarnFelsoulCleave			= mod:NewSpecialWarningDodge(236543, "Tank", nil, 
 local specWarnChaoticEnergy			= mod:NewSpecialWarningMoveTo(234107, nil, nil, nil, 2, 2)
 
 local timerFelsoulCleaveCD			= mod:NewCDTimer(20, 236543, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerChaoticEnergyCD			= mod:NewCDTimer(35, 234107, nil, nil, nil, 2)
+local timerChaoticEnergyCD			= mod:NewCDTimer(30, 234107, nil, nil, nil, 2)
 --local timerApproachingDoom			= mod:NewCastTimer(20, 241622, nil, nil, nil, 1)
 
 local voiceFelsoulCleave			= mod:NewVoice(236543)--shockwave (review)
@@ -47,10 +48,16 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 234107 then
 		specWarnChaoticEnergy:Show(shield)
 		voiceChaoticEnergy:Play("findshield")
-		timerChaoticEnergyCD:Start()
 	elseif spellId == 241622 then
 		warnApproachingDoom:Show()
 		--timerApproachingDoom
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 234107 then
+		timerChaoticEnergyCD:Start()
 	end
 end
 
