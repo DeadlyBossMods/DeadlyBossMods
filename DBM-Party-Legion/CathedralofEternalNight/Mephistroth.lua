@@ -10,20 +10,19 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 233155 233206",
-	"SPELL_AURA_APPLIED 233963"
+--	"SPELL_AURA_APPLIED 233963",
+	"UNIT_AURA_UNFILTERED"
 )
 
 --TODO: Can tank dodge swarm once cast starts?
 --TODO, shadowfade ending and initial timers post shadow phase
 --TODO, verify if more debuff spellids for Demonic Upheavel than one. determine if best place to do timer
---TODO< shadow of mephistro spawn warnings, probably 234034
---[[
-phases for mephisto
-announce who grabs shield on mephisto
-announce circles spawning on ground (watch step) on mephisto
-Fix demonic Upheavel
-basic range frame for dark solitude?
---]]
+--TODO, shadow of mephistro spawn warnings, probably 234034
+--TODO, phases for mephisto
+--TODO, announce who grabs shield on mephisto
+--TODO, announce circles spawning on ground (watch step) on mephisto
+--TODO, basic range frame for dark solitude?
+--TODO, fix upheaval timer. unit aura is just a drycode since it's clear it's not in combat log
 local warnShadowFade				= mod:NewSpellAnnounce(233206, 2)
 local warnDemonicUpheaval			= mod:NewTargetAnnounce(233963, 3)
 
@@ -36,6 +35,9 @@ local timerDemonicUpheavalCD		= mod:NewAITimer(24.2, 233963, nil, nil, nil, 3)
 
 local voiceCarrionSwarm				= mod:NewVoice(233155, "Tank")--shockwave
 local voiceDemonicUpheaval			= mod:NewVoice(233963)--runout
+
+local demonicUpheaval = GetSpellInfo(233963)
+local demonicUpheavalTable = {}
 
 function mod:OnCombatStart(delay)
 	timerCarrionSwarmCD:Start(15-delay)
@@ -59,12 +61,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 233963 then
 		timerDemonicUpheavalCD:Start()
-		if args:IsPlayer() then
-			specWarnDemonicUpheaval:Show()
-			voiceDemonicUpheaval:Play("runout")
-			yellDemonicUpheaval:Yell()
-		else
-			warnDemonicUpheaval:Show(args.destName)
+	end
+end
+
+function mod:UNIT_AURA_UNFILTERED(uId)
+	local hasDebuff = UnitDebuff(uId, demonicUpheaval)
+	local name = DBM:GetUnitFullName(uId)
+	if not hasDebuff and demonicUpheavalTable[name] then
+		demonicUpheavalTable[name] = nil
+	elseif hasDebuff and not demonicUpheavalTable[name] then
+		demonicUpheavalTable[name] = true
+		warndemonicUpheaval:CombinedShow(0.5, name)--Multiple targets in mythic
+		if UnitIsUnit(uId, "player") then
+			specWarndemonicUpheaval:Show()
+			voicedemonicUpheaval:Play("runout")
+			yelldemonicUpheaval:Yell()
 		end
 	end
 end
