@@ -134,6 +134,7 @@ local voiceWorldDevouringForce		= mod:NewVoice(216909)--farfromline
 
 mod:AddRangeFrameOption("5/8")
 mod:AddInfoFrameOption(205408)--really needs a "various" option
+mod:AddBoolOption("ConjunctionYellFilter", true)
 
 mod.vb.StarSigns = 0
 mod.vb.phase = 1
@@ -143,6 +144,7 @@ mod.vb.frostNovaCount = 0
 mod.vb.felNovaCount = 0
 mod.vb.voidNovaCount = 0
 mod.vb.grandConCount = 0
+mod.vb.conActive = false
 mod.vb.worldDestroyingCount = 0
 mod.vb.isPhaseChanging = false
 --mod.vb.voidEjectionCount = 0
@@ -277,6 +279,14 @@ local function showConjunction(self)
 	end
 end
 
+local function updateConjunctionYell(self, spellName, icon)
+	if not self.Options.ConjunctionYellFilter then return end
+	if UnitDebuff("player", spellName) then
+		yellConjunctionSign:Yell(icon, "", icon)
+		self:Schedule(2, updateConjunctionYell, self, spellName, icon)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	voidWarned = false
 	playerAffected = false
@@ -285,6 +295,7 @@ function mod:OnCombatStart(delay)
 	self.vb.isPhaseChanging = false
 	if self:IsMythic() then
 		self.vb.grandConCount = 0
+		self.vb.conActive = false
 		self.vb.worldDestroyingCount = 0
 --		timerCoronalEjectionCD:Start(12-delay)--Still could be health based
 		timerConjunctionCD:Start(15-delay, 1)
@@ -306,6 +317,8 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 205408 then
 		self.vb.grandConCount = self.vb.grandConCount + 1
+		self.vb.conActive = true
+		C_Timer.After(19, function() self.vb.conActive = false end)
 		specWarnConjunction:Show()
 		voiceConjunction:Play("scatter")
 		local timers
@@ -432,6 +445,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
 				yellConjunctionSign:Yell(2, "", 2)--Orange Circle
+				self:Schedule(2, updateConjunctionYell, self, args.spellName, 2)
 				voiceConjunction:Play("205408c")
 				countdownConjunction:Start()
 				timerConjunction:Start()
@@ -442,6 +456,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
 				yellConjunctionSign:Yell(6, "", 6)--Blue Square
+				self:Schedule(2, updateConjunctionYell, self, args.spellName, 6)
 				voiceConjunction:Play("205408d")
 				countdownConjunction:Start()
 				timerConjunction:Start()
@@ -452,6 +467,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
 				yellConjunctionSign:Yell(4, "", 4)--Green Triangle
+				self:Schedule(2, updateConjunctionYell, self, args.spellName, 4)
 				voiceConjunction:Play("205408h")
 				countdownConjunction:Start()
 				timerConjunction:Start()
@@ -462,6 +478,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnConjunctionSign:Show(args.spellName)
 				yellConjunctionSign:Yell(7, "", 7)--Red Cross
+				self:Schedule(2, updateConjunctionYell, self, args.spellName, 7)
 				voiceConjunction:Play("205408w")
 				countdownConjunction:Start()
 				timerConjunction:Start()
@@ -488,6 +505,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if expires then
 				local remaining = expires-GetTime()
 				countdownGravPull:Start(remaining)
+				if self.Options.ConjunctionYellFilter and self.vb.conActive then return end--No ejection yells during conjunction
 				yellGravitationalPull:Schedule(remaining-1, 1)
 				yellGravitationalPull:Schedule(remaining-2, 2)
 				yellGravitationalPull:Schedule(remaining-3, 3)
@@ -501,6 +519,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnIcyEjection:Show()
 			voiceIcyEjection:Play("runout")
 			updateRangeFrame(self)
+			if self.Options.ConjunctionYellFilter and self.vb.conActive then return end--No ejection yells during conjunction
 			yellIcyEjection:Schedule(9, 1)
 			yellIcyEjection:Schedule(8, 2)
 			yellIcyEjection:Schedule(7, 3)
@@ -511,14 +530,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFelEjection:Show()
 			voiceFelEjection:Play("runout")
 			voiceFelEjection:Schedule(1, "keepmove")
-			yellFelEjection:Yell()
-			yellFelEjectionFade:Schedule(7, 1)
-			yellFelEjectionFade:Schedule(6, 2)
-			yellFelEjectionFade:Schedule(5, 3)
 			warnFelEjectionPuddle:Schedule(2, 3)
 			warnFelEjectionPuddle:Schedule(4, 2)
 			warnFelEjectionPuddle:Schedule(6, 1)
 			warnFelEjectionPuddle:Schedule(8, 0)
+			if self.Options.ConjunctionYellFilter and self.vb.conActive then return end--No ejection yells during conjunction
+			yellFelEjection:Yell()
+			yellFelEjectionFade:Schedule(7, 1)
+			yellFelEjectionFade:Schedule(6, 2)
+			yellFelEjectionFade:Schedule(5, 3)
 		end
 	elseif spellId == 207143 then
 		--warnVoidEjection:CombinedShow(0.5, args.destName)

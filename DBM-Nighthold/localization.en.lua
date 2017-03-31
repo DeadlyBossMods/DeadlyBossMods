@@ -79,6 +79,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1732)
 
+L:SetOptionLocalization({
+	ConjunctionYellFilter	= "During $spell:205408, disable all other SAY messages and just spam the star sign message says instead until conjunction has ended"
+})
+
 ------------------
 -- Grand Magistrix Elisande --
 ------------------
