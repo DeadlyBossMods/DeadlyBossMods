@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "koKR" then return end
+if GetLocale() ~= "koKR" then return end
 local L
 
 ---------------
@@ -28,6 +28,10 @@ L:SetOptionLocalization({
 	InfoFrameBehavior	= "전투시 정보 창에 표시할 정보 설정",
 	Fixates				= "시선 집중에 걸린 플레이어 표시",
 	Adds				= "쫄 종류별로 마릿수 표시"
+})
+
+L:SetMiscLocalization({
+	AddSpawnNotice		= "공대원 스펙이 올라갈수록 블리자드의 자동 속도 조절 코드로 인해 쫄 생성 속도가 점차 빨라집니다. 공대가 오버스펙이라면 쫄 생성 타이머를 그대로 믿지 마세요."
 })
 
 ---------------------------
