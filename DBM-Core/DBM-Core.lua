@@ -6373,6 +6373,7 @@ do
 		local _, month, day = CalendarGetDate()--Must be called after PLAYER_ENTERING_WORLD
 		if self.Options.RhoninOn and (month == 4 and day == 1) then--April 1st
 			self:Schedule(180 + math.random(0, 300) , self.AprilFools, self)
+			self:AddMsg("Rhonin can be Enabled/Disabled with '/dbm rhonin' without quotes")
 		end
 		if GetLocale() == "ptBR" or GetLocale() == "frFR" or GetLocale() == "itIT" or GetLocale() == "esES" or GetLocale() == "ruRU" then
 			C_TimerAfter(10, function() if self.Options.HelpMessageVersion < 4 then self.Options.HelpMessageVersion = 4 self:AddMsg(DBM_CORE_NEED_LOCALS) end end)
