@@ -6341,9 +6341,10 @@ do
 		PlaySoundFile(soundFiles[count], "Dialog")
 	end
 
-	function DBM:AprilFools()
+	function DBM:AprilFools(shutupRhonin)
 		self:Unschedule(self.AprilFools)
 		self:Unschedule(playDelay)
+		if shutupRhonin then return end--This was invoked by a movie event
 		local currentMapId = GetPlayerMapAreaID("player")
 		if not currentMapId then
 			SetMapToCurrentZone()
@@ -6826,6 +6827,7 @@ do
 	}
 	MovieFrame:HookScript("OnEvent", function(self, event, id)
 		if event == "PLAY_MOVIE" and id and not neverFilter[id] then
+			DBM:AprilFools(true)
 			DBM:Debug("PLAY_MOVIE fired for ID: "..id, 2)
 			local isInstance, instanceType = IsInInstance()
 			if not isInstance or C_Garrison:IsOnGarrisonMap() or instanceType == "scenario" or DBM.Options.MovieFilter == "Never" then return end
@@ -6839,6 +6841,7 @@ do
 	end)
 
 	function DBM:CINEMATIC_START()
+		self:AprilFools(true)
 		self:Debug("CINEMATIC_START fired", 2)
 		local isInstance, instanceType = IsInInstance()
 		if not isInstance or C_Garrison:IsOnGarrisonMap() or instanceType == "scenario" or self.Options.MovieFilter == "Never" then return end
