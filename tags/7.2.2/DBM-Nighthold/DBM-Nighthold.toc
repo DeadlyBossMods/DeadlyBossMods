@@ -1,0 +1,37 @@
+﻿## Interface: 70200
+## X-Min-Interface: 70100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0The Nighthold|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Die Nachtfestung|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0暗夜要塞|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0暗夜堡|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastión Nocturno|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0밤의 요새|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMNighthold_AllSavedVars
+## SavedVariablesPerCharacter: DBMNighthold_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: LEG
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 053
+## X-DBM-Mod-MapID: 1530
+## X-DBM-Mod-MinCoreRevision: 14737
+localization.en.lua
+localization.cn.lua
+localization.de.lua
+localization.tw.lua
+localization.es.lua
+localization.kr.lua
+Skorpyron.lua
+ChronoAnomaly.lua
+Trilliax.lua
+Aluriel.lua
+Tichondrius.lua
+Krosus.lua
+Telarn.lua
+Etraeus.lua
+Elisande.lua
+Guldan.lua
+NightholdTrash.lua
