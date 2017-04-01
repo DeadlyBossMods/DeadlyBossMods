@@ -279,6 +279,7 @@ DBM.DefaultOptions = {
 	LastRevision = 0,
 	FilterSayAndYell = false,
 	DebugMode = false,
+	RhoninOn = true,
 	DebugLevel = 1,
 	RoleSpecAlert = true,
 	CheckGear = true,
@@ -2102,6 +2103,12 @@ do
 		elseif cmd:sub(1, 5) == "debug" then
 			DBM.Options.DebugMode = DBM.Options.DebugMode == false and true or false
 			DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
+		elseif cmd:sub(1, 6) == "rhonin" then
+			DBM.Options.RhoninOn = DBM.Options.RhoninOn == false and true or false
+			DBM:AddMsg("Rhonin is " .. (DBM.Options.RhoninOn and "ON" or "OFF"))
+			if not DBM.Options.RhoninOn then
+				DBM:AprilFools(true)
+			end
 		elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 			if DBM:HasMapRestrictions() then
 				local _, _, _, map = UnitPosition("player")
@@ -6362,8 +6369,8 @@ do
 		self:Schedule(50.5, playDelay, self, 8)
 	end
 	function DBM:PLAYER_ENTERING_WORLD()
-		local weekday, month, day, year = CalendarGetDate()--Must be called after PLAYER_ENTERING_WORLD
-		if month == 4 and day == 1 then--April 1st
+		local _, month, day = CalendarGetDate()--Must be called after PLAYER_ENTERING_WORLD
+		if self.Options.RhoninOn and (month == 4 and day == 1) then--April 1st
 			self:Schedule(180 + math.random(0, 300) , self.AprilFools, self)
 		end
 		if GetLocale() == "ptBR" or GetLocale() == "frFR" or GetLocale() == "itIT" or GetLocale() == "esES" or GetLocale() == "ruRU" then
