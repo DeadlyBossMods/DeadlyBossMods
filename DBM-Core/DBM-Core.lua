@@ -2108,6 +2108,7 @@ do
 			DBM:AddMsg("Rhonin is " .. (DBM.Options.RhoninOn and "ON" or "OFF"))
 			if not DBM.Options.RhoninOn then
 				DBM:AprilFools(true)
+				DBM:Unschedule(DBM.AprilFools)
 			end
 		elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 			if DBM:HasMapRestrictions() then
