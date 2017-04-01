@@ -90,7 +90,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 240065 and destGUID == playerGUID and self:AntiSpam(2, 1) then
+	if spellId == 240065 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnSucculentSecretion:Show()
 		voiceSucculentSecretion:Play("runaway")
 	end

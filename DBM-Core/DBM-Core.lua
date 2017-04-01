@@ -6338,18 +6338,19 @@ do
 		"Sound\\Creature\\Rhonin\\UR_Rhonin_Event08.ogg",
 	}
 	local function playDelay(self, count)
-		self:PlaySoundFile(soundFiles[count])
+		PlaySoundFile(soundFiles[count], "Dialog")
 	end
 
 	function DBM:AprilFools()
 		self:Unschedule(self.AprilFools)
+		self:Unschedule(playDelay)
 		local currentMapId = GetPlayerMapAreaID("player")
 		if not currentMapId then
 			SetMapToCurrentZone()
 			currentMapId = GetCurrentMapAreaID()
 		end
-		self:Schedule(120 + math.random(0, 300) , self.AprilFools, self)
-		if currentMapId ~= 1014 then return end--Legion Dalaran
+		self:Schedule(180 + math.random(0, 300) , self.AprilFools, self)
+		if currentMapId ~= 1014 or (MovieFrame and MovieFrame:IsShown()) then return end--Legion Dalaran
 		playDelay(self, 1)
 		self:Schedule(5, playDelay, self, 2)
 		self:Schedule(10, playDelay, self, 3)

@@ -543,6 +543,10 @@ L= DBM:GetModLocalization(1905)
 -----------------------
 L= DBM:GetModLocalization(1906)
 
+L:SetMiscLocalization({
+	bookCase	=	"Behind bookcase"
+})
+
 -----------------------
 -- Domatrax --
 -----------------------

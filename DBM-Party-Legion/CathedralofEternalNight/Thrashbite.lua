@@ -32,8 +32,6 @@ local voiceMindControl				= mod:NewVoice(238484)--findmc
 local voicePulvCrudgel				= mod:NewVoice(237276)--runout
 local voiceScornfulGaze				= mod:NewVoice(237726)--findshelter
 
-local book = GetSpellInfo(230940)
-
 function mod:OnCombatStart(delay)
 	timerPulvCrudgelCD:Start(6-delay)
 	timerHeaveCrudCD:Start(15.5-delay)
@@ -59,7 +57,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 237726 then
 		timerScornfulGazeCD:Start()
 		if args:IsPlayer() then
-			specWarnScornfulGaze:Show(book)
+			specWarnScornfulGaze:Show(L.bookCase)
 			yellScornfulGaze:Yell()
 			voiceScornfulGaze:Play("findshelter")
 		else
