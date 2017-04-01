@@ -6342,7 +6342,6 @@ do
 	end
 
 	function DBM:AprilFools(shutupRhonin)
-		self:Unschedule(self.AprilFools)
 		self:Unschedule(playDelay)
 		if shutupRhonin then return end--This was invoked by a movie event
 		local currentMapId = GetPlayerMapAreaID("player")
@@ -6350,6 +6349,7 @@ do
 			SetMapToCurrentZone()
 			currentMapId = GetCurrentMapAreaID()
 		end
+		self:Unschedule(self.AprilFools)
 		self:Schedule(180 + math.random(0, 300) , self.AprilFools, self)
 		if currentMapId ~= 1014 or (MovieFrame and MovieFrame:IsShown()) then return end--Legion Dalaran
 		playDelay(self, 1)
