@@ -249,7 +249,6 @@ function mod:OnCombatStart(delay)
 	table.wipe(bondsIcons)
 	table.wipe(flamesIcons)
 	if self:IsMythic() then
-		DBM:AddMsg("This mod still needs mythic refactoring to properly support new phase 3")
 		timerBondsofFelCD:Start(8.4-delay, 1)
 		countdownBondsOfFel:Start(8.4)
 		timerDzorykxCD:Start(17-delay)
