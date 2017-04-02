@@ -8887,20 +8887,18 @@ do
 		voice3 = self.Options.CountdownVoice3v2
 		local voicesFound = 0
 		for i = 1, #self.Counts do
-			if voicesFound == 3 then return end
 			local curVoice = self.Counts[i]
 			if curVoice.value == voice1 then
 				path1 = curVoice.path
 				voice1max = curVoice.max
-				voicesFound = voicesFound + 1
-			elseif curVoice.value == voice2 then
+			end
+			if curVoice.value == voice2 then
 				path2 = curVoice.path
 				voice2max = curVoice.max
-				voicesFound = voicesFound + 1
-			elseif curVoice.value == voice3 then
+			end
+			if curVoice.value == voice3 then
 				path3 = curVoice.path
 				voice3max = curVoice.max
-				voicesFound = voicesFound + 1
 			end
 		end
 	end
