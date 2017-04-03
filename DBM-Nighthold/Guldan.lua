@@ -863,7 +863,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 227035 then -- Parasitic Wound
 		timerParasiticWoundCD:Start()
 	elseif spellId == 221149 or spellId == 227277 then -- Manifest Azzinoth
-		specWarnManifestAzzinoth:show()
+		specWarnManifestAzzinoth:Show()
 		voiceManifestAzzinoth:Play("bigmob")
 		timerBulwarkofAzzinothCD:Start(15)
 		timerManifestAzzinothCD:Start(41)
