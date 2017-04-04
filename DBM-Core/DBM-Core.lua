@@ -264,7 +264,7 @@ DBM.DefaultOptions = {
 	BigBrotherAnnounceToRaid = false,
 	SettingsMessageShown = false,
 	ForumsMessageShown = false,
-	PGMessageShown = false,
+	PGMessageShown2 = false,
 	MCMessageShown = false,
 	BCTWMessageShown = false,
 	WOTLKTWMessageShown = false,
@@ -3608,9 +3608,9 @@ do
 				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Party-Cataclysm"))
 			end
 		else
-			if LastInstanceMapID == 1148 and not self.Options.PGMessageShown and not GetAddOnInfo("DBM-ProvingGrounds") then
-				self.Options.PGMessageShown = true
-				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-ProvingGrounds"))
+			if (LastInstanceMapID == 1148 or LastInstanceMapID == 1698) and not self.Options.PGMessageShown2 and not GetAddOnInfo("DBM-Challenges") then
+				self.Options.PGMessageShown2 = true
+				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Challenges"))
 			elseif LastInstanceMapID == 409 and not self.Options.MCMessageShown and not GetAddOnInfo("DBM-MC") then
 				self.Options.MCMessageShown = true
 				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-MC"))
