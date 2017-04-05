@@ -475,7 +475,7 @@ function mod:OnSync(msg, targetname)
 			end
 		else
 			if self.vb.addsCount == 1 then
-				timerAddsCD:Start(40)--ish, need relogging to confirm
+				timerAddsCD:Start(35)--ish, need relogging to confirm
 			elseif self.vb.addsCount == 2 then
 				timerAddsCD:Start(47)
 			end
