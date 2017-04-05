@@ -421,7 +421,7 @@ local UpdateChestTimer
 local breakTimerStart
 local AddMsg
 
-local fakeBWVersion, fakeBWHash = 50, "1e39f8a"
+local fakeBWVersion, fakeBWHash = 51, "eacf411"
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
@@ -8837,8 +8837,14 @@ do
 		)
 		if #DBM.Voices < 2 then optionName = false end--Hide options if no voice packs are installed
 		if optionName then
-			obj.option = optionName
-			self:AddBoolOption(obj.option, optionDefault, "sound")
+			if spellId then--Still need to use spell ID for voice pack filter if one is provided
+				obj.option = "Voice"..spellId..(optionVersion or "")
+				self:AddBoolOption(obj.option, optionDefault, "sound")
+				self.localization.options[obj.option] = optionName
+			else
+				obj.option = optionName
+				self:AddBoolOption(obj.option, optionDefault, "sound")
+			end
 		elseif not (optionName == false) then
 			obj.option = "Voice"..spellId..(optionVersion or "")
 			self:AddBoolOption(obj.option, optionDefault, "sound")
