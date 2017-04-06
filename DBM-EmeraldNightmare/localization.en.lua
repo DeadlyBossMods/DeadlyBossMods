@@ -30,7 +30,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	AddSpawnNotice		= "As players overgear encounter, add spawns grow increasingly faster as encounter was designd by blizzard with auto pacing code. As such, if you overgear/overkill fight, take the add spawn timers witha grain of salt."
+	AddSpawnNotice		= "As players overgear encounter, add spawns grow increasingly faster as encounter was designed by blizzard with auto pacing code. As such, if you overgear/overkill fight, take the add spawn timers with a grain of salt."
 })
 
 ---------------------------
