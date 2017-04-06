@@ -159,7 +159,7 @@ local countdownHandofGuldan			= mod:NewCountdown("Alt50", 212258, "Tank")
 local countdownLiquidHellfire		= mod:NewCountdown("AltTwo50", 206219, "Ranged")
 local countdownBlackHarvest			= mod:NewCountdown("AltTwo50", 206744)
 --mythic
---TODO, what needs countdowns the most?
+local countdownFlameCrash			= mod:NewCountdown(20, 227071)
 
 --Stage One: The Council of Elders
 ----Gul'dan
@@ -232,6 +232,27 @@ local p3EmpoweredEyeTimersMythic = {35.1, 52.6, 53.3, 20.4, 84.2, 52.6}--Credit 
 local bondsIcons = {}
 local flamesIcons = {}
 local timeStopBuff = GetSpellInfo(206310)
+
+local function upValueCapsAreStupid(self)
+	if self.vb.phase ~= 3 then -- For unlocalized clients
+		self.vb.phase = 3
+		timerWindsCD:Stop()
+	end
+	specWarnWilloftheDemonWithin:Show()
+	voiceWilloftheDemonWithin:Play("carefly")
+	timerWilloftheDemonWithin:Start()
+	self.vb.severCastCount = 0
+	self.vb.crashCastCount = 0
+	self.vb.orbCastCount = 0
+	self.vb.visionCastCount = 0
+	timerParasiticWoundCD:Start(8.6)
+	timerSoulSeverCD:Start(19.6, 1)	
+	timerManifestAzzinothCD:Start(26.6)
+	timerFlameCrashCD:Start(29.6, 1)
+	countdownFlameCrash:Start(29.6)
+	timerSummonNightorbCD:Start(39.6, 1)
+	timerVisionsofDarkTitanCD:Start(96.2, 1)
+end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
@@ -430,24 +451,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.flamesTargets = 0
 	--Begin Mythic Only Stuff
 	elseif spellId == 211439 then--Will of the Demon Within
-		if self.vb.phase ~= 3 then -- For unlocalized clients
-			self.vb.phase = 3
-			timerWindsCD:Stop()
-		end
-		specWarnWilloftheDemonWithin:Show()
-		voiceWilloftheDemonWithin:Play("carefly")
-		timerWilloftheDemonWithin:Start()
-
-		self.vb.severCastCount = 0
-		self.vb.crashCastCount = 0
-		self.vb.orbCastCount = 0
-		self.vb.visionCastCount = 0
-		timerParasiticWoundCD:Start(8.6)
-		timerSoulSeverCD:Start(19.6, 1)	
- 		timerManifestAzzinothCD:Start(26.6)
- 		timerFlameCrashCD:Start(29.6, 1)
- 		timerSummonNightorbCD:Start(39.6, 1)
- 		timerVisionsofDarkTitanCD:Start(96.2, 1)
+		upValueCapsAreStupid(self)
 	elseif spellId == 220957 then
 		self.vb.severCastCount = self.vb.severCastCount + 1
 		if self:IsTank() then
@@ -871,8 +875,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.crashCastCount  = self.vb.crashCastCount  + 1
 		if self.vb.crashCastCount == 4 or self.vb.crashCastCount == 7 then
 			timerFlameCrashCD:Start(50, self.vb.crashCastCount+1)
+			countdownFlameCrash:Start(50)
 		else
 			timerFlameCrashCD:Start(20, self.vb.crashCastCount+1)
+			countdownFlameCrash:Start(20)
 		end
 	elseif spellId == 227283 then -- Nightorb
 		self.vb.orbCastCount = self.vb.orbCastCount + 1
