@@ -76,6 +76,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(1732)
 
+L:SetOptionLocalization({
+	ConjunctionYellFilter	= "在$spell:205408當中，停用其他所有說話訊息而不停重複的說著星之記號直到大連線結束"
+})
+
 ------------------
 -- Grand Magistrix Elisande --
 ------------------
