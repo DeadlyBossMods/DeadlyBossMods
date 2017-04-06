@@ -30,6 +30,10 @@ L:SetOptionLocalization({
 	Adds				= "顯示小怪數量和類型"
 })
 
+L:SetMiscLocalization({
+	AddSpawnNotice		= "當玩家裝等輾壓此戰鬥，小怪重生的速度會快一些。所以不可盡信小怪重生的計時器。"
+})
+
 ---------------------------
 -- Elerethe Renferal --
 ---------------------------
