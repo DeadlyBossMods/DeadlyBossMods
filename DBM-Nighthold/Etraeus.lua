@@ -104,11 +104,14 @@ local timerConjunction				= mod:NewBuffFadesTimer(15, 207720, nil, nil, nil, 5, 
 local berserkTimer					= mod:NewBerserkTimer(463)
 
 --Base abilities
-local countdownConjunction			= mod:NewCountdownFades("AltTwo15", 205408, nil, nil, 10)
+local countdownConjunction			= mod:NewCountdown("AltTwo15", 205408, nil, nil, 10)
+local countdownConjunctionFades		= mod:NewCountdownFades("AltTwo15", 205408, nil, nil, 10)
 local countdownGravPull				= mod:NewCountdownFades("Alt10", 205984)--Maybe change to everyone if it works like I think
 --Stage One: The Dome of Observation
 --Stage Two: Absolute Zero
+local countdownFrigidNova			= mod:NewCountdown(61.5, 206949)
 --Stage Three: A Shattered World
+local countdownFelNova				= mod:NewCountdown(25, 206517)
 --Stage Four: Inevitable Fate
 local countWorldDevouringForce		= mod:NewCountdown(15, 216909)
 
@@ -158,7 +161,7 @@ mod.vb.isPhaseChanging = false
 --For all inclusive, i'll simply use lowest observed time for each count, which will give close approx cd timer but imprecise to be a "next" timer.
 local icyEjectionTimers = {24.5, 34.4, 6.5, 4.8, 50.2, 1.2, 2.4, 25.6, 2.8}--43.3, 35.6, 8.1, 4.1, 52.2, 1.2, 2.4
 local felEjectionTimers = {18.2, 3.6, 3.2, 2.4, 10.2, 4.4, 2.8, 32.8, 4.0, 1.6, 4.0, 4.5, 22.3, 6.9, 17.0, 1.6, 1.2, 2.0, 18.3, 0.4}--10 after 4, 32 after 7, 22 after 12, 17 after 14, 18 after 18
-local mythicfelEjectionTimers = {17.4, 3.2, 2.8, 2.4, 9.3, 2.4, 3.2, 31.2, 2, 1.2, 13.4, 1.2, 1.7, 23, 8.5, 9.3, 2.5, 1.5, 24.3, 3.2}
+local mythicfelEjectionTimers = {17.4, 3.2, 2.8, 2.4, 9.3, 2.4, 3.2, 31.2, 2, 1.2, 13.4, 1.2, 1.7, 22.2, 8.5, 9.3, 2.5, 1.5, 24.3, 3.2}
 local voidEjectionTimers = {24, 3.2, 14.1, 17.4, 0.8, 4.7, 25.7, 2.3}
 --local felNovaTImers = {34.8, 31.3, 29.3}--Latest is 47.1, 45.0, 25.1. Currently unused. for now just doing 45 or 25
 local worldDestroyingTimers = {22, 42, 57, 51.8}
@@ -299,6 +302,7 @@ function mod:OnCombatStart(delay)
 		self.vb.worldDestroyingCount = 0
 --		timerCoronalEjectionCD:Start(12-delay)--Still could be health based
 		timerConjunctionCD:Start(15-delay, 1)
+		countdownConjunction:Start(15-delay)
 	else
 --		timerCoronalEjectionCD:Start(12.9-delay)--Still could be health based
 	end
@@ -333,6 +337,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		if timers then
 			timerConjunctionCD:Start(timers, self.vb.grandConCount+1)
+			countdownConjunction:Start(timers)
 		end
 		updateRangeFrame(self, true)
 		self:Schedule(4.5, showConjunction, self)
@@ -345,14 +350,17 @@ function mod:SPELL_CAST_START(args)
 		specWarnFrigidNova:Show()
 		voiceFrigidNova:Play("gathershare")
 		timerFrigidNovaCD:Start(nil, self.vb.frostNovaCount+1)
+		countdownFrigidNova:Start()
 	elseif spellId == 206517 then
 		self.vb.felNovaCount = self.vb.felNovaCount + 1
 		specWarnFelNova:Show()
 		voiceFelnova:Play("justrun")
 		if self.vb.felNovaCount < 3 then
 			timerFelNovaCD:Start(44, self.vb.felNovaCount+1)
+			countdownFelNova:Start(44)
 		else
 			timerFelNovaCD:Start(nil, self.vb.felNovaCount+1)
+			countdownFelNova:Start()
 		end
 	elseif spellId == 207720 then
 		specWarnWitnessVoid:Show()
@@ -447,7 +455,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellConjunctionSign:Yell(2, "", 2)--Orange Circle
 				self:Schedule(2, updateConjunctionYell, self, args.spellName, 2)
 				voiceConjunction:Play("205408c")
-				countdownConjunction:Start()
+				countdownConjunctionFades:Start()
 				timerConjunction:Start()
 				playerAffected = true
 			end
@@ -458,7 +466,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellConjunctionSign:Yell(6, "", 6)--Blue Square
 				self:Schedule(2, updateConjunctionYell, self, args.spellName, 6)
 				voiceConjunction:Play("205408d")
-				countdownConjunction:Start()
+				countdownConjunctionFades:Start()
 				timerConjunction:Start()
 				playerAffected = true
 			end
@@ -469,7 +477,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellConjunctionSign:Yell(4, "", 4)--Green Triangle
 				self:Schedule(2, updateConjunctionYell, self, args.spellName, 4)
 				voiceConjunction:Play("205408h")
-				countdownConjunction:Start()
+				countdownConjunctionFades:Start()
 				timerConjunction:Start()
 				playerAffected = true
 			end
@@ -480,7 +488,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				yellConjunctionSign:Yell(7, "", 7)--Red Cross
 				self:Schedule(2, updateConjunctionYell, self, args.spellName, 7)
 				voiceConjunction:Play("205408w")
-				countdownConjunction:Start()
+				countdownConjunctionFades:Start()
 				timerConjunction:Start()
 				playerAffected = true
 			end
@@ -556,7 +564,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 205429 or spellId == 216344 or spellId == 216345 or spellId == 205445 then--Star Signs
 		self.vb.StarSigns = self.vb.StarSigns - 1
 		if args:IsPlayer() then
-			countdownConjunction:Cancel()
+			countdownConjunctionFades:Cancel()
 			timerConjunction:Stop()
 			playerAffected = false
 		end
@@ -623,15 +631,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.icyEjectionCount = 0
 --		timerCoronalEjectionCD:Stop()
 		timerConjunctionCD:Stop()
+		countdownConjunction:Cancel()
 		timerGravPullCD:Start(30)
 		if not self:IsEasy() then
 			timerFrigidNovaCD:Start(49, 1)
+			countdownFrigidNova:Start(49)
 		end
 		if self:IsMythic() then
 			self:Unschedule(showConjunction)
 			self.vb.grandConCount = 0
 			timerIcyEjectionCD:Start(15, 1)
 			timerConjunctionCD:Start(27, 1)
+			countdownConjunction:Start(27)
 		else
 			timerIcyEjectionCD:Start(23.3, 1)
 		end
@@ -643,19 +654,24 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		self.vb.felNovaCount = 0
 		timerIcyEjectionCD:Stop()
 		timerFrigidNovaCD:Stop()
+		countdownFrigidNova:Cancel()
 		timerGravPullCD:Stop()
 		timerConjunctionCD:Stop()
+		countdownConjunction:Cancel()
 		timerGravPullCD:Start(29)
 		if self:IsMythic() then
 			self:Unschedule(showConjunction)
 			self.vb.grandConCount = 0
 			timerFelEjectionCD:Start(17.5, 1)
-			timerFelNovaCD:Start(52, 1)
+			timerFelNovaCD:Start(50.4, 1)
+			countdownFelNova:Start(50.4)
 			timerConjunctionCD:Start(58, 1)
+			countdownConjunction:Start(58)
 		else
 			timerFelEjectionCD:Start(18.2, 1)
 			if not self:IsEasy() then
 				timerFelNovaCD:Start(57.7, 1)
+				countdownFelNova:Start(57.7)
 			end
 		end
 	elseif spellId == 222134 then--Phase 4 Conversation
@@ -665,8 +681,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		--self.vb.voidEjectionCount = 0
 		timerFelEjectionCD:Stop()
 		timerFelNovaCD:Stop()
+		countdownFelNova:Cancel()
 		timerGravPullCD:Stop()
 		timerConjunctionCD:Stop()
+		countdownConjunction:Cancel()
 		timerGravPullCD:Start(19.6)
 		timerThingCD:Start(31)
 		if not self:IsEasy() then--Was never used on normal, probably not LFR either then
@@ -680,6 +698,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerWorldDevouringForceCD:Start(22, 1)
 			countWorldDevouringForce:Start(22)
 			timerConjunctionCD:Start(46.5, 1)
+			countdownConjunction:Start(46.5)
 			berserkTimer:Start(201)
 		else
 			berserkTimer:Start(231)
