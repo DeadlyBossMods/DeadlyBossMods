@@ -11,6 +11,12 @@ L= DBM:GetModLocalization(1706)
 ---------------------------
 L= DBM:GetModLocalization(1725)
 
+L:SetOptionLocalization({
+	InfoFrameBehavior	= "Auswahl der Information im Infofenster während des Kampfes",
+	TimeRelease			= "Zeige Spieler, die von Zeitentfesselung betroffen sind",
+	TimeBomb			= "Zeige Spieler, die von Zeitbombe betroffen sind"
+})
+
 ---------------------------
 -- Trilliax --
 ---------------------------
@@ -69,6 +75,10 @@ L:SetMiscLocalization({
 -- Star Augur Etraeus --
 ------------------
 L= DBM:GetModLocalization(1732)
+
+L:SetOptionLocalization({
+	ConjunctionYellFilter	= "Deaktivere alle anderen SCHREIE während $spell:205408 und schreie stattdessen nur fortwährend die Sternzeichenmeldung, bis die Konjunktion vorbei ist"
+})
 
 ------------------
 -- Grand Magistrix Elisande --

@@ -30,6 +30,10 @@ L:SetOptionLocalization({
 	Adds				= "Zeige Zähler für alle Add-Arten"
 })
 
+L:SetMiscLocalization({
+	AddSpawnNotice		= "Bei Übertreffen der Gegenstandsanforderung dieses Kampfes erscheinen die Adds automatisch entsprechend schneller. In diesem Fall sind die Timer für das Erscheinen der Adds mit Vorsicht zu genießen."
+})
+
 ---------------------------
 -- Elerethe Renferal --
 ---------------------------
