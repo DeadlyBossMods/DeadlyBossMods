@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
 
-mod:RegisterCombat("scenario", 1704, 1705, 1706, 1707)--All 4 Ids
+--mod:RegisterCombat("scenario", 1704, 1705, 1706, 1707)--All 4 Ids
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 238005 234660",
@@ -13,7 +13,7 @@ mod:RegisterEvents(
 --	"UNIT_DIED",
 	"RAID_BOSS_WHISPER"
 )
-mod.onlyNormal = true
+mod.noStatistics = true
 
 --local warnRumblingSlam			= mod:NewSpellAnnounce(223420, 2)
 
