@@ -53,8 +53,10 @@ local warnOrbOfCorrosion			= mod:NewTargetAnnounce(230267, 3)
 
 --Stage One: Low Tide
 local specWarnOrbOfCorruption		= mod:NewSpecialWarningYou(229119, nil, nil, nil, 1, 5)
-local yellOrbOfCorruption			= mod:NewPosYell(229119)
+local yellOrbOfCorruption			= mod:NewPosYell(229119, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local specWarnTaintofSeaPre			= mod:NewSpecialWarningYou(228088, "false", nil, nil, 1, 2)
 local specWarnTaintofSea			= mod:NewSpecialWarningDodge(228088, nil, nil, nil, 1, 2)
+local yellTaint						= mod:NewPosYell(228088, DBM_CORE_AUTO_YELL_CUSTOM_POSITION, false)
 local specWarnBilewaterBreath		= mod:NewSpecialWarningCount(227967, nil, nil, nil, 2, 2)
 local specWarnBilewaterRedox		= mod:NewSpecialWarningTaunt(227982, nil, nil, nil, 1, 2)
 local specWarnBilewaterCorrosion	= mod:NewSpecialWarningMove(227998, nil, nil, nil, 1, 2)
@@ -75,7 +77,7 @@ local specWarnGiveNoQuarter			= mod:NewSpecialWarningDodge(228633, nil, nil, nil
 --Stage Three: Helheim's Last Stand
 local specWarnCorruptedBreath		= mod:NewSpecialWarningCount(228565, nil, nil, nil, 2)
 local specWarnOrbOfCorrosion		= mod:NewSpecialWarningYou(230267, nil, nil, nil, 1, 5)
-local yellOrbOfCorrosion			= mod:NewPosYell(230267)
+local yellOrbOfCorrosion			= mod:NewPosYell(230267, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
 
 --Stage One: Low Tide
 mod:AddTimerLine(SCENARIO_STAGE:format(1))
@@ -113,7 +115,7 @@ local countdownOozeExplosions		= mod:NewCountdown(20.5, 227992)
 
 --Stage One: Low Tide
 local voiceOrbofCorruption			= mod:NewVoice(229119)--orbrun
-local voiceTaintOfSea				= mod:NewVoice(228088)--watchstep
+local voiceTaintOfSea				= mod:NewVoice(228088)--targetyou/watchstep
 local voiceBilewaterBreath			= mod:NewVoice(227967)--breathsoon
 local voiceBilewaterRedox			= mod:NewVoice(227982)--tauntboss
 local voiceBilewaterCorrosion		= mod:NewVoice(227998)--runaway
@@ -163,6 +165,7 @@ mod.vb.orbCount = 0
 mod.vb.furyOfMawCount = 0
 mod.vb.tentacleCount = 0
 mod.vb.taintCount = 0
+mod.vb.taintIcon = 4
 mod.vb.lastTentacles = 9
 mod.vb.breathCount = 0
 
@@ -174,6 +177,7 @@ function mod:OnCombatStart(delay)
 	self.vb.furyOfMawCount = 0
 	self.vb.tentacleCount = 0
 	self.vb.taintCount = 0
+	self.vb.taintIcon = 4
 	self.vb.breathCount = 0
 	if self:IsEasy() then
 		self.vb.lastTentacles = 9
@@ -403,11 +407,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDarkHatred:CombinedShow(0.3, args.destName)
 	elseif spellId == 228054 then
 		warnTaintOfSea:CombinedShow(0.3, args.destName)
-		if self.Options.SetIconOnTaint then
-			self:SetSortedIcon(0.5, args.destName, 4, 5)
-		end
 		if self:AntiSpam(5, 6) then
 			self.vb.taintCount = self.vb.taintCount + 1
+			self.vb.taintIcon = 4
 			if self:IsEasy() then--Cast MORE OFTEN in LFR/normal?
 				if self.vb.phase == 3 then
 					timerTaintOfSeaCD:Start(27)
@@ -433,6 +435,16 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
+		if self.Options.SetIconOnTaint then
+			self:SetIcon(args.destName, self.vb.taintIcon)
+		end
+		if args:IsPlayer() then
+			specWarnTaintofSeaPre:Show()
+			voiceTaintOfSea:Play("targetyou")
+			yellTaint:Yell(self.vb.taintIcon, "", self.vb.taintIcon)
+			yellTaint:Schedule(2, self.vb.taintIcon, "", self.vb.taintIcon)
+		end
+		self.vb.taintIcon = self.vb.taintIcon + 1
 	end
 end
 
@@ -579,21 +591,21 @@ function mod:RAID_BOSS_WHISPER(msg)
 		specWarnOrbOfCorruption:Show()
 		voiceOrbofCorruption:Play("orbrun")
 		if self:IsTank() then
-			yellOrbOfCorruption:Yell(2, 2, 2)
+			yellOrbOfCorruption:Yell(2, DBM_CORE_ORB, 2)
 		elseif self:IsHealer() then--LFR/Normal doesn't choose a healer, just tank/damage
-			yellOrbOfCorruption:Yell(1, 1, 1)
+			yellOrbOfCorruption:Yell(1, DBM_CORE_ORB, 1)
 		else
-			yellOrbOfCorruption:Yell(3, 3, 3)
+			yellOrbOfCorruption:Yell(3, DBM_CORE_ORB, 3)
 		end
 	elseif msg:find("spell:228058") then
 		specWarnOrbOfCorrosion:Show()
 		voiceOrbofCorrosion:Play("orbrun")
 		if self:IsTank() then
-			yellOrbOfCorrosion:Yell(2, 2, 2)
+			yellOrbOfCorrosion:Yell(2, DBM_CORE_ORB, 2)
 		elseif self:IsHealer() then--LFR/Normal doesn't choose a healer, just tank/damage
-			yellOrbOfCorrosion:Yell(1, 1, 1)
+			yellOrbOfCorrosion:Yell(1, DBM_CORE_ORB, 1)
 		else
-			yellOrbOfCorrosion:Yell(3, 3, 3)
+			yellOrbOfCorrosion:Yell(3, DBM_CORE_ORB, 3)
 		end
 	end
 end
@@ -670,7 +682,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		else
 			timerFetidRotCD:Start(12, UnitGUID(uId))
 		end
-	elseif spellId == 228728 then--Tentacle strike activating
-		DBM:Debug("Tentacle Strike Activating", 2)
 	end
 end
