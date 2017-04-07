@@ -641,8 +641,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			self:Unschedule(showConjunction)
 			self.vb.grandConCount = 0
 			timerIcyEjectionCD:Start(15, 1)
-			timerConjunctionCD:Start(24.7, 1)
-			countdownConjunction:Start(24.7)
+			timerConjunctionCD:Start(24, 1)
+			countdownConjunction:Start(24)
 		else
 			timerIcyEjectionCD:Start(23.3, 1)
 		end
