@@ -632,7 +632,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 --		timerCoronalEjectionCD:Stop()
 		timerConjunctionCD:Stop()
 		countdownConjunction:Cancel()
-		timerGravPullCD:Start(30)
+		timerGravPullCD:Start(28.7)
 		if not self:IsEasy() then
 			timerFrigidNovaCD:Start(49, 1)
 			countdownFrigidNova:Start(49)
@@ -641,8 +641,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			self:Unschedule(showConjunction)
 			self.vb.grandConCount = 0
 			timerIcyEjectionCD:Start(15, 1)
-			timerConjunctionCD:Start(27, 1)
-			countdownConjunction:Start(27)
+			timerConjunctionCD:Start(24.7, 1)
+			countdownConjunction:Start(24.7)
 		else
 			timerIcyEjectionCD:Start(23.3, 1)
 		end
