@@ -85,7 +85,7 @@ local timerOrbOfCorruptionCD		= mod:NewNextTimer(25, 229119, "OrbsTimerText", ni
 local timerTaintOfSeaCD				= mod:NewCDTimer(14.5, 228088, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
 local timerBilewaterBreathCD		= mod:NewNextCountTimer(40, 227967, 21131, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--On for everyone though so others avoid it too
 local timerTentacleStrikeCD			= mod:NewNextCountTimer(30, 228730, nil, nil, nil, 5)
---local timerTentacleStrike			= mod:NewCastSourceTimer(6, 228730, nil, nil, nil, 5)
+local timerTentacleStrike			= mod:NewCastSourceTimer(6, 228730, nil, nil, nil, 5)
 local timerExplodingOozes			= mod:NewCastTimer(20.5, 227992, nil, nil, nil, 2, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Two: From the Mists (65%)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -163,6 +163,7 @@ mod.vb.phase = 1
 mod.vb.rottedPlayers = 0
 mod.vb.orbCount = 0
 mod.vb.furyOfMawCount = 0
+mod.vb.tentacleSetCount = 0
 mod.vb.tentacleCount = 0
 mod.vb.taintCount = 0
 mod.vb.taintIcon = 4
@@ -175,6 +176,7 @@ function mod:OnCombatStart(delay)
 	self.vb.rottedPlayers = 0
 	self.vb.orbCount = 1
 	self.vb.furyOfMawCount = 0
+	self.vb.tentacleSetCount = 0
 	self.vb.tentacleCount = 0
 	self.vb.taintCount = 0
 	self.vb.taintIcon = 4
@@ -551,37 +553,44 @@ end
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg:find("inv_misc_monsterhorn_03") then
 		if self:AntiSpam(20, 2) then
-			self.vb.tentacleCount = self.vb.tentacleCount + 1
+			self.vb.tentacleCount = 0
+			self.vb.tentacleSetCount = self.vb.tentacleSetCount + 1
 			if self:IsEasy() then
-				timerTentacleStrikeCD:Start(40, self.vb.tentacleCount+1)
+				timerTentacleStrikeCD:Start(40, self.vb.tentacleSetCount+1)
 			elseif self:IsMythic() then
-				timerTentacleStrikeCD:Start(35, self.vb.tentacleCount+1)
-				local text = mythicTentacleSpawns[self.vb.tentacleCount]
+				timerTentacleStrikeCD:Start(35, self.vb.tentacleSetCount+1)
+				local text = mythicTentacleSpawns[self.vb.tentacleSetCount]
 				if text then
 					specWarnTentacleStrike:Show(text)
 				else
 					specWarnTentacleStrike:Show(DBM_CORE_UNKNOWN)
 				end
 			else
-				timerTentacleStrikeCD:Start(42.5, self.vb.tentacleCount+1)
+				timerTentacleStrikeCD:Start(42.5, self.vb.tentacleSetCount+1)
 			end
 		end
 		if msg:find(L.near) then
+			self.vb.tentacleCount = self.vb.tentacleCount + 1
 			if not self:IsMythic() then
 				specWarnTentacleStrike:Show(DBM_CORE_FRONT)
 			end
-			timerTentacleStrike:Start(DBM_CORE_FRONT)
+			local subtext = self:IsMythic() and DBM_CORE_FRONT.." ("..self.vb.tentacleCount..")" or DBM_CORE_FRONT
+			timerTentacleStrike:Start(subtext)
 		elseif msg:find(L.far) then
+			self.vb.tentacleCount = self.vb.tentacleCount + 1
 			if not self:IsMythic() then
 				specWarnTentacleStrike:Show(DBM_CORE_BACK)
 			end
-		--timerTentacleStrike:Start(DBM_CORE_BACK)
+			local subtext = self:IsMythic() and DBM_CORE_BACK.." ("..self.vb.tentacleCount..")" or DBM_CORE_BACK
+			timerTentacleStrike:Start(subtext)
 		--Backup for the like 8 languages dbm doesn't have translators for
 		else
+			self.vb.tentacleCount = self.vb.tentacleCount + 1
 			if not self:IsMythic() then
 				specWarnTentacleStrike:Show(DBM_CORE_UNKNOWN)
 			end
-			--timerTentacleStrike:Start(DBM_CORE_UNKNOWN)
+			local subtext = self:IsMythic() and DBM_CORE_UNKNOWN.." ("..self.vb.tentacleCount..")" or DBM_CORE_UNKNOWN
+			timerTentacleStrike:Start(subtext)
 		end
 	end
 end
