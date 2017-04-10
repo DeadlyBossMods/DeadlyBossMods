@@ -85,7 +85,7 @@ local timerOrbOfCorruptionCD		= mod:NewNextTimer(25, 229119, "OrbsTimerText", ni
 local timerTaintOfSeaCD				= mod:NewCDTimer(14.5, 228088, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
 local timerBilewaterBreathCD		= mod:NewNextCountTimer(40, 227967, 21131, nil, nil, 5, nil, DBM_CORE_TANK_ICON)--On for everyone though so others avoid it too
 local timerTentacleStrikeCD			= mod:NewNextCountTimer(30, 228730, nil, nil, nil, 5)
-local timerTentacleStrike			= mod:NewCastSourceTimer(6, 228730, nil, nil, nil, 5)
+--local timerTentacleStrike			= mod:NewCastSourceTimer(6, 228730, nil, nil, nil, 5)
 local timerExplodingOozes			= mod:NewCastTimer(20.5, 227992, nil, nil, nil, 2, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Two: From the Mists (65%)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
@@ -575,13 +575,13 @@ function mod:RAID_BOSS_EMOTE(msg)
 			if not self:IsMythic() then
 				specWarnTentacleStrike:Show(DBM_CORE_BACK)
 			end
-		timerTentacleStrike:Start(DBM_CORE_BACK)
+		--timerTentacleStrike:Start(DBM_CORE_BACK)
 		--Backup for the like 8 languages dbm doesn't have translators for
 		else
 			if not self:IsMythic() then
 				specWarnTentacleStrike:Show(DBM_CORE_UNKNOWN)
 			end
-			timerTentacleStrike:Start(DBM_CORE_UNKNOWN)
+			--timerTentacleStrike:Start(DBM_CORE_UNKNOWN)
 		end
 	end
 end
