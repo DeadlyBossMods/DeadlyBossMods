@@ -207,7 +207,6 @@ L.CountdownVoice2			= "Définir la deuxième voix pour les comptes à rebours"
 L.CountdownVoice3			= "Définir la troisième voix" --shortened to avoid overlap in game
 L.VoicePackChoice			= "Définir le Pack de voix pour les Alertes Vocales"
 L.Area_CountdownOptions		= "Options des Comptes à rebours"
-L.ShowCountdownText			= "Afficher le texte du compte à rebours lors des comptes à rebours de la voix principale" --might be possible to make it shorter
 L.Area_VoicePackOptions		= "Options des Packs de voix (Pack de voix tiers)"
 L.SpecWarn_NoSoundsWVoice	= "Ne pas jouer d'alerte spéciale s'il y a déjà une alerte vocale"
 L.SWFNever					= "Jamais"

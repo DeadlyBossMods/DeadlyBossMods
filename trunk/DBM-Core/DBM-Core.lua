@@ -101,7 +101,6 @@ DBM.DefaultOptions = {
 	ChosenVoicePack = "None",
 	VoiceOverSpecW2 = "DefaultOnly",
 	AlwaysPlayVoice = false,
-	ShowCountdownText = false,
 	Enabled = true,
 	ShowWarningsInChat = true,
 	ShowSWarningsInChat = true,
@@ -585,10 +584,6 @@ local function stripServerName(cap)
 		cap = Ambiguate(cap, "short")
 	end
 	return cap
-end
-
-local function countDownTextDelay(timer)
-	TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer+1, timer+1)
 end
 
 --------------
@@ -2318,8 +2313,6 @@ do
 			self:Unschedule(loopTimer)
 			fakeMod.countdown:Cancel()
 			self.Bars:CancelBar(text)
-			self:Unschedule(countDownTextDelay)
-			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
 			return
 		end
 		if sender and ignore[sender] then return end
@@ -2354,16 +2347,6 @@ do
 			if not self.Options.DontPlayPTCountdown then
 				fakeMod.countdown:Cancel()
 				fakeMod.countdown:Start(time)
-			end
-			if not self.Options.DontShowPTCountdownText then
-				self:Unschedule(countDownTextDelay)
-				TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
-				local threshold = self.Options.PTCountThreshold
-				if time > threshold then
-					self:Schedule(time-threshold, countDownTextDelay, threshold)
-				else
-					TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, time, time)
-				end
 			end
 		end
 		if loop then
@@ -4008,7 +3991,6 @@ do
 			dummyMod.countdown:Cancel()
 		end
 		if not DBM.Options.DontShowPTCountdownText then
-			DBM:Unschedule(countDownTextDelay)
 			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")--easiest way to nil out timers on TimerTracker frame. This frame just has no actual star/stop functions
 		end
 		dummyMod.text:Cancel()
@@ -8910,28 +8892,12 @@ do
 		end
 	end
 
-	local function showCountdown(timer)
-		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer+1, timer+1)
-	end
-
-	local function stopCountdown()
-		TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
-	end
-
 	function countdownProtoType:Start(timer, count)
 		if not self.option or self.mod.Options[self.option] then
 			timer = timer or self.timer or 10
 			timer = timer < 2 and self.timer or timer
 			count = count or self.count or 5
 			if timer <= count then count = floor(timer) end
-			if DBM.Options.ShowCountdownText and not (self.textDisabled or self.alternateVoice) and self.type ~= "Countout" then
-				stopCountdown()
-				if timer >= count then
-					DBM:Schedule(timer-count, showCountdown, count)
-				else
-					DBM:Schedule(timer%1, showCountdown, floor(timer))
-				end
-			end
 			if DBM.Options.DontPlayCountdowns then return end
 			if not path1 or not path2 or not path3 then
 				DBM:Debug("Voice cache not built at time of countdownProtoType:Start. On fly caching.")
@@ -8977,10 +8943,6 @@ do
 	end
 
 	function countdownProtoType:Cancel()
-		if DBM.Options.ShowCountdownText and not self.textDisabled then
-			DBM:Unschedule(showCountdown)
-			stopCountdown()
-		end
 		self.mod:Unschedule(self.Start, self)
 		self.sound5:Cancel()
 	end
@@ -10334,14 +10296,6 @@ do
 			if not DBM.Options.DontPlayPTCountdown then
 				self.countdown:Start(timer)
 			end
-			if not DBM.Options.DontShowPTCountdownText then
-				local threshold = DBM.Options.PTCountThreshold
-				if timer > threshold then
-					DBM:Schedule(timer-threshold, countDownTextDelay, threshold)
-				else
-					TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
-				end
-			end
 		end
 	end
 
@@ -10358,9 +10312,7 @@ do
 			self.warning2:Cancel()
 		end
 		if self.countdown then
-			DBM:Unschedule(countDownTextDelay)
 			self.countdown:Cancel()
-			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
 		end
 		self.bar:Stop()
 	end
