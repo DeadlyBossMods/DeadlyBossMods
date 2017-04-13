@@ -79,7 +79,7 @@ local timerPlasmaSpheresCD			= mod:NewNextTimer(55, 218774, 104923, nil, nil, 1)
 local timerFlareCD					= mod:NewCDTimer(8.5, 218806, nil, "Melee", nil, 5, nil, DBM_CORE_TANK_ICON)--Exception to 35, 40, 50 rule
 --Stage 3: Pure Forms
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
-local timerToxicSporesCD			= mod:NewNextTimer(8.5, 219049, nil, nil, nil, 3)--Exception to 35, 40, 50 rule
+local timerToxicSporesCD			= mod:NewCDTimer(8, 219049, nil, nil, nil, 3)--Exception to 35, 40, 50 rule
 local timerGraceOfNatureCD			= mod:NewNextTimer(48, 218927, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--48-51
 local timerCoNCD					= mod:NewNextTimer(50, 218809, nil, nil, nil, 3)
 mod:AddTimerLine(PLAYER_DIFFICULTY6)
