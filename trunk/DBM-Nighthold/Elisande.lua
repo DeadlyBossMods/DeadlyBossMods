@@ -152,11 +152,11 @@ local mythicP2FastElementalTimers = {8, 51}--Mythic Feb 5
 local mythicP3FastElementalTimers = {8, 36, 44}--Mythic Feb 5
 local heroicRingTimers = {34, 40, 10, 62, 9, 45}--Heroic Jan 19
 local normalRingTimers = {34, 30, 75, 50}--Normal Feb 8
-local mythicRingTimers = {30, 39, 15, 30, 19, 10, 25, 9, 10, 10}--Mythic Feb 5 (figure out that 25 in middle of 10s)
+local mythicRingTimers = {30, 39, 14.7, 30, 19, 10, 25, 9, 10, 10}--Mythic Feb 5 (figure out that 25 in middle of 10s)
 local lfrRingTimers = {21, 30, 37, 35}
 local heroicSingularityTimers = {10, 22, 36.0, 57, 65}--Heroic Jan 18
 local normalSingularityTimers = {10, 22, 36.0, 46}--Normal Feb 2
-local mythicSingularityTimers = {10, 55, 50, 45}--Mythic Feb 5th
+local mythicSingularityTimers = {10, 54, 50, 45}--Mythic Feb 5th
 local lfrSingularityTimers = {10, 15, 57, 30}--LFR April 2nd
 --Only exist in phase 2
 local heroicBeamTimers = {72, 57, 60}--Heroic Jan 18
@@ -213,8 +213,8 @@ function mod:OnCombatStart(delay)
 	--timerAblationCD:Start(8.5-delay)--Verify/tweak
 	if self:IsMythic() then
 		timerTimeElementalsCD:Start(8-delay, FAST)
-		timerSpanningSingularityCD:Start(56-delay, 2)
-		countdownSpanningSingularity:Start(56)
+		timerSpanningSingularityCD:Start(54-delay, 2)
+		countdownSpanningSingularity:Start(54)
 		timerArcaneticRing:Start(30-delay, 1)
 		countdownArcaneticRing:Start(30-delay)
 	elseif self:IsLFR() then
