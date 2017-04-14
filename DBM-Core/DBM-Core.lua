@@ -5115,6 +5115,7 @@ do
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if timerRequestInProgress then return end--do not start ieeu combat if timer request is progressing. (not to break Timer Recovery stuff)
 		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
+			self:Debug("INSTANCE_ENCOUNTER_ENGAGE_UNIT event fired for "..LastInstanceMapID, 2)
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type:find("combat") and isBossEngaged(v.multiMobPullDetection or v.mob) then
 					self:StartCombat(v.mod, 0, "IEEU")
@@ -5393,8 +5394,12 @@ do
 		cSyncSender = {}
 		cSyncReceived = 0
 		if not checkEntry(inCombat, mod) then
+			self:Debug("StartCombat called", 3)
 			if not mod.Options.Enabled then return end
-			if not mod.combatInfo then return end
+			if not mod.combatInfo then
+				self:Debug("StartCombat failed because no combatInfo", 3)
+				return
+			end
 			if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
 				return
 			end
