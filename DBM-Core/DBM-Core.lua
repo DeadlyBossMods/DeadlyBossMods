@@ -5394,12 +5394,8 @@ do
 		cSyncSender = {}
 		cSyncReceived = 0
 		if not checkEntry(inCombat, mod) then
-			self:Debug("StartCombat called", 3)
 			if not mod.Options.Enabled then return end
-			if not mod.combatInfo then
-				self:Debug("StartCombat failed because no combatInfo", 3)
-				return
-			end
+			if not mod.combatInfo then return end
 			if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
 				return
 			end
