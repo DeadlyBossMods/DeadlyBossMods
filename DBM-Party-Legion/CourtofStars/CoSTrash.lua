@@ -221,7 +221,11 @@ do
 				local clue = clues[GetGossipText()]
 				if clue and not hints[clue] then
 					CloseGossip()
-					SendChatMessage(hintTranslations[clue], "PARTY")
+					if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
+						SendChatMessage(hintTranslations[clue], "INSTANCE_CHAT")
+					elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
+						SendChatMessage(hintTranslations[clue], "PARTY")
+					end
 					hints[clue] = true
 					self:SendSync("CoS", clue)
 					DBM.InfoFrame:Show(5, "function", updateInfoFrame)
