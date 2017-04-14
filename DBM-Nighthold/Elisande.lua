@@ -473,8 +473,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			if self:IsMythic() then--TODO: Fine tune these as they may be hit or miss by some seconds Hard to measure precise phase changes from WCL
 				timerEpochericOrbCD:Start(24, 1)
 				countdownOrbs:Start(24)
-				timerArcaneticRing:Start(43, 1)--Verified Jan 18
-				countdownArcaneticRing:Start(43.7)
+				timerArcaneticRing:Start(41.9, 1)--Verified Jan 18
+				countdownArcaneticRing:Start(41.9)
 				timerDelphuricBeamCD:Start(67, 1)--Cast SUCCESS
 				countdownSpanningSingularity:Start(10)
 			elseif self:IsHeroic() then
