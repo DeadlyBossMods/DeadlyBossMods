@@ -273,7 +273,7 @@ L.DontShowPTNoID			= "같은 지역에 없는 사용자가 보낸 풀링 타이�
 L.DontShowPT				= "풀링/휴식 타이머 표시 안함"
 L.DontShowPTText			= "풀링/휴식 알림 텍스트 표시 안함"
 L.DontPlayPTCountdown		= "풀링/휴식/전투/사용자 지정 초읽기 음성 재생 안함"
-L.DontShowPTCountdownText	= "풀링/휴식/전투/사용자 지정 초읽기 숫자 표시 안함"
+L.DontShowPTCountdownText	= "풀링 초읽기 숫자 표시 안함"
 L.PT_Threshold				= "휴식/전투/사용자 지정 타이머 초읽기 숫자 표시 안함: %d초 까지"
 
 L.Panel_HideBlizzard		= "블리자드 기능 끄기 및 숨김"
