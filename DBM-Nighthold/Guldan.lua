@@ -526,7 +526,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerFlamesofSargerasCD:Start(18.9, (self.vb.flamesSargCast).."-"..2)
 			timerFlamesofSargerasCD:Start(58.5, (self.vb.flamesSargCast+1).."-"..1)
 		end
-	elseif spellId == 212258 and self.vb.phase > 1.5 then--Ignore phase 1 adds with this cast
+	elseif spellId == 212258 and (self:IsMythic() or self.vb.phase > 1.5) then--Ignore phase 1 adds with this cast
 		self.vb.handofGuldanCast = self.vb.handofGuldanCast + 1
 		specWarnHandofGuldan:Show()
 		voiceHandofGuldan:Play("bigmob")
