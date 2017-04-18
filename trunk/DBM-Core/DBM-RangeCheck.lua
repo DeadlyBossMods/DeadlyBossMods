@@ -633,6 +633,10 @@ do
 				if rEnabled then
 					local playerX, playerY = UnitPosition("player")
 					local x, y = UnitPosition(uId)
+					if not playerX and not playerY then
+						rangeCheck:Hide(true)
+						return
+					end
 					local cy = x - playerX
 					local cx = y - playerY
 					dot.x = -cx
