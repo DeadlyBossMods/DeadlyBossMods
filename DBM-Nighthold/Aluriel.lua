@@ -103,7 +103,7 @@ local timerArmageddon				= mod:NewCastTimer(33, 213568, nil, nil, nil, 2, nil, D
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerFelSoulCD				= mod:NewNextTimer(15, 230951, nil, nil, nil, 1, nil, DBM_CORE_HEROIC_ICON)
 local timerFelSoul					= mod:NewBuffActiveTimer(45, 230951, nil, nil, nil, 6)
-local timerDecimateCD				= mod:NewCDTimer(17, 230504, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--17-20 (Tank timer by default, holy/ret/etc that's doing taunting will have to enable by default)
+local timerDecimateCD				= mod:NewCDTimer(16.1, 230504, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--17-20 (Tank timer by default, holy/ret/etc that's doing taunting will have to enable by default)
 local timerFelStompCD				= mod:NewNextTimer(25, 230414, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
 local timerFelLashCD				= mod:NewNextCountTimer(25, 230403, nil, nil, nil, 2, nil, DBM_CORE_HEROIC_ICON)
 
