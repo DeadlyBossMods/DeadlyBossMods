@@ -9,6 +9,7 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 mod:SetHotfixNoticeRev(16164)
 
 mod:RegisterCombat("combat")
+mod:SetWipeTime(30)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 206219 206220 206514 206675 206840 207938 104534 208545 209270 211152 208672 206744 206883 206221 206222 221783 211439 220957 227008 221408 221486",
@@ -270,6 +271,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(bondsIcons)
 	table.wipe(flamesIcons)
 	if self:IsMythic() then
+		self:SetCreatureID(104154, 104537)
 		timerBondsofFelCD:Start(8.4-delay, 1)
 		countdownBondsOfFel:Start(8.4)
 		timerDzorykxCD:Start(17-delay)
@@ -280,6 +282,7 @@ function mod:OnCombatStart(delay)
 		countdownLiquidHellfire:Start(36)
 		self:SetCreatureID(104154, 999999)--Placeholder until I know id of mythic enemy
 	else
+		self:SetCreatureID(104154)
 		timerLiquidHellfireCD:Start(2-delay, 1)
 		timerFelEffluxCD:Start(11-delay, 1)
 		timerFelLordKurazCD:Start(11-delay)
