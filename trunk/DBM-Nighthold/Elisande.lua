@@ -213,8 +213,8 @@ function mod:OnCombatStart(delay)
 	--timerAblationCD:Start(8.5-delay)--Verify/tweak
 	if self:IsMythic() then
 		timerTimeElementalsCD:Start(8-delay, FAST)
-		timerSpanningSingularityCD:Start(54-delay, 2)
-		countdownSpanningSingularity:Start(54)
+		timerSpanningSingularityCD:Start(53.7-delay, 2)
+		countdownSpanningSingularity:Start(53.7)
 		timerArcaneticRing:Start(30-delay, 1)
 		countdownArcaneticRing:Start(30-delay)
 	elseif self:IsLFR() then
