@@ -156,7 +156,7 @@ local mythicRingTimers = {30, 39, 14.7, 30, 19, 10, 25, 9, 10, 10}--Mythic Feb 5
 local lfrRingTimers = {21, 30, 37, 35}
 local heroicSingularityTimers = {10, 22, 36.0, 57, 65}--Heroic Jan 18
 local normalSingularityTimers = {10, 22, 36.0, 46}--Normal Feb 2
-local mythicSingularityTimers = {10, 54, 49.8, 45}--Mythic Feb 5th
+local mythicSingularityTimers = {10, 53.7, 49.8, 45}--Mythic April 20th
 local lfrSingularityTimers = {10, 15, 57, 30}--LFR April 2nd
 --Only exist in phase 2
 local heroicBeamTimers = {72, 57, 60}--Heroic Jan 18
