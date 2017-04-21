@@ -670,6 +670,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		end
 		--Timers above started in earliest possible place
 		--Timer started at jump though has to be delayed to avoid phase 1 ClearAllDebuffs events
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end
 	elseif spellId == 227882 then--Jump into Battle (phase 2 begin)
 		self.vb.phase = 2
 		if not self:IsEasy() then
