@@ -509,13 +509,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				countdownArcaneticRing:Start(43)
 				timerConflexiveBurstCD:Start(48, 1)
 				countdownConflexiveBurst:Start(48)
-				timerPermaliativeTormentCD:Start(74)--Updated Jan 18 Heroic
+				timerPermaliativeTormentCD:Start(74, 1)--Updated Jan 18 Heroic
 			elseif self:IsHeroic() then
 				timerEpochericOrbCD:Start(27, 1)
 				countdownOrbs:Start(27)
 				specWarnEpochericOrb:Schedule(27)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
 				voiceEpochericOrb:Schedule(27, "161612")
-				timerPermaliativeTormentCD:Start(33)
+				timerPermaliativeTormentCD:Start(33, 1)
 				timerArcaneticRing:Start(45.7, 1)--Verified Jan 18
 				countdownArcaneticRing:Start(45.7)
 				timerConflexiveBurstCD:Start(57.7, 1)
@@ -523,7 +523,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			elseif self:IsLFR() then
 				timerDelphuricBeamCD:Start(23.7, 1)--Special exception
 			else--Normal
-				timerPermaliativeTormentCD:Start(33)
+				timerPermaliativeTormentCD:Start(33, 1)
 				timerConflexiveBurstCD:Start(57.7, 1)
 				countdownConflexiveBurst:Start(57.7)
 			end
