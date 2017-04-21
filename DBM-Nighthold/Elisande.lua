@@ -471,8 +471,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			voicePhaseChange:Play("ptwo")
 			timerAblatingExplosionCD:Start(22)--Verfied unchanged Dec 13 Heroic
 			if self:IsMythic() then--TODO: Fine tune these as they may be hit or miss by some seconds Hard to measure precise phase changes from WCL
-				timerEpochericOrbCD:Start(24, 1)
-				countdownOrbs:Start(24)
+				timerEpochericOrbCD:Start(23.8, 1)
+				countdownOrbs:Start(23.8)
 				timerArcaneticRing:Start(41.9, 1)--Verified Jan 18
 				countdownArcaneticRing:Start(41.9)
 				timerDelphuricBeamCD:Start(67, 1)--Cast SUCCESS
@@ -505,11 +505,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				countdownOrbs:Start(24)
 				specWarnEpochericOrb:Schedule(24)--Spawning isn't in combat log in phase 3, only landing, so need to use schedule for warnings
 				voiceEpochericOrb:Schedule(24, "161612")
-				timerArcaneticRing:Start(43, 1)--Verified Jan 18
-				countdownArcaneticRing:Start(43)
+				timerArcaneticRing:Start(42, 1)--Verified Jan 18
+				countdownArcaneticRing:Start(42)
 				timerConflexiveBurstCD:Start(48, 1)
 				countdownConflexiveBurst:Start(48)
-				timerPermaliativeTormentCD:Start(74, 1)--Updated Jan 18 Heroic
+				timerPermaliativeTormentCD:Start(73.7, 1)--Updated April 21 Mythic
 			elseif self:IsHeroic() then
 				timerEpochericOrbCD:Start(27, 1)
 				countdownOrbs:Start(27)
