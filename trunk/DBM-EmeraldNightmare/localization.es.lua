@@ -29,6 +29,10 @@ L:SetOptionLocalization({
 	Adds				= "Cantidad de esbirros de cada tipo"
 })
 
+L:SetMiscLocalization({
+	AddSpawnNotice		= "Como los jugadores tienen un nivel de equipo cada vez mayor y por tanto avanzan más rápido en el combate, el juego ajusta automáticamente la frecuencia con que aparecen los esbirros. Es posible que los temporizadores de aparición de esbirros de este jefe no reflejen el tiempo exacto."
+})
+
 -----------------------
 -- Elerethe Renferal --
 -----------------------
