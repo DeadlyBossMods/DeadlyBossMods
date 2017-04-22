@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "koKR" then return end
+if GetLocale() ~= "koKR" then return end
 local L
 
 ------------
@@ -61,8 +61,8 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("d287")
 
 L:SetWarningLocalization({
-	specWarnBrew		= "가방에 있는 맥주 사용!",
-	specWarnBrewStun	= "맥주를 미리 사용하셔야 기절하지 않습니다!"
+	specWarnBrew		= "다른 맥주가 넘어오기 전에 가방에 있는 맥주를 사용하세요!",
+	specWarnBrewStun	= "힌트: 기절했습니다. 다음엔 맥주를 꼭 마시세요!"
 })
 
 L:SetOptionLocalization({
@@ -72,7 +72,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	YellBarrel			= "저에게 맥주통!"
+	YellBarrel			= "나에게 맥주통!"
 }
 
 ----------------
@@ -85,7 +85,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	NormalizeVolume			= "가을 축제 지역에서 소음 문제 해결을 위해 대화 음량을 배경음 음량에 맞추어 자동 조절하기(배경음이 설정되지 않았을 경우 대화 음량은 음소거 됩니다.)"
+	NormalizeVolume			= "가을 축제 지역에선 자동으로 대화 음량이 배경음 음량에 맞게 평준화되어 소음을 해소합니다. (배경음이 설정되지 않았을 경우 대화 음량은 음소거 됩니다.)"
 })
 
 -----------------------------
@@ -129,7 +129,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnTotalAdds	= "총공격 전까지 생성된 적 수 : %d",
+	warnTotalAdds	= "총공격 전까지 생성된 적 수: %d",
 	specWarnWave	= "총공격!"
 })
 
@@ -145,4 +145,13 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	MassiveWave		= "좀비의 총공격이 시작됐습니다!"
+})
+
+--------------------------
+--  Demonic Invasions  --
+--------------------------
+L = DBM:GetModLocalization("DemonInvasions")
+
+L:SetGeneralLocalization({
+	name = "악마 침공"
 })
