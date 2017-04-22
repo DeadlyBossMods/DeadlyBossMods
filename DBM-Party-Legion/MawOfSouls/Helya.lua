@@ -53,8 +53,8 @@ function mod:SPELL_CAST_START(args)
 		timerBreathCD:Start()
 		countdownBreath:Start()
 	elseif spellId == 202088 then
-		specWarnBrackwaterBarrage:Schedule(5)
-		voiceBrackwaterBarrage:Schedule(5, "breathsoon")
+		specWarnBrackwaterBarrage:Show()
+		voiceBrackwaterBarrage:Play("breathsoon")
 		--timerBreathCD:Start()
 		--countdownBreath:Start()
 	elseif spellId == 198495 then
