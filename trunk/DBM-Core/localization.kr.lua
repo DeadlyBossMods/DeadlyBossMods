@@ -19,7 +19,7 @@ DBM_CORE_LOAD_MOD_DISABLED			= "%s|1이;가; 설치는 돼있지만 켜져있질
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s|1이;가; 설치는 돼있지만 켜져있질 않습니다. 직접 켜기 전까진 모드들이 로딩되지 않습니다."
 
 DBM_CORE_WHATS_NEW					= "새로 추가된 사항: '대규모 패치'시 옵션 설정을 강제 업데이트 또는 사용 안함 상태로 만드는 기능이 대규모 패치가 아닌 버전에도 잘못 발동되던 버그를 수정했습니다. DBM은 더이상 사용자 설정과 관계없이 부서진 해안 동영상을 중단시키지 않을 것입니다. 악마 침공 모드가 추가됐습니다. 자잘한 텍스트 오류 수정"
-DBM_CORE_WHATS_NEW_LINK				= "안내: 유닛 위치에 의존하는 다수의 기능들이 제한되었습니다. 이유가 궁금하다면 |HDBM:forumsnews|h|cff3588ff이곳을 클릭|r해서 알아보세요"
+DBM_CORE_WHATS_NEW_LINK				= "DBM은 음성팩과 함께 이용하는 걸 권장하고 있습니다. 그 이유와 사용 방법에 대한 도움말은 |HDBM:forumsnews|h|cff3588ff이곳을 클릭|r해서 알아보세요"
 
 --Post Patch 7.1
 DBM_CORE_NO_RANGE					= "거리 레이더를 인스턴스 던전에서 사용할 수 없습니다. 예전의 텍스트 방식 거리창으로 대체됩니다."
