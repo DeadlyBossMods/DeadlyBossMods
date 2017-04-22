@@ -246,6 +246,8 @@ DBM_ERROR_NO_PERMISSION				= "No tienes permiso para hacer eso."
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Ocultar marco de salud"
 
 --Common Locals
+DBM_NEXT							= "Siguiente %s"
+DBM_COOLDOWN						= "%s TdR"
 DBM_CORE_UNKNOWN					= "Desconocido"--UNKNOWN which is "Unknown" (does u vs U matter?)
 DBM_CORE_LEFT						= "Izquierda"
 DBM_CORE_RIGHT						= "Derecha"
@@ -256,6 +258,8 @@ DBM_CORE_INTERMISSION				= "Interfase"--No blizz global for this, and will proba
 DBM_CORE_ORB						= "Orbe"
 DBM_CHEST							= "Cofre"--As in Treasure 'Chest'. Not Chest as in body part.
 DBM_NO_DEBUFF						= "Sin %s"--For use in places like info frame where you put "Not Spellname"
+DBM_ALLY							= "un aliado"--Such as "Move to Ally"
+DBM_ADDS							= "esbirros"--Such as "Move to Ally"
 --Common Locals end
 
 DBM_CORE_BREAK_USAGE				= "El temporizador de descanso no puede durar más de 60 minutos. Asegúrate de que has escrito el tiempo en minutos y no en segundos."
@@ -358,8 +362,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soakpos			= "Mostrar aviso especial (con posici�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target 			= "Mostrar aviso especial cuando $spell:%s afecte a un jugador"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.targetcount 	= "Mostrar aviso especial (con contador) cuando $spell:%s afecte a un jugador"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.defensive 		= "Mostrar aviso especial para usar mitigaciones para $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt 			= "Mostrar aviso especial para provocar cuando el otro tanque sea afectado por $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 			= "Mostrar aviso especial cuando un jugador cercano sea afectado por $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.taunt 			= "Mostrar aviso especial para provocar cuando $spell:%s afecte al otro tanque"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 			= "Mostrar aviso especial cuando $spell:%s afecte a un jugador cercano"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 			= "Mostrar aviso especial para salir de $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge 			= "Mostrar aviso especial para esquivar $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.moveaway		= "Mostrar aviso especial para alejarse de los demás jugadores durante $spell:%s"
@@ -424,7 +428,7 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Reproducir sonido de cuenta atrás para 
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Reproducir sonido de contador para la duración de $spell:%s"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.yell		= "Gritar cuando te afecte $spell:%s"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.count	= "Gritar (con contador) cuando te afecte $spell:%s"
-DBM_CORE_AUTO_YELL_OPTION_TEXT.fade		= "Gritar (con tiempo de reutilización) cuando $spell:%s esté a punto de expirar"
+DBM_CORE_AUTO_YELL_OPTION_TEXT.fade		= "Gritar (con duración restante) cuando $spell:%s esté a punto de expirar"
 DBM_CORE_AUTO_YELL_OPTION_TEXT.position	= "Gritar (con posición) cuando te afecte $spell:%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.yell		= "¡%s en " .. UnitName("player") .. "!"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT.count		= "¡%s en " .. UnitName("player") .. "! (%%d)"
