@@ -4022,11 +4022,11 @@ do
 						top1value1:SetPoint("TOPLEFT", top1text1, "TOPLEFT", 80, 0)
 						top1value2:SetPoint("TOPLEFT", top1text2, "TOPLEFT", 80, 0)
 						top1value3:SetPoint("TOPLEFT", top1text3, "TOPLEFT", 80, 0)
-						--Set Dims
-						Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*5*singleline))
-						area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*5 )
-						singleline = singleline + 1
 					end
+					--Set Dims
+					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*5*singleline))
+					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*5 )
+					singleline = singleline + 1
 				elseif mod.addon.type == "PARTY" or mod.addon.type == "SCENARIO" then--If party or scenario instance have no heroic, we should use oneFormat.
 					statsType = 1
 					if mod.addon.hasChallenge then--Should never have an "Only normal" type
