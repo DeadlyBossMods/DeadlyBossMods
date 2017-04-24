@@ -9,8 +9,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 233155 233206 234817",
---	"SPELL_AURA_APPLIED 233963",
+	"SPELL_CAST_START 233155 233206 234817 233963",
 	"SPELL_AURA_REMOVED 233206",
 	"UNIT_AURA_UNFILTERED",
 	"UNIT_SPELLCAST_SUCCEEDED"--All available unitIDs, no bossN for shadows
@@ -33,9 +32,9 @@ local specWarnCarrionSwarm			= mod:NewSpecialWarningSpell(233155, "Tank", nil, n
 local specWarnDemonicUpheaval		= mod:NewSpecialWarningMoveAway(233963, nil, nil, nil, 1, 2)
 local yellDemonicUpheaval			= mod:NewYell(233963)
 
-local timerDarkSolitudeCD			= mod:NewAITimer(8.5, 234817, nil, nil, nil, 3)
+local timerDarkSolitudeCD			= mod:NewCDTimer(8.5, 234817, nil, nil, nil, 3)
 local timerCarrionSwarmCD			= mod:NewCDTimer(18, 233155, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerDemonicUpheavalCD		= mod:NewAITimer(24.2, 233963, nil, nil, nil, 3)
+local timerDemonicUpheavalCD		= mod:NewCDTimer(32, 233963, nil, nil, nil, 3)--32-35
 local timerShadowFadeCD				= mod:NewCDTimer(40, 233206, nil, nil, nil, 6)
 
 local voiceCarrionSwarm				= mod:NewVoice(233155, "Tank")--shockwave
@@ -89,12 +88,7 @@ function mod:SPELL_CAST_START(args)
 			DBM.InfoFrame:SetHeader(GetSpellInfo(234217))
 			DBM.InfoFrame:Show(2, "enemypower", 2, ALTERNATE_POWER_INDEX)
 		end
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	local spellId = args.spellId
-	if spellId == 233963 then
+	elseif spellId == 233963 then
 		timerDemonicUpheavalCD:Start()
 	end
 end
