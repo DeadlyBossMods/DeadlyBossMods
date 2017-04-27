@@ -658,12 +658,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownEyeofGuldan:Cancel()
 		timerHandofGuldanCD:Stop()
 		countdownHandofGuldan:Cancel()
+		timerWindsCD:Start(12, 1)
 		timerWellOfSouls:Start(15)
 		self.vb.eyeCast = 0
 		if self:IsMythic() then
 			self.vb.phase = 2
 			warnPhase2:Show()
-			timerWindsCD:Start(12, 1)
 			timerFlamesofSargerasCD:Start(24.5, "1-1")
 			timerEyeofGuldanCD:Start(35.1, 1)
 			countdownEyeofGuldan:Start(35)
