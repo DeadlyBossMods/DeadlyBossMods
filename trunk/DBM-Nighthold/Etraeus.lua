@@ -109,11 +109,11 @@ local countdownConjunctionFades		= mod:NewCountdownFades("AltTwo15", 205408, nil
 local countdownGravPull				= mod:NewCountdownFades("Alt10", 205984)--Maybe change to everyone if it works like I think
 --Stage One: The Dome of Observation
 --Stage Two: Absolute Zero
-local countdownFrigidNova			= mod:NewCountdown(61.5, 206949)
+local countdownFrigidNova			= mod:NewCountdown(61.5, 206949, nil, nil, 5)
 --Stage Three: A Shattered World
-local countdownFelNova				= mod:NewCountdown(25, 206517)
+local countdownFelNova				= mod:NewCountdown(25, 206517, nil, nil, 5)
 --Stage Four: Inevitable Fate
-local countWorldDevouringForce		= mod:NewCountdown(15, 216909)
+local countWorldDevouringForce		= mod:NewCountdown(15, 216909, nil, nil, 6)
 
 --Base abilities
 local voiceConjunction				= mod:NewVoice(205408)--scatter/find <type>

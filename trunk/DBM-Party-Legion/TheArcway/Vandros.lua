@@ -26,9 +26,9 @@ local warnUnstableMana				= mod:NewTargetAnnounce(203176, 2)
 
 local specWarnTimeSplit				= mod:NewSpecialWarningMove(203833, nil, nil, nil, 1, 2)
 local specWarnForceBomb				= mod:NewSpecialWarningSpell(202974, nil, nil, nil, 2, 2)
-local specWarnBlast					= mod:NewSpecialWarningInterruptCount(203176, "HasInterrupt", nil, nil, 1, 2)
+local specWarnBlast					= mod:NewSpecialWarningInterruptCount(203176, "HasInterrupt", nil, 2, 1, 2)
 local specWarnBlastStacks			= mod:NewSpecialWarningDispel(203176, "MagicDispeller")
-local specWarnTimeLock				= mod:NewSpecialWarningInterrupt(203957, "HasInterrupt", nil, nil, 1, 2)
+local specWarnTimeLock				= mod:NewSpecialWarningInterrupt(203957, "HasInterrupt", nil, 2, 1, 2)
 local specWarnUnstableMana			= mod:NewSpecialWarningMove(203176, nil, nil, nil, 1, 2)
 
 local timerForceBombD				= mod:NewCDTimer(31.8, 202974, nil, nil, nil, 2)
@@ -36,8 +36,8 @@ local timerEvent					= mod:NewBuffFadesTimer(124, 203914, nil, nil, nil, 6)
 
 local voicetimeSplit				= mod:NewVoice(203833)--runaway
 local voiceForceBomb				= mod:NewVoice(202974)--157349 (force nova)
-local voiceBlast					= mod:NewVoice(203176, "HasInterrupt")--kickNr/dispelboss
-local voicetimeLock					= mod:NewVoice(203957, "HasInterrupt")--kickcast
+local voiceBlast					= mod:NewVoice(203176, "HasInterrupt", nil, 2)--kickNr/dispelboss
+local voicetimeLock					= mod:NewVoice(203957, "HasInterrupt", nil, 2)--kickcast
 local voiceUnstableMana				= mod:NewVoice(203176)--runout/keepmove
 
 local countdownEvent				= mod:NewCountdownFades(124, 203914, nil, nil, 10)
