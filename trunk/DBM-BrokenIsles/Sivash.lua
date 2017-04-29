@@ -17,19 +17,36 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
+local warnSubmerge					= mod:NewTargetAnnounce(241433, 2)
 local warnSummonHonorGuard			= mod:NewSpellAnnounce(233968, 3)
 
 local specWarnTidalWave				= mod:NewSpecialWarningDodge(233996, nil, nil, nil, 2, 2)
-local specWarnSubmerge				= mod:NewSpecialWarningDodge(241433, nil, nil, nil, 2, 2)
+local specWarnSubmerge				= mod:NewSpecialWarningDodge(241433, nil, nil, nil, 1, 2)
+local yellSubmerge					= mod:NewYell(241433)
+local specWarnSubmergeNear			= mod:NewSpecialWarningClose(241433, nil, nil, nil, 1, 2)
 
 local timerTidalWaveCD				= mod:NewCDTimer(20.6, 233996, nil, nil, nil, 3)--20.6-24.7
 local timerSummonHonorGuardCD		= mod:NewCDTimer(24, 233968, nil, nil, nil, 1)--24-25
-local timerSubmergeCD				= mod:NewCDTimer(13.3, 241433, nil, nil, nil, 3)--13.3-15.9
+local timerSubmergeCD				= mod:NewCDTimer(12.4, 241433, nil, nil, nil, 3)--13.3-15.9
 
 local voiceTidalWave				= mod:NewVoice(233996)--watchwave
 local voiceSubmerge					= mod:NewVoice(241433)--watchstep
 
 --mod:AddReadyCheckOption(37460, false)
+
+function mod:SubmergeTarget(targetname, uId)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnSubmerge:Show()
+		voiceSubmerge:Play("runout")
+		yellSubmerge:Yell()
+	elseif self:CheckNearby(10, targetname) then
+		specWarnSubmergeNear:Show(targetname)
+		voiceSubmerge:Play("watchstep")
+	else
+		warnSubmerge:Show(targetname)
+	end
+end
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
@@ -55,5 +72,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		specWarnSubmerge:Show()
 		voiceSubmerge:Play("watchstep")
 		timerSubmergeCD:Start()
+		self:BossTargetScanner(UnitGUID(uId), "SubmergeTarget", 0.2, 5)
 	end
 end
