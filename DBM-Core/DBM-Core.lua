@@ -2644,7 +2644,7 @@ do
 				SendAddonMessage("BigWigs", versionQueryString:format(0, fakeBWHash), IsPartyLFG() and "INSTANCE_CHAT" or "RAID")
 				self:Schedule(2, self.RoleCheck, false, self)
 				fireEvent("raidJoin", playerName)
-				if BigWigs and BigWigs.db.profile.raidicon and not self.Options.DontSetIcons then--Both DBM and bigwigs have raid icon marking turned on.
+				if BigWigs and BigWigs.db.profile.raidicon and not self.Options.DontSetIcons and self:GetRaidRank() > 0 then--Both DBM and bigwigs have raid icon marking turned on.
 					self:AddMsg(DBM_CORE_BIGWIGS_ICON_CONFLICT)--Warn that one of them should be turned off to prevent conflict (which they turn off is obviously up to raid leaders preference, dbm accepts either or turned off to stop this alert)
 				end
 			end
@@ -5625,6 +5625,9 @@ do
 					dummyMod.text:Cancel()
 					self.Bars:CancelBar(DBM_CORE_TIMER_PULL)
 					TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
+				end
+				if BigWigs and BigWigs.db.profile.raidicon and not self.Options.DontSetIcons and self:GetRaidRank() > 0 then--Both DBM and bigwigs have raid icon marking turned on.
+					self:AddMsg(DBM_CORE_BIGWIGS_ICON_CONFLICT)--Warn that one of them should be turned off to prevent conflict (which they turn off is obviously up to raid leaders preference, dbm accepts either or turned off to stop this alert)
 				end
 			else
 				self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..name, strFromTime(delay)))
