@@ -31,7 +31,7 @@ DBM_CORE_DYNAMIC_MULTIPLE			= "DBM has disabled multiple features on this fight 
 
 DBM_CORE_LOOT_SPEC_REMINDER			= "Your current spec is %s. Your current loot choice is %s."
 
-DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM has detected that you have raid icons turned on in both BigWigs and DBM. Please disable icons in one of them to avoid conflict with your group leader"
+DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM has detected that you have raid icons turned on in both BigWigs and DBM. Please disable icons in one of them to avoid conflicts"
 
 DBM_CORE_MOD_AVAILABLE				= "%s is available for this content. You can find on |HDBM:forums|h|cff3588ffdeadlybossmods.com|r or on Curse. This message will only display once."
 
