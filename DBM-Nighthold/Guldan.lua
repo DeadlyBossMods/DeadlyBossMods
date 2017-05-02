@@ -272,7 +272,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(flamesIcons)
 	if self:IsMythic() then
 		self:SetCreatureID(104154, 111022)
-		timerBondsofFelCD:Start(IsTank() and 6.4 or 8.4, 1)
+		timerBondsofFelCD:Start(self:IsTank() and 6.4 or 8.4, 1)
 		countdownBondsOfFel:Start(8.4)
 		timerDzorykxCD:Start(17-delay)
 		countdownHandofGuldan:Start(17)
@@ -502,19 +502,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 206222 or spellId == 206221 then
 		self.vb.bondsofFelCast = self.vb.bondsofFelCast + 1
 		if self:IsMythic() then
-			local timer = IsTank() and 38 or 40
+			local timer = self:IsTank() and 38 or 40
 			timerBondsofFelCD:Start(timer, self.vb.bondsofFelCast+1)
 			countdownBondsOfFel:Start(timer)
 		elseif self:IsHeroic() then
-			local timer = IsTank() and 42.4 or 44.4
+			local timer = self:IsTank() and 42.4 or 44.4
 			timerBondsofFelCD:Start(timer, self.vb.bondsofFelCast+1)
 			countdownBondsOfFel:Start(timer)
 		elseif self:IsNormal() then
-			local timer = IsTank() and 48 or 50
+			local timer = self:IsTank() and 48 or 50
 			timerBondsofFelCD:Start(timer, self.vb.bondsofFelCast+1)
 			countdownBondsOfFel:Start(timer)
 		else
-			local timer = IsTank() and 51 or 53
+			local timer = self:IsTank() and 51 or 53
 			timerBondsofFelCD:Start(timer, self.vb.bondsofFelCast+1)
 			countdownBondsOfFel:Start(timer)
 		end
@@ -853,7 +853,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				countdownLiquidHellfire:Cancel()
 				timerFelEffluxCD:Stop()
 				timerTransition:Start(19)
-				timerBondsofFelCD:Start(IsTank() and 25.5 or 27.6, 1)
+				local timer = 
+				timerBondsofFelCD:Start(self:IsTank() and 25.5 or 27.6, 1)
 				countdownBondsOfFel:Start(27.6)
 				if self:IsLFR() then
 					timerEyeofGuldanCD:Start(54, 1)
