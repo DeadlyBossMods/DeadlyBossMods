@@ -1,0 +1,29 @@
+﻿## Interface: 70200
+## X-Min-Interface: 70100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Trial of Valor|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Die Prüfung der Tapferkeit|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0勇氣試煉|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0용맹의 시험|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMTrialofValor_AllSavedVars
+## SavedVariablesPerCharacter: DBMTrialofValor_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: LEG
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 054
+## X-DBM-Mod-MapID: 1648
+## X-DBM-Mod-MinCoreRevision: 14737
+localization.en.lua
+localization.de.lua
+localization.kr.lua
+localization.ru.lua
+localization.tw.lua
+localization.cn.lua
+localization.es.lua
+Odyn.lua
+Guarm.lua
+Helya.lua
+TrialofValorTrash.lua
