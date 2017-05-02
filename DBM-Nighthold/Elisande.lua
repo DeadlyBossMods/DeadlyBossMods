@@ -668,9 +668,9 @@ function mod:OnSync(msg, targetname)
 		end
 	elseif msg == "SlowAddDied" then
 		self.vb.slowBubbleCount = self.vb.slowBubbleCount + 1
-		timerSlowTimeBubble:Start(60, self.vb.slowBubbleCount)
+		timerSlowTimeBubble:Start(70, self.vb.slowBubbleCount)
 	elseif msg == "FastAddDied" then
 		self.vb.fastBubbleCount = self.vb.fastBubbleCount + 1
-		timerFastTimeBubble:Start(30, self.vb.fastBubbleCount)
+		timerFastTimeBubble:Start(35, self.vb.fastBubbleCount)
 	end
 end
