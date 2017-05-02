@@ -664,6 +664,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsMythic() then
 			self.vb.phase = 2
 			warnPhase2:Show()
+			timerDzorykxCD:Stop()
+			timerFelLordKurazCD:Stop()
 			timerFlamesofSargerasCD:Start(24.5, "1-1")
 			timerEyeofGuldanCD:Start(34.3, 1)
 			countdownEyeofGuldan:Start(34.3)
