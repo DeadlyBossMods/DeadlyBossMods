@@ -1,0 +1,40 @@
+﻿## Interface: 70200
+## X-Min-Interface: 70200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Broken Isles|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Verheerten Inseln|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0破碎群岛|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0破碎群島|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Islas Abruptas|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0부서진 섬|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMBrokenIsles_AllSavedVars
+## SavedVariablesPerCharacter: DBMBrokenIsles_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: LEG
+## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-Mod-World-Boss: 1
+## X-DBM-Mod-Sort: 056
+## X-DBM-Mod-MapID: 1220
+## X-DBM-Mod-LoadCID: 107023, 106981, 106984, 106982, 109943, 109331, 110378, 99929, 108879, 110321, 108678, 112350, 108829, 117239, 121124, 117470, 117303, 102075
+## X-DBM-Mod-MinCoreRevision: 14737
+localization.en.lua
+localization.de.lua
+localization.tw.lua
+AnaMouz.lua
+Apocron.lua
+Brutallus.lua
+Calamir.lua
+Drugon.lua
+Flotsam.lua
+Humongris.lua
+Levantus.lua
+Malificus.lua
+Nazak.lua
+Nithogg.lua
+Sharthos.lua
+Sivash.lua
+Soultakers.lua
+WitheredJim.lua
