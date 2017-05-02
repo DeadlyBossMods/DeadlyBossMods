@@ -272,7 +272,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(flamesIcons)
 	if self:IsMythic() then
 		self:SetCreatureID(104154, 111022)
-		timerBondsofFelCD:Start(8.4-delay, 1)
+		timerBondsofFelCD:Start(IsTank() and 6.4 or 8.4, 1)
 		countdownBondsOfFel:Start(8.4)
 		timerDzorykxCD:Start(17-delay)
 		countdownHandofGuldan:Start(17)
@@ -441,7 +441,9 @@ function mod:SPELL_CAST_START(args)
 		table.wipe(bondsIcons)
 		local tanking, status = UnitDetailedThreatSituation("player", "boss1")
 		if tanking or (status == 3) then
-			--Not a thing!
+			if spellId == 206221 then
+				voiceBondsofFel:Play("carefly")
+			end
 		else
 			local targetName = UnitName("boss1target") or DBM_CORE_UNKNOWN
 			if not UnitIsUnit("player", "boss1target") then--the very first bonds of fel, threat is broken and not available yet, so we need an additional filter
@@ -500,17 +502,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 206222 or spellId == 206221 then
 		self.vb.bondsofFelCast = self.vb.bondsofFelCast + 1
 		if self:IsMythic() then
-			timerBondsofFelCD:Start(40, self.vb.bondsofFelCast+1)
-			countdownBondsOfFel:Start(40)
+			local timer = IsTank() and 38 or 40
+			timerBondsofFelCD:Start(timer, self.vb.bondsofFelCast+1)
+			countdownBondsOfFel:Start(timer)
 		elseif self:IsHeroic() then
-			timerBondsofFelCD:Start(44.4, self.vb.bondsofFelCast+1)
-			countdownBondsOfFel:Start(44.4)
+			local timer = IsTank() and 42.4 or 44.4
+			timerBondsofFelCD:Start(timer, self.vb.bondsofFelCast+1)
+			countdownBondsOfFel:Start(timer)
 		elseif self:IsNormal() then
-			timerBondsofFelCD:Start(50, self.vb.bondsofFelCast+1)
-			countdownBondsOfFel:Start(50)
+			local timer = IsTank() and 48 or 50
+			timerBondsofFelCD:Start(timer, self.vb.bondsofFelCast+1)
+			countdownBondsOfFel:Start(timer)
 		else
-			timerBondsofFelCD:Start(53, self.vb.bondsofFelCast+1)
-			countdownBondsOfFel:Start(53)
+			local timer = IsTank() and 51 or 53
+			timerBondsofFelCD:Start(timer, self.vb.bondsofFelCast+1)
+			countdownBondsOfFel:Start(timer)
 		end
 	elseif spellId == 221783 and self:AntiSpam(35, 1) then
 		self.vb.flamesSargCast = self.vb.flamesSargCast + 1
@@ -847,7 +853,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				countdownLiquidHellfire:Cancel()
 				timerFelEffluxCD:Stop()
 				timerTransition:Start(19)
-				timerBondsofFelCD:Start(27.6, 1)
+				timerBondsofFelCD:Start(IsTank() and 25.5 or 27.6, 1)
 				countdownBondsOfFel:Start(27.6)
 				if self:IsLFR() then
 					timerEyeofGuldanCD:Start(54, 1)
