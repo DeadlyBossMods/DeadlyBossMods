@@ -9,7 +9,7 @@ mod.isTrashMod = true
 mod:RegisterEvents(
 	"SPELL_CAST_START 221164 224510 224246 231005 143807 231737",
 	"SPELL_CAST_SUCCESS 225389",
-	"SPELL_AURA_APPLIED 221344 222111 224572 225390 224632 224560 204744 224978 225856 223655 224982 225105 222079",
+	"SPELL_AURA_APPLIED 221344 222111 224572 225390 224632 224560 204744 224978 225856 223655 224982 225105 222079 225845",
 	"SPELL_AURA_APPLIED_DOSE 222079"
 )
 
@@ -17,6 +17,7 @@ mod:RegisterEvents(
 local warnAnnihilatingOrb			= mod:NewTargetAnnounce(221344, 3)
 local warnCelestialBrand			= mod:NewTargetAnnounce(224560, 2)
 local warnArcaneRelease				= mod:NewTargetAnnounce(225105, 2)
+local warnChosenFate				= mod:NewTargetAnnounce(225845, 2)
 local warnOozingRush				= mod:NewTargetAnnounce(223655, 2)
 local warnFelGlare					= mod:NewTargetAnnounce(224982, 2)
 
@@ -40,6 +41,7 @@ local specWarnArcaneBlast			= mod:NewSpecialWarningInterrupt(143807, "HasInterru
 local yellArcaneRelease				= mod:NewYell(225105)
 local specWarnHeavenlyCrash			= mod:NewSpecialWarningMoveTo(224632, nil, nil, nil, 1, 2)
 local yellHeavenlyCrash				= mod:NewFadesYell(224632)--VERIFY duration
+local specWarnChosenFate			= mod:NewSpecialWarningReflect(225845, nil, nil, nil, 1, 2)
 local specWarnOozingRush			= mod:NewSpecialWarningRun(223655, nil, nil, nil, 4, 2)
 local yellOozingRush				= mod:NewYell(223655)
 local specWarnFelGlare				= mod:NewSpecialWarningMoveAway(224982, nil, nil, nil, 1, 2)
@@ -66,9 +68,10 @@ local voiceCelestialBrand			= mod:NewVoice(224560)--runout
 local voiceArcaneRelease			= mod:NewVoice(225105)--runout
 local voiceArcaneBlast				= mod:NewVoice(143807, "HasInterrupt")--kickcast
 local voiceHeavenlyCrash			= mod:NewVoice(224632)--gathershare
+local voiceChosenFate				= mod:NewVoice(225845)--stopattack
 local voiceOozingRush				= mod:NewVoice(223655)--runaway/keepmove
 local voiceFelGlare					= mod:NewVoice(224982)--runout/keepmove
-local voiceSearingWounds				= mod:NewVoice(222079)--changemt
+local voiceSearingWounds			= mod:NewVoice(222079)--changemt
 local voiceNightwellDischarge		= mod:NewVoice(231737)--watchorb
 
 mod:RemoveOption("HealthFrame")
@@ -174,6 +177,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellFelGlareh:Yell()
 		else
 			warnFelGlare:Show(args.destName)
+		end
+	elseif spellId == 225845 then
+		warnChosenFate:CombinedShow(0.5, args.destName)
+		if args:IsPlayer() then
+			specWarnChosenFate:Show()
+			voiceChosenFate:Play("stopattack")
 		end
 	elseif spellId == 222079 then
 		local uId = DBM:GetRaidUnitId(args.destName)
