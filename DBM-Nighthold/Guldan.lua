@@ -399,9 +399,6 @@ function mod:SPELL_CAST_START(args)
 				timerEyeofGuldanCD:Start(timer, self.vb.eyeCast+1)
 				countdownEyeofGuldan:Start(timer)
 			end
-			if self.vb.eyeCast == 4 and self:IsMythic() then
-				timerWindsCD:Start(97, 3)
-			end
 		else
 			local longTimer, shortTimer
 			if self:IsMythic() then
@@ -435,8 +432,12 @@ function mod:SPELL_CAST_START(args)
 			timerBlackHarvestCD:Start(timer, self.vb.blackHarvestCast+1)
 			countdownBlackHarvest:Start(timer)
 		end
-		if self:IsMythic() and self.vb.blackHarvestCast == 4 then
-			timerWindsCD:Start(75, 4)
+		if self:IsMythic() then
+			if self.vb.blackHarvestCast == 3 then
+				timerWindsCD:Start(67, 3)
+			elseif self.vb.blackHarvestCast == 4 then
+				timerWindsCD:Start(75, 4)
+			end
 		end
 	elseif spellId == 206222 or spellId == 206221 then
 		table.wipe(bondsIcons)
