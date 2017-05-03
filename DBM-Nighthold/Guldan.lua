@@ -274,7 +274,7 @@ function mod:OnCombatStart(delay)
 	if self:IsMythic() then
 		self:SetCreatureID(104154, 111022)
 		timerBondsofFelCD:Start(self:IsTank() and 6.4 or 8.4, 1)
-		countdownBondsOfFel:Start(8.4)
+		countdownBondsOfFel:Start(self:IsTank() and 6.4 or 8.4)
 		timerDzorykxCD:Start(17-delay)
 		countdownHandofGuldan:Start(17)
 		timerEyeofGuldanCD:Start(26.4-delay, 1)
@@ -856,7 +856,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 				timerTransition:Start(19)
 				local timer = 
 				timerBondsofFelCD:Start(self:IsTank() and 25.5 or 27.6, 1)
-				countdownBondsOfFel:Start(27.6)
+				countdownBondsOfFel:Start(self:IsTank() and 25.5 or 27.6)
 				if self:IsLFR() then
 					timerEyeofGuldanCD:Start(54, 1)
 					countdownEyeofGuldan:Start(54)
