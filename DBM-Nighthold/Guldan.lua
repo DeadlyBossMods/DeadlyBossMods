@@ -281,7 +281,6 @@ function mod:OnCombatStart(delay)
 		countdownEyeofGuldan:Start(26.4)
 		timerLiquidHellfireCD:Start(36-delay, 1)
 		countdownLiquidHellfire:Start(36)
-		self:SetCreatureID(104154, 999999)--Placeholder until I know id of mythic enemy
 	else
 		self:SetCreatureID(104154)
 		timerLiquidHellfireCD:Start(2-delay, 1)
@@ -770,6 +769,7 @@ function mod:UNIT_DIED(args)
 	if cid == 111070 then--Azzinoth
 		timerChaosSeedCD:Stop()
 	elseif cid == 104154 and self:IsMythic() then--Gul'dan
+		self.vb.bossLeft = self.vb.bossLeft - 1
 		timerFlamesofSargerasCD:Stop()
 		timerEyeofGuldanCD:Stop()
 		countdownEyeofGuldan:Cancel()
