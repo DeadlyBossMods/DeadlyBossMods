@@ -100,7 +100,7 @@ local specWarnSoulsever				= mod:NewSpecialWarningCount(220957, nil, nil, nil, 3
 local specWarnVisionsofDarkTitan	= mod:NewSpecialWarningMoveTo(227008, nil, nil, nil, 3, 7)
 local specWarnSummonNightorb		= mod:NewSpecialWarningSwitchCount(227283, "-Healer", nil, nil, 1, 2)
 --Shard
-local specWarnManifestAzzinoth		= mod:NewSpecialWarningSwitch(221149, "-Healer", nil, nil, 1, 2)
+local specWarnManifestAzzinoth		= mod:NewSpecialWarningSwitchCount(221149, "-Healer", nil, nil, 1, 2)
 local specWarnBulwarkofAzzinoth		= mod:NewSpecialWarningSpell(221408, nil, nil, nil, 1)--Needs voice, but what?
 local specWarnPurifiedEssence		= mod:NewSpecialWarningMoveTo(221486, nil, nil, nil, 3, 7)
 
@@ -149,7 +149,7 @@ local timerFlameCrashCD				= mod:NewCDCountTimer(20, 227071, nil, nil, nil, 3)
 local timerSummonNightorbCD			= mod:NewCDCountTimer(10.9, 227283, nil, nil, nil, 1, 225133)
 --Shard
 mod:AddTimerLine(GetSpellInfo(221149))
-local timerManifestAzzinothCD		= mod:NewCDTimer(10.9, 221149, nil, nil, nil, 1, 236237)
+local timerManifestAzzinothCD		= mod:NewCDCountTimer(10.9, 221149, nil, nil, nil, 1, 236237)
 local timerChaosSeedCD				= mod:NewCDTimer(10.9, 221336, nil, nil, nil, 3)
 local timerBulwarkofAzzinothCD		= mod:NewCDTimer(10.9, 221408, nil, nil, nil, 6)
 local timerPurifiedEssence			= mod:NewCastTimer(4, 221486, nil, nil, nil, 2)
@@ -161,7 +161,9 @@ local countdownHandofGuldan			= mod:NewCountdown("Alt50", 212258, "Tank")
 local countdownLiquidHellfire		= mod:NewCountdown("AltTwo50", 206219, "Ranged")
 local countdownBlackHarvest			= mod:NewCountdown("AltTwo50", 206744)
 --mythic
-local countdownFlameCrash			= mod:NewCountdown(20, 227071)
+local countdownVisions				= mod:NewCountdown(50, 227008)
+local countdownSoulSever			= mod:NewCountdown("Alt36", 220957, "Tank")
+local countdownFlameCrash			= mod:NewCountdown("AltTwo36", 227071, "Tank")
 
 --Stage One: The Council of Elders
 ----Gul'dan
@@ -215,6 +217,7 @@ mod.vb.severCastCount = 0
 mod.vb.crashCastCount = 0
 mod.vb.orbCastCount = 0
 mod.vb.visionCastCount = 0
+mod.vb.azzCount = 0
 --Mythic only Phase end
 local felEffluxTimers = {11.0, 14.0, 18.5, 12.0, 12.2, 12.0}
 local felEffluxTimersEasy = {11.0, 14.0, 19.9, 15.6, 16.8, 15.9, 15.8}
@@ -240,6 +243,7 @@ local function upValueCapsAreStupid(self)
 		self.vb.phase = 3
 		timerWindsCD:Stop()
 	end
+	self:SetBossHPInfoToHighest()
 	specWarnWilloftheDemonWithin:Show()
 	voiceWilloftheDemonWithin:Play("carefly")
 	timerWilloftheDemonWithin:Start()
@@ -247,13 +251,16 @@ local function upValueCapsAreStupid(self)
 	self.vb.crashCastCount = 0
 	self.vb.orbCastCount = 0
 	self.vb.visionCastCount = 0
+	self.vb.azzCount = 0
 	timerParasiticWoundCD:Start(8.6)
 	timerSoulSeverCD:Start(19.6, 1)	
+	countdownSoulSever:Start(19.6)
 	timerManifestAzzinothCD:Start(26.6)
 	timerFlameCrashCD:Start(29.6, 1)
 	countdownFlameCrash:Start(29.6)
 	timerSummonNightorbCD:Start(39.6, 1)
 	timerVisionsofDarkTitanCD:Start(96.2, 1)
+	countdownVisions:Start(96.2)
 end
 
 function mod:OnCombatStart(delay)
@@ -466,8 +473,10 @@ function mod:SPELL_CAST_START(args)
 		end
 		if self.vb.severCastCount == 4 or self.vb.severCastCount == 7 then
 			timerSoulSeverCD:Start(50, self.vb.severCastCount+1)
+			countdownSoulSever:Start(50)
 		else
 			timerSoulSeverCD:Start(20, self.vb.severCastCount+1)
+			countdownSoulSever:Start(20)
 		end
 	elseif spellId == 227008 then
 		self.vb.visionCastCount = self.vb.visionCastCount+1
@@ -477,8 +486,10 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.visionCastCount ~= 3 then
 			if self.vb.visionCastCount == 2 then
 				timerVisionsofDarkTitanCD:Start(150)
+				countdownVisions:Start(150)
 			else
 				timerVisionsofDarkTitanCD:Start(90)
+				countdownVisions:Start(90)
 			end
 		end
 		if self.Options.InfoFrame then
@@ -881,10 +892,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 	elseif spellId == 227035 then -- Parasitic Wound
 		timerParasiticWoundCD:Start()
 	elseif spellId == 221149 or spellId == 227277 then -- Manifest Azzinoth
-		specWarnManifestAzzinoth:Show()
+		self.vb.azzCount = self.vb.azzCount + 1
+		specWarnManifestAzzinoth:Show(self.vb.azzCount)
 		voiceManifestAzzinoth:Play("bigmob")
 		timerBulwarkofAzzinothCD:Start(15)
-		timerManifestAzzinothCD:Start(41)
+		timerManifestAzzinothCD:Start(41, self.vb.azzCount+1)
 	elseif spellId == 227071 then -- Flame Crash
 		self.vb.crashCastCount  = self.vb.crashCastCount  + 1
 		if self.vb.crashCastCount == 4 or self.vb.crashCastCount == 7 then
@@ -916,7 +928,6 @@ function mod:OnSync(msg)
 	end
 	if not self:IsInCombat() then return end
 	if msg == "mythicPhase3" and self:IsMythic() then
-		self:SetBossHPInfoToHighest()
 		self.vb.phase = 3
 		warnPhase3:Show()
 		timerWilloftheDemonWithinCD:Start(39)
