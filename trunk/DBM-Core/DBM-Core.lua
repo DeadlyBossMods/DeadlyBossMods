@@ -3665,7 +3665,9 @@ do
 				if enabled ~= 0 then
 					self:LoadMod(v)
 				else
-					self:AddMsg(DBM_CORE_LOAD_MOD_DISABLED:format(v.name))
+					if not self.Options.DontShowReminders then
+						self:AddMsg(DBM_CORE_LOAD_MOD_DISABLED:format(v.name))
+					end
 				end
 			end
 		end
