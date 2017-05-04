@@ -3367,6 +3367,7 @@ local function CreateOptionsMenu()
 		spamOutArea:CreateCheckButton(L.SpamBlockNoCountdowns, true, nil, "DontPlayCountdowns")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoYells, true, nil, "DontSendYells")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoNoteSync, true, nil, "BlockNoteShare")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoReminders, true, nil, "DontShowReminders")
 
 		local spamRestoreArea = spamPanel:CreateArea(L.Area_Restore, nil, 170, true)
 		spamRestoreArea:CreateCheckButton(L.SpamBlockNoIconRestore, true, nil, "DontRestoreIcons")
