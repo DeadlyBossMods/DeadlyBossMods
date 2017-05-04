@@ -455,8 +455,10 @@ function mod:SPELL_CAST_START(args)
 		else
 			local targetName = UnitName("boss1target") or DBM_CORE_UNKNOWN
 			if not UnitIsUnit("player", "boss1target") then--the very first bonds of fel, threat is broken and not available yet, so we need an additional filter
-				specWarnBondsofFelTank:Show(targetName)
-				voiceBondsofFel:Play("tauntboss")
+				if self:AntiSpam(5, targetName) then
+					specWarnBondsofFelTank:Show(targetName)
+					voiceBondsofFel:Play("tauntboss")
+				end
 			end
 		end
 	elseif spellId == 221783 then
@@ -597,9 +599,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			local uId = DBM:GetRaidUnitId(name)
 			if self:IsTanking(uId, "boss1") and not UnitDetailedThreatSituation("player", "boss1") then
-				--secondary warning, in case you spaced out the first taunt warning
-				specWarnBondsofFelTank:Show(name)
-				voiceBondsofFel:Play("tauntboss")
+				--secondary warning, in case first one didn't go through
+				if self:AntiSpam(5, name) then
+					specWarnBondsofFelTank:Show(name)
+					voiceBondsofFel:Play("tauntboss")
+				end
 			end
 		end
 		if self.Options.SetIconOnBondsOfFel then
