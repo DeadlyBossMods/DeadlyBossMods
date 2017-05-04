@@ -1062,7 +1062,7 @@ do
 				AddMsg(DBM, DBM_CORE_VOICE_MISSING)
 			end
 		else
-			if not self.options.DontShowReminders and #self.Voices > 1 then
+			if not self.Options.DontShowReminders and #self.Voices > 1 then
 				--At least one voice pack installed but activeVP set to "None"
 				AddMsg(DBM, DBM_CORE_VOICE_DISABLED)
 			end
@@ -3627,7 +3627,7 @@ do
 		end
 		-- LoadMod
 		self:LoadModsOnDemand("mapId", mapID)
-		if not self.options.DontShowReminders then
+		if not self.Options.DontShowReminders then
 			checkMods(self)
 		end
 		if DBM:HasMapRestrictions() then
@@ -4232,7 +4232,7 @@ do
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
 			DBM:Debug("Received version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
-			if not DBM.options.DontShowReminders then
+			if not DBM.Options.DontShowReminders then
 				HandleVersion(revision, version, displayVersion, sender)
 			end
 		end
@@ -4243,7 +4243,7 @@ do
 		revision, version = tonumber(revision), tonumber(version)
 		if revision and version and displayVersion then
 			DBM:Debug("Received G version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
-			if not DBM.options.DontShowReminders then
+			if not DBM.Options.DontShowReminders then
 				HandleVersion(revision, version, displayVersion, sender, true)
 			end
 		end
@@ -6349,7 +6349,7 @@ end
 
 do
 	function DBM:PLAYER_ENTERING_WORLD()
-		if not self.options.DontShowReminders then
+		if not self.Options.DontShowReminders then
 			if GetLocale() == "ptBR" or GetLocale() == "frFR" or GetLocale() == "itIT" or GetLocale() == "esES" or GetLocale() == "ruRU" then
 				C_TimerAfter(10, function() if self.Options.HelpMessageVersion < 4 then self.Options.HelpMessageVersion = 4 self:AddMsg(DBM_CORE_NEED_LOCALS) end end)
 			end
