@@ -916,6 +916,7 @@ function mod:OnSync(msg)
 	end
 	if not self:IsInCombat() then return end
 	if msg == "mythicPhase3" and self:IsMythic() then
+		self:SetBossHPInfoToHighest()
 		self.vb.phase = 3
 		warnPhase3:Show()
 		timerWilloftheDemonWithinCD:Start(39)
