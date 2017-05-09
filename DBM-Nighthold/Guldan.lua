@@ -32,7 +32,7 @@ mod:RegisterEvents(
 --TODO, Do a bunch of stuff with well of souls? infoframe to track stacks/who should soak next?
 --TODO, infoframe for TimeStop (206310) used correctly/well?
 --TODO, maybe add a 'watch orb" warning to chaos seed?
---TODO, new voice "Get Stop Time" (getstoptime)
+--TODO, new voice "Move to time bubble" (gettimebubble)
 --[[
 (ability.id = 206219 or ability.id = 206220 or ability.id = 206514 or ability.id = 206675 or ability.id = 206840 or ability.id = 207938 or ability.id = 206883 or ability.id = 208545 or ability.id = 209270 or ability.id = 211152 or ability.id = 208672 or ability.id = 167819 or ability.id = 206939 or ability.id = 206744) and type = "begincast"
 or (ability.id = 206222 or ability.id = 206221 or ability.id = 221783 or ability.id = 212258) and type = "cast"
@@ -189,11 +189,11 @@ local voiceWilloftheDemonWithin		= mod:NewVoice(211439)--carefly
 local voiceParasiticWound			= mod:NewVoice(206847)--scatter
 local voiceShearedSoul				= mod:NewVoice(206458)--defensive
 --local voiceSoulSever				= mod:NewVoice(220957)--??? (temp, no idea what you're supposed to for spell_
-local voiceVisionsOfDarkTitan		= mod:NewVoice(227008)--getstoptime
+local voiceVisionsOfDarkTitan		= mod:NewVoice(227008)--gettimebubble
 local voiceSummonNightorb			= mod:NewVoice(227283, "-Healer")--killmob
 --Shard
 local voiceManifestAzzinoth			= mod:NewVoice(221149, "-Healer")--bigmob
-local voicePurifiedEssence			= mod:NewVoice(221486)--getstoptime
+local voicePurifiedEssence			= mod:NewVoice(221486)--gettimebubble
 
 mod:AddRangeFrameOption(8, 221606)
 mod:AddSetIconOption("SetIconOnBondsOfFlames", 221783, true)
@@ -483,7 +483,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 227008 then
 		self.vb.visionCastCount = self.vb.visionCastCount+1
 		specWarnVisionsofDarkTitan:Show(timeStopBuff)
-		voiceVisionsOfDarkTitan:Play("getstoptime")
+		voiceVisionsOfDarkTitan:Play("gettimebubble")
 		timerVisionsofDarkTitan:Start()
 		if self.vb.visionCastCount ~= 3 then
 			if self.vb.visionCastCount == 2 then
@@ -502,7 +502,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnBulwarkofAzzinoth:Show()
 	elseif spellId == 221486 then
 		specWarnPurifiedEssence:Show(timeStopBuff)
-		voicePurifiedEssence:Play("getstoptime")
+		voicePurifiedEssence:Play("gettimebubble")
 		timerPurifiedEssence:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(timeStopBuff))
