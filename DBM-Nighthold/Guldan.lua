@@ -95,7 +95,7 @@ local specWarnWilloftheDemonWithin	= mod:NewSpecialWarningSpell(211439, nil, nil
 local specWarnParasiticWound		= mod:NewSpecialWarningMoveAway(206847, nil, nil, nil, 3, 2)
 local yellParasiticWound			= mod:NewYell(206847)
 local yellParasiticWoundFades		= mod:NewFadesYell(206847)
-local specWarnShearedSoul			= mod:NewSpecialWarningDefensive(206458, nil, nil, nil, 1, 2)
+--local specWarnShearedSoul			= mod:NewSpecialWarningYou(206458, nil, nil, nil, 1)
 local specWarnSoulsever				= mod:NewSpecialWarningCount(220957, nil, nil, nil, 3)--Needs voice, but what?
 local specWarnVisionsofDarkTitan	= mod:NewSpecialWarningMoveTo(227008, nil, nil, nil, 3, 7)
 local specWarnSummonNightorb		= mod:NewSpecialWarningSwitchCount(227283, "-Healer", nil, nil, 1, 2)
@@ -187,8 +187,8 @@ local voiceFlamesOfSargeras			= mod:NewVoice(221606)--runout
 --Mythic Only
 local voiceWilloftheDemonWithin		= mod:NewVoice(211439)--carefly
 local voiceParasiticWound			= mod:NewVoice(206847)--scatter
-local voiceShearedSoul				= mod:NewVoice(206458)--defensive
---local voiceSoulSever				= mod:NewVoice(220957)--??? (temp, no idea what you're supposed to for spell_
+--local voiceShearedSoul				= mod:NewVoice(206458)--???
+local voiceSoulSever				= mod:NewVoice(220957)--defensive
 local voiceVisionsOfDarkTitan		= mod:NewVoice(227008)--gettimebubble
 local voiceSummonNightorb			= mod:NewVoice(227283, "-Healer")--killmob
 --Shard
@@ -252,15 +252,15 @@ local function upValueCapsAreStupid(self)
 	self.vb.orbCastCount = 0
 	self.vb.visionCastCount = 0
 	self.vb.azzCount = 0
-	timerParasiticWoundCD:Start(8.6)
-	timerSoulSeverCD:Start(19.6, 1)	
-	countdownSoulSever:Start(19.6)
-	timerManifestAzzinothCD:Start(26.6)
-	timerFlameCrashCD:Start(29.6, 1)
-	countdownFlameCrash:Start(29.6)
-	timerSummonNightorbCD:Start(39.6, 1)
-	timerVisionsofDarkTitanCD:Start(96.2, 1)
-	countdownVisions:Start(96.2)
+	timerParasiticWoundCD:Start(8.3)
+	timerSoulSeverCD:Start(19.3, 1)	
+	countdownSoulSever:Start(19.3)
+	timerManifestAzzinothCD:Start(26.3)
+	timerFlameCrashCD:Start(29.3, 1)
+	countdownFlameCrash:Start(29.3)
+	timerSummonNightorbCD:Start(39.3, 1)
+	timerVisionsofDarkTitanCD:Start(95.1, 1)
+	countdownVisions:Start(95.1)
 end
 
 function mod:OnCombatStart(delay)
@@ -439,9 +439,9 @@ function mod:SPELL_CAST_START(args)
 			countdownBlackHarvest:Start(timer)
 		end
 		if self:IsMythic() then
-			if self.vb.blackHarvestCast == 3 then
+			if self.vb.blackHarvestCast == 2 then
 				timerWindsCD:Start(67, 3)
-			elseif self.vb.blackHarvestCast == 4 then
+			elseif self.vb.blackHarvestCast == 3 then
 				timerWindsCD:Start(75, 4)
 			end
 		end
@@ -471,7 +471,7 @@ function mod:SPELL_CAST_START(args)
 		self.vb.severCastCount = self.vb.severCastCount + 1
 		if self:IsTank() then
 			specWarnSoulsever:Show(self.vb.severCastCount)
-			--voiceSoulSever:Play("stilldanger")
+			voiceSoulSever:Play("defensive")
 		end
 		if self.vb.severCastCount == 4 or self.vb.severCastCount == 7 then
 			timerSoulSeverCD:Start(50, self.vb.severCastCount+1)
@@ -574,7 +574,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			DBM.InfoFrame:Hide()
 		end
 	elseif spellId == 221336 then
-		timerChaosSeedCD:Start(10.9)
+		timerChaosSeedCD:Start(10.5)
 	end
 end
 
@@ -727,8 +727,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnShadowyGaze:CombinedShow(0.3, args.destName)
 	elseif spellId == 206458 then
 		if args:IsPlayer() then
-			specWarnShearedSoul:Show()
-			voiceShearedSoul:Play("defensive")
+			--specWarnShearedSoul:Show()
+			--voiceShearedSoul:Play("defensive")
 		end
 	elseif spellId == 227009 then
 		warnWounded:Show()
