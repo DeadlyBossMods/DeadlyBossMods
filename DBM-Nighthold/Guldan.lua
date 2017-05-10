@@ -58,6 +58,7 @@ local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 local warnBondsofFel				= mod:NewTargetAnnounce(206222, 3)
 local warnEmpBondsofFel				= mod:NewTargetAnnounce(209086, 4)
 --Stage Three: The Master's Power
+local warnPhase3Soon				= mod:NewPrePhaseAnnounce(3, 2)
 local warnPhase3					= mod:NewPhaseAnnounce(3, 2)
 local warnSoulSiphon				= mod:NewTargetAnnounce(221891, 3, nil, "Healer")
 local warnFlamesofSargeras			= mod:NewTargetAnnounce(221606, 4)
@@ -239,10 +240,8 @@ local flamesIcons = {}
 local timeStopBuff = GetSpellInfo(206310)
 
 local function upValueCapsAreStupid(self)
-	if self.vb.phase ~= 3 then -- For unlocalized clients
-		self.vb.phase = 3
-		timerWindsCD:Stop()
-	end
+	self.vb.phase = 3
+	timerWindsCD:Stop()
 	self:SetBossHPInfoToHighest()
 	specWarnWilloftheDemonWithin:Show()
 	voiceWilloftheDemonWithin:Play("carefly")
@@ -932,8 +931,7 @@ function mod:OnSync(msg)
 	end
 	if not self:IsInCombat() then return end
 	if msg == "mythicPhase3" and self:IsMythic() then
-		self.vb.phase = 3
-		warnPhase3:Show()
+		warnPhase3Soon:Show()
 		timerWilloftheDemonWithinCD:Start(39)
 	end
 end
