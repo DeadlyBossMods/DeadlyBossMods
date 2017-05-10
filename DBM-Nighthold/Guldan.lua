@@ -161,9 +161,9 @@ local countdownHandofGuldan			= mod:NewCountdown("Alt50", 212258, "Tank")
 local countdownLiquidHellfire		= mod:NewCountdown("AltTwo50", 206219, "Ranged")
 local countdownBlackHarvest			= mod:NewCountdown("AltTwo50", 206744)
 --mythic
-local countdownVisions				= mod:NewCountdown(50, 227008)
-local countdownSoulSever			= mod:NewCountdown("Alt36", 220957, "Tank")
-local countdownFlameCrash			= mod:NewCountdown("AltTwo36", 227071, "Tank")
+local countdownVisions				= mod:NewCountdown(50, 227008, nil, nil, 6)
+local countdownSoulSever			= mod:NewCountdown("Alt36", 220957, "Tank", nil, 6)
+local countdownFlameCrash			= mod:NewCountdown("AltTwo36", 227071, "Tank", nil, 6)
 
 --Stage One: The Council of Elders
 ----Gul'dan
