@@ -139,8 +139,7 @@ local timerBlackHarvestCD			= mod:NewNextCountTimer(83, 206744, nil, nil, nil, 2
 --Mythic Only
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerWindsCD					= mod:NewCDCountTimer(39, 199446, nil, nil, nil, 2)
-local timerWilloftheDemonWithinCD	= mod:NewCDTimer(39, 211439, nil, nil, nil, 2)
-local timerWilloftheDemonWithin		= mod:NewCastTimer(4, 211439, nil, nil, nil, 2)
+local timerWilloftheDemonWithin		= mod:NewCastTimer(43, 211439, nil, nil, nil, 2)
 local timerParasiticWoundCD			= mod:NewCDTimer(36, 206847, nil, nil, nil, 3)
 local timerWounded					= mod:NewBuffActiveTimer(36, 227009, nil, nil, nil, 6)
 local timerSoulSeverCD				= mod:NewCDCountTimer(36, 220957, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
@@ -245,7 +244,7 @@ local function upValueCapsAreStupid(self)
 	self:SetBossHPInfoToHighest()
 	specWarnWilloftheDemonWithin:Show()
 	voiceWilloftheDemonWithin:Play("carefly")
-	timerWilloftheDemonWithin:Start()
+	timerWilloftheDemonWithin:Update(39, 43)
 	self.vb.severCastCount = 0
 	self.vb.crashCastCount = 0
 	self.vb.orbCastCount = 0
@@ -254,7 +253,7 @@ local function upValueCapsAreStupid(self)
 	timerParasiticWoundCD:Start(8.3)
 	timerSoulSeverCD:Start(19.3, 1)	
 	countdownSoulSever:Start(19.3)
-	timerManifestAzzinothCD:Start(26.3)
+	timerManifestAzzinothCD:Start(26.3, 1)
 	timerFlameCrashCD:Start(29.3, 1)
 	countdownFlameCrash:Start(29.3)
 	timerSummonNightorbCD:Start(39.3, 1)
@@ -932,6 +931,6 @@ function mod:OnSync(msg)
 	if not self:IsInCombat() then return end
 	if msg == "mythicPhase3" and self:IsMythic() then
 		warnPhase3Soon:Show()
-		timerWilloftheDemonWithinCD:Start(39)
+		timerWilloftheDemonWithin:Start(43)
 	end
 end
