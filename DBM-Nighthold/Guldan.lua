@@ -32,7 +32,7 @@ mod:RegisterEvents(
 --TODO, Do a bunch of stuff with well of souls? infoframe to track stacks/who should soak next?
 --TODO, infoframe for TimeStop (206310) used correctly/well?
 --TODO, maybe add a 'watch orb" warning to chaos seed?
---TODO, new voice "Move to time bubble" (gettimebubble)
+--TODO, new voice "Move to time bubble" (movetimebubble)
 --[[
 (ability.id = 206219 or ability.id = 206220 or ability.id = 206514 or ability.id = 206675 or ability.id = 206840 or ability.id = 207938 or ability.id = 206883 or ability.id = 208545 or ability.id = 209270 or ability.id = 211152 or ability.id = 208672 or ability.id = 167819 or ability.id = 206939 or ability.id = 206744) and type = "begincast"
 or (ability.id = 206222 or ability.id = 206221 or ability.id = 221783 or ability.id = 212258) and type = "cast"
@@ -189,11 +189,11 @@ local voiceWilloftheDemonWithin		= mod:NewVoice(211439)--carefly
 local voiceParasiticWound			= mod:NewVoice(206847)--scatter
 --local voiceShearedSoul				= mod:NewVoice(206458)--???
 local voiceSoulSever				= mod:NewVoice(220957)--defensive
-local voiceVisionsOfDarkTitan		= mod:NewVoice(227008)--gettimebubble
+local voiceVisionsOfDarkTitan		= mod:NewVoice(227008)--movetimebubble
 local voiceSummonNightorb			= mod:NewVoice(227283, "-Healer")--killmob
 --Shard
 local voiceManifestAzzinoth			= mod:NewVoice(221149, "-Healer")--bigmob
-local voicePurifiedEssence			= mod:NewVoice(221486)--gettimebubble
+local voicePurifiedEssence			= mod:NewVoice(221486)--movetimebubble
 
 mod:AddRangeFrameOption(8, 221606)
 mod:AddSetIconOption("SetIconOnBondsOfFlames", 221783, true)
@@ -481,7 +481,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 227008 then
 		self.vb.visionCastCount = self.vb.visionCastCount+1
 		specWarnVisionsofDarkTitan:Show(timeStopBuff)
-		voiceVisionsOfDarkTitan:Play("gettimebubble")
+		voiceVisionsOfDarkTitan:Play("movetimebubble")
 		timerVisionsofDarkTitan:Start()
 		if self.vb.visionCastCount ~= 3 then
 			if self.vb.visionCastCount == 2 then
@@ -498,9 +498,9 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif spellId == 221408 then
 		specWarnBulwarkofAzzinoth:Show()
-	elseif spellId == 221486 then
+	elseif spellId == 221486 and self:AntiSpam(5, 4) then
 		specWarnPurifiedEssence:Show(timeStopBuff)
-		voicePurifiedEssence:Play("gettimebubble")
+		voicePurifiedEssence:Play("movetimebubble")
 		timerPurifiedEssence:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(DBM_NO_DEBUFF:format(timeStopBuff))
@@ -898,7 +898,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		specWarnManifestAzzinoth:Show(self.vb.azzCount)
 		voiceManifestAzzinoth:Play("bigmob")
 		timerBulwarkofAzzinothCD:Start(15)
-		timerManifestAzzinothCD:Start(41, self.vb.azzCount+1)
+		timerManifestAzzinothCD:Start(40, self.vb.azzCount+1)
 	elseif spellId == 227071 then -- Flame Crash
 		self.vb.crashCastCount  = self.vb.crashCastCount  + 1
 		if self.vb.crashCastCount == 4 or self.vb.crashCastCount == 7 then
