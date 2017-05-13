@@ -249,6 +249,7 @@ L.SpamBlockNoHealthFrame	= "보스 체력 창 표시 안함"
 L.SpamBlockNoCountdowns		= "초읽기 효과음 재생 안함"
 L.SpamBlockNoYells			= "대화 알림 사용 안함"
 L.SpamBlockNoNoteSync		= "메모 공유 수락 안함"
+L.SpamBlockNoReminders		= "로그인, 권장사항, 업데이트 알림 메시지 표시 안함 (권장하지 않음)"
 
 L.Area_Restore				= "DBM 복구 설정 (DBM이 보스 모드 종료시 이전 사용자 설정 상태로 돌아갈 지 여부를 설정)"
 L.SpamBlockNoIconRestore	= "아이콘 설정 상태를 저장하지 않고 전투 종료시 원래대로 복구"
