@@ -39,7 +39,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 192094 then
 		timerSpearCD:Start()
 		if args:IsPlayer() then
-			specWarnImpalingSpear:Show(ADD)
+			specWarnImpalingSpear:Show(DBM_ADDS)
 			yellImpalingSpear:Yell()
 			voiceImpalingSpear:Play("192094")
 		else
