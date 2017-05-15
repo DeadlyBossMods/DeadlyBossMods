@@ -17,7 +17,7 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s could not be loaded because your DBM-Core 
 DBM_CORE_LOAD_MOD_DISABLED			= "%s is installed but currently disabled. This mod will not be loaded unless you enable it."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s are installed but currently disabled. These mods will not be loaded unless you enable them."
 
-DBM_CORE_WHATS_NEW					= "The Overwatch countdown sounds have been split from DBM core and moved to a seperate optional download. To get these counts back, just download DBM-CountPack-Overwatch. This was done to significantly reduce the pointless redownloading of media files, especially with additional Overwatch characters being added."
+DBM_CORE_WHATS_NEW					= "The Overwatch & Heroes of the Storm countdown sounds have been split from DBM core and moved to a seperate optional downloads. To get these counts back, just download DBM-CountPack-Overwatch & DBM-CountPack-HoTS. This was done to significantly reduce the pointless redownloading of media files, especially with a lot of additional counts being added to both."
 DBM_CORE_WHATS_NEW_LINK				= "The recommended way to use DBM is with a voice pack. Read more on why and how this helps you by |HDBM:forumsnews|h|cff3588ffclicking here|r"
 
 --Post Patch 7.1
