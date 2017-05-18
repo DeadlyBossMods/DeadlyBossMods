@@ -432,7 +432,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 212647 then
 		local amount = args.amount or 1
-		if args:IsPlayer() and amount % 2 == 0 and amount >= 6 then
+		if args:IsPlayer() and amount % 2 == 0 and amount >= 6 and amount ~= 8 then
 			specWarnFrostbitten:Show(amount)
 			voiceFrostbitten:Play("stackhigh")
 		end
