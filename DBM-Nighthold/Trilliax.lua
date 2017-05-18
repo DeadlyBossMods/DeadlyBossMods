@@ -83,7 +83,7 @@ local countdownAnnihilation			= mod:NewCountdown("AltTwo20", 207630)
 local countdownArcaneSlash			= mod:NewCountdown("Alt20", 206641, "Tank")
 
 local voiceArcaneSeepage			= mod:NewVoice(206488)--runaway
-local voiceArcaneSlash				= mod:NewVoice(206641)--tauntboss
+local voiceArcaneSlash				= mod:NewVoice(206641, "Tank", nil, 2)--tauntboss
 --Cleaner
 local voiceSterilize				= mod:NewVoice(208499)--scatter (runout better?)
 local voiceCleansingRage			= mod:NewVoice(206820)--aesoon
