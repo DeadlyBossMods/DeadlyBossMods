@@ -2103,6 +2103,9 @@ do
 			DBM:RequestTimers(1)
 			DBM:RequestTimers(2)
 			DBM:RequestTimers(3)
+		elseif cmd:sub(1, 6) == "silent" then
+			DBM.Options.SilentMode = DBM.Options.SilentMode == false and true or false
+			DBM:AddMsg("SilentMode is " .. (DBM.Options.SilentMode and "ON" or "OFF"))
 		else
 			DBM:LoadGUI()
 		end
@@ -6135,6 +6138,7 @@ function DBM:HasMapRestrictions()
 end
 
 function DBM:PlaySoundFile(path, ignoreSFX)
+	if self.Options.SilentMode then return end
 	local soundSetting = self.Options.UseSoundChannel
 	if soundSetting == "Dialog" then
 		PlaySoundFile(path, "Dialog")
@@ -6146,6 +6150,7 @@ function DBM:PlaySoundFile(path, ignoreSFX)
 end
 
 function DBM:PlaySound(path)
+	if self.Options.SilentMode then return end
 	local soundSetting = self.Options.UseSoundChannel
 	if soundSetting == "Master" then
 		PlaySound(path, "Master")
@@ -6342,6 +6347,7 @@ do
 				C_TimerAfter(10, function() if self.Options.HelpMessageVersion < 4 then self.Options.HelpMessageVersion = 4 self:AddMsg(DBM_CORE_NEED_LOCALS) end end)
 			end
 			--C_TimerAfter(20, function() if not self.Options.ForumsMessageShown then self.Options.ForumsMessageShown = self.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
+			C_TimerAfter(25, function() if self.Options.SilentMode then self:AddMsg(DBM_SILENT_REMINDER) end end)
 			C_TimerAfter(30, function() if not self.Options.SettingsMessageShown then self.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
 			C_TimerAfter(40, function() if self.Options.NewsMessageShown < 10 then self.Options.NewsMessageShown = 10 self:AddMsg(DBM_CORE_WHATS_NEW) end end)
 		end
