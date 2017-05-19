@@ -267,6 +267,7 @@ DBM.DefaultOptions = {
 	BCTWMessageShown = false,
 	WOTLKTWMessageShown = false,
 	CATATWMessageShown = false,
+	MISTSTWMessageShown = false,
 	AlwaysShowSpeedKillTimer = true,
 	CRT_Enabled = false,
 	ShowRespawn = true,
@@ -3563,18 +3564,22 @@ end
 --------------------------------
 do
 	local function checkMods(self)
-		if difficultyIndex == 24 then
-			--Surely a less shitty way of checking "this is a BC dungeon"?
+		if difficultyIndex == 24 then--Timewalking
 			if (LastInstanceMapID == 540 or LastInstanceMapID == 558 or LastInstanceMapID == 556 or LastInstanceMapID == 555 or LastInstanceMapID == 542 or LastInstanceMapID == 546 or LastInstanceMapID == 545 or LastInstanceMapID == 547 or LastInstanceMapID == 553 or LastInstanceMapID == 554 or LastInstanceMapID == 552 or LastInstanceMapID == 557 or LastInstanceMapID == 269 or LastInstanceMapID == 560 or LastInstanceMapID == 543 or LastInstanceMapID == 585) and not self.Options.BCTWMessageShown and not GetAddOnInfo("DBM-Party-BC") then
 				self.Options.BCTWMessageShown = true
 				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Party-BC"))
-			--Surely a less shitty way of checking "this is a wrath dungeon"?
+			elseif LastInstanceMapID == 564 and not self.Options.BCTWMessageShown and not GetAddOnInfo("DBM-BlackTemple") then
+				self.Options.BCTWMessageShown = true
+				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-BlackTemple"))
 			elseif (LastInstanceMapID == 619 or LastInstanceMapID == 601 or LastInstanceMapID == 595 or LastInstanceMapID == 600 or LastInstanceMapID == 604 or LastInstanceMapID == 602 or LastInstanceMapID == 599 or LastInstanceMapID == 576 or LastInstanceMapID == 578 or LastInstanceMapID == 574 or LastInstanceMapID == 575 or LastInstanceMapID == 608 or LastInstanceMapID == 658 or LastInstanceMapID == 632 or LastInstanceMapID == 668 or LastInstanceMapID == 650) and not self.Options.WOTLKTWMessageShown and not GetAddOnInfo("DBM-Party-WotLK") then
 				self.Options.WOTLKTWMessageShown = true
 				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Party-WotLK"))
 			elseif (LastInstanceMapID == 755 or LastInstanceMapID == 645 or LastInstanceMapID == 36 or LastInstanceMapID == 670 or LastInstanceMapID == 644 or LastInstanceMapID == 33 or LastInstanceMapID == 643 or LastInstanceMapID == 725 or LastInstanceMapID == 657 or LastInstanceMapID == 309 or LastInstanceMapID == 859 or LastInstanceMapID == 568 or LastInstanceMapID == 938 or LastInstanceMapID == 940 or LastInstanceMapID == 939) and not self.Options.CATATWMessageShown and not GetAddOnInfo("DBM-Party-Cataclysm") then
-				self.Options.CATATWMessageShown = true-- 
+				self.Options.CATATWMessageShown = true
 				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Party-Cataclysm"))
+			elseif (LastInstanceMapID == 960 or LastInstanceMapID == 961 or LastInstanceMapID == 959 or LastInstanceMapID == 962 or LastInstanceMapID == 994 or LastInstanceMapID == 1011 or LastInstanceMapID == 1007 or LastInstanceMapID == 1001 or LastInstanceMapID == 1004) and not self.Options.MISTSTWMessageShown and not GetAddOnInfo("DBM-Party-MoP") then
+				self.Options.MISTSTWMessageShown = true
+				AddMsg(self, DBM_CORE_MOD_AVAILABLE:format("DBM-Party-MoP"))
 			end
 		else
 			if (LastInstanceMapID == 1148 or LastInstanceMapID == 1698 or LastInstanceMapID == 1710 or LastInstanceMapID == 1703 or LastInstanceMapID == 1702 or LastInstanceMapID == 1684 or LastInstanceMapID == 1673 or LastInstanceMapID == 1616) and not self.Options.PGMessageShown2 and not GetAddOnInfo("DBM-Challenges") then
