@@ -260,6 +260,7 @@ DBM_CHEST							= "Chest"--As in Treasure 'Chest'. Not Chest as in body part.
 DBM_NO_DEBUFF						= "Not %s"--For use in places like info frame where you put "Not Spellname"
 DBM_ALLY							= "Ally"--Such as "Move to Ally"
 DBM_ADDS							= "Adds"--Such as "Move to Ally"
+DBM_CORE_ROOM_EDGE					= "Room Edge"
 --Common Locals end
 
 DBM_CORE_BREAK_USAGE				= "Break timer cannot be longer than 60 minutes. Make sure you're inputting time in minutes and not seconds."
