@@ -18,7 +18,7 @@ DBM_CORE_LOAD_MOD_VER_MISMATCH		= "%s could not be loaded because your DBM-Core 
 DBM_CORE_LOAD_MOD_DISABLED			= "%s is installed but currently disabled. This mod will not be loaded unless you enable it."
 DBM_CORE_LOAD_MOD_DISABLED_PLURAL	= "%s are installed but currently disabled. These mods will not be loaded unless you enable them."
 
-DBM_CORE_WHATS_NEW					= "The Overwatch & Heroes of the Storm countdown sounds have been split from DBM core and moved to a seperate optional downloads. To get these counts back, just download DBM-CountPack-Overwatch & DBM-CountPack-HoTS. This was done to significantly reduce the pointless redownloading of media files, especially with a lot of additional counts being added to both. There is also a new setting to hide notes like this from ever being show again."
+DBM_CORE_WHATS_NEW					= "The Overwatch & Heroes of the Storm countdown sounds have been split from DBM core and moved to a seperate optional downloads. To get these counts back, just install DBM-CountPack-Overwatch & DBM-CountPack-HoTS. This was done to significantly reduce the pointless redownloading of media files, especially with a LOT of additional counts having just been added. There is also a new setting to hide notes like this from ever being show again."
 DBM_CORE_WHATS_NEW_LINK				= "The recommended way to use DBM is with a voice pack. Read more on why and how this helps you by |HDBM:forumsnews|h|cff3588ffclicking here|r"
 
 --Post Patch 7.1
@@ -157,7 +157,7 @@ DBM_CORE_YOUR_VERSION_OUTDATED      = "Your version of Deadly Boss Mods is out-o
 DBM_CORE_VOICE_PACK_OUTDATED		= "Your DBM voice pack may be missing sounds supported by this version of DBM. Some special warning sounds will not be supressed for alerts using voices not supported by your voice pack version. Please download a newer version of voice pack or contact author for an update that contains missing audio files"
 DBM_CORE_VOICE_MISSING				= "You had a DBM voice pack selected that could not be found. Your selection has been reset to 'None'. If this is an error, make sure your voice pack is properly installed and enabled in addons."
 DBM_CORE_VOICE_DISABLED				= "You currently have at least one DBM voice pack installed but none enabled. If you intend to use a voice pack, make sure it's chosen in 'Spoken Alerts', else uninstall unused voice packs to hide this message"
-DBM_CORE_VOICE_COUNT_MISSING		= "Countdown voice %d is set to a voice/count pack that could not be found. It has be reset to default settings."
+DBM_CORE_VOICE_COUNT_MISSING		= "Countdown voice %d is set to a voice/count pack that could not be found. It has be reset to default setting: %s."
 DBM_BIG_WIGS						= "BigWigs"
 
 DBM_CORE_UPDATEREMINDER_HEADER			= "Your version of Deadly Boss Mods is out-of-date.\n Version %s (r%d) is available for download through Curse, WoWI, or from here:"
