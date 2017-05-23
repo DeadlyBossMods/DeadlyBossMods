@@ -48,11 +48,13 @@ function mod:MissilesTarget(targetname, uId)
 	end
 end
 
+--[[
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 
 	end
 end
+--]]
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
