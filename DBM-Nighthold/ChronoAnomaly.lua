@@ -18,8 +18,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE 206607 219823",
 	"SPELL_AURA_REMOVED 206617",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
-	"UNIT_SPELLCAST_CHANNEL_STOP boss1",
-	"UNIT_SPELLCAST_STOP boss1"
+	"UNIT_SPELLCAST_CHANNEL_STOP boss1 boss2 boss3 boss4 boss5",
+	"UNIT_SPELLCAST_STOP boss1 boss2 boss3 boss4 boss5"
 )
 
 --TODO, figure out how often tanks need to swap, adjust warnings accordingly
