@@ -67,10 +67,6 @@ L:SetOptionLocalization({
 	warnStarLow				= "Spezialwarnung, wenn eine Plasmasphäre bald stirbt (bei ~25%)"
 })
 
-L:SetMiscLocalization({
-	RadarMessage			= "Use Radar to find a non debuff partner and HUD to avoid other debuffs. I hope to improve this function over time and provide more options than this."--translate later
-})
-
 ------------------
 -- Star Augur Etraeus --
 ------------------

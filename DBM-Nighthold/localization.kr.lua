@@ -71,10 +71,6 @@ L:SetOptionLocalization({
 	warnStarLow				= "플라스마 구체 체력이 낮으면 특수 경고 보기 (25% 이하)"
 })
 
-L:SetMiscLocalization({
-	RadarMessage			= "레이더는 디버프가 없는 짝을 찾을 때 사용하고 HUD는 다른 디버프를 피할 때 사용하세요. 본 기능이 앞으로 발전되어 더 많은 기능을 제공했으면 좋겠습니다."
-})
-
 ------------------
 -- Star Augur Etraeus --
 ------------------
