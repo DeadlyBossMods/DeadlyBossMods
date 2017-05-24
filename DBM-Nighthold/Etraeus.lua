@@ -161,10 +161,10 @@ mod.vb.isPhaseChanging = false
 --For all inclusive, i'll simply use lowest observed time for each count, which will give close approx cd timer but imprecise to be a "next" timer.
 local icyEjectionTimers = {24.5, 34.1, 6.5, 4.8, 50.2, 1.2, 2.4, 25.6, 2.8}--43.3, 35.6, 8.1, 4.1, 52.2, 1.2, 2.4
 local felEjectionTimers = {18.2, 3.6, 3.2, 2.4, 10.2, 4.4, 2.8, 32.8, 4.0, 1.6, 4.0, 4.5, 22.3, 6.9, 17.0, 1.6, 1.2, 2.0, 18.3, 0.4}--10 after 4, 32 after 7, 22 after 12, 17 after 14, 18 after 18
-local mythicfelEjectionTimers = {17.4, 3.2, 2.8, 2.4, 9.3, 2.4, 3.2, 30, 2, 1.2, 12.6, 1.2, 1.7, 22.2, 5.6, 9.3, 2.5, 1.5, 24.3, 3.2}
+local mythicfelEjectionTimers = {17.4, 3.2, 2.8, 2.4, 9.3, 2.4, 3.2, 30, 2, 1.2, 12.6, 1.2, 1.7, 21.1, 5.6, 9.3, 2.5, 1.5, 24.3, 3.2}
 local voidEjectionTimers = {24, 3.2, 14.1, 17.4, 0.8, 4.7, 25.7, 2.3}
 --local felNovaTImers = {34.8, 31.3, 29.3}--Latest is 47.1, 45.0, 25.1. Currently unused. for now just doing 45 or 25
-local worldDestroyingTimers = {22, 42, 57, 51.8}
+local worldDestroyingTimers = {22, 41.7, 57, 51.8}
 local ps1Grand = {15, 12.2}
 local ps2Grand = {27, 43.9, 58.3}
 local ps3Grand = {58.7, 43, 41.4}

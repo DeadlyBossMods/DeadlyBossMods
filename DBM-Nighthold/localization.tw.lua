@@ -67,10 +67,6 @@ L:SetOptionLocalization({
 	warnStarLow				= "為電漿球血量變低時(25%)顯示特別警告"
 })
 
-L:SetMiscLocalization({
-	RadarMessage			= "使用雷達找到無減益的夥伴加上HUD去閃避減益。未來希望能加強此功能並提供更多選項。"
-})
-
 ------------------
 -- Star Augur Etraeus --
 ------------------
