@@ -72,10 +72,6 @@ L:SetOptionLocalization({
 	warnStarLow				= "特殊警报：当坍缩之星血量低时(~25%)"
 })
 
-L:SetMiscLocalization({
-	RadarMessage			= "目前请使用雷达来找一个没有debuff的队友，并用HUD来防止碰到debuffs。我们会拿出更多的黑科技。"
-})
-
 ------------------
 -- Star Augur Etraeus --
 ------------------

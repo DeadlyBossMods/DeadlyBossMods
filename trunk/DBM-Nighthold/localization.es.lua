@@ -67,10 +67,6 @@ L:SetOptionLocalization({
 	warnStarLow				= "Mostrar aviso especial cuando una esfera de plasma tenga la salud baja (15%)"
 })
 
-L:SetMiscLocalization({
-	RadarMessage			= "Usar el radar de distancia para buscar aliados sin perjuicio y el indicador en pantalla para evitar otros perjuicios (esta opción se mejorará en el futuro)"
-})
-
 ---------------------------
 -- Augur estelar Etraeus --
 ---------------------------
