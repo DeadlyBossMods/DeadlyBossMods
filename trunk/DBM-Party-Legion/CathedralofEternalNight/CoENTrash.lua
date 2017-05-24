@@ -9,6 +9,7 @@ mod.isTrashMod = true
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 239232 237391 238543 236737 242724 242760 238653",
+	"SPELL_CAST_SUCCESS 190620",
 	"SPELL_AURA_APPLIED 238688 239161"
 )
 
@@ -25,6 +26,7 @@ local specWarnLumberingCrash	= mod:NewSpecialWarningRun(242760, "Melee", nil, ni
 local specWarnShadowWave		= mod:NewSpecialWarningDodge(238653, nil, nil, nil, 2, 2)
 local specWarnChokingVines		= mod:NewSpecialWarningRun(238688, nil, nil, nil, 4, 2)
 local specWarnTomeSilence		= mod:NewSpecialWarningSwitch(239161, "-Healer", nil, nil, 1, 2)
+local specWarnFelblazeOrb		= mod:NewSpecialWarningDodge(190620, nil, nil, nil, 1, 2)
 
 local voiceFelStrike			= mod:NewVoice(236737)--watchstep
 local voiceAlluringAroma		= mod:NewVoice(237391, "HasInterrupt")--kickcast
@@ -35,6 +37,7 @@ local voiceLumberingCrash		= mod:NewVoice(242760, "Melee")--runout
 local voiceShadowWave			= mod:NewVoice(238653)--watchwave
 local voiceChokingVine			= mod:NewVoice(238688)--runout
 local voiceTomeSilence			= mod:NewVoice(239161)--targetchange
+local voiceFelblazeOrb			= mod:NewVoice(190620)--watchorb
 
 mod:RemoveOption("HealthFrame")
 
@@ -77,6 +80,15 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 238653 then
 		specWarnShadowWave:Show()
 		voiceShadowWave:Play("watchwave")
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if not self.Options.Enabled then return end
+	local spellId = args.spellId
+	if spellId == 190620 then
+		specWarnFelblazeOrb:Show()
+		voiceFelblazeOrb:Play("watchorb")
 	end
 end
 
