@@ -895,10 +895,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerParasiticWoundCD:Start()
 	elseif spellId == 221149 or spellId == 227277 then -- Manifest Azzinoth
 		self.vb.azzCount = self.vb.azzCount + 1
-		specWarnManifestAzzinoth:Show(self.vb.azzCount)
+		local count = self.vb.azzCount
+		specWarnManifestAzzinoth:Show(count)
 		voiceManifestAzzinoth:Play("bigmob")
+		voiceManifestAzzinoth:Schedule(1.5, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 		timerBulwarkofAzzinothCD:Start(15)
-		timerManifestAzzinothCD:Start(40, self.vb.azzCount+1)
+		timerManifestAzzinothCD:Start(40, count+1)
 	elseif spellId == 227071 then -- Flame Crash
 		self.vb.crashCastCount  = self.vb.crashCastCount  + 1
 		if self.vb.crashCastCount == 4 or self.vb.crashCastCount == 7 then

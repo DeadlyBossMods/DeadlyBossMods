@@ -64,7 +64,7 @@ local specWarnExpedite				= mod:NewSpecialWarningInterrupt(209617, "HasInterrupt
 --Time Layer 1
 local specWarnArcaneticRing			= mod:NewSpecialWarningDodge(208807, nil, nil, nil, 2, 5)
 local specWarnAblation				= mod:NewSpecialWarningTaunt(209615, nil, nil, nil, 1, 2)
-local specWarnSpanningSingularityPre= mod:NewSpecialWarningMoveTo(209168, "Ranged", nil, nil, 1, 7)
+local specWarnSpanningSingularityPre= mod:NewSpecialWarningMoveTo(209168, "RangedDps", nil, 2, 1, 7)
 local specWarnSpanningSingularity	= mod:NewSpecialWarningDodge(209168, nil, nil, nil, 2, 2)
 local specWarnSingularityGTFO		= mod:NewSpecialWarningMove(209168, "-Tank", nil, 2, 1, 2)
 --Time Layer 2
@@ -216,7 +216,9 @@ function mod:OnCombatStart(delay)
 		timerTimeElementalsCD:Start(8-delay, FAST)
 		timerSpanningSingularityCD:Start(53.7-delay, 2)
 		specWarnSpanningSingularityPre:Schedule(48.7, DBM_CORE_ROOM_EDGE)
-		voiceSpanningSingularity:Schedule(48.7, "runtoedge")
+		if self.Options.SpecWarn209168moveto then
+			voiceSpanningSingularity:Schedule(48.7, "runtoedge")
+		end
 		countdownSpanningSingularity:Start(53.7)
 		timerArcaneticRing:Start(30-delay, 1)
 		countdownArcaneticRing:Start(30-delay)
@@ -594,7 +596,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			timerSpanningSingularityCD:Start(timer, nextCount)
 			if self:IsMythic() then
 				specWarnSpanningSingularityPre:Schedule(timer-5, DBM_CORE_ROOM_EDGE)
-				voiceSpanningSingularity:Schedule(timer-5, "runtoedge")
+				if self.Options.SpecWarn209168moveto then
+					voiceSpanningSingularity:Schedule(timer-5, "runtoedge")
+				end
 				countdownSpanningSingularity:Start(timer)
 			end
 		end
