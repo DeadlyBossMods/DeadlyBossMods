@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 233431 233983 233894",
 	"SPELL_AURA_APPLIED 233430 233441 235230 233983 233894 233431",
 --	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED 233441 235230 233983 233431 235230"
+	"SPELL_AURA_REMOVED 233441 235230 233983"
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
 --	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
@@ -92,20 +92,20 @@ function mod:OnCombatStart(delay)
 	self.vb.burstCount = 0
 	self.vb.scytheCount = 0
 	self.vb.pangCount = 0
-	timerScytheSweepCD:Start(5.5-delay)
+	timerScytheSweepCD:Start(5.2-delay)
 	timerCalcifiedQuillsCD:Start(8.5-delay)--8.5-11
-	timerBoneSawCD:Start(60.5-delay)
-	countdownBoneSaw:Start(60.5-delay)
+	timerBoneSawCD:Start(64.5-delay)
+	countdownBoneSaw:Start(64.5-delay)
 --	timerEchoingAnguishCD:Start(1-delay)--6-20
 --	timerSuffocatingDarkCD:Start(1-delay)--13-48
 --	timerTormentingBurstCD:Start(1-delay)--8-20
-	timerFelSquallCD:Start(30-delay)--Always same, at least
+	timerFelSquallCD:Start(35-delay)--Always same, at least
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(233104))
 		DBM.InfoFrame:Show(8, "playerpower", 5, ALTERNATE_POWER_INDEX)
 	end
 	if not self:IsLFR() then
-		DBM:AddMsg("In normal/heroic/Mythc tests, Belac had erratic timers so most Belac timers are disabled")
+		DBM:AddMsg("In all tests, Belac had erratic timers so most Belac timers are disabled")
 	end
 end
 
