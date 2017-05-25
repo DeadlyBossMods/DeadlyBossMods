@@ -27,8 +27,9 @@ mod:RegisterEventsInCombat(
 --TODO, More timer data for longer pulls (both mythic and non mythic)
 --TODO, more timer data for combowambo for more difficulties and of course longer pulls for existing ones.
 --[[
-(ability.id = 233062) and type = "begincast" or
-(ability.id = 232249 or ability.id = 231363 or ability.id = 233272) and type = "cast"
+(ability.id = 233062) and type = "begincast"
+ or (ability.id = 232249 or ability.id = 231363 or ability.id = 233272) and type = "cast"
+ or ability.name = "Rain of Brimstone"
 --]]
 local warnInfernalSpike					= mod:NewSpellAnnounce(233055, 1)
 local warnShatteringStar				= mod:NewTargetAnnounce(233272, 3)
@@ -86,8 +87,8 @@ function mod:OnCombatStart(delay)
 	self.vb.comboWamboCount = 0
 	timerComboWamboCD:Start(4-delay, 1)
 	timerBurningArmorCD:Start(10.5-delay)
-	timerShatteringStarCD:Start(24-delay, 1)
-	countdownShatteringStar:Start(24-delay)
+	timerShatteringStarCD:Start(24-delay, 1)--34 on mythic testing
+	countdownShatteringStar:Start(24-delay)--34 on mythic testing
 	timerInfernalBurningCD:Start(54-delay)
 	if self:IsMythic() then
 		self.vb.brimstoneCount = 0
@@ -257,11 +258,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, spellGUID)
 		self.vb.brimstoneCount = self.vb.brimstoneCount + 1
 		specWarnRainofBrimstone:Show(spellName)
 		voiceRainofBrimstone:Play("helpsoak")
-		if self.vb.brimstoneCount % 2 == 0 then
-			timerRainofBrimstoneCD:Start(36, self.vb.brimstoneCount+1)
-		else
-			timerRainofBrimstoneCD:Start(24, self.vb.brimstoneCount+1)
-		end
+		timerRainofBrimstoneCD:Start(60, self.vb.brimstoneCount+1)
 	end
 end
 
