@@ -24,15 +24,13 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
---TODO, phase detection to remove/add timers etc.
 --TODO, figure out which of the MANY scripts are for glaive storm
 --TODO, figure out how to actually pre warn moon glaive and give it a warning.
 --TODO, is there even a point to Shadow shot?
---TODO, infoframe showing absorbs remaining on boss/players if possible to get remaining shield from UnitBuff/UnitDebuff in an onupdate call?
 --TODO, fine tune all option defaults once what targets or doesn't target x and y is known. Fight can't have too much timer/warning spam
 --TODO, announce lunar strike? more redundancy in encounter that isn't needed IMO
 --TODO, video fight and improve timer interactions to better deal with huge variation in stuff like moon glaive timer.
---TODO, new voice, changemoon (Change Moon)
+--TODO, both 54 timers were 58 on mythic, see if that's new consistency
 --[[
 (ability.id = 236694 or ability.id = 236442 or ability.id = 239379 or ability.id = 236712) and type = "begincast" or
 (ability.id = 236480 or ability.id = 237561 or ability.id = 236547 or ability.id = 236518 or ability.id = 233263 or ability.id = 239264 or ability.id = 236672) and type = "cast" or
@@ -125,7 +123,7 @@ function mod:OnCombatStart(delay)
 	self.vb.twilightGlaiveCount = 0
 	self.vb.eclipseCount = 0
 	timerMoonBurnCD:Start(9.6-delay)
-	timerMoonGlaiveCD:Start(14.4-delay)
+	timerMoonGlaiveCD:Start(14.4-delay)--16.6 on lat mythic test
 	timerTwilightVolleyCD:Start(15.5-delay)--15.5-17
 	timerTwilightGlaiveCD:Start(18.3-delay)
 	timerIncorporealShotCD:Start(48-delay)
