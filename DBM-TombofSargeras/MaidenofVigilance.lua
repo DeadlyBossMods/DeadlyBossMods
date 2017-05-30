@@ -210,7 +210,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellUnstableSoul:Cancel()
 		end
-		if self.Options.InfoFrame and self.vb.burstDebuffCount == 0 and not self.vb.shieldActive then
+		if self.Options.InfoFrame and self.vb.unstableSoulCount == 0 and not self.vb.shieldActive then
 			DBM.InfoFrame:Hide()
 		end
 	elseif spellId == 235028 then--Bulwark Removed
@@ -229,7 +229,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self.vb.spontFragmentationCount = 0
 			--timerSpontFragmentationCD:Start(nil, 1)
 		end
-		if self.Options.InfoFrame and self.vb.burstDebuffCount > 0 then
+		if self.Options.InfoFrame and self.vb.unstableSoulCount > 0 then
 			local spellName = GetSpellInfo(235117)
 			DBM.InfoFrame:SetHeader(spellName)
 			DBM.InfoFrame:Show(10, "playerdebuffremaining", spellName)
