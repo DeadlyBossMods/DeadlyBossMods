@@ -89,13 +89,13 @@ local specWarnStormOfDestroyer		= mod:NewSpecialWarningDodge(161121, nil, nil, n
 local specWarnSoulCorrosion			= mod:NewSpecialWarningStack(208802, nil, 3, nil, nil, 1, 6)--stack guessed
 local specWarnBlackHarvest			= mod:NewSpecialWarningCount(206744, nil, nil, nil, 2, 2)
 local specWarnFlamesOfSargeras		= mod:NewSpecialWarningMoveAway(221606, nil, nil, nil, 3, 2)
-local yellFlamesofSargeras			= mod:NewPosYell(221606)
+local yellFlamesofSargeras			= mod:NewPosYell(221606, 15643)
 local specWarnFlamesOfSargerasTank	= mod:NewSpecialWarningTaunt(221606, nil, nil, nil, 1, 2)
 --Mythic Only
 local specWarnWilloftheDemonWithin	= mod:NewSpecialWarningSpell(211439, nil, nil, nil, 1, 2)
 local specWarnParasiticWound		= mod:NewSpecialWarningMoveAway(206847, nil, nil, nil, 3, 2)
-local yellParasiticWound			= mod:NewYell(206847)
-local yellParasiticWoundFades		= mod:NewFadesYell(206847)
+local yellParasiticWound			= mod:NewYell(206847, 36469)
+local yellParasiticWoundFades		= mod:NewFadesYell(206847, 36469)
 --local specWarnShearedSoul			= mod:NewSpecialWarningYou(206458, nil, nil, nil, 1)
 local specWarnSoulsever				= mod:NewSpecialWarningCount(220957, nil, nil, nil, 3)--Needs voice, but what?
 local specWarnVisionsofDarkTitan	= mod:NewSpecialWarningMoveTo(227008, nil, nil, nil, 3, 7)
@@ -132,8 +132,8 @@ local timerBondsofFelCD				= mod:NewNextCountTimer(50, 206222, nil, nil, nil, 3)
 local timerEyeofGuldanCD			= mod:NewNextCountTimer(60, 209270, nil, nil, nil, 1)
 --Stage Three: The Master's Power
 mod:AddTimerLine(SCENARIO_STAGE:format(3))
-local timerFlamesofSargerasCD		= mod:NewNextCountTimer("d58.5", 221783, nil, nil, nil, 3)
-local timerStormOfDestroyerCD		= mod:NewNextCountTimer(16, 161121, nil, nil, nil, 3)
+local timerFlamesofSargerasCD		= mod:NewNextCountTimer("d58.5", 221783, 15643, nil, nil, 3)
+local timerStormOfDestroyerCD		= mod:NewNextCountTimer(16, 161121, 196871, nil, nil, 3)
 local timerWellOfSouls				= mod:NewCastTimer(16, 206939, nil, nil, nil, 5)
 local timerBlackHarvestCD			= mod:NewNextCountTimer(83, 206744, nil, nil, nil, 2)
 --Mythic Only
