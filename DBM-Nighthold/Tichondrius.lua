@@ -219,7 +219,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnCarrionNightmare:Show()
 		voiceCarrionNightmare:Play("watchstep")
 		if self.vb.carrionNightmare < 6 then
-			timerCarrionNightmare:Start()
+			timerCarrionNightmare:Start(nil, self.vb.carrionNightmare+1)
 			countdownCarrionNightmare:Start()
 		end
 	elseif spellId == 212997 then
