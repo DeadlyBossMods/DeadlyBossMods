@@ -76,6 +76,7 @@ local specWarnAblationExplosionOut	= mod:NewSpecialWarningMoveAway(209615, nil, 
 local yellAblatingExplosion			= mod:NewFadesYell(209973)
 --Time Layer 3
 local specWarnConflexiveBurst		= mod:NewSpecialWarningYou(209598, nil, nil, nil, 1, 2)
+local specWarnConflexiveBurstTank	= mod:NewSpecialWarningTaunt(209598, nil, nil, nil, 1, 2)
 local specWarnAblativePulse			= mod:NewSpecialWarningInterrupt(209971, "Tank", nil, 2, 1, 2)
 
 --Base
@@ -378,9 +379,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 209598 then
 		self.vb.burstDebuffCount = self.vb.burstDebuffCount + 1
 		warnConflexiveBurst:CombinedShow(0.5, args.destName)
+		local uId = DBM:GetRaidUnitId(args.destName)
 		if args:IsPlayer() then
 			specWarnConflexiveBurst:Show()
 			voiceConflexiveBurst:Play("targetyou")
+		elseif self:IsTanking(uId, "boss1") then
+			specWarnConflexiveBurstTank:Show(args.destName)
+			voiceConflexiveBurst:Play("tauntboss")
 		end
 		if self.Options.SetIconOnConflexiveBurst then
 			self:SetAlphaIcon(0.5, args.destName)
