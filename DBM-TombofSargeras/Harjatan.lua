@@ -49,7 +49,7 @@ local warnAqueousBurst				= mod:NewTargetAnnounce(231729, 2, nil, false)--Spammy
 --Razorjaw Gladiator
 local warnDrivenAssault				= mod:NewTargetAnnounce(234016, 3, nil, false)--Spammy
 --Darkscale Taskmaster
-local warnFrostySpittle				= mod:NewSpellAnnounce(234194, 2)
+--local warnFrostySpittle				= mod:NewSpellAnnounce(234194, 2)
 --Mythic (Eggs and tadpoles)
 local warnSicklyFixate				= mod:NewTargetAnnounce(241600, 4)
 
@@ -67,7 +67,7 @@ local specWarnTendWoundsDispel		= mod:NewSpecialWarningDispel(231904, "MagicDisp
 --Razorjaw Gladiator
 local specWarnDrivenAssault			= mod:NewSpecialWarningRun(234016, nil, nil, nil, 4, 2)
 --Darkscale Taskmaster
-local specWarnTaskMaster			= mod:NewSpecialWarningSwitch("ej14725", "-Healer", nil, nil, 1, 2)
+--local specWarnTaskMaster			= mod:NewSpecialWarningSwitch("ej14725", "-Healer", nil, nil, 1, 2)
 --Mythic (Eggs and tadpoles)
 local specWarnHatching				= mod:NewSpecialWarningSwitch(240319, "Dps", nil, nil, 1, 2)
 local specWarnSicklyFixate			= mod:NewSpecialWarningRun(241600, nil, nil, nil, 4, 2)
@@ -77,7 +77,7 @@ local specWarnTantrum				= mod:NewSpecialWarningSpell(241590, nil, nil, nil, 2, 
 local timerUncheckedRageCD			= mod:NewNextCountTimer(20, 231854, nil, nil, nil, 2)--5 power per second heroic, 20 seconds for 100 energy
 local timerDrawInCD					= mod:NewNextTimer(60.8, 232061, nil, nil, nil, 6)
 local timerCommandingRoarCD			= mod:NewNextTimer(31.8, 232192, nil, nil, nil, 1)
-local timerTaskMasterCD				= mod:NewNextTimer(40.6, "ej14725", nil, nil, nil, 1, 233951)
+--local timerTaskMasterCD				= mod:NewNextTimer(40.6, "ej14725", nil, nil, nil, 1, 233951)
 --Razorjaw Wavemender
 local timerAqueousBurstCD			= mod:NewCDTimer(6, 231729, nil, false, nil, 3)--6-8
 local timerTendWoundsCD				= mod:NewAITimer(15, 231904, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
@@ -104,7 +104,7 @@ local voiceTendWounds				= mod:NewVoice(231904)--kickcast/dispelnow
 --Razorjaw Gladiator
 local voiceDrivenAssault			= mod:NewVoice(234016)--justrun/keepmove
 --Darkscale Taskmaster
-local voiceTaskMaster				= mod:NewVoice("ej14725", "-Healer")--bigmob
+--local voiceTaskMaster				= mod:NewVoice("ej14725", "-Healer")--bigmob
 --Mythic (Eggs and tadpoles)
 local voiceHatching					= mod:NewVoice(240319, "Dps")--killmob
 local voiceSicklyFixate				= mod:NewVoice(241600)--justrun/keepmove
@@ -383,9 +383,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 			DBM:Debug("Draw In is Delaying Commaning Roar", 2)
 		end
 	elseif spellId == 241736 then--Heroic Trigger Mistress Speaking to Naga
-		specWarnTaskMaster:Show()
-		voiceTaskMaster:Play("bigmob")
-		timerTaskMasterCD:Start(60)
+		--specWarnTaskMaster:Show()
+		--voiceTaskMaster:Play("bigmob")
+		--timerTaskMasterCD:Start(60)
 	elseif spellId == 240347 then--Warn Players of Hatching Eggs
 		specWarnHatching:Show()
 		voiceHatching:Play("killmob")
