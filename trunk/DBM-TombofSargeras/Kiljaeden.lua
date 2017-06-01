@@ -153,6 +153,7 @@ function mod:OnCombatStart(delay)
 	timerRupturingSingularityCD:Start(1-delay)
 	timerArmageddonCD:Start(1-delay)
 	timerShadowReflectionCD:Start(1-delay)
+	DBM:AddMsg("This mod is a full drycode and proper support will likely come mid/late week, first week of tomb. You can help speed this up by sharing transcriptor logs of this fight")
 end
 
 function mod:OnCombatEnd()
