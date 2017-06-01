@@ -586,7 +586,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		--specWarnTimeElementals:Show(STATUS_TEXT_BOTH)
 		--voiceElemental:Play("bigmob")
 		DBM:Debug("Both elementals summoned, this event still exists, probably need custom code for certain difficulties")
-	elseif (spellId == 209168 or spellId == 233012 or spellId == 233011 or spellId == 233009) and self:AntiSpam(4, 3) and not self.vb.transitionActive then
+	elseif (spellId == 209168 or spellId == 233013 or spellId == 233012 or spellId == 233011 or spellId == 233009 or spellId == 233010) and self:AntiSpam(4, 3) and not self.vb.transitionActive then
 		self.vb.singularityCount = self.vb.singularityCount + 1
 		specWarnSpanningSingularity:Show()
 		voiceSpanningSingularity:Play("watchstep")
