@@ -76,7 +76,7 @@ local specWarnFlamingOrbSpawn		= mod:NewSpecialWarningSpell(239253, nil, nil, ni
 
 --Stage One: The Betrayer
 local timerFelclawsCD				= mod:NewCDTimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerRupturingSingularityCD	= mod:NewCDTimer(66, 235059, nil, nil, nil, 3)--58, 61, 31
+local timerRupturingSingularityCD	= mod:NewCDTimer(61, 235059, nil, nil, nil, 3)--61-68?
 local timerArmageddonCD				= mod:NewCDTimer(42, 240910, nil, nil, nil, 5)--10, 54, 38, 30
 local timerShadowReflectionCD		= mod:NewCDTimer(35, "ej15238", nil, nil, nil, 3, 236378)--Wailing icon used.
 --Intermission: Eternal Flame
@@ -182,6 +182,13 @@ function mod:SPELL_CAST_START(args)
 				DBM.RangeCheck:Show(5)
 			end
 		end
+		if self.vb.phase == 1 then--Temp intermission 1 trigger, likely triggered sooner so can start more timers, like adjust armageddon
+			timerRupturingSingularityCD:Stop()
+			timerArmageddonCD:Stop()
+			self.vb.phase = 1.5
+			timerRupturingSingularityCD:Start(30)
+			timerShadowReflectionCD:Start(50)
+		end
 	elseif spellId == 237725 and self:AntiSpam(5, 2) then--Assume they all spawn/begin casting at same time
 		timerHopelessness:Start()
 	elseif spellId == 238999 then
@@ -205,7 +212,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 235059 then
 		specWarnRupturingSingularity:Show()
 		voiceRupturingSingularity:Play("watchstep")
-		--timerRupturingSingularityCD:Start()
+		timerRupturingSingularityCD:Start()
 	elseif (spellId == 236378 or spellId == 236710 or spellId == 237590 or spellId == 236498) and self:AntiSpam(5, 1) then
 		--Assumed for now, reflections happen at same time, so no sense in more than one timer
 		--timerShadowReflectionCD:Start()--1 timer to rule them all!
