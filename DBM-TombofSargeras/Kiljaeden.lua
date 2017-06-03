@@ -40,6 +40,11 @@ mod:RegisterEventsInCombat(
 --TODO, also verify cast event for tear rift. 239214 cast ID is a script and might not be combat log reliable
 --TODO, flame orb work. target of fixate after spawn. more than one spawn? if not, remove antispam
 --TODO, if above is successful, add range frame (10 yards) for fixated flame orb person.
+--[[
+(ability.id = 238502 or ability.id = 237725 or ability.id = 238999 or ability.id = 239214 or ability.id = 240910) and type = "begincast"
+ or (ability.id = 239932 or ability.id = 235059 or ability.id = 238502 or ability.id = 239785 or ability.id = 236378 or ability.id = 236710 or ability.id = 237590 or ability.id = 236498) and type = "cast"
+ or ability.name = "Rupturing Singularity" and target.name = "Omegal"
+ --]]
 --Intermission: Eternal Flame
 local warnBurstingDreadFlame		= mod:NewSpellAnnounce(238430, 2)--Generic for now until more known, likely something cast fairly often
 --Stage Three: Darkness of A Thousand Souls
@@ -70,10 +75,10 @@ local specWarnDarknessofSouls		= mod:NewSpecialWarningMoveTo(238999, nil, nil, n
 local specWarnFlamingOrbSpawn		= mod:NewSpecialWarningSpell(239253, nil, nil, nil, 1, 2)--Spawn warning (todo, another warning for fixate target if possible)
 
 --Stage One: The Betrayer
-local timerFelclawsCD				= mod:NewAITimer(31, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerRupturingSingularityCD	= mod:NewAITimer(31, 235059, nil, nil, nil, 3)
-local timerArmageddonCD				= mod:NewAITimer(31, 240910, nil, nil, nil, 5)
-local timerShadowReflectionCD		= mod:NewAITimer(31, "ej15238", nil, nil, nil, 3, 236378)--Wailing icon used.
+local timerFelclawsCD				= mod:NewCDTimer(25, 239932, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerRupturingSingularityCD	= mod:NewCDTimer(66, 235059, nil, nil, nil, 3)--58, 61, 31
+local timerArmageddonCD				= mod:NewCDTimer(42, 240910, nil, nil, nil, 5)--10, 54, 38, 30
+local timerShadowReflectionCD		= mod:NewCDTimer(35, "ej15238", nil, nil, nil, 3, 236378)--Wailing icon used.
 --Intermission: Eternal Flame
 local timerFocusedDreadflameCD		= mod:NewAITimer(31, 238502, nil, nil, nil, 3)
 local timerBurstingDreadflameCD		= mod:NewAITimer(31, 238429, nil, nil, nil, 3)
@@ -149,10 +154,10 @@ end
 
 function mod:OnCombatStart(delay)
 	self.vb.phase = 1
-	timerFelclawsCD:Start(1-delay)
-	timerRupturingSingularityCD:Start(1-delay)
-	timerArmageddonCD:Start(1-delay)
-	timerShadowReflectionCD:Start(1-delay)
+	timerArmageddonCD:Start(10-delay)
+	timerShadowReflectionCD:Start(21-delay)
+	timerFelclawsCD:Start(26-delay)
+	timerRupturingSingularityCD:Start(58-delay)
 	DBM:AddMsg("This mod is a full drycode and proper support will likely come mid/late week, first week of tomb. You can help speed this up by sharing transcriptor logs of this fight")
 end
 
@@ -186,6 +191,10 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 239214 then
 		warnTearRift:Show()
 		timerTearRiftCD:Start()
+	elseif spellId == 240910 then--Armageddon. Assuming scripted and not in combat log
+		specWarnArmageddon:Show()
+		voiceArmageddon:Play("helpsoak")
+		--timerArmageddonCD:Start()
 	end
 end
 
@@ -196,10 +205,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 235059 then
 		specWarnRupturingSingularity:Show()
 		voiceRupturingSingularity:Play("watchstep")
-		timerRupturingSingularityCD:Start()
+		--timerRupturingSingularityCD:Start()
 	elseif (spellId == 236378 or spellId == 236710 or spellId == 237590 or spellId == 236498) and self:AntiSpam(5, 1) then
 		--Assumed for now, reflections happen at same time, so no sense in more than one timer
-		timerShadowReflectionCD:Start()--1 timer to rule them all!
+		--timerShadowReflectionCD:Start()--1 timer to rule them all!
 	elseif spellId == 238502 and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	elseif spellId == 239785 then
@@ -332,11 +341,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
 		timerFocusedDreadflameCD:Start(1)--If this is wrong trigger this will not work idealy, but if it is, yay!
 		timerBurstingDreadflameCD:Start(1)
 	elseif spellId == 242902 then--Kil'jaden Intro Conversation (not my typo, blizz spelled their own npc wrong)
-	
-	elseif spellId == 240910 then--Armageddon. Assuming scripted and not in combat log
-		specWarnArmageddon:Show()
-		voiceArmageddon:Play("helpsoak")
-		timerArmageddonCD:Start()
+		
 	elseif spellId == 238430 then--Bursting Dreadflame, likely the projectile script that's not in combat log
 		warnBurstingDreadFlame:Show()
 		timerBurstingDreadflameCD:Start()
