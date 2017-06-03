@@ -218,7 +218,7 @@ L.HUDAlphaSlider			= "Alpha: %0.1f"
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "Spoken Alerts"
-L.Area_VoiceSelection		= "Voice Selections"
+L.Area_VoiceSelection		= "Voice Selections (scroll selection menus with mouse wheel)"
 L.CountdownVoice			= "Set primary voice for count sounds"
 L.CountdownVoice2			= "Set secondary voice for count sounds"
 L.CountdownVoice3			= "Set tertiary voice for count sounds"
