@@ -85,7 +85,7 @@ local timerTendWoundsCD				= mod:NewAITimer(15, 231904, nil, nil, nil, 4, nil, D
 local timerDrivenAssault			= mod:NewTargetTimer(10, 234016, nil, false, nil, 3)--Too many spawn, this would be spammy so off by default
 local timerSplashCleaveCD			= mod:NewCDTimer(12, 234129, nil, false, nil, 5, nil, DBM_CORE_TANK_ICON)
 --Darkscale Taskmaster
-local timerFrostySpittleCD			= mod:NewCDTimer(12, 234194, nil, nil, nil, 3)
+--local timerFrostySpittleCD			= mod:NewCDTimer(12, 234194, nil, nil, nil, 3)
 --Mythic
 local timerHatchingCD				= mod:NewCDTimer(40.6, 240319, nil, nil, nil, 1)--40.6-42
 --local berserkTimer				= mod:NewBerserkTimer(300)
@@ -134,7 +134,7 @@ function mod:OnCombatStart(delay)
 	end
 	if not self:IsEasy() then
 		timerCommandingRoarCD:Start(6.3-delay)
-		timerTaskMasterCD:Start(30.5)--30-41
+		--timerTaskMasterCD:Start(30.5)--30-41
 		if self:IsMythic() then
 			timerHatchingCD:Start(30.5-delay)
 		end
@@ -179,8 +179,8 @@ function mod:SPELL_CAST_START(args)
 			voiceTendWounds:Play("kickcast")
 		end
 	elseif spellId == 234194 then
-		warnFrostySpittle:Show()
-		timerFrostySpittleCD:Start(nil, args.sourceGUID)
+		--warnFrostySpittle:Show()
+		--timerFrostySpittleCD:Start(nil, args.sourceGUID)
 	elseif spellId == 241590 then
 		specWarnTantrum:Show()
 		voiceTantrum:Play("aesoon")
@@ -319,8 +319,8 @@ function mod:UNIT_DIED(args)
 		timerTendWoundsCD:Stop(args.destGUID)
 	elseif cid == 117596 then--Razorjaw Gladiator
 		timerSplashCleaveCD:Stop(args.destGUID)
-	elseif cid == 117522 then--Darkscale Taskmaster
-		timerFrostySpittleCD:Stop(args.destGUID)
+	--elseif cid == 117522 then--Darkscale Taskmaster
+		--timerFrostySpittleCD:Stop(args.destGUID)
 	elseif cid == 120545 then--Incubated Egg
 		
 	end
@@ -342,7 +342,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				timerTendWoundsCD:Start(1, GUID)
 			elseif cid == 117596 then--Razorjaw Gladiator
 
-			elseif cid == 117522 then--Darkscale Taskmaster
+			--elseif cid == 117522 then--Darkscale Taskmaster
 				--timerFrostySpittleCD:Start(1, GUID)
 			end
 		end
