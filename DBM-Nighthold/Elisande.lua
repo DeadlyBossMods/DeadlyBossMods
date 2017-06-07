@@ -209,7 +209,7 @@ function mod:OnCombatStart(delay)
 	self.vb.transitionActive = false
 	self.vb.totalRingCasts = 0
 	self.vb.totalbeamCasts = 0
-	self.vb.totalsingularityCasts = 0
+	self.vb.totalsingularityCasts = 1
 	timerLeaveNightwell:Start(4-delay)
 	timerTimeElementalsCD:Start(5-delay, SLOW)
 	--timerAblationCD:Start(8.5-delay)--Verify/tweak
