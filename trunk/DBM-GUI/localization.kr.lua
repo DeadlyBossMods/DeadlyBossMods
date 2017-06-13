@@ -211,7 +211,7 @@ L.HUDAlphaSlider			= "투명도: %0.1f"
 
 -- Tab: Spoken Alerts Frame
 L.Panel_SpokenAlerts		= "음성 경보"
-L.Area_VoiceSelection		= "음성 선택"
+L.Area_VoiceSelection		= "음성 선택 (마우스 휠로 메뉴 스크롤)"
 L.CountdownVoice			= "1순위 초읽기 음성 설정"
 L.CountdownVoice2			= "2순위 초읽기 음성 설정"
 L.CountdownVoice3			= "3순위 초읽기 음성 설정"
