@@ -102,7 +102,7 @@ local voiceDoomedSunderin			= mod:NewVoice(236544)--gathershare/justrun
 
 --mod:AddSetIconOption("SetIconOnShield", 228270, true)
 mod:AddInfoFrameOption(235621, true)
-mod:AddRangeFrameOption(5, 236459)
+mod:AddRangeFrameOption(8, 235621)
 mod:AddNamePlateOption("NPAuraOnBonecageArmor", 236513)
 
 mod.vb.soulboundCast = 0
@@ -170,8 +170,14 @@ function mod:OnCombatStart(delay)
 			local name = DBM:GetUnitFullName(uId)
 			if UnitDebuff(uId, spiritRealm) then
 				playersInSpirit[#playersInSpirit+1] = name
+				if UnitIsUnit("player", uId) then
+					DBM.RangeCheck:Show(5, regularFilter)
+				end
 			else
 				playersNotInSpirit[#playersNotInSpirit+1] = name
+				if UnitIsUnit("player", uId) then
+					DBM.RangeCheck:Show(5, spiritFilter)
+				end
 			end
 		end
 		DBM.InfoFrame:SetHeader(OVERVIEW)
@@ -253,9 +259,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnSoulbind:Show()
 			voiceSoulbind:Play("targetyou")
 			yellSoulbind:Yell()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(5)
-			end
 		end
 	elseif spellId == 235924 then
 		warnSpearofAnguish:CombinedShow(0.3, args.destName)
@@ -265,9 +268,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellSpearofAnguish:Schedule(5, 1)
 			yellSpearofAnguish:Schedule(4, 2)
 			yellSpearofAnguish:Schedule(3, 3)
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(5)
-			end
 		end
 	elseif spellId == 238018 then
 		if args:IsPlayer() then
@@ -307,15 +307,10 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 236459 then
-		if self.Options.RangeFrame and args:IsPlayer() then
-			DBM.RangeCheck:Hide()
-		end
+
 	elseif spellId == 235924 then
 		if args:IsPlayer() then
 			yellSpearofAnguish:Cancel()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Hide()
-			end
 		end
 	elseif spellId == 236513 then--Bonecage Armor
 		self.vb.boneArmorCount = self.vb.boneArmorCount - 1
@@ -350,15 +345,15 @@ function mod:UNIT_AURA_UNFILTERED(uId)
 	if not tContains(playersNotInSpirit, name) and not inSpiritRealm then--Not Spirit Realm
 		playersNotInSpirit[#playersNotInSpirit+1] = name
 		tDeleteItem(playersInSpirit, name)
-		--[[if UnitIsUnit("player", uId) then
-			DBM.RangeCheck:Show(5, regularFilter)
-		end--]]
+		if UnitIsUnit("player", uId) then--Only show people in spirit realm
+			DBM.RangeCheck:Show(5, spiritFilter)
+		end
 	elseif not tContains(playersInSpirit, name) and inSpiritRealm then--Spirit Realm
 		playersInSpirit[#playersInSpirit+1] = name
 		tDeleteItem(playersNotInSpirit, name)
-		--[[if UnitIsUnit("player", uId) then
-			DBM.RangeCheck:Show(5, spiritFilter)
-		end--]]
+		if UnitIsUnit("player", uId) then--Only show people not in spirit realm
+			DBM.RangeCheck:Show(5, regularFilter)
+		end
 	end
 end
 
