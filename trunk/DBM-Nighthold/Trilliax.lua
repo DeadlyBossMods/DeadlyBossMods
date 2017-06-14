@@ -90,6 +90,7 @@ local voiceCleansingRage			= mod:NewVoice(206820)--aesoon
 --Maniac
 local voiceArcingBonds				= mod:NewVoice(208915)--linegather
 local voiceAnnihilation				= mod:NewVoice(207630)--stilldanger
+local voiceEchoDuder				= mod:NewVoice(214880)--bigmob
 
 --Caretaker
 local voiceTidyUp					= mod:NewVoice(207513)--mobsoon/watchstep
@@ -310,9 +311,11 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			if cid == 108144 then--Maniac Imprint
 				local name = GetSpellInfo(206557)
 				specWarnEchoDuder:Show(name)
+				voiceEchoDuder:Play("bigmob")
 			elseif cid == 108303 then--Caretaker Imprint
 				local name = GetSpellInfo(206560)
 				specWarnEchoDuder:Show(name)
+				voiceEchoDuder:Play("bigmob")
 				timerToxicSliceCD:Start(16, "echo")
 			end
 		end
