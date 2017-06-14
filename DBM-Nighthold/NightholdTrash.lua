@@ -17,7 +17,7 @@ mod:RegisterEvents(
 local warnAnnihilatingOrb			= mod:NewTargetAnnounce(221344, 3)
 local warnCelestialBrand			= mod:NewTargetAnnounce(224560, 2)
 local warnArcaneRelease				= mod:NewTargetAnnounce(225105, 2)
-local warnChosenFate				= mod:NewTargetAnnounce(225845, 2)
+local warnChosenFate				= mod:NewTargetAnnounce(225845, 2, nil, false, 2)
 local warnOozingRush				= mod:NewTargetAnnounce(223655, 2)
 local warnFelGlare					= mod:NewTargetAnnounce(224982, 2)
 
@@ -184,7 +184,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnFelGlare:Show(args.destName)
 		end
 	elseif spellId == 225845 then
-		warnChosenFate:CombinedShow(0.5, args.destName)
+		warnChosenFate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnChosenFate:Show()
 			voiceChosenFate:Play("stopattack")
