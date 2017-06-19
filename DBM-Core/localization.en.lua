@@ -350,6 +350,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	stack			= "%%d stacks of %s on you",
 	switch			= "%s - switch targets",
 	switchcount		= "%s - switch targets (%%s)",
+	gtfo			= "Bad under you - move away",
 	Adds			= "Incoming Adds - switch targets"
 }
 
@@ -384,6 +385,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	stack 			= "Show special warning when you are affected by >=%d stacks of $spell:%s",
 	switch			= "Show special warning to switch targets for $spell:%s",
 	switchcount		= "Show special warning (with count) to switch targets for $spell:%s",
+	gtfo 			= "Show special warning to move out bad stuff on ground",
 	Adds			= "Show special warning to switch targets for incoming adds"
 }
 
@@ -439,6 +441,7 @@ DBM_CORE_AUTO_ARROW_OPTION_TEXT3		= "Show DBM Arrow to move toward specific loca
 DBM_CORE_AUTO_VOICE_OPTION_TEXT			= "Play spoken alerts for $spell:%s"
 DBM_CORE_AUTO_VOICE2_OPTION_TEXT		= "Play spoken alerts for phase changes"
 DBM_CORE_AUTO_VOICE3_OPTION_TEXT		= "Play spoken alerts for incoming adds"
+DBM_CORE_AUTO_VOICE4_OPTION_TEXT		= "Play spoken alerts for bad stuff on ground"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Play countdown sound for $spell:%s cooldown"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Play countdown sound for when $spell:%s fades"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Play countout sound for $spell:%s duration"
