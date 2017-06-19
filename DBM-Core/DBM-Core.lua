@@ -9640,6 +9640,10 @@ do
 		return newSpecialWarning(self, "move", text, nil, optionDefault, ...)
 	end
 	
+	function bossModPrototype:NewSpecialWarningGTFO(text, optionDefault, ...)
+		return newSpecialWarning(self, "gtfo", text, nil, optionDefault, ...)
+	end
+	
 	function bossModPrototype:NewSpecialWarningDodge(text, optionDefault, ...)
 		return newSpecialWarning(self, "dodge", text, nil, optionDefault, ...)
 	end
